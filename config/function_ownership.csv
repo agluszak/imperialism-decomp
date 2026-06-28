@@ -208,6 +208,7 @@ address|target_cpp|ownership|note
 4867e0|src/game/TApplication.cpp|manual|marker_sync
 486880|src/game/TApplication.cpp|manual|marker_sync
 4868a0|src/game/TApplication.cpp|manual|marker_sync
+4868c0|src/game/ui_invalidation_guard.cpp|manual|marker_sync
 486990|src/game/TApplication.cpp|manual|marker_sync
 4869b0|src/game/TApplication.cpp|manual|marker_sync
 486b10|src/game/TApplication.cpp|manual|marker_sync
@@ -602,6 +603,7 @@ address|target_cpp|ownership|note
 494700|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 4948b0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 495000|src/game/quickdraw_globals.cpp|manual|marker_sync
+495070|src/game/quickdraw_globals.cpp|manual|marker_sync
 495310|src/game/quickdraw_globals.cpp|manual|marker_sync
 4953a0|src/game/quickdraw_globals.cpp|manual|marker_sync
 495610|src/game/ClipStateRegion.cpp|manual|marker_sync
@@ -627,6 +629,15 @@ address|target_cpp|ownership|note
 497300|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 497320|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
 497390|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
+4977a0|src/game/ClipStateRegion.cpp|manual|marker_sync
+497810|src/game/ClipStateRegion.cpp|manual|marker_sync
+497bb0|src/game/ClipStateRegion.cpp|manual|marker_sync
+497c00|src/game/ClipStateRegion.cpp|manual|marker_sync
+497ef0|src/game/ClipStateRegion.cpp|manual|marker_sync
+497f60|src/game/ClipStateRegion.cpp|manual|marker_sync
+497f90|src/game/ClipStateRegion.cpp|manual|marker_sync
+498180|src/game/ClipStateRegion.cpp|manual|marker_sync
+498980|src/game/quickdraw_globals.cpp|manual|marker_sync
 498bb0|src/game/ClipStateRegion.cpp|manual|marker_sync
 498f60|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 498fe0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync

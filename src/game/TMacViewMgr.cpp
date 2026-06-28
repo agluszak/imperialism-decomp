@@ -5,6 +5,7 @@
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/ClipStateRegion.h"
 #include "game/TAnimation.h"
+#include "game/TAnimation.h"
 #include "game/TAssetMgr.h"
 #include "game/TCity.h"
 #include "game/TControl.h"
@@ -40,12 +41,13 @@ undefined4 scanBracketExpressions(void);
 undefined4 AssignStringSharedRefAndReturnThis(void);
 undefined4 RunEnableAndProcessFlagWithScopedSharedStringCleanup(void);
 undefined4 BuildUiTextStyleDescriptor(void);
+undefined4 CallCallbackRepeatedly(void);
+undefined4 RebuildSurfaceRowsWithTemporaryRowBuffer(void);
+undefined4 BuildBitmapMaskOpcodeBufferFromResourceRows(void);
+undefined4 BuildHexNeighborHighlightPolygonForTile(void);
+undefined4 CallObjectOffset24Vslot54IfPresent(void);
 
 namespace MacViewUiInvoke {
-
-static void FormatStringWithVarArgsToSharedRef(CString* dest, const char* format, int value) {
-  dest->Format(format, value);
-}
 
 static CString* AssignStringSharedRefAndReturnThis(TView* view, CString* sharedString) {
   return reinterpret_cast<CString*(__cdecl*)(TView*, CString*)>(
@@ -120,147 +122,37 @@ static void ScanBracketExpressionsInto(CString* dest, const CString& templateTex
       const_cast<char*>(static_cast<LPCSTR>(templateText)));
 }
 
-struct MacViewInvoke {
-  static void __stdcall CallCallbackRepeatedly(void* buf, int elemSize, int count, void* cb) {
-    extern undefined4 CallCallbackRepeatedly(void);
-    reinterpret_cast<void(__stdcall*)(void*, int, int, void*)>(
-        reinterpret_cast<void (*)()>(CallCallbackRepeatedly))(buf, elemSize, count, cb);
-  }
+static undefined4 QueryPointInsideHitRegion(short x, short y, ClipStateRegionWrapper* region) {
+  CPoint point;
+  point.x = x;
+  point.y = y;
+  return IsPointInsideHitRegion(&point, reinterpret_cast<int>(region));
+}
 
-  static void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* ctx, int* flags) {
-    ::GetActiveQuickDrawSurfaceContextAndFlags(ctx, reinterpret_cast<undefined4*>(flags));
-  }
+static void InvokeCallCallbackRepeatedly(void* buf, int elemSize, int count, void* cb) {
+  reinterpret_cast<void(__stdcall*)(void*, int, int, void*)>(
+      reinterpret_cast<void (*)()>(CallCallbackRepeatedly))(buf, elemSize, count, cb);
+}
 
-  static void SetActiveQuickDrawSurfaceContext(undefined4 ctx, int flags) {
-    ::SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(ctx),
-                                       static_cast<undefined4>(flags));
-  }
+static void InvokeRebuildSurfaceRowsWithTemporaryRowBuffer(void) {
+  reinterpret_cast<void(__cdecl*)(void)>(
+      reinterpret_cast<void (*)()>(RebuildSurfaceRowsWithTemporaryRowBuffer))();
+}
 
-  static void* GetSurfaceObjectAtContextOffset24(int context) {
-    return reinterpret_cast<void*>(::GetSurfaceObjectAtContextOffset24(context));
-  }
+static void InvokeBuildBitmapMaskOpcodeBufferFromResourceRows(int a, int b, int c, int d, int e) {
+  reinterpret_cast<void(__cdecl*)(int, int, int, int, int)>(reinterpret_cast<void (*)()>(
+      BuildBitmapMaskOpcodeBufferFromResourceRows))(a, b, c, d, e);
+}
 
-  static void ReturnConstantTrueQuickDrawFlag(void* surface) {
-    ::ReturnConstantTrueQuickDrawFlag(surface);
-  }
+static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
+  reinterpret_cast<void(__cdecl*)(short, int)>(reinterpret_cast<void (*)()>(
+      BuildHexNeighborHighlightPolygonForTile))(tileId, tileIndex);
+}
 
-  static void* GetSurfaceHeaderFromSurfaceObject(void* surface) {
-    return ::GetSurfaceHeaderFromSurfaceObject(surface);
-  }
-
-  static void NoOpQuickDrawLifecycleHookB(void* surface) {
-    ::NoOpQuickDrawLifecycleHookB(surface);
-  }
-
-  static void CombineOptionalSourceRegionIntoDestinationAndUpdateBox(int srcRegion, int dstRegion) {
-    extern undefined4 CombineOptionalSourceRegionIntoDestinationAndUpdateBox(void);
-    reinterpret_cast<void(__cdecl*)(int, int)>(reinterpret_cast<void (*)()>(
-        CombineOptionalSourceRegionIntoDestinationAndUpdateBox))(srcRegion, dstRegion);
-  }
-
-  static int** WrapperFor_AllocateWithFallbackHandler_At004a1130(int resourceId) {
-    return ::WrapperFor_AllocateWithFallbackHandler_At004a1130(static_cast<unsigned short>(resourceId));
-  }
-
-  static void WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(int** handle,
-                                                                                 RECT* bounds) {
-    ::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(handle, bounds);
-  }
-
-  static int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(int resourceId) {
-    return ::LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(
-        static_cast<unsigned short>(resourceId));
-  }
-
-  static void NoOpRuntimeCallback_00497c00(int** handle) {
-    extern undefined4 NoOpRuntimeCallback_00497c00(void);
-    reinterpret_cast<void(__cdecl*)(int**)>(
-        reinterpret_cast<void (*)()>(NoOpRuntimeCallback_00497c00))(handle);
-  }
-
-  static void RebuildSurfaceRowsWithTemporaryRowBuffer(void) {
-    extern undefined4 RebuildSurfaceRowsWithTemporaryRowBuffer(void);
-    reinterpret_cast<void(__cdecl*)(void)>(
-        reinterpret_cast<void (*)()>(RebuildSurfaceRowsWithTemporaryRowBuffer))();
-  }
-
-  static void BuildBitmapMaskOpcodeBufferFromResourceRows(int a, int b, int c, int d, int e) {
-    extern undefined4 BuildBitmapMaskOpcodeBufferFromResourceRows(void);
-    reinterpret_cast<void(__cdecl*)(int, int, int, int, int)>(reinterpret_cast<void (*)()>(
-        BuildBitmapMaskOpcodeBufferFromResourceRows))(a, b, c, d, e);
-  }
-
-  static void RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl(void) {
-    extern undefined4 RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl(void);
-    reinterpret_cast<void(__cdecl*)(void)>(reinterpret_cast<void (*)()>(
-        RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl))();
-  }
-
-  static void BuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
-    extern undefined4 BuildHexNeighborHighlightPolygonForTile(void);
-    reinterpret_cast<void(__cdecl*)(short, int)>(reinterpret_cast<void (*)()>(
-        BuildHexNeighborHighlightPolygonForTile))(tileId, tileIndex);
-  }
-
-  static void WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(int region) {
-    extern undefined4 WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(void);
-    reinterpret_cast<void(__cdecl*)(int)>(reinterpret_cast<void (*)()>(
-        WrapperFor_LookupHandleMapEntryWithCreate_At00497f90))(region);
-  }
-
-  static void DispatchTaggedGameStateEvent1F20(unsigned int tag, int param2, int param3) {
-    ::DispatchTaggedGameStateEvent1F20(static_cast<int>(tag), param2, param3);
-  }
-
-  static void ResetClipRegionAndReadBoundingRect(int region) {
-    extern undefined4 ResetClipRegionAndReadBoundingRect(void);
-    reinterpret_cast<void(__cdecl*)(int)>(
-        reinterpret_cast<void (*)()>(ResetClipRegionAndReadBoundingRect))(region);
-  }
-
-  static void CombineTwoRegionsIntoDestinationAndUpdateBox(int dst, int src, int out) {
-    extern undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void);
-    reinterpret_cast<void(__cdecl*)(int, int, int)>(reinterpret_cast<void (*)()>(
-        CombineTwoRegionsIntoDestinationAndUpdateBox))(dst, src, out);
-  }
-
-  static undefined4 QueryPointInsideHitRegion(short x, short y, int region) {
-    CPoint point;
-    point.x = x;
-    point.y = y;
-    return IsPointInsideHitRegion(&point, region);
-  }
-
-  static int RebuildSpriteNonTransparentPolygonRegion(int region, void* surface) {
-    extern undefined4 RebuildSpriteNonTransparentPolygonRegion(void);
-    return reinterpret_cast<int(__cdecl*)(int, void*)>(reinterpret_cast<void (*)()>(
-        RebuildSpriteNonTransparentPolygonRegion))(region, surface);
-  }
-
-  static void PumpUiMessagesAndBackgroundTasks(int flag) {
-    extern undefined4 PumpUiMessagesAndBackgroundTasks(void);
-    reinterpret_cast<void(__cdecl*)(int)>(
-        reinterpret_cast<void (*)()>(PumpUiMessagesAndBackgroundTasks))(flag);
-  }
-
-  static void CallObjectOffset24Vslot54IfPresent(void) {
-    extern undefined4 CallObjectOffset24Vslot54IfPresent(void);
-    reinterpret_cast<void(__cdecl*)(void)>(
-        reinterpret_cast<void (*)()>(CallObjectOffset24Vslot54IfPresent))();
-  }
-
-  static void SetQuickDrawStrokeColor(int color) {
-    extern undefined4 SetQuickDrawStrokeColor(void);
-    reinterpret_cast<void(__cdecl*)(int)>(
-        reinterpret_cast<void (*)()>(SetQuickDrawStrokeColor))(color);
-  }
-
-  static void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
-    extern undefined4 FillRectWithQuickDrawBrushAndContextOffset(void);
-    reinterpret_cast<void(__cdecl*)(RECT*)>(reinterpret_cast<void (*)()>(
-        FillRectWithQuickDrawBrushAndContextOffset))(rect);
-  }
-};
+static void InvokeCallObjectOffset24Vslot54IfPresent(void) {
+  reinterpret_cast<void(__cdecl*)(void)>(
+      reinterpret_cast<void (*)()>(CallObjectOffset24Vslot54IfPresent))();
+}
 
 void FreeHeapBufferField(int* field) {
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(field));
@@ -279,9 +171,9 @@ void ReleaseBitmapLoaderHandle(int** loaderHandle) {
 }
 
 void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
-  int** loaderHandle = MacViewInvoke::WrapperFor_AllocateWithFallbackHandler_At004a1130(resourceId);
+  int** loaderHandle = WrapperFor_AllocateWithFallbackHandler_At004a1130(resourceId);
   if (*loaderHandle != 0) {
-    MacViewInvoke::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle, dstRect);
+    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle, dstRect);
   }
   ReleaseBitmapLoaderHandle(loaderHandle);
 }
@@ -322,9 +214,9 @@ IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00509ca0
 TMacViewMgr::TMacViewMgr() : TObject() {
-  MacViewInvoke::CallCallbackRepeatedly(callback6bc, 0x30, 0x18, reinterpret_cast<void*>(0x00404d5e));
-  MacViewInvoke::CallCallbackRepeatedly(callbackB3c, 0x30, 6, reinterpret_cast<void*>(0x00404d5e));
-  MacViewInvoke::CallCallbackRepeatedly(callbackC5c, 0x30, 6, reinterpret_cast<void*>(0x00404d5e));
+  InvokeCallCallbackRepeatedly(callback6bc, 0x30, 0x18, reinterpret_cast<void*>(0x00404d5e));
+  InvokeCallCallbackRepeatedly(callbackB3c, 0x30, 6, reinterpret_cast<void*>(0x00404d5e));
+  InvokeCallCallbackRepeatedly(callbackC5c, 0x30, 6, reinterpret_cast<void*>(0x00404d5e));
   field04 = 0;
   int index = 0;
   while (index < 0x17) {
@@ -369,9 +261,9 @@ TMacViewMgr::~TMacViewMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00509e60
 void __fastcall WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60(TMacViewMgr* self) {
-  MacViewInvoke::CallCallbackRepeatedly(self->callbackC5c, 0x30, 6, reinterpret_cast<void*>(0x004038a0));
-  MacViewInvoke::CallCallbackRepeatedly(self->callbackB3c, 0x30, 6, reinterpret_cast<void*>(0x004038a0));
-  MacViewInvoke::CallCallbackRepeatedly(self->callback6bc, 0x30, 0x18, reinterpret_cast<void*>(0x004038a0));
+  InvokeCallCallbackRepeatedly(self->callbackC5c, 0x30, 6, reinterpret_cast<void*>(0x004038a0));
+  InvokeCallCallbackRepeatedly(self->callbackB3c, 0x30, 6, reinterpret_cast<void*>(0x004038a0));
+  InvokeCallCallbackRepeatedly(self->callback6bc, 0x30, 0x18, reinterpret_cast<void*>(0x004038a0));
 }
 
 // FUNCTION: IMPERIALISM 0x00509f20
@@ -444,7 +336,7 @@ void TMacViewMgr::WriteTo(TStream* stream) {
 undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   RECT atlasBounds;
   undefined4 savedContext;
-  int savedFlags;
+  undefined4 savedFlags;
   int* atlasSurface;
   int* pixelBuffer;
   undefined4* clearCursor;
@@ -458,12 +350,12 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   atlasBounds.right = 0x2e0;
   atlasBounds.bottom = 0x18;
   g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas674), 8, &atlasBounds);
-  MacViewInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(atlas674, savedFlags);
-  atlasSurface = reinterpret_cast<int*>(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas674));
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(atlasSurface);
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas674), savedFlags);
+  atlasSurface = reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(atlas674));
+  ReturnConstantTrueQuickDrawFlag(atlasSurface);
   ResetQuickDrawStrokeState();
-  pixelBuffer = reinterpret_cast<int*>(MacViewInvoke::GetSurfaceHeaderFromSurfaceObject(atlasSurface));
+  pixelBuffer = reinterpret_cast<int*>(GetSurfaceHeaderFromSurfaceObject(atlasSurface));
   clearWords = (atlasBounds.right - atlasBounds.left) * (atlasBounds.bottom - atlasBounds.top);
   clearCursor = reinterpret_cast<undefined4*>(pixelBuffer);
   while (clearWords >= 4) {
@@ -482,7 +374,7 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   commodityIndex = 0;
   while (commodityIndex < 0x17) {
     int** loaderHandle =
-        MacViewInvoke::WrapperFor_AllocateWithFallbackHandler_At004a1130(commodityIndex + 700);
+        WrapperFor_AllocateWithFallbackHandler_At004a1130(commodityIndex + 700);
     if (loaderHandle != nullptr && *loaderHandle != 0) {
       dstCursor = dstCursor + 2;
       CopySpriteSurfaceToStrideBuffer(reinterpret_cast<int*>(loaderHandle), dstCursor,
@@ -491,32 +383,32 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
     ReleaseBitmapLoaderHandle(loaderHandle);
     commodityIndex = commodityIndex + 1;
   }
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas674));
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas674));
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050a3b0
 undefined TMacViewMgr::LoadStrategicMapUnitIconAtlas750() {
-  unitIconAtlas = MacViewInvoke::LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ee);
+  unitIconAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ee);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050a3e0
 undefined TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751() {
-  unitOverlayAtlas = MacViewInvoke::LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ef);
+  unitOverlayAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ef);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050a410
 undefined TMacViewMgr::LoadStrategicMapOverlayAtlas8699() {
-  atlas680 = MacViewInvoke::LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x21fb);
+  atlas680 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x21fb);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050a440
 undefined TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
-  atlas684 = MacViewInvoke::LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
+  atlas684 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
   return 0;
 }
 
@@ -524,20 +416,20 @@ undefined TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
 void __fastcall BuildStrategicMapGaugeAtlasFrom1422And1423(TMacViewMgr* self) {
   RECT atlasBounds;
   undefined4 savedContext;
-  int savedFlags;
+  undefined4 savedFlags;
   atlasBounds.left = 0;
   atlasBounds.top = 0;
   atlasBounds.right = 0x500;
   atlasBounds.bottom = 0x10;
   g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&self->atlas688), 8, &atlasBounds);
-  MacViewInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(self->atlas688, savedFlags);
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(MacViewInvoke::GetSurfaceObjectAtContextOffset24(self->atlas688));
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(self->atlas688), savedFlags);
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(self->atlas688));
   ResetQuickDrawStrokeState();
   ResolveAndBlitBitmapResourceToActiveAtlas(0x58e, &atlasBounds);
   ResolveAndBlitBitmapResourceToActiveAtlas(0x58f, &atlasBounds);
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(MacViewInvoke::GetSurfaceObjectAtContextOffset24(self->atlas688));
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(self->atlas688));
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a6a0
@@ -568,20 +460,20 @@ void __fastcall RefreshCityCapabilityUiHandlesForActiveNation(TMacViewMgr* self)
     variant = 2;
   }
   nationId = g_pUiRuntimeContext->GetActiveNationId();
-  self->atlas68c = MacViewInvoke::LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x579 + variant * 7);
+  self->atlas68c = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x579 + variant * 7);
   nationId = g_pUiRuntimeContext->GetActiveNationId();
-  self->atlas690 = MacViewInvoke::LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
+  self->atlas690 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a820
 void __fastcall BuildStrategicMapTileOverlayStripSurfaces800To807(TMacViewMgr* self) {
   undefined4 savedContext;
-  int savedFlags;
+  undefined4 savedFlags;
   int stripIndex;
-  MacViewInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   stripIndex = 0;
   while (stripIndex < 8) {
-    int** loaderHandle = MacViewInvoke::WrapperFor_AllocateWithFallbackHandler_At004a1130(stripIndex + 800);
+    int** loaderHandle = WrapperFor_AllocateWithFallbackHandler_At004a1130(stripIndex + 800);
     if (*loaderHandle == 0) {
       return;
     }
@@ -589,28 +481,28 @@ void __fastcall BuildStrategicMapTileOverlayStripSurfaces800To807(TMacViewMgr* s
     CopyRect(&resourceBounds, reinterpret_cast<RECT*>(*loaderHandle + 8));
     g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&self->atlas694[stripIndex]), 8,
                                 &resourceBounds);
-    MacViewInvoke::SetActiveQuickDrawSurfaceContext(self->atlas694[stripIndex], savedFlags);
-    MacViewInvoke::ReturnConstantTrueQuickDrawFlag(MacViewInvoke::GetSurfaceObjectAtContextOffset24(self->atlas694[stripIndex]));
-    MacViewInvoke::NoOpRuntimeCallback_00497c00(loaderHandle);
+    SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(self->atlas694[stripIndex]), savedFlags);
+    ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(self->atlas694[stripIndex]));
+    NoOpRuntimeCallback_00497c00(loaderHandle);
     if (*loaderHandle != 0) {
       ResetQuickDrawStrokeState();
-      MacViewInvoke::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle, &resourceBounds);
+      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle, &resourceBounds);
       if (stripIndex == 0) {
-        MacViewInvoke::RebuildSurfaceRowsWithTemporaryRowBuffer();
+        InvokeRebuildSurfaceRowsWithTemporaryRowBuffer();
       }
       ReleaseBitmapLoaderHandle(loaderHandle);
     }
-    MacViewInvoke::NoOpQuickDrawLifecycleHookB(MacViewInvoke::GetSurfaceObjectAtContextOffset24(self->atlas694[stripIndex]));
+    NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(self->atlas694[stripIndex]));
     stripIndex = stripIndex + 1;
   }
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a9f0
 undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   RECT atlasBounds;
   undefined4 savedContext;
-  int savedFlags;
+  undefined4 savedFlags;
   int dstX;
   int dstY;
   int resourceId;
@@ -620,9 +512,9 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   atlasBounds.right = 0xcc0;
   atlasBounds.bottom = 0x40;
   g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas668), 8, &atlasBounds);
-  MacViewInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(atlas668, savedFlags);
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas668));
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas668), savedFlags);
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas668));
   ResetQuickDrawStrokeState();
   dstX = 0;
   dstY = 0;
@@ -675,14 +567,14 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(0x277e, &blitRect);
   }
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas668));
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas668));
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
 
   atlasBounds.right = 0xa80;
   g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas66c), 8, &atlasBounds);
-  MacViewInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(atlas66c, savedFlags);
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas66c));
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas66c), savedFlags);
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas66c));
   ResetQuickDrawStrokeState();
   dstX = 0x40;
   resourceId = 0x190;
@@ -742,8 +634,8 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
     dstX = dstX + 0x40;
     index = index + 1;
   }
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas66c));
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas66c));
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
 
   atlasBounds.right = 0xd7;
   atlasBounds.bottom = 0x78;
@@ -751,9 +643,9 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   atlasBounds.right = 0x90;
   atlasBounds.bottom = 0x26;
   g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas6b4), 8, &atlasBounds);
-  MacViewInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(atlas6b4, savedFlags);
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas6b4));
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas6b4), savedFlags);
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas6b4));
   ResetQuickDrawStrokeState();
   dstX = 0;
   resourceId = 0x23a;
@@ -767,8 +659,8 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
     dstX = dstX + 2;
     resourceId = resourceId + 1;
   }
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas6b4));
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas6b4));
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
 
   if (atlas6b8 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas6b8));
@@ -778,28 +670,28 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   atlasBounds.right = 0;
   atlasBounds.bottom = 0;
   g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas6b8), 8, &atlasBounds);
-  MacViewInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(atlas6b8, savedFlags);
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas6b8));
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas6b8), savedFlags);
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas6b8));
   ResetQuickDrawStrokeState();
   ResolveAndBlitBitmapResourceToActiveAtlas(0x244, &atlasBounds);
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas6b8));
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas6b8));
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
 
   index = 0;
   while (index < 0x10) {
-    MacViewInvoke::BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40, 0x40, 0x1680, 0x10);
+    InvokeBuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40, 0x40, 0x1680, 0x10);
     index = index + 1;
   }
   resourceId = 0x2760;
   while (resourceId < 0x2766) {
-    MacViewInvoke::BuildBitmapMaskOpcodeBufferFromResourceRows(resourceId - 0x26, 0x40, 0x40, 0x1680, 0x10);
-    MacViewInvoke::BuildBitmapMaskOpcodeBufferFromResourceRows(resourceId, 0x40, 0x40, 0x1680, 0x10);
+    InvokeBuildBitmapMaskOpcodeBufferFromResourceRows(resourceId - 0x26, 0x40, 0x40, 0x1680, 0x10);
+    InvokeBuildBitmapMaskOpcodeBufferFromResourceRows(resourceId, 0x40, 0x40, 0x1680, 0x10);
     resourceId = resourceId + 1;
   }
   index = 0x10;
   while (index < 0x18) {
-    MacViewInvoke::BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40, 0x40, 0x1680, 0x10);
+    InvokeBuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40, 0x40, 0x1680, 0x10);
     index = index + 1;
   }
   return 0;
@@ -811,7 +703,7 @@ void __fastcall ReloadBitmap244AndRefreshUiCaches(TMacViewMgr* self) {
   if (self->atlas6b8 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&self->atlas6b8));
   }
-  self->atlas6b8 = MacViewInvoke::LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x244);
+  self->atlas6b8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x244);
   if (self->atlas688 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&self->atlas688));
   }
@@ -822,7 +714,7 @@ void __fastcall ReloadBitmap244AndRefreshUiCaches(TMacViewMgr* self) {
 undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   RECT fillRect;
   undefined4 savedContext;
-  int savedFlags;
+  undefined4 savedFlags;
   int* surfaceObject;
   int pixelBase;
   unsigned int strideBytes;
@@ -835,16 +727,16 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   fillRect.top = 0;
   fillRect.right = 0xd7;
   fillRect.bottom = 0x78;
-  MacViewInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(atlas670, savedFlags);
-  surfaceObject = reinterpret_cast<int*>(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas670));
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(surfaceObject);
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas670), savedFlags);
+  surfaceObject = reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(atlas670));
+  ReturnConstantTrueQuickDrawFlag(surfaceObject);
   ResetQuickDrawStrokeState();
-  pixelBase = reinterpret_cast<int>(MacViewInvoke::GetSurfaceHeaderFromSurfaceObject(surfaceObject));
+  pixelBase = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(surfaceObject));
   strideBytes = *reinterpret_cast<ushort*>(*surfaceObject + 4) & 0x3fff;
-  MacViewInvoke::SetQuickDrawStrokeColor(0xffffff);
+  SetQuickDrawStrokeColor(0xffffff);
   g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x32);
-  MacViewInvoke::FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
+  FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
   colOffset = 0;
   tileIndex = 0;
   while (tileIndex < 0x1950) {
@@ -867,7 +759,7 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     }
     tileIndex = tileIndex + 1;
   }
-  pixelBase = reinterpret_cast<int>(MacViewInvoke::GetSurfaceHeaderFromSurfaceObject(surfaceObject));
+  pixelBase = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(surfaceObject));
   pixelBase = pixelBase + strideBytes * 2;
   scratchBuffer = new unsigned char[0x6540];
   if (scratchBuffer == 0) {
@@ -933,9 +825,9 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   }
   delete[] scratchBuffer;
   SetQuickDrawFillColor(0);
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas670));
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
-  MacViewInvoke::RebuildSurfaceRowsWithTemporaryRowBuffer();
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas670));
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
+  InvokeRebuildSurfaceRowsWithTemporaryRowBuffer();
   reinterpret_cast<unsigned char*>(g_pGlobalMapState)[4] = 1;
   return 0;
 }
@@ -952,7 +844,7 @@ undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
         *tileSlot = 0;
       }
       *tileSlot = CreateClipStateRegionWrapperObject();
-      MacViewInvoke::RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl();
+      RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl();
       char neighborCount =
           reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset + 0x3a];
       int neighborIndex = 0;
@@ -960,13 +852,12 @@ undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
         short* neighborCursor = reinterpret_cast<short*>(
             reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + tileByteOffset + 0x42);
         while (neighborIndex < neighborCount) {
-          MacViewInvoke::BuildHexNeighborHighlightPolygonForTile(neighborCursor[0], tileIndex);
+          InvokeBuildHexNeighborHighlightPolygonForTile(neighborCursor[0], tileIndex);
           neighborIndex = neighborIndex + 1;
           neighborCursor = neighborCursor + 1;
         }
       }
-      MacViewInvoke::WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(
-          reinterpret_cast<int>(*tileSlot));
+      WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(*tileSlot);
     }
     tileByteOffset = tileByteOffset + 0xa8;
     tileIndex = tileIndex + 1;
@@ -979,21 +870,19 @@ undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
 // FUNCTION: IMPERIALISM 0x0050bad0
 undefined TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
   if (g_pLocalizationTable->field30 == 1) {
-    MacViewInvoke::DispatchTaggedGameStateEvent1F20(0x72656765, 0, 0xfffffffd);
+    DispatchTaggedGameStateEvent1F20(0x72656765, 0, 0xfffffffd);
   }
   if (tileStateSlots[0] != 0) {
     ClipStateRegionWrapper* regionWrapper = CreateClipStateRegionWrapperObject();
     int nationIndex = 0;
     while (nationIndex < 0x17) {
-      MacViewInvoke::ResetClipRegionAndReadBoundingRect(reinterpret_cast<int>(regionWrapper));
+      ResetClipRegionAndReadBoundingRect(regionWrapper);
       int tileByteOffset = 0;
       ClipStateRegionWrapper** tileSlot = tileStateSlots;
       while (tileByteOffset < 0xfc00) {
         if (reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset] ==
             nationIndex) {
-          MacViewInvoke::CombineTwoRegionsIntoDestinationAndUpdateBox(
-              reinterpret_cast<int>(regionWrapper), reinterpret_cast<int>(*tileSlot),
-              reinterpret_cast<int>(regionWrapper));
+          CombineTwoRegionsIntoDestinationAndUpdateBox(regionWrapper, *tileSlot, regionWrapper);
         }
         tileByteOffset = tileByteOffset + 0xa8;
         tileSlot = tileSlot + 1;
@@ -1153,10 +1042,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(0);
       deficitCount = static_cast<short>(production * 2 - city->cityStockCottonB6 - city->cityStockWoolB8);
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(
-          &formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
           static_cast<int>(city->cityStockCottonB6) + static_cast<int>(city->cityStockWoolB8));
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatProduction, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatProduction.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 0, &displayText);
     }
@@ -1168,9 +1056,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(4);
       deficitCount = static_cast<short>(production * 2 - city->cityStockTimberBA);
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           static_cast<int>(city->cityStockTimberBA));
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 4, &displayText);
       formatFieldValue = city->cityStockTimberBA;
@@ -1186,9 +1074,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(2);
       deficitCount = static_cast<short>(production - (&city->cityStockCottonB6)[nationSlot]);
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production);
       g_pLocalizationTable->GetString(0x2719, 2, &displayText);
       formatFieldValue = (&city->cityStockCottonB6)[nationSlot];
@@ -1200,9 +1088,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needTarget = nation->needTargetByType[5];
     needCurrent = nation->needCurrentByType[5];
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
-    MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+    formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                         static_cast<int>(needCurrent));
-    MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+    formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                         static_cast<int>(needTarget));
     g_pLocalizationTable->GetString(0x2719, 1, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
@@ -1215,9 +1103,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(6);
       deficitCount = static_cast<short>(production * 2 - city->cityStockOilC2);
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           static_cast<int>(city->cityStockOilC2));
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 6, &displayText);
       formatFieldValue = city->cityStockOilC2;
@@ -1232,9 +1120,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(1);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFabricC6);
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           static_cast<int>(city->cityStockFabricC6));
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 1, &displayText);
       formatFieldValue = city->cityStockFabricC6;
@@ -1249,9 +1137,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(5);
       deficitCount = static_cast<short>(production * 2 - city->cityStockLumberC8);
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           static_cast<int>(city->cityStockLumberC8));
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 5, &displayText);
       formatFieldValue = city->cityStockLumberC8;
@@ -1266,9 +1154,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(3);
       deficitCount = static_cast<short>(production * 2 - city->cityStockSteelCC);
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           static_cast<int>(city->cityStockSteelCC));
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 3, &displayText);
       formatFieldValue = city->cityStockSteelCC;
@@ -1283,9 +1171,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(0xb);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFuelCE);
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           static_cast<int>(city->cityStockFuelCE));
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 0xb, &displayText);
       formatFieldValue = city->cityStockFuelCE;
@@ -1299,9 +1187,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needTarget = nation->needTargetByType[nationSlot];
     needCurrent = nation->needCurrentByType[nationSlot];
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
-    MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+    formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                         static_cast<int>(needCurrent));
-    MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+    formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                         static_cast<int>(needTarget));
     g_pLocalizationTable->GetString(0x2719, 8, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
@@ -1315,10 +1203,10 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   {
     short* summary = city->GetCitySummaryRecordSlot74();
     short summaryValue = summary[nationSlot];
-    MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+    formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                         static_cast<int>(summaryValue));
     deficitCount = static_cast<short>(summaryValue - (&city->cityStockCottonB6)[nationSlot]);
-    MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
+    formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                         static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
     g_pLocalizationTable->GetString(0x2735, 7, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
@@ -1335,7 +1223,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   {
     short* summary = city->GetCitySummaryRecordSlot74();
     short summaryValue = summary[0x14];
-    MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
+    formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                         static_cast<int>(summaryValue));
     deficitCount = static_cast<short>(summaryValue - city->cityStockFishDC - city->cityStockLivestockDE);
     formatFieldValue =
@@ -1375,7 +1263,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     displayText = bracketScratch;
   } else if (!useSummaryPath) {
     if (useProductionTailPath) {
-      MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatField, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      formatField.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                         static_cast<int>(formatFieldValue));
     }
     g_pLocalizationTable->GetString(0x2735, 7, &formatTarget);
@@ -1469,7 +1357,7 @@ undefined TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag() {
   g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x3b8, 0);
   short completionFlag = *reinterpret_cast<short*>(reinterpret_cast<char*>(dialog) + 0x14);
   while (completionFlag == 0) {
-    MacViewInvoke::PumpUiMessagesAndBackgroundTasks(1);
+    PumpUiMessagesAndBackgroundTasks(1);
     completionFlag = *reinterpret_cast<short*>(reinterpret_cast<char*>(dialog) + 0x14);
   }
   return 0;
@@ -1538,16 +1426,15 @@ undefined TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefin
   if (regionSlots[param_2] == 0) {
     regionSlots[param_2] = CreateClipStateRegionWrapperObject();
   }
-  MacViewInvoke::CombineOptionalSourceRegionIntoDestinationAndUpdateBox(
-      static_cast<int>(param_1), reinterpret_cast<int>(regionSlots[param_2]));
+  CombineOptionalSourceRegionIntoDestinationAndUpdateBox(
+      reinterpret_cast<ClipStateRegionWrapper*>(param_1), regionSlots[param_2]);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d6c0
 undefined TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(short tileIndex) {
   if (regionSlots[tileIndex] != 0) {
-    return MacViewInvoke::QueryPointInsideHitRegion(0, 0,
-                                                    reinterpret_cast<int>(regionSlots[tileIndex]));
+    return QueryPointInsideHitRegion(0, 0, regionSlots[tileIndex]);
   }
   return 0;
 }
@@ -1555,34 +1442,31 @@ undefined TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(short tileIn
 // FUNCTION: IMPERIALISM 0x0050d700
 undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1) {
   undefined4 savedContext;
-  int savedFlags;
+  undefined4 savedFlags;
   RECT resourceBounds;
   int gworldHandle = param_1;
   regionSlots[param_1] = CreateClipStateRegionWrapperObject();
-  MacViewInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  int** loaderHandle = MacViewInvoke::WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1 + 4000);
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  int** loaderHandle = WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1 + 4000);
   CopyRect(&resourceBounds, reinterpret_cast<RECT*>(reinterpret_cast<char*>(*loaderHandle) + 8));
   g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&gworldHandle), 1, &resourceBounds);
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(resourceBounds.right, savedFlags);
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(MacViewInvoke::GetSurfaceObjectAtContextOffset24(resourceBounds.right));
-  MacViewInvoke::NoOpRuntimeCallback_00497c00(loaderHandle);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(resourceBounds.right), savedFlags);
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(resourceBounds.right));
+  NoOpRuntimeCallback_00497c00(loaderHandle);
   if (*loaderHandle != 0) {
     ResetQuickDrawStrokeState();
-    MacViewInvoke::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle, &resourceBounds);
+    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle, &resourceBounds);
     ReleaseBitmapLoaderHandle(loaderHandle);
   }
-  void* surfaceObject = MacViewInvoke::GetSurfaceObjectAtContextOffset24(resourceBounds.right);
-  if (MacViewInvoke::RebuildSpriteNonTransparentPolygonRegion(
-          reinterpret_cast<int>(regionSlots[param_1]), surfaceObject) != 0) {
-    MacViewInvoke::RebuildSpriteNonTransparentPolygonRegion(
-        reinterpret_cast<int>(regionSlots[param_1]), surfaceObject);
-    MacViewInvoke::RebuildSpriteNonTransparentPolygonRegion(
-        reinterpret_cast<int>(regionSlots[param_1]), surfaceObject);
+  void* surfaceObject = GetSurfaceObjectAtContextOffset24(resourceBounds.right);
+  if (RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], surfaceObject) != 0) {
+    RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], surfaceObject);
+    RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], surfaceObject);
   }
   int surfaceContext = resourceBounds.right;
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&surfaceContext));
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(MacViewInvoke::GetSurfaceObjectAtContextOffset24(resourceBounds.right));
-  MacViewInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(resourceBounds.right));
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
   return 0;
 }
 
@@ -1623,7 +1507,7 @@ undefined TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(
   }
   goldControl->gold71();
   goldControl->SetGoldControlStateByResource(0, 0);
-  MacViewInvoke::CallObjectOffset24Vslot54IfPresent();
+  InvokeCallObjectOffset24Vslot54IfPresent();
   return 0;
 }
 
@@ -1669,17 +1553,17 @@ undefined TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(int* param_1, sho
   int* atlasSurface;
   short srcRowOffset;
   if (param_2 < 100) {
-    atlasSurface = reinterpret_cast<int*>(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas674));
+    atlasSurface = reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(atlas674));
     srcRowOffset = static_cast<short>(param_2 << 5);
   } else {
-    atlasSurface = reinterpret_cast<int*>(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas680));
+    atlasSurface = reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(atlas680));
     srcRowOffset = static_cast<short>((param_2 - 100) * 0x20);
   }
   ushort dstStrideRaw = *reinterpret_cast<ushort*>(*param_1 + 4);
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(atlasSurface);
-  int srcPixels = reinterpret_cast<int>(MacViewInvoke::GetSurfaceHeaderFromSurfaceObject(atlasSurface));
+  ReturnConstantTrueQuickDrawFlag(atlasSurface);
+  int srcPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(atlasSurface));
   ushort srcStrideRaw = *reinterpret_cast<ushort*>(*atlasSurface + 4);
-  int dstPixels = reinterpret_cast<int>(MacViewInvoke::GetSurfaceHeaderFromSurfaceObject(param_1));
+  int dstPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(param_1));
   int dstStrideBytes = static_cast<int>(static_cast<short>(dstStrideRaw & 0x3fff));
   char* srcRow = reinterpret_cast<char*>(srcPixels + srcRowOffset);
   char* dstRow = reinterpret_cast<char*>(dstPixels + param_4 * dstStrideBytes + param_3);
@@ -1721,7 +1605,7 @@ undefined TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(int* param_1, sho
     dstRow = dstRow + dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
   } while (rowsRemaining != 0);
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(atlasSurface);
+  NoOpQuickDrawLifecycleHookB(atlasSurface);
   return 0;
 }
 
@@ -1729,11 +1613,11 @@ undefined TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(int* param_1, sho
 void TMacViewMgr::DrawStrategicMapUnitIcon(int* pDstSurface, short nIconVariant, short nDstX,
                                            short nYShift) {
   int* atlasSurface =
-      reinterpret_cast<int*>(MacViewInvoke::GetSurfaceObjectAtContextOffset24(unitIconAtlas));
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(atlasSurface);
-  int srcPixels = reinterpret_cast<int>(MacViewInvoke::GetSurfaceHeaderFromSurfaceObject(atlasSurface));
+      reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(unitIconAtlas));
+  ReturnConstantTrueQuickDrawFlag(atlasSurface);
+  int srcPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(atlasSurface));
   ushort srcStrideRaw = *reinterpret_cast<ushort*>(*atlasSurface + 4);
-  int dstPixels = reinterpret_cast<int>(MacViewInvoke::GetSurfaceHeaderFromSurfaceObject(pDstSurface));
+  int dstPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(pDstSurface));
   int dstStrideBytes =
       static_cast<int>(static_cast<short>(*reinterpret_cast<ushort*>(*pDstSurface + 4) & 0x3fff));
   char* srcRow = reinterpret_cast<char*>(srcPixels + static_cast<short>(nIconVariant * 0x14));
@@ -1764,7 +1648,7 @@ void TMacViewMgr::DrawStrategicMapUnitIcon(int* pDstSurface, short nIconVariant,
     dstRow = dstRow + dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
   } while (rowsRemaining != 0);
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(atlasSurface);
+  NoOpQuickDrawLifecycleHookB(atlasSurface);
 }
 
 // FUNCTION: IMPERIALISM 0x0050df40
@@ -1779,11 +1663,11 @@ void TMacViewMgr::DrawStrategicMapUnitIconOverlay(int* pDstSurface, ushort wOver
     return;
   }
   int* atlasSurface =
-      reinterpret_cast<int*>(MacViewInvoke::GetSurfaceObjectAtContextOffset24(unitOverlayAtlas));
-  MacViewInvoke::ReturnConstantTrueQuickDrawFlag(atlasSurface);
-  int srcPixels = reinterpret_cast<int>(MacViewInvoke::GetSurfaceHeaderFromSurfaceObject(atlasSurface));
+      reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(unitOverlayAtlas));
+  ReturnConstantTrueQuickDrawFlag(atlasSurface);
+  int srcPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(atlasSurface));
   ushort srcStrideRaw = *reinterpret_cast<ushort*>(*atlasSurface + 4);
-  int dstPixels = reinterpret_cast<int>(MacViewInvoke::GetSurfaceHeaderFromSurfaceObject(pDstSurface));
+  int dstPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(pDstSurface));
   int dstStrideBytes =
       static_cast<int>(static_cast<short>(*reinterpret_cast<ushort*>(*pDstSurface + 4) & 0x3fff));
   char* srcRow = reinterpret_cast<char*>(srcPixels + overlaySourceRow * (srcStrideRaw & 0x3fff));
@@ -1806,5 +1690,5 @@ void TMacViewMgr::DrawStrategicMapUnitIconOverlay(int* pDstSurface, ushort wOver
     dstRow = dstRow + dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
   } while (rowsRemaining != 0);
-  MacViewInvoke::NoOpQuickDrawLifecycleHookB(atlasSurface);
+  NoOpQuickDrawLifecycleHookB(atlasSurface);
 }

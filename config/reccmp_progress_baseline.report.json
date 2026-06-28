@@ -3004,7 +3004,7 @@
     },
     {
       "address": "0x4868c0",
-      "matching": 0.0,
+      "matching": 0.2992125984251969,
       "name": "PumpUiMessagesAndBackgroundTasks",
       "type": 1
     },
@@ -5911,7 +5911,7 @@
     },
     {
       "address": "0x495070",
-      "matching": 0.2857142857142857,
+      "matching": 0.5,
       "name": "SetQuickDrawStrokeColor",
       "type": 1
     },
@@ -6193,13 +6193,13 @@
     },
     {
       "address": "0x4977a0",
-      "matching": 0.06451612903225806,
+      "matching": 0.4126984126984127,
       "name": "CombineTwoRegionsIntoDestinationAndUpdateBox",
       "type": 1
     },
     {
       "address": "0x497810",
-      "matching": 0.07692307692307693,
+      "matching": 0.52,
       "name": "ResetClipRegionAndReadBoundingRect",
       "type": 1
     },
@@ -6229,13 +6229,13 @@
     },
     {
       "address": "0x497bb0",
-      "matching": 0.08,
+      "matching": 0.48,
       "name": "CombineOptionalSourceRegionIntoDestinationAndUpdateBox",
       "type": 1
     },
     {
       "address": "0x497c00",
-      "matching": 1.0,
+      "matching": 0.5714285714285714,
       "name": "NoOpRuntimeCallback_00497c00",
       "type": 1
     },
@@ -6253,13 +6253,13 @@
     },
     {
       "address": "0x497ef0",
-      "matching": 0.0625,
+      "matching": 0.5151515151515151,
       "name": "RebuildSpriteNonTransparentPolygonRegion",
       "type": 1
     },
     {
       "address": "0x497f60",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl",
       "type": 1
     },
@@ -6271,7 +6271,7 @@
     },
     {
       "address": "0x498180",
-      "matching": 0.024096385542168676,
+      "matching": 0.4,
       "name": "DrawFrameRectOrUpdateClipRegion",
       "type": 1
     },
@@ -6283,7 +6283,7 @@
     },
     {
       "address": "0x498980",
-      "matching": 0.05970149253731343,
+      "matching": 0.3076923076923077,
       "name": "FillRectWithQuickDrawBrushAndContextOffset",
       "type": 1
     },
@@ -12032,7 +12032,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12266,7 +12266,7 @@
     },
     {
       "address": "0x4de700",
-      "matching": 0.6216216216216216,
+      "matching": 0.6486486486486487,
       "name": "TGreatPower::CanAffordDiplomacyGrantEntryForTarget",
       "type": 1
     },
@@ -12470,7 +12470,7 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12482,7 +12482,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12494,7 +12494,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.6363636363636364,
+      "matching": 0.6818181818181818,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12524,7 +12524,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -15776,7 +15776,7 @@
     },
     {
       "address": "0x509ca0",
-      "matching": 0.7746478873239436,
+      "matching": 0.6896551724137931,
       "name": "ConstructStrategicMapViewSystem",
       "type": 1
     },
@@ -15860,13 +15860,13 @@
     },
     {
       "address": "0x50a820",
-      "matching": 0.3886255924170616,
+      "matching": 0.3791469194312796,
       "name": "BuildStrategicMapTileOverlayStripSurfaces800To807",
       "type": 1
     },
     {
       "address": "0x50a9f0",
-      "matching": 0.1532192339038305,
+      "matching": 0.1466992665036675,
       "name": "TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext",
       "type": 1
     },
@@ -15878,13 +15878,13 @@
     },
     {
       "address": "0x50b640",
-      "matching": 0.3833718244803695,
+      "matching": 0.3787528868360277,
       "name": "TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress",
       "type": 1
     },
     {
       "address": "0x50b9e0",
-      "matching": 0.3333333333333333,
+      "matching": 0.3181818181818182,
       "name": "TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles",
       "type": 1
     },
@@ -15914,13 +15914,13 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.18230088495575222,
+      "matching": 0.1752212389380531,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
     {
       "address": "0x50d310",
-      "matching": 0.47058823529411764,
+      "matching": 0.48484848484848486,
       "name": "TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag",
       "type": 1
     },
@@ -15944,13 +15944,13 @@
     },
     {
       "address": "0x50d680",
-      "matching": 0.6666666666666666,
+      "matching": 0.7777777777777778,
       "name": "TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion",
       "type": 1
     },
     {
       "address": "0x50d6c0",
-      "matching": 0.35294117647058826,
+      "matching": 0.35714285714285715,
       "name": "TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0",
       "type": 1
     },
@@ -15980,7 +15980,7 @@
     },
     {
       "address": "0x50d950",
-      "matching": 0.7017543859649122,
+      "matching": 0.6666666666666666,
       "name": "TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950",
       "type": 1
     },
@@ -16928,7 +16928,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.29545454545454547,
+      "matching": 0.2857142857142857,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -26812,7 +26812,7 @@
     },
     {
       "address": "0x589260",
-      "matching": 0.4406779661016949,
+      "matching": 0.42016806722689076,
       "name": "TIndustryAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },

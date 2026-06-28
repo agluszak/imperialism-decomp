@@ -14,7 +14,7 @@ extern int g_nActiveQuickDrawSurfaceFlags;
 
 void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* outContext, undefined4* outFlags);
 void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext* context, undefined4 flags);
-int GetSurfaceObjectAtContextOffset24(int context);
+void* GetSurfaceObjectAtContextOffset24(int context);
 void* GetSurfaceHeaderFromSurfaceObject(void* surfaceObject);
 short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(int* outContext, short bitDepth,
                                                          RECT* bounds, int hintField18, int arg4,

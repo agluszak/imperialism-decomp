@@ -1,5 +1,9 @@
 #include "game/quickdraw_globals.h"
 
+#include "game/bitmap_descriptor_helpers.h"
+
+extern void* g_pScopedMapQuickDrawDcHandleObject;
+
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
@@ -23,6 +27,8 @@ int g_bQuickDrawStrokePairDirty = 0;
 int g_pGlobalClipRegionHandleObject = 0;
 // GLOBAL: IMPERIALISM 0x6950fc
 int g_Quick_Draw_Color_State_006950FC = 0;
+// GLOBAL: IMPERIALISM 0x695100
+int g_uQuickDrawStrokeColor = 0;
 // GLOBAL: IMPERIALISM 0x6a1d52
 int g_uQuickDrawCurrentColor = 0;
 // GLOBAL: IMPERIALISM 0x6a1d80
@@ -37,6 +43,14 @@ void SetQuickDrawFillColor(int fillColor) {
     g_pActiveQuickDrawSurfaceContext->quickDrawColor = fillColor;
   }
   g_uQuickDrawCurrentColor = fillColor;
+}
+
+// FUNCTION: IMPERIALISM 0x00495070
+void SetQuickDrawStrokeColor(int strokeColor) {
+  g_uQuickDrawStrokeColor = strokeColor;
+  if (g_pActiveQuickDrawSurfaceContext != 0) {
+    g_pActiveQuickDrawSurfaceContext->transparentBlitColor = strokeColor;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00495310
@@ -69,4 +83,35 @@ void SnapshotHitRegionToClipCache(int* clipDescriptor) {
 void SetGlobalQuickDrawOrigin(short originX, short originY) {
   g_nQuickDrawOriginX = originX;
   g_nQuickDrawOriginY = originY;
+}
+
+// FUNCTION: IMPERIALISM 0x00498980
+void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
+  CBrush brush;
+  brush.CreateSolidBrush(static_cast<COLORREF>(g_Quick_Draw_Color_State_006950FC));
+
+  RECT fillRect;
+  CopyRect(&fillRect, rect);
+
+  int surfaceField1c = 0;
+  if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
+    surfaceField1c = 0;
+  } else {
+    void** surfaceSlot = reinterpret_cast<void**>(
+        reinterpret_cast<char*>(g_pActiveQuickDrawSurfaceContextHead) + 0x24);
+    if (surfaceSlot != nullptr && *surfaceSlot != nullptr) {
+      surfaceField1c = *reinterpret_cast<int*>(static_cast<char*>(*surfaceSlot) + 0x1c);
+    }
+  }
+  if (surfaceField1c == 0) {
+    OffsetRect(&fillRect, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
+  }
+
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = static_cast<CDC*>(g_pScopedMapQuickDrawDcHandleObject);
+  }
+  if (dc != nullptr) {
+    FillRect(dc->GetSafeHdc(), &fillRect, static_cast<HBRUSH>(brush.GetSafeHandle()));
+  }
 }

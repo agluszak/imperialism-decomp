@@ -851,14 +851,6 @@ undefined4 SetQuickDrawColorAndPropagateIfChanged(void)
   return 0;
 }
 
-// ghidra_name SetQuickDrawStrokeColor
-// ghidra_proto undefined SetQuickDrawStrokeColor()
-// FUNCTION: IMPERIALISM 0x00495070
-undefined4 SetQuickDrawStrokeColor(void)
-{
-  return 0;
-}
-
 // ghidra_name SetQuickDrawColorAndSyncGlobals
 // ghidra_proto undefined SetQuickDrawColorAndSyncGlobals()
 // FUNCTION: IMPERIALISM 0x004950a0
@@ -1075,22 +1067,6 @@ undefined4 Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497540(void)
   return 0;
 }
 
-// ghidra_name CombineTwoRegionsIntoDestinationAndUpdateBox
-// ghidra_proto undefined CombineTwoRegionsIntoDestinationAndUpdateBox()
-// FUNCTION: IMPERIALISM 0x004977a0
-undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetClipRegionAndReadBoundingRect
-// ghidra_proto undefined ResetClipRegionAndReadBoundingRect()
-// FUNCTION: IMPERIALISM 0x00497810
-undefined4 ResetClipRegionAndReadBoundingRect(void)
-{
-  return 0;
-}
-
 // ghidra_name TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState
 // ghidra_proto undefined FrameRegionOnHdcAndReleaseBrushState()
 // FUNCTION: IMPERIALISM 0x00497860
@@ -1123,22 +1099,6 @@ undefined4 InitializeCityBuildingControlRegions_Impl(void)
   return 0;
 }
 
-// ghidra_name CombineOptionalSourceRegionIntoDestinationAndUpdateBox
-// ghidra_proto undefined CombineOptionalSourceRegionIntoDestinationAndUpdateBox()
-// FUNCTION: IMPERIALISM 0x00497bb0
-undefined4 CombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeCallback_00497c00
-// ghidra_proto undefined NoOpRuntimeCallback_00497c00()
-// FUNCTION: IMPERIALISM 0x00497c00
-undefined4 NoOpRuntimeCallback_00497c00(void)
-{
-  return 0;
-}
-
 // ghidra_name SetQuickDrawTextOriginWithContextOffset
 // ghidra_proto undefined SetQuickDrawTextOriginWithContextOffset()
 // FUNCTION: IMPERIALISM 0x00497c80
@@ -1155,42 +1115,10 @@ undefined4 DrawCenteredGuideLineOnMapDc(void)
   return 0;
 }
 
-// ghidra_name RebuildSpriteNonTransparentPolygonRegion
-// ghidra_proto undefined RebuildSpriteNonTransparentPolygonRegion()
-// FUNCTION: IMPERIALISM 0x00497ef0
-undefined4 RebuildSpriteNonTransparentPolygonRegion(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl
-// ghidra_proto undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl()
-// FUNCTION: IMPERIALISM 0x00497f60
-undefined4 RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_LookupHandleMapEntryWithCreate_At00497f90
-// ghidra_proto undefined WrapperFor_LookupHandleMapEntryWithCreate_At00497f90()
-// FUNCTION: IMPERIALISM 0x00497f90
-undefined4 WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(void)
-{
-  return 0;
-}
-
 // ghidra_name IntersectClipRegionWithRectAndUpdateBounds
 // ghidra_proto undefined IntersectClipRegionWithRectAndUpdateBounds()
 // FUNCTION: IMPERIALISM 0x00498070
 undefined4 IntersectClipRegionWithRectAndUpdateBounds(void)
-{
-  return 0;
-}
-
-// ghidra_name DrawFrameRectOrUpdateClipRegion
-// ghidra_proto undefined DrawFrameRectOrUpdateClipRegion()
-// FUNCTION: IMPERIALISM 0x00498180
-undefined4 DrawFrameRectOrUpdateClipRegion(void)
 {
   return 0;
 }
@@ -1207,14 +1135,6 @@ undefined4 InitializeBrushStateVtableAndClearHandle(void)
 // ghidra_proto undefined WrapperFor_DeleteRegionHandleFromClipState_At00498610()
 // FUNCTION: IMPERIALISM 0x00498610
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00498610(void)
-{
-  return 0;
-}
-
-// ghidra_name FillRectWithQuickDrawBrushAndContextOffset
-// ghidra_proto undefined FillRectWithQuickDrawBrushAndContextOffset()
-// FUNCTION: IMPERIALISM 0x00498980
-undefined4 FillRectWithQuickDrawBrushAndContextOffset(void)
 {
   return 0;
 }

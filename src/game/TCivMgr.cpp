@@ -15,12 +15,12 @@
 #include "game/TMapUberPicture.h"
 #include "game/TViewMgr.h"
 #include "game/mfc.h"
+#include "game/ui_invalidation_guard.h"
 
 extern "C" {
 extern short g_awEngineerFortBuildCostByLevel[8];
 extern int g_adwEngineerRailBuildCostByTerrainType[16];
 }
-undefined4 PumpUiMessagesAndBackgroundTasks(void);
 undefined4 GetTickCountDiv16(void);
 undefined4 scanBracketExpressions(void);
 IMPLEMENT_DYNCREATE(TCivMgr, TObject)
@@ -190,7 +190,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
     int startTick = reinterpret_cast<int(__cdecl*)(void)>(GetTickCountDiv16)();
     while (true) {
-      reinterpret_cast<void(__stdcall*)(int)>(PumpUiMessagesAndBackgroundTasks)(1);
+      PumpUiMessagesAndBackgroundTasks(1);
       int now = reinterpret_cast<int(__cdecl*)(void)>(GetTickCountDiv16)();
       if (now < startTick) {
         break;

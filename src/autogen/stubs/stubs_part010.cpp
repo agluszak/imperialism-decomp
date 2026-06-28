@@ -1747,14 +1747,6 @@ undefined4 CreateTCommandHandlerInstance(void)
   return 0;
 }
 
-// ghidra_name PumpUiMessagesAndBackgroundTasks
-// ghidra_proto int __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode)
-// FUNCTION: IMPERIALISM 0x004868c0
-undefined4 PumpUiMessagesAndBackgroundTasks(void)
-{
-  return 0;
-}
-
 // ghidra_name InvokeAfxThreadAndCallSecondaryRefresh
 // ghidra_proto undefined InvokeAfxThreadAndCallSecondaryRefresh()
 // FUNCTION: IMPERIALISM 0x00486960

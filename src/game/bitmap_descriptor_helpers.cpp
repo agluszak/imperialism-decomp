@@ -278,8 +278,8 @@ void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* outContext, undefined4
 }
 
 // FUNCTION: IMPERIALISM 0x004962a0
-int GetSurfaceObjectAtContextOffset24(int context) {
-  return *reinterpret_cast<int*>(context + 0x24);
+void* GetSurfaceObjectAtContextOffset24(int context) {
+  return *reinterpret_cast<void**>(context + 0x24);
 }
 
 // FUNCTION: IMPERIALISM 0x004962c0
@@ -346,7 +346,7 @@ int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceI
 
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(outContext),
                                    savedFlags);
-  void* surfaceObject = reinterpret_cast<void*>(GetSurfaceObjectAtContextOffset24(outContext));
+  void* surfaceObject = GetSurfaceObjectAtContextOffset24(outContext);
   ReturnConstantTrueQuickDrawFlag(surfaceObject);
 
   loader->EnsureBitmapResourceLoadedAndCopyRectSize();

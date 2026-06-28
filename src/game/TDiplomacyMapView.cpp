@@ -351,10 +351,9 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   do {
     if (*terrainDescriptors != 0) {
-      void* frameRegion = reinterpret_cast<void*>(
+      ClipStateRegionWrapper* frameRegion = reinterpret_cast<ClipStateRegionWrapper*>(
           g_pStrategicMapViewSystem->VTableSlot26(static_cast<short>(terrainIndex)));
-      reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
-          CombineTwoRegionsIntoDestinationAndUpdateBox)(region, frameRegion, region);
+      CombineTwoRegionsIntoDestinationAndUpdateBox(region, frameRegion, region);
     }
     terrainIndex = static_cast<short>(terrainIndex + 1);
     terrainDescriptors = terrainDescriptors + 1;
