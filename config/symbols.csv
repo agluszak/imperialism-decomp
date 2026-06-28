@@ -3042,7 +3042,7 @@ address|name|size|type|prototype
 509c00|TMacViewMgr::CreateTMacViewMgrInstance|90|function|undefined CreateTMacViewMgrInstance()
 509c80|TMacViewMgr::GetRuntimeClass|6|function|undefined GetTMacViewMgrClassNamePointer()
 509ca0|ConstructStrategicMapViewSystem|281|function|undefined ConstructStrategicMapViewSystem()
-509e10|TMacViewMgr::VTableSlot26|12|function|undefined DestructTMacViewMgrAndMaybeFree()
+509e10|TMacViewMgr::GetClipRegionSlotByIndex|12|function|ClipStateRegionWrapper * __thiscall TMacViewMgr::GetClipRegionSlotByIndex(short index)
 509e30|TMacViewMgr::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 509e60|WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60|132|function|undefined WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60()
 509f20|TMacViewMgr::InitializeStrategicMapViewSystem|63|function|void InitializeStrategicMapViewSystem()

@@ -324,8 +324,8 @@ TMacViewMgr::TMacViewMgr() : TObject() {
 }
 
 // FUNCTION: IMPERIALISM 0x00509e10
-undefined4 TMacViewMgr::VTableSlot26(short tileIndex) {
-  return reinterpret_cast<undefined4>(regionSlots[tileIndex]);
+ClipStateRegionWrapper* TMacViewMgr::GetClipRegionSlotByIndex(short index) {
+  return regionSlots[index];
 }
 
 // SYNTHETIC: IMPERIALISM 0x00509e30

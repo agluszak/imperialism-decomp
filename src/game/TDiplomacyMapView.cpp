@@ -317,8 +317,8 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
   }
 
   SetQuickDrawFillColor(0xffffff);
-  void* frameRegion = reinterpret_cast<void*>(
-      g_pStrategicMapViewSystem->VTableSlot26(static_cast<short>(frameRegionSelectorAt98)));
+  ClipStateRegionWrapper* frameRegion = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(
+      static_cast<short>(frameRegionSelectorAt98));
   reinterpret_cast<void(__fastcall*)(void*, int, void*)>(FrameRegionOnHdcAndReleaseBrushState)(
       this, 0, frameRegion);
   SetQuickDrawFillColor(0);
@@ -332,8 +332,8 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   do {
     if (*terrainDescriptors != 0) {
-      ClipStateRegionWrapper* frameRegion = reinterpret_cast<ClipStateRegionWrapper*>(
-          g_pStrategicMapViewSystem->VTableSlot26(static_cast<short>(terrainIndex)));
+      ClipStateRegionWrapper* frameRegion =
+          g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(static_cast<short>(terrainIndex));
       CombineTwoRegionsIntoDestinationAndUpdateBox(region, frameRegion, region);
     }
     terrainIndex = static_cast<short>(terrainIndex + 1);
@@ -382,8 +382,8 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
       int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
       reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
       maskRuns[nationIndex].BlitMonochromeMaskBytePatternToSurface(
-          reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
-          paletteIndex, maskState, 1);
+          reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
+          maskState, 1);
 
       int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
       packedColorRuns[nationIndex].AppendPackedColorDword(
@@ -519,8 +519,8 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
         int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode + 200);
         reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
         maskRuns[terrainIndex].BlitMonochromeMaskBytePatternToSurface(
-            reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
-            paletteIndex, maskState, 1);
+            reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
+            maskState, 1);
 
         int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
         packedColorRuns[terrainIndex].AppendPackedColorDword(
