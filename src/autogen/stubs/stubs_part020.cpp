@@ -755,22 +755,6 @@ undefined4 HandleTurnEventVtableSlotA0SyncStatusPanel(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventVtableSlot60ActivateMainDialog
-// ghidra_proto undefined HandleTurnEventVtableSlot60ActivateMainDialog()
-// FUNCTION: IMPERIALISM 0x005da040
-undefined4 HandleTurnEventVtableSlot60ActivateMainDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnEvent2260_RefreshMainHudTitles
-// ghidra_proto undefined HandleTurnEvent2260_RefreshMainHudTitles()
-// FUNCTION: IMPERIALISM 0x005da180
-undefined4 HandleTurnEvent2260_RefreshMainHudTitles(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpUiRuntimeCallback_005db2f0
 // ghidra_proto undefined NoOpUiRuntimeCallback_005db2f0()
 // FUNCTION: IMPERIALISM 0x005db2f0

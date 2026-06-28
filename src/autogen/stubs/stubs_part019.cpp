@@ -1675,14 +1675,6 @@ undefined4 ConstructTDealBookPictureBaseState(void)
   return 0;
 }
 
-// ghidra_name RefreshHudNationTitleControlsAndTheme
-// ghidra_proto undefined RefreshHudNationTitleControlsAndTheme()
-// FUNCTION: IMPERIALISM 0x005bac50
-undefined4 RefreshHudNationTitleControlsAndTheme(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshTradeSelectionHeaderAndNationOfferBidLines
 // ghidra_proto undefined RefreshTradeSelectionHeaderAndNationOfferBidLines()
 // FUNCTION: IMPERIALISM 0x005bc0d0

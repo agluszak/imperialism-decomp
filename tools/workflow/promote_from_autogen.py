@@ -110,11 +110,11 @@ def parse_ranges(range_specs: list[str]) -> list[tuple[int, int]]:
 
 def annotation_re(module: str) -> re.Pattern[str]:
     return re.compile(
-        r"^\s*//\s*(?:(?:FUNCTION|STUB)\s*:\s*"
+        r"^[ \t]*//[ \t]*(?:(?:FUNCTION|STUB)[ \t]*:[ \t]*"
         + re.escape(module)
-        + r"\s+|GHIDRA_FUNCTION\s+"
+        + r"[ \t]+|GHIDRA_FUNCTION[ \t]+"
         + re.escape(module)
-        + r"\s+)(?:0x)?([0-9a-fA-F]+)\s*$",
+        + r"[ \t]+)(?:0x)?([0-9a-fA-F]+)[ \t]*$",
         re.MULTILINE,
     )
 

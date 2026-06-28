@@ -8,6 +8,9 @@ class TStream;
 class TToolBarClusterVtbl;
 class TView;
 class TEventHandler;
+class TControl;
+class TCursorControlPanel;
+class TDiplomacyMapView;
 
 // TODO(manifest): describe TViewMgr and its role. Base edge (TObject) recovered from RTTI
 // CRuntimeClass chain: TViewMgr -> TObject -> CObject.
@@ -125,6 +128,7 @@ public:
 };
 
 extern TViewMgr* g_pUiRuntimeContext;
+extern TCursorControlPanel* g_pCursorControlPanel;
 
 ASSERT_SIZE(TViewMgr, 0xfc);
 

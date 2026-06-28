@@ -16,6 +16,12 @@
 #include "game/TControl.h"
 #include "game/TGlobalMapState.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TInfoBarText.h"
+#include "game/ui_control_tags.h"
+#include "game/TMilitaryUnitOrderState.h"
+#include "game/TViewMgr.h"
+#include "game/TSimMgr.h"
+#include "game/TCursorControlPanel.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -756,4 +762,53 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
   } while (policyIndex < 0x180);
 
   reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
+}
+
+// FUNCTION: IMPERIALISM 0x005DA040
+void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount() {
+  TView* mainView = g_pDisplayMgr->activeDialog;
+  TCursorControlPanel* cursor = static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCrus));
+  g_pCursorControlPanel = cursor;
+  if (cursor != nullptr) {
+    cursor->AssertValid();
+    cursor->RefreshControl();
+  }
+
+  CString emptyString(g_szEmptyString);
+  emptyString = emptyString;
+  EnableAndProcessFlag(emptyString);
+}
+
+// FUNCTION: IMPERIALISM 0x005DA180
+void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920() {
+  TView* mainView = g_pDisplayMgr->activeDialog;
+  TCursorControlPanel* cursor = static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCrus));
+  g_pCursorControlPanel = cursor;
+  if (cursor != nullptr) {
+    cursor->AssertValid();
+    cursor->RefreshControl();
+  }
+
+  CString emptyString(g_szEmptyString);
+  emptyString = emptyString;
+  EnableAndProcessFlag(emptyString);
+
+  TControl* queryControl = mainView->ResolveControlByTag(kControlTagQuer);
+  if (queryControl != nullptr) {
+    queryControl->AssertValid();
+    CString loadedString;
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2730, 3);
+    queryControl->EnableAndProcessFlag(loadedString);
+  }
+
+  TControl* titleControl = mainView->ResolveControlByTag(0x7469744c);
+  if (titleControl != nullptr) {
+    titleControl->AssertValid();
+    titleControl->RefreshControl();
+    static_cast<TInfoBarText*>(titleControl)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
+    CString titleString;
+    g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(&titleString);
+    titleControl->EnableAndProcessFlag(titleString);
+    titleControl->RefreshHudNationTitleControlsAndTheme(0x2b6c);
+  }
 }

@@ -163,6 +163,8 @@ public:
   virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                     int arg4) override;
   virtual int QuerySelectedIndexSlotBC() override;
+
+  void RefreshHudNationTitleControlsAndTheme(int themeCode);
 };
 
 // === BEGIN GENERATED (TControl) — refreshed by `just gen-class TControl`; do not hand-edit ===

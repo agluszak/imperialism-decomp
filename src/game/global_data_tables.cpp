@@ -11,6 +11,7 @@
 
 class TControl;
 class TView;
+class TCursorControlPanel;
 
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
@@ -28,6 +29,7 @@ class TView;
 #include "game/TMacViewMgr.h"
 #include "game/TLanguageMgr.h"
 #include "game/THelpMgr.h"
+#include "game/TCursorControlPanel.h"
 #include "game/TAnimator.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
@@ -461,7 +463,7 @@ extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 int g_bCityDialogLegendSelectionInitialized = 0;
 
 // GLOBAL: IMPERIALISM 0x006a590c
-extern "C" void* g_pCursorControlPanel = nullptr;
+TCursorControlPanel* g_pCursorControlPanel = nullptr;
 
 // McAppUI-wide modal-window stack (an MFC CPtrList of TWindow*, base 0x006a1ac0).
 // TWindow::ExecuteViewModalStateWithPushPopChain pushes the active window on entry and
