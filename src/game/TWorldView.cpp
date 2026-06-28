@@ -3,7 +3,7 @@
 #include "game/QuickDrawSurfaceGuard.h"
 #include "game/TGlobalMapState.h"
 #include "game/TSelectedCivilianOrderState.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/quickdraw_globals.h"
 #include "game/trade_quickdraw.h"
 

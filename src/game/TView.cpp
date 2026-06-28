@@ -13,7 +13,7 @@
 #include "game/TView.h"
 #include "game/TControl.h"
 #include "game/TCursorControlPanel.h"
-#include "game/mcappui_globals.h"
+#include "game/global_data_tables.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/quickdraw_globals.h"
 #include "game/ui_invalidation_guard.h"

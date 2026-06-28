@@ -6,7 +6,6 @@
 // symbol by name (the C-linkage leading underscore is stripped), so the *values* here
 // are irrelevant to matching — only the symbol identity and its use site matter.
 //
-// Same mechanism as the g_p* pointer globals in diplomacy_globals.cpp.
 // Symbol names below are taken verbatim from config/symbols.csv (including the few
 // historically double-named float tables) so the address mapping resolves.
 
@@ -14,41 +13,160 @@ class TControl;
 class TView;
 
 #include "game/mfc.h"
-#include "game/mcappui_globals.h"
+#include "game/global_data_tables.h"
 #include "game/startup_helpers.h"
 #include "game/TNetMgr.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
+#include "game/TCountry.h"
+#include "game/TDiplomacyMgr.h"
+#include "game/TDisplayMgr.h"
+#include "game/TGreatPower.h"
+#include "game/TInterNationEventQueueManager.h"
+#include "game/TNavyMgr.h"
+#include "game/TSimMgr.h"
+#include "game/TAssetMgr.h"
+#include "game/TMacViewMgr.h"
+#include "game/TLanguageMgr.h"
+#include "game/THelpMgr.h"
+#include "game/TAnimator.h"
+
+// Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
+// GLOBAL: IMPERIALISM 0x006a4310
+TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
+// GLOBAL: IMPERIALISM 0x006a2158
+TDisplayMgr* g_pDisplayMgr = 0;
+// GLOBAL: IMPERIALISM 0x006a21a8
+TMacViewMgr* g_pStrategicMapViewSystem = 0;
+// GLOBAL: IMPERIALISM 0x006a2148
+TAssetMgr* g_pUiViewManager = 0;
+// GLOBAL: IMPERIALISM 0x006a327c
+TLanguageMgr* g_pLanguageMgr = 0;
+// GLOBAL: IMPERIALISM 0x006a43e0
+TAnimator* g_pUiAnimator = 0;
 
 extern "C" {
 
+// Diplomacy globals
+// GLOBAL: IMPERIALISM 0x006a4280
+TMinor* g_apSecondaryNationStateSlots[36] = {0};
+// GLOBAL: IMPERIALISM 0x006a432c
+// Minor-nation capability object table, iterated as a pointer array. The slot-0x32 loop
+// scans entries [0..15] inclusive (`cmp edx, 0x6a4368` == &table[15]); sizing the array to
+// 16 lets MSVC emit the sentinel as `g_apMinorNationCapabilityObjects + 0x3c`.
+TMinor* g_apMinorNationCapabilityObjects[16] = {0};
+// GLOBAL: IMPERIALISM 0x006a429c
+// Scanned with g_apMinorNationCapabilityObjects[16].
+TMinor* g_apNationAuxRuntimeStateSlots[16] = {0};
+// GLOBAL: IMPERIALISM 0x006a4370
+TGreatPower* g_apNationStates[7] = {0};
+// GLOBAL: IMPERIALISM 0x006a438c
+void* g_apNationStates_End = reinterpret_cast<void*>(g_apNationStates + 7);
+// GLOBAL: IMPERIALISM 0x006a20f8
+TSimMgr* g_pLocalizationTable = 0;
+// GLOBAL: IMPERIALISM 0x006a21b8
+THelpMgr* g_pHelpMgr = 0;
+// GLOBAL: IMPERIALISM 0x006a43e8
+TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
+// GLOBAL: IMPERIALISM 0x006a1344
+TApplication* g_pGlobalUiRootController = 0;
+// GLOBAL: IMPERIALISM 0x006a43c8
+void* g_pGameFlowState = 0;
+// GLOBAL: IMPERIALISM 0x006a43d0
+TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
+// GLOBAL: IMPERIALISM 0x006a43e4
+TNavyMgr* g_pNavyOrderManager = 0;
+// GLOBAL: IMPERIALISM 0x006a3338
+int* g_pMapContextActionManager = 0;
+char g_vtblTSortedByRelationshipList = 0;
+// GLOBAL: IMPERIALISM 0x006a21c0
+int DAT_006a21c0 = 0;
+// GLOBAL: IMPERIALISM 0x006a1348
+class ImperialismApp* DAT_006a1348 = 0;
+// GLOBAL: IMPERIALISM 0x006a1350
+int DAT_006a1350 = 0;
+// GLOBAL: IMPERIALISM 0x006a1354
+void* DAT_006a1354 = 0;
+
 // McAppUI.cpp module globals referenced by TView/TControl widget code. See
-// include/game/mcappui_globals.h.
+// include/game/global_data_tables.h.
+// GLOBAL: IMPERIALISM 0x006950ac
 int g_McAppUiActiveFlag_006950AC = 0;
+// GLOBAL: IMPERIALISM 0x006a1af8
 int g_McAppUiDrawGate_006A1AF8 = 0;
+// GLOBAL: IMPERIALISM 0x006a1ae0
 int g_McAppUiFlag_006A1AE0 = 0;
+// GLOBAL: IMPERIALISM 0x006a1ae4
 int g_McAppUiFlag_006A1AE4 = 0;
+// GLOBAL: IMPERIALISM 0x006a1afc
 int g_McAppUiFlag_006A1AFC = 0;
+// GLOBAL: IMPERIALISM 0x006a1b00
 int g_McAppUiFlag_006A1B00 = 0;
+// GLOBAL: IMPERIALISM 0x006a1af0
 int g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 0;
+// GLOBAL: IMPERIALISM 0x006a1af4
 TView* g_McAppUiActiveRenderContext_006A1AF4 = 0;
+// GLOBAL: IMPERIALISM 0x006a1a60
 int g_McAppUiDefaultPosX_006A1A60 = 0;
+// GLOBAL: IMPERIALISM 0x006a1a64
 int g_McAppUiDefaultPosY_006A1A64 = 0;
+// GLOBAL: IMPERIALISM 0x006a1a68
 int g_McAppUiMouseCaptureStartPoint_006A1A68[2] = {0, 0};
+// GLOBAL: IMPERIALISM 0x006a1a70
 int g_McAppUiMouseCaptureLastPoint_006A1A70[2] = {0, 0};
+// GLOBAL: IMPERIALISM 0x006a1a78
 int g_McAppUiMouseCaptureCurrentPoint_006A1A78[2] = {0, 0};
+// GLOBAL: IMPERIALISM 0x006a1a80
 TControl* g_McAppUiMouseCaptureControl_006A1A80 = 0;
+// GLOBAL: IMPERIALISM 0x006a1adc
 unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
+// GLOBAL: IMPERIALISM 0x006950b0
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
+// GLOBAL: IMPERIALISM 0x006943cc
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
+// GLOBAL: IMPERIALISM 0x00696bc0
 char g_szUGameWindowSourcePath_00696bc0[] = "D:\\Ambit\\Cross\\UGameWindow.cpp";
+// GLOBAL: IMPERIALISM 0x006a143c
 int g_McAppUiFlag_006A143C = 0;
+// GLOBAL: IMPERIALISM 0x006a1b04
 int g_McAppUiFlag_006A1B04 = 0;
+// GLOBAL: IMPERIALISM 0x006a1b08
 int g_McAppUiFlag_006A1B08 = 0;
+// GLOBAL: IMPERIALISM 0x006a1b10
 int g_McAppUiFlag_006A1B10 = 0;
+// GLOBAL: IMPERIALISM 0x006a1b14
 int g_McAppUiFlag_006A1B14 = 0;
+// GLOBAL: IMPERIALISM 0x006a1b18
 int g_McAppUiFlag_006A1B18 = 0;
+// GLOBAL: IMPERIALISM 0x006a1b1c
 int g_McAppUiFlag_006A1B1C = 0;
+// GLOBAL: IMPERIALISM 0x006a1b0c
 int g_McAppUiFlag_006A1B0C = 0;
+
+} // extern "C"
+
+// Diplomacy helper functions (formerly in diplomacy_globals.cpp).
+TGreatPower* GetNationStateBySlot(short slotId) {
+  return g_apNationStates[slotId];
+}
+
+short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot) {
+  return nationState->GetDiplomacyExternalStateByTarget(metricSlot);
+}
+
+// Active root of the in-progress UI resource tree and the entry currently being registered.
+// GLOBAL: IMPERIALISM 0x006a141c
+TView* g_pUiResourceHead = nullptr;
+// GLOBAL: IMPERIALISM 0x006a1420
+TView* g_pUiResourceContext = nullptr;
+
+// FUNCTION: IMPERIALISM 0x00489a50
+undefined4 SetGlobalUiInvalidationFlagAndReturnPrevious(undefined4 newValue) {
+  undefined4 previous = g_McAppUiActiveFlag_006950AC;
+  g_McAppUiActiveFlag_006950AC = newValue;
+  return previous;
+}
+
+extern "C" {
 // MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
 // symbol name, so the zero-initialized contents are irrelevant to matching.
 CRuntimeClass PTR_s_TEventHandler_00649588 = {nullptr, 0, 0, nullptr, nullptr};
@@ -211,7 +329,8 @@ int g_NetworkManagerLastError006a5f6c = 0;
 undefined4 DAT_0066ac88 = 0;
 int DAT_006a601c = 0;
 
-// InitInstance asset-path literals (LoadLanguageResourcesFromIrgFiles, EnsurePictWvDataGobLoadedBySlot).
+// InitInstance asset-path literals (LoadLanguageResourcesFromIrgFiles,
+// EnsurePictWvDataGobLoadedBySlot).
 // GLOBAL: IMPERIALISM 0x006942a8
 extern "C" const char s_DataDirectoryPath_006942A8[] = "Data/";
 // GLOBAL: IMPERIALISM 0x006942fc
@@ -257,15 +376,18 @@ extern "C" const char* const g_pRegistryCompanyKey_0063E038 = s_RegistryCompanyN
 // GLOBAL: IMPERIALISM 0x0063e03c
 extern "C" const char* const g_pRegistryAppKey_0063E03C = s_ProfileAppTitleImperialism_006941DC;
 // GLOBAL: IMPERIALISM 0x0063e040
-extern "C" const char* const g_pRegistrySettingsSection_0063E040 = s_ProfileSectionSettings_006941D0;
+extern "C" const char* const g_pRegistrySettingsSection_0063E040 =
+    s_ProfileSectionSettings_006941D0;
 // GLOBAL: IMPERIALISM 0x0063e044
-extern "C" const char* const g_pRegistrySettingsSectionAlt_0063E044 = s_ProfileSectionSettings_006941D0;
+extern "C" const char* const g_pRegistrySettingsSectionAlt_0063E044 =
+    s_ProfileSectionSettings_006941D0;
 // GLOBAL: IMPERIALISM 0x0063e048
 extern "C" const char* const g_pRegistryAutoResKey_0063E048 = s_ProfileKeyAutoRes_006941C4;
 // GLOBAL: IMPERIALISM 0x0063e04c
 extern "C" const char* const g_pRegistryLanguageKey_0063E04C = s_ProfileKeyLanguage_006941B8;
 // GLOBAL: IMPERIALISM 0x0063e050
-extern "C" const char* const g_pRegistryProfileAppName_0063E050 = s_ProfileLiteralIMPERIALISM_006941A8;
+extern "C" const char* const g_pRegistryProfileAppName_0063E050 =
+    s_ProfileLiteralIMPERIALISM_006941A8;
 
 // Shared empty-string literal at 0x006a13a0 (the "" passed to CString ctors / string
 // compares). Defined so reccmp pairs the address reference as a DATA symbol.
@@ -277,14 +399,6 @@ extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16] = {0};
 
 // GLOBAL: IMPERIALISM 0x698f58
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {0};
-
-// Minor-nation capability object table at 0x006a432c, iterated as a pointer array. The
-// slot-0x32 loop scans entries [0..15] inclusive (`cmp edx, 0x6a4368` == &table[15]); sizing
-// the array to 16 lets MSVC emit the sentinel as `g_apMinorNationCapabilityObjects + 0x3c`.
-TMinor* g_apMinorNationCapabilityObjects[16] = {0};
-
-// GLOBAL: IMPERIALISM 0x006a429c — scanned with g_apMinorNationCapabilityObjects[16].
-TMinor* g_apNationAuxRuntimeStateSlots[16] = {0};
 
 // Turn-flow cooldown defer counter and side flag (IsTurnCooldownCounterActiveOrResetFlag).
 // GLOBAL: IMPERIALISM 0x006a43c4
@@ -302,9 +416,8 @@ short g_nTurnCooldownSideFlag00698B10 = 0;
 // recovered from the original binary; sized to cover every short the loop reads.
 // GLOBAL: IMPERIALISM 0x00698b1a
 extern "C" short g_anScenarioNationSetupTable_00698B1A[27] = {
-    0x40f, 0x0,   0x41fc, 0x67, 0x410, 0x0,   0x41f4, 0x67, 0x410, 0x0,
-    0x41e4, 0x67, 0x810,  0x0,  0x41e0, 0x67, 0x810, 0x0,   0x41d4, 0x67,
-    0x411, 0x0,   0x41d0, 0x67, 0x411, 0x0,   0x41cc};
+    0x40f,  0x0,  0x41fc, 0x67, 0x410,  0x0,  0x41f4, 0x67, 0x410,  0x0,  0x41e4, 0x67, 0x810, 0x0,
+    0x41e0, 0x67, 0x810,  0x0,  0x41d4, 0x67, 0x411,  0x0,  0x41d0, 0x67, 0x411,  0x0,  0x41cc};
 
 // UI command-tag default params copied into every TControl (offsets 0x78/0x7c/0x80).
 // Named so reccmp pairs the direct absolute loads in the TControl ctor.
@@ -314,9 +427,9 @@ unsigned short g_wUiResourceEntryDefaultParam2 = 0;
 
 } // extern "C"
 
-// 0x006a6014 — global turn-event-queue manager pointer (built by ConstructGlobalTurnEventQueueManager
-// during multiplayer init, stored here and read by the turn-event dispatch path).
-// GLOBAL: IMPERIALISM 0x006a6014
+// 0x006a6014 — global turn-event-queue manager pointer (built by
+// ConstructGlobalTurnEventQueueManager during multiplayer init, stored here and read by the
+// turn-event dispatch path). GLOBAL: IMPERIALISM 0x006a6014
 TNetMgr* DAT_006a6014 = 0;
 
 #include "game/TApplication.h"
@@ -361,10 +474,6 @@ CPtrList g_LiveViewRegistry;
 
 // GLOBAL: IMPERIALISM 0x006a1b24
 TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = nullptr;
-
-// GLOBAL: IMPERIALISM 0x006a141c / 0x006a1420 — UI resource tree builder state.
-TView* g_pUiResourceHead = nullptr;
-TView* g_pUiResourceContext = nullptr;
 
 // GLOBAL: IMPERIALISM 0x006a1d18
 GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord = {0, 0, 0, 0, 0};

@@ -13,10 +13,11 @@
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
 #include "game/UiRuntimeContext.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/quickdraw_globals.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_control_tags.h"
 
 extern "C" {
 extern CRuntimeClass classRuntimeClass;
@@ -84,8 +85,6 @@ static void FailUiAssert(const char* sourceFile, int line) {
 namespace {
 
 const char* kSourceFileUDisplayMgr = "D:\\Ambit\\Cross\\UDisplayMgr.cpp";
-const unsigned int kControlTagMain = 0x6d61696eu;
-const unsigned int kTagOkOkOk = 0x6f6b6f6bu;
 const int kClass99WindowId = 99;
 
 static void AssignUiFontGlobalFromLiteral(CString& globalSlot, const char* literal) {

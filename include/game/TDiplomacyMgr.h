@@ -137,4 +137,4 @@ public:
   TDiplomacyMgr();
 };
 
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"

@@ -9526,11 +9526,19 @@ address|name|size|type|prototype
 6a1a80|g_McAppUiMouseCaptureControl_006A1A80||global|
 6a1adc|g_McAppUiMouseCaptureTimerId_006A1ADC||global|
 6a1ae0|g_McAppUiFlag_006A1AE0||global|
+6a1ae4|g_McAppUiFlag_006A1AE4||global|
 6a1af0|g_McAppUiUpdateWindowRecursionGuard_006A1AF0||global|
 6a1af4|g_McAppUiActiveRenderContext_006A1AF4||global|
 6a1af8|g_McAppUiDrawGate_006A1AF8||global|
 6a1afc|g_McAppUiFlag_006A1AFC||global|
 6a1b00|g_McAppUiFlag_006A1B00||global|
+6a1b04|g_McAppUiFlag_006A1B04||global|
+6a1b08|g_McAppUiFlag_006A1B08||global|
+6a1b0c|g_McAppUiFlag_006A1B0C||global|
+6a1b10|g_McAppUiFlag_006A1B10||global|
+6a1b14|g_McAppUiFlag_006A1B14||global|
+6a1b18|g_McAppUiFlag_006A1B18||global|
+6a1b1c|g_McAppUiFlag_006A1B1C||global|
 6a1c98|g_pReusableQuickDrawSurfaceListHead||global|
 6a1d08|g_nQuickDrawStrokeStylePrimary||global|
 6a1d0c|g_nQuickDrawStrokeStyleSecondary||global|
@@ -9549,6 +9557,7 @@ address|name|size|type|prototype
 6a2148|g_pUiViewManager||global|
 6a2158|g_pDisplayMgr||global|
 6a21a8|g_pStrategicMapViewSystem||global|
+6a21b8|g_pHelpMgr||global|
 6a21bc|g_pUiRuntimeContext||global|
 6a21c0|DAT_006a21c0||global|
 6a24d4|g_Sanitize_City_Counter_Value_006A24D4||global|

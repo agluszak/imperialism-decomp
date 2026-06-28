@@ -7,7 +7,7 @@
 #include "game/TPortZone.h"
 #include "game/TOcean.h"
 #include "game/TZone.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 
 void EnsurePortZoneForTile(short nTileIndex);
 void RemovePortZoneByTile(short nTileIndex);

@@ -368,7 +368,7 @@ address|target_cpp|ownership|note
 489810|src/game/THandleStream.cpp|manual|marker_sync
 489980|src/game/TStream.cpp|manual|marker_sync
 4899a0|src/game/TStream.cpp|manual|marker_sync
-489a50|src/game/ui_runtime_globals.cpp|manual|marker_sync
+489a50|src/game/global_data_tables.cpp|manual|marker_sync
 489f40|src/game/TEvent.cpp|manual|marker_sync
 48a070|src/game/TEventHandler.cpp|manual|marker_sync
 48a0e0|src/game/TEventHandler.cpp|manual|mfc_runtime_macro

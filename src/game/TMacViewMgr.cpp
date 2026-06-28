@@ -18,8 +18,9 @@
 #include "game/TTechMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TView.h"
+#include "game/ui_control_tags.h"
 #include "game/UiRuntimeContext.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/localization_text_helpers.h"
 #include "game/quickdraw_globals.h"
 #include "game/trade_quickdraw.h"
@@ -43,12 +44,6 @@ namespace {
 
 const unsigned int kAddrStrategicMapOverlaySourceRowByIconId = 0x00696d20;
 const unsigned int kAddrDecimalFormat = 0x0069430c;
-
-const unsigned int kTagCityProductionTotal = 0x746f7461u;
-const unsigned int kTagArrowLeft = 0x6c656674u;
-const unsigned int kTagArrowRight = 0x72676874u;
-const unsigned int kTagDetailText = 0x74657874u;
-const unsigned int kTagDetailValue = 0x76616c75u;
 
 static void SetPanelShortField(TControl* panel, int offset, short value) {
   *reinterpret_cast<short*>(reinterpret_cast<char*>(panel) + offset) = value;

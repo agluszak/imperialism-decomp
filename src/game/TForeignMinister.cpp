@@ -5,7 +5,7 @@
 #include "game/TGreatPower_internal.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TDiplomacyMgr.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/TStream.h"
 

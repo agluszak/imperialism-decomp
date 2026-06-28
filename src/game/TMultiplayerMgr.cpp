@@ -4,7 +4,7 @@
 #include "game/TNetMgr.h"
 #include "game/TStream.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include <cstring>
 
 // Leaf helpers reached through ILT thunks / autogen stubs. They are genuine __cdecl free

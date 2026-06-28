@@ -7,7 +7,7 @@
 #include "game/TTurnEventPacket.h"
 #include "game/TViewMgr.h"
 #include "game/TWNetSessionManager.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
 #include "game/network_error_reporting.h"

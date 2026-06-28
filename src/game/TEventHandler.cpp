@@ -10,7 +10,7 @@
 #include "game/TFileStream.h"
 #include "game/TView.h"
 #include "game/TApplication.h"
-#include "game/mcappui_globals.h"
+#include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include <string.h>
 

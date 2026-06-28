@@ -6,7 +6,7 @@
 #include "game/TSimMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TSortedList.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 
 extern "C" {
 extern short g_Classify_Nation_Military_LookupTable_00695CD4[][7];

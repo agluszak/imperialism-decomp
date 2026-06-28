@@ -1,4 +1,4 @@
-#include "game/mcappui_globals.h"
+#include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x0041b420
 unsigned char* ZeroUiResourceContextStyleBytes(unsigned char* buffer) {

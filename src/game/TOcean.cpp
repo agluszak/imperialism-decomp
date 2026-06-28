@@ -10,7 +10,7 @@
 #include "game/TGlobalMapState.h"
 #include "game/TZone.h"
 #include "game/TGreatPower.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TMapUberPicture.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TStream.h"

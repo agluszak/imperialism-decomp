@@ -2,7 +2,7 @@
 
 #include "game/ImperialismApp.h"
 #include "game/buffered_stream.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include <cstring>
 
 namespace {

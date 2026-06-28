@@ -3,7 +3,7 @@
 #include "decomp_types.h"
 #include "game/CString.h"
 #include "game/TUnit.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 
 extern "C" char g_szEmptyString[];
 undefined4 thunk_GenerateMappedFlavorTextByNationSlotField0C(void);

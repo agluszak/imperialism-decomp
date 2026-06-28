@@ -10,7 +10,7 @@
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCivToolbar.h"
-#include "game/diplomacy_globals.h" // g_pGameFlowState, g_pLocalizationTable, g_apNationStates
+#include "game/global_data_tables.h" // g_pGameFlowState, g_pLocalizationTable, g_apNationStates
 #include "game/TGreatPower.h"
 #include "game/TGlobalMapState.h"
 #include "game/TDisplayMgr.h"        // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
@@ -42,7 +42,7 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 TViewMgr* g_pUiRuntimeContext = 0;
 
 // TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pLocalizationTable / turn-state
-// manager). Included via diplomacy_globals.h.
+// manager). Included via global_data_tables.h.
 
 // The display/GWorld manager (g_pDisplayMgr @ 0x6a2158); its activeDialog (+0x04) field
 // holds the active main TView used as the dispatch root for turn-event UI refreshes.

@@ -1,7 +1,7 @@
 #include "game/TSoundPlayer.h"
 
 #include "game/mfc.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TApplication.h"
 #include "game/TSoundChannelNode.h"
 #include "game/TSoundResourceManager.h"

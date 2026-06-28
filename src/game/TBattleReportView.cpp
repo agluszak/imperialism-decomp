@@ -1,6 +1,6 @@
 #include "game/TBattleReportView.h"
 
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TAnimator.h"
 
 TBattleReportView::TBattleReportView()

@@ -1,7 +1,7 @@
 #include "game/ui_invalidation_guard.h"
 
 #include "game/mfc.h"
-#include "game/ui_runtime_globals.h"
+#include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x004868c0
 int __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode) {

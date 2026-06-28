@@ -20,7 +20,7 @@
 #include "game/TSoundPlayer.h"
 #include "game/TTechMgr.h"
 #include "game/TViewMgr.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 
 extern "C" char DAT_006a43f0;
 extern "C" char DAT_006a43c0;

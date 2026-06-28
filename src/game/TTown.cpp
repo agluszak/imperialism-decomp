@@ -4,7 +4,7 @@
 #include "game/TStream.h"
 #include <string.h>
 
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 
 extern "C" CRuntimeClass PTR_s_TTown_0066d780;

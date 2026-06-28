@@ -1,6 +1,6 @@
 #include "game/TMinister.h"
 
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"

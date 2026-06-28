@@ -5,7 +5,7 @@
 #include "game/TZone.h"
 #include "game/TStream.h"
 #include "game/GameAssert.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/map_action_context_helpers.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/CString.h"
