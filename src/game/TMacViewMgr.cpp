@@ -1074,7 +1074,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     TControlPictureRectState styleDescriptor;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
     textEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
-    textEntry->OrphanCallChain_C1_I09_0048ff70();
+    textEntry->OrphanCallChain_C1_I09_0048ff70(0, 0);
     textEntry->controlTag = kTagDetailText;
 
     g_pLocalizationTable->GetString(0x2735, 1, &scratch38);
@@ -1396,7 +1396,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   TControlPictureRectState styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
   textEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
-  textEntry->OrphanCallChain_C1_I09_0048ff70();
+  textEntry->OrphanCallChain_C1_I09_0048ff70(0, 0);
   textEntry->controlTag = kTagDetailText;
 
   g_pLocalizationTable->GetString(0x2735, 4, &scratch38);
@@ -1412,7 +1412,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     valueEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &valuePos, &valueHeight, 5,
                                                                  5, -1, 0);
     valueEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
-    valueEntry->OrphanCallChain_C1_I09_0048ff70();
+    valueEntry->OrphanCallChain_C1_I09_0048ff70(0, 0);
     valueEntry->controlTag = kTagDetailValue;
   }
 

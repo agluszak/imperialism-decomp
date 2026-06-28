@@ -129,7 +129,8 @@ public:
   virtual undefined OrphanCallChain_C1_I08_005b60a0(char param_1); // slot 0x76 0x5b60a0
   virtual undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl(); // slot 0x77 0x5b60d0
   virtual undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(); // slot 0x78 0x5b62e0
-  virtual undefined ConstructTMapKeyBaseState_Impl(); // slot 0x79 0x5b62a0
+  virtual undefined ConstructTMapKeyBaseState_Impl(void* styleDescriptor,
+                                                   int unusedFlag); // slot 0x79 0x5b62a0
   virtual undefined BuildCityViewProductionControls_Impl(); // slot 0x7a 0x5b64e0
   virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2); // slot 0x7b 0x5b64a0
   virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1); // slot 0x7c 0x5b6480

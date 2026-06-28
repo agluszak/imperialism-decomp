@@ -141,7 +141,12 @@ public:
                                                             int styleSecondary); // slot 0x81 0x5b6840
   virtual undefined OrphanCallChain_C1_I05_005b6810(); // slot 0x82 0x5b6810
 // === END GENERATED DECLS (TInfoBarText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TInfoBarText 0xCTOR`).
+
+  int cursorThemeCode98;      // +0x98
+  int cursorThemeCode9c;      // +0x9c
+  unsigned char fieldA0;      // +0xa0
+  unsigned char paddingA1[3]; // +0xa1
+  RECT layoutRectA4;          // +0xa4
 
   TInfoBarText();
 };

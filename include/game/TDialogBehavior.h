@@ -31,6 +31,8 @@ public:
   virtual undefined CreateTCommandInstance();                                  // slot 0x12 0x487660
   // === END GENERATED DECLS (TDialogBehavior) ===
 
+  void SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB);
+
   // --- TDialogBehavior data members (object size 0x24; the TBehavior base ends at 0x10).
   // field14/18 hold 4-char command codes (default 0x20202020 == "    " == unbound); the
   // keyboard handlers (slots 0x10/0x11) fire the default command on Enter/Return and the

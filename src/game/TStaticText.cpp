@@ -111,7 +111,11 @@ undefined TStaticText::LoadUiStringAndDispatchViaVslot1C8() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048ff70
-undefined TStaticText::OrphanCallChain_C1_I09_0048ff70() {
+undefined TStaticText::OrphanCallChain_C1_I09_0048ff70(short themeCode, char refreshFlag) {
+  field90 = themeCode;
+  if (refreshFlag != 0) {
+    RefreshControl();
+  }
   return 0;
 }
 

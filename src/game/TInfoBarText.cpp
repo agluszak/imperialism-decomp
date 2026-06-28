@@ -1,5 +1,10 @@
 #include "game/TInfoBarText.h"
 
+#include <cstring>
+
+void __cdecl BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int stylePrimary);
+undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
+
 // SYNTHETIC: IMPERIALISM 0x004293c0
 // TInfoBarText::`scalar deleting destructor'
 TInfoBarText::~TInfoBarText() {}
@@ -34,8 +39,20 @@ undefined TInfoBarText::OrphanCallChain_C1_I05_005b6810() {
 // FUNCTION: IMPERIALISM 0x005b6840
 undefined TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
                                                                 int styleSecondary) {
-  (void)stylePrimary;
-  (void)styleSecondary;
+  unsigned char styleDescriptor[16];
+  memset(&styleDescriptor, 0, sizeof(styleDescriptor));
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, stylePrimary);
+  ConstructTMapKeyBaseState_Impl(&styleDescriptor, 0);
+  OrphanCallChain_C1_I09_0048ff70(0, static_cast<char>(-1));
+  layoutRectA4.left = 0;
+  layoutRectA4.top = 0;
+  layoutRectA4.right = 0;
+  layoutRectA4.bottom = 0;
+  cursorThemeCode98 = reinterpret_cast<int(__cdecl*)(int, void*)>(thunk_MapUiThemeCodeToStyleFlags)(
+      styleSecondary, &styleDescriptor);
+  cursorThemeCode9c = reinterpret_cast<int(__cdecl*)(int, void*)>(thunk_MapUiThemeCodeToStyleFlags)(
+      stylePrimary, &styleDescriptor);
+  fieldA0 = 1;
   return 0;
 }
 

@@ -13,26 +13,19 @@ extern CPtrList g_ModalViewStack;
 
 undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void);
 
-// FUNCTION: IMPERIALISM 0x00487400
-void SetUiColorDescriptorGoldTriplet(TDialogBehavior* descriptor, int flag, int colorA,
-                                     int colorB) {
-  descriptor->field_0x4 = 0x646c6f67; // 'gold'
-  descriptor->field10 = static_cast<unsigned char>(flag);
-  descriptor->defaultCommandCode = colorA;
-  descriptor->cancelCommandCode = colorB;
-}
-
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own
 // g_McAppUiFlag_* one-shot so the assert fires at most once.
 static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
+  (void)path;
+  (void)line;
   TemporarilyClearAndRestoreUiInvalidationFlag();
 }
 
 // FUNCTION: IMPERIALISM 0x0048d500
 TWindow::TWindow() : TView(), dialogBehavior(), field98(0) {
   g_LiveViewRegistry.AddHead(this);
-  SetUiColorDescriptorGoldTriplet(&dialogBehavior, 1, 0x20202020, 0x20202020);
+  dialogBehavior.SetUiColorDescriptorGoldTriplet(1, 0x20202020, 0x20202020);
   field64 = this;
   dialogBehavior.SetDword08(reinterpret_cast<int>(this));
 }

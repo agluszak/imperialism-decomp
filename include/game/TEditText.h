@@ -30,7 +30,7 @@ public:
   void ApplyRectSlot110(RECT* rectBuffer) override;
   char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
   void RecomputeAbsolutePositionRecursive() override;
-  undefined OrphanCallChain_C1_I09_0048ff70() override;
+  undefined OrphanCallChain_C1_I09_0048ff70(short themeCode, char refreshFlag) override;
   virtual undefined SetEditSelectionAndScrollCaret();
   virtual undefined WrapperFor_StringShared_AssignFromPtr_At00490c70(CString* param_1);
   virtual void InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag);

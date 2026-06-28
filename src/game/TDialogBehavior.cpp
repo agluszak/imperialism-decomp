@@ -12,6 +12,14 @@ TDialogBehavior::TDialogBehavior()
 // TDialogBehavior::`scalar deleting destructor'
 TDialogBehavior::~TDialogBehavior() {}
 
+// FUNCTION: IMPERIALISM 0x00487400
+void TDialogBehavior::SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB) {
+  field_0x4 = 0x646c6f67; // 'gold'
+  field10 = flag;
+  defaultCommandCode = colorA;
+  cancelCommandCode = colorB;
+}
+
 // FUNCTION: IMPERIALISM 0x00487430
 undefined TDialogBehavior::OrphanCallChain_C1_I13_00487430(undefined4 param_1, undefined4 param_2) {
   (void)param_2;

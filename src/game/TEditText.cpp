@@ -93,7 +93,9 @@ undefined TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString * 
 }
 
 // FUNCTION: IMPERIALISM 0x00490cb0
-undefined TEditText::OrphanCallChain_C1_I09_0048ff70() {
+undefined TEditText::OrphanCallChain_C1_I09_0048ff70(short themeCode, char refreshFlag) {
+  (void)themeCode;
+  (void)refreshFlag;
   return 0;
 }
 

@@ -26,7 +26,9 @@ void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b62a0
-undefined TDeluxeText::ConstructTMapKeyBaseState_Impl() {
+undefined TDeluxeText::ConstructTMapKeyBaseState_Impl(void* styleDescriptor, int unusedFlag) {
+  (void)styleDescriptor;
+  (void)unusedFlag;
   return 0;
 }
 

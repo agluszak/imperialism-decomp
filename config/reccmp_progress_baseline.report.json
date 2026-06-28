@@ -3106,7 +3106,7 @@
     },
     {
       "address": "0x487400",
-      "matching": 0.0,
+      "matching": 0.5263157894736842,
       "name": "SetUiColorDescriptorGoldTriplet",
       "type": 1
     },
@@ -4798,7 +4798,7 @@
     },
     {
       "address": "0x48d500",
-      "matching": 0.35,
+      "matching": 0.35294117647058826,
       "name": "TControl::ConstructUiWindowResourceEntryBase",
       "type": 1
     },
@@ -5237,7 +5237,7 @@
     },
     {
       "address": "0x48ff70",
-      "matching": 0.0,
+      "matching": 0.2857142857142857,
       "name": "TStaticText::OrphanCallChain_C1_I09_0048ff70",
       "type": 1
     },
@@ -5357,7 +5357,7 @@
     },
     {
       "address": "0x490cb0",
-      "matching": 0.0,
+      "matching": 0.14285714285714285,
       "name": "TEditText::OrphanCallChain_C1_I09_0048ff70",
       "type": 1
     },
@@ -12026,7 +12026,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12464,7 +12464,7 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12476,19 +12476,19 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.6818181818181818,
+      "matching": 0.6363636363636364,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12518,7 +12518,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.4939759036144578,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -15908,7 +15908,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.16955170883266754,
+      "matching": 0.17441345728198318,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -30652,7 +30652,7 @@
     },
     {
       "address": "0x5b62a0",
-      "matching": 0.0,
+      "matching": 0.09090909090909091,
       "name": "TDeluxeText::ConstructTMapKeyBaseState_Impl",
       "type": 1
     },
@@ -30718,7 +30718,7 @@
     },
     {
       "address": "0x5b6840",
-      "matching": 0.08823529411764706,
+      "matching": 0.35294117647058826,
       "name": "TInfoBarText::AssertValid",
       "type": 1
     },
@@ -32422,7 +32422,7 @@
     },
     {
       "address": "0x5d7fc0",
-      "matching": 0.05555555555555555,
+      "matching": 0.43478260869565216,
       "name": "SetCursorRangeAndRefreshMainPanel",
       "type": 1
     },

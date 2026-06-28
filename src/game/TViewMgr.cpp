@@ -726,7 +726,7 @@ void BindCursorPanelAndSetTurnEventCodeRange() {
   g_pCursorControlPanel = cursor;
   if (cursor != nullptr) {
     cursor->AssertValid();
-    static_cast<TInfoBarText*>(cursor)->OrphanCallChain_C1_I05_005b6810();
+    static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
   }
 }
 
@@ -1014,8 +1014,15 @@ void TViewMgr::UiRuntimeSlotB8() {}
 // FUNCTION: IMPERIALISM 0x005d7fc0
 void TViewMgr::UiRuntimeSlot50(int payload) {
   (void)payload;
-  turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
-  turn_event_ui_refresh::RefreshMainCouncilTickerPanel();
+  TView* mainView = g_pDisplayMgr->activeDialog;
+  TControl* cursor = mainView->ResolveControlByTag(kControlTagCrus);
+  g_pCursorControlPanel = cursor;
+  cursor->AssertValid();
+  static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+  TControl* mainPanel = mainView->ResolveControlByTag(kControlTagMain);
+  mainPanel->AssertValid();
+  static_cast<TCouncilTickerAnimation*>(static_cast<void*>(mainPanel))
+      ->InitializeDiplomacyCouncilViewControlsAndTicker();
 }
 
 
