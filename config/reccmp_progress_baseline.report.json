@@ -5488,6 +5488,12 @@
       "type": 1
     },
     {
+      "address": "0x491ad0",
+      "matching": 0.07692307692307693,
+      "name": "TTurnEventDialogFactoryRegistryState_0064B328::InitializeTurnEventDialogFactoryRegistry_Impl",
+      "type": 1
+    },
+    {
       "address": "0x491b10",
       "matching": 0.64,
       "name": "TTurnEventDialogFactoryRegistry::`scalar deleting destructor'",
@@ -5497,6 +5503,12 @@
       "address": "0x491be0",
       "matching": 0.6857142857142857,
       "name": "RegisterDialogFactoryCallback",
+      "type": 1
+    },
+    {
+      "address": "0x491c80",
+      "matching": 0.5945945945945946,
+      "name": "TCluster::OrphanCallChain_C1_I17_00491c80",
       "type": 1
     },
     {
@@ -15896,8 +15908,14 @@
     },
     {
       "address": "0x50be30",
-      "matching": 0.01584507042253521,
-      "name": "TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C(unsigned short)",
+      "matching": 0.5333333333333333,
+      "name": "TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C",
+      "type": 1
+    },
+    {
+      "address": "0x50bea0",
+      "matching": 0.16955170883266754,
+      "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
     {
@@ -15980,8 +15998,14 @@
     },
     {
       "address": "0x50dd40",
-      "matching": 0.078125,
-      "name": "TMacViewMgr::DrawStrategicMapUnitIcon(int *, unsigned short, short, short, short)",
+      "matching": 0.31921824104234525,
+      "name": "TMacViewMgr::DrawStrategicMapUnitIcon",
+      "type": 1
+    },
+    {
+      "address": "0x50df40",
+      "matching": 0.10191082802547771,
+      "name": "TMacViewMgr::DrawStrategicMapUnitIconOverlay",
       "type": 1
     },
     {
@@ -32242,7 +32266,7 @@
     },
     {
       "address": "0x5d57b0",
-      "matching": 0.5576923076923077,
+      "matching": 0.5673076923076923,
       "name": "TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog",
       "type": 1
     },
@@ -32290,13 +32314,13 @@
     },
     {
       "address": "0x5d69b0",
-      "matching": 0.2751322751322751,
+      "matching": 0.31746031746031744,
       "name": "TViewMgr::ComputeTurnEventDialogPlacementByCode",
       "type": 1
     },
     {
       "address": "0x5d6b70",
-      "matching": 0.5263157894736842,
+      "matching": 0.8070175438596491,
       "name": "TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent",
       "type": 1
     },
@@ -39430,7 +39454,7 @@
     },
     {
       "address": "0x64b2e8",
-      "matching": 0.9230769230769231,
+      "matching": 1.0,
       "name": "TTurnEventDialogFactoryRegistry::`vftable'",
       "type": 5
     },
@@ -40120,7 +40144,7 @@
     },
     {
       "address": "0x658660",
-      "matching": 0.9375,
+      "matching": 1.0,
       "name": "TMacViewMgr::`vftable'",
       "type": 5
     },

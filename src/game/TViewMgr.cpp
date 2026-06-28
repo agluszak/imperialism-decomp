@@ -5,8 +5,9 @@
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCivToolbar.h"
-#include "game/diplomacy_globals.h"  // g_pGameFlowState, g_pLocalizationTable
+#include "game/diplomacy_globals.h" // g_pGameFlowState, g_pLocalizationTable
 #include "game/TGlobalMapState.h"
+#include "game/TDisplayMgr.h"        // g_pDisplayMgr (display/GWorld manager @ 0x6a2158)
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
 #include "game/ui_invalidation_guard.h"
 #include "game/turn_event_packets.h"
@@ -20,15 +21,8 @@ TViewMgr* g_pUiRuntimeContext = 0;
 // TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pLocalizationTable / turn-state
 // manager). Included via diplomacy_globals.h.
 
-// Application/document root pointer @ 0x6a2158; its +0x04 field holds the active main
-// TView used as the dispatch root for turn-event UI refreshes.
-namespace {
-struct MainViewHostContext {
-  void* field0;    // +0x00
-  TView* mainView; // +0x04
-};
-const unsigned int kAddrMainViewHostPtr = 0x006a2158;
-} // namespace
+// The display/GWorld manager (g_pDisplayMgr @ 0x6a2158); its activeDialog (+0x04) field
+// holds the active main TView used as the dispatch root for turn-event UI refreshes.
 
 #include "game/startup_helpers.h"
 
@@ -68,7 +62,6 @@ struct GoldDialogControl : public TControl {
 };
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
-const unsigned int kAddrUiViewManagerPtr = 0x006a2148;
 const unsigned int kAddrStrNilPointer = 0x00694fc8;
 const unsigned int kAddrStrFailure = 0x00694fd8;
 const unsigned int kAddrStrSourceFile = 0x0069b6bc;
@@ -206,7 +199,7 @@ int TViewMgr::MapTurnEventCodeToPaletteIndex(int eventCode) {
     case 5:
       return 0x1e;
     case 6:
-case_6:
+    case_6:
       return 0x2e;
     case 7:
     case 0x35:
@@ -255,17 +248,17 @@ case_6:
     case 0x32:
       return 0x1a;
     case 0x33:
-case_33:
+    case_33:
       return 0x2d;
     case 0x34:
-case_34:
+    case_34:
       return 0x18;
     case 0x37:
       return 0xbd;
     case 0x3a:
       return 0xc6;
     case 0x3b:
-case_3b:
+    case_3b:
       return 0x27;
     case 0x3e:
       return 0x15;
@@ -321,9 +314,8 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
     return;
   }
-  TAssetMgr* uiViewManager = *reinterpret_cast<TAssetMgr**>(kAddrUiViewManagerPtr);
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      uiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e5));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e5));
   if (node == nullptr) {
     MessageBoxA(nullptr, reinterpret_cast<const char*>(kAddrStrNilPointer),
                 reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
@@ -404,7 +396,7 @@ undefined4 TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(CString
 
 // FUNCTION: IMPERIALISM 0x005d5b00
 undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplateA13A0(int overlayMode,
-                                                                  CString* messageCString) {
+                                                                 CString* messageCString) {
   CString messageLocal;
   ::new ((void*)&messageLocal) CString(*messageCString);
   CString formatArg;
@@ -529,9 +521,8 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
 
 // FUNCTION: IMPERIALISM 0x005d69b0
 void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* outPlacement) {
-  MainViewHostContext* host = *reinterpret_cast<MainViewHostContext**>(kAddrMainViewHostPtr);
   RECT mainBounds;
-  host->mainView->QueryBounds(&mainBounds);
+  g_pDisplayMgr->activeDialog->QueryBounds(&mainBounds);
   (void)mainBounds; // original makes the call but discards the result
 
   char* afxWindow = reinterpret_cast<char*>(GetMainViewHostFromActiveThread());
@@ -565,8 +556,7 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* o
 
 // FUNCTION: IMPERIALISM 0x005d6b70
 void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
-  MainViewHostContext* host = *reinterpret_cast<MainViewHostContext**>(kAddrMainViewHostPtr);
-  TView* mainView = host->mainView;
+  TView* mainView = g_pDisplayMgr->activeDialog;
   if (mainView == nullptr) {
     return;
   }
@@ -642,7 +632,8 @@ void TViewMgr::UiRuntimeSlot88() {}
 
 void TViewMgr::UiRuntimeSlot8C() {}
 
-char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation, int proposalCode) {
+char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
+                                              int proposalCode) {
   (void)sourceNation;
   (void)targetNation;
   (void)proposalCode;
