@@ -4,6 +4,9 @@
 #include "decomp_types.h"
 #include "game/TApplication.h"
 
+class TMapUberPicture;
+class TStream;
+
 // Ambit-specific application subclass (size 0x54, base TApplication = 0x48).
 // Introduces virtual overrides for runtime serialization and modal auto-scroll.
 // VTABLE: IMPERIALISM 0x0063e398
@@ -20,10 +23,12 @@ public:
   virtual void ForwardParam(int param) override;           // slot 0x12, 0x0049e4b0
 
   virtual void VTableSlot2B(int arg1, int arg2, int arg3) override;   // slot 0x2b, 0x0049e320
-  virtual void VTableSlot2C() override;                     // slot 0x2c, 0x00414770
+  virtual void VTableSlot2C() override;                     // slot 0x2c, 0x00414770 OrphanRetStub
   virtual void VTableSlot2D(void* param_1) override;        // slot 0x2d, 0x0049e4e0
 
-  int field_48; // 0x48
-  int field_4c; // 0x4c
-  int field_50; // 0x50
+  void ParseDirectionTokenAndSetMovementFlags(CString token, int parseMode, int parseTail);
+
+  TMapUberPicture* field_48; // 0x48 — viewport edge-scroll handler (slot 0x74 target)
+  int field_4c;              // 0x4c
+  int field_50;              // 0x50
 };

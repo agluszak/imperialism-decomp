@@ -99,14 +99,6 @@ undefined4 OrphanCallChain_C1_I08_004133a0(void)
   return 0;
 }
 
-// ghidra_name ParseDirectionTokenAndSetMovementFlags
-// ghidra_proto undefined ParseDirectionTokenAndSetMovementFlags()
-// FUNCTION: IMPERIALISM 0x004133d0
-undefined4 ParseDirectionTokenAndSetMovementFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413550
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413550()
 // FUNCTION: IMPERIALISM 0x00413550

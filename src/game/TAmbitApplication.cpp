@@ -1,4 +1,6 @@
 #include "game/TAmbitApplication.h"
+
+#include "game/CObjectGameParse.h"
 #include "game/global_data_tables.h"
 #include "game/TDisplayMgr.h"
 #include "game/TViewMgr.h"
@@ -22,6 +24,62 @@ TAmbitApplication::~TAmbitApplication() {}
 // FUNCTION: IMPERIALISM 0x00414770
 void TAmbitApplication::VTableSlot2C() {
   // OrphanRetStub
+}
+
+// FUNCTION: IMPERIALISM 0x004133d0
+void TAmbitApplication::ParseDirectionTokenAndSetMovementFlags(CString token, int parseMode,
+                                                               int parseTail) {
+  CString localToken(token);
+
+  int& movementParseFlag2c = *reinterpret_cast<int*>(&trackedEntries);
+  int& movementParseFlag30 =
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 4);
+  int& movementParseCenterFlag =
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 8);
+  CString& movementParseTypeTail =
+      *reinterpret_cast<CString*>(reinterpret_cast<char*>(&trackedEntries) + 12);
+  int& movementParseRightFlag =
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 16);
+  int& movementParseStopFlag =
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 20);
+
+  unsigned char* tokenText = const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
+      static_cast<LPCSTR>(localToken)));
+  if (parseMode != 0) {
+    if (CompareAnsiStringsWithMbcsAwareness(
+            tokenText,
+            reinterpret_cast<unsigned char*>(g_szMovementParseCompareB_00694254)) == 0) {
+      movementParseFlag2c = 1;
+      movementParseFlag30 = 1;
+      goto finish_parse_direction_token;
+    }
+    if (CompareAnsiStringsWithMbcsAwareness(
+            tokenText,
+            reinterpret_cast<unsigned char*>(g_szMovementParseCompareA_00694250)) == 0) {
+      movementParseFlag30 = 1;
+      goto finish_parse_direction_token;
+    }
+  }
+
+  if (parseMode == 0 || tokenText == nullptr || tokenText[0] != 'L') {
+    if (parseMode != 0) {
+      if (tokenText != nullptr && tokenText[0] == 'R') {
+        movementParseRightFlag = 1;
+      } else if (tokenText != nullptr && tokenText[0] == 'S') {
+        movementParseStopFlag = 1;
+      } else if (tokenText != nullptr && tokenText[0] == 'T') {
+        movementParseTypeTail = reinterpret_cast<const char*>(tokenText + 1);
+      } else if (tokenText != nullptr && tokenText[0] == 'C') {
+        movementParseCenterFlag = 1;
+      }
+    }
+  } else {
+    (**reinterpret_cast<CString**>(&screenModeAt24)) = reinterpret_cast<const char*>(tokenText + 1);
+  }
+
+finish_parse_direction_token:
+  static_cast<CObjectWithGameParseParam*>(static_cast<CObject*>(this))
+      ->ParseParam(reinterpret_cast<const char*>(tokenText), parseMode, parseTail);
 }
 
 TAmbitApplication::TAmbitApplication() : TApplication() {

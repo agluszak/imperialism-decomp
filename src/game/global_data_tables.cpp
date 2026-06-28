@@ -82,6 +82,12 @@ int* g_pMapContextActionManager = 0;
 char g_vtblTSortedByRelationshipList = 0;
 // GLOBAL: IMPERIALISM 0x006a21c0
 int DAT_006a21c0 = 0;
+// GLOBAL: IMPERIALISM 0x00695278
+int g_nSaveFormatVersion = 0;
+// GLOBAL: IMPERIALISM 0x00694250
+char g_szMovementParseCompareA_00694250[] = "";
+// GLOBAL: IMPERIALISM 0x00694254
+char g_szMovementParseCompareB_00694254[] = "";
 // GLOBAL: IMPERIALISM 0x006a1348
 class ImperialismApp* DAT_006a1348 = 0;
 // GLOBAL: IMPERIALISM 0x006a1350

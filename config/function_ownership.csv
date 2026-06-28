@@ -22,6 +22,7 @@ address|target_cpp|ownership|note
 412c10|src/game/CObject.cpp|manual|marker_sync
 412dc0|src/game/ImperialismApp.cpp|manual|marker_sync
 413250|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+4133d0|src/game/TAmbitApplication.cpp|manual|marker_sync
 4135f0|src/game/TAmbitApplication.cpp|manual|marker_sync
 413780|src/game/ImperialismApp.cpp|manual|marker_sync
 4138b0|src/game/ImperialismApp.cpp|manual|marker_sync
@@ -3649,6 +3650,7 @@ address|target_cpp|ownership|note
 618e72|src/game/list_box.cpp|manual|marker_sync
 61f342|src/game/TTEView.cpp|manual|marker_sync
 62246c|src/game/MfcRuntime.cpp|manual|marker_sync
+622778|src/game/CObjectParseParam.cpp|manual|marker_sync
 622b58|src/game/MfcRuntime.cpp|manual|marker_sync
 623523|src/game/MfcRuntime.cpp|manual|marker_sync
 623886|src/game/MfcRuntime.cpp|manual|marker_sync

@@ -83,14 +83,6 @@ undefined4 DestructCommandLineParseContext(void)
   return 0;
 }
 
-// ghidra_name ParseParam
-// ghidra_proto undefined ParseParam()
-// FUNCTION: IMPERIALISM 0x00622778
-undefined4 ParseParam(void)
-{
-  return 0;
-}
-
 // ghidra_name ParseParamNotFlag
 // ghidra_proto undefined ParseParamNotFlag()
 // FUNCTION: IMPERIALISM 0x0062285f
