@@ -115,6 +115,10 @@ public:
 // === END GENERATED DECLS (TIncludeView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TIncludeView 0xCTOR`).
 
+  // Turn-event factory packet builder (thiscall on the freshly-constructed entry).
+  void BuildTurnEventFactoryPacket(int arg0, class TView* mainView, short eventCode, void* factoryOut,
+                                   class CString* labelText, int flag);
+
   TIncludeView();
 };
 

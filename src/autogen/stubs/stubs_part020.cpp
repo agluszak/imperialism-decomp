@@ -747,14 +747,6 @@ undefined4 InvokeMainWidgetMethod1CCWithArgs(void)
   return 0;
 }
 
-// ghidra_name LinkedListQueryOwner::DispatchGlobalTurnEventCode
-// ghidra_proto undefined DispatchGlobalTurnEventCode()
-// FUNCTION: IMPERIALISM 0x005d7240
-undefined4 DispatchGlobalTurnEventCode(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchTurnEvent3B8AndWaitForCompletion
 // ghidra_proto undefined DispatchTurnEvent3B8AndWaitForCompletion()
 // FUNCTION: IMPERIALISM 0x005d7c40

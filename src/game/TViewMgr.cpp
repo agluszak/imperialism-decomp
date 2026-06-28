@@ -1,5 +1,10 @@
 #include "game/TViewMgr.h"
 #include "game/TAssetMgr.h"
+#include "game/TSoundPlayer.h"  // g_pSfxPlaybackSystem
+#include "game/TMacViewMgr.h"   // g_pStrategicMapViewSystem
+#include "game/TIncludeView.h"  // turn-event UI entry packet ('Incl')
+#include "game/CWMgrIterator.h" // window-registry traversal for the full (code-0) refresh
+#include "game/quickdraw_globals.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
 #include "game/TToolBarCluster.h" // pulls TView/TControl/TCluster chain for main-view dispatch
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
@@ -554,6 +559,7 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* o
   outPlacement->y = (designHeight - dlgHeight) / 2 + clientRect.top + margin;
 }
 
+
 // FUNCTION: IMPERIALISM 0x005d6b70
 void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   TView* mainView = g_pDisplayMgr->activeDialog;
@@ -573,27 +579,248 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005dcaa0
-void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
-  CDialog dialog;
-  reinterpret_cast<void(__cdecl*)(void)>(InitializeHotKeyDialogTemplateA1WithTripleTextState)();
+// Globals/flags reached by the central dispatcher.
+extern "C" TControl* g_pCursorControlPanel;
+// The help-runtime gate object pointer @ 0x006a21b8 (read by-address, matching the
+// existing convention in TGameWindow.cpp / TAmbitApplication.cpp).
+const unsigned int kAddrHelpRuntimeGate = 0x006a21b8;
 
-  char* buffer = new char[0x3e];
-  if (buffer != 0) {
-    CopyHotKeyDialogTemplateToBuffer(reinterpret_cast<int>(buffer));
-    *reinterpret_cast<void**>(buffer + 0x118) = &dialog;
+// Module-local helpers reached by the dispatcher; declared in the repo's generic stub
+// form (`undefined4 Name(void)`) and invoked for their side effects. Real bodies are
+// owned elsewhere / pending port; arg-passing fidelity is deferred.
+undefined4 QueueDeferredUiEventPacket(void);
+undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
+undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
+undefined4 HandlePostDispatchTurnStateEventUpdates(void);
+undefined4 HandlePendingEventActivationByCode(void);
+undefined4 HandlePostPendingEventActivationNoOp(void);
 
-    int modalResult = reinterpret_cast<int(__cdecl*)(void)>(DoModal_6051b9)();
-    if (modalResult != 0) {
-      g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
-    }
-    delete[] buffer;
+// Clears style bit 0x02000000 on the main view's child window (CWnd at +0x50).
+static void ModifyMainViewChildWindowStyleClear02000000(TView* mainView) {
+  CWnd* childWnd = *reinterpret_cast<CWnd**>(reinterpret_cast<char*>(mainView) + 0x50);
+  if (childWnd != nullptr) {
+    childWnd->ModifyStyle(0, 0x02000000);
   }
 }
 
+namespace {
+// One window node walked during the code-0 full refresh. It is a TView-derived window
+// whose tag lives in the inherited controlTag (+0x1c); only the subclass slot at byte
+// 0x1d0 ("rebuild window content") is dispatched. Slots 0x68..0x73 are the window
+// subclass's other virtuals, declared (pure, never constructed here) only to place
+// RebuildWindowContentSlot1D0 at the correct vtable byte offset 0x1d0.
+struct UiWindowTraversalNode : public TView {
+  virtual void win_slot68() = 0;
+  virtual void win_slot69() = 0;
+  virtual void win_slot6A() = 0;
+  virtual void win_slot6B() = 0;
+  virtual void win_slot6C() = 0;
+  virtual void win_slot6D() = 0;
+  virtual void win_slot6E() = 0;
+  virtual void win_slot6F() = 0;
+  virtual void win_slot70() = 0;
+  virtual void win_slot71() = 0;
+  virtual void win_slot72() = 0;
+  virtual void win_slot73() = 0;
+  virtual void RebuildWindowContentSlot1D0() = 0; // slot 0x74 byte 0x1d0
+};
+
+// Run the shared post-dispatch turn-state update tail (decompiled at 0x5d795f..0x5d79b6
+// for the cross-code path).
+void DispatchPostTurnStateUpdatesTail() {
+  if (*reinterpret_cast<void**>(kAddrHelpRuntimeGate) == nullptr) {
+    return;
+  }
+  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+    return;
+  }
+  // g_pUiRuntimeContext->GetActiveNationId();
+  // if (IsNationSlotEligibleForEventProcessing() == 0) {
+  //   return;
+  // }
+  // The per-nation eligibility gate (g_pLocalizationTable) is deferred pending its port.
+  HandlePostDispatchTurnStateEventUpdates();
+  HandlePendingEventActivationByCode();
+  HandlePostPendingEventActivationNoOp();
+}
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x005d7240
 void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
-  (void)eventCode;
-  (void)payload;
+  TView* mainView = g_pDisplayMgr->activeDialog;
+  SetQuickDrawFillColor(0);
+  SetQuickDrawStrokeColor(0xffffff);
+
+  const short newCode = eventCode;
+  const short secondary = static_cast<short>(payload);
+
+  // Sound cue when the turn-flow mode is in the 0x67..0x6a band and the code changed.
+  if (newCode != this->currentTurnEventCode) {
+    switch (static_cast<short>(g_pLocalizationTable->mode)) {
+    case 0x67: g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5b); break;
+    case 0x68: g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5c); break;
+    case 0x69: g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5e); break;
+    case 0x6a: g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5d); break;
+    }
+  }
+
+  // Teardown hook for the code currently displayed.
+  const int curCode = this->currentTurnEventCode;
+  if (curCode < 0x2135) {
+    if (curCode == 0x2134) {
+      ModifyMainViewChildWindowStyleClear02000000(mainView);
+    } else {
+      switch (curCode) {
+      case 0x7d9:
+      case 0x7da:
+        this->UiRuntimeSlot58();
+        break;
+      case 0x7db:
+        g_pStrategicMapViewSystem->OrphanCallChain_C1_I10_0050d920();
+        break;
+      case 0x7dd:
+        this->mapUberPictureF0 = 0;
+        break;
+      }
+    }
+  }
+
+  // Code 0 = rebuild every registered UI window node.
+  if (newCode == 0) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x4c) = 0;
+    this->currentTurnEventCode = 0;
+    *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pDisplayMgr) + 0x1c) = 0;
+    mainView->CallVoidSlotA0();
+    CWMgrIterator iter;
+    iter.Reset(1);
+    UiWindowTraversalNode* node = static_cast<UiWindowTraversalNode*>(iter.FirstWindow());
+    while (iter.More() != 0) {
+      const unsigned int tag = static_cast<unsigned int>(node->controlTag);
+      if (tag == 0x6d617057 || tag == 0x74726e57) { // 'Wpam'/'Wnrt'
+        node->RebuildWindowContentSlot1D0();
+      }
+      node = static_cast<UiWindowTraversalNode*>(iter.NextWindow());
+    }
+    return;
+  }
+
+  // Same-code refresh: refresh the main view, then run the per-code hook.
+  if (newCode == this->currentTurnEventCode) {
+    if (secondary != -1) {
+      this->pad06 = secondary;
+    }
+    if (newCode == 0x5e4) {
+      QueueDeferredUiEventPacket(); // (mainView, 0x29a) — args deferred pending port
+    } else if (newCode == 0x547) {
+      mainView->RefreshControl();
+      g_pCursorControlPanel->AssertValid();
+    } else if (newCode == 0x8fc) {
+      mainView->RefreshControl();
+      HandleTurnEvent8FC_RebuildPageTabsAndTitles();
+    } else if (newCode == 0x7d8) {
+      if (static_cast<short>(g_pLocalizationTable->mode) == 0x68) {
+        mainView->RefreshControl();
+        this->UiRuntimeSlot6C();
+      }
+    } else if (newCode == 0x7d9 || newCode == 0x7da) {
+      mainView->RefreshControl();
+      this->UiRuntimeSlot84();
+    } else if (newCode == 0x7db) {
+      mainView->RefreshControl();
+      this->UiRuntimeSlotA8();
+    } else if (newCode == 0x7dd) {
+      mainView->RefreshControl();
+      this->UiRuntimeSlotBC();
+    } else if (newCode == 0x7de) {
+      mainView->RefreshControl();
+      this->UiRuntimeSlot9C();
+    } else if (newCode == 0x2103) {
+      this->UiRuntimeSlot9C();
+    } else if (newCode == 0x2260) {
+      mainView->RefreshControl();
+      this->UiRuntimeSlot64();
+    }
+    DispatchPostTurnStateUpdatesTail();
+    return;
+  }
+
+  // Cross-code path: tear down the previous dialog, build the new turn-event UI packet.
+  g_pUiViewManager->NoOpRuntimeUiCallback_005df780(0);
+  mainView->DispatchSlot9CToLinkedChildren();
+  if (this->field10 != 0) {
+    ShowDialogTemplateE0ModalAndReleaseCapture();
+    this->field10 = 0;
+  }
+  TControl* inclControl = mainView->ResolveControlByTag(0x496e636c); // 'Incl'
+  if (inclControl != nullptr) {
+    inclControl->AssertValid();
+    inclControl->RefreshControl();
+    inclControl->Free();
+  }
+
+  TIncludeView* packet = new TIncludeView();
+  CString emptyText(reinterpret_cast<const char*>(kAddrEmptyString));
+  void* factoryOut = nullptr;
+  packet->BuildTurnEventFactoryPacket(0, mainView, newCode, &factoryOut, &emptyText, 1);
+  packet->NoOpUiLifecycleHook(0);
+  packet->controlTag = 0x496e636c; // 'Incl'
+  packet->RefreshControl();
+  g_pDisplayMgr->LoadMainViewClipSnapshotIntoQuickDrawState(static_cast<unsigned short>(newCode));
+  if (this->field10 != 0) {
+    ShowDialogTemplateE0ModalAndReleaseCapture();
+    this->field10 = 0;
+  }
+  this->currentTurnEventCode = newCode;
+
+  if (newCode > 0x3c0) {
+    if (newCode < 0x5dd) {
+      if (newCode == 0x5dc) {
+        this->UiRuntimeSlotF8();
+      } else if (newCode == 0x547) {
+        this->UiRuntimeSlot50();
+      }
+    } else if (newCode < 0x7d9) {
+      switch (newCode) {
+      case 0x5dd: this->UiRuntimeSlotFC(); break;
+      case 0x5de: this->UiRuntimeSlot100(); break;
+      case 0x5df: this->UiRuntimeSlot104(); break;
+      case 0x5e0: this->UiRuntimeSlot108(); break;
+      case 0x7d8: this->UiRuntimeSlot6C(); break;
+      }
+    } else if (newCode > 0x898) {
+      if (newCode == 0xed8 || newCode == 0xf3c) {
+        this->UiRuntimeSlotF4();
+      } else if (newCode == 0x8fc) {
+        HandleTurnEvent8FC_RebuildPageTabsAndTitles();
+      } else if (newCode == 0x11f8) {
+        this->UiRuntimeSlot110();
+      } else if (newCode == 0xf3d) {
+        this->UiRuntimeSlotA0();
+      } else if (newCode == 0x2103) {
+        this->UiRuntimeSlot64();
+      } else if (newCode == 0x2134) {
+        this->UiRuntimeSlot60();
+      } else if (newCode == 0x2260) {
+        this->UiRuntimeSlot9C();
+      }
+    } else if (newCode == 0x898) {
+      this->UiRuntimeSlotBC();
+    } else {
+      switch (newCode) {
+      case 0x7d9:
+      case 0x7da: this->UiRuntimeSlotBC(); break;
+      case 0x7db: this->UiRuntimeSlot5C(); break;
+      case 0x7dd: this->UiRuntimeSlotA8(); break;
+      case 0x7de: this->UiRuntimeSlot84(); break;
+      case 0x7e0: this->UiRuntimeSlot50(); break;
+      }
+    }
+  } else if (newCode == 0x3c0) {
+    this->UiRuntimeSlot10C();
+  } else if (newCode == 0x3b8) {
+    this->UiRuntimeSlotD0();
+  }
+  DispatchPostTurnStateUpdatesTail();
 }
 
 void TViewMgr::UiRuntimeSlot50() {}
@@ -690,3 +917,37 @@ void TViewMgr::UiRuntimeSlotD8() {}
 int TViewMgr::ShowConstructionOptionsDialog() {
   return 0;
 }
+
+void TViewMgr::UiRuntimeSlotE0() {}
+void TViewMgr::UiRuntimeSlotE4() {}
+void TViewMgr::UiRuntimeSlotE8() {}
+void TViewMgr::UiRuntimeSlotEC() {}
+void TViewMgr::UiRuntimeSlotF0() {}
+void TViewMgr::UiRuntimeSlotF4() {}
+void TViewMgr::UiRuntimeSlotF8() {}
+void TViewMgr::UiRuntimeSlotFC() {}
+void TViewMgr::UiRuntimeSlot100() {}
+void TViewMgr::UiRuntimeSlot104() {}
+void TViewMgr::UiRuntimeSlot108() {}
+void TViewMgr::UiRuntimeSlot10C() {}
+void TViewMgr::UiRuntimeSlot110() {}
+
+
+// FUNCTION: IMPERIALISM 0x005dcaa0
+void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
+  CDialog dialog;
+  reinterpret_cast<void(__cdecl*)(void)>(InitializeHotKeyDialogTemplateA1WithTripleTextState)();
+
+  char* buffer = new char[0x3e];
+  if (buffer != 0) {
+    CopyHotKeyDialogTemplateToBuffer(reinterpret_cast<int>(buffer));
+    *reinterpret_cast<void**>(buffer + 0x118) = &dialog;
+
+    int modalResult = reinterpret_cast<int(__cdecl*)(void)>(DoModal_6051b9)();
+    if (modalResult != 0) {
+      g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
+    }
+    delete[] buffer;
+  }
+}
+

@@ -1158,7 +1158,7 @@ targets:
       - WrapperFor_AllocateWithFallbackHandler_At00486320
       - WrapperFor_AllocateWithFallbackHandler_At0049cc60
       - WrapperFor_AllocateWithFallbackHandler_At004a03f0
-      - WrapperFor_AllocateWithFallbackHandler_At004a1130
+      - CreateBitmapResourceLoaderHandle
       - WrapperFor_AllocateWithFallbackHandler_At004a7b20
       - WrapperFor_AllocateWithFallbackHandler_At004b5c00
       - WrapperFor_AllocateWithFallbackHandler_At005082b0
@@ -1726,7 +1726,7 @@ targets:
       - WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480
       - WrapperFor_thunk_ConstructUiResourceEntryBase_At0045aee0
       - WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000
-      - WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
+      - TBitmapResourceLoader::ReleaseBitmapResource
       - WrapperFor_thunk_DispatchTaggedGameStateEvent1F20_At004e7510
       - WrapperFor_thunk_DispatchUiMouseMoveToChildren_At00490bc0
       - WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At004c7180
@@ -1768,7 +1768,7 @@ targets:
       - WrapperFor_thunk_RegisterDialogFactoryCallback_At0044fba0
       - WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900
       - WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900_Impl
-      - WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
+      - BlitBitmapResourceLoaderToActiveDc
       - WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00
       - WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80
       - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530

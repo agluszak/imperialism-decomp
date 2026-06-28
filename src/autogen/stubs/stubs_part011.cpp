@@ -75,14 +75,6 @@ undefined4 DestructTIncludeViewAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TCViewOwnedBufferRegistryState_00648560::BuildTurnEventFactoryPacket
-// ghidra_proto undefined BuildTurnEventFactoryPacket()
-// FUNCTION: IMPERIALISM 0x0048cf10
-undefined4 BuildTurnEventFactoryPacket(void)
-{
-  return 0;
-}
-
 // ghidra_name TWindow::CreateTWindowInstance
 // ghidra_proto undefined CreateTWindowInstance()
 // FUNCTION: IMPERIALISM 0x0048d090

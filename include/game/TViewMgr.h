@@ -77,6 +77,19 @@ public:
   virtual void UiRuntimeSlotD4();                                                    // 0xd4
   virtual void UiRuntimeSlotD8();                                                    // 0xd8
   virtual int ShowConstructionOptionsDialog();                                       // 0xdc
+  virtual void UiRuntimeSlotE0();                                                    // 0xe0
+  virtual void UiRuntimeSlotE4();                                                    // 0xe4
+  virtual void UiRuntimeSlotE8();                                                    // 0xe8
+  virtual void UiRuntimeSlotEC();                                                    // 0xec
+  virtual void UiRuntimeSlotF0();                                                    // 0xf0
+  virtual void UiRuntimeSlotF4();                                                    // 0xf4
+  virtual void UiRuntimeSlotF8();                                                    // 0xf8
+  virtual void UiRuntimeSlotFC();                                                    // 0xfc
+  virtual void UiRuntimeSlot100();                                                   // 0x100
+  virtual void UiRuntimeSlot104();                                                   // 0x104
+  virtual void UiRuntimeSlot108();                                                   // 0x108
+  virtual void UiRuntimeSlot10C();                                                   // 0x10c
+  virtual void UiRuntimeSlot110();                                                   // 0x110
 
   void ApplyLegendSplitSlot34(int split) { ApplyTurnEventPaletteColorByEventCode(split); }
   void QueueTurnStatusPromptSlot3C(int promptIndex, int payload) {

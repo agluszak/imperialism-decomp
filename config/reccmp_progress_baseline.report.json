@@ -4396,7 +4396,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -4738,7 +4738,7 @@
     },
     {
       "address": "0x48cf10",
-      "matching": 0.0,
+      "matching": 0.0425531914893617,
       "name": "TCViewOwnedBufferRegistryState_00648560::BuildTurnEventFactoryPacket",
       "type": 1
     },
@@ -6056,13 +6056,7 @@
     {
       "address": "0x495b70",
       "matching": 0.5316455696202531,
-      "name": "TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize",
-      "type": 1
-    },
-    {
-      "address": "0x495c00",
-      "matching": 0.9166666666666666,
-      "name": "TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00",
+      "name": "TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize",
       "type": 1
     },
     {
@@ -6163,7 +6157,7 @@
     },
     {
       "address": "0x497300",
-      "matching": 0.2,
+      "matching": 1.0,
       "name": "GetSurfaceHeaderFromSurfaceObject",
       "type": 1
     },
@@ -7262,7 +7256,7 @@
     {
       "address": "0x4a1100",
       "matching": 0.25,
-      "name": "TAnimation::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100",
+      "name": "TBitmapResourceLoader::TemporarilyClearAndRestoreUiInvalidationFlag",
       "type": 1
     },
     {
@@ -12032,7 +12026,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12464,13 +12458,13 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12482,7 +12476,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12494,7 +12488,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.6818181818181818,
+      "matching": 0.6363636363636364,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12524,7 +12518,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -14894,8 +14888,8 @@
     },
     {
       "address": "0x4feab0",
-      "matching": 0.5454545454545454,
-      "name": "TDisplayMgr::Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0",
+      "matching": 0.5909090909090909,
+      "name": "TDisplayMgr::InitializeBitmapSurfaceContextWithRetry",
       "type": 1
     },
     {
@@ -15860,7 +15854,7 @@
     },
     {
       "address": "0x50a820",
-      "matching": 0.3791469194312796,
+      "matching": 0.2711864406779661,
       "name": "TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807",
       "type": 1
     },
@@ -15878,7 +15872,7 @@
     },
     {
       "address": "0x50b640",
-      "matching": 0.3787528868360277,
+      "matching": 0.3833718244803695,
       "name": "TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress",
       "type": 1
     },
@@ -15914,7 +15908,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.16955170883266754,
+      "matching": 0.17310252996005326,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -15986,7 +15980,7 @@
     },
     {
       "address": "0x50d9e0",
-      "matching": 0.1391304347826087,
+      "matching": 0.15517241379310345,
       "name": "TMacViewMgr::CopySpriteSurfaceToStrideBuffer",
       "type": 1
     },
@@ -26920,7 +26914,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45320197044334976,
+      "matching": 0.4729064039408867,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -31840,7 +31834,7 @@
     },
     {
       "address": "0x5c3b70",
-      "matching": 0.18666666666666668,
+      "matching": 0.13274336283185842,
       "name": "LoadBitmapResourceSurfaceAndRestoreQuickDrawContext",
       "type": 1
     },
@@ -32400,12 +32394,6 @@
       "address": "0x5d71b0",
       "matching": 0.0,
       "name": "TViewMgr::InvokeMainWidgetMethod1CCWithArgs",
-      "type": 1
-    },
-    {
-      "address": "0x5d7240",
-      "matching": 0.0,
-      "name": "LinkedListQueryOwner::DispatchGlobalTurnEventCode",
       "type": 1
     },
     {
@@ -39486,6 +39474,12 @@
       "address": "0x64c170",
       "matching": 1.0,
       "name": "TAmbitFileBasedDocument::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x64c340",
+      "matching": 1.0,
+      "name": "TBitmapResourceLoader::`vftable'",
       "type": 5
     },
     {
