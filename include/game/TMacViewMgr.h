@@ -2,6 +2,7 @@
 
 #include "game/TObject.h"
 #include "game/ClipStateRegion.h"
+#include "game/StrategicMapCallbackRecord.h"
 #include "game/mfc.h"
 
 class TStream;
@@ -76,9 +77,9 @@ public:
   int atlas694[8];
   int atlas6b4;
   int atlas6b8;
-  unsigned char callback6bc[0x480];
-  unsigned char callbackB3c[0x120];
-  unsigned char callbackC5c[0x120];
+  StrategicMapCallbackRecord callback6bc[0x18];
+  StrategicMapCallbackRecord callbackB3c[6];
+  StrategicMapCallbackRecord callbackC5c[6];
   int fieldD7c;
   int fieldD80;
 

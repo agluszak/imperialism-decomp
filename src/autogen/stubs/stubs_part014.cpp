@@ -547,14 +547,6 @@ undefined4 CreateTDiplomacyMapViewInstance(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree
-// ghidra_proto undefined DestructTDiplomacyMapViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004f3c70
-undefined4 DestructTDiplomacyMapViewAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TDiplomacyMapView::DestructTDiplomacyMapViewBaseState
 // ghidra_proto undefined DestructTDiplomacyMapViewBaseState()
 // FUNCTION: IMPERIALISM 0x004f3cc0
@@ -1383,6 +1375,14 @@ undefined4 BuildHexNeighborHighlightPolygonForTile(void)
 // ghidra_proto undefined CreateTMacViewMgrInstance()
 // FUNCTION: IMPERIALISM 0x00509c00
 undefined4 CreateTMacViewMgrInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60
+// ghidra_proto undefined WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60()
+// FUNCTION: IMPERIALISM 0x00509e60
+undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60(void)
 {
   return 0;
 }

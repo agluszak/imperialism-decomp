@@ -70,6 +70,8 @@ address|target_cpp|ownership|note
 430570|src/game/TCouncilPanelView.cpp|manual|marker_sync
 4305c0|src/game/TNominationView.cpp|manual|marker_sync
 4305e0|src/game/TNominationView.cpp|manual|marker_sync
+430730|src/game/TDiplomacyMapView.cpp|manual|marker_sync
+430750|src/game/TMacViewMgr.cpp|manual|marker_sync
 430900|src/game/TMapKey.cpp|manual|marker_sync
 4309e0|src/game/TDeluxeText.cpp|manual|marker_sync
 430a30|src/game/TBattleReportView.cpp|manual|marker_sync
@@ -1209,6 +1211,7 @@ address|target_cpp|ownership|note
 4d3a60|src/game/TCivMgr.cpp|manual|marker_sync
 4d4310|src/game/TCivMgr.cpp|manual|marker_sync
 4d49a0|src/game/TLandSaleEvent.cpp|manual|marker_sync
+4d4b90|src/game/TMacViewMgr.cpp|manual|marker_sync
 4d6500|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d6570|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d6590|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
@@ -1623,6 +1626,7 @@ address|target_cpp|ownership|note
 4f3960|src/game/TRearFloatWindow.cpp|manual|marker_sync
 4f3b60|src/game/TDiplomacyMapView.cpp|manual|mfc_runtime_macro
 4f3b80|src/game/TDiplomacyMapView.cpp|manual|marker_sync
+4f3c70|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f3c90|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f3d60|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f3e30|src/game/TDiplomacyMapView.cpp|manual|marker_sync
@@ -1803,7 +1807,6 @@ address|target_cpp|ownership|note
 509ca0|src/game/TMacViewMgr.cpp|manual|marker_sync
 509e10|src/game/TMacViewMgr.cpp|manual|marker_sync
 509e30|src/game/TMacViewMgr.cpp|manual|marker_sync
-509e60|src/game/TMacViewMgr.cpp|manual|marker_sync
 509f20|src/game/TMacViewMgr.cpp|manual|marker_sync
 509f70|src/game/TMacViewMgr.cpp|manual|marker_sync
 50a140|src/game/TMacViewMgr.cpp|manual|marker_sync

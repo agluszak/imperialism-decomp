@@ -142,26 +142,37 @@ examples, and rationale: `docs/reference/construction.md`.
 5. **Use real member objects, not raw storage + init helpers** — declare a `CString`
    member as `CString`, not `unsigned char[4]` + `InitializeCString`. Raw storage only
    while the type is genuinely unknown.
-6. **Virtual calls are real virtual calls / real member methods**, not `VCall_*`
+6. **Compiler construction/destruction helpers are compiler output, not source-model
+   APIs.** MSVC EH/vector iterator functions (`CallCallbackRepeatedly`,
+   `InvokeCallbackNTimesWithSehGuard`, array constructors/destructors, cleanup callbacks,
+   unwind helpers) and scalar deleting destructors must not be restored, wrapped, ported
+   into invented helper TUs, or renamed as gameplay/runtime abstractions in manual game
+   code. Do not keep them as "runtime helpers" either: in manual source they must
+   disappear into real C++ source constructs. Recover the actual element/member type and
+   let C++ member arrays, constructors, destructors, scalar deleting destructors, and
+   inheritance emit those helper calls naturally. Never introduce `callback_helpers`,
+   `CallCallbackRepeatedly`, `InvokeCallbackRepeatedly`, raw callback-address wrappers,
+   or similar fake abstractions as a substitute for the real element type.
+7. **Virtual calls are real virtual calls / real member methods**, not `VCall_*`
    facades or `reinterpret_cast` to fake calling conventions (see the guardrail below).
-7. **No `operator new`/`operator delete` factories or `__cdecl` free-function factory /
+8. **No `operator new`/`operator delete` factories or `__cdecl` free-function factory /
    class-name helpers** (`CreateTViewInstance`, etc.) as a porting approach — port real
    methods + real inheritance. The retired "EH-new factory" pattern is not a template.
    *(baseline-tracked by `just antipattern-gate`)*
-8. **No placement-new (`new (this) T()`) for base construction** — use real
+9. **No placement-new (`new (this) T()`) for base construction** — use real
    inheritance. Placement-new is only for genuine placement semantics (pools, explicit
    reconstruction into a buffer). *(enforced by `just antipattern-gate`)*
-9. **Scalar deleting destructors (`??_G`/`??_E`) are compiler-generated** — claim them
+10. **Scalar deleting destructors (`??_G`/`??_E`) are compiler-generated** — claim them
    with `// SYNTHETIC` + an exact backtick name in `config/symbols.csv`; never
    hand-write a `Destruct*AndMaybeFree` bridge. Requires a genuinely polymorphic class.
-10. **Retire temporary scaffolding** (`Construct*AtThis`, `VCall_*Runtime`,
+11. **Retire temporary scaffolding** (`Construct*AtThis`, `VCall_*Runtime`,
     `*AndMaybeFree`) as classes become understood; name any unavoidable bridge as
     temporary with a removal condition. *(count baseline-tracked by `just antipattern-gate`)*
-11. **Don't corrupt the source model to chase a local score.** A 70% match with correct
+12. **Don't corrupt the source model to chase a local score.** A 70% match with correct
     architecture beats a 100% match built on fake source that blocks hierarchy recovery.
     **This applies to gates too:** a failing `just gates` / `just vtable` with correct
     source is not permission to revert to stubs — see the gate-chasing guardrail below.
-12. **Evidence required for inheritance** — base edges need constructor/destructor
+13. **Evidence required for inheritance** — base edges need constructor/destructor
     sequencing, vtable layout, prefix-layout, or Mac-symbol evidence; never names alone.
 
 ## Gate-chasing guardrail (never revert architecture to pass verification)

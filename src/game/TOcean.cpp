@@ -25,7 +25,6 @@ extern char g_pClassDescTPortZone;
 extern CRuntimeClass PTR_s_TOcean_0065c630;
 }
 
-undefined4 CallCallbackRepeatedly(void);
 undefined4 RelaxMapTileCostFieldByNeighborTerrain(void);
 undefined4 SelectBestSeedTileForNationFromCostField(void);
 
@@ -175,8 +174,7 @@ void TOcean::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x00562d90
 void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
-  int* countHeader;
-  TMapNationActionContext* contextBase;
+  TZone* contextBase;
   int* costField;
   int relaxPassCount;
   int nationIndex;
@@ -184,19 +182,10 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
 
   nationCount = static_cast<short>(nationCountArg);
   if (contextArray != 0) {
-    reinterpret_cast<void(__fastcall*)(TMapNationActionContext*, int, int)>(
-        *reinterpret_cast<int*>(contextArray) + 4)(contextArray, 0, 3);
+    reinterpret_cast<void(__fastcall*)(TZone*, int, int)>(*reinterpret_cast<int*>(contextArray) +
+                                                          4)(contextArray, 0, 3);
   }
-  countHeader = reinterpret_cast<int*>(new char[static_cast<int>(static_cast<short>(nationCountArg)) * 0x48 + 4]);
-  if (countHeader == 0) {
-    contextBase = 0;
-  } else {
-    contextBase = reinterpret_cast<TMapNationActionContext*>(countHeader + 1);
-    *countHeader = static_cast<int>(static_cast<short>(nationCountArg));
-    reinterpret_cast<void(__stdcall*)(int, int, int, int, int)>(CallCallbackRepeatedly)(
-        reinterpret_cast<int>(contextBase), 0x48,
-        static_cast<int>(static_cast<short>(nationCountArg)), 0x0040405c, 0x00407775);
-  }
+  contextBase = new TZone[static_cast<int>(static_cast<short>(nationCountArg))];
   contextArray = contextBase;
   if (contextBase == 0) {
     GAME_FAIL_NIL_POINTER();

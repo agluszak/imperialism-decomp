@@ -691,22 +691,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430730
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00430730()
-// FUNCTION: IMPERIALISM 0x00430730
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430730(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750
-// ghidra_proto undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750()
-// FUNCTION: IMPERIALISM 0x00430750
-undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0
 // ghidra_proto undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0()
 // FUNCTION: IMPERIALISM 0x004307a0

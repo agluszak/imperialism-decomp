@@ -524,7 +524,7 @@
     },
     {
       "address": "0x4149a0",
-      "matching": 0.2222222222222222,
+      "matching": 0.22530864197530864,
       "name": "LoadLanguageResourcesFromIrgFiles",
       "type": 1
     },
@@ -11239,7 +11239,7 @@
     },
     {
       "address": "0x4d4b90",
-      "matching": 0.11764705882352941,
+      "matching": 0.8666666666666667,
       "name": "OrphanLeaf_NoCall_Ins15_004d4b90",
       "type": 1
     },
@@ -12032,7 +12032,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12464,13 +12464,13 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12482,7 +12482,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12524,7 +12524,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.4939759036144578,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -14264,7 +14264,7 @@
     },
     {
       "address": "0x4f3b80",
-      "matching": 0.8,
+      "matching": 0.9090909090909091,
       "name": "TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState",
       "type": 1
     },
@@ -14306,7 +14306,7 @@
     },
     {
       "address": "0x4f48c0",
-      "matching": 0.024096385542168676,
+      "matching": 0.046511627906976744,
       "name": "TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill",
       "type": 1
     },
@@ -14324,7 +14324,7 @@
     },
     {
       "address": "0x4f5410",
-      "matching": 0.003976143141153081,
+      "matching": 0.015625,
       "name": "TDiplomacyMapView::HandleDiplomacySelectedNationActionCommand",
       "type": 1
     },
@@ -14360,7 +14360,7 @@
     },
     {
       "address": "0x4f64c0",
-      "matching": 0.49808429118773945,
+      "matching": 0.45384615384615384,
       "name": "TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit",
       "type": 1
     },
@@ -14378,7 +14378,7 @@
     },
     {
       "address": "0x4f6840",
-      "matching": 0.4625,
+      "matching": 0.3887147335423197,
       "name": "TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit",
       "type": 1
     },
@@ -15776,7 +15776,7 @@
     },
     {
       "address": "0x509ca0",
-      "matching": 0.6896551724137931,
+      "matching": 0.8027210884353742,
       "name": "ConstructStrategicMapViewSystem",
       "type": 1
     },
@@ -15914,7 +15914,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.1752212389380531,
+      "matching": 0.17876106194690267,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16742,7 +16742,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.34382566585956414,
+      "matching": 0.32038834951456313,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -22334,7 +22334,7 @@
     },
     {
       "address": "0x55e700",
-      "matching": 0.6611570247933884,
+      "matching": 0.6666666666666666,
       "name": "TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList",
       "type": 1
     },
@@ -22784,8 +22784,8 @@
     },
     {
       "address": "0x562880",
-      "matching": 0.3111111111111111,
-      "name": "TZone::`scalar deleting destructor'",
+      "matching": 0.8529411764705882,
+      "name": "TZone::`vector deleting destructor'",
       "type": 1
     },
     {
@@ -22808,7 +22808,7 @@
     },
     {
       "address": "0x562d90",
-      "matching": 0.4536082474226804,
+      "matching": 0.5221674876847291,
       "name": "InputState::InitializeMapActionContextsForNationCountUsingCostField",
       "type": 1
     },

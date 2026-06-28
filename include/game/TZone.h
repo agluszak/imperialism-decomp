@@ -44,7 +44,7 @@ public:
   // vtable 0x0065c6d8 — slots 0x00..0x16. Slots 0x02..0x04 (Serialize/AssertValid/
   // Dump) and 0x08..0x09 (ShallowClone/ShallowFree) come from TObject/CObject.
   DECLARE_DYNCREATE(TZone)
-  ~TZone() override;                                               // slot 0x01 scalar dtor 0x562880
+  ~TZone() override;                                               // slot 0x01 vector dtor 0x562880
   void WriteTo(TStream* stream) override;                          // slot 0x05 0x55eff0
   void ReadFrom(TStream* stream) override;                         // slot 0x06 0x55ed20
   void Free() override;                                            // slot 0x07 0x55ec60
@@ -88,7 +88,6 @@ public:
   TZonePrimaryNeighborStretch primaryNeighbors;     // +0x24
   TZoneSecondaryNeighborStretch secondaryNeighbors; // +0x34
   short field44;                  // +0x44
-  int field48;                    // +0x48 TPortZone tile index (past base TZone 0x48 extent)
 
   TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
@@ -118,13 +117,9 @@ public:
 
 ASSERT_SIZE(TZonePrimaryNeighborStretch, 0x10);
 ASSERT_SIZE(TZoneSecondaryNeighborStretch, 0x10);
+ASSERT_SIZE(TZone, 0x48);
 
 extern TZone* g_pMapActionContextListHead;
-
-// Nation-sized map-action context embedded in TOcean::contextArray (stride 0x48).
-struct TMapNationActionContext {
-  char storage[0x48];
-};
 
 // === BEGIN GENERATED (TZone) — refreshed by `just gen-class TZone`; do not hand-edit ===
 // clang-format off

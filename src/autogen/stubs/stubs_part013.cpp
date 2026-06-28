@@ -787,14 +787,6 @@ undefined4 HandleMapHotkeyW_ResetSelectedActionableObjects(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins15_004d4b90
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins15_004d4b90()
-// FUNCTION: IMPERIALISM 0x004d4b90
-undefined4 OrphanLeaf_NoCall_Ins15_004d4b90(void)
-{
-  return 0;
-}
-
 // ghidra_name DiscardTileTokenArgumentAndReturn
 // ghidra_proto undefined DiscardTileTokenArgumentAndReturn()
 // FUNCTION: IMPERIALISM 0x004d4bd0

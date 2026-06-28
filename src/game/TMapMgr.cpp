@@ -783,7 +783,7 @@ short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
 void RemovePortZoneByTile(short nTileIndex) {
   for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
     if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
-        static_cast<short>(zone->field48) == nTileIndex) {
+        static_cast<short>(static_cast<TPortZone*>(zone)->field48) == nTileIndex) {
       zone->Free();
       return;
     }

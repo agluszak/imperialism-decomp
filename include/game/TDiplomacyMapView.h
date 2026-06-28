@@ -1,8 +1,25 @@
 #pragma once
 
 #include "compat.h"
+#include "game/StrategicMapCallbackRecord.h"
 #include "game/TPicture.h"
 #include "game/mfc.h"
+
+struct DiplomacyMaskBufferRun {
+  DiplomacyMaskBufferRun();
+  ~DiplomacyMaskBufferRun();
+
+  void BlitMonochromeMaskBytePatternToSurface(int surfaceContext, int paletteByte, int* origin,
+                                              int flipVertical);
+
+  unsigned char* maskBytesAt00;
+  int leftAt04;
+  int topAt08;
+  int rightAt0c;
+  int bottomAt10;
+};
+
+ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
 
 // Constructor evidence calls TPicture::TPicture at 0x0048efc0, then writes the
 // complete-object vfptr at 0x00655b68. The table at 0x0066f16c is separate
@@ -50,7 +67,9 @@ private:
   short frameRegionSelectorAt98;
   char pad_9a[0x48a];
   int legendSurfaceModeAt524;
-  char pad_528[0x1fa0];
+  char pad_528[0x1984];
+  DiplomacyMaskBufferRun maskRuns[0x17];
+  StrategicMapCallbackRecord packedColorRuns[0x17];
 };
 
 ASSERT_SIZE(TDiplomacyMapView, 0x24c8);

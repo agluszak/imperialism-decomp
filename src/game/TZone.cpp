@@ -5,6 +5,7 @@
 #include "game/mfc.h"
 #include "game/TGlobalMapState.h"
 #include "game/TOcean.h"
+#include "game/TPortZone.h"
 #include "game/UiRuntimeContext.h"
 
 #if defined(_MSC_VER)
@@ -95,7 +96,7 @@ IMPLEMENT_DYNCREATE(TZone, TObject)
 TZone::TZone()
     : field04(-1), displayName(), field0c(-1), field10(0), field12(-1), field14(0),
       prev18(static_cast<TZone*>(g_pMapActionContextListHead)), next1c(0), field20(-1),
-      primaryNeighbors(), secondaryNeighbors(), field44(0), field48(0) {
+      primaryNeighbors(), secondaryNeighbors(), field44(0) {
   field14 = static_cast<short>(g_nMapActionContextCount);
   g_nMapActionContextCount = g_nMapActionContextCount + 1;
   g_pMapActionContextListHead = this;
@@ -475,7 +476,7 @@ void TZone::SetMapOrderUiFlag(int flag) {
 TZone* TZone::FindPortZoneByTile(short nTileIndex) {
   for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
     if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
-        static_cast<short>(zone->field48) == nTileIndex) {
+        static_cast<short>(static_cast<TPortZone*>(zone)->field48) == nTileIndex) {
       return zone;
     }
   }
@@ -504,7 +505,7 @@ TZone* TZone::GetNextPortZone() {
 // PortZone vtable bodies (0x005616c0..0x00561e40) live in TPortZone.cpp.
 
 // SYNTHETIC: IMPERIALISM 0x00562880
-// TZone::`scalar deleting destructor'
+// TZone::`vector deleting destructor'
 TZone::~TZone() {}
 
 // FUNCTION: IMPERIALISM 0x00563540
@@ -525,7 +526,7 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
   }
 
   do {
-    short tileIndex = static_cast<short>(eax->field48);
+    short tileIndex = static_cast<short>(static_cast<TPortZone*>(eax)->field48);
     short ownerTag =
         static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
     if (ownerTag == nationSlot) {

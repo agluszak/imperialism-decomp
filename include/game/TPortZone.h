@@ -26,7 +26,11 @@ public:
   bool QueryZoneCapabilityFlagE(int unused) override;                       // slot 0x11 0x561b50
   bool HasZoneActiveChildCount(int unused) override;                        // slot 0x12 0x561dc0
   short FindNearestActiveSeaContextTileFromOffset216() override;            // slot 0x13 0x561e40
+
+  int field48; // +0x48 selected/coastal tile index
 };
+
+ASSERT_SIZE(TPortZone, 0x4c);
 
 // === BEGIN GENERATED (TPortZone) — refreshed by `just gen-class TPortZone`; do not hand-edit ===
 // clang-format off

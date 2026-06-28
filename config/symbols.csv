@@ -4251,7 +4251,7 @@ address|name|size|type|prototype
 5621e0|TOcean::Free|264|function|void Free()
 562340|TOcean::ReadFrom|887|function|undefined DeserializeMapActionContextRuntimeState(void)
 5627a0|ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList|171|function|undefined ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList()
-562880|TZone::`scalar deleting destructor'|80|function|undefined ScalarDeletingDestructor()
+562880|TZone::`vector deleting destructor'|80|function|undefined VectorDeletingDestructor()
 5628f0|TOcean::WriteTo|399|function|undefined SerializeMapActionContextRuntimeState(void)
 562af0|RelaxMapTileCostFieldByNeighborTerrain|205|function|undefined RelaxMapTileCostFieldByNeighborTerrain()
 562c00|SelectBestSeedTileForNationFromCostField|306|function|undefined SelectBestSeedTileForNationFromCostField()

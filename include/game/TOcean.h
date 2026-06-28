@@ -26,7 +26,7 @@ public:
   virtual void Free() override; // slot 0x07 0x5621e0
 // === END GENERATED DECLS (TOcean) ===
   short nationCount;                     // +0x04
-  TMapNationActionContext* contextArray; // +0x08
+  TZone* contextArray;                   // +0x08
   short field0c;                         // +0x0c
   char pad0e[2];                         // +0x0e
   unsigned short keyMask;                // +0x10

@@ -41,7 +41,6 @@ undefined4 scanBracketExpressions(void);
 undefined4 AssignStringSharedRefAndReturnThis(void);
 undefined4 RunEnableAndProcessFlagWithScopedSharedStringCleanup(void);
 undefined4 BuildUiTextStyleDescriptor(void);
-undefined4 CallCallbackRepeatedly(void);
 undefined4 RebuildSurfaceRowsWithTemporaryRowBuffer(void);
 undefined4 BuildBitmapMaskOpcodeBufferFromResourceRows(void);
 undefined4 BuildHexNeighborHighlightPolygonForTile(void);
@@ -129,11 +128,6 @@ static undefined4 QueryPointInsideHitRegion(short x, short y, ClipStateRegionWra
   return IsPointInsideHitRegion(&point, reinterpret_cast<int>(region));
 }
 
-static void InvokeCallCallbackRepeatedly(void* buf, int elemSize, int count, void* cb) {
-  reinterpret_cast<void(__stdcall*)(void*, int, int, void*)>(
-      reinterpret_cast<void (*)()>(CallCallbackRepeatedly))(buf, elemSize, count, cb);
-}
-
 static void InvokeRebuildSurfaceRowsWithTemporaryRowBuffer(void) {
   reinterpret_cast<void(__cdecl*)(void)>(
       reinterpret_cast<void (*)()>(RebuildSurfaceRowsWithTemporaryRowBuffer))();
@@ -209,14 +203,39 @@ struct GoldDialogControl : public TControl {
 
 }  // namespace
 
+// FUNCTION: IMPERIALISM 0x00430750
+StrategicMapCallbackRecord::~StrategicMapCallbackRecord() {
+  subobjectDispatchTable1c = 0x006404a8;
+  if (ownedBuffer20 != 0) {
+    delete[] ownedBuffer20;
+  }
+  dispatchTable00 = 0x006404a4;
+  if (ownedBuffer04 != 0) {
+    delete[] ownedBuffer04;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004d4b90
+StrategicMapCallbackRecord::StrategicMapCallbackRecord() {
+  ownedBuffer04 = 0;
+  field08 = 0;
+  field0c = 0;
+  dispatchTable00 = 0x006404a4;
+  field10 = 0;
+  field14 = 0;
+  field18 = 0;
+  ownedBuffer20 = 0;
+  field24 = 0;
+  field28 = 0;
+  subobjectDispatchTable1c = 0x006404a8;
+  field2c = 0;
+}
+
 // GLOBAL: IMPERIALISM 0x00658610
 IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00509ca0
 TMacViewMgr::TMacViewMgr() : TObject() {
-  InvokeCallCallbackRepeatedly(callback6bc, 0x30, 0x18, reinterpret_cast<void*>(0x00404d5e));
-  InvokeCallCallbackRepeatedly(callbackB3c, 0x30, 6, reinterpret_cast<void*>(0x00404d5e));
-  InvokeCallCallbackRepeatedly(callbackC5c, 0x30, 6, reinterpret_cast<void*>(0x00404d5e));
   field04 = 0;
   int index = 0;
   while (index < 0x17) {
@@ -258,13 +277,6 @@ undefined4 TMacViewMgr::VTableSlot26(short tileIndex) {
 // SYNTHETIC: IMPERIALISM 0x00509e30
 // TMacViewMgr::`scalar deleting destructor'
 TMacViewMgr::~TMacViewMgr() {}
-
-// FUNCTION: IMPERIALISM 0x00509e60
-void __fastcall WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60(TMacViewMgr* self) {
-  InvokeCallCallbackRepeatedly(self->callbackC5c, 0x30, 6, reinterpret_cast<void*>(0x004038a0));
-  InvokeCallCallbackRepeatedly(self->callbackB3c, 0x30, 6, reinterpret_cast<void*>(0x004038a0));
-  InvokeCallCallbackRepeatedly(self->callback6bc, 0x30, 0x18, reinterpret_cast<void*>(0x004038a0));
-}
 
 // FUNCTION: IMPERIALISM 0x00509f20
 void InitializeStrategicMapViewSystem(TMacViewMgr* self) {

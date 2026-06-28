@@ -21,8 +21,6 @@
 #pragma optimize("y", on)
 #endif
 
-undefined4 CallCallbackRepeatedly(void);
-undefined4 InvokeCallbackNTimesWithSehGuard(void);
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
 undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);
 undefined4 thunk_GetSurfaceObjectAtContextOffset24(void);
@@ -55,29 +53,15 @@ const unsigned int kAddrDiplomacyHitBounds = 0x006A3008;
 const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
 } // namespace
 
-struct DiplomacyMaskBufferRun {
-  unsigned char* maskBytesAt00;
-  int leftAt04;
-  int topAt08;
-  int rightAt0c;
-  int bottomAt10;
-
-  void BlitMonochromeMaskBytePatternToSurface(int surfaceContext, int paletteByte, int* origin,
-                                              int flipVertical);
-};
-
-// Packed-color run subobject at `this+0x2078 + index*0x30` (0x30-byte stride).
-struct DiplomacyPackedColorRun {
-  void AppendPackedColorDword(int surface, int packedColor);
-};
 IMPLEMENT_DYNCREATE(TDiplomacyMapView, TPicture)
+
+// FUNCTION: IMPERIALISM 0x00430730
+DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun() {
+  delete[] maskBytesAt00;
+}
 
 // FUNCTION: IMPERIALISM 0x004f3b80
 TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
-  reinterpret_cast<void(__stdcall*)(void*, int, int, void*)>(CallCallbackRepeatedly)(
-      reinterpret_cast<char*>(this) + 0x1eac, 0x14, 0x17, reinterpret_cast<void*>(0x00408436));
-  reinterpret_cast<void(__stdcall*)(void*, int, int, void*)>(CallCallbackRepeatedly)(
-      reinterpret_cast<char*>(this) + 0x2078, 0x30, 0x17, reinterpret_cast<void*>(0x00404d5e));
   *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x94) = 0;
   frameRegionSelectorAt98 = 0;
   *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x90) = 0;
@@ -87,14 +71,14 @@ TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
   *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0x28) = 1;
 }
 
+// FUNCTION: IMPERIALISM 0x004f3c70
+DiplomacyMaskBufferRun::DiplomacyMaskBufferRun() {
+  maskBytesAt00 = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x004f3c90
 // TDiplomacyMapView::`scalar deleting destructor'
-TDiplomacyMapView::~TDiplomacyMapView() {
-  reinterpret_cast<void(__cdecl*)(void*, int, int, void*)>(InvokeCallbackNTimesWithSehGuard)(
-      reinterpret_cast<char*>(this) + 0x2078, 0x30, 0x17, reinterpret_cast<void*>(0x004038a0));
-  reinterpret_cast<void(__cdecl*)(void*, int, int, void*)>(InvokeCallbackNTimesWithSehGuard)(
-      reinterpret_cast<char*>(this) + 0x1eac, 0x14, 0x17, reinterpret_cast<void*>(0x004077bb));
-}
+TDiplomacyMapView::~TDiplomacyMapView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3d60
 void TDiplomacyMapView::NoOpUiLifecycleHook(int arg) {
@@ -111,19 +95,16 @@ void TDiplomacyMapView::Free() {}
 
 // FUNCTION: IMPERIALISM 0x004f48c0
 void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer;
+  TPicture::ApplyRectSlot110(rectBuffer);
 }
 
 // FUNCTION: IMPERIALISM 0x004f5410
 void TDiplomacyMapView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                              int arg4) {
-  (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  TPicture::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
 }
 
-void DiplomacyPackedColorRun::AppendPackedColorDword(int surface, int packedColor) {
+void StrategicMapCallbackRecord::AppendPackedColorDword(int surface, int packedColor) {
   reinterpret_cast<void(__cdecl*)(void*, int, int)>(thunk_AppendPackedColorDwordToMaskBuffers)(
       this, surface, packedColor);
 }
@@ -384,8 +365,6 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
         reinterpret_cast<int(__cdecl*)(int*)>(thunk_GetSurfaceObjectAtContextOffset24)(
             reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext)));
 
-    char* maskCursor = reinterpret_cast<char*>(this) + 0x1eac;
-    char* packedColorCursor = reinterpret_cast<char*>(this) + 0x2078;
     short nationIndex = 0;
     do {
       int eventCode;
@@ -402,21 +381,16 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
       maskState[1] = 0;
       int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
       reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
-      reinterpret_cast<DiplomacyMaskBufferRun*>(maskCursor)
-          ->BlitMonochromeMaskBytePatternToSurface(
-              reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
-              paletteIndex, maskState, 1);
+      maskRuns[nationIndex].BlitMonochromeMaskBytePatternToSurface(
+          reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
+          paletteIndex, maskState, 1);
 
       int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
-      reinterpret_cast<void(__cdecl*)(void*, unsigned int, int)>(
-          thunk_AppendPackedColorDwordToMaskBuffers)(
-          packedColorCursor,
+      packedColorRuns[nationIndex].AppendPackedColorDword(
           reinterpret_cast<unsigned int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
           packedColor);
 
       nationIndex = static_cast<short>(nationIndex + 1);
-      maskCursor += 0x14;
-      packedColorCursor += 0x30;
     } while (nationIndex < 0x17);
 
     reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_RenderTerrainAndMinorNationLegendLabels)(
@@ -533,8 +507,6 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
         reinterpret_cast<int(__cdecl*)(int*)>(thunk_GetSurfaceObjectAtContextOffset24)(
             reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext)));
 
-    char* maskCursor = reinterpret_cast<char*>(this) + 0x1eac;
-    char* packedColorCursor = reinterpret_cast<char*>(this) + 0x2078;
     int terrainIndex = 0;
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
     do {
@@ -546,22 +518,17 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
         maskState[1] = 0;
         int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode + 200);
         reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
-        reinterpret_cast<DiplomacyMaskBufferRun*>(maskCursor)
-            ->BlitMonochromeMaskBytePatternToSurface(
-                reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
-                paletteIndex, maskState, 1);
+        maskRuns[terrainIndex].BlitMonochromeMaskBytePatternToSurface(
+            reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
+            paletteIndex, maskState, 1);
 
         int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
-        reinterpret_cast<void(__cdecl*)(void*, unsigned int, int)>(
-            thunk_AppendPackedColorDwordToMaskBuffers)(
-            packedColorCursor,
+        packedColorRuns[terrainIndex].AppendPackedColorDword(
             reinterpret_cast<unsigned int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
             packedColor);
       }
       terrainIndex++;
       terrainDescriptors++;
-      maskCursor += 0x14;
-      packedColorCursor += 0x30;
     } while (terrainIndex < 0x17);
 
     reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_RenderTerrainAndMinorNationLegendLabels)(
@@ -587,15 +554,13 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int e
   maskState[1] = 0;
   int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
   reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
-  DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
-      reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
+  DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
   maskRun->BlitMonochromeMaskBytePatternToSurface(
       reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
       maskState, 1);
 
   int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
-  DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
-      reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
+  StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
   packedRun->AppendPackedColorDword(
       reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), packedColor);
 }
@@ -603,8 +568,7 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int e
 // FUNCTION: IMPERIALISM 0x004f6bd0
 void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex, int bmpId) {
   TQuickDrawBlitSurface* surfaceCtx = g_pActiveQuickDrawSurfaceContext->GetBlitSurface();
-  DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
-      reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
+  DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
   CDib* bmpHandle =
       g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(static_cast<unsigned short>(bmpId));
 
@@ -668,8 +632,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
 
   g_pModuleLibraryCacheState->ReleaseRecordByHandle(bmpHandle);
   int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
-  DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
-      reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
+  StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
   packedRun->AppendPackedColorDword(reinterpret_cast<int>(surfaceCtx), packedColor);
 }
 
