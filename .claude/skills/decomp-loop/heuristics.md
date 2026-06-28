@@ -46,6 +46,14 @@ compiled per-TU with different settings, so this is the highest-frequency lever.
   `#pragma optimize("y", on)` to drop the frame pointer, or you get a spurious
   `push ebp; mov ebp,esp`. This alone takes `ret N` no-op slots and tiny getters to
   100% (`0x00495310` 53%→100%). Bulk no-op slots live in `src/game/noop_slots.cpp`.
+  When wrapping only a *region* (not a whole file), close it with
+  `#pragma optimize("", on)` to RESTORE command-line flags — **not** `("", off)`,
+  which DISABLES all optimization for the rest of the TU and silently tanks every
+  following function (caught a −0.13pp avg-similarity drop this way). Keep the
+  region tight: put the pragma above the `// FUNCTION:` marker, never between the
+  marker and the declaration (marker-gate Rule 3). Forwarders that clean their own
+  arg (`ret 4`) are `__stdcall`, not `__cdecl` — fix the convention too or they
+  cap at ~66% on the `ret`/`ret 4` mismatch.
 - **MFC foundation/collection code is favor-size** — bracket those TUs/regions with
   `#pragma optimize("ys", on)` (FPO + favor-size). Size-vs-speed shows as `and [m],0`
   vs `mov [m],0`, `pop ecx` vs `add esp,4`, RMW `inc [m]`, and shared (not duplicated)
