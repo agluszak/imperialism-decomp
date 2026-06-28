@@ -227,8 +227,9 @@ address|target_cpp|ownership|note
 4872c0|src/game/TBehavior.cpp|manual|marker_sync
 4872e0|src/game/TBehavior.cpp|manual|marker_sync
 487350|src/game/TDialogBehavior.cpp|manual|mfc_runtime_macro
+487370|src/game/TDialogBehavior.cpp|manual|marker_sync
 4873b0|src/game/TDialogBehavior.cpp|manual|marker_sync
-487400|src/game/TFloatWindow.cpp|manual|marker_sync
+487400|src/game/TWindow.cpp|manual|marker_sync
 487430|src/game/TDialogBehavior.cpp|manual|marker_sync
 487470|src/game/TDialogBehavior.cpp|manual|marker_sync
 4874b0|src/game/TDialogBehavior.cpp|manual|marker_sync
@@ -475,6 +476,7 @@ address|target_cpp|ownership|note
 48cf10|src/game/TIncludeView.cpp|manual|marker_sync
 48cfd0|src/game/TIncludeView.cpp|manual|marker_sync
 48d220|src/game/TWindow.cpp|manual|mfc_runtime_macro
+48d500|src/game/TWindow.cpp|manual|marker_sync
 48d640|src/game/TWindow.cpp|manual|marker_sync
 48d670|src/game/TWindow.cpp|manual|marker_sync
 48d8a0|src/game/TWindow.cpp|manual|marker_sync
@@ -3406,6 +3408,10 @@ address|target_cpp|ownership|note
 5d6480|src/game/TViewMgr.cpp|manual|marker_sync
 5d69b0|src/game/TViewMgr.cpp|manual|marker_sync
 5d6b70|src/game/TViewMgr.cpp|manual|marker_sync
+5d6bf0|src/game/TViewMgr.cpp|manual|marker_sync
+5d6c10|src/game/TViewMgr.cpp|manual|marker_sync
+5d6e30|src/game/TViewMgr.cpp|manual|marker_sync
+5d7190|src/game/TViewMgr.cpp|manual|marker_sync
 5d7240|src/game/TViewMgr.cpp|manual|marker_sync
 5dcaa0|src/game/TViewMgr.cpp|manual|marker_sync
 5dcd10|src/game/TModalMessageCommand.cpp|manual|marker_sync

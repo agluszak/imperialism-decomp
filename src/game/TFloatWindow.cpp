@@ -1,19 +1,6 @@
 #include "game/TFloatWindow.h"
-#include "game/TDialogBehavior.h"
-#include "game/mfc.h"
 
 extern "C" CRuntimeClass PTR_s_TFloatWindow_006496d8;
-extern CPtrList g_LiveViewRegistry;
-
-extern "C" void __fastcall SetUiColorDescriptorGoldTriplet(int param_1, int param_2, int param_3, int param_4);
-
-// FUNCTION: IMPERIALISM 0x00487400
-void __fastcall SetUiColorDescriptorGoldTriplet(int param_1, int param_2, int param_3, int param_4) {
-  *reinterpret_cast<unsigned char*>(param_1 + 0x10) = static_cast<unsigned char>(param_2);
-  *reinterpret_cast<int*>(param_1 + 4) = 0x646c6f67; // 'gold'
-  *reinterpret_cast<int*>(param_1 + 0x14) = param_3;
-  *reinterpret_cast<int*>(param_1 + 0x18) = param_4;
-}
 
 // FUNCTION: IMPERIALISM 0x00491e00
 TView* TFloatWindow::CreateTFloatWindowInstance() {
@@ -22,12 +9,7 @@ TView* TFloatWindow::CreateTFloatWindowInstance() {
 IMPLEMENT_DYNCREATE(TFloatWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x00491fb0
-TFloatWindow::TFloatWindow() : TWindow() {
-  g_LiveViewRegistry.AddTail(this);
-  SetUiColorDescriptorGoldTriplet(reinterpret_cast<int>(this), 0x20202020, 0x20202020, 0x20202020);
-  field64 = this;
-  GetEmbeddedDialogBehavior()->SetDword08(reinterpret_cast<int>(this));
-}
+TFloatWindow::TFloatWindow() : TWindow() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00492110

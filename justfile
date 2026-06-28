@@ -361,6 +361,13 @@ debug *args:
   script="${DEBUG_SCRIPT:-$'break MessageBoxA\ncont\nbt\nquit\n'}"
   printf '%s' "$script" | winedbg "$recomp" "$@"
 
+# Run the debugger with a short timeout. Override with DEBUG_TIMEOUT=10s.
+debug-timeout *args:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  export WINEDEBUG="${WINEDEBUG-err+all,+debugstr,+loaddll}"
+  exec timeout --kill-after=2s "${DEBUG_TIMEOUT:-5s}" just debug "$@"
+
 detect:
   (cd "{{build_dir}}" && uv run reccmp-project detect --what recompiled)
 

@@ -1060,7 +1060,7 @@ undefined TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C() {
 // FUNCTION: IMPERIALISM 0x0050bea0
 undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlot) {
   TGreatPower* nation = g_apNationStates[nationSlot];
-  TView* hostView = reinterpret_cast<TView*>(field04);
+  TView* hostView = field04;
   CString scratch38;
 
   if (nationSlot == static_cast<word>(-1)) {
@@ -1430,15 +1430,14 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 }
 
 // FUNCTION: IMPERIALISM 0x0050d310
-undefined TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag() {
-  TView* dialog = reinterpret_cast<TView*>(field04);
+void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag() {
+  TView* dialog = field04;
   g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x3b8, 0);
   short completionFlag = static_cast<short>(dialog->field14);
   while (completionFlag == 0) {
     PumpUiMessagesAndBackgroundTasks(1);
     completionFlag = static_cast<short>(dialog->field14);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d360
@@ -1551,32 +1550,29 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
 }
 
 // FUNCTION: IMPERIALISM 0x0050d8d0
-undefined TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0() {
+void TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0() {
   if (field04 != 0) {
-    reinterpret_cast<TView*>(field04)->InvalidateOffsetRegionUsingChildClipRect(0);
+    field04->InvalidateOffsetRegionUsingChildClipRect(0);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d8f0
-undefined TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1) {
+void TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1) {
   if (field04 != 0) {
     *reinterpret_cast<int*>(reinterpret_cast<char*>(field04) + 0xac + param_1 * 4) = 0;
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d920
-undefined TMacViewMgr::OrphanCallChain_C1_I10_0050d920() {
+void TMacViewMgr::OrphanCallChain_C1_I10_0050d920() {
   if (field04 != 0) {
-    reinterpret_cast<TView*>(field04)->RefreshCityProductionViewStateFromContext(0);
+    field04->RefreshCityProductionViewStateFromContext(0);
   }
   field04 = 0;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d950
-undefined TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950() {
+void TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950() {
   TView* hostView = g_pDisplayMgr->activeDialog;
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(hostView->ResolveControlByTag(0x444c4f47));
@@ -1588,7 +1584,6 @@ undefined TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(
   goldControl->gold71();
   goldControl->SetGoldControlStateByResource(0, 0);
   InvokeCallObjectOffset24Vslot54IfPresent();
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d9e0

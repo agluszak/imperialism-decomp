@@ -579,6 +579,26 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005d6bf0
+void TViewMgr::ApplyUiRuntimeSlot68(int modeValue) {
+  fieldEc = static_cast<short>(fieldEc + static_cast<short>(modeValue));
+}
+
+// FUNCTION: IMPERIALISM 0x005d6c10
+short TViewMgr::QueryUiScreenModeSlot54() {
+  return fieldEc;
+}
+
+// FUNCTION: IMPERIALISM 0x005d6e30
+void TViewMgr::UiRuntimeSlot8C(int arg) {
+  (void)arg;
+}
+
+// FUNCTION: IMPERIALISM 0x005d7190
+void TViewMgr::UiRuntimeSlotD4(int arg) {
+  (void)arg;
+}
+
 // Globals/flags reached by the central dispatcher.
 extern "C" TControl* g_pCursorControlPanel;
 // The help-runtime gate object pointer @ 0x006a21b8 (read by-address, matching the
@@ -825,10 +845,6 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
 
 void TViewMgr::UiRuntimeSlot50() {}
 
-short TViewMgr::QueryUiScreenModeSlot54() {
-  return 0;
-}
-
 void TViewMgr::UiRuntimeSlot58() {}
 
 void TViewMgr::UiRuntimeSlot5C() {}
@@ -836,10 +852,6 @@ void TViewMgr::UiRuntimeSlot5C() {}
 void TViewMgr::UiRuntimeSlot60() {}
 
 void TViewMgr::UiRuntimeSlot64() {}
-
-void TViewMgr::ApplyUiRuntimeSlot68(int modeValue) {
-  (void)modeValue;
-}
 
 void TViewMgr::UiRuntimeSlot6C() {}
 
@@ -856,8 +868,6 @@ void TViewMgr::UiRuntimeSlot80() {}
 void TViewMgr::UiRuntimeSlot84() {}
 
 void TViewMgr::UiRuntimeSlot88() {}
-
-void TViewMgr::UiRuntimeSlot8C() {}
 
 char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
                                               int proposalCode) {
@@ -910,8 +920,6 @@ void TViewMgr::UiRuntimeSlotCC() {}
 
 void TViewMgr::UiRuntimeSlotD0() {}
 
-void TViewMgr::UiRuntimeSlotD4() {}
-
 void TViewMgr::UiRuntimeSlotD8() {}
 
 int TViewMgr::ShowConstructionOptionsDialog() {
@@ -950,4 +958,3 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
     delete[] buffer;
   }
 }
-

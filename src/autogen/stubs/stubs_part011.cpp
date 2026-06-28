@@ -131,14 +131,6 @@ undefined4 thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass_
   return 0;
 }
 
-// ghidra_name TControl::ConstructUiWindowResourceEntryBase
-// ghidra_proto undefined ConstructUiWindowResourceEntryBase()
-// FUNCTION: IMPERIALISM 0x0048d500
-undefined4 ConstructUiWindowResourceEntryBase(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::CreateTControlInstance
 // ghidra_proto undefined CreateTControlInstance()
 // FUNCTION: IMPERIALISM 0x0048e430

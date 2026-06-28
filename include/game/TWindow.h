@@ -1,11 +1,11 @@
 #pragma once
 
+#include "game/TDialogBehavior.h"
 #include "game/TView.h"
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TObject;
-class TDialogBehavior;
 
 // TODO(manifest): describe TWindow and its role. Base edge (TView) recovered from RTTI
 // CRuntimeClass chain: TWindow -> TView -> TEventHandler -> TObject -> CObject. VTABLE: IMPERIALISM
@@ -142,10 +142,9 @@ public:
                                                      // === END GENERATED DECLS (TWindow) ===
 
   // --- TWindow data members (object size 0xa0; the TView subobject ends at 0x60). ---
-  // The 0x74 region is an embedded TDialogBehavior subobject (its base state is built by
-  // ConstructTDialogBehaviorBaseState at &this[1].field14 == +0x74); modelled as raw
-  // storage until that class is recovered. Remaining named fields are accessed directly
-  // by TWindow's own methods. Offsets that are not yet attributed stay as padding.
+  // The 0x74 region is an embedded TDialogBehavior subobject (ConstructTDialogBehaviorBaseState
+  // at +0x74). Remaining named fields are accessed directly by TWindow's own methods.
+  // Offsets that are not yet attributed stay as padding.
   short windowStyleType; // 0x60 — window-type code; selects the CreateEx style bits
   unsigned char padding_62_to_63[0x02];
   class TWindow* field64;               // 0x64 — linked sibling/owner window
@@ -154,13 +153,8 @@ public:
   unsigned char padding_6e_to_6f[0x02];
   unsigned char field70; // 0x70 — when set, adds WS_EX_TOPMOST in CreateMcWindow
   unsigned char padding_71_to_73[0x03];
-  unsigned char field74[0x10]; // 0x74 — embedded TDialogBehavior region
-  unsigned char field84;       // 0x84
-  unsigned char padding_85_to_87[0x03];
-  int field88; // 0x88
-  int field8c; // 0x8c
-  unsigned char padding_90_to_97[0x08];
-  int field98; // 0x98
+  TDialogBehavior dialogBehavior; // 0x74
+  int field98;                    // 0x98
   unsigned char padding_9c_to_9f[0x04];
 
   TWindow();

@@ -3,7 +3,10 @@
 extern "C" char g_pClassDescTDialogBehavior;
 IMPLEMENT_DYNCREATE(TDialogBehavior, TBehavior)
 
-TDialogBehavior::TDialogBehavior() {}
+// FUNCTION: IMPERIALISM 0x00487370
+TDialogBehavior::TDialogBehavior()
+    : TBehavior(), field10(0), defaultCommandCode(0x20202020), cancelCommandCode(0x20202020),
+      armedCommandCode(0x20202020), field20(1) {}
 
 // SYNTHETIC: IMPERIALISM 0x004873b0
 // TDialogBehavior::`scalar deleting destructor'

@@ -7,6 +7,7 @@
 
 class TStream;
 class TBitmapResourceLoader;
+class TView;
 
 // Strategic map view / render system (singleton g_pStrategicMapViewSystem @ 0x006a21a8).
 // VTABLE: IMPERIALISM 0x00658660
@@ -35,18 +36,17 @@ public:
   virtual undefined
   RefreshCityProductionDetailPanelAndArrowWidgets(word param_1);    // slot 0x11 0x50bea0
   virtual undefined ResolveTurnEventDialogOrFailAndInvokeSlot9C();  // slot 0x12 0x50be30
-  virtual undefined DispatchTurnEvent3B8AndWaitForCompletionFlag(); // slot 0x13 0x50d310
+  virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag();      // slot 0x13 0x50d310
   virtual undefined OrphanCallChain_C10_I80_0050d470(undefined4 param_1,
                                                      undefined4 param_2); // slot 0x14 0x50d470
   virtual undefined CreateCityBuildingDialogBySlot(int param_1, undefined4 param_2,
                                                    undefined4 param_3);  // slot 0x15 0x50d360
   virtual undefined OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1); // slot 0x16 0x50d5b0
-  virtual undefined OrphanLeaf_NoCall_Ins06_0050d8d0();                  // slot 0x17 0x50d8d0
-  virtual undefined OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1);     // slot 0x18 0x50d8f0
-  virtual undefined OrphanCallChain_C1_I10_0050d920();                   // slot 0x19 0x50d920
+  virtual void OrphanLeaf_NoCall_Ins06_0050d8d0();                       // slot 0x17 0x50d8d0
+  virtual void OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1);          // slot 0x18 0x50d8f0
+  virtual void OrphanCallChain_C1_I10_0050d920();                        // slot 0x19 0x50d920
   virtual undefined RenderOffscreenBitmapGridStripAndRestoreContext();   // slot 0x1a 0x50a9f0
-  virtual undefined
-  WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950();             // slot 0x1b 0x50d950
+  virtual void WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(); // slot 0x1b 0x50d950
   virtual undefined RenderTurnEventPalettePreviewSurfaceAndProgress();    // slot 0x1c 0x50b640
   virtual undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles(); // slot 0x1d 0x50b9e0
   virtual undefined RebuildNationClipRegionsAndDispatchMapEvent();        // slot 0x1e 0x50bad0
@@ -71,7 +71,7 @@ public:
   virtual ClipStateRegionWrapper* GetClipRegionSlotByIndex(short index); // slot 0x26 0x509e10
   // === END GENERATED DECLS (TMacViewMgr) ===
 
-  int field04;
+  TView* field04;
   ClipStateRegionWrapper* regionSlots[0x17];
   ClipStateRegionWrapper* tileStateSlots[0x180];
   int padding664;

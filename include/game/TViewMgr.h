@@ -53,7 +53,7 @@ public:
   virtual void UiRuntimeSlot80();                                                    // 0x80
   virtual void UiRuntimeSlot84();                                                    // 0x84
   virtual void UiRuntimeSlot88();                                                    // 0x88
-  virtual void UiRuntimeSlot8C();                                                    // 0x8c
+  virtual void UiRuntimeSlot8C(int arg);                                             // 0x8c
   virtual char RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
                                               int proposalCode);                   // 0x90
   virtual char RequestDecisionSlot94(int sourceNation, int arg1, int arg2,
@@ -74,7 +74,7 @@ public:
   virtual void UiRuntimeSlotC8();                                                    // 0xc8
   virtual void UiRuntimeSlotCC();                                                    // 0xcc
   virtual void UiRuntimeSlotD0();                                                    // 0xd0
-  virtual void UiRuntimeSlotD4();                                                    // 0xd4
+  virtual void UiRuntimeSlotD4(int arg);                                             // 0xd4
   virtual void UiRuntimeSlotD8();                                                    // 0xd8
   virtual int ShowConstructionOptionsDialog();                                       // 0xdc
   virtual void UiRuntimeSlotE0();                                                    // 0xe0

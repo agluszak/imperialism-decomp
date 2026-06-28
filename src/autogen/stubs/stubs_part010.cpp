@@ -1771,14 +1771,6 @@ undefined4 DestructTBehaviorAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TDialogBehavior::ConstructTDialogBehaviorBaseState
-// ghidra_proto undefined ConstructTDialogBehaviorBaseState()
-// FUNCTION: IMPERIALISM 0x00487370
-undefined4 ConstructTDialogBehaviorBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTDialogBehaviorAndMaybeFree_Impl
 // ghidra_proto undefined DestructTDialogBehaviorAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x004873e0

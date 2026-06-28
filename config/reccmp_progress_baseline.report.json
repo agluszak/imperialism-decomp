@@ -3094,7 +3094,7 @@
     },
     {
       "address": "0x487370",
-      "matching": 0.13333333333333333,
+      "matching": 0.07692307692307693,
       "name": "TDialogBehavior::ConstructTDialogBehaviorBaseState",
       "type": 1
     },
@@ -4798,7 +4798,7 @@
     },
     {
       "address": "0x48d500",
-      "matching": 0.025,
+      "matching": 0.33613445378151263,
       "name": "TControl::ConstructUiWindowResourceEntryBase",
       "type": 1
     },
@@ -4810,7 +4810,7 @@
     },
     {
       "address": "0x48d670",
-      "matching": 0.19631901840490798,
+      "matching": 0.1927710843373494,
       "name": "DestructTWindowViewAndUnlinkGlobalLists",
       "type": 1
     },
@@ -5537,7 +5537,7 @@
     },
     {
       "address": "0x491fb0",
-      "matching": 0.2782608695652174,
+      "matching": 0.13953488372093023,
       "name": "TFloatWindow::TFloatWindow",
       "type": 1
     },
@@ -11803,7 +11803,7 @@
     },
     {
       "address": "0x4db380",
-      "matching": 0.32936507936507936,
+      "matching": 0.3333333333333333,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -12026,7 +12026,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12488,7 +12488,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.6363636363636364,
+      "matching": 0.6818181818181818,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -15074,7 +15074,7 @@
     },
     {
       "address": "0x4ffc10",
-      "matching": 0.8461538461538461,
+      "matching": 0.9230769230769231,
       "name": "TGameWindow::TGameWindow",
       "type": 1
     },
@@ -15908,13 +15908,13 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.17310252996005326,
+      "matching": 0.17132711939636042,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
     {
       "address": "0x50d310",
-      "matching": 0.48484848484848486,
+      "matching": 0.5,
       "name": "TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag",
       "type": 1
     },
@@ -15956,25 +15956,25 @@
     },
     {
       "address": "0x50d8d0",
-      "matching": 0.5714285714285714,
+      "matching": 0.6153846153846154,
       "name": "TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0",
       "type": 1
     },
     {
       "address": "0x50d8f0",
-      "matching": 0.5,
+      "matching": 0.5333333333333333,
       "name": "TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0",
       "type": 1
     },
     {
       "address": "0x50d920",
-      "matching": 0.7272727272727273,
+      "matching": 0.7619047619047619,
       "name": "TMacViewMgr::OrphanCallChain_C1_I10_0050d920",
       "type": 1
     },
     {
       "address": "0x50d950",
-      "matching": 0.6666666666666666,
+      "matching": 0.6785714285714286,
       "name": "TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950",
       "type": 1
     },
@@ -32320,13 +32320,13 @@
     },
     {
       "address": "0x5d6bf0",
-      "matching": 0.0,
+      "matching": 0.4444444444444444,
       "name": "AddPendingTurnOverlayCode",
       "type": 1
     },
     {
       "address": "0x5d6c10",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "GetPendingTurnOverlayCode",
       "type": 1
     },
@@ -32350,7 +32350,7 @@
     },
     {
       "address": "0x5d6e30",
-      "matching": 0.0,
+      "matching": 0.4,
       "name": "NoOpTurnEventStateVtableSlot8C",
       "type": 1
     },
@@ -32386,7 +32386,7 @@
     },
     {
       "address": "0x5d7190",
-      "matching": 0.0,
+      "matching": 0.4,
       "name": "NoOpTurnEventStateVtableSlotD4",
       "type": 1
     },

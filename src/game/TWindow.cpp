@@ -13,6 +13,14 @@ extern CPtrList g_ModalViewStack;
 
 undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void);
 
+// FUNCTION: IMPERIALISM 0x00487400
+void __fastcall SetUiColorDescriptorGoldTriplet(int descriptor, int flag, int colorA, int colorB) {
+  *reinterpret_cast<unsigned char*>(descriptor + 0x10) = static_cast<unsigned char>(flag);
+  *reinterpret_cast<int*>(descriptor + 4) = 0x646c6f67; // 'gold'
+  *reinterpret_cast<int*>(descriptor + 0x14) = colorA;
+  *reinterpret_cast<int*>(descriptor + 0x18) = colorB;
+}
+
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own
 // g_McAppUiFlag_* one-shot so the assert fires at most once.
@@ -20,7 +28,14 @@ static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
   TemporarilyClearAndRestoreUiInvalidationFlag();
 }
 
-TWindow::TWindow() : TView() {}
+// FUNCTION: IMPERIALISM 0x0048d500
+TWindow::TWindow() : TView(), dialogBehavior(), field98(0) {
+  g_LiveViewRegistry.AddHead(this);
+  SetUiColorDescriptorGoldTriplet(reinterpret_cast<int>(&dialogBehavior), 1, 0x20202020,
+                                  0x20202020);
+  field64 = this;
+  dialogBehavior.SetDword08(reinterpret_cast<int>(this));
+}
 IMPLEMENT_DYNCREATE(TWindow, TView)
 
 // SYNTHETIC: IMPERIALISM 0x0048d640
@@ -49,8 +64,8 @@ TWindow::~TWindow() {
 
 // FUNCTION: IMPERIALISM 0x0048d8a0
 void TWindow::SetField88And8c(int param_1, int param_2) {
-  field88 = param_1;
-  field8c = param_2;
+  dialogBehavior.defaultCommandCode = param_1;
+  dialogBehavior.cancelCommandCode = param_2;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d8d0
@@ -106,7 +121,7 @@ undefined TWindow::GetDialogBehaviorByte10() {
 
 // FUNCTION: IMPERIALISM 0x0048da40
 void TWindow::SetField84(unsigned char param_1) {
-  field84 = param_1;
+  dialogBehavior.field10 = param_1;
 }
 
 // Run this window as a modal: optionally arm the dialog-state flag, disable the window
@@ -170,7 +185,7 @@ undefined TWindow::OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined
 // writes its vptr at +0x74); expose it through its real type so callers dispatch real virtuals.
 // FUNCTION: IMPERIALISM 0x0048dcc0
 TDialogBehavior* TWindow::GetEmbeddedDialogBehavior() {
-  return reinterpret_cast<TDialogBehavior*>(&field74[0]);
+  return &dialogBehavior;
 }
 
 // FUNCTION: IMPERIALISM 0x0048dce0
@@ -184,8 +199,7 @@ void TWindow::AssertMcAppUILine2554() {
 void TWindow::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   // Direct access to the embedded TDialogBehavior (the original reads its vptr straight from
   // +0x74), then bubble to HandleEvent.
-  reinterpret_cast<TDialogBehavior*>(&field74[0])
-      ->OrphanCallChain_C1_I17_00487470(commandId, reinterpret_cast<int>(event));
+  dialogBehavior.OrphanCallChain_C1_I17_00487470(commandId, reinterpret_cast<int>(event));
   HandleEvent(commandId, sourceHandler, event);
 }
 

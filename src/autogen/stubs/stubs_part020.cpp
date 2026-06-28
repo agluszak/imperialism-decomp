@@ -643,22 +643,6 @@ undefined4 RunNationInfoModalAndReturnNonCancel(void)
   return 0;
 }
 
-// ghidra_name AddPendingTurnOverlayCode
-// ghidra_proto undefined AddPendingTurnOverlayCode()
-// FUNCTION: IMPERIALISM 0x005d6bf0
-undefined4 AddPendingTurnOverlayCode(void)
-{
-  return 0;
-}
-
-// ghidra_name GetPendingTurnOverlayCode
-// ghidra_proto undefined GetPendingTurnOverlayCode()
-// FUNCTION: IMPERIALISM 0x005d6c10
-undefined4 GetPendingTurnOverlayCode(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::RefreshStrategicMapStatusIconsForActiveNation
 // ghidra_proto undefined RefreshStrategicMapStatusIconsForActiveNation()
 // FUNCTION: IMPERIALISM 0x005d6c30
@@ -679,14 +663,6 @@ undefined4 HandleTurnEventDialogFactorySlot70(void)
 // ghidra_proto undefined HandleTurnEventDialogFactorySlot74()
 // FUNCTION: IMPERIALISM 0x005d6d70
 undefined4 HandleTurnEventDialogFactorySlot74(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpTurnEventStateVtableSlot8C
-// ghidra_proto undefined NoOpTurnEventStateVtableSlot8C()
-// FUNCTION: IMPERIALISM 0x005d6e30
-undefined4 NoOpTurnEventStateVtableSlot8C(void)
 {
   return 0;
 }
@@ -727,14 +703,6 @@ undefined4 DispatchTurnEvent7D8AndUpdateMainViewSelection(void)
 // ghidra_proto undefined DispatchTurnEvent7D8IfTurnFlowIdle()
 // FUNCTION: IMPERIALISM 0x005d7100
 undefined4 DispatchTurnEvent7D8IfTurnFlowIdle(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpTurnEventStateVtableSlotD4
-// ghidra_proto undefined NoOpTurnEventStateVtableSlotD4()
-// FUNCTION: IMPERIALISM 0x005d7190
-undefined4 NoOpTurnEventStateVtableSlotD4(void)
 {
   return 0;
 }
