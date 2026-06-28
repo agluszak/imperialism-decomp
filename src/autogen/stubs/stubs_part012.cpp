@@ -67,14 +67,6 @@ undefined4 CreateTCouncilTickerAnimationInstance(void)
   return 0;
 }
 
-// ghidra_name TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
-// ghidra_proto undefined ConstructTCouncilTickerAnimationBaseState()
-// FUNCTION: IMPERIALISM 0x0049ff90
-undefined4 ConstructTCouncilTickerAnimationBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TFocusAnimation::CreateTFocusAnimationInstance
 // ghidra_proto undefined CreateTFocusAnimationInstance()
 // FUNCTION: IMPERIALISM 0x004a0080
@@ -135,14 +127,6 @@ undefined4 DestructTAnimatorAndMaybeFree_Impl(void)
 // ghidra_proto undefined InitializeUiTransientObjectRegistry()
 // FUNCTION: IMPERIALISM 0x004a0b20
 undefined4 InitializeUiTransientObjectRegistry(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivAnimation2::AddObjectToUiTransientRegistry
-// ghidra_proto undefined AddObjectToUiTransientRegistry()
-// FUNCTION: IMPERIALISM 0x004a0d10
-undefined4 AddObjectToUiTransientRegistry(void)
 {
   return 0;
 }

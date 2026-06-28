@@ -26,6 +26,11 @@
 #include "game/turn_event_packets.h"
 #include "game/TMilitaryUnitOrderState.h" // g_szEmptyString
 #include "game/localization_text_helpers.h"
+#include "game/TCluster.h"
+
+char IsNationSlotEligibleForEventProcessing(short nationSlot);
+
+void __cdecl BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int stylePrimary);
 
 undefined4 QueueDeferredUiEventPacket(void);
 undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
@@ -51,7 +56,6 @@ undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
 undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
 undefined4 FormatOverlayTerrainLabelText(void);
-undefined4 LoadNationDisplayNameSharedRefFromField8(void);
 undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void);
 undefined4 RunNationInfoModalAndReturnNonCancel(void);
 undefined4 NoOpUiRuntimeCallback_005db2f0(void);
@@ -537,12 +541,16 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     g_pLocalizationTable->GetString(0, 0, &templateText);
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
-  case 6:
-    reinterpret_cast<void(__cdecl*)(void)>(LoadNationDisplayNameSharedRefFromField8)();
+  case 6: {
+    TGreatPower* nation = g_apNationStates[g_pUiRuntimeContext->GetActiveNationId()];
+    if (nation != nullptr) {
+      nation->LoadNationDisplayNameSharedRefFromField8(&formattedText);
+    }
     g_pLocalizationTable->GetString(0, 0, &templateText);
     scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = 0x250e;
     break;
+  }
   case 7:
     g_pLocalizationTable->GetString(0, 0, &templateText);
     resourceId = static_cast<short>((-static_cast<int>(contextArg != -1) & 0xfff5) + 0x251a);
@@ -762,6 +770,61 @@ void RefreshOrderStatusPicture(unsigned int controlTag, unsigned int flagMask,
                               ? pictureWhenFlagSet
                               : pictureWhenFlagClear;
   static_cast<TPicture*>(control)->SetPictureResourceIdAndRefresh(pictureId, true);
+}
+
+void RefreshTradClusterPictureAndHintText() {
+  TControl* tradControl = ResolveMainTaggedControl(kControlTagTrad);
+  if (tradControl == nullptr) {
+    return;
+  }
+  tradControl->AssertValid();
+  TToolBarCluster* tradCluster = static_cast<TToolBarCluster*>(tradControl);
+  const short pictureId = static_cast<short>(tradCluster->field84 + 1);
+  static_cast<TPicture*>(tradControl)->SetPictureResourceIdAndRefresh(pictureId, false);
+  tradControl->SetState(0, 0);
+
+  CString hintText;
+  g_pLocalizationTable->GetString(0x2730, 0, &hintText);
+  tradControl->EnableAndProcessFlag(hintText);
+}
+
+void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stringCode,
+                                             short stringIndex) {
+  TControl* control = ResolveMainTaggedControl(controlTag);
+  if (control == nullptr) {
+    return;
+  }
+  control->AssertValid();
+  CString localizedText;
+  g_pLocalizationTable->GetString(stringCode, stringIndex, &localizedText);
+  control->EnableAndProcessFlag(localizedText);
+}
+
+void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int stylePrimary,
+                                   int styleSecondary) {
+  TControl* control = ResolveMainTaggedControl(controlTag);
+  if (control == nullptr) {
+    return;
+  }
+  control->AssertValid();
+  TControlPictureRectState styleDescriptor;
+  styleDescriptor.value0 = 0;
+  styleDescriptor.value1 = 0;
+  styleDescriptor.value2 = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, styleWidth, styleSecondary);
+  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+  (void)stylePrimary;
+}
+
+void RefreshQuerControlLayoutAndClearText() {
+  TControl* querControl = ResolveMainTaggedControl(kControlTagQuer);
+  if (querControl == nullptr) {
+    return;
+  }
+  querControl->AssertValid();
+  int layoutCaptureBuffer = 0;
+  querControl->CaptureLayoutF0(&layoutCaptureBuffer, 0);
+  querControl->EnableAndProcessFlag(g_szEmptyString);
 }
 
 } // namespace turn_event_ui_refresh
@@ -1126,16 +1189,49 @@ void TViewMgr::UiRuntimeSlotA0() {}
 // FUNCTION: IMPERIALISM 0x005d8dd0
 void TViewMgr::UiRuntimeSlot5C() {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTrad);
+  turn_event_ui_refresh::RefreshTradClusterPictureAndHintText();
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagBpot, 0x2730, 0);
 
-  TControl* textControl =
-      turn_event_ui_refresh::ResolveMainTaggedControl(0x74657874u); // 'text'
+  TControl* textControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagText);
   if (textControl != nullptr) {
     textControl->AssertValid();
     textControl->EnableAndProcessFlag(g_szEmptyString);
   }
+
+  const short activeNationId = this->GetActiveNationId();
+  g_apNationStates[activeNationId]->ReturnFalseNationStateCapabilityFlag9C();
+  this->fieldEc = 0;
+  for (short metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
+    if (g_apNationStates[activeNationId]->QueryNationMetricBySlot7C(metricSlot) == -1) {
+      this->fieldEc = static_cast<short>(this->fieldEc + 1);
+    }
+  }
+
+  turn_event_ui_refresh::ApplyThemeToTaggedTextControl(kControlTagText, 0xc, 0x2b67, 0x2b6c);
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagText, 0x2730, 0);
+  turn_event_ui_refresh::ApplyThemeToTaggedTextControl(kControlTagFood, 0xc, 0x2b67, 0x2b6c);
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2731, 0);
+
+  TControlPictureRectState foodStyle;
+  foodStyle.value0 = 0;
+  foodStyle.value1 = 0;
+  foodStyle.value2 = 0;
+  BuildUiTextStyleDescriptor(&foodStyle, 0, 0xc, 0x2b6b);
+  TControl* foodControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagFood);
+  if (foodControl != nullptr) {
+    foodControl->AssertValid();
+    foodControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&foodStyle, 0);
+    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
+    foodControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&foodStyle, 0);
+    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
+    foodControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&foodStyle, 0);
+    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
+  }
+
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagQuer, 0x2730, 0);
 
   UiRuntimeSlot58();
 }
@@ -1148,6 +1244,11 @@ void TViewMgr::UiRuntimeSlot64() {}
 
 // FUNCTION: IMPERIALISM 0x005da360
 void TViewMgr::UiRuntimeSlotBC() {
+  const short activeNationId = this->GetActiveNationId();
+  if (IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
+    g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(nullptr);
+  }
+
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTrb1);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
@@ -1156,6 +1257,30 @@ void TViewMgr::UiRuntimeSlotBC() {
   turn_event_ui_refresh::RefreshOrderStatusPicture(kControlTagTrad, 0x100, 0x24db, 0x24e3);
   turn_event_ui_refresh::RefreshOrderStatusPicture(kControlTagCity, 0x10, 0x24dd, 0x24e5);
   turn_event_ui_refresh::RefreshOrderStatusPicture(kControlTagTran, 0x1000, 0x24df, 0x24e7);
+
+  TControl* tranControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagTran);
+  if (tranControl != nullptr) {
+    tranControl->AssertValid();
+    g_pLocalizationTable->TestTurnFlowStatusFlagMask(0x1000);
+    const short followUpPictureId =
+        g_pLocalizationTable->TestTurnFlowStatusFlagMask(0x1000) ? 0x24df : 0x24e7;
+    static_cast<TPicture*>(tranControl)->SetPictureResourceIdAndRefresh(followUpPictureId, true);
+  }
+
+  turn_event_ui_refresh::RefreshQuerControlLayoutAndClearText();
+
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagQuer, 0x2730, 0);
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagCity, 0x2730, 0);
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagTrad, 0x2730, 0);
+
+  if (g_pLocalizationTable->TestTurnFlowStatusFlagMask(1) == 0) {
+    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDipl, 0x19, 0);
+  } else {
+    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDipl, 0x15, 0);
+  }
+
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagTran, 0x2730, 0);
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagCity, 0x2731, 0);
 }
 
 void TViewMgr::UiRuntimeSlotC0() {}

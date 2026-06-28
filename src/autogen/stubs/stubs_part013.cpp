@@ -971,14 +971,6 @@ undefined4 SetNationDisplayNameAndLocalizationSlotRef(void)
   return 0;
 }
 
-// ghidra_name LoadNationDisplayNameSharedRefFromField8
-// ghidra_proto undefined LoadNationDisplayNameSharedRefFromField8()
-// FUNCTION: IMPERIALISM 0x004d7a40
-undefined4 LoadNationDisplayNameSharedRefFromField8(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeSelectedMilitaryPowerScore
 // ghidra_proto undefined ComputeSelectedMilitaryPowerScore()
 // FUNCTION: IMPERIALISM 0x004d8430

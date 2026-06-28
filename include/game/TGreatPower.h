@@ -318,6 +318,8 @@ public:
   virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags);
   virtual void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 
+  void LoadNationDisplayNameSharedRefFromField8(CString* destString);
+
   // 0x04..0x90 (identity strings, nation-slot metrics, militaryUnitList44,
   // unitNameOrdinalByType, ownedRegionList) now live on the TCountry base.
   TForeignMinister* foreignMinister;

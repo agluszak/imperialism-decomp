@@ -25,6 +25,7 @@ public:
   // TODO(manifest): add data members from the object slice (`just slice-discovery TCouncilTickerAnimation 0xCTOR`).
 
   void InitializeDiplomacyCouncilViewControlsAndTicker();
+  void ConstructTCouncilTickerAnimationBaseState(void* hostPanel, int tickMode);
 
   TCouncilTickerAnimation();
 };

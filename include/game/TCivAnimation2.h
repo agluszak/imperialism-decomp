@@ -24,6 +24,8 @@ public:
 // === END GENERATED DECLS (TCivAnimation2) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TCivAnimation2 0xCTOR`).
 
+  void AddObjectToUiTransientRegistry(TAnimation* animationObject);
+
   TCivAnimation2();
 };
 

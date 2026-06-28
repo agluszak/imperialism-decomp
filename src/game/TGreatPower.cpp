@@ -5046,3 +5046,8 @@ char __stdcall IsSpecialNationInteractionResource(short resourceIndex) {
   return 0;
 }
 #pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004d7a40
+void TGreatPower::LoadNationDisplayNameSharedRefFromField8(CString* destString) {
+  *destString = identitySharedString1;
+}

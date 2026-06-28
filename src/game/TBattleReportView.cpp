@@ -1,10 +1,7 @@
 #include "game/TBattleReportView.h"
 
+#include "game/diplomacy_globals.h"
 #include "game/TAnimator.h"
-
-// GLOBAL: IMPERIALISM 0x0064dc80
-// GLOBAL: IMPERIALISM 0x006a43e0
-extern "C" TAnimator* g_pUiAnimator = 0;
 
 TBattleReportView::TBattleReportView()
     : TDiplomacyMapView(), selectedReportIndex24c8(1), transientRegistryObject24cc(0) {}

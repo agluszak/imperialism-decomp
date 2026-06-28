@@ -16,3 +16,8 @@ undefined TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
 undefined TCivAnimation2::RenderBattleReportInsetWithPaletteShift() {
   return 0;
 }
+
+// FUNCTION: IMPERIALISM 0x004a0d10
+void TCivAnimation2::AddObjectToUiTransientRegistry(TAnimation* animationObject) {
+  (void)animationObject;
+}

@@ -14,6 +14,7 @@ class TInterNationEventQueueManager;
 
 class TLanguageMgr;
 class THelpMgr;
+class TAnimator;
 
 extern "C" {
 class TGreatPower;
@@ -42,3 +43,5 @@ extern class ImperialismApp* DAT_006a1348;
 extern int DAT_006a1350;
 extern void* DAT_006a1354;
 }
+
+extern TAnimator* g_pUiAnimator;

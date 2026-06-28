@@ -12,12 +12,14 @@
 
 #include "game/TLanguageMgr.h"
 #include "game/THelpMgr.h"
+#include "game/TAnimator.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
 TDisplayMgr* g_pDisplayMgr = 0;
 TMacViewMgr* g_pStrategicMapViewSystem = 0;
 TAssetMgr* g_pUiViewManager = 0;
+TAnimator* g_pUiAnimator = 0;
 
 extern "C" {
 TMinor* g_apSecondaryNationStateSlots[36] = {0};

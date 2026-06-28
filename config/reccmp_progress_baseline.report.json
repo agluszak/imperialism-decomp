@@ -7117,7 +7117,7 @@
     },
     {
       "address": "0x49ff90",
-      "matching": 0.07407407407407407,
+      "matching": 0.37209302325581395,
       "name": "TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState",
       "type": 1
     },
@@ -7207,7 +7207,7 @@
     },
     {
       "address": "0x4a0d10",
-      "matching": 0.0,
+      "matching": 0.2,
       "name": "TCivAnimation2::AddObjectToUiTransientRegistry",
       "type": 1
     },
@@ -11467,7 +11467,7 @@
     },
     {
       "address": "0x4d7a40",
-      "matching": 0.0,
+      "matching": 0.12903225806451613,
       "name": "LoadNationDisplayNameSharedRefFromField8",
       "type": 1
     },
@@ -12026,7 +12026,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12464,7 +12464,7 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12476,13 +12476,13 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12518,7 +12518,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -14714,7 +14714,7 @@
     },
     {
       "address": "0x4fc2e0",
-      "matching": 0.010526315789473684,
+      "matching": 0.20526315789473684,
       "name": "TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker",
       "type": 1
     },
@@ -15908,7 +15908,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.17441345728198318,
+      "matching": 0.17264276228419656,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16736,7 +16736,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32038834951456313,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -32296,7 +32296,7 @@
     },
     {
       "address": "0x5d6480",
-      "matching": 0.13267813267813267,
+      "matching": 0.19002375296912113,
       "name": "TViewMgr::BuildAndShowTurnOverlayByMode",
       "type": 1
     },
@@ -32464,7 +32464,7 @@
     },
     {
       "address": "0x5d8dd0",
-      "matching": 0.02099737532808399,
+      "matching": 0.024,
       "name": "HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor",
       "type": 1
     },
@@ -32482,7 +32482,7 @@
     },
     {
       "address": "0x5da360",
-      "matching": 0.012036108324974924,
+      "matching": 0.037418147801683815,
       "name": "HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons",
       "type": 1
     },

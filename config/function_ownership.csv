@@ -707,6 +707,7 @@ address|target_cpp|ownership|note
 49fde0|src/game/TOneTimeAnimation.cpp|manual|marker_sync
 49ff20|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync
 49ff70|src/game/TCouncilTickerAnimation.cpp|manual|mfc_runtime_macro
+49ff90|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync
 49ffe0|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync
 4a0050|src/game/TFocusAnimation.cpp|manual|marker_sync
 4a00a0|src/game/TFocusAnimation.cpp|manual|marker_sync
@@ -724,6 +725,7 @@ address|target_cpp|ownership|note
 4a0ad0|src/game/TAnimator.cpp|manual|marker_sync
 4a0c00|src/game/TAnimator.cpp|manual|marker_sync
 4a0c30|src/game/TAnimator.cpp|manual|marker_sync
+4a0d10|src/game/TCivAnimation2.cpp|manual|marker_sync
 4a0dc0|src/game/TAnimator.cpp|manual|marker_sync
 4a0e10|src/game/TAnimator.cpp|manual|marker_sync
 4a0e50|src/game/TAnimator.cpp|manual|marker_sync
@@ -1240,6 +1242,7 @@ address|target_cpp|ownership|note
 4d70e0|src/game/TCountry.cpp|manual|marker_sync
 4d71b0|src/game/TCountry.cpp|manual|marker_sync
 4d7770|src/game/TGreatPower_pending_action.cpp|manual|marker_sync
+4d7a40|src/game/TGreatPower.cpp|manual|marker_sync
 4d7ae0|src/game/TCountry.cpp|manual|marker_sync
 4d7b00|src/game/TCountry.cpp|manual|marker_sync
 4d7b20|src/game/TCountry.cpp|manual|marker_sync
