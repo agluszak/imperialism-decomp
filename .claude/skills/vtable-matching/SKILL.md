@@ -26,7 +26,7 @@ deep tactics in `decomp-loop/heuristics.md` (#4, #7, #8).
    original's slot order exactly; reordering members reorders the vtable.
 4. **Markers must be ascending by address within a file** or `just decomplint` errors
    `function_out_of_order` (and `just gates` fails). Insert promoted functions at the
-   right address position, respecting any `#pragma optimize` region.
+   right address position.
 
 ## Read the diff
 

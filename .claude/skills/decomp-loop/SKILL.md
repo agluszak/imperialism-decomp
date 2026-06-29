@@ -16,11 +16,9 @@ The priority right now is **porting more functions with correct, real C++ shapes
 real classes, real member methods, real virtual dispatch, real inheritance — not
 squeezing any single function to 100%.
 
-- **Ignore pragmas entirely.** Do **not** add `#pragma optimize`, chase FPO/frame-pointer
-  differences, or tune register allocation. A body that is structurally faithful (right
-  calls, right order, right receivers) at 30–60% is a *success*; move on. Frame-pointer
-  (`/Oy`) and instruction-scheduling diffs are expected residual and are explicitly out
-  of scope.
+- A body that is structurally faithful (right calls, right order, right receivers) at
+  30–60% is a *success*; move on. Instruction-scheduling diffs are expected residual
+  and are explicitly out of scope.
 - **Promote to unblock.** If a body needs a callee, receiver class, global, or signature
   that isn't modeled yet, **port/declare that too** rather than inventing a hacky
   workaround (no raw `vftable[...]`, no `reinterpret_cast` to fake a calling convention,
@@ -78,8 +76,7 @@ squeezing any single function to 100%.
 5. **Compare** the touched function: `just compare 0xADDR --verbose`.
 6. **Data pass — optional, and only the cheap real-shape wins.** Align obvious
    `short`/`int` widths, hidden stack args, struct-return-via-hidden-pointer, and return
-   contracts when they reflect the real shape. **Stop there.** Do not chase FPO,
-   register allocation, or add pragmas (see "Current objective").
+   contracts when they reflect the real shape. **Stop there.**
 7. **Verify**: run `just gates` for the mechanical source-policy gates (raw-vtable,
    construction anti-patterns, marker hygiene, vtable correctness). Run `just stats` when
    the edit's blast radius could change aggregate progress.

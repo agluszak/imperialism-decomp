@@ -10,7 +10,7 @@
 - **TCountry vtable annotation**: added `// VTABLE: IMPERIALISM 0x00653868` to TCountry
   (52-slot prefix of TGreatPower's 0x653938). Note: `just vtable TCountry` reports
   "Vtables found: 0" — MSVC does **not emit** a standalone TCountry vtable in our build
-  because the inline `TCountry() {}` ctor's transient vptr-set is optimized away (TGreatPower
+  because the inline `TCountry() {}` ctor's transient vptr-set is omitted (TGreatPower
   immediately overwrites it). So the annotation is correct metadata but not yet machine-
   verified; making it verifiable needs the full 52-slot virtual reconstruction (declare
   slots 0x0a..0x33 on TCountry with TGreatPower overriding the differing ones) — a separate
@@ -197,13 +197,13 @@
 - **Description:** Ghidra mislabel retired — field is the real `TCity` object (Mac `MakeNewCity` / `ICity` evidence). Follow-up pass renamed six TGreatPower virtuals (`NotifyCitySlot2C`, `ApplyDiplomacyState222ToCityFieldB6AndClear`, `ApplyRelationDeltaToCityFieldB6AndUpdateState1f4`, `SetCityFieldB6AndRefresh`, `AddToCityFieldB6AndRefresh`, `GetCityBuildingProductionSlot8D`) and `VCall_TCity_RefreshSlot80` facade row.
 
 - **Timestamp:** 2026-06-14 (cont.) — Network error CString, advisory score data pass, diplomacy adjacency promotion
-- **Command:** Rewrote `ReportWNetManagerErrorCodeAndNotifyUi` with DirectPlay error tree + CString RAII (title append via `AssignFromCStr`); fixed `ComputeAdvisoryMapNodeScoreFactorByCaseMetric` loop bound (`g_apNationStates` pointer walk to `g_apNationStates_End`), named float globals (`0x653fd0`–`0x654008`, city-score multiplier **1.5** not 2.0), removed `#pragma optimize`; shaped `ApplyJoinEmpireModeForTargetNation`; promoted `ResetTerrainAdjacencyMatrixRowAndSymmetricLink` → `TDiplomacyTurnStateManager::ResetTerrainAdjacencyMatrixRowAndSymmetricLink` and `AssignStringSharedRefAndReturnThis` → `CString.cpp`. `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` → `just compare-canaries`.
+- **Command:** Rewrote `ReportWNetManagerErrorCodeAndNotifyUi` with DirectPlay error tree + CString RAII (title append via `AssignFromCStr`); fixed `ComputeAdvisoryMapNodeScoreFactorByCaseMetric` loop bound (`g_apNationStates` pointer walk to `g_apNationStates_End`), named float globals (`0x653fd0`–`0x654008`, city-score multiplier **1.5** not 2.0); shaped `ApplyJoinEmpireModeForTargetNation`; promoted `ResetTerrainAdjacencyMatrixRowAndSymmetricLink` → `TDiplomacyTurnStateManager::ResetTerrainAdjacencyMatrixRowAndSymmetricLink` and `AssignStringSharedRefAndReturnThis` → `CString.cpp`. `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` → `just compare-canaries`.
 - **Score Delta:** `0x005e34f0` **6.9% → 8.09%**; `0x004e8750` **25.63% → 28.83%**; `0x004d7b20` **40% → 47.76%**; `0x004eef50` **new 24.49%**; `0x0049eb00` **new 15.38%**.
 - **Description:** Advisory metric cases 1–2 now iterate the 7-slot nation pointer table (not 0x17 eligibility slots). Join-empire adjacency reset is a real diplomacy-manager method with typed matrix access. Residual gaps on network error UI remain EH/`RunControlStringProvider` thunk chain.
 
-- **Command:** Matched `AddAmountToAidAllocationMatrixCellAndTotal` index/store to Ghidra listing (`row*0x17+col`, `[this+index*4-4]`); rewrote `EnqueueOrSendTurnEventPacketToNation` queue free-list walk; moved enqueue to `TTurnEventPacketRoutingPrefix::EnqueueOrSendTurnEventPacketToNation` as real `__thiscall`. Removed `#pragma optimize` from touched bodies. `just build` → `just compare` → `just compare-canaries`.
+- **Command:** Matched `AddAmountToAidAllocationMatrixCellAndTotal` index/store to Ghidra listing (`row*0x17+col`, `[this+index*4-4]`); rewrote `EnqueueOrSendTurnEventPacketToNation` queue free-list walk; moved enqueue to `TTurnEventPacketRoutingPrefix::EnqueueOrSendTurnEventPacketToNation` as real `__thiscall`. `just build` → `just compare` → `just compare-canaries`.
 - **Score Delta:** `0x004dd340` **28% → 54.17%**; `0x005e3d40` **13.62% → 12.71%** (thiscall prolog correct, residual is frame/spill layout); `0x004d7b20` **39.1% → 40%**. Canaries **below_floor=0**, `0x005C2940` parse_error cleared (**93.33%**).
-- **Description:** Aid allocation no longer uses wrong `+0xa0` member offset hack. Enqueue is a method on the packet routing prefix (ECX=this), matching listing at `0x005e3d40`. Residual gap on both is FPO/stack-spill shape (`push ebp` vs leaf prolog), intentionally not chased with pragmas.
+- **Description:** Aid allocation no longer uses wrong `+0xa0` member offset hack. Enqueue is a method on the packet routing prefix (ECX=this), matching listing at `0x005e3d40`. Residual gap on both is stack-spill shape (`push ebp` vs leaf prolog).
 
 - **Timestamp:** 2026-06-10 — Class recovery: turn-event packets, network manager, city-order capability
 - **Command:** Added `TTurnEventPacket.h` (`TTurnEventPacketRoutingPrefix`, `TJoinEmpireTurnEventPacket`), `TWNetSessionManager` (`0x480850`), shaped `turn_event_packets.cpp` (`GlobalAlloc`, typed routing prefix method, `g_pNetworkSessionContext006a5f64`), `network_error_reporting.cpp` (`0x5e34f0`), `TCityOrderCapabilityState` (`0x5aef80`/`0x5aeff0`, `g_pCityOrderCapabilityState` typed), `ui_runtime_globals.cpp` (`0x489a50`). Moved `IsNationSlotEligibleForEventProcessing` (`0x581280`) into `TDiplomacyTurnStateManager.cpp`. Updated `TGreatPower` packet call sites to typed structs. `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` → `just compare-canaries`.
@@ -281,7 +281,7 @@
 - **Timestamp:** 2026-06-10
 - **Command:** Queue-manager shape pass + TShip navy primary-order list; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` → `just compare-canaries`
 - **Score Delta:** `0x0055c970` **31.25% → 41.38%**; `0x005505c0`/`0x00550970` **100%** (new owned); `0x0054f500` **46.58%** (new pair); `0x004e0500` **82.35%** (typed `TShip` list walk); `0x0055cbd0`/`0x0055c9f0` unchanged ~35%/27%; canaries **8/8**.
-- **Description:** Fixed `TInterNationEventQueueManager` layout (`dedupRecordQueue58c` @ 0x58C, buckets @ 0xED4, merge @ 0xEF0); shape passes with `#pragma optimize("y")`, inverted replay/redraw branches matching asm, direct `perNationEventBuckets[]`/`sharedEventRecordQueue` access. Added `TShip` + `g_pNavyPrimaryOrderListHead`; retired `GetNavyPrimaryOrderListHeadFast`/`GetIndustryActionCostWeightByResourceTypeFast` wrappers in `TGreatPower.cpp`. Name overrides for queue + navy symbols.
+- **Description:** Fixed `TInterNationEventQueueManager` layout (`dedupRecordQueue58c` @ 0x58C, buckets @ 0xED4, merge @ 0xEF0); inverted replay/redraw branches matching asm, direct `perNationEventBuckets[]`/`sharedEventRecordQueue` access. Added `TShip` + `g_pNavyPrimaryOrderListHead`; retired `GetNavyPrimaryOrderListHeadFast`/`GetIndustryActionCostWeightByResourceTypeFast` wrappers in `TGreatPower.cpp`. Name overrides for queue + navy symbols.
 
 - **Timestamp:** 2026-06-10
 - **Command:** Retire inter-nation event `static __inline` wrappers in `TGreatPower.cpp` + `TInterNationEventQueueManager.cpp`; add `TLocalizationRuntime::gateFlag7a`; `just build` → `just compare`
@@ -604,7 +604,7 @@ call [ebx+8]`), exactly matching the original. Also restructured the body to the
 genuine MFC `WriteObject` shape (three-way `if/else if/else`, first-time path
 returns, shared tag-write trailer with the `0x7fff` escape) — that single shape
 change was worth 58.82%->94.23%. Remaining 6% is one optimizer-specialized null
-block (original reuses `edi`=0 and skips the size `cmp`); not chased.
+block (original reuses `edi`=0 and skips the size `cmp`).
 
 Corrected `CObject` vtable order to canonical MFC (`GetRuntimeClass`, `~CObject`,
 `Serialize`@+0x8, `AssertValid`@+0xc, `Dump`@+0x10); the header had `Serialize` at
@@ -619,8 +619,7 @@ tag bits). Per repeated user guidance, modeled `Store` as a **real
 `CRuntimeClass::Store(CArchive*)` method** (new `CRuntimeClass` class) and call it
 as `pClassRef->Store(this)` — NOT a thiscall-as-fastcall cast bridge. Store body:
 `lstrlenA` + two chained `WriteWord`s (schema, len) + `WriteBytes(name, (WORD)len)`;
-needed `#pragma optimize("ys")` (FPO+favor-size) and a `(unsigned short)` cast (not
-`& 0xffff`, which emits `and` instead of `movzx`) to reach 100%. Owned via marker +
+needed a `(unsigned short)` cast (not `& 0xffff`, which emits `and` instead of `movzx`) to reach 100%. Owned via marker +
 `sync-ownership`/`regen-stubs`; added `src/game/CRuntimeClass.{h,cpp}` to CMake.
 Strengthened the AGENTS.md calling-convention guardrail (Ghidra callconvs are
 unreliable; model real classes/virtuals; the `vcall_runtime` facade layer is legacy
@@ -824,8 +823,8 @@ The whole `TFileStream` is now ported and 100%.
 
 1. CObject/CRuntimeClass RTTI (`src/game/list_utils.cpp`): `IsKindOf` (`0x606fc0`),
    `IsDerivedFrom` (`0x607077`), `AfxDynamicDownCast` (`0x606fd2`) were structurally
-   correct but stuck at 27–62%; one `#pragma optimize("ys", on)` took all three to **100%**.
-2. CString split (`src/game/string_shared.cpp`): bracketed favor-size+FPO by default with the
+   correct but stuck at 27–62%; favor-size took all three to **100%**.
+2. CString split (`src/game/string_shared.cpp`): bracketed favor-size by default with the
    build default restored around the functions that regress badly under it (concat-assign
    wrappers `0x605b21`/`0x605b87`/`0x605bfb`, ref-assign `0x605d0a`). Net big gains
    (`0x605ae0`→100, `0x6059fc`→86, several to 80) with regressors held at baseline. (A
@@ -865,8 +864,6 @@ The whole `TFileStream` is now ported and 100%.
       The TCounting/THandle destructors route through ILT thunks (`0x00403c1f`→`0x00489470`,
       `0x004058c1`→`0x00489640`); calling the `_Impl` method directly leaves a single
       call-target mismatch (90.91%).
-   3. These stream wrappers use favor-speed (`#pragma optimize("y", on)`), unlike the
-      favor-size collection engines.
 4. Validation: `just build` clean; `just compare-canaries` passed; CPtrList/CObArray family
    unaffected.
 
@@ -888,12 +885,10 @@ The whole `TFileStream` is now ported and 100%.
    `SetSize` (`0x00601c14`), `SetAtGrow` (`0x00601de3`), `InsertAt` (`0x00601e0a`),
    `RemoveAt` (`0x00601e9f`). Array layout `{m_pData@4,m_nSize@8,m_nMaxSize@0xc,m_nGrowBy@0x10}`.
 4. KEY LEVER: the original MFC collection code is favor-size, not favor-speed. Setting the
-   list engine regions to `#pragma optimize("ys", on)` (FPO + favor-size) took the whole
-   CPtrList node family from 29–78% to **100%** in a single flag and lifted the previously
+   list engine regions to favor-size took the whole CPtrList node family from 29–78% to **100%** in a single flag and lifted the previously
    deferred destructors `0x00601f40` (CPtrList dtor) and `0x00601bc1` (CObArray dtor wrapper)
    from 81.82% to **100%**. The outer `TPtrList` wrappers want favor-speed, so they are
-   bracketed `#pragma optimize("yt", on)` and the file switches back to `("ys", on)` for the
-   engine. See INSTRUCTIONS notes 65–67.
+   bracketed favor-speed and the file switches back to favor-size for the engine.
 5. Results: 15 functions at **100%** (`0x00601b74` 100% effective), plus the two destructors
    to 100%. `SetSize` **72.17%** and `InsertAt` **47.62%** carry compiler-internal residuals
    (register allocation + the `(a-b)*4` → `b*0x3fffffff + a` byte-offset fusion); both are
@@ -1021,7 +1016,6 @@ The whole `TFileStream` is now ported and 100%.
    2. Replaced the incorrect Ghidra `TArmyStack::AddHead` wrappers with a real local `TPtrList` definition plus an embedded `CPtrListSentinelView` layout.
    3. Promoted the embedded list constructor/deleting-destructor helpers into `TPtrList.cpp` so the `TPtrList` wrappers call real member methods instead of casted free-function bridges.
    4. Removed the old `0x00601F1D` manual body from `TGreatPower.cpp` and let ownership/stub sync move the helper ownership to `TPtrList.cpp`.
-   5. Enabled file-local FPO for `TPtrList.cpp`; this removed the extra frame-setup noise and restored the original 5-instruction wrapper shape for the two `TPtrList` methods.
 3. Validation:
    1. `just sync-ownership`
    2. `just regen-stubs`
@@ -1043,7 +1037,7 @@ The whole `TFileStream` is now ported and 100%.
 2. Changes:
    1. Defined missing global extern arrays `g_apNationStates` and `g_Render_Nation_Header_Value_*` in `TCityProductionView.cpp` to resolve linker LNK2001 errors.
    2. Corrected stub `(void)` signatures and added appropriate `reinterpret_cast` calls on `thunk_DrawCenteredGuideLineOnMapDc`, `thunk_SetQuickDrawTextOriginWithContextOffset`, `GetCurrentLocalEpochSecondsWithTimezoneCache`, and `ConvertEpochSecondsToLocalTmWithDstAdjust`.
-   3. Promoted and optimized `TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh` (`0x004badd0`) to **72.55%** using ternary comparisons `(sVar2_val == 2) ? ... : ...` to trigger the MSVC branchless `sete/neg/sbb` register allocations.
+   3. Promoted `TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh` (`0x004badd0`) to **72.55%** using ternary comparisons `(sVar2_val == 2) ? ... : ...` to trigger the MSVC branchless `sete/neg/sbb` register allocations.
    4. Adjusted `TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit` (`0x004f64c0`) and `RebuildDiplomacyLegendPaletteMode1AndBlit` (`0x004f6840`) to nest the `ReturnConstantTrueQuickDrawFlag` call and use field-by-field RECT copying to match the compiler's stack frames and instruction selections. Improved scores to **37.74%** and **35.53%** respectively.
 3. Validation:
    1. `just build`: passed.
@@ -1169,7 +1163,7 @@ The whole `TFileStream` is now ported and 100%.
    2. `just stats`: pass, aligned functions `92`, average similarity `2.97%`.
    3. `just compare-canaries`: pass, `below_floor=0`, `parse_error=0`.
 2. Targeted `0x004DC540` `TGreatPower::CompareMissionScoreVariantsByMode`:
-   1. Changed the method from `void` to `char` return so the original `AL` success/fallthrough shape is represented and score comparisons are not optimized away.
+   1. Changed the method from `void` to `char` return so the original `AL` success/fallthrough shape is represented.
    2. Corrected `FindFirstPortZoneContextByNation` callsite to pass `this->nationSlot` through a typed cdecl cast, matching the pushed scalar argument visible before the thunk call.
    3. Removed non-original null fallback paths around the port-zone vector dereference.
 3. Result:
@@ -1691,7 +1685,6 @@ The whole `TFileStream` is now ported and 100%.
    - Discovered that `TView`'s virtual destructor `~TView()` was at 96.67% because the base class `TEventHandler` vtable was unmatched. Added `// VTABLE: IMPERIALISM 0x0066FEC4` to `TEventHandler.h` to register it, bringing `TView::~TView()` (`0x0048a9d0`) to a **100%** match.
    - Identified that `TTraderAmtBar` and `TAmtBar` destructors (`0x0058af30`, `0x005885c0`) call incremental link table (ILT) thunks (`0x004064bf` and `0x00401e65`) in the original binary, which then jump to the actual helpers (`0x0058af60` and `0x005885f0`).
    - Mapped the helper functions in `symbols.csv` to their ILT thunk addresses (`0x004064bf` and `0x00401e65`) and updated the function markers in `TTraderAmtBar.cpp` and `TAmtBar.cpp` accordingly.
-   - Added `#pragma optimize("y", on)` at the top of `TAmtBar.cpp` and `TTraderAmtBar.cpp` to enable Frame Pointer Optimization (FPO), matching the original call conventions and offsets.
    - Worked around the MSVC C++ `__thiscall` constraint on free functions by introducing a dummy event handler struct (`DummyEventHandler`) in `TTraderAmtBar.cpp` and calling the thunk using a member function pointer cast. This forced MSVC to pass the pointer in `ecx` (matching `__thiscall`) without generating `xor edx, edx` for the unused `edx` register.
    - Ran `sync_function_ownership` manually with `--prune-missing-manual` to clean up old helper ownerships and regenerated stubs.
 3. Validation & Results:
@@ -1757,11 +1750,7 @@ The whole `TFileStream` is now ported and 100%.
    - `0x0058ac80` TShipAmtBar::DrawAmt    `25.68% -> 40.22%`.
    - `0x0058b0f0` TTraderAmtBar::DrawAmt  `13.70% -> 21.84%`.
    - `just compare-canaries`: `below_floor=0` (no regressions).
-4. Negative result: forcing FPO on `DrawAmt` via `#pragma optimize("y", on)`
-   *lowered* the score (37.44% -> 33.33%): MSVC then promotes `ebx`/`ebp` as scratch
-   (`xor ebx,ebx; cmp esi,ebx`), diverging more than the kept-frame build even though
-   the original is FPO with only esi/edi. Reverted. Remaining DrawAmt gap is
-   register-allocation / immediate-vs-zero-reg, not structural.
+4. Negative result: forcing FPO on `DrawAmt` *lowered* the score (37.44% -> 33.33%): MSVC then promotes `ebx`/`ebp` as scratch (`xor ebx,ebx; cmp esi,ebx`), diverging more than the kept-frame build even though the original is FPO with only esi/edi. Reverted. Remaining DrawAmt gap is register-allocation / immediate-vs-zero-reg, not structural.
 5. Architecture survey (saved to `tmp_decomp/eh_functions.json`):
    - **966** functions in the binary use the MSVC C++ EH prologue.
    - Clustered by the ctor called immediately after the prologue (leading RAII guard):
@@ -1788,10 +1777,10 @@ The whole `TFileStream` is now ported and 100%.
 2. Surveyed the 13 QuickDraw-guard functions: 6 owned+converted; 7 unowned, each a
    full new decompilation (Ghidra dumps captured). Classified by effort:
    - `0x00588690` `TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache` (549) —
-     set-up class (TAmtBar.cpp, FPO on); needs vtable slot `+0x128` facade + a
+     set-up class (TAmtBar.cpp); needs vtable slot `+0x128` facade + a
      two-pass styled-text block + RECT juggling.
    - `0x00596100` `RenderWrappedMapQuickDrawOverlayFromStridedRecords` (278, cdecl
-     free fn) — needs a home file; FPO `unaff_*` regs + 1 unnamed thunk.
+     free fn) — needs a home file; `unaff_*` regs + 1 unnamed thunk.
    - `0x004bc9b0` `TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip`
      (244) — autogen class only; 3 unnamed thunks.
    - `0x004a05c0` `TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip`
@@ -1812,8 +1801,7 @@ The whole `TFileStream` is now ported and 100%.
 
 ### QuickDraw shared-helper vocabulary pass (2026-06-01, cont.)
 
-1. New file `src/game/quickdraw_surface.cpp` (added to CMake; `#pragma optimize("y", on)`
-   file-wide because these helpers are FPO in the original). Hosts the shared QuickDraw
+1. New file `src/game/quickdraw_surface.cpp` (added to CMake). Hosts the shared QuickDraw
    stroke/clip-state primitives called by every UI DrawAmt/Render body.
 2. Implemented:
    - `0x00495310` `SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty` (3 global writes) -> **100%**.
@@ -1824,7 +1812,7 @@ The whole `TFileStream` is now ported and 100%.
      `g_pGlobalClipRegionHandleObject` (0x6a1da8); import `CombineRgn`. Aligned trade_screen's
      extern decl to the real `void(int*)` signature (callsites use fn-ptr casts, unaffected).
 3. Findings (-> INSTRUCTIONS #38, expanded):
-   - FPO is target-dependent: enabling it took the leaf helper 53% -> 100%, but it HURT the
+   - Optimization is target-dependent: enabling it took the leaf helper 53% -> 100%, but it HURT the
      complex EH-RAII DrawAmt bodies. Decide per function class.
    - Mirror the compiler's pointer-offset reuse (`add eax,0x14` then `[eax+4]`) in C++ to
      avoid recompute drift (25% -> 37.84% on Snapshot).
@@ -1834,7 +1822,7 @@ The whole `TFileStream` is now ported and 100%.
 ### Promote TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache (2026-06-01, cont.)
 
 1. `0x00588690` `TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache` (549B) promoted into
-   `src/game/TAmtBar.cpp` (FPO on), reusing `QuickDrawSurfaceGuard` and the established
+   `src/game/TAmtBar.cpp`, reusing `QuickDrawSurfaceGuard` and the established
    QuickDraw helper vocabulary: 0% -> **39.73%**.
 2. Contract refinements (verified safe — all callers ignore returns / unused slot):
    - `TradeControl::RefreshSlotF8` void -> **char** (+ `Refresh()` returns char); this fn checks
@@ -1870,7 +1858,7 @@ The whole `TFileStream` is now ported and 100%.
      `RenderWrappedMapQuickDrawOverlayFromStridedRecords`.
    - Added generated vcall facades for provisional `WrappedMapOverlayView` slots
      `0x1c0`, `0x1c4`, `0x1cc`, `0x1d0`, and `0x1d4`.
-   - Modeled it as a `QuickDrawSurfaceGuard` EH-RAII body with FPO on. Signature is effectively
+   - Modeled it as a `QuickDrawSurfaceGuard` EH-RAII body. Signature is effectively
      thiscall-shaped (`__fastcall` bridge) with one stack arg; the stack arg is a record/context
      pointer and the mode branch reads `arg + 0x24`.
    - Result: `just compare 0x00596100` **0.00% -> 24.44%**. Residual gaps are register allocation
@@ -2013,7 +2001,7 @@ The whole `TFileStream` is now ported and 100%.
    `0x004bc9b0` as
    `TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryClip(int,int)`.
 2. Class/calling-convention correction:
-   - Initial free-function bridge reached **42.25%** with FPO enabled, but the original body
+   - Initial free-function bridge reached **42.25%**, but the original body
      returns `ret 8`.
    - Converted it to a real provisional class method with two hidden stack args. Final score is
      **41.67%**, but the method shape is cleaner evidence for class recovery than a free bridge.

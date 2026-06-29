@@ -38,8 +38,6 @@ Common conventions in every ratio body:
 - "yearTerm" = `min((short)(TSimMgr::quarterGateTick2c / 4), 0x3c)` —
   elapsed quarters/4, capped at 60.
 - Division guarded by `denominator == 0.0f` → return the numerator unchanged.
-- All bodies are FPO: `#pragma optimize("y", on)` is mandatory (added it alone moved the
-  family from 26–70% to 51–90%).
 
 ## Slot 0x9e join-war logic (0x004e1c20)
 

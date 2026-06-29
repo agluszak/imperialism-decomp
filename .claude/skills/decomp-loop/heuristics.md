@@ -37,32 +37,7 @@ restate a Hard Rule or a memory; link to it instead.
   fix is moving the body to the right class file + `symbols.csv` rename, not a
   score change per se — but it unblocks real-virtual modeling.
 
-## 2. FPO and optimization pragmas (`#pragma optimize`)
-
-The global build is `/O2 /Oy-` (favor speed, frame pointer kept). The original was
-compiled per-TU with different settings, so this is the highest-frequency lever.
-
-- **Leaf / no-op / small helper bodies are FPO** — wrap the file in
-  `#pragma optimize("y", on)` to drop the frame pointer, or you get a spurious
-  `push ebp; mov ebp,esp`. This alone takes `ret N` no-op slots and tiny getters to
-  100% (`0x00495310` 53%→100%). Bulk no-op slots live in `src/game/noop_slots.cpp`.
-  When wrapping only a *region* (not a whole file), close it with
-  `#pragma optimize("", on)` to RESTORE command-line flags — **not** `("", off)`,
-  which DISABLES all optimization for the rest of the TU and silently tanks every
-  following function (caught a −0.13pp avg-similarity drop this way). Keep the
-  region tight: put the pragma above the `// FUNCTION:` marker, never between the
-  marker and the declaration (marker-gate Rule 3). Forwarders that clean their own
-  arg (`ret 4`) are `__stdcall`, not `__cdecl` — fix the convention too or they
-  cap at ~66% on the `ret`/`ret 4` mismatch.
-- **MFC foundation/collection code is favor-size** — bracket those TUs/regions with
-  `#pragma optimize("ys", on)` (FPO + favor-size). Size-vs-speed shows as `and [m],0`
-  vs `mov [m],0`, `pop ecx` vs `add esp,4`, RMW `inc [m]`, and shared (not duplicated)
-  return tails. This took the whole `CPtrList` node family 29–78%→100%.
-  See [[favor-size-mfc-foundation]].
-- **Complex EH-RAII bodies are usually NOT FPO** — forcing `("y")` makes MSVC promote
-  `ebx`/`ebp` as scratch and diverge more. Measure both ways before committing.
-- EH ctors are an exception: they carry the `fs:[0]` frame yet are still FPO in the
-  original — add `("y", on)` even with the EH frame present.
+## 2. (removed)
 
 ## 3. Constructor matching = field-init PLACEMENT
 
@@ -297,8 +272,7 @@ See [[imported-thunks-block-vtable-resolution]], [[ilt-thunk-retirement]],
 
 When a vtable region is one repeating template (e.g. TGreatPower score-factor slots
 0x8e–0x9e = six shapes × {army,navy}), port it as a batch, not one-off: define the
-shared float coefficients as named globals, apply `#pragma optimize("y", on)` across
-the family (alone took it 26–70%→51–90%), and reconstruct loop shape from the
+shared float coefficients as named globals and reconstruct loop shape from the
 listing's FSTP slots (Ghidra's decompile of float-heavy code is garbage). Order-class
 recovery for TGreatPower's pending-action slots is the related lever — see
 [[order-class-recovery-cstring-blocker]] and [[next-tgreatpower-vtable-scope]].
@@ -408,7 +382,7 @@ not just a marker-gate fail.
   that TU — editing the file *or* editing any header it `#include`s (even a one-token
   virtual-parameter change in `TForeignMinister.h`) — can flip a previously-100% leaf to
   42.86%. They **cannot be pinned from source**: `double v = A; return v + B;` still emits
-  `fld B; fadd A` because the optimizer reorders across the temporary. Practical
+  `fld B; fadd A` because the compiler reorders across the temporary. Practical
   consequences: (1) the fake "view" facades and local `reinterpret_cast` bridges in the
   GreatPower family are *deliberate workarounds* to dispatch/pass-args without recompiling
   the fragile TU — "cleaning them up" trades those flips for architectural correctness
