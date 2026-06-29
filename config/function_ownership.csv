@@ -659,7 +659,13 @@ address|target_cpp|ownership|note
 49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49c240|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c850|src/game/TSoundResourceManager.cpp|manual|marker_sync
+49cbc0|src/game/TBackdropWindow.cpp|manual|marker_sync
+49cbf0|src/game/TBackdropWindow.cpp|manual|marker_sync
 49cc40|src/game/startup_helpers.cpp|manual|marker_sync
+49cca0|src/game/TBackdropWindow.cpp|manual|marker_sync
+49cdf0|src/game/TBackdropWindow.cpp|manual|marker_sync
+49ce90|src/game/TBackdropWindow.cpp|manual|marker_sync
+49cfa0|src/game/TBackdropWindow.cpp|manual|marker_sync
 49d360|src/game/TControl.cpp|manual|marker_sync
 49d450|src/game/TControl.cpp|manual|marker_sync
 49d510|src/game/TModalTemplateDialog.cpp|manual|marker_sync

@@ -16,6 +16,7 @@ public:
   DECLARE_DYNCREATE(CMainFrame)
   DECLARE_MESSAGE_MAP()
 
+public:
   CMainFrame();
   ~CMainFrame();
 

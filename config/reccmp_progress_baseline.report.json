@@ -6702,6 +6702,18 @@
       "type": 1
     },
     {
+      "address": "0x49cbc0",
+      "matching": 0.72,
+      "name": "TBackdropWindow::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x49cbf0",
+      "matching": 0.3333333333333333,
+      "name": "TBackdropWindow::~TBackdropWindow",
+      "type": 1
+    },
+    {
       "address": "0x49cc20",
       "matching": 0.5,
       "name": "OrphanVtableAssignStub_0049cc20",
@@ -6715,26 +6727,26 @@
     },
     {
       "address": "0x49cca0",
-      "matching": 0.02564102564102564,
-      "name": "InitializeGlobalBackdropWindowWithDefaultBmp3B6",
+      "matching": 0.17777777777777778,
+      "name": "CreateGlobalBackdropWindowWithDefaultBmp3B6",
       "type": 1
     },
     {
       "address": "0x49cdf0",
-      "matching": 0.04878048780487805,
+      "matching": 0.6976744186046512,
       "name": "RefreshBackdropOnInputMessages",
       "type": 1
     },
     {
       "address": "0x49ce90",
-      "matching": 0.0,
-      "name": "InitializeDefaultBackdropWindowFromBmp3B6",
+      "matching": 0.6274509803921569,
+      "name": "TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6",
       "type": 1
     },
     {
       "address": "0x49cfa0",
-      "matching": 0.06896551724137931,
-      "name": "ResetTopLevelWindowStateAndReleaseTempMapBuffer",
+      "matching": 0.5576923076923077,
+      "name": "TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer",
       "type": 1
     },
     {
@@ -12494,13 +12506,13 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12536,7 +12548,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.4939759036144578,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -15926,7 +15938,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.18053097345132743,
+      "matching": 0.18495575221238938,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16754,7 +16766,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.34382566585956414,
+      "matching": 0.32038834951456313,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },

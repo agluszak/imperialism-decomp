@@ -1,11 +1,11 @@
 #include "game/CMainFrame.h"
 
 #include "game/ImperialismApp.h"
+#include "game/TBackdropWindow.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 
 #include <new>
 
-extern undefined4 WrapperFor_AllocateWithFallbackHandler_At0049cc60(void);
 extern undefined4 ResolveBmpResourceHandleWithDefault3B6(void);
 extern undefined4 thunk_DispatchHandleMapLookupWithReadPtrProbe(void);
 extern undefined4 TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void);
@@ -24,15 +24,8 @@ void* GetValueAtOffset98(CWnd* wnd) {
 
 int ResolveBmpHandleFromModuleCache(TModuleLibraryCacheTableStateB* cache) {
   typedef int(__fastcall * ResolveBmpProc)(TModuleLibraryCacheTableStateB*);
-  ResolveBmpProc resolve =
-      (ResolveBmpProc)(void*)ResolveBmpResourceHandleWithDefault3B6;
+  ResolveBmpProc resolve = (ResolveBmpProc)(void*)ResolveBmpResourceHandleWithDefault3B6;
   return resolve(cache);
-}
-
-void AllocateWithFallbackForMainFrame(CMainFrame* frame) {
-  typedef void(__fastcall * AllocateProc)(CMainFrame*);
-  AllocateProc allocate = (AllocateProc)(void*)WrapperFor_AllocateWithFallbackHandler_At0049cc60;
-  allocate(frame);
 }
 
 undefined4 DispatchHandleMapLookup(undefined4 handle, int flag) {
@@ -72,8 +65,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   if (CFrameWnd::OnCreate(lpCreateStruct) == -1) {
     return -1;
   }
-  AllocateWithFallbackForMainFrame(this);
-  field_BC = reinterpret_cast<CMainFrameRefTarget*>(ResolveBmpHandleFromModuleCache(g_pModuleLibraryCacheState));
+  CreateGlobalBackdropWindowWithDefaultBmp3B6(this);
+  field_BC = reinterpret_cast<CMainFrameRefTarget*>(
+      ResolveBmpHandleFromModuleCache(g_pModuleLibraryCacheState));
   TryRealizeViewPaletteAndInvalidateWindow();
   return 0;
 }
@@ -154,7 +148,8 @@ LRESULT CMainFrame::OnMsg030F(WPARAM wParam, LPARAM lParam) {
 
 // FUNCTION: IMPERIALISM 0x00485180
 void CMainFrame::OnCommand8009() {
-  field_BC = reinterpret_cast<CMainFrameRefTarget*>(ResolveBmpHandleFromModuleCache(g_pModuleLibraryCacheState));
+  field_BC = reinterpret_cast<CMainFrameRefTarget*>(
+      ResolveBmpHandleFromModuleCache(g_pModuleLibraryCacheState));
   TryRealizeViewPaletteAndInvalidateWindow();
 }
 

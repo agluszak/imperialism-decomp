@@ -3,6 +3,59 @@
 Living backlog. Keep entries actionable with addresses; move durable design notes to
 `docs/reference/`. See also `docs/reference/initinstance-port-plan.md`.
 
+## Backdrop window bring-up under `just debug`
+
+Goal: get the first visible window on screen by recovering the loading/backdrop
+window as real C++ rather than stubs or vtable facades. Runtime evidence shows
+`InitInstance` and `ProcessShellCommand` reach `CMainFrame::OnCreate`, but the
+main frame stays hidden because the backdrop creator path does not yet faithfully
+produce the retail loading window.
+
+Current recovered surface:
+- `TBackdropWindow` cluster: `0x49cb90..0x49cfa0`.
+- Retail base vtable: `0x670b4c`; retail derived vtable: `0x64bca8`.
+- Object size: `0x40`; important fields: `CWnd::m_hWnd` at `+0x1c`, backdrop BMP
+  handle at `+0x3c`.
+- Creator: `CreateGlobalBackdropWindowWithDefaultBmp3B6` @ `0x49cca0`.
+- Input refresh/destroy path: `RefreshBackdropOnInputMessages` @ `0x49cdf0`
+  (slot `0x18` in the observed window flow).
+- Backdrop initializer: `TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6`
+  @ `0x49ce90`.
+- Teardown/reveal path: `TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer`
+  @ `0x49cfa0` (slot `0x2b` in the observed window flow).
+- Globals: `g_pBackdropWindow` / `DAT_006a2050`, temp map/wait-cursor buffer
+  `DAT_006a2054`, and the still-understood init flag `DAT_006a2018`.
+
+Next work:
+1. Model `DAT_006a2018` instead of bypassing it. The current bring-up path may need
+   the creator's retail predicate relaxed because `CMainFrame::OnCreate` reaches the
+   recovered creator before the backdrop initializer under `just debug`. Recover the
+   writer(s), reader(s), and semantic name for `DAT_006a2018` (`SetGlobalDword6A2018`
+   @ `0x49cc40` is the known starting point), then restore the creator guard in source
+   if the real init-state model makes the retail condition true at the right time.
+2. Verify the `TBackdropWindow` base model. The class is structurally `CWnd`-derived,
+   but the repo's current MFC vtable model emits extra OLE/dispatch slots for
+   `CWnd`-derived classes, so do not force a `// VTABLE:` annotation until the inherited
+   slot surface can compare honestly. Keep calls as real methods/virtuals; no raw
+   `vftable[]`, no `VCall_*`, no constructor bridge.
+3. Confirm the visible-window path in `just debug`: break on
+   `CreateGlobalBackdropWindowWithDefaultBmp3B6`, then
+   `TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6`, then the `CreateEx` /
+   `CreateWindowExA` / `UpdateWindow` sequence for the backdrop. A good trace proves
+   `DAT_006a2050 != NULL`, a non-null `m_hWnd`, BMP `0x3b6` loaded, and the first
+   visible backdrop window created before the main frame reveal.
+4. Wire and prove the teardown trigger. Find the runtime caller that dispatches
+   `DAT_006a2050->slot0x2b()` when loading completes, then route it to
+   `TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer`. The teardown
+   must release the BMP, null `DAT_006a2050`, release `DAT_006a2054` if needed, and call
+   the already-real `CMainFrame::ConfigureTopLevelWindowStyleAndPlacement` so the hidden
+   main frame becomes maximized/visible.
+5. Verification loop for this batch:
+   - `just sync-ownership && just regen-stubs && just build`
+   - `just compare 0x0049cbf0 0x0049cca0 0x0049cdf0 0x0049ce90 0x0049cfa0`
+   - `just gates`
+   - `just stats` and `just stats-commit` once the runtime path is accepted
+
 ## Game init & asset loading
 
 Goal: port the asset-loader functions that sit on top of the (already real)

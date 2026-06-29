@@ -35,6 +35,7 @@ class TCursorControlPanel;
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TAmbitApplication.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TBackdropWindow.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // GLOBAL: IMPERIALISM 0x006a4310
@@ -45,6 +46,10 @@ TDisplayMgr* g_pDisplayMgr = 0;
 TMacViewMgr* g_pStrategicMapViewSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a21bc
 TViewMgr* g_pUiRuntimeContext = 0;
+// GLOBAL: IMPERIALISM 0x006a2050
+TBackdropWindow* DAT_006a2050 = 0;
+// GLOBAL: IMPERIALISM 0x006a2054
+void* DAT_006a2054 = 0;
 // GLOBAL: IMPERIALISM 0x006a2148
 TAssetMgr* g_pUiViewManager = 0;
 // GLOBAL: IMPERIALISM 0x006a327c

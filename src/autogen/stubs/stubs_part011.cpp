@@ -1739,22 +1739,6 @@ undefined4 ResetGlobalDword6A1FC8(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0()
-// FUNCTION: IMPERIALISM 0x0049cbc0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl()
-// FUNCTION: IMPERIALISM 0x0049cbf0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanVtableAssignStub_0049cc20
 // ghidra_proto undefined OrphanVtableAssignStub_0049cc20()
 // FUNCTION: IMPERIALISM 0x0049cc20
@@ -1767,38 +1751,6 @@ undefined4 OrphanVtableAssignStub_0049cc20(void)
 // ghidra_proto undefined WrapperFor_AllocateWithFallbackHandler_At0049cc60()
 // FUNCTION: IMPERIALISM 0x0049cc60
 undefined4 WrapperFor_AllocateWithFallbackHandler_At0049cc60(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeGlobalBackdropWindowWithDefaultBmp3B6
-// ghidra_proto undefined InitializeGlobalBackdropWindowWithDefaultBmp3B6()
-// FUNCTION: IMPERIALISM 0x0049cca0
-undefined4 InitializeGlobalBackdropWindowWithDefaultBmp3B6(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshBackdropOnInputMessages
-// ghidra_proto undefined RefreshBackdropOnInputMessages()
-// FUNCTION: IMPERIALISM 0x0049cdf0
-undefined4 RefreshBackdropOnInputMessages(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeDefaultBackdropWindowFromBmp3B6
-// ghidra_proto undefined InitializeDefaultBackdropWindowFromBmp3B6()
-// FUNCTION: IMPERIALISM 0x0049ce90
-undefined4 InitializeDefaultBackdropWindowFromBmp3B6(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetTopLevelWindowStateAndReleaseTempMapBuffer
-// ghidra_proto undefined ResetTopLevelWindowStateAndReleaseTempMapBuffer()
-// FUNCTION: IMPERIALISM 0x0049cfa0
-undefined4 ResetTopLevelWindowStateAndReleaseTempMapBuffer(void)
 {
   return 0;
 }
