@@ -32,6 +32,9 @@ public:
   virtual int RefreshVoiceStateSlot34(int a) = 0;           // 0x34
   AUDIO_CHANNEL_DUMMY(38);                                  // 0x38
   virtual int SetChannelVolumeSlot3C(int volume) = 0;       // 0x3c
+  AUDIO_CHANNEL_DUMMY(40);                                  // 0x40
+  AUDIO_CHANNEL_DUMMY(44);                                  // 0x44
+  virtual void __stdcall NotifyAudioObjectSlot48() = 0;     // 0x48
 #undef AUDIO_CHANNEL_DUMMY
 };
 

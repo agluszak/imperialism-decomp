@@ -27,14 +27,6 @@ undefined4 DestroyTCityInteriorMinister_Impl(void)
   return 0;
 }
 
-// ghidra_name DestructLinkedValueListMaybeFree
-// ghidra_proto undefined DestructLinkedValueListMaybeFree()
-// FUNCTION: IMPERIALISM 0x004bec10
-undefined4 DestructLinkedValueListMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TLinkedBlockChainState_00650A50::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004bec40
 // ghidra_proto undefined DestructLinkedBlockChainState_00650A50_AndFreeChain_At004bec40()
 // FUNCTION: IMPERIALISM 0x004bec40
@@ -195,70 +187,6 @@ undefined4 WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::SerializeLinkedValueListWithArchiveFlags
-// ghidra_proto undefined SerializeLinkedValueListWithArchiveFlags()
-// FUNCTION: IMPERIALISM 0x004c65d0
-undefined4 SerializeLinkedValueListWithArchiveFlags(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::AddIntToLinkedValueList
-// ghidra_proto undefined AddIntToLinkedValueList()
-// FUNCTION: IMPERIALISM 0x004c6740
-undefined4 AddIntToLinkedValueList(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::AddIntToLinkedValueListAlt
-// ghidra_proto undefined AddIntToLinkedValueListAlt()
-// FUNCTION: IMPERIALISM 0x004c67e0
-undefined4 AddIntToLinkedValueListAlt(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::GetNthIntFromLinkedValueList
-// ghidra_proto undefined GetNthIntFromLinkedValueList()
-// FUNCTION: IMPERIALISM 0x004c6880
-undefined4 GetNthIntFromLinkedValueList(void)
-{
-  return 0;
-}
-
-// ghidra_name GetLinkedValueListCount
-// ghidra_proto undefined GetLinkedValueListCount()
-// FUNCTION: IMPERIALISM 0x004c68c0
-undefined4 GetLinkedValueListCount(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::RemoveNthIntFromLinkedValueList
-// ghidra_proto undefined RemoveNthIntFromLinkedValueList()
-// FUNCTION: IMPERIALISM 0x004c68e0
-undefined4 RemoveNthIntFromLinkedValueList(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::ClearLinkedValueList
-// ghidra_proto undefined ClearLinkedValueList()
-// FUNCTION: IMPERIALISM 0x004c69a0
-undefined4 ClearLinkedValueList(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::RemoveIntFromLinkedValueListByValue
-// ghidra_proto undefined RemoveIntFromLinkedValueListByValue()
-// FUNCTION: IMPERIALISM 0x004c69e0
-undefined4 RemoveIntFromLinkedValueListByValue(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0()
 // FUNCTION: IMPERIALISM 0x004c6aa0
@@ -271,22 +199,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0(void)
 // ghidra_proto undefined DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0()
 // FUNCTION: IMPERIALISM 0x004c6ad0
 undefined4 DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::DebugDumpLinkedValueList
-// ghidra_proto undefined DebugDumpLinkedValueList()
-// FUNCTION: IMPERIALISM 0x004c6b60
-undefined4 DebugDumpLinkedValueList(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::DestroyLinkedValueListAndFreeSelf
-// ghidra_proto undefined DestroyLinkedValueListAndFreeSelf()
-// FUNCTION: IMPERIALISM 0x004c6bf0
-undefined4 DestroyLinkedValueListAndFreeSelf(void)
 {
   return 0;
 }

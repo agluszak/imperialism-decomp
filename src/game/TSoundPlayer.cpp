@@ -2,6 +2,7 @@
 
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
+#include "game/TSimMgr.h"
 #include "game/TApplication.h"
 #include "game/TSoundChannelNode.h"
 #include "game/TSoundResourceManager.h"
@@ -14,32 +15,22 @@
 #endif
 
 extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-
 // Random-cue rotation counter at 0x006a4520 (raw audio-state global, not yet in
 // symbols.csv). Provisional definition until the owning data block is recovered.
 short DAT_006a4520 = 0;
 
 undefined4 thunk_InitializeDirectSoundDeviceAndChannels(void);
 undefined4 EnsureCdAudioDeviceHandleInitialized(void);
-undefined4 ClearDirectSoundInitPendingAndResetState_Impl(void);
-undefined4 ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void);
 undefined4 ForwardMciCommand808ToDevice(void);
 undefined4 ForwardMciStatusCommand814IgnoreFailure(void);
+undefined4 ClearDirectSoundInitPendingAndResetState_Impl(void);
+undefined4 ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void);
 undefined4 RequestAudioPresetChangeWithDeferredApply(void);
 undefined4 SelectAndScheduleRandomAudioCue(void);
+
 void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player);
 
 static int DAT_006a60f8 = 0;
-
-undefined4 LoadWaveResourceByNumericIdAndBuildBuffer(void);
-
-namespace {
-int CallLoadWaveResource(int sfxToken, int slot) {
-  typedef int(__fastcall * LoadWaveFunc)(void*, int, int, int);
-  return reinterpret_cast<LoadWaveFunc>(LoadWaveResourceByNumericIdAndBuildBuffer)(
-      reinterpret_cast<void*>(0x6a60c0), 0, sfxToken, slot);
-}
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x005932b0
 TSoundPlayer* CreateTSoundPlayerInstance(void) {
@@ -67,9 +58,23 @@ TSoundPlayer* TSoundPlayer::ConstructTSoundPlayerBaseState() {
 // Partial teardown writes the runtime-object base vptr, symmetric with TEventHandler
 // construction via the normal base ctor chain.
 
+extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+
 // FUNCTION: IMPERIALISM 0x005933e0
 void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
   *reinterpret_cast<void**>(player) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+}
+
+void TSoundPlayer::EnsureCdAudioDeviceHandleInitialized() {
+  ::EnsureCdAudioDeviceHandleInitialized();
+}
+
+void TSoundPlayer::ForwardMciCommand808ToDevice() {
+  ::ForwardMciCommand808ToDevice();
+}
+
+BOOL TSoundPlayer::ForwardMciStatusCommand814IgnoreFailure() {
+  return static_cast<BOOL>(::ForwardMciStatusCommand814IgnoreFailure());
 }
 
 // Slot 0x13 override — pump the audio playback state machine / schedule random cues.
@@ -77,10 +82,10 @@ void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
 // FUNCTION: IMPERIALISM 0x00593400
 char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
   (void)action;
-  if (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x4e) == 0) {
+  if (g_pLocalizationTable->preferenceValues[5] == 0) {
     if (this->stateByte78 != 0) {
-      if (static_cast<char>(ForwardMciStatusCommand814IgnoreFailure()) != 0) {
-        ForwardMciCommand808ToDevice();
+      if (static_cast<char>(this->ForwardMciStatusCommand814IgnoreFailure()) != 0) {
+        this->ForwardMciCommand808ToDevice();
       }
       this->stateByte78 = 0;
     }
@@ -88,14 +93,13 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
   }
 
   if (this->stateByte80 != 0 && this->stateDword7c == 0) {
-    int n =
-        static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->QueryPendingPlaybackCountSlot28();
+    int n = this->runtimePeerAt6c->QueryPendingPlaybackCountSlot28();
     if (n > 0) {
-      static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->StopOrResetActivePlaybackSlot30();
-      static_cast<TSoundChannelNode*>(this->runtimePeerAt70)->StopOrResetActivePlaybackSlot30();
+      this->runtimePeerAt6c->StopOrResetActivePlaybackSlot30();
+      this->runtimePeerAt70->StopOrResetActivePlaybackSlot30();
     }
     if (this->stateByte78 != 0) {
-      ForwardMciCommand808ToDevice();
+      this->ForwardMciCommand808ToDevice();
       this->stateByte78 = 0;
       this->fieldShort74 = 0;
     }
@@ -109,12 +113,12 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
     return 0;
   }
 
-  int n = static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->QueryPendingPlaybackCountSlot28();
+  int n = this->runtimePeerAt6c->QueryPendingPlaybackCountSlot28();
   if (n > 0) {
     DAT_006a4520 = static_cast<short>(DAT_006a4520 + 1);
     if (DAT_006a4520 > 4) {
       DAT_006a4520 = 0;
-      if (static_cast<char>(ForwardMciStatusCommand814IgnoreFailure()) == 0) {
+      if (static_cast<char>(this->ForwardMciStatusCommand814IgnoreFailure()) == 0) {
         SelectAndScheduleRandomAudioCue();
       }
     }
@@ -123,20 +127,6 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
 }
 
 // Slot 0x25 — allocate the two sound-channel peer objects and bring up DirectSound.
-
-namespace {
-
-struct SoundChannelListNode {
-  void* vtable;
-  int field04;
-  int field08;
-  int field0c;
-  int field10;
-  int field14;
-  int field18;
-};
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x005e4e70
 void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) {
@@ -149,36 +139,14 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) 
     this->RequestDirectSoundInitIfAllowed();
   }
 
-  SoundChannelListNode* node = new SoundChannelListNode();
-  if (node != 0) {
-    node->vtable = 0;
-    node->field04 = 0;
-    node->field08 = 0;
-    node->field0c = 0;
-    node->field10 = 0;
-    node->field14 = 0;
-    node->field18 = 10;
-  }
-  this->runtimePeerAt6c = node;
-
-  node = new SoundChannelListNode();
-  if (node != 0) {
-    node->vtable = 0;
-    node->field04 = 0;
-    node->field08 = 0;
-    node->field0c = 0;
-    node->field10 = 0;
-    node->field14 = 0;
-    node->field18 = 10;
-  }
-  this->runtimePeerAt70 = node;
+  this->runtimePeerAt6c = new TSoundChannelNode();
+  this->runtimePeerAt70 = new TSoundChannelNode();
 
   this->fieldShort74 = 0;
   EnsureCdAudioDeviceHandleInitialized();
   this->field10 = param_1;
   // Notify the global UI root controller via its slot 0x29 (peer class unrecovered).
-  reinterpret_cast<TApplication*>(g_pGlobalUiRootController)
-      ->InsertOrRemoveTrackedEntry(reinterpret_cast<int>(this), 1);
+  g_pGlobalUiRootController->InsertOrRemoveTrackedEntry(reinterpret_cast<int>(this), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005e4f60
@@ -213,11 +181,10 @@ void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
 
 // FUNCTION: IMPERIALISM 0x005e4ff0
 void TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48() {
-  for (int offset = 4; offset < 0x1c; offset += 4) {
-    void* obj = *reinterpret_cast<void**>(0x006a60c0 + offset);
-    typedef void(__stdcall * VirtualFunc)(void*);
-    VirtualFunc* vtable = *reinterpret_cast<VirtualFunc**>(obj);
-    vtable[18](obj);
+  for (int offset = 4; offset < 28; offset += 4) {
+    TAudioChannel* obj = *reinterpret_cast<TAudioChannel**>(
+        reinterpret_cast<char*>(&g_soundResourceManager) + offset);
+    obj->NotifyAudioObjectSlot48();
   }
 }
 
@@ -244,14 +211,14 @@ void TSoundPlayer::NoOpAudioTickCallback_005e50a0() {}
 // FUNCTION: IMPERIALISM 0x005e50c0
 int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxToken, int param_2,
                                                                        int param_3, int param_4) {
-  if (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x4c) == 0) {
+  if (g_pLocalizationTable->preferenceValues[4] == 0) {
     return 0;
   }
   int slot = DAT_006a60f8++;
   if (DAT_006a60f8 > 5) {
     DAT_006a60f8 = 0;
   }
-  if (CallLoadWaveResource(sfxToken, slot) != 0) {
+  if (g_soundResourceManager.LoadWaveResourceByNumericIdAndBuildBuffer(sfxToken, slot) != 0) {
     g_soundResourceManager.UpdateLocalizationAudioSlot(slot);
   }
   return 0;
@@ -265,15 +232,14 @@ void TSoundPlayer::PlaySoundEffect(int sfxToken, int param_2, int param_3) {
 // FUNCTION: IMPERIALISM 0x005e51d0
 void TSoundPlayer::Free() {
   if (this->runtimePeerAt70 != 0) {
-    // Peer class (vtable 0x650a08) unrecovered — slot 0x38 release.
-    static_cast<TSoundChannelNode*>(this->runtimePeerAt70)->ReleaseChannelNodeSlot38();
+    this->runtimePeerAt70->ReleaseChannelNodeSlot38();
   }
   this->runtimePeerAt70 = 0;
   if (this->runtimePeerAt6c != 0) {
-    static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->ReleaseChannelNodeSlot38();
+    this->runtimePeerAt6c->ReleaseChannelNodeSlot38();
   }
   this->runtimePeerAt6c = 0;
   ReleaseRuntimeSelectionPeersAndResetOwner_Impl();
-  ForwardMciCommand808ToDevice();
+  this->ForwardMciCommand808ToDevice();
   TEventHandler::Free();
 }

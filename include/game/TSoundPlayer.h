@@ -2,6 +2,7 @@
 
 #include "game/TEventHandler.h"
 #include "game/global_data_tables.h"
+#include "game/TSoundChannelNode.h"
 
 struct CRuntimeClass;
 
@@ -12,8 +13,8 @@ public:
   unsigned char directSoundInitOkAt20;      // 0x20 — set by InitializeSoundSubsystem
   unsigned char directSoundInitPendingAt21; // 0x21 — set by RequestDirectSoundInitIfAllowed
   char pad22[0x4a];
-  void* runtimePeerAt6c;
-  void* runtimePeerAt70;
+  TSoundChannelNode* runtimePeerAt6c;
+  TSoundChannelNode* runtimePeerAt70;
   unsigned short fieldShort74;
   unsigned short fieldShort76;
   unsigned char stateByte78;
@@ -27,6 +28,10 @@ public:
   TSoundPlayer();
   TSoundPlayer* ConstructTSoundPlayerBaseState();
   DECLARE_DYNCREATE(TSoundPlayer)
+  void EnsureCdAudioDeviceHandleInitialized();
+  void ForwardMciCommand808ToDevice();
+  BOOL ForwardMciStatusCommand814IgnoreFailure();
+
   void Free() override;                                     // 0x07 -> 0x5e51d0
   char CanHandleCityDialogActionFalse(int action) override; // 0x13 -> 0x593400
 
@@ -39,7 +44,8 @@ public:
   virtual void NotifyGlobalAudioObjectsViaVslot48();                         // 0x2a -> 0x5e4ff0
   virtual void WrapperFor_ftol_At005e5020(short param_1);                    // 0x2b -> 0x5e5020
   virtual void NoOpAudioTickCallback_005e50a0();                             // 0x2c -> 0x5e50a0
-  virtual int UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxToken, int param_2 = 0, int param_3 = 1, int param_4 = 1); // 0x2d -> 0x5e50c0
+  virtual int UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(
+      int sfxToken, int param_2 = 0, int param_3 = 1, int param_4 = 1);         // 0x2d -> 0x5e50c0
   virtual void PlaySoundEffect(int sfxToken, int param_2 = 0, int param_3 = 1); // 0x2e -> 0x5e5140
 };
 
