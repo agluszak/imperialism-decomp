@@ -48,6 +48,10 @@ public:
   void CopyRgbQuadTableFrom(const LOGPALETTE* source);
   // Copy bitmap width/height into a point, or zero it if no header is attached. 0x0047a3e0
   CPoint* CopyBitmapDimensionsToPoint(CPoint* out);
+  // Realize the DIB palette into a DC before blitting. 0x0047aa00
+  UINT SelectAndRealizeDibPalette(CDC* dc, BOOL background);
+  // Stretch-blit stored DIB bits to a DC. 0x0047aa70
+  BOOL StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int width, int height);
   // Load an RT_BITMAP resource from a module into the DIB state. 0x0047c080
   int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module);
 

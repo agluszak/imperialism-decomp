@@ -28,6 +28,8 @@ public:
   afx_msg void OnCommand8009();
   afx_msg void OnCommand800C();
 
+  virtual BOOL PreTranslateMessage(MSG* msg);
+
   void ConfigureTopLevelWindowStyleAndPlacement(int width, int height);
   int TryRealizeViewPaletteAndInvalidateWindow();
 

@@ -1,5 +1,6 @@
 #include "game/ImperialismApp.h"
 #include "game/startup_helpers.h"
+#include "game/app_init_globals.h"
 #include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
@@ -108,7 +109,9 @@ BOOL ImperialismApp::InitInstance() {
     }
     PostMessageA(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
 
-    SetGlobalDword6A2018(cmdInfo.m_nShellCommand);
+    // cmdInfo.m_nShellCommand is CCommandLineInfo+0x04 (UINT enum, not m_strFileName).
+    // Cached for backdrop guard @ 0x0049cc60 — see g_cachedAppShellCommand in global_data_tables.h.
+    SetCachedAppShellCommand(cmdInfo.m_nShellCommand);
 
     CSingleDocTemplate* pDocTemplate =
         new CSingleDocTemplate(0x80, RUNTIME_CLASS(CAmbitDocument), RUNTIME_CLASS(CMainFrame),

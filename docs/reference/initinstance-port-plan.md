@@ -38,7 +38,8 @@ be a real, correctly-typed declaration before the body can compile cleanly (no
     `InitializeMultiplayerManagerForSessionContext`.
   - `SetUiRuntimeContextAndActivateMain @ 0x00483340` — real body.
   - `GetMainViewHostFromActiveThread @ 0x00412a70` — real body (Afx thread main window + offset `+0x98`).
-  - `SetGlobalCallback6A7FACAndReturnPrevious`, `SetGlobalDword6A2018`.
+  - `SetGlobalCallback6A7FACAndReturnPrevious`, `SetCachedAppShellCommand` (`0x49cc40`; was
+    `SetGlobalDword6A2018`).
   - `WarnLowDiskSpaceAndConfirmContinue @ 0x00415760` — disk-space check + `TLowDiskWarningDialog`
     (template `0x98`).
 - **Manager ctors / init** promoted to real methods:
@@ -90,6 +91,33 @@ Orchestration uses real `new` + method calls. Remaining leaf depth:
   branch uses `m_pchData == nullptr` vs `IsEmpty()`.
 - Register allocation around `GetMainViewHostFromActiveThread` / `SetWindowTextOrDelegateToOwner`
   (compiler choice — do not chase).
+
+## Globals: cached shell command (`g_cachedAppShellCommand` / `0x006a2018`)
+
+**Type:** `UINT` — a copy of `CCommandLineInfo::m_nShellCommand` (MFC enum), **not** a `char*`
+and not the filename. Do not confuse with `m_strFileName.m_pchData` (that CString lives at
+cmdInfo **+0x08**; the global stores cmdInfo **+0x04** only).
+
+**Writer:** `SetCachedAppShellCommand` @ `0x0049cc40`, called from `InitInstance` @
+`0x00412f81` **after** `ParseCommandLine` and **before** `ProcessShellCommand`:
+
+```asm
+; cmdInfo object on stack at [ESP+0x1c]
+MOV EDX, dword ptr [ESP + 0x20]   ; cmdInfo + 4 == m_nShellCommand
+PUSH EDX
+CALL SetCachedAppShellCommand     ; -> g_cachedAppShellCommand
+```
+
+**Reader:** `WrapperFor_AllocateWithFallbackHandler_At0049cc60` @ `0x0049cc60` (backdrop
+creator from `CMainFrame::OnCreate`): creates the loading window only when
+`g_cachedAppShellCommand != 0` **and** `DAT_006a2050 == NULL`.
+
+**MFC `m_nShellCommand` values** (standard `CCommandLineInfo` enum): `FileNew` = 0,
+`FileOpen` = 1, `FilePrint` = 2, `FilePrintPreview` = 3, `FilePageSetup` = 4, `FileDDE` = 5,
+`FileNothing` = 6. InitInstance’s *separate* early guard compares other cmdInfo fields (empty
+filename at `[ESP+0x50]`, and `[ESP+0x2c] == 5`) — those are not what gets cached here.
+
+**Runtime (2026-06):** backdrop window confirmed visible under `just debug` with this model.
 
 ### E. ExitInstance residual match (~79%)
 - Register allocation (`ebp` vs `edi`) — out of scope.

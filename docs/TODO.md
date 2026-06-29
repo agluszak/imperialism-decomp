@@ -6,55 +6,53 @@ Living backlog. Keep entries actionable with addresses; move durable design note
 ## Backdrop window bring-up under `just debug`
 
 Goal: get the first visible window on screen by recovering the loading/backdrop
-window as real C++ rather than stubs or vtable facades. Runtime evidence shows
-`InitInstance` and `ProcessShellCommand` reach `CMainFrame::OnCreate`, but the
-main frame stays hidden because the backdrop creator path does not yet faithfully
-produce the retail loading window.
+window as real C++ rather than stubs or vtable facades. **Runtime confirmed (2026-06):**
+backdrop window is visible under `just debug`; main-frame reveal/teardown still needs
+shape work.
 
 Current recovered surface:
 - `TBackdropWindow` cluster: `0x49cb90..0x49cfa0`.
 - Retail base vtable: `0x670b4c`; retail derived vtable: `0x64bca8`.
 - Object size: `0x40`; important fields: `CWnd::m_hWnd` at `+0x1c`, backdrop BMP
   handle at `+0x3c`.
-- Creator: `CreateGlobalBackdropWindowWithDefaultBmp3B6` @ `0x49cca0`.
+- Guarded creator: `WrapperFor_AllocateWithFallbackHandler_At0049cc60` @ `0x49cc60`
+  (reads `g_cachedAppShellCommand`; see `docs/reference/initinstance-port-plan.md`).
+- Inner init: `CreateGlobalBackdropWindowWithDefaultBmp3B6` @ `0x49cca0`.
 - Input refresh/destroy path: `RefreshBackdropOnInputMessages` @ `0x49cdf0`
-  (slot `0x18` in the observed window flow).
+  (slot `0x18` / `CWnd::DestroyWindow` in the observed window flow).
 - Backdrop initializer: `TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6`
   @ `0x49ce90`.
-- Teardown/reveal path: `TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer`
-  @ `0x49cfa0` (slot `0x2b` in the observed window flow).
-- Globals: `g_pBackdropWindow` / `DAT_006a2050`, temp map/wait-cursor buffer
-  `DAT_006a2054`, and the still-understood init flag `DAT_006a2018`.
+- Teardown/reveal path: `TBackdropWindow::PostNcDestroy` @ `0x49cfa0` (retail vtable
+  slot `0x2b` ILT → this body).
+- Globals: `DAT_006a2050` (backdrop `TBackdropWindow*`), temp map/wait-cursor buffer
+  `DAT_006a2054`, cached shell command `g_cachedAppShellCommand` @ `0x006a2018`
+  (`CCommandLineInfo::m_nShellCommand` as `UINT` enum — **not** a filename pointer).
 
 Next work:
-1. Model `DAT_006a2018` instead of bypassing it. The current bring-up path may need
-   the creator's retail predicate relaxed because `CMainFrame::OnCreate` reaches the
-   recovered creator before the backdrop initializer under `just debug`. Recover the
-   writer(s), reader(s), and semantic name for `DAT_006a2018` (`SetGlobalDword6A2018`
-   @ `0x49cc40` is the known starting point), then restore the creator guard in source
-   if the real init-state model makes the retail condition true at the right time.
+1. ~~Model `DAT_006a2018`~~ — **done:** `g_cachedAppShellCommand` +
+   `SetCachedAppShellCommand` @ `0x49cc40`; guarded creator @ `0x49cc60`. Semantics
+   documented in source (`global_data_tables.cpp`, `ImperialismApp.cpp`).
 2. Verify the `TBackdropWindow` base model. The class is structurally `CWnd`-derived,
    but the repo's current MFC vtable model emits extra OLE/dispatch slots for
    `CWnd`-derived classes, so do not force a `// VTABLE:` annotation until the inherited
    slot surface can compare honestly. Keep calls as real methods/virtuals; no raw
    `vftable[]`, no `VCall_*`, no constructor bridge.
-3. Confirm the visible-window path in `just debug`: break on
-   `CreateGlobalBackdropWindowWithDefaultBmp3B6`, then
-   `TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6`, then the `CreateEx` /
-   `CreateWindowExA` / `UpdateWindow` sequence for the backdrop. A good trace proves
-   `DAT_006a2050 != NULL`, a non-null `m_hWnd`, BMP `0x3b6` loaded, and the first
-   visible backdrop window created before the main frame reveal.
-4. Wire and prove the teardown trigger. Find the runtime caller that dispatches
-   `DAT_006a2050->slot0x2b()` when loading completes, then route it to
-   `TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer`. The teardown
-   must release the BMP, null `DAT_006a2050`, release `DAT_006a2054` if needed, and call
-   the already-real `CMainFrame::ConfigureTopLevelWindowStyleAndPlacement` so the hidden
-   main frame becomes maximized/visible.
+3. ~~Confirm the visible-window path in `just debug`~~ — **done** (backdrop window exists).
+4. Wire and prove the teardown trigger. Timer id 1 (750ms) or input via
+   `RefreshBackdropOnInputMessages` → `DestroyWindow` → `PostNcDestroy` @ `0x49cfa0`.
+   Prove the teardown releases the BMP, nulls `DAT_006a2050`, releases `DAT_006a2054` if needed,
+   and calls `CMainFrame::ConfigureTopLevelWindowStyleAndPlacement` so the hidden main frame
+   becomes maximized/visible. **Wired in source; runtime proof + shape pass still open**
+   (`0x49cfa0` ~60%, `0x49d090` ~50%).
 5. Verification loop for this batch:
    - `just sync-ownership && just regen-stubs && just build`
-   - `just compare 0x0049cbf0 0x0049cca0 0x0049cdf0 0x0049ce90 0x0049cfa0`
+   - `just compare 0x0049cbf0 0x0049cca0 0x0049cdf0 0x0049ce90 0x0049cfa0 0x0049d090 0x0049d180`
    - `just gates`
    - `just stats` and `just stats-commit` once the runtime path is accepted
+
+Current compare snapshot (2026-06): `0x49ce90`/`0x49cdf0`/`0x49d180` ~75%,
+`0x49cfa0` ~60%, `0x49d090` ~50%, `0x49cca0`/`0x49cbf0` ~31–33%.
+`0x49cc60` on reccmp ignore list.
 
 ## Game init & asset loading
 

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "game/app_init_globals.h"
 #include "game/mfc.h"
-#include "decomp_types.h"
 
 class TAmbitApplication;
 class TView;
@@ -11,9 +11,6 @@ struct GlobalViewportRectDefaultsRecord;
 extern "C" {
 // 0x005e7a80
 void* SetGlobalCallback6A7FACAndReturnPrevious(void* callback);
-
-// 0x0049cc40
-void SetGlobalDword6A2018(int value);
 
 // 0x00415760
 BOOL WarnLowDiskSpaceAndConfirmContinue();

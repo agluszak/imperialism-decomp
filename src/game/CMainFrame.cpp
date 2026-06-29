@@ -49,6 +49,12 @@ ON_COMMAND(0x8009, OnCommand8009)
 ON_COMMAND(0x800C, OnCommand800C)
 END_MESSAGE_MAP()
 
+// FUNCTION: IMPERIALISM 0x00413a20
+BOOL CMainFrame::PreTranslateMessage(MSG* msg) {
+  RefreshBackdropOnInputMessages(msg);
+  return CFrameWnd::PreTranslateMessage(msg);
+}
+
 // FUNCTION: IMPERIALISM 0x00484bf0
 CMainFrame::CMainFrame()
     : CFrameWnd(), field_BC(0), field_C0(0x100005f), field_C4(0), field_CC(1) {}
@@ -65,7 +71,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   if (CFrameWnd::OnCreate(lpCreateStruct) == -1) {
     return -1;
   }
-  CreateGlobalBackdropWindowWithDefaultBmp3B6(this);
+  WrapperFor_AllocateWithFallbackHandler_At0049cc60(this);
   field_BC = reinterpret_cast<CMainFrameRefTarget*>(
       ResolveBmpHandleFromModuleCache(g_pModuleLibraryCacheState));
   TryRealizeViewPaletteAndInvalidateWindow();

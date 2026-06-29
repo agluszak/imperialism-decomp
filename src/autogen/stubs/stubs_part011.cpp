@@ -1747,30 +1747,6 @@ undefined4 OrphanVtableAssignStub_0049cc20(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_AllocateWithFallbackHandler_At0049cc60
-// ghidra_proto undefined WrapperFor_AllocateWithFallbackHandler_At0049cc60()
-// FUNCTION: IMPERIALISM 0x0049cc60
-undefined4 WrapperFor_AllocateWithFallbackHandler_At0049cc60(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTopLevelWindowTimerAndAcquireTempMapHandle
-// ghidra_proto undefined InitializeTopLevelWindowTimerAndAcquireTempMapHandle()
-// FUNCTION: IMPERIALISM 0x0049d090
-undefined4 InitializeTopLevelWindowTimerAndAcquireTempMapHandle(void)
-{
-  return 0;
-}
-
-// ghidra_name PaintStoredBitmapToWindowClientDc
-// ghidra_proto undefined PaintStoredBitmapToWindowClientDc()
-// FUNCTION: IMPERIALISM 0x0049d180
-undefined4 PaintStoredBitmapToWindowClientDc(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetGlobalPair6A2020And6A2024
 // ghidra_proto undefined ResetGlobalPair6A2020And6A2024()
 // FUNCTION: IMPERIALISM 0x0049d290

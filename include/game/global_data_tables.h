@@ -6,6 +6,7 @@
 #include "decomp_types.h"
 
 #include "game/mfc.h"
+#include "game/app_init_globals.h"
 #include "game/TCountry.h"
 #include "game/startup_helpers.h"
 #include "game/TDisplayMgr.h"
@@ -125,7 +126,8 @@ extern double DAT_0066fad0;
 extern char g_pClassDescTStratReportView;
 extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
 extern void* g_pGlobalCallback_006a7fac;
-extern int DAT_006a2018;
+// Cached CCommandLineInfo::m_nShellCommand (cmdInfo+0x04, UINT enum — not m_strFileName).
+extern UINT g_cachedAppShellCommand;
 extern TBackdropWindow* DAT_006a2050;
 extern void* DAT_006a2054;
 extern LPCSTR g_apFontFiles[];

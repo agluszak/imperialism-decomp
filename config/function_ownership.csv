@@ -28,6 +28,7 @@ address|target_cpp|ownership|note
 4138b0|src/game/ImperialismApp.cpp|manual|marker_sync
 413950|src/game/ImperialismApp.cpp|manual|marker_sync
 4139f0|src/game/ImperialismApp.cpp|manual|marker_sync
+413a20|src/game/CMainFrame.cpp|manual|marker_sync
 414770|src/game/TAmbitApplication.cpp|manual|marker_sync
 414850|src/game/startup_paths.cpp|manual|marker_sync
 4149a0|src/game/ImperialismApp.cpp|manual|marker_sync
@@ -159,6 +160,8 @@ address|target_cpp|ownership|note
 479fe0|src/game/CDib.cpp|manual|marker_sync
 47a370|src/game/CDib.cpp|manual|marker_sync
 47a3e0|src/game/CDib.cpp|manual|marker_sync
+47aa00|src/game/CDib.cpp|manual|marker_sync
+47aa70|src/game/CDib.cpp|manual|marker_sync
 47ae20|src/game/CDib.cpp|manual|marker_sync
 47ae90|src/game/CDib.cpp|manual|marker_sync
 47b0c0|src/game/CDib.cpp|manual|marker_sync
@@ -662,10 +665,13 @@ address|target_cpp|ownership|note
 49cbc0|src/game/TBackdropWindow.cpp|manual|marker_sync
 49cbf0|src/game/TBackdropWindow.cpp|manual|marker_sync
 49cc40|src/game/startup_helpers.cpp|manual|marker_sync
+49cc60|src/game/TBackdropWindow.cpp|manual|marker_sync
 49cca0|src/game/TBackdropWindow.cpp|manual|marker_sync
 49cdf0|src/game/TBackdropWindow.cpp|manual|marker_sync
 49ce90|src/game/TBackdropWindow.cpp|manual|marker_sync
 49cfa0|src/game/TBackdropWindow.cpp|manual|marker_sync
+49d090|src/game/TBackdropWindow.cpp|manual|marker_sync
+49d180|src/game/TBackdropWindow.cpp|manual|marker_sync
 49d360|src/game/TControl.cpp|manual|marker_sync
 49d450|src/game/TControl.cpp|manual|marker_sync
 49d510|src/game/TModalTemplateDialog.cpp|manual|marker_sync

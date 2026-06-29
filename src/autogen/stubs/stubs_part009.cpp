@@ -139,14 +139,6 @@ undefined4 ShowDialogTemplate64Modal(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_RefreshBackdropOnInputMessages_At00413a20
-// ghidra_proto undefined WrapperFor_RefreshBackdropOnInputMessages_At00413a20()
-// FUNCTION: IMPERIALISM 0x00413a20
-undefined4 WrapperFor_RefreshBackdropOnInputMessages_At00413a20(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowSelectedDibInTemplateDDDialog
 // ghidra_proto undefined ShowSelectedDibInTemplateDDDialog()
 // FUNCTION: IMPERIALISM 0x00413a50
@@ -1263,22 +1255,6 @@ undefined4 Helper_Uses_BuildPaletteFromRgbQuadBuffer_At0047a630(void)
 // ghidra_proto undefined Helper_Uses_BuildPaletteFromRgbQuadBuffer_At0047a8a0()
 // FUNCTION: IMPERIALISM 0x0047a8a0
 undefined4 Helper_Uses_BuildPaletteFromRgbQuadBuffer_At0047a8a0(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectAndRealizeDibPalette
-// ghidra_proto undefined SelectAndRealizeDibPalette()
-// FUNCTION: IMPERIALISM 0x0047aa00
-undefined4 SelectAndRealizeDibPalette(void)
-{
-  return 0;
-}
-
-// ghidra_name StretchDibitsFromStoredBitmapToHdcSimple
-// ghidra_proto undefined StretchDibitsFromStoredBitmapToHdcSimple()
-// FUNCTION: IMPERIALISM 0x0047aa70
-undefined4 StretchDibitsFromStoredBitmapToHdcSimple(void)
 {
   return 0;
 }

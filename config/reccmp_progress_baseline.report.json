@@ -1725,13 +1725,13 @@
     },
     {
       "address": "0x47aa00",
-      "matching": 0.06666666666666667,
+      "matching": 0.7169811320754716,
       "name": "SelectAndRealizeDibPalette",
       "type": 1
     },
     {
       "address": "0x47aa70",
-      "matching": 0.0,
+      "matching": 0.9375,
       "name": "StretchDibitsFromStoredBitmapToHdcSimple",
       "type": 1
     },
@@ -6722,18 +6722,18 @@
     {
       "address": "0x49cc40",
       "matching": 1.0,
-      "name": "SetGlobalDword6A2018",
+      "name": "SetCachedAppShellCommand",
       "type": 1
     },
     {
       "address": "0x49cca0",
-      "matching": 0.1984732824427481,
+      "matching": 0.3106796116504854,
       "name": "CreateGlobalBackdropWindowWithDefaultBmp3B6",
       "type": 1
     },
     {
       "address": "0x49cdf0",
-      "matching": 0.7804878048780488,
+      "matching": 0.7466666666666667,
       "name": "RefreshBackdropOnInputMessages",
       "type": 1
     },
@@ -6745,19 +6745,19 @@
     },
     {
       "address": "0x49cfa0",
-      "matching": 0.5576923076923077,
+      "matching": 0.5977011494252874,
       "name": "TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer",
       "type": 1
     },
     {
       "address": "0x49d090",
-      "matching": 0.03508771929824561,
+      "matching": 0.5,
       "name": "InitializeTopLevelWindowTimerAndAcquireTempMapHandle",
       "type": 1
     },
     {
       "address": "0x49d180",
-      "matching": 0.09302325581395349,
+      "matching": 0.7560975609756098,
       "name": "PaintStoredBitmapToWindowClientDc",
       "type": 1
     },
@@ -12056,7 +12056,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12500,13 +12500,13 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -15938,7 +15938,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.1918181818181818,
+      "matching": 0.19545454545454546,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },

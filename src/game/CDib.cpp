@@ -1,15 +1,12 @@
 #include "game/CDib.h"
 
 #include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
 
 // FUNCTION: IMPERIALISM 0x00479ed0
 CRuntimeClass* CDib::GetRuntimeClass() const {
   return &s_CDib_RuntimeClass_00694b48;
 }
-
-// The scalar deleting destructor is compiler-generated from the virtual dtor.
-// SYNTHETIC: IMPERIALISM 0x00479fb0
-// CDib::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00479f40
 CDib::CDib() : CObject() {
@@ -20,6 +17,10 @@ CDib::CDib() : CObject() {
   m_hPalette = NULL;
   Release();
 }
+
+// The scalar deleting destructor is compiler-generated from the virtual dtor.
+// SYNTHETIC: IMPERIALISM 0x00479fb0
+// CDib::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00479fe0
 CDib::CDib(int width, int height, int bitDepth) : CObject() {
@@ -108,6 +109,31 @@ CPoint* CDib::CopyBitmapDimensionsToPoint(CPoint* out) {
   out->x = m_pInfoHeader->bmiHeader.biWidth;
   out->y = m_pInfoHeader->bmiHeader.biHeight;
   return out;
+}
+
+// FUNCTION: IMPERIALISM 0x0047aa00
+UINT CDib::SelectAndRealizeDibPalette(CDC* dc, BOOL background) {
+  if (m_hPalette == NULL) {
+    TemporarilyClearAndRestoreUiInvalidationFlag("CDib.cpp", 0xe9);
+    return 0;
+  }
+
+  HDC hdc = (dc != NULL) ? dc->m_hDC : NULL;
+  ::SelectPalette(hdc, m_hPalette, background);
+  return ::RealizePalette(hdc);
+}
+
+// FUNCTION: IMPERIALISM 0x0047aa70
+BOOL CDib::StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int width, int height) {
+  if (m_pInfoHeader == NULL) {
+    return FALSE;
+  }
+
+  HDC hdc = (dc != NULL) ? dc->m_hDC : NULL;
+  ::StretchDIBits(hdc, x, y, width, height, 0, 0, m_pInfoHeader->bmiHeader.biWidth,
+                  m_pInfoHeader->bmiHeader.biHeight, m_dibBits, m_pInfoHeader, DIB_RGB_COLORS,
+                  SRCCOPY);
+  return TRUE;
 }
 
 // FUNCTION: IMPERIALISM 0x0047ae20
