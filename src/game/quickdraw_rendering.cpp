@@ -71,10 +71,11 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
     surfaceField1c = 0;
   } else {
-    void** surfaceSlot = reinterpret_cast<void**>(
-        reinterpret_cast<char*>(g_pActiveQuickDrawSurfaceContextHead) + 0x24);
-    if (surfaceSlot != nullptr && *surfaceSlot != nullptr) {
-      surfaceField1c = *reinterpret_cast<int*>(static_cast<char*>(*surfaceSlot) + 0x1c);
+    TBitmapSurfaceContextDescriptor* descriptor =
+        static_cast<TBitmapSurfaceContextDescriptor*>(g_pActiveQuickDrawSurfaceContextHead);
+    TBitmapSurfaceNode* node = descriptor->GetSurfaceNode();
+    if (node != nullptr) {
+      surfaceField1c = reinterpret_cast<int>(node->dib);
     }
   }
   if (surfaceField1c == 0) {

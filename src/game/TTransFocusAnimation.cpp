@@ -2,6 +2,7 @@
 
 #include "game/TTransFocusAnimation.h"
 
+#include "game/global_data_tables.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TView.h"
 #include "game/mfc.h"
@@ -21,7 +22,8 @@ undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
 // FUNCTION: IMPERIALISM 0x004a05c0
 void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() {
   QuickDrawSurfaceGuard surface;
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(reinterpret_cast<int*>(surface.surfaceWrapper));
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(
+      reinterpret_cast<int*>(surface.surfaceWrapper));
 
   RECT destinationRect;
   RECT sourceRect;

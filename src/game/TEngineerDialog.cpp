@@ -1,6 +1,7 @@
 #include "game/TEngineerDialog.h"
 
 #include "decomp_types.h"
+#include "game/global_data_tables.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
@@ -61,20 +62,19 @@ void TEngineerDialog::ApplyRectSlot110(RECT* rectBuffer) {
   dstRect.left = 0;
   dstRect.right = 0x148;
 
-  BlitQuickDrawSurfaces(
-      reinterpret_cast<TQuickDrawBlitSurface*>(this->field60 + 4),
-      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &headerRect, &headerRect, 0);
+  BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field60 + 4),
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &headerRect,
+                        &headerRect, 0);
 
   bodyY = 0x38;
-  int bodyRowCount =
-      (static_cast<short>(this->field38) - 0x46) / 0x0e;
+  int bodyRowCount = (static_cast<short>(this->field38) - 0x46) / 0x0e;
   if (bodyRowCount > 0) {
     do {
       dstRect.top = bodyY;
       dstRect.bottom = bodyY + 0x0e;
-      BlitQuickDrawSurfaces(
-          reinterpret_cast<TQuickDrawBlitSurface*>(this->field68 + 4),
-          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &bodyTileRect, &dstRect, 0);
+      BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field68 + 4),
+                            g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &bodyTileRect,
+                            &dstRect, 0);
       bodyY = static_cast<short>(bodyY + 0x0e);
       bodyRowCount = bodyRowCount - 1;
     } while (bodyRowCount != 0);
@@ -82,9 +82,9 @@ void TEngineerDialog::ApplyRectSlot110(RECT* rectBuffer) {
 
   dstRect.top = bodyY;
   dstRect.bottom = bodyY + 0x0e;
-  BlitQuickDrawSurfaces(
-      reinterpret_cast<TQuickDrawBlitSurface*>(this->field64 + 4),
-      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &bodyTileRect, &dstRect, 0);
+  BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field64 + 4),
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &bodyTileRect, &dstRect,
+                        0);
 
   (void)rectBuffer;
 }

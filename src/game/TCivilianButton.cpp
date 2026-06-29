@@ -1,6 +1,7 @@
 #include "game/TCivilianButton.h"
 #include "game/TAmtBar.h"
 #include "game/TPicture.h"
+#include "game/global_data_tables.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TControl.h"
 #include "game/ui_invalidation_guard.h"

@@ -2,6 +2,7 @@
 
 #include "game/TNumberedArrowButton.h"
 #include "game/TAmtBar.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_invalidation_guard.h"
@@ -42,7 +43,8 @@ void TNumberedArrowButton::OrphanCallChain_C3_I43_0058b750(char mode, char refre
   }
 }
 
-// OrphanCallChain_C2_I37_0058b8d0 — body at 0x0058b8d0 owned by THQButton::SetSelectionStateAndRefreshBitmap
+// OrphanCallChain_C2_I37_0058b8d0 — body at 0x0058b8d0 owned by
+// THQButton::SetSelectionStateAndRefreshBitmap
 void TNumberedArrowButton::OrphanCallChain_C2_I37_0058b8d0(short mode) {
   *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x98) = mode;
   *reinterpret_cast<char*>(reinterpret_cast<char*>(this) + 0x64) = 0;

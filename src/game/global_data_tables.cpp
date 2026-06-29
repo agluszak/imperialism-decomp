@@ -32,6 +32,7 @@ class TCursorControlPanel;
 #include "game/THelpMgr.h"
 #include "game/TCursorControlPanel.h"
 #include "game/TAnimator.h"
+#include "game/TQuickDrawSurfaceContext.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // GLOBAL: IMPERIALISM 0x006a4310
@@ -179,6 +180,24 @@ int g_uQuickDrawCurrentColor = 0;
 int g_nQuickDrawOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a1d84
 int g_nQuickDrawOriginY = 0;
+// GLOBAL: IMPERIALISM 0x006a1ca0
+TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
+// Statically initialized to the sentinel address (the dword at 0x006950f8 holds
+// 0x006a1ca0 in the original), not null — the restore path in
+// BuildStrategicMapCommodityIconAtlasFrom700To722 captures this before the first
+// SetActiveQuickDrawSurfaceContext and would otherwise restore a null context.
+// GLOBAL: IMPERIALISM 0x006950f8
+TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead = &g_defaultQuickDrawSurfaceSentinel;
+// GLOBAL: IMPERIALISM 0x006a1d60
+TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext = 0;
+// GLOBAL: IMPERIALISM 0x006a30a8
+TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext = 0;
+// GLOBAL: IMPERIALISM 0x006a1da0
+CDC* g_pQuickDrawMemoryDc = nullptr;
+// GLOBAL: IMPERIALISM 0x006a1dbc
+HGDIOBJ g_hQuickDrawSavedBitmap = nullptr;
+// GLOBAL: IMPERIALISM 0x006a1db0
+int g_nActiveQuickDrawSurfaceFlags = 0;
 
 // Overlay clip cache parameters
 // GLOBAL: IMPERIALISM 0x006a4450

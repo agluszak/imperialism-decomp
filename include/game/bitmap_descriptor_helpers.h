@@ -7,12 +7,6 @@ class CDib;
 class TBitmapResourceLoader;
 struct TQuickDrawSurfaceContext;
 
-extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
-extern TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
-extern CDC* g_pQuickDrawMemoryDc;
-extern HGDIOBJ g_hQuickDrawSavedBitmap;
-extern int g_nActiveQuickDrawSurfaceFlags;
-
 void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* outContext, int* outFlags);
 void SetActiveQuickDrawSurfaceContext(undefined4 context, undefined4 flags);
 void* GetSurfaceObjectAtContextOffset24(int context);

@@ -5,6 +5,7 @@
 
 #include "decomp_types.h"
 
+#include "game/mfc.h"
 #include "game/TDealList.h"
 #include "game/TCountry.h"
 #include "game/TDisplayMgr.h"
@@ -18,6 +19,7 @@ TGreatPower* GetActiveNationState(void);
 int GetTradeSummarySelectionTagByIndex(short index);
 
 struct NationState;
+struct TQuickDrawSurfaceContext;
 class TDiplomacyMgr;
 class TNavyMgr;
 class TSimMgr;
@@ -61,6 +63,13 @@ extern int g_uQuickDrawCurrentColor;
 extern int g_uQuickDrawStrokeColor;
 extern int g_nQuickDrawOriginX;
 extern int g_nQuickDrawOriginY;
+extern TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
+extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
+extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
+extern TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext;
+extern CDC* g_pQuickDrawMemoryDc;
+extern HGDIOBJ g_hQuickDrawSavedBitmap;
+extern int g_nActiveQuickDrawSurfaceFlags;
 extern int g_pTradeSummarySelectionMap[32];
 extern const int kTradeSellPropagationTags[17];
 

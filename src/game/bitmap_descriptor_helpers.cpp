@@ -29,8 +29,8 @@ static void StretchDibitsFromCdibToDc(CDib* dib, CDC* dcWrapper, int x, int y) {
   if (height < 0) {
     height = -height;
   }
-  StretchDIBits(hdc, x, y, width, height, 0, 0, width, height, dib->m_dibBits,
-                dib->m_pInfoHeader, DIB_RGB_COLORS, SRCCOPY);
+  StretchDIBits(hdc, x, y, width, height, 0, 0, width, height, dib->m_dibBits, dib->m_pInfoHeader,
+                DIB_RGB_COLORS, SRCCOPY);
 }
 
 static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
@@ -41,55 +41,26 @@ static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   ::operator delete(loaderHandle);
 }
 
-struct BitmapSurfaceNode {
-  void* pixelBits;
-  short stride;
-  short field06;
-  int field08;
-  int field0c;
-  int field10;
-  int field14;
-  int field18;
-  CDib* dib;
-  short bitDepth;
-  int headerPointer;
-};
-
-struct BitmapSurfaceContextDescriptor {
-  int field00;
-  int field04;
-  short field08;
-  short pad0a;
-  int rectLeft;
-  int rectTop;
-  int rectRight;
-  int rectBottom;
-  short field1c;
-  short pad1e;
-  int field20;
-  int* surfaceNodeSlot;
-  char pad28[8];
-  const char* debugSourcePath;
-};
-
-static void ResetBitmapSurfaceContextDescriptor(BitmapSurfaceContextDescriptor* descriptor) {
+static void ResetBitmapSurfaceContextDescriptor(TBitmapSurfaceContextDescriptor* descriptor) {
   descriptor->field00 = 0;
-  descriptor->field04 = 0;
-  descriptor->field08 = 0;
+  descriptor->blitSurface.field00 = 0;
+  descriptor->blitSurface.hdcOrBitmapHandle = 0;
   descriptor->field1c = 0;
-  descriptor->field20 = 0;
-  descriptor->rectLeft = 0;
-  descriptor->rectTop = 0;
-  descriptor->rectRight = 0;
-  descriptor->rectBottom = 0;
-  descriptor->surfaceNodeSlot = nullptr;
+  descriptor->flipDescriptor = 0;
+  descriptor->clipRect.left = 0;
+  descriptor->clipRect.top = 0;
+  descriptor->clipRect.right = 0;
+  descriptor->clipRect.bottom = 0;
+  descriptor->SetSurfaceNodeSlot(nullptr);
+  descriptor->quickDrawColor = 0;
+  descriptor->transparentBlitColor = 0;
   descriptor->debugSourcePath = kQuickDrawDebugSourcePath;
 }
 
-static BitmapSurfaceNode* InitializeBitmapSurfaceNode(int width, int height, int bitDepth) {
-  BitmapSurfaceNode* node =
-      static_cast<BitmapSurfaceNode*>(::operator new(sizeof(BitmapSurfaceNode)));
-  memset(node, 0, sizeof(BitmapSurfaceNode));
+static TBitmapSurfaceNode* InitializeBitmapSurfaceNode(int width, int height, int bitDepth) {
+  TBitmapSurfaceNode* node =
+      static_cast<TBitmapSurfaceNode*>(::operator new(sizeof(TBitmapSurfaceNode)));
+  memset(node, 0, sizeof(TBitmapSurfaceNode));
 
   node->dib = new CDib(width, height, bitDepth);
   if (node->dib == nullptr) {
@@ -112,8 +83,8 @@ static BitmapSurfaceNode* InitializeBitmapSurfaceNode(int width, int height, int
 
   node->pixelBits = node->dib->m_dibBits;
   if (node->dib->m_pInfoHeader != nullptr) {
-    const int rowBits =
-        node->dib->m_pInfoHeader->bmiHeader.biWidth * node->dib->m_pInfoHeader->bmiHeader.biBitCount;
+    const int rowBits = node->dib->m_pInfoHeader->bmiHeader.biWidth *
+                        node->dib->m_pInfoHeader->bmiHeader.biBitCount;
     node->stride = static_cast<short>(((rowBits + 31) / 32) * 4);
     node->field10 = node->dib->m_pInfoHeader->bmiHeader.biWidth;
     node->field14 = abs(node->dib->m_pInfoHeader->bmiHeader.biHeight);
@@ -121,54 +92,36 @@ static BitmapSurfaceNode* InitializeBitmapSurfaceNode(int width, int height, int
     node->field10 = width;
     node->field14 = height;
   }
-  node->bitDepth = static_cast<short>(bitDepth);
   node->field18 = height;
-  node->headerPointer = reinterpret_cast<int>(node->dib->m_pInfoHeader);
   return node;
 }
 
-static bool InitializeBitmapDescriptorNodeFromResourceSurface(
-    BitmapSurfaceContextDescriptor* descriptor, int width, int height, int bitDepth) {
-  int* surfaceNodeSlot = static_cast<int*>(::operator new(sizeof(BitmapSurfaceNode*)));
-  *reinterpret_cast<BitmapSurfaceNode**>(surfaceNodeSlot) = nullptr;
-  descriptor->surfaceNodeSlot = surfaceNodeSlot;
+static bool
+InitializeBitmapDescriptorNodeFromResourceSurfaceImpl(TBitmapSurfaceContextDescriptor* descriptor,
+                                                      int width, int height, int bitDepth) {
+  TBitmapSurfaceNode** surfaceNodeSlot =
+      static_cast<TBitmapSurfaceNode**>(::operator new(sizeof(TBitmapSurfaceNode*)));
+  *surfaceNodeSlot = nullptr;
+  descriptor->SetSurfaceNodeSlot(surfaceNodeSlot);
 
-  BitmapSurfaceNode* node = InitializeBitmapSurfaceNode(width, height, bitDepth);
-  *reinterpret_cast<BitmapSurfaceNode**>(surfaceNodeSlot) = node;
+  TBitmapSurfaceNode* node = InitializeBitmapSurfaceNode(width, height, bitDepth);
+  *surfaceNodeSlot = node;
   if (node == nullptr || node->pixelBits == nullptr) {
     return false;
   }
 
-  descriptor->field04 = node->dib->m_pInfoHeader != nullptr
-                            ? node->dib->m_pInfoHeader->bmiHeader.biHeight
-                            : 0;
-  descriptor->field08 = node->stride;
-  descriptor->rectLeft = 0;
-  descriptor->rectTop = 0;
-  descriptor->rectRight = node->field10;
-  descriptor->rectBottom = node->field14;
-  descriptor->field20 = node->headerPointer;
+  descriptor->blitSurface.field00 =
+      node->dib->m_pInfoHeader != nullptr ? node->dib->m_pInfoHeader->bmiHeader.biHeight : 0;
+  descriptor->blitSurface.hdcOrBitmapHandle = node->stride;
+  descriptor->clipRect.left = 0;
+  descriptor->clipRect.top = 0;
+  descriptor->clipRect.right = node->field10;
+  descriptor->clipRect.bottom = node->field14;
+  descriptor->flipDescriptor = reinterpret_cast<int>(node->dib->m_pInfoHeader);
   return true;
 }
 
 } // namespace
-
-// GLOBAL: IMPERIALISM 0x006a1ca0
-TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
-
-// Statically initialized to the sentinel address (the dword at 0x006950f8 holds
-// 0x006a1ca0 in the original), not null — the restore path in
-// BuildStrategicMapCommodityIconAtlasFrom700To722 captures this before the first
-// SetActiveQuickDrawSurfaceContext and would otherwise restore a null context.
-// GLOBAL: IMPERIALISM 0x006950f8
-TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead =
-    &g_defaultQuickDrawSurfaceSentinel;
-// GLOBAL: IMPERIALISM 0x006a1da0
-CDC* g_pQuickDrawMemoryDc = nullptr;
-// GLOBAL: IMPERIALISM 0x006a1dbc
-HGDIOBJ g_hQuickDrawSavedBitmap = nullptr;
-// GLOBAL: IMPERIALISM 0x006a1db0
-int g_nActiveQuickDrawSurfaceFlags = 0;
 
 // FUNCTION: IMPERIALISM 0x00495c40
 void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bounds) {
@@ -189,43 +142,38 @@ void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bo
 }
 
 // FUNCTION: IMPERIALISM 0x00495d00
-BitmapSurfaceNode* InitializeBitmapSurfaceFromResourceDescriptor(BitmapSurfaceNode* node, int width,
-                                                                 int height, int bitDepth) {
+TBitmapSurfaceNode* InitializeBitmapSurfaceFromResourceDescriptor(TBitmapSurfaceNode* node,
+                                                                  int width, int height,
+                                                                  int bitDepth) {
   (void)node;
   return InitializeBitmapSurfaceNode(width, height, bitDepth);
 }
 
 // FUNCTION: IMPERIALISM 0x00495e20
-void InitializeBitmapDescriptorRecordState(int record) {
-  ResetBitmapSurfaceContextDescriptor(reinterpret_cast<BitmapSurfaceContextDescriptor*>(record));
+void TBitmapSurfaceContextDescriptor::Reset() {
+  ResetBitmapSurfaceContextDescriptor(this);
 }
 
 // FUNCTION: IMPERIALISM 0x00495eb0
-bool InitializeBitmapDescriptorNodeFromResourceSurface(int record, int width, int height,
-                                                       int bitDepth) {
-  return InitializeBitmapDescriptorNodeFromResourceSurface(
-      reinterpret_cast<BitmapSurfaceContextDescriptor*>(record), width, height, bitDepth);
+bool TBitmapSurfaceContextDescriptor::InitializeSurfaceNode(int width, int height, int bitDepth) {
+  return InitializeBitmapDescriptorNodeFromResourceSurfaceImpl(this, width, height, bitDepth);
 }
 
 // FUNCTION: IMPERIALISM 0x00495fd0
-void WrapperFor_FreeHeapBufferIfNotNull_At00495fd0(int record) {
-  BitmapSurfaceContextDescriptor* descriptor =
-      reinterpret_cast<BitmapSurfaceContextDescriptor*>(record);
-  if (descriptor->surfaceNodeSlot == nullptr) {
-    return;
+void TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode() {
+  TBitmapSurfaceNode** slot = GetSurfaceNodeSlot();
+  if (slot != nullptr) {
+    TBitmapSurfaceNode* node = *slot;
+    if (node != nullptr) {
+      delete node->dib;
+      ::operator delete(node);
+    }
+    ::operator delete(slot);
   }
-
-  BitmapSurfaceNode* node =
-      *reinterpret_cast<BitmapSurfaceNode**>(descriptor->surfaceNodeSlot);
-  if (node != nullptr) {
-    delete node->dib;
-    ::operator delete(node);
-  }
-  ::operator delete(descriptor->surfaceNodeSlot);
-  descriptor->surfaceNodeSlot = nullptr;
-  descriptor->field04 = 0;
-  descriptor->field08 = 0;
-  descriptor->field20 = 0;
+  SetSurfaceNodeSlot(nullptr);
+  blitSurface.field00 = 0;
+  blitSurface.hdcOrBitmapHandle = 0;
+  flipDescriptor = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00496090
@@ -263,9 +211,9 @@ void SetActiveQuickDrawSurfaceContext(undefined4 context, undefined4 flags) {
   }
 
   if (contextPtr != &g_defaultQuickDrawSurfaceSentinel) {
-    BitmapSurfaceContextDescriptor* descriptor =
-        reinterpret_cast<BitmapSurfaceContextDescriptor*>(contextPtr);
-    BitmapSurfaceNode* node = *reinterpret_cast<BitmapSurfaceNode**>(descriptor->surfaceNodeSlot);
+    TBitmapSurfaceContextDescriptor* descriptor =
+        static_cast<TBitmapSurfaceContextDescriptor*>(contextPtr);
+    TBitmapSurfaceNode* node = descriptor->GetSurfaceNode();
     SetActiveQuickDrawSurfaceContext_Impl(node != nullptr ? node->dib : nullptr, nullptr);
   }
 
@@ -287,22 +235,21 @@ void* GetSurfaceObjectAtContextOffset24(int context) {
 
 // FUNCTION: IMPERIALISM 0x004962c0
 short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(int* outContext, short bitDepth,
-                                                           RECT* bounds, int hintField18, int arg4,
-                                                           int arg5) {
+                                                         RECT* bounds, int hintField18, int arg4,
+                                                         int arg5) {
   (void)hintField18;
   (void)arg4;
   (void)arg5;
 
-  BitmapSurfaceContextDescriptor* descriptor = static_cast<BitmapSurfaceContextDescriptor*>(
-      ::operator new(sizeof(BitmapSurfaceContextDescriptor)));
+  TBitmapSurfaceContextDescriptor* descriptor = static_cast<TBitmapSurfaceContextDescriptor*>(
+      ::operator new(sizeof(TBitmapSurfaceContextDescriptor)));
   ResetBitmapSurfaceContextDescriptor(descriptor);
 
   *outContext = reinterpret_cast<int>(descriptor);
 
   const int width = bounds->right - bounds->left;
   const int height = bounds->bottom - bounds->top;
-  const bool loaded =
-      InitializeBitmapDescriptorNodeFromResourceSurface(descriptor, width, height, bitDepth);
+  const bool loaded = descriptor->InitializeSurfaceNode(width, height, bitDepth);
   return loaded ? 0 : static_cast<short>(-1);
 }
 
