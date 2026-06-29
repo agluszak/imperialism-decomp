@@ -4,12 +4,8 @@ IMPLEMENT_DYNCREATE(TPtrList, TSortedPtrList)
 
 TPtrList::TPtrList() {}
 
-extern "C" {
-char g_pClassDescTPtrList = 0;
-}
-
 void* TPtrList::GetTPtrListClassNamePointer() {
-  return &g_pClassDescTPtrList;
+  return RUNTIME_CLASS(TPtrList);
 }
 
 int TPtrList::VirtualSlot6C() {

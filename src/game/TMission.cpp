@@ -10,7 +10,7 @@ extern "C" {
 // global_data_tables.cpp; reccmp pairs by symbol name.
 extern CRuntimeClass PTR_s_TMission_00697848;
 // Default mission score constant (0.0) loaded by the slot 0x68-0x7C float stubs.
-extern float g_MissionDefaultScore_0065a468;
+extern const float g_MissionDefaultScore_0065a468;
 }
 
 undefined4 CreateMissionObjectByKindAndNodeContext(void);

@@ -1,16 +1,16 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TPictureButton.h"
+#include "game/TUpDownPictureButton.h"
 
-// TEMP: recover TUpDownPictureButton as the real base before ctor/SYNTHETIC dtor work.
 // VTABLE: IMPERIALISM 0x663540
-class TSidewaysArrow : public TPictureButton {
+class TSidewaysArrow : public TUpDownPictureButton {
 public:
-  int repeatDeadlineTick; // 0x94
+  DECLARE_DYNCREATE(TSidewaysArrow) // GetRuntimeClass slot 0x00 0x583b30
+  int repeatDeadlineTick;           // 0x94
 
-  void HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void* arg8, void* argC,
-                                                 void* dispatchArg, void* arg14);
+  virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
+                                              void* eventDataB) override; // slot 0x68 0x583bd0
 };
 
 ASSERT_SIZE(TSidewaysArrow, 0x98);

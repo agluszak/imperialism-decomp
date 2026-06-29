@@ -52,7 +52,7 @@ extern int g_nOverlayClipCacheParamX;
 extern int g_nOverlayClipCacheParamY;
 extern int g_Reset_Quick_Draw_Value_0064B8F0;
 extern int g_Reset_Quick_Draw_Value_0064B8F4;
-extern short g_Reset_Quick_Draw_WordState_0064B8F8;
+extern const short g_Reset_Quick_Draw_WordState_0064B8F8;
 extern short g_Reset_Quick_Draw_State_006A1D10;
 extern int g_nQuickDrawStrokeStylePrimary;
 extern int g_nQuickDrawStrokeStyleSecondary;

@@ -15,20 +15,20 @@
 // GLOBAL: IMPERIALISM 0x0064f440
 CRuntimeClass g_pClassDescTCapacityOrder = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x00695b50
-char g_industryActionCostWeightResCode09;
+short g_industryActionCostWeightResCode09[16] = {0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x00695b70
-char g_industryActionCostWeightResCode08;
+short g_industryActionCostWeightResCode08[16] = {0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x00695b90
-char g_industryActionCostWeightResCode10;
+short g_industryActionCostWeightResCode10[16] = {0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18, 10, 0};
 // GLOBAL: IMPERIALISM 0x00695bb0
-char g_industryActionCostWeightResCode0B;
+short g_industryActionCostWeightResCode0B[16] = {0, 0, 0, 0, 0, 2, 0, 0, 4, 10, 8, 6, 30, 22, 0, 0};
 // GLOBAL: IMPERIALISM 0x00695bd0
-char g_industryActionCostWeightResCode03;
+short g_industryActionCostWeightResCode03[16] = {0, 0, 0, 0, 0, 10, 0, 10, 10, 20, 20, 20, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x00695bf0
-char g_industryActionCostWeightResCode0C;
+short g_industryActionCostWeightResCode0C[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20, 0, 0};
 
-static __inline short ReadWeight(const char* tableBase, short index) {
-  return *reinterpret_cast<const short*>(tableBase + static_cast<unsigned int>(index) * 2);
+static __inline short ReadWeight(const short* tableBase, short index) {
+  return tableBase[static_cast<unsigned int>(index)];
 }
 
 static __inline void WriteShort(void* base, int offset, short value) {
@@ -79,17 +79,17 @@ TCapacityOrder* TCapacityOrder::NewForCity(TCity* city) {
 bool TCapacityOrder::CanMakeFromCityStock() {
   TCity* city = this->cityField08;
 
-  if (ReadWeight(&g_industryActionCostWeightResCode09, this->resourceTypeIndex48) <=
+  if (ReadWeight(g_industryActionCostWeightResCode09, this->resourceTypeIndex48) <=
           city->cityStockLumberC8 &&
-      ReadWeight(&g_industryActionCostWeightResCode08, this->resourceTypeIndex48) <=
+      ReadWeight(g_industryActionCostWeightResCode08, this->resourceTypeIndex48) <=
           city->cityStockFabricC6 &&
-      ReadWeight(&g_industryActionCostWeightResCode10, this->resourceTypeIndex48) <=
+      ReadWeight(g_industryActionCostWeightResCode10, this->resourceTypeIndex48) <=
           city->cityStockArmsD6 &&
-      ReadWeight(&g_industryActionCostWeightResCode0B, this->resourceTypeIndex48) <=
+      ReadWeight(g_industryActionCostWeightResCode0B, this->resourceTypeIndex48) <=
           city->cityStockSteelCC &&
-      ReadWeight(&g_industryActionCostWeightResCode03, this->resourceTypeIndex48) <=
+      ReadWeight(g_industryActionCostWeightResCode03, this->resourceTypeIndex48) <=
           city->cityStockCoalBC &&
-      ReadWeight(&g_industryActionCostWeightResCode0C, this->resourceTypeIndex48) <=
+      ReadWeight(g_industryActionCostWeightResCode0C, this->resourceTypeIndex48) <=
           city->cityStockFuelCE) {
     return true;
   }
@@ -100,12 +100,12 @@ bool TCapacityOrder::CanMakeFromCityStock() {
 
 bool TCapacityOrder::CanFillOrderSheet(void* orderSheet) {
   const short weightIndex = this->resourceTypeIndex48;
-  const short weight09 = ReadWeight(&g_industryActionCostWeightResCode09, weightIndex);
-  const short weight08 = ReadWeight(&g_industryActionCostWeightResCode08, weightIndex);
-  const short weight10 = ReadWeight(&g_industryActionCostWeightResCode10, weightIndex);
-  const short weight0B = ReadWeight(&g_industryActionCostWeightResCode0B, weightIndex);
-  const short weight03 = ReadWeight(&g_industryActionCostWeightResCode03, weightIndex);
-  const short weight0C = ReadWeight(&g_industryActionCostWeightResCode0C, weightIndex);
+  const short weight09 = ReadWeight(g_industryActionCostWeightResCode09, weightIndex);
+  const short weight08 = ReadWeight(g_industryActionCostWeightResCode08, weightIndex);
+  const short weight10 = ReadWeight(g_industryActionCostWeightResCode10, weightIndex);
+  const short weight0B = ReadWeight(g_industryActionCostWeightResCode0B, weightIndex);
+  const short weight03 = ReadWeight(g_industryActionCostWeightResCode03, weightIndex);
+  const short weight0C = ReadWeight(g_industryActionCostWeightResCode0C, weightIndex);
 
   if (static_cast<int>(weight09) <= static_cast<int>(ReadShort(orderSheet, 0x22) + weight09) &&
       static_cast<int>(weight08) <= static_cast<int>(ReadShort(orderSheet, 0x20) + weight08) &&
@@ -126,44 +126,44 @@ short TCapacityOrder::ComputeCapacityOrderMaxQuantity() {
   int limit = 10000;
   int candidate;
 
-  if (ReadWeight(&g_industryActionCostWeightResCode09, weightIndex) != 0) {
+  if (ReadWeight(g_industryActionCostWeightResCode09, weightIndex) != 0) {
     candidate = static_cast<int>(city->cityStockLumberC8) /
-                static_cast<int>(ReadWeight(&g_industryActionCostWeightResCode09, weightIndex));
+                static_cast<int>(ReadWeight(g_industryActionCostWeightResCode09, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
   }
-  if (ReadWeight(&g_industryActionCostWeightResCode08, weightIndex) != 0) {
+  if (ReadWeight(g_industryActionCostWeightResCode08, weightIndex) != 0) {
     candidate = static_cast<int>(city->cityStockFabricC6) /
-                static_cast<int>(ReadWeight(&g_industryActionCostWeightResCode08, weightIndex));
+                static_cast<int>(ReadWeight(g_industryActionCostWeightResCode08, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
   }
-  if (ReadWeight(&g_industryActionCostWeightResCode10, weightIndex) != 0) {
+  if (ReadWeight(g_industryActionCostWeightResCode10, weightIndex) != 0) {
     candidate = static_cast<int>(city->cityStockArmsD6) /
-                static_cast<int>(ReadWeight(&g_industryActionCostWeightResCode10, weightIndex));
+                static_cast<int>(ReadWeight(g_industryActionCostWeightResCode10, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
   }
-  if (ReadWeight(&g_industryActionCostWeightResCode03, weightIndex) != 0) {
+  if (ReadWeight(g_industryActionCostWeightResCode03, weightIndex) != 0) {
     candidate = static_cast<int>(city->cityStockCoalBC) /
-                static_cast<int>(ReadWeight(&g_industryActionCostWeightResCode03, weightIndex));
+                static_cast<int>(ReadWeight(g_industryActionCostWeightResCode03, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
   }
-  if (ReadWeight(&g_industryActionCostWeightResCode0B, weightIndex) != 0) {
+  if (ReadWeight(g_industryActionCostWeightResCode0B, weightIndex) != 0) {
     candidate = static_cast<int>(city->cityStockSteelCC) /
-                static_cast<int>(ReadWeight(&g_industryActionCostWeightResCode0B, weightIndex));
+                static_cast<int>(ReadWeight(g_industryActionCostWeightResCode0B, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
   }
-  if (ReadWeight(&g_industryActionCostWeightResCode0C, weightIndex) != 0) {
+  if (ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) != 0) {
     candidate = static_cast<int>(city->cityStockFuelCE) /
-                static_cast<int>(ReadWeight(&g_industryActionCostWeightResCode0C, weightIndex));
+                static_cast<int>(ReadWeight(g_industryActionCostWeightResCode0C, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
@@ -193,27 +193,27 @@ bool TCapacityOrder::SetCapacityOrderQuantity(short quantity) {
 
   city->cityStockLumberC8 =
       static_cast<short>(city->cityStockLumberC8 -
-                         ReadWeight(&g_industryActionCostWeightResCode09, weightIndex) * delta);
+                         ReadWeight(g_industryActionCostWeightResCode09, weightIndex) * delta);
   city->Refresh80();
   city->cityStockFabricC6 =
       static_cast<short>(city->cityStockFabricC6 -
-                         ReadWeight(&g_industryActionCostWeightResCode08, weightIndex) * delta);
+                         ReadWeight(g_industryActionCostWeightResCode08, weightIndex) * delta);
   city->Refresh80();
   city->cityStockArmsD6 =
       static_cast<short>(city->cityStockArmsD6 -
-                         ReadWeight(&g_industryActionCostWeightResCode10, weightIndex) * delta);
+                         ReadWeight(g_industryActionCostWeightResCode10, weightIndex) * delta);
   city->Refresh80();
   city->cityStockSteelCC =
       static_cast<short>(city->cityStockSteelCC -
-                         ReadWeight(&g_industryActionCostWeightResCode0B, weightIndex) * delta);
+                         ReadWeight(g_industryActionCostWeightResCode0B, weightIndex) * delta);
   city->Refresh80();
   city->cityStockCoalBC =
       static_cast<short>(city->cityStockCoalBC -
-                         ReadWeight(&g_industryActionCostWeightResCode03, weightIndex) * delta);
+                         ReadWeight(g_industryActionCostWeightResCode03, weightIndex) * delta);
   city->Refresh80();
   city->cityStockFuelCE =
       static_cast<short>(city->cityStockFuelCE -
-                         ReadWeight(&g_industryActionCostWeightResCode0C, weightIndex) * delta);
+                         ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
   city->Refresh80();
   if (g_pUiRuntimeContext != 0) {
     g_pUiRuntimeContext->RefreshCityProductionUiSlotAc();
@@ -237,42 +237,42 @@ void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
   this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
 
   value = static_cast<short>(
-      ReadWeight(&g_industryActionCostWeightResCode09, this->resourceTypeIndex48) * quantity);
+      ReadWeight(g_industryActionCostWeightResCode09, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x12, value);
   if (value < 0) {
     WriteShort(orderSheet, 0x12, 0);
   }
 
   value = static_cast<short>(
-      ReadWeight(&g_industryActionCostWeightResCode08, this->resourceTypeIndex48) * quantity);
+      ReadWeight(g_industryActionCostWeightResCode08, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x10, value);
   if (value < 0) {
     WriteShort(orderSheet, 0x10, 0);
   }
 
   value = static_cast<short>(
-      ReadWeight(&g_industryActionCostWeightResCode10, this->resourceTypeIndex48) * quantity);
+      ReadWeight(g_industryActionCostWeightResCode10, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x20, value);
   if (ReadShort(orderSheet, 0x12) < 0) {
     WriteShort(orderSheet, 0x12, 0);
   }
 
   value = static_cast<short>(
-      ReadWeight(&g_industryActionCostWeightResCode0B, this->resourceTypeIndex48) * quantity);
+      ReadWeight(g_industryActionCostWeightResCode0B, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x16, value);
   if (value < 0) {
     WriteShort(orderSheet, 0x16, 0);
   }
 
   value = static_cast<short>(
-      ReadWeight(&g_industryActionCostWeightResCode03, this->resourceTypeIndex48) * quantity);
+      ReadWeight(g_industryActionCostWeightResCode03, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x06, value);
   if (value < 0) {
     WriteShort(orderSheet, 0x06, 0);
   }
 
   value = static_cast<short>(
-      ReadWeight(&g_industryActionCostWeightResCode0C, this->resourceTypeIndex48) * quantity);
+      ReadWeight(g_industryActionCostWeightResCode0C, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x18, value);
   if (value < 0) {
     WriteShort(orderSheet, 0x18, 0);

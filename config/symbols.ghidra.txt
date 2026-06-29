@@ -9509,7 +9509,7 @@ TCommand::'vftable' 648E28 l
 g_pClassDescTSortedList 648E68 l
 g_pClassDescTList 648E80 l
 g_pClassDescTSortedPtrList 648E98 l
-g_pClassDescTPtrList 648EB0 l
+TPtrList::classTPtrList 648EB0 l
 TSortedList::'vftable' 648EE0 l
 TList::'vftable' 648F78 l
 TSortedPtrList::'vftable' 649068 l
@@ -9545,7 +9545,7 @@ TButton::'vftable' 64A2B8 l
 TStaticText::'vftable' 64AB58 l
 TCluster::'vftable' 64B0C0 l
 CMcWindow::vftable 64B35C l
-CMcWindow::classRuntimeClass 64B5D0 l
+CMcWindow::classCMcWindow 64B5D0 l
 g_Reset_Quick_Draw_Value_0064B8F0 64B8F0 l
 g_Reset_Quick_Draw_Value_0064B8F4 64B8F4 l
 g_Reset_Quick_Draw_WordState_0064B8F8 64B8F8 l
@@ -9789,7 +9789,7 @@ TMadnessButton::classRuntimeClass 65C1B0 l
 TMultiMessagePicture::classRuntimeClass 65C1C8 l
 g_awMapContextActionLabelTokenByCommand 65C2F0 l
 TShip::classRuntimeClass 65C318 l
-g_pClassDescTAdmiral 65C330 l
+TAdmiral::classTAdmiral 65C330 l
 TTaskForce::classRuntimeClass 65C348 l
 TNavyMgr::classRuntimeClass 65C360 l
 TAdmiral::'vftable' 65C498 l
@@ -9868,7 +9868,7 @@ TGameScorePicture::classRuntimeClass 661A70 l
 TSelectoText::classRuntimeClass 661A88 l
 TSimMgr::classRuntimeClass 662960 l
 TArrowsControl::classRuntimeClass 662DB8 l
-g_pClassDescTSidewaysArrow 662DD0 l
+TSidewaysArrow::classTSidewaysArrow 662DD0 l
 TUpDownView::classRuntimeClass 662DE8 l
 TRightLeftView::classRuntimeClass 662E00 l
 TDipDlgCluster::classRuntimeClass 662E18 l
@@ -10022,7 +10022,7 @@ TMovieView::classRuntimeClass 66F6E8 l
 g_pClassDescTNetMgr 66F978 l
 CDialog::classRuntimeClass 66FC00 l
 CWinApp::classRuntimeClass 66FDC8 l
-PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4 66FEC4 l
+CObject::vftable 66FEC4 l
 CFrameWnd::classRuntimeClass 670320 l
 CView::classRuntimeClass 670338 l
 CControlBar::CControlBar_classDesc 670350 l

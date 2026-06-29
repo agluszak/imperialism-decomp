@@ -17,15 +17,6 @@
 extern "C" CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8 = {
     "TAmbitApplication", sizeof(TAmbitApplication), 0xffff, nullptr, nullptr, nullptr};
 
-// SYNTHETIC: IMPERIALISM 0x004135f0
-// TAmbitApplication::`scalar deleting destructor'
-TAmbitApplication::~TAmbitApplication() {}
-
-// FUNCTION: IMPERIALISM 0x00414770
-void TAmbitApplication::VTableSlot2C() {
-  // OrphanRetStub
-}
-
 // FUNCTION: IMPERIALISM 0x004133d0
 void TAmbitApplication::ParseDirectionTokenAndSetMovementFlags(CString token, int parseMode,
                                                                int parseTail) {
@@ -80,6 +71,15 @@ void TAmbitApplication::ParseDirectionTokenAndSetMovementFlags(CString token, in
 finish_parse_direction_token:
   static_cast<CObjectWithGameParseParam*>(static_cast<CObject*>(this))
       ->ParseParam(reinterpret_cast<const char*>(tokenText), parseMode, parseTail);
+}
+
+// SYNTHETIC: IMPERIALISM 0x004135f0
+// TAmbitApplication::`scalar deleting destructor'
+TAmbitApplication::~TAmbitApplication() {}
+
+// FUNCTION: IMPERIALISM 0x00414770
+void TAmbitApplication::VTableSlot2C() {
+  // OrphanRetStub
 }
 
 TAmbitApplication::TAmbitApplication() : TApplication() {

@@ -738,7 +738,7 @@ address|name|size|type|prototype
 488470|InsertCopiedRecordAtFrontOfPtrListAlt|60|function|undefined InsertCopiedRecordAtFrontOfPtrListAlt()
 4884c0|TPtrList::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 4884f0|thunk_DestructCObArray|5|function|undefined thunk_DestructCObArray()
-488510|TPtrList::GetTPtrListClassNamePointer|6|function|undefined GetTPtrListClassNamePointer()
+488510|TPtrList::GetRuntimeClass|6|function|undefined GetTPtrListClassNamePointer()
 4885d0|TPtrList::AddHeadSlot28|16|function|undefined AddHeadSlot28()
 4885f0|TPtrList::AddHeadSlot2C|16|function|undefined AddHeadSlot2C()
 488610|TPtrList::AddTailSlot30|16|function|undefined AddTailSlot30()
@@ -1028,7 +1028,7 @@ address|name|size|type|prototype
 48e9c0|TControl::NoOpUiViewSlotHandler|3|function|undefined NoOpUiViewSlotHandler(void)
 48e9e0|TControl::ReturnZeroFromUiSlot6C|3|function|undefined ReturnZeroFromUiSlot6C(void)
 48ea00|TCtlMgr::CreateTCtlMgrInstance|181|function|undefined CreateTCtlMgrInstance()
-48eaf0|TButton::GetRuntimeClass|6|function|undefined GetRuntimeClass()
+48eaf0|TCtlMgr::GetRuntimeClass|6|function|undefined GetRuntimeClass()
 48eb10|TCtlMgr::ConstructTCtlMgrBaseState|187|function|undefined ConstructTCtlMgrBaseState()
 48ec00|TButton::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 48ec30|TButton::CreateTButtonInstance|104|function|undefined CreateTButtonInstance()
@@ -5181,7 +5181,7 @@ address|name|size|type|prototype
 5974eb|ReinitializeGameFlowAndPostTurnEvent5DD|32|function|undefined ReinitializeGameFlowAndPostTurnEvent5DD()
 597600|TMapUberPicture::vmethod_0017|272|function|undefined 'scalar_deleting_destructor'(int param_1)
 597770|TMapUberPicture::ForwardParam|23|function|undefined OrphanTiny_ReturnZero_0048a730(void)
-5977a0|TMapUberPicture::OrphanRetStub_0045d2a0|72|function|undefined OrphanRetStub_0045d2a0(byte param_1)
+5977a0|TMapUberPicture::OrphanRetStub_0045d2a0|72|function|undefined OrphanRetStub_0045d2a0(void)
 597810|TToolBarCluster::RefreshMapOrderEntryPanel|246|function|void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)
 597950|TToolBarCluster::SetActiveMapOrderEntry|113|function|void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)
 5979f0|GetActiveMapOrderEntry|9|function|void * __thiscall GetActiveMapOrderEntry(void)
@@ -8939,24 +8939,24 @@ address|name|size|type|prototype
 648af8|TApplication::classTApplication||global|
 648cf8|TBehavior::classTBehavior||global|
 648d10|TDialogBehavior::classTDialogBehavior||global|
-648e08|TCommand::classRuntimeClass||global|
-648e68|g_pClassDescTSortedList||global|
-648e80|g_pClassDescTList||global|
-648e98|g_pClassDescTSortedPtrList||global|
-648eb0|g_pClassDescTPtrList||global|
-6490c8|TStream::classRuntimeClass||global|
+648e08|TCommand::classTCommand||global|
+648e68|TSortedList::classTSortedList||global|
+648e80|TList::classTList||global|
+648e98|TSortedPtrList::classTSortedPtrList||global|
+648eb0|TPtrList::classTPtrList||global|
+6490c8|TStream::classTStream||global|
 6490e0|TFileStream::classTFileStream||global|
 6490f8|TCountingStream::classTCountingStream||global|
 649110|THandleStream::classTHandleStream||global|
-649570|TEvent::classRuntimeClass||global|
+649570|TEvent::classTEvent||global|
 649588|TEventHandler::classTEventHandler||global|
 6495a0|TView::classTView||global|
 6495b8|TScroller::classRuntimeClass||global|
 6495d0|TIncludeView::classTIncludeView||global|
 6495e8|TWindow::classTWindow||global|
 649600|TControl::classTControl||global|
-649618|TCtlMgr::classRuntimeClass||global|
-649630|TButton::classRuntimeClass||global|
+649618|TCtlMgr::classTCtlMgr||global|
+649630|TButton::classTButton||global|
 649648|TRadio::classRuntimeClass||global|
 649660|TPicture::classTPicture||global|
 649678|TStaticText::classTStaticText||global|
@@ -8966,7 +8966,7 @@ address|name|size|type|prototype
 6496d8|TFloatWindow::classTFloatWindow||global|
 649e74|CMcWindow::vftable||global|
 64b35c|CMcWindow::vftable||global|
-64b5d0|g_pClassDescCMcWindow||global|
+64b5d0|CMcWindow::classCMcWindow||global|
 64b8f0|g_Reset_Quick_Draw_Value_0064B8F0||global|
 64b8f4|g_Reset_Quick_Draw_Value_0064B8F4||global|
 64b8f8|g_Reset_Quick_Draw_WordState_0064B8F8||global|
@@ -9070,7 +9070,7 @@ address|name|size|type|prototype
 6533e8|g_DAT_006533e8_Value_006533E8||global|
 653408|g_DAT_Value_00653408||global|
 653570|g_Rebuild_Primary_Nation_Value_00653570||global|
-653658|g_pClassDescTProvinceDesirabilityList||global|
+653658|TProvinceDesirabilityList::classTProvinceDesirabilityList||global|
 653670|TCountry::classTCountry||global|
 653688|TGreatPower::classTGreatPower||global|
 6536a0|TMinor::classTMinor||global|
@@ -9142,7 +9142,7 @@ address|name|size|type|prototype
 6579b8|TNumberedIcon::classTNumberedIcon||global|
 6579d0|TNumberedItem::classRuntimeClass||global|
 658560|TLanguageMgr::classTLanguageMgr||global|
-658610|TMacViewMgr::classTMacViewMgr||global|m_lpszClassName=TMacViewMgr; strategic map @ g_pStrategicMapViewSystem
+658610|TMacViewMgr::classTMacViewMgr||global|
 6586e0|g_vtblStrategicMapViewSystem_DrawUnitIcon||global|
 6586e4|g_vtblStrategicMapViewSystem_DrawUnitIconOverlay||global|
 658788|TMapMgr::classTMapMgr||global|
@@ -9163,8 +9163,8 @@ address|name|size|type|prototype
 659af8|TTextileForeignMinister::classRuntimeClass||global|
 659b10|TTraderForeignMinister::classRuntimeClass||global|
 659b28|TArmsForeignMinister::classRuntimeClass||global|
-659b40|g_pClassDescTSortByPriceList||global|
-659b58|TIndexAndRankList::classRuntimeClass||global|
+659b40|TSortByPriceList::classTSortByPriceList||global|
+659b58|TIndexAndRankList::classTIndexAndRankList||global|
 65a650|g_vtblMissionOrderPrioritizerDefendProvince||global|
 65a7e8|g_vtblMissionOrderPrioritizerNavy||global|
 65a9e8|g_Recompute_Nation_Order_LookupTable_0065A9E8||global|
@@ -9192,7 +9192,7 @@ address|name|size|type|prototype
 65c1c8|TMultiMessagePicture::classTMultiMessagePicture||global|
 65c2f0|g_awMapContextActionLabelTokenByCommand||global|
 65c318|TShip::classTShip||global|
-65c330|g_pClassDescTAdmiral||global|
+65c330|TAdmiral::classTAdmiral||global|
 65c348|TTaskForce::classTTaskForce||global|
 65c360|TNavyMgr::classTNavyMgr||global|
 65c530|TNewsMgr::classTNewsMgr||global|
@@ -9265,7 +9265,7 @@ address|name|size|type|prototype
 661a88|TSelectoText::classTSelectoText||global|
 662960|TSimMgr::classTSimMgr||global|
 662db8|TArrowsControl::classTArrowsControl||global|
-662dd0|g_pClassDescTSidewaysArrow||global|
+662dd0|TSidewaysArrow::classTSidewaysArrow||global|
 662de8|TUpDownView::classTUpDownView||global|
 662e00|TRightLeftView::classTRightLeftView||global|
 662e18|TDipDlgCluster::classTDipDlgCluster||global|
@@ -9395,7 +9395,7 @@ address|name|size|type|prototype
 66fad0|DAT_0066fad0|8|global|double DAT_0066fad0
 66fc00|CDialog::classRuntimeClass||global|
 66fdc8|CWinApp::classRuntimeClass||global|
-66fec4|PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4||global|
+66fec4|CObject::vftable||global|
 670320|CFrameWnd::classRuntimeClass||global|
 670338|CView::classRuntimeClass||global|
 670350|CControlBar::CControlBar_classDesc||global|

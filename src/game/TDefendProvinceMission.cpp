@@ -6,8 +6,8 @@
 #include "game/global_data_tables.h"
 
 extern "C" {
-extern float g_Recompute_Nation_Order_LookupTable_0065A9E8;
-extern double g_Recompute_Nation_Order_LookupTable_0065A9F0;
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
+extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
 extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA08;

@@ -7,7 +7,6 @@
 #include "game/ui_invalidation_guard.h"
 
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
-extern "C" char g_pClassDescCMcWindow;
 extern TApplication* g_pApplicationUiRootController;
 extern CPtrList g_ModalViewStack;
 
@@ -345,7 +344,7 @@ void TWindow::Free() {
       ::SendMessageA(window->m_hWnd, 0x4ef, 0, controlTag);
       ::SendMessageA(nativeWindow50->m_hWnd, 0x468, 4, controlTag);
     } else {
-      if (window->IsKindOf(reinterpret_cast<CRuntimeClass*>(&g_pClassDescCMcWindow))) {
+      if (window->IsKindOf(RUNTIME_CLASS(CMcWindow))) {
         CMcWindow* mcWindow = static_cast<CMcWindow*>(nativeWindow50);
         mcWindow->AssertValid();
         mcWindow->m_pOwnerWindow = 0;

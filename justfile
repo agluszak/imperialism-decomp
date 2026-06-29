@@ -268,6 +268,7 @@ tgreatpower-gate-update:
 # is not fully clang-formatted, so format-check is per-path, not whole-tree.
 gates:
   just vtable
+  just datacmp
   just vtable-gate
   just antipattern-gate
   just tgreatpower-gate
@@ -277,6 +278,7 @@ gates:
   just field-layout-gate
   just synthetic-gate
   just decomplint
+  just global-location-gate
 
 # Check the decompilation annotations (// FUNCTION / // VTABLE / // GLOBAL etc.)
 # for syntax errors, duplicate addresses, and stray markers.

@@ -67,13 +67,13 @@ extern float g_DAT_006533d0_Value_006533D0[];
 extern float g_DAT_006533e8_Value_006533E8[];
 extern float g_DAT_Value_00653408[];
 // Float constants for the relative-power-score family (slots 0x8e-0x9e).
-extern float g_Compute_Advisory_Handler_LookupTable_00653700; // 0.0f
+extern const float g_Compute_Advisory_Handler_LookupTable_00653700; // 0.0f
 extern float g_Compute_Advisory_Handler_LookupTable_00653714; // -0.25f
 extern float g_Iterate_Linked_List_Value_00653718;            // 0.25f
 extern float g_Compute_City_Order_Value_0065371C;             // 0.5f
 extern float g_Compute_Advisory_Handler_LookupTable_00653720; // -90.0f
 extern float g_Compute_Advisory_Peer_LookupTable_00653724;    // -0.5f
-extern float g_Compute_Advisory_Zero_00653FD0;
+extern const float g_Compute_Advisory_Zero_00653FD0;
 extern float g_Compute_Advisory_Map_Value_00653FD4;
 extern double g_Compute_Advisory_MinusSix_00653FE8;
 extern double g_Compute_Advisory_MinusHundred_00653FF0;
@@ -4726,7 +4726,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     float selected = 0.0f;
     TGreatPower** nationCursor = g_apNationStates;
 
-    for (; reinterpret_cast<int>(nationCursor) < reinterpret_cast<int>(g_apNationStates_End);
+    for (; reinterpret_cast<int>(nationCursor) < reinterpret_cast<int>(&g_apNationStates_End);
          ++nationCursor) {
       int slot = static_cast<int>(nationCursor - g_apNationStates);
       if (IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
@@ -4754,7 +4754,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     float selected = 0.0f;
     TGreatPower** nationCursor = g_apNationStates;
 
-    for (; reinterpret_cast<int>(nationCursor) < reinterpret_cast<int>(g_apNationStates_End);
+    for (; reinterpret_cast<int>(nationCursor) < reinterpret_cast<int>(&g_apNationStates_End);
          ++nationCursor) {
       int slot = static_cast<int>(nationCursor - g_apNationStates);
       if (IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {

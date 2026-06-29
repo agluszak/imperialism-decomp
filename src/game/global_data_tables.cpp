@@ -66,7 +66,7 @@ TMinor* g_apNationAuxRuntimeStateSlots[16] = {0};
 // GLOBAL: IMPERIALISM 0x006a4370
 TGreatPower* g_apNationStates[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a438c
-void* g_apNationStates_End = reinterpret_cast<void*>(g_apNationStates + 7);
+void* g_apNationStates_End;
 // GLOBAL: IMPERIALISM 0x006a20f8
 TSimMgr* g_pLocalizationTable = 0;
 // GLOBAL: IMPERIALISM 0x006a21b8
@@ -87,7 +87,7 @@ char g_vtblTSortedByRelationshipList = 0;
 // GLOBAL: IMPERIALISM 0x006a21c0
 int DAT_006a21c0 = 0;
 // GLOBAL: IMPERIALISM 0x00695278
-int g_nSaveFormatVersion = 0;
+int g_nSaveFormatVersion = -1;
 // GLOBAL: IMPERIALISM 0x00694250
 char g_szMovementParseCompareA_00694250[] = "";
 // GLOBAL: IMPERIALISM 0x00694254
@@ -102,7 +102,7 @@ void* DAT_006a1354 = 0;
 // McAppUI.cpp module globals referenced by TView/TControl widget code. See
 // include/game/global_data_tables.h.
 // GLOBAL: IMPERIALISM 0x006950ac
-int g_McAppUiActiveFlag_006950AC = 0;
+int g_McAppUiActiveFlag_006950AC = 1;
 // GLOBAL: IMPERIALISM 0x006a1af8
 int g_McAppUiDrawGate_006A1AF8 = 0;
 // GLOBAL: IMPERIALISM 0x006a1ae0
@@ -155,11 +155,11 @@ int g_McAppUiFlag_006A1B1C = 0;
 int g_McAppUiFlag_006A1B0C = 0;
 
 // GLOBAL: IMPERIALISM 0x0064b8f0
-int g_Reset_Quick_Draw_Value_0064B8F0 = 0;
+int g_Reset_Quick_Draw_Value_0064B8F0 = 1;
 // GLOBAL: IMPERIALISM 0x0064b8f4
-int g_Reset_Quick_Draw_Value_0064B8F4 = 0;
+int g_Reset_Quick_Draw_Value_0064B8F4 = 1;
 // GLOBAL: IMPERIALISM 0x0064b8f8
-short g_Reset_Quick_Draw_WordState_0064B8F8 = 0;
+extern const short g_Reset_Quick_Draw_WordState_0064B8F8 = 0;
 // GLOBAL: IMPERIALISM 0x006a1d10
 short g_Reset_Quick_Draw_State_006A1D10 = 0;
 // GLOBAL: IMPERIALISM 0x006a1d08
@@ -171,9 +171,9 @@ int g_bQuickDrawStrokePairDirty = 0;
 // GLOBAL: IMPERIALISM 0x006a1da8
 int g_pGlobalClipRegionHandleObject = 0;
 // GLOBAL: IMPERIALISM 0x006950fc
-int g_Quick_Draw_Color_State_006950FC = 0;
+int g_Quick_Draw_Color_State_006950FC = 0x010000FF;
 // GLOBAL: IMPERIALISM 0x00695100
-int g_uQuickDrawStrokeColor = 0;
+int g_uQuickDrawStrokeColor = 0x01000000;
 // GLOBAL: IMPERIALISM 0x006a1d52
 int g_uQuickDrawCurrentColor = 0;
 // GLOBAL: IMPERIALISM 0x006a1d80
@@ -284,7 +284,7 @@ char LAB_00409a9d = 0;
 // Default mission score constant (0.0), loaded by the TMission slot 0x68-0x7C float
 // stubs (read pointer at 0x0065a468, immediately before the TMission vtable).
 // GLOBAL: IMPERIALISM 0x0065a468
-float g_MissionDefaultScore_0065a468 = 0.0f;
+extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
@@ -302,7 +302,7 @@ float g_DAT_Value_00653408[8] = {0};
 // Float constants used by the TGreatPower relative-power-score family
 // (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20). Values in the
 // original image: 0.0f, -0.25f, 0.25f, 0.5f, -90.0f, -0.5f.
-float g_Compute_Advisory_Handler_LookupTable_00653700 = 0.0f;
+extern const float g_Compute_Advisory_Handler_LookupTable_00653700 = 0.0f;
 // 0x653704-0x653710 — production-tier classification constants (TGreatPower slot
 // 0x82, body 0x004e2880): -1.0, 2.0, 1.0, -2.0.
 float g_Classify_Nation_Military_Value_00653704 = -1.0f;
@@ -344,11 +344,11 @@ struct MappedFlavorTextNationVariantEntry {
 MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32] = {0};
 
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
-float g_Recompute_Nation_Order_LookupTable_0065A9E8 = 0.0f;
-double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
-double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.0;
-double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.0;
-double g_Recompute_Nation_Order_LookupTable_0065AA08 = 0.0;
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8 = 0.0f;
+extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
+double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.01;
+double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.5;
+double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
 unsigned short g_Recompute_Nation_Order_LookupTable_00697870[0x10] = {0};
 unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {0};
 
@@ -360,7 +360,7 @@ double g_DAT_00653fc8_Value_00653FC8 = 32767.0;
 // TAutoGreatPower slot 0x9d / 0xa7 scoring constants: -100.0f and 0.5 (double).
 float g_Compute_Advisory_Map_Value_00653FD4 = -100.0f;
 double g_Evaluate_Advisory_Case11_Value_00653FD8 = 0.5;
-float g_Compute_Advisory_Zero_00653FD0 = 0.0f;
+extern const float g_Compute_Advisory_Zero_00653FD0 = 0.0f;
 double g_Compute_Advisory_MinusSix_00653FE8 = -6.0;
 double g_Compute_Advisory_MinusHundred_00653FF0 = -100.0;
 double g_Compute_Advisory_Hundred_00654000 = 100.0;
@@ -371,7 +371,7 @@ double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 
 // GLOBAL: IMPERIALISM 0x0066fad0
-double DAT_0066fad0 = -0.092;
+double DAT_0066fad0 = 0.092;
 
 } // extern "C"
 
@@ -491,7 +491,7 @@ char DAT_006a43c0 = 0;
 // GLOBAL: IMPERIALISM 0x006a43f0 — nonzero during multiplayer scenario setup.
 char DAT_006a43f0 = 0;
 // GLOBAL: IMPERIALISM 0x00698b10
-short g_nTurnCooldownSideFlag00698B10 = 0;
+short g_nTurnCooldownSideFlag00698B10 = 1;
 
 // Per-nation scenario setup table copied into TSimMgr's +0xe8 region by the ctor (0x57b9e0)
 // and by InitializeTurnFlowStateDefaults. The copy loop reads with a -1 short bias (starts at
@@ -528,9 +528,6 @@ extern "C" char g_pClassDescTDialogBehavior = 0;
 
 // GLOBAL: IMPERIALISM 0x0064bda8
 extern "C" char g_pClassDescTDialogView = 0;
-
-// GLOBAL: IMPERIALISM 0x0064b5d0
-extern "C" char g_pClassDescCMcWindow = 0;
 
 // GLOBAL: IMPERIALISM 0x00648af8
 extern "C" CRuntimeClass PTR_s_TApplication_00648af8 = {nullptr, 0, 0, nullptr, nullptr};

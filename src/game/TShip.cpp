@@ -17,7 +17,7 @@
 #endif
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
-extern char g_industryActionCostWeightResCode10;
+extern short g_industryActionCostWeightResCode10[16];
 char g_ResourceDescriptorWeightWord0Base0069811c[0x24 * 64] = {0};
 
 extern "C" {
@@ -161,7 +161,7 @@ void* GetNavyPrimaryOrderListHead(void) {
 
 // FUNCTION: IMPERIALISM 0x00550970
 short GetIndustryActionCostWeightByResourceType(short resourceType) {
-  return *reinterpret_cast<short*>(&g_industryActionCostWeightResCode10 + resourceType * 2);
+  return g_industryActionCostWeightResCode10[resourceType];
 }
 
 // FUNCTION: IMPERIALISM 0x00550b60

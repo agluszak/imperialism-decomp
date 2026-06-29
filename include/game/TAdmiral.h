@@ -18,7 +18,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
 // === END GENERATED DECLS (TAdmiral) ===
-  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x551410
+  DECLARE_DYNCREATE(TAdmiral)                              // GetRuntimeClass slot 0x00 0x551410
   virtual void WriteTo(TStream* stream) override;          // 0x14 0x551670
   virtual void ReadFrom(TStream* stream) override;         // 0x18 0x551700
   virtual void Free() override;                            // 0x1c 0x5515d0
@@ -32,7 +32,7 @@ public:
   TAdmiral* next;         // 0x14 (toward older entries)
   TAdmiral* prev;         // 0x18 (toward newer entries)
 
-  TAdmiral(short terrainTypeIndex);
+  TAdmiral(short terrainTypeIndex = static_cast<short>(0xffff));
   virtual ~TAdmiral() override;
 
   void SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primaryOrderNode);

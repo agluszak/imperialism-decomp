@@ -2,6 +2,8 @@
 
 #include "game/TWindow.h"
 
+IMPLEMENT_DYNCREATE(CMcWindow, CWnd)
+
 // Build the host window for a TWindow descriptor: construct the CWnd base, record the
 // owner backref, derive the CreateEx window style from the descriptor's type code, then
 // create and bring up the window via the real MFC CWnd surface. (The original also fires

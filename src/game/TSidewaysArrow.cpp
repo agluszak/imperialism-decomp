@@ -6,17 +6,16 @@
 #include "game/quickdraw_rendering.h"
 #include "game/ui_widget_thunks.h"
 
-extern "C" char g_pClassDescTSidewaysArrow = 0;
+IMPLEMENT_DYNCREATE(TSidewaysArrow, TUpDownPictureButton)
 
 undefined4 GetTickCountDiv16(void);
 
 // FUNCTION: IMPERIALISM 0x00583bd0
-void TSidewaysArrow::HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void* arg8,
-                                                               void* argC, void* dispatchArg,
-                                                               void* arg14) {
-  reinterpret_cast<TControl*>(this)->DispatchPictureResourceCommand(repeatState, arg8, argC, arg14);
+void TSidewaysArrow::DispatchPictureResourceCommand(int eventType, void* eventSender,
+                                                    void* eventDataA, void* eventDataB) {
+  TControl::DispatchPictureResourceCommand(eventType, eventSender, eventDataA, eventDataB);
 
-  if (repeatState == 2) {
+  if (eventType == 2) {
     return;
   }
 
@@ -28,11 +27,11 @@ void TSidewaysArrow::HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, 
 
   tick = reinterpret_cast<GetTickCountDiv16Proc>(GetTickCountDiv16)();
   repeatDeadlineTick = (int)tick;
-  if (repeatState == 0) {
+  if (eventType == 0) {
     repeatDeadlineTick = (int)tick + 10;
   }
 
-  if (this->PointInBoundsAndActionable(reinterpret_cast<CPoint*>(dispatchArg)) == '\0') {
+  if (this->PointInBoundsAndActionable(reinterpret_cast<CPoint*>(eventDataB)) == '\0') {
     return;
   }
 

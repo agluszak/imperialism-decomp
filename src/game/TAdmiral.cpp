@@ -10,19 +10,15 @@
 #include "game/global_data_tables.h"
 #include "game/TMinor.h"
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
-extern "C" char g_pClassDescTAdmiral = 0;
 
 #include "game/CString.h"
+
+IMPLEMENT_DYNCREATE(TAdmiral, TObject)
 
 // FUNCTION: IMPERIALISM 0x004d7eb0
 void __fastcall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TMinor* terrainDescriptor,
                                                                       CString* dest) {
   GenerateMappedFlavorTextByTableSlot(dest, terrainDescriptor->nationSlot);
-}
-
-// FUNCTION: IMPERIALISM 0x00551410
-CRuntimeClass* TAdmiral::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTAdmiral);
 }
 
 // FUNCTION: IMPERIALISM 0x00551430

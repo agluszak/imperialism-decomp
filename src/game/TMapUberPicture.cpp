@@ -27,8 +27,7 @@ void TMapUberPicture::ForwardParam(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x005977a0
-undefined TMapUberPicture::OrphanRetStub_0045d2a0(int edgeFlags) {
-  (void)edgeFlags;
+undefined TMapUberPicture::OrphanRetStub_0045d2a0() {
   return 0;
 }
 
