@@ -3,11 +3,13 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TPoseMessageDialog and its role. Base edge (TCommand) recovered from RTTI CRuntimeClass chain: TPoseMessageDialog -> TCommand -> TEvent -> TObject -> CObject.
+// TODO(manifest): describe TPoseMessageDialog and its role. Base edge (TCommand) recovered from
+// RTTI CRuntimeClass chain: TPoseMessageDialog -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065c0e8
 class TPoseMessageDialog : public TCommand {
 public:
-// === BEGIN GENERATED DECLS (TPoseMessageDialog) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TPoseMessageDialog) — refreshed by recover-class; do not hand-edit
+  // ===
   DECLARE_DYNCREATE(TPoseMessageDialog)
   virtual ~TPoseMessageDialog(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -19,14 +21,16 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
-  virtual undefined OrphanRetStub_00487a00() override; // slot 0x0b 0x54aff0
-// === END GENERATED DECLS (TPoseMessageDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPoseMessageDialog 0xCTOR`).
+  virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x54aff0
+  // === END GENERATED DECLS (TPoseMessageDialog) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery
+  // TPoseMessageDialog 0xCTOR`).
 
   TPoseMessageDialog();
 };
 
-// === BEGIN GENERATED (TPoseMessageDialog) — refreshed by `just gen-class TPoseMessageDialog`; do not hand-edit ===
+// === BEGIN GENERATED (TPoseMessageDialog) — refreshed by `just gen-class TPoseMessageDialog`; do
+// not hand-edit ===
 // clang-format off
 // vtable @ 0x0065c0e8 (12 slots), object size 0x1c, base TCommand
 //   slot 0x00  byte 0x00  0x0054b0d0  override  GetTEventClassNamePointer

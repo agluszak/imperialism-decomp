@@ -36,18 +36,17 @@ TApplication::~TApplication() {
 }
 
 // FUNCTION: IMPERIALISM 0x00486880
-void TApplication::SetActiveView(TView* view) {
+void TApplication::SetActiveView(TEventHandler* view) {
   this->activeView = view;
 }
 
 // FUNCTION: IMPERIALISM 0x004868a0
-TView* TApplication::GetActiveView() {
+TEventHandler* TApplication::GetActiveView() {
   return this->activeView;
 }
 
-// vtable slot 0x25 placeholder (0x00486650 body deferred pending TCommandHandler class
-// recovery; see header note). Real body calls the arg's vtable slots 0x0b (no-arg command
-// processor, not yet modeled) and 0x07 (release/destroy).
+// vtable slot 0x25 is inherited from TCommandHandler: process a queued command through
+// its slot 0x0b and then release it through slot 0x07.
 // vtable slot 0x28 (0x00486990 via ILT 0x00405551): original body is `RET 0xc` (takes
 // three stack args, does nothing). A no-op hook for viewport-edge auto-scroll handling.
 

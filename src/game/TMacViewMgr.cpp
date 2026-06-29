@@ -30,7 +30,7 @@
 #include "decomp_types.h"
 #include <string.h>
 
-void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(undefined4* field);
+void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(int* field);
 
 int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg);
 
@@ -96,7 +96,7 @@ static void InvokeCallObjectOffset24Vslot54IfPresent(void) {
 }
 
 void FreeHeapBufferField(int* field) {
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(field));
+  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(field);
 }
 
 void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
@@ -491,10 +491,10 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
     return;
   }
   if (atlas68c != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas68c));
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&atlas68c);
   }
   if (atlas690 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas690));
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&atlas690);
   }
   nationId = g_pUiRuntimeContext->GetActiveNationId();
   if (nationId < 0) {
@@ -719,7 +719,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
 
   if (atlas6b8 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas6b8));
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&atlas6b8);
   }
   atlasBounds.left = 0;
   atlasBounds.top = 0;
@@ -761,11 +761,11 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
 void TMacViewMgr::ReloadBitmap244AndRefreshUiCaches() {
   g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
   if (atlas6b8 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas6b8));
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&atlas6b8);
   }
   atlas6b8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x244);
   if (atlas688 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas688));
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&atlas688);
   }
   LoadStrategicMapOverlayAtlas8699();
 }
@@ -1508,7 +1508,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
     RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], surfaceObject);
   }
   int surfaceContext = resourceBounds.right;
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&surfaceContext));
+  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&surfaceContext);
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(resourceBounds.right));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
   return 0;

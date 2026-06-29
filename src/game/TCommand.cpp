@@ -1,4 +1,6 @@
 #include "game/TCommand.h"
+#include "game/TApplication.h"
+#include "game/global_data_tables.h"
 
 IMPLEMENT_DYNCREATE(TCommand, TEvent)
 
@@ -18,13 +20,13 @@ TCommand::TCommand() : targetContext(0) {}
 TCommand::~TCommand() {}
 
 // FUNCTION: IMPERIALISM 0x004878a0
-void TCommand::InitializeRangePair(int arg1, TEventHandler* arg2, int arg3, int arg4, int arg5) {
+void TCommand::InitializeRangePair(int arg1, TCommandHandler* arg2, int arg3, int arg4, int arg5) {
   (void)arg3;
   (void)arg4;
   (void)arg5;
-  TEventHandler* resolvedContext = arg2;
+  TCommandHandler* resolvedContext = arg2;
   if (resolvedContext == 0) {
-    resolvedContext = *reinterpret_cast<TEventHandler**>(0x006a18e0);
+    resolvedContext = g_pApplicationUiRootController;
   }
   sourceHandler = 0;
   dispatchMessage = arg1;
@@ -34,15 +36,14 @@ void TCommand::InitializeRangePair(int arg1, TEventHandler* arg2, int arg3, int 
 }
 
 // FUNCTION: IMPERIALISM 0x004878e0
-void TCommand::Free() {
-}
+void TCommand::Free() {}
 
 // FUNCTION: IMPERIALISM 0x00487900
-undefined TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94() {
-  return 0;
+void TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94() {
+  if (targetContext != 0) {
+    targetContext->ConstructTCommandHandlerBaseState(this);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00487a00
-undefined TCommand::OrphanRetStub_00487a00() {
-  return 0;
-}
+void TCommand::OrphanRetStub_00487a00() {}

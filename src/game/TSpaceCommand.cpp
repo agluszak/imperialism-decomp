@@ -1,6 +1,6 @@
 #include "game/TSpaceCommand.h"
 
-undefined TSpaceCommand::OrphanRetStub_00487a00() { return 0; }
+void TSpaceCommand::OrphanRetStub_00487a00() {}
 
 TSpaceCommand::~TSpaceCommand() {}
 IMPLEMENT_DYNCREATE(TSpaceCommand, TCommand)

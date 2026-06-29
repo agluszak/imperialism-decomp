@@ -524,7 +524,7 @@
     },
     {
       "address": "0x4149a0",
-      "matching": 0.2222222222222222,
+      "matching": 0.22530864197530864,
       "name": "LoadLanguageResourcesFromIrgFiles",
       "type": 1
     },
@@ -2956,7 +2956,7 @@
     },
     {
       "address": "0x486650",
-      "matching": 0.0,
+      "matching": 0.8,
       "name": "TCommandHandler::ConstructTCommandHandlerBaseState",
       "type": 1
     },
@@ -3154,7 +3154,7 @@
     },
     {
       "address": "0x4878a0",
-      "matching": 0.64,
+      "matching": 0.72,
       "name": "InitializeRangePairAndResetCursor",
       "type": 1
     },
@@ -3166,13 +3166,13 @@
     },
     {
       "address": "0x487900",
-      "matching": 0.2,
+      "matching": 1.0,
       "name": "TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94",
       "type": 1
     },
     {
       "address": "0x487a00",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TCommand::OrphanRetStub_00487a00",
       "type": 1
     },
@@ -4072,7 +4072,7 @@
     },
     {
       "address": "0x48a070",
-      "matching": 0.9285714285714286,
+      "matching": 1.0,
       "name": "TEventHandler::CreateTEventHandlerInstance",
       "type": 1
     },
@@ -4354,7 +4354,7 @@
     },
     {
       "address": "0x48b0b0",
-      "matching": 1.0,
+      "matching": 0.9814814814814815,
       "name": "TView::CloseCityDialogChildrenAndReleaseSelf",
       "type": 1
     },
@@ -6877,7 +6877,7 @@
     },
     {
       "address": "0x49ddb0",
-      "matching": 0.3333333333333333,
+      "matching": 0.4,
       "name": "TNewGameCommand::OrphanRetStub_00487a00",
       "type": 1
     },
@@ -11821,7 +11821,7 @@
     },
     {
       "address": "0x4db380",
-      "matching": 0.32936507936507936,
+      "matching": 0.3333333333333333,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -12506,7 +12506,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13880,7 +13880,7 @@
     },
     {
       "address": "0x4eff40",
-      "matching": 0.2857142857142857,
+      "matching": 0.27988338192419826,
       "name": "TSortedByRelationshipList::AdjustNationPairDiplomacyStandingAndPropagate",
       "type": 1
     },
@@ -15926,7 +15926,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.18672566371681415,
+      "matching": 0.18053097345132743,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16940,7 +16940,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.29545454545454547,
+      "matching": 0.2857142857142857,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -20540,7 +20540,7 @@
     },
     {
       "address": "0x542520",
-      "matching": 0.15384615384615385,
+      "matching": 0.16666666666666666,
       "name": "TCancelGameOptionsCommand::OrphanRetStub_00487a00",
       "type": 1
     },
@@ -20936,7 +20936,7 @@
     },
     {
       "address": "0x54aff0",
-      "matching": 0.2857142857142857,
+      "matching": 0.3333333333333333,
       "name": "TPoseMessageDialog::OrphanRetStub_00487a00",
       "type": 1
     },
@@ -24824,7 +24824,7 @@
     },
     {
       "address": "0x5751f0",
-      "matching": 0.2857142857142857,
+      "matching": 0.3333333333333333,
       "name": "TSpaceCommand::OrphanRetStub_00487a00",
       "type": 1
     },
@@ -27502,7 +27502,7 @@
     },
     {
       "address": "0x58f550",
-      "matching": 0.4460431654676259,
+      "matching": 0.39568345323741005,
       "name": "TCivDescription::ApplyRectSlot110",
       "type": 1
     },
@@ -29464,7 +29464,7 @@
     },
     {
       "address": "0x5a6620",
-      "matching": 0.0425531914893617,
+      "matching": 0.043478260869565216,
       "name": "TNextMoveCommand::OrphanRetStub_00487a00",
       "type": 1
     },
@@ -32638,7 +32638,7 @@
     },
     {
       "address": "0x5dcd10",
-      "matching": 0.11764705882352941,
+      "matching": 0.125,
       "name": "TModalMessageCommand::OrphanRetStub_00487a00",
       "type": 1
     },

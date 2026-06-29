@@ -3,7 +3,6 @@
 #include "game/TCommand.h"
 #include <stddef.h>
 
-
 // The 'NeXT' (0x4E655854) turn-event command enqueued onto the UI root
 // controller. Real inheritance from TCommand: the base constructor installs the
 // 0x648e28 vtable, then this class's constructor installs 0x0066da90 — reproducing
@@ -12,12 +11,10 @@
 // VTABLE: IMPERIALISM 0x0066da90
 class TNextTradeCommand : public TCommand {
 public:
-// === BEGIN GENERATED DECLS (TNextTradeCommand) — refreshed by recover-class; do not hand-edit ===
-  // slot 0x00 cmd_slot0 — declared in hand section (0x5ba3e0)
-  // slot 0x01 ~TNextTradeCommand / cmd_slot1 — declared in hand section
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  // === BEGIN GENERATED DECLS (TNextTradeCommand) — refreshed by recover-class; do not hand-edit
+  // === slot 0x00 cmd_slot0 — declared in hand section (0x5ba3e0) slot 0x01 ~TNextTradeCommand /
+  // cmd_slot1 — declared in hand section slot 0x02 Serialize inherited unchanged (0x485e90) slot
+  // 0x03 AssertValid inherited unchanged (0x412bf0) slot 0x04 Dump inherited unchanged (0x412c10)
   // slot 0x05 WriteTo inherited unchanged (0x485f70)
   // slot 0x06 ReadFrom inherited unchanged (0x485f90)
   // slot 0x07 Free inherited unchanged (0x4878e0)
@@ -25,11 +22,11 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
   // slot 0x0b cmd_slot11 — declared in hand section (0x5ba4b0)
-// === END GENERATED DECLS (TNextTradeCommand) ===
+  // === END GENERATED DECLS (TNextTradeCommand) ===
   TNextTradeCommand();
 
   DECLARE_DYNCREATE(TNextTradeCommand)
-  undefined OrphanRetStub_00487a00() override;     // slot 0x0b 0x5ba4b0
+  void OrphanRetStub_00487a00() override; // slot 0x0b 0x5ba4b0
   // slot 0x01 (dtor) overridden by ~TNextTradeCommand below (0x5ba430)
 
   virtual ~TNextTradeCommand();
@@ -37,7 +34,8 @@ public:
 
 ASSERT_SIZE(TNextTradeCommand, 0x18);
 
-// === BEGIN GENERATED (TNextTradeCommand) — refreshed by `just gen-class TNextTradeCommand`; do not hand-edit ===
+// === BEGIN GENERATED (TNextTradeCommand) — refreshed by `just gen-class TNextTradeCommand`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x0066da90 (12 slots), object size 0x18, base TCommand
 //   slot 0x00  byte 0x00  0x005ba3e0  override  GetTEventClassNamePointer

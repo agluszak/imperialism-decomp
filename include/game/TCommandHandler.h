@@ -3,11 +3,14 @@
 #include "game/TEventHandler.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TCommandHandler and its role. Base edge (TEventHandler) recovered from RTTI CRuntimeClass chain: TCommandHandler -> TEventHandler -> TObject -> CObject.
+class TCommand;
+
+// TODO(manifest): describe TCommandHandler and its role. Base edge (TEventHandler) recovered from
+// RTTI CRuntimeClass chain: TCommandHandler -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00648b20
 class TCommandHandler : public TEventHandler {
 public:
-// === BEGIN GENERATED DECLS (TCommandHandler) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TCommandHandler) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCommandHandler)
   virtual ~TCommandHandler(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -45,14 +48,16 @@ public:
   // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
   // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
-  virtual undefined ConstructTCommandHandlerBaseState(); // slot 0x25 0x486650
-// === END GENERATED DECLS (TCommandHandler) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TCommandHandler 0xCTOR`).
+  virtual void ConstructTCommandHandlerBaseState(TCommand* command); // slot 0x25 0x486650
+  // === END GENERATED DECLS (TCommandHandler) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TCommandHandler
+  // 0xCTOR`).
 
   TCommandHandler();
 };
 
-// === BEGIN GENERATED (TCommandHandler) — refreshed by `just gen-class TCommandHandler`; do not hand-edit ===
+// === BEGIN GENERATED (TCommandHandler) — refreshed by `just gen-class TCommandHandler`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x00648b20 (38 slots), object size 0x20, base TEventHandler
 //   slot 0x00  byte 0x00  0x00486630  override  GetTEventHandlerClassNamePointer

@@ -3,11 +3,12 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNewGameCommand and its role. Base edge (TCommand) recovered from RTTI CRuntimeClass chain: TNewGameCommand -> TCommand -> TEvent -> TObject -> CObject.
+// TODO(manifest): describe TNewGameCommand and its role. Base edge (TCommand) recovered from RTTI
+// CRuntimeClass chain: TNewGameCommand -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c130
 class TNewGameCommand : public TCommand {
 public:
-// === BEGIN GENERATED DECLS (TNewGameCommand) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TNewGameCommand) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNewGameCommand)
   virtual ~TNewGameCommand(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -19,14 +20,16 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
-  virtual undefined OrphanRetStub_00487a00() override; // slot 0x0b 0x49ddb0
-// === END GENERATED DECLS (TNewGameCommand) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNewGameCommand 0xCTOR`).
+  virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x49ddb0
+  // === END GENERATED DECLS (TNewGameCommand) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TNewGameCommand
+  // 0xCTOR`).
 
   TNewGameCommand();
 };
 
-// === BEGIN GENERATED (TNewGameCommand) — refreshed by `just gen-class TNewGameCommand`; do not hand-edit ===
+// === BEGIN GENERATED (TNewGameCommand) — refreshed by `just gen-class TNewGameCommand`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x0064c130 (12 slots), object size 0x18, base TCommand
 //   slot 0x00  byte 0x00  0x0049de20  override  GetTEventClassNamePointer

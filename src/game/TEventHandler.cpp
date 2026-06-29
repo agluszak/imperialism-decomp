@@ -32,9 +32,9 @@ void TEventHandler::SetCityDialogValueDword10(int value) {
 
 // Drain the linked command/event list rooted at handler+0x04 until field0c reaches zero.
 // FUNCTION: IMPERIALISM 0x0048a070
-void TEventHandler::CreateTEventHandlerInstance(TEventHandler* handler) {
-  while (handler->field0c != 0) {
-    TEventHandler* entry = *reinterpret_cast<TEventHandler**>(handler->field04 + 8);
+void TEventHandler::CreateTEventHandlerInstance() {
+  while (field0c != 0) {
+    TEventHandler* entry = static_cast<TEventHandler*>(recordHead->payload);
     entry->Free();
   }
 }
@@ -67,24 +67,22 @@ TEventHandler::~TEventHandler() {}
 // Slot 0x07/0x08: base implementations (overridden by TView and AppRoot).
 // FUNCTION: IMPERIALISM 0x0048a1b0
 void TEventHandler::Free() {
-  if (g_pApplicationUiRootController != 0 &&
-      g_pApplicationUiRootController != reinterpret_cast<TApplication*>(this)) {
-    TView* activeView = g_pApplicationUiRootController->GetActiveView();
-    if (activeView == reinterpret_cast<TView*>(this)) {
-      TView* replacement = reinterpret_cast<TView*>(QueryStepValue());
+  if (g_pApplicationUiRootController != 0 && g_pApplicationUiRootController != this) {
+    TEventHandler* activeView = g_pApplicationUiRootController->GetActiveView();
+    if (activeView == this) {
+      TEventHandler* replacement = QueryStepValue();
       if (replacement == 0) {
-        g_pApplicationUiRootController->SetActiveView(
-            reinterpret_cast<TView*>(g_pApplicationUiRootController));
+        g_pApplicationUiRootController->SetActiveView(g_pApplicationUiRootController);
       } else {
         g_pApplicationUiRootController->SetActiveView(replacement);
       }
     }
   }
   field0c = 0;
-  if (resourceOwner != 0) {
-    reinterpret_cast<TEventHandler*>(resourceOwner)->Free();
+  if (linkedResourceOwner != 0) {
+    linkedResourceOwner->Free();
   }
-  resourceOwner = 0;
+  linkedResourceOwner = 0;
   delete this;
 }
 
@@ -101,15 +99,15 @@ void TEventHandler::SetControlValue(int value) {
 // Forward a UI command triplet to the child returned by slot 0x0c (QueryStepValue), if any.
 // FUNCTION: IMPERIALISM 0x0048a280
 void TEventHandler::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TEventHandler* child = reinterpret_cast<TEventHandler*>(QueryStepValue());
+  TEventHandler* child = QueryStepValue();
   if (child != 0) {
     child->DispatchEvent(commandId, sourceHandler, event);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048a2c0
-int TEventHandler::QueryStepValue() {
-  return field0c;
+TEventHandler* TEventHandler::QueryStepValue() {
+  return linkedChildHandler;
 }
 
 // Bubble a UI command triplet into this handler chain (forwards to HandleEvent at slot 0x0f).
@@ -120,7 +118,7 @@ void TEventHandler::DispatchEvent(int commandId, TEventHandler* sourceHandler, T
 
 // FUNCTION: IMPERIALISM 0x0048a310
 void TEventHandler::vmethod_0017(int param) {
-  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+  TView* child = static_cast<TView*>(QueryStepValue());
   if (child != 0) {
     child->vmethod_0017(param);
   }
@@ -128,7 +126,7 @@ void TEventHandler::vmethod_0017(int param) {
 
 // FUNCTION: IMPERIALISM 0x0048a380
 void TEventHandler::ForwardParam(int param) {
-  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+  TView* child = static_cast<TView*>(QueryStepValue());
   if (child != 0) {
     child->ForwardParam(param);
   }
@@ -141,12 +139,10 @@ void TEventHandler::ForwardParam(int param) {
 void TEventHandler::DispatchQueuedUiCommandAndRelease(void* payload) {
   // Polymorphic dispatch slot: this base interprets the opaque payload as a TCommand
   // (other overrides interpret it differently, e.g. TView passes a RECT). The target
-  // handler dispatches the command's message + source handler, with the command
-  // object itself passed where DoEvent expects a TEvent* (TCommand and TEvent are
-  // distinct classes, hence the single pun cast), then frees it.
+  // handler dispatches the command's message + source handler, with the command object
+  // itself passed through its real TEvent base, then frees it.
   TCommand* command = static_cast<TCommand*>(payload);
-  command->targetHandler->DispatchEvent(command->dispatchMessage, command->sourceHandler,
-                                        reinterpret_cast<TEvent*>(command));
+  command->targetHandler->DispatchEvent(command->dispatchMessage, command->sourceHandler, command);
   if (command != 0) {
     command->Free();
   }
@@ -165,19 +161,19 @@ char TEventHandler::CanHandleCityDialogActionFalse(int action) {
 
 // If the given object is our currently-linked resourceOwner target, detach it both ways.
 // FUNCTION: IMPERIALISM 0x0048a4a0
-void TEventHandler::vmethod_0033(int arg) {
-  if (resourceOwner != 0 && resourceOwner == arg) {
-    resourceOwner = 0;
-    *reinterpret_cast<int*>(arg + 8) = 0;
+void TEventHandler::vmethod_0033(TEventHandler* owner) {
+  if (linkedResourceOwner != 0 && linkedResourceOwner == owner) {
+    linkedResourceOwner = 0;
+    owner->resourceOwnerBackLink = 0;
   }
 }
 
 // Link this view to a resource-owner object and set the owner's back-pointer to this.
 // FUNCTION: IMPERIALISM 0x0048a4d0
-void TEventHandler::SetUiResourceOwner(int owner) {
+void TEventHandler::SetUiResourceOwner(TEventHandler* owner) {
   if (owner != 0) {
-    resourceOwner = owner;
-    *reinterpret_cast<int*>(owner + 8) = reinterpret_cast<int>(this);
+    linkedResourceOwner = owner;
+    owner->resourceOwnerBackLink = this;
   }
 }
 
@@ -201,12 +197,12 @@ char TEventHandler::vmethod_0024() {
 // otherwise the current active view must agree (slot 0x20) before we take over.
 // FUNCTION: IMPERIALISM 0x0048a570
 char TEventHandler::ActivateCityProductionViewIfAllowed() {
-  TView* active = g_pApplicationUiRootController->GetActiveView();
+  TEventHandler* active = g_pApplicationUiRootController->GetActiveView();
   if (this == active) {
     return 1;
   }
   if (active != 0 && active->vmethod_0080() != 0) {
-    g_pApplicationUiRootController->SetActiveView(reinterpret_cast<TView*>(this));
+    g_pApplicationUiRootController->SetActiveView(this);
     return 1;
   }
   return 0;
@@ -217,15 +213,14 @@ char TEventHandler::vmethod_0080() {
   if (g_pApplicationUiRootController == 0) {
     return 0;
   }
-  TView* activeView = g_pApplicationUiRootController->GetActiveView();
+  TEventHandler* activeView = g_pApplicationUiRootController->GetActiveView();
   if (activeView == 0) {
     return 0;
   }
   char gate = activeView->vmethod_0024();
   if (gate == 0) {
     activeView->vmethod_0025();
-    g_pApplicationUiRootController->SetActiveView(
-        reinterpret_cast<TView*>(g_pApplicationUiRootController));
+    g_pApplicationUiRootController->SetActiveView(g_pApplicationUiRootController);
     return 1;
   }
   activeView->vmethod_0026(gate);
@@ -284,7 +279,3 @@ TObject* TEventHandler::ShallowClone() {
   header->controlTag = controlTag;
   return header;
 }
-
-// Shared vtable slot 0x09 body (also referenced from TZone vtable). Creates a new object
-// of the same runtime class via CRuntimeClass::CreateObject, then memcpy's the payload
-// (m_nObjectSize bytes from `this`) into it. The original emits rep movsd / rep movsb

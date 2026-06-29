@@ -111,7 +111,7 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     SetControlStateFlagAndMaybeRefresh(commandTagResourceByte == 0, 1);
     return;
   }
-  TEventHandler* child = reinterpret_cast<TEventHandler*>(QueryStepValue());
+  TEventHandler* child = QueryStepValue();
   if (child != 0) {
     child->DispatchEvent(commandId, sourceHandler, event);
   }

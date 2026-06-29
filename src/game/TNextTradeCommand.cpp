@@ -14,6 +14,4 @@ TNextTradeCommand::~TNextTradeCommand() {}
 IMPLEMENT_DYNCREATE(TNextTradeCommand, TCommand)
 
 // FUNCTION: IMPERIALISM 0x005ba4b0
-undefined TNextTradeCommand::OrphanRetStub_00487a00() {
-  return 0;
-}
+void TNextTradeCommand::OrphanRetStub_00487a00() {}

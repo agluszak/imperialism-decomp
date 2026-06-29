@@ -203,7 +203,7 @@ void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     }
     return;
   }
-  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+  TView* child = static_cast<TView*>(QueryStepValue());
   if (child != 0) {
     child->DispatchEvent(commandId, sourceHandler, event);
   }
@@ -365,7 +365,7 @@ void TWindow::Free() {
   if (g_pApplicationUiRootController != 0 &&
       g_pApplicationUiRootController != reinterpret_cast<TApplication*>(this)) {
     if (g_pApplicationUiRootController->GetActiveView() == reinterpret_cast<TView*>(this)) {
-      TView* replacement = reinterpret_cast<TView*>(QueryStepValue());
+      TView* replacement = static_cast<TView*>(QueryStepValue());
       if (replacement == 0) {
         g_pApplicationUiRootController->SetActiveView(
             reinterpret_cast<TView*>(g_pApplicationUiRootController));

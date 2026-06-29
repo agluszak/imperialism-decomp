@@ -10,6 +10,12 @@ class TView;
 class TControl;
 class TEvent;
 
+struct TEventHandlerRecordNode {
+  TEventHandlerRecordNode* next;
+  TEventHandlerRecordNode* previous;
+  void* payload;
+};
+
 //
 // The real shared base of TView and TApplication (TApplication). Both
 // inherit this 37-slot interface (slots 0x00-0x24) and the fields through +0x1c; they
@@ -21,17 +27,37 @@ class TEvent;
 // VTABLE: IMPERIALISM 0x006497a0
 class TEventHandler : public TObject {
 public:
-  int field04;
-  int field08;
-  int field0c;
-  int field10;
-  int field14;
-  int resourceOwner;
+  union {
+    int field04;
+    TEventHandlerRecordNode* recordHead;
+  };
+  union {
+    int field08;
+    TEventHandlerRecordNode* recordTail;
+    TEventHandler* resourceOwnerBackLink;
+  };
+  union {
+    int field0c;
+    TEventHandler* linkedChildHandler;
+  };
+  union {
+    int field10;
+    TEventHandlerRecordNode* freeRecordHead;
+  };
+  union {
+    int field14;
+    int recordBlockHead;
+  };
+  union {
+    int resourceOwner;
+    int recordBlockCount;
+    TEventHandler* linkedResourceOwner;
+  };
   int controlTag; // 0x1c
 
   TEventHandler();
 
-  static void CreateTEventHandlerInstance(TEventHandler* handler);
+  void CreateTEventHandlerInstance();
 
   // Standalone binary helper @ 0x48a100 (also reached via ILT 0x403049).
   void InitializeUiResourceEntryBaseHeaderDefaults();
@@ -50,7 +76,7 @@ public:
   TObject* ShallowClone() override;        // 0x08 0x48a7c0 base; TView override 0x48bfd0
   virtual char GetBoolSlot28();            // 0x0a 0x48a240 GetCityDialogFlagByte4
   virtual void SetControlValue(int value); // 0x0b 0x48a260 SetCityDialogFlagByte4
-  virtual int QueryStepValue();            // 0x0c 0x48a2c0 GetCityDialogValueDwordC
+  virtual TEventHandler* QueryStepValue(); // 0x0c 0x48a2c0 GetCityDialogValueDwordC
   virtual void DispatchQueuedUiCommandAndRelease(void* payload); // 0x0d 0x48a3b0
   virtual void DispatchUiSelectionToHandler(void* payload);      // 0x0e 0x48a3f0
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
@@ -75,6 +101,6 @@ public:
   virtual char vmethod_0080();                             // 0x20 0x48a5e0
   virtual void vmethod_0081(int param);                    // 0x21 0x48a710
   virtual char vmethod_0032();                             // 0x22 0x48a500
-  virtual void vmethod_0033(int arg);                      // 0x23 0x48a4a0
-  virtual void SetUiResourceOwner(int owner);              // 0x24 0x48a4d0
+  virtual void vmethod_0033(TEventHandler* owner);         // 0x23 0x48a4a0
+  virtual void SetUiResourceOwner(TEventHandler* owner);   // 0x24 0x48a4d0
 };

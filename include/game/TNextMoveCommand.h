@@ -3,11 +3,12 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNextMoveCommand and its role. Base edge (TCommand) recovered from RTTI CRuntimeClass chain: TNextMoveCommand -> TCommand -> TEvent -> TObject -> CObject.
+// TODO(manifest): describe TNextMoveCommand and its role. Base edge (TCommand) recovered from RTTI
+// CRuntimeClass chain: TNextMoveCommand -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a100
 class TNextMoveCommand : public TCommand {
 public:
-// === BEGIN GENERATED DECLS (TNextMoveCommand) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TNextMoveCommand) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNextMoveCommand)
   virtual ~TNextMoveCommand(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -19,14 +20,16 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
-  virtual undefined OrphanRetStub_00487a00() override; // slot 0x0b 0x5a6620
-// === END GENERATED DECLS (TNextMoveCommand) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNextMoveCommand 0xCTOR`).
+  virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x5a6620
+  // === END GENERATED DECLS (TNextMoveCommand) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TNextMoveCommand
+  // 0xCTOR`).
 
   TNextMoveCommand();
 };
 
-// === BEGIN GENERATED (TNextMoveCommand) — refreshed by `just gen-class TNextMoveCommand`; do not hand-edit ===
+// === BEGIN GENERATED (TNextMoveCommand) — refreshed by `just gen-class TNextMoveCommand`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x0066a100 (12 slots), object size 0x1c, base TCommand
 //   slot 0x00  byte 0x00  0x005a6540  override  GetTEventClassNamePointer

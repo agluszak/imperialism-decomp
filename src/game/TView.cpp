@@ -115,41 +115,43 @@ void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
     for (int count = archive->ReadCount(); count != 0; count = count - 1) {
       CArchive* value = 0;
       archive->Read(&value, sizeof(value));
-      int tail = field08;
-      if (field10 == 0) {
-        int blockBase = AllocateAndLinkBlockHead(&field14, resourceOwner, 0xc);
-        int blockCount = resourceOwner;
-        int* node = reinterpret_cast<int*>(blockBase + -8 + blockCount * 0xc);
+      TEventHandlerRecordNode* tail = recordTail;
+      if (freeRecordHead == 0) {
+        int blockBase = AllocateAndLinkBlockHead(&recordBlockHead, recordBlockCount,
+                                                 sizeof(TEventHandlerRecordNode));
+        int blockCount = recordBlockCount;
+        TEventHandlerRecordNode* node = reinterpret_cast<TEventHandlerRecordNode*>(
+            blockBase + -8 + blockCount * sizeof(TEventHandlerRecordNode));
         if (-1 < blockCount - 1) {
           do {
-            *node = field10;
-            field10 = reinterpret_cast<int>(node);
-            node = node - 3;
+            node->next = freeRecordHead;
+            freeRecordHead = node;
+            node = node - 1;
             blockCount = blockCount - 1;
           } while (blockCount != 0);
         }
       }
-      int* node = reinterpret_cast<int*>(field10);
-      field10 = *node;
-      node[1] = tail;
-      node[0] = 0;
+      TEventHandlerRecordNode* node = freeRecordHead;
+      freeRecordHead = node->next;
+      node->previous = tail;
+      node->next = 0;
       field0c = field0c + 1;
-      node[2] = 0;
-      node[2] = reinterpret_cast<int>(value);
-      if (field08 == 0) {
-        field04 = reinterpret_cast<int>(node);
+      node->payload = 0;
+      node->payload = value;
+      if (recordTail == 0) {
+        recordHead = node;
       } else {
-        *reinterpret_cast<int**>(field08) = node;
+        recordTail->next = node;
       }
-      field08 = reinterpret_cast<int>(node);
+      recordTail = node;
     }
   } else {
     archive->WriteCount(field0c);
-    int* node = reinterpret_cast<int*>(field04);
+    TEventHandlerRecordNode* node = recordHead;
     if (node != 0) {
       do {
-        archive->Write(node + 2, sizeof(CArchive*));
-        node = reinterpret_cast<int*>(*node);
+        archive->Write(&node->payload, sizeof(CArchive*));
+        node = node->next;
       } while (node != 0);
     }
   }
@@ -336,10 +338,7 @@ void TView::SetState(int state, int refreshFlag) {
 // FUNCTION: IMPERIALISM 0x0048b0b0
 void TView::Free() {
   while (childList44 != 0) {
-    int* listWords = reinterpret_cast<int*>(childList44);
-    TEventHandler* child = *reinterpret_cast<TEventHandler**>(
-        reinterpret_cast<char*>(*reinterpret_cast<int*>(reinterpret_cast<char*>(listWords) + 4)) +
-        8);
+    TEventHandler* child = static_cast<TEventHandler*>(childList44->GetTail());
     child->Free();
   }
   if (ownerContext != 0) {
@@ -347,23 +346,23 @@ void TView::Free() {
     ownerContext = 0;
   }
   if (g_pApplicationUiRootController != 0 &&
-      g_pApplicationUiRootController != reinterpret_cast<TApplication*>(this)) {
-    TView* activeView = g_pApplicationUiRootController->GetActiveView();
+      static_cast<TEventHandler*>(g_pApplicationUiRootController) !=
+          static_cast<TEventHandler*>(this)) {
+    TEventHandler* activeView = g_pApplicationUiRootController->GetActiveView();
     if (activeView == this) {
-      TEventHandler* replacement = reinterpret_cast<TEventHandler*>(QueryStepValue());
+      TEventHandler* replacement = QueryStepValue();
       if (replacement == 0) {
-        g_pApplicationUiRootController->SetActiveView(
-            reinterpret_cast<TView*>(g_pApplicationUiRootController));
+        g_pApplicationUiRootController->SetActiveView(g_pApplicationUiRootController);
       } else {
-        g_pApplicationUiRootController->SetActiveView(reinterpret_cast<TView*>(replacement));
+        g_pApplicationUiRootController->SetActiveView(replacement);
       }
     }
   }
   field0c = 0;
-  if (resourceOwner != 0) {
-    reinterpret_cast<TEventHandler*>(resourceOwner)->Free();
+  if (linkedResourceOwner != 0) {
+    linkedResourceOwner->Free();
   }
-  resourceOwner = 0;
+  linkedResourceOwner = 0;
   delete this;
 }
 
@@ -602,9 +601,8 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg
 
   if (BindMapQuickDrawDc(bindArg) != 0) {
     ApplyRectSlot110(&clippedRect);
-    if (resourceOwner != 0) {
-      reinterpret_cast<TEventHandler*>(resourceOwner)
-          ->DispatchQueuedUiCommandAndRelease(&clippedRect);
+    if (linkedResourceOwner != 0) {
+      linkedResourceOwner->DispatchQueuedUiCommandAndRelease(&clippedRect);
     }
     ReleaseMapQuickDrawDc(bindArg);
   }

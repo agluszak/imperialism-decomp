@@ -59,7 +59,7 @@ void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     SetControlStateFlagAndMaybeRefresh(commandTagResourceByte == 0, true);
     return;
   }
-  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+  TView* child = static_cast<TView*>(QueryStepValue());
   if (child != 0) {
     child->DispatchEvent(commandId, sourceHandler, event);
   }

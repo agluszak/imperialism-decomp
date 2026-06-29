@@ -5,4 +5,4 @@ TNextMoveCommand::TNextMoveCommand() {}
 
 TNextMoveCommand::~TNextMoveCommand() {}
 
-undefined TNextMoveCommand::OrphanRetStub_00487a00() { return 0; }
+void TNextMoveCommand::OrphanRetStub_00487a00() {}

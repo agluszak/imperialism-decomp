@@ -118,9 +118,9 @@ undefined TDisplayMgr::InitializeBitmapSurfaceContextWithRetry(int* outContext, 
 }
 
 // FUNCTION: IMPERIALISM 0x004feb50
-void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(undefined4* param_1) {
-  delete reinterpret_cast<void*>(*param_1);
-  *param_1 = 0;
+void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(int* field) {
+  delete reinterpret_cast<void*>(*field);
+  *field = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004feb80
@@ -162,7 +162,8 @@ undefined TDisplayMgr::AssertUDisplayMgrLine495() {
 // FUNCTION: IMPERIALISM 0x004fec80
 undefined TDisplayMgr::DispatchDisplayManagerControlStringMessage() {
   CString message;
-  reinterpret_cast<void(__cdecl*)(CString*, CString*)>(AssignStringSharedRefAndReturnThis)(&message, &message);
+  reinterpret_cast<void(__cdecl*)(CString*, CString*)>(AssignStringSharedRefAndReturnThis)(
+      &message, &message);
   reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
       ->RunControlStringProviderAndDispatchLocalizedMessage(&message);
   return 0;
@@ -209,8 +210,10 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   int clipDescriptor = reinterpret_cast<int>(surfaceGuard.surfaceWrapper);
   reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(&clipDescriptor);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext), savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext)));
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext),
+                                   savedFlags);
+  ReturnConstantTrueQuickDrawFlag(
+      GetSurfaceObjectAtContextOffset24(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext)));
 
   TControl* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
@@ -234,7 +237,8 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   reinterpret_cast<void(__cdecl*)(RECT*)>(ApplyRectClipRegionToGlobalClipState)(&clipRect);
   mainView->ApplyRectSlot110(&queryBounds);
 
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext)));
+  NoOpQuickDrawLifecycleHookB(
+      GetSurfaceObjectAtContextOffset24(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext)));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
   SnapshotHitRegionToClipCache(&clipDescriptor);
   clipSnapshotEvent = static_cast<short>(param_1);

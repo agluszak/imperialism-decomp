@@ -7,8 +7,6 @@
 #include "game/global_data_tables.h"
 #include <afxtempl.h>
 
-class TView;
-
 // Application UI root controller — global modal-view gatekeeper installed at startup.
 // Inherits the shared 37-slot base interface (indices 0x00-0x24) and fields through +0x1c
 // from TEventHandler (the same base TView derives from). Introduces its own slots 0x25-0x2a
@@ -55,8 +53,8 @@ public:
   // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ConstructTCommandHandlerBaseState inherited unchanged (0x486650)
-  virtual void SetActiveView(TView* view); // slot 0x26 0x486880
-  virtual TView* GetActiveView();          // slot 0x27 0x4868a0
+  virtual void SetActiveView(TEventHandler* view); // slot 0x26 0x486880
+  virtual TEventHandler* GetActiveView();          // slot 0x27 0x4868a0
   virtual void HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2,
                                                      int arg3); // slot 0x28 0x486990
   virtual void InsertOrRemoveTrackedEntry(int value,
@@ -78,12 +76,13 @@ public:
   // vtable index 0x2a (0x00486b10): walk the embedded list and invoke each entry's tick
   // method (slot at node+8 receiver, passing arg) via the per-entry thunk.
 
-  TView* activeView;                  // 0x20
+  TEventHandler* activeView;          // 0x20
   int screenModeAt24;                 // 0x24
   int field28;                        // 0x28
   CList<void*, void*> trackedEntries; // 0x2c, vtable 0x00648ca8
 
-  // Reserved slots overridden by TAmbitApplication only (orig TApplication vtable has null at 0x2b-0x2d).
+  // Reserved slots overridden by TAmbitApplication only (orig TApplication vtable has null at
+  // 0x2b-0x2d).
 };
 
 ASSERT_SIZE(TApplication, 0x48);

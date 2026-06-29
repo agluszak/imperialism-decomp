@@ -1,4 +1,5 @@
 #include "game/TCommandHandler.h"
+#include "game/TCommand.h"
 
 TCommandHandler::TCommandHandler() : TEventHandler() {}
 
@@ -8,6 +9,7 @@ TCommandHandler::~TCommandHandler() {}
 IMPLEMENT_DYNCREATE(TCommandHandler, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x00486650
-undefined TCommandHandler::ConstructTCommandHandlerBaseState() {
-  return 0;
+void TCommandHandler::ConstructTCommandHandlerBaseState(TCommand* command) {
+  command->OrphanRetStub_00487a00();
+  command->Free();
 }

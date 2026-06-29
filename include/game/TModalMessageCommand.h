@@ -3,11 +3,13 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TModalMessageCommand and its role. Base edge (TCommand) recovered from RTTI CRuntimeClass chain: TModalMessageCommand -> TCommand -> TEvent -> TObject -> CObject.
+// TODO(manifest): describe TModalMessageCommand and its role. Base edge (TCommand) recovered from
+// RTTI CRuntimeClass chain: TModalMessageCommand -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066f2f0
 class TModalMessageCommand : public TCommand {
 public:
-// === BEGIN GENERATED DECLS (TModalMessageCommand) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TModalMessageCommand) — refreshed by recover-class; do not hand-edit
+  // ===
   DECLARE_DYNCREATE(TModalMessageCommand)
   virtual ~TModalMessageCommand(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -19,14 +21,16 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
-  virtual undefined OrphanRetStub_00487a00() override; // slot 0x0b 0x5dcd10
-// === END GENERATED DECLS (TModalMessageCommand) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TModalMessageCommand 0xCTOR`).
+  virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x5dcd10
+  // === END GENERATED DECLS (TModalMessageCommand) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery
+  // TModalMessageCommand 0xCTOR`).
 
   TModalMessageCommand();
 };
 
-// === BEGIN GENERATED (TModalMessageCommand) — refreshed by `just gen-class TModalMessageCommand`; do not hand-edit ===
+// === BEGIN GENERATED (TModalMessageCommand) — refreshed by `just gen-class TModalMessageCommand`;
+// do not hand-edit ===
 // clang-format off
 // vtable @ 0x0066f2f0 (12 slots), object size 0x20, base TCommand
 //   slot 0x00  byte 0x00  0x005dcdd0  override  GetTEventClassNamePointer
