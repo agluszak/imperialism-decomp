@@ -20,7 +20,7 @@
 #include <new>
 #include "game/mfc.h"
 
-undefined4 ApplyHitRegionToClipState(void);
+void ApplyHitRegionToClipState(int* clipDescriptor);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
 
@@ -117,7 +117,7 @@ int TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
 void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(reinterpret_cast<int>(surface.surfaceWrapper));
+  ApplyHitRegionToClipState(reinterpret_cast<int*>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();

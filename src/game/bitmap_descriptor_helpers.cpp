@@ -244,8 +244,9 @@ void SetActiveQuickDrawSurfaceContext_Impl(CDib* dibSurface, HDC referenceDc) {
 }
 
 // FUNCTION: IMPERIALISM 0x004961b0
-void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext* context, undefined4 flags) {
-  if (g_pActiveQuickDrawSurfaceContextHead == context) {
+void SetActiveQuickDrawSurfaceContext(undefined4 context, undefined4 flags) {
+  TQuickDrawSurfaceContext* contextPtr = reinterpret_cast<TQuickDrawSurfaceContext*>(context);
+  if (g_pActiveQuickDrawSurfaceContextHead == contextPtr) {
     return;
   }
 
@@ -261,22 +262,22 @@ void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext* context, undefin
     }
   }
 
-  if (context != &g_defaultQuickDrawSurfaceSentinel) {
+  if (contextPtr != &g_defaultQuickDrawSurfaceSentinel) {
     BitmapSurfaceContextDescriptor* descriptor =
-        reinterpret_cast<BitmapSurfaceContextDescriptor*>(context);
+        reinterpret_cast<BitmapSurfaceContextDescriptor*>(contextPtr);
     BitmapSurfaceNode* node = *reinterpret_cast<BitmapSurfaceNode**>(descriptor->surfaceNodeSlot);
     SetActiveQuickDrawSurfaceContext_Impl(node != nullptr ? node->dib : nullptr, nullptr);
   }
 
-  g_pActiveQuickDrawSurfaceContextHead = context;
+  g_pActiveQuickDrawSurfaceContextHead = contextPtr;
   g_nActiveQuickDrawSurfaceFlags = static_cast<int>(flags);
-  g_pActiveQuickDrawSurfaceContext = context;
+  g_pActiveQuickDrawSurfaceContext = contextPtr;
 }
 
 // FUNCTION: IMPERIALISM 0x00496270
-void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* outContext, undefined4* outFlags) {
+void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* outContext, int* outFlags) {
   *outContext = reinterpret_cast<undefined4>(g_pActiveQuickDrawSurfaceContextHead);
-  *outFlags = static_cast<undefined4>(g_nActiveQuickDrawSurfaceFlags);
+  *outFlags = g_nActiveQuickDrawSurfaceFlags;
 }
 
 // FUNCTION: IMPERIALISM 0x004962a0
@@ -328,7 +329,7 @@ void* GetSurfaceHeaderFromSurfaceObject(void* surfaceObject) {
 // FUNCTION: IMPERIALISM 0x005c3b70
 int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
   undefined4 savedContext = 0;
-  undefined4 savedFlags = 0;
+  int savedFlags = 0;
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
 
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(resourceId);
@@ -348,8 +349,7 @@ int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceI
     return 0;
   }
 
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(outContext),
-                                   savedFlags);
+  SetActiveQuickDrawSurfaceContext(outContext, savedFlags);
   void* surfaceObject = GetSurfaceObjectAtContextOffset24(outContext);
   ReturnConstantTrueQuickDrawFlag(surfaceObject);
 
@@ -361,7 +361,6 @@ int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceI
   ReleaseBitmapLoaderHandle(loaderHandle);
 
   NoOpQuickDrawLifecycleHookB(surfaceObject);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
-                                   savedFlags);
+  SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
   return outContext;
 }

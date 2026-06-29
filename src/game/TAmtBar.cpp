@@ -71,8 +71,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   short guideValue = 0;
   short fillOrigin;
 
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(
-      reinterpret_cast<int>(surface.surfaceWrapper));
+  ApplyHitRegionToClipState(reinterpret_cast<int*>(surface.surfaceWrapper));
 
   if (this->IsActionable() == 0 || this->Refresh() == 0) {
     return;

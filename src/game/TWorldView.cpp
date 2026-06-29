@@ -12,7 +12,7 @@
 undefined4 thunk_GetMapActionContextByTileIndex(void);
 undefined4 thunk_InvalidateMapRegionForOrderEntry(void);
 undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void);
-undefined4 ApplyHitRegionToClipState(void);
+void ApplyHitRegionToClipState(int* clipDescriptor);
 int IntersectRectWrapper(RECT* src1, RECT* src2, RECT* dst);
 undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void);
 undefined4 ReplaceClipStateRegionHandleFromRect(void);
@@ -165,7 +165,8 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       previewTileIndex, reinterpret_cast<int>(&viewportOffsetX), reinterpret_cast<int>(&outX),
       reinterpret_cast<int>(&outY), packedBand);
 
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(0);
+  int nullClipDescriptor = 0;
+  ApplyHitRegionToClipState(&nullClipDescriptor);
   SetGlobalQuickDrawOrigin(static_cast<short>(field2c), static_cast<short>(field30));
 
   short rectWidth = field76;

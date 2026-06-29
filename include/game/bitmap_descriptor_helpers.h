@@ -13,8 +13,8 @@ extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;
 
-void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* outContext, undefined4* outFlags);
-void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext* context, undefined4 flags);
+void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* outContext, int* outFlags);
+void SetActiveQuickDrawSurfaceContext(undefined4 context, undefined4 flags);
 void* GetSurfaceObjectAtContextOffset24(int context);
 void* GetSurfaceHeaderFromSurfaceObject(void* surfaceObject);
 short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(int* outContext, short bitDepth,

@@ -17,7 +17,7 @@
 #pragma optimize("y", on)
 #endif
 
-undefined4 ApplyHitRegionToClipState(void);
+void ApplyHitRegionToClipState(int* clipDescriptor);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
 undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);
@@ -187,7 +187,8 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip() 
   clipRect.right = boundsRecord.right;
   clipRect.bottom = boundsRecord.bottom;
 
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(0);
+  int nullClipDescriptor = 0;
+  ApplyHitRegionToClipState(&nullClipDescriptor);
 
   int* previousSurface = 0;
   int contextFlags = 0;

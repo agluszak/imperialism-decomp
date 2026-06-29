@@ -14,7 +14,7 @@
 #pragma optimize("y", on)
 #endif
 
-undefined4 ApplyHitRegionToClipState(void);
+void ApplyHitRegionToClipState(int* clipDescriptor);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
@@ -22,7 +22,7 @@ undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
 // FUNCTION: IMPERIALISM 0x004a05c0
 void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() {
   QuickDrawSurfaceGuard surface;
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(reinterpret_cast<int>(surface.surfaceWrapper));
+  ApplyHitRegionToClipState(reinterpret_cast<int*>(surface.surfaceWrapper));
 
   RECT destinationRect;
   RECT sourceRect;

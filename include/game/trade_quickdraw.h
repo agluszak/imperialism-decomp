@@ -10,8 +10,10 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_widget_thunks.h"
 
-undefined4 ApplyHitRegionToClipState(void);
-undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
+void ApplyHitRegionToClipState(int* clipDescriptor);
+void ApplyRectClipRegionToGlobalClipState(RECT* rectBuffer);
+void AssignStringSharedRefAndReturnThis(CString* dest, CString* source);
+void NoOpCallback_00498ca0(void* fieldPtr);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
@@ -32,8 +34,7 @@ static __inline void SetQuickDrawStylePair(short styleA, short styleB) {
 }
 
 static __inline void ApplyRectClipRegion(RECT* rectBuffer) {
-  reinterpret_cast<void(__cdecl*)(RECT*)>(
-      reinterpret_cast<void (*)()>(thunk_ApplyRectClipRegionToGlobalClipState))(rectBuffer);
+  ApplyRectClipRegionToGlobalClipState(rectBuffer);
 }
 
 // SetQuickDrawFillColor(int) is the real global at 0x495000, declared in
@@ -83,8 +84,7 @@ extern void FailNilPointerInUSmallViews(int line);
 // per-file wrappers (e.g. FailNilPointerInUSmallViews) forward through here.
 static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
   GAME_FAIL_NIL_POINTER();
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(
-      reinterpret_cast<void (*)()>(TemporarilyClearAndRestoreUiInvalidationFlag))(sourcePath, line);
+  TemporarilyClearAndRestoreUiInvalidationFlag(sourcePath, line);
 }
 
 struct CityTradeProductionSlots {

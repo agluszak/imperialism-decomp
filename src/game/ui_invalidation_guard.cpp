@@ -36,3 +36,10 @@ undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void) {
   SetGlobalUiInvalidationFlagAndReturnPrevious(previous);
   return 0;
 }
+
+// Overload for assert-style calls with source file and line
+void TemporarilyClearAndRestoreUiInvalidationFlag(const char* sourceFile, int line) {
+  (void)sourceFile;
+  (void)line;
+  TemporarilyClearAndRestoreUiInvalidationFlag();
+}

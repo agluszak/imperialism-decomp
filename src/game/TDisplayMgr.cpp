@@ -18,69 +18,11 @@
 #include "game/quickdraw_globals.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_control_tags.h"
+#include "game/trade_quickdraw.h"
 
 extern "C" {
 extern CRuntimeClass classRuntimeClass;
 }
-
-undefined4 AssignStringSharedRefAndReturnThis(void);
-undefined4 NoOpCallback_00498ca0(void);
-undefined4 ApplyHitRegionToClipState(void);
-undefined4 ApplyRectClipRegionToGlobalClipState(void);
-
-namespace DisplayMgrInvoke {
-
-static void AssignStringSharedRefAndReturnThis(TView* view, CString* dest, CString* sharedSource) {
-  reinterpret_cast<void(__cdecl*)(TView*, CString*, CString*)>(
-      reinterpret_cast<void (*)()>(::AssignStringSharedRefAndReturnThis))(view, dest, sharedSource);
-}
-
-static void NoOpCallback_00498ca0(void* fieldPtr) {
-  reinterpret_cast<void(__cdecl*)(void*)>(reinterpret_cast<void (*)()>(::NoOpCallback_00498ca0))(
-      fieldPtr);
-}
-
-static void ApplyHitRegionToClipState(int clipDescriptor) {
-  reinterpret_cast<void(__cdecl*)(int)>(reinterpret_cast<void (*)()>(::ApplyHitRegionToClipState))(
-      clipDescriptor);
-}
-
-static void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* ctx, int* flags) {
-  ::GetActiveQuickDrawSurfaceContextAndFlags(ctx, reinterpret_cast<undefined4*>(flags));
-}
-
-static void SetActiveQuickDrawSurfaceContext(undefined4 ctx, int flags) {
-  ::SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(ctx),
-                                     static_cast<undefined4>(flags));
-}
-
-static void* GetSurfaceObjectAtContextOffset24(undefined4 ctx) {
-  return reinterpret_cast<void*>(::GetSurfaceObjectAtContextOffset24(static_cast<int>(ctx)));
-}
-
-static void ReturnConstantTrueQuickDrawFlag(void* surface) {
-  ::ReturnConstantTrueQuickDrawFlag(surface);
-}
-
-static void ApplyRectClipRegionToGlobalClipState(RECT* rectBuffer) {
-  reinterpret_cast<void(__cdecl*)(RECT*)>(
-      reinterpret_cast<void (*)()>(::ApplyRectClipRegionToGlobalClipState))(rectBuffer);
-}
-
-static void NoOpQuickDrawLifecycleHookB(void* surface) {
-  ::NoOpQuickDrawLifecycleHookB(surface);
-}
-
-static void InvokeSnapshotHitRegionToClipCache(int clipDescriptor) {
-  ::SnapshotHitRegionToClipCache(reinterpret_cast<int*>(clipDescriptor));
-}
-
-static void FailUiAssert(const char* sourceFile, int line) {
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(reinterpret_cast<void (*)()>(
-      ::TemporarilyClearAndRestoreUiInvalidationFlag))(sourceFile, line);
-}
-
-} // namespace DisplayMgrInvoke
 
 namespace {
 
@@ -146,7 +88,7 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
   TView* dialogRoot = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(eventCode0e);
   if (dialogRoot == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0xb0);
+    TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0xb0);
   }
   activeDialog = dialogRoot;
   field18 = InitializeTurnOrderNavigationDialogByViewportSize_Impl(0x80);
@@ -198,14 +140,14 @@ undefined TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0() {
     activeDialog->RefreshCityProductionViewStateFromContext(0);
   }
   OrphanRetStub_004fed50(1);
-  DisplayMgrInvoke::NoOpCallback_00498ca0(&tileIcon14);
+  NoOpCallback_00498ca0(&tileIcon14);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004fec20
 undefined TDisplayMgr::AssertUDisplayMgrLine471() {
   if (g_nUiInvalidationAssertFlagLine471 == 0) {
-    DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0x1d7);
+    TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x1d7);
   }
   return 0;
 }
@@ -213,7 +155,7 @@ undefined TDisplayMgr::AssertUDisplayMgrLine471() {
 // FUNCTION: IMPERIALISM 0x004fec50
 undefined TDisplayMgr::AssertUDisplayMgrLine495() {
   if (g_nUiInvalidationAssertFlagLine495 == 0) {
-    DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0x1ef);
+    TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x1ef);
   }
   return 0;
 }
@@ -221,8 +163,7 @@ undefined TDisplayMgr::AssertUDisplayMgrLine495() {
 // FUNCTION: IMPERIALISM 0x004fec80
 undefined TDisplayMgr::DispatchDisplayManagerControlStringMessage() {
   CString message;
-  DisplayMgrInvoke::AssignStringSharedRefAndReturnThis(reinterpret_cast<TView*>(this), &message,
-                                                       &message);
+  AssignStringSharedRefAndReturnThis(&message, &message);
   reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
       ->RunControlStringProviderAndDispatchLocalizedMessage(&message);
   return 0;
@@ -235,7 +176,7 @@ undefined TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00() {
     activeDialog->InvokeSlot13C();
   }
   OrphanRetStub_004fed50(0);
-  DisplayMgrInvoke::NoOpCallback_00498ca0(&tileIcon10);
+  NoOpCallback_00498ca0(&tileIcon10);
   return 0;
 }
 
@@ -249,9 +190,9 @@ undefined TDisplayMgr::OrphanRetStub_004fed50(char param_1) {
 undefined TDisplayMgr::AssertUDisplayMgrLines614And616(char param_1) {
   if (dialogActiveFlag != 0) {
     if (param_1 != 0) {
-      DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0x266);
+      TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x266);
     } else {
-      DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0x268);
+      TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x268);
     }
   }
   return 0;
@@ -267,18 +208,15 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   undefined4 savedContext = 0;
   QuickDrawSurfaceGuard surfaceGuard;
   int clipDescriptor = reinterpret_cast<int>(surfaceGuard.surfaceWrapper);
-  DisplayMgrInvoke::ApplyHitRegionToClipState(clipDescriptor);
-  DisplayMgrInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  DisplayMgrInvoke::SetActiveQuickDrawSurfaceContext(
-      reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext), savedFlags);
-  DisplayMgrInvoke::ReturnConstantTrueQuickDrawFlag(
-      DisplayMgrInvoke::GetSurfaceObjectAtContextOffset24(
-          reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext)));
+  ApplyHitRegionToClipState(&clipDescriptor);
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext), savedFlags);
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext)));
 
   TControl* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0x28a);
+    TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x28a);
     return 0;
   }
 
@@ -294,13 +232,12 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
 
   SetGlobalQuickDrawOrigin(static_cast<short>(mainView->ownerOffsetX),
                            static_cast<short>(mainView->ownerOffsetY));
-  DisplayMgrInvoke::ApplyRectClipRegionToGlobalClipState(&clipRect);
+  ApplyRectClipRegionToGlobalClipState(&clipRect);
   mainView->ApplyRectSlot110(&queryBounds);
 
-  DisplayMgrInvoke::NoOpQuickDrawLifecycleHookB(DisplayMgrInvoke::GetSurfaceObjectAtContextOffset24(
-      reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext)));
-  DisplayMgrInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
-  DisplayMgrInvoke::InvokeSnapshotHitRegionToClipCache(clipDescriptor);
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext)));
+  SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  SnapshotHitRegionToClipCache(&clipDescriptor);
   clipSnapshotEvent = static_cast<short>(param_1);
   return 0;
 }
@@ -310,7 +247,7 @@ undefined TDisplayMgr::SetMapTileIconVariantTriplet(undefined1* param_1) {
   tileIcon10 = param_1[0];
   tileIcon11 = param_1[1];
   tileIcon12 = param_1[2];
-  DisplayMgrInvoke::NoOpCallback_00498ca0(&tileIcon10);
+  NoOpCallback_00498ca0(&tileIcon10);
   return 0;
 }
 

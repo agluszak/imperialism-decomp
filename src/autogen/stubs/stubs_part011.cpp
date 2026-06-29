@@ -2,6 +2,7 @@
 // Regenerate with: uv run python -m tools.stubgen
 
 #include "decomp_types.h"
+#include "game/mfc.h"
 
 // ghidra_name TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks
 // ghidra_proto undefined CopyCityDialogStateFromSourceAndCloneChildLinks()
@@ -982,17 +983,19 @@ undefined4 ReplaceClipStateRegionHandleFromRect(void)
 // ghidra_name ApplyHitRegionToClipState
 // ghidra_proto undefined ApplyHitRegionToClipState()
 // FUNCTION: IMPERIALISM 0x00495920
-undefined4 ApplyHitRegionToClipState(void)
+void ApplyHitRegionToClipState(int* param_1)
 {
-  return 0;
+  // This is a stub - the real implementation is in global_part005.cpp
+  (void)param_1;
 }
 
 // ghidra_name ApplyRectClipRegionToGlobalClipState
 // ghidra_proto undefined ApplyRectClipRegionToGlobalClipState()
 // FUNCTION: IMPERIALISM 0x00495a80
-undefined4 ApplyRectClipRegionToGlobalClipState(void)
+void ApplyRectClipRegionToGlobalClipState(RECT* param_1)
 {
-  return 0;
+  // This is a stub - the real implementation is in global_part005.cpp
+  (void)param_1;
 }
 
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00496420
@@ -1182,9 +1185,10 @@ undefined4 RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(v
 // ghidra_name NoOpCallback_00498ca0
 // ghidra_proto undefined NoOpCallback_00498ca0()
 // FUNCTION: IMPERIALISM 0x00498ca0
-undefined4 NoOpCallback_00498ca0(void)
+void NoOpCallback_00498ca0(void* param_1)
 {
-  return 0;
+  // This is a stub - the real implementation is in global_part005.cpp
+  (void)param_1;
 }
 
 // ghidra_name ShowDialogTemplateE0ModalAndReleaseCapture
@@ -1918,9 +1922,11 @@ undefined4 DestructTAmbitFileBasedDocumentAndMaybeFree_Impl(void)
 // ghidra_name AssignStringSharedRefAndReturnThis
 // ghidra_proto undefined AssignStringSharedRefAndReturnThis()
 // FUNCTION: IMPERIALISM 0x0049eb00
-undefined4 AssignStringSharedRefAndReturnThis(void)
+void AssignStringSharedRefAndReturnThis(CString* dest, CString* source)
 {
-  return 0;
+  // This is a stub - the real implementation is in global_part005.cpp
+  (void)dest;
+  (void)source;
 }
 
 // ghidra_name WrapperFor_ftol_At0049efd0
