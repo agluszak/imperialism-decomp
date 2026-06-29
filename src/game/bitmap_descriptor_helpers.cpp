@@ -8,7 +8,7 @@
 #include "game/global_data_tables.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/quickdraw_globals.h"
+#include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
 
 extern "C" TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;

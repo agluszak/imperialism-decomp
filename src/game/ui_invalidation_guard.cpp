@@ -43,3 +43,10 @@ void TemporarilyClearAndRestoreUiInvalidationFlag(const char* sourceFile, int li
   (void)line;
   TemporarilyClearAndRestoreUiInvalidationFlag();
 }
+
+// Nil-pointer assert helper for USmallViews
+void FailNilPointerInUSmallViews(int line) {
+  const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
+  GAME_FAIL_NIL_POINTER();
+  TemporarilyClearAndRestoreUiInvalidationFlag(kUSmallViewsCppPath, line);
+}

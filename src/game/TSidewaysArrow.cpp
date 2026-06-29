@@ -1,7 +1,9 @@
 #include "game/TSidewaysArrow.h"
 
 #include "decomp_types.h"
-#include "game/trade_quickdraw.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_widget_thunks.h"
 
 extern "C" char g_pClassDescTSidewaysArrow = 0;

@@ -11,7 +11,8 @@
 #include "game/TProductionCluster.h"
 
 #include "game/GameAssert.h"
-#include "game/trade_quickdraw.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_widget_thunks.h"
 
 #include <new>

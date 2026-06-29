@@ -1,7 +1,9 @@
 #include "game/TArmyPlacard.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/CString.h"
-#include "game/trade_quickdraw.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TTechMgr.h"
 #include "game/TSpaceCommand.h"
@@ -65,12 +67,12 @@ void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
     short textY =
         static_cast<short>(*reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x38) - 2);
 
-    SetQuickDrawTextOrigin(textX, textY);
+    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(textX, textY);
     reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
         sharedStringRefPtr);
 
     reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
-    SetQuickDrawTextOrigin(static_cast<short>(textX - 1), static_cast<short>(textY - 1));
+    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(static_cast<short>(textX - 1), static_cast<short>(textY - 1));
     reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
         sharedStringRefPtr);
   }

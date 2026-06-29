@@ -5,7 +5,11 @@
 #include "game/TUberCluster.h"
 #include "game/TView.h"
 #include "game/TGreatPower.h"
-#include "game/trade_quickdraw.h"
+#include "game/TCity.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 #include "game/UiRuntimeContext.h"
 #include "game/mfc.h"
 #include "game/quickdraw_guards.h"
@@ -21,12 +25,12 @@ CRuntimeClass g_pClassDescTShipyardCluster = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 
-static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
+static __inline TCity* GetNationCityStateBySlot(short slotId) {
   TGreatPower* nationState = GetNationStateBySlot(slotId);
   if (nationState == 0) {
     return 0;
   }
-  return GetNationTradeCityState(nationState);
+  return nationState->GetCityState();
 }
 
 
@@ -57,8 +61,7 @@ TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0),
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::NoOpUiLifecycleHook(int styleSeed) {
   (void)styleSeed;
-  NationCityTradeState* cityState =
-      GetNationCityStateBySlot(g_pUiRuntimeContext->GetActiveNationId());
+  TCity* cityState = GetNationCityStateBySlot(g_pUiRuntimeContext->GetActiveNationId());
   field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
   field_8c = 999;
   this->InitializeTradeMoveAndBarControls();

@@ -5,10 +5,13 @@
 #include "game/TView.h"
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
-#include "game/trade_quickdraw.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/UiRuntimeContext.h"
 #include "game/mfc.h"
 #include "game/quickdraw_guards.h"
+#include "game/quickdraw_rendering.h"
 #include "game/GameAssert.h"
 
 #include <new>
@@ -74,8 +77,7 @@ void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {
   short tagIndex = 0;
   short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
-  NationCityTradeState* cityState =
-      activeNationState == 0 ? 0 : GetNationTradeCityState(activeNationState);
+  TCity* cityState = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
   int mappedSummaryTag = GetTradeSummarySelectionTagByIndex(0);
   while (mappedSummaryTag != this->controlTag) {
@@ -137,17 +139,15 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
     FailNilPointerInUSmallViews(0xb49);
   }
 
-  TradeMoveControlState* barLayout = reinterpret_cast<TradeMoveControlState*>(barControl);
-  TAmtBar* barAmount = reinterpret_cast<TAmtBar*>(barControl);
   float barScale = 9999.0f;
-  if (barLayout->barStepsRaw != 0) {
-    barScale = (float)barLayout->barRangeRaw / (float)barLayout->barStepsRaw;
+  if (barControl->field34 != 0) {
+    barScale = (float)barControl->field38 / (float)barControl->field34;
   }
 
   if (ReadControlValueFieldPlus4(selectedControl) == this->selectedMetricValue) {
-    barAmount->auxValueB = 0x34;
+    barControl->auxValueB = 0x34;
   } else {
-    barAmount->auxValueB = 0x3a;
+    barControl->auxValueB = 0x3a;
   }
 
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);

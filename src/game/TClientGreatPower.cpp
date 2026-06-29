@@ -1,4 +1,5 @@
 #include "game/TClientGreatPower.h"
+#include "game/global_data_tables.h"
 #include "game/TUiRuntimeContext.h"
 #include "game/UiRuntimeContext.h"
 #include "game/turn_event_packets.h"

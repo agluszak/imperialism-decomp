@@ -1,7 +1,8 @@
 #include "game/TPlacard.h"
 #include "game/mfc.h"
 #include "game/TControl.h"
-#include "game/trade_quickdraw.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_widget_thunks.h"
 // FUNCTION: IMPERIALISM 0x0058b960
 void* __cdecl CreateTPlacardInstance(void) {
@@ -56,11 +57,11 @@ void TPlacard::ApplyRectSlot110(RECT* rectBuffer) {
   reinterpret_cast<void(__cdecl*)(int, int)>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)(0,
                                                                                                 10);
   if (glyph90 < 10) {
-    SetQuickDrawTextOrigin(field34 / 2 - 2, 0);
+    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(field34 / 2 - 2, 0);
   } else if (glyph90 < 100) {
-    SetQuickDrawTextOrigin(field34 / 2 - 6, 0);
+    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(field34 / 2 - 6, 0);
   } else {
-    SetQuickDrawTextOrigin(field34 / 2 - 10, 0);
+    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(field34 / 2 - 10, 0);
   }
   RefreshControl();
 }

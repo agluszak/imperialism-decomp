@@ -6,7 +6,8 @@
 
 #include "game/TAmtBar.h"
 #include "game/TIndustryAmtBar.h"
-#include "game/trade_quickdraw.h"
+#include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -18,13 +19,15 @@
 #include "game/UiRuntimeContext.h"
 #include "game/ui_widget_thunks.h"
 #include "game/quickdraw_guards.h"
+#include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
 #include <new>
 
 #include "game/mfc.h"
 
 
-const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
-const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
+extern int g_nOverlayClipCacheParamX;
+extern int g_nOverlayClipCacheParamY;
 
 // FUNCTION: IMPERIALISM 0x00589110
 TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
@@ -42,9 +45,8 @@ TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}
 // FUNCTION: IMPERIALISM 0x00589260
 void TIndustryAmtBar::NoOpUiLifecycleHook(int arg) {
   // ORIG_CALLCONV: __thiscall
-  TGreatPower* nationState = reinterpret_cast<TGreatPower**>(
-      kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState = nationState != 0 ? GetNationTradeCityState(nationState) : 0;
+  TGreatPower* nationState = GetActiveNationState();
+  TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
@@ -73,32 +75,32 @@ void TIndustryAmtBar::NoOpUiLifecycleHook(int arg) {
 void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  ApplyHitRegionToClipState(reinterpret_cast<int*>(surface.surfaceWrapper));
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(reinterpret_cast<int*>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
     if (control->IsActionable() != 0) {
       RECT boundsRect = {0, 0, 0, 0};
       control->QueryBounds(&boundsRect);
-      ApplyRectClipRegion(&boundsRect);
+      reinterpret_cast<void(__cdecl*)(RECT*)>(ApplyRectClipRegionToGlobalClipState)(&boundsRect);
       control->QueryBounds(&boundsRect);
       control->TranslatePointToParentChain4E();
 
       short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
       if (styleValueAt60 > 0) {
-        ApplyQuickDrawStyleFromRuntime(0);
-        SetQuickDrawStylePair(1, 4);
-        SetQuickDrawTextOrigin(0, 1);
-        DrawCenteredGuideLine((short)(styleValueAt60 - 1), 1);
+        g_pUiRuntimeContext->ApplyLegendSplitSlot34(0);
+        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 4);
+        reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(0, 1);
+        reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)((short)(styleValueAt60 - 1), 1);
         ResetQuickDrawStrokeState();
       }
 
       short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
       short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      SetQuickDrawTextOrigin(overlayOffsetX, 0);
+      reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();
-      DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
+      reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)(overlayOffsetX, (short)(overlayOffsetY - 2));
 
       reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
       TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(control)->OwnerPanel());
@@ -115,13 +117,13 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, i
   (void)unusedEdx;
   QuickDrawSurfaceGuard surface;
   *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  ApplyHitRegionToClipState(reinterpret_cast<int*>(surface.surfaceWrapper));
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(reinterpret_cast<int*>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
     if (control->IsActionable() != 0) {
-      int cachedX = ReadIntAt(kAddrOverlayClipCacheParamX);
-      int cachedY = ReadIntAt(kAddrOverlayClipCacheParamY);
+      int cachedX = g_nOverlayClipCacheParamX;
+      int cachedY = g_nOverlayClipCacheParamY;
       int invalidRect[4] = {cachedX, cachedY, 0, 0};
       control->TranslatePointToParentChain4E();
       invalidRect[2] =

@@ -6,6 +6,14 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
+class TPopulationMetricBucket {
+public:
+  void* vftable;
+  short valueAt4;
+  short valueAt6;
+  short valueAt8;
+};
+
 // TODO(manifest): describe TPopulationMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TPopulationMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f9b0
 class TPopulationMgr : public TObject {
@@ -40,7 +48,12 @@ public:
   }
   short* GetSummaryArraySlot50();
 
-  short stockLevel1c; // +0x1c — low-stock flag derivation in TCity slot 0x0b
+  unsigned char pad04[0x10 - 0x04];
+  TPopulationMetricBucket* baselineSlots10;  // +0x10
+  TPopulationMetricBucket* productionSlots14; // +0x14
+  TPopulationMetricBucket* pendingDeltaSlots18; // +0x18
+  short stockLevel1c; // +0x1c — low-stock flag / trade production cap
+  short extraAt1e;    // +0x1e
 
   TPopulationMgr();
 };

@@ -12,6 +12,11 @@
 #include "game/TMacViewMgr.h"
 #include "game/TMinor.h"
 
+TGreatPower* GetNationStateBySlot(short slotId);
+short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
+TGreatPower* GetActiveNationState(void);
+int GetTradeSummarySelectionTagByIndex(short index);
+
 struct NationState;
 class TDiplomacyMgr;
 class TNavyMgr;
@@ -24,6 +29,7 @@ class THelpMgr;
 class TAnimator;
 
 class TView;
+class TViewMgr;
 class TControl;
 class TOcean;
 class TZone;
@@ -39,6 +45,24 @@ class TSoundPlayer;
 extern "C" {
 class TApplication;
 class ImperialismApp;
+
+extern int g_nOverlayClipCacheParamX;
+extern int g_nOverlayClipCacheParamY;
+extern int g_Reset_Quick_Draw_Value_0064B8F0;
+extern int g_Reset_Quick_Draw_Value_0064B8F4;
+extern short g_Reset_Quick_Draw_WordState_0064B8F8;
+extern short g_Reset_Quick_Draw_State_006A1D10;
+extern int g_nQuickDrawStrokeStylePrimary;
+extern int g_nQuickDrawStrokeStyleSecondary;
+extern int g_bQuickDrawStrokePairDirty;
+extern int g_pGlobalClipRegionHandleObject;
+extern int g_Quick_Draw_Color_State_006950FC;
+extern int g_uQuickDrawCurrentColor;
+extern int g_uQuickDrawStrokeColor;
+extern int g_nQuickDrawOriginX;
+extern int g_nQuickDrawOriginY;
+extern int g_pTradeSummarySelectionMap[32];
+extern const int kTradeSellPropagationTags[17];
 
 // 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
 // (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
@@ -69,6 +93,7 @@ extern void* DAT_006a1354;
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 extern TDisplayMgr* g_pDisplayMgr;
 extern TMacViewMgr* g_pStrategicMapViewSystem;
+extern TViewMgr* g_pUiRuntimeContext;
 extern TAssetMgr* g_pUiViewManager;
 extern TLanguageMgr* g_pLanguageMgr;
 extern TAnimator* g_pUiAnimator;

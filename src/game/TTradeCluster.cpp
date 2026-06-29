@@ -21,7 +21,10 @@ extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 #include "game/TAmtBar.h"
 #include "game/TPicture.h"
 #include "game/TGreatPower.h"
-#include "game/trade_quickdraw.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
 #include "game/TEvent.h"
 
@@ -67,8 +70,6 @@ const int kAssertLineTradeSellDecSell = 0x82f;
 const int kAssertLineTradeSellMoveSell = 0x85a;
 const int kAssertLineTradeSellMoveBar = 0x874;
 const int kAssertLineTradeSellZeroBar = 0x896;
-
-extern const int kTradeSellPropagationTags[17];
 
 const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 
@@ -216,7 +217,7 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
   }
   case 0x67:
     g_pUiRuntimeContext->AddPendingTurnOverlayCode(-1);
-    if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 3) {
+    if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() == 3) {
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
@@ -231,7 +232,7 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
     break;
   case 0x68:
     g_pUiRuntimeContext->AddPendingTurnOverlayCode(1);
-    if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 4) {
+    if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() == 4) {
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
@@ -298,7 +299,7 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 // whether the current Sell control quantity is at its minimum.
 // FUNCTION: IMPERIALISM 0x00587900
 int TTradeCluster::IsTradeControlAtMinimum() {
-  if (QueryUiScreenModeRaw(g_pUiRuntimeContext) > 3) {
+  if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() > 3) {
     return 0;
   }
   TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
@@ -370,7 +371,7 @@ void TTradeCluster::DoControlAction() {
   layoutCapture[1] = 0x14;
   bidControl->CaptureLayout(layoutCapture, 1);
 
-  if (QueryUiScreenModeRaw(g_pUiRuntimeContext) < 4) {
+  if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() < 4) {
     bidControl->SetEnabled(1, 1);
     if (controlTag == kTradeRowStateTag_67643020) {
       bidControl->SetBitmap(kTradeBitmapBidSecondaryStateB, 0);

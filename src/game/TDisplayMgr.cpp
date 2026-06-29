@@ -15,10 +15,9 @@
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
-#include "game/quickdraw_globals.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_control_tags.h"
-#include "game/trade_quickdraw.h"
 
 extern "C" {
 extern CRuntimeClass classRuntimeClass;
@@ -140,7 +139,7 @@ undefined TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0() {
     activeDialog->RefreshCityProductionViewStateFromContext(0);
   }
   OrphanRetStub_004fed50(1);
-  NoOpCallback_00498ca0(&tileIcon14);
+  reinterpret_cast<void(__cdecl*)(void*)>(NoOpCallback_00498ca0)(&tileIcon14);
   return 0;
 }
 
@@ -163,7 +162,7 @@ undefined TDisplayMgr::AssertUDisplayMgrLine495() {
 // FUNCTION: IMPERIALISM 0x004fec80
 undefined TDisplayMgr::DispatchDisplayManagerControlStringMessage() {
   CString message;
-  AssignStringSharedRefAndReturnThis(&message, &message);
+  reinterpret_cast<void(__cdecl*)(CString*, CString*)>(AssignStringSharedRefAndReturnThis)(&message, &message);
   reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
       ->RunControlStringProviderAndDispatchLocalizedMessage(&message);
   return 0;
@@ -176,7 +175,7 @@ undefined TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00() {
     activeDialog->InvokeSlot13C();
   }
   OrphanRetStub_004fed50(0);
-  NoOpCallback_00498ca0(&tileIcon10);
+  reinterpret_cast<void(__cdecl*)(void*)>(NoOpCallback_00498ca0)(&tileIcon10);
   return 0;
 }
 
@@ -208,7 +207,7 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   undefined4 savedContext = 0;
   QuickDrawSurfaceGuard surfaceGuard;
   int clipDescriptor = reinterpret_cast<int>(surfaceGuard.surfaceWrapper);
-  ApplyHitRegionToClipState(&clipDescriptor);
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(&clipDescriptor);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext), savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext)));
@@ -232,7 +231,7 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
 
   SetGlobalQuickDrawOrigin(static_cast<short>(mainView->ownerOffsetX),
                            static_cast<short>(mainView->ownerOffsetY));
-  ApplyRectClipRegionToGlobalClipState(&clipRect);
+  reinterpret_cast<void(__cdecl*)(RECT*)>(ApplyRectClipRegionToGlobalClipState)(&clipRect);
   mainView->ApplyRectSlot110(&queryBounds);
 
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext)));
@@ -247,7 +246,7 @@ undefined TDisplayMgr::SetMapTileIconVariantTriplet(undefined1* param_1) {
   tileIcon10 = param_1[0];
   tileIcon11 = param_1[1];
   tileIcon12 = param_1[2];
-  NoOpCallback_00498ca0(&tileIcon10);
+  reinterpret_cast<void(__cdecl*)(void*)>(NoOpCallback_00498ca0)(&tileIcon10);
   return 0;
 }
 

@@ -1,10 +1,11 @@
 #include "game/TMapDialog.h"
 #include "game/QuickDrawSurfaceGuard.h"
 #include "game/TGlobalMapState.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/TView.h"
 #include "game/global_data_tables.h"
-#include "game/quickdraw_globals.h"
-#include "game/trade_quickdraw.h"
+#include "game/quickdraw_rendering.h"
+#include "game/ui_invalidation_guard.h"
 
 extern "C" long _ftol(void);
 

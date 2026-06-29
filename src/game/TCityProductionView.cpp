@@ -8,7 +8,7 @@
 #include "game/TMinor.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/quickdraw_globals.h"
+#include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
@@ -17,11 +17,9 @@
 #pragma optimize("y", on)
 #endif
 
-void ApplyHitRegionToClipState(int* clipDescriptor);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
 undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);
-void __cdecl SnapshotHitRegionToClipCache(int* clipDescriptor);
 
 extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {0};
@@ -188,7 +186,7 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip() 
   clipRect.bottom = boundsRecord.bottom;
 
   int nullClipDescriptor = 0;
-  ApplyHitRegionToClipState(&nullClipDescriptor);
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(&nullClipDescriptor);
 
   int* previousSurface = 0;
   int contextFlags = 0;

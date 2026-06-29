@@ -1,4 +1,5 @@
 #include "game/TCapacityOrder.h"
+#include "game/global_data_tables.h"
 
 #include "game/mfc.h"
 #include "game/TGreatPower.h"

@@ -1,40 +1,14 @@
-#include "game/quickdraw_globals.h"
+#include "game/quickdraw_rendering.h"
 
 #include "game/bitmap_descriptor_helpers.h"
+#include "game/global_data_tables.h"
+#include "game/TQuickDrawSurfaceContext.h"
 
 extern void* g_pScopedMapQuickDrawDcHandleObject;
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-
-// GLOBAL: IMPERIALISM 0x64b8f0
-int g_Reset_Quick_Draw_Value_0064B8F0 = 0;
-// GLOBAL: IMPERIALISM 0x64b8f4
-int g_Reset_Quick_Draw_Value_0064B8F4 = 0;
-// GLOBAL: IMPERIALISM 0x64b8f8
-short g_Reset_Quick_Draw_WordState_0064B8F8 = 0;
-// GLOBAL: IMPERIALISM 0x6a1d10
-short g_Reset_Quick_Draw_State_006A1D10 = 0;
-
-// GLOBAL: IMPERIALISM 0x6a1d08
-int g_nQuickDrawStrokeStylePrimary = 0;
-// GLOBAL: IMPERIALISM 0x6a1d0c
-int g_nQuickDrawStrokeStyleSecondary = 0;
-// GLOBAL: IMPERIALISM 0x6a1db4
-int g_bQuickDrawStrokePairDirty = 0;
-// GLOBAL: IMPERIALISM 0x6a1da8
-int g_pGlobalClipRegionHandleObject = 0;
-// GLOBAL: IMPERIALISM 0x6950fc
-int g_Quick_Draw_Color_State_006950FC = 0;
-// GLOBAL: IMPERIALISM 0x695100
-int g_uQuickDrawStrokeColor = 0;
-// GLOBAL: IMPERIALISM 0x6a1d52
-int g_uQuickDrawCurrentColor = 0;
-// GLOBAL: IMPERIALISM 0x6a1d80
-int g_nQuickDrawOriginX = 0;
-// GLOBAL: IMPERIALISM 0x6a1d84
-int g_nQuickDrawOriginY = 0;
 
 // FUNCTION: IMPERIALISM 0x00495000
 void SetQuickDrawFillColor(int fillColor) {

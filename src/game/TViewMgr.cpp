@@ -4,7 +4,7 @@
 #include "game/TMacViewMgr.h"   // g_pStrategicMapViewSystem
 #include "game/TIncludeView.h"  // turn-event UI entry packet ('Incl')
 #include "game/CWMgrIterator.h" // window-registry traversal for the full (code-0) refresh
-#include "game/quickdraw_globals.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
+#include "game/quickdraw_rendering.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
 #include "game/TToolBarCluster.h" // pulls TView/TControl/TCluster chain for main-view dispatch
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
@@ -39,9 +39,6 @@ undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
 undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 
 #include <new>
-
-// GLOBAL: IMPERIALISM 0x6a21bc
-TViewMgr* g_pUiRuntimeContext = 0;
 
 // TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pLocalizationTable / turn-state
 // manager). Included via global_data_tables.h.
@@ -1266,4 +1263,3 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
     delete[] buffer;
   }
 }
-

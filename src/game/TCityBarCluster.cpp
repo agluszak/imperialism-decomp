@@ -2,7 +2,7 @@
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
-#include "game/trade_quickdraw.h"
+#include "game/quickdraw_rendering.h"
 #include "game/TGreatPower.h"
 #include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
@@ -17,6 +17,10 @@
 extern "C" {
 char g_vtblTCityBarCluster = 0;
 }
+
+const int kAssertLineTradeSummaryRtnu = 0x67d;
+const int kAssertLineTradeSummaryIart = 0x682;
+const int kAssertLineTradeSummaryProf = 0x687;
 
 undefined4 thunk_DestructTShipAndFreeIfOwned(void);
 

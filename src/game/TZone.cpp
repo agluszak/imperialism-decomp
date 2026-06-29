@@ -1,4 +1,5 @@
 #include "game/TZone.h"
+#include "game/global_data_tables.h"
 
 #include <new>
 

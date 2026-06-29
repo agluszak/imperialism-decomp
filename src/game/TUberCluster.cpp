@@ -2,7 +2,9 @@
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
-#include "game/trade_quickdraw.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 #include "game/TGreatPower.h"
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
@@ -13,8 +15,7 @@
 #include "game/mfc.h"
 
 
-extern void FailNilPointerInUSmallViews(int line);
-extern const int kAssertLineMoveBarInitNil;
+const int kAssertLineMoveBarInitNil = 0x725;
 undefined4 thunk_BuildUiTextStyleDescriptor(void);
 #include "game/TAmtBar.h"
 #include "game/ui_widget_thunks.h"

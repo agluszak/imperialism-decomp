@@ -1,4 +1,5 @@
 #include "game/TProxyGreatPower.h"
+#include "game/global_data_tables.h"
 #include "game/TTurnEventPacket.h"
 #include "game/TUiRuntimeContext.h"
 #include "game/UiRuntimeContext.h"

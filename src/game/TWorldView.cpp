@@ -4,15 +4,13 @@
 #include "game/TGlobalMapState.h"
 #include "game/TSelectedCivilianOrderState.h"
 #include "game/global_data_tables.h"
-#include "game/quickdraw_globals.h"
-#include "game/trade_quickdraw.h"
+#include "game/quickdraw_rendering.h"
 
 #include <new>
 
 undefined4 thunk_GetMapActionContextByTileIndex(void);
 undefined4 thunk_InvalidateMapRegionForOrderEntry(void);
 undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void);
-void ApplyHitRegionToClipState(int* clipDescriptor);
 int IntersectRectWrapper(RECT* src1, RECT* src2, RECT* dst);
 undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void);
 undefined4 ReplaceClipStateRegionHandleFromRect(void);
@@ -166,7 +164,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       reinterpret_cast<int>(&outY), packedBand);
 
   int nullClipDescriptor = 0;
-  ApplyHitRegionToClipState(&nullClipDescriptor);
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(&nullClipDescriptor);
   SetGlobalQuickDrawOrigin(static_cast<short>(field2c), static_cast<short>(field30));
 
   short rectWidth = field76;

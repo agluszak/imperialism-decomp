@@ -6,8 +6,11 @@
 
 #include "game/TAmtBar.h"
 #include "game/TShipAmtBar.h"
-#include "game/trade_quickdraw.h"
+#include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 #include "game/TradeCommodityMetricRecord.h"
+#include "game/TCity.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
 #include "game/ui_widget_thunks.h"
@@ -38,12 +41,10 @@ TShipAmtBar::TShipAmtBar() : TIndustryAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058abf0
 void TShipAmtBar::NoOpUiLifecycleHook(int arg) {
-  TGreatPower* nationState = reinterpret_cast<TGreatPower**>(
-      kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState = nationState != 0 ? GetNationTradeCityState(nationState) : 0;
+  TGreatPower* nationState = GetActiveNationState();
+  TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
   selectedMetricRecord = cityState->specialCommodityRecordAt190;
-  short productionCap =
-      *(short*)(reinterpret_cast<char*>(cityState->scenarioTradeDescriptor) + 0x1c);
+  short productionCap = cityState->productionSummary1d8->stockLevel1c;
   stepOrCurrentValue = (short)this->field34;
   auxValueA = productionCap;
   auxValueB = 0x3a;
@@ -55,33 +56,33 @@ void TShipAmtBar::NoOpUiLifecycleHook(int arg) {
 void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  ApplyHitRegionToClipState(reinterpret_cast<int*>(surface.surfaceWrapper));
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(reinterpret_cast<int*>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
     if (control->IsActionable() != 0) {
       RECT boundsRect = {0, 0, 0, 0};
       control->QueryBounds(&boundsRect);
-      ApplyRectClipRegion(&boundsRect);
+      reinterpret_cast<void(__cdecl*)(RECT*)>(ApplyRectClipRegionToGlobalClipState)(&boundsRect);
       control->QueryBounds(&boundsRect);
       control->TranslatePointToParentChain4E();
 
       short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
       if (styleValueAt60 > 0) {
         short styleValueAt66 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x66);
-        SetQuickDrawTextOrigin(0, 1);
-        ApplyQuickDrawStyleFromRuntime(styleValueAt66);
-        SetQuickDrawStylePair(1, 4);
-        DrawCenteredGuideLine((short)(styleValueAt60 - 1), 1);
+        reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(0, 1);
+        g_pUiRuntimeContext->ApplyLegendSplitSlot34(styleValueAt66);
+        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 4);
+        reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)((short)(styleValueAt60 - 1), 1);
         ResetQuickDrawStrokeState();
       }
 
       short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
       short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      SetQuickDrawTextOrigin(overlayOffsetX, 0);
+      reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();
-      DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
+      reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)(overlayOffsetX, (short)(overlayOffsetY - 2));
 
       reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
       TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(control)->OwnerPanel());

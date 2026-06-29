@@ -15,6 +15,7 @@ class TCursorControlPanel;
 
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
+#include "game/UiRuntimeContext.h"
 #include "game/startup_helpers.h"
 #include "game/TNetMgr.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
@@ -39,6 +40,8 @@ TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0}
 TDisplayMgr* g_pDisplayMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a21a8
 TMacViewMgr* g_pStrategicMapViewSystem = 0;
+// GLOBAL: IMPERIALISM 0x006a21bc
+TViewMgr* g_pUiRuntimeContext = 0;
 // GLOBAL: IMPERIALISM 0x006a2148
 TAssetMgr* g_pUiViewManager = 0;
 // GLOBAL: IMPERIALISM 0x006a327c
@@ -150,6 +153,50 @@ int g_McAppUiFlag_006A1B1C = 0;
 // GLOBAL: IMPERIALISM 0x006a1b0c
 int g_McAppUiFlag_006A1B0C = 0;
 
+// GLOBAL: IMPERIALISM 0x0064b8f0
+int g_Reset_Quick_Draw_Value_0064B8F0 = 0;
+// GLOBAL: IMPERIALISM 0x0064b8f4
+int g_Reset_Quick_Draw_Value_0064B8F4 = 0;
+// GLOBAL: IMPERIALISM 0x0064b8f8
+short g_Reset_Quick_Draw_WordState_0064B8F8 = 0;
+// GLOBAL: IMPERIALISM 0x006a1d10
+short g_Reset_Quick_Draw_State_006A1D10 = 0;
+// GLOBAL: IMPERIALISM 0x006a1d08
+int g_nQuickDrawStrokeStylePrimary = 0;
+// GLOBAL: IMPERIALISM 0x006a1d0c
+int g_nQuickDrawStrokeStyleSecondary = 0;
+// GLOBAL: IMPERIALISM 0x006a1db4
+int g_bQuickDrawStrokePairDirty = 0;
+// GLOBAL: IMPERIALISM 0x006a1da8
+int g_pGlobalClipRegionHandleObject = 0;
+// GLOBAL: IMPERIALISM 0x006950fc
+int g_Quick_Draw_Color_State_006950FC = 0;
+// GLOBAL: IMPERIALISM 0x00695100
+int g_uQuickDrawStrokeColor = 0;
+// GLOBAL: IMPERIALISM 0x006a1d52
+int g_uQuickDrawCurrentColor = 0;
+// GLOBAL: IMPERIALISM 0x006a1d80
+int g_nQuickDrawOriginX = 0;
+// GLOBAL: IMPERIALISM 0x006a1d84
+int g_nQuickDrawOriginY = 0;
+
+// Overlay clip cache parameters
+// GLOBAL: IMPERIALISM 0x006a4450
+int g_nOverlayClipCacheParamX = 0;
+// GLOBAL: IMPERIALISM 0x006a4454
+int g_nOverlayClipCacheParamY = 0;
+
+// Trade summary selection map
+// GLOBAL: IMPERIALISM 0x006960e0
+int g_pTradeSummarySelectionMap[32] = {0};
+
+// Trade sell propagation tags
+const int kTradeSellPropagationTags[17] = {
+    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
+    0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
+    0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
+};
+
 } // extern "C"
 
 // Diplomacy helper functions (formerly in diplomacy_globals.cpp).
@@ -159,6 +206,14 @@ TGreatPower* GetNationStateBySlot(short slotId) {
 
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot) {
   return nationState->GetDiplomacyExternalStateByTarget(metricSlot);
+}
+
+TGreatPower* GetActiveNationState(void) {
+  return g_apNationStates[g_pUiRuntimeContext->GetActiveNationId()];
+}
+
+int GetTradeSummarySelectionTagByIndex(short index) {
+  return g_pTradeSummarySelectionMap[index];
 }
 
 // Active root of the in-progress UI resource tree and the entry currently being registered.

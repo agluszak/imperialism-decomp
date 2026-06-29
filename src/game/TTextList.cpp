@@ -1,9 +1,11 @@
 #include "game/TTextList.h"
+#include "game/global_data_tables.h"
 #include "game/CString.h"
 #include "game/TControl.h"
 #include "game/TTextList_Virtuals.h"
 #include "game/UiRuntimeContext.h"
-#include "game/trade_quickdraw.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
 #include "game/mfc.h"
 
@@ -78,12 +80,12 @@ void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
       int* tempStringRef = reinterpret_cast<int*>(&tempString);
 
       reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(styleFlags2);
-      SetQuickDrawTextOrigin(static_cast<short>(textX + 1), static_cast<short>(currentY + 12));
+      reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(static_cast<short>(textX + 1), static_cast<short>(currentY + 12));
       reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
           tempStringRef);
 
       reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(styleFlags1);
-      SetQuickDrawTextOrigin(textX, static_cast<short>(currentY + 11));
+      reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(textX, static_cast<short>(currentY + 11));
       reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
           tempStringRef);
 

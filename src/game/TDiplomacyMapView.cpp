@@ -2,11 +2,12 @@
 
 #include "decomp_types.h"
 #include "game/TDiplomacyMapView.h"
+#include "game/global_data_tables.h"
 #include "game/TView.h"
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/quickdraw_globals.h"
+#include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"

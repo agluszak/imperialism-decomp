@@ -48,6 +48,8 @@ public:
   virtual void UiRuntimeSlot5C();                                                  // 0x5c
   virtual void UiRuntimeSlot60();                                                  // 0x60
   virtual void UiRuntimeSlot64();                                                  // 0x64
+
+  // UI runtime helper functions
   virtual void AddPendingTurnOverlayCode(int modeValue);                           // 0x68
   virtual void UiRuntimeSlot6C();                                                    // 0x6c
   virtual void UiRuntimeSlot70();                                                    // 0x70
@@ -127,7 +129,6 @@ public:
   TViewMgr();
 };
 
-extern TViewMgr* g_pUiRuntimeContext;
 extern TCursorControlPanel* g_pCursorControlPanel;
 
 ASSERT_SIZE(TViewMgr, 0xfc);

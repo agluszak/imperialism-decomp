@@ -52,3 +52,24 @@ const unsigned int kTagArmyModeGarrison = 0x67617272; // 'garr'
 const unsigned int kTagArmyModeDefend = 0x64666E64; // 'dfnd'
 const unsigned int kTagArmyModeLater = 0x6C617472; // 'latr'
 const unsigned int kTagArmyModeDone = 0x646F6E65; // 'done'
+
+// Trade screen control tags
+const unsigned int kControlTagMove = 0x6d6f7665; // 'move'
+const unsigned int kControlTagSell = 0x53656c6c; // 'Sell'
+const unsigned int kControlTagAvai = 0x61766169; // 'Avai'
+const unsigned int kControlTagCard = 0x63617264; // 'Card'
+const unsigned int kControlTagOffr = 0x6f666672; // 'Offr'
+const unsigned int kControlTagGree = 0x67726565; // 'Gree'
+const unsigned int kControlTagLeft = 0x6c656674; // 'left'
+const unsigned int kControlTagRght = 0x72676874; // 'rght'
+
+// Trade summary tags
+const unsigned int kSummaryTagFood = 0x666f6f64; // 'food'
+const unsigned int kSummaryTagPopu = 0x706f7075; // 'Popu'
+const unsigned int kSummaryTagProf = 0x70726f66; // 'Prof'
+const unsigned int kSummaryTagPowe = 0x706f7765; // 'Powe'
+const unsigned int kSummaryTagRail = 0x7261696c; // 'Rail'
+const unsigned int kSummaryTagIart = 0x74726169; // 'Iart'
+
+// Trade control tags
+const unsigned int kControlTagBar = 0x62617220; // 'bar '

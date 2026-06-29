@@ -2,13 +2,17 @@
 #include "game/TIndustryCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
-#include "game/trade_quickdraw.h"
+#include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/TradeCommodityMetricRecord.h"
+#include "game/TCity.h"
 #include "game/TGreatPower.h"
 #include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
 #include <new>
 
 #include "game/TRailCluster.h"
@@ -78,34 +82,33 @@ void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {
   short recordIndex = static_cast<short>(styleSeed);
   short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
-  NationCityTradeState* cityState =
-      activeNationState == 0 ? 0 : GetNationTradeCityState(activeNationState);
+  TCity* cityState = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
   unsigned int summaryTag = (unsigned int)this->controlTag;
-  int scenarioDescriptor = *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + 0x1d8);
+  TPopulationMgr* scenarioDescriptor = cityState->productionSummary1d8;
   if (summaryTag < 0x706f7076) {
     if (summaryTag == kSummaryTagPopu) {
       recordIndex = 0x3c;
       this->selectedMetricStep = 1;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 2) +
-                                  (short)ReadIntAt(scenarioDescriptor + 0x24) -
-                                  (short)ReadIntAt(scenarioDescriptor + 0x10);
+                                  scenarioDescriptor->productionSlots14->valueAt8 -
+                                  scenarioDescriptor->productionSlots14->valueAt4;
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagProf) {
       recordIndex = 0x3e;
       this->selectedMetricStep = 0;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 4) +
-                                  (short)ReadIntAt(scenarioDescriptor + 0x30) -
-                                  (short)ReadIntAt(scenarioDescriptor + 0x1c);
+                                  scenarioDescriptor->extraAt1e -
+                                  scenarioDescriptor->stockLevel1c;
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagFood) {
       recordIndex = 0x38;
       this->selectedMetricStep = 1;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 0) +
-                                  (short)ReadIntAt(scenarioDescriptor + 0x18) -
-                                  (short)ReadIntAt(scenarioDescriptor + 4);
+                                  scenarioDescriptor->productionSlots14->valueAt6 -
+                                  scenarioDescriptor->productionSlots14->valueAt4;
       goto LABEL_12;
     }
   } else {
@@ -113,24 +116,24 @@ void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {
       recordIndex = 0x3f;
       this->selectedMetricStep = 0;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 5) +
-                                  (short)ReadIntAt(scenarioDescriptor + 0x34) -
-                                  (short)ReadIntAt(scenarioDescriptor + 0x20);
+                                  *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x34) -
+                                  *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x20);
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagRail) {
       recordIndex = 0x39;
       this->selectedMetricStep = 0;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 6) +
-                                  (short)ReadIntAt(scenarioDescriptor + 0x2c) -
-                                  (short)ReadIntAt(scenarioDescriptor + 0x14);
+                                  *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x2c) -
+                                  *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x14);
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagIart) {
       recordIndex = 0x3a;
       this->selectedMetricStep = 0;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 1) +
-                                  (short)ReadIntAt(scenarioDescriptor + 0x1c) -
-                                  (short)ReadIntAt(scenarioDescriptor + 8);
+                                  scenarioDescriptor->stockLevel1c -
+                                  scenarioDescriptor->productionSlots14->valueAt4;
       goto LABEL_12;
     }
   }

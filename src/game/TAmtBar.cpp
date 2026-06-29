@@ -1,14 +1,15 @@
 #include <new>
 
+#include "game/global_data_tables.h"
 #include "game/TAmtBar.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/TUberCluster.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/quickdraw_globals.h"
-#include "game/trade_quickdraw.h"
+#include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/ui_widget_thunks.h"
-#include "game/TUberCluster.h"
-#include "game/mfc.h"
 #include "game/mfc.h"
 
 #pragma optimize("y", on)
@@ -71,14 +72,14 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   short guideValue = 0;
   short fillOrigin;
 
-  ApplyHitRegionToClipState(reinterpret_cast<int*>(surface.surfaceWrapper));
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(reinterpret_cast<int*>(surface.surfaceWrapper));
 
   if (this->IsActionable() == 0 || this->Refresh() == 0) {
     return;
   }
 
   this->QueryContentBounds(&contentBounds);
-  ApplyRectClipRegion(&contentBounds);
+  reinterpret_cast<void(__cdecl*)(RECT*)>(ApplyRectClipRegionToGlobalClipState)(&contentBounds);
 
   this->QueryBounds(&frameBounds);
 
@@ -102,22 +103,22 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
                         &contentRect, 0);
 
   if (barRange > 0) {
-    SetQuickDrawTextOrigin(0, 1);
+    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(0, 1);
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(auxValueB);
-    SetQuickDrawStylePair(1, 7);
+    SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 7);
     guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
-    DrawCenteredGuideLine((short)(guideValue - 1), 1);
+    reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)((short)(guideValue - 1), 1);
     ResetQuickDrawStrokeState();
   }
 
   fillOrigin = guideValue > 0 ? (short)(guideValue + 1) : 0;
-  SetQuickDrawTextOrigin(fillOrigin, 4);
+  reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(fillOrigin, 4);
   SetQuickDrawFillColor(0);
-  SetQuickDrawStylePair(1, 1);
-  DrawCenteredGuideLine(controlWidth, 4);
-  SetQuickDrawTextOrigin(stepOrCurrentValue, 0);
+  SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 1);
+  reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)(controlWidth, 4);
+  reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(stepOrCurrentValue, 0);
   ResetQuickDrawStrokeState();
-  DrawCenteredGuideLine((short)(stepOrCurrentValue - 1), controlHeight);
+  reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)((short)(stepOrCurrentValue - 1), controlHeight);
   int clipDescriptorHead = 0;
   SnapshotHitRegionToClipCache(&clipDescriptorHead);
 }

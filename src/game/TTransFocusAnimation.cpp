@@ -5,7 +5,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TView.h"
 #include "game/mfc.h"
-#include "game/quickdraw_globals.h"
+#include "game/quickdraw_rendering.h"
 #include "game/quickdraw_guards.h"
 #include "game/ui_widget_thunks.h"
 
@@ -14,7 +14,6 @@
 #pragma optimize("y", on)
 #endif
 
-void ApplyHitRegionToClipState(int* clipDescriptor);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
@@ -22,7 +21,7 @@ undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
 // FUNCTION: IMPERIALISM 0x004a05c0
 void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() {
   QuickDrawSurfaceGuard surface;
-  ApplyHitRegionToClipState(reinterpret_cast<int*>(surface.surfaceWrapper));
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(reinterpret_cast<int*>(surface.surfaceWrapper));
 
   RECT destinationRect;
   RECT sourceRect;

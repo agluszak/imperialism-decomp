@@ -1,6 +1,7 @@
 #include "game/ClipStateRegion.h"
 #include "game/bitmap_descriptor_helpers.h"
-#include "game/quickdraw_globals.h"
+#include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
 
 extern void* g_pScopedMapQuickDrawDcHandleObject;

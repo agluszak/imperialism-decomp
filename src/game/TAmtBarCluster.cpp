@@ -3,17 +3,11 @@
 #include "game/TAmtBarCluster.h"
 #include "game/GameAssert.h"
 #include "game/UiRuntimeContext.h"
-#include "game/trade_quickdraw.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
+#include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
-
-struct TGreatPower;
-
-extern const int kTradeSellPropagationTags[17];
-extern const int kControlTagBar;
-extern TGreatPower* GetNationStateBySlot(short slot);
-extern short QueryNationMetricBySlot(TGreatPower* state, short metricSlot);
-extern int QueryUiScreenModeRaw(UiRuntimeContext* context);
-extern void FailNilPointerInUSmallViews(int line);
+#include "game/ui_invalidation_guard.h"
 
 const int kAssertLineTradeSellIncSell = 0x816;
 const int kAssertLineTradeSellIncCap = 0x81d;

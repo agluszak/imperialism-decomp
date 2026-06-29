@@ -5,7 +5,9 @@
 
 #include "game/TAmtBar.h"
 #include "game/TPicture.h"
-#include "game/trade_quickdraw.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/TGreatPower.h"
 
@@ -14,15 +16,11 @@
 #include "game/TTraderAmtBar.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/trade_quickdraw.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
 #include <new>
 #include "game/mfc.h"
-
-void ApplyHitRegionToClipState(int* clipDescriptor);
-undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
-undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
 
 namespace {
 extern "C" char g_vtblTTraderAmtBar = 0;
@@ -117,7 +115,7 @@ int TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
 void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  ApplyHitRegionToClipState(reinterpret_cast<int*>(surface.surfaceWrapper));
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(reinterpret_cast<int*>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -131,10 +129,10 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       short styleValueAt60 = rangeOrMaxValue;
       if (styleValueAt60 > 0) {
         short styleValueAt66 = auxValueB;
-        SetQuickDrawTextOrigin(0, 0);
-        ApplyQuickDrawStyleFromRuntime(styleValueAt66);
-        SetQuickDrawStylePair(1, 5);
-        DrawCenteredGuideLine((short)(styleValueAt60 - 1), 0);
+        reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(0, 0);
+        g_pUiRuntimeContext->ApplyLegendSplitSlot34(styleValueAt66);
+        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 5);
+        reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)((short)(styleValueAt60 - 1), 0);
         ResetQuickDrawStrokeState();
       }
 

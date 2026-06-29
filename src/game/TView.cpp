@@ -15,7 +15,7 @@
 #include "game/TCursorControlPanel.h"
 #include "game/global_data_tables.h"
 #include "game/ScopedMapQuickDrawContext.h"
-#include "game/quickdraw_globals.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_invalidation_guard.h"
 
 // Shared thunks/hooks whose callers interpret the arguments differently are kept in

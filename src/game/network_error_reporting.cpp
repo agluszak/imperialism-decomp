@@ -1,4 +1,5 @@
 #include "game/network_error_reporting.h"
+#include "game/global_data_tables.h"
 
 #include "game/TViewMgr.h"
 #include "game/UiRuntimeContext.h"
@@ -6,7 +7,6 @@
 
 extern "C" {
 extern int DAT_006a601c;
-extern UiRuntimeContext* g_pUiRuntimeContext;
 }
 
 static const char kDirectPlayErrorTitle[] = "DirectPlay Error";

@@ -50,7 +50,7 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TradeCommodityMetricRecord.h"
-#include "game/trade_quickdraw.h"
+#include "game/quickdraw_rendering.h"
 #include <stddef.h>
 #include <new>
 
@@ -215,8 +215,6 @@ enum {
   kTGreatPowerOffset_pendingAidTotal = offsetof(TGreatPower, pendingAidTotal),
   kTGreatPowerOffset_actionMetricByQuarter = offsetof(TGreatPower, actionMetricByQuarter),
 };
-
-extern "C" UiRuntimeContext* g_pUiRuntimeContext;
 
 static __inline TGlobalMapCityScoreRecord*
 GlobalMapState_GetCityRecord(const TMapMgr* globalMapState, int cityIndex) {
@@ -1783,8 +1781,8 @@ char TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch(void) {
 // FUNCTION: IMPERIALISM 0x004dc440
 #pragma optimize("y", on)
 char TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
-  NationCityTradeState* tradeCity = GetNationTradeCityState(this);
-  if (tradeCity->scenarioTradeDescriptor->valueAt1C <= 1) {
+  TCity* tradeCity = this->city;
+  if (tradeCity->productionSummary1d8->stockLevel1c <= 1) {
     return 0;
   }
   for (int recordIndex = 8; recordIndex < 0xd; ++recordIndex) {
@@ -3818,7 +3816,7 @@ double TGreatPower::ComputeMinisterSkillFloatSlot8C(void) {
 // FUNCTION: IMPERIALISM 0x004e06d0
 #pragma optimize("y", on)
 int TGreatPower::SumCommodityRecordAccumulatedValues(void) {
-  NationCityTradeState* cityState = GetNationTradeCityState(this);
+  TCity* cityState = this->city;
   int total = 0;
   if (cityState != 0) {
     total = cityState->tradeCommodityRecordPtrs[11]->accumulatedValue44 +
@@ -3847,9 +3845,9 @@ int TGreatPower::ComputeArmyCommitBudgetSlot8E(void) {
   if (this->city == 0) {
     return 0;
   }
-  CityTradeScenarioDescriptor* scenario = GetNationTradeCityState(this)->scenarioTradeDescriptor;
-  short scenarioCap = scenario->valueAt1C;
-  short productionCap = scenario->productionSlots->valueAt4;
+  TPopulationMgr* scenario = this->city->productionSummary1d8;
+  short scenarioCap = scenario->stockLevel1c;
+  short productionCap = scenario->productionSlots14->valueAt4;
   if (scenarioCap < productionCap) {
     productionCap = scenarioCap;
   }

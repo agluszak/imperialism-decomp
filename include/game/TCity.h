@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 #include "game/TObject.h"
 #include "game/TPopulationMgr.h"
+#include "game/TradeCommodityMetricRecord.h"
 
 class TSortedList;
 class TStream;
@@ -130,8 +131,16 @@ public:
   short cityStockLivestockDE;
   short cityStockGemsE0;
   short cityStockGoldE2;
-  // +0xe4..+0x1d8 — owned order objects, released through slot 0x1c on teardown.
-  void* orderSlotsE4[0x3D];
+  // +0xe4..+0x1d8 — mixed city payload table. Early entries are trade commodity
+  // records; later entries include city/ship/build order objects released via slot 0x1c.
+  union {
+    void* orderSlotsE4[0x3D];
+    struct {
+      TradeCommodityMetricRecord* tradeCommodityRecordPtrs[0x2b];
+      TradeCommodityMetricRecord* specialCommodityRecordAt190;
+      void* orderSlots194[0x11];
+    };
+  };
   TPopulationMgr* productionSummary1d8; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)
   // 0x1DC — 16-entry per-city production order table (0x004b4dc0, ctor-cleared).
   short productionOrderTable1dc[0x10];

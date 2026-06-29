@@ -4,7 +4,8 @@
 #include "game/TAmtBar.h"
 #include "game/mfc.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/trade_quickdraw.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"
@@ -121,7 +122,7 @@ void TNumberedArrowButton::ApplyRectSlot110(RECT* rectBuffer) {
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
   reinterpret_cast<void(__cdecl*)(int, int)>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)(0,
                                                                                                 10);
-  SetQuickDrawTextOrigin(7, 0);
+  reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(7, 0);
   RefreshControl();
 }
 
