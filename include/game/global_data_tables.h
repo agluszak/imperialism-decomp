@@ -6,8 +6,8 @@
 #include "decomp_types.h"
 
 #include "game/mfc.h"
-#include "game/TDealList.h"
 #include "game/TCountry.h"
+#include "game/startup_helpers.h"
 #include "game/TDisplayMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TMacViewMgr.h"
@@ -39,6 +39,20 @@ class TMapMgr;
 class TTurnEventDialogFactoryRegistry;
 class TSelectedCivilianOrderState;
 class TSoundPlayer;
+class TCursorControlPanel;
+class TTechMgr;
+class TWNetSessionManager;
+class TDealList;
+class TSoundResourceManager;
+class TModuleLibraryCacheTableStateB;
+
+struct GlobalViewportRectDefaultsRecord {
+  int field0;
+  int left;
+  int top;
+  int right;
+  int bottom;
+};
 
 // ============================================================================
 // Diplomacy globals
@@ -96,9 +110,37 @@ extern char g_szMovementParseCompareB_00694254[];
 extern ImperialismApp* DAT_006a1348;
 extern int DAT_006a1350;
 extern void* DAT_006a1354;
+extern CRuntimeClass g_pClassDescTCapacityOrder;
+extern short g_industryActionCostWeightResCode09[16];
+extern short g_industryActionCostWeightResCode08[16];
+extern short g_industryActionCostWeightResCode10[16];
+extern short g_industryActionCostWeightResCode0B[16];
+extern short g_industryActionCostWeightResCode03[16];
+extern short g_industryActionCostWeightResCode0C[16];
+extern "C" CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8;
+extern HGDIOBJ g_pTempMapTileClipRegion;
+extern char g_Sanitize_City_Counter_Value_006A24D4;
+extern double DAT_0066fad0;
+extern char g_pClassDescTStratReportView;
+extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
+extern void* g_pGlobalCallback_006a7fac;
+extern int DAT_006a2018;
+extern LPCSTR g_apFontFiles[];
+extern int g_nDibOrientationFlag_006A1890;
+extern CRuntimeClass s_CDib_RuntimeClass_00694b48;
+extern void* g_pScopedMapQuickDrawViewContext;
+extern void* g_pScopedMapQuickDrawDcHandleObject;
+extern void* g_pReusableQuickDrawSurfaceListHead;
 }
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
+extern TCursorControlPanel* g_pCursorControlPanel;
+extern TDealList* g_pNationInteractionStateManager;
+extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
+extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
+extern TWNetSessionManager g_NetworkSessionManager006a5f60;
+extern TTechMgr* g_pCityOrderCapabilityState;
+extern TSoundResourceManager g_soundResourceManager;
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 extern TDisplayMgr* g_pDisplayMgr;
 extern TMacViewMgr* g_pStrategicMapViewSystem;

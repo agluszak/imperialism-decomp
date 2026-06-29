@@ -2,8 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/ClipStateRegion.h"
-
-extern void* g_pReusableQuickDrawSurfaceListHead;
+#include "game/global_data_tables.h"
 
 struct QuickDrawSurfaceGuard {
   ClipStateRegionWrapper* surfaceWrapper;

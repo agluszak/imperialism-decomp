@@ -6,13 +6,6 @@
 #pragma optimize("y", on)
 #endif
 
-extern "C" {
-CRuntimeClass g_pClassDescTBismarckMinister = {nullptr, 0, 0, nullptr, nullptr
-}
-
-;
-}
-
 // NOTE: NoOpForeignMinisterUtilityStub (slot 0x44, the InitializeRecruitQueuePattern* recruit-queue setup)
 // and DefenseSlot18 (slot 0x60, a per-personality float aggressiveness multiplier whose
 // real signature returns float) are promoted here as real virtual overrides owning their

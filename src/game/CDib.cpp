@@ -1,12 +1,6 @@
 #include "game/CDib.h"
 
-// Orientation flag: when > 0 the engine builds top-down DIBs (negative biHeight).
-// GLOBAL: IMPERIALISM 0x006a1890
-int g_nDibOrientationFlag_006A1890 = 0;
-
-// CRuntimeClass descriptor returned by GetRuntimeClass (data values matched separately).
-// GLOBAL: IMPERIALISM 0x00694b48
-CRuntimeClass s_CDib_RuntimeClass_00694b48 = {nullptr, 0, 0, nullptr, nullptr};
+#include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x00479ed0
 CRuntimeClass* CDib::GetRuntimeClass() const {

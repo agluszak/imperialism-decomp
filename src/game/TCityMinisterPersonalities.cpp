@@ -2,13 +2,6 @@
 
 #include "game/mfc.h"
 
-extern "C" {
-CRuntimeClass g_pClassDescTShipBuilderCityMinister = {nullptr, 0, 0, nullptr, nullptr
-}
-
-;
-}
-
 // Each derived city minister overrides only GetRuntimeClass, the scalar deleting
 // destructor, and the slot-0x80 priority-preset hook (CityInteriorSlot20). The preset
 // bodies are honest partial ports (previously return-0 autogen stubs).

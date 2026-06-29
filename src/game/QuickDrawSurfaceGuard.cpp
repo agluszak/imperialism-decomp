@@ -3,13 +3,11 @@
 #include "game/ClipStateRegion.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
+#include "game/global_data_tables.h"
 
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
 
 const char kQuickDrawCppPath[] = "D:\\Ambit\\QuickDraw.cpp";
-
-// GLOBAL: IMPERIALISM 0x6a1c98
-void* g_pReusableQuickDrawSurfaceListHead = 0;
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)

@@ -133,7 +133,7 @@ public:
   short selectedMetricStep;       // 0x8e
 
   TIndustryCluster();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TIndustryCluster)
   void NoOpUiLifecycleHook(int styleSeed) override;
 };
 

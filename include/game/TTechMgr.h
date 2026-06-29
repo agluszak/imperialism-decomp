@@ -50,5 +50,3 @@ public:
 
   ~TTechMgr() override;
 };
-
-extern TTechMgr* g_pCityOrderCapabilityState;

@@ -8,6 +8,11 @@
 
 IMPLEMENT_DYNCREATE(TSidewaysArrow, TUpDownPictureButton)
 
+// FUNCTION: IMPERIALISM 0x00583b50
+TSidewaysArrow::TSidewaysArrow() : TUpDownPictureButton() {
+  repeatDeadlineTick = 0;
+}
+
 undefined4 GetTickCountDiv16(void);
 
 // FUNCTION: IMPERIALISM 0x00583bd0

@@ -45,19 +45,7 @@ undefined4 DispatchHandleMapLookup(undefined4 handle, int flag) {
 
 CMainFrameRefTarget::~CMainFrameRefTarget() {}
 
-// FUNCTION: IMPERIALISM 0x00484af0
-CObject* PASCAL CMainFrame::CreateObject() {
-  CMainFrame* pFrame = nullptr;
-  try {
-    pFrame = new CMainFrame;
-  } catch (...) {
-    pFrame = nullptr;
-  }
-  return pFrame;
-}
-
-// GLOBAL: IMPERIALISM 0x00648628
-IMPLEMENT_RUNTIMECLASS(CMainFrame, CFrameWnd, 0xFFFF, CMainFrame::CreateObject, NULL)
+IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 ON_WM_CREATE()

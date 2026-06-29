@@ -1,7 +1,5 @@
 #include "game/TSoundResourceManager.h"
 
-// GLOBAL: IMPERIALISM 0x6a60c0
-extern "C" TSoundResourceManager g_soundResourceManager;
 TSoundResourceManager g_soundResourceManager;
 
 // FUNCTION: IMPERIALISM 0x0049c240

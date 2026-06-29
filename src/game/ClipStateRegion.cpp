@@ -13,9 +13,6 @@ int* Sprite__CollectNonTransparentPixels(void* this_obj, uint this_ptr);
 
 static int RegisterClipRegionHandle(CBrush* brush, HRGN region);
 
-// GLOBAL: IMPERIALISM 0x006a1da4
-HGDIOBJ g_pTempMapTileClipRegion = nullptr;
-
 // FUNCTION: IMPERIALISM 0x00495610
 undefined4 DestroyClipStateRegionWrapperObject(ClipStateRegionWrapper* wrapperObject) {
   if ((wrapperObject != 0) && (wrapperObject->inner != 0)) {

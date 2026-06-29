@@ -5,14 +5,7 @@
 #include "game/TOcean.h"
 #include "game/TShip.h"
 #include "game/TZone.h"
-
-// GLOBAL: IMPERIALISM 0x0064f428
-extern short g_industryActionCostWeightResCode09[16];
-extern short g_industryActionCostWeightResCode08[16];
-extern short g_industryActionCostWeightResCode10[16];
-extern short g_industryActionCostWeightResCode0B[16];
-extern short g_industryActionCostWeightResCode03[16];
-extern short g_industryActionCostWeightResCode0C[16];
+#include "game/global_data_tables.h"
 
 static __inline short ReadWeight(const short* tableBase, short index) {
   return tableBase[static_cast<unsigned int>(index)];

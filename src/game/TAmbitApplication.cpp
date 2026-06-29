@@ -13,10 +13,6 @@
 #include "game/THelpMgr.h"
 #include "game/ui_invalidation_guard.h"
 
-// GLOBAL: IMPERIALISM 0x0064c0b8
-extern "C" CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8 = {
-    "TAmbitApplication", sizeof(TAmbitApplication), 0xffff, nullptr, nullptr, nullptr};
-
 // FUNCTION: IMPERIALISM 0x004133d0
 void TAmbitApplication::ParseDirectionTokenAndSetMovementFlags(CString token, int parseMode,
                                                                int parseTail) {

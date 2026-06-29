@@ -263,6 +263,14 @@ tgreatpower-gate:
 tgreatpower-gate-update:
   uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
 
+# Ensure // GLOBAL: markers live in global_data_tables.cpp and declarations in global_data_tables.h
+global-location-gate:
+  uv run python -m tools.workflow.check_global_location --source-dir src --include-dir include
+
+# Ensure manual CRuntimeClass definitions are replaced with MFC macros
+manual-cruntimeclass-gate:
+  uv run python -m tools.workflow.check_manual_cruntimeclass --source-dir src
+
 # Run all mechanical source-policy gates (the pre-commit check).
 # Run `just format-check <touched paths>` separately on files you edited; the tree
 # is not fully clang-formatted, so format-check is per-path, not whole-tree.
@@ -277,6 +285,8 @@ gates:
   just vtable-collision-gate
   just field-layout-gate
   just synthetic-gate
+  just global-location-gate
+  just manual-cruntimeclass-gate
   just decomplint
   just global-location-gate
 

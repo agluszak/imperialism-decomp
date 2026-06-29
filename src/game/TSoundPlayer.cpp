@@ -13,11 +13,6 @@
 #pragma optimize("y", on)
 #endif
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00668a18
-extern double DAT_0066fad0;
-}
-
 extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 
 // Random-cue rotation counter at 0x006a4520 (raw audio-state global, not yet in

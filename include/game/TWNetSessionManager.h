@@ -16,6 +16,3 @@ public:
 
   bool TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount);
 };
-
-// The global instance itself. `&g_NetworkSessionManager006a5f60` resolves to 0x006a5f60.
-extern TWNetSessionManager g_NetworkSessionManager006a5f60;

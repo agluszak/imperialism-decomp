@@ -2737,6 +2737,7 @@ address|target_cpp|ownership|note
 5839a0|src/game/TArrowsControl.cpp|manual|marker_sync
 5839f0|src/game/TArrowsControl.cpp|manual|marker_sync
 583b30|src/game/TSidewaysArrow.cpp|manual|mfc_runtime_macro
+583b50|src/game/TSidewaysArrow.cpp|manual|marker_sync
 583b80|src/game/TSidewaysArrow.cpp|manual|marker_sync
 583bd0|src/game/TSidewaysArrow.cpp|manual|marker_sync
 583d30|src/game/TUpDownView.cpp|manual|mfc_runtime_macro

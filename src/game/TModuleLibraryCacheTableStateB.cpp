@@ -5,9 +5,6 @@ extern "C" char g_szEmptyString[];
 extern "C" const char s_BmpResourceNameFormat_006951C4[];
 extern "C" const char s_MissingRequiredFileFormat_00695188[];
 
-// GLOBAL: IMPERIALISM 0x6a134c
-extern "C" TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState = nullptr;
-
 // Both embedded CMap members default-construct (hash size 17, block size 10); the leading
 // m_dibPalette is zeroed first (declaration order), matching the original's [obj]=0 then map A,
 // map B init sequence.

@@ -843,14 +843,6 @@ undefined4 CreateTSidewaysArrowInstance(void)
   return 0;
 }
 
-// ghidra_name TSidewaysArrow::ConstructTSidewaysArrowBaseState
-// ghidra_proto undefined ConstructTSidewaysArrowBaseState()
-// FUNCTION: IMPERIALISM 0x00583b50
-undefined4 ConstructTSidewaysArrowBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TUpDownView::CreateTUpDownViewInstance
 // ghidra_proto undefined CreateTUpDownViewInstance()
 // FUNCTION: IMPERIALISM 0x00583c90

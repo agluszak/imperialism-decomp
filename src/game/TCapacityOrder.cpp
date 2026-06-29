@@ -12,21 +12,6 @@
 #pragma optimize("y", on)
 #endif
 
-// GLOBAL: IMPERIALISM 0x0064f440
-CRuntimeClass g_pClassDescTCapacityOrder = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x00695b50
-short g_industryActionCostWeightResCode09[16] = {0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0, 0, 0};
-// GLOBAL: IMPERIALISM 0x00695b70
-short g_industryActionCostWeightResCode08[16] = {0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-// GLOBAL: IMPERIALISM 0x00695b90
-short g_industryActionCostWeightResCode10[16] = {0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18, 10, 0};
-// GLOBAL: IMPERIALISM 0x00695bb0
-short g_industryActionCostWeightResCode0B[16] = {0, 0, 0, 0, 0, 2, 0, 0, 4, 10, 8, 6, 30, 22, 0, 0};
-// GLOBAL: IMPERIALISM 0x00695bd0
-short g_industryActionCostWeightResCode03[16] = {0, 0, 0, 0, 0, 10, 0, 10, 10, 20, 20, 20, 0, 0, 0, 0};
-// GLOBAL: IMPERIALISM 0x00695bf0
-short g_industryActionCostWeightResCode0C[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20, 0, 0};
-
 static __inline short ReadWeight(const short* tableBase, short index) {
   return tableBase[static_cast<unsigned int>(index)];
 }

@@ -5,10 +5,8 @@
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/global_data_tables.h"
 #include <new>
-
-extern "C" CRuntimeClass g_pClassDescTTradeCluster = {nullptr, 0, 0, nullptr, nullptr};
-extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 
 // TTradeCluster (VTABLE 0x665a70): the trade-screen sell/bid/offer cluster.
 // Owns the Sell/Bar/Bid/Offer child-control state machine for one trade row.
@@ -96,10 +94,7 @@ void* CreateTradeSellControlPanel(void) {
   return new TTradeCluster();
 }
 
-// FUNCTION: IMPERIALISM 0x00587090
-CRuntimeClass* TTradeCluster::GetRuntimeClass() const {
-  return &g_pClassDescTTradeCluster;
-}
+IMPLEMENT_DYNCREATE(TTradeCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x005870b0
 TTradeCluster::TTradeCluster() : TUberCluster() {}

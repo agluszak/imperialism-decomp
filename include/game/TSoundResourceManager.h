@@ -50,5 +50,3 @@ public:
   HMODULE m_module;             // 0x30 (wave-pack module datafile)
   int m_field34;                // 0x34 (last channel result / built buffer handle)
 };
-
-extern "C" TSoundResourceManager g_soundResourceManager;

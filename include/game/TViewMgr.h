@@ -129,8 +129,6 @@ public:
   TViewMgr();
 };
 
-extern TCursorControlPanel* g_pCursorControlPanel;
-
 ASSERT_SIZE(TViewMgr, 0xfc);
 
 // === BEGIN GENERATED (TViewMgr) — refreshed by `just gen-class TViewMgr`; do not hand-edit ===

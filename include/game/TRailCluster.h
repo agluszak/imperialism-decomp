@@ -133,7 +133,7 @@ public:
   short selectedMetricStep;       // 0x8e
 
   TRailCluster();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TRailCluster)
   void NoOpUiLifecycleHook(int styleSeed) override;
 };
 

@@ -18,10 +18,6 @@ struct ClipStateRegionWrapper {
   ClipStateRegionInner* inner;
 };
 
-// Temporary scratch region handle used while rebuilding map-tile clip regions.
-// Address marker: src/game/ClipStateRegion.cpp (g_pTempMapTileClipRegion).
-extern HGDIOBJ g_pTempMapTileClipRegion;
-
 ClipStateRegionWrapper* CreateClipStateRegionWrapperObject(void);
 undefined4 DestroyClipStateRegionWrapperObject(ClipStateRegionWrapper* wrapperObject);
 int IntersectRectWrapper(RECT* src1, RECT* src2, RECT* dst);

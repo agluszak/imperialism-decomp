@@ -12,13 +12,6 @@
 #pragma optimize("y", on)
 #endif
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x0064f338
-char g_pClassDescTCity = 0;
-// GLOBAL: IMPERIALISM 0x006a24d4
-char g_Sanitize_City_Counter_Value_006A24D4 = 0;
-}
-
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;
 IMPLEMENT_DYNCREATE(TCity, TObject)

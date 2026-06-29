@@ -7,8 +7,7 @@ struct CRuntimeClass;
 class TShipAmtBar : public TIndustryAmtBar {
 public:
   TShipAmtBar();
-  // ~TShipAmtBar is compiler-generated (implicit virtual dtor).
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TShipAmtBar)
 
   void NoOpUiLifecycleHook(int arg) override;
   void RenderPrimarySurfaceOverlayPanelWithClipCache() override;

@@ -2,6 +2,7 @@
 
 #include "game/TSimMgr.h"
 #include "game/TGreatPower.h"
+#include "game/TSortedPtrList.h"
 #include "game/TWindow.h"
 #include "game/TViewMgr.h"
 #include "game/TDisplayMgr.h"

@@ -33,6 +33,8 @@ class TCursorControlPanel;
 #include "game/TCursorControlPanel.h"
 #include "game/TAnimator.h"
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/TAmbitApplication.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // GLOBAL: IMPERIALISM 0x006a4310
@@ -215,6 +217,54 @@ const int kTradeSellPropagationTags[17] = {
     0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
     0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
 };
+
+// Industry action cost weight tables
+// GLOBAL: IMPERIALISM 0x0064f440
+CRuntimeClass g_pClassDescTCapacityOrder = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x00695b50
+short g_industryActionCostWeightResCode09[16] = {0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0, 0, 0};
+// GLOBAL: IMPERIALISM 0x00695b70
+short g_industryActionCostWeightResCode08[16] = {0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+// GLOBAL: IMPERIALISM 0x00695b90
+short g_industryActionCostWeightResCode10[16] = {0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18, 10, 0};
+// GLOBAL: IMPERIALISM 0x00695bb0
+short g_industryActionCostWeightResCode0B[16] = {0, 0, 0, 0, 0, 2, 0, 0, 4, 10, 8, 6, 30, 22, 0, 0};
+// GLOBAL: IMPERIALISM 0x00695bd0
+short g_industryActionCostWeightResCode03[16] = {0, 0, 0, 0, 0, 10, 0, 10, 10, 20, 20, 20, 0, 0, 0, 0};
+// GLOBAL: IMPERIALISM 0x00695bf0
+short g_industryActionCostWeightResCode0C[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20, 0, 0};
+
+// GLOBAL: IMPERIALISM 0x0064c0b8
+CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8 = {
+    "TAmbitApplication", sizeof(TAmbitApplication), 0xffff, nullptr, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x006a1da4
+HGDIOBJ g_pTempMapTileClipRegion = nullptr;
+
+// GLOBAL: IMPERIALISM 0x006a24d4
+char g_Sanitize_City_Counter_Value_006A24D4 = 0;
+// GLOBAL: IMPERIALISM 0x6630e8
+char g_pClassDescTStratReportView = 0;
+// GLOBAL: IMPERIALISM 0x6a134c
+TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState = nullptr;
+// GLOBAL: IMPERIALISM 0x00694150
+LPCSTR g_apFontFiles[] = {"data\\WeBeBd__.ttf", "data\\Antqua.ttf", "data\\Antqua.ttf",
+                           "data\\AntquaB.ttf", nullptr};
+// GLOBAL: IMPERIALISM 0x006a1890
+int g_nDibOrientationFlag_006A1890 = 0;
+// GLOBAL: IMPERIALISM 0x00694b48
+CRuntimeClass s_CDib_RuntimeClass_00694b48 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x6a1d9c
+void* g_pScopedMapQuickDrawDcHandleObject = 0;
+// GLOBAL: IMPERIALISM 0x6a1dac
+void* g_pScopedMapQuickDrawViewContext = 0;
+// GLOBAL: IMPERIALISM 0x6a1c98
+void* g_pReusableQuickDrawSurfaceListHead = 0;
+
+// GLOBAL: IMPERIALISM 0x006a7fac
+void* g_pGlobalCallback_006a7fac = nullptr;
+// GLOBAL: IMPERIALISM 0x006a2018
+int DAT_006a2018 = 0;
+CRuntimeClass g_pClassDescTScopedMapQuickDrawContext2 = {nullptr, 0, 0, nullptr, nullptr};
 
 } // extern "C"
 

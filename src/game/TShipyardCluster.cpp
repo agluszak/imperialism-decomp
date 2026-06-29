@@ -19,11 +19,6 @@
 
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00662ff8
-CRuntimeClass g_pClassDescTShipyardCluster = {nullptr, 0, 0, nullptr, nullptr};
-}
-
 
 static __inline TCity* GetNationCityStateBySlot(short slotId) {
   TGreatPower* nationState = GetNationStateBySlot(slotId);
@@ -40,14 +35,7 @@ TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
   return new TShipyardCluster();
 }
 
-
-
-// FUNCTION: IMPERIALISM 0x0058a570
-CRuntimeClass* TShipyardCluster::GetRuntimeClass() const {
-  return &g_pClassDescTShipyardCluster;
-}
-
-
+IMPLEMENT_DYNCREATE(TShipyardCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x0058a590
 TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0), field_8e(0) {}

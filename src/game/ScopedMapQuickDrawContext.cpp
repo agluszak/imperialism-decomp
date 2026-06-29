@@ -1,22 +1,15 @@
 #include "game/ScopedMapQuickDrawContext.h"
 #include "decomp_types.h"
+#include "game/global_data_tables.h"
 
 typedef void* hwnd_t;
 typedef void* hdc_t;
 
 undefined4 FromHandle_612736(void);
 
-extern void* g_pScopedMapQuickDrawDcHandleObject;
-extern void* g_pScopedMapQuickDrawViewContext;
-
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-
-// GLOBAL: IMPERIALISM 0x6a1d9c
-void* g_pScopedMapQuickDrawDcHandleObject = 0;
-// GLOBAL: IMPERIALISM 0x6a1dac
-void* g_pScopedMapQuickDrawViewContext = 0;
 
 // Bind the scoped map QuickDraw DC: record the active view, and select the DC-handle
 // object (either the caller-supplied one, or a fresh CDC wrapping the view window's DC).

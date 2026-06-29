@@ -2,16 +2,6 @@
 
 #include "game/mfc.h"
 
-// Per-personality CRuntimeClass descriptors (slot 0 GetRuntimeClass targets).
-extern "C" {
-CRuntimeClass g_pClassDescTTedForeignMinister = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass g_pClassDescTBillForeignMinister = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass g_pClassDescTDiplomatForeignMinister = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass g_pClassDescTTextileForeignMinister = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass g_pClassDescTTraderForeignMinister = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass g_pClassDescTArmsForeignMinister = {nullptr, 0, 0, nullptr, nullptr};
-}
-
 // NOTE: The large slot bodies (MinisterSlot21 0x84, Call90 0x90, DispatchProposalSlot98
 // 0x98, and the MinisterSlot18 0x60 action queues) are dispatch-heavy and dispatch
 // through TGreatPower / TNationInteractionStateManager vtable slots whose method names
@@ -21,9 +11,16 @@ CRuntimeClass g_pClassDescTArmsForeignMinister = {nullptr, 0, 0, nullptr, nullpt
 
 // ===================== TTedForeignMinister (0x659d70) =====================
 
+CObject* PASCAL TTedForeignMinister::CreateObject() {
+  return new TTedForeignMinister;
+}
+const CRuntimeClass TTedForeignMinister::classTTedForeignMinister = {
+    "TTedForeignMinister", sizeof(TTedForeignMinister), 0xffff, TTedForeignMinister::CreateObject,
+    RUNTIME_CLASS(TForeignMinister), nullptr};
+
 // FUNCTION: IMPERIALISM 0x005311b0
 CRuntimeClass* TTedForeignMinister::GetRuntimeClass() const {
-  return &g_pClassDescTTedForeignMinister;
+  return const_cast<CRuntimeClass*>(&classTTedForeignMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x005311d0
@@ -70,9 +67,16 @@ void TTedForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // ===================== TBillForeignMinister (0x659e30) =====================
 
+CObject* PASCAL TBillForeignMinister::CreateObject() {
+  return new TBillForeignMinister;
+}
+const CRuntimeClass TBillForeignMinister::classTBillForeignMinister = {
+    "TBillForeignMinister", sizeof(TBillForeignMinister), 0xffff,
+    TBillForeignMinister::CreateObject, RUNTIME_CLASS(TForeignMinister), nullptr};
+
 // FUNCTION: IMPERIALISM 0x00531bc0
 CRuntimeClass* TBillForeignMinister::GetRuntimeClass() const {
-  return &g_pClassDescTBillForeignMinister;
+  return const_cast<CRuntimeClass*>(&classTBillForeignMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x00531be0
@@ -130,9 +134,16 @@ void TBillForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // ===================== TDiplomatForeignMinister (0x659f48) =====================
 
+CObject* PASCAL TDiplomatForeignMinister::CreateObject() {
+  return new TDiplomatForeignMinister;
+}
+const CRuntimeClass TDiplomatForeignMinister::classTDiplomatForeignMinister = {
+    "TDiplomatForeignMinister", sizeof(TDiplomatForeignMinister), 0xffff,
+    TDiplomatForeignMinister::CreateObject, RUNTIME_CLASS(TForeignMinister), nullptr};
+
 // FUNCTION: IMPERIALISM 0x00532760
 CRuntimeClass* TDiplomatForeignMinister::GetRuntimeClass() const {
-  return &g_pClassDescTDiplomatForeignMinister;
+  return const_cast<CRuntimeClass*>(&classTDiplomatForeignMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x00532780
@@ -176,9 +187,16 @@ void TDiplomatForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // ===================== TTextileForeignMinister (0x65a008) =====================
 
+CObject* PASCAL TTextileForeignMinister::CreateObject() {
+  return new TTextileForeignMinister;
+}
+const CRuntimeClass TTextileForeignMinister::classTTextileForeignMinister = {
+    "TTextileForeignMinister", sizeof(TTextileForeignMinister), 0xffff,
+    TTextileForeignMinister::CreateObject, RUNTIME_CLASS(TForeignMinister), nullptr};
+
 // FUNCTION: IMPERIALISM 0x005330f0
 CRuntimeClass* TTextileForeignMinister::GetRuntimeClass() const {
-  return &g_pClassDescTTextileForeignMinister;
+  return const_cast<CRuntimeClass*>(&classTTextileForeignMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x00533110
@@ -217,9 +235,16 @@ void TTextileForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // ===================== TTraderForeignMinister (0x65a0c8) =====================
 
+CObject* PASCAL TTraderForeignMinister::CreateObject() {
+  return new TTraderForeignMinister;
+}
+const CRuntimeClass TTraderForeignMinister::classTTraderForeignMinister = {
+    "TTraderForeignMinister", sizeof(TTraderForeignMinister), 0xffff,
+    TTraderForeignMinister::CreateObject, RUNTIME_CLASS(TForeignMinister), nullptr};
+
 // FUNCTION: IMPERIALISM 0x00533880
 CRuntimeClass* TTraderForeignMinister::GetRuntimeClass() const {
-  return &g_pClassDescTTraderForeignMinister;
+  return const_cast<CRuntimeClass*>(&classTTraderForeignMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x005338a0
@@ -260,9 +285,16 @@ void TTraderForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // ===================== TArmsForeignMinister (0x65a188) =====================
 
+CObject* PASCAL TArmsForeignMinister::CreateObject() {
+  return new TArmsForeignMinister;
+}
+const CRuntimeClass TArmsForeignMinister::classTArmsForeignMinister = {
+    "TArmsForeignMinister", sizeof(TArmsForeignMinister), 0xffff,
+    TArmsForeignMinister::CreateObject, RUNTIME_CLASS(TForeignMinister), nullptr};
+
 // FUNCTION: IMPERIALISM 0x00533ff0
 CRuntimeClass* TArmsForeignMinister::GetRuntimeClass() const {
-  return &g_pClassDescTArmsForeignMinister;
+  return const_cast<CRuntimeClass*>(&classTArmsForeignMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x00534010

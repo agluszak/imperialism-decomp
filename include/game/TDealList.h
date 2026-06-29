@@ -57,8 +57,6 @@ public:
 
 typedef TDealList TNationInteractionStateManager;
 
-extern TDealList* g_pNationInteractionStateManager;
-
 // === BEGIN GENERATED (TDealList) — refreshed by `just gen-class TDealList`; do not hand-edit ===
 // clang-format off
 // vtable @ 0x0066da38 (18 slots), object size 0x18, base TSortedPtrList

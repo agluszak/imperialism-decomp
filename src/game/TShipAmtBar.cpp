@@ -20,16 +20,11 @@
 
 #pragma optimize("y", on)
 
-extern "C" CRuntimeClass g_pClassDescTShipAmtBar = {nullptr, 0, 0, nullptr, nullptr};
+IMPLEMENT_DYNCREATE(TShipAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x0058aaa0
 TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {
   return new TShipAmtBar();
-}
-
-// FUNCTION: IMPERIALISM 0x0058ab40
-CRuntimeClass* TShipAmtBar::GetRuntimeClass() const {
-  return &g_pClassDescTShipAmtBar;
 }
 
 // FUNCTION: IMPERIALISM 0x0058ab60

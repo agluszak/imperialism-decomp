@@ -139,14 +139,6 @@ undefined4 CreateTControlInstance(void)
   return 0;
 }
 
-// ghidra_name TButton::GetRuntimeClass
-// ghidra_proto undefined GetRuntimeClass()
-// FUNCTION: IMPERIALISM 0x0048eaf0
-undefined4 GetRuntimeClass(void)
-{
-  return 0;
-}
-
 // ghidra_name TCtlMgr::ConstructTCtlMgrBaseState
 // ghidra_proto undefined ConstructTCtlMgrBaseState()
 // FUNCTION: IMPERIALISM 0x0048eb10

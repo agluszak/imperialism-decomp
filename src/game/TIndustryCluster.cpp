@@ -18,11 +18,6 @@
 
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00662f98
-CRuntimeClass g_pClassDescTIndustryCluster = {nullptr, 0, 0, nullptr, nullptr};
-}
-
 
 const int kAssertLineRatioB = 0xb73;
 
@@ -53,14 +48,7 @@ TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
   return new TIndustryCluster();
 }
 
-
-
-// FUNCTION: IMPERIALISM 0x00588ad0
-CRuntimeClass* TIndustryCluster::GetRuntimeClass() const {
-  return &g_pClassDescTIndustryCluster;
-}
-
-
+IMPLEMENT_DYNCREATE(TIndustryCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00588af0
 TIndustryCluster::TIndustryCluster()

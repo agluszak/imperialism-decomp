@@ -21,11 +21,6 @@
 
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00662fc8
-CRuntimeClass g_pClassDescTRailCluster = {nullptr, 0, 0, nullptr, nullptr};
-}
-
 
 const int kAssertLineRatioA = 0xd1d;
 
@@ -56,14 +51,7 @@ TRailCluster* __cdecl CreateTradeMoveScaledControlPanel(void) {
   return new TRailCluster();
 }
 
-
-
-// FUNCTION: IMPERIALISM 0x00589700
-CRuntimeClass* TRailCluster::GetRuntimeClass() const {
-  return &g_pClassDescTRailCluster;
-}
-
-
+IMPLEMENT_DYNCREATE(TRailCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00589720
 TRailCluster::TRailCluster() : TUberCluster() {

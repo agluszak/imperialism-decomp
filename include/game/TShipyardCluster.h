@@ -131,7 +131,7 @@ public:
   short field_8e;
 
   TShipyardCluster();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TShipyardCluster)
   void NoOpUiLifecycleHook(int styleSeed) override;
 };
 

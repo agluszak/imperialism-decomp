@@ -2,19 +2,19 @@
 #pragma once
 
 #include "game/TUberCluster.h"
+#include "game/mfc.h"
 
 class TAmtBar;
 
 struct CRuntimeClass;
-extern "C" CRuntimeClass g_pClassDescTTradeCluster;
 
 // VTABLE: IMPERIALISM 0x665a70
 class TTradeCluster : public TUberCluster {
 public:
   short tradeMetricSlot; // 0x88
 
+  DECLARE_DYNCREATE(TTradeCluster)
   TTradeCluster();
-  CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;

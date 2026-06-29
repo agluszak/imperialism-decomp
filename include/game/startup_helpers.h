@@ -6,16 +6,7 @@
 class TAmbitApplication;
 class TView;
 
-struct GlobalViewportRectDefaultsRecord {
-  int field0;
-  int left;
-  int top;
-  int right;
-  int bottom;
-};
-
-extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
-extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
+struct GlobalViewportRectDefaultsRecord;
 
 extern "C" {
 // 0x005e7a80

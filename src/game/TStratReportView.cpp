@@ -2,14 +2,12 @@
 
 #include "decomp_types.h"
 #include "game/TView.h"
+#include "game/global_data_tables.h"
 
 #include <new>
 
 
 namespace {
-
-// GLOBAL: IMPERIALISM 0x6630e8
-char g_pClassDescTStratReportView;
 
 // VTABLE: IMPERIALISM 0x667d08
 class TStratReportView : public TView {

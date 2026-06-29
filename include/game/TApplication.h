@@ -83,10 +83,7 @@ public:
   int field28;                        // 0x28
   CList<void*, void*> trackedEntries; // 0x2c, vtable 0x00648ca8
 
-  // Reserved slots overridden by TAmbitApplication
-  virtual void VTableSlot2B(int arg1, int arg2, int arg3) {} // slot 0x2b
-  virtual void VTableSlot2C() {}                   // slot 0x2c
-  virtual void VTableSlot2D(void* param_1) {}      // slot 0x2d
+  // Reserved slots overridden by TAmbitApplication only (orig TApplication vtable has null at 0x2b-0x2d).
 };
 
 ASSERT_SIZE(TApplication, 0x48);

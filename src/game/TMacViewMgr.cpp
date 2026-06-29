@@ -266,7 +266,6 @@ void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
   }
 }
 
-// GLOBAL: IMPERIALISM 0x00658610
 IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00509ca0

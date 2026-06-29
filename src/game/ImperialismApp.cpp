@@ -60,10 +60,6 @@ void LoadLanguageLabelFromIrgModule(HMODULE irgModule, CString& languageLabel) {
 // 0x00412d40 (ctor) / 0x00412d70 (dtor).
 ImperialismApp theApp;
 
-// GLOBAL: IMPERIALISM 0x00694150
-extern "C" LPCSTR g_apFontFiles[] = {"data\\WeBeBd__.ttf", "data\\Antqua.ttf", "data\\Antqua.ttf",
-                                     "data\\AntquaB.ttf", nullptr};
-
 // FUNCTION: IMPERIALISM 0x00412ac0
 ImperialismApp::ImperialismApp()
     : CWinApp(), field_C0(0), field_C4(), field_C8(0), field_CC(), field_D0(), field_D4(),

@@ -18,14 +18,6 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/localization_text_helpers.h"
 
-// Define the global callback pointer
-// GLOBAL: IMPERIALISM 0x006a7fac
-extern "C" void* g_pGlobalCallback_006a7fac = nullptr;
-
-// Define DAT_006a2018
-// GLOBAL: IMPERIALISM 0x006a2018
-extern "C" int DAT_006a2018 = 0;
-
 namespace {
 
 const unsigned int kAddrDecimalFormat = 0x0069430c;
