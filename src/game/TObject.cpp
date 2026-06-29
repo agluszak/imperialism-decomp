@@ -2,10 +2,6 @@
 
 #include <string.h>
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 IMPLEMENT_SERIAL(TObject, CObject, 1)
 
 TObject::TObject() {}

@@ -16,10 +16,6 @@
 #include "game/TStream.h"
 #include "game/TShip.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 extern "C" {
 extern char g_pClassDescTPortZone;
 extern CRuntimeClass PTR_s_TOcean_0065c630;

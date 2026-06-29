@@ -8,10 +8,6 @@
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;
 IMPLEMENT_DYNCREATE(TCity, TObject)
@@ -457,4 +453,3 @@ int TCity::GetBuildingProductionValueBySlot(short buildingSlot) {
   }
   return 1;
 }
-#pragma optimize("", on)

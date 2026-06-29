@@ -19,10 +19,6 @@
 #include "game/TZone.h"
 #include <new>
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 #include "game/map_action_context_helpers.h"
 #include "game/turn_event_packets.h"
 #include "game/TShip.h"
@@ -143,9 +139,6 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e73f0
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 void TAutoGreatPower::WriteTo(TStream* stream) {
   TGreatPower::WriteTo(stream);
 
@@ -181,10 +174,6 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
     } while (index <= missionQueueCount);
   }
 }
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-#pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
@@ -212,7 +201,6 @@ void TAutoGreatPower::OrphanRetStub_004dcc30(void) {
 undefined TAutoGreatPower::OrphanCallChain_C4_I28_004e75c0(int) {
   return 0;
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e7630
 void TAutoGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
@@ -224,7 +212,6 @@ void TAutoGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourc
 
   TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(resourceIndex, delta, multiplier);
 }
-#pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x004e7680
 void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation) {
@@ -264,7 +251,6 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sour
     this->SetDiplomacyState1c6ClampedToCounterA4(5, static_cast<short>(assignAmount));
   }
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e7810
 void TAutoGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
@@ -409,10 +395,6 @@ void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
 
   this->ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
 }
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
 
 // FUNCTION: IMPERIALISM 0x004e7c50
 void TAutoGreatPower::NotifyActionSlot94(int sourceNation, int actionCode) {
@@ -653,9 +635,6 @@ void TAutoGreatPower::NoOpSlotA2(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e9ed0
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 void TAutoGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot,
                                                                             int policyCode,
                                                                             int sourceNationSlot) {
@@ -663,9 +642,6 @@ void TAutoGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int t
   TGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNationSlot, policyCode,
                                                                     sourceNationSlot);
 }
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
 
 // FUNCTION: IMPERIALISM 0x004e9f10
 char TAutoGreatPower::HasActiveCandidateNationSlots(void) {

@@ -6,10 +6,6 @@
 
 extern void* g_pScopedMapQuickDrawDcHandleObject;
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x00495000
 void SetQuickDrawFillColor(int fillColor) {
   g_Quick_Draw_Color_State_006950FC = fillColor;

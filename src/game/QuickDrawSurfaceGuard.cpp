@@ -9,10 +9,6 @@ undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
 
 const char kQuickDrawCppPath[] = "D:\\Ambit\\QuickDraw.cpp";
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x00497320
 QuickDrawSurfaceGuard::QuickDrawSurfaceGuard() {
   if (g_pReusableQuickDrawSurfaceListHead != 0) {
@@ -48,7 +44,3 @@ QuickDrawSurfaceGuard::~QuickDrawSurfaceGuard() {
   g_pReusableQuickDrawSurfaceListHead = surfaceWrapper;
   surfaceWrapper = 0;
 }
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif

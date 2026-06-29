@@ -8,10 +8,6 @@
 
 #include <new>
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 static __inline short ReadWeight(const short* tableBase, short index) {
   return tableBase[static_cast<unsigned int>(index)];
 }

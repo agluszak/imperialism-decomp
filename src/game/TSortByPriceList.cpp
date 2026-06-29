@@ -3,10 +3,6 @@
 
 IMPLEMENT_DYNCREATE(TSortByPriceList, TSortedPtrList)
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x00534680
 TSortByPriceList* TSortByPriceList::AllocateAndConstructTSortByPriceList() {
   return new TSortByPriceList();

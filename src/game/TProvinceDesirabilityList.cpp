@@ -3,10 +3,6 @@
 
 IMPLEMENT_DYNCREATE(TProvinceDesirabilityList, TSortedPtrList)
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x004d6500
 TProvinceDesirabilityList* TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstance() {
   return new TProvinceDesirabilityList();

@@ -17,9 +17,6 @@
 
 extern "C" CRuntimeClass TDiplomacyMgr_classRuntimeClass_00654cd0;
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 
 char IsNationSlotEligibleForEventProcessing(short nationSlot);
 

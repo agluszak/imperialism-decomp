@@ -89,7 +89,6 @@ IMPLEMENT_DYNCREATE(TCivDescription, TView)
 /* Caches civilian class changes and refreshes target tile counts for supported civilian classes. */
 
 // FUNCTION: IMPERIALISM 0x0058f110
-#pragma optimize("y", on)
 void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(
     TCivUnit* orderState) {
   TCivDescription* context = this;
@@ -143,7 +142,6 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(
 /* Handles civ-description click hit-test and selects matching terrain/entry descriptor. */
 
 // FUNCTION: IMPERIALISM 0x0058f1a0
-#pragma optimize("y", on)
 void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                            int arg4) {
   (void)arg2;
@@ -217,9 +215,6 @@ void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int ar
     }
   } while (true);
 }
-#pragma optimize("", on)
-
-#pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x0058f3c0
 void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
@@ -289,10 +284,8 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
     provinceCount = ownerNationProvinceCollection->GetCountSlot48();
   } while (provinceOrdinal <= provinceCount);
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x0058f550
-#pragma optimize("y", on)
 void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   // ORIG_CALLCONV: __thiscall

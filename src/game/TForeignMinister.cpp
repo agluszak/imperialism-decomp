@@ -11,10 +11,6 @@
 
 #include "game/nation_slot_eligibility.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 extern undefined4 GenerateThreadLocalRandom15(void);
 
 static __inline unsigned int GenerateThreadLocalRandom15Value(void) {
@@ -309,7 +305,3 @@ void TForeignMinister::MinisterSlot1F(short) {}
 
 // FUNCTION: IMPERIALISM 0x00531110
 void TForeignMinister::Call80() {}
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif

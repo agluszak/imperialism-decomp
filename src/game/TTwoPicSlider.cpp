@@ -12,10 +12,6 @@
 #include <new>
 #include "game/CString.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 undefined4 BlitRectWithOptionalTransparency(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 undefined4 thunk_MapUiThemeCodeToStyleFlags(void);

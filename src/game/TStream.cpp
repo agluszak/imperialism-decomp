@@ -9,9 +9,6 @@ extern "C" unsigned int __cdecl strlen(const char* s);
 IMPLEMENT_DYNCREATE(TStream, TObject)
 
 // MFC-style serialization foundation: compiled favor-size in the original.
-#if defined(_MSC_VER)
-#pragma optimize("ys", on)
-#endif
 
 // ---------------------------------------------------------------------------
 // Placeholder defaults (honest empty bodies; real shared/primitive bodies are

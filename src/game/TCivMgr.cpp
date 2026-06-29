@@ -1,8 +1,4 @@
-// The original TCivMgr translation unit was compiled with frame-pointer omission
-// (matches the empty sibling stubs' prologue/epilogue better than the default).
-#pragma optimize("y", on)
 #include "game/TCivMgr.h"
-
 #include "decomp_types.h"
 #include "game/TCivUnit.h"
 #include "game/TGlobalMapState.h"

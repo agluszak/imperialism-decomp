@@ -6,9 +6,6 @@
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 IMPLEMENT_DYNCREATE(TEngineerDialog, TView)
 
 // FUNCTION: IMPERIALISM 0x004d0560

@@ -222,7 +222,6 @@ void TCountry::ReadFrom(TStream* stream) {
 // Serializes the TCountry base sub-object: the identity strings (stream slot 0xac), the
 // nation-slot metrics, the per-unit-type name ordinals, the military unit list and the
 // owned-region list. The leading TObject::WriteTo is the no-op base-of-base (0x00485f70).
-#pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x004d6e60
 void TCountry::WriteTo(TStream* stream) {
@@ -243,7 +242,6 @@ void TCountry::WriteTo(TStream* stream) {
   WriteTrackedListToStream(stream, this->militaryUnitList44);
   WriteIntListToStream(stream, this->ownedRegionList);
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d7070
 void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
@@ -263,7 +261,6 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d71b0
-#pragma optimize("y", on)
 void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   TSimMgr* localization = g_pLocalizationTable;
   if (localization->stateFlag114 > 0) {
@@ -361,14 +358,11 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d7ae0
-#pragma optimize("y", on)
 void TCountry::AddToNationMetricAtField10(int amount) {
   this->treasuryValue10 += amount;
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d7b00
 char TCountry::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
@@ -442,7 +436,6 @@ void TCountry::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7d20
-#pragma optimize("y", on)
 char TCountry::IsEncodedNationSlotMinus200Equal(int nationCode) {
   int adjusted = static_cast<int>(static_cast<short>(this->encodedNationSlot)) - 0xc8;
   if (adjusted == nationCode) {
@@ -450,7 +443,6 @@ char TCountry::IsEncodedNationSlotMinus200Equal(int nationCode) {
   }
   return 0;
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d7d50
 void TCountry::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
@@ -549,7 +541,6 @@ void TCountry::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, sho
 }
 
 // FUNCTION: IMPERIALISM 0x004d8000
-#pragma optimize("y", on)
 void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
   int ordinal = 1;
   if (this->militaryUnitList44->GetCountSlot48() < 1) {
@@ -594,7 +585,6 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
     ordinal = static_cast<short>(ordinal);
   } while (ordinal <= this->militaryUnitList44->GetCountSlot48());
 }
-#pragma optimize("", on)
 
 int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encodedNationSlot) {
   if (encodedNationSlot < 200) {
@@ -641,14 +631,11 @@ int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d87b0
-#pragma optimize("y", on)
 int TCountry::GetHomeRegionCityRecordIndex(void) {
   return g_pGlobalMapState->terrainStateTable[this->ownerNationSlot].cityRecordIndex;
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d87e0
-#pragma optimize("y", on)
 void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
   short tickRaw = g_pLocalizationTable->quarterGateTick2c;
   if (!IsRecruitQuarterTickGate(tickRaw)) {
@@ -688,7 +675,6 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
     regionCount = this->ownedRegionList->GetCountSlot48();
   } while (ordinal <= regionCount);
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d8920
 void TCountry::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {

@@ -5,10 +5,6 @@
 #include "game/CString.h"
 #include "game/ui_invalidation_guard.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 typedef void* hwnd_t;
 
 extern "C" {

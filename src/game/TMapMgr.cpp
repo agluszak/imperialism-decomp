@@ -13,7 +13,6 @@ void EnsurePortZoneForTile(short nTileIndex);
 void RemovePortZoneByTile(short nTileIndex);
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 
-#pragma optimize("y", on)
 
 extern "C" {
 extern short g_Build_Hex_Area_LookupTable_00696E70[];

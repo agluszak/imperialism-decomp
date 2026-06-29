@@ -15,7 +15,6 @@
 
 
 // FUNCTION: IMPERIALISM 0x004d7770
-#pragma optimize("y", on)
 void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
   int capabilityBonus = 0;
   if (static_cast<unsigned short>(this->nationSlot) < 7) {
@@ -33,10 +32,8 @@ void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
                                              this->nationSlot);
   militaryOrder->SetOrderModeSlot34(2, -1);
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004dab20
-#pragma optimize("y", on)
 void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   TCity* cityPtr = this->city;
   cityPtr->RefreshOrderStateSlot0C();
@@ -107,4 +104,3 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();
 }
-#pragma optimize("", on)

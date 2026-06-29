@@ -11,10 +11,6 @@ TAssetMgr::TAssetMgr() : TObject(), sharedTextSlots() {}
 // TAssetMgr::`scalar deleting destructor'
 TAssetMgr::~TAssetMgr() {}
 
-// These forwarders / no-op vtable slots are frameless (FPO) in the original; the global
-// /Oy- build would add a spurious ebp frame, so enable FPO locally (heuristics #2).
-#pragma optimize("y", on)
-
 // FUNCTION: IMPERIALISM 0x005df3a0
 void __stdcall ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag) {
   (void)languageTag;
@@ -44,7 +40,6 @@ void TAssetMgr::NoOpRuntimeUiCallback_005df410(int arg) {
 void TAssetMgr::NoOpRuntimeUiCallback_005df780(int arg) {
   (void)arg;
 }
-#pragma optimize("", on)
 
 // Builds "Movies\<movieName>" (+ install-drive prefix), stashes followupEventCode in the
 // UI-runtime context, then tries to play the clip via the message-499 detach helper and

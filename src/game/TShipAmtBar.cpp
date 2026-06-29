@@ -18,8 +18,6 @@
 #include <new>
 #include "game/mfc.h"
 
-#pragma optimize("y", on)
-
 IMPLEMENT_DYNCREATE(TShipAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x0058aaa0

@@ -5,25 +5,14 @@
 extern "C" char g_pClassDescTCivUnit = 0;
 IMPLEMENT_DYNCREATE(TCivUnit, TUnit)
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x005c28c0
 TCivUnit::TCivUnit() {}
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
 
 // SYNTHETIC: IMPERIALISM 0x005c28f0
 // TCivUnit::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005c2920
 TCivUnit::~TCivUnit() {}
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 
 // FUNCTION: IMPERIALISM 0x005c2940
 void TCivUnit::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
@@ -33,9 +22,6 @@ void TCivUnit::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
   this->remainingTurns24 = 0;
   this->completionMarker26 = static_cast<short>(-1);
 }
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
 
 // FUNCTION: IMPERIALISM 0x005c2980
 int TCivUnit::IsInIdleSelectionState() {

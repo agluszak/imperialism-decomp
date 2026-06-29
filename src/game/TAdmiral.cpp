@@ -2,11 +2,6 @@
 
 #include "game/mapped_flavor_text.h"
 #include "game/TMapOrderEntry.h"
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 #include "game/global_data_tables.h"
 #include "game/TMinor.h"
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;

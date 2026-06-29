@@ -2,10 +2,6 @@
 
 #include "game/mfc.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("ys", on)
-#endif
-
 IMPLEMENT_DYNCREATE(TIndexAndRankList, TSortedPtrList)
 
 TIndexAndRankList::TIndexAndRankList() {}
@@ -14,7 +10,3 @@ TIndexAndRankList::TIndexAndRankList() {}
 // TIndexAndRankList::`scalar deleting destructor'
 // The list-operation virtuals (slots 0x14-0x40) are inherited unchanged from
 // TSortedPtrList; TIndexAndRankList does not override them.
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif

@@ -21,7 +21,6 @@ TClosePicture::TClosePicture() : TPictureButton() {}
 TClosePicture::~TClosePicture() {}
 
 // FUNCTION: IMPERIALISM 0x00586bf0
-#pragma optimize("y", on)
 char TClosePicture::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
                                                               int arg4) {
   char result = TControl::DispatchUiMouseEventToChildrenOrSelf_Impl(point, arg2, arg3, arg4);
@@ -31,4 +30,3 @@ char TClosePicture::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int
   }
   return result;
 }
-#pragma optimize("", off)

@@ -9,10 +9,6 @@
 #include "game/mfc.h"
 #include "game/mfc.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 extern "C" {
 char g_vtblTTextList = 0;
 }

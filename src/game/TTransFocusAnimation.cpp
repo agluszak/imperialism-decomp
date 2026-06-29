@@ -10,11 +10,6 @@
 #include "game/quickdraw_guards.h"
 #include "game/ui_widget_thunks.h"
 
-// This QuickDraw body keeps the EH-RAII frame but omits the frame pointer.
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 SetQuickDrawFillColorFromPaletteIndex(void);

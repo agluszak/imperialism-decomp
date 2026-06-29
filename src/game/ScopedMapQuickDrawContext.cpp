@@ -7,10 +7,6 @@ typedef void* hdc_t;
 
 undefined4 FromHandle_612736(void);
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // Bind the scoped map QuickDraw DC: record the active view, and select the DC-handle
 // object (either the caller-supplied one, or a fresh CDC wrapping the view window's DC).
 // FUNCTION: IMPERIALISM 0x004945f0

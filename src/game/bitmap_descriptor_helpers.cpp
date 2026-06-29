@@ -264,14 +264,10 @@ void NoOpQuickDrawLifecycleHookB(void* surfaceObject) {
   (void)surfaceObject;
 }
 
-// Frameless (FPO) in the original; force FPO locally so /Oy- doesn't add an ebp
-// frame (heuristics #2).
-#pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x00497300
 void* GetSurfaceHeaderFromSurfaceObject(void* surfaceObject) {
   return **reinterpret_cast<void***>(surfaceObject);
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x005c3b70
 int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {

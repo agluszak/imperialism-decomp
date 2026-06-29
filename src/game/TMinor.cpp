@@ -54,10 +54,6 @@ extern "C" {
 extern float g_ApplyIndexedResourceDeltaScale_00653728;
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x004e3660
 void* TMinor::CreateTMinorInstance() {
   return new TMinor();
@@ -72,7 +68,6 @@ void* TMinor::GetTMinorClassNamePointer() {
 TMinor::TMinor() {
   encodedNationSlot = 0;
 }
-#pragma optimize("", on)
 
 // SYNTHETIC: IMPERIALISM 0x004e3790
 // TMinor::`scalar deleting destructor'
@@ -792,11 +787,6 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
     }
   }
 }
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-#pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x004e5be0
 void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {

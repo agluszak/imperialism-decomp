@@ -10,11 +10,6 @@
 #include "game/global_data_tables.h"
 #include "game/TMinor.h"
 #include "game/TForeignMinister.h"
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 #include "decomp_types.h"
 
 static short kNationMetricCategoryPresetValues[0x11];
@@ -164,10 +159,6 @@ void TDealList::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
     }
   }
 }
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
 
 // FUNCTION: IMPERIALISM 0x005BA090
 short TDealList::ResolveProposalCodeForCategorySlot84(int proposalCode, int category) {

@@ -2,10 +2,6 @@
 
 #include "game/mfc.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // NOTE: NoOpForeignMinisterUtilityStub (slot 0x44, the InitializeRecruitQueuePattern* recruit-queue setup)
 // and DefenseSlot18 (slot 0x60, a per-personality float aggressiveness multiplier whose
 // real signature returns float) are promoted here as real virtual overrides owning their
@@ -99,6 +95,3 @@ void TBullyMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   (void)receiver;
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif

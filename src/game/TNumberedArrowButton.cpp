@@ -13,10 +13,6 @@
 #include "game/ui_widget_thunks.h"
 #include <new>
 
-#if defined(_MSC_VER)
-#pragma auto_inline(off)
-#endif
-
 void TNumberedArrowButton::OrphanCallChain_C3_I43_0058b750(char mode, char refreshParent) {
   if (mode != *reinterpret_cast<char*>(reinterpret_cast<char*>(this) + 0x64)) {
     *reinterpret_cast<char*>(reinterpret_cast<char*>(this) + 0x64) = mode;
@@ -72,10 +68,6 @@ TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x0058c2e0
 // TNumberedArrowButton::`scalar deleting destructor'
-
-#if defined(_MSC_VER)
-#pragma auto_inline(on)
-#endif
 
 // FUNCTION: IMPERIALISM 0x0058c330
 void TNumberedArrowButton::OrphanCallChain_C1_I08_0058c330(short value84Arg, char refreshFlag) {

@@ -1,8 +1,6 @@
 #include "game/CIterator.h"
 #include "game/TSortedList.h"
 
-#pragma optimize("y", on) // omit frame pointer, as in the original bodies
-
 // FUNCTION: IMPERIALISM 0x00487ef0
 void* CIterator::Reset() {
   POSITION pos = ownerList->listState.GetHeadPosition();

@@ -4,10 +4,6 @@
 
 #include "game/mfc.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 extern "C" char g_pClassDescTPortZone = 0;
 
 // FUNCTION: IMPERIALISM 0x005615e0

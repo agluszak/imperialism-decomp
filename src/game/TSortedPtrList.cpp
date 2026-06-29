@@ -3,11 +3,6 @@
 
 IMPLEMENT_DYNCREATE(TSortedPtrList, CPtrArray)
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-#pragma optimize("ys", on)
-
 // FUNCTION: IMPERIALISM 0x004880a0
 void TSortedPtrList::ResetPtrListRecordsSlot1C() {}
 
@@ -54,27 +49,16 @@ void TSortedPtrList::PushPairSlot40(void* pair) {
   (void)pair;
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-#pragma optimize("y", on)
-
 // SYNTHETIC: IMPERIALISM 0x00488390
 // TSortedPtrList::`scalar deleting destructor'
 TSortedPtrList::~TSortedPtrList() {}
 
 TSortedPtrList::TSortedPtrList() {}
 
-#if defined(_MSC_VER)
-#pragma optimize("ys", on)
-#endif
-#pragma optimize("y", on)
-
 // FUNCTION: IMPERIALISM 0x00488400
 TSortedPtrList* TSortedPtrList::ConstructTSortedPtrListBaseState() {
   return new TSortedPtrList();
 }
-#pragma optimize("ys", on)
 
 // FUNCTION: IMPERIALISM 0x005e1e50
 void TSortedPtrList::slot18() {}

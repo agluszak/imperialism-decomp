@@ -10,10 +10,6 @@
 #include <new>
 #include "game/quickdraw_guards.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // TOneTimeAnimation derives from the MFC CObject root: the factory at
 // 0x0049fd20 installs the shared CObject runtime vtable (0x0066fec4) into the
 // object, and TOneTimeAnimation adds no virtuals of its own. The CObject base

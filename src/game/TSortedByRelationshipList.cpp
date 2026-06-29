@@ -1,10 +1,6 @@
 #include "game/TSortedByRelationshipList.h"
 #include "game/mfc.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x004ee4b0
 TSortedByRelationshipList* TSortedByRelationshipList::CreateTSortedByRelationshipListInstance() {
   return new TSortedByRelationshipList();

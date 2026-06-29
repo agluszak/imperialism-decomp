@@ -3,7 +3,6 @@
 // Bodies here are the original shared implementations referenced by both derived vtables;
 // TView/AppRoot override only the few slots where their vtable bodies differ.
 
-#pragma optimize("y", on)
 #include "game/TEventHandler.h"
 #include "game/TEvent.h"
 #include "game/TCommand.h"

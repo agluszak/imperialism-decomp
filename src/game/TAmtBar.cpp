@@ -12,8 +12,6 @@
 #include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
 
-#pragma optimize("y", on)
-
 undefined4 ftol(void);
 // FUNCTION: IMPERIALISM 0x00586e50
 int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {

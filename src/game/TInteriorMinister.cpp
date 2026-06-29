@@ -2,10 +2,6 @@
 
 #include "game/TStream.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).
 // FUNCTION: IMPERIALISM 0x004be150
 void TInteriorMinister::InteriorSlot1D() {}
@@ -76,11 +72,6 @@ void TInteriorMinister::InteriorSlot18() {}
 
 // FUNCTION: IMPERIALISM 0x004be690
 void TInteriorMinister::InteriorSlot19() {}
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-#pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x004be6d0
 void TInteriorMinister::NoOpForeignMinisterUtilityStub(void* receiver) {

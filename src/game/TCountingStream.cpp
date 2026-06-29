@@ -1,9 +1,5 @@
 #include "game/TCountingStream.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 extern "C" {
 char g_pClassDescTCountingStream = 0;
 }

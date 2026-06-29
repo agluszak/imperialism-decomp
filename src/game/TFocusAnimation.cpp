@@ -8,10 +8,6 @@
 #include "game/quickdraw_guards.h"
 #include "game/ui_widget_thunks.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x004a0190
 void TFocusAnimation::DestructTFocusAnimationAndMaybeFree() {
   if (enabledFlag != 0) {

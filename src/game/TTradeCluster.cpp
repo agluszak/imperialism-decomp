@@ -84,11 +84,6 @@ static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
   return nationState->tradeCapacity;
 }
 
-#if defined(_MSC_VER)
-#pragma auto_inline(off)
-#pragma optimize("y", off)
-#endif
-
 // FUNCTION: IMPERIALISM 0x00587010
 void* CreateTradeSellControlPanel(void) {
   return new TTradeCluster();
@@ -101,10 +96,6 @@ TTradeCluster::TTradeCluster() : TUberCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x005870e0
 // TTradeCluster::`scalar deleting destructor'
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 
 // Initializes Sell/Bar/Arrow control style and enabled state for the current
 // nation/resource context, then initializes the move/bar controls baseline.
@@ -577,12 +568,3 @@ void TTradeCluster::ApplyMoveValue(int metricClampMax) {
     greenControl->SetEnabled(0, 1);
   }
 }
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#pragma auto_inline(on)
-#endif
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif

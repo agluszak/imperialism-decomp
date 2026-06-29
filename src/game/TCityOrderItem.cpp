@@ -3,10 +3,6 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // Slot 0x3c (Mac: Produce). The real body at 0x004b5180 is owned by
 // TProductionOrder (its own vtable region); this parallel TCityOrderItem chain
 // (TCapacityOrder) shares the same slot but cannot own the address, so this is an

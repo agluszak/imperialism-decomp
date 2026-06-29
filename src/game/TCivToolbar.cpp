@@ -1,4 +1,3 @@
-#pragma optimize("y", on)
 // TCivToolbar wrapper class quad extracted from Ghidra autogen.
 
 #include "decomp_types.h"

@@ -1,7 +1,6 @@
 // Manual decompilation file.
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
-#pragma optimize("y", on)
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"

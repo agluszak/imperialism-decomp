@@ -4,10 +4,6 @@
 #include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 struct MappedFlavorTextNationVariantEntry {
   short variantIndex;
   short pad;
@@ -71,10 +67,6 @@ void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot) {
   GenerateMappedFlavorTextUntilValidationPasses(
       dest, g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex);
 }
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
 
 // FUNCTION: IMPERIALISM 0x005d4720
 void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantIndex) {

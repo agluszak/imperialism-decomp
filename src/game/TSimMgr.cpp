@@ -283,19 +283,15 @@ void TSimMgr::GetString(short, short, CString*) {}
 // FUNCTION: IMPERIALISM 0x00580790
 void TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString*, short*) {}
 
-#pragma optimize("", on)
-
 // FUNCTION: IMPERIALISM 0x005811e0
 int TSimMgr::GetField30(void) {
   return field30;
 }
 
 // FUNCTION: IMPERIALISM 0x00581200
-#pragma optimize("y", on)
 void TSimMgr::DecrementField30Value() {
   --field30;
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x00581400
 void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {

@@ -9,10 +9,6 @@
 #include "game/TPortZone.h"
 #include "game/UiRuntimeContext.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 extern TZone* g_pMapActionContextListHead;
 
 extern "C" {

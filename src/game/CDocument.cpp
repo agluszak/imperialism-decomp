@@ -1,9 +1,5 @@
 #include "game/mfc.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("ys", on)
-#endif
-
 // LIBRARY: IMPERIALISM 0x006109eb
 // CDocument::DestructCDocumentBaseState
 

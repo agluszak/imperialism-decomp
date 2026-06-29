@@ -10,9 +10,6 @@
 #include <new>
 #include <math.h>
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 
 extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 // Random-cue rotation counter at 0x006a4520 (raw audio-state global, not yet in
@@ -50,10 +47,6 @@ TSoundPlayer* TSoundPlayer::ConstructTSoundPlayerBaseState() {
 
 // SYNTHETIC: IMPERIALISM 0x005933b0
 // TSoundPlayer::`scalar deleting destructor'
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
 
 // Partial teardown writes the runtime-object base vptr, symmetric with TEventHandler
 // construction via the normal base ctor chain.

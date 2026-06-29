@@ -7,10 +7,6 @@
 #include "game/mfc.h"
 #include "game/ui_control_tags.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
@@ -150,7 +146,3 @@ void TArmyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
     InvokeActiveCivToolbarCycleMapInteractionSelection();
   }
 }
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif

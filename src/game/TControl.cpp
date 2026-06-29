@@ -1,10 +1,6 @@
 // Manual decompilation file.
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 #include "game/TControl.h"
 #include "game/ClipStateRegion.h"
 #include "game/TTEView.h"

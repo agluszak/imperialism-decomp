@@ -29,7 +29,6 @@ IMPLEMENT_DYNCREATE(TTown, TObject)
 TTown::TTown() {}
 
 // FUNCTION: IMPERIALISM 0x005b6cd0
-#pragma optimize("y", on)
 void TTown::InitializeTownMarker(const char* markerName, short regionId, char enabledFlag,
                                  short ownerNation) {
   strcpy(this->name, markerName);
@@ -45,7 +44,6 @@ void TTown::InitializeTownMarker(const char* markerName, short regionId, char en
   this->transportLinkedFlag4c = 0;
   memset(this->payload1e, 0, sizeof(this->payload1e));
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x005b6d70
 void TTown::ReadFrom(TStream* stream) {

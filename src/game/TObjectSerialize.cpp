@@ -3,10 +3,6 @@
 #include "game/ArchiveStreamAdapter.h"
 #include "game/TFileStream.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x00485e90
 void TObject::Serialize(CArchive& archive) {
   ArchiveStreamAdapter adapter(&archive);

@@ -10,9 +10,6 @@ CRuntimeClass* TMilitaryUnitOrderState::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTMilitaryUnitOrderState);
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 // FUNCTION: IMPERIALISM 0x005c2df0
 TMilitaryUnitOrderState::TMilitaryUnitOrderState()
     : name24(), field_38(0), field_3A(0), field_3C(0), field_40(0) {
@@ -22,9 +19,6 @@ TMilitaryUnitOrderState::TMilitaryUnitOrderState()
   CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
   name24 = empty;                 // -> 0x00605a29 CString::operator=
 }
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
 
 // SYNTHETIC: IMPERIALISM 0x005c2ed0
 // TMilitaryUnitOrderState::`scalar deleting destructor'
@@ -32,9 +26,6 @@ TMilitaryUnitOrderState::TMilitaryUnitOrderState()
 // FUNCTION: IMPERIALISM 0x005c2f00
 TMilitaryUnitOrderState::~TMilitaryUnitOrderState() {}
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 // FUNCTION: IMPERIALISM 0x005c2f50
 void TMilitaryUnitOrderState::InitializeRecruitOrderState(short capValue, int nodeContext,
                                                           short nationSlot) {
@@ -49,9 +40,6 @@ void TMilitaryUnitOrderState::InitializeRecruitOrderState(short capValue, int no
   }
   CopyUnitCurrentTileIntoOrderTargets();
 }
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
 
 // FUNCTION: IMPERIALISM 0x005c2fd0
 void TMilitaryUnitOrderState::ReadFrom(TStream* stream) {

@@ -63,10 +63,6 @@ void DispatchOverlayEvent78Common(TWorldView* self, int stridedRecord) {
 
 } // namespace
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x00519af0
 short TWorldView::QueryMinusOneWordSlot77() {
   return -1;

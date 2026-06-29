@@ -3,10 +3,6 @@
 #include "decomp_types.h"
 #include "game/TCivUnit.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x004d2c60
 void TSelectedCivilianOrderState::SetActiveCivilianSelection(TCivUnit* entryContext,
                                                              int refreshCommandPanel) {

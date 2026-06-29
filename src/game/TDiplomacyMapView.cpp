@@ -24,10 +24,6 @@
 #include "game/TSimMgr.h"
 #include "game/TCursorControlPanel.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
 undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);
 undefined4 thunk_GetSurfaceObjectAtContextOffset24(void);

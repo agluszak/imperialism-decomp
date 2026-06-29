@@ -5,9 +5,6 @@
 #include "game/TQueueObject.h"
 #include "game/turn_event_packets.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 
 struct TInterNationEventDedupPacket {
   short eventCode0;
@@ -179,6 +176,3 @@ void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
                                         static_cast<unsigned char>(nationB));
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif

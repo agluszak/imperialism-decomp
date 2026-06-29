@@ -6,10 +6,6 @@
 #include "game/TStream.h"
 #include "game/TMission.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // Slot 24 (0x60) — body 0x4ec0a0; placed first because it is the lowest address.
 
 // FUNCTION: IMPERIALISM 0x004ec0a0

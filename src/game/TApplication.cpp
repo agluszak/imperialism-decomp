@@ -5,10 +5,6 @@
 #include "game/ui_widget_thunks.h"
 #include <new.h>
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void);
 
 extern "C" CRuntimeClass PTR_s_TApplication_00648af8;

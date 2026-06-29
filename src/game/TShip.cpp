@@ -12,10 +12,6 @@
 
 #include <new>
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
 extern short g_industryActionCostWeightResCode10[16];
 char g_ResourceDescriptorWeightWord0Base0069811c[0x24 * 64] = {0};
@@ -127,10 +123,6 @@ void TShip::ReadFrom(TStream* stream) {
   field08 = reinterpret_cast<TZone*(__cdecl*)(short)>(FindMapActionContextByNodeId)(zoneIndex);
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x0054fbf0
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode) {
   do {
@@ -182,10 +174,6 @@ int ComputeOrderNodeCompositeEconomicScore(TShip* node) {
          (int)*(short*)(reinterpret_cast<char*>(&g_Task_Force_Order_LookupTable_00698110) +
                         resourceType * 0x24);
 }
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 
 static int* NavyZoneOrderDescriptorEnabledFlagPtr(short zoneIndex) {
   return reinterpret_cast<int*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +

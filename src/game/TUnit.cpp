@@ -55,9 +55,6 @@ TUnit::TUnit() {
 // FUNCTION: IMPERIALISM 0x005c2510
 TUnit::~TUnit() {}
 
-// Original is FPO (frame-pointer omitted); force /Oy to match the esp-relative
-// argument loads (heuristic 88).
-#pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x005c2530
 void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
                                                         short nOrderOwnerNationId, short arg3) {
@@ -92,7 +89,6 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContex
   locTable->field_64 = uniqueId;
   this->field_20 = uniqueId;
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x005c2610
 void TUnit::VTableSlot10(int pOwnerContext) {

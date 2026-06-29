@@ -13,10 +13,6 @@
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
 undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);

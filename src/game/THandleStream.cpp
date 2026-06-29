@@ -1,9 +1,5 @@
 #include "game/THandleStream.h"
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 extern "C" {
 char g_pClassDescTHandleStream = 0;
 }
