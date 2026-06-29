@@ -2,6 +2,7 @@
 
 #include "game/TEventHandler.h"
 #include "game/global_data_tables.h"
+#include "game/TSoundChannelNode.h"
 
 struct CRuntimeClass;
 
@@ -12,8 +13,8 @@ public:
   unsigned char directSoundInitOkAt20;      // 0x20 — set by InitializeSoundSubsystem
   unsigned char directSoundInitPendingAt21; // 0x21 — set by RequestDirectSoundInitIfAllowed
   char pad22[0x4a];
-  void* runtimePeerAt6c;
-  void* runtimePeerAt70;
+  TSoundChannelNode* runtimePeerAt6c;
+  TSoundChannelNode* runtimePeerAt70;
   unsigned short fieldShort74;
   unsigned short fieldShort76;
   unsigned char stateByte78;
@@ -27,6 +28,10 @@ public:
   TSoundPlayer();
   TSoundPlayer* ConstructTSoundPlayerBaseState();
   DECLARE_DYNCREATE(TSoundPlayer)
+  void EnsureCdAudioDeviceHandleInitialized();
+  void ForwardMciCommand808ToDevice();
+  BOOL ForwardMciStatusCommand814IgnoreFailure();
+
   void Free() override;                                     // 0x07 -> 0x5e51d0
   char CanHandleCityDialogActionFalse(int action) override; // 0x13 -> 0x593400
 

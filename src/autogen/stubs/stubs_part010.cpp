@@ -1803,22 +1803,6 @@ undefined4 FindOneBasedNodeIndexByValueInLinkedList(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_00487f70
-// ghidra_proto undefined OrphanRetStub_00487f70()
-// FUNCTION: IMPERIALISM 0x00487f70
-undefined4 OrphanRetStub_00487f70(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpLinkedValueListHook20
-// ghidra_proto undefined NoOpLinkedValueListHook20()
-// FUNCTION: IMPERIALISM 0x00487f90
-undefined4 NoOpLinkedValueListHook20(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fb0
 // ghidra_proto undefined ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fb0()
 // FUNCTION: IMPERIALISM 0x00487fb0
