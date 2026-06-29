@@ -1,7 +1,7 @@
 #include "game/TNumberText.h"
 #include "game/CMcWindow.h"
-#include "game/buffered_stream.h"
 #include "game/mfc.h"
+#include <stdlib.h>
 
 extern "C" CRuntimeClass PTR_s_TNumberText_006496a8;
 
@@ -17,8 +17,10 @@ TNumberText::~TNumberText() {}
 IMPLEMENT_DYNCREATE(TNumberText, TEditText)
 
 // FUNCTION: IMPERIALISM 0x00491060
-void TNumberText::ConstructTNumberTextBaseState(TControl* panel, int* offsetLayout, int* sizeLayout, int val, int field_a4_val, int field_a8_val) {
-  this->InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, sizeLayout, 5, 5, -1, 0);
+void TNumberText::ConstructTNumberTextBaseState(TControl* panel, int* offsetLayout, int* sizeLayout,
+                                                int val, int field_a4_val, int field_a8_val) {
+  this->InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, sizeLayout, 5, 5, -1,
+                                                         0);
   this->field_9c = 0xff;
   this->SetControlValue(1);
   this->field_a8 = field_a8_val;
@@ -39,7 +41,7 @@ int TNumberText::UpdateControlCachedIntFromWindowText() {
   if (this->field_94 != nullptr) {
     CString textVal;
     this->field_94->GetWindowTextOrDelegateToOwner(&textVal);
-    this->value = ParseSignedIntAndDiscardResult(const_cast<char*>((const char*)textVal));
+    this->value = atoi(textVal);
   }
   return this->value;
 }

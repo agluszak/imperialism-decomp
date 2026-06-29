@@ -134,6 +134,9 @@ else()
         target_link_options(Imperialism PRIVATE /INCREMENTAL:NO)
 
         if(IMPERIALISM_MATCH_FLAGS_CSV)
+            # Matching default is global frame-pointer omission (/Oy): recovered game
+            # code overwhelmingly matches frameless output, while CRT/MFC bodies are
+            # treated as LIBRARY annotations instead of forcing /Oy- globally.
             set(IMPERIALISM_MATCH_FLAGS_RAW "${IMPERIALISM_MATCH_FLAGS_CSV}")
             if(IMPERIALISM_MATCH_FLAGS_RAW MATCHES ",")
                 string(REPLACE "," ";" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_RAW}")

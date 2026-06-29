@@ -1,8 +1,9 @@
 #include "game/TLanguageMgr.h"
 
 #include "game/ImperialismApp.h"
-#include "game/buffered_stream.h"
 #include "game/global_data_tables.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <cstring>
 
 namespace {
@@ -42,14 +43,13 @@ bool TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, 
   delimiter = 0x20;
   FreeNestedPointerTableRowsAndResetDimensions();
 
-  BufferedStreamState* stream = OpenBufferedStreamWithMode40(tablePath, kReadTextMode);
+  FILE* stream = fopen(tablePath, kReadTextMode);
   if (stream == 0) {
     return false;
   }
 
   char line[0x100];
-  ReadLineFromBufferedStreamUntilTerminator(line, 0xff, stream);
-  while ((stream->flags & 0x10) == 0) {
+  while (fgets(line, 0xff, stream) != 0) {
     char* entry = line;
     if (line[0] == '>') {
       entry = line + 1;
@@ -81,7 +81,7 @@ bool TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, 
         break;
       }
       case 'R':
-        field30 = ParseSignedIntAndDiscardResult(entry + 2);
+        field30 = atoi(entry + 2);
         break;
       case '[': {
         char firstExtra = 1;
@@ -97,11 +97,9 @@ bool TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, 
     } else if (marker == '.') {
       ParseNewsTableRow(entry);
     }
-
-    ReadLineFromBufferedStreamUntilTerminator(line, 0xff, stream);
   }
 
-  CloseBufferedStreamAndReleaseResources(stream);
+  fclose(stream);
   return true;
 }
 
