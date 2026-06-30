@@ -11,6 +11,7 @@ import argparse
 import bisect
 import json
 import re
+import sys
 from pathlib import Path
 
 from tools.common.hexutil import parse_hex_address
@@ -86,8 +87,8 @@ def load_old_generated_cpp_files(manifest_path: Path) -> list[str]:
         files = payload.get("generated_cpp_files", [])
         if isinstance(files, list):
             return [str(x) for x in files]
-    except Exception:
-        pass
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        print(f"Warning: failed reading manifest {manifest_path}: {exc}", file=sys.stderr)
     return []
 
 
@@ -117,8 +118,8 @@ def read_existing_assignments(output_dir: Path, target: str) -> dict[int, str]:
             files = payload.get("generated_cpp_files", [])
             if isinstance(files, list):
                 files_to_read = [output_dir / x for x in files]
-        except Exception:
-            pass
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"Warning: failed reading manifest {manifest_path}: {exc}", file=sys.stderr)
 
     if not files_to_read:
         files_to_read = sorted(output_dir.glob("stubs_part*.cpp"))

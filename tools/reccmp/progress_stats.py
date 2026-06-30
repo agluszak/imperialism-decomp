@@ -7,6 +7,7 @@ import argparse
 import csv
 import json
 import subprocess
+import sys
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -79,7 +80,8 @@ def git_info() -> dict[str, str]:
                 ["git", "log", "-1", "--format=%cI"], text=True
             ).strip(),
         }
-    except Exception:
+    except (OSError, subprocess.CalledProcessError) as exc:
+        print(f"Warning: failed to retrieve git info: {exc}", file=sys.stderr)
         return {}
 
 

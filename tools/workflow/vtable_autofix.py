@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import re
 import subprocess
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -182,7 +183,8 @@ def _ancestry_depth(repo_root: Path, cls: str) -> int:
         return 1_000_000
     try:
         manifest = cm.load_manifest(path)
-    except Exception:
+    except Exception as exc:
+        print(f"Warning: failed loading manifest for {cls}: {exc}", file=sys.stderr)
         return 1_000_000
     ancestry = (manifest.get("generated") or {}).get("ancestry") or []
     return len(ancestry) or 1_000_000

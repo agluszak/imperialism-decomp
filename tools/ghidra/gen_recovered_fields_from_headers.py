@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -175,7 +176,11 @@ def collect_rows(
                 continue
             try:
                 all_rows.extend(extract_class_rows(path, cls, layout_bases))
-            except Exception:
+            except Exception as exc:
+                print(
+                    f"Warning: failed extracting fields for {cls} from {path.name}: {exc}",
+                    file=sys.stderr,
+                )
                 continue
     return all_rows
 

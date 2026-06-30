@@ -130,7 +130,8 @@ def remove_old_generated_files(base_dir, old_files):
     for rel in old_files:
         try:
             full = safe_join(base_dir, rel)
-        except Exception:
+        except RuntimeError:
+            print("Warning: skipping unsafe path during cleanup: {}".format(rel))
             continue
         if os.path.isfile(full):
             os.remove(full)

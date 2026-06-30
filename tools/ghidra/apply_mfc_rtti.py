@@ -1404,7 +1404,10 @@ def run(program, args) -> dict:
                                     )
                                 field_len = clipped
                     except ValueError:
-                        pass
+                        changes.append(
+                            f"  !! curated field {cls}+0x{off:x}: "
+                            f"bad next offset '{next_off_s}', skipping clip"
+                        )
                 if off + field_len > struct.getLength():
                     changes.append(
                         f"  !! curated field {cls}+0x{off:x}: beyond object size 0x{struct.getLength():x}"

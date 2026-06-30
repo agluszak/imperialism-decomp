@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -92,7 +93,10 @@ def parse_function_symbols(path: Path) -> list[FunctionSymbol]:
             try:
                 size = int(size_text, 10)
             except ValueError:
-                pass
+                print(
+                    f"Warning: invalid size '{size_text}' for symbol at {addr_text}",
+                    file=sys.stderr,
+                )
         out.append(FunctionSymbol(address=addr, name=name, size=size))
     return out
 
