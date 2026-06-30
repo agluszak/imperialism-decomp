@@ -2,7 +2,6 @@
 
 #include "game/CString.h"
 #include "game/mfc.h"
-#include "game/mfc.h"
 #include "game/TMapMgr.h"
 #include "game/TTurnEventPacket.h"
 #include "game/TViewMgr.h"

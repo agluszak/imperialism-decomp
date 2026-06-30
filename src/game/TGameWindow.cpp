@@ -2,7 +2,6 @@
 
 #include "game/TSimMgr.h"
 #include "game/TControl.h"
-#include "game/TSimMgr.h"
 #include "game/TView.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"

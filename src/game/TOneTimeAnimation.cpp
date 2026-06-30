@@ -5,10 +5,8 @@
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
-#include "game/quickdraw_guards.h"
 
 // TOneTimeAnimation derives from the MFC CObject root: the factory at
 // 0x0049fd20 installs the shared CObject runtime vtable (0x0066fec4) into the

@@ -2,7 +2,6 @@
 
 #include "decomp_types.h"
 #include "game/mfc.h"
-#include "game/mfc.h"
 #include "game/TStream.h"
 
 extern "C" {

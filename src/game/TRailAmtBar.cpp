@@ -19,7 +19,6 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
-#include "game/mfc.h"
 
 // FUNCTION: IMPERIALISM 0x00589ed0
 TRailAmtBar* __cdecl CreateTRailAmtBarInstance(void) {

@@ -17,7 +17,6 @@
 
 #include <new>
 
-#include "game/mfc.h"
 
 
 static __inline TCity* GetNationCityStateBySlot(short slotId) {

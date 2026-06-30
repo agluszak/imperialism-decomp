@@ -10,7 +10,6 @@
 #include "game/global_data_tables.h"
 #include "game/TMinor.h"
 #include "game/TForeignMinister.h"
-#include "decomp_types.h"
 
 static short kNationMetricCategoryPresetValues[0x11];
 static short kNationMetricCodeLookup[0x20];

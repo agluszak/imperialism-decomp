@@ -17,7 +17,6 @@
 
 #include <new>
 
-#include "game/mfc.h"
 
 
 // FUNCTION: IMPERIALISM 0x00586840

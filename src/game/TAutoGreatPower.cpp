@@ -13,21 +13,16 @@
 #include "game/TStream.h"
 #include "game/TMission.h"
 #include "game/TMinor.h"
-#include "game/TSortedList.h"
 #include "game/TCity.h"
 #include "game/global_data_tables.h"
 #include "game/TZone.h"
 #include <new>
 
-#include "game/map_action_context_helpers.h"
+#include "game/nation_byte_swap_helpers.h"
 #include "game/turn_event_packets.h"
 #include "game/TShip.h"
 
 undefined4 GenerateThreadLocalRandom15(void);
-
-static __inline short GetShortAtOffset14OrInvalidValue(void) {
-  return GetShortAtOffset14OrInvalid(g_pMapActionContextListHead);
-}
 
 extern "C" {
 extern double g_DAT_00653fc0_Value_00653FC0; // 1/255
@@ -43,18 +38,6 @@ static const int kMapNodeCount = 0x180;
 static const int kPortZoneCount = 0x70;
 
 undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void);
-
-static __inline void SwapShortArrayBytes(void* base, int count) {
-  unsigned char* bytes = reinterpret_cast<unsigned char*>(base);
-  int i = 0;
-  while (i < count) {
-    unsigned char t = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = t;
-    bytes += 2;
-    ++i;
-  }
-}
 
 #include "game/TQueueObject.h"
 

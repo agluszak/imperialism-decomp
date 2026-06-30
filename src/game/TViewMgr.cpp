@@ -6,7 +6,6 @@
 #include "game/CWMgrIterator.h" // window-registry traversal for the full (code-0) refresh
 #include "game/quickdraw_rendering.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
 #include "game/TToolBarCluster.h" // pulls TView/TControl/TCluster chain for main-view dispatch
-#include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCivToolbar.h"

@@ -7,7 +7,6 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
-#include "game/mfc.h"
 
 extern "C" {
 char g_vtblTTextList = 0;

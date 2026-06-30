@@ -1,4 +1,5 @@
 #include "game/TShipOrder.h"
+#include "game/order_weight_helpers.h"
 
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
@@ -6,19 +7,6 @@
 #include "game/TShip.h"
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
-
-static __inline short ReadWeight(const short* tableBase, short index) {
-  return tableBase[static_cast<unsigned int>(index)];
-}
-
-enum {
-  kResourceWeightIndex03 = 3,
-  kResourceWeightIndex08 = 8,
-  kResourceWeightIndex09 = 9,
-  kResourceWeightIndex0B = 11,
-  kResourceWeightIndex0C = 12,
-  kResourceWeightIndex10 = 16,
-};
 
 static void ZeroShipOrderTrackingSlots(TShipOrder* order) {
   int remaining;

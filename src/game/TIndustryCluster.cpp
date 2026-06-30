@@ -6,6 +6,7 @@
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
 #include "game/global_data_tables.h"
+#include "game/trade_cluster_helpers.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/UiRuntimeContext.h"
@@ -16,14 +17,8 @@
 
 #include <new>
 
-#include "game/mfc.h"
-
 
 const int kAssertLineRatioB = 0xb73;
-
-static __inline short ReadControlValueFieldPlus4(TAmtBar* control) {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 4);
-}
 
 static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* context,
                                                            int assertLine) {

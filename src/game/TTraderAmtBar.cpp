@@ -12,7 +12,6 @@
 #include "game/TGreatPower.h"
 
 #include "decomp_types.h"
-#include "game/TGreatPower.h"
 #include "game/TTraderAmtBar.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -20,7 +19,6 @@
 #include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
 #include <new>
-#include "game/mfc.h"
 
 namespace {
 extern "C" char g_vtblTTraderAmtBar = 0;

@@ -12,12 +12,10 @@
 #include "game/TAmtBar.h"
 #include "game/TUnitToolbarCluster.h"
 #include "game/GameAssert.h"
-#include "game/UiRuntimeContext.h"
 
 #include <new>
 
 #include "game/TApplication.h"
-#include "game/mfc.h"
 
 extern "C" {
 char g_vtblTUnitToolbarCluster = 0;

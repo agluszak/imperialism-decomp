@@ -3,9 +3,7 @@
 #include <new>
 
 #include "game/mfc.h"
-#include "game/mfc.h"
 #include "game/GameAssert.h"
-#include "game/mfc.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
 #include "game/TZone.h"

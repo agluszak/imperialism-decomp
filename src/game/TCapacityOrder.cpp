@@ -1,5 +1,6 @@
 #include "game/TCapacityOrder.h"
 #include "game/global_data_tables.h"
+#include "game/order_weight_helpers.h"
 
 #include "game/mfc.h"
 #include "game/TGreatPower.h"
@@ -7,27 +8,6 @@
 #include "game/UiRuntimeContext.h"
 
 #include <new>
-
-static __inline short ReadWeight(const short* tableBase, short index) {
-  return tableBase[static_cast<unsigned int>(index)];
-}
-
-static __inline void WriteShort(void* base, int offset, short value) {
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
-}
-
-static __inline short ReadShort(void* base, int offset) {
-  return *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset);
-}
-
-enum {
-  kResourceWeightIndex03 = 3,
-  kResourceWeightIndex08 = 8,
-  kResourceWeightIndex09 = 9,
-  kResourceWeightIndex0B = 11,
-  kResourceWeightIndex0C = 12,
-  kResourceWeightIndex10 = 16,
-};
 
 static void ZeroTrackingSlots(TCapacityOrder* order) {
   int remaining;

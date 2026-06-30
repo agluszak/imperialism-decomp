@@ -27,6 +27,7 @@
 #include "game/turn_event_packets.h"
 #include "game/diplomacy_policy_hooks.h"
 #include "game/map_action_context_helpers.h"
+#include "game/nation_byte_swap_helpers.h"
 #include "game/TTurnEventPacket.h"
 #include "game/turn_flow_cooldown.h"
 #include "game/ui_invalidation_guard.h"
@@ -52,7 +53,6 @@
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/quickdraw_rendering.h"
 #include <stddef.h>
-#include <new>
 
 // Minister-skill float coefficient tables (defined in global_data_tables.cpp).
 extern "C" {
@@ -87,8 +87,6 @@ extern short g_DAT_006966d0_Value_006966D0[];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
 extern short g_awTacticalUnitCategoryCodeBySlot[];
 }
-extern TZone* g_pMapActionContextListHead;
-
 // Abstract View Classes for Native Virtual Method Dispatches (MSVC 5.0 compatible __thiscall
 // dispatches)
 
@@ -149,7 +147,6 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[];
 }
 
 #include "game/TUnit.h"
-#include "game/TZone.h"
 #include "game/TCivUnit.h"
 #include "game/TAdmiral.h"
 #include "game/TTrackedObjectListEntry.h"
@@ -157,9 +154,7 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[];
 #include "game/TQueueObject.h"
 #include "game/TStream.h"
 #include "game/nation_stream_serialization.h"
-#include "game/TIndexAndRankList.h"
 #include "game/TSortedByRelationshipList.h"
-#include "game/TSortedList.h"
 #include "game/TSortedList.h"
 
 static const unsigned int kAddrUiRuntimeContextPtr = 0x006A21BC;
@@ -240,18 +235,6 @@ static __inline signed char ReadLocaleByteStep(unsigned int baseAddress, int loc
 
 static __inline int ReadGlobalIntStep(unsigned int baseAddress, int index) {
   return *reinterpret_cast<int*>(baseAddress + index * 4);
-}
-
-static __inline void SwapShortArrayBytes(void* base, int count) {
-  unsigned char* bytes = reinterpret_cast<unsigned char*>(base);
-  int i = 0;
-  while (i < count) {
-    unsigned char t = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = t;
-    bytes += 2;
-    ++i;
-  }
 }
 
 static __inline void ReverseDwordArrayBytes(void* base, int count) {
@@ -431,10 +414,6 @@ static __inline unsigned int GenerateThreadLocalRandom15Value(void) {
 static __inline void QueueNationPairWarTransition(TDiplomacyMgr* diplomacyManager,
                                                   short sourceNation, short targetNation) {
   diplomacyManager->QueueNationPairWarTransition(sourceNation, targetNation);
-}
-
-static __inline short GetShortAtOffset14OrInvalidValue(void) {
-  return GetShortAtOffset14OrInvalid(g_pMapActionContextListHead);
 }
 
 static __inline void TemporarilyClearAndRestoreUiInvalidationFlag(const char* path, int line) {

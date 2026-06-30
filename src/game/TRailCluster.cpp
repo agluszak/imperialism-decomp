@@ -3,6 +3,7 @@
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
 #include "game/global_data_tables.h"
+#include "game/trade_cluster_helpers.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/TCity.h"
@@ -19,14 +20,8 @@
 #include "game/TView.h"
 #include "game/TUberCluster.h"
 
-#include "game/mfc.h"
-
 
 const int kAssertLineRatioA = 0xd1d;
-
-static __inline short ReadControlValueFieldPlus4(TAmtBar* control) {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 4);
-}
 
 static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context, int assertLine) {
   void* owner = context;

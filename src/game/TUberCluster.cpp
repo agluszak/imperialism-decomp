@@ -12,15 +12,12 @@
 
 #include "game/ui_widget_thunks.h"
 
-#include "game/mfc.h"
 
 
 const int kAssertLineMoveBarInitNil = 0x725;
 undefined4 thunk_BuildUiTextStyleDescriptor(void);
 #include "game/TAmtBar.h"
-#include "game/ui_widget_thunks.h"
 #include "game/TUberCluster.h"
-#include "game/ui_widget_thunks.h"
 
 #include <new>
 

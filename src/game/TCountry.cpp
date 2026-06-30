@@ -7,7 +7,6 @@
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
-#include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TOcean.h"
 #include "game/TMilitaryUnit.h"
@@ -23,7 +22,6 @@
 #include "game/mapped_flavor_text.h"
 
 #include "game/TDiplomacyMgr.h"
-#include "game/TInterNationEventQueueManager.h"
 
 #include <new>
 

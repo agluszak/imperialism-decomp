@@ -14,8 +14,6 @@
 
 
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
-#include "game/CString.h"
-#include "game/mfc.h"
 
 undefined4 thunk_RefreshCivilianTargetLegendBySelectedClass(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);

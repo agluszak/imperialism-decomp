@@ -6,7 +6,6 @@
 #include "game/UiRuntimeContext.h"
 #include "game/TView.h"
 #include "game/TMinor.h"
-#include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
