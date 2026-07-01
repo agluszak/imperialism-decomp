@@ -1,35 +1,35 @@
 #pragma once
 
-#include "game/mfc.h"
+#include "game/TAnimation.h"
 
 // Focus-animation helper object
-// completion callback at slot 0x14 (index 5).
-// VTABLE: IMPERIALISM (provisional)
-class TFocusAnimation : public CObject {
+// completion callback at slot 0x14 (index 5 of subclass, slot 13 in vtable).
+// VTABLE: IMPERIALISM 0x0064c268
+class TFocusAnimation : public TAnimation {
+  DECLARE_DYNCREATE(TFocusAnimation)
 public:
-#define TFOCUS_ANIMATION_DUMMY(n) virtual void TFocusAnimationDummy##n() = 0
-  TFOCUS_ANIMATION_DUMMY(00);
-  TFOCUS_ANIMATION_DUMMY(01);
-  TFOCUS_ANIMATION_DUMMY(02);
-  TFOCUS_ANIMATION_DUMMY(03);
-  TFOCUS_ANIMATION_DUMMY(04);
-#undef TFOCUS_ANIMATION_DUMMY
+  TFocusAnimation();
+  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140() override; // slot 10 / 0x28
+  virtual void VTableSlot0D(int* completionRecord = nullptr); // slot 13 / 0x34
+  virtual void Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(); // slot 14 / 0x38
 
-  virtual void DispatchCompletionRecordSlot14(int* completionRecord); // 0x14
 
-  void* scopedRenderTarget; // 0x04
-  short currentFrame;         // 0x08
-  short frameCount;           // 0x0a
-  short field0c;              // 0x0c
-  char pad_0e[2];
-  int frameTick;      // 0x10
-  int frameTickLimit; // 0x14
-  int field18;        // 0x18
-  int field1c;        // 0x1c
-  int field20;        // 0x20
-  int field24;        // 0x24
-  int field28;        // 0x28
+  void*& ScopedRenderTarget() { return *reinterpret_cast<void**>(&field04); }
+  short& Field08() { return *reinterpret_cast<short*>(&bitmapRect.left); }
+  short& Field0a() { return *(reinterpret_cast<short*>(&bitmapRect.left) + 1); }
+  short& Field0c() { return *reinterpret_cast<short*>(&bitmapRect.top); }
+  LONG& FrameTick() { return bitmapRect.right; }
+  LONG& FrameTickLimit() { return bitmapRect.bottom; }
+  int& Field18() { return *reinterpret_cast<int*>(&bitmapResource); }
+  int& SourceLeft() { return *reinterpret_cast<int*>(&field1e[0]); }
+  int& SourceTop() { return *reinterpret_cast<int*>(&field1e[4]); }
+  int& SourceRight() { return *reinterpret_cast<int*>(&field1e[8]); }
+  int& SourceBottom() { return *reinterpret_cast<int*>(&field1e[12]); }
+
   char enabledFlag;   // 0x2c
+
+  char pad_2d[3];
 
   void DestructTFocusAnimationAndMaybeFree();
 };
+

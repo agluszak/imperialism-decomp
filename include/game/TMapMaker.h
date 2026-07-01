@@ -1,53 +1,59 @@
 #pragma once
 
-#include "game/TControl.h"
-#include "game/mfc.h"
 #include "game/TObject.h"
+#include "game/TEventHandler.h"
 #include "game/TView.h"
+#include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x006598f8
 class TMapMaker : public TObject {
+  DECLARE_DYNAMIC(TMapMaker)
 public:
-  // Orig vtable (0x006598f8) has 43 slots; slots 0x22..0x28 are literal NULL and
-  // SetEnabled/SetState (orig 0x29/0x2a) follow after the gap. MSVC500 cannot emit
-  // mid-table NULL entries, so the C++ vtable ends at slot 0x21; SetEnabled/SetState
-  // are non-virtual bodies paired by address marker (TZone pattern).
-  // Slots 0x07/0x08 reuse TObject::Free/ShallowClone (not TControl bodies).
-  CRuntimeClass* GetRuntimeClass() const override;
-  ~TMapMaker();
-
-  virtual char GetBoolSlot28();
-  virtual void SetControlValue(int value);
-  virtual int QueryStepValue();
-  virtual void DispatchQueuedUiCommandAndRelease(void* payload);
-  virtual void DispatchUiSelectionToHandler(void* payload);
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
-  virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
-  virtual void vmethod_0017(int param);
-  virtual void ForwardParam(int param);
-  virtual char CanHandleCityDialogActionFalse(int action);
-  virtual int GetCityDialogValueDword10();
-  virtual void SetCityDialogValueDword10(int value);
-  virtual TView* OwnerPanel();
-  virtual char vmethod_0023();
-  virtual char vmethod_0024();
-  virtual void vmethod_0025();
-  virtual void vmethod_0026(int gate);
-  virtual void HandleCityProductionNoOp();
-  virtual void DispatchUiCommand19ToParent();
-  virtual void DispatchCityProductionAction1A();
-  virtual void DispatchCityProductionAction1B();
-  virtual char ActivateCityProductionViewIfAllowed();
-  virtual char vmethod_0080();
-  virtual void vmethod_0081(int);
-  // --- vtable ends at slot 0x21 (orig 0x22..0x28 are NULL; see note above) ---
-
-  // Original vtable slots 0x29/0x2a, kept as non-virtual (paired by address).
-  void SetEnabled(int enabledState, int refreshFlag);
-  void SetState(int state, int refreshFlag);
-
   TMapMaker();
+  virtual ~TMapMaker() override;
+
+  virtual char GetBoolSlot28(); // slot 10 / 0x28
+  virtual void SetControlValue(int value); // slot 11 / 0x2c
+  virtual TEventHandler* QueryStepValue(); // slot 12 / 0x30
+  virtual void DispatchQueuedUiCommandAndRelease(void* payload); // slot 13 / 0x34
+  virtual void DispatchUiSelectionToHandler(void* payload); // slot 14 / 0x38
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event); // slot 15 / 0x3c
+  virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event); // slot 16 / 0x40
+  virtual void vmethod_0017(int param); // slot 17 / 0x44
+  virtual void ForwardParam(int param); // slot 18 / 0x48
+  virtual char CanHandleCityDialogActionFalse(int action); // slot 19 / 0x4c
+  virtual int GetCityDialogValueDword10(); // slot 20 / 0x50
+  virtual void SetCityDialogValueDword10(int value); // slot 21 / 0x54
+  virtual TView* OwnerPanel(); // slot 22 / 0x58
+  virtual char vmethod_0023(); // slot 23 / 0x5c
+  virtual char vmethod_0024(); // slot 24 / 0x60
+  virtual void vmethod_0025(); // slot 25 / 0x64
+  virtual void vmethod_0026(int gate); // slot 26 / 0x68
+  virtual void HandleCityProductionNoOp(); // slot 27 / 0x6c
+  virtual void DispatchUiCommand19ToParent(); // slot 28 / 0x70
+  virtual void DispatchCityProductionAction1A(); // slot 29 / 0x74
+  virtual void DispatchCityProductionAction1B(); // slot 30 / 0x78
+  virtual char ActivateCityProductionViewIfAllowed(); // slot 31 / 0x7c
+  virtual char vmethod_0080(); // slot 32 / 0x80
+  virtual void vmethod_0081(int param); // slot 33 / 0x84
+
+  // Slots 34 to 40 are NULL (pure virtual dummy methods)
+  virtual void TMapMakerDummy34() = 0;
+  virtual void TMapMakerDummy35() = 0;
+  virtual void TMapMakerDummy36() = 0;
+  virtual void TMapMakerDummy37() = 0;
+  virtual void TMapMakerDummy38() = 0;
+  virtual void TMapMakerDummy39() = 0;
+  virtual void TMapMakerDummy40() = 0;
+
+  // Slots 41 and 42 (offset 0xa4 and 0xa8)
+  virtual void SetEnabled(int enabledState, int refreshFlag); // slot 41 / 0xa4
+  virtual void SetState(int state, int refreshFlag); // slot 42 / 0xa8
+
+  char pad_04_2a8[0x2a8 - 0x04];
 };
+
+ASSERT_SIZE(TMapMaker, 0x2a8);
 
 // === BEGIN GENERATED (TMapMaker) — refreshed by `just gen-class TMapMaker`; do not hand-edit ===
 // clang-format off

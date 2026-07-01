@@ -139,58 +139,10 @@ undefined4 ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(void)
   return 0;
 }
 
-// ghidra_name TNavyMission::CreateTNavyMission
-// ghidra_proto undefined CreateTNavyMission()
-// FUNCTION: IMPERIALISM 0x00536390
-undefined4 CreateTNavyMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyMission::GetTNavyMissionClassNamePointer
-// ghidra_proto undefined GetTNavyMissionClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00536450
-undefined4 GetTNavyMissionClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At00536470
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At00536470()
 // FUNCTION: IMPERIALISM 0x00536470
 undefined4 WrapperFor_AFX_CLASSINIT_At00536470(void)
-{
-  return 0;
-}
-
-// ghidra_name CleanupTMissionAndReleaseOwnedOrders
-// ghidra_proto undefined CleanupTMissionAndReleaseOwnedOrders()
-// FUNCTION: IMPERIALISM 0x005364c0
-undefined4 CleanupTMissionAndReleaseOwnedOrders(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeTNavyMissionCommon
-// ghidra_proto undefined SerializeTNavyMissionCommon()
-// FUNCTION: IMPERIALISM 0x00536530
-undefined4 SerializeTNavyMissionCommon(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeTNavyMissionCommon
-// ghidra_proto undefined DeserializeTNavyMissionCommon()
-// FUNCTION: IMPERIALISM 0x00536650
-undefined4 DeserializeTNavyMissionCommon(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearMissionQueuedOrderLinksAndOwnerPointers
-// ghidra_proto undefined ClearMissionQueuedOrderLinksAndOwnerPointers()
-// FUNCTION: IMPERIALISM 0x00536740
-undefined4 ClearMissionQueuedOrderLinksAndOwnerPointers(void)
 {
   return 0;
 }
@@ -263,30 +215,6 @@ undefined4 SetMapOrderEntryChildFlags(void)
 // ghidra_proto undefined RefreshMissionPortZoneContextForNation()
 // FUNCTION: IMPERIALISM 0x00536fa0
 undefined4 RefreshMissionPortZoneContextForNation(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyMission::EnsureMissionCurrentTargetContextIsValid
-// ghidra_proto undefined EnsureMissionCurrentTargetContextIsValid()
-// FUNCTION: IMPERIALISM 0x00536fc0
-undefined4 EnsureMissionCurrentTargetContextIsValid(void)
-{
-  return 0;
-}
-
-// ghidra_name GetMissionOrderBudgetByMode
-// ghidra_proto undefined GetMissionOrderBudgetByMode()
-// FUNCTION: IMPERIALISM 0x00537060
-undefined4 GetMissionOrderBudgetByMode(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::QueueMissionOrdersByPriorityForContext
-// ghidra_proto void __thiscall QueueMissionOrdersByPriorityForContext(int pContextAnchor, int * ppSelectedChildNode)
-// FUNCTION: IMPERIALISM 0x00537090
-undefined4 QueueMissionOrdersByPriorityForContext(void)
 {
   return 0;
 }
@@ -979,14 +907,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053c050(void)
   return 0;
 }
 
-// ghidra_name TMission::ConstructTArmyMissionWithNodeKey
-// ghidra_proto undefined ConstructTArmyMissionWithNodeKey()
-// FUNCTION: IMPERIALISM 0x0053c0a0
-undefined4 ConstructTArmyMissionWithNodeKey(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnFalseForArmyAttackInvadeCapabilityFlag
 // ghidra_proto undefined ReturnFalseForArmyAttackInvadeCapabilityFlag()
 // FUNCTION: IMPERIALISM 0x0053c1b0
@@ -1007,30 +927,6 @@ undefined4 DestroyTArmyMission(void)
 // ghidra_proto undefined ResetTArmyMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x0053c200
 undefined4 ResetTArmyMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyMission::CleanupTArmyMissionAndReleaseChildContext
-// ghidra_proto undefined CleanupTArmyMissionAndReleaseChildContext()
-// FUNCTION: IMPERIALISM 0x0053c220
-undefined4 CleanupTArmyMissionAndReleaseChildContext(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeTArmyMission
-// ghidra_proto undefined SerializeTArmyMission()
-// FUNCTION: IMPERIALISM 0x0053c2b0
-undefined4 SerializeTArmyMission(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeTArmyMission
-// ghidra_proto undefined DeserializeTArmyMission()
-// FUNCTION: IMPERIALISM 0x0053c3d0
-undefined4 DeserializeTArmyMission(void)
 {
   return 0;
 }
@@ -1331,22 +1227,6 @@ undefined4 HandleDefendProvinceMissionActionType01ForTargetTile(void)
   return 0;
 }
 
-// ghidra_name TDefendProvinceMission::CreateTDefendProvinceMission
-// ghidra_proto undefined CreateTDefendProvinceMission()
-// FUNCTION: IMPERIALISM 0x0053e5f0
-undefined4 CreateTDefendProvinceMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer
-// ghidra_proto undefined GetTDefendProvinceMissionClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0053e670
-undefined4 GetTDefendProvinceMissionClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At0053e690
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053e690()
 // FUNCTION: IMPERIALISM 0x0053e690
@@ -1355,50 +1235,10 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053e690(void)
   return 0;
 }
 
-// ghidra_name TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext
-// ghidra_proto undefined CleanupDefendProvinceMissionAndReleaseChildContext()
-// FUNCTION: IMPERIALISM 0x0053ebe0
-undefined4 CleanupDefendProvinceMissionAndReleaseChildContext(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefendProvinceMission::UpdateDefendProvinceMissionStateByNationTargetMatch
-// ghidra_proto undefined UpdateDefendProvinceMissionStateByNationTargetMatch()
-// FUNCTION: IMPERIALISM 0x0053ecc0
-undefined4 UpdateDefendProvinceMissionStateByNationTargetMatch(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14
-// ghidra_proto undefined ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14()
-// FUNCTION: IMPERIALISM 0x0053ed00
-undefined4 ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext
-// ghidra_proto undefined PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext()
-// FUNCTION: IMPERIALISM 0x0053edf0
-undefined4 PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearMissionStateByte11
 // ghidra_proto undefined ClearMissionStateByte11()
 // FUNCTION: IMPERIALISM 0x0053eff0
 undefined4 ClearMissionStateByte11(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefendProvinceMission::HandleInvadeMissionActionType3ForTargetTile
-// ghidra_proto undefined HandleInvadeMissionActionType3ForTargetTile()
-// FUNCTION: IMPERIALISM 0x0053f010
-undefined4 HandleInvadeMissionActionType3ForTargetTile(void)
 {
   return 0;
 }

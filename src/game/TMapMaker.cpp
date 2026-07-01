@@ -1,14 +1,16 @@
 #include "game/TMapMaker.h"
 #include "game/TObject.h"
+#include "game/TControl.h"
 
-// FUNCTION: IMPERIALISM 0x00525950
-CRuntimeClass* TMapMaker::GetRuntimeClass() const {
-  return 0;
+IMPLEMENT_DYNAMIC(TMapMaker, TObject)
+
+// FUNCTION: IMPERIALISM 0x00525970
+TMapMaker::TMapMaker() : TObject() {
 }
 
-// SYNTHETIC: IMPERIALISM 0x00525990
-// TMapMaker::`scalar deleting destructor'
-TMapMaker::~TMapMaker() {}
+// FUNCTION: IMPERIALISM 0x005259c0
+TMapMaker::~TMapMaker() {
+}
 
 // FUNCTION: IMPERIALISM 0x00526ba0
 char TMapMaker::GetBoolSlot28() {
@@ -20,7 +22,7 @@ void TMapMaker::SetControlValue(int value) {
 }
 
 // FUNCTION: IMPERIALISM 0x00527040
-int TMapMaker::QueryStepValue() {
+TEventHandler* TMapMaker::QueryStepValue() {
   return 0;
 }
 

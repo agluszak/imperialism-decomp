@@ -707,22 +707,6 @@ undefined4 WrapperFor_ftol_At005258c0(void)
   return 0;
 }
 
-// ghidra_name TMapMaker::ConstructTMapMaker
-// ghidra_proto undefined ConstructTMapMaker()
-// FUNCTION: IMPERIALISM 0x00525970
-undefined4 ConstructTMapMaker(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::DestructTMapMaker
-// ghidra_proto undefined DestructTMapMaker()
-// FUNCTION: IMPERIALISM 0x005259c0
-undefined4 DestructTMapMaker(void)
-{
-  return 0;
-}
-
 // ghidra_name TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
 // ghidra_proto undefined GenerateMapFromTuningStringAndApplyScenarioOverrides()
 // FUNCTION: IMPERIALISM 0x00525a30
@@ -1179,14 +1163,6 @@ undefined4 CreateMissionObjectByKindAndNodeContext(void)
   return 0;
 }
 
-// ghidra_name TNavyMission::ConstructTNavyMission
-// ghidra_proto undefined ConstructTNavyMission()
-// FUNCTION: IMPERIALISM 0x00535470
-undefined4 ConstructTNavyMission(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanRetStub_005354c0
 // ghidra_proto undefined OrphanRetStub_005354c0()
 // FUNCTION: IMPERIALISM 0x005354c0
@@ -1223,14 +1199,6 @@ undefined4 ReturnZeroMissionSlot58NavyOverride(void)
 // ghidra_proto undefined ReturnArgMissionSlot5CNavyOverride()
 // FUNCTION: IMPERIALISM 0x00535540
 undefined4 ReturnArgMissionSlot5CNavyOverride(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyMission::DestroyTNavyMission
-// ghidra_proto undefined DestroyTNavyMission()
-// FUNCTION: IMPERIALISM 0x00535560
-undefined4 DestroyTNavyMission(void)
 {
   return 0;
 }

@@ -2568,3 +2568,14 @@ thunk_~CProcessLocalObject|CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ
 ~THandleStream|THandleStream::~THandleStream
 ~TSortByPriceList|CObArray::??1CUIntArray@@UAE@XZ
 ~TStaticText|TStaticText::~TStaticText
+?CreateTStratReportViewInstance@@YAPAVTStratReportView@@XZ|TStratReportView::?CreateTStratReportViewInstance@@YAPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@XZ
+?GetTStratReportViewClassNamePointer@@YAPAXXZ|TStratReportView::GetTStratReportViewClassNamePointer
+??0TStratReportView@@QAE@XZ|TStratReportView::?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@PAU12@@Z
+?CreateTDefendProvinceMission@@YAPAVTMission@@XZ|TDefendProvinceMission::CreateTDefendProvinceMission
+?GetTDefendProvinceMissionClassNamePointer@@YAPAXXZ|TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer
+??0TNavyMission@@QAE@PAVTZone@@@Z|TNavyMission::ConstructTNavyMission
+?CreateTNavyMission@@YAPAVTMission@@XZ|TNavyMission::CreateTNavyMission
+?GetTNavyMissionClassNamePointer@@YAPAXXZ|TNavyMission::GetTNavyMissionClassNamePointer
+
+
+

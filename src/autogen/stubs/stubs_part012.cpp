@@ -91,14 +91,6 @@ undefined4 CreateTTransFocusAnimationInstance(void)
   return 0;
 }
 
-// ghidra_name TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
-// ghidra_proto undefined ConstructTTransFocusAnimationBaseState()
-// FUNCTION: IMPERIALISM 0x004a04a0
-undefined4 ConstructTTransFocusAnimationBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TAnimator::CreateTAnimatorInstance
 // ghidra_proto undefined CreateTAnimatorInstance()
 // FUNCTION: IMPERIALISM 0x004a09f0

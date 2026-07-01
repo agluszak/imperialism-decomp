@@ -389,6 +389,8 @@ public:
   unsigned char mapNodeStateFlags[0x180];
   unsigned char portZoneStateFlags[0x70];
   TSortedList* missionQueue;
+  float floatB64;
+  float floatB68;
 
   // (All thunk_*_At0040xxxx member wrappers retired: those addresses are pure ILT
   // `jmp` stubs from incremental linking, not real functions. Callsites now call the

@@ -1,37 +1,25 @@
 #pragma once
 
-#include "game/mfc.h"
+#include "game/TFocusAnimation.h"
 
 // Transitional focus-animation helper (factory 0x004a0460). Shares the completion callback
 // slot layout with TFocusAnimation (vtable index 5 / byte offset 0x14).
 // VTABLE: IMPERIALISM 0x0064c498
-class TTransFocusAnimation : public CObject {
+class TTransFocusAnimation : public TFocusAnimation {
+  DECLARE_DYNCREATE(TTransFocusAnimation)
+
 public:
-#define TTRANS_FOCUS_ANIMATION_DUMMY(n) virtual void TTransFocusAnimationDummy##n() = 0
-  TTRANS_FOCUS_ANIMATION_DUMMY(00);
-  TTRANS_FOCUS_ANIMATION_DUMMY(01);
-  TTRANS_FOCUS_ANIMATION_DUMMY(02);
-  TTRANS_FOCUS_ANIMATION_DUMMY(03);
-  TTRANS_FOCUS_ANIMATION_DUMMY(04);
-#undef TTRANS_FOCUS_ANIMATION_DUMMY
+  TTransFocusAnimation();
+  TTransFocusAnimation(void* target, RECT* bounds, short f0a, short f0c, int tickLimit, int f18);
+  virtual ~TTransFocusAnimation() override;
 
-  virtual void DispatchCompletionRecordSlot14(int* completionRecord); // 0x14
+  virtual void Free() override; // slot 7 / 0x1c
+  virtual void VTableSlot0D(int* completionRecord) override; // slot 13 / 0x34
+  virtual undefined RenderBattleReportInsetWithPaletteShift() override; // slot 11 / 0x2c
 
-  void* scopedRenderTarget; // 0x04
-  short field08;            // 0x08
-  short field0a;            // 0x0a
-  short field0c;            // 0x0c
-  char pad_0e[2];
-  int field10;      // 0x10
-  int field14;      // 0x14
-  int field18;      // 0x18
-  int sourceLeft;   // 0x1c
-  int sourceTop;    // 0x20
-  int sourceRight;  // 0x24
-  int sourceBottom; // 0x28
-  char pad_2c[4];
+
   int transientSurfaceContext; // 0x30
+  int field34;                 // 0x34
 
   void BlitTransientSurfaceToPrimaryRenderContextWithClip();
-  void RenderFocusAnimationFrameWithScopedQuickDraw();
 };
