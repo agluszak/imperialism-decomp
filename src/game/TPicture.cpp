@@ -9,6 +9,9 @@ undefined4 SetPictureResourceIdAndRefresh_Impl(void);
 // SYNTHETIC: IMPERIALISM 0x0048eeb0
 // TPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0048efa0
+// TPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPicture, TControl)
 
 // FUNCTION: IMPERIALISM 0x0048efc0

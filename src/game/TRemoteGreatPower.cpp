@@ -83,6 +83,9 @@ TRemoteGreatPower::~TRemoteGreatPower() {}
 // SYNTHETIC: IMPERIALISM 0x005417c0
 // TRemoteGreatPower::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00541b20
+// TRemoteGreatPower::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TRemoteGreatPower, TGreatPower)
 
 TRemoteGreatPower::TRemoteGreatPower() {}

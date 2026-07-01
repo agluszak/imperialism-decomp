@@ -6,6 +6,9 @@ TTradeOfferNationView::~TTradeOfferNationView() {}
 // SYNTHETIC: IMPERIALISM 0x005bd1f0
 // TTradeOfferNationView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005bd260
+// TTradeOfferNationView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTradeOfferNationView, TView)
 
 TTradeOfferNationView::TTradeOfferNationView() {}

@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00584d80
 // TToolBarCluster::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00584e00
+// TToolBarCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TToolBarCluster, TCluster)
 
 TToolBarCluster::TToolBarCluster() {}

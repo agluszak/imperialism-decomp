@@ -5,6 +5,9 @@
 // SYNTHETIC: IMPERIALISM 0x004877c0
 // TCommand::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00487800
+// TCommand::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCommand, TEvent)
 
 // The compiler emits the 0x648e28 vtable write from the // VTABLE: annotation.

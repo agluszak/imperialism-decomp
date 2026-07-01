@@ -150,6 +150,9 @@ TOcean::~TOcean() {}
 // SYNTHETIC: IMPERIALISM 0x00562100
 // TOcean::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00562190
+// TOcean::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TOcean, TObject)
 
 TOcean::TOcean() {}

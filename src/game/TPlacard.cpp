@@ -8,6 +8,9 @@
 void* __cdecl CreateTPlacardInstance(void) {
   return new TPlacard();
 }
+// SYNTHETIC: IMPERIALISM 0x0058b9f0
+// TPlacard::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPlacard, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058ba10

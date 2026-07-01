@@ -8,6 +8,9 @@
 TToggleButton* __cdecl CreateTToggleButtonInstance(void) {
   return new TToggleButton();
 }
+// SYNTHETIC: IMPERIALISM 0x005710d0
+// TToggleButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TToggleButton, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005710f0

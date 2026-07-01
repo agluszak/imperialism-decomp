@@ -6,6 +6,9 @@ TScoreGraph::~TScoreGraph() {}
 // SYNTHETIC: IMPERIALISM 0x004fe1d0
 // TScoreGraph::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004fe290
+// TScoreGraph::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TScoreGraph, TView)
 
 TScoreGraph::TScoreGraph() {}

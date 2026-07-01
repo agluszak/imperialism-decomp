@@ -1,5 +1,8 @@
 #include "game/TPtrList.h"
 
+// SYNTHETIC: IMPERIALISM 0x00488510
+// TPtrList::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPtrList, TSortedPtrList)
 
 TPtrList::TPtrList() {}
@@ -103,3 +106,6 @@ void TPtrList::SetAtOrdinalSlot60(int ordinal, void** entryPtr, int unusedFlag) 
   (void)entryPtr;
   (void)unusedFlag;
 }
+
+// SYNTHETIC: IMPERIALISM 0x004884c0
+// TPtrList::`scalar deleting destructor'

@@ -6,6 +6,9 @@ TScrollBarView::~TScrollBarView() {}
 // SYNTHETIC: IMPERIALISM 0x005743f0
 // TScrollBarView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00574490
+// TScrollBarView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TScrollBarView, TControl)
 
 TScrollBarView::TScrollBarView() {}

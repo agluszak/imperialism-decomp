@@ -6,6 +6,9 @@ TTacticalToolbar::~TTacticalToolbar() {}
 // SYNTHETIC: IMPERIALISM 0x005ac780
 // TTacticalToolbar::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005ac820
+// TTacticalToolbar::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTacticalToolbar, TCluster)
 
 TTacticalToolbar::TTacticalToolbar() {}

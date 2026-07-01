@@ -9,6 +9,9 @@ extern "C" unsigned int __cdecl strlen(const char* s);
 // SYNTHETIC: IMPERIALISM 0x004889a0
 // TStream::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004889d0
+// TStream::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TStream, TObject)
 
 // MFC-style serialization foundation: compiled favor-size in the original.
@@ -211,3 +214,7 @@ char TStream::ReadByte(void*) {
 
 // FUNCTION: IMPERIALISM 0x004899a0
 void TStream::WriteObjectSlotB4(void*, int) {}
+
+// SYNTHETIC: IMPERIALISM 0x00488a10
+// TStream::`scalar deleting destructor'
+

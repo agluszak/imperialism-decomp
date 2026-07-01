@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x0056f8e0
 // TPageView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0056f9a0
+// TPageView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPageView, TView)
 
 TPageView::TPageView() {}

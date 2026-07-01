@@ -40,6 +40,9 @@ void TEventHandler::CreateTEventHandlerInstance() {
 // SYNTHETIC: IMPERIALISM 0x0048a0a0
 // TEventHandler::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0048a0e0
+// TEventHandler::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TEventHandler, TObject)
 
 TEventHandler::TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), resourceOwner(0) {}

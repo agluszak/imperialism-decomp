@@ -659,6 +659,13 @@ undefined4 WrapperFor_ftol_At005258c0(void)
   return 0;
 }
 
+// ghidra_name TMapMaker::CreateObject
+// FUNCTION: IMPERIALISM 0x00525910
+undefined4 TMapMaker_CreateObject(void)
+{
+  return 0;
+}
+
 // ghidra_name TMapMaker::ConstructTMapMaker
 // ghidra_proto undefined ConstructTMapMaker()
 // FUNCTION: IMPERIALISM 0x00525970
@@ -1087,6 +1094,14 @@ undefined4 ConstructTIndexAndRankList(void)
 // ghidra_proto undefined DestructTIndexAndRankList()
 // FUNCTION: IMPERIALISM 0x005348d0
 undefined4 DestructTIndexAndRankList(void)
+{
+  return 0;
+}
+
+// ghidra_name TIndexAndRankList::CompareUnsignedIntsAscending
+// ghidra_proto undefined CompareIndexAndRankEntriesByField2Descending()
+// FUNCTION: IMPERIALISM 0x00534910
+undefined4 CompareIndexAndRankEntriesByField2Descending(void)
 {
   return 0;
 }

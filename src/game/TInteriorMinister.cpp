@@ -14,6 +14,9 @@ void TInteriorMinister::InteriorSlot1F() {}
 // SYNTHETIC: IMPERIALISM 0x004be0d0
 // TInteriorMinister::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004be1b0
+// TInteriorMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TInteriorMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x004be1d0

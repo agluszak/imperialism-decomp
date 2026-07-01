@@ -11,6 +11,9 @@ TNominationView::~TNominationView() {}
 // SYNTHETIC: IMPERIALISM 0x004fb6e0
 // TNominationView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004fb760
+// TNominationView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNominationView, TPicture)
 
 TNominationView::TNominationView() {}

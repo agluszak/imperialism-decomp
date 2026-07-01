@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004a8ca0
 // TArmyUnitLine::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004a8d10
+// TArmyUnitLine::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyUnitLine, TLineData)
 
 TArmyUnitLine::TArmyUnitLine() {}

@@ -962,10 +962,9 @@ undefined4 TMyNumberText_CreateObject(void)
   return 0;
 }
 
-// ghidra_name TMyNumberText::GetTMyNumberTextClassNamePointer
-// ghidra_proto undefined GetTMyNumberTextClassNamePointer()
+// ghidra_name TMyNumberText::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x005b4fb0
-undefined4 GetTMyNumberTextClassNamePointer(void)
+undefined4 TMyNumberText_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -1017,10 +1016,9 @@ undefined4 TDropShadowNumberText_CreateObject(void)
   return 0;
 }
 
-// ghidra_name TDropShadowNumberText::GetTDropShadowNumberTextClassNamePointer
-// ghidra_proto undefined GetTDropShadowNumberTextClassNamePointer()
+// ghidra_name TDropShadowNumberText::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x005b58f0
-undefined4 GetTDropShadowNumberTextClassNamePointer(void)
+undefined4 TDropShadowNumberText_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -1097,6 +1095,46 @@ undefined4 DestructTTownAndMaybeFree_Impl(void)
   return 0;
 }
 
+// ghidra_name TTown::RecomputeTownAdjacentTileYieldTotals
+// ghidra_proto undefined RecomputeTownAdjacentTileYieldTotals()
+// FUNCTION: IMPERIALISM 0x005b6f70
+undefined4 RecomputeTownAdjacentTileYieldTotals(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::RecomputeTownAdjacentResourceSupplyTotals
+// ghidra_proto undefined RecomputeTownAdjacentResourceSupplyTotals()
+// FUNCTION: IMPERIALISM 0x005b7140
+undefined4 RecomputeTownAdjacentResourceSupplyTotals(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::RecomputeTownAdjacentUniversityWeightedTotals
+// ghidra_proto undefined RecomputeTownAdjacentUniversityWeightedTotals()
+// FUNCTION: IMPERIALISM 0x005b73e0
+undefined4 RecomputeTownAdjacentUniversityWeightedTotals(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::IncrementProductionDerivedCountersWithTurnParityRules
+// ghidra_proto undefined IncrementProductionDerivedCountersWithTurnParityRules()
+// FUNCTION: IMPERIALISM 0x005b7570
+undefined4 IncrementProductionDerivedCountersWithTurnParityRules(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::OrphanLeaf_NoCall_Ins29_005b77e0
+// ghidra_proto undefined OrphanLeaf_NoCall_Ins29_005b77e0(char * param_1)
+// FUNCTION: IMPERIALISM 0x005b77e0
+undefined4 OrphanLeaf_NoCall_Ins29_005b77e0(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_ftol_At005b79a0
 // ghidra_proto undefined WrapperFor_ftol_At005b79a0()
 // FUNCTION: IMPERIALISM 0x005b79a0
@@ -1105,10 +1143,16 @@ undefined4 WrapperFor_ftol_At005b79a0(void)
   return 0;
 }
 
-// ghidra_name TTradeMgr::GetTTradeMgrClassNamePointer
-// ghidra_proto undefined GetTTradeMgrClassNamePointer()
+// ghidra_name TTradeMgr::CreateObject
+// FUNCTION: IMPERIALISM 0x005b79d0
+undefined4 TTradeMgr_CreateObject(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x005b7a00
-undefined4 GetTTradeMgrClassNamePointer(void)
+undefined4 TTradeMgr_GetRuntimeClass(void)
 {
   return 0;
 }

@@ -6,6 +6,9 @@ TFlagOptionsPicture::~TFlagOptionsPicture() {}
 // SYNTHETIC: IMPERIALISM 0x0056b210
 // TFlagOptionsPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0056b290
+// TFlagOptionsPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TFlagOptionsPicture, TPicture)
 
 TFlagOptionsPicture::TFlagOptionsPicture() {}

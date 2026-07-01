@@ -6,6 +6,9 @@ TCivAnimation2::~TCivAnimation2() {}
 // SYNTHETIC: IMPERIALISM 0x0049f600
 // TCivAnimation2::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0049f680
+// TCivAnimation2::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCivAnimation2, TAnimation)
 
 TCivAnimation2::TCivAnimation2() {}

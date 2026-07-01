@@ -6,6 +6,9 @@ TNetGameSelectPicture::~TNetGameSelectPicture() {}
 // SYNTHETIC: IMPERIALISM 0x00576aa0
 // TNetGameSelectPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00576b70
+// TNetGameSelectPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNetGameSelectPicture, TNoHilitePicture)
 
 TNetGameSelectPicture::TNetGameSelectPicture() {}

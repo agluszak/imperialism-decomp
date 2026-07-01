@@ -12,6 +12,9 @@ TTechMgr* g_pCityOrderCapabilityState = 0;
 // SYNTHETIC: IMPERIALISM 0x005aef30
 // TTechMgr::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005aef60
+// TTechMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTechMgr, TObject)
 
 TTechMgr::TTechMgr() {}
@@ -175,3 +178,7 @@ void TTechMgr::ReadFrom(TStream* stream) {
 void TTechMgr::WriteTo(TStream* stream) {
   (void)stream;
 }
+
+// SYNTHETIC: IMPERIALISM 0x005aefa0
+// TTechMgr::`scalar deleting destructor'
+

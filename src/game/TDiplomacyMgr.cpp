@@ -69,6 +69,9 @@ int TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(int
 // SYNTHETIC: IMPERIALISM 0x004ee650
 // TDiplomacyMgr::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004ee6a0
+// TDiplomacyMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDiplomacyMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x004ee6c0

@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x005c1a80
 // TTradeTotalsView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005c1af0
+// TTradeTotalsView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTradeTotalsView, TView)
 
 TTradeTotalsView::TTradeTotalsView() {}

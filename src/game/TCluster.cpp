@@ -21,6 +21,9 @@ extern "C" CRuntimeClass PTR_s_TCluster_006496c0;
 // SYNTHETIC: IMPERIALISM 0x00491300
 // TCluster::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004913e0
+// TCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCluster, TControl)
 
 // FUNCTION: IMPERIALISM 0x00491400

@@ -12,6 +12,9 @@
 void* __cdecl CreateTHQButtonInstance(void) {
   return new THQButton();
 }
+// SYNTHETIC: IMPERIALISM 0x0058b640
+// THQButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(THQButton, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058b660

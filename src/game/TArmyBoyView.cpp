@@ -6,6 +6,9 @@ TArmyBoyView::~TArmyBoyView() {}
 // SYNTHETIC: IMPERIALISM 0x004aeae0
 // TArmyBoyView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004aeba0
+// TArmyBoyView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyBoyView, TView)
 
 TArmyBoyView::TArmyBoyView() {}

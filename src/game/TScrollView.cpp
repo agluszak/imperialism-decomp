@@ -8,6 +8,9 @@ TScrollView::~TScrollView() {}
 // SYNTHETIC: IMPERIALISM 0x00573c20
 // TScrollView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00573c90
+// TScrollView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TScrollView, TView)
 
 TScrollView::TScrollView() {}

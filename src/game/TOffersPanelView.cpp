@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004f8ec0
 // TOffersPanelView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004f8f50
+// TOffersPanelView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TOffersPanelView, TPanelView)
 
 TOffersPanelView::TOffersPanelView() {}

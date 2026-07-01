@@ -33,6 +33,9 @@ extern int g_nOverlayClipCacheParamY;
 TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
   return new TIndustryAmtBar();
 }
+// SYNTHETIC: IMPERIALISM 0x005891b0
+// TIndustryAmtBar::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TIndustryAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x005891d0

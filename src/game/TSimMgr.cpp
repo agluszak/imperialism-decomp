@@ -31,6 +31,9 @@ void WriteSettingsPrefIntByIndex(int index, int value) {
 // SYNTHETIC: IMPERIALISM 0x0057b940
 // TSimMgr::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0057b9c0
+// TSimMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSimMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0057b9e0

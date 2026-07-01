@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00572a80
 // TNoHilitePicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00572b10
+// TNoHilitePicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNoHilitePicture, TPicture)
 
 TNoHilitePicture::TNoHilitePicture() {}

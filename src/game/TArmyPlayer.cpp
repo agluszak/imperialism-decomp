@@ -6,6 +6,9 @@ TArmyPlayer::~TArmyPlayer() {}
 // SYNTHETIC: IMPERIALISM 0x0059b110
 // TArmyPlayer::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0059b190
+// TArmyPlayer::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyPlayer, TTacticalPlayer)
 
 TArmyPlayer::TArmyPlayer() {}

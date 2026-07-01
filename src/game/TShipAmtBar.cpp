@@ -18,6 +18,9 @@
 #include <new>
 #include "game/mfc.h"
 
+// SYNTHETIC: IMPERIALISM 0x0058ab40
+// TShipAmtBar::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TShipAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x0058aaa0

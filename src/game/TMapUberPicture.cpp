@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00596900
 // TMapUberPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005969c0
+// TMapUberPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
 
 TMapUberPicture::TMapUberPicture() {}

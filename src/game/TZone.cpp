@@ -90,6 +90,9 @@ void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
 // SYNTHETIC: IMPERIALISM 0x0055e660
 // TZone::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0055e6e0
+// TZone::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055e700

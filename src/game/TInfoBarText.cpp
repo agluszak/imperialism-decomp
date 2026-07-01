@@ -11,6 +11,9 @@ TInfoBarText::~TInfoBarText() {}
 // SYNTHETIC: IMPERIALISM 0x005b65a0
 // TInfoBarText::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005b6690
+// TInfoBarText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TInfoBarText, TDeluxeText)
 
 TInfoBarText::TInfoBarText() {}

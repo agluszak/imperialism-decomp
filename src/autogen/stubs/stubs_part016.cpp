@@ -146,10 +146,9 @@ undefined4 TNavyMission_CreateObject(void)
   return 0;
 }
 
-// ghidra_name TNavyMission::GetTNavyMissionClassNamePointer
-// ghidra_proto undefined GetTNavyMissionClassNamePointer()
+// ghidra_name TNavyMission::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x00536450
-undefined4 GetTNavyMissionClassNamePointer(void)
+undefined4 TNavyMission_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -401,10 +400,9 @@ undefined4 TControlSeaZoneMission_CreateObject(void)
   return 0;
 }
 
-// ghidra_name TControlSeaZoneMission::GetTControlSeaZoneMissionClassNamePointer
-// ghidra_proto undefined GetTControlSeaZoneMissionClassNamePointer()
+// ghidra_name TControlSeaZoneMission::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x00538780
-undefined4 GetTControlSeaZoneMissionClassNamePointer(void)
+undefined4 TControlSeaZoneMission_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -536,10 +534,9 @@ undefined4 ResetTEscortMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name TEscortMission::GetTEscortMissionClassNamePointer
-// ghidra_proto undefined GetTEscortMissionClassNamePointer()
+// ghidra_name TEscortMission::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x005399b0
-undefined4 GetTEscortMissionClassNamePointer(void)
+undefined4 TEscortMission_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -647,10 +644,9 @@ undefined4 ResetTBeachheadMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name TBeachheadMission::GetTBeachheadMissionClassNamePointer
-// ghidra_proto undefined GetTBeachheadMissionClassNamePointer()
+// ghidra_name TBeachheadMission::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x0053a420
-undefined4 GetTBeachheadMissionClassNamePointer(void)
+undefined4 TBeachheadMission_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -750,10 +746,9 @@ undefined4 ResetTBlockadePortMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name TBlockadePortMission::GetTBlockadePortMissionClassNamePointer
-// ghidra_proto undefined GetTBlockadePortMissionClassNamePointer()
+// ghidra_name TBlockadePortMission::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x0053aae0
-undefined4 GetTBlockadePortMissionClassNamePointer(void)
+undefined4 TBlockadePortMission_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -861,10 +856,9 @@ undefined4 TScatteredShipsMission_CreateObject(void)
   return 0;
 }
 
-// ghidra_name TScatteredShipsMission::GetTScatteredShipsMissionClassNamePointer
-// ghidra_proto undefined GetTScatteredShipsMissionClassNamePointer()
+// ghidra_name TScatteredShipsMission::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x0053bb20
-undefined4 GetTScatteredShipsMissionClassNamePointer(void)
+undefined4 TScatteredShipsMission_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -956,10 +950,9 @@ undefined4 TArmyMission_CreateObject(void)
   return 0;
 }
 
-// ghidra_name TArmyMission::GetTArmyMissionClassNamePointer
-// ghidra_proto undefined GetTArmyMissionClassNamePointer()
+// ghidra_name TArmyMission::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x0053c030
-undefined4 GetTArmyMissionClassNamePointer(void)
+undefined4 TArmyMission_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -1179,10 +1172,9 @@ undefined4 ReturnFalseForAttackProvinceMissionCapabilityFlag(void)
   return 0;
 }
 
-// ghidra_name TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer
-// ghidra_proto undefined GetTAttackProvinceMissionClassNamePointer()
+// ghidra_name TAttackProvinceMission::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x0053d710
-undefined4 GetTAttackProvinceMissionClassNamePointer(void)
+undefined4 TAttackProvinceMission_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -1330,10 +1322,9 @@ undefined4 TDefendProvinceMission_CreateObject(void)
   return 0;
 }
 
-// ghidra_name TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer
-// ghidra_proto undefined GetTDefendProvinceMissionClassNamePointer()
+// ghidra_name TDefendProvinceMission::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x0053e670
-undefined4 GetTDefendProvinceMissionClassNamePointer(void)
+undefined4 TDefendProvinceMission_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -1465,10 +1456,9 @@ undefined4 ReturnFalseForInvadeMissionCapabilityFlag(void)
   return 0;
 }
 
-// ghidra_name TInvadeMission::GetTInvadeMissionClassNamePointer
-// ghidra_proto undefined GetTInvadeMissionClassNamePointer()
+// ghidra_name TInvadeMission::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x0053f260
-undefined4 GetTInvadeMissionClassNamePointer(void)
+undefined4 TInvadeMission_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -1701,6 +1691,14 @@ undefined4 DestructTClientGreatPower(void)
 // ghidra_proto undefined DestructTRemoteGreatPower()
 // FUNCTION: IMPERIALISM 0x00541ab0
 undefined4 DestructTRemoteGreatPower(void)
+{
+  return 0;
+}
+
+// ghidra_name TRemoteMinor::~TRemoteMinor
+// ghidra_proto undefined ~TRemoteMinor()
+// FUNCTION: IMPERIALISM 0x00541d00
+undefined4 TRemoteMinor(void)
 {
   return 0;
 }

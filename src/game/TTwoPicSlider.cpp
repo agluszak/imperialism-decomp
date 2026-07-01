@@ -24,6 +24,9 @@ undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 undefined4 WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0(void);
 void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(int* field);
 
+// SYNTHETIC: IMPERIALISM 0x0056e1e0
+// TTwoPicSlider::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTwoPicSlider, TControl)
 
 // Constructor body is inlined into the CreateObject factory in the original binary

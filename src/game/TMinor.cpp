@@ -58,6 +58,9 @@ extern float g_ApplyIndexedResourceDeltaScale_00653728;
 void* TMinor::CreateTMinorInstance() {
   return new TMinor();
 }
+// SYNTHETIC: IMPERIALISM 0x004e36f0
+// TMinor::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMinor, TCountry)
 
 void* TMinor::GetTMinorClassNamePointer() {

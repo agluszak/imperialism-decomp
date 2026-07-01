@@ -11,6 +11,9 @@ extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
 // SYNTHETIC: IMPERIALISM 0x005512d0
 // TAdmiral::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00551410
+// TAdmiral::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAdmiral, TObject)
 
 // FUNCTION: IMPERIALISM 0x004d7eb0

@@ -6,6 +6,9 @@ TGamePreferencesPicture::~TGamePreferencesPicture() {}
 // SYNTHETIC: IMPERIALISM 0x0056a510
 // TGamePreferencesPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0056a590
+// TGamePreferencesPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TGamePreferencesPicture, TPicture)
 
 TGamePreferencesPicture::TGamePreferencesPicture() {}

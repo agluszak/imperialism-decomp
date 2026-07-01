@@ -6,6 +6,9 @@ TJoinSelectorDialog::~TJoinSelectorDialog() {}
 // SYNTHETIC: IMPERIALISM 0x0054e690
 // TJoinSelectorDialog::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0054e710
+// TJoinSelectorDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TJoinSelectorDialog, TNoHilitePicture)
 
 TJoinSelectorDialog::TJoinSelectorDialog() {}

@@ -6,6 +6,9 @@ TRadioText::~TRadioText() {}
 // SYNTHETIC: IMPERIALISM 0x005793f0
 // TRadioText::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00579470
+// TRadioText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TRadioText, TDropShadowText)
 
 TRadioText::TRadioText() {}

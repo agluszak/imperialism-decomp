@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00572bd0
 // TBackgroundPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00572c60
+// TBackgroundPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TBackgroundPicture, TNoHilitePicture)
 
 TBackgroundPicture::TBackgroundPicture() {}

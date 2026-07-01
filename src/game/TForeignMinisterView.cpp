@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004f2f20
 // TForeignMinisterView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004f2fb0
+// TForeignMinisterView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TForeignMinisterView, TMinisterView)
 
 TForeignMinisterView::TForeignMinisterView() {}

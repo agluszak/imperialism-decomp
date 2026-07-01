@@ -16,6 +16,9 @@ TTacNavyToolbar::~TTacNavyToolbar() {}
 // SYNTHETIC: IMPERIALISM 0x005ad030
 // TTacNavyToolbar::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005ad160
+// TTacNavyToolbar::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTacNavyToolbar, TTacticalToolbar)
 
 TTacNavyToolbar::TTacNavyToolbar() {}

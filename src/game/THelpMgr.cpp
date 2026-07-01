@@ -71,6 +71,9 @@ THelpMgr::THelpMgr() : TObject() {
 // SYNTHETIC: IMPERIALISM 0x00500550
 // THelpMgr::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005005c0
+// THelpMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(THelpMgr, TObject)
 
 THelpMgr::~THelpMgr() {}
@@ -217,3 +220,7 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   pendingEntry->rank = g_pUiRuntimeContext->GetActiveNationId();
   // Full dialog refresh path deferred; mark the help-set entry seen/current-nation.
 }
+
+// SYNTHETIC: IMPERIALISM 0x00500630
+// THelpMgr::`scalar deleting destructor'
+

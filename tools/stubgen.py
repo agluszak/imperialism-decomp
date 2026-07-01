@@ -244,6 +244,15 @@ def chunked_rows(
     return chunks
 
 
+# Incremental-link (ILT) jmp-thunk table of the original binary: 5-byte `jmp target`
+# linker stubs, never real functions. Legacy manual code still links against a few of
+# these via the extern-thunk pattern (Hard Rule 9), so their stub DEFINITIONS must
+# exist — but they must NOT carry a `// FUNCTION:` annotation: an entity at a thunk
+# address blocks reccmp's automatic thunk-to-target resolution (it broke 364/379
+# vtable comparisons when annotated).
+ILT_THUNK_RANGE = range(0x401000, 0x409AB6)
+
+
 def render_chunk(
     chunk_rows: list[tuple[int, str, str]],
     seen_idents: set[str],
@@ -267,7 +276,14 @@ def render_chunk(
             out.append("// ghidra_name {}\n".format(name))
         if prototype:
             out.append("// ghidra_proto {}\n".format(prototype))
-        out.append("// {}: {} 0x{:08x}\n".format(annotation_kind, target, address))
+        if address in ILT_THUNK_RANGE:
+            out.append(
+                "// ILT thunk 0x{:08x} - unannotated on purpose (see ILT_THUNK_RANGE)\n".format(
+                    address
+                )
+            )
+        else:
+            out.append("// {}: {} 0x{:08x}\n".format(annotation_kind, target, address))
         out.append("{}\n".format(signature))
         out.append("{\n")
         if signature_returns_void(signature):

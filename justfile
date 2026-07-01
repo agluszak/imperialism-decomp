@@ -233,6 +233,11 @@ regen-stubs:
     --name-overrides "{{name_overrides}}" \
     --ownership-csv "{{function_ownership}}"
 
+# Reconcile config/function_ownership.csv with source markers (src/ + include/).
+# Deletion-reconciling by default: marker_sync rows whose marker disappeared AND whose
+# file/header no longer mentions the address are pruned (a stale row silently
+# suppresses stub regeneration). Curated notes (e.g. mfc_runtime_macro) are never
+# pruned. Pass --no-prune-missing-manual through the module directly to skip pruning.
 sync-ownership:
   uv run python -m tools.workflow.sync_function_ownership \
     --target "{{target}}" \
@@ -272,6 +277,12 @@ vtable-collision-gate:
 # Ensure synthetic symbol names in source comments match symbols.csv.
 synthetic-gate:
   uv run python -m tools.workflow.check_synthetic_names --paths src include
+
+# Structural integrity of config/symbols.csv: header row exactly at line 1, no
+# duplicate headers, parseable hex addresses, no duplicate addresses. (Every consumer
+# is a DictReader that silently degrades when the header is misplaced.)
+symbols-integrity-gate:
+  uv run python -m tools.workflow.check_symbols_integrity
 
 # Report `// VTABLE:` annotations that reccmp does not turn into a matched vtable
 # (needs a built binary + reccmp DB, so it is not part of `just gates`). Pass --strict
@@ -313,10 +324,10 @@ gates:
   just vtable-collision-gate
   just field-layout-gate
   just synthetic-gate
+  just symbols-integrity-gate
   just global-location-gate
   just manual-cruntimeclass-gate
   just decomplint
-  just global-location-gate
 
 # Check the decompilation annotations (// FUNCTION / // VTABLE / // GLOBAL etc.)
 # for syntax errors, duplicate addresses, and stray markers.

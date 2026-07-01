@@ -11,6 +11,9 @@ TCreditsPicture::~TCreditsPicture() {}
 // SYNTHETIC: IMPERIALISM 0x0056edb0
 // TCreditsPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0056ee30
+// TCreditsPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCreditsPicture, TPicture)
 
 TCreditsPicture::TCreditsPicture() {}

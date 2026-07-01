@@ -6,6 +6,9 @@ TRailheadDialog::~TRailheadDialog() {}
 // SYNTHETIC: IMPERIALISM 0x004bcf40
 // TRailheadDialog::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004bd020
+// TRailheadDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TRailheadDialog, TDialogView)
 
 TRailheadDialog::TRailheadDialog() {}

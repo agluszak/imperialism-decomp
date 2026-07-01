@@ -21,6 +21,9 @@ struct MinisterTerrainPreferenceEntry {
 // SYNTHETIC: IMPERIALISM 0x0052eb30
 // TMinister::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0052eb60
+// TMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMinister, TObject)
 
 // FUNCTION: IMPERIALISM 0x0052eb80

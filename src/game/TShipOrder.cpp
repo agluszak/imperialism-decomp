@@ -41,6 +41,9 @@ TShipOrder::TShipOrder()
 // SYNTHETIC: IMPERIALISM 0x004b8470
 // TShipOrder::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004b84a0
+// TShipOrder::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TShipOrder, TProductionOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b84e0

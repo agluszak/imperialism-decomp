@@ -6,6 +6,9 @@ TNewTownView::~TNewTownView() {}
 // SYNTHETIC: IMPERIALISM 0x004bd7a0
 // TNewTownView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004bd860
+// TNewTownView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNewTownView, TView)
 
 TNewTownView::TNewTownView() {}

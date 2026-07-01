@@ -9,6 +9,9 @@
 // SYNTHETIC: IMPERIALISM 0x004d04b0
 // TEngineerDialog::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004d0540
+// TEngineerDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TEngineerDialog, TView)
 
 // FUNCTION: IMPERIALISM 0x004d0560

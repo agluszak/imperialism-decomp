@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004a83b0
 // TArmyStackList::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004a8430
+// TArmyStackList::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyStackList, TSortedList)
 
 TArmyStackList::TArmyStackList() {}

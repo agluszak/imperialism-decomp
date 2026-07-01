@@ -11,6 +11,9 @@ TMiniShipView::~TMiniShipView() {}
 // SYNTHETIC: IMPERIALISM 0x00569dc0
 // TMiniShipView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00569e40
+// TMiniShipView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMiniShipView, TControl)
 
 TMiniShipView::TMiniShipView() {}

@@ -860,7 +860,7 @@ undefined4 OnVScroll(void)
 // ghidra_name OrphanRetStub_0059add0
 // ghidra_proto undefined OrphanRetStub_0059add0()
 // FUNCTION: IMPERIALISM 0x0061849d
-undefined4 OrphanRetStub_0059add0(void)
+undefined4 OrphanRetStub_0059add0_0061849D(void)
 {
   return 0;
 }

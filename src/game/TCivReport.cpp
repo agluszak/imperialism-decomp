@@ -6,6 +6,9 @@
 TCivReport* __cdecl CreateTCivReportInstance(void) {
   return new TCivReport();
 }
+// SYNTHETIC: IMPERIALISM 0x00590c10
+// TCivReport::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCivReport, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00590c30

@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004b57b0
 // TOrItemOrder::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004b57e0
+// TOrItemOrder::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TOrItemOrder, TItemOrder)
 
 TOrItemOrder::TOrItemOrder() {}

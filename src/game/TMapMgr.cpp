@@ -25,6 +25,9 @@ short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
 // SYNTHETIC: IMPERIALISM 0x0050e2f0
 // TMapMgr::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0050e3b0
+// TMapMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 
 TMapMgr::TMapMgr() {}

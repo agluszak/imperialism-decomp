@@ -6,6 +6,9 @@ TShipFractionCluster::~TShipFractionCluster() {}
 // SYNTHETIC: IMPERIALISM 0x00568cd0
 // TShipFractionCluster::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00568d50
+// TShipFractionCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TShipFractionCluster, TCluster)
 
 TShipFractionCluster::TShipFractionCluster() {}

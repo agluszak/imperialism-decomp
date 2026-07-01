@@ -6,6 +6,9 @@ TTacticalAdiosPicture::~TTacticalAdiosPicture() {}
 // SYNTHETIC: IMPERIALISM 0x005ad430
 // TTacticalAdiosPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005ad4b0
+// TTacticalAdiosPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTacticalAdiosPicture, TPicture)
 
 TTacticalAdiosPicture::TTacticalAdiosPicture() {}

@@ -11,6 +11,9 @@ TSpecialQuitPicture::~TSpecialQuitPicture() {}
 // SYNTHETIC: IMPERIALISM 0x005b4760
 // TSpecialQuitPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005b47f0
+// TSpecialQuitPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSpecialQuitPicture, TPicture)
 
 TSpecialQuitPicture::TSpecialQuitPicture() {}

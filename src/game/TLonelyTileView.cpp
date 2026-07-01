@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00505a50
 // TLonelyTileView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00505ac0
+// TLonelyTileView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TLonelyTileView, TView)
 
 TLonelyTileView::TLonelyTileView() {}

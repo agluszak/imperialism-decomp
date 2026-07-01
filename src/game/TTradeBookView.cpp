@@ -6,6 +6,9 @@ TTradeBookView::~TTradeBookView() {}
 // SYNTHETIC: IMPERIALISM 0x005bde30
 // TTradeBookView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005bded0
+// TTradeBookView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTradeBookView, TView)
 
 TTradeBookView::TTradeBookView() {}

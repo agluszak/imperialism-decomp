@@ -27,6 +27,13 @@ undefined4 ConstructTCivAnimation2BaseState(void)
   return 0;
 }
 
+// ghidra_name TOneTimeAnimation::CreateObject
+// FUNCTION: IMPERIALISM 0x0049fcc0
+undefined4 TOneTimeAnimation_CreateObject(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0()
 // FUNCTION: IMPERIALISM 0x0049fcf0
@@ -43,10 +50,9 @@ undefined4 CreateTOneTimeAnimationInstance(void)
   return 0;
 }
 
-// ghidra_name TOneTimeAnimation::GetTOneTimeAnimationClassNamePointer
-// ghidra_proto undefined GetTOneTimeAnimationClassNamePointer()
+// ghidra_name TOneTimeAnimation::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x0049fd40
-undefined4 GetTOneTimeAnimationClassNamePointer(void)
+undefined4 TOneTimeAnimation_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -67,6 +73,21 @@ undefined4 CreateTCouncilTickerAnimationInstance(void)
   return 0;
 }
 
+// ghidra_name TFocusAnimation::CreateObject
+// FUNCTION: IMPERIALISM 0x004a0020
+undefined4 TFocusAnimation_CreateObject(void)
+{
+  return 0;
+}
+
+// ghidra_name TFocusAnimation::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
+// FUNCTION: IMPERIALISM 0x004a0050
+undefined4 ScalarDeletingDestructor_004A0050(void)
+{
+  return 0;
+}
+
 // ghidra_name TFocusAnimation::CreateTFocusAnimationInstance
 // ghidra_proto undefined CreateTFocusAnimationInstance()
 // FUNCTION: IMPERIALISM 0x004a0080
@@ -75,9 +96,49 @@ undefined4 CreateTFocusAnimationInstance(void)
   return 0;
 }
 
+// ghidra_name TFocusAnimation::GetRuntimeClass
+// ghidra_proto undefined GetTFocusAnimationClassNamePointer()
+// FUNCTION: IMPERIALISM 0x004a00a0
+undefined4 GetTFocusAnimationClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
+// ghidra_proto undefined ConstructTFocusAnimationBaseState()
+// FUNCTION: IMPERIALISM 0x004a0140
+undefined4 ConstructTFocusAnimationBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TFocusAnimation::RenderBattleReportInsetWithPaletteShift
+// ghidra_proto undefined RenderBattleReportInsetWithPaletteShift(void)
+// FUNCTION: IMPERIALISM 0x004a0250
+undefined4 RenderBattleReportInsetWithPaletteShift(void)
+{
+  return 0;
+}
+
+// ghidra_name TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280
+// ghidra_proto undefined Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(void)
+// FUNCTION: IMPERIALISM 0x004a0280
+undefined4 Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(void)
+{
+  return 0;
+}
+
 // ghidra_name TTransFocusAnimation::CreateObject
 // FUNCTION: IMPERIALISM 0x004a03f0
 undefined4 TTransFocusAnimation_CreateObject(void)
+{
+  return 0;
+}
+
+// ghidra_name TTransFocusAnimation::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
+// FUNCTION: IMPERIALISM 0x004a0430
+undefined4 ScalarDeletingDestructor_004A0430(void)
 {
   return 0;
 }
@@ -90,10 +151,34 @@ undefined4 CreateTTransFocusAnimationInstance(void)
   return 0;
 }
 
+// ghidra_name TTransFocusAnimation::GetRuntimeClass
+// ghidra_proto undefined GetTTransFocusAnimationClassNamePointer()
+// FUNCTION: IMPERIALISM 0x004a0480
+undefined4 GetTTransFocusAnimationClassNamePointer(void)
+{
+  return 0;
+}
+
 // ghidra_name TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
 // ghidra_proto undefined ConstructTTransFocusAnimationBaseState()
 // FUNCTION: IMPERIALISM 0x004a04a0
 undefined4 ConstructTTransFocusAnimationBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TTransFocusAnimation::Free
+// ghidra_proto undefined DestructTTransFocusAnimationAndMaybeFree()
+// FUNCTION: IMPERIALISM 0x004a0570
+undefined4 DestructTTransFocusAnimationAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift
+// ghidra_proto undefined BlitUiFrameToTransientSurfaceWithOptionalOverlay()
+// FUNCTION: IMPERIALISM 0x004a0810
+undefined4 BlitUiFrameToTransientSurfaceWithOptionalOverlay(void)
 {
   return 0;
 }
@@ -1038,6 +1123,13 @@ undefined4 DestructTFoodProcessingOrderAndMaybeFree(void)
 // ghidra_proto undefined DestructTShipOrderAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004b8510
 undefined4 DestructTShipOrderAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TCapacityOrder::CreateObject
+// FUNCTION: IMPERIALISM 0x004b8c90
+undefined4 TCapacityOrder_CreateObject(void)
 {
   return 0;
 }

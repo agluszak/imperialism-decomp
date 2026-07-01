@@ -35,6 +35,9 @@ TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
   return new TShipyardCluster();
 }
 
+// SYNTHETIC: IMPERIALISM 0x0058a570
+// TShipyardCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TShipyardCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x0058a590

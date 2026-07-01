@@ -6,6 +6,9 @@ TTransportView::~TTransportView() {}
 // SYNTHETIC: IMPERIALISM 0x004bd300
 // TTransportView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004bd3c0
+// TTransportView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTransportView, TView)
 
 TTransportView::TTransportView() {}

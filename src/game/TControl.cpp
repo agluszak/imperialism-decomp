@@ -55,6 +55,9 @@ TObject* TControl::ShallowClone() {
 // SYNTHETIC: IMPERIALISM 0x0048e430
 // TControl::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0048e500
+// TControl::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TControl, TView)
 
 TModalTemplateDialogBase::TModalTemplateDialogBase()

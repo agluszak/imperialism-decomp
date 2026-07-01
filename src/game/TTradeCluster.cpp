@@ -89,6 +89,9 @@ void* CreateTradeSellControlPanel(void) {
   return new TTradeCluster();
 }
 
+// SYNTHETIC: IMPERIALISM 0x00587090
+// TTradeCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTradeCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x005870b0

@@ -6,6 +6,9 @@ TMinorRelationshipDialog::~TMinorRelationshipDialog() {}
 // SYNTHETIC: IMPERIALISM 0x005b3300
 // TMinorRelationshipDialog::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005b33e0
+// TMinorRelationshipDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMinorRelationshipDialog, TDialogView)
 
 TMinorRelationshipDialog::TMinorRelationshipDialog() {}

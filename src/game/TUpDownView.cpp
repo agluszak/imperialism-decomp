@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00583c90
 // TUpDownView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00583d30
+// TUpDownView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TUpDownView, TControl)
 
 TUpDownView::TUpDownView() {}

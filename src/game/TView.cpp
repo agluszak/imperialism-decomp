@@ -161,6 +161,9 @@ void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
 // TView::CreateObject
 
 // TView slot 0x00 override: return this class's MFC CRuntimeClass descriptor.
+// SYNTHETIC: IMPERIALISM 0x0048a8c0
+// TView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
 // Real ctor. The TEventHandler base ctor (inlined) writes the base vptr (0x006497a0)

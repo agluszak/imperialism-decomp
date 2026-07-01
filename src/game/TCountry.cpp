@@ -97,6 +97,9 @@ void TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
 // SYNTHETIC: IMPERIALISM 0x004d66a0
 // TCountry::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004d67b0
+// TCountry::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCountry, TObject)
 
 TCountry::TCountry() {}

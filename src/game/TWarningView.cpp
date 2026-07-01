@@ -7,6 +7,9 @@
 TWarningView* __cdecl CreateTWarningViewInstance(void) {
   return new TWarningView();
 }
+// SYNTHETIC: IMPERIALISM 0x005928e0
+// TWarningView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TWarningView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00592900

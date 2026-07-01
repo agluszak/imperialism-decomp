@@ -18,6 +18,9 @@ undefined4 thunk_SplitTileIndexToRowAndColumn(void);
 // SYNTHETIC: IMPERIALISM 0x005199c0
 // TMapDialog::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00519b30
+// TMapDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
 TMapDialog::TMapDialog() {}

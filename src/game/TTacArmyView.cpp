@@ -6,6 +6,9 @@ TTacArmyView::~TTacArmyView() {}
 // SYNTHETIC: IMPERIALISM 0x005a9cf0
 // TTacArmyView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005a9d70
+// TTacArmyView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTacArmyView, TTacticalBattleView)
 
 TTacArmyView::TTacArmyView() {}

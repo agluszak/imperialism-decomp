@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00572080
 // TGWorldButton::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00572110
+// TGWorldButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TGWorldButton, TControl)
 
 TGWorldButton::TGWorldButton() {}

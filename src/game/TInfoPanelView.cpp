@@ -6,6 +6,9 @@ TInfoPanelView::~TInfoPanelView() {}
 // SYNTHETIC: IMPERIALISM 0x004f9f60
 // TInfoPanelView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004f9ff0
+// TInfoPanelView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TInfoPanelView, TPanelView)
 
 TInfoPanelView::TInfoPanelView() {}

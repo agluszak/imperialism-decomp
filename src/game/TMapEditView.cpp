@@ -6,6 +6,9 @@ TMapEditView::~TMapEditView() {}
 // SYNTHETIC: IMPERIALISM 0x0051cab0
 // TMapEditView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0051cc40
+// TMapEditView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMapEditView, TMapDialog)
 
 TMapEditView::TMapEditView() {}

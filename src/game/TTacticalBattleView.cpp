@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x005a82b0
 // TTacticalBattleView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005a8330
+// TTacticalBattleView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 
 TTacticalBattleView::TTacticalBattleView() {}

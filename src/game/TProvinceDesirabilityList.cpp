@@ -1,6 +1,9 @@
 #include "game/TProvinceDesirabilityList.h"
 #include "game/mfc.h"
 
+// SYNTHETIC: IMPERIALISM 0x004d6570
+// TProvinceDesirabilityList::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TProvinceDesirabilityList, TSortedPtrList)
 
 // FUNCTION: IMPERIALISM 0x004d6500

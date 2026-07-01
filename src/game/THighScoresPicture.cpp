@@ -11,6 +11,9 @@ THighScoresPicture::~THighScoresPicture() {}
 // SYNTHETIC: IMPERIALISM 0x00575280
 // THighScoresPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00575300
+// THighScoresPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(THighScoresPicture, TNoHilitePicture)
 
 THighScoresPicture::THighScoresPicture() {}

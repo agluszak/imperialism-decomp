@@ -22,6 +22,9 @@ undefined4 SetQuickDrawColorAndSyncGlobals(void);
 TTextList* TTextList::CreateTTextListInstance() {
   return new TTextList();
 }
+// SYNTHETIC: IMPERIALISM 0x0057ac30
+// TTextList::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTextList, TView)
 
 TTextList::TTextList() : TView() {

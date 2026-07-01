@@ -34,6 +34,9 @@ TWindow::TWindow() : TView(), dialogBehavior(), field98(0) {
 // SYNTHETIC: IMPERIALISM 0x0048d090
 // TWindow::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0048d220
+// TWindow::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TWindow, TView)
 
 // SYNTHETIC: IMPERIALISM 0x0048d640

@@ -6,6 +6,9 @@
 TAlwaysPictureButton* __cdecl CreateTAlwaysPictureButtonInstance(void) {
   return new TAlwaysPictureButton();
 }
+// SYNTHETIC: IMPERIALISM 0x005709d0
+// TAlwaysPictureButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAlwaysPictureButton, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005709f0

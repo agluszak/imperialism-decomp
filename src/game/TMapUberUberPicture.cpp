@@ -11,6 +11,9 @@ TMapUberUberPicture::~TMapUberUberPicture() {}
 // SYNTHETIC: IMPERIALISM 0x00596770
 // TMapUberUberPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005967f0
+// TMapUberUberPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMapUberUberPicture, TOffLimitsPicture)
 
 TMapUberUberPicture::TMapUberUberPicture() {}

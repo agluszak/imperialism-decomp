@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00575e90
 // TGameSetupMultiplayerPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00575f10
+// TGameSetupMultiplayerPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TGameSetupMultiplayerPicture, TNoHilitePicture)
 
 TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture() {}

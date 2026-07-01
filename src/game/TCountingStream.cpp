@@ -7,6 +7,9 @@ char g_pClassDescTCountingStream = 0;
 // SYNTHETIC: IMPERIALISM 0x004893c0
 // TCountingStream::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004893f0
+// TCountingStream::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCountingStream, TStream)
 
 // ReadBytes (slot 0x3c, 0x00488b40) is inherited unchanged from TStream;

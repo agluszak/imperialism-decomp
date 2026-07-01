@@ -12,6 +12,9 @@ TBattleReportView::~TBattleReportView() {}
 // SYNTHETIC: IMPERIALISM 0x004acaa0
 // TBattleReportView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004acb40
+// TBattleReportView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TBattleReportView, TDiplomacyMapView)
 
 // FUNCTION: IMPERIALISM 0x004acb60

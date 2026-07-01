@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x005b5ac0
 // TInfoBarPictureText::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005b5bb0
+// TInfoBarPictureText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TInfoBarPictureText, TInfoBarText)
 
 TInfoBarPictureText::TInfoBarPictureText() {}

@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004c9d70
 // TBuildingConstructionView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004c9e10
+// TBuildingConstructionView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TBuildingConstructionView, TPicture)
 
 TBuildingConstructionView::TBuildingConstructionView() {}

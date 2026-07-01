@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004cc6b0
 // TIndustryView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004cc770
+// TIndustryView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TIndustryView, TBuildingView)
 
 TIndustryView::TIndustryView() {}

@@ -6,6 +6,9 @@ TDeluxeText::~TDeluxeText() {}
 // SYNTHETIC: IMPERIALISM 0x005b5ee0
 // TDeluxeText::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005b5fd0
+// TDeluxeText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 
 TDeluxeText::TDeluxeText() {}

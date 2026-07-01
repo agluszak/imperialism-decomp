@@ -4,6 +4,9 @@
 // SYNTHETIC: IMPERIALISM 0x00488030
 // TSortedPtrList::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004883e0
+// TSortedPtrList::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSortedPtrList, CPtrArray)
 
 // FUNCTION: IMPERIALISM 0x004880a0

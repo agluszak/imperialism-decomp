@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00571930
 // TOnOffRadioButton::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005719d0
+// TOnOffRadioButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TOnOffRadioButton, TPictureButton)
 
 TOnOffRadioButton::TOnOffRadioButton() {}

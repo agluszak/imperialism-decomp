@@ -6,6 +6,9 @@ TArmyTacUnit::~TArmyTacUnit() {}
 // SYNTHETIC: IMPERIALISM 0x005a5ed0
 // TArmyTacUnit::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005a5f00
+// TArmyTacUnit::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyTacUnit, TTacticalUnit)
 
 TArmyTacUnit::TArmyTacUnit() {}

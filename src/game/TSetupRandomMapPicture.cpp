@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00576ca0
 // TSetupRandomMapPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00576d60
+// TSetupRandomMapPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSetupRandomMapPicture, TNoHilitePicture)
 
 TSetupRandomMapPicture::TSetupRandomMapPicture() {}

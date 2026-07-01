@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004b79f0
 // TPowerPlantOrder::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004b7a20
+// TPowerPlantOrder::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPowerPlantOrder, TProductionOrder)
 
 TPowerPlantOrder::TPowerPlantOrder() {}

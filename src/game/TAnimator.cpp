@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004a09f0
 // TAnimator::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004a0a80
+// TAnimator::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 
 TAnimator::TAnimator() {}

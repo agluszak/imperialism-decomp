@@ -9,6 +9,9 @@ TCommandHandler::~TCommandHandler() {}
 // SYNTHETIC: IMPERIALISM 0x00486570
 // TCommandHandler::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00486630
+// TCommandHandler::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCommandHandler, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x00486650

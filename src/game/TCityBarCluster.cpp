@@ -26,6 +26,9 @@ undefined4 thunk_DestructEngineerDialogBaseState(void);
 TCityBarCluster* TCityBarCluster::CreateInstance() {
   return new TCityBarCluster();
 }
+// SYNTHETIC: IMPERIALISM 0x00586610
+// TCityBarCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCityBarCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586630

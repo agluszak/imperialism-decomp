@@ -6,6 +6,9 @@ TLandSaleEvent::~TLandSaleEvent() {}
 // SYNTHETIC: IMPERIALISM 0x004e66c0
 // TLandSaleEvent::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004e66f0
+// TLandSaleEvent::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TLandSaleEvent, TTurnStartEvent)
 
 TLandSaleEvent::TLandSaleEvent() {}

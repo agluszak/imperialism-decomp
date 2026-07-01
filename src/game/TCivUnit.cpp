@@ -6,6 +6,9 @@ extern "C" char g_pClassDescTCivUnit = 0;
 // SYNTHETIC: IMPERIALISM 0x005c2860
 // TCivUnit::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005c28a0
+// TCivUnit::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCivUnit, TUnit)
 
 // FUNCTION: IMPERIALISM 0x005c28c0

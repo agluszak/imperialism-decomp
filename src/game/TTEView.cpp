@@ -6,6 +6,9 @@ TTEView::~TTEView() {}
 // SYNTHETIC: IMPERIALISM 0x00485fb0
 // TTEView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00486030
+// TTEView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTEView, TStaticText)
 
 TTEView::TTEView() {}

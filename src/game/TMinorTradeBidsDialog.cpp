@@ -6,6 +6,9 @@ TMinorTradeBidsDialog::~TMinorTradeBidsDialog() {}
 // SYNTHETIC: IMPERIALISM 0x005b29a0
 // TMinorTradeBidsDialog::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005b2a80
+// TMinorTradeBidsDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMinorTradeBidsDialog, TDialogView)
 
 TMinorTradeBidsDialog::TMinorTradeBidsDialog() {}

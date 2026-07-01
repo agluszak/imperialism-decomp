@@ -142,6 +142,12 @@ char TMission::ReturnFalseSlot98() {
 void TMission::AssertValid(CArchive* archive) const {
   (void)archive;
 }
+// SYNTHETIC: IMPERIALISM 0x00534fb0
+// TMission::GetRuntimeClass
+
+// SYNTHETIC: IMPERIALISM 0x00534bc0
+// TMission::CreateObject
+
 IMPLEMENT_SERIAL(TMission, TObject, 1)
 
 void* TMission::CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2,

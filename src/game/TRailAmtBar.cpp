@@ -26,6 +26,9 @@ TRailAmtBar* __cdecl CreateTRailAmtBarInstance(void) {
   return new TRailAmtBar();
 }
 
+// SYNTHETIC: IMPERIALISM 0x00589f70
+// TRailAmtBar::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TRailAmtBar, TIndustryAmtBar)
 
 // FUNCTION: IMPERIALISM 0x00589f90

@@ -34,10 +34,9 @@ undefined4 CreateTScrollerInstance(void)
   return 0;
 }
 
-// ghidra_name TView::GetTScrollerClassNamePointer
-// ghidra_proto undefined GetTScrollerClassNamePointer()
+// ghidra_name TScroller::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x0048cb90
-undefined4 GetTScrollerClassNamePointer(void)
+undefined4 TScroller_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -130,10 +129,9 @@ undefined4 CreateTRadioInstance(void)
   return 0;
 }
 
-// ghidra_name TRadio::GetTRadioClassNamePointer
-// ghidra_proto undefined GetTRadioClassNamePointer()
+// ghidra_name TRadio::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x0048ee90
-undefined4 GetTRadioClassNamePointer(void)
+undefined4 TRadio_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -142,6 +140,14 @@ undefined4 GetTRadioClassNamePointer(void)
 // ghidra_proto undefined Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080()
 // FUNCTION: IMPERIALISM 0x0048f080
 undefined4 Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructCityDialogSharedBaseState
+// ghidra_proto undefined DestructCityDialogSharedBaseState()
+// FUNCTION: IMPERIALISM 0x0048f250
+undefined4 DestructCityDialogSharedBaseState(void)
 {
   return 0;
 }
@@ -438,14 +444,6 @@ undefined4 GetTickCountDiv16(void)
 // ghidra_proto undefined WrapperFor_ftol_At004933a0()
 // FUNCTION: IMPERIALISM 0x004933a0
 undefined4 WrapperFor_ftol_At004933a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_00493450
-// ghidra_proto undefined OrphanVtableAssignStub_00493450()
-// FUNCTION: IMPERIALISM 0x00493450
-undefined4 OrphanVtableAssignStub_00493450(void)
 {
   return 0;
 }

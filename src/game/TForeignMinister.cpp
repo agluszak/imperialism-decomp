@@ -21,6 +21,9 @@ static const short kPrimaryNationUnset = static_cast<short>(0xfff6);
 // SYNTHETIC: IMPERIALISM 0x0052efd0
 // TForeignMinister::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0052f050
+// TForeignMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x0052f070

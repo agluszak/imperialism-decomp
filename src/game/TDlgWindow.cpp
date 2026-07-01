@@ -15,6 +15,9 @@ static __inline void AssertUGameWindowInvalidation(const char* path, int line) {
 // SYNTHETIC: IMPERIALISM 0x00500280
 // TDlgWindow::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00500300
+// TDlgWindow::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDlgWindow, TWindow)
 
 TDlgWindow::TDlgWindow() {}

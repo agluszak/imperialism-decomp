@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x0049e5a0
 // TAmbitFileBasedDocument::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0049e5d0
+// TAmbitFileBasedDocument::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAmbitFileBasedDocument, TFileBasedDocument)
 
 TAmbitFileBasedDocument::TAmbitFileBasedDocument() {}

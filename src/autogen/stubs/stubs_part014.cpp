@@ -283,6 +283,14 @@ undefined4 InitializeObArrayVtable654D38ModeField(void)
   return 0;
 }
 
+// ghidra_name TSortedByRelationshipList::CompareUnsignedIntsAscending
+// ghidra_proto undefined CreateTDiplomacyMgrInstance()
+// FUNCTION: IMPERIALISM 0x004ee5e0
+undefined4 CreateTDiplomacyMgrInstance(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004ee730
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004ee730()
 // FUNCTION: IMPERIALISM 0x004ee730
@@ -378,10 +386,9 @@ undefined4 TNextDiplomationCommand_CreateObject(void)
   return 0;
 }
 
-// ghidra_name TNextDiplomationCommand::GetTNextDiplomationCommandClassNamePointer
-// ghidra_proto undefined GetTNextDiplomationCommandClassNamePointer()
+// ghidra_name TNextDiplomationCommand::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x004f2910
-undefined4 GetTNextDiplomationCommandClassNamePointer(void)
+undefined4 TNextDiplomationCommand_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -545,10 +552,9 @@ undefined4 TCouncilView_CreateObject(void)
   return 0;
 }
 
-// ghidra_name TCouncilView::GetTCouncilViewClassNamePointer
-// ghidra_proto undefined GetTCouncilViewClassNamePointer()
+// ghidra_name TCouncilView::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x004fba50
-undefined4 GetTCouncilViewClassNamePointer(void)
+undefined4 TCouncilView_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -840,10 +846,9 @@ undefined4 THelpWindow_CreateObject(void)
   return 0;
 }
 
-// ghidra_name THelpWindow::GetTHelpWindowClassNamePointer
-// ghidra_proto undefined GetTHelpWindowClassNamePointer()
+// ghidra_name THelpWindow::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x00504bd0
-undefined4 GetTHelpWindowClassNamePointer(void)
+undefined4 THelpWindow_GetRuntimeClass(void)
 {
   return 0;
 }
@@ -879,10 +884,9 @@ undefined4 TTerrainHelpWindow_CreateObject(void)
   return 0;
 }
 
-// ghidra_name TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer
-// ghidra_proto undefined GetTTerrainHelpWindowClassNamePointer()
+// ghidra_name TTerrainHelpWindow::GetRuntimeClass
 // FUNCTION: IMPERIALISM 0x00504d20
-undefined4 GetTTerrainHelpWindowClassNamePointer(void)
+undefined4 TTerrainHelpWindow_GetRuntimeClass(void)
 {
   return 0;
 }

@@ -6,6 +6,9 @@ TRelationshipDialog::~TRelationshipDialog() {}
 // SYNTHETIC: IMPERIALISM 0x005b2ca0
 // TRelationshipDialog::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005b2d80
+// TRelationshipDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TRelationshipDialog, TDialogView)
 
 TRelationshipDialog::TRelationshipDialog() {}

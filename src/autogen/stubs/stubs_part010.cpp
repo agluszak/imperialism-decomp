@@ -1187,14 +1187,6 @@ undefined4 InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820(void)
   return 0;
 }
 
-// ghidra_name OrphanVtableAssignStub_00482930
-// ghidra_proto undefined OrphanVtableAssignStub_00482930()
-// FUNCTION: IMPERIALISM 0x00482930
-undefined4 OrphanVtableAssignStub_00482930(void)
-{
-  return 0;
-}
-
 // ghidra_name TCViewOwnedBufferRegistryState_00648560::ConstructCViewOwnedBufferRegistryState
 // ghidra_proto undefined ConstructCViewOwnedBufferRegistryState()
 // FUNCTION: IMPERIALISM 0x00482950
@@ -1499,14 +1491,6 @@ undefined4 WrapperFor_ftol_At00484ac0(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr::GetTMacViewMgrRuntimeClass
-// ghidra_proto undefined GetTMacViewMgrRuntimeClass()
-// FUNCTION: IMPERIALISM 0x00484bb0
-undefined4 GetTMacViewMgrRuntimeClass(void)
-{
-  return 0;
-}
-
 // ghidra_name GetTMacViewMgrMessageMap
 // ghidra_proto undefined GetTMacViewMgrMessageMap()
 // FUNCTION: IMPERIALISM 0x00484bd0
@@ -1723,6 +1707,14 @@ undefined4 InvokeAfxThreadAndCallSecondaryRefresh(void)
   return 0;
 }
 
+// ghidra_name TBehavior::CreateTBehaviorInstance
+// ghidra_proto undefined CreateTBehaviorInstance()
+// FUNCTION: IMPERIALISM 0x00486f90
+undefined4 CreateTBehaviorInstance(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_ftol_At00487150
 // ghidra_proto undefined WrapperFor_ftol_At00487150()
 // FUNCTION: IMPERIALISM 0x00487150
@@ -1791,6 +1783,14 @@ undefined4 ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0(voi
 // ghidra_proto undefined ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl()
 // FUNCTION: IMPERIALISM 0x00488000
 undefined4 ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name TSortedPtrList::CompareUnsignedIntsAscending
+// ghidra_proto undefined CompareUnsignedIntsAscending()
+// FUNCTION: IMPERIALISM 0x00488360
+undefined4 CompareUnsignedIntsAscending(void)
 {
   return 0;
 }
@@ -1951,6 +1951,14 @@ undefined4 DestructTEventHandlerAndMaybeFree_Impl(void)
 // ghidra_proto undefined WrapperFor_thunk_GetTickCountDiv16_At0048a410()
 // FUNCTION: IMPERIALISM 0x0048a410
 undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void)
+{
+  return 0;
+}
+
+// ghidra_name TView::VTableSlot7F
+// ghidra_proto undefined 'scalar_deleting_destructor'(void)
+// FUNCTION: IMPERIALISM 0x0048ada0
+undefined4 TView_VTableSlot7F(void)
 {
   return 0;
 }

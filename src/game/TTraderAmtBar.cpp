@@ -39,6 +39,9 @@ TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
 TTraderAmtBar* __cdecl CreateTTraderAmtBarInstance(void) {
   return new TTraderAmtBar();
 }
+// SYNTHETIC: IMPERIALISM 0x0058aed0
+// TTraderAmtBar::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 
 // Destructors are compiler-generated (implicit) from real inheritance.

@@ -42,6 +42,9 @@ void TUnit::DetachUnitOrderFromOwnerAndReset() {}
 // SYNTHETIC: IMPERIALISM 0x005c2430
 // TUnit::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005c2490
+// TUnit::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TUnit, TObject)
 
 TUnit::TUnit() {

@@ -6,6 +6,9 @@ extern "C" CRuntimeClass PTR_s_TFloatWindow_006496d8;
 TView* TFloatWindow::CreateTFloatWindowInstance() {
   return new TFloatWindow();
 }
+// SYNTHETIC: IMPERIALISM 0x00491f90
+// TFloatWindow::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TFloatWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x00491fb0

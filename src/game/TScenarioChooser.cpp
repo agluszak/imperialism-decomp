@@ -6,6 +6,9 @@ TScenarioChooser::~TScenarioChooser() {}
 // SYNTHETIC: IMPERIALISM 0x00579ae0
 // TScenarioChooser::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00579b60
+// TScenarioChooser::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TScenarioChooser, TNoHilitePicture)
 
 TScenarioChooser::TScenarioChooser() {}

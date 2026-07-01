@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x0051b0a0
 // TTerrainInfoDialog::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0051b120
+// TTerrainInfoDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTerrainInfoDialog, TNoHilitePicture)
 
 TTerrainInfoDialog::TTerrainInfoDialog() {}

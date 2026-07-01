@@ -43,6 +43,9 @@ int InitializeTurnOrderNavigationDialogByViewportSize_Impl(int arg) {
 // SYNTHETIC: IMPERIALISM 0x004fe710
 // TDisplayMgr::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004fe780
+// TDisplayMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDisplayMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x004fe7a0

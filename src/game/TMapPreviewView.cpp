@@ -6,6 +6,9 @@ TMapPreviewView::~TMapPreviewView() {}
 // SYNTHETIC: IMPERIALISM 0x005787b0
 // TMapPreviewView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00578830
+// TMapPreviewView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMapPreviewView, TView)
 
 TMapPreviewView::TMapPreviewView() {}

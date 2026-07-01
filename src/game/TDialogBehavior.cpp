@@ -4,6 +4,9 @@ extern "C" char g_pClassDescTDialogBehavior;
 // SYNTHETIC: IMPERIALISM 0x00487300
 // TDialogBehavior::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00487350
+// TDialogBehavior::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDialogBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x00487370

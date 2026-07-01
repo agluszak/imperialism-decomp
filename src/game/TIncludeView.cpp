@@ -13,6 +13,9 @@ extern "C" char g_szEmptyString[];
 // SYNTHETIC: IMPERIALISM 0x0048cc40
 // TIncludeView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0048cd50
+// TIncludeView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TIncludeView, TView)
 
 // FUNCTION: IMPERIALISM 0x0048cd70

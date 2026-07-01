@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x005b54a0
 // TDropShadowText::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005b5570
+// TDropShadowText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDropShadowText, TPictureText)
 
 TDropShadowText::TDropShadowText() {}

@@ -5,6 +5,9 @@
 // SYNTHETIC: IMPERIALISM 0x00482850
 // CIncludeView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00482930
+// CIncludeView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(CIncludeView, CView)
 
 CIncludeView::CIncludeView() : CView() {}

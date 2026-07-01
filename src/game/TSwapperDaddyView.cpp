@@ -6,6 +6,9 @@ TSwapperDaddyView::~TSwapperDaddyView() {}
 // SYNTHETIC: IMPERIALISM 0x004ac5c0
 // TSwapperDaddyView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004ac6a0
+// TSwapperDaddyView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSwapperDaddyView, TView)
 
 TSwapperDaddyView::TSwapperDaddyView() {}

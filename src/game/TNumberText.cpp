@@ -17,6 +17,9 @@ TNumberText::~TNumberText() {}
 // SYNTHETIC: IMPERIALISM 0x00490ed0
 // TNumberText::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00491040
+// TNumberText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNumberText, TEditText)
 
 // FUNCTION: IMPERIALISM 0x00491060

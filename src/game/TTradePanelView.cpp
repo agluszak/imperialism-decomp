@@ -6,6 +6,9 @@ TTradePanelView::~TTradePanelView() {}
 // SYNTHETIC: IMPERIALISM 0x004f86d0
 // TTradePanelView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004f8760
+// TTradePanelView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTradePanelView, TPanelView)
 
 TTradePanelView::TTradePanelView() {}

@@ -8,6 +8,9 @@
 // SYNTHETIC: IMPERIALISM 0x004c5900
 // TSteelCityMinister::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004c59c0
+// TSteelCityMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSteelCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c59e0
@@ -24,6 +27,9 @@ void TSteelCityMinister::CityInteriorSlot20() {}
 // SYNTHETIC: IMPERIALISM 0x004c5c00
 // TShipBuilderCityMinister::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004c5cc0
+// TShipBuilderCityMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TShipBuilderCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c5ce0
@@ -37,6 +43,9 @@ void TShipBuilderCityMinister::CityInteriorSlot20() {}
 // SYNTHETIC: IMPERIALISM 0x004c5f00
 // TEvenCityMinister::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004c5fc0
+// TEvenCityMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TEvenCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c5fe0
@@ -49,6 +58,9 @@ TEvenCityMinister::TEvenCityMinister() : TCityInteriorMinister() {}
 void TEvenCityMinister::CityInteriorSlot20() {}
 // SYNTHETIC: IMPERIALISM 0x004c6210
 // TRailCityMinister::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004c62d0
+// TRailCityMinister::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TRailCityMinister, TCityInteriorMinister)
 

@@ -11,6 +11,9 @@ TTacMapUberPicture::~TTacMapUberPicture() {}
 // SYNTHETIC: IMPERIALISM 0x005ad2e0
 // TTacMapUberPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005ad380
+// TTacMapUberPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTacMapUberPicture, TMapUberUberPicture)
 
 TTacMapUberPicture::TTacMapUberPicture() {}

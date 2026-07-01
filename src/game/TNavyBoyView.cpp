@@ -6,6 +6,9 @@ TNavyBoyView::~TNavyBoyView() {}
 // SYNTHETIC: IMPERIALISM 0x004aefd0
 // TNavyBoyView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004af090
+// TNavyBoyView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNavyBoyView, TView)
 
 TNavyBoyView::TNavyBoyView() {}

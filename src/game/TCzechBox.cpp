@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00571b60
 // TCzechBox::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00571c00
+// TCzechBox::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCzechBox, TUpDownPictureButton)
 
 TCzechBox::TCzechBox() {}

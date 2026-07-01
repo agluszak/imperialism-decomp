@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x0059a290
 // TMiniMapView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0059a360
+// TMiniMapView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMiniMapView, TControl)
 
 TMiniMapView::TMiniMapView() {}

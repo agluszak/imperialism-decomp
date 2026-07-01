@@ -93,6 +93,9 @@ static void PlayClickSfx7000() {
 // SYNTHETIC: IMPERIALISM 0x004ffb30
 // TGameWindow::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004ffbf0
+// TGameWindow::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TGameWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x004ffc10

@@ -3,6 +3,334 @@
 
 #include "decomp_types.h"
 
+// ghidra_name thunk_TPictureButton::TPictureButton
+// ghidra_proto undefined TPictureButton()
+// ILT thunk 0x00401122 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 TPictureButton(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InvalidateMapRegionForOrderEntry
+// ghidra_proto undefined thunk_InvalidateMapRegionForOrderEntry()
+// ILT thunk 0x004019ba - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_InvalidateMapRegionForOrderEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
+// ghidra_proto undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()
+// ILT thunk 0x0040231a - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_GenerateMappedFlavorTextByNationSlotField0C(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_NoOpQuickDrawLifecycleHookB
+// ghidra_proto undefined thunk_NoOpQuickDrawLifecycleHookB()
+// ILT thunk 0x004024fa - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_NoOpQuickDrawLifecycleHookB(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetCityBuildingProductionValueBySlot
+// ghidra_proto int __thiscall thunk_GetCityBuildingProductionValueBySlot(short nBuildingSlotId)
+// ILT thunk 0x0040257c - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_GetCityBuildingProductionValueBySlot(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeCityInteriorMinister
+// ghidra_proto undefined thunk_InitializeCityInteriorMinister()
+// ILT thunk 0x004028d8 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_InitializeCityInteriorMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name THQButton::thunk_DrawTextWithCachedQuickDrawStyleState
+// ghidra_proto undefined thunk_DrawTextWithCachedQuickDrawStyleState()
+// ILT thunk 0x004029aa - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeUiTextStyleDescriptor
+// ghidra_proto undefined thunk_InitializeUiTextStyleDescriptor()
+// ILT thunk 0x00402a7c - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_InitializeUiTextStyleDescriptor(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SetUiResourceContextTagWord
+// ghidra_proto undefined thunk_SetUiResourceContextTagWord()
+// ILT thunk 0x00402aa4 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_SetUiResourceContextTagWord(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ApplyRectClipRegionToGlobalClipState
+// ghidra_proto undefined thunk_ApplyRectClipRegionToGlobalClipState()
+// ILT thunk 0x004030e9 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetMapActionContextByTileIndex
+// ghidra_proto void * __cdecl thunk_GetMapActionContextByTileIndex(short nTileIndex)
+// ILT thunk 0x0040318e - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_GetMapActionContextByTileIndex(void)
+{
+  return 0;
+}
+
+// ghidra_name TCivToolbar::thunk_SetMapInteractionMode
+// ghidra_proto void __thiscall thunk_SetMapInteractionMode(short nMode)
+// ILT thunk 0x004032a1 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_SetMapInteractionMode(void)
+{
+  return 0;
+}
+
+// ghidra_name UiRuntimeContext::GetActiveNationId
+// ghidra_proto undefined GetActiveNationId()
+// ILT thunk 0x00403b16 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 GetActiveNationId(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DrawCenteredGuideLineOnMapDc
+// ghidra_proto undefined thunk_DrawCenteredGuideLineOnMapDc()
+// ILT thunk 0x00403bb6 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_DrawCenteredGuideLineOnMapDc(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
+// ghidra_proto undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()
+// ILT thunk 0x00403f71 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ConstructUiResourceEntryType4B0C0
+// ghidra_proto undefined thunk_ConstructUiResourceEntryType4B0C0()
+// ILT thunk 0x004042c8 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_ConstructUiResourceEntryType4B0C0(void)
+{
+  return 0;
+}
+
+// ghidra_name TDiplomacyMapView::thunk_AppendPackedColorDwordToMaskBuffers
+// ghidra_proto undefined thunk_AppendPackedColorDwordToMaskBuffers()
+// ILT thunk 0x00404a25 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetSurfaceObjectAtContextOffset24
+// ghidra_proto undefined thunk_GetSurfaceObjectAtContextOffset24()
+// ILT thunk 0x0040520e - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_GetSurfaceObjectAtContextOffset24(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale
+// ghidra_proto undefined thunk_ProjectTileIndexToWrappedScreenOffsetByScale()
+// ILT thunk 0x004056a5 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_MeasureTextExtentWithCachedQuickDrawStyle
+// ghidra_proto undefined thunk_MeasureTextExtentWithCachedQuickDrawStyle()
+// ILT thunk 0x00405b7d - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DestructEngineerDialogBaseState
+// ghidra_proto void __thiscall thunk_DestructEngineerDialogBaseState(void)
+// ILT thunk 0x00405c72 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_DestructEngineerDialogBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RenderTerrainAndMinorNationLegendLabels
+// ghidra_proto undefined thunk_RenderTerrainAndMinorNationLegendLabels()
+// ILT thunk 0x00405e16 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_RenderTerrainAndMinorNationLegendLabels(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_FillRectWithQuickDrawBrushAndContextOffset
+// ghidra_proto undefined thunk_FillRectWithQuickDrawBrushAndContextOffset()
+// ILT thunk 0x00406546 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_FillRectWithQuickDrawBrushAndContextOffset(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DestructCityDialogSharedBaseState
+// ghidra_proto undefined thunk_DestructCityDialogSharedBaseState()
+// ILT thunk 0x004067c1 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_DestructCityDialogSharedBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SetGlobalBlitTransparentColorRaw
+// ghidra_proto undefined thunk_SetGlobalBlitTransparentColorRaw()
+// ILT thunk 0x004069e2 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_SetGlobalBlitTransparentColorRaw(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_BuildUiTextStyleDescriptor
+// ghidra_proto undefined thunk_BuildUiTextStyleDescriptor()
+// ILT thunk 0x00406afa - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_BuildUiTextStyleDescriptor(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapDialog::thunk_SplitTileIndexToRowAndColumn
+// ghidra_proto undefined thunk_SplitTileIndexToRowAndColumn()
+// ILT thunk 0x00406c1c - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_SplitTileIndexToRowAndColumn(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_HandleEngineerConstructionAction
+// ghidra_proto bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
+// ILT thunk 0x00406ccb - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_HandleEngineerConstructionAction(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SetActiveQuickDrawSurfaceContext
+// ghidra_proto undefined thunk_SetActiveQuickDrawSurfaceContext()
+// ILT thunk 0x00406f5f - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_SetActiveQuickDrawSurfaceContext(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReturnConstantTrueQuickDrawFlag
+// ghidra_proto undefined thunk_ReturnConstantTrueQuickDrawFlag()
+// ILT thunk 0x0040761c - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_ReturnConstantTrueQuickDrawFlag(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DestroyScopedMapQuickDrawContext
+// ghidra_proto undefined thunk_DestroyScopedMapQuickDrawContext()
+// ILT thunk 0x00408035 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_DestroyScopedMapQuickDrawContext(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_NormalizeWrappedMapCoord108x60
+// ghidra_proto undefined thunk_NormalizeWrappedMapCoord108x60()
+// ILT thunk 0x00408328 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_NormalizeWrappedMapCoord108x60(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::thunk_RefreshMapOrderEntryPanel
+// ghidra_proto void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)
+// ILT thunk 0x00408995 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_RefreshMapOrderEntryPanel(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetActiveQuickDrawSurfaceContextAndFlags
+// ghidra_proto undefined thunk_GetActiveQuickDrawSurfaceContextAndFlags()
+// ILT thunk 0x00408d64 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SetQuickDrawTextOriginWithContextOffset
+// ghidra_proto undefined thunk_SetQuickDrawTextOriginWithContextOffset()
+// ILT thunk 0x00408d6e - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetResourceTypeRandomDrawBlockFlag
+// ghidra_proto undefined thunk_GetResourceTypeRandomDrawBlockFlag()
+// ILT thunk 0x00408ed6 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_GetResourceTypeRandomDrawBlockFlag(void)
+{
+  return 0;
+}
+
+// ghidra_name UiRuntimeContext::MapTurnEventCodeToPaletteIndex
+// ghidra_proto undefined MapTurnEventCodeToPaletteIndex()
+// ILT thunk 0x00409205 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 MapTurnEventCodeToPaletteIndex(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh
+// ghidra_proto undefined thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh()
+// ILT thunk 0x0040928c - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_MapUiThemeCodeToStyleFlags
+// ghidra_proto undefined thunk_MapUiThemeCodeToStyleFlags()
+// ILT thunk 0x004093cc - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_MapUiThemeCodeToStyleFlags(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DispatchLocalizedUiMessageWithTemplateA13A0
+// ghidra_proto undefined thunk_DispatchLocalizedUiMessageWithTemplateA13A0()
+// ILT thunk 0x004096b0 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void)
+{
+  return 0;
+}
+
+// ghidra_name TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry
+// ghidra_proto undefined thunk_ConstructUiClickablePictureResourceEntry()
+// ILT thunk 0x00409980 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_ConstructUiClickablePictureResourceEntry(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_ftol_At004125d0
 // ghidra_proto undefined WrapperFor_ftol_At004125d0()
 // FUNCTION: IMPERIALISM 0x004125d0

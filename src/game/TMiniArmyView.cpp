@@ -11,6 +11,9 @@ TMiniArmyView::~TMiniArmyView() {}
 // SYNTHETIC: IMPERIALISM 0x004aad90
 // TMiniArmyView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004aae10
+// TMiniArmyView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMiniArmyView, TControl)
 
 TMiniArmyView::TMiniArmyView() {}

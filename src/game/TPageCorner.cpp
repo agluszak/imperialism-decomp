@@ -6,6 +6,9 @@ TPageCorner::~TPageCorner() {}
 // SYNTHETIC: IMPERIALISM 0x0056f7b0
 // TPageCorner::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0056f830
+// TPageCorner::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPageCorner, TColorKeyPicture)
 
 TPageCorner::TPageCorner() {}

@@ -6,6 +6,9 @@ TMapKey::~TMapKey() {}
 // SYNTHETIC: IMPERIALISM 0x004fc9c0
 // TMapKey::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004fca70
+// TMapKey::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMapKey, TPicture)
 
 TMapKey::TMapKey() {}

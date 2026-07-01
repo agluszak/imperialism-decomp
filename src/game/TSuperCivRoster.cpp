@@ -6,6 +6,9 @@ TSuperCivRoster::~TSuperCivRoster() {}
 // SYNTHETIC: IMPERIALISM 0x004ab380
 // TSuperCivRoster::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004ab450
+// TSuperCivRoster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSuperCivRoster, TPageView)
 
 TSuperCivRoster::TSuperCivRoster() {}

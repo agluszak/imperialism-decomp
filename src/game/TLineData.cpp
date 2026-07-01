@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x0056f360
 // TLineData::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0056f390
+// TLineData::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TLineData, TObject)
 
 TLineData::TLineData() {}

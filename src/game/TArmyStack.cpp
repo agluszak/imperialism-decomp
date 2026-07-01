@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004a76a0
 // TArmyStack::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004a76d0
+// TArmyStack::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyStack, TObject)
 
 TArmyStack::TArmyStack() {}

@@ -8,6 +8,9 @@ extern "C" TSimMgr* g_pLocalizationTable;
 // SYNTHETIC: IMPERIALISM 0x004b6f20
 // TUnitOrder::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004b6f50
+// TUnitOrder::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TUnitOrder, TProductionOrder)
 
 TUnitOrder::TUnitOrder() {}

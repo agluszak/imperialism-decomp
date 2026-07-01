@@ -5,6 +5,9 @@ extern "C" char g_pClassDescTDialogView;
 // SYNTHETIC: IMPERIALISM 0x0049d6f0
 // TDialogView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0049d790
+// TDialogView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDialogView, TView)
 
 TDialogView::TDialogView() {}

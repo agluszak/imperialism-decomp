@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x005072e0
 // TNumberedIcon::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00507380
+// TNumberedIcon::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNumberedIcon, TMegaPicture)
 
 TNumberedIcon::TNumberedIcon() {}

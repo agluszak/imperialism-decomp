@@ -24,6 +24,9 @@ undefined TStaticText::AssignSharedStringFromField84() {
 // SYNTHETIC: IMPERIALISM 0x0048f710
 // TStaticText::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0048f870
+// TStaticText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TStaticText, TControl)
 
 // FUNCTION: IMPERIALISM 0x0048F890

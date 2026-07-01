@@ -8,6 +8,9 @@ TClosePicture* __cdecl CreateTClosePictureInstance(void) {
 }
 
 // MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x662f38).
+// SYNTHETIC: IMPERIALISM 0x00586b50
+// TClosePicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TClosePicture, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00586b70

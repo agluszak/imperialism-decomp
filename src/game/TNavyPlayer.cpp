@@ -6,6 +6,9 @@ TNavyPlayer::~TNavyPlayer() {}
 // SYNTHETIC: IMPERIALISM 0x0059eb80
 // TNavyPlayer::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0059ec00
+// TNavyPlayer::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNavyPlayer, TTacticalPlayer)
 
 TNavyPlayer::TNavyPlayer() {}

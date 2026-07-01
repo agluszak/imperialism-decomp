@@ -33,6 +33,9 @@ static int DAT_006a60f8 = 0;
 TSoundPlayer* CreateTSoundPlayerInstance(void) {
   return new TSoundPlayer();
 }
+// SYNTHETIC: IMPERIALISM 0x00593350
+// TSoundPlayer::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSoundPlayer, TEventHandler)
 
 TSoundPlayer::TSoundPlayer()

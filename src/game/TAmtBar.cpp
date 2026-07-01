@@ -27,6 +27,9 @@ void TAmtBar::SetBarMetric(int value, int range) {
 TAmtBar* __cdecl CreateTAmtBarInstance(void) {
   return new TAmtBar();
 }
+// SYNTHETIC: IMPERIALISM 0x00588560
+// TAmtBar::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAmtBar, TView)
 
 // FUNCTION: IMPERIALISM 0x00588580

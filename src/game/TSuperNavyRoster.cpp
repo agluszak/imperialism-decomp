@@ -6,6 +6,9 @@ TSuperNavyRoster::~TSuperNavyRoster() {}
 // SYNTHETIC: IMPERIALISM 0x005697d0
 // TSuperNavyRoster::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005698c0
+// TSuperNavyRoster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSuperNavyRoster, TPageView)
 
 TSuperNavyRoster::TSuperNavyRoster() {}

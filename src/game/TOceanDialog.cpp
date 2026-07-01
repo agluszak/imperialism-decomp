@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00565db0
 // TOceanDialog::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00565e70
+// TOceanDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TOceanDialog, TWorldView)
 
 TOceanDialog::TOceanDialog() {}

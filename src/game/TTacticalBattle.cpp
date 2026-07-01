@@ -6,6 +6,9 @@ undefined TTacticalBattle::CreateTTacticalBattleInstance() { return 0; }
 // SYNTHETIC: IMPERIALISM 0x0059f6d0
 // TTacticalBattle::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x0059f750
+// TTacticalBattle::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTacticalBattle, TObject)
 
 TTacticalBattle::TTacticalBattle() {}

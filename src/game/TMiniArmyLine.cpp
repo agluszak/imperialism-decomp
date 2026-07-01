@@ -6,6 +6,9 @@ TMiniArmyLine::~TMiniArmyLine() {}
 // SYNTHETIC: IMPERIALISM 0x004aa890
 // TMiniArmyLine::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004aa900
+// TMiniArmyLine::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMiniArmyLine, TLineData)
 
 TMiniArmyLine::TMiniArmyLine() {}

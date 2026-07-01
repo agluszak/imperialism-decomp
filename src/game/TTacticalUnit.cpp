@@ -26,6 +26,9 @@ TTacticalUnit::~TTacticalUnit() {}
 // SYNTHETIC: IMPERIALISM 0x005a5d10
 // TTacticalUnit::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005a5e10
+// TTacticalUnit::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTacticalUnit, TObject)
 
 TTacticalUnit::TTacticalUnit() {}

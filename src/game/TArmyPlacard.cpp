@@ -11,6 +11,9 @@
 void* __cdecl CreateTArmyPlacardInstance(void) {
   return new TArmyPlacard();
 }
+// SYNTHETIC: IMPERIALISM 0x0058beb0
+// TArmyPlacard::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyPlacard, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058bed0

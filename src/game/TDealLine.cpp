@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x005c0cf0
 // TDealLine::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x005c0d60
+// TDealLine::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDealLine, TLineData)
 
 TDealLine::TDealLine() {}

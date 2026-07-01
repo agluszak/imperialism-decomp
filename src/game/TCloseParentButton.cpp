@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00584bb0
 // TCloseParentButton::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00584c40
+// TCloseParentButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCloseParentButton, TButton)
 
 TCloseParentButton::TCloseParentButton() {}

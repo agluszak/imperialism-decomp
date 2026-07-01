@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x00568b20
 // TDisappearingButton::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00568ba0
+// TDisappearingButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDisappearingButton, TPicture)
 
 TDisappearingButton::TDisappearingButton() {}

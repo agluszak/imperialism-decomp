@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004c7f10
 // TUnitsView::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004c7fb0
+// TUnitsView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TUnitsView, TBuildingView)
 
 TUnitsView::TUnitsView() {}

@@ -6,6 +6,9 @@ TColorFill::~TColorFill() {}
 // SYNTHETIC: IMPERIALISM 0x004ff0c0
 // TColorFill::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004ff1a0
+// TColorFill::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TColorFill, TAdorner)
 
 TColorFill::TColorFill() {}

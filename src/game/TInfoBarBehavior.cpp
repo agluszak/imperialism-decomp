@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x004b0c90
 // TInfoBarBehavior::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x004b0d10
+// TInfoBarBehavior::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TInfoBarBehavior, TBehavior)
 
 TInfoBarBehavior::TInfoBarBehavior() {}

@@ -39,6 +39,9 @@ undefined4 ShowCivilianLedgerDialogAndSelectUnit(void);
 TCivToolbar* __cdecl CreateTCivToolbarInstance(void) {
   return new TCivToolbar();
 }
+// SYNTHETIC: IMPERIALISM 0x0058ea80
+// TCivToolbar::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCivToolbar, TCluster)
 
 // FUNCTION: IMPERIALISM 0x0058eaa0

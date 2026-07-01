@@ -24,6 +24,9 @@
 TProductionCluster* __cdecl CreateTProductionClusterInstance(void) {
   return new TProductionCluster();
 }
+// SYNTHETIC: IMPERIALISM 0x00586900
+// TProductionCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TProductionCluster, TUberCluster)
 
 TProductionCluster* ConstructTProductionClusterBaseState(TProductionCluster* cluster) {

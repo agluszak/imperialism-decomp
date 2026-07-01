@@ -2,6 +2,9 @@
 // SYNTHETIC: IMPERIALISM 0x005730d0
 // TMegaPicture::CreateObject
 
+// SYNTHETIC: IMPERIALISM 0x00573170
+// TMegaPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMegaPicture, TNoHilitePicture)
 
 TMegaPicture::TMegaPicture() {}
