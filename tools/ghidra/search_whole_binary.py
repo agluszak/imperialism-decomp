@@ -16,6 +16,8 @@ from __future__ import annotations
 
 import sys
 
+import jpype
+
 from tools.common import ghidra_env
 
 
@@ -41,31 +43,38 @@ def search_text(program, needle: str, limit: int) -> int:
 
 
 def search_dword(program, target: int, limit: int) -> int:
+    # NOTE: do NOT reimplement this with Memory.getBytes(Address, byte[]) + a Python
+    # bytearray/bytes buffer or a manually-constructed jpype.JArray(JByte) pulled into
+    # bulk blocks — both were tried and produced silent, confidently-wrong all-zero
+    # reads in some invocation contexts (reproduced consistently under `python -m`,
+    # not under direct script execution; root cause not fully pinned down, smells like
+    # a jpype JVM-attach/threading quirk specific to this environment). Use Ghidra's
+    # own Memory.findBytes search instead, which reads memory content-search state
+    # entirely on the Java side — no Python-side byte marshalling to get wrong.
     mem = program.getMemory()
     target_bytes = target.to_bytes(4, "little")
+    JByte = jpype.JArray(jpype.JByte)
+    pattern = JByte(4)
+    for i, b in enumerate(target_bytes):
+        pattern[i] = jpype.JByte(b if b < 128 else b - 256)
+    monitor = jpype.JClass("ghidra.util.task.TaskMonitor").DUMMY
+
     count = 0
-    for block in mem.getBlocks():
-        if not (block.isInitialized() and block.isRead()):
-            continue
-        size = block.getSize()
-        if size > 50_000_000:
-            continue
-        data = bytearray(size)
-        try:
-            mem.getBytes(block.getStart(), data)
-        except Exception:
-            continue
-        start = 0
-        while True:
-            idx = data.find(target_bytes, start)
-            if idx == -1:
-                break
-            print(f"{block.getName()}: {block.getStart().add(idx)}")
-            count += 1
-            start = idx + 1
-            if count >= limit:
-                print("...truncated")
-                return count
+    start_addr = mem.getMinAddress()
+    end_addr = mem.getMaxAddress()
+    while True:
+        found = mem.findBytes(start_addr, end_addr, pattern, None, True, monitor)
+        if found is None:
+            break
+        block = mem.getBlock(found)
+        print(f"{block.getName() if block else '?'}: {found}")
+        count += 1
+        if count >= limit:
+            print("...truncated")
+            return count
+        start_addr = found.add(1)
+        if start_addr.compareTo(end_addr) > 0:
+            break
     print(f"total: {count}")
     return count
 

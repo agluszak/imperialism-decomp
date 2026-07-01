@@ -133,6 +133,12 @@ ghidra-linear-disasm *args: _require-ghidra-install
 ghidra-search *args: _require-ghidra-install
   uv run python -m tools.ghidra.search_whole_binary {{args}}
 
+# Disassemble raw bytes with capstone, bypassing Ghidra's instruction database
+# entirely (for regions Ghidra hasn't disassembled at all).
+# `just ghidra-raw-disasm 0xADDR [byte_count]`.
+ghidra-raw-disasm *args: _require-ghidra-install
+  uv run python -m tools.ghidra.raw_disasm {{args}}
+
 # Decompile benchmark gate: must-keep patterns for curated Ghidra typing work.
 # Pass --strict to also fail on missing should-improve patterns.
 ghidra-decomp-check *args: _require-ghidra-install

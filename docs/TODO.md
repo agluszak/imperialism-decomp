@@ -93,45 +93,86 @@ in-progress port and its shortcut TODOs):
    main frame's client area still doesn't paint anything** — process is stable
    (no crash), just blank.
 
-**UPDATE 2026-07-01-D — message 0x4ef ruled out; real lead is the un-analyzed paint
-dispatcher.** Searched the *entire* original binary (all 9098 Ghidra-defined functions,
-both as disassembled-instruction text and as a raw little-endian DWORD scan over every
-initialized/readable memory block) for any consumer of `0x4ef`. Result: **zero
-handlers** — the only two occurrences anywhere in the binary are the two known senders
-(`DispatchTurnEventPacketThroughDialogFactory`/`TIncludeView::NoOpUiLifecycleHook` and
-`DestroyChildResourceWindowAndDetach`/`TWindow::Free`). No `ON_MESSAGE`/message-map
-table entry, no `if (message == 0x4ef)` comparison anywhere. **This message is very
-likely a dead end for painting** — treat the earlier "0x4ef is the real repaint
-trigger" hypothesis (below, and in memory `turn-event-dispatch-code-mega-map.md`) as
-**superseded**.
+**UPDATE 2026-07-01-E — critical tooling bug found; the 0x4ef "dead end" and "zero
+padding" conclusions below (2026-07-01-D) were both artifacts of it, now corrected.**
 
-**Better lead found instead:** `TView::PaintVisibleChildrenIntersectingClipRect` (slot
-0x43, byte 0x10c, real body at `0x0048b8d0`) has exactly **one genuine code caller** in
-the whole binary (besides the ~29 vtable-slot data references, which are just every
-derived class's vtable pointing at the same slot): a direct call at **`0x00574383`**.
-That address sits in a **Ghidra analysis gap** — `FUN_005741e0` (ends ~`0x574279`) and
-`FUN_005743f0` are the nearest defined functions before/after it, and
-`just ghidra-linear-disasm 0x574279` finds no instruction there either.
-(`just ghidra-linear-disasm 0xADDR [count]` and `just ghidra-search text|dword <value>`
-are new general-purpose tools added this session for exactly this kind of
-mis-bounded-function/message-map hunting — see
-`tools/ghidra/linear_disasm.py`/`search_whole_binary.py`.) This is almost certainly the
-real "paint the TView tree" dispatcher (likely
-called from `CIncludeView`'s or `CMainFrame`'s real `OnPaint`/`OnDraw`, which are
-currently empty/no-op stubs in our port — `CIncludeView::OnDraw` is `(void)pDC;` and
-does nothing). **Next step for whoever continues:** get Ghidra to properly disassemble
-`0x574279`-`0x5743f0` (may need to manually clear+redefine the function boundary, or
-check if it's reachable via a different entry point/thunk with correct alignment), find
-what class method contains the call at `0x574383`, and port it — that's likely the
-actual missing link between "a real bitmap is loaded and attached to the tree" (done,
-confirmed via screenshot) and "it appears on screen."
+`tools/ghidra/search_whole_binary.py dword` (used to conclude "0x4ef has zero data
+references") had a real bug: `Memory.getBytes(Address, byte[])` called with a *Python*
+`bytearray`/`bytes` object via jpype silently returns success with the buffer
+untouched (all zeros) in this environment — reproduced consistently when driven
+through `python -m`, not when the same code runs as a direct script (root cause not
+fully pinned down; smells like a jpype JVM-attach quirk). `Memory.getByte(Address)`
+(single-byte, no bulk buffer) reads correctly. **This is a serious, easy-to-hit trap
+for any future Ghidra scratch tooling in this repo** — see the `NOTE` now in
+`search_whole_binary.py`'s `search_dword` (rewritten to use Ghidra's own
+`Memory.findBytes` search, which never crosses the JNI boundary with a Python buffer)
+and in `linear_disasm.py`/scratch `capstone_disasm.py`. **Do not reintroduce
+`mem.getBytes(addr, pythonBuffer)` bulk reads** — use `findBytes` for searches,
+`getByte` in a loop for small reads.
 
-(Historical, likely obsolete once the above is confirmed:) `TIncludeView::NoOpUiLifecycleHook`
+**Redone with the fixed tool:** `just ghidra-search dword 0x04ef` now finds **3** hits:
+two are the known senders' `PUSH 0x4ef` operand bytes, and a genuine third at
+**`.rdata: 0x00648338`**. Dumped the surrounding table (`AFX_MSGMAP_ENTRY` layout —
+`nMessage, nCode, nID, nLastID, nSig, pfn`, 24 bytes/entry) and it's a real MFC message
+map, 14 entries, `0x006481e8`-`0x00648368` (sentinel at the end). **Handles `0x4ef`**
+at `pfn=0x00403a3a` — an ILT thunk (ignore, per Hard Rule) to the real handler body at
+**`0x00482c1c`** (branches on `wParam&0xff`: `0`→`0x482c3b`, `1`→`0x482c1c`). The
+`wParam==1` branch (our `TIncludeView::NoOpUiLifecycleHook` sender uses `wParam=1`) is:
+```
+TView* root = this->m_activeDialogContext;      // [esi+0x40] — CIncludeView field, already modeled
+root->PropagateUiResourceContextRecursive(this); // this = CIncludeView* as CWnd* (thunk 0x4074d2 -> 0x48c900, already ported)
+root->ResolveControlByTag('main');               // vtable slot 0x25/byte 0x94; return value discarded
+```
+The message-map's parent class's `CRuntimeClass` sits exactly 0x18 bytes before this
+table (`0x6481c8`), matching **`CIncludeView`**'s already-known `CRuntimeClass` address
+(see `include/game/CIncludeView.h`) — **so this is confirmed to be `CIncludeView`'s
+own message handler**, not some other class's.
+
+**Conclusion: message 0x4ef genuinely does NOT paint anything itself** — its only
+substantive effect (`PropagateUiResourceContextRecursive`) is the exact thing this
+session's earlier fix (in `BuildStartupIntroBackground`, committed `4ea450b3`) already
+manually replicates. So that fix is likely *directionally* fine (both do "propagate
+nativeWindow50 down the tree"), but it does **not** mean CIncludeView is the right
+paint target — see below, this is now genuinely unresolved and reopened.
+
+**CIncludeView's full message map has NO `WM_PAINT` (0xf) entry** (dumped all 14
+entries: `WM_ERASEBKGND`, `WM_LBUTTONDOWN/UP/DBLCLK`, `WM_MOUSEMOVE`, `WM_COMMAND`×2,
+`WM_SETCURSOR`, `WM_RBUTTONDOWN/UP`, `WM_CHAR`(0x102), `WM_PARENTNOTIFY`(0x210),
+`WM_SHOWWINDOW`(0x19), `WM_KEYDOWN`(0x100), plus our `0x4ef`/`0x4c8`). Combined with
+`CIncludeView::OnDraw` being a confirmed-empty no-op, **this means CIncludeView is
+never the thing that actually paints TView content** — painting must happen through
+some *other* native window. This reopens (does not close) the original "why does
+content render in a separate window" question from earlier this session: **the
+separate popup window observed before this session's `nativeWindow50` fix may have
+been architecturally correct** (a real per-dialog host window, like `CMcWindow`), and
+forcing `nativeWindow50` onto `CIncludeView` may be the wrong direction, not a fix —
+it just happened to make a broken-looking symptom (stray popup) go away without
+addressing why the popup existed or was mis-sized/transient.
+
+**The real paint-dispatch function was found and fully disassembled** (bypassing the
+Ghidra gap with a direct capstone read of raw bytes, `getByte`-based, not the broken
+bulk read): starts at **`0x005742b0`** (has a real MSVC C++-EH prologue,
+`FUN_005741e0` genuinely ends before it, then ~0x30 bytes of `int3` alignment padding,
+*not* zero padding — the earlier "0x574279-0x5743f0 is empty" conclusion was also an
+artifact of the same tooling bug and is now corrected). Body: guards on
+`this->IsActionable()` (vtable slot 0x3b) and `this->Refresh()` (slot 0x3e), builds a
+clip-region object (reusing the same `0x67106c`-vtable clip object this session's
+`quickdraw_rendering.cpp` shortcut touches), then calls
+`this->PaintVisibleChildrenIntersectingClipRect(&clipRect, 2)` (slot 0x43) at
+`0x00574383`. This function itself isn't yet attributed to a specific class/method —
+**next step: identify what class's vtable slot points at `0x5742b0`** (search vtable
+data tables for that address, the way the earlier `xrefs_to` search found data refs to
+`0x48b8d0`) to name it, then figure out what actually *calls* this function (that
+caller is the real trigger this whole investigation has been hunting) and whether it's
+reachable for our `BuildStartupIntroBackground` tree at all given it's plain
+`TView`/`TPicture`, not `TWindow`-hosted.
+
+(Superseded by the above, kept for history) `TIncludeView::NoOpUiLifecycleHook`
 (already ported, `src/game/TIncludeView.cpp`) ends with
 `SendMessageA(nativeWindow50->m_hWnd, 0x4ef, 1, 0)` — originally guessed to be the real
-repaint trigger; see correction above. Confirmed **not** it (separately from the 0x4ef
-finding): `TView::RefreshControl()` — it's gated by `g_McAppUiActiveFlag_006950AC`,
-which is deliberately `0` for the entire duration of
+repaint trigger; confirmed not, see correction above. Confirmed **not** it (separately
+from the 0x4ef finding): `TView::RefreshControl()` — it's gated by
+`g_McAppUiActiveFlag_006950AC`, which is deliberately `0` for the entire duration of
 `TTurnEventDialogFactoryRegistry::InvokeDialogFactoryFromPacket` (the caller of every
 dialog factory, including `BuildStartupIntroBackground`), so any refresh call made
 *from inside* a factory body is a guaranteed no-op by design — the real refresh must

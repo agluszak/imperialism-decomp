@@ -90,6 +90,7 @@ name = "imperialism-decomp"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "capstone" },
     { name = "clang-format" },
     { name = "cxxheaderparser" },
     { name = "ghidra-stubs" },
@@ -101,6 +102,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "capstone", specifier = ">=5.0.7" },
     { name = "clang-format", specifier = "==21.1.8" },
     { name = "cxxheaderparser", specifier = ">=1.8.1" },
     { name = "ghidra-stubs", specifier = ">=12.1.2" },
