@@ -138,10 +138,10 @@ def main() -> int:
     pruned = kept_claimed = kept_referenced = 0
     for line in lines[1:]:
         parts = line.rstrip("\n").split("|")
-        if len(parts) < 4:
+        if len(parts) < 5:
             out.append(line)
             continue
-        addr_text, name, _size, row_type = parts[0], parts[1], parts[2], parts[3]
+        addr_text, name, row_type = parts[0], parts[1], parts[4]
         try:
             addr = int(addr_text, 16)
         except ValueError:
