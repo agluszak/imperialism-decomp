@@ -5735,14 +5735,8 @@
     },
     {
       "address": "0x493800",
-      "matching": 0.26229508196721313,
+      "matching": 0.9811320754716981,
       "name": "CMcWindow::OnWindowStateMsg468",
-      "type": 1
-    },
-    {
-      "address": "0x493839",
-      "matching": 0.11764705882352941,
-      "name": "DestructObjectAndReleaseWithFlag_Field0F",
       "type": 1
     },
     {

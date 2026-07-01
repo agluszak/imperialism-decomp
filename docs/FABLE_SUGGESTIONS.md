@@ -89,9 +89,15 @@ vtables/thunks. Consequences: xrefs and decompiles come back empty, and reccmp
 cannot disassemble the *original* side past an indirect `jmp`, so byte-equivalent
 ports score absurdly low.
 
-**Evidence.** `CMcWindow::OnWindowStateMsg468` (0x493800) scores 26% while being
-byte-identical (verified via `just ghidra-raw-disasm`); 0x5742b0 and several
-CMcWindow handlers were invisible to `ghidra-listing`/xrefs until raw-disasm'd.
+**Evidence.** `CMcWindow::OnWindowStateMsg468` (0x493800) scored 26% while being
+byte-identical. RESOLVED 2026-07-02: not a reccmp-disassembler issue — Ghidra had
+defined the switch's *case bodies* as standalone functions (junk symbols.csv rows at
+0x493819/29/39 + a paired autogen stub), which clamped reccmp's max_size window to
+0x19 bytes. Deleting the rows + regen-stubs took it to 98%. reccmp's InstructGen
+handles in-function jump tables correctly (verified standalone). The general fix for
+this class of junk (case-body pseudo-functions in the Ghidra DB) belongs to the
+gap-repair pass below. 0x5742b0 and several CMcWindow handlers were invisible to
+`ghidra-listing`/xrefs until raw-disasm'd.
 
 **Fix.** A gap-scan pass: walk `int3`-padded boundaries, vtable slot targets,
 ILT jmp targets, and message-map `pfn`s; `createFunction` each undefined target

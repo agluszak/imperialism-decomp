@@ -472,30 +472,6 @@ undefined4 OrphanVtableAssignStub_004937e0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_ShowWindowOrForwardToSite_At00493819
-// ghidra_proto undefined WrapperFor_ShowWindowOrForwardToSite_At00493819()
-// FUNCTION: IMPERIALISM 0x00493819
-undefined4 WrapperFor_ShowWindowOrForwardToSite_At00493819(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ShowWindowOrForwardToSite_At00493829
-// ghidra_proto undefined WrapperFor_ShowWindowOrForwardToSite_At00493829()
-// FUNCTION: IMPERIALISM 0x00493829
-undefined4 WrapperFor_ShowWindowOrForwardToSite_At00493829(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructObjectAndReleaseWithFlag_Field0F
-// ghidra_proto undefined DestructObjectAndReleaseWithFlag_Field0F()
-// FUNCTION: IMPERIALISM 0x00493839
-undefined4 DestructObjectAndReleaseWithFlag_Field0F(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00
 // ghidra_proto undefined WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00()
 // FUNCTION: IMPERIALISM 0x00493a00
