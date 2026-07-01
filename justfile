@@ -139,6 +139,12 @@ ghidra-search *args: _require-ghidra-install
 ghidra-raw-disasm *args: _require-ghidra-install
   uv run python -m tools.ghidra.raw_disasm {{args}}
 
+# Walk every MFC CRuntimeClass descriptor in the binary: true class names, object
+# sizes, base-class edges, resolved CreateObject addresses. Ground truth for class
+# recovery — refresh config/rtti_class_oracle.csv with `--csv`.
+rtti-oracle *args: _require-ghidra-install
+  uv run python -m tools.ghidra.rtti_class_oracle {{args}}
+
 # Decompile benchmark gate: must-keep patterns for curated Ghidra typing work.
 # Pass --strict to also fail on missing should-improve patterns.
 ghidra-decomp-check *args: _require-ghidra-install

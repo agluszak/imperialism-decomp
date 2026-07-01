@@ -37,6 +37,12 @@ Never commit the live `.rep` (gitignored). Refresh the archive with
   ```sh
   just ghidra-vtable-dump TGreatPower 0x00653938
   ```
+- **RTTI class oracle** — every MFC `CRuntimeClass` descriptor in the binary
+  (true class name, object size, base-class edge, resolved `CreateObject` address);
+  the durable snapshot lives at `config/rtti_class_oracle.csv`:
+  ```sh
+  just rtti-oracle          # table; `--csv` for the CSV artifact
+  ```
 - **Classify calling convention** — `ecx_this` (likely `__thiscall`) / `no_ecx`
   (likely `__cdecl`) / `empty` (thunk). Pass addresses or pipe `__cdecl` rows from
   `config/symbols.csv` to `--stdin`:
