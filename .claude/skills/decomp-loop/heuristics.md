@@ -504,3 +504,122 @@ plain free functions in another `.cpp`, the recompiled body becomes a thin seque
 - Remaining gap on such a function is then ordinary matching work (e.g. the original hoists a
   single function-scope `CString` at entry, pinning `this` in `ebx`; a per-case local `CString`
   shifts register allocation across the whole body).
+
+## 20. "Same address in two sibling vtables" is inheritance, not COMDAT folding — check RTTI first
+
+Two supposedly-sibling classes whose vtables both point at the *identical* original address
+for several slots looks like linker COMDAT/ICF folding of byte-identical override bodies. It
+usually isn't — MSVC500's plain link here does not fold identical functions across TUs (we
+verified: porting each "shared" method as its own per-class override compiles to a *distinct*
+recomp address per class, so the vtable slot never matches; `just vtable`/`just gates` then
+fail with "Recomp vtable is larger than orig" + unpaired slots). The far more common real
+cause is that one of the "siblings" is actually the **base class** of the other(s), and the
+shared address is simply an *inherited, unoverridden* virtual — ordinary single inheritance,
+zero linker magic required.
+
+- **Check the RTTI ancestry before modeling either theory.** Every class vtable slot 0 is its
+  `CRuntimeClass` getter; the descriptor's `+0x10` is `m_pBaseClass`, an intact ground-truth
+  chain. Query it directly (no Ghidra GUI needed):
+  `uv run python -m tools.ghidra.vtable_slots "ClassA=0xVTABLE"` (with `.env` sourced for
+  `GHIDRA_INSTALL_DIR`) prints `ancestry ClassA -> ClassB -> ... -> TObject -> CObject` as a
+  side-effect log line. This is deterministic and cheap — always run it before writing a
+  "shared/COMDAT-folded" comment.
+- **Corroborating evidence, if you want a second signal:** the derived class's constructor
+  disassembly calls the *grandparent's* ctor directly (one hop, e.g. straight to `TMission`'s
+  ctor) with no visible call to the immediate parent's ctor — this is just the parent's ctor
+  being trivial enough to get fully inlined at every call site (verified by checking the
+  parent's own standalone ctor: same flattened, call-free shape). It is not evidence against
+  a normal single-inheritance edge.
+- **The fix, once the real base is confirmed:** change the derived class's base from the
+  wrong sibling/grandparent to the real immediate base, delete the duplicate override
+  declarations+bodies for slots that are genuinely inherited unchanged (their address matches
+  the base's own address exactly), and fix the ctor initializer list to call the real base's
+  ctor. Slots where the "sibling" has a *distinct* address are genuine own overrides — keep
+  those. Field layout is unaffected when the true base is the same size as the wrongly-assumed
+  one, so no `ASSERT_SIZE`/offset changes are needed.
+- Worked example: `TBeachheadMission` and `TBlockadePortMission` were modeled as direct
+  `TNavyMission` children with 5 "COMDAT-folded" methods shared with sibling
+  `TControlSeaZoneMission`. RTTI ancestry proved both actually derive from
+  `TControlSeaZoneMission` (`TBeachheadMission -> TControlSeaZoneMission -> TNavyMission ->
+  TMission -> TObject -> CObject`). Fixing the base class and deleting the bogus overrides
+  took both vtables from "not matching" to 100% with zero score regressions elsewhere
+  (+33 aligned functions, +0.57pp average similarity overall).
+
+## 22. Two adjacent same-typed fields that are always compared/set together are probably one field
+
+If a struct models two adjacent `short` (or other sub-word) fields purely from Ghidra's
+default per-access typing, and every real usage reads/writes them as a pair (never
+independently), check the disassembly for the *write* site (usually a constructor): a
+single `mov dword ptr [this+off], reg` zeroing both in one instruction means the source
+really declared **one** 4-byte field there, not two shorts ANDed together at every use.
+Modelling it as two shorts is harmless for a plain equality-to-zero check (the compiler may
+still fuse two `cmp` you can write as `a == 0 && b == 0`), but it's the wrong shape and can
+cost real match percentage elsewhere (a caller comparing the combined value in one op will
+now emit two `cmp`s instead of one `cmp dword`). Merge them into one field once the ctor
+disassembly confirms a single wide write; there is no user of the codebase who needs the
+narrower two-field view if no callsite ever reads them apart.
+
+Worked example: `TShip::linkContext0c` + `linkTag0e` (two `short`s in the header) were
+really one `int field0c` -- `TShip::TShip()` at 0x54f500 does one
+`MOV dword ptr [ESI+0xc],EDI` (zero), and the only reader (`TZone::HandleKeyDown`, 0x55fc40)
+tested equality-to-zero the same way. Splitting the check into
+`linkContext0c == 0 && linkTag0e == 0` compiled to two separate `cmp`s and dropped that
+caller from 28.85% to 17.25%; merging to one `int` field restored the original single
+`cmp dword ptr [x+0xc], 0` and the 28.85% score.
+
+## 23. "Same free-function name, different receiver class" -- make the shared logic receiver-agnostic
+
+A function that reads fields at consistent offsets (e.g. +4/+0x1c/+0x30) may be called with
+*more than one* receiver class if those classes independently happen to carry compatible
+fields at those offsets (not uncommon for sibling "order node" types in this codebase, e.g.
+`TShip` and `TMapOrderEntry` both used as generic queue-node payloads). Don't force it onto
+one class as a member method if a second, unrelated call site passes a different class's
+pointer to the "same" free function name — that's a sign that promoting it to a member
+method would silently miscompile (or require an unsafe cross-cast) at the second call site.
+Instead: make the shared computation a plain function that takes the actual **values** by
+parameter (not `this`), and give each class a thin member-method wrapper that forwards its
+own fields into it. Both callers get a real, typed call with no casts; only the numeric
+values need to line up, not the class identity.
+
+Worked example: `ComputeNavyOrderPriorityContributionPercentByCategory` (0x54ff00) is called
+both on `TShip` nodes (`TNavyMission.cpp`'s primary order-list walk) and on `TMapOrderEntry`
+nodes (`TNavyMission::ReturnZeroSlot2C`'s `orderList24` chain) — unrelated classes that just
+happen to share `order_type`/`required_count`/`tiebreak_strength`-shaped fields at the same
+offsets. Modeled as a free function taking `(resourceType, stockOrRequiredCount,
+tiebreakField, category)`, with `TShip::ComputeNavyOrderPriorityContributionPercentByCategory`
+as a one-line wrapper.
+
+## 24. One "table" read at five different offsets is one struct, not five globals
+
+Ghidra's auto-analysis names a global by the *first* byte offset it sees referenced, so a
+single struct-array accessed at its base and at base+4/+8/+0x10/+0x14 etc. (by different
+functions, or even by the *same* function through different-looking pointer arithmetic)
+gets recorded as five separately-named "tables". Tell-tale sign: several `g_Foo_0x...`
+globals whose addresses are 4/8 bytes apart and which are always indexed with the *same*
+per-element stride (e.g. every read does `index * 0x24`, regardless of which "table" name is
+in the expression). Verify by disassembly, not decompile pseudocode — the decompiler will
+`MOV`/`MOVSX` from `[reg + 0x24*index + 0x1234]` for every one of the "different" tables at
+consecutive constant offsets. Once confirmed, merge into one real struct type (named fields
+at the recovered offsets, explicit `padXX` for gaps) and one array declaration; every
+consuming file's raw-offset accessor helpers collapse into named field reads.
+
+Worked example: `g_Resolve_Map_Order_LookupTable_00698108`, `g_Calculate_Mission_Order_LookupTable_0069810C`,
+`g_Task_Force_Order_LookupTable_00698110`, `g_Navy_Order_Priority_LookupTable_00698118`, and
+`g_ResourceDescriptorWeightWord0Base0069811c` were five "tables" 4-8 bytes apart, all indexed
+by `resourceType * 0x24` — one `TNavyOrderResourceDescriptor[64]` struct array. This also
+surfaced two real pre-existing bugs the split had caused: one already-ported function read a
+table at the wrong stride (a factor-of-2 miscount from indexing a `short[]` by element instead
+of by the real 0x24-byte stride), and another read from an entirely disconnected local
+zero-filled buffer instead of the real game data (always returned 0).
+
+## 25. `function_out_of_order` (decomplint) is a pure textual-reorder fix
+
+Marked `// FUNCTION:` bodies within one non-header `.cpp` must appear in strictly ascending
+address order (folded/by-name markers are exempt). This is purely cosmetic — C++ member
+function definition order in a TU doesn't affect codegen or linkage, since the class header
+already declares every member. Fix by cutting-and-pasting whole comment+function blocks into
+address order; leave anonymous-namespace helpers and other unmarked prerequisites in place
+near the top if something later in the file (now possibly reordered before its old position)
+depends on them being textually visible first. Verify with `just decomplint` (or grep the
+`function_out_of_order` count) before/after — the reorder should be a pure score no-op in
+`just stats`.

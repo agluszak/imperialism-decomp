@@ -1331,14 +1331,6 @@ undefined4 GetNavyContextPointerFromGlobalTableByIndex(void)
   return 0;
 }
 
-// ghidra_name ComputeNavyOrderPriorityContributionPercentByCategory
-// ghidra_proto undefined ComputeNavyOrderPriorityContributionPercentByCategory()
-// FUNCTION: IMPERIALISM 0x0054ff00
-undefined4 ComputeNavyOrderPriorityContributionPercentByCategory(void)
-{
-  return 0;
-}
-
 // ghidra_name GetNormalizedIndustryActionResourceCostPercent
 // ghidra_proto undefined GetNormalizedIndustryActionResourceCostPercent()
 // FUNCTION: IMPERIALISM 0x00550090
@@ -1383,14 +1375,6 @@ undefined4 GetOrderNodeDescriptorWord20ByResourceType(void)
 // ghidra_proto undefined ComputeOrderNodeDistanceQuotientByDescriptorWord24()
 // FUNCTION: IMPERIALISM 0x00550550
 undefined4 ComputeOrderNodeDistanceQuotientByDescriptorWord24(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNavyOrderNormalizationBaseByNationType
-// ghidra_proto undefined GetNavyOrderNormalizationBaseByNationType()
-// FUNCTION: IMPERIALISM 0x005505a0
-undefined4 GetNavyOrderNormalizationBaseByNationType(void)
 {
   return 0;
 }

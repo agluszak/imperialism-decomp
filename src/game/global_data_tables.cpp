@@ -232,11 +232,13 @@ short g_industryActionCostWeightResCode09[16] = {0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0
 // GLOBAL: IMPERIALISM 0x00695b70
 short g_industryActionCostWeightResCode08[16] = {0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x00695b90
-short g_industryActionCostWeightResCode10[16] = {0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18, 10, 0};
+short g_industryActionCostWeightResCode10[16] = {0, 0,  0, 2, 5,  0,  0,  3,
+                                                 6, 15, 0, 8, 24, 18, 10, 0};
 // GLOBAL: IMPERIALISM 0x00695bb0
 short g_industryActionCostWeightResCode0B[16] = {0, 0, 0, 0, 0, 2, 0, 0, 4, 10, 8, 6, 30, 22, 0, 0};
 // GLOBAL: IMPERIALISM 0x00695bd0
-short g_industryActionCostWeightResCode03[16] = {0, 0, 0, 0, 0, 10, 0, 10, 10, 20, 20, 20, 0, 0, 0, 0};
+short g_industryActionCostWeightResCode03[16] = {0,  0,  0,  0,  0, 10, 0, 10,
+                                                 10, 20, 20, 20, 0, 0,  0, 0};
 // GLOBAL: IMPERIALISM 0x00695bf0
 short g_industryActionCostWeightResCode0C[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20, 0, 0};
 
@@ -254,7 +256,7 @@ char g_pClassDescTStratReportView = 0;
 TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState = nullptr;
 // GLOBAL: IMPERIALISM 0x00694150
 LPCSTR g_apFontFiles[] = {"data\\WeBeBd__.ttf", "data\\Antqua.ttf", "data\\Antqua.ttf",
-                           "data\\AntquaB.ttf", nullptr};
+                          "data\\AntquaB.ttf", nullptr};
 // GLOBAL: IMPERIALISM 0x006a1890
 int g_nDibOrientationFlag_006A1890 = 0;
 // GLOBAL: IMPERIALISM 0x00694b48
@@ -394,11 +396,10 @@ short g_awTacticalUnitCategoryCodeBySlot[64] = {0};
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};
 
-// Navy/order composite score tables (0x550b60 / SumNavyOrderPriority family).
-short g_Resolve_Map_Order_LookupTable_00698108[9 * 64] = {0};
-short g_Calculate_Mission_Order_LookupTable_0069810C[9 * 64] = {0};
-short g_Task_Force_Order_LookupTable_00698110[0x24 * 32] = {0};
-short g_Navy_Order_Priority_LookupTable_00698118[9 * 64] = {0};
+// Navy/order composite score table (0x550b60 /
+// ComputeNavyOrderPriorityContributionPercentByCategory family); see TNavyOrderResourceDescriptor
+// in global_data_tables.h.
+TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64] = {{0}};
 
 struct MappedFlavorTextNationVariantEntry {
   short variantIndex;
@@ -553,15 +554,8 @@ extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16] = {0};
 
 // GLOBAL: IMPERIALISM 0x698f58
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
-    8, 9, -1, -1, -1,
-    8, 9, 10, 11, 12,
-    6, 5, 2, -1, -1,
-    13, -1, -1, -1, -1,
-    -1, -1, -1, -1, 0,
-    3, 7, -1, -1, -1,
-    -1, -1, -1, -1, 0,
-    -1, -1, -1, -1, 0,
-    10, 11, 12, -1, -1};
+    8,  9, -1, -1, -1, 8,  9,  10, 11, 12, 6,  5, 2,  -1, -1, 13, -1, -1, -1, -1, -1, -1, -1,
+    -1, 0, 3,  7,  -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0,  10, 11, 12, -1, -1};
 
 // Turn-flow cooldown defer counter and side flag (IsTurnCooldownCounterActiveOrResetFlag).
 // GLOBAL: IMPERIALISM 0x006a43c4

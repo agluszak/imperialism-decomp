@@ -42,6 +42,11 @@ TMission*& OwnerOf(TMission* item) {
 }
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x0053d6f0
+char TAttackProvinceMission::ReturnFalseSlot64() {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0053d780
 TAttackProvinceMission::TAttackProvinceMission() : TArmyMission(0xffff) {
   targetProvince30 = static_cast<short>(0xffff);
@@ -100,82 +105,57 @@ void TAttackProvinceMission::Free() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0053e570
-void TAttackProvinceMission::Call30() {
-  flag10 = 1;
-  if (targetProvince30 != -1) {
-    pathMarker06 = static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince30]
-                                          .ownerNationCode00);
-  }
+// FUNCTION: IMPERIALISM 0x0053d950
+char TAttackProvinceMission::ReturnFalseSlot98() {
+  return TArmyMission::ReturnFalseSlot98();
 }
 
-// FUNCTION: IMPERIALISM 0x0053e180
-void TAttackProvinceMission::SetStateByte8To2() {
-  state08 = 2;
-}
+// FUNCTION: IMPERIALISM 0x0053db60
+char TAttackProvinceMission::TryResolveTargetTerrainClass() {
+  field_14 = static_cast<short>(0xffff);
+  float bestScore = 0.0f;
 
-// Shared with TInvadeMission (COMDAT-folded body; TInvadeMission does not
-// redeclare a `// FUNCTION:` marker for this address, see TInvadeMission.cpp).
-// FUNCTION: IMPERIALISM 0x0053e1a0
-void TAttackProvinceMission::ResetValue0CToZero() {
-  const TGlobalMapCityScoreRecord& targetRecord = g_pGlobalMapState->cityScoreTable[targetProvince30];
-  float score = static_cast<float>(targetRecord.cityScoreValue);
+  const TGlobalMapCityScoreRecord& targetRecord =
+      g_pGlobalMapState->cityScoreTable[targetProvince30];
+  typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
+  GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
+      reinterpret_cast<GetTileNormalizedMovementClassId_t>(
+          (void*)&GetTileNormalizedMovementClassId);
 
-  int matchCount = 0;
-  int adjacentCount = targetRecord.adjacentRegionCount08;
-  if (adjacentCount > 0) {
-    typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
-    GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-        reinterpret_cast<GetTileNormalizedMovementClassId_t>(
-            (void*)&GetTileNormalizedMovementClassId);
-    for (int i = 0; i < adjacentCount; ++i) {
-      short movementClass = GetTileNormalizedMovementClassId_fn(targetRecord.adjacentRegionIds0A[i]);
-      if (movementClass == nationId04) {
+  for (int i = 0; i < targetRecord.adjacentRegionCount08; ++i) {
+    short candidateTile = targetRecord.adjacentRegionIds0A[i];
+    short movementClass = GetTileNormalizedMovementClassId_fn(candidateTile);
+    if (movementClass != nationId04) {
+      continue;
+    }
+
+    const TGlobalMapCityScoreRecord& candidateRecord =
+        g_pGlobalMapState->cityScoreTable[candidateTile];
+    float candidateScore = static_cast<float>(candidateRecord.cityScoreValue);
+    int matchCount = 0;
+    int adjacentCount = candidateRecord.adjacentRegionCount08;
+    for (int j = 0; j < adjacentCount; ++j) {
+      short adjMovementClass =
+          GetTileNormalizedMovementClassId_fn(candidateRecord.adjacentRegionIds0A[j]);
+      if (adjMovementClass == nationId04) {
         matchCount++;
       }
     }
-    score = (static_cast<float>(matchCount) / static_cast<float>(adjacentCount) -
-             *reinterpret_cast<const float*>(0x0065a9e0)) *
-            score;
-  }
-  *reinterpret_cast<float*>(&value0c) = score / *reinterpret_cast<const float*>(0x0065a9c0);
-}
-
-// Shared with TInvadeMission (COMDAT-folded body).
-// FUNCTION: IMPERIALISM 0x0053e290
-void TAttackProvinceMission::NoOpSlot3C() {
-  extern undefined4 NoOpRuntimeCallback_005184e0(void);
-  extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
-
-  typedef short(__cdecl * NoOpRuntimeCallback_005184e0_t)(short);
-  short movementClassWeight =
-      reinterpret_cast<NoOpRuntimeCallback_005184e0_t>((void*)&NoOpRuntimeCallback_005184e0)(
-          targetProvince30);
-
-  float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  if (targetProvince30 >= 0 && targetProvince30 <= 0x17f) {
-    typedef void(__cdecl * AccumulateUnitOrderPriorityVectorContribution_t)(void*, float*, int,
-                                                                             float);
-    AccumulateUnitOrderPriorityVectorContribution_t
-        AccumulateUnitOrderPriorityVectorContribution_fn =
-            reinterpret_cast<AccumulateUnitOrderPriorityVectorContribution_t>(
-                (void*)&AccumulateUnitOrderPriorityVectorContribution);
-    for (TStationedUnitNode* unit =
-             g_pGlobalMapState->cityScoreTable[targetProvince30].stationedUnitChain98;
-         unit != nullptr; unit = unit->next14) {
-      AccumulateUnitOrderPriorityVectorContribution_fn(unit, vector, 0x3f800000,
-                                                       static_cast<float>(movementClassWeight));
+    if (adjacentCount > 0) {
+      candidateScore = (static_cast<float>(matchCount) / static_cast<float>(adjacentCount) -
+                        *reinterpret_cast<const float*>(0x0065a9e0)) *
+                       candidateScore;
     }
+    candidateScore = candidateScore / *reinterpret_cast<const float*>(0x0065a9c0);
+
+    if (field_14 != -1 && candidateScore <= bestScore) {
+      continue;
+    }
+    field_14 = candidateTile;
+    bestScore = candidateScore;
   }
 
-  // NOTE: the original also re-weights this vector against a per-resource-type
-  // lookup table selected by the target province's development-stage byte
-  // (pad03 in TGlobalMapCityScoreRecord) before storing it; that lookup table
-  // is not yet catalogued in global_data_tables, so the accumulated priority
-  // vector is stored directly pending further recovery.
-  for (int i = 0; i < 5; ++i) {
-    resourceWeights[i] = vector[i];
-  }
+  return field_14 != -1;
 }
 
 // FUNCTION: IMPERIALISM 0x0053de00
@@ -201,8 +181,7 @@ void TAttackProvinceMission::MissionSlot44() {
   }
 
   if (*reinterpret_cast<const float*>(0x0065a8f0) < weighted / total) {
-    short targetOwnerNation =
-        g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00;
+    short targetOwnerNation = g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00;
     if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(targetOwnerNation, nationId04)) {
       // Original also walks a global "queued mission" cursor here, updating
       // every sibling mission whose context matches field_14 via a vtable
@@ -270,18 +249,74 @@ TMission* TAttackProvinceMission::GetReplacementSlot48() {
   return this;
 }
 
-// FUNCTION: IMPERIALISM 0x0053e5b0
-char TAttackProvinceMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
-  (void)mode;
-  if ((kind == 0 || kind == 1) && key == static_cast<int>(targetProvince30)) {
-    return 1;
-  }
-  return 0;
+// FUNCTION: IMPERIALISM 0x0053e180
+void TAttackProvinceMission::SetStateByte8To2() {
+  state08 = 2;
 }
 
-// FUNCTION: IMPERIALISM 0x0053d6f0
-char TAttackProvinceMission::ReturnFalseSlot64() {
-  return 0;
+// Shared with TInvadeMission (COMDAT-folded body; TInvadeMission does not
+// redeclare a `// FUNCTION:` marker for this address, see TInvadeMission.cpp).
+// FUNCTION: IMPERIALISM 0x0053e1a0
+void TAttackProvinceMission::ResetValue0CToZero() {
+  const TGlobalMapCityScoreRecord& targetRecord =
+      g_pGlobalMapState->cityScoreTable[targetProvince30];
+  float score = static_cast<float>(targetRecord.cityScoreValue);
+
+  int matchCount = 0;
+  int adjacentCount = targetRecord.adjacentRegionCount08;
+  if (adjacentCount > 0) {
+    typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
+    GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
+        reinterpret_cast<GetTileNormalizedMovementClassId_t>(
+            (void*)&GetTileNormalizedMovementClassId);
+    for (int i = 0; i < adjacentCount; ++i) {
+      short movementClass =
+          GetTileNormalizedMovementClassId_fn(targetRecord.adjacentRegionIds0A[i]);
+      if (movementClass == nationId04) {
+        matchCount++;
+      }
+    }
+    score = (static_cast<float>(matchCount) / static_cast<float>(adjacentCount) -
+             *reinterpret_cast<const float*>(0x0065a9e0)) *
+            score;
+  }
+  *reinterpret_cast<float*>(&value0c) = score / *reinterpret_cast<const float*>(0x0065a9c0);
+}
+
+// Shared with TInvadeMission (COMDAT-folded body).
+// FUNCTION: IMPERIALISM 0x0053e290
+void TAttackProvinceMission::NoOpSlot3C() {
+  extern undefined4 NoOpRuntimeCallback_005184e0(void);
+  extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
+
+  typedef short(__cdecl * NoOpRuntimeCallback_005184e0_t)(short);
+  short movementClassWeight = reinterpret_cast<NoOpRuntimeCallback_005184e0_t>(
+      (void*)&NoOpRuntimeCallback_005184e0)(targetProvince30);
+
+  float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  if (targetProvince30 >= 0 && targetProvince30 <= 0x17f) {
+    typedef void(__cdecl * AccumulateUnitOrderPriorityVectorContribution_t)(void*, float*, int,
+                                                                            float);
+    AccumulateUnitOrderPriorityVectorContribution_t
+        AccumulateUnitOrderPriorityVectorContribution_fn =
+            reinterpret_cast<AccumulateUnitOrderPriorityVectorContribution_t>(
+                (void*)&AccumulateUnitOrderPriorityVectorContribution);
+    for (TStationedUnitNode* unit =
+             g_pGlobalMapState->cityScoreTable[targetProvince30].stationedUnitChain98;
+         unit != nullptr; unit = unit->next14) {
+      AccumulateUnitOrderPriorityVectorContribution_fn(unit, vector, 0x3f800000,
+                                                       static_cast<float>(movementClassWeight));
+    }
+  }
+
+  // NOTE: the original also re-weights this vector against a per-resource-type
+  // lookup table selected by the target province's development-stage byte
+  // (pad03 in TGlobalMapCityScoreRecord) before storing it; that lookup table
+  // is not yet catalogued in global_data_tables, so the accumulated priority
+  // vector is stored directly pending further recovery.
+  for (int i = 0; i < 5; ++i) {
+    resourceWeights[i] = vector[i];
+  }
 }
 
 // Shared with TInvadeMission (COMDAT-folded body).
@@ -299,53 +334,20 @@ float TAttackProvinceMission::ReturnZeroFloatSlot78(TMission* candidate, float* 
   return TArmyMission::ReturnZeroFloatSlot78(candidate, referenceVector);
 }
 
-// FUNCTION: IMPERIALISM 0x0053d950
-char TAttackProvinceMission::ReturnFalseSlot98() {
-  return TArmyMission::ReturnFalseSlot98();
+// FUNCTION: IMPERIALISM 0x0053e570
+void TAttackProvinceMission::Call30() {
+  flag10 = 1;
+  if (targetProvince30 != -1) {
+    pathMarker06 =
+        static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00);
+  }
 }
 
-// FUNCTION: IMPERIALISM 0x0053db60
-char TAttackProvinceMission::TryResolveTargetTerrainClass() {
-  field_14 = static_cast<short>(0xffff);
-  float bestScore = 0.0f;
-
-  const TGlobalMapCityScoreRecord& targetRecord =
-      g_pGlobalMapState->cityScoreTable[targetProvince30];
-  typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
-  GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-      reinterpret_cast<GetTileNormalizedMovementClassId_t>((void*)&GetTileNormalizedMovementClassId);
-
-  for (int i = 0; i < targetRecord.adjacentRegionCount08; ++i) {
-    short candidateTile = targetRecord.adjacentRegionIds0A[i];
-    short movementClass = GetTileNormalizedMovementClassId_fn(candidateTile);
-    if (movementClass != nationId04) {
-      continue;
-    }
-
-    const TGlobalMapCityScoreRecord& candidateRecord = g_pGlobalMapState->cityScoreTable[candidateTile];
-    float candidateScore = static_cast<float>(candidateRecord.cityScoreValue);
-    int matchCount = 0;
-    int adjacentCount = candidateRecord.adjacentRegionCount08;
-    for (int j = 0; j < adjacentCount; ++j) {
-      short adjMovementClass =
-          GetTileNormalizedMovementClassId_fn(candidateRecord.adjacentRegionIds0A[j]);
-      if (adjMovementClass == nationId04) {
-        matchCount++;
-      }
-    }
-    if (adjacentCount > 0) {
-      candidateScore = (static_cast<float>(matchCount) / static_cast<float>(adjacentCount) -
-                        *reinterpret_cast<const float*>(0x0065a9e0)) *
-                       candidateScore;
-    }
-    candidateScore = candidateScore / *reinterpret_cast<const float*>(0x0065a9c0);
-
-    if (field_14 != -1 && candidateScore <= bestScore) {
-      continue;
-    }
-    field_14 = candidateTile;
-    bestScore = candidateScore;
+// FUNCTION: IMPERIALISM 0x0053e5b0
+char TAttackProvinceMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
+  (void)mode;
+  if ((kind == 0 || kind == 1) && key == static_cast<int>(targetProvince30)) {
+    return 1;
   }
-
-  return field_14 != -1;
+  return 0;
 }

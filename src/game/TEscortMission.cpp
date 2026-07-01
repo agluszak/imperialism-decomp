@@ -17,6 +17,21 @@ TEscortMission::TEscortMission() : TNavyMission() {}
 
 TEscortMission::TEscortMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
+// FUNCTION: IMPERIALISM 0x00539900
+TMission* TEscortMission::GetReplacementSlot48() {
+  return this;
+}
+
+// FUNCTION: IMPERIALISM 0x00539920
+char TEscortMission::ReturnFalseSlot64() {
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00539940
+char TEscortMission::ReturnFalseSlot60() {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00539a70
 void TEscortMission::Call30() {
   marker11 = 0;
@@ -41,21 +56,6 @@ void TEscortMission::NoOpSlot3C() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0053a290
-void TEscortMission::MissionSlot44() {
-  if (orderList24 != nullptr) {
-    orderList24->active_flag = 0;
-    // TODO: also clears flags on the linked child node (SetMapOrderEntryChildFlags);
-    // pending recovery of that helper's real receiver type.
-  }
-  ConsolidateMissionOrderEntriesByTargetAndQueue(reinterpret_cast<int*>(targetZone14));
-}
-
-// FUNCTION: IMPERIALISM 0x00539900
-TMission* TEscortMission::GetReplacementSlot48() {
-  return this;
-}
-
 // FUNCTION: IMPERIALISM 0x0053a250
 char TEscortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
   (void)mode;
@@ -65,12 +65,12 @@ char TEscortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00539940
-char TEscortMission::ReturnFalseSlot60() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00539920
-char TEscortMission::ReturnFalseSlot64() {
-  return 1;
+// FUNCTION: IMPERIALISM 0x0053a290
+void TEscortMission::MissionSlot44() {
+  if (orderList24 != nullptr) {
+    orderList24->active_flag = 0;
+    // TODO: also clears flags on the linked child node (SetMapOrderEntryChildFlags);
+    // pending recovery of that helper's real receiver type.
+  }
+  ConsolidateMissionOrderEntriesByTargetAndQueue(reinterpret_cast<int*>(targetZone14));
 }

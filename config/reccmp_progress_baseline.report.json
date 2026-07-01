@@ -4342,7 +4342,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -12062,7 +12062,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12512,7 +12512,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12524,7 +12524,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12548,7 +12548,7 @@
     },
     {
       "address": "0x4e0890",
-      "matching": 0.2222222222222222,
+      "matching": 0.24242424242424243,
       "name": "TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890",
       "type": 1
     },
@@ -12830,7 +12830,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.9333333333333333,
+      "matching": 0.6666666666666666,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -16772,7 +16772,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32038834951456313,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18848,20 +18848,20 @@
     },
     {
       "address": "0x5355b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueForControlSeaZoneMissionCapabilityFlagA",
       "type": 1
     },
     {
       "address": "0x5355d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnFalseForControlSeaZoneMissionCapabilityFlagB",
       "type": 1
     },
     {
       "address": "0x5355f0",
-      "matching": 0.0,
-      "name": "TControlSeaZoneMission::DestroyTControlSeaZoneMission",
+      "matching": 0.9090909090909091,
+      "name": "TControlSeaZoneMission::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -18872,26 +18872,26 @@
     },
     {
       "address": "0x535640",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueForScatteredShipsMissionCapabilityFlagA",
       "type": 1
     },
     {
       "address": "0x535660",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueForScatteredShipsMissionCapabilityFlagB",
       "type": 1
     },
     {
       "address": "0x535680",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueForScatteredShipsMissionSlot20",
       "type": 1
     },
     {
       "address": "0x5356a0",
-      "matching": 0.0,
-      "name": "TScatteredShipsMission::DestroyTScatteredShipsMission",
+      "matching": 0.9090909090909091,
+      "name": "TScatteredShipsMission::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -19058,7 +19058,7 @@
     },
     {
       "address": "0x536840",
-      "matching": 0.17073170731707318,
+      "matching": 0.13793103448275862,
       "name": "BuildMissionQueuedOrderCategoryWeightsAndReturnTotal",
       "type": 1
     },
@@ -19082,7 +19082,7 @@
     },
     {
       "address": "0x536f70",
-      "matching": 0.0,
+      "matching": 0.23529411764705882,
       "name": "TScatteredShipsMission::SetMapOrderEntryChildFlags",
       "type": 1
     },
@@ -19197,12 +19197,12 @@
     {
       "address": "0x538780",
       "matching": 0.5,
-      "name": "TControlSeaZoneMission::GetTControlSeaZoneMissionClassNamePointer",
+      "name": "TControlSeaZoneMission::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x5387f0",
-      "matching": 0.027777777777777776,
+      "matching": 0.12903225806451613,
       "name": "RecomputeAndClearMissionScoreUsingPortZoneContextAverage",
       "type": 1
     },
@@ -19238,19 +19238,19 @@
     },
     {
       "address": "0x539290",
-      "matching": 0.028169014084507043,
+      "matching": 0.13186813186813187,
       "name": "ComputeMissionScoreUsingPortZoneContextAverage",
       "type": 1
     },
     {
       "address": "0x5393a0",
-      "matching": 0.027586206896551724,
+      "matching": 0.3763837638376384,
       "name": "TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure",
       "type": 1
     },
     {
       "address": "0x539600",
-      "matching": 0.13333333333333333,
+      "matching": 0.6153846153846154,
       "name": "TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort",
       "type": 1
     },
@@ -19262,7 +19262,7 @@
     },
     {
       "address": "0x539780",
-      "matching": 0.0392156862745098,
+      "matching": 0.04,
       "name": "ResolveAndCacheMissionPortZoneContextForNationTarget",
       "type": 1
     },
@@ -19274,20 +19274,20 @@
     },
     {
       "address": "0x539920",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueForEscortMissionCapabilityFlagA",
       "type": 1
     },
     {
       "address": "0x539940",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnFalseForEscortMissionCapabilityFlagB",
       "type": 1
     },
     {
       "address": "0x539960",
-      "matching": 0.0,
-      "name": "TEscortMission::DestroyTEscortMission",
+      "matching": 0.9090909090909091,
+      "name": "TEscortMission::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -19299,7 +19299,7 @@
     {
       "address": "0x5399b0",
       "matching": 0.5,
-      "name": "TEscortMission::GetTEscortMissionClassNamePointer",
+      "name": "TEscortMission::GetRuntimeClass",
       "type": 1
     },
     {
@@ -19310,7 +19310,7 @@
     },
     {
       "address": "0x539a70",
-      "matching": 0.3333333333333333,
+      "matching": 1.0,
       "name": "TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId",
       "type": 1
     },
@@ -19322,25 +19322,25 @@
     },
     {
       "address": "0x539ca0",
-      "matching": 0.031746031746031744,
+      "matching": 0.043795620437956206,
       "name": "TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAverage",
       "type": 1
     },
     {
       "address": "0x539e70",
-      "matching": 0.017094017094017096,
+      "matching": 0.008368200836820083,
       "name": "TEscortMission::PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressure",
       "type": 1
     },
     {
       "address": "0x53a250",
-      "matching": 0.13333333333333333,
+      "matching": 0.6153846153846154,
       "name": "TEscortMission::HandleBeachheadMissionActionType0Or3ForTargetPort",
       "type": 1
     },
     {
       "address": "0x53a290",
-      "matching": 0.1111111111111111,
+      "matching": 0.32,
       "name": "TEscortMission::ResetBeachheadMissionChildFlagsAndDispatchField5Context",
       "type": 1
     },
@@ -19352,20 +19352,20 @@
     },
     {
       "address": "0x53a390",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnFalseForBeachheadMissionCapabilityFlagA",
       "type": 1
     },
     {
       "address": "0x53a3b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnFalseForBeachheadMissionCapabilityFlagB",
       "type": 1
     },
     {
       "address": "0x53a3d0",
-      "matching": 0.0,
-      "name": "DestroyTBeachheadMission",
+      "matching": 0.9090909090909091,
+      "name": "TBeachheadMission::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -19377,7 +19377,7 @@
     {
       "address": "0x53a420",
       "matching": 0.5,
-      "name": "TBeachheadMission::GetTBeachheadMissionClassNamePointer",
+      "name": "TBeachheadMission::GetRuntimeClass",
       "type": 1
     },
     {
@@ -19388,13 +19388,13 @@
     },
     {
       "address": "0x53a500",
-      "matching": 0.023952095808383235,
+      "matching": 0.011627906976744186,
       "name": "TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext",
       "type": 1
     },
     {
       "address": "0x53a7b0",
-      "matching": 0.10526315789473684,
+      "matching": 0.1935483870967742,
       "name": "TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget",
       "type": 1
     },
@@ -19406,13 +19406,13 @@
     },
     {
       "address": "0x53a920",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "GetBlockadePortMissionBeachheadChild",
       "type": 1
     },
     {
       "address": "0x53a940",
-      "matching": 0.07142857142857142,
+      "matching": 0.2702702702702703,
       "name": "TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady",
       "type": 1
     },
@@ -19424,20 +19424,20 @@
     },
     {
       "address": "0x53aa50",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnFalseForBlockadePortMissionCapabilityFlagA",
       "type": 1
     },
     {
       "address": "0x53aa70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnFalseForBlockadePortMissionCapabilityFlagB",
       "type": 1
     },
     {
       "address": "0x53aa90",
-      "matching": 0.0,
-      "name": "TBlockadePortMission::DestroyTBlockadePortMission",
+      "matching": 0.9090909090909091,
+      "name": "TBlockadePortMission::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -19449,7 +19449,7 @@
     {
       "address": "0x53aae0",
       "matching": 0.5,
-      "name": "TBlockadePortMission::GetTBlockadePortMissionClassNamePointer",
+      "name": "TBlockadePortMission::GetRuntimeClass",
       "type": 1
     },
     {
@@ -19460,19 +19460,19 @@
     },
     {
       "address": "0x53ac60",
-      "matching": 0.0,
+      "matching": 0.19047619047619047,
       "name": "TBlockadePortMission::SerializeTBlockadePortMission",
       "type": 1
     },
     {
       "address": "0x53aca0",
-      "matching": 0.0,
+      "matching": 0.56,
       "name": "TBlockadePortMission::DeserializeTBlockadePortMission",
       "type": 1
     },
     {
       "address": "0x53ace0",
-      "matching": 0.027777777777777776,
+      "matching": 0.12903225806451613,
       "name": "TBlockadePortMission::RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB",
       "type": 1
     },
@@ -19484,13 +19484,13 @@
     },
     {
       "address": "0x53ae90",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TBlockadePortMission::SetBlockadePortMissionStateByte8To3",
       "type": 1
     },
     {
       "address": "0x53aeb0",
-      "matching": 0.01384083044982699,
+      "matching": 0.013605442176870748,
       "name": "TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext",
       "type": 1
     },
@@ -19508,7 +19508,7 @@
     },
     {
       "address": "0x53ba10",
-      "matching": 0.16666666666666666,
+      "matching": 0.4,
       "name": "TBlockadePortMission::HandleBlockadePortMissionActionType4ForTargetPort",
       "type": 1
     },
@@ -19527,54 +19527,55 @@
     {
       "address": "0x53bb20",
       "matching": 0.5,
-      "name": "TScatteredShipsMission::GetTScatteredShipsMissionClassNamePointer",
+      "name": "TScatteredShipsMission::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x53bb90",
-      "matching": 0.3333333333333333,
+      "effective": true,
+      "matching": 0.75,
       "name": "ResetScatteredShipsMissionStateAndScoreDefault",
       "type": 1
     },
     {
       "address": "0x53bbb0",
-      "matching": 0.14285714285714285,
+      "matching": 1.0,
       "name": "TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline",
       "type": 1
     },
     {
       "address": "0x53bc00",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3",
       "type": 1
     },
     {
       "address": "0x53bc20",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C",
       "type": 1
     },
     {
       "address": "0x53bc40",
-      "matching": 0.06666666666666667,
+      "matching": 0.05714285714285714,
       "name": "TScatteredShipsMission::PopulateScatteredShipsMissionResourceWeightsFromNationNavyPressure",
       "type": 1
     },
     {
       "address": "0x53bcc0",
-      "matching": 0.15384615384615385,
+      "matching": 0.125,
       "name": "HandleScatteredShipsMissionActionType5WithNoTarget",
       "type": 1
     },
     {
       "address": "0x53bdd0",
-      "matching": 0.015503875968992248,
+      "matching": 0.07246376811594203,
       "name": "TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain",
       "type": 1
     },
     {
       "address": "0x53bf90",
-      "matching": 1.0,
+      "matching": 0.6666666666666666,
       "name": "ReturnFalseForScatteredShipsMissionCapabilityFlag",
       "type": 1
     },
@@ -19742,26 +19743,26 @@
     },
     {
       "address": "0x53d6f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnFalseForAttackProvinceMissionCapabilityFlag",
       "type": 1
     },
     {
       "address": "0x53d710",
       "matching": 0.5,
-      "name": "TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer",
+      "name": "TAttackProvinceMission::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x53d780",
-      "matching": 0.0,
+      "matching": 0.5217391304347826,
       "name": "TAttackProvinceMission::ConstructTAttackProvinceMission",
       "type": 1
     },
     {
       "address": "0x53d7c0",
-      "matching": 0.0,
-      "name": "TAttackProvinceMission::DestroyTAttackProvinceMission",
+      "matching": 0.9090909090909091,
+      "name": "TAttackProvinceMission::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -19772,79 +19773,79 @@
     },
     {
       "address": "0x53d810",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TAttackProvinceMission::SerializeTAttackProvinceMission",
       "type": 1
     },
     {
       "address": "0x53d850",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TAttackProvinceMission::DeserializeTAttackProvinceMission",
       "type": 1
     },
     {
       "address": "0x53d890",
-      "matching": 0.03636363636363636,
+      "matching": 0.6605504587155964,
       "name": "TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext",
       "type": 1
     },
     {
       "address": "0x53d950",
-      "matching": 0.014814814814814815,
+      "matching": 0.0,
       "name": "TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits",
       "type": 1
     },
     {
       "address": "0x53db60",
-      "matching": 0.026143790849673203,
+      "matching": 0.41295546558704455,
       "name": "TryResolveAttackProvinceMissionTargetTerrainClass",
       "type": 1
     },
     {
       "address": "0x53de00",
-      "matching": 0.013513513513513514,
+      "matching": 0.26126126126126126,
       "name": "RefreshAttackProvinceMissionTargetAndMaybeQueueUnits",
       "type": 1
     },
     {
       "address": "0x53e050",
-      "matching": 0.04395604395604396,
+      "matching": 0.35602094240837695,
       "name": "TryValidateOrRetargetDefendProvinceMissionTarget",
       "type": 1
     },
     {
       "address": "0x53e180",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending",
       "type": 1
     },
     {
       "address": "0x53e1a0",
-      "matching": 0.03225806451612903,
+      "matching": 0.29357798165137616,
       "name": "ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile30",
       "type": 1
     },
     {
       "address": "0x53e290",
-      "matching": 0.024844720496894408,
+      "matching": 0.14150943396226415,
       "name": "PopulateDefendProvinceMissionResourceWeightsFromTargetProvince",
       "type": 1
     },
     {
       "address": "0x53e500",
-      "matching": 0.0,
+      "matching": 0.5,
       "name": "ComputeDefendProvinceMissionScoreWithEarlyThreatGate",
       "type": 1
     },
     {
       "address": "0x53e570",
-      "matching": 0.125,
+      "matching": 0.8571428571428571,
       "name": "TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetProvince",
       "type": 1
     },
     {
       "address": "0x53e5b0",
-      "matching": 0.14285714285714285,
+      "matching": 0.6666666666666666,
       "name": "TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile",
       "type": 1
     },
@@ -19922,50 +19923,50 @@
     },
     {
       "address": "0x53f120",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "GetInvadeMissionBeachheadChild",
       "type": 1
     },
     {
       "address": "0x53f140",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueForInvadeMissionCapabilityFlagAlt",
       "type": 1
     },
     {
       "address": "0x53f160",
-      "matching": 0.0,
+      "matching": 0.7142857142857143,
       "name": "TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90",
       "type": 1
     },
     {
       "address": "0x53f190",
-      "matching": 0.0,
+      "matching": 0.6666666666666666,
       "name": "TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot84",
       "type": 1
     },
     {
       "address": "0x53f1c0",
-      "matching": 0.0,
+      "matching": 0.6666666666666666,
       "name": "TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C",
       "type": 1
     },
     {
       "address": "0x53f1f0",
-      "matching": 0.1,
+      "matching": 0.23076923076923078,
       "name": "TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead",
       "type": 1
     },
     {
       "address": "0x53f240",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnFalseForInvadeMissionCapabilityFlag",
       "type": 1
     },
     {
       "address": "0x53f260",
       "matching": 0.5,
-      "name": "TInvadeMission::GetTInvadeMissionClassNamePointer",
+      "name": "TInvadeMission::GetRuntimeClass",
       "type": 1
     },
     {
@@ -19976,8 +19977,8 @@
     },
     {
       "address": "0x53f3c0",
-      "matching": 0.0,
-      "name": "TInvadeMission::DestroyTInvadeMission",
+      "matching": 0.9090909090909091,
+      "name": "TInvadeMission::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -19988,55 +19989,55 @@
     },
     {
       "address": "0x53f410",
-      "matching": 0.034482758620689655,
+      "matching": 0.23529411764705882,
       "name": "TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders",
       "type": 1
     },
     {
       "address": "0x53f4e0",
-      "matching": 0.044444444444444446,
+      "matching": 0.0851063829787234,
       "name": "TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits",
       "type": 1
     },
     {
       "address": "0x53f580",
-      "matching": 0.08333333333333333,
+      "matching": 0.15789473684210525,
       "name": "TInvadeMission::InitializeInvadeMissionFromNationAndTargetTile",
       "type": 1
     },
     {
       "address": "0x53f5f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TInvadeMission::SetInvadeMissionKindTag2",
       "type": 1
     },
     {
       "address": "0x53f610",
-      "matching": 0.2,
+      "matching": 0.8888888888888888,
       "name": "TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState",
       "type": 1
     },
     {
       "address": "0x53f640",
-      "matching": 0.0,
+      "matching": 0.47619047619047616,
       "name": "TInvadeMission::SerializeTInvadeMission",
       "type": 1
     },
     {
       "address": "0x53f690",
-      "matching": 0.0,
+      "matching": 0.1411764705882353,
       "name": "TMission::DeserializeTInvadeMission",
       "type": 1
     },
     {
       "address": "0x53f780",
-      "matching": 0.08,
+      "matching": 0.7755102040816326,
       "name": "TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath",
       "type": 1
     },
     {
       "address": "0x53f7d0",
-      "matching": 0.1111111111111111,
+      "matching": 0.9411764705882353,
       "name": "TInvadeMission::AdvanceInvadeMissionCompositeHandlers",
       "type": 1
     },
@@ -20048,49 +20049,49 @@
     },
     {
       "address": "0x53faa0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueForInvadeMissionCapabilityFlag",
       "type": 1
     },
     {
       "address": "0x53fac0",
-      "matching": 0.0,
+      "matching": 0.0425531914893617,
       "name": "TInvadeMission::ComputeInvadeMissionWeightedScoreDelta",
       "type": 1
     },
     {
       "address": "0x53fb60",
-      "matching": 0.0,
+      "matching": 0.38095238095238093,
       "name": "TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled",
       "type": 1
     },
     {
       "address": "0x53fb90",
-      "matching": 0.0,
+      "matching": 0.75,
       "name": "TInvadeMission::SetInvadeMissionBeachheadDisabledFlag",
       "type": 1
     },
     {
       "address": "0x53fbc0",
-      "matching": 0.07407407407407407,
+      "matching": 0.76,
       "name": "TInvadeMission::HandleInvadeMissionActionOnTargetViaBeachhead",
       "type": 1
     },
     {
       "address": "0x53fc10",
-      "matching": 0.017543859649122806,
+      "matching": 0.03389830508474576,
       "name": "TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore",
       "type": 1
     },
     {
       "address": "0x53fdc0",
-      "matching": 0.1,
+      "matching": 0.6428571428571429,
       "name": "TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass",
       "type": 1
     },
     {
       "address": "0x53fe10",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh",
       "type": 1
     },
@@ -21290,7 +21291,7 @@
     },
     {
       "address": "0x54f500",
-      "matching": 0.8941176470588236,
+      "matching": 0.9285714285714286,
       "name": "TShip::ConstructAndLinkNavyPrimaryOrderNode",
       "type": 1
     },
@@ -21314,7 +21315,7 @@
     },
     {
       "address": "0x54f8e0",
-      "matching": 0.3948497854077253,
+      "matching": 0.4177777777777778,
       "name": "CreateNavyPrimaryOrderNodeAndAssignDisplayName",
       "type": 1
     },
@@ -21350,7 +21351,7 @@
     },
     {
       "address": "0x54ff00",
-      "matching": 0.018867924528301886,
+      "matching": 0.41081081081081083,
       "name": "ComputeNavyOrderPriorityContributionPercentByCategory",
       "type": 1
     },
@@ -21392,7 +21393,7 @@
     },
     {
       "address": "0x5505a0",
-      "matching": 0.3333333333333333,
+      "matching": 0.5,
       "name": "GetNavyOrderNormalizationBaseByNationType",
       "type": 1
     },
@@ -21452,7 +21453,7 @@
     },
     {
       "address": "0x550b60",
-      "matching": 0.1956521739130435,
+      "matching": 0.2,
       "name": "ComputeOrderNodeCompositeEconomicScore",
       "type": 1
     },
@@ -21494,7 +21495,7 @@
     },
     {
       "address": "0x550e70",
-      "matching": 0.5454545454545454,
+      "matching": 0.75,
       "name": "GetResourceDescriptorWeightWord0ByType",
       "type": 1
     },
@@ -41835,9 +41836,21 @@
       "type": 5
     },
     {
+      "address": "0x65a5a8",
+      "matching": 1.0,
+      "name": "TScatteredShipsMission::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x65a680",
       "matching": 1.0,
       "name": "TDefendProvinceMission::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65a740",
+      "matching": 1.0,
+      "name": "TControlSeaZoneMission::`vftable'",
       "type": 5
     },
     {
@@ -41847,9 +41860,39 @@
       "type": 5
     },
     {
+      "address": "0x65aab0",
+      "matching": 1.0,
+      "name": "TEscortMission::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65ab88",
+      "matching": 1.0,
+      "name": "TBeachheadMission::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65ac60",
+      "matching": 1.0,
+      "name": "TBlockadePortMission::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x65ad38",
       "matching": 1.0,
       "name": "TArmyMission::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65adf8",
+      "matching": 1.0,
+      "name": "TAttackProvinceMission::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65aec0",
+      "matching": 1.0,
+      "name": "TInvadeMission::`vftable'",
       "type": 5
     },
     {

@@ -14,14 +14,6 @@
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
 extern short g_industryActionCostWeightResCode10[16];
-char g_ResourceDescriptorWeightWord0Base0069811c[0x24 * 64] = {0};
-
-extern "C" {
-extern short g_Resolve_Map_Order_LookupTable_00698108[];
-extern short g_Calculate_Mission_Order_LookupTable_0069810C[];
-extern short g_Navy_Order_Priority_LookupTable_00698118[];
-extern short g_Task_Force_Order_LookupTable_00698110[];
-}
 
 extern undefined4 FindMapActionContextByNodeId(void);
 
@@ -35,14 +27,10 @@ static short SignedDiv10(int value) {
                  (short)(((__int64)value * 0x66666667) >> 0x3f));
 }
 
-static int* NavyZoneOrderDescriptorEnabledFlagPtr(short zoneIndex);
-static short* NavyZoneOrderDescriptorStockCapPtr(short zoneIndex);
-
 // FUNCTION: IMPERIALISM 0x004e0460
 int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeType) {
   int sum = 0;
-  for (TShip* node = static_cast<TShip*>(GetNavyPrimaryOrderListHead()); node != 0;
-       node = node->nextOlder24) {
+  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
     if (node->ownerNationSlot14 == nationObj->nationSlot && node->field08 == (void*)nodeType) {
       sum += ComputeOrderNodeCompositeEconomicScore(node);
     }
@@ -53,8 +41,7 @@ int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeTyp
 // FUNCTION: IMPERIALISM 0x004e04b0
 int SumNavyOrderPriorityForNation(TGreatPower* nationObj) {
   int sum = 0;
-  for (TShip* node = static_cast<TShip*>(GetNavyPrimaryOrderListHead()); node != 0;
-       node = node->nextOlder24) {
+  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
     if (node->ownerNationSlot14 == nationObj->nationSlot) {
       sum += ComputeOrderNodeCompositeEconomicScore(node);
     }
@@ -65,10 +52,10 @@ IMPLEMENT_DYNCREATE(TShip, TObject)
 
 // FUNCTION: IMPERIALISM 0x0054f500
 TShip::TShip()
-    : TObject(), displayName18(), resourceType04(0), pad06(0), field08(0), linkContext0c(0),
-      linkTag0e(0), quantityFlag10(1), ownerNationSlot14(static_cast<short>(-1)),
-      stockLevel1c(0), pad1e(0), field20(0), nextOlder24(g_pNavyPrimaryOrderListHead),
-      prevNewer28(0), field2c(0), field30(0), field34(0) {
+    : TObject(), displayName18(), resourceType04(0), pad06(0), field08(0), field0c(0),
+      quantityFlag10(1), ownerNationSlot14(static_cast<short>(-1)), stockLevel1c(0), pad1e(0),
+      field20(0), nextOlder24(g_pNavyPrimaryOrderListHead), prevNewer28(0), field2c(0), field30(0),
+      field34(0) {
   g_pNavyPrimaryOrderListHead = this;
   if (nextOlder24 != 0) {
     nextOlder24->prevNewer28 = this;
@@ -146,8 +133,59 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
   } while (1);
 }
 
+// Receiver-agnostic: also called directly on a TMapOrderEntry's own
+// order_type/required_count/tiebreak_strength fields (TNavyMission::ReturnZeroSlot2C),
+// which happen to share these same 3 offsets with TShip -- see the header comment.
+// FUNCTION: IMPERIALISM 0x0054ff00
+int ComputeNavyOrderPriorityContributionPercentByCategory(short resourceType,
+                                                          short stockOrRequiredCount,
+                                                          short tiebreakField, int category) {
+  // Category-normalization divisor table; not yet a catalogued global (sits
+  // between g_pNavySecondaryOrderListHead and g_pCachedMapActionContext).
+  int divisor = reinterpret_cast<const int*>(0x006a3ec8)[category];
+  const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[resourceType];
+
+  switch (category) {
+  case 0: {
+    int quantityTerm =
+        static_cast<int>(SignedMod100(tiebreakField)) + 5 + descriptor.resolveWeight * 10;
+    int weight = descriptor.calculateWeight;
+    return (SignedDiv10(quantityTerm) * weight * weight * 100) / divisor;
+  }
+  case 1: {
+    int weight = descriptor.calculateWeight;
+    return (weight * static_cast<int>(stockOrRequiredCount) * 10000) /
+           (descriptor.taskForceWeight * divisor);
+  }
+  case 2:
+    return (static_cast<int>(descriptor.descriptorWeight) * 100) / divisor;
+  case 3:
+    if (stockOrRequiredCount < 1) {
+      return 0;
+    }
+    return (static_cast<int>(GetIndustryActionCostWeightByResourceType(resourceType)) * 100) /
+           divisor;
+  default:
+    return 0;
+  }
+}
+
+int TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category) {
+  return ::ComputeNavyOrderPriorityContributionPercentByCategory(resourceType04, stockLevel1c,
+                                                                 field30, category);
+}
+
+// FUNCTION: IMPERIALISM 0x005505a0
+short GetNavyOrderNormalizationBaseByResourceType(short resourceType) {
+  return g_NavyOrderResourceDescriptorTable[resourceType].stockCap;
+}
+
+short TShip::GetNavyOrderNormalizationBaseByNationType() {
+  return GetNavyOrderNormalizationBaseByResourceType(resourceType04);
+}
+
 // FUNCTION: IMPERIALISM 0x005505c0
-void* GetNavyPrimaryOrderListHead(void) {
+TShip* GetNavyPrimaryOrderListHead(void) {
   return g_pNavyPrimaryOrderListHead;
 }
 
@@ -158,35 +196,17 @@ short GetIndustryActionCostWeightByResourceType(short resourceType) {
 
 // FUNCTION: IMPERIALISM 0x00550b60
 int ComputeOrderNodeCompositeEconomicScore(TShip* node) {
-  int resourceType = (int)node->resourceType04;
-  short quantityField = node->field30;
-  int quantityTerm = (int)SignedMod100(quantityField);
-  int navyTerm =
-      quantityTerm + 5 + g_Navy_Order_Priority_LookupTable_00698118[resourceType * 9] * 10;
-  int resolveTerm =
-      quantityTerm + 5 + g_Resolve_Map_Order_LookupTable_00698108[resourceType * 9] * 10;
-  short stockAt1c = node->stockLevel1c;
-  return (SignedDiv10(resolveTerm) +
-          (SignedDiv10(navyTerm) +
-           g_Calculate_Mission_Order_LookupTable_0069810C[resourceType * 9]) *
-              100 +
-          (int)stockAt1c) /
-         (int)*(short*)(reinterpret_cast<char*>(&g_Task_Force_Order_LookupTable_00698110) +
-                        resourceType * 0x24);
-}
-
-static int* NavyZoneOrderDescriptorEnabledFlagPtr(short zoneIndex) {
-  return reinterpret_cast<int*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
-                                static_cast<int>(zoneIndex) * 0x24 + 0x10);
-}
-
-static short* NavyZoneOrderDescriptorStockCapPtr(short zoneIndex) {
-  return reinterpret_cast<short*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
-                                  static_cast<int>(zoneIndex) * 0x24 + 4);
+  const TNavyOrderResourceDescriptor& descriptor =
+      g_NavyOrderResourceDescriptorTable[node->resourceType04];
+  int quantityTerm = static_cast<int>(SignedMod100(node->field30));
+  int navyTerm = quantityTerm + 5 + descriptor.navyPriorityWeight * 10;
+  int resolveTerm = quantityTerm + 5 + descriptor.resolveWeight * 10;
+  return (SignedDiv10(resolveTerm) + (SignedDiv10(navyTerm) + descriptor.calculateWeight) * 100 +
+          static_cast<int>(node->stockLevel1c)) /
+         descriptor.taskForceWeight;
 }
 
 // FUNCTION: IMPERIALISM 0x00550e70
 short GetResourceDescriptorWeightWord0ByType(short resourceType) {
-  return *reinterpret_cast<short*>(&g_ResourceDescriptorWeightWord0Base0069811c +
-                                   resourceType * 0x24);
+  return g_NavyOrderResourceDescriptorTable[resourceType].resourceDescriptorWeightWord0;
 }

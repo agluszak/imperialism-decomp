@@ -2270,7 +2270,7 @@ address|target_cpp|ownership|note
 538900|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 5389f0|src/game/TNavyMission.cpp|manual|marker_sync
 538bf0|src/game/TNavyMission.cpp|manual|marker_sync
-538fe0|src/game/TBeachheadMission.cpp|manual|marker_sync
+538fe0|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 539290|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 5393a0|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 539600|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
@@ -2494,6 +2494,8 @@ address|target_cpp|ownership|note
 54fab0|src/game/TShip.cpp|manual|marker_sync
 54fb50|src/game/TShip.cpp|manual|marker_sync
 54fbf0|src/game/TShip.cpp|manual|marker_sync
+54ff00|src/game/TShip.cpp|manual|marker_sync
+5505a0|src/game/TShip.cpp|manual|marker_sync
 5505c0|src/game/TShip.cpp|manual|marker_sync
 550670|src/game/TMapOrderEntry.cpp|manual|marker_sync
 550970|src/game/TShip.cpp|manual|marker_sync

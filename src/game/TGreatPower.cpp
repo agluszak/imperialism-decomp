@@ -68,11 +68,11 @@ extern float g_DAT_006533e8_Value_006533E8[];
 extern float g_DAT_Value_00653408[];
 // Float constants for the relative-power-score family (slots 0x8e-0x9e).
 extern const float g_Compute_Advisory_Handler_LookupTable_00653700; // 0.0f
-extern float g_Compute_Advisory_Handler_LookupTable_00653714; // -0.25f
-extern float g_Iterate_Linked_List_Value_00653718;            // 0.25f
-extern float g_Compute_City_Order_Value_0065371C;             // 0.5f
-extern float g_Compute_Advisory_Handler_LookupTable_00653720; // -90.0f
-extern float g_Compute_Advisory_Peer_LookupTable_00653724;    // -0.5f
+extern float g_Compute_Advisory_Handler_LookupTable_00653714;       // -0.25f
+extern float g_Iterate_Linked_List_Value_00653718;                  // 0.25f
+extern float g_Compute_City_Order_Value_0065371C;                   // 0.5f
+extern float g_Compute_Advisory_Handler_LookupTable_00653720;       // -90.0f
+extern float g_Compute_Advisory_Peer_LookupTable_00653724;          // -0.5f
 extern const float g_Compute_Advisory_Zero_00653FD0;
 extern float g_Compute_Advisory_Map_Value_00653FD4;
 extern double g_Compute_Advisory_MinusSix_00653FE8;
@@ -1776,7 +1776,6 @@ char TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
   return 0;
 }
 
-
 // FUNCTION: IMPERIALISM 0x004dc4c0
 short TGreatPower::ComputeTreasuryStatusPromptCode(void) {
   int dispatchCounter = g_pDiplomacyTurnStateManager->proposalDispatchCounter790;
@@ -1791,7 +1790,6 @@ short TGreatPower::ComputeTreasuryStatusPromptCode(void) {
   }
   return promptCode;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004dc540
 char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
@@ -1963,7 +1961,6 @@ void TGreatPower::NotifyCitySlot2C(void) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004dca80
 void TGreatPower::OrphanRetStub_004dca80(void) {}
 
@@ -2017,7 +2014,6 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
   }
   return static_cast<unsigned short>(this->diplomacyCounterA2);
 }
-
 
 // FUNCTION: IMPERIALISM 0x004dcc30
 void TGreatPower::OrphanRetStub_004dcc30(void) {}
@@ -2140,7 +2136,6 @@ short TGreatPower::TryDecayRelationNeedScores9And8(void) {
   return 0;
 }
 
-
 // FUNCTION: IMPERIALISM 0x004dd040
 void TGreatPower::ResetDiplomacyLevelForNationSlot12(NationSlot targetNationSlot, int resetLevel) {
   short nation = static_cast<short>(targetNationSlot);
@@ -2155,7 +2150,6 @@ void TGreatPower::ResetDiplomacyLevelForNationSlot12(NationSlot targetNationSlot
     this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, -1);
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x004dd0c0
 void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
@@ -2173,8 +2167,6 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
   }
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004dd140
 void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
   int total = 0;
@@ -2188,9 +2180,6 @@ void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
   this->tradeCapacity = static_cast<short>(total);
   this->diplomacyCounterA2 = static_cast<short>(total);
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x004dd1b0
 void TGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
@@ -2237,7 +2226,6 @@ void TGreatPower::RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
     }
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x004dd310
 void TGreatPower::ReleaseDiplomacyTrackedObjectSlots850(void) {
@@ -2309,8 +2297,6 @@ void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
   this->SetDiplomacyState1c6ClampedToCounterA4(2, -1);
   this->SnapshotDiplomacyState1c6Into250();
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004dd4e0
 void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
@@ -2417,7 +2403,6 @@ void TGreatPower::AddToCityStockCounterAndRefresh(short targetSlot, short value)
   cityPtr->Refresh80();
 }
 
-
 // FUNCTION: IMPERIALISM 0x004dd7f0
 unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
   switch (orderKind) {
@@ -2478,8 +2463,6 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
   }
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004dda20
 void TGreatPower::DecrementDiplomacyCounterA2ByValue(int delta) {
   this->diplomacyCounterA2 =
@@ -2533,7 +2516,6 @@ short TGreatPower::QueryNationMetricBySlot7C(short targetNationSlot) {
   return this->diplomacyState1c6[targetNationSlot];
 }
 
-
 // FUNCTION: IMPERIALISM 0x004ddb40
 void TGreatPower::SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value) {
   if (targetSlot != -10) {
@@ -2545,15 +2527,12 @@ void TGreatPower::SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004ddb80
 void TGreatPower::SnapshotDiplomacyState1c6Into250(void) {
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     this->diplomacyState250[nationSlot] = this->diplomacyState1c6[nationSlot];
   }
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004ddbb0
 char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
@@ -2567,8 +2546,6 @@ char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int ar
   this->AppendTrackedSlotEntry(1, arg1, 0, static_cast<short>(arg4), 0);
   return 0;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004ddc30
 void TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
@@ -2595,7 +2572,6 @@ void TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceInd
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004ddd20
 void TGreatPower::ClearDiplomacyState1c6ForTarget(short targetSlot) {
   this->diplomacyState1c6[targetSlot] = 0;
@@ -2609,7 +2585,6 @@ bool TGreatPower::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targ
   }
   return result;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004ddd90
 void TGreatPower::AppendTrackedSlotEntry(short kind, int targetNation, short value, short slotIndex,
@@ -2627,7 +2602,6 @@ void TGreatPower::AppendTrackedSlotEntry(short kind, int targetNation, short val
   }
   this->diplomacyTrackedSlots[slotIndex]->WritePackedIntSlot38(reinterpret_cast<int*>(&packet));
 }
-
 
 // FUNCTION: IMPERIALISM 0x004dde30
 char TGreatPower::AnyTrackedSlotEntryHasZeroField4(short targetSlot) {
@@ -2651,7 +2625,6 @@ short TGreatPower::GetTrackedSlotEntryCountLow(short targetSlot) {
   return static_cast<short>(this->diplomacyTrackedSlots[targetSlot]->GetEntryCount());
 }
 
-
 // FUNCTION: IMPERIALISM 0x004ddeb0
 void TGreatPower::ReadTrackedSlotEntryFields(short slotIndex, short ordinal, short* outKind,
                                              short* outValue, short* outTargetNation,
@@ -2663,7 +2636,6 @@ void TGreatPower::ReadTrackedSlotEntryFields(short slotIndex, short ordinal, sho
   *outValue = entry->value;
   *outPayload = entry->payload;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004ddf20
 void TGreatPower::AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
@@ -2948,14 +2920,12 @@ bool TGreatPower::CanAffordAdditionalDiplomacyCostAfterCommitments(short additio
   return remainingBudget >= 0;
 }
 
-
 // FUNCTION: IMPERIALISM 0x004de7e0
 void TGreatPower::ApplyTurnDiplomacyStateSlot1e0(void) {
   if (this->city != 0 && this->foreignMinister != 0) {
     this->foreignMinister->Call80();
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x004de810
 void TGreatPower::NotifyWarResetSlotA5(void) {
@@ -3216,7 +3186,6 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004defd0
 void TGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
                                                             short targetNationId) {
@@ -3331,7 +3300,6 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004df370
 void TGreatPower::QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex) {
   const short kProposalCode12D = 0x12D;
@@ -3426,7 +3394,6 @@ char TGreatPower::IsEventCodeAllowedForRelationTier(short eventCode, int targetN
   }
   return allowed;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004df580
 void TGreatPower::ResetNationDiplomacyProposalQueue(void) {
@@ -3557,9 +3524,6 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   this->CreateFrogCityTownMarkerAndAttach(mgr);
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x004dfa20
 void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   TTown* marker = new TTown();
@@ -3568,7 +3532,6 @@ void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   marker->activeFlag4f = 1;
   this->townMarkerList->AddTailSlot30(marker);
 }
-
 
 // FUNCTION: IMPERIALISM 0x004dfae0
 void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
@@ -3610,7 +3573,6 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e00d0
 void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(void) {
   if (!IsQuarterlyLocalizationGateOpen()) {
@@ -3646,7 +3608,6 @@ void TGreatPower::DispatchTrackedOrderSlot2CCallbacks(void) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e0290
 void TGreatPower::SortTrackedOrdersByTypePriority(void) {
   short orderCount = static_cast<short>(this->trackedObjectList->GetCountSlot48());
@@ -3670,19 +3631,16 @@ void TGreatPower::SortTrackedOrdersByTypePriority(void) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e03a0
 void TGreatPower::RunSlot4CThenSortTrackedOrders(void) {
   this->DispatchTrackedOrderSlot2CCallbacks();
   this->SortTrackedOrdersByTypePriority();
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e03d0
 void TGreatPower::ResetField900FromNeedCapA6(void) {
   this->field900 = this->needCapA6 / 5;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e0400
 char TGreatPower::HasActiveCandidateNationSlots() {
@@ -3702,15 +3660,13 @@ void TGreatPower::NotifyAllianceSlot214(int targetNation) {
 // FUNCTION: IMPERIALISM 0x004e0500
 int TGreatPower::SumNavyOrderPriorityForNationSlot86(void) {
   int prioritySum = 0;
-  for (TShip* node = static_cast<TShip*>(GetNavyPrimaryOrderListHead()); node != 0;
-       node = node->nextOlder24) {
+  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
     if (node->ownerNationSlot14 == this->nationSlot) {
       prioritySum += GetIndustryActionCostWeightByResourceType(node->resourceType04);
     }
   }
   return prioritySum;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e0550
 int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
@@ -3771,7 +3727,6 @@ int TGreatPower::SumCommodityRecordAccumulatedValues(void) {
   return total;
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e0740
 int TGreatPower::GetCityBuildingProductionSlot8D(short buildingSlot) {
   if (this->city != 0) {
@@ -3780,8 +3735,7 @@ int TGreatPower::GetCityBuildingProductionSlot8D(short buildingSlot) {
   return 0;
 }
 
- // omit frame pointer, as in the original bodies
-
+// omit frame pointer, as in the original bodies
 
 // FUNCTION: IMPERIALISM 0x004e07b0
 int TGreatPower::ComputeArmyCommitBudgetSlot8E(void) {
@@ -3805,8 +3759,6 @@ int TGreatPower::ComputeArmyCommitBudgetSlot8E(void) {
   }
   return budget;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004e0890
 float TGreatPower::GetScoreFactorSlot23C(void) {
@@ -3931,8 +3883,6 @@ float TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, 
   return combinedScore / denominator;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004e1170
 float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, int partnerNation) {
   float selfScore = this->GetScoreFactorSlot23C();
@@ -3955,9 +3905,6 @@ float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, i
          denominator;
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x004e1300
 float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot) {
   float selfScore = this->GetScoreFactorSlot240();
@@ -3978,8 +3925,6 @@ float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, 
   }
   return combinedScore / denominator;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004e1490
 float TGreatPower::ComputeNavyScoreStandingRatioVsNationPair(int targetNation, int partnerNation) {
@@ -4002,9 +3947,6 @@ float TGreatPower::ComputeNavyScoreStandingRatioVsNationPair(int targetNation, i
   return (static_cast<float>(standingRow[static_cast<short>(partnerNation)]) + selfScore) /
          denominator;
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x004e1620
 float TGreatPower::ComputeArmyScoreRatioForNationPair(int nationA, int nationB, char swapRoles) {
@@ -4122,7 +4064,6 @@ float TGreatPower::ComputeNavyScoreStandingRatioForNationPair(int nationA, int n
   return numerator;
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e1c00
 char TGreatPower::ReturnZeroSlot9D(int targetNation) {
   (void)targetNation;
@@ -4157,8 +4098,6 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
   }
   return joinsWar;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004e1d50
 int TGreatPower::CheckTransitionSlot27C(int arg1, int arg2) {
@@ -4261,8 +4200,6 @@ float TGreatPower::ComputeWarThresholdSlotA3(int targetNation) {
       targetNavyScore + alliedNavyForTarget * (-g_Compute_Advisory_Peer_LookupTable_00653724);
   return numerator / denominator;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004e2190
 void TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {}
@@ -4536,7 +4473,6 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
   }
   return 0;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e2b00
 void TGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) {
@@ -4984,4 +4920,3 @@ char __stdcall IsSpecialNationInteractionResource(short resourceIndex) {
   }
   return 0;
 }
-

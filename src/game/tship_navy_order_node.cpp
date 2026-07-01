@@ -8,24 +8,13 @@
 #include "game/CString.h"
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
-extern "C" short g_Task_Force_Order_LookupTable_00698110[];
 
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode);
 
-static int* NavyZoneOrderDescriptorEnabledFlagPtr(short zoneIndex) {
-  return reinterpret_cast<int*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
-                                static_cast<int>(zoneIndex) * 0x24 + 0x10);
-}
-
-static short* NavyZoneOrderDescriptorStockCapPtr(short zoneIndex) {
-  return reinterpret_cast<short*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
-                                  static_cast<int>(zoneIndex) * 0x24 + 4);
-}
-
 // FUNCTION: IMPERIALISM 0x0054f8e0
-TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* portZoneContext,
+TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone* portZoneContext,
                                                       int nationSlot, char* displayNameOverride) {
-  if (*NavyZoneOrderDescriptorEnabledFlagPtr(zoneIndex) < 0) {
+  if (g_NavyOrderResourceDescriptorTable[resourceType].enabledFlagOrBucketOffset < 0) {
     return 0;
   }
 
@@ -38,12 +27,13 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
   }
 
   shipNode->field08 = portZoneContext;
-  shipNode->resourceType04 = zoneIndex;
+  shipNode->resourceType04 = resourceType;
   shipNode->ownerNationSlot14 = static_cast<short>(nationSlot);
 
   if (displayNameOverride == 0) {
     TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[zoneIndex]), &shipNode->displayName18);
+        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[resourceType]),
+        &shipNode->displayName18);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
          existing = existing->nextOlder24) {
       if (existing != shipNode &&
@@ -60,7 +50,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
     shipNode->displayName18 = temp;
   }
 
-  shipNode->stockLevel1c = *NavyZoneOrderDescriptorStockCapPtr(zoneIndex);
+  shipNode->stockLevel1c = g_NavyOrderResourceDescriptorTable[resourceType].stockCap;
 
   if (portZoneContext != 0) {
     portZoneContext->HandleKeyDown(nationSlot);

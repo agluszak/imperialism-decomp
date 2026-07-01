@@ -1,4 +1,5 @@
 #include "game/TMapOrderEntry.h"
+#include "game/global_data_tables.h"
 
 namespace {
 
@@ -22,8 +23,9 @@ protected:
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00550670
-TMapOrderEntry* TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(
-    TMapOrderEntry* candidate, int compareAttachedFlag) {
+TMapOrderEntry*
+TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* candidate,
+                                                            int compareAttachedFlag) {
   if ((char)compareAttachedFlag != '\0') {
     if (attachment != 0) {
       return candidate;
@@ -120,11 +122,13 @@ void TMapOrderEntry::RemoveNode(int self) {
 
       owner_ctx->head = list_head;
 
-      const short* order_type_to_bucket_offset =
-          reinterpret_cast<const short*>(0x00698120 + order_type * 0x24);
-      short bucket_offset = *order_type_to_bucket_offset;
-      short* bucket_counter = reinterpret_cast<short*>(
-          reinterpret_cast<char*>(owner_ctx) + 0x18 + bucket_offset * 2);
+      // Low 16 bits of the shared per-order-type descriptor's enabled-flag
+      // dword (see TNavyOrderResourceDescriptor in global_data_tables.h),
+      // reused here as a bucket-count array index.
+      short bucket_offset = static_cast<short>(
+          g_NavyOrderResourceDescriptorTable[order_type].enabledFlagOrBucketOffset);
+      short* bucket_counter =
+          reinterpret_cast<short*>(reinterpret_cast<char*>(owner_ctx) + 0x18 + bucket_offset * 2);
       *bucket_counter = *bucket_counter - 1;
     }
 

@@ -17,8 +17,7 @@ public:
   short resourceType04;
   short pad06;
   TZone* field08;
-  short linkContext0c;
-  short linkTag0e;
+  int field0c; // single dword (ctor writes it as one `mov dword ptr [this+0xc], 0`)
   int quantityFlag10;
   short ownerNationSlot14;
   CString displayName18;
@@ -39,19 +38,46 @@ public:
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   void Free() override;
+
+  // Per-category (0-3) priority-contribution percentage for this order node,
+  // used by callers that accumulate a 4-component category vector (see e.g.
+  // TControlSeaZoneMission::NoOpSlot3C). Sibling of ComputeOrderNodeCompositeEconomicScore
+  // (same lookup tables, different blend per category). Thin wrapper over the
+  // receiver-agnostic ComputeNavyOrderPriorityContributionPercentByCategory
+  // free function -- the same body is also called on a plain TMapOrderEntry*
+  // (TNavyMission::ReturnZeroSlot2C), so the shared logic takes values, not `this`.
+  int ComputeNavyOrderPriorityContributionPercentByCategory(int category);
+  // Per-resourceType-04 normalization base (the "stock cap" field of the
+  // shared per-resource-type descriptor table, TNavyOrderResourceDescriptor).
+  // Thin wrapper, same receiver-agnostic reasoning as above.
+  short GetNavyOrderNormalizationBaseByNationType();
 };
 
 ASSERT_SIZE(TShip, 0x38);
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 
-void* GetNavyPrimaryOrderListHead(void);
+TShip* GetNavyPrimaryOrderListHead(void);
 short GetIndustryActionCostWeightByResourceType(short resourceType);
 short GetResourceDescriptorWeightWord0ByType(short resourceType);
 int ComputeOrderNodeCompositeEconomicScore(TShip* node);
 int SumNavyOrderPriorityForNation(TGreatPower* nationObj);
 int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeType);
 
-TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* portZoneContext,
+// Shared navy-order-priority helper (0x54ff00): reads the per-resourceType
+// TNavyOrderResourceDescriptor and blends it with the caller's own
+// stock/tiebreak field. Called both on TShip nodes (the primary navy order
+// list, via TShip::ComputeNavyOrderPriorityContributionPercentByCategory) and
+// on plain TMapOrderEntry nodes (TNavyMission::ReturnZeroSlot2C's orderList24
+// chain) -- both classes happen to carry the same 3 fields at the offsets the
+// original reads (+0x04 resource/order type, +0x1c stock/required-count,
+// +0x30 a tiebreak/context field), so this takes them by value instead of by
+// receiver type.
+int ComputeNavyOrderPriorityContributionPercentByCategory(short resourceType,
+                                                          short stockOrRequiredCount,
+                                                          short tiebreakField, int category);
+short GetNavyOrderNormalizationBaseByResourceType(short resourceType);
+
+TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone* portZoneContext,
                                                       int nationSlot, char* displayNameOverride);
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode);

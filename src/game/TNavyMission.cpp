@@ -31,8 +31,6 @@ extern const float g_ArmyMissionCandidateScoreTable_006978f8[];
 extern undefined4 GetNavyPrimaryOrderListIndexOfNode(void);
 extern undefined4 FindMapActionContextByNodeId(void);
 extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
-extern undefined4 GetNavyOrderNormalizationBaseByNationType(void);
-extern undefined4 ComputeNavyOrderPriorityContributionPercentByCategory(void);
 extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
 extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
 extern undefined4 ComputeOrderNodeDistanceQuotientByDescriptorWord24(void);
@@ -46,7 +44,10 @@ extern undefined4 IsZoneMaskOrArrayEntryPresentForKey(void);
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
-  union { float f; unsigned char b[4]; } src, dst;
+  union {
+    float f;
+    unsigned char b[4];
+  } src, dst;
   src.f = val;
   dst.b[0] = src.b[3];
   dst.b[1] = src.b[2];
@@ -100,17 +101,6 @@ TMission* CreateTNavyMission() {
 
 namespace {
 
-struct NavyPrimaryOrderNode {
-  char pad00[8];
-  TZone* nodeContext08;
-  char pad0c[8];
-  short sourceNation14;
-  char pad16[6];
-  short weight1c;
-  char pad1e[6];
-  void* next24;
-};
-
 float NormalizeFourComponentNavyVector(const float* vector, float sum) {
   if (sum == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
@@ -130,32 +120,22 @@ float NormalizeFourComponentNavyVector(const float* vector, float sum) {
                 accum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
 }
 
-void AccumulateNavyOrderVectorFromNode(NavyPrimaryOrderNode* orderNode, float* vector) {
-  typedef short (__cdecl *GetNavyOrderNormalizationBaseByNationType_t)(void);
-  GetNavyOrderNormalizationBaseByNationType_t GetNavyOrderNormalizationBaseByNationType_fn =
-      reinterpret_cast<GetNavyOrderNormalizationBaseByNationType_t>(
-          (void*)&GetNavyOrderNormalizationBaseByNationType); // at 0x5505a0
-
-  short normalizationBase = GetNavyOrderNormalizationBaseByNationType_fn();
+void AccumulateNavyOrderVectorFromNode(TShip* orderNode, float* vector) {
+  short normalizationBase = orderNode->GetNavyOrderNormalizationBaseByNationType();
   if (normalizationBase == 0) {
     return;
   }
-  float scale = static_cast<float>(orderNode->weight1c) / static_cast<float>(normalizationBase);
-  int category = static_cast<int>(orderNode->weight1c % normalizationBase);
-
-  typedef short (__fastcall *ComputeNavyOrderPriorityContributionPercentByCategory_t)(void*, int);
-  ComputeNavyOrderPriorityContributionPercentByCategory_t ComputeNavyOrderPriorityContributionPercentByCategory_fn =
-      reinterpret_cast<ComputeNavyOrderPriorityContributionPercentByCategory_t>(
-          (void*)&ComputeNavyOrderPriorityContributionPercentByCategory); // at 0x54ff00
+  float scale = static_cast<float>(orderNode->stockLevel1c) / static_cast<float>(normalizationBase);
+  int category = static_cast<int>(orderNode->stockLevel1c % normalizationBase);
 
   for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
-    short contribution = ComputeNavyOrderPriorityContributionPercentByCategory_fn(orderNode, category);
+    int contribution = orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
     if (componentIndex < 3) {
       vector[componentIndex] += static_cast<float>(contribution) * scale;
     } else {
       vector[componentIndex] += static_cast<float>(contribution);
     }
-    category = static_cast<int>(contribution);
+    category = contribution;
   }
 }
 
@@ -199,7 +179,7 @@ void TNavyMission::WriteTo(TStream* stream) {
     stream->WriteBytesSlot78(&swapped, 4);
   }
 
-  typedef int (__cdecl *GetNavyPrimaryOrderListIndexOfNode_t)(void* node);
+  typedef int(__cdecl * GetNavyPrimaryOrderListIndexOfNode_t)(void* node);
   GetNavyPrimaryOrderListIndexOfNode_t GetNavyPrimaryOrderListIndexOfNode_fn =
       reinterpret_cast<GetNavyPrimaryOrderListIndexOfNode_t>(
           (void*)&GetNavyPrimaryOrderListIndexOfNode); // at 0x550610
@@ -217,7 +197,7 @@ void TNavyMission::WriteTo(TStream* stream) {
 void TNavyMission::ReadFrom(TStream* stream) {
   TMission::ReadFrom(stream);
 
-  typedef int (__cdecl *FindMapActionContextByNodeId_t)(int id);
+  typedef int(__cdecl * FindMapActionContextByNodeId_t)(int id);
   FindMapActionContextByNodeId_t FindMapActionContextByNodeId_fn =
       reinterpret_cast<FindMapActionContextByNodeId_t>(
           (void*)&FindMapActionContextByNodeId); // at 0x55f100
@@ -233,7 +213,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
     resourceWeights2c[i] = SwapFloat(resourceWeights2c[i]);
   }
 
-  typedef void* (__cdecl *GetNavyPrimaryOrderNodeByIndex_t)(int index, int unused);
+  typedef void*(__cdecl * GetNavyPrimaryOrderNodeByIndex_t)(int index, int unused);
   GetNavyPrimaryOrderNodeByIndex_t GetNavyPrimaryOrderNodeByIndex_fn =
       reinterpret_cast<GetNavyPrimaryOrderNodeByIndex_t>(
           (void*)&GetNavyPrimaryOrderNodeByIndex); // at 0x550640
@@ -306,20 +286,12 @@ void TNavyMission::NoOpSlot90(int a) {
 int TNavyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
   (void)unused;
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    typedef short (__fastcall *ComputeNavyOrderPriorityContributionPercentByCategory_t)(void*, int);
-    ComputeNavyOrderPriorityContributionPercentByCategory_t
-        ComputeNavyOrderPriorityContributionPercentByCategory_fn =
-            reinterpret_cast<ComputeNavyOrderPriorityContributionPercentByCategory_t>(
-                (void*)&ComputeNavyOrderPriorityContributionPercentByCategory);
+    TMapOrderEntry* entry = node->object_ptr;
     for (int category = 0; category < 4; ++category) {
-      ComputeNavyOrderPriorityContributionPercentByCategory_fn(node->object_ptr, category);
+      ComputeNavyOrderPriorityContributionPercentByCategory(
+          entry->order_type, entry->required_count, entry->tiebreak_strength, category);
     }
-
-    typedef short (__cdecl *GetNavyOrderNormalizationBaseByNationType_t)(void);
-    GetNavyOrderNormalizationBaseByNationType_t GetNavyOrderNormalizationBaseByNationType_fn =
-        reinterpret_cast<GetNavyOrderNormalizationBaseByNationType_t>(
-            (void*)&GetNavyOrderNormalizationBaseByNationType);
-    GetNavyOrderNormalizationBaseByNationType_fn();
+    GetNavyOrderNormalizationBaseByResourceType(entry->order_type);
   }
 
   int total = 0;
@@ -342,7 +314,7 @@ void TNavyMission::RefreshSlot40() {
   ResetValue0CToZero();
   NoOpSlot3C();
 
-  typedef void (__fastcall *IsZoneMaskOrArrayEntryPresentForKey_t)(short);
+  typedef void(__fastcall * IsZoneMaskOrArrayEntryPresentForKey_t)(short);
   IsZoneMaskOrArrayEntryPresentForKey_t IsZoneMaskOrArrayEntryPresentForKey_fn =
       reinterpret_cast<IsZoneMaskOrArrayEntryPresentForKey_t>(
           (void*)&IsZoneMaskOrArrayEntryPresentForKey);
@@ -374,7 +346,8 @@ void TNavyMission::RefreshSlot40() {
 
 // Shared helper for RefreshSlot40 (0x536b30's inlined similarity-ratio computation).
 float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) {
-  typedef void (__fastcall *BuildNavyOrderCategoryVectorForNationWithExclusion_t)(float*, TZone*, int, TObject*);
+  typedef void(__fastcall * BuildNavyOrderCategoryVectorForNationWithExclusion_t)(float*, TZone*,
+                                                                                  int, TObject*);
   BuildNavyOrderCategoryVectorForNationWithExclusion_t
       BuildNavyOrderCategoryVectorForNationWithExclusion_fn =
           reinterpret_cast<BuildNavyOrderCategoryVectorForNationWithExclusion_t>(
@@ -397,7 +370,7 @@ void TNavyMission::MissionSlot44() {}
 
 // FUNCTION: IMPERIALISM 0x00536fa0
 void TNavyMission::RefreshMissionPortZoneContextForNation() {
-  typedef void (__fastcall *SelectBestMapActionContextForNationDiplomacyMask_t)(int);
+  typedef void(__fastcall * SelectBestMapActionContextForNationDiplomacyMask_t)(int);
   SelectBestMapActionContextForNationDiplomacyMask_t
       SelectBestMapActionContextForNationDiplomacyMask_fn =
           reinterpret_cast<SelectBestMapActionContextForNationDiplomacyMask_t>(
@@ -430,21 +403,23 @@ int TNavyMission::GetMissionOrderBudgetByMode(int mode) {
 }
 
 // FUNCTION: IMPERIALISM 0x00537090
-void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor, int* ppSelectedChildNode) {
-  typedef void* (__cdecl *FindFirstTrackedHandlerMatchingModeAndShortKey_t)(void*, int);
-  FindFirstTrackedHandlerMatchingModeAndShortKey_t FindFirstTrackedHandlerMatchingModeAndShortKey_fn =
-      reinterpret_cast<FindFirstTrackedHandlerMatchingModeAndShortKey_t>(
-          (void*)&FindFirstTrackedHandlerMatchingModeAndShortKey);
+void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
+                                                          int* ppSelectedChildNode) {
+  typedef void*(__cdecl * FindFirstTrackedHandlerMatchingModeAndShortKey_t)(void*, int);
+  FindFirstTrackedHandlerMatchingModeAndShortKey_t
+      FindFirstTrackedHandlerMatchingModeAndShortKey_fn =
+          reinterpret_cast<FindFirstTrackedHandlerMatchingModeAndShortKey_t>(
+              (void*)&FindFirstTrackedHandlerMatchingModeAndShortKey);
 
-  if ((*ppSelectedChildNode != 0) &&
-      (FindFirstTrackedHandlerMatchingModeAndShortKey_fn(orderList24, *ppSelectedChildNode) == nullptr)) {
+  if ((*ppSelectedChildNode != 0) && (FindFirstTrackedHandlerMatchingModeAndShortKey_fn(
+                                          orderList24, *ppSelectedChildNode) == nullptr)) {
     *ppSelectedChildNode = 0;
   }
 
   void* topOrder = nullptr;
   int maxScore = -1;
 
-  typedef int (__cdecl *CompareMissionOrderEntriesByPriorityScore_t)(void*, int);
+  typedef int(__cdecl * CompareMissionOrderEntriesByPriorityScore_t)(void*, int);
   CompareMissionOrderEntriesByPriorityScore_t CompareMissionOrderEntriesByPriorityScore_fn =
       reinterpret_cast<CompareMissionOrderEntriesByPriorityScore_t>(
           (void*)&CompareMissionOrderEntriesByPriorityScore);
@@ -464,7 +439,7 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor, in
       topOrder = nullptr;
     } else {
       if (selectedOrder != nullptr) {
-        typedef short (__fastcall *ComputeOrderNodeDistanceQuotientByDescriptorWord24_t)(void*);
+        typedef short(__fastcall * ComputeOrderNodeDistanceQuotientByDescriptorWord24_t)(void*);
         ComputeOrderNodeDistanceQuotientByDescriptorWord24_t
             ComputeOrderNodeDistanceQuotientByDescriptorWord24_fn =
                 reinterpret_cast<ComputeOrderNodeDistanceQuotientByDescriptorWord24_t>(
@@ -482,25 +457,28 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor, in
 
 LAB_0053711a:
   void* startOrder = reinterpret_cast<void*>(*ppSelectedChildNode);
-  void* orders[2] = { startOrder, topOrder };
+  void* orders[2] = {startOrder, topOrder};
 
-  typedef void* (__fastcall *GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
+  typedef void*(__fastcall * GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
   GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
       reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(
           (void*)&GetOrCreateMissionOrderEntryForNode);
-  typedef void (__fastcall *SetMapOrderType9AndQueue_t)(void*);
+  typedef void(__fastcall * SetMapOrderType9AndQueue_t)(void*);
   SetMapOrderType9AndQueue_t SetMapOrderType9AndQueue_fn =
       reinterpret_cast<SetMapOrderType9AndQueue_t>((void*)&SetMapOrderType9AndQueue);
-  typedef void (__fastcall *PromoteMapOrderChainAndQueue_t)(void*, void*);
+  typedef void(__fastcall * PromoteMapOrderChainAndQueue_t)(void*, void*);
   PromoteMapOrderChainAndQueue_t PromoteMapOrderChainAndQueue_fn =
       reinterpret_cast<PromoteMapOrderChainAndQueue_t>((void*)&PromoteMapOrderChainAndQueue);
 
   for (int i = 0; i < 2; ++i) {
     void* orderObj = orders[i];
-    if (orderObj == nullptr) continue;
-    if (i == 1 && orderObj == startOrder) continue;
+    if (orderObj == nullptr)
+      continue;
+    if (i == 1 && orderObj == startOrder)
+      continue;
 
-    void* nodePtr = FindFirstTrackedHandlerMatchingModeAndShortKey_fn(orderList24, reinterpret_cast<int>(orderObj));
+    void* nodePtr = FindFirstTrackedHandlerMatchingModeAndShortKey_fn(
+        orderList24, reinterpret_cast<int>(orderObj));
     *reinterpret_cast<char*>(reinterpret_cast<char*>(nodePtr) + 0xc) = 1;
     void* entry = GetOrCreateMissionOrderEntryForNode_fn(orderObj, 0);
 
@@ -514,11 +492,11 @@ LAB_0053711a:
 
 // FUNCTION: IMPERIALISM 0x005371d0
 void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextAnchor) {
-  typedef void* (__fastcall *GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
+  typedef void*(__fastcall * GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
   GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
       reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(
           (void*)&GetOrCreateMissionOrderEntryForNode);
-  typedef void (__fastcall *PromoteMapOrderChainAndQueue_t)(void*, void*);
+  typedef void(__fastcall * PromoteMapOrderChainAndQueue_t)(void*, void*);
   PromoteMapOrderChainAndQueue_t PromoteMapOrderChainAndQueue_fn =
       reinterpret_cast<PromoteMapOrderChainAndQueue_t>((void*)&PromoteMapOrderChainAndQueue);
 
@@ -564,15 +542,14 @@ float TNavyMission::ReturnZeroFloatSlot68() {
 }
 
 // FUNCTION: IMPERIALISM 0x005389f0
-float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(
-    int sourceNation, TZone* nodeContext) {
+float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(int sourceNation,
+                                                                               TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (NavyPrimaryOrderNode* orderNode =
-           reinterpret_cast<NavyPrimaryOrderNode*>(GetNavyPrimaryOrderListHead());
-       orderNode != 0; orderNode = reinterpret_cast<NavyPrimaryOrderNode*>(orderNode->next24)) {
-    if (orderNode->nodeContext08 == nodeContext &&
-        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(static_cast<short>(sourceNation),
-                                                                orderNode->sourceNation14) != 0) {
+  for (TShip* orderNode = GetNavyPrimaryOrderListHead(); orderNode != 0;
+       orderNode = orderNode->nextOlder24) {
+    if (orderNode->field08 == nodeContext &&
+        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+            static_cast<short>(sourceNation), orderNode->ownerNationSlot14) != 0) {
       AccumulateNavyOrderVectorFromNode(orderNode, vector);
     }
   }
@@ -584,14 +561,13 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(
 }
 
 // FUNCTION: IMPERIALISM 0x00538bf0
-float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
-                                                                                TZone* nodeContext) {
+float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(
+    int sourceNation, TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (NavyPrimaryOrderNode* orderNode =
-           reinterpret_cast<NavyPrimaryOrderNode*>(GetNavyPrimaryOrderListHead());
-       orderNode != 0; orderNode = reinterpret_cast<NavyPrimaryOrderNode*>(orderNode->next24)) {
-    if (orderNode->nodeContext08 == nodeContext &&
-        static_cast<short>(sourceNation) == orderNode->sourceNation14) {
+  for (TShip* orderNode = GetNavyPrimaryOrderListHead(); orderNode != 0;
+       orderNode = orderNode->nextOlder24) {
+    if (orderNode->field08 == nodeContext &&
+        static_cast<short>(sourceNation) == orderNode->ownerNationSlot14) {
       AccumulateNavyOrderVectorFromNode(orderNode, vector);
     }
   }
@@ -614,4 +590,3 @@ TNavyMission::TNavyMission() : TMission() {
     resourceWeights2c[i] = 0.0f;
   }
 }
-

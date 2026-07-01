@@ -50,8 +50,7 @@ TOcean g_anchorTOceanInstance;
 // FUNCTION: IMPERIALISM 0x00515e00
 void NotifyMapUberPictureTileMarker(short tileIndex) {
   if (g_pUiRuntimeContext != 0 && g_pUiRuntimeContext->mapUberPictureF0 != 0) {
-    g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(
-        static_cast<short>(tileIndex));
+    g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(static_cast<short>(tileIndex));
   }
 }
 
@@ -65,7 +64,7 @@ void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
 void TZone::HandleKeyDown(int key_id) {
   short sVarSlotId;
   short sVarActiveSlot;
-  void* pvNode;
+  TShip* pvNode;
   int nSlotsRemaining;
   bool bSlotIsActive;
   unsigned int uSlotIndex;
@@ -109,8 +108,9 @@ void TZone::HandleKeyDown(int key_id) {
           if ((field10 & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
             sVarSlotId = GetActiveNationSlotTile();
             SetMapTileStateByteAndNotifyObserver(sVarSlotId, key_id % 7 + 7);
-            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(
-                &g_pGlobalMapState->terrainStateTable[sVarSlotId]) + 0x1a) = 0xffff;
+            *reinterpret_cast<unsigned short*>(
+                reinterpret_cast<char*>(&g_pGlobalMapState->terrainStateTable[sVarSlotId]) + 0x1a) =
+                0xffff;
           }
           key_id = key_id + 1;
           nSlotsRemaining = nSlotsRemaining - 1;
@@ -118,8 +118,9 @@ void TZone::HandleKeyDown(int key_id) {
       } else {
         sVarSlotId = GetActiveNationSlotTile();
         SetMapTileStateByteAndNotifyObserver(sVarSlotId, 7);
-        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(
-            &g_pGlobalMapState->terrainStateTable[sVarSlotId]) + 0x1a) = 0xffff;
+        *reinterpret_cast<unsigned short*>(
+            reinterpret_cast<char*>(&g_pGlobalMapState->terrainStateTable[sVarSlotId]) + 0x1a) =
+            0xffff;
       }
     }
   }
@@ -130,11 +131,9 @@ void TZone::HandleKeyDown(int key_id) {
   }
 
   if ((field10 & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
-    for (pvNode = GetNavyPrimaryOrderListHead(); pvNode != 0;
-         pvNode = *reinterpret_cast<void**>(reinterpret_cast<char*>(pvNode) + 0x24)) {
-      if (((*reinterpret_cast<void**>(reinterpret_cast<char*>(pvNode) + 8) == this) &&
-           (*reinterpret_cast<short*>(reinterpret_cast<char*>(pvNode) + 0x14) == sVarActiveSlot)) &&
-          (*reinterpret_cast<int*>(reinterpret_cast<char*>(pvNode) + 0xc) == 0)) {
+    for (pvNode = GetNavyPrimaryOrderListHead(); pvNode != 0; pvNode = pvNode->nextOlder24) {
+      if (((pvNode->field08 == this) && (pvNode->ownerNationSlot14 == sVarActiveSlot)) &&
+          (pvNode->field0c == 0)) {
         SetMapOrderUiFlag(1);
         return;
       }

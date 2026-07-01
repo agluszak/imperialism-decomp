@@ -56,6 +56,37 @@ struct GlobalViewportRectDefaultsRecord {
   int bottom;
 };
 
+// Per-resource-type navy-order descriptor (base 0x00698108, stride 0x24). Ghidra's
+// auto-analysis had split this into five separately-named "tables"
+// (g_Resolve_Map_Order_LookupTable_00698108, g_Calculate_Mission_Order_LookupTable_0069810C,
+// g_Task_Force_Order_LookupTable_00698110, g_Navy_Order_Priority_LookupTable_00698118,
+// g_ResourceDescriptorWeightWord0Base0069811c); every one of those "tables" is read at
+// per-index byte offset `index * 0x24` from a base address exactly 4/8/0x10/0x14 bytes
+// apart -- confirmed via TShip.cpp/TMapOrderEntry.cpp callsite disassembly, they are one
+// struct array. Element count is not yet pinned down (32 vs 64 in the pre-split
+// declarations); 64 is the conservative (larger) choice pending confirmation.
+struct TNavyOrderResourceDescriptor {
+  short resolveWeight; // +0x00 (was g_Resolve_Map_Order_LookupTable_00698108)
+  short pad02;
+  short calculateWeight; // +0x04 (was g_Calculate_Mission_Order_LookupTable_0069810C)
+  short pad06;
+  short taskForceWeight; // +0x08 (was g_Task_Force_Order_LookupTable_00698110's own +0x00)
+  short pad0a;
+  short stockCap; // +0x0c (was same table's +0x04; reused as navy-order "normalization base")
+  short pad0e;
+  int navyPriorityWeight; // +0x10 (was g_Navy_Order_Priority_LookupTable_00698118, read as a dword)
+  short resourceDescriptorWeightWord0; // +0x14 (was g_ResourceDescriptorWeightWord0Base0069811c)
+  short pad16;
+  int enabledFlagOrBucketOffset; // +0x18 (was same table's +0x10; low short reused elsewhere
+                                 // as a bucket offset, full dword tested for sign as an
+                                 // enabled/disabled gate)
+  short descriptorWeight;        // +0x1c (was DAT_00698124)
+  short pad1e[3];                // +0x1e..+0x24
+};
+ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
+
+extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64];
+
 // ============================================================================
 // Diplomacy globals
 // ============================================================================

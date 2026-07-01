@@ -1,10 +1,11 @@
 // TBlockadePortMission implementations.
 //
-// ResetValue0CToZero and RefreshMissionPortZoneContextForNation are
-// COMDAT-folded in the original binary with TControlSeaZoneMission (which
-// owns those `// FUNCTION:` markers); see the notes there. Call30 here is a
-// distinct address (RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB)
-// even though structurally identical.
+// Real base is TControlSeaZoneMission (RTTI ancestry: TBlockadePortMission ->
+// TControlSeaZoneMission -> TNavyMission -> TMission -> TObject -> CObject).
+// ResetValue0CToZero and RefreshMissionPortZoneContextForNation are NOT
+// overridden here -- they're inherited unchanged from TControlSeaZoneMission,
+// which owns their `// FUNCTION:` markers. Call30 here is a genuinely distinct
+// own override (RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB).
 
 #include "game/TBlockadePortMission.h"
 #include "game/TDiplomacyMgr.h"
@@ -12,7 +13,7 @@
 #include "game/TStream.h"
 #include "game/TZone.h"
 
-IMPLEMENT_SERIAL(TBlockadePortMission, TNavyMission, 1)
+IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
 
 // SYNTHETIC: IMPERIALISM 0x0053aae0
 // TBlockadePortMission::GetRuntimeClass
@@ -24,10 +25,21 @@ extern undefined4 FindMapActionContextByNodeId(void);
 extern undefined4 GetPortZoneOwnerNationCodeFromMissionField48(void);
 extern undefined4 SetByteFlagAtOffsetAF0ByIndex(void);
 
-TBlockadePortMission::TBlockadePortMission() : TNavyMission(), portZoneContext3c(nullptr) {}
+TBlockadePortMission::TBlockadePortMission()
+    : TControlSeaZoneMission(), portZoneContext3c(nullptr) {}
 
 TBlockadePortMission::TBlockadePortMission(TZone* targetZone)
-    : TNavyMission(targetZone), portZoneContext3c(nullptr) {}
+    : TControlSeaZoneMission(targetZone), portZoneContext3c(nullptr) {}
+
+// FUNCTION: IMPERIALISM 0x0053aa50
+char TBlockadePortMission::ReturnFalseSlot64() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0053aa70
+char TBlockadePortMission::ReturnFalseSlot60() {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x0053ac60
 void TBlockadePortMission::WriteTo(TStream* stream) {
@@ -39,7 +51,7 @@ void TBlockadePortMission::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0053aca0
 void TBlockadePortMission::ReadFrom(TStream* stream) {
   TNavyMission::ReadFrom(stream);
-  typedef void* (__cdecl * FindMapActionContextByNodeId_t)(void);
+  typedef void*(__cdecl * FindMapActionContextByNodeId_t)(void);
   portZoneContext3c =
       reinterpret_cast<FindMapActionContextByNodeId_t>((void*)&FindMapActionContextByNodeId)();
 }
@@ -58,17 +70,16 @@ void TBlockadePortMission::Call30() {
   *reinterpret_cast<float*>(&value0c) = score / *reinterpret_cast<const float*>(0x0065a9c0);
 }
 
+// FUNCTION: IMPERIALISM 0x0053adf0
+TMission* TBlockadePortMission::GetReplacementSlot48() {
+  // TODO: ValidateBlockadePortMissionContextAndRefreshChild -- pending
+  // recovery of the per-nation "task force" gate array.
+  return nullptr;
+}
+
 // FUNCTION: IMPERIALISM 0x0053ae90
 void TBlockadePortMission::SetStateByte8To2() {
   state08 = 3;
-}
-
-// Shared with TBeachheadMission and TControlSeaZoneMission (COMDAT-folded
-// body; see TControlSeaZoneMission::ResetValue0CToZero).
-void TBlockadePortMission::ResetValue0CToZero() {
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(targetZone14);
-  float score = static_cast<float>(owner->ComputeMapActionContextNodeValueAverage());
-  *reinterpret_cast<float*>(&value0c) = score / *reinterpret_cast<const float*>(0x0065a9c0);
 }
 
 // FUNCTION: IMPERIALISM 0x0053aeb0
@@ -80,13 +91,6 @@ void TBlockadePortMission::NoOpSlot3C() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0053adf0
-TMission* TBlockadePortMission::GetReplacementSlot48() {
-  // TODO: ValidateBlockadePortMissionContextAndRefreshChild -- pending
-  // recovery of the per-nation "task force" gate array.
-  return nullptr;
-}
-
 // FUNCTION: IMPERIALISM 0x0053ba10
 char TBlockadePortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
   (void)mode;
@@ -96,21 +100,7 @@ char TBlockadePortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) 
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x0053aa70
-char TBlockadePortMission::ReturnFalseSlot60() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x0053aa50
-char TBlockadePortMission::ReturnFalseSlot64() {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x0053ba40
 void TBlockadePortMission::NoOpSlot9C() {
   // TODO: QueueMapOrderType6FromContextPointer -- pending recovery.
 }
-
-// Shared with TBeachheadMission and TControlSeaZoneMission (COMDAT-folded
-// body; see TControlSeaZoneMission::RefreshMissionPortZoneContextForNation).
-void TBlockadePortMission::RefreshMissionPortZoneContextForNation() {}
