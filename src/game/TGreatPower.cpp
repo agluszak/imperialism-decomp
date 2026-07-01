@@ -508,6 +508,9 @@ void TGreatPower::LoadNationDisplayNameSharedRefFromField8(CString* destString) 
 void* __cdecl TGreatPower::CreateTGreatPowerInstance(void) {
   return new TGreatPower();
 }
+// SYNTHETIC: IMPERIALISM 0x004d89d0
+// TGreatPower::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TGreatPower, TCountry)
 
 // FUNCTION: IMPERIALISM 0x004d89f0

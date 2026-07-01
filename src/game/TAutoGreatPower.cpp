@@ -71,6 +71,9 @@ extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 }
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
+// SYNTHETIC: IMPERIALISM 0x004e6b30
+// TAutoGreatPower::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAutoGreatPower, TGreatPower)
 
 TAutoGreatPower::TAutoGreatPower() : TGreatPower() {

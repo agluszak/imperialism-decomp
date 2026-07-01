@@ -1,4 +1,10 @@
 #include "game/TTaskList.h"
+// SYNTHETIC: IMPERIALISM 0x005aeaf0
+// TTaskList::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005aeb70
+// TTaskList::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTaskList, TList)
 
 TTaskList::TTaskList() {}

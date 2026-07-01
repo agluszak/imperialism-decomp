@@ -9,7 +9,7 @@ struct ScopedMapQuickDrawContext {
   CClientDC clientDc;
   TView* renderTarget;
 
-  explicit ScopedMapQuickDrawContext(void* renderTarget);
+  explicit ScopedMapQuickDrawContext(TView* renderTarget);
   ~ScopedMapQuickDrawContext();
 
   int* IntersectClipRectOnPrimaryAndSecondaryDc(int* clipRect);
@@ -19,5 +19,7 @@ ASSERT_SIZE(ScopedMapQuickDrawContext, 0x18);
 
 typedef ScopedMapQuickDrawContext ScopedMapQuickDrawContextGuard;
 
-int BindScopedMapQuickDrawDcHandle(void* view, int existingHandle);
-void ReleaseScopedMapQuickDrawDcHandle(void* view, int existingHandle);
+// existingDc: the caller-supplied CDC to bind (e.g. CMcWindow::OnPaint's CPaintDC), or
+// null to bind a fresh CDC wrapping the view window's DC.
+int BindScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc);
+void ReleaseScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc);

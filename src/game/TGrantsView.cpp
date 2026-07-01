@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x004303d0
 // TGrantsView::`scalar deleting destructor'
 TGrantsView::~TGrantsView() {}
+// SYNTHETIC: IMPERIALISM 0x004f7fd0
+// TGrantsView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004f8060
+// TGrantsView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TGrantsView, TPanelView)
 
 TGrantsView::TGrantsView() {}

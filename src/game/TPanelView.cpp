@@ -8,6 +8,12 @@ undefined TPanelView::OrphanRetStub_00430550() {
 // SYNTHETIC: IMPERIALISM 0x004f7970
 // TPanelView::`scalar deleting destructor'
 TPanelView::~TPanelView() {}
+// SYNTHETIC: IMPERIALISM 0x004f78e0
+// TPanelView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004f79c0
+// TPanelView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPanelView, TView)
 
 TPanelView::TPanelView() {}

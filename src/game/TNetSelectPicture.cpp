@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x0045ae10
 // TNetSelectPicture::`scalar deleting destructor'
 TNetSelectPicture::~TNetSelectPicture() {}
+// SYNTHETIC: IMPERIALISM 0x00576900
+// TNetSelectPicture::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00576980
+// TNetSelectPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNetSelectPicture, TNoHilitePicture)
 
 TNetSelectPicture::TNetSelectPicture() {}

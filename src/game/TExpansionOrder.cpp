@@ -1,4 +1,10 @@
 #include "game/TExpansionOrder.h"
+// SYNTHETIC: IMPERIALISM 0x004b8f50
+// TExpansionOrder::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004b8f80
+// TExpansionOrder::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TExpansionOrder, TItemOrder)
 
 TExpansionOrder::TExpansionOrder() {}

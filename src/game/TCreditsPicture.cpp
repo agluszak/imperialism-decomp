@@ -8,6 +8,12 @@ undefined TCreditsPicture::OrphanRetStub_0043d9f0() {
 // SYNTHETIC: IMPERIALISM 0x0043dad0
 // TCreditsPicture::`scalar deleting destructor'
 TCreditsPicture::~TCreditsPicture() {}
+// SYNTHETIC: IMPERIALISM 0x0056edb0
+// TCreditsPicture::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0056ee30
+// TCreditsPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCreditsPicture, TPicture)
 
 TCreditsPicture::TCreditsPicture() {}

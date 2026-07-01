@@ -1,4 +1,10 @@
 #include "game/TMilitaryPageView.h"
+// SYNTHETIC: IMPERIALISM 0x00564860
+// TMilitaryPageView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00564900
+// TMilitaryPageView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMilitaryPageView, TPageView)
 
 TMilitaryPageView::TMilitaryPageView() {}

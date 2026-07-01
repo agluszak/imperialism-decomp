@@ -51,6 +51,9 @@ TRailCluster* __cdecl CreateTradeMoveScaledControlPanel(void) {
   return new TRailCluster();
 }
 
+// SYNTHETIC: IMPERIALISM 0x00589700
+// TRailCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TRailCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00589720

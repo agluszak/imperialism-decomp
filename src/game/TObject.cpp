@@ -2,6 +2,12 @@
 
 #include <string.h>
 
+// SYNTHETIC: IMPERIALISM 0x00485e20
+// TObject::GetRuntimeClass
+
+// SYNTHETIC: IMPERIALISM 0x00485df0
+// TObject::CreateObject
+
 IMPLEMENT_SERIAL(TObject, CObject, 1)
 
 TObject::TObject() {}

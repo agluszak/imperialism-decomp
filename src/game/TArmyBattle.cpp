@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x004a5c50
 // TArmyBattle::`scalar deleting destructor'
 TArmyBattle::~TArmyBattle() {}
+// SYNTHETIC: IMPERIALISM 0x005a4710
+// TArmyBattle::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005a4750
+// TArmyBattle::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyBattle, TTacticalBattle)
 
 TArmyBattle::TArmyBattle() {}

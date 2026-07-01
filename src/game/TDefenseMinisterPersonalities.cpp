@@ -10,6 +10,12 @@
 // Slot 24 (0x60) override — factory hook on this minister variant.
 // FUNCTION: IMPERIALISM 0x004ed490
 undefined TNapoleonMinister::CreateTDefenseMinisterInstance() { return 0; }
+// SYNTHETIC: IMPERIALISM 0x004ed400
+// TNapoleonMinister::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004ed4c0
+// TNapoleonMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNapoleonMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ed4e0
@@ -28,6 +34,12 @@ undefined TBismarckMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
+// SYNTHETIC: IMPERIALISM 0x004ed740
+// TBismarckMinister::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004ed7f0
+// TBismarckMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TBismarckMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ed810
@@ -46,6 +58,12 @@ undefined TPirateMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
+// SYNTHETIC: IMPERIALISM 0x004eda30
+// TPirateMinister::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004edae0
+// TPirateMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPirateMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004edb00
@@ -64,6 +82,12 @@ undefined TDefenderMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
+// SYNTHETIC: IMPERIALISM 0x004edd20
+// TDefenderMinister::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004eddc0
+// TDefenderMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDefenderMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004edde0
@@ -82,6 +106,12 @@ undefined TBullyMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
+// SYNTHETIC: IMPERIALISM 0x004ee000
+// TBullyMinister::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004ee0b0
+// TBullyMinister::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TBullyMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ee0d0

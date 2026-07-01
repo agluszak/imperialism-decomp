@@ -1,4 +1,10 @@
 #include "game/THotspotBehavior.h"
+// SYNTHETIC: IMPERIALISM 0x004b0af0
+// THotspotBehavior::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004b0b60
+// THotspotBehavior::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(THotspotBehavior, TBehavior)
 
 THotspotBehavior::THotspotBehavior() {}

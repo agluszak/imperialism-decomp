@@ -8,6 +8,9 @@
 TBoycottButton* __cdecl CreateTBoycottButtonInstance(void) {
   return new TBoycottButton();
 }
+// SYNTHETIC: IMPERIALISM 0x00584760
+// TBoycottButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TBoycottButton, TToggleButton)
 
 // FUNCTION: IMPERIALISM 0x00584780

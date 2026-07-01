@@ -12,6 +12,12 @@ static const unsigned int kAddrMainViewHostPtr = 0x006a2158;
 static __inline void AssertUGameWindowInvalidation(const char* path, int line) {
   TemporarilyClearAndRestoreUiInvalidationFlag();
 }
+// SYNTHETIC: IMPERIALISM 0x00500280
+// TDlgWindow::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00500300
+// TDlgWindow::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDlgWindow, TWindow)
 
 TDlgWindow::TDlgWindow() {}

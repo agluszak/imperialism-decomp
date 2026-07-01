@@ -11,14 +11,6 @@ undefined4 DestructTTradeTotalsLineAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TTradeTotalsView::CreateTTradeTotalsViewInstance
-// ghidra_proto undefined CreateTTradeTotalsViewInstance()
-// FUNCTION: IMPERIALISM 0x005c1a80
-undefined4 CreateTTradeTotalsViewInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeTotalsView::ConstructTTradeTotalsViewBaseState
 // ghidra_proto undefined ConstructTTradeTotalsViewBaseState()
 // FUNCTION: IMPERIALISM 0x005c1b10
@@ -43,10 +35,9 @@ undefined4 TickCivWorkOrderCountdownAndComplete(void)
   return 0;
 }
 
-// ghidra_name TMilitaryUnit::CreateTMilitaryUnitInstance
-// ghidra_proto undefined CreateTMilitaryUnitInstance()
+// ghidra_name TMilitaryUnit::CreateObject
 // FUNCTION: IMPERIALISM 0x005c2cb0
-undefined4 CreateTMilitaryUnitInstance(void)
+undefined4 TMilitaryUnit_CreateObject(void)
 {
   return 0;
 }
@@ -1975,6 +1966,30 @@ undefined4 InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
 // ghidra_proto undefined thunk_SendMciCommand804IfDeviceOpenAndClearHandle()
 // FUNCTION: IMPERIALISM 0x005e4e15
 undefined4 thunk_SendMciCommand804IfDeviceOpenAndClearHandle(void)
+{
+  return 0;
+}
+
+// ghidra_name TSoundPlayer::ReturnConstantZero_005e5170
+// ghidra_proto undefined ReturnConstantZero_005e5170()
+// FUNCTION: IMPERIALISM 0x005e5170
+undefined4 ReturnConstantZero_005e5170(void)
+{
+  return 0;
+}
+
+// ghidra_name TSoundPlayer::ReturnConstantZero_005e5190
+// ghidra_proto undefined ReturnConstantZero_005e5190()
+// FUNCTION: IMPERIALISM 0x005e5190
+undefined4 ReturnConstantZero_005e5190(void)
+{
+  return 0;
+}
+
+// ghidra_name TSoundPlayer::VTableSlot31
+// ghidra_proto undefined 'scalar_deleting_destructor'(void)
+// FUNCTION: IMPERIALISM 0x005e51b0
+undefined4 TSoundPlayer_VTableSlot31(void)
 {
   return 0;
 }

@@ -72,6 +72,12 @@ short TWorldView::QueryMinusOneWordSlot77() {
 void TWorldView::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
   (void)arg1;
 }
+// SYNTHETIC: IMPERIALISM 0x00594f20
+// TWorldView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00594fe0
+// TWorldView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TWorldView, TView)
 
 TWorldView::TWorldView() {}

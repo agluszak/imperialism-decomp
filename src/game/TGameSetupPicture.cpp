@@ -1,4 +1,10 @@
 #include "game/TGameSetupPicture.h"
+// SYNTHETIC: IMPERIALISM 0x005757c0
+// TGameSetupPicture::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00575840
+// TGameSetupPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TGameSetupPicture, TNoHilitePicture)
 
 TGameSetupPicture::TGameSetupPicture() {}

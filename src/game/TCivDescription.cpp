@@ -84,6 +84,9 @@ TCivDescription::TCivDescription() : TView() {
   selectedCivilianClass = -1;
   legendInitialized = 0;
 }
+// SYNTHETIC: IMPERIALISM 0x0058f0f0
+// TCivDescription::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCivDescription, TView)
 
 /* Caches civilian class changes and refreshes target tile counts for supported civilian classes. */

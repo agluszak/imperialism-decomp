@@ -1,4 +1,10 @@
 #include "game/TTownNameDialog.h"
+// SYNTHETIC: IMPERIALISM 0x0051ba70
+// TTownNameDialog::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0051baf0
+// TTownNameDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTownNameDialog, TNoHilitePicture)
 
 TTownNameDialog::TTownNameDialog() {}

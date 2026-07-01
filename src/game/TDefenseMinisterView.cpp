@@ -1,4 +1,10 @@
 #include "game/TDefenseMinisterView.h"
+// SYNTHETIC: IMPERIALISM 0x004f3240
+// TDefenseMinisterView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004f32d0
+// TDefenseMinisterView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDefenseMinisterView, TMinisterView)
 
 TDefenseMinisterView::TDefenseMinisterView() {}

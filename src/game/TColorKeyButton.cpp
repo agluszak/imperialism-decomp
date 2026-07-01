@@ -1,4 +1,10 @@
 #include "game/TColorKeyButton.h"
+// SYNTHETIC: IMPERIALISM 0x00571ed0
+// TColorKeyButton::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00571f50
+// TColorKeyButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TColorKeyButton, TColorKeyPicture)
 
 TColorKeyButton::TColorKeyButton() {}

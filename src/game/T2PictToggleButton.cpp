@@ -6,6 +6,9 @@
 T2PictToggleButton* __cdecl CreateT2PictToggleButtonInstance(void) {
   return new T2PictToggleButton();
 }
+// SYNTHETIC: IMPERIALISM 0x00584910
+// T2PictToggleButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(T2PictToggleButton, TToggleButton)
 
 // FUNCTION: IMPERIALISM 0x00584930

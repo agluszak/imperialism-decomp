@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x0045d310
 // TTacArmyView::`scalar deleting destructor'
 TTacArmyView::~TTacArmyView() {}
+// SYNTHETIC: IMPERIALISM 0x005a9cf0
+// TTacArmyView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005a9d70
+// TTacArmyView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTacArmyView, TTacticalBattleView)
 
 TTacArmyView::TTacArmyView() {}

@@ -48,6 +48,12 @@ int SumNavyOrderPriorityForNation(TGreatPower* nationObj) {
   }
   return sum;
 }
+// SYNTHETIC: IMPERIALISM 0x0054f460
+// TShip::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0054f4e0
+// TShip::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TShip, TObject)
 
 // FUNCTION: IMPERIALISM 0x0054f500

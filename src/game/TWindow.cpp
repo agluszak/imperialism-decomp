@@ -28,6 +28,15 @@ TWindow::TWindow() : TView(), dialogBehavior(), field98(0) {
   field64 = this;
   dialogBehavior.SetDword08(reinterpret_cast<int>(this));
 }
+// IMPLEMENT_DYNCREATE also emits `TWindow::CreateObject`; the original copy at
+// 0x48d090 has the TWindow ctor (including the inlined g_LiveViewRegistry AddHead
+// CPlex node code on the 0x6a1a44/0x6a1a50/0x6a1a54/0x6a1a58 globals) inlined into it.
+// SYNTHETIC: IMPERIALISM 0x0048d090
+// TWindow::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0048d220
+// TWindow::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TWindow, TView)
 
 // SYNTHETIC: IMPERIALISM 0x0048d640
@@ -48,7 +57,7 @@ TWindow::~TWindow() {
       TWindow* modalTop = static_cast<TWindow*>(g_ModalViewStack.GetHead());
       modalTop->AssertValid();
       if (modalTop->nativeWindow50 != 0) {
-        static_cast<CMcWindow*>(modalTop->nativeWindow50)->EnableWindowOrDelegateToOwner(1);
+        modalTop->nativeWindow50->EnableWindow(1);
       }
     }
   }
@@ -83,22 +92,19 @@ undefined TWindow::OrphanCallChain_C2_I39_0048d900(char param_1, char param_2) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048d980
-int TWindow::IsActionable() {
-  if (field98 != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0) {
-    return 1;
-  }
-  return 0;
+char TWindow::IsActionable() {
+  return field98 != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9c0
 undefined TWindow::SetWindowText(CString* param_1) {
-  static_cast<CMcWindow*>(nativeWindow50)->SetWindowTextOrDelegateToOwner(*param_1);
+  nativeWindow50->SetWindowText(*param_1);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9f0
 undefined TWindow::GetWindowText(CString* param_1) {
-  static_cast<CMcWindow*>(nativeWindow50)->GetWindowTextOrDelegateToOwner(param_1);
+  nativeWindow50->GetWindowText(*param_1);
   return 0;
 }
 
@@ -131,7 +137,7 @@ int TWindow::ExecuteViewModalStateWithPushPopChain() {
     TWindow* top = static_cast<TWindow*>(g_ModalViewStack.GetHead());
     top->AssertValid();
     if (top->nativeWindow50 != 0) {
-      static_cast<CMcWindow*>(top->nativeWindow50)->EnableWindowOrDelegateToOwner(0);
+      top->nativeWindow50->EnableWindow(0);
     }
   }
   g_ModalViewStack.AddHead(this);
@@ -144,7 +150,7 @@ int TWindow::ExecuteViewModalStateWithPushPopChain() {
       TWindow* top = static_cast<TWindow*>(g_ModalViewStack.GetHead());
       top->AssertValid();
       if (top->nativeWindow50 != 0) {
-        static_cast<CMcWindow*>(top->nativeWindow50)->EnableWindowOrDelegateToOwner(1);
+        top->nativeWindow50->EnableWindow(1);
       }
     }
   }

@@ -1,4 +1,10 @@
 #include "game/TNavyToolbarCluster.h"
+// SYNTHETIC: IMPERIALISM 0x00569430
+// TNavyToolbarCluster::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005694b0
+// TNavyToolbarCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNavyToolbarCluster, TUberCluster)
 
 TNavyToolbarCluster::TNavyToolbarCluster() {}

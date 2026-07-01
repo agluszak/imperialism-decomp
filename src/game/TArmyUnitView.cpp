@@ -1,4 +1,10 @@
 #include "game/TArmyUnitView.h"
+// SYNTHETIC: IMPERIALISM 0x004a9450
+// TArmyUnitView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004a94c0
+// TArmyUnitView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyUnitView, TView)
 
 TArmyUnitView::TArmyUnitView() {}

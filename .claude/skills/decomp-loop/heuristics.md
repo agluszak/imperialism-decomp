@@ -361,7 +361,7 @@ explanatory comment must go **above** the `// FUNCTION:` marker, never between i
 decl — a comment there silently unpairs the address (shows as `no recomp` / oversize vtable),
 not just a marker-gate fail.
 
-- **Shape-only class batch (`just gen-classes`)**: porting all remaining classes at once
+- **Shape-only class batch** *(historical — the gen-class/manifest tooling was retired 2026-07-02; config/classes/ manifests no longer exist)*: porting all remaining classes at once
   works only if you *defer bodies*. `gen-class --no-bodies` emits header + GENERATED
   DECLS + compilable **unmarked** cpp stubs (no `// FUNCTION:`/ownership/symbols), so
   the vtable still emits/pairs but nothing claims the heavily-shared slot addresses
@@ -505,6 +505,10 @@ plain free functions in another `.cpp`, the recompiled body becomes a thin seque
   single function-scope `CString` at entry, pinning `this` in `ebx`; a per-case local `CString`
   shifts register allocation across the whole body).
 
+- **Batch compare exists — never loop single `just compare` calls.** `just compare
+  0xA 0xB 0xC`, `just compare --file src/game/X.cpp`, and `just compare-class X`
+  all run reccmp once with `--json` (one PDB parse for any number of functions).
+  A per-address loop pays ~10s of PDB parsing per call for nothing.
 ## 20. "Same address in two sibling vtables" is inheritance, not COMDAT folding — check RTTI first
 
 Two supposedly-sibling classes whose vtables both point at the *identical* original address

@@ -48,6 +48,9 @@ TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
   return new TIndustryCluster();
 }
 
+// SYNTHETIC: IMPERIALISM 0x00588ad0
+// TIndustryCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TIndustryCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00588af0

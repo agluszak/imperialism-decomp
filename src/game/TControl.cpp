@@ -50,6 +50,14 @@ TObject* TControl::ShallowClone() {
   TemporarilyClearAndRestoreUiInvalidationFlag();
   return 0;
 }
+// IMPLEMENT_DYNCREATE also emits `TControl::CreateObject`; the original copy at
+// 0x48e430 has the TControl ctor inlined into it.
+// SYNTHETIC: IMPERIALISM 0x0048e430
+// TControl::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0048e500
+// TControl::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TControl, TView)
 
 TModalTemplateDialogBase::TModalTemplateDialogBase()
@@ -212,7 +220,7 @@ HWND ResolvePreModalOwner() {
 int TModalTemplateDialogBase::PrepareAndCreateModalFromTemplate() {
   void* lockedTemplateBytes = field48;
   field70 = reinterpret_cast<int>(childList44);
-  const UINT resourceTemplateId = static_cast<UINT>(*reinterpret_cast<int*>(padding_40_to_43));
+  const UINT resourceTemplateId = static_cast<UINT>(resourceTemplateId40);
   if (resourceTemplateId != 0) {
     AFX_MODULE_STATE* moduleState = AfxGetModuleState();
     HMODULE module = moduleState->m_hCurrentInstanceHandle;
@@ -284,7 +292,7 @@ TModalTemplateDialogBase::InitializeDialogTemplateFromId(UINT templateId, void* 
   new (&sharedStringRef) CString();
   nativeWindow50 = reinterpret_cast<CWnd*>(initParam);
   field3c = static_cast<int>(templateId);
-  *reinterpret_cast<int*>(padding_40_to_43) = static_cast<int>(templateId & 0xffff);
+  resourceTemplateId40 = static_cast<int>(templateId & 0xffff);
   field5c = 0;
   hasCommandTagResource = 0;
   field68 = 0;

@@ -1,4 +1,10 @@
 #include "game/TTextLine.h"
+// SYNTHETIC: IMPERIALISM 0x005701d0
+// TTextLine::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00570270
+// TTextLine::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTextLine, TLineData)
 
 TTextLine::TTextLine() {}

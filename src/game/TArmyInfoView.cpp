@@ -6,6 +6,9 @@
 TArmyInfoView* __cdecl CreateTArmyInfoViewInstance(void) {
   return new TArmyInfoView();
 }
+// SYNTHETIC: IMPERIALISM 0x00591580
+// TArmyInfoView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyInfoView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005915a0

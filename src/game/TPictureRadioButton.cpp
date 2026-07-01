@@ -1,4 +1,10 @@
 #include "game/TPictureRadioButton.h"
+// SYNTHETIC: IMPERIALISM 0x00570cc0
+// TPictureRadioButton::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00570d40
+// TPictureRadioButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPictureRadioButton, TToggleButton)
 
 TPictureRadioButton::TPictureRadioButton() {}

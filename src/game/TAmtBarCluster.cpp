@@ -16,6 +16,9 @@ const int kAssertLineTradeSellIncCap = 0x81d;
 TAmtBarCluster* TAmtBarCluster::CreateInstance() {
   return new TAmtBarCluster();
 }
+// SYNTHETIC: IMPERIALISM 0x00586cc0
+// TAmtBarCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAmtBarCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586ce0

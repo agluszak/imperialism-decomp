@@ -4,6 +4,9 @@
 TStatusButton* __cdecl CreateTStatusButtonInstance(void) {
   return new TStatusButton();
 }
+// SYNTHETIC: IMPERIALISM 0x00586310
+// TStatusButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TStatusButton, TButton)
 
 // FUNCTION: IMPERIALISM 0x00586330

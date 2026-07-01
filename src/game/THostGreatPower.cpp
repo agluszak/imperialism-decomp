@@ -10,6 +10,12 @@ char THostGreatPower::ReturnFalseNationStateCapabilityFlag9C(void) {
 // SYNTHETIC: IMPERIALISM 0x00540f40
 // THostGreatPower::`scalar deleting destructor'
 THostGreatPower::~THostGreatPower() {}
+// SYNTHETIC: IMPERIALISM 0x00540e90
+// THostGreatPower::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00540fe0
+// THostGreatPower::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(THostGreatPower, TGreatPower)
 
 THostGreatPower::THostGreatPower() {}

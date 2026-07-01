@@ -23,6 +23,12 @@ static __inline void FailNilPointer(int line) {
 static __inline CArchive* BackingArchive(ArchiveStreamAdapter* backingArchiveOrStream) {
   return backingArchiveOrStream->archive;
 }
+// SYNTHETIC: IMPERIALISM 0x004890c0
+// TFileStream::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004890f0
+// TFileStream::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TFileStream, TStream)
 
 // FUNCTION: IMPERIALISM 0x00489110

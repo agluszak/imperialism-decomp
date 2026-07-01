@@ -28,7 +28,7 @@ protected:
 
 ASSERT_SIZE(TBackdropWindow, 0x40);
 
-// Guarded creator @ 0x0049cc60 — see g_cachedAppShellCommand in global_data_tables.h.
+// Guarded creator @ 0x0049cc60 — see g_cachedShowSplashFlag in global_data_tables.h.
 void WrapperFor_AllocateWithFallbackHandler_At0049cc60(CWnd* parent);
 void CreateGlobalBackdropWindowWithDefaultBmp3B6(TBackdropWindow* window, CWnd* parent);
 void RefreshBackdropOnInputMessages(MSG* msg);

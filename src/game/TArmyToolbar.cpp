@@ -77,6 +77,9 @@ static __inline void SetArmyPayloadRatioOrModeSelection(ArmyCommandPayload* payl
 TArmyToolbar* __cdecl CreateTArmyToolbarInstance(void) {
   return new TArmyToolbar();
 }
+// SYNTHETIC: IMPERIALISM 0x0058dec0
+// TArmyToolbar::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyToolbar, TUnitToolbarCluster)
 
 TArmyToolbar::TArmyToolbar() : TUnitToolbarCluster(), field88(0) {}

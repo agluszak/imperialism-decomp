@@ -5,6 +5,9 @@
 TSortedByRelationshipList* TSortedByRelationshipList::CreateTSortedByRelationshipListInstance() {
   return new TSortedByRelationshipList();
 }
+// SYNTHETIC: IMPERIALISM 0x004ee520
+// TSortedByRelationshipList::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSortedByRelationshipList, TSortedPtrList)
 
 // FUNCTION: IMPERIALISM 0x004ee540

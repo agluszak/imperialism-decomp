@@ -8,6 +8,12 @@ undefined TMiniArmyView::OrphanRetStub_004aad20() {
 // SYNTHETIC: IMPERIALISM 0x004aad40
 // TMiniArmyView::`scalar deleting destructor'
 TMiniArmyView::~TMiniArmyView() {}
+// SYNTHETIC: IMPERIALISM 0x004aad90
+// TMiniArmyView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004aae10
+// TMiniArmyView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMiniArmyView, TControl)
 
 TMiniArmyView::TMiniArmyView() {}

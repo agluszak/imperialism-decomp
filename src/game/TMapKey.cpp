@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x00430900
 // TMapKey::`scalar deleting destructor'
 TMapKey::~TMapKey() {}
+// SYNTHETIC: IMPERIALISM 0x004fc9c0
+// TMapKey::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004fca70
+// TMapKey::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMapKey, TPicture)
 
 TMapKey::TMapKey() {}

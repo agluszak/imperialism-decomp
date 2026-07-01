@@ -11,6 +11,7 @@ dependencies = [
     "cxxheaderparser>=1.8.1",
     "pcpp>=1.30",
     "pyyaml>=6.0.3",
+    "capstone>=5.0.7",
 ]
 
 [tool.uv]

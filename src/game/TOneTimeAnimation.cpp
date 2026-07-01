@@ -18,7 +18,7 @@
 // Duplicate VTABLE annotation removed
 class TOneTimeAnimation : public CObject {
 public:
-  void* scopedRenderTarget; // 0x04
+  TView* scopedRenderTarget; // 0x04 — render-target view for the scoped QuickDraw context
   short currentFrame;       // 0x08
   short frameCount;         // 0x0a
   short field0c;            // 0x0c
@@ -42,11 +42,11 @@ void TOneTimeAnimation::AdvanceOneTimeAnimationFrameAndInvalidateTargetRect() {
       reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&targetRect, 1);
 
       ScopedMapQuickDrawContextGuard quickDrawContext(scopedRenderTarget);
-      reinterpret_cast<TView*>(scopedRenderTarget)->Refresh();
+      scopedRenderTarget->Refresh();
 
       RECT renderRect;
       CopyRect(&renderRect, &targetRect);
-      reinterpret_cast<TView*>(scopedRenderTarget)->ApplyRectSlot110(&renderRect);
+      scopedRenderTarget->ApplyRectSlot110(&renderRect);
 
       frameTick = 0;
       if (currentFrame < frameCount - 1) {

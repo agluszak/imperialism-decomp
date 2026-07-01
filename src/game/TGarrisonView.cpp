@@ -1,4 +1,10 @@
 #include "game/TGarrisonView.h"
+// SYNTHETIC: IMPERIALISM 0x004a8770
+// TGarrisonView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004a87f0
+// TGarrisonView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TGarrisonView, TMilitaryPageView)
 
 TGarrisonView::TGarrisonView() {}

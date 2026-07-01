@@ -1,4 +1,10 @@
 #include "game/TOfferDeskPicture.h"
+// SYNTHETIC: IMPERIALISM 0x005be4b0
+// TOfferDeskPicture::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005be550
+// TOfferDeskPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TOfferDeskPicture, TPicture)
 
 TOfferDeskPicture::TOfferDeskPicture() {}

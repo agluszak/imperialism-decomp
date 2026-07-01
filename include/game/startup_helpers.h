@@ -4,7 +4,7 @@
 #include "game/mfc.h"
 
 class TAmbitApplication;
-class TView;
+class CIncludeView;
 
 struct GlobalViewportRectDefaultsRecord;
 
@@ -17,16 +17,15 @@ BOOL WarnLowDiskSpaceAndConfirmContinue();
 
 // 0x0049ded0 — allocates/initializes global runtime singletons from startup config.
 void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app);
-
-// 0x00483340 — stores active dialog on the main view host and propagates UI context.
-void SetUiRuntimeContextAndActivateMain(TView* mainViewHost, TView* activeDialog);
 }
 
 // 0x004974f0
 extern "C++" undefined4 ReleaseGlobalClipRegionHandleListAndReset_006a1c98();
 
-// 0x00412a70 — AfxGetThread virtual +0x7c then read *(obj+0x98).
-void* GetMainViewHostFromActiveThread();
+// 0x00412a70 — the main thread's CWinThread::m_pMainWnd (the SDI CMainFrame), via its
+// real CFrameWnd::GetActiveView(). Always a CIncludeView in this app (the only registered
+// document-template view class).
+CIncludeView* GetMainViewHostFromActiveThread();
 
 // 0x00497230 — lazily seeds default 640x480 viewport rect globals.
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized();

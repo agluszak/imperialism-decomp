@@ -1,4 +1,10 @@
 #include "game/TScrollerButton.h"
+// SYNTHETIC: IMPERIALISM 0x00574ea0
+// TScrollerButton::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00574f20
+// TScrollerButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TScrollerButton, TPictureButton)
 
 TScrollerButton::TScrollerButton() {}

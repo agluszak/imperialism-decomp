@@ -1,4 +1,10 @@
 #include "game/TNavyRoster.h"
+// SYNTHETIC: IMPERIALISM 0x00564c30
+// TNavyRoster::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00564d00
+// TNavyRoster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNavyRoster, TMilitaryPageView)
 
 TNavyRoster::TNavyRoster() {}

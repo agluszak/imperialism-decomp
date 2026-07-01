@@ -157,8 +157,8 @@ extern double DAT_0066fad0;
 extern char g_pClassDescTStratReportView;
 extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
 extern void* g_pGlobalCallback_006a7fac;
-// Cached CCommandLineInfo::m_nShellCommand (cmdInfo+0x04, UINT enum — not m_strFileName).
-extern UINT g_cachedAppShellCommand;
+// Cached CCommandLineInfo::m_bShowSplash (cmdInfo+0x04), not m_nShellCommand.
+extern BOOL g_cachedShowSplashFlag;
 extern TBackdropWindow* DAT_006a2050;
 extern void* DAT_006a2054;
 extern LPCSTR g_apFontFiles[];
@@ -240,6 +240,11 @@ extern unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC;
 // UI invalidation-flag assert/log helper.
 extern char g_szMcAppUiSourcePath_006950B0[];
 
+// Source-file path string ("D:\\Ambit\\McWindow.cpp") for CMcWindow's one-shot asserts,
+// and the gate read before the unknown-wParam 0x468 assert fires.
+extern char g_szMcWindowSourcePath_006950D8[];
+extern int g_nMcWindowStateMsgAssertGate_006A1C74;
+
 // Header path string ("D:\\Ambit\\McAppUI.h") passed with a line number to city-production
 // dialog assert/log helpers on the TControl branch.
 extern char g_szMcAppUiHeaderPath_006943CC[];
@@ -278,6 +283,7 @@ extern TSelectedCivilianOrderState* g_pSelectedCivilianOrderState;
 extern TSoundPlayer* g_pSfxPlaybackSystem;
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 extern TApplication* g_pApplicationUiRootController;
+extern int g_turnEventDialogAnchorPoint[2];
 extern CPtrList g_LiveViewRegistry;
 extern CPtrList g_ModalViewStack;
 
@@ -286,3 +292,6 @@ extern CPtrList g_ModalViewStack;
 // ============================================================================
 
 undefined4 SetGlobalUiInvalidationFlagAndReturnPrevious(undefined4 newValue);
+
+// Read g_McAppUiActiveFlag_006950AC (0x489a70) — guard checked before any real painting.
+int GetMcAppUiActiveFlag();

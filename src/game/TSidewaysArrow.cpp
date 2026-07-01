@@ -6,6 +6,12 @@
 #include "game/quickdraw_rendering.h"
 #include "game/ui_widget_thunks.h"
 
+// SYNTHETIC: IMPERIALISM 0x00583a90
+// TSidewaysArrow::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00583b30
+// TSidewaysArrow::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSidewaysArrow, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00583b50
@@ -47,3 +53,7 @@ void TSidewaysArrow::DispatchPictureResourceCommand(int eventType, void* eventSe
 
   this->DispatchEvent(0x65, this, 0);
 }
+
+// SYNTHETIC: IMPERIALISM 0x00583b80
+// TSidewaysArrow::`scalar deleting destructor'
+

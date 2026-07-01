@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x005b27d0
 // TGameSetupDialog::`scalar deleting destructor'
 TGameSetupDialog::~TGameSetupDialog() {}
+// SYNTHETIC: IMPERIALISM 0x005b2740
+// TGameSetupDialog::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005b2820
+// TGameSetupDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TGameSetupDialog, TDialogView)
 
 TGameSetupDialog::TGameSetupDialog() {}

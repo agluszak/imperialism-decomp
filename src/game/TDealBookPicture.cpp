@@ -1,4 +1,10 @@
 #include "game/TDealBookPicture.h"
+// SYNTHETIC: IMPERIALISM 0x005bab00
+// TDealBookPicture::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005baba0
+// TDealBookPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDealBookPicture, TPicture)
 
 TDealBookPicture::TDealBookPicture() {}

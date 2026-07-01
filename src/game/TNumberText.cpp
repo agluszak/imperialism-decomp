@@ -14,6 +14,12 @@ TNumberText::TNumberText() : TEditText() {
 // SYNTHETIC: IMPERIALISM 0x00429530
 // TNumberText::`scalar deleting destructor'
 TNumberText::~TNumberText() {}
+// SYNTHETIC: IMPERIALISM 0x00490ed0
+// TNumberText::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00491040
+// TNumberText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNumberText, TEditText)
 
 // FUNCTION: IMPERIALISM 0x00491060
@@ -40,7 +46,7 @@ void TNumberText::SetControlValue(int val, int refresh) {
 int TNumberText::UpdateControlCachedIntFromWindowText() {
   if (this->field_94 != nullptr) {
     CString textVal;
-    this->field_94->GetWindowTextOrDelegateToOwner(&textVal);
+    this->field_94->GetWindowText(textVal);
     this->value = atoi(textVal);
   }
   return this->value;

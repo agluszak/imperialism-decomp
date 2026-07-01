@@ -5,6 +5,9 @@
 void* __cdecl CreateTCombatReportViewInstance(void) {
   return new TCombatReportView();
 }
+// SYNTHETIC: IMPERIALISM 0x0058c8b0
+// TCombatReportView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCombatReportView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058c8d0

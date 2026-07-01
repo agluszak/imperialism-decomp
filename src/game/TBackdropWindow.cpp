@@ -45,7 +45,7 @@ TBackdropWindow::TBackdropWindow() : CWnd(), m_backdropBmp(NULL) {}
 
 // FUNCTION: IMPERIALISM 0x0049cc60
 void WrapperFor_AllocateWithFallbackHandler_At0049cc60(CWnd* parent) {
-  if (g_cachedAppShellCommand == 0 || DAT_006a2050 != NULL) {
+  if (!g_cachedShowSplashFlag || DAT_006a2050 != NULL) {
     return;
   }
 

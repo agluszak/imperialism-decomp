@@ -1,4 +1,10 @@
 #include "game/TTradeScreenPicture.h"
+// SYNTHETIC: IMPERIALISM 0x005ba680
+// TTradeScreenPicture::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005ba700
+// TTradeScreenPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTradeScreenPicture, TPicture)
 
 TTradeScreenPicture::TTradeScreenPicture() {}

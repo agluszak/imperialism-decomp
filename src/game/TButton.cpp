@@ -1,6 +1,12 @@
 #include "game/TButton.h"
 #include "game/mfc.h"
 
+// SYNTHETIC: IMPERIALISM 0x0048eb10
+// TButton::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0048ecc0
+// TButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TButton, TCtlMgr)
 
 extern "C" CRuntimeClass PTR_s_TButton_00649618;

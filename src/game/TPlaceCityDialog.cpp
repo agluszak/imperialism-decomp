@@ -1,4 +1,10 @@
 #include "game/TPlaceCityDialog.h"
+// SYNTHETIC: IMPERIALISM 0x004d1760
+// TPlaceCityDialog::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004d17e0
+// TPlaceCityDialog::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPlaceCityDialog, TPicture)
 
 TPlaceCityDialog::TPlaceCityDialog() {}

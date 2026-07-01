@@ -1,4 +1,10 @@
 #include "game/TTradeOrderPicture.h"
+// SYNTHETIC: IMPERIALISM 0x005843e0
+// TTradeOrderPicture::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00584460
+// TTradeOrderPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTradeOrderPicture, TPicture)
 
 TTradeOrderPicture::TTradeOrderPicture() {}

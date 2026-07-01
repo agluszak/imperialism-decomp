@@ -83,6 +83,12 @@ TAmbitApplication::TAmbitApplication() : TApplication() {
   field_4c = 0;
   field_50 = 0;
 }
+// SYNTHETIC: IMPERIALISM 0x0049de40
+// TAmbitApplication::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0049deb0
+// TAmbitApplication::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAmbitApplication, TApplication)
 
 // FUNCTION: IMPERIALISM 0x0049e1a0

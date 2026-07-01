@@ -3,6 +3,12 @@
 extern "C" {
 char g_pClassDescTHandleStream = 0;
 }
+// SYNTHETIC: IMPERIALISM 0x00489580
+// THandleStream::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004895c0
+// THandleStream::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(THandleStream, TStream)
 
 // FUNCTION: IMPERIALISM 0x004895e0

@@ -7,6 +7,9 @@ extern "C" CRuntimeClass PTR_s_TPictureNumberText_0066c3c0;
 TView* __cdecl CreateTPictureNumberTextInstance(void) {
   return new TPictureNumberText();
 }
+// SYNTHETIC: IMPERIALISM 0x005b51c0
+// TPictureNumberText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPictureNumberText, TNumberText)
 
 // FUNCTION: IMPERIALISM 0x005b51e0

@@ -11,6 +11,8 @@
 
 // ===================== TTedForeignMinister (0x659d70) =====================
 
+// SYNTHETIC: IMPERIALISM 0x00531130
+// TTedForeignMinister::CreateObject
 CObject* PASCAL TTedForeignMinister::CreateObject() {
   return new TTedForeignMinister;
 }
@@ -67,6 +69,8 @@ void TTedForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // ===================== TBillForeignMinister (0x659e30) =====================
 
+// SYNTHETIC: IMPERIALISM 0x00531b30
+// TBillForeignMinister::CreateObject
 CObject* PASCAL TBillForeignMinister::CreateObject() {
   return new TBillForeignMinister;
 }
@@ -134,6 +138,8 @@ void TBillForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // ===================== TDiplomatForeignMinister (0x659f48) =====================
 
+// SYNTHETIC: IMPERIALISM 0x005326e0
+// TDiplomatForeignMinister::CreateObject
 CObject* PASCAL TDiplomatForeignMinister::CreateObject() {
   return new TDiplomatForeignMinister;
 }
@@ -187,6 +193,8 @@ void TDiplomatForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // ===================== TTextileForeignMinister (0x65a008) =====================
 
+// SYNTHETIC: IMPERIALISM 0x00533070
+// TTextileForeignMinister::CreateObject
 CObject* PASCAL TTextileForeignMinister::CreateObject() {
   return new TTextileForeignMinister;
 }
@@ -235,6 +243,8 @@ void TTextileForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // ===================== TTraderForeignMinister (0x65a0c8) =====================
 
+// SYNTHETIC: IMPERIALISM 0x00533800
+// TTraderForeignMinister::CreateObject
 CObject* PASCAL TTraderForeignMinister::CreateObject() {
   return new TTraderForeignMinister;
 }
@@ -285,6 +295,8 @@ void TTraderForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // ===================== TArmsForeignMinister (0x65a188) =====================
 
+// SYNTHETIC: IMPERIALISM 0x00533f70
+// TArmsForeignMinister::CreateObject
 CObject* PASCAL TArmsForeignMinister::CreateObject() {
   return new TArmsForeignMinister;
 }

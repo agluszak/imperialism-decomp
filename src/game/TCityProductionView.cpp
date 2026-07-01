@@ -33,6 +33,12 @@ struct RuntimeLocalTime {
 
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 undefined4 ConvertEpochSecondsToLocalTmWithDstAdjust(void);
+// SYNTHETIC: IMPERIALISM 0x004ba240
+// TCityProductionView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004ba2c0
+// TCityProductionView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCityProductionView, TNoHilitePicture)
 
 TCityProductionView::TCityProductionView() {}

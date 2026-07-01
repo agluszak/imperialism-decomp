@@ -6,15 +6,13 @@
 
 #include <new>
 
-extern undefined4 ResolveBmpResourceHandleWithDefault3B6(void);
-extern undefined4 thunk_DispatchHandleMapLookupWithReadPtrProbe(void);
 extern undefined4 TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void);
 
 namespace {
 
-void ReleaseFrameRefTarget(CMainFrameRefTarget* target) {
+void ReleaseFrameRefTarget(CObject* target) {
   if (target != nullptr) {
-    target->ReleaseWithFlag(1);
+    delete target;
   }
 }
 
@@ -22,21 +20,15 @@ void* GetValueAtOffset98(CWnd* wnd) {
   return *reinterpret_cast<void**>(reinterpret_cast<char*>(wnd) + 0x98);
 }
 
-int ResolveBmpHandleFromModuleCache(TModuleLibraryCacheTableStateB* cache) {
-  typedef int(__fastcall * ResolveBmpProc)(TModuleLibraryCacheTableStateB*);
-  ResolveBmpProc resolve = (ResolveBmpProc)(void*)ResolveBmpResourceHandleWithDefault3B6;
-  return resolve(cache);
-}
-
-undefined4 DispatchHandleMapLookup(undefined4 handle, int flag) {
-  typedef undefined4(__cdecl * ProbeProc)(undefined4, int);
-  ProbeProc probe = (ProbeProc)(void*)thunk_DispatchHandleMapLookupWithReadPtrProbe;
-  return probe(handle, flag);
-}
-
 } // namespace
 
 CMainFrameRefTarget::~CMainFrameRefTarget() {}
+
+// SYNTHETIC: IMPERIALISM 0x00484af0
+// CMainFrame::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00484bb0
+// CMainFrame::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
@@ -72,8 +64,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     return -1;
   }
   WrapperFor_AllocateWithFallbackHandler_At0049cc60(this);
-  field_BC = reinterpret_cast<CMainFrameRefTarget*>(
-      ResolveBmpHandleFromModuleCache(g_pModuleLibraryCacheState));
+  field_BC = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
   TryRealizeViewPaletteAndInvalidateWindow();
   return 0;
 }
@@ -119,12 +110,11 @@ int CMainFrame::TryRealizeViewPaletteAndInvalidateWindow() {
     return 0;
   }
   const MSG* msg = GetCurrentMessage();
-  const int paletteChangedMsg = (msg != nullptr && msg->message == 0x311) ? 1 : 0;
-  undefined4 priorHandle =
-      DispatchHandleMapLookup(reinterpret_cast<undefined4>(field_BC), paletteChangedMsg);
+  const BOOL background = (msg != nullptr && msg->message == 0x311) ? TRUE : FALSE;
   CClientDC dc(this);
+  CPalette* priorPalette = dc.SelectPalette(field_BC, background);
   const UINT realized = dc.RealizePalette();
-  DispatchHandleMapLookup(priorHandle, 1);
+  dc.SelectPalette(priorPalette, TRUE);
   if (realized == 0) {
     return 0;
   }
@@ -154,8 +144,7 @@ LRESULT CMainFrame::OnMsg030F(WPARAM wParam, LPARAM lParam) {
 
 // FUNCTION: IMPERIALISM 0x00485180
 void CMainFrame::OnCommand8009() {
-  field_BC = reinterpret_cast<CMainFrameRefTarget*>(
-      ResolveBmpHandleFromModuleCache(g_pModuleLibraryCacheState));
+  field_BC = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
   TryRealizeViewPaletteAndInvalidateWindow();
 }
 

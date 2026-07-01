@@ -19,6 +19,12 @@ extern short g_awEngineerFortBuildCostByLevel[8];
 extern int g_adwEngineerRailBuildCostByTerrainType[16];
 }
 undefined4 GetTickCountDiv16(void);
+// SYNTHETIC: IMPERIALISM 0x004d2000
+// TCivMgr::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004d2030
+// TCivMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCivMgr, TObject)
 
 TCivMgr::TCivMgr() {}

@@ -38,6 +38,9 @@ bool TPortZone::QueryZoneCapabilityFlagC() {
 TPortZone::~TPortZone() {}
 
 // slot 0x00 — GetRuntimeClass override.
+// SYNTHETIC: IMPERIALISM 0x005617d0
+// TPortZone::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPortZone, TZone)
 
 // slot 0x06 — TZone::ReadFrom override.

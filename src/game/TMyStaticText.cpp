@@ -10,6 +10,12 @@ extern int g_nUiResourceEntryDefaultParam0;
 }
 
 undefined4 LoadUiStringResourceByGroupAndIndex(void);
+// SYNTHETIC: IMPERIALISM 0x005b5380
+// TMyStaticText::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005b5400
+// TMyStaticText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMyStaticText, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x005b5420

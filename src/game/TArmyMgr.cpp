@@ -1,4 +1,10 @@
 #include "game/TArmyMgr.h"
+// SYNTHETIC: IMPERIALISM 0x004a1810
+// TArmyMgr::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004a1850
+// TArmyMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
 
 TArmyMgr::TArmyMgr() {}

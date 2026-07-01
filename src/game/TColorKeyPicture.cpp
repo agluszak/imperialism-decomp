@@ -1,4 +1,10 @@
 #include "game/TColorKeyPicture.h"
+// SYNTHETIC: IMPERIALISM 0x00572d20
+// TColorKeyPicture::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00572dc0
+// TColorKeyPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TColorKeyPicture, TNoHilitePicture)
 
 TColorKeyPicture::TColorKeyPicture() {}

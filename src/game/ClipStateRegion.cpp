@@ -7,7 +7,6 @@
 extern void* g_pScopedMapQuickDrawDcHandleObject;
 
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
-undefined4 afxMapHIMAGELIST_6139c6(void);
 
 int* Sprite__CollectNonTransparentPixels(void* this_obj, uint this_ptr);
 
@@ -113,8 +112,8 @@ void DrawFrameRectOrUpdateClipRegion(RECT* rect) {
     CBrush clipBrush;
     RegisterClipRegionHandle(&clipBrush, rectRegion);
     CombineRgn(static_cast<HRGN>(g_pTempMapTileClipRegion),
-               static_cast<HRGN>(g_pTempMapTileClipRegion),
-               static_cast<HRGN>(clipBrush.m_hObject), RGN_XOR);
+               static_cast<HRGN>(g_pTempMapTileClipRegion), static_cast<HRGN>(clipBrush.m_hObject),
+               RGN_XOR);
     clipBrush.DeleteObject();
     return;
   }
@@ -143,14 +142,30 @@ int IntersectRectWrapper(RECT* src1, RECT* src2, RECT* dst) {
   return IntersectRect(dst, src1, src2);
 }
 
+// TODO(shortcut): real behavior is a lazily-constructed CMapPtrToPtr cached on the
+// current thread's AFX module-thread-state (AfxGetModuleThreadState()+0x20 in the
+// original). That state struct's layout isn't modeled here, so this is a process-wide
+// lazy singleton instead of a proper per-thread-state one — behaviorally equivalent
+// only as long as this map is never touched from more than one thread (true today: the
+// game is single-threaded UI-wise). Revisit if a second thread ever needs a clip
+// region. Was an unported stub (returned null unconditionally), which crashed the
+// first time a real clip region was registered.
+// FUNCTION: IMPERIALISM 0x006139c6
+static CMapPtrToPtr* afxMapHIMAGELIST_6139c6() {
+  static CMapPtrToPtr* s_map = nullptr;
+  if (s_map == nullptr) {
+    s_map = new CMapPtrToPtr();
+  }
+  return s_map;
+}
+
 // Ghidra mislabels this as CBrush::; clip-state registration over retail MFC CBrush.
 // FUNCTION: IMPERIALISM 0x00613a4c
 static int RegisterClipRegionHandle(CBrush* brush, HRGN region) {
   if (region == NULL) {
     return 0;
   }
-  CMapPtrToPtr* handleMap = reinterpret_cast<CMapPtrToPtr*>(
-      reinterpret_cast<void*(__cdecl*)(int)>(afxMapHIMAGELIST_6139c6)(1));
+  CMapPtrToPtr* handleMap = afxMapHIMAGELIST_6139c6();
   brush->Attach(region);
   void*& slot = (*handleMap)[reinterpret_cast<void*>(region)];
   slot = brush;

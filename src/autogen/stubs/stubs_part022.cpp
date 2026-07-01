@@ -587,26 +587,16 @@ undefined4 SelectPaletteThenLookupHandleMapEntryWithCreate(void)
   return 0;
 }
 
-// ghidra_name GetClipBoxFromThisHdcField
-// ghidra_proto undefined GetClipBoxFromThisHdcField()
+// ghidra_name CDC::GetClipBox
 // FUNCTION: IMPERIALISM 0x00612e9a
-undefined4 GetClipBoxFromThisHdcField(void)
+undefined4 CDC_GetClipBox(void)
 {
   return 0;
 }
 
-// ghidra_name CPaintDC
-// ghidra_proto undefined CPaintDC()
+// ghidra_name CPaintDC::CPaintDC
 // FUNCTION: IMPERIALISM 0x006138f9
-undefined4 CPaintDC(void)
-{
-  return 0;
-}
-
-// ghidra_name afxMapHIMAGELIST_6139c6
-// ghidra_proto undefined afxMapHIMAGELIST_6139c6()
-// FUNCTION: IMPERIALISM 0x006139c6
-undefined4 afxMapHIMAGELIST_6139c6(void)
+undefined4 CPaintDC_CPaintDC(void)
 {
   return 0;
 }
@@ -870,7 +860,7 @@ undefined4 OnVScroll(void)
 // ghidra_name OrphanRetStub_0059add0
 // ghidra_proto undefined OrphanRetStub_0059add0()
 // FUNCTION: IMPERIALISM 0x0061849d
-undefined4 OrphanRetStub_0059add0(void)
+undefined4 OrphanRetStub_0059add0_0061849D(void)
 {
   return 0;
 }

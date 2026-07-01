@@ -17,6 +17,12 @@ char TClientGreatPower::ShouldDispatchImmediatelySlot28(void) {
 // SYNTHETIC: IMPERIALISM 0x005412f0
 // TClientGreatPower::`scalar deleting destructor'
 TClientGreatPower::~TClientGreatPower() {}
+// SYNTHETIC: IMPERIALISM 0x00541230
+// TClientGreatPower::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00541390
+// TClientGreatPower::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TClientGreatPower, TGreatPower)
 
 // FUNCTION: IMPERIALISM 0x005413b0

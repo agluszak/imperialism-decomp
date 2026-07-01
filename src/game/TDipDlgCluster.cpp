@@ -1,4 +1,10 @@
 #include "game/TDipDlgCluster.h"
+// SYNTHETIC: IMPERIALISM 0x00584040
+// TDipDlgCluster::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005840c0
+// TDipDlgCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDipDlgCluster, TUberCluster)
 
 TDipDlgCluster::TDipDlgCluster() {}

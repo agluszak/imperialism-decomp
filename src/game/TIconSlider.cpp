@@ -1,4 +1,10 @@
 #include "game/TIconSlider.h"
+// SYNTHETIC: IMPERIALISM 0x005062d0
+// TIconSlider::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005063a0
+// TIconSlider::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TIconSlider, TIconBar)
 
 TIconSlider::TIconSlider() {}

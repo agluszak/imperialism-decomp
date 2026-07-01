@@ -76,7 +76,7 @@ public:
   // slot 0x41 ReleaseMapQuickDrawDc inherited unchanged (0x48b7e0)
   // slot 0x42 EnsureField48Buffer inherited unchanged (0x48b810)
   virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect,
-                                                        int bindArg) override; // slot 0x43 0x5742b0
+                                                        CDC* paintDc) override; // slot 0x43 0x5742b0
   // slot 0x44 ApplyRectSlot110 inherited unchanged (0x430bf0)
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)

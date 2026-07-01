@@ -111,6 +111,11 @@ def merge_curated_symbols_csv(
             out_rows.append(row)
             continue
         addr = int(addr_text, 16)
+        if addr in merged_addrs:
+            # The Ghidra export can carry two symbols at one address (e.g. a label
+            # and a data symbol); every downstream consumer keys rows by address,
+            # so keep only the first.
+            continue
         merged_addrs.add(addr)
         merged = dict(row)
         curated = curated_by_addr.get(addr)
@@ -129,6 +134,9 @@ def merge_curated_symbols_csv(
             if curated_proto and merged.get("prototype", "") != curated_proto:
                 merged["prototype"] = curated_proto
                 preserved_prototypes += 1
+            curated_prov = (curated.get("provenance") or "").strip()
+            if curated_prov and merged.get("provenance", "") != curated_prov:
+                merged["provenance"] = curated_prov
         if coerce_vtable_row(merged, vtable_addrs):
             coerced_vtables += 1
         out_rows.append(merged)
@@ -163,6 +171,10 @@ def write_symbols_csv(path: Path, fieldnames: list[str], rows: list[dict[str, st
     if "symbol" not in fieldnames:
         insert_at = fieldnames.index("size") if "size" in fieldnames else len(fieldnames)
         fieldnames.insert(insert_at, "symbol")
+    # Optional trailing provenance column: who established the row's name
+    # (rtti | mac | manual | ghidra-auto | empty = unknown/legacy).
+    if "provenance" not in fieldnames:
+        fieldnames.append("provenance")
     for row in rows:
         for field in fieldnames:
             row.setdefault(field, "")

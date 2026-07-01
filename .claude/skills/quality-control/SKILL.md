@@ -16,6 +16,11 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
 - `just detect` — re-run reccmp recompiled detection (do this after every rebuild).
 - `just compare 0xADDR` — targeted verbose compare of one function (the acceptance
   gate for a touched body). With no address, runs a full compare.
+- **Batch mode (one PDB parse for many functions — use this instead of looping
+  single compares):** `just compare 0xA 0xB 0xC ...` scores several addresses at
+  once; `just compare --file src/game/X.cpp` scores every `// FUNCTION:` marker in
+  a file; `just compare-class X` is shorthand for the latter. All three run reccmp
+  once with `--json` (seconds total, vs ~10s of PDB parsing per single compare).
 - `just stats` — aggregate progress compared against the committed baseline. It reports
   improved and worsened metrics separately.
 - `just stats-commit` — update the committed aggregate baseline after accepting the

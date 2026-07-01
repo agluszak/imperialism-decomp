@@ -8,6 +8,12 @@ undefined TNavyTacUnit::ConstructTNavyPlayerBaseState() {
 // SYNTHETIC: IMPERIALISM 0x0059ed80
 // TNavyTacUnit::`scalar deleting destructor'
 TNavyTacUnit::~TNavyTacUnit() {}
+// SYNTHETIC: IMPERIALISM 0x005a6240
+// TNavyTacUnit::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005a6270
+// TNavyTacUnit::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNavyTacUnit, TTacticalUnit)
 
 TNavyTacUnit::TNavyTacUnit() {}

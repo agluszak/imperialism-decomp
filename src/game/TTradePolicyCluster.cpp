@@ -1,4 +1,10 @@
 #include "game/TTradePolicyCluster.h"
+// SYNTHETIC: IMPERIALISM 0x00584200
+// TTradePolicyCluster::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00584280
+// TTradePolicyCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTradePolicyCluster, TUberCluster)
 
 TTradePolicyCluster::TTradePolicyCluster() {}

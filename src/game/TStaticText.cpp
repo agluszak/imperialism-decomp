@@ -18,12 +18,15 @@ undefined TStaticText::AssignSharedStringFromField84() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x0048F710
-void* __cdecl CreateTStaticTextInstance(void) {
-  return new TStaticText();
-}
-
 // MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x649678).
+// 0x48f710 is the IMPLEMENT_DYNCREATE-generated CreateObject (was previously modeled as
+// a banned free-function factory; retired in favor of the macro's real static).
+// SYNTHETIC: IMPERIALISM 0x0048f710
+// TStaticText::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0048f870
+// TStaticText::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TStaticText, TControl)
 
 // FUNCTION: IMPERIALISM 0x0048F890

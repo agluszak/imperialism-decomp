@@ -2,6 +2,9 @@
 #include "game/TMission.h"
 #include <new>
 
+// SYNTHETIC: IMPERIALISM 0x00487b10
+// TSortedList::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSortedList, TObject)
 
 // FUNCTION: IMPERIALISM 0x00487a90

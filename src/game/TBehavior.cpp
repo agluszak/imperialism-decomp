@@ -3,6 +3,12 @@
 #include "game/mfc.h"
 
 extern "C" char g_pClassDescTBehavior;
+// SYNTHETIC: IMPERIALISM 0x00487180
+// TBehavior::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004871c0
+// TBehavior::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TBehavior, TObject)
 
 // FUNCTION: IMPERIALISM 0x004871e0

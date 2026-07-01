@@ -1,4 +1,10 @@
 #include "game/TTrainingOrder.h"
+// SYNTHETIC: IMPERIALISM 0x004b6a60
+// TTrainingOrder::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004b6a90
+// TTrainingOrder::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTrainingOrder, TProductionOrder)
 
 TTrainingOrder::TTrainingOrder() {}

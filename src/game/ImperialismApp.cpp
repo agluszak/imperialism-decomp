@@ -15,7 +15,6 @@
 #include "game/TView.h"
 #include "game/CString.h"
 #include "game/mfc.h"
-#include "game/CMcWindow.h"
 #include "game/TAutoResolutionDialog.h"
 
 extern "C" char g_szEmptyString[];
@@ -109,9 +108,7 @@ BOOL ImperialismApp::InitInstance() {
     }
     PostMessageA(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
 
-    // cmdInfo.m_nShellCommand is CCommandLineInfo+0x04 (UINT enum, not m_strFileName).
-    // Cached for backdrop guard @ 0x0049cc60 — see g_cachedAppShellCommand in global_data_tables.h.
-    SetCachedAppShellCommand(cmdInfo.m_nShellCommand);
+    SetCachedShowSplashFlag(cmdInfo.m_bShowSplash);
 
     CSingleDocTemplate* pDocTemplate =
         new CSingleDocTemplate(0x80, RUNTIME_CLASS(CAmbitDocument), RUNTIME_CLASS(CMainFrame),
@@ -135,17 +132,16 @@ BOOL ImperialismApp::InitInstance() {
     g_pSfxPlaybackSystem = new TSoundPlayer();
     g_pSfxPlaybackSystem->InitializeSoundSubsystemAndAllocateChannelLists(0xf);
 
-    TView* mainViewHost = reinterpret_cast<TView*>(GetMainViewHostFromActiveThread());
-    SetUiRuntimeContextAndActivateMain(mainViewHost, g_pDisplayMgr->activeDialog);
+    CIncludeView* mainView = GetMainViewHostFromActiveThread();
+    mainView->SetUiRuntimeContextAndActivateMain(g_pDisplayMgr->activeDialog);
 
     if (CompareAnsiStringsWithMbcsAwareness(
             const_cast<unsigned char*>(
                 reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(cmdInfo.m_strFileName))),
             reinterpret_cast<unsigned char*>(g_szEmptyString)) != 0) {
-      void* uiWindow = GetMainViewHostFromActiveThread();
+      CIncludeView* uiWindow = GetMainViewHostFromActiveThread();
       if (uiWindow != nullptr) {
-        static_cast<CMcWindow*>(uiWindow)->SetWindowTextOrDelegateToOwner(
-            static_cast<LPCSTR>(cmdInfo.m_strFileName));
+        uiWindow->SetWindowText(static_cast<LPCSTR>(cmdInfo.m_strFileName));
       }
     }
 

@@ -1,4 +1,10 @@
 #include "game/TTradeSchoolView.h"
+// SYNTHETIC: IMPERIALISM 0x004cd760
+// TTradeSchoolView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004cd820
+// TTradeSchoolView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTradeSchoolView, TIndustryView)
 
 TTradeSchoolView::TTradeSchoolView() {}

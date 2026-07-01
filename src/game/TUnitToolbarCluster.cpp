@@ -27,6 +27,9 @@ char g_vtblTUnitToolbarCluster = 0;
 TUnitToolbarCluster* TUnitToolbarCluster::CreateInstance() {
   return new TUnitToolbarCluster();
 }
+// SYNTHETIC: IMPERIALISM 0x00585ff0
+// TUnitToolbarCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TUnitToolbarCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586010

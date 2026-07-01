@@ -1,4 +1,10 @@
 #include "game/TAdorner.h"
+// SYNTHETIC: IMPERIALISM 0x0049d650
+// TAdorner::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0049d6d0
+// TAdorner::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAdorner, TObject)
 
 TAdorner::TAdorner() {}

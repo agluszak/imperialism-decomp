@@ -1,5 +1,11 @@
 #include "game/TRightLeftView.h"
 #include "game/TControl.h"
+// SYNTHETIC: IMPERIALISM 0x00583e70
+// TRightLeftView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00583f10
+// TRightLeftView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TRightLeftView, TControl)
 
 // SYNTHETIC: IMPERIALISM 0x00583f60

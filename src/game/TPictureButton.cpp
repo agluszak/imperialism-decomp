@@ -2,6 +2,12 @@
 #include "game/mfc.h"
 
 extern "C" CRuntimeClass PTR_s_TPictureButton_0065e538;
+// SYNTHETIC: IMPERIALISM 0x00570750
+// TPictureButton::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005707d0
+// TPictureButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPictureButton, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005707f0

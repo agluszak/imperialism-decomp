@@ -10,6 +10,9 @@
 TTransportPicture* __cdecl CreateTTransportPictureInstance(void) {
   return new TTransportPicture();
 }
+// SYNTHETIC: IMPERIALISM 0x00591e50
+// TTransportPicture::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TTransportPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00591e70

@@ -56,6 +56,12 @@ const unsigned int kAddrDiplomacyHitBounds = 0x006A3008;
 const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
 } // namespace
 
+// SYNTHETIC: IMPERIALISM 0x004f3ae0
+// TDiplomacyMapView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004f3b60
+// TDiplomacyMapView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TDiplomacyMapView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00430730

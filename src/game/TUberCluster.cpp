@@ -28,6 +28,9 @@ undefined4 thunk_BuildUiTextStyleDescriptor(void);
 TUberCluster* __cdecl CreateTUberClusterInstance(void) {
   return new TUberCluster();
 }
+// SYNTHETIC: IMPERIALISM 0x00571440
+// TUberCluster::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TUberCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x00571460

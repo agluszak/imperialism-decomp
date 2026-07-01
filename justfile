@@ -123,6 +123,41 @@ ghidra-function-slice *args: _require-ghidra-install
 ghidra-decompile *args: _require-ghidra-install
   uv run python -m tools.ghidra.decompile_one {{args}}
 
+# Linear disassembly by address, ignoring Ghidra's (sometimes wrong) function
+# boundaries. `just ghidra-linear-disasm 0xADDR [count]`.
+ghidra-linear-disasm *args: _require-ghidra-install
+  uv run python -m tools.ghidra.linear_disasm {{args}}
+
+# Whole-binary search for a value in disassembled instruction text or raw data
+# (message-map/handler hunting). `just ghidra-search text|dword <value> [limit]`.
+ghidra-search *args: _require-ghidra-install
+  uv run python -m tools.ghidra.search_whole_binary {{args}}
+
+# Disassemble raw bytes with capstone, bypassing Ghidra's instruction database
+# entirely (for regions Ghidra hasn't disassembled at all).
+# `just ghidra-raw-disasm 0xADDR [byte_count]`.
+ghidra-raw-disasm *args: _require-ghidra-install
+  uv run python -m tools.ghidra.raw_disasm {{args}}
+
+# Walk every MFC CRuntimeClass descriptor in the binary: true class names, object
+# sizes, base-class edges, resolved CreateObject addresses. Ground truth for class
+# recovery — refresh config/rtti_class_oracle.csv with `--csv`.
+rtti-oracle *args: _require-ghidra-install
+  uv run python -m tools.ghidra.rtti_class_oracle {{args}}
+
+# Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
+# m_nObjectSize. Report-only; pass --strict to fail on mismatches, or
+# --show-unasserted to list oracle classes with no size assert yet.
+class-size-check *args:
+  uv run python -m tools.workflow.check_class_sizes {{args}}
+
+# Define real functions Ghidra never created (vtable slot targets, ILT jmp
+# targets, symbols.csv rows). Dry-run by default; --apply writes + saves the DB.
+# See docs/ghidra-db-mutations.md before applying: the post-apply sync-ghidra
+# needs the ILT thunk-range handled or vtable resolution collapses.
+repair-code-gaps *args: _require-ghidra-install
+  uv run python -m tools.ghidra.repair_code_gaps {{args}}
+
 # Decompile benchmark gate: must-keep patterns for curated Ghidra typing work.
 # Pass --strict to also fail on missing should-improve patterns.
 ghidra-decomp-check *args: _require-ghidra-install
@@ -165,8 +200,8 @@ fix-in-stack-params *args: _require-ghidra-install
   uv run python -m tools.ghidra.fix_in_stack_params {{args}}
 
 # Dump the Ghidra thunk-name -> real-name map to config/thunk_map.csv so offline
-# body promotion (gen-class) can resolve jmp-thunk/alias call names without
-# a live Ghidra connection. Read-only and idempotent.
+# body promotion (promote/promote-range, resolve-autogen-thunks) can resolve
+# jmp-thunk/alias call names without a live Ghidra connection. Read-only, idempotent.
 dump-thunk-map *args: _require-ghidra-install
   uv run python -m tools.ghidra.dump_thunk_map {{args}}
 
@@ -211,6 +246,11 @@ regen-stubs:
     --name-overrides "{{name_overrides}}" \
     --ownership-csv "{{function_ownership}}"
 
+# Reconcile config/function_ownership.csv with source markers (src/ + include/).
+# Deletion-reconciling by default: marker_sync rows whose marker disappeared AND whose
+# file/header no longer mentions the address are pruned (a stale row silently
+# suppresses stub regeneration). Curated notes (e.g. mfc_runtime_macro) are never
+# pruned. Pass --no-prune-missing-manual through the module directly to skip pruning.
 sync-ownership:
   uv run python -m tools.workflow.sync_function_ownership \
     --target "{{target}}" \
@@ -250,6 +290,12 @@ vtable-collision-gate:
 # Ensure synthetic symbol names in source comments match symbols.csv.
 synthetic-gate:
   uv run python -m tools.workflow.check_synthetic_names --paths src include
+
+# Structural integrity of config/symbols.csv: header row exactly at line 1, no
+# duplicate headers, parseable hex addresses, no duplicate addresses. (Every consumer
+# is a DictReader that silently degrades when the header is misplaced.)
+symbols-integrity-gate:
+  uv run python -m tools.workflow.check_symbols_integrity
 
 # Report `// VTABLE:` annotations that reccmp does not turn into a matched vtable
 # (needs a built binary + reccmp DB, so it is not part of `just gates`). Pass --strict
@@ -291,10 +337,10 @@ gates:
   just vtable-collision-gate
   just field-layout-gate
   just synthetic-gate
+  just symbols-integrity-gate
   just global-location-gate
   just manual-cruntimeclass-gate
   just decomplint
-  just global-location-gate
 
 # Check the decompilation annotations (// FUNCTION / // VTABLE / // GLOBAL etc.)
 # for syntax errors, duplicate addresses, and stray markers.
@@ -502,17 +548,6 @@ promote-range target_cpp start end:
     --target-cpp "{{target_cpp}}" \
     --ownership-csv "{{function_ownership}}" \
     --range "{{start}}:{{end}}"
-
-# Promote autogen blocks with shape_body when config/classes/<Class>.yml exists.
-promote-shaped target_cpp *args:
-  uv run python -m tools.workflow.promote_shaped \
-    --target-cpp "{{target_cpp}}" \
-    --ownership-csv "{{function_ownership}}" \
-    {{args}}
-
-# Manifest-driven class generator (header block + shaped slot bodies). Dry-run by default.
-gen-class cls *args:
-  uv run python -m tools.workflow.gen_class "{{cls}}" {{args}}
 
 # Score every // FUNCTION marker in src/game/<Class>.cpp (single PDB parse).
 compare-class cls:

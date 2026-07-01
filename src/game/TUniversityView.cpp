@@ -1,4 +1,10 @@
 #include "game/TUniversityView.h"
+// SYNTHETIC: IMPERIALISM 0x004caba0
+// TUniversityView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004cac40
+// TUniversityView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TUniversityView, TBuildingView)
 
 TUniversityView::TUniversityView() {}

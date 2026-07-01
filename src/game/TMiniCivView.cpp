@@ -8,6 +8,12 @@ undefined TMiniCivView::OrphanRetStub_004ab800() {
 // SYNTHETIC: IMPERIALISM 0x004ab820
 // TMiniCivView::`scalar deleting destructor'
 TMiniCivView::~TMiniCivView() {}
+// SYNTHETIC: IMPERIALISM 0x004ab8c0
+// TMiniCivView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004ab950
+// TMiniCivView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TMiniCivView, TControl)
 
 TMiniCivView::TMiniCivView() {}

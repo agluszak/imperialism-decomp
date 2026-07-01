@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x005a54d0
 // TNavyBattle::`scalar deleting destructor'
 TNavyBattle::~TNavyBattle() {}
+// SYNTHETIC: IMPERIALISM 0x005a5480
+// TNavyBattle::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005a5520
+// TNavyBattle::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNavyBattle, TTacticalBattle)
 
 TNavyBattle::TNavyBattle() {}

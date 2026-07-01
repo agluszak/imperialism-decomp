@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x005653b0
 // TShipView::`scalar deleting destructor'
 TShipView::~TShipView() {}
+// SYNTHETIC: IMPERIALISM 0x00565400
+// TShipView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00565470
+// TShipView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TShipView, TView)
 
 TShipView::TShipView() {}

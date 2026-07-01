@@ -1,4 +1,10 @@
 #include "game/TPopulationMgr.h"
+// SYNTHETIC: IMPERIALISM 0x004b5b40
+// TPopulationMgr::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004b5b70
+// TPopulationMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TPopulationMgr, TObject)
 
 TPopulationMgr::TPopulationMgr() {}

@@ -113,14 +113,21 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
 // === END GENERATED DECLS (TIncludeView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TIncludeView 0xCTOR`).
+  short turnEventCode60;
+  short padding62;
+  int anchorPoint64[2];
+  CString labelText6c;
+  short completionFlag70;
+  short padding72;
 
   // Turn-event factory packet builder (thiscall on the freshly-constructed entry).
-  void BuildTurnEventFactoryPacket(int arg0, class TView* mainView, short eventCode, void* factoryOut,
-                                   class CString* labelText, int flag);
+  void BuildTurnEventFactoryPacket(TView* ownerContextArg, TView* mainView, short eventCode,
+                                   int* anchorPoint, CString* labelText, int flag);
 
   TIncludeView();
 };
+
+ASSERT_SIZE(TIncludeView, 0x74);
 
 // === BEGIN GENERATED (TIncludeView) — refreshed by `just gen-class TIncludeView`; do not hand-edit ===
 // clang-format off

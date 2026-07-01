@@ -27,14 +27,6 @@ undefined4 GetCityIndexFromCityStatePointer(void)
   return 0;
 }
 
-// ghidra_name TMapMgr::CreateTMapMgrInstance
-// ghidra_proto undefined CreateTMapMgrInstance()
-// FUNCTION: IMPERIALISM 0x0050e2f0
-undefined4 CreateTMapMgrInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructGlobalMapState
 // ghidra_proto void * __fastcall ConstructGlobalMapState(void * pGlobalMapState)
 // FUNCTION: IMPERIALISM 0x0050e3d0
@@ -523,26 +515,10 @@ undefined4 WrapperFor_ftol_At00519970(void)
   return 0;
 }
 
-// ghidra_name TMapDialog::CreateTMapDialogInstance
-// ghidra_proto undefined CreateTMapDialogInstance()
-// FUNCTION: IMPERIALISM 0x005199c0
-undefined4 CreateTMapDialogInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapDialog::ConstructTMapDialogBaseState
 // ghidra_proto undefined ConstructTMapDialogBaseState()
 // FUNCTION: IMPERIALISM 0x00519b50
 undefined4 ConstructTMapDialogBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTerrainInfoDialog::CreateTTerrainInfoDialogInstance
-// ghidra_proto undefined CreateTTerrainInfoDialogInstance()
-// FUNCTION: IMPERIALISM 0x0051b0a0
-undefined4 CreateTTerrainInfoDialogInstance(void)
 {
   return 0;
 }
@@ -563,14 +539,6 @@ undefined4 PopulateMapContextInfoPanelStringsByTileSelection(void)
   return 0;
 }
 
-// ghidra_name TTownNameDialog::CreateTTownNameDialogInstance
-// ghidra_proto undefined CreateTTownNameDialogInstance()
-// FUNCTION: IMPERIALISM 0x0051ba70
-undefined4 CreateTTownNameDialogInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TTownNameDialog::ConstructTTownNameDialogBaseState
 // ghidra_proto undefined ConstructTTownNameDialogBaseState()
 // FUNCTION: IMPERIALISM 0x0051bb10
@@ -579,26 +547,10 @@ undefined4 ConstructTTownNameDialogBaseState(void)
   return 0;
 }
 
-// ghidra_name TCitySiteView::CreateTCitySiteViewInstance
-// ghidra_proto undefined CreateTCitySiteViewInstance()
-// FUNCTION: IMPERIALISM 0x0051bd60
-undefined4 CreateTCitySiteViewInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeCitySiteView
 // ghidra_proto undefined InitializeCitySiteView()
 // FUNCTION: IMPERIALISM 0x0051beb0
 undefined4 InitializeCitySiteView(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapEditView::CreateTMapEditViewInstance
-// ghidra_proto undefined CreateTMapEditViewInstance()
-// FUNCTION: IMPERIALISM 0x0051cab0
-undefined4 CreateTMapEditViewInstance(void)
 {
   return 0;
 }
@@ -703,6 +655,13 @@ undefined4 WrapperFor_SetQuickDrawFillColor_At0051e160(void)
 // ghidra_proto undefined WrapperFor_ftol_At005258c0()
 // FUNCTION: IMPERIALISM 0x005258c0
 undefined4 WrapperFor_ftol_At005258c0(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapMaker::CreateObject
+// FUNCTION: IMPERIALISM 0x00525910
+undefined4 TMapMaker_CreateObject(void)
 {
   return 0;
 }
@@ -1107,14 +1066,6 @@ undefined4 DestructTArmsForeignMinister(void)
   return 0;
 }
 
-// ghidra_name AllocateAndConstructTIndexAndRankList
-// ghidra_proto undefined AllocateAndConstructTIndexAndRankList()
-// FUNCTION: IMPERIALISM 0x005347e0
-undefined4 AllocateAndConstructTIndexAndRankList(void)
-{
-  return 0;
-}
-
 // ghidra_name TIndexAndRankList::ConstructTIndexAndRankList
 // ghidra_proto undefined ConstructTIndexAndRankList()
 // FUNCTION: IMPERIALISM 0x00534870
@@ -1127,6 +1078,14 @@ undefined4 ConstructTIndexAndRankList(void)
 // ghidra_proto undefined DestructTIndexAndRankList()
 // FUNCTION: IMPERIALISM 0x005348d0
 undefined4 DestructTIndexAndRankList(void)
+{
+  return 0;
+}
+
+// ghidra_name TIndexAndRankList::CompareUnsignedIntsAscending
+// ghidra_proto undefined CompareIndexAndRankEntriesByField2Descending()
+// FUNCTION: IMPERIALISM 0x00534910
+undefined4 CompareIndexAndRankEntriesByField2Descending(void)
 {
   return 0;
 }

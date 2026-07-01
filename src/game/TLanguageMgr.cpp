@@ -27,6 +27,12 @@ TLanguageMgr::TLanguageMgr() : TObject() {
   delimiter = 0x20;
   field30 = 6;
 }
+// SYNTHETIC: IMPERIALISM 0x00507bc0
+// TLanguageMgr::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00507c40
+// TLanguageMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TLanguageMgr, TObject)
 
 TLanguageMgr::~TLanguageMgr() {}
@@ -190,3 +196,6 @@ void TLanguageMgr::BuildNewsTableDimensions(char firstColumnArg, char lastColumn
     }
   }
 }
+
+// SYNTHETIC: IMPERIALISM 0x00507d80
+// TLanguageMgr::`scalar deleting destructor'

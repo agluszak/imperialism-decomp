@@ -60,6 +60,9 @@ void TNumberedArrowButton::OrphanCallChain_C2_I37_0058b8d0(short mode) {
 TNumberedArrowButton* __cdecl CreateTNumberedArrowButtonInstance(void) {
   return new TNumberedArrowButton();
 }
+// SYNTHETIC: IMPERIALISM 0x0058c280
+// TNumberedArrowButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNumberedArrowButton, TControl)
 
 // FUNCTION: IMPERIALISM 0x0058c2a0

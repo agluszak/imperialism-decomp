@@ -1,4 +1,10 @@
 #include "game/TIconBar.h"
+// SYNTHETIC: IMPERIALISM 0x00505f50
+// TIconBar::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00505fd0
+// TIconBar::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TIconBar, TNoHilitePicture)
 
 TIconBar::TIconBar() {}

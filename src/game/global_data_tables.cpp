@@ -271,14 +271,10 @@ void* g_pReusableQuickDrawSurfaceListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a7fac
 void* g_pGlobalCallback_006a7fac = nullptr;
 // GLOBAL: IMPERIALISM 0x006a2018
-// Cached copy of CCommandLineInfo::m_nShellCommand (cmdInfo+0x04, UINT enum).
-// NOT m_strFileName.m_pchData (CString at cmdInfo+0x08).
-// Writer: SetCachedAppShellCommand @ 0x0049cc40 from InitInstance @ 0x00412f81
-//   (MOV EDX,[ESP+0x20] with cmdInfo at [ESP+0x1c]).
-// Reader: WrapperFor_AllocateWithFallbackHandler_At0049cc60 @ 0x0049cc60 when != 0.
-// Enum: FileNew=0, FileOpen=1, FilePrint=2, FilePrintPreview=3, FilePageSetup=4,
-//       FileDDE=5, FileNothing=6.
-UINT g_cachedAppShellCommand = 0;
+// Cached CCommandLineInfo::m_bShowSplash flag (cmdInfo+0x04 after the CObject vptr).
+// Writer: SetCachedShowSplashFlag @ 0x0049cc40 from InitInstance @ 0x00412f81.
+// Reader: WrapperFor_AllocateWithFallbackHandler_At0049cc60 @ 0x0049cc60 when nonzero.
+BOOL g_cachedShowSplashFlag = FALSE;
 CRuntimeClass g_pClassDescTScopedMapQuickDrawContext2 = {nullptr, 0, 0, nullptr, nullptr};
 
 } // extern "C"
@@ -312,6 +308,20 @@ undefined4 SetGlobalUiInvalidationFlagAndReturnPrevious(undefined4 newValue) {
   g_McAppUiActiveFlag_006950AC = newValue;
   return previous;
 }
+
+// FUNCTION: IMPERIALISM 0x00489a70
+int GetMcAppUiActiveFlag() {
+  return g_McAppUiActiveFlag_006950AC;
+}
+
+// Source-path string for CMcWindow's McWindow.cpp one-shot debug asserts.
+// GLOBAL: IMPERIALISM 0x006950d8
+char g_szMcWindowSourcePath_006950D8[] = "D:\\Ambit\\McWindow.cpp";
+
+// Gate read by CMcWindow::OnWindowStateMsg468 before firing the unknown-wParam
+// one-shot assert (writer not yet identified).
+// GLOBAL: IMPERIALISM 0x006a1c74
+int g_nMcWindowStateMsgAssertGate_006A1C74 = 0;
 
 extern "C" {
 // MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
@@ -615,6 +625,9 @@ int g_bCityDialogLegendSelectionInitialized = 0;
 
 // GLOBAL: IMPERIALISM 0x006a590c
 TCursorControlPanel* g_pCursorControlPanel = nullptr;
+
+// GLOBAL: IMPERIALISM 0x006a1ab0
+int g_turnEventDialogAnchorPoint[2] = {0, 0};
 
 // McAppUI-wide modal-window stack (an MFC CPtrList of TWindow*, base 0x006a1ac0).
 // TWindow::ExecuteViewModalStateWithPushPopChain pushes the active window on entry and

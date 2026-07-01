@@ -156,7 +156,14 @@ void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
   }
 }
 
+// IMPLEMENT_DYNCREATE also emits `TView::CreateObject` (`return new TView;`).
+// SYNTHETIC: IMPERIALISM 0x0048a840
+// TView::CreateObject
+
 // TView slot 0x00 override: return this class's MFC CRuntimeClass descriptor.
+// SYNTHETIC: IMPERIALISM 0x0048a8c0
+// TView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
 // Real ctor. The TEventHandler base ctor (inlined) writes the base vptr (0x006497a0)
@@ -181,7 +188,7 @@ TView::~TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048aa60
-void TView::InitializeUiResourceEntryFrameAndParent(int ownerContext, TControl* panel,
+void TView::InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TControl* panel,
                                                     int* offsetLayout, int* sizeLayout,
                                                     int layoutParam6, int layoutParam7,
                                                     int attachFlag) {
@@ -201,7 +208,7 @@ void TView::InitializeUiResourceEntryFrameAndParent(int ownerContext, TControl* 
   if (panel != 0) {
     panel->AttachChildControl(this, attachFlag);
   }
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x40) = ownerContext;
+  uiResourceContext40 = ownerContext;
 }
 // Recursively dispatch a control event: walk the field44 child list, forward to each
 // child's slot-0x36, then invoke this view's own slot-0x37 handler.
@@ -394,14 +401,9 @@ void TView::SetEnabled(int enabledState, int refreshFlag) {
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b200
-int TView::IsActionable() {
-  if (g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0 &&
-      ownerContext != 0) {
-    if (ownerContext->IsActionable() != 0) {
-      return 1;
-    }
-  }
-  return 0;
+char TView::IsActionable() {
+  return g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0 &&
+         ownerContext != 0 && ownerContext->IsActionable() != 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b250
 void TView::CaptureLayoutF0(int* buffer, int modeFlag) {
@@ -554,13 +556,13 @@ char TView::Refresh() {
   return 1;
 }
 // FUNCTION: IMPERIALISM 0x0048b7b0
-int TView::BindMapQuickDrawDc(int arg) {
-  return BindScopedMapQuickDrawDcHandle(this, arg);
+int TView::BindMapQuickDrawDc(CDC* paintDc) {
+  return BindScopedMapQuickDrawDcHandle(this, paintDc);
 }
 
 // FUNCTION: IMPERIALISM 0x0048b7e0
-void TView::ReleaseMapQuickDrawDc(int arg) {
-  ReleaseScopedMapQuickDrawDcHandle(this, arg);
+void TView::ReleaseMapQuickDrawDc(CDC* paintDc) {
+  ReleaseScopedMapQuickDrawDcHandle(this, paintDc);
 }
 // Lazily allocate the 8-byte auxiliary buffer stored at field48 (freed in the dtor).
 // FUNCTION: IMPERIALISM 0x0048b810
@@ -576,18 +578,18 @@ void TView::EnsureField48Buffer() {
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b860
-void TView::PaintOrInvalidateControl(int arg) {
-  if (arg != 0) {
+void TView::PaintOrInvalidateControl(CDC* paintDc) {
+  if (paintDc != 0) {
     RECT rect;
     QueryContentBounds(&rect);
-    PaintVisibleChildrenIntersectingClipRect(&rect, arg);
+    PaintVisibleChildrenIntersectingClipRect(&rect, paintDc);
     return;
   }
   InvalidateCityDialogRectRegion(0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0048b8d0
-void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg) {
+void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
   if (g_McAppUiActiveFlag_006950AC == 0 || IsActionable() == 0 || Refresh() == 0) {
     return;
   }
@@ -598,12 +600,12 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg
     return;
   }
 
-  if (BindMapQuickDrawDc(bindArg) != 0) {
+  if (BindMapQuickDrawDc(paintDc) != 0) {
     ApplyRectSlot110(&clippedRect);
     if (linkedResourceOwner != 0) {
       linkedResourceOwner->DispatchQueuedUiCommandAndRelease(&clippedRect);
     }
-    ReleaseMapQuickDrawDc(bindArg);
+    ReleaseMapQuickDrawDc(paintDc);
   }
 
   CPtrList* list = childList44;
@@ -615,7 +617,7 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg
       OffsetRect(&childClip, -child->ownerOffsetX, -child->ownerOffsetY);
       RECT childPaintRect;
       CopyRect(&childPaintRect, &childClip);
-      child->PaintVisibleChildrenIntersectingClipRect(&childPaintRect, bindArg);
+      child->PaintVisibleChildrenIntersectingClipRect(&childPaintRect, paintDc);
     }
   }
 }
@@ -1031,3 +1033,9 @@ void TView::ReturnFromUiSlot63(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
+
+// MSVC500 emitted a fresh out-of-line copy of the (header-inline) `TView::~TView` in
+// every TU that needed it non-inline: 0x0048cb00, 0x0048ec30, 0x0048ee00 are
+// byte-identical twins of 0x0048a9d0 (verified instruction-for-instruction). reccmp
+// cannot bind two original addresses to one recomp symbol, so the twins stay
+// stub-owned; their symbols.csv rows carry the truthful `TView::~TView` label.

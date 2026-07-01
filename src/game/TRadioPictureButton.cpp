@@ -1,6 +1,12 @@
 #include "game/TRadioPictureButton.h"
 #include "game/TAmtBar.h"
 #include "game/TControl.h"
+// SYNTHETIC: IMPERIALISM 0x00571700
+// TRadioPictureButton::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005717a0
+// TRadioPictureButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TRadioPictureButton, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005717c0

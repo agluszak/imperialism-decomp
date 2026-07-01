@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x004ff280
 // TGWorldPeeker::`scalar deleting destructor'
 TGWorldPeeker::~TGWorldPeeker() {}
+// SYNTHETIC: IMPERIALISM 0x004ff1f0
+// TGWorldPeeker::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004ff2d0
+// TGWorldPeeker::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TGWorldPeeker, TView)
 
 TGWorldPeeker::TGWorldPeeker() {}

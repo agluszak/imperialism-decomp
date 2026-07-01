@@ -80,6 +80,12 @@ void TRemoteGreatPower::NoOpTailStateHookSlot2B8(int arg) {
 // SYNTHETIC: IMPERIALISM 0x00541a80
 // TRemoteGreatPower::`scalar deleting destructor'
 TRemoteGreatPower::~TRemoteGreatPower() {}
+// SYNTHETIC: IMPERIALISM 0x005417c0
+// TRemoteGreatPower::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00541b20
+// TRemoteGreatPower::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TRemoteGreatPower, TGreatPower)
 
 TRemoteGreatPower::TRemoteGreatPower() {}

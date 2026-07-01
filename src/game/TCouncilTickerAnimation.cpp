@@ -69,6 +69,12 @@ void RefreshCouncilCoatOfArmsPicture(TView* hostPanel, unsigned int controlTag,
 // SYNTHETIC: IMPERIALISM 0x0049ff20
 // TCouncilTickerAnimation::`scalar deleting destructor'
 TCouncilTickerAnimation::~TCouncilTickerAnimation() {}
+// SYNTHETIC: IMPERIALISM 0x0049fef0
+// TCouncilTickerAnimation::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0049ff70
+// TCouncilTickerAnimation::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TCouncilTickerAnimation, TAnimation)
 
 TCouncilTickerAnimation::TCouncilTickerAnimation() {}

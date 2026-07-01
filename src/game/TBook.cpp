@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x00430280
 // TBook::`scalar deleting destructor'
 TBook::~TBook() {}
+// SYNTHETIC: IMPERIALISM 0x0056f4a0
+// TBook::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0056f540
+// TBook::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TBook, TPicture)
 
 TBook::TBook() {}

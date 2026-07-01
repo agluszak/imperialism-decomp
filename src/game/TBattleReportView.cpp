@@ -9,6 +9,12 @@ TBattleReportView::TBattleReportView()
 // SYNTHETIC: IMPERIALISM 0x00430a30
 // TBattleReportView::`scalar deleting destructor'
 TBattleReportView::~TBattleReportView() {}
+// SYNTHETIC: IMPERIALISM 0x004acaa0
+// TBattleReportView::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004acb40
+// TBattleReportView::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TBattleReportView, TDiplomacyMapView)
 
 // FUNCTION: IMPERIALISM 0x004acb60

@@ -3,6 +3,12 @@
 // SYNTHETIC: IMPERIALISM 0x0059f070
 // TNavyAutoPlayer::`scalar deleting destructor'
 TNavyAutoPlayer::~TNavyAutoPlayer() {}
+// SYNTHETIC: IMPERIALISM 0x0059f040
+// TNavyAutoPlayer::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0059f0c0
+// TNavyAutoPlayer::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TNavyAutoPlayer, TNavyPlayer)
 
 TNavyAutoPlayer::TNavyAutoPlayer() {}

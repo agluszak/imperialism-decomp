@@ -1,6 +1,9 @@
 #include "game/TSortByPriceList.h"
 #include "game/mfc.h"
 
+// SYNTHETIC: IMPERIALISM 0x005346f0
+// TSortByPriceList::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TSortByPriceList, TSortedPtrList)
 
 // FUNCTION: IMPERIALISM 0x00534680

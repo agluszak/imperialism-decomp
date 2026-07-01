@@ -6,6 +6,9 @@
 T2PictureButton* __cdecl CreateT2PictureButtonInstance(void) {
   return new T2PictureButton();
 }
+// SYNTHETIC: IMPERIALISM 0x00570b90
+// T2PictureButton::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(T2PictureButton, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00570bb0

@@ -2,6 +2,12 @@
 
 #include "game/mfc.h"
 
+// SYNTHETIC: IMPERIALISM 0x005347e0
+// TIndexAndRankList::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00534850
+// TIndexAndRankList::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TIndexAndRankList, TSortedPtrList)
 
 TIndexAndRankList::TIndexAndRankList() {}
