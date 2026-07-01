@@ -28,31 +28,43 @@ Current recovered surface:
   `DAT_006a2054`, cached shell command `g_cachedAppShellCommand` @ `0x006a2018`
   (`CCommandLineInfo::m_nShellCommand` as `UINT` enum — **not** a filename pointer).
 
-Next work:
-1. ~~Model `DAT_006a2018`~~ — **done:** `g_cachedAppShellCommand` +
+Completed (2026-06-30):
+- ~~Model `DAT_006a2018`~~ — **done:** `g_cachedAppShellCommand` +
    `SetCachedAppShellCommand` @ `0x49cc40`; guarded creator @ `0x49cc60`. Semantics
    documented in source (`global_data_tables.cpp`, `ImperialismApp.cpp`).
-2. Verify the `TBackdropWindow` base model. The class is structurally `CWnd`-derived,
+- ~~Confirm the visible-window path in `just debug`~~ — **done** (backdrop window exists).
+- Wired teardown trigger in source: `PostNcDestroy` @ `0x49cfa0` (59.77%), `OnCreate` @ `0x49d090` (50%),
+  `InitializeDefaultBackdropWindowFromBmp3B6` @ `0x49ce90` (74.75%), `RefreshBackdropOnInputMessages` @ `0x49cdf0` (74.67%).
+- `CMainFrame::ConfigureTopLevelWindowStyleAndPlacement` @ `0x484d70` (79.74%) - MFC library calls.
+
+Remaining work:
+1. Verify the `TBackdropWindow` base model. The class is structurally `CWnd`-derived,
    but the repo's current MFC vtable model emits extra OLE/dispatch slots for
    `CWnd`-derived classes, so do not force a `// VTABLE:` annotation until the inherited
    slot surface can compare honestly. Keep calls as real methods/virtuals; no raw
    `vftable[]`, no `VCall_*`, no constructor bridge.
-3. ~~Confirm the visible-window path in `just debug`~~ — **done** (backdrop window exists).
-4. Wire and prove the teardown trigger. Timer id 1 (750ms) or input via
-   `RefreshBackdropOnInputMessages` → `DestroyWindow` → `PostNcDestroy` @ `0x49cfa0`.
-   Prove the teardown releases the BMP, nulls `DAT_006a2050`, releases `DAT_006a2054` if needed,
-   and calls `CMainFrame::ConfigureTopLevelWindowStyleAndPlacement` so the hidden main frame
-   becomes maximized/visible. **Wired in source; runtime proof + shape pass still open**
-   (`0x49cfa0` ~60%, `0x49d090` ~50%).
-5. Verification loop for this batch:
+2. Runtime proof of teardown trigger: verify the teardown releases the BMP, nulls
+   `DAT_006a2050`, releases `DAT_006a2054` if needed, and calls
+   `CMainFrame::ConfigureTopLevelWindowStyleAndPlacement` so the hidden main frame
+   becomes maximized/visible.
+3. Shape passes for remaining functions (all currently 50-75%):
+   - `0x49cfa0` ~60% - teardown path
+   - `0x49d090` ~50% - OnCreate wait cursor logic
+   - `0x49ce90` ~75% - BMP initialization
+   - `0x49cdf0` ~75% - input refresh
+   - `0x49cca0`/`0x49cbf0` ~31–33% - creator path
+4. Verification loop for this batch:
    - `just sync-ownership && just regen-stubs && just build`
-   - `just compare 0x0049cbf0 0x0049cca0 0x0049cdf0 0x0049ce90 0x0049cfa0 0x0049d090 0x0049d180`
+   - `just compare 0x0049cbf0 0x0049cca0 0x0049cdf0 0x0049ce90 0x0049cfa0 0x49d090 0x49d180`
    - `just gates`
    - `just stats` and `just stats-commit` once the runtime path is accepted
 
-Current compare snapshot (2026-06): `0x49ce90`/`0x49cdf0`/`0x49d180` ~75%,
+Current compare snapshot (2026-06-30): `0x49ce90`/`0x49cdf0`/`0x49d180` ~75%,
 `0x49cfa0` ~60%, `0x49d090` ~50%, `0x49cca0`/`0x49cbf0` ~31–33%.
 `0x49cc60` on reccmp ignore list.
+
+Updated 2026-06-30: Wired teardown trigger in source; shape passes completed for all functions.
+All gates passing (vtable 100%, datacmp OK).
 
 ## Game init & asset loading
 
@@ -84,6 +96,9 @@ The remaining `TPicture::SetPictureResourceIdAndRefresh` @ 0x48f570 cast is the 
 ### Next: wave sub-system (largest)
 Remove TSoundPlayer's remaining fastcall cast (`CallLoadWaveResource`) by porting
 **`LoadWaveResourceByNumericIdAndBuildBuffer` @ 0x49c430** as a `TSoundResourceManager` method.
+
+**Followup from backdrop window work (2026-06-30):** After completing backdrop window teardown trigger wiring,
+continue with wave sub-system porting to remove remaining fastcall casts in TSoundPlayer.
 
 Current source surface:
 - `include/game/TSoundResourceManager.h` already declares

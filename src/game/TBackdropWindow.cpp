@@ -141,10 +141,14 @@ void TBackdropWindow::PostNcDestroy() {
   DAT_006a2050 = NULL;
 
   CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
-  static_cast<CMainFrame*>(mainWnd)->ConfigureTopLevelWindowStyleAndPlacement(0x280, 0x1e0);
+  if (mainWnd != NULL) {
+    static_cast<CMainFrame*>(mainWnd)->ConfigureTopLevelWindowStyleAndPlacement(0x280, 0x1e0);
+  }
 
   mainWnd = GetMainWndViaDoubleAfxGetThread();
-  mainWnd->SetWindowPos(NULL, 0, 0, 0, 0, 5);
+  if (mainWnd != NULL) {
+    mainWnd->SetWindowPos(NULL, 0, 0, 0, 0, 5);
+  }
 
   ReleaseTempMapWaitCursorBufferIfNeeded();
 }
