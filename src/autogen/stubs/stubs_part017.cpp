@@ -1299,14 +1299,6 @@ undefined4 CreateTTwoPicSliderInstance(void)
   return 0;
 }
 
-// ghidra_name TTwoPicSlider::ConstructTTwoPicSliderBaseState
-// ghidra_proto undefined ConstructTTwoPicSliderBaseState()
-// FUNCTION: IMPERIALISM 0x0056e200
-undefined4 ConstructTTwoPicSliderBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TQueryFloater::CreateTQueryFloaterInstance
 // ghidra_proto undefined CreateTQueryFloaterInstance()
 // FUNCTION: IMPERIALISM 0x0056e840

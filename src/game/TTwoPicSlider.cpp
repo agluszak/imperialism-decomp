@@ -4,6 +4,8 @@
 #include "game/TTwoPicSlider.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
+#include "game/TDisplayMgr.h"
+#include "game/bitmap_descriptor_helpers.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -20,6 +22,42 @@ undefined4 SetQuickDrawColorAndSyncGlobals(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 undefined4 WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0(void);
+void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(int* field);
+
+IMPLEMENT_DYNCREATE(TTwoPicSlider, TControl)
+
+// Constructor body is inlined into the CreateObject factory in the original binary
+// (0x0056e120): allocate, run the base TControl ctor, patch the vtable, zero the
+// slider-specific fields.
+TTwoPicSlider::TTwoPicSlider()
+    : TControl(), lowerSurface(0), upperSurface(0), compositeSurface(0), splitPosition(0),
+      mode(0) {}
+
+// SYNTHETIC: IMPERIALISM 0x0043d650
+// TTwoPicSlider::`scalar deleting destructor'
+TTwoPicSlider::~TTwoPicSlider() {}
+
+// FUNCTION: IMPERIALISM 0x0056e200
+void TTwoPicSlider::InitializePictureSurfaces(int baseBitmapId) {
+  lowerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId + 1);
+  upperSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId);
+  RECT bounds = {0, 0, field34, field38};
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&compositeSurface, 8, &bounds);
+}
+
+// FUNCTION: IMPERIALISM 0x0056e2f0
+void TTwoPicSlider::Free() {
+  if (lowerSurface != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&lowerSurface);
+  }
+  if (upperSurface != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&upperSurface);
+  }
+  if (compositeSurface != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&compositeSurface);
+  }
+  TView::Free();
+}
 
 namespace {
 const unsigned int kAddrLocalizationTable = 0x006A20F8;
@@ -53,7 +91,8 @@ static __inline int SliderScaledValue(TTwoPicSlider* slider, int scale) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0056e370
-void TTwoPicSlider::DrawTwoPicSliderSplitOverlayAndCenteredStatusText() {
+void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
   TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::Draw.
   if ((slider->lowerSurface != 0) && (slider->upperSurface != 0) &&
@@ -124,13 +163,15 @@ void TTwoPicSlider::DrawTwoPicSliderSplitOverlayAndCenteredStatusText() {
 }
 
 // FUNCTION: IMPERIALISM 0x0056e640
-void TTwoPicSlider::TrackTwoPicSliderMouseAndRefresh(int inputPhase, void* param2,
-                                                     int pointRecord) {
+void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
+                                                   void* pEventDataA, void* pEventDataB) {
   TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::TrackMouse.
-  (void)param2;
-  if (0 < inputPhase) {
-    if (2 < inputPhase) {
+  (void)pEventSender;
+  (void)pEventDataA;
+  int pointRecord = reinterpret_cast<int>(pEventDataB);
+  if (0 < nEventType) {
+    if (2 < nEventType) {
       return;
     }
 
@@ -157,7 +198,7 @@ void TTwoPicSlider::TrackTwoPicSliderMouseAndRefresh(int inputPhase, void* param
     }
   }
 
-  if ((inputPhase == 2) && (slider->mode == 2)) {
+  if ((nEventType == 2) && (slider->mode == 2)) {
     int percent = SliderScaledValue(slider, 100);
     void** sfxPlaybackSystem = *reinterpret_cast<void***>(kAddrSfxPlaybackSystem);
     reinterpret_cast<void(__cdecl*)(int)>(sfxPlaybackSystem[0x2b])(percent);

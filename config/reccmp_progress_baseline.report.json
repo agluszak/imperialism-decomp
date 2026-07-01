@@ -1076,6 +1076,12 @@
       "type": 1
     },
     {
+      "address": "0x43d650",
+      "matching": 0.9090909090909091,
+      "name": "TTwoPicSlider::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x43d6a0",
       "matching": 0.9090909090909091,
       "name": "TQueryFloater::`scalar deleting destructor'",
@@ -23563,14 +23569,26 @@
       "type": 1
     },
     {
+      "address": "0x56e1e0",
+      "matching": 0.5,
+      "name": "TTwoPicSlider::GetRuntimeClass",
+      "type": 1
+    },
+    {
       "address": "0x56e200",
-      "matching": 0.0,
+      "matching": 0.6,
       "name": "TTwoPicSlider::ConstructTTwoPicSliderBaseState",
       "type": 1
     },
     {
+      "address": "0x56e2f0",
+      "matching": 0.7777777777777778,
+      "name": "TTwoPicSlider::Free",
+      "type": 1
+    },
+    {
       "address": "0x56e370",
-      "matching": 0.5508982035928144,
+      "matching": 0.5568862275449101,
       "name": "TTwoPicSlider::ApplyRectSlot110",
       "type": 1
     },
@@ -40578,6 +40596,12 @@
       "address": "0x6419d8",
       "matching": 1.0,
       "name": "TMapPreviewView::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x641bd0",
+      "matching": 1.0,
+      "name": "TTwoPicSlider::`vftable'",
       "type": 5
     },
     {
