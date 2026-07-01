@@ -3633,7 +3633,7 @@ address|name|symbol|size|type|prototype
 535500|ReturnFalseMissionCapabilityStub||3|function|undefined ReturnFalseMissionCapabilityStub()
 535520|ReturnZeroMissionSlot58NavyOverride||3|function|undefined ReturnZeroMissionSlot58NavyOverride()
 535540|ReturnArgMissionSlot5CNavyOverride||3|function|undefined ReturnArgMissionSlot5CNavyOverride()
-535560|TNavyMission::DestroyTNavyMission||30|function|undefined DestroyTNavyMission()
+535560|TNavyMission::`scalar deleting destructor'||30|function|undefined DestroyTNavyMission()
 535590|ResetTNavyMissionToSentinelVtable||7|function|undefined ResetTNavyMissionToSentinelVtable()
 5355b0|ReturnTrueForControlSeaZoneMissionCapabilityFlagA||3|function|undefined ReturnTrueForControlSeaZoneMissionCapabilityFlagA()
 5355d0|ReturnFalseForControlSeaZoneMissionCapabilityFlagB||3|function|undefined ReturnFalseForControlSeaZoneMissionCapabilityFlagB()
@@ -3651,7 +3651,7 @@ address|name|symbol|size|type|prototype
 535770|PropagateMissionTargetContextIdToLinkedUnits||11|function|undefined PropagateMissionTargetContextIdToLinkedUnits()
 535790|ReturnTrueForDefendProvinceMissionCapabilityFlagA||3|function|undefined ReturnTrueForDefendProvinceMissionCapabilityFlagA()
 5357b0|ReturnTrueForDefendProvinceMissionCapabilityFlagB||3|function|undefined ReturnTrueForDefendProvinceMissionCapabilityFlagB()
-5357d0|DestroyTDefendProvinceMission||30|function|undefined DestroyTDefendProvinceMission()
+5357d0|TDefendProvinceMission::`scalar deleting destructor'||30|function|undefined DestroyTDefendProvinceMission()
 535800|ResetTDefendProvinceMissionToSentinelVtable||7|function|undefined ResetTDefendProvinceMissionToSentinelVtable()
 535820|TMission::SerializeMissionState||86|function|void __thiscall SerializeMissionState(TStream* stream)
 5358a0|TMission::DeserializeMissionState||125|function|void __thiscall DeserializeMissionState(TStream* stream)
@@ -3663,7 +3663,7 @@ address|name|symbol|size|type|prototype
 536290|WrapperFor_ftol_At00536290||30|function|undefined WrapperFor_ftol_At00536290()
 5362c0|ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile||145|function|undefined ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile()
 536390|TNavyMission::CreateTNavyMission||133|function|undefined CreateTNavyMission()
-536450|TNavyMission::GetTNavyMissionClassNamePointer||6|function|undefined GetTNavyMissionClassNamePointer()
+536450|TNavyMission::GetRuntimeClass||6|function|undefined GetTNavyMissionClassNamePointer()
 536470|WrapperFor_AFX_CLASSINIT_At00536470||16|function|undefined WrapperFor_AFX_CLASSINIT_At00536470()
 5364c0|CleanupTMissionAndReleaseOwnedOrders||67|function|undefined CleanupTMissionAndReleaseOwnedOrders()
 536530|SerializeTNavyMissionCommon||211|function|undefined SerializeTNavyMissionCommon()
@@ -3767,11 +3767,11 @@ address|name|symbol|size|type|prototype
 53bdd0|TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain||339|function|undefined SelectMapActionContextAndPromoteMissionOrderChain()
 53bf90|ReturnFalseForScatteredShipsMissionCapabilityFlag||3|function|undefined ReturnFalseForScatteredShipsMissionCapabilityFlag()
 53bfb0|AllocateAndConstructTArmyMissionWithNodeKey||89|function|undefined AllocateAndConstructTArmyMissionWithNodeKey()
-53c030|TArmyMission::GetTArmyMissionClassNamePointer||6|function|undefined GetTArmyMissionClassNamePointer()
+53c030|TArmyMission::GetRuntimeClass||6|function|undefined GetTArmyMissionClassNamePointer()
 53c050|WrapperFor_AFX_CLASSINIT_At0053c050||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053c050()
 53c0a0|TMission::ConstructTArmyMissionWithNodeKey||196|function|undefined ConstructTArmyMissionWithNodeKey()
 53c1b0|ReturnFalseForArmyAttackInvadeCapabilityFlag||3|function|undefined ReturnFalseForArmyAttackInvadeCapabilityFlag()
-53c1d0|TArmyMission::DestroyTArmyMission||30|function|undefined DestroyTArmyMission()
+53c1d0|TArmyMission::`scalar deleting destructor'||30|function|undefined DestroyTArmyMission()
 53c200|ResetTArmyMissionToSentinelVtable||7|function|undefined ResetTArmyMissionToSentinelVtable()
 53c220|TArmyMission::CleanupTArmyMissionAndReleaseChildContext||111|function|undefined CleanupTArmyMissionAndReleaseChildContext()
 53c2b0|SerializeTArmyMission||219|function|undefined SerializeTArmyMission()
@@ -3814,7 +3814,7 @@ address|name|symbol|size|type|prototype
 53e570|TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetProvince||46|function|undefined InitializeDefendProvinceMissionMovementClassFromTargetProvince()
 53e5b0|TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile||36|function|undefined HandleDefendProvinceMissionActionType01ForTargetTile()
 53e5f0|TDefendProvinceMission::CreateTDefendProvinceMission||82|function|undefined CreateTDefendProvinceMission()
-53e670|TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer||6|function|undefined GetTDefendProvinceMissionClassNamePointer()
+53e670|TDefendProvinceMission::GetRuntimeClass||6|function|undefined GetTDefendProvinceMissionClassNamePointer()
 53e690|WrapperFor_AFX_CLASSINIT_At0053e690||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053e690()
 53e6e0|ComputeDefendProvinceMissionCrossNationSupportVectorScore||711|function|undefined ComputeDefendProvinceMissionCrossNationSupportVectorScore()
 53ea70|ComputeDefendProvinceMissionLocalSupportVectorScore||288|function|undefined ComputeDefendProvinceMissionLocalSupportVectorScore()
@@ -5148,7 +5148,7 @@ address|name|symbol|size|type|prototype
 58df60|Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60||466|function|undefined Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60()
 58e1c0|TArmyToolbar::HandleEvent||282|function|undefined HandleEvent()
 58e330|TStratReportView::?CreateTStratReportViewInstance@@YAPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@XZ||80|function|undefined ?CreateTStratReportViewInstance@@YAPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@XZ()
-58e3a0|TStratReportView::GetTStratReportViewClassNamePointer||6|function|undefined GetTStratReportViewClassNamePointer()
+58e3a0|TStratReportView::GetRuntimeClass||6|function|undefined GetTStratReportViewClassNamePointer()
 58e3c0|TStratReportView::?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@PAU12@@Z||18|function|undefined ?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@PAU12@@Z()
 58e3f0|TStratReportView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()
 58e440|TControl::SetHasCommandTagResource||10|function|void __thiscall SetHasCommandTagResource(int value)
@@ -9319,10 +9319,8 @@ address|name|symbol|size|type|prototype
 64c220|TCivAnimation2::classTCivAnimation2|||global|
 64c238|TOneTimeAnimation::classRuntimeClass|||global|
 64c250|TCouncilTickerAnimation::classTCouncilTickerAnimation|||global|
-64c268|TFocusAnimation::classRuntimeClass|||global|
 64c280|TTransFocusAnimation::classRuntimeClass|||global|
 64c298|TAnimator::classTAnimator|||global|
-64c450|TFocusAnimation::vftable|||global|
 64c828|TArmyMgr::classTArmyMgr|||global|
 64c840|TArmyStack::classTArmyStack|||global|
 64c858|TArmyStackList::classTArmyStackList|||global|

@@ -1,11 +1,15 @@
 // TNavyMission implementations.
 
+#include <math.h>
+
 #include "game/TNavyMission.h"
 #include "game/TStream.h"
 #include "game/TList.h"
 #include "game/TZone.h"
 #include "game/TShip.h"
 #include "game/TDiplomacyMgr.h"
+#include "game/TMapOrderEntry.h"
+#include "game/map_action_context_helpers.h"
 #include "game/global_data_tables.h"
 
 IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
@@ -17,14 +21,28 @@ extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
 extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
-
-short GetMissionTargetContextIdFromField14(int arg);
-void* FindFirstTrackedHandlerMatchingModeAndShortKey(void* list, int key);
-int CompareMissionOrderEntriesByPriorityScore(void* item, int profile);
-void __fastcall AttachMissionOrderAsQueuedChildAndNotify(void* order, void* notifyObj);
-void __fastcall PromoteMapOrderChainAndQueue(void* order, void* contextAnchor);
-int* __fastcall DeleteMapOrderChildLinkAndReturnNext(int* pChildLinkNode);
+extern const float g_ArmyMissionOrderWeightTable_006978c8[6];
+extern const float g_ArmyMissionCandidateScoreTable_006978f8[];
 }
+
+// Not-yet-recovered free functions this file calls into (generic stub
+// signature per the autogen stub definition; real signature applied via a
+// typed cast at each call site so the linker resolves the correct symbol).
+extern undefined4 GetNavyPrimaryOrderListIndexOfNode(void);
+extern undefined4 FindMapActionContextByNodeId(void);
+extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
+extern undefined4 GetNavyOrderNormalizationBaseByNationType(void);
+extern undefined4 ComputeNavyOrderPriorityContributionPercentByCategory(void);
+extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
+extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
+extern undefined4 ComputeOrderNodeDistanceQuotientByDescriptorWord24(void);
+extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
+extern undefined4 SetMapOrderType9AndQueue(void);
+extern undefined4 PromoteMapOrderChainAndQueue(void);
+extern undefined4 SelectBestMapActionContextForNationDiplomacyMask(void);
+extern undefined4 AccumulateNavyOrderCategoryVectorWithScale(void);
+extern undefined4 BuildNavyOrderCategoryVectorForNationWithExclusion(void);
+extern undefined4 IsZoneMaskOrArrayEntryPresentForKey(void);
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
@@ -37,114 +55,47 @@ static inline float SwapFloat(float val) {
   return dst.f;
 }
 
-// Helper functions for static factory and metadata
+// FUNCTION: IMPERIALISM 0x00535470
+TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
+  nationId04 = 0xffff;
+  pathMarker06 = 0xffff;
+  targetZone14 = targetZone;
+  targetZone18 = nullptr;
+  navyField1c = 0;
+  navyField20 = nullptr;
+  orderList24 = nullptr;
+  navyField28 = 0.0f;
+  for (int i = 0; i < 4; ++i) {
+    resourceWeights2c[i] = 0.0f;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005354c0
+void TNavyMission::NoOpSlot9C() {}
+
+// FUNCTION: IMPERIALISM 0x005354e0
+char TNavyMission::ReturnFalseSlot54() {
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00535500
+char TNavyMission::ReturnFalseSlot28() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00535520
+int TNavyMission::ReturnZeroSlot58() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00535540
+int TNavyMission::ReturnZeroSlot5C() {
+  return reinterpret_cast<int>(this);
+}
+
 // FUNCTION: IMPERIALISM 0x00536390
 TMission* CreateTNavyMission() {
   return new TNavyMission();
-}
-
-// FUNCTION: IMPERIALISM 0x00536450
-void* GetTNavyMissionClassNamePointer() {
-  return &TNavyMission::classTNavyMission;
-}
-
-// Helper to serialize TNavyMission onto TStream
-// FUNCTION: IMPERIALISM 0x00536530
-void SerializeTNavyMissionCommon(TNavyMission* self, TStream* stream) {
-  self->TMission::WriteTo(stream);
-  
-  typedef short (__fastcall *GetShortAtOffset14OrInvalid_t)(TZone* self, int dummyEdx);
-  GetShortAtOffset14OrInvalid_t GetShortAtOffset14OrInvalid_fn =
-      reinterpret_cast<GetShortAtOffset14OrInvalid_t>(0x55f0b0);
-
-  int nodeIdx1 = -1;
-  if (self->targetZone14 != nullptr) {
-    nodeIdx1 = GetShortAtOffset14OrInvalid_fn(self->targetZone14, 0);
-  }
-  stream->WriteCountSlot88(nodeIdx1);
-
-  int nodeIdx2 = -1;
-  if (self->targetZone18 != nullptr) {
-    nodeIdx2 = GetShortAtOffset14OrInvalid_fn(self->targetZone18, 0);
-  }
-  stream->WriteCountSlot88(nodeIdx2);
-
-  for (int i = 0; i < 4; ++i) {
-    float swapped = SwapFloat(self->resourceWeights2c[i]);
-    stream->WriteBytesSlot78(&swapped, 4);
-  }
-
-  // Walk orderList24 and write indices
-  // In Ghidra, the loop is:
-  // for (iVar5 = *(int *)(unaff_EBX + 0x24); iVar5 != 0; iVar5 = *(int *)(iVar5 + 4)) {
-  //   uVar6 = GetNavyPrimaryOrderListIndexOfNode();
-  //   (*unaff_EBP)(uVar6);
-  // }
-  // (*unaff_EBP)(0xffffffff);
-  // And (*unaff_EBP) is WriteCountSlot88!
-  
-  typedef int (__cdecl *GetNavyPrimaryOrderListIndexOfNode_t)(void* node);
-  GetNavyPrimaryOrderListIndexOfNode_t GetNavyPrimaryOrderListIndexOfNode_fn =
-      reinterpret_cast<GetNavyPrimaryOrderListIndexOfNode_t>(0x5503d0); // GetNavyPrimaryOrderListIndexOfNode is at 0x5503d0
-
-  struct ListNode {
-    void* item;
-    ListNode* next;
-  };
-
-  ListNode* node = reinterpret_cast<ListNode*>(self->orderList24);
-  while (node != nullptr) {
-    int idx = GetNavyPrimaryOrderListIndexOfNode_fn(node->item);
-    stream->WriteCountSlot88(idx);
-    node = node->next;
-  }
-  stream->WriteCountSlot88(-1);
-
-  stream->WriteBytesSlot78(&self->navyField28, 4);
-}
-
-// Helper to deserialize TNavyMission from TStream
-// FUNCTION: IMPERIALISM 0x00536650
-void DeserializeTNavyMissionCommon(TNavyMission* self, TStream* stream) {
-  self->TMission::ReadFrom(stream);
-
-  typedef int (__cdecl *FindMapActionContextByNodeId_t)(int id);
-  FindMapActionContextByNodeId_t FindMapActionContextByNodeId_fn =
-      reinterpret_cast<FindMapActionContextByNodeId_t>(0x55f1a0); // FindMapActionContextByNodeId is at 0x55f1a0
-
-  int id1 = stream->ReadInteger();
-  self->targetZone14 = reinterpret_cast<TZone*>(FindMapActionContextByNodeId_fn(id1));
-
-  int id2 = stream->ReadInteger();
-  self->targetZone18 = reinterpret_cast<TZone*>(FindMapActionContextByNodeId_fn(id2));
-
-  stream->ReadBytes(&self->resourceWeights2c[0], 0x10);
-  for (int i = 0; i < 4; ++i) {
-    self->resourceWeights2c[i] = SwapFloat(self->resourceWeights2c[i]);
-  }
-
-  // Read order nodes
-  typedef void* (__cdecl *GetNavyPrimaryOrderNodeByIndex_t)(int index, int unused);
-  GetNavyPrimaryOrderNodeByIndex_t GetNavyPrimaryOrderNodeByIndex_fn =
-      reinterpret_cast<GetNavyPrimaryOrderNodeByIndex_t>(0x550410); // GetNavyPrimaryOrderNodeByIndex is at 0x550410
-
-  short nodeIdx = stream->ReadShort();
-  if (nodeIdx > -1) {
-    // (*pcVar3)(uVar4); where pcVar3 is slot 0x84 / 33 (byte 0x84 of TNavyMission)
-    // Slot 33 (byte 0x84) is NoOpSlot84!
-    do {
-      void* orderNode = GetNavyPrimaryOrderNodeByIndex_fn(nodeIdx, 0);
-      self->NoOpSlot84(reinterpret_cast<int>(orderNode), 0);
-      nodeIdx = stream->ReadShort();
-    } while (nodeIdx >= 0);
-  }
-
-  stream->ReadBytes(&self->navyField28, 4);
-  self->navyField1c = 0;
-  if (self->navyField20 != nullptr) {
-    static_cast<TObject*>(self->navyField20)->Free();
-  }
-  self->navyField20 = nullptr;
 }
 
 namespace {
@@ -182,7 +133,8 @@ float NormalizeFourComponentNavyVector(const float* vector, float sum) {
 void AccumulateNavyOrderVectorFromNode(NavyPrimaryOrderNode* orderNode, float* vector) {
   typedef short (__cdecl *GetNavyOrderNormalizationBaseByNationType_t)(void);
   GetNavyOrderNormalizationBaseByNationType_t GetNavyOrderNormalizationBaseByNationType_fn =
-      reinterpret_cast<GetNavyOrderNormalizationBaseByNationType_t>(0x550d50); // at 0x550d50
+      reinterpret_cast<GetNavyOrderNormalizationBaseByNationType_t>(
+          (void*)&GetNavyOrderNormalizationBaseByNationType); // at 0x5505a0
 
   short normalizationBase = GetNavyOrderNormalizationBaseByNationType_fn();
   if (normalizationBase == 0) {
@@ -193,7 +145,8 @@ void AccumulateNavyOrderVectorFromNode(NavyPrimaryOrderNode* orderNode, float* v
 
   typedef short (__fastcall *ComputeNavyOrderPriorityContributionPercentByCategory_t)(void*, int);
   ComputeNavyOrderPriorityContributionPercentByCategory_t ComputeNavyOrderPriorityContributionPercentByCategory_fn =
-      reinterpret_cast<ComputeNavyOrderPriorityContributionPercentByCategory_t>(0x550b60); // at 0x550b60
+      reinterpret_cast<ComputeNavyOrderPriorityContributionPercentByCategory_t>(
+          (void*)&ComputeNavyOrderPriorityContributionPercentByCategory); // at 0x54ff00
 
   for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
     short contribution = ComputeNavyOrderPriorityContributionPercentByCategory_fn(orderNode, category);
@@ -207,6 +160,408 @@ void AccumulateNavyOrderVectorFromNode(NavyPrimaryOrderNode* orderNode, float* v
 }
 
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x005364c0
+void TNavyMission::Free() {
+  if (navyField20 != nullptr) {
+    navyField20->Free();
+  }
+  navyField20 = nullptr;
+
+  while (orderList24 != nullptr) {
+    orderList24->object_ptr = nullptr;
+    orderList24 = TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(orderList24);
+  }
+
+  if (this != nullptr) {
+    delete this;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00536530
+void TNavyMission::WriteTo(TStream* stream) {
+  TMission::WriteTo(stream);
+
+  int nodeIdx1 = -1;
+  if (targetZone14 != nullptr) {
+    nodeIdx1 = GetShortAtOffset14OrInvalid(targetZone14);
+  }
+  stream->WriteCountSlot88(nodeIdx1);
+
+  int nodeIdx2 = -1;
+  if (targetZone18 != nullptr) {
+    nodeIdx2 = GetShortAtOffset14OrInvalid(targetZone18);
+  }
+  stream->WriteCountSlot88(nodeIdx2);
+
+  for (int i = 0; i < 4; ++i) {
+    float swapped = SwapFloat(resourceWeights2c[i]);
+    stream->WriteBytesSlot78(&swapped, 4);
+  }
+
+  typedef int (__cdecl *GetNavyPrimaryOrderListIndexOfNode_t)(void* node);
+  GetNavyPrimaryOrderListIndexOfNode_t GetNavyPrimaryOrderListIndexOfNode_fn =
+      reinterpret_cast<GetNavyPrimaryOrderListIndexOfNode_t>(
+          (void*)&GetNavyPrimaryOrderListIndexOfNode); // at 0x550610
+
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    int idx = GetNavyPrimaryOrderListIndexOfNode_fn(node->object_ptr);
+    stream->WriteCountSlot88(idx);
+  }
+  stream->WriteCountSlot88(-1);
+
+  stream->WriteBytesSlot78(&navyField28, 4);
+}
+
+// FUNCTION: IMPERIALISM 0x00536650
+void TNavyMission::ReadFrom(TStream* stream) {
+  TMission::ReadFrom(stream);
+
+  typedef int (__cdecl *FindMapActionContextByNodeId_t)(int id);
+  FindMapActionContextByNodeId_t FindMapActionContextByNodeId_fn =
+      reinterpret_cast<FindMapActionContextByNodeId_t>(
+          (void*)&FindMapActionContextByNodeId); // at 0x55f100
+
+  int id1 = stream->ReadInteger();
+  targetZone14 = reinterpret_cast<TZone*>(FindMapActionContextByNodeId_fn(id1));
+
+  int id2 = stream->ReadInteger();
+  targetZone18 = reinterpret_cast<TZone*>(FindMapActionContextByNodeId_fn(id2));
+
+  stream->ReadBytes(&resourceWeights2c[0], 0x10);
+  for (int i = 0; i < 4; ++i) {
+    resourceWeights2c[i] = SwapFloat(resourceWeights2c[i]);
+  }
+
+  typedef void* (__cdecl *GetNavyPrimaryOrderNodeByIndex_t)(int index, int unused);
+  GetNavyPrimaryOrderNodeByIndex_t GetNavyPrimaryOrderNodeByIndex_fn =
+      reinterpret_cast<GetNavyPrimaryOrderNodeByIndex_t>(
+          (void*)&GetNavyPrimaryOrderNodeByIndex); // at 0x550640
+
+  short nodeIdx = stream->ReadShort();
+  if (nodeIdx > -1) {
+    do {
+      void* orderNode = GetNavyPrimaryOrderNodeByIndex_fn(nodeIdx, 0);
+      NoOpSlot84(reinterpret_cast<int>(orderNode), 0);
+      nodeIdx = stream->ReadShort();
+    } while (nodeIdx >= 0);
+  }
+
+  stream->ReadBytes(&navyField28, 4);
+  navyField1c = 0;
+  if (navyField20 != nullptr) {
+    navyField20->Free();
+  }
+  navyField20 = nullptr;
+}
+
+// FUNCTION: IMPERIALISM 0x00536740
+char TNavyMission::ReturnFalseSlot98() {
+  while (orderList24 != nullptr) {
+    orderList24->object_ptr = nullptr;
+    orderList24 = TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(orderList24);
+  }
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00536780
+void TNavyMission::NoOpSlot84(int a, int b) {
+  TMapOrderEntry* item = reinterpret_cast<TMapOrderEntry*>(a);
+  TMission*& owner = *reinterpret_cast<TMission**>(reinterpret_cast<char*>(item) + 0x2c);
+  if (owner != nullptr) {
+    owner->NoOpSlot8C(a, b);
+  }
+  owner = this;
+  TMapOrderChildLinkNode* node = TMapOrderEntry::CreateLinkedOrderNode(orderList24, item);
+  orderList24 = node;
+  if (static_cast<char>(b) != 0) {
+    RefreshSlot40();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005367d0
+void TNavyMission::NoOpSlot8C(int a, int b) {
+  (void)b;
+  TMapOrderEntry* item = reinterpret_cast<TMapOrderEntry*>(a);
+  if (orderList24 != nullptr) {
+    if (orderList24->object_ptr == item) {
+      orderList24 = TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(orderList24);
+    } else {
+      TMapOrderEntry::RemoveLinkedOrderNodeByValueRecursive(orderList24->next, item);
+    }
+  }
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(item) + 0x2c) = 0;
+  if (navyField1c == a) {
+    navyField1c = 0;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00536810
+void TNavyMission::NoOpSlot90(int a) {
+  if (reinterpret_cast<int>(navyField20) == a) {
+    navyField20 = nullptr;
+  }
+}
+// FUNCTION: IMPERIALISM 0x00536840
+int TNavyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
+  (void)unused;
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    typedef short (__fastcall *ComputeNavyOrderPriorityContributionPercentByCategory_t)(void*, int);
+    ComputeNavyOrderPriorityContributionPercentByCategory_t
+        ComputeNavyOrderPriorityContributionPercentByCategory_fn =
+            reinterpret_cast<ComputeNavyOrderPriorityContributionPercentByCategory_t>(
+                (void*)&ComputeNavyOrderPriorityContributionPercentByCategory);
+    for (int category = 0; category < 4; ++category) {
+      ComputeNavyOrderPriorityContributionPercentByCategory_fn(node->object_ptr, category);
+    }
+
+    typedef short (__cdecl *GetNavyOrderNormalizationBaseByNationType_t)(void);
+    GetNavyOrderNormalizationBaseByNationType_t GetNavyOrderNormalizationBaseByNationType_fn =
+        reinterpret_cast<GetNavyOrderNormalizationBaseByNationType_t>(
+            (void*)&GetNavyOrderNormalizationBaseByNationType);
+    GetNavyOrderNormalizationBaseByNationType_fn();
+  }
+
+  int total = 0;
+  for (int i = 0; i < 4; ++i) {
+    int rounded = static_cast<int>(resourceWeights2c[i]);
+    outBuffer[i] = rounded;
+    total += rounded;
+  }
+  return total;
+}
+
+// FUNCTION: IMPERIALISM 0x00536b30
+void TNavyMission::RefreshSlot40() {
+  // navyField28 is dual-purposed here as a raw selection-mode int (0/1/2);
+  // GetMissionOrderBudgetByMode reads the same field as a float. Access via
+  // a bit-reinterpreting pointer to avoid a numeric float<->int conversion.
+  int* modeSlot = reinterpret_cast<int*>(&navyField28);
+
+  SetStateByte8To2();
+  ResetValue0CToZero();
+  NoOpSlot3C();
+
+  typedef void (__fastcall *IsZoneMaskOrArrayEntryPresentForKey_t)(short);
+  IsZoneMaskOrArrayEntryPresentForKey_t IsZoneMaskOrArrayEntryPresentForKey_fn =
+      reinterpret_cast<IsZoneMaskOrArrayEntryPresentForKey_t>(
+          (void*)&IsZoneMaskOrArrayEntryPresentForKey);
+  IsZoneMaskOrArrayEntryPresentForKey_fn(pathMarker06);
+
+  if (orderList24 == nullptr) {
+    *modeSlot = 0;
+    return;
+  }
+
+  int mode = *modeSlot;
+  if (mode == 0) {
+    if (1.0f <= ComputeNavyOrderCategorySimilarityRatio(1)) {
+      if (1.0f <= ComputeNavyOrderCategorySimilarityRatio(0)) {
+        *modeSlot = 2;
+        return;
+      }
+      *modeSlot = 1;
+    }
+  } else if (mode == 1) {
+    *modeSlot = 2;
+  } else if (mode == 2) {
+    if (ComputeNavyOrderCategorySimilarityRatio(1) < 0.8f) {
+      *modeSlot = 0;
+      navyField20 = static_cast<TObject*>(GetReplacementSlot48());
+    }
+  }
+}
+
+// Shared helper for RefreshSlot40 (0x536b30's inlined similarity-ratio computation).
+float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) {
+  typedef void (__fastcall *BuildNavyOrderCategoryVectorForNationWithExclusion_t)(float*, TZone*, int, TObject*);
+  BuildNavyOrderCategoryVectorForNationWithExclusion_t
+      BuildNavyOrderCategoryVectorForNationWithExclusion_fn =
+          reinterpret_cast<BuildNavyOrderCategoryVectorForNationWithExclusion_t>(
+              (void*)&BuildNavyOrderCategoryVectorForNationWithExclusion);
+
+  float vector[4];
+  BuildNavyOrderCategoryVectorForNationWithExclusion_fn(vector, targetZone14, excludeCurrent,
+                                                        navyField20);
+  float numerator = 0.0f;
+  float denominator = 0.0f;
+  for (int i = 0; i < 4; ++i) {
+    numerator += sqrtf(resourceWeights2c[i] * vector[i]);
+    denominator += resourceWeights2c[i];
+  }
+  return numerator / denominator;
+}
+
+// FUNCTION: IMPERIALISM 0x00536e40
+void TNavyMission::MissionSlot44() {}
+
+// FUNCTION: IMPERIALISM 0x00536fa0
+void TNavyMission::RefreshMissionPortZoneContextForNation() {
+  typedef void (__fastcall *SelectBestMapActionContextForNationDiplomacyMask_t)(int);
+  SelectBestMapActionContextForNationDiplomacyMask_t
+      SelectBestMapActionContextForNationDiplomacyMask_fn =
+          reinterpret_cast<SelectBestMapActionContextForNationDiplomacyMask_t>(
+              (void*)&SelectBestMapActionContextForNationDiplomacyMask);
+  SelectBestMapActionContextForNationDiplomacyMask_fn(nationId04);
+}
+
+// FUNCTION: IMPERIALISM 0x00536fc0
+TMission* TNavyMission::GetReplacementSlot48() {
+  if (targetZone18 != nullptr) {
+    if (targetZone18->QueryPortZoneCapability() != 0) {
+      if (targetZone18->QueryZoneCapabilityFlagD(nationId04) == 0) {
+        targetZone18 = reinterpret_cast<TZone*>(GetReplacementSlot48());
+      }
+    }
+  }
+  return (targetZone18 != nullptr) ? this : nullptr;
+}
+
+// FUNCTION: IMPERIALISM 0x00537060
+int TNavyMission::GetMissionOrderBudgetByMode(int mode) {
+  int modeVal = static_cast<int>(navyField28);
+  if (modeVal == 0) {
+    return reinterpret_cast<int>(targetZone18);
+  }
+  if (modeVal > 0 && modeVal < 3) {
+    return reinterpret_cast<int>(targetZone14);
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00537090
+void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor, int* ppSelectedChildNode) {
+  typedef void* (__cdecl *FindFirstTrackedHandlerMatchingModeAndShortKey_t)(void*, int);
+  FindFirstTrackedHandlerMatchingModeAndShortKey_t FindFirstTrackedHandlerMatchingModeAndShortKey_fn =
+      reinterpret_cast<FindFirstTrackedHandlerMatchingModeAndShortKey_t>(
+          (void*)&FindFirstTrackedHandlerMatchingModeAndShortKey);
+
+  if ((*ppSelectedChildNode != 0) &&
+      (FindFirstTrackedHandlerMatchingModeAndShortKey_fn(orderList24, *ppSelectedChildNode) == nullptr)) {
+    *ppSelectedChildNode = 0;
+  }
+
+  void* topOrder = nullptr;
+  int maxScore = -1;
+
+  typedef int (__cdecl *CompareMissionOrderEntriesByPriorityScore_t)(void*, int);
+  CompareMissionOrderEntriesByPriorityScore_t CompareMissionOrderEntriesByPriorityScore_fn =
+      reinterpret_cast<CompareMissionOrderEntriesByPriorityScore_t>(
+          (void*)&CompareMissionOrderEntriesByPriorityScore);
+
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    int score = CompareMissionOrderEntriesByPriorityScore_fn(node->object_ptr, 3);
+    if (maxScore < score) {
+      topOrder = node->object_ptr;
+      maxScore = score;
+    }
+  }
+
+  void* selectedOrder = reinterpret_cast<void*>(*ppSelectedChildNode);
+
+  if (topOrder != nullptr) {
+    if (topOrder == selectedOrder) {
+      topOrder = nullptr;
+    } else {
+      if (selectedOrder != nullptr) {
+        typedef short (__fastcall *ComputeOrderNodeDistanceQuotientByDescriptorWord24_t)(void*);
+        ComputeOrderNodeDistanceQuotientByDescriptorWord24_t
+            ComputeOrderNodeDistanceQuotientByDescriptorWord24_fn =
+                reinterpret_cast<ComputeOrderNodeDistanceQuotientByDescriptorWord24_t>(
+                    (void*)&ComputeOrderNodeDistanceQuotientByDescriptorWord24);
+        short target1 = ComputeOrderNodeDistanceQuotientByDescriptorWord24_fn(targetZone14);
+        short target2 = ComputeOrderNodeDistanceQuotientByDescriptorWord24_fn(topOrder);
+        if (target1 < target2) {
+          goto LAB_0053711a;
+        }
+      }
+      *ppSelectedChildNode = reinterpret_cast<int>(topOrder);
+      topOrder = nullptr;
+    }
+  }
+
+LAB_0053711a:
+  void* startOrder = reinterpret_cast<void*>(*ppSelectedChildNode);
+  void* orders[2] = { startOrder, topOrder };
+
+  typedef void* (__fastcall *GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
+  GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
+      reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(
+          (void*)&GetOrCreateMissionOrderEntryForNode);
+  typedef void (__fastcall *SetMapOrderType9AndQueue_t)(void*);
+  SetMapOrderType9AndQueue_t SetMapOrderType9AndQueue_fn =
+      reinterpret_cast<SetMapOrderType9AndQueue_t>((void*)&SetMapOrderType9AndQueue);
+  typedef void (__fastcall *PromoteMapOrderChainAndQueue_t)(void*, void*);
+  PromoteMapOrderChainAndQueue_t PromoteMapOrderChainAndQueue_fn =
+      reinterpret_cast<PromoteMapOrderChainAndQueue_t>((void*)&PromoteMapOrderChainAndQueue);
+
+  for (int i = 0; i < 2; ++i) {
+    void* orderObj = orders[i];
+    if (orderObj == nullptr) continue;
+    if (i == 1 && orderObj == startOrder) continue;
+
+    void* nodePtr = FindFirstTrackedHandlerMatchingModeAndShortKey_fn(orderList24, reinterpret_cast<int>(orderObj));
+    *reinterpret_cast<char*>(reinterpret_cast<char*>(nodePtr) + 0xc) = 1;
+    void* entry = GetOrCreateMissionOrderEntryForNode_fn(orderObj, 0);
+
+    if (*reinterpret_cast<int*>(reinterpret_cast<char*>(orderObj) + 8) == pContextAnchor) {
+      SetMapOrderType9AndQueue_fn(entry);
+    } else {
+      PromoteMapOrderChainAndQueue_fn(entry, reinterpret_cast<void*>(pContextAnchor));
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005371d0
+void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextAnchor) {
+  typedef void* (__fastcall *GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
+  GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
+      reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(
+          (void*)&GetOrCreateMissionOrderEntryForNode);
+  typedef void (__fastcall *PromoteMapOrderChainAndQueue_t)(void*, void*);
+  PromoteMapOrderChainAndQueue_t PromoteMapOrderChainAndQueue_fn =
+      reinterpret_cast<PromoteMapOrderChainAndQueue_t>((void*)&PromoteMapOrderChainAndQueue);
+
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    if (node->active_flag == 0) {
+      node->active_flag = 1;
+      void* entry = GetOrCreateMissionOrderEntryForNode_fn(node->object_ptr, 0);
+      for (TMapOrderChildLinkNode* other = orderList24; other != nullptr; other = other->next) {
+        if (other->active_flag == 0 &&
+            *reinterpret_cast<int*>(reinterpret_cast<char*>(other->object_ptr) + 8) ==
+                *reinterpret_cast<int*>(reinterpret_cast<char*>(entry) + 0x18)) {
+          static_cast<TMapOrderEntry*>(other->object_ptr)->RemoveNode(reinterpret_cast<int>(entry));
+          other->active_flag = 1;
+        }
+      }
+      PromoteMapOrderChainAndQueue_fn(entry, pContextAnchor);
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00537270
+float TNavyMission::ReturnZeroFloatSlot74() {
+  return 0.0f;
+}
+
+// FUNCTION: IMPERIALISM 0x00537610
+float TNavyMission::ReturnZeroFloatSlot7C() {
+  return 0.0f;
+}
+
+// FUNCTION: IMPERIALISM 0x005378c0
+float TNavyMission::ReturnZeroFloatSlot6C() {
+  double total = 0.0;
+  for (int i = 0; i < 4; ++i) {
+    total += static_cast<double>(resourceWeights2c[i]);
+  }
+  return static_cast<float>(total);
+}
+
+// FUNCTION: IMPERIALISM 0x00537f40
+float TNavyMission::ReturnZeroFloatSlot68() {
+  return 0.0f;
+}
 
 // FUNCTION: IMPERIALISM 0x005389f0
 float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(
@@ -260,149 +615,3 @@ TNavyMission::TNavyMission() : TMission() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00535470
-TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
-  nationId04 = 0xffff;
-  pathMarker06 = 0xffff;
-  targetZone14 = targetZone;
-  targetZone18 = nullptr;
-  navyField1c = 0;
-  navyField20 = nullptr;
-  orderList24 = nullptr;
-  navyField28 = 0.0f;
-  for (int i = 0; i < 4; ++i) {
-    resourceWeights2c[i] = 0.0f;
-  }
-}
-
-// Destructor
-// FUNCTION: IMPERIALISM 0x00535560
-TNavyMission::~TNavyMission() {
-  // ResetTNavyMissionToSentinelVtable is inline/automatic in MSVC
-}
-
-void TNavyMission::WriteTo(TStream* stream) {
-  SerializeTNavyMissionCommon(this, stream);
-}
-
-void TNavyMission::ReadFrom(TStream* stream) {
-  DeserializeTNavyMissionCommon(this, stream);
-}
-
-// FUNCTION: IMPERIALISM 0x005364c0
-void TNavyMission::CleanupTMissionAndReleaseOwnedOrders() {
-  if (navyField20 != nullptr) {
-    static_cast<TObject*>(navyField20)->Free();
-  }
-  navyField20 = nullptr;
-
-  while (orderList24 != nullptr) {
-    *reinterpret_cast<int*>(reinterpret_cast<char*>(orderList24) + 0x2c) = 0;
-    orderList24 = reinterpret_cast<TList*>(DeleteMapOrderChildLinkAndReturnNext(reinterpret_cast<int*>(orderList24)));
-  }
-
-  if (this != nullptr) {
-    delete this;
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x00536fc0
-uint TNavyMission::EnsureMissionCurrentTargetContextIsValid() {
-  TZone* zone = reinterpret_cast<TZone*>(targetZone18);
-  if (zone != nullptr) {
-    if (zone->QueryPortZoneCapability() != 0) {
-      if (zone->QueryZoneCapabilityFlagD(nationId04) == 0) {
-        targetZone18 = reinterpret_cast<TZone*>(this->EnsureMissionCurrentTargetContextIsValid());
-      }
-    }
-  }
-  return (targetZone18 != nullptr) ? reinterpret_cast<uint>(this) : 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00536740
-void TNavyMission::ClearMissionQueuedOrderLinksAndOwnerPointers() {
-  while (orderList24 != nullptr) {
-    *reinterpret_cast<int*>(reinterpret_cast<char*>(orderList24) + 0x2c) = 0;
-    orderList24 = reinterpret_cast<TList*>(DeleteMapOrderChildLinkAndReturnNext(reinterpret_cast<int*>(orderList24)));
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x00537090
-void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor, int* ppSelectedChildNode) {
-  struct ListNode {
-    void* item;
-    ListNode* next;
-  };
-
-  if ((*ppSelectedChildNode != 0) &&
-      (FindFirstTrackedHandlerMatchingModeAndShortKey(orderList24, *ppSelectedChildNode) == nullptr)) {
-    *ppSelectedChildNode = 0;
-  }
-
-  void* topOrder = nullptr;
-  int maxScore = -1;
-
-  ListNode* node = reinterpret_cast<ListNode*>(orderList24);
-  while (node != nullptr) {
-    int score = CompareMissionOrderEntriesByPriorityScore(node->item, 3);
-    if (maxScore < score) {
-      topOrder = node->item;
-      maxScore = score;
-    }
-    node = node->next;
-  }
-
-  void* selectedOrder = reinterpret_cast<void*>(*ppSelectedChildNode);
-
-  if (topOrder != nullptr) {
-    if (topOrder == selectedOrder) {
-      topOrder = nullptr;
-    } else {
-      if (selectedOrder != nullptr) {
-        short target1 = GetMissionTargetContextIdFromField14(reinterpret_cast<int>(targetZone14));
-        short target2 = GetMissionTargetContextIdFromField14(reinterpret_cast<int>(targetZone14));
-        if (target1 < target2) {
-          goto LAB_0053711a;
-        }
-      }
-      *ppSelectedChildNode = reinterpret_cast<int>(topOrder);
-      topOrder = nullptr;
-    }
-  }
-
-LAB_0053711a:
-  void* startOrder = reinterpret_cast<void*>(*ppSelectedChildNode);
-  void* orders[2] = { startOrder, topOrder };
-
-  typedef void* (__fastcall *GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
-  GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
-      reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(0x5503a0);
-
-  for (int i = 0; i < 2; ++i) {
-    void* orderObj = orders[i];
-    if (orderObj == nullptr) continue;
-    if (i == 1 && orderObj == startOrder) continue;
-
-    void* nodePtr = FindFirstTrackedHandlerMatchingModeAndShortKey(orderList24, reinterpret_cast<int>(orderObj));
-    *reinterpret_cast<char*>(reinterpret_cast<char*>(nodePtr) + 0xc) = 1;
-    void* entry = GetOrCreateMissionOrderEntryForNode_fn(orderObj, 0);
-
-    if (*reinterpret_cast<int*>(reinterpret_cast<char*>(orderObj) + 8) == pContextAnchor) {
-      AttachMissionOrderAsQueuedChildAndNotify(entry, this);
-    } else {
-      PromoteMapOrderChainAndQueue(entry, reinterpret_cast<void*>(pContextAnchor));
-    }
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x00537060
-int TNavyMission::GetMissionOrderBudgetByMode(int mode) {
-  int modeVal = static_cast<int>(navyField28);
-  if (modeVal == 0) {
-    return reinterpret_cast<int>(targetZone18);
-  }
-  if (modeVal > 0 && modeVal < 3) {
-    return reinterpret_cast<int>(targetZone14);
-  }
-  return 0;
-}

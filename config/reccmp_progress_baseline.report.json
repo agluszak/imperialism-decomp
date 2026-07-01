@@ -7098,15 +7098,51 @@
       "type": 1
     },
     {
+      "address": "0x4a0050",
+      "matching": 0.9090909090909091,
+      "name": "TFocusAnimation::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x4a0080",
       "matching": 0.5,
       "name": "TFocusAnimation::CreateTFocusAnimationInstance",
       "type": 1
     },
     {
+      "address": "0x4a00a0",
+      "matching": 0.5,
+      "name": "TFocusAnimation::GetRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x4a0140",
+      "matching": 0.5581395348837209,
+      "name": "TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140",
+      "type": 1
+    },
+    {
       "address": "0x4a0190",
-      "matching": 0.9459459459459459,
+      "matching": 0.6857142857142857,
       "name": "TFocusAnimation::VTableSlot0D",
+      "type": 1
+    },
+    {
+      "address": "0x4a0250",
+      "matching": 0.8571428571428571,
+      "name": "TFocusAnimation::RenderBattleReportInsetWithPaletteShift",
+      "type": 1
+    },
+    {
+      "address": "0x4a0280",
+      "matching": 0.25,
+      "name": "TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280",
+      "type": 1
+    },
+    {
+      "address": "0x4a0430",
+      "matching": 0.9090909090909091,
+      "name": "TTransFocusAnimation::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -7116,21 +7152,39 @@
       "type": 1
     },
     {
+      "address": "0x4a0480",
+      "matching": 0.5,
+      "name": "TTransFocusAnimation::GetRuntimeClass",
+      "type": 1
+    },
+    {
       "address": "0x4a04a0",
-      "matching": 0.0,
+      "matching": 0.3089430894308943,
       "name": "TTransFocusAnimation::ConstructTTransFocusAnimationBaseState",
       "type": 1
     },
     {
+      "address": "0x4a0570",
+      "matching": 0.8333333333333334,
+      "name": "TTransFocusAnimation::Free",
+      "type": 1
+    },
+    {
       "address": "0x4a05c0",
-      "matching": 0.44019138755980863,
+      "matching": 0.6039603960396039,
       "name": "TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip",
       "type": 1
     },
     {
       "address": "0x4a0770",
-      "matching": 0.9354838709677419,
+      "matching": 0.0625,
       "name": "TTransFocusAnimation::VTableSlot0D",
+      "type": 1
+    },
+    {
+      "address": "0x4a0810",
+      "matching": 0.48132780082987553,
+      "name": "TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift",
       "type": 1
     },
     {
@@ -11797,7 +11851,7 @@
     },
     {
       "address": "0x4dbac0",
-      "matching": 0.9696969696969697,
+      "matching": 0.9545454545454546,
       "name": "TGreatPower::MarkConnectedOwnedRegionsInMaskRecursive",
       "type": 1
     },
@@ -12008,7 +12062,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12452,13 +12506,13 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12500,7 +12554,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13184,7 +13238,7 @@
     },
     {
       "address": "0x4e8540",
-      "matching": 0.4358974358974359,
+      "matching": 0.44871794871794873,
       "name": "TGreatPower::QueueMapActionMissionFromCandidateAndMarkState",
       "type": 1
     },
@@ -13196,7 +13250,7 @@
     },
     {
       "address": "0x4e8750",
-      "matching": 0.28990825688073396,
+      "matching": 0.28623853211009176,
       "name": "TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric",
       "type": 1
     },
@@ -17450,8 +17504,14 @@
     },
     {
       "address": "0x525970",
-      "matching": 0.3333333333333333,
+      "matching": 0.18181818181818182,
       "name": "TMapMaker::ConstructTMapMaker",
+      "type": 1
+    },
+    {
+      "address": "0x525990",
+      "matching": 1.0,
+      "name": "TMapMaker::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -18644,7 +18704,7 @@
     },
     {
       "address": "0x534e70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnMissionConstantFloatSlot70",
       "type": 1
     },
@@ -18656,7 +18716,7 @@
     },
     {
       "address": "0x534eb0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnMissionConstantFloatSlot78",
       "type": 1
     },
@@ -18740,7 +18800,7 @@
     },
     {
       "address": "0x535470",
-      "matching": 0.0,
+      "matching": 0.0975609756097561,
       "name": "TNavyMission::ConstructTNavyMission",
       "type": 1
     },
@@ -18752,13 +18812,13 @@
     },
     {
       "address": "0x5354e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueMissionCapabilityStub",
       "type": 1
     },
     {
       "address": "0x535500",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnFalseMissionCapabilityStub",
       "type": 1
     },
@@ -18770,14 +18830,14 @@
     },
     {
       "address": "0x535540",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnArgMissionSlot5CNavyOverride",
       "type": 1
     },
     {
       "address": "0x535560",
-      "matching": 0.0,
-      "name": "TNavyMission::DestroyTNavyMission",
+      "matching": 0.9090909090909091,
+      "name": "TNavyMission::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -18842,13 +18902,13 @@
     },
     {
       "address": "0x5356f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueForArmyMissionCapabilityFlag",
       "type": 1
     },
     {
       "address": "0x535710",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnMissionSelfPointer",
       "type": 1
     },
@@ -18860,32 +18920,32 @@
     },
     {
       "address": "0x535750",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "GetMissionTargetContextIdFromField14",
       "type": 1
     },
     {
       "address": "0x535770",
-      "matching": 0.3333333333333333,
+      "matching": 0.0,
       "name": "PropagateMissionTargetContextIdToLinkedUnits",
       "type": 1
     },
     {
       "address": "0x535790",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueForDefendProvinceMissionCapabilityFlagA",
       "type": 1
     },
     {
       "address": "0x5357b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueForDefendProvinceMissionCapabilityFlagB",
       "type": 1
     },
     {
       "address": "0x5357d0",
-      "matching": 0.0,
-      "name": "DestroyTDefendProvinceMission",
+      "matching": 0.9090909090909091,
+      "name": "TDefendProvinceMission::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -18944,67 +19004,67 @@
     },
     {
       "address": "0x536390",
-      "matching": 0.0851063829787234,
+      "matching": 0.463768115942029,
       "name": "TNavyMission::CreateTNavyMission",
       "type": 1
     },
     {
       "address": "0x536450",
       "matching": 0.5,
-      "name": "TNavyMission::GetTNavyMissionClassNamePointer",
+      "name": "TNavyMission::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x5364c0",
-      "matching": 0.0625,
+      "matching": 0.5862068965517241,
       "name": "CleanupTMissionAndReleaseOwnedOrders",
       "type": 1
     },
     {
       "address": "0x536530",
-      "matching": 0.0,
+      "matching": 0.2981366459627329,
       "name": "SerializeTNavyMissionCommon",
       "type": 1
     },
     {
       "address": "0x536650",
-      "matching": 0.0,
+      "matching": 0.5925925925925926,
       "name": "DeserializeTNavyMissionCommon",
       "type": 1
     },
     {
       "address": "0x536740",
-      "matching": 0.1,
+      "matching": 0.5142857142857142,
       "name": "ClearMissionQueuedOrderLinksAndOwnerPointers",
       "type": 1
     },
     {
       "address": "0x536780",
-      "matching": 0.0,
+      "matching": 0.9285714285714286,
       "name": "AttachMissionOrderAsQueuedChildAndNotify",
       "type": 1
     },
     {
       "address": "0x5367d0",
-      "matching": 0.10526315789473684,
+      "matching": 0.36363636363636365,
       "name": "DetachMissionOrderChildAndClearPrimaryIfMatch",
       "type": 1
     },
     {
       "address": "0x536810",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "ClearMissionSecondaryOrderIfMatch",
       "type": 1
     },
     {
       "address": "0x536840",
-      "matching": 0.015503875968992248,
+      "matching": 0.17073170731707318,
       "name": "BuildMissionQueuedOrderCategoryWeightsAndReturnTotal",
       "type": 1
     },
     {
       "address": "0x536b30",
-      "matching": 0.012903225806451613,
+      "matching": 0.29357798165137616,
       "name": "UpdateMissionOrderSelectionStateByNationSimilarityThresholds",
       "type": 1
     },
@@ -19016,7 +19076,7 @@
     },
     {
       "address": "0x536e40",
-      "matching": 0.020833333333333332,
+      "matching": 0.021052631578947368,
       "name": "ProcessMapOrderEntryContextMode",
       "type": 1
     },
@@ -19028,25 +19088,25 @@
     },
     {
       "address": "0x536fa0",
-      "matching": 0.2857142857142857,
+      "matching": 0.0,
       "name": "RefreshMissionPortZoneContextForNation",
       "type": 1
     },
     {
       "address": "0x536fc0",
-      "matching": 0.07142857142857142,
+      "matching": 0.7692307692307693,
       "name": "TNavyMission::EnsureMissionCurrentTargetContextIsValid",
       "type": 1
     },
     {
       "address": "0x537060",
-      "matching": 0.2857142857142857,
+      "matching": 0.13333333333333333,
       "name": "GetMissionOrderBudgetByMode",
       "type": 1
     },
     {
       "address": "0x537090",
-      "matching": 0.0,
+      "matching": 0.2814814814814815,
       "name": "TScatteredShipsMission::QueueMissionOrdersByPriorityForContext",
       "type": 1
     },
@@ -19064,25 +19124,25 @@
     },
     {
       "address": "0x5371d0",
-      "matching": 0.0,
+      "matching": 0.92,
       "name": "ConsolidateMissionOrderEntriesByTargetAndQueue",
       "type": 1
     },
     {
       "address": "0x537270",
-      "matching": 0.008,
+      "matching": 0.0,
       "name": "ComputeMissionOrderMatchDeltaWithCandidateNavyOrder",
       "type": 1
     },
     {
       "address": "0x537610",
-      "matching": 0.011111111111111112,
+      "matching": 0.0,
       "name": "ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile",
       "type": 1
     },
     {
       "address": "0x5378c0",
-      "matching": 0.15384615384615385,
+      "matching": 0.21052631578947367,
       "name": "ComputeMissionWeightDotProductWithBaselineProfile",
       "type": 1
     },
@@ -19112,7 +19172,7 @@
     },
     {
       "address": "0x537f40",
-      "matching": 0.03076923076923077,
+      "matching": 0.015384615384615385,
       "name": "ComputeMissionQueuedOrderSimilarityWithFloorAdjustedCandidateVector",
       "type": 1
     },
@@ -19527,25 +19587,25 @@
     {
       "address": "0x53c030",
       "matching": 0.5,
-      "name": "TArmyMission::GetTArmyMissionClassNamePointer",
+      "name": "TArmyMission::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x53c0a0",
-      "matching": 0.0,
+      "matching": 0.42424242424242425,
       "name": "TMission::ConstructTArmyMissionWithNodeKey",
       "type": 1
     },
     {
       "address": "0x53c1b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnFalseForArmyAttackInvadeCapabilityFlag",
       "type": 1
     },
     {
       "address": "0x53c1d0",
-      "matching": 0.0,
-      "name": "TArmyMission::DestroyTArmyMission",
+      "matching": 0.9090909090909091,
+      "name": "TArmyMission::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -19556,43 +19616,43 @@
     },
     {
       "address": "0x53c220",
-      "matching": 0.044444444444444446,
+      "matching": 0.5454545454545454,
       "name": "TArmyMission::CleanupTArmyMissionAndReleaseChildContext",
       "type": 1
     },
     {
       "address": "0x53c2b0",
-      "matching": 0.0,
+      "matching": 0.3411764705882353,
       "name": "SerializeTArmyMission",
       "type": 1
     },
     {
       "address": "0x53c3d0",
-      "matching": 0.0,
+      "matching": 0.23668639053254437,
       "name": "DeserializeTArmyMission",
       "type": 1
     },
     {
       "address": "0x53c4f0",
-      "matching": 0.05555555555555555,
+      "matching": 0.6944444444444444,
       "name": "EvaluateMissionAndQueueEligibleUnitsByMovementClass",
       "type": 1
     },
     {
       "address": "0x53c570",
-      "matching": 0.0,
+      "matching": 0.2857142857142857,
       "name": "AttachMissionAsOwnerAndNotifyIfRequested",
       "type": 1
     },
     {
       "address": "0x53c5e0",
-      "matching": 0.0,
+      "matching": 0.5714285714285714,
       "name": "ReleaseMissionOwnerLinkAtOffset40",
       "type": 1
     },
     {
       "address": "0x53c620",
-      "matching": 0.019230769230769232,
+      "matching": 0.208955223880597,
       "name": "BuildMissionPriorityVectorAndReturnTotal",
       "type": 1
     },
@@ -19634,7 +19694,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.04081632653061224,
+      "matching": 0.2,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -19652,25 +19712,25 @@
     },
     {
       "address": "0x53d3e0",
-      "matching": 0.15384615384615385,
+      "matching": 0.7272727272727273,
       "name": "ComputeArmyMissionDotProductScore",
       "type": 1
     },
     {
       "address": "0x53d420",
-      "matching": 0.0,
+      "matching": 0.7567567567567568,
       "name": "ComputeArmyMissionScoreDeltaAgainstCurrentSelection",
       "type": 1
     },
     {
       "address": "0x53d4a0",
-      "matching": 0.018518518518518517,
+      "matching": 0.4307692307692308,
       "name": "ComputeArmyMissionCandidateVectorDistanceScore",
       "type": 1
     },
     {
       "address": "0x53d630",
-      "matching": 0.13333333333333333,
+      "matching": 0.5185185185185185,
       "name": "ReturnMissionIfMovementClassMatchesTargetTile",
       "type": 1
     },
@@ -19790,14 +19850,14 @@
     },
     {
       "address": "0x53e5f0",
-      "matching": 0.14285714285714285,
+      "matching": 0.48,
       "name": "TDefendProvinceMission::CreateTDefendProvinceMission",
       "type": 1
     },
     {
       "address": "0x53e670",
       "matching": 0.5,
-      "name": "TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer",
+      "name": "TDefendProvinceMission::GetRuntimeClass",
       "type": 1
     },
     {
@@ -19814,43 +19874,43 @@
     },
     {
       "address": "0x53ebe0",
-      "matching": 0.03636363636363636,
+      "matching": 0.8990825688073395,
       "name": "TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext",
       "type": 1
     },
     {
       "address": "0x53ecc0",
-      "matching": 0.11764705882352941,
+      "matching": 0.896551724137931,
       "name": "TDefendProvinceMission::UpdateDefendProvinceMissionStateByNationTargetMatch",
       "type": 1
     },
     {
       "address": "0x53ed00",
-      "matching": 0.03225806451612903,
+      "matching": 0.3185840707964602,
       "name": "TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14",
       "type": 1
     },
     {
       "address": "0x53edf0",
-      "matching": 0.02962962962962963,
+      "matching": 0.40293040293040294,
       "name": "TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext",
       "type": 1
     },
     {
       "address": "0x53eff0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ClearMissionStateByte11",
       "type": 1
     },
     {
       "address": "0x53f010",
-      "matching": 0.18181818181818182,
+      "matching": 0.5555555555555556,
       "name": "TDefendProvinceMission::HandleInvadeMissionActionType3ForTargetTile",
       "type": 1
     },
     {
       "address": "0x53f040",
-      "matching": 0.13333333333333333,
+      "matching": 0.5185185185185185,
       "name": "ReturnInvadeMissionIfMovementClassMatchesTargetTile",
       "type": 1
     },
@@ -27383,13 +27443,19 @@
     {
       "address": "0x58e3a0",
       "matching": 0.5,
-      "name": "TStratReportView::GetTStratReportViewClassNamePointer",
+      "name": "TStratReportView::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x58e3c0",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TStratReportView::?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@PAU12@@Z",
+      "type": 1
+    },
+    {
+      "address": "0x58e3f0",
+      "matching": 0.9090909090909091,
+      "name": "TStratReportView::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -27400,7 +27466,7 @@
     },
     {
       "address": "0x58e460",
-      "matching": 0.0,
+      "matching": 0.006309148264984227,
       "name": "RenderBattleOutcomeHeaderWinnerLoserLines",
       "type": 1
     },
@@ -41001,6 +41067,18 @@
       "type": 5
     },
     {
+      "address": "0x64c450",
+      "matching": 1.0,
+      "name": "TFocusAnimation::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x64c498",
+      "matching": 1.0,
+      "name": "TTransFocusAnimation::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x64c4e8",
       "matching": 1.0,
       "name": "TAnimator::`vftable'",
@@ -41685,6 +41763,12 @@
       "type": 5
     },
     {
+      "address": "0x6598f8",
+      "matching": 1.0,
+      "name": "TMapMaker::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x659c00",
       "matching": 1.0,
       "name": "TMinister::`vftable'",
@@ -41748,6 +41832,24 @@
       "address": "0x65a4e8",
       "matching": 1.0,
       "name": "TMission::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65a680",
+      "matching": 1.0,
+      "name": "TDefendProvinceMission::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65a818",
+      "matching": 1.0,
+      "name": "TNavyMission::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65ad38",
+      "matching": 1.0,
+      "name": "TArmyMission::`vftable'",
       "type": 5
     },
     {
@@ -42336,6 +42438,12 @@
       "address": "0x667ad0",
       "matching": 1.0,
       "name": "TArmyToolbar::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x667d08",
+      "matching": 1.0,
+      "name": "TStratReportView::`vftable'",
       "type": 5
     },
     {

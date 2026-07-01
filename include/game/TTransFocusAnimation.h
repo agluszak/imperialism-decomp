@@ -14,12 +14,12 @@ public:
   virtual ~TTransFocusAnimation() override;
 
   virtual void Free() override; // slot 7 / 0x1c
-  virtual void VTableSlot0D(int* completionRecord) override; // slot 13 / 0x34
   virtual undefined RenderBattleReportInsetWithPaletteShift() override; // slot 11 / 0x2c
+  virtual void VTableSlot0D() override; // slot 13 / 0x34
 
+  // TTransFocusAnimation-introduced virtual (past TFocusAnimation's own slots).
+  virtual void BlitTransientSurfaceToPrimaryRenderContextWithClip(); // slot 0x3c 0x4a05c0
 
   int transientSurfaceContext; // 0x30
   int field34;                 // 0x34
-
-  void BlitTransientSurfaceToPrimaryRenderContextWithClip();
 };

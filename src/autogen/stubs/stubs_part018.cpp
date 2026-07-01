@@ -1147,14 +1147,6 @@ undefined4 Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At
   return 0;
 }
 
-// ghidra_name RenderBattleOutcomeHeaderWinnerLoserLines
-// ghidra_proto undefined RenderBattleOutcomeHeaderWinnerLoserLines()
-// FUNCTION: IMPERIALISM 0x0058e460
-undefined4 RenderBattleOutcomeHeaderWinnerLoserLines(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005931e0
 // ghidra_proto undefined WrapperFor_ftol_At005931e0()
 // FUNCTION: IMPERIALISM 0x005931e0

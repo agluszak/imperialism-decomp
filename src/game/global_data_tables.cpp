@@ -415,6 +415,14 @@ double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
 unsigned short g_Recompute_Nation_Order_LookupTable_00697870[0x10] = {0};
 unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {0};
 
+// Army-mission order-priority weight/scoring tables (0x53c620 / 0x53ceb0 /
+// 0x53d4a0 family). Sizes are the minimum proven by observed index use;
+// g_ArmyMissionCandidateScoreTable_006978f8's row count (state08 range) is
+// not yet fully catalogued.
+float g_ArmyMissionOrderWeightTable_006978c8[6] = {0};
+float g_ArmyMissionDotProductWeights_00697980[5] = {0};
+float g_ArmyMissionCandidateScoreTable_006978f8[48] = {0};
+
 // Random-roll scaling constants for TAutoGreatPower::AssignNeedSlotFromSourceSlot19C
 // (0x004e7680): 1/255 and 32767.
 double g_DAT_00653fc0_Value_00653FC0 = 0.00392156862745098;

@@ -16,25 +16,11 @@ IMPLEMENT_DYNCREATE(TFocusAnimation, TAnimation)
 
 TFocusAnimation::TFocusAnimation() : TAnimation(), enabledFlag(1) {}
 
-// FUNCTION: IMPERIALISM 0x004a0190
-void TFocusAnimation::DestructTFocusAnimationAndMaybeFree() {
-  if (enabledFlag != 0) {
-    ScopedMapQuickDrawContextGuard quickDrawContext(reinterpret_cast<void*>(field04));
-    reinterpret_cast<TView*>(reinterpret_cast<void*>(field04))->Refresh();
-
-    int completionRecord[2];
-    completionRecord[0] = 0;
-    completionRecord[1] = 0;
-    this->VTableSlot0D(completionRecord);
-    reinterpret_cast<TView*>(reinterpret_cast<void*>(field04))->PostRenderSlotFC();
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x004a0140
 undefined TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
   FrameTick()++;
   if (FrameTick() == FrameTickLimit()) {
-    VTableSlot0D(nullptr);
+    VTableSlot0D();
     Field08()++;
     FrameTick() = 0;
     if (Field08() == Field0a()) {
@@ -44,8 +30,21 @@ undefined TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140(
   return 0;
 }
 
-void TFocusAnimation::VTableSlot0D(int* completionRecord) {
-  (void)completionRecord;
+// FUNCTION: IMPERIALISM 0x004a0190
+void TFocusAnimation::VTableSlot0D() {
+  if (enabledFlag != 0) {
+    ScopedMapQuickDrawContextGuard quickDrawContext(reinterpret_cast<void*>(field04));
+    reinterpret_cast<TView*>(reinterpret_cast<void*>(field04))->Refresh();
+    RenderBattleReportInsetWithPaletteShift();
+    reinterpret_cast<TView*>(reinterpret_cast<void*>(field04))->PostRenderSlotFC();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004a0250
+undefined TFocusAnimation::RenderBattleReportInsetWithPaletteShift() {
+  RenderBattleReportViewSurfaceSpriteWithResourceHandle();
+  Helper_Uses_BlitRectWithOptionalTransparency_At004a0280();
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a0280

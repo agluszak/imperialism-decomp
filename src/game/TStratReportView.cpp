@@ -8,6 +8,11 @@
 
 IMPLEMENT_DYNCREATE(TStratReportView, TView)
 
+// FUNCTION: IMPERIALISM 0x0058e330
+TStratReportView* __cdecl CreateTStratReportViewInstance(void) {
+  return new TStratReportView();
+}
+
 // FUNCTION: IMPERIALISM 0x0058e3c0
 TStratReportView::TStratReportView() : TView() {}
 
@@ -15,12 +20,9 @@ TStratReportView::TStratReportView() : TView() {}
 // TStratReportView::`scalar deleting destructor'
 TStratReportView::~TStratReportView() {}
 
-// FUNCTION: IMPERIALISM 0x0058e330
-TStratReportView* __cdecl CreateTStratReportViewInstance(void) {
-  return new TStratReportView();
-}
-
-// FUNCTION: IMPERIALISM 0x0058e3a0
-void* __cdecl GetTStratReportViewClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTStratReportView);
+// FUNCTION: IMPERIALISM 0x0058e460
+void TStratReportView::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+  // TODO: not yet ported -- draws the battle-outcome header winner/loser
+  // score lines via CString formatting + THQButton text rendering.
 }

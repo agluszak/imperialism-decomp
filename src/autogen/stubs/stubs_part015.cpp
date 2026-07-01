@@ -1163,46 +1163,6 @@ undefined4 CreateMissionObjectByKindAndNodeContext(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_005354c0
-// ghidra_proto undefined OrphanRetStub_005354c0()
-// FUNCTION: IMPERIALISM 0x005354c0
-undefined4 OrphanRetStub_005354c0(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueMissionCapabilityStub
-// ghidra_proto undefined ReturnTrueMissionCapabilityStub()
-// FUNCTION: IMPERIALISM 0x005354e0
-undefined4 ReturnTrueMissionCapabilityStub(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionCapabilityStub
-// ghidra_proto undefined ReturnFalseMissionCapabilityStub()
-// FUNCTION: IMPERIALISM 0x00535500
-undefined4 ReturnFalseMissionCapabilityStub(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnZeroMissionSlot58NavyOverride
-// ghidra_proto undefined ReturnZeroMissionSlot58NavyOverride()
-// FUNCTION: IMPERIALISM 0x00535520
-undefined4 ReturnZeroMissionSlot58NavyOverride(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnArgMissionSlot5CNavyOverride
-// ghidra_proto undefined ReturnArgMissionSlot5CNavyOverride()
-// FUNCTION: IMPERIALISM 0x00535540
-undefined4 ReturnArgMissionSlot5CNavyOverride(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTNavyMissionToSentinelVtable
 // ghidra_proto undefined ResetTNavyMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x00535590

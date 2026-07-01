@@ -77,11 +77,6 @@ void TTransFocusAnimation::Free() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x004a0770
-void TTransFocusAnimation::VTableSlot0D(int* completionRecord) {
-  (void)completionRecord;
-}
-
 // FUNCTION: IMPERIALISM 0x004a05c0
 void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() {
   QuickDrawSurfaceGuard surface;
@@ -131,6 +126,9 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
       &destinationRect, 0);
   SnapshotHitRegionToClipCache(reinterpret_cast<int*>(surface.surfaceWrapper));
 }
+
+// FUNCTION: IMPERIALISM 0x004a0770
+void TTransFocusAnimation::VTableSlot0D() {}
 
 // FUNCTION: IMPERIALISM 0x004a0810
 undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift() {
