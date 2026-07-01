@@ -4,43 +4,43 @@
 // Bucket: TClosePicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586AD0
-// GHIDRA_NAME TClosePicture::CreateTClosePictureInstance
-// GHIDRA_PROTO undefined CreateTClosePictureInstance()
+// GHIDRA_NAME TClosePicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TPictureButton * TClosePicture::CreateTClosePictureInstance(void)
+undefined4 * TClosePicture::CreateObject(void)
 
 {
-  TPictureButton *this;
-  TPictureButton *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063789a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  pTVar1 = (TPictureButton *)0x0;
-  if (this != (TPictureButton *)0x0) {
-    TPictureButton::ConstructUiTabCursorPictureEntry(this);
-    this->vftable = (TPictureButtonVtbl *)&_vftable_;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00405628();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586B50
-// GHIDRA_NAME TClosePicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TClosePicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TClosePicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TClosePicture::GetRuntimeClass()
 
 {
-  return &g_pClassDescTClosePicture;
+  return &classTClosePicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586B70
@@ -50,7 +50,7 @@ CRuntimeClass * TClosePicture::GetTEventHandlerClassNamePointer()
 TClosePicture * TClosePicture::ConstructTClosePictureBaseState()
 
 {
-  TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)this);
+  func_0x00405628();
   this->vftable = &_vftable_;
   return this;
 }
@@ -62,19 +62,19 @@ TClosePicture * TClosePicture::ConstructTClosePictureBaseState()
 TClosePicture * TClosePicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00403652();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586BF0
-// GHIDRA_NAME TClosePicture::InvalidateWindowRectFromHandleField1C
-// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_NAME TClosePicture::DispatchUiMouseEventToChildrenOrSelf_Impl
+// GHIDRA_PROTO undefined __thiscall DispatchUiMouseEventToChildrenOrSelf_Impl(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 undefined1 __thiscall
-TClosePicture::InvalidateWindowRectFromHandleField1C
+TClosePicture::DispatchUiMouseEventToChildrenOrSelf_Impl
           (TClosePicture *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
           undefined4 param_4)
 
@@ -82,9 +82,8 @@ TClosePicture::InvalidateWindowRectFromHandleField1C
   undefined1 uVar1;
   undefined uVar2;
   undefined3 extraout_var;
-
-  uVar1 = TControl::DispatchUiMouseEventToChildrenOrSelf
-                    ((TControl *)this,param_1,param_2,param_3,param_4);
+  
+  uVar1 = func_0x00406429(param_1,param_2,param_3,param_4);
   uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))(this->controlTag,1);
   return uVar1;

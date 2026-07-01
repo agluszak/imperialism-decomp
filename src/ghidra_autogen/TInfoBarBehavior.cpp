@@ -4,45 +4,45 @@
 // Bucket: TInfoBarBehavior.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0C90
-// GHIDRA_NAME TInfoBarBehavior::CreateTInfoBarBehaviorInstance
-// GHIDRA_PROTO undefined CreateTInfoBarBehaviorInstance()
+// GHIDRA_NAME TInfoBarBehavior::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TBehavior * TInfoBarBehavior::CreateTInfoBarBehaviorInstance(void)
+undefined4 * TInfoBarBehavior::CreateObject(void)
 
 {
-  TBehavior *this;
-  TBehavior *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630c42;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TBehavior *)__2_YAPAXI_Z(0x24);
+  puVar1 = (undefined4 *)operator_new(0x24);
   local_4 = 0;
-  pTVar1 = (TBehavior *)0x0;
-  if (this != (TBehavior *)0x0) {
-    TBehavior::ConstructTBehaviorBaseState(this);
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403602();
     local_4 = CONCAT31(local_4._1_3_,1);
-    CString::__0CString__QAE_XZ((CString *)(this + 1));
-    this->vftable = (TBehaviorVtbl *)&TInfoBarBehaviorVtbl_0064eb10;
-    pTVar1 = this;
+    CString::CString((CString *)(puVar1 + 4));
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0D10
-// GHIDRA_NAME TInfoBarBehavior::GetTBehaviorClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
+// GHIDRA_NAME TInfoBarBehavior::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInfoBarBehavior::GetTBehaviorClassNamePointer()
+CRuntimeClass * TInfoBarBehavior::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTInfoBarBehavior;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0D30
@@ -56,29 +56,29 @@ TInfoBarBehavior * TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630c68;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TBehavior::ConstructTBehaviorBaseState((TBehavior *)this);
+  func_0x00403602();
   local_4 = 0;
-  CString::__0CString__QAE_XZ((CString *)&this->field_0x10);
-  this->vftable = &TInfoBarBehaviorVtbl_0064eb10;
+  CString::CString((CString *)&this->field_0x10);
+  this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0DA0
-// GHIDRA_NAME TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTInfoBarBehaviorAndMaybeFree(byte param_1)
+// GHIDRA_NAME TInfoBarBehavior::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInfoBarBehavior * TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(byte param_1)
+TInfoBarBehavior * TInfoBarBehavior::_scalar_deleting_destructor_(byte param_1)
 
 {
-  WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004b0dd0();
+  func_0x00407595();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -93,36 +93,34 @@ TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild
 
 {
   char cVar1;
-  int *extraout_EAX;
-  TView *unaff_EBX;
   int *piVar2;
+  int unaff_EBX;
   int iVar3;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
+  int *unaff_FS_OFFSET;
+  int iStack_c;
   undefined1 *puStack_8;
   CString local_4;
-
+  
   puStack_8 = &LAB_00630cb2;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   iVar3 = *param_2;
   local_4.m_pchData = (char *)0x0;
   *(undefined4 *)&this->field_0x4 = 0x696e6642;
   (**(code **)(iVar3 + 300))(&this->field_0x14);
-  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x10,(CString *)&stack0x00000000);
+  CString::operator=((CString *)&this->field_0x10,(CString *)&stack0x00000000);
   cVar1 = (**(code **)(iVar3 + 0xcc))();
   if (cVar1 == '\0') {
-    unaff_EBX = (TView *)__2_YAPAXI_Z(0x60);
+    unaff_EBX = operator_new(0x60);
     puStack_8._0_1_ = 1;
-    if (unaff_EBX == (TView *)0x0) {
+    if (unaff_EBX == 0) {
       piVar2 = (int *)0x0;
     }
     else {
-      TView::ConstructTViewBaseState(unaff_EBX);
-      piVar2 = extraout_EAX;
+      piVar2 = (int *)func_0x004064e2();
     }
     puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-    InitializeUiResourceEntryFrameAndParent(0,param_2,&DAT_006a2410,param_2 + 0xd,0,0,0);
+    func_0x004096b5(0,param_2,&DAT_006a2410,param_2 + 0xd,0,0,0);
     iVar3 = *piVar2;
     piVar2[7] = 0x64756d79;
     (**(code **)(iVar3 + 0xa8))(1,0);
@@ -130,8 +128,8 @@ TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild
     iVar3 = param_1;
   }
   (**(code **)(iVar3 + 0x90))(this);
-  uStack_c = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_4);
+  iStack_c = -1;
+  CString::~CString(&local_4);
   *unaff_FS_OFFSET = unaff_EBX;
   return;
 }
@@ -144,17 +142,19 @@ uint TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip()
 
 {
   uint uVar1;
-  undefined4 unaff_retaddr;
-
+  TInfoBarBehavior *pTStack_10;
+  undefined1 *puStack_c;
+  
   uVar1 = 0;
   if (g_pCursorControlPanel != (TControl *)0x0) {
-    AssignStringSharedRefAndReturnThis(&this->field_0x10);
+    puStack_c = &this->field_0x14;
+    pTStack_10 = this;
+    func_0x004076b7(&this->field_0x10);
     (*g_pCursorControlPanel->vftable[1].ReleaseRuntimeSelectionOwnerAndDestroyObject_0f)();
     (**(code **)(**(int **)&this->field_0x8 + 0xf8))();
-    uVar1 = GetRegionBoxToRectIfPresent(unaff_retaddr);
+    uVar1 = func_0x00401104(&pTStack_10);
     if ((char)uVar1 != '\0') {
-      uVar1 = WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0
-                        (unaff_retaddr,0,0,0x280,0x1e0);
+      uVar1 = func_0x00403850(&pTStack_10,0,0,0x280,0x1e0);
     }
   }
   return uVar1 & 0xffffff00;

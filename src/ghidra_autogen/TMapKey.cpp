@@ -3,19 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TMapKey.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004308D0
-// GHIDRA_NAME TMapKey::ConstructPictureResourceEntry_Vtbl006404b0
-// GHIDRA_PROTO undefined __thiscall TMapKey::ConstructPictureResourceEntry_Vtbl006404b0(void)
-
-TMapKey * TMapKey::ConstructPictureResourceEntry_Vtbl006404b0()
-
-{
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TMapKeyVtbl_006404b0;
-  *(undefined2 *)&this->field_0x90 = 0;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00430900
 // GHIDRA_NAME TMapKey::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -23,227 +10,214 @@ TMapKey * TMapKey::ConstructPictureResourceEntry_Vtbl006404b0()
 TMapKey * TMapKey::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004031cf();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AD20
 // GHIDRA_NAME TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20
-// GHIDRA_PROTO undefined __thiscall TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
 
 TMapKey * TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20()
 
 {
-  TStaticText::TStaticText((TStaticText *)this);
-  this->vftable = (TMapKeyVtbl *)&TTEViewVtbl_00644308;
+  func_0x0040541b();
+  this->vftable = (TMapKeyVtbl *)&TTEView::_vftable_;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FC9C0
-// GHIDRA_NAME TMapKey::CreateTMapKeyInstance
-// GHIDRA_PROTO undefined CreateTMapKeyInstance()
+// GHIDRA_NAME TMapKey::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TMapKey::CreateTMapKeyInstance(void)
+undefined4 * TMapKey::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006330ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TMapKeyVtbl **)this = &TMapKeyVtbl_006404b0;
-    *(undefined2 *)(this + 0x90) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x24) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FCA70
-// GHIDRA_NAME TMapKey::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMapKey::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMapKey::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMapKey::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMapKey;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FCAC0
-// GHIDRA_NAME TMapKey::OrphanCallChain_C6_I49_004875d0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
+// GHIDRA_NAME TMapKey::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TMapKey::OrphanCallChain_C6_I49_004875d0()
+void TMapKey::NoOpUiLifecycleHook()
 
 {
-  TDeluxeTextVtbl *pTVar1;
+  TMapKeyVtbl *pTVar1;
   int iVar2;
-  TDeluxeText *pTVar3;
-  undefined4 *puVar4;
+  TMapKey *pTVar3;
+  int *piVar4;
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar6;
-  undefined1 local_88;
-  undefined1 local_87;
-  undefined1 local_86;
-  undefined1 local_85;
-  CString local_84;
-  TCountry **local_80;
+  CString local_88;
+  TCountry **local_84;
+  TMapKey *local_80;
   TMapKey *local_7c;
-  int local_78;
-  int local_74;
-  TDeluxeText *pTStack_70;
-  undefined1 auStack_6c [4];
-  undefined4 local_68;
-  undefined4 local_64;
-  int iStack_60;
-  int iStack_5c;
-  undefined1 local_58 [6];
-  undefined1 local_52;
-  undefined1 local_51;
-  undefined1 local_50;
-  undefined1 local_4f;
-  short local_4c [16];
-  RECT RStack_2c;
-  tagRECT tStack_1c;
+  int local_78 [2];
+  int iStack_70;
+  int iStack_6c;
+  undefined4 local_68 [3];
+  short asStack_5c [3];
+  undefined1 uStack_56;
+  undefined1 uStack_55;
+  undefined1 uStack_54;
+  undefined1 uStack_53;
+  undefined2 local_50;
+  undefined2 uStack_4e;
+  short local_4c [8];
+  RECT local_3c;
+  tagRECT tStack_2c;
+  undefined1 uStack_14;
+  undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  int local_4;
-
+  undefined4 local_4;
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063311d;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_7c = this;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  func_0x00406ba9();
+  local_50 = 0x171;
+  uStack_4e = 0x171;
   local_4c[0] = 0x171;
   local_4c[1] = 0x171;
-  local_4c[2] = 0x171;
-  local_4c[3] = 0x171;
-  local_4c[10] = 0x1b8;
+  local_4c[2] = 0x1de;
+  local_4c[3] = 0x1de;
   local_4c[4] = 0x1de;
   local_4c[5] = 0x1de;
-  local_4c[6] = 0x1de;
-  local_4c[7] = 0x1de;
-  local_4c[0xe] = 0x1b8;
-  local_4c[0xb] = 0x1d1;
-  local_4c[0xf] = 0x1d1;
-  local_80 = (TCountry **)
+  local_3c.left = 0x1d101b8;
+  local_3c.right = 0x1d101b8;
+  local_84 = (TCountry **)
              (uint)(ushort)((short)this->ownerOffsetY + (short)this->ownerContext->ownerOffsetY);
-  local_4c[8] = 0x187;
-  local_4c[0xc] = 0x187;
+  local_4c[6] = 0x187;
   iVar5 = this->ownerOffsetX;
   iVar2 = this->ownerContext->ownerOffsetX;
-  local_4c[9] = 0x1a0;
-  local_4c[0xd] = 0x1a0;
-  local_68 = 0x46;
-  local_64 = 0x19;
-  CString::__0CString__QAE_XZ(&local_84);
-  local_4 = 0;
-  local_52 = 0;
-  local_51 = 0;
-  local_50 = 0;
-  local_4f = 0;
-  local_88 = 0;
-  local_87 = 0;
-  local_86 = 0;
-  local_85 = 0;
-  MapUiThemeCodeToStyleFlags(0x2b68,&local_88);
-  InitializeUiTextStyleDescriptor(local_58,0,10,0x2b6b,3);
-  local_74 = (int)(short)local_80;
-  local_78 = (int)(short)((short)iVar5 + (short)iVar2);
+  local_4c[7] = 0x1a0;
+  local_3c.top = 0x1a00187;
+  iStack_6c = 0x46;
+  local_68[0] = 0x19;
+  CString::CString(&local_88);
+  puStack_8 = (undefined1 *)0x0;
+  uStack_56 = 0;
+  uStack_55 = 0;
+  uStack_54 = 0;
+  uStack_53 = 0;
+  MapUiThemeCodeToStyleFlags();
+  InitializeUiTextStyleDescriptor(asStack_5c);
+  local_78[0] = (int)(short)local_84;
+  local_7c = (TMapKey *)(int)(short)((short)iVar5 + (short)iVar2);
   iVar5 = 0;
-  local_80 = g_apTerrainTypeDescriptorTable;
+  local_84 = g_apTerrainTypeDescriptorTable;
   do {
-    if (*local_80 == (TCountry *)0x0) {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x275d,2,&local_84);
+    if (*local_84 == (TCountry *)0x0) {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     }
     else {
-      FormatOverlayTerrainLabelText(&local_84);
+      func_0x00405245();
     }
-    pTVar3 = (TDeluxeText *)__2_YAPAXI_Z(0xa4);
-    local_4._0_1_ = 1;
-    pTStack_70 = pTVar3;
-    if (pTVar3 == (TDeluxeText *)0x0) {
-      pTVar3 = (TDeluxeText *)0x0;
+    pTVar3 = (TMapKey *)operator_new();
+    uStack_14 = 1;
+    local_80 = pTVar3;
+    if (pTVar3 == (TMapKey *)0x0) {
+      pTVar3 = (TMapKey *)0x0;
     }
     else {
-      TStaticText::TStaticText((TStaticText *)pTVar3);
-      pTVar3->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
-      local_4._0_1_ = 2;
-      pTVar3->field_0x98 = 0;
-      pTVar3->field_0x99 = 0;
-      pTVar3->field_0x9a = 0;
-      pTVar3->field_0x9b = 0;
-      ClearColorRgbaBytes();
-      pTVar3->vftable = &TDeluxeTextVtbl_006406d8;
-      puVar4 = (undefined4 *)SetColorRgbAndClearAlphaByte(0,0,0);
-      uVar6 = *puVar4;
-      pTVar3->field_0xa0 = 0;
-      *(undefined4 *)&pTVar3->field_0x98 = uVar6;
+      func_0x0040541b();
+      pTVar3->vftable = (TMapKeyVtbl *)&TTEView::_vftable_;
+      uStack_14 = 2;
+      *(undefined1 *)&pTVar3[1].field04 = 0;
+      *(undefined1 *)((int)&pTVar3[1].field04 + 1) = 0;
+      *(undefined1 *)((int)&pTVar3[1].field04 + 2) = 0;
+      *(undefined1 *)((int)&pTVar3[1].field04 + 3) = 0;
+      func_0x00407bdf();
+      pTVar3->vftable = (TMapKeyVtbl *)&TDeluxeText::_vftable_;
+      piVar4 = (int *)func_0x00404863(0,0);
+      iVar2 = *piVar4;
+      *(undefined1 *)&pTVar3[1].field0c = 0;
+      pTVar3[1].field04 = iVar2;
     }
-    local_4 = (uint)local_4._1_3_ << 8;
-    RStack_2c.left = 0;
-    RStack_2c.top = 0;
-    RStack_2c.right = 0;
-    RStack_2c.bottom = 0;
-    CopyRect(&tStack_1c,&RStack_2c);
-    iStack_60 = local_4c[iVar5] - local_78;
-    iStack_5c = (local_4c[iVar5 + 8] - local_74) + -0xf;
-    TDeluxeText::ConstructTDeluxeTextBaseState
-              (pTVar3,this,&iStack_60,&local_68,&tStack_1c.left,(int)local_58);
+    uStack_14 = 0;
+    local_3c.left = 0;
+    local_3c.top = 0;
+    local_3c.right = 0;
+    local_3c.bottom = 0;
+    CopyRect(&tStack_2c,&local_3c);
+    iStack_70 = (int)asStack_5c[iVar5] - (int)local_88.m_pchData;
+    iStack_6c = ((int)local_4c[iVar5] - (int)local_84) + -0xf;
+    func_0x00408e31(this,&iStack_70,local_78,&tStack_2c,local_68);
     pTVar1 = pTVar3->vftable;
-    uVar6 = 0;
-    (*pTVar1->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0)(&local_84);
+    (*pTVar1[1].GetTBehaviorClassNamePointer)(&stack0xffffff54);
     (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(0,0);
     pTVar3->controlTag = iVar5 + 0x6e616d30;
-    (*pTVar1->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(0);
-    *(undefined4 *)&pTVar3->field_0x9c = uVar6;
-    pTVar3->field_0xa0 = 1;
-    (*pTVar1->ConstructTMapKeyBaseState_Impl)(auStack_6c,1);
+    (*pTVar1[1].ReleaseRuntimeSelectionOwnerAndDestroyObject)(0);
+    pTVar3[1].padding_08_to_0b = 0;
+    *(undefined1 *)&pTVar3[1].field0c = 1;
+    (*pTVar1[1].ReadFrom)(&stack0xffffff6c,1);
     iVar5 = iVar5 + 1;
-    local_80 = local_80 + 1;
-    this = local_7c;
-  } while ((int)local_80 < 0x6a432c);
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_84);
-  *unaff_FS_OFFSET = uStack_c;
+    local_84 = local_84 + 1;
+    this = local_80;
+  } while ((int)local_84 < 0x6a432c);
+  puStack_8 = (undefined1 *)0xffffffff;
+  CString::~CString(&local_88);
+  *unaff_FS_OFFSET = uStack_10;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FCF80
-// GHIDRA_NAME TMapKey::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TMapKey::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMapKey::OrphanTiny_ReturnZero_0048a730()
+void TMapKey::ApplyRectSlot110()
 
 {
-  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
+  func_0x00404fe8();
   switch(*(undefined2 *)&this->field_0x90) {
   case 0:
-    RenderMapHintOverlayMode0();
+    func_0x00405060();
     return;
   case 1:
-    RenderMapHintOverlayMode1();
+    func_0x00404b2e();
     return;
   case 2:
-    RenderMapHintOverlayMode2();
+    func_0x004069c4();
     break;
   case 4:
-    RenderMapHintOverlayMode4();
+    func_0x00403d4b();
     return;
   }
   return;

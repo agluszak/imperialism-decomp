@@ -20,28 +20,58 @@ void TNominationView::OrphanRetStub_004305c0()
 TNominationView * TNominationView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00408e4f();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FB760
-// GHIDRA_NAME TNominationView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004FB6E0
+// GHIDRA_NAME TNominationView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TNominationView::GetTEventHandlerClassNamePointer()
+undefined4 * TNominationView::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00632ffa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x90);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FB760
+// GHIDRA_NAME TNominationView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TNominationView::GetRuntimeClass()
+
+{
+  return &classTNominationView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB780
-// GHIDRA_NAME TNominationView::OrphanCallChain_C6_I49_004875d0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
+// GHIDRA_NAME TNominationView::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TNominationView::OrphanCallChain_C6_I49_004875d0()
+void TNominationView::NoOpUiLifecycleHook()
 
 {
   _vslot_fn *p_Var1;
@@ -51,11 +81,13 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
-  undefined4 *unaff_FS_OFFSET;
-  CString CStack_74;
-  undefined4 *puStack_70;
-  undefined4 uStack_6c;
-  undefined4 *puStack_68;
+  int *unaff_FS_OFFSET;
+  CString CStack_7c;
+  undefined4 uStack_78;
+  undefined4 *puStack_74;
+  undefined4 uStack_70;
+  undefined4 *puStack_6c;
+  char acStack_68 [4];
   undefined4 *puStack_64;
   undefined4 uStack_60;
   undefined4 *puStack_5c;
@@ -75,20 +107,20 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   undefined1 local_11;
   undefined1 local_10;
   undefined1 local_f;
-  undefined4 uStack_c;
+  int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633018;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   local_12 = 0;
   local_11 = 0;
   local_10 = 0;
   local_f = 0;
   uStack_30 = 0x4fb7bb;
-  CString::__0CString__QAE_XZ(local_1c);
+  CString::CString(local_1c);
   uStack_30 = 0x636f756e;
   local_4 = 0;
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
@@ -127,7 +159,10 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   puStack_5c = (undefined4 *)0xe;
   puStack_64 = &uStack_40;
   uStack_60 = 0;
-  puStack_68 = (undefined4 *)0x4fb84b;
+  acStack_68[0] = 'K';
+  acStack_68[1] = -0x48;
+  acStack_68[2] = 'O';
+  acStack_68[3] = '\0';
   BuildUiTextStyleDescriptor();
   puStack_5c = &uStack_40;
   uStack_58 = 1;
@@ -140,41 +175,50 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   puStack_64 = (undefined4 *)0x4fb86f;
   (**(code **)(iVar2 + 0xc))();
   puStack_64 = &uStack_50;
-  puStack_68 = (undefined4 *)0x4fb88c;
-  FormatOverlayTerrainLabelText();
-  puStack_68 = &uStack_50;
-  puStack_64 = (undefined4 *)0x1;
-  uStack_6c = 0x4fb89b;
+  acStack_68[0] = -0x74;
+  acStack_68[1] = -0x48;
+  acStack_68[2] = 'O';
+  acStack_68[3] = '\0';
+  func_0x00405245();
+  puStack_6c = &uStack_54;
+  acStack_68[0] = '\x01';
+  acStack_68[1] = '\0';
+  acStack_68[2] = '\0';
+  acStack_68[3] = '\0';
+  uStack_70 = 0x4fb89b;
   (**(code **)(iVar2 + 0x1c8))();
-  puStack_70 = &uStack_54;
-  uStack_6c = 1;
-  CStack_74.m_pchData = (char *)0x4fb8aa;
+  puStack_74 = &uStack_58;
+  uStack_70 = 1;
+  uStack_78 = 0x4fb8aa;
   (**(code **)(iVar2 + 0x1b4))();
-  CStack_74.m_pchData = (char *)0x63616e31;
+  uStack_78 = 0x63616e31;
+  CStack_7c.m_pchData = (char *)0x4fb8b3;
   uVar3 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
+  CStack_7c.m_pchData = (char *)0x4fb8bc;
   (**(code **)(iVar2 + 0xc))();
-  FormatOverlayTerrainLabelText(&puStack_64);
-  (**(code **)(iVar2 + 0x1c8))(&puStack_64,1);
-  (**(code **)(iVar2 + 0x1b4))(&puStack_68,1);
-  puStack_5c = (undefined4 *)0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_74);
-  *unaff_FS_OFFSET = puStack_64;
+  CStack_7c.m_pchData = acStack_68;
+  func_0x00405245();
+  (**(code **)(iVar2 + 0x1c8))(&puStack_6c,1);
+  (**(code **)(iVar2 + 0x1b4))(&uStack_70,1);
+  puStack_64 = (undefined4 *)0xffffffff;
+  CString::~CString(&CStack_7c);
+  *unaff_FS_OFFSET = (int)puStack_6c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB990
-// GHIDRA_NAME TNominationView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
+// GHIDRA_NAME TNominationView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TNominationView::OrphanRetStub_0059add0(int param_1)
+void TNominationView::HandleEvent(int param_1)
 
 {
   if (param_1 == 10) {
-    PostTurnEventCodeMessage2420(0x7e0);
+    func_0x00408715(0x7e0);
     return;
   }
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+  func_0x00404566(param_1);
   return;
 }
 

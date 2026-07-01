@@ -3,19 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: TTaskForce.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005527E0
-// GHIDRA_NAME TTaskForce::GetTTaskForceClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskForceClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00552770
+// GHIDRA_NAME TTaskForce::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TTaskForce::GetTTaskForceClassNamePointer()
+undefined4 * TTaskForce::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x34);
+  if (puVar1 != (undefined4 *)0x0) {
+    puVar1[1] = 1;
+    *(undefined2 *)(puVar1 + 7) = 0xffff;
+    *(undefined2 *)(puVar1 + 0xc) = 0xffff;
+    puVar1[2] = 0;
+    puVar1[3] = 0;
+    puVar1[4] = 0;
+    puVar1[5] = 0;
+    puVar1[6] = 0;
+    puVar1[10] = 0;
+    puVar1[0xb] = 0;
+    *puVar1 = &_vftable_;
+    *(undefined4 *)((int)puVar1 + 0x1e) = 0;
+    *(undefined4 *)((int)puVar1 + 0x22) = 0;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005527E0
+// GHIDRA_NAME TTaskForce::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TTaskForce::GetRuntimeClass()
+
+{
+  return &classTTaskForce;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552800
 // GHIDRA_NAME TTaskForce::ConstructTTaskForce
-// GHIDRA_PROTO undefined __thiscall TTaskForce::ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
+// GHIDRA_PROTO undefined __thiscall ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
 
 void TTaskForce::ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
 
@@ -30,23 +59,293 @@ void TTaskForce::ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
   *(undefined4 *)&this->field_0x28 = 0;
   *(undefined4 *)&this->field_0x2c = 0;
   *(undefined2 *)&this->field_0x30 = 0xffff;
-  this->vftable = &TTaskForceVtbl_0065c468;
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x1e = 0;
   *(undefined4 *)&this->field_0x22 = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552870
-// GHIDRA_NAME TTaskForce::DestroyTTaskForce
-// GHIDRA_PROTO undefined __thiscall DestroyTTaskForce(byte param_1)
+// GHIDRA_NAME TTaskForce::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTaskForce * TTaskForce::DestroyTTaskForce(byte param_1)
+TTaskForce * TTaskForce::_scalar_deleting_destructor_(byte param_1)
 
 {
-  ResetTTaskForceToSentinelVtable();
+  func_0x004064d8();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00552930
+// GHIDRA_NAME TTaskForce::Free
+// GHIDRA_PROTO void __thiscall Free(int * pMapOrderEntry)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void DeleteMapOrderEntryAndUnlink(int* pMapOrderEntry)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void DeleteMapOrderEntryAndUnlink(int* pMapOrderEntry) */
+
+void TTaskForce::Free(int *pMapOrderEntry)
+
+{
+  int iVar1;
+  int iVar2;
+  int *piVar3;
+  
+  iVar2 = *(int *)&this->field_0x10;
+  while (iVar2 != 0) {
+    *(undefined4 *)(**(int **)&this->field_0x10 + 0xc) = 0;
+    iVar1 = *(int *)&this->field_0x10;
+    iVar2 = *(int *)(iVar1 + 4);
+    if (iVar2 != 0) {
+      *(undefined4 *)(iVar2 + 8) = *(undefined4 *)(iVar1 + 8);
+    }
+    if (*(int *)(iVar1 + 8) != 0) {
+      *(undefined4 *)(*(int *)(iVar1 + 8) + 4) = *(undefined4 *)(iVar1 + 4);
+    }
+    operator_delete(iVar1);
+    *(int *)&this->field_0x10 = iVar2;
+  }
+  if ((g_pNavyOrderManager != (TNavyMgr *)0x0) &&
+     (this == *(TTaskForce **)&g_pNavyOrderManager->field_0x4)) {
+    *(undefined4 *)&g_pNavyOrderManager->field_0x4 = *(undefined4 *)&this->field_0x2c;
+  }
+  if (*(int *)&this->field_0x28 != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x28 + 0x2c) = *(undefined4 *)&this->field_0x2c;
+  }
+  if (*(int *)&this->field_0x2c != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x2c + 0x28) = *(undefined4 *)&this->field_0x28;
+  }
+  *(undefined4 *)&this->field_0x28 = 0;
+  *(undefined4 *)&this->field_0x2c = 0;
+                    /* If deleting the current head entry, advance DAT_006A43E4->pHead to next
+                       queued entry. */
+  func_0x00404c28(this);
+  if ((g_apNationStates[*(short *)&this->field_0x1c] != (TGreatPower *)0x0) &&
+     (iVar2 = CObject::IsKindOf((CObject *)g_apNationStates[*(short *)&this->field_0x1c]),
+     iVar2 != 0)) {
+    piVar3 = (int *)func_0x00401118();
+    iVar2 = func_0x00403620();
+    while (iVar2 != 0) {
+      (**(code **)(*piVar3 + 0x90))(this);
+      piVar3 = (int *)func_0x00406d20();
+      iVar2 = func_0x00403620();
+    }
+  }
+  if (this != (TTaskForce *)0x0) {
+    (*this->vftable->~TTaskForce)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00552B90
+// GHIDRA_NAME TTaskForce::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
+
+void TTaskForce::WriteTo(int *param_1)
+
+{
+  code *pcVar1;
+  int iVar2;
+  int *piVar3;
+  TShip *pTVar4;
+  short sVar5;
+  undefined2 extraout_var;
+  undefined1 *puStack_48;
+  undefined4 uStack_44;
+  undefined1 *puStack_40;
+  undefined4 uStack_3c;
+  int **ppiStack_38;
+  undefined4 uStack_34;
+  undefined1 *puStack_30;
+  undefined4 uStack_2c;
+  undefined1 *puStack_28;
+  undefined4 uStack_24;
+  undefined1 *puStack_20;
+  undefined4 uStack_1c;
+  int *piStack_18;
+  
+  piStack_18 = param_1;
+  uStack_1c = 0x552ba1;
+  func_0x0040583a();
+  puStack_20 = &this->field_0x4;
+  uStack_1c = 4;
+  pcVar1 = *(code **)(*param_1 + 0x78);
+  uStack_24 = 0x552bb0;
+  (*pcVar1)();
+  uStack_24 = 4;
+  uStack_2c = 0x552bba;
+  puStack_28 = &this->field_0x8;
+  (*pcVar1)();
+  if (*(int *)&this->field_0x8 == 5) {
+    sVar5 = 0;
+    do {
+      if (*(int *)&g_pGlobalMapState->field_0x10 + sVar5 * 0xa8 == *(int *)&this->field_0xc) break;
+      sVar5 = sVar5 + 1;
+    } while (sVar5 < 0x180);
+  }
+  else {
+    uStack_2c = 0x552bfc;
+    func_0x004055ba();
+  }
+  puStack_30 = &stack0xfffffff0;
+  uStack_2c = 2;
+  uStack_34 = 0x552c0b;
+  (*pcVar1)();
+  uStack_34 = 0x552c13;
+  piStack_18 = (int *)func_0x004055ba();
+  ppiStack_38 = &piStack_18;
+  uStack_34 = 2;
+  uStack_3c = 0x552c22;
+  (*pcVar1)();
+  puStack_40 = &this->field_0x1c;
+  uStack_3c = 2;
+  uStack_44 = 0x552c2c;
+  (*pcVar1)();
+  puStack_48 = &this->field_0x26;
+  uStack_44 = 1;
+  (*pcVar1)();
+  (*pcVar1)(&this->field_0x30,2);
+  if (this == (TTaskForce *)0x0) {
+    puStack_40 = (undefined1 *)0x0;
+  }
+  else {
+    puStack_40 = (undefined1 *)0x0;
+    for (iVar2 = *(int *)&this->field_0x10; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
+      puStack_40 = puStack_40 + 1;
+    }
+  }
+  (*pcVar1)(&puStack_40,2);
+  for (piVar3 = *(int **)&this->field_0x10; piVar3 != (int *)0x0; piVar3 = (int *)piVar3[1]) {
+    puStack_40 = (undefined1 *)0x0;
+    for (pTVar4 = g_pNavyPrimaryOrderListHead;
+        (pTVar4 != (TShip *)0x0 && (pTVar4 != (TShip *)*piVar3));
+        pTVar4 = *(TShip **)&pTVar4->field_0x24) {
+      puStack_40 = puStack_40 + 1;
+    }
+    (*pcVar1)(&puStack_40,2);
+    puStack_48 = (undefined1 *)CONCAT22(extraout_var,(short)(char)piVar3[3]);
+    (*pcVar1)(&puStack_48,2);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00552D10
+// GHIDRA_NAME TTaskForce::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
+
+void TTaskForce::ReadFrom(int *param_1)
+
+{
+  code *pcVar1;
+  TShip *pTVar2;
+  char cVar3;
+  short sVar4;
+  int iVar5;
+  undefined4 uVar6;
+  short *psVar7;
+  int *piVar8;
+  undefined1 *puStack_58;
+  short *psStack_50;
+  short *psStack_4c;
+  undefined1 **ppuStack_48;
+  undefined1 *puStack_44;
+  int **ppiStack_40;
+  undefined4 uStack_3c;
+  undefined1 *puStack_38;
+  undefined4 uStack_34;
+  undefined1 *puStack_30;
+  undefined1 *puStack_2c;
+  int *piStack_28;
+  
+  piStack_28 = param_1;
+  puStack_2c = (undefined1 *)0x552d27;
+  func_0x00403517();
+  puStack_30 = &this->field_0x4;
+  puStack_2c = (undefined1 *)0x4;
+  pcVar1 = *(code **)(*param_1 + 0x3c);
+  uStack_34 = 0x552d36;
+  (*pcVar1)();
+  uStack_34 = 4;
+  uStack_3c = 0x552d40;
+  puStack_38 = &this->field_0x8;
+  (*pcVar1)();
+  ppiStack_40 = &piStack_28;
+  uStack_3c = 2;
+  puStack_44 = (undefined1 *)0x552d4b;
+  (*pcVar1)();
+  if (*(int *)&this->field_0x8 == 5) {
+    iVar5 = *(int *)&g_pGlobalMapState->field_0x10 + (short)puStack_30 * 0xa8;
+  }
+  else {
+    puStack_44 = puStack_30;
+    ppuStack_48 = (undefined1 **)0x552d77;
+    iVar5 = func_0x004024c3();
+  }
+  ppuStack_48 = &puStack_30;
+  puStack_44 = (undefined1 *)0x2;
+  *(int *)&this->field_0xc = iVar5;
+  psStack_4c = (short *)0x552d88;
+  (*pcVar1)();
+  psStack_4c = (short *)puStack_38;
+  psStack_50 = (short *)0x552d92;
+  uVar6 = func_0x004024c3();
+  psVar7 = (short *)&this->field_0x1c;
+  *(undefined4 *)&this->field_0x18 = uVar6;
+  psStack_4c = (short *)0x2;
+  psStack_50 = psVar7;
+  puStack_2c = (undefined1 *)psVar7;
+  (*pcVar1)();
+  (*pcVar1)();
+  puStack_38 = &this->field_0x30;
+  (*pcVar1)(puStack_38,2);
+  (*pcVar1)(&psStack_50,2);
+  puStack_58 = &this->field_0x25;
+  if ((short)this != -0x26) {
+    do {
+      (*pcVar1)(&psStack_50,2);
+      (*pcVar1)(&ppuStack_48,2);
+      pTVar2 = g_pNavyPrimaryOrderListHead;
+      for (psVar7 = psStack_50; (pTVar2 != (TShip *)0x0 && ((short)psVar7 != 0));
+          psVar7 = (short *)((int)psVar7 + -1)) {
+        pTVar2 = *(TShip **)&pTVar2->field_0x24;
+      }
+      if ((0x10 < g_nSaveFormatVersion) || (*(int *)&pTVar2->field_0xc == 0)) {
+        func_0x004027de(pTVar2);
+        cVar3 = (char)ppiStack_40;
+        piVar8 = piRam00000011;
+        if ((piRam00000011 != (int *)0x0) && ((TShip *)*piRam00000011 != pTVar2)) {
+          piVar8 = (int *)func_0x0040635c(pTVar2);
+        }
+        if ((piVar8 != (int *)0x0) && (*(char *)(piVar8 + 3) = cVar3, cVar3 != '\0')) {
+          *(undefined4 *)&pTVar2->field_0x34 = 0;
+        }
+      }
+      sVar4 = (short)puStack_58;
+      puStack_58 = puStack_58 + -1;
+      psVar7 = psStack_4c;
+    } while (sVar4 != 0);
+  }
+  sVar4 = func_0x00403b16();
+  if (*(short *)ppuStack_48 == -1) {
+    if (*psVar7 != sVar4) {
+      return;
+    }
+  }
+  else {
+    if (*psVar7 != sVar4) {
+      *(short *)ppuStack_48 = -1;
+      return;
+    }
+    if (-1 < *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + *(short *)ppuStack_48 * 0x24))
+    {
+      return;
+    }
+  }
+  func_0x00404a1b();
+  return;
 }
 

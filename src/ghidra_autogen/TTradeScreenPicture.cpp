@@ -3,14 +3,44 @@
 // Program: Imperialism.exe
 // Bucket: TTradeScreenPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005BA700
-// GHIDRA_NAME TTradeScreenPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005BA680
+// GHIDRA_NAME TTradeScreenPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TTradeScreenPicture::GetTEventHandlerClassNamePointer()
+undefined4 * TTradeScreenPicture::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006390da;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x90);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005BA700
+// GHIDRA_NAME TTradeScreenPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TTradeScreenPicture::GetRuntimeClass()
+
+{
+  return &classTTradeScreenPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA750
@@ -20,116 +50,112 @@ CRuntimeClass * TTradeScreenPicture::GetTEventHandlerClassNamePointer()
 TTradeScreenPicture * TTradeScreenPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040826f();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA7A0
-// GHIDRA_NAME TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(CString param_1)
+// GHIDRA_NAME TTradeScreenPicture::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(CString param_1)
 
-void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
+void TTradeScreenPicture::ApplyRectSlot110(CString param_1)
 
 {
   TSimMgrVtbl *pTVar1;
   undefined uVar2;
   short sVar3;
+  int iVar4;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
-  undefined3 extraout_var_02;
   char *pcVar5;
   int iVar6;
-  undefined4 *unaff_FS_OFFSET;
-  _vslot_fn *local_30;
+  int *unaff_FS_OFFSET;
+  TTradeScreenPicture *local_34;
+  int local_30;
   int iStack_2c;
   int iStack_28;
   int iStack_24;
-  int iStack_20;
-  RECT local_1c;
-  undefined4 local_c;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  int local_10;
+  int local_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
-  int iVar4;
-
-  local_4 = 0xffffffff;
+  CString local_4;
+  
+  local_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_00639100;
   local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_1c.left = *(LONG *)param_1.m_pchData;
-  local_1c.top = *(LONG *)(param_1.m_pchData + 4);
-  local_1c.right = *(LONG *)(param_1.m_pchData + 8);
-  local_1c.bottom = *(LONG *)(param_1.m_pchData + 0xc);
-  if ((*(short *)(DAT_006a2158 + 0x1c) == 0x7d9) || (*(short *)(DAT_006a2158 + 0x1c) == 0x7da)) {
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_1c,0,
-               (astruct_19 *)0x0);
+  *unaff_FS_OFFSET = (int)&local_c;
+  local_1c = *(undefined4 *)param_1.m_pchData;
+  local_18 = *(undefined4 *)(param_1.m_pchData + 4);
+  local_14 = *(undefined4 *)(param_1.m_pchData + 8);
+  local_10 = *(int *)(param_1.m_pchData + 0xc);
+  local_34 = this;
+  if ((*(short *)(g_pDisplayMgr + 0x1c) == 0x7d9) || (*(short *)(g_pDisplayMgr + 0x1c) == 0x7da)) {
+    func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                    &local_1c,&local_1c,0,0);
   }
   else {
-    TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
-    InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xe,0x2b68,2);
+    func_0x00404fe8(param_1.m_pchData);
+    func_0x00401bf9(0,0xe,0x2b68,2);
     iVar6 = 0;
     pcVar5 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
-    local_30 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    local_34 = (TTradeScreenPicture *)this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
     do {
-      CString::__0CString__QAE_XZ(&param_1);
-      local_4 = 0;
-      uVar2 = (*local_30)(*(undefined4 *)pcVar5);
-      iVar4 = CONCAT31(extraout_var,uVar2);
+      CString::CString((CString *)&stack0x00000000);
+      puStack_8 = (undefined1 *)0x0;
+      iVar4 = (*(code *)local_34)(*(undefined4 *)pcVar5);
       if (iVar4 == 0) {
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag
-                  (s_D__Ambit_Cross_UTradeViews_cpp_0069aa94,0xbf);
+        MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+        func_0x004057a4(s_D__Ambit_Cross_UTradeViews_cpp_0069aa94,0xbf);
       }
       if (((pcVar5 != " 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg") &&
           (pcVar5 != " 5am 0dg 1dg 2dg 3dg")) || (g_pCityOrderCapabilityState->field_0x193 != '\0'))
       {
-        iStack_28 = *(int *)(iVar4 + 0x28) + 3;
-        iStack_20 = *(int *)(iVar4 + 0x28) + 0x11;
-        iStack_2c = *(int *)(iVar4 + 0x24) + 0x11a;
-        iStack_24 = *(int *)(iVar4 + 0x24) + 300;
-        sVar3 = UiRuntimeContext::GetActiveNationId();
-        uVar2 = (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar6);
-        if ((short)CONCAT31(extraout_var_00,uVar2) == 0) {
-          CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffc4,&DAT_0069aa90);
-          puStack_8._0_1_ = 1;
-          CString::__4CString__QAEABV0_ABV0__Z
-                    ((CString *)&stack0x00000000,(CString *)&stack0xffffffc4);
-          puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-          CString::__1CString__QAE_XZ((CString *)&stack0xffffffc4);
-        }
-        else {
-          sVar3 = UiRuntimeContext::GetActiveNationId();
-          uVar2 = (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar6);
-          _Format_CString__QAAXPBDZZ
-                    (&stack0x00000000,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var_01,uVar2)
-                    );
-        }
-        iStack_2c = iStack_2c + -5;
-        iStack_24 = iStack_24 + -5;
-        RenderTradeScreenCommoditySummaryRows_Impl(&stack0x00000000,&local_30,0xffffffff,0);
         iStack_2c = *(int *)(iVar4 + 0x28) + 3;
         iStack_24 = *(int *)(iVar4 + 0x28) + 0x11;
-        pTVar1 = g_pLocalizationTable->vftable;
-        local_30 = (_vslot_fn *)(*(int *)(iVar4 + 0x24) + 200);
-        iStack_28 = *(int *)(iVar4 + 0x24) + 0xee;
-        uVar2 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(iVar6,&stack0x00000000);
-        (*pTVar1[0xe].slot_0x04)((int)(short)CONCAT31(extraout_var_02,uVar2));
-        iStack_20 = iStack_20 + -5;
+        local_30 = *(int *)(iVar4 + 0x24) + 0x11a;
+        iStack_28 = *(int *)(iVar4 + 0x24) + 300;
+        sVar3 = func_0x00403b16();
+        uVar2 = (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar6);
+        if ((short)CONCAT31(extraout_var,uVar2) == 0) {
+          CString::CString((CString *)&stack0xffffffc0,&DAT_0069aa90);
+          local_c._0_1_ = 1;
+          CString::operator=(&local_4,(CString *)&stack0xffffffc0);
+          local_c = (uint)local_c._1_3_ << 8;
+          CString::~CString((CString *)&stack0xffffffc0);
+        }
+        else {
+          sVar3 = func_0x00403b16();
+          uVar2 = (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar6);
+          _Format_CString__QAAXPBDZZ
+                    (&local_4,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var_00,uVar2));
+        }
+        local_30 = local_30 + -5;
         iStack_28 = iStack_28 + -5;
-        RenderTradeScreenCommoditySummaryRows_Impl(&param_1,&iStack_2c,0xffffffff,0);
+        func_0x004053c1(&local_4,&local_34,0xffffffff,0);
+        local_30 = *(int *)(iVar4 + 0x28) + 3;
+        iStack_28 = *(int *)(iVar4 + 0x28) + 0x11;
+        pTVar1 = g_pLocalizationTable->vftable;
+        local_34 = (TTradeScreenPicture *)(*(int *)(iVar4 + 0x24) + 200);
+        iStack_2c = *(int *)(iVar4 + 0x24) + 0xee;
+        uVar2 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(iVar6,&local_4);
+        (*pTVar1[0xe].slot_0x04)((int)(short)CONCAT31(extraout_var_01,uVar2));
+        local_34 = (TTradeScreenPicture *)&local_34[-1].field_0x8b;
+        func_0x004053c1(&local_10,&stack0xffffffc0,0xffffffff,0);
       }
-      local_4 = 0xffffffff;
-      CString::__1CString__QAE_XZ(&param_1);
+      puStack_8 = (undefined1 *)0xffffffff;
+      CString::~CString((CString *)&stack0x00000000);
       pcVar5 = pcVar5 + 4;
       iVar6 = iVar6 + 1;
     } while ((int)pcVar5 < 0x66db14);
   }
-  *unaff_FS_OFFSET = local_c;
+  *unaff_FS_OFFSET = local_10;
   return;
 }
 

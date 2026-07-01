@@ -3,9 +3,53 @@
 // Program: Imperialism.exe
 // Bucket: TCommandHandler.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00486570
+// GHIDRA_NAME TCommandHandler::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TCommandHandler::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ea7a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x20);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403049();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004865E0
+// GHIDRA_NAME TCommandHandler::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TCommandHandler * TCommandHandler::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00408bc5();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00486610
 // GHIDRA_NAME TCommandHandler::CreateTCommandHandlerInstance
-// GHIDRA_PROTO undefined __thiscall TCommandHandler::CreateTCommandHandlerInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTCommandHandlerInstance(void)
 
 void TCommandHandler::CreateTCommandHandlerInstance()
 
@@ -16,13 +60,13 @@ void TCommandHandler::CreateTCommandHandlerInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486630
-// GHIDRA_NAME TCommandHandler::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TCommandHandler::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCommandHandler::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TCommandHandler::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTCommandHandler;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486650

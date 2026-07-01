@@ -3,41 +3,56 @@
 // Program: Imperialism.exe
 // Bucket: TDefendProvinceMission.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0053E5F0
-// GHIDRA_NAME TDefendProvinceMission::CreateTDefendProvinceMission
-// GHIDRA_PROTO undefined CreateTDefendProvinceMission()
+// GHIDRA_FUNCTION IMPERIALISM 0x005357D0
+// GHIDRA_NAME TDefendProvinceMission::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-TMission * TDefendProvinceMission::CreateTDefendProvinceMission(void)
+undefined4 __thiscall
+TDefendProvinceMission::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
-  TMission *this;
-  TMission *pTVar1;
+  func_0x00408cf6();
+  if ((param_2 & 1) != 0) {
+    operator_delete(param_1);
+  }
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0053E5F0
+// GHIDRA_NAME TDefendProvinceMission::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TDefendProvinceMission::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063447a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)__2_YAPAXI_Z(0x30);
+  puVar1 = (undefined4 *)operator_new(0x30);
   local_4 = 0;
-  pTVar1 = (TMission *)0x0;
-  if (this != (TMission *)0x0) {
-    TMission::ConstructTArmyMissionWithNodeKey(this,0xffff);
-    *(undefined ***)this = &g_vtblTDefendProvinceMission;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064a1(0xffffffff);
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053E670
-// GHIDRA_NAME TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer
-// GHIDRA_PROTO undefined GetTDefendProvinceMissionClassNamePointer()
+// GHIDRA_NAME TDefendProvinceMission::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer(void)
+undefined ** TDefendProvinceMission::GetRuntimeClass(void)
 
 {
   return &PTR_s_TDefendProvinceMission_00697a58;
@@ -52,20 +67,17 @@ TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext
           (TDefendProvinceMission *this)
 
 {
-  TGreatPower *this_00;
   int iVar1;
   int iVar2;
-
-  this_00 = g_apNationStates[*(short *)(this + 4)];
-  (*this_00->vftable->ConstructTTaskBaseState)();
-  TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
-            ((TAttackProvinceMission *)this_00,(int)*(short *)(this + 0x14),0);
-  iVar1 = InitializeLinkedListCursorFromOwnerHead();
-  iVar2 = LinkedListCursorHasCurrent();
+  
+  (*g_apNationStates[*(short *)(this + 4)]->vftable->ConstructTTaskBaseState)();
+  func_0x00402491((int)*(short *)(this + 0x14),0);
+  iVar1 = func_0x00401118();
+  iVar2 = func_0x00403620();
   while (iVar2 != 0) {
     *(undefined4 *)(iVar1 + 0x40) = 0;
-    iVar1 = AdvanceLinkedListCursor();
-    iVar2 = LinkedListCursorHasCurrent();
+    iVar1 = func_0x00406d20();
+    iVar2 = func_0x00403620();
   }
   (**(code **)(**(int **)(this + 0x18) + 0x5c))();
   if (*(int **)(this + 0x18) != (int *)0x0) {
@@ -89,7 +101,7 @@ TDefendProvinceMission::UpdateDefendProvinceMissionStateByNationTargetMatch
 {
   undefined uVar1;
   undefined3 extraout_var;
-
+  
   uVar1 = (*g_apNationStates[*(short *)(this + 4)]->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_10)();
   if (CONCAT31(extraout_var,uVar1) == (int)*(short *)(this + 0x14)) {
     this[8] = (TDefendProvinceMission)0x0;
@@ -119,7 +131,7 @@ TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTil
   short *psVar7;
   int local_c;
   float local_8;
-
+  
   iVar6 = 0;
   local_c = 0;
   sVar2 = *(short *)(this + 4);
@@ -130,7 +142,7 @@ TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTil
   if ('\0' < *(char *)(iVar3 + 8 + iVar5 * 0xa8)) {
     psVar7 = (short *)(iVar1 + 10);
     do {
-      sVar4 = GetTileNormalizedMovementClassId((int)*psVar7);
+      sVar4 = func_0x00402b1c((int)*psVar7);
       if (sVar2 == sVar4) {
         local_c = local_c + 1;
       }
@@ -170,15 +182,14 @@ TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyC
   int iVar9;
   float10 fVar10;
   float fStack_c;
-
+  
   pTVar1 = g_apNationStates[*(short *)(this + 4)];
   (*pTVar1->vftable->ConstructTTaskBaseState)();
   fStack_c = *(float *)&pTVar1[1].field_0x204;
   if (fStack_c <= (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
     fStack_c = DAT_0065a9b8;
   }
-  uVar4 = IsMapTileCompatibleWithCurrentTerrainOrActionContext
-                    (CONCAT22(extraout_var,*(undefined2 *)(this + 0x14)));
+  uVar4 = func_0x004016d6(CONCAT22(extraout_var,*(undefined2 *)(this + 0x14)));
   if ((char)uVar4 == '\0') {
     if ((&g_pCityOrderCapabilityState->field_0x3a5)[*(short *)(this + 4) * 0x1e] == '\0') {
       bVar8 = -((&g_pCityOrderCapabilityState->field_0x39d)[*(short *)(this + 4) * 0x1e] != '\0') &
@@ -190,14 +201,14 @@ TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyC
     iVar7 = 0;
     iVar9 = 0;
     do {
-      sVar3 = GetNormalizedCityActionResourceCostPercent(bVar8,iVar9);
+      sVar3 = func_0x004081d9(bVar8,iVar9);
       iVar7 = iVar7 + sVar3;
       iVar9 = iVar9 + 1;
     } while (iVar9 < 5);
     iVar9 = 0;
     pTVar6 = this + 0x1c;
     do {
-      sVar3 = GetNormalizedCityActionResourceCostPercent(bVar8,iVar9);
+      sVar3 = func_0x004081d9(bVar8,iVar9);
       iVar9 = iVar9 + 1;
       *(float *)pTVar6 = ((float)(int)sVar3 * fStack_c) / (float)iVar7;
       pTVar6 = pTVar6 + 4;
@@ -207,8 +218,7 @@ TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyC
   cVar2 = (*g_pDiplomacyTurnStateManager->vftable[9].slot_0x04)
                     (CONCAT22((short)((uint)uVar4 >> 0x10),*(undefined2 *)(this + 4)));
   if (cVar2 != '\0') {
-    fVar10 = (float10)ComputeDefendProvinceMissionCrossNationSupportVectorScore
-                                (CONCAT22(extraout_var_00,*(undefined2 *)(this + 0x14)));
+    fVar10 = (float10)func_0x00401a32(CONCAT22(extraout_var_00,*(undefined2 *)(this + 0x14)));
     if (unaff_EBX < _DAT_0065a8f8 * (float)fVar10) {
       unaff_EBX = _DAT_0065a8f8 * (float)fVar10;
     }

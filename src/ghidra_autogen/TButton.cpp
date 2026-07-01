@@ -3,6 +3,47 @@
 // Program: Imperialism.exe
 // Bucket: TButton.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0048EB10
+// GHIDRA_NAME TButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TButton::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062eec2;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x84);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *(undefined1 *)(puVar1 + 0x19) = 0;
+    puVar1[0x18] = 1;
+    puVar1[0x1a] = 0;
+    puVar1[0x1b] = 0;
+    puVar1[0x1c] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
+    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
+    local_4 = CONCAT31(local_4._1_3_,1);
+    *puVar1 = &_vftable_;
+    func_0x004057a4(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+    *puVar1 = &_vftable_;
+    *unaff_FS_OFFSET = local_c;
+    return puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EC00
 // GHIDRA_NAME TButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,89 +51,48 @@
 TButton * TButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TButton::CreateTButtonInstance(this);
+  func_0x00404066();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048EC30
-// GHIDRA_NAME TButton::CreateTButtonInstance
-// GHIDRA_PROTO undefined __thiscall TButton::CreateTButtonInstance(void)
-
-void TButton::CreateTButtonInstance()
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint local_4;
-
-  puStack_8 = &LAB_0062eef3;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->vftable = (TButtonVtbl *)&TView::_vftable_;
-  local_4 = 1;
-  if ((int *)this->field44 != (int *)0x0) {
-    (**(code **)(*(int *)this->field44 + 4))(1);
-  }
-  __3_YAXPAX_Z(this->field48);
-  local_4 = local_4 & 0xffffff00;
-  CString::__1CString__QAE_XZ(&this->sharedStringRef);
-  this->vftable = (TButtonVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048ECC0
-// GHIDRA_NAME TButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TButton::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTButton;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048ECE0
-// GHIDRA_NAME TButton::ConstructTButtonBaseState
-// GHIDRA_PROTO undefined ConstructTButtonBaseState()
+// GHIDRA_FUNCTION IMPERIALISM 0x0048EDD0
+// GHIDRA_NAME TButton::DestructTButtonAndMaybeFree
+// GHIDRA_PROTO undefined __thiscall DestructTButtonAndMaybeFree(byte param_1)
 
-TView * TButton::ConstructTButtonBaseState(void)
+TButton * TButton::DestructTButtonAndMaybeFree(byte param_1)
 
 {
-  TView *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062ef22;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x84);
-  local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    *(undefined1 *)&this[1].field04 = 0;
-    this[1].vftable = (TViewVtbl *)0x1;
-    this[1].padding_08_to_0b = 0;
-    this[1].field0c = 0;
-    this[1].field10 = 0;
-    this[1].field14 = 0;
-    this[1].field18 = g_nUiResourceEntryDefaultParam0;
-    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
-    local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = (TViewVtbl *)&_vftable_;
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
-    this->vftable = (TViewVtbl *)&TRadioVtbl_0064a708;
-    *unaff_FS_OFFSET = local_c;
-    return this;
+  func_0x00401b36();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
   }
-  *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492DE0
+// GHIDRA_NAME TButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TButton * TButton::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00409467();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
 }
 

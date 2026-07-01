@@ -3,26 +3,55 @@
 // Program: Imperialism.exe
 // Bucket: TArmyMission.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0053C030
-// GHIDRA_NAME TArmyMission::GetTArmyMissionClassNamePointer
-// GHIDRA_PROTO undefined GetTArmyMissionClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x0053BFB0
+// GHIDRA_NAME TArmyMission::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-undefined ** TArmyMission::GetTArmyMissionClassNamePointer(void)
+undefined4 __fastcall TArmyMission::CreateObject(undefined4 param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  int *unaff_FS_OFFSET;
+  int local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063440a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&local_c;
+  iVar1 = operator_new(0x30,param_1);
+  local_4 = 0;
+  if (iVar1 != 0) {
+    uVar2 = func_0x004064a1(0xffffffff);
+    *unaff_FS_OFFSET = iVar1;
+    return uVar2;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0053C030
+// GHIDRA_NAME TArmyMission::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
+
+undefined ** TArmyMission::GetRuntimeClass(void)
 
 {
   return &PTR_s_TArmyMission_00697a28;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C1D0
-// GHIDRA_NAME TArmyMission::DestroyTArmyMission
-// GHIDRA_PROTO undefined __thiscall DestroyTArmyMission(byte param_1)
+// GHIDRA_NAME TArmyMission::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyMission * TArmyMission::DestroyTArmyMission(byte param_1)
+TArmyMission * TArmyMission::_scalar_deleting_destructor_(byte param_1)
 
 {
-  ResetTArmyMissionToSentinelVtable();
+  func_0x00407b94();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -36,13 +65,13 @@ void TArmyMission::CleanupTArmyMissionAndReleaseChildContext()
 {
   int iVar1;
   int iVar2;
-
-  iVar1 = InitializeLinkedListCursorFromOwnerHead();
-  iVar2 = LinkedListCursorHasCurrent();
+  
+  iVar1 = func_0x00401118();
+  iVar2 = func_0x00403620();
   while (iVar2 != 0) {
     *(undefined4 *)(iVar1 + 0x40) = 0;
-    iVar1 = AdvanceLinkedListCursor();
-    iVar2 = LinkedListCursorHasCurrent();
+    iVar1 = func_0x00406d20();
+    iVar2 = func_0x00403620();
   }
   (**(code **)(**(int **)(this + 0x18) + 0x5c))();
   if (*(int **)(this + 0x18) != (int *)0x0) {

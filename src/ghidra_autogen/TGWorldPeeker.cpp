@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TGWorldPeeker.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF1F0
+// GHIDRA_NAME TGWorldPeeker::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TGWorldPeeker::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006332fa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(100);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar1[0x18] = 0;
+    *unaff_FS_OFFSET = local_c;
+    return puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF280
 // GHIDRA_NAME TGWorldPeeker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,47 +40,51 @@
 TGWorldPeeker * TGWorldPeeker::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00404890();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF2D0
-// GHIDRA_NAME TGWorldPeeker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TGWorldPeeker::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGWorldPeeker::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TGWorldPeeker::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTGWorldPeeker;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF2F0
-// GHIDRA_NAME TGWorldPeeker::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(LONG * param_1)
+// GHIDRA_NAME TGWorldPeeker::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(LONG * param_1)
 
-void TGWorldPeeker::OrphanTiny_ReturnZero_0048a730(LONG *param_1)
+void TGWorldPeeker::ApplyRectSlot110(LONG *param_1)
 
 {
-  RECT local_20;
-  RECT local_10;
-
+  LONG local_20;
+  LONG local_1c;
+  LONG local_18;
+  LONG local_14;
+  LONG local_10;
+  LONG local_c;
+  LONG local_8;
+  LONG local_4;
+  
   if (*(int *)&this->field_0x60 != 0) {
-    local_10.left = *param_1;
-    local_10.top = param_1[1];
-    local_10.right = param_1[2];
-    local_20.left = *param_1;
-    local_10.bottom = param_1[3];
-    local_20.right = param_1[2];
-    local_20.top = param_1[1];
-    local_20.bottom = param_1[3];
-    ResetQuickDrawStrokeState();
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)&this->field_0x60 + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
-               (astruct_19 *)0x0);
+    local_10 = *param_1;
+    local_c = param_1[1];
+    local_8 = param_1[2];
+    local_20 = *param_1;
+    local_4 = param_1[3];
+    local_18 = param_1[2];
+    local_1c = param_1[1];
+    local_14 = param_1[3];
+    func_0x004088aa();
+    func_0x00405493(*(int *)&this->field_0x60 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                    &local_10,&local_20,0,0);
   }
   return;
 }

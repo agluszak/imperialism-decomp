@@ -3,53 +3,41 @@
 // Program: Imperialism.exe
 // Bucket: TScroller.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048CAD0
-// GHIDRA_NAME TScroller::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x0048CA60
+// GHIDRA_NAME TScroller::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TScroller * TScroller::_scalar_deleting_destructor_(byte param_1)
-
-{
-  TScroller::CreateTScrollerInstance(this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048CB00
-// GHIDRA_NAME TScroller::CreateTScrollerInstance
-// GHIDRA_PROTO undefined __thiscall TScroller::CreateTScrollerInstance(void)
-
-void TScroller::CreateTScrollerInstance()
+undefined4 * TScroller::CreateObject(void)
 
 {
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
+  undefined4 local_c;
   undefined1 *puStack_8;
-  uint local_4;
-
-  puStack_8 = &LAB_0062ece3;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->vftable = (TScrollerVtbl *)&TView::_vftable_;
-  local_4 = 1;
-  if ((int *)this->field44 != (int *)0x0) {
-    (**(code **)(*(int *)this->field44 + 4))(1);
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ecba;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x60);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &DAT_00649a68;
+    puVar2 = puVar1;
   }
-  __3_YAXPAX_Z(this->field48);
-  local_4 = local_4 & 0xffffff00;
-  CString::__1CString__QAE_XZ(&this->sharedStringRef);
-  this->vftable = (TScrollerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CB90
-// GHIDRA_NAME TScroller::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TScroller::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TScroller::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TScroller::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
@@ -63,7 +51,7 @@ void TScroller::ConstructTScrollerBaseState(int *param_1, int *param_2, int *par
 
 {
   int iVar1;
-
+  
   iVar1 = 0;
   if ((param_1 != (int *)0x0) && (iVar1 = param_1[0x10], param_1 != (int *)0x0)) {
     this->field50 = param_1[0x14];
@@ -81,50 +69,5 @@ void TScroller::ConstructTScrollerBaseState(int *param_1, int *param_2, int *par
   }
   this->padding_40_to_43 = iVar1;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048CC40
-// GHIDRA_NAME TScroller::DestructTScrollerAndMaybeFree
-// GHIDRA_PROTO undefined DestructTScrollerAndMaybeFree()
-
-TView * TScroller::DestructTScrollerAndMaybeFree(void)
-
-{
-  TView *this;
-  undefined4 *unaff_FS_OFFSET;
-  CString local_14;
-  TView *local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062ed25;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x74);
-  local_4 = 0;
-  if (this != (TView *)0x0) {
-    local_10 = this;
-    TView::ConstructTViewBaseState(this);
-    local_4._0_1_ = 1;
-    CString::__0CString__QAE_XZ((CString *)&this[1].field0c);
-    this[1].field04 = 0;
-    this[1].padding_08_to_0b = 0;
-    local_4._0_1_ = 2;
-    this->vftable = (TViewVtbl *)&TIncludeViewVtbl_00649c60;
-    *(undefined2 *)&this[1].vftable = 0xffff;
-    CString::__0CString__QAE_PBD_Z(&local_14,(char *)&g_szEmptyString);
-    local_4._0_1_ = 3;
-    CString::__4CString__QAEABV0_ABV0__Z((CString *)&this[1].field0c,&local_14);
-    local_4 = CONCAT31(local_4._1_3_,2);
-    CString::__1CString__QAE_XZ(&local_14);
-    *(undefined2 *)&this[1].field10 = 1;
-    this->field04 = 0;
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
 }
 

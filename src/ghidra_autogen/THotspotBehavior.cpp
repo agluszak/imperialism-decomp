@@ -4,43 +4,43 @@
 // Bucket: THotspotBehavior.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0AF0
-// GHIDRA_NAME THotspotBehavior::CreateTHotspotBehaviorInstance
-// GHIDRA_PROTO undefined CreateTHotspotBehaviorInstance()
+// GHIDRA_NAME THotspotBehavior::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TBehavior * THotspotBehavior::CreateTHotspotBehaviorInstance(void)
+undefined4 * THotspotBehavior::CreateObject(void)
 
 {
-  TBehavior *this;
-  TBehavior *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630c1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TBehavior *)__2_YAPAXI_Z(0x10);
+  puVar1 = (undefined4 *)operator_new(0x10);
   local_4 = 0;
-  pTVar1 = (TBehavior *)0x0;
-  if (this != (TBehavior *)0x0) {
-    TBehavior::ConstructTBehaviorBaseState(this);
-    this->vftable = (TBehaviorVtbl *)&THotspotBehaviorVtbl_0064eac8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403602();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0B60
-// GHIDRA_NAME THotspotBehavior::GetTBehaviorClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
+// GHIDRA_NAME THotspotBehavior::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THotspotBehavior::GetTBehaviorClassNamePointer()
+CRuntimeClass * THotspotBehavior::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTHotspotBehavior;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0B80
@@ -50,21 +50,21 @@ CRuntimeClass * THotspotBehavior::GetTBehaviorClassNamePointer()
 THotspotBehavior * THotspotBehavior::ConstructTHotspotBehaviorBaseState()
 
 {
-  TBehavior::ConstructTBehaviorBaseState((TBehavior *)this);
-  this->vftable = &THotspotBehaviorVtbl_0064eac8;
+  func_0x00403602();
+  this->vftable = &_vftable_;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0BB0
-// GHIDRA_NAME THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTHotspotBehaviorAndMaybeFree(byte param_1)
+// GHIDRA_NAME THotspotBehavior::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THotspotBehavior * THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree(byte param_1)
+THotspotBehavior * THotspotBehavior::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTHotspotBehaviorAndMaybeFree_Impl();
+  func_0x0040614a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -81,12 +81,12 @@ uint THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00()
   undefined4 *puVar3;
   uint uVar4;
   int *piVar5;
-
+  
   piVar5 = *(int **)&this->field_0x8;
   if ((piVar5[7] != 0x444c4f47) && (piVar5[7] != 0x6d61696e)) {
     piVar5 = (int *)piVar5[8];
   }
-  puVar3 = (undefined4 *)__2_YAPAXI_Z(0x14);
+  puVar3 = (undefined4 *)operator_new(0x14);
   if (puVar3 == (undefined4 *)0x0) {
     puVar3 = (undefined4 *)0x0;
   }

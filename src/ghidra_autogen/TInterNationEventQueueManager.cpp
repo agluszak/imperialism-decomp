@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055C970
 // GHIDRA_NAME TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket
-// GHIDRA_PROTO undefined TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket()
+// GHIDRA_PROTO undefined QueueInterNationEventIntoNationBucket()
 
 void __thiscall
 TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket
@@ -14,7 +14,7 @@ TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket
 {
   if (g_pLocalizationTable->field_0x7a == '\0') {
     if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
-      CreateAndSendTurnEvent13_NationAndNineDwords(param_2,param_3);
+      func_0x004048d6(param_2,param_3);
       return;
     }
     (**(code **)(**(int **)(param_1 + 0xed4 + param_2 * 4) + 0x38))(param_3);
@@ -41,7 +41,7 @@ TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
   if (g_pLocalizationTable->field_0x7a == '\0') {
     if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
       if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-        CreateAndSendTurnEvent20_ShortAndTwoBytes(param_1,param_2,param_3);
+        func_0x00405bd7(param_1,param_2,param_3);
         return;
       }
     }
@@ -53,11 +53,11 @@ TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
         bVar1 = true;
       }
       if (bVar1) {
-        AddOrUpdateBilateralActionRelationEntry(param_1,param_2,param_3);
+        func_0x00406bf9(param_1,param_2,param_3);
         return;
       }
-      piVar2 = (int *)SetPlaybackState2AndNotifyOwnerCallback();
-      iVar3 = NoOpPlaybackCallback_005e1fd0();
+      piVar2 = (int *)func_0x00407919();
+      iVar3 = func_0x00409679();
       while (iVar3 != 0) {
         if (*piVar2 == param_1) {
           if ((piVar2[1] == param_2) && ((piVar2[2] & 1 << ((byte)param_3 & 0x1f)) != 0)) {
@@ -67,8 +67,8 @@ TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
             return;
           }
         }
-        piVar2 = (int *)IncrementPlaybackCounterAndNotifyOwnerCallback();
-        iVar3 = NoOpPlaybackCallback_005e1fd0();
+        piVar2 = (int *)func_0x004097dc();
+        iVar3 = func_0x00409679();
       }
       if (param_2 < 7) {
         local_10 = param_1;
@@ -106,7 +106,7 @@ TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge
   
   if (g_pLocalizationTable->field_0x7a == '\0') {
     if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
-      CreateAndSendTurnEvent21_ThreeBytes(param_1,param_2,param_3);
+      func_0x004072ac(param_1,param_2,param_3);
       return;
     }
     piVar1 = *(int **)&this->field_0xef0;

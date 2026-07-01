@@ -4,51 +4,48 @@
 // Bucket: TArmyToolbar.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058DE40
-// GHIDRA_NAME TArmyToolbar::?CreateTArmyToolbarInstance@@YAPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@XZ
-// GHIDRA_PROTO undefined ?CreateTArmyToolbarInstance@@YAPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@XZ()
+// GHIDRA_NAME TArmyToolbar::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TUberCluster *
-TArmyToolbar::
-_CreateTArmyToolbarInstance__YAPAUArmyToolbarState___Z_imperialismsrcgameTArmyToolbar_cpp126722299__XZ
-          (void)
+undefined4 * TArmyToolbar::CreateObject(void)
 
 {
-  TUberCluster *this;
-  TUberCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637d4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)__2_YAPAXI_Z(0x8c);
+  puVar1 = (undefined4 *)operator_new(0x8c);
   local_4 = 0;
-  pTVar1 = (TUberCluster *)0x0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->vftable = (TUberClusterVtbl *)&TArmyToolbarVtbl_00667ad0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00405835();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058DEC0
-// GHIDRA_NAME TArmyToolbar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TArmyToolbar::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyToolbar::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TArmyToolbar::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTArmyToolbar;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058DEE0
 // GHIDRA_NAME TArmyToolbar::?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@@Z
-// GHIDRA_PROTO undefined __thiscall TArmyToolbar::?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@@Z(void)
+// GHIDRA_PROTO undefined __thiscall ?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@@Z(void)
 
 TArmyToolbar * __thiscall
 TArmyToolbar::
@@ -56,8 +53,8 @@ _ConstructTArmyToolbarBaseState__YIPAUArmyToolbarState___Z_imperialismsrcgameTAr
           (TArmyToolbar *this)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  this->vftable = &TArmyToolbarVtbl_00667ad0;
+  func_0x00405835();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -68,137 +65,34 @@ _ConstructTArmyToolbarBaseState__YIPAUArmyToolbarState___Z_imperialismsrcgameTAr
 TArmyToolbar * TArmyToolbar::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00408567();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0058DF60
-// GHIDRA_NAME TArmyToolbar::Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60(short param_1)
-
-void __thiscall
-TArmyToolbar::Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60
-          (TArmyToolbar *this,short param_1)
-
-{
-  short sVar1;
-  TArmyToolbar_slot_0x04_0x04 *pTVar2;
-  int iVar3;
-  byte bVar4;
-  char cVar5;
-  undefined uVar6;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  undefined3 extraout_var_01;
-  int iVar7;
-  undefined2 extraout_var_02;
-  undefined2 extraout_var_03;
-  int *piVar8;
-  undefined4 *unaff_FS_OFFSET;
-  CString local_60;
-  int local_5c [6];
-  undefined2 auStack_44 [8];
-  int local_34 [7];
-  undefined4 uStack_18;
-  undefined4 uStack_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00637d68;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  CString::__0CString__QAE_XZ(&local_60);
-  piVar8 = local_34;
-  for (iVar7 = 10; iVar7 != 0; iVar7 = iVar7 + -1) {
-    *piVar8 = 0;
-    piVar8 = piVar8 + 1;
-  }
-  local_4 = 0;
-  bVar4 = 0;
-  *(short *)&this->field_0x88 = param_1;
-  piVar8 = local_5c;
-  for (iVar7 = 10; iVar7 != 0; iVar7 = iVar7 + -1) {
-    *piVar8 = 0;
-    piVar8 = piVar8 + 1;
-  }
-  if (param_1 != -1) {
-    if ((param_1 < 0) || (0x17f < param_1)) {
-      iVar7 = 0;
-    }
-    else {
-      iVar7 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_1 * 0xa8);
-    }
-    for (; iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x14)) {
-      sVar1 = *(short *)(iVar7 + 8);
-      if (sVar1 == 0) {
-        local_34[*(int *)(s_ltitoperssoledro_00698ed0 + *(short *)(iVar7 + 4) * 4 + 0x10)] =
-             local_34[*(int *)(s_ltitoperssoledro_00698ed0 + *(short *)(iVar7 + 4) * 4 + 0x10)] + 1;
-LAB_0058e021:
-        local_5c[*(int *)(s_ltitoperssoledro_00698ed0 + *(short *)(iVar7 + 4) * 4 + 0x10)] =
-             local_5c[*(int *)(s_ltitoperssoledro_00698ed0 + *(short *)(iVar7 + 4) * 4 + 0x10)] + 1;
-      }
-      else if ((1 < sVar1) && (sVar1 < 5)) goto LAB_0058e021;
-      cVar5 = WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650();
-      if (cVar5 != '\0') {
-        bVar4 = 1;
-      }
-    }
-  }
-  iVar7 = 0;
-  pTVar2 = this->vftable[0x12].slot_0x04;
-  do {
-    uVar6 = (*pTVar2)(iVar7 + 0x70696330);
-    (**(code **)(*(int *)CONCAT31(extraout_var,uVar6) + 0x1cc))
-              (CONCAT22(extraout_var_02,(short)local_5c[iVar7 + -1]),1);
-    uVar6 = (*pTVar2)(iVar7 + 0x61727230);
-    if ((local_5c[iVar7 + -1] == 0) || (iVar7 == 0)) {
-      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar6) + 0xa4))(0,1);
-    }
-    else {
-      iVar3 = *(int *)CONCAT31(extraout_var_00,uVar6);
-      (**(code **)(iVar3 + 0x1c4))(CONCAT22(extraout_var_03,auStack_44[iVar7 * 2]),1);
-      (**(code **)(iVar3 + 0xa4))(1,1);
-    }
-    iVar7 = iVar7 + 1;
-  } while (iVar7 < 10);
-  uVar6 = (*pTVar2)(0x67617272);
-  iVar7 = *(int *)CONCAT31(extraout_var_01,uVar6);
-  (**(code **)(iVar7 + 0xc))();
-  (**(code **)(iVar7 + 0x1c8))((-(uint)bVar4 & 0x2020) + 0x4b5,1);
-  (**(code **)(g_pUiRuntimeContext->vftable + 0x48))();
-  uStack_10 = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff94);
-  *unaff_FS_OFFSET = uStack_18;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E1C0
-// GHIDRA_NAME TArmyToolbar::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int * param_2)
+// GHIDRA_NAME TArmyToolbar::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int * param_2)
 
-void TArmyToolbar::OrphanRetStub_0059add0(int param_1, int *param_2)
+void TArmyToolbar::HandleEvent(int param_1, int *param_2)
 
 {
   uint uVar1;
   ushort uVar2;
   undefined4 uVar3;
   undefined2 extraout_var;
-  TArmyMgrVtbl *pTVar4;
-
+  int iVar4;
+  
   uVar1 = param_2[7];
   if ((0x6172722f < uVar1) && (uVar1 < 0x6172723a)) {
     uVar3 = CONCAT22((short)(uVar1 >> 0x10),(short)param_2[7] + -0x7230);
     if (param_1 == 100) {
-      uVar3 = ActivateFirstActiveTacticalUnitByCategoryAtTile
-                        (uVar3,*(undefined2 *)&this->field_0x88);
+      uVar3 = func_0x004071fd(uVar3,*(undefined2 *)&this->field_0x88);
     }
     else {
-      uVar3 = ActivateFirstIdleTacticalUnitByCategoryAtTile(uVar3,*(undefined2 *)&this->field_0x88);
+      uVar3 = func_0x00408756(uVar3,*(undefined2 *)&this->field_0x88);
     }
     (**(code **)(*param_2 + 0x1c4))(uVar3,1);
     (**(code **)(g_pUiRuntimeContext->vftable + 0x48))();
@@ -207,37 +101,34 @@ void TArmyToolbar::OrphanRetStub_0059add0(int param_1, int *param_2)
   if (uVar1 == 0x67617272) {
     uVar2 = GetAsyncKeyState(0x11);
     if ((uVar2 & 0x8000) != 0) {
-      TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection
-                ((TSuperArmyRoster *)g_pUiRuntimeContext);
+      func_0x0040593e();
       return;
     }
-    if (*(short *)&g_pMapContextActionManager->field_0x31c != -1) {
+    if ((short)g_pMapContextActionManager[199] != -1) {
       (**(code **)(g_pUiRuntimeContext->vftable + 0xec))
-                (CONCAT22(extraout_var,*(short *)&g_pMapContextActionManager->field_0x31c));
+                (CONCAT22(extraout_var,(short)g_pMapContextActionManager[199]));
       return;
     }
   }
   else {
     if (uVar1 == 0x64666e64) {
-      (*g_pMapContextActionManager->vftable->OrphanCallChain_C1_I34_004a4260)(2);
-      TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
-                (*(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0);
+      (**(code **)(*g_pMapContextActionManager + 0x58))(2);
+      func_0x00408b93();
       return;
     }
     if (uVar1 == 0x6c617472) {
       uVar3 = 3;
-      pTVar4 = g_pMapContextActionManager->vftable;
+      iVar4 = *g_pMapContextActionManager;
     }
     else {
       if (uVar1 != 0x646f6e65) {
         return;
       }
       uVar3 = 4;
-      pTVar4 = g_pMapContextActionManager->vftable;
+      iVar4 = *g_pMapContextActionManager;
     }
-    (*pTVar4->OrphanCallChain_C1_I34_004a4260)(uVar3);
-    TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
-              (*(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0);
+    (**(code **)(iVar4 + 0x58))(uVar3);
+    func_0x00408b93();
   }
   return;
 }

@@ -4,59 +4,59 @@
 // Bucket: TTradeSchoolView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CD760
-// GHIDRA_NAME TTradeSchoolView::CreateTTradeSchoolViewInstance
-// GHIDRA_PROTO undefined CreateTTradeSchoolViewInstance()
+// GHIDRA_NAME TTradeSchoolView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TNoHilitePicture * TTradeSchoolView::CreateTTradeSchoolViewInstance(void)
+undefined4 * TTradeSchoolView::CreateObject(void)
 
 {
-  TNoHilitePicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006318fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)__2_YAPAXI_Z(0xa8);
+  puVar1 = (undefined4 *)operator_new(0xa8);
   local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
-    this[1].vftable = (TNoHilitePictureVtbl *)0x0;
-    this[1].field0c = 0;
-    *(undefined2 *)&this[1].field10 = 0xffff;
-    this->vftable = (TNoHilitePictureVtbl *)&TTradeSchoolViewVtbl_00652690;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403328();
+    puVar1[0x25] = 0;
+    puVar1[0x28] = 0;
+    *(undefined2 *)(puVar1 + 0x29) = 0xffff;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TNoHilitePicture *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CD820
-// GHIDRA_NAME TTradeSchoolView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTradeSchoolView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeSchoolView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTradeSchoolView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTradeSchoolView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CD840
 // GHIDRA_NAME TTradeSchoolView::ConstructTTradeSchoolViewBaseState
-// GHIDRA_PROTO undefined __thiscall TTradeSchoolView::ConstructTTradeSchoolViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTradeSchoolViewBaseState(void)
 
 TTradeSchoolView * TTradeSchoolView::ConstructTTradeSchoolViewBaseState()
 
 {
-  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  func_0x00403328();
   *(undefined2 *)&this->field_0xa4 = 0xffff;
   *(undefined4 *)&this->field_0x94 = 0;
   *(undefined4 *)&this->field_0xa0 = 0;
-  this->vftable = &TTradeSchoolViewVtbl_00652690;
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -67,9 +67,9 @@ TTradeSchoolView * TTradeSchoolView::ConstructTTradeSchoolViewBaseState()
 TTradeSchoolView * TTradeSchoolView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00404327();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -122,20 +122,25 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   undefined3 extraout_var_09;
   undefined3 extraout_var_10;
   undefined3 extraout_var_11;
+  undefined3 extraout_var_12;
+  int extraout_ECX;
   undefined4 *unaff_FS_OFFSET;
-  CString CStack_ec;
-  undefined4 *puStack_e8;
-  undefined4 uStack_e4;
+  CString CStack_f0;
+  undefined4 *puStack_ec;
+  undefined4 uStack_e8;
   undefined4 uVar5;
-  undefined4 uStack_d0;
-  CString CStack_54;
-  undefined4 *puStack_50;
-  CString CStack_4c;
+  undefined4 uStack_d4;
+  int iStack_5c;
+  CString CStack_58;
+  undefined1 **ppuStack_54;
+  CString CStack_50;
+  undefined4 *puStack_4c;
   undefined1 *puStack_48;
-  undefined4 uStack_3c;
-  undefined1 *puStack_38;
+  undefined1 *puStack_40;
+  char acStack_3c [4];
+  undefined4 uStack_38;
   CString local_24;
-  char acStack_20 [4];
+  undefined1 auStack_20 [4];
   CString local_1c [2];
   undefined1 local_12;
   undefined1 local_11;
@@ -144,203 +149,218 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631958;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puStack_38 = (undefined1 *)0x4cd8f7;
-  CString::__0CString__QAE_XZ(&local_24);
+  uStack_38 = 0x4cd8f7;
+  CString::CString(&local_24);
   local_4 = 0;
-  puStack_38 = (undefined1 *)0x4cd908;
-  CString::__0CString__QAE_XZ(local_1c);
+  uStack_38 = 0x4cd908;
+  CString::CString(local_1c);
   pTVar1 = this->vftable;
-  puStack_38 = (undefined1 *)0x0;
-  uStack_3c = 0;
+  uStack_38 = 0;
+  acStack_3c[0] = '\0';
+  acStack_3c[1] = '\0';
+  acStack_3c[2] = '\0';
+  acStack_3c[3] = '\0';
   local_4 = CONCAT31(local_4._1_3_,1);
   local_12 = 0;
   local_11 = 0;
   local_10 = 0;
   local_f = 0;
+  puStack_40 = (undefined1 *)0x4cd92f;
   (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
-  CStack_4c.m_pchData = acStack_20;
+  puStack_40 = (undefined1 *)0x2b67;
+  puStack_4c = (undefined4 *)auStack_20;
   puStack_48 = (undefined1 *)0x0;
-  puStack_50 = (undefined4 *)0x4cd942;
+  CStack_50.m_pchData = (char *)0x4cd942;
   BuildUiTextStyleDescriptor();
   p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  puStack_40 = (undefined1 *)0x6e616d65;
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var,uVar4) != (int *)0x0) {
     puStack_48 = (undefined1 *)
                  CONCAT22((short)((uint)&stack0xffffffd0 >> 0x10),*(undefined2 *)&this->field_0x9e);
-    CStack_4c.m_pchData = (char *)0x2719;
-    puStack_50 = (undefined4 *)0x4cd97a;
+    puStack_4c = (undefined4 *)0x2719;
+    CStack_50.m_pchData = (char *)0x4cd97a;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
                     /* Load slot-specific title token and apply to summary header. */
     iVar3 = *(int *)CONCAT31(extraout_var,uVar4);
-    CStack_54.m_pchData = &stack0xffffffd0;
-    puStack_50 = (undefined4 *)0x0;
+    ppuStack_54 = (undefined1 **)&stack0xffffffd0;
+    CStack_50.m_pchData = (char *)0x0;
+    CStack_58.m_pchData = "j";
     (**(code **)(iVar3 + 0x1b4))();
+    CStack_58.m_pchData = (char *)0x0;
+    iStack_5c = 1;
     (**(code **)(iVar3 + 0x1c4))();
     (**(code **)(iVar3 + 0x1c8))();
   }
   puStack_48 = (undefined1 *)0x4cd9b5;
-  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffd4,(char *)&g_szEmptyString);
+  CString::CString((CString *)&stack0xffffffd4,(char *)&g_szEmptyString);
   local_10 = 2;
   puStack_48 = (undefined1 *)0x4cd9c8;
-  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffd0,(CString *)&stack0xffffffd4);
+  CString::operator=((CString *)&stack0xffffffd0,(CString *)&stack0xffffffd4);
   local_10 = 1;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
-  CStack_4c.m_pchData = &stack0xffffffd0;
-  puStack_50 = (undefined4 *)0x4cd9e8;
-  AssignStringSharedRefAndReturnThis();
-  CStack_4c.m_pchData = (char *)0x4cd9ed;
-  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  puStack_48 = (undefined1 *)0x4cd9f9;
+  CString::~CString((CString *)&stack0xffffffd4);
+  puStack_4c = (undefined4 *)&stack0xffffffd0;
+  CStack_50.m_pchData = (char *)0x4cd9e8;
+  func_0x004076b7();
+  CStack_50.m_pchData = (char *)0x4cd9ed;
+  func_0x00404d22();
+  puStack_48 = (undefined1 *)0x65717531;
+  puStack_4c = (undefined4 *)0x4cd9f9;
   uVar4 = (*p_Var2)();
-  if (CONCAT31(extraout_var_00,uVar4) != 0) {
-    puStack_48 = &stack0xffffffcc;
-    CStack_4c.m_pchData = (char *)0x18;
-    puStack_50 = (undefined4 *)0x2738;
-    CStack_54.m_pchData = (char *)0x4cda19;
+  if ((char *)CONCAT31(extraout_var_00,uVar4) != (char *)0x0) {
+    puStack_4c = &uStack_38;
+    CStack_50.m_pchData = (char *)0x18;
+    ppuStack_54 = (undefined1 **)0x2738;
+    CStack_58.m_pchData = (char *)0x4cda19;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    puStack_50 = (undefined4 *)&stack0xffffffcc;
-    CStack_54.m_pchData = (char *)0x4cda2b;
-    puStack_48 = (undefined1 *)CONCAT31(extraout_var_00,uVar4);
-    AssignStringSharedRefAndReturnThis();
-    puStack_50 = (undefined4 *)0x4cda30;
-    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
+    puStack_40 = (undefined1 *)&iStack_5c;
+    iStack_5c = extraout_ECX;
+    CStack_58.m_pchData = (char *)CONCAT31(extraout_var_00,uVar4);
+    func_0x004076b7();
+    func_0x00404d22();
   }
-  puStack_48 = (undefined1 *)0x65717532;
-  CStack_4c.m_pchData = (char *)0x4cda3c;
+  puStack_4c = (undefined4 *)0x65717532;
+  CStack_50.m_pchData = (char *)0x4cda3c;
   uVar4 = (*p_Var2)();
                     /* Populate equ2/equ3/equ4/equ5 requirement labels. */
-  if ((char *)CONCAT31(extraout_var_01,uVar4) != (char *)0x0) {
-    CStack_4c.m_pchData = (char *)&puStack_38;
-    puStack_50 = (undefined4 *)0x19;
-    CStack_54.m_pchData = (char *)0x2738;
+  if (CONCAT31(extraout_var_01,uVar4) != 0) {
+    CStack_50.m_pchData = acStack_3c;
+    ppuStack_54 = (undefined1 **)0x19;
+    CStack_58.m_pchData = (char *)0x2738;
+    iStack_5c = 0x4cda5c;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    CStack_54.m_pchData = (char *)&puStack_38;
-    CStack_4c.m_pchData = (char *)CONCAT31(extraout_var_01,uVar4);
-    AssignStringSharedRefAndReturnThis();
-    CStack_54.m_pchData = (char *)0x4cda73;
-    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
+    iStack_5c = CONCAT31(extraout_var_01,uVar4);
+    func_0x004076b7();
+    func_0x00404d22();
   }
-  CStack_4c.m_pchData = (char *)0x65717533;
-  puStack_50 = (undefined4 *)0x4cda7f;
+  CStack_50.m_pchData = (char *)0x65717533;
+  ppuStack_54 = (undefined1 **)0x4cda7f;
   uVar4 = (*p_Var2)();
   if (CONCAT31(extraout_var_02,uVar4) != 0) {
-    puStack_50 = &uStack_3c;
-    CStack_54.m_pchData = (char *)0x1a;
+    ppuStack_54 = &puStack_40;
+    CStack_58.m_pchData = (char *)0x1a;
+    iStack_5c = 0x2738;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    puStack_38 = (undefined1 *)&CStack_54;
-    puStack_50 = (undefined4 *)CONCAT31(extraout_var_02,uVar4);
-    AssignStringSharedRefAndReturnThis();
-    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
+    puStack_48 = &stack0xffffff9c;
+    func_0x004076b7();
+    func_0x00404d22();
   }
-  puStack_50 = (undefined4 *)0x65717534;
-  CStack_54.m_pchData = "Pj\x1fh8\'";
+  ppuStack_54 = (undefined1 **)0x65717534;
+  CStack_58.m_pchData = "Pj\x1fh8\'";
   uVar4 = (*p_Var2)();
-  CStack_54.m_pchData = (char *)CONCAT31(extraout_var_03,uVar4);
-  LoadUiStringByGroupAndIndexToControlObject();
-  CStack_54.m_pchData = (char *)0x65717535;
-  (*p_Var2)();
-  LoadUiStringByGroupAndIndexToControlObject();
+  CStack_58.m_pchData = (char *)CONCAT31(extraout_var_03,uVar4);
+  iStack_5c = 0x1f;
+  func_0x0040807b();
+  CStack_58.m_pchData = (char *)0x65717535;
+  iStack_5c = 0x4cdadb;
+  uVar4 = (*p_Var2)();
+  iStack_5c = CONCAT31(extraout_var_04,uVar4);
+  func_0x0040807b();
+  iStack_5c = 0x2b69;
   BuildUiTextStyleDescriptor();
-  uVar4 = (*p_Var2)();
-  if ((int *)CONCAT31(extraout_var_04,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
-  }
-  iVar3 = *(int *)CONCAT31(extraout_var_04,uVar4);
-  (**(code **)(iVar3 + 0x1b4))();
-  CString::__0CString__QAE_PBD_Z(&CStack_4c,&DAT_00696674);
-  (**(code **)(iVar3 + 0x1c8))();
-  puStack_38 = (undefined1 *)CONCAT31(puStack_38._1_3_,1);
-  CString::__1CString__QAE_XZ(&CStack_54);
+  iStack_5c = 0x70617031;
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_05,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   iVar3 = *(int *)CONCAT31(extraout_var_05,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffa0,&DAT_00696674);
+  CString::CString(&CStack_50,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
-  CStack_4c.m_pchData._0_1_ = 1;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff98);
+  acStack_3c[0] = 1;
+  CString::~CString(&CStack_58);
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_06,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   iVar3 = *(int *)CONCAT31(extraout_var_06,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff8c,&DAT_00696674);
+  CString::CString((CString *)&stack0xffffff9c,&DAT_00696674);
+  puStack_48 = (undefined1 *)CONCAT31(puStack_48._1_3_,4);
   (**(code **)(iVar3 + 0x1c8))();
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff84);
+  CStack_50.m_pchData._0_1_ = 1;
+  CString::~CString((CString *)&stack0xffffff94);
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_07,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   iVar3 = *(int *)CONCAT31(extraout_var_07,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff78,&DAT_00696674);
+  CString::CString((CString *)&stack0xffffff88,&DAT_00696674);
+  iStack_5c = CONCAT31(iStack_5c._1_3_,5);
   (**(code **)(iVar3 + 0x1c8))();
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff70);
+  CString::~CString((CString *)&stack0xffffff80);
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_08,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   iVar3 = *(int *)CONCAT31(extraout_var_08,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff64,&DAT_00696674);
+  CString::CString((CString *)&stack0xffffff74,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff5c);
+  CString::~CString((CString *)&stack0xffffff6c);
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_09,uVar4) == (int *)0x0) {
-    uStack_d0 = 0x4cdd71;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   iVar3 = *(int *)CONCAT31(extraout_var_09,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff50,&DAT_00696674);
-  uStack_d0 = 0x4cddb7;
+  CString::CString((CString *)&stack0xffffff60,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
-  uStack_d0 = 0x4cddc5;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff48);
-  uStack_d0 = 0x2b67;
-  BuildUiTextStyleDescriptor();
-  uStack_d0 = 0x636f7331;
+  CString::~CString((CString *)&stack0xffffff58);
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_10,uVar4) == (int *)0x0) {
-    uStack_e4 = 0x4cddfd;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    uStack_d4 = 0x4cdd71;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
   iVar3 = *(int *)CONCAT31(extraout_var_10,uVar4);
-  uVar5 = 0;
-  uStack_e4 = 0x4cde33;
   (**(code **)(iVar3 + 0x1b4))();
-  puStack_e8 = &uStack_d0;
-  uStack_e4 = 0;
-  CStack_ec.m_pchData = (char *)0x4cde42;
+  CString::CString((CString *)&stack0xffffff4c,&DAT_00696674);
+  uStack_d4 = 0x4cddb7;
   (**(code **)(iVar3 + 0x1c8))();
-  CStack_ec.m_pchData = (char *)0x636f7332;
+  uStack_d4 = 0x4cddc5;
+  CString::~CString((CString *)&stack0xffffff44);
+  uStack_d4 = 0x2b67;
+  BuildUiTextStyleDescriptor();
+  uStack_d4 = 0x636f7331;
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_11,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    uStack_e8 = 0x4cddfd;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
   iVar3 = *(int *)CONCAT31(extraout_var_11,uVar4);
-  (**(code **)(iVar3 + 0x1b4))(&stack0xffffff28,0);
-  (**(code **)(iVar3 + 0x1c8))(&CStack_ec,0);
-  CString::__1CString__QAE_XZ(&CStack_ec);
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff0c);
+  uVar5 = 0;
+  uStack_e8 = 0x4cde33;
+  (**(code **)(iVar3 + 0x1b4))();
+  puStack_ec = &uStack_d4;
+  uStack_e8 = 0;
+  CStack_f0.m_pchData = (char *)0x4cde42;
+  (**(code **)(iVar3 + 0x1c8))();
+  CStack_f0.m_pchData = (char *)0x636f7332;
+  uVar4 = (*p_Var2)();
+  if ((int *)CONCAT31(extraout_var_12,uVar4) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  iVar3 = *(int *)CONCAT31(extraout_var_12,uVar4);
+  (**(code **)(iVar3 + 0x1b4))(&stack0xffffff24,0);
+  (**(code **)(iVar3 + 0x1c8))(&CStack_f0,0);
+  CString::~CString(&CStack_f0);
+  CString::~CString((CString *)&stack0xffffff08);
   *unaff_FS_OFFSET = uVar5;
   return;
 }
@@ -367,16 +387,15 @@ void TTradeSchoolView::OrphanRetStub_004c6fb0()
   int iVar7;
   undefined4 uVar8;
   int iVar9;
-
+  
   if (*(int *)&this->field_0x94 == 0) {
     return;
   }
   p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x9df);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0x9df);
   }
   iVar9 = *(int *)CONCAT31(extraout_var,uVar4);
   if (*(short *)(*(int *)&this->field_0x94 + 0xca) < 1) {
@@ -397,9 +416,8 @@ LAB_004ce0fd:
   iVar9 = 0x70617032;
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_00,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x9ef);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0x9ef);
   }
   iVar7 = *(int *)CONCAT31(extraout_var_00,uVar4);
   if (*(short *)(*(int *)&this->field_0x94 + 0xca) < 2) {
@@ -419,9 +437,8 @@ LAB_004ce16b:
   }
   uVar4 = (*p_Var2)(0x6d6f6e31);
   if ((int *)CONCAT31(extraout_var_01,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa00);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa00);
   }
   iVar7 = *(int *)CONCAT31(extraout_var_01,uVar4);
   iVar3 = *(int *)(*(int *)&this->field_0x94 + 0xac);
@@ -443,9 +460,8 @@ LAB_004ce201:
   }
   uVar4 = (*p_Var2)(0x6d6f6e32);
   if ((int *)CONCAT31(extraout_var_02,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa11);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa11);
   }
   iVar7 = *(int *)CONCAT31(extraout_var_02,uVar4);
   iVar3 = *(int *)(*(int *)&this->field_0x94 + 0xac);
@@ -467,9 +483,8 @@ LAB_004ce299:
   }
   uVar4 = (*p_Var2)(0x756e7456);
   if ((int *)CONCAT31(extraout_var_03,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa23);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa23);
   }
   sVar6 = sRam7061704d;
   if (*(short *)(iRam70617045 + 4) <= sRam7061704d) {
@@ -490,9 +505,8 @@ LAB_004ce299:
 LAB_004ce31a:
   uVar4 = (*p_Var2)(0x74726156);
   if ((int *)CONCAT31(extraout_var_04,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa34);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa34);
   }
   iVar7 = (int)*(short *)(*(int *)(iVar9 + 0x14) + 6);
   iVar9 = (int)*(short *)(iVar9 + 0x1c) / 2;

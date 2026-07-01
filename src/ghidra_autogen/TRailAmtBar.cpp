@@ -4,43 +4,43 @@
 // Bucket: TRailAmtBar.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589ED0
-// GHIDRA_NAME TRailAmtBar::CreateTRailAmtBarInstance
-// GHIDRA_PROTO undefined CreateTRailAmtBarInstance()
+// GHIDRA_NAME TRailAmtBar::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TRailAmtBar::CreateTRailAmtBarInstance(void)
+undefined4 * TRailAmtBar::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006379da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x6c);
+  puVar1 = (undefined4 *)operator_new(0x6c);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    *(undefined2 *)&this[1].vftable = 0;
-    *(undefined2 *)((int)&this[1].vftable + 2) = 0;
-    *(undefined2 *)&this[1].field04 = 0;
-    *(undefined2 *)((int)&this[1].field04 + 2) = 0;
-    this->vftable = (TViewVtbl *)&TRailAmtBarVtbl_00666558;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *(undefined2 *)(puVar1 + 0x18) = 0;
+    *(undefined2 *)((int)puVar1 + 0x62) = 0;
+    *(undefined2 *)(puVar1 + 0x19) = 0;
+    *(undefined2 *)((int)puVar1 + 0x66) = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589F70
-// GHIDRA_NAME TRailAmtBar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TRailAmtBar::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRailAmtBar::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TRailAmtBar::GetRuntimeClass()
 
 {
   return &g_pClassDescTRailAmtBar;
@@ -48,13 +48,13 @@ CRuntimeClass * TRailAmtBar::GetTEventHandlerClassNamePointer()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589F90
 // GHIDRA_NAME TRailAmtBar::ConstructBaseState
-// GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
 
 TRailAmtBar * TRailAmtBar::ConstructBaseState()
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
-  this->vftable = &TRailAmtBarVtbl_00666558;
+  func_0x004064e2();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x60 = 0;
   *(undefined2 *)&this->field_0x62 = 0;
   *(undefined2 *)&this->field_0x64 = 0;
@@ -69,87 +69,88 @@ TRailAmtBar * TRailAmtBar::ConstructBaseState()
 TRailAmtBar * TRailAmtBar::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x0040173f();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A020
-// GHIDRA_NAME TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
+// GHIDRA_NAME TRailAmtBar::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(int param_1)
 
-void TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
+void TRailAmtBar::NoOpUiLifecycleHook(int param_1)
 
 {
   uint uVar1;
   int *piVar2;
-  int iVar3;
+  short sVar3;
   short sVar4;
-  short sVar5;
-  undefined2 uVar6;
+  undefined2 uVar5;
+  int iVar6;
   TCity *pTVar7;
-
-  sVar4 = UiRuntimeContext::GetActiveNationId();
-  if (g_apNationStates[sVar4] == (TGreatPower *)0x0) {
+  
+  sVar3 = func_0x00403b16();
+  if (g_apNationStates[sVar3] == (TGreatPower *)0x0) {
     pTVar7 = (TCity *)0x0;
   }
   else {
-    pTVar7 = g_apNationStates[sVar4]->city;
+    pTVar7 = g_apNationStates[sVar3]->city;
   }
   uVar1 = this->ownerContext->controlTag;
+  iVar6 = param_1;
   if (uVar1 < 0x706f7076) {
     if (uVar1 == 0x706f7075) {
-      param_1 = 0x3c;
+      iVar6 = 0x3c;
     }
     else if (uVar1 == 0x666f6f64) {
-      param_1 = 7;
+      iVar6 = 7;
     }
   }
   else if (uVar1 < 0x70726f67) {
     if (uVar1 == 0x70726f66) {
-      param_1 = 0x18;
+      iVar6 = 0x18;
     }
     else if (uVar1 == 0x706f7765) {
-      param_1 = 0x34;
+      iVar6 = 0x34;
     }
   }
   else if (uVar1 == 0x7261696c) {
-    param_1 = 0x33;
+    iVar6 = 0x33;
   }
   else if (uVar1 == 0x74726169) {
-    param_1 = 0x17;
+    iVar6 = 0x17;
   }
-  piVar2 = pTVar7->orderSlotsE4[(short)param_1];
+  piVar2 = pTVar7->orderSlotsE4[(short)iVar6];
   *(int **)&this->field_0x68 = piVar2;
-  if ((param_1 == 0x33) || (param_1 == 7)) {
-    iVar3 = *(int *)(*(int *)&pTVar7->field_0x1d8 + 0x14);
-    sVar4 = (short)((*(short *)(iVar3 + 8) * 2 + *(short *)(iVar3 + 6)) * 2 +
-                    *(short *)(*(int *)&pTVar7->field_0x1d8 + 0x1e) + *(short *)(iVar3 + 4)) / 2;
+  if ((iVar6 == 0x33) || (iVar6 == 7)) {
+    iVar6 = *(int *)(*(int *)&pTVar7->field_0x1d8 + 0x14);
+    sVar3 = (short)((*(short *)(iVar6 + 8) * 2 + *(short *)(iVar6 + 6)) * 2 +
+                    *(short *)(*(int *)&pTVar7->field_0x1d8 + 0x1e) + *(short *)(iVar6 + 4)) / 2;
   }
   else {
-    sVar4 = (**(code **)(*piVar2 + 0x30))();
+    sVar3 = (**(code **)(*piVar2 + 0x30))();
   }
-  if (sVar4 == 0) {
-    uVar6 = 9999;
-  }
-  else {
-    sVar5 = (**(code **)(**(int **)&this->field_0x68 + 0x30))();
-    uVar6 = (undefined2)(((int)sVar5 * this->field34) / (int)sVar4);
-  }
-  *(undefined2 *)&this->field_0x62 = uVar6;
-  *(short *)&this->field_0x64 = sVar4;
-  if (sVar4 == 0) {
-    uVar6 = 9999;
+  if (sVar3 == 0) {
+    uVar5 = 9999;
   }
   else {
-    uVar6 = (undefined2)
-            ((this->field34 * (int)*(short *)(*(int *)&this->field_0x68 + 4)) / (int)sVar4);
+    sVar4 = (**(code **)(**(int **)&this->field_0x68 + 0x30))();
+    uVar5 = (undefined2)(((int)sVar4 * this->field34) / (int)sVar3);
   }
-  *(undefined2 *)&this->field_0x60 = uVar6;
+  *(undefined2 *)&this->field_0x62 = uVar5;
+  *(short *)&this->field_0x64 = sVar3;
+  if (sVar3 == 0) {
+    uVar5 = 9999;
+  }
+  else {
+    uVar5 = (undefined2)
+            ((this->field34 * (int)*(short *)(*(int *)&this->field_0x68 + 4)) / (int)sVar3);
+  }
+  *(undefined2 *)&this->field_0x60 = uVar5;
   *(undefined2 *)&this->field_0x66 = 0x3a;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  func_0x00406ba9(param_1);
   return;
 }
 
@@ -172,14 +173,14 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006379f8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  AcquireReusableQuickDrawSurface();
+  func_0x004021c1();
   local_4 = 0;
-  ApplyHitRegionToClipState();
+  func_0x0040232e();
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->VTableSlot3B)();
   if (cVar2 != '\0') {
@@ -193,24 +194,24 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       if (0 < *(short *)&this->field_0x60) {
         SetQuickDrawTextOriginWithContextOffset(0);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1);
-        DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1);
-        ResetQuickDrawStrokeState();
+        func_0x00402e73(1,4);
+        DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1,1);
+        func_0x004088aa();
         uVar4 = extraout_var_02;
       }
       SetQuickDrawTextOriginWithContextOffset
                 (CONCAT22(uVar4,*(undefined2 *)&this->field_0x62));
-      SetQuickDrawFillColor();
-      ResetQuickDrawStrokeState();
+      func_0x00406b86();
+      func_0x004088aa();
       DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62))
       ;
-      SnapshotHitRegionToClipCache();
+      func_0x00405be1();
       uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
     }
   }
   local_4 = 0xffffffff;
-  ReleaseOrCacheQuickDrawSurface();
+  func_0x00409aac();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -225,42 +226,40 @@ void TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB(undefined2 param_1
   TRailAmtBarVtbl *pTVar1;
   char cVar2;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 local_28;
+  int local_28;
   int iStack_24;
   int iStack_20;
   int iStack_1c;
   int iStack_18;
   int iStack_14;
-  int iStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637a18;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  AcquireReusableQuickDrawSurface();
+  func_0x004021c1();
   local_4 = 0;
   *(undefined2 *)&this->field_0x62 = param_1;
-  ApplyHitRegionToClipState(local_28);
+  func_0x0040232e(local_28);
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->VTableSlot3B)();
   if (cVar2 != '\0') {
     cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
     if (cVar2 != '\0') {
-      iStack_24 = DAT_006a4450;
-      iStack_20 = DAT_006a4454;
+      iStack_24 = g_nOverlayClipCacheParamX;
+      iStack_20 = g_nOverlayClipCacheParamY;
       (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)(&iStack_24);
-      iStack_14 = this->field34 + iStack_24;
-      iStack_10 = this->field38 + iStack_20;
+      iStack_18 = this->field34 + local_28;
+      iStack_14 = this->field38 + iStack_24;
       iStack_1c = iStack_24;
-      iStack_18 = iStack_20;
-      InvalidateCityDialogRectRegion(&iStack_1c,1);
+      func_0x00408a03(&iStack_20,1);
     }
   }
   local_4 = 0xffffffff;
-  ReleaseOrCacheQuickDrawSurface();
+  func_0x00409aac();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

@@ -4,43 +4,43 @@
 // Bucket: TTradeTotalsLine.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1870
-// GHIDRA_NAME TTradeTotalsLine::CreateTTradeTotalsLineInstance
-// GHIDRA_PROTO undefined CreateTTradeTotalsLineInstance()
+// GHIDRA_NAME TTradeTotalsLine::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TLineData * TTradeTotalsLine::CreateTTradeTotalsLineInstance(void)
+undefined4 * TTradeTotalsLine::CreateObject(void)
 
 {
-  TLineData *this;
-  TLineData *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063983a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)__2_YAPAXI_Z(0x14);
+  puVar1 = (undefined4 *)operator_new(0x14);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (this != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(this);
-    this->vftable = (TLineDataVtbl *)&TTradeTotalsLineVtbl_0066e1f8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00408f0d();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C18E0
-// GHIDRA_NAME TTradeTotalsLine::GetTLineDataClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
+// GHIDRA_NAME TTradeTotalsLine::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeTotalsLine::GetTLineDataClassNamePointer()
+CRuntimeClass * TTradeTotalsLine::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTradeTotalsLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1900
@@ -50,28 +50,28 @@ CRuntimeClass * TTradeTotalsLine::GetTLineDataClassNamePointer()
 TTradeTotalsLine * TTradeTotalsLine::ConstructTTradeTotalsLineBaseState()
 
 {
-  TLineData::ConstructTLineDataBaseState((TLineData *)this);
-  this->vftable = &TTradeTotalsLineVtbl_0066e1f8;
+  func_0x00408f0d();
+  this->vftable = &_vftable_;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1930
-// GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTradeTotalsLineAndMaybeFree(byte param_1)
+// GHIDRA_NAME TTradeTotalsLine::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeTotalsLine * TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(byte param_1)
+TTradeTotalsLine * TTradeTotalsLine::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(this);
+  func_0x00405353();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1960
 // GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl
-// GHIDRA_PROTO undefined __thiscall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTradeTotalsLineAndMaybeFree_Impl(void)
 
 void TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl()
 
@@ -91,30 +91,32 @@ TTradeTotalsLine::OrphanRetStub_0056f460
 
 {
   undefined2 uVar1;
-  TView *this_00;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar3;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063985a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (TView *)__2_YAPAXI_Z(100);
+  puVar2 = (undefined4 *)operator_new(100);
   local_4 = 0;
-  if (this_00 == (TView *)0x0) {
-    this_00 = (TView *)0x0;
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
   }
   else {
-    TView::ConstructTViewBaseState(this_00);
-    this_00->vftable = (TViewVtbl *)&TTradeTotalsViewVtbl_0066e958;
+    func_0x004064e2();
+    *puVar2 = &TTradeTotalsView::_vftable_;
   }
   uVar1 = *(undefined2 *)&this->field_0x10;
+  uVar3 = 5;
   local_4 = 0xffffffff;
-  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
-  *(undefined2 *)&this_00[1].vftable = uVar1;
-  *unaff_FS_OFFSET = local_c;
+  func_0x004096b5(0,param_1,param_2,&this->field_0x8,5,5,0);
+  *(undefined2 *)(puVar2 + 0x18) = uVar1;
+  *unaff_FS_OFFSET = uVar3;
   return;
 }
 

@@ -11,32 +11,32 @@ TIdleMeAnimation * __cdecl TIdleMeAnimation::CreateObject(void)
 
 {
   TIdleMeAnimation *pTVar1;
-
-  pTVar1 = (TIdleMeAnimation *)__2_YAPAXI_Z(0x2c);
+  
+  pTVar1 = (TIdleMeAnimation *)operator_new(0x2c);
   if (pTVar1 != (TIdleMeAnimation *)0x0) {
-    pTVar1->vftable = &TIdleMeAnimationVtbl_0064dfb8;
+    pTVar1->vftable = &_vftable_;
     return pTVar1;
   }
   return (TIdleMeAnimation *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC950
-// GHIDRA_NAME TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004ac950(byte param_1)
+// GHIDRA_NAME TIdleMeAnimation::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIdleMeAnimation * TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950(byte param_1)
+TIdleMeAnimation * TIdleMeAnimation::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TIdleMeAnimation::CreateTIdleMeAnimationInstance(this);
+  func_0x0040155f();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC980
 // GHIDRA_NAME TIdleMeAnimation::CreateTIdleMeAnimationInstance
-// GHIDRA_PROTO undefined __thiscall TIdleMeAnimation::CreateTIdleMeAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTIdleMeAnimationInstance(void)
 
 void TIdleMeAnimation::CreateTIdleMeAnimationInstance()
 
@@ -47,13 +47,13 @@ void TIdleMeAnimation::CreateTIdleMeAnimationInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC9A0
-// GHIDRA_NAME TIdleMeAnimation::GetTAnimationClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
+// GHIDRA_NAME TIdleMeAnimation::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TIdleMeAnimation::GetTAnimationClassNamePointer()
+CRuntimeClass * TIdleMeAnimation::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTIdleMeAnimation;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC9C0
@@ -68,31 +68,30 @@ void TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(undefined4 param_1)
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-
+  
   uVar1 = s_0TUATIdleMeAnimation_00695934._0_4_;
   s_0TUATIdleMeAnimation_00695934._0_4_ = s_0TUATIdleMeAnimation_00695934._0_4_ + 1;
   local_10 = 0;
   local_c = 0;
   local_8 = 0;
   local_4 = 0;
-  TAnimation::ConstructTAnimationBaseState((TAnimation *)this,param_1,&local_10,0,0,0,uVar1);
-  TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
+  func_0x0040302b(param_1,&local_10,0,0,0,uVar1);
+  func_0x00402ec8(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ACA60
-// GHIDRA_NAME TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTIdleMeAnimationAndMaybeFree(void)
+// GHIDRA_NAME TIdleMeAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
+// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
 
-void TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree()
+void TIdleMeAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
 
 {
   char cVar1;
-
+  
   cVar1 = (**(code **)(**(int **)&this->field_0x4 + 0x4c))(1);
   if ((cVar1 != '\0') && (this != (TIdleMeAnimation *)0x0)) {
-    TBattleReportView::RemoveUiTransientRegistryObjectByTag
-              ((TBattleReportView *)g_pUiAnimator,*(int *)&this->field_0x18);
+    func_0x004030a8(*(undefined4 *)&this->field_0x18);
   }
   return;
 }

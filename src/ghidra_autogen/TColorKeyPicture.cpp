@@ -4,55 +4,55 @@
 // Bucket: TColorKeyPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572D20
-// GHIDRA_NAME TColorKeyPicture::CreateTColorKeyPictureInstance
-// GHIDRA_PROTO undefined CreateTColorKeyPictureInstance()
+// GHIDRA_NAME TColorKeyPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TColorKeyPicture::CreateTColorKeyPictureInstance(void)
+undefined4 * TColorKeyPicture::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063659a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x98);
+  puVar1 = (undefined4 *)operator_new(0x98);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    this[0x90] = (thunk_TPictureButton)0x0;
-    *(TColorKeyPictureVtbl **)this = &TColorKeyPictureVtbl_00660b48;
-    *(undefined4 *)(this + 0x94) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *(undefined1 *)(puVar1 + 0x24) = 0;
+    *puVar1 = &_vftable_;
+    puVar1[0x25] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572DC0
-// GHIDRA_NAME TColorKeyPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TColorKeyPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TColorKeyPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TColorKeyPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTColorKeyPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572DE0
 // GHIDRA_NAME TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48
-// GHIDRA_PROTO undefined __thiscall TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(void)
+// GHIDRA_PROTO undefined __thiscall ConstructPictureResourceEntry_Vtbl00660b48(void)
 
 TColorKeyPicture * TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TColorKeyPictureVtbl_00660b48;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   this->field_0x90 = 0;
   *(undefined4 *)&this->field_0x94 = 0;
   return this;
@@ -65,18 +65,18 @@ TColorKeyPicture * TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(
 TColorKeyPicture * TColorKeyPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004065cd();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572E60
-// GHIDRA_NAME TColorKeyPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TColorKeyPicture::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TColorKeyPicture::OrphanTiny_ReturnZero_0048a730()
+void TColorKeyPicture::ApplyRectSlot110()
 
 {
   TColorKeyPictureVtbl *pTVar1;
@@ -89,15 +89,13 @@ void TColorKeyPicture::OrphanTiny_ReturnZero_0048a730()
   undefined4 uVar5;
   undefined4 unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
-  int iVar6;
-  undefined4 uVar7;
-  int iVar8;
-  int iStack_18;
-  undefined4 uStack_14;
+  int *piVar6;
+  int iVar7;
+  int aiStack_18 [3];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006365ba;
@@ -105,14 +103,13 @@ void TColorKeyPicture::OrphanTiny_ReturnZero_0048a730()
   if (DAT_006a4194 != (int *)0x0) {
     (**(code **)(*DAT_006a4194 + 4))(1);
   }
-  iStack_18 = __2_YAPAXI_Z(0x38);
+  aiStack_18[0] = operator_new(0x38);
   uStack_4 = 0;
-  if (iStack_18 == 0) {
+  if (aiStack_18[0] == 0) {
     DAT_006a4194 = (int *)0x0;
   }
   else {
-    DAT_006a4194 = (int *)ConstructBitmapBlitBufferFromSourceDescriptor
-                                    (*(undefined4 *)&this->field_0x8c);
+    DAT_006a4194 = (int *)func_0x00404999(*(undefined4 *)&this->field_0x8c);
   }
   pTVar1 = this->vftable;
   uStack_4 = 0xffffffff;
@@ -127,25 +124,22 @@ void TColorKeyPicture::OrphanTiny_ReturnZero_0048a730()
       (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x94))(0x444c4f47);
     }
   }
-  (*pTVar1->GetTEventHandlerClassNamePointer_56)(&iStack_18);
-  BlitSurfaceRectSkippingTransparentColor
-            (DAT_006a4194,unaff_EBX,iStack_18,this->field34,this->field38,0,0,0xffffffff);
-  BlitSurfaceRectSkippingTransparentColor
-            (DAT_006a4194,0,0,this->field34,this->field38,0,0,0x1000010);
-  uVar7 = 0;
-  uVar5 = NoOpQuickDrawContextSelectionHook(0);
-  TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(uVar5);
-  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(uVar5,uVar7);
-  iVar4 = this->field34;
-  iVar8 = this->field38;
-  iVar6 = iStack_18;
-  uVar5 = NoOpQuickDrawContextSelectionHook(unaff_EBX,iStack_18,iVar4,iVar8);
-  StretchDibitsFromStoredBitmapToHdcSimple(uVar5,unaff_EBX,iVar6,iVar4,iVar8);
+  (*pTVar1->GetTEventHandlerClassNamePointer_56)(aiStack_18);
+  func_0x004039e5(DAT_006a4194,unaff_EBX,aiStack_18[0],this->field34,this->field38,0,0,0xffffffff);
+  iVar4 = this->field38;
+  iVar7 = this->field34;
+  piVar6 = DAT_006a4194;
+  func_0x004039e5(DAT_006a4194,0,0,iVar7,iVar4,0,0,0x1000010);
+  uVar5 = func_0x004021c6(0);
+  func_0x0040492b(uVar5);
+  func_0x00405498();
+  uVar5 = func_0x004021c6(iVar7,iVar4,this->field34,this->field38);
+  func_0x0040728e(uVar5);
   if (DAT_006a4194 != (int *)0x0) {
     (**(code **)(*DAT_006a4194 + 4))(1);
   }
   DAT_006a4194 = (int *)0x0;
-  *unaff_FS_OFFSET = uStack_14;
+  *unaff_FS_OFFSET = piVar6;
   return;
 }
 
@@ -156,28 +150,29 @@ void TColorKeyPicture::OrphanTiny_ReturnZero_0048a730()
 void TColorKeyPicture::SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
 {
-  undefined2 unaff_DI;
-
+  undefined2 in_stack_00000006;
+  undefined3 in_stack_00000009;
+  
   if (*(int *)&this->field_0x94 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x94);
+    func_0x004010e6(&this->field_0x94);
   }
   *(undefined4 *)&this->field_0x94 = 0;
-  TPicture::SetPictureResourceIdAndRefresh((TPicture *)this,param_1,param_2,unaff_DI);
+  func_0x00408454(_param_1,_param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573090
-// GHIDRA_NAME TColorKeyPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TColorKeyPicture::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TColorKeyPicture::OrphanLeaf_NoCall_Ins07_004d8920()
+void TColorKeyPicture::Free()
 
 {
   if (*(int *)&this->field_0x94 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x94);
+    func_0x004010e6(&this->field_0x94);
   }
   *(undefined4 *)&this->field_0x94 = 0;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
+  func_0x00408db4();
   return;
 }
 

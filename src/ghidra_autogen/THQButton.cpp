@@ -3,56 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: THQButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004029AA
-// GHIDRA_NAME THQButton::DrawTextWithCachedQuickDrawStyleState
-// GHIDRA_PROTO undefined THQButton::DrawTextWithCachedQuickDrawStyleState()
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F3C0
+// GHIDRA_NAME THQButton::RenderHintHelperWithCtrlModifierOverlay
+// GHIDRA_PROTO undefined __thiscall RenderHintHelperWithCtrlModifierOverlay(void)
 
-void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
-
-{
-  undefined4 uVar1;
-  int *piVar2;
-  int iVar3;
-
-  if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
-    if (DAT_006a1d48 != (int *)0x0) {
-      (**(code **)(*DAT_006a1d48 + 4))(1);
-    }
-    DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
-    DAT_006a1d56 = '\0';
-  }
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar2 + 0x30))(DAT_006a1d48);
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  iVar3 = g_uQuickDrawCurrentColor;
-  (**(code **)(*piVar2 + 0x38))(g_uQuickDrawCurrentColor);
-  _SetMapperFlags_CDC__QAEKK_Z(1);
-  uVar1 = _SetTextAlign_CDC__QAEII_Z(0x18);
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar2 + 100))(DAT_006a1d00,DAT_006a1d04,*param_1,*(undefined4 *)(*param_1 + -8));
-  _SetTextAlign_CDC__QAEII_Z(uVar1);
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar2 + 0x30))(iVar3);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404FE8
-// GHIDRA_NAME TPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TPicture::OrphanTiny_ReturnZero_0048a730(void)
-
-void TPicture::OrphanTiny_ReturnZero_0048a730()
+void THQButton::RenderHintHelperWithCtrlModifierOverlay()
 
 {
   _vslot_fn *p_Var1;
@@ -62,58 +17,38 @@ void TPicture::OrphanTiny_ReturnZero_0048a730()
   undefined4 uVar5;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  undefined4 uVar6;
-  int iVar7;
-  int *piVar8;
-  undefined1 *puVar9;
-  int iVar10;
-  undefined4 uVar11;
-  undefined4 uVar12;
-  undefined4 uVar13;
-  undefined1 auStack_18 [4];
   int iStack_14;
-  int iStack_10;
+  int local_10;
   int iStack_c;
   int iStack_8;
-
+  
   uVar3 = GetAsyncKeyState(0x11);
   if ((uVar3 & 0x8000) != 0) {
-    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&iStack_10);
+    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
   }
-  iVar4 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
+  iVar4 = func_0x00409377();
   if (((iVar4 != 0) &&
       (iVar4 = *(int *)(*(int *)&this->field_0x8c + 0x10), *(short *)(iVar4 + 0xe) == 8)) &&
      (*(int *)(iVar4 + 0x10) == 0)) {
-    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&iStack_10);
-    iVar7 = iStack_c - iStack_14;
-    iVar4 = iStack_8 - iStack_10;
-    uVar5 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
-    BlitSurfaceRectSkippingTransparentColor(uVar5,0,0,iVar7,iVar4,iStack_14,iStack_10,0xffffffff);
+    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
+    iVar4 = iStack_8 - local_10;
+    uVar5 = func_0x00409377();
+    func_0x004039e5(uVar5,0,0,iStack_c - iStack_14,iVar4,iStack_14,local_10,0xffffffff);
     return;
   }
-  uVar13 = 0;
-  uVar5 = NoOpQuickDrawContextSelectionHook(0);
-  TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(uVar5);
-  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(uVar5,uVar13);
+  uVar5 = func_0x004021c6(0);
+  func_0x0040492b(uVar5);
+  func_0x00405498();
   iVar4 = *(int *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 8);
   if (iVar4 < 1) {
     iVar4 = -iVar4;
   }
   p_Var1 = this->vftable->GetTEventHandlerClassNamePointer_56;
-  iVar7 = this->field38;
-  iVar10 = this->field34;
-  uVar12 = 0;
-  uVar11 = 0;
-  puVar9 = auStack_18;
-  uVar2 = (*p_Var1)(puVar9,iVar10,iVar7,0,0,
+  uVar2 = (*p_Var1)(&stack0xffffffe0,this->field34,this->field38,0,0,
                     *(undefined4 *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 4),iVar4);
-  uVar5 = *(undefined4 *)(CONCAT31(extraout_var,uVar2) + 4);
-  piVar8 = &iStack_14;
-  uVar2 = (*p_Var1)(piVar8,uVar5);
-  uVar13 = *(undefined4 *)CONCAT31(extraout_var_00,uVar2);
-  uVar6 = NoOpQuickDrawContextSelectionHook(uVar13);
-  RenderHintHelperWithCtrlModifierOverlay_Impl
-            (uVar6,uVar13,piVar8,uVar5,puVar9,iVar10,iVar7,uVar11,uVar12);
+  uVar2 = (*p_Var1)(&stack0xffffffe4,*(undefined4 *)(CONCAT31(extraout_var,uVar2) + 4));
+  uVar5 = func_0x004021c6(*(undefined4 *)CONCAT31(extraout_var_00,uVar2));
+  func_0x00407c93(uVar5);
   return;
 }
 
@@ -127,79 +62,289 @@ void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
   undefined4 uVar1;
   int *piVar2;
   int iVar3;
-
+  
   if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
     if (DAT_006a1d48 != (int *)0x0) {
       (**(code **)(*DAT_006a1d48 + 4))(1);
     }
-    DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
+    DAT_006a1d48 = (int *)func_0x00404147(&DAT_006a1d4c);
     DAT_006a1d56 = '\0';
   }
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
+  piVar2 = g_pQuickDrawMemoryDc;
+  if (g_pQuickDrawMemoryDc == (int *)0x0) {
     piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
   (**(code **)(*piVar2 + 0x30))(DAT_006a1d48);
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
+  piVar2 = g_pQuickDrawMemoryDc;
+  if (g_pQuickDrawMemoryDc == (int *)0x0) {
     piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
   iVar3 = g_uQuickDrawCurrentColor;
   (**(code **)(*piVar2 + 0x38))(g_uQuickDrawCurrentColor);
-  _SetMapperFlags_CDC__QAEKK_Z(1);
-  uVar1 = _SetTextAlign_CDC__QAEII_Z(0x18);
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
+  CDC::SetMapperFlags(1);
+  uVar1 = CDC::SetTextAlign(0x18);
+  piVar2 = g_pQuickDrawMemoryDc;
+  if (g_pQuickDrawMemoryDc == (int *)0x0) {
     piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
   (**(code **)(*piVar2 + 100))(DAT_006a1d00,DAT_006a1d04,*param_1,*(undefined4 *)(*param_1 + -8));
-  _SetTextAlign_CDC__QAEII_Z(uVar1);
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
+  CDC::SetTextAlign(uVar1);
+  piVar2 = g_pQuickDrawMemoryDc;
+  if (g_pQuickDrawMemoryDc == (int *)0x0) {
     piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
   (**(code **)(*piVar2 + 0x30))(iVar3);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0058B5C0
-// GHIDRA_NAME THQButton::CreateTHQButtonInstance
-// GHIDRA_PROTO undefined CreateTHQButtonInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x004BA7B0
+// GHIDRA_NAME THQButton::RenderCityBuildingIcons
+// GHIDRA_PROTO void __thiscall RenderCityBuildingIcons(tagRECT * pTargetRect)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Render city-screen building icons and special overlays.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1) Iterate slotIds from g_anCityBuildingSlotOrder.
+// GHIDRA_COMMENT 2) Resolve per-city building level/state for each slot.
+// GHIDRA_COMMENT 3) Choose icon ID:
+// GHIDRA_COMMENT    - normal: 7000 + (level * 16) + slotId
+// GHIDRA_COMMENT    - upgrading: 7300 + (level * 16) + slotId (used in upgrade path)
+// GHIDRA_COMMENT    - slot 11 (Power Plant): 7011/7027 special toggle
+// GHIDRA_COMMENT 4) Draw at g_anCityBuildingSlotCoords using draw offsets.
+// GHIDRA_COMMENT 5) Draw extra overlays 7070/7071 for late Railyard/Capitol states.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT SlotId to building type:
+// GHIDRA_COMMENT 0 Textile Mill
+// GHIDRA_COMMENT 1 Clothing Factory
+// GHIDRA_COMMENT 2 Steel Mill
+// GHIDRA_COMMENT 3 Metalworks
+// GHIDRA_COMMENT 4 Lumber Mill
+// GHIDRA_COMMENT 5 Furniture Factory
+// GHIDRA_COMMENT 6 Oil Refinery
+// GHIDRA_COMMENT 7 Shipyard
+// GHIDRA_COMMENT 8 Armory
+// GHIDRA_COMMENT 9 Trade School
+// GHIDRA_COMMENT 10 University
+// GHIDRA_COMMENT 11 Power Plant
+// GHIDRA_COMMENT 12 Food Processing
+// GHIDRA_COMMENT 13 Warehouse
+// GHIDRA_COMMENT 14 Railyard
+// GHIDRA_COMMENT 15 Capitol
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT City entry index mapping used by logic: buildingEnum = slotId + 0x35.
+// GHIDRA_COMMENT_END
 
-thunk_TPictureButton * THQButton::CreateTHQButtonInstance(void)
+/* Render city-screen building icons and special overlays.
+   Algorithm:
+   1) Iterate slotIds from g_anCityBuildingSlotOrder.
+   2) Resolve per-city building level/state for each slot.
+   3) Choose icon ID:
+      - normal: 7000 + (level * 16) + slotId
+      - upgrading: 7300 + (level * 16) + slotId (used in upgrade path)
+      - slot 11 (Power Plant): 7011/7027 special toggle
+   4) Draw at g_anCityBuildingSlotCoords using draw offsets.
+   5) Draw extra overlays 7070/7071 for late Railyard/Capitol states.
+   
+   SlotId to building type:
+   0 Textile Mill
+   1 Clothing Factory
+   2 Steel Mill
+   3 Metalworks
+   4 Lumber Mill
+   5 Furniture Factory
+   6 Oil Refinery
+   7 Shipyard
+   8 Armory
+   9 Trade School
+   10 University
+   11 Power Plant
+   12 Food Processing
+   13 Warehouse
+   14 Railyard
+   15 Capitol
+   
+   City entry index mapping used by logic: buildingEnum = slotId + 0x35. */
+
+void THQButton::RenderCityBuildingIcons(tagRECT *pTargetRect)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  TCityVtbl *pTVar1;
+  code *pcVar2;
+  bool bVar3;
+  undefined uVar4;
+  char cVar5;
+  short sVar6;
+  int *piVar7;
+  undefined4 uVar8;
+  undefined3 extraout_var;
+  undefined4 *puVar9;
+  int iVar10;
+  undefined4 unaff_ESI;
+  undefined4 *puVar11;
+  undefined4 unaff_EDI;
+  TCity *pTVar12;
+  int iVar13;
+  undefined4 uVar14;
+  undefined4 uVar15;
+  int *piVar16;
+  undefined1 local_20 [12];
+  tagRECT local_14;
+  LONG local_4;
+  
+  local_14.left = (LONG)this;
+  if (((short)g_pDisplayMgr[7] == 0x7db) && (*(char *)((int)&this[1].padding_08_to_0b + 2) == '\0'))
+  {
+    local_14.top = pTargetRect->left;
+    local_14.right = pTargetRect->top;
+    local_14.bottom = pTargetRect->right;
+    local_4 = pTargetRect->bottom;
+    func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                    &local_14.top,&local_14.top,0,0);
+    (*this->vftable[1].GetTEventHandlerClassNamePointer)();
+    return;
+  }
+  *(undefined1 *)((int)&this[1].padding_08_to_0b + 2) = 0;
+  func_0x00404fe8(pTargetRect);
+  GetActiveQuickDrawSurfaceContextAndFlags(local_20,&stack0xffffffdc);
+  piVar7 = (int *)func_0x004047a0(7000);
+  CopyRect(&local_14,(RECT *)(*piVar7 + 8));
+  (**(code **)(*g_pDisplayMgr + 0x2c))(&stack0x00000000,8,&local_14);
+  piVar16 = (int *)*piVar7;
+  (**(code **)(*piVar16 + 4))();
+  *(byte *)(piVar16 + 1) = *(byte *)(piVar16 + 1) & 0xfe;
+  puVar11 = (undefined4 *)*piVar7;
+  if (puVar11 != (undefined4 *)0x0) {
+    *puVar11 = 0x64c340;
+    func_0x00409124();
+    operator_delete(puVar11);
+  }
+  operator_delete(piVar7);
+  SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
+  uVar8 = GetSurfaceObjectAtContextOffset24(local_14.right);
+  ReturnConstantTrueQuickDrawFlag(uVar8);
+  piVar16 = (int *)&g_anCityBuildingSlotOrder;
+  do {
+    SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
+    sVar6 = func_0x00403b16();
+    if (g_apNationStates[sVar6] == (TGreatPower *)0x0) {
+      pTVar12 = (TCity *)0x0;
+    }
+    else {
+      pTVar12 = g_apNationStates[sVar6]->city;
+    }
+    pTVar1 = pTVar12->vftable;
+    sVar6 = (short)*piVar16;
+    puVar11 = (undefined4 *)CONCAT22((short)((uint)puVar11 >> 0x10),sVar6);
+    uVar4 = (*pTVar1->WrapperFor_GetActiveNationId_At004b4940)(puVar11);
+    iVar10 = CONCAT31(extraout_var,uVar4);
+    if ((short)iVar10 < 1) {
+      bVar3 = false;
+      if ((sVar6 < 0) || (6 < sVar6)) {
+        if ((sVar6 == 0xb) && (pTVar12->field_0x4 != '\0')) goto LAB_004ba97b;
+      }
+      else if (0 < *(short *)((int)pTVar12->orderSlotsE4[(short)(sVar6 + 0x35)] + 4)) {
+LAB_004ba97b:
+        bVar3 = true;
+      }
+      if (bVar3) goto LAB_004ba985;
+    }
+    else {
+LAB_004ba985:
+      if (sVar6 == 0xb) {
+        puVar9 = (undefined4 *)((-(uint)(pTVar12->field_0x4 != '\0') & 0xfffffff0) + 0x1b73);
+      }
+      else if (((((short)iVar10 == 0) || (sVar6 < 0)) || (5 < sVar6)) ||
+              ((*(short *)((int)pTVar12->orderSlotsE4[(short)(sVar6 + 0x35)] + 4) < 1 ||
+               (cVar5 = (*pTVar1->IsBasicResourceSlot78)(puVar11), cVar5 == '\0')))) {
+        puVar9 = puVar11 + iVar10 * 4 + 0x6d6;
+      }
+      else {
+        puVar9 = puVar11 + iVar10 * 4 + 0x721;
+      }
+      pcVar2 = *(code **)(iRam00000000 + 0x1d0);
+      (*pcVar2)(local_20,local_14.right,
+                (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawXOffsetIndex + sVar6 * 2],
+                (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawYOffsetIndex + sVar6 * 2],
+                puVar9,unaff_ESI,unaff_EDI);
+      if ((sVar6 == 0xf) && ('2' < *(char *)(*(int *)&pTVar12->field_0xac + 0x8d2))) {
+        SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
+        uVar15 = 0x1b9e;
+        uVar14 = 0x3c;
+        uVar8 = 0xa6;
+      }
+      else {
+        if ((sVar6 != 0xe) || (*(char *)(*(int *)&pTVar12->field_0xac + 0x8d3) < '3'))
+        goto LAB_004baac3;
+        SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
+        uVar15 = 0x1b9f;
+        uVar14 = 0x143;
+        uVar8 = 0x6d;
+      }
+      (*pcVar2)(local_20,local_14.right,uVar8,uVar14,uVar15,unaff_ESI,unaff_EDI);
+    }
+LAB_004baac3:
+    piVar16 = (int *)((int)piVar16 + 2);
+    if (0x696197 < (int)piVar16) {
+      iVar10 = 8;
+      piVar7 = (int *)0x12c;
+      do {
+        iVar13 = 3;
+        do {
+          if ((int *)*piVar7 != (int *)0x0) {
+            (**(code **)(*(int *)*piVar7 + 0x3c))();
+          }
+          piVar7 = piVar7 + 1;
+          iVar13 = iVar13 + -1;
+        } while (iVar13 != 0);
+        iVar10 = iVar10 + -1;
+      } while (iVar10 != 0);
+      SetActiveQuickDrawSurfaceContext(unaff_ESI,unaff_EDI);
+      uVar8 = GetSurfaceObjectAtContextOffset24(local_14.right);
+      NoOpQuickDrawLifecycleHookB(uVar8);
+      func_0x004010e6(&local_14.right);
+      (**(code **)(*piVar16 + 0x1d4))();
+      return;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058B5C0
+// GHIDRA_NAME THQButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * THQButton::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637b1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x9c);
+  puVar1 = (undefined4 *)operator_new(0x9c);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(THQButtonVtbl **)this = &_vftable_;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B640
-// GHIDRA_NAME THQButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME THQButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THQButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * THQButton::GetRuntimeClass()
 
 {
-  return &g_pClassDescTHQButton;
+  return &classTHQButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B660
@@ -209,7 +354,7 @@ CRuntimeClass * THQButton::GetTEventHandlerClassNamePointer()
 THQButton * THQButton::THQButton()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  func_0x00401122();
   this->vftable = &_vftable_;
   return this;
 }
@@ -221,23 +366,23 @@ THQButton * THQButton::THQButton()
 THQButton * THQButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00408abc();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B6E0
-// GHIDRA_NAME THQButton::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME THQButton::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void THQButton::OrphanLeaf_NoCall_Ins07_004d8920()
+void THQButton::NoOpUiLifecycleHook()
 
 {
   short sVar1;
-
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  
+  func_0x00406ba9();
   sVar1 = *(short *)&this->field_0x84;
   *(undefined2 *)&this->field_0x98 = 0;
   *(short *)&this->field_0x90 = sVar1;
@@ -249,10 +394,10 @@ void THQButton::OrphanLeaf_NoCall_Ins07_004d8920()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B750
-// GHIDRA_NAME THQButton::SetModeAndBitmapBySelectionState
-// GHIDRA_PROTO undefined __thiscall SetModeAndBitmapBySelectionState(char param_1)
+// GHIDRA_NAME THQButton::SetControlStateFlagAndMaybeRefresh
+// GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void THQButton::SetModeAndBitmapBySelectionState(char param_1)
+void THQButton::SetControlStateFlagAndMaybeRefresh(char param_1)
 
 {
   undefined2 uVar1;
@@ -263,7 +408,7 @@ void THQButton::SetModeAndBitmapBySelectionState(char param_1)
   undefined4 in_EDX;
   THQButtonVtbl *pTVar4;
   char unaff_retaddr;
-
+  
   if (param_1 == this->field_0x64) {
     return;
   }
@@ -297,22 +442,25 @@ LAB_0058b7a7:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B7F0
-// GHIDRA_NAME THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_NAME THQButton::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+void THQButton::HandleEvent(int param_1)
 
 {
+  undefined4 in_stack_00000008;
+  undefined4 in_stack_0000000c;
+  
   if (param_1 == 0xc) {
     if (this->field_0x64 == '\0') {
       (*this->vftable->InvokeSlot1CCIfSlot28Enabled)(1,1);
     }
-    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0xc);
+    func_0x00404566(0xc,in_stack_00000008,in_stack_0000000c);
     return;
   }
   if (param_1 != 0x1f) {
     if (param_1 != 0x20) {
-      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+      func_0x00404566(param_1);
       return;
     }
     (*this->vftable->InvokeSlot1CCIfSlot28Enabled)(0,1);
@@ -323,15 +471,15 @@ void THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B890
-// GHIDRA_NAME THQButton::InvokeSlot1CCIfSlot28Enabled
-// GHIDRA_PROTO undefined __thiscall InvokeSlot1CCIfSlot28Enabled(undefined4 param_1, undefined4 param_2)
+// GHIDRA_NAME THQButton::IsSelected
+// GHIDRA_PROTO undefined __thiscall IsSelected(undefined4 param_1, undefined4 param_2)
 
-void THQButton::InvokeSlot1CCIfSlot28Enabled(undefined4 param_1, undefined4 param_2)
+void THQButton::IsSelected(undefined4 param_1, undefined4 param_2)
 
 {
   THQButtonVtbl *pTVar1;
   char cVar2;
-
+  
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {
@@ -351,7 +499,7 @@ void THQButton::SetSelectionStateAndRefreshBitmap(short param_1)
   undefined4 uVar1;
   undefined4 in_EDX;
   THQButtonVtbl *pTVar2;
-
+  
   *(short *)&this->field_0x98 = param_1;
   this->field_0x64 = 0;
   if (param_1 == 0) {

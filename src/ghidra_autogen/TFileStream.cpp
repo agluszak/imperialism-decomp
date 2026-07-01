@@ -14,7 +14,7 @@ void TFileStream::CreateTFileStreamInstance(char *param_1)
   TFileStreamVtbl *pTVar2;
   uint uVar3;
   char *pcVar4;
-
+  
   uVar3 = 0xffffffff;
   pTVar2 = this->vftable;
   pcVar4 = param_1;
@@ -29,19 +29,37 @@ void TFileStream::CreateTFileStreamInstance(char *param_1)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004890F0
-// GHIDRA_NAME TFileStream::GetTStreamClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTStreamClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004890C0
+// GHIDRA_NAME TFileStream::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TFileStream::GetTStreamClassNamePointer()
+undefined4 * TFileStream::CreateObject(void)
 
 {
-  return &g_pClassDescTFileStream;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(8);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    puVar1[1] = 0;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004890F0
+// GHIDRA_NAME TFileStream::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TFileStream::GetRuntimeClass()
+
+{
+  return &classTFileStream;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489110
 // GHIDRA_NAME TFileStream::ConstructTFileStreamBaseState
-// GHIDRA_PROTO undefined __thiscall TFileStream::ConstructTFileStreamBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTFileStreamBaseState(void)
 
 void TFileStream::ConstructTFileStreamBaseState()
 
@@ -52,22 +70,22 @@ void TFileStream::ConstructTFileStreamBaseState()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489130
-// GHIDRA_NAME TFileStream::ConstructTStreamBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(byte param_1)
+// GHIDRA_NAME TFileStream::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFileStream * TFileStream::ConstructTStreamBaseState(byte param_1)
+TFileStream * TFileStream::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TObject::DestructTObjectAndMaybeFree((TObject *)this);
+  func_0x00407644();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489160
 // GHIDRA_NAME TFileStream::SetBackingArchive
-// GHIDRA_PROTO undefined __thiscall TFileStream::SetBackingArchive(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall SetBackingArchive(undefined4 param_1)
 
 void TFileStream::SetBackingArchive(undefined4 param_1)
 
@@ -125,21 +143,20 @@ void TFileStream::OrphanRetStub_00488e50()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489220
-// GHIDRA_NAME TFileStream::OrphanRetStub_00488b40
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488b40(void)
+// GHIDRA_NAME TFileStream::ReadBytes
+// GHIDRA_PROTO undefined __thiscall ReadBytes(void)
 
-void TFileStream::OrphanRetStub_00488b40()
+void TFileStream::ReadBytes()
 
 {
   int in_stack_00000004;
   uint in_stack_00000008;
-
+  
   if (*(int *)&this->field_0x4 == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x3cc);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_McAppStream_cpp_00694fa8,0x3cc);
   }
-  CArchive::_Read_CArchive__QAEIPAXI_Z
-            (*(CArchive **)(*(int *)&this->field_0x4 + 4),in_stack_00000004,in_stack_00000008);
+  CArchive::Read(*(CArchive **)(*(int *)&this->field_0x4 + 4),in_stack_00000004,in_stack_00000008);
   return;
 }
 
@@ -152,13 +169,12 @@ void TFileStream::OrphanRetStub_00488e70()
 {
   int in_stack_00000004;
   uint in_stack_00000008;
-
+  
   if (*(int *)&this->field_0x4 == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x410);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_McAppStream_cpp_00694fa8,0x410);
   }
-  TNetMgr::_Write_CArchive__QAEXPBXI_Z
-            (*(TNetMgr **)(*(int *)&this->field_0x4 + 4),in_stack_00000004,in_stack_00000008);
+  CArchive::Write(*(CArchive **)(*(int *)&this->field_0x4 + 4),in_stack_00000004,in_stack_00000008);
   return;
 }
 
@@ -170,8 +186,8 @@ undefined4 TFileStream::OrphanLeaf_NoCall_Ins02_00489980(undefined4 *param_1)
 
 {
   undefined4 uVar1;
-
-  uVar1 = _ReadObject_CArchive__QAEPAVCObject__PBUCRuntimeClass___Z(0);
+  
+  uVar1 = CArchive::ReadObject(0);
   *param_1 = uVar1;
   return 1;
 }
@@ -184,20 +200,21 @@ void TFileStream::OrphanRetStub_004899a0()
 
 {
   int *in_stack_00000004;
-
-  TNetMgr::_WriteObject_CArchive__QAEXPBVCObject___Z
-            (*(TNetMgr **)(*(int *)&this->field_0x4 + 4),in_stack_00000004);
+  
+  CArchive::WriteObject(*(CArchive **)(*(int *)&this->field_0x4 + 4),in_stack_00000004);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489360
-// GHIDRA_NAME TFileStream::WrapperFor_operator_At00489360
-// GHIDRA_PROTO undefined __thiscall WrapperFor_operator_At00489360(undefined4 param_1)
+// GHIDRA_NAME TFileStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(undefined4 param_1)
 
-void TFileStream::WrapperFor_operator_At00489360(undefined4 param_1)
+void __thiscall
+TFileStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50
+          (TFileStream *this,undefined4 param_1)
 
 {
-  __5_YGAAVCArchive__AAV0_AAVCString___Z(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);
+  operator>>(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);
   return;
 }
 
@@ -208,7 +225,7 @@ void TFileStream::WrapperFor_operator_At00489360(undefined4 param_1)
 void TFileStream::OrphanCallChain_C2_I21_00489030(undefined4 param_1)
 
 {
-  __6_YGAAVCArchive__AAV0_ABVCString___Z(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);
+  operator<<(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);
   return;
 }
 

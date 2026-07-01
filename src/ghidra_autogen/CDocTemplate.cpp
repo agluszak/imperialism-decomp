@@ -3,339 +3,268 @@
 // Program: Imperialism.exe
 // Bucket: CDocTemplate.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005E5EA9
-// GHIDRA_NAME CDocTemplate::?GetItemData@CListCtrl@@QBEKH@Z
-// GHIDRA_PROTO undefined __thiscall ?GetItemData@CListCtrl@@QBEKH@Z(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds mode-4 query struct and sends control message 0x1005; returns extracted output field.
-// GHIDRA_COMMENT_END
-
-/* Builds mode-4 query struct and sends control message 0x1005; returns extracted output field. */
-
-undefined4 CDocTemplate::_GetItemData_CListCtrl__QBEKH_Z()
-
-{
-  undefined4 local_2c [8];
-  undefined4 local_c;
-
-  _memset(local_2c,0,0x28);
-  local_2c[0] = 4;
-  SendMessageA(*(HWND *)(this + 0x1c),0x1005,0,(LPARAM)local_2c);
-  return local_c;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E9A90
-// GHIDRA_NAME CDocTemplate::_memset
-// GHIDRA_PROTO void * __cdecl _memset(void * _Dst, int _Val, size_t _Size)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  _memset
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Libraries: Visual Studio 1998 Debug, Visual Studio 1998 Release
-// GHIDRA_COMMENT_END
-
-/* Library Function - Single Match
-    _memset
-
-   Libraries: Visual Studio 1998 Debug, Visual Studio 1998 Release */
-
-void * __cdecl CDocTemplate::_memset(void *_Dst,int _Val,size_t _Size)
-
-{
-  uint uVar1;
-  uint uVar2;
-  size_t sVar3;
-  uint *puVar4;
-
-  if (_Size == 0) {
-    return _Dst;
-  }
-  uVar1 = _Val & 0xff;
-  puVar4 = _Dst;
-  if (3 < _Size) {
-    uVar2 = -(int)_Dst & 3;
-    sVar3 = _Size;
-    if (uVar2 != 0) {
-      sVar3 = _Size - uVar2;
-      do {
-        *(undefined1 *)puVar4 = (undefined1)_Val;
-        puVar4 = (uint *)((int)puVar4 + 1);
-        uVar2 = uVar2 - 1;
-      } while (uVar2 != 0);
-    }
-    uVar1 = uVar1 * 0x1010101;
-    _Size = sVar3 & 3;
-    uVar2 = sVar3 >> 2;
-    if (uVar2 != 0) {
-      for (; uVar2 != 0; uVar2 = uVar2 - 1) {
-        *puVar4 = uVar1;
-        puVar4 = puVar4 + 1;
-      }
-      if (_Size == 0) {
-        return _Dst;
-      }
-    }
-  }
-  do {
-    *(char *)puVar4 = (char)uVar1;
-    puVar4 = (uint *)((int)puVar4 + 1);
-    _Size = _Size - 1;
-  } while (_Size != 0);
-  return _Dst;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005FAB9A
-// GHIDRA_NAME CDocTemplate::?HitTest@CToolTipCtrl@@QBEHPAVCWnd@@VCPoint@@PAUtagTOOLINFOA@@@Z
-// GHIDRA_PROTO undefined __thiscall ?HitTest@CToolTipCtrl@@QBEHPAVCWnd@@VCPoint@@PAUtagTOOLINFOA@@@Z(int param_1, undefined4 param_2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds 0x2C-byte hit/query structure and sends tooltip message 0x40A for window/id lookup; copies out structure on success.
-// GHIDRA_COMMENT_END
-
-/* Builds 0x2C-byte hit/query structure and sends tooltip message 0x40A for window/id lookup; copies
-   out structure on success. */
-
-bool __thiscall
-CDocTemplate::_HitTest_CToolTipCtrl__QBEHPAVCWnd__VCPoint__PAUtagTOOLINFOA___Z
-          (CDocTemplate *this,int param_1,undefined4 param_2)
-
-{
-  LRESULT LVar1;
-  undefined4 in_stack_00000010;
-  undefined4 local_3c;
-  undefined4 local_38;
-  undefined4 local_30 [11];
-
-  _memset(&local_3c,0,0x38);
-  local_30[0] = 0x2c;
-  if (param_1 == 0) {
-    local_3c = 0;
-  }
-  else {
-    local_3c = *(undefined4 *)(param_1 + 0x1c);
-  }
-  local_38 = param_2;
-  LVar1 = SendMessageA(*(HWND *)(this + 0x1c),0x40a,0,(LPARAM)&local_3c);
-  if (LVar1 != 0) {
-    _memcpy(in_stack_00000010,local_30,0x2c);
-  }
-  return LVar1 != 0;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x006036B2
-// GHIDRA_NAME CDocTemplate::?InitHashTable@CMapStringToOb@@QAEXIH@Z
-// GHIDRA_PROTO undefined __thiscall ?InitHashTable@CMapStringToOb@@QAEXIH@Z(int param_1, int param_2)
+// GHIDRA_NAME CDocTemplate::CMapStringToOb::InitHashTable
+// GHIDRA_PROTO undefined __thiscall CMapStringToOb::InitHashTable(int param_1, int param_2)
 
-void CDocTemplate::_InitHashTable_CMapStringToOb__QAEXIH_Z(int param_1, int param_2)
+void CDocTemplate::CMapStringToOb__InitHashTable(int param_1, int param_2)
 
 {
   void *_Dst;
-
+  
   if (*(int *)(this + 4) != 0) {
-    __3_YAXPAX_Z(*(int *)(this + 4));
+    operator_delete(*(int *)(this + 4));
     *(undefined4 *)(this + 4) = 0;
   }
   if (param_2 != 0) {
-    _Dst = (void *)__2_YAPAXI_Z(param_1 << 2);
+    _Dst = (void *)operator_new(param_1 << 2);
     *(void **)(this + 4) = _Dst;
-    _memset(_Dst,0,param_1 << 2);
+    memset(_Dst,0,param_1 << 2);
   }
   *(int *)(this + 8) = param_1;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0060508E
-// GHIDRA_NAME CDocTemplate::??0CDialog@@QAE@PBDPAVCWnd@@@Z
-// GHIDRA_PROTO undefined __thiscall ??0CDialog@@QAE@PBDPAVCWnd@@@Z(undefined4 param_1, undefined4 param_2)
+// GHIDRA_FUNCTION IMPERIALISM 0x00614790
+// GHIDRA_NAME CDocTemplate::CDocTemplate
+// GHIDRA_PROTO undefined CDocTemplate()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Base constructor for CSingleDocTemplate-like object. Stores ctor args into template fields corresponding to resource id, document runtime class, frame runtime class, and view runtime class. This confirms startup doc-template registration uses runtime class pointers provided by caller.
+// GHIDRA_COMMENT_END
 
-CDocTemplate * __thiscall
-CDocTemplate::__0CDialog__QAE_PBDPAVCWnd___Z
-          (CDocTemplate *this,undefined4 param_1,undefined4 param_2)
+/* Base constructor for CSingleDocTemplate-like object. Stores ctor args into template fields
+   corresponding to resource id, document runtime class, frame runtime class, and view runtime
+   class. This confirms startup doc-template registration uses runtime class pointers provided by
+   caller. */
 
-{
-  __0CWnd__QAE_XZ();
-  *(undefined ***)this = &PTR_LAB_0066fc2c;
-  _memset(this + 0x3c,0,0x20);
-  *(undefined4 *)(this + 0x50) = param_2;
-  *(undefined4 *)(this + 0x40) = param_1;
-  if ((short)((uint)param_1 >> 0x10) == 0) {
-    *(uint *)(this + 0x3c) = (uint)*(ushort *)(this + 0x40);
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060780C
-// GHIDRA_NAME CDocTemplate::??0CWnd@@AAE@PAUHWND__@@@Z
-// GHIDRA_PROTO undefined __thiscall ??0CWnd@@AAE@PAUHWND__@@@Z(undefined4 param_1)
-
-CDocTemplate * CDocTemplate::__0CWnd__AAE_PAUHWND_____Z(undefined4 param_1)
+undefined4 * CDocTemplate::CDocTemplate(void)
 
 {
-  __0CCmdTarget__QAE_XZ();
-  *(undefined ***)this = &PTR_LAB_00670b4c;
-  _memset(this + 0x1c,0,0x20);
-  *(undefined4 *)(this + 0x38) = 0;
-  *(undefined4 *)(this + 0x34) = 0;
-  *(undefined4 *)(this + 0x1c) = param_1;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060B910
-// GHIDRA_NAME CDocTemplate::?GetStatus@CFile@@QBEHAAUCFileStatus@@@Z
-// GHIDRA_PROTO undefined __thiscall ?GetStatus@CFile@@QBEHAAUCFileStatus@@@Z(int * param_1)
-
-undefined4 CDocTemplate::_GetStatus_CFile__QBEHAAUCFileStatus___Z(int *param_1)
-
-{
-  int iVar1;
-  BOOL BVar2;
-  DWORD DVar3;
-  undefined4 uVar4;
-  int *piVar5;
-  _FILETIME local_1c;
-  _FILETIME local_14;
-  _FILETIME local_c;
-
-  _memset(param_1,0,0x118);
-  lstrcpynA((LPSTR)((int)param_1 + 0x12),*(LPCSTR *)(this + 0xc),0x104);
-  if (*(HANDLE *)(this + 4) == (HANDLE)0xffffffff) {
-LAB_0060b9e0:
-    uVar4 = 1;
+  undefined4 uVar1;
+  CPtrList *this;
+  int iVar2;
+  undefined4 *this_00;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  bool bVar3;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = this_00;
+  CCmdTarget();
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  CString::CString((CString *)(this_00 + 0x18));
+  uVar1 = *(undefined4 *)(unaff_EBP + 8);
+  *this_00 = &PTR_LAB_006733e4;
+  this_00[0xf] = uVar1;
+  this_00[0x13] = *(undefined4 *)(unaff_EBP + 0xc);
+  this_00[0x14] = *(undefined4 *)(unaff_EBP + 0x10);
+  uVar1 = *(undefined4 *)(unaff_EBP + 0x14);
+  this_00[0x10] = 0;
+  this_00[0x11] = 0;
+  this_00[0x12] = 0;
+  this_00[0x15] = uVar1;
+  this_00[0x16] = 0;
+  this_00[0x17] = 0;
+  this_00[8] = 0;
+  this_00[9] = 0;
+  this_00[10] = 0;
+  this_00[0xb] = 0;
+  this_00[0xc] = 0;
+  this_00[0xd] = 0;
+  this_00[0xe] = 0;
+  bVar3 = DAT_0069bd58 == 0;
+  *(undefined1 *)(unaff_EBP + -4) = 1;
+  if (bVar3) {
+    this_00[7] = 1;
+    ReleaseRuntimeSelectionOwnerAndDestroyObject(this_00);
   }
   else {
-    BVar2 = GetFileTime(*(HANDLE *)(this + 4),&local_c,&local_14,&local_1c);
-    if (BVar2 != 0) {
-      DVar3 = GetFileSize(*(HANDLE *)(this + 4),(LPDWORD)0x0);
-      param_1[3] = DVar3;
-      if (DVar3 != 0xffffffff) {
-        if (*(int *)(*(LPCSTR *)(this + 0xc) + -8) == 0) {
-LAB_0060b98f:
-          *(undefined1 *)(param_1 + 4) = 0;
-        }
-        else {
-          DVar3 = GetFileAttributesA(*(LPCSTR *)(this + 0xc));
-          if (DVar3 == 0xffffffff) goto LAB_0060b98f;
-          *(char *)(param_1 + 4) = (char)DVar3;
-        }
-        piVar5 = (int *)__0CTime__QAE_ABU_FILETIME__H_Z(&local_c,0xffffffff);
-        *param_1 = *piVar5;
-        piVar5 = (int *)__0CTime__QAE_ABU_FILETIME__H_Z(&local_14,0xffffffff);
-        param_1[2] = *piVar5;
-        piVar5 = (int *)__0CTime__QAE_ABU_FILETIME__H_Z(&local_1c,0xffffffff);
-        iVar1 = *piVar5;
-        param_1[1] = iVar1;
-        if (*param_1 == 0) {
-          *param_1 = iVar1;
-        }
-        if (param_1[2] == 0) {
-          param_1[2] = param_1[1];
-        }
-        goto LAB_0060b9e0;
+    this_00[7] = 0;
+    if (DAT_006a6124 == (CPtrList *)0x0) {
+      this = (CPtrList *)operator_new(0x1c);
+      *(CPtrList **)(unaff_EBP + 8) = this;
+      *(undefined1 *)(unaff_EBP + -4) = 2;
+      if (this == (CPtrList *)0x0) {
+        DAT_006a6124 = (CPtrList *)0x0;
       }
+      else {
+        DAT_006a6124 = (CPtrList *)CPtrList::CPtrList(this,10);
+      }
+      *(undefined1 *)(unaff_EBP + -4) = 1;
     }
-    uVar4 = 0;
+    if (DAT_006a6120 == 0) {
+      iVar2 = operator_new(0x20);
+      *(int *)(unaff_EBP + 8) = iVar2;
+      *(undefined1 *)(unaff_EBP + -4) = 3;
+      if (iVar2 == 0) {
+        DAT_006a6120 = 0;
+      }
+      else {
+        DAT_006a6120 = CDocManager::CDocManager();
+      }
+      *(undefined1 *)(unaff_EBP + -4) = 1;
+    }
+    CPtrList::AddTail(DAT_006a6124,this_00);
   }
-  return uVar4;
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this_00;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00612828
-// GHIDRA_NAME CDocTemplate::?StartDocA@CDC@@QAEHPBD@Z
-// GHIDRA_PROTO undefined __thiscall ?StartDocA@CDC@@QAEHPBD@Z(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0061499C
+// GHIDRA_NAME CDocTemplate::~CDocTemplate
+// GHIDRA_PROTO undefined ~CDocTemplate()
 
-void CDocTemplate::_StartDocA_CDC__QAEHPBD_Z()
+void CDocTemplate::~CDocTemplate(void)
 
 {
-  DOCINFOA local_18;
-
-  _memset(&local_18,0,0x14);
-  local_18.cbSize = 0x14;
-  StartDocA(*(HDC *)(this + 4),&local_18);
+  HMENU hMenu;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &PTR_LAB_006733e4;
+  hMenu = (HMENU)extraout_ECX[9];
+  *(undefined4 *)(unaff_EBP + -4) = 1;
+  if (hMenu != (HMENU)0x0) {
+    DestroyMenu(hMenu);
+  }
+  if ((HMENU)extraout_ECX[0xb] != (HMENU)0x0) {
+    DestroyMenu((HMENU)extraout_ECX[0xb]);
+  }
+  if ((HMENU)extraout_ECX[0xd] != (HMENU)0x0) {
+    DestroyMenu((HMENU)extraout_ECX[0xd]);
+  }
+  *(undefined1 *)(unaff_EBP + -4) = 0;
+  CString::~CString((CString *)(extraout_ECX + 0x18));
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  CCmdTarget::~CCmdTarget();
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00614603
-// GHIDRA_NAME CDocTemplate::?OpenDocumentFile@CDocManager@@UAEPAVCDocument@@PBD@Z
-// GHIDRA_PROTO undefined __thiscall ?OpenDocumentFile@CDocManager@@UAEPAVCDocument@@PBD@Z(LPCSTR param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x00614A2E
+// GHIDRA_NAME CDocTemplate::MatchDocType
+// GHIDRA_PROTO undefined __thiscall MatchDocType(void)
 
-int * __thiscall
-CDocTemplate::_OpenDocumentFile_CDocManager__UAEPAVCDocument__PBD_Z
-          (CDocTemplate *this,LPCSTR param_1)
+undefined4 CDocTemplate::MatchDocType()
 
 {
-  undefined4 *puVar1;
-  int *piVar2;
-  LPCSTR lpString2;
-  undefined1 *puVar3;
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  LPCSTR lpString1;
+  int *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
   undefined4 uVar4;
-  int iVar5;
-  int *piVar6;
-  int iVar7;
-  undefined4 *puVar8;
-  CHAR *pCVar9;
-  CHAR *pCVar10;
-  undefined4 uVar11;
-  CHAR local_318 [260];
-  CHAR local_214 [260];
-  CHAR local_110 [260];
-  int *local_c;
-  int *local_8;
-
-  iVar7 = 0;
-  puVar8 = *(undefined4 **)(this + 8);
-  local_c = (int *)0x0;
-  local_8 = (int *)0x0;
-  lpString2 = param_1;
-  if (*param_1 == '\"') {
-    lpString2 = param_1 + 1;
-  }
-  lstrcpynA(local_214,lpString2,0x104);
-  puVar3 = (undefined1 *)__mbsrchr(local_214,0x22);
-  if (puVar3 != (undefined1 *)0x0) {
-    *puVar3 = 0;
-  }
-  _AfxFullPath__YGHPADPBD_Z(local_110,local_214);
-  pCVar10 = local_318;
-  uVar11 = 0x104;
-  pCVar9 = local_110;
-  uVar4 = _AfxGetMainWnd__YGPAVCWnd__XZ(pCVar9,pCVar10,0x104);
-  iVar5 = _AfxResolveShortcut__YGHPAVCWnd__PBDPADH_Z(uVar4,pCVar9,pCVar10,uVar11);
-  if (iVar5 != 0) {
-    lstrcpyA(local_110,local_318);
-  }
+  
+  EstablishSehFrameProlog();
+  **(undefined4 **)(unaff_EBP + 0xc) = 0;
+  iVar3 = *extraout_ECX;
+  iVar1 = (**(code **)(iVar3 + 0x5c))();
+  *(int *)(unaff_EBP + -0x14) = iVar1;
   do {
-    if (puVar8 == (undefined4 *)0x0) break;
-    puVar1 = (undefined4 *)*puVar8;
-    piVar6 = (int *)puVar8[2];
-    iVar5 = (**(code **)(*piVar6 + 0x70))(local_110,&local_8);
-    if (iVar7 < iVar5) {
-      iVar7 = iVar5;
-      local_c = piVar6;
+    if (iVar1 == 0) {
+      CString::CString((CString *)(unaff_EBP + -0x10));
+      *(undefined4 *)(unaff_EBP + -4) = 0;
+      iVar3 = (**(code **)(iVar3 + 0x6c))(unaff_EBP + -0x10,4);
+      if ((((iVar3 == 0) || (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0)) ||
+          (lpString1 = (LPCSTR)__mbsrchr(*(undefined4 *)(unaff_EBP + 8),0x2e),
+          lpString1 == (LPCSTR)0x0)) ||
+         (iVar3 = lstrcmpiA(lpString1,*(LPCSTR *)(unaff_EBP + -0x10)), iVar3 != 0)) {
+        *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+        CString::~CString((CString *)(unaff_EBP + -0x10));
+        uVar4 = 3;
+      }
+      else {
+        *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+        CString::~CString((CString *)(unaff_EBP + -0x10));
+        uVar4 = 4;
+      }
+LAB_00614ad0:
+      *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+      return uVar4;
     }
-    puVar8 = puVar1;
-  } while (iVar5 != 5);
-  if (local_8 == (int *)0x0) {
-    if (local_c == (int *)0x0) {
-      _AfxMessageBox__YGHIII_Z(0xf101,0,0xffffffff);
-      local_8 = (int *)0x0;
+    iVar1 = (**(code **)(iVar3 + 0x60))(unaff_EBP + -0x14);
+    iVar2 = AfxComparePath(*(undefined4 *)(iVar1 + 0x20),*(undefined4 *)(unaff_EBP + 8));
+    if (iVar2 != 0) {
+      uVar4 = 5;
+      **(int **)(unaff_EBP + 0xc) = iVar1;
+      goto LAB_00614ad0;
     }
-    else {
-      local_8 = (int *)(**(code **)(*local_c + 0x88))(local_110,1);
-    }
+    iVar1 = *(int *)(unaff_EBP + -0x14);
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00614B7B
+// GHIDRA_NAME CDocTemplate::CreateOleFrame
+// GHIDRA_PROTO undefined CreateOleFrame()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: class CFrameWnd * __thiscall CDocTemplate::CreateOleFrame(class CWnd *,class CDocument *,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: class CFrameWnd * __thiscall CDocTemplate::CreateOleFrame(class CWnd *,class CDocument
+   *,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+uint __thiscall
+CDocTemplate::CreateOleFrame(int param_1,undefined4 param_2,undefined4 param_3,int param_4)
+
+{
+  int *piVar1;
+  int iVar2;
+  undefined4 local_18;
+  undefined4 local_14;
+  int local_10;
+  undefined4 local_8;
+  
+  memset(&local_18,0,0x14);
+  local_8 = 0;
+  local_14 = param_3;
+  if (param_4 == 0) {
+    local_18 = 0;
   }
   else {
-    param_1 = (LPCSTR)(**(code **)(*local_8 + 0x68))();
-    if (param_1 != (LPCSTR)0x0) {
-      (**(code **)(*local_8 + 0x6c))(&param_1);
-      piVar6 = (int *)_GetParentFrame_CWnd__QBEPAVCFrameWnd__XZ();
-      if (piVar6 != (int *)0x0) {
-        (**(code **)(*piVar6 + 0xd4))(0xffffffff);
-      }
-      iVar7 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-      piVar2 = *(int **)(*(int *)(iVar7 + 4) + 0x1c);
-      if (piVar6 != piVar2) {
-        (**(code **)(*piVar2 + 0xd4))(0xffffffff);
-      }
-    }
+    local_18 = *(undefined4 *)(param_1 + 0x5c);
   }
-  return local_8;
+  if ((*(int *)(param_1 + 0x58) != 0) &&
+     (local_10 = param_1, piVar1 = (int *)CRuntimeClass::CreateObject(), piVar1 != (int *)0x0)) {
+    iVar2 = (**(code **)(*piVar1 + 0xc0))
+                      (*(undefined4 *)(param_1 + 0x40),0x44000000,param_2,&local_18);
+    return -(uint)(iVar2 != 0) & (uint)piVar1;
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00614C76
+// GHIDRA_NAME CDocTemplate::OnIdle
+// GHIDRA_PROTO undefined __thiscall OnIdle(void)
+
+void CDocTemplate::OnIdle()
+
+{
+  int iVar1;
+  code *pcVar2;
+  int *piVar3;
+  CDocTemplate *local_8;
+  
+  iVar1 = *(int *)this;
+  local_8 = this;
+  local_8 = (CDocTemplate *)(**(code **)(iVar1 + 0x5c))();
+  if (local_8 != (CDocTemplate *)0x0) {
+    pcVar2 = *(code **)(iVar1 + 0x60);
+    do {
+      piVar3 = (int *)(*pcVar2)(&local_8);
+      (**(code **)(*piVar3 + 0xb4))();
+    } while (local_8 != (CDocTemplate *)0x0);
+  }
+  return;
 }
 

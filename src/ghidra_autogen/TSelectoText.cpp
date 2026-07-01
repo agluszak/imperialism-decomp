@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TSelectoText.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0057B670
+// GHIDRA_NAME TSelectoText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TSelectoText::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00636c7a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x94);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040541b();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B6F0
 // GHIDRA_NAME TSelectoText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,57 +40,57 @@
 TSelectoText * TSelectoText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TStaticText::~TStaticText(this);
+  func_0x00402662();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B720
 // GHIDRA_NAME TSelectoText::CreateTSelectoTextInstance
-// GHIDRA_PROTO undefined __thiscall TStaticText::~TStaticText(void)
+// GHIDRA_PROTO undefined TStaticText::~TStaticText()
 
-void TSelectoText::CreateTSelectoTextInstance()
+void __fastcall TSelectoText::CreateTSelectoTextInstance(undefined4 *param_1)
 
 {
-  CString *this_00;
+  CString *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   puStack_8 = &LAB_0062f0ab;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this->vftable = (TSelectoTextVtbl *)&TStaticText::_vftable_;
-  this_00 = *(CString **)&this->field_0x84;
+  *param_1 = &TStaticText::_vftable_;
+  this = (CString *)param_1[0x21];
   uStack_4 = 0;
-  if (this_00 != (CString *)0x0) {
-    CString::__1CString__QAE_XZ(this_00);
-    __3_YAXPAX_Z(this_00);
+  if (this != (CString *)0x0) {
+    CString::~CString(this);
+    operator_delete(this);
   }
-  this->vftable = (TSelectoTextVtbl *)&TView::_vftable_;
+  *param_1 = &TView::_vftable_;
   uStack_4 = 2;
-  if ((int *)this->field44 != (int *)0x0) {
-    (**(code **)(*(int *)this->field44 + 4))(1);
+  if ((int *)param_1[0x11] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0x11] + 4))(1);
   }
-  __3_YAXPAX_Z(this->field48);
+  operator_delete(param_1[0x12]);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  CString::__1CString__QAE_XZ(&this->sharedStringRef);
-  this->vftable = (TSelectoTextVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  CString::~CString((CString *)(param_1 + 0x16));
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B740
-// GHIDRA_NAME TSelectoText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TSelectoText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSelectoText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TSelectoText::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTSelectoText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B760

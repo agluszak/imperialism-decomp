@@ -3,29 +3,46 @@
 // Program: Imperialism.exe
 // Bucket: TEngineerDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004D0540
-// GHIDRA_NAME TEngineerDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004D04B0
+// GHIDRA_NAME TEngineerDialog::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TEngineerDialog::GetTEventHandlerClassNamePointer()
+undefined4 * TEngineerDialog::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631a8a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x6c);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar1[0x18] = 0;
+    puVar1[0x19] = 0;
+    puVar1[0x1a] = 0;
+    *unaff_FS_OFFSET = local_c;
+    return puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004D0560
-// GHIDRA_NAME TEngineerDialog::ConstructEngineerDialog
-// GHIDRA_PROTO undefined __thiscall ConstructEngineerDialog(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004D0540
+// GHIDRA_NAME TEngineerDialog::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-TEngineerDialog * TEngineerDialog::ConstructEngineerDialog()
+CRuntimeClass * TEngineerDialog::GetRuntimeClass()
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
-  this->vftable = &_vftable_;
-  *(undefined4 *)&this->field_0x60 = 0;
-  *(undefined4 *)&this->field_0x64 = 0;
-  *(undefined4 *)&this->field_0x68 = 0;
-  return this;
+  return &classTEngineerDialog;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0590
@@ -35,36 +52,36 @@ TEngineerDialog * TEngineerDialog::ConstructEngineerDialog()
 TEngineerDialog * TEngineerDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00402b94();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D05E0
-// GHIDRA_NAME TEngineerDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TEngineerDialog::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TEngineerDialog::_scalar_deleting_destructor_()
+void TEngineerDialog::Free()
 
 {
   if (*(int *)&this->field_0x60 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x60);
+    func_0x004010e6(&this->field_0x60);
   }
   if (*(int *)&this->field_0x64 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x64);
+    func_0x004010e6(&this->field_0x64);
   }
   if (*(int *)&this->field_0x68 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x68);
+    func_0x004010e6(&this->field_0x68);
   }
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
+  func_0x00408db4();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0650
-// GHIDRA_NAME TEngineerDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TEngineerDialog::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Renders Engineer dialog background into DAT_006A1D60 using a header/body/footer tiling scheme.
 // GHIDRA_COMMENT - blits header strip from surface +0x60.
@@ -80,60 +97,60 @@ void TEngineerDialog::_scalar_deleting_destructor_()
    - blits footer strip from surface +0x64 for remaining tail.
    - used when Engineer dialog backing surface is present. */
 
-void TEngineerDialog::OrphanTiny_ReturnZero_0048a730()
+void TEngineerDialog::ApplyRectSlot110()
 
 {
   int iVar1;
   short sVar2;
-  RECT local_20;
-  RECT local_10;
-
+  undefined4 local_20;
+  int local_1c;
+  undefined4 local_18;
+  int local_14;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined4 local_8;
+  undefined4 local_4;
+  
   if (*(int *)&this->field_0x60 != 0) {
-    ResetQuickDrawStrokeState();
-    SetQuickDrawStrokeColor(0xffffff);
-    SetQuickDrawFillColor(0);
-    local_10.left = 0;
-    local_20.left = 0;
-    local_10.right = 0x148;
-    local_20.right = 0x148;
-    local_10.top = 0;
-    local_20.top = 0;
+    func_0x004088aa();
+    func_0x00402bdf(0xffffff);
+    func_0x00406b86(0);
+    local_10 = 0;
+    local_20 = 0;
+    local_8 = 0x148;
+    local_18 = 0x148;
+    local_c = 0;
+    local_1c = 0;
     sVar2 = 0x38;
-    local_10.bottom = 0x38;
-    local_20.bottom = 0x38;
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)&this->field_0x60 + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
-               (astruct_19 *)0x0);
+    local_4 = 0x38;
+    local_14 = 0x38;
+    func_0x00405493(*(int *)&this->field_0x60 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                    &local_10,&local_20,0,0);
     iVar1 = this->field38 + -0x46;
-    local_10.left = 0;
+    local_10 = 0;
     iVar1 = (int)(short)(((short)(iVar1 / 0xe) + (short)(iVar1 >> 0x1f)) -
                         (short)((longlong)iVar1 * 0x92492493 >> 0x3f));
-    local_10.top = 0;
-    local_10.right = 0x148;
-    local_10.bottom = 0xe;
+    local_c = 0;
+    local_8 = 0x148;
+    local_4 = 0xe;
     if (0 < iVar1) {
       do {
-        local_20.top = (LONG)sVar2;
-        local_20.bottom = local_20.top + 0xe;
-        local_20.right = 0x148;
-        local_20.left = 0;
-        BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)&this->field_0x68 + 4),
-                   (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
-                   (astruct_19 *)0x0);
+        local_1c = (int)sVar2;
+        local_14 = local_1c + 0xe;
+        local_18 = 0x148;
+        local_20 = 0;
+        func_0x00405493(*(int *)&this->field_0x68 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                        &local_10,&local_20,0,0);
         sVar2 = sVar2 + 0xe;
         iVar1 = iVar1 + -1;
       } while (iVar1 != 0);
     }
-    local_20.top = (LONG)sVar2;
-    local_20.bottom = local_20.top + 0xe;
-    local_20.right = 0x148;
-    local_20.left = 0;
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)&this->field_0x64 + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
-               (astruct_19 *)0x0);
+    local_1c = (int)sVar2;
+    local_14 = local_1c + 0xe;
+    local_18 = 0x148;
+    local_20 = 0;
+    func_0x00405493(*(int *)&this->field_0x64 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                    &local_10,&local_20,0,0);
   }
   return;
 }

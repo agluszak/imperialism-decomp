@@ -4,43 +4,43 @@
 // Bucket: TUpDownView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583C90
-// GHIDRA_NAME TUpDownView::CreateTUpDownViewInstance
-// GHIDRA_PROTO undefined CreateTUpDownViewInstance()
+// GHIDRA_NAME TUpDownView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TUpDownView::CreateTUpDownViewInstance(void)
+undefined4 * TUpDownView::CreateObject(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063756a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0x88);
+  puVar1 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::TControl(this);
-    this->vftable = (TControlVtbl *)&TUpDownViewVtbl_00663770;
-    this[1].vftable = (TControlVtbl *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004087fb();
+    *puVar1 = &_vftable_;
+    puVar1[0x21] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TControl *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583D30
-// GHIDRA_NAME TUpDownView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TUpDownView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUpDownView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TUpDownView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTUpDownView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583D50
@@ -50,8 +50,8 @@ CRuntimeClass * TUpDownView::GetTEventHandlerClassNamePointer()
 TUpDownView * TUpDownView::ConstructTUpDownViewBaseState()
 
 {
-  TControl::TControl((TControl *)this);
-  this->vftable = &TUpDownViewVtbl_00663770;
+  func_0x004087fb();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x84 = 0;
   return this;
 }
@@ -63,18 +63,18 @@ TUpDownView * TUpDownView::ConstructTUpDownViewBaseState()
 TUpDownView * TUpDownView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004095b1();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583DD0
-// GHIDRA_NAME TUpDownView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
+// GHIDRA_NAME TUpDownView::DispatchPictureResourceCommand
+// GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1, int param_2)
 
-void TUpDownView::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
+void TUpDownView::DispatchPictureResourceCommand(int param_1, int param_2)
 
 {
   TUpDownViewVtbl *pTVar1;
@@ -82,11 +82,11 @@ void TUpDownView::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int 
   uint uVar3;
   int iVar4;
   int in_stack_00000010;
-
+  
   if (param_1 != 2) {
-    uVar3 = GetTickCountDiv16();
+    uVar3 = func_0x004092d7();
     if (*(int *)&this->field_0x84 + 5U <= uVar3) {
-      iVar4 = GetTickCountDiv16();
+      iVar4 = func_0x004092d7();
       *(int *)&this->field_0x84 = iVar4;
       if (param_1 == 0) {
         *(int *)&this->field_0x84 = iVar4 + 10;

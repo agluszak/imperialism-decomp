@@ -4,54 +4,54 @@
 // Bucket: TNumberedArrowButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C1E0
-// GHIDRA_NAME TNumberedArrowButton::CreateTNumberedArrowButtonInstance
-// GHIDRA_PROTO undefined CreateTNumberedArrowButtonInstance()
+// GHIDRA_NAME TNumberedArrowButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
+undefined4 * TNumberedArrowButton::CreateObject(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637bba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0x88);
+  puVar1 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::TControl(this);
-    this->vftable = (TControlVtbl *)&_vftable_;
-    *(undefined2 *)&this[1].vftable = 0;
-    *(undefined2 *)((int)&this[1].vftable + 2) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004087fb();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x21) = 0;
+    *(undefined2 *)((int)puVar1 + 0x86) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TControl *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C280
-// GHIDRA_NAME TNumberedArrowButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TNumberedArrowButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNumberedArrowButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TNumberedArrowButton::GetRuntimeClass()
 
 {
-  return &g_pClassDescTNumberedArrowButton;
+  return &classTNumberedArrowButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C2A0
 // GHIDRA_NAME TNumberedArrowButton::TNumberedArrowButton
-// GHIDRA_PROTO undefined __thiscall TNumberedArrowButton::TNumberedArrowButton(void)
+// GHIDRA_PROTO undefined __thiscall TNumberedArrowButton(void)
 
 TNumberedArrowButton * TNumberedArrowButton::TNumberedArrowButton()
 
 {
-  TControl::TControl((TControl *)this);
+  func_0x004087fb();
   this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x84 = 0;
   *(undefined2 *)&this->field_0x86 = 0;
@@ -65,21 +65,18 @@ TNumberedArrowButton * TNumberedArrowButton::TNumberedArrowButton()
 TNumberedArrowButton * TNumberedArrowButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00402f54();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C330
-// GHIDRA_NAME TNumberedArrowButton::?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z
-// GHIDRA_PROTO undefined __thiscall ?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z(undefined2 param_1, char param_2)
+// GHIDRA_NAME TNumberedArrowButton::VTableSlot71
+// GHIDRA_PROTO undefined __thiscall VTableSlot71(undefined2 param_1, char param_2)
 
-void __thiscall
-TNumberedArrowButton::
-_OrphanCallChain_C1_I08_0058c330__YIXPAUNumberedArrowButtonState___Z_imperialismincludegame_ui_widget_shared_h141796978__HFD_Z
-          (TNumberedArrowButton *this,undefined2 param_1,char param_2)
+void TNumberedArrowButton::VTableSlot71(undefined2 param_1, char param_2)
 
 {
   *(undefined2 *)&this->field_0x84 = param_1;
@@ -90,77 +87,91 @@ _OrphanCallChain_C1_I08_0058c330__YIXPAUNumberedArrowButtonState___Z_imperialism
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C3D0
-// GHIDRA_NAME TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TNumberedArrowButton::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730()
+void TNumberedArrowButton::ApplyRectSlot110()
 
 {
   short sVar1;
   undefined4 *unaff_FS_OFFSET;
+  CString *local_44;
   CString local_34;
   undefined1 *local_30;
-  RECT local_2c;
-  RECT local_1c;
+  undefined4 local_2c;
+  undefined4 local_28;
+  undefined4 local_24;
+  undefined4 local_20;
+  int local_1c [3];
+  undefined4 local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637bd8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::__0CString__QAE_XZ(&local_34);
+  local_44 = (CString *)0x58c3f6;
+  CString::CString(&local_34);
+  local_44 = (CString *)0x10;
   local_4 = 0;
-  UpdatePaletteIndexWithDefaultFallback(0x10);
-  local_30 = &stack0xffffffbc;
-  SetQuickDrawFillColor();
-  local_1c.top = 0;
-  local_1c.left = (LONG)(short)((*(short *)&this->field_0x86 != 2) - 1 & 0xb);
-  local_1c.right = local_1c.left + 0xb;
-  local_1c.bottom = 0x10;
-  local_2c.left = 0;
-  local_2c.top = 0;
-  local_2c.right = 0xb;
-  local_2c.bottom = 0x10;
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6a4) + 4),
-             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24,
-             (astruct_19 *)0x0);
-  local_1c.bottom = 0x10;
-  local_1c.top = 0;
-  local_1c.left = (LONG)(short)((-(ushort)(*(short *)&this->field_0x86 != 1) & 0xfff5) + 0x21);
-  local_1c.right = local_1c.left + 0xb;
-  local_2c.right = 0xb;
-  local_2c.left = 0;
-  local_2c.top = 0x19;
-  local_2c.bottom = 0x29;
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6a4) + 4),
-             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24,
-             (astruct_19 *)0x0);
-  UpdatePaletteIndexWithDefaultFallback(0x13);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
+  func_0x004010be();
+  local_44 = (CString *)0x0;
+  local_30 = (undefined1 *)&local_44;
+  func_0x00406b86();
+  local_44 = (CString *)0x0;
+  local_1c[1] = 0;
+  local_1c[0] = (int)(short)((*(short *)&this->field_0x86 != 2) - 1 & 0xb);
+  local_1c[2] = local_1c[0] + 0xb;
+  local_10 = 0x10;
+  local_2c = 0;
+  local_28 = 0;
+  local_24 = 0xb;
+  local_20 = 0x10;
+  func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x6a4) + 4,
+                  &g_pActiveQuickDrawSurfaceContext->field_0x4,local_1c,&local_2c,0x24);
+  local_10 = 0x10;
+  local_44 = (CString *)0x0;
+  local_1c[1] = 0;
+  local_1c[0] = (int)(short)((-(ushort)(*(short *)&this->field_0x86 != 1) & 0xfff5) + 0x21);
+  local_1c[2] = local_1c[0] + 0xb;
+  local_24 = 0xb;
+  local_2c = 0;
+  local_28 = 0x19;
+  local_20 = 0x29;
+  func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x6a4) + 4,
+                  &g_pActiveQuickDrawSurfaceContext->field_0x4,local_1c,&local_2c,0x24);
+  local_44 = (CString *)0x13;
+  func_0x004010be();
+  local_44 = (CString *)0x2b67;
+  func_0x0040448f(0,10);
+  local_44 = (CString *)(int)*(short *)&this->field_0x84;
   _Format_CString__QAAXPBDZZ(&local_34,&g_szDecimalFormat);
+  local_44 = &local_34;
   sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
+  local_44 = (CString *)0x18;
   SetQuickDrawTextOriginWithContextOffset(7 - (int)sVar1 / 2);
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
+  local_44 = &local_34;
+  func_0x004029aa();
+  local_44 = (CString *)0x2b6c;
+  func_0x0040448f(0,10);
+  local_44 = (CString *)0x17;
   SetQuickDrawTextOriginWithContextOffset(6 - (int)sVar1 / 2);
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  local_44 = &local_34;
+  func_0x004029aa();
   local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_34);
+  local_44 = (CString *)0x58c5a5;
+  CString::~CString(&local_34);
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C640
-// GHIDRA_NAME TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
+// GHIDRA_NAME TNumberedArrowButton::DispatchPictureResourceCommand
+// GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1)
 
-void __thiscall
-TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
-          (TNumberedArrowButton *this,int param_1)
+void TNumberedArrowButton::DispatchPictureResourceCommand(int param_1)
 
 {
   TNumberedArrowButtonVtbl *pTVar1;
@@ -170,7 +181,7 @@ TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
   int unaff_retaddr;
   int in_stack_00000010;
   short sStack_10;
-
+  
   sVar4 = 0;
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->PointInBoundsAndActionable)();
@@ -215,28 +226,26 @@ TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C7C0
-// GHIDRA_NAME TNumberedArrowButton::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2)
+// GHIDRA_NAME TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback
+// GHIDRA_PROTO undefined __thiscall HandleCursorHoverSelectionByChildHitTestAndFallback(undefined4 * param_1, undefined4 param_2)
 
 void __thiscall
-TNumberedArrowButton::SetForeignMinisterReadyFlag14
+TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback
           (TNumberedArrowButton *this,undefined4 *param_1,undefined4 param_2)
 
 {
   char cVar1;
-
+  
   cVar1 = (*this->vftable->VTableSlot3B)();
   if (cVar1 != '\0') {
     if ((int)param_1[1] < this->field38 / 2) {
       this->field4e = 0x100;
-      TMapDialog::SetForeignMinisterReadyFlag14
-                ((TControl *)this,param_1,param_2);
+      func_0x00408b07(param_1,param_2);
       return;
     }
     this->field4e = -1;
   }
-  TMapDialog::SetForeignMinisterReadyFlag14
-            ((TControl *)this,param_1,param_2);
+  func_0x00408b07(param_1,param_2);
   return;
 }
 

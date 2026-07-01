@@ -4,56 +4,56 @@
 // Bucket: TGameSetupMultiplayerPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575E90
-// GHIDRA_NAME TGameSetupMultiplayerPicture::CreateTGameSetupMultiplayerPictureInstance
-// GHIDRA_PROTO undefined CreateTGameSetupMultiplayerPictureInstance()
+// GHIDRA_NAME TGameSetupMultiplayerPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TNoHilitePicture * TGameSetupMultiplayerPicture::CreateTGameSetupMultiplayerPictureInstance(void)
+undefined4 * TGameSetupMultiplayerPicture::CreateObject(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063682a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
-    this->vftable = (TNoHilitePictureVtbl *)&TGameSetupMultiplayerPictureVtbl_00661d80;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403328();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575F10
-// GHIDRA_NAME TGameSetupMultiplayerPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TGameSetupMultiplayerPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGameSetupMultiplayerPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TGameSetupMultiplayerPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTGameSetupMultiplayerPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575F30
 // GHIDRA_NAME TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState
-// GHIDRA_PROTO undefined __thiscall TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTGameSetupMultiplayerPictureBaseState(void)
 
 TGameSetupMultiplayerPicture * __thiscall
 TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState
           (TGameSetupMultiplayerPicture *this)
 
 {
-  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->vftable = &TGameSetupMultiplayerPictureVtbl_00661d80;
+  func_0x00403328();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -66,18 +66,18 @@ TGameSetupMultiplayerPicture::_scalar_deleting_destructor_
           (TGameSetupMultiplayerPicture *this,byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004039a9();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575FB0
-// GHIDRA_NAME TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TGameSetupMultiplayerPicture::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920()
+void TGameSetupMultiplayerPicture::NoOpUiLifecycleHook()
 
 {
   _vslot_fn *p_Var1;
@@ -88,57 +88,58 @@ void TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   int iVar5;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
-
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  undefined1 auStack_34 [4];
+  
+  func_0x00406ba9();
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar2 = (*p_Var1)(0x70726f74);
   piVar4 = (int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(*piVar4 + 0xc))();
   *(undefined2 *)(piVar4 + 0x23) = 0x4c;
   *(undefined2 *)((int)piVar4 + 0x8e) = 0x4d;
-  cVar3 = InitializeProtocolOptionControlFromProvider(this);
+  cVar3 = func_0x00408341(this);
   if (cVar3 == '\0') {
-    ResetDiplomacyRuntimeSelectionAndSetModeNada();
+    func_0x00408fc1();
   }
   else {
-    InitializeSelectableTextOptionEntryIteratorContext(piVar4);
-    piVar4 = (int *)BeginSelectableTextOptionEntryIterator();
-    iVar5 = IsSelectableTextOptionEntryIteratorValid();
+    func_0x00403bbb(piVar4);
+    piVar4 = (int *)func_0x00405754();
+    iVar5 = func_0x00406c4e();
     while (iVar5 != 0) {
       (**(code **)(*piVar4 + 0xc))();
-      ApplyUiTextStyleAndThemeFlags(piVar4,0,0xc,0x2b6c,0x2b6a);
-      piVar4 = (int *)AdvanceSelectableTextOptionEntryIterator();
-      iVar5 = IsSelectableTextOptionEntryIteratorValid();
+      func_0x0040263a(piVar4,0,0xc,0x2b6c,0x2b6a);
+      piVar4 = (int *)func_0x00404368();
+      iVar5 = func_0x00406c4e();
     }
     uVar2 = (*p_Var1)(0x63757273);
     g_pCursorControlPanel = (TControl *)CONCAT31(extraout_var_00,uVar2);
     (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
-    BuildUiTextStyleDescriptor(&stack0xffffffd8,0,0xe,0x2b6c);
-    (*g_pCursorControlPanel->vftable[1].OrphanCallChain_C11_I88_004874b0_08)(&stack0xffffffd8,1);
+    BuildUiTextStyleDescriptor(auStack_34,0,0xe,0x2b6c);
+    (*g_pCursorControlPanel->vftable[1].OrphanCallChain_C11_I88_004874b0_08)(auStack_34,1);
     (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6b,0x2b6c);
     (*g_pCursorControlPanel->vftable[1].GetTEventHandlerClassNamePointer)(1,0);
-    InitializeMainRoutineContextAndRun(&g_szEmptyString,0x6d61696e);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x1f,0x72616e64);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x20,0x7363656e);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x21,0x6c6f6164);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x22,0x6d756c74);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x23,0x6a6f696e);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x24,0x70726f74);
+    func_0x00401875(&g_szEmptyString,0x6d61696e);
+    func_0x00406bc7(0x2737,0x1f,0x72616e64);
+    func_0x00406bc7(0x2737,0x20,0x7363656e);
+    func_0x00406bc7(0x2737,0x21,0x6c6f6164);
+    func_0x00406bc7(0x2737,0x22,0x6d756c74);
+    func_0x00406bc7(0x2737,0x23,0x6a6f696e);
+    func_0x00406bc7(0x2737,0x24,0x70726f74);
   }
-  cVar3 = WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0();
+  cVar3 = func_0x00405dd5();
   if (cVar3 != '\0') {
     uVar2 = (*p_Var1)(0x73706974);
     iVar5 = *(int *)CONCAT31(extraout_var_01,uVar2);
     (**(code **)(iVar5 + 0xc))();
     (**(code **)(iVar5 + 0xa8))(1,0);
-    LoadUiStringByGroupAndIndexToControlObject(0x2759,7,(int *)CONCAT31(extraout_var_01,uVar2));
+    func_0x0040807b(0x2759,7,(int *)CONCAT31(extraout_var_01,uVar2));
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576230
-// GHIDRA_NAME TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2)
+// GHIDRA_NAME TGameSetupMultiplayerPicture::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, CString param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches setup/menu command tags and posts follow-up turn-event codes (load/random/scenario/join/multiplayer paths).
 // GHIDRA_COMMENT_END
@@ -147,7 +148,7 @@ void TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920()
    (load/random/scenario/join/multiplayer paths). */
 
 void __thiscall
-TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+TGameSetupMultiplayerPicture::HandleEvent
           (TGameSetupMultiplayerPicture *this,int param_1,CString param_2)
 
 {
@@ -157,22 +158,37 @@ TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined uVar4;
   int iVar5;
   undefined3 extraout_var;
-  undefined3 extraout_var_00;
+  int *piVar6;
+  undefined4 uVar7;
   undefined3 extraout_var_01;
-  CString *this_00;
-  int *unaff_FS_OFFSET;
+  TSimMgr *extraout_ECX;
+  TSimMgr *extraout_ECX_00;
+  CString *pCVar8;
+  undefined4 unaff_ESI;
+  undefined4 *unaff_FS_OFFSET;
+  int unaff_retaddr;
+  undefined4 uStack_58;
+  undefined4 *puStack_54;
+  undefined4 uStack_50;
+  int *piStack_4c;
+  TSimMgr *pTStack_48;
+  undefined4 *puStack_44;
+  char *pcStack_40;
+  int iStack_3c;
+  CString *pCStack_38;
+  char *pcStack_34;
   CString local_1c;
   CString local_18;
-  CString local_14;
-  undefined1 *local_10;
-  int local_c;
-  undefined1 *puStack_8;
-  int local_4;
-
+  CString local_14 [2];
+  undefined4 local_c;
+  CString CStack_8;
+  undefined1 *local_4;
+  undefined3 extraout_var_00;
+  
   local_c = *unaff_FS_OFFSET;
-  local_4 = -1;
-  puStack_8 = &LAB_00636878;
-  *unaff_FS_OFFSET = (int)&local_c;
+  local_4 = (undefined1 *)0xffffffff;
+  CStack_8.m_pchData = &LAB_00636878;
+  *unaff_FS_OFFSET = &local_c;
   if ((((param_1 == 0x14) || (param_1 == 10)) || (param_1 == 0x22)) || (param_1 == 0xd)) {
     uVar1 = *(uint *)(param_2.m_pchData + 0x1c);
     if (uVar1 < 0x6c6f6165) {
@@ -180,142 +196,231 @@ TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       if (uVar1 != 0x6a6f696e) goto LAB_005764ac;
 LAB_005763d6:
       p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+      pcStack_34 = (char *)0x5763e8;
       uVar4 = (*p_Var2)();
+      pcStack_34 = (char *)0x5763f1;
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0xc))();
+      pcStack_34 = (char *)((int *)CONCAT31(extraout_var,uVar4))[0x22];
+      pCStack_38 = (CString *)0x5763fc;
       uVar4 = (*p_Var2)();
-      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar4) + 0xc))();
-      cVar3 = ValidateGameFlowNameAndSelectionContext();
+      piVar6 = (int *)CONCAT31(extraout_var_00,uVar4);
+      pCStack_38 = (CString *)0x576405;
+      (**(code **)(*piVar6 + 0xc))();
+      iStack_3c = piVar6[0xf];
+      pCStack_38 = (CString *)(uint)(*(int *)(unaff_retaddr + 0x1c) != 0x6a6f696e);
+      pcStack_40 = (char *)0x576427;
+      cVar3 = func_0x004030cb();
       if (cVar3 == '\0') {
-        CString::__0CString__QAE_XZ(&param_2);
-        local_4 = 3;
-        LoadUiStringResourceByGroupAndIndex();
-        AssignStringSharedRefAndReturnThis(&param_2);
-        DispatchLocalizedUiMessageWithTemplateA13A0();
-        ResetGameFlowStateAndPostTurnEvent5DC();
-        this_00 = &param_2;
+        pcStack_40 = (char *)0x576434;
+        CString::CString(&CStack_8);
+        pcStack_40 = (char *)0x28;
+        pTStack_48 = (TSimMgr *)&CStack_8;
+        puStack_44 = (undefined4 *)0x2737;
+        local_14[0].m_pchData = (char *)0x3;
+        piStack_4c = (int *)0x576453;
+        func_0x00401e7e();
+        piStack_4c = (int *)0x0;
+        uStack_50 = 0;
+        puStack_54 = &DAT_006a4218;
+        local_18.m_pchData = (char *)&uStack_58;
+        pCVar8 = local_14;
+        func_0x004076b7(pCVar8);
+        DispatchLocalizedUiMessageWithTemplateA13A0(pCVar8);
+        uStack_50 = 0x576483;
+        func_0x00401d75();
+        pCVar8 = &param_2;
 LAB_00576781:
-        local_4 = -1;
-        CString::__1CString__QAE_XZ(this_00);
+        local_4 = (undefined1 *)0xffffffff;
+        CString::~CString(pCVar8);
         goto LAB_00576786;
       }
-      WrapperFor_WriteProfileInt_At005e02c0();
+      puStack_44 = (undefined4 *)piVar6[7];
+      pcStack_40 = s_DefaultProtocol_0069802c;
+      pTStack_48 = (TSimMgr *)0x5764a8;
+      func_0x00403d23();
     }
     else if ((uVar1 == 0x72616e64) || (uVar1 == 0x7363656e)) {
 LAB_005762a1:
-      cVar3 = ReturnTrueStub();
+      cVar3 = func_0x00408594();
       while (cVar3 == '\0') {
-        CString::__0CString__QAE_XZ(&local_18);
-        local_4 = 0;
-        LoadUiStringResourceByGroupAndIndex();
-        local_14.m_pchData = &stack0xffffffc4;
-        AssignStringSharedRefAndReturnThis(&local_18);
+        CString::CString(&local_18);
+        pCStack_38 = &local_18;
+        pcStack_34 = (char *)0x2745;
+        local_4 = (undefined1 *)0x0;
+        iStack_3c = 0x5762d8;
+        func_0x00401e7e();
+        iStack_3c = 1;
+        pcStack_40 = (char *)0x1;
+        puStack_44 = &DAT_006a4218;
+        piStack_4c = (int *)&stack0xffffffdc;
+        uStack_50 = 0x5762f0;
+        pTStack_48 = extraout_ECX;
+        func_0x004076b7();
+        pcStack_40 = (char *)0x5762fb;
         cVar3 = DispatchLocalizedUiMessageWithTemplateA13A0();
-        local_4 = -1;
-        this_00 = &local_18;
+        local_4 = (undefined1 *)0xffffffff;
+        pCVar8 = &local_18;
         if (cVar3 == '\0') goto LAB_00576781;
-        CString::__1CString__QAE_XZ(this_00);
-        cVar3 = ReturnTrueStub();
+        CString::~CString(pCVar8);
+        cVar3 = func_0x00408594();
       }
-      CString::__0CString__QAE_PBD_Z(&local_18,*(char **)&g_pGameFlowState->field_0x74);
-      local_4 = 1;
-      CString::__0CString__QAE_XZ(&local_1c);
-      local_4._0_1_ = 2;
-      LoadUiStringResourceByGroupAndIndex();
-      iVar5 = RunTaggedOptionDialogAndReturnSelectionTag(local_1c.m_pchData,&local_18);
+      pcStack_34 = (char *)0x576335;
+      CString::CString(&local_18,*(char **)((int)g_pGameFlowState + 0x74));
+      local_4 = (undefined1 *)0x1;
+      CString::CString(&local_1c);
+      pCStack_38 = &local_1c;
+      pcStack_34 = (char *)0x2737;
+      local_4 = (undefined1 *)CONCAT31(local_4._1_3_,2);
+      iStack_3c = 0x57635e;
+      func_0x00401e7e();
+      iStack_3c = 1;
+      pcStack_40 = (char *)0x0;
+      puStack_44 = (undefined4 *)0x0;
+      piStack_4c = (int *)&stack0xffffffdc;
+      pTStack_48 = (TSimMgr *)0x0;
+      puStack_54 = (undefined4 *)0x57637a;
+      uStack_50 = unaff_ESI;
+      iVar5 = func_0x00407ce3();
       if (iVar5 != 0x63616e63) {
-        iVar5 = __mbscmp();
+        pcStack_34 = local_18.m_pchData;
+        pCStack_38 = (CString *)0x576394;
+        iVar5 = CompareAnsiStringsWithMbcsAwareness();
         if (iVar5 != 0) {
-          CString::__4CString__QAEABV0_ABV0__Z((CString *)&g_pGameFlowState->field_0x74,&local_18);
-          local_4 = CONCAT31(local_4._1_3_,1);
-          CString::__1CString__QAE_XZ(&local_1c);
-          local_4 = -1;
-          CString::__1CString__QAE_XZ(&local_18);
+          pcStack_34 = (char *)0x5763b8;
+          CString::operator=((CString *)((int)g_pGameFlowState + 0x74),&local_18);
+          local_4 = (undefined1 *)CONCAT31(local_4._1_3_,1);
+          CString::~CString(&local_1c);
+          local_4 = (undefined1 *)0xffffffff;
+          CString::~CString(&local_18);
           goto LAB_005763d6;
         }
-        LoadUiStringResourceByGroupAndIndex();
-        param_2.m_pchData = &stack0xffffffc4;
-        AssignStringSharedRefAndReturnThis(&local_1c);
+        pCStack_38 = &local_1c;
+        pcStack_34 = (char *)0x2737;
+        iStack_3c = 0x576743;
+        func_0x00401e7e();
+        iStack_3c = 0;
+        pcStack_40 = (char *)0x0;
+        puStack_44 = &DAT_006a4218;
+        local_4 = (undefined1 *)&pTStack_48;
+        piStack_4c = (int *)&stack0xffffffd8;
+        uStack_50 = 0x57675d;
+        pTStack_48 = extraout_ECX_00;
+        func_0x004076b7();
+        pcStack_40 = (char *)0x576768;
         DispatchLocalizedUiMessageWithTemplateA13A0();
       }
-      local_4 = CONCAT31(local_4._1_3_,1);
-      CString::__1CString__QAE_XZ(&local_1c);
-      this_00 = &local_18;
+      local_4 = (undefined1 *)CONCAT31(local_4._1_3_,1);
+      CString::~CString(&local_1c);
+      pCVar8 = &local_18;
       goto LAB_00576781;
     }
 LAB_005764ac:
     uVar1 = *(uint *)(param_2.m_pchData + 0x1c);
     if (uVar1 < 0x6c6f6165) {
       if (uVar1 == 0x6c6f6164) {
-        *(undefined4 *)&g_pGameFlowState->field_0xe0 = 0x6c6f6164;
-        cVar3 = TSimMgr::ValidateAndPrepareGameFlowNameForDispatch((TSimMgr *)g_pGameFlowState);
+        *(undefined4 *)((int)g_pGameFlowState + 0xe0) = 0x6c6f6164;
+        cVar3 = func_0x00407482();
         if (cVar3 != '\0') {
           *(undefined4 *)&g_pLocalizationTable->field_0x44 = 1;
-          DAT_00695278 = 0xfffffffe;
+          g_nSaveFormatVersion = -2;
           goto LAB_0057670d;
         }
       }
       else if (uVar1 == 0x6a6f696e) {
-        DAT_006a43f0 = 0;
+        DAT_006a43f0 = '\0';
         *(undefined4 *)&g_pLocalizationTable->field_0x44 = 2;
-        ApplyJoinGameSelectionAndPostTurnEvent5E4();
+        pcStack_34 = (char *)0x5764e7;
+        func_0x00402397();
       }
     }
     else if (uVar1 < 0x72616e65) {
       if (uVar1 == 0x72616e64) {
-        *(undefined4 *)&g_pGameFlowState->field_0xe0 = 0x72616e64;
-        cVar3 = TSimMgr::ValidateAndPrepareGameFlowNameForDispatch((TSimMgr *)g_pGameFlowState);
+        *(undefined4 *)((int)g_pGameFlowState + 0xe0) = 0x72616e64;
+        cVar3 = func_0x00407482();
         if (cVar3 != '\0') {
           *(undefined4 *)&g_pLocalizationTable->field_0x44 = 1;
 LAB_0057670d:
-          PostTurnEventCodeMessage2420();
+          pcStack_34 = (char *)0x576718;
+          func_0x00408715();
         }
       }
       else if (uVar1 == 0x6d756c74) {
-        ResetGameFlowStateAndPostTurnEvent5DC();
+        func_0x00401d75();
       }
     }
     else if (uVar1 == 0x7363656e) {
-      *(undefined4 *)&g_pGameFlowState->field_0xe0 = 0x73636e30;
-      cVar3 = TSimMgr::ValidateAndPrepareGameFlowNameForDispatch((TSimMgr *)g_pGameFlowState);
+      *(undefined4 *)((int)g_pGameFlowState + 0xe0) = 0x73636e30;
+      cVar3 = func_0x00407482();
       if (cVar3 != '\0') {
         *(undefined4 *)&g_pLocalizationTable->field_0x44 = 1;
         goto LAB_0057670d;
       }
     }
-    else if (((uVar1 == 0x73706974) &&
-             (cVar3 = WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0(), cVar3 != '\0')
-             ) && (cVar3 = ShowLocalizedUiPromptByGroupAndIndex(0x2759,8,0,1), cVar3 != '\0'))
-    {
-      DeleteLegacyCliSaveImpFiles();
-      CString::__0CString__QAE_XZ(&local_14);
-      local_4 = 4;
-      CString::__0CString__QAE_XZ(&local_1c);
-      local_4._0_1_ = 5;
-      CString::__0CString__QAE_XZ(&local_18);
-      local_4._0_1_ = 6;
-      LoadUiStringResourceByGroupAndIndex();
-      _Format_CString__QAAXPBDZZ();
-      scanBracketExpressions(g_pLocalizationTable,&local_14,local_1c.m_pchData);
-      local_10 = &stack0xffffffc4;
-      AssignStringSharedRefAndReturnThis(&local_14);
-      DispatchLocalizedUiMessageWithTemplateA13A0();
-      uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
-      iVar5 = *(int *)CONCAT31(extraout_var_01,uVar4);
-      (**(code **)(iVar5 + 0xc))();
-      (**(code **)(iVar5 + 0xa8))();
-      local_10 = &stack0xffffffcc;
-      TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-                ((TToolBarCluster *)&stack0xffffffcc,(char *)&g_szEmptyString);
-      RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-      local_4._0_1_ = 5;
-      CString::__1CString__QAE_XZ(&local_18);
-      local_4 = CONCAT31(local_4._1_3_,4);
-      CString::__1CString__QAE_XZ(&local_1c);
-      local_4 = -1;
-      CString::__1CString__QAE_XZ(&local_14);
+    else if ((uVar1 == 0x73706974) && (cVar3 = func_0x00405dd5(), cVar3 != '\0')) {
+      pcStack_34 = (char *)0x0;
+      pCStack_38 = (CString *)0x8;
+      iStack_3c = 0x2759;
+      pcStack_40 = (char *)0x5765c1;
+      cVar3 = func_0x004075a9();
+      if (cVar3 != '\0') {
+        uVar7 = func_0x00409953();
+        CString::CString(local_14);
+        local_4 = (undefined1 *)0x4;
+        CString::CString(&local_1c);
+        local_4._0_1_ = 5;
+        CString::CString(&local_18);
+        pCStack_38 = &local_1c;
+        pcStack_34 = (char *)0x2759;
+        local_4._0_1_ = 6;
+        iStack_3c = 0x57661b;
+        func_0x00401e7e();
+        puStack_44 = (undefined4 *)&stack0xffffffdc;
+        pcStack_40 = &g_szDecimalFormat;
+        pTStack_48 = (TSimMgr *)0x57662b;
+        iStack_3c = uVar7;
+        _Format_CString__QAAXPBDZZ();
+        puStack_44 = (undefined4 *)&stack0xffffffe0;
+        pTStack_48 = g_pLocalizationTable;
+        piStack_4c = (int *)0x576648;
+        func_0x0040988b();
+        piStack_4c = (int *)&stack0xffffffe0;
+        iStack_3c = 0;
+        pcStack_40 = (char *)0x0;
+        puStack_44 = &DAT_006a4218;
+        uStack_50 = 0x576665;
+        local_1c.m_pchData = (char *)&pTStack_48;
+        func_0x004076b7();
+        uStack_50 = 0x576670;
+        DispatchLocalizedUiMessageWithTemplateA13A0();
+        pcStack_40 = (char *)0x73706974;
+        puStack_44 = (undefined4 *)0x576680;
+        uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
+        iVar5 = *(int *)CONCAT31(extraout_var_01,uVar4);
+        puStack_44 = (undefined4 *)0x576689;
+        (**(code **)(iVar5 + 0xc))();
+        puStack_44 = (undefined4 *)0x0;
+        pTStack_48 = (TSimMgr *)0x0;
+        piStack_4c = (int *)0x576695;
+        (**(code **)(iVar5 + 0xa8))();
+        puStack_54 = &g_szEmptyString;
+        uStack_58 = 0x5766a7;
+        piStack_4c = (int *)CONCAT31(extraout_var_01,uVar4);
+        func_0x00401b40();
+        uStack_58 = 0x5766ac;
+        func_0x00404d22();
+        local_4._0_1_ = 5;
+        CString::~CString(&local_18);
+        local_4 = (undefined1 *)CONCAT31(local_4._1_3_,4);
+        CString::~CString(&local_1c);
+        local_4 = (undefined1 *)0xffffffff;
+        CString::~CString(local_14);
+      }
     }
   }
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+  pcStack_34 = param_2.m_pchData;
+  pCStack_38 = (CString *)param_1;
+  iStack_3c = 0x57672a;
+  func_0x00404566();
 LAB_00576786:
   *unaff_FS_OFFSET = local_c;
   return;

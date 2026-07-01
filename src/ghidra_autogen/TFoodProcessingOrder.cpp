@@ -3,35 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: TFoodProcessingOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B7DF0
-// GHIDRA_NAME TFoodProcessingOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004B7DC0
+// GHIDRA_NAME TFoodProcessingOrder::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TFoodProcessingOrder::GetTProductionOrderClassNamePointer()
+undefined4 * TFoodProcessingOrder::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x4c);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B7DF0
+// GHIDRA_NAME TFoodProcessingOrder::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TFoodProcessingOrder::GetRuntimeClass()
+
+{
+  return &classTFoodProcessingOrder;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7E30
-// GHIDRA_NAME TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTFoodProcessingOrderBaseState(byte param_1)
+// GHIDRA_NAME TFoodProcessingOrder::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFoodProcessingOrder * __thiscall
-TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState
-          (TFoodProcessingOrder *this,byte param_1)
+TFoodProcessingOrder * TFoodProcessingOrder::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(this);
+  func_0x00405b32();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7E60
 // GHIDRA_NAME TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTFoodProcessingOrderAndMaybeFree(void)
 
 void TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree()
 
@@ -43,7 +58,7 @@ void TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7E80
 // GHIDRA_NAME TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
-// GHIDRA_PROTO undefined __thiscall TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80(int param_1)
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b7e80(int param_1)
 
 void __thiscall
 TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
@@ -52,7 +67,7 @@ TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
 {
   int iVar1;
   undefined4 *puVar2;
-
+  
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = 7;
@@ -70,10 +85,10 @@ TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7ED0
-// GHIDRA_NAME TFoodProcessingOrder::OrphanLeaf_NoCall_Ins02_004b50e0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
+// GHIDRA_NAME TFoodProcessingOrder::MaxOrder
+// GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-int TFoodProcessingOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
+int TFoodProcessingOrder::MaxOrder()
 
 {
   int iVar1;
@@ -81,7 +96,7 @@ int TFoodProcessingOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   short sVar3;
   undefined4 unaff_EBX;
   int iVar4;
-
+  
   iVar1 = *(int *)&this->field_0x8;
   sVar3 = *(short *)(iVar1 + 0xdc) + *(short *)(iVar1 + 0xde);
   iVar2 = (int)*(short *)(iVar1 + 0xd8) / 2;
@@ -99,10 +114,10 @@ int TFoodProcessingOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7F50
-// GHIDRA_NAME TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(ushort param_1)
+// GHIDRA_NAME TFoodProcessingOrder::SetQuantity
+// GHIDRA_PROTO undefined __thiscall SetQuantity(ushort param_1)
 
-undefined4 TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100(ushort param_1)
+undefined4 TFoodProcessingOrder::SetQuantity(ushort param_1)
 
 {
   short *psVar1;
@@ -113,7 +128,7 @@ undefined4 TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100(ushort param_1)
   char cVar6;
   undefined3 extraout_var;
   int *piVar7;
-
+  
   if ((param_1 & 1) != 0) {
     param_1 = param_1 + 1;
   }
@@ -157,15 +172,15 @@ undefined4 TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100(ushort param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8060
-// GHIDRA_NAME TFoodProcessingOrder::OrphanRetStub_004b5160
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+// GHIDRA_NAME TFoodProcessingOrder::CommitIfPending
+// GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TFoodProcessingOrder::OrphanRetStub_004b5160()
+void TFoodProcessingOrder::CommitIfPending()
 
 {
   int *piVar1;
   int *piVar2;
-
+  
   piVar2 = *(int **)&this->field_0x8;
   piVar1 = piVar2 + 0x31;
   *(short *)piVar1 = (short)*piVar1 + *(short *)&this->field_0x4;
@@ -177,7 +192,7 @@ void TFoodProcessingOrder::OrphanRetStub_004b5160()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B80A0
 // GHIDRA_NAME TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop
-// GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
+// GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
 
 void TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop()
 
@@ -186,12 +201,10 @@ void TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B80C0
-// GHIDRA_NAME TFoodProcessingOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(int param_1, ushort param_2)
+// GHIDRA_NAME TFoodProcessingOrder::FillOrderSheet
+// GHIDRA_PROTO undefined __thiscall FillOrderSheet(int param_1, ushort param_2)
 
-void __thiscall
-TFoodProcessingOrder::CreateTItemOrderInstance
-          (TFoodProcessingOrder *this,int param_1,ushort param_2)
+void TFoodProcessingOrder::FillOrderSheet(int param_1, ushort param_2)
 
 {
   if ((param_2 & 1) != 0) {

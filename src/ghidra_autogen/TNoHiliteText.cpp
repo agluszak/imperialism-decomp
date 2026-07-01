@@ -4,43 +4,43 @@
 // Bucket: TNoHiliteText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6960
-// GHIDRA_NAME TNoHiliteText::CreateTNoHiliteTextInstance
-// GHIDRA_PROTO undefined CreateTNoHiliteTextInstance()
+// GHIDRA_NAME TNoHiliteText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TStaticText * TNoHiliteText::CreateTNoHiliteTextInstance(void)
+undefined4 * TNoHiliteText::CreateObject(void)
 
 {
-  TStaticText *this;
-  TStaticText *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063905a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  pTVar1 = (TStaticText *)0x0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::TStaticText(this);
-    this->vftable = (TStaticTextVtbl *)&TNoHiliteTextVtbl_0066d500;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040541b();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B69E0
-// GHIDRA_NAME TNoHiliteText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TNoHiliteText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNoHiliteText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TNoHiliteText::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNoHiliteText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6A00
@@ -59,19 +59,19 @@ CRuntimeClass * TNoHiliteText::GetTEventHandlerClassNamePointer()
 
 /* Constructs a status-list text entry used by turn-event status row builders and related list text
    panels.
-
+   
    Algorithm:
    1. Calls ConstructUiTextResourceEntryBase.
    2. Installs status-list text vtable.
-
+   
    Returns:
    - this pointer. */
 
 TNoHiliteText * TNoHiliteText::ConstructUiStatusListTextEntry()
 
 {
-  TStaticText::TStaticText((TStaticText *)this);
-  this->vftable = &TNoHiliteTextVtbl_0066d500;
+  func_0x0040541b();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -82,9 +82,9 @@ TNoHiliteText * TNoHiliteText::ConstructUiStatusListTextEntry()
 TNoHiliteText * TNoHiliteText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TStaticText::~TStaticText((TStaticText *)this);
+  func_0x004015e1();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }

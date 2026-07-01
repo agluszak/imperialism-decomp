@@ -4,43 +4,43 @@
 // Bucket: TCityBarCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586590
-// GHIDRA_NAME TCityBarCluster::CreateTCityBarClusterInstance
-// GHIDRA_PROTO undefined CreateTCityBarClusterInstance()
+// GHIDRA_NAME TCityBarCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TUberCluster * TCityBarCluster::CreateTCityBarClusterInstance(void)
+undefined4 * TCityBarCluster::CreateObject(void)
 
 {
-  TUberCluster *this;
-  TUberCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063785a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
+  puVar1 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  pTVar1 = (TUberCluster *)0x0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->vftable = (TUberClusterVtbl *)&g_vtblTCityBarCluster;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00405835();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586610
-// GHIDRA_NAME TCityBarCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TCityBarCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCityBarCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TCityBarCluster::GetRuntimeClass()
 
 {
-  return &g_pClassDescTCityBarCluster;
+  return &classTCityBarCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586630
@@ -50,8 +50,8 @@ CRuntimeClass * TCityBarCluster::GetTEventHandlerClassNamePointer()
 TCityBarCluster * TCityBarCluster::ConstructTCityBarClusterBaseState()
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  this->vftable = &g_vtblTCityBarCluster;
+  func_0x00405835();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,9 +62,9 @@ TCityBarCluster * TCityBarCluster::ConstructTCityBarClusterBaseState()
 TCityBarCluster * TCityBarCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x0040801c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -86,7 +86,7 @@ void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int param_1)
   int unaff_EBX;
   int unaff_ESI;
   int iVar4;
-
+  
   iVar1 = *(int *)(param_1 + 0xac);
   p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar3 = (*p_Var2)(0x74726561);
@@ -98,25 +98,22 @@ void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int param_1)
   iVar4 = 0x756e7472;
   uVar3 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x67d);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x67d);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x1e4))
             ((int)*(short *)(*(int *)(iVar1 + 0x10) + 4),1);
   uVar3 = (*p_Var2)(0x74726169);
   if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x682);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x682);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x1e4))
             ((int)*(short *)(*(int *)(unaff_ESI + 0x10) + 6),1);
   uVar3 = (*p_Var2)(0x70726f66);
   if ((int *)CONCAT31(extraout_var_02,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x687);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x687);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar3) + 0x1e4))
             ((int)*(short *)(*(int *)(iVar4 + 0x10) + 8),1);

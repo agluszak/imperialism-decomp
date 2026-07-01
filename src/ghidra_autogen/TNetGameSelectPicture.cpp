@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TNetGameSelectPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00576AA0
+// GHIDRA_NAME TNetGameSelectPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TNetGameSelectPicture::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006368ca;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x94);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403328();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00576B20
 // GHIDRA_NAME TNetGameSelectPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,42 +40,40 @@
 TNetGameSelectPicture * TNetGameSelectPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00403f17();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576B70
-// GHIDRA_NAME TNetGameSelectPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TNetGameSelectPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNetGameSelectPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TNetGameSelectPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNetGameSelectPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576B90
-// GHIDRA_NAME TNetGameSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TNetGameSelectPicture::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TNetGameSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920()
+void TNetGameSelectPicture::NoOpUiLifecycleHook()
 
 {
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  InitializeRuntimeSelectionCredentialsFromProviderAndConnect(this);
+  func_0x00406ba9();
+  func_0x00408eb3(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576BC0
-// GHIDRA_NAME TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_NAME TNetGameSelectPicture::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void __thiscall
-TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TNetGameSelectPicture *this,int param_1,int param_2)
+void TNetGameSelectPicture::HandleEvent(int param_1, int param_2)
 
 {
   int iVar1;
@@ -54,14 +82,15 @@ TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined3 extraout_var;
   undefined4 uVar4;
   undefined3 extraout_var_00;
-
+  undefined4 in_stack_0000000c;
+  
   if (((param_1 == 0x14) || (param_1 == 10)) || (param_1 == 0x22)) {
     iVar1 = *(int *)(param_2 + 0x1c);
     if (iVar1 == 0x636e636c) {
-      ResetGameFlowStateAndPostTurnEvent5DCAlt();
+      func_0x004016f9();
     }
     else if (iVar1 == 0x686f7374) {
-      AssignStringAtB4FromB0AndResetState40();
+      func_0x00406717();
     }
     else if (iVar1 == 0x6a6f696e) {
       p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
@@ -70,11 +99,10 @@ TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       (**(code **)(iVar1 + 0xc))();
       uVar4 = (**(code **)(iVar1 + 0x1c4))();
       uVar3 = (*p_Var2)(uVar4);
-      ApplyJoinGameSelectionAndPostTurnEvent5E4
-                (*(undefined4 *)(CONCAT31(extraout_var_00,uVar3) + 0x3c));
+      func_0x00402397(*(undefined4 *)(CONCAT31(extraout_var_00,uVar3) + 0x3c));
     }
   }
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+  func_0x00404566(param_1,param_2,in_stack_0000000c);
   return;
 }
 

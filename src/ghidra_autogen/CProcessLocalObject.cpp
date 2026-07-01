@@ -4,19 +4,49 @@
 // Bucket: CProcessLocalObject.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622AAC
-// GHIDRA_NAME CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ
-// GHIDRA_PROTO void __thiscall CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ(void)
+// GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
+// GHIDRA_PROTO void __thiscall CProcessLocalObject::~CProcessLocalObject(void)
 
-void __thiscall CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ(CProcessLocalObject *this)
+void CProcessLocalObject::~CProcessLocalObject()
 
 {
-  __1CProcessLocalObject__QAE_XZ(this);
+  ~CProcessLocalObject(this);
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x006240B8
+// GHIDRA_NAME CProcessLocalObject::GetData
+// GHIDRA_PROTO undefined GetData()
+
+int CProcessLocalObject::GetData(void)
+
+{
+  int iVar1;
+  int *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe8;
+  *(int **)(unaff_EBP + -0x14) = extraout_ECX;
+  if (*extraout_ECX == 0) {
+    AfxLockGlobals(0x10);
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    if (*extraout_ECX == 0) {
+      iVar1 = (**(code **)(unaff_EBP + 8))();
+      *extraout_ECX = iVar1;
+    }
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    AfxUnlockGlobals(0x10);
+  }
+  iVar1 = *extraout_ECX;
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return iVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00624123
-// GHIDRA_NAME CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ
-// GHIDRA_PROTO void __thiscall ??1CProcessLocalObject@@QAE@XZ(void)
+// GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
+// GHIDRA_PROTO void __thiscall ~CProcessLocalObject(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: __thiscall CProcessLocalObject::~CProcessLocalObject(void)
@@ -26,10 +56,10 @@ void __thiscall CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ(CProcessLoca
 
 /* Library Function - Single Match
     public: __thiscall CProcessLocalObject::~CProcessLocalObject(void)
-
+   
    Library: nafxcw retail msvc500:static */
 
-void CProcessLocalObject::__1CProcessLocalObject__QAE_XZ()
+void CProcessLocalObject::~CProcessLocalObject()
 
 {
   if (*(int *)this != 0) {
@@ -41,13 +71,13 @@ void CProcessLocalObject::__1CProcessLocalObject__QAE_XZ()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006244CE
-// GHIDRA_NAME CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ
-// GHIDRA_PROTO void __thiscall CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ(void)
+// GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
+// GHIDRA_PROTO void __thiscall CProcessLocalObject::~CProcessLocalObject(void)
 
 void CProcessLocalObject::thunk__CProcessLocalObject()
 
 {
-  __1CProcessLocalObject__QAE_XZ(this);
+  ~CProcessLocalObject(this);
   return;
 }
 

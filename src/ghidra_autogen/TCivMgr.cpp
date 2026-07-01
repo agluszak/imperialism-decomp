@@ -3,14 +3,45 @@
 // Program: Imperialism.exe
 // Bucket: TCivMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004D2030
-// GHIDRA_NAME TCivMgr::GetTCivMgrClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTCivMgrClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2000
+// GHIDRA_NAME TCivMgr::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TCivMgr::GetTCivMgrClassNamePointer()
+undefined4 * TCivMgr::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0xc);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2030
+// GHIDRA_NAME TCivMgr::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TCivMgr::GetRuntimeClass()
+
+{
+  return &classTCivMgr;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2070
+// GHIDRA_NAME TCivMgr::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TCivMgr * TCivMgr::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00402f18();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D2270
@@ -79,6 +110,630 @@ void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(int *pUnitOrderEntry)
   }
   (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins09_00514ef0)();
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2380
+// GHIDRA_NAME TCivMgr::HandleCivilianTileSelectionOrReportClick
+// GHIDRA_PROTO bool __thiscall HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Handles a click on a civilian tile: either select idle civilian or open Civilian Report.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Resolve player nation and fetch tile civilian entry.
+// GHIDRA_COMMENT 2. Classify entry with IsCivilianOrderInIdleSelectionState.
+// GHIDRA_COMMENT 3. Idle path: enforce gate bit rules (unless nClickMode == 2), then select civilian and refresh UI.
+// GHIDRA_COMMENT 4. Working path: open report/rescind/confirm flow via HandleCivilianReportDecision.
+// GHIDRA_COMMENT 5. Play selection SFX when a civilian is selected.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - nTileIndex: clicked tile index.
+// GHIDRA_COMMENT - nClickMode: interaction mode; value 2 bypasses tile gate bit 0x20.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - true if click was consumed (selection changed or report opened), else false.
+// GHIDRA_COMMENT Special Cases:
+// GHIDRA_COMMENT - If no civilian for player nation exists on the tile, returns false.
+// GHIDRA_COMMENT_END
+
+/* Handles a click on a civilian tile: either select idle civilian or open Civilian Report.
+   Algorithm:
+   1. Resolve player nation and fetch tile civilian entry.
+   2. Classify entry with IsCivilianOrderInIdleSelectionState.
+   3. Idle path: enforce gate bit rules (unless nClickMode == 2), then select civilian and refresh
+   UI.
+   4. Working path: open report/rescind/confirm flow via HandleCivilianReportDecision.
+   5. Play selection SFX when a civilian is selected.
+   Parameters:
+   - nTileIndex: clicked tile index.
+   - nClickMode: interaction mode; value 2 bypasses tile gate bit 0x20.
+   Returns:
+   - true if click was consumed (selection changed or report opened), else false.
+   Special Cases:
+   - If no civilian for player nation exists on the tile, returns false. */
+
+bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode)
+
+{
+  int *piVar1;
+  char fCivilianIsIdleSelectable;
+  undefined4 uVar2;
+  int pTileUnitEntry;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  int nResolvedActionKind;
+  short unaff_retaddr;
+  undefined2 in_stack_00000006;
+  
+  nResolvedActionKind = 0;
+  uVar2 = func_0x00403b16();
+  pTileUnitEntry = func_0x00401e47(_nTileIndex,uVar2);
+  if (pTileUnitEntry != 0) {
+    uVar2 = func_0x00403b16();
+    func_0x00401e47(_nTileIndex,uVar2);
+    fCivilianIsIdleSelectable = func_0x0040765d();
+    if (fCivilianIsIdleSelectable == '\0') {
+                    /* Non-idle civilian entries route to Civilian Report flow. */
+      nResolvedActionKind = 10;
+    }
+    else {
+                    /* ClickMode==2 is forced selection mode (ignores tile gate bit 0x20). */
+      if ((unaff_retaddr == 2) ||
+         ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + nTileIndex * 0x24) & 0x20) == 0)
+         ) {
+        nResolvedActionKind = 2;
+      }
+    }
+  }
+  if (nResolvedActionKind == 2) {
+    if (*(int *)&g_pUiRuntimeContext->field_0xf0 != 0) {
+      func_0x004032a1(0);
+      piVar1 = *(int **)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + nTileIndex * 0x24);
+      *(int **)&this->field_0x4 = piVar1;
+      (*this->vftable->DispatchSelectedUnitToGlobalMapStateHandler)(piVar1);
+      if (piVar1 != (int *)0x0) {
+        (**(code **)(*piVar1 + 0x28))(CONCAT22(extraout_var_00,*(undefined2 *)((int)piVar1 + 6)));
+        if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
+          (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d8))
+                    (CONCAT22(extraout_var,*(undefined2 *)((int)piVar1 + 6)));
+        }
+        if (*(int *)&g_pUiRuntimeContext->field_0xf0 != 0) {
+          func_0x00402581(piVar1);
+        }
+      }
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x2338,0,1);
+      return true;
+    }
+  }
+  else if (nResolvedActionKind == 10) {
+    func_0x00402612(*(undefined4 *)
+                     (*(int *)&g_pGlobalMapState->field_0xc + 0x20 + nTileIndex * 0x24));
+    return true;
+  }
+  return false;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D26D0
+// GHIDRA_NAME TCivMgr::HandleCivilianTileOrderAction
+// GHIDRA_PROTO bool __thiscall HandleCivilianTileOrderAction(short nTileIndex, short nInputHint, undefined2 param_3)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Dispatch civilian tile-click actions resolved by ResolveCivilianTileOrderActionCode.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Resolve action code for the clicked tile and current civilian selection.
+// GHIDRA_COMMENT 2. Action 2: select clicked civilian, refresh selection markers and command panel.
+// GHIDRA_COMMENT 3. Action 3: queue immediate move/no-work assignment and play feedback SFX.
+// GHIDRA_COMMENT 4. Actions 4..7: delegate to engineer construction handler flow.
+// GHIDRA_COMMENT 5. Action 8: issue immediate order type 8 and pump a short feedback loop.
+// GHIDRA_COMMENT 6. Action 9: queue civilian work order with affordability/cost checks.
+// GHIDRA_COMMENT 7. Action 10: open Civilian Report dialog (confirm/rescind path).
+// GHIDRA_COMMENT 8. Action 11: open engineer rail prompt flow.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - nTileIndex: Clicked tile index.
+// GHIDRA_COMMENT - nInputHint: Input modifier/context hint.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - true if an order/action was queued or handled; false for selection/report-only paths.
+// GHIDRA_COMMENT_END
+
+/* Dispatch civilian tile-click actions resolved by ResolveCivilianTileOrderActionCode.
+   Algorithm:
+   1. Resolve action code for the clicked tile and current civilian selection.
+   2. Action 2: select clicked civilian, refresh selection markers and command panel.
+   3. Action 3: queue immediate move/no-work assignment and play feedback SFX.
+   4. Actions 4..7: delegate to engineer construction handler flow.
+   5. Action 8: issue immediate order type 8 and pump a short feedback loop.
+   6. Action 9: queue civilian work order with affordability/cost checks.
+   7. Action 10: open Civilian Report dialog (confirm/rescind path).
+   8. Action 11: open engineer rail prompt flow.
+   Parameters:
+   - nTileIndex: Clicked tile index.
+   - nInputHint: Input modifier/context hint.
+   Returns:
+   - true if an order/action was queued or handled; false for selection/report-only paths. */
+
+bool __thiscall
+TCivMgr::HandleCivilianTileOrderAction
+          (TCivMgr *this,short nTileIndex,short nInputHint,undefined2 param_3)
+
+{
+  bool fCanQueueMoveOrder;
+  bool fEngineerConstructionHandled;
+  bool fCivilianWorkOrderQueued;
+  bool fTileActionHandled;
+  int nTileActionCode;
+  undefined2 extraout_var;
+  int nStartTickDiv16;
+  int nCurrentTickDiv16;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 in_stack_00000006;
+  undefined2 in_stack_0000000a;
+  undefined4 uVar1;
+  int *pClickedCivilianUnit;
+  int nMapInteractionController;
+  
+  fTileActionHandled = false;
+  uVar1 = _nTileIndex;
+  nTileActionCode = func_0x004059a2(_nTileIndex,_nInputHint);
+  switch(nTileActionCode + -2) {
+  case 0:
+                    /* Action 2: select clicked civilian entry and refresh map/cmd panel focus. */
+    pClickedCivilianUnit =
+         *(int **)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + nTileIndex * 0x24);
+    *(int **)&this->field_0x4 = pClickedCivilianUnit;
+    (*this->vftable->DispatchSelectedUnitToGlobalMapStateHandler)(pClickedCivilianUnit);
+    if (pClickedCivilianUnit != (int *)0x0) {
+      (**(code **)(*pClickedCivilianUnit + 0x28))
+                (CONCAT22(extraout_var_00,*(undefined2 *)((int)pClickedCivilianUnit + 6)));
+      if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
+        (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d8))
+                  (CONCAT22(extraout_var,*(undefined2 *)((int)pClickedCivilianUnit + 6)));
+      }
+      if (*(int *)&g_pUiRuntimeContext->field_0xf0 != 0) {
+        func_0x00402581(pClickedCivilianUnit);
+      }
+    }
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x2338,0,1);
+    return false;
+  case 1:
+                    /* Action 3: queue move/no-work assignment for currently selected civilian. */
+    fCanQueueMoveOrder = (bool)func_0x00402ef5(_nTileIndex);
+    fTileActionHandled = false;
+    if (fCanQueueMoveOrder != false) {
+      (**(code **)(**(int **)&this->field_0x4 + 0x34))
+                (1,CONCAT22(extraout_var_01,*(undefined2 *)((int)*(int **)&this->field_0x4 + 6)));
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(9000,0,1);
+      (*this->vftable->RelinkCivilianOrderTileAndInvalidateMapTiles)
+                (_nTileIndex,*(undefined4 *)&this->field_0x4);
+      return fCanQueueMoveOrder;
+    }
+    break;
+  case 2:
+  case 3:
+  case 4:
+  case 5:
+                    /* Actions 4..7 are delegated to engineer construction resolver/handler. */
+    fEngineerConstructionHandled =
+         TCivMgr::HandleEngineerConstructionAction(this,nTileIndex,(short)uVar1);
+    return fEngineerConstructionHandled;
+  case 6:
+                    /* Action 8 issues immediate work type 8 and pumps UI briefly for feedback. */
+    (**(code **)(**(int **)&this->field_0x4 + 0x34))
+              (8,CONCAT22((short)((uint)(nTileActionCode + -2) >> 0x10),
+                          *(undefined2 *)((int)*(int **)&this->field_0x4 + 6)));
+    (*this->vftable->RelinkCivilianOrderTileAndInvalidateMapTiles)
+              (_nTileIndex,*(undefined4 *)&this->field_0x4);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x232e,0,1);
+    nStartTickDiv16 = func_0x004092d7();
+    do {
+      func_0x00405033(1);
+      nCurrentTickDiv16 = func_0x004092d7();
+      if (nCurrentTickDiv16 < nStartTickDiv16) {
+        return true;
+      }
+    } while (nCurrentTickDiv16 - nStartTickDiv16 < 0x1e);
+    return true;
+  case 7:
+    fCivilianWorkOrderQueued = (bool)func_0x00406555(_nTileIndex);
+    return fCivilianWorkOrderQueued;
+  case 8:
+                    /* Action 10 opens Civilian Report decision path (confirm vs rescind). */
+    func_0x00402612(*(undefined4 *)
+                     (*(int *)&g_pGlobalMapState->field_0xc + 0x20 + nTileIndex * 0x24));
+    return false;
+  case 9:
+                    /* Action 11 prompts engineer rail-order UI flow. */
+    fTileActionHandled = (bool)func_0x00403332(_nTileIndex);
+  }
+  return fTileActionHandled;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D3A60
+// GHIDRA_NAME TCivMgr::HandleEngineerConstructionAction
+// GHIDRA_PROTO bool __thiscall HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Handle engineer construction actions from map tile click context.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. If clicking current tile, resolve Construction Options choice (depot/port/fort/cancel).
+// GHIDRA_COMMENT 2. Compute required cost for selected action.
+// GHIDRA_COMMENT 3. Validate available nation cash and show localized error on failure.
+// GHIDRA_COMMENT 4. On success set order type, deduct treasury, and refresh panel/selection state.
+// GHIDRA_COMMENT 5. If clicking adjacent tile, queue rail-section order using terrain cost table.
+// GHIDRA_COMMENT 6. Apply endpoint direction flags for rail, play sound, and queue redraw updates.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT nTileIndex: Clicked tile index (current tile or adjacent rail target).
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT true when action is handled/queued; false on cancel/failure.
+// GHIDRA_COMMENT Cost model:
+// GHIDRA_COMMENT Depot=2000, Port=3000, Fort uses g_awEngineerFortBuildCostByLevel, rail uses g_adwEngineerRailBuildCostByTerrainType.
+// GHIDRA_COMMENT_END
+
+/* Handle engineer construction actions from map tile click context.
+   Algorithm:
+   1. If clicking current tile, resolve Construction Options choice (depot/port/fort/cancel).
+   2. Compute required cost for selected action.
+   3. Validate available nation cash and show localized error on failure.
+   4. On success set order type, deduct treasury, and refresh panel/selection state.
+   5. If clicking adjacent tile, queue rail-section order using terrain cost table.
+   6. Apply endpoint direction flags for rail, play sound, and queue redraw updates.
+   Parameters:
+   nTileIndex: Clicked tile index (current tile or adjacent rail target).
+   Returns:
+   true when action is handled/queued; false on cancel/failure.
+   Cost model:
+   Depot=2000, Port=3000, Fort uses g_awEngineerFortBuildCostByLevel, rail uses
+   g_adwEngineerRailBuildCostByTerrainType. */
+
+bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
+
+{
+  uint uVar1;
+  int *piVar2;
+  TGreatPower *pTVar3;
+  CString CVar4;
+  short nCostOrNationId;
+  short sVar5;
+  short nNationId;
+  int nActionTagOrStartTick;
+  undefined2 extraout_var;
+  int iVar6;
+  int nTickNowDiv16;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  TSimMgr *extraout_ECX;
+  undefined2 extraout_var_02;
+  TSoundPlayerVtbl *pTVar7;
+  undefined4 unaff_EBX;
+  CString *pCVar8;
+  uint *unaff_FS_OFFSET;
+  undefined2 in_stack_00000006;
+  TSimMgr *pTStack_54;
+  CString *pCStack_50;
+  CString *pCStack_4c;
+  uint uStack_48;
+  undefined4 uStack_44;
+  CString *pCStack_40;
+  CString *pCStack_3c;
+  CString *pCStack_38;
+  CString *pCStack_34;
+  CString pszFormattedText;
+  CString pszTemplateText;
+  int *pThisAlias;
+  TCivMgr *local_14;
+  uint dwSavedSehFrame;
+  uint dwPrevSehFrame;
+  undefined1 *puStack_8;
+  uint local_4;
+  uint dwAvailableNationCash;
+  int *pSelectedCivilianOrderEntry;
+  ushort wActionFinalizeFlags;
+  uint dwSfxToken;
+  
+  sVar5 = nTileIndex;
+  wActionFinalizeFlags = (ushort)((uint)unaff_EBX >> 0x10);
+  CVar4.m_pchData = _nTileIndex;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631cf0;
+  dwPrevSehFrame = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (uint)&dwPrevSehFrame;
+  piVar2 = *(int **)&g_pSelectedCivilianOrderState->field_0x4;
+  pszFormattedText.m_pchData._3_1_ = 0;
+  pszFormattedText.m_pchData._2_1_ = 0;
+  local_14 = this;
+  if (sVar5 == *(short *)(*(int *)&this->field_0x4 + 6)) {
+    pCStack_34 = (CString *)_nTileIndex;
+    pCStack_38 = (CString *)0x4d3ab4;
+    nActionTagOrStartTick = (**(code **)(g_pUiRuntimeContext->vftable + 0xdc))();
+    if (nActionTagOrStartTick == 0x666f7274) {
+      pCVar8 = (CString *)
+               (int)*(short *)(&g_awEngineerFortBuildCostByLevel +
+                              *(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 3 +
+                                       *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 +
+                                                 sVar5 * 0x24) * 0xa8) * 2);
+      pCStack_38 = (CString *)0x4d3e06;
+      nNationId = func_0x00403b16();
+      uVar1 = *(int *)&g_apNationStates[nNationId]->field_0x8f0 / 100 +
+              *(int *)&g_apNationStates[nNationId]->field_0x10;
+      if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < (int)pCVar8) {
+        pCStack_38 = (CString *)0x4d3e48;
+        CString::CString(&pszFormattedText);
+        puStack_8 = (undefined1 *)0x6;
+        pCStack_38 = (CString *)0x4d3e59;
+        CString::CString(&pszTemplateText);
+        puStack_8._0_1_ = 7;
+        pCStack_38 = (CString *)0x4d3e68;
+        CString::CString((CString *)&stack0x00000000);
+        pCStack_38 = &pszFormattedText;
+        puStack_8._0_1_ = 8;
+        pCStack_40 = (CString *)0x4d3e7e;
+        pCStack_3c = pCVar8;
+        (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+        pCStack_40 = (CString *)&stack0xffffffdc;
+        uStack_44 = 8;
+        dwSfxToken = 0x2745;
+        pCStack_4c = (CString *)0x4d3e98;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        pCStack_4c = pCStack_34;
+        pTStack_54 = (TSimMgr *)&local_14;
+        func_0x0040988b();
+        pCStack_4c = (CString *)0x0;
+        pCStack_50 = (CString *)0x2;
+        pTStack_54 = (TSimMgr *)&DAT_006a2d40;
+        func_0x004076b7(&local_14);
+        dwSfxToken = 0x4d3eda;
+        DispatchLocalizedUiMessageWithTemplateA13A0();
+        puStack_8._0_1_ = 7;
+        pCStack_38 = (CString *)0x4d3ee7;
+        CString::~CString((CString *)&stack0x00000000);
+        puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
+        pCStack_38 = (CString *)0x4d3ef5;
+        CString::~CString(&pszTemplateText);
+        puStack_8 = (undefined1 *)0xffffffff;
+        pCStack_38 = (CString *)0x4d3f06;
+        CString::~CString(&pszFormattedText);
+        this = (TCivMgr *)pThisAlias;
+                    /* Same-tile depot/port/fort handling branch after affordability checks. */
+        goto finalize_engineer_action_and_refresh;
+      }
+      pCStack_38 = (CString *)0x4d3f1a;
+      sVar5 = func_0x00403b16();
+      iVar6 = *(int *)&g_apNationStates[sVar5]->field_0x10 - (int)pCVar8;
+      *(int *)&g_apNationStates[sVar5]->field_0x10 = iVar6;
+      pCStack_38 = (CString *)
+                   CONCAT22((short)((uint)iVar6 >> 0x10),*(undefined2 *)((int)piVar2 + 6));
+      pCStack_3c = (CString *)0xc;
+      pCStack_40 = (CString *)0x4d3f3a;
+      (**(code **)(*piVar2 + 0x34))();
+      dwSfxToken = 0x232c;
+      pTVar7 = g_pSfxPlaybackSystem->vftable;
+      goto LAB_004d40cd;
+    }
+    if (nActionTagOrStartTick == 0x706f7274) {
+      pCStack_38 = (CString *)0x4d3c5a;
+      sVar5 = func_0x00403b16();
+      uVar1 = *(int *)&g_apNationStates[sVar5]->field_0x8f0 / 100 +
+              *(int *)&g_apNationStates[sVar5]->field_0x10;
+      if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 3000) {
+        pCStack_38 = (CString *)0x4d3c9f;
+        CString::CString(&pszFormattedText);
+        puStack_8 = (undefined1 *)0x3;
+        pCStack_38 = (CString *)0x4d3cb0;
+        CString::CString(&pszTemplateText);
+        puStack_8._0_1_ = 4;
+        pCStack_38 = (CString *)0x4d3cbf;
+        CString::CString((CString *)&stack0x00000000);
+        pCStack_38 = &pszFormattedText;
+        pCStack_3c = (CString *)0xbb8;
+        puStack_8._0_1_ = 5;
+        pCStack_40 = (CString *)0x4d3cd9;
+        (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+        pCStack_40 = (CString *)&stack0xffffffdc;
+        uStack_44 = 8;
+        dwSfxToken = 0x2745;
+        pCStack_4c = (CString *)0x4d3cf3;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        pCStack_4c = pCStack_34;
+        pTStack_54 = (TSimMgr *)&local_14;
+        func_0x0040988b();
+        pCStack_4c = (CString *)0x0;
+        pCStack_50 = (CString *)0x2;
+        pTStack_54 = (TSimMgr *)&DAT_006a2d40;
+        func_0x004076b7(&local_14);
+        dwSfxToken = 0x4d3d35;
+        DispatchLocalizedUiMessageWithTemplateA13A0();
+        puStack_8._0_1_ = 4;
+        pCStack_38 = (CString *)0x4d3d42;
+        CString::~CString((CString *)&stack0x00000000);
+        puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
+        pCStack_38 = (CString *)0x4d3d50;
+        CString::~CString(&pszTemplateText);
+                    /* Alternate same-tile option affordability/cancel branch. */
+        puStack_8 = (undefined1 *)0xffffffff;
+        pCStack_38 = (CString *)0x4d3d61;
+        CString::~CString(&pszFormattedText);
+        this = (TCivMgr *)pThisAlias;
+        goto finalize_engineer_action_and_refresh;
+      }
+      pCStack_38 = (CString *)0x4d3d75;
+      sVar5 = func_0x00403b16();
+      *(int *)&g_apNationStates[sVar5]->field_0x10 =
+           *(int *)&g_apNationStates[sVar5]->field_0x10 + -3000;
+      pCStack_38 = (CString *)CONCAT22(extraout_var_01,*(undefined2 *)((int)piVar2 + 6));
+      pCStack_3c = (CString *)0x7;
+      pCStack_40 = (CString *)0x4d3d99;
+      (**(code **)(*piVar2 + 0x34))();
+      if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
+        pCStack_40 = (CString *)CVar4.m_pchData;
+        uStack_44 = 0x4d3db1;
+        (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d8))();
+      }
+      pCStack_40 = (CString *)0x1;
+      uStack_44 = 0;
+      dwSfxToken = 0x232b;
+      pCStack_4c = (CString *)0x4d3dc8;
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
+    }
+    else {
+      if (nActionTagOrStartTick != 0x7261696c) goto finalize_engineer_action_and_refresh;
+      pCStack_38 = (CString *)0x4d3ae0;
+      nCostOrNationId = func_0x00403b16();
+      dwAvailableNationCash =
+           *(int *)&g_apNationStates[nCostOrNationId]->field_0x8f0 / 100 +
+           *(int *)&g_apNationStates[nCostOrNationId]->field_0x10;
+      if ((int)(dwAvailableNationCash & ((int)dwAvailableNationCash < 1) - 1) < 2000) {
+        pCStack_38 = (CString *)0x4d3b25;
+        CString::CString(&pszTemplateText);
+        puStack_8 = (undefined1 *)0x0;
+                    /* Construction-option affordability failure path (selected same-tile action).
+                        */
+        pCStack_38 = (CString *)0x4d3b36;
+        CString::CString(&pszFormattedText);
+        puStack_8._0_1_ = 1;
+        pCStack_38 = (CString *)0x4d3b44;
+        CString::CString((CString *)&stack0x00000000);
+        pCStack_38 = &pszTemplateText;
+        pCStack_3c = (CString *)0x7d0;
+        puStack_8._0_1_ = 2;
+        pCStack_40 = (CString *)0x4d3b5e;
+        (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+        pCStack_40 = (CString *)&stack0xffffffd8;
+        uStack_44 = 8;
+        dwSfxToken = 0x2745;
+        pCStack_4c = (CString *)0x4d3b78;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        pTStack_54 = (TSimMgr *)&local_14;
+        pCStack_50 = pCStack_34;
+        func_0x0040988b();
+        pCStack_4c = (CString *)0x0;
+        pCStack_50 = (CString *)0x2;
+        pTStack_54 = (TSimMgr *)&DAT_006a2d40;
+        func_0x004076b7(&local_14);
+        dwSfxToken = 0x4d3bba;
+        DispatchLocalizedUiMessageWithTemplateA13A0();
+        puStack_8._0_1_ = 1;
+        pCStack_38 = (CString *)0x4d3bc8;
+        CString::~CString((CString *)&stack0x00000000);
+        puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
+        pCStack_38 = (CString *)0x4d3bd6;
+        CString::~CString(&pszFormattedText);
+        puStack_8 = (undefined1 *)0xffffffff;
+                    /* Abort branch for unaffordable or canceled same-tile construction option. */
+        pCStack_38 = (CString *)0x4d3be7;
+        CString::~CString(&pszTemplateText);
+        goto finalize_engineer_action_and_refresh;
+      }
+      pCStack_38 = (CString *)0x4d3bf7;
+      sVar5 = func_0x00403b16();
+      *(int *)&g_apNationStates[sVar5]->field_0x10 =
+           *(int *)&g_apNationStates[sVar5]->field_0x10 + -2000;
+      pCStack_38 = (CString *)CONCAT22(extraout_var_00,*(undefined2 *)((int)piVar2 + 6));
+      pCStack_3c = (CString *)0x6;
+      pCStack_40 = (CString *)0x4d3c1b;
+      (**(code **)(*piVar2 + 0x34))();
+      if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
+        pCStack_40 = (CString *)CVar4.m_pchData;
+        uStack_44 = 0x4d3c33;
+        (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d8))();
+      }
+      pCStack_40 = (CString *)0x1;
+      uStack_44 = 0;
+      dwSfxToken = 0x232a;
+      pCStack_4c = (CString *)0x4d3c4a;
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
+    }
+  }
+  else {
+    iVar6 = *(int *)(&g_adwEngineerRailBuildCostByTerrainType +
+                    *(char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar5 * 0x24) * 4);
+    pCStack_34 = (CString *)0x4d3f75;
+    sVar5 = func_0x00403b16();
+    uVar1 = *(int *)&g_apNationStates[sVar5]->field_0x8f0 / 100 +
+            *(int *)&g_apNationStates[sVar5]->field_0x10;
+    if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < iVar6) {
+                    /* Adjacent-tile rail branch affordability check and warning path. */
+      pCStack_34 = (CString *)0x4d3fb7;
+      CString::CString(&pszTemplateText);
+      local_4 = 9;
+      pCStack_34 = (CString *)0x4d3fc8;
+      CString::CString((CString *)&pThisAlias);
+      local_4 = CONCAT31(local_4._1_3_,10);
+      pCStack_34 = (CString *)0x4d3fd7;
+      CString::CString((CString *)&nTileIndex);
+      pCStack_34 = &pszTemplateText;
+      local_4 = CONCAT31(local_4._1_3_,0xb);
+      pCStack_3c = (CString *)0x4d3fed;
+      pCStack_38 = (CString *)iVar6;
+      (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+      pCStack_3c = &pszFormattedText;
+      pCStack_40 = (CString *)&DAT_00000008;
+      uStack_44 = 0x2745;
+      dwSfxToken = 0x4d4007;
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      pCStack_50 = (CString *)&dwSavedSehFrame;
+      pTStack_54 = g_pLocalizationTable;
+      wActionFinalizeFlags = (ushort)((uint)&pTStack_54 >> 0x10);
+      func_0x0040988b();
+      dwSfxToken = 0;
+      pCStack_4c = (CString *)0x2;
+      pCStack_50 = (CString *)&DAT_006a2d40;
+      pTStack_54 = extraout_ECX;
+      func_0x004076b7();
+      dwSfxToken = 0x4d4049;
+      DispatchLocalizedUiMessageWithTemplateA13A0();
+      puStack_8._0_1_ = 10;
+      pCStack_38 = (CString *)0x4d4056;
+      CString::~CString((CString *)&stack0x00000000);
+      puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,9);
+      pCStack_38 = (CString *)0x4d4064;
+      CString::~CString(&pszTemplateText);
+      puStack_8 = (undefined1 *)0xffffffff;
+      pCStack_38 = (CString *)0x4d4075;
+      CString::~CString(&pszFormattedText);
+      this = (TCivMgr *)pThisAlias;
+      goto finalize_engineer_action_and_refresh;
+    }
+    pCStack_34 = (CString *)0x4d4086;
+    sVar5 = func_0x00403b16();
+    pTVar3 = g_apNationStates[sVar5];
+    *(int *)&pTVar3->field_0x10 = *(int *)&pTVar3->field_0x10 - iVar6;
+    pCStack_34 = (CString *)CONCAT22((short)((uint)pTVar3 >> 0x10),(short)piVar2[6]);
+    pCStack_3c = (CString *)CONCAT22(extraout_var_02,*(undefined2 *)((int)piVar2 + 6));
+    pCStack_38 = (CString *)CVar4.m_pchData;
+    pCStack_40 = (CString *)0x4d40ae;
+    func_0x0040570e();
+    pCStack_40 = (CString *)CONCAT22(extraout_var,*(undefined2 *)((int)piVar2 + 6));
+    uStack_44 = 5;
+    dwSfxToken = 0x4d40bc;
+    (**(code **)(*piVar2 + 0x34))();
+    dwSfxToken = 0x2329;
+    pTVar7 = g_pSfxPlaybackSystem->vftable;
+LAB_004d40cd:
+    pCStack_40 = (CString *)0x1;
+    uStack_44 = 0;
+    pCStack_4c = (CString *)0x4d40d3;
+    (**(code **)&pTVar7[1].field_0x10)();
+  }
+  wActionFinalizeFlags = 0x101;
+finalize_engineer_action_and_refresh:
+                    /* Common finalize path: optional target-link, short UI pump, and panel refresh.
+                        */
+  if ((char)wActionFinalizeFlags != '\0') {
+    pCStack_38 = *(CString **)&this->field_0x4;
+    pCStack_3c = (CString *)CVar4.m_pchData;
+    pCStack_40 = (CString *)0x4d40f1;
+    (*this->vftable->RelinkCivilianOrderTileAndInvalidateMapTiles)();
+    pCStack_40 = (CString *)0x4d40f6;
+    iVar6 = func_0x004092d7();
+    do {
+      pCStack_38 = (CString *)0x1;
+      pCStack_3c = (CString *)0x4d4105;
+      func_0x00405033();
+      pCStack_3c = (CString *)0x4d410a;
+      nTickNowDiv16 = func_0x004092d7();
+      if (nTickNowDiv16 < iVar6) break;
+    } while (nTickNowDiv16 - iVar6 < 0x1e);
+  }
+  if ((char)(wActionFinalizeFlags >> 8) != '\0') {
+    pCStack_38 = (CString *)0x4d4128;
+    (**(code **)(g_pUiRuntimeContext->vftable + 0x48))();
+  }
+  *unaff_FS_OFFSET = dwSavedSehFrame;
+  return (bool)(char)wActionFinalizeFlags;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D4310

@@ -10,84 +10,83 @@
 TTEView * TTEView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TStaticText::~TStaticText((TStaticText *)this);
+  func_0x00401e33();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485FB0
-// GHIDRA_NAME TTEView::CreateTTEViewInstance
-// GHIDRA_PROTO undefined CreateTTEViewInstance()
+// GHIDRA_NAME TTEView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TStaticText * TTEView::CreateTTEViewInstance(void)
+undefined4 * TTEView::CreateObject(void)
 
 {
-  TStaticText *this;
-  TStaticText *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ea1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)__2_YAPAXI_Z(0x98);
+  puVar1 = (undefined4 *)operator_new(0x98);
   local_4 = 0;
-  pTVar1 = (TStaticText *)0x0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::TStaticText(this);
-    this->vftable = (TStaticTextVtbl *)&TTEViewVtbl_00644308;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040541b();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486030
-// GHIDRA_NAME TTEView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTEView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTEView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTEView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTEView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486050
 // GHIDRA_NAME TTEView::ConstructTTEViewBaseState
-// GHIDRA_PROTO undefined __thiscall TTEView::ConstructTTEViewBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5, undefined4 * param_6, undefined4 * param_7, undefined2 param_8)
+// GHIDRA_PROTO undefined __thiscall ConstructTTEViewBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5, undefined4 * param_6, undefined4 * param_7, undefined2 param_8)
 
 void __thiscall
 TTEView::ConstructTTEViewBaseState
-          (TTEView *this,undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4
-          ,undefined4 param_5,undefined4 *param_6,undefined4 *param_7,undefined2 param_8)
+          (TTEView *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4,undefined4 param_5,undefined4 *param_6,undefined4 *param_7,
+          undefined2 param_8)
 
 {
   undefined2 uVar1;
-  undefined2 in_stack_00000022;
-  undefined2 in_stack_00000024;
-
-  InitializeTextEntryBaseAndOptionalStringResource
-            (param_2,param_3,param_4,param_5,param_6,0xffffffff,0);
-  *(undefined4 *)&this->field_0x68 = *param_7;
-  *(undefined4 *)&this->field_0x6c = param_7[1];
-  *(undefined4 *)&this->field_0x70 = param_7[2];
-  *(undefined4 *)&this->field_0x74 = param_7[3];
-  *(undefined4 *)&this->field_0x78 = *_param_8;
-  *(undefined4 *)&this->field_0x7c = _param_8[1];
-  uVar1 = *(undefined2 *)(_param_8 + 2);
-  *(undefined2 *)&this->field_0x90 = in_stack_00000024;
+  undefined4 *unaff_retaddr;
+  
+  func_0x00401fd2(param_2,param_3,param_4,param_5,param_6,0xffffffff,0);
+  *(undefined4 *)&this->field_0x68 = *unaff_retaddr;
+  *(undefined4 *)&this->field_0x6c = unaff_retaddr[1];
+  *(undefined4 *)&this->field_0x70 = unaff_retaddr[2];
+  *(undefined4 *)&this->field_0x74 = unaff_retaddr[3];
+  *(undefined4 *)&this->field_0x78 = *param_1;
+  *(undefined4 *)&this->field_0x7c = param_1[1];
+  uVar1 = *(undefined2 *)(param_1 + 2);
+  *(undefined2 *)&this->field_0x90 = (undefined2)param_2;
   *(undefined2 *)&this->field_0x80 = uVar1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004860E0
 // GHIDRA_NAME TTEView::DestructTTEViewAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TTEView::DestructTTEViewAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTEViewAndMaybeFree(void)
 
 int TTEView::DestructTTEViewAndMaybeFree()
 
@@ -96,480 +95,41 @@ int TTEView::DestructTTEViewAndMaybeFree()
   HGDIOBJ pvVar2;
   int unaff_ESI;
   int *unaff_FS_OFFSET;
-  TTEViewVtbl *pTStack_40;
-  CDC local_2c;
-  int iStack_18;
-  TView *pTStack_c;
+  CObject CStack_40;
+  undefined1 local_2c [20];
+  undefined4 uStack_18;
+  int iStack_c;
   undefined1 *puStack_8;
-  int local_4;
-
-  local_4 = -1;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ea38;
-  pTStack_c = (TView *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&pTStack_c;
-  CDC::__0CDC__QAE_XZ(&local_2c);
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  CDC::CDC((CDC *)local_2c);
   local_4 = 0;
   pHVar1 = CreateCompatibleDC((HDC)0x0);
-  TCivDescription::_Attach_CDC__QAEHPAUHDC_____Z((TCivDescription *)&local_2c,(int)pHVar1);
-  pvVar2 = (HGDIOBJ)UpdateGlobalFontPresetAndRebuildCachedFontIfDirty();
-  pvVar2 = (HGDIOBJ)_SelectObject_CDC__QAEPAVCBrush__PAV2__Z((TTEView *)&local_2c,pvVar2);
+  CDC::Attach((CDC *)local_2c,(int)pHVar1);
+  pvVar2 = (HGDIOBJ)func_0x004019ce();
+  pvVar2 = (HGDIOBJ)CDC::SelectObject((CDC *)local_2c,pvVar2);
   (*this->vftable->GetTEventHandlerClassNamePointer_58)();
-  pTStack_40 = (TTEViewVtbl *)0x486153;
-  _DeflateRect_CRect__QAEXPBUtagRECT___Z((TTEView *)&local_2c.m_bPrinting,(int *)&this->field_0x68);
-  pTStack_40 = (TTEViewVtbl *)&local_2c.m_bPrinting;
+  CStack_40.vftable = (CObjectVtbl *)0x486153;
+  DeflateRect((TTEView *)(local_2c + 0xc),(int *)&this->field_0x68);
+  CStack_40.vftable = (CObjectVtbl *)(local_2c + 0xc);
   (**(code **)(unaff_ESI + 0x70))
             (**(int **)&this->field_0x84,*(undefined4 *)(**(int **)&this->field_0x84 + -8));
-  _SelectObject_CDC__QAEPAVCBrush__PAV2__Z((TTEView *)&pTStack_40,pvVar2);
-  iStack_18 = -1;
-  __1CDC__UAE_XZ();
-  *unaff_FS_OFFSET = local_2c.m_bPrinting;
-  return (int)local_2c.m_hAttribDC - (int)local_2c.cobject.vftable;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00504220
-// GHIDRA_NAME TTEView::BuildHelpSubjectListControlsWithPrevNext
-// GHIDRA_PROTO undefined __thiscall BuildHelpSubjectListControlsWithPrevNext(void)
-
-void TTEView::BuildHelpSubjectListControlsWithPrevNext()
-
-{
-  _vslot_fn *p_Var1;
-  code *pcVar2;
-  undefined uVar3;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  undefined3 extraout_var_01;
-  undefined3 extraout_var_02;
-  undefined3 extraout_var_03;
-  undefined3 extraout_var_04;
-  int iVar4;
-  undefined2 extraout_var_05;
-  int iVar5;
-  undefined4 *unaff_FS_OFFSET;
-  int unaff_retaddr;
-  CString CStack_154;
-  undefined4 *puStack_150;
-  int iStack_14c;
-  int *piStack_148;
-  undefined4 uStack_144;
-  undefined4 uStack_140;
-  undefined4 uStack_13c;
-  undefined4 uStack_138;
-  int *piStack_134;
-  undefined4 uStack_130;
-  undefined4 uStack_12c;
-  undefined4 uStack_128;
-  undefined4 uStack_124;
-  undefined4 uStack_120;
-  undefined4 uStack_11c;
-  undefined4 uStack_118;
-  undefined4 **ppuStack_114;
-  undefined4 uStack_110;
-  int aiStack_10c [2];
-  undefined4 *puStack_104;
-  undefined4 uStack_100;
-  undefined4 *puStack_fc;
-  undefined4 uStack_f8;
-  undefined4 uStack_f4;
-  undefined4 uStack_f0;
-  undefined4 uStack_ec;
-  undefined4 uStack_e8;
-  code *pcStack_e4;
-  undefined4 uStack_e0;
-  undefined4 **ppuStack_dc;
-  code *pcStack_d8;
-  undefined4 uStack_d4;
-  undefined4 uStack_d0;
-  undefined4 *puStack_cc;
-  int iStack_c8;
-  undefined4 *puStack_c4;
-  undefined4 uStack_c0;
-  int iStack_bc;
-  undefined4 uStack_b8;
-  int iStack_b4;
-  undefined4 uStack_b0;
-  undefined4 uStack_ac;
-  undefined4 uStack_a8;
-  undefined4 uStack_a4;
-  undefined1 *puStack_a0;
-  undefined4 uStack_9c;
-  undefined4 uStack_98;
-  undefined4 uStack_94;
-  undefined4 uStack_90;
-  undefined4 uStack_8c;
-  undefined4 uStack_88;
-  undefined1 *puStack_84;
-  undefined4 uStack_80;
-  int iStack_7c;
-  undefined4 uStack_78;
-  undefined4 uStack_74;
-  CString local_60 [2];
-  TTEViewVtbl *local_58;
-  undefined4 local_54;
-  undefined1 local_50 [6];
-  undefined1 local_4a;
-  undefined1 local_49;
-  undefined1 local_48;
-  undefined1 local_47;
-  undefined1 local_44 [6];
-  undefined1 local_3e;
-  undefined1 local_3d;
-  undefined1 local_3c;
-  undefined1 local_3b;
-  undefined1 local_38 [6];
-  undefined1 local_32;
-  undefined1 local_31;
-  undefined1 local_30;
-  undefined1 local_2f;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00633628;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  local_54 = *(undefined4 *)(DAT_006a21b8 + 8);
-  local_4a = 0;
-  local_49 = 0;
-  local_48 = 0;
-  local_47 = 0;
-  local_32 = 0;
-  local_31 = 0;
-  local_30 = 0;
-  local_2f = 0;
-  local_3e = 0;
-  local_3d = 0;
-  local_3c = 0;
-  local_3b = 0;
-  uStack_74 = 0x50428f;
-  CString::__0CString__QAE_XZ(local_60);
-  uStack_74 = 3;
-  uStack_78 = 0x2b6d;
-  iStack_7c = 0xc;
-  puStack_84 = local_50;
-  uStack_80 = 4;
-  local_4 = 0;
-  uStack_88 = 0x5042af;
-  InitializeUiTextStyleDescriptor();
-  puStack_84 = local_38;
-  uStack_74 = 3;
-  uStack_78 = 0x2b69;
-  iStack_7c = 0xc;
-  uStack_80 = 4;
-  uStack_88 = 0x5042c7;
-  InitializeUiTextStyleDescriptor();
-  puStack_84 = local_44;
-  uStack_74 = 1;
-  uStack_78 = 0x2b67;
-  iStack_7c = 0xc;
-  uStack_80 = 0;
-  uStack_88 = 0x5042df;
-  InitializeUiTextStyleDescriptor();
-  local_58 = this->vftable;
-  p_Var1 = local_58->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  uStack_74 = 0x7375626a;
-  uStack_78 = 0x5042f7;
-  uVar3 = (*p_Var1)();
-  iStack_7c = unaff_retaddr + 1;
-  iVar5 = *(int *)CONCAT31(extraout_var,uVar3);
-  uStack_78 = 1;
-  uStack_80 = CONCAT22(extraout_var_05,**(undefined2 **)&this->field_0x90);
-  puStack_84 = (undefined1 *)0x504315;
-  (**(code **)(iVar5 + 0x1cc))();
-  puStack_84 = (undefined1 *)0x1;
-  uStack_88 = 1;
-  uStack_8c = 0x504321;
-  (**(code **)(iVar5 + 0xa4))();
-  uStack_8c = 1;
-  uStack_90 = 0;
-  uStack_94 = 0x50432d;
-  (**(code **)(iVar5 + 0xa8))();
-  uStack_94 = 0;
-  uStack_98 = 1;
-  uStack_9c = 0x504339;
-  (**(code **)(iVar5 + 0x1c4))();
-  puStack_a0 = &stack0xffffff94;
-  uStack_9c = 0;
-  uStack_a4 = 0x504348;
-  (**(code **)(iVar5 + 0x1b4))();
-  uStack_a4 = 0x746f676c;
-  uStack_a8 = 0x504351;
-  uVar3 = (*p_Var1)();
-  uStack_a8 = 1;
-  uStack_ac = 1;
-  iVar5 = *(int *)CONCAT31(extraout_var_00,uVar3);
-  uStack_b0 = 0x504361;
-  (**(code **)(iVar5 + 0xa4))();
-  uStack_b0 = 1;
-  iStack_b4 = 1;
-  uStack_b8 = 0x50436d;
-  (**(code **)(iVar5 + 0xa8))();
-  uStack_b8 = 0;
-  iStack_bc = 1;
-  uStack_c0 = 0x504379;
-  (**(code **)(iVar5 + 0x1c4))();
-  puStack_c4 = &uStack_9c;
-  uStack_c0 = 0;
-  iStack_c8 = 0x504388;
-  (**(code **)(iVar5 + 0x1b4))();
-  iVar5 = 0;
-  do {
-    iStack_c8 = iVar5 + 0x6e616d31;
-    puStack_cc = (undefined4 *)0x504395;
-    uVar3 = (*p_Var1)();
-    puStack_cc = (undefined4 *)0x1;
-    uStack_d0 = 0;
-    iStack_b4 = *(int *)CONCAT31(extraout_var_01,uVar3);
-    uStack_d4 = 0x5043a9;
-    (**(code **)(iStack_b4 + 0xa4))();
-    uStack_d4 = 1;
-    pcStack_d8 = (code *)0x0;
-    ppuStack_dc = (undefined4 **)0x5043b9;
-    (**(code **)(iStack_bc + 0xa8))();
-    iVar5 = iVar5 + 1;
-  } while (iVar5 < 5);
-  iStack_c8 = 0x70726576;
-  puStack_cc = (undefined4 *)0x5043c8;
-  uVar3 = (*p_Var1)();
-  puStack_cc = &uStack_b8;
-  uStack_d0 = 0xd;
-  uStack_d4 = 0x2749;
-  pcStack_d8 = (code *)0x5043e4;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  iVar5 = *(int *)CONCAT31(extraout_var_02,uVar3);
-  ppuStack_dc = &puStack_c4;
-  pcStack_d8 = (code *)0x1;
-  uStack_e0 = 0x5043f5;
-  (**(code **)(iVar5 + 0x1c8))();
-  uStack_e0 = 1;
-  pcStack_e4 = (code *)0x0;
-  uStack_e8 = 0x504401;
-  (**(code **)(iVar5 + 0xa4))();
-  uStack_e8 = 1;
-  uStack_ec = 0;
-  uStack_f0 = 0x50440d;
-  (**(code **)(iVar5 + 0xa8))();
-  uStack_f0 = 0;
-  uStack_f4 = 0xffffffff;
-  uStack_f8 = 0x504419;
-  (**(code **)(iVar5 + 0x1c4))();
-  puStack_fc = &uStack_d4;
-  uStack_f8 = 0;
-  uStack_100 = 0x504428;
-  (**(code **)(iVar5 + 0x1b4))();
-  uStack_100 = 0x6e657874;
-  puStack_104 = (undefined4 *)0x504431;
-  uVar3 = (*p_Var1)();
-  puStack_104 = &uStack_f0;
-  aiStack_10c[1] = 0xe;
-  aiStack_10c[0] = 0x2749;
-  uStack_110 = 0x50444d;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  iVar5 = *(int *)CONCAT31(extraout_var_03,uVar3);
-  ppuStack_114 = &puStack_fc;
-  uStack_110 = 1;
-  uStack_118 = 0x50445e;
-  (**(code **)(iVar5 + 0x1c8))();
-  uStack_118 = 1;
-  uStack_11c = 0;
-  uStack_120 = 0x50446a;
-  (**(code **)(iVar5 + 0xa4))();
-  uStack_120 = 1;
-  uStack_124 = 0;
-  uStack_128 = 0x504476;
-  (**(code **)(iVar5 + 0xa8))();
-  uStack_128 = 0;
-  uStack_12c = 0xffffffff;
-  uStack_130 = 0x504482;
-  (**(code **)(iVar5 + 0x1c4))();
-  piStack_134 = aiStack_10c;
-  uStack_130 = 0;
-  uStack_138 = 0x504491;
-  (**(code **)(iVar5 + 0x1b4))();
-  uStack_138 = 0;
-  uStack_13c = 1;
-  uStack_140 = 0x5044a3;
-  (**(code **)(**(int **)&this->field_0x94 + 0xa4))();
-  uStack_140 = 0x7377696e;
-  uStack_144 = 0x5044ac;
-  uVar3 = (*p_Var1)();
-  iVar5 = *(int *)CONCAT31(extraout_var_04,uVar3);
-  uStack_144 = 0x5044b5;
-  (**(code **)(iVar5 + 0xc))();
-  uStack_144 = 0;
-  piStack_148 = (int *)0x1;
-  iStack_14c = 0x5044c1;
-  (**(code **)(iVar5 + 0xa4))();
-  iStack_14c = CONCAT22((short)((uint)uStack_d4 >> 0x10),
-                        (short)uStack_d4 + **(short **)&this->field_0x90);
-  puStack_150 = (undefined4 *)0x5044de;
-  (**(code **)(**(int **)&this->field_0x94 + 0x1dc))();
-  puStack_150 = (undefined4 *)0x5044e9;
-  iVar4 = TTEView::DestructTTEViewAndMaybeFree(*(TTEView **)&this->field_0x94);
-  puStack_150 = &uStack_f8;
-  pcStack_d8 = *(code **)(iVar5 + 300);
-  CStack_154.m_pchData = (char *)0x504501;
-  (*pcStack_d8)();
-  pcVar2 = *(code **)(iVar5 + 0x168);
-  CStack_154.m_pchData = (char *)0x1;
-  uStack_f8 = 0x92;
-  uStack_f0 = 0x135;
-  (*pcVar2)(&puStack_fc);
-  if (iVar4 + 8 < 0xa3) {
-    (*pcStack_e4)(&ppuStack_114);
-    ppuStack_114 = (undefined4 **)((int)ppuStack_114 + 10);
-    (*pcVar2)(&uStack_118,0);
-  }
-  (**(code **)(**(int **)&this->field_0x94 + 300))(&ppuStack_114);
-  ppuStack_114 = (undefined4 **)0x0;
-  aiStack_10c[0] = iVar4 + 8;
-  (**(code **)(**(int **)&this->field_0x94 + 0x168))(&uStack_118,0);
-  SyncBoundedValueAndToggleControlStates();
-  (**(code **)(iStack_14c + 0xe4))();
-  (**(code **)(*piStack_148 + 0x13c))();
-  uStack_f8 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_154);
-  *unaff_FS_OFFSET = uStack_100;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0055DF50
-// GHIDRA_NAME TTEView::AppendInterNationEventSummaryTextEntry
-// GHIDRA_PROTO undefined __thiscall TTEView::AppendInterNationEventSummaryTextEntry(int param_1, undefined4 * param_2)
-
-int TTEView::AppendInterNationEventSummaryTextEntry(int param_1, undefined4 *param_2)
-
-{
-  char *pcVar1;
-  char cVar2;
-  TDeluxeTextVtbl *pTVar3;
-  TDeluxeText *this_00;
-  undefined4 *puVar4;
-  undefined4 uVar5;
-  char *text_or_resource_id;
-  int iVar6;
-  undefined4 *unaff_FS_OFFSET;
-  char *pcStack00000010;
-  int in_stack_00000014;
-  undefined4 *in_stack_0000001c;
-  CString local_44;
-  TDeluxeText *local_40;
-  undefined4 local_3c;
-  undefined4 *local_38 [6];
-  int local_20;
-  undefined4 local_1c;
-  int local_18;
-  undefined4 uStack_14;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006356aa;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_38[0] = (undefined4 *)0x18;
-  local_38[1] = (undefined4 *)0xe2;
-  local_38[2] = (undefined4 *)0x1ac;
-  this_00 = (TDeluxeText *)__2_YAPAXI_Z();
-  local_4 = 0;
-  if (this_00 == (TDeluxeText *)0x0) {
-    this_00 = (TDeluxeText *)0x0;
-  }
-  else {
-    local_40 = this_00;
-    TStaticText::TStaticText((TStaticText *)this_00);
-    this_00->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
-    local_4 = CONCAT31(local_4._1_3_,1);
-    ClearColorRgbaBytes();
-    ClearColorRgbaBytes();
-    this_00->vftable = &TDeluxeTextVtbl_006406d8;
-    puVar4 = (undefined4 *)SetColorRgbAndClearAlphaByte(0,0);
-    uVar5 = *puVar4;
-    this_00->field_0xa0 = 0;
-    *(undefined4 *)&this_00->field_0x98 = uVar5;
-  }
-  local_38[3] = (undefined4 *)0x4;
-  local_38[4] = (undefined4 *)0x4;
-  local_38[0] = local_38[param_1];
-  local_38[5] = (undefined4 *)0x4;
-  local_20 = 4;
-  local_38[1] = param_2;
-  local_4 = 0xffffffff;
-  local_40 = (TDeluxeText *)0xbc;
-  local_3c = 0x18c;
-  TDeluxeText::ConstructTDeluxeTextBaseState
-            (this_00,this,local_38,&local_40,local_38 + 3,in_stack_00000014);
-  uVar5 = __2_YAPAXI_Z();
-  InvokeVtableSlot30OnTargetObject(*(undefined4 *)&this->field_0x94);
-  ReadResourceStreamIntoBufferAndAdvance(*(undefined4 *)&this->field_0x94,uVar5);
-  text_or_resource_id =
-       (char *)AppendInterNationEventSummaryTextEntry_Impl
-                         (g_pLocalizationTable,uVar5,*in_stack_0000001c,in_stack_0000001c[1],
-                          in_stack_0000001c[2]);
-  __3_YAXPAX_Z();
-  cVar2 = *text_or_resource_id;
-  pcStack00000010 = text_or_resource_id;
-  while (cVar2 != '\0') {
-    pcVar1 = pcStack00000010 + 1;
-    pcStack00000010 = pcStack00000010 + 1;
-    cVar2 = *pcVar1;
-  }
-  pcStack00000010 = pcStack00000010 + (1 - (int)text_or_resource_id);
-  CString::__0CString__QAE_PBD_Z(&local_44,text_or_resource_id);
-  pTVar3 = this_00->vftable;
-  local_4 = 2;
-  (*pTVar3->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)();
-  _free(text_or_resource_id);
-  iVar6 = TTEView::DestructTTEViewAndMaybeFree((TTEView *)this_00);
-  (*pTVar3->OrphanRetStub_0059add0_4b)(&local_20);
-  local_18 = iVar6 + 8 + local_20;
-  (*pTVar3->GetTEventHandlerClassNamePointer_5a)(local_38 + 5,0);
-  uStack_14 = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffac);
-  *unaff_FS_OFFSET = local_1c;
-  return iVar6 + 8;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006129D7
-// GHIDRA_NAME TTEView::?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z
-// GHIDRA_PROTO undefined __thiscall ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z(HGDIOBJ param_1)
-
-void TTEView::_SelectObject_CDC__QAEPAVCBrush__PAV2__Z(HGDIOBJ param_1)
-
-{
-  HGDIOBJ pvVar1;
-  HGDIOBJ h;
-
-  pvVar1 = param_1;
-  if ((HDC)this->field04 != (HDC)this->padding_08_to_0b) {
-    if (param_1 == (HGDIOBJ)0x0) {
-      h = (HGDIOBJ)0x0;
-    }
-    else {
-      h = *(HGDIOBJ *)((int)param_1 + 4);
-    }
-    param_1 = SelectObject((HDC)this->field04,h);
-  }
-  if ((HDC)this->padding_08_to_0b != (HDC)0x0) {
-    if (pvVar1 == (HGDIOBJ)0x0) {
-      pvVar1 = (HGDIOBJ)0x0;
-    }
-    else {
-      pvVar1 = *(HGDIOBJ *)((int)pvVar1 + 4);
-    }
-    param_1 = SelectObject((HDC)this->padding_08_to_0b,pvVar1);
-  }
-  _FromHandle_CGdiObject__SGPAV1_PAX_Z(param_1);
-  return;
+  CDC::SelectObject((CDC *)&CStack_40,pvVar2);
+  uStack_18 = 0xffffffff;
+  CDC::~CDC();
+  *unaff_FS_OFFSET = local_2c._12_4_;
+  return local_2c._8_4_ - local_2c._0_4_;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061F342
-// GHIDRA_NAME TTEView::?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z
-// GHIDRA_PROTO undefined __thiscall ?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z(int * param_1)
+// GHIDRA_NAME TTEView::DeflateRect
+// GHIDRA_PROTO undefined __thiscall DeflateRect(int * param_1)
 
-void TTEView::_DeflateRect_CRect__QAEXPBUtagRECT___Z(int *param_1)
+void TTEView::DeflateRect(int *param_1)
 
 {
   this->vftable = (TTEViewVtbl *)((int)&this->vftable->GetTEventHandlerClassNamePointer + *param_1);

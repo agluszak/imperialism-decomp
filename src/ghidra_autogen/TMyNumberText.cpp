@@ -16,13 +16,13 @@ TMyNumberText * TMyNumberText::CloneCityDialogStateWithSharedStringInit(int para
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
-  int local_4;
-
+  undefined4 local_4;
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f053;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CopyCityDialogStateFromSourceAndCloneChildLinks(param_1);
+  func_0x004017ad(param_1);
   *(undefined4 *)&this->field_0x60 = *(undefined4 *)(param_1 + 0x60);
   this->field_0x64 = *(undefined1 *)(param_1 + 100);
   *(undefined4 *)&this->field_0x68 = *(undefined4 *)(param_1 + 0x68);
@@ -37,60 +37,60 @@ TMyNumberText * TMyNumberText::CloneCityDialogStateWithSharedStringInit(int para
   *(undefined4 *)&this->field_0x84 = 0;
   *(undefined4 *)&this->field_0x88 = *(undefined4 *)(param_1 + 0x88);
   *(undefined4 *)&this->field_0x8c = *(undefined4 *)(param_1 + 0x8c);
-  local_4 = 0;
+  puStack_8 = (undefined1 *)0x0;
   *(undefined2 *)&this->field_0x90 = *(undefined2 *)(param_1 + 0x90);
   this->vftable = (TMyNumberTextVtbl *)&TStaticText::_vftable_;
-  pCVar2 = (CString *)__2_YAPAXI_Z(4);
-  local_4._0_1_ = 1;
+  pCVar2 = (CString *)operator_new(4);
+  puStack_8._0_1_ = 1;
   if (pCVar2 == (CString *)0x0) {
     pCVar2 = (CString *)0x0;
   }
   else {
-    CString::__0CString__QAE_XZ(pCVar2);
+    CString::CString(pCVar2);
     pCVar2 = extraout_EAX;
   }
   *(CString **)&this->field_0x84 = pCVar2;
-  local_4 = (uint)local_4._1_3_ << 8;
-  CString::__4CString__QAEABV0_ABV0__Z(pCVar2,*(CString **)(param_1 + 0x84));
-  *unaff_FS_OFFSET = local_c;
+  puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
+  CString::operator=(pCVar2,*(CString **)(param_1 + 0x84));
+  *unaff_FS_OFFSET = this;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4F10
-// GHIDRA_NAME TMyNumberText::CreateTMyNumberTextInstance
-// GHIDRA_PROTO undefined CreateTMyNumberTextInstance()
+// GHIDRA_NAME TMyNumberText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TEditText * TMyNumberText::CreateTMyNumberTextInstance(void)
+undefined4 * TMyNumberText::CreateObject(void)
 
 {
-  TEditText *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638dca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TEditText *)__2_YAPAXI_Z(0xac);
+  puVar1 = (undefined4 *)operator_new(0xac);
   local_4 = 0;
-  if (this != (TEditText *)0x0) {
-    TEditText::ConstructUiNumericTextEntryBase(this);
-    this[1].vftable = (TEditTextVtbl *)0x0;
-    this->vftable = (TEditTextVtbl *)&TMyNumberTextVtbl_0066c4f0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040913d();
+    puVar1[0x28] = 0;
+    *puVar1 = &TMyNumberTextVtbl_0066c4f0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TEditText *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4FB0
-// GHIDRA_NAME TMyNumberText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMyNumberText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMyNumberText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMyNumberText::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
@@ -98,36 +98,36 @@ CRuntimeClass * TMyNumberText::GetTEventHandlerClassNamePointer()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4FD0
 // GHIDRA_NAME TMyNumberText::ConstructTMyNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall TMyNumberText::ConstructTMyNumberTextBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTMyNumberTextBaseState(void)
 
 TMyNumberText * TMyNumberText::ConstructTMyNumberTextBaseState()
 
 {
-  TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
+  func_0x0040913d();
   *(undefined4 *)&this->field_0xa0 = 0;
   this->vftable = &TMyNumberTextVtbl_0066c4f0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5000
-// GHIDRA_NAME TMyNumberText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// GHIDRA_NAME TMyNumberText::DestructTMyNumberTextAndMaybeFree
+// GHIDRA_PROTO undefined __thiscall DestructTMyNumberTextAndMaybeFree(byte param_1)
 
-TMyNumberText * TMyNumberText::_scalar_deleting_destructor_(byte param_1)
+TMyNumberText * TMyNumberText::DestructTMyNumberTextAndMaybeFree(byte param_1)
 
 {
-  TView::DestructTEditTextAndMaybeFree((TView *)this);
+  func_0x004016a4();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5050
-// GHIDRA_NAME TMyNumberText::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_NAME TMyNumberText::UpdateMyNumberTextFromTownValueString
+// GHIDRA_PROTO undefined __thiscall UpdateMyNumberTextFromTownValueString(void)
 
-char * TMyNumberText::UpdateControlCachedIntFromWindowText()
+char * TMyNumberText::UpdateMyNumberTextFromTownValueString()
 
 {
   int unaff_ESI;
@@ -141,14 +141,14 @@ char * TMyNumberText::UpdateControlCachedIntFromWindowText()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638de8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_14 = (undefined1 *)0x0;
   pCStack_20 = (CString *)0x5b507c;
-  CString::__0CString__QAE_XZ(&local_18);
+  CString::CString(&local_18);
   pCStack_20 = &local_18;
   local_4 = 0;
   pCStack_24 = (CString *)0x5b5093;
@@ -156,12 +156,12 @@ char * TMyNumberText::UpdateControlCachedIntFromWindowText()
   if (*(int *)(unaff_ESI + -8) != 0) {
     pCStack_24 = &local_18;
     local_14 = auStack_28;
-    AssignStringSharedRefAndReturnThis(&stack0xffffffe4);
-    TTown::CreateTTownInstance();
+    func_0x004076b7(&stack0xffffffe4);
+    func_0x0040720c();
   }
   puStack_8 = (undefined1 *)0xffffffff;
   pCStack_24 = (CString *)0x5b50d1;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffe4);
+  CString::~CString((CString *)&stack0xffffffe4);
   *unaff_FS_OFFSET = uStack_10;
   return local_18.m_pchData;
 }

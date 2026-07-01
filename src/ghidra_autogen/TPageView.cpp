@@ -5,94 +5,94 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00435590
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590
-// GHIDRA_PROTO undefined __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTPageViewBaseState_At00435590(void)
 
 TPageView * TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590()
 
 {
-  TPageView::ConstructTPageViewBaseState(this);
-  this->vftable = (TPageViewVtbl *)&TTradePageSellViewVtbl_00640f58;
+  func_0x0040778e();
+  this->vftable = (TPageViewVtbl *)&TTradePageSellView::_vftable_;
   *(undefined2 *)&this[1].vftable = 0xffff;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00435610
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610
-// GHIDRA_PROTO undefined __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTPageViewBaseState_At00435610(void)
 
 TPageView * TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610()
 
 {
-  TPageView::ConstructTPageViewBaseState(this);
-  this->vftable = (TPageViewVtbl *)&TTradePageBuyViewVtbl_00640d48;
+  func_0x0040778e();
+  this->vftable = (TPageViewVtbl *)&TTradePageBuyView::_vftable_;
   *(undefined2 *)&this[1].vftable = 0xffff;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004600C0
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0
-// GHIDRA_PROTO undefined __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
 
 TPageView * TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0()
 
 {
-  TPageView::ConstructTPageViewBaseState(this);
-  this->vftable = (TPageViewVtbl *)&TTechStorePageVtbl_00645ca8;
+  func_0x0040778e();
+  this->vftable = (TPageViewVtbl *)&TTechStorePage::_vftable_;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F8E0
-// GHIDRA_NAME TPageView::CreateTPageViewInstance
-// GHIDRA_PROTO undefined CreateTPageViewInstance()
+// GHIDRA_NAME TPageView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TPageView::CreateTPageViewInstance(void)
+undefined4 * TPageView::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063623a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x84);
+  puVar1 = (undefined4 *)operator_new(0x84);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TPageViewVtbl_0065e270;
-    this[1].controlTag = 0;
-    this[1].ownerContext = (TView *)0x0;
-    *(undefined2 *)((int)&this[1].vftable + 2) = 0xffff;
-    *(undefined2 *)&this[1].field04 = 1;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar1[0x1f] = 0;
+    puVar1[0x20] = 0;
+    *(undefined2 *)((int)puVar1 + 0x62) = 0xffff;
+    *(undefined2 *)(puVar1 + 0x19) = 1;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F9A0
-// GHIDRA_NAME TPageView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TPageView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPageView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TPageView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTPageView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F9C0
 // GHIDRA_NAME TPageView::ConstructTPageViewBaseState
-// GHIDRA_PROTO undefined __thiscall TPageView::ConstructTPageViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTPageViewBaseState(void)
 
 TPageView * TPageView::ConstructTPageViewBaseState()
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
-  this->vftable = &TPageViewVtbl_0065e270;
+  func_0x004064e2();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x7c = 0;
   *(undefined4 *)&this->field_0x80 = 0;
   *(undefined2 *)&this->field_0x62 = 0xffff;
@@ -107,60 +107,58 @@ TPageView * TPageView::ConstructTPageViewBaseState()
 TPageView * TPageView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004050d3();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056FA50
-// GHIDRA_NAME TPageView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TPageView::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TPageView::OrphanLeaf_NoCall_Ins07_004d8920()
+void TPageView::NoOpUiLifecycleHook()
 
 {
   undefined4 *puVar1;
+  undefined4 unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 *puStack00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636274;
   *unaff_FS_OFFSET = &local_c;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
-  local_4 = 0;
-  puStack00000004 = puVar1;
+  func_0x00406ba9();
+  puVar1 = (undefined4 *)operator_new(0x20);
+  puStack_8 = (undefined1 *)0x0;
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
   else {
-    InitializeRefCountedObjectBaseVtable();
-    local_4 = CONCAT31(local_4._1_3_,1);
-    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
+    func_0x00408dc3();
+    puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
+    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
-  local_4 = 0xffffffff;
+  puStack_8 = (undefined1 *)0xffffffff;
   *(undefined4 **)&this->field_0x7c = puVar1;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
-  puStack00000004 = puVar1;
+  puVar1 = (undefined4 *)operator_new(0x20);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
   else {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
-    local_4 = 3;
-    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
+    *puVar1 = &TObject::_vftable_;
+    puStack_8 = (undefined1 *)0x3;
+    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
-  local_4 = 0xffffffff;
+  puStack_8 = (undefined1 *)0xffffffff;
   *(undefined4 **)&this->field_0x78 = puVar1;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x1c);
+  puVar1 = (undefined4 *)operator_new(0x1c);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
@@ -171,14 +169,14 @@ void TPageView::OrphanLeaf_NoCall_Ins07_004d8920()
     puVar1[1] = 0;
     puVar1[5] = 0;
     puVar1[6] = 10;
-    *puVar1 = &CObjectVtbl_00650a08;
+    *puVar1 = &TSoundChannelNode::_vftable_;
   }
   *(int *)&this->field_0x74 = this->field38 + -1;
   *(undefined4 **)&this->field_0x80 = puVar1;
   *(undefined4 *)&this->field_0x6c = 0;
   *(undefined4 *)&this->field_0x68 = 0;
   *(int *)&this->field_0x70 = this->field34 + -1;
-  *unaff_FS_OFFSET = local_c;
+  *unaff_FS_OFFSET = unaff_EBX;
   return;
 }
 
@@ -213,18 +211,18 @@ void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay()
 {
   int *piVar1;
   int iVar2;
-
-  InitializeSelectableTextOptionEntryIteratorContext(this);
-  piVar1 = (int *)BeginSelectableTextOptionEntryIterator();
-  iVar2 = IsSelectableTextOptionEntryIteratorValid();
+  
+  func_0x00403bbb(this);
+  piVar1 = (int *)func_0x00405754();
+  iVar2 = func_0x00406c4e();
   while (iVar2 != 0) {
     iVar2 = piVar1[7];
     if ((((iVar2 != 0x6c636f72) && (iVar2 != 0x72636f72)) && (iVar2 != 0x6f6b6179)) &&
        (piVar1[0xf] != 0x646f6e74)) {
       (**(code **)(*piVar1 + 0x1c))();
     }
-    piVar1 = (int *)AdvanceSelectableTextOptionEntryIterator();
-    iVar2 = IsSelectableTextOptionEntryIteratorValid();
+    piVar1 = (int *)func_0x00404368();
+    iVar2 = func_0x00406c4e();
   }
   return;
 }
@@ -242,7 +240,7 @@ void TPageView::OrphanCallChain_C8_I82_0056fc80()
   short unaff_BP;
   int iVar4;
   short sVar5;
-
+  
   (**(code **)(**(int **)&this->field_0x80 + 0x30))();
   sVar5 = *(short *)&this->field_0x6c;
   iVar4 = 1;
@@ -300,7 +298,7 @@ void TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1)
   int iVar12;
   int iStack_8;
   int iStack_4;
-
+  
   sVar5 = 0;
   if ((0 < param_1) && (param_1 <= *(short *)&this->field_0x60)) {
     pTVar4 = this->vftable;
@@ -366,10 +364,10 @@ void TPageView::OrphanCallChain_C4_I18_0056ff90()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056FFE0
-// GHIDRA_NAME TPageView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TPageView::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TPageView::OrphanLeaf_NoCall_Ins07_004d8920()
+void TPageView::Free()
 
 {
   if (*(int **)&this->field_0x78 != (int *)0x0) {
@@ -381,7 +379,7 @@ void TPageView::OrphanLeaf_NoCall_Ins07_004d8920()
   if (*(int **)&this->field_0x80 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x80 + 0x38))();
   }
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
+  func_0x00408db4();
   return;
 }
 

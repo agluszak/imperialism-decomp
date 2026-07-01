@@ -5,67 +5,67 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045D270
 // GHIDRA_NAME TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270
-// GHIDRA_PROTO undefined __thiscall TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
 
 TOffLimitsPicture * __thiscall
 TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270
           (TOffLimitsPicture *this)
 
 {
-  TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
-  this->vftable = (TOffLimitsPictureVtbl *)&TMapUberUberPictureVtbl_00645650;
+  func_0x004014bf();
+  this->vftable = (TOffLimitsPictureVtbl *)&TMapUberUberPicture::_vftable_;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573710
-// GHIDRA_NAME TOffLimitsPicture::CreateTOffLimitsPictureInstance
-// GHIDRA_PROTO undefined CreateTOffLimitsPictureInstance()
+// GHIDRA_NAME TOffLimitsPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TOffLimitsPicture::CreateTOffLimitsPictureInstance(void)
+undefined4 * TOffLimitsPicture::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006365fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TOffLimitsPictureVtbl **)this = &TOffLimitsPictureVtbl_00660fb0;
-    *(undefined4 *)(this + 0x90) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar1[0x24] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005737B0
-// GHIDRA_NAME TOffLimitsPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TOffLimitsPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOffLimitsPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TOffLimitsPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTOffLimitsPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005737D0
 // GHIDRA_NAME TOffLimitsPicture::ConstructTOffLimitsPictureBaseState
-// GHIDRA_PROTO undefined __thiscall TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTOffLimitsPictureBaseState(void)
 
 TOffLimitsPicture * TOffLimitsPicture::ConstructTOffLimitsPictureBaseState()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TOffLimitsPictureVtbl_00660fb0;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x90 = 0;
   return this;
 }
@@ -77,64 +77,65 @@ TOffLimitsPicture * TOffLimitsPicture::ConstructTOffLimitsPictureBaseState()
 TOffLimitsPicture * TOffLimitsPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040414c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573850
-// GHIDRA_NAME TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TOffLimitsPicture::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
+void TOffLimitsPicture::NoOpUiLifecycleHook()
 
 {
   undefined4 uVar1;
-
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  uVar1 = CreateClipStateRegionWrapperObject();
+  
+  func_0x00406ba9();
+  uVar1 = func_0x00401127();
   *(undefined4 *)&this->field_0x90 = uVar1;
-  ResetClipRegionAndReadBoundingRect(uVar1);
+  func_0x0040215d(uVar1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573890
-// GHIDRA_NAME TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TOffLimitsPicture::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730()
+void TOffLimitsPicture::ApplyRectSlot110()
 
 {
   int iVar1;
+  undefined4 in_stack_00000004;
   undefined4 uVar2;
   undefined4 uVar3;
-
+  
   if (*(int **)&this->field_0x90 != (int *)0x0) {
-    uVar2 = 4;
+    uVar3 = 4;
     iVar1 = **(int **)&this->field_0x90 + 0x14;
-    NoOpQuickDrawContextSelectionHook(iVar1,4);
-    _SelectClipRgn_CDC__QAEHPAVCRgn__H_Z(iVar1,uVar2);
-    TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
-    uVar3 = 5;
-    uVar2 = 0;
-    NoOpQuickDrawContextSelectionHook(0,5);
-    _SelectClipRgn_CDC__QAEHPAVCRgn__H_Z(uVar2,uVar3);
+    func_0x004021c6(iVar1,4);
+    CDC::SelectClipRgn(iVar1,uVar3);
+    func_0x00404fe8(in_stack_00000004);
+    uVar2 = 5;
+    uVar3 = 0;
+    func_0x004021c6(0,5);
+    CDC::SelectClipRgn(uVar3,uVar2);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573900
-// GHIDRA_NAME TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TOffLimitsPicture::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
+void TOffLimitsPicture::Free()
 
 {
-  DestroyClipStateRegionWrapperObject(*(undefined4 *)&this->field_0x90);
+  func_0x0040696a(*(undefined4 *)&this->field_0x90);
   *(undefined4 *)&this->field_0x90 = 0;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
+  func_0x00408db4();
   return;
 }
 
@@ -147,7 +148,7 @@ TOffLimitsPicture::ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox
           (TOffLimitsPicture *this)
 
 {
-  CombineOptionalSourceRegionIntoDestinationAndUpdateBox();
+  func_0x00405d58();
   return;
 }
 

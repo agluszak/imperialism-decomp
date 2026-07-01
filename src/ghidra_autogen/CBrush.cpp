@@ -5,16 +5,16 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00494040
 // GHIDRA_NAME CBrush::InitializeGlobalClipRegionHandleState
-// GHIDRA_PROTO undefined __thiscall CBrush::InitializeGlobalClipRegionHandleState(void)
+// GHIDRA_PROTO undefined __thiscall InitializeGlobalClipRegionHandleState(void)
 
 CBrush * CBrush::InitializeGlobalClipRegionHandleState()
 
 {
   CBrush *this_00;
   HRGN pHVar1;
-
-  *(undefined **)(this + 8) = &DAT_006a1ca0;
-  this_00 = (CBrush *)__2_YAPAXI_Z(8);
+  
+  *(undefined **)(this + 8) = &g_defaultQuickDrawSurfaceSentinel;
+  this_00 = (CBrush *)operator_new(8);
   if (this_00 == (CBrush *)0x0) {
     this_00 = (CBrush *)0x0;
   }
@@ -24,7 +24,7 @@ CBrush * CBrush::InitializeGlobalClipRegionHandleState()
   }
   g_pGlobalClipRegionHandleObject = (int)this_00;
   pHVar1 = CreateRectRgn(0,0,0,0);
-  _Attach_CGdiObject__QAEHPAX_Z(this_00,(int)pHVar1);
+  AttachRegionHandleToClipStateAndRegister(this_00,(int)pHVar1);
   return this;
 }
 
@@ -37,13 +37,36 @@ void CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(REC
 {
   HRGN pHVar1;
   undefined4 uVar2;
-
+  
   if (*(int *)(this + 0x10) != 0) {
-    _DeleteObject_CGdiObject__QAEHXZ();
+    DeleteObject();
   }
   pHVar1 = CreateRectRgnIndirect(param_1);
-  uVar2 = _Attach_CGdiObject__QAEHPAX_Z(this + 0x14,(int)pHVar1);
+  uVar2 = AttachRegionHandleToClipStateAndRegister(this + 0x14,(int)pHVar1);
   *(undefined4 *)(this + 0x10) = uVar2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E68BE
+// GHIDRA_NAME CBrush::~CBrush
+// GHIDRA_PROTO undefined ~CBrush()
+
+void CBrush::~CBrush(void)
+
+{
+  undefined4 uVar1;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &PTR_LAB_00671a8c;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  CMenu::DestroyMenu();
+  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uVar1;
   return;
 }
 
@@ -54,35 +77,132 @@ void CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(REC
 CBrush * CBrush::_scalar_deleting_destructor_(byte param_1)
 
 {
-  CGdiObject::~CGdiObject((CGdiObject *)this);
+  func_0x00406d48();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613A4C
-// GHIDRA_NAME CBrush::?Attach@CGdiObject@@QAEHPAX@Z
-// GHIDRA_PROTO undefined __thiscall ?Attach@CGdiObject@@QAEHPAX@Z(int param_1)
+// GHIDRA_NAME CBrush::AttachRegionHandleToClipStateAndRegister
+// GHIDRA_PROTO undefined __thiscall AttachRegionHandleToClipStateAndRegister(int param_1)
 
-bool CBrush::_Attach_CGdiObject__QAEHPAX_Z(int param_1)
+bool CBrush::AttachRegionHandleToClipStateAndRegister(int param_1)
 
 {
-  TNetMgr *this_00;
+  CMapPtrToPtr *this_00;
   undefined4 *puVar1;
-
+  
   if (param_1 != 0) {
-    this_00 = (TNetMgr *)_afxMapHMENU__YAPAVCHandleMap__H_Z(1);
+    this_00 = (CMapPtrToPtr *)afxMapHIMAGELIST_6139c6(1);
     *(int *)(this + 4) = param_1;
-    puVar1 = (undefined4 *)TNetMgr::__ACMapPtrToPtr__QAEAAPAXPAX_Z(this_00,param_1);
+    puVar1 = (undefined4 *)CMapPtrToPtr::operator[](this_00,param_1);
     *puVar1 = this;
   }
   return param_1 != 0;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00613B5F
+// GHIDRA_NAME CBrush::CBrush
+// GHIDRA_PROTO undefined CBrush()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: __thiscall CBrush::CBrush(unsigned long)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: __thiscall CBrush::CBrush(unsigned long)
+   
+   Library: nafxcw retail msvc500:static */
+
+CBrush * CBrush::CBrush(void)
+
+{
+  COLORREF color;
+  HBRUSH pHVar1;
+  int iVar2;
+  CBrush *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(CBrush **)(unaff_EBP + -0x10) = this;
+  *(undefined4 *)(this + 4) = 0;
+  color = *(COLORREF *)(unaff_EBP + 8);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  *(undefined ***)this = &PTR_LAB_00672634;
+  pHVar1 = CreateSolidBrush(color);
+  iVar2 = AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  if (iVar2 == 0) {
+    AfxThrowResourceException();
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613BA9
+// GHIDRA_NAME CBrush::CBrush
+// GHIDRA_PROTO undefined CBrush()
+
+CBrush * CBrush::CBrush(void)
+
+{
+  COLORREF color;
+  HBRUSH pHVar1;
+  int iVar2;
+  CBrush *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(CBrush **)(unaff_EBP + -0x10) = this;
+  *(undefined4 *)(this + 4) = 0;
+  color = *(COLORREF *)(unaff_EBP + 0xc);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  *(undefined ***)this = &PTR_LAB_00672634;
+  pHVar1 = CreateHatchBrush(*(int *)(unaff_EBP + 8),color);
+  iVar2 = AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  if (iVar2 == 0) {
+    AfxThrowResourceException();
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613BF6
+// GHIDRA_NAME CBrush::CBrush
+// GHIDRA_PROTO undefined CBrush()
+
+CBrush * CBrush::CBrush(void)
+
+{
+  HBRUSH pHVar1;
+  int iVar2;
+  CBrush *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(CBrush **)(unaff_EBP + -0x10) = this;
+  *(undefined4 *)(this + 4) = 0;
+  iVar2 = *(int *)(unaff_EBP + 8);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  *(undefined ***)this = &PTR_LAB_00672634;
+  pHVar1 = CreatePatternBrush(*(HBITMAP *)(iVar2 + 4));
+  iVar2 = AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  if (iVar2 == 0) {
+    AfxThrowResourceException();
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00613C43
-// GHIDRA_NAME CBrush::?CreateDIBPatternBrush@CBrush@@QAEHPAXI@Z
-// GHIDRA_PROTO int __thiscall ?CreateDIBPatternBrush@CBrush@@QAEHPAXI@Z(void * param_1, uint param_2)
+// GHIDRA_NAME CBrush::CreateDIBPatternBrush
+// GHIDRA_PROTO int __thiscall CreateDIBPatternBrush(void * param_1, uint param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: int __thiscall CBrush::CreateDIBPatternBrush(void *,unsigned int)
@@ -92,19 +212,19 @@ bool CBrush::_Attach_CGdiObject__QAEHPAX_Z(int param_1)
 
 /* Library Function - Single Match
     public: int __thiscall CBrush::CreateDIBPatternBrush(void *,unsigned int)
-
+   
    Library: nafxcw retail msvc500:static */
 
-int CBrush::_CreateDIBPatternBrush_CBrush__QAEHPAXI_Z(void *param_1, uint param_2)
+int CBrush::CreateDIBPatternBrush(void *param_1, uint param_2)
 
 {
   LPVOID lpPackedDIB;
   HBRUSH pHVar1;
   int iVar2;
-
+  
   lpPackedDIB = GlobalLock(param_1);
   pHVar1 = CreateDIBPatternBrushPt(lpPackedDIB,param_2);
-  iVar2 = _Attach_CGdiObject__QAEHPAX_Z(this,(int)pHVar1);
+  iVar2 = AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
   GlobalUnlock(param_1);
   return iVar2;
 }

@@ -4,54 +4,54 @@
 // Bucket: TTradeOrderPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005843E0
-// GHIDRA_NAME TTradeOrderPicture::CreateTTradeOrderPictureInstance
-// GHIDRA_PROTO undefined CreateTTradeOrderPictureInstance()
+// GHIDRA_NAME TTradeOrderPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TTradeOrderPicture::CreateTTradeOrderPictureInstance(void)
+undefined4 * TTradeOrderPicture::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006375ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TTradeOrderPictureVtbl **)this = &TTradeOrderPictureVtbl_00664010;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584460
-// GHIDRA_NAME TTradeOrderPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTradeOrderPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeOrderPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTradeOrderPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTradeOrderPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584480
 // GHIDRA_NAME TTradeOrderPicture::ConstructTTradeOrderPictureBaseState
-// GHIDRA_PROTO undefined __thiscall TTradeOrderPicture::ConstructTTradeOrderPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTradeOrderPictureBaseState(void)
 
 TTradeOrderPicture * TTradeOrderPicture::ConstructTTradeOrderPictureBaseState()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TTradeOrderPictureVtbl_00664010;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,18 +62,18 @@ TTradeOrderPicture * TTradeOrderPicture::ConstructTTradeOrderPictureBaseState()
 TTradeOrderPicture * TTradeOrderPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040845e();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584500
-// GHIDRA_NAME TTradeOrderPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TTradeOrderPicture::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTradeOrderPicture::OrphanLeaf_NoCall_Ins07_004d8920()
+void TTradeOrderPicture::NoOpUiLifecycleHook()
 
 {
   (*this->vftable->UpdateControlCachedIntFromWindowText_2a)(1,0);
@@ -81,14 +81,14 @@ void TTradeOrderPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584520
-// GHIDRA_NAME TTradeOrderPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TTradeOrderPicture::BeginMouseCaptureAndStartRepeatTimer
+// GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(void)
 
-void TTradeOrderPicture::_scalar_deleting_destructor_()
+void TTradeOrderPicture::BeginMouseCaptureAndStartRepeatTimer()
 
 {
   char cVar1;
-
+  
   cVar1 = (*this->vftable->VTableSlot3B)();
   if (cVar1 != '\0') {
     if (this->controlTag == 0x63617264) {

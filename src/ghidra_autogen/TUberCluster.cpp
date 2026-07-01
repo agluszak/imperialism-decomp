@@ -4,10 +4,10 @@
 // Bucket: TUberCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005713C0
-// GHIDRA_NAME TUberCluster::CreateTUberClusterInstance
-// GHIDRA_PROTO undefined CreateTUberClusterInstance()
+// GHIDRA_NAME TUberCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TCluster * TUberCluster::CreateTUberClusterInstance(void)
+TCluster * TUberCluster::CreateObject(void)
 
 {
   TCluster *this;
@@ -16,12 +16,12 @@ TCluster * TUberCluster::CreateTUberClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006363ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)__2_YAPAXI_Z(0x88);
+  this = (TCluster *)operator_new(0x88);
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
@@ -34,18 +34,18 @@ TCluster * TUberCluster::CreateTUberClusterInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571440
-// GHIDRA_NAME TUberCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TUberCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUberCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TUberCluster::GetRuntimeClass()
 
 {
-  return &g_pClassDescTUberCluster;
+  return &classTUberCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571460
 // GHIDRA_NAME TUberCluster::ConstructTUberClusterBaseState
-// GHIDRA_PROTO undefined __thiscall TUberCluster::ConstructTUberClusterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTUberClusterBaseState(void)
 
 TUberCluster * TUberCluster::ConstructTUberClusterBaseState()
 
@@ -62,18 +62,18 @@ TUberCluster * TUberCluster::ConstructTUberClusterBaseState()
 TUberCluster * TUberCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x0040567d();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005714E0
-// GHIDRA_NAME TUberCluster::OrphanVtableAssignStub_005714e0
-// GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
+// GHIDRA_NAME TUberCluster::IsTradeControlAtMinimum
+// GHIDRA_PROTO undefined __thiscall IsTradeControlAtMinimum(void)
 
-undefined1 TUberCluster::OrphanVtableAssignStub_005714e0()
+undefined1 TUberCluster::IsTradeControlAtMinimum()
 
 {
   return 1;

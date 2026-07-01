@@ -4,43 +4,43 @@
 // Bucket: TDisappearingButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568B20
-// GHIDRA_NAME TDisappearingButton::CreateTDisappearingButtonInstance
-// GHIDRA_PROTO undefined CreateTDisappearingButtonInstance()
+// GHIDRA_NAME TDisappearingButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TDisappearingButton::CreateTDisappearingButtonInstance(void)
+undefined4 * TDisappearingButton::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635b1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TDisappearingButtonVtbl **)this = &TDisappearingButtonVtbl_0065d280;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568BA0
-// GHIDRA_NAME TDisappearingButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TDisappearingButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDisappearingButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TDisappearingButton::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTDisappearingButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568BC0
@@ -50,8 +50,8 @@ CRuntimeClass * TDisappearingButton::GetTEventHandlerClassNamePointer()
 TDisappearingButton * TDisappearingButton::ConstructTDisappearingButtonBaseState()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TDisappearingButtonVtbl_0065d280;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,23 +62,23 @@ TDisappearingButton * TDisappearingButton::ConstructTDisappearingButtonBaseState
 TDisappearingButton * TDisappearingButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00401f50();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568C40
-// GHIDRA_NAME TDisappearingButton::OrphanCallChain_C2_I24_00568c40
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00568c40(char param_1)
+// GHIDRA_NAME TDisappearingButton::SetControlStateFlagAndMaybeRefresh
+// GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void TDisappearingButton::OrphanCallChain_C2_I24_00568c40(char param_1)
+void TDisappearingButton::SetControlStateFlagAndMaybeRefresh(char param_1)
 
 {
   TDisappearingButtonVtbl *pTVar1;
   char unaff_retaddr;
-
+  
   if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
     this->field_0x64 = param_1;
@@ -100,7 +100,7 @@ void TDisappearingButton::OrphanCallChain_C2_I18_00568c90()
   undefined uVar1;
   undefined3 extraout_var;
   undefined1 local_10 [16];
-
+  
   uVar1 = (*this->vftable->GetTEventHandlerClassNamePointer_58)(local_10);
   RedrawWindow(*(HWND *)(this->field50 + 0x1c),(RECT *)CONCAT31(extraout_var,uVar1),(HRGN)0x0,0x101)
   ;

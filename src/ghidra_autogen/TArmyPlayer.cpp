@@ -5,66 +5,75 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0B20
 // GHIDRA_NAME TArmyPlayer::InitializeUiTransientObjectRegistry
-// GHIDRA_PROTO undefined TArmyPlayer::InitializeUiTransientObjectRegistry()
+// GHIDRA_PROTO undefined InitializeUiTransientObjectRegistry()
 
-void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(int param_1,undefined4 param_2)
+void __fastcall TArmyPlayer::InitializeUiTransientObjectRegistry(int param_1)
 
 {
   undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 local_1c;
-  undefined4 local_18;
-  undefined4 local_14;
-  undefined4 local_10;
-  undefined4 uStack_c;
-  undefined4 *puStack_8;
+  undefined4 unaff_retaddr;
+  undefined4 *puStack_c;
+  undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_4 = 0xffffffff;
-  puStack_8 = (undefined4 *)&LAB_0062fee2;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  InitializePacketHeaderFields_Tag20202020(0);
-  local_1c = 0;
-  *(undefined4 *)(param_1 + 0x10) = param_2;
-  local_10 = DAT_006a222c;
-  local_14 = DAT_006a2228;
-  local_18 = 0;
-  (**(code **)(*DAT_006a2158 + 0x2c))(param_1 + 0x20,8,&local_1c);
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
+  puStack_8 = &LAB_0062fee2;
+  puStack_c = (undefined4 *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &puStack_c;
+  func_0x0040174e(0);
+  *(undefined4 *)(param_1 + 0x10) = unaff_retaddr;
+  (**(code **)(*g_pDisplayMgr + 0x2c))(param_1 + 0x20,8,&stack0xffffffe0);
+  puVar1 = (undefined4 *)operator_new(0x20);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
   else {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
-    local_10 = 1;
-    puStack_8 = puVar1;
-    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
+    *puVar1 = &TObject::_vftable_;
+    puStack_c = puVar1;
+    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   *(undefined4 **)(param_1 + 0x24) = puVar1;
   *(undefined4 *)(param_1 + 0x28) = 0;
-  *unaff_FS_OFFSET = local_18;
+  *unaff_FS_OFFSET = 0;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0059B140
-// GHIDRA_NAME TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059b140(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x0059B110
+// GHIDRA_NAME TArmyPlayer::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TArmyPlayer * TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140(byte param_1)
+undefined4 * TArmyPlayer::CreateObject(void)
 
 {
-  TArmyPlayer::CreateTArmyPlayerInstance(this);
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x54);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059B140
+// GHIDRA_NAME TArmyPlayer::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TArmyPlayer * TArmyPlayer::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x004087f1();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B170
 // GHIDRA_NAME TArmyPlayer::CreateTArmyPlayerInstance
-// GHIDRA_PROTO undefined __thiscall TArmyPlayer::CreateTArmyPlayerInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTArmyPlayerInstance(void)
 
 void TArmyPlayer::CreateTArmyPlayerInstance()
 
@@ -74,32 +83,18 @@ void TArmyPlayer::CreateTArmyPlayerInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B190
-// GHIDRA_NAME TArmyPlayer::GetTTacticalPlayerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTacticalPlayerClassNamePointer(void)
+// GHIDRA_NAME TArmyPlayer::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyPlayer::GetTTacticalPlayerClassNamePointer()
-
-{
-  return &classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059B390
-// GHIDRA_NAME TArmyPlayer::ConstructTTacticalPlayerBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTacticalPlayerBaseState(byte param_1)
-
-TArmyPlayer * TArmyPlayer::ConstructTTacticalPlayerBaseState(byte param_1)
+CRuntimeClass * TArmyPlayer::GetRuntimeClass()
 
 {
-  DestructTArmyPlayerAndMaybeFree_Impl();
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
+  return &classTArmyPlayer;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B3E0
 // GHIDRA_NAME TArmyPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 
 void TArmyPlayer::OrphanRetStub_0059add0()
 
@@ -107,35 +102,73 @@ void TArmyPlayer::OrphanRetStub_0059add0()
   int *piVar1;
   int iVar2;
   int iVar3;
-
+  
   iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x48))();
   if (0 < iVar2) {
-    iVar2 = InitializeLinkedListCursorFromOwnerHead();
-    iVar3 = LinkedListCursorHasCurrent();
+    iVar2 = func_0x00401118();
+    iVar3 = func_0x00403620();
     while (iVar3 != 0) {
       piVar1 = *(int **)(iVar2 + 0x38);
       *(short *)(piVar1 + 0xd) = (short)*(undefined4 *)(iVar2 + 4);
       if (*(int *)(iVar2 + 4) == 0) {
         (**(code **)(*piVar1 + 0x30))();
       }
-      iVar2 = AdvanceLinkedListCursor();
-      iVar3 = LinkedListCursorHasCurrent();
+      iVar2 = func_0x00406d20();
+      iVar3 = func_0x00403620();
     }
   }
   iVar2 = (**(code **)(**(int **)&this->field_0x8 + 0x48))();
   if (0 < iVar2) {
-    iVar2 = InitializeLinkedListCursorFromOwnerHead();
-    iVar3 = LinkedListCursorHasCurrent();
+    iVar2 = func_0x00401118();
+    iVar3 = func_0x00403620();
     while (iVar3 != 0) {
       piVar1 = *(int **)(iVar2 + 0x38);
       *(short *)(piVar1 + 0xd) = (short)*(undefined4 *)(iVar2 + 4);
       if (*(int *)(iVar2 + 4) == 0) {
         (**(code **)(*piVar1 + 0x30))();
       }
-      iVar2 = AdvanceLinkedListCursor();
-      iVar3 = LinkedListCursorHasCurrent();
+      iVar2 = func_0x00406d20();
+      iVar3 = func_0x00403620();
     }
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059B4F0
+// GHIDRA_NAME TArmyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(int param_1)
+
+void TArmyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(int param_1)
+
+{
+  CPtrList *this_00;
+  int *piVar1;
+  
+  this_00 = (CPtrList *)(*(int *)&this->field_0x4 + 4);
+  piVar1 = (int *)CPtrList::Find(this_00,param_1,(undefined4 *)0x0);
+  if (piVar1 != (int *)0x0) {
+    CPtrList::RemoveAt(this_00,piVar1);
+  }
+  func_0x00406c08(*(undefined4 *)(param_1 + 0x38));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059B540
+// GHIDRA_NAME TArmyPlayer::WrapperFor_AddHead_At0059afe0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_AddHead_At0059afe0(int * param_1)
+
+void TArmyPlayer::WrapperFor_AddHead_At0059afe0(int *param_1)
+
+{
+  int *piVar1;
+  
+  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
+  (**(code **)(*param_1 + 0x3c))();
+  piVar1 = (int *)param_1[0xe];
+  *(short *)(piVar1 + 6) = (short)*(undefined4 *)&this->field_0x1c;
+  (**(code **)(*piVar1 + 0x28))(*(undefined4 *)(*(int *)&this->field_0x14 + 0x38));
+  func_0x004019b5(piVar1);
+  param_1[0xd] = param_1[1];
   return;
 }
 
@@ -149,32 +182,99 @@ void TArmyPlayer::OrphanRetStub_0059ad70()
   int iVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  TTask *this_00;
-  int iVar3;
-
+  int *piVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  short unaff_BP;
+  undefined4 uVar7;
+  
   if (this->field_0xe != '\0') {
-    SelectAndApplyTacticalCursorModeProfile(1);
+    func_0x00409a34(1);
     (*this->vftable->TArmyTacUnit_VtblSlot06)();
     return;
   }
   if (*(int *)&this->field_0x24 != 2) {
     uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0xf19);
     if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_UTacPlayer_cpp_00699d84,0x18d);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UTacPlayer_cpp_00699d84,0x18d);
     }
     iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
-    this_00 = (TTask *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
-    (*this_00->vftable->AssertValid)();
-    TTask::CreateTTaskInstance(this_00);
-    iVar3 = (**(code **)(iVar1 + 0x1ac))();
+    piVar3 = (int *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
+    (**(code **)(*piVar3 + 0xc))();
+    if (this->field_0xc == '\0') {
+      iVar6 = *(int *)&this->field_0x1c;
+      uVar7 = *(undefined4 *)(*(int *)&this->field_0x14 + 0x38);
+      iVar5 = (int)unaff_BP;
+      iVar4 = 0;
+    }
+    else {
+      iVar4 = (int)(char)this->field_0xc;
+      uVar7 = *(undefined4 *)(*(int *)&this->field_0x14 + 0x38);
+      iVar6 = (int)unaff_BP;
+      iVar5 = *(int *)&this->field_0x1c;
+    }
+    func_0x0040311b(iVar5,iVar6,iVar4,uVar7);
+    iVar5 = (**(code **)(iVar1 + 0x1ac))();
     (**(code **)(iVar1 + 0xa0))();
     (**(code **)(iVar1 + 0x1c))();
-    if (iVar3 == 0x6f6b6179) {
+    if (iVar5 == 0x6f6b6179) {
       (*this->vftable->OrphanRetStub_0059ae10)();
     }
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059BC80
+// GHIDRA_NAME TArmyPlayer::TArmyTacUnit_VtblSlot06
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot06(void)
+
+void TArmyPlayer::TArmyTacUnit_VtblSlot06()
+
+{
+  int iVar1;
+  int iVar2;
+  
+  iVar1 = func_0x00403661();
+  iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x48))();
+  if (iVar1 < iVar2) {
+    func_0x00408643(iVar1);
+  }
+  if (this->field_0xc != '\0') {
+    func_0x00401b1d();
+    this->field_0x10 = 1;
+    return;
+  }
+  func_0x004029cd();
+  this->field_0x10 = 1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059C3C0
+// GHIDRA_NAME TArmyPlayer::TArmyTacUnit_VtblSlot07
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot07(undefined4 param_1)
+
+void TArmyPlayer::TArmyTacUnit_VtblSlot07(undefined4 param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar3 = 1;
+  do {
+    iVar1 = (**(code **)(**(int **)&this->field_0x4 + 0x4c))(iVar3);
+    iVar3 = iVar3 + 1;
+    if (*(int *)(iVar1 + 8) == -2) break;
+    iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x48))();
+  } while (iVar3 <= iVar2);
+  iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x48))();
+  if (iVar2 < iVar3) {
+    this->field_0x10 = 1;
+    return;
+  }
+  (**(code **)(**(int **)&this->field_0x14 + 0x30))(iVar1,param_1);
   return;
 }
 
@@ -188,7 +288,7 @@ void TArmyPlayer::OrphanRetStub_0059ad90()
   ushort uVar1;
   int iVar2;
   int iVar3;
-
+  
   if (this->field_0x20 == '\0') {
     if (this->field_0xe != '\0') {
       if ((this->field_0xd != '\0') && (uVar1 = GetAsyncKeyState(0x5c), (uVar1 & 0x8000) != 0)) {
@@ -199,27 +299,216 @@ void TArmyPlayer::OrphanRetStub_0059ad90()
     }
     return;
   }
-  iVar2 = InitializeLinkedListCursorFromOwnerHead();
-  iVar3 = LinkedListCursorHasCurrent();
+  iVar2 = func_0x00401118();
+  iVar3 = func_0x00403620();
   if (iVar3 != 0) {
     while ((*(short *)(&DAT_00695528 + *(int *)(iVar2 + 0xc) * 2) != 8 ||
            (*(int *)(iVar2 + 0x1c) != 0))) {
-      iVar2 = AdvanceLinkedListCursor();
-      iVar3 = LinkedListCursorHasCurrent();
+      iVar2 = func_0x00406d20();
+      iVar3 = func_0x00403620();
       if (iVar3 == 0) {
         this->field_0x20 = 0;
         return;
       }
     }
-    if (*(short *)(&DAT_00695528 +
-                  (int)((*(TNextMoveCommand **)&this->field_0x14)[1].vftable)->AssertValid * 2) != 8
-       ) {
-      TNextMoveCommand::QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
+    if (*(short *)(&DAT_00695528 + *(int *)(*(int *)(*(int *)&this->field_0x14 + 0x1c) + 0xc) * 2)
+        != 8) {
+      func_0x0040400c();
       return;
     }
   }
   this->field_0x20 = 0;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059E4F0
+// GHIDRA_NAME TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit
+// GHIDRA_PROTO undefined __thiscall RunTacticalAutoTurnControllerForActiveUnit(void)
+
+void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit()
+
+{
+  short sVar1;
+  int iVar2;
+  int iVar3;
+  char cVar4;
+  int iVar5;
+  int *piVar6;
+  int iVar7;
+  undefined *puVar8;
+  int local_18 [6];
+  
+  iVar2 = *(int *)(*(int *)&this->field_0x14 + 0x1c);
+  if ((*(short *)(&DAT_006693b8 + *(int *)(iVar2 + 0xc) * 2) != 2) || (*(int *)(iVar2 + 0x20) == 1))
+  {
+    func_0x00409a34(0);
+  }
+  iVar7 = *(int *)(iVar2 + 8);
+  sVar1 = *(short *)(&DAT_00695528 + *(int *)(iVar2 + 0xc) * 2);
+  iVar5 = iVar7;
+  if ((sVar1 == 8) && (*(int *)(iVar2 + 0x2c) != 0xc)) {
+    cVar4 = func_0x00404129();
+    if (cVar4 == '\0') {
+      if ((*(char *)(*(int *)(*(int *)&this->field_0x14 + 4) + 0x10 + iVar7 * 0x14) != '\0') ||
+         (*(char *)(*(int *)(*(int *)&this->field_0x14 + 0x28) + iVar7) != '\0')) goto LAB_0059e5be;
+      puVar8 = &DAT_0069980c;
+    }
+    else {
+      puVar8 = &DAT_006997d0;
+    }
+  }
+  else {
+    iVar3 = *(int *)(iVar2 + 0x2c);
+    if (((iVar3 == 5) || ((iVar3 == 2 || (sVar1 == 4)))) &&
+       (*(int *)(*(int *)&this->field_0x14 + 0x74) < 2)) goto LAB_0059e5be;
+    if ((sVar1 == 6) && (*(int *)(*(int *)&this->field_0x14 + 0x74) < 2)) {
+      puVar8 = &DAT_00699938;
+    }
+    else {
+      puVar8 = &DAT_00699500 + iVar3 * 0x3c;
+    }
+  }
+  iVar5 = func_0x004033e6(iVar2,puVar8);
+LAB_0059e5be:
+  if (iVar5 == -1) {
+    iVar5 = *(int *)(iVar2 + 8);
+  }
+  if (iVar5 != *(int *)(iVar2 + 8)) {
+    piVar6 = *(int **)&this->field_0x14;
+    cVar4 = (char)piVar6[0x12];
+    iVar3 = 200;
+    while ((((cVar4 != '\0' && (*(int *)(iVar2 + 0x1c) == 0)) && (*(int *)(iVar2 + 8) != iVar5)) &&
+           (iVar3 != 0))) {
+      (**(code **)(*piVar6 + 0x34))(iVar2,iVar5);
+      piVar6 = *(int **)&this->field_0x14;
+      cVar4 = (char)piVar6[0x12];
+      iVar3 = iVar3 + -1;
+    }
+  }
+  if ((*(char *)(*(int *)&this->field_0x14 + 0x48) != '\0') && (*(int *)(iVar2 + 0x1c) == 0)) {
+    iVar5 = *(int *)(iVar2 + 0xc);
+    if (iVar5 < 0x1b) {
+      if (*(short *)(&DAT_00695528 + iVar5 * 2) == 8) {
+        if ((*(int *)(iVar2 + 8) == iVar7) &&
+           ((int)*(short *)(&DAT_006693f8 + iVar5 * 2) / 2 <= *(int *)(iVar2 + 0x28))) {
+          do {
+            iVar5 = *(int *)(iVar2 + 8) + 1;
+            iVar7 = (*(int **)&this->field_0x14)[1] + iVar5 * 0x14;
+            if (1 < *(int *)(iVar7 + 8)) {
+              (**(code **)(**(int **)&this->field_0x14 + 0x5c))(iVar2,iVar5);
+              return;
+            }
+            if ((*(int *)(iVar7 + 4) == 0) && (*(char *)(iVar7 + 0x10) == '\0')) {
+              (**(code **)(**(int **)&this->field_0x14 + 0x60))(iVar2,iVar5);
+            }
+          } while ((int)*(short *)(&DAT_006693f8 + *(int *)(iVar2 + 0xc) * 2) / 2 <=
+                   *(int *)(iVar2 + 0x28));
+        }
+      }
+      else if (*(char *)(iVar2 + 0x18) != '\0') {
+        iVar7 = 0;
+        iVar5 = func_0x00408c92(iVar2,1);
+        if (iVar5 != -1) {
+          iVar7 = *(int *)(*(int *)(*(int *)&this->field_0x14 + 4) + 4 + iVar5 * 0x14);
+        }
+        if ((((iVar7 != 0) &&
+             ((**(code **)(**(int **)&this->field_0x14 + 0x3c))(iVar2,*(undefined4 *)(iVar7 + 8)),
+             *(char *)(*(int *)&this->field_0x14 + 0x48) != '\0')) &&
+            ((*(short *)(&DAT_006693b8 + *(int *)(iVar2 + 0xc) * 2) == 1 &&
+             (*(int *)(iVar2 + 0x28) != 0)))) &&
+           ((((iVar7 = *(int *)(iVar2 + 0x2c), iVar7 == 2 || (iVar7 == 5)) || (iVar7 == 0xe)) &&
+            (iVar7 = func_0x004033e6(iVar2,&DAT_0069953c + iVar7 * 0x3c),
+            iVar7 != *(int *)(iVar2 + 8))))) {
+          piVar6 = *(int **)&this->field_0x14;
+          iVar5 = piVar6[7];
+          iVar3 = 200;
+          while (((iVar5 == iVar2 && (*(int *)(iVar2 + 0x1c) == 0)) &&
+                 ((*(int *)(iVar2 + 8) != iVar7 && (iVar3 != 0))))) {
+            (**(code **)(*piVar6 + 0x34))(iVar2,iVar7);
+            piVar6 = *(int **)&this->field_0x14;
+            iVar5 = piVar6[7];
+            iVar3 = iVar3 + -1;
+          }
+        }
+      }
+    }
+    else {
+      iVar7 = 0;
+      func_0x004032ec(*(undefined4 *)(iVar2 + 8),local_18);
+      iVar5 = 0;
+      piVar6 = local_18;
+      do {
+        if (5 < iVar5) break;
+        if ((((*piVar6 != -1) &&
+             (iVar3 = *(int *)(*(int *)(*(int *)&this->field_0x14 + 4) + 4 + *piVar6 * 0x14),
+             iVar3 != 0)) && (*(int *)(iVar3 + 0x20) == *(int *)(iVar2 + 0x20))) &&
+           (*(int *)(iVar3 + 0x34) < *(int *)(iVar3 + 4))) {
+          iVar7 = iVar3;
+        }
+        iVar5 = iVar5 + 1;
+        piVar6 = piVar6 + 1;
+      } while (iVar7 == 0);
+      if (iVar7 != 0) {
+        (**(code **)(**(int **)&this->field_0x14 + 0x58))(iVar2,iVar7);
+      }
+    }
+  }
+  if (*(char *)(*(int *)&this->field_0x14 + 0x48) != '\0') {
+    func_0x0040400c();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059EA60
+// GHIDRA_NAME TArmyPlayer::TArmyTacUnit_VtblSlot09
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot09(void)
+
+undefined1 TArmyPlayer::TArmyTacUnit_VtblSlot09()
+
+{
+  undefined1 uVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 *puVar2;
+  undefined1 auStack_34 [4];
+  undefined *puStack_30;
+  undefined4 uStack_2c;
+  undefined4 uStack_28;
+  CString CStack_24;
+  undefined4 uStack_20;
+  CString *pCStack_1c;
+  CString aCStack_14 [2];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00638568;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (this->field_0xe != '\0') {
+    pCStack_1c = (CString *)0x59ea89;
+    CString::CString(aCStack_14);
+    pCStack_1c = aCStack_14;
+    uStack_20 = 0;
+    CStack_24.m_pchData = (char *)0x273d;
+    uStack_4 = 0;
+    uStack_28 = 0x59eaab;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    uStack_28 = 1;
+    uStack_2c = 1;
+    puStack_30 = &DAT_006a4650;
+    pCStack_1c = (CString *)auStack_34;
+    puVar2 = &uStack_20;
+    func_0x004076b7(puVar2);
+    uVar1 = DispatchLocalizedUiMessageWithTemplateA13A0(puVar2);
+    aCStack_14[0].m_pchData = (char *)0xffffffff;
+    uStack_2c = 0x59eae3;
+    CString::~CString(&CStack_24);
+    *unaff_FS_OFFSET = pCStack_1c;
+    return uVar1;
+  }
+  *unaff_FS_OFFSET = uStack_c;
+  return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EB40
@@ -235,99 +524,8 @@ void TArmyPlayer::OrphanRetStub_0059ae10()
   }
   if (this->field_0xe == '\0') {
     this->field_0xe = 1;
-    SelectAndApplyTacticalCursorModeProfile(0);
+    func_0x00409a34(0);
     (*this->vftable->OrphanRetStub_0059ad90)();
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A4790
-// GHIDRA_NAME TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
-// GHIDRA_PROTO undefined __thiscall TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8(int param_1, int param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
-
-void __thiscall
-TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
-          (TArmyPlayer *this,int param_1,int param_2,undefined4 param_3,undefined4 param_4,
-          undefined4 param_5)
-
-{
-  char cVar1;
-  undefined4 *puVar2;
-  undefined4 *puVar3;
-  int iVar4;
-  TTacArmyView *this_00;
-  char cVar5;
-
-  *(undefined4 *)&this->field_0x3c = 0x1b3;
-  *(undefined4 *)&this->field_0x40 = 0x1d;
-  cVar5 = '\0';
-  cVar1 = '\0';
-  if ((*(short *)&g_pLocalizationTable->field_0x48 != 0) &&
-     (*(int *)&g_pLocalizationTable->field_0x44 == 0)) {
-    cVar5 = g_apNationStates[*(char *)(param_1 + 8)]->field_0xa0;
-    if (*(char *)(param_2 + 8) < '\a') {
-      cVar1 = g_apNationStates[*(char *)(param_2 + 8)]->field_0xa0;
-    }
-    else {
-      cVar1 = '\0';
-    }
-  }
-  puVar2 = (undefined4 *)__2_YAPAXI_Z(0x54);
-  if (puVar2 == (undefined4 *)0x0) {
-    puVar2 = (undefined4 *)0x0;
-  }
-  else {
-    *puVar2 = &TArmyPlayerVtbl_006695f0;
-  }
-  InitializeTacticalSideFromArmyUnitList(param_1,1,cVar5,(int)*(char *)(param_1 + 8));
-  puVar3 = (undefined4 *)__2_YAPAXI_Z(0x54);
-  if (puVar3 == (undefined4 *)0x0) {
-    puVar3 = (undefined4 *)0x0;
-  }
-  else {
-    *puVar3 = &TArmyPlayerVtbl_006695f0;
-  }
-  InitializeTacticalSideFromArmyUnitList(param_2,0,cVar1,(int)*(char *)(param_2 + 8));
-  BuildTacticalBattleStateFromBothSides(puVar2,puVar3);
-  *(undefined4 *)&this->field_0x38 = param_5;
-  LoadBattleSetupTabDataByIndex(param_3,param_4);
-  *(undefined4 *)&this->field_0x50 = param_3;
-  this->field_0x49 = (char)param_4;
-  if (((DAT_006a4758 != '\0') || (cVar1 != '\0')) || (cVar5 != '\0')) {
-    cVar5 = '\0';
-    g_nTurnCooldownDeferCounter006A43C4 = 0;
-    iVar4 = _rand();
-    TOceanDialog::RequestAudioPresetChangeWithDeferredApply
-              ((TOceanDialog *)g_pSfxPlaybackSystem,iVar4 % 3 + 6,cVar5);
-    (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0xed8,0);
-    this_00 = (TTacArmyView *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x444c4f47);
-    (*this_00->vftable->AssertValid)();
-    *(TTacArmyView **)&this->field_0x8 = this_00;
-    TTacArmyView::ConstructTTacArmyViewBaseState(this_00);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A61C0
-// GHIDRA_NAME TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit
-// GHIDRA_PROTO undefined __thiscall RunTacticalAutoTurnControllerForActiveUnit(int param_1, int param_2)
-
-void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit(int param_1, int param_2)
-
-{
-  int iVar1;
-
-  iVar1 = *(int *)&this->field_0x34 - param_2;
-  *(int *)&this->field_0x34 = iVar1;
-  if (iVar1 < 1) {
-    *(undefined4 *)&this->field_0x34 = 0;
-    *(undefined4 *)&this->field_0x1c = 1;
-  }
-  iVar1 = *(int *)&this->field_0x4 - param_1;
-  *(int *)&this->field_0x4 = iVar1;
-  if (iVar1 < 1) {
-    *(undefined4 *)&this->field_0x4 = 0;
-    *(undefined4 *)&this->field_0x1c = 3;
   }
   return;
 }

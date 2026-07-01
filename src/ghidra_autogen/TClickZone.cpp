@@ -4,34 +4,34 @@
 // Bucket: TClickZone.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572350
-// GHIDRA_NAME TClickZone::CreateTClickZoneInstance
-// GHIDRA_PROTO undefined CreateTClickZoneInstance()
+// GHIDRA_NAME TClickZone::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TClickZone::CreateTClickZoneInstance(void)
+undefined4 * TClickZone::CreateObject(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006364ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0x88);
+  puVar1 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::TControl(this);
-    this->vftable = (TControlVtbl *)&TClickZoneVtbl_00660180;
-    *(undefined2 *)&this[1].vftable = 7000;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004087fb();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x21) = 7000;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005723D0
@@ -45,13 +45,13 @@ void TClickZone::OrphanRetStub_005723d0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005723F0
-// GHIDRA_NAME TClickZone::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TClickZone::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TClickZone::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TClickZone::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTClickZone;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572410
@@ -67,8 +67,8 @@ CRuntimeClass * TClickZone::GetTEventHandlerClassNamePointer()
 TClickZone * TClickZone::ConstructUiCommandTagResourceEntry()
 
 {
-  TControl::TControl((TControl *)this);
-  this->vftable = &TClickZoneVtbl_00660180;
+  func_0x004087fb();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x84 = 7000;
   return this;
 }
@@ -80,22 +80,28 @@ TClickZone * TClickZone::ConstructUiCommandTagResourceEntry()
 TClickZone * TClickZone::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00404a2f();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572490
-// GHIDRA_NAME TClickZone::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TClickZone::BeginMouseCaptureAndStartRepeatTimer
+// GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(void)
 
-void TClickZone::_scalar_deleting_destructor_()
+void TClickZone::BeginMouseCaptureAndStartRepeatTimer()
 
 {
-  (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(*(undefined2 *)&this->field_0x84,0);
-  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,(undefined4 *)0x1);
+  undefined4 unaff_ESI;
+  undefined4 unaff_retaddr;
+  undefined4 in_stack_00000004;
+  undefined4 uVar1;
+  
+  uVar1 = 1;
+  (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(*(undefined2 *)&this->field_0x84,0,1);
+  func_0x0040750e(uVar1,unaff_ESI,unaff_retaddr,in_stack_00000004);
   return;
 }
 

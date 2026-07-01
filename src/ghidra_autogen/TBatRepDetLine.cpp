@@ -3,23 +3,53 @@
 // Program: Imperialism.exe
 // Bucket: TBatRepDetLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004AFFD0
-// GHIDRA_NAME TBatRepDetLine::WrapperFor_FreeHeapBufferIfNotNull_At004affd0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004affd0(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x004AFF60
+// GHIDRA_NAME TBatRepDetLine::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TBatRepDetLine * TBatRepDetLine::WrapperFor_FreeHeapBufferIfNotNull_At004affd0(byte param_1)
+undefined4 * TBatRepDetLine::CreateObject(void)
 
 {
-  TBatRepDetLine::CreateTBatRepDetLineInstance(this);
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630b3a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x18);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00408f0d();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AFFD0
+// GHIDRA_NAME TBatRepDetLine::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TBatRepDetLine * TBatRepDetLine::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x0040694c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0000
 // GHIDRA_NAME TBatRepDetLine::CreateTBatRepDetLineInstance
-// GHIDRA_PROTO undefined __thiscall TBatRepDetLine::CreateTBatRepDetLineInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTBatRepDetLineInstance(void)
 
 void TBatRepDetLine::CreateTBatRepDetLineInstance()
 
@@ -29,13 +59,13 @@ void TBatRepDetLine::CreateTBatRepDetLineInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0020
-// GHIDRA_NAME TBatRepDetLine::GetTLineDataClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
+// GHIDRA_NAME TBatRepDetLine::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBatRepDetLine::GetTLineDataClassNamePointer()
+CRuntimeClass * TBatRepDetLine::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTBatRepDetLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0040
@@ -46,211 +76,226 @@ void TBatRepDetLine::OrphanRetStub_0056f460(int *param_1, undefined4 param_2)
 
 {
   uint uVar1;
-  TView *pTVar2;
-  TArmyCheckBox *pTVar3;
-  TArmyCheckBoxVtbl *pTVar4;
+  undefined4 *puVar2;
+  int *piVar3;
+  int iVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar5;
+  undefined4 uStack_74;
+  undefined4 uStack_70;
+  undefined4 *puStack_5c;
   undefined4 uStack_58;
   undefined4 uStack_54;
   undefined4 uStack_50;
   undefined4 uStack_4c;
   undefined4 uStack_48;
-  undefined4 uStack_44;
-  undefined4 uStack_40;
-  undefined4 uStack_3c;
-  undefined4 uStack_38;
-  undefined4 uStack_34;
-  undefined4 uStack_30;
-  undefined4 uStack_2c;
-  undefined2 uStack_28;
-  undefined2 uStack_26;
-  undefined2 uStack_24;
-  undefined2 uStack_22;
-  undefined2 uStack_20;
-  undefined2 uStack_1e;
-  undefined2 uStack_1c;
-  undefined2 uStack_1a;
-  undefined2 uStack_18;
-  undefined2 uStack_16;
-  undefined2 uStack_14;
-  undefined2 uStack_12;
-  undefined2 uStack_10;
-  undefined2 uStack_e;
+  short asStack_44 [18];
+  undefined4 uStack_20;
+  undefined4 uStack_18;
+  int *piStack_14;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00630ba0;
   *unaff_FS_OFFSET = &uStack_c;
+  uStack_70 = 0x4b0069;
   (**(code **)(*param_1 + 0xc))();
   uVar1 = *(uint *)(*(int *)&this->field_0x14 + 0x28);
   if (uVar1 < 0x6974656e) {
     if (uVar1 == 0x6974656d) {
-      pTVar2 = (TView *)__2_YAPAXI_Z(100);
+      uStack_70 = 100;
+      uStack_74 = 0x4b0194;
+      puVar2 = (undefined4 *)operator_new();
       uStack_4 = 6;
-      if (pTVar2 == (TView *)0x0) {
+      if (puVar2 == (undefined4 *)0x0) {
 LAB_004b0206:
-        pTVar2 = (TView *)0x0;
+        puVar2 = (undefined4 *)0x0;
       }
       else {
-        TView::ConstructTViewBaseState(pTVar2);
-        pTVar2->vftable = (TViewVtbl *)&TItemBoyViewVtbl_0064e5e0;
+        uStack_70 = 0x4b01b2;
+        func_0x004064e2();
+        *puVar2 = &TItemBoyView::_vftable_;
       }
 LAB_004b0208:
+      uStack_70 = 0;
+      uStack_74 = 5;
       uStack_4 = 0xffffffff;
-      InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
-      pTVar2[1].vftable = *(TViewVtbl **)&this->field_0x14;
+      func_0x004096b5(0,param_1,param_2,&this->field_0x8,5);
+      puVar2[0x18] = *(undefined4 *)&this->field_0x14;
       goto LAB_004b04e9;
     }
     if (uVar1 != 0x61726d79) goto LAB_004b04e9;
-    pTVar2 = (TView *)__2_YAPAXI_Z(100);
+    uStack_70 = 100;
+    uStack_74 = 0x4b009c;
+    puVar2 = (undefined4 *)operator_new();
     uStack_4 = 0;
-    if (pTVar2 == (TView *)0x0) {
-      pTVar2 = (TView *)0x0;
+    puStack_5c = puVar2;
+    if (puVar2 == (undefined4 *)0x0) {
+      puVar2 = (undefined4 *)0x0;
     }
     else {
-      TView::ConstructTViewBaseState(pTVar2);
-      pTVar2->vftable = (TViewVtbl *)&TArmyBoyViewVtbl_0064dff8;
+      uStack_70 = 0x4b00b6;
+      func_0x004064e2();
+      *puVar2 = &TArmyBoyView::_vftable_;
     }
+    uStack_70 = 0;
+    uStack_74 = 5;
     uStack_4 = 0xffffffff;
-    InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
-    pTVar2[1].vftable = *(TViewVtbl **)&this->field_0x14;
-    pTVar3 = (TArmyCheckBox *)__2_YAPAXI_Z(0x94);
-    uStack_4 = 1;
-    if (pTVar3 == (TArmyCheckBox *)0x0) {
-      pTVar3 = (TArmyCheckBox *)0x0;
+    func_0x004096b5(0,param_1,param_2,&this->field_0x8,5);
+    puVar2[0x18] = *(undefined4 *)&this->field_0x14;
+    piVar3 = (int *)operator_new(0x94);
+    uStack_20 = 1;
+    piStack_14 = piVar3;
+    if (piVar3 == (int *)0x0) {
+      piVar3 = (int *)0x0;
     }
     else {
-      TControl::TControl((TControl *)pTVar3);
-      pTVar3->vftable = &TArmyCheckBoxVtbl_0064cec0;
-      *(undefined4 *)&pTVar3->field_0x88 = 0;
-      *(undefined4 *)&pTVar3->field_0x90 = 0;
-      *(undefined4 *)&pTVar3->field_0x8c = 0;
-      pTVar3->field_0x84 = 0;
+      func_0x004087fb();
+      *piVar3 = (int)&TArmyCheckBox::_vftable_;
+      piVar3[0x22] = 0;
+      piVar3[0x24] = 0;
+      piVar3[0x23] = 0;
+      *(undefined1 *)(piVar3 + 0x21) = 0;
     }
-    uStack_58 = 0x40;
-    uStack_54 = 0x31;
-    uStack_50 = 0;
-    uStack_4c = 0;
-    uStack_4 = 0xffffffff;
-    TArmyCheckBox::ConstructTArmyCheckBoxBaseState(pTVar3,pTVar2,&uStack_50,&uStack_58,5,5);
-    pTVar4 = pTVar3->vftable;
-    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)(0,0);
+    uStack_74 = 0x40;
+    uStack_70 = 0x31;
+    uStack_20 = 0xffffffff;
+    func_0x00401fcd(puVar2,&stack0xffffff94,&uStack_74,5,5,uStack_18,
+                    (int)**(short **)&this->field_0x14 << 7);
+    iVar4 = *piVar3;
+    (**(code **)(iVar4 + 0xa8))(0,0);
     uVar5 = 1;
   }
   else if (uVar1 == 0x6d657263) {
-    pTVar2 = (TView *)__2_YAPAXI_Z(100);
+    uStack_70 = 100;
+    uStack_74 = 0x4b039f;
+    puVar2 = (undefined4 *)operator_new();
     uStack_4 = 4;
-    if (pTVar2 == (TView *)0x0) {
-      pTVar2 = (TView *)0x0;
+    puStack_5c = puVar2;
+    if (puVar2 == (undefined4 *)0x0) {
+      puVar2 = (undefined4 *)0x0;
     }
     else {
-      TView::ConstructTViewBaseState(pTVar2);
-      pTVar2->vftable = (TViewVtbl *)&TMerchantBoyViewVtbl_0064e3e8;
+      uStack_70 = 0x4b03bd;
+      func_0x004064e2();
+      *puVar2 = &TMerchantBoyView::_vftable_;
     }
+    uStack_70 = 0;
+    uStack_74 = 5;
     uStack_4 = 0xffffffff;
-    InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
-    pTVar2[1].vftable = *(TViewVtbl **)&this->field_0x14;
-    uStack_28 = 0;
-    uStack_26 = 0;
-    uStack_24 = 1;
-    uStack_22 = 0;
-    uStack_20 = 0;
-    uStack_1e = 2;
-    uStack_1c = 3;
-    uStack_1a = 0;
-    uStack_18 = 0;
-    uStack_16 = 0;
-    uStack_14 = 4;
-    uStack_12 = 0;
-    uStack_10 = 0;
-    uStack_e = 0;
-    pTVar3 = (TArmyCheckBox *)__2_YAPAXI_Z(0x94);
-    uStack_4 = 5;
-    if (pTVar3 == (TArmyCheckBox *)0x0) {
-      pTVar3 = (TArmyCheckBox *)0x0;
+    func_0x004096b5(0,param_1,param_2,&this->field_0x8,5);
+    puVar2[0x18] = *(undefined4 *)&this->field_0x14;
+    asStack_44[0] = 0;
+    asStack_44[1] = 0;
+    asStack_44[2] = 1;
+    asStack_44[3] = 0;
+    asStack_44[4] = 0;
+    asStack_44[5] = 2;
+    asStack_44[6] = 3;
+    asStack_44[7] = 0;
+    asStack_44[8] = 0;
+    asStack_44[9] = 0;
+    asStack_44[10] = 4;
+    asStack_44[0xb] = 0;
+    asStack_44[0xc] = 0;
+    asStack_44[0xd] = 0;
+    piVar3 = (int *)operator_new(0x94);
+    piStack_14 = piVar3;
+    uStack_20 = 5;
+    if (piVar3 == (int *)0x0) {
+      piVar3 = (int *)0x0;
     }
     else {
-      TControl::TControl((TControl *)pTVar3);
-      pTVar3->vftable = &TArmyCheckBoxVtbl_0064cec0;
-      *(undefined4 *)&pTVar3->field_0x88 = 0;
-      *(undefined4 *)&pTVar3->field_0x90 = 0;
-      *(undefined4 *)&pTVar3->field_0x8c = 0;
-      pTVar3->field_0x84 = 0;
+      func_0x004087fb();
+      *piVar3 = (int)&TArmyCheckBox::_vftable_;
+      piVar3[0x22] = 0;
+      piVar3[0x24] = 0;
+      piVar3[0x23] = 0;
+      *(undefined1 *)(piVar3 + 0x21) = 0;
     }
-    uStack_38 = 0x50;
-    uStack_34 = 0x2d;
-    uStack_30 = 0;
-    uStack_2c = 0;
-    uStack_4 = 0xffffffff;
-    TArmyCheckBox::ConstructTArmyCheckBoxBaseState(pTVar3,pTVar2,&uStack_30,&uStack_38,5,5);
-    pTVar4 = pTVar3->vftable;
-    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)(0,0);
+    uStack_54 = 0x50;
+    uStack_50 = 0x2d;
+    uStack_4c = 0;
+    uStack_48 = 0;
+    uStack_20 = 0xffffffff;
+    func_0x00401fcd(puVar2,&uStack_4c,&uStack_54,5,5,uStack_18,
+                    asStack_44[**(short **)&this->field_0x14] * 0x50);
+    iVar4 = *piVar3;
+    (**(code **)(iVar4 + 0xa8))(0,0);
     uVar5 = 0;
   }
   else {
     if (uVar1 != 0x6e617679) {
       if (uVar1 != 0x72757074) goto LAB_004b04e9;
-      pTVar2 = (TView *)__2_YAPAXI_Z(100);
+      uStack_70 = 100;
+      uStack_74 = 0x4b01df;
+      puVar2 = (undefined4 *)operator_new();
       uStack_4 = 7;
-      if (pTVar2 == (TView *)0x0) goto LAB_004b0206;
-      TView::ConstructTViewBaseState(pTVar2);
-      pTVar2->vftable = (TViewVtbl *)&TInterruptusViewVtbl_0064e7d8;
+      if (puVar2 == (undefined4 *)0x0) goto LAB_004b0206;
+      uStack_70 = 0x4b01fd;
+      func_0x004064e2();
+      *puVar2 = &TInterruptusView::_vftable_;
       goto LAB_004b0208;
     }
-    pTVar2 = (TView *)__2_YAPAXI_Z(100);
+    uStack_70 = 100;
+    uStack_74 = 0x4b0246;
+    puVar2 = (undefined4 *)operator_new();
     uStack_4 = 2;
-    if (pTVar2 == (TView *)0x0) {
-      pTVar2 = (TView *)0x0;
+    puStack_5c = puVar2;
+    if (puVar2 == (undefined4 *)0x0) {
+      puVar2 = (undefined4 *)0x0;
     }
     else {
-      TView::ConstructTViewBaseState(pTVar2);
-      pTVar2->vftable = (TViewVtbl *)&TNavyBoyViewVtbl_0064e1f0;
+      uStack_70 = 0x4b0264;
+      func_0x004064e2();
+      *puVar2 = &TNavyBoyView::_vftable_;
     }
+    uStack_70 = 0;
+    uStack_74 = 5;
     uStack_4 = 0xffffffff;
-    InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
-    pTVar2[1].vftable = *(TViewVtbl **)&this->field_0x14;
-    uStack_28 = 0;
-    uStack_26 = 0;
-    uStack_24 = 0;
-    uStack_22 = 0;
-    uStack_20 = 0xa0;
-    uStack_1e = 0;
-    uStack_1c = 0;
-    uStack_1a = 0x140;
-    uStack_18 = 0x1e0;
-    uStack_16 = 0x280;
-    uStack_14 = 0;
-    uStack_12 = 800;
-    uStack_10 = 0x3c0;
-    uStack_e = 0x460;
-    pTVar3 = (TArmyCheckBox *)__2_YAPAXI_Z(0x94);
-    uStack_4 = 3;
-    if (pTVar3 == (TArmyCheckBox *)0x0) {
-      pTVar3 = (TArmyCheckBox *)0x0;
+    func_0x004096b5(0,param_1,param_2,&this->field_0x8,5);
+    puVar2[0x18] = *(undefined4 *)&this->field_0x14;
+    asStack_44[0] = 0;
+    asStack_44[1] = 0;
+    asStack_44[2] = 0;
+    asStack_44[3] = 0;
+    asStack_44[4] = 0xa0;
+    asStack_44[5] = 0;
+    asStack_44[6] = 0;
+    asStack_44[7] = 0x140;
+    asStack_44[8] = 0x1e0;
+    asStack_44[9] = 0x280;
+    asStack_44[10] = 0;
+    asStack_44[0xb] = 800;
+    asStack_44[0xc] = 0x3c0;
+    asStack_44[0xd] = 0x460;
+    piVar3 = (int *)operator_new(0x94);
+    piStack_14 = piVar3;
+    uStack_20 = 3;
+    if (piVar3 == (int *)0x0) {
+      piVar3 = (int *)0x0;
     }
     else {
-      TControl::TControl((TControl *)pTVar3);
-      pTVar3->vftable = &TArmyCheckBoxVtbl_0064cec0;
-      *(undefined4 *)&pTVar3->field_0x88 = 0;
-      *(undefined4 *)&pTVar3->field_0x90 = 0;
-      *(undefined4 *)&pTVar3->field_0x8c = 0;
-      pTVar3->field_0x84 = 0;
+      func_0x004087fb();
+      *piVar3 = (int)&TArmyCheckBox::_vftable_;
+      piVar3[0x22] = 0;
+      piVar3[0x24] = 0;
+      piVar3[0x23] = 0;
+      *(undefined1 *)(piVar3 + 0x21) = 0;
     }
-    uStack_48 = 0x50;
-    uStack_44 = 0x2d;
-    uStack_40 = 0;
-    uStack_3c = 0;
-    uStack_4 = 0xffffffff;
-    TArmyCheckBox::ConstructTArmyCheckBoxBaseState(pTVar3,pTVar2,&uStack_40,&uStack_48,5,5);
-    pTVar4 = pTVar3->vftable;
-    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)(0,0);
+    puStack_5c = (undefined4 *)0x0;
+    uStack_58 = 0;
+    uStack_20 = 0xffffffff;
+    func_0x00401fcd(puVar2,&puStack_5c,&stack0xffffff9c,5,5,uStack_18,
+                    (int)asStack_44[**(short **)&this->field_0x14]);
+    iVar4 = *piVar3;
+    (**(code **)(iVar4 + 0xa8))(0,0);
     uVar5 = 1;
   }
-  (*pTVar4->SetArmyUnitLineActiveFlagAndNotify)(uVar5,0);
+  (**(code **)(iVar4 + 0x1c8))(uVar5,0);
 LAB_004b04e9:
   *unaff_FS_OFFSET = uStack_c;
   return;

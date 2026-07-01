@@ -10,55 +10,55 @@
 TDealTabControl * TDealTabControl::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x0040372e();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC690
-// GHIDRA_NAME TDealTabControl::CreateTDealTabControlInstance
-// GHIDRA_PROTO undefined CreateTDealTabControlInstance()
+// GHIDRA_NAME TDealTabControl::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TDealTabControl::CreateTDealTabControlInstance(void)
+undefined4 * TDealTabControl::CreateObject(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006392ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::TControl(this);
-    this->vftable = (TControlVtbl *)&TDealTabControlVtbl_00641168;
-    *(undefined2 *)&this[1].vftable = 0xffff;
-    *(undefined4 *)&this[1].field_0x8 = 0;
-    *(undefined4 *)&this[1].field_0xc = 0;
-    *(undefined2 *)((int)&this[1].vftable + 2) = 0x10;
-    *(undefined2 *)&this[1].field_0x4 = 0x11;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004087fb();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x21) = 0xffff;
+    puVar1[0x23] = 0;
+    puVar1[0x24] = 0;
+    *(undefined2 *)((int)puVar1 + 0x86) = 0x10;
+    *(undefined2 *)(puVar1 + 0x22) = 0x11;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TControl *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC760
-// GHIDRA_NAME TDealTabControl::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TDealTabControl::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDealTabControl::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TDealTabControl::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTDealTabControl;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC780
@@ -69,76 +69,71 @@ void TDealTabControl::ConstructTDealTabControlBaseState(int param_1, char param_
 
 {
   undefined4 uVar1;
-
+  
   if (param_2 == '\0') {
     *(undefined2 *)&this->field_0x88 = 0xf;
   }
   else {
     param_1 = param_1 + 1;
   }
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_1);
+  uVar1 = func_0x00401fe1(param_1);
   *(undefined4 *)&this->field_0x8c = uVar1;
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_1 + 4);
+  uVar1 = func_0x00401fe1(param_1 + 4);
   *(undefined4 *)&this->field_0x90 = uVar1;
   *(undefined2 *)&this->field_0x86 = 0x19;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC7F0
-// GHIDRA_NAME TDealTabControl::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_NAME TDealTabControl::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TDealTabControl::OrphanCallChain_C11_I88_004874b0()
+void TDealTabControl::ApplyRectSlot110()
 
 {
   short sVar1;
   int iVar2;
-  RECT local_10;
-
+  undefined4 local_10;
+  int local_c;
+  int local_8;
+  int local_4;
+  
   if (*(int *)&this->field_0x8c != 0) {
-    ResetQuickDrawStrokeState();
-    SetQuickDrawStrokeColor(0xffffff);
-    SetQuickDrawFillColor(0);
+    func_0x004088aa();
+    func_0x00402bdf(0xffffff);
+    func_0x00406b86(0);
     if (*(short *)&this->field_0x84 < 0) {
-      local_10.right = this->field34;
-      local_10.bottom = this->field38;
-      local_10.top = 0;
-      local_10.left = 0;
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)&this->field_0x90 + 4),
-                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_10,0,
-                 (astruct_19 *)0x0);
+      local_8 = this->field34;
+      local_4 = this->field38;
+      local_c = 0;
+      local_10 = 0;
+      func_0x00405493(*(int *)&this->field_0x90 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                      &local_10,&local_10,0,0);
     }
     else {
       sVar1 = *(short *)&this->field_0x84 * *(short *)&this->field_0x86;
       if (sVar1 != 0) {
-        local_10.right = this->field34;
-        local_10.left = 0;
-        local_10.top = 0;
-        local_10.bottom = (LONG)sVar1;
-        BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)&this->field_0x90 + 4),
-                   (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_10,0,
-                   (astruct_19 *)0x0);
+        local_8 = this->field34;
+        local_10 = 0;
+        local_c = 0;
+        local_4 = (int)sVar1;
+        func_0x00405493(*(int *)&this->field_0x90 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                        &local_10,&local_10,0,0);
       }
-      local_10.right = this->field34;
+      local_8 = this->field34;
       iVar2 = (int)sVar1;
-      local_10.bottom = *(short *)&this->field_0x86 + iVar2;
-      local_10.left = 0;
-      local_10.top = iVar2;
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)&this->field_0x8c + 4),
-                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_10,0,
-                 (astruct_19 *)0x0);
-      local_10.bottom = this->field38;
-      local_10.top = *(short *)&this->field_0x86 + iVar2;
-      if (local_10.top < local_10.bottom) {
-        local_10.right = this->field34;
-        local_10.left = 0;
-        BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)&this->field_0x90 + 4),
-                   (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_10,0,
-                   (astruct_19 *)0x0);
+      local_4 = *(short *)&this->field_0x86 + iVar2;
+      local_10 = 0;
+      local_c = iVar2;
+      func_0x00405493(*(int *)&this->field_0x8c + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                      &local_10,&local_10,0,0);
+      local_4 = this->field38;
+      local_c = *(short *)&this->field_0x86 + iVar2;
+      if (local_c < local_4) {
+        local_8 = this->field34;
+        local_10 = 0;
+        func_0x00405493(*(int *)&this->field_0x90 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                        &local_10,&local_10,0,0);
         return;
       }
     }
@@ -147,10 +142,10 @@ void TDealTabControl::OrphanCallChain_C11_I88_004874b0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC9F0
-// GHIDRA_NAME TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
+// GHIDRA_NAME TDealTabControl::DispatchPictureResourceCommand
+// GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1)
 
-void TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
+void TDealTabControl::DispatchPictureResourceCommand(int param_1)
 
 {
   TDealTabControlVtbl *pTVar1;
@@ -160,7 +155,7 @@ void TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
   int unaff_retaddr;
   int in_stack_0000000c;
   short sStack_10;
-
+  
   pTVar1 = this->vftable;
   sVar4 = -1;
   p_Var2 = pTVar1->VTableSlot5B;
@@ -199,19 +194,19 @@ void TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BCB20
-// GHIDRA_NAME TDealTabControl::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TDealTabControl::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TDealTabControl::OrphanLeaf_NoCall_Ins07_004d8920()
+void TDealTabControl::Free()
 
 {
   if (*(int *)&this->field_0x8c != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x8c);
+    func_0x004010e6(&this->field_0x8c);
   }
   if (*(int *)&this->field_0x90 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x90);
+    func_0x004010e6(&this->field_0x90);
   }
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
+  func_0x00408db4();
   return;
 }
 

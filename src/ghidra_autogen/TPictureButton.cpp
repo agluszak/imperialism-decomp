@@ -3,99 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: TPictureButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048EFC0
-// GHIDRA_NAME TPictureButton::TPictureButton
-// GHIDRA_PROTO undefined __thiscall TPictureButton::TPictureButton(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Base constructor for picture-oriented UI resource entries.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Calls ConstructUiResourceEntryBase.
-// GHIDRA_COMMENT 2. Initializes picture/style fields from global defaults.
-// GHIDRA_COMMENT 3. Installs picture-entry base vtable.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - this pointer.
-// GHIDRA_COMMENT_END
-
-/* Base constructor for picture-oriented UI resource entries.
-
-   Algorithm:
-   1. Calls ConstructUiResourceEntryBase.
-   2. Initializes picture/style fields from global defaults.
-   3. Installs picture-entry base vtable.
-
-   Returns:
-   - this pointer. */
-
-TPictureButton * TPictureButton::TPictureButton()
-
-{
-  ushort uVar1;
-
-  TView::ConstructTViewBaseState((TView *)this);
-  *(undefined4 *)&this->field_0x60 = 1;
-  this->field_0x64 = 0;
-  *(undefined4 *)&this->field_0x68 = 0;
-  *(undefined4 *)&this->field_0x6c = 0;
-  *(undefined4 *)&this->field_0x70 = 0;
-  *(undefined4 *)&this->field_0x74 = 0;
-  *(int *)&this->field_0x78 = g_nUiResourceEntryDefaultParam0;
-  *(int *)&this->field_0x7c = g_nUiResourceEntryDefaultParam1;
-  uVar1 = g_wUiResourceEntryDefaultParam2;
-  *(undefined4 *)&this->field_0x88 = 0;
-  *(undefined4 *)&this->field_0x8c = 0;
-  *(undefined2 *)&this->field_0x84 = 0xffff;
-  this->vftable = (TPictureButtonVtbl *)&TPictureVtbl_0064a930;
-  *(undefined4 *)&this->field_0x60 = 10;
-  *(ushort *)&this->field_0x80 = uVar1;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00570750
-// GHIDRA_NAME TPictureButton::CreateTPictureButtonInstance
-// GHIDRA_PROTO undefined CreateTPictureButtonInstance()
+// GHIDRA_NAME TPictureButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TPictureButton::CreateTPictureButtonInstance(void)
+undefined4 * TPictureButton::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063634a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TPictureButtonVtbl **)this = &TPictureResourceEntryBase::_vftable_;
-    *(undefined2 *)(this + 0x92) = 7000;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005707D0
-// GHIDRA_NAME TPictureButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TPictureButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPictureButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TPictureButton::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTPictureButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005707F0
-// GHIDRA_NAME TPictureButton::ConstructUiTabCursorPictureEntry
-// GHIDRA_PROTO undefined __thiscall ConstructUiTabCursorPictureEntry(void)
+// GHIDRA_NAME TPictureButton::TPictureButton
+// GHIDRA_PROTO undefined __thiscall TPictureButton(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived picture constructor reused for cursor/tab glyph entries (observed tags: 'curs', 'tab0'..'tab8'). Sets timing/word field (+0x92=7000).
 // GHIDRA_COMMENT_END
@@ -103,11 +54,11 @@ CRuntimeClass * TPictureButton::GetTEventHandlerClassNamePointer()
 /* Derived picture constructor reused for cursor/tab glyph entries (observed tags: 'curs',
    'tab0'..'tab8'). Sets timing/word field (+0x92=7000). */
 
-TPictureButton * TPictureButton::ConstructUiTabCursorPictureEntry()
+TPictureButton * TPictureButton::TPictureButton()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TPictureResourceEntryBase::_vftable_;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x92 = 7000;
   return this;
 }
@@ -119,23 +70,23 @@ TPictureButton * TPictureButton::ConstructUiTabCursorPictureEntry()
 TPictureButton * TPictureButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004087ba();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570870
-// GHIDRA_NAME TPictureButton::OrphanCallChain_C2_I24_00570870
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00570870(char param_1)
+// GHIDRA_NAME TPictureButton::SetControlStateFlagAndMaybeRefresh
+// GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void TPictureButton::OrphanCallChain_C2_I24_00570870(char param_1)
+void TPictureButton::SetControlStateFlagAndMaybeRefresh(char param_1)
 
 {
   TPictureButtonVtbl *pTVar1;
   char unaff_retaddr;
-
+  
   if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
     this->field_0x64 = param_1;
@@ -148,16 +99,16 @@ void TPictureButton::OrphanCallChain_C2_I24_00570870(char param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005708C0
-// GHIDRA_NAME TPictureButton::OrphanCallChain_C2_I18_005708c0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_005708c0(void)
+// GHIDRA_NAME TPictureButton::IsSelected
+// GHIDRA_PROTO undefined __thiscall IsSelected(void)
 
-void TPictureButton::OrphanCallChain_C2_I18_005708c0()
+void TPictureButton::IsSelected()
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   undefined1 local_10 [16];
-
+  
   uVar1 = (*this->vftable->GetTEventHandlerClassNamePointer_58)(local_10);
   RedrawWindow(*(HWND *)(this->field50 + 0x1c),(RECT *)CONCAT31(extraout_var,uVar1),(HRGN)0x0,0x101)
   ;
@@ -165,14 +116,20 @@ void TPictureButton::OrphanCallChain_C2_I18_005708c0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570900
-// GHIDRA_NAME TPictureButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TPictureButton::BeginMouseCaptureAndStartRepeatTimer
+// GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(void)
 
-void TPictureButton::_scalar_deleting_destructor_()
+void TPictureButton::BeginMouseCaptureAndStartRepeatTimer()
 
 {
-  (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(*(undefined2 *)&this->field_0x92,0);
-  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,(undefined4 *)0x1);
+  undefined4 unaff_ESI;
+  undefined4 unaff_retaddr;
+  undefined4 in_stack_00000004;
+  undefined4 uVar1;
+  
+  uVar1 = 1;
+  (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(*(undefined2 *)&this->field_0x92,0,1);
+  func_0x0040750e(uVar1,unaff_ESI,unaff_retaddr,in_stack_00000004);
   return;
 }
 

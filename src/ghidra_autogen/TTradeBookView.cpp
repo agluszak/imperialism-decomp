@@ -10,59 +10,59 @@
 TTradeBookView * TTradeBookView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x0040221b();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDE30
-// GHIDRA_NAME TTradeBookView::CreateTTradeBookViewInstance
-// GHIDRA_PROTO undefined CreateTTradeBookViewInstance()
+// GHIDRA_NAME TTradeBookView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TTradeBookView::CreateTTradeBookViewInstance(void)
+undefined4 * TTradeBookView::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006394aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x78);
+  puVar1 = (undefined4 *)operator_new(0x78);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TTradeBookViewVtbl_00640b50;
-    this[1].vftable = (TViewVtbl *)0x0;
-    this[1].field04 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar1[0x18] = 0;
+    puVar1[0x19] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDED0
-// GHIDRA_NAME TTradeBookView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTradeBookView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeBookView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTradeBookView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTradeBookView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDEF0
-// GHIDRA_NAME TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO void __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(uint this_obj)
+// GHIDRA_NAME TTradeBookView::NoOpUiLifecycleHook
+// GHIDRA_PROTO void __thiscall NoOpUiLifecycleHook(uint this_obj)
 
-void TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920(uint this_obj)
+void TTradeBookView::NoOpUiLifecycleHook(uint this_obj)
 
 {
   undefined uVar1;
@@ -75,103 +75,102 @@ void TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920(uint this_obj)
   undefined4 text_handle;
   CString *src_ref;
   undefined4 *seh_chain;
-  CString CStack_48;
+  CString CStack_4c;
+  undefined4 uStack_48;
   undefined4 uStack_44;
   undefined4 uStack_40;
   undefined4 uStack_3c;
-  undefined4 temp_tag;
+  CString temp_tag;
   CString tag_or_handle;
   CString color_or_tag;
-  CString tmp_buf4;
-  CString tmp_buf8 [2];
+  CString CStack_1c;
+  CString tmp_buf4 [3];
   undefined4 seh_prev;
   undefined1 *seh_handler;
   undefined4 seh_state;
   _vslot_fn *getResourceByTag;
   int iVar1;
-
+  
   seh_state = 0xffffffff;
   seh_handler = &LAB_006394e8;
   seh_prev = *seh_chain;
   *seh_chain = &seh_prev;
   color_or_tag.m_pchData = (char *)this_obj;
   tag_or_handle.m_pchData = (char *)0x5bdf18;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  color_or_tag.m_pchData = (char *)0x6c636f72;
+  func_0x00406ba9();
+  tag_or_handle.m_pchData = (char *)0x6c636f72;
   getResourceByTag = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  tag_or_handle.m_pchData = (char *)0x5bdf29;
+  temp_tag.m_pchData = (char *)0x5bdf29;
   resource_obj._0_1_ = (*getResourceByTag)();
   resource_obj = (astruct_7 *)CONCAT31(resource_obj._1_3_,resource_obj._0_1_);
-  tag_or_handle.m_pchData = (char *)0x72636f72;
+  temp_tag.m_pchData = (char *)0x72636f72;
   *(astruct_7 **)&this->field_0x60 = resource_obj;
-  temp_tag = 0x5bdf35;
+  uStack_3c = 0x5bdf35;
   uVar1 = (*getResourceByTag)();
-  temp_tag = 0x74626f75;
+  uStack_3c = 0x74626f75;
   *(uint *)&this->field_0x64 = CONCAT31(extraout_var,uVar1);
-  uStack_3c = 0x5bdf41;
+  uStack_40 = 0x5bdf41;
   uVar1 = (*getResourceByTag)();
-  uStack_3c = 0x74736f6c;
+  uStack_40 = 0x74736f6c;
   *(uint *)&this->field_0x68 = CONCAT31(extraout_var_00,uVar1);
-  uStack_40 = 0x5bdf4d;
+  uStack_44 = 0x5bdf4d;
   uVar1 = (*getResourceByTag)();
-  uStack_40 = 0x7274696c;
+  uStack_44 = 0x7274696c;
   *(uint *)&this->field_0x6c = CONCAT31(extraout_var_01,uVar1);
-  uStack_44 = 0x5bdf59;
+  uStack_48 = 0x5bdf59;
   lit_resource._0_1_ = (*getResourceByTag)();
   lit_resource = (astruct_5 *)CONCAT31(lit_resource._1_3_,lit_resource._0_1_);
   iVar1 = lit_resource->field0_0x0;
-  uStack_44 = 0x5bdf63;
+  uStack_48 = 0x5bdf63;
   (**(code **)(iVar1 + 0xc))();
-  uStack_44 = 0x7469744c;
-  CStack_48.m_pchData = (char *)0x5bdf6c;
+  uStack_48 = 0x7469744c;
+  CStack_4c.m_pchData = (char *)0x5bdf6c;
   lit_resource2._0_1_ = (*getResourceByTag)();
   lit_resource2 = (astruct_6 *)CONCAT31(lit_resource2._1_3_,lit_resource2._0_1_);
-  CStack_48.m_pchData = "hl+";
+  CStack_4c.m_pchData = "hl+";
   (**(code **)(lit_resource2->field0_0x0 + 0xc))();
-  CStack_48.m_pchData = (char *)0x2b6c;
-  ApplyUiTextStyleAndThemeFlags(lit_resource,0,0x12,0x2b6b);
-  CStack_48.m_pchData = (char *)0x2b6c;
-  ApplyUiTextStyleAndThemeFlags(lit_resource2,0,0x12,0x2b6b);
-  CStack_48.m_pchData = (char *)0x5bdfac;
-  CString::__0CString__QAE_XZ(tmp_buf8);
-  CStack_48.m_pchData = (char *)0x5bdfbd;
-  CString::__0CString__QAE_XZ(&tag_or_handle);
-  CStack_48.m_pchData =
+  CStack_4c.m_pchData = (char *)0x2b6c;
+  func_0x0040263a(lit_resource,0,0x12,0x2b6b);
+  CStack_4c.m_pchData = (char *)0x2b6c;
+  func_0x0040263a(lit_resource2,0,0x12,0x2b6b);
+  CStack_4c.m_pchData = (char *)0x5bdfac;
+  CString::CString(tmp_buf4);
+  CStack_4c.m_pchData = (char *)0x5bdfbd;
+  CString::CString(&temp_tag);
+  CStack_4c.m_pchData =
        (char *)((short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
                              ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2)
                + 0x717);
-  _Format_CString__QAAXPBDZZ(&tag_or_handle,&g_szDecimalFormat);
-  CStack_48.m_pchData = (char *)tmp_buf8;
+  _Format_CString__QAAXPBDZZ(&temp_tag,&g_szDecimalFormat);
+  CStack_4c.m_pchData = (char *)tmp_buf4;
   (*g_pLocalizationTable->vftable[6].slot_0x04)();
-  text_handle = __H_YG_AVCString__ABV0_PBD_Z
-                          (&stack0xffffffd4,&tmp_buf4,g_Build_Map_Order_LookupTable_00695794);
-  src_ref = (CString *)__H_YG_AVCString__ABV0_0_Z(&color_or_tag,text_handle,&temp_tag);
-  CString::__0CString__QAE_ABV0__Z(&tag_or_handle,src_ref);
-  CString::__4CString__QAEABV0_ABV0__Z(&tmp_buf4,&tag_or_handle);
-  CString::__1CString__QAE_XZ(&tag_or_handle);
-  CString::__1CString__QAE_XZ(&color_or_tag);
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
-  (**(code **)(iVar1 + 0x1c8))(&tmp_buf4,0);
+  text_handle = AssignSharedStringConcatRefAndCStr
+                          (&color_or_tag,&CStack_1c,g_Build_Map_Order_LookupTable_00695794);
+  src_ref = (CString *)AssignSharedStringConcatRefAndRef(&tag_or_handle,text_handle,&uStack_3c);
+  CString::CString(&temp_tag,src_ref);
+  CString::operator=(&CStack_1c,&temp_tag);
+  CString::~CString(&temp_tag);
+  CString::~CString(&tag_or_handle);
+  CString::~CString(&color_or_tag);
+  (**(code **)(iVar1 + 0x1c8))(&CStack_1c,0);
   (**(code **)(iVar1 + 0xa4))(1,1);
-  color_or_tag.m_pchData = color_or_tag.m_pchData & 0xffffff00;
-  CString::__1CString__QAE_XZ(&CStack_48);
-  color_or_tag.m_pchData = (char *)0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd8);
-  *seh_chain = temp_tag;
+  tag_or_handle.m_pchData = tag_or_handle.m_pchData & 0xffffff00;
+  CString::~CString(&CStack_4c);
+  tag_or_handle.m_pchData = (char *)0xffffffff;
+  CString::~CString((CString *)&stack0xffffffd4);
+  *seh_chain = uStack_3c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE370
-// GHIDRA_NAME TTradeBookView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
+// GHIDRA_NAME TTradeBookView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall
-TTradeBookView::OrphanRetStub_0059add0
-          (TTradeBookView *this,int param_1,int param_2,undefined4 param_3)
+void TTradeBookView::HandleEvent(int param_1, int param_2, undefined4 param_3)
 
 {
   int iVar1;
-
+  
   if (param_1 == 10) {
     if (*(int *)(param_2 + 0x1c) == 0x72636f72) {
       iVar1 = *(int *)&this->field_0x74 + 1;
@@ -180,10 +179,10 @@ TTradeBookView::OrphanRetStub_0059add0
       if (*(int *)(param_2 + 0x1c) != 0x6c636f72) goto LAB_005be3a6;
       iVar1 = *(int *)&this->field_0x74 + -1;
     }
-    UpdatePagerButtonStatesAndRefreshPanels(iVar1);
+    func_0x0040687f(iVar1);
   }
 LAB_005be3a6:
-  TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
+  func_0x00408657(param_1,param_2,param_3);
   return;
 }
 

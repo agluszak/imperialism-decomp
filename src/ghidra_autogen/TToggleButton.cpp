@@ -3,74 +3,55 @@
 // Program: Imperialism.exe
 // Bucket: TToggleButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405F8D
-// GHIDRA_NAME TToggleButton::TToggleButton_VtblSlot116
-// GHIDRA_PROTO undefined __thiscall TToggleButton::HandleToggleButtonStateChangeAndRefresh(char param_1, char param_2)
-
-void TToggleButton::TToggleButton_VtblSlot116(char param_1, char param_2)
-
-{
-  TToggleButtonVtbl *pTVar1;
-
-  pTVar1 = this->vftable;
-  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)((int)param_1,(int)param_2);
-  if (param_1 != '\0') {
-    (*this->ownerContext->vftable[1].SetCityDialogValueDword10)(this->controlTag);
-  }
-  (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
-  (*pTVar1->GetTEventHandlerClassNamePointer_45)(0);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00571050
-// GHIDRA_NAME TToggleButton::CreateTToggleButtonInstance
-// GHIDRA_PROTO undefined CreateTToggleButtonInstance()
+// GHIDRA_NAME TToggleButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TToggleButton::CreateTToggleButtonInstance(void)
+undefined4 * TToggleButton::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006363ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TToggleButtonVtbl **)this = &TToggleButtonVtbl_0065efd8;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005710D0
-// GHIDRA_NAME TToggleButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TToggleButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TToggleButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TToggleButton::GetRuntimeClass()
 
 {
-  return &g_pClassDescTToggleButton;
+  return &classTToggleButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005710F0
 // GHIDRA_NAME TToggleButton::ConstructTToggleButtonBaseState
-// GHIDRA_PROTO undefined __thiscall TToggleButton::ConstructTToggleButtonBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTToggleButtonBaseState(void)
 
 TToggleButton * TToggleButton::ConstructTToggleButtonBaseState()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TToggleButtonVtbl_0065efd8;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -81,32 +62,30 @@ TToggleButton * TToggleButton::ConstructTToggleButtonBaseState()
 TToggleButton * TToggleButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00405ccc();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571170
-// GHIDRA_NAME TToggleButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, undefined4 param_2)
+// GHIDRA_NAME TToggleButton::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, undefined4 param_2)
 
-void __thiscall
-TToggleButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TToggleButton *this,int param_1,undefined4 param_2)
+void TToggleButton::HandleEvent(int param_1, undefined4 param_2)
 
 {
   TToggleButtonVtbl *pTVar1;
   uint uVar2;
   char cVar3;
   undefined4 in_stack_0000000c;
-
+  
   if (param_1 != 0x20) {
     if (param_1 == 0x1f) {
       return;
     }
-    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+    func_0x00404566(param_1,param_2);
     return;
   }
   pTVar1 = this->vftable;
@@ -153,16 +132,16 @@ LAB_005711e0:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005712A0
-// GHIDRA_NAME TToggleButton::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
+// GHIDRA_NAME TToggleButton::DispatchUiMouseMoveToChildren
+// GHIDRA_PROTO undefined __thiscall DispatchUiMouseMoveToChildren(void)
 
-undefined4 TToggleButton::SetForeignMinisterReadyFlag14()
+undefined4 TToggleButton::DispatchUiMouseMoveToChildren()
 
 {
   TToggleButtonVtbl *pTVar1;
   char cVar2;
   char cVar3;
-
+  
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 == '\0') {
@@ -182,10 +161,10 @@ undefined4 TToggleButton::SetForeignMinisterReadyFlag14()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571330
-// GHIDRA_NAME TToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_VcallForward_Slot_ec_00571330(void)
+// GHIDRA_NAME TToggleButton::IsSelected
+// GHIDRA_PROTO undefined __thiscall IsSelected(void)
 
-void TToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330()
+void TToggleButton::IsSelected()
 
 {
                     /* WARNING: Could not recover jumptable at 0x00571332. Too many branches */
@@ -195,16 +174,14 @@ void TToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571350
-// GHIDRA_NAME TToggleButton::HandleToggleButtonStateChangeAndRefresh
-// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(char param_1, char param_2)
+// GHIDRA_NAME TToggleButton::Select
+// GHIDRA_PROTO undefined __thiscall Select(char param_1, char param_2)
 
-void __thiscall
-TToggleButton::HandleToggleButtonStateChangeAndRefresh
-          (TToggleButton *this,char param_1,char param_2)
+void TToggleButton::Select(char param_1, char param_2)
 
 {
   TToggleButtonVtbl *pTVar1;
-
+  
   pTVar1 = this->vftable;
   (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)((int)param_1,(int)param_2);
   if (param_1 != '\0') {

@@ -3,6 +3,39 @@
 // Program: Imperialism.exe
 // Bucket: TTacNavyToolbar.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005AD030
+// GHIDRA_NAME TTacNavyToolbar::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+TCluster * TTacNavyToolbar::CreateObject(void)
+
+{
+  TCluster *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063881a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TCluster *)operator_new(0x98);
+  local_4 = 0;
+  if (this != (TCluster *)0x0) {
+    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    this[1].vftable = (TClusterVtbl *)0x0;
+    this[1].field04 = 0;
+    this[1].field0c = 0;
+    this[1].padding_08_to_0b = 0;
+    this->vftable = (TClusterVtbl *)&_vftable_;
+    *unaff_FS_OFFSET = local_c;
+    return this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (TCluster *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD0D0
 // GHIDRA_NAME TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
 // GHIDRA_PROTO undefined __thiscall UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(void)
@@ -14,10 +47,10 @@ void TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD0F0
-// GHIDRA_NAME TTacNavyToolbar::OrphanRetStub_005ad0f0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005ad0f0(void)
+// GHIDRA_NAME TTacNavyToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
+// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At005acc90(void)
 
-void TTacNavyToolbar::OrphanRetStub_005ad0f0()
+void TTacNavyToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90()
 
 {
   return;
@@ -30,78 +63,76 @@ void TTacNavyToolbar::OrphanRetStub_005ad0f0()
 TTacNavyToolbar * TTacNavyToolbar::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x0040266c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD160
-// GHIDRA_NAME TTacNavyToolbar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTacNavyToolbar::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacNavyToolbar::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTacNavyToolbar::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTacNavyToolbar;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD180
-// GHIDRA_NAME TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TTacNavyToolbar::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920()
+void TTacNavyToolbar::NoOpUiLifecycleHook()
 
 {
-  TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920((TTacticalToolbar *)this);
+  func_0x004023a6();
   (*this->vftable->OrphanCallChain_C2_I51_00491790)(0x68756c6c);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD1B0
-// GHIDRA_NAME TTacNavyToolbar::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_NAME TTacNavyToolbar::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TTacNavyToolbar::OrphanRetStub_0059add0(int param_1, void *param_2, int param_3)
+void TTacNavyToolbar::HandleEvent(int param_1, void *param_2, int param_3)
 
 {
   int iVar1;
-  uint commandTag;
-  undefined4 uVar2;
-
+  uint uVar2;
+  undefined4 uVar3;
+  
   if (param_1 == 0xc) {
     iVar1 = *(int *)((int)param_2 + 0x1c);
     if (iVar1 == 0x63726577) {
-      uVar2 = 1;
+      uVar3 = 1;
     }
     else if (iVar1 == 0x68756c6c) {
-      uVar2 = 0;
+      uVar3 = 0;
     }
     else {
       if (iVar1 != 0x7361696c) goto LAB_005ad1ef;
-      uVar2 = 2;
+      uVar3 = 2;
     }
-    TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl
-              (*(TacticalBattleView **)&this->field_0x88,uVar2);
+    func_0x004036e8(uVar3);
   }
 LAB_005ad1ef:
   if (param_1 != 10) goto LAB_005ad237;
-  commandTag = *(uint *)((int)param_2 + 0x1c);
-  if (commandTag < 0x646f6e66) {
-    if ((commandTag != 0x646f6e65) && (commandTag != 0x6175746f)) goto LAB_005ad237;
+  uVar2 = *(uint *)((int)param_2 + 0x1c);
+  if (uVar2 < 0x646f6e66) {
+    if ((uVar2 != 0x646f6e65) && (uVar2 != 0x6175746f)) goto LAB_005ad237;
   }
   else {
-    if (commandTag == 0x68656c70) {
-      SelectAndActivatePendingEventForCurrentView();
+    if (uVar2 == 0x68656c70) {
+      func_0x00407018();
       goto LAB_005ad237;
     }
-    if ((commandTag != 0x72657472) && (commandTag != 0x74617267)) goto LAB_005ad237;
+    if ((uVar2 != 0x72657472) && (uVar2 != 0x74617267)) goto LAB_005ad237;
   }
-  TacticalBattleView::HandleTacticalBattleCommandTag
-            (*(TacticalBattleView **)&this->field_0x88,commandTag);
+  func_0x00409002(uVar2);
 LAB_005ad237:
-  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
+  func_0x004023ab(param_1,param_2,param_3);
   (*g_pGlobalUiRootController->vftable->OrphanTiny_SetDwordEcxOffset_20_00486880)
             (this->ownerContext);
   return;

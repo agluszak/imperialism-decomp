@@ -3,37 +3,54 @@
 // Program: Imperialism.exe
 // Bucket: TAmbitFileBasedDocument.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049E5D0
-// GHIDRA_NAME TAmbitFileBasedDocument::GetTDocumentClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTDocumentClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E5A0
+// GHIDRA_NAME TAmbitFileBasedDocument::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TAmbitFileBasedDocument::GetTDocumentClassNamePointer()
+undefined4 * TAmbitFileBasedDocument::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(4);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E5D0
+// GHIDRA_NAME TAmbitFileBasedDocument::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TAmbitFileBasedDocument::GetRuntimeClass()
+
+{
+  return &classTAmbitFileBasedDocument;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E5F0
 // GHIDRA_NAME TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState
-// GHIDRA_PROTO undefined __thiscall TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTAmbitFileBasedDocumentBaseState(void)
 
 void TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState()
 
 {
-  this->vftable = &TAmbitFileBasedDocumentVtbl_0064c170;
+  this->vftable = &_vftable_;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E610
-// GHIDRA_NAME TAmbitFileBasedDocument::ConstructTDocumentBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDocumentBaseState(byte param_1)
+// GHIDRA_NAME TAmbitFileBasedDocument::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAmbitFileBasedDocument * TAmbitFileBasedDocument::ConstructTDocumentBaseState(byte param_1)
+TAmbitFileBasedDocument * TAmbitFileBasedDocument::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTAmbitFileBasedDocumentAndMaybeFree_Impl();
+  func_0x00407130();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -81,103 +98,102 @@ void TAmbitFileBasedDocument::OrphanRetStub_0049e680()
 void TAmbitFileBasedDocument::OrphanRetStub_00486530(void *pLoadContext)
 
 {
-  _vslot_fn *p_Var1;
+  code *pcVar1;
   bool bVar2;
   char cVar3;
-  TFileStream *this_00;
   int iVar4;
-  TFileStream *this_01;
-  short sVar5;
+  int *piVar5;
+  short sVar6;
   undefined4 *unaff_FS_OFFSET;
   int local_1c;
   int local_18;
   undefined4 local_10;
   undefined1 *puStack_c;
   undefined4 local_8;
-
+  
   puStack_c = &LAB_0062fde2;
   local_10 = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_10;
-  this_01 = (TFileStream *)0x0;
+  piVar5 = (int *)0x0;
   local_8 = 0;
-  this_00 = (TFileStream *)__2_YAPAXI_Z();
+  iVar4 = operator_new();
   local_8._0_1_ = 1;
-  if (this_00 != (TFileStream *)0x0) {
-    this_01 = (TFileStream *)TFileStream::ConstructTFileStreamBaseState(this_00);
+  if (iVar4 != 0) {
+    piVar5 = (int *)func_0x00402374();
   }
   local_8._0_1_ = 0;
-  TFileStream::SetBackingArchive(this_01,pLoadContext);
-  p_Var1 = this_01->vftable->OrphanRetStub_00488b40;
-  (*p_Var1)();
-  (*p_Var1)();
-  (*p_Var1)();
-  (*p_Var1)();
+  func_0x00408846();
+  pcVar1 = *(code **)(*piVar5 + 0x3c);
+  (*pcVar1)();
+  (*pcVar1)();
+  (*pcVar1)();
+  (*pcVar1)();
   bVar2 = false;
   if (local_18 == 0x414d4249) {
-    if (0x22 < DAT_00695278) goto LAB_0049e7e4;
-    CString::__0CString__QAE_XZ((CString *)&pLoadContext);
+    if (0x22 < g_nSaveFormatVersion) goto LAB_0049e7e4;
+    CString::CString((CString *)&pLoadContext);
     local_8._0_1_ = 3;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    AssignStringSharedRefAndReturnThis(&pLoadContext);
+    func_0x004076b7(&pLoadContext);
     DispatchLocalizedUiMessageWithTemplateA13A0();
   }
   else {
-    CString::__0CString__QAE_XZ((CString *)&pLoadContext);
+    CString::CString((CString *)&pLoadContext);
     local_8._0_1_ = 2;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    AssignStringSharedRefAndReturnThis(&pLoadContext);
+    func_0x004076b7(&pLoadContext);
     DispatchLocalizedUiMessageWithTemplateA13A0();
   }
   local_8._0_1_ = 0;
   bVar2 = true;
-  CString::__1CString__QAE_XZ((CString *)&pLoadContext);
+  CString::~CString((CString *)&pLoadContext);
 LAB_0049e7e4:
   if (!bVar2) {
     if ((*(int *)&g_pLocalizationTable->field_0x44 == 2) &&
-       (local_1c != *(int *)&g_pGameFlowState->field_0x64)) {
-      CString::__0CString__QAE_XZ((CString *)&pLoadContext);
+       (local_1c != *(int *)((int)g_pGameFlowState + 100))) {
+      CString::CString((CString *)&pLoadContext);
       local_8._0_1_ = 4;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      AssignStringSharedRefAndReturnThis(&pLoadContext);
+      func_0x004076b7(&pLoadContext);
       DispatchLocalizedUiMessageWithTemplateA13A0();
       bVar2 = true;
       local_8._0_1_ = 0;
-      CString::__1CString__QAE_XZ((CString *)&pLoadContext);
+      CString::~CString((CString *)&pLoadContext);
     }
     if (!bVar2) {
-      iVar4 = __2_YAPAXI_Z();
+      iVar4 = operator_new();
       if (iVar4 == 0) {
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag();
+        MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+        func_0x004057a4();
       }
-      (*p_Var1)();
-      (*p_Var1)();
-      __3_YAXPAX_Z(iVar4);
-      (*g_pGlobalUiRootController->vftable->ReadFrom)(this_01);
-      (*g_pLocalizationTable->vftable[3].GetTSimMgrClassNamePointer)(this_01);
-      (*g_pUiAnimator->vftable->GetTEventHandlerClassNamePointer_06)(this_01);
-      (*g_pNationInteractionStateManager->vftable[3].GetTTradeMgrClassNamePointer)(this_01);
-      (*g_pDiplomacyTurnStateManager->vftable[3].GetTDiplomacyMgrClassNamePointer)(this_01);
-      (*g_pCityOrderCapabilityState->vftable[3].GetTTechMgrClassNamePointer)(this_01);
-      (*g_pGlobalMapState->vftable->ReadFrom)(this_01);
-      (*g_pActiveMapOrderContext->vftable->ReadFrom)(this_01);
-      (*g_pNavyOrderManager->vftable->ReadFrom)(this_01);
-      (*g_pMapContextActionManager->vftable->ReadFrom)(this_01);
-      for (sVar5 = 0; sVar5 < 0x17; sVar5 = sVar5 + 1) {
-        if (g_apTerrainTypeDescriptorTable[sVar5] != (TCountry *)0x0) {
-          (*g_apTerrainTypeDescriptorTable[sVar5]->vftable->
-            DeserializeRecruitScenarioAndInstantiateOrders)(this_01);
+      (*pcVar1)();
+      (*pcVar1)();
+      operator_delete();
+      (*g_pGlobalUiRootController->vftable->ReadFrom)();
+      (*g_pLocalizationTable->vftable[3].GetTSimMgrClassNamePointer)();
+      (*g_pUiAnimator->vftable->GetTEventHandlerClassNamePointer_06)();
+      (*g_pNationInteractionStateManager->vftable[3].GetTTradeMgrClassNamePointer)(piVar5);
+      (*g_pDiplomacyTurnStateManager->vftable[3].GetTDiplomacyMgrClassNamePointer)(piVar5);
+      (*g_pCityOrderCapabilityState->vftable[3].GetTTechMgrClassNamePointer)(piVar5);
+      (*g_pGlobalMapState->vftable->ReadFrom)(piVar5);
+      (*g_pActiveMapOrderContext->vftable->ReadFrom)(piVar5);
+      (*g_pNavyOrderManager->vftable->ReadFrom)(piVar5);
+      (**(code **)(*g_pMapContextActionManager + 0x18))(piVar5);
+      for (sVar6 = 0; sVar6 < 0x17; sVar6 = sVar6 + 1) {
+        if (g_apTerrainTypeDescriptorTable[sVar6] != (TCountry *)0x0) {
+          (*g_apTerrainTypeDescriptorTable[sVar6]->vftable->
+            DeserializeRecruitScenarioAndInstantiateOrders)(piVar5);
         }
       }
-      (**(code **)(g_pUiRuntimeContext->vftable + 0x18))(this_01);
-      (**(code **)(*g_pStrategicMapViewSystem + 0x18))(this_01);
-      (**(code **)(g_pInterNationEventQueueManager->vftable + 0x18))(this_01);
-      (**(code **)(*DAT_006a21b8 + 0x18))(this_01);
+      (**(code **)(g_pUiRuntimeContext->vftable + 0x18))(piVar5);
+      (**(code **)(*g_pStrategicMapViewSystem + 0x18))(piVar5);
+      (**(code **)(g_pInterNationEventQueueManager->vftable + 0x18))(piVar5);
+      (**(code **)(*g_pHelpMgr + 0x18))(piVar5);
     }
   }
-  (*this_01->vftable->OrphanCallChain_C1_I06_00488ab0)();
+  (**(code **)(*piVar5 + 0x1c))();
   for (iVar4 = 0; iVar4 < 7; iVar4 = iVar4 + 1) {
-    cVar3 = IsNationSlotEligibleForEventProcessing();
+    cVar3 = func_0x004044b7();
     if (cVar3 != '\0') {
       cVar3 = (*g_apNationStates[iVar4]->vftable->ReturnFalseNationStateCapabilityFlagA0)();
       if (cVar3 == '\0') {
@@ -185,7 +201,7 @@ LAB_0049e7e4:
       }
     }
   }
-  DAT_00695278 = -1;
+  g_nSaveFormatVersion = -1;
   *unaff_FS_OFFSET = local_10;
   return;
 }
@@ -212,118 +228,151 @@ LAB_0049e7e4:
 void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
 
 {
-  _vslot_fn *p_Var1;
-  TFileStream *pTVar2;
-  undefined1 *puVar3;
-  int iVar4;
+  code *pcVar1;
+  int iVar2;
+  int *piVar3;
+  undefined1 *puVar4;
   int iVar5;
   TCountry **ppTVar6;
   undefined4 *unaff_FS_OFFSET;
-  CString CStack_9c;
-  TFileStream *pTStack_98;
-  TFileStream *pTStack_94;
-  TFileStream *pTStack_90;
-  TFileStream *pTStack_8c;
-  TFileStream *pTStack_88;
-  TFileStream *pTStack_84;
-  TFileStream *pTStack_80;
-  TFileStream *pTVar7;
-  CString CStack_64;
+  CString CStack_a4;
+  int *piStack_a0;
+  int *piStack_9c;
+  int *piStack_98;
+  int *piStack_94;
+  int *piStack_90;
+  int *piStack_8c;
+  int *piStack_88;
+  int *piVar7;
+  CString CStack_6c;
+  undefined4 uStack_68;
+  undefined4 uStack_54;
+  undefined4 uStack_50;
+  undefined1 *puStack_4c;
+  undefined4 uStack_48;
+  undefined *puStack_44;
+  int iStack_40;
+  undefined *puStack_3c;
+  undefined4 uStack_38;
+  void *pvStack_34;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe12;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  pTVar2 = (TFileStream *)__2_YAPAXI_Z();
+  pvStack_34 = (void *)0x8;
+  uStack_38 = 0x49eb53;
+  iVar2 = operator_new();
   iVar5 = 0;
   local_4 = 0;
-  if (pTVar2 == (TFileStream *)0x0) {
-    pTVar2 = (TFileStream *)0x0;
+  if (iVar2 == 0) {
+    piVar3 = (int *)0x0;
   }
   else {
-    pTVar2 = (TFileStream *)TFileStream::ConstructTFileStreamBaseState(pTVar2);
+    pvStack_34 = (void *)0x49eb6b;
+    piVar3 = (int *)func_0x00402374();
   }
+  pvStack_34 = pSaveContext;
   local_4 = 0xffffffff;
-  TFileStream::SetBackingArchive(pTVar2,pSaveContext);
-  p_Var1 = pTVar2->vftable->OrphanRetStub_00488e70;
-  (*p_Var1)();
-  (*p_Var1)();
-  (*p_Var1)();
-  (*p_Var1)();
-  puVar3 = (undefined1 *)__2_YAPAXI_Z();
-  if (puVar3 == (undefined1 *)0x0) {
-    CStack_64.m_pchData = (char *)0x49ebed;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+  uStack_38 = 0x49eb85;
+  func_0x00408846();
+  uStack_38 = 4;
+  puStack_3c = &DAT_0064c094;
+  pcVar1 = *(code **)(*piVar3 + 0x78);
+  iStack_40 = 0x49eb99;
+  (*pcVar1)();
+  iStack_40 = 4;
+  puStack_44 = &DAT_0064c098;
+  uStack_48 = 0x49eba4;
+  (*pcVar1)();
+  puStack_4c = &stack0xffffffd4;
+  uStack_48 = 4;
+  uStack_50 = 0x49ebbc;
+  (*pcVar1)();
+  uStack_50 = 0x20;
+  uStack_54 = &DAT_006a2178;
+  (*pcVar1)();
+  puVar4 = (undefined1 *)operator_new();
+  if (puVar4 == (undefined1 *)0x0) {
+    uStack_68 = 0x49ebed;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
-  iVar4 = 0x1950;
+  iVar2 = 0x1950;
   do {
     iVar5 = iVar5 + 0x24;
-    iVar4 = iVar4 + -1;
-    *puVar3 = *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + -0x20 + iVar5);
-    puVar3 = puVar3 + 1;
-  } while (iVar4 != 0);
-  (*p_Var1)();
-  __3_YAXPAX_Z();
-  CStack_64.m_pchData = (char *)0x49ec51;
-  (*p_Var1)();
-  CStack_64.m_pchData = (char *)0x1;
-  (*p_Var1)();
-  UiRuntimeContext::GetActiveNationId();
-  (*p_Var1)();
-  CString::__0CString__QAE_XZ((CString *)&stack0xffffffa4);
-  FormatOverlayTerrainLabelText();
-  CString::_GetBuffer_CString__QAEPADH_Z((CString *)&stack0xffffffa4,0x21);
-  (*p_Var1)();
-  pTStack_80 = (TFileStream *)0x49ecc7;
-  CString::_ReleaseBuffer_CString__QAEXH_Z(&CStack_64,-1);
-  pTStack_80 = (TFileStream *)0x49ecd3;
-  pTVar7 = pTVar2;
+    iVar2 = iVar2 + -1;
+    *puVar4 = *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + -0x20 + iVar5);
+    puVar4 = puVar4 + 1;
+  } while (iVar2 != 0);
+  (*pcVar1)();
+  operator_delete();
+  iStack_40 = (int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
+                   ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2;
+  uStack_68 = 0x49ec51;
+  (*pcVar1)();
+  uStack_68 = 1;
+  uStack_54 = (undefined4 *)
+              CONCAT13((char)*(undefined4 *)&g_pLocalizationTable->field_0x40,(undefined3)uStack_54)
+  ;
+  CStack_6c.m_pchData = (char *)((int)&uStack_54 + 3);
+  (*pcVar1)();
+  func_0x00403b16();
+  (*pcVar1)();
+  CString::CString((CString *)&stack0xffffffa0);
+  uStack_48 = 1;
+  func_0x00405245();
+  CString::GetBuffer((CString *)&stack0xffffff9c,0x21);
+  (*pcVar1)();
+  piStack_88 = (int *)0x49ecc7;
+  CString::ReleaseBuffer(&CStack_6c,-1);
+  piStack_88 = (int *)0x49ecd3;
+  piVar7 = piVar3;
   (*g_pGlobalUiRootController->vftable->WriteTo)();
-  pTStack_84 = (TFileStream *)0x49ecdf;
-  pTStack_80 = pTVar2;
+  piStack_8c = (int *)0x49ecdf;
+  piStack_88 = piVar3;
   (*g_pLocalizationTable->vftable[2].slot_0x04)();
-  pTStack_88 = (TFileStream *)0x49eceb;
-  pTStack_84 = pTVar2;
+  piStack_90 = (int *)0x49eceb;
+  piStack_8c = piVar3;
   (*g_pUiAnimator->vftable->VTableSlot05)();
-  pTStack_8c = (TFileStream *)0x49ecf7;
-  pTStack_88 = pTVar2;
+  piStack_94 = (int *)0x49ecf7;
+  piStack_90 = piVar3;
   (*g_pNationInteractionStateManager->vftable[2].slot_0x04)();
-  pTStack_90 = (TFileStream *)0x49ed03;
-  pTStack_8c = pTVar2;
+  piStack_98 = (int *)0x49ed03;
+  piStack_94 = piVar3;
   (*g_pDiplomacyTurnStateManager->vftable[2].slot_0x04)();
-  pTStack_94 = (TFileStream *)0x49ed0f;
-  pTStack_90 = pTVar2;
+  piStack_9c = (int *)0x49ed0f;
+  piStack_98 = piVar3;
   (*g_pCityOrderCapabilityState->vftable[2].slot_0x04)();
-  pTStack_98 = (TFileStream *)0x49ed1b;
-  pTStack_94 = pTVar2;
+  piStack_a0 = (int *)0x49ed1b;
+  piStack_9c = piVar3;
   (*g_pGlobalMapState->vftable->WriteTo)();
-  CStack_9c.m_pchData = (char *)0x49ed27;
-  pTStack_98 = pTVar2;
+  CStack_a4.m_pchData = (char *)0x49ed27;
+  piStack_a0 = piVar3;
   (*g_pActiveMapOrderContext->vftable->WriteTo)();
-  CStack_9c.m_pchData = (char *)pTVar2;
+  CStack_a4.m_pchData = (char *)piVar3;
   (*g_pNavyOrderManager->vftable->WriteTo)();
-  (*g_pMapContextActionManager->vftable->WriteTo)(pTVar2);
+  (**(code **)(*g_pMapContextActionManager + 0x14))(piVar3);
   ppTVar6 = g_apTerrainTypeDescriptorTable;
-  iVar5 = 0x17;
+  iVar2 = 0x17;
   do {
     if (*ppTVar6 != (TCountry *)0x0) {
-      (*(*ppTVar6)->vftable->WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60)(pTVar2);
+      (*(*ppTVar6)->vftable->WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60)(piVar3);
     }
     ppTVar6 = ppTVar6 + 1;
-    iVar5 = iVar5 + -1;
-  } while (iVar5 != 0);
-  (**(code **)(g_pUiRuntimeContext->vftable + 0x14))(pTVar2);
-  (**(code **)(*g_pStrategicMapViewSystem + 0x14))(pTVar2);
-  (**(code **)(g_pInterNationEventQueueManager->vftable + 0x14))(pTVar2);
-  (**(code **)(*DAT_006a21b8 + 0x14))(pTVar2);
-  (**(code **)&pTVar7[3].field_0x4)();
-  pTStack_84 = (TFileStream *)0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_9c);
-  *unaff_FS_OFFSET = pTStack_8c;
+    iVar2 = iVar2 + -1;
+  } while (iVar2 != 0);
+  (**(code **)(g_pUiRuntimeContext->vftable + 0x14))(piVar3);
+  (**(code **)(*g_pStrategicMapViewSystem + 0x14))(piVar3);
+  (**(code **)(g_pInterNationEventQueueManager->vftable + 0x14))(piVar3);
+  (**(code **)(*g_pHelpMgr + 0x14))(piVar3);
+  (*(code *)piVar7[7])();
+  piStack_8c = (int *)0xffffffff;
+  CString::~CString(&CStack_a4);
+  *unaff_FS_OFFSET = piStack_94;
   return;
 }
 
@@ -335,7 +384,7 @@ void TAmbitFileBasedDocument::AssertUAmbitLine1335()
 
 {
   if (DAT_006a21c4 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UAmbit_cpp_0069527c,0x537);
+    func_0x004057a4(s_D__Ambit_Cross_UAmbit_cpp_0069527c,0x537);
   }
   return;
 }

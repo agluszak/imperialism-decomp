@@ -4,43 +4,43 @@
 // Bucket: T2PictToggleButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584890
-// GHIDRA_NAME T2PictToggleButton::CreateT2PictToggleButtonInstance
-// GHIDRA_PROTO undefined CreateT2PictToggleButtonInstance()
+// GHIDRA_NAME T2PictToggleButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TToggleButton * T2PictToggleButton::CreateT2PictToggleButtonInstance(void)
+undefined4 * T2PictToggleButton::CreateObject(void)
 
 {
-  TToggleButton *this;
-  TToggleButton *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063762a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TToggleButton *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  pTVar1 = (TToggleButton *)0x0;
-  if (this != (TToggleButton *)0x0) {
-    TToggleButton::ConstructTToggleButtonBaseState(this);
-    this->vftable = (TToggleButtonVtbl *)&T2PictToggleButtonVtbl_00664470;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00402b53();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584910
-// GHIDRA_NAME T2PictToggleButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME T2PictToggleButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * T2PictToggleButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * T2PictToggleButton::GetRuntimeClass()
 
 {
-  return &g_pClassDescT2PictToggleButton;
+  return &classT2PictToggleButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584930
@@ -50,8 +50,8 @@ CRuntimeClass * T2PictToggleButton::GetTEventHandlerClassNamePointer()
 T2PictToggleButton * T2PictToggleButton::ConstructT2PictToggleButtonBaseState()
 
 {
-  TToggleButton::ConstructTToggleButtonBaseState((TToggleButton *)this);
-  this->vftable = &T2PictToggleButtonVtbl_00664470;
+  func_0x00402b53();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,18 +62,18 @@ T2PictToggleButton * T2PictToggleButton::ConstructT2PictToggleButtonBaseState()
 T2PictToggleButton * T2PictToggleButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00405a06();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005849B0
-// GHIDRA_NAME T2PictToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_VcallForward_Slot_ec_00571330(void)
+// GHIDRA_NAME T2PictToggleButton::IsSelected
+// GHIDRA_PROTO undefined __thiscall IsSelected(void)
 
-undefined4 T2PictToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330()
+undefined4 T2PictToggleButton::IsSelected()
 
 {
   return CONCAT31((int3)(char)((ushort)*(short *)&this->field_0x84 >> 8),
@@ -81,15 +81,15 @@ undefined4 T2PictToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005849D0
-// GHIDRA_NAME T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh
-// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(char param_1)
+// GHIDRA_NAME T2PictToggleButton::Select
+// GHIDRA_PROTO undefined __thiscall Select(char param_1)
 
-void T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh(char param_1)
+void T2PictToggleButton::Select(char param_1)
 
 {
   short sVar1;
   T2PictToggleButtonVtbl *pTVar2;
-
+  
   sVar1 = *(short *)&this->field_0x84;
   if (((param_1 == '\0') && (this->field3c < (int)sVar1)) ||
      ((param_1 == '\x01' && ((int)sVar1 < this->field3c)))) {

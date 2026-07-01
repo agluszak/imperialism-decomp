@@ -4,54 +4,54 @@
 // Bucket: TLonelyTileView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505A50
-// GHIDRA_NAME TLonelyTileView::CreateTLonelyTileViewInstance
-// GHIDRA_PROTO undefined CreateTLonelyTileViewInstance()
+// GHIDRA_NAME TLonelyTileView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TLonelyTileView::CreateTLonelyTileViewInstance(void)
+undefined4 * TLonelyTileView::CreateObject(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063374a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(100);
+  puVar1 = (undefined4 *)operator_new(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TLonelyTileViewVtbl_00657740;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505AC0
-// GHIDRA_NAME TLonelyTileView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TLonelyTileView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TLonelyTileView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TLonelyTileView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTLonelyTileView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505AE0
 // GHIDRA_NAME TLonelyTileView::ConstructTLonelyTileViewBaseState
-// GHIDRA_PROTO undefined __thiscall TLonelyTileView::ConstructTLonelyTileViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTLonelyTileViewBaseState(void)
 
 TLonelyTileView * TLonelyTileView::ConstructTLonelyTileViewBaseState()
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
-  this->vftable = &TLonelyTileViewVtbl_00657740;
+  func_0x004064e2();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,61 +62,62 @@ TLonelyTileView * TLonelyTileView::ConstructTLonelyTileViewBaseState()
 TLonelyTileView * TLonelyTileView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004046fb();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505B60
-// GHIDRA_NAME TLonelyTileView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TLonelyTileView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TLonelyTileView::OrphanTiny_ReturnZero_0048a730()
+void TLonelyTileView::ApplyRectSlot110()
 
 {
   int iVar1;
-  astruct_17 *srcSurface;
-  astruct_18 *dstSurface;
-  RECT RStack_24;
-  LONG LStack_14;
+  undefined1 *puVar2;
+  undefined4 uStack_24;
+  int iStack_20;
+  undefined4 uStack_1c;
+  undefined4 uStack_18;
+  undefined4 uStack_14;
   int local_10;
-  LONG LStack_c;
-  LONG LStack_8;
-
+  undefined4 uStack_c;
+  undefined4 uStack_8;
+  
   iVar1 = *(int *)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)(&local_10);
-  RStack_24.left = LStack_14;
-  RStack_24.right = LStack_c;
-  RStack_24.bottom = LStack_8;
-  RStack_24.top = local_10;
+  uStack_24 = uStack_14;
+  uStack_1c = uStack_c;
+  uStack_18 = uStack_8;
+  iStack_20 = local_10;
   if ((this->controlTag == 0x74696c65) &&
      (local_10 = *(int *)&g_pUiRuntimeContext->field_0xf0, *(char *)(local_10 + 0x94) != '\0')) {
     iVar1 = *(int *)(iVar1 + 0x350);
-    SetQuickDrawFillColor(0);
-    dstSurface = (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4;
-    srcSurface = (astruct_17 *)(iVar1 + 4);
+    func_0x00406b86(0);
+    puVar2 = &g_pActiveQuickDrawSurfaceContext->field_0x4;
+    iVar1 = iVar1 + 4;
   }
   else if ((this->controlTag == 0x74696c32) &&
           (*(char *)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0x94) != '\0')) {
     (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins14_00516150)
               (CONCAT22((short)((uint)*(int *)&g_pUiRuntimeContext->field_0xf0 >> 0x10),
                         *(undefined2 *)&this->field_0x60));
-    SetQuickDrawFillColor(0);
-    dstSurface = (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4;
-    srcSurface = (astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x668) + 4);
+    func_0x00406b86(0);
+    puVar2 = &g_pActiveQuickDrawSurfaceContext->field_0x4;
+    iVar1 = *(int *)(g_pStrategicMapViewSystem + 0x668) + 4;
   }
   else {
     (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins14_00516150)
               (CONCAT22((short)((uint)local_10 >> 0x10),*(undefined2 *)&this->field_0x60));
-    SetQuickDrawFillColor(0);
-    dstSurface = (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4;
-    srcSurface = (astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x668) + 4);
+    func_0x00406b86(0);
+    puVar2 = &g_pActiveQuickDrawSurfaceContext->field_0x4;
+    iVar1 = *(int *)(g_pStrategicMapViewSystem + 0x668) + 4;
   }
-  BlitRectWithOptionalTransparency
-            (srcSurface,dstSurface,(RECT *)&stack0xffffffcc,&RStack_24,0,(astruct_19 *)0x0);
-  UpdatePaletteIndexWithDefaultFallback(0x13);
+  func_0x00405493(iVar1,puVar2,&stack0xffffffcc,&uStack_24,0,0);
+  func_0x004010be(0x13);
   return;
 }
 

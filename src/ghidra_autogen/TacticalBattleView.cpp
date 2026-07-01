@@ -3,155 +3,9 @@
 // Program: Imperialism.exe
 // Bucket: TacticalBattleView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004C8D70
-// GHIDRA_NAME TacticalBattleView::InitializeCityViewActionButtons
-// GHIDRA_PROTO void __thiscall InitializeCityViewActionButtons(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initialize top-level city view action buttons for selected building.
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1) Resolve selected building and fetch available action descriptors.
-// GHIDRA_COMMENT 2) Populate action button table using static per-building lookup arrays.
-// GHIDRA_COMMENT 3) Enable only valid actions for the current building state.
-// GHIDRA_COMMENT 4) Clear unused action slots.
-// GHIDRA_COMMENT_END
-
-/* Initialize top-level city view action buttons for selected building.
-   Algorithm:
-   1) Resolve selected building and fetch available action descriptors.
-   2) Populate action button table using static per-building lookup arrays.
-   3) Enable only valid actions for the current building state.
-   4) Clear unused action slots. */
-
-void TacticalBattleView::InitializeCityViewActionButtons()
-
-{
-  short sVar1;
-  code *pcVar2;
-  int *piVar3;
-  int iVar4;
-  uint uVar5;
-  uint uVar6;
-  TacticalBattleView *pTVar7;
-  int *unaff_FS_OFFSET;
-  int unaff_retaddr;
-  undefined1 *puVar8;
-  int iStack_70;
-  int iStack_6c;
-  undefined4 uStack_68;
-  LONG LStack_64;
-  RECT RStack_50;
-  tagRECT local_40;
-  undefined4 uStack_24;
-  int iStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00631698;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  LStack_64 = 0x4c8d97;
-  CString::__0CString__QAE_XZ((CString *)&local_40);
-  local_4 = 0;
-  LStack_64 = 0x4c8da6;
-  CString::__0CString__QAE_XZ((CString *)&RStack_50.bottom);
-  local_4._0_1_ = 1;
-  LStack_64 = 0x4c8db4;
-  CString::__0CString__QAE_XZ((CString *)&RStack_50.right);
-  LStack_64 = 0x73706963;
-  local_4 = CONCAT31(local_4._1_3_,2);
-  RStack_50.top = *(LONG *)&g_pActiveQuickDrawSurfaceContext->field_0x2c;
-  pcVar2 = *(code **)(*(int *)this + 0x94);
-  uStack_68 = 0x4c8dd6;
-  piVar3 = (int *)(*pcVar2)();
-  iVar4 = *piVar3;
-  uStack_68 = 0x4c8de3;
-  (**(code **)(iVar4 + 0xc))();
-  iStack_6c = unaff_retaddr + 0x266a;
-  uStack_68 = 1;
-  iStack_70 = 0x4c8dfb;
-  (**(code **)(iVar4 + 0x1c8))();
-  iStack_70 = 0x38;
-  (**(code **)(g_pUiRuntimeContext->vftable + 0x30))();
-  piVar3 = (int *)(*pcVar2)();
-  if (piVar3 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
-  }
-  LStack_64 = *piVar3;
-  (**(code **)(LStack_64 + 0x1cc))();
-  puVar8 = &stack0xffffffa4;
-  (**(code **)(iStack_70 + 300))(puVar8);
-  RStack_50.bottom = iVar4;
-  CopyRect(&local_40,&RStack_50);
-  InvalidateCityDialogRectRegion(&local_40,1);
-  piVar3 = (int *)(*pcVar2)(0x64657363);
-  iVar4 = *piVar3;
-  (**(code **)(iVar4 + 0xc))();
-  (**(code **)(iVar4 + 0x1cc))(0x2752,uStack_24,0);
-  (**(code **)(iVar4 + 300))(&iStack_70);
-  LStack_64 = 0x736e616d;
-  CopyRect((LPRECT)&stack0xffffffac,(RECT *)&LStack_64);
-  InvalidateCityDialogRectRegion(&stack0xffffffac,1);
-  iVar4 = (short)local_40.bottom * 2;
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode08 + iVar4);
-  if (sVar1 != 0) {
-    *(short *)(this + 0xc4) = sVar1;
-    *(undefined2 *)(this + 0xbc) = 8;
-  }
-  uVar6 = (uint)(sVar1 != 0);
-  if (*(short *)(&g_industryActionCostWeightResCode09 + iVar4) != 0) {
-    *(short *)(this + uVar6 * 2 + 0xc4) = *(short *)(&g_industryActionCostWeightResCode09 + iVar4);
-    *(undefined2 *)(this + uVar6 * 2 + 0xbc) = 9;
-    uVar6 = uVar6 + 1;
-  }
-  if (*(short *)(&g_industryActionCostWeightResCode10 + iVar4) != 0) {
-    *(short *)(this + uVar6 * 2 + 0xc4) = *(short *)(&g_industryActionCostWeightResCode10 + iVar4);
-    *(undefined2 *)(this + uVar6 * 2 + 0xbc) = 0x10;
-    uVar6 = uVar6 + 1;
-  }
-  if (*(short *)(&g_industryActionCostWeightResCode0B + iVar4) != 0) {
-    *(short *)(this + uVar6 * 2 + 0xc4) = *(short *)(&g_industryActionCostWeightResCode0B + iVar4);
-    *(undefined2 *)(this + uVar6 * 2 + 0xbc) = 0xb;
-    uVar6 = uVar6 + 1;
-  }
-  if (*(short *)(&g_industryActionCostWeightResCode03 + iVar4) != 0) {
-    *(short *)(this + uVar6 * 2 + 0xc4) = *(short *)(&g_industryActionCostWeightResCode03 + iVar4);
-    *(undefined2 *)(this + uVar6 * 2 + 0xbc) = 3;
-    uVar6 = uVar6 + 1;
-  }
-  if (*(short *)(&g_industryActionCostWeightResCode0C + iVar4) != 0) {
-    *(short *)(this + uVar6 * 2 + 0xc4) = *(short *)(&g_industryActionCostWeightResCode0C + iVar4);
-    *(undefined2 *)(this + uVar6 * 2 + 0xbc) = 0xc;
-    uVar6 = uVar6 + 1;
-  }
-  if (uVar6 < 4) {
-    pTVar7 = this + uVar6 * 2 + 0xbc;
-    for (uVar5 = 4 - uVar6 >> 1; uVar5 != 0; uVar5 = uVar5 - 1) {
-      *(undefined4 *)pTVar7 = 0xffffffff;
-      pTVar7 = pTVar7 + 4;
-    }
-    for (uVar6 = (uint)((4 - uVar6 & 1) != 0); uVar6 != 0; uVar6 = uVar6 - 1) {
-      *(undefined2 *)pTVar7 = 0xffff;
-      pTVar7 = pTVar7 + 2;
-    }
-  }
-  LStack_64 = 0x19;
-  InvalidateCityDialogRectRegion(&LStack_64,1);
-  SetGlobalBlitTransparentColorRaw(puVar8);
-  local_40.top._0_1_ = 1;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff80);
-  local_40.top = (uint)local_40.top._1_3_ << 8;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff84);
-  local_40.top = -1;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff88);
-  *unaff_FS_OFFSET = RStack_50.bottom;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00599A50
 // GHIDRA_NAME TacticalBattleView::EnterMapInteractionOverlayMode
-// GHIDRA_PROTO undefined __thiscall TacticalBattleView::EnterMapInteractionOverlayMode(int * param_1)
+// GHIDRA_PROTO undefined __thiscall EnterMapInteractionOverlayMode(int * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Transitions map interaction into overlay/selection mode and updates linked UI views.
 // GHIDRA_COMMENT
@@ -165,12 +19,12 @@ void TacticalBattleView::InitializeCityViewActionButtons()
 // GHIDRA_COMMENT_END
 
 /* Transitions map interaction into overlay/selection mode and updates linked UI views.
-
+   
    Behavior:
    1. If not already in overlay mode, resolves/initializes overlay view handle.
    2. Sets overlay-active flag (this+0x25).
    3. Synchronizes child views, cursor marker widget, and active panel references.
-
+   
    Notes:
    - Called when switching from civilian-selection mode to order/overlay interaction. */
 
@@ -180,7 +34,7 @@ void TacticalBattleView::EnterMapInteractionOverlayMode(int *param_1)
   int iVar1;
   int *piVar2;
   undefined4 uVar3;
-
+  
   if (this[0x94] == (TacticalBattleView)0x0) {
     if (param_1 == (int *)0x0) {
       param_1 = (int *)(**(code **)(*(int *)this + 0x94))(0x5a6d496e);
@@ -221,24 +75,23 @@ void TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A()
 
 {
   int iVar1;
-  TTacArmyView *this_00;
-  undefined4 uVar2;
-
-  RebuildListFromProviderAndDeduplicateByKey();
-  RebuildListFromProviderAndDeduplicateByKey();
+  int *piVar2;
+  undefined4 uVar3;
+  
+  func_0x00405ae7();
+  func_0x00405ae7();
   (**(code **)(**(int **)(this + 0x20) + 0x68))(&LAB_004083f0,this);
   *(undefined4 *)(this + 0x10) = 1;
   if (*(int *)(this + 8) != 0) {
-    this_00 = (TTacArmyView *)
-              (**(code **)(**(int **)(*(int *)(this + 8) + 0x20) + 0x94))(0x746f6f6c);
-    (*this_00->vftable->AssertValid)();
-    TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(this_00,1);
+    piVar2 = (int *)(**(code **)(**(int **)(*(int *)(this + 8) + 0x20) + 0x94))(0x746f6f6c);
+    (**(code **)(*piVar2 + 0xc))();
+    func_0x0040652d(1);
   }
   iVar1 = **(int **)(this + 0x20);
-  uVar2 = (**(code **)(iVar1 + 0x48))();
-  uVar2 = (**(code **)(iVar1 + 0x4c))(uVar2);
-  *(undefined4 *)(this + 0x1c) = uVar2;
-  TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+  uVar3 = (**(code **)(iVar1 + 0x48))();
+  uVar3 = (**(code **)(iVar1 + 0x4c))(uVar3);
+  *(undefined4 *)(this + 0x1c) = uVar3;
+  func_0x0040400c();
   return;
 }
 
@@ -257,16 +110,16 @@ void TacticalBattleView::HandleTacticalBattleCommandTag(int commandTag)
   int *piVar1;
   char cVar2;
   undefined4 uVar3;
-
+  
   if (*(char *)((int)*(int **)(this + *(int *)(this + 0xc) * 4 + 0x14) + 0xd) != '\0') {
     if (commandTag < 0x646f6e66) {
       if (commandTag == 0x646f6e65) {
         if (*(int *)(this + 0x10) == 1) {
-          TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+          func_0x0040400c();
           return;
         }
-        uVar3 = SelectNextTacticalUnitForDoneCommand();
-        ApplyTacticalDoneSelectionAndRefreshUi(uVar3);
+        uVar3 = func_0x0040809e();
+        func_0x00407333(uVar3);
         return;
       }
       if (commandTag == 0x6175746f) {
@@ -276,10 +129,10 @@ void TacticalBattleView::HandleTacticalBattleCommandTag(int commandTag)
     }
     else if (commandTag == 0x72657472) {
       if (*(int *)(this + 0x10) == 0) {
-        HandleTacticalCommandTag_retr();
+        func_0x004057f9();
         return;
       }
-      cVar2 = ShowLocalizedUiPromptByGroupAndIndex(0x273d,0x32,1,1);
+      cVar2 = func_0x004075a9(0x273d,0x32,1,1);
       if (cVar2 != '\0') {
         piVar1 = *(int **)(this + *(int *)(this + 0xc) * 4 + 0x14);
         *(undefined1 *)((int)piVar1 + 0xf) = 1;
@@ -288,11 +141,11 @@ void TacticalBattleView::HandleTacticalBattleCommandTag(int commandTag)
     }
     else {
       if (commandTag == 0x736b6970) {
-        HandleTacticalCommandTag_skip();
+        func_0x004055e2();
         return;
       }
       if (commandTag == 0x74617267) {
-        TacticalBattleView::HandleTacticalCommandTag_targ(this);
+        func_0x00405b4b();
         return;
       }
     }
@@ -316,64 +169,63 @@ void TacticalBattleView::HandleTacticalCommandTag_targ()
   char cVar5;
   int iVar6;
   undefined4 uVar7;
-  undefined4 uVar8;
-  int iVar9;
-  int *piVar10;
-  int iVar11;
+  int iVar8;
+  int *piVar9;
+  int iVar10;
   int local_20;
   int *local_18;
   int local_14;
   int *local_10;
-
-  iVar9 = *(int *)(this + 0x1c);
+  
+  iVar8 = *(int *)(this + 0x1c);
   local_10 = (int *)0x0;
-  if ((iVar9 != 0) && (*(int *)(this + 8) != 0)) {
-    local_18 = *(int **)(iVar9 + 0x30);
-    piVar1 = *(int **)(*(int *)(this + (*(int *)(iVar9 + 0x20) == 0) * 4 + 0x14) + 4);
+  if ((iVar8 != 0) && (*(int *)(this + 8) != 0)) {
+    local_18 = *(int **)(iVar8 + 0x30);
+    piVar1 = *(int **)(*(int *)(this + (*(int *)(iVar8 + 0x20) == 0) * 4 + 0x14) + 4);
     if (local_18 != (int *)0x0) {
-      iVar9 = *piVar1;
-      iVar11 = 1;
-      iVar6 = (**(code **)(iVar9 + 0x48))();
+      iVar8 = *piVar1;
+      iVar10 = 1;
+      iVar6 = (**(code **)(iVar8 + 0x48))();
       if (0 < iVar6) {
         do {
-          (**(code **)(iVar9 + 0x4c))(iVar11);
-          iVar11 = iVar11 + 1;
-          iVar6 = (**(code **)(iVar9 + 0x48))();
-        } while (iVar11 <= iVar6);
+          (**(code **)(iVar8 + 0x4c))(iVar10);
+          iVar10 = iVar10 + 1;
+          iVar6 = (**(code **)(iVar8 + 0x48))();
+        } while (iVar10 <= iVar6);
       }
       local_18 = (int *)0x0;
     }
     if ((local_18 != (int *)0x0) && (local_18[7] == 0)) {
-      piVar10 = *(int **)(this + 0x1c);
-      iVar9 = local_18[2];
-      iVar6 = piVar10[2];
-      if ((char)piVar10[6] == '\0') {
+      piVar9 = *(int **)(this + 0x1c);
+      iVar8 = local_18[2];
+      iVar6 = piVar9[2];
+      if ((char)piVar9[6] == '\0') {
         cVar5 = '\0';
       }
       else {
-        uVar7 = (**(code **)(*piVar10 + 0x2c))();
-        uVar8 = ftol(uVar7);
-        cVar5 = IsTacticalTargetTileReachableForAction(iVar6,iVar9,uVar8,uVar7);
+        uVar7 = (**(code **)(*piVar9 + 0x2c))();
+        uVar7 = ftol(uVar7);
+        cVar5 = func_0x00406b09(iVar6,iVar8,uVar7);
       }
       if (cVar5 != '\0') {
-        CenterViewportAroundGridIndexAndSnap(local_18[2]);
+        func_0x004077f7(local_18[2]);
       }
     }
     local_20 = 1;
-    iVar9 = *piVar1;
-    pcVar2 = *(code **)(iVar9 + 0x48);
-    pcVar3 = *(code **)(iVar9 + 0x4c);
+    iVar8 = *piVar1;
+    pcVar2 = *(code **)(iVar8 + 0x48);
+    pcVar3 = *(code **)(iVar8 + 0x4c);
     do {
       local_14 = local_20 + 1;
-      iVar9 = (*pcVar2)();
-      if (iVar9 < local_14) {
+      iVar8 = (*pcVar2)();
+      if (iVar8 < local_14) {
         local_14 = 1;
       }
-      piVar10 = (int *)(*pcVar3)(local_14);
-      (**(code **)(*piVar10 + 0xc))();
+      piVar9 = (int *)(*pcVar3)(local_14);
+      (**(code **)(*piVar9 + 0xc))();
       piVar1 = local_10;
-      if (piVar10[7] == 0) {
-        iVar9 = piVar10[2];
+      if (piVar9[7] == 0) {
+        iVar8 = piVar9[2];
         piVar4 = *(int **)(this + 0x1c);
         iVar6 = piVar4[2];
         if ((char)piVar4[6] == '\0') {
@@ -381,12 +233,12 @@ void TacticalBattleView::HandleTacticalCommandTag_targ()
         }
         else {
           uVar7 = (**(code **)(*piVar4 + 0x2c))();
-          uVar8 = ftol(uVar7);
-          cVar5 = IsTacticalTargetTileReachableForAction(iVar6,iVar9,uVar8,uVar7);
+          uVar7 = ftol(uVar7);
+          cVar5 = func_0x00406b09(iVar6,iVar8,uVar7);
         }
-        if ((cVar5 != '\0') && (piVar1 = piVar10, local_18 == (int *)0x0)) {
-          CenterViewportAroundGridIndexAndSnap(piVar10[2]);
-          local_18 = piVar10;
+        if ((cVar5 != '\0') && (piVar1 = piVar9, local_18 == (int *)0x0)) {
+          func_0x004077f7(piVar9[2]);
+          local_18 = piVar9;
           piVar1 = local_10;
         }
       }
@@ -402,7 +254,7 @@ void TacticalBattleView::HandleTacticalCommandTag_targ()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5B90
 // GHIDRA_NAME TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl
-// GHIDRA_PROTO undefined __thiscall TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall HandleNavyTacticalToolbarModeAndCommandTags_Impl(undefined4 param_1)
 
 void __thiscall
 TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl
@@ -413,44 +265,15 @@ TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A82B0
-// GHIDRA_NAME TacticalBattleView::CreateTacticalBattleViewInstance
-// GHIDRA_PROTO undefined CreateTacticalBattleViewInstance()
-
-undefined4 __fastcall TacticalBattleView::CreateTacticalBattleViewInstance(undefined4 param_1)
-
-{
-  TacticalBattleView *this;
-  undefined4 uVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063875a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TacticalBattleView *)__2_YAPAXI_Z(0xd8,param_1);
-  local_4 = 0;
-  if (this != (TacticalBattleView *)0x0) {
-    uVar1 = TacticalBattleView::ConstructTacticalBattleViewBaseState(this);
-    *unaff_FS_OFFSET = local_c;
-    return uVar1;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return 0;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005A8350
 // GHIDRA_NAME TacticalBattleView::ConstructTacticalBattleViewBaseState
-// GHIDRA_PROTO undefined __thiscall TacticalBattleView::ConstructTacticalBattleViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTacticalBattleViewBaseState(void)
 
 TacticalBattleView * TacticalBattleView::ConstructTacticalBattleViewBaseState()
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
-  *(TTacticalBattleViewVtbl **)this = &TTacticalBattleViewVtbl_0066a380;
+  func_0x004064e2();
+  *(TTacticalBattleViewVtbl **)this = &TTacticalBattleView::_vftable_;
   *(undefined4 *)(this + 0x60) = 0;
   *(undefined4 *)(this + 100) = 0;
   *(undefined2 *)(this + 0x78) = 0;
@@ -465,192 +288,9 @@ TacticalBattleView * TacticalBattleView::ConstructTacticalBattleViewBaseState()
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A8900
-// GHIDRA_NAME TacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8900
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1)
-
-void __thiscall
-TacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8900
-          (TacticalBattleView *this,int param_1)
-
-{
-  uint uVar1;
-  int local_10;
-  int local_c;
-  int local_8;
-  int local_4;
-
-  uVar1 = param_1 / *(int *)(this + 0x80);
-  local_8 = *(int *)(this + 0x88);
-  local_10 = (param_1 % *(int *)(this + 0x80)) * local_8 - (int)*(short *)(this + 0x78);
-  if ((uVar1 & 1) != 0) {
-    local_10 = local_10 + local_8 / 2;
-  }
-  local_c = uVar1 * *(int *)(this + 0x8c);
-  local_8 = local_10 + local_8;
-  local_4 = local_c + *(int *)(this + 0x8c);
-  InvalidateCityDialogRectRegion(&local_10,1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A8BE0
-// GHIDRA_NAME TacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker
-// GHIDRA_PROTO undefined __thiscall AdjustTacticalUnitVerticalOffsetAndRefreshMarker(short param_1)
-
-void __thiscall
-TacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker
-          (TacticalBattleView *this,short param_1)
-
-{
-  if (this[0x98] != (TacticalBattleView)0x0) {
-    if (param_1 == 8) {
-      if (0 < *(short *)(this + 0x78)) {
-        *(short *)(this + 0x78) = *(short *)(this + 0x78) - *(short *)(this + 0x88);
-        (**(code **)(*(int *)this + 0xe4))();
-        TAnimation::SpawnTacticalUiMarkerAtUnitTile((TAnimation *)this);
-        return;
-      }
-    }
-    else if ((param_1 == 4) &&
-            ((int)*(short *)(this + 0x78) <
-             ((int)*(short *)(this + 0x7a) - *(int *)(this + 0x34)) - *(int *)(this + 0x88))) {
-      *(short *)(this + 0x78) = *(short *)(this + 0x88) + *(short *)(this + 0x78);
-      (**(code **)(*(int *)this + 0xe4))();
-    }
-    TAnimation::SpawnTacticalUiMarkerAtUnitTile((TAnimation *)this);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A9170
-// GHIDRA_NAME TacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-// GHIDRA_PROTO undefined __thiscall RunOneTimeAnimationModalWaitAndInvalidateCityDialog(undefined4 * param_1, undefined2 param_2, undefined2 param_3, int param_4, undefined4 param_5)
-
-void __thiscall
-TacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-          (TacticalBattleView *this,undefined4 *param_1,undefined2 param_2,undefined2 param_3,
-          int param_4,undefined4 param_5)
-
-{
-  char cVar1;
-  TOneTimeAnimation *this_00;
-
-  this_00 = (TOneTimeAnimation *)__2_YAPAXI_Z(0x30);
-  if (this_00 == (TOneTimeAnimation *)0x0) {
-    this_00 = (TOneTimeAnimation *)0x0;
-  }
-  else {
-    this_00->vftable = &TOneTimeAnimationVtbl_0064c3d0;
-  }
-  TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
-            (this_00,this,param_1,param_3,param_2,param_5,param_4);
-  TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
-  RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl();
-  this[0x98] = (TacticalBattleView)0x0;
-  cVar1 = this_00->field_0x2c;
-  while (cVar1 == '\0') {
-    PumpUiMessagesAndBackgroundTasks(1);
-    cVar1 = this_00->field_0x2c;
-  }
-  this[0x98] = (TacticalBattleView)0x1;
-  RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80();
-  InvalidateCityDialogRectRegion(param_1,1);
-  TBattleReportView::RemoveUiTransientRegistryObjectByTag
-            ((TBattleReportView *)g_pUiAnimator,param_4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A9240
-// GHIDRA_NAME TacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a9240
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At005a9240(int param_1, int param_2, int param_3)
-
-void __thiscall
-TacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a9240
-          (TacticalBattleView *this,int param_1,int param_2,int param_3)
-
-{
-  uint uVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-  int iStack_30;
-  int iStack_2c;
-  int iStack_28;
-  int iStack_24;
-  int iStack_20;
-  int iStack_1c;
-  int iStack_18;
-  int iStack_14;
-  int iStack_c;
-
-  if (*(short *)&g_pLocalizationTable->field_0x52 != 0) {
-    uVar1 = param_2 / *(int *)(this + 0x80);
-    iVar5 = (param_2 % *(int *)(this + 0x80)) * *(int *)(this + 0x88) - (int)*(short *)(this + 0x78)
-    ;
-    if ((uVar1 & 1) != 0) {
-      iVar5 = iVar5 + *(int *)(this + 0x88) / 2;
-    }
-    iVar3 = *(int *)(this + 0x8c);
-    iStack_c = uVar1 * iVar3;
-    uVar1 = param_3 / *(int *)(this + 0x80);
-    iVar4 = iStack_c + iVar3;
-    iVar2 = (param_3 % *(int *)(this + 0x80)) * *(int *)(this + 0x88) - (int)*(short *)(this + 0x78)
-    ;
-    if ((uVar1 & 1) != 0) {
-      iVar2 = iVar2 + *(int *)(this + 0x88) / 2;
-    }
-    iStack_1c = uVar1 * iVar3;
-    iStack_30 = iVar2;
-    if (iVar5 < iVar2) {
-      iStack_30 = iVar5;
-    }
-    iStack_24 = iStack_1c + iVar3;
-    if (iStack_1c + iVar3 < iVar4) {
-      iStack_24 = iVar4;
-    }
-    iStack_2c = iStack_24 + iVar3 * -3;
-    iStack_28 = iStack_30 + *(int *)(this + 0x88) * 2;
-    *(int *)(this + 0xa8) = (iVar4 - iStack_2c) + -4;
-    *(int *)(this + 0xc0) = iStack_30;
-    *(int *)(this + 0xc4) = iStack_2c;
-    *(int *)(this + 200) = iStack_28;
-    *(int *)(this + 0xcc) = iStack_24;
-    *(int *)(this + 0x9c) = (iVar2 - iVar5) / 3;
-    *(int *)(this + 0xa0) = (iStack_1c - iStack_c) / 3;
-    *(int *)(this + 0xa4) = iVar5 - iStack_30;
-    iVar5 = *(int *)(param_1 + 0xc) * *(int *)(this + 0x90);
-    if ((int)((param_2 / 0x1d & 1U) + (param_2 % 0x1d) * 2) <
-        (int)((param_3 / 0x1d & 1U) + (param_3 % 0x1d) * 2)) {
-      iVar3 = 0;
-    }
-    else {
-      iVar3 = *(int *)(this + 0x94);
-    }
-    *(int *)(this + 0xac) = iVar5;
-    *(int *)(this + 0xb0) = iVar3;
-    *(int *)(this + 0xb4) = iVar5 + *(int *)(this + 0x90);
-    *(int *)(this + 0xb8) = *(int *)(this + 0x94) + iVar3;
-    InvalidateCityDialogRectRegion(&iStack_30,1);
-    iStack_18 = *(int *)(this + 0x88);
-    uVar1 = param_2 / *(int *)(this + 0x80);
-    iStack_20 = (param_2 % *(int *)(this + 0x80)) * iStack_18 - (int)*(short *)(this + 0x78);
-    if ((uVar1 & 1) != 0) {
-      iStack_20 = iStack_20 + iStack_18 / 2;
-    }
-    iStack_18 = iStack_20 + iStack_18;
-    iStack_1c = uVar1 * *(int *)(this + 0x8c);
-    iStack_14 = iStack_1c + *(int *)(this + 0x8c);
-    InvalidateCityDialogRectRegion(&iStack_20,1);
-    (**(code **)(*(int *)this + 0x13c))();
-    *(undefined4 *)(this + 0xa4) = 0xffffffff;
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AA7D0
 // GHIDRA_NAME TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
-// GHIDRA_PROTO undefined __thiscall TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(int param_1, LPRECT param_2)
+// GHIDRA_PROTO undefined __thiscall ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(int param_1, LPRECT param_2)
 
 void __thiscall
 TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
@@ -661,7 +301,7 @@ TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
   short sVar2;
   uint uVar3;
   int iVar4;
-
+  
   iVar1 = *(int *)(param_1 + 8);
   uVar3 = iVar1 / *(int *)(this + 0x80);
   iVar4 = (iVar1 % *(int *)(this + 0x80)) * *(int *)(this + 0x88) - (int)*(short *)(this + 0x78);
@@ -677,8 +317,7 @@ TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
   iVar4 = *(int *)(*(int *)(this + 0x60) + 4) + iVar1 * 0x14;
   if (*(int *)(iVar4 + 8) == 1) {
     iVar4 = *(int *)(param_1 + 0xc);
-    sVar2 = TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-                      ((TCivDescription *)this,iVar1);
+    sVar2 = func_0x00405b87(iVar1);
     iVar1 = *(int *)(param_1 + 0x20) + ((int)sVar2 + iVar4 * 7) * 2;
     OffsetRect(param_2,*(int *)(&DAT_006a4780 + iVar1 * 8),*(int *)(&DAT_006a4784 + iVar1 * 8));
     return;
@@ -686,82 +325,6 @@ TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
   if ((*(char *)(iVar4 + 0x10) != '\0') &&
      (*(short *)(&DAT_00695528 + *(int *)(param_1 + 0xc) * 2) == 8)) {
     param_2->right = -200;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B6840
-// GHIDRA_NAME TacticalBattleView::InitializeMapHintTextStyleAndThemeFlags
-// GHIDRA_PROTO undefined __thiscall InitializeMapHintTextStyleAndThemeFlags(void)
-
-void TacticalBattleView::InitializeMapHintTextStyleAndThemeFlags()
-
-{
-  int iVar1;
-  undefined4 unaff_EDI;
-  undefined4 local_c;
-  undefined1 local_6;
-  undefined1 local_5;
-  undefined1 local_4;
-  undefined1 local_3;
-
-  local_6 = 0;
-  local_5 = 0;
-  local_4 = 0;
-  local_3 = 0;
-  BuildUiTextStyleDescriptor(&local_c,0,0xc);
-  iVar1 = *(int *)this;
-  (**(code **)(iVar1 + 0x1e4))(&local_c,0);
-  (**(code **)(iVar1 + 0x1c4))(0xffffffff,0);
-  *(undefined4 *)(this + 0xa4) = 0;
-  *(undefined4 *)(this + 0xa8) = 0;
-  *(undefined4 *)(this + 0xac) = 0;
-  *(undefined4 *)(this + 0xb0) = 0;
-  MapUiThemeCodeToStyleFlags(local_c,&stack0xffffffe0);
-  *(undefined4 *)(this + 0x98) = unaff_EDI;
-  MapUiThemeCodeToStyleFlags();
-  *(undefined4 *)(this + 0x9c) = unaff_EDI;
-  this[0xa0] = (TacticalBattleView)0x1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061CC4B
-// GHIDRA_NAME TacticalBattleView::?OnEnable@CFrameWnd@@IAEXH@Z
-// GHIDRA_PROTO undefined __thiscall ?OnEnable@CFrameWnd@@IAEXH@Z(int param_1)
-
-void TacticalBattleView::_OnEnable_CFrameWnd__IAEXH_Z(int param_1)
-
-{
-  HWND pHVar1;
-  int iVar2;
-  HWND pHVar3;
-
-  if ((param_1 == 0) || (((byte)this[0x24] & 4) == 0)) {
-    pHVar1 = GetParent(*(HWND *)(this + 0x1c));
-    iVar2 = _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar1);
-    if (iVar2 == 0) {
-      if ((param_1 == 0) && (*(int *)(this + 0xa0) == 0)) {
-        this[0x24] = (TacticalBattleView)((byte)this[0x24] | 0x80);
-        (**(code **)(*(int *)this + 0x90))();
-      }
-      else if ((param_1 != 0) && ((*(uint *)(this + 0x24) & 0x80) != 0)) {
-        *(uint *)(this + 0x24) = *(uint *)(this + 0x24) & 0xffffff7f;
-        (**(code **)(*(int *)this + 0x94))();
-        pHVar1 = *(HWND *)(this + 0x1c);
-        pHVar3 = GetActiveWindow();
-        if (pHVar3 == pHVar1) {
-          SendMessageA(pHVar1,6,1,0);
-        }
-      }
-      if ((param_1 != 0) && (((byte)this[0x24] & 0x20) != 0)) {
-        SendMessageA(*(HWND *)(this + 0x1c),0x86,1,0);
-      }
-      _NotifyFloatingWindows_CFrameWnd__QAEXK_Z((-(uint)(param_1 != 0) & 0xfffffff0) + 0x20);
-    }
-  }
-  else {
-    CMcWindow::EnableWindowOrDelegateToOwner(0);
-    SetFocus((HWND)0x0);
   }
   return;
 }

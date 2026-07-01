@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TArmyBoyView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004AEAE0
+// GHIDRA_NAME TArmyBoyView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TArmyBoyView::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063093a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(100);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEB50
 // GHIDRA_NAME TArmyBoyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,28 +40,28 @@
 TArmyBoyView * TArmyBoyView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00403c51();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEBA0
-// GHIDRA_NAME TArmyBoyView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TArmyBoyView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyBoyView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TArmyBoyView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTArmyBoyView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEBC0
-// GHIDRA_NAME TArmyBoyView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TArmyBoyView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TArmyBoyView::OrphanTiny_ReturnZero_0048a730()
+void TArmyBoyView::ApplyRectSlot110()
 
 {
   short sVar1;
@@ -41,31 +71,37 @@ void TArmyBoyView::OrphanTiny_ReturnZero_0048a730()
   CString local_38;
   CString local_34;
   CString local_30;
-  RECT local_2c;
-  RECT local_1c;
+  undefined4 local_2c;
+  undefined4 local_28;
+  int local_24;
+  undefined4 local_20;
+  undefined4 local_1c;
+  int local_18;
+  int local_14;
+  int local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630970;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::__0CString__QAE_XZ(&local_30);
+  CString::CString(&local_30);
   local_4 = 0;
-  CString::__0CString__QAE_XZ(&local_34);
+  CString::CString(&local_34);
   local_4._0_1_ = 1;
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
+  func_0x0040448f(0,0xc);
   local_38.m_pchData = (char *)0x1c474b;
-  SetQuickDrawColorAndSyncGlobals();
+  func_0x00409444();
   SetQuickDrawTextOriginWithContextOffset(0x40);
-  CString::__0CString__QAE_PBD_Z(&local_38,(char *)(*(int *)&this->field_0x60 + 4));
+  CString::CString(&local_38,(char *)(*(int *)&this->field_0x60 + 4));
   local_4._0_1_ = 2;
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  func_0x004029aa();
   local_4._0_1_ = 1;
-  CString::__1CString__QAE_XZ(&local_38);
+  CString::~CString(&local_38);
   local_38.m_pchData = &stack0xffffffb8;
-  SetQuickDrawFillColor();
+  func_0x00406b86();
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 2) / 0x19 + 1;
   if (0x14 < sVar1) {
     sVar1 = 0x14;
@@ -76,17 +112,17 @@ void TArmyBoyView::OrphanTiny_ReturnZero_0048a730()
   else {
     sVar2 = ((0xe < sVar1) - 1 & 8) + 10;
   }
-  local_1c.top = (LONG)sVar2;
-  local_1c.bottom = local_1c.top + 7;
-  local_1c.right = sVar1 * 4 + -1;
-  local_2c.right = sVar1 * 4 + 0x42;
-  local_1c.left = 0;
-  local_2c.left = 0x43;
-  local_2c.top = 0x1f;
-  local_2c.bottom = 0x26;
+  local_18 = (int)sVar2;
+  local_10 = local_18 + 7;
+  local_14 = sVar1 * 4 + -1;
+  local_24 = sVar1 * 4 + 0x42;
+  local_1c = 0;
+  local_2c = 0x43;
+  local_28 = 0x1f;
+  local_20 = 0x26;
   if (*(short *)(*(int *)&this->field_0x60 + 2) < 1) {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1,0xc);
-    CString::__0CString__QAE_XZ(&local_38);
+    func_0x0040448f(1,0xc);
+    CString::CString(&local_38);
     local_4._0_1_ = 3;
     if (*(short *)(*(int *)&this->field_0x60 + 2) == -0x56) {
       uVar3 = 0x20;
@@ -95,23 +131,21 @@ void TArmyBoyView::OrphanTiny_ReturnZero_0048a730()
       uVar3 = 0x1f;
     }
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273c,uVar3);
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
-    SetQuickDrawTextOriginWithContextOffset(0x6a - (int)sVar1 / 2);
-    THQButton::DrawTextWithCachedQuickDrawStyleState();
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffbc);
+    SetQuickDrawTextOriginWithContextOffset(0x6a - (int)sVar1 / 2,0x26);
+    func_0x004029aa(&stack0xffffffbc);
     local_4._0_1_ = 1;
-    CString::__1CString__QAE_XZ(&local_38);
+    CString::~CString(&local_38);
   }
   else {
-    UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24,
-               (astruct_19 *)0x0);
+    func_0x004010be();
+    func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4,
+                    &g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24);
   }
   local_38.m_pchData = &stack0xffffffb8;
-  SetQuickDrawFillColor();
+  func_0x00406b86();
   local_38.m_pchData = &stack0xffffffb8;
-  SetQuickDrawStrokeColor();
+  func_0x00402bdf();
   SetQuickDrawTextOriginWithContextOffset(0x41);
   DrawCenteredGuideLineOnMapDc(0x41);
   DrawCenteredGuideLineOnMapDc(0x93);
@@ -122,57 +156,25 @@ void TArmyBoyView::OrphanTiny_ReturnZero_0048a730()
     sVar2 = sVar2 + 5;
   }
   if (sVar2 != 0) {
-    local_1c.right = (LONG)sVar2;
-    local_1c.left = 0;
-    local_1c.top = 0;
-    local_1c.bottom = 10;
-    local_2c.right = local_1c.right + 0x94;
-    local_2c.left = 0x94;
-    local_2c.top = 0x1f;
-    local_2c.bottom = 0x29;
-    UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24,
-               (astruct_19 *)0x0);
+    local_14 = (int)sVar2;
+    local_1c = 0;
+    local_18 = 0;
+    local_10 = 10;
+    local_24 = local_14 + 0x94;
+    local_2c = 0x94;
+    local_28 = 0x1f;
+    local_20 = 0x29;
+    func_0x004010be();
+    func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4,
+                    &g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24);
     local_38.m_pchData = &stack0xffffffb8;
-    SetQuickDrawStrokeColor();
+    func_0x00402bdf();
   }
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::__1CString__QAE_XZ(&local_34);
+  CString::~CString(&local_34);
   local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_30);
+  CString::~CString(&local_30);
   *unaff_FS_OFFSET = local_c;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004AEFD0
-// GHIDRA_NAME TArmyBoyView::DestructTArmyBoyViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTArmyBoyViewAndMaybeFree()
-
-TView * TArmyBoyView::DestructTArmyBoyViewAndMaybeFree(void)
-
-{
-  TView *this;
-  TView *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063099a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(100);
-  local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TNavyBoyViewVtbl_0064e1f0;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 

@@ -4,81 +4,81 @@
 // Bucket: TEditText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490210
-// GHIDRA_NAME TEditText::CreateTEditTextInstance
-// GHIDRA_PROTO undefined CreateTEditTextInstance()
+// GHIDRA_NAME TEditText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TEditText::CreateTEditTextInstance(void)
+undefined4 * TEditText::CreateObject(void)
 
 {
-  TView *this;
-  CString *this_00;
-  int extraout_EAX;
-  int iVar1;
+  undefined4 *puVar1;
+  CString *this;
+  undefined4 extraout_EAX;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f13d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0xa0);
+  puVar1 = (undefined4 *)operator_new(0xa0);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    *(undefined1 *)&this[1].field04 = 0;
-    this[1].vftable = (TViewVtbl *)0x1;
-    this[1].padding_08_to_0b = 0;
-    this[1].field0c = 0;
-    this[1].field10 = 0;
-    this[1].field14 = 0;
-    this[1].field18 = g_nUiResourceEntryDefaultParam0;
-    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *(undefined1 *)(puVar1 + 0x19) = 0;
+    puVar1[0x18] = 1;
+    puVar1[0x1a] = 0;
+    puVar1[0x1b] = 0;
+    puVar1[0x1c] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
+    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
     local_4._0_1_ = 1;
-    this[1].ownerOffsetX = 0;
-    this[1].ownerOffsetY = -1;
-    this[1].field2c = 0;
-    *(undefined2 *)&this[1].field30 = 0;
-    this->vftable = (TViewVtbl *)&TStaticText::_vftable_;
-    this[1].vftable = (TViewVtbl *)0xd;
-    this_00 = (CString *)__2_YAPAXI_Z(4);
+    puVar1[0x21] = 0;
+    puVar1[0x22] = 0xffffffff;
+    puVar1[0x23] = 0;
+    *(undefined2 *)(puVar1 + 0x24) = 0;
+    *puVar1 = &TStaticText::_vftable_;
+    puVar1[0x18] = 0xd;
+    this = (CString *)operator_new(4);
     local_4 = CONCAT31(local_4._1_3_,2);
-    if (this_00 == (CString *)0x0) {
-      iVar1 = 0;
+    if (this == (CString *)0x0) {
+      uVar2 = 0;
     }
     else {
-      CString::__0CString__QAE_XZ(this_00);
-      iVar1 = extraout_EAX;
+      CString::CString(this);
+      uVar2 = extraout_EAX;
     }
-    this[1].ownerOffsetX = iVar1;
-    this[1].field34 = 0;
-    this[1].field38 = 0;
-    *(undefined2 *)&this[1].field3c = 0xff;
-    this->vftable = (TViewVtbl *)0x64ad90;
-    this[1].vftable = (TViewVtbl *)0x6;
-    this->flag4d = 0;
+    puVar1[0x21] = uVar2;
+    puVar1[0x25] = 0;
+    puVar1[0x26] = 0;
+    *(undefined2 *)(puVar1 + 0x27) = 0xff;
+    *puVar1 = 0x64ad90;
+    puVar1[0x18] = 6;
+    *(undefined1 *)((int)puVar1 + 0x4d) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490380
-// GHIDRA_NAME TEditText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TEditText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TEditText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TEditText::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTEditText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004903A0
-// GHIDRA_NAME TEditText::ConstructUiNumericTextEntryBase
-// GHIDRA_PROTO undefined __thiscall ConstructUiNumericTextEntryBase(void)
+// GHIDRA_NAME TEditText::TEditText
+// GHIDRA_PROTO undefined __thiscall TEditText(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base constructor for numeric text widgets. Initializes shared style/state fields and allocates an auxiliary 4-byte state block before derived numeric vtable install.
 // GHIDRA_COMMENT_END
@@ -86,7 +86,7 @@ CRuntimeClass * TEditText::GetTEventHandlerClassNamePointer()
 /* Base constructor for numeric text widgets. Initializes shared style/state fields and allocates an
    auxiliary 4-byte state block before derived numeric vtable install. */
 
-TEditText * TEditText::ConstructUiNumericTextEntryBase()
+TEditText * TEditText::TEditText()
 
 {
   CString *this_00;
@@ -96,12 +96,12 @@ TEditText * TEditText::ConstructUiNumericTextEntryBase()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f163;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::ConstructTViewBaseState((TView *)this);
+  func_0x004064e2();
   *(undefined4 *)&this->field_0x60 = 1;
   this->field_0x64 = 0;
   *(undefined4 *)&this->field_0x68 = 0;
@@ -118,13 +118,13 @@ TEditText * TEditText::ConstructUiNumericTextEntryBase()
   *(undefined2 *)&this->field_0x90 = 0;
   this->vftable = (TEditTextVtbl *)&TStaticText::_vftable_;
   *(undefined4 *)&this->field_0x60 = 0xd;
-  this_00 = (CString *)__2_YAPAXI_Z(4);
+  this_00 = (CString *)operator_new(4);
   local_4 = CONCAT31(local_4._1_3_,1);
   if (this_00 == (CString *)0x0) {
     uVar1 = 0;
   }
   else {
-    CString::__0CString__QAE_XZ(this_00);
+    CString::CString(this_00);
     uVar1 = extraout_EAX;
   }
   *(undefined4 *)&this->field_0x84 = uVar1;
@@ -138,11 +138,55 @@ TEditText * TEditText::ConstructUiNumericTextEntryBase()
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00490650
-// GHIDRA_NAME TEditText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004904D0
+// GHIDRA_NAME TEditText::~TEditText
+// GHIDRA_PROTO undefined __thiscall ~TEditText(void)
 
-void TEditText::GetTEventHandlerClassNamePointer()
+void TEditText::~TEditText()
+
+{
+  CString *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062f1a3;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this->vftable = (TEditTextVtbl *)0x64ad90;
+  local_4 = 0;
+  if (*(int **)&this->field_0x94 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x94 + 4))(1);
+  }
+  if (*(int **)&this->field_0x98 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x98 + 4))(1);
+  }
+  this->vftable = (TEditTextVtbl *)&TStaticText::_vftable_;
+  this_00 = *(CString **)&this->field_0x84;
+  local_4 = 1;
+  if (this_00 != (CString *)0x0) {
+    CString::~CString(this_00);
+    operator_delete(this_00);
+  }
+  this->vftable = (TEditTextVtbl *)&TView::_vftable_;
+  local_4 = 3;
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
+  }
+  operator_delete(this->field48);
+  local_4 = CONCAT31(local_4._1_3_,2);
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TEditTextVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00490650
+// GHIDRA_NAME TEditText::CallVoidSlotA0
+// GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
+
+void TEditText::CallVoidSlotA0()
 
 {
   if (*(int **)&this->field_0x94 != (int *)0x0) {
@@ -157,79 +201,74 @@ void TEditText::GetTEventHandlerClassNamePointer()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004906A0
-// GHIDRA_NAME TEditText::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TEditText::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TEditText::OrphanTiny_ReturnZero_0048a730()
+void TEditText::ApplyRectSlot110()
 
 {
   int iVar1;
-  astruct_10 *unaff_ESI;
-
-  iVar1 = TEditText::OrphanCallChain_C11_I88_004874b0(this,unaff_ESI);
+  undefined4 in_stack_00000004;
+  
+  iVar1 = func_0x0040799b();
   if (iVar1 == 0) {
-    TStaticText::OrphanTiny_ReturnZero_0048a730((TStaticText *)this);
+    func_0x00406f9b(in_stack_00000004);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004906D0
-// GHIDRA_NAME TEditText::GetTBehaviorClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
+// GHIDRA_NAME TEditText::GetBoolSlot28
+// GHIDRA_PROTO undefined __thiscall GetBoolSlot28(void)
 
-undefined1 TEditText::GetTBehaviorClassNamePointer()
+undefined1 TEditText::GetBoolSlot28()
 
 {
   return (char)this->field04;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004906F0
-// GHIDRA_NAME TEditText::OrphanRetStub_0059ad90
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(char param_1)
+// GHIDRA_NAME TEditText::SetControlValue
+// GHIDRA_PROTO undefined __thiscall SetControlValue(char param_1)
 
-void TEditText::OrphanRetStub_0059ad90(char param_1)
+void TEditText::SetControlValue(char param_1)
 
 {
-  astruct_10 *unaff_retaddr;
-
   this->field04 = (int)param_1;
   if (*(int *)&this->field_0x94 != 0) {
     CMcWindow::EnableWindowOrDelegateToOwner((int)param_1);
     return;
   }
-  TEditText::OrphanCallChain_C11_I88_004874b0(this,unaff_retaddr);
+  func_0x0040799b();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490730
-// GHIDRA_NAME TEditText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1, int param_2)
+// GHIDRA_NAME TEditText::SetEnabled
+// GHIDRA_PROTO undefined __thiscall SetEnabled(int param_1, int param_2)
 
-void TEditText::_scalar_deleting_destructor_(int param_1, int param_2)
+void TEditText::SetEnabled(int param_1, int param_2)
 
 {
-  astruct_10 *unaff_ESI;
-
   if (param_1 != this->padding_08_to_0b) {
     this->padding_08_to_0b = param_1;
     if (param_2 != 0) {
       (*this->vftable->VTableSlot39)();
     }
-    if (*(CFrameWnd **)&this->field_0x94 != (CFrameWnd *)0x0) {
-      CFrameWnd::_ShowWindow_CWnd__QAEHH_Z
-                (*(CFrameWnd **)&this->field_0x94,-(uint)(this->padding_08_to_0b != 0) & 5);
+    if (*(CWnd **)&this->field_0x94 != (CWnd *)0x0) {
+      CWnd::ShowWindow(*(CWnd **)&this->field_0x94,-(uint)(this->padding_08_to_0b != 0) & 5);
       return;
     }
-    TEditText::OrphanCallChain_C11_I88_004874b0(this,unaff_ESI);
+    func_0x0040799b();
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004907A0
-// GHIDRA_NAME TEditText::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO int __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 * ui_ctx)
+// GHIDRA_NAME TEditText::DispatchSlot9CToLinkedChildren
+// GHIDRA_PROTO int __thiscall DispatchSlot9CToLinkedChildren(astruct_10 * ui_ctx)
 
-int TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 *ui_ctx)
+int TEditText::DispatchSlot9CToLinkedChildren(astruct_10 *ui_ctx)
 
 {
   short sVar1;
@@ -247,28 +286,28 @@ int TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 *ui_ctx)
   void *seh_prev;
   undefined1 *seh_handler;
   undefined4 seh_state;
-  int parent_hwnd;
-
+  undefined1 *parent_hwnd;
+  
   seh_prev = *unaff_FS_OFFSET;
   seh_state = 0xffffffff;
   seh_handler = &LAB_0062f1ca;
   *unaff_FS_OFFSET = &seh_prev;
   if ((((*(int *)&this->field_0x94 == 0) && (this->padding_08_to_0b != 0)) && (this->field04 != 0))
      && (this->field50 != 0)) {
-    dlg_obj = (undefined4 *)__2_YAPAXI_Z(0x3c);
+    dlg_obj = (undefined4 *)operator_new(0x3c);
     seh_state = 0;
     if (dlg_obj == (undefined4 *)0x0) {
       dlg_obj = (undefined4 *)0x0;
     }
     else {
-      __0CWnd__QAE_XZ();
+      CWnd::CWnd();
       *dlg_obj = &PTR_LAB_0064afd8;
     }
     seh_state = 0xffffffff;
     *(undefined4 **)&this->field_0x94 = dlg_obj;
     if (dlg_obj == (undefined4 *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xdee);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(g_szMcAppUiSourcePath_006950B0,0xdee);
     }
     sVar1 = *(short *)&this->field_0x90;
     style_base = 0x44010004;
@@ -290,11 +329,11 @@ int TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 *ui_ctx)
     if (flag_ok == '\0') {
       style_flags = style_flags | 0x8000000;
     }
-    iface = this->controlTag;
-    parent_hwnd = this->field50;
-    uVar3 = (*pTVar2->GetTEventHandlerClassNamePointer_58)(dlg_template,parent_hwnd,iface);
+    iface = this->field50;
+    parent_hwnd = dlg_template;
+    uVar3 = (*pTVar2->GetTEventHandlerClassNamePointer_58)(parent_hwnd,iface,this->controlTag);
     InvokeDialogCreateVslot5CWithTemplate45(style_flags,uVar3,parent_hwnd,iface);
-    iface = CreateFontFromPresetAndAttachRegionHandle(&this->field_0x78);
+    iface = func_0x00404147(&this->field_0x78);
     *(int *)&this->field_0x98 = iface;
     icon_wparam = 0;
     if (iface != 0) {
@@ -305,8 +344,8 @@ int TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 *ui_ctx)
        (iface = **(int **)&this->field_0x84, *(int *)(iface + -8) != 0)) {
       CMcWindow::SetWindowTextOrDelegateToOwner(iface);
     }
-    _ModifyStyleEx_CWnd__QAEHKKI_Z(0,0x20,0);
-    _ModifyStyle_CWnd__QAEHKKI_Z(0x2000000,0,0);
+    ModifyStyleEx(0,0x20,0);
+    ModifyStyle(0x2000000,0,0);
     dlg_hwnd = (HWND)0x0;
     if (*(int *)&this->field_0x94 != 0) {
       dlg_hwnd = *(HWND *)(*(int *)&this->field_0x94 + 0x1c);
@@ -322,7 +361,7 @@ int TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 *ui_ctx)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490A50
 // GHIDRA_NAME TEditText::SetEditSelectionAndScrollCaret
-// GHIDRA_PROTO undefined __thiscall TEditText::SetEditSelectionAndScrollCaret(short param_1, short param_2)
+// GHIDRA_PROTO undefined __thiscall SetEditSelectionAndScrollCaret(short param_1, short param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sets text selection range in edit control (EM_SETSEL) and scrolls caret into view (EM_SCROLLCARET).
 // GHIDRA_COMMENT_END
@@ -334,7 +373,7 @@ void TEditText::SetEditSelectionAndScrollCaret(short param_1, short param_2)
 
 {
   int iVar1;
-
+  
   iVar1 = *(int *)&this->field_0x94;
   if (iVar1 != 0) {
     SendMessageA(*(HWND *)(iVar1 + 0x1c),0xb1,(int)param_1,(int)param_2);
@@ -344,23 +383,23 @@ void TEditText::SetEditSelectionAndScrollCaret(short param_1, short param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490AA0
-// GHIDRA_NAME TEditText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TEditText::ActivateCityProductionViewIfAllowed
+// GHIDRA_PROTO undefined __thiscall ActivateCityProductionViewIfAllowed(void)
 
-undefined1 TEditText::_scalar_deleting_destructor_()
+undefined1 TEditText::ActivateCityProductionViewIfAllowed()
 
 {
   if (*(int *)&this->field_0x94 != 0) {
-    _SetFocus_CWnd__QAEPAV1_XZ();
+    CWnd::SetFocus();
   }
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490AD0
-// GHIDRA_NAME TEditText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TEditText::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TEditText::_scalar_deleting_destructor_()
+void TEditText::Free()
 
 {
   int iVar1;
@@ -368,7 +407,7 @@ void TEditText::_scalar_deleting_destructor_()
   TEditText *pTVar3;
   undefined3 extraout_var;
   ApplicationUiRootController *pAVar4;
-
+  
   if (*(int **)&this->field_0x94 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x94 + 4))(1);
     *(undefined4 *)&this->field_0x94 = 0;
@@ -409,19 +448,19 @@ void TEditText::_scalar_deleting_destructor_()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490BC0
-// GHIDRA_NAME TEditText::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_NAME TEditText::DispatchUiMouseMoveToChildren
+// GHIDRA_PROTO undefined __thiscall DispatchUiMouseMoveToChildren(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 uint __thiscall
-TEditText::SetForeignMinisterReadyFlag14
+TEditText::DispatchUiMouseMoveToChildren
           (TEditText *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
           undefined4 param_4)
 
 {
   uint uVar1;
   undefined3 extraout_var;
-
-  uVar1 = TView::SetForeignMinisterReadyFlag14((TView *)this,param_1,param_2,param_3,param_4);
+  
+  uVar1 = func_0x0040723e(param_1,param_2,param_3,param_4);
   if ((char)uVar1 != '\0') {
     (*this->vftable->OrphanTiny_ReturnZero_0048a730)(*(undefined4 *)&this->field_0x60,this,0);
     return CONCAT31(extraout_var,1);
@@ -430,28 +469,28 @@ TEditText::SetForeignMinisterReadyFlag14
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490C10
-// GHIDRA_NAME TEditText::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
+// GHIDRA_NAME TEditText::HandleCityProductionNoOp
+// GHIDRA_PROTO undefined __thiscall HandleCityProductionNoOp(void)
 
-void TEditText::OrphanRetStub_0059add0()
+void TEditText::HandleCityProductionNoOp()
 
 {
   if (*(int *)&this->field_0x94 != 0) {
-    _SetFocus_CWnd__QAEPAV1_XZ();
+    CWnd::SetFocus();
     return;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490C30
-// GHIDRA_NAME TEditText::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(undefined4 param_1)
+// GHIDRA_NAME TEditText::vmethod_0081
+// GHIDRA_PROTO undefined __thiscall vmethod_0081(undefined4 param_1)
 
-void TEditText::OrphanRetStub_0059add0(undefined4 param_1)
+void TEditText::vmethod_0081(undefined4 param_1)
 
 {
   if (*(int *)&this->field_0x94 != 0) {
-    _SetFocus_CWnd__QAEPAV1_XZ();
+    CWnd::SetFocus();
   }
   (*this->vftable->SetEditSelectionAndScrollCaret)(0,0x7fff,param_1);
   return;
@@ -459,7 +498,7 @@ void TEditText::OrphanRetStub_0059add0(undefined4 param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490C70
 // GHIDRA_NAME TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70
-// GHIDRA_PROTO undefined __thiscall TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString * param_1)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_StringShared_AssignFromPtr_At00490c70(CString * param_1)
 
 void TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString *param_1)
 
@@ -468,13 +507,13 @@ void TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString *param_
     CMcWindow::GetWindowTextOrDelegateToOwner(param_1);
     return;
   }
-  CString::__4CString__QAEABV0_ABV0__Z(param_1,*(CString **)&this->field_0x84);
+  CString::operator=(param_1,*(CString **)&this->field_0x84);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490CB0
 // GHIDRA_NAME TEditText::OrphanCallChain_C1_I09_0048ff70
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
 
 void TEditText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
 
@@ -486,20 +525,75 @@ void TEditText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00490E50
-// GHIDRA_NAME TEditText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00490CF0
+// GHIDRA_NAME TEditText::InitDialogWindowAndSyncTitleIfChanged
+// GHIDRA_PROTO undefined __thiscall InitDialogWindowAndSyncTitleIfChanged(CString param_1, char param_2)
 
-void TEditText::_scalar_deleting_destructor_()
+void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString param_1, char param_2)
+
+{
+  CString CVar1;
+  CString *src_ref;
+  int iVar2;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_14;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  CVar1.m_pchData = param_1.m_pchData;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062f1f8;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  CString::CString(&param_1,(CString *)param_1.m_pchData);
+  local_4 = 0;
+  if ((int)*(short *)&this->field_0x9c < *(int *)(param_1.m_pchData + -8)) {
+    src_ref = (CString *)CString::Left(&local_10,(int)*(short *)&this->field_0x9c);
+    local_4._0_1_ = 1;
+    CString::CString(&local_14,src_ref);
+    local_4._0_1_ = 2;
+    CString::operator=(&param_1,&local_14);
+    local_4._0_1_ = 1;
+    CString::~CString(&local_14);
+    local_4 = (uint)local_4._1_3_ << 8;
+    CString::~CString(&local_10);
+  }
+  iVar2 = func_0x0040799b();
+  if (iVar2 == 0) {
+    iVar2 = CompareAnsiStringsWithMbcsAwareness
+                      (param_1.m_pchData,**(undefined4 **)&this->field_0x84);
+    if (iVar2 != 0) {
+      CString::operator=(*(CString **)&this->field_0x84,&param_1);
+      if (param_2 != '\0') {
+        (*this->vftable->VTableSlot39)();
+      }
+    }
+  }
+  else {
+    CMcWindow::SetWindowTextOrDelegateToOwner(*(undefined4 *)CVar1.m_pchData);
+  }
+  local_4 = 0xffffffff;
+  CString::~CString(&param_1);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00490E50
+// GHIDRA_NAME TEditText::VTableSlot59
+// GHIDRA_PROTO undefined __thiscall VTableSlot59(void)
+
+void TEditText::VTableSlot59()
 
 {
   tagRECT local_10;
-
-  TSoundPlayer::_scalar_deleting_destructor_((TSoundPlayer *)this);
+  
+  func_0x004064e7();
   if (*(int *)&this->field_0x94 != 0) {
     GetClientRect(*(HWND *)(*(int *)&this->field_0x94 + 0x1c),&local_10);
     if ((local_10.left != this->field2c) || (local_10.top != this->field30)) {
-      _SetWindowPos_CWnd__QAEHPBV1_HHHHI_Z(0,this->field2c,this->field30,0,0,0x215);
+      SetWindowPos(0,this->field2c,this->field30,0,0,0x215);
     }
   }
   return;
@@ -512,9 +606,9 @@ void TEditText::_scalar_deleting_destructor_()
 TEditText * TEditText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTEditTextAndMaybeFree((TView *)this);
+  func_0x004043c7();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }

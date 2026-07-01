@@ -5,56 +5,84 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6A80
 // GHIDRA_NAME TTown::CreateTTownInstance
-// GHIDRA_PROTO undefined TTown::CreateTTownInstance()
+// GHIDRA_PROTO undefined CreateTTownInstance()
 
 void TTown::CreateTTownInstance(CString param_1,undefined4 *param_2)
 
 {
   undefined4 uVar1;
-
+  
   uVar1 = _atoi(param_1.m_pchData);
   *param_2 = uVar1;
-  CString::__1CString__QAE_XZ(&param_1);
+  CString::~CString(&param_1);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005B6C40
-// GHIDRA_NAME TTown::GetTTownClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTownClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005B6C10
+// GHIDRA_NAME TTown::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TTown::GetTTownClassNamePointer()
+undefined4 * TTown::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x50);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B6C40
+// GHIDRA_NAME TTown::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TTown::GetRuntimeClass()
+
+{
+  return &classTTown;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B6C60
+// GHIDRA_NAME TTown::TTown
+// GHIDRA_PROTO undefined __thiscall TTown(void)
+
+void TTown::TTown()
+
+{
+  this->vftable = &_vftable_;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6C80
-// GHIDRA_NAME TTown::DestructTTownAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTownAndMaybeFree(byte param_1)
+// GHIDRA_NAME TTown::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTown * TTown::DestructTTownAndMaybeFree(byte param_1)
+TTown * TTown::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTTownAndMaybeFree_Impl();
+  func_0x0040957a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6D70
-// GHIDRA_NAME TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int * param_1)
+// GHIDRA_NAME TTown::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int *param_1)
+void TTown::ReadFrom(int *param_1)
 
 {
   code *pcVar1;
   undefined1 uVar2;
   undefined1 *puVar3;
   int iVar4;
-
-  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
+  
+  func_0x00403517(param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,0x10);
   (*pcVar1)(&this->field_0x14,2);
@@ -75,7 +103,7 @@ void TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int *param_1)
   (*pcVar1)(&this->field_0x4c);
   (*pcVar1)(&this->field_0x4d,1);
   (*pcVar1)(&this->field_0x4e,1);
-  if (DAT_00695278 < 10) {
+  if (g_nSaveFormatVersion < 10) {
     this->field_0x4f = 1;
     return;
   }
@@ -85,32 +113,36 @@ void TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6E60
-// GHIDRA_NAME TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(int * param_1)
+// GHIDRA_NAME TTown::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(int *param_1)
+void TTown::WriteTo(int *param_1)
 
 {
   code *pcVar1;
   int iVar2;
   undefined2 *puVar3;
   int iVar4;
-  undefined4 uStack_2c;
-  undefined1 *puStack_28;
-  undefined4 uStack_24;
-  undefined1 *puStack_20;
-
-  puStack_20 = (undefined1 *)0x5b6e73;
-  TObject::WriteTo((TObject *)this,(TStream *)param_1);
+  undefined4 uStack_30;
+  undefined1 *puStack_2c;
+  undefined4 uStack_28;
+  undefined1 *puStack_24;
+  undefined4 uStack_20;
+  int *piStack_1c;
+  
+  piStack_1c = param_1;
+  uStack_20 = 0x5b6e73;
+  func_0x0040583a();
+  uStack_20 = 0x10;
   pcVar1 = *(code **)(*param_1 + 0x78);
-  puStack_20 = &this->field_0x4;
-  uStack_24 = 0x5b6e86;
+  puStack_24 = &this->field_0x4;
+  uStack_28 = 0x5b6e86;
   (*pcVar1)();
-  puStack_28 = &this->field_0x14;
-  uStack_24 = 2;
-  uStack_2c = 0x5b6e90;
+  puStack_2c = &this->field_0x14;
+  uStack_28 = 2;
+  uStack_30 = 0x5b6e90;
   (*pcVar1)();
-  uStack_2c = 2;
+  uStack_30 = 2;
   (*pcVar1)(&this->field_0x16);
   (*pcVar1)(&this->field_0x18,2);
   (*pcVar1)(&this->field_0x1a,2);
@@ -118,11 +150,11 @@ void TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(int *param_1)
   puVar3 = (undefined2 *)&this->field_0x1e;
   iVar4 = 0x17;
   do {
-    uStack_2c._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
-    uStack_2c._0_1_ = (undefined1)*puVar3;
-    uStack_2c._0_2_ = CONCAT11((undefined1)uStack_2c,uStack_2c._1_1_);
-    uStack_2c = CONCAT22((short)((uint)iVar2 >> 0x10),(undefined2)uStack_2c);
-    (*pcVar1)(&uStack_2c,2);
+    uStack_30._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
+    uStack_30._0_1_ = (undefined1)*puVar3;
+    uStack_30._0_2_ = CONCAT11((undefined1)uStack_30,uStack_30._1_1_);
+    uStack_30 = CONCAT22((short)((uint)iVar2 >> 0x10),(undefined2)uStack_30);
+    (*pcVar1)(&uStack_30,2);
     puVar3 = puVar3 + 1;
     iVar2 = iVar4 + -1;
     iVar4 = iVar2;
@@ -156,7 +188,7 @@ void TTown::RecomputeTownAdjacentResourceSupplyTotals()
   undefined4 *puVar11;
   int local_10;
   int local_c;
-
+  
   cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 5 + *(short *)&this->field_0x14 * 0x24);
   this->field_0x4e = 0;
   puVar11 = (undefined4 *)&this->field_0x1e;
@@ -170,9 +202,7 @@ void TTown::RecomputeTownAdjacentResourceSupplyTotals()
   pTVar7 = g_pGlobalMapState;
   do {
     if (local_c < 6) {
-      puVar4 = (undefined2 *)
-               GetWrappedHexNeighborTileIndexByDirection
-                         (*(undefined2 *)&this->field_0x14,local_c);
+      puVar4 = (undefined2 *)func_0x0040246e(*(undefined2 *)&this->field_0x14,local_c);
       pTVar7 = g_pGlobalMapState;
     }
     else {
@@ -255,7 +285,7 @@ void TTown::RecomputeTownAdjacentUniversityWeightedTotals()
   short *psVar9;
   undefined4 local_c;
   int local_8;
-
+  
   puVar8 = (undefined4 *)&this->field_0x1e;
   for (iVar4 = 0xb; iVar4 != 0; iVar4 = iVar4 + -1) {
     *puVar8 = 0;
@@ -266,8 +296,7 @@ void TTown::RecomputeTownAdjacentUniversityWeightedTotals()
   pTVar5 = g_pGlobalMapState;
   do {
     if (local_8 < 6) {
-      local_c = GetWrappedHexNeighborTileIndexByDirection
-                          (*(undefined2 *)&this->field_0x14,local_8);
+      local_c = func_0x0040246e(*(undefined2 *)&this->field_0x14,local_8);
       pTVar5 = g_pGlobalMapState;
     }
     else {
@@ -284,7 +313,7 @@ void TTown::RecomputeTownAdjacentUniversityWeightedTotals()
           cVar1 = (*pTVar5->vftable->OrphanCallChain_C1_I29_005135a0)(local_c,iVar7);
           sVar2 = (short)cVar1;
           if ((sVar2 != 0) &&
-             ((&TNoHiliteTextVtbl_0066d500.field_0x270)
+             ((&TNoHiliteText::_vftable_.field_0x270)
               [*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar4)] != '\0')) {
             sVar2 = (short)(char)(&g_abUniversityRequirementLevelById)
                                  [iVar6 * 4 +
@@ -324,7 +353,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
   ushort uVar4;
   TCity *this_00;
   short sVar5;
-
+  
   if (g_apNationStates[*(short *)&this->field_0x1c] == (TGreatPower *)0x0) {
     this_00 = (TCity *)0x0;
   }
@@ -336,7 +365,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
   if ((4 < (short)uVar4) && ((uVar4 & 1) == 0)) {
     sVar5 = *(short *)&this->field_0x20 + *(short *)&this->field_0x1e;
     if (sVar5 != 0) {
-      iVar3 = TCity::GetCityBuildingProductionValueBySlot(this_00,1);
+      iVar3 = GetCityBuildingProductionValueBySlot(this_00,1);
       sVar1 = *(short *)&this->field_0x2e;
       if ((sVar1 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar1 < (int)sVar5 / 2)) {
@@ -344,7 +373,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
       }
     }
     if (*(short *)&this->field_0x22 != 0) {
-      iVar3 = TCity::GetCityBuildingProductionValueBySlot(this_00,5);
+      iVar3 = GetCityBuildingProductionValueBySlot(this_00,5);
       sVar5 = *(short *)&this->field_0x30;
       if ((sVar5 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar5 < (int)*(short *)&this->field_0x22 / 2)) {
@@ -356,7 +385,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
       if (sVar1 <= sVar5) {
         sVar5 = sVar1;
       }
-      iVar3 = TCity::GetCityBuildingProductionValueBySlot(this_00,3);
+      iVar3 = GetCityBuildingProductionValueBySlot(this_00,3);
       sVar1 = *(short *)&this->field_0x34;
       if ((sVar1 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar1 < (int)sVar5 / 2)) {
@@ -403,7 +432,7 @@ void TTown::OrphanLeaf_NoCall_Ins29_005b77e0(char *param_1)
   uint uVar5;
   char *pcVar6;
   char *pcVar7;
-
+  
   uVar4 = 0xffffffff;
   pcVar6 = param_1;
   do {

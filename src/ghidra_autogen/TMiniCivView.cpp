@@ -20,328 +20,387 @@ void TMiniCivView::OrphanRetStub_004ab800()
 TMiniCivView * TMiniCivView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTMiniCivLineAndMaybeFree_Impl();
+  func_0x00402004();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB8C0
-// GHIDRA_NAME TMiniCivView::CreateTMiniCivViewInstance
-// GHIDRA_PROTO undefined CreateTMiniCivViewInstance()
+// GHIDRA_NAME TMiniCivView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TMiniCivView::CreateTMiniCivViewInstance(void)
+undefined4 * TMiniCivView::CreateObject(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006306d2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0x8c);
+  puVar1 = (undefined4 *)operator_new(0x8c);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::TControl(this);
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004087fb();
     local_4 = CONCAT31(local_4._1_3_,1);
-    CString::__0CString__QAE_XZ((CString *)&this[1].field_0x4);
-    this->vftable = (TControlVtbl *)&TMiniCivViewVtbl_0064d9d0;
-    pTVar1 = this;
+    CString::CString((CString *)(puVar1 + 0x22));
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB950
-// GHIDRA_NAME TMiniCivView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMiniCivView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMiniCivView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMiniCivView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMiniCivView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB970
 // GHIDRA_NAME TMiniCivView::ConstructTMiniCivViewBaseState
-// GHIDRA_PROTO undefined TMiniCivView::ConstructTMiniCivViewBaseState()
+// GHIDRA_PROTO undefined ConstructTMiniCivViewBaseState()
 
 void __thiscall
 TMiniCivView::ConstructTMiniCivViewBaseState
-          (int param_1,CString param_2,CString param_3,CString param_4,CString param_5)
+          (int param_1,undefined4 param_2,undefined4 param_3,char *param_4)
 
 {
   short sVar1;
-  CString CVar2;
+  undefined1 *puVar2;
   char cVar3;
   short sVar4;
-  undefined2 uVar5;
+  int iVar5;
+  undefined4 unaff_EBX;
   short sVar6;
+  undefined4 unaff_EDI;
   int *unaff_FS_OFFSET;
+  CString *pCStack_68;
+  undefined4 uStack_5c;
+  undefined4 uStack_58;
+  undefined4 uStack_54;
+  CString CStack_50;
+  CString CStack_4c;
+  CString CStack_48;
+  CString CStack_44;
   CString local_30;
-  CString local_2c;
-  CString CStack_28;
-  CString CStack_24;
-  CString CStack_20;
+  int local_2c;
+  undefined4 uStack_28;
+  int iStack_24;
+  undefined4 uStack_20;
   CString CStack_1c;
   CString CStack_18;
   CString CStack_14;
   CString CStack_10;
-  int iStack_c;
+  undefined1 *puStack_c;
   undefined1 *puStack_8;
-  int local_4;
-
-  local_4 = -1;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
   puStack_8 = &LAB_00630758;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  InitializeUiResourceEntryFrameAndParent
-            (0,param_2.m_pchData,param_3.m_pchData,param_4.m_pchData,5);
-  CVar2.m_pchData = param_5.m_pchData;
-  *(char **)(param_1 + 0x84) = param_5.m_pchData;
+  puStack_c = (undefined1 *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&puStack_c;
+  CStack_44.m_pchData = (char *)0x0;
+  CStack_48.m_pchData = (char *)0x5;
+  CStack_4c.m_pchData = (char *)0x5;
+  CStack_50.m_pchData = param_4;
+  uStack_54 = param_3;
+  uStack_58 = param_2;
+  uStack_5c = 0;
+  func_0x004096b5();
+  puVar2 = puStack_c;
+  *(undefined1 **)(param_1 + 0x84) = puStack_c;
   *(undefined4 *)(param_1 + 0x60) = 0x22;
-  param_5.m_pchData = &stack0xffffffb8;
-  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&stack0xffffffb8,PTR_g_szEmptyString_0064cb18);
-  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  CString::__0CString__QAE_XZ(&param_3);
-  local_4 = 0;
-  CString::__0CString__QAE_XZ(&param_4);
-  local_4._0_1_ = 1;
-  CString::__0CString__QAE_XZ(&local_2c);
-  local_4._0_1_ = 2;
-  CString::__0CString__QAE_XZ(&param_2);
-  local_4._0_1_ = 3;
-  CString::__0CString__QAE_XZ(&local_30);
-  sVar1 = *(short *)(CVar2.m_pchData + 6);
-  local_4._0_1_ = 4;
-  CString::__0CString__QAE_PBD_Z(&param_5,PTR_g_szEmptyString_0064cb18);
-  local_4._0_1_ = 5;
-  CString::__4CString__QAEABV0_ABV0__Z(&param_3,&param_5);
-  local_4._0_1_ = 4;
-  CString::__1CString__QAE_XZ(&param_5);
-  switch(*(undefined4 *)(CVar2.m_pchData + 8)) {
+  puStack_c = &stack0xffffff9c;
+  pCStack_68 = (CString *)PTR_g_szEmptyString_0064cb18;
+  func_0x00401b40();
+  func_0x00404d22();
+  CString::CString(&CStack_18);
+  iStack_24 = 0;
+  CString::CString(&CStack_14);
+  iStack_24._0_1_ = 1;
+  CString::CString(&CStack_4c);
+  iStack_24._0_1_ = 2;
+  CString::CString(&CStack_1c);
+  iStack_24._0_1_ = 3;
+  CString::CString(&CStack_50);
+  sVar1 = *(short *)(puVar2 + 6);
+  iStack_24._0_1_ = 4;
+  pCStack_68 = (CString *)0x4aba39;
+  CString::CString(&CStack_10,PTR_g_szEmptyString_0064cb18);
+  iStack_24._0_1_ = 5;
+  pCStack_68 = (CString *)0x4aba4c;
+  CString::operator=(&CStack_18,&CStack_10);
+  iStack_24._0_1_ = 4;
+  CString::~CString(&CStack_10);
+  switch(*(undefined4 *)(puVar2 + 8)) {
   case 1:
+    pCStack_68 = (CString *)0x8;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-    __YCString__QAEABV0_ABV0__Z();
+    pCStack_68 = (CString *)0x4abe1a;
+    CString::operator+=();
     break;
   case 5:
+    pCStack_68 = (CString *)0x1;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-    __H_YG_AVCString__ABV0_PBD_Z(&CStack_28);
-    local_4._0_1_ = 6;
-    __YCString__QAEABV0_ABV0__Z();
-    local_4._0_1_ = 4;
-    CString::__1CString__QAE_XZ(&CStack_28);
+    pCStack_68 = &CStack_14;
+    AssignSharedStringConcatRefAndCStr(&CStack_48);
+    iStack_24._0_1_ = 6;
+    pCStack_68 = (CString *)0x4abaaa;
+    CString::operator+=();
+    iStack_24._0_1_ = 4;
+    CString::~CString(&CStack_48);
     break;
   case 6:
+    pCStack_68 = (CString *)0x2;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-    __H_YG_AVCString__ABV0_PBD_Z(&CStack_24);
-    local_4._0_1_ = 7;
-    __YCString__QAEABV0_ABV0__Z();
-    local_4._0_1_ = 4;
-    CString::__1CString__QAE_XZ(&CStack_24);
+    pCStack_68 = &CStack_14;
+    AssignSharedStringConcatRefAndCStr(&CStack_44);
+    iStack_24._0_1_ = 7;
+    pCStack_68 = (CString *)0x4abaf9;
+    CString::operator+=();
+    iStack_24._0_1_ = 4;
+    CString::~CString(&CStack_44);
     break;
   case 7:
+    pCStack_68 = (CString *)0x3;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-    __H_YG_AVCString__ABV0_PBD_Z(&CStack_20);
-    local_4._0_1_ = 8;
-    __YCString__QAEABV0_ABV0__Z();
-    local_4._0_1_ = 4;
-    CString::__1CString__QAE_XZ(&CStack_20);
+    pCStack_68 = &CStack_14;
+    AssignSharedStringConcatRefAndCStr(&stack0xffffffc0);
+    iStack_24._0_1_ = 8;
+    pCStack_68 = (CString *)0x4abb48;
+    CString::operator+=();
+    iStack_24._0_1_ = 4;
+    CString::~CString((CString *)&stack0xffffffc0);
     break;
   case 8:
+    pCStack_68 = (CString *)0x4;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-    __H_YG_AVCString__ABV0_PBD_Z(&CStack_1c);
-    local_4._0_1_ = 9;
-    __YCString__QAEABV0_ABV0__Z();
-    local_4._0_1_ = 4;
-    CString::__1CString__QAE_XZ(&CStack_1c);
+    pCStack_68 = &CStack_14;
+    AssignSharedStringConcatRefAndCStr(&stack0xffffffc4);
+    iStack_24._0_1_ = 9;
+    pCStack_68 = (CString *)0x4abb96;
+    CString::operator+=();
+    iStack_24._0_1_ = 4;
+    CString::~CString((CString *)&stack0xffffffc4);
     break;
   case 10:
-    if ((*(short *)(CVar2.m_pchData + 4) == 0) &&
-       (cVar3 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)(),
+    if ((*(short *)(puVar2 + 4) == 0) &&
+       (pCStack_68 = (CString *)CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar1),
+       cVar3 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)(),
        cVar3 == '\0')) {
       sVar6 = 0;
-      param_5.m_pchData = (char *)0x0;
+      CStack_10.m_pchData = (char *)0x0;
       do {
-        sVar4 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + (int)sVar6 + 0x11 +
-                                sVar1 * 0x24);
+        iVar5 = *(int *)&g_pGlobalMapState->field_0xc + (int)sVar6;
+        sVar4 = (short)*(char *)(iVar5 + 0x11 + sVar1 * 0x24);
+        pCStack_68 = (CString *)CONCAT22((short)((uint)iVar5 >> 0x10),sVar4);
         if ((sVar4 != -1) && ((&DAT_006963e8)[sVar4] != '\0')) {
           (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2711);
-          param_5.m_pchData = param_5.m_pchData + 1;
+          CStack_10.m_pchData = CStack_10.m_pchData + 1;
         }
         sVar6 = sVar6 + 1;
       } while (sVar6 < 2);
-      if ((short)param_5.m_pchData < 2) {
+      if ((short)CStack_10.m_pchData < 2) {
+        pCStack_68 = (CString *)0xa;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-        scanBracketExpressions(g_pLocalizationTable,&local_30,param_2.m_pchData);
+        func_0x0040988b(g_pLocalizationTable,&uStack_5c,uStack_28,uStack_20);
       }
       else {
+        pCStack_68 = (CString *)0x6;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-        scanBracketExpressions(g_pLocalizationTable,&local_30,param_2.m_pchData);
+        func_0x0040988b(g_pLocalizationTable,&uStack_5c,uStack_28,uStack_20,uStack_58);
       }
-      __H_YG_AVCString__ABV0_PBD_Z(&CStack_18);
-      local_4._0_1_ = 10;
-      __YCString__QAEABV0_ABV0__Z();
-      local_4._0_1_ = 4;
-      CString::__1CString__QAE_XZ(&CStack_18);
+      pCStack_68 = &CStack_50;
+      AssignSharedStringConcatRefAndCStr(&stack0xffffffc8);
+      iStack_24._0_1_ = 10;
+      pCStack_68 = (CString *)0x4abcd5;
+      CString::operator+=();
+      iStack_24._0_1_ = 4;
+      CString::~CString((CString *)&stack0xffffffc8);
+    }
+    else if (*(short *)(puVar2 + 4) == 7) {
+      pCStack_68 = (CString *)0x5;
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+                (0x2725,CONCAT22((short)((uint)&uStack_20 >> 0x10),*(undefined2 *)(puVar2 + 4)),
+                 &uStack_20);
+      func_0x0040988b(g_pLocalizationTable,&pCStack_68,unaff_EBX,local_2c);
+      pCStack_68 = &CStack_50;
+      AssignSharedStringConcatRefAndCStr(&stack0xffffffcc);
+      iStack_24._0_1_ = 0xb;
+      pCStack_68 = (CString *)0x4abd66;
+      CString::operator+=();
+      iStack_24._0_1_ = 4;
+      CString::~CString((CString *)&stack0xffffffcc);
     }
     else {
-      uVar5 = (undefined2)((uint)&stack0x00000000 >> 0x10);
-      if (*(short *)(CVar2.m_pchData + 4) == 7) {
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)
-                  (0x2725,CONCAT22(uVar5,*(undefined2 *)(CVar2.m_pchData + 4)),&stack0x00000000);
-        scanBracketExpressions(g_pLocalizationTable,&local_30,param_2.m_pchData);
-        __H_YG_AVCString__ABV0_PBD_Z(&CStack_14);
-        local_4._0_1_ = 0xb;
-        __YCString__QAEABV0_ABV0__Z();
-        local_4._0_1_ = 4;
-        CString::__1CString__QAE_XZ(&CStack_14);
-      }
-      else {
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)
-                  (0x2725,CONCAT22(uVar5,*(undefined2 *)(CVar2.m_pchData + 4)),&stack0x00000000);
-        scanBracketExpressions(g_pLocalizationTable,&local_30,param_2.m_pchData);
-        __H_YG_AVCString__ABV0_PBD_Z(&CStack_10);
-        local_4._0_1_ = 0xc;
-        __YCString__QAEABV0_ABV0__Z();
-        local_4._0_1_ = 4;
-        CString::__1CString__QAE_XZ(&CStack_10);
-      }
+      pCStack_68 = (CString *)0x7;
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+                (0x2725,CONCAT22((short)((uint)&uStack_20 >> 0x10),*(undefined2 *)(puVar2 + 4)),
+                 &uStack_20);
+      func_0x0040988b(g_pLocalizationTable,&pCStack_68,unaff_EBX,local_2c);
+      pCStack_68 = &CStack_50;
+      AssignSharedStringConcatRefAndCStr(&local_30);
+      iStack_24._0_1_ = 0xc;
+      pCStack_68 = (CString *)0x4abde3;
+      CString::operator+=();
+      iStack_24._0_1_ = 4;
+      CString::~CString(&local_30);
     }
   }
-  CString::__4CString__QAEABV0_ABV0__Z((CString *)(param_1 + 0x88),&param_3);
-  local_4._0_1_ = 3;
-  CString::__1CString__QAE_XZ(&local_30);
-  local_4._0_1_ = 2;
-  CString::__1CString__QAE_XZ(&param_2);
-  local_4._0_1_ = 1;
-  CString::__1CString__QAE_XZ(&local_2c);
-  local_4 = (uint)local_4._1_3_ << 8;
-  CString::__1CString__QAE_XZ(&param_4);
-  local_4 = -1;
-  CString::__1CString__QAE_XZ(&param_3);
-  *unaff_FS_OFFSET = iStack_c;
+  pCStack_68 = (CString *)0x4abe2a;
+  CString::operator=((CString *)(param_1 + 0x88),&CStack_18);
+  iStack_24._0_1_ = 3;
+  CString::~CString(&CStack_50);
+  iStack_24._0_1_ = 2;
+  CString::~CString(&CStack_1c);
+  iStack_24._0_1_ = 1;
+  CString::~CString(&CStack_4c);
+  iStack_24 = (uint)iStack_24._1_3_ << 8;
+  CString::~CString(&CStack_14);
+  iStack_24 = 0xffffffff;
+  CString::~CString(&CStack_18);
+  *unaff_FS_OFFSET = local_2c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC000
-// GHIDRA_NAME TMiniCivView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TMiniCivView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMiniCivView::OrphanTiny_ReturnZero_0048a730()
+void TMiniCivView::ApplyRectSlot110()
 
 {
   undefined uVar1;
   CString *src_ref;
   undefined3 extraout_var;
   undefined4 *unaff_FS_OFFSET;
-  CString CStack_58;
+  CString CStack_64;
+  CString CStack_60;
+  CString CStack_5c;
+  undefined4 uStack_58;
   CString CStack_54;
   CString local_48;
-  CString CStack_44;
+  undefined4 uStack_44;
   CString local_40;
-  RECT RStack_3c;
-  RECT RStack_2c;
-  undefined4 uStack_1c;
-  int iStack_14;
+  undefined4 uStack_3c;
+  int aiStack_38 [3];
+  undefined4 uStack_2c;
+  undefined4 uStack_28;
+  int iStack_20;
+  undefined1 uStack_1c;
   undefined1 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006307b0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_54.m_pchData = (char *)0x3;
-  CStack_58.m_pchData = (char *)0x2b67;
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw();
+  uStack_58 = 0x2b67;
+  CStack_5c.m_pchData = (char *)0xc;
+  CStack_60.m_pchData = (char *)0x0;
+  CStack_64.m_pchData = (char *)0x4ac02d;
+  func_0x00401bf9();
   CStack_54.m_pchData = (char *)0x4ac039;
-  CString::__0CString__QAE_XZ(&local_48);
+  CString::CString(&local_48);
   local_4 = 0;
   CStack_54.m_pchData = (char *)0x4ac046;
-  CString::__0CString__QAE_XZ(&local_40);
+  CString::CString(&local_40);
   CStack_54.m_pchData = (char *)&local_48;
   local_4 = CONCAT31(local_4._1_3_,1);
-  CStack_58.m_pchData =
-       (char *)CONCAT22((short)((uint)*(int *)&this->field_0x84 >> 0x10),
-                        *(undefined2 *)(*(int *)&this->field_0x84 + 4));
+  uStack_58 = CONCAT22((short)((uint)*(int *)&this->field_0x84 >> 0x10),
+                       *(undefined2 *)(*(int *)&this->field_0x84 + 4));
+  CStack_5c.m_pchData = (char *)0x2718;
+  CStack_60.m_pchData = (char *)0x4ac06e;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  CStack_60.m_pchData = (char *)0x18;
+  CStack_64.m_pchData = (char *)0x40;
   SetQuickDrawTextOriginWithContextOffset();
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
-  CString::__0CString__QAE_XZ((CString *)&stack0xffffffb0);
+  CStack_60.m_pchData = (char *)&CStack_54;
+  CStack_64.m_pchData = (char *)0x4ac084;
+  func_0x004029aa();
+  CStack_60.m_pchData = (char *)0x4ac090;
+  CString::CString((CString *)&stack0xffffffb0);
+  CStack_60.m_pchData = &stack0xffffffb4;
   uStack_10 = 2;
-  FormatOverlayTerrainLabelText();
-  AssignSharedStringFromIndexedA8EntryNameField();
-  __H_YG_AVCString__ABV0_PBD_Z(&local_40);
-  uStack_10 = 3;
-  src_ref = (CString *)__H_YG_AVCString__ABV0_0_Z(&CStack_44);
-  uStack_10 = 4;
-  CString::__0CString__QAE_ABV0__Z(&local_48,src_ref);
-  uStack_10 = 5;
-  CString::__4CString__QAEABV0_ABV0__Z(&CStack_54,&local_48);
-  uStack_10 = 4;
-  CString::__1CString__QAE_XZ(&local_48);
-  uStack_10 = 3;
-  CString::__1CString__QAE_XZ(&CStack_44);
-  uStack_10 = 2;
-  CString::__1CString__QAE_XZ(&local_40);
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xc);
+  CStack_64.m_pchData = (char *)0x4ac0c1;
+  func_0x00405245();
+  CStack_64.m_pchData = (char *)&CStack_54;
+  func_0x0040918d();
+  AssignSharedStringConcatRefAndCStr(&stack0xffffffb4);
+  uStack_1c = 3;
+  src_ref = (CString *)AssignSharedStringConcatRefAndRef(&stack0xffffffb0);
+  uStack_1c = 4;
+  CString::CString(&CStack_54,src_ref);
+  uStack_1c = 5;
+  CString::operator=(&CStack_60,&CStack_54);
+  uStack_1c = 4;
+  CString::~CString(&CStack_54);
+  uStack_1c = 3;
+  CString::~CString((CString *)&stack0xffffffb0);
+  uStack_1c = 2;
+  CString::~CString((CString *)&stack0xffffffb4);
+  func_0x00401bf9(0,0xc);
   SetQuickDrawTextOriginWithContextOffset();
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  func_0x004029aa();
   SetQuickDrawTextOriginWithContextOffset();
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  func_0x004029aa();
   uVar1 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)();
-  RStack_2c.left = (LONG)(short)CONCAT31(extraout_var,uVar1);
-  RStack_2c.right = RStack_2c.left + 0x40;
-  RStack_3c.left = 0;
-  RStack_3c.top = 0;
-  RStack_3c.right = 0x40;
-  RStack_3c.bottom = 0x40;
-  RStack_2c.top = 0;
-  RStack_2c.bottom = 0x40;
-  UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4),
-             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_2c,&RStack_3c,0x24,
-             (astruct_19 *)0x0);
-  local_40.m_pchData = &stack0xffffff9c;
-  SetQuickDrawStrokeColor();
-  iStack_14._0_1_ = 1;
-  CString::__1CString__QAE_XZ(&CStack_54);
-  iStack_14 = (uint)iStack_14._1_3_ << 8;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb0);
-  iStack_14 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_58);
-  *unaff_FS_OFFSET = uStack_1c;
+  aiStack_38[0] = (int)(short)CONCAT31(extraout_var,uVar1);
+  aiStack_38[2] = aiStack_38[0] + 0x40;
+  local_48.m_pchData = (char *)0x0;
+  uStack_44 = 0;
+  local_40.m_pchData = (char *)0x40;
+  uStack_3c = 0x40;
+  aiStack_38[1] = 0;
+  uStack_2c = 0x40;
+  func_0x004010be();
+  func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4,
+                  &g_pActiveQuickDrawSurfaceContext->field_0x4,aiStack_38,&local_48,0x24);
+  func_0x00402bdf();
+  iStack_20._0_1_ = 1;
+  CString::~CString(&CStack_60);
+  iStack_20 = (uint)iStack_20._1_3_ << 8;
+  CString::~CString(&CStack_5c);
+  iStack_20 = 0xffffffff;
+  CString::~CString(&CStack_64);
+  *unaff_FS_OFFSET = uStack_28;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC320
-// GHIDRA_NAME TMiniCivView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, TMiniCivView * param_2)
+// GHIDRA_NAME TMiniCivView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, TMiniCivView * param_2)
 
-void TMiniCivView::OrphanRetStub_0059add0(int param_1, TMiniCivView *param_2)
+void TMiniCivView::HandleEvent(int param_1, TMiniCivView *param_2)
 
 {
   TView *pTVar1;
-
+  undefined4 in_stack_0000000c;
+  
   if (param_2 == this) {
     pTVar1 = this->ownerContext;
     (**(code **)&pTVar1->vftable->field_0xc)();
     *(undefined2 *)&pTVar1[1].ownerOffsetX = *(undefined2 *)(*(int *)&this->field_0x84 + 6);
   }
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+  func_0x00404566(param_1,param_2,in_stack_0000000c);
   return;
 }
 

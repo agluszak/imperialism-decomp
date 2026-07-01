@@ -3,20 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TFlagOptionsPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0043D8C0
-// GHIDRA_NAME TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0
-// GHIDRA_PROTO undefined __thiscall TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0(void)
-
-TFlagOptionsPicture * __thiscall
-TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0
-          (TFlagOptionsPicture *this)
-
-{
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TFlagOptionsPictureVtbl_00642490;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0043DA10
 // GHIDRA_NAME TFlagOptionsPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -24,182 +10,256 @@ TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8
 TFlagOptionsPicture * TFlagOptionsPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004053e4();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B210
-// GHIDRA_NAME TFlagOptionsPicture::CreateTFlagOptionsPictureInstance
-// GHIDRA_PROTO undefined CreateTFlagOptionsPictureInstance()
+// GHIDRA_NAME TFlagOptionsPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(void)
+undefined4 * TFlagOptionsPicture::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635d2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TFlagOptionsPictureVtbl **)this = &TFlagOptionsPictureVtbl_00642490;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B290
-// GHIDRA_NAME TFlagOptionsPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TFlagOptionsPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFlagOptionsPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TFlagOptionsPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTFlagOptionsPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B2B0
-// GHIDRA_NAME TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(CString param_1, undefined1 * param_2)
+// GHIDRA_NAME TFlagOptionsPicture::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(CString param_1, undefined1 * param_2)
 
-void __thiscall
-TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TFlagOptionsPicture *this,CString param_1,undefined1 *param_2)
+void TFlagOptionsPicture::HandleEvent(CString param_1, undefined1 *param_2)
 
 {
-  uint uVar1;
-  undefined uVar2;
-  char cVar3;
+  undefined uVar1;
+  char cVar2;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
   undefined3 extraout_var_03;
   undefined3 extraout_var_04;
-  TSimMgrVtbl *pTVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  int local_4;
-
-  local_c = *unaff_FS_OFFSET;
+  undefined4 extraout_ECX;
+  TSimMgrVtbl *pTVar3;
+  uint *unaff_FS_OFFSET;
+  uint in_stack_0000000c;
+  undefined4 uStack_38;
+  undefined *puStack_34;
+  int iStack_30;
+  undefined4 uStack_2c;
+  CString *pCStack_28;
+  undefined4 uStack_24;
+  undefined4 uStack_20;
+  char *pcStack_1c;
+  undefined1 *puStack_18;
+  undefined1 *local_c;
+  CString CStack_8;
+  undefined4 local_4;
+  
+  local_c = (undefined1 *)*unaff_FS_OFFSET;
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_00635d50;
-  *unaff_FS_OFFSET = &local_c;
+  CStack_8.m_pchData = &LAB_00635d50;
+  *unaff_FS_OFFSET = (uint)&local_c;
   if (param_1.m_pchData != (char *)0xa) {
-    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-              ((TMapDialog *)this,(int)param_1.m_pchData);
-    *unaff_FS_OFFSET = local_c;
+    puStack_18 = param_2;
+    pcStack_1c = param_1.m_pchData;
+    uStack_20 = 0x56b55f;
+    func_0x00404566();
+    *unaff_FS_OFFSET = (uint)puStack_18;
     return;
   }
-  CString::__0CString__QAE_XZ(&param_1);
+  puStack_18 = (undefined1 *)0x56b2df;
+  CString::CString(&param_1);
   local_4 = 0;
-  uVar1 = *(uint *)(param_2 + 0x1c);
-  if (uVar1 < 0x676f777a) {
-    if (uVar1 == 0x676f7779) {
-      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
-      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1b4))();
+  puStack_18 = *(undefined1 **)(param_2 + 0x1c);
+  if (puStack_18 < 0x676f777a) {
+    if (puStack_18 == (undefined1 *)0x676f7779) {
+      puStack_18 = (undefined1 *)0x56b333;
+      uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+      pcStack_1c = *(char **)(param_2 + 0x1c);
+      puStack_18 = (undefined1 *)0x0;
+      uStack_20 = 0x56b343;
+      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar1) + 0x1b4))();
       goto LAB_0056b529;
     }
-    if (uVar1 == 0x63726564) {
-      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
-      (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))();
+    if (puStack_18 == (undefined1 *)0x63726564) {
+      puStack_18 = (undefined1 *)0x56b309;
+      uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+      puStack_18 = (undefined1 *)0x0;
+      pcStack_1c = (undefined1 *)0x6f6b6179;
+      uStack_20 = 0x56b31a;
+      (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))();
+      uStack_20 = 0x71;
+      uStack_24 = 0x56b327;
       (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
       goto LAB_0056b529;
     }
   }
-  else if (uVar1 < 0x6e657768) {
-    if (uVar1 == 0x6e657767) {
+  else if (puStack_18 < 0x6e657768) {
+    if (puStack_18 == (undefined1 *)0x6e657767) {
 LAB_0056b474:
-      cVar3 = DispatchGameStateEventIfLocalizedPromptAccepted();
-      if (cVar3 != '\0') {
-        uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
-        (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar2) + 0x1b4))();
+      pcStack_1c = (undefined1 *)0x56b480;
+      cVar2 = func_0x0040426e();
+      if (cVar2 != '\0') {
+        uStack_24 = 0x56b48f;
+        uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+        pCStack_28 = *(CString **)(param_2 + 0x1c);
+        uStack_24 = 0;
+        uStack_2c = 0x56b49f;
+        (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar1) + 0x1b4))();
         if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-          if (g_pGameFlowState->field_0xf4 != '\0') {
-            TrySaveGameAndMaybeShowFailureDialog();
+          iStack_30 = 0;
+          if (*(char *)((int)g_pGameFlowState + 0xf4) != '\0') {
+            uStack_2c = 0;
+            iStack_30 = 0;
+            puStack_34 = (undefined *)0xa1;
+            uStack_38 = 0x56b4d0;
+            cVar2 = func_0x00409476();
+            iStack_30 = (int)cVar2;
           }
-          DispatchTaggedGameStateEvent1F20();
+          puStack_34 = *(undefined **)(param_2 + 0x1c);
+          uStack_2c = 0xfffffffd;
+          uStack_38 = 0x56b4e5;
+          func_0x00406efb();
         }
         else if (*(int *)(param_2 + 0x1c) == 0x71756974) {
-          PostWmCloseToMainThreadWindow();
+          uStack_2c = 0x56b4fc;
+          func_0x004077e3();
         }
         else {
-          CreateAndQueueTurnEventPacketTagGWEN();
+          uStack_2c = 0x56b503;
+          func_0x00407518();
         }
       }
       goto LAB_0056b529;
     }
-    if (uVar1 == 0x6c6f6164) {
+    if (puStack_18 == (undefined1 *)0x6c6f6164) {
       if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
-        ShowLocalizedUiPromptByGroupAndIndex(0x2737,0x34,0,0);
+        puStack_18 = (undefined1 *)0x0;
+        pcStack_1c = (undefined1 *)0x0;
+        uStack_20 = 0x34;
+        uStack_24 = 0x2737;
+        pCStack_28 = (CString *)0x56b385;
+        func_0x004075a9();
         goto LAB_0056b529;
       }
-      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
-      (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar2) + 0x1b4))();
-      pTVar4 = g_pLocalizationTable->vftable;
+      puStack_18 = (undefined1 *)0x56b391;
+      uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+      pcStack_1c = *(char **)(param_2 + 0x1c);
+      puStack_18 = (undefined1 *)0x0;
+      uStack_20 = 0x56b3a1;
+      (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar1) + 0x1b4))();
+      uStack_20 = 0x70;
+      pTVar3 = g_pLocalizationTable->vftable;
       goto LAB_0056b526;
     }
   }
   else {
-    if (uVar1 == 0x70726566) {
-      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
-      (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar2) + 0x1b4))();
-      pTVar4 = g_pLocalizationTable->vftable;
+    if (puStack_18 == (undefined1 *)0x70726566) {
+      puStack_18 = (undefined1 *)0x56b50c;
+      uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+      pcStack_1c = *(char **)(param_2 + 0x1c);
+      puStack_18 = (undefined1 *)0x0;
+      uStack_20 = 0x56b51c;
+      (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar1) + 0x1b4))();
+      uStack_20 = 0x6b;
+      pTVar3 = g_pLocalizationTable->vftable;
 LAB_0056b526:
-      (*pTVar4[9].GetTSimMgrClassNamePointer)();
+      uStack_24 = 0x56b529;
+      (*pTVar3[9].GetTSimMgrClassNamePointer)();
       goto LAB_0056b529;
     }
-    if (uVar1 == 0x71756974) goto LAB_0056b474;
-    if (uVar1 == 0x73617665) {
-      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
-      (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar2) + 0x1b4))();
+    if (puStack_18 == (undefined1 *)0x71756974) goto LAB_0056b474;
+    if (puStack_18 == (undefined1 *)0x73617665) {
+      puStack_18 = (undefined1 *)0x56b3e8;
+      uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+      pcStack_1c = *(char **)(param_2 + 0x1c);
+      puStack_18 = (undefined1 *)0x0;
+      uStack_20 = 0x56b3f8;
+      (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar1) + 0x1b4))();
       if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
-        CString::__0CString__QAE_XZ((CString *)&stack0x0000000c);
-        local_4._0_1_ = 1;
-        LoadUiStringResourceByGroupAndIndex();
-        AssignStringSharedRefAndReturnThis(&stack0x0000000c);
+        uStack_20 = 0x56b414;
+        CString::CString(&param_1);
+        uStack_20 = 0x13;
+        pCStack_28 = &param_1;
+        uStack_24 = 0x2742;
+        local_c = (undefined1 *)CONCAT31(local_c._1_3_,1);
+        uStack_2c = 0x56b430;
+        func_0x00401e7e();
+        uStack_2c = 0;
+        iStack_30 = 0;
+        puStack_34 = &DAT_006a4048;
+        local_c = (undefined1 *)&uStack_38;
+        uStack_38 = extraout_ECX;
+        func_0x004076b7(&CStack_8);
+        puStack_34 = (undefined *)0x56b455;
         DispatchLocalizedUiMessageWithTemplateA13A0();
-        local_4 = (uint)local_4._1_3_ << 8;
-        CString::__1CString__QAE_XZ((CString *)&stack0x0000000c);
+        uStack_24 = 0x56b463;
+        CString::~CString((CString *)&stack0x00000000);
       }
       else {
+        uStack_20 = 0x6f;
+        uStack_24 = 0x56b46f;
         (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
       }
       goto LAB_0056b529;
     }
   }
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,10);
+  puStack_18 = (undefined1 *)in_stack_0000000c;
+  pcStack_1c = param_2;
+  uStack_20 = 10;
+  uStack_24 = 0x56b3dc;
+  func_0x00404566();
 LAB_0056b529:
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&param_1);
-  *unaff_FS_OFFSET = local_c;
+  uStack_24 = 0x56b53a;
+  CString::~CString(&CStack_8);
+  *unaff_FS_OFFSET = (uint)puStack_18;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B640
-// GHIDRA_NAME TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TFlagOptionsPicture::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
+void TFlagOptionsPicture::NoOpUiLifecycleHook()
 
 {
   int iVar1;
   int *piVar2;
-  code *unaff_ESI;
+  code *unaff_EDI;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar4;
@@ -208,18 +268,18 @@ void TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635d68;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
+  func_0x00406ba9();
+  CString::CString((CString *)&stack0x00000000);
   iVar3 = 0;
-  local_4 = 0;
+  puStack_8 = (undefined1 *)0x0;
   do {
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2743,iVar3,&stack0x00000004);
-    piVar2 = (int *)(*unaff_ESI)(iVar3 + 0x74787430);
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2743,iVar3,&stack0x00000000);
+    piVar2 = (int *)(*unaff_EDI)(iVar3 + 0x74787430);
     iVar1 = *piVar2;
     (**(code **)(iVar1 + 0xc))();
     if (iVar3 == 0) {
@@ -232,14 +292,14 @@ void TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
       uVar5 = 0x2b6c;
       uVar4 = 0xc;
     }
-    ApplyUiTextStyleAndThemeFlags(piVar2,0,uVar4,uVar5,uVar6);
+    func_0x0040263a(piVar2,0,uVar4,uVar5,uVar6);
     (**(code **)(iVar1 + 0x1c4))(((1 < iVar3) - 1 & 3) - 2,0);
-    (**(code **)(iVar1 + 0x1c8))(&stack0xffffffec,0);
+    (**(code **)(iVar1 + 0x1c8))(&stack0xffffffe8,0);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 8);
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0x00000004);
-  *unaff_FS_OFFSET = uStack_c;
+  puStack_8 = (undefined1 *)0xffffffff;
+  CString::~CString((CString *)&stack0x00000000);
+  *unaff_FS_OFFSET = this;
   return;
 }
 

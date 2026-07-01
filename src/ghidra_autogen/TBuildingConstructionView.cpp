@@ -4,57 +4,57 @@
 // Bucket: TBuildingConstructionView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C9D70
-// GHIDRA_NAME TBuildingConstructionView::CreateTBuildingConstructionViewInstance
-// GHIDRA_PROTO undefined CreateTBuildingConstructionViewInstance()
+// GHIDRA_NAME TBuildingConstructionView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TBuildingConstructionView::CreateTBuildingConstructionViewInstance(void)
+undefined4 * TBuildingConstructionView::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063173a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x9c);
+  puVar1 = (undefined4 *)operator_new(0x9c);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TBuildingConstructionViewVtbl **)this = &TBuildingConstructionViewVtbl_00651d88;
-    *(undefined4 *)(this + 0x90) = 0;
-    *(undefined4 *)(this + 0x98) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar1[0x24] = 0;
+    puVar1[0x26] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C9E10
-// GHIDRA_NAME TBuildingConstructionView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TBuildingConstructionView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBuildingConstructionView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TBuildingConstructionView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTBuildingConstructionView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C9E30
 // GHIDRA_NAME TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState
-// GHIDRA_PROTO undefined __thiscall TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTBuildingConstructionViewBaseState(void)
 
 TBuildingConstructionView * __thiscall
 TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState
           (TBuildingConstructionView *this)
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TBuildingConstructionViewVtbl_00651d88;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   this->pCity = (TCity *)0x0;
   *(undefined4 *)&this->field_0x98 = 0;
   return this;
@@ -69,9 +69,9 @@ TBuildingConstructionView::_scalar_deleting_destructor_
           (TBuildingConstructionView *this,byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040100a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -123,8 +123,10 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   uint uVar1;
   short sVar2;
   TCity *this_00;
-  undefined uVar3;
-  char cVar4;
+  short sVar3;
+  short sVar4;
+  undefined uVar5;
+  char cVar6;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
@@ -132,11 +134,11 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   undefined3 extraout_var_03;
   undefined3 extraout_var_04;
   undefined3 extraout_var_05;
-  int *piVar5;
-  int iVar6;
   int *piVar7;
-  short sVar8;
-  _vslot_fn *p_Var9;
+  int iVar8;
+  int *piVar9;
+  short sVar10;
+  undefined1 **ppuVar11;
   short unaff_SI;
   undefined4 *unaff_FS_OFFSET;
   CString CStack_184;
@@ -153,23 +155,28 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   undefined4 uStack_158;
   undefined1 **ppuStack_154;
   undefined4 uStack_150;
-  undefined1 *puStack_14c;
+  TSimMgr **ppTStack_14c;
   undefined4 *puStack_148;
-  undefined1 *puStack_144;
+  undefined1 ***pppuStack_144;
   undefined1 *puStack_140;
-  code *pcStack_13c;
-  code *pcVar10;
-  short sVar11;
+  undefined1 ***pppuStack_13c;
+  TSimMgr *pTStack_110;
+  undefined1 **ppuStack_10c;
+  code *pcStack_108;
+  _vslot_fn *p_Stack_104;
+  CString **ppCStack_100;
+  undefined *puStack_fc;
   CString CStack_f8;
   undefined4 uStack_f4;
   undefined1 *puStack_f0;
   undefined4 uStack_ec;
   undefined4 uStack_e8;
-  char *pcStack_e4;
+  undefined4 uStack_e4;
   CString *pCStack_e0;
   undefined1 **ppuVar12;
   int iVar13;
-  undefined2 uVar14;
+  undefined2 uVar15;
+  code *pcVar14;
   CString CStack_cc;
   undefined1 *puStack_c8;
   undefined4 uStack_c4;
@@ -180,7 +187,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   undefined4 uStack_a0;
   undefined4 uStack_9c;
   undefined4 uStack_98;
-  undefined4 uVar15;
+  undefined4 uVar16;
   CString local_40;
   CString local_3c;
   undefined4 uStack_38;
@@ -193,7 +200,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631778;
   uStack_c = *unaff_FS_OFFSET;
@@ -201,35 +208,35 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   local_22 = 0;
   local_21 = 0;
   local_20 = local_20 & 0xffff0000;
-  CString::__0CString__QAE_XZ(&local_40);
+  CString::CString(&local_40);
   local_4 = 0;
-  CString::__0CString__QAE_XZ(&local_3c);
+  CString::CString(&local_3c);
   local_4._0_1_ = 1;
-  CString::__0CString__QAE_XZ(local_34);
+  CString::CString(local_34);
   local_4._0_1_ = 2;
-  CString::__0CString__QAE_XZ(local_2c);
+  CString::CString(local_2c);
                     /* Persist dialog context (city ptr, slot id, caller flags) into object fields.
                         */
-  iVar6 = *pCityState;
+  iVar8 = *pCityState;
   local_4 = CONCAT31(local_4._1_3_,3);
   this->pCity = (TCity *)pCityState;
   *(short *)&this->field_0x94 = nBuildingSlotId;
   *(int *)&this->field_0x98 = nDialogContextFlags;
-  (**(code **)(iVar6 + 0x54))();
+  (**(code **)(iVar8 + 0x54))();
   (*this->vftable->SetPictureResourceIdAndRefresh)();
   if (nBuildingSlotId == 0xb) {
-    uVar15 = 0;
-    (**(code **)(iVar6 + 0x60))();
+    uVar16 = 0;
+    (**(code **)(iVar8 + 0x60))();
   }
   else {
-    iVar13 = TCity::GetCityBuildingProductionValueBySlot((TCity *)pCityState,nBuildingSlotId);
-    pcVar10 = *(code **)(iVar6 + 0x80);
+    iVar13 = GetCityBuildingProductionValueBySlot(pCityState,nBuildingSlotId);
+    pcVar14 = *(code **)(iVar8 + 0x80);
     *(short *)(pCityState + 0x32) = (short)pCityState[0x32] + (short)iVar13;
-    (*pcVar10)();
-    iVar6 = TCity::GetCityBuildingProductionValueBySlot((TCity *)pCityState,nBuildingSlotId);
-    *(short *)(pCityState + 0x33) = (short)pCityState[0x33] + (short)iVar6;
-    uVar15 = 0x4c9f95;
-    (*pcVar10)();
+    (*pcVar14)();
+    iVar8 = GetCityBuildingProductionValueBySlot(pCityState,nBuildingSlotId);
+    *(short *)(pCityState + 0x33) = (short)pCityState[0x33] + (short)iVar8;
+    uVar16 = 0x4c9f95;
+    (*pcVar14)();
   }
   switch(*(undefined2 *)&this->field_0x94) {
   case 0:
@@ -244,51 +251,51 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     *(undefined2 *)&this->field_0x96 = 1;
   }
   BuildUiTextStyleDescriptor();
-  p_Var9 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  uVar3 = (*p_Var9)();
-  if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+  ppuVar11 = (undefined1 **)this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar5 = (*(code *)ppuVar11)();
+  if ((int *)CONCAT31(extraout_var,uVar5) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
-  iVar6 = *(int *)CONCAT31(extraout_var,uVar3);
-  (**(code **)(iVar6 + 0x1b4))();
-  (**(code **)(iVar6 + 0x1c4))();
+  iVar8 = *(int *)CONCAT31(extraout_var,uVar5);
+  (**(code **)(iVar8 + 0x1b4))();
+  (**(code **)(iVar8 + 0x1c4))();
   iStack_18 = local_20 + 0x2422;
-  (**(code **)(iVar6 + 0x1cc))();
-  uVar3 = (*p_Var9)();
-  if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
+  (**(code **)(iVar8 + 0x1cc))();
+  uVar5 = (*(code *)ppuVar11)();
+  if ((int *)CONCAT31(extraout_var_00,uVar5) == (int *)0x0) {
     uStack_98 = 0x4ca06c;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
-  iVar6 = *(int *)CONCAT31(extraout_var_00,uVar3);
-  (**(code **)(iVar6 + 0x1b4))();
+  iVar8 = *(int *)CONCAT31(extraout_var_00,uVar5);
+  (**(code **)(iVar8 + 0x1b4))();
   uStack_98 = 0x4ca09b;
-  (**(code **)(iVar6 + 0x1c4))();
+  (**(code **)(iVar8 + 0x1c4))();
   uStack_98 = 1;
   uStack_9c = 2;
   uStack_a0 = uStack_38;
   puStack_a4 = (undefined1 *)0x4ca0ac;
-  (**(code **)(iVar6 + 0x1cc))();
+  (**(code **)(iVar8 + 0x1cc))();
   if (unaff_SI == 0xb) {
     puStack_a4 = &stack0xffffff94;
-    (**(code **)(iVar6 + 300))();
-    (**(code **)(iVar6 + 0x168))();
+    (**(code **)(iVar8 + 300))();
+    (**(code **)(iVar8 + 0x168))();
   }
   puStack_a4 = (undefined1 *)0x2b67;
   BuildUiTextStyleDescriptor();
   puStack_a4 = (undefined1 *)0x6e616d65;
-  uVar3 = (*p_Var9)();
-  if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
+  uVar5 = (*(code *)ppuVar11)();
+  if ((int *)CONCAT31(extraout_var_01,uVar5) == (int *)0x0) {
     ppuStack_b8 = (undefined1 **)0x4ca121;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
-  iVar6 = *(int *)CONCAT31(extraout_var_01,uVar3);
-  (**(code **)(iVar6 + 0x1b4))();
+  iVar8 = *(int *)CONCAT31(extraout_var_01,uVar5);
+  (**(code **)(iVar8 + 0x1b4))();
   ppuStack_b8 = (undefined1 **)0x4ca150;
-  uStack_bc = uVar15;
-  (**(code **)(iVar6 + 0x1c4))();
+  uStack_bc = uVar16;
+  (**(code **)(iVar8 + 0x1c4))();
   ppuStack_b8 = &puStack_a4;
   uStack_c0 = 0x2719;
   uStack_c4 = 0x4ca16d;
@@ -296,177 +303,201 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   puStack_c8 = &stack0xffffff50;
   uStack_c4 = 0;
   CStack_cc.m_pchData = (char *)0x4ca17c;
-  (**(code **)(iVar6 + 0x1c8))();
+  (**(code **)(iVar8 + 0x1c8))();
   CStack_cc.m_pchData = (char *)0x636f7374;
-  uVar3 = (*p_Var9)();
-  if ((int *)CONCAT31(extraout_var_02,uVar3) == (int *)0x0) {
+  uVar5 = (*(code *)ppuVar11)();
+  if ((int *)CONCAT31(extraout_var_02,uVar5) == (int *)0x0) {
     pCStack_e0 = (CString *)0x4ca19e;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
-  iVar6 = *(int *)CONCAT31(extraout_var_02,uVar3);
+  iVar8 = *(int *)CONCAT31(extraout_var_02,uVar5);
   ppuVar12 = &puStack_a4;
   iVar13 = 0;
-  (**(code **)(iVar6 + 0x1b4))();
+  (**(code **)(iVar8 + 0x1b4))();
   pCStack_e0 = (CString *)0x4ca1cd;
-  (**(code **)(iVar6 + 0x1c4))();
+  (**(code **)(iVar8 + 0x1c4))();
   pCStack_e0 = &CStack_cc;
-  pcStack_e4 = (char *)0x14;
+  uStack_e4 = 0x14;
   uStack_e8 = 0x2738;
   uStack_ec = 0x4ca1e7;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   puStack_f0 = &stack0xffffff28;
   uStack_ec = 0;
   uStack_f4 = 0x4ca1f6;
-  (**(code **)(iVar6 + 0x1c8))();
+  (**(code **)(iVar8 + 0x1c8))();
   uStack_f4 = 0x63617054;
   CStack_f8.m_pchData = (char *)0x4ca1ff;
-  uVar3 = (*p_Var9)();
-  sVar11 = *(short *)&this->field_0x94;
+  uVar5 = (*(code *)ppuVar11)();
+  sVar2 = *(short *)&this->field_0x94;
                     /* Slot-dependent cost/description format mode selection. */
-  if ((((sVar11 == 0) || (sVar11 == 2)) || (sVar11 == 4)) || (sVar11 == 6)) {
+  if ((((sVar2 == 0) || (sVar2 == 2)) || (sVar2 == 4)) || (sVar2 == 6)) {
     CStack_f8.m_pchData = (char *)0x2;
   }
   else {
-    if (sVar11 == 0xb) {
-      CStack_f8.m_pchData = (char *)&pcStack_e4;
+    if (sVar2 == 0xb) {
+      CStack_f8.m_pchData = (char *)&uStack_e4;
+      puStack_fc = (undefined *)0x15;
+      ppCStack_100 = (CString **)0x2738;
+      p_Stack_104 = (_vslot_fn *)0x4ca23f;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       goto LAB_004ca263;
     }
     CStack_f8.m_pchData = (char *)0x1;
   }
+  ppCStack_100 = &pCStack_e0;
+  puStack_fc = &g_szDecimalFormat;
+  p_Stack_104 = (_vslot_fn *)0x4ca260;
   _Format_CString__QAAXPBDZZ();
 LAB_004ca263:
   CStack_f8.m_pchData = &stack0xffffff28;
+  puStack_fc = (undefined *)0x10;
+  ppCStack_100 = (CString **)0x2738;
+  p_Stack_104 = (_vslot_fn *)0x4ca27d;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  scanBracketExpressions(g_pLocalizationTable,&puStack_f0,pcStack_e4);
-  iVar6 = *(int *)CONCAT31(extraout_var_03,uVar3);
-  (**(code **)(iVar6 + 0x1b4))();
-  sVar11 = 0;
-  pcVar10 = (code *)0x1;
-  (**(code **)(iVar6 + 0x1c4))();
-  (**(code **)(iVar6 + 0x1c8))();
-  uVar3 = (*p_Var9)();
-  piVar5 = (int *)CONCAT31(extraout_var_04,uVar3);
-  if (piVar5 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+  p_Stack_104 = (_vslot_fn *)uStack_ec;
+  ppuStack_10c = &puStack_f0;
+  pcStack_108 = (code *)uStack_e4;
+  pTStack_110 = g_pLocalizationTable;
+  func_0x0040988b();
+  iVar8 = *(int *)CONCAT31(extraout_var_03,uVar5);
+  pcStack_108 = (code *)&stack0xffffff28;
+  p_Stack_104 = (_vslot_fn *)0x0;
+  ppuStack_10c = (undefined1 **)0x4ca2ab;
+  (**(code **)(iVar8 + 0x1b4))();
+  ppuStack_10c = (undefined1 **)0x0;
+  pTStack_110 = (TSimMgr *)0x1;
+  (**(code **)(iVar8 + 0x1c4))();
+  (**(code **)(iVar8 + 0x1c8))();
+  uVar5 = (*(code *)ppuVar11)();
+  piVar7 = (int *)CONCAT31(extraout_var_04,uVar5);
+  if (piVar7 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   sVar2 = *(short *)&this->field_0x94;
   if (((sVar2 == 0) || (sVar2 == 4)) || (sVar2 == 3)) {
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = *piVar5;
-    (**(code **)(iVar6 + 0x1b4))();
-    pcStack_13c = (code *)0x4ca35c;
-    (**(code **)(iVar6 + 0x1c4))();
+    iVar8 = *piVar7;
+    (**(code **)(iVar8 + 0x1b4))();
+    pppuStack_13c = (undefined1 ***)0x4ca35c;
+    (**(code **)(iVar8 + 0x1c4))();
     puStack_140 = &stack0xfffffed8;
-    pcStack_13c = (code *)0x0;
-    puStack_144 = (undefined1 *)0x4ca36b;
-    (**(code **)(iVar6 + 0x1c8))();
-    puStack_144 = &stack0xfffffef4;
-    sVar8 = 0;
+    pppuStack_13c = (undefined1 ***)0x0;
+    pppuStack_144 = (undefined1 ***)0x4ca36b;
+    (**(code **)(iVar8 + 0x1c8))();
+    pppuStack_144 = &ppuStack_10c;
+    sVar10 = 0;
     puStack_148 = (undefined4 *)0x4ca37a;
-    (**(code **)(iVar6 + 300))();
+    (**(code **)(iVar8 + 300))();
+    sVar4 = (short)pTStack_110;
+    sVar3 = (short)ppuStack_10c;
     sVar2 = *(short *)&this->field_0x94;
     if (sVar2 == 0) {
-      sVar8 = 0x98;
+      sVar10 = 0x98;
     }
     else if (sVar2 == 3) {
-      sVar8 = 0xcd;
+      sVar10 = 0xcd;
     }
     else if (sVar2 == 4) {
-      sVar8 = 0xd0;
+      sVar10 = 0xd0;
     }
-    pcVar10 = (code *)(int)sVar8;
-    p_Var9 = (_vslot_fn *)(int)sVar11;
+    pTStack_110 = (TSimMgr *)(int)sVar10;
+    ppuStack_10c = (undefined1 **)(int)sVar3;
+    p_Stack_104 = (_vslot_fn *)((int)ppuStack_10c + (int)(short)((short)p_Stack_104 - sVar3));
     puStack_148 = (undefined4 *)0x0;
-    puStack_14c = &stack0xfffffef0;
+    ppTStack_14c = &pTStack_110;
+    pcStack_108 = (code *)((int)&pTStack_110->vftable + (int)(short)((short)pcStack_108 - sVar4));
     uStack_150 = 0x4ca3e5;
-    (**(code **)(iVar6 + 0x168))();
+    (**(code **)(iVar8 + 0x168))();
     uStack_150 = 0;
     ppuStack_154 = (undefined1 **)0x1;
     uStack_158 = 0x4ca3f1;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
+    ppuVar11 = ppuStack_10c;
   }
   else {
-    (**(code **)(*piVar5 + 0xa4))();
+    (**(code **)(*piVar7 + 0xa4))();
   }
-  uVar3 = (*p_Var9)();
-  piVar5 = (int *)CONCAT31(extraout_var_05,uVar3);
-  if (piVar5 == (int *)0x0) {
-    pcStack_13c = (code *)0x4ca41b;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+  uVar5 = (*(code *)ppuVar11)();
+  piVar7 = (int *)CONCAT31(extraout_var_05,uVar5);
+  pcStack_108 = (code *)piVar7;
+  if (piVar7 == (int *)0x0) {
+    pppuStack_13c = (undefined1 ***)0x4ca41b;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
                     /* Compute OK-button availability for University slot 11. */
   if ((short)ppuVar12 == 0xb) {
-    CString::__0CString__QAE_XZ(&CStack_cc);
+    CString::CString(&CStack_cc);
     uVar1 = *(int *)(*(int *)(iVar13 + 0xac) + 0x10) +
             *(int *)(*(int *)(iVar13 + 0xac) + 0x8f0) / 100;
-    cVar4 = 4999 < (int)(uVar1 & ((int)uVar1 < 1) - 1);
-    pcStack_13c = (code *)0x4ca495;
+    cVar6 = 4999 < (int)(uVar1 & ((int)uVar1 < 1) - 1);
+    pppuStack_13c = (undefined1 ***)0x4ca495;
     BuildUiTextStyleDescriptor();
-    piVar5 = (int *)(*pcVar10)();
-    iVar6 = *piVar5;
-    (**(code **)(iVar6 + 0xc))();
-    piVar5 = (int *)0x1;
-    (**(code **)(iVar6 + 0xa4))();
-    pcStack_13c = (code *)&stack0xfffffef4;
+    piVar7 = (int *)(*(code *)pTStack_110)();
+    iVar8 = *piVar7;
+    (**(code **)(iVar8 + 0xc))();
+    piVar7 = (int *)0x1;
+    (**(code **)(iVar8 + 0xa4))();
+    pppuStack_13c = &ppuStack_10c;
     puStack_140 = (undefined1 *)0x4ca4c7;
-    (**(code **)(iVar6 + 0x1b4))();
+    (**(code **)(iVar8 + 0x1b4))();
     puStack_140 = (undefined1 *)0x0;
-    puStack_144 = (undefined1 *)0x1;
+    pppuStack_144 = (undefined1 ***)0x1;
     puStack_148 = (undefined4 *)0x4ca4d3;
-    (**(code **)(iVar6 + 0x1c4))();
+    (**(code **)(iVar8 + 0x1c4))();
     puStack_148 = &uStack_e8;
-    puStack_14c = (undefined1 *)0x1388;
+    ppTStack_14c = (TSimMgr **)0x1388;
     uStack_150 = 0x4ca4e8;
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
     ppuStack_154 = &puStack_f0;
     uStack_150 = 1;
     uStack_158 = 0x4ca4f7;
-    (**(code **)(iVar6 + 0x1c8))();
+    (**(code **)(iVar8 + 0x1c8))();
+    pcStack_108 = (code *)CONCAT31(pcStack_108._1_3_,3);
     uStack_158 = 0x4ca505;
-    CString::__1CString__QAE_XZ(&CStack_f8);
+    CString::~CString(&CStack_f8);
   }
   else {
-    piVar7 = this->pCity->orderSlotsE4[(short)(*(short *)&this->field_0x94 + 0x35)];
-    if (piVar7 == (int *)0x0) {
-      pcStack_13c = (code *)0x4ca540;
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag();
+    piVar9 = this->pCity->orderSlotsE4[(short)(*(short *)&this->field_0x94 + 0x35)];
+    if (piVar9 == (int *)0x0) {
+      pppuStack_13c = (undefined1 ***)0x4ca540;
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4();
     }
-    uVar14 = (undefined2)((uint)iVar13 >> 0x10);
+    uVar15 = (undefined2)((uint)iVar13 >> 0x10);
     this_00 = this->pCity;
-    CStack_cc.m_pchData = *(char **)(*piVar7 + 0x2c);
-    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,(short)ppuVar12);
-    pcVar10 = (code *)CONCAT22(uVar14,(short)iVar6);
+    pcStack_108 = (code *)CONCAT22(pcStack_108._2_2_,(short)piVar9[1]);
+    CStack_cc.m_pchData = *(char **)(*piVar9 + 0x2c);
+    iVar8 = GetCityBuildingProductionValueBySlot(this_00,(short)ppuVar12);
+    pcVar14 = (code *)CONCAT22(uVar15,(short)iVar8);
     (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)();
-    cVar4 = (*pcVar10)();
+    cVar6 = (*pcVar14)();
     (*(code *)ppuVar12)();
   }
   uStack_158 = 0x6f6b6179;
   uStack_15c = 0x4ca5b0;
-  piVar7 = (int *)(*pcStack_13c)();
+  piVar9 = (int *)(*(code *)pppuStack_13c)();
   uStack_15c = 0x4ca5b9;
-  (**(code **)(*piVar7 + 0xc))();
+  (**(code **)(*piVar9 + 0xc))();
                     /* Disable OK when queued action already in progress. */
-  if (cVar4 == '\0') {
+  if (cVar6 == '\0') {
     uStack_15c = 0x2b69;
     puStack_160 = (undefined1 *)0xc;
     puStack_168 = &stack0xfffffed0;
     uStack_164 = 0;
     puStack_16c = (undefined4 *)0x4ca5d4;
     BuildUiTextStyleDescriptor();
-    iVar6 = *piVar5;
+    iVar8 = *piVar7;
     puStack_160 = &stack0xfffffed0;
     uStack_15c = 0;
     uStack_164 = 0x4ca5e9;
-    (**(code **)(iVar6 + 0x1b4))();
+    (**(code **)(iVar8 + 0x1b4))();
     uStack_164 = 0;
     puStack_168 = (undefined1 *)0x1;
     puStack_16c = (undefined4 *)0x4ca5f5;
-    (**(code **)(iVar6 + 0x1c4))();
+    (**(code **)(iVar8 + 0x1c4))();
     puStack_16c = &uStack_158;
     CStack_170.m_pchData = (char *)0x17;
     uStack_174 = 0x2738;
@@ -475,29 +506,29 @@ LAB_004ca263:
     puStack_17c = &uStack_164;
     CStack_178.m_pchData = (char *)0x0;
     CStack_180.m_pchData = "j";
-    (**(code **)(iVar6 + 0x1c8))();
+    (**(code **)(iVar8 + 0x1c8))();
     CStack_180.m_pchData = (char *)0x0;
     CStack_184.m_pchData = (char *)0x1;
-    (**(code **)(iVar6 + 0xa4))();
-    iVar6 = *piVar7;
-    (**(code **)(iVar6 + 0xa4))(0,0);
-    (**(code **)(iVar6 + 0xa8))(0,0);
+    (**(code **)(iVar8 + 0xa4))();
+    iVar8 = *piVar9;
+    (**(code **)(iVar8 + 0xa4))(0,0);
+    (**(code **)(iVar8 + 0xa8))(0,0);
   }
   else {
     uStack_15c = 0;
     puStack_160 = (undefined1 *)0x0;
     uStack_164 = 0x4ca661;
-    (**(code **)(*piVar5 + 0xa4))();
-    *(undefined2 *)((int)piVar7 + 0x92) = 0xbc7;
+    (**(code **)(*piVar7 + 0xa4))();
+    *(undefined2 *)((int)piVar9 + 0x92) = 0xbc7;
   }
   puStack_148._0_1_ = 2;
-  CString::__1CString__QAE_XZ(&CStack_170);
+  CString::~CString(&CStack_170);
   puStack_148._0_1_ = 1;
-  CString::__1CString__QAE_XZ(&CStack_178);
+  CString::~CString(&CStack_178);
   puStack_148 = (undefined4 *)((uint)puStack_148._1_3_ << 8);
-  CString::__1CString__QAE_XZ(&CStack_180);
+  CString::~CString(&CStack_180);
   puStack_148 = (undefined4 *)0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_184);
+  CString::~CString(&CStack_184);
   *unaff_FS_OFFSET = uStack_150;
   return;
 }
@@ -549,7 +580,7 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
   int iVar4;
   undefined2 extraout_var_00;
   int unaff_retaddr;
-
+  
                     /* Slot 11 uses the Power Plant special upgrade toggle path (city-model vfunc
                        +0x60). */
   if (*(short *)&this->field_0x94 == 0xb) {
@@ -564,9 +595,8 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
                     /* Resolve selected building entry pointer: city->slotTable[slot + 0x35]. */
     piVar1 = this->pCity->orderSlotsE4[(short)(*(short *)&this->field_0x94 + 0x35)];
     if (piVar1 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x519);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0x519);
     }
                     /* OK path: persist order delta into entry callback (+0x2C). */
     if (nDialogActionTag == 0x6f6b6179) {
@@ -574,8 +604,7 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
                        (+0x2C). */
       this_00 = this->pCity;
       iVar4 = *piVar1;
-      iVar3 = TCity::GetCityBuildingProductionValueBySlot(this_00,*(short *)&this->field_0x94)
-      ;
+      iVar3 = GetCityBuildingProductionValueBySlot(this_00,*(short *)&this->field_0x94);
       uVar2 = (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)
                         (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x94));
       (**(code **)(unaff_retaddr + 0x2c))
@@ -589,8 +618,7 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
       }
     }
   }
-  iVar4 = TCity::GetCityBuildingProductionValueBySlot(this->pCity,*(short *)&this->field_0x94)
-  ;
+  iVar4 = GetCityBuildingProductionValueBySlot(this->pCity,*(short *)&this->field_0x94);
   (**(code **)(**(int **)&this->field_0x98 + 0x1e8))(*(undefined2 *)&this->field_0x94,iVar4);
   (**(code **)(**(int **)&this->field_0x98 + 0x1e0))();
   (**(code **)(**(int **)&this->field_0x98 + 0xe4))();
@@ -632,44 +660,44 @@ TBuildingConstructionView::SelectNextValidMapOrderEntryFromCursor
 
 {
   char cVar1;
-  void *pMapOrderEntry;
-  TCivToolbar *this_00;
-
+  undefined4 uVar2;
+  TZone *pTVar3;
+  
   if (*(short *)&this->field_0x96 == 2) {
-    this_00 = *(TCivToolbar **)&this->field_0x98;
+    pTVar3 = *(TZone **)&this->field_0x98;
     EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
-    if (this_00 != (TCivToolbar *)0x0) {
+    if (pTVar3 != (TZone *)0x0) {
       if ((char)pMapInteractionState == '\0') {
-        this_00 = (TCivToolbar *)this_00->field18;
+        pTVar3 = *(TZone **)&pTVar3->field_0x18;
       }
-      if (this_00 != (TCivToolbar *)0x0) goto LAB_005997b8;
+      if (pTVar3 != (TZone *)0x0) goto LAB_005997b8;
     }
-    this_00 = (TCivToolbar *)g_pMapActionContextListHead;
+    pTVar3 = g_pMapActionContextListHead;
     if (g_pMapActionContextListHead != (TZone *)0x0) {
 LAB_005997b8:
       while( true ) {
-        cVar1 = TCivToolbar::CanDisplayMapOrderEntryInCurrentContext(this_00,-1,'\0');
+        cVar1 = func_0x00405bf5(0xffffffff,0);
         if (cVar1 != '\0') break;
-        this_00 = (TCivToolbar *)this_00->field18;
-        if (this_00 == (TCivToolbar *)0x0) {
+        pTVar3 = *(TZone **)&pTVar3->field_0x18;
+        if (pTVar3 == (TZone *)0x0) {
           *(undefined4 *)&this->field_0x98 = 0;
           return;
         }
       }
-      TToolBarCluster::SetMapInteractionMode((TCivToolbar *)this,2);
+      func_0x004032a1(2);
       if (this->field_0x94 == '\0') {
         InvalidateMapRegionForOrderEntry(*(undefined4 *)&this->field_0x98);
       }
-      *(TCivToolbar **)&this->field_0x98 = this_00;
+      *(TZone **)&this->field_0x98 = pTVar3;
       if (this->field_0x94 == '\0') {
-        InvalidateMapRegionForOrderEntry(this_00);
+        InvalidateMapRegionForOrderEntry(pTVar3);
       }
-      if (this_00 == (TCivToolbar *)0x0) {
-        TToolBarCluster::RefreshMapOrderEntryPanel((TToolBarCluster *)this,(void *)0x0);
+      if (pTVar3 == (TZone *)0x0) {
+        func_0x00408995(0);
         return;
       }
-      pMapOrderEntry = (void *)EnsureSelectedTaskForceForOrderOwnerAndRefresh(this_00);
-      TToolBarCluster::RefreshMapOrderEntryPanel((TToolBarCluster *)this,pMapOrderEntry);
+      uVar2 = EnsureSelectedTaskForceForOrderOwnerAndRefresh(pTVar3);
+      func_0x00408995(uVar2);
       return;
     }
     *(undefined4 *)&this->field_0x98 = 0;

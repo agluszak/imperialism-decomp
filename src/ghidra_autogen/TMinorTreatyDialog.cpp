@@ -3,6 +3,39 @@
 // Program: Imperialism.exe
 // Bucket: TMinorTreatyDialog.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005B3F90
+// GHIDRA_NAME TMinorTreatyDialog::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TMinorTreatyDialog::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00638cf2;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x60);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    local_4 = CONCAT31(local_4._1_3_,1);
+    *puVar1 = &TDialogView::_vftable_;
+    func_0x004057a4(s_D__Ambit_Toy_h_0069633c,0x23);
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4020
 // GHIDRA_NAME TMinorTreatyDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,21 +43,21 @@
 TMinorTreatyDialog * TMinorTreatyDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004083c8();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4070
-// GHIDRA_NAME TMinorTreatyDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMinorTreatyDialog::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMinorTreatyDialog::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMinorTreatyDialog::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMinorTreatyDialog;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4090
@@ -34,24 +67,23 @@ CRuntimeClass * TMinorTreatyDialog::GetTEventHandlerClassNamePointer()
 void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
 
 {
-  int iVar1;
-  _vslot_fn *p_Var2;
-  undefined4 uVar3;
-  TMinorTreatyDialog *pTVar4;
-  undefined uVar5;
+  _vslot_fn *p_Var1;
+  undefined4 uVar2;
+  TMinorTreatyDialog *pTVar3;
+  undefined uVar4;
   undefined3 extraout_var;
-  int *piVar6;
+  int *piVar5;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
-  int *piVar7;
+  int *piVar6;
+  short sVar7;
   int iVar8;
   int iVar9;
-  int *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   CString local_44;
   int *local_40;
-  int *local_3c;
+  int local_3c;
   TMinorTreatyDialog *local_38;
   int *piStack_34;
   _vslot_fn *p_Stack_30;
@@ -66,13 +98,13 @@ void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638d18;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_38 = this;
-  CString::__0CString__QAE_XZ(&local_44);
+  CString::CString(&local_44);
   local_4 = 0;
   local_2c = 0x6e616d30;
   local_28 = 0x6e616d31;
@@ -83,156 +115,116 @@ void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
   local_14 = 0x6e616d36;
   local_10 = 0x6e616d37;
   local_40 = (int *)0x7;
-  local_3c = (int *)0x0;
+  local_3c = 0;
   do {
-    piVar6 = local_40;
-    if (local_3c[0x1a90cb] != 0) {
-      uVar5 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
-      piVar7 = (int *)CONCAT31(extraout_var,uVar5);
-      piStack_34 = piVar7;
-      if (piVar7 == (int *)0x0) {
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag();
+    piVar5 = local_40;
+    if (*(int *)((int)g_apTerrainTypeDescriptorTable + local_3c + 0x1c) != 0) {
+      uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
+      piVar6 = (int *)CONCAT31(extraout_var,uVar4);
+      piStack_34 = piVar6;
+      if (piVar6 == (int *)0x0) {
+        MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+        func_0x004057a4();
       }
+      sVar7 = 0;
       iVar8 = 0;
-      iVar9 = 0;
       do {
-        if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar9) != 0) {
-          piVar6 = (int *)(**(code **)(*piVar7 + 0x94))();
-          if (piVar6 == (int *)0x0) {
-            MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-            TemporarilyClearAndRestoreUiInvalidationFlag
-                      (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
+        if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar8) != 0) {
+          piVar5 = (int *)(**(code **)(*piVar6 + 0x94))();
+          if (piVar5 == (int *)0x0) {
+            MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+            func_0x004057a4();
           }
-          uVar5 = (*g_pDiplomacyTurnStateManager->vftable[0xe].GetTDiplomacyMgrClassNamePointer)
-                            (iVar8);
-          iVar1 = *piVar6;
-          (**(code **)(iVar1 + 0x1e4))((int)(short)CONCAT31(extraout_var_00,uVar5),0);
-          (**(code **)(iVar1 + 0xa8))(0,0);
-          piVar7 = piStack_34;
-          piVar6 = local_40;
+          uVar4 = (*g_pDiplomacyTurnStateManager->vftable[0xe].GetTDiplomacyMgrClassNamePointer)();
+          iVar9 = *piVar5;
+          (**(code **)(iVar9 + 0x1e4))((int)(short)CONCAT31(extraout_var_00,uVar4),0);
+          (**(code **)(iVar9 + 0xa8))(0,0);
+          piVar6 = piStack_34;
+          piVar5 = local_40;
         }
-        iVar8 = iVar8 + 1;
-        iVar9 = iVar9 + 4;
+        sVar7 = sVar7 + 1;
+        iVar8 = iVar8 + 4;
         this = local_38;
-      } while ((short)iVar8 < 7);
+      } while (sVar7 < 7);
     }
-    local_40 = (int *)((int)piVar6 + 1);
-    local_3c = local_3c + 1;
+    local_40 = (int *)((int)piVar5 + 1);
+    local_3c = local_3c + 4;
   } while ((short)local_40 < 0x17);
-  p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  p_Stack_30 = p_Var2;
-  uVar5 = (*p_Var2)();
-  local_38 = (TMinorTreatyDialog *)CONCAT31(extraout_var_01,uVar5);
+  piVar5 = (int *)0x726f7731;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  p_Stack_30 = p_Var1;
+  uVar4 = (*p_Var1)();
+  local_38 = (TMinorTreatyDialog *)CONCAT31(extraout_var_01,uVar4);
   if (local_38 == (TMinorTreatyDialog *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
-  uVar5 = (*p_Var2)();
-  if (CONCAT31(extraout_var_02,uVar5) == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x30e);
+  uVar4 = (*p_Var1)();
+  if (CONCAT31(extraout_var_02,uVar4) == 0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
   iVar8 = 0;
   local_44.m_pchData = (char *)0x7;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar8) != 0) {
-      FormatOverlayTerrainLabelText(&stack0xffffffb4);
-      uVar3 = *(undefined4 *)((int)&piStack_34 + iVar8);
-      piVar6 = (int *)(**(code **)(*local_3c + 0x94))(uVar3);
+      func_0x00405245();
+      uVar2 = *(undefined4 *)((int)&local_38 + iVar8);
+      piVar6 = (int *)(**(code **)(*local_40 + 0x94))(uVar2);
       if (piVar6 == (int *)0x0) {
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag
-                  (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x316);
+        MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+        func_0x004057a4(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x316);
       }
-      (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffb0,0);
-      piVar6 = (int *)(**(code **)(*unaff_EDI + 0x94))(uVar3);
+      (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffac,0);
+      piVar6 = (int *)(**(code **)(*piVar5 + 0x94))(uVar2);
       if (piVar6 == (int *)0x0) {
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag
-                  (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x319);
+        MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+        func_0x004057a4(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x319);
       }
-      (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffa4,0);
+      (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffa0,0);
     }
-    pTVar4 = local_38;
+    pTVar3 = local_38;
     iVar8 = iVar8 + 4;
     local_44.m_pchData = local_44.m_pchData + -1;
-  } while (local_44.m_pchData != (char *)0x0);
-  local_3c = (int *)(*(code *)local_38)(0x636f6c31);
-  if (local_3c == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x31e);
+  } while ((int *)local_44.m_pchData != (int *)0x0);
+  local_3c = (*(code *)local_38)();
+  if (local_3c == 0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x31e);
   }
-  piVar6 = (int *)(*(code *)pTVar4)(0x636f6c32);
-  if (piVar6 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,800);
+  piVar5 = (int *)(*(code *)pTVar3)(0x636f6c32);
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,800);
   }
   iVar9 = 0x1c;
   iVar8 = 8;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar9) != 0) {
-      FormatOverlayTerrainLabelText(&stack0xffffffac);
-      piVar7 = (int *)(**(code **)(*local_40 + 0x94))(*(undefined4 *)(&stack0xffffffa8 + iVar9));
-      if (piVar7 == (int *)0x0) {
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag
-                  (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x329);
+      func_0x00405245(&stack0xffffffac);
+      piVar6 = (int *)(**(code **)(*(int *)local_44.m_pchData + 0x94))
+                                (*(undefined4 *)(&stack0xffffffa4 + iVar9));
+      if (piVar6 == (int *)0x0) {
+        MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+        func_0x004057a4(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x329);
       }
-      (**(code **)(*piVar7 + 0x1c8))(&stack0xffffffa8,0);
+      (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffa4,0);
     }
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar9 + 0x20) != 0) {
-      FormatOverlayTerrainLabelText(&stack0xffffffac);
-      piVar7 = (int *)(**(code **)(*piVar6 + 0x94))(*(undefined4 *)(&stack0xffffffa8 + iVar9));
-      if (piVar7 == (int *)0x0) {
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag
-                  (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x331);
+      func_0x00405245(&stack0xffffffac);
+      piVar6 = (int *)(**(code **)(*piVar5 + 0x94))(*(undefined4 *)(&stack0xffffffa4 + iVar9));
+      if (piVar6 == (int *)0x0) {
+        MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+        func_0x004057a4(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x331);
       }
-      (**(code **)(*piVar7 + 0x1c8))(&stack0xffffffa8,0);
+      (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffa4,0);
     }
     iVar9 = iVar9 + 4;
     iVar8 = iVar8 + -1;
   } while (iVar8 != 0);
   local_14 = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffac);
+  CString::~CString((CString *)&stack0xffffffac);
   *unaff_FS_OFFSET = local_1c;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B45C0
-// GHIDRA_NAME TMinorTreatyDialog::DestructTMinorTreatyDialogAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMinorTreatyDialogAndMaybeFree()
-
-TView * TMinorTreatyDialog::DestructTMinorTreatyDialogAndMaybeFree(void)
-
-{
-  TView *this;
-  TView *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00638d42;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x60);
-  local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
-    this->vftable = (TViewVtbl *)&TAutomatedPlayDialogVtbl_0066c178;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 

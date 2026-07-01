@@ -3,396 +3,53 @@
 // Program: Imperialism.exe
 // Bucket: CMainFrame.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00412DC0
-// GHIDRA_NAME CMainFrame::OnEndPrintPreview
-// GHIDRA_PROTO undefined __thiscall OnEndPrintPreview(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00484AF0
+// GHIDRA_NAME CMainFrame::CreateObject
+// GHIDRA_PROTO CMainFrame * __cdecl CreateObject(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Imperialism application InitInstance-equivalent (vtable slot +0x58 from PTR_LAB_0063e2d0).
-// GHIDRA_COMMENT Performs main game startup: registry/settings handling, resource package initialization, font loading, manager/system object construction, thread/UI preparation, and initial WM_COMMAND dispatch to main window.
-// GHIDRA_COMMENT Returns 1 on successful startup, 0 on failure path.
+// GHIDRA_COMMENT CRuntimeClass create-object target for class name TMacViewMgr (runtime-class block @ 0x00648628). Allocates 0xD0 bytes, runs base ctor (FUN_0061c5dc), sets vtable PTR_LAB_006488D8, and initializes startup flags used during main window/frame setup.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* Imperialism application InitInstance-equivalent (vtable slot +0x58 from PTR_LAB_0063e2d0).
-   Performs main game startup: registry/settings handling, resource package initialization, font
-   loading, manager/system object construction, thread/UI preparation, and initial WM_COMMAND
-   dispatch to main window.
-   Returns 1 on successful startup, 0 on failure path. */
+/* CRuntimeClass create-object target for class name TMacViewMgr (runtime-class block @ 0x00648628).
+   Allocates 0xD0 bytes, runs base ctor (FUN_0061c5dc), sets vtable PTR_LAB_006488D8, and
+   initializes startup flags used during main window/frame setup. */
 
-undefined4 CMainFrame::OnEndPrintPreview()
+CMainFrame * __cdecl CMainFrame::CreateObject(void)
 
 {
   CMainFrame *pCVar1;
-  int iVar2;
-  LPCSTR pCVar3;
-  undefined4 uVar4;
-  TApplication *this_00;
-  CWinThread *pCVar5;
-  LSTATUS LVar6;
-  undefined **ppuVar7;
-  CMainFrame *hKey;
-  undefined4 *unaff_FS_OFFSET;
-  CString local_5c;
-  CMainFrame *local_58;
-  CMainFrame *local_54;
-  CObjectVtbl *local_50;
-  undefined4 local_4c;
-  int local_40;
-  CString *local_2c;
-  undefined1 local_28;
-  undefined4 local_24;
-  undefined4 local_20;
-  CString local_1c;
-  CString local_18;
-  undefined4 local_14;
-  undefined4 local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  int local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00627f81;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  _DAT_006a1354 = __set_new_handler__YAP6AHI_ZP6AHI_Z_Z(&LAB_004025f9);
-  TControl::_SetRegistryKey_CWinApp__IAEXPBD_Z((TControl *)this,PTR_DAT_0063e038);
-  CString::__0CString__QAE_XZ(&local_5c);
-  local_4 = 0;
-  __0CCommandLineInfo__QAE_XZ();
-  local_2c = &local_5c;
-  local_4._0_1_ = 1;
-  local_28 = 0x20;
-  local_24 = 0;
-  local_20 = 0;
-  local_1c.m_pchData = (char *)0x0;
-  CString::__0CString__QAE_XZ(&local_18);
-  local_14 = 0;
-  local_10 = 0;
-  local_50 = &CObjectVtbl_0063e478;
-  local_4._0_1_ = 2;
-  _ParseCommandLine_CWinApp__QAEXAAVCCommandLineInfo___Z(&local_50);
-  if ((local_1c.m_pchData == (char *)0x0) && (local_40 != 5)) {
-    local_54 = (CMainFrame *)__2_YAPAXI_Z(0x50);
-    local_4._0_1_ = 5;
-    if (local_54 == (CMainFrame *)0x0) {
-      g_pModuleLibraryCacheState = (CMainFrame *)0x0;
-    }
-    else {
-      g_pModuleLibraryCacheState = (CMainFrame *)CMainFrame::ConstructModuleLibraryCacheDualTableState(local_54);
-    }
-    local_4._0_1_ = 2;
-    iVar2 = LoadLanguageResourcesFromIrgFiles();
-    if (iVar2 == 0) {
-      local_4._0_1_ = 6;
-    }
-    else {
-      iVar2 = LoadPrimaryDataLibraryWithErrorDialog(*(undefined4 *)&this[1].field_0x8);
-      if (iVar2 == 0) {
-        local_4._0_1_ = 7;
-      }
-      else {
-        _DAT_006a1350 = ShowAutoResolutionDialogIfNeeded();
-        ApplyAutoResolutionModeAndPersist(_DAT_006a1350);
-        iVar2 = CMainFrame::LoadModuleLibrarySlotWithErrorDialog
-                          (g_pModuleLibraryCacheState,(LPCSTR)this[1].vftable,(CString)0x0);
-        if (iVar2 == 0) {
-          local_4._0_1_ = 8;
-        }
-        else {
-          iVar2 = CMainFrame::LoadModuleLibrarySlotWithErrorDialog
-                            (g_pModuleLibraryCacheState,s_Data_PictPaid_gob_00694238,(CString)0x1);
-          if (iVar2 == 0) {
-            local_4._0_1_ = 9;
-          }
-          else {
-            iVar2 = CMainFrame::LoadModuleLibrarySlotWithErrorDialog
-                              (g_pModuleLibraryCacheState,s_Data_PictUniv_gob_00694220,(CString)0x3)
-            ;
-            if (iVar2 == 0) {
-              local_4._0_1_ = 10;
-            }
-            else {
-              if (PTR_s_data_WeBeBd___ttf_00694150 != (undefined *)0x0) {
-                ppuVar7 = &PTR_s_data_WeBeBd___ttf_00694150;
-                pCVar3 = PTR_s_data_WeBeBd___ttf_00694150;
-                do {
-                  AddFontResourceA(pCVar3);
-                  pCVar3 = ppuVar7[1];
-                  ppuVar7 = ppuVar7 + 1;
-                } while (pCVar3 != (LPCSTR)0x0);
-              }
-              PostMessageA((HWND)0xffff,0x1d,0,0);
-              SetGlobalDword6A2018(local_4c);
-              local_54 = (CMainFrame *)__2_YAPAXI_Z(0x68);
-              local_4._0_1_ = 0xb;
-              if (local_54 == (CMainFrame *)0x0) {
-                uVar4 = 0;
-              }
-              else {
-                uVar4 = __0CSingleDocTemplate__QAE_IPAUCRuntimeClass__00_Z
-                                  (0x80,&CAmbitDocument::classRuntimeClass,&TMacViewMgr_RuntimeClass
-                                   ,&CIncludeView::classRuntimeClass);
-              }
-              local_4._0_1_ = 2;
-              _AddDocTemplate_CWinApp__QAEXPAVCDocTemplate___Z(uVar4);
-              iVar2 = WarnLowDiskSpaceAndConfirmContinue();
-              if (iVar2 == 0) {
-                local_4._0_1_ = 0xc;
-              }
-              else {
-                iVar2 = _ProcessShellCommand_CWinApp__QAEHAAVCCommandLineInfo___Z(&local_50);
-                if (iVar2 != 0) {
-                  DAT_006a1348 = &DAT_006a1210;
-                  this_00 = (TApplication *)__2_YAPAXI_Z(0x54);
-                  local_4._0_1_ = 0xe;
-                  local_54 = (CMainFrame *)this_00;
-                  if (this_00 == (TApplication *)0x0) {
-                    g_pGlobalUiRootController = (TApplication *)0x0;
-                  }
-                  else {
-                    TApplication::ConstructGlobalUiRootControllerState(this_00);
-                    this_00->vftable = (TApplicationVtbl *)&TAmbitApplicationVtbl_0063e398;
-                    g_pGlobalUiRootController = this_00;
-                  }
-                  local_4._0_1_ = 2;
-                  InitializeGlobalRuntimeSystemsFromConfig();
-                  local_54 = (CMainFrame *)__2_YAPAXI_Z(0x84);
-                  local_4._0_1_ = 0xf;
-                  if (local_54 == (CMainFrame *)0x0) {
-                    g_pSfxPlaybackSystem = (TSoundPlayer *)0x0;
-                  }
-                  else {
-                    g_pSfxPlaybackSystem =
-                         (TSoundPlayer *)
-                         TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z
-                                   ((TSoundPlayer *)local_54);
-                  }
-                  local_4 = CONCAT31(local_4._1_3_,2);
-                  (*g_pSfxPlaybackSystem->vftable->InitializeSoundSubsystemAndAllocateChannelLists)
-                            (0xf);
-                  pCVar5 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
-                  if (pCVar5 != (CWinThread *)0x0) {
-                    pCVar5 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
-                    (**(code **)(*(int *)pCVar5 + 0x7c))();
-                  }
-                  GetObjectValueAtOffset98();
-                  SetUiRuntimeContextAndActivateMain(*(undefined4 *)(DAT_006a2158 + 4));
-                  iVar2 = __mbscmp(local_1c.m_pchData,&g_szEmptyString);
-                  if (iVar2 != 0) {
-                    pCVar5 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
-                    if (pCVar5 != (CWinThread *)0x0) {
-                      pCVar5 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
-                      (**(code **)(*(int *)pCVar5 + 0x7c))();
-                    }
-                    CMcWindow::SetWindowTextOrDelegateToOwner(local_1c.m_pchData);
-                  }
-                  PostMessageA(*(HWND *)(*(int *)(DAT_006a1348 + 0x1c) + 0x1c),0x111,100,0);
-                  puStack_8._0_1_ = 0x10;
-                  CString::__1CString__QAE_XZ(&local_1c);
-                  puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-                  __1CCommandLineInfo__UAE_XZ();
-                  puStack_8 = (undefined1 *)0xffffffff;
-                  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa0);
-                  *unaff_FS_OFFSET = local_10;
-                  return 1;
-                }
-                local_4._0_1_ = 0xd;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  else {
-    local_54 = (CMainFrame *)0x80000001;
-    local_4 = CONCAT31(local_4._1_3_,3);
-    local_58 = (CMainFrame *)0x0;
-    LVar6 = RegOpenKeyExA((HKEY)0x80000001,s_Software_00694214,0,0xf003f,(PHKEY)&local_58);
-    if (LVar6 != 0) {
-      RegCloseKey((HKEY)0x80000001);
-    }
-    pCVar1 = local_58;
-    local_58 = (CMainFrame *)0x0;
-    local_54 = pCVar1;
-    hKey = (CMainFrame *)0x0;
-    if ((pCVar1 != (CMainFrame *)0x0) &&
-       (LVar6 = RegOpenKeyExA((HKEY)pCVar1,PTR_DAT_0063e038,0,0xf003f,(PHKEY)&local_58),
-       hKey = local_58, LVar6 != 0)) {
-      RegCloseKey((HKEY)pCVar1);
-      hKey = local_58;
-    }
-    local_58 = (CMainFrame *)0x0;
-    if ((hKey != (CMainFrame *)0x0) &&
-       (local_54 = hKey,
-       LVar6 = RegOpenKeyExA((HKEY)hKey,PTR_s_Imperialism_0063e03c,0,0xf003f,(PHKEY)&local_58),
-       LVar6 != 0)) {
-      RegCloseKey((HKEY)hKey);
-    }
-    pCVar1 = local_58;
-    local_54 = local_58;
-    if (local_58 != (CMainFrame *)0x0) {
-      RegDeleteKeyA((HKEY)local_58,PTR_s_Settings_0063e040);
-    }
-    local_4._0_1_ = 2;
-    RegCloseKey((HKEY)pCVar1);
-    local_4._0_1_ = 4;
-  }
-  CString::__1CString__QAE_XZ(&local_18);
-  local_4 = (uint)local_4._1_3_ << 8;
-  __1CCommandLineInfo__UAE_XZ();
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_5c);
-  *unaff_FS_OFFSET = local_c;
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004135F0
-// GHIDRA_NAME CMainFrame::AdjustWindowRectForClientAndScrollStyles
-// GHIDRA_PROTO undefined __thiscall AdjustWindowRectForClientAndScrollStyles(byte param_1)
-
-CMainFrame * CMainFrame::AdjustWindowRectForClientAndScrollStyles(byte param_1)
-
-{
-  TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
-            ((TApplication *)this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00486990
-// GHIDRA_NAME CMainFrame::DispatchVirtualSlotF8_WithArg
-// GHIDRA_PROTO undefined __thiscall CMainFrame::DispatchVirtualSlotF8_WithArg(void)
-
-void CMainFrame::DispatchVirtualSlotF8_WithArg()
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00486B10
-// GHIDRA_NAME CMainFrame::OnEndPrintPreview
-// GHIDRA_PROTO undefined __thiscall OnEndPrintPreview(undefined4 param_1)
-
-void CMainFrame::OnEndPrintPreview(undefined4 param_1)
-
-{
-  undefined4 *puVar1;
-
-  puVar1 = this->m_pDropTarget;
-  while (puVar1 != (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)*puVar1;
-    WrapperFor_thunk_GetTickCountDiv16_At0048a410(param_1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A7C0
-// GHIDRA_NAME CMainFrame::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
-
-undefined4 * CMainFrame::UpdateControlCachedIntFromWindowText()
-
-{
-  undefined4 *puVar1;
-
-  if (DAT_006a1ae4 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x2ef);
-  }
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
-  if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
-    puVar1[1] = *(undefined4 *)&this->field_0x4;
-    puVar1[2] = *(undefined4 *)&this->field_0x8;
-    puVar1[3] = *(undefined4 *)&this->field_0xc;
-    puVar1[7] = this->m_hWnd;
-    *puVar1 = &TEventHandler::_vftable_;
-    return puVar1;
-  }
-  return (undefined4 *)0x0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498F60
-// GHIDRA_NAME CMainFrame::ConstructModuleLibraryCacheDualTableState
-// GHIDRA_PROTO undefined __thiscall ConstructModuleLibraryCacheDualTableState(void)
-
-void CMainFrame::ConstructModuleLibraryCacheDualTableState()
-
-{
-  this->vftable = (CMainFrameVtbl *)0x0;
-  *(undefined **)&this->field_0x4 = &DAT_0064ba80;
-  *(undefined4 *)&this->field_0x8 = 0;
-  *(undefined4 *)&this->field_0xc = 0x11;
-  *(undefined4 *)&this->field_0x10 = 0;
-  *(undefined4 *)&this->field_0x14 = 0;
-  *(undefined4 *)&this->field_0x18 = 0;
-  this->m_hWnd = (void *)0xa;
-  this->m_pCtrlSite = (void *)0xa;
-  this->m_hWndOwner = &CObjectVtbl_0064ba68;
-  this->m_nFlags = 0;
-  this->m_pfnSuper = (void *)0x11;
-  this->m_nModalResult = 0;
-  this->m_pDropTarget = (void *)0x0;
-  this->m_pCtrlCont = (void *)0x0;
-  *(undefined4 *)&this->field_0x4c = 0;
-  *(undefined4 *)&this->field_0x3c = 0;
-  *(undefined4 *)&this->field_0x40 = 0;
-  *(undefined4 *)&this->field_0x44 = 0;
-  *(undefined4 *)&this->field_0x48 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004992A0
-// GHIDRA_NAME CMainFrame::LoadModuleLibrarySlotWithErrorDialog
-// GHIDRA_PROTO undefined __thiscall CMainFrame::LoadModuleLibrarySlotWithErrorDialog(LPCSTR param_1, CString param_2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Loads/reloads a required data library into one of the per-slot handles at object+0x3C.
-// GHIDRA_COMMENT - Frees previous module in the slot if present.
-// GHIDRA_COMMENT - Loads requested path via LoadLibraryExA(..., LOAD_LIBRARY_AS_DATAFILE).
-// GHIDRA_COMMENT - On failure, builds and shows a formatted missing-file error message.
-// GHIDRA_COMMENT Returns nonzero if slot module handle is valid.
-// GHIDRA_COMMENT_END
-
-/* Loads/reloads a required data library into one of the per-slot handles at object+0x3C.
-   - Frees previous module in the slot if present.
-   - Loads requested path via LoadLibraryExA(..., LOAD_LIBRARY_AS_DATAFILE).
-   - On failure, builds and shows a formatted missing-file error message.
-   Returns nonzero if slot module handle is valid. */
-
-bool CMainFrame::LoadModuleLibrarySlotWithErrorDialog(LPCSTR param_1, CString param_2)
-
-{
-  int iVar1;
-  CString CVar2;
-  HMODULE pHVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
-  CVar2.m_pchData = param_2.m_pchData;
-  local_c = *unaff_FS_OFFSET;
+  
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f948;
+  puStack_8 = &LAB_0062e89a;
+  local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  if (*(HMODULE *)(&this->field_0x3c + (int)param_2.m_pchData * 4) != (HMODULE)0x0) {
-    FreeLibrary(*(HMODULE *)(&this->field_0x3c + (int)param_2.m_pchData * 4));
-    *(undefined4 *)(&this->field_0x3c + (int)CVar2.m_pchData * 4) = 0;
+  pCVar1 = (CMainFrame *)operator_new(0xd0);
+  local_4 = 0;
+  if (pCVar1 != (CMainFrame *)0x0) {
+    CFrameWnd();
+    *(undefined4 *)&pCVar1->field_0xbc = 0;
+    *(undefined4 *)&pCVar1->field_0xcc = 1;
+    pCVar1->vftable = (CMainFrameVtbl *)&PTR_LAB_006488d8;
+    *(undefined4 *)&pCVar1->field_0xc0 = 0x100005f;
+    *(undefined4 *)&pCVar1->field_0xc4 = 0;
+    *unaff_FS_OFFSET = local_c;
+    return pCVar1;
   }
-  pHVar3 = LoadLibraryExA(param_1,(HANDLE)0x0,2);
-  *(HMODULE *)(&this->field_0x3c + (int)CVar2.m_pchData * 4) = pHVar3;
-  if (pHVar3 == (HMODULE)0x0) {
-    CString::__0CString__QAE_XZ(&param_2);
-    local_4 = 0;
-    _Format_CString__QAAXPBDZZ(&param_2,s_A_file_required_by_the_program____00695188,param_1);
-    _AfxMessageBox__YGHPBDII_Z(param_2.m_pchData,0,0);
-    local_4 = 0xffffffff;
-    CString::__1CString__QAE_XZ(&param_2);
-  }
-  iVar1 = *(int *)(&this->field_0x3c + (int)CVar2.m_pchData * 4);
   *unaff_FS_OFFSET = local_c;
-  return iVar1 != 0;
+  return (CMainFrame *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00484BB0
+// GHIDRA_NAME CMainFrame::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
+
+CRuntimeClass * CMainFrame::GetRuntimeClass(void)
+
+{
+  return &classCMainFrame;
 }
 

@@ -3,291 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: TArmyTacUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0059B4F0
-// GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot02
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot02(int param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x0059B390
+// GHIDRA_NAME TArmyTacUnit::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-void TArmyTacUnit::TArmyTacUnit_VtblSlot02(int param_1)
-
-{
-  TAutoGreatPower *this_00;
-  int *piVar1;
-
-  this_00 = (TAutoGreatPower *)(*(int *)&this->field_0x4 + 4);
-  piVar1 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
-                            (this_00,param_1,(undefined4 *)0x0);
-  if (piVar1 != (int *)0x0) {
-    TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar1);
-  }
-  WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0(*(undefined4 *)(param_1 + 0x38));
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059B540
-// GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot03
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot03(int * param_1)
-
-void TArmyTacUnit::TArmyTacUnit_VtblSlot03(int *param_1)
+TArmyTacUnit * TArmyTacUnit::_scalar_deleting_destructor_(byte param_1)
 
 {
-  int *piVar1;
-
-  CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
-            ((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
-  (**(code **)(*param_1 + 0x3c))();
-  piVar1 = (int *)param_1[0xe];
-  *(short *)(piVar1 + 6) = (short)*(undefined4 *)&this->field_0x1c;
-  (**(code **)(*piVar1 + 0x28))(*(undefined4 *)(*(int *)&this->field_0x14 + 0x38));
-  WrapperFor_AllocateWithFallbackHandler_At004a7b20(piVar1);
-  param_1[0xd] = param_1[1];
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059BC80
-// GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot06
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot06(void)
-
-void TArmyTacUnit::TArmyTacUnit_VtblSlot06()
-
-{
-  int iVar1;
-  int iVar2;
-
-  iVar1 = TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(*(TArmyTacUnit **)&this->field_0x14);
-  iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x48))();
-  if (iVar1 < iVar2) {
-    RecomputeTacticalCursorProjectionScoresAndPruneList(iVar1);
+  func_0x004082e7();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
   }
-  if (this->field_0xc != '\0') {
-    BuildTacticalActionPriorityBucketsWithGridGuard();
-    this->field_0x10 = 1;
-    return;
-  }
-  DispatchTacticalActionClassSelectionAcrossCursorList();
-  this->field_0x10 = 1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059C3C0
-// GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot07
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot07(undefined4 param_1)
-
-void TArmyTacUnit::TArmyTacUnit_VtblSlot07(undefined4 param_1)
-
-{
-  int iVar1;
-  int iVar2;
-  int iVar3;
-
-  iVar3 = 1;
-  do {
-    iVar1 = (**(code **)(**(int **)&this->field_0x4 + 0x4c))(iVar3);
-    iVar3 = iVar3 + 1;
-    if (*(int *)(iVar1 + 8) == -2) break;
-    iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x48))();
-  } while (iVar3 <= iVar2);
-  iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x48))();
-  if (iVar2 < iVar3) {
-    this->field_0x10 = 1;
-    return;
-  }
-  (**(code **)(**(int **)&this->field_0x14 + 0x30))(iVar1,param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059E4F0
-// GHIDRA_NAME TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit
-// GHIDRA_PROTO undefined __thiscall RunTacticalAutoTurnControllerForActiveUnit(void)
-
-void TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit()
-
-{
-  short sVar1;
-  int iVar2;
-  int iVar3;
-  char cVar4;
-  int iVar5;
-  int *piVar6;
-  int iVar7;
-  undefined *puVar8;
-  int local_18 [6];
-
-  iVar2 = *(int *)(*(int *)&this->field_0x14 + 0x1c);
-  if ((*(short *)(&DAT_006693b8 + *(int *)(iVar2 + 0xc) * 2) != 2) || (*(int *)(iVar2 + 0x20) == 1))
-  {
-    SelectAndApplyTacticalCursorModeProfile(0);
-  }
-  iVar7 = *(int *)(iVar2 + 8);
-  sVar1 = *(short *)(&DAT_00695528 + *(int *)(iVar2 + 0xc) * 2);
-  iVar5 = iVar7;
-  if ((sVar1 == 8) && (*(int *)(iVar2 + 0x2c) != 0xc)) {
-    cVar4 = IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
-    if (cVar4 == '\0') {
-      if ((*(char *)(*(int *)(*(int *)&this->field_0x14 + 4) + 0x10 + iVar7 * 0x14) != '\0') ||
-         (*(char *)(*(int *)(*(int *)&this->field_0x14 + 0x28) + iVar7) != '\0')) goto LAB_0059e5be;
-      puVar8 = &DAT_0069980c;
-    }
-    else {
-      puVar8 = &DAT_006997d0;
-    }
-  }
-  else {
-    iVar3 = *(int *)(iVar2 + 0x2c);
-    if (((iVar3 == 5) || ((iVar3 == 2 || (sVar1 == 4)))) &&
-       (*(int *)(*(int *)&this->field_0x14 + 0x74) < 2)) goto LAB_0059e5be;
-    if ((sVar1 == 6) && (*(int *)(*(int *)&this->field_0x14 + 0x74) < 2)) {
-      puVar8 = &DAT_00699938;
-    }
-    else {
-      puVar8 = &DAT_00699500 + iVar3 * 0x3c;
-    }
-  }
-  iVar5 = SelectBestTacticalTileByWeightedHeuristics(iVar2,puVar8);
-LAB_0059e5be:
-  if (iVar5 == -1) {
-    iVar5 = *(int *)(iVar2 + 8);
-  }
-  if (iVar5 != *(int *)(iVar2 + 8)) {
-    piVar6 = *(int **)&this->field_0x14;
-    cVar4 = (char)piVar6[0x12];
-    iVar3 = 200;
-    while ((((cVar4 != '\0' && (*(int *)(iVar2 + 0x1c) == 0)) && (*(int *)(iVar2 + 8) != iVar5)) &&
-           (iVar3 != 0))) {
-      (**(code **)(*piVar6 + 0x34))(iVar2,iVar5);
-      piVar6 = *(int **)&this->field_0x14;
-      cVar4 = (char)piVar6[0x12];
-      iVar3 = iVar3 + -1;
-    }
-  }
-  if ((*(char *)(*(int *)&this->field_0x14 + 0x48) != '\0') && (*(int *)(iVar2 + 0x1c) == 0)) {
-    iVar5 = *(int *)(iVar2 + 0xc);
-    if (iVar5 < 0x1b) {
-      if (*(short *)(&DAT_00695528 + iVar5 * 2) == 8) {
-        if ((*(int *)(iVar2 + 8) == iVar7) &&
-           ((int)*(short *)(&DAT_006693f8 + iVar5 * 2) / 2 <= *(int *)(iVar2 + 0x28))) {
-          do {
-            iVar5 = *(int *)(iVar2 + 8) + 1;
-            iVar7 = (*(int **)&this->field_0x14)[1] + iVar5 * 0x14;
-            if (1 < *(int *)(iVar7 + 8)) {
-              (**(code **)(**(int **)&this->field_0x14 + 0x5c))(iVar2,iVar5);
-              return;
-            }
-            if ((*(int *)(iVar7 + 4) == 0) && (*(char *)(iVar7 + 0x10) == '\0')) {
-              (**(code **)(**(int **)&this->field_0x14 + 0x60))(iVar2,iVar5);
-            }
-          } while ((int)*(short *)(&DAT_006693f8 + *(int *)(iVar2 + 0xc) * 2) / 2 <=
-                   *(int *)(iVar2 + 0x28));
-        }
-      }
-      else if (*(char *)(iVar2 + 0x18) != '\0') {
-        iVar7 = 0;
-        iVar5 = SelectBestTacticalTargetTileByActionHeuristics(iVar2,1);
-        if (iVar5 != -1) {
-          iVar7 = *(int *)(*(int *)(*(int *)&this->field_0x14 + 4) + 4 + iVar5 * 0x14);
-        }
-        if ((((iVar7 != 0) &&
-             ((**(code **)(**(int **)&this->field_0x14 + 0x3c))(iVar2,*(undefined4 *)(iVar7 + 8)),
-             *(char *)(*(int *)&this->field_0x14 + 0x48) != '\0')) &&
-            ((*(short *)(&DAT_006693b8 + *(int *)(iVar2 + 0xc) * 2) == 1 &&
-             (*(int *)(iVar2 + 0x28) != 0)))) &&
-           ((((iVar7 = *(int *)(iVar2 + 0x2c), iVar7 == 2 || (iVar7 == 5)) || (iVar7 == 0xe)) &&
-            (iVar7 = SelectBestTacticalTileByWeightedHeuristics(iVar2,&DAT_0069953c + iVar7 * 0x3c),
-            iVar7 != *(int *)(iVar2 + 8))))) {
-          piVar6 = *(int **)&this->field_0x14;
-          iVar5 = piVar6[7];
-          iVar3 = 200;
-          while (((iVar5 == iVar2 && (*(int *)(iVar2 + 0x1c) == 0)) &&
-                 ((*(int *)(iVar2 + 8) != iVar7 && (iVar3 != 0))))) {
-            (**(code **)(*piVar6 + 0x34))(iVar2,iVar7);
-            piVar6 = *(int **)&this->field_0x14;
-            iVar5 = piVar6[7];
-            iVar3 = iVar3 + -1;
-          }
-        }
-      }
-    }
-    else {
-      iVar7 = 0;
-      ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(iVar2 + 8),local_18);
-      iVar5 = 0;
-      piVar6 = local_18;
-      do {
-        if (5 < iVar5) break;
-        if ((((*piVar6 != -1) &&
-             (iVar3 = *(int *)(*(int *)(*(int *)&this->field_0x14 + 4) + 4 + *piVar6 * 0x14),
-             iVar3 != 0)) && (*(int *)(iVar3 + 0x20) == *(int *)(iVar2 + 0x20))) &&
-           (*(int *)(iVar3 + 0x34) < *(int *)(iVar3 + 4))) {
-          iVar7 = iVar3;
-        }
-        iVar5 = iVar5 + 1;
-        piVar6 = piVar6 + 1;
-      } while (iVar7 == 0);
-      if (iVar7 != 0) {
-        (**(code **)(**(int **)&this->field_0x14 + 0x58))(iVar2,iVar7);
-      }
-    }
-  }
-  if ((*(TNextMoveCommand **)&this->field_0x14)[2].field_0x10 != '\0') {
-    TNextMoveCommand::QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059EA60
-// GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot09
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot09(void)
-
-undefined1 TArmyTacUnit::TArmyTacUnit_VtblSlot09()
-
-{
-  undefined1 uVar1;
-  undefined4 unaff_EBX;
-  undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_34 [4];
-  undefined *puStack_30;
-  undefined4 uStack_2c;
-  undefined4 uStack_28;
-  undefined4 uStack_24;
-  CString CStack_20;
-  CString *pCStack_1c;
-  CString CStack_14;
-  undefined4 uStack_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00638568;
-  *unaff_FS_OFFSET = &uStack_c;
-  if (this->field_0xe != '\0') {
-    pCStack_1c = (CString *)0x59ea89;
-    CString::__0CString__QAE_XZ(&CStack_14);
-    pCStack_1c = &CStack_14;
-    CStack_20.m_pchData = (char *)0x0;
-    uStack_24 = 0x273d;
-    uStack_4 = 0;
-    uStack_28 = 0x59eaab;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    uStack_28 = 1;
-    uStack_2c = 1;
-    puStack_30 = &DAT_006a4650;
-    pCStack_1c = (CString *)auStack_34;
-    AssignStringSharedRefAndReturnThis(&CStack_20);
-    uVar1 = DispatchLocalizedUiMessageWithTemplateA13A0();
-    uStack_10 = 0xffffffff;
-    uStack_28 = 0x59eae3;
-    CString::__1CString__QAE_XZ(&CStack_20);
-    *unaff_FS_OFFSET = unaff_EBX;
-    return uVar1;
-  }
-  *unaff_FS_OFFSET = uStack_c;
-  return 1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4240
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(void)
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot06_Impl(void)
 
 int TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl()
 
@@ -298,7 +30,7 @@ int TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl()
   int iVar4;
   int iVar5;
   int local_4;
-
+  
   iVar4 = 0;
   iVar5 = 0;
   local_4 = 0;
@@ -329,30 +61,36 @@ LAB_005a42a1:
   return local_4;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A5EB0
-// GHIDRA_NAME TArmyTacUnit::CreateTArmyTacUnitInstance
-// GHIDRA_PROTO undefined __thiscall CreateTArmyTacUnitInstance(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5ED0
+// GHIDRA_NAME TArmyTacUnit::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-void TArmyTacUnit::CreateTArmyTacUnitInstance()
+undefined4 * TArmyTacUnit::CreateObject(void)
 
 {
-  *(uint *)&this->field_0x20 = (uint)(*(int *)&this->field_0x20 == 0);
-  return;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x58);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5F00
-// GHIDRA_NAME TArmyTacUnit::GetTTacticalUnitClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTacticalUnitClassNamePointer(void)
+// GHIDRA_NAME TArmyTacUnit::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyTacUnit::GetTTacticalUnitClassNamePointer()
+CRuntimeClass * TArmyTacUnit::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTArmyTacUnit;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5F20
 // GHIDRA_NAME TArmyTacUnit::ConstructTArmyTacUnitBaseState
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(int param_1)
+// GHIDRA_PROTO undefined __thiscall ConstructTArmyTacUnitBaseState(int param_1)
 
 void TArmyTacUnit::ConstructTArmyTacUnitBaseState(int param_1)
 
@@ -361,7 +99,7 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(int param_1)
   undefined uVar2;
   undefined3 extraout_var;
   undefined1 uVar3;
-
+  
   uVar3 = 0;
   *(int *)&this->field_0xc = (int)*(short *)(param_1 + 4);
   *(undefined4 *)&this->field_0x8 = 0xfffffffe;
@@ -391,7 +129,7 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5FE0
 // GHIDRA_NAME TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTArmyTacUnitAndMaybeFree(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
@@ -399,34 +137,27 @@ void TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree()
 
 {
   float fVar1;
-  float fVar2;
-  float fVar3;
-  short sVar4;
-
-  sVar4 = *(short *)(*(int *)&this->field_0x38 + 0x38);
-  fVar1 = (float)_DAT_00669ec8;
-  fVar2 = (float)_DAT_00669ed0;
-  NoOpRuntimeCallback_005c3530(5);
-  fVar3 = (float)*(int *)&this->field_0x4 * _DAT_00669f0c;
-  fVar1 = fVar3 * (fVar2 - (float)(int)(short)((sVar4 / 100 + (sVar4 >> 0xf)) -
-                                              (short)((longlong)(int)sVar4 * 0x51eb851f >> 0x3f)) *
-                           fVar1);
-  sVar4 = NoOpRuntimeCallback_005c3530(0);
-  *(float *)&this->field_0x44 = (float)(int)sVar4 * fVar1 * fVar3 * 1.0;
-  sVar4 = NoOpRuntimeCallback_005c3530(1);
-  *(float *)&this->field_0x48 = (float)(int)sVar4 * fVar1 * 1.0;
-  sVar4 = NoOpRuntimeCallback_005c3530(2);
-  *(float *)&this->field_0x4c = (float)(int)sVar4 * fVar1;
-  sVar4 = NoOpRuntimeCallback_005c3530(3);
-  *(float *)&this->field_0x50 = (float)(int)sVar4 * fVar1;
-  sVar4 = NoOpRuntimeCallback_005c3530(4);
-  *(float *)&this->field_0x54 = (float)(int)sVar4 * fVar1 * 1.0;
+  short sVar2;
+  float unaff_ESI;
+  
+  func_0x004088dc();
+  fVar1 = (float)*(int *)&this->field_0x4 * _DAT_00669f0c;
+  sVar2 = func_0x004088dc();
+  *(float *)&this->field_0x44 = (float)(int)sVar2 * 7.00649e-45 * 1.0 * fVar1 * unaff_ESI;
+  sVar2 = func_0x004088dc();
+  *(float *)&this->field_0x48 = (float)(int)sVar2 * 0.0 * 7.00649e-45;
+  sVar2 = func_0x004088dc();
+  *(float *)&this->field_0x4c = (float)(int)sVar2 * 1.4013e-45;
+  sVar2 = func_0x004088dc();
+  *(float *)&this->field_0x50 = (float)(int)sVar2 * 2.8026e-45;
+  sVar2 = func_0x004088dc(4);
+  *(float *)&this->field_0x54 = (float)(int)sVar2 * 4.2039e-45 * 2.8026e-45;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6120
 // GHIDRA_NAME TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d40(void)
 
 int TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40()
 
@@ -442,7 +173,7 @@ int TArmyTacUnit::OrphanTiny_ReturnZero_005a5d60()
 
 {
   int iVar1;
-
+  
   iVar1 = *(int *)(&DAT_006699e8 + *(int *)&this->field_0xc * 4);
   if ((*(int *)&this->field_0x20 == 1) &&
      (*(short *)(&DAT_00669858 + *(int *)&this->field_0xc * 2) == 2)) {
@@ -471,478 +202,27 @@ float10 TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0()
   return (float10)*(float *)(&DAT_00669970 + *(int *)&this->field_0xc * 4);
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0060962A
-// GHIDRA_NAME TArmyTacUnit::?SetScrollRange@CWnd@@QAEXHHHH@Z
-// GHIDRA_PROTO undefined __thiscall ?SetScrollRange@CWnd@@QAEXHHHH@Z(int param_1, int param_2, int param_3, BOOL param_4)
+// GHIDRA_FUNCTION IMPERIALISM 0x005A61C0
+// GHIDRA_NAME TArmyTacUnit::VTableSlot0E
+// GHIDRA_PROTO undefined __thiscall VTableSlot0E(int param_1, int param_2)
 
-void __thiscall
-TArmyTacUnit::_SetScrollRange_CWnd__QAEXHHHH_Z
-          (TArmyTacUnit *this,int param_1,int param_2,int param_3,BOOL param_4)
-
-{
-  undefined uVar1;
-  undefined3 extraout_var;
-  HWND hWnd;
-
-  uVar1 = (*this->vftable[1].OrphanLeaf_NoCall_Ins02_005a5d80)(param_1);
-  if (CONCAT31(extraout_var,uVar1) == 0) {
-    hWnd = *(HWND *)&this->field_0x1c;
-  }
-  else {
-    param_1 = 2;
-    hWnd = *(HWND *)(CONCAT31(extraout_var,uVar1) + 0x1c);
-  }
-  SetScrollRange(hWnd,param_1,param_2,param_3,param_4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060968D
-// GHIDRA_NAME TArmyTacUnit::?EnableScrollBarCtrl@CWnd@@QAEXHH@Z
-// GHIDRA_PROTO undefined __thiscall ?EnableScrollBarCtrl@CWnd@@QAEXHH@Z(int param_1)
-
-void TArmyTacUnit::_EnableScrollBarCtrl_CWnd__QAEXHH_Z(int param_1)
-
-{
-  undefined uVar1;
-  undefined3 extraout_var;
-  int wBar;
-
-  wBar = param_1;
-  if (param_1 == 3) {
-    _EnableScrollBarCtrl_CWnd__QAEXHH_Z(this,0);
-    wBar = 1;
-  }
-  uVar1 = (*this->vftable[1].OrphanLeaf_NoCall_Ins02_005a5d80)(wBar);
-  if (CONCAT31(extraout_var,uVar1) == 0) {
-    ShowScrollBar(*(HWND *)&this->field_0x1c,wBar,param_1);
-  }
-  else {
-    CMcWindow::EnableWindowOrDelegateToOwner(param_1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006097AE
-// GHIDRA_NAME TArmyTacUnit::?ScrollWindow@CWnd@@QAEXHHPBUtagRECT@@0@Z
-// GHIDRA_PROTO undefined __thiscall ?ScrollWindow@CWnd@@QAEXHHPBUtagRECT@@0@Z(int param_1, int param_2, RECT * param_3, RECT * param_4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Scrolls client area by delta or repositions child windows when invisible/no clip rects.
-// GHIDRA_COMMENT Also forwards scroll delta to attached helper object (+0x34 -> vfunc +0x60).
-// GHIDRA_COMMENT_END
-
-/* Scrolls client area by delta or repositions child windows when invisible/no clip rects.
-   Also forwards scroll delta to attached helper object (+0x34 -> vfunc +0x60). */
-
-void __thiscall
-TArmyTacUnit::_ScrollWindow_CWnd__QAEXHHPBUtagRECT__0_Z
-          (TArmyTacUnit *this,int param_1,int param_2,RECT *param_3,RECT *param_4)
-
-{
-  BOOL BVar1;
-  HWND hWnd;
-  undefined1 local_14 [16];
-
-  BVar1 = IsWindowVisible(*(HWND *)&this->field_0x1c);
-  if (((BVar1 == 0) && (param_3 == (RECT *)0x0)) && (param_4 == (RECT *)0x0)) {
-    for (hWnd = GetWindow(*(HWND *)&this->field_0x1c,5); hWnd != (HWND)0x0; hWnd = GetWindow(hWnd,2)
-        ) {
-      GetWindowRect(hWnd,(LPRECT)local_14);
-      ScreenToClient(*(HWND *)&this->field_0x1c,(LPPOINT)local_14);
-      ScreenToClient(*(HWND *)&this->field_0x1c,(LPPOINT)(local_14 + 8));
-      SetWindowPos(hWnd,(HWND)0x0,local_14._0_4_ + param_1,local_14._4_4_ + param_2,0,0,0x15);
-    }
-  }
-  else {
-    ScrollWindow(*(HWND *)&this->field_0x1c,param_1,param_2,param_3,param_4);
-  }
-  if ((*(int **)&this->field_0x34 != (int *)0x0) && (param_3 == (RECT *)0x0)) {
-    (**(code **)(**(int **)&this->field_0x34 + 0x60))(param_1,param_2);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614F95
-// GHIDRA_NAME TArmyTacUnit::?SetScaleToFitSize@CScrollView@@QAEXUtagSIZE@@@Z
-// GHIDRA_PROTO undefined __thiscall ?SetScaleToFitSize@CScrollView@@QAEXUtagSIZE@@@Z(undefined4 param_1, undefined4 param_2)
-
-void __thiscall
-TArmyTacUnit::_SetScaleToFitSize_CScrollView__QAEXUtagSIZE___Z
-          (TArmyTacUnit *this,undefined4 param_1,undefined4 param_2)
-
-{
-  uint uVar1;
-  tagRECT local_14;
-
-  *(undefined4 *)&this->field_0x40 = 0xffffffff;
-  *(undefined4 *)&this->field_0x44 = param_1;
-  *(undefined4 *)&this->field_0x48 = param_2;
-  if (*(int *)&this->field_0x1c != 0) {
-    uVar1 = _GetStyle_CWnd__QBEKXZ();
-    if ((uVar1 & 0x300000) != 0) {
-      _SetScrollPos_CWnd__QAEHHHH_Z(0,0,1);
-      _SetScrollPos_CWnd__QAEHHHH_Z(1,0,1);
-      _EnableScrollBarCtrl_CWnd__QAEXHH_Z(this,3);
-    }
-  }
-  GetClientRect(*(HWND *)&this->field_0x1c,&local_14);
-  *(LONG *)&this->field_0x4c = local_14.right - local_14.left;
-  *(LONG *)&this->field_0x50 = local_14.bottom - local_14.top;
-  if (*(int *)&this->field_0x1c != 0) {
-    _UpdateBars_CScrollView__IAEXXZ(this);
-    InvalidateRect(*(HWND *)&this->field_0x1c,(RECT *)0x0,1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00615020
-// GHIDRA_NAME TArmyTacUnit::?SetScrollSizes@CScrollView@@QAEXHUtagSIZE@@ABU2@1@Z
-// GHIDRA_PROTO undefined ?SetScrollSizes@CScrollView@@QAEXHUtagSIZE@@ABU2@1@Z()
-
-void TArmyTacUnit::_SetScrollSizes_CScrollView__QAEXHUtagSIZE__ABU2_1_Z(void)
-
-{
-  undefined1 *lppt;
-  undefined4 uVar1;
-  HDC pHVar2;
-  undefined4 *puVar3;
-  TArmyTacUnit *this;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  *(undefined4 *)(unaff_EBP + -0x10) = *(undefined4 *)&this->field_0x40;
-  *(undefined4 *)&this->field_0x40 = *(undefined4 *)(unaff_EBP + 8);
-  *(undefined4 *)&this->field_0x44 = *(undefined4 *)(unaff_EBP + 0xc);
-  *(undefined4 *)&this->field_0x48 = *(undefined4 *)(unaff_EBP + 0x10);
-  __0CWindowDC__QAE_PAVCWnd___Z(0);
-  uVar1 = *(undefined4 *)&this->field_0x40;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  _SetMapMode_CDC__UAEHH_Z(uVar1);
-  pHVar2 = *(HDC *)(unaff_EBP + -0x1c);
-  *(undefined4 *)&this->field_0x4c = *(undefined4 *)&this->field_0x44;
-  *(undefined4 *)&this->field_0x50 = *(undefined4 *)&this->field_0x48;
-  LPtoDP(pHVar2,(LPPOINT)&this->field_0x4c,1);
-  puVar3 = *(undefined4 **)(unaff_EBP + 0x14);
-  lppt = &this->field_0x54;
-  pHVar2 = *(HDC *)(unaff_EBP + -0x1c);
-  *(undefined4 *)lppt = *puVar3;
-  this[1].vftable = (TArmyTacUnitVtbl *)puVar3[1];
-  LPtoDP(pHVar2,(LPPOINT)lppt,1);
-  puVar3 = *(undefined4 **)(unaff_EBP + 0x18);
-  pHVar2 = *(HDC *)(unaff_EBP + -0x1c);
-  *(undefined4 *)&this[1].field_0x4 = *puVar3;
-  *(undefined4 *)&this[1].field_0x8 = puVar3[1];
-  LPtoDP(pHVar2,(LPPOINT)&this[1].field_0x4,1);
-  if (*(int *)&this->field_0x50 < 0) {
-    *(int *)&this->field_0x50 = -*(int *)&this->field_0x50;
-  }
-  if ((int)this[1].vftable < 0) {
-    this[1].vftable = (TArmyTacUnitVtbl *)-(int)this[1].vftable;
-  }
-  if (*(int *)&this[1].field_0x8 < 0) {
-    *(int *)&this[1].field_0x8 = -*(int *)&this[1].field_0x8;
-  }
-  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  __1CWindowDC__UAE_XZ();
-  if (*(int *)lppt == 0) {
-    *(int *)lppt = *(int *)&this->field_0x4c / 10;
-  }
-  if (this[1].vftable == (TArmyTacUnitVtbl *)0x0) {
-    this[1].vftable = (TArmyTacUnitVtbl *)(*(int *)&this->field_0x50 / 10);
-  }
-  if (*(int *)&this[1].field_0x4 == 0) {
-    *(int *)&this[1].field_0x4 = *(int *)lppt / 10;
-  }
-  if (*(int *)&this[1].field_0x8 == 0) {
-    *(int *)&this[1].field_0x8 = (int)this[1].vftable / 10;
-  }
-  if (*(int *)&this->field_0x1c != 0) {
-    _UpdateBars_CScrollView__IAEXXZ(this);
-    if (*(int *)(unaff_EBP + -0x10) != *(int *)&this->field_0x40) {
-      InvalidateRect(*(HWND *)&this->field_0x1c,(RECT *)0x0,1);
-    }
-  }
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006151D6
-// GHIDRA_NAME TArmyTacUnit::?ScrollToPosition@CScrollView@@QAEXUtagPOINT@@@Z
-// GHIDRA_PROTO undefined ?ScrollToPosition@CScrollView@@QAEXUtagPOINT@@@Z()
-
-void TArmyTacUnit::_ScrollToPosition_CScrollView__QAEXUtagPOINT___Z(void)
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  int iVar3;
-  TArmyTacUnit *this;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  if (*(int *)&this->field_0x40 != 1) {
-    __0CWindowDC__QAE_PAVCWnd___Z(0);
-    uVar1 = *(undefined4 *)&this->field_0x40;
-    *(undefined4 *)(unaff_EBP + -4) = 0;
-    _SetMapMode_CDC__UAEHH_Z(uVar1);
-    LPtoDP(*(HDC *)(unaff_EBP + -0x18),(LPPOINT)(unaff_EBP + 8),1);
-    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    __1CWindowDC__UAE_XZ();
-  }
-  iVar2 = _GetScrollLimit_CWnd__QAEHH_Z(0);
-  iVar3 = _GetScrollLimit_CWnd__QAEHH_Z(1);
-  if (*(int *)(unaff_EBP + 8) < 0) {
-    *(undefined4 *)(unaff_EBP + 8) = 0;
-  }
-  else if (iVar2 < *(int *)(unaff_EBP + 8)) {
-    *(int *)(unaff_EBP + 8) = iVar2;
-  }
-  if (*(int *)(unaff_EBP + 0xc) < 0) {
-    *(undefined4 *)(unaff_EBP + 0xc) = 0;
-  }
-  else if (iVar3 < *(int *)(unaff_EBP + 0xc)) {
-    *(int *)(unaff_EBP + 0xc) = iVar3;
-  }
-  _ScrollToDevicePosition_CScrollView__IAEXUtagPOINT___Z
-            (this,*(int *)(unaff_EBP + 8),*(int *)(unaff_EBP + 0xc));
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00615329
-// GHIDRA_NAME TArmyTacUnit::?ScrollToDevicePosition@CScrollView@@IAEXUtagPOINT@@@Z
-// GHIDRA_PROTO undefined __thiscall ?ScrollToDevicePosition@CScrollView@@IAEXUtagPOINT@@@Z(int param_1, int param_2)
-
-void __thiscall
-TArmyTacUnit::_ScrollToDevicePosition_CScrollView__IAEXUtagPOINT___Z
-          (TArmyTacUnit *this,int param_1,int param_2)
+void TArmyTacUnit::VTableSlot0E(int param_1, int param_2)
 
 {
   int iVar1;
-  int iVar2;
-
-  iVar1 = _GetScrollPos_CWnd__QBEHH_Z(0);
-  _SetScrollPos_CWnd__QAEHHHH_Z(0,param_1,1);
-  iVar2 = _GetScrollPos_CWnd__QBEHH_Z(1);
-  _SetScrollPos_CWnd__QAEHHHH_Z(1,param_2,1);
-  _ScrollWindow_CWnd__QAEXHHPBUtagRECT__0_Z
-            (this,iVar1 - param_1,iVar2 - param_2,(RECT *)0x0,(RECT *)0x0);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006155ED
-// GHIDRA_NAME TArmyTacUnit::?GetScrollBarSizes@CScrollView@@IAEXAAVCSize@@@Z
-// GHIDRA_PROTO undefined __thiscall ?GetScrollBarSizes@CScrollView@@IAEXAAVCSize@@@Z(int * param_1)
-
-void TArmyTacUnit::_GetScrollBarSizes_CScrollView__IAEXAAVCSize___Z(int *param_1)
-
-{
-  _vslot_fn *p_Var1;
-  undefined uVar2;
-  uint uVar3;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-
-  param_1[1] = 0;
-  *param_1 = 0;
-  uVar3 = _GetStyle_CWnd__QBEKXZ();
-  p_Var1 = this->vftable[1].OrphanLeaf_NoCall_Ins02_005a5d80;
-  uVar2 = (*p_Var1)(1);
-  if ((CONCAT31(extraout_var,uVar2) == 0) && (*param_1 = DAT_006a7d00, (uVar3 & 0x800000) != 0)) {
-    *param_1 = *param_1 + -1;
+  
+  iVar1 = *(int *)&this->field_0x34 - param_2;
+  *(int *)&this->field_0x34 = iVar1;
+  if (iVar1 < 1) {
+    *(undefined4 *)&this->field_0x34 = 0;
+    *(undefined4 *)&this->field_0x1c = 1;
   }
-  uVar2 = (*p_Var1)(0);
-  if ((CONCAT31(extraout_var_00,uVar2) == 0) && (param_1[1] = DAT_006a7d04, (uVar3 & 0x800000) != 0)
-     ) {
-    param_1[1] = param_1[1] + -1;
+  iVar1 = *(int *)&this->field_0x4 - param_1;
+  *(int *)&this->field_0x4 = iVar1;
+  if (iVar1 < 1) {
+    *(undefined4 *)&this->field_0x4 = 0;
+    *(undefined4 *)&this->field_0x1c = 3;
   }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00615647
-// GHIDRA_NAME TArmyTacUnit::?GetTrueClientSize@CScrollView@@IAEHAAVCSize@@0@Z
-// GHIDRA_PROTO undefined __thiscall ?GetTrueClientSize@CScrollView@@IAEHAAVCSize@@0@Z(int * param_1, int * param_2)
-
-undefined4 __thiscall
-TArmyTacUnit::_GetTrueClientSize_CScrollView__IAEHAAVCSize__0_Z
-          (TArmyTacUnit *this,int *param_1,int *param_2)
-
-{
-  uint uVar1;
-  undefined4 uVar2;
-  tagRECT local_14;
-
-  GetClientRect(*(HWND *)&this->field_0x1c,&local_14);
-  *param_1 = local_14.right;
-  param_1[1] = local_14.bottom;
-  uVar1 = _GetStyle_CWnd__QBEKXZ();
-  _GetScrollBarSizes_CScrollView__IAEXAAVCSize___Z(this,param_2);
-  if ((*param_2 != 0) && ((uVar1 & 0x200000) != 0)) {
-    *param_1 = *param_1 + *param_2;
-  }
-  if ((param_2[1] != 0) && ((uVar1 & 0x100000) != 0)) {
-    param_1[1] = param_1[1] + param_2[1];
-  }
-  if ((*param_2 < *param_1) && (param_2[1] < param_1[1])) {
-    uVar2 = 1;
-  }
-  else {
-    uVar2 = 0;
-  }
-  return uVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006156BC
-// GHIDRA_NAME TArmyTacUnit::?GetScrollBarState@CScrollView@@IAEXVCSize@@AAV2@1AAVCPoint@@H@Z
-// GHIDRA_PROTO undefined __thiscall ?GetScrollBarState@CScrollView@@IAEXVCSize@@AAV2@1AAVCPoint@@H@Z(int param_1, int param_2, uint * param_3, int * param_4, int * param_5, int param_6)
-
-void __thiscall
-TArmyTacUnit::_GetScrollBarState_CScrollView__IAEXVCSize__AAV2_1AAVCPoint__H_Z
-          (TArmyTacUnit *this,int param_1,int param_2,uint *param_3,int *param_4,int *param_5,
-          int param_6)
-
-{
-  int iVar1;
-  int *piVar2;
-  int *piVar3;
-  uint uVar4;
-  uint uVar5;
-  TArmyTacUnit *local_c;
-  TArmyTacUnit *local_8;
-
-  local_c = this;
-  local_8 = this;
-  _GetScrollBarSizes_CScrollView__IAEXAAVCSize___Z(this,(int *)&local_c);
-  piVar2 = param_4;
-  iVar1 = *(int *)&this->field_0x50;
-  *param_4 = *(int *)&this->field_0x4c - param_1;
-  param_4[1] = iVar1 - param_2;
-  piVar3 = (int *)TControl::_GetDeviceScrollPosition_CScrollView__QBE_AVCPoint__XZ
-                            ((TControl *)this,&param_1);
-  *param_5 = *piVar3;
-  param_5[1] = piVar3[1];
-  uVar4 = (uint)(0 < *piVar2);
-  if (uVar4 == 0) {
-    *param_5 = 0;
-  }
-  else if (param_6 != 0) {
-    piVar2[1] = (int)&local_8->vftable + piVar2[1];
-  }
-  uVar5 = (uint)(0 < piVar2[1]);
-  if (uVar5 == 0) {
-    param_5[1] = 0;
-  }
-  else if (param_6 != 0) {
-    *piVar2 = (int)&local_c->vftable + *piVar2;
-  }
-  if (((uVar5 != 0) && (uVar4 == 0)) && (0 < *piVar2)) {
-    piVar2[1] = (int)&local_8->vftable + piVar2[1];
-    uVar4 = 1;
-  }
-  iVar1 = *piVar2;
-  if ((0 < iVar1) && (iVar1 <= *param_5)) {
-    *param_5 = iVar1;
-  }
-  iVar1 = piVar2[1];
-  if ((0 < iVar1) && (iVar1 <= param_5[1])) {
-    param_5[1] = iVar1;
-  }
-  *param_3 = uVar4;
-  param_3[1] = uVar5;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00615778
-// GHIDRA_NAME TArmyTacUnit::?UpdateBars@CScrollView@@IAEXXZ
-// GHIDRA_PROTO undefined __thiscall ?UpdateBars@CScrollView@@IAEXXZ(void)
-
-void TArmyTacUnit::_UpdateBars_CScrollView__IAEXXZ()
-
-{
-  HWND pHVar1;
-  int iVar2;
-  LRESULT LVar3;
-  undefined1 local_6c [4];
-  undefined4 local_68;
-  undefined4 local_64;
-  int local_60;
-  int local_5c;
-  tagRECT local_50;
-  int local_40;
-  int local_3c;
-  int local_38;
-  int local_34;
-  int local_30;
-  int local_2c;
-  int local_28;
-  int local_24;
-  int local_20;
-  int local_1c;
-  uint local_18;
-  int local_14;
-  int local_10;
-  int local_c;
-  int local_8;
-
-  if (*(int *)&this[1].field_0x10 != 0) {
-    return;
-  }
-  pHVar1 = *(HWND *)&this->field_0x1c;
-  *(undefined4 *)&this[1].field_0x10 = 1;
-  local_8 = 1;
-  pHVar1 = GetParent(pHVar1);
-  iVar2 = _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar1);
-  if ((iVar2 != 0) &&
-     (LVar3 = SendMessageA(*(HWND *)(iVar2 + 0x1c),0x368,0,(LPARAM)&local_40), LVar3 != 0)) {
-    local_8 = 0;
-  }
-  if (local_8 == 0) {
-    _GetScrollBarSizes_CScrollView__IAEXAAVCSize___Z(this,&local_20);
-    local_10 = local_38 - local_40;
-    local_c = local_34 - local_3c;
-  }
-  else {
-    iVar2 = _GetTrueClientSize_CScrollView__IAEHAAVCSize__0_Z(this,&local_10,&local_20);
-    if (iVar2 == 0) {
-      GetClientRect(*(HWND *)&this->field_0x1c,&local_50);
-      if ((0 < local_50.right) && (0 < local_50.bottom)) {
-        _EnableScrollBarCtrl_CWnd__QAEXHH_Z(this,3);
-      }
-      goto LAB_006158e6;
-    }
-  }
-  _GetScrollBarState_CScrollView__IAEXVCSize__AAV2_1AAVCPoint__H_Z
-            (this,local_10,local_c,&local_18,&local_30,&local_28,local_8);
-  if (local_18 != 0) {
-    local_c = local_c - local_1c;
-  }
-  if (local_14 != 0) {
-    local_10 = local_10 - local_20;
-  }
-  _ScrollToDevicePosition_CScrollView__IAEXUtagPOINT___Z(this,local_28,local_24);
-  local_68 = 3;
-  local_64 = 0;
-  _EnableScrollBarCtrl_CWnd__QAEXHH_Z(this,0);
-  if (local_18 != 0) {
-    local_5c = local_10;
-    local_60 = *(int *)&this->field_0x4c + -1;
-    iVar2 = _SetScrollInfo_CWnd__QAEHHPAUtagSCROLLINFO__H_Z(0,local_6c,1);
-    if (iVar2 == 0) {
-      _SetScrollRange_CWnd__QAEXHHHH_Z(this,0,0,local_30,1);
-    }
-  }
-  _EnableScrollBarCtrl_CWnd__QAEXHH_Z(this,1);
-  if (local_14 != 0) {
-    local_5c = local_c;
-    local_60 = *(int *)&this->field_0x50 + -1;
-    iVar2 = _SetScrollInfo_CWnd__QAEHHPAUtagSCROLLINFO__H_Z(1,local_6c,1);
-    if (iVar2 == 0) {
-      _SetScrollRange_CWnd__QAEXHHHH_Z(this,1,0,local_2c,1);
-    }
-  }
-LAB_006158e6:
-  *(undefined4 *)&this[1].field_0x10 = 0;
   return;
 }
 

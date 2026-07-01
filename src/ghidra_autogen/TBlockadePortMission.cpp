@@ -4,63 +4,63 @@
 // Bucket: TBlockadePortMission.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A990
-// GHIDRA_NAME TBlockadePortMission::CreateTBlockadePortMission
-// GHIDRA_PROTO undefined CreateTBlockadePortMission()
+// GHIDRA_NAME TBlockadePortMission::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TMission * TBlockadePortMission::CreateTBlockadePortMission(void)
+undefined4 * TBlockadePortMission::CreateObject(void)
 
 {
-  TMission *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006343aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)__2_YAPAXI_Z(0x40);
+  puVar1 = (undefined4 *)operator_new(0x40);
   local_4 = 0;
-  if (this != (TMission *)0x0) {
-    TMission::ConstructTMission(this);
-    *(undefined4 *)(this + 0x14) = 0;
-    *(undefined4 *)(this + 0x18) = 0;
-    *(undefined4 *)(this + 0x1c) = 0;
-    *(undefined4 *)(this + 0x20) = 0;
-    *(undefined4 *)(this + 0x24) = 0;
-    *(undefined4 *)(this + 0x28) = 0;
-    *(undefined4 *)(this + 0x2c) = 0;
-    *(undefined4 *)(this + 0x30) = 0;
-    *(undefined4 *)(this + 0x34) = 0;
-    *(undefined4 *)(this + 0x38) = 0;
-    *(undefined ***)this = &g_vtblTBlockadePortMission;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00406f05();
+    puVar1[5] = 0;
+    puVar1[6] = 0;
+    puVar1[7] = 0;
+    puVar1[8] = 0;
+    puVar1[9] = 0;
+    puVar1[10] = 0;
+    puVar1[0xb] = 0;
+    puVar1[0xc] = 0;
+    puVar1[0xd] = 0;
+    puVar1[0xe] = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TMission *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AA90
-// GHIDRA_NAME TBlockadePortMission::DestroyTBlockadePortMission
-// GHIDRA_PROTO undefined __thiscall DestroyTBlockadePortMission(byte param_1)
+// GHIDRA_NAME TBlockadePortMission::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBlockadePortMission * TBlockadePortMission::DestroyTBlockadePortMission(byte param_1)
+TBlockadePortMission * TBlockadePortMission::_scalar_deleting_destructor_(byte param_1)
 
 {
-  ResetTBlockadePortMissionToSentinelVtable();
+  func_0x00401ac3();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AAE0
-// GHIDRA_NAME TBlockadePortMission::GetTBlockadePortMissionClassNamePointer
-// GHIDRA_PROTO undefined GetTBlockadePortMissionClassNamePointer()
+// GHIDRA_NAME TBlockadePortMission::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TBlockadePortMission::GetTBlockadePortMissionClassNamePointer(void)
+undefined ** TBlockadePortMission::GetRuntimeClass(void)
 
 {
   return &PTR_s_TBlockadePortMission_006979f8;
@@ -75,10 +75,10 @@ void TBlockadePortMission::SerializeTBlockadePortMission(int *param_1)
 {
   int iVar1;
   undefined4 uVar2;
-
-  SerializeTNavyMissionCommon(param_1);
+  
+  func_0x00406c76(param_1);
   iVar1 = *param_1;
-  uVar2 = GetShortAtOffset14OrInvalid();
+  uVar2 = func_0x004055ba();
   (**(code **)(iVar1 + 0x88))(uVar2);
   return;
 }
@@ -91,10 +91,10 @@ void TBlockadePortMission::DeserializeTBlockadePortMission(int *param_1)
 
 {
   undefined4 uVar1;
-
-  DeserializeTNavyMissionCommon(param_1);
+  
+  func_0x00404d3b(param_1);
   uVar1 = (**(code **)(*param_1 + 0x4c))();
-  uVar1 = FindMapActionContextByNodeId(uVar1);
+  uVar1 = func_0x004024c3(uVar1);
   *(undefined4 *)(this + 0x3c) = uVar1;
   return;
 }
@@ -110,43 +110,43 @@ TBlockadePortMission::RecomputeAndClearMissionScoreUsingPortZoneContextAverageVa
           (TBlockadePortMission *this)
 
 {
-  TGreatPower *this_00;
-  double dVar1;
-  short sVar2;
-  int iVar3;
-  TZone *this_01;
-  undefined4 uVar4;
-  void *unaff_EBX;
+  int iVar1;
+  double dVar2;
+  short sVar3;
+  int iVar4;
+  int iVar5;
+  undefined4 uVar6;
   float fStack_4;
-
-  this_00 = *(TGreatPower **)(this + 0x14);
-  iVar3 = TGreatPower::ComputeMapActionContextNodeValueAverage(this_00);
-  fStack_4 = (float)iVar3;
-  for (this_01 = GetFirstPortZone(); this_01 != (TZone *)0x0;
-      this_01 = TZone::GetNextPortZone(this_01,unaff_EBX)) {
-    if (*(int *)&this_01->field_0x2c == 0) {
-      iVar3 = _realloc(*(undefined4 *)&this_01->field_0x28,8);
-      if (iVar3 == 0) {
-        uVar4 = _realloc(*(undefined4 *)&this_01->field_0x28,4);
-        *(undefined4 *)&this_01->field_0x28 = uVar4;
-        *(undefined4 *)&this_01->field_0x2c = 1;
+  
+  iVar1 = *(int *)(this + 0x14);
+  iVar4 = func_0x00401172();
+  fStack_4 = (float)iVar4;
+  iVar4 = func_0x00402955();
+  while (iVar4 != 0) {
+    if (*(int *)(iVar4 + 0x2c) == 0) {
+      iVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar4 + 0x28),8);
+      if (iVar5 == 0) {
+        uVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar4 + 0x28),4);
+        *(undefined4 *)(iVar4 + 0x28) = uVar6;
+        *(undefined4 *)(iVar4 + 0x2c) = 1;
       }
       else {
-        *(int *)&this_01->field_0x28 = iVar3;
-        *(undefined4 *)&this_01->field_0x2c = 2;
+        *(int *)(iVar4 + 0x28) = iVar5;
+        *(undefined4 *)(iVar4 + 0x2c) = 2;
       }
     }
-    if (*(int *)&this_01->field_0x30 == 0) {
-      *(undefined4 *)&this_01->field_0x30 = 1;
+    if (*(int *)(iVar4 + 0x30) == 0) {
+      *(undefined4 *)(iVar4 + 0x30) = 1;
     }
-    if ((TGreatPower *)**(undefined4 **)&this_01->field_0x28 == this_00) {
-      sVar2 = GetPortZoneOwnerNationCodeFromMissionField48();
-      dVar1 = _DAT_0065aa18;
-      if (sVar2 == *(short *)(this + 4)) {
-        dVar1 = _DAT_0065aa10;
+    if (**(int **)(iVar4 + 0x28) == iVar1) {
+      sVar3 = func_0x00403585();
+      dVar2 = _DAT_0065aa18;
+      if (sVar3 == *(short *)(this + 4)) {
+        dVar2 = _DAT_0065aa10;
       }
-      fStack_4 = fStack_4 * (float)dVar1;
+      fStack_4 = fStack_4 * (float)dVar2;
     }
+    iVar4 = func_0x004083fa();
   }
   fStack_4 = fStack_4 / _DAT_0065a9c0;
   this[0x11] = (TBlockadePortMission)0x0;
@@ -164,16 +164,15 @@ uint TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild()
   TGreatPower *pTVar1;
   char cVar2;
   short sVar3;
-  undefined2 extraout_var;
   undefined4 uVar4;
-
+  undefined2 extraout_var;
+  
   pTVar1 = g_apNationStates[*(short *)(this + 4)];
   (*pTVar1->vftable->ConstructTTaskBaseState)();
-  sVar3 = GetPortZoneOwnerNationCodeFromMissionField48();
+  sVar3 = func_0x00403585();
   if ((&pTVar1->field_0x8a0)[sVar3] == '\0') {
-    uVar4 = 0;
-    sVar3 = GetShortAtOffset14OrInvalid(0);
-    SetByteFlagAtOffsetAF0ByIndex((int)sVar3,uVar4);
+    sVar3 = func_0x004055ba(0);
+    func_0x00403819((int)sVar3);
     return 0;
   }
   if (*(int **)(this + 0x18) != (int *)0x0) {
@@ -232,14 +231,14 @@ TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
   float10 fVar16;
   float fStack_30;
   float local_20 [8];
-
+  
   local_20[0] = 0.0;
   local_20[1] = 0.0;
   local_20[2] = 0.0;
   iVar12 = *(int *)(this + 0x14);
   uVar1 = *(undefined2 *)(this + 4);
   local_20[3] = 0.0;
-  iVar8 = GetNavyPrimaryOrderListHead();
+  iVar8 = func_0x0040793c();
   iVar9 = iVar8;
   for (; iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x24)) {
     if (*(int *)(iVar8 + 8) == iVar12) {
@@ -248,15 +247,11 @@ TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
                          CONCAT22((short)((uint)iVar9 >> 0x10),*(undefined2 *)(iVar8 + 0x14)));
       iVar9 = CONCAT31(extraout_var,cVar5);
       if (cVar5 != '\0') {
-        sVar6 = GetNavyOrderNormalizationBaseByNationType();
-        fVar2 = (float)((int)*(short *)(iVar8 + 0x1c) / (int)sVar6);
-        sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(0);
-        local_20[0] = (float)(int)sVar6 * fVar2 + local_20[0];
-        sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(1);
-        local_20[1] = (float)(int)sVar6 * fVar2 + local_20[1];
-        sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(2);
-        local_20[2] = (float)(int)sVar6 * fVar2 + local_20[2];
-        iVar9 = ComputeNavyOrderPriorityContributionPercentByCategory(3);
+        func_0x004063e3();
+        func_0x0040605f(0);
+        func_0x0040605f(1);
+        func_0x0040605f(2);
+        iVar9 = func_0x0040605f(3);
         local_20[3] = (float)(int)(short)iVar9 + local_20[3];
       }
     }
@@ -301,24 +296,20 @@ TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
     pTVar13 = pTVar13 + 4;
   } while ((int)psVar11 < 0x697960);
   fStack_30 = 0.0;
-  sVar6 = GetPortZoneOwnerNationCodeFromMissionField48();
+  sVar6 = func_0x00403585();
   if (sVar6 < 7) {
-    sVar6 = GetPortZoneOwnerNationCodeFromMissionField48();
+    sVar6 = func_0x00403585();
     local_20[0] = 0.0;
     local_20[1] = 0.0;
     local_20[2] = 0.0;
     local_20[3] = 0.0;
-    for (iVar12 = GetNavyPrimaryOrderListHead(); iVar12 != 0; iVar12 = *(int *)(iVar12 + 0x24)
-        ) {
-      if (((*(short *)(iVar12 + 0x14) == sVar6) &&
-          (cVar5 = InvokeOrderNodeOwnerVfunc38(), cVar5 != '\0')) &&
-         (sVar7 = GetNavyOrderNormalizationBaseByNationType(), sVar7 <= *(short *)(iVar12 + 0x1c)))
-      {
-        AccumulateNavyOrderCategoryVectorWithScale(iVar12,local_20,0x3f800000);
+    for (iVar12 = func_0x0040793c(); iVar12 != 0; iVar12 = *(int *)(iVar12 + 0x24)) {
+      if (((*(short *)(iVar12 + 0x14) == sVar6) && (cVar5 = func_0x00407c75(), cVar5 != '\0')) &&
+         (sVar7 = func_0x004063e3(), sVar7 <= *(short *)(iVar12 + 0x1c))) {
+        func_0x00405272(iVar12,local_20,0x3f800000);
       }
     }
-    fVar16 = (float10)ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
-                                (local_20,&DAT_00697978,4);
+    fVar16 = (float10)func_0x004027e3(local_20,&DAT_00697978,4);
     fStack_30 = (float)fVar16;
   }
   else {
@@ -329,22 +320,18 @@ TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
          (cVar5 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)
                             (CONCAT22((short)((uint)this >> 0x10),*(undefined2 *)(this + 4)),iVar12)
          , cVar5 != '\0')) {
-        sVar6 = GetPortZoneOwnerNationCodeFromMissionField48();
+        sVar6 = func_0x00403585();
         local_20[4] = 0.0;
         local_20[5] = 0.0;
         local_20[6] = 0.0;
         local_20[7] = 0.0;
-        for (iVar8 = GetNavyPrimaryOrderListHead(); iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x24)
-            ) {
-          if (((*(short *)(iVar8 + 0x14) == sVar6) &&
-              (cVar5 = InvokeOrderNodeOwnerVfunc38(), cVar5 != '\0')) &&
-             (sVar7 = GetNavyOrderNormalizationBaseByNationType(), sVar7 <= *(short *)(iVar8 + 0x1c)
-             )) {
-            AccumulateNavyOrderCategoryVectorWithScale(iVar8,local_20 + 4,0x3f800000);
+        for (iVar8 = func_0x0040793c(); iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x24)) {
+          if (((*(short *)(iVar8 + 0x14) == sVar6) && (cVar5 = func_0x00407c75(), cVar5 != '\0')) &&
+             (sVar7 = func_0x004063e3(), sVar7 <= *(short *)(iVar8 + 0x1c))) {
+            func_0x00405272(iVar8,local_20 + 4,0x3f800000);
           }
         }
-        fVar16 = (float10)ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
-                                    (local_20 + 4,&DAT_00697978,4);
+        fVar16 = (float10)func_0x004027e3(local_20 + 4,&DAT_00697978,4);
         if ((float10)fStack_30 < fVar16) {
           fStack_30 = (float)fVar16;
         }
@@ -379,7 +366,7 @@ TBlockadePortMission::HandleBlockadePortMissionActionType4ForTargetPort
 
 {
   int in_stack_0000000c;
-
+  
   if ((param_1 == 4) && (in_stack_0000000c == *(int *)(this + 0x14))) {
     return 1;
   }

@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TNewTownView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD7A0
+// GHIDRA_NAME TNewTownView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TNewTownView::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063113a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(100);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD810
 // GHIDRA_NAME TNewTownView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,21 +40,21 @@
 TNewTownView * TNewTownView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004028ce();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD860
-// GHIDRA_NAME TNewTownView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TNewTownView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNewTownView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TNewTownView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNewTownView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD880
@@ -40,15 +70,14 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   int *piVar4;
-  TIconBar *pTVar5;
+  int *piVar5;
   int iVar6;
   int *unaff_FS_OFFSET;
   undefined1 *puVar7;
   code *pcVar8;
-  short *psVar9;
   undefined1 *puStack_64;
   code *pcStack_60;
-  int *piVar10;
+  int *piVar9;
   tagRECT local_3c;
   undefined1 auStack_2c [12];
   int aiStack_20 [3];
@@ -56,13 +85,13 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631162;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   iVar6 = 0;
-  CString::__0CString__QAE_XZ((CString *)&local_3c);
+  CString::CString((CString *)&local_3c);
   local_4 = 0;
   *(int **)&this->field_0x60 = param_1;
   (**(code **)(*param_1 + 0x28))();
@@ -78,13 +107,13 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     pcStack_60 = (code *)0x4bd8f2;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   local_3c.top = *(int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(local_3c.top + 300))();
   iStack_14 = iStack_14 + iVar6;
-  piVar10 = aiStack_20;
+  piVar9 = aiStack_20;
   (**(code **)(local_3c.left + 0x168))();
   pcStack_60 = (code *)0x4bd942;
   (*pTVar1->OrphanRetStub_0059add0_4b)();
@@ -94,8 +123,8 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   (*pTVar1->GetTEventHandlerClassNamePointer_5a)();
   uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   iVar3 = *(int *)CONCAT31(extraout_var_00,uVar2);
   (**(code **)(iVar3 + 300))();
@@ -104,8 +133,8 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   (**(code **)(iVar3 + 0x168))();
   piVar4 = (int *)(*pcStack_60)();
   if (piVar4 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   iVar3 = *piVar4;
   puVar7 = &stack0xffffffb8;
@@ -115,50 +144,46 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   piVar4 = (int *)0x40;
   iVar3 = 0;
   do {
-    psVar9 = (short *)(local_3c.right + 0x1e + (short)iVar3 * 2);
     if (*(short *)(local_3c.right + 0x1e + (short)iVar3 * 2) != 0) {
-      pTVar5 = (TIconBar *)__2_YAPAXI_Z();
+      iVar6 = operator_new();
       local_3c.left._0_1_ = 1;
-      if (pTVar5 == (TIconBar *)0x0) {
-        pTVar5 = (TIconBar *)0x0;
+      if (iVar6 == 0) {
+        piVar5 = (int *)0x0;
       }
       else {
-        pTVar5 = (TIconBar *)TIconBar::ConstructTIconBarBaseState(pTVar5);
+        piVar5 = (int *)func_0x0040827e();
       }
       puStack_64 = (undefined1 *)(this->field34 + -0x20);
       local_3c.left = (uint)local_3c.left._1_3_ << 8;
                     /* Commodity icon id = 700 + commodity index (same mapping as production
                        screen). */
       pcStack_60 = (code *)0x18;
-      piVar10 = piVar4;
-      TIconBar::AddCityCommodityIconControl
-                (pTVar5,(int *)this,(int *)&stack0xffffffa4,(int *)&puStack_64,5,5,iVar3 + 700,
-                 (int)*psVar9);
-      (*pTVar5->vftable->VTableSlot39)();
+      piVar9 = piVar4;
+      func_0x0040308a(this,&stack0xffffffa4,&puStack_64,5,5,iVar3 + 700);
+      (**(code **)(*piVar5 + 0xe4))();
       piVar4 = piVar4 + 8;
     }
     iVar3 = iVar3 + 1;
   } while (iVar3 < 0x17);
   piVar4 = (int *)(*pcVar8)();
   if (piVar4 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x821);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x821);
   }
   iVar3 = *piVar4;
   (**(code **)(iVar3 + 0x7c))();
   (**(code **)(iVar3 + 0x1dc))(&stack0xffffff88);
   (**(code **)(iVar3 + 0x1d8))(0,*(undefined4 *)(puVar7 + -8),1);
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff78);
-  *unaff_FS_OFFSET = (int)piVar10;
+  CString::~CString((CString *)&stack0xffffff78);
+  *unaff_FS_OFFSET = (int)piVar9;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BDC10
-// GHIDRA_NAME TNewTownView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TNewTownView::CallVoidSlotA0
+// GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TNewTownView::GetTEventHandlerClassNamePointer()
+void TNewTownView::CallVoidSlotA0()
 
 {
   undefined uVar1;
@@ -170,27 +195,26 @@ void TNewTownView::GetTEventHandlerClassNamePointer()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631188;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_1c.m_pchData = (char *)0x4bdc33;
   local_10.m_pchData = (char *)this;
-  CString::__0CString__QAE_XZ(&local_10);
+  CString::CString(&local_10);
   CStack_1c.m_pchData = (char *)0x6e616d65;
   local_4 = 0;
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x82e);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x82e);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1dc))(&stack0xffffffec);
   (**(code **)(**(int **)&this->field_0x60 + 0x38))(unaff_EDI);
-  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
+  TView::CallVoidSlotA0((TView *)this);
   local_10.m_pchData = (char *)0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_1c);
+  CString::~CString(&CStack_1c);
   *unaff_FS_OFFSET = unaff_EDI;
   return;
 }

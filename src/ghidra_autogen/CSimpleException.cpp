@@ -4,8 +4,8 @@
 // Bucket: CSimpleException.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FF3CD
-// GHIDRA_NAME CSimpleException::?InitString@CSimpleException@@QAEXXZ
-// GHIDRA_PROTO void __thiscall ?InitString@CSimpleException@@QAEXXZ(void)
+// GHIDRA_NAME CSimpleException::InitString
+// GHIDRA_PROTO void __thiscall InitString(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: void __thiscall CSimpleException::InitString(void)
@@ -18,13 +18,13 @@
    
    Library: nafxcw retail msvc500:static */
 
-void CSimpleException::_InitString_CSimpleException__QAEXXZ()
+void CSimpleException::InitString()
 
 {
   int iVar1;
   
   *(undefined4 *)(this + 0xc) = 1;
-  iVar1 = _AfxLoadString__YGHIPADI_Z(*(undefined4 *)(this + 0x94),this + 0x14,0x80);
+  iVar1 = AfxLoadString(*(undefined4 *)(this + 0x94),this + 0x14,0x80);
   *(uint *)(this + 0x10) = (uint)(iVar1 != 0);
   return;
 }

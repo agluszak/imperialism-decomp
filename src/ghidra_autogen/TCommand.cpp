@@ -5,26 +5,48 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00484080
 // GHIDRA_NAME TCommand::RunCommandModalLoopAndFinalizeState_Impl
-// GHIDRA_PROTO undefined __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(uint param_1)
+// GHIDRA_PROTO undefined __thiscall RunCommandModalLoopAndFinalizeState_Impl(uint param_1)
 
 TCommandVtbl * TCommand::RunCommandModalLoopAndFinalizeState_Impl(uint param_1)
 
 {
   TCommandVtbl *pTVar1;
-
+  
   pTVar1 = this[6].vftable;
   this[6].vftable = (TCommandVtbl *)(param_1 & 0xff);
   return pTVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00487800
-// GHIDRA_NAME TCommand::GetTEventClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004877C0
+// GHIDRA_NAME TCommand::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TCommand::GetTEventClassNamePointer()
+undefined4 * TCommand::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x18);
+  if (puVar1 != (undefined4 *)0x0) {
+    puVar1[1] = 0;
+    puVar1[2] = 0;
+    puVar1[3] = 0;
+    puVar1[4] = 0;
+    *puVar1 = &_vftable_;
+    puVar1[5] = 0;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487800
+// GHIDRA_NAME TCommand::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TCommand::GetRuntimeClass()
+
+{
+  return &classTCommand;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487820
@@ -40,6 +62,33 @@ void TCommand::ConstructTurnEventPacketBase()
   *(undefined4 *)&this->field_0x10 = 0;
   this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x14 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487850
+// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TCommand * TCommand::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00408094();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004878E0
+// GHIDRA_NAME TCommand::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
+
+void TCommand::Free()
+
+{
+  if (this != (TCommand *)0x0) {
+    (*this->vftable->OrphanCallChain_C1_I17_00487470)(1);
+  }
   return;
 }
 
@@ -66,243 +115,9 @@ void TCommand::OrphanRetStub_00487a00()
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00487B10
-// GHIDRA_NAME TCommand::OnActivateView
-// GHIDRA_PROTO undefined __thiscall OnActivateView(void)
-
-CRuntimeClass * TCommand::OnActivateView()
-
-{
-  return &g_pClassDescTSortedList;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004880A0
-// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
-
-void TCommand::_scalar_deleting_destructor_()
-
-{
-  _vslot_fn *p_Var1;
-  undefined uVar2;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  int iVar4;
-  int iVar3;
-
-  iVar4 = 1;
-  p_Var1 = this->vftable->OrphanRetStub_00487a00;
-  uVar2 = (*p_Var1)(1);
-  iVar3 = CONCAT31(extraout_var,uVar2);
-  while (iVar3 != 0) {
-    __3_YAXPAX_Z(iVar3);
-    iVar4 = iVar4 + 1;
-    uVar2 = (*p_Var1)(iVar4);
-    iVar3 = CONCAT31(extraout_var_00,uVar2);
-  }
-  _SetSize_CPtrArray__QAEXHH_Z(0,0xffffffff);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004880F0
-// GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-
-void TCommand::GetTEventHandlerClassNamePointer()
-
-{
-                    /* WARNING: Could not recover jumptable at 0x004880f2. Too many branches */
-                    /* WARNING: Treating indirect jump as call */
-  (*this->vftable->QueueCityRecruitmentSupportCommandsIfDeficit)();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488110
-// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
-
-void TCommand::_scalar_deleting_destructor_()
-
-{
-  TCommandVtbl *pTVar1;
-
-  pTVar1 = this->vftable;
-  (*pTVar1->QueueCityRecruitmentSupportCommandsIfDeficit)();
-  (*pTVar1->NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94)();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488140
-// GHIDRA_NAME TCommand::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
-
-void TCommand::OrphanCallChain_C11_I88_004874b0()
-
-{
-  if (this != (TCommand *)0x0) {
-    (*this->vftable->OrphanCallChain_C1_I17_00487470)(1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488160
-// GHIDRA_NAME TCommand::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
-
-undefined4 TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
-
-{
-  if (param_1 <= *(int *)&this->field_0x8) {
-    return *(undefined4 *)(*(int *)&this->field_0x4 + -4 + param_1 * 4);
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488190
-// GHIDRA_NAME TCommand::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
-
-void TCommand::OrphanCallChain_C11_I88_004874b0()
-
-{
-  undefined uVar1;
-  int in_stack_00000004;
-
-  uVar1 = (*this->vftable->OrphanRetStub_00487a00)();
-  CPtrArray::_RemoveAt_CUIntArray__QAEXHH_Z((CPtrArray *)this,in_stack_00000004 + -1,1);
-  __3_YAXPAX_Z(uVar1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004881D0
-// GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-
-void TCommand::GetTEventHandlerClassNamePointer()
-
-{
-  (*this->vftable->OrphanRetStub_00487a00)(1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004881F0
-// GHIDRA_NAME TCommand::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
-
-void TCommand::SetForeignMinisterReadyFlag14()
-
-{
-  _vslot_fn *p_Var1;
-  code *pcVar2;
-  undefined uVar3;
-  short sVar4;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  undefined4 *puVar6;
-  uint uVar7;
-  int unaff_EBX;
-  int iVar8;
-  undefined4 *puVar9;
-  undefined4 *unaff_retaddr;
-  int iVar5;
-
-  iVar8 = 1;
-  p_Var1 = this->vftable->OrphanRetStub_00487a00;
-  uVar3 = (*p_Var1)(1);
-  iVar5 = CONCAT31(extraout_var,uVar3);
-  if (iVar5 == 0) {
-    (**(code **)(unaff_EBX + 0x3c))(unaff_retaddr);
-    return;
-  }
-  pcVar2 = *(code **)(unaff_EBX + 0x44);
-  do {
-    sVar4 = (*pcVar2)(unaff_retaddr,iVar5);
-    if (sVar4 != 1) {
-      puVar6 = (undefined4 *)__2_YAPAXI_Z((int)*(short *)&this->field_0x14);
-      sVar4 = *(short *)&this->field_0x14;
-      puVar9 = puVar6;
-      for (uVar7 = (uint)(int)sVar4 >> 2; uVar7 != 0; uVar7 = uVar7 - 1) {
-        *puVar9 = *unaff_retaddr;
-        unaff_retaddr = unaff_retaddr + 1;
-        puVar9 = puVar9 + 1;
-      }
-      for (uVar7 = (int)sVar4 & 3; uVar7 != 0; uVar7 = uVar7 - 1) {
-        *(undefined1 *)puVar9 = *(undefined1 *)unaff_retaddr;
-        unaff_retaddr = (undefined4 *)((int)unaff_retaddr + 1);
-        puVar9 = (undefined4 *)((int)puVar9 + 1);
-      }
-      _InsertAt_CPtrArray__QAEXHPAXH_Z(iVar8 + -1,puVar6,1);
-      return;
-    }
-    iVar8 = iVar8 + 1;
-    uVar3 = (*p_Var1)(iVar8);
-    iVar5 = CONCAT31(extraout_var_00,uVar3);
-  } while (iVar5 != 0);
-  (**(code **)(unaff_EBX + 0x3c))(unaff_retaddr);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004882C0
-// GHIDRA_NAME TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 * param_1)
-
-void TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 *param_1)
-
-{
-  short sVar1;
-  undefined4 *puVar2;
-  uint uVar3;
-  undefined4 *puVar4;
-
-  puVar2 = (undefined4 *)__2_YAPAXI_Z((int)*(short *)&this->field_0x14);
-  sVar1 = *(short *)&this->field_0x14;
-  puVar4 = puVar2;
-  for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
-    *puVar4 = *param_1;
-    param_1 = param_1 + 1;
-    puVar4 = puVar4 + 1;
-  }
-  for (uVar3 = (int)sVar1 & 3; uVar3 != 0; uVar3 = uVar3 - 1) {
-    *(undefined1 *)puVar4 = *(undefined1 *)param_1;
-    param_1 = (undefined4 *)((int)param_1 + 1);
-    puVar4 = (undefined4 *)((int)puVar4 + 1);
-  }
-  CPtrArray::_SetAtGrow_CUIntArray__QAEXHI_Z((CPtrArray *)this,*(int *)&this->field_0x8,puVar2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488310
-// GHIDRA_NAME TCommand::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(undefined4 * param_1)
-
-void TCommand::UpdateControlCachedIntFromWindowText(undefined4 *param_1)
-
-{
-  short sVar1;
-  undefined4 *puVar2;
-  uint uVar3;
-  undefined4 *puVar4;
-
-  puVar2 = (undefined4 *)__2_YAPAXI_Z((int)*(short *)&this->field_0x14);
-  sVar1 = *(short *)&this->field_0x14;
-  puVar4 = puVar2;
-  for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
-    *puVar4 = *param_1;
-    param_1 = param_1 + 1;
-    puVar4 = puVar4 + 1;
-  }
-  for (uVar3 = (int)sVar1 & 3; uVar3 != 0; uVar3 = uVar3 - 1) {
-    *(undefined1 *)puVar4 = *(undefined1 *)param_1;
-    param_1 = (undefined4 *)((int)param_1 + 1);
-    puVar4 = (undefined4 *)((int)puVar4 + 1);
-  }
-  _InsertAt_CPtrArray__QAEXHPAXH_Z(0,puVar2,1);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00488360
 // GHIDRA_NAME TCommand::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(uint param_1, uint param_2)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(uint param_1, uint param_2)
 
 int TCommand::OrphanRetStub_0059add0(uint param_1, uint param_2)
 
@@ -311,160 +126,5 @@ int TCommand::OrphanRetStub_0059add0(uint param_1, uint param_2)
     return 1;
   }
   return -(uint)(param_1 < param_2);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488390
-// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
-
-TCommand * TCommand::_scalar_deleting_destructor_(byte param_1)
-
-{
-  CObArray::??1CUIntArray@@UAE@XZ();
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004883E0
-// GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-
-CRuntimeClass * TCommand::GetTEventHandlerClassNamePointer()
-
-{
-  return &g_pClassDescTSortedPtrList;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004885D0
-// GHIDRA_NAME TCommand::InvalidateWindowRectFromHandleField1C
-// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
-
-void TCommand::InvalidateWindowRectFromHandleField1C()
-
-{
-  undefined4 in_stack_00000004;
-
-  CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
-            ((CPtrList *)&this->field_0x4,in_stack_00000004);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004885F0
-// GHIDRA_NAME TCommand::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
-
-void TCommand::OrphanLeaf_NoCall_Ins07_004d8920()
-
-{
-  undefined4 in_stack_00000004;
-
-  CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
-            ((CPtrList *)&this->field_0x4,in_stack_00000004);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488610
-// GHIDRA_NAME TCommand::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
-
-void TCommand::OrphanCallChain_C11_I88_004874b0()
-
-{
-  undefined4 in_stack_00000004;
-
-  CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z
-            ((CPtrList *)&this->field_0x4,in_stack_00000004);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488630
-// GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-
-void TCommand::GetTEventHandlerClassNamePointer()
-
-{
-  undefined4 in_stack_00000004;
-
-  CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z
-            ((CPtrList *)&this->field_0x4,in_stack_00000004);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004888F0
-// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
-
-TCommand * TCommand::_scalar_deleting_destructor_(byte param_1)
-
-{
-  TStream::CreateTStreamInstance((TStream *)this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E1E50
-// GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int * param_1)
-
-void TCommand::GetTEventHandlerClassNamePointer(int *param_1)
-
-{
-  undefined1 *puVar1;
-  int iVar2;
-  undefined4 uVar3;
-  code *unaff_EBX;
-  code *unaff_EBP;
-  short sVar4;
-
-  iVar2 = *param_1;
-  puVar1 = &this->field_0x14;
-  (**(code **)(iVar2 + 0x3c))(puVar1,2);
-  iVar2 = (**(code **)(iVar2 + 0x50))();
-  uVar3 = __2_YAPAXI_Z((int)*(short *)puVar1);
-  sVar4 = 1;
-  if (0 < iVar2) {
-    do {
-      (*unaff_EBX)(uVar3,(int)*(short *)puVar1);
-      (*unaff_EBP)(uVar3);
-      sVar4 = sVar4 + 1;
-    } while (sVar4 <= iVar2);
-  }
-  __3_YAXPAX_Z(uVar3);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E1F10
-// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
-
-void TCommand::_scalar_deleting_destructor_(int *param_1)
-
-{
-  _vslot_fn *p_Var1;
-  undefined uVar2;
-  int iVar3;
-  short sVar4;
-  code *unaff_EDI;
-
-  iVar3 = *param_1;
-  (**(code **)(iVar3 + 0x78))(&this->field_0x14,2);
-  (**(code **)(iVar3 + 0x8c))(*(undefined4 *)&this->field_0x8);
-  sVar4 = 1;
-  if (0 < *(int *)&this->field_0x8) {
-    iVar3 = 1;
-    p_Var1 = this->vftable->OrphanRetStub_00487a00;
-    do {
-      uVar2 = (*p_Var1)(iVar3,(int)*(short *)&this->field_0x14);
-      (*unaff_EDI)(uVar2);
-      sVar4 = sVar4 + 1;
-      iVar3 = (int)sVar4;
-    } while (iVar3 <= *(int *)&this->field_0x8);
-  }
-  return;
 }
 

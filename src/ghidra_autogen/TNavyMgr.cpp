@@ -3,17 +3,98 @@
 // Program: Imperialism.exe
 // Bucket: TNavyMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00556590
-// GHIDRA_NAME TNavyMgr::ConstructNavyManager
-// GHIDRA_PROTO undefined __thiscall TNavyMgr::ConstructNavyManager(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00556530
+// GHIDRA_NAME TNavyMgr::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-void TNavyMgr::ConstructNavyManager()
+undefined4 * TNavyMgr::CreateObject(void)
 
 {
-  this->vftable = &TNavyMgrVtbl_0065c4c8;
-  *(undefined4 *)&this->field_0x4 = 0;
-  *(undefined2 *)&this->field_0x8 = 0xffff;
-  *(undefined4 *)&this->field_0xc = 0;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x10);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    puVar1[1] = 0;
+    *(undefined2 *)(puVar1 + 2) = 0xffff;
+    puVar1[3] = 0;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00556570
+// GHIDRA_NAME TNavyMgr::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TNavyMgr::GetRuntimeClass()
+
+{
+  return &classTNavyMgr;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005565C0
+// GHIDRA_NAME TNavyMgr::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TNavyMgr * TNavyMgr::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00401dcf();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005567A0
+// GHIDRA_NAME TNavyMgr::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
+
+void TNavyMgr::Free()
+
+{
+  int *piVar1;
+  
+  while (g_pNavyPrimaryOrderListHead != (TShip *)0x0) {
+    (*g_pNavyPrimaryOrderListHead->vftable[3].DestructTShipAndFreeIfOwned)();
+  }
+  g_pNavyPrimaryOrderListHead = (TShip *)0x0;
+  while (g_pNavySecondaryOrderListHead != (int *)0x0) {
+    (**(code **)(*g_pNavySecondaryOrderListHead + 0x1c))();
+  }
+  piVar1 = *(int **)&this->field_0x4;
+  if (piVar1 != (int *)0x0) {
+    func_0x00406d16();
+    (**(code **)(*piVar1 + 0x1c))();
+  }
+  if (this != (TNavyMgr *)0x0) {
+    (*this->vftable->~TNavyMgr)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005568C0
+// GHIDRA_NAME TNavyMgr::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(undefined4 param_1)
+
+void TNavyMgr::WriteTo(undefined4 param_1)
+
+{
+  func_0x0040583a(param_1);
+  func_0x00403940(param_1,0xffffffff);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00556AA0
+// GHIDRA_NAME TNavyMgr::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(undefined4 param_1)
+
+void TNavyMgr::ReadFrom(undefined4 param_1)
+
+{
+  func_0x00403517(param_1);
+  func_0x0040774d(param_1,0xffffffff);
   return;
 }
 

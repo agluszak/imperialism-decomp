@@ -4,46 +4,46 @@
 // Bucket: TCloseParentButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584BB0
-// GHIDRA_NAME TCloseParentButton::CreateTCloseParentButtonInstance
-// GHIDRA_PROTO undefined CreateTCloseParentButtonInstance()
+// GHIDRA_NAME TCloseParentButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TCloseParentButton::CreateTCloseParentButtonInstance(void)
+undefined4 * TCloseParentButton::CreateObject(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637672;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0x84);
+  puVar1 = (undefined4 *)operator_new(0x84);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::TControl(this);
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004087fb();
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = (TControlVtbl *)&TButton::_vftable_;
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
-    this->vftable = (TControlVtbl *)&TCloseParentButtonVtbl_006648d8;
-    pTVar1 = this;
+    *puVar1 = &TButton::_vftable_;
+    func_0x004057a4(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584C40
-// GHIDRA_NAME TCloseParentButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TCloseParentButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCloseParentButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TCloseParentButton::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTCloseParentButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584C60
@@ -57,16 +57,16 @@ TCloseParentButton * TCloseParentButton::ConstructTCloseParentButtonBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637698;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::TControl((TControl *)this);
+  func_0x004087fb();
   local_4 = 0;
   this->vftable = (TCloseParentButtonVtbl *)&TButton::_vftable_;
-  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
-  this->vftable = &TCloseParentButtonVtbl_006648d8;
+  func_0x004057a4(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+  this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -78,20 +78,18 @@ TCloseParentButton * TCloseParentButton::ConstructTCloseParentButtonBaseState()
 TCloseParentButton * TCloseParentButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00406465();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584D30
-// GHIDRA_NAME TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_NAME TCloseParentButton::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void __thiscall
-TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TCloseParentButton *this,int param_1)
+void TCloseParentButton::HandleEvent(int param_1)
 
 {
   TCloseParentButtonVtbl *pTVar1;
@@ -99,7 +97,7 @@ TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
   char cVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-
+  
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1->VTableSlot2F)();
   if (param_1 == CONCAT31(extraout_var,uVar2)) {

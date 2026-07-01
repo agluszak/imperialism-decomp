@@ -3,15 +3,43 @@
 // Program: Imperialism.exe
 // Bucket: TNapoleonMinister.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004ED400
+// GHIDRA_NAME TNapoleonMinister::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TNapoleonMinister::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063278a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x94);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040433b();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 3) = 0;
+    *unaff_FS_OFFSET = local_c;
+    return puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED490
-// GHIDRA_NAME TNapoleonMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(char param_1)
+// GHIDRA_NAME TNapoleonMinister::CreateTNapoleonMinisterInstance
+// GHIDRA_PROTO undefined __thiscall CreateTNapoleonMinisterInstance(char param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 __thiscall
-TNapoleonMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-          (TNapoleonMinister *this,char param_1)
+float10 TNapoleonMinister::CreateTNapoleonMinisterInstance(char param_1)
 
 {
   if (param_1 != '\0') {
@@ -21,39 +49,94 @@ TNapoleonMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED4C0
-// GHIDRA_NAME TNapoleonMinister::GetTMinisterClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
+// GHIDRA_NAME TNapoleonMinister::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNapoleonMinister::GetTMinisterClassNamePointer()
+CRuntimeClass * TNapoleonMinister::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNapoleonMinister;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED4E0
 // GHIDRA_NAME TNapoleonMinister::ConstructTNapoleonMinisterBaseState
-// GHIDRA_PROTO undefined __thiscall TNapoleonMinister::ConstructTNapoleonMinisterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTNapoleonMinisterBaseState(void)
 
 TNapoleonMinister * TNapoleonMinister::ConstructTNapoleonMinisterBaseState()
 
 {
-  TMinister::ConstructTMinister((TMinister *)this);
-  this->vftable = &TNapoleonMinisterVtbl_00654a28;
+  func_0x0040433b();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0xc = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED510
-// GHIDRA_NAME TNapoleonMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
+// GHIDRA_NAME TNapoleonMinister::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNapoleonMinister * TNapoleonMinister::DeletingDestructTMinister(byte param_1)
+TNapoleonMinister * TNapoleonMinister::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTNapoleonMinisterAndMaybeFree_Impl();
+  func_0x00404f57();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004ED620
+// GHIDRA_NAME TNapoleonMinister::InitializeRecruitQueuePatternA_Type2x3_Type4x2
+// GHIDRA_PROTO undefined __thiscall InitializeRecruitQueuePatternA_Type2x3_Type4x2(int param_1)
+
+void __thiscall
+TNapoleonMinister::InitializeRecruitQueuePatternA_Type2x3_Type4x2
+          (TNapoleonMinister *this,int param_1)
+
+{
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 uVar1;
+  undefined2 extraout_var_01;
+  undefined2 extraout_var_02;
+  undefined4 unaff_ESI;
+  int iVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006327b4;
+  *unaff_FS_OFFSET = &uStack_c;
+  (**(code **)(**(int **)(param_1 + 0x1d8) + 0x2c))(10,4,0);
+  *(undefined2 *)(param_1 + 0x62) = 1;
+  iVar2 = 3;
+  do {
+    puStack_8 = (undefined1 *)operator_new(0x44);
+    uVar1 = extraout_var;
+    if (puStack_8 != (undefined1 *)0x0) {
+      func_0x004054e3();
+      uVar1 = extraout_var_00;
+    }
+    func_0x00407a72(2,0,CONCAT22(uVar1,*(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),0);
+    *(short *)&this->field_0x18 = *(short *)&this->field_0x18 + 1;
+    iVar2 = iVar2 + -1;
+  } while (iVar2 != 0);
+  iVar2 = 2;
+  do {
+    puStack_8 = (undefined1 *)operator_new(0x44);
+    uVar1 = extraout_var_01;
+    if (puStack_8 != (undefined1 *)0x0) {
+      func_0x004054e3();
+      uVar1 = extraout_var_02;
+    }
+    func_0x00407a72(4,0,CONCAT22(uVar1,*(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),0);
+    *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + 1;
+    iVar2 = iVar2 + -1;
+  } while (iVar2 != 0);
+  *unaff_FS_OFFSET = unaff_ESI;
+  return;
 }
 

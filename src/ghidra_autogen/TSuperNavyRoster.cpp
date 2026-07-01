@@ -3,6 +3,37 @@
 // Program: Imperialism.exe
 // Bucket: TSuperNavyRoster.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005697D0
+// GHIDRA_NAME TSuperNavyRoster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TSuperNavyRoster::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00635bba;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x8c);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040778e();
+    *puVar1 = &_vftable_;
+    puVar1[0x21] = 0;
+    puVar1[0x22] = 0;
+    *unaff_FS_OFFSET = local_c;
+    return puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00569870
 // GHIDRA_NAME TSuperNavyRoster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,26 +41,26 @@
 TSuperNavyRoster * TSuperNavyRoster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004084c7();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005698C0
-// GHIDRA_NAME TSuperNavyRoster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TSuperNavyRoster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSuperNavyRoster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TSuperNavyRoster::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTSuperNavyRoster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005698E0
 // GHIDRA_NAME TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
-// GHIDRA_PROTO undefined __thiscall TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(int param_1, CString param_2)
+// GHIDRA_PROTO undefined __thiscall PopulateNavyOrderPageEntriesByMapContext(int param_1, CString param_2)
 
 void __thiscall
 TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
@@ -38,76 +69,71 @@ TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
 {
   TSuperNavyRosterVtbl *pTVar1;
   TZone *pTVar2;
-  bool bVar3;
-  short sVar4;
-  TLineDataVtbl *pTVar5;
-  TTextLine *this_00;
-  undefined4 uVar6;
-  TLineData *this_01;
+  short sVar3;
+  int iVar4;
+  undefined4 uVar5;
+  undefined4 *puVar6;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_0000000c;
-  undefined4 local_1c;
-  undefined4 local_18;
-  undefined4 uStack_14;
-  undefined4 uStack_10;
+  undefined4 uStack_3c;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
+  undefined4 uStack_30;
+  CString local_18;
+  uint uStack_14;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  int local_4;
-
+  undefined4 local_4;
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635bec;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2.m_pchData,in_stack_0000000c,5,5,0)
-  ;
+  uStack_30 = 0;
+  uStack_34 = 5;
+  uStack_38 = 5;
+  uStack_3c = in_stack_0000000c;
+  func_0x004096b5(0,param_1,param_2.m_pchData);
   this->controlTag = 0x70616765;
-  TPageView::OrphanLeaf_NoCall_Ins07_004d8920((TPageView *)this);
-  sVar4 = UiRuntimeContext::GetActiveNationId();
-  param_1 = (int)sVar4;
+  func_0x00406f8c(0);
+  sVar3 = func_0x00403b16();
   for (pTVar2 = g_pMapActionContextListHead; pTVar2 != (TZone *)0x0;
       pTVar2 = *(TZone **)&pTVar2->field_0x18) {
-    bVar3 = false;
-    for (pTVar5 = (TLineDataVtbl *)GetNavyPrimaryOrderListHead();
-        pTVar5 != (TLineDataVtbl *)0x0; pTVar5 = (TLineDataVtbl *)pTVar5->ShallowFree) {
-      if (((TZone *)pTVar5->Serialize == pTVar2) && (*(short *)&pTVar5->WriteTo == param_1)) {
-        if (!bVar3) {
-          CString::__0CString__QAE_XZ(&param_2);
-          local_4 = 0;
-          this_00 = (TTextLine *)__2_YAPAXI_Z(0x20);
-          local_4._0_1_ = 1;
-          if (this_00 == (TTextLine *)0x0) {
-            uVar6 = 0;
+    uStack_14 = uStack_14 & 0xffffff00;
+    for (iVar4 = func_0x0040793c(); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24)) {
+      if ((*(TZone **)(iVar4 + 8) == pTVar2) && (*(short *)(iVar4 + 0x14) == sVar3)) {
+        if ((char)uStack_14 == '\0') {
+          CString::CString(&local_18);
+          uStack_14 = operator_new(0x20);
+          if (uStack_14 == 0) {
+            uVar5 = 0;
           }
           else {
-            uVar6 = TTextLine::ConstructTTextLineBaseState(this_00);
+            uVar5 = func_0x004072cf();
           }
-          local_4 = (uint)local_4._1_3_ << 8;
-          local_1c = 0xec;
-          local_18 = 0x12;
-          WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0,&local_1c,0xffffffff,0);
-          (*pTVar2->vftable->GetTEventHandlerClassNamePointer_0b)(&param_2);
-          WrapperFor_StringShared_AssignFromPtr_At00570420(&param_1);
-          (*this->vftable->OrphanCallChain_C1_I06_0056fbb0)(uVar6);
-          bVar3 = true;
-          local_4 = 0xffffffff;
-          CString::__1CString__QAE_XZ(&param_2);
+          uStack_3c = 0xec;
+          uStack_38 = 0x12;
+          func_0x004059b6(0,0,&uStack_3c,0xffffffff,0);
+          (*pTVar2->vftable->GetTEventHandlerClassNamePointer_0b)(&stack0xffffffd4);
+          func_0x00402e87(&uStack_30);
+          (*this->vftable->OrphanCallChain_C1_I06_0056fbb0)(uVar5);
+          uStack_14 = CONCAT31(uStack_14._1_3_,1);
+          CString::~CString(&local_18);
         }
-        this_01 = (TLineData *)__2_YAPAXI_Z(0x14);
-        local_4 = 2;
-        if (this_01 == (TLineData *)0x0) {
-          this_01 = (TLineData *)0x0;
+        puVar6 = (undefined4 *)operator_new(0x14);
+        if (puVar6 == (undefined4 *)0x0) {
+          puVar6 = (undefined4 *)0x0;
         }
         else {
-          TLineData::ConstructTLineDataBaseState(this_01);
-          this_01->vftable = (TLineDataVtbl *)&TMiniShipLineVtbl_0065db28;
+          func_0x00408f0d();
+          *puVar6 = &TMiniShipLine::_vftable_;
         }
-        local_4 = 0xffffffff;
-        uStack_14 = 0xec;
-        uStack_10 = 0x12;
-        TLineData::SetLineDataRowAndBounds(this_01,0,0,&uStack_14);
+        uStack_34 = 0xec;
+        uStack_30 = 0x12;
+        func_0x00409025(0,0,&uStack_34);
         pTVar1 = this->vftable;
-        this_01[1].vftable = pTVar5;
-        (*pTVar1->OrphanCallChain_C1_I06_0056fbb0)(this_01);
+        puVar6[4] = iVar4;
+        (*pTVar1->OrphanCallChain_C1_I06_0056fbb0)(puVar6);
       }
     }
   }
@@ -116,130 +142,8 @@ TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
   (*pTVar1->OrphanCallChain_C8_I82_0056fc80)();
   (*pTVar1->OrphanCallChain_C8_I118_0056fdb0)(1);
   (**(code **)&this->ownerContext->vftable->field_0xc)();
-  UpdatePagedListNavigationButtonState((int)*(short *)&this->field_0x62);
-  *unaff_FS_OFFSET = uStack_10;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00569B60
-// GHIDRA_NAME TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTSuperNavyRosterAndMaybeFree(byte param_1)
-
-TSuperNavyRoster * TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree(byte param_1)
-
-{
-  DestructTSuperNavyRosterAndMaybeFree_Impl();
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005DD450
-// GHIDRA_NAME TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult
-// GHIDRA_PROTO undefined __thiscall TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult(void)
-
-/* WARNING: Type propagation algorithm not settling */
-
-void TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult()
-
-{
-  int iVar1;
-  int iVar2;
-  undefined uVar3;
-  undefined3 extraout_var;
-  int *piVar5;
-  TPageView *this_00;
-  TStaticText *this_01;
-  undefined4 uVar6;
-  undefined2 extraout_var_00;
-  undefined4 unaff_ESI;
-  int *unaff_FS_OFFSET;
-  TPageViewVtbl *pMapOrderEntry;
-  int aiStack_30 [6];
-  undefined4 uStack_18;
-  int iStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  int *piVar4;
-
-  iStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0063a474;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0x2506);
-  piVar4 = (int *)CONCAT31(extraout_var,uVar3);
-  if (piVar4 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x183);
-  }
-  iVar1 = *piVar4;
-  piVar5 = (int *)(**(code **)(iVar1 + 0x94))(0x70616765);
-  if (piVar5 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x187);
-  }
-  aiStack_30[0] = piVar5[8];
-  (**(code **)(*piVar5 + 0x1c))();
-  this_00 = (TPageView *)__2_YAPAXI_Z(0x8c);
-  iStack_c = 0;
-  if (this_00 == (TPageView *)0x0) {
-    this_00 = (TPageView *)0x0;
-  }
-  else {
-    TPageView::ConstructTPageViewBaseState(this_00);
-    this_00->vftable = (TPageViewVtbl *)&TSuperNavyRosterVtbl_0065d910;
-    this_00[1].vftable = (TPageViewVtbl *)0x0;
-    this_00[1].field04 = 0;
-  }
-  iStack_c = -1;
-  aiStack_30[1] = 0xd;
-  aiStack_30[2] = 0x2e;
-  (*this_00->vftable[1].GetTEventHandlerClassNamePointer)
-            (aiStack_30[0],aiStack_30 + 1,&stack0xffffffc8);
-  this_00->controlTag = 0x70616765;
-  this_01 = (TStaticText *)__2_YAPAXI_Z(0x94);
-  uStack_18 = 1;
-  if (this_01 == (TStaticText *)0x0) {
-    uVar6 = 0;
-  }
-  else {
-    uVar6 = TStaticText::TStaticText(this_01);
-  }
-  uStack_18 = 0xffffffff;
-  aiStack_30[0] = 0x4d;
-  aiStack_30[1] = 0x11;
-  InitializeTextEntryBaseAndOptionalStringResource
-            (unaff_ESI,aiStack_30,&stack0xffffffc8,5,5,0x2746,0xc);
-  ApplyControlThemeStyleAndOptionalCaption(uVar6,0,0xe,0x2b6a,0xfffffffe,0);
-  (*this->vftable->VTableSlot11)(piVar4,aiStack_30 + 2);
-  (**(code **)(iVar1 + 0xf0))(aiStack_30,0);
-  (**(code **)(iVar1 + 0x1ac))();
-  pMapOrderEntry = this_00[1].vftable;
-  iVar2 = this_00[1].field04;
-  (**(code **)(iVar1 + 0xa0))();
-  (**(code **)(iVar1 + 0x1c))();
-  if (iVar2 == 0) {
-    if (pMapOrderEntry == (TPageViewVtbl *)0x0) goto LAB_005dd6b8;
-  }
-  else {
-    if (*(short *)(iVar2 + 8) != 0) {
-      TToolBarCluster::RefreshMapOrderEntryPanel
-                (*(TToolBarCluster **)&this[1].field_0x64,(void *)0x0);
-      TToolBarCluster::SetMapInteractionMode(*(TCivToolbar **)&this[1].field_0x64,3);
-      (**(code **)(**(int **)&this[1].field_0x64 + 0x1e8))
-                (CONCAT22(extraout_var_00,*(undefined2 *)(iVar2 + 0x30)));
-      *unaff_FS_OFFSET = 0x12;
-      return;
-    }
-    pMapOrderEntry = *(TPageViewVtbl **)(iVar2 + 0x18);
-  }
-  TToolBarCluster::SetActiveMapOrderEntry
-            (*(TToolBarCluster **)&this[1].field_0x64,pMapOrderEntry);
-LAB_005dd6b8:
-  *unaff_FS_OFFSET = aiStack_30[0];
+  func_0x00404def((int)*(short *)&this->field_0x62);
+  *unaff_FS_OFFSET = uStack_34;
   return;
 }
 

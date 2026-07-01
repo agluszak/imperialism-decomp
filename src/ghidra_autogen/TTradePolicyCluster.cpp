@@ -4,43 +4,43 @@
 // Bucket: TTradePolicyCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584200
-// GHIDRA_NAME TTradePolicyCluster::CreateTTradePolicyClusterInstance
-// GHIDRA_PROTO undefined CreateTTradePolicyClusterInstance()
+// GHIDRA_NAME TTradePolicyCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TUberCluster * TTradePolicyCluster::CreateTTradePolicyClusterInstance(void)
+undefined4 * TTradePolicyCluster::CreateObject(void)
 
 {
-  TUberCluster *this;
-  TUberCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006375ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
+  puVar1 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  pTVar1 = (TUberCluster *)0x0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->vftable = (TUberClusterVtbl *)&TTradePolicyClusterVtbl_00663de0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00405835();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584280
-// GHIDRA_NAME TTradePolicyCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTradePolicyCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradePolicyCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTradePolicyCluster::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTradePolicyCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005842A0
@@ -50,8 +50,8 @@ CRuntimeClass * TTradePolicyCluster::GetTEventHandlerClassNamePointer()
 TTradePolicyCluster * TTradePolicyCluster::ConstructTTradePolicyClusterBaseState()
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  this->vftable = &TTradePolicyClusterVtbl_00663de0;
+  func_0x00405835();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,30 +62,27 @@ TTradePolicyCluster * TTradePolicyCluster::ConstructTTradePolicyClusterBaseState
 TTradePolicyCluster * TTradePolicyCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00404b56();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584320
-// GHIDRA_NAME TTradePolicyCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_NAME TTradePolicyCluster::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void __thiscall
-TTradePolicyCluster::OrphanRetStub_0059add0
-          (TTradePolicyCluster *this,int param_1,void *param_2,int param_3)
+void TTradePolicyCluster::HandleEvent(int param_1, void *param_2, int param_3)
 
 {
   TTradePolicyClusterVtbl *pTVar1;
   undefined uVar2;
   undefined3 extraout_var;
   int *piVar3;
-
+  
   if (param_1 != 0x67) {
-    TCluster::OrphanRetStub_0059add0
-              ((TMapEditCluster *)this,param_1,param_2,param_3);
+    func_0x004023ab(param_1,param_2,param_3);
     return;
   }
   pTVar1 = this->vftable;
@@ -93,9 +90,8 @@ TTradePolicyCluster::OrphanRetStub_0059add0
   (*pTVar1->OrphanCallChain_C2_I51_00491790)(0x20202020);
   piVar3 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94))(0x636c7573);
   if (piVar3 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x203);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x203);
   }
   (**(code **)(*piVar3 + 0x1c8))(0x20202020);
   return;

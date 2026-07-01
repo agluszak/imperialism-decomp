@@ -5,37 +5,41 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD760
 // GHIDRA_NAME TTask::CreateTTaskInstance
-// GHIDRA_PROTO undefined __thiscall TTask::CreateTTaskInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTTaskInstance(void)
+
+/* WARNING: Type propagation algorithm not settling */
 
 void TTask::CreateTTaskInstance()
 
 {
   _vslot_fn *p_Var1;
   int iVar2;
-  TLoadSavePictureVtbl *pTVar3;
-  undefined uVar4;
+  undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
-  TLoadSavePicture *this_00;
+  undefined3 extraout_var_02;
   int *unaff_FS_OFFSET;
   int unaff_retaddr;
-  CString CStack_58;
-  CString CStack_54;
-  CString CStack_50;
-  int iStack_4c;
+  CString CStack_6c;
+  CString CStack_68;
+  CString CStack_64;
+  CString CStack_60;
+  int iStack_5c;
+  int *piStack_58;
+  int *piStack_54;
+  undefined4 uStack_50;
+  char *pcStack_4c;
   CString *pCStack_48;
-  undefined1 *puStack_44;
-  char *pcStack_40;
-  char *pcStack_3c;
-  char *pcStack_38;
+  char *pcStack_44;
+  int aiStack_40 [3];
   CString CStack_34;
   CString CStack_30;
+  int iStack_18;
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  undefined3 extraout_var_02;
-
+  
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006388b0;
   iStack_c = *unaff_FS_OFFSET;
@@ -43,110 +47,133 @@ void TTask::CreateTTaskInstance()
   CStack_30.m_pchData = (char *)0x61636f61;
   p_Var1 = this->vftable[3].Dump;
   CStack_34.m_pchData = (char *)0x5ad78d;
-  uVar4 = (*p_Var1)();
-  iVar2 = *(int *)CONCAT31(extraout_var,uVar4);
+  uVar3 = (*p_Var1)();
+  iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
   CStack_34.m_pchData = (char *)0x5ad796;
   (**(code **)(iVar2 + 0xc))();
   CStack_34.m_pchData = (char *)0x1;
-  pcStack_38 = (char *)(unaff_retaddr + 0xea6);
-  pcStack_3c = (char *)0x5ad7ab;
+  aiStack_40[2] = unaff_retaddr + 0xea6;
+  aiStack_40[1] = 0x5ad7ab;
   (**(code **)(iVar2 + 0x1c8))();
-  pcStack_3c = (char *)0x64636f61;
-  pcStack_40 = (char *)0x5ad7b4;
-  uVar4 = (*p_Var1)();
-  iVar2 = *(int *)CONCAT31(extraout_var_00,uVar4);
-  pcStack_40 = (char *)0x5ad7bd;
+  aiStack_40[1] = 0x64636f61;
+  aiStack_40[0] = 0x5ad7b4;
+  uVar3 = (*p_Var1)();
+  iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
+  aiStack_40[0] = 0x5ad7bd;
   (**(code **)(iVar2 + 0xc))();
-  pcStack_40 = (char *)0x1;
-  puStack_44 = puStack_8 + 0xea6;
+  aiStack_40[0] = 1;
+  pcStack_44 = puStack_8 + 0xea6;
   pCStack_48 = (CString *)0x5ad7d2;
   (**(code **)(iVar2 + 0x1c8))();
   pCStack_48 = (CString *)0x5ad7db;
-  CString::__0CString__QAE_XZ(&CStack_30);
+  CString::CString(&CStack_30);
   pCStack_48 = (CString *)0x5ad7ec;
-  CString::__0CString__QAE_XZ((CString *)&stack0xffffffd8);
+  CString::CString((CString *)&stack0xffffffd8);
   pCStack_48 = (CString *)0x5ad7fa;
-  CString::__0CString__QAE_XZ(&CStack_34);
+  CString::CString(&CStack_34);
   pCStack_48 = (CString *)0x5ad808;
-  CString::__0CString__QAE_XZ((CString *)&stack0xffffffd4);
+  CString::CString((CString *)&stack0xffffffd4);
   if (iStack_c == 0) {
     pCStack_48 = &CStack_30;
-    iStack_4c = 0xd;
-    CStack_50.m_pchData = (char *)0x273d;
-    CStack_54.m_pchData = (char *)0x5ad855;
+    pcStack_4c = (char *)0xd;
+    uStack_50 = 0x273d;
+    piStack_54 = (int *)0x5ad855;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   }
   else {
     pCStack_48 = &CStack_30;
-    iStack_4c = 0xc;
-    CStack_50.m_pchData = (char *)0x273d;
-    CStack_54.m_pchData = (char *)0x5ad82f;
+    pcStack_4c = (char *)0xc;
+    uStack_50 = 0x273d;
+    piStack_54 = (int *)0x5ad82f;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   }
-  CStack_54.m_pchData = (char *)&pcStack_40;
-  CStack_58.m_pchData = (char *)0x5ad86a;
-  FormatOverlayTerrainLabelText();
-  CStack_54.m_pchData = (char *)&pcStack_38;
-  AssignSharedStringFromIndexedA8EntryNameField();
-  CStack_54.m_pchData = pcStack_40;
-  CStack_58.m_pchData = pcStack_38;
-  scanBracketExpressions(g_pLocalizationTable,&CStack_34,pcStack_3c);
-  CStack_54.m_pchData = (char *)0x696e666f;
-  CStack_58.m_pchData = (char *)0x5ad8aa;
-  uVar4 = (*p_Var1)();
-  iVar2 = *(int *)CONCAT31(extraout_var_01,uVar4);
-  CStack_58.m_pchData = (char *)0x5ad8b3;
+  piStack_54 = aiStack_40;
+  piStack_58 = (int *)0x5ad86a;
+  func_0x00405245();
+  piStack_58 = aiStack_40 + 1;
+  iStack_5c = iStack_18;
+  CStack_60.m_pchData = (char *)0x5ad87f;
+  func_0x0040918d();
+  CStack_60.m_pchData = pcStack_4c;
+  CStack_64.m_pchData = pcStack_44;
+  CStack_6c.m_pchData = (char *)aiStack_40;
+  CStack_68.m_pchData = (char *)pCStack_48;
+  func_0x0040988b(g_pLocalizationTable);
+  CStack_60.m_pchData = (char *)0x696e666f;
+  CStack_64.m_pchData = (char *)0x5ad8aa;
+  uVar3 = (*p_Var1)();
+  iVar2 = *(int *)CONCAT31(extraout_var_01,uVar3);
+  CStack_64.m_pchData = (char *)0x5ad8b3;
   (**(code **)(iVar2 + 0xc))();
-  CStack_58.m_pchData = (char *)&pcStack_38;
+  CStack_64.m_pchData = (char *)&pcStack_44;
+  CStack_68.m_pchData = "hj+";
   (**(code **)(iVar2 + 0x1f0))();
-  (**(code **)(iVar2 + 0x1e0))(0,0xc);
+  CStack_68.m_pchData = (char *)0x2b6a;
+  CStack_6c.m_pchData = (char *)0xc;
+  (**(code **)(iVar2 + 0x1e0))(0);
   (**(code **)(iVar2 + 0x1f8))(1);
-  uVar4 = (*p_Var1)(0x706d6170);
-  this_00 = (TLoadSavePicture *)CONCAT31(extraout_var_02,uVar4);
-  pTVar3 = this_00->vftable;
-  (*pTVar3->AssertValid)();
-  TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this_00,0);
-  *(char **)&this_00->field_0x64 = CStack_30.m_pchData;
-  (*pTVar3->VTableSlot39)();
-  puStack_44._0_1_ = 2;
-  CString::__1CString__QAE_XZ(&CStack_54);
-  puStack_44._0_1_ = 1;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa4);
-  puStack_44 = (undefined1 *)((uint)puStack_44._1_3_ << 8);
-  CString::__1CString__QAE_XZ(&CStack_50);
-  puStack_44 = (undefined1 *)0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_58);
-  *unaff_FS_OFFSET = iStack_4c;
+  uVar3 = (*p_Var1)(0x706d6170);
+  iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
+  (**(code **)(iVar2 + 0xc))();
+  func_0x004099d0(0);
+  ((int *)CONCAT31(extraout_var_02,uVar3))[0x19] = aiStack_40[0];
+  (**(code **)(iVar2 + 0xe4))();
+  piStack_54._0_1_ = 2;
+  CString::~CString(&CStack_64);
+  piStack_54._0_1_ = 1;
+  CString::~CString(&CStack_6c);
+  piStack_54 = (int *)((uint)piStack_54._1_3_ << 8);
+  CString::~CString(&CStack_60);
+  piStack_54 = (int *)0xffffffff;
+  CString::~CString(&CStack_68);
+  *unaff_FS_OFFSET = iStack_5c;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005ADB70
-// GHIDRA_NAME TTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005ADB40
+// GHIDRA_NAME TTask::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TTask::GetTTaskClassNamePointer()
+undefined4 * TTask::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(8);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005ADB70
+// GHIDRA_NAME TTask::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TTask::GetRuntimeClass()
+
+{
+  return &classTTask;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADBB0
-// GHIDRA_NAME TTask::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
+// GHIDRA_NAME TTask::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTask * TTask::ConstructTTaskBaseState(byte param_1)
+TTask * TTask::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TTask::DestructTTaskAndMaybeFree(this);
+  func_0x00407ac7();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADBE0
 // GHIDRA_NAME TTask::DestructTTaskAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TTask::DestructTTaskAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTaskAndMaybeFree(void)
 
 void TTask::DestructTTaskAndMaybeFree()
 
@@ -157,7 +184,7 @@ void TTask::DestructTTaskAndMaybeFree()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADC30
 // GHIDRA_NAME TTask::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
 
 bool TTask::OrphanLeaf_NoCall_Ins04_005adc30()
 
@@ -167,15 +194,15 @@ bool TTask::OrphanLeaf_NoCall_Ins04_005adc30()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADC50
-// GHIDRA_NAME TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(int * param_1)
+// GHIDRA_NAME TTask::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(int *param_1)
+void TTask::WriteTo(int *param_1)
 
 {
   code *pcVar1;
-
-  TObject::WriteTo((TObject *)this,(TStream *)param_1);
+  
+  func_0x0040583a(param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
@@ -183,15 +210,15 @@ void TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADC90
-// GHIDRA_NAME TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(int * param_1)
+// GHIDRA_NAME TTask::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(int *param_1)
+void TTask::ReadFrom(int *param_1)
 
 {
   code *pcVar1;
-
-  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
+  
+  func_0x00403517(param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);

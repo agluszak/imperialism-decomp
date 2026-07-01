@@ -4,43 +4,43 @@
 // Bucket: TDefenseMinisterView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3240
-// GHIDRA_NAME TDefenseMinisterView::CreateTDefenseMinisterViewInstance
-// GHIDRA_PROTO undefined CreateTDefenseMinisterViewInstance()
+// GHIDRA_NAME TDefenseMinisterView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TDefenseMinisterView::CreateTDefenseMinisterViewInstance(void)
+undefined4 * TDefenseMinisterView::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632a4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x68);
+  puVar1 = (undefined4 *)operator_new(0x68);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this[1].vftable = (TViewVtbl *)0x0;
-    this->vftable = (TViewVtbl *)&TDefenseMinisterViewVtbl_00655518;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    puVar1[0x18] = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F32D0
-// GHIDRA_NAME TDefenseMinisterView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TDefenseMinisterView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDefenseMinisterView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TDefenseMinisterView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTDefenseMinisterView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F32F0
@@ -50,9 +50,9 @@ CRuntimeClass * TDefenseMinisterView::GetTEventHandlerClassNamePointer()
 TDefenseMinisterView * TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState()
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
+  func_0x004064e2();
   *(undefined4 *)&this->field_0x60 = 0;
-  this->vftable = &TDefenseMinisterViewVtbl_00655518;
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -63,69 +63,90 @@ TDefenseMinisterView * TDefenseMinisterView::ConstructTDefenseMinisterViewBaseSt
 TDefenseMinisterView * TDefenseMinisterView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004099f3();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3370
-// GHIDRA_NAME TDefenseMinisterView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, CString param_3)
+// GHIDRA_NAME TDefenseMinisterView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, CString param_3)
 
 void __thiscall
-TDefenseMinisterView::OrphanRetStub_0059add0
+TDefenseMinisterView::HandleEvent
           (TDefenseMinisterView *this,int param_1,int param_2,CString param_3)
 
 {
   int iVar1;
   TDefenseMinisterViewVtbl *pTVar2;
-  char cVar3;
-  int unaff_ESI;
-  int *unaff_FS_OFFSET;
-  undefined1 auStack_30 [4];
+  undefined uVar3;
+  char cVar4;
+  short sVar5;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined4 unaff_ESI;
+  undefined4 *unaff_FS_OFFSET;
+  undefined1 *puVar6;
+  char acStack_30 [4];
   undefined *puStack_2c;
   undefined4 uStack_28;
   undefined4 uStack_24;
-  CString *pCVar4;
-  int local_c;
+  int iStack_20;
+  int iStack_1c;
+  CString *pCStack_18;
+  undefined4 local_c;
   undefined1 *puStack_8;
-  undefined1 *local_4;
-
+  CString local_4;
+  
   local_c = *unaff_FS_OFFSET;
-  local_4 = (undefined1 *)0xffffffff;
+  local_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_00632a68;
-  *unaff_FS_OFFSET = (int)&local_c;
+  *unaff_FS_OFFSET = &local_c;
   iVar1 = *(int *)(param_2 + 0x1c);
   if (param_1 == 0x14) {
     if (iVar1 == 0x63616e6e) {
-      UiRuntimeContext::GetActiveNationId();
-      cVar3 = ScanMapContextActionEntriesForCodeMatch();
-      if (cVar3 == '\0') {
-        CString::__0CString__QAE_XZ(&param_3);
-        pCVar4 = &param_3;
-        local_4 = (undefined1 *)0x0;
+      pCStack_18 = (CString *)0x4f3488;
+      sVar5 = func_0x00403b16();
+      pCStack_18 = (CString *)(int)sVar5;
+      iStack_1c = 0x4f3497;
+      cVar4 = func_0x0040596b();
+      if (cVar4 == '\0') {
+        pCStack_18 = (CString *)0x4f34a4;
+        CString::CString(&param_3);
+        pCStack_18 = &param_3;
+        iStack_1c = 0x12;
+        iStack_20 = 0x273d;
+        local_4.m_pchData = (char *)0x0;
         uStack_24 = 0x4f34c6;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
         uStack_24 = 0;
         uStack_28 = 1;
         puStack_2c = &DAT_006a2fc0;
-        local_4 = auStack_30;
-        AssignStringSharedRefAndReturnThis(&stack0x00000000);
-        DispatchLocalizedUiMessageWithTemplateA13A0();
-        uStack_24 = 0x4f34fc;
-        CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
-        *unaff_FS_OFFSET = (int)pCVar4;
+        local_4.m_pchData = acStack_30;
+        puVar6 = (undefined1 *)register0x00000010;
+        func_0x004076b7(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0(puVar6);
+        uStack_28 = 0x4f34fc;
+        CString::~CString(&local_4);
+        *unaff_FS_OFFSET = iStack_1c;
         return;
       }
       if (g_pLocalizationTable->field_0x14 == '\0') {
-        (*this->vftable->SetForeignMinisterReadyFlag14)();
+        pCStack_18 = (CString *)0x4f3522;
+        uVar3 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+        pCStack_18 = (CString *)CONCAT31(extraout_var_00,uVar3);
+        iStack_1c = 0x4f3531;
         (**(code **)&g_pGlobalUiRootController->vftable->field_0xb4)();
+        iStack_1c = 0x65;
+        iStack_20 = 0x4f353e;
         (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
       }
     }
     else if (iVar1 == 0x72656363) {
+      pCStack_18 = (CString *)0x258a;
+      iStack_1c = 0x4f346a;
       (*this->vftable->OrphanCallChain_C2_I08_004f2ec0)();
       *unaff_FS_OFFSET = unaff_ESI;
       return;
@@ -134,27 +155,36 @@ TDefenseMinisterView::OrphanRetStub_0059add0
     return;
   }
   if (param_1 != 10) {
+    pCStack_18 = (CString *)param_3.m_pchData;
+    iStack_1c = param_2;
+    iStack_20 = param_1;
     uStack_24 = 0x4f3434;
-    TView::OrphanRetStub_0059add0
-              ((TView *)this,param_1,param_2,param_3.m_pchData);
-    *unaff_FS_OFFSET = local_c;
+    func_0x00408657();
+    *unaff_FS_OFFSET = pCStack_18;
     return;
   }
   if (iVar1 == 0x6261636b) {
+    pCStack_18 = (CString *)0x4f3413;
     (*this->vftable->OrphanLeaf_NoCall_Ins03_004f2ea0)();
     *unaff_FS_OFFSET = local_c;
     return;
   }
   if (iVar1 != 0x6f6b6179) {
+    pCStack_18 = (CString *)param_3.m_pchData;
+    iStack_1c = param_2;
+    iStack_20 = 10;
     uStack_24 = 0x4f33c5;
-    TView::OrphanRetStub_0059add0
-              ((TView *)this,10,param_2,param_3.m_pchData);
-    *unaff_FS_OFFSET = local_c;
+    func_0x00408657();
+    *unaff_FS_OFFSET = pCStack_18;
     return;
   }
   pTVar2 = this->vftable;
+  pCStack_18 = (CString *)0x4f33e2;
   (*pTVar2->OrphanLeaf_NoCall_Ins03_004f2ea0)();
-  (*pTVar2->SetForeignMinisterReadyFlag14)();
+  pCStack_18 = (CString *)0x4f33e7;
+  uVar3 = (*pTVar2->SetForeignMinisterReadyFlag14)();
+  pCStack_18 = (CString *)CONCAT31(extraout_var,uVar3);
+  iStack_1c = 0x4f33f6;
   (**(code **)&g_pGlobalUiRootController->vftable->field_0xb4)();
   *unaff_FS_OFFSET = unaff_ESI;
   return;

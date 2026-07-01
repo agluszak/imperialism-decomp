@@ -3,20 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TMultiMessagePicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0044FA80
-// GHIDRA_NAME TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80
-// GHIDRA_PROTO undefined __thiscall TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80(void)
-
-TMultiMessagePicture * __thiscall
-TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80
-          (TMultiMessagePicture *this)
-
-{
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TMultiMessagePictureVtbl_00643818;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0044FB10
 // GHIDRA_NAME TMultiMessagePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -24,87 +10,117 @@ TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044f
 TMultiMessagePicture * TMultiMessagePicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004010eb();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0054ECA0
-// GHIDRA_NAME TMultiMessagePicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0054EC20
+// GHIDRA_NAME TMultiMessagePicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TMultiMessagePicture::GetTEventHandlerClassNamePointer()
+undefined4 * TMultiMessagePicture::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00634faa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x90);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054ECA0
+// GHIDRA_NAME TMultiMessagePicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TMultiMessagePicture::GetRuntimeClass()
+
+{
+  return &classTMultiMessagePicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054ECC0
-// GHIDRA_NAME TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(CString param_1, CString param_2, TMultiMessagePicture_slot_0x04_0x04 * param_3)
+// GHIDRA_NAME TMultiMessagePicture::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(CString param_1, CString param_2, TMultiMessagePicture_slot_0x04_0x04 * param_3)
 
 void __thiscall
-TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+TMultiMessagePicture::HandleEvent
           (TMultiMessagePicture *this,CString param_1,CString param_2,
           TMultiMessagePicture_slot_0x04_0x04 *param_3)
 
 {
-  _vslot_fn *p_Var1;
-  int iVar2;
-  TApplicationVtbl *pTVar3;
-  undefined uVar4;
-  char cVar5;
+  int iVar1;
+  TApplicationVtbl *pTVar2;
+  undefined uVar3;
+  char cVar4;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  undefined4 uVar6;
-  int iVar7;
+  undefined4 uVar5;
+  int iVar6;
+  CString CVar7;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
-  undefined4 uStack_4;
-
+  uint uStack_4;
+  
   local_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634fc8;
   *unaff_FS_OFFSET = &local_c;
   if (((param_1.m_pchData == (char *)0x14) || (param_1.m_pchData == (char *)0xa)) ||
      (param_1.m_pchData == (char *)0x22)) {
-    iVar7 = *(int *)(param_2.m_pchData + 0x1c);
-    if ((iVar7 != 0x63616e63) && (iVar7 != 0x636e636c)) {
-      if (iVar7 != 0x6f6b6179) {
-        TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-                  ((TMapDialog *)this,(int)param_1.m_pchData);
+    iVar6 = *(int *)(param_2.m_pchData + 0x1c);
+    if ((iVar6 != 0x63616e63) && (iVar6 != 0x636e636c)) {
+      if (iVar6 != 0x6f6b6179) {
+        func_0x00404566(param_1.m_pchData,param_2.m_pchData,param_3);
         goto LAB_0054edfd;
       }
-      p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-      uVar4 = (*p_Var1)(0x6d657367);
-      iVar7 = *(int *)CONCAT31(extraout_var,uVar4);
-      (**(code **)(iVar7 + 0xc))();
-      CString::__0CString__QAE_XZ(&param_1);
+      CVar7.m_pchData = (char *)this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+      uVar3 = (*(code *)CVar7.m_pchData)(0x6d657367);
+      iVar6 = *(int *)CONCAT31(extraout_var,uVar3);
+      (**(code **)(iVar6 + 0xc))();
+      CString::CString(&param_1);
       puStack_8 = (undefined1 *)0x0;
-      (**(code **)(iVar7 + 0x1dc))(&param_1);
-      iVar7 = 0;
-      param_1.m_pchData = (char *)0x0;
+      (**(code **)(iVar6 + 0x1dc))(&param_1);
+      iVar6 = 0;
+      uStack_4 = 0;
       do {
-        uVar4 = (*p_Var1)(iVar7 + 0x626f7830);
-        iVar2 = *(int *)CONCAT31(extraout_var_00,uVar4);
-        (**(code **)(iVar2 + 0xc))();
-        cVar5 = (**(code **)(iVar2 + 0x28))();
-        if ((cVar5 != '\0') && (cVar5 = (**(code **)(iVar2 + 0x1d0))(), cVar5 != '\0')) {
-          param_1.m_pchData = param_1.m_pchData | 1 << ((byte)iVar7 & 0x1f);
+        uVar3 = (*(code *)CVar7.m_pchData)(iVar6 + 0x626f7830);
+        iVar1 = *(int *)CONCAT31(extraout_var_00,uVar3);
+        (**(code **)(iVar1 + 0xc))();
+        cVar4 = (**(code **)(iVar1 + 0x28))();
+        if ((cVar4 != '\0') && (cVar4 = (**(code **)(iVar1 + 0x1d0))(), cVar4 != '\0')) {
+          uStack_4 = uStack_4 | 1 << ((byte)iVar6 & 0x1f);
         }
-        iVar7 = iVar7 + 1;
-      } while (iVar7 < 7);
-      uVar6 = FindActiveNationSlotIndexInGameFlowList();
-      CreateAndSendTurnEvent0C_Text256AndTwoFlags(&param_2,param_1.m_pchData,uVar6);
+        iVar6 = iVar6 + 1;
+        CVar7.m_pchData = param_1.m_pchData;
+      } while (iVar6 < 7);
+      uVar5 = func_0x004015af();
+      func_0x00405c2c(&stack0x00000000,uStack_4,uVar5);
       uStack_4 = 0xffffffff;
-      CString::__1CString__QAE_XZ(&param_2);
+      CString::~CString(&param_2);
     }
-    pTVar3 = g_pGlobalUiRootController->vftable;
-    uVar4 = (*this->vftable->SetForeignMinisterReadyFlag14)();
-    (**(code **)&pTVar3->field_0xb4)(uVar4);
+    pTVar2 = g_pGlobalUiRootController->vftable;
+    uVar3 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+    (**(code **)&pTVar2->field_0xb4)(uVar3);
   }
 LAB_0054edfd:
   *unaff_FS_OFFSET = local_c;

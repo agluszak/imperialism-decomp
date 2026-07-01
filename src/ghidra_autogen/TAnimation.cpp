@@ -3,72 +3,40 @@
 // Program: Imperialism.exe
 // Bucket: TAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00495B70
-// GHIDRA_NAME TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize
-// GHIDRA_PROTO undefined __thiscall TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F020
+// GHIDRA_NAME TAnimation::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-void TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize()
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  undefined4 uVar3;
-  undefined4 *puVar4;
-  undefined1 local_8 [8];
-
-  if (*(int *)&this->field_0x18 == 0) {
-    iVar2 = LoadBmpResourceByIdCached(*(undefined2 *)&this->field_0x1c);
-    *(int *)&this->field_0x18 = iVar2;
-    if (iVar2 == 0) {
-      uVar3 = BuildIndexedBmpResourceById(*(undefined2 *)&this->field_0x1c,0x42,0x42,0);
-      *(undefined4 *)&this->field_0x18 = uVar3;
-    }
-  }
-  puVar4 = (undefined4 *)CopyOffset10PointPairToOutOrZero(local_8);
-  uVar3 = *puVar4;
-  uVar1 = puVar4[1];
-  *(undefined4 *)&this->field_0x8 = 0;
-  *(undefined4 *)&this->field_0xc = 0;
-  *(undefined4 *)&this->field_0x10 = uVar3;
-  *(undefined4 *)&this->field_0x14 = uVar1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495C00
-// GHIDRA_NAME TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-// GHIDRA_PROTO undefined __thiscall TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00(void)
-
-void __thiscall
-TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-          (TAnimation *this)
+undefined4 * TAnimation::CreateObject(void)
 
 {
-  if (*(int *)&this->field_0x18 != 0) {
-    DecrementDialogResourceRefCountByShortIdAndCleanup
-              (CONCAT22((short)((uint)*(int *)&this->field_0x18 >> 0x10),
-                        *(undefined2 *)&this->field_0x1c));
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x2c);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &TAnimationVtbl_0064c300;
+    return puVar1;
   }
-  *(undefined4 *)&this->field_0x18 = 0;
-  return;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F050
-// GHIDRA_NAME TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049f050(byte param_1)
+// GHIDRA_NAME TAnimation::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAnimation * TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050(byte param_1)
+TAnimation * TAnimation::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TAnimation::CreateTAnimationInstance(this);
+  func_0x004089cc();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F080
 // GHIDRA_NAME TAnimation::CreateTAnimationInstance
-// GHIDRA_PROTO undefined __thiscall TAnimation::CreateTAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTAnimationInstance(void)
 
 void TAnimation::CreateTAnimationInstance()
 
@@ -78,18 +46,18 @@ void TAnimation::CreateTAnimationInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F0A0
-// GHIDRA_NAME TAnimation::GetTAnimationClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
+// GHIDRA_NAME TAnimation::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAnimation::GetTAnimationClassNamePointer()
+CRuntimeClass * TAnimation::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTAnimation;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F0C0
 // GHIDRA_NAME TAnimation::ConstructTAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall TAnimation::ConstructTAnimationBaseState(undefined4 param_1, undefined4 * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
+// GHIDRA_PROTO undefined __thiscall ConstructTAnimationBaseState(undefined4 param_1, undefined4 * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
 
 void __thiscall
 TAnimation::ConstructTAnimationBaseState
@@ -119,11 +87,11 @@ void TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
 
 {
   int iVar1;
-
+  
   iVar1 = *(int *)&this->field_0x10 + 1;
   *(int *)&this->field_0x10 = iVar1;
   if (iVar1 == *(int *)&this->field_0x14) {
-    InvalidateCityDialogRectRegion(&this->field_0x1c,1);
+    func_0x00408a03(&this->field_0x1c,1);
     *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
     *(undefined4 *)&this->field_0x10 = 0;
     if (*(short *)&this->field_0x8 == *(short *)&this->field_0xa) {
@@ -135,7 +103,7 @@ void TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F190
 // GHIDRA_NAME TAnimation::RenderBattleReportInsetWithPaletteShift
-// GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(int * param_1)
+// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(int * param_1)
 
 void TAnimation::RenderBattleReportInsetWithPaletteShift(int *param_1)
 
@@ -144,7 +112,7 @@ void TAnimation::RenderBattleReportInsetWithPaletteShift(int *param_1)
   int iVar2;
   tagRECT tStack_20;
   tagRECT tStack_10;
-
+  
   iVar1 = *(int *)&g_pUiAnimator->field_0x20;
   (*this->vftable->RenderBattleReportViewSurfaceSpriteWithResourceHandle)();
   tStack_20.top = *(int *)&this->field_0x20 + param_1[1];
@@ -155,7 +123,7 @@ void TAnimation::RenderBattleReportInsetWithPaletteShift(int *param_1)
   tStack_10.bottom = tStack_20.bottom - tStack_20.top;
   tStack_10.left = 0;
   tStack_10.top = 0;
-  UpdatePaletteIndexWithDefaultFallback(0x10);
+  func_0x004010be(0x10);
   iVar2 = *(int *)(iVar1 + 0x20);
   if (iVar2 != 0) {
     iVar2 = *(int *)(*(int *)(iVar2 + 0x10) + 8);
@@ -171,63 +139,64 @@ void TAnimation::RenderBattleReportInsetWithPaletteShift(int *param_1)
     }
     OffsetRect(&tStack_20,0,(iVar2 - tStack_20.top) - tStack_20.bottom);
   }
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(iVar1 + 4),(astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,
-             &tStack_10,&tStack_20,0x24,(astruct_19 *)0x0);
-  UpdatePaletteIndexWithDefaultFallback(0x13);
+  func_0x00405493(iVar1 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&tStack_10,&tStack_20,0x24,
+                  0);
+  func_0x004010be(0x13);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004A1100
-// GHIDRA_NAME TAnimation::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F2D0
+// GHIDRA_NAME TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle
+// GHIDRA_PROTO undefined __thiscall RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)
 
-undefined4 __thiscall
-TAnimation::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
-          (TAnimation *this)
+void TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle()
 
 {
-  TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_h_00695340,0x1a1);
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A9BB0
-// GHIDRA_NAME TAnimation::SpawnTacticalUiMarkerAtUnitTile
-// GHIDRA_PROTO undefined __thiscall SpawnTacticalUiMarkerAtUnitTile(void)
-
-void TAnimation::SpawnTacticalUiMarkerAtUnitTile()
-
-{
-  int iVar1;
-  uint uVar2;
-  TAnimation *this_00;
-  int local_10;
-  int local_c;
-  int local_8;
-  int local_4;
-
-  TBattleReportView::RemoveUiTransientRegistryObjectByTag((TBattleReportView *)g_pUiAnimator,0x2711)
-  ;
-  iVar1 = *(int *)(*(int *)&this[2].field_0x8 + 0x1c);
-  if ((iVar1 != 0) && (iVar1 = *(int *)(iVar1 + 8), -1 < iVar1)) {
-    uVar2 = iVar1 / *(int *)&this[2].field_0x28;
-    local_8 = *(int *)&this[3].field_0x4;
-    local_10 = (iVar1 % *(int *)&this[2].field_0x28) * local_8 - (int)*(short *)&this[2].field_0x20;
-    if ((uVar2 & 1) != 0) {
-      local_10 = local_10 + local_8 / 2;
+  undefined4 *puVar1;
+  int *piVar2;
+  int *piVar3;
+  undefined4 uVar4;
+  undefined4 uVar5;
+  undefined4 local_28;
+  undefined4 local_24;
+  tagRECT tStack_20;
+  LONG LStack_10;
+  LONG LStack_c;
+  LONG LStack_8;
+  LONG LStack_4;
+  
+  local_28 = 0;
+  uVar5 = *(undefined4 *)&g_pUiAnimator->field_0x20;
+  GetActiveQuickDrawSurfaceContextAndFlags(&local_24,&local_28);
+  piVar3 = (int *)func_0x004047a0(*(short *)&this->field_0x8 + *(short *)&this->field_0xc);
+  func_0x004062d5(piVar3);
+  if (*piVar3 != 0) {
+    SetActiveQuickDrawSurfaceContext(uVar5,local_28);
+    uVar4 = GetSurfaceObjectAtContextOffset24(uVar5);
+    ReturnConstantTrueQuickDrawFlag(uVar4);
+    puVar1 = (undefined4 *)*piVar3;
+    (**(code **)*puVar1)();
+    *(byte *)(puVar1 + 1) = *(byte *)(puVar1 + 1) | 1;
+    CopyRect(&tStack_20,(RECT *)(*piVar3 + 8));
+    LStack_10 = tStack_20.left;
+    LStack_c = tStack_20.top;
+    LStack_8 = tStack_20.right;
+    LStack_4 = tStack_20.bottom;
+    func_0x004088aa();
+    func_0x00404db8(piVar3,&LStack_10);
+    piVar2 = (int *)*piVar3;
+    (**(code **)(*piVar2 + 4))();
+    *(byte *)(piVar2 + 1) = *(byte *)(piVar2 + 1) & 0xfe;
+    puVar1 = (undefined4 *)*piVar3;
+    if (puVar1 != (undefined4 *)0x0) {
+      *puVar1 = 0x64c340;
+      func_0x00409124();
+      operator_delete(puVar1);
     }
-    local_8 = local_10 + local_8;
-    local_c = uVar2 * *(int *)&this[3].field_0x8;
-    local_4 = local_c + *(int *)&this[3].field_0x8;
-    this_00 = (TAnimation *)__2_YAPAXI_Z(0x2c);
-    if (this_00 == (TAnimation *)0x0) {
-      this_00 = (TAnimation *)0x0;
-    }
-    else {
-      this_00->vftable = &TAnimationVtbl_0064c300;
-    }
-    TAnimation::ConstructTAnimationBaseState(this_00,this,&local_10,2,0,10,0x2711);
-    TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
+    operator_delete(piVar3);
+    uVar5 = GetSurfaceObjectAtContextOffset24(uVar5);
+    NoOpQuickDrawLifecycleHookB(uVar5);
+    SetActiveQuickDrawSurfaceContext(local_24,local_28);
   }
   return;
 }

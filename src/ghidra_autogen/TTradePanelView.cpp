@@ -3,19 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TTradePanelView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00430420
-// GHIDRA_NAME TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68
-// GHIDRA_PROTO undefined __thiscall TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68(void)
-
-TTradePanelView * TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68()
-
-{
-  TView::ConstructTViewBaseState((TView *)this);
-  *(undefined4 *)&this->field_0x60 = 0;
-  this->vftable = &TTradePanelViewVtbl_0063fc68;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00430450
 // GHIDRA_NAME TTradePanelView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -23,150 +10,142 @@ TTradePanelView * TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68()
 TTradePanelView * TTradePanelView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00403233();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F86D0
-// GHIDRA_NAME TTradePanelView::CreateTTradePanelViewInstance
-// GHIDRA_PROTO undefined CreateTTradePanelViewInstance()
+// GHIDRA_NAME TTradePanelView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TTradePanelView::CreateTTradePanelViewInstance(void)
+undefined4 * TTradePanelView::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632e0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(100);
+  puVar1 = (undefined4 *)operator_new(100);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this[1].vftable = (TViewVtbl *)0x0;
-    this->vftable = (TViewVtbl *)&TTradePanelViewVtbl_0063fc68;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    puVar1[0x18] = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8760
-// GHIDRA_NAME TTradePanelView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTradePanelView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradePanelView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTradePanelView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTradePanelView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8780
-// GHIDRA_NAME TTradePanelView::OrphanCallChain_C6_I49_004875d0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
+// GHIDRA_NAME TTradePanelView::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTradePanelView::OrphanCallChain_C6_I49_004875d0()
+void TTradePanelView::NoOpUiLifecycleHook()
 
 {
-  code *pcVar1;
-  undefined uVar2;
+  undefined uVar1;
   undefined3 extraout_var;
-  undefined4 uVar3;
-  undefined4 unaff_EBP;
-  int iVar4;
+  code *unaff_EBX;
+  int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  char acStack_44 [4];
-  undefined1 *puStack_34;
-  int iStack_30;
-  CString CStack_2c;
+  undefined4 *puStack_4c;
+  CString CStack_38;
+  CString CStack_34;
+  undefined4 uStack_30;
+  undefined1 *puStack_2c;
   CString local_18;
-  _vslot_fn *local_14;
-  CString CStack_10;
+  undefined1 *local_14;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
+  code *local_4;
+  
+  local_4 = (code *)0xffffffff;
   puStack_8 = &LAB_00632e30;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CStack_2c.m_pchData = (char *)0x4f87a7;
-  CString::__0CString__QAE_XZ(&local_18);
-  iVar4 = 0;
-  local_4 = 0;
-  iStack_30 = 0x4f87b9;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  puStack_2c = (undefined1 *)0x4f87a7;
+  CString::CString(&local_18);
+  iVar2 = 0;
+  local_4 = (code *)0x0;
+  uStack_30 = 0x4f87b9;
+  func_0x00406ba9();
   *(TView **)&this->field_0x60 = this->ownerContext;
-  CStack_2c.m_pchData = (char *)0x636c7573;
-  local_14 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  iStack_30 = 0x4f87d4;
-  uVar2 = (*local_14)();
-  pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94);
+  uStack_30 = 0x636c7573;
+  local_18.m_pchData = (char *)this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  CStack_34.m_pchData = (char *)0x4f87d4;
+  uVar1 = (*(code *)local_18.m_pchData)();
+  local_4 = *(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94);
   do {
-    iStack_30 = iVar4 + 0x74726161;
-    puStack_34 = (undefined1 *)0x4f87f0;
-    uVar3 = (*pcVar1)();
-    puStack_34 = &stack0xffffffe0;
+    CStack_34.m_pchData = (char *)(iVar2 + 0x74726161);
+    CStack_38.m_pchData = (char *)0x4f87f0;
+    (*local_4)();
+    CStack_38.m_pchData = &stack0xffffffdc;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    local_14 = (_vslot_fn *)&puStack_34;
-    iStack_30 = uVar3;
-    AssignStringSharedRefAndReturnThis();
-    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-    iVar4 = iVar4 + 1;
-  } while (iVar4 < 7);
-  iStack_30 = 0x6c696e6b;
-  puStack_34 = (undefined1 *)0x4f8839;
-  (*(code *)local_18.m_pchData)();
-  puStack_34 = &stack0xffffffe0;
+    puStack_4c = &uStack_30;
+    func_0x004076b7();
+    func_0x00404d22();
+    iVar2 = iVar2 + 1;
+  } while (iVar2 < 7);
+  CStack_34.m_pchData = (char *)0x6c696e6b;
+  CStack_38.m_pchData = (char *)0x4f8839;
+  (*unaff_EBX)();
+  CStack_38.m_pchData = &stack0xffffffdc;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  CStack_10.m_pchData = acStack_44;
-  AssignStringSharedRefAndReturnThis(&CStack_2c);
-  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  acStack_44[0] = '}';
-  acStack_44[1] = -0x78;
-  acStack_44[2] = 'O';
-  acStack_44[3] = '\0';
-  CString::__0CString__QAE_PBD_Z(&CStack_10,(char *)g_Build_Map_Order_LookupTable_00695794);
-  local_18.m_pchData._0_1_ = 1;
-  acStack_44[0] = -0x70;
-  acStack_44[1] = -0x78;
-  acStack_44[2] = 'O';
-  acStack_44[3] = '\0';
-  CString::__4CString__QAEABV0_ABV0__Z(&CStack_2c,&CStack_10);
-  local_18.m_pchData = (char *)((uint)local_18.m_pchData._1_3_ << 8);
-  CString::__1CString__QAE_XZ(&CStack_10);
-  AssignStringSharedRefAndReturnThis(&CStack_2c);
-  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  local_18.m_pchData = (char *)0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_2c);
-  *unaff_FS_OFFSET = unaff_EBP;
+  local_14 = &stack0xffffffb8;
+  puStack_4c = &uStack_30;
+  func_0x004076b7();
+  func_0x00404d22();
+  puStack_4c = (undefined4 *)0x4f887d;
+  CString::CString(&local_18,(char *)g_Build_Map_Order_LookupTable_00695794);
+  puStack_4c = (undefined4 *)0x4f8890;
+  CString::operator=(&CStack_34,&local_18);
+  CString::~CString(&local_18);
+  puStack_2c = (undefined1 *)&puStack_4c;
+  func_0x004076b7(&CStack_34);
+  func_0x00404d22();
+  puStack_4c = (undefined4 *)0x4f88c9;
+  CString::~CString(&CStack_38);
+  *unaff_FS_OFFSET = puStack_2c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8940
-// GHIDRA_NAME TTradePanelView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TTradePanelView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTradePanelView::OrphanTiny_ReturnZero_0048a730()
+void TTradePanelView::ApplyRectSlot110()
 
 {
   short sVar1;
   undefined4 unaff_EBX;
   int iVar2;
+  short unaff_BP;
   int iVar3;
   undefined1 *puVar4;
   undefined4 unaff_EDI;
   undefined1 *puVar5;
-  undefined1 *puVar6;
+  int iVar6;
   undefined4 *unaff_FS_OFFSET;
   undefined1 *puStack_6c;
   undefined4 uStack_68;
@@ -178,8 +157,15 @@ void TTradePanelView::OrphanTiny_ReturnZero_0048a730()
   short asStack_40 [2];
   undefined1 *local_3c;
   CString local_38;
-  short local_34 [10];
-  short local_20 [4];
+  undefined2 local_34;
+  undefined2 local_32;
+  undefined2 local_30;
+  undefined2 local_2e;
+  short local_2c [6];
+  undefined2 local_20;
+  undefined2 local_1e;
+  undefined2 local_1c;
+  undefined2 local_1a;
   undefined4 local_18;
   undefined2 local_14;
   undefined2 local_12;
@@ -187,23 +173,23 @@ void TTradePanelView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632e50;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pCStack_60 = (CString *)0x4f8967;
-  CString::__0CString__QAE_XZ(&local_4c);
+  CString::CString(&local_4c);
   local_4 = 0;
   pCStack_60 = (CString *)0x4f8978;
-  CString::__0CString__QAE_XZ(&local_38);
+  CString::CString(&local_38);
   puVar5 = (undefined1 *)CONCAT22((short)((uint)unaff_EDI >> 0x10),(short)this->ownerOffsetY);
   sVar1 = (short)this->ownerOffsetX;
   iVar2 = CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1);
   pCStack_60 = (CString *)0x2b68;
-  local_34[1] = 0x184;
-  local_34[3] = 0x184;
-  local_34[5] = 0x184;
+  local_32 = 0x184;
+  local_2e = 0x184;
+  local_2c[1] = 0x184;
   uStack_64 = 0xe;
   uStack_68 = 0;
   local_4 = CONCAT31(local_4._1_3_,1);
@@ -212,23 +198,23 @@ void TTradePanelView::OrphanTiny_ReturnZero_0048a730()
   local_44.m_pchData._2_1_ = 0;
   local_44.m_pchData._3_1_ = 0;
   local_48 = (undefined1 *)0x0;
-  local_20[0] = 0x52;
-  local_20[1] = 0x83;
-  local_20[2] = 0xb6;
-  local_20[3] = 0xea;
+  local_20 = 0x52;
+  local_1e = 0x83;
+  local_1c = 0xb6;
+  local_1a = 0xea;
   local_18 = 0x14c011d;
   local_14 = 0xd5;
   local_12 = 0x1b5;
   local_10 = CONCAT22(local_10._2_2_,0x212);
-  local_34[0] = 0x1b7;
-  local_34[2] = 0x1b7;
-  local_34[4] = 0x1b7;
-  local_34[6] = 0x1ce;
-  local_34[7] = 0x1ce;
-  local_34[8] = 0x1ce;
+  local_34 = 0x1b7;
+  local_30 = 0x1b7;
+  local_2c[0] = 0x1b7;
+  local_2c[2] = 0x1ce;
+  local_2c[3] = 0x1ce;
+  local_2c[4] = 0x1ce;
   puStack_6c = (undefined1 *)0x4f8a3a;
   local_3c = puVar5;
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  func_0x0040448f();
   pCStack_60 = &local_44;
   uStack_64 = 0x2b6b;
   uStack_68 = 0x4f8a4c;
@@ -244,35 +230,33 @@ void TTradePanelView::OrphanTiny_ReturnZero_0048a730()
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   puVar4 = (undefined1 *)(-(int)puVar5 + 0x16f);
   iVar3 = -iVar2;
-  SetQuickDrawColorAndSyncGlobals();
+  func_0x00409444();
   puStack_6c = (undefined1 *)(-(int)puVar5 + 0x170);
   SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x49);
   puStack_6c = &stack0xffffffa8;
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
-  SetQuickDrawColorAndSyncGlobals();
+  func_0x004029aa();
+  func_0x00409444();
   puStack_6c = puVar4;
   SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x48);
   puStack_6c = &stack0xffffffa8;
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  func_0x004029aa();
   puStack_6c = (undefined1 *)0x2b68;
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
+  func_0x0040448f(0,0xc);
   iVar3 = 0;
   do {
     puStack_6c = &stack0xffffffa8;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,iVar3 + 0x2b);
-    puVar4 = (undefined1 *)CONCAT22((short)((uint)puVar4 >> 0x10),asStack_40[iVar3] - (short)puVar5)
-    ;
-    puVar6 = (undefined1 *)CONCAT22((short)((uint)puVar5 >> 0x10),local_34[iVar3 + 4] - sVar1);
-    SetQuickDrawColorAndSyncGlobals();
-    puStack_6c = puVar4 + 1;
-    SetQuickDrawTextOriginWithContextOffset(puVar6 + 1);
-    puStack_6c = &stack0xffffffa8;
-    THQButton::DrawTextWithCachedQuickDrawStyleState();
-    SetQuickDrawColorAndSyncGlobals();
-    puStack_6c = puVar4;
-    SetQuickDrawTextOriginWithContextOffset(puVar6);
-    puStack_6c = &stack0xffffffa8;
-    THQButton::DrawTextWithCachedQuickDrawStyleState();
+    puVar4 = (undefined1 *)
+             CONCAT22((short)((uint)puVar4 >> 0x10),
+                      *(short *)((int)&local_4c.m_pchData + iVar3 * 2) - (short)puVar5);
+    iVar6 = CONCAT22((short)((uint)puVar5 >> 0x10),
+                     *(short *)((int)&local_38.m_pchData + iVar3 * 2) - sVar1);
+    func_0x00409444(pCStack_60);
+    SetQuickDrawTextOriginWithContextOffset(iVar6 + 1,puVar4 + 1);
+    func_0x004029aa(&uStack_64);
+    func_0x00409444(unaff_EDI);
+    SetQuickDrawTextOriginWithContextOffset(iVar6,puVar4);
+    func_0x004029aa(&uStack_64);
     iVar3 = iVar3 + 1;
     puVar5 = local_48;
   } while (iVar3 < 6);
@@ -281,36 +265,29 @@ void TTradePanelView::OrphanTiny_ReturnZero_0048a730()
   do {
     puStack_6c = &stack0xffffffa8;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,local_4c.m_pchData + 0x2b);
-    puStack_6c = &stack0xffffffa8;
-    puVar6 = (undefined1 *)
-             CONCAT22((short)((uint)puVar6 >> 0x10),
-                      *(short *)((int)local_34 + iVar3) - (short)local_48);
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
+    iVar6 = CONCAT22((short)((uint)iVar6 >> 0x10),*(short *)((int)asStack_40 + iVar3) - unaff_BP);
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&uStack_64);
     puVar4 = (undefined1 *)
-             (CONCAT22((short)((uint)puVar4 >> 0x10),*(short *)((int)local_20 + iVar3) - sVar1 / 2)
+             (CONCAT22((short)((uint)puVar4 >> 0x10),*(short *)((int)local_2c + iVar3) - sVar1 / 2)
              - iVar2);
-    SetQuickDrawColorAndSyncGlobals();
-    puStack_6c = puVar6 + 1;
-    SetQuickDrawTextOriginWithContextOffset(puVar4 + 1);
-    puStack_6c = &stack0xffffffa8;
-    THQButton::DrawTextWithCachedQuickDrawStyleState();
-    SetQuickDrawColorAndSyncGlobals();
-    puStack_6c = puVar6;
-    SetQuickDrawTextOriginWithContextOffset(puVar4);
-    puStack_6c = &stack0xffffffa8;
-    THQButton::DrawTextWithCachedQuickDrawStyleState();
+    func_0x00409444(pCStack_60);
+    SetQuickDrawTextOriginWithContextOffset(puVar4 + 1,iVar6 + 1);
+    func_0x004029aa(&uStack_64);
+    func_0x00409444(unaff_EDI);
+    SetQuickDrawTextOriginWithContextOffset(puVar4,iVar6);
+    func_0x004029aa(&uStack_64);
     iVar3 = iVar3 + 2;
     local_4c.m_pchData = local_4c.m_pchData + 1;
   } while (iVar3 < 6);
-  local_48 = (undefined1 *)&puStack_6c;
   puStack_6c = (undefined1 *)0x0;
-  SetQuickDrawFillColor();
+  local_48 = (undefined1 *)&puStack_6c;
+  func_0x00406b86();
   local_10 = local_10 & 0xffffff00;
   puStack_6c = (undefined1 *)0x4f8c4d;
-  CString::__1CString__QAE_XZ(&local_44);
+  CString::~CString(&local_44);
   local_10 = 0xffffffff;
   puStack_6c = (undefined1 *)0x4f8c5e;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa8);
+  CString::~CString((CString *)&stack0xffffffa8);
   *unaff_FS_OFFSET = local_18;
   return;
 }
@@ -324,19 +301,10 @@ void TTradePanelView::OrphanRetStub_00430550()
 {
   undefined uVar1;
   undefined3 extraout_var;
-  TToolBarClusterVtbl *pTStack_18;
-  int *piStack_14;
-  undefined4 uStack_10;
-
-  uStack_10 = 0x636c7573;
-  piStack_14 = (int *)0x4f8d62;
+  
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
-  piStack_14 = (int *)CONCAT31(extraout_var,uVar1);
-  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_18,PTR_g_szEmptyString_00654ec8);
-  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  piStack_14 = (int *)0x74726161;
-  pTStack_18 = (TToolBarClusterVtbl *)0x4f8d8f;
+  func_0x00401b40(PTR_g_szEmptyString_00654ec8);
+  func_0x00404d22();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1c8))();
   *(undefined2 *)(*(int *)&this->field_0x60 + 0xc0) = 0;
   *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 9;
@@ -344,37 +312,35 @@ void TTradePanelView::OrphanRetStub_00430550()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8DD0
-// GHIDRA_NAME TTradePanelView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
+// GHIDRA_NAME TTradePanelView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall
-TTradePanelView::OrphanRetStub_0059add0
-          (TTradePanelView *this,int param_1,int param_2,undefined4 param_3)
+void TTradePanelView::HandleEvent(int param_1, int param_2, undefined4 param_3)
 
 {
   int iVar1;
-
+  
   if (param_1 == 0xc) {
     if (*(int *)(param_2 + 0x1c) != 0x6c696e6b) {
       iVar1 = *(int *)(param_2 + 0x1c) + -0x74726161;
       *(short *)(*(int *)&this->field_0x60 + 0xc0) = (short)iVar1;
       if ((&DAT_00696950)[iVar1] == 300) {
         *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 0xb;
-        TView::OrphanRetStub_0059add0((TView *)this,0xc,param_2,param_3);
+        func_0x00408657(0xc,param_2,param_3);
         return;
       }
       if ((short)(&DAT_00696950)[iVar1] < 0x60) {
         *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 9;
-        TView::OrphanRetStub_0059add0((TView *)this,0xc,param_2,param_3);
+        func_0x00408657(0xc,param_2,param_3);
         return;
       }
       *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 10;
-      TView::OrphanRetStub_0059add0((TView *)this,0xc,param_2,param_3);
+      func_0x00408657(0xc,param_2,param_3);
       return;
     }
     *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 0xc;
   }
-  TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
+  func_0x00408657(param_1,param_2,param_3);
   return;
 }
 

@@ -3,100 +3,55 @@
 // Program: Imperialism.exe
 // Bucket: TRadio.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048EDD0
-// GHIDRA_NAME TRadio::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x0048ECE0
+// GHIDRA_NAME TRadio::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TRadio * TRadio::_scalar_deleting_destructor_(byte param_1)
-
-{
-  TRadio::CreateTRadioInstance(this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048EE00
-// GHIDRA_NAME TRadio::CreateTRadioInstance
-// GHIDRA_PROTO undefined __thiscall TRadio::CreateTRadioInstance(void)
-
-void TRadio::CreateTRadioInstance()
+undefined4 * TRadio::CreateObject(void)
 
 {
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint local_4;
-
-  puStack_8 = &LAB_0062ef53;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->vftable = (TRadioVtbl *)&TView::_vftable_;
-  local_4 = 1;
-  if ((int *)this->field44 != (int *)0x0) {
-    (**(code **)(*(int *)this->field44 + 4))(1);
-  }
-  __3_YAXPAX_Z(this->field48);
-  local_4 = local_4 & 0xffffff00;
-  CString::__1CString__QAE_XZ(&this->sharedStringRef);
-  this->vftable = (TRadioVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048EE90
-// GHIDRA_NAME TRadio::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-
-CRuntimeClass * TRadio::GetTEventHandlerClassNamePointer()
-
-{
-  return &classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048EEB0
-// GHIDRA_NAME TRadio::ConstructTRadioBaseState
-// GHIDRA_PROTO undefined ConstructTRadioBaseState()
-
-TView * TRadio::ConstructTRadioBaseState(void)
-
-{
-  ushort uVar1;
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062ef7a;
+  puStack_8 = &LAB_0062ef22;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x84);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this[1].vftable = (TViewVtbl *)0x1;
-    *(undefined1 *)&this[1].field04 = 0;
-    this[1].padding_08_to_0b = 0;
-    this[1].field0c = 0;
-    this[1].field10 = 0;
-    this[1].field14 = 0;
-    this[1].field18 = g_nUiResourceEntryDefaultParam0;
-    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
-    uVar1 = g_wUiResourceEntryDefaultParam2;
-    *(undefined2 *)&this[1].ownerOffsetX = 0xffff;
-    this[1].ownerOffsetY = 0;
-    *(ushort *)&this[1].ownerContext = uVar1;
-    this[1].field2c = 0;
-    this->vftable = (TViewVtbl *)&TPictureVtbl_0064a930;
-    this[1].vftable = (TViewVtbl *)0xa;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *(undefined1 *)(puVar1 + 0x19) = 0;
+    puVar1[0x18] = 1;
+    puVar1[0x1a] = 0;
+    puVar1[0x1b] = 0;
+    puVar1[0x1c] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
+    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
+    local_4 = CONCAT31(local_4._1_3_,1);
+    *puVar1 = &TButton::_vftable_;
+    func_0x004057a4(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+    *puVar1 = &TRadioVtbl_0064a708;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048EE90
+// GHIDRA_NAME TRadio::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TRadio::GetRuntimeClass()
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F080
@@ -115,12 +70,12 @@ TRadio::Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ef98;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CopyCityDialogStateFromSourceAndCloneChildLinks(param_1);
+  func_0x004017ad(param_1);
   *(undefined4 *)&this->field_0x60 = *(undefined4 *)(param_1 + 0x60);
   this->field_0x64 = *(undefined1 *)(param_1 + 100);
   *(undefined4 *)&this->field_0x68 = *(undefined4 *)(param_1 + 0x68);
@@ -133,17 +88,16 @@ TRadio::Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048
   this->vftable = (TRadioVtbl *)&TControl::_vftable_;
   *(undefined2 *)&this->field_0x80 = uVar1;
   sVar2 = *(short *)(param_1 + 0x84);
-  local_4 = 0;
+  puStack_8 = (undefined1 *)0x0;
   *(short *)&this[1].vftable = sVar2;
   this[1].field04 = *(int *)(param_1 + 0x88);
   uVar3 = *(undefined4 *)(param_1 + 0x8c);
   this[1].padding_08_to_0b = uVar3;
-  this->vftable = (TRadioVtbl *)&TPictureVtbl_0064a930;
+  this->vftable = (TRadioVtbl *)&TPicture::_vftable_;
   if (sVar2 != -1) {
-    IncrementDialogResourceRefCountByShortIdInRegistry
-              (CONCAT22((short)((uint)uVar3 >> 0x10),sVar2));
+    func_0x00402c98(CONCAT22((short)((uint)uVar3 >> 0x10),sVar2));
   }
-  *unaff_FS_OFFSET = local_c;
+  *unaff_FS_OFFSET = this;
   return this;
 }
 

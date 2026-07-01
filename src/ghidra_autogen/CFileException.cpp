@@ -3,31 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: CFileException.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0060ABAC
-// GHIDRA_NAME CFileException::??0CFile@@QAE@XZ
-// GHIDRA_PROTO undefined ??0CFile@@QAE@XZ()
-
-undefined4 * CFileException::__0CFile__QAE_XZ(void)
-
-{
-  undefined4 uVar1;
-  undefined4 *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::__0CString__QAE_XZ((CString *)(extraout_ECX + 3));
-  extraout_ECX[1] = 0xffffffff;
-  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
-  extraout_ECX[2] = 0;
-  *extraout_ECX = &PTR_LAB_006727e4;
-  *unaff_FS_OFFSET = uVar1;
-  return extraout_ECX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ABEC
 // GHIDRA_NAME CFileException::??_GCFile@@UAEPAXI@Z
 // GHIDRA_PROTO undefined __thiscall ??_GCFile@@UAEPAXI@Z(byte param_1)
@@ -35,70 +10,258 @@ undefined4 * CFileException::__0CFile__QAE_XZ(void)
 CFileException * CFileException::___GCFile__UAEPAXI_Z(byte param_1)
 
 {
-  __1CFile__UAE_XZ();
+  CFile::~CFile();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0060ACF6
-// GHIDRA_NAME CFileException::??1CFile@@UAE@XZ
-// GHIDRA_PROTO undefined ??1CFile@@UAE@XZ()
+// GHIDRA_FUNCTION IMPERIALISM 0x0060BC98
+// GHIDRA_NAME CFileException::ThrowOsError
+// GHIDRA_PROTO undefined ThrowOsError()
 
-void CFileException::__1CFile__UAE_XZ(void)
+void CFileException::ThrowOsError(int param_1,undefined4 param_2)
+
+{
+  undefined4 uVar1;
+  
+  if (param_1 != 0) {
+    uVar1 = OsErrorToException(param_1);
+    AfxThrowFileException(uVar1,param_1,param_2);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060BE52
+// GHIDRA_NAME CFileException::OsErrorToException
+// GHIDRA_PROTO undefined OsErrorToException()
+
+undefined4 CFileException::OsErrorToException(uint param_1)
 
 {
   int iVar1;
-  undefined4 uVar2;
-  undefined4 *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &PTR_LAB_006727e4;
-  iVar1 = extraout_ECX[1];
-  *(undefined4 *)(unaff_EBP + -4) = 1;
-  if ((iVar1 != -1) && (extraout_ECX[2] != 0)) {
-    _Close_CFile__UAEXXZ();
+  bool bVar2;
+  
+  if (0x10b < param_1) {
+    if (param_1 == 0x3e3) {
+      return 10;
+    }
+    if (param_1 == 0x3e4) {
+      return 10;
+    }
+    if (param_1 == 0x3e5) {
+      return 10;
+    }
+    if (param_1 == 999) {
+      return 5;
+    }
+    return 1;
   }
-  *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::__1CString__QAE_XZ((CString *)(extraout_ECX + 3));
-  uVar2 = *(undefined4 *)(unaff_EBP + -0xc);
-  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uVar2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006113C6
-// GHIDRA_NAME CFileException::??1CMirrorFile@@UAE@XZ
-// GHIDRA_PROTO undefined ??1CMirrorFile@@UAE@XZ()
-
-void CFileException::__1CMirrorFile__UAE_XZ(void)
-
-{
-  int extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::__1CString__QAE_XZ((CString *)(extraout_ECX + 0x10));
-  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  __1CFile__UAE_XZ();
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
+  if (param_1 == 0x10b) {
+    return 3;
+  }
+  if (param_1 < 0x3f) {
+    if (param_1 == 0x3e) {
+      return 8;
+    }
+    switch(param_1) {
+    case 0:
+      return 0;
+    default:
+      return 1;
+    case 2:
+    case 6:
+    case 0x12:
+      return 2;
+    case 3:
+    case 0xf:
+    case 0x11:
+    case 0x22:
+    case 0x34:
+    case 0x35:
+    case 0x37:
+      goto LAB_0060bf3c;
+    case 4:
+    case 0x24:
+      return 4;
+    case 5:
+    case 0xc:
+    case 0x13:
+    case 0x1d:
+    case 0x36:
+    case 0x3a:
+      return 5;
+    case 0xb:
+    case 0x1a:
+    case 0x3c:
+      return 6;
+    case 0x10:
+      return 7;
+    case 0x14:
+    case 0x15:
+    case 0x16:
+    case 0x17:
+    case 0x39:
+    case 0x3b:
+      goto LAB_0060bf3c;
+    case 0x18:
+    case 0x19:
+    case 0x1b:
+    case 0x1e:
+      return 9;
+    case 0x20:
+      return 0xb;
+    case 0x21:
+      return 0xc;
+    case 0x26:
+      return 0xe;
+    case 0x27:
+      return 0xd;
+    }
+  }
+  if (param_1 < 0x6c) {
+    if (param_1 == 0x6b) {
+      return 2;
+    }
+    if (param_1 < 0x48) {
+      if (param_1 == 0x47) {
+        return 5;
+      }
+      if (param_1 == 0x40) {
+        return 5;
+      }
+      if (param_1 == 0x41) {
+        return 5;
+      }
+      if (param_1 == 0x42) {
+        return 6;
+      }
+      if (param_1 == 0x43) {
+        return 3;
+      }
+      iVar1 = param_1 - 0x44;
+      if (iVar1 == 0) {
+        return 4;
+      }
+LAB_0060bf12:
+      bVar2 = iVar1 == 2;
+      goto LAB_0060bf14;
+    }
+    if (param_1 == 0x50) {
+      return 5;
+    }
+    if (param_1 == 0x52) {
+      return 5;
+    }
+    if (param_1 == 0x55) {
+      return 3;
+    }
+    if (param_1 == 0x56) {
+      return 5;
+    }
+    bVar2 = param_1 == 0x58;
+  }
+  else {
+    if (param_1 < 0x70) {
+      if (param_1 == 0x6f) {
+        return 3;
+      }
+      if (param_1 == 0x6c) {
+        return 0xc;
+      }
+      return 1;
+    }
+    if (0x90 < param_1) {
+      if (param_1 < 0x9b) {
+        if (param_1 == 0x9a) {
+          return 3;
+        }
+        if (param_1 == 0x91) {
+          return 7;
+        }
+        return 1;
+      }
+      if (0xa7 < param_1) {
+        if (param_1 == 0xaa) {
+          return 5;
+        }
+        if (param_1 == 0xb6) {
+          return 6;
+        }
+        if (param_1 == 0xb7) {
+          return 5;
+        }
+        if (param_1 == 0xbf) {
+          return 6;
+        }
+        if (param_1 == 0xc1) {
+          return 6;
+        }
+        iVar1 = param_1 - 0xce;
+        if (iVar1 == 0) {
+          return 3;
+        }
+        goto LAB_0060bf12;
+      }
+      if (param_1 == 0xa7) {
+        return 0xc;
+      }
+      bVar2 = param_1 == 0xa1;
+LAB_0060bf14:
+      if (!bVar2) {
+        return 1;
+      }
+LAB_0060bf3c:
+      return 3;
+    }
+    if (param_1 == 0x90) {
+      return 3;
+    }
+    if (0x7b < param_1) {
+      if (param_1 == 0x7c) {
+        return 3;
+      }
+      if (param_1 == 0x7d) {
+        return 3;
+      }
+      if (param_1 == 0x83) {
+        return 9;
+      }
+      if (param_1 == 0x84) {
+        return 9;
+      }
+      return 1;
+    }
+    if (param_1 == 0x7b) {
+      return 3;
+    }
+    if (param_1 == 0x70) {
+      return 0xd;
+    }
+    if (param_1 == 0x71) {
+      return 4;
+    }
+    if (param_1 == 0x72) {
+      return 6;
+    }
+    bVar2 = param_1 == 0x75;
+  }
+  if (!bVar2) {
+    return 1;
+  }
+LAB_0060bf3c:
+  return 10;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619AAC
-// GHIDRA_NAME CFileException::??0CMemFile@@QAE@I@Z
-// GHIDRA_PROTO undefined __thiscall ??0CMemFile@@QAE@I@Z(undefined4 param_1)
+// GHIDRA_NAME CFileException::CMemFile::CMemFile
+// GHIDRA_PROTO undefined __thiscall CMemFile::CMemFile(undefined4 param_1)
 
-CFileException * CFileException::__0CMemFile__QAE_I_Z(undefined4 param_1)
+CFileException * CFileException::CMemFile__CMemFile(undefined4 param_1)
 
 {
-  __0CFile__QAE_XZ();
+  CFile::CFile();
   this->vftable = (CFileExceptionVtbl *)&CMemFileVtbl_00672f7c;
   *(undefined4 *)&this->field_0x10 = param_1;
   this[1].vftable = (CFileExceptionVtbl *)0x0;
@@ -110,15 +273,13 @@ CFileException * CFileException::__0CMemFile__QAE_I_Z(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619AF8
-// GHIDRA_NAME CFileException::??0CMemFile@@QAE@PAEII@Z
-// GHIDRA_PROTO undefined __thiscall ??0CMemFile@@QAE@PAEII@Z(undefined4 param_1, uint param_2, int param_3)
+// GHIDRA_NAME CFileException::CMemFile::CMemFile
+// GHIDRA_PROTO undefined __thiscall CMemFile::CMemFile(undefined4 param_1, uint param_2, int param_3)
 
-CFileException * __thiscall
-CFileException::__0CMemFile__QAE_PAEII_Z
-          (CFileException *this,undefined4 param_1,uint param_2,int param_3)
+CFileException * CFileException::CMemFile__CMemFile(undefined4 param_1, uint param_2, int param_3)
 
 {
-  __0CFile__QAE_XZ();
+  CFile::CFile();
   this[1].vftable = (CFileExceptionVtbl *)0x0;
   *(int *)&this->field_0x10 = param_3;
   *(undefined4 *)&this[1].field_0x10 = 0;

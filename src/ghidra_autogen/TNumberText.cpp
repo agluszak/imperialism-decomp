@@ -4,8 +4,8 @@
 // Bucket: TNumberText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00429500
-// GHIDRA_NAME TNumberText::ConstructUiNumericTextEntry
-// GHIDRA_PROTO undefined __thiscall ConstructUiNumericTextEntry(void)
+// GHIDRA_NAME TNumberText::TNumberText
+// GHIDRA_PROTO undefined __thiscall TNumberText(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Numeric text entry constructor. Builds on ConstructUiNumericTextEntryBase and installs numeric-entry vtable used across university and control panels.
 // GHIDRA_COMMENT_END
@@ -13,12 +13,12 @@
 /* Numeric text entry constructor. Builds on ConstructUiNumericTextEntryBase and installs
    numeric-entry vtable used across university and control panels. */
 
-TNumberText * TNumberText::ConstructUiNumericTextEntry()
+TNumberText * TNumberText::TNumberText()
 
 {
-  TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
+  func_0x0040913d();
   *(undefined4 *)&this->field_0xa0 = 0;
-  this->vftable = (TNumberTextVtbl *)&DAT_0063e8b0;
+  this->vftable = (TNumberTextVtbl *)&_vftable_;
   return this;
 }
 
@@ -29,90 +29,90 @@ TNumberText * TNumberText::ConstructUiNumericTextEntry()
 TNumberText * TNumberText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTEditTextAndMaybeFree((TView *)this);
+  func_0x00406e2e();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490ED0
-// GHIDRA_NAME TNumberText::CreateTNumberTextInstance
-// GHIDRA_PROTO undefined CreateTNumberTextInstance()
+// GHIDRA_NAME TNumberText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TNumberText::CreateTNumberTextInstance(void)
+undefined4 * TNumberText::CreateObject(void)
 
 {
-  TView *this;
-  CString *this_00;
-  int extraout_EAX;
-  int iVar1;
+  undefined4 *puVar1;
+  CString *this;
+  undefined4 extraout_EAX;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f22d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0xac);
+  puVar1 = (undefined4 *)operator_new(0xac);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    *(undefined1 *)&this[1].field04 = 0;
-    this[1].vftable = (TViewVtbl *)0x1;
-    this[1].padding_08_to_0b = 0;
-    this[1].field0c = 0;
-    this[1].field10 = 0;
-    this[1].field14 = 0;
-    this[1].field18 = g_nUiResourceEntryDefaultParam0;
-    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *(undefined1 *)(puVar1 + 0x19) = 0;
+    puVar1[0x18] = 1;
+    puVar1[0x1a] = 0;
+    puVar1[0x1b] = 0;
+    puVar1[0x1c] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
+    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
     local_4._0_1_ = 1;
-    this[1].ownerOffsetX = 0;
-    this[1].ownerOffsetY = -1;
-    this[1].field2c = 0;
-    *(undefined2 *)&this[1].field30 = 0;
-    this->vftable = (TViewVtbl *)&TStaticText::_vftable_;
-    this[1].vftable = (TViewVtbl *)0xd;
-    this_00 = (CString *)__2_YAPAXI_Z(4);
+    puVar1[0x21] = 0;
+    puVar1[0x22] = 0xffffffff;
+    puVar1[0x23] = 0;
+    *(undefined2 *)(puVar1 + 0x24) = 0;
+    *puVar1 = &TStaticText::_vftable_;
+    puVar1[0x18] = 0xd;
+    this = (CString *)operator_new(4);
     local_4 = CONCAT31(local_4._1_3_,2);
-    if (this_00 == (CString *)0x0) {
-      iVar1 = 0;
+    if (this == (CString *)0x0) {
+      uVar2 = 0;
     }
     else {
-      CString::__0CString__QAE_XZ(this_00);
-      iVar1 = extraout_EAX;
+      CString::CString(this);
+      uVar2 = extraout_EAX;
     }
-    this[1].ownerOffsetX = iVar1;
-    this[1].field34 = 0;
-    this[1].field38 = 0;
-    *(undefined2 *)&this[1].field3c = 0xff;
-    this[1].vftable = (TViewVtbl *)0x6;
-    this->flag4d = 0;
-    this[1].padding_40_to_43 = 0;
-    this->vftable = (TViewVtbl *)&DAT_0063e8b0;
+    puVar1[0x21] = uVar2;
+    puVar1[0x25] = 0;
+    puVar1[0x26] = 0;
+    *(undefined2 *)(puVar1 + 0x27) = 0xff;
+    puVar1[0x18] = 6;
+    *(undefined1 *)((int)puVar1 + 0x4d) = 0;
+    puVar1[0x28] = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491040
-// GHIDRA_NAME TNumberText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TNumberText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNumberText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TNumberText::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNumberText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491060
 // GHIDRA_NAME TNumberText::ConstructTNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall TNumberText::ConstructTNumberTextBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
+// GHIDRA_PROTO undefined __thiscall ConstructTNumberTextBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
 
 void __thiscall
 TNumberText::ConstructTNumberTextBaseState
@@ -121,22 +121,25 @@ TNumberText::ConstructTNumberTextBaseState
 
 {
   TNumberTextVtbl *pTVar1;
-
-  InitializeTextEntryBaseAndOptionalStringResource(param_1,param_2,param_3,5,5,0xffffffff,0);
+  undefined4 unaff_EDI;
+  undefined4 uVar2;
+  
+  uVar2 = 0xffffffff;
+  func_0x00401fd2(param_1,param_2,param_3,5,5,0xffffffff);
   pTVar1 = this->vftable;
   *(undefined2 *)&this->field_0x9c = 0xff;
   (*pTVar1[5].slot_0x04)(1);
-  *(undefined4 *)&this->field_0xa8 = param_5;
-  *(undefined4 *)&this->field_0xa4 = param_4;
-  (*pTVar1[0x3c].slot_0x04)(param_3,0);
+  *(undefined4 *)&this->field_0xa8 = unaff_EDI;
+  *(undefined4 *)&this->field_0xa4 = 0;
+  (*pTVar1[0x3c].slot_0x04)(uVar2,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004910E0
-// GHIDRA_NAME TNumberText::DestructTNumberTextAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TNumberText::DestructTNumberTextAndMaybeFree(CString param_1, undefined4 param_2)
+// GHIDRA_NAME TNumberText::SetControlValue
+// GHIDRA_PROTO undefined __thiscall SetControlValue(CString param_1, undefined4 param_2)
 
-void TNumberText::DestructTNumberTextAndMaybeFree(CString param_1, undefined4 param_2)
+void TNumberText::SetControlValue(CString param_1, undefined4 param_2)
 
 {
   CString CVar1;
@@ -146,7 +149,7 @@ void TNumberText::DestructTNumberTextAndMaybeFree(CString param_1, undefined4 pa
   uint uStack_c;
   undefined1 *puStack_8;
   CString local_4;
-
+  
   CVar1.m_pchData = param_1.m_pchData;
   local_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_0062f250;
@@ -154,23 +157,23 @@ void TNumberText::DestructTNumberTextAndMaybeFree(CString param_1, undefined4 pa
   *unaff_FS_OFFSET = (uint)&uStack_c;
   *(char **)&this->field_0xa0 = param_1.m_pchData;
   local_10.m_pchData = (char *)this;
-  CString::__0CString__QAE_XZ(&param_1);
+  CString::CString(&param_1);
   local_4.m_pchData = (char *)0x0;
   _Format_CString__QAAXPBDZZ(&param_1,&g_szDecimalFormat,CVar1.m_pchData);
-  CString::__0CString__QAE_ABV0__Z(&local_10,&param_1);
+  CString::CString(&local_10,&param_1);
   local_4.m_pchData._0_1_ = 1;
   (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)(&local_10,param_2);
   uStack_c = uStack_c & 0xffffff00;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffe8);
+  CString::~CString((CString *)&stack0xffffffe8);
   uStack_c = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_4);
+  CString::~CString(&local_4);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004911C0
 // GHIDRA_NAME TNumberText::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
 
 undefined4 TNumberText::UpdateControlCachedIntFromWindowText()
 
@@ -181,20 +184,20 @@ undefined4 TNumberText::UpdateControlCachedIntFromWindowText()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f268;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   if (*(int *)&this->field_0x94 != 0) {
     local_10.m_pchData = (char *)this;
-    CString::__0CString__QAE_XZ(&local_10);
+    CString::CString(&local_10);
     local_4 = 0;
     CMcWindow::GetWindowTextOrDelegateToOwner(&local_10);
     uVar1 = _atoi(local_10.m_pchData);
     *(undefined4 *)&this->field_0xa0 = uVar1;
     local_4 = 0xffffffff;
-    CString::__1CString__QAE_XZ(&local_10);
+    CString::~CString(&local_10);
   }
   uVar1 = *(undefined4 *)&this->field_0xa0;
   *unaff_FS_OFFSET = local_c;
@@ -202,19 +205,19 @@ undefined4 TNumberText::UpdateControlCachedIntFromWindowText()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004912B0
-// GHIDRA_NAME TNumberText::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_NAME TNumberText::ShallowClone
+// GHIDRA_PROTO undefined __thiscall ShallowClone(void)
 
-int TNumberText::OrphanCallChain_C11_I88_004874b0()
+int TNumberText::ShallowClone()
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   int iVar2;
-
+  
   uVar1 = (*this->vftable[4].slot_0x04)();
   iVar2 = CONCAT31(extraout_var,uVar1);
-  CopyExtendedCityDialogControllerState(this);
+  func_0x004089a4(this);
   *(undefined4 *)(iVar2 + 0x94) = *(undefined4 *)&this->field_0x94;
   *(undefined4 *)(iVar2 + 0x98) = *(undefined4 *)&this->field_0x98;
   *(undefined2 *)(iVar2 + 0x9c) = *(undefined2 *)&this->field_0x9c;

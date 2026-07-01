@@ -5,13 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6A30
 // GHIDRA_NAME TTrainingOrder::CreateTTrainingOrderInstance
-// GHIDRA_PROTO undefined __thiscall TTrainingOrder::CreateTTrainingOrderInstance(short param_1)
+// GHIDRA_PROTO undefined __thiscall CreateTTrainingOrderInstance(short param_1)
 
 void TTrainingOrder::CreateTTrainingOrderInstance(short param_1)
 
 {
   short *psVar1;
-
+  
   psVar1 = (short *)(*(int *)&this->field_0x10 + 8);
   *psVar1 = *psVar1 + param_1;
   psVar1 = (short *)(*(int *)&this->field_0x14 + 8);
@@ -21,33 +21,50 @@ void TTrainingOrder::CreateTTrainingOrderInstance(short param_1)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B6A90
-// GHIDRA_NAME TTrainingOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004B6A60
+// GHIDRA_NAME TTrainingOrder::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TTrainingOrder::GetTProductionOrderClassNamePointer()
+undefined4 * TTrainingOrder::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x4c);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B6A90
+// GHIDRA_NAME TTrainingOrder::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TTrainingOrder::GetRuntimeClass()
+
+{
+  return &classTTrainingOrder;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6AD0
-// GHIDRA_NAME TTrainingOrder::ConstructTTrainingOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTrainingOrderBaseState(byte param_1)
+// GHIDRA_NAME TTrainingOrder::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTrainingOrder * TTrainingOrder::ConstructTTrainingOrderBaseState(byte param_1)
+TTrainingOrder * TTrainingOrder::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TTrainingOrder::DestructTTrainingOrderAndMaybeFree(this);
+  func_0x00403701();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6B00
 // GHIDRA_NAME TTrainingOrder::DestructTTrainingOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TTrainingOrder::DestructTTrainingOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTrainingOrderAndMaybeFree(void)
 
 void TTrainingOrder::DestructTTrainingOrderAndMaybeFree()
 
@@ -58,7 +75,7 @@ void TTrainingOrder::DestructTTrainingOrderAndMaybeFree()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6B20
 // GHIDRA_NAME TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
-// GHIDRA_PROTO undefined __thiscall TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20(int param_1, undefined2 param_2)
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b6b20(int param_1, undefined2 param_2)
 
 void __thiscall
 TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
@@ -67,7 +84,7 @@ TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
 {
   int iVar1;
   undefined4 *puVar2;
-
+  
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = param_2;
@@ -85,10 +102,10 @@ TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6B90
-// GHIDRA_NAME TTrainingOrder::OrphanLeaf_NoCall_Ins02_004b50e0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
+// GHIDRA_NAME TTrainingOrder::MaxOrder
+// GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-int TTrainingOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
+int TTrainingOrder::MaxOrder()
 
 {
   short sVar1;
@@ -100,7 +117,7 @@ int TTrainingOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   int iVar6;
   undefined4 unaff_EDI;
   short local_4;
-
+  
   if (*(short *)&this->field_0x48 == 1) {
     local_4 = 1;
     iVar6 = 100;
@@ -149,10 +166,10 @@ int TTrainingOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6CD0
-// GHIDRA_NAME TTrainingOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
+// GHIDRA_NAME TTrainingOrder::SetQuantity
+// GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TTrainingOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
+undefined4 TTrainingOrder::SetQuantity(short param_1)
 
 {
   int *piVar1;
@@ -162,7 +179,7 @@ undefined4 TTrainingOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   undefined3 extraout_var;
   int iVar5;
   short sVar6;
-
+  
   sVar6 = param_1 - *(short *)&this->field_0x4;
   uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar3) < param_1) || (param_1 < 0)) {
@@ -196,14 +213,14 @@ undefined4 TTrainingOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6DE0
-// GHIDRA_NAME TTrainingOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
+// GHIDRA_NAME TTrainingOrder::FillOrderSheet
+// GHIDRA_PROTO undefined __thiscall FillOrderSheet(void)
 
-void TTrainingOrder::CreateTItemOrderInstance()
+void TTrainingOrder::FillOrderSheet()
 
 {
   short sStack00000004;
-
+  
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   if (*(short *)&this->field_0x48 == 1) {
     *(short *)(_sStack00000004 + 0x14) = sStack00000004;
@@ -215,17 +232,17 @@ void TTrainingOrder::CreateTItemOrderInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6E30
-// GHIDRA_NAME TTrainingOrder::OrphanRetStub_004b5160
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+// GHIDRA_NAME TTrainingOrder::CommitIfPending
+// GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TTrainingOrder::OrphanRetStub_004b5160()
+void TTrainingOrder::CommitIfPending()
 
 {
   short sVar1;
   int iVar2;
   int *piVar3;
   int iVar4;
-
+  
   sVar1 = *(short *)&this->field_0x4;
   if (sVar1 != 0) {
     iVar2 = *(int *)(*(int *)&this->field_0xc + 0x10);
@@ -257,7 +274,7 @@ void TTrainingOrder::OrphanRetStub_004b5160()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6F00
 // GHIDRA_NAME TTrainingOrder::ResetCityOrderItemDerivedStateNoop
-// GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
+// GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
 
 void TTrainingOrder::ResetCityOrderItemDerivedStateNoop()
 

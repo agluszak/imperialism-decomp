@@ -3,23 +3,54 @@
 // Program: Imperialism.exe
 // Bucket: TColorFill.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FF150
-// GHIDRA_NAME TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004ff150(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF0C0
+// GHIDRA_NAME TColorFill::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TColorFill * TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150(byte param_1)
+undefined4 * TColorFill::CreateObject(void)
 
 {
-  TColorFill::CreateTColorFillInstance(this);
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006332d2;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0xc);
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    local_4 = 1;
+    *puVar1 = &TAdorner::_vftable_;
+    func_0x004057a4(s_D__Ambit_Toy_h_0069633c,0x69);
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF150
+// GHIDRA_NAME TColorFill::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TColorFill * TColorFill::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00405583();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF180
 // GHIDRA_NAME TColorFill::CreateTColorFillInstance
-// GHIDRA_PROTO undefined __thiscall TColorFill::CreateTColorFillInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTColorFillInstance(void)
 
 void TColorFill::CreateTColorFillInstance()
 
@@ -29,56 +60,27 @@ void TColorFill::CreateTColorFillInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF1A0
-// GHIDRA_NAME TColorFill::GetTAdornerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTAdornerClassNamePointer(void)
+// GHIDRA_NAME TColorFill::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TColorFill::GetTAdornerClassNamePointer()
+CRuntimeClass * TColorFill::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTColorFill;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF1C0
-// GHIDRA_NAME TColorFill::AssertUDisplayMgrLine730
-// GHIDRA_PROTO undefined __thiscall AssertUDisplayMgrLine730(void)
+// GHIDRA_NAME TColorFill::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(void)
 
-void TColorFill::AssertUDisplayMgrLine730()
+void __thiscall
+TColorFill::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0
+          (TColorFill *this)
 
 {
   if (DAT_006a30b4 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x2da);
+    func_0x004057a4(s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x2da);
   }
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004FF1F0
-// GHIDRA_NAME TColorFill::DestructTColorFillAndMaybeFree
-// GHIDRA_PROTO undefined DestructTColorFillAndMaybeFree()
-
-TView * TColorFill::DestructTColorFillAndMaybeFree(void)
-
-{
-  TView *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006332fa;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(100);
-  local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TGWorldPeekerVtbl_00656748;
-    this[1].vftable = (TViewVtbl *)0x0;
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
 }
 

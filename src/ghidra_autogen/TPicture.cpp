@@ -3,14 +3,107 @@
 // Program: Imperialism.exe
 // Bucket: TPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048EFA0
-// GHIDRA_NAME TPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0048EEB0
+// GHIDRA_NAME TPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TPicture::GetTEventHandlerClassNamePointer()
+undefined4 * TPicture::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  ushort uVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ef7a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar2 = (undefined4 *)operator_new(0x90);
+  local_4 = 0;
+  if (puVar2 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    puVar2[0x18] = 1;
+    *(undefined1 *)(puVar2 + 0x19) = 0;
+    puVar2[0x1a] = 0;
+    puVar2[0x1b] = 0;
+    puVar2[0x1c] = 0;
+    puVar2[0x1d] = 0;
+    puVar2[0x1e] = g_nUiResourceEntryDefaultParam0;
+    puVar2[0x1f] = g_nUiResourceEntryDefaultParam1;
+    uVar1 = g_wUiResourceEntryDefaultParam2;
+    *(undefined2 *)(puVar2 + 0x21) = 0xffff;
+    puVar2[0x22] = 0;
+    *(ushort *)(puVar2 + 0x20) = uVar1;
+    puVar2[0x23] = 0;
+    *puVar2 = &_vftable_;
+    puVar2[0x18] = 10;
+    *unaff_FS_OFFSET = local_c;
+    return puVar2;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048EFA0
+// GHIDRA_NAME TPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TPicture::GetRuntimeClass()
+
+{
+  return &classTPicture;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048EFC0
+// GHIDRA_NAME TPicture::TPicture
+// GHIDRA_PROTO undefined __thiscall TPicture(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Base constructor for picture-oriented UI resource entries.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Calls ConstructUiResourceEntryBase.
+// GHIDRA_COMMENT 2. Initializes picture/style fields from global defaults.
+// GHIDRA_COMMENT 3. Installs picture-entry base vtable.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - this pointer.
+// GHIDRA_COMMENT_END
+
+/* Base constructor for picture-oriented UI resource entries.
+   
+   Algorithm:
+   1. Calls ConstructUiResourceEntryBase.
+   2. Initializes picture/style fields from global defaults.
+   3. Installs picture-entry base vtable.
+   
+   Returns:
+   - this pointer. */
+
+TPicture * TPicture::TPicture()
+
+{
+  ushort uVar1;
+  
+  func_0x004064e2();
+  *(undefined4 *)&this->field_0x60 = 1;
+  this->field_0x64 = 0;
+  *(undefined4 *)&this->field_0x68 = 0;
+  *(undefined4 *)&this->field_0x6c = 0;
+  *(undefined4 *)&this->field_0x70 = 0;
+  *(undefined4 *)&this->field_0x74 = 0;
+  *(int *)&this->field_0x78 = g_nUiResourceEntryDefaultParam0;
+  *(int *)&this->field_0x7c = g_nUiResourceEntryDefaultParam1;
+  uVar1 = g_wUiResourceEntryDefaultParam2;
+  *(undefined4 *)&this->field_0x88 = 0;
+  *(undefined4 *)&this->field_0x8c = 0;
+  *(undefined2 *)&this->field_0x84 = 0xffff;
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x60 = 10;
+  *(ushort *)&this->field_0x80 = uVar1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F050
@@ -22,77 +115,29 @@ TPicture * TPicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048F3C0
-// GHIDRA_NAME TPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F520
+// GHIDRA_NAME TPicture::ResetPictureResourceEntry
+// GHIDRA_PROTO void __thiscall ResetPictureResourceEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Release current picture resource and clear cached resource id/state for the UI picture entry.
+// GHIDRA_COMMENT_END
 
-void TPicture::OrphanTiny_ReturnZero_0048a730()
+/* Release current picture resource and clear cached resource id/state for the UI picture entry. */
+
+void TPicture::ResetPictureResourceEntry()
 
 {
-  _vslot_fn *p_Var1;
-  undefined uVar2;
-  ushort uVar3;
-  int iVar4;
-  undefined4 uVar5;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  undefined4 uVar6;
-  int iVar7;
-  int *piVar8;
-  undefined1 *puVar9;
-  int iVar10;
-  undefined4 uVar11;
-  undefined4 uVar12;
-  undefined4 uVar13;
-  undefined1 auStack_18 [4];
-  int iStack_14;
-  int local_10;
-  int iStack_c;
-  int iStack_8;
-
-  uVar3 = GetAsyncKeyState(0x11);
-  if ((uVar3 & 0x8000) != 0) {
-    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
+  if (*(short *)&this->field_0x84 != -1) {
+    func_0x004046bf(*(short *)&this->field_0x84);
   }
-  iVar4 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
-  if (((iVar4 != 0) &&
-      (iVar4 = *(int *)(*(int *)&this->field_0x8c + 0x10), *(short *)(iVar4 + 0xe) == 8)) &&
-     (*(int *)(iVar4 + 0x10) == 0)) {
-    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
-    iVar7 = iStack_c - iStack_14;
-    iVar4 = iStack_8 - local_10;
-    uVar5 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
-    BlitSurfaceRectSkippingTransparentColor(uVar5,0,0,iVar7,iVar4,iStack_14,local_10,0xffffffff);
-    return;
-  }
-  uVar13 = 0;
-  uVar5 = NoOpQuickDrawContextSelectionHook(0);
-  TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(uVar5);
-  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(uVar5,uVar13);
-  iVar4 = *(int *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 8);
-  if (iVar4 < 1) {
-    iVar4 = -iVar4;
-  }
-  p_Var1 = this->vftable->GetTEventHandlerClassNamePointer_56;
-  iVar7 = this->field38;
-  iVar10 = this->field34;
-  uVar12 = 0;
-  uVar11 = 0;
-  puVar9 = auStack_18;
-  uVar2 = (*p_Var1)(puVar9,iVar10,iVar7,0,0,
-                    *(undefined4 *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 4),iVar4);
-  uVar5 = *(undefined4 *)(CONCAT31(extraout_var,uVar2) + 4);
-  piVar8 = &iStack_14;
-  uVar2 = (*p_Var1)(piVar8,uVar5);
-  uVar13 = *(undefined4 *)CONCAT31(extraout_var_00,uVar2);
-  uVar6 = NoOpQuickDrawContextSelectionHook(uVar13);
-  RenderHintHelperWithCtrlModifierOverlay_Impl
-            (uVar6,uVar13,piVar8,uVar5,puVar9,iVar10,iVar7,uVar11,uVar12);
+  *(undefined2 *)&this->field_0x84 = 0xffff;
+  *(undefined4 *)&this->field_0x88 = 0;
+  *(undefined4 *)&this->field_0x8c = 0;
   return;
 }
 
@@ -113,17 +158,17 @@ TPicture::SetPictureResourceIdAndRefresh
   TPictureVtbl *pTVar1;
   undefined4 uVar2;
   undefined2 in_stack_00000006;
-
+  
   pTVar1 = this->vftable;
   (*pTVar1->ResetPictureResourceEntry)();
   *(short *)&this->field_0x84 = nPictureId;
   if (nPictureId != -1) {
-    uVar2 = LoadBmpResourceByIdCached(_nPictureId);
+    uVar2 = func_0x00403224(_nPictureId);
     *(undefined4 *)&this->field_0x8c = uVar2;
   }
   if (*(int *)&this->field_0x8c == 0) {
-    SetPictureResourceIdAndRefresh_Impl(this->field34,this->field38);
-    uVar2 = BuildIndexedBmpResourceById(_nPictureId);
+    func_0x00408d73(this->field34,this->field38);
+    uVar2 = func_0x004061fe(_nPictureId);
     *(undefined4 *)&this->field_0x8c = uVar2;
   }
   if (fRefreshNow) {

@@ -3,20 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TEvent.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00483AD0
-// GHIDRA_NAME TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(byte param_1)
-
-TEvent * TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(byte param_1)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl();
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00489EE0
 // GHIDRA_NAME TEvent::CreateTEventInstance
 // GHIDRA_PROTO undefined CreateTEventInstance()
@@ -27,26 +13,47 @@ undefined ** TEvent::CreateTEventInstance(void)
   return &PTR_PTR_00649538;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00489F40
-// GHIDRA_NAME TEvent::GetTEventClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00489F00
+// GHIDRA_NAME TEvent::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TEvent::GetTEventClassNamePointer()
+undefined4 * TEvent::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x14);
+  if (puVar1 != (undefined4 *)0x0) {
+    puVar1[1] = 0;
+    puVar1[2] = 0;
+    puVar1[3] = 0;
+    puVar1[4] = 0;
+    *puVar1 = &TEventVtbl_00649770;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489F40
+// GHIDRA_NAME TEvent::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TEvent::GetRuntimeClass()
+
+{
+  return &classTEvent;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492C70
-// GHIDRA_NAME TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492c70(byte param_1)
+// GHIDRA_NAME TEvent::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TEvent * TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70(byte param_1)
+TEvent * TEvent::_scalar_deleting_destructor_(byte param_1)
 
 {
-  WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl();
+  func_0x0040734c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }

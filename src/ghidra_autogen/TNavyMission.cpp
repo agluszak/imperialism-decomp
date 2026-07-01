@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535470
 // GHIDRA_NAME TNavyMission::ConstructTNavyMission
-// GHIDRA_PROTO undefined __thiscall TNavyMission::ConstructTNavyMission(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall ConstructTNavyMission(undefined4 param_1)
 
 void TNavyMission::ConstructTNavyMission(undefined4 param_1)
 
@@ -19,7 +19,7 @@ void TNavyMission::ConstructTNavyMission(undefined4 param_1)
   *(undefined4 *)(this + 0x20) = 0;
   *(undefined4 *)(this + 0x24) = 0;
   *(undefined4 *)(this + 0x28) = 0;
-  *(undefined ***)this = &g_vtblTNavyMission;
+  *(undefined ***)this = &_vftable_;
   *(undefined4 *)(this + 0x2c) = 0;
   *(undefined4 *)(this + 0x30) = 0;
   *(undefined4 *)(this + 0x34) = 0;
@@ -28,63 +28,63 @@ void TNavyMission::ConstructTNavyMission(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535560
-// GHIDRA_NAME TNavyMission::DestroyTNavyMission
-// GHIDRA_PROTO undefined __thiscall DestroyTNavyMission(byte param_1)
+// GHIDRA_NAME TNavyMission::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyMission * TNavyMission::DestroyTNavyMission(byte param_1)
+TNavyMission * TNavyMission::_scalar_deleting_destructor_(byte param_1)
 
 {
-  ResetTNavyMissionToSentinelVtable();
+  func_0x004044da();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536390
-// GHIDRA_NAME TNavyMission::CreateTNavyMission
-// GHIDRA_PROTO undefined CreateTNavyMission()
+// GHIDRA_NAME TNavyMission::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TMission * TNavyMission::CreateTNavyMission(void)
+undefined4 * TNavyMission::CreateObject(void)
 
 {
-  TMission *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063430a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)__2_YAPAXI_Z(0x3c);
+  puVar1 = (undefined4 *)operator_new(0x3c);
   local_4 = 0;
-  if (this != (TMission *)0x0) {
-    TMission::ConstructTMission(this);
-    *(undefined4 *)(this + 0x14) = 0;
-    *(undefined4 *)(this + 0x18) = 0;
-    *(undefined4 *)(this + 0x1c) = 0;
-    *(undefined4 *)(this + 0x20) = 0;
-    *(undefined4 *)(this + 0x24) = 0;
-    *(undefined4 *)(this + 0x28) = 0;
-    *(undefined ***)this = &g_vtblTNavyMission;
-    *(undefined4 *)(this + 0x2c) = 0;
-    *(undefined4 *)(this + 0x30) = 0;
-    *(undefined4 *)(this + 0x34) = 0;
-    *(undefined4 *)(this + 0x38) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00406f05();
+    puVar1[5] = 0;
+    puVar1[6] = 0;
+    puVar1[7] = 0;
+    puVar1[8] = 0;
+    puVar1[9] = 0;
+    puVar1[10] = 0;
+    *puVar1 = &_vftable_;
+    puVar1[0xb] = 0;
+    puVar1[0xc] = 0;
+    puVar1[0xd] = 0;
+    puVar1[0xe] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TMission *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536450
-// GHIDRA_NAME TNavyMission::GetTNavyMissionClassNamePointer
-// GHIDRA_PROTO undefined GetTNavyMissionClassNamePointer()
+// GHIDRA_NAME TNavyMission::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TNavyMission::GetTNavyMissionClassNamePointer(void)
+undefined ** TNavyMission::GetRuntimeClass(void)
 
 {
   return &PTR_s_TNavyMission_00697998;
@@ -99,7 +99,7 @@ uint TNavyMission::EnsureMissionCurrentTargetContextIsValid()
 {
   char cVar1;
   undefined4 uVar2;
-
+  
   if (*(int **)(this + 0x18) != (int *)0x0) {
     cVar1 = (**(code **)(**(int **)(this + 0x18) + 0x38))();
     if (cVar1 != '\0') {

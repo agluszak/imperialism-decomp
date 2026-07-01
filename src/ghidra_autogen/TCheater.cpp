@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TCheater.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004B13A0
+// GHIDRA_NAME TCheater::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TCheater::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630d1a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(100);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1410
 // GHIDRA_NAME TCheater::OrphanRetStub_004b1410
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b1410(void)
@@ -20,86 +50,97 @@ void TCheater::OrphanRetStub_004b1410()
 TCheater * TCheater::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00406a0a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1480
-// GHIDRA_NAME TCheater::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TCheater::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCheater::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TCheater::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTCheater;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B14A0
 // GHIDRA_NAME TCheater::ConstructTCheaterBaseState
-// GHIDRA_PROTO undefined TCheater::ConstructTCheaterBaseState()
+// GHIDRA_PROTO undefined ConstructTCheaterBaseState()
 
-void __thiscall TCheater::ConstructTCheaterBaseState(int param_1,CString param_2,undefined4 param_3)
+void __thiscall TCheater::ConstructTCheaterBaseState(int param_1,undefined4 param_2)
 
 {
   undefined4 uVar1;
-  TControl *pTVar2;
-  undefined4 *unaff_FS_OFFSET;
+  char *pcVar2;
+  int *unaff_FS_OFFSET;
+  undefined4 *puStack_40;
+  undefined4 uStack_3c;
+  undefined4 uStack_38;
+  CString CStack_34;
   undefined4 local_24;
   undefined4 local_20;
   undefined4 local_1c;
-  undefined4 local_18;
+  int local_18;
   undefined4 local_14;
   undefined4 local_10;
-  undefined4 local_c;
+  int local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630d54;
   local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
+  *unaff_FS_OFFSET = (int)&local_c;
+  CStack_34.m_pchData = (char *)0x0;
+  uStack_38 = 5;
+  puStack_40 = &local_1c;
+  uStack_3c = 5;
   local_24 = 0;
   local_20 = 0;
   local_1c = 0x280;
   local_18 = 0x1e0;
   local_14 = 0x80;
   local_10 = 0x20;
-  InitializeUiResourceEntryFrameAndParent(0,param_2.m_pchData,&local_24,&local_1c,5,5,0);
-  param_2.m_pchData = (char *)__2_YAPAXI_Z(0x94);
-  local_4 = 0;
-  if ((TStaticText *)param_2.m_pchData != (TStaticText *)0x0) {
-    TStaticText::TStaticText((TStaticText *)param_2.m_pchData);
+  func_0x004096b5(0,param_2);
+  local_18 = operator_new(0x94);
+  local_20 = 0;
+  if (local_18 != 0) {
+    func_0x0040541b();
   }
-  uVar1 = param_3;
-  local_4 = 0xffffffff;
-  InitializeTextEntryBaseAndOptionalStringResource(param_1,&local_24,&local_14,5,5,param_3,1);
-  pTVar2 = (TControl *)__2_YAPAXI_Z(0x84);
-  local_4 = 1;
-  param_2.m_pchData = (char *)pTVar2;
-  if (pTVar2 == (TControl *)0x0) {
-    pTVar2 = (TControl *)0x0;
+  uVar1 = local_14;
+  local_20 = 0xffffffff;
+  func_0x00401fd2(param_1,&puStack_40,&stack0xffffffd0,5,5,local_14,1);
+  pcVar2 = (char *)operator_new(0x84);
+  uStack_3c = 1;
+  CStack_34.m_pchData = pcVar2;
+  if (pcVar2 == (char *)0x0) {
+    pcVar2 = (char *)0x0;
   }
   else {
-    TControl::TControl(pTVar2);
-    local_4 = CONCAT31(local_4._1_3_,2);
-    pTVar2->vftable = (TControlVtbl *)&TButton::_vftable_;
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
-    pTVar2->vftable = (TControlVtbl *)&TButtonVtbl_0064a4e0;
+    func_0x004087fb();
+    uStack_3c = CONCAT31(uStack_3c._1_3_,2);
+    *(TCtlMgrVtbl **)pcVar2 = &TButton::_vftable_;
+    func_0x004057a4(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+    *(TButtonVtbl **)pcVar2 = &TButton::_vftable_;
   }
-  local_4 = 0xffffffff;
-  CString::__0CString__QAE_PBD_Z(&param_2,&DAT_00695a18);
-  local_4 = 3;
+  uStack_3c = 0xffffffff;
+  CString::CString(&CStack_34,&DAT_00695a18);
+  uStack_3c = 3;
   if (DAT_006a2480 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5b7);
+    func_0x004057a4(g_szMcAppUiHeaderPath_006943CC,0x5b7);
   }
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&param_2);
-  pTVar2->hasCommandTagResource = 0x22;
+  uStack_3c = 0xffffffff;
+  CString::~CString(&CStack_34);
+  pcVar2[0x60] = '\"';
+  pcVar2[0x61] = '\0';
+  pcVar2[0x62] = '\0';
+  pcVar2[99] = '\0';
   *(short *)(param_1 + 0x60) = (short)uVar1;
-  *unaff_FS_OFFSET = local_c;
+  *unaff_FS_OFFSET = (int)&local_24;
   return;
 }
 
@@ -117,7 +158,7 @@ void TCheater::DestructTCheaterAndMaybeFree()
   int iStack_10;
   int iStack_c;
   int iStack_8;
-
+  
   uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(iVar1 + 300))(&iStack_10);

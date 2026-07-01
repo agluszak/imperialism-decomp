@@ -3,16 +3,38 @@
 // Program: Imperialism.exe
 // Bucket: TOcean.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00562140
-// GHIDRA_NAME TOcean::DestroyTPortZoneManager
-// GHIDRA_PROTO undefined __thiscall DestroyTPortZoneManager(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x00562100
+// GHIDRA_NAME TOcean::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TOcean * TOcean::DestroyTPortZoneManager(byte param_1)
+undefined4 * TOcean::CreateObject(void)
 
 {
-  ResetTPortZoneManagerToSentinelVtable();
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x18);
+  if (puVar1 != (undefined4 *)0x0) {
+    *(undefined2 *)(puVar1 + 1) = 0;
+    puVar1[2] = 0;
+    *(undefined2 *)(puVar1 + 3) = 0;
+    puVar1[4] = 0;
+    puVar1[5] = 0;
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00562140
+// GHIDRA_NAME TOcean::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TOcean * TOcean::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00407fbd();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -24,7 +46,72 @@ TOcean * TOcean::DestroyTPortZoneManager(byte param_1)
 CRuntimeClass * TOcean::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTOcean;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005621E0
+// GHIDRA_NAME TOcean::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
+
+void TOcean::Free()
+
+{
+  TZone *this_00;
+  TZone *pTVar1;
+  int iVar2;
+  int iVar3;
+  
+  if (g_pNavyOrderManager != (TNavyMgr *)0x0) {
+    func_0x0040515f();
+  }
+  if (g_pMapActionContextDistanceCache != (void *)0x0) {
+    operator_delete(g_pMapActionContextDistanceCache);
+    g_pMapActionContextDistanceCache = (void *)0x0;
+    DAT_006984b4 = 0xffffffff;
+    g_nMapActionContextCount = 0;
+  }
+  iVar2 = 0;
+  if (0 < (short)this->nationCount) {
+    iVar3 = 0;
+    do {
+      pTVar1 = (TZone *)((int)this->contextArray + iVar3);
+      if (g_pMapActionContextListHead == pTVar1) {
+        g_pMapActionContextListHead = *(TZone **)&pTVar1->field_0x18;
+      }
+      if (*(int *)&pTVar1->field_0x18 != 0) {
+        *(undefined4 *)(*(int *)&pTVar1->field_0x18 + 0x1c) = *(undefined4 *)&pTVar1->field_0x1c;
+      }
+      if (*(int *)&pTVar1->field_0x1c != 0) {
+        *(undefined4 *)(*(int *)&pTVar1->field_0x1c + 0x18) = *(undefined4 *)&pTVar1->field_0x18;
+      }
+      *(undefined4 *)&pTVar1->field_0x1c = 0;
+      *(undefined4 *)&pTVar1->field_0x18 = 0;
+      iVar2 = iVar2 + 1;
+      iVar3 = iVar3 + 0x48;
+    } while (iVar2 < (short)this->nationCount);
+  }
+  if (this->contextArray != (dword *)0x0) {
+    (**(code **)(*this->contextArray + 4))(3);
+  }
+  while (pTVar1 = g_pMapActionContextListHead, g_pMapActionContextListHead != (TZone *)0x0) {
+    do {
+      iVar2 = CObject::IsKindOf((CObject *)pTVar1);
+      if (iVar2 != 0) break;
+      pTVar1 = *(TZone **)&pTVar1->field_0x18;
+    } while (pTVar1 != (TZone *)0x0);
+    this_00 = g_pMapActionContextListHead;
+    if (pTVar1 == (TZone *)0x0) break;
+    while ((this_00 != (TZone *)0x0 && (iVar2 = CObject::IsKindOf((CObject *)this_00), iVar2 == 0)))
+    {
+      this_00 = *(TZone **)&this_00->field_0x18;
+    }
+    (*this_00->vftable->GetTCountryClassNamePointer)();
+  }
+  operator_delete(this->keyMask);
+  if (this != (TOcean *)0x0) {
+    (*this->vftable->~TOcean)(1);
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00562340
@@ -37,42 +124,46 @@ void TOcean::ReadFrom(int *param_1)
   word *pwVar1;
   code *pcVar2;
   short sVar3;
+  TZone *this_00;
   TZone *pTVar4;
   int *piVar5;
   int *piVar6;
   dword dVar7;
   int iVar8;
-  int unaff_EBP;
+  TOcean *unaff_EBX;
   int unaff_ESI;
   int iVar9;
   int unaff_EDI;
+  TOcean *pTVar10;
   int *unaff_FS_OFFSET;
-  int iVar10;
-  TZone *pTVar11;
+  int iVar11;
   undefined1 *puVar12;
   word *pwVar13;
-  short *psStack_14;
-  TZone *pTStack_c;
-  undefined1 *puStack_8;
-  short *psStack_4;
-
-  psStack_4 = (short *)0xffffffff;
-  puStack_8 = &LAB_00635855;
-  pTStack_c = (TZone *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&pTStack_c;
+  int *piVar14;
+  TOcean *local_18;
+  int iStack_c;
+  short *psStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  psStack_8 = (short *)&LAB_00635855;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   if (g_pMapActionContextDistanceCache != (void *)0x0) {
-    __3_YAXPAX_Z(g_pMapActionContextDistanceCache);
+    operator_delete(g_pMapActionContextDistanceCache);
     g_pMapActionContextDistanceCache = (void *)0x0;
     g_nMapActionContextCount = -1;
   }
-  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
+  piVar14 = param_1;
+  func_0x00403517();
   EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
   pwVar1 = &this->nationCount;
   iVar8 = 0;
+  pTVar10 = this;
   if (0 < (short)*pwVar1) {
     iVar9 = 0;
     do {
-      pTVar4 = (TZone *)(iVar9 + (int)this->contextArray);
+      pTVar4 = (TZone *)(iVar9 + (int)pTVar10->contextArray);
       if (g_pMapActionContextListHead == pTVar4) {
         g_pMapActionContextListHead = *(TZone **)&pTVar4->field_0x18;
       }
@@ -86,122 +177,118 @@ void TOcean::ReadFrom(int *param_1)
       *(undefined4 *)&pTVar4->field_0x18 = 0;
       iVar8 = iVar8 + 1;
       iVar9 = iVar9 + 0x48;
+      pTVar10 = unaff_EBX;
     } while (iVar8 < (short)*pwVar1);
   }
-  if (this->contextArray != (dword *)0x0) {
-    (**(code **)(*this->contextArray + 4))(3);
+  if (pTVar10->contextArray != (dword *)0x0) {
+    (**(code **)(*pTVar10->contextArray + 4))(3);
   }
   while (pTVar4 = g_pMapActionContextListHead, g_pMapActionContextListHead != (TZone *)0x0) {
     do {
-      iVar8 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar4);
+      iVar8 = CObject::IsKindOf((CObject *)pTVar4);
       if (iVar8 != 0) break;
       pTVar4 = *(TZone **)&pTVar4->field_0x18;
     } while (pTVar4 != (TZone *)0x0);
-    pTVar11 = g_pMapActionContextListHead;
+    this_00 = g_pMapActionContextListHead;
     if (pTVar4 == (TZone *)0x0) break;
-    while ((pTVar11 != (TZone *)0x0 &&
-           (iVar8 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar11),
-           iVar8 == 0))) {
-      pTVar11 = *(TZone **)&pTVar11->field_0x18;
+    while ((this_00 != (TZone *)0x0 && (iVar8 = CObject::IsKindOf((CObject *)this_00), iVar8 == 0)))
+    {
+      this_00 = *(TZone **)&this_00->field_0x18;
     }
-    (*pTVar11->vftable->GetTCountryClassNamePointer)();
+    (*this_00->vftable->GetTCountryClassNamePointer)();
   }
   pcVar2 = *(code **)(*param_1 + 0x3c);
   pwVar13 = pwVar1;
   (*pcVar2)(pwVar1,2);
   iVar8 = (int)(short)*pwVar1;
-  piVar5 = (int *)__2_YAPAXI_Z(iVar8 * 0x48 + 4);
-  pTStack_c = (TZone *)0x0;
+  piVar5 = (int *)operator_new(iVar8 * 0x48 + 4);
   if (piVar5 == (int *)0x0) {
     piVar6 = (int *)0x0;
   }
   else {
     piVar6 = piVar5 + 1;
     *piVar5 = iVar8;
-    ___L_YGXPAXIHP6EX0_Z1_Z
-              (piVar6,0x48,iVar8,TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList);
+    ___L_YGXPAXIHP6EX0_Z1_Z(piVar6,0x48,iVar8,&SUB_0040405c);
   }
   iVar8 = 0;
-  pTStack_c = (TZone *)0xffffffff;
-  *(int **)(unaff_EBP + 8) = piVar6;
+  *(int **)(unaff_ESI + 8) = piVar6;
   if (piVar6 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7ac);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7ac);
   }
   iVar9 = 0;
-  if (0 < *psStack_4) {
+  if (0 < *psStack_8) {
     do {
-      (**(code **)(*(int *)(*(int *)(unaff_EBP + 8) + iVar8) + 0x18))(param_1);
+      (**(code **)(*(int *)(*(int *)(unaff_ESI + 8) + iVar8) + 0x18))(param_1);
       iVar9 = iVar9 + 1;
       iVar8 = iVar8 + 0x48;
-    } while (iVar9 < *psStack_4);
+    } while (iVar9 < *psStack_8);
   }
-  puVar12 = &stack0xffffffe4;
+  puVar12 = &stack0xffffffe0;
   (*pcVar2)(puVar12,2);
-  sVar3 = (short)unaff_ESI;
-  while (unaff_ESI = unaff_ESI + -1, sVar3 != 0) {
-    pTVar4 = (TZone *)__2_YAPAXI_Z(0x4c);
-    pTStack_c = pTVar4;
-    if (pTVar4 == (TZone *)0x0) {
-      pTVar4 = (TZone *)0x0;
+  sVar3 = (short)unaff_EDI;
+  while (unaff_EDI = unaff_EDI + -1, sVar3 != 0) {
+    piVar5 = (int *)operator_new(0x4c);
+    if (piVar5 == (int *)0x0) {
+      piVar5 = (int *)0x0;
     }
     else {
-      TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(pTVar4);
-      *(undefined2 *)&pTVar4[1].vftable = 0xffff;
-      pTVar4->vftable = (TZoneVtbl *)&TPortZone::_vftable_;
+      func_0x0040405c();
+      *(undefined2 *)(piVar5 + 0x12) = 0xffff;
+      *piVar5 = (int)&TPortZone::_vftable_;
     }
-    psStack_14 = (short *)0xffffffff;
-    (*pTVar4->vftable->HasQueuedCivWorkOrderType7)(param_1);
-    sVar3 = (short)unaff_ESI;
+    local_18 = (TOcean *)0xffffffff;
+    (**(code **)(*piVar5 + 0x18))(param_1);
+    this = local_18;
+    sVar3 = (short)unaff_EDI;
   }
-  pTVar4 = (TZone *)(unaff_EDI + 0xc);
-  pTVar11 = pTVar4;
-  pTStack_c = pTVar4;
-  (*pcVar2)(pTVar4,2);
-  __3_YAXPAX_Z(*(undefined4 *)(unaff_EDI + 0x10));
-  dVar7 = __2_YAPAXI_Z((int)*(short *)&pTVar4->vftable << 4);
+  piVar5 = piVar14 + 3;
+  piVar6 = piVar5;
+  (*pcVar2)(piVar5,2);
+  operator_delete(piVar14[4]);
+  dVar7 = operator_new((int)(short)*piVar5 << 4);
   if (dVar7 == 0) {
     dVar7 = 0;
   }
   *(dword *)(pwVar13 + 8) = dVar7;
   if (dVar7 == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7c3);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7c3);
   }
   iVar8 = 0;
-  if (0 < *(short *)&pTVar4->vftable) {
+  if (0 < (short)*piVar5) {
     iVar9 = 0;
     do {
-      iVar10 = iVar9 + 4 + *(dword *)(pwVar13 + 8);
-      (*pcVar2)(iVar10,4);
+      iVar11 = iVar9 + 4 + *(dword *)(pwVar13 + 8);
+      (*pcVar2)(iVar11,4);
       (*pcVar2)(iVar9 + *(int *)(puVar12 + 0x10),4);
-      (*pcVar2)(iVar9 + 0xc + *(int *)&pTVar11->field_0x10,4);
-      (*pcVar2)(iVar9 + 8 + *(int *)(iVar10 + 0x10),4);
+      (*pcVar2)(iVar9 + 0xc + piVar6[4],4);
+      (*pcVar2)(iVar9 + 8 + *(int *)(iVar11 + 0x10),4);
       iVar8 = iVar8 + 1;
       iVar9 = iVar9 + 0x10;
-    } while (iVar8 < *psStack_14);
+    } while (iVar8 < *(short *)&this->vftable);
   }
   pTVar4 = g_pMapActionContextListHead;
-  if (DAT_00695278 < 0xd) {
+  if (g_nSaveFormatVersion < 0xd) {
     for (; pTVar4 != (TZone *)0x0; pTVar4 = *(TZone **)&pTVar4->field_0x18) {
       iVar8 = *(int *)&pTVar4->field_0x28;
       if (iVar8 != 0) {
         *(undefined4 *)&pTVar4->field_0x28 = 0;
         *(undefined4 *)&pTVar4->field_0x2c = 0;
         *(undefined4 *)&pTVar4->field_0x30 = 0;
-        _free(iVar8);
+        FreeHeapBlockWithAllocatorTracking(iVar8);
       }
       iVar8 = *(int *)&pTVar4->field_0x38;
       if (iVar8 != 0) {
         *(undefined4 *)&pTVar4->field_0x38 = 0;
         *(undefined4 *)&pTVar4->field_0x3c = 0;
         *(undefined4 *)&pTVar4->field_0x40 = 0;
-        _free(iVar8);
+        FreeHeapBlockWithAllocatorTracking(iVar8);
       }
     }
   }
-  RefreshPortZoneNeighborContextLinksAndFallbacks();
-  *unaff_FS_OFFSET = unaff_ESI;
+  func_0x00402efa();
+  *unaff_FS_OFFSET = unaff_EDI;
   return;
 }
 
@@ -214,17 +301,17 @@ void TOcean::WriteTo(int *param_1)
 {
   word *pwVar1;
   TZone *pTVar2;
+  code *unaff_EBX;
   int iVar3;
   int iVar4;
   TZone *this_00;
   TZone *pTVar5;
-  code *unaff_EDI;
   word *pwVar6;
   code *pcVar7;
   word *pwVar8;
   code *pcVar9;
-
-  TObject::WriteTo((TObject *)this,(TStream *)param_1);
+  
+  func_0x0040583a();
   pwVar1 = &this->nationCount;
   pwVar8 = pwVar1;
   (**(code **)(*param_1 + 0x78))(pwVar1,2);
@@ -241,7 +328,7 @@ void TOcean::WriteTo(int *param_1)
   pTVar5 = g_pMapActionContextListHead;
   if (g_pMapActionContextListHead != (TZone *)0x0) {
     do {
-      iVar4 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar5);
+      iVar4 = CObject::IsKindOf((CObject *)pTVar5);
       if (iVar4 != 0) break;
       pTVar5 = *(TZone **)&pTVar5->field_0x18;
     } while (pTVar5 != (TZone *)0x0);
@@ -251,7 +338,7 @@ joined_r0x0056295f:
       pTVar5 = *(TZone **)&pTVar5->field_0x18;
       if (pTVar5 == (TZone *)0x0) goto LAB_0056298c;
       do {
-        iVar4 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar5);
+        iVar4 = CObject::IsKindOf((CObject *)pTVar5);
         if (iVar4 != 0) break;
         pTVar5 = *(TZone **)&pTVar5->field_0x18;
       } while (pTVar5 != (TZone *)0x0);
@@ -259,12 +346,11 @@ joined_r0x0056295f:
     }
   }
 LAB_0056298c:
-  pcVar7 = (code *)&stack0xfffffff4;
-  (*(code *)this)(pcVar7,2);
+  pcVar7 = (code *)&stack0xfffffff0;
+  (*unaff_EBX)(pcVar7,2);
   pTVar5 = g_pMapActionContextListHead;
   while ((this_00 = pTVar5, pTVar5 != (TZone *)0x0 &&
-         (iVar4 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar5),
-         iVar4 == 0))) {
+         (iVar4 = CObject::IsKindOf((CObject *)pTVar5), iVar4 == 0))) {
     pTVar5 = *(TZone **)&pTVar5->field_0x18;
   }
   do {
@@ -272,7 +358,7 @@ LAB_0056298c:
     if ((pTVar2 == (TZone *)0x0) ||
        (this_00 = *(TZone **)&pTVar2->field_0x18, pTVar5 = pTVar2, this_00 == (TZone *)0x0)) break;
     do {
-      iVar4 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)this_00);
+      iVar4 = CObject::IsKindOf((CObject *)this_00);
       if (iVar4 != 0) break;
       this_00 = *(TZone **)&this_00->field_0x18;
     } while (this_00 != (TZone *)0x0);
@@ -287,7 +373,7 @@ LAB_00562a16:
     if (0 < (short)*pwVar1) {
       iVar3 = 0;
       do {
-        (*unaff_EDI)(iVar3 + 4 + this->keyMask,4);
+        (*(code *)param_1)(iVar3 + 4 + this->keyMask,4);
         (*(code *)pwVar8)(iVar3 + this->keyMask,4);
         (*pcVar7)(iVar3 + 0xc + this->keyMask,4);
         (*(code *)pwVar6)(iVar3 + 8 + this->keyMask,4);
@@ -301,68 +387,10 @@ LAB_00562a16:
   pTVar5 = *(TZone **)&pTVar5->field_0x1c;
   if (pTVar5 == (TZone *)0x0) goto LAB_00562a16;
   do {
-    iVar4 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar5);
+    iVar4 = CObject::IsKindOf((CObject *)pTVar5);
     if (iVar4 != 0) break;
     pTVar5 = *(TZone **)&pTVar5->field_0x1c;
   } while (pTVar5 != (TZone *)0x0);
   goto joined_r0x005629ea;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0057C9A0
-// GHIDRA_NAME TOcean::RecreateActiveMapContextAndInitializeGlobalMapState
-// GHIDRA_PROTO undefined __thiscall TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
-
-void TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
-
-{
-  TMapMgr *this_00;
-  int *unaff_ESI;
-  undefined4 *unaff_FS_OFFSET;
-  undefined *puVar1;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00636dda;
-  *unaff_FS_OFFSET = &uStack_c;
-  this[0xb].field0c = param_1 + 1;
-  if (g_pActiveMapOrderContext != (TOcean *)0x0) {
-    (*g_pActiveMapOrderContext->vftable[1].GetRuntimeClass)();
-    g_pActiveMapOrderContext = (TOcean *)0x0;
-  }
-  g_pActiveMapOrderContext = (TOcean *)__2_YAPAXI_Z(0x18);
-  if (g_pActiveMapOrderContext == (TOcean *)0x0) {
-    g_pActiveMapOrderContext = (TOcean *)0x0;
-  }
-  else {
-    g_pActiveMapOrderContext->nationCount = 0;
-    g_pActiveMapOrderContext->contextArray = (dword *)0x0;
-    g_pActiveMapOrderContext->field0c = 0;
-    g_pActiveMapOrderContext->keyMask = 0;
-    g_pActiveMapOrderContext->field14 = 0;
-    g_pActiveMapOrderContext->vftable = &TOceanVtbl_0065c7c8;
-  }
-  ResetPortZoneGlobalContextCounters();
-  if (g_pGlobalMapState != (TMapMgr *)0x0) {
-    (*g_pGlobalMapState->vftable->Free)();
-    g_pGlobalMapState = (TMapMgr *)0x0;
-  }
-  this_00 = (TMapMgr *)__2_YAPAXI_Z(0x28);
-  uStack_4 = 0;
-  if (this_00 == (TMapMgr *)0x0) {
-    g_pGlobalMapState = (TMapMgr *)0x0;
-  }
-  else {
-    g_pGlobalMapState = TMapMgr::ConstructGlobalMapState(this_00,unaff_ESI);
-  }
-  uStack_4 = 0xffffffff;
-  InitializeGlobalMapState(g_pGlobalMapState,unaff_ESI);
-  g_pGlobalMapState->field_0x20 = 1;
-  puVar1 = PTR_g_szEmptyString_006628b8;
-  (*g_pGlobalMapState->vftable->BuildOrLoadGlobalMapStateForSession)(PTR_g_szEmptyString_006628b8);
-  *unaff_FS_OFFSET = puVar1;
-  return;
 }
 

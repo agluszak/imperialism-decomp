@@ -3,40 +3,9 @@
 // Program: Imperialism.exe
 // Bucket: TaskList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005AEAF0
-// GHIDRA_NAME TaskList::CreateTaskListInstance
-// GHIDRA_PROTO undefined CreateTaskListInstance()
-
-undefined4 * TaskList::CreateTaskListInstance(void)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006388e2;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
-    local_4 = 1;
-    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
-    *puVar1 = &TTaskListVtbl_0066aa48;
-    puVar2 = puVar1;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return puVar2;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEB90
 // GHIDRA_NAME TaskList::ConstructTaskListBaseState
-// GHIDRA_PROTO undefined __thiscall TaskList::ConstructTaskListBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTaskListBaseState(void)
 
 TaskList * TaskList::ConstructTaskListBaseState()
 
@@ -45,21 +14,21 @@ TaskList * TaskList::ConstructTaskListBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   puStack_8 = &LAB_00638908;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *(undefined ***)this = &RefCountedObjectBase::_vftable_;
+  *(undefined ***)this = &TObject::_vftable_;
   local_4 = 0;
-  TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(this + 4),10);
-  *(TTaskListVtbl **)this = &TTaskListVtbl_0066aa48;
+  CPtrList::CPtrList((CPtrList *)(this + 4),10);
+  *(TTaskListVtbl **)this = &TTaskList::_vftable_;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEC30
 // GHIDRA_NAME TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30
-// GHIDRA_PROTO undefined __thiscall TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_DestructCPtrListBaseState_At005aec30(void)
 
 void TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30()
 
@@ -68,12 +37,12 @@ void TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00638928;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  __1CPtrList__UAE_XZ();
+  CPtrList::~CPtrList();
   *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;

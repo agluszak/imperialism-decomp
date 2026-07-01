@@ -4,43 +4,43 @@
 // Bucket: TTerrainInfoDialog.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B0A0
-// GHIDRA_NAME TTerrainInfoDialog::CreateTTerrainInfoDialogInstance
-// GHIDRA_PROTO undefined CreateTTerrainInfoDialogInstance()
+// GHIDRA_NAME TTerrainInfoDialog::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TNoHilitePicture * TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
+undefined4 * TTerrainInfoDialog::CreateObject(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633dda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
-    this->vftable = (TNoHilitePictureVtbl *)&TTerrainInfoDialogVtbl_00658d70;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403328();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B120
-// GHIDRA_NAME TTerrainInfoDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTerrainInfoDialog::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTerrainInfoDialog::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTerrainInfoDialog::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTerrainInfoDialog;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B140
@@ -50,8 +50,8 @@ CRuntimeClass * TTerrainInfoDialog::GetTEventHandlerClassNamePointer()
 TTerrainInfoDialog * TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState()
 
 {
-  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->vftable = &TTerrainInfoDialogVtbl_00658d70;
+  func_0x00403328();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,9 +62,9 @@ TTerrainInfoDialog * TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState()
 TTerrainInfoDialog * TTerrainInfoDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00401d43();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }

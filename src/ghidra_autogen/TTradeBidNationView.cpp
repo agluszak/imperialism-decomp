@@ -10,112 +10,125 @@
 TTradeBidNationView * TTradeBidNationView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00402270();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDB40
-// GHIDRA_NAME TTradeBidNationView::CreateTTradeBidNationViewInstance
-// GHIDRA_PROTO undefined CreateTTradeBidNationViewInstance()
+// GHIDRA_NAME TTradeBidNationView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TTradeBidNationView::CreateTTradeBidNationViewInstance(void)
+undefined4 * TTradeBidNationView::CreateObject(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063946a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(100);
+  puVar1 = (undefined4 *)operator_new(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TTradeBidNationViewVtbl_0066e530;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDBB0
-// GHIDRA_NAME TTradeBidNationView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTradeBidNationView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeBidNationView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTradeBidNationView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTradeBidNationView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDC20
-// GHIDRA_NAME TTradeBidNationView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_NAME TTradeBidNationView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTradeBidNationView::OrphanCallChain_C11_I88_004874b0()
+void TTradeBidNationView::ApplyRectSlot110()
 
 {
-  short sVar1;
+  undefined uVar1;
+  short sVar2;
   CString *src_ref;
-  undefined2 extraout_var;
-  undefined4 *unaff_FS_OFFSET;
+  undefined3 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  int *unaff_FS_OFFSET;
+  undefined4 local_40;
   CString local_34;
-  CString local_30;
-  RECT local_2c;
-  RECT local_1c;
-  undefined4 uStack_c;
+  undefined1 *local_30;
+  undefined4 local_2c;
+  undefined4 local_28;
+  undefined4 local_24;
+  undefined4 local_20;
+  int local_1c [3];
+  undefined4 local_10;
+  int iStack_c;
   undefined1 *puStack_8;
-  int local_4;
-
+  undefined4 local_4;
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639490;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  UpdatePaletteIndexWithDefaultFallback(0x10);
-  local_1c.left = (LONG)(short)(*(short *)&this->field_0x62 << 5);
-  local_1c.right = local_1c.left + 0x20;
-  local_1c.bottom = 0x18;
-  local_2c.bottom = 0x18;
-  local_1c.top = 0;
-  local_2c.left = 0;
-  local_2c.top = 0;
-  local_2c.right = 0x20;
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x680) + 4),
-             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24,
-             (astruct_19 *)0x0);
-  local_30.m_pchData = &stack0xffffffc0;
-  SetQuickDrawStrokeColor();
-  CString::__0CString__QAE_XZ(&local_34);
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  local_40 = 0x10;
+  func_0x004010be();
+  local_1c[0] = (int)(short)(*(short *)&this->field_0x62 << 5);
+  local_1c[2] = local_1c[0] + 0x20;
+  local_10 = 0x18;
+  local_20 = 0x18;
+  local_40 = 0;
+  local_1c[1] = 0;
+  local_2c = 0;
+  local_28 = 0;
+  local_24 = 0x20;
+  func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x680) + 4,
+                  &g_pActiveQuickDrawSurfaceContext->field_0x4,local_1c,&local_2c,0x24);
+  local_30 = (undefined1 *)&local_40;
+  local_40 = 0xffffff;
+  func_0x00402bdf();
+  local_40 = 0x5bdcca;
+  CString::CString(&local_34);
+  local_40 = CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x62);
   local_4 = 0;
-  src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot(&local_30);
-  local_4._0_1_ = 1;
-  CString::__4CString__QAEABV0_ABV0__Z(&local_34,src_ref);
-  local_4 = (uint)local_4._1_3_ << 8;
-  CString::__1CString__QAE_XZ(&local_30);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
-  SetQuickDrawTextOriginWithContextOffset(0x28);
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  src_ref = (CString *)func_0x00405b14(&local_30);
+  iStack_c._0_1_ = 1;
+  CString::operator=((CString *)&stack0xffffffc4,src_ref);
+  iStack_c = (uint)iStack_c._1_3_ << 8;
+  CString::~CString((CString *)&stack0xffffffc8);
+  func_0x0040448f(0,0xc,0x2b6a);
+  SetQuickDrawTextOriginWithContextOffset(0x28,0xc);
+  func_0x004029aa(&stack0xffffffc4);
   if ((*(short *)&this->field_0x62 < 7) && (*(int *)&g_pLocalizationTable->field_0x8 == 7)) {
-    (*g_apNationStates[*(short *)&this->field_0x62]->vftable->OrphanLeaf_NoCall_Ins02_004d7f00)();
-    _Format_CString__QAAXPBDZZ(&local_34,&g_szDecimalFormat);
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_34);
+    uVar1 = (*g_apNationStates[*(short *)&this->field_0x62]->vftable->
+              OrphanLeaf_NoCall_Ins02_004d7f00)();
+    _Format_CString__QAAXPBDZZ
+              (&stack0xffffffc4,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var,uVar1));
+    sVar2 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffc4,0xc);
     SetQuickDrawTextOriginWithContextOffset
-              (CONCAT22(extraout_var,(short)this->field34 - sVar1) + -4);
-    THQButton::DrawTextWithCachedQuickDrawStyleState();
+              (CONCAT22(extraout_var_00,(short)this->field34 - sVar2) + -4);
+    func_0x004029aa(&stack0xffffffc4);
   }
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_34);
-  *unaff_FS_OFFSET = uStack_c;
+  iStack_c = -1;
+  CString::~CString((CString *)&stack0xffffffc4);
+  *unaff_FS_OFFSET = local_1c[2];
   return;
 }
 

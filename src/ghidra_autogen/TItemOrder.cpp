@@ -3,44 +3,51 @@
 // Program: Imperialism.exe
 // Bucket: TItemOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B51B0
-// GHIDRA_NAME TItemOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004B51D0
+// GHIDRA_NAME TItemOrder::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-void TItemOrder::CreateTItemOrderInstance()
+undefined4 * TItemOrder::CreateObject(void)
 
 {
-  (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
-  return;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x54);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 1) = 0;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5200
-// GHIDRA_NAME TItemOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
+// GHIDRA_NAME TItemOrder::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TItemOrder::GetTProductionOrderClassNamePointer()
+CRuntimeClass * TItemOrder::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTItemOrder;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5240
-// GHIDRA_NAME TItemOrder::ConstructTItemOrderBaseState
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
+// GHIDRA_NAME TItemOrder::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TItemOrder * TItemOrder::ConstructTItemOrderBaseState(byte param_1)
+TItemOrder * TItemOrder::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TItemOrder::DestructTItemOrderAndMaybeFree(this);
+  func_0x004062ad();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5270
 // GHIDRA_NAME TItemOrder::DestructTItemOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TItemOrder::DestructTItemOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTItemOrderAndMaybeFree(void)
 
 void TItemOrder::DestructTItemOrderAndMaybeFree()
 
@@ -51,7 +58,7 @@ void TItemOrder::DestructTItemOrderAndMaybeFree()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5290
 // GHIDRA_NAME TItemOrder::InitializeCityProductionState_Impl_At004b5290
-// GHIDRA_PROTO undefined __thiscall TItemOrder::InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
 TItemOrder::InitializeCityProductionState_Impl_At004b5290
@@ -61,7 +68,7 @@ TItemOrder::InitializeCityProductionState_Impl_At004b5290
 {
   int iVar1;
   undefined4 *puVar2;
-
+  
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = param_2;
@@ -83,10 +90,10 @@ TItemOrder::InitializeCityProductionState_Impl_At004b5290
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5310
-// GHIDRA_NAME TItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
+// GHIDRA_NAME TItemOrder::MaxOrder
+// GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-uint TItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
+uint TItemOrder::MaxOrder()
 
 {
   short sVar1;
@@ -97,7 +104,7 @@ uint TItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   ushort uVar6;
   uint uVar7;
   ushort uVar8;
-
+  
   iVar2 = *(int *)&this->field_0x8;
   uVar7 = (int)*(short *)(*(int *)&this->field_0xc + 0x1c) / 2 + (uint)*(ushort *)&this->field_0x4;
   uVar8 = *(short *)(iVar2 + 0x1fc + *(short *)&this->field_0x52 * 2) + *(ushort *)&this->field_0x4;
@@ -128,10 +135,10 @@ uint TItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B53D0
-// GHIDRA_NAME TItemOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
+// GHIDRA_NAME TItemOrder::SetQuantity
+// GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TItemOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
+undefined4 TItemOrder::SetQuantity(short param_1)
 
 {
   int iVar1;
@@ -141,7 +148,7 @@ undefined4 TItemOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   char cVar5;
   undefined3 extraout_var;
   short sVar6;
-
+  
   sVar6 = param_1 - *(short *)&this->field_0x4;
   uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar4) < param_1) || (param_1 < 0)) {
@@ -186,14 +193,14 @@ undefined4 TItemOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5510
-// GHIDRA_NAME TItemOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(int param_1)
+// GHIDRA_NAME TItemOrder::FillOrderSheet
+// GHIDRA_PROTO undefined __thiscall FillOrderSheet(int param_1)
 
-void TItemOrder::CreateTItemOrderInstance(int param_1)
+void TItemOrder::FillOrderSheet(int param_1)
 
 {
   short sVar1;
-
+  
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)(param_1);
   sVar1 = (short)param_1;
   if (-1 < *(short *)&this->field_0x50) {
@@ -208,15 +215,15 @@ void TItemOrder::CreateTItemOrderInstance(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5580
-// GHIDRA_NAME TItemOrder::OrphanRetStub_004b5160
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+// GHIDRA_NAME TItemOrder::CommitIfPending
+// GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TItemOrder::OrphanRetStub_004b5160()
+void TItemOrder::CommitIfPending()
 
 {
   short *psVar1;
   int *piVar2;
-
+  
   psVar1 = (short *)(*(int *)&this->field_0x8 + 0x1fc + *(short *)&this->field_0x52 * 2);
   *psVar1 = *psVar1 + *(short *)&this->field_0x4;
   piVar2 = *(int **)&this->field_0x8;
@@ -236,7 +243,7 @@ void TItemOrder::OrphanRetStub_004b5160()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5620
 // GHIDRA_NAME TItemOrder::ResetCityOrderItemDerivedStateNoop
-// GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
+// GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
 
 void TItemOrder::ResetCityOrderItemDerivedStateNoop()
 
@@ -246,7 +253,7 @@ void TItemOrder::ResetCityOrderItemDerivedStateNoop()
   undefined uVar3;
   undefined3 extraout_var;
   undefined4 unaff_EBX;
-
+  
   pTVar2 = this->vftable;
   uVar3 = (*pTVar2->OrphanLeaf_NoCall_Ins02_004b50e0)();
   sVar1 = *(short *)&this->field_0x4c;
@@ -261,15 +268,15 @@ void TItemOrder::ResetCityOrderItemDerivedStateNoop()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5670
-// GHIDRA_NAME TItemOrder::SerializeCityOrderItemContextCore
-// GHIDRA_PROTO undefined __thiscall TItemOrder::SerializeCityOrderItemContextCore(int * param_1)
+// GHIDRA_NAME TItemOrder::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TItemOrder::SerializeCityOrderItemContextCore(int *param_1)
+void TItemOrder::WriteTo(int *param_1)
 
 {
   code *pcVar1;
-
-  TObject::WriteTo((TObject *)this,(TStream *)param_1);
+  
+  func_0x0040583a(param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
@@ -285,15 +292,15 @@ void TItemOrder::SerializeCityOrderItemContextCore(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5710
-// GHIDRA_NAME TItemOrder::DeserializeCityOrderItemContextCore
-// GHIDRA_PROTO undefined __thiscall TItemOrder::DeserializeCityOrderItemContextCore(int * param_1)
+// GHIDRA_NAME TItemOrder::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TItemOrder::DeserializeCityOrderItemContextCore(int *param_1)
+void TItemOrder::ReadFrom(int *param_1)
 
 {
   code *pcVar1;
-
-  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
+  
+  func_0x00403517(param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);

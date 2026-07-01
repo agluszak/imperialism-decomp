@@ -3,54 +3,172 @@
 // Program: Imperialism.exe
 // Bucket: TUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005C2470
-// GHIDRA_NAME TUnit::OrphanRetStub_005c2470
-// GHIDRA_PROTO undefined __thiscall TCivUnit::OrphanRetStub_005c2470(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00402EEB
+// GHIDRA_NAME TUnit::RegisterUnitOrderWithOwnerManager
+// GHIDRA_PROTO undefined __thiscall TUnit::RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
 
-void TUnit::OrphanRetStub_005c2470()
+void TUnit::RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
+
+{
+  int iVar1;
+  int *piVar2;
+  undefined2 in_stack_0000000a;
+  
+  *(undefined2 *)&this->field_0x4 = param_1;
+  *(undefined4 *)&this->field_0x8 = 0;
+  (*this->vftable[5].GetTUnitClassNamePointer)(_param_2);
+  if (this->field_0x1c == '\0') {
+    piVar2 = *(int **)&g_apNationStates[param_2]->field_0x89c;
+  }
+  else {
+    piVar2 = *(int **)&g_apTerrainTypeDescriptorTable[param_2]->field_0x44;
+  }
+  if (piVar2 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UUnit_cpp_0069aae0,0x11f);
+  }
+  (**(code **)(*piVar2 + 0x30))(this);
+  *(short *)&this->field_0x18 = param_2;
+  *(short *)&this->field_0x1a = param_2;
+  *(undefined2 *)&this->field_0xc = 0xffff;
+  iVar1 = *(int *)&g_pLocalizationTable->field_0x64 + 1;
+  *(int *)&g_pLocalizationTable->field_0x64 = iVar1;
+  *(int *)&this->field_0x20 = iVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2430
+// GHIDRA_NAME TUnit::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TUnit::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x24);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    puVar1[4] = 0;
+    puVar1[5] = 0;
+    *(undefined2 *)((int)puVar1 + 6) = 0xffff;
+    *(undefined1 *)(puVar1 + 7) = 0;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2470
+// GHIDRA_NAME TUnit::DetachUnitOrderFromOwnerAndReset
+// GHIDRA_PROTO undefined __thiscall DetachUnitOrderFromOwnerAndReset(void)
+
+void TUnit::DetachUnitOrderFromOwnerAndReset()
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2490
-// GHIDRA_NAME TUnit::GetTUnitClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTUnitClassNamePointer(void)
+// GHIDRA_NAME TUnit::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUnit::GetTUnitClassNamePointer()
+CRuntimeClass * TUnit::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTUnit;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C24E0
-// GHIDRA_NAME TUnit::ConstructTUnitBaseState
-// GHIDRA_PROTO undefined __thiscall TUnit::ConstructTUnitBaseState(byte param_1)
+// GHIDRA_NAME TUnit::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUnit * TUnit::ConstructTUnitBaseState(byte param_1)
+TUnit * TUnit::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TUnit::DestructTUnitAndMaybeFree(this);
+  func_0x004050dd();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2510
-// GHIDRA_NAME TUnit::DestructTUnitAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TUnit::DestructTUnitAndMaybeFree(void)
+// GHIDRA_NAME TUnit::~TUnit
+// GHIDRA_PROTO undefined __thiscall ~TUnit(void)
 
-void TUnit::DestructTUnitAndMaybeFree()
+void TUnit::~TUnit()
 
 {
   this->vftable = (TUnitVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2530
+// GHIDRA_NAME TUnit::RegisterUnitOrderWithOwnerManager
+// GHIDRA_PROTO undefined __thiscall RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Registers a newly created unit-order object with its owner manager and initializes core identity fields.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Store unit type id and clear transient state.
+// GHIDRA_COMMENT 2. Route owner manager by mode flag:
+// GHIDRA_COMMENT    - civ path: g_apNationStates[ownerIndex]+0x89C
+// GHIDRA_COMMENT    - alternate/military path: DAT_006A4310[ownerIndex]+0x44
+// GHIDRA_COMMENT 3. Call owner manager vfunc +0x30 to insert this object into manager lists.
+// GHIDRA_COMMENT 4. Initialize owner index fields (+0x18/+0x1A), tile index to -1, and global unique id.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Significance:
+// GHIDRA_COMMENT - This is the key insertion point for newly created recruit/unit objects before map tile linking.
+// GHIDRA_COMMENT_END
+
+/* Registers a newly created unit-order object with its owner manager and initializes core identity
+   fields.
+   
+   Algorithm:
+   1. Store unit type id and clear transient state.
+   2. Route owner manager by mode flag:
+      - civ path: g_apNationStates[ownerIndex]+0x89C
+      - alternate/military path: DAT_006A4310[ownerIndex]+0x44
+   3. Call owner manager vfunc +0x30 to insert this object into manager lists.
+   4. Initialize owner index fields (+0x18/+0x1A), tile index to -1, and global unique id.
+   
+   Significance:
+   - This is the key insertion point for newly created recruit/unit objects before map tile linking.
+    */
+
+void TUnit::RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
+
+{
+  int iVar1;
+  int *piVar2;
+  undefined2 in_stack_0000000a;
+  
+  *(undefined2 *)&this->field_0x4 = param_1;
+  *(undefined4 *)&this->field_0x8 = 0;
+  (*this->vftable[5].GetTUnitClassNamePointer)(_param_2);
+  if (this->field_0x1c == '\0') {
+    piVar2 = *(int **)&g_apNationStates[param_2]->field_0x89c;
+  }
+  else {
+    piVar2 = *(int **)&g_apTerrainTypeDescriptorTable[param_2]->field_0x44;
+  }
+  if (piVar2 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UUnit_cpp_0069aae0,0x11f);
+  }
+  (**(code **)(*piVar2 + 0x30))(this);
+  *(short *)&this->field_0x18 = param_2;
+  *(short *)&this->field_0x1a = param_2;
+  *(undefined2 *)&this->field_0xc = 0xffff;
+  iVar1 = *(int *)&g_pLocalizationTable->field_0x64 + 1;
+  *(int *)&g_pLocalizationTable->field_0x64 = iVar1;
+  *(int *)&this->field_0x20 = iVar1;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2610
 // GHIDRA_NAME TUnit::OrphanRetStub_005c2610
-// GHIDRA_PROTO undefined __thiscall TCivUnit::OrphanRetStub_005c2610(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005c2610(void)
 
 void TUnit::OrphanRetStub_005c2610()
 
@@ -59,10 +177,10 @@ void TUnit::OrphanRetStub_005c2610()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2630
-// GHIDRA_NAME TUnit::SetUnitOrderTypeAndOwnerIndex
-// GHIDRA_PROTO undefined __thiscall SetUnitOrderTypeAndOwnerIndex(undefined4 nOrderType, undefined2 nOrderOwnerId)
+// GHIDRA_NAME TUnit::SetOrderModeSlot34
+// GHIDRA_PROTO undefined __thiscall SetOrderModeSlot34(undefined4 nOrderType, undefined2 nOrderOwnerId)
 
-void TUnit::SetUnitOrderTypeAndOwnerIndex(undefined4 nOrderType, undefined2 nOrderOwnerId)
+void TUnit::SetOrderModeSlot34(undefined4 nOrderType, undefined2 nOrderOwnerId)
 
 {
   *(undefined4 *)&this->field_0x8 = nOrderType;
@@ -71,10 +189,10 @@ void TUnit::SetUnitOrderTypeAndOwnerIndex(undefined4 nOrderType, undefined2 nOrd
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2660
-// GHIDRA_NAME TUnit::NormalizeUnitOrderStateAfterLoad
-// GHIDRA_PROTO undefined __thiscall TUnit::NormalizeUnitOrderStateAfterLoad(void)
+// GHIDRA_NAME TUnit::DispatchSlot2C
+// GHIDRA_PROTO undefined __thiscall DispatchSlot2C(void)
 
-void TUnit::NormalizeUnitOrderStateAfterLoad()
+void TUnit::DispatchSlot2C()
 
 {
   if (*(int *)&this->field_0x8 != 2) {
@@ -84,15 +202,15 @@ void TUnit::NormalizeUnitOrderStateAfterLoad()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2680
-// GHIDRA_NAME TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy
-// GHIDRA_PROTO undefined __thiscall TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy(void)
+// GHIDRA_NAME TUnit::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy()
+void TUnit::Free()
 
 {
   int iVar1;
   int *piVar2;
-
+  
   if (this->field_0x1c == '\0') {
     iVar1 = *(int *)&g_apNationStates[*(short *)&this->field_0x18]->field_0x89c;
   }
@@ -100,11 +218,9 @@ void TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy()
     iVar1 = *(int *)&g_apTerrainTypeDescriptorTable[*(short *)&this->field_0x18]->field_0x44;
   }
   if (iVar1 != 0) {
-    piVar2 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
-                              ((TAutoGreatPower *)(iVar1 + 4),(int)this,(undefined4 *)0x0);
+    piVar2 = (int *)CPtrList::Find((CPtrList *)(iVar1 + 4),(int)this,(undefined4 *)0x0);
     if (piVar2 != (int *)0x0) {
-      TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z
-                ((TAutoGreatPower *)(iVar1 + 4),piVar2);
+      CPtrList::RemoveAt((CPtrList *)(iVar1 + 4),piVar2);
     }
   }
   if (this != (TUnit *)0x0) {
@@ -114,8 +230,8 @@ void TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2700
-// GHIDRA_NAME TUnit::DeserializeUnitOrderCoreState
-// GHIDRA_PROTO void __thiscall TCivUnit::DeserializeUnitOrderCoreState(int * pArchiveStream)
+// GHIDRA_NAME TUnit::ReadFrom
+// GHIDRA_PROTO void __thiscall ReadFrom(int * pArchiveStream)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Deserialize common unit-order core fields from archive stream and restore runtime links.
 // GHIDRA_COMMENT
@@ -137,25 +253,25 @@ void TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy()
 // GHIDRA_COMMENT_END
 
 /* Deserialize common unit-order core fields from archive stream and restore runtime links.
-
+   
    Algorithm:
    1. Enter archive read context for the order object.
    2. Read core fields in the same order used by SerializeUnitOrderCoreState.
    3. If loaded source tile index (+0x06) is valid, temporarily clear it and call order vfunc +0x28
    to relink runtime tile ownership/state, then restore owner index field.
    4. For save versions > 0x2D, read trailing 4-byte field at +0x20.
-
+   
    Parameters:
    - this (IMPLICIT): Unit-order state object.
    - pArchiveStream: Load/archive stream interface.
-
+   
    Returns:
    - void.
-
+   
    Versioning:
    - DAT_00695278 gates legacy-vs-newer layout for the +0x20 field. */
 
-void TUnit::DeserializeUnitOrderCoreState(int *pArchiveStream)
+void TUnit::ReadFrom(int *pArchiveStream)
 
 {
   undefined2 extraout_var;
@@ -163,8 +279,8 @@ void TUnit::DeserializeUnitOrderCoreState(int *pArchiveStream)
   code *pReadBytesFn;
   undefined1 *pnSourceTileIndex;
   undefined2 wSavedOrderOwnerIndex;
-
-  TObject::ReadFrom((TObject *)this,(TStream *)pArchiveStream);
+  
+  func_0x00403517(pArchiveStream);
   pReadBytesFn = *(code **)(*pArchiveStream + 0x3c);
   (*pReadBytesFn)(&this->field_0x4,2);
   pnSourceTileIndex = &this->field_0x6;
@@ -181,15 +297,15 @@ void TUnit::DeserializeUnitOrderCoreState(int *pArchiveStream)
     (*this->vftable[5].GetTUnitClassNamePointer)(CONCAT22(extraout_var,nSourceTileIndex));
     *(undefined2 *)&this->field_0xc = wSavedOrderOwnerIndex;
   }
-  if (0x2d < DAT_00695278) {
+  if (0x2d < g_nSaveFormatVersion) {
     (*pReadBytesFn)(&this->field_0x20,4);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C27D0
-// GHIDRA_NAME TUnit::SerializeUnitOrderCoreState
-// GHIDRA_PROTO void __thiscall TUnit::SerializeUnitOrderCoreState(int * pArchiveStream)
+// GHIDRA_NAME TUnit::WriteTo
+// GHIDRA_PROTO void __thiscall WriteTo(int * pArchiveStream)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Serialize common unit-order core fields to archive stream.
 // GHIDRA_COMMENT
@@ -212,30 +328,30 @@ void TUnit::DeserializeUnitOrderCoreState(int *pArchiveStream)
 // GHIDRA_COMMENT_END
 
 /* Serialize common unit-order core fields to archive stream.
-
+   
    Algorithm:
    1. Enter archive write context for the order object.
    2. Write fixed-size core fields from this object in save order.
    3. Persist 2-byte fields at offsets +0x04, +0x06, +0x0C, +0x18, +0x1A.
    4. Persist 1-byte field at offset +0x1C.
    5. Persist 4-byte fields at offsets +0x08 and +0x20.
-
+   
    Parameters:
    - this (IMPLICIT): Unit-order state object.
    - pArchiveStream: Save/archive stream interface.
-
+   
    Returns:
    - void.
-
+   
    Notes:
    - Civ/Military serializers wrap this routine and append class-specific fields. */
 
-void TUnit::SerializeUnitOrderCoreState(int *pArchiveStream)
+void TUnit::WriteTo(int *pArchiveStream)
 
 {
   code *pWriteBytesFn;
-
-  TObject::WriteTo((TObject *)this,(TStream *)pArchiveStream);
+  
+  func_0x0040583a(pArchiveStream);
   pWriteBytesFn = *(code **)(*pArchiveStream + 0x78);
   (*pWriteBytesFn)(&this->field_0x4,2);
   (*pWriteBytesFn)(&this->field_0x6,2);

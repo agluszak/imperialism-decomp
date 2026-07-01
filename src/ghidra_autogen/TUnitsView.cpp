@@ -4,43 +4,43 @@
 // Bucket: TUnitsView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7F10
-// GHIDRA_NAME TUnitsView::CreateTUnitsViewInstance
-// GHIDRA_PROTO undefined CreateTUnitsViewInstance()
+// GHIDRA_NAME TUnitsView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TNoHilitePicture * TUnitsView::CreateTUnitsViewInstance(void)
+undefined4 * TUnitsView::CreateObject(void)
 
 {
-  TNoHilitePicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063162a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)__2_YAPAXI_Z(0xa0);
+  puVar1 = (undefined4 *)operator_new(0xa0);
   local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
-    this[1].vftable = (TNoHilitePictureVtbl *)0x0;
-    this->vftable = (TNoHilitePictureVtbl *)&TUnitsViewVtbl_006518e8;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403328();
+    puVar1[0x25] = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TNoHilitePicture *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7FB0
-// GHIDRA_NAME TUnitsView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TUnitsView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUnitsView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TUnitsView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTUnitsView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7FD0
@@ -50,9 +50,9 @@ CRuntimeClass * TUnitsView::GetTEventHandlerClassNamePointer()
 TUnitsView * TUnitsView::ConstructTUnitsViewBaseState()
 
 {
-  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  func_0x00403328();
   *(undefined4 *)&this->field_0x94 = 0;
-  this->vftable = &TUnitsViewVtbl_006518e8;
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -63,9 +63,9 @@ TUnitsView * TUnitsView::ConstructTUnitsViewBaseState()
 TUnitsView * TUnitsView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00401a69();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -80,62 +80,63 @@ void TUnitsView::OrphanRetStub_004c6fd0()
   short sVar1;
   int *piVar2;
   int iVar3;
-  TColorKeyPicture *this_00;
-  short sVar4;
+  int iVar4;
   short sVar5;
+  int iVar6;
+  short sVar7;
   undefined4 *unaff_FS_OFFSET;
   int local_3c;
-  int local_38;
+  undefined4 uStack_34;
   undefined4 uStack_30;
   undefined4 uStack_2c;
-  undefined4 uStack_28;
-  int iStack_24;
+  int iStack_28;
+  undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063164a;
   *unaff_FS_OFFSET = &uStack_c;
-  sVar4 = 0;
-  InitializeSelectableTextOptionEntryIteratorContext(this);
-  piVar2 = (int *)BeginSelectableTextOptionEntryIterator();
-  iVar3 = IsSelectableTextOptionEntryIteratorValid();
+  sVar5 = 0;
+  func_0x00403bbb(this);
+  piVar2 = (int *)func_0x00405754();
+  iVar3 = func_0x00406c4e();
   while (iVar3 != 0) {
     if (piVar2[7] == 0x69636f6e) {
       (**(code **)(*piVar2 + 0x1c))();
     }
-    piVar2 = (int *)AdvanceSelectableTextOptionEntryIterator();
-    iVar3 = IsSelectableTextOptionEntryIteratorValid();
+    piVar2 = (int *)func_0x00404368();
+    iVar3 = func_0x00406c4e();
   }
-  local_3c = 0x5c;
-  local_38 = 0xe;
+  iVar3 = 0x5c;
+  local_3c = 0xe;
   do {
-    sVar1 = *(short *)(*(int *)&this->field_0x94 + local_3c);
-    if ((sVar1 != 0) && (sVar5 = 0, 0 < sVar1)) {
+    sVar1 = *(short *)(*(int *)&this->field_0x94 + iVar3);
+    if ((sVar1 != 0) && (sVar7 = 0, 0 < sVar1)) {
       do {
-        this_00 = (TColorKeyPicture *)__2_YAPAXI_Z(0x98);
-        iVar3 = 0;
-        uStack_4 = 0;
-        if (this_00 != (TColorKeyPicture *)0x0) {
-          iVar3 = TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(this_00);
+        iVar4 = operator_new(0x98);
+        iVar6 = 0;
+        puStack_8 = (undefined1 *)0x0;
+        if (iVar4 != 0) {
+          iVar6 = func_0x00408ee5();
         }
-        uStack_30 = 0x20;
-        uStack_28 = 0x20;
-        iStack_24 = (int)sVar4;
-        uStack_4 = 0xffffffff;
-        uStack_2c = 0x18;
-        InitializePictureEntryBaseAndRefresh(this,&uStack_28,&uStack_30,5,5,0x222e);
-        *(undefined4 *)(iVar3 + 0x1c) = 0x69636f6e;
-        sVar4 = sVar4 + 0x18;
-        sVar5 = sVar5 + 1;
-      } while (sVar5 < *(short *)(*(int *)&this->field_0x94 + local_3c));
+        uStack_34 = 0x20;
+        uStack_2c = 0x20;
+        iStack_28 = (int)sVar5;
+        puStack_8 = (undefined1 *)0xffffffff;
+        uStack_30 = 0x18;
+        func_0x00403ff3(this,&uStack_2c,&uStack_34,5,5,0x222e);
+        *(undefined4 *)(iVar6 + 0x1c) = 0x69636f6e;
+        sVar5 = sVar5 + 0x18;
+        sVar7 = sVar7 + 1;
+      } while (sVar7 < *(short *)(*(int *)&this->field_0x94 + iVar3));
     }
-    local_3c = local_3c + 2;
-    local_38 = local_38 + -1;
-  } while (local_38 != 0);
-  *unaff_FS_OFFSET = uStack_c;
+    iVar3 = iVar3 + 2;
+    local_3c = local_3c + -1;
+  } while (local_3c != 0);
+  *unaff_FS_OFFSET = uStack_10;
   return;
 }
 

@@ -4,35 +4,35 @@
 // Bucket: TInvadeMission.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F080
-// GHIDRA_NAME TInvadeMission::CreateTInvadeMission
-// GHIDRA_PROTO undefined CreateTInvadeMission()
+// GHIDRA_NAME TInvadeMission::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TMission * TInvadeMission::CreateTInvadeMission(void)
+undefined4 * TInvadeMission::CreateObject(void)
 
 {
-  TMission *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006344a2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)__2_YAPAXI_Z(0x38);
+  puVar1 = (undefined4 *)operator_new(0x38);
   local_4 = 0;
-  if (this != (TMission *)0x0) {
-    TMission::ConstructTArmyMissionWithNodeKey(this,0xffff);
-    *(undefined2 *)(this + 0x30) = 0xffff;
-    *(undefined2 *)(this + 0x32) = 0xffff;
-    *(undefined4 *)(this + 0x34) = 0;
-    *(undefined ***)this = &PTR_LAB_0065aec0;
-    *unaff_FS_OFFSET = local_c;
-    return this;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064a1(0xffffffff);
+    *(undefined2 *)(puVar1 + 0xc) = 0xffff;
+    *(undefined2 *)((int)puVar1 + 0x32) = 0xffff;
+    puVar1[0xd] = 0;
+    *puVar1 = &_vftable_;
+    *unaff_FS_OFFSET = puVar1;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TMission *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F160
@@ -81,7 +81,7 @@ float10 TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead()
   float *pfVar4;
   TInvadeMission *pTVar5;
   float10 fVar6;
-
+  
   pfVar4 = (float *)&DAT_00697980;
   pTVar5 = this + 0x1c;
   fVar3 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
@@ -97,25 +97,25 @@ float10 TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F260
-// GHIDRA_NAME TInvadeMission::GetTInvadeMissionClassNamePointer
-// GHIDRA_PROTO undefined GetTInvadeMissionClassNamePointer()
+// GHIDRA_NAME TInvadeMission::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TInvadeMission::GetTInvadeMissionClassNamePointer(void)
+undefined ** TInvadeMission::GetRuntimeClass(void)
 
 {
   return &PTR_s_TInvadeMission_00697a70;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F3C0
-// GHIDRA_NAME TInvadeMission::DestroyTInvadeMission
-// GHIDRA_PROTO undefined __thiscall DestroyTInvadeMission(byte param_1)
+// GHIDRA_NAME TInvadeMission::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInvadeMission * TInvadeMission::DestroyTInvadeMission(byte param_1)
+TInvadeMission * TInvadeMission::_scalar_deleting_destructor_(byte param_1)
 
 {
-  ResetTInvadeMissionToSentinelVtable();
+  func_0x004022fc();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -127,21 +127,18 @@ TInvadeMission * TInvadeMission::DestroyTInvadeMission(byte param_1)
 void TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders()
 
 {
-  TGreatPower *this_00;
   int iVar1;
   int iVar2;
-
+  
   (**(code **)(**(int **)(this + 0x34) + 0x1c))();
-  this_00 = g_apNationStates[*(short *)(this + 4)];
-  (*this_00->vftable->ConstructTTaskBaseState)();
-  TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
-            ((TAttackProvinceMission *)this_00,(int)*(short *)(this + 0x30),0);
-  iVar1 = InitializeLinkedListCursorFromOwnerHead();
-  iVar2 = LinkedListCursorHasCurrent();
+  (*g_apNationStates[*(short *)(this + 4)]->vftable->ConstructTTaskBaseState)();
+  func_0x00402491((int)*(short *)(this + 0x30),0);
+  iVar1 = func_0x00401118();
+  iVar2 = func_0x00403620();
   while (iVar2 != 0) {
     *(undefined4 *)(iVar1 + 0x40) = 0;
-    iVar1 = AdvanceLinkedListCursor();
-    iVar2 = LinkedListCursorHasCurrent();
+    iVar1 = func_0x00406d20();
+    iVar2 = func_0x00403620();
   }
   (**(code **)(**(int **)(this + 0x18) + 0x5c))();
   if (*(int **)(this + 0x18) != (int *)0x0) {
@@ -165,20 +162,20 @@ uint TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits()
   uint uVar2;
   undefined4 uVar3;
   int iVar4;
-
+  
   uVar2 = (**(code **)(**(int **)(this + 0x34) + 0x98))();
   if ((char)uVar2 == '\0') {
     return uVar2 & 0xffffff00;
   }
-  uVar3 = InitializeLinkedListCursorFromOwnerHead();
-  iVar4 = LinkedListCursorHasCurrent();
+  uVar3 = func_0x00401118();
+  iVar4 = func_0x00403620();
   while (iVar4 != 0) {
-    sVar1 = GetUnitMovementClassId();
+    sVar1 = func_0x00407e64();
     if (sVar1 != 0) {
       (**(code **)(*(int *)this + 0x88))(uVar3,1);
     }
-    uVar3 = AdvanceLinkedListCursor();
-    iVar4 = LinkedListCursorHasCurrent();
+    uVar3 = func_0x00406d20();
+    iVar4 = func_0x00403620();
   }
   return 1;
 }
@@ -190,7 +187,7 @@ uint TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits()
 void TInvadeMission::InitializeInvadeMissionFromNationAndTargetTile()
 
 {
-  InitializeMissionWithNationIdAndResetPathMarker(*(undefined2 *)(this + 4));
+  func_0x0040163b(*(undefined2 *)(this + 4));
   this[0x11] = (TInvadeMission)0x1;
   if (*(short *)(this + 0x30) != -1) {
     *(short *)(this + 6) =
@@ -219,8 +216,8 @@ void TInvadeMission::SerializeTInvadeMission(int *param_1)
 
 {
   code *pcVar1;
-
-  SerializeTArmyMission(param_1);
+  
+  func_0x00407ec8(param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(this + 0x30,2);
   (*pcVar1)(this + 0x32,2);
@@ -236,7 +233,7 @@ void TInvadeMission::AdvanceInvadeMissionCompositeHandlers()
 
 {
   int iVar1;
-
+  
   (**(code **)(**(int **)(this + 0x34) + 0x40))();
   iVar1 = *(int *)this;
   (**(code **)(iVar1 + 0x34))();
@@ -257,17 +254,17 @@ float10 TInvadeMission::ComputeInvadeMissionWeightedScoreDelta(float param_1)
   char cVar1;
   float10 fVar2;
   float10 fVar3;
-
+  
   if (this[0x10] == (TInvadeMission)0x0) {
     if (*(TInvadeMission **)((int)param_1 + 0x40) == this) {
       fVar2 = (float10)(**(code **)(*(int *)this + 0x68))();
-      fVar3 = (float10)ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(param_1);
+      fVar3 = (float10)func_0x00406686(param_1);
       fVar3 = (float10)(float)fVar2 - fVar3;
     }
     else {
-      fVar2 = (float10)ComputeArmyMissionScoreDeltaWithCandidateUnit(param_1);
+      func_0x004031f2(param_1);
       fVar3 = (float10)(**(code **)(*(int *)this + 0x68))();
-      fVar3 = (float10)(float)fVar2 - fVar3;
+      fVar3 = (float10)param_1 - fVar3;
     }
     param_1 = (float)fVar3;
   }
@@ -289,7 +286,7 @@ float10 TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled()
 
 {
   float10 fVar1;
-
+  
   if (this[0x10] != (TInvadeMission)0x0) {
     return (float10)g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
@@ -319,7 +316,7 @@ TInvadeMission::HandleInvadeMissionActionOnTargetViaBeachhead
 
 {
   char cVar1;
-
+  
   if (((param_1 == 2) && (param_2 == *(short *)(this + 0x30))) &&
      (*(int **)(this + 0x34) != (int *)0x0)) {
     cVar1 = (**(code **)(**(int **)(this + 0x34) + 0x4c))(2,param_2);
@@ -344,46 +341,43 @@ TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore
   int *piVar3;
   int iVar4;
   undefined4 uVar5;
-  undefined4 uVar6;
   int unaff_EBP;
-  undefined4 *puVar7;
+  undefined4 *puVar6;
   int local_28;
+  undefined4 local_1c [2];
   undefined4 local_14;
   undefined4 local_10;
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-
+  
   local_14 = 0;
   local_10 = 0;
+  local_1c[0] = *(undefined4 *)(this + 0x18);
   local_c = 0;
   local_8 = 0;
   local_4 = 0;
-  piVar3 = (int *)InitializeLinkedListCursorFromOwnerHead();
-  iVar4 = LinkedListCursorHasCurrent();
+  piVar3 = (int *)func_0x00401118();
+  iVar4 = func_0x00403620();
   if (iVar4 != 0) {
     pcVar1 = *(code **)(*(int *)this + 0x9c);
     do {
       (**(code **)(*piVar3 + 0xc))();
       uVar5 = (*pcVar1)();
-      sVar2 = NoOpRuntimeCallback_005c34d0(uVar5);
-      if (5 < sVar2) {
-        sVar2 = 5;
-      }
-      uVar5 = *(undefined4 *)(&DAT_006978c8 + sVar2 * 4);
-      uVar6 = (*pcVar1)();
-      sVar2 = NoOpRuntimeCallback_005184e0(uVar6);
-      AccumulateUnitOrderPriorityVectorContribution(piVar3,&local_14,uVar5,(float)(int)sVar2);
-      piVar3 = (int *)AdvanceLinkedListCursor();
-      iVar4 = LinkedListCursorHasCurrent();
+      func_0x0040527c(uVar5);
+      uVar5 = (*pcVar1)();
+      sVar2 = func_0x00405dc1(uVar5);
+      func_0x004072fc(piVar3,local_1c,0,(float)(int)sVar2);
+      piVar3 = (int *)func_0x00406d20();
+      iVar4 = func_0x00403620();
     } while (iVar4 != 0);
   }
   local_28 = 5;
-  puVar7 = param_1;
+  puVar6 = param_1;
   do {
     uVar5 = ftol();
-    *puVar7 = uVar5;
-    puVar7 = puVar7 + 1;
+    *puVar6 = uVar5;
+    puVar6 = puVar6 + 1;
     local_28 = local_28 + -1;
   } while (local_28 != 0);
   iVar4 = (**(code **)(**(int **)(this + 0x34) + 0x2c))(param_1,param_2);

@@ -4,29 +4,86 @@
 // Bucket: CArchive.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D04
-// GHIDRA_NAME CArchive::??6CArchive@@QAEAAV0@E@Z
-// GHIDRA_PROTO undefined __thiscall ??6CArchive@@QAEAAV0@E@Z(byte param_1)
+// GHIDRA_NAME CArchive::CArchive::operator<<
+// GHIDRA_PROTO undefined __thiscall CArchive::operator<<(byte param_1)
 
-CArchive * CArchive::__6CArchive__QAEAAV0_E_Z(byte param_1)
+CArchive * __thiscall CArchive::CArchive__operator<<(CArchive *this,byte param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 1) {
-    _Flush_CArchive__QAEXXZ();
+    Flush();
   }
   *this->m_lpBufCur = param_1;
   this->m_lpBufCur = this->m_lpBufCur + 1;
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005E6DA3
-// GHIDRA_NAME CArchive::??5CArchive@@QAEAAV0@AAG@Z
-// GHIDRA_PROTO undefined __thiscall ??5CArchive@@QAEAAV0@AAG@Z(undefined2 * param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6D27
+// GHIDRA_NAME CArchive::CArchive::operator<<
+// GHIDRA_PROTO undefined __thiscall CArchive::operator<<(undefined2 param_1)
 
-CArchive * CArchive::__5CArchive__QAEAAV0_AAG_Z(undefined2 *param_1)
+CArchive * __thiscall CArchive::CArchive__operator<<(CArchive *this,undefined2 param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 2) {
-    _FillBuffer_CArchive__QAEXI_Z(this,(uint)(this->m_lpBufCur + (2 - (int)this->m_lpBufMax)));
+    Flush();
+  }
+  *(undefined2 *)this->m_lpBufCur = param_1;
+  this->m_lpBufCur = this->m_lpBufCur + 2;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6D4E
+// GHIDRA_NAME CArchive::CArchive::operator<<
+// GHIDRA_PROTO undefined __thiscall CArchive::operator<<(TNetMgr_GetTNetMgrClassNamePointer_0x00 * param_1)
+
+CArchive * __thiscall
+CArchive::CArchive__operator<<(CArchive *this,TNetMgr_GetTNetMgrClassNamePointer_0x00 *param_1)
+
+{
+  if (this->m_lpBufMax < this->m_lpBufCur + 4) {
+    Flush();
+  }
+  *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)this->m_lpBufCur = param_1;
+  this->m_lpBufCur = this->m_lpBufCur + 4;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6D74
+// GHIDRA_NAME CArchive::CArchive::operator>>
+// GHIDRA_PROTO undefined CArchive::operator>>()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: class CArchive & __thiscall CArchive::operator>>(unsigned char &)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: class CArchive & __thiscall CArchive::operator>>(unsigned char &)
+   
+   Library: nafxcw retail msvc500:static */
+
+CArchive * __thiscall CArchive::CArchive__operator>>(CArchive *param_1,byte *param_2)
+
+{
+  if (param_1->m_lpBufMax < param_1->m_lpBufCur + 1) {
+    FillBuffer(param_1,(uint)(param_1->m_lpBufCur + (1 - (int)param_1->m_lpBufMax)));
+  }
+  *param_2 = *param_1->m_lpBufCur;
+  param_1->m_lpBufCur = param_1->m_lpBufCur + 1;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6DA3
+// GHIDRA_NAME CArchive::CArchive::operator>>
+// GHIDRA_PROTO undefined __thiscall CArchive::operator>>(undefined2 * param_1)
+
+CArchive * __thiscall CArchive::CArchive__operator>>(CArchive *this,undefined2 *param_1)
+
+{
+  if (this->m_lpBufMax < this->m_lpBufCur + 2) {
+    FillBuffer(this,(uint)(this->m_lpBufCur + (2 - (int)this->m_lpBufMax)));
   }
   *param_1 = *(undefined2 *)this->m_lpBufCur;
   this->m_lpBufCur = this->m_lpBufCur + 2;
@@ -34,25 +91,85 @@ CArchive * CArchive::__5CArchive__QAEAAV0_AAG_Z(undefined2 *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6DD6
-// GHIDRA_NAME CArchive::??5CArchive@@QAEAAV0@AAK@Z
-// GHIDRA_PROTO undefined __thiscall ??5CArchive@@QAEAAV0@AAK@Z(undefined4 * param_1)
+// GHIDRA_NAME CArchive::CArchive::operator>>
+// GHIDRA_PROTO undefined __thiscall CArchive::operator>>(undefined4 * param_1)
 
-CArchive * CArchive::__5CArchive__QAEAAV0_AAK_Z(undefined4 *param_1)
+CArchive * __thiscall CArchive::CArchive__operator>>(CArchive *this,undefined4 *param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 4) {
-    _FillBuffer_CArchive__QAEXI_Z(this,(uint)(this->m_lpBufCur + (4 - (int)this->m_lpBufMax)));
+    FillBuffer(this,(uint)(this->m_lpBufCur + (4 - (int)this->m_lpBufMax)));
   }
   *param_1 = *(undefined4 *)this->m_lpBufCur;
   this->m_lpBufCur = this->m_lpBufCur + 4;
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00611D26
-// GHIDRA_NAME CArchive::?Read@CArchive@@QAEIPAXI@Z
-// GHIDRA_PROTO undefined __thiscall ?Read@CArchive@@QAEIPAXI@Z(int param_1, uint param_2)
+// GHIDRA_FUNCTION IMPERIALISM 0x00611C90
+// GHIDRA_NAME CArchive::~CArchive
+// GHIDRA_PROTO undefined ~CArchive()
 
-int CArchive::_Read_CArchive__QAEIPAXI_Z(int param_1, uint param_2)
+void CArchive::~CArchive(void)
+
+{
+  CArchive *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(CArchive **)(unaff_EBP + -0x10) = this;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  if ((this->m_pFile != (void *)0x0) && ((this->m_nMode & 2) == 0)) {
+    Close(this);
+  }
+  Abort();
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  CString::~CString(&this->m_strFileName);
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611CD6
+// GHIDRA_NAME CArchive::Abort
+// GHIDRA_PROTO undefined Abort()
+
+void __fastcall CArchive::Abort(int param_1)
+
+{
+  *(undefined4 *)(param_1 + 0x20) = 0;
+  if (*(int *)(param_1 + 0x18) == 0) {
+    operator_delete(*(undefined4 *)(param_1 + 0x2c));
+    *(undefined4 *)(param_1 + 0x2c) = 0;
+    *(undefined4 *)(param_1 + 0x24) = 0;
+  }
+  if (*(int **)(param_1 + 0x38) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 0x38) + 4))(1);
+  }
+  *(undefined4 *)(param_1 + 0x38) = 0;
+  if (*(int **)(param_1 + 0x34) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 0x34) + 4))(1);
+  }
+  *(undefined4 *)(param_1 + 0x34) = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611D18
+// GHIDRA_NAME CArchive::Close
+// GHIDRA_PROTO undefined __thiscall Close(void)
+
+void CArchive::Close()
+
+{
+  Flush();
+  this->m_pFile = (void *)0x0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611D26
+// GHIDRA_NAME CArchive::Read
+// GHIDRA_PROTO undefined __thiscall Read(int param_1, uint param_2)
+
+int CArchive::Read(int param_1, uint param_2)
 
 {
   int iVar1;
@@ -62,7 +179,7 @@ int CArchive::_Read_CArchive__QAEIPAXI_Z(int param_1, uint param_2)
   uint uVar5;
   byte *local_c;
   uint local_8;
-
+  
   if (param_2 == 0) {
     iVar1 = 0;
   }
@@ -126,11 +243,46 @@ int CArchive::_Read_CArchive__QAEIPAXI_Z(int param_1, uint param_2)
   return iVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00611F3E
-// GHIDRA_NAME CArchive::?FillBuffer@CArchive@@QAEXI@Z
-// GHIDRA_PROTO undefined __thiscall ?FillBuffer@CArchive@@QAEXI@Z(uint param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x00611E34
+// GHIDRA_NAME CArchive::Write
+// GHIDRA_PROTO undefined __thiscall Write(int param_1, uint param_2)
 
-void CArchive::_FillBuffer_CArchive__QAEXI_Z(uint param_1)
+void CArchive::Write(int param_1, uint param_2)
+
+{
+  uint uVar1;
+  uint uVar2;
+  int iVar3;
+  
+  if (param_2 != 0) {
+    uVar2 = (int)this->m_lpBufMax - (int)this->m_lpBufCur;
+    if (param_2 < uVar2) {
+      uVar2 = param_2;
+    }
+    _memcpy(this->m_lpBufCur,param_1,uVar2);
+    this->m_lpBufCur = this->m_lpBufCur + uVar2;
+    uVar1 = param_2 - uVar2;
+    if (uVar1 != 0) {
+      Flush();
+      iVar3 = uVar1 - uVar1 % (uint)this->m_nBufSize;
+      (**(code **)(*(int *)this->m_pFile + 0x40))(param_1 + uVar2,iVar3);
+      if (this->m_bDirectBuffer != 0) {
+        (**(code **)(*(int *)this->m_pFile + 0x58))
+                  (1,this->m_nBufSize,&this->m_lpBufStart,&this->m_lpBufMax);
+        this->m_lpBufCur = this->m_lpBufStart;
+      }
+      _memcpy(this->m_lpBufCur,param_1 + uVar2 + iVar3,uVar1 - iVar3);
+      this->m_lpBufCur = this->m_lpBufCur + (uVar1 - iVar3);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611F3E
+// GHIDRA_NAME CArchive::FillBuffer
+// GHIDRA_PROTO undefined __thiscall FillBuffer(uint param_1)
+
+void CArchive::FillBuffer(uint param_1)
 
 {
   byte *pbVar1;
@@ -139,7 +291,7 @@ void CArchive::_FillBuffer_CArchive__QAEXI_Z(uint param_1)
   int iVar4;
   byte *pbVar5;
   uint local_8;
-
+  
   pbVar1 = this->m_lpBufCur;
   local_8 = (int)this->m_lpBufMax - (int)pbVar1;
   uVar2 = param_1 + local_8;
@@ -174,8 +326,489 @@ void CArchive::_FillBuffer_CArchive__QAEXI_Z(uint param_1)
     this->m_lpBufCur = this->m_lpBufStart;
   }
   if ((uint)((int)this->m_lpBufMax - (int)this->m_lpBufCur) < uVar2) {
-    _AfxThrowArchiveException__YGXHPBD_Z(3,0);
+    AfxThrowArchiveException(3,0);
   }
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612000
+// GHIDRA_NAME CArchive::WriteCount
+// GHIDRA_PROTO undefined __thiscall WriteCount(TNetMgr_GetTNetMgrClassNamePointer_0x00 * param_1)
+
+void CArchive::WriteCount(TNetMgr_GetTNetMgrClassNamePointer_0x00 *param_1)
+
+{
+  if (param_1 < (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0xffff) {
+    CArchive__operator<<(this,(short)param_1);
+  }
+  else {
+    CArchive__operator<<(this,0xffff);
+    CArchive__operator<<(this,param_1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061202E
+// GHIDRA_NAME CArchive::ReadCount
+// GHIDRA_PROTO undefined ReadCount()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: unsigned long __thiscall CArchive::ReadCount(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: unsigned long __thiscall CArchive::ReadCount(void)
+   
+   Library: nafxcw retail msvc500:static */
+
+CArchive * __fastcall CArchive::ReadCount(CArchive *param_1)
+
+{
+  CArchive *local_c;
+  undefined4 uStack_8;
+  
+  local_c = param_1;
+  uStack_8 = param_1;
+  CArchive__operator>>(param_1,(undefined2 *)((int)&uStack_8 + 2));
+  if (uStack_8._2_2_ == 0xffff) {
+    CArchive__operator>>(param_1,&local_c);
+  }
+  else {
+    local_c = (CArchive *)(uint)uStack_8._2_2_;
+  }
+  return local_c;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061205E
+// GHIDRA_NAME CArchive::WriteString
+// GHIDRA_PROTO undefined WriteString()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CArchive::WriteString(char const *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CArchive::WriteString(char const *)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CArchive::WriteString(CArchive *param_1,LPCSTR param_2)
+
+{
+  uint uVar1;
+  
+  uVar1 = lstrlenA(param_2);
+  Write(param_1,(int)param_2,uVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061207B
+// GHIDRA_NAME CArchive::ReadString
+// GHIDRA_PROTO undefined ReadString()
+
+int CArchive::ReadString(void)
+
+{
+  char cVar1;
+  int iVar2;
+  undefined1 uVar3;
+  undefined4 extraout_ECX;
+  int iVar4;
+  int unaff_EBP;
+  int iVar5;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  iVar4 = *(int *)(unaff_EBP + 0xc);
+  iVar5 = 0;
+  *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe0;
+  *(undefined4 *)(unaff_EBP + -0x1c) = extraout_ECX;
+  if (iVar4 < 0) {
+    iVar4 = -iVar4;
+  }
+  iVar2 = *(int *)(unaff_EBP + 8);
+  *(undefined4 *)(unaff_EBP + -0x18) = 0;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  do {
+    if (iVar4 <= iVar5) {
+LAB_0061211b:
+      *(undefined1 *)(iVar5 + iVar2) = 0;
+      *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+      return iVar2;
+    }
+    CArchive__operator>>(unaff_EBP + -0x11);
+    cVar1 = *(char *)(unaff_EBP + -0x11);
+    if (cVar1 == '\n') {
+      uVar3 = 10;
+LAB_006120dd:
+      if (*(int *)(unaff_EBP + 0xc) != iVar4) {
+        *(undefined1 *)(iVar5 + iVar2) = uVar3;
+        iVar5 = iVar5 + 1;
+      }
+      goto LAB_0061211b;
+    }
+    if (cVar1 == '\r') {
+      CArchive__operator>>(unaff_EBP + -0x11);
+      uVar3 = *(undefined1 *)(unaff_EBP + -0x11);
+      goto LAB_006120dd;
+    }
+    *(char *)(iVar5 + iVar2) = cVar1;
+    iVar5 = iVar5 + 1;
+    *(int *)(unaff_EBP + -0x18) = iVar5;
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612132
+// GHIDRA_NAME CArchive::ReadString
+// GHIDRA_PROTO undefined __thiscall ReadString(CString * param_1)
+
+bool CArchive::ReadString(CString *param_1)
+
+{
+  LPCSTR lpString;
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  
+  CString::operator=(param_1,&DAT_006a6128);
+  lpString = (LPCSTR)CString::GetBuffer(param_1,0x80);
+  while( true ) {
+    iVar1 = ReadString(lpString,0xffffff80);
+    CString::ReleaseBuffer(param_1,-1);
+    if (iVar1 == 0) break;
+    iVar2 = lstrlenA(lpString);
+    if ((iVar2 < 0x80) || (lpString[iVar2 + -1] == '\n')) break;
+    iVar1 = *(int *)(param_1->m_pchData + -8);
+    iVar2 = CString::GetBuffer(param_1,iVar1 + 0x80);
+    lpString = (LPCSTR)(iVar2 + iVar1);
+  }
+  iVar3 = CString::GetBuffer(param_1,0);
+  iVar2 = *(int *)(param_1->m_pchData + -8);
+  if ((iVar2 != 0) && (*(char *)(iVar2 + -1 + iVar3) == '\n')) {
+    CString::GetBufferSetLength(param_1,iVar2 + -1);
+  }
+  return iVar1 != 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006121CD
+// GHIDRA_NAME CArchive::CheckCount
+// GHIDRA_PROTO undefined CheckCount()
+
+void __fastcall CArchive::CheckCount(int param_1)
+
+{
+  if (0x3ffffffd < *(uint *)(param_1 + 0x30)) {
+    AfxThrowArchiveException(5,*(undefined4 *)(param_1 + 0x10));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006121E1
+// GHIDRA_NAME CArchive::WriteObject
+// GHIDRA_PROTO undefined __thiscall WriteObject(int * param_1)
+
+void CArchive::WriteObject(int *param_1)
+
+{
+  undefined4 *puVar1;
+  int iVar2;
+  int *piVar3;
+  TNetMgr_GetTNetMgrClassNamePointer_0x00 *pTVar4;
+  
+  MapObject(0);
+  if (param_1 == (int *)0x0) {
+    pTVar4 = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+  }
+  else {
+    puVar1 = (undefined4 *)CMapPtrToPtr::operator[](this->m_pLoadArrayOrStoreMap,(int)param_1);
+    pTVar4 = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)*puVar1;
+    if (pTVar4 == (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0) {
+      puVar1 = (undefined4 *)*param_1;
+      iVar2 = (*(code *)*puVar1)();
+      WriteClass(this,iVar2);
+      CheckCount();
+      piVar3 = (int *)CMapPtrToPtr::operator[](this->m_pLoadArrayOrStoreMap,(int)param_1);
+      *piVar3 = this->m_nMapCount;
+      this->m_nMapCount = this->m_nMapCount + 1;
+      (*(code *)puVar1[2])(this);
+      return;
+    }
+    if ((TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x7ffe < pTVar4) {
+      CArchive__operator<<(this,0x7fff);
+      CArchive__operator<<(this,pTVar4);
+      return;
+    }
+  }
+  CArchive__operator<<(this,(short)pTVar4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061225E
+// GHIDRA_NAME CArchive::ReadObject
+// GHIDRA_PROTO undefined ReadObject()
+
+CObject * __thiscall CArchive::ReadObject(uint param_1,int param_2)
+
+{
+  undefined4 uVar1;
+  int iVar2;
+  CObject *this;
+  uint local_c;
+  uint local_8;
+  
+  local_c = param_1;
+  local_8 = param_1;
+  iVar2 = ReadClass(param_2,&local_c,&local_8);
+  if (iVar2 == 0) {
+    if (*(int *)(*(int *)(param_1 + 0x34) + 8) - 1U < local_8) {
+      AfxThrowArchiveException(5,*(undefined4 *)(param_1 + 0x10));
+    }
+    this = *(CObject **)(*(int *)(*(int *)(param_1 + 0x34) + 4) + local_8 * 4);
+    if ((this != (CObject *)0x0) && (param_2 != 0)) {
+      iVar2 = CObject::IsKindOf(this);
+      if (iVar2 == 0) {
+        AfxThrowArchiveException(6,*(undefined4 *)(param_1 + 0x10));
+      }
+    }
+  }
+  else {
+    this = (CObject *)CRuntimeClass::CreateObject();
+    if (this == (CObject *)0x0) {
+      AfxThrowMemoryException();
+    }
+    CheckCount();
+    iVar2 = *(int *)(param_1 + 0x30);
+    *(int *)(param_1 + 0x30) = iVar2 + 1;
+    CPtrArray::InsertAt(iVar2,this,1);
+    uVar1 = *(undefined4 *)(param_1 + 0xc);
+    *(uint *)(param_1 + 0xc) = local_c;
+    (*this->vftable[1].SetForeignMinisterReadyFlag14)(param_1);
+    *(undefined4 *)(param_1 + 0xc) = uVar1;
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612315
+// GHIDRA_NAME CArchive::MapObject
+// GHIDRA_PROTO undefined MapObject()
+
+void CArchive::MapObject(void)
+
+{
+  undefined4 uVar1;
+  int iVar2;
+  CMapPtrToPtr *pCVar3;
+  undefined4 *puVar4;
+  CPtrArray *this;
+  undefined4 uVar5;
+  int extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  if ((~(byte)*(undefined4 *)(extraout_ECX + 0x14) & 1) == 0) {
+    if (*(int *)(extraout_ECX + 0x34) == 0) {
+      this = (CPtrArray *)operator_new(0x14);
+      *(CPtrArray **)(unaff_EBP + -0x10) = this;
+      *(undefined4 *)(unaff_EBP + -4) = 1;
+      if (this == (CPtrArray *)0x0) {
+        uVar5 = 0;
+      }
+      else {
+        uVar5 = CPtrArray::CPtrArray(this);
+      }
+      uVar1 = *(undefined4 *)(extraout_ECX + 0x3c);
+      *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+      *(undefined4 *)(extraout_ECX + 0x34) = uVar5;
+      CPtrArray::SetSize(1,uVar1);
+      **(undefined4 **)(*(int *)(extraout_ECX + 0x34) + 4) = 0;
+      *(undefined4 *)(extraout_ECX + 0x30) = 1;
+    }
+    if (*(int *)(unaff_EBP + 8) != 0) {
+      CheckCount();
+      iVar2 = *(int *)(extraout_ECX + 0x30);
+      uVar5 = *(undefined4 *)(unaff_EBP + 8);
+      *(int *)(extraout_ECX + 0x30) = iVar2 + 1;
+      CPtrArray::InsertAt(iVar2,uVar5,1);
+    }
+  }
+  else {
+    if (*(int *)(extraout_ECX + 0x34) == 0) {
+      pCVar3 = (CMapPtrToPtr *)operator_new(0x1c);
+      *(CMapPtrToPtr **)(unaff_EBP + -0x10) = pCVar3;
+      *(undefined4 *)(unaff_EBP + -4) = 0;
+      if (pCVar3 == (CMapPtrToPtr *)0x0) {
+        pCVar3 = (CMapPtrToPtr *)0x0;
+      }
+      else {
+        pCVar3 = (CMapPtrToPtr *)
+                 CMapPtrToPtr::CMapPtrToPtr(pCVar3,*(TNetMgrVtbl **)(extraout_ECX + 0x3c));
+      }
+      *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+      *(CMapPtrToPtr **)(extraout_ECX + 0x34) = pCVar3;
+      CMapPtrToPtr::InitHashTable(pCVar3,*(TNetMgrVtbl **)(extraout_ECX + 0x40),1);
+      puVar4 = (undefined4 *)CMapPtrToPtr::operator[](*(CMapPtrToPtr **)(extraout_ECX + 0x34),0);
+      *puVar4 = 0;
+      *(undefined4 *)(extraout_ECX + 0x30) = 1;
+    }
+    if (*(int *)(unaff_EBP + 8) != 0) {
+      CheckCount();
+      puVar4 = (undefined4 *)
+               CMapPtrToPtr::operator[]
+                         (*(CMapPtrToPtr **)(extraout_ECX + 0x34),*(int *)(unaff_EBP + 8));
+      *puVar4 = *(undefined4 *)(extraout_ECX + 0x30);
+      *(int *)(extraout_ECX + 0x30) = *(int *)(extraout_ECX + 0x30) + 1;
+    }
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061240D
+// GHIDRA_NAME CArchive::WriteClass
+// GHIDRA_PROTO undefined __thiscall WriteClass(int param_1)
+
+void CArchive::WriteClass(int param_1)
+
+{
+  uint uVar1;
+  uint *puVar2;
+  int *piVar3;
+  
+  if (*(int *)(param_1 + 8) == 0xffff) {
+    AfxThrowNotSupportedException();
+  }
+  MapObject(0);
+  puVar2 = (uint *)CMapPtrToPtr::operator[](this->m_pLoadArrayOrStoreMap,param_1);
+  uVar1 = *puVar2;
+  if (uVar1 == 0) {
+    CArchive__operator<<(this,0xffff);
+    CRuntimeClass::Store(this);
+    CheckCount();
+    piVar3 = (int *)CMapPtrToPtr::operator[](this->m_pLoadArrayOrStoreMap,param_1);
+    *piVar3 = this->m_nMapCount;
+    this->m_nMapCount = this->m_nMapCount + 1;
+  }
+  else if (uVar1 < 0x7fff) {
+    CArchive__operator<<(this,(ushort)uVar1 | 0x8000);
+  }
+  else {
+    CArchive__operator<<(this,0x7fff);
+    CArchive__operator<<(this,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)(uVar1 | 0x80000000));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061249E
+// GHIDRA_NAME CArchive::ReadClass
+// GHIDRA_PROTO undefined ReadClass()
+
+CRuntimeClass * CArchive::ReadClass(void)
+
+{
+  undefined4 uVar1;
+  CRuntimeClass *this;
+  CMapPtrToPtr *this_00;
+  void *pvVar2;
+  undefined4 *puVar3;
+  uint uVar4;
+  int iVar5;
+  CArchive *this_01;
+  int unaff_EBP;
+  uint uVar6;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  if ((*(int *)(unaff_EBP + 8) != 0) && (*(int *)(*(int *)(unaff_EBP + 8) + 8) == 0xffff)) {
+    AfxThrowNotSupportedException();
+  }
+  MapObject(0);
+  CArchive__operator>>(this_01,(undefined2 *)(unaff_EBP + -0xe));
+  if (*(short *)(unaff_EBP + -0xe) == 0x7fff) {
+    CArchive__operator>>(this_01,(undefined4 *)(unaff_EBP + -0x18));
+  }
+  else {
+    *(uint *)(unaff_EBP + -0x18) =
+         CONCAT22(*(undefined2 *)(unaff_EBP + -0xe),*(undefined2 *)(unaff_EBP + -0xe)) & 0x80007fff;
+  }
+  if ((*(uint *)(unaff_EBP + -0x18) & 0x80000000) == 0) {
+    puVar3 = *(undefined4 **)(unaff_EBP + 0x10);
+    if (puVar3 == (undefined4 *)0x0) {
+      AfxThrowArchiveException(5,(this_01->m_strFileName).m_pchData);
+    }
+    *puVar3 = *(undefined4 *)(unaff_EBP + -0x18);
+    this = (CRuntimeClass *)0x0;
+  }
+  else {
+    if (*(short *)(unaff_EBP + -0xe) == -1) {
+      this = (CRuntimeClass *)CRuntimeClass::Load(this_01,unaff_EBP + -0x14);
+      if (this == (CRuntimeClass *)0x0) {
+        AfxThrowArchiveException(6,(this_01->m_strFileName).m_pchData);
+      }
+      if ((this->m_wSchema & 0x7fffffffU) != *(uint *)(unaff_EBP + -0x14)) {
+        if ((this->m_wSchema & 0x80000000U) == 0) {
+          AfxThrowArchiveException(7,(this_01->m_strFileName).m_pchData);
+        }
+        else {
+          if (this_01->m_pSchemaMap == (void *)0x0) {
+            this_00 = (CMapPtrToPtr *)operator_new(0x1c);
+            *(CMapPtrToPtr **)(unaff_EBP + -0x1c) = this_00;
+            *(undefined4 *)(unaff_EBP + -4) = 0;
+            if (this_00 == (CMapPtrToPtr *)0x0) {
+              pvVar2 = (void *)0x0;
+            }
+            else {
+              pvVar2 = (void *)CMapPtrToPtr::CMapPtrToPtr(this_00,(TNetMgrVtbl *)0xa);
+            }
+            *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+            this_01->m_pSchemaMap = pvVar2;
+          }
+          uVar1 = *(undefined4 *)(unaff_EBP + -0x14);
+          puVar3 = (undefined4 *)CMapPtrToPtr::operator[](this_01->m_pSchemaMap,(int)this);
+          *puVar3 = uVar1;
+        }
+      }
+      CheckCount();
+      iVar5 = this_01->m_nMapCount;
+      this_01->m_nMapCount = iVar5 + 1;
+      CPtrArray::InsertAt(iVar5,this,1);
+      uVar4 = *(uint *)(unaff_EBP + -0x14);
+    }
+    else {
+      uVar4 = *(uint *)(unaff_EBP + -0x18);
+      uVar6 = uVar4 & 0x7fffffff;
+      if ((uVar6 == 0) || (*(int *)((int)this_01->m_pLoadArrayOrStoreMap + 8) - 1U < uVar6)) {
+        AfxThrowArchiveException(5,(this_01->m_strFileName).m_pchData);
+      }
+      this = *(CRuntimeClass **)(*(int *)((int)this_01->m_pLoadArrayOrStoreMap + 4) + uVar4 * 4);
+      if ((this_01->m_pSchemaMap == (CMapPtrToPtr *)0x0) ||
+         (uVar4 = CMapPtrToPtr::GetValueAt(this_01->m_pSchemaMap,(uint)this), uVar4 == 0)) {
+        uVar4 = this->m_wSchema & 0x7fffffff;
+      }
+      *(uint *)(unaff_EBP + -0x14) = uVar4;
+    }
+    if (*(int *)(unaff_EBP + 8) != 0) {
+      iVar5 = CRuntimeClass::IsDerivedFrom(this,*(CRuntimeClass **)(unaff_EBP + 8));
+      if (iVar5 == 0) {
+        AfxThrowArchiveException(6,(this_01->m_strFileName).m_pchData);
+      }
+      uVar4 = *(uint *)(unaff_EBP + -0x14);
+    }
+    if (*(uint **)(unaff_EBP + 0xc) == (uint *)0x0) {
+      this_01->m_nObjectSchema = uVar4;
+    }
+    else {
+      **(uint **)(unaff_EBP + 0xc) = uVar4;
+    }
+    if (*(undefined4 **)(unaff_EBP + 0x10) != (undefined4 *)0x0) {
+      **(undefined4 **)(unaff_EBP + 0x10) = *(undefined4 *)(unaff_EBP + -0x18);
+    }
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
 }
 

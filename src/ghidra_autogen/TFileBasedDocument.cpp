@@ -3,9 +3,40 @@
 // Program: Imperialism.exe
 // Bucket: TFileBasedDocument.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004863C0
+// GHIDRA_NAME TFileBasedDocument::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TFileBasedDocument::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(4);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004863F0
+// GHIDRA_NAME TFileBasedDocument::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TFileBasedDocument * TFileBasedDocument::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x0040850d();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00486420
 // GHIDRA_NAME TFileBasedDocument::CreateTFileBasedDocumentInstance
-// GHIDRA_PROTO undefined __thiscall TFileBasedDocument::CreateTFileBasedDocumentInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTFileBasedDocumentInstance(void)
 
 void TFileBasedDocument::CreateTFileBasedDocumentInstance()
 
@@ -16,56 +47,12 @@ void TFileBasedDocument::CreateTFileBasedDocumentInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486440
-// GHIDRA_NAME TFileBasedDocument::GetTDocumentClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTDocumentClassNamePointer(void)
+// GHIDRA_NAME TFileBasedDocument::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFileBasedDocument::GetTDocumentClassNamePointer()
-
-{
-  return &classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00486570
-// GHIDRA_NAME TFileBasedDocument::ConstructTFileBasedDocumentBaseState
-// GHIDRA_PROTO undefined ConstructTFileBasedDocumentBaseState()
-
-TEventHandler * TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
+CRuntimeClass * TFileBasedDocument::GetRuntimeClass()
 
 {
-  TEventHandler *this;
-  TEventHandler *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062ea7a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TEventHandler *)__2_YAPAXI_Z(0x20);
-  local_4 = 0;
-  pTVar1 = (TEventHandler *)0x0;
-  if (this != (TEventHandler *)0x0) {
-    TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults(this);
-    this->vftable = (TEventHandlerVtbl *)&TCommandHandlerVtbl_00648b20;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004865E0
-// GHIDRA_NAME TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTFileBasedDocumentAndMaybeFree(byte param_1)
-
-TFileBasedDocument * TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree(byte param_1)
-
-{
-  TCommandHandler::CreateTCommandHandlerInstance((TCommandHandler *)this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
+  return &classTFileBasedDocument;
 }
 

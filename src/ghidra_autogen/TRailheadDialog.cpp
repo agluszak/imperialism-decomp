@@ -3,6 +3,39 @@
 // Program: Imperialism.exe
 // Bucket: TRailheadDialog.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004BCF40
+// GHIDRA_NAME TRailheadDialog::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TRailheadDialog::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006310d2;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(100);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    local_4 = CONCAT31(local_4._1_3_,1);
+    *puVar1 = &TDialogView::_vftable_;
+    func_0x004057a4(s_D__Ambit_Toy_h_0069633c,0x23);
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004BCFD0
 // GHIDRA_NAME TRailheadDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,21 +43,21 @@
 TRailheadDialog * TRailheadDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004026df();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD020
-// GHIDRA_NAME TRailheadDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TRailheadDialog::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRailheadDialog::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TRailheadDialog::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTRailheadDialog;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD040
@@ -41,50 +74,45 @@ void TRailheadDialog::ConstructTRailheadDialogBaseState(int param_1)
   undefined uVar3;
   undefined3 extraout_var;
   int *piVar4;
-
+  
   *(int *)&this->field_0x60 = param_1;
   uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63686f69);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x732);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x732);
   }
   iVar1 = *(int *)CONCAT31(extraout_var,uVar3);
-  (**(code **)(iVar1 + 0x1c8))(TradeSummarySelectionMap_006960e0.summaryTags[0]);
+  (**(code **)(iVar1 + 0x1c8))(g_pTradeSummarySelectionMap.summaryTags[0]);
   if (*(short *)(param_1 + 10) == 0) {
     pcVar2 = *(code **)(iVar1 + 0x94);
-    piVar4 = (int *)(*pcVar2)(TradeSummarySelectionMap_006960e0.summaryTags[3]);
+    piVar4 = (int *)(*pcVar2)(g_pTradeSummarySelectionMap.summaryTags[3]);
     if (piVar4 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x73a);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x73a);
     }
     iVar1 = *piVar4;
     (**(code **)(iVar1 + 0xa8))(0,1);
     (**(code **)(iVar1 + 0x1a8))(1,1);
-    piVar4 = (int *)(*pcVar2)(TradeSummarySelectionMap_006960e0.summaryTags[4]);
+    piVar4 = (int *)(*pcVar2)(g_pTradeSummarySelectionMap.summaryTags[4]);
     if (piVar4 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x73f);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x73f);
     }
     iVar1 = *piVar4;
     (**(code **)(iVar1 + 0xa8))(0,1);
     (**(code **)(iVar1 + 0x1a8))(1,1);
     piVar4 = (int *)(*pcVar2)(_DAT_00696160);
     if (piVar4 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x744);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x744);
     }
     iVar1 = *piVar4;
     (**(code **)(iVar1 + 0xa8))(0,1);
     (**(code **)(iVar1 + 0x1a8))(1,1);
-    piVar4 = (int *)(*pcVar2)(TradeSummarySelectionMap_006960e0.primaryControlTag);
+    piVar4 = (int *)(*pcVar2)(g_pTradeSummarySelectionMap.primaryControlTag);
     if (piVar4 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x749);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x749);
     }
     iVar1 = *piVar4;
     (**(code **)(iVar1 + 0xa8))(0,1);
@@ -94,28 +122,27 @@ void TRailheadDialog::ConstructTRailheadDialogBaseState(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD260
-// GHIDRA_NAME TRailheadDialog::DestructTRailheadDialogAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTRailheadDialogAndMaybeFree(int param_1)
+// GHIDRA_NAME TRailheadDialog::VTableSlot69
+// GHIDRA_PROTO undefined __thiscall VTableSlot69(int param_1)
 
-void TRailheadDialog::DestructTRailheadDialogAndMaybeFree(int param_1)
+void TRailheadDialog::VTableSlot69(int param_1)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   dword dVar2;
   int iVar3;
-
+  
   if (param_1 == 0x6f6b6179) {
     uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63686f69);
     if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x75e);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x75e);
     }
     dVar2 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1c4))();
     iVar3 = 0;
     do {
-      if (TradeSummarySelectionMap_006960e0.summaryTags[(short)iVar3] == dVar2) break;
+      if (g_pTradeSummarySelectionMap.summaryTags[(short)iVar3] == dVar2) break;
       iVar3 = iVar3 + 1;
     } while ((short)iVar3 < 0x17);
     (**(code **)(**(int **)&this->field_0x60 + 0x40))(iVar3);

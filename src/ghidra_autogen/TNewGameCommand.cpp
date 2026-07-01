@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TNewGameCommand.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0049DD40
+// GHIDRA_NAME TNewGameCommand::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TNewGameCommand::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062fcfa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x18);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403d5f();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DDB0
 // GHIDRA_NAME TNewGameCommand::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
@@ -16,27 +46,27 @@
 void TNewGameCommand::OrphanRetStub_00487a00()
 
 {
-  ReinitializeGameFlowAndPostTurnEventCode(0);
+  func_0x00403553(0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DDD0
-// GHIDRA_NAME TNewGameCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
+// GHIDRA_NAME TNewGameCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNewGameCommand * TNewGameCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
+TNewGameCommand * TNewGameCommand::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TNewGameCommand::CreateTNewGameCommandInstance(this);
+  func_0x00403df0();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DE00
 // GHIDRA_NAME TNewGameCommand::CreateTNewGameCommandInstance
-// GHIDRA_PROTO undefined __thiscall TNewGameCommand::CreateTNewGameCommandInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTNewGameCommandInstance(void)
 
 void TNewGameCommand::CreateTNewGameCommandInstance()
 
@@ -47,43 +77,32 @@ void TNewGameCommand::CreateTNewGameCommandInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DE20
-// GHIDRA_NAME TNewGameCommand::GetTEventClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
+// GHIDRA_NAME TNewGameCommand::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNewGameCommand::GetTEventClassNamePointer()
+CRuntimeClass * TNewGameCommand::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNewGameCommand;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049DE40
-// GHIDRA_NAME TNewGameCommand::ConstructTNewGameCommandBaseState
-// GHIDRA_PROTO undefined ConstructTNewGameCommandBaseState()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E280
+// GHIDRA_NAME TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot18_At0049e280
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At0049e280(int * param_1)
 
-TApplication * TNewGameCommand::ConstructTNewGameCommandBaseState(void)
+void __thiscall
+TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot18_At0049e280
+          (TNewGameCommand *this,int *param_1)
 
 {
-  TApplication *this;
-  TApplication *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062fd1a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TApplication *)__2_YAPAXI_Z(0x54);
-  local_4 = 0;
-  pTVar1 = (TApplication *)0x0;
-  if (this != (TApplication *)0x0) {
-    TApplication::ConstructGlobalUiRootControllerState(this);
-    this->vftable = (TApplicationVtbl *)&TAmbitApplicationVtbl_0063e398;
-    pTVar1 = this;
+  func_0x00403517(param_1);
+  if (g_nSaveFormatVersion < 0x2a) {
+    (**(code **)(*param_1 + 0x3c))(&this[3].field_0x8,2);
+    *(undefined **)&this[3].field_0x8 = &DAT_00657573;
+    return;
   }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  (**(code **)(*param_1 + 0x3c))(&this[3].field_0x8,4);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E320
@@ -105,22 +124,23 @@ TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
   int iVar2;
   int iVar3;
   byte bVar4;
+  undefined4 in_stack_0000000c;
   int local_8;
   int local_4;
-
-  iVar3 = InvokeAfxThreadAndCallSecondaryRefresh();
+  
+  iVar3 = func_0x004026bc();
   if (((iVar3 == 0) && (this[3].vftable != (TNewGameCommandVtbl *)0x0)) &&
      ((sVar1 = *(short *)&g_pUiRuntimeContext->field_0x4, sVar1 == 0x7dd ||
       ((((sVar1 == 0x3b8 || (sVar1 == 0xed8)) || (sVar1 == 0xf3c)) || (sVar1 == 0x3c0)))))) {
-    iVar3 = InvokeAfxThreadAndCallSecondaryRefresh();
+    iVar3 = func_0x004026bc();
     if (iVar3 == 0) {
       local_8 = param_1;
       local_4 = param_2;
-      (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x144))(&local_8);
+      (**(code **)(**(int **)(g_pDisplayMgr + 4) + 0x144))(&local_8);
       if ((-200 < local_8) && (-200 < local_4)) {
-        iVar3 = *(int *)(*(int *)(DAT_006a2158 + 4) + 0x34);
+        iVar3 = *(int *)(*(int *)(g_pDisplayMgr + 4) + 0x34);
         if ((local_8 < iVar3 + 200) &&
-           (iVar2 = *(int *)(*(int *)(DAT_006a2158 + 4) + 0x38), local_4 < iVar2 + 200)) {
+           (iVar2 = *(int *)(*(int *)(g_pDisplayMgr + 4) + 0x38), local_4 < iVar2 + 200)) {
           bVar4 = 0;
           if (local_8 < 5) {
             bVar4 = 8;
@@ -135,7 +155,7 @@ TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
             bVar4 = bVar4 | 2;
           }
           if (bVar4 != 0) {
-            iVar3 = GetTickCountDiv16();
+            iVar3 = func_0x004092d7();
             if ((iVar3 < DAT_006a21c0) || (DAT_006a21c0 + 3 < iVar3)) {
               DAT_006a21c0 = iVar3;
               (**(code **)((this[3].vftable)->GetTEventClassNamePointer + 0x1d0))(bVar4);
@@ -146,51 +166,7 @@ TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
       }
     }
   }
-  CMainFrame::DispatchVirtualSlotF8_WithArg((CMainFrame *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004B4F70
-// GHIDRA_NAME TNewGameCommand::InitializeBasicCityOrderContext
-// GHIDRA_PROTO undefined __thiscall TNewGameCommand::InitializeBasicCityOrderContext(int param_1, undefined2 param_2)
-
-void __thiscall
-TNewGameCommand::InitializeBasicCityOrderContext
-          (TNewGameCommand *this,int param_1,undefined2 param_2)
-
-{
-  int iVar1;
-  undefined4 *puVar2;
-
-  *(int *)&this->field_0x8 = param_1;
-  *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
-  *(undefined2 *)&this[3].vftable = param_2;
-  *(undefined2 *)&this->field_0x4 = 0;
-  puVar2 = (undefined4 *)&this->field_0x10;
-  for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
-  }
-  *(undefined2 *)puVar2 = 0;
-  *(undefined4 *)&this[2].field_0x14 = 0;
-  *(undefined2 *)&this[2].field_0x10 = 0;
-  *(undefined2 *)&this[2].field_0xe = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006054AA
-// GHIDRA_NAME TNewGameCommand::?OnOK@CDialog@@MAEXXZ
-// GHIDRA_PROTO undefined __thiscall ?OnOK@CDialog@@MAEXXZ(void)
-
-void TNewGameCommand::_OnOK_CDialog__MAEXXZ()
-
-{
-  int iVar1;
-
-  iVar1 = _UpdateData_CWnd__QAEHH_Z(1);
-  if (iVar1 != 0) {
-    _EndDialog_CDialog__QAEXH_Z(1);
-  }
+  func_0x00405551(param_1,param_2,in_stack_0000000c);
   return;
 }
 

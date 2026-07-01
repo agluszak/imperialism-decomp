@@ -4,46 +4,43 @@
 // Bucket: TWarningView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592860
-// GHIDRA_NAME TWarningView::?CreateTWarningViewInstance@@YAPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@XZ
-// GHIDRA_PROTO undefined ?CreateTWarningViewInstance@@YAPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@XZ()
+// GHIDRA_NAME TWarningView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton *
-TWarningView::
-_CreateTWarningViewInstance__YAPAUWarningViewState___Z_imperialismsrcgameTWarningView_cpp14012305__XZ
-          (void)
+undefined4 * TWarningView::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006380fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TWarningViewVtbl **)this = &TWarningViewVtbl_006687b8;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005928E0
-// GHIDRA_NAME TWarningView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TWarningView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TWarningView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TWarningView::GetRuntimeClass()
 
 {
-  return &g_pClassDescTWarningView;
+  return &classTWarningView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592900
@@ -56,8 +53,8 @@ _ConstructTWarningViewBaseState__YIPAUWarningViewState___Z_imperialismsrcgameTWa
           (TWarningView *this)
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TWarningViewVtbl_006687b8;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -68,34 +65,33 @@ _ConstructTWarningViewBaseState__YIPAUWarningViewState___Z_imperialismsrcgameTWa
 TWarningView * TWarningView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004068ed();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592980
-// GHIDRA_NAME TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_NAME TWarningView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void __thiscall
-TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TWarningView *this,int param_1,int param_2)
+void TWarningView::HandleEvent(int param_1, int param_2)
 
 {
   TSimMgrVtbl *pTVar1;
+  undefined4 in_stack_0000000c;
   undefined4 uVar2;
-
+  
   if (param_1 == 0x22) {
     switch(*(undefined4 *)(param_2 + 0x1c)) {
     case 0x70696331:
       (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x68);
-      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0x22);
+      func_0x00404566(0x22,param_2,param_2);
       return;
     case 0x70696332:
       (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x67);
-      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0x22);
+      func_0x00404566(0x22,param_2,param_2);
       return;
     case 0x70696333:
       uVar2 = 0x6a;
@@ -115,15 +111,15 @@ TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
     (*pTVar1[9].GetTSimMgrClassNamePointer)(uVar2);
   }
 switchD_0059299f_default:
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+  func_0x00404566(param_1,param_2,in_stack_0000000c);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592A70
-// GHIDRA_NAME TWarningView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TWarningView::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
+void TWarningView::NoOpUiLifecycleHook()
 
 {
   code *pcVar1;
@@ -145,7 +141,7 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00638140;
   iStack_c = *unaff_FS_OFFSET;
@@ -161,15 +157,15 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(iVar2 + 0xc))();
   if (piVar5 == (int *)0x0) {
     uStack_48 = 0x592aee;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   (**(code **)(iVar2 + 0x1b4))();
-  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffd4,s_Ministers_request_orders__006993a4);
+  CString::CString((CString *)&stack0xffffffd4,s_Ministers_request_orders__006993a4);
   uStack_48 = 0x592b34;
   (**(code **)(iVar2 + 0x1c8))();
   uStack_48 = 0x592b45;
-  CString::__1CString__QAE_XZ(&CStack_34);
+  CString::~CString(&CStack_34);
   uStack_48 = 0;
   uStack_4c = 1;
   CStack_50.m_pchData = "j";
@@ -184,17 +180,17 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(iVar2 + 0xc))();
   if (piVar5 == (int *)0x0) {
     uStack_6c = 0x592b86;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   puVar6 = &stack0xffffffc0;
   (**(code **)(iVar2 + 0x1b4))();
-  CString::__0CString__QAE_PBD_Z(&CStack_50,s_End_Turn_Now_00699394);
+  CString::CString(&CStack_50,s_End_Turn_Now_00699394);
   CStack_34.m_pchData = (char *)0x1;
   uStack_6c = 0x592bcc;
   (**(code **)(iVar2 + 0x1c8))();
   uStack_6c = 0x592bdd;
-  CString::__1CString__QAE_XZ(&CStack_58);
+  CString::~CString(&CStack_58);
   uStack_6c = 0;
   uStack_70 = 1;
   (**(code **)(iVar2 + 0xa4))();
@@ -202,8 +198,8 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
   iVar2 = *piVar5;
   (**(code **)(iVar2 + 0xc))();
   if (piVar5 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   (**(code **)(iVar2 + 0xa8))();
   (**(code **)(iVar2 + 0xa4))();
@@ -213,23 +209,21 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
     iVar2 = *piVar5;
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1aee);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1aee);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
-    CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff84,s_Diplomacy_00699388);
+    CString::CString((CString *)&stack0xffffff84,s_Diplomacy_00699388);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
     uStack_6c = 0xffffffff;
-    CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
+    CString::~CString((CString *)&stack0xffffff7c);
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar5 = (int *)(*pcVar1)(0x70696331);
     iVar2 = *piVar5;
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1af4);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1af4);
     }
     (**(code **)(iVar2 + 0xa8))(1,0);
     (**(code **)(iVar2 + 0xa4))(1,0);
@@ -239,23 +233,21 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
     iVar2 = *piVar5;
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1afc);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1afc);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
-    CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff84,s_Transport_00694b14);
+    CString::CString((CString *)&stack0xffffff84,s_Transport_00694b14);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
     uStack_6c = 0xffffffff;
-    CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
+    CString::~CString((CString *)&stack0xffffff7c);
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar5 = (int *)(*pcVar1)(0x70696334);
     iVar2 = *piVar5;
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b02);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b02);
     }
     (**(code **)(iVar2 + 0xa8))(1,0);
     (**(code **)(iVar2 + 0xa4))(1,0);
@@ -265,23 +257,21 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
     iVar2 = *piVar5;
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b0a);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b0a);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
-    CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff84,s_Trade_00699380);
+    CString::CString((CString *)&stack0xffffff84,s_Trade_00699380);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
     uStack_6c = 0xffffffff;
-    CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
+    CString::~CString((CString *)&stack0xffffff7c);
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar5 = (int *)(*pcVar1)(0x70696332);
     iVar2 = *piVar5;
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b10);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b10);
     }
     (**(code **)(iVar2 + 0xa8))(1,0);
     (**(code **)(iVar2 + 0xa4))(1,0);
@@ -291,23 +281,21 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
     iVar2 = *piVar5;
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b18);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b18);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
-    CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff84,s_Industry_00699374);
+    CString::CString((CString *)&stack0xffffff84,s_Industry_00699374);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
     uStack_6c = 0xffffffff;
-    CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
+    CString::~CString((CString *)&stack0xffffff7c);
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar5 = (int *)(*pcVar1)(0x70696333);
     iVar2 = *piVar5;
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b1e);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b1e);
     }
     (**(code **)(iVar2 + 0xa8))(1,0);
     (**(code **)(iVar2 + 0xa4))(1,0);

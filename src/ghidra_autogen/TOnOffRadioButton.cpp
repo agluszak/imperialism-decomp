@@ -4,45 +4,45 @@
 // Bucket: TOnOffRadioButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571930
-// GHIDRA_NAME TOnOffRadioButton::CreateTOnOffRadioButtonInstance
-// GHIDRA_PROTO undefined CreateTOnOffRadioButtonInstance()
+// GHIDRA_NAME TOnOffRadioButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TOnOffRadioButton::CreateTOnOffRadioButtonInstance(void)
+undefined4 * TOnOffRadioButton::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063644a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x98);
+  puVar1 = (undefined4 *)operator_new(0x98);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(undefined2 *)(this + 0x92) = 7000;
-    *(TOnOffRadioButtonVtbl **)this = &TOnOffRadioButtonVtbl_0065f8a8;
-    *(undefined4 *)(this + 0x60) = 0xc;
-    this[0x94] = (thunk_TPictureButton)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
+    *puVar1 = &_vftable_;
+    puVar1[0x18] = 0xc;
+    *(undefined1 *)(puVar1 + 0x25) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005719D0
-// GHIDRA_NAME TOnOffRadioButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TOnOffRadioButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOnOffRadioButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TOnOffRadioButton::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTOnOffRadioButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005719F0
@@ -52,9 +52,9 @@ CRuntimeClass * TOnOffRadioButton::GetTEventHandlerClassNamePointer()
 TOnOffRadioButton * TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  func_0x00401122();
   *(undefined2 *)&this->field_0x92 = 7000;
-  this->vftable = &TOnOffRadioButtonVtbl_0065f8a8;
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x60 = 0xc;
   this->field_0x94 = 0;
   return this;
@@ -67,30 +67,33 @@ TOnOffRadioButton * TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState()
 TOnOffRadioButton * TOnOffRadioButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004051a0();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571A80
-// GHIDRA_NAME TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_NAME TOnOffRadioButton::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+void TOnOffRadioButton::HandleEvent(int param_1)
 
 {
+  undefined4 in_stack_00000008;
+  undefined4 in_stack_0000000c;
+  
   if (param_1 == 0xc) {
     if (this->field_0x64 == '\0') {
       (*this->vftable->OrphanCallChain_C2_I16_00571b20)(1,1);
     }
-    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0xc);
+    func_0x00404566(0xc,in_stack_00000008,in_stack_0000000c);
     return;
   }
   if (param_1 != 0x1f) {
     if (param_1 != 0x20) {
-      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+      func_0x00404566(param_1);
       return;
     }
     (*this->vftable->OrphanCallChain_C2_I16_00571b20)(0,1);
@@ -111,7 +114,7 @@ TOnOffRadioButton::OrphanCallChain_C2_I16_00571b20
 {
   TOnOffRadioButtonVtbl *pTVar1;
   char cVar2;
-
+  
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {

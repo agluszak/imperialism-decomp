@@ -5,24 +5,1070 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00415510
 // GHIDRA_NAME CWinApp::WrapperFor_WriteProfileInt_At00415510
-// GHIDRA_PROTO undefined CWinApp::WrapperFor_WriteProfileInt_At00415510()
+// GHIDRA_PROTO undefined WrapperFor_WriteProfileInt_At00415510()
 
 void CWinApp::WrapperFor_WriteProfileInt_At00415510(undefined4 param_1,undefined4 param_2)
 
 {
-  _WriteProfileInt_CWinApp__QAEHPBD0H_Z(PTR_s_Settings_0063e044,param_1,param_2);
+  WriteProfileInt(g_pRegistrySettingsSectionAlt_0063E044,param_1,param_2);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00618704
-// GHIDRA_NAME CWinApp::?CloseAllDocuments@CWinApp@@QAEXH@Z
-// GHIDRA_PROTO undefined __thiscall ?CloseAllDocuments@CWinApp@@QAEXH@Z(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x006055AE
+// GHIDRA_NAME CWinApp::Run
+// GHIDRA_PROTO undefined __thiscall Run(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Run-stage lifecycle method (called from DispatchMfcAppLifecycle after successful InitInstance).
+// GHIDRA_COMMENT Posts quit if no main window and app shutdown condition is met, then executes RunMfcThreadMessageLoopCore for the active app thread.
+// GHIDRA_COMMENT_END
 
-void CWinApp::_CloseAllDocuments_CWinApp__QAEXH_Z()
+/* Run-stage lifecycle method (called from DispatchMfcAppLifecycle after successful InitInstance).
+   Posts quit if no main window and app shutdown condition is met, then executes
+   RunMfcThreadMessageLoopCore for the active app thread. */
+
+void CWinApp::Run()
+
+{
+  int iVar1;
+  
+  if (*(int *)(this + 0x1c) == 0) {
+    iVar1 = GetMfcThreadStateFlagDword30();
+    if (iVar1 != 0) {
+      AfxPostQuitMessage(0);
+    }
+  }
+  CWinThread::Run();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060567E
+// GHIDRA_NAME CWinApp::OnIdle
+// GHIDRA_PROTO undefined OnIdle()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual int __thiscall CWinApp::OnIdle(long)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual int __thiscall CWinApp::OnIdle(long)
+   
+   Library: nafxcw retail msvc500:static */
+
+bool __thiscall CWinApp::OnIdle(CWinThread *param_1,int param_2)
+
+{
+  int iVar1;
+  int *piVar2;
+  
+  iVar1 = param_2;
+  if (param_2 < 1) {
+    CWinThread::OnIdle(param_1,param_2);
+    param_2 = 0;
+    if (*(int **)(param_1 + 0x80) != (int *)0x0) {
+      param_2 = (**(code **)(**(int **)(param_1 + 0x80) + 0x18))();
+    }
+    while (param_2 != 0) {
+      piVar2 = (int *)(**(code **)(**(int **)(param_1 + 0x80) + 0x1c))(&param_2);
+      (**(code **)(*piVar2 + 0x90))();
+    }
+  }
+  else if (param_2 == 1) {
+    CWinThread::OnIdle(param_1,1);
+  }
+  return iVar1 < 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006056E4
+// GHIDRA_NAME CWinApp::DevModeChange
+// GHIDRA_PROTO undefined DevModeChange()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CWinApp::DevModeChange(char *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CWinApp::DevModeChange(char *)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CWinApp::DevModeChange(HANDLE param_1,LPSTR param_2)
+
+{
+  LPVOID pvVar1;
+  int iVar2;
+  BOOL BVar3;
+  SIZE_T dwBytes;
+  HGLOBAL hMem;
+  PDEVMODEA pDevModeOutput;
+  LONG LVar4;
+  HANDLE local_8;
+  
+  if (*(HGLOBAL *)((int)param_1 + 0x98) != (HGLOBAL)0x0) {
+    local_8 = param_1;
+    pvVar1 = GlobalLock(*(HGLOBAL *)((int)param_1 + 0x98));
+    iVar2 = lstrcmpA((LPCSTR)((uint)*(ushort *)((int)pvVar1 + 2) + (int)pvVar1),param_2);
+    if (iVar2 == 0) {
+      BVar3 = WINSPOOL.DRV::OpenPrinterA(param_2,&local_8,(LPPRINTER_DEFAULTSA)0x0);
+      if (BVar3 != 0) {
+        if (*(int *)((int)param_1 + 0x94) != 0) {
+          AfxGlobalFree(*(int *)((int)param_1 + 0x94));
+        }
+        dwBytes = WINSPOOL.DRV::DocumentPropertiesA((HWND)0x0,local_8,param_2,(PDEVMODEA)0x0,(PDEVMODEA)0x0,0);
+        hMem = GlobalAlloc(0x42,dwBytes);
+        *(HGLOBAL *)((int)param_1 + 0x94) = hMem;
+        pDevModeOutput = GlobalLock(hMem);
+        LVar4 = WINSPOOL.DRV::DocumentPropertiesA((HWND)0x0,local_8,param_2,pDevModeOutput,(PDEVMODEA)0x0,2);
+        if (LVar4 != 1) {
+          AfxGlobalFree(*(undefined4 *)((int)param_1 + 0x94));
+          *(undefined4 *)((int)param_1 + 0x94) = 0;
+        }
+        WINSPOOL.DRV::ClosePrinter(local_8);
+      }
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061842F
+// GHIDRA_NAME CWinApp::OnFileNew
+// GHIDRA_PROTO undefined OnFileNew()
+
+void __fastcall CWinApp::OnFileNew(int param_1)
+
+{
+  if (*(int **)(param_1 + 0x80) != (int *)0x0) {
+                    /* WARNING: Could not recover jumptable at 0x0061843b. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    (**(code **)(**(int **)(param_1 + 0x80) + 0x3c))();
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061844A
+// GHIDRA_NAME CWinApp::DoPromptFileName
+// GHIDRA_PROTO undefined DoPromptFileName()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CWinApp::DoPromptFileName(class CString &,unsigned int,unsigned long,int,class CDocTemplate *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CWinApp::DoPromptFileName(class CString &,unsigned int,unsigned
+   long,int,class CDocTemplate *)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+CWinApp::DoPromptFileName
+          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5,
+          undefined4 param_6)
+
+{
+  (**(code **)(**(int **)(param_1 + 0x80) + 0x34))(param_2,param_3,param_4,param_5,param_6);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061846B
+// GHIDRA_NAME CWinApp::HideApplication
+// GHIDRA_PROTO undefined HideApplication()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CWinApp::HideApplication(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CWinApp::HideApplication(void)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __fastcall CWinApp::HideApplication(int param_1)
+
+{
+  CWnd::ShowWindow(*(CWnd **)(param_1 + 0x1c),0);
+  ShowOwnedPopups(*(HWND *)(*(int *)(param_1 + 0x1c) + 0x1c),0);
+  SetWindowPos(&DAT_006a7a10,0,0,0,0,0x13);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006184FC
+// GHIDRA_NAME CWinApp::EnableModeless
+// GHIDRA_PROTO undefined EnableModeless()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CWinApp::EnableModeless(int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CWinApp::EnableModeless(int)
+   
+   Library: nafxcw retail msvc500:static */
+
+void CWinApp::EnableModeless(undefined4 param_1)
+
+{
+  int *piVar1;
+  int iVar2;
+  
+  piVar1 = (int *)AfxGetMainWnd();
+  if (piVar1 != (int *)0x0) {
+    iVar2 = (**(code **)(*piVar1 + 0xb8))();
+    if ((iVar2 != 0) && ((int *)piVar1[0x1a] != (int *)0x0)) {
+      (**(code **)(*(int *)piVar1[0x1a] + 0x6c))(param_1);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061852A
+// GHIDRA_NAME CWinApp::DoMessageBox
+// GHIDRA_PROTO undefined __thiscall DoMessageBox(LPCSTR param_1, uint param_2, int param_3)
+
+int CWinApp::DoMessageBox(LPCSTR param_1, uint param_2, int param_3)
+
+{
+  int iVar1;
+  int *piVar2;
+  int iVar3;
+  uint uVar4;
+  HWND hWnd;
+  CWinApp *pCVar5;
+  CWinApp *local_8;
+  
+  local_8 = this;
+  EnableModeless(0);
+  iVar1 = CWnd::GetSafeOwner(0,&local_8);
+  pCVar5 = this + 0x9c;
+  if (iVar1 != 0) {
+    piVar2 = (int *)CWnd::GetTopLevelParent();
+    iVar3 = (**(code **)(*piVar2 + 0xb8))();
+    if (iVar3 != 0) {
+      pCVar5 = (CWinApp *)(piVar2 + 0x13);
+    }
+  }
+  iVar3 = *(int *)pCVar5;
+  if (param_3 != 0) {
+    *(int *)pCVar5 = param_3 + 0x30000;
+  }
+  if (((param_2 & 0xf0) == 0) &&
+     ((uVar4 = param_2 & 0xf, uVar4 < 2 || ((2 < uVar4 && (uVar4 < 5)))))) {
+    param_2 = param_2 | 0x30;
+  }
+  AfxGetThreadState();
+  hWnd = (HWND)0x0;
+  if (iVar1 != 0) {
+    hWnd = *(HWND *)(iVar1 + 0x1c);
+  }
+  iVar1 = MessageBoxA(hWnd,param_1,*(LPCSTR *)(this + 0x78),param_2);
+  *(int *)pCVar5 = iVar3;
+  if (local_8 != (CWinApp *)0x0) {
+    EnableWindow((HWND)local_8,1);
+  }
+  EnableModeless(1);
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00618704
+// GHIDRA_NAME CWinApp::CWinApp::CloseAllDocuments_618704
+// GHIDRA_PROTO undefined __thiscall CWinApp::CloseAllDocuments_618704(void)
+
+void CWinApp::CWinApp__CloseAllDocuments_618704()
 
 {
   if (*(int **)(this + 0x80) != (int *)0x0) {
     (**(code **)(**(int **)(this + 0x80) + 0x2c))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006187EB
+// GHIDRA_NAME CWinApp::GetFirstDocTemplatePosition
+// GHIDRA_PROTO undefined GetFirstDocTemplatePosition()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: struct __POSITION * __thiscall CWinApp::GetFirstDocTemplatePosition(void)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: struct __POSITION * __thiscall CWinApp::GetFirstDocTemplatePosition(void)const 
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __fastcall CWinApp::GetFirstDocTemplatePosition(int param_1)
+
+{
+  undefined4 uVar1;
+  
+  if (*(int **)(param_1 + 0x80) == (int *)0x0) {
+    return 0;
+  }
+                    /* WARNING: Could not recover jumptable at 0x006187fa. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  uVar1 = (**(code **)(**(int **)(param_1 + 0x80) + 0x18))();
+  return uVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006187FD
+// GHIDRA_NAME CWinApp::GetNextDocTemplate
+// GHIDRA_PROTO undefined GetNextDocTemplate()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: class CDocTemplate * __thiscall CWinApp::GetNextDocTemplate(struct __POSITION * &)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: class CDocTemplate * __thiscall CWinApp::GetNextDocTemplate(struct __POSITION * &)const 
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CWinApp::GetNextDocTemplate(int param_1,undefined4 param_2)
+
+{
+  (**(code **)(**(int **)(param_1 + 0x80) + 0x1c))(param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061880F
+// GHIDRA_NAME CWinApp::WriteProfileInt
+// GHIDRA_PROTO undefined WriteProfileInt()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CWinApp::WriteProfileInt(char const *,char const *,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CWinApp::WriteProfileInt(char const *,char const *,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+uint __thiscall
+CWinApp::WriteProfileInt(int param_1,LPCSTR param_2,LPCSTR param_3,undefined4 param_4)
+
+{
+  HKEY hKey;
+  LSTATUS LVar1;
+  uint uVar2;
+  CHAR local_14 [16];
+  
+  if (*(int *)(param_1 + 0x7c) == 0) {
+    wsprintfA(local_14,&g_szDecimalFormat,param_4);
+    uVar2 = WritePrivateProfileStringA(param_2,param_3,local_14,*(LPCSTR *)(param_1 + 0x90));
+  }
+  else {
+    hKey = (HKEY)GetSectionKey(param_2);
+    uVar2 = 0;
+    if (hKey != (HKEY)0x0) {
+      LVar1 = RegSetValueExA(hKey,param_3,0,4,(BYTE *)&param_4,4);
+      RegCloseKey(hKey);
+      uVar2 = (uint)(LVar1 == 0);
+    }
+  }
+  return uVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00618884
+// GHIDRA_NAME CWinApp::WriteProfileStringA
+// GHIDRA_PROTO undefined WriteProfileStringA()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CWinApp::WriteProfileStringA(char const *,char const *,char const *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CWinApp::WriteProfileStringA(char const *,char const *,char const *)
+   
+   Library: nafxcw retail msvc500:static */
+
+uint __thiscall
+CWinApp::WriteProfileStringA(int param_1,LPCSTR param_2,LPCSTR param_3,BYTE *param_4)
+
+{
+  HKEY hKey;
+  int iVar1;
+  uint uVar2;
+  
+  if (*(int *)(param_1 + 0x7c) == 0) {
+    uVar2 = WritePrivateProfileStringA(param_2,param_3,(LPCSTR)param_4,*(LPCSTR *)(param_1 + 0x90));
+    return uVar2;
+  }
+  if (param_3 == (LPCSTR)0x0) {
+    hKey = (HKEY)GetAppRegistryKey();
+    if (hKey == (HKEY)0x0) {
+      return 0;
+    }
+    iVar1 = RegDeleteKeyA(hKey,param_2);
+  }
+  else if (param_4 == (BYTE *)0x0) {
+    hKey = (HKEY)GetSectionKey(param_2);
+    if (hKey == (HKEY)0x0) {
+      return 0;
+    }
+    iVar1 = RegDeleteValueA(hKey,param_3);
+  }
+  else {
+    hKey = (HKEY)GetSectionKey(param_2);
+    if (hKey == (HKEY)0x0) {
+      return 0;
+    }
+    iVar1 = lstrlenA((LPCSTR)param_4);
+    iVar1 = RegSetValueExA(hKey,param_3,0,1,param_4,iVar1 + 1);
+  }
+  RegCloseKey(hKey);
+  return (uint)(iVar1 == 0);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00618924
+// GHIDRA_NAME CWinApp::WriteProfileBinary
+// GHIDRA_PROTO undefined WriteProfileBinary()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CWinApp::WriteProfileBinary(char const *,char const *,unsigned char *,unsigned int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CWinApp::WriteProfileBinary(char const *,char const *,unsigned char
+   *,unsigned int)
+   
+   Library: nafxcw retail msvc500:static */
+
+uint __thiscall
+CWinApp::WriteProfileBinary
+          (int param_1,undefined4 param_2,LPCSTR param_3,BYTE *param_4,uint param_5)
+
+{
+  HKEY hKey;
+  LSTATUS LVar1;
+  char *pcVar2;
+  byte *pbVar3;
+  uint uVar4;
+  char *pcVar5;
+  
+  if (*(int *)(param_1 + 0x7c) == 0) {
+    pcVar2 = (char *)operator_new(param_5 * 2 + 1);
+    uVar4 = 0;
+    pcVar5 = pcVar2;
+    if (param_5 != 0) {
+      do {
+        pbVar3 = param_4 + uVar4;
+        *pcVar5 = (*pbVar3 & 0xf) + 0x41;
+        uVar4 = uVar4 + 1;
+        pcVar5[1] = (*pbVar3 >> 4) + 0x41;
+        pcVar5 = pcVar5 + 2;
+      } while (uVar4 < param_5);
+    }
+    pcVar2[uVar4 * 2] = '\0';
+    uVar4 = WriteProfileStringA(param_2,param_3,pcVar2);
+    operator_delete(pcVar2);
+  }
+  else {
+    hKey = (HKEY)GetSectionKey(param_2);
+    uVar4 = 0;
+    if (hKey != (HKEY)0x0) {
+      LVar1 = RegSetValueExA(hKey,param_3,0,3,param_4,param_5);
+      RegCloseKey(hKey);
+      uVar4 = (uint)(LVar1 == 0);
+    }
+  }
+  return uVar4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00622572
+// GHIDRA_NAME CWinApp::InitApplication
+// GHIDRA_PROTO undefined InitApplication()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Lifecycle slot +0x8C handler during app startup.
+// GHIDRA_COMMENT If a pending global doc-template manager exists (DAT_006a6120), attach it to app->0x80, clear the global, then invoke manager vfunc +0x14 with NULL to flush pending templates from DAT_006a6124 into the active app manager context. Returns success (1).
+// GHIDRA_COMMENT_END
+
+/* Lifecycle slot +0x8C handler during app startup.
+   If a pending global doc-template manager exists (DAT_006a6120), attach it to app->0x80, clear the
+   global, then invoke manager vfunc +0x14 with NULL to flush pending templates from DAT_006a6124
+   into the active app manager context. Returns success (1). */
+
+undefined4 __fastcall CWinApp::InitApplication(int param_1)
+
+{
+  if (DAT_006a6120 != 0) {
+    if (*(int *)(param_1 + 0x80) == 0) {
+      *(int *)(param_1 + 0x80) = DAT_006a6120;
+    }
+    DAT_006a6120 = 0;
+  }
+  if (*(int **)(param_1 + 0x80) == (int *)0x0) {
+    DAT_0069bd58 = 0;
+  }
+  else {
+    (**(code **)(**(int **)(param_1 + 0x80) + 0x14))(0);
+  }
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006228DE
+// GHIDRA_NAME CWinApp::~CWinApp
+// GHIDRA_PROTO undefined ~CWinApp()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual __thiscall CWinApp::~CWinApp(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual __thiscall CWinApp::~CWinApp(void)
+   
+   Library: nafxcw retail msvc500:static */
+
+void CWinApp::~CWinApp(void)
+
+{
+  int *piVar1;
+  int iVar2;
+  CWinThread *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(CWinThread **)(unaff_EBP + -0x10) = this;
+  *(undefined ***)this = &PTR_FUN_0066fdfc;
+  piVar1 = *(int **)(this + 0x80);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  if (piVar1 != (int *)0x0) {
+    (**(code **)(*piVar1 + 4))(1);
+  }
+  if (*(int **)(this + 0xa8) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 0xa8) + 0x14))(1);
+  }
+  iVar2 = AfxGetModuleState();
+  if (*(char *)(iVar2 + 0x14) == '\0') {
+    if (DAT_006a6124 != (int *)0x0) {
+      (**(code **)(*DAT_006a6124 + 4))(1);
+      DAT_006a6124 = (int *)0x0;
+    }
+    if (DAT_006a6120 != (int *)0x0) {
+      (**(code **)(*DAT_006a6120 + 4))(1);
+      DAT_006a6120 = (int *)0x0;
+    }
+  }
+  if (*(int *)(this + 0x94) != 0) {
+    AfxGlobalFree(*(int *)(this + 0x94));
+  }
+  if (*(int *)(this + 0x98) != 0) {
+    AfxGlobalFree(*(int *)(this + 0x98));
+  }
+  if (*(ATOM *)(this + 0xb0) != 0) {
+    GlobalDeleteAtom(*(ATOM *)(this + 0xb0));
+  }
+  if (*(ATOM *)(this + 0xb2) != 0) {
+    GlobalDeleteAtom(*(ATOM *)(this + 0xb2));
+  }
+  if (*(int **)(this + 0xac) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 0xac) + 4))(1);
+  }
+  iVar2 = AfxGetModuleState();
+  if (*(int *)(iVar2 + 0x10) == *(int *)(this + 0x78)) {
+    *(undefined4 *)(iVar2 + 0x10) = 0;
+  }
+  if (*(CWinThread **)(iVar2 + 4) == this) {
+    *(undefined4 *)(iVar2 + 4) = 0;
+  }
+  FreeHeapBlockWithAllocatorTracking(*(undefined4 *)(this + 0x78));
+  FreeHeapBlockWithAllocatorTracking(*(undefined4 *)(this + 0x7c));
+  FreeHeapBlockWithAllocatorTracking(*(undefined4 *)(this + 0x88));
+  FreeHeapBlockWithAllocatorTracking(*(undefined4 *)(this + 0x8c));
+  FreeHeapBlockWithAllocatorTracking(*(undefined4 *)(this + 0x90));
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  CWinThread::~CWinThread(this);
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00622A13
+// GHIDRA_NAME CWinApp::SaveStdProfileSettings
+// GHIDRA_PROTO undefined SaveStdProfileSettings()
+
+void __fastcall CWinApp::SaveStdProfileSettings(int param_1)
+
+{
+  int iVar1;
+  
+  if (*(int **)(param_1 + 0xa8) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 0xa8) + 0x10))();
+  }
+  if (*(int *)(param_1 + 0xb4) != 0) {
+    iVar1 = AfxGetModuleState();
+    WriteProfileInt("Settings","PreviewPages",*(undefined4 *)(*(int *)(iVar1 + 4) + 0xb4));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00622DFC
+// GHIDRA_NAME CWinApp::Unregister
+// GHIDRA_PROTO undefined Unregister()
+
+undefined4 CWinApp::Unregister(void)
+
+{
+  char *text;
+  undefined4 uVar1;
+  int iVar2;
+  int *piVar3;
+  undefined4 uVar4;
+  LSTATUS LVar5;
+  int extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 *)(unaff_EBP + -0x14) = 0;
+  iVar2 = GetFirstDocTemplatePosition();
+  *(int *)(unaff_EBP + -0x1c) = iVar2;
+  while (iVar2 != 0) {
+    piVar3 = (int *)GetNextDocTemplate(unaff_EBP + -0x1c);
+    if (piVar3 != (int *)0x0) {
+      (**(code **)(*piVar3 + 0x14))(0,0xfffffffc,0,0);
+    }
+    iVar2 = *(int *)(unaff_EBP + -0x1c);
+  }
+  if (*(int *)(extraout_ECX + 0x7c) != 0) {
+    CString::CString((CString *)(unaff_EBP + -0x10),"Software\\");
+    text = *(char **)(extraout_ECX + 0x7c);
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    CString::operator+=((CString *)(unaff_EBP + -0x10),text);
+    uVar4 = AssignSharedStringConcatRefAndCStr(unaff_EBP + -0x20,unaff_EBP + -0x10,&DAT_00670708);
+    uVar1 = *(undefined4 *)(extraout_ECX + 0x90);
+    *(undefined1 *)(unaff_EBP + -4) = 1;
+    AssignSharedStringConcatRefAndCStr(unaff_EBP + -0x18,uVar4,uVar1);
+    *(undefined1 *)(unaff_EBP + -4) = 3;
+    CString::~CString((CString *)(unaff_EBP + -0x20));
+    DelRegTree(0x80000001,unaff_EBP + -0x18);
+    LVar5 = RegOpenKeyA((HKEY)0x80000001,*(LPCSTR *)(unaff_EBP + -0x10),(PHKEY)(unaff_EBP + -0x14));
+    if (LVar5 == 0) {
+      LVar5 = RegEnumKeyA(*(HKEY *)(unaff_EBP + -0x14),0,(LPSTR)(unaff_EBP + -300),0x104);
+      if (LVar5 == 0x103) {
+        DelRegTree(0x80000001,unaff_EBP + -0x10);
+      }
+      RegCloseKey(*(HKEY *)(unaff_EBP + -0x14));
+    }
+    RegQueryValueA((HKEY)0x80000001,*(LPCSTR *)(unaff_EBP + -0x18),(LPSTR)(unaff_EBP + -300),
+                   (PLONG)(unaff_EBP + -0x24));
+    *(undefined1 *)(unaff_EBP + -4) = 0;
+    CString::~CString((CString *)(unaff_EBP + -0x18));
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    CString::~CString((CString *)(unaff_EBP + -0x10));
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00622F2B
+// GHIDRA_NAME CWinApp::DelRegTree
+// GHIDRA_PROTO undefined DelRegTree()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: long __thiscall CWinApp::DelRegTree(struct HKEY__ *,class CString const &)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: long __thiscall CWinApp::DelRegTree(struct HKEY__ *,class CString const &)
+   
+   Library: nafxcw retail msvc500:static */
+
+LSTATUS CWinApp::DelRegTree(void)
+
+{
+  LSTATUS LVar1;
+  undefined4 extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  HKEY hKey;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 *)(unaff_EBP + -0x1c) = extraout_ECX;
+  LVar1 = RegOpenKeyA(*(HKEY *)(unaff_EBP + 8),(LPCSTR)**(undefined4 **)(unaff_EBP + 0xc),
+                      (PHKEY)(unaff_EBP + -0x14));
+  if (LVar1 == 0) {
+    hKey = *(HKEY *)(unaff_EBP + -0x14);
+    while( true ) {
+      LVar1 = RegEnumKeyA(hKey,0,(LPSTR)(unaff_EBP + -0x11c),0xff);
+      if (LVar1 != 0) break;
+      CString::CString((CString *)(unaff_EBP + -0x18),(char *)(unaff_EBP + -0x11c));
+      *(undefined4 *)(unaff_EBP + -4) = 0;
+      LVar1 = DelRegTree(*(undefined4 *)(unaff_EBP + -0x14),unaff_EBP + -0x18);
+      *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+      *(bool *)(unaff_EBP + -0xd) = LVar1 != 0;
+      CString::~CString((CString *)(unaff_EBP + -0x18));
+      if (*(char *)(unaff_EBP + -0xd) != '\0') break;
+      hKey = *(HKEY *)(unaff_EBP + -0x14);
+    }
+    if ((LVar1 == 0x103) || (LVar1 == 0x3f2)) {
+      LVar1 = RegDeleteKeyA(*(HKEY *)(unaff_EBP + 8),(LPCSTR)**(undefined4 **)(unaff_EBP + 0xc));
+    }
+  }
+  RegCloseKey(*(HKEY *)(unaff_EBP + -0x14));
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return LVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00623099
+// GHIDRA_NAME CWinApp::SetRegistryKey
+// GHIDRA_PROTO undefined SetRegistryKey()
+
+void __thiscall CWinApp::SetRegistryKey(void *param_1,undefined4 param_2)
+
+{
+  undefined1 local_104 [256];
+  
+  AfxLoadString(param_2,local_104,0x100);
+  ::SetRegistryKey(param_1,local_104);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006230CC
+// GHIDRA_NAME CWinApp::GetAppRegistryKey
+// GHIDRA_PROTO undefined GetAppRegistryKey()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: struct HKEY__ * __thiscall CWinApp::GetAppRegistryKey(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: struct HKEY__ * __thiscall CWinApp::GetAppRegistryKey(void)
+   
+   Library: nafxcw retail msvc500:static */
+
+HKEY __fastcall CWinApp::GetAppRegistryKey(int param_1)
+
+{
+  LSTATUS LVar1;
+  DWORD local_14;
+  HKEY local_10;
+  HKEY local_c;
+  HKEY local_8;
+  
+  local_10 = (HKEY)0x0;
+  local_8 = (HKEY)0x0;
+  local_c = (HKEY)0x0;
+  LVar1 = RegOpenKeyExA((HKEY)0x80000001,"Software",0,0x2001f,&local_8);
+  if (LVar1 == 0) {
+    LVar1 = RegCreateKeyExA(local_8,*(LPCSTR *)(param_1 + 0x7c),0,(LPSTR)0x0,0,0x2001f,
+                            (LPSECURITY_ATTRIBUTES)0x0,&local_c,&local_14);
+    if (LVar1 == 0) {
+      RegCreateKeyExA(local_c,*(LPCSTR *)(param_1 + 0x90),0,(LPSTR)0x0,0,0x2001f,
+                      (LPSECURITY_ATTRIBUTES)0x0,&local_10,&local_14);
+    }
+  }
+  if (local_8 != (HKEY)0x0) {
+    RegCloseKey(local_8);
+  }
+  if (local_c != (HKEY)0x0) {
+    RegCloseKey(local_c);
+  }
+  return local_10;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006231A6
+// GHIDRA_NAME CWinApp::GetProfileIntA
+// GHIDRA_PROTO undefined GetProfileIntA()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: unsigned int __thiscall CWinApp::GetProfileIntA(char const *,char const *,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: unsigned int __thiscall CWinApp::GetProfileIntA(char const *,char const *,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+UINT __thiscall CWinApp::GetProfileIntA(UINT param_1,LPCSTR param_2,LPCSTR param_3,UINT param_4)
+
+{
+  HKEY hKey;
+  LSTATUS LVar1;
+  UINT local_c;
+  UINT local_8;
+  
+  local_c = param_1;
+  local_8 = param_1;
+  if (*(int *)(param_1 + 0x7c) == 0) {
+    param_4 = GetPrivateProfileIntA(param_2,param_3,param_4,*(LPCSTR *)(param_1 + 0x90));
+  }
+  else {
+    hKey = (HKEY)GetSectionKey(param_2);
+    if (hKey != (HKEY)0x0) {
+      param_2 = (LPCSTR)0x4;
+      LVar1 = RegQueryValueExA(hKey,param_3,(LPDWORD)0x0,&local_c,(LPBYTE)&local_8,(LPDWORD)&param_2
+                              );
+      RegCloseKey(hKey);
+      if (LVar1 == 0) {
+        param_4 = local_8;
+      }
+    }
+  }
+  return param_4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00623212
+// GHIDRA_NAME CWinApp::GetProfileStringA
+// GHIDRA_PROTO undefined GetProfileStringA()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: class CString __thiscall CWinApp::GetProfileStringA(char const *,char const *,char const *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: class CString __thiscall CWinApp::GetProfileStringA(char const *,char const *,char const
+   *)
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 CWinApp::GetProfileStringA(void)
+
+{
+  undefined4 uVar1;
+  int iVar2;
+  LSTATUS LVar3;
+  LPBYTE lpData;
+  int extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  LPDWORD lpcbData;
+  char *text_or_resource_id;
+  
+  EstablishSehFrameProlog();
+  ProbeStackPagesForLargeFrameAllocation();
+  iVar2 = *(int *)(extraout_ECX + 0x7c);
+  *(undefined4 *)(unaff_EBP + -0x18) = 0;
+  if (iVar2 == 0) {
+    if (*(int *)(unaff_EBP + 0x14) == 0) {
+      *(undefined **)(unaff_EBP + 0x14) = &DAT_006a6128;
+    }
+    GetPrivateProfileStringA
+              (*(LPCSTR *)(unaff_EBP + 0xc),*(LPCSTR *)(unaff_EBP + 0x10),
+               *(LPCSTR *)(unaff_EBP + 0x14),(LPSTR)(unaff_EBP + -0x1018),0x1000,
+               *(LPCSTR *)(extraout_ECX + 0x90));
+    text_or_resource_id = (char *)(unaff_EBP + -0x1018);
+  }
+  else {
+    iVar2 = GetSectionKey(*(undefined4 *)(unaff_EBP + 0xc));
+    *(int *)(unaff_EBP + -0x10) = iVar2;
+    if (iVar2 != 0) {
+      CString::CString((CString *)(unaff_EBP + 0xc));
+      *(undefined4 *)(unaff_EBP + -4) = 0;
+      LVar3 = RegQueryValueExA(*(HKEY *)(unaff_EBP + -0x10),*(LPCSTR *)(unaff_EBP + 0x10),
+                               (LPDWORD)0x0,(LPDWORD)(unaff_EBP + -0x18),(LPBYTE)0x0,
+                               (LPDWORD)(unaff_EBP + -0x14));
+      if (LVar3 == 0) {
+        lpcbData = (LPDWORD)(unaff_EBP + -0x14);
+        lpData = (LPBYTE)CString::GetBuffer((CString *)(unaff_EBP + 0xc),*(int *)(unaff_EBP + -0x14)
+                                           );
+        LVar3 = RegQueryValueExA(*(HKEY *)(unaff_EBP + -0x10),*(LPCSTR *)(unaff_EBP + 0x10),
+                                 (LPDWORD)0x0,(LPDWORD)(unaff_EBP + -0x18),lpData,lpcbData);
+        CString::ReleaseBuffer((CString *)(unaff_EBP + 0xc),-1);
+      }
+      RegCloseKey(*(HKEY *)(unaff_EBP + -0x10));
+      if (LVar3 == 0) {
+        CString::CString(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + 0xc));
+      }
+      else {
+        CString::CString(*(CString **)(unaff_EBP + 8),*(char **)(unaff_EBP + 0x14));
+      }
+      *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+      CString::~CString((CString *)(unaff_EBP + 0xc));
+      goto LAB_00623310;
+    }
+    text_or_resource_id = *(char **)(unaff_EBP + 0x14);
+  }
+  CString::CString(*(CString **)(unaff_EBP + 8),text_or_resource_id);
+LAB_00623310:
+  uVar1 = *(undefined4 *)(unaff_EBP + 8);
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return uVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00623324
+// GHIDRA_NAME CWinApp::GetProfileBinary
+// GHIDRA_PROTO undefined GetProfileBinary()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CWinApp::GetProfileBinary(char const *,char const *,unsigned char * *,unsigned int *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CWinApp::GetProfileBinary(char const *,char const *,unsigned char *
+   *,unsigned int *)
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 CWinApp::GetProfileBinary(void)
+
+{
+  int *piVar1;
+  int *piVar2;
+  HKEY hKey;
+  LSTATUS LVar3;
+  LPBYTE lpData;
+  undefined4 uVar4;
+  int iVar5;
+  char *pcVar6;
+  int iVar7;
+  int extraout_ECX;
+  int unaff_EBP;
+  int iVar8;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  piVar1 = *(int **)(unaff_EBP + 0x14);
+  piVar2 = *(int **)(unaff_EBP + 0x10);
+  iVar8 = 0;
+  *piVar2 = 0;
+  *piVar1 = 0;
+  if (*(int *)(extraout_ECX + 0x7c) == 0) {
+    GetProfileStringA(unaff_EBP + 0xc,*(undefined4 *)(unaff_EBP + 8),
+                      *(undefined4 *)(unaff_EBP + 0xc),0);
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    iVar7 = *(int *)(*(int *)(unaff_EBP + 0xc) + -8);
+    *(int *)(unaff_EBP + 8) = iVar7;
+    if (iVar7 != 0) {
+      *piVar1 = iVar7 / 2;
+      iVar5 = operator_new(iVar7 / 2);
+      iVar7 = *(int *)(unaff_EBP + 8);
+      *piVar2 = iVar5;
+      if (0 < iVar7) {
+        do {
+          pcVar6 = (char *)(*(int *)(unaff_EBP + 0xc) + iVar8);
+          iVar7 = iVar8 / 2;
+          iVar8 = iVar8 + 2;
+          *(char *)(iVar7 + *piVar2) = pcVar6[1] * '\x10' + *pcVar6 + -0x51;
+        } while (iVar8 < *(int *)(unaff_EBP + 8));
+      }
+      *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+      CString::~CString((CString *)(unaff_EBP + 0xc));
+LAB_0062342b:
+      uVar4 = 1;
+      goto LAB_0062342e;
+    }
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    CString::~CString((CString *)(unaff_EBP + 0xc));
+  }
+  else {
+    hKey = (HKEY)GetSectionKey(*(undefined4 *)(unaff_EBP + 8));
+    *(HKEY *)(unaff_EBP + 0x14) = hKey;
+    if (hKey != (HKEY)0x0) {
+      LVar3 = RegQueryValueExA(hKey,*(LPCSTR *)(unaff_EBP + 0xc),(LPDWORD)0x0,
+                               (LPDWORD)(unaff_EBP + -0x10),(LPBYTE)0x0,(LPDWORD)(unaff_EBP + 0x10))
+      ;
+      *(LSTATUS *)(unaff_EBP + 8) = LVar3;
+      iVar8 = *(int *)(unaff_EBP + 0x10);
+      *piVar1 = iVar8;
+      if (*(int *)(unaff_EBP + 8) == 0) {
+        lpData = (LPBYTE)operator_new(iVar8);
+        *piVar2 = (int)lpData;
+        LVar3 = RegQueryValueExA(*(HKEY *)(unaff_EBP + 0x14),*(LPCSTR *)(unaff_EBP + 0xc),
+                                 (LPDWORD)0x0,(LPDWORD)(unaff_EBP + -0x10),lpData,
+                                 (LPDWORD)(unaff_EBP + 0x10));
+        *(LSTATUS *)(unaff_EBP + 8) = LVar3;
+      }
+      RegCloseKey(*(HKEY *)(unaff_EBP + 0x14));
+      if (*(int *)(unaff_EBP + 8) == 0) goto LAB_0062342b;
+      operator_delete(*piVar2);
+      *piVar2 = 0;
+    }
+  }
+  uVar4 = 0;
+LAB_0062342e:
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return uVar4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00624ED6
+// GHIDRA_NAME CWinApp::SetCurrentHandles
+// GHIDRA_PROTO undefined SetCurrentHandles()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes MFC application path/resource strings from module file path.
+// GHIDRA_COMMENT Seeds app/module handles in thread state and fills app name/help path/.INI defaults when unset.
+// GHIDRA_COMMENT_END
+
+/* Initializes MFC application path/resource strings from module file path.
+   Seeds app/module handles in thread state and fills app name/help path/.INI defaults when unset.
+    */
+
+void __fastcall CWinApp::SetCurrentHandles(int param_1)
+
+{
+  LPSTR pCVar1;
+  int iVar2;
+  undefined4 uVar3;
+  int iVar4;
+  undefined1 *puVar5;
+  undefined1 local_310 [256];
+  CHAR local_210 [260];
+  CHAR local_10c [260];
+  LPSTR local_8;
+  
+  iVar2 = AfxGetModuleState();
+  *(undefined4 *)(iVar2 + 8) = *(undefined4 *)(param_1 + 0x68);
+  *(undefined4 *)(iVar2 + 0xc) = *(undefined4 *)(param_1 + 0x68);
+  GetModuleFileNameA(*(HMODULE *)(param_1 + 0x68),local_210,0x104);
+  local_8 = (LPSTR)__mbsrchr(local_210,0x2e);
+  *local_8 = '\0';
+  AfxGetFileName(local_210,local_10c,0x104);
+  if (*(int *)(param_1 + 0x88) == 0) {
+    uVar3 = __strdup(local_10c);
+    *(undefined4 *)(param_1 + 0x88) = uVar3;
+  }
+  if (*(int *)(param_1 + 0x78) == 0) {
+    iVar4 = AfxLoadString(0xe000,local_310,0x100);
+    if (iVar4 == 0) {
+      puVar5 = *(undefined1 **)(param_1 + 0x88);
+    }
+    else {
+      puVar5 = local_310;
+    }
+    uVar3 = __strdup(puVar5);
+    *(undefined4 *)(param_1 + 0x78) = uVar3;
+  }
+  pCVar1 = local_8;
+  *(undefined4 *)(iVar2 + 0x10) = *(undefined4 *)(param_1 + 0x78);
+  if (*(int *)(param_1 + 0x8c) == 0) {
+    lstrcpyA(local_8,".HLP");
+    uVar3 = __strdup(local_210);
+    *(undefined4 *)(param_1 + 0x8c) = uVar3;
+    *pCVar1 = '\0';
+  }
+  if (*(int *)(param_1 + 0x90) == 0) {
+    lstrcatA(local_10c,".INI");
+    uVar3 = __strdup(local_10c);
+    *(undefined4 *)(param_1 + 0x90) = uVar3;
   }
   return;
 }

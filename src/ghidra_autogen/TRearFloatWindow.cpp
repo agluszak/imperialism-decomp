@@ -4,43 +4,43 @@
 // Bucket: TRearFloatWindow.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3840
-// GHIDRA_NAME TRearFloatWindow::CreateTRearFloatWindowInstance
-// GHIDRA_PROTO undefined CreateTRearFloatWindowInstance()
+// GHIDRA_NAME TRearFloatWindow::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TRearFloatWindow::CreateTRearFloatWindowInstance(void)
+undefined4 * TRearFloatWindow::CreateObject(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632aaa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0xa0);
+  puVar1 = (undefined4 *)operator_new(0xa0);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::ConstructUiWindowResourceEntryType4B340(this);
-    this->vftable = (TControlVtbl *)&TRearFloatWindowVtbl_00655928;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004054ed();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F38C0
-// GHIDRA_NAME TRearFloatWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TRearFloatWindow::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRearFloatWindow::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TRearFloatWindow::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTRearFloatWindow;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F38E0
@@ -50,8 +50,8 @@ CRuntimeClass * TRearFloatWindow::GetTEventHandlerClassNamePointer()
 TRearFloatWindow * TRearFloatWindow::ConstructTRearFloatWindowBaseState()
 
 {
-  TControl::ConstructUiWindowResourceEntryType4B340((TControl *)this);
-  this->vftable = &TRearFloatWindowVtbl_00655928;
+  func_0x004054ed();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,19 +62,19 @@ TRearFloatWindow * TRearFloatWindow::ConstructTRearFloatWindowBaseState()
 TRearFloatWindow * TRearFloatWindow::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
+  func_0x00402383();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3960
-// GHIDRA_NAME TRearFloatWindow::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3)
+// GHIDRA_NAME TRearFloatWindow::DispatchUiMouseMoveToChildren
+// GHIDRA_PROTO undefined __thiscall DispatchUiMouseMoveToChildren(undefined4 * param_1, undefined4 param_2, undefined4 param_3)
 
 undefined4 __thiscall
-TRearFloatWindow::SetForeignMinisterReadyFlag14
+TRearFloatWindow::DispatchUiMouseMoveToChildren
           (TRearFloatWindow *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3)
 
 {
@@ -87,14 +87,13 @@ TRearFloatWindow::SetForeignMinisterReadyFlag14
   undefined3 extraout_var_02;
   uint3 extraout_var_03;
   int iVar3;
-
+  
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1[0x2f].slot_0x04)(param_1);
   iVar3 = CONCAT31(extraout_var,uVar2);
   switch((short)iVar3) {
   case 3:
-    uVar4 = TView::SetForeignMinisterReadyFlag14
-                      ((TView *)this,param_1,param_1,param_2,param_3);
+    uVar4 = func_0x0040723e(param_1,param_1,param_2,param_3);
     return uVar4;
   case 4:
     (*pTVar1[0x30].slot_0x04)(param_1);

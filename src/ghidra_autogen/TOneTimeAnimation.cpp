@@ -3,25 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TOneTimeAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049FCF0
-// GHIDRA_NAME TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x0049FCC0
+// GHIDRA_NAME TOneTimeAnimation::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TOneTimeAnimation * __thiscall
-TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
-          (TOneTimeAnimation *this,byte param_1)
+undefined4 * TOneTimeAnimation::CreateObject(void)
 
 {
-  TOneTimeAnimation::CreateTOneTimeAnimationInstance(this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x30);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &TOneTimeAnimationVtbl_0064c3d0;
+    return puVar1;
   }
-  return this;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD20
 // GHIDRA_NAME TOneTimeAnimation::CreateTOneTimeAnimationInstance
-// GHIDRA_PROTO undefined __thiscall TOneTimeAnimation::CreateTOneTimeAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTOneTimeAnimationInstance(void)
 
 void TOneTimeAnimation::CreateTOneTimeAnimationInstance()
 
@@ -32,10 +33,10 @@ void TOneTimeAnimation::CreateTOneTimeAnimationInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD40
-// GHIDRA_NAME TOneTimeAnimation::GetTAnimationClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
+// GHIDRA_NAME TOneTimeAnimation::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOneTimeAnimation::GetTAnimationClassNamePointer()
+CRuntimeClass * TOneTimeAnimation::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
@@ -43,7 +44,7 @@ CRuntimeClass * TOneTimeAnimation::GetTAnimationClassNamePointer()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD60
 // GHIDRA_NAME TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall TOneTimeAnimation::ConstructTOneTimeAnimationBaseState(undefined4 param_1, undefined4 * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
+// GHIDRA_PROTO undefined __thiscall ConstructTOneTimeAnimationBaseState(undefined4 param_1, undefined4 * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
 
 void __thiscall
 TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
@@ -75,11 +76,11 @@ void TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree()
 {
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
-  tagRECT atStack_34 [2];
+  LONG LStack_40;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe38;
@@ -87,12 +88,12 @@ void TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree()
   if ((this->field_0x2c == '\0') &&
      (iVar1 = *(int *)&this->field_0x10 + 1, *(int *)&this->field_0x10 = iVar1,
      iVar1 == *(int *)&this->field_0x14)) {
-    InvalidateCityDialogRectRegion(&this->field_0x1c,1);
-    ConstructScopedMapQuickDrawContext(*(undefined4 *)&this->field_0x4);
-    uStack_4 = 0;
+    LStack_40 = 1;
+    func_0x00408a03(&this->field_0x1c);
+    func_0x00401d70(*(undefined4 *)&this->field_0x4);
     (**(code **)(**(int **)&this->field_0x4 + 0xf8))();
-    CopyRect(atStack_34,(RECT *)&this->field_0x1c);
-    (**(code **)(**(int **)&this->field_0x4 + 0x110))(atStack_34);
+    CopyRect((LPRECT)&LStack_40,(RECT *)&this->field_0x1c);
+    (**(code **)(**(int **)&this->field_0x4 + 0x110))(&LStack_40);
     *(undefined4 *)&this->field_0x10 = 0;
     if ((int)*(short *)&this->field_0x8 < *(short *)&this->field_0xa + -1) {
       *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
@@ -101,6 +102,7 @@ void TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree()
       this->field_0x2c = 1;
     }
     uStack_4 = 0xffffffff;
+    LStack_40 = 0x49fe94;
     DestroyScopedMapQuickDrawContext();
   }
   *unaff_FS_OFFSET = uStack_c;

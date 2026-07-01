@@ -4,43 +4,43 @@
 // Bucket: TInteriorMinisterView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F35E0
-// GHIDRA_NAME TInteriorMinisterView::CreateTInteriorMinisterViewInstance
-// GHIDRA_PROTO undefined CreateTInteriorMinisterViewInstance()
+// GHIDRA_NAME TInteriorMinisterView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TInteriorMinisterView::CreateTInteriorMinisterViewInstance(void)
+undefined4 * TInteriorMinisterView::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632a8a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x68);
+  puVar1 = (undefined4 *)operator_new(0x68);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this[1].vftable = (TViewVtbl *)0x0;
-    this->vftable = (TViewVtbl *)&TInteriorMinisterViewVtbl_00655720;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    puVar1[0x18] = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3670
-// GHIDRA_NAME TInteriorMinisterView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TInteriorMinisterView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInteriorMinisterView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TInteriorMinisterView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTInteriorMinisterView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3690
@@ -50,9 +50,9 @@ CRuntimeClass * TInteriorMinisterView::GetTEventHandlerClassNamePointer()
 TInteriorMinisterView * TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState()
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
+  func_0x004064e2();
   *(undefined4 *)&this->field_0x60 = 0;
-  this->vftable = &TInteriorMinisterViewVtbl_00655720;
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -63,26 +63,26 @@ TInteriorMinisterView * TInteriorMinisterView::ConstructTInteriorMinisterViewBas
 TInteriorMinisterView * TInteriorMinisterView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004050fb();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3710
-// GHIDRA_NAME TInteriorMinisterView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
+// GHIDRA_NAME TInteriorMinisterView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
 void __thiscall
-TInteriorMinisterView::OrphanRetStub_0059add0
+TInteriorMinisterView::HandleEvent
           (TInteriorMinisterView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   int iVar1;
   TInteriorMinisterViewVtbl *pTVar2;
   undefined uVar3;
-
+  
   iVar1 = *(int *)(param_2 + 0x1c);
   if (param_1 == 0x14) {
     if (iVar1 == 0x72656363) {
@@ -102,7 +102,7 @@ TInteriorMinisterView::OrphanRetStub_0059add0
     return;
   }
   if (param_1 != 10) {
-    TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
+    func_0x00408657(param_1,param_2,param_3);
     return;
   }
   if (iVar1 == 0x6261636b) {
@@ -110,7 +110,7 @@ TInteriorMinisterView::OrphanRetStub_0059add0
     return;
   }
   if (iVar1 != 0x6f6b6179) {
-    TView::OrphanRetStub_0059add0((TView *)this,10,param_2,param_3);
+    func_0x00408657(10,param_2,param_3);
     return;
   }
   pTVar2 = this->vftable;

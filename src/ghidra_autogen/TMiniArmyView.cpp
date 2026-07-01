@@ -20,58 +20,58 @@ void TMiniArmyView::OrphanRetStub_004aad20()
 TMiniArmyView * TMiniArmyView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00405a51();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AAD90
-// GHIDRA_NAME TMiniArmyView::CreateTMiniArmyViewInstance
-// GHIDRA_PROTO undefined CreateTMiniArmyViewInstance()
+// GHIDRA_NAME TMiniArmyView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TMiniArmyView::CreateTMiniArmyViewInstance(void)
+undefined4 * TMiniArmyView::CreateObject(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063059a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0x88);
+  puVar1 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::TControl(this);
-    this->vftable = (TControlVtbl *)&TMiniArmyViewVtbl_0064d550;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004087fb();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AAE10
-// GHIDRA_NAME TMiniArmyView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMiniArmyView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMiniArmyView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMiniArmyView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMiniArmyView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AAEB0
-// GHIDRA_NAME TMiniArmyView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TMiniArmyView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMiniArmyView::OrphanTiny_ReturnZero_0048a730()
+void TMiniArmyView::ApplyRectSlot110()
 
 {
   short sVar1;
@@ -83,43 +83,49 @@ void TMiniArmyView::OrphanTiny_ReturnZero_0048a730()
   CString local_38;
   CString local_34;
   undefined1 *local_30;
-  RECT local_2c;
-  RECT local_1c;
+  undefined4 local_2c;
+  undefined4 local_28;
+  int local_24;
+  undefined4 local_20;
+  undefined4 local_1c;
+  int local_18;
+  int local_14;
+  int local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006305d0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::__0CString__QAE_XZ(&local_40);
+  CString::CString(&local_40);
   local_4 = 0;
-  CString::__0CString__QAE_XZ(&local_38);
+  CString::CString(&local_38);
   local_4._0_1_ = 1;
-  CString::__4CString__QAEABV0_ABV0__Z(&local_38,(CString *)(*(int *)&this->field_0x84 + 0x24));
-  CString::__4CString__QAEABV0_ABV0__Z(&local_40,&local_38);
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xc,0x2b6a);
+  CString::operator=(&local_38,(CString *)(*(int *)&this->field_0x84 + 0x24));
+  CString::operator=(&local_40,&local_38);
+  func_0x00401bf9(0,0xc,0x2b6a);
   sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
   if (100 < sVar1) {
-    CString::__0CString__QAE_XZ(&local_3c);
+    CString::CString(&local_3c);
     local_4._0_1_ = 2;
     do {
-      src_ref = (CString *)AssignSharedStringFromMidSubstring(&local_34,1);
+      src_ref = (CString *)func_0x00404ed5(&local_34,1);
       local_4._0_1_ = 3;
-      CString::__4CString__QAEABV0_ABV0__Z(&local_3c,src_ref);
+      CString::operator=(&local_3c,src_ref);
       local_4._0_1_ = 2;
-      CString::__1CString__QAE_XZ(&local_34);
-      CString::__4CString__QAEABV0_ABV0__Z(&local_40,&local_3c);
-      CString::__YCString__QAEABV0_PBD_Z(&local_3c,&DAT_0069587c);
+      CString::~CString(&local_34);
+      CString::operator=(&local_40,&local_3c);
+      CString::operator+=(&local_3c,&DAT_0069587c);
       sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
     } while (100 < sVar1);
-    CString::__4CString__QAEABV0_ABV0__Z(&local_40,&local_3c);
+    CString::operator=(&local_40,&local_3c);
     local_4._0_1_ = 1;
-    CString::__1CString__QAE_XZ(&local_3c);
+    CString::~CString(&local_3c);
   }
   SetQuickDrawTextOriginWithContextOffset(10);
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  func_0x004029aa();
   sVar1 = *(short *)(*(int *)&this->field_0x84 + 0x34) / 0x19 + 1;
   if (0x14 < sVar1) {
     sVar1 = 0x14;
@@ -130,38 +136,36 @@ void TMiniArmyView::OrphanTiny_ReturnZero_0048a730()
   else {
     sVar2 = ((0xe < sVar1) - 1 & 8) + 10;
   }
-  local_1c.top = (LONG)sVar2;
-  local_1c.bottom = local_1c.top + 7;
-  local_1c.right = sVar1 * 4 + -1;
-  local_2c.right = sVar1 * 4 + 0x8b;
-  local_1c.left = 0;
-  local_2c.left = 0x8c;
-  local_2c.top = 4;
-  local_2c.bottom = 0xb;
-  UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
-             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24,
-             (astruct_19 *)0x0);
+  local_18 = (int)sVar2;
+  local_10 = local_18 + 7;
+  local_14 = sVar1 * 4 + -1;
+  local_24 = sVar1 * 4 + 0x8b;
+  local_1c = 0;
+  local_2c = 0x8c;
+  local_28 = 4;
+  local_20 = 0xb;
+  func_0x004010be();
+  func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4,
+                  &g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24);
   local_30 = &stack0xffffffb4;
-  SetQuickDrawStrokeColor();
+  func_0x00402bdf();
   SetQuickDrawTextOriginWithContextOffset(0x8a);
   DrawCenteredGuideLineOnMapDc(0x8a);
   DrawCenteredGuideLineOnMapDc(0xdc);
   DrawCenteredGuideLineOnMapDc(0xdc);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::__1CString__QAE_XZ(&local_38);
+  CString::~CString(&local_38);
   local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_40);
+  CString::~CString(&local_40);
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB1D0
-// GHIDRA_NAME TMiniArmyView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, CString param_2)
+// GHIDRA_NAME TMiniArmyView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, CString param_2)
 
-void TMiniArmyView::OrphanRetStub_0059add0(int param_1, CString param_2)
+void TMiniArmyView::HandleEvent(int param_1, CString param_2)
 
 {
   int iVar1;
@@ -169,41 +173,36 @@ void TMiniArmyView::OrphanRetStub_0059add0(int param_1, CString param_2)
   CString CVar3;
   char cVar4;
   int *piVar5;
-  int *unaff_FS_OFFSET;
-  TToolBarClusterVtbl *pTStack_30;
-  int iStack_c;
+  undefined4 unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
-  int local_4;
-
+  undefined4 local_4;
+  
   CVar3.m_pchData = param_2.m_pchData;
-  local_4 = -1;
+  local_4 = 0xffffffff;
   puStack_8 = &LAB_006305f8;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
   if (*(int *)(param_2.m_pchData + 0x1c) == 0x75706772) {
-    cVar4 = ApplyEraCapabilityCostAndSetSelection();
+    cVar4 = func_0x0040538a();
     if (cVar4 == '\0') {
-      CString::__0CString__QAE_XZ(&param_2);
+      CString::CString(&param_2);
       local_4 = 0;
-      pTStack_30 = (TToolBarClusterVtbl *)0x4ab298;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      AssignStringSharedRefAndReturnThis(&param_2);
+      func_0x004076b7(&local_4);
       DispatchLocalizedUiMessageWithTemplateA13A0();
-      local_4 = -1;
-      CString::__1CString__QAE_XZ(&param_2);
+      local_4 = 0xffffffff;
+      CString::~CString(&param_2);
     }
     else {
       (**(code **)(*(int *)CVar3.m_pchData + 0xa4))();
-      TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-                ((TToolBarCluster *)&pTStack_30,PTR_g_szEmptyString_0064cb18);
-      EnableAndProcessFlagWithSharedStringCleanup();
-      pTStack_30 = (TToolBarClusterVtbl *)0x4ab24b;
-      piVar5 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
+      func_0x00401b40();
+      func_0x00404d54();
+      piVar5 = (int *)(**(code **)(**(int **)(g_pDisplayMgr + 4) + 0x94))();
       iVar1 = *piVar5;
-      pTStack_30 = (TToolBarClusterVtbl *)0x4ab254;
       (**(code **)(iVar1 + 0xc))();
-      pTStack_30 = (TToolBarClusterVtbl *)0x4ab25f;
-      pTStack_30 = (TToolBarClusterVtbl *)UiRuntimeContext::GetActiveNationId();
+      func_0x00403b16();
       (**(code **)(iVar1 + 0x1d0))();
     }
   }
@@ -212,9 +211,8 @@ void TMiniArmyView::OrphanRetStub_0059add0(int param_1, CString param_2)
     (**(code **)&pTVar2->vftable->field_0xc)();
     *(undefined2 *)&pTVar2[1].ownerOffsetX = *(undefined2 *)(*(int *)&this->field_0x84 + 6);
   }
-  pTStack_30 = (TToolBarClusterVtbl *)0x4ab301;
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
-  *unaff_FS_OFFSET = iStack_c;
+  func_0x00404566();
+  *unaff_FS_OFFSET = unaff_EBP;
   return;
 }
 

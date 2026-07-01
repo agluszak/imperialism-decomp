@@ -3,11 +3,687 @@
 // Program: Imperialism.exe
 // Bucket: CScrollView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00615A34
-// GHIDRA_NAME CScrollView::?DoMouseWheel@CScrollView@@QAEHIFVCPoint@@@Z
-// GHIDRA_PROTO undefined __thiscall ?DoMouseWheel@CScrollView@@QAEHIFVCPoint@@@Z(short param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x00614E71
+// GHIDRA_NAME CScrollView::CScrollView
+// GHIDRA_PROTO undefined CScrollView()
 
-int CScrollView::_DoMouseWheel_CScrollView__QAEHIFVCPoint___Z(short param_1)
+undefined4 * __fastcall CScrollView::CScrollView(undefined4 *param_1)
+
+{
+  CView();
+  *param_1 = &PTR_LAB_0067358c;
+  memset(param_1 + 0x10,0,0x2c);
+  param_1[0x10] = 0;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00614EBF
+// GHIDRA_NAME CScrollView::OnPrepareDC
+// GHIDRA_PROTO undefined __thiscall OnPrepareDC(int * param_1, undefined4 param_2)
+
+void CScrollView::OnPrepareDC(int *param_1, undefined4 param_2)
+
+{
+  int iVar1;
+  int *piVar2;
+  tagRECT local_1c;
+  int local_c;
+  int local_8;
+  
+  iVar1 = *param_1;
+  if (*(int *)(this + 0x40) == -1) {
+    (**(code **)(iVar1 + 0x3c))(8);
+    (**(code **)(iVar1 + 0x50))(&local_c,*(undefined4 *)(this + 0x44),*(undefined4 *)(this + 0x48));
+    (**(code **)(iVar1 + 0x48))
+              (&local_1c.right,*(undefined4 *)(this + 0x4c),*(undefined4 *)(this + 0x50));
+  }
+  else {
+    (**(code **)(iVar1 + 0x3c))(*(int *)(this + 0x40));
+  }
+  local_c = 0;
+  local_8 = 0;
+  if (param_1[3] == 0) {
+    piVar2 = (int *)GetDeviceScrollPosition(this,&local_1c.right);
+    local_c = -*piVar2;
+    local_8 = -piVar2[1];
+    if (*(int *)(this + 100) != 0) {
+      GetClientRect(*(HWND *)(this + 0x1c),&local_1c);
+      if (*(int *)(this + 0x4c) < local_1c.right - local_1c.left) {
+        local_c = ((local_1c.right - local_1c.left) - *(int *)(this + 0x4c)) / 2;
+      }
+      if (*(int *)(this + 0x50) < local_1c.bottom - local_1c.top) {
+        local_8 = ((local_1c.bottom - local_1c.top) - *(int *)(this + 0x50)) / 2;
+      }
+    }
+  }
+  (**(code **)(iVar1 + 0x40))(&local_1c.right,local_c,local_8);
+  CView::OnPrepareDC(param_1,param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00614F95
+// GHIDRA_NAME CScrollView::SetScaleToFitSize
+// GHIDRA_PROTO undefined __thiscall SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
+
+void CScrollView::SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
+
+{
+  uint uVar1;
+  tagRECT local_14;
+  
+  *(undefined4 *)(this + 0x40) = 0xffffffff;
+  *(undefined4 *)(this + 0x44) = param_1;
+  *(undefined4 *)(this + 0x48) = param_2;
+  if (*(int *)(this + 0x1c) != 0) {
+    uVar1 = GetStyle();
+    if ((uVar1 & 0x300000) != 0) {
+      CWnd::SetScrollPos(0,0,1);
+      CWnd::SetScrollPos(1,0,1);
+      CWnd::EnableScrollBarCtrl((CWnd *)this,3);
+    }
+  }
+  GetClientRect(*(HWND *)(this + 0x1c),&local_14);
+  *(LONG *)(this + 0x4c) = local_14.right - local_14.left;
+  *(LONG *)(this + 0x50) = local_14.bottom - local_14.top;
+  if (*(int *)(this + 0x1c) != 0) {
+    UpdateBars(this);
+    InvalidateRect(*(HWND *)(this + 0x1c),(RECT *)0x0,1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615020
+// GHIDRA_NAME CScrollView::SetScrollSizes
+// GHIDRA_PROTO undefined SetScrollSizes()
+
+void CScrollView::SetScrollSizes(void)
+
+{
+  LPPOINT lppt;
+  undefined4 uVar1;
+  HDC pHVar2;
+  LONG *pLVar3;
+  CScrollView *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 *)(unaff_EBP + -0x10) = *(undefined4 *)(this + 0x40);
+  *(undefined4 *)(this + 0x40) = *(undefined4 *)(unaff_EBP + 8);
+  *(undefined4 *)(this + 0x44) = *(undefined4 *)(unaff_EBP + 0xc);
+  *(undefined4 *)(this + 0x48) = *(undefined4 *)(unaff_EBP + 0x10);
+  CWindowDC::CWindowDC(0);
+  uVar1 = *(undefined4 *)(this + 0x40);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  CDC::SetMapMode(uVar1);
+  pHVar2 = *(HDC *)(unaff_EBP + -0x1c);
+  ((LPPOINT)(this + 0x4c))->x = *(LONG *)(this + 0x44);
+  *(undefined4 *)(this + 0x50) = *(undefined4 *)(this + 0x48);
+  LPtoDP(pHVar2,(LPPOINT)(this + 0x4c),1);
+  pLVar3 = *(LONG **)(unaff_EBP + 0x14);
+  lppt = (LPPOINT)(this + 0x54);
+  pHVar2 = *(HDC *)(unaff_EBP + -0x1c);
+  lppt->x = *pLVar3;
+  *(LONG *)(this + 0x58) = pLVar3[1];
+  LPtoDP(pHVar2,lppt,1);
+  pLVar3 = *(LONG **)(unaff_EBP + 0x18);
+  pHVar2 = *(HDC *)(unaff_EBP + -0x1c);
+  ((LPPOINT)(this + 0x5c))->x = *pLVar3;
+  *(LONG *)(this + 0x60) = pLVar3[1];
+  LPtoDP(pHVar2,(LPPOINT)(this + 0x5c),1);
+  if (*(int *)(this + 0x50) < 0) {
+    *(int *)(this + 0x50) = -*(int *)(this + 0x50);
+  }
+  if (*(int *)(this + 0x58) < 0) {
+    *(int *)(this + 0x58) = -*(int *)(this + 0x58);
+  }
+  if (*(int *)(this + 0x60) < 0) {
+    *(int *)(this + 0x60) = -*(int *)(this + 0x60);
+  }
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  CWindowDC::~CWindowDC();
+  if (lppt->x == 0) {
+    lppt->x = *(int *)(this + 0x4c) / 10;
+  }
+  if (*(int *)(this + 0x58) == 0) {
+    *(int *)(this + 0x58) = *(int *)(this + 0x50) / 10;
+  }
+  if (*(int *)(this + 0x5c) == 0) {
+    *(int *)(this + 0x5c) = lppt->x / 10;
+  }
+  if (*(int *)(this + 0x60) == 0) {
+    *(int *)(this + 0x60) = *(int *)(this + 0x58) / 10;
+  }
+  if (*(int *)(this + 0x1c) != 0) {
+    UpdateBars(this);
+    if (*(int *)(unaff_EBP + -0x10) != *(int *)(this + 0x40)) {
+      InvalidateRect(*(HWND *)(this + 0x1c),(RECT *)0x0,1);
+    }
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615152
+// GHIDRA_NAME CScrollView::GetScrollPosition
+// GHIDRA_PROTO undefined GetScrollPosition()
+
+void CScrollView::GetScrollPosition(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 uVar2;
+  CScrollView *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  if (*(int *)(this + 0x40) == -1) {
+    puVar1 = *(undefined4 **)(unaff_EBP + 8);
+    *puVar1 = 0;
+    puVar1[1] = 0;
+  }
+  else {
+    GetDeviceScrollPosition(this,(int *)(unaff_EBP + -0x14));
+    if (*(int *)(this + 0x40) != 1) {
+      CWindowDC::CWindowDC(0);
+      uVar2 = *(undefined4 *)(this + 0x40);
+      *(undefined4 *)(unaff_EBP + -4) = 0;
+      CDC::SetMapMode(uVar2);
+      DPtoLP(*(HDC *)(unaff_EBP + -0x20),(LPPOINT)(unaff_EBP + -0x14),1);
+      *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+      CWindowDC::~CWindowDC();
+    }
+    puVar1 = *(undefined4 **)(unaff_EBP + 8);
+    *puVar1 = *(undefined4 *)(unaff_EBP + -0x14);
+    puVar1[1] = *(undefined4 *)(unaff_EBP + -0x10);
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006151D6
+// GHIDRA_NAME CScrollView::ScrollToPosition
+// GHIDRA_PROTO undefined ScrollToPosition()
+
+void CScrollView::ScrollToPosition(void)
+
+{
+  undefined4 uVar1;
+  int iVar2;
+  int iVar3;
+  CScrollView *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  if (*(int *)(this + 0x40) != 1) {
+    CWindowDC::CWindowDC(0);
+    uVar1 = *(undefined4 *)(this + 0x40);
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    CDC::SetMapMode(uVar1);
+    LPtoDP(*(HDC *)(unaff_EBP + -0x18),(LPPOINT)(unaff_EBP + 8),1);
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    CWindowDC::~CWindowDC();
+  }
+  iVar2 = CWnd::GetScrollLimit(0);
+  iVar3 = CWnd::GetScrollLimit(1);
+  if (*(int *)(unaff_EBP + 8) < 0) {
+    *(undefined4 *)(unaff_EBP + 8) = 0;
+  }
+  else if (iVar2 < *(int *)(unaff_EBP + 8)) {
+    *(int *)(unaff_EBP + 8) = iVar2;
+  }
+  if (*(int *)(unaff_EBP + 0xc) < 0) {
+    *(undefined4 *)(unaff_EBP + 0xc) = 0;
+  }
+  else if (iVar3 < *(int *)(unaff_EBP + 0xc)) {
+    *(int *)(unaff_EBP + 0xc) = iVar3;
+  }
+  ScrollToDevicePosition(this,*(int *)(unaff_EBP + 8),*(int *)(unaff_EBP + 0xc));
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615277
+// GHIDRA_NAME CScrollView::GetDeviceScrollPosition
+// GHIDRA_PROTO undefined __thiscall GetDeviceScrollPosition(int * param_1)
+
+void CScrollView::GetDeviceScrollPosition(int *param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  tagRECT local_14;
+  
+  iVar1 = CWnd::GetScrollPos(1);
+  iVar2 = CWnd::GetScrollPos(0);
+  if (*(int *)(this + 100) != 0) {
+    GetClientRect(*(HWND *)(this + 0x1c),&local_14);
+    if (*(int *)(this + 0x4c) < local_14.right - local_14.left) {
+      iVar2 = ((local_14.right - local_14.left) - *(int *)(this + 0x4c)) / -2;
+    }
+    if (*(int *)(this + 0x50) < local_14.bottom - local_14.top) {
+      iVar1 = ((local_14.bottom - local_14.top) - *(int *)(this + 0x50)) / -2;
+    }
+  }
+  *param_1 = iVar2;
+  param_1[1] = iVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615329
+// GHIDRA_NAME CScrollView::ScrollToDevicePosition
+// GHIDRA_PROTO undefined __thiscall ScrollToDevicePosition(int param_1, int param_2)
+
+void CScrollView::ScrollToDevicePosition(int param_1, int param_2)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  iVar1 = CWnd::GetScrollPos(0);
+  CWnd::SetScrollPos(0,param_1,1);
+  iVar2 = CWnd::GetScrollPos(1);
+  CWnd::SetScrollPos(1,param_2,1);
+  CWnd::ScrollWindow((CWnd *)this,iVar1 - param_1,iVar2 - param_2,(RECT *)0x0,(RECT *)0x0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061537B
+// GHIDRA_NAME CScrollView::FillOutsideRect
+// GHIDRA_PROTO undefined FillOutsideRect()
+
+void __thiscall CScrollView::FillOutsideRect(int param_1,int param_2,int param_3)
+
+{
+  BOOL BVar1;
+  HBRUSH pHVar2;
+  tagRECT local_14;
+  
+  GetClientRect(*(HWND *)(param_1 + 0x1c),&local_14);
+  local_14.left = *(LONG *)(param_1 + 0x4c);
+  BVar1 = IsRectEmpty(&local_14);
+  if (BVar1 == 0) {
+    pHVar2 = (HBRUSH)0x0;
+    if (param_3 != 0) {
+      pHVar2 = *(HBRUSH *)(param_3 + 4);
+    }
+    FillRect(*(HDC *)(param_2 + 4),&local_14,pHVar2);
+  }
+  local_14.right = *(LONG *)(param_1 + 0x4c);
+  local_14.left = 0;
+  local_14.top = *(LONG *)(param_1 + 0x50);
+  BVar1 = IsRectEmpty(&local_14);
+  if (BVar1 == 0) {
+    pHVar2 = (HBRUSH)0x0;
+    if (param_3 != 0) {
+      pHVar2 = *(HBRUSH *)(param_3 + 4);
+    }
+    FillRect(*(HDC *)(param_2 + 4),&local_14,pHVar2);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006153FE
+// GHIDRA_NAME CScrollView::ResizeParentToFit
+// GHIDRA_PROTO undefined __thiscall ResizeParentToFit(int param_1)
+
+void CScrollView::ResizeParentToFit(int param_1)
+
+{
+  code *pcVar1;
+  int iVar2;
+  tagRECT local_44;
+  int local_34;
+  int local_30;
+  int local_2c;
+  int local_28;
+  tagRECT local_24;
+  tagRECT local_14;
+  
+  GetWindowRect(*(HWND *)(this + 0x1c),&local_14);
+  local_34 = local_14.left;
+  local_30 = local_14.top;
+  local_2c = local_14.right;
+  local_28 = local_14.bottom;
+  pcVar1 = *(code **)(*(int *)this + 0x68);
+  (*pcVar1)(&local_34,0);
+  local_14.top = local_14.top * 2 - local_30;
+  local_14.right = local_14.right * 2 - local_2c;
+  local_14.left = local_14.left * 2 - local_34;
+  local_14.bottom = local_14.bottom * 2 - local_28;
+  OffsetRect(&local_14,-local_14.left,-local_14.top);
+  local_24.left = 0;
+  local_24.top = 0;
+  local_24.right = *(LONG *)(this + 0x4c);
+  local_24.bottom = *(LONG *)(this + 0x50);
+  if (param_1 != 0) {
+    if (local_14.right <= local_24.right) {
+      local_24.right = local_14.right;
+    }
+    if (local_14.bottom <= local_24.bottom) {
+      local_24.bottom = local_14.bottom;
+    }
+  }
+  (*pcVar1)(&local_24,1);
+  OffsetRect(&local_24,-local_24.left,-local_24.top);
+  if (param_1 != 0) {
+    if (local_14.right <= *(int *)(this + 0x4c)) {
+      local_24.right = local_14.right;
+    }
+    if (local_14.bottom <= *(int *)(this + 0x50)) {
+      local_24.bottom = local_14.bottom;
+    }
+  }
+  iVar2 = CWnd::GetParentFrame();
+  GetWindowRect(*(HWND *)(iVar2 + 0x1c),&local_44);
+  SetWindowPos(0,0,0,((local_44.right - local_14.right) - local_44.left) + local_24.right,
+               ((local_44.bottom - local_14.bottom) - local_44.top) + local_24.bottom,0x16);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061553F
+// GHIDRA_NAME CScrollView::CenterOnPoint
+// GHIDRA_PROTO undefined CenterOnPoint()
+
+void __thiscall CScrollView::CenterOnPoint(int param_1,int param_2,int param_3)
+
+{
+  uint uVar1;
+  int iVar2;
+  tagRECT local_14;
+  
+  GetClientRect(*(HWND *)(param_1 + 0x1c),&local_14);
+  param_2 = param_2 - (local_14.right - local_14.left) / 2;
+  param_3 = param_3 - (local_14.bottom - local_14.top) / 2;
+  uVar1 = GetStyle();
+  if (((uVar1 & 0x100000) == 0) || (param_2 < 0)) {
+    param_2 = 0;
+  }
+  else {
+    iVar2 = CWnd::GetScrollLimit(0);
+    if (iVar2 < param_2) {
+      param_2 = iVar2;
+    }
+  }
+  if (((uVar1 & 0x200000) == 0) || (param_3 < 0)) {
+    param_3 = 0;
+  }
+  else {
+    iVar2 = CWnd::GetScrollLimit(1);
+    if (iVar2 < param_3) {
+      param_3 = iVar2;
+    }
+  }
+  CWnd::GetScrollPos(0);
+  CWnd::SetScrollPos(0,param_2,1);
+  CWnd::GetScrollPos(1);
+  CWnd::SetScrollPos(1,param_3,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006155ED
+// GHIDRA_NAME CScrollView::GetScrollBarSizes
+// GHIDRA_PROTO undefined __thiscall GetScrollBarSizes(int * param_1)
+
+void CScrollView::GetScrollBarSizes(int *param_1)
+
+{
+  code *pcVar1;
+  uint uVar2;
+  int iVar3;
+  
+  param_1[1] = 0;
+  *param_1 = 0;
+  uVar2 = GetStyle();
+  pcVar1 = *(code **)(*(int *)this + 0x70);
+  iVar3 = (*pcVar1)(1);
+  if ((iVar3 == 0) && (*param_1 = DAT_006a7d00, (uVar2 & 0x800000) != 0)) {
+    *param_1 = *param_1 + -1;
+  }
+  iVar3 = (*pcVar1)(0);
+  if ((iVar3 == 0) && (param_1[1] = DAT_006a7d04, (uVar2 & 0x800000) != 0)) {
+    param_1[1] = param_1[1] + -1;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615647
+// GHIDRA_NAME CScrollView::GetTrueClientSize
+// GHIDRA_PROTO undefined __thiscall GetTrueClientSize(int * param_1, int * param_2)
+
+undefined4 CScrollView::GetTrueClientSize(int *param_1, int *param_2)
+
+{
+  uint uVar1;
+  undefined4 uVar2;
+  tagRECT local_14;
+  
+  GetClientRect(*(HWND *)(this + 0x1c),&local_14);
+  *param_1 = local_14.right;
+  param_1[1] = local_14.bottom;
+  uVar1 = GetStyle();
+  GetScrollBarSizes(this,param_2);
+  if ((*param_2 != 0) && ((uVar1 & 0x200000) != 0)) {
+    *param_1 = *param_1 + *param_2;
+  }
+  if ((param_2[1] != 0) && ((uVar1 & 0x100000) != 0)) {
+    param_1[1] = param_1[1] + param_2[1];
+  }
+  if ((*param_2 < *param_1) && (param_2[1] < param_1[1])) {
+    uVar2 = 1;
+  }
+  else {
+    uVar2 = 0;
+  }
+  return uVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006156BC
+// GHIDRA_NAME CScrollView::GetScrollBarState
+// GHIDRA_PROTO undefined __thiscall GetScrollBarState(int param_1, int param_2, uint * param_3, int * param_4, int * param_5, int param_6)
+
+void __thiscall
+CScrollView::GetScrollBarState
+          (CScrollView *this,int param_1,int param_2,uint *param_3,int *param_4,int *param_5,
+          int param_6)
+
+{
+  int iVar1;
+  int *piVar2;
+  int *piVar3;
+  uint uVar4;
+  uint uVar5;
+  CScrollView *local_c;
+  CScrollView *local_8;
+  
+  local_c = this;
+  local_8 = this;
+  GetScrollBarSizes(this,(int *)&local_c);
+  piVar2 = param_4;
+  iVar1 = *(int *)(this + 0x50);
+  *param_4 = *(int *)(this + 0x4c) - param_1;
+  param_4[1] = iVar1 - param_2;
+  piVar3 = (int *)GetDeviceScrollPosition(this,&param_1);
+  *param_5 = *piVar3;
+  param_5[1] = piVar3[1];
+  uVar4 = (uint)(0 < *piVar2);
+  if (uVar4 == 0) {
+    *param_5 = 0;
+  }
+  else if (param_6 != 0) {
+    piVar2[1] = (int)(local_8 + piVar2[1]);
+  }
+  uVar5 = (uint)(0 < piVar2[1]);
+  if (uVar5 == 0) {
+    param_5[1] = 0;
+  }
+  else if (param_6 != 0) {
+    *piVar2 = (int)(local_c + *piVar2);
+  }
+  if (((uVar5 != 0) && (uVar4 == 0)) && (0 < *piVar2)) {
+    piVar2[1] = (int)(local_8 + piVar2[1]);
+    uVar4 = 1;
+  }
+  iVar1 = *piVar2;
+  if ((0 < iVar1) && (iVar1 <= *param_5)) {
+    *param_5 = iVar1;
+  }
+  iVar1 = piVar2[1];
+  if ((0 < iVar1) && (iVar1 <= param_5[1])) {
+    param_5[1] = iVar1;
+  }
+  *param_3 = uVar4;
+  param_3[1] = uVar5;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615778
+// GHIDRA_NAME CScrollView::UpdateBars
+// GHIDRA_PROTO undefined __thiscall UpdateBars(void)
+
+void CScrollView::UpdateBars()
+
+{
+  HWND pHVar1;
+  int iVar2;
+  LRESULT LVar3;
+  undefined1 local_6c [4];
+  undefined4 local_68;
+  undefined4 local_64;
+  int local_60;
+  int local_5c;
+  tagRECT local_50;
+  int local_40;
+  int local_3c;
+  int local_38;
+  int local_34;
+  int local_30;
+  int local_2c;
+  int local_28;
+  int local_24;
+  int local_20;
+  int local_1c;
+  uint local_18;
+  int local_14;
+  int local_10;
+  int local_c;
+  int local_8;
+  
+  if (*(int *)(this + 0x68) != 0) {
+    return;
+  }
+  *(undefined4 *)(this + 0x68) = 1;
+  local_8 = 1;
+  pHVar1 = GetParent(*(HWND *)(this + 0x1c));
+  iVar2 = FromHandle(pHVar1);
+  if ((iVar2 != 0) &&
+     (LVar3 = SendMessageA(*(HWND *)(iVar2 + 0x1c),0x368,0,(LPARAM)&local_40), LVar3 != 0)) {
+    local_8 = 0;
+  }
+  if (local_8 == 0) {
+    GetScrollBarSizes(this,&local_20);
+    local_10 = local_38 - local_40;
+    local_c = local_34 - local_3c;
+  }
+  else {
+    iVar2 = GetTrueClientSize(this,&local_10,&local_20);
+    if (iVar2 == 0) {
+      GetClientRect(*(HWND *)(this + 0x1c),&local_50);
+      if ((0 < local_50.right) && (0 < local_50.bottom)) {
+        CWnd::EnableScrollBarCtrl((CWnd *)this,3);
+      }
+      goto LAB_006158e6;
+    }
+  }
+  GetScrollBarState(this,local_10,local_c,&local_18,&local_30,&local_28,local_8);
+  if (local_18 != 0) {
+    local_c = local_c - local_1c;
+  }
+  if (local_14 != 0) {
+    local_10 = local_10 - local_20;
+  }
+  ScrollToDevicePosition(this,local_28,local_24);
+  local_68 = 3;
+  local_64 = 0;
+  CWnd::EnableScrollBarCtrl((CWnd *)this,0);
+  if (local_18 != 0) {
+    local_5c = local_10;
+    local_60 = *(int *)(this + 0x4c) + -1;
+    iVar2 = CWnd::SetScrollInfo(0,local_6c,1);
+    if (iVar2 == 0) {
+      CWnd::SetScrollRange((CWnd *)this,0,0,local_30,1);
+    }
+  }
+  CWnd::EnableScrollBarCtrl((CWnd *)this,1);
+  if (local_14 != 0) {
+    local_5c = local_c;
+    local_60 = *(int *)(this + 0x50) + -1;
+    iVar2 = CWnd::SetScrollInfo(1,local_6c,1);
+    if (iVar2 == 0) {
+      CWnd::SetScrollRange((CWnd *)this,1,0,local_2c,1);
+    }
+  }
+LAB_006158e6:
+  *(undefined4 *)(this + 0x68) = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615975
+// GHIDRA_NAME CScrollView::OnHScroll
+// GHIDRA_PROTO undefined OnHScroll()
+
+void __thiscall
+CScrollView::OnHScroll(int *param_1,undefined1 param_2,undefined4 param_3,int param_4)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  if ((param_4 != 0) && (iVar1 = CWnd::SendChildNotifyLastMsg(0), iVar1 != 0)) {
+    return;
+  }
+  iVar1 = *param_1;
+  iVar2 = (**(code **)(iVar1 + 0x70))(0);
+  if (param_4 == iVar2) {
+    (**(code **)(iVar1 + 0xc4))(CONCAT11(0xff,param_2),param_3,1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615A00
+// GHIDRA_NAME CScrollView::OnMouseWheel
+// GHIDRA_PROTO int __thiscall OnMouseWheel(uint param_1, short param_2, CPoint param_3)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CScrollView::OnMouseWheel(unsigned int,short,class CPoint)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: Visual Studio 2003 Release
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CScrollView::OnMouseWheel(unsigned int,short,class CPoint)
+   
+   Library: Visual Studio 2003 Release */
+
+int CScrollView::OnMouseWheel(ushort param_1)
+
+{
+  int iVar1;
+  
+  if (((param_1 & 0xc) == 0) && (iVar1 = CView::GetParentSplitter(this,1), iVar1 == 0)) {
+    iVar1 = DoMouseWheel(this,param_1);
+    return iVar1;
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615A34
+// GHIDRA_NAME CScrollView::DoMouseWheel
+// GHIDRA_PROTO undefined __thiscall DoMouseWheel(short param_1)
+
+int CScrollView::DoMouseWheel(short param_1)
 
 {
   int iVar1;
@@ -19,13 +695,12 @@ int CScrollView::_DoMouseWheel_CScrollView__QAEHIFVCPoint___Z(short param_1)
   int iVar7;
   int iVar8;
   short in_stack_00000008;
-
-  uVar5 = _GetStyle_CWnd__QBEKXZ();
+  
+  uVar5 = GetStyle();
   iVar1 = *(int *)this;
   pcVar2 = *(code **)(iVar1 + 0x70);
   iVar6 = (*pcVar2)(1);
-  if (((iVar6 == 0) || (iVar6 = _IsWindowEnabled_CWnd__QBEHXZ(), iVar6 == 0)) &&
-     ((uVar5 & 0x200000) == 0)) {
+  if (((iVar6 == 0) || (iVar6 = IsWindowEnabled(), iVar6 == 0)) && ((uVar5 & 0x200000) == 0)) {
     bVar3 = false;
   }
   else {
@@ -33,14 +708,14 @@ int CScrollView::_DoMouseWheel_CScrollView__QAEHIFVCPoint___Z(short param_1)
   }
   iVar6 = (*pcVar2)(0);
   iVar8 = 0;
-  if (((iVar6 != 0) && (iVar6 = _IsWindowEnabled_CWnd__QBEHXZ(), iVar6 != 0)) ||
+  if (((iVar6 != 0) && (iVar6 = IsWindowEnabled(), iVar6 != 0)) ||
      (bVar4 = false, (uVar5 & 0x100000) != 0)) {
     bVar4 = true;
   }
   if ((!bVar3) && (!bVar4)) {
     return 0;
   }
-  iVar6 = __AfxGetMouseScrollLines__YAIH_Z(0);
+  iVar6 = _AfxGetMouseScrollLines(0);
   if (bVar3) {
     iVar7 = MulDiv(-(int)in_stack_00000008,iVar6,0x78);
     if ((iVar7 == -1) || (iVar6 == -1)) {
@@ -77,5 +752,164 @@ LAB_00615b42:
     UpdateWindow(*(HWND *)(this + 0x1c));
   }
   return iVar8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615B58
+// GHIDRA_NAME CScrollView::OnScroll
+// GHIDRA_PROTO undefined OnScroll()
+
+int __thiscall CScrollView::OnScroll(int *param_1,undefined4 param_2,int param_3,int param_4)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar1 = CWnd::GetScrollPos(0);
+  if ((char)param_2 == '\0') {
+    iVar3 = iVar1 - param_1[0x17];
+  }
+  else if ((char)param_2 == '\x01') {
+    iVar3 = iVar1 + param_1[0x17];
+  }
+  else if ((char)param_2 == '\x02') {
+    iVar3 = iVar1 - param_1[0x15];
+  }
+  else if ((char)param_2 == '\x03') {
+    iVar3 = iVar1 + param_1[0x15];
+  }
+  else {
+    iVar3 = param_3;
+    if ((char)param_2 != '\x05') {
+      if ((char)param_2 == '\x06') {
+        iVar3 = 0;
+      }
+      else {
+        iVar3 = iVar1;
+        if ((char)param_2 == '\a') {
+          iVar3 = 0x7fffffff;
+        }
+      }
+    }
+  }
+  iVar2 = CWnd::GetScrollPos(1);
+  if (param_2._1_1_ == '\0') {
+    param_3 = iVar2 - param_1[0x18];
+  }
+  else if (param_2._1_1_ == '\x01') {
+    param_3 = iVar2 + param_1[0x18];
+  }
+  else if (param_2._1_1_ == '\x02') {
+    param_3 = iVar2 - param_1[0x16];
+  }
+  else if (param_2._1_1_ == '\x03') {
+    param_3 = iVar2 + param_1[0x16];
+  }
+  else if (param_2._1_1_ != '\x05') {
+    if (param_2._1_1_ == '\x06') {
+      param_3 = 0;
+    }
+    else {
+      param_3 = iVar2;
+      if (param_2._1_1_ == '\a') {
+        param_3 = 0x7fffffff;
+      }
+    }
+  }
+  iVar1 = (**(code **)(*param_1 + 200))(iVar3 - iVar1,param_3 - iVar2,param_4);
+  if ((iVar1 != 0) && (param_4 != 0)) {
+    UpdateWindow((HWND)param_1[7]);
+  }
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615C28
+// GHIDRA_NAME CScrollView::OnScrollBy
+// GHIDRA_PROTO undefined OnScrollBy()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual int __thiscall CScrollView::OnScrollBy(class CSize,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual int __thiscall CScrollView::OnScrollBy(class CSize,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall CScrollView::OnScrollBy(CWnd *param_1,int param_2,int param_3,int param_4)
+
+{
+  CCmdTarget_slot_0x04_0x04 *pCVar1;
+  uint uVar2;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  undefined4 uVar6;
+  
+  uVar2 = GetStyle();
+  pCVar1 = (param_1->ccmdTarget).vftable[9].slot_0x04;
+  iVar3 = (*pCVar1)(1);
+  if (iVar3 == 0) {
+LAB_00615c5a:
+    if ((uVar2 & 0x200000) == 0) {
+LAB_00615c60:
+      param_3 = 0;
+    }
+  }
+  else {
+    iVar4 = IsWindowEnabled();
+    if (iVar4 == 0) goto LAB_00615c60;
+    if (iVar3 == 0) goto LAB_00615c5a;
+  }
+  iVar3 = (*pCVar1)(0);
+  if (iVar3 == 0) {
+LAB_00615c7f:
+    if ((uVar2 & 0x100000) != 0) goto LAB_00615c89;
+  }
+  else {
+    iVar4 = IsWindowEnabled();
+    if (iVar4 != 0) {
+      if (iVar3 != 0) goto LAB_00615c89;
+      goto LAB_00615c7f;
+    }
+  }
+  param_2 = 0;
+LAB_00615c89:
+  iVar3 = CWnd::GetScrollPos(0);
+  iVar4 = CWnd::GetScrollLimit(0);
+  param_2 = iVar3 + param_2;
+  if (param_2 < 0) {
+    param_2 = 0;
+  }
+  else if (iVar4 < param_2) {
+    param_2 = iVar4;
+  }
+  iVar4 = CWnd::GetScrollPos(1);
+  iVar5 = CWnd::GetScrollLimit(1);
+  param_3 = iVar4 + param_3;
+  if (param_3 < 0) {
+    param_3 = 0;
+  }
+  else if (iVar5 < param_3) {
+    param_3 = iVar5;
+  }
+  if ((param_2 == iVar3) && (param_3 == iVar4)) {
+    uVar6 = 0;
+  }
+  else {
+    if (param_4 != 0) {
+      CWnd::ScrollWindow(param_1,iVar3 - param_2,iVar4 - param_3,(RECT *)0x0,(RECT *)0x0);
+      if (param_2 != iVar3) {
+        CWnd::SetScrollPos(0,param_2,1);
+      }
+      if (param_3 != iVar4) {
+        CWnd::SetScrollPos(1,param_3,1);
+      }
+    }
+    uVar6 = 1;
+  }
+  return uVar6;
 }
 

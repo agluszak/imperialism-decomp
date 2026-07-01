@@ -3,18 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TNewspaperView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004356E0
-// GHIDRA_NAME TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0
-// GHIDRA_PROTO undefined __thiscall TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(void)
-
-TNewspaperView * TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0()
-
-{
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TNewspaperViewVtbl_00641390;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00435710
 // GHIDRA_NAME TNewspaperView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -22,50 +10,50 @@ TNewspaperView * TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryB
 TNewspaperView * TNewspaperView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00406bc2();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055D160
-// GHIDRA_NAME TNewspaperView::CreateTNewspaperView
-// GHIDRA_PROTO undefined CreateTNewspaperView()
+// GHIDRA_NAME TNewspaperView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TNewspaperView::CreateTNewspaperView(void)
+undefined4 * TNewspaperView::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063551a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x98);
+  puVar1 = (undefined4 *)operator_new(0x98);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TNewspaperViewVtbl **)this = &TNewspaperViewVtbl_00641390;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055D1E0
-// GHIDRA_NAME TNewspaperView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TNewspaperView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNewspaperView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TNewspaperView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNewspaperView;
 }
 

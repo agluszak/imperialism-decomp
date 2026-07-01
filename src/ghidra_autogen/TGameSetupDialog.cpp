@@ -3,6 +3,39 @@
 // Program: Imperialism.exe
 // Bucket: TGameSetupDialog.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005B2740
+// GHIDRA_NAME TGameSetupDialog::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TGameSetupDialog::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00638b82;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x60);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    local_4 = CONCAT31(local_4._1_3_,1);
+    *puVar1 = &TDialogView::_vftable_;
+    func_0x004057a4(s_D__Ambit_Toy_h_0069633c,0x23);
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005B27D0
 // GHIDRA_NAME TGameSetupDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,21 +43,21 @@
 TGameSetupDialog * TGameSetupDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00404453();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2820
-// GHIDRA_NAME TGameSetupDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TGameSetupDialog::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGameSetupDialog::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TGameSetupDialog::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTGameSetupDialog;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2860
@@ -35,35 +68,5 @@ void TGameSetupDialog::OrphanRetStub_005b2860()
 
 {
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B2880
-// GHIDRA_NAME TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree
-// GHIDRA_PROTO undefined DestructTGameSetupDialogAndMaybeFree()
-
-TCluster * TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree(void)
-
-{
-  TCluster *this;
-  TCluster *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00638baa;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)__2_YAPAXI_Z(0x88);
-  local_4 = 0;
-  pTVar1 = (TCluster *)0x0;
-  if (this != (TCluster *)0x0) {
-    TCluster::ConstructUiResourceEntryType4B0C0(this);
-    this->vftable = (TClusterVtbl *)&TMapEditClusterVtbl_0066b578;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 

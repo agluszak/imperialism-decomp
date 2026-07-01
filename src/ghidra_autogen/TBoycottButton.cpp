@@ -4,43 +4,43 @@
 // Bucket: TBoycottButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005846E0
-// GHIDRA_NAME TBoycottButton::CreateTBoycottButtonInstance
-// GHIDRA_PROTO undefined CreateTBoycottButtonInstance()
+// GHIDRA_NAME TBoycottButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TToggleButton * TBoycottButton::CreateTBoycottButtonInstance(void)
+undefined4 * TBoycottButton::CreateObject(void)
 
 {
-  TToggleButton *this;
-  TToggleButton *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063760a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TToggleButton *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  pTVar1 = (TToggleButton *)0x0;
-  if (this != (TToggleButton *)0x0) {
-    TToggleButton::ConstructTToggleButtonBaseState(this);
-    this->vftable = (TToggleButtonVtbl *)&TBoycottButtonVtbl_00664238;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00402b53();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584760
-// GHIDRA_NAME TBoycottButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TBoycottButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBoycottButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TBoycottButton::GetRuntimeClass()
 
 {
-  return &g_pClassDescTBoycottButton;
+  return &classTBoycottButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584780
@@ -50,8 +50,8 @@ CRuntimeClass * TBoycottButton::GetTEventHandlerClassNamePointer()
 TBoycottButton * TBoycottButton::ConstructTBoycottButtonBaseState()
 
 {
-  TToggleButton::ConstructTToggleButtonBaseState((TToggleButton *)this);
-  this->vftable = &TBoycottButtonVtbl_00664238;
+  func_0x00402b53();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,9 +62,9 @@ TBoycottButton * TBoycottButton::ConstructTBoycottButtonBaseState()
 TBoycottButton * TBoycottButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00402824();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -81,18 +81,19 @@ TBoycottButton::HandleToggleButtonStateChangeAndRefresh
   undefined uVar1;
   undefined3 extraout_var;
   int *piVar2;
-
+  undefined3 in_stack_00000005;
+  undefined3 in_stack_00000009;
+  
   if (param_1 != '\0') {
     uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x636c7573);
     if (piVar2 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x2be);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x2be);
     }
     (**(code **)(*piVar2 + 0x1c8))(0x20202020);
   }
-  TToggleButton::TToggleButton_VtblSlot116((TToggleButton *)this,param_1,param_2);
+  func_0x00405f8d(_param_1,_param_2);
   return;
 }
 

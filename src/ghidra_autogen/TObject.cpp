@@ -24,12 +24,12 @@ TObject * TObject::ShallowFree()
   uint uVar4;
   uint uVar5;
   TObject *pTVar6;
-
+  
   pcVar1 = (code *)**(undefined4 **)this;
   iVar2 = (*pcVar1)();
   uVar5 = *(uint *)(iVar2 + 4);
   (*pcVar1)();
-  pTVar3 = (TObject *)_CreateObject_CRuntimeClass__QAEPAVCObject__XZ();
+  pTVar3 = (TObject *)CRuntimeClass::CreateObject();
   pTVar6 = pTVar3;
   for (uVar4 = uVar5 >> 2; uVar4 != 0; uVar4 = uVar4 - 1) {
     *(undefined4 *)pTVar6 = *(undefined4 *)this;
@@ -46,7 +46,7 @@ TObject * TObject::ShallowFree()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004798B0
 // GHIDRA_NAME TObject::Free
-// GHIDRA_PROTO void __thiscall TObject::Free(void)
+// GHIDRA_PROTO void __thiscall Free(void)
 
 void TObject::Free()
 
@@ -70,21 +70,25 @@ TObject * TObject::ShallowClone()
 
 {
   TObject *pTVar1;
-
+  
                     /* WARNING: Could not recover jumptable at 0x004798d2. Too many branches */
                     /* WARNING: Treating indirect jump as call */
   pTVar1 = (TObject *)(**(code **)(*(int *)this + 0x24))();
   return pTVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00479ED0
-// GHIDRA_NAME TObject::OrphanVtableAssignStub_00479ed0
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_00479ed0()
+// GHIDRA_FUNCTION IMPERIALISM 0x00484990
+// GHIDRA_NAME TObject::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-undefined ** TObject::OrphanVtableAssignStub_00479ed0(void)
+undefined4 __thiscall TObject::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
-  return &PTR_DAT_00694b48;
+  func_0x00401636();
+  if ((param_2 & 1) != 0) {
+    operator_delete(param_1);
+  }
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485C90
@@ -99,8 +103,8 @@ void TObject::CreateTObjectInstance(int param_1)
   int local_24;
   undefined4 local_20;
   undefined4 local_1c;
-
-  CWnd::_Default_CWnd__IAEJXZ((CWnd *)this);
+  
+  CWnd::Default((CWnd *)this);
   local_2c = 0x2c;
   GetWindowPlacementFromThisHwnd(&local_2c);
   if ((param_1 == 0) && (local_24 != 2)) {
@@ -113,6 +117,23 @@ void TObject::CreateTObjectInstance(int param_1)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00485DF0
+// GHIDRA_NAME TObject::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TObject::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(4);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00485E20
 // GHIDRA_NAME TObject::GetRuntimeClass
 // GHIDRA_PROTO CRuntimeClass * __thiscall GetRuntimeClass(void)
@@ -120,7 +141,7 @@ void TObject::CreateTObjectInstance(int param_1)
 CRuntimeClass * TObject::GetRuntimeClass()
 
 {
-  return (CRuntimeClass *)&PTR_s_TObject_00694eb8;
+  return (CRuntimeClass *)&classTObject;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485E90
@@ -139,37 +160,36 @@ void TObject::Serialize(CArchive *archive)
 
 {
   undefined4 *unaff_FS_OFFSET;
-  TFileStream local_1c;
   undefined **local_14;
   CArchive *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   puStack_8 = &LAB_0062ea00;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_10 = archive;
-  local_14 = &PTR_LAB_00645f98;
+  local_14 = &ArchiveStreamAdapter::_vftable_;
   local_4 = 0;
-  TFileStream::ConstructTFileStreamBaseState(&local_1c);
+  func_0x00402374();
   local_4 = CONCAT31(local_4._1_3_,1);
-  TFileStream::SetBackingArchive(&local_1c,&local_14);
+  func_0x00408846(&local_14);
   if ((~archive->m_nMode & 1U) != 0) {
     (**(code **)(*(int *)this + 0x14))();
-    *unaff_FS_OFFSET = local_10;
+    *unaff_FS_OFFSET = local_14;
     return;
   }
-  (**(code **)(*(int *)this + 0x18))(&local_1c);
-  *unaff_FS_OFFSET = local_10;
+  (**(code **)(*(int *)this + 0x18))(&stack0xffffffe0);
+  *unaff_FS_OFFSET = local_14;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485F50
-// GHIDRA_NAME TObject::DestructTObjectAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TObject::DestructTObjectAndMaybeFree(void)
+// GHIDRA_NAME TObject::RestoreConstructionSentinelVtable
+// GHIDRA_PROTO undefined __thiscall RestoreConstructionSentinelVtable(void)
 
-void TObject::DestructTObjectAndMaybeFree()
+void TObject::RestoreConstructionSentinelVtable()
 
 {
   *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -194,82 +214,5 @@ void TObject::ReadFrom(TStream *stream)
 
 {
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491CC0
-// GHIDRA_NAME TObject::RunRegisteredDialogFactoriesByEventCode
-// GHIDRA_PROTO int * __thiscall RunRegisteredDialogFactoriesByEventCode(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Iterates registered dialog factory callbacks and invokes each with nEventCode until one returns a UI resource object; applies packet association and anchor offset if provided.
-// GHIDRA_COMMENT_END
-
-/* Iterates registered dialog factory callbacks and invokes each with nEventCode until one returns a
-   UI resource object; applies packet association and anchor offset if provided. */
-
-int * __thiscall
-TObject::RunRegisteredDialogFactoriesByEventCode
-          (TObject *this,int nContextId,int *pEventPacket,int nEventCode,int *pAnchorPoint)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  int *piVar3;
-  int iStack_8;
-  int iStack_4;
-
-  piVar3 = (int *)0x0;
-  puVar2 = *(undefined4 **)(this + 8);
-  do {
-    if (puVar2 == (undefined4 *)0x0) {
-      if (piVar3 == (int *)0x0) {
-        return (int *)0x0;
-      }
-      break;
-    }
-    puVar1 = (undefined4 *)*puVar2;
-    piVar3 = (int *)(*(code *)puVar2[2])(0,nEventCode);
-    puVar2 = puVar1;
-  } while (piVar3 == (int *)0x0);
-  if (pEventPacket != (int *)0x0) {
-    (**(code **)(*pEventPacket + 0x170))(piVar3,0);
-  }
-  if ((pAnchorPoint[1] != 0) || (*pAnchorPoint != 0)) {
-    iStack_8 = *pAnchorPoint + piVar3[9];
-    iStack_4 = piVar3[10] + pAnchorPoint[1];
-    (**(code **)(*piVar3 + 0xf0))(&iStack_8,0);
-  }
-  return piVar3;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491D80
-// GHIDRA_NAME TObject::InvokeDialogFactoryFromPacket
-// GHIDRA_PROTO int * __thiscall InvokeDialogFactoryFromPacket(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Factory wrapper that forwards nEventCode to callback iterator (vfunc +0x30) and performs post-create initialization on returned UI resource object.
-// GHIDRA_COMMENT_END
-
-/* Factory wrapper that forwards nEventCode to callback iterator (vfunc +0x30) and performs
-   post-create initialization on returned UI resource object. */
-
-int * __thiscall
-TObject::InvokeDialogFactoryFromPacket
-          (TObject *this,int nContextId,int *pEventPacket,int nEventCode,int *pAnchorPoint)
-
-{
-  int iVar1;
-  int iVar2;
-  int *piVar3;
-
-  iVar2 = g_McAppUiActiveFlag_006950AC;
-  g_McAppUiActiveFlag_006950AC = 0;
-  piVar3 = (int *)(**(code **)(*(int *)this + 0x30))
-                            (nContextId,pEventPacket,nEventCode,pAnchorPoint);
-  if (piVar3 != (int *)0x0) {
-    iVar1 = *piVar3;
-    (**(code **)(iVar1 + 0xd8))(nContextId);
-    (**(code **)(iVar1 + 0xe0))();
-  }
-  g_McAppUiActiveFlag_006950AC = iVar2;
-  return piVar3;
 }
 

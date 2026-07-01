@@ -4,43 +4,43 @@
 // Bucket: TArrowsControl.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005838B0
-// GHIDRA_NAME TArrowsControl::CreateTArrowsControlInstance
-// GHIDRA_PROTO undefined CreateTArrowsControlInstance()
+// GHIDRA_NAME TArrowsControl::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TArrowsControl::CreateTArrowsControlInstance(void)
+undefined4 * TArrowsControl::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063752a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TArrowsControlVtbl **)this = &TArrowsControlVtbl_00663318;
-    *(undefined4 *)(this + 0x90) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar1[0x24] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583950
-// GHIDRA_NAME TArrowsControl::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TArrowsControl::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArrowsControl::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TArrowsControl::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTArrowsControl;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583970
@@ -50,8 +50,8 @@ CRuntimeClass * TArrowsControl::GetTEventHandlerClassNamePointer()
 TArrowsControl * TArrowsControl::ConstructTArrowsControlBaseState()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TArrowsControlVtbl_00663318;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x90 = 0;
   return this;
 }
@@ -63,20 +63,18 @@ TArrowsControl * TArrowsControl::ConstructTArrowsControlBaseState()
 TArrowsControl * TArrowsControl::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040159b();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005839F0
-// GHIDRA_NAME TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
+// GHIDRA_NAME TArrowsControl::DispatchPictureResourceCommand
+// GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1, int param_2)
 
-void __thiscall
-TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit
-          (TArrowsControl *this,int param_1,int param_2)
+void TArrowsControl::DispatchPictureResourceCommand(int param_1, int param_2)
 
 {
   TArrowsControlVtbl *pTVar1;
@@ -84,11 +82,11 @@ TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit
   uint uVar3;
   int iVar4;
   int in_stack_00000010;
-
+  
   if (param_1 != 2) {
-    uVar3 = GetTickCountDiv16();
+    uVar3 = func_0x004092d7();
     if (*(int *)&this->field_0x90 + 5U <= uVar3) {
-      iVar4 = GetTickCountDiv16();
+      iVar4 = func_0x004092d7();
       *(int *)&this->field_0x90 = iVar4;
       if (param_1 == 0) {
         *(int *)&this->field_0x90 = iVar4 + 10;

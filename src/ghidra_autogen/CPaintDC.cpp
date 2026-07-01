@@ -3,9 +3,40 @@
 // Program: Imperialism.exe
 // Bucket: CPaintDC.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x006138F9
+// GHIDRA_NAME CPaintDC::CPaintDC
+// GHIDRA_PROTO undefined CPaintDC()
+
+CDC * CPaintDC::CPaintDC(void)
+
+{
+  CObjectVtbl *hWnd;
+  HDC pHVar1;
+  int iVar2;
+  CDC *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(CDC **)(unaff_EBP + -0x10) = this;
+  CDC::CDC(this);
+  iVar2 = *(int *)(unaff_EBP + 8);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  (this->cobject).vftable = (CObjectVtbl *)&PTR_LAB_0067259c;
+  hWnd = *(CObjectVtbl **)(iVar2 + 0x1c);
+  this[1].cobject.vftable = hWnd;
+  pHVar1 = BeginPaint((HWND)hWnd,(LPPAINTSTRUCT)&this[1].m_hDC);
+  iVar2 = CDC::Attach(this,(int)pHVar1);
+  if (iVar2 == 0) {
+    AfxThrowResourceException();
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0061394F
-// GHIDRA_NAME CPaintDC::??_GCPaintDC@@UAEPAXI@Z
-// GHIDRA_PROTO void * __thiscall ??_GCPaintDC@@UAEPAXI@Z(uint param_1)
+// GHIDRA_NAME CPaintDC::'scalar_deleting_destructor'
+// GHIDRA_PROTO void * __thiscall 'scalar_deleting_destructor'(uint param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: virtual void * __thiscall CPaintDC::`scalar deleting destructor'(unsigned int)
@@ -18,19 +49,19 @@
    
    Library: nafxcw retail msvc500:static */
 
-void * CPaintDC::___GCPaintDC__UAEPAXI_Z(uint param_1)
+void * CPaintDC::_scalar_deleting_destructor_(uint param_1)
 
 {
-  __1CPaintDC__UAE_XZ(this);
+  ~CPaintDC(this);
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061396B
-// GHIDRA_NAME CPaintDC::??1CPaintDC@@UAE@XZ
-// GHIDRA_PROTO void __thiscall ??1CPaintDC@@UAE@XZ(void)
+// GHIDRA_NAME CPaintDC::~CPaintDC
+// GHIDRA_PROTO void __thiscall ~CPaintDC(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: virtual __thiscall CPaintDC::~CPaintDC(void)
@@ -43,7 +74,7 @@ void * CPaintDC::___GCPaintDC__UAEPAXI_Z(uint param_1)
    
    Library: nafxcw retail msvc500:static */
 
-void CPaintDC::__1CPaintDC__UAE_XZ()
+void CPaintDC::~CPaintDC()
 
 {
   undefined4 *extraout_ECX;
@@ -55,9 +86,9 @@ void CPaintDC::__1CPaintDC__UAE_XZ()
   *extraout_ECX = &PTR_LAB_0067259c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   EndPaint((HWND)extraout_ECX[4],(PAINTSTRUCT *)(extraout_ECX + 5));
-  _Detach_CDC__QAEPAUHDC____XZ();
+  CDC::Detach();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  __1CDC__UAE_XZ();
+  CDC::~CDC();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }

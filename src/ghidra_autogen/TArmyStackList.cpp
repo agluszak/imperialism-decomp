@@ -16,25 +16,25 @@ void TArmyStackList::InitializeMapContextActionManager()
 
 {
   undefined4 *puVar1;
-  TIndexAndRankList *this_00;
+  CPtrArray *this_00;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ff3c;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
+  puVar1 = (undefined4 *)operator_new(0x20);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
   else {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
+    *puVar1 = &TObject::_vftable_;
     local_4 = 1;
-    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
-    *puVar1 = &TArmyStackListVtbl_0064c9a0;
+    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
+    *puVar1 = &_vftable_;
   }
   local_4 = 0xffffffff;
   *(undefined4 **)&this->field_0xc = puVar1;
@@ -44,27 +44,27 @@ void TArmyStackList::InitializeMapContextActionManager()
   *(undefined4 *)&this[0x1c].field_0x1c = 0;
   this[0x1d].vftable = (TArmyStackListVtbl *)0x0;
   *(undefined4 *)&this[0x1d].field_0x4 = 0;
-  this_00 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
+  this_00 = (CPtrArray *)operator_new(0x18);
   local_4 = 2;
-  if (this_00 == (TIndexAndRankList *)0x0) {
-    this_00 = (TIndexAndRankList *)0x0;
+  if (this_00 == (CPtrArray *)0x0) {
+    this_00 = (CPtrArray *)0x0;
   }
   else {
-    TIndexAndRankList::__0CPtrArray__QAE_XZ(this_00);
-    this_00->vftable = (TIndexAndRankListVtbl *)&TSortedPtrListVtbl_00649010;
+    CPtrArray::CPtrArray(this_00);
+    *(TSortedPtrListVtbl **)this_00 = &TSortedPtrList::_vftable_;
   }
-  *(TIndexAndRankList **)&this->field_0x4 = this_00;
-  *(undefined2 *)&this_00->field_0x14 = 0x268;
+  *(CPtrArray **)&this->field_0x4 = this_00;
+  *(undefined2 *)(this_00 + 0x14) = 0x268;
   this->field_0x8 = 0;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A83B0
-// GHIDRA_NAME TArmyStackList::CreateTArmyStackListInstance
-// GHIDRA_PROTO undefined CreateTArmyStackListInstance()
+// GHIDRA_NAME TArmyStackList::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-undefined4 * TArmyStackList::CreateTArmyStackListInstance(void)
+undefined4 * TArmyStackList::CreateObject(void)
 
 {
   undefined4 *puVar1;
@@ -73,18 +73,18 @@ undefined4 * TArmyStackList::CreateTArmyStackListInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630262;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
+  puVar1 = (undefined4 *)operator_new(0x20);
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
+    *puVar1 = &TObject::_vftable_;
     local_4 = 1;
-    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
-    *puVar1 = &TArmyStackListVtbl_0064c9a0;
+    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
+    *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -92,13 +92,13 @@ undefined4 * TArmyStackList::CreateTArmyStackListInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8430
-// GHIDRA_NAME TArmyStackList::OnActivateView
-// GHIDRA_PROTO undefined __thiscall OnActivateView(void)
+// GHIDRA_NAME TArmyStackList::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyStackList::OnActivateView()
+CRuntimeClass * TArmyStackList::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTArmyStackList;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8450
@@ -112,14 +112,14 @@ TArmyStackList * TArmyStackList::ConstructTArmyStackListBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   puStack_8 = &LAB_00630288;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->vftable = (TArmyStackListVtbl *)&RefCountedObjectBase::_vftable_;
+  this->vftable = (TArmyStackListVtbl *)&TObject::_vftable_;
   local_4 = 0;
-  TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)&this->field_0x4,10);
-  this->vftable = &TArmyStackListVtbl_0064c9a0;
+  CPtrList::CPtrList((CPtrList *)&this->field_0x4,10);
+  this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -131,16 +131,16 @@ TArmyStackList * TArmyStackList::ConstructTArmyStackListBaseState()
 TArmyStackList * TArmyStackList::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(this);
+  func_0x004019c4();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A84F0
 // GHIDRA_NAME TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0
-// GHIDRA_PROTO undefined __thiscall TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_DestructCPtrListBaseState_At004a84f0(void)
 
 void TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0()
 
@@ -149,22 +149,22 @@ void TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_006302a8;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  __1CPtrList__UAE_XZ();
+  CPtrList::~CPtrList();
   this->vftable = (TArmyStackListVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8560
-// GHIDRA_NAME TArmyStackList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1, int param_2)
+// GHIDRA_NAME TArmyStackList::ConstructTSortedListBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTSortedListBaseState(int param_1, int param_2)
 
-short TArmyStackList::GetTEventHandlerClassNamePointer(int param_1, int param_2)
+short TArmyStackList::ConstructTSortedListBaseState(int param_1, int param_2)
 
 {
   if (*(short *)(param_1 + 6) < *(short *)(param_2 + 6)) {

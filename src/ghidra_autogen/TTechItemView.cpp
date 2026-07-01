@@ -10,383 +10,586 @@
 TTechItemView * TTechItemView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00404070();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1250
-// GHIDRA_NAME TTechItemView::CreateTTechItemViewInstance
-// GHIDRA_PROTO undefined CreateTTechItemViewInstance()
+// GHIDRA_NAME TTechItemView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TTechItemView::CreateTTechItemViewInstance(void)
+undefined4 * TTechItemView::CreateObject(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006389fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x68);
+  puVar1 = (undefined4 *)operator_new(0x68);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TTechItemViewVtbl_0066af08;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B12C0
-// GHIDRA_NAME TTechItemView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTechItemView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTechItemView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTechItemView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTechItemView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B12E0
 // GHIDRA_NAME TTechItemView::ConstructTTechItemViewBaseState
-// GHIDRA_PROTO undefined __thiscall TTechItemView::ConstructTTechItemViewBaseState(int param_1, undefined4 param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall ConstructTTechItemViewBaseState(int param_1, undefined4 param_2, int param_3)
+
+/* WARNING: Type propagation algorithm not settling */
 
 void __thiscall
 TTechItemView::ConstructTTechItemViewBaseState
           (TTechItemView *this,int param_1,undefined4 param_2,int param_3)
 
 {
-  uint3 uVar1;
+  CString CVar1;
   char cVar2;
-  TUpDownPictureButton *this_00;
   int *piVar3;
-  TDeluxeText *pTVar4;
-  undefined4 *puVar5;
-  CString *pCVar6;
-  undefined4 uVar7;
-  TDeluxeTextVtbl *pTVar8;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000010;
-  int in_stack_00000014;
-  CString input_str;
-  CString CVar9;
-  undefined4 uStack_6c;
+  int *piVar4;
+  CString *src_ref;
+  TSimMgr_slot_0x04_0x04 *pTVar5;
+  undefined4 uVar6;
+  int iVar7;
+  int *unaff_FS_OFFSET;
+  TTechItemViewVtbl *pTVar8;
+  undefined4 uStack_140;
+  TSimMgr *pTStack_13c;
+  TTechItemView *pTStack_138;
+  CString CStack_134;
+  TTechItemView *pTStack_130;
+  TTechItemView **ppTStack_12c;
+  CString CStack_128;
+  CString CStack_124;
+  CString CStack_120;
+  CString CStack_11c;
+  TSimMgrVtbl *pTStack_118;
+  int **ppiStack_114;
+  TTechItemViewVtbl *pTStack_110;
+  TTechItemView *pTStack_10c;
+  TTechItemView *pTStack_108;
+  TTechItemViewVtbl **ppTStack_104;
+  int *piStack_100;
+  undefined1 *puStack_fc;
+  int ***pppiStack_f8;
+  TTechItemViewVtbl *pTStack_f4;
+  TTechItemViewVtbl *pTStack_f0;
+  TTechItemViewVtbl *pTStack_ec;
+  TTechItemViewVtbl *pTStack_e8;
+  int **ppiStack_e4;
+  CString *pCStack_e0;
+  TTechItemViewVtbl *pTStack_dc;
+  TSimMgrVtbl TStack_d4;
+  TTechItemViewVtbl *pTStack_cc;
+  TTechItemView *pTStack_c8;
+  CString CStack_c4;
+  int *piStack_c0;
+  CString *pCStack_bc;
+  CString CStack_b8;
+  int *piStack_b4;
+  undefined1 *puStack_b0;
+  TView *pTStack_ac;
+  int iStack_a8;
+  int *piStack_a4;
+  int *piStack_a0;
+  TSimMgrVtbl TStack_9c;
+  CString CStack_94;
+  CString *pCStack_90;
+  int aiStack_8c [2];
+  CString CStack_84;
+  undefined4 uStack_80;
+  int aiStack_7c [2];
+  CString CStack_74;
+  int iStack_70;
+  CString CStack_6c;
   CString CStack_68;
   CString local_54;
   undefined4 uStack_50;
-  undefined4 uStack_4c;
+  TTechItemView *pTStack_4c;
   CString local_48;
   CString local_44;
   CString local_40;
-  CString local_3c;
-  undefined4 local_38;
-  undefined4 local_34;
-  undefined4 local_30;
-  TLineData *local_2c;
-  undefined4 uStack_28;
-  int iStack_24;
-  TDeluxeText *pTStack_20;
-  TDeluxeTextVtbl *pTStack_1c;
-  undefined1 uStack_18;
-  CString CStack_10;
-  CString CStack_c;
-  CString CStack_8;
+  CString local_3c [3];
+  int *local_30;
+  undefined1 uStack_20;
+  int iStack_10;
+  int iStack_c;
+  TTechItemViewVtbl *pTStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
-  CStack_8.m_pchData = &LAB_00638aac;
-  CStack_c.m_pchData = (char *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &CStack_c;
+  pTStack_8 = (TTechItemViewVtbl *)&LAB_00638aac;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   CStack_68.m_pchData = (char *)0x5b1307;
-  CString::__0CString__QAE_XZ(&local_3c);
+  CString::CString(local_3c);
   local_4 = 0;
   CStack_68.m_pchData = (char *)0x5b1316;
-  CString::__0CString__QAE_XZ(&local_40);
+  CString::CString(&local_40);
   local_4._0_1_ = 1;
   CStack_68.m_pchData = (char *)0x5b1324;
-  CString::__0CString__QAE_XZ(&local_54);
+  CString::CString(&local_54);
   local_4._0_1_ = 2;
   CStack_68.m_pchData = (char *)0x5b1332;
-  CString::__0CString__QAE_XZ(&local_44);
+  CString::CString(&local_44);
   local_4._0_1_ = 3;
   CStack_68.m_pchData = (char *)0x5b1340;
-  CString::__0CString__QAE_XZ(&local_48);
+  CString::CString(&local_48);
   CStack_68.m_pchData = (char *)0x0;
-  uStack_6c = 5;
+  CStack_6c.m_pchData = (char *)0x5;
+  iStack_70 = 5;
+  CStack_74.m_pchData = (char *)param_3;
+  aiStack_7c[1] = param_2;
+  aiStack_7c[0] = param_1;
+  uStack_80 = *(undefined4 *)(param_1 + 0x40);
   local_4._0_1_ = 4;
-  InitializeUiResourceEntryFrameAndParent();
-  CStack_68.m_pchData = (char *)0x94;
-  *(undefined4 *)&this->field_0x60 = in_stack_00000010;
-  *(int *)&this->field_0x64 = in_stack_00000014;
-  uStack_6c = 0x5b137c;
-  this_00 = (TUpDownPictureButton *)__2_YAPAXI_Z();
-  local_4._0_1_ = 5;
-  if (this_00 == (TUpDownPictureButton *)0x0) {
+  CStack_84.m_pchData = (char *)0x5b1364;
+  func_0x004096b5();
+  pTVar8 = pTStack_8;
+  CStack_84.m_pchData = (char *)0x94;
+  *(int *)&this->field_0x60 = iStack_c;
+  *(TTechItemViewVtbl **)&this->field_0x64 = pTStack_8;
+  aiStack_8c[1] = 0x5b137c;
+  iStack_10 = operator_new();
+  uStack_20 = 5;
+  if (iStack_10 == 0) {
     piVar3 = (int *)0x0;
   }
   else {
-    CStack_68.m_pchData = (char *)0x5b1393;
-    piVar3 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(this_00);
+    CStack_84.m_pchData = (char *)0x5b1393;
+    piVar3 = (int *)func_0x00403512();
   }
-  CStack_68.m_pchData = (char *)(in_stack_00000014 * 2 + 0x8ff);
-  uStack_6c = 5;
-  local_4 = CONCAT31(local_4._1_3_,4);
-  local_38 = 0x40;
-  local_34 = 0x3f;
-  local_30 = 0;
-  local_2c = (TLineData *)0x0;
-  InitializePictureEntryBaseAndRefresh();
-  CStack_68.m_pchData = (char *)0x0;
-  uStack_6c = 1;
+  CStack_84.m_pchData = (char *)((int)pTVar8 * 2 + 0x8ff);
+  pCStack_90 = &local_54;
+  aiStack_8c[1] = 5;
+  aiStack_8c[0] = 5;
+  CStack_94.m_pchData = (char *)&pTStack_4c;
+  uStack_20 = 4;
+  local_54.m_pchData = (char *)0x40;
+  uStack_50 = 0x3f;
+  pTStack_4c = (TTechItemView *)0x0;
+  local_48.m_pchData = (char *)0x0;
+  TStack_9c.GetTSimMgrClassNamePointer = (TSimMgr_GetTSimMgrClassNamePointer_0x00 *)0x5b13d4;
+  TStack_9c.slot_0x04 = (TSimMgr_slot_0x04_0x04 *)this;
+  func_0x00403ff3();
+  TStack_9c.GetTSimMgrClassNamePointer = (TSimMgr_GetTSimMgrClassNamePointer_0x00 *)0x0;
+  piStack_a0 = (int *)0x1;
+  piStack_a4 = (int *)0x5b13e1;
   (**(code **)(*piVar3 + 0xa8))();
+  iStack_a8 = 8;
+  pTStack_ac = (TView *)0x274f;
   piVar3[7] = 0x64657363;
-  LoadUiStringByGroupAndIndexToControlObject();
-  uVar1 = (uint3)local_2c;
-  local_2c = (TLineData *)(uint)(uVar1 & 0xffff);
-  uStack_28 = (TDeluxeText *)((uint)uStack_28._2_2_ << 0x10);
-  local_54.m_pchData = (char *)0x0;
+  puStack_b0 = (undefined1 *)0x5b13f5;
+  piStack_a4 = piVar3;
+  func_0x0040807b();
+  piStack_a4 = aiStack_8c;
+  iStack_a8 = 0x2b6a;
+  aiStack_8c[0] = 0;
+  aiStack_8c[1] = 0;
+  pTStack_ac = (TView *)0x5b1437;
   MapUiThemeCodeToStyleFlags();
+  piStack_a4 = aiStack_8c + 1;
+  iStack_a8 = 0x2b68;
+  pTStack_ac = (TView *)0x5b1449;
   MapUiThemeCodeToStyleFlags();
+  puStack_b0 = &stack0xffffff9c;
+  piStack_a4 = (int *)0x2b6a;
+  iStack_a8 = 0xc;
+  pTStack_ac = (TView *)0x0;
+  piStack_b4 = (int *)0x5b145e;
   BuildUiTextStyleDescriptor();
-  pTVar4 = (TDeluxeText *)__2_YAPAXI_Z();
-  CStack_c.m_pchData._0_1_ = 6;
-  if (pTVar4 == (TDeluxeText *)0x0) {
-    pTVar4 = (TDeluxeText *)0x0;
+  piStack_a4 = (int *)0xa4;
+  iStack_a8 = 0x5b146b;
+  piVar3 = (int *)operator_new();
+  local_40.m_pchData._0_1_ = 6;
+  local_30 = piVar3;
+  if (piVar3 == (int *)0x0) {
+    piVar3 = (int *)0x0;
   }
   else {
-    TStaticText::TStaticText((TStaticText *)pTVar4);
-    pTVar4->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
-    CStack_c.m_pchData._0_1_ = 7;
-    ClearColorRgbaBytes();
-    ClearColorRgbaBytes();
-    pTVar4->vftable = &TDeluxeTextVtbl_006406d8;
-    puVar5 = (undefined4 *)SetColorRgbAndClearAlphaByte();
-    uVar7 = *puVar5;
-    pTVar4->field_0xa0 = 0;
-    *(undefined4 *)&pTVar4->field_0x98 = uVar7;
+    piStack_a4 = (int *)0x5b1484;
+    func_0x0040541b();
+    *piVar3 = (int)&TTEView::_vftable_;
+    local_40.m_pchData._0_1_ = 7;
+    piStack_a4 = (int *)0x5b149a;
+    func_0x00407bdf();
+    piStack_a4 = (int *)0x5b14a5;
+    func_0x00407bdf();
+    piStack_a4 = (int *)0x0;
+    iStack_a8 = 0;
+    pTStack_ac = (TView *)0x0;
+    *piVar3 = (int)&TDeluxeText::_vftable_;
+    puStack_b0 = (undefined1 *)0x5b14b7;
+    piVar4 = (int *)func_0x00404863();
+    iVar7 = *piVar4;
+    *(undefined1 *)(piVar3 + 0x28) = 0;
+    piVar3[0x26] = iVar7;
   }
-  CStack_c.m_pchData._0_1_ = 4;
-  CRect::CRect((CRect *)&iStack_24,0,0,0,0);
-  local_38 = 0x69;
-  local_34 = 0x3f;
-  local_40.m_pchData = (char *)0x4d;
-  local_3c.m_pchData = (char *)0x0;
-  TDeluxeText::ConstructTDeluxeTextBaseState
-            (pTVar4,this,&local_40,&local_38,&iStack_24,(int)&local_30);
-  *(undefined4 *)&pTVar4->field_0x98 = 0;
-  *(char **)&pTVar4->field_0x9c = local_54.m_pchData;
-  pTVar4->field_0xa0 = 1;
+  piStack_a4 = (int *)0x0;
+  iStack_a8 = 0;
+  pTStack_ac = (TView *)0x0;
+  puStack_b0 = (undefined1 *)0x0;
+  local_40.m_pchData._0_1_ = 4;
+  piStack_b4 = (int *)0x5b14db;
+  func_0x00406825();
+  CStack_b8.m_pchData = (char *)&CStack_74;
+  piStack_b4 = (int *)0xfffffffe;
+  pCStack_bc = &CStack_68;
+  piStack_c0 = aiStack_7c;
+  CStack_c4.m_pchData = (char *)&CStack_84;
+  aiStack_7c[0] = 0x69;
+  aiStack_7c[1]._0_2_ = 0x3f;
+  aiStack_7c[1]._2_2_ = 0;
+  CStack_84.m_pchData = (char *)0x4d;
+  uStack_80._0_1_ = 0;
+  uStack_80._1_1_ = 0;
+  uStack_80._2_2_ = 0;
+  pTStack_cc = (TTechItemViewVtbl *)0x5b1515;
+  pTStack_c8 = this;
+  func_0x00408e31();
+  piVar3[0x26] = (int)piStack_b4;
+  piVar3[0x27] = (int)puStack_b0;
+  *(undefined1 *)(piVar3 + 0x28) = 1;
+  pTStack_cc = (TTechItemViewVtbl *)&piStack_a0;
+  TStack_d4.slot_0x04 = (TSimMgr_slot_0x04_0x04 *)pTVar8;
+  TStack_d4.GetTSimMgrClassNamePointer = (TSimMgr_GetTSimMgrClassNamePointer_0x00 *)0x2712;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  pCStack_e0 = (CString *)&puStack_b0;
+  pTStack_dc = (TTechItemViewVtbl *)&g_szDecimalFormat;
+  ppiStack_e4 = (int **)0x5b1572;
   _Format_CString__QAAXPBDZZ();
-  __H_YG_AVCString__ABV0_PBD_Z();
-  uStack_18 = 8;
-  pCVar6 = (CString *)__H_YG_AVCString__ABV0_0_Z();
-  uStack_18 = 9;
-  CString::__0CString__QAE_ABV0__Z(&CStack_8,pCVar6);
-  uStack_18 = 10;
-  CString::__4CString__QAEABV0_ABV0__Z(&CStack_68,&CStack_8);
-  uStack_18 = 9;
-  CString::__1CString__QAE_XZ(&CStack_8);
-  uStack_18 = 8;
-  CString::__1CString__QAE_XZ(&CStack_c);
-  uStack_18 = 4;
-  CString::__1CString__QAE_XZ(&CStack_10);
-  CStack_8.m_pchData = (char *)pTVar4->vftable;
-  pCVar6 = &CStack_68;
-  (*((TDeluxeTextVtbl *)CStack_8.m_pchData)->
-    WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)();
-  CVar9.m_pchData = (char *)0x0;
-  (**(code **)(CStack_c.m_pchData + 0x1f8))();
-  pTVar4 = (TDeluxeText *)__2_YAPAXI_Z();
-  pTStack_20._0_1_ = 0xb;
-  CStack_10.m_pchData = (char *)pTVar4;
-  if (pTVar4 == (TDeluxeText *)0x0) {
-    pTVar4 = (TDeluxeText *)0x0;
+  pTStack_dc = (TTechItemViewVtbl *)&pTStack_ac;
+  pCStack_e0 = &CStack_6c;
+  ppiStack_e4 = (int **)0x5b1589;
+  pTStack_dc = (TTechItemViewVtbl *)AssignSharedStringConcatRefAndCStr();
+  CStack_74.m_pchData._0_1_ = 8;
+  pCStack_e0 = &CStack_68;
+  ppiStack_e4 = (int **)0x5b159e;
+  src_ref = (CString *)AssignSharedStringConcatRefAndRef();
+  CStack_74.m_pchData._0_1_ = 9;
+  pTStack_dc = (TTechItemViewVtbl *)0x5b15ad;
+  CString::CString((CString *)&stack0xffffff9c,src_ref);
+  CStack_74.m_pchData._0_1_ = 10;
+  pTStack_dc = (TTechItemViewVtbl *)0x5b15c0;
+  CString::operator=(&CStack_c4,(CString *)&stack0xffffff9c);
+  CStack_74.m_pchData._0_1_ = 9;
+  CString::~CString((CString *)&stack0xffffff9c);
+  CStack_74.m_pchData._0_1_ = 8;
+  CString::~CString(&CStack_68);
+  CStack_74.m_pchData._0_1_ = 4;
+  CString::~CString(&CStack_6c);
+  pTStack_dc = (TTechItemViewVtbl *)0x5b15fd;
+  (**(code **)(*piVar3 + 0x1f0))();
+  pTStack_dc = (TTechItemViewVtbl *)0x0;
+  pCStack_e0 = (CString *)0x5b160a;
+  (**(code **)(CStack_68.m_pchData + 0x1f8))();
+  pCStack_e0 = (CString *)0xa4;
+  ppiStack_e4 = (int **)0x5b1614;
+  piVar3 = (int *)operator_new();
+  aiStack_7c[0]._0_1_ = 0xb;
+  CStack_6c.m_pchData = (char *)piVar3;
+  if (piVar3 == (int *)0x0) {
+    piVar3 = (int *)0x0;
   }
   else {
-    TStaticText::TStaticText((TStaticText *)pTVar4);
-    pTVar4->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
-    pTStack_20._0_1_ = 0xc;
-    ClearColorRgbaBytes();
-    ClearColorRgbaBytes();
-    pTVar4->vftable = &TDeluxeTextVtbl_006406d8;
-    puVar5 = (undefined4 *)SetColorRgbAndClearAlphaByte();
-    uVar7 = *puVar5;
-    pTVar4->field_0xa0 = 0;
-    *(undefined4 *)&pTVar4->field_0x98 = uVar7;
+    pCStack_e0 = (CString *)0x5b162d;
+    func_0x0040541b();
+    *piVar3 = (int)&TTEView::_vftable_;
+    aiStack_7c[0]._0_1_ = 0xc;
+    pCStack_e0 = (CString *)0x5b1643;
+    func_0x00407bdf();
+    pCStack_e0 = (CString *)0x5b164e;
+    func_0x00407bdf();
+    pCStack_e0 = (CString *)0x0;
+    ppiStack_e4 = (int **)0x0;
+    pTStack_e8 = (TTechItemViewVtbl *)0x0;
+    *piVar3 = (int)&TDeluxeText::_vftable_;
+    pTStack_ec = (TTechItemViewVtbl *)0x5b1660;
+    piVar4 = (int *)func_0x00404863();
+    iVar7 = *piVar4;
+    *(undefined1 *)(piVar3 + 0x28) = 0;
+    piVar3[0x26] = iVar7;
   }
-  pTStack_20 = (TDeluxeText *)CONCAT31(pTStack_20._1_3_,4);
-  local_38 = 0;
-  local_34 = 0;
-  local_30 = 0;
-  local_2c = (TLineData *)0x0;
-  uStack_4c = 0x10d;
-  local_48.m_pchData = (char *)0x3f;
-  local_54.m_pchData = (char *)0x127;
-  uStack_50 = 0;
-  TDeluxeText::ConstructTDeluxeTextBaseState
-            (pTVar4,this,&local_54,&uStack_4c,&local_38,(int)&local_44);
-  *(undefined4 *)&pTVar4->field_0x98 = uStack_6c;
-  *(char **)&pTVar4->field_0x9c = CStack_68.m_pchData;
-  pTVar4->field_0xa0 = 1;
-  input_str.m_pchData = (char *)0x274e;
+  ppiStack_e4 = &piStack_a0;
+  pCStack_e0 = (CString *)0xfffffffe;
+  pTStack_e8 = (TTechItemViewVtbl *)&CStack_94;
+  pTStack_ec = (TTechItemViewVtbl *)&iStack_a8;
+  pTStack_f0 = (TTechItemViewVtbl *)&puStack_b0;
+  aiStack_7c[0] = CONCAT31(aiStack_7c[0]._1_3_,4);
+  CStack_94.m_pchData = (char *)0x0;
+  pCStack_90 = (CString *)0x0;
+  aiStack_8c[0] = 0;
+  aiStack_8c[1] = 0;
+  iStack_a8 = 0x10d;
+  piStack_a4 = (int *)0x3f;
+  puStack_b0 = (undefined1 *)0x127;
+  pTStack_ac = (TView *)0x0;
+  pppiStack_f8 = (int ***)0x5b16c1;
+  pTStack_f4 = (TTechItemViewVtbl *)this;
+  func_0x00408e31();
+  piVar3[0x26] = (int)pCStack_e0;
+  pppiStack_f8 = &ppiStack_e4;
+  piVar3[0x27] = (int)pTStack_dc;
+  *(undefined1 *)(piVar3 + 0x28) = 1;
+  puStack_fc = (undefined1 *)((int)&pTVar8[-1].OrphanRetStub_0059add0_67 + 3);
+  piStack_100 = (int *)0x274e;
+  ppTStack_104 = (TTechItemViewVtbl **)0x5b16f8;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  pTStack_1c = pTVar4->vftable;
-  (*pTStack_1c->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)();
-  (*(code *)pTStack_20[3].field0c)();
-  pTVar4 = pTStack_20;
-  iStack_24 = (int)pTStack_20 * 0x1d;
-  pTStack_20 = (TDeluxeText *)(iStack_24 + (short)in_stack_00000014);
-  if ((&g_pCityOrderCapabilityState->field_0x268)[(int)pTStack_20] == '\x02') {
-    pTVar4 = (TDeluxeText *)__2_YAPAXI_Z();
-    local_34._0_1_ = 0x10;
-    pTStack_20 = pTVar4;
-    if (pTVar4 == (TDeluxeText *)0x0) {
-      pTVar4 = (TDeluxeText *)0x0;
+  pCStack_90 = (CString *)*piVar3;
+  ppTStack_104 = &pTStack_f0;
+  pTStack_108 = (TTechItemView *)0x5b170b;
+  (**(code **)((int)pCStack_90 + 0x1f0))();
+  pTStack_108 = (TTechItemView *)0x0;
+  pTStack_10c = (TTechItemView *)0x5b1718;
+  (*(code *)*(TTechItemViewVtbl **)(CStack_94.m_pchData + 0x1f8))();
+  CVar1.m_pchData = CStack_94.m_pchData;
+  TStack_9c.slot_0x04 = (TSimMgr_slot_0x04_0x04 *)((int)CStack_94.m_pchData * 0x1d);
+  pTVar5 = TStack_9c.slot_0x04 + (short)pTVar8;
+  if ((&g_pCityOrderCapabilityState->field_0x268)[(int)pTVar5] == '\x02') {
+    pTStack_10c = (TTechItemView *)0xa4;
+    pTStack_110 = (TTechItemViewVtbl *)0x5b1a1d;
+    CStack_94.m_pchData = (char *)pTVar5;
+    piVar3 = (int *)operator_new();
+    iStack_a8._0_1_ = 0x10;
+    CStack_94.m_pchData = (char *)piVar3;
+    if (piVar3 == (int *)0x0) {
+      piVar3 = (int *)0x0;
     }
     else {
-      TStaticText::TStaticText((TStaticText *)pTVar4);
-      pTVar4->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
-      local_34._0_1_ = 0x11;
-      pTVar4->field_0x98 = 0;
-      pTVar4->field_0x99 = 0;
-      pTVar4->field_0x9a = 0;
-      pTVar4->field_0x9b = 0;
-      ClearColorRgbaBytes();
-      pTVar4->vftable = &TDeluxeTextVtbl_006406d8;
-      puVar5 = (undefined4 *)SetColorRgbAndClearAlphaByte(0,0);
-      uVar7 = *puVar5;
-      pTVar4->field_0xa0 = 0;
-      *(undefined4 *)&pTVar4->field_0x98 = uVar7;
+      pTStack_10c = (TTechItemView *)0x5b1a36;
+      func_0x0040541b();
+      *piVar3 = (int)&TTEView::_vftable_;
+      iStack_a8._0_1_ = 0x11;
+      *(undefined1 *)(piVar3 + 0x26) = 0;
+      *(undefined1 *)((int)piVar3 + 0x99) = 0;
+      *(undefined1 *)((int)piVar3 + 0x9a) = 0;
+      *(undefined1 *)((int)piVar3 + 0x9b) = 0;
+      pTStack_10c = (TTechItemView *)0x5b1a64;
+      func_0x00407bdf();
+      pTStack_10c = (TTechItemView *)0x0;
+      pTStack_110 = (TTechItemViewVtbl *)0x0;
+      ppiStack_114 = (int **)0x0;
+      *piVar3 = (int)&TDeluxeText::_vftable_;
+      pTStack_118 = (TSimMgrVtbl *)0x5b1a79;
+      piVar4 = (int *)func_0x00404863();
+      iVar7 = *piVar4;
+      *(undefined1 *)(piVar3 + 0x28) = 0;
+      piVar3[0x26] = iVar7;
     }
-    local_34 = CONCAT31(local_34._1_3_,4);
-    uStack_4c = 0;
-    local_48.m_pchData = (char *)0x0;
-    local_44.m_pchData = (char *)0x0;
-    local_40.m_pchData = (char *)0x0;
-    CStack_68.m_pchData = (char *)0xba;
-    TDeluxeText::ConstructTDeluxeTextBaseState
-              (pTVar4,this,&CStack_68,&stack0xffffffa0,&uStack_4c,(int)&stack0xffffffa8);
-    *(char **)&pTVar4->field_0x98 = CVar9.m_pchData;
-    *(CString **)&pTVar4->field_0x9c = pCVar6;
-    pTVar4->field_0xa0 = 1;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x274f,0);
-    _Format_CString__QAAXPBDZZ
-              (&stack0xffffff78,&g_szDecimalFormat,
-               *(short *)(&g_pCityOrderCapabilityState->field_0x4a6 +
-                         (int)(local_3c.m_pchData + in_stack_00000014) * 2) + 0x717);
-    scanBracketExpressions(g_pLocalizationTable,&stack0xffffff70,input_str.m_pchData);
-    pTVar8 = pTVar4->vftable;
+    pTStack_110 = (TTechItemViewVtbl *)&pTStack_cc;
+    pTStack_10c = (TTechItemView *)0x1;
+    ppiStack_114 = &piStack_c0;
+    pTStack_118 = &TStack_d4;
+    CStack_11c.m_pchData = (char *)&pTStack_dc;
+    iStack_a8 = CONCAT31(iStack_a8._1_3_,4);
+    piStack_c0 = (int *)0x0;
+    pCStack_bc = (CString *)0x0;
+    CStack_b8.m_pchData = (char *)0x0;
+    piStack_b4 = (int *)0x0;
+    TStack_d4.GetTSimMgrClassNamePointer = (TSimMgr_GetTSimMgrClassNamePointer_0x00 *)0x53;
+    TStack_d4.slot_0x04 = (TSimMgr_slot_0x04_0x04 *)0x3f;
+    pTStack_dc = (TTechItemViewVtbl *)0xba;
+    CStack_124.m_pchData = (char *)0x5b1ada;
+    CStack_120.m_pchData = (char *)this;
+    func_0x00408e31();
+    piVar3[0x26] = (int)pTStack_10c;
+    piVar3[0x27] = (int)pTStack_108;
+    *(undefined1 *)(piVar3 + 0x28) = 1;
+    CStack_124.m_pchData = (char *)&piStack_100;
+    CStack_128.m_pchData = (char *)0x0;
+    ppTStack_12c = (TTechItemView **)0x274f;
+    pTStack_130 = (TTechItemView *)0x5b1b0e;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    pTStack_138 = (TTechItemView *)&pTStack_108;
+    pTStack_130 = (TTechItemView *)
+                  (*(short *)(&g_pCityOrderCapabilityState->field_0x4a6 +
+                             (int)((int)&pTVar8->GetTEventHandlerClassNamePointer + (int)pCStack_bc)
+                             * 2) + 0x717);
+    CStack_134.m_pchData = &g_szDecimalFormat;
+    pTStack_13c = (TSimMgr *)0x5b1b37;
+    _Format_CString__QAAXPBDZZ();
+    pTStack_138 = (TTechItemView *)&pTStack_110;
+    pTStack_130 = pTStack_108;
+    CStack_134.m_pchData = (char *)pTStack_10c;
+    pTStack_13c = g_pLocalizationTable;
+    uStack_140 = 0x5b1b55;
+    func_0x0040988b();
+    iVar7 = *piVar3;
   }
   else {
-    cVar2 = AreTechItemPrerequisitePairCompleted(in_stack_00000014);
+    pTStack_10c = (TTechItemView *)CStack_94.m_pchData;
+    pTStack_110 = pTVar8;
+    ppiStack_114 = (int **)0x5b174e;
+    CStack_94.m_pchData = (char *)pTVar5;
+    cVar2 = func_0x00402d38();
     if (cVar2 != '\0') {
-      if ((&g_pCityOrderCapabilityState->field_0x268)[(int)pTStack_20] == '\x01') {
-        uVar7 = 10;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x274f,3);
+      if ((&g_pCityOrderCapabilityState->field_0x268)[(int)TStack_9c.GetTSimMgrClassNamePointer] ==
+          '\x01') {
+        ppiStack_114 = &piStack_100;
+        pTStack_118 = (TSimMgrVtbl *)0x3;
+        CStack_11c.m_pchData = (char *)0x274f;
+        uVar6 = 10;
+        CStack_120.m_pchData = (char *)0x5b1955;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       }
       else {
-        (*g_pLocalizationTable->vftable[0xe].slot_0x04)
-                  (*(undefined4 *)(&DAT_0066ad58 + in_stack_00000014 * 4));
-        uVar7 = 9;
+        ppiStack_114 = &piStack_100;
+        pTStack_118 = *(TSimMgrVtbl **)(&DAT_0066ad58 + (int)pTVar8 * 4);
+        CStack_11c.m_pchData = (char *)0x5b196f;
+        (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+        uVar6 = 9;
       }
-      local_2c = (TLineData *)__2_YAPAXI_Z(0xa0);
-      local_40.m_pchData._0_1_ = 0xf;
-      if (local_2c == (TLineData *)0x0) {
+      CStack_120.m_pchData = (char *)0xa0;
+      CStack_124.m_pchData = (char *)0x5b197e;
+      iStack_a8 = operator_new();
+      pCStack_bc._0_1_ = 0xf;
+      if (iStack_a8 == 0) {
         piVar3 = (int *)0x0;
       }
       else {
-        piVar3 = (int *)TLineData::ConstructPictureScreenVariantEntry(local_2c);
+        CStack_120.m_pchData = (char *)0x5b1995;
+        piVar3 = (int *)func_0x0040610e();
       }
-      local_40.m_pchData._0_1_ = 4;
-      uStack_6c = 0x53;
-      CStack_68.m_pchData = (char *)0x18;
-      WrapperFor_StringShared_AssignFromPtr_At00572710
-                (this,&stack0xffffff8c,&uStack_6c,0x8ff,&stack0xffffff70,0xc,0x2b6a,0x2b68);
-      (**(code **)(*piVar3 + 0xa8))(1,0);
+      CStack_120.m_pchData = (char *)0x2b68;
+      CStack_124.m_pchData = (char *)0x2b6a;
+      ppTStack_12c = &pTStack_10c;
+      CStack_128.m_pchData = (char *)0xc;
+      CStack_134.m_pchData = (char *)&pTStack_e8;
+      pTStack_130 = (TTechItemView *)0x8ff;
+      pTStack_138 = (TTechItemView *)&pTStack_f0;
+      pCStack_bc = (CString *)CONCAT31(pCStack_bc._1_3_,4);
+      pTStack_e8 = (TTechItemViewVtbl *)0x53;
+      ppiStack_e4 = (int **)0x18;
+      pTStack_f0 = (TTechItemViewVtbl *)0xba;
+      pTStack_ec = (TTechItemViewVtbl *)0x12;
+      uStack_140 = 0x5b19eb;
+      pTStack_13c = (TSimMgr *)this;
+      func_0x00407d6f();
+      uStack_140 = 0;
+      (**(code **)(*piVar3 + 0xa8))(1);
       piVar3[7] = 0x70757263;
-      LoadUiStringByGroupAndIndexToControlObject(0x274f,uVar7,piVar3);
+      func_0x0040807b(0x274f,uVar6,piVar3);
       goto LAB_005b1b70;
     }
-    SelectMissingTechItemPrerequisitesFromPair(in_stack_00000014,pTVar4,&pTStack_20);
-    pTVar4 = (TDeluxeText *)__2_YAPAXI_Z();
-    local_34._0_1_ = 0xd;
-    uStack_28 = pTVar4;
-    if (pTVar4 == (TDeluxeText *)0x0) {
-      pTVar4 = (TDeluxeText *)0x0;
+    ppiStack_114 = &piStack_a0;
+    pTStack_118 = &TStack_9c;
+    CStack_11c.m_pchData = CVar1.m_pchData;
+    CStack_120.m_pchData = (char *)pTVar8;
+    CStack_124.m_pchData = (char *)0x5b176d;
+    func_0x004060ff();
+    CStack_124.m_pchData = (char *)0xa4;
+    CStack_128.m_pchData = (char *)0x5b1777;
+    piVar3 = (int *)operator_new();
+    piStack_c0._0_1_ = 0xd;
+    piStack_b4 = piVar3;
+    if (piVar3 == (int *)0x0) {
+      piVar3 = (int *)0x0;
     }
     else {
-      TStaticText::TStaticText((TStaticText *)pTVar4);
-      pTVar4->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
-      local_34._0_1_ = 0xe;
-      ClearColorRgbaBytes();
-      ClearColorRgbaBytes();
-      pTVar4->vftable = &TDeluxeTextVtbl_006406d8;
-      puVar5 = (undefined4 *)SetColorRgbAndClearAlphaByte(0,0);
-      uVar7 = *puVar5;
-      pTVar4->field_0xa0 = 0;
-      *(undefined4 *)&pTVar4->field_0x98 = uVar7;
+      CStack_124.m_pchData = (char *)0x5b1790;
+      func_0x0040541b();
+      *piVar3 = (int)&TTEView::_vftable_;
+      piStack_c0._0_1_ = 0xe;
+      CStack_124.m_pchData = (char *)0x5b17a8;
+      func_0x00407bdf();
+      CStack_124.m_pchData = (char *)0x5b17b3;
+      func_0x00407bdf();
+      CStack_124.m_pchData = (char *)0x0;
+      CStack_128.m_pchData = (char *)0x0;
+      ppTStack_12c = (TTechItemView **)0x0;
+      *piVar3 = (int)&TDeluxeText::_vftable_;
+      pTStack_130 = (TTechItemView *)0x5b17c5;
+      piVar4 = (int *)func_0x00404863();
+      iVar7 = *piVar4;
+      *(undefined1 *)(piVar3 + 0x28) = 0;
+      piVar3[0x26] = iVar7;
     }
-    local_34 = CONCAT31(local_34._1_3_,4);
-    uStack_4c = 0;
-    local_48.m_pchData = (char *)0x0;
-    local_44.m_pchData = (char *)0x0;
-    local_40.m_pchData = (char *)0x0;
-    CStack_68.m_pchData = (char *)0xbd;
-    TDeluxeText::ConstructTDeluxeTextBaseState
-              (pTVar4,this,&CStack_68,&stack0xffffffa0,&uStack_4c,(int)&stack0xffffffa8);
-    *(char **)&pTVar4->field_0x98 = CVar9.m_pchData;
-    *(CString **)&pTVar4->field_0x9c = pCVar6;
-    pTVar4->field_0xa0 = 1;
-    if (iStack_24 == 0) {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x274f,2);
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2712,local_2c,&stack0xffffff70);
-      scanBracketExpressions(g_pLocalizationTable,&stack0xffffff70,input_str.m_pchData);
-      pTVar8 = pTVar4->vftable;
+    CStack_128.m_pchData = (char *)&ppiStack_e4;
+    CStack_124.m_pchData = (char *)0x1;
+    ppTStack_12c = (TTechItemView **)&stack0xffffff28;
+    pTStack_130 = (TTechItemView *)&pTStack_ec;
+    CStack_134.m_pchData = (char *)&pTStack_f4;
+    piStack_c0 = (int *)CONCAT31(piStack_c0._1_3_,4);
+    TStack_d4.GetTSimMgrClassNamePointer = (TSimMgr_GetTSimMgrClassNamePointer_0x00 *)0x0;
+    TStack_d4.slot_0x04 = (TSimMgr_slot_0x04_0x04 *)0x0;
+    pTStack_cc = (TTechItemViewVtbl *)0x0;
+    pTStack_ec = (TTechItemViewVtbl *)0x53;
+    pTStack_e8 = (TTechItemViewVtbl *)0x3f;
+    pTStack_f4 = (TTechItemViewVtbl *)0xbd;
+    pTStack_f0 = (TTechItemViewVtbl *)0x0;
+    pTStack_13c = (TSimMgr *)0x5b1822;
+    pTStack_138 = this;
+    func_0x00408e31();
+    piVar3[0x26] = (int)CStack_124.m_pchData;
+    piVar3[0x27] = (int)CStack_120.m_pchData;
+    *(undefined1 *)(piVar3 + 0x28) = 1;
+    if (pTStack_c8 == (TTechItemView *)0x0) {
+      pTStack_13c = (TSimMgr *)&pTStack_118;
+      uStack_140 = 2;
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x274f);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2712,TStack_d4.slot_0x04,&CStack_134);
+      func_0x0040988b(g_pLocalizationTable,&CStack_134,pTStack_130,uStack_140);
+      iVar7 = *piVar3;
     }
     else {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x274f,1);
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2712,local_2c,&stack0xffffff70);
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2712,local_3c.m_pchData,&stack0xffffff7c);
-      scanBracketExpressions(g_pLocalizationTable,&stack0xffffff70,input_str.m_pchData);
-      pTVar8 = pTVar4->vftable;
+      pTStack_13c = (TSimMgr *)&pTStack_118;
+      uStack_140 = 1;
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x274f);
+      pTVar8 = (TTechItemViewVtbl *)TStack_d4.slot_0x04;
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2712,TStack_d4.slot_0x04,&CStack_134);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2712,pCStack_e0,&CStack_128);
+      func_0x0040988b(g_pLocalizationTable,&uStack_140,pTStack_13c,pTVar8,CStack_134.m_pchData);
+      iVar7 = *piVar3;
     }
   }
-  (*pTVar8->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)(&stack0xffffff70);
-  (*pTVar8->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(0);
+  (**(code **)(iVar7 + 0x1f0))(&CStack_134);
+  (**(code **)(iVar7 + 0x1f8))(0);
 LAB_005b1b70:
-  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_0066ae08,this->controlTag);
-  local_48.m_pchData._0_1_ = 3;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff74);
-  local_48.m_pchData._0_1_ = 2;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff78);
-  local_48.m_pchData._0_1_ = 1;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff68);
-  local_48.m_pchData = (char *)((uint)local_48.m_pchData._1_3_ << 8);
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
-  local_48.m_pchData = (char *)0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffff80);
-  *unaff_FS_OFFSET = uStack_50;
+  func_0x00401875(PTR_g_szEmptyString_0066ae08,this->controlTag);
+  ppiStack_e4._0_1_ = 3;
+  CString::~CString(&CStack_128);
+  ppiStack_e4._0_1_ = 2;
+  CString::~CString(&CStack_124);
+  ppiStack_e4._0_1_ = 1;
+  CString::~CString(&CStack_134);
+  ppiStack_e4 = (int **)((uint)ppiStack_e4._1_3_ << 8);
+  CString::~CString(&CStack_120);
+  ppiStack_e4 = (int **)0xffffffff;
+  CString::~CString(&CStack_11c);
+  *unaff_FS_OFFSET = (int)pTStack_ec;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1E20
-// GHIDRA_NAME TTechItemView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(CString param_1, CString param_2, CString param_3)
+// GHIDRA_NAME TTechItemView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(CString param_1, CString param_2, CString param_3)
 
-void __thiscall
-TTechItemView::OrphanRetStub_0059add0
-          (TTechItemView *this,CString param_1,CString param_2,CString param_3)
+void TTechItemView::HandleEvent(CString param_1, CString param_2, CString param_3)
 
 {
   int iVar1;
@@ -396,33 +599,40 @@ TTechItemView::OrphanRetStub_0059add0
   undefined3 extraout_var;
   int *piVar5;
   undefined3 extraout_var_00;
-  TTechHistoryView *this_00;
   int iVar6;
   uint uVar7;
   undefined4 *unaff_FS_OFFSET;
-  CString aCStack_18 [2];
-  CString CStack_10;
-  undefined4 uStack_c;
+  undefined1 *puVar8;
+  CString CStack_30;
+  CString *pCStack_2c;
+  CString CStack_18;
+  CString CStack_14;
+  undefined1 auStack_10 [4];
+  CString CStack_c;
   CString CStack_8;
-  CString CStack_4;
-
+  undefined4 uStack_4;
+  
   CVar2.m_pchData = param_2.m_pchData;
-  uStack_c = *unaff_FS_OFFSET;
-  CStack_4.m_pchData = (char *)0xffffffff;
+  CStack_c.m_pchData = (char *)*unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
   CStack_8.m_pchData = &LAB_00638b00;
-  *unaff_FS_OFFSET = &uStack_c;
+  *unaff_FS_OFFSET = &CStack_c;
   if (param_1.m_pchData != (char *)0xa) {
-    TView::OrphanRetStub_0059add0
-              ((TView *)this,param_1.m_pchData,param_2.m_pchData,param_3.m_pchData);
+    pCStack_2c = (CString *)param_3.m_pchData;
+    CStack_30.m_pchData = param_2.m_pchData;
+    func_0x00408657();
     goto LAB_005b2141;
   }
   if (*(int *)(param_2.m_pchData + 0x1c) != 0x70757263) {
     if (*(int *)(param_2.m_pchData + 0x1c) == 0x64657363) {
+      pCStack_2c = (CString *)0x942;
+      CStack_30.m_pchData = (char *)0x5b20b4;
       uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
+      CStack_30.m_pchData = (char *)0x444c4f47;
       iVar1 = *(int *)CONCAT31(extraout_var_00,uVar3);
-      this_00 = (TTechHistoryView *)(**(code **)(iVar1 + 0x94))();
-      (*this_00->vftable->AssertValid)();
-      TTechHistoryView::ConstructTTechHistoryViewBaseState(this_00);
+      piVar5 = (int *)(**(code **)(iVar1 + 0x94))();
+      (**(code **)(*piVar5 + 0xc))();
+      func_0x00408da5();
       (**(code **)(g_pUiRuntimeContext->vftable + 0x44))();
       (**(code **)(iVar1 + 0xf0))();
       (**(code **)(iVar1 + 0x1a0))();
@@ -436,58 +646,67 @@ TTechItemView::OrphanRetStub_0059add0
     }
     goto LAB_005b2141;
   }
-  CString::__0CString__QAE_XZ(&param_2);
-  CStack_4.m_pchData = (char *)0x0;
+  pCStack_2c = (CString *)0x5b1e66;
+  CString::CString(&param_2);
+  pCStack_2c = *(CString **)&this->field_0x60;
+  uStack_4 = 0;
   if ((&g_pCityOrderCapabilityState->field_0x268)
-      [(int)*(short *)&this->field_0x64 + *(int *)&this->field_0x60 * 0x1d] == '\0') {
-    sVar4 = UiRuntimeContext::GetActiveNationId();
+      [(int)*(short *)&this->field_0x64 + (int)pCStack_2c * 0x1d] == '\0') {
+    pCStack_2c = (CString *)0x5b1ea3;
+    sVar4 = func_0x00403b16();
     uVar7 = *(int *)&g_apNationStates[sVar4]->field_0x8f0 / 100 +
             *(int *)&g_apNationStates[sVar4]->field_0x10;
     if (*(int *)(&DAT_0066ad58 + *(int *)&this->field_0x64 * 4) <=
         (int)(((int)uVar7 < 1) - 1 & uVar7)) {
+      pCStack_2c = &param_2;
+      CStack_30.m_pchData = (char *)0x3;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      ApplyTechItemPurchaseCostAndState();
-      CString::__4CString__QAEABV0_ABV0__Z((CString *)(CVar2.m_pchData + 0x94),&CStack_4);
+      func_0x004023e7();
+      CString::operator=((CString *)(CVar2.m_pchData + 0x94),&CStack_c);
       (**(code **)(*(int *)CVar2.m_pchData + 0xe4))();
       goto LAB_005b2043;
     }
-    CString::__0CString__QAE_XZ(aCStack_18);
-    CStack_4.m_pchData._0_1_ = 1;
-    CString::__0CString__QAE_XZ(&param_3);
-    CStack_4.m_pchData._0_1_ = 2;
-    CString::__0CString__QAE_XZ(&param_1);
-    CStack_4.m_pchData._0_1_ = 3;
+    pCStack_2c = (CString *)0x5b1eec;
+    CString::CString(&CStack_18);
+    uStack_4._0_1_ = 1;
+    pCStack_2c = (CString *)0x5b1efa;
+    CString::CString(&param_3);
+    uStack_4._0_1_ = 2;
+    pCStack_2c = (CString *)0x5b1f0c;
+    CString::CString(&param_1);
+    pCStack_2c = &CStack_18;
+    uStack_4 = CONCAT31(uStack_4._1_3_,3);
+    CStack_30.m_pchData = *(char **)(&DAT_0066ad58 + *(int *)&this->field_0x64 * 4);
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    scanBracketExpressions(g_pLocalizationTable,&CStack_10,CStack_8.m_pchData);
-    AssignStringSharedRefAndReturnThis(&CStack_10);
-    DispatchLocalizedUiMessageWithTemplateA13A0();
-    aCStack_18[0].m_pchData._0_1_ = 2;
-    CString::__1CString__QAE_XZ(&CStack_10);
-    aCStack_18[0].m_pchData._0_1_ = 1;
-    CString::__1CString__QAE_XZ(&CStack_8);
-    aCStack_18[0].m_pchData._0_1_ = 0;
-    CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
+    func_0x0040988b();
+    puVar8 = auStack_10;
+    func_0x004076b7(puVar8);
+    DispatchLocalizedUiMessageWithTemplateA13A0(puVar8);
+    CString::~CString(&CStack_14);
+    CString::~CString(&CStack_c);
+    CString::~CString(&CStack_30);
   }
   else {
-    RefundTechItemPurchaseCostAndClearState();
+    CStack_30.m_pchData = *(char **)&this->field_0x64;
+    func_0x004039cc();
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
-    CString::__4CString__QAEABV0_ABV0__Z
-              ((CString *)(CVar2.m_pchData + 0x94),(CString *)&stack0x00000000);
+    CString::operator=((CString *)(CVar2.m_pchData + 0x94),&CStack_8);
     (**(code **)(*(int *)CVar2.m_pchData + 0xe4))();
 LAB_005b2043:
-    LoadUiStringAndDispatchSharedMessageCommand();
+    func_0x00407ce8();
   }
   uVar3 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   piVar5 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))();
   iVar1 = *piVar5;
   (**(code **)(iVar1 + 0xc))();
-  UiRuntimeContext::GetActiveNationId();
+  func_0x00403b16();
   (**(code **)(iVar1 + 0x1d0))();
-  CStack_4.m_pchData = (char *)0xffffffff;
-  CString::__1CString__QAE_XZ(&param_2);
+  uStack_4 = 0xffffffff;
+  pCStack_2c = (CString *)0x5b2094;
+  CString::~CString(&param_2);
 LAB_005b2141:
-  *unaff_FS_OFFSET = uStack_c;
+  *unaff_FS_OFFSET = CStack_c.m_pchData;
   return;
 }
 

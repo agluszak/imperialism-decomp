@@ -23,64 +23,64 @@ void TTacMapUberPicture::OrphanRetStub_0045d2a0()
 TTacMapUberPicture * TTacMapUberPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040331e();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD2E0
-// GHIDRA_NAME TTacMapUberPicture::CreateTTacMapUberPictureInstance
-// GHIDRA_PROTO undefined CreateTTacMapUberPictureInstance()
+// GHIDRA_NAME TTacMapUberPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TOffLimitsPicture * TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
+undefined4 * TTacMapUberPicture::CreateObject(void)
 
 {
-  TOffLimitsPicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063883a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TOffLimitsPicture *)__2_YAPAXI_Z(0x98);
+  puVar1 = (undefined4 *)operator_new(0x98);
   local_4 = 0;
-  if (this != (TOffLimitsPicture *)0x0) {
-    TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
-    this->vftable = (TOffLimitsPictureVtbl *)&TTacMapUberPictureVtbl_006451f0;
-    this[1].vftable = (TOffLimitsPictureVtbl *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004014bf();
+    *puVar1 = &_vftable_;
+    puVar1[0x25] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TOffLimitsPicture *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD380
-// GHIDRA_NAME TTacMapUberPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTacMapUberPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacMapUberPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTacMapUberPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTacMapUberPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD3A0
-// GHIDRA_NAME TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TTacMapUberPicture::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920()
+void TTacMapUberPicture::NoOpUiLifecycleHook()
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-
-  TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920((TMapUberUberPicture *)this);
+  
+  func_0x00401997();
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x444c4f47);
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0xc))();
   *(int **)&this->field_0x94 = (int *)CONCAT31(extraout_var,uVar1);
@@ -88,17 +88,17 @@ void TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD3F0
-// GHIDRA_NAME TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TTacMapUberPicture::ForwardParam
+// GHIDRA_PROTO undefined __thiscall ForwardParam(void)
 
-void TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730()
+void TTacMapUberPicture::ForwardParam()
 
 {
   int iVar1;
   undefined uVar2;
   undefined3 extraout_var;
   undefined4 unaff_retaddr;
-
+  
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x444c4f47);
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(iVar1 + 0xc))();

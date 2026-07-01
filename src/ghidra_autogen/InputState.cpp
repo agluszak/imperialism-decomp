@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00515E00
 // GHIDRA_NAME InputState::SetMapTileStateByteAndNotifyObserver
-// GHIDRA_PROTO undefined InputState::SetMapTileStateByteAndNotifyObserver()
+// GHIDRA_PROTO undefined SetMapTileStateByteAndNotifyObserver()
 
 void __thiscall
 InputState::SetMapTileStateByteAndNotifyObserver(int param_1,undefined4 param_2,undefined1 param_3)
@@ -20,7 +20,7 @@ InputState::SetMapTileStateByteAndNotifyObserver(int param_1,undefined4 param_2,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055FC40
 // GHIDRA_NAME InputState::HandleKeyDown
-// GHIDRA_PROTO void __thiscall InputState::HandleKeyDown(int key_id)
+// GHIDRA_PROTO void __thiscall HandleKeyDown(int key_id)
 
 void InputState::HandleKeyDown(int key_id)
 
@@ -34,10 +34,10 @@ void InputState::HandleKeyDown(int key_id)
   int slots_remaining;
   bool slot_is_active;
   uint slot_count;
-
+  
   if (((byte)this[0x10] & '\x01' << ((byte)key_id & 0x1f)) == 0) {
     *(ushort *)(this + 0x10) = *(ushort *)(this + 0x10) | (ushort)(1 << ((byte)key_id & 0x1f));
-    controller_id = (astruct *)UiRuntimeContext::GetActiveNationId();
+    controller_id = (astruct *)func_0x00403b16();
     slot_id = (short)controller_id;
     if (((byte)this[0x10] & '\x01' << ((byte)controller_id & 0x1f)) == 0) {
       slot_count = *(uint *)(this + 0x40);
@@ -69,7 +69,7 @@ LAB_0055fcae:
         do {
           if (((byte)this[0x10] & '\x01' << ((byte)(key_id % 7) & 0x1f)) != 0) {
             slot_id = (**(code **)(iVar1 + 0x50))();
-            InputState::SetMapTileStateByteAndNotifyObserver((int)slot_id,key_id % 7 + 7);
+            func_0x0040107d((int)slot_id,key_id % 7 + 7);
             *(undefined2 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1a + slot_id * 0x24) = 0xffff;
           }
           key_id = key_id + 1;
@@ -78,18 +78,18 @@ LAB_0055fcae:
       }
       else {
         slot_handle = (**(code **)(*(int *)this + 0x50))();
-        InputState::SetMapTileStateByteAndNotifyObserver(slot_handle,&controller_id->field_0x7);
+        func_0x0040107d(slot_handle,&controller_id->field_0x7);
         *(undefined2 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1a + (short)slot_handle * 0x24) =
              0xffff;
       }
     }
   }
-  slot_id = UiRuntimeContext::GetActiveNationId();
+  slot_id = func_0x00403b16();
   if (slot_id == -1) {
-    slot_id = UiRuntimeContext::GetActiveNationId();
+    slot_id = func_0x00403b16();
   }
   if (((byte)this[0x10] & '\x01' << ((byte)slot_id & 0x1f)) != 0) {
-    for (iVar1 = GetNavyPrimaryOrderListHead(); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x24)) {
+    for (iVar1 = func_0x0040793c(); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x24)) {
       if (((*(InputState **)(iVar1 + 8) == this) && (*(short *)(iVar1 + 0x14) == slot_id)) &&
          (*(int *)(iVar1 + 0xc) == 0)) {
         key_id = CONCAT31(key_id._1_3_,1);
@@ -105,25 +105,24 @@ LAB_0055fcae:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00562D90
 // GHIDRA_NAME InputState::InitializeMapActionContextsForNationCountUsingCostField
-// GHIDRA_PROTO undefined InputState::InitializeMapActionContextsForNationCountUsingCostField()
+// GHIDRA_PROTO undefined InitializeMapActionContextsForNationCountUsingCostField()
 
 void __thiscall
 InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,short param_2)
 
 {
-  short sVar1;
-  int *piVar2;
-  undefined4 *puVar3;
+  int *piVar1;
+  undefined4 *puVar2;
+  undefined4 uVar3;
   int iVar4;
-  int iVar5;
   int iteration_count;
-  int *piVar6;
-  undefined4 *puVar7;
+  int *piVar5;
+  undefined4 *puVar6;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063589b;
   uStack_c = *unaff_FS_OFFSET;
@@ -133,46 +132,41 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
     (**(code **)(**(int **)(param_1 + 8) + 4))(3);
   }
   iteration_count = (int)param_2;
-  piVar2 = (int *)__2_YAPAXI_Z(iteration_count * 0x48 + 4);
+  piVar1 = (int *)operator_new(iteration_count * 0x48 + 4);
   uStack_4 = 0;
-  if (piVar2 == (int *)0x0) {
-    piVar6 = (int *)0x0;
+  if (piVar1 == (int *)0x0) {
+    piVar5 = (int *)0x0;
   }
   else {
-    piVar6 = piVar2 + 1;
-    *piVar2 = iteration_count;
-    ___L_YGXPAXIHP6EX0_Z1_Z
-              (piVar6,0x48,iteration_count,
-               TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList);
+    piVar5 = piVar1 + 1;
+    *piVar1 = iteration_count;
+    ___L_YGXPAXIHP6EX0_Z1_Z(piVar5,0x48,iteration_count,&SUB_0040405c);
   }
   uStack_4 = 0xffffffff;
-  *(int **)(param_1 + 8) = piVar6;
-  if (piVar6 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x87f);
+  *(int **)(param_1 + 8) = piVar5;
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x87f);
   }
-  puVar3 = (undefined4 *)__2_YAPAXI_Z(0x32a0);
-  puVar7 = puVar3;
+  puVar2 = (undefined4 *)operator_new(0x32a0);
+  puVar6 = puVar2;
   for (iVar4 = 0xca8; iVar4 != 0; iVar4 = iVar4 + -1) {
-    *puVar7 = 0;
-    puVar7 = puVar7 + 1;
+    *puVar6 = 0;
+    puVar6 = puVar6 + 1;
   }
-  iVar4 = RelaxMapTileCostFieldByNeighborTerrain(puVar3);
+  iVar4 = func_0x004029d2(puVar2);
   while (iVar4 != 0) {
-    iVar4 = RelaxMapTileCostFieldByNeighborTerrain(puVar3);
+    iVar4 = func_0x004029d2(puVar2);
   }
   iVar4 = 0;
   if (0 < iteration_count) {
-    iVar5 = 0;
     do {
-      sVar1 = SelectBestSeedTileForNationFromCostField(puVar3,iVar4 + 0x17);
-      TZone::SetMapActionContextTargetTileAndRefreshMarkers
-                ((TZone *)(*(int *)(param_1 + 8) + iVar5),iVar4 + 0x17,sVar1);
+      uVar3 = func_0x00403765(puVar2,iVar4 + 0x17);
+      func_0x0040982c(iVar4 + 0x17,uVar3);
       iVar4 = iVar4 + 1;
-      iVar5 = iVar5 + 0x48;
     } while (iVar4 < iteration_count);
   }
-  __3_YAXPAX_Z(puVar3);
+  operator_delete(puVar2);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

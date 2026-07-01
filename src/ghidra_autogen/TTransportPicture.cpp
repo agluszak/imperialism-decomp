@@ -4,54 +4,51 @@
 // Bucket: TTransportPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591D90
-// GHIDRA_NAME TTransportPicture::?CreateTTransportPictureInstance@@YAPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@XZ
-// GHIDRA_PROTO undefined ?CreateTTransportPictureInstance@@YAPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@XZ()
+// GHIDRA_NAME TTransportPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton *
-TTransportPicture::
-_CreateTTransportPictureInstance__YAPAUTransportPictureState___Z_imperialismsrcgameTTransportPicture_cpp234212302__XZ
-          (void)
+undefined4 * TTransportPicture::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063807a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x9c);
+  puVar1 = (undefined4 *)operator_new(0x9c);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TTransportPictureVtbl **)this = &TTransportPictureVtbl_00668588;
-    *(undefined2 *)(this + 0x90) = 0x3a;
-    *(undefined2 *)(this + 0x94) = 0;
-    *(undefined2 *)(this + 0x96) = 0;
-    *(undefined2 *)(this + 0x98) = 0xffff;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x24) = 0x3a;
+    *(undefined2 *)(puVar1 + 0x25) = 0;
+    *(undefined2 *)((int)puVar1 + 0x96) = 0;
+    *(undefined2 *)(puVar1 + 0x26) = 0xffff;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591E50
-// GHIDRA_NAME TTransportPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTransportPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTransportPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTransportPicture::GetRuntimeClass()
 
 {
-  return &g_pClassDescTTransportPicture;
+  return &classTTransportPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591E70
 // GHIDRA_NAME TTransportPicture::?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z
-// GHIDRA_PROTO undefined __thiscall TTransportPicture::?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z(void)
+// GHIDRA_PROTO undefined __thiscall ?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z(void)
 
 TTransportPicture * __thiscall
 TTransportPicture::
@@ -59,8 +56,8 @@ _ConstructTTransportPictureBaseState__YIPAUTransportPictureState___Z_imperialism
           (TTransportPicture *this)
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TTransportPictureVtbl_00668588;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x94 = 0;
   *(undefined2 *)&this->field_0x96 = 0;
   *(undefined2 *)&this->field_0x90 = 0x3a;
@@ -75,18 +72,18 @@ _ConstructTTransportPictureBaseState__YIPAUTransportPictureState___Z_imperialism
 TTransportPicture * TTransportPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00408d2d();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591F10
-// GHIDRA_NAME TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_NAME TTransportPicture::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+void TTransportPicture::HandleEvent(int param_1)
 
 {
   TGreatPower *pTVar1;
@@ -107,11 +104,13 @@ void TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1
   undefined2 extraout_var_03;
   undefined2 extraout_var_04;
   undefined4 unaff_EBX;
-
+  undefined4 in_stack_00000008;
+  undefined4 in_stack_0000000c;
+  
   uVar4 = (undefined2)((uint)unaff_EBX >> 0x10);
   bVar3 = false;
   if ((param_1 < 100) || (0x65 < param_1)) goto LAB_00592108;
-  sVar7 = UiRuntimeContext::GetActiveNationId();
+  sVar7 = func_0x00403b16();
   iVar11 = (int)*(short *)&this->field_0x92;
   pTVar1 = g_apNationStates[sVar7];
   if (iVar11 == 0) {
@@ -182,17 +181,17 @@ LAB_00591fc3:
     (*this->vftable->VTableSlot39)();
   }
 LAB_00592108:
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+  func_0x00404566(param_1,in_stack_00000008,in_stack_0000000c);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005921C0
-// GHIDRA_NAME TTransportPicture::RenderTransportPictureGaugeAndLabels
-// GHIDRA_PROTO undefined __thiscall RenderTransportPictureGaugeAndLabels(void)
+// GHIDRA_NAME TTransportPicture::IsSelected
+// GHIDRA_PROTO undefined __thiscall IsSelected(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TTransportPicture::RenderTransportPictureGaugeAndLabels()
+void TTransportPicture::IsSelected()
 
 {
   _vslot_fn *p_Var1;
@@ -207,60 +206,61 @@ void TTransportPicture::RenderTransportPictureGaugeAndLabels()
   undefined3 extraout_var;
   CString *src_ref;
   int *piVar10;
+  int iVar11;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
-  undefined *puVar11;
-  TSimMgrVtbl *pTVar12;
-  int iVar13;
+  undefined *puVar12;
+  TSimMgrVtbl *pTVar13;
+  undefined1 *puVar14;
   undefined4 *unaff_FS_OFFSET;
-  int *piStack_64;
+  undefined1 **ppuStack_64;
   CString CStack_60;
   char *pcStack_5c;
   CString local_4c;
   CString local_48;
   CString local_44;
   CString local_40;
-  float local_3c;
+  undefined1 *local_3c;
   TTransportPictureVtbl *local_38;
-  int iStack_34;
-  int iStack_30;
-  int iStack_2c;
+  undefined1 *puStack_34;
+  undefined1 *puStack_30;
+  undefined1 *puStack_2c;
   undefined4 uStack_28;
   undefined4 uStack_24;
   undefined4 uStack_20;
   undefined4 local_1c;
   int local_18;
-  int local_14;
+  undefined1 *local_14;
   undefined4 local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   undefined3 extraout_var_00;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006380c8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pcStack_5c = (char *)0x5921e6;
-  AcquireReusableQuickDrawSurface();
+  func_0x004021c1();
   local_4 = 0;
   pcStack_5c = (char *)0x5921f7;
-  CString::__0CString__QAE_XZ(&local_40);
+  CString::CString(&local_40);
   local_4._0_1_ = 1;
   pcStack_5c = (char *)0x592205;
-  CString::__0CString__QAE_XZ(&local_44);
+  CString::CString(&local_44);
   local_4._0_1_ = 2;
   pcStack_5c = (char *)0x592213;
-  CString::__0CString__QAE_XZ(&local_4c);
+  CString::CString(&local_4c);
   local_4 = CONCAT31(local_4._1_3_,3);
   sVar7 = 0x61;
   if (200 < this->ownerOffsetX) {
     sVar7 = 0x5d;
   }
-  local_3c = (float)(int)*(short *)&this->field_0x96;
+  local_3c = (undefined1 *)(float)(int)*(short *)&this->field_0x96;
   fVar5 = (float)(int)*(short *)&this->field_0x94;
-  fVar3 = _DAT_006631b8 / local_3c;
-  fVar4 = _DAT_006631b8 - fVar3 * local_3c;
+  fVar3 = _DAT_006631b8 / (float)local_3c;
+  fVar4 = _DAT_006631b8 - fVar3 * (float)local_3c;
   if (fVar4 < fVar5) {
     local_38 = (TTransportPictureVtbl *)
                (fVar4 * (fVar3 - (float)_DAT_006631a0) + (fVar5 - fVar4) * fVar3);
@@ -271,14 +271,14 @@ void TTransportPicture::RenderTransportPictureGaugeAndLabels()
   }
   pcStack_5c = local_48.m_pchData;
   CStack_60.m_pchData = (char *)0x5922bd;
-  ApplyHitRegionToClipState();
-  iVar13 = (int)sVar7;
+  func_0x0040232e();
+  puVar14 = (undefined1 *)(int)sVar7;
   pcStack_5c = (char *)0x5922d4;
-  local_3c = (float)iVar13;
+  local_3c = puVar14;
   uVar9 = ftol();
   local_18 = 0xd;
   pcStack_5c = (char *)&local_1c;
-  local_14 = iVar13 + 0x71;
+  local_14 = puVar14 + 0x71;
   local_10 = 0x11;
   CStack_60.m_pchData = (char *)0x5922fd;
   local_1c = uVar9;
@@ -287,119 +287,113 @@ void TTransportPicture::RenderTransportPictureGaugeAndLabels()
   CStack_60.m_pchData = (char *)0x59230d;
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
   CStack_60.m_pchData = (char *)&uStack_20;
-  piStack_64 = (int *)0x592317;
+  ppuStack_64 = (undefined1 **)0x592317;
   FillRectWithQuickDrawBrushAndContextOffset();
-  iStack_2c = 0xd;
+  puStack_2c = (undefined1 *)0xd;
   uStack_24 = 0x11;
-  iStack_30 = iVar13;
+  puStack_30 = puVar14;
   uStack_28 = uVar9;
   if (this->controlTag == 0x746f7461) {
     if (*(short *)&this->field_0x96 == *(short *)&this->field_0x94) {
-      puVar11 = g_pUiRuntimeContext->vftable;
+      puVar12 = g_pUiRuntimeContext->vftable;
       CStack_60.m_pchData = (char *)0x34;
       goto LAB_00592373;
     }
     CStack_60.m_pchData = (char *)0x33;
-    piStack_64 = (int *)0x592361;
+    ppuStack_64 = (undefined1 **)0x592361;
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
   }
   else {
     CStack_60.m_pchData =
          (char *)CONCAT22((short)((uint)this->controlTag >> 0x10),*(undefined2 *)&this->field_0x90);
-    puVar11 = g_pUiRuntimeContext->vftable;
+    puVar12 = g_pUiRuntimeContext->vftable;
 LAB_00592373:
-    piStack_64 = (int *)0x592376;
-    (**(code **)(puVar11 + 0x34))();
+    ppuStack_64 = (undefined1 **)0x592376;
+    (**(code **)(puVar12 + 0x34))();
   }
-  piStack_64 = &iStack_34;
+  ppuStack_64 = &puStack_34;
   ApplyRectClipRegionToGlobalClipState();
-  piStack_64 = &iStack_34;
+  ppuStack_64 = &puStack_34;
   FillRectWithQuickDrawBrushAndContextOffset();
-  SnapshotHitRegionToClipCache();
-  piStack_64 = (int *)0x0;
-  local_38 = (TTransportPictureVtbl *)&piStack_64;
-  SetQuickDrawFillColor();
+  func_0x00405be1();
+  ppuStack_64 = (undefined1 **)0x0;
+  local_38 = (TTransportPictureVtbl *)&ppuStack_64;
+  func_0x00406b86();
   if (-1 < *(short *)&this->field_0x98) {
-    iStack_34 = iVar13 + -1;
-    iStack_2c = iVar13 + 0x72;
-    iStack_30 = 0x12;
+    puStack_34 = puVar14 + -1;
+    puStack_2c = puVar14 + 0x72;
+    puStack_30 = (undefined1 *)0x12;
     uStack_28 = 0x14;
     if (*(short *)&this->field_0x94 < *(short *)&this->field_0x98) {
-      piStack_64 = (int *)0x33;
+      ppuStack_64 = (undefined1 **)0x33;
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     }
     else {
-      piStack_64 = (int *)0x34;
+      ppuStack_64 = (undefined1 **)0x34;
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     }
-    piStack_64 = &iStack_34;
     ApplyRectClipRegionToGlobalClipState();
-    piStack_64 = &iStack_34;
     FillRectWithQuickDrawBrushAndContextOffset();
-    SnapshotHitRegionToClipCache();
-    piStack_64 = (int *)0x0;
-    local_38 = (TTransportPictureVtbl *)&piStack_64;
-    SetQuickDrawFillColor();
+    func_0x00405be1();
+    local_3c = &stack0xffffff98;
+    func_0x00406b86();
   }
   local_38 = this->vftable;
-  piStack_64 = (int *)0x74657874;
+  ppuStack_64 = (undefined1 **)0x74657874;
   p_Var1 = local_38->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar6 = (*p_Var1)();
   if ((int *)CONCAT31(extraout_var,uVar6) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   _Format_CString__QAAXPBDZZ(&local_4c);
   _Format_CString__QAAXPBDZZ(&stack0xffffffb0);
-  __H_YG_AVCString__ABV0_PBD_Z(&local_40);
+  AssignSharedStringConcatRefAndCStr(&local_40);
   local_10._0_1_ = 4;
-  src_ref = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_48);
+  src_ref = (CString *)AssignSharedStringConcatRefAndRef(&local_48);
   local_10._0_1_ = 5;
-  CString::__0CString__QAE_ABV0__Z(&local_44,src_ref);
+  CString::CString(&local_44,src_ref);
   local_10._0_1_ = 6;
-  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffa8,&local_44);
+  CString::operator=((CString *)&stack0xffffffa8,&local_44);
   local_10._0_1_ = 5;
-  CString::__1CString__QAE_XZ(&local_44);
+  CString::~CString(&local_44);
   local_10._0_1_ = 4;
-  CString::__1CString__QAE_XZ(&local_48);
+  CString::~CString(&local_48);
   local_10 = CONCAT31(local_10._1_3_,3);
-  CString::__1CString__QAE_XZ(&local_40);
+  CString::~CString(&local_40);
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar6) + 0x1c8))();
   if (*(short *)&this->field_0x92 == 0x16) {
     uVar6 = (*p_Var1)(0x76616c75);
     piVar10 = (int *)CONCAT31(extraout_var_00,uVar6);
     if (piVar10 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a63);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a63);
     }
-    pTVar12 = g_pLocalizationTable->vftable;
-    iVar13 = *(short *)&this->field_0x94 * 200;
+    pTVar13 = g_pLocalizationTable->vftable;
+    iVar11 = *(short *)&this->field_0x94 * 200;
   }
   else {
     if (*(short *)&this->field_0x92 != 0x15) goto LAB_005925fa;
     uVar6 = (*p_Var1)(0x76616c75);
     piVar10 = (int *)CONCAT31(extraout_var_01,uVar6);
     if (piVar10 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a6a);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a6a);
     }
-    pTVar12 = g_pLocalizationTable->vftable;
-    iVar13 = *(short *)&this->field_0x94 * 500;
+    pTVar13 = g_pLocalizationTable->vftable;
+    iVar11 = *(short *)&this->field_0x94 * 500;
   }
-  (*pTVar12[0xe].slot_0x04)(iVar13,&piStack_64);
+  (*pTVar13[0xe].slot_0x04)(iVar11,&ppuStack_64);
   (**(code **)(*piVar10 + 0x1c8))(&stack0xffffff94,1);
 LAB_005925fa:
   if (this->controlTag != 0x746f7461) {
-    sVar7 = UiRuntimeContext::GetActiveNationId();
+    sVar7 = func_0x00403b16();
     pTVar2 = g_apNationStates[sVar7];
     uVar6 = (*this->ownerContext->vftable->ResolveControlByTag)(0x746f7461);
     piVar10 = (int *)CONCAT31(extraout_var_02,uVar6);
     if (piVar10 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a77);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a77);
     }
     if (pTVar2 == (TGreatPower *)0x0) {
       wVar8 = 0;
@@ -412,25 +406,25 @@ LAB_005925fa:
     (**(code **)(local_48.m_pchData + 0xf8))();
   }
   local_18._0_1_ = 2;
-  CString::__1CString__QAE_XZ(&CStack_60);
+  CString::~CString(&CStack_60);
   local_18._0_1_ = 1;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa8);
+  CString::~CString((CString *)&stack0xffffffa8);
   local_18 = (uint)local_18._1_3_ << 8;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffac);
+  CString::~CString((CString *)&stack0xffffffac);
   local_18 = 0xffffffff;
-  ReleaseOrCacheQuickDrawSurface();
+  func_0x00409aac();
   *unaff_FS_OFFSET = uStack_20;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592830
-// GHIDRA_NAME TTransportPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TTransportPicture::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTransportPicture::OrphanTiny_ReturnZero_0048a730()
+void TTransportPicture::ApplyRectSlot110()
 
 {
-  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
+  func_0x00404fe8();
   (*this->vftable[1].GetTEventHandlerClassNamePointer)();
   return;
 }

@@ -4,120 +4,52 @@
 // Bucket: TCtlMgr.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EA00
-// GHIDRA_NAME TCtlMgr::CreateTCtlMgrInstance
-// GHIDRA_PROTO undefined CreateTCtlMgrInstance()
+// GHIDRA_NAME TCtlMgr::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TCtlMgr::CreateTCtlMgrInstance(void)
+undefined4 * TCtlMgr::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ee92;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x84);
+  puVar1 = (undefined4 *)operator_new(0x84);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    *(undefined1 *)&this[1].field04 = 0;
-    this[1].vftable = (TViewVtbl *)0x1;
-    this[1].padding_08_to_0b = 0;
-    this[1].field0c = 0;
-    this[1].field10 = 0;
-    this[1].field14 = 0;
-    this[1].field18 = g_nUiResourceEntryDefaultParam0;
-    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *(undefined1 *)(puVar1 + 0x19) = 0;
+    puVar1[0x18] = 1;
+    puVar1[0x1a] = 0;
+    puVar1[0x1b] = 0;
+    puVar1[0x1c] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
+    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = (TViewVtbl *)&TButton::_vftable_;
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+    *puVar1 = &TButton::_vftable_;
+    func_0x004057a4(g_szMcAppUiHeaderPath_006943CC,0x5a6);
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EAF0
-// GHIDRA_NAME TCtlMgr::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TCtlMgr::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCtlMgr::GetTEventHandlerClassNamePointer()
-
-{
-  return &classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048EB10
-// GHIDRA_NAME TCtlMgr::ConstructTCtlMgrBaseState
-// GHIDRA_PROTO undefined ConstructTCtlMgrBaseState()
-
-TView * TCtlMgr::ConstructTCtlMgrBaseState(void)
+CRuntimeClass * TCtlMgr::GetRuntimeClass()
 
 {
-  TView *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062eec2;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x84);
-  local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    *(undefined1 *)&this[1].field04 = 0;
-    this[1].vftable = (TViewVtbl *)0x1;
-    this[1].padding_08_to_0b = 0;
-    this[1].field0c = 0;
-    this[1].field10 = 0;
-    this[1].field14 = 0;
-    this[1].field18 = g_nUiResourceEntryDefaultParam0;
-    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
-    local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = (TViewVtbl *)&TButton::_vftable_;
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
-    this->vftable = (TViewVtbl *)&TButtonVtbl_0064a4e0;
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492DB0
-// GHIDRA_NAME TCtlMgr::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(void)
-
-void TCtlMgr::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0()
-
-{
-  if (DAT_006a1b5c == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a7);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492DE0
-// GHIDRA_NAME TCtlMgr::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
-
-TCtlMgr * TCtlMgr::_scalar_deleting_destructor_(byte param_1)
-
-{
-  TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl((TView *)this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
+  return &classTCtlMgr;
 }
 

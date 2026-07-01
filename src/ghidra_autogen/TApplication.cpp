@@ -3,87 +3,67 @@
 // Program: Imperialism.exe
 // Bucket: TApplication.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00486740
-// GHIDRA_NAME TApplication::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00486680
+// GHIDRA_NAME TApplication::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TApplication::GetTEventHandlerClassNamePointer()
-
-{
-  return &classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00486760
-// GHIDRA_NAME TApplication::ConstructGlobalUiRootControllerState
-// GHIDRA_PROTO undefined __thiscall ConstructGlobalUiRootControllerState(void)
-
-TApplication * TApplication::ConstructGlobalUiRootControllerState()
+ApplicationUiRootController * TApplication::CreateObject(void)
 
 {
-  TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
-  *(undefined4 *)&this->field_0x20 = 0;
-  *(undefined4 *)&this->field_0x24 = 0;
-  *(undefined4 *)&this->field_0x2c = 0x648ca8;
-  *(undefined4 *)&this->field_0x38 = 0;
-  *(undefined4 *)&this->field_0x3c = 0;
-  *(undefined4 *)&this->field_0x34 = 0;
-  *(undefined4 *)&this->field_0x30 = 0;
-  *(undefined4 *)&this->field_0x40 = 0;
-  *(undefined4 *)&this->field_0x44 = 10;
-  this->vftable = &ApplicationUiRootController::_vftable_;
-  g_pApplicationUiRootController = (ApplicationUiRootController *)this;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004867B0
-// GHIDRA_NAME TApplication::DestructTApplicationAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTApplicationAndMaybeFree(byte param_1)
-
-TApplication * TApplication::DestructTApplicationAndMaybeFree(byte param_1)
-
-{
-  TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004867E0
-// GHIDRA_NAME TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
-// GHIDRA_PROTO undefined __thiscall TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(void)
-
-void __thiscall
-TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
-          (TApplication *this)
-
-{
-  undefined4 *puVar1;
+  ApplicationUiRootController *pAVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
-  puStack_8 = &LAB_0062eac0;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ea9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->vftable = &ApplicationUiRootController::_vftable_;
-  g_pApplicationUiRootController = (ApplicationUiRootController *)0x0;
-  *(undefined4 *)&this->field_0x2c = 0x648ca8;
-  puVar1 = *(undefined4 **)&this->field_0x30;
-  local_4 = 1;
-  for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+  pAVar1 = (ApplicationUiRootController *)operator_new(0x48);
+  local_4 = 0;
+  if (pAVar1 != (ApplicationUiRootController *)0x0) {
+    func_0x00403049();
+    *(undefined4 *)&pAVar1->field_0x20 = 0;
+    *(undefined4 *)&pAVar1->field_0x24 = 0;
+    *(undefined4 *)&pAVar1->field_0x2c = 0x648ca8;
+    *(undefined4 *)&pAVar1->field_0x38 = 0;
+    *(undefined4 *)&pAVar1->field_0x3c = 0;
+    *(undefined4 *)&pAVar1->field_0x34 = 0;
+    *(undefined4 *)&pAVar1->field_0x30 = 0;
+    *(undefined4 *)&pAVar1->field_0x40 = 0;
+    *(undefined4 *)&pAVar1->field_0x44 = 10;
+    pAVar1->vftable = (undefined *)&_vftable_;
+    g_pApplicationUiRootController = pAVar1;
+    *unaff_FS_OFFSET = local_c;
+    return pAVar1;
   }
-  *(undefined4 *)&this->field_0x38 = 0;
-  *(undefined4 *)&this->field_0x3c = 0;
-  *(undefined4 *)&this->field_0x34 = 0;
-  *(undefined4 *)&this->field_0x30 = 0;
-  _FreeDataChain_CPlex__QAEXXZ();
-  *(undefined4 *)&this->field_0x40 = 0;
-  *(char **)&this->field_0x2c = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  this->vftable = (TApplicationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
-  return;
+  return (ApplicationUiRootController *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486740
+// GHIDRA_NAME TApplication::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TApplication::GetRuntimeClass()
+
+{
+  return &classTApplication;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004867B0
+// GHIDRA_NAME TApplication::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TApplication * TApplication::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00409656();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486880
@@ -107,13 +87,21 @@ undefined4 TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0()
   return *(undefined4 *)&this->field_0x20;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004869B0
-// GHIDRA_NAME TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_AllocateAndLinkBlockHead_At004869b0(int param_1, char param_2)
+// GHIDRA_FUNCTION IMPERIALISM 0x00486990
+// GHIDRA_NAME TApplication::HandleTurnEventViewportEdgeAutoScroll
+// GHIDRA_PROTO undefined __thiscall HandleTurnEventViewportEdgeAutoScroll(void)
 
-void __thiscall
-TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0
-          (TApplication *this,int param_1,char param_2)
+void TApplication::HandleTurnEventViewportEdgeAutoScroll()
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004869B0
+// GHIDRA_NAME TApplication::InsertOrRemoveTrackedEntry
+// GHIDRA_PROTO undefined __thiscall InsertOrRemoveTrackedEntry(int param_1, char param_2)
+
+void TApplication::InsertOrRemoveTrackedEntry(int param_1, char param_2)
 
 {
   undefined4 uVar1;
@@ -121,12 +109,11 @@ TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0
   undefined4 *puVar3;
   int *piVar4;
   int iVar5;
-
+  
   if (param_2 != '\0') {
     uVar1 = *(undefined4 *)&this->field_0x30;
     if (*(int *)&this->field_0x3c == 0) {
-      iVar2 = _Create_CPlex__SGPAU1_AAPAU1_II_Z
-                        (&this->field_0x40,*(undefined4 *)&this->field_0x44,0xc);
+      iVar2 = CPlex::Create(&this->field_0x40,*(undefined4 *)&this->field_0x44,0xc);
       iVar5 = *(int *)&this->field_0x44;
       puVar3 = (undefined4 *)(iVar2 + -8 + iVar5 * 0xc);
       if (-1 < iVar5 + -1) {
@@ -184,34 +171,51 @@ LAB_00486a4b:
       *(undefined4 *)&this->field_0x3c = 0;
       *(undefined4 *)&this->field_0x34 = 0;
       *(undefined4 *)&this->field_0x30 = 0;
-      _FreeDataChain_CPlex__QAEXXZ();
+      CPlex::FreeDataChain();
       *(undefined4 *)&this->field_0x40 = 0;
     }
   }
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00486B10
+// GHIDRA_NAME TApplication::TickEachTrackedEntry
+// GHIDRA_PROTO undefined __thiscall TickEachTrackedEntry(undefined4 param_1)
+
+void TApplication::TickEachTrackedEntry(undefined4 param_1)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = *(undefined4 **)&this->field_0x30;
+  while (puVar1 != (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)*puVar1;
+    func_0x004012ad(param_1);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00486B50
-// GHIDRA_NAME TApplication::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(LPARAM param_1)
+// GHIDRA_NAME TApplication::DispatchQueuedUiCommandAndRelease
+// GHIDRA_PROTO undefined __thiscall DispatchQueuedUiCommandAndRelease(LPARAM param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Posts custom message 0xBC0 with caller-supplied lParam to main thread window.
 // GHIDRA_COMMENT_END
 
 /* Posts custom message 0xBC0 with caller-supplied lParam to main thread window. */
 
-void TApplication::_scalar_deleting_destructor_(LPARAM param_1)
+void TApplication::DispatchQueuedUiCommandAndRelease(LPARAM param_1)
 
 {
   CWinThread *pCVar1;
   int iVar2;
-
-  pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+  
+  pCVar1 = AfxGetThread();
   if (pCVar1 == (CWinThread *)0x0) {
     iVar2 = 0;
   }
   else {
-    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+    pCVar1 = AfxGetThread();
     iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
   }
   PostMessageA(*(HWND *)(iVar2 + 0x1c),0xbc0,0,param_1);
@@ -219,29 +223,29 @@ void TApplication::_scalar_deleting_destructor_(LPARAM param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486BA0
-// GHIDRA_NAME TApplication::DispatchReflectedControlMessageOrFallback
-// GHIDRA_PROTO undefined __thiscall DispatchReflectedControlMessageOrFallback(undefined4 param_1)
+// GHIDRA_NAME TApplication::vmethod_0017
+// GHIDRA_PROTO undefined __thiscall vmethod_0017(undefined4 param_1)
 
-void TApplication::DispatchReflectedControlMessageOrFallback(undefined4 param_1)
+void TApplication::vmethod_0017(undefined4 param_1)
 
 {
   CWinThread *pCVar1;
   int iVar2;
-
+  
   switch(param_1) {
   case 1:
-    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+    pCVar1 = AfxGetThread();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+      pCVar1 = AfxGetThread();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe140,0);
     return;
   default:
-    TMapDialog::'scalar_deleting_destructor'((TMapDialog *)this,param_1);
+    func_0x004069ec(param_1);
     return;
   case 10:
   case 0xb:
@@ -253,12 +257,12 @@ void TApplication::DispatchReflectedControlMessageOrFallback(undefined4 param_1)
   case 0x11:
   case 0x12:
   case 0x13:
-    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+    pCVar1 = AfxGetThread();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+      pCVar1 = AfxGetThread();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe100,0);
@@ -273,55 +277,55 @@ void TApplication::DispatchReflectedControlMessageOrFallback(undefined4 param_1)
   case 0x1b:
   case 0x1c:
   case 0x1d:
-    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+    pCVar1 = AfxGetThread();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+      pCVar1 = AfxGetThread();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     break;
   case 0x1e:
-    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+    pCVar1 = AfxGetThread();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+      pCVar1 = AfxGetThread();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe103,0);
     return;
   case 0x1f:
-    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+    pCVar1 = AfxGetThread();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+      pCVar1 = AfxGetThread();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe102,0);
     return;
   case 0x20:
-    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+    pCVar1 = AfxGetThread();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+      pCVar1 = AfxGetThread();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe104,0);
     return;
   case 0x24:
-    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+    pCVar1 = AfxGetThread();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+      pCVar1 = AfxGetThread();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x10,0,0);
@@ -346,21 +350,20 @@ void TApplication::SerializeRecordList_0x0C_WithBlockPool_B(CArchive *param_1)
   undefined4 *puVar5;
   int iVar6;
   int *piVar7;
-
+  
   this_00 = param_1;
   if ((~param_1->m_nMode & 1U) == 0) {
-    for (iVar3 = _ReadCount_CArchive__QAEKXZ(); iVar3 != 0; iVar3 = iVar3 + -1) {
+    for (iVar3 = CArchive::ReadCount(); iVar3 != 0; iVar3 = iVar3 + -1) {
       if ((~this_00->m_nMode & 1U) == 0) {
-        CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)&param_1,4);
+        CArchive::Read(this_00,(int)&param_1,4);
       }
       else {
-        TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)&param_1,4);
+        CArchive::Write(this_00,(int)&param_1,4);
       }
       pCVar2 = param_1;
       uVar1 = this->padding_08_to_0b;
       if (*(int *)&this->field_0x10 == 0) {
-        iVar4 = _Create_CPlex__SGPAU1_AAPAU1_II_Z
-                          (&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
+        iVar4 = CPlex::Create(&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
         iVar6 = *(int *)&this->field_0x18;
         puVar5 = (undefined4 *)(iVar4 + -8 + iVar6 * 0xc);
         if (-1 < iVar6 + -1) {
@@ -389,16 +392,15 @@ void TApplication::SerializeRecordList_0x0C_WithBlockPool_B(CArchive *param_1)
     }
   }
   else {
-    TNetMgr::_WriteCount_CArchive__QAEXK_Z
-              ((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c);
+    CArchive::WriteCount(param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c);
     piVar7 = (int *)this->field04;
     if (piVar7 != (int *)0x0) {
       do {
         if ((~this_00->m_nMode & 1U) == 0) {
-          CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)(piVar7 + 2),4);
+          CArchive::Read(this_00,(int)(piVar7 + 2),4);
         }
         else {
-          TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)(piVar7 + 2),4);
+          CArchive::Write(this_00,(int)(piVar7 + 2),4);
         }
         piVar7 = (int *)*piVar7;
       } while (piVar7 != (int *)0x0);
@@ -415,9 +417,9 @@ void TApplication::SerializeRecordList_0x0C_WithBlockPool_B(CArchive *param_1)
 TApplication * TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(byte param_1)
 
 {
-  TBehavior::CreateTBehaviorInstance((TBehavior *)this);
+  func_0x00407b3a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }

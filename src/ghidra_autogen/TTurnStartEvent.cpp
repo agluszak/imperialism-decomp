@@ -3,9 +3,51 @@
 // Program: Imperialism.exe
 // Bucket: TTurnStartEvent.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004E65E0
+// GHIDRA_NAME TTurnStartEvent::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TTurnStartEvent::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(8);
+  if (puVar1 != (undefined4 *)0x0) {
+    puVar1[1] = 0x65727261;
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E6610
+// GHIDRA_NAME TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState
+// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode2FinalizeNationNameState(void)
+
+void TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState()
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E6630
+// GHIDRA_NAME TTurnStartEvent::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TTurnStartEvent * TTurnStartEvent::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00408a0d();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004E6660
 // GHIDRA_NAME TTurnStartEvent::CreateTTurnStartEventInstance
-// GHIDRA_PROTO undefined __thiscall TTurnStartEvent::CreateTTurnStartEventInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTTurnStartEventInstance(void)
 
 void TTurnStartEvent::CreateTTurnStartEventInstance()
 
@@ -13,5 +55,15 @@ void TTurnStartEvent::CreateTTurnStartEventInstance()
   this->vftable = (TTurnStartEventVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
   ;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E6680
+// GHIDRA_NAME TTurnStartEvent::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TTurnStartEvent::GetRuntimeClass()
+
+{
+  return &classTTurnStartEvent;
 }
 

@@ -3,19 +3,59 @@
 // Program: Imperialism.exe
 // Bucket: THandleStream.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004895C0
-// GHIDRA_NAME THandleStream::GetTStreamClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTStreamClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00489550
+// GHIDRA_NAME THandleStream::CreateTHandleStreamInstance
+// GHIDRA_PROTO undefined __thiscall CreateTHandleStreamInstance(int param_1)
 
-CRuntimeClass * THandleStream::GetTStreamClassNamePointer()
+void THandleStream::CreateTHandleStreamInstance(int param_1)
 
 {
-  return &g_pClassDescTHandleStream;
+  int iVar1;
+  int in_stack_00000008;
+  
+  iVar1 = *(int *)&this->field_0x4 + in_stack_00000008;
+  *(int *)&this->field_0x4 = iVar1;
+  if (*(int *)&this->field_0x8 < iVar1) {
+    *(int *)&this->field_0x8 = iVar1;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489580
+// GHIDRA_NAME THandleStream::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * THandleStream::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x18);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    puVar1[4] = 1;
+    puVar1[1] = 0;
+    puVar1[2] = 0;
+    *(undefined1 *)(puVar1 + 5) = 0;
+    puVar1[3] = 0;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004895C0
+// GHIDRA_NAME THandleStream::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * THandleStream::GetRuntimeClass()
+
+{
+  return &classTHandleStream;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004895E0
 // GHIDRA_NAME THandleStream::ConstructTHandleStreamBaseState
-// GHIDRA_PROTO undefined __thiscall THandleStream::ConstructTHandleStreamBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTHandleStreamBaseState(void)
 
 void THandleStream::ConstructTHandleStreamBaseState()
 
@@ -30,22 +70,22 @@ void THandleStream::ConstructTHandleStreamBaseState()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489610
-// GHIDRA_NAME THandleStream::ConstructTStreamBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(byte param_1)
+// GHIDRA_NAME THandleStream::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THandleStream * THandleStream::ConstructTStreamBaseState(byte param_1)
+THandleStream * THandleStream::_scalar_deleting_destructor_(byte param_1)
 
 {
-  THandleStream::~THandleStream(this);
+  func_0x004058c1();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489640
 // GHIDRA_NAME THandleStream::~THandleStream
-// GHIDRA_PROTO undefined __thiscall THandleStream::~THandleStream(void)
+// GHIDRA_PROTO undefined __thiscall ~THandleStream(void)
 
 void THandleStream::~THandleStream()
 
@@ -55,16 +95,16 @@ void THandleStream::~THandleStream()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004896A0
-// GHIDRA_NAME THandleStream::OrphanCallChain_C1_I06_00488ab0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488ab0(void)
+// GHIDRA_NAME THandleStream::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void THandleStream::OrphanCallChain_C1_I06_00488ab0()
+void THandleStream::Free()
 
 {
   THandleStreamVtbl *pTVar1;
   undefined uVar2;
   undefined3 extraout_var;
-
+  
   if (*(int *)&this->field_0x4 != 0) {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1->OrphanTiny_ReturnZero_00488ad0)();
@@ -104,7 +144,7 @@ int THandleStream::OrphanLeaf_NoCall_Ins06_00489720(int param_1)
 
 {
   int iVar1;
-
+  
   iVar1 = *(int *)&this->field_0x10;
   if (*(int *)&this->field_0x10 <= param_1) {
     iVar1 = param_1;
@@ -139,15 +179,15 @@ void THandleStream::OrphanRetStub_00488e50(SIZE_T param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004897A0
-// GHIDRA_NAME THandleStream::OrphanRetStub_00488b40
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488b40(undefined4 param_1, int param_2)
+// GHIDRA_NAME THandleStream::ReadBytes
+// GHIDRA_PROTO undefined __thiscall ReadBytes(undefined4 param_1, int param_2)
 
-void THandleStream::OrphanRetStub_00488b40(undefined4 param_1, int param_2)
+void THandleStream::ReadBytes(undefined4 param_1, int param_2)
 
 {
   int iVar1;
   LPVOID pvVar2;
-
+  
   iVar1 = *(int *)&this->field_0xc - *(int *)&this->field_0x8;
   if (iVar1 < param_2) {
     param_2 = iVar1;
@@ -173,7 +213,7 @@ void THandleStream::OrphanRetStub_00488e70(undefined4 param_1, int param_2)
   int iVar3;
   undefined3 extraout_var;
   LPVOID pvVar4;
-
+  
   iVar3 = *(int *)&this->field_0xc - *(int *)&this->field_0x8;
   if (iVar3 < param_2) {
     pTVar1 = this->vftable;

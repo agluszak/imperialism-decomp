@@ -4,54 +4,54 @@
 // Bucket: TMyStaticText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5380
-// GHIDRA_NAME TMyStaticText::CreateTMyStaticTextInstance
-// GHIDRA_PROTO undefined CreateTMyStaticTextInstance()
+// GHIDRA_NAME TMyStaticText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TStaticText * TMyStaticText::CreateTMyStaticTextInstance(void)
+undefined4 * TMyStaticText::CreateObject(void)
 
 {
-  TStaticText *this;
-  TStaticText *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638e4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  pTVar1 = (TStaticText *)0x0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::TStaticText(this);
-    this->vftable = (TStaticTextVtbl *)&TMyStaticTextVtbl_0066cbc8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040541b();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5400
-// GHIDRA_NAME TMyStaticText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMyStaticText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMyStaticText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMyStaticText::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMyStaticText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5420
 // GHIDRA_NAME TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
-// GHIDRA_PROTO undefined __thiscall TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
+// GHIDRA_PROTO undefined __thiscall ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
 
 TMyStaticText * TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8()
 
 {
-  TStaticText::TStaticText((TStaticText *)this);
-  this->vftable = &TMyStaticTextVtbl_0066cbc8;
+  func_0x0040541b();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,9 +62,9 @@ TMyStaticText * TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8()
 TMyStaticText * TMyStaticText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TStaticText::~TStaticText((TStaticText *)this);
+  func_0x00409ab1();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }

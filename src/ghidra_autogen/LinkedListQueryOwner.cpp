@@ -3,63 +3,337 @@
 // Program: Imperialism.exe
 // Bucket: LinkedListQueryOwner.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005FFEB1
-// GHIDRA_NAME LinkedListQueryOwner::?_AfxCommDlgProc@@YGIPAUHWND__@@IIJ@Z
-// GHIDRA_PROTO undefined ?_AfxCommDlgProc@@YGIPAUHWND__@@IIJ@Z()
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7240
+// GHIDRA_NAME LinkedListQueryOwner::DispatchGlobalTurnEventCode
+// GHIDRA_PROTO undefined __thiscall DispatchGlobalTurnEventCode(undefined4 param_1, short param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Central turn-event dispatcher. Explicit switch handles common codes; default branch creates packet/callback dispatch that reaches registered UI builders (e.g., BuildTurnEventDialogUiByCode for 0x1036/0x104F/0x10CC).
+// GHIDRA_COMMENT_END
 
-undefined1
-LinkedListQueryOwner::__AfxCommDlgProc__YGIPAUHWND____IIJ_Z
-          (HWND param_1,uint param_2,undefined4 param_3,CObjectVtbl *param_4)
+/* Central turn-event dispatcher. Explicit switch handles common codes; default branch creates
+   packet/callback dispatch that reaches registered UI builders (e.g., BuildTurnEventDialogUiByCode
+   for 0x1036/0x104F/0x10CC). */
+
+void __thiscall
+LinkedListQueryOwner::DispatchGlobalTurnEventCode
+          (LinkedListQueryOwner *this,undefined4 param_1,short param_2)
 
 {
-  undefined1 uVar1;
-  undefined uVar2;
-  int iVar3;
-  CObject *this;
-
-  if (param_1 != (HWND)0x0) {
-    iVar3 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
-                      ((TMacViewMgr *)&DAT_006a7a50,
-                       _CreateObject___CThreadLocal_V_AFX_THREAD_STATE____SGPAVCNoTrackObject__XZ);
-    if (*(int *)(iVar3 + 0x18) != 0) {
-      _SubclassWindow_CWnd__QAEHPAUHWND_____Z(param_1);
-      *(undefined4 *)(iVar3 + 0x18) = 0;
+  undefined4 uVar1;
+  code *pcVar2;
+  char cVar3;
+  TSoundPlayerVtbl *pTVar4;
+  int iVar5;
+  CObject *pCVar6;
+  int *piVar7;
+  int *piVar8;
+  short sVar9;
+  undefined4 *unaff_FS_OFFSET;
+  undefined2 unaff_retaddr;
+  undefined4 uVar10;
+  CString aCStack_18 [3];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0063a0c2;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  uVar1 = *(undefined4 *)(this + 8);
+  piVar8 = (int *)g_pDisplayMgr[1];
+  func_0x00406b86();
+  func_0x00402bdf();
+  sVar9 = (short)param_1;
+  if (sVar9 == *(short *)(this + 4)) goto switchD_005d72b4_default;
+  switch(*(undefined2 *)&g_pLocalizationTable->field_0x8) {
+  case 0x67:
+    uVar10 = 0x1b5b;
+    pTVar4 = g_pSfxPlaybackSystem->vftable;
+    goto LAB_005d730d;
+  case 0x68:
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x1b5c,0);
+    break;
+  case 0x69:
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x1b5e,0);
+    break;
+  case 0x6a:
+    uVar10 = 0x1b5d;
+    pTVar4 = g_pSfxPlaybackSystem->vftable;
+LAB_005d730d:
+    (**(code **)&pTVar4[1].field_0x10)(uVar10,0);
+  }
+switchD_005d72b4_default:
+  iVar5 = (int)*(short *)(this + 4);
+  if (iVar5 < 0x2135) {
+    if (iVar5 == 0x2134) {
+      ModifyStyle(0,0x2000000);
     }
-    if (param_2 == 0x110) {
-      uVar1 = _AfxDlgProc__YGHPAUHWND____IIJ_Z(param_1,0x110,param_3,param_4);
-      return uVar1;
-    }
-    if ((param_2 == DAT_006a7f9c) || ((param_2 == 0x111 && ((short)param_3 == 0x40e)))) {
-      SendMessageA(param_1,0x111,0xe146,0);
-      return 1;
-    }
-    if (0xbfff < param_2) {
-      this = (CObject *)_FromHandlePermanent_CWnd__SGPAV1_PAUHWND_____Z(param_1);
-      iVar3 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(this);
-      if ((iVar3 == 0) || (((uint)this[0x24].vftable & 0x80000) == 0)) {
-        if (param_2 == DAT_006a7f8c) {
-          uVar2 = (*this->vftable[0x1b].SetForeignMinisterReadyFlag14)(param_4);
-          return uVar2;
-        }
-        if (param_2 == DAT_006a7f98) {
-          if (DAT_006a7d5c != 0) {
-            this[0x7d].vftable = param_4;
-          }
-          uVar2 = (*this->vftable[0x1b].slot_0x04)();
-          this[0x7d].vftable = (CObjectVtbl *)0x0;
-          return uVar2;
-        }
-        if (param_2 == DAT_006a7f94) {
-          (*this->vftable[0x1c].SetForeignMinisterReadyFlag14)
-                    (param_3,(uint)param_4 & 0xffff,(uint)param_4 >> 0x10);
-        }
-        else if (param_2 == DAT_006a7f90) {
-          uVar2 = (*this->vftable[0x1b].SetForeignMinisterReadyFlag14)();
-          return uVar2;
-        }
+    else {
+      switch(iVar5) {
+      case 0x7d9:
+      case 0x7da:
+        (**(code **)(*(int *)this + 0x58))();
+        break;
+      case 0x7db:
+        (**(code **)(*g_pStrategicMapViewSystem + 100))();
+        break;
+      case 0x7dd:
+        *(undefined4 *)(this + 0xf0) = 0;
       }
     }
   }
-  return 0;
+  if (sVar9 == 0) {
+    iVar5 = *piVar8;
+    *(undefined1 *)&g_pGlobalUiRootController[1].field04 = 0;
+    *(undefined2 *)(this + 4) = 0;
+    *(undefined2 *)(g_pDisplayMgr + 7) = 0;
+    (**(code **)(iVar5 + 0xa0))();
+    func_0x004040c0();
+    piVar8 = (int *)func_0x004032c9();
+    iVar5 = func_0x00409304();
+    while (iVar5 != 0) {
+      if ((piVar8[7] == 0x6d617057) || (piVar8[7] == 0x74726e57)) {
+        (**(code **)(*piVar8 + 0x1d0))();
+      }
+      piVar8 = (int *)func_0x004067b7();
+      iVar5 = func_0x00409304();
+    }
+    goto LAB_005d79b8;
+  }
+  if (sVar9 == *(short *)(this + 4)) {
+    if (param_2 != -1) {
+      *(short *)(this + 6) = param_2;
+    }
+    iVar5 = (int)sVar9;
+    if (iVar5 < 0x5e5) {
+      if (iVar5 == 0x5e4) {
+        func_0x00405100(piVar8,0x29a);
+      }
+      else if (iVar5 == 0x547) {
+        (**(code **)(*piVar8 + 0xe4))();
+        pcVar2 = *(code **)(*(int *)g_pDisplayMgr[1] + 0x94);
+        g_pCursorControlPanel = (TControl *)(*pcVar2)();
+        (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
+        (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c,0x2b67);
+        pCVar6 = (CObject *)(*pcVar2)(0x6d61696e);
+        (*pCVar6->vftable[1].slot_0x04)();
+        if ((pCVar6 != (CObject *)0x0) && (iVar5 = CObject::IsKindOf(pCVar6), iVar5 != 0)) {
+          *(short *)&pCVar6[0x24].vftable = param_2;
+        }
+      }
+    }
+    else if (iVar5 < 0x8fd) {
+      if (iVar5 == 0x8fc) {
+        (**(code **)(*piVar8 + 0xe4))();
+        func_0x00402199();
+      }
+      else {
+        switch(iVar5) {
+        case 0x7d8:
+          if (*(short *)&g_pLocalizationTable->field_0x8 == 0x68) {
+            (**(code **)(*piVar8 + 0xe4))();
+            (**(code **)(*(int *)this + 0x6c))();
+          }
+          break;
+        case 0x7d9:
+        case 0x7da:
+          (**(code **)(*piVar8 + 0xe4))();
+          (**(code **)(*(int *)this + 0x5c))();
+          break;
+        case 0x7db:
+          (**(code **)(*piVar8 + 0xe4))();
+          (**(code **)(*(int *)this + 0xa8))();
+          break;
+        case 0x7dd:
+          (**(code **)(*piVar8 + 0xe4))();
+          (**(code **)(*(int *)this + 0xbc))();
+          break;
+        case 0x7de:
+          (**(code **)(*piVar8 + 0xe4))();
+          (**(code **)(*(int *)this + 0x84))();
+        }
+      }
+    }
+    else if (iVar5 == 0x2103) {
+      (**(code **)(*(int *)this + 0x9c))();
+    }
+    else if (iVar5 == 0x2260) {
+      (**(code **)(*piVar8 + 0xe4))();
+      (**(code **)(*(int *)this + 100))();
+    }
+    goto switchD_005d7452_caseD_7dc;
+  }
+  (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df780)();
+  iVar5 = *piVar8;
+  (**(code **)(iVar5 + 0x9c))();
+  if (this[0x10] != (LinkedListQueryOwner)0x0) {
+    func_0x004028d3();
+    this[0x10] = (LinkedListQueryOwner)0x0;
+  }
+  piVar7 = (int *)(**(code **)(iVar5 + 0x94))(0x496e636c);
+  uVar10 = param_1;
+  if (piVar7 != (int *)0x0) {
+    iVar5 = *piVar7;
+    (**(code **)(iVar5 + 0xc))();
+    (**(code **)(iVar5 + 0xe4))();
+    (**(code **)(iVar5 + 0x1c))();
+    uVar10 = uStack_4;
+  }
+  if ((short)uVar10 != 0x898) {
+    *(undefined2 *)(this + 6) = unaff_retaddr;
+  }
+  iVar5 = operator_new(0x74);
+  uStack_c = 0;
+  if (iVar5 == 0) {
+    piVar7 = (int *)0x0;
+  }
+  else {
+    piVar7 = (int *)func_0x00407838();
+  }
+  uStack_c = 0xffffffff;
+  CString::CString((CString *)&stack0x00000000,(char *)&g_szEmptyString);
+  uStack_c = 1;
+  func_0x00408d46(0,piVar8,uStack_4,&stack0xffffffd8,&stack0x00000000,1);
+  CString::~CString(aCStack_18);
+  iVar5 = *piVar7;
+  (**(code **)(iVar5 + 0xdc))(0);
+  piVar7[7] = 0x496e636c;
+  (**(code **)(iVar5 + 0xe4))();
+  (**(code **)(*g_pDisplayMgr + 0x50))(uVar1);
+  if (this[0x10] != (LinkedListQueryOwner)0x0) {
+    func_0x004028d3();
+    this[0x10] = (LinkedListQueryOwner)0x0;
+  }
+  *(short *)(this + 4) = sVar9;
+  iVar5 = (int)sVar9;
+  if (0x3c0 < iVar5) {
+    if (iVar5 < 0x5dd) {
+      if (iVar5 == 0x5dc) {
+        (**(code **)(*(int *)this + 0xf8))();
+      }
+      else if (iVar5 == 0x547) {
+        pcVar2 = *(code **)(*(int *)g_pDisplayMgr[1] + 0x94);
+        g_pCursorControlPanel = (TControl *)(*pcVar2)();
+        (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
+        (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c,0x2b67);
+        pCVar6 = (CObject *)(*pcVar2)(0x6d61696e);
+        (*pCVar6->vftable[1].slot_0x04)();
+        if ((pCVar6 == (CObject *)0x0) || (iVar5 = CObject::IsKindOf(pCVar6), iVar5 == 0)) {
+LAB_005d785e:
+          *(undefined1 *)&g_pGlobalUiRootController[1].field04 = 1;
+        }
+        else {
+          *(undefined2 *)&pCVar6[0x24].vftable = unaff_retaddr;
+          *(undefined1 *)&g_pGlobalUiRootController[1].field04 = 1;
+        }
+        goto switchD_005d7452_caseD_7dc;
+      }
+      goto switchD_005d7745_default;
+    }
+    if (iVar5 < 0x7d9) {
+      if (iVar5 == 0x7d8) {
+        (**(code **)(*(int *)this + 0x6c))();
+        *(undefined1 *)&g_pGlobalUiRootController[1].field04 = 1;
+        goto switchD_005d7452_caseD_7dc;
+      }
+      switch(iVar5) {
+      case 0x5dd:
+        (**(code **)(*(int *)this + 0xfc))();
+        break;
+      case 0x5de:
+        (**(code **)(*(int *)this + 0x100))();
+        break;
+      case 0x5df:
+        (**(code **)(*(int *)this + 0x104))();
+        break;
+      case 0x5e0:
+        (**(code **)(*(int *)this + 0x108))();
+      }
+      goto switchD_005d7745_default;
+    }
+    if (0x898 < iVar5) {
+      if (iVar5 < 0xed9) {
+        if (iVar5 == 0xed8) {
+LAB_005d7889:
+          (**(code **)(*(int *)this + 0xa0))();
+        }
+        else if (iVar5 == 0x8fc) {
+          func_0x00402199();
+          goto LAB_005d785e;
+        }
+      }
+      else if (iVar5 < 0x11f9) {
+        if (iVar5 == 0x11f8) {
+          (**(code **)(*(int *)this + 0xf4))();
+        }
+        else {
+          if (iVar5 == 0xf3c) goto LAB_005d7889;
+          if (iVar5 == 0xf3d) {
+            (**(code **)(*(int *)this + 0x110))();
+            goto switchD_005d7452_caseD_7dc;
+          }
+        }
+      }
+      else if (iVar5 == 0x2103) {
+        (**(code **)(*(int *)this + 0x9c))();
+      }
+      else if (iVar5 == 0x2134) {
+        (**(code **)(*(int *)this + 0x60))();
+      }
+      else if (iVar5 == 0x2260) {
+        (**(code **)(*(int *)this + 100))();
+      }
+      goto switchD_005d7745_default;
+    }
+    if (iVar5 == 0x898) {
+      (**(code **)(*(int *)this + 0x88))();
+      goto switchD_005d7745_default;
+    }
+    switch(iVar5) {
+    case 0x7d9:
+    case 0x7da:
+      (**(code **)(*(int *)this + 0x5c))();
+      *(undefined1 *)&g_pGlobalUiRootController[1].field04 = 1;
+      break;
+    case 0x7db:
+      (**(code **)(*(int *)this + 0xa8))();
+      *(undefined1 *)&g_pGlobalUiRootController[1].field04 = 1;
+      break;
+    case 0x7dd:
+      (**(code **)(*(int *)this + 0xbc))();
+      *(undefined1 *)&g_pGlobalUiRootController[1].field04 = 1;
+      break;
+    case 0x7de:
+      (**(code **)(*(int *)this + 0x84))();
+      *(undefined1 *)&g_pGlobalUiRootController[1].field04 = 1;
+      break;
+    case 0x7e0:
+      (**(code **)(*(int *)this + 0x50))();
+    default:
+switchD_005d7745_default:
+      *(undefined1 *)&g_pGlobalUiRootController[1].field04 = 0;
+    }
+switchD_005d7452_caseD_7dc:
+    if ((g_pHelpMgr != 0) && (cVar3 = func_0x00403c2e(), cVar3 == '\0')) {
+      func_0x00403b16();
+      cVar3 = func_0x004044b7();
+      if (cVar3 != '\0') {
+        func_0x004056af();
+        func_0x00405ef2();
+        func_0x00401c03(param_1);
+      }
+    }
+LAB_005d79b8:
+    *unaff_FS_OFFSET = uStack_c;
+    return;
+  }
+  if (iVar5 == 0x3c0) {
+    (**(code **)(*(int *)this + 0x10c))();
+  }
+  else if (iVar5 == 0x3b8) {
+    (**(code **)(*(int *)this + 0xd0))();
+  }
+  goto switchD_005d7745_default;
 }
 

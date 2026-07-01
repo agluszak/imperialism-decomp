@@ -3,44 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TTradeOfferNationLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005BCFC0
-// GHIDRA_NAME TTradeOfferNationLine::CreateTTradeOfferNationLineInstance
-// GHIDRA_PROTO undefined CreateTTradeOfferNationLineInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x005BCF70
+// GHIDRA_NAME TTradeOfferNationLine::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLineData * TTradeOfferNationLine::CreateTTradeOfferNationLineInstance(void)
+TTradeOfferNationLine * TTradeOfferNationLine::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TLineData *this;
-  TLineData *pTVar1;
+  func_0x00405169();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005BCFC0
+// GHIDRA_NAME TTradeOfferNationLine::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TTradeOfferNationLine::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063933a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)__2_YAPAXI_Z(0x14);
+  puVar1 = (undefined4 *)operator_new(0x14);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (this != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(this);
-    this->vftable = (TLineDataVtbl *)&TTradeOfferNationLineVtbl_0066e2b8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00408f0d();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD030
-// GHIDRA_NAME TTradeOfferNationLine::GetTLineDataClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
+// GHIDRA_NAME TTradeOfferNationLine::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeOfferNationLine::GetTLineDataClassNamePointer()
+CRuntimeClass * TTradeOfferNationLine::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTradeOfferNationLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD090
@@ -57,40 +71,40 @@ TTradeOfferNationLine::OrphanRetStub_0056f460
   TTradeMgrVtbl *pTVar3;
   char cVar4;
   short sVar5;
-  TView *this_00;
-  undefined4 unaff_EBX;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
+  undefined4 *puVar6;
+  int *unaff_FS_OFFSET;
+  undefined1 *puVar7;
+  int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063935a;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this_00 = (TView *)__2_YAPAXI_Z(100);
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  puVar6 = (undefined4 *)operator_new(100);
   local_4 = 0;
-  if (this_00 == (TView *)0x0) {
-    this_00 = (TView *)0x0;
+  if (puVar6 == (undefined4 *)0x0) {
+    puVar6 = (undefined4 *)0x0;
   }
   else {
-    TView::ConstructTViewBaseState(this_00);
-    this_00->vftable = (TViewVtbl *)&TTradeOfferNationViewVtbl_0066e2f8;
+    func_0x004064e2();
+    *puVar6 = &TTradeOfferNationView::_vftable_;
   }
+  puVar7 = &this->field_0x8;
   uVar1 = *(undefined2 *)&this->field_0x10;
   uVar2 = *(undefined2 *)&this->field_0x12;
   local_4 = 0xffffffff;
-  InitializeUiResourceEntryFrameAndParent
-            (*(undefined4 *)(param_1 + 0x40),param_1,param_2,&this->field_0x8,5,5,0);
-  *(undefined2 *)((int)&this_00[1].vftable + 2) = uVar2;
-  *(undefined2 *)&this_00[1].vftable = uVar1;
+  func_0x004096b5(*(undefined4 *)(param_1 + 0x40),param_1,param_2,puVar7,5,5,0);
+  *(undefined2 *)((int)puVar6 + 0x62) = uVar2;
+  *(undefined2 *)(puVar6 + 0x18) = uVar1;
   pTVar3 = g_pNationInteractionStateManager->vftable;
-  sVar5 = UiRuntimeContext::GetActiveNationId();
+  sVar5 = func_0x00403b16();
   cVar4 = (*pTVar3[0xf].GetTTradeMgrClassNamePointer)((int)*(short *)&this->field_0x10,(int)sVar5);
   if (cVar4 != '\0') {
-    LoadUiStringByGroupAndIndexToControlObject(0x2740,3,this_00);
+    func_0x0040807b(0x2740,3,puVar6);
   }
-  *unaff_FS_OFFSET = unaff_EBX;
+  *unaff_FS_OFFSET = (int)puVar7;
   return;
 }
 

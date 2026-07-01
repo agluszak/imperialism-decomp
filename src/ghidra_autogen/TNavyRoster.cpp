@@ -11,134 +11,132 @@ int * TNavyRoster::BuildNavyRosterDialogUiResourceTree(void)
 
 {
   int *piVar1;
-  TNavyRoster *pTVar2;
-  undefined4 uVar3;
-  TNavyRoster *unaff_EBX;
+  undefined4 uVar2;
+  int *unaff_EBX;
+  undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000094;
-
-  RegisterUiResourceEntry(0x70696374,0x444c4f47);
-  SetUiResourceStateFlags();
-  SetUiResourceLayoutValues(10);
-  ApplyUiResourceLayoutFromContext();
-  ClearUiResourceContext();
-  pTVar2 = (TNavyRoster *)AllocateUiResourceNode();
-  if (pTVar2 == unaff_EBX) {
-    uVar3 = 0;
+  undefined4 in_stack_00000084;
+  
+  func_0x00405a33(0x70696374,0x444c4f47);
+  func_0x00405d71();
+  func_0x00407612(10);
+  func_0x0040772f();
+  func_0x00405c40();
+  piVar1 = (int *)func_0x00402072();
+  if (piVar1 == unaff_EBX) {
+    uVar2 = 0;
   }
   else {
-    uVar3 = TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)pTVar2);
+    uVar2 = func_0x00405628();
   }
-  RegisterUiResourceEntry(0x70696374,0x6f6b6179,uVar3,0x1a,0xb,0x1d,0x1d);
-  SetUiResourceStateFlags();
-  SetUiResourceLayoutValues(0x22);
-  ApplyUiResourceLayoutFromContext();
-  ClearUiResourceContext();
-  PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TNavyRoster *)AllocateUiResourceNode();
-  if (pTVar2 == unaff_EBX) {
-    uVar3 = 0;
-  }
-  else {
-    uVar3 = TNavyRoster::ConstructTNavyRosterBaseState(pTVar2);
-  }
-  RegisterUiResourceEntry(0x76696577,0x70616765,uVar3,0xd,0x2e,0x1ca,0x136);
-  SetUiResourceStateFlags();
-  ClearUiResourceContext();
-  PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TNavyRoster *)AllocateUiResourceNode();
-  if (pTVar2 == unaff_EBX) {
-    uVar3 = 0;
+  func_0x00405a33(0x70696374,0x6f6b6179,uVar2,0x1a,0xb,0x1d,0x1d,1);
+  func_0x00405d71();
+  func_0x00407612(0x22);
+  func_0x0040772f();
+  func_0x00405c40();
+  func_0x004054b1();
+  piVar1 = (int *)func_0x00402072();
+  if (piVar1 == unaff_EBX) {
+    uVar2 = 0;
   }
   else {
-    uVar3 = TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)pTVar2)
-    ;
+    uVar2 = func_0x004074cd();
   }
-  RegisterUiResourceEntry(0x70696374,0x6c636f72,uVar3,0xc,0x164,0x29,0x24);
-  SetUiResourceStateFlags();
-  SetUiResourceLayoutValues(10);
-  ApplyUiResourceLayoutFromContext();
-  ClearUiResourceContext();
-  PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TNavyRoster *)AllocateUiResourceNode();
-  if (pTVar2 == unaff_EBX) {
-    uVar3 = 0;
+  func_0x00405a33(0x76696577,0x70616765,uVar2,0xd,0x2e,0x1ca,0x136);
+  func_0x00405d71();
+  func_0x00405c40();
+  func_0x004054b1();
+  piVar1 = (int *)func_0x00402072();
+  if (piVar1 == unaff_EBX) {
+    uVar2 = 0;
   }
   else {
-    uVar3 = TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)pTVar2)
-    ;
+    uVar2 = func_0x00408ee5();
   }
-  RegisterUiResourceEntry(0x70696374,0x72636f72,uVar3,0x1b0,0x164,0x29,0x24);
-  SetUiResourceStateFlags();
-  SetUiResourceLayoutValues(10);
-  ApplyUiResourceLayoutFromContext();
-  ClearUiResourceContext();
-  PopUiResourcePoolNode_00479A80();
-  PopUiResourcePoolNode_00479A80();
-  PopUiResourcePoolNode_00479A80();
-  if ((TNavyRoster *)g_pUiResourceHead != unaff_EBX) {
-    PropagateUiResourceContextRecursive();
+  func_0x00405a33(0x70696374,0x6c636f72,uVar2,0xc,0x164,0x29,0x24,1,1,0x444c4f47);
+  func_0x00405d71(1);
+  func_0x00407612(10);
+  func_0x0040772f();
+  func_0x00405c40();
+  func_0x004054b1();
+  piVar1 = (int *)func_0x00402072();
+  if (piVar1 == unaff_EBX) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = func_0x00408ee5();
+  }
+  func_0x00405a33(0x70696374,0x72636f72,uVar2,0x1b0,0x164,0x29,0x24,1,1,0x444c4f47);
+  func_0x00405d71(1,1);
+  func_0x00407612(10);
+  func_0x0040772f(0xdb1);
+  func_0x00405c40();
+  func_0x004054b1(0x72636f72);
+  func_0x004054b1(0x444c4f47);
+  func_0x004054b1(0x57494e44);
+  if (g_pUiResourceHead != unaff_EBX) {
+    func_0x004074d2(unaff_ESI);
   }
   piVar1 = g_pUiResourceHead;
-  *unaff_FS_OFFSET = in_stack_00000094;
+  *unaff_FS_OFFSET = in_stack_00000084;
   return piVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564C30
-// GHIDRA_NAME TNavyRoster::CreateTNavyRosterInstance
-// GHIDRA_PROTO undefined CreateTNavyRosterInstance()
+// GHIDRA_NAME TNavyRoster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TPageView * TNavyRoster::CreateTNavyRosterInstance(void)
+undefined4 * TNavyRoster::CreateObject(void)
 
 {
-  TPageView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006358fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPageView *)__2_YAPAXI_Z(0xd0);
+  puVar1 = (undefined4 *)operator_new(0xd0);
   local_4 = 0;
-  if (this != (TPageView *)0x0) {
-    TPageView::ConstructTPageViewBaseState(this);
-    this[1].vftable = (TPageViewVtbl *)0x0;
-    this->vftable = (TPageViewVtbl *)&TNavyRosterVtbl_0065cbd0;
-    this[1].field04 = 0;
-    this[1].padding_08_to_0b = 0;
-    this[1].field0c = 0;
-    this[1].field10 = 0;
-    this[1].field14 = 0;
-    this[1].field18 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040778e();
+    puVar1[0x21] = 0;
+    *puVar1 = &_vftable_;
+    puVar1[0x22] = 0;
+    puVar1[0x23] = 0;
+    puVar1[0x24] = 0;
+    puVar1[0x25] = 0;
+    puVar1[0x26] = 0;
+    puVar1[0x27] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TPageView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564D00
-// GHIDRA_NAME TNavyRoster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TNavyRoster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyRoster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TNavyRoster::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNavyRoster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564D20
 // GHIDRA_NAME TNavyRoster::ConstructTNavyRosterBaseState
-// GHIDRA_PROTO undefined __thiscall TNavyRoster::ConstructTNavyRosterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTNavyRosterBaseState(void)
 
 TNavyRoster * TNavyRoster::ConstructTNavyRosterBaseState()
 
 {
-  TPageView::ConstructTPageViewBaseState((TPageView *)this);
-  this->vftable = &TNavyRosterVtbl_0065cbd0;
+  func_0x0040778e();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x84 = 0;
   *(undefined4 *)&this->field_0x88 = 0;
   *(undefined4 *)&this->field_0x8c = 0;
@@ -156,23 +154,100 @@ TNavyRoster * TNavyRoster::ConstructTNavyRosterBaseState()
 TNavyRoster * TNavyRoster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x0040571d();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00564FE0
-// GHIDRA_NAME TNavyRoster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00564DC0
+// GHIDRA_NAME TNavyRoster::InitializePagedListLineDataControlsAndHeaderBitmap
+// GHIDRA_PROTO undefined __thiscall InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 param_1)
 
-void TNavyRoster::GetTEventHandlerClassNamePointer()
+void __thiscall
+TNavyRoster::InitializePagedListLineDataControlsAndHeaderBitmap
+          (TNavyRoster *this,undefined4 param_1)
+
+{
+  _vslot_fn *p_Var1;
+  undefined4 uVar2;
+  TNavyRosterVtbl *pTVar3;
+  int iVar4;
+  undefined4 *puVar5;
+  undefined4 unaff_EBP;
+  int *piVar6;
+  int iVar7;
+  undefined4 *puVar8;
+  undefined4 *unaff_FS_OFFSET;
+  int iVar9;
+  undefined4 uStack_14;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0063591a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  func_0x00407c6b(0xdba,0x500,0x2d);
+  iVar7 = 0x636c7330;
+  *(undefined1 **)&this->field_0x88 = puStack_8;
+  piVar6 = (int *)&this->field_0x90;
+  iVar9 = 4;
+  do {
+    iVar4 = (**(code **)(**(int **)(g_pDisplayMgr + 4) + 0x94))(iVar7);
+    if (iVar4 == 0) {
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UOceanViews_cpp_00698650,0x114);
+    }
+    *piVar6 = iVar4;
+    piVar6 = piVar6 + 1;
+    iVar7 = iVar7 + 1;
+    iVar9 = iVar9 + -1;
+  } while (iVar9 != 0);
+  puVar8 = *(undefined4 **)(*(int *)&this->field_0x88 + 0x10);
+  if (puVar8 != (undefined4 *)0x0) {
+    p_Var1 = this->vftable->OrphanCallChain_C1_I06_0056fbb0;
+    do {
+      puVar5 = (undefined4 *)operator_new(0x1c);
+      if (puVar5 == (undefined4 *)0x0) {
+        puVar5 = (undefined4 *)0x0;
+      }
+      else {
+        func_0x00408f0d();
+        *puVar5 = &TShipLine::_vftable_;
+      }
+      unaff_EBP = 0xec;
+      func_0x00409025(0,0,&stack0xffffffe0);
+      puVar5[5] = puVar8;
+      uVar2 = *puVar8;
+      puVar5[6] = uStack_14;
+      puVar5[4] = uVar2;
+      (*p_Var1)(puVar5);
+      puVar8 = (undefined4 *)puVar8[1];
+    } while (puVar8 != (undefined4 *)0x0);
+  }
+  pTVar3 = this->vftable;
+  *(undefined2 *)&this->field_0x64 = 2;
+  (*pTVar3->OrphanCallChain_C8_I82_0056fc80)();
+  (*pTVar3->OrphanCallChain_C8_I118_0056fdb0)(1);
+  (**(code **)&this->ownerContext->vftable->field_0xc)();
+  func_0x00404def((int)*(short *)&this->field_0x62);
+  *unaff_FS_OFFSET = unaff_EBP;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00564FE0
+// GHIDRA_NAME TNavyRoster::CallVoidSlotA0
+// GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
+
+void TNavyRoster::CallVoidSlotA0()
 
 {
   int *piVar1;
-
-  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
+  
+  TView::CallVoidSlotA0((TView *)this);
   piVar1 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   *(undefined1 *)(piVar1 + 0xd3) = 0;
   (**(code **)(*piVar1 + 0x1f8))();

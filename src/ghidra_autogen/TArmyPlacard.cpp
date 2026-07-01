@@ -4,55 +4,55 @@
 // Bucket: TArmyPlacard.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BE30
-// GHIDRA_NAME TArmyPlacard::CreateTArmyPlacardInstance
-// GHIDRA_PROTO undefined CreateTArmyPlacardInstance()
+// GHIDRA_NAME TArmyPlacard::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TArmyPlacard::CreateTArmyPlacardInstance(void)
+undefined4 * TArmyPlacard::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637b7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TArmyPlacardVtbl **)this = &TArmyPlacardVtbl_00667448;
-    *(undefined2 *)(this + 0x90) = 0xffff;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x24) = 0xffff;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BEB0
-// GHIDRA_NAME TArmyPlacard::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TArmyPlacard::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyPlacard::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TArmyPlacard::GetRuntimeClass()
 
 {
-  return &g_pClassDescTArmyPlacard;
+  return &classTArmyPlacard;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BED0
 // GHIDRA_NAME TArmyPlacard::TArmyPlacard
-// GHIDRA_PROTO undefined __thiscall TArmyPlacard::TArmyPlacard(void)
+// GHIDRA_PROTO undefined __thiscall TArmyPlacard(void)
 
 TArmyPlacard * TArmyPlacard::TArmyPlacard()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TArmyPlacardVtbl_00667448;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x90 = 0xffff;
   return this;
 }
@@ -64,26 +64,26 @@ TArmyPlacard * TArmyPlacard::TArmyPlacard()
 TArmyPlacard * TArmyPlacard::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00407054();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BF50
-// GHIDRA_NAME TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
-// GHIDRA_PROTO undefined __thiscall WrapperFor_GetActiveNationId_At0058bf50(short param_1)
+// GHIDRA_NAME TArmyPlacard::IsSelected
+// GHIDRA_PROTO undefined __thiscall IsSelected(short param_1)
 
-void TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(short param_1)
+void TArmyPlacard::IsSelected(short param_1)
 
 {
   TArmyPlacardVtbl *pTVar1;
   short sVar2;
   int iVar3;
   char unaff_retaddr;
-
-  sVar2 = UiRuntimeContext::GetActiveNationId();
+  
+  sVar2 = func_0x00403b16();
   iVar3 = CONCAT22((short)((uint)g_pCityOrderCapabilityState >> 0x10),
                    *(short *)(&g_pCityOrderCapabilityState[0x50032].field_0x3be +
                              (this->controlTag + sVar2 * 10) * 2) + 0x4c4);
@@ -102,67 +102,67 @@ void TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(short param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BFE0
-// GHIDRA_NAME TArmyPlacard::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TArmyPlacard::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TArmyPlacard::OrphanTiny_ReturnZero_0048a730()
+void TArmyPlacard::ApplyRectSlot110()
 
 {
   short sVar1;
   undefined2 extraout_var;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_00000004;
   CString local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637b98;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10.m_pchData = (char *)this;
-  CString::__0CString__QAE_XZ(&local_10);
+  CString::CString(&local_10);
   local_4 = 0;
-  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
+  func_0x00404fe8(in_stack_00000004);
   if (*(short *)&this->field_0x90 != 0) {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b67);
-    _Format_CString__QAAXPBDZZ(&local_10,&g_szDecimalFormat,(int)*(short *)&this->field_0x90);
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_10);
+    func_0x0040448f(0,10,0x2b67);
+    _Format_CString__QAAXPBDZZ(&stack0xffffffec,&g_szDecimalFormat,(int)*(short *)&this->field_0x90)
+    ;
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffec);
     SetQuickDrawTextOriginWithContextOffset
               ((short)this->field34 - sVar1,(short)this->field38 + -2);
-    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_10);
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6c);
+    func_0x004029aa(&stack0xffffffec);
+    func_0x0040448f(0,10,0x2b6c);
     SetQuickDrawTextOriginWithContextOffset
               (CONCAT22(extraout_var,(short)this->field34 - sVar1) + -1,(short)this->field38 + -3);
-    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_10);
+    func_0x004029aa(&stack0xffffffec);
   }
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_10);
-  *unaff_FS_OFFSET = local_c;
+  puStack_8 = (undefined1 *)0xffffffff;
+  CString::~CString((CString *)&stack0xffffffec);
+  *unaff_FS_OFFSET = local_10.m_pchData;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C140
-// GHIDRA_NAME TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_NAME TArmyPlacard::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+void TArmyPlacard::HandleEvent(int param_1)
 
 {
   undefined4 uVar1;
   int in_stack_00000008;
-
+  
   if (*(int *)(in_stack_00000008 + 0x1c) == 0x706c7573) {
-    uVar1 = ActivateFirstActiveTacticalUnitByCategoryAtTile
-                      (CONCAT22(0x706c,(short)this->controlTag + -0x6330),
-                       *(undefined2 *)&g_pMapContextActionManager->field_0x31c);
+    uVar1 = func_0x004071fd(CONCAT22(0x706c,(short)this->controlTag + -0x6330),
+                            (short)g_pMapContextActionManager[199]);
     (*this->vftable->WrapperFor_GetActiveNationId_At0058bf50)(uVar1,1);
     return;
   }
   if (*(int *)(in_stack_00000008 + 0x1c) == 0x6d696e75) {
-    uVar1 = ActivateFirstIdleTacticalUnitByCategoryAtTile
-                      ((short)this->controlTag + -0x6330,
-                       CONCAT22(0x6d69,*(undefined2 *)&g_pMapContextActionManager->field_0x31c));
+    uVar1 = func_0x00408756((short)this->controlTag + -0x6330,
+                            CONCAT22(0x6d69,(short)g_pMapContextActionManager[199]));
     (*this->vftable->WrapperFor_GetActiveNationId_At0058bf50)(uVar1,1);
   }
   return;

@@ -4,43 +4,43 @@
 // Bucket: TDipDlgCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584040
-// GHIDRA_NAME TDipDlgCluster::CreateTDipDlgClusterInstance
-// GHIDRA_PROTO undefined CreateTDipDlgClusterInstance()
+// GHIDRA_NAME TDipDlgCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TUberCluster * TDipDlgCluster::CreateTDipDlgClusterInstance(void)
+undefined4 * TDipDlgCluster::CreateObject(void)
 
 {
-  TUberCluster *this;
-  TUberCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006375aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
+  puVar1 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  pTVar1 = (TUberCluster *)0x0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->vftable = (TUberClusterVtbl *)&TDipDlgClusterVtbl_00663bb0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00405835();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005840C0
-// GHIDRA_NAME TDipDlgCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TDipDlgCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDipDlgCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TDipDlgCluster::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTDipDlgCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005840E0
@@ -50,8 +50,8 @@ CRuntimeClass * TDipDlgCluster::GetTEventHandlerClassNamePointer()
 TDipDlgCluster * TDipDlgCluster::ConstructTDipDlgClusterBaseState()
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  this->vftable = &TDipDlgClusterVtbl_00663bb0;
+  func_0x00405835();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,18 +62,18 @@ TDipDlgCluster * TDipDlgCluster::ConstructTDipDlgClusterBaseState()
 TDipDlgCluster * TDipDlgCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x0040187a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584160
-// GHIDRA_NAME TDipDlgCluster::OrphanVtableAssignStub_005714e0
-// GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
+// GHIDRA_NAME TDipDlgCluster::IsTradeControlAtMinimum
+// GHIDRA_PROTO undefined __thiscall IsTradeControlAtMinimum(void)
 
-bool TDipDlgCluster::OrphanVtableAssignStub_005714e0()
+bool TDipDlgCluster::IsTradeControlAtMinimum()
 
 {
   undefined uVar1;
@@ -81,12 +81,11 @@ bool TDipDlgCluster::OrphanVtableAssignStub_005714e0()
   char cVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-
+  
   uVar1 = (*this->ownerContext->vftable->ResolveControlByTag)(0x73756273);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1cd);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1cd);
   }
   uVar2 = (*this->ownerContext->vftable->ResolveControlByTag)(0x73616e63);
   cVar3 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1cc))();

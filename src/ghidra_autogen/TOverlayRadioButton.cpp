@@ -3,58 +3,59 @@
 // Program: Imperialism.exe
 // Bucket: TOverlayRadioButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00453800
-// GHIDRA_NAME TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40
-// GHIDRA_PROTO undefined __thiscall TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004CAA50
+// GHIDRA_NAME TOverlayRadioButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TOverlayRadioButton * TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40()
-
-{
-  TRadioPictureButton::TRadioPictureButton((TCivilianButton *)this);
-  this->vftable = &TRadioPictureButton::_vftable_;
-  *(undefined4 *)&this->field_0x98 = 0;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00453830
-// GHIDRA_NAME TOverlayRadioButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
-
-TOverlayRadioButton * TOverlayRadioButton::_scalar_deleting_destructor_(byte param_1)
+undefined4 * TOverlayRadioButton::CreateObject(void)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063179a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0xbc);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00409980();
+    *puVar1 = &TRadioPictureButton::_vftable_;
+    puVar1[0x26] = 0;
+    *unaff_FS_OFFSET = local_c;
+    return puVar1;
   }
-  return this;
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAAF0
-// GHIDRA_NAME TOverlayRadioButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TOverlayRadioButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOverlayRadioButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TOverlayRadioButton::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAB10
-// GHIDRA_NAME TOverlayRadioButton::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TOverlayRadioButton::ConstructTOverlayRadioButtonBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTOverlayRadioButtonBaseState(void)
 
-void TOverlayRadioButton::OrphanTiny_ReturnZero_0048a730()
+void TOverlayRadioButton::ConstructTOverlayRadioButtonBaseState()
 
 {
-  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
+  func_0x00404fe8();
   if (*(int *)&this->field_0x98 != 0) {
-    UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)&this->field_0x98 + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,(RECT *)&this->field_0x9c,
-               (RECT *)&this->field_0xac,0x24,(astruct_19 *)0x0);
-    SetQuickDrawStrokeColor(0x13);
+    func_0x004010be(0x10);
+    func_0x00405493(*(int *)&this->field_0x98 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                    &this->field_0x9c,&this->field_0xac,0x24,0);
+    func_0x00402bdf(0x13);
   }
   return;
 }

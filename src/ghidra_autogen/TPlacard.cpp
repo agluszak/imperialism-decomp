@@ -4,54 +4,54 @@
 // Bucket: TPlacard.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B960
-// GHIDRA_NAME TPlacard::CreateTPlacardInstance
-// GHIDRA_PROTO undefined CreateTPlacardInstance()
+// GHIDRA_NAME TPlacard::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TPlacard::CreateTPlacardInstance(void)
+undefined4 * TPlacard::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TPlacardVtbl **)this = &TPlacardVtbl_00667218;
-    *(undefined2 *)(this + 0x90) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x24) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B9F0
-// GHIDRA_NAME TPlacard::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TPlacard::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPlacard::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TPlacard::GetRuntimeClass()
 
 {
-  return &g_pClassDescTPlacard;
+  return &classTPlacard;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BA10
 // GHIDRA_NAME TPlacard::TPlacard
-// GHIDRA_PROTO undefined __thiscall TPlacard::TPlacard(void)
+// GHIDRA_PROTO undefined __thiscall TPlacard(void)
 
 TPlacard * TPlacard::TPlacard()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TPlacardVtbl_00667218;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x90 = 0;
   return this;
 }
@@ -63,21 +63,21 @@ TPlacard * TPlacard::TPlacard()
 TPlacard * TPlacard::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00409688();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BAB0
-// GHIDRA_NAME TPlacard::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TPlacard::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TPlacard::OrphanLeaf_NoCall_Ins07_004d8920()
+void TPlacard::NoOpUiLifecycleHook()
 
 {
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  func_0x00406ba9();
   if (*(short *)&this->field_0x90 == 0) {
     (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(0,1);
     return;
@@ -87,17 +87,15 @@ void TPlacard::OrphanLeaf_NoCall_Ins07_004d8920()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BB50
-// GHIDRA_NAME TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(short param_1, char param_2)
+// GHIDRA_NAME TPlacard::IsSelected
+// GHIDRA_PROTO undefined __thiscall IsSelected(short param_1, char param_2)
 
-void __thiscall
-TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
-          (TPlacard *this,short param_1,char param_2)
+void TPlacard::IsSelected(short param_1, char param_2)
 
 {
   RECT local_20;
   tagRECT tStack_10;
-
+  
   if (param_1 != *(short *)&this->field_0x90) {
     if (param_1 == 0) {
       (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(0,(int)param_2);
@@ -112,35 +110,40 @@ TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
       local_20.right = local_20.left + 0x14;
       local_20.bottom = this->field38 + -1;
       CopyRect(&tStack_10,&local_20);
-      InvalidateCityDialogRectRegion(&tStack_10,1);
+      func_0x00408a03(&tStack_10,1);
     }
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BC60
-// GHIDRA_NAME TPlacard::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TPlacard::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TPlacard::OrphanTiny_ReturnZero_0048a730()
+void TPlacard::ApplyRectSlot110()
 
 {
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
+  CString local_14;
   CString local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637b58;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::__0CString__QAE_XZ(&local_10);
+  CString::CString(&local_10);
   local_4 = 0;
-  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
-  _Format_CString__QAAXPBDZZ(&local_10,&g_szDecimalFormat);
+  local_14.m_pchData._0_1_ = 0;
+  local_14.m_pchData._1_1_ = 0;
+  local_14.m_pchData._2_1_ = 0;
+  local_14.m_pchData._3_1_ = 0;
+  func_0x00404fe8();
+  func_0x0040448f(0,10);
+  _Format_CString__QAAXPBDZZ(&local_14,&g_szDecimalFormat);
   if (*(short *)&this->field_0x90 < 10) {
     iVar1 = this->field34 / 2 + -2;
   }
@@ -152,16 +155,16 @@ void TPlacard::OrphanTiny_ReturnZero_0048a730()
   }
   MapUiThemeCodeToStyleFlags(0x2b6c);
   MapUiThemeCodeToStyleFlags(0x2b67);
-  SetQuickDrawColorAndSyncGlobals();
+  func_0x00409444();
   SetQuickDrawTextOriginWithContextOffset(iVar1 + 1);
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
-  SetQuickDrawColorAndSyncGlobals();
+  func_0x004029aa();
+  func_0x00409444();
   SetQuickDrawTextOriginWithContextOffset(iVar1);
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
-  SetQuickDrawFillColor();
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_10);
-  *unaff_FS_OFFSET = local_c;
+  func_0x004029aa();
+  func_0x00406b86();
+  puStack_8 = (undefined1 *)0xffffffff;
+  CString::~CString(&local_14);
+  *unaff_FS_OFFSET = local_10.m_pchData;
   return;
 }
 

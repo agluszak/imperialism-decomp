@@ -4,51 +4,48 @@
 // Bucket: TArmyInfoView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591500
-// GHIDRA_NAME TArmyInfoView::?CreateTArmyInfoViewInstance@@YAPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@XZ
-// GHIDRA_PROTO undefined ?CreateTArmyInfoViewInstance@@YAPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@XZ()
+// GHIDRA_NAME TArmyInfoView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton *
-TArmyInfoView::
-_CreateTArmyInfoViewInstance__YAPAUArmyInfoViewState___Z_imperialismsrcgameTArmyInfoView_cpp234212302__XZ
-          (void)
+undefined4 * TArmyInfoView::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637fca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TArmyInfoViewVtbl **)this = &TArmyInfoViewVtbl_00668358;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591580
-// GHIDRA_NAME TArmyInfoView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TArmyInfoView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyInfoView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TArmyInfoView::GetRuntimeClass()
 
 {
-  return &g_pClassDescTArmyInfoView;
+  return &classTArmyInfoView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005915A0
 // GHIDRA_NAME TArmyInfoView::?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z
-// GHIDRA_PROTO undefined __thiscall TArmyInfoView::?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z(void)
+// GHIDRA_PROTO undefined __thiscall ?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z(void)
 
 TArmyInfoView * __thiscall
 TArmyInfoView::
@@ -56,8 +53,8 @@ _ConstructTArmyInfoViewBaseState__YIPAUArmyInfoViewState___Z_imperialismsrcgameT
           (TArmyInfoView *this)
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TArmyInfoViewVtbl_00668358;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -68,10 +65,250 @@ _ConstructTArmyInfoViewBaseState__YIPAUArmyInfoViewState___Z_imperialismsrcgameT
 TArmyInfoView * TArmyInfoView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040865c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00591620
+// GHIDRA_NAME TArmyInfoView::IsSelected
+// GHIDRA_PROTO undefined __thiscall IsSelected(void)
+
+void TArmyInfoView::IsSelected()
+
+{
+  undefined uVar1;
+  short sVar2;
+  short sVar3;
+  undefined3 extraout_var;
+  int *piVar4;
+  CString *pCVar5;
+  int iVar6;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_120;
+  code *pcStack_11c;
+  CString CStack_118;
+  CString CStack_114;
+  int iStack_110;
+  CString CStack_10c;
+  CString CStack_108;
+  char *pcVar7;
+  _vslot_fn **pp_Stack_bc;
+  CString CVar8;
+  CString CStack_a0;
+  undefined1 *puStack_9c;
+  undefined4 uStack_98;
+  undefined1 *puStack_94;
+  code *pcVar9;
+  short sVar10;
+  undefined1 *puVar11;
+  CString local_6c;
+  _vslot_fn *local_68;
+  CString local_64;
+  CString local_60;
+  undefined4 local_5c;
+  CString local_58;
+  CString local_54 [6];
+  undefined1 local_3c [6];
+  undefined1 local_36;
+  undefined1 local_35;
+  undefined1 local_34;
+  undefined1 local_33;
+  undefined1 local_2a;
+  undefined1 local_29;
+  undefined1 local_28;
+  undefined1 local_27;
+  undefined1 local_1e;
+  undefined1 local_1d;
+  undefined1 local_1c;
+  undefined1 local_1b;
+  undefined1 local_12;
+  undefined1 local_11;
+  undefined1 local_10;
+  undefined1 local_f;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00638048;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CString::CString(&local_6c);
+  local_4 = 0;
+  CString::CString(&local_60);
+  local_4._0_1_ = 1;
+  CString::CString(&local_64);
+  local_4._0_1_ = 2;
+  local_5c = 0;
+  CString::CString(local_54);
+  local_4._0_1_ = 3;
+  CString::CString(&local_58);
+  local_4 = CONCAT31(local_4._1_3_,4);
+  local_1e = 0;
+  local_1d = 0;
+  local_1c = 0;
+  local_1b = 0;
+  local_2a = 0;
+  local_29 = 0;
+  local_28 = 0;
+  local_27 = 0;
+  local_36 = 0;
+  local_35 = 0;
+  local_34 = 0;
+  local_33 = 0;
+  local_12 = 0;
+  local_11 = 0;
+  local_10 = 0;
+  local_f = 0;
+  puStack_94 = (undefined1 *)0x5916e6;
+  InitializeUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
+  puStack_94 = (undefined1 *)0x591712;
+  InitializeUiTextStyleDescriptor();
+  puStack_94 = (undefined1 *)0x59172a;
+  InitializeUiTextStyleDescriptor();
+  local_68 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar1 = (*local_68)();
+  if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
+    puStack_94 = (undefined1 *)0x59175c;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  puVar11 = &stack0xffffff90;
+  pcVar9 = (code *)0xb;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  iVar6 = *(int *)CONCAT31(extraout_var,uVar1);
+  puStack_94 = &stack0xffffff84;
+  uStack_98 = 0x591799;
+  (**(code **)(iVar6 + 0x1c8))();
+  puStack_9c = local_3c;
+  uStack_98 = 0;
+  CStack_a0.m_pchData = (char *)0x5917a7;
+  (**(code **)(iVar6 + 0x1b4))();
+  CStack_a0.m_pchData = (char *)0x6c616232;
+  piVar4 = (int *)(*pcVar9)();
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  CVar8.m_pchData = (char *)0xc;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  iVar6 = *piVar4;
+  (**(code **)(iVar6 + 0x1c8))();
+  pp_Stack_bc = &local_68;
+  (**(code **)(iVar6 + 0x1b4))();
+  piVar4 = (int *)(*(code *)CVar8.m_pchData)();
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  pcVar9 = (code *)0xd;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  iVar6 = *piVar4;
+  (**(code **)(iVar6 + 0x1c8))();
+  (**(code **)(iVar6 + 0x1b4))();
+  CString::CString((CString *)&stack0xffffff50,PTR_g_szEmptyString_00662b90);
+  local_64.m_pchData._0_1_ = 5;
+  CString::operator=((CString *)&stack0xffffff34,(CString *)&stack0xffffff50);
+  local_64.m_pchData._0_1_ = 4;
+  CString::~CString((CString *)&stack0xffffff50);
+  iVar6 = 0;
+  CVar8.m_pchData = local_58.m_pchData;
+  do {
+    if (*(int *)CVar8.m_pchData != 0) {
+      _Format_CString__QAAXPBDZZ();
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      if (pp_Stack_bc == (_vslot_fn **)0x0) {
+        AssignSharedStringConcatRefAndCStr();
+        local_64.m_pchData._0_1_ = 6;
+        pCVar5 = (CString *)AssignSharedStringConcatRefAndRef();
+        local_64.m_pchData._0_1_ = 7;
+        CString::CString(&local_58,pCVar5);
+        local_64.m_pchData._0_1_ = 8;
+        CString::operator=((CString *)&stack0xffffff34,&local_58);
+        local_64.m_pchData._0_1_ = 7;
+        CString::~CString(&local_58);
+        local_64.m_pchData._0_1_ = 6;
+        CString::~CString((CString *)&stack0xffffff50);
+        pCVar5 = (CString *)&stack0xffffff54;
+      }
+      else {
+        AssignSharedStringConcatCStrAndRef();
+        local_64.m_pchData._0_1_ = 9;
+        AssignSharedStringConcatRefAndCStr();
+        local_64.m_pchData._0_1_ = 10;
+        AssignSharedStringConcatRefAndRef();
+        local_64.m_pchData._0_1_ = 0xb;
+        CString::operator+=();
+        local_64.m_pchData._0_1_ = 10;
+        CString::~CString((CString *)&stack0xffffff58);
+        local_64.m_pchData._0_1_ = 9;
+        CString::~CString((CString *)&stack0xffffff5c);
+        pCVar5 = &CStack_a0;
+      }
+      local_64.m_pchData._0_1_ = 4;
+      CString::~CString(pCVar5);
+      pp_Stack_bc = (_vslot_fn **)((int)pp_Stack_bc + 1);
+    }
+    iVar6 = iVar6 + 1;
+    CVar8.m_pchData = CVar8.m_pchData + 4;
+  } while (iVar6 < 10);
+  piVar4 = (int *)(*pcVar9)();
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  iVar6 = *piVar4;
+  (**(code **)(iVar6 + 0x1c8))();
+  (**(code **)(iVar6 + 0x1b4))();
+  piVar4 = (int *)(*(code *)&stack0xffffff78)();
+  if (piVar4 == (int *)0x0) {
+    CStack_108.m_pchData = "h \x19";
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  CString::CString((CString *)&stack0xffffff90,PTR_g_szEmptyString_00662b90);
+  iVar6 = *piVar4;
+  pcVar7 = (char *)0x1;
+  (**(code **)(iVar6 + 0x1c8))();
+  sVar10 = (short)CONCAT31((int3)((uint)puVar11 >> 8),4);
+  CString::~CString((CString *)&stack0xffffff88);
+  CStack_108.m_pchData = (char *)0x591ad8;
+  (**(code **)(iVar6 + 0x1b4))();
+  CStack_10c.m_pchData = (char *)0x591aec;
+  CStack_108.m_pchData = (char *)(int)sVar10;
+  sVar2 = func_0x00402b1c();
+  CStack_10c.m_pchData = (char *)0x591afa;
+  sVar3 = func_0x00403b16();
+  CStack_10c.m_pchData = &stack0xffffff20;
+  iStack_110 = (-(uint)(sVar2 != sVar3) & 4) + 10;
+  CStack_114.m_pchData = (char *)0x2744;
+  CStack_118.m_pchData = (char *)0x591b21;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  CStack_118.m_pchData = &stack0xffffff10;
+  CStack_120.m_pchData = (char *)0x591b32;
+  pcStack_11c = (code *)(int)sVar10;
+  func_0x0040918d();
+  CStack_120.m_pchData = pcVar7;
+  func_0x0040988b(g_pLocalizationTable,&CStack_10c,0x67656e65);
+  CStack_120.m_pchData = (char *)0x6f726473;
+  piVar4 = (int *)(*(code *)CStack_108.m_pchData)();
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x192c);
+  }
+  iVar6 = *piVar4;
+  (**(code **)(iVar6 + 0x1c8))(&iStack_110,1);
+  (**(code **)(iVar6 + 0x1b4))(&stack0xffffff18,0);
+  CString::~CString(&CStack_10c);
+  CString::~CString(&CStack_108);
+  CString::~CString(&CStack_118);
+  CString::~CString(&CStack_114);
+  CString::~CString(&CStack_120);
+  *unaff_FS_OFFSET = 0x6c616233;
+  return;
 }
 

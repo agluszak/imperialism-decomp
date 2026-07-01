@@ -3,47 +3,67 @@
 // Program: Imperialism.exe
 // Bucket: TMission.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00534FB0
-// GHIDRA_NAME TMission::GetTMissionClassNamePointer
-// GHIDRA_PROTO undefined GetTMissionClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x00534BC0
+// GHIDRA_NAME TMission::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-undefined ** TMission::GetTMissionClassNamePointer(void)
+undefined4 * TMission::CreateObject(void)
 
 {
-  return &PTR_s_TMission_00697848;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x14);
+  if (puVar1 != (undefined4 *)0x0) {
+    *(undefined1 *)(puVar1 + 2) = 2;
+    puVar1[3] = 0;
+    *puVar1 = &_vftable_;
+    *(undefined1 *)((int)puVar1 + 0x11) = 0xff;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00534FB0
+// GHIDRA_NAME TMission::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
+
+undefined ** TMission::GetRuntimeClass(void)
+
+{
+  return &classTMission;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535020
 // GHIDRA_NAME TMission::ConstructTMission
-// GHIDRA_PROTO undefined __thiscall TMission::ConstructTMission(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTMission(void)
 
 void TMission::ConstructTMission()
 
 {
   this[8] = (TMission)0x2;
   *(undefined4 *)(this + 0xc) = 0;
-  *(undefined ***)this = &PTR_LAB_0065a4e8;
+  *(undefined ***)this = &_vftable_;
   this[0x11] = (TMission)0xff;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535050
-// GHIDRA_NAME TMission::DeletingDestructTMission
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMission(byte param_1)
+// GHIDRA_NAME TMission::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMission * TMission::DeletingDestructTMission(byte param_1)
+TMission * TMission::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TMission::DestructTMission(this);
+  func_0x00405a47();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535080
 // GHIDRA_NAME TMission::DestructTMission
-// GHIDRA_PROTO undefined __thiscall TMission::DestructTMission(void)
+// GHIDRA_PROTO undefined __thiscall DestructTMission(void)
 
 void TMission::DestructTMission()
 
@@ -52,14 +72,63 @@ void TMission::DestructTMission()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00535820
+// GHIDRA_NAME TMission::SerializeMissionState
+// GHIDRA_PROTO undefined SerializeMissionState()
+
+void __thiscall TMission::SerializeMissionState(int param_1,int *param_2)
+
+{
+  code *pcVar1;
+  
+  func_0x0040583a(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x78);
+  (*pcVar1)(param_1 + 4,2);
+  (*pcVar1)(param_1 + 8,1);
+  (*pcVar1)(param_1 + 0xc,4);
+  (*pcVar1)(param_1 + 0x10,1);
+  (*pcVar1)(param_1 + 6,2);
+  (*pcVar1)(param_1 + 0x11,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005358A0
+// GHIDRA_NAME TMission::DeserializeMissionState
+// GHIDRA_PROTO undefined DeserializeMissionState()
+
+void __thiscall TMission::DeserializeMissionState(int *param_1,int *param_2)
+
+{
+  code *pcVar1;
+  
+  func_0x00403517(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x3c);
+  (*pcVar1)(param_1 + 1,2);
+  (*pcVar1)(param_1 + 2,1);
+  (*pcVar1)(param_1 + 3,4);
+  (*pcVar1)(param_1 + 4,1);
+  if (g_nSaveFormatVersion < 0x10) {
+    *(undefined2 *)((int)param_1 + 6) = 0xffff;
+  }
+  else {
+    (*pcVar1)((int)param_1 + 6,2);
+  }
+  if (g_nSaveFormatVersion < 9) {
+    (**(code **)(*param_1 + 0x30))();
+    return;
+  }
+  (*pcVar1)((int)param_1 + 0x11,1);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00539A20
 // GHIDRA_NAME TMission::ConstructTEscortMissionForPortContext
-// GHIDRA_PROTO undefined __thiscall TMission::ConstructTEscortMissionForPortContext(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall ConstructTEscortMissionForPortContext(undefined4 param_1)
 
 TMission * TMission::ConstructTEscortMissionForPortContext(undefined4 param_1)
 
 {
-  TMission::ConstructTMission(this);
+  func_0x00406f05();
   *(undefined4 *)(this + 0x14) = param_1;
   *(undefined4 *)(this + 0x18) = 0;
   *(undefined4 *)(this + 0x1c) = 0;
@@ -70,16 +139,16 @@ TMission * TMission::ConstructTEscortMissionForPortContext(undefined4 param_1)
   *(undefined4 *)(this + 0x30) = 0;
   *(undefined4 *)(this + 0x34) = 0;
   *(undefined4 *)(this + 0x38) = 0;
-  *(undefined ***)this = &PTR_LAB_0065aab0;
+  *(undefined ***)this = &TEscortMission::_vftable_;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AB50
 // GHIDRA_NAME TMission::ConstructBlockadePortMissionForContext
-// GHIDRA_PROTO undefined TMission::ConstructBlockadePortMissionForContext()
+// GHIDRA_PROTO undefined ConstructBlockadePortMissionForContext()
 
-TMission * __thiscall
-TMission::ConstructBlockadePortMissionForContext(TMission *param_1,int *param_2)
+undefined4 * __thiscall
+TMission::ConstructBlockadePortMissionForContext(undefined4 *param_1,int *param_2)
 
 {
   undefined4 uVar1;
@@ -88,15 +157,15 @@ TMission::ConstructBlockadePortMissionForContext(TMission *param_1,int *param_2)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006343c8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   if (param_2[0xb] == 0) {
-    iVar2 = _realloc(param_2[10],8);
+    iVar2 = ReallocateHeapBlockWithAllocatorTracking(param_2[10],8);
     if (iVar2 == 0) {
-      iVar2 = _realloc(param_2[10],4);
+      iVar2 = ReallocateHeapBlockWithAllocatorTracking(param_2[10],4);
       param_2[10] = iVar2;
       param_2[0xb] = 1;
     }
@@ -109,21 +178,21 @@ TMission::ConstructBlockadePortMissionForContext(TMission *param_1,int *param_2)
     param_2[0xc] = 1;
   }
   uVar1 = *(undefined4 *)param_2[10];
-  TMission::ConstructTMission(param_1);
-  *(undefined4 *)(param_1 + 0x14) = uVar1;
-  *(undefined4 *)(param_1 + 0x18) = 0;
-  *(undefined4 *)(param_1 + 0x1c) = 0;
-  *(undefined4 *)(param_1 + 0x20) = 0;
-  *(undefined4 *)(param_1 + 0x24) = 0;
-  *(undefined4 *)(param_1 + 0x28) = 0;
-  *(undefined4 *)(param_1 + 0x2c) = 0;
-  *(undefined4 *)(param_1 + 0x30) = 0;
-  *(undefined4 *)(param_1 + 0x34) = 0;
-  *(undefined4 *)(param_1 + 0x38) = 0;
+  func_0x00406f05();
+  param_1[5] = uVar1;
+  param_1[6] = 0;
+  param_1[7] = 0;
+  param_1[8] = 0;
+  param_1[9] = 0;
+  param_1[10] = 0;
+  param_1[0xb] = 0;
+  param_1[0xc] = 0;
+  param_1[0xd] = 0;
+  param_1[0xe] = 0;
   iVar2 = *param_2;
   local_4 = 0;
-  *(undefined ***)param_1 = &g_vtblTBlockadePortMission;
-  *(int **)(param_1 + 0x3c) = param_2;
+  *param_1 = &TBlockadePortMission::_vftable_;
+  param_1[0xf] = param_2;
   (**(code **)(iVar2 + 0xc))();
   *unaff_FS_OFFSET = uStack_c;
   return param_1;
@@ -131,7 +200,7 @@ TMission::ConstructBlockadePortMissionForContext(TMission *param_1,int *param_2)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C0A0
 // GHIDRA_NAME TMission::ConstructTArmyMissionWithNodeKey
-// GHIDRA_PROTO undefined __thiscall TMission::ConstructTArmyMissionWithNodeKey(undefined2 param_1)
+// GHIDRA_PROTO undefined __thiscall ConstructTArmyMissionWithNodeKey(undefined2 param_1)
 
 TMission * TMission::ConstructTArmyMissionWithNodeKey(undefined2 param_1)
 
@@ -141,31 +210,30 @@ TMission * TMission::ConstructTArmyMissionWithNodeKey(undefined2 param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063443a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TMission::ConstructTMission(this);
+  func_0x00406f05();
   local_4 = 0;
-  *(undefined ***)this = &g_vtblTArmyMission;
+  *(undefined ***)this = &TArmyMission::_vftable_;
   *(undefined2 *)(this + 0x14) = param_1;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
+  puVar1 = (undefined4 *)operator_new(0x20);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
   else {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
+    *puVar1 = &TObject::_vftable_;
     local_4 = CONCAT31(local_4._1_3_,2);
-    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
+    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   local_4 = local_4 & 0xffffff00;
   *(undefined4 **)(this + 0x18) = puVar1;
   if (puVar1 == (undefined4 *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UMissionSubs_cpp_00697be0,0x842);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UMissionSubs_cpp_00697be0,0x842);
   }
   *(undefined4 *)(this + 0x1c) = 0;
   *(undefined4 *)(this + 0x20) = 0;
@@ -178,53 +246,54 @@ TMission * TMission::ConstructTArmyMissionWithNodeKey(undefined2 param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F2D0
 // GHIDRA_NAME TMission::ConstructTInvadeMissionWithOptionalBeachhead
-// GHIDRA_PROTO undefined __thiscall TMission::ConstructTInvadeMissionWithOptionalBeachhead(int param_1, undefined2 param_2)
+// GHIDRA_PROTO undefined __thiscall ConstructTInvadeMissionWithOptionalBeachhead(int param_1, undefined2 param_2)
 
 TMission * __thiscall
 TMission::ConstructTInvadeMissionWithOptionalBeachhead
           (TMission *this,int param_1,undefined2 param_2)
 
 {
-  TMission *this_00;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
+  int unaff_retaddr;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006344d2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TMission::ConstructTArmyMissionWithNodeKey(this,0xffff);
+  func_0x004064a1(0xffffffff);
   *(undefined2 *)(this + 0x32) = 0xffff;
-  *(undefined2 *)(this + 0x30) = param_2;
-  local_4 = 0;
+  *(undefined2 *)(this + 0x30) = (undefined2)param_1;
+  puStack_8 = (undefined1 *)0x0;
   *(undefined4 *)(this + 0x34) = 0;
-  *(undefined ***)this = &PTR_LAB_0065aec0;
-  if (param_1 != 0) {
-    this_00 = (TMission *)__2_YAPAXI_Z(0x40);
-    local_4 = CONCAT31(local_4._1_3_,1);
-    if (this_00 == (TMission *)0x0) {
-      this_00 = (TMission *)0x0;
+  *(undefined ***)this = &TInvadeMission::_vftable_;
+  if (unaff_retaddr != 0) {
+    puVar1 = (undefined4 *)operator_new(0x40);
+    puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
+    if (puVar1 == (undefined4 *)0x0) {
+      puVar1 = (undefined4 *)0x0;
     }
     else {
-      TMission::ConstructTMission(this_00);
-      *(int *)(this_00 + 0x14) = param_1;
-      *(undefined4 *)(this_00 + 0x18) = 0;
-      *(undefined4 *)(this_00 + 0x1c) = 0;
-      *(undefined4 *)(this_00 + 0x20) = 0;
-      *(undefined4 *)(this_00 + 0x24) = 0;
-      *(undefined4 *)(this_00 + 0x28) = 0;
-      *(undefined4 *)(this_00 + 0x2c) = 0;
-      *(undefined4 *)(this_00 + 0x30) = 0;
-      *(undefined4 *)(this_00 + 0x34) = 0;
-      *(undefined4 *)(this_00 + 0x38) = 0;
-      *(TMission **)(this_00 + 0x3c) = this;
-      *(undefined ***)this_00 = &g_vtblTBeachheadMission;
+      func_0x00406f05();
+      puVar1[5] = unaff_retaddr;
+      puVar1[6] = 0;
+      puVar1[7] = 0;
+      puVar1[8] = 0;
+      puVar1[9] = 0;
+      puVar1[10] = 0;
+      puVar1[0xb] = 0;
+      puVar1[0xc] = 0;
+      puVar1[0xd] = 0;
+      puVar1[0xe] = 0;
+      puVar1[0xf] = this;
+      *puVar1 = &TBeachheadMission::_vftable_;
     }
-    *(TMission **)(this + 0x34) = this_00;
+    *(undefined4 **)(this + 0x34) = puVar1;
   }
-  *unaff_FS_OFFSET = local_c;
+  *unaff_FS_OFFSET = this;
   return this;
 }
 
@@ -237,49 +306,46 @@ void __thiscall TMission::DeserializeTInvadeMission(int param_1,int *param_2)
 {
   code *pcVar1;
   int iVar2;
-  TMission *pTVar3;
+  int *piVar3;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar4;
-  TMission *pTStack_c;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
-  pTStack_c = (TMission *)*unaff_FS_OFFSET;
+  
+  uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006344fa;
-  *unaff_FS_OFFSET = &pTStack_c;
-  DeserializeTArmyMission(param_2);
-  uVar4 = 2;
+  *unaff_FS_OFFSET = &uStack_c;
+  func_0x00407653(param_2);
   pcVar1 = *(code **)(*param_2 + 0x3c);
   (*pcVar1)(param_1 + 0x30);
   (*pcVar1)(param_1 + 0x32,2);
   if (*(int **)(param_1 + 0x34) != (int *)0x0) {
     (**(code **)(**(int **)(param_1 + 0x34) + 0x1c))();
   }
-  pTVar3 = (TMission *)__2_YAPAXI_Z(0x40);
-  pTStack_c = pTVar3;
-  if (pTVar3 == (TMission *)0x0) {
-    pTVar3 = (TMission *)0x0;
+  piVar3 = (int *)operator_new(0x40);
+  if (piVar3 == (int *)0x0) {
+    piVar3 = (int *)0x0;
   }
   else {
-    TMission::ConstructTMission(pTVar3);
-    *(undefined4 *)(pTVar3 + 0x14) = 0;
-    *(undefined4 *)(pTVar3 + 0x18) = 0;
-    *(undefined4 *)(pTVar3 + 0x1c) = 0;
-    *(undefined4 *)(pTVar3 + 0x20) = 0;
-    *(undefined4 *)(pTVar3 + 0x24) = 0;
-    *(undefined4 *)(pTVar3 + 0x28) = 0;
-    *(undefined4 *)(pTVar3 + 0x2c) = 0;
-    *(undefined4 *)(pTVar3 + 0x30) = 0;
-    *(undefined4 *)(pTVar3 + 0x34) = 0;
-    *(undefined4 *)(pTVar3 + 0x38) = 0;
-    *(int *)(pTVar3 + 0x3c) = param_1;
-    *(undefined ***)pTVar3 = &g_vtblTBeachheadMission;
+    func_0x00406f05();
+    piVar3[5] = 0;
+    piVar3[6] = 0;
+    piVar3[7] = 0;
+    piVar3[8] = 0;
+    piVar3[9] = 0;
+    piVar3[10] = 0;
+    piVar3[0xb] = 0;
+    piVar3[0xc] = 0;
+    piVar3[0xd] = 0;
+    piVar3[0xe] = 0;
+    piVar3[0xf] = param_1;
+    *piVar3 = (int)&TBeachheadMission::_vftable_;
   }
-  iVar2 = *(int *)pTVar3;
-  *(TMission **)(param_1 + 0x34) = pTVar3;
+  iVar2 = *piVar3;
+  *(int **)(param_1 + 0x34) = piVar3;
   (**(code **)(iVar2 + 0x18))(param_2);
-  *unaff_FS_OFFSET = uVar4;
+  *unaff_FS_OFFSET = 2;
   return;
 }
 

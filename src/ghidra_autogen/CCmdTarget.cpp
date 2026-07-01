@@ -3,30 +3,106 @@
 // Program: Imperialism.exe
 // Bucket: CCmdTarget.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005EAD10
-// GHIDRA_NAME CCmdTarget::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x006069CB
+// GHIDRA_NAME CCmdTarget::~CCmdTarget
+// GHIDRA_PROTO undefined ~CCmdTarget()
 
-void CCmdTarget::ConstructTTaskBaseState()
+void CCmdTarget::~CCmdTarget(void)
 
 {
-  amsg_exit(0x19);
+  undefined4 uVar1;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &PTR_GetCCmdTargetRuntimeClass_0067066c;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  if (extraout_ECX[4] != 0) {
+    (**(code **)(extraout_ECX[4] + 0x1c))();
+  }
+  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uVar1;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00606CA6
-// GHIDRA_NAME CCmdTarget::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00606A07
+// GHIDRA_NAME CCmdTarget::OnCmdMsg
+// GHIDRA_PROTO undefined __thiscall OnCmdMsg(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
-undefined * CCmdTarget::_scalar_deleting_destructor_()
+uint CCmdTarget::OnCmdMsg(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
 {
-  return &DAT_00670560;
+  void *_Buf1;
+  undefined uVar1;
+  int iVar2;
+  undefined4 *puVar3;
+  undefined3 extraout_var;
+  AFX_MSGMAP_ENTRY *pAVar4;
+  uint uVar5;
+  int *piVar6;
+  
+  if (param_2 == 0xfffffffe) {
+    iVar2 = AfxGetModuleState();
+    param_2 = (**(code **)(**(int **)(iVar2 + 0x1038) + 4))(this,param_1,param_3,param_4);
+  }
+  else {
+    uVar5 = 0;
+    if (param_2 == 0xfffffffd) {
+      param_2 = 0;
+      _Buf1 = *(void **)(param_3 + 0x30);
+      puVar3 = (undefined4 *)(*this->vftable[4].slot_0x04)();
+      while ((puVar3 != (undefined4 *)0x0 && (param_2 == 0))) {
+        piVar6 = (int *)puVar3[1];
+        while (((piVar6[1] != 0 && (piVar6[2] != 0)) && (param_2 == 0))) {
+          if (param_1 == piVar6[1]) {
+            if (_Buf1 == (void *)0x0) {
+              iVar2 = *piVar6;
+            }
+            else {
+              if ((void *)*piVar6 == (void *)0x0) goto LAB_00606aac;
+              iVar2 = _memcmp(_Buf1,(void *)*piVar6,0x10);
+            }
+            if (iVar2 == 0) {
+              param_2 = 1;
+              *(int *)(param_3 + 4) = piVar6[2];
+            }
+          }
+LAB_00606aac:
+          piVar6 = piVar6 + 3;
+        }
+        puVar3 = (undefined4 *)*puVar3;
+      }
+    }
+    else {
+      if (param_2 != 0xffffffff) {
+        uVar5 = param_2 >> 0x10;
+        param_2 = param_2 & 0xffff;
+      }
+      if (uVar5 == 0) {
+        uVar5 = 0x111;
+      }
+      uVar1 = (*this->vftable[4].SetForeignMinisterReadyFlag14)();
+      for (puVar3 = (undefined4 *)CONCAT31(extraout_var,uVar1); puVar3 != (undefined4 *)0x0;
+          puVar3 = (undefined4 *)*puVar3) {
+        pAVar4 = AfxFindMessageEntry((AFX_MSGMAP_ENTRY *)puVar3[1],uVar5,param_2,param_1);
+        if (pAVar4 != (AFX_MSGMAP_ENTRY *)0x0) {
+          uVar5 = DispatchCmdMsg(this,param_1,param_2,*(undefined4 *)(pAVar4 + 0x14),param_3,
+                                 *(undefined4 *)(pAVar4 + 0x10),param_4);
+          return uVar5;
+        }
+      }
+      param_2 = 0;
+    }
+  }
+  return param_2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CBE
-// GHIDRA_NAME CCmdTarget::?OnFinalRelease@CCmdTarget@@UAEXXZ
-// GHIDRA_PROTO void __thiscall ?OnFinalRelease@CCmdTarget@@UAEXXZ(void)
+// GHIDRA_NAME CCmdTarget::OnFinalRelease
+// GHIDRA_PROTO void __thiscall OnFinalRelease(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: virtual void __thiscall CCmdTarget::OnFinalRelease(void)
@@ -36,22 +112,22 @@ undefined * CCmdTarget::_scalar_deleting_destructor_()
 
 /* Library Function - Single Match
     public: virtual void __thiscall CCmdTarget::OnFinalRelease(void)
-
+   
    Library: Visual Studio 1998 Release */
 
-void CCmdTarget::_OnFinalRelease_CCmdTarget__UAEXXZ()
+void CCmdTarget::OnFinalRelease()
 
 {
   CCmdTargetVtbl *pCVar1;
   CTypeLibCache *this_00;
-
-  _AfxLockGlobals__YGXH_Z(0xd);
+  
+  AfxLockGlobals(0xd);
   pCVar1 = this->vftable;
   this_00 = (CTypeLibCache *)(*pCVar1[3].slot_0x04)();
   if (this_00 != (CTypeLibCache *)0x0) {
-    CTypeLibCache::_Unlock_CTypeLibCache__QAEXXZ(this_00);
+    CTypeLibCache::Unlock(this_00);
   }
-  _AfxUnlockGlobals__YGXH_Z(0xd);
+  AfxUnlockGlobals(0xd);
   if (this != (CCmdTarget *)0x0) {
     (*pCVar1->slot_0x04)(1);
   }
@@ -70,981 +146,11 @@ undefined4 CCmdTarget::OrphanCallChain_C7_I57_004be5b0()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CF4
 // GHIDRA_NAME CCmdTarget::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
 
 undefined4 CCmdTarget::SetForeignMinisterReadyFlag14()
 
 {
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00607BDA
-// GHIDRA_NAME CCmdTarget::LogUnhandledDialogMethodAndReturnFalse
-// GHIDRA_PROTO undefined LogUnhandledDialogMethodAndReturnFalse()
-
-void CCmdTarget::LogUnhandledDialogMethodAndReturnFalse(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00608409
-// GHIDRA_NAME CCmdTarget::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
-
-void CCmdTarget::_scalar_deleting_destructor_()
-
-{
-  if (this[1].vftable != (CCmdTargetVtbl *)0x0) {
-                    /* WARNING: Could not recover jumptable at 0x00608411. Too many branches */
-                    /* WARNING: Treating indirect jump as call */
-    (*this->vftable[8].SetForeignMinisterReadyFlag14)();
-    return;
-  }
-                    /* WARNING: Could not recover jumptable at 0x00608414. Too many branches */
-                    /* WARNING: Treating indirect jump as call */
-  (*this->vftable[0xe].slot_0x04)();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060841A
-// GHIDRA_NAME CCmdTarget::?DestroyWindow@CWnd@@UAEHXZ
-// GHIDRA_PROTO undefined ?DestroyWindow@CWnd@@UAEHXZ()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Destroys attached window handle or forwards destruction to site object.
-// GHIDRA_COMMENT Uses handle-map lookup/detach helpers to keep MFC HWND mapping consistent.
-// GHIDRA_COMMENT_END
-
-/* Destroys attached window handle or forwards destruction to site object.
-   Uses handle-map lookup/detach helpers to keep MFC HWND mapping consistent. */
-
-BOOL __fastcall CCmdTarget::_DestroyWindow_CWnd__UAEHXZ(int param_1)
-
-{
-  CWnd *this;
-  int iVar1;
-  BOOL BVar2;
-
-  if (*(int *)(param_1 + 0x1c) == 0) {
-    return 0;
-  }
-  this = (CWnd *)_afxMapHWND__YAPAVCHandleMap__H_Z(0);
-  iVar1 = CWnd::_GetValueAt_CMapPtrToPtr__QBEPAXPAX_Z(this,*(uint *)(param_1 + 0x1c));
-  if (*(int **)(param_1 + 0x38) == (int *)0x0) {
-    BVar2 = DestroyWindow(*(HWND *)(param_1 + 0x1c));
-  }
-  else {
-    BVar2 = (**(code **)(**(int **)(param_1 + 0x38) + 0x58))();
-  }
-  if (iVar1 == 0) {
-    _Detach_CWnd__QAEPAUHWND____XZ();
-  }
-  return BVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060852E
-// GHIDRA_NAME CCmdTarget::?OnToolHitTest@CWnd@@UBEHVCPoint@@PAUtagTOOLINFOA@@@Z
-// GHIDRA_PROTO undefined ?OnToolHitTest@CWnd@@UBEHVCPoint@@PAUtagTOOLINFOA@@@Z()
-
-uint __thiscall
-CCmdTarget::_OnToolHitTest_CWnd__UBEHVCPoint__PAUtagTOOLINFOA___Z
-          (int param_1,undefined4 param_2,undefined4 param_3,uint *param_4)
-
-{
-  HWND hWnd;
-  uint uVar1;
-  uint uVar2;
-
-  hWnd = (HWND)__AfxChildWindowFromPoint__YGPAUHWND____PAU1_UtagPOINT___Z
-                         (*(undefined4 *)(param_1 + 0x1c),param_2,param_3);
-  if (hWnd == (HWND)0x0) {
-    uVar1 = 0xffffffff;
-  }
-  else {
-    uVar1 = GetDlgCtrlID(hWnd);
-    uVar1 = uVar1 & 0xffff;
-    if ((param_4 != (uint *)0x0) && (0x2b < *param_4)) {
-      uVar2 = *(uint *)(param_1 + 0x1c);
-      param_4[1] = param_4[1] | 1;
-      param_4[9] = 0xffffffff;
-      param_4[2] = uVar2;
-      param_4[3] = (uint)hWnd;
-      uVar2 = SendMessageA(hWnd,0x87,0,0);
-      if ((uVar2 & 0x2000) == 0) {
-        param_4[1] = param_4[1] | 0x80000002;
-      }
-    }
-  }
-  return uVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00608685
-// GHIDRA_NAME CCmdTarget::?OnDrawItem@CWnd@@IAEXHPAUtagDRAWITEMSTRUCT@@@Z
-// GHIDRA_PROTO undefined ?OnDrawItem@CWnd@@IAEXHPAUtagDRAWITEMSTRUCT@@@Z()
-
-void __thiscall
-CCmdTarget::_OnDrawItem_CWnd__IAEXHPAUtagDRAWITEMSTRUCT___Z
-          (CWnd *param_1,undefined4 param_2,int *param_3)
-
-{
-  int *piVar1;
-  int iVar2;
-
-  if (*param_3 == 1) {
-    piVar1 = (int *)_FromHandlePermanent_CMenu__SGPAV1_PAUHMENU_____Z(param_3[5]);
-    if (piVar1 != (int *)0x0) {
-      (**(code **)(*piVar1 + 0x14))(param_3);
-      return;
-    }
-  }
-  else {
-    iVar2 = _ReflectLastMsg_CWnd__KGHPAUHWND____PAJ_Z(param_3[5],0);
-    if (iVar2 != 0) {
-      return;
-    }
-  }
-  CWnd::_Default_CWnd__IAEJXZ(param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006087B6
-// GHIDRA_NAME CCmdTarget::?OnMeasureItem@CWnd@@IAEXHPAUtagMEASUREITEMSTRUCT@@@Z
-// GHIDRA_PROTO undefined ?OnMeasureItem@CWnd@@IAEXHPAUtagMEASUREITEMSTRUCT@@@Z()
-
-void __thiscall
-CCmdTarget::_OnMeasureItem_CWnd__IAEXHPAUtagMEASUREITEMSTRUCT___Z
-          (CWnd *param_1,undefined4 param_2,int *param_3)
-
-{
-  int iVar1;
-  HMENU pHVar2;
-  undefined4 uVar3;
-  int *piVar4;
-
-  if (*param_3 == 1) {
-    iVar1 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
-                      ((TMacViewMgr *)&DAT_006a7a50,
-                       _CreateObject___CThreadLocal_V_AFX_THREAD_STATE____SGPAVCNoTrackObject__XZ);
-    if (*(HWND *)(iVar1 + 0x50) == param_1->m_hWnd) {
-      pHVar2 = *(HMENU *)(iVar1 + 0x54);
-    }
-    else {
-      pHVar2 = GetMenu(param_1->m_hWnd);
-    }
-    uVar3 = _FromHandle_CMenu__SGPAV1_PAUHMENU_____Z(pHVar2);
-    piVar4 = (int *)_FindPopupMenuFromID__YAPAVCMenu__PAV1_I_Z(uVar3,param_3[2]);
-    if (piVar4 != (int *)0x0) {
-      (**(code **)(*piVar4 + 0x18))(param_3);
-    }
-  }
-  else {
-    iVar1 = _GetDescendantWindow_CWnd__SGPAV1_PAUHWND____HH_Z(param_1->m_hWnd,param_3[1],1);
-    if ((iVar1 != 0) && (iVar1 = _SendChildNotifyLastMsg_CWnd__QAEHPAJ_Z(0), iVar1 != 0)) {
-      return;
-    }
-  }
-  CWnd::_Default_CWnd__IAEJXZ(param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006089EF
-// GHIDRA_NAME CCmdTarget::?OnNTCtlColor@CWnd@@IAEJIJ@Z
-// GHIDRA_PROTO undefined ?OnNTCtlColor@CWnd@@IAEJIJ@Z()
-
-void __thiscall
-CCmdTarget::_OnNTCtlColor_CWnd__IAEJIJ_Z(int *param_1,undefined4 param_2,undefined4 param_3)
-
-{
-  int iVar1;
-  undefined4 local_10;
-  undefined4 local_c;
-  int local_8;
-
-  local_c = param_2;
-  local_10 = param_3;
-  iVar1 = _GetCurrentMessage_CWnd__KGPBUtagMSG__XZ();
-  local_8 = *(int *)(iVar1 + 4) + -0x132;
-  (**(code **)(*param_1 + 0xa0))(0x19,0,&local_10);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00608A2B
-// GHIDRA_NAME CCmdTarget::?WinHelpA@CWnd@@UAEXKI@Z
-// GHIDRA_PROTO undefined ?WinHelpA@CWnd@@UAEXKI@Z()
-
-void CCmdTarget::_WinHelpA_CWnd__UAEXKI_Z(void)
-
-{
-  int iVar1;
-  int iVar2;
-  HWND hWnd;
-  BOOL BVar3;
-  int *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-  *(undefined4 *)(unaff_EBP + -0x10) = *(undefined4 *)(iVar1 + 4);
-  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-  _BeginWaitCursor_CCmdTarget__QAEXXZ();
-  iVar1 = *extraout_ECX;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  iVar2 = (**(code **)(iVar1 + 0xb8))();
-  if (iVar2 != 0) {
-    (**(code **)(iVar1 + 0xf8))();
-  }
-  SendMessageA((HWND)extraout_ECX[7],0x1f,0,0);
-  _SendMessageToDescendants_CWnd__SGXPAUHWND____IIJHH_Z(extraout_ECX[7],0x1f,0,0,1,1);
-  iVar1 = _GetTopLevelParent_CWnd__QBEPAV1_XZ();
-  SendMessageA(*(HWND *)(iVar1 + 0x1c),0x1f,0,0);
-  _SendMessageToDescendants_CWnd__SGXPAUHWND____IIJHH_Z(*(undefined4 *)(iVar1 + 0x1c),0x1f,0,0,1,1);
-  hWnd = GetCapture();
-  if (hWnd != (HWND)0x0) {
-    SendMessageA(hWnd,0x1f,0,0);
-  }
-  BVar3 = WinHelpA(*(HWND *)(iVar1 + 0x1c),*(LPCSTR *)(*(int *)(unaff_EBP + -0x10) + 0x8c),
-                   *(UINT *)(unaff_EBP + 0xc),*(ULONG_PTR *)(unaff_EBP + 8));
-  if (BVar3 == 0) {
-    _AfxMessageBox__YGHIII_Z(0xf107,0,0xffffffff);
-  }
-  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-  _EndWaitCursor_CCmdTarget__QAEXXZ();
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006091D9
-// GHIDRA_NAME CCmdTarget::?OnNotify@CWnd@@MAEHIJPAJ@Z
-// GHIDRA_PROTO undefined ?OnNotify@CWnd@@MAEHIJPAJ@Z()
-
-undefined4 __thiscall
-CCmdTarget::_OnNotify_CWnd__MAEHIJPAJ_Z
-          (int *param_1,undefined4 param_2,undefined4 *param_3,undefined4 param_4)
-
-{
-  HWND hWnd;
-  uint uVar1;
-  int iVar2;
-  undefined4 uVar3;
-  undefined4 local_10;
-  undefined4 *local_c;
-  uint local_8;
-
-  hWnd = (HWND)*param_3;
-  local_8 = GetDlgCtrlID(hWnd);
-  local_8 = local_8 & 0xffff;
-  uVar1 = param_3[2];
-  iVar2 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
-                    ((TMacViewMgr *)&DAT_006a7a50,
-                     _CreateObject___CThreadLocal_V_AFX_THREAD_STATE____SGPAVCNoTrackObject__XZ);
-  if ((*(int *)(iVar2 + 0xb8) != param_1[7]) &&
-     (iVar2 = _ReflectLastMsg_CWnd__KGHPAUHWND____PAJ_Z(hWnd,param_4), iVar2 == 0)) {
-    local_10 = param_4;
-    local_c = param_3;
-    uVar3 = (**(code **)(*param_1 + 0x14))(local_8,uVar1 & 0xffff | 0x4e0000,&local_10,0);
-    return uVar3;
-  }
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060A770
-// GHIDRA_NAME CCmdTarget::?EndModalLoop@CWnd@@UAEXH@Z
-// GHIDRA_PROTO undefined ?EndModalLoop@CWnd@@UAEXH@Z()
-
-void __thiscall CCmdTarget::_EndModalLoop_CWnd__UAEXH_Z(int param_1,undefined4 param_2)
-
-{
-  *(undefined4 *)(param_1 + 0x2c) = param_2;
-  if ((*(uint *)(param_1 + 0x24) & 0x10) != 0) {
-    *(uint *)(param_1 + 0x24) = *(uint *)(param_1 + 0x24) & 0xffffffef;
-    PostMessageA(*(HWND *)(param_1 + 0x1c),0,0,0);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00610728
-// GHIDRA_NAME CCmdTarget::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined TSoundPlayer::GetTEventHandlerClassNamePointer()
-
-void __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *param_1,int param_2)
-
-{
-  TSoundPlayer::GetTEventHandlerClassNamePointer(param_1,param_2);
-  param_1[3].m_xDispatch = param_2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061073E
-// GHIDRA_NAME CCmdTarget::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined TShipBuildingTask::ConstructTTaskBaseState()
-
-void __thiscall CCmdTarget::ConstructTTaskBaseState(CCmdTarget *param_1,int param_2)
-
-{
-  TSoundPlayer::OrphanRetStub_0059add0(param_1,param_2);
-  param_1[3].m_xDispatch = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00610752
-// GHIDRA_NAME CCmdTarget::?OpenDocumentFile@CSingleDocTemplate@@UAEPAVCDocument@@PBDH@Z
-// GHIDRA_PROTO undefined ?OpenDocumentFile@CSingleDocTemplate@@UAEPAVCDocument@@PBDH@Z()
-
-int * CCmdTarget::_OpenDocumentFile_CSingleDocTemplate__UAEPAVCDocument__PBDH_Z(void)
-
-{
-  code *pcVar1;
-  int iVar2;
-  undefined4 uVar3;
-  int iVar4;
-  int *piVar5;
-  CWinThread *pCVar6;
-  int *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  piVar5 = (int *)extraout_ECX[0x19];
-  *(undefined4 *)(unaff_EBP + -0x10) = 0;
-  *(undefined4 *)(unaff_EBP + -0x14) = 0;
-  if (piVar5 == (int *)0x0) {
-    piVar5 = (int *)(**(code **)(*extraout_ECX + 0x74))();
-    *(undefined4 *)(unaff_EBP + -0x14) = 1;
-LAB_0061079f:
-    if (piVar5 == (int *)0x0) {
-      _AfxMessageBox__YGHIII_Z(0xf104,0,0xffffffff);
-    }
-    else {
-      if (*(int *)(unaff_EBP + -0x10) == 0) {
-        iVar2 = *extraout_ECX;
-        iVar4 = piVar5[0x12];
-        piVar5[0x12] = 0;
-        iVar2 = (**(code **)(iVar2 + 0x78))(piVar5,0);
-        *(int *)(unaff_EBP + -0x10) = iVar2;
-        piVar5[0x12] = iVar4;
-        if (iVar2 == 0) {
-          _AfxMessageBox__YGHIII_Z(0xf104,0,0xffffffff);
-          (**(code **)(*piVar5 + 4))(1);
-          goto LAB_006108a7;
-        }
-      }
-      if (*(int *)(unaff_EBP + 8) == 0) {
-        (**(code **)(*extraout_ECX + 0x8c))(piVar5);
-        if (*(int *)(unaff_EBP + 0xc) == 0) {
-          piVar5[0x13] = 1;
-        }
-        iVar2 = (**(code **)(*piVar5 + 0x78))();
-        if (iVar2 != 0) {
-LAB_006108c8:
-          pCVar6 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
-          if ((*(int *)(unaff_EBP + -0x14) != 0) && (*(int *)(pCVar6 + 0x1c) == 0)) {
-            *(undefined4 *)(pCVar6 + 0x1c) = *(undefined4 *)(unaff_EBP + -0x10);
-          }
-          (**(code **)(*extraout_ECX + 0x7c))
-                    (*(undefined4 *)(unaff_EBP + -0x10),piVar5,*(undefined4 *)(unaff_EBP + 0xc));
-          goto LAB_006108ed;
-        }
-        if (*(int *)(unaff_EBP + -0x14) != 0) {
-          (**(code **)(**(int **)(unaff_EBP + -0x10) + 0x60))();
-        }
-      }
-      else {
-        _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-        _BeginWaitCursor_CCmdTarget__QAEXXZ();
-        *(undefined4 *)(unaff_EBP + -4) = 0;
-        iVar2 = *piVar5;
-        uVar3 = (**(code **)(iVar2 + 0x60))();
-        *(undefined4 *)(unaff_EBP + -0x18) = uVar3;
-        pcVar1 = *(code **)(iVar2 + 100);
-        *(code **)(unaff_EBP + -0x1c) = pcVar1;
-        (*pcVar1)(0);
-        iVar4 = (**(code **)(iVar2 + 0x7c))(*(undefined4 *)(unaff_EBP + 8));
-        if (iVar4 != 0) {
-          (**(code **)(iVar2 + 0x5c))(*(undefined4 *)(unaff_EBP + 8),1);
-          *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-          _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-          _EndWaitCursor_CCmdTarget__QAEXXZ();
-          goto LAB_006108c8;
-        }
-        if (*(int *)(unaff_EBP + -0x14) == 0) {
-          iVar4 = (**(code **)(iVar2 + 0x60))();
-          if (iVar4 == 0) {
-            (**(code **)(unaff_EBP + -0x1c))(*(undefined4 *)(unaff_EBP + -0x18));
-          }
-          else {
-            (**(code **)(*extraout_ECX + 0x8c))(piVar5);
-            (**(code **)(iVar2 + 0x78))();
-          }
-        }
-        else {
-          (**(code **)(**(int **)(unaff_EBP + -0x10) + 0x60))();
-        }
-        *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-        _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-        _EndWaitCursor_CCmdTarget__QAEXXZ();
-      }
-    }
-  }
-  else {
-    iVar2 = (**(code **)(*piVar5 + 0x98))();
-    if (iVar2 != 0) {
-      uVar3 = _AfxGetMainWnd__YGPAVCWnd__XZ();
-      *(undefined4 *)(unaff_EBP + -0x10) = uVar3;
-      goto LAB_0061079f;
-    }
-  }
-LAB_006108a7:
-  piVar5 = (int *)0x0;
-LAB_006108ed:
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return piVar5;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006108FE
-// GHIDRA_NAME CCmdTarget::?SetDefaultTitle@CSingleDocTemplate@@UAEXPAVCDocument@@@Z
-// GHIDRA_PROTO undefined ?SetDefaultTitle@CSingleDocTemplate@@UAEXPAVCDocument@@@Z()
-
-void CCmdTarget::_SetDefaultTitle_CSingleDocTemplate__UAEXPAVCDocument___Z(void)
-
-{
-  int iVar1;
-  int *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
-  iVar1 = *extraout_ECX;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  iVar1 = (**(code **)(iVar1 + 0x6c))(unaff_EBP + -0x10,1);
-  if ((iVar1 == 0) || (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0)) {
-    _LoadStringA_CString__QAEHI_Z(0xf003);
-  }
-  (**(code **)(**(int **)(unaff_EBP + 8) + 0x58))(*(undefined4 *)(unaff_EBP + -0x10));
-  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00613E49
-// GHIDRA_NAME CCmdTarget::?OnCmdMsg@CView@@MAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
-// GHIDRA_PROTO undefined __thiscall ?OnCmdMsg@CView@@MAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z(uint param_1, uint param_2, int param_3, undefined4 param_4)
-
-undefined4 __thiscall
-CCmdTarget::_OnCmdMsg_CView__MAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
-          (CCmdTarget *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  undefined4 uVar3;
-
-  iVar2 = TTooltipRelayWindowState::_OnCmdMsg_CCmdTarget__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
-                    ((TTooltipRelayWindowState *)this,param_1,param_2,param_3,param_4);
-  if (iVar2 == 0) {
-    uVar3 = 0;
-    if (this[2].m_dwRef != 0) {
-      iVar2 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
-                        ((TMacViewMgr *)&DAT_006a7a50,
-                         _CreateObject___CThreadLocal_V_AFX_THREAD_STATE____SGPAVCNoTrackObject__XZ)
-      ;
-      uVar1 = *(undefined4 *)(iVar2 + 0xc0);
-      *(CCmdTarget **)(iVar2 + 0xc0) = this;
-      uVar3 = (**(code **)(*(int *)this[2].m_dwRef + 0x14))(param_1,param_2,param_3,param_4);
-      *(undefined4 *)(iVar2 + 0xc0) = uVar1;
-    }
-  }
-  else {
-    uVar3 = 1;
-  }
-  return uVar3;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061404D
-// GHIDRA_NAME CCmdTarget::?GetScrollBarCtrl@CView@@UBEPAVCScrollBar@@H@Z
-// GHIDRA_PROTO undefined __thiscall ?GetScrollBarCtrl@CView@@UBEPAVCScrollBar@@H@Z(int param_1)
-
-undefined4 CCmdTarget::_GetScrollBarCtrl_CView__UBEPAVCScrollBar__H_Z(int param_1)
-
-{
-  uint uVar1;
-  int iVar2;
-  uint uVar3;
-  undefined4 uVar4;
-
-  uVar1 = _GetStyle_CWnd__QBEKXZ();
-  if ((((-(uint)(param_1 != 0) & 0x100000) + 0x100000 & uVar1) == 0) &&
-     (iVar2 = _GetParentSplitter_CView__SGPAVCSplitterWnd__PBVCWnd__H_Z(this,1), iVar2 != 0)) {
-    uVar1 = GetDlgCtrlID((HWND)this[1].vftable);
-    uVar3 = uVar1 & 0xffff;
-    if ((0xe8ff < uVar3) && (uVar3 < 0xea00)) {
-      if (param_1 == 0) {
-        iVar2 = (uVar1 & 0xf) + 0xea00;
-      }
-      else {
-        iVar2 = (uVar3 - 0xe900 >> 4) + 0xea10;
-      }
-      uVar4 = _GetDlgItem_CWnd__QBEPAV1_H_Z(iVar2);
-      return uVar4;
-    }
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006148AF
-// GHIDRA_NAME CCmdTarget::?LoadTemplate@CDocTemplate@@UAEXXZ
-// GHIDRA_PROTO undefined __thiscall ?LoadTemplate@CDocTemplate@@UAEXXZ(void)
-
-void CCmdTarget::_LoadTemplate_CDocTemplate__UAEXXZ()
-
-{
-  HINSTANCE pHVar1;
-  int iVar2;
-  HMENU pHVar3;
-  HACCEL pHVar4;
-  CCmdTargetVtbl *pCVar5;
-
-  if (*(int *)(this[3].m_xInnerUnknown + -8) == 0) {
-    _LoadStringA_CString__QAEHI_Z(this[2].m_dwRef);
-  }
-  if ((this[2].m_xInnerUnknown != 0) && (this[1].m_xDispatch == 0)) {
-    iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-    pHVar1 = *(HINSTANCE *)(iVar2 + 0xc);
-    pHVar3 = LoadMenuA(pHVar1,(LPCSTR)(uint)(ushort)this[2].m_xInnerUnknown);
-    this[1].m_xDispatch = (int)pHVar3;
-    pHVar4 = LoadAcceleratorsA(pHVar1,(LPCSTR)(uint)(ushort)this[2].m_xInnerUnknown);
-    this[1].m_bResultExpected = (int)pHVar4;
-  }
-  if ((this[2].m_pOuterUnknown != (void *)0x0) && (this[1].m_xConnPtContainer == 0)) {
-    iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-    pHVar1 = *(HINSTANCE *)(iVar2 + 0xc);
-    pHVar3 = LoadMenuA(pHVar1,(LPCSTR)(uint)*(ushort *)&this[2].m_pOuterUnknown);
-    this[1].m_xConnPtContainer = (int)pHVar3;
-    pCVar5 = (CCmdTargetVtbl *)
-             LoadAcceleratorsA(pHVar1,(LPCSTR)(uint)*(ushort *)&this[2].m_pOuterUnknown);
-    this[2].vftable = pCVar5;
-  }
-  if ((this[2].m_xDispatch != 0) && (this[1].m_pOuterUnknown == (void *)0x0)) {
-    iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-    pHVar1 = *(HINSTANCE *)(iVar2 + 0xc);
-    pHVar3 = LoadMenuA(pHVar1,(LPCSTR)(uint)(ushort)this[2].m_xDispatch);
-    this[1].m_pOuterUnknown = pHVar3;
-    pHVar4 = LoadAcceleratorsA(pHVar1,(LPCSTR)(uint)(ushort)this[2].m_xDispatch);
-    this[1].m_xInnerUnknown = (int)pHVar4;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614A04
-// GHIDRA_NAME CCmdTarget::?GetDocString@CDocTemplate@@UBEHAAVCString@@W4DocStringIndex@1@@Z
-// GHIDRA_PROTO undefined __thiscall ?GetDocString@CDocTemplate@@UBEHAAVCString@@W4DocStringIndex@1@@Z(undefined4 param_1, undefined4 param_2)
-
-void __thiscall
-CCmdTarget::_GetDocString_CDocTemplate__UBEHAAVCString__W4DocStringIndex_1__Z
-          (CCmdTarget *this,undefined4 param_1,undefined4 param_2)
-
-{
-  _AfxExtractSubString__YGHAAVCString__PBDHD_Z(param_1,this[3].m_xInnerUnknown,param_2,10);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614A19
-// GHIDRA_NAME CCmdTarget::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1)
-
-void CCmdTarget::GetTEventHandlerClassNamePointer(int param_1)
-
-{
-  *(CCmdTarget **)(param_1 + 0x24) = this;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614A23
-// GHIDRA_NAME CCmdTarget::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
-
-void CCmdTarget::OrphanRetStub_0059add0(int param_1)
-
-{
-  *(undefined4 *)(param_1 + 0x24) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614A2E
-// GHIDRA_NAME CCmdTarget::?MatchDocType@CDocTemplate@@UAE?AW4Confidence@1@PBDAAPAVCDocument@@@Z
-// GHIDRA_PROTO undefined __thiscall ?MatchDocType@CDocTemplate@@UAE?AW4Confidence@1@PBDAAPAVCDocument@@@Z(void)
-
-undefined4 CCmdTarget::_MatchDocType_CDocTemplate__UAE_AW4Confidence_1_PBDAAPAVCDocument___Z()
-
-{
-  int iVar1;
-  int iVar2;
-  int iVar3;
-  LPCSTR lpString1;
-  int *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar4;
-
-  EstablishSehFrameProlog();
-  **(undefined4 **)(unaff_EBP + 0xc) = 0;
-  iVar3 = *extraout_ECX;
-  iVar1 = (**(code **)(iVar3 + 0x5c))();
-  *(int *)(unaff_EBP + -0x14) = iVar1;
-  do {
-    if (iVar1 == 0) {
-      CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
-      *(undefined4 *)(unaff_EBP + -4) = 0;
-      iVar3 = (**(code **)(iVar3 + 0x6c))(unaff_EBP + -0x10,4);
-      if ((((iVar3 == 0) || (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0)) ||
-          (lpString1 = (LPCSTR)__mbsrchr(*(undefined4 *)(unaff_EBP + 8),0x2e),
-          lpString1 == (LPCSTR)0x0)) ||
-         (iVar3 = lstrcmpiA(lpString1,*(LPCSTR *)(unaff_EBP + -0x10)), iVar3 != 0)) {
-        *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-        CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
-        uVar4 = 3;
-      }
-      else {
-        *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-        CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
-        uVar4 = 4;
-      }
-LAB_00614ad0:
-      *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-      return uVar4;
-    }
-    iVar1 = (**(code **)(iVar3 + 0x60))(unaff_EBP + -0x14);
-    iVar2 = _AfxComparePath__YGHPBD0_Z(*(undefined4 *)(iVar1 + 0x20),*(undefined4 *)(unaff_EBP + 8))
-    ;
-    if (iVar2 != 0) {
-      uVar4 = 5;
-      **(int **)(unaff_EBP + 0xc) = iVar1;
-      goto LAB_00614ad0;
-    }
-    iVar1 = *(int *)(unaff_EBP + -0x14);
-  } while( true );
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614AEB
-// GHIDRA_NAME CCmdTarget::?CreateNewDocument@CDocTemplate@@UAEPAVCDocument@@XZ
-// GHIDRA_PROTO undefined __thiscall ?CreateNewDocument@CDocTemplate@@UAEPAVCDocument@@XZ(void)
-
-int CCmdTarget::_CreateNewDocument_CDocTemplate__UAEPAVCDocument__XZ()
-
-{
-  int iVar1;
-
-  if ((this[2].m_bResultExpected != 0) &&
-     (iVar1 = _CreateObject_CRuntimeClass__QAEPAVCObject__XZ(), iVar1 != 0)) {
-    (*this->vftable[8].slot_0x04)(iVar1);
-    return iVar1;
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614B12
-// GHIDRA_NAME CCmdTarget::?CreateNewFrame@CDocTemplate@@UAEPAVCFrameWnd@@PAVCDocument@@PAV2@@Z
-// GHIDRA_PROTO undefined __thiscall ?CreateNewFrame@CDocTemplate@@UAEPAVCFrameWnd@@PAVCDocument@@PAV2@@Z(void)
-
-uint CCmdTarget::_CreateNewFrame_CDocTemplate__UAEPAVCFrameWnd__PAVCDocument__PAV2__Z()
-
-{
-  int *piVar1;
-  int iVar2;
-  CCmdTargetVtbl *local_18 [2];
-  CCmdTarget *local_10;
-
-  CDocTemplate::_memset(local_18,0,0x14);
-  local_18[0] = this[3].vftable;
-  if ((this[2].m_xConnPtContainer != 0) &&
-     (local_10 = this, piVar1 = (int *)_CreateObject_CRuntimeClass__QAEPAVCObject__XZ(),
-     piVar1 != (int *)0x0)) {
-    iVar2 = (**(code **)(*piVar1 + 0xc0))(this[2].m_dwRef,0xcf8000,0,local_18);
-    return -(uint)(iVar2 != 0) & (uint)piVar1;
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614BEF
-// GHIDRA_NAME CCmdTarget::?InitialUpdateFrame@CDocTemplate@@UAEXPAVCFrameWnd@@PAVCDocument@@H@Z
-// GHIDRA_PROTO undefined __thiscall ?InitialUpdateFrame@CDocTemplate@@UAEXPAVCFrameWnd@@PAVCDocument@@H@Z(undefined4 param_1, undefined4 param_2)
-
-void __thiscall
-CCmdTarget::_InitialUpdateFrame_CDocTemplate__UAEXPAVCFrameWnd__PAVCDocument__H_Z
-          (CCmdTarget *this,undefined4 param_1,undefined4 param_2)
-
-{
-  undefined4 in_stack_0000000c;
-
-  _InitialUpdateFrame_CFrameWnd__QAEXPAVCDocument__H_Z(param_2,in_stack_0000000c);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614C03
-// GHIDRA_NAME CCmdTarget::?SaveAllModified@CDocTemplate@@UAEHXZ
-// GHIDRA_PROTO undefined __thiscall ?SaveAllModified@CDocTemplate@@UAEHXZ(void)
-
-undefined4 CCmdTarget::_SaveAllModified_CDocTemplate__UAEHXZ()
-
-{
-  CCmdTargetVtbl *pCVar1;
-  CCmdTarget_SetForeignMinisterReadyFlag14_0x00 *pCVar2;
-  undefined uVar3;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  int iVar4;
-  CCmdTarget *local_8;
-
-  pCVar1 = this->vftable;
-  local_8 = this;
-  uVar3 = (*pCVar1[7].slot_0x08)();
-  local_8 = (CCmdTarget *)CONCAT31(extraout_var,uVar3);
-  if (local_8 != (CCmdTarget *)0x0) {
-    pCVar2 = pCVar1[8].SetForeignMinisterReadyFlag14;
-    do {
-      uVar3 = (*pCVar2)(&local_8);
-      iVar4 = (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x98))();
-      if (iVar4 == 0) {
-        return 0;
-      }
-    } while (local_8 != (CCmdTarget *)0x0);
-  }
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614C41
-// GHIDRA_NAME CCmdTarget::?CloseAllDocuments@CDocTemplate@@UAEXH@Z
-// GHIDRA_PROTO undefined __thiscall ?CloseAllDocuments@CDocTemplate@@UAEXH@Z(void)
-
-void CCmdTarget::_CloseAllDocuments_CDocTemplate__UAEXH_Z()
-
-{
-  CCmdTargetVtbl *pCVar1;
-  CCmdTarget_SetForeignMinisterReadyFlag14_0x00 *pCVar2;
-  undefined uVar3;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  CCmdTarget *local_8;
-
-  pCVar1 = this->vftable;
-  local_8 = this;
-  uVar3 = (*pCVar1[7].slot_0x08)();
-  local_8 = (CCmdTarget *)CONCAT31(extraout_var,uVar3);
-  if (local_8 != (CCmdTarget *)0x0) {
-    pCVar2 = pCVar1[8].SetForeignMinisterReadyFlag14;
-    do {
-      uVar3 = (*pCVar2)(&local_8);
-      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x84))();
-    } while (local_8 != (CCmdTarget *)0x0);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614C76
-// GHIDRA_NAME CCmdTarget::?OnIdle@CDocTemplate@@UAEXXZ
-// GHIDRA_PROTO undefined __thiscall ?OnIdle@CDocTemplate@@UAEXXZ(void)
-
-void CCmdTarget::_OnIdle_CDocTemplate__UAEXXZ()
-
-{
-  CCmdTargetVtbl *pCVar1;
-  CCmdTarget_SetForeignMinisterReadyFlag14_0x00 *pCVar2;
-  undefined uVar3;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  CCmdTarget *local_8;
-
-  pCVar1 = this->vftable;
-  local_8 = this;
-  uVar3 = (*pCVar1[7].slot_0x08)();
-  local_8 = (CCmdTarget *)CONCAT31(extraout_var,uVar3);
-  if (local_8 != (CCmdTarget *)0x0) {
-    pCVar2 = pCVar1[8].SetForeignMinisterReadyFlag14;
-    do {
-      uVar3 = (*pCVar2)(&local_8);
-      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xb4))();
-    } while (local_8 != (CCmdTarget *)0x0);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614CA9
-// GHIDRA_NAME CCmdTarget::?OnCmdMsg@CDocTemplate@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
-// GHIDRA_PROTO undefined __thiscall ?OnCmdMsg@CDocTemplate@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z(uint param_1, uint param_2, int param_3, undefined4 param_4)
-
-void __thiscall
-CCmdTarget::_OnCmdMsg_CDocTemplate__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
-          (CCmdTarget *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
-
-{
-  int *piVar1;
-
-  piVar1 = (int *)_AfxDynamicDownCast__YAPAVCObject__PAUCRuntimeClass__PAV1__Z
-                            (&classRuntimeClass,this[1].m_dwRef);
-  if ((param_2 == 0xfffffffc) && (piVar1 != (int *)0x0)) {
-    (**(code **)(*piVar1 + 0x14))(param_1,0xfffffffc,param_3,param_4);
-  }
-  else {
-    TTooltipRelayWindowState::_OnCmdMsg_CCmdTarget__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
-              ((TTooltipRelayWindowState *)this,param_1,param_2,param_3,param_4);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00614E98
-// GHIDRA_NAME CCmdTarget::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined TSoundPlayer::GetTEventHandlerClassNamePointer()
-
-undefined4 __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(undefined4 param_1,byte param_2)
-
-{
-  DestructCViewAndResetVtable_0067358c();
-  if ((param_2 & 1) != 0) {
-    __3_YAXPAX_Z(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00615517
-// GHIDRA_NAME CCmdTarget::?OnSize@CScrollView@@QAEXIHH@Z
-// GHIDRA_PROTO undefined __thiscall ?OnSize@CScrollView@@QAEXIHH@Z(void)
-
-void CCmdTarget::_OnSize_CScrollView__QAEXIHH_Z()
-
-{
-  CWnd::_Default_CWnd__IAEJXZ((CWnd *)this);
-  if (this[2].m_pOuterUnknown == (void *)0xffffffff) {
-    TArmyTacUnit::_SetScaleToFitSize_CScrollView__QAEXUtagSIZE___Z
-              ((TArmyTacUnit *)this,this[2].m_xInnerUnknown,this[2].m_xDispatch);
-  }
-  else {
-    TArmyTacUnit::_UpdateBars_CScrollView__IAEXXZ((TArmyTacUnit *)this);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006158EE
-// GHIDRA_NAME CCmdTarget::?CalcWindowRect@CScrollView@@UAEXPAUtagRECT@@I@Z
-// GHIDRA_PROTO undefined __thiscall ?CalcWindowRect@CScrollView@@UAEXPAUtagRECT@@I@Z(LPRECT param_1, int param_2)
-
-void __thiscall
-CCmdTarget::_CalcWindowRect_CScrollView__UAEXPAUtagRECT__I_Z
-          (CCmdTarget *this,LPRECT param_1,int param_2)
-
-{
-  int iVar1;
-  int iVar2;
-  DWORD DVar3;
-  int iVar4;
-  uint uVar5;
-  int iVar6;
-  BOOL bMenu;
-  CCmdTarget *local_c;
-  TArmyTacUnit *local_8;
-
-  local_c = this;
-  local_8 = (TArmyTacUnit *)this;
-  if (param_2 == 1) {
-    DVar3 = _GetExStyle_CWnd__QBEKXZ();
-    AdjustWindowRectEx(param_1,0,0,DVar3);
-    if (this[2].m_pOuterUnknown != (void *)0xffffffff) {
-      iVar4 = param_1->right - param_1->left;
-      iVar1 = this[2].m_bResultExpected;
-      iVar6 = param_1->bottom - param_1->top;
-      iVar2 = this[2].m_xConnPtContainer;
-      TArmyTacUnit::_GetScrollBarSizes_CScrollView__IAEXAAVCSize___Z(local_8,(int *)&local_c);
-      if (iVar2 != iVar6 && -1 < iVar2 - iVar6) {
-        param_1->right = (int)&local_c->vftable + param_1->right;
-      }
-      if (iVar1 != iVar4 && -1 < iVar1 - iVar4) {
-        param_1->bottom = (int)&local_8->vftable + param_1->bottom;
-      }
-    }
-  }
-  else {
-    uVar5 = _GetExStyle_CWnd__QBEKXZ();
-    uVar5 = uVar5 & 0xfffffdff;
-    bMenu = 0;
-    DVar3 = _GetStyle_CWnd__QBEKXZ();
-    AdjustWindowRectEx(param_1,DVar3,bMenu,uVar5);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00615975
-// GHIDRA_NAME CCmdTarget::?OnHScroll@CScrollView@@QAEXIIPAVCScrollBar@@@Z
-// GHIDRA_PROTO undefined ?OnHScroll@CScrollView@@QAEXIIPAVCScrollBar@@@Z()
-
-void __thiscall
-CCmdTarget::_OnHScroll_CScrollView__QAEXIIPAVCScrollBar___Z
-          (int *param_1,undefined1 param_2,undefined4 param_3,int param_4)
-
-{
-  int iVar1;
-  int iVar2;
-
-  if ((param_4 != 0) && (iVar1 = _SendChildNotifyLastMsg_CWnd__QAEHPAJ_Z(0), iVar1 != 0)) {
-    return;
-  }
-  iVar1 = *param_1;
-  iVar2 = (**(code **)(iVar1 + 0x70))(0);
-  if (param_4 == iVar2) {
-    (**(code **)(iVar1 + 0xc4))(CONCAT11(0xff,param_2),param_3,1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006159B9
-// GHIDRA_NAME CCmdTarget::?OnVScroll@CScrollView@@QAEXIIPAVCScrollBar@@@Z
-// GHIDRA_PROTO undefined ?OnVScroll@CScrollView@@QAEXIIPAVCScrollBar@@@Z()
-
-void __thiscall
-CCmdTarget::_OnVScroll_CScrollView__QAEXIIPAVCScrollBar___Z
-          (int *param_1,byte param_2,undefined4 param_3,int param_4)
-
-{
-  int iVar1;
-  int iVar2;
-
-  if ((param_4 != 0) && (iVar1 = _SendChildNotifyLastMsg_CWnd__QAEHPAJ_Z(0), iVar1 != 0)) {
-    return;
-  }
-  iVar1 = *param_1;
-  iVar2 = (**(code **)(iVar1 + 0x70))(1);
-  if (param_4 == iVar2) {
-    (**(code **)(iVar1 + 0xc4))(CONCAT31((uint3)param_2,0xff),param_3,1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00615A00
-// GHIDRA_NAME CCmdTarget::?OnMouseWheel@CScrollView@@QAEHIFVCPoint@@@Z
-// GHIDRA_PROTO int __thiscall ?OnMouseWheel@CScrollView@@QAEHIFVCPoint@@@Z(uint param_1, short param_2, CPoint param_3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  public: int __thiscall CScrollView::OnMouseWheel(unsigned int,short,class CPoint)
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Library: Visual Studio 2003 Release
-// GHIDRA_COMMENT_END
-
-/* Library Function - Single Match
-    public: int __thiscall CScrollView::OnMouseWheel(unsigned int,short,class CPoint)
-
-   Library: Visual Studio 2003 Release */
-
-int CCmdTarget::_OnMouseWheel_CScrollView__QAEHIFVCPoint___Z(ushort param_1)
-
-{
-  int iVar1;
-
-  if (((param_1 & 0xc) == 0) &&
-     (iVar1 = _GetParentSplitter_CView__SGPAVCSplitterWnd__PBVCWnd__H_Z(this,1), iVar1 == 0)) {
-    iVar1 = CScrollView::_DoMouseWheel_CScrollView__QAEHIFVCPoint___Z((CScrollView *)this,param_1);
-    return iVar1;
-  }
   return 0;
 }
 

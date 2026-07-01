@@ -4,47 +4,70 @@
 // Bucket: TGameWindow.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFB30
-// GHIDRA_NAME TGameWindow::CreateTGameWindowInstance
-// GHIDRA_PROTO undefined CreateTGameWindowInstance()
+// GHIDRA_NAME TGameWindow::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TGameWindow::CreateTGameWindowInstance(void)
+undefined4 * TGameWindow::CreateObject(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063331a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0xb0);
+  puVar1 = (undefined4 *)operator_new(0xb0);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::ConstructUiWindowResourceEntryBase(this);
-    this->vftable = (TControlVtbl *)&TGameWindowVtbl_00656a98;
-    this[1].field_0x1c = 0;
-    *(undefined2 *)&this[1].field_0x1e = 0x14;
-    *(undefined4 *)&this[1].field_0x20 = 0;
-    *(undefined4 *)&this[1].field_0x24 = 0;
-    *(undefined4 *)&this[1].field_0x28 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00407c43();
+    *puVar1 = &_vftable_;
+    *(undefined1 *)(puVar1 + 0x28) = 0;
+    *(undefined2 *)((int)puVar1 + 0xa2) = 0x14;
+    puVar1[0x29] = 0;
+    puVar1[0x2a] = 0;
+    puVar1[0x2b] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TControl *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFBF0
-// GHIDRA_NAME TGameWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TGameWindow::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGameWindow::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TGameWindow::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTGameWindow;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FFC10
+// GHIDRA_NAME TGameWindow::TGameWindow
+// GHIDRA_PROTO undefined __thiscall TGameWindow(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Constructor for viewport-adaptive turn-order navigation window entries used by BuildTurnEventDialogUiByCode event branches 0x7D1/0x7D2.
+// GHIDRA_COMMENT_END
+
+/* Constructor for viewport-adaptive turn-order navigation window entries used by
+   BuildTurnEventDialogUiByCode event branches 0x7D1/0x7D2. */
+
+TGameWindow * TGameWindow::TGameWindow()
+
+{
+  func_0x00407c43();
+  this->vftable = &_vftable_;
+  this->field_0xa0 = 0;
+  *(undefined4 *)&this->field_0xa4 = 0;
+  *(undefined4 *)&this->field_0xa8 = 0;
+  *(undefined4 *)&this->field_0xac = 0;
+  *(undefined2 *)&this->field_0xa2 = 0x14;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFC60
@@ -59,63 +82,63 @@ CRuntimeClass * TGameWindow::GetTEventHandlerClassNamePointer()
 TGameWindow * TGameWindow::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
+  func_0x00403d0a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFCB0
-// GHIDRA_NAME TGameWindow::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_NAME TGameWindow::DispatchSlot9CToLinkedChildren
+// GHIDRA_PROTO undefined __thiscall DispatchSlot9CToLinkedChildren(void)
 
-void TGameWindow::OrphanCallChain_C11_I88_004874b0()
+void TGameWindow::DispatchSlot9CToLinkedChildren()
 
 {
   TGameWindowVtbl *pTVar1;
   char cVar2;
-
+  
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_3b)();
   if (cVar2 == '\0') {
     (*pTVar1->UpdateTurnOrderNavigationWindowLayout)();
   }
-  TWindow::OrphanCallChain_C11_I88_004874b0((TWindow *)this);
+  func_0x00406712();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFD10
-// GHIDRA_NAME TGameWindow::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_NAME TGameWindow::DispatchUiMouseMoveToChildren
+// GHIDRA_PROTO undefined __thiscall DispatchUiMouseMoveToChildren(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 void __thiscall
-TGameWindow::SetForeignMinisterReadyFlag14
+TGameWindow::DispatchUiMouseMoveToChildren
           (TGameWindow *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
           undefined4 param_4)
 
 {
-  TView::SetForeignMinisterReadyFlag14((TView *)this,param_1,param_2,param_3,param_4);
+  func_0x0040723e(param_1,param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFD40
-// GHIDRA_NAME TGameWindow::InvalidateWindowRectFromHandleField1C
-// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_NAME TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl
+// GHIDRA_PROTO undefined __thiscall DispatchUiMouseEventToChildrenOrSelf_Impl(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 void __thiscall
-TGameWindow::InvalidateWindowRectFromHandleField1C
+TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl
           (TGameWindow *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
           undefined4 param_4)
 
 {
-  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this,param_1,param_2,param_3,param_4);
+  func_0x00406429(param_1,param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFD70
-// GHIDRA_NAME TGameWindow::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TGameWindow::ForwardParam
+// GHIDRA_PROTO undefined __thiscall ForwardParam(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles commands for the viewport-adaptive turn-order navigation window. Maps command codes 0x31..0x35 to turn-state requests (0x69,0x6A,0x67,0x68,0x6D) while guarding against already-active target event states (0x7DE,0x7DB,0x7D9/0x7DA,0x7D8,0x8FC).
 // GHIDRA_COMMENT_END
@@ -124,7 +147,7 @@ TGameWindow::InvalidateWindowRectFromHandleField1C
    0x31..0x35 to turn-state requests (0x69,0x6A,0x67,0x68,0x6D) while guarding against
    already-active target event states (0x7DE,0x7DB,0x7D9/0x7DA,0x7D8,0x8FC). */
 
-void TGameWindow::OrphanTiny_ReturnZero_0048a730()
+void TGameWindow::ForwardParam()
 
 {
   short sVar1;
@@ -134,7 +157,7 @@ void TGameWindow::OrphanTiny_ReturnZero_0048a730()
   undefined4 uVar5;
   int unaff_retaddr;
   int *piVar3;
-
+  
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920)(0x6d61696e);
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
@@ -143,19 +166,19 @@ void TGameWindow::OrphanTiny_ReturnZero_0048a730()
   if (*(short *)(unaff_retaddr + 0x20) == 0x29a) {
     return;
   }
-  iVar4 = InvokeAfxThreadAndCallSecondaryRefresh();
+  iVar4 = func_0x004026bc();
   if (iVar4 != 0) {
     return;
   }
   *(undefined2 *)(unaff_retaddr + 0x20) = 0x29a;
   if ((((*(short *)(unaff_retaddr + 0x1c) == 0x68) || (*(short *)(unaff_retaddr + 0x1c) == 0x48)) &&
-      (iVar4 = (**(code **)(*piVar3 + 0x94))(0x71756572), iVar4 != 0)) && (DAT_006a21b8 != 0)) {
+      (iVar4 = (**(code **)(*piVar3 + 0x94))(0x71756572), iVar4 != 0)) && (g_pHelpMgr != 0)) {
     (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
     if (*(short *)&g_pUiRuntimeContext->field_0x4 == 0x7dd) {
-      DispatchUiRuntimeMessage101AAndRefreshActiveView();
+      func_0x0040425f();
       return;
     }
-    SelectAndActivatePendingEventForCurrentView();
+    func_0x00407018();
     return;
   }
   sVar1 = *(short *)(unaff_retaddr + 0x1c);
@@ -167,8 +190,8 @@ void TGameWindow::OrphanTiny_ReturnZero_0048a730()
         (*g_pLocalizationTable->vftable[8].slot_0x04)();
         return;
       }
-      uVar5 = UiRuntimeContext::GetActiveNationId();
-      uVar5 = ConsumeFirstPendingAbilityUnlock(uVar5);
+      uVar5 = func_0x00403b16();
+      uVar5 = func_0x00403cf6(uVar5);
       if ((short)uVar5 != -1) {
         (**(code **)(g_pUiRuntimeContext->vftable + 0x88))(uVar5);
         return;
@@ -180,7 +203,7 @@ void TGameWindow::OrphanTiny_ReturnZero_0048a730()
       if (*(int *)&g_pUiRuntimeContext->field_0xf4 == 0) {
         return;
       }
-      SendMessage808IfSelectionStateActive();
+      func_0x0040485e();
       return;
     }
 switchD_004ffe93_default:
@@ -258,11 +281,11 @@ void TGameWindow::UpdateTurnOrderNavigationWindowLayout()
   LONG LStack_1c;
   LONG LStack_18;
   tagRECT tStack_14;
-
-  if (*(short *)(DAT_006a2158 + 0xe) == 0x7d1) {
+  
+  if (*(short *)(g_pDisplayMgr + 0xe) == 0x7d1) {
     pTVar1 = this->vftable;
     (*pTVar1->OrphanRetStub_0059add0_4b)(&local_20);
-    piVar2 = (int *)InitializeGlobalRectDefaultsIfUninitialized();
+    piVar2 = (int *)func_0x00406b9f();
     CopyRect(&tStack_14,(RECT *)(*piVar2 + 4));
     local_20 = tStack_14.top;
     LStack_18 = tStack_14.bottom;
@@ -306,8 +329,8 @@ void TGameWindow::NoOpTurnOrderNavigationVtableSlotB()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500240
-// GHIDRA_NAME TGameWindow::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TGameWindow::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Turn-order navigation window cleanup override: executes class-specific teardown path and clears the display-manager active dialog slot (DAT_006a2158 + 0x4).
 // GHIDRA_COMMENT_END
@@ -315,12 +338,12 @@ void TGameWindow::NoOpTurnOrderNavigationVtableSlotB()
 /* Turn-order navigation window cleanup override: executes class-specific teardown path and clears
    the display-manager active dialog slot (DAT_006a2158 + 0x4). */
 
-void TGameWindow::_scalar_deleting_destructor_()
+void TGameWindow::Free()
 
 {
   (*this->vftable->NoOpTurnOrderNavigationVtableSlotB)();
-  TWindow::_scalar_deleting_destructor_((TWindow *)this);
-  *(undefined4 *)(DAT_006a2158 + 4) = 0;
+  func_0x00404507();
+  *(undefined4 *)(g_pDisplayMgr + 4) = 0;
   return;
 }
 

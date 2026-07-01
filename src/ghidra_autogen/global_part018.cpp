@@ -3,7 +3,7 @@
 // Program: Imperialism.exe
 // Bucket: global_part018.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006320B3
+// GHIDRA_FUNCTION IMPERIALISM 0x00639B30
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -14,7 +14,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632117
+// GHIDRA_FUNCTION IMPERIALISM 0x00639B50
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -25,7 +25,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063213F
+// GHIDRA_FUNCTION IMPERIALISM 0x00639B70
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -36,7 +36,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632173
+// GHIDRA_FUNCTION IMPERIALISM 0x00639B90
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -47,7 +47,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006321D7
+// GHIDRA_FUNCTION IMPERIALISM 0x00639BB0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -58,7 +58,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006321FD
+// GHIDRA_FUNCTION IMPERIALISM 0x00639BD0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -69,7 +69,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632225
+// GHIDRA_FUNCTION IMPERIALISM 0x00639BF0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -80,7 +80,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632245
+// GHIDRA_FUNCTION IMPERIALISM 0x00639C10
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -91,7 +91,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063225F
+// GHIDRA_FUNCTION IMPERIALISM 0x00639C30
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -102,7 +102,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063228D
+// GHIDRA_FUNCTION IMPERIALISM 0x00639C50
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -113,7 +113,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006322BD
+// GHIDRA_FUNCTION IMPERIALISM 0x00639C70
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -124,7 +124,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006322E5
+// GHIDRA_FUNCTION IMPERIALISM 0x00639CA0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -135,7 +135,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006322FF
+// GHIDRA_FUNCTION IMPERIALISM 0x00639CC0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -146,7 +146,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063232F
+// GHIDRA_FUNCTION IMPERIALISM 0x00639CF0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -157,7 +157,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063237F
+// GHIDRA_FUNCTION IMPERIALISM 0x00639D0D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -168,7 +168,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006323AD
+// GHIDRA_FUNCTION IMPERIALISM 0x00639D4C
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -179,7 +179,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632405
+// GHIDRA_FUNCTION IMPERIALISM 0x00639D70
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -190,7 +190,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632442
+// GHIDRA_FUNCTION IMPERIALISM 0x00639DA0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -201,7 +201,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632468
+// GHIDRA_FUNCTION IMPERIALISM 0x00639DC0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -212,7 +212,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632498
+// GHIDRA_FUNCTION IMPERIALISM 0x00639DF0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -223,7 +223,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006324CD
+// GHIDRA_FUNCTION IMPERIALISM 0x00639E10
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -234,7 +234,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006324EF
+// GHIDRA_FUNCTION IMPERIALISM 0x00639E40
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -245,7 +245,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063250D
+// GHIDRA_FUNCTION IMPERIALISM 0x00639EA2
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -256,7 +256,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632565
+// GHIDRA_FUNCTION IMPERIALISM 0x00639EE0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -267,7 +267,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063258F
+// GHIDRA_FUNCTION IMPERIALISM 0x00639F05
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -278,7 +278,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006325B8
+// GHIDRA_FUNCTION IMPERIALISM 0x00639F25
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -289,7 +289,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063267D
+// GHIDRA_FUNCTION IMPERIALISM 0x00639F55
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -300,7 +300,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006326BF
+// GHIDRA_FUNCTION IMPERIALISM 0x00639F8D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -311,7 +311,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006326F7
+// GHIDRA_FUNCTION IMPERIALISM 0x00639FAD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -322,7 +322,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063271F
+// GHIDRA_FUNCTION IMPERIALISM 0x00639FCD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -333,7 +333,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063276B
+// GHIDRA_FUNCTION IMPERIALISM 0x00639FF5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -344,7 +344,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063278F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A035
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -355,7 +355,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006327B9
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A05F
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -366,7 +366,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006327DF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A09D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -377,7 +377,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006327FF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A0C7
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -388,7 +388,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063281F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A0F5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -399,7 +399,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063283F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A115
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -410,7 +410,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063285F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A135
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -421,7 +421,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063287F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A14D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -432,7 +432,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063289F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A175
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -443,7 +443,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006328C9
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A18D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -454,7 +454,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006328EF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A1F5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -465,7 +465,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063290D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A225
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -476,7 +476,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063292F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A245
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -487,7 +487,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632965
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A275
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -498,7 +498,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063298F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A2BD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -509,7 +509,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006329AF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A2E5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -520,7 +520,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006329CF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A2FD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -531,7 +531,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006329EF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A325
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -542,7 +542,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632A0F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A34D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -553,7 +553,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632A2F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A3A5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -564,7 +564,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632A4F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A3F1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -575,7 +575,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632A6D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A427
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -586,7 +586,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632A8F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A44D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -597,7 +597,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632AAF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A479
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -608,7 +608,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632ACF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A4A9
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -619,7 +619,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632B05
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A4D9
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -630,7 +630,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632B45
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A515
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -641,7 +641,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632B70
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A56D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -652,7 +652,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632B8D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A597
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -663,7 +663,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632BAD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A5BD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -674,7 +674,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632BDD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A5E7
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -685,7 +685,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632BFD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A60D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -696,7 +696,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632C35
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A62D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -707,7 +707,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632C65
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A681
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -718,7 +718,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632CE5
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A6AD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -729,7 +729,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632D1F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A6CD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -740,7 +740,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632D3F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A73D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -751,7 +751,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632D65
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A76D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -762,7 +762,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632D85
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A78D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -773,7 +773,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632D9F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A7BD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -784,7 +784,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632DC5
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A7E5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -795,7 +795,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632DED
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A805
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -806,7 +806,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632E0F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A82B
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -817,7 +817,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632E35
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A864
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -828,7 +828,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632E55
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A898
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -839,7 +839,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632E6F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A8BD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -850,7 +850,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632E95
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A8E7
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -861,7 +861,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632EC5
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A90D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -872,7 +872,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632F05
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A92D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -883,7 +883,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632F2F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A950
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -894,7 +894,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632F55
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A97B
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -905,7 +905,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632F85
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A9A0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -916,7 +916,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632FAF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A9C0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -927,7 +927,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632FDD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063A9DD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -938,7 +938,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00632FFF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AA05
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -949,7 +949,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063301D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AA1D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -960,7 +960,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063303F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AA3D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -971,7 +971,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063306D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AA5D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -982,7 +982,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633095
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AA7D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -993,7 +993,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006330AD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AA95
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1004,7 +1004,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006330D5
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AAB1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1015,7 +1015,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006330EF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AABD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1026,7 +1026,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633122
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AAD1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1037,7 +1037,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063313D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AAE5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1048,7 +1048,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063316D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AB2E
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1059,7 +1059,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063319D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AB62
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1070,7 +1070,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006331CD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AB75
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1081,7 +1081,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006331EF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AB8A
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1092,7 +1092,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063320F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063ABB0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1103,7 +1103,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063322D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063ABD8
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1114,7 +1114,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633267
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AC00
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1125,7 +1125,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063328D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AC2E
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1136,7 +1136,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006332AD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AC5A
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1147,7 +1147,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006332D7
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AC6D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1158,7 +1158,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006332FF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AC81
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1169,7 +1169,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063331F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AC95
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1180,7 +1180,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063333F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063ACA9
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1191,7 +1191,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063335F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063ACD1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1202,7 +1202,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006333ED
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AD0D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1213,7 +1213,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633445
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AD21
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1224,7 +1224,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006334DD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AD36
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1235,7 +1235,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633565
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AD49
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1246,7 +1246,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633595
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AD5D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1257,7 +1257,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006335BD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AD69
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1268,7 +1268,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006335DF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AD7E
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1279,7 +1279,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633607
+// GHIDRA_FUNCTION IMPERIALISM 0x0063ADA1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1290,7 +1290,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063362D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063ADB5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1301,7 +1301,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063364D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063ADCA
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1312,7 +1312,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063366F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063ADDD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1323,7 +1323,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063368F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063ADF1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1334,7 +1334,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006336AF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AE05
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1345,7 +1345,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006336FD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AE19
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1356,7 +1356,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063372D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AE25
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1367,7 +1367,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063374F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AE3B
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1378,7 +1378,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063376F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AE45
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1389,7 +1389,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063378F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AE5A
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1400,7 +1400,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006337AF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AE6D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1411,7 +1411,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006337CF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AE79
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1422,7 +1422,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006337EF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AE8D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1433,7 +1433,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063380F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AEB1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1444,7 +1444,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063382D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AEC5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1455,7 +1455,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063384F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AED1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1466,7 +1466,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633893
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AEE5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1477,7 +1477,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006338C8
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AEFA
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1488,7 +1488,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063393D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AF0D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1499,7 +1499,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633994
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AF2F
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1510,7 +1510,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006339BD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AF57
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1521,7 +1521,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006339ED
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AF8A
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1532,7 +1532,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633A3C
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AF9E
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1543,7 +1543,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633A6F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AFBC
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1554,7 +1554,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633ABD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AFD1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1565,7 +1565,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633B1D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063AFE5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1576,7 +1576,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633BAF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B001
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1587,7 +1587,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633BF7
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B015
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1598,7 +1598,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633C1D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B029
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1609,7 +1609,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633C3D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B054
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1620,7 +1620,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633C68
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B069
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1631,7 +1631,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633C97
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B094
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1642,7 +1642,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633CC5
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B0BD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1653,7 +1653,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633CDD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B0E8
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1664,7 +1664,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633D07
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B111
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1675,7 +1675,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633D2F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B125
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1686,7 +1686,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633D55
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B139
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1697,7 +1697,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633D6D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B14D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1708,7 +1708,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633D97
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B161
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1719,7 +1719,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633DBD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B175
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1730,7 +1730,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633DDF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B189
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1741,7 +1741,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633EA5
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B19D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1752,7 +1752,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633EEF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B1B1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1763,7 +1763,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633F0D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B1C7
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1774,7 +1774,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633F37
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B200
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1785,7 +1785,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633F5D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B228
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1796,7 +1796,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633F95
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B254
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1807,7 +1807,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633FC7
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B27C
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1818,7 +1818,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00633FED
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B2A4
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1829,7 +1829,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634010
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B2CD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1840,7 +1840,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634075
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B2E1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1851,7 +1851,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063409F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B2F5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1862,7 +1862,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006340BF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B309
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1873,7 +1873,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006340DF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B31D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1884,7 +1884,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006340FF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B331
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1895,7 +1895,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063411F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B345
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1906,7 +1906,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063413F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B36F
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1917,7 +1917,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634169
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B3A2
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1928,7 +1928,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063418F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B3C5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1939,7 +1939,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006341AF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B3E1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1950,7 +1950,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006341CF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B3F5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1961,7 +1961,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006341EF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B409
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1972,7 +1972,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063420F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B41D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1983,7 +1983,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063422F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B43A
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -1994,7 +1994,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063424F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B44D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2005,7 +2005,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063426F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B499
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2016,7 +2016,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006342DF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B4E5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2027,7 +2027,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063430F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B4FC
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2038,7 +2038,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063432F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B514
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2049,7 +2049,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063434F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B521
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2060,7 +2060,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063436F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B53F
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2071,7 +2071,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063438F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B552
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2082,7 +2082,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006343AF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B567
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2093,7 +2093,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006343CD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B579
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2104,7 +2104,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006343EF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B58D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2115,7 +2115,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063440F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B5A1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2126,7 +2126,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063443F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B5B5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2137,7 +2137,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063445F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B5C9
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2148,7 +2148,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063447F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B5DD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2159,7 +2159,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006344A7
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B5F1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2170,7 +2170,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006344D7
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B607
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2181,7 +2181,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006344FF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B619
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2192,7 +2192,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063451F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B62D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2203,7 +2203,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634548
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B641
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2214,7 +2214,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063456F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B655
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2225,7 +2225,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634598
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B669
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2236,7 +2236,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006345BF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B691
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2247,7 +2247,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006345E8
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B6A5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2258,7 +2258,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063460F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B6B9
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2269,7 +2269,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634638
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B6CD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2280,7 +2280,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063465D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B6E1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2291,7 +2291,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063467F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B6F5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2302,7 +2302,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006346A8
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B734
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2313,7 +2313,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006346CD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B754
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2324,7 +2324,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006346EF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B76A
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2335,7 +2335,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063470F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B785
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2346,7 +2346,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634798
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B799
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2357,7 +2357,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634838
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B7AD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2368,7 +2368,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063487F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B7CF
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2379,7 +2379,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063489D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B7E1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2390,7 +2390,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006348BD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B7F5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2401,7 +2401,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006348DD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B830
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2412,7 +2412,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634923
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B87C
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2423,7 +2423,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063494F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B8A8
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2434,7 +2434,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063496D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B8BD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2445,7 +2445,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0063499D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B8D1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2456,7 +2456,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006349C5
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B905
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2467,7 +2467,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006349DD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B961
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2478,7 +2478,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634BB4
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B975
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2489,7 +2489,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634C49
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B989
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2500,7 +2500,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634C99
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B9B0
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2511,7 +2511,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634CBF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B9D8
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2522,7 +2522,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634CDF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063B9F5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2533,7 +2533,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634D00
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BA1D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2544,7 +2544,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634D1F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BA31
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2555,7 +2555,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634D3F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BA45
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2566,7 +2566,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634D5D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BA51
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2577,7 +2577,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634DA3
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BA88
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2588,7 +2588,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634DCF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BAB6
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2599,7 +2599,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634DED
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BAE1
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2610,7 +2610,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634E1D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BAF5
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2621,7 +2621,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634E3F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BB0B
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2632,7 +2632,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634E5D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BB1D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2643,7 +2643,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634E7F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BB31
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2654,7 +2654,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634EB5
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BB45
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2665,7 +2665,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634EED
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BB64
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2676,7 +2676,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634F15
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BB71
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2687,7 +2687,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634F2F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BB85
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2698,7 +2698,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634F4D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BB99
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2709,7 +2709,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634F6F
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BBCD
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2720,7 +2720,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634F8D
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BC29
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2731,7 +2731,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634FAF
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BC3D
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 
@@ -2742,7 +2742,7 @@ void ___CxxFrameHandler(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00634FCD
+// GHIDRA_FUNCTION IMPERIALISM 0x0063BC7F
 // GHIDRA_NAME ___CxxFrameHandler
 // GHIDRA_PROTO undefined ___CxxFrameHandler()
 

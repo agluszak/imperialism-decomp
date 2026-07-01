@@ -4,43 +4,43 @@
 // Bucket: TPictureText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5260
-// GHIDRA_NAME TPictureText::CreateTPictureTextInstance
-// GHIDRA_PROTO undefined CreateTPictureTextInstance()
+// GHIDRA_NAME TPictureText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TStaticText * TPictureText::CreateTPictureTextInstance(void)
+undefined4 * TPictureText::CreateObject(void)
 
 {
-  TStaticText *this;
-  TStaticText *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638e2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  pTVar1 = (TStaticText *)0x0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::TStaticText(this);
-    this->vftable = (TStaticTextVtbl *)&TPictureTextVtbl_0066c990;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040541b();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B52E0
-// GHIDRA_NAME TPictureText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TPictureText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPictureText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TPictureText::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTPictureText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5300
@@ -50,8 +50,8 @@ CRuntimeClass * TPictureText::GetTEventHandlerClassNamePointer()
 TPictureText * TPictureText::ConstructTPictureTextBaseState()
 
 {
-  TStaticText::TStaticText((TStaticText *)this);
-  this->vftable = &TPictureTextVtbl_0066c990;
+  func_0x0040541b();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,9 +62,9 @@ TPictureText * TPictureText::ConstructTPictureTextBaseState()
 TPictureText * TPictureText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TStaticText::~TStaticText((TStaticText *)this);
+  func_0x00407383();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }

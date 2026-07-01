@@ -4,55 +4,55 @@
 // Bucket: TPictureNumberText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5120
-// GHIDRA_NAME TPictureNumberText::CreateTPictureNumberTextInstance
-// GHIDRA_PROTO undefined CreateTPictureNumberTextInstance()
+// GHIDRA_NAME TPictureNumberText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TEditText * TPictureNumberText::CreateTPictureNumberTextInstance(void)
+undefined4 * TPictureNumberText::CreateObject(void)
 
 {
-  TEditText *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638e0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TEditText *)__2_YAPAXI_Z(0xac);
+  puVar1 = (undefined4 *)operator_new(0xac);
   local_4 = 0;
-  if (this != (TEditText *)0x0) {
-    TEditText::ConstructUiNumericTextEntryBase(this);
-    this[1].vftable = (TEditTextVtbl *)0x0;
-    this->vftable = (TEditTextVtbl *)&TPictureNumberTextVtbl_0066c740;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040913d();
+    puVar1[0x28] = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TEditText *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B51C0
-// GHIDRA_NAME TPictureNumberText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TPictureNumberText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPictureNumberText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TPictureNumberText::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTPictureNumberText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B51E0
-// GHIDRA_NAME TPictureNumberText::ConstructTPictureNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall TPictureNumberText::ConstructTPictureNumberTextBaseState(void)
+// GHIDRA_NAME TPictureNumberText::TPictureNumberText
+// GHIDRA_PROTO undefined __thiscall TPictureNumberText(void)
 
-TPictureNumberText * TPictureNumberText::ConstructTPictureNumberTextBaseState()
+TPictureNumberText * TPictureNumberText::TPictureNumberText()
 
 {
-  TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
+  func_0x0040913d();
   *(undefined4 *)&this->field_0xa0 = 0;
-  this->vftable = &TPictureNumberTextVtbl_0066c740;
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -63,9 +63,9 @@ TPictureNumberText * TPictureNumberText::ConstructTPictureNumberTextBaseState()
 TPictureNumberText * TPictureNumberText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTEditTextAndMaybeFree((TView *)this);
+  func_0x0040736a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }

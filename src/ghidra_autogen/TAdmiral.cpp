@@ -3,17 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TAdmiral.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040231A
-// GHIDRA_NAME TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
-// GHIDRA_PROTO undefined __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(void)
-
-void TAdmiral::GenerateMappedFlavorTextByNationSlotField0C()
-
-{
-  GenerateMappedFlavorTextByTableSlot();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7EB0
 // GHIDRA_NAME TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
 // GHIDRA_PROTO undefined __thiscall GenerateMappedFlavorTextByNationSlotField0C(void)
@@ -21,32 +10,99 @@ void TAdmiral::GenerateMappedFlavorTextByNationSlotField0C()
 void TAdmiral::GenerateMappedFlavorTextByNationSlotField0C()
 
 {
-  GenerateMappedFlavorTextByTableSlot();
+  func_0x00405312();
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005512D0
+// GHIDRA_NAME TAdmiral::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TAdmiral::CreateObject(void)
+
+{
+  CString *this;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  int iVar3;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063510d;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar2 = (undefined4 *)operator_new(0x1c);
+  if (puVar2 == (undefined4 *)0x0) {
+    *unaff_FS_OFFSET = local_c;
+    return (undefined4 *)0x0;
+  }
+  *puVar2 = &TObject::_vftable_;
+  this = (CString *)(puVar2 + 3);
+  local_4._0_1_ = 1;
+  local_4._1_3_ = 0;
+  *(undefined2 *)(puVar2 + 1) = 0xffff;
+  puVar2[2] = 0;
+  CString::CString(this);
+  *(undefined2 *)(puVar2 + 4) = 0;
+  puVar2[5] = g_pNavySecondaryOrderListHead;
+  puVar2[6] = 0;
+  *puVar2 = &_vftable_;
+  local_4 = CONCAT31(local_4._1_3_,2);
+  g_pNavySecondaryOrderListHead = puVar2;
+  if (puVar2[5] != 0) {
+    *(undefined4 **)(puVar2[5] + 0x18) = puVar2;
+  }
+  if (*(short *)(puVar2 + 1) != -1) {
+    func_0x0040231a(this);
+    for (puVar1 = g_pNavySecondaryOrderListHead; puVar1 != (undefined4 *)0x0;
+        puVar1 = (undefined4 *)puVar1[5]) {
+      if ((puVar1 != puVar2) &&
+         (iVar3 = CompareAnsiStringsWithMbcsAwareness(puVar1[3],this->m_pchData), iVar3 == 0)) {
+        func_0x004058f3();
+      }
+    }
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00551410
+// GHIDRA_NAME TAdmiral::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TAdmiral::GetRuntimeClass()
+
+{
+  return &classTAdmiral;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00551430
 // GHIDRA_NAME TAdmiral::TAdmiral
-// GHIDRA_PROTO undefined __thiscall TAdmiral::TAdmiral(undefined2 param_1)
+// GHIDRA_PROTO undefined __thiscall TAdmiral(undefined2 param_1)
 
 TAdmiral * TAdmiral::TAdmiral(undefined2 param_1)
 
 {
+  undefined1 *this_00;
   TAdmiral *pTVar1;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   puStack_8 = &LAB_00635133;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->vftable = (TAdmiralVtbl *)&RefCountedObjectBase::_vftable_;
+  this->vftable = (TAdmiralVtbl *)&TObject::_vftable_;
+  this_00 = &this->field_0xc;
   local_4 = 0;
   *(undefined2 *)&this->field_0x4 = param_1;
   *(undefined4 *)&this->field_0x8 = 0;
-  CString::__0CString__QAE_XZ((CString *)&this->field_0xc);
+  CString::CString((CString *)this_00);
   *(undefined2 *)&this->field_0x10 = 0;
   *(TAdmiral **)&this->field_0x14 = g_pNavySecondaryOrderListHead;
   *(undefined4 *)&this->field_0x18 = 0;
@@ -57,14 +113,14 @@ TAdmiral * TAdmiral::TAdmiral(undefined2 param_1)
     *(TAdmiral **)(*(int *)&this->field_0x14 + 0x18) = this;
   }
   if (*(short *)&this->field_0x4 != -1) {
-    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
-              ((TAdmiral *)g_apTerrainTypeDescriptorTable[*(short *)&this->field_0x4]);
+    func_0x0040231a(this_00);
     for (pTVar1 = g_pNavySecondaryOrderListHead; pTVar1 != (TAdmiral *)0x0;
         pTVar1 = *(TAdmiral **)&pTVar1->field_0x14) {
       if ((pTVar1 != this) &&
-         (iVar2 = __mbscmp(*(undefined4 *)&pTVar1->field_0xc,*(undefined4 *)&this->field_0xc),
-         iVar2 == 0)) {
-        RemoveDuplicateNavySecondaryOrdersByDisplayName();
+         (iVar2 = CompareAnsiStringsWithMbcsAwareness
+                            (*(undefined4 *)&pTVar1->field_0xc,*(undefined4 *)this_00), iVar2 == 0))
+      {
+        func_0x004058f3();
       }
     }
   }
@@ -72,9 +128,23 @@ TAdmiral * TAdmiral::TAdmiral(undefined2 param_1)
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00551550
+// GHIDRA_NAME TAdmiral::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TAdmiral * TAdmiral::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x004051cd();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00551580
 // GHIDRA_NAME TAdmiral::DestructTAdmiral
-// GHIDRA_PROTO undefined __thiscall TAdmiral::DestructTAdmiral(void)
+// GHIDRA_PROTO undefined __thiscall DestructTAdmiral(void)
 
 void TAdmiral::DestructTAdmiral()
 
@@ -83,14 +153,129 @@ void TAdmiral::DestructTAdmiral()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00635158;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::__1CString__QAE_XZ((CString *)&this->field_0xc);
+  CString::~CString((CString *)&this->field_0xc);
   this->vftable = (TAdmiralVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005515D0
+// GHIDRA_NAME TAdmiral::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
+
+void TAdmiral::Free()
+
+{
+  if (g_pNavySecondaryOrderListHead == this) {
+    g_pNavySecondaryOrderListHead = *(TAdmiral **)&this->field_0x14;
+  }
+  if (*(int *)&this->field_0x14 != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x14 + 0x18) = *(undefined4 *)&this->field_0x18;
+  }
+  if (*(int *)&this->field_0x18 != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x18 + 0x14) = *(undefined4 *)&this->field_0x14;
+  }
+  if (*(int *)&this->field_0x8 != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x8 + 0x20) = 0;
+  }
+  if (this != (TAdmiral *)0x0) {
+    (*this->vftable->DeserializeRecruitScenarioAndInstantiateOrders)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00551670
+// GHIDRA_NAME TAdmiral::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
+
+void TAdmiral::WriteTo(int *param_1)
+
+{
+  int iVar1;
+  code *pcVar2;
+  TShip *pTVar3;
+  int *piStack_14;
+  
+  piStack_14 = param_1;
+  func_0x0040583a();
+  iVar1 = *param_1;
+  pcVar2 = *(code **)(iVar1 + 0x78);
+  (*pcVar2)(&this->field_0x4,2);
+  (**(code **)(iVar1 + 0xac))(&this->field_0xc);
+  (*pcVar2)(&this->field_0x10,2);
+  piStack_14 = (int *)0x0;
+  if (g_pNavyPrimaryOrderListHead != (TShip *)0x0) {
+    pTVar3 = g_pNavyPrimaryOrderListHead;
+    do {
+      if (pTVar3 == *(TShip **)&this->field_0x8) break;
+      pTVar3 = *(TShip **)&pTVar3->field_0x24;
+      piStack_14 = (int *)((int)piStack_14 + 1);
+    } while (pTVar3 != (TShip *)0x0);
+  }
+  (*pcVar2)(&piStack_14,2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00551700
+// GHIDRA_NAME TAdmiral::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
+
+void TAdmiral::ReadFrom(int *param_1)
+
+{
+  int iVar1;
+  code *pcVar2;
+  TShip *pTVar3;
+  int iVar4;
+  short sVar5;
+  undefined4 uVar6;
+  undefined4 uStack_18;
+  int *piStack_14;
+  
+  piStack_14 = param_1;
+  uStack_18 = 0x551710;
+  func_0x00403517();
+  iVar1 = *param_1;
+  uStack_18 = 2;
+  pcVar2 = *(code **)(iVar1 + 0x3c);
+  (*pcVar2)(&this->field_0x4);
+  (**(code **)(iVar1 + 0x70))(&this->field_0xc);
+  (*pcVar2)(&this->field_0x10,2);
+  (*pcVar2)(&uStack_18,2);
+  pTVar3 = g_pNavyPrimaryOrderListHead;
+  for (sVar5 = 0x20; (pTVar3 != (TShip *)0x0 && (sVar5 != 0)); sVar5 = sVar5 + -1) {
+    pTVar3 = *(TShip **)&pTVar3->field_0x24;
+  }
+  if (*(int *)&this->field_0x8 != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x8 + 0x20) = 0;
+    iVar1 = *(int *)(*(int *)&this->field_0x8 + 0xc);
+    if (iVar1 != 0) {
+      iVar4 = *(int *)(iVar1 + 0x10);
+      *(undefined4 *)(iVar1 + 0x14) = 0;
+      for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 4)) {
+        uVar6 = func_0x004076fd(*(undefined4 *)(iVar1 + 0x14),0);
+        *(undefined4 *)(iVar1 + 0x14) = uVar6;
+      }
+    }
+  }
+  *(TShip **)&this->field_0x8 = pTVar3;
+  if (pTVar3 != (TShip *)0x0) {
+    *(TAdmiral **)&pTVar3->field_0x20 = this;
+    iVar1 = *(int *)(*(int *)&this->field_0x8 + 0xc);
+    if (iVar1 != 0) {
+      iVar4 = *(int *)(iVar1 + 0x10);
+      *(undefined4 *)(iVar1 + 0x14) = 0;
+      for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 4)) {
+        uVar6 = func_0x004076fd(*(undefined4 *)(iVar1 + 0x14),0);
+        *(undefined4 *)(iVar1 + 0x14) = uVar6;
+      }
+    }
+  }
   return;
 }
 

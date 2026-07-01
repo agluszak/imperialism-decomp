@@ -3,11 +3,291 @@
 // Program: Imperialism.exe
 // Bucket: CWinThread.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0062246C
-// GHIDRA_NAME CWinThread::??0CWinApp@@QAE@PBD@Z
-// GHIDRA_PROTO undefined ??0CWinApp@@QAE@PBD@Z()
+// GHIDRA_FUNCTION IMPERIALISM 0x006062C2
+// GHIDRA_NAME CWinThread::CreateThread
+// GHIDRA_PROTO undefined CreateThread()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CWinThread::CreateThread(unsigned long,unsigned int,struct _SECURITY_ATTRIBUTES *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
 
-undefined4 * CWinThread::__0CWinApp__QAE_PBD_Z(void)
+/* Library Function - Single Match
+    public: int __thiscall CWinThread::CreateThread(unsigned long,unsigned int,struct
+   _SECURITY_ATTRIBUTES *)
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall
+CWinThread::CreateThread(int param_1,uint param_2,undefined4 param_3,undefined4 param_4)
+
+{
+  HANDLE hThread;
+  undefined4 local_20;
+  int local_1c;
+  uint local_18;
+  HANDLE local_10;
+  HANDLE local_c;
+  int local_8;
+  
+  memset(&local_20,0,0x1c);
+  local_20 = AfxGetThreadState();
+  local_1c = param_1;
+  local_10 = CreateEventA((LPSECURITY_ATTRIBUTES)0x0,1,0,(LPCSTR)0x0);
+  local_c = CreateEventA((LPSECURITY_ATTRIBUTES)0x0,1,0,(LPCSTR)0x0);
+  local_18 = param_2;
+  if ((local_10 == (HANDLE)0x0) || (local_c == (HANDLE)0x0)) {
+    if (local_10 != (HANDLE)0x0) {
+      CloseHandle(local_10);
+    }
+    if (local_c != (HANDLE)0x0) {
+      CloseHandle(local_c);
+    }
+  }
+  else {
+    hThread = (HANDLE)__beginthreadex(param_4,param_3,_AfxThreadEntry,&local_20,param_2 | 4,
+                                      param_1 + 0x2c);
+    *(HANDLE *)(param_1 + 0x28) = hThread;
+    if (hThread != (HANDLE)0x0) {
+      ResumeThread(hThread);
+      WaitForSingleObject(local_10,0xffffffff);
+      CloseHandle(local_10);
+      if ((param_2 & 4) != 0) {
+        SuspendThread(*(HANDLE *)(param_1 + 0x28));
+      }
+      if (local_8 == 0) {
+        SetEvent(local_c);
+        return 1;
+      }
+      WaitForSingleObject(*(HANDLE *)(param_1 + 0x28),0xffffffff);
+      CloseHandle(*(HANDLE *)(param_1 + 0x28));
+      *(undefined4 *)(param_1 + 0x28) = 0;
+      CloseHandle(local_c);
+    }
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006063CD
+// GHIDRA_NAME CWinThread::Run
+// GHIDRA_PROTO undefined Run()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Core MFC thread message loop.
+// GHIDRA_COMMENT Alternates idle processing (vtable +0x68) and message pumping (vtable +0x64 / +0x6C).
+// GHIDRA_COMMENT Exits when pump returns false, then calls vtable +0x70 exit hook.
+// GHIDRA_COMMENT_END
+
+/* Core MFC thread message loop.
+   Alternates idle processing (vtable +0x68) and message pumping (vtable +0x64 / +0x6C).
+   Exits when pump returns false, then calls vtable +0x70 exit hook. */
+
+void __fastcall CWinThread::Run(int *param_1)
+
+{
+  int iVar1;
+  bool bVar2;
+  BOOL BVar3;
+  int iVar4;
+  int iVar5;
+  
+  bVar2 = true;
+  iVar1 = *param_1;
+  iVar5 = 0;
+  do {
+    if (bVar2) {
+      iVar4 = iVar5;
+      do {
+        BVar3 = PeekMessageA((LPMSG)(param_1 + 0xc),(HWND)0x0,0,0,0);
+        iVar5 = iVar4;
+        if (BVar3 != 0) break;
+        iVar5 = iVar4 + 1;
+        iVar4 = (**(code **)(iVar1 + 0x68))(iVar4);
+        if (iVar4 == 0) {
+          bVar2 = false;
+        }
+        iVar4 = iVar5;
+      } while (bVar2);
+    }
+    do {
+      iVar4 = (**(code **)(iVar1 + 100))();
+      if (iVar4 == 0) {
+        (**(code **)(iVar1 + 0x70))();
+        return;
+      }
+      iVar4 = (**(code **)(iVar1 + 0x6c))((LPMSG)(param_1 + 0xc));
+      if (iVar4 != 0) {
+        bVar2 = true;
+        iVar5 = 0;
+      }
+      BVar3 = PeekMessageA((LPMSG)(param_1 + 0xc),(HWND)0x0,0,0,0);
+    } while (BVar3 != 0);
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006064B0
+// GHIDRA_NAME CWinThread::OnIdle
+// GHIDRA_PROTO undefined __thiscall OnIdle(int param_1)
+
+bool CWinThread::OnIdle(int param_1)
+
+{
+  CWnd *pCVar1;
+  BOOL BVar2;
+  int iVar3;
+  CWnd *this_00;
+  
+  if (param_1 < 1) {
+    pCVar1 = *(CWnd **)(this + 0x1c);
+    if ((pCVar1 != (CWnd *)0x0) && (pCVar1->m_hWnd != (HWND)0x0)) {
+      BVar2 = IsWindowVisible(pCVar1->m_hWnd);
+      if (BVar2 != 0) {
+        AfxCallWndProc(pCVar1,pCVar1->m_hWnd,0x363,1,0);
+        CWnd::SendMessageToDescendants(pCVar1->m_hWnd,0x363,1,0,1,1);
+      }
+    }
+    iVar3 = AfxGetModuleState();
+    iVar3 = CThreadLocalObject::GetData((CThreadLocalObject *)(iVar3 + 0x1070),::CreateObject);
+    for (this_00 = *(CWnd **)(iVar3 + 8); this_00 != (CWnd *)0x0;
+        this_00 = (CWnd *)this_00[1].ccmdTarget.m_xConnPtContainer) {
+      if ((this_00->m_hWnd != (void *)0x0) && (this_00 != pCVar1)) {
+        if (this_00[2].ccmdTarget.m_xDispatch == 0) {
+          CWnd::ShowWindow(this_00,0);
+        }
+        BVar2 = IsWindowVisible(this_00->m_hWnd);
+        if ((BVar2 != 0) || (-1 < this_00[2].ccmdTarget.m_xDispatch)) {
+          AfxCallWndProc(this_00,this_00->m_hWnd,0x363,1,0);
+          CWnd::SendMessageToDescendants(this_00->m_hWnd,0x363,1,0,1,1);
+        }
+        iVar3 = this_00[2].ccmdTarget.m_xDispatch;
+        if (0 < iVar3) {
+          CWnd::ShowWindow(this_00,iVar3);
+        }
+        this_00[2].ccmdTarget.m_xDispatch = -1;
+      }
+    }
+  }
+  else {
+    iVar3 = AfxGetModuleState();
+    iVar3 = CThreadLocalObject::GetData((CThreadLocalObject *)(iVar3 + 0x1070),::CreateObject);
+    if (*(int *)(iVar3 + 0x10) == 0) {
+      IncrementAfxModuleThreadStateTempMapLockDepth();
+      AfxUnlockTempMaps(1);
+    }
+  }
+  return param_1 < 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006065C7
+// GHIDRA_NAME CWinThread::DispatchThreadMessageEx
+// GHIDRA_PROTO undefined DispatchThreadMessageEx()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  protected: int __thiscall CWinThread::DispatchThreadMessageEx(struct tagMSG *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    protected: int __thiscall CWinThread::DispatchThreadMessageEx(struct tagMSG *)
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall CWinThread::DispatchThreadMessageEx(int *param_1,int param_2)
+
+{
+  undefined4 *puVar1;
+  AFX_MSGMAP_ENTRY *pAVar2;
+  
+  puVar1 = (undefined4 *)(**(code **)(*param_1 + 0x30))();
+  do {
+    if (puVar1 == (undefined4 *)0x0) {
+      return 0;
+    }
+    if (*(uint *)(param_2 + 4) < 0xc000) {
+      pAVar2 = AfxFindMessageEntry((AFX_MSGMAP_ENTRY *)puVar1[1],*(uint *)(param_2 + 4),0,0);
+      if (pAVar2 != (AFX_MSGMAP_ENTRY *)0x0) {
+LAB_00606604:
+        (**(code **)(pAVar2 + 0x14))(*(undefined4 *)(param_2 + 8),*(undefined4 *)(param_2 + 0xc));
+        return 1;
+      }
+    }
+    else {
+      pAVar2 = (AFX_MSGMAP_ENTRY *)puVar1[1];
+      while (pAVar2 = AfxFindMessageEntry(pAVar2,0xc000,0,0), pAVar2 != (AFX_MSGMAP_ENTRY *)0x0) {
+        if (**(int **)(pAVar2 + 0x10) == *(int *)(param_2 + 4)) goto LAB_00606604;
+        pAVar2 = pAVar2 + 0x18;
+      }
+    }
+    puVar1 = (undefined4 *)*puVar1;
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606640
+// GHIDRA_NAME CWinThread::PreTranslateMessage
+// GHIDRA_PROTO undefined PreTranslateMessage()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual int __thiscall CWinThread::PreTranslateMessage(struct tagMSG *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual int __thiscall CWinThread::PreTranslateMessage(struct tagMSG *)
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 CWinThread::PreTranslateMessage(int *param_1)
+
+{
+  uint uVar1;
+  int iVar2;
+  int *piVar3;
+  int *piVar4;
+  undefined4 uVar5;
+  
+  if ((*param_1 != 0) || (iVar2 = DispatchThreadMessageEx(param_1), iVar2 == 0)) {
+    uVar1 = param_1[1];
+    if (((uVar1 < 0x100) || (0x108 < uVar1)) && ((uVar1 < 0x104 || (0x107 < uVar1)))) {
+      iVar2 = 0;
+    }
+    else {
+      iVar2 = 1;
+    }
+    if (((((iVar2 != 0) || (uVar1 == 0x201)) || (uVar1 == 0x203)) ||
+        (((uVar1 == 0x204 || (uVar1 == 0x206)) ||
+         ((uVar1 == 0x207 || ((uVar1 == 0x209 || (uVar1 == 0xa1)))))))) ||
+       ((uVar1 == 0xa3 ||
+        ((((uVar1 == 0xa4 || (uVar1 == 0xa6)) || (uVar1 == 0xa7)) || (uVar1 == 0xa9)))))) {
+      CWnd::CancelToolTips(iVar2);
+    }
+    piVar3 = (int *)AfxGetMainWnd();
+    iVar2 = 0;
+    if (piVar3 != (int *)0x0) {
+      iVar2 = piVar3[7];
+    }
+    iVar2 = CWnd::WalkPreTranslateTree(iVar2,param_1);
+    if (iVar2 == 0) {
+      if (piVar3 != (int *)0x0) {
+        FromHandle(*param_1);
+        piVar4 = (int *)CWnd::GetTopLevelParent();
+        if (piVar4 != piVar3) {
+          uVar5 = (**(code **)(*piVar3 + 0x98))(param_1);
+          return uVar5;
+        }
+      }
+      return 0;
+    }
+  }
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0062246C
+// GHIDRA_NAME CWinThread::CWinThread::CWinApp
+// GHIDRA_PROTO undefined CWinThread::CWinApp()
+
+undefined4 * CWinThread::CWinThread__CWinApp(void)
 
 {
   undefined4 uVar1;
@@ -18,11 +298,11 @@ undefined4 * CWinThread::__0CWinApp__QAE_PBD_Z(void)
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-
+  
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  __0CWinThread__QAE_XZ();
-  *extraout_ECX = &PTR_LAB_0066fdfc;
+  CWinThread();
+  *extraout_ECX = &PTR_FUN_0066fdfc;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (*(int *)(unaff_EBP + 8) == 0) {
     extraout_ECX[0x1e] = 0;
@@ -31,11 +311,8 @@ undefined4 * CWinThread::__0CWinApp__QAE_PBD_Z(void)
     uVar1 = __strdup(*(undefined4 *)(unaff_EBP + 8));
     extraout_ECX[0x1e] = uVar1;
   }
-  iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-  iVar3 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
-                    ((TMacViewMgr *)(iVar2 + 0x1070),
-                     _CreateObject___CThreadLocal_VAFX_MODULE_THREAD_STATE____SGPAVCNoTrackObject__XZ
-                    );
+  iVar2 = AfxGetModuleState();
+  iVar3 = CThreadLocalObject::GetData((CThreadLocalObject *)(iVar2 + 0x1070),::CreateObject);
   *(undefined4 **)(iVar3 + 4) = extraout_ECX;
   pvVar4 = GetCurrentThread();
   extraout_ECX[10] = pvVar4;
@@ -78,45 +355,76 @@ undefined4 * CWinThread::__0CWinApp__QAE_PBD_Z(void)
 
 /* Library Function - Single Match
     public: virtual void * __thiscall CWinThread::`scalar deleting destructor'(unsigned int)
-
+   
    Library: nafxcw retail msvc500:static */
 
 void * CWinThread::___GCWinThread__UAEPAXI_Z(uint param_1)
 
 {
-  __1CWinThread__UAE_XZ(this);
+  ~CWinThread(this);
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622B58
-// GHIDRA_NAME CWinThread::??0CWinThread@@QAE@XZ
-// GHIDRA_PROTO undefined ??0CWinThread@@QAE@XZ()
+// GHIDRA_NAME CWinThread::CWinThread
+// GHIDRA_PROTO undefined CWinThread()
 
-undefined4 * CWinThread::__0CWinThread__QAE_XZ(void)
+undefined4 * CWinThread::CWinThread(void)
 
 {
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-
+  
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  __0CCmdTarget__QAE_XZ();
+  CCmdTarget();
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *extraout_ECX = &PTR_LAB_006704cc;
   extraout_ECX[0x13] = 0;
   extraout_ECX[0x14] = 0;
-  _CommonConstruct_CWinThread__QAEXXZ();
+  CommonConstruct();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return extraout_ECX;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00622B95
+// GHIDRA_NAME CWinThread::CommonConstruct
+// GHIDRA_PROTO undefined CommonConstruct()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CWinThread::CommonConstruct(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CWinThread::CommonConstruct(void)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __fastcall CWinThread::CommonConstruct(int param_1)
+
+{
+  *(undefined4 *)(param_1 + 0x1c) = 0;
+  *(undefined4 *)(param_1 + 0x20) = 0;
+  *(undefined4 *)(param_1 + 0x28) = 0;
+  *(undefined4 *)(param_1 + 0x2c) = 0;
+  *(undefined4 *)(param_1 + 0x34) = 0;
+  *(undefined4 *)(param_1 + 100) = 0;
+  GetCursorPos((LPPOINT)(param_1 + 0x5c));
+  *(undefined4 *)(param_1 + 0x58) = 0;
+  *(undefined4 *)(param_1 + 0x54) = 0;
+  *(undefined4 *)(param_1 + 0x24) = 1;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00626BB3
-// GHIDRA_NAME CWinThread::??1CWinThread@@UAE@XZ
-// GHIDRA_PROTO void __thiscall ??1CWinThread@@UAE@XZ(void)
+// GHIDRA_NAME CWinThread::~CWinThread
+// GHIDRA_PROTO void __thiscall ~CWinThread(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: virtual __thiscall CWinThread::~CWinThread(void)
@@ -126,10 +434,10 @@ undefined4 * CWinThread::__0CWinThread__QAE_XZ(void)
 
 /* Library Function - Single Match
     public: virtual __thiscall CWinThread::~CWinThread(void)
-
+   
    Library: nafxcw retail msvc500:static */
 
-void CWinThread::__1CWinThread__UAE_XZ()
+void CWinThread::~CWinThread()
 
 {
   HANDLE hObject;
@@ -137,7 +445,7 @@ void CWinThread::__1CWinThread__UAE_XZ()
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-
+  
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_006704cc;
@@ -146,12 +454,12 @@ void CWinThread::__1CWinThread__UAE_XZ()
   if (hObject != (HANDLE)0x0) {
     CloseHandle(hObject);
   }
-  pAVar1 = _AfxGetModuleThreadState__YGPAVAFX_MODULE_THREAD_STATE__XZ_006238ac();
+  pAVar1 = AfxGetModuleThreadState();
   if (*(undefined4 **)(pAVar1 + 4) == extraout_ECX) {
     *(undefined4 *)(pAVar1 + 4) = 0;
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  __1CCmdTarget__UAE_XZ();
+  CCmdTarget::~CCmdTarget();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }

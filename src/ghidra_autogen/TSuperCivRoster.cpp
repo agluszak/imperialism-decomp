@@ -3,6 +3,51 @@
 // Program: Imperialism.exe
 // Bucket: TSuperCivRoster.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004AB380
+// GHIDRA_NAME TSuperCivRoster::CreateObject
+// GHIDRA_PROTO void * CreateObject(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Allocates and initializes the civilian-ledger dialog object (vtable PTR_LAB_0064d778).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - Pointer to dialog object on success.
+// GHIDRA_COMMENT - NULL on allocation failure.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+/* Allocates and initializes the civilian-ledger dialog object (vtable PTR_LAB_0064d778).
+   
+   Returns:
+   - Pointer to dialog object on success.
+   - NULL on allocation failure. */
+
+void * TSuperCivRoster::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063061a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x88);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040778e();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x21) = 0xffff;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB400
 // GHIDRA_NAME TSuperCivRoster::'scalar_deleting_destructor'
 // GHIDRA_PROTO void * __thiscall 'scalar_deleting_destructor'(byte bFreeMemory)
@@ -17,36 +62,36 @@
 // GHIDRA_COMMENT_END
 
 /* Cleans up a civilian-ledger dialog instance; optionally releases heap memory.
-
+   
    Parameters:
    - bFreeMemory: If low bit is set, frees the dialog object after destructor logic.
-
+   
    Returns:
    - this pointer. */
 
 void * TSuperCivRoster::_scalar_deleting_destructor_(byte bFreeMemory)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004045ed();
   if ((bFreeMemory & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB450
-// GHIDRA_NAME TSuperCivRoster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TSuperCivRoster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSuperCivRoster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TSuperCivRoster::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTSuperCivRoster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB470
 // GHIDRA_NAME TSuperCivRoster::ConstructTSuperCivRosterBaseState
-// GHIDRA_PROTO undefined __thiscall TSuperCivRoster::ConstructTSuperCivRosterBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall ConstructTSuperCivRosterBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3)
 
 void __thiscall
 TSuperCivRoster::ConstructTSuperCivRosterBaseState
@@ -56,49 +101,53 @@ TSuperCivRoster::ConstructTSuperCivRosterBaseState
   _vslot_fn *p_Var1;
   TSuperCivRosterVtbl *pTVar2;
   short sVar3;
-  TLineDataVtbl *pTVar4;
+  undefined4 uVar4;
   int iVar5;
-  TLineData *this_00;
+  undefined4 *puVar6;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 local_20;
-  undefined4 local_1c;
-  undefined4 local_14;
-  undefined4 uStack_10;
+  undefined4 uStack_40;
+  undefined4 uStack_3c;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
+  undefined4 uStack_30;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063063a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,5,5,0);
+  uStack_30 = 0;
+  uStack_34 = 5;
+  uStack_38 = 5;
+  uStack_3c = param_3;
+  uStack_40 = param_2;
+  func_0x004096b5(0,param_1);
   this->controlTag = 0x70616765;
-  TPageView::OrphanLeaf_NoCall_Ins07_004d8920((TPageView *)this);
-  sVar3 = UiRuntimeContext::GetActiveNationId();
-  local_14 = *(undefined4 *)&g_apNationStates[sVar3]->field_0x89c;
-  pTVar4 = (TLineDataVtbl *)InitializeLinkedListCursorFromOwnerHead();
-  iVar5 = LinkedListCursorHasCurrent();
+  func_0x00406f8c(0);
+  sVar3 = func_0x00403b16();
+  uStack_34 = *(undefined4 *)&g_apNationStates[sVar3]->field_0x89c;
+  uVar4 = func_0x00401118();
+  iVar5 = func_0x00403620();
   if (iVar5 != 0) {
     p_Var1 = this->vftable->OrphanCallChain_C1_I06_0056fbb0;
     do {
-      this_00 = (TLineData *)__2_YAPAXI_Z(0x14);
-      local_4 = 0;
-      if (this_00 == (TLineData *)0x0) {
-        this_00 = (TLineData *)0x0;
+      puVar6 = (undefined4 *)operator_new(0x14);
+      if (puVar6 == (undefined4 *)0x0) {
+        puVar6 = (undefined4 *)0x0;
       }
       else {
-        TLineData::ConstructTLineDataBaseState(this_00);
-        this_00->vftable = (TLineDataVtbl *)&TMiniCivLineVtbl_0064d990;
+        func_0x00408f0d();
+        *puVar6 = &TMiniCivLine::_vftable_;
       }
-      local_4 = 0xffffffff;
-      local_20 = 0xec;
-      local_1c = 0x40;
-      TLineData::SetLineDataRowAndBounds(this_00,0,0,&local_20);
-      this_00[1].vftable = pTVar4;
-      (*p_Var1)(this_00);
-      pTVar4 = (TLineDataVtbl *)AdvanceLinkedListCursor();
-      iVar5 = LinkedListCursorHasCurrent();
+      uStack_40 = 0xec;
+      uStack_3c = 0x40;
+      func_0x00409025(0,0,&uStack_40);
+      puVar6[4] = uVar4;
+      (*p_Var1)(puVar6);
+      uVar4 = func_0x00406d20();
+      iVar5 = func_0x00403620();
     } while (iVar5 != 0);
   }
   pTVar2 = this->vftable;
@@ -106,161 +155,8 @@ TSuperCivRoster::ConstructTSuperCivRosterBaseState
   (*pTVar2->OrphanCallChain_C8_I82_0056fc80)();
   (*pTVar2->OrphanCallChain_C8_I118_0056fdb0)(1);
   (**(code **)&this->ownerContext->vftable->field_0xc)();
-  UpdatePagedListNavigationButtonState((int)*(short *)&this->field_0x62);
-  *unaff_FS_OFFSET = uStack_10;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004AB620
-// GHIDRA_NAME TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTSuperCivRosterAndMaybeFree(byte param_1)
-
-TSuperCivRoster * TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree(byte param_1)
-
-{
-  DestructTSuperCivRosterAndMaybeFree_Impl();
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005DDD20
-// GHIDRA_NAME TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit
-// GHIDRA_PROTO void __thiscall ShowCivilianLedgerDialogAndSelectUnit(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Shows the civilian ledger/list dialog (also reachable via CTRL+Disband and hotkey 't') and applies the selected civilian as active map selection.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Acquire the map UI page manager and page container for the ledger context.
-// GHIDRA_COMMENT 2. Build and initialize the civilian-ledger dialog instance with page index 10.
-// GHIDRA_COMMENT 3. Enter modal dialog processing until the list selection is confirmed/cancelled.
-// GHIDRA_COMMENT 4. If a civilian index is selected, focus that entry in the map UI context.
-// GHIDRA_COMMENT 5. For active civilian task states (0/2/3), dispatch map selection update callback.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - None.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - void.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Special Cases:
-// GHIDRA_COMMENT - If no list item is selected (index -1), no selection update is applied.
-// GHIDRA_COMMENT - Internal allocation/assertion failures follow engine nil-pointer/failure paths.
-// GHIDRA_COMMENT_END
-
-/* Shows the civilian ledger/list dialog (also reachable via CTRL+Disband and hotkey 't') and
-   applies the selected civilian as active map selection.
-
-   Algorithm:
-   1. Acquire the map UI page manager and page container for the ledger context.
-   2. Build and initialize the civilian-ledger dialog instance with page index 10.
-   3. Enter modal dialog processing until the list selection is confirmed/cancelled.
-   4. If a civilian index is selected, focus that entry in the map UI context.
-   5. For active civilian task states (0/2/3), dispatch map selection update callback.
-
-   Parameters:
-   - None.
-
-   Returns:
-   - void.
-
-   Special Cases:
-   - If no list item is selected (index -1), no selection update is applied.
-   - Internal allocation/assertion failures follow engine nil-pointer/failure paths. */
-
-void TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit()
-
-{
-  short sVar1;
-  int iVar2;
-  int iVar3;
-  int *pViewManagerContext;
-  int *pCivilianLedgerDialog;
-  TPageView *this_00;
-  int nLedgerPageHandle;
-  undefined4 uVar4;
-  int *unaff_EDI;
-  undefined4 *unaff_FS_OFFSET;
-  TPageView *pTStack_2c;
-  int local_28;
-  undefined4 uStack_24;
-  undefined4 uStack_20;
-  undefined4 uStack_18;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  int dwViewTypeId;
-
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0063a4d4;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  dwViewTypeId = 0xdac;
-  local_28 = (int)this;
-  pViewManagerContext._0_1_ =
-       (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0xdac);
-  pViewManagerContext = (int *)CONCAT31(pViewManagerContext._1_3_,pViewManagerContext._0_1_);
-  if (pViewManagerContext == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x232);
-  }
-  iVar2 = *pViewManagerContext;
-  pCivilianLedgerDialog = (int *)(**(code **)(iVar2 + 0x94))(0x70616765);
-  if (pCivilianLedgerDialog == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x233);
-  }
-  iVar3 = pCivilianLedgerDialog[8];
-  (**(code **)(*pCivilianLedgerDialog + 0x1c))();
-  this_00 = (TPageView *)__2_YAPAXI_Z(0x88);
-  uStack_c = 0;
-  if (this_00 == (TPageView *)0x0) {
-    this_00 = (TPageView *)0x0;
-  }
-  else {
-    pTStack_2c = this_00;
-    TPageView::ConstructTPageViewBaseState(this_00);
-    this_00->vftable = (TPageViewVtbl *)&TSuperCivRosterVtbl_0064d778;
-    *(undefined2 *)&this_00[1].vftable = 0xffff;
-  }
-  uStack_c = 0xffffffff;
-  pTStack_2c = (TPageView *)0x1ca;
-  local_28 = 0x136;
-  uStack_24 = 0xd;
-  uStack_20 = 0x2e;
-  (*this_00->vftable[1].GetTEventHandlerClassNamePointer)(iVar3,&uStack_24,&pTStack_2c);
-  this_00->controlTag = 0x70616765;
-  nLedgerPageHandle = __2_YAPAXI_Z(0x94);
-  uStack_18 = 1;
-  if (nLedgerPageHandle == 0) {
-    uVar4 = 0;
-  }
-  else {
-    uVar4 = TStaticText::TStaticText((TStaticText *)nLedgerPageHandle);
-  }
-  uStack_18 = 0xffffffff;
-  pTStack_2c = (TPageView *)0x12;
-  InitializeTextEntryBaseAndOptionalStringResource
-            (dwViewTypeId,&stack0xffffffc8,&stack0xffffffd0,5,5,0x2746,10);
-  ApplyControlThemeStyleAndOptionalCaption(uVar4,0,0xe,0x2b6a,0xfffffffe,0);
-  (**(code **)(*unaff_EDI + 0x44))(pViewManagerContext,&local_28);
-  (**(code **)(iVar2 + 0xf0))(&stack0xffffffd0,0);
-  (**(code **)(iVar2 + 0x1a0))(1);
-  (**(code **)(iVar2 + 0x1ac))();
-  sVar1 = *(short *)&this_00[1].vftable;
-  (**(code **)(iVar2 + 0xa0))();
-  (**(code **)(iVar2 + 0x1c))();
-  if (sVar1 != -1) {
-    (**(code **)(*(int *)unaff_EDI[0x3c] + 0x1e8))(sVar1);
-    iVar2 = *(int *)(*(int *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + sVar1 * 0x24) + 8);
-    if (((iVar2 == 0) || (iVar2 == 3)) || (iVar2 == 2)) {
-      (**(code **)(g_pSelectedCivilianOrderState->vftable + 0x28))(sVar1,2);
-    }
-  }
-  *unaff_FS_OFFSET = 0x11;
+  func_0x00404def((int)*(short *)&this->field_0x62);
+  *unaff_FS_OFFSET = uStack_34;
   return;
 }
 

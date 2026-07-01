@@ -3,80 +3,44 @@
 // Program: Imperialism.exe
 // Bucket: TAmtBarCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00586A60
-// GHIDRA_NAME TAmtBarCluster::SetTAmtBarClusterWordField8c
-// GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8c(undefined2 param_1)
-
-void TAmtBarCluster::SetTAmtBarClusterWordField8c(undefined2 param_1)
-
-{
-  *(undefined2 *)&this[1].field04 = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00586A80
-// GHIDRA_NAME TAmtBarCluster::OrphanLeaf_NoCall_Ins05_00586a80
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_00586a80(undefined4 param_1, int param_2)
-
-void __thiscall
-TAmtBarCluster::OrphanLeaf_NoCall_Ins05_00586a80
-          (TAmtBarCluster *this,undefined4 param_1,int param_2)
-
-{
-  this[1].padding_08_to_0b = param_1;
-  this[1].field0c = param_2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00586AB0
-// GHIDRA_NAME TAmtBarCluster::SetTAmtBarClusterWordField8e
-// GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8e(undefined2 param_1)
-
-void TAmtBarCluster::SetTAmtBarClusterWordField8e(undefined2 param_1)
-
-{
-  *(undefined2 *)((int)&this[1].field04 + 2) = param_1;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00586C40
-// GHIDRA_NAME TAmtBarCluster::CreateTradeMoveControlPanelBasic
-// GHIDRA_PROTO undefined CreateTradeMoveControlPanelBasic()
+// GHIDRA_NAME TAmtBarCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TUberCluster * TAmtBarCluster::CreateTradeMoveControlPanelBasic(void)
+undefined4 * TAmtBarCluster::CreateObject(void)
 
 {
-  TUberCluster *this;
-  TUberCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006378ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
+  puVar1 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  pTVar1 = (TUberCluster *)0x0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->vftable = (TUberClusterVtbl *)&_vftable_;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00405835();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586CC0
-// GHIDRA_NAME TAmtBarCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TAmtBarCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAmtBarCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TAmtBarCluster::GetRuntimeClass()
 
 {
-  return &g_pClassDescTAmtBarCluster;
+  return &classTAmtBarCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586CE0
@@ -86,7 +50,7 @@ CRuntimeClass * TAmtBarCluster::GetTEventHandlerClassNamePointer()
 TAmtBarCluster * TAmtBarCluster::ConstructTradeMoveControlPanelBasic()
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
+  func_0x00405835();
   this->vftable = &_vftable_;
   return this;
 }
@@ -98,18 +62,18 @@ TAmtBarCluster * TAmtBarCluster::ConstructTradeMoveControlPanelBasic()
 TAmtBarCluster * TAmtBarCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00403c24();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586D60
-// GHIDRA_NAME TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TAmtBarCluster::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920()
+void TAmtBarCluster::NoOpUiLifecycleHook()
 
 {
   _vslot_fn *p_Var1;
@@ -118,7 +82,7 @@ void TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   uint local_4;
-
+  
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   local_4 = local_4 & 0xffff0000;
   uVar3 = (*p_Var1)(0x6d6f7665);
@@ -130,20 +94,19 @@ void TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920()
   }
   uVar3 = (*p_Var1)(0x62617220);
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x725);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x725);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xdc))(local_4);
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  func_0x00406ba9(local_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586E70
-// GHIDRA_NAME TAmtBarCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_NAME TAmtBarCluster::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TAmtBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_3)
+void TAmtBarCluster::HandleEvent(int param_1, void *param_2, int param_3)
 
 {
   TAmtBarClusterVtbl *pTVar1;
@@ -154,22 +117,20 @@ void TAmtBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int para
   int iVar5;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
-
+  
   if (param_1 == 100) {
     pTVar1 = this->vftable;
     p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
     uVar3 = (*p_Var2)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x749);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x749);
     }
     (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x1e8))();
     uVar3 = (*p_Var2)(0x61766169);
     if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x74d);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x74d);
     }
     sVar4 = (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x1e8))();
     if ((short)this < sVar4) {
@@ -180,16 +141,15 @@ void TAmtBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int para
     pTVar1 = this->vftable;
     uVar3 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x759);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x759);
     }
     iVar5 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x1e8))();
     if ((short)iVar5 != 0) {
       (*pTVar1->OrphanRetStub_00586ff0)(iVar5 + -1);
     }
   }
-  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
+  func_0x004023ab(param_1,param_2,param_3);
   return;
 }
 
@@ -200,406 +160,6 @@ void TAmtBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int para
 void TAmtBarCluster::OrphanRetStub_00586ff0()
 
 {
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00587950
-// GHIDRA_NAME TAmtBarCluster::QueryTradeSellControlQuantity
-// GHIDRA_PROTO undefined __thiscall QueryTradeSellControlQuantity(void)
-
-void TAmtBarCluster::QueryTradeSellControlQuantity()
-
-{
-  undefined uVar1;
-  undefined3 extraout_var;
-
-  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x53656c6c);
-                    /* WARNING: Could not recover jumptable at 0x00587961. Too many branches */
-                    /* WARNING: Treating indirect jump as call */
-  (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1e8))();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00587980
-// GHIDRA_NAME TAmtBarCluster::IsTradeBidControlActionable
-// GHIDRA_PROTO undefined __thiscall IsTradeBidControlActionable(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI predicate for Bid control interactivity.
-// GHIDRA_COMMENT Looks up control tag 'card' and returns true when control bitmap is 2111 (0x83F) or 2125 (0x84D) and control reports actionable state via vtable+0xEC.
-// GHIDRA_COMMENT_END
-
-/* Trade UI predicate for Bid control interactivity.
-   Looks up control tag 'card' and returns true when control bitmap is 2111 (0x83F) or 2125 (0x84D)
-   and control reports actionable state via vtable+0xEC. */
-
-undefined4 TAmtBarCluster::IsTradeBidControlActionable()
-
-{
-  undefined uVar1;
-  char cVar2;
-  undefined3 extraout_var;
-  int *piVar3;
-
-  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63617264);
-  piVar3 = (int *)CONCAT31(extraout_var,uVar1);
-  if (piVar3 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x8de);
-  }
-  if (((short)piVar3[0x21] == 0x83f) || ((short)piVar3[0x21] == 0x84d)) {
-    cVar2 = (**(code **)(*piVar3 + 0xec))();
-    if (cVar2 != '\0') {
-      return 1;
-    }
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00587A10
-// GHIDRA_NAME TAmtBarCluster::IsTradeOfferControlActionable
-// GHIDRA_PROTO undefined __thiscall IsTradeOfferControlActionable(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI predicate for Offer control interactivity.
-// GHIDRA_COMMENT Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841) or 2127 (0x84F) and control reports actionable state via vtable+0xEC.
-// GHIDRA_COMMENT_END
-
-/* Trade UI predicate for Offer control interactivity.
-   Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841) or 2127 (0x84F)
-   and control reports actionable state via vtable+0xEC. */
-
-undefined4 TAmtBarCluster::IsTradeOfferControlActionable()
-
-{
-  undefined uVar1;
-  char cVar2;
-  undefined3 extraout_var;
-  int *piVar3;
-
-  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6f666672);
-  piVar3 = (int *)CONCAT31(extraout_var,uVar1);
-  if (piVar3 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x8f2);
-  }
-  if (((short)piVar3[0x21] == 0x841) || ((short)piVar3[0x21] == 0x84f)) {
-    cVar2 = (**(code **)(*piVar3 + 0xec))();
-    if (cVar2 != '\0') {
-      return 1;
-    }
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00587AA0
-// GHIDRA_NAME TAmtBarCluster::SetTradeBidSecondaryBitmapState
-// GHIDRA_PROTO undefined __thiscall SetTradeBidSecondaryBitmapState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI Bid secondary-state updater.
-// GHIDRA_COMMENT Resolves 'card' control and assigns 2112 (0x840) or 2126 (0x84E) through vtable+0x1C8 based on row state field (+0x1C == 0x67643020) when nation availability gate passes.
-// GHIDRA_COMMENT_END
-
-/* Trade UI Bid secondary-state updater.
-   Resolves 'card' control and assigns 2112 (0x840) or 2126 (0x84E) through vtable+0x1C8 based on
-   row state field (+0x1C == 0x67643020) when nation availability gate passes. */
-
-void TAmtBarCluster::SetTradeBidSecondaryBitmapState()
-
-{
-  int iVar1;
-  undefined uVar2;
-  short sVar3;
-  undefined3 extraout_var;
-  undefined4 uVar4;
-
-  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63617264);
-  if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x907);
-  }
-  iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
-  (**(code **)(iVar1 + 0xf4))(&stack0xfffffff4,1);
-  sVar3 = (**(code **)(g_pUiRuntimeContext->vftable + 0x54))();
-  if (sVar3 < 4) {
-    (**(code **)(iVar1 + 0xa4))(1);
-    if (this->controlTag == 0x67643020) {
-      uVar4 = 0x84e;
-    }
-    else {
-      uVar4 = 0x840;
-    }
-    (**(code **)(iVar1 + 0x1c8))(uVar4,0);
-    (**(code **)(iVar1 + 0xf8))();
-    (**(code **)(iVar1 + 0x114))(0);
-    return;
-  }
-  (**(code **)(iVar1 + 0xa4))(0,1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00587BB0
-// GHIDRA_NAME TAmtBarCluster::SetTradeBidControlBitmapState
-// GHIDRA_PROTO undefined __thiscall SetTradeBidControlBitmapState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI Bid-state updater.
-// GHIDRA_COMMENT Resolves control tag 'card' from current row context.
-// GHIDRA_COMMENT If row state field (+0x1C) equals 0x67643020, assigns bitmap 2125 (0x84D); otherwise assigns bitmap 2111 (0x83F).
-// GHIDRA_COMMENT Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags.
-// GHIDRA_COMMENT_END
-
-/* Trade UI Bid-state updater.
-   Resolves control tag 'card' from current row context.
-   If row state field (+0x1C) equals 0x67643020, assigns bitmap 2125 (0x84D); otherwise assigns
-   bitmap 2111 (0x83F).
-   Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
-
-void TAmtBarCluster::SetTradeBidControlBitmapState()
-
-{
-  _vslot_fn *p_Var1;
-  int iVar2;
-  undefined uVar3;
-  undefined uVar4;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  undefined3 extraout_var_01;
-  undefined3 extraout_var_02;
-  int iVar6;
-  int iVar7;
-  undefined4 uVar8;
-  int *piVar5;
-
-  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  uVar3 = (*p_Var1)(0x63617264);
-  piVar5 = (int *)CONCAT31(extraout_var,uVar3);
-  if (piVar5 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x92e);
-  }
-  iVar2 = *piVar5;
-  (**(code **)(iVar2 + 0xa4))(1,0);
-  if (this->controlTag == 0x67643020) {
-    uVar8 = 0x84d;
-  }
-  else {
-    uVar8 = 0x83f;
-  }
-  (**(code **)(iVar2 + 0x1c8))(uVar8,0);
-  (**(code **)(iVar2 + 0xf4))(&stack0xffffffe4,1);
-  uVar3 = (*p_Var1)();
-  if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x93f);
-  }
-  uVar4 = (*p_Var1)(0x6c656674);
-  if (CONCAT31(extraout_var_01,uVar4) == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x941);
-  }
-  uVar4 = (*p_Var1)(0x72676874);
-  if ((int *)CONCAT31(extraout_var_02,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x943);
-  }
-  iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
-  (**(code **)(iVar2 + 0xa4))(0,1);
-  iVar7 = 1;
-  iVar6 = 0;
-  (**(code **)(iRam67726565 + 0xa4))();
-  (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar4) + 0xa4))(0,1);
-  (**(code **)(iVar2 + 0xa8))(0,1);
-  (**(code **)(iVar7 + 0xa8))(0,1);
-  (**(code **)(iVar6 + 0xa8))(0,1);
-  iVar2 = *piVar5;
-  (**(code **)(iVar2 + 0xf8))();
-  (**(code **)(iVar2 + 0x114))(0);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00587DD0
-// GHIDRA_NAME TAmtBarCluster::SetTradeOfferControlBitmapState
-// GHIDRA_PROTO undefined __thiscall SetTradeOfferControlBitmapState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI Offer-state updater.
-// GHIDRA_COMMENT Resolves control tag 'offr' from current row context.
-// GHIDRA_COMMENT If row state field (+0x1C) equals 0x67643020, assigns bitmap 2127 (0x84F); otherwise assigns bitmap 2113 (0x841).
-// GHIDRA_COMMENT Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags.
-// GHIDRA_COMMENT_END
-
-/* Trade UI Offer-state updater.
-   Resolves control tag 'offr' from current row context.
-   If row state field (+0x1C) equals 0x67643020, assigns bitmap 2127 (0x84F); otherwise assigns
-   bitmap 2113 (0x841).
-   Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
-
-void TAmtBarCluster::SetTradeOfferControlBitmapState()
-
-{
-  _vslot_fn *p_Var1;
-  int iVar2;
-  undefined uVar3;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  int iVar4;
-  int *piVar5;
-  int iVar6;
-  int *piVar7;
-  undefined4 uVar8;
-
-  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  uVar3 = (*p_Var1)(0x6f666672);
-  if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x95c);
-  }
-  iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
-  (**(code **)(iVar2 + 0xa4))(1,0);
-  if (this->controlTag == 0x67643020) {
-    uVar8 = 0x84f;
-  }
-  else {
-    uVar8 = 0x841;
-  }
-  (**(code **)(iVar2 + 0x1c8))(uVar8,0);
-  (**(code **)(iVar2 + 0xf4))();
-  piVar7 = (int *)&stack0xffffffdc;
-  (**(code **)(iVar2 + 0xf0))(piVar7,1);
-  uVar3 = (*p_Var1)(0x67726565);
-  if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x970);
-  }
-  iVar4 = (*(code *)0x1)(0x6c656674);
-  if (iVar4 == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x972);
-  }
-  piVar5 = (int *)(*(code *)&stack0xffffffdc)(0x72676874);
-  if (piVar5 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x974);
-  }
-  iVar6 = 1;
-  (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xa4))(1,1);
-  iVar4 = 1;
-  (**(code **)(*piVar7 + 0xa4))(1);
-  (**(code **)(*piVar5 + 0xa4))(1,1);
-  (**(code **)(iVar6 + 0xa8))(1,1);
-  (**(code **)(iVar6 + 0xa8))(1,1);
-  (**(code **)(iVar4 + 0xa8))(1,1);
-  (**(code **)(iVar2 + 0xf8))();
-  (**(code **)(iVar2 + 0x114))(0);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00588030
-// GHIDRA_NAME TAmtBarCluster::SetTradeOfferSecondaryBitmapState
-// GHIDRA_PROTO undefined __thiscall SetTradeOfferSecondaryBitmapState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI Offer secondary-state updater.
-// GHIDRA_COMMENT Resolves 'offr' control and assigns 2114 (0x842) or 2128 (0x850) through vtable+0x1C8 based on row state field (+0x1C == 0x67643020) when nation availability gate passes.
-// GHIDRA_COMMENT_END
-
-/* Trade UI Offer secondary-state updater.
-   Resolves 'offr' control and assigns 2114 (0x842) or 2128 (0x850) through vtable+0x1C8 based on
-   row state field (+0x1C == 0x67643020) when nation availability gate passes. */
-
-void TAmtBarCluster::SetTradeOfferSecondaryBitmapState()
-
-{
-  _vslot_fn *p_Var1;
-  int iVar2;
-  int iVar3;
-  undefined uVar4;
-  short sVar5;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  undefined3 extraout_var_01;
-  undefined3 extraout_var_02;
-  undefined3 extraout_var_03;
-  int iVar6;
-  int iVar7;
-  int *piStack_54;
-  int *piStack_50;
-  undefined4 uVar8;
-  int iStack_30;
-  undefined4 uStack_c;
-  undefined4 uStack_8;
-
-  iStack_30 = 0x6f666672;
-  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  uVar4 = (*p_Var1)();
-  if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x98f);
-  }
-  iVar2 = *(int *)CONCAT31(extraout_var,uVar4);
-  uStack_c = 0x11;
-  uStack_8 = 0x14;
-  (**(code **)(iVar2 + 0xf4))(&uStack_c,1);
-  sVar5 = UiRuntimeContext::GetActiveNationId();
-  uVar4 = (*g_apNationStates[sVar5]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)
-                    (CONCAT22(sVar5 >> 0xf,*(undefined2 *)&this[1].vftable));
-  if ((short)CONCAT31(extraout_var_00,uVar4) != 0) {
-    sVar5 = UiRuntimeContext::GetActiveNationId();
-    if (*(short *)&g_apNationStates[sVar5]->field_0xa4 != 0) {
-      (**(code **)(iVar2 + 0xa4))(1,0);
-      if (this->controlTag == 0x67643020) {
-        uVar8 = 0x850;
-      }
-      else {
-        uVar8 = 0x842;
-      }
-      (**(code **)(iVar2 + 0x1c8))(uVar8,0);
-      piStack_54 = &iStack_30;
-      piStack_50 = (int *)0x1;
-      iStack_30 = 0xa3;
-      (**(code **)(iVar2 + 0xf0))();
-      goto LAB_00588133;
-    }
-  }
-  (**(code **)(iVar2 + 0xa4))(0,1);
-LAB_00588133:
-  uVar4 = (*p_Var1)(0x67726565);
-  if (CONCAT31(extraout_var_01,uVar4) == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9ad);
-  }
-  uVar4 = (*p_Var1)(0x6c656674);
-  if (CONCAT31(extraout_var_02,uVar4) == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9af);
-  }
-  uVar4 = (*p_Var1)(0x72676874);
-  if ((int *)CONCAT31(extraout_var_03,uVar4) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9b1);
-  }
-  iVar7 = 0;
-  iVar3 = *piStack_50;
-  (**(code **)(iVar3 + 0xa4))(0,1);
-  iVar6 = 1;
-  (**(code **)(*piStack_54 + 0xa4))(0);
-  (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar4) + 0xa4))(0,1);
-  (**(code **)(iVar3 + 0xa8))(0,1);
-  (**(code **)(iVar7 + 0xa8))(0,1);
-  (**(code **)(iVar6 + 0xa8))(0,1);
-  (**(code **)(iVar2 + 0xf8))();
-  (**(code **)(iVar2 + 0x114))(0);
   return;
 }
 

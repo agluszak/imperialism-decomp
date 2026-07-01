@@ -4,45 +4,45 @@
 // Bucket: TRadioPictureButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571700
-// GHIDRA_NAME TRadioPictureButton::CreateTRadioPictureButtonInstance
-// GHIDRA_PROTO undefined CreateTRadioPictureButtonInstance()
+// GHIDRA_NAME TRadioPictureButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TRadioPictureButton::CreateTRadioPictureButtonInstance(void)
+undefined4 * TRadioPictureButton::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063642a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x98);
+  puVar1 = (undefined4 *)operator_new(0x98);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(undefined2 *)(this + 0x92) = 7000;
-    *(TRadioPictureButtonVtbl **)this = &TRadioPictureButtonVtbl_0065f670;
-    *(undefined4 *)(this + 0x60) = 0xc;
-    this[0x94] = (thunk_TPictureButton)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
+    *puVar1 = &_vftable_;
+    puVar1[0x18] = 0xc;
+    *(undefined1 *)(puVar1 + 0x25) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005717A0
-// GHIDRA_NAME TRadioPictureButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TRadioPictureButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRadioPictureButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TRadioPictureButton::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTRadioPictureButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005717C0
@@ -58,9 +58,9 @@ CRuntimeClass * TRadioPictureButton::GetTEventHandlerClassNamePointer()
 TRadioPictureButton * TRadioPictureButton::TRadioPictureButton()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  func_0x00401122();
   *(undefined2 *)&this->field_0x92 = 7000;
-  this->vftable = &TRadioPictureButtonVtbl_0065f670;
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x60 = 0xc;
   this->field_0x94 = 0;
   return this;
@@ -73,39 +73,11 @@ TRadioPictureButton * TRadioPictureButton::TRadioPictureButton()
 TRadioPictureButton * TRadioPictureButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00402095();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00571850
-// GHIDRA_NAME TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
-
-void __thiscall
-TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TRadioPictureButton *this,int param_1)
-
-{
-  if (param_1 == 0xc) {
-    if (this->field_0x64 == '\0') {
-      (*this->vftable->OrphanCallChain_C2_I16_005718f0)(1,0);
-    }
-    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0xc);
-    return;
-  }
-  if (param_1 != 0x1f) {
-    if (param_1 != 0x20) {
-      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
-      return;
-    }
-    (*this->vftable->OrphanCallChain_C2_I16_005718f0)(0,0);
-    return;
-  }
-  (*this->vftable->OrphanCallChain_C2_I16_005718f0)(1,0);
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005718F0
@@ -119,7 +91,7 @@ TRadioPictureButton::OrphanCallChain_C2_I16_005718f0
 {
   TRadioPictureButtonVtbl *pTVar1;
   char cVar2;
-
+  
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {

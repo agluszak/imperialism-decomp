@@ -4,8 +4,8 @@
 // Bucket: CTypeLibCache.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006238C3
-// GHIDRA_NAME CTypeLibCache::?Unlock@CTypeLibCache@@QAEXXZ
-// GHIDRA_PROTO void __thiscall ?Unlock@CTypeLibCache@@QAEXXZ(void)
+// GHIDRA_NAME CTypeLibCache::Unlock
+// GHIDRA_PROTO void __thiscall Unlock(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: void __thiscall CTypeLibCache::Unlock(void)
@@ -18,7 +18,7 @@
    
    Library: nafxcw retail msvc500:static */
 
-void CTypeLibCache::_Unlock_CTypeLibCache__QAEXXZ()
+void CTypeLibCache::Unlock()
 
 {
   int *piVar1;

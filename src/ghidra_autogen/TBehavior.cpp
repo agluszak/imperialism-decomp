@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486F90
 // GHIDRA_NAME TBehavior::CreateTBehaviorInstance
-// GHIDRA_PROTO undefined __thiscall TBehavior::CreateTBehaviorInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTBehaviorInstance(void)
 
 void TBehavior::CreateTBehaviorInstance()
 
@@ -15,7 +15,7 @@ void TBehavior::CreateTBehaviorInstance()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   puStack_8 = &LAB_0062ead8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -28,11 +28,31 @@ void TBehavior::CreateTBehaviorInstance()
   this[1].vftable = (TBehaviorVtbl *)0x0;
   *(undefined4 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0x4 = 0;
-  _FreeDataChain_CPlex__QAEXXZ();
+  CPlex::FreeDataChain();
   *(undefined4 *)&this[1].field_0x4 = 0;
   this->vftable = (TBehaviorVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487180
+// GHIDRA_NAME TBehavior::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TBehavior::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x10);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    puVar1[1] = 0x20202020;
+    puVar1[2] = 0;
+    *(undefined1 *)(puVar1 + 3) = 1;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004871C0
@@ -42,17 +62,17 @@ void TBehavior::CreateTBehaviorInstance()
 CRuntimeClass * TBehavior::GetRuntimeClass()
 
 {
-  return &g_pClassDescTBehavior;
+  return &classTBehavior;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004871E0
 // GHIDRA_NAME TBehavior::ConstructTBehaviorBaseState
-// GHIDRA_PROTO undefined __thiscall TBehavior::ConstructTBehaviorBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTBehaviorBaseState(void)
 
 void TBehavior::ConstructTBehaviorBaseState()
 
 {
-  this->vftable = &TBehaviorVtbl_00648d60;
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x4 = 0x20202020;
   *(undefined4 *)&this->field_0x8 = 0;
   this->field_0xc = 1;
@@ -60,15 +80,15 @@ void TBehavior::ConstructTBehaviorBaseState()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487210
-// GHIDRA_NAME TBehavior::DestructTBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTBehaviorAndMaybeFree(byte param_1)
+// GHIDRA_NAME TBehavior::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBehavior * TBehavior::DestructTBehaviorAndMaybeFree(byte param_1)
+TBehavior * TBehavior::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTBehaviorAndMaybeFree_Impl();
+  func_0x00403f94();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -92,6 +112,17 @@ undefined1 TBehavior::OrphanLeaf_NoCall_Ins02_004872a0()
 
 {
   return this->field_0xc;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004872C0
+// GHIDRA_NAME TBehavior::CreateTDialogBehaviorInstance
+// GHIDRA_PROTO undefined __thiscall CreateTDialogBehaviorInstance(undefined1 param_1)
+
+void TBehavior::CreateTDialogBehaviorInstance(undefined1 param_1)
+
+{
+  this->field_0xc = param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004872E0

@@ -5,13 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B7A90
 // GHIDRA_NAME TDealList::InitializeNationInteractionStateManagerDefaults
-// GHIDRA_PROTO undefined TDealList::InitializeNationInteractionStateManagerDefaults()
+// GHIDRA_PROTO undefined InitializeNationInteractionStateManagerDefaults()
 
 void __fastcall TDealList::InitializeNationInteractionStateManagerDefaults(int param_1)
 
 {
   undefined2 uVar1;
-  TIndexAndRankList *this;
+  CPtrArray *this;
   undefined2 *puVar2;
   int iVar3;
   undefined4 *puVar4;
@@ -22,7 +22,7 @@ void __fastcall TDealList::InitializeNationInteractionStateManagerDefaults(int p
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   puStack_8 = &LAB_0063907a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -41,16 +41,16 @@ void __fastcall TDealList::InitializeNationInteractionStateManagerDefaults(int p
     puVar5[-3] = uVar1;
     puVar5[-2] = uVar1;
     puVar5[6] = puVar5[-3];
-    this = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
+    this = (CPtrArray *)operator_new(0x18);
     local_4 = 0;
-    if (this == (TIndexAndRankList *)0x0) {
-      this = (TIndexAndRankList *)0x0;
+    if (this == (CPtrArray *)0x0) {
+      this = (CPtrArray *)0x0;
     }
     else {
-      TIndexAndRankList::__0CPtrArray__QAE_XZ(this);
-      this->vftable = (TIndexAndRankListVtbl *)&TDealListVtbl_0066da38;
+      CPtrArray::CPtrArray(this);
+      *(TDealListVtbl **)this = &_vftable_;
     }
-    *(undefined2 *)&this->field_0x14 = 0x10;
+    *(undefined2 *)(this + 0x14) = 0x10;
     *puVar4 = this;
     puVar2 = puVar5 + 0x35;
     iVar3 = 0x17;
@@ -71,43 +71,43 @@ void __fastcall TDealList::InitializeNationInteractionStateManagerDefaults(int p
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA130
-// GHIDRA_NAME TDealList::CreateTDealListInstance
-// GHIDRA_PROTO undefined CreateTDealListInstance()
+// GHIDRA_NAME TDealList::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TIndexAndRankList * TDealList::CreateTDealListInstance(void)
+CPtrArray * TDealList::CreateObject(void)
 
 {
-  TIndexAndRankList *this;
-  TIndexAndRankList *pTVar1;
+  CPtrArray *this;
+  CPtrArray *pCVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063909a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
+  this = (CPtrArray *)operator_new(0x18);
   local_4 = 0;
-  pTVar1 = (TIndexAndRankList *)0x0;
-  if (this != (TIndexAndRankList *)0x0) {
-    TIndexAndRankList::__0CPtrArray__QAE_XZ(this);
-    this->vftable = (TIndexAndRankListVtbl *)&TDealListVtbl_0066da38;
-    pTVar1 = this;
+  pCVar1 = (CPtrArray *)0x0;
+  if (this != (CPtrArray *)0x0) {
+    CPtrArray::CPtrArray(this);
+    *(TDealListVtbl **)this = &_vftable_;
+    pCVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return pCVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1A0
-// GHIDRA_NAME TDealList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TDealList::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDealList::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TDealList::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTDealList;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1C0
@@ -117,8 +117,8 @@ CRuntimeClass * TDealList::GetTEventHandlerClassNamePointer()
 TDealList * TDealList::ConstructTDealListBaseState()
 
 {
-  TIndexAndRankList::__0CPtrArray__QAE_XZ((TIndexAndRankList *)this);
-  this->vftable = &TDealListVtbl_0066da38;
+  CPtrArray::CPtrArray((CPtrArray *)this);
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -129,18 +129,18 @@ TDealList * TDealList::ConstructTDealListBaseState()
 TDealList * TDealList::_scalar_deleting_destructor_(byte param_1)
 
 {
-  CObArray::??1CUIntArray@@UAE@XZ();
+  func_0x004057e5();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA260
-// GHIDRA_NAME TDealList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(short * param_1, short * param_2)
+// GHIDRA_NAME TDealList::CompareUnsignedIntsAscending
+// GHIDRA_PROTO undefined __thiscall CompareUnsignedIntsAscending(short * param_1, short * param_2)
 
-int TDealList::OrphanRetStub_0059add0(short *param_1, short *param_2)
+int TDealList::CompareUnsignedIntsAscending(short *param_1, short *param_2)
 
 {
   short sVar1;
@@ -149,7 +149,7 @@ int TDealList::OrphanRetStub_0059add0(short *param_1, short *param_2)
   int iVar4;
   int iVar5;
   int iVar6;
-
+  
   sVar1 = param_1[6];
   if ((sVar1 < 0xd) || (0x10 < sVar1)) {
     bVar3 = false;

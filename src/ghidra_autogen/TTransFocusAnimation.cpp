@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047C3D0
 // GHIDRA_NAME TTransFocusAnimation::Sprite__CollectNonTransparentPixels
-// GHIDRA_PROTO int * __thiscall TTransFocusAnimation::Sprite__CollectNonTransparentPixels(uint this_ptr)
+// GHIDRA_PROTO int * __thiscall Sprite__CollectNonTransparentPixels(uint this_ptr)
 
 int * TTransFocusAnimation::Sprite__CollectNonTransparentPixels(uint this_ptr)
 
@@ -29,7 +29,7 @@ int * TTransFocusAnimation::Sprite__CollectNonTransparentPixels(uint this_ptr)
   int row_idx;
   int pair_count;
   byte *row_ptr;
-
+  
   header_ptr = *(int *)&this->field_0x10;
   if (*(short *)(header_ptr + 0xe) != 1) {
     width = *(int *)(header_ptr + 4);
@@ -50,7 +50,7 @@ LAB_0047c603:
         col_idx = -header_ptr;
       }
       if (col_idx <= scan_offset) {
-        out_pairs = (int *)__2_YAPAXI_Z((row_idx + 1) * 0x10);
+        out_pairs = (int *)operator_new((row_idx + 1) * 0x10);
         *out_pairs = row_idx * 2 + 1;
         pair_count = 1;
         header_ptr = 0;
@@ -162,7 +162,7 @@ LAB_0047c453:
       row_idx = row_idx + col_idx;
     }
   }
-  out_pairs = (int *)__2_YAPAXI_Z((this_ptr + 1) * 0x10);
+  out_pairs = (int *)operator_new((this_ptr + 1) * 0x10);
   width = 0;
   *out_pairs = this_ptr * 2 + 1;
   this_ptr = 1;
@@ -252,11 +252,11 @@ TTransFocusAnimation * __cdecl TTransFocusAnimation::CreateObject(void)
 
 {
   TTransFocusAnimation *pTVar1;
-
-  pTVar1 = (TTransFocusAnimation *)__2_YAPAXI_Z(0x38);
+  
+  pTVar1 = (TTransFocusAnimation *)operator_new(0x38);
   if (pTVar1 != (TTransFocusAnimation *)0x0) {
     pTVar1->field_0x2c = 1;
-    pTVar1->vftable = &TTransFocusAnimationVtbl_0064c498;
+    pTVar1->vftable = &_vftable_;
     *(undefined4 *)&pTVar1->field_0x30 = 0;
     *(undefined4 *)&pTVar1->field_0x34 = 0;
     return pTVar1;
@@ -265,24 +265,22 @@ TTransFocusAnimation * __cdecl TTransFocusAnimation::CreateObject(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0430
-// GHIDRA_NAME TTransFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0430
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a0430(byte param_1)
+// GHIDRA_NAME TTransFocusAnimation::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTransFocusAnimation * __thiscall
-TTransFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0430
-          (TTransFocusAnimation *this,byte param_1)
+TTransFocusAnimation * TTransFocusAnimation::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TTransFocusAnimation::CreateTTransFocusAnimationInstance(this);
+  func_0x00403666();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0460
 // GHIDRA_NAME TTransFocusAnimation::CreateTTransFocusAnimationInstance
-// GHIDRA_PROTO undefined __thiscall TTransFocusAnimation::CreateTTransFocusAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTTransFocusAnimationInstance(void)
 
 void TTransFocusAnimation::CreateTTransFocusAnimationInstance()
 
@@ -293,10 +291,10 @@ void TTransFocusAnimation::CreateTTransFocusAnimationInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0480
-// GHIDRA_NAME TTransFocusAnimation::GetTAnimationClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
+// GHIDRA_NAME TTransFocusAnimation::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTransFocusAnimation::GetTAnimationClassNamePointer()
+CRuntimeClass * TTransFocusAnimation::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
@@ -304,7 +302,7 @@ CRuntimeClass * TTransFocusAnimation::GetTAnimationClassNamePointer()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A04A0
 // GHIDRA_NAME TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall TTransFocusAnimation::ConstructTTransFocusAnimationBaseState(undefined4 param_1, int * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
+// GHIDRA_PROTO undefined __thiscall ConstructTTransFocusAnimationBaseState(undefined4 param_1, int * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
 
 void __thiscall
 TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
@@ -319,7 +317,7 @@ TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
   undefined4 local_c;
   int local_8;
   int local_4;
-
+  
   *(undefined4 *)&this->field_0x4 = param_1;
   *(int *)&this->field_0x1c = *param_2;
   *(int *)&this->field_0x20 = param_2[1];
@@ -336,24 +334,24 @@ TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
   local_c = 0;
   local_8 = param_2[2] - *param_2;
   local_4 = param_2[3] - param_2[1];
-  (**(code **)(*DAT_006a2158 + 0x2c))(&this->field_0x30,8,&local_10);
-  uVar2 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(_param_4);
+  (**(code **)(*g_pDisplayMgr + 0x2c))(&this->field_0x30,8,&local_10);
+  uVar2 = func_0x00401fe1(_param_4);
   *(undefined4 *)&this->field_0x34 = uVar2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0570
-// GHIDRA_NAME TTransFocusAnimation::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_NAME TTransFocusAnimation::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TTransFocusAnimation::QueueCityRecruitmentSupportCommandsIfDeficit()
+void TTransFocusAnimation::Free()
 
 {
   if (*(int *)&this->field_0x30 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x30);
+    func_0x004010e6(&this->field_0x30);
   }
   if (*(int *)&this->field_0x34 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x34);
+    func_0x004010e6(&this->field_0x34);
   }
   if (this != (TTransFocusAnimation *)0x0) {
     (*this->vftable->slot_0x04)(1);
@@ -376,14 +374,14 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe78;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  AcquireReusableQuickDrawSurface();
+  func_0x004021c1();
   local_4 = 0;
-  ApplyHitRegionToClipState(local_30);
+  func_0x0040232e(local_30);
   local_2c.left = 0;
   local_2c.top = 0;
   local_1c.left = *(LONG *)&this->field_0x1c;
@@ -393,9 +391,9 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip()
   local_1c.bottom = *(LONG *)&this->field_0x28;
   local_2c.bottom = local_1c.bottom - local_1c.top;
   ApplyRectClipRegionToGlobalClipState(&local_2c);
-  ResetQuickDrawStrokeState();
-  UpdatePaletteIndexWithDefaultFallback(0x13);
-  SetQuickDrawFillColorFromPaletteIndex(0);
+  func_0x004088aa();
+  func_0x004010be(0x13);
+  func_0x0040330f(0);
   if (*(int *)(g_pPrimaryRenderSurfaceContext + 0x20) != 0) {
     iVar1 = *(int *)(*(int *)(*(int *)(g_pPrimaryRenderSurfaceContext + 0x20) + 0x10) + 8);
     if (iVar1 < 1) {
@@ -411,50 +409,45 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip()
     }
     OffsetRect(&local_2c,0,(iVar1 - local_2c.top) - local_2c.bottom);
   }
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
-             (astruct_18 *)(*(int *)&this->field_0x30 + 4),&local_1c,&local_2c,0,(astruct_19 *)0x0);
-  SnapshotHitRegionToClipCache(local_30);
+  func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,*(int *)&this->field_0x30 + 4,&local_1c,
+                  &local_2c,0,0);
+  func_0x00405be1(local_30);
   local_4 = 0xffffffff;
-  ReleaseOrCacheQuickDrawSurface();
+  func_0x00409aac();
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0770
-// GHIDRA_NAME TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw
-// GHIDRA_PROTO undefined __thiscall RenderFocusAnimationFrameWithScopedQuickDraw(void)
+// GHIDRA_NAME TTransFocusAnimation::VTableSlot0D
+// GHIDRA_PROTO undefined __thiscall VTableSlot0D(void)
 
-void TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw()
+void TTransFocusAnimation::VTableSlot0D()
 
 {
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_2c;
-  undefined4 uStack_28;
-  undefined4 uStack_10;
+  undefined4 uStack_14;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe98;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  ConstructScopedMapQuickDrawContext(*(undefined4 *)&this->field_0x4);
-  local_4 = 0;
+  func_0x00401d70(*(undefined4 *)&this->field_0x4);
+  puStack_8 = (undefined1 *)0x0;
   (**(code **)(**(int **)&this->field_0x4 + 0xf8))();
-  uStack_2c = 0;
-  uStack_28 = 0;
-  (**(code **)&this->vftable->field_0x2c)(&uStack_2c);
-  puStack_8 = (undefined1 *)0xffffffff;
+  (**(code **)&this->vftable->field_0x2c)(&stack0xffffffd0);
+  uStack_c = 0xffffffff;
   DestroyScopedMapQuickDrawContext();
-  *unaff_FS_OFFSET = uStack_10;
+  *unaff_FS_OFFSET = uStack_14;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0810
 // GHIDRA_NAME TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift
-// GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(void)
+// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(void)
 
 void TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift()
 
@@ -464,46 +457,46 @@ void TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift()
   int iVar3;
   short sVar4;
   undefined4 uStack_3c;
-  astruct_18 *local_38;
+  int local_38;
   undefined4 uStack_34;
-  RECT local_30;
+  LONG local_30;
+  int local_2c;
+  int local_28;
+  int local_24;
   tagRECT local_20;
-  RECT local_10;
-
+  int local_10 [3];
+  int local_4;
+  
   sVar4 = *(short *)&this->field_0x24 - *(short *)&this->field_0x1c;
-  local_38 = *(astruct_18 **)&g_pUiAnimator->field_0x20;
+  local_38 = *(int *)&g_pUiAnimator->field_0x20;
   iVar3 = (int)(short)(*(short *)&this->field_0x28 - *(short *)&this->field_0x20);
-  local_30.left = 0;
-  local_30.top = 0;
-  local_30.right = (int)sVar4;
-  local_30.bottom = iVar3;
-  ResetQuickDrawStrokeState();
-  SetQuickDrawStrokeColor(0xffffff);
-  SetQuickDrawFillColor(0);
-  local_20.left = local_30.left;
-  local_20.right = local_30.right;
-  local_20.top = local_30.top;
-  local_20.bottom = local_30.bottom;
-  if (*(int *)((int)local_38 + 0x20) != 0) {
-    iVar2 = *(int *)(*(int *)(*(int *)((int)local_38 + 0x20) + 0x10) + 8);
+  local_30 = 0;
+  local_2c = 0;
+  local_28 = (int)sVar4;
+  local_24 = iVar3;
+  func_0x004088aa();
+  func_0x00402bdf(0xffffff);
+  func_0x00406b86(0);
+  local_20.left = local_30;
+  local_20.right = local_28;
+  local_20.top = local_2c;
+  local_20.bottom = local_24;
+  if (*(int *)(local_38 + 0x20) != 0) {
+    iVar2 = *(int *)(*(int *)(*(int *)(local_38 + 0x20) + 0x10) + 8);
     if (iVar2 < 1) {
       iVar2 = -iVar2;
     }
-    OffsetRect(&local_20,0,(iVar2 - local_30.top) - local_30.bottom);
+    OffsetRect(&local_20,0,(iVar2 - local_2c) - local_24);
   }
-  local_38 = (astruct_18 *)((int)local_38 + 4);
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)&this->field_0x30 + 4),local_38,&local_30,&local_20,0,
-             (astruct_19 *)0x0);
+  local_38 = local_38 + 4;
+  func_0x00405493(*(int *)&this->field_0x30 + 4,local_38,&local_30,&local_20,0,0);
   if (this->field_0x2c != '\0') {
-    local_10.left = (LONG)(short)(*(short *)&this->field_0x8 * sVar4);
-    local_10.right = local_10.left + sVar4;
-    local_10.top = 0;
-    local_10.bottom = iVar3;
-    UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)&this->field_0x34 + 4),local_38,&local_10,&local_20,0x24,
-               (astruct_19 *)0x0);
+    local_10[0] = (int)(short)(*(short *)&this->field_0x8 * sVar4);
+    local_10[2] = local_10[0] + sVar4;
+    local_10[1] = 0;
+    local_4 = iVar3;
+    func_0x004010be(0x10);
+    func_0x00405493(*(int *)&this->field_0x34 + 4,local_38,local_10,&local_20,0x24,0);
   }
   pcVar1 = *(code **)&this->vftable->field_0x38;
   (*pcVar1)();
@@ -515,60 +508,181 @@ void TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift()
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00607840
-// GHIDRA_NAME TTransFocusAnimation::?ModifyStyle@CWnd@@SGHPAUHWND__@@KKI@Z
-// GHIDRA_PROTO undefined ?ModifyStyle@CWnd@@SGHPAUHWND__@@KKI@Z()
-
-void TTransFocusAnimation::_ModifyStyle_CWnd__SGHPAUHWND____KKI_Z
-               (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
-{
-  __AfxModifyStyle__YGHPAUHWND____HKKI_Z(param_1,0xfffffff0,param_2,param_3,param_4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060785A
-// GHIDRA_NAME TTransFocusAnimation::?_AfxModifyStyle@@YGHPAUHWND__@@HKKI@Z
-// GHIDRA_PROTO undefined ?_AfxModifyStyle@@YGHPAUHWND__@@HKKI@Z()
+// GHIDRA_FUNCTION IMPERIALISM 0x004BA3B0
+// GHIDRA_NAME TTransFocusAnimation::InitializeCityBuildingControlRegions
+// GHIDRA_PROTO void __thiscall InitializeCityBuildingControlRegions(void * pInitContext)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Updates a window long field using clear/set masks, and optionally forces non-client refresh via SetWindowPos with SWP_NOSIZE/NOMOVE/NOZORDER frame flags.
+// GHIDRA_COMMENT Initialize city-screen clickable building controls.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1) For slotId 0..15, query building level and create hit region control.
+// GHIDRA_COMMENT 2) Control/icon resource formula: 7100 + (level * 16) + slotId.
+// GHIDRA_COMMENT 3) Position controls with g_anCityBuildingSlotCoords + slot offset indices.
+// GHIDRA_COMMENT 4) Build action controls from g_aCityBuildingActionRects and g_awCityBuildingActionResourceIds.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT SlotId to building type:
+// GHIDRA_COMMENT 0 Textile Mill
+// GHIDRA_COMMENT 1 Clothing Factory
+// GHIDRA_COMMENT 2 Steel Mill
+// GHIDRA_COMMENT 3 Metalworks
+// GHIDRA_COMMENT 4 Lumber Mill
+// GHIDRA_COMMENT 5 Furniture Factory
+// GHIDRA_COMMENT 6 Oil Refinery
+// GHIDRA_COMMENT 7 Shipyard
+// GHIDRA_COMMENT 8 Armory
+// GHIDRA_COMMENT 9 Trade School
+// GHIDRA_COMMENT 10 University
+// GHIDRA_COMMENT 11 Power Plant
+// GHIDRA_COMMENT 12 Food Processing
+// GHIDRA_COMMENT 13 Warehouse
+// GHIDRA_COMMENT 14 Railyard
+// GHIDRA_COMMENT 15 Capitol.
 // GHIDRA_COMMENT_END
 
-/* Updates a window long field using clear/set masks, and optionally forces non-client refresh via
-   SetWindowPos with SWP_NOSIZE/NOMOVE/NOZORDER frame flags. */
+/* Initialize city-screen clickable building controls.
+   Algorithm:
+   1) For slotId 0..15, query building level and create hit region control.
+   2) Control/icon resource formula: 7100 + (level * 16) + slotId.
+   3) Position controls with g_anCityBuildingSlotCoords + slot offset indices.
+   4) Build action controls from g_aCityBuildingActionRects and g_awCityBuildingActionResourceIds.
+   
+   SlotId to building type:
+   0 Textile Mill
+   1 Clothing Factory
+   2 Steel Mill
+   3 Metalworks
+   4 Lumber Mill
+   5 Furniture Factory
+   6 Oil Refinery
+   7 Shipyard
+   8 Armory
+   9 Trade School
+   10 University
+   11 Power Plant
+   12 Food Processing
+   13 Warehouse
+   14 Railyard
+   15 Capitol. */
 
-undefined4
-TTransFocusAnimation::__AfxModifyStyle__YGHPAUHWND____HKKI_Z
-          (HWND param_1,int param_2,uint param_3,uint param_4,uint param_5)
+void __thiscall
+TTransFocusAnimation::InitializeCityBuildingControlRegions
+          (TTransFocusAnimation *this,void *pInitContext)
 
 {
-  uint uVar1;
-  undefined4 uVar2;
-
-  uVar1 = GetWindowLongA(param_1,param_2);
-  param_4 = ~param_3 & uVar1 | param_4;
-  if (uVar1 == param_4) {
-    uVar2 = 0;
+  undefined2 uVar1;
+  undefined uVar2;
+  short sVar3;
+  undefined4 uVar4;
+  undefined3 extraout_var;
+  int *piVar5;
+  HRGN pHVar6;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  int iVar7;
+  LONG *pLVar8;
+  undefined4 *puVar9;
+  TCity *pTVar10;
+  int iVar11;
+  int *unaff_EBX;
+  undefined4 *puVar12;
+  int iVar13;
+  int iVar14;
+  TCity *pTVar15;
+  undefined2 *local_2c;
+  int iStack_28;
+  int iStack_20;
+  tagRECT tStack_14;
+  
+  func_0x00406ba9(pInitContext);
+  *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 1;
+  sVar3 = func_0x00403b16();
+  iVar13 = 0;
+  if (g_apNationStates[sVar3] == (TGreatPower *)0x0) {
+    pTVar15 = (TCity *)0x0;
   }
   else {
-    SetWindowLongA(param_1,param_2,param_4);
-    if (param_5 != 0) {
-      SetWindowPos(param_1,(HWND)0x0,0,0,0,0,param_5 | 0x17);
-    }
-    uVar2 = 1;
+    pTVar15 = g_apNationStates[sVar3]->city;
   }
-  return uVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006078A9
-// GHIDRA_NAME TTransFocusAnimation::?ModifyStyleEx@CWnd@@SGHPAUHWND__@@KKI@Z
-// GHIDRA_PROTO undefined ?ModifyStyleEx@CWnd@@SGHPAUHWND__@@KKI@Z()
-
-void TTransFocusAnimation::_ModifyStyleEx_CWnd__SGHPAUHWND____KKI_Z
-               (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
-{
-  __AfxModifyStyle__YGHPAUHWND____HKKI_Z(param_1,0xffffffec,param_2,param_3,param_4);
+  puVar12 = (undefined4 *)&this[4].field_0xc;
+  do {
+    uVar4 = func_0x00401127();
+    *puVar12 = uVar4;
+    sVar3 = func_0x00403b16();
+    if (g_apNationStates[sVar3] == (TGreatPower *)0x0) {
+      pTVar10 = (TCity *)0x0;
+    }
+    else {
+      pTVar10 = g_apNationStates[sVar3]->city;
+    }
+    uVar2 = (*pTVar10->vftable->WrapperFor_GetActiveNationId_At004b4940)(iVar13);
+    func_0x00403224(CONCAT31(extraout_var,uVar2) * 0x10 + 0x1bbc + iVar13);
+    piVar5 = (int *)func_0x00402e19(0xffffffff);
+    DeleteObject();
+    iVar7 = *(int *)*puVar12;
+    pHVar6 = CreatePolygonRgn((POINT *)(piVar5 + 2),*piVar5,2);
+    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar7 + 0x14),(int)pHVar6);
+    operator_delete(piVar5);
+    func_0x004020fe(this);
+    func_0x0040275c(*puVar12,(int)(short)(&g_anCityBuildingSlotCoords)
+                                         [(int)g_nCityBuildingSlotXOffsetIndex + iVar13 * 2],
+                    (int)(short)(&g_anCityBuildingSlotCoords)
+                                [(int)g_nCityBuildingSlotYOffsetIndex + iVar13 * 2]);
+    iVar13 = iVar13 + 1;
+    puVar12 = puVar12 + 1;
+  } while (iVar13 < 0x10);
+  (**(code **)(*unaff_EBX + 0x58))();
+  ModifyStyle(0,0x2000000,0);
+  iStack_20 = 0;
+  iStack_28 = 0;
+  do {
+    if (iStack_28 < 0x15) {
+      uVar2 = (*pTVar15->vftable->WrapperFor_GetActiveNationId_At004b4940)(iStack_20);
+      iVar13 = CONCAT31(extraout_var_00,uVar2);
+    }
+    else {
+      uVar2 = (*pTVar15->vftable->WrapperFor_GetActiveNationId_At004b4940)(0xb);
+      iVar13 = CONCAT31(extraout_var_01,uVar2);
+    }
+    if (0 < (short)iVar13) {
+      iVar14 = 0;
+      iVar7 = (short)(iVar13 + -1) + iStack_28;
+      local_2c = (undefined2 *)(&g_awCityBuildingActionResourceIds + iVar7 * 6);
+      pLVar8 = (LONG *)(&g_aCityBuildingActionRects + iVar7 * 0x30);
+      do {
+        tStack_14.left = *pLVar8;
+        tStack_14.top = pLVar8[1];
+        tStack_14.right = pLVar8[2];
+        tStack_14.bottom = pLVar8[3];
+        if (tStack_14.right < 1) {
+          unaff_EBX[iVar14 + iStack_28 + 0x4b] = 0;
+        }
+        else {
+          OffsetRect(&tStack_14,0x32,0x23);
+          iVar7 = (iVar13 + -1) * 3 + iVar14 + (iStack_20 + 0x5dc) * 10;
+          uVar1 = *local_2c;
+          puVar9 = (undefined4 *)operator_new(0x38);
+          puVar12 = (undefined4 *)0x0;
+          if (puVar9 != (undefined4 *)0x0) {
+            puVar9[0xc] = 0;
+            puVar9[0xd] = 0;
+            *(undefined1 *)(puVar9 + 0xb) = 1;
+            *puVar9 = &_vftable_;
+            puVar12 = puVar9;
+          }
+          iVar11 = (int)(short)iVar7;
+          func_0x00406799(unaff_EBX,&tStack_14,uVar1,iVar7,(-(iStack_20 != 7) & 2U) + 5);
+          func_0x00402ec8(puVar12);
+          unaff_EBX[iVar14 + iVar11 + 0x4b] = (int)puVar12;
+          func_0x00408a03(&stack0xffffffd0,1);
+          *(undefined1 *)((int)unaff_EBX + 0xa6) = 1;
+        }
+        iVar14 = iVar14 + 1;
+        pLVar8 = pLVar8 + 4;
+        local_2c = local_2c + 1;
+      } while (iVar14 < 3);
+    }
+    iStack_28 = iStack_28 + 3;
+    iStack_20 = iStack_20 + 1;
+  } while (iStack_28 < 0x18);
   return;
 }
 

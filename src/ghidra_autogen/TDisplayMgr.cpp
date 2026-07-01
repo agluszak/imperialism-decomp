@@ -3,19 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: TDisplayMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FE780
-// GHIDRA_NAME TDisplayMgr::GetTDisplayMgrClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTDisplayMgrClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004FE710
+// GHIDRA_NAME TDisplayMgr::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TDisplayMgr::GetTDisplayMgrClassNamePointer()
+undefined4 * TDisplayMgr::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x24);
+  if (puVar1 != (undefined4 *)0x0) {
+    *(undefined1 *)(puVar1 + 4) = 0;
+    *(undefined1 *)((int)puVar1 + 0x11) = 0;
+    *(undefined1 *)((int)puVar1 + 0x12) = 0;
+    *(undefined1 *)((int)puVar1 + 0x13) = 0;
+    *(undefined1 *)(puVar1 + 5) = 0;
+    *(undefined1 *)((int)puVar1 + 0x15) = 0;
+    *(undefined1 *)((int)puVar1 + 0x16) = 0;
+    *(undefined1 *)((int)puVar1 + 0x17) = 0;
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 2) = 8;
+    puVar1[1] = 0;
+    *(undefined2 *)((int)puVar1 + 10) = 0;
+    *(undefined1 *)(puVar1 + 3) = 0;
+    puVar1[6] = 0;
+    puVar1[8] = 0;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FE780
+// GHIDRA_NAME TDisplayMgr::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TDisplayMgr::GetRuntimeClass()
+
+{
+  return &classTDisplayMgr;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE7A0
 // GHIDRA_NAME TDisplayMgr::InitializeMapTileRuntimeStateEntry
-// GHIDRA_PROTO undefined __thiscall TDisplayMgr::InitializeMapTileRuntimeStateEntry(void)
+// GHIDRA_PROTO undefined __thiscall InitializeMapTileRuntimeStateEntry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes one map tile runtime-state entry with default icon/overlay bytes.
 // GHIDRA_COMMENT Key defaults:
@@ -41,7 +72,7 @@ void TDisplayMgr::InitializeMapTileRuntimeStateEntry()
   this->field_0x15 = 0;
   this->field_0x16 = 0;
   this->field_0x17 = 0;
-  this->vftable = &TDisplayMgrVtbl_00656680;
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x8 = 8;
   *(undefined4 *)&this->field_0x4 = 0;
   *(undefined2 *)&this->field_0xa = 0;
@@ -52,27 +83,113 @@ void TDisplayMgr::InitializeMapTileRuntimeStateEntry()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE7F0
-// GHIDRA_NAME TDisplayMgr::DestructTDisplayMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTDisplayMgrAndMaybeFree(byte param_1)
+// GHIDRA_NAME TDisplayMgr::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDisplayMgr * TDisplayMgr::DestructTDisplayMgrAndMaybeFree(byte param_1)
+TDisplayMgr * TDisplayMgr::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTDisplayMgrAndMaybeFree_Impl();
+  func_0x004029eb();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FEA60
-// GHIDRA_NAME TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView
-// GHIDRA_PROTO undefined __thiscall ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004FE840
+// GHIDRA_NAME TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize
+// GHIDRA_PROTO undefined __thiscall InitializeTurnOrderNavigationDialogByViewportSize(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes turn-order navigation dialog resources in UDisplayMgr and selects event code by viewport size: width<641 and height<481 -> 0x7D1, otherwise 0x7D2. Then requests dialog root from callback factory manager and stores it in manager state.
+// GHIDRA_COMMENT_END
 
-void TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView()
+/* Initializes turn-order navigation dialog resources in UDisplayMgr and selects event code by
+   viewport size: width<641 and height<481 -> 0x7D1, otherwise 0x7D2. Then requests dialog root from
+   callback factory manager and stores it in manager state. */
+
+void TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize()
 
 {
-  WrapperFor_FreeHeapBufferIfNotNull_At00496420(g_pPrimaryRenderSurfaceContext);
+  TDisplayMgrVtbl *pTVar1;
+  CPtrArray *pCVar2;
+  int *piVar3;
+  undefined2 extraout_var;
+  int iVar4;
+  undefined4 uVar5;
+  LONG *unaff_FS_OFFSET;
+  CString local_20;
+  tagRECT local_1c;
+  LONG LStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00633262;
+  LStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (LONG)&LStack_c;
+  pCVar2 = (CPtrArray *)operator_new(0x18);
+  local_4 = 0;
+  local_20.m_pchData = (char *)pCVar2;
+  if (pCVar2 == (CPtrArray *)0x0) {
+    pCVar2 = (CPtrArray *)0x0;
+  }
+  else {
+    CPtrArray::CPtrArray(pCVar2);
+    *(TPtrListVtbl **)pCVar2 = &TSortedPtrList::_vftable_;
+  }
+  *(CPtrArray **)&this->field_0x20 = pCVar2;
+  *(undefined2 *)(pCVar2 + 0x14) = 4;
+  local_4 = 0xffffffff;
+  *(undefined2 *)&this->field_0xa = 0;
+  CString::CString(&local_20,g_szUiFontLiteralBelweBdBt);
+  local_4 = 1;
+  CString::operator=((CString *)&g_cstrUiFontBelweBdBt,&local_20);
+  local_4 = 0xffffffff;
+  CString::~CString(&local_20);
+  CString::CString(&local_20,g_szUiFontLiteralBelweLight);
+  local_4 = 2;
+  CString::operator=((CString *)&g_cstrUiFontBelweLight,&local_20);
+  local_4 = 0xffffffff;
+  CString::~CString(&local_20);
+  CString::CString(&local_20,g_szUiFontLiteralPalatino);
+  local_4 = 3;
+  CString::operator=((CString *)&g_cstrUiFontPalatino,&local_20);
+  local_4 = 0xffffffff;
+  CString::~CString(&local_20);
+  piVar3 = (int *)func_0x00406b9f();
+  CopyRect(&local_1c,(RECT *)(*piVar3 + 4));
+  iVar4 = *piVar3;
+  if ((*(int *)(iVar4 + 0xc) - *(int *)(iVar4 + 4) < 0x281) &&
+     (*(int *)(iVar4 + 0x10) - *(int *)(iVar4 + 8) < 0x1e1)) {
+    *(undefined2 *)&this->field_0xe = 0x7d1;
+  }
+  else {
+    *(undefined2 *)&this->field_0xe = 0x7d2;
+  }
+  pTVar1 = this->vftable;
+  (*pTVar1->OrphanRetStub_004fed50)(0);
+  iVar4 = (**(code **)(*g_pTurnEventDialogFactoryRegistry + 0x28))
+                    (CONCAT22(extraout_var,*(undefined2 *)&this->field_0xe),0);
+  if (iVar4 == 0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0xb0);
+  }
+  *(int *)&this->field_0x4 = iVar4;
+  uVar5 = func_0x004027d4(0x80);
+  *(undefined4 *)&this->field_0x18 = uVar5;
+  (*pTVar1->EnsurePrimaryRenderSurfaceContextAllocated)();
+  *unaff_FS_OFFSET = local_1c.top;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FEA60
+// GHIDRA_NAME TDisplayMgr::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
+
+void TDisplayMgr::Free()
+
+{
+  func_0x00402a3b(g_pPrimaryRenderSurfaceContext);
   g_pPrimaryRenderSurfaceContext = 0;
   (**(code **)(**(int **)&this->field_0x20 + 0x28))();
   if (this != (TDisplayMgr *)0x0) {
@@ -82,18 +199,18 @@ void TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FEAB0
-// GHIDRA_NAME TDisplayMgr::Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(void)
+// GHIDRA_NAME TDisplayMgr::InitializeBitmapSurfaceContextWithRetry
+// GHIDRA_PROTO undefined __thiscall InitializeBitmapSurfaceContextWithRetry(void)
 
-void TDisplayMgr::Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0()
+void TDisplayMgr::InitializeBitmapSurfaceContextWithRetry()
 
 {
   short sVar1;
-
-  sVar1 = InitializeBitmapDescriptorRecordAndLoadSurfaceNode();
+  
+  sVar1 = func_0x00409863();
   if (sVar1 != 0) {
-    InitializeBitmapDescriptorRecordAndLoadSurfaceNode();
-    InitializeBitmapDescriptorRecordAndLoadSurfaceNode();
+    func_0x00409863();
+    func_0x00409863();
   }
   return;
 }
@@ -109,7 +226,7 @@ void TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated()
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-
+  
   if (g_pPrimaryRenderSurfaceContext == 0) {
     local_10 = 0xffffffc0;
     local_c = 0xffffffc0;
@@ -132,7 +249,7 @@ void TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0()
     (**(code **)(**(int **)&this->field_0x4 + 0x1e4))();
   }
   (*this->vftable->OrphanRetStub_004fed50)(1);
-  NoOpCallback_00498ca0(&this->field_0x14);
+  func_0x0040227f(&this->field_0x14);
   return;
 }
 
@@ -143,9 +260,8 @@ void TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0()
 void TDisplayMgr::AssertUDisplayMgrLine471()
 
 {
-  if (DAT_006a30ac == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x1d7);
+  if (g_nUiInvalidationAssertFlagLine471 == 0) {
+    func_0x004057a4(s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x1d7);
   }
   return;
 }
@@ -157,9 +273,8 @@ void TDisplayMgr::AssertUDisplayMgrLine471()
 void TDisplayMgr::AssertUDisplayMgrLine495()
 
 {
-  if (DAT_006a30b0 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x1ef);
+  if (g_nUiInvalidationAssertFlagLine495 == 0) {
+    func_0x004057a4(s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x1ef);
   }
   return;
 }
@@ -171,23 +286,25 @@ void TDisplayMgr::AssertUDisplayMgrLine495()
 void TDisplayMgr::DispatchDisplayManagerControlStringMessage()
 
 {
-  undefined4 *unaff_FS_OFFSET;
-  undefined1 *puStack00000008;
-  undefined4 local_c;
-  undefined1 *puStack_8;
+  int *unaff_FS_OFFSET;
+  TDisplayMgr **ppTStack00000008;
+  TDisplayMgr *pTStack_14;
+  undefined4 uStack_10;
+  int local_c;
+  CString CStack_8;
   undefined4 local_4;
-
+  
   local_c = *unaff_FS_OFFSET;
-  puStack_8 = &LAB_00633288;
-  *unaff_FS_OFFSET = &local_c;
-  puStack00000008 = &stack0xffffffec;
+  CStack_8.m_pchData = &LAB_00633288;
+  *unaff_FS_OFFSET = (int)&local_c;
+  ppTStack00000008 = &pTStack_14;
   local_4 = 0;
-  AssignStringSharedRefAndReturnThis(&stack0x00000004);
-  TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
-            ((TViewMgr *)g_pUiRuntimeContext,&this->vftable);
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0x00000004);
-  *unaff_FS_OFFSET = local_c;
+  pTStack_14 = this;
+  func_0x004076b7();
+  func_0x00401730();
+  uStack_10 = 0xffffffff;
+  CString::~CString(&CStack_8);
+  *unaff_FS_OFFSET = (int)&stack0x00000004;
   return;
 }
 
@@ -203,7 +320,7 @@ void TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00()
   }
   (*this->vftable->OrphanRetStub_004fed50)(0);
   (**(code **)(**(int **)&this->field_0x4 + 0x13c))();
-  NoOpCallback_00498ca0(&this->field_0x10);
+  func_0x0040227f(&this->field_0x10);
   return;
 }
 
@@ -226,12 +343,10 @@ void TDisplayMgr::AssertUDisplayMgrLines614And616(char param_1)
 {
   if (*(short *)&this->field_0xa != 0) {
     if (param_1 != '\0') {
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x266);
+      func_0x004057a4(s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x266);
       return;
     }
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x268);
+    func_0x004057a4(s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x268);
   }
   return;
 }
@@ -246,6 +361,9 @@ void TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1)
   int iVar1;
   undefined4 uVar2;
   int *piVar3;
+  undefined4 unaff_EBX;
+  undefined4 unaff_ESI;
+  undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_38;
   undefined4 uStack_34;
@@ -256,10 +374,11 @@ void TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1)
   undefined4 uStack_20;
   undefined4 uStack_1c;
   undefined4 uStack_18;
+  undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   iVar1 = g_pPrimaryRenderSurfaceContext;
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
@@ -267,18 +386,17 @@ void TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1)
   *unaff_FS_OFFSET = &uStack_c;
   if (iVar1 != 0) {
     uStack_38 = 0;
-    AcquireReusableQuickDrawSurface();
+    func_0x004021c1();
     uStack_4 = 0;
-    ApplyHitRegionToClipState(uStack_34);
+    func_0x0040232e(uStack_34);
     GetActiveQuickDrawSurfaceContextAndFlags(&uStack_30,&uStack_38);
     SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,uStack_38);
     uVar2 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
     ReturnConstantTrueQuickDrawFlag(uVar2);
     piVar3 = (int *)(**(code **)(**(int **)&this->field_0x4 + 0x94))(0x6d61696e);
     if (piVar3 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x28a);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x28a);
     }
     iVar1 = *piVar3;
     (**(code **)(iVar1 + 300))(&uStack_30);
@@ -286,16 +404,16 @@ void TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1)
     uStack_20 = uStack_30;
     uStack_1c = uStack_2c;
     uStack_18 = uStack_28;
-    SetGlobalQuickDrawOrigin((short)piVar3[0xb],(short)piVar3[0xc]);
+    func_0x00409a11((short)piVar3[0xb],(short)piVar3[0xc]);
     ApplyRectClipRegionToGlobalClipState(&uStack_24);
     (**(code **)(iVar1 + 0x110))(&uStack_34);
     uVar2 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
     NoOpQuickDrawLifecycleHookB(uVar2);
-    SetActiveQuickDrawSurfaceContext(uStack_30,uStack_38);
-    SnapshotHitRegionToClipCache(uStack_34);
-    *(undefined2 *)&this->field_0x1c = param_1;
-    uStack_4 = 0xffffffff;
-    ReleaseOrCacheQuickDrawSurface();
+    SetActiveQuickDrawSurfaceContext(unaff_EBX,unaff_ESI);
+    func_0x00405be1(unaff_EDI);
+    *(undefined2 *)&this->field_0x1c = puStack_8._0_2_;
+    uStack_10 = 0xffffffff;
+    func_0x00409aac();
   }
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -320,7 +438,7 @@ void TDisplayMgr::SetMapTileIconVariantTriplet(undefined1 *param_1)
   this->field_0x10 = *param_1;
   this->field_0x11 = param_1[1];
   this->field_0x12 = param_1[2];
-  NoOpCallback_00498ca0(&this->field_0x10);
+  func_0x0040227f(&this->field_0x10);
   return;
 }
 
@@ -334,10 +452,10 @@ void TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows()
   char cVar1;
   int *piVar2;
   int iVar3;
-
-  CWMgrIterator::Reset(1);
-  piVar2 = (int *)CWMgrIterator::FirstWindow();
-  iVar3 = CWMgrIterator::More();
+  
+  func_0x004040c0(1);
+  piVar2 = (int *)func_0x004032c9();
+  iVar3 = func_0x00409304();
   while (iVar3 != 0) {
     if (piVar2 != (int *)0x0) {
       iVar3 = *piVar2;
@@ -352,8 +470,8 @@ void TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows()
         }
       }
     }
-    piVar2 = (int *)CWMgrIterator::NextWindow();
-    iVar3 = CWMgrIterator::More();
+    piVar2 = (int *)func_0x004067b7();
+    iVar3 = func_0x00409304();
   }
   return;
 }

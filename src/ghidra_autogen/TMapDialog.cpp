@@ -3,506 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TMapDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004056A5
-// GHIDRA_NAME TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-// GHIDRA_PROTO undefined TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale()
-
-void TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-               (short param_1,short *param_2,short *param_3,short *param_4,short param_5)
-
-{
-  uint uVar1;
-  short sVar2;
-
-  uVar1 = (int)param_1 / 0x6c;
-  *param_3 = (short)uVar1 * 0x40 - param_2[2];
-  sVar2 = (short)((int)param_1 % 0x6c << 6) - *param_2;
-  *param_4 = sVar2;
-  if (((uVar1 & 1) != 0) && (*param_4 = sVar2 + 0x20, 0x1adf < (short)(sVar2 + 0x20))) {
-    *param_4 = sVar2 + -0x1ae0;
-  }
-  sVar2 = *param_4;
-  while (sVar2 < -0x40) {
-    *param_4 = *param_4 + 0x1b00;
-    sVar2 = *param_4;
-  }
-  *param_3 = *param_3 / param_5;
-  *param_4 = *param_4 / param_5;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406C1C
-// GHIDRA_NAME TMapDialog::SplitTileIndexToRowAndColumn
-// GHIDRA_PROTO undefined TMapDialog::SplitTileIndexToRowAndColumn()
-
-void TMapDialog::SplitTileIndexToRowAndColumn(short param_1,short *param_2,short *param_3)
-
-{
-  *param_2 = (param_1 / 0x6c + (param_1 >> 0xf)) -
-             (short)((longlong)(int)param_1 * 0x4bda12f7 >> 0x3f);
-  *param_3 = param_1 % 0x6c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00415D50
-// GHIDRA_NAME TMapDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO int __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(CityDialogController * pDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: int GetCityDialogValueDword10(CityDialogController *pDialog)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: int GetCityDialogValueDword10(CityDialogController *pDialog) */
-
-int TMapDialog::OrphanTiny_ReturnZero_0048a730(CityDialogController *pDialog)
-
-{
-  return this->field10;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00415D70
-// GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO void __thiscall 'scalar_deleting_destructor'(int value)
-
-void TMapDialog::_scalar_deleting_destructor_(int value)
-
-{
-  this->field10 = value;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00429450
-// GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
-
-undefined4 TMapDialog::_scalar_deleting_destructor_()
-
-{
-  return *(undefined4 *)&this->field_0x60;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A240
-// GHIDRA_NAME TMapDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO byte __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(CityDialogController * pDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: byte GetCityDialogFlagByte4(CityDialogController *pDialog)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: byte GetCityDialogFlagByte4(CityDialogController *pDialog) */
-
-byte TMapDialog::GetTEventHandlerClassNamePointer(CityDialogController *pDialog)
-
-{
-  return (byte)this->field04;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A260
-// GHIDRA_NAME TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO void __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue)
-
-void TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue)
-
-{
-  this->field04 = (int)flagValue;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A2C0
-// GHIDRA_NAME TMapDialog::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO int __thiscall TNumberText::UpdateControlCachedIntFromWindowText(CityDialogController * pDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: int GetCityDialogValueDwordC(CityDialogController *pDialog)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: int GetCityDialogValueDwordC(CityDialogController *pDialog) */
-
-int TMapDialog::UpdateControlCachedIntFromWindowText(CityDialogController *pDialog)
-
-{
-  return this->field0c;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A2E0
-// GHIDRA_NAME TMapDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Forwards a UI command triplet to the current widget handler at vtable slot +0x3C.
-// GHIDRA_COMMENT Used by numeric entry controls to bubble command IDs to parent dialog handlers.
-// GHIDRA_COMMENT_END
-
-/* Forwards a UI command triplet to the current widget handler at vtable slot +0x3C.
-   Used by numeric entry controls to bubble command IDs to parent dialog handlers. */
-
-void TMapDialog::OrphanTiny_ReturnZero_0048a730()
-
-{
-  (*this->vftable->HandleEvent)();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A310
-// GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1)
-
-void TMapDialog::_scalar_deleting_destructor_(undefined4 param_1)
-
-{
-  undefined uVar1;
-  undefined3 extraout_var;
-
-  uVar1 = (*this->vftable->QueryStepValue)();
-  if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
-    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x44))(param_1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A380
-// GHIDRA_NAME TMapDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
-
-void TMapDialog::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
-
-{
-  undefined uVar1;
-  undefined3 extraout_var;
-
-  uVar1 = (*this->vftable->QueryStepValue)();
-  if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
-    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x48))(param_1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A3B0
-// GHIDRA_NAME TMapDialog::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int * param_1)
-
-void TMapDialog::OrphanRetStub_0059add0(int *param_1)
-
-{
-  (**(code **)(*(int *)param_1[4] + 0x40))(param_1[2],param_1[3],param_1);
-  if (param_1 != (int *)0x0) {
-    (**(code **)(*param_1 + 0x1c))();
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A3F0
-// GHIDRA_NAME TMapDialog::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
-
-void TMapDialog::OrphanCallChain_C11_I88_004874b0()
-
-{
-  (*this->vftable->vmethod_0013)();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A480
-// GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
-
-undefined1 TMapDialog::_scalar_deleting_destructor_()
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A530
-// GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
-
-undefined1 TMapDialog::_scalar_deleting_destructor_()
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A670
-// GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Dispatches city-production action code 0x1A through object vtable slot +0x40.
-// GHIDRA_COMMENT Used as a tiny action wrapper from city/production method table.
-// GHIDRA_COMMENT_END
-
-/* Dispatches city-production action code 0x1A through object vtable slot +0x40.
-   Used as a tiny action wrapper from city/production method table. */
-
-void TMapDialog::_scalar_deleting_destructor_()
-
-{
-  (*this->vftable->DispatchEvent)(0x1a,this,0);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048AB70
-// GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
-
-void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048B0B0
-// GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Closes current city dialog child resources and releases ownership links.
-// GHIDRA_COMMENT - drains child list at +0x11 by calling each child release callback (+0x1C).
-// GHIDRA_COMMENT - detaches owned child at +0x08 via callback +0x174.
-// GHIDRA_COMMENT - if this dialog is currently selected by global city dialog manager (DAT_006A18E0), reselects parent/fallback via +0x98.
-// GHIDRA_COMMENT - clears active state fields and releases final owned resource at +0x06, then self-releases via virtual destructor slot +0x04.
-// GHIDRA_COMMENT_END
-
-/* Closes current city dialog child resources and releases ownership links.
-   - drains child list at +0x11 by calling each child release callback (+0x1C).
-   - detaches owned child at +0x08 via callback +0x174.
-   - if this dialog is currently selected by global city dialog manager (DAT_006A18E0), reselects
-   parent/fallback via +0x98.
-   - clears active state fields and releases final owned resource at +0x06, then self-releases via
-   virtual destructor slot +0x04. */
-
-void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
-
-{
-  int iVar1;
-  undefined uVar2;
-  TMapDialog *pTVar3;
-  undefined3 extraout_var;
-  ApplicationUiRootController *pAVar4;
-
-  iVar1 = this->field44;
-  while (iVar1 != 0) {
-    (**(code **)(**(int **)(*(int *)(iVar1 + 4) + 8) + 0x1c))();
-    iVar1 = this->field44;
-  }
-  if (this->ownerContext != (TView *)0x0) {
-    (*this->ownerContext->vftable[1].GetRuntimeClass)(this);
-    this->ownerContext = (TView *)0x0;
-  }
-  if (((g_pApplicationUiRootController != (ApplicationUiRootController *)0x0) &&
-      ((TMapDialog *)g_pApplicationUiRootController != this)) &&
-     (pTVar3 = (TMapDialog *)(**(code **)(g_pApplicationUiRootController->vftable + 0x9c))(),
-     pTVar3 == this)) {
-    uVar2 = (*this->vftable->QueryStepValue)();
-    pAVar4 = (ApplicationUiRootController *)CONCAT31(extraout_var,uVar2);
-    if (pAVar4 == (ApplicationUiRootController *)0x0) {
-      pAVar4 = g_pApplicationUiRootController;
-    }
-    (**(code **)(g_pApplicationUiRootController->vftable + 0x98))(pAVar4);
-  }
-  this->field0c = 0;
-  if ((int *)this->field18 != (int *)0x0) {
-    (**(code **)(*(int *)this->field18 + 0x1c))();
-  }
-  this->field18 = 0;
-  if (this != (TMapDialog *)0x0) {
-    (*this->vftable->~TEventHandler)(1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048B180
-// GHIDRA_NAME TMapDialog::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
-
-undefined1 TMapDialog::SetForeignMinisterReadyFlag14()
-
-{
-  undefined uVar1;
-
-  if (this->ownerContext != (TView *)0x0) {
-                    /* WARNING: Could not recover jumptable at 0x0048b189. Too many branches */
-                    /* WARNING: Treating indirect jump as call */
-    uVar1 = (*this->ownerContext->vftable->OwnerPanel)();
-    return uVar1;
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048C080
-// GHIDRA_NAME TMapDialog::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2)
-
-void TMapDialog::SetForeignMinisterReadyFlag14(undefined4 *param_1, undefined4 param_2)
-
-{
-  TMapDialogVtbl *pTVar1;
-  int iVar2;
-  char cVar3;
-  int *piVar4;
-  int iVar5;
-  TMapDialog *local_c;
-  undefined4 uStack_8;
-  undefined4 uStack_4;
-
-  pTVar1 = this->vftable;
-  local_c = this;
-  cVar3 = (*pTVar1->HasRenderableParentAndContent)();
-  if (cVar3 != '\0') {
-    if (this->field44 == 0) {
-      iVar5 = 0;
-    }
-    else {
-      iVar5 = *(int *)(this->field44 + 8);
-    }
-    if (iVar5 == 0) {
-      piVar4 = (int *)0x0;
-      iVar5 = 0;
-    }
-    else {
-      piVar4 = *(int **)(iVar5 + 8);
-      iVar5 = *(int *)(iVar5 + 4);
-    }
-    while (piVar4 != (int *)0x0) {
-      uStack_4 = param_1[1];
-      uStack_8 = *param_1;
-      iVar2 = *piVar4;
-      (**(code **)(iVar2 + 0x144))(&uStack_8);
-      cVar3 = (**(code **)(iVar2 + 0x16c))(&local_c);
-      if ((cVar3 != '\0') && (cVar3 = (**(code **)(iVar2 + 0xcc))(), cVar3 != '\0')) {
-        (**(code **)(*piVar4 + 0xd4))(&uStack_8,param_2);
-        return;
-      }
-      if (iVar5 == 0) {
-        piVar4 = (int *)0x0;
-        iVar5 = 0;
-      }
-      else {
-        piVar4 = *(int **)(iVar5 + 8);
-        iVar5 = *(int *)(iVar5 + 4);
-      }
-    }
-  }
-  cVar3 = GetRegionBoxToRectIfPresent(param_2);
-  if ((cVar3 != '\0') && (cVar3 = (*pTVar1->Refresh)(), cVar3 != '\0')) {
-    (*pTVar1->HandleCursorHoverFallback)(param_1,param_2);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048C250
-// GHIDRA_NAME TMapDialog::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
-
-void TMapDialog::OrphanCallChain_C11_I88_004874b0()
-
-{
-  TMapDialogVtbl *pTVar1;
-  undefined uVar2;
-  undefined4 *puVar3;
-  undefined3 extraout_var;
-  int iVar4;
-  HCURSOR hCursor;
-  RECT RStack_30;
-  tagRECT atStack_20 [2];
-
-  if (this->field5c != 0) {
-    puVar3 = (undefined4 *)(**(code **)&this->vftable->field_0x160)();
-    RStack_30.left = *puVar3;
-    RStack_30.top = puVar3[1];
-    RStack_30.right = puVar3[2];
-    RStack_30.bottom = puVar3[3];
-    CopyRect(atStack_20,&RStack_30);
-    if (g_pCursorControlPanel != (TControl *)0x0) {
-      RStack_30.left = (LONG)&stack0xffffffbc;
-      WrapperFor_StringSharedRef_AssignFromPtr_At00492b70(&this->sharedStringRef);
-      (*g_pCursorControlPanel->vftable[1].ReleaseRuntimeSelectionOwnerAndDestroyObject_0f)();
-    }
-  }
-  pTVar1 = this->vftable;
-  uVar2 = (*pTVar1->GetField4E)();
-  if ((short)CONCAT31(extraout_var,uVar2) != -1) {
-    (**(code **)&pTVar1->field_0x148)();
-    iVar4 = IsPointInsideHitRegion();
-    if (iVar4 != 0) {
-      AssertQuickDrawFlag6A1DCCNonZero();
-      AssertQuickDrawFlag6A1DC8NonZero();
-      return;
-    }
-  }
-  hCursor = LoadCursorA((HINSTANCE)0x0,&DAT_00007f00);
-  SetCursor(hCursor);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048E710
-// GHIDRA_NAME TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
-
-void TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
-
-{
-  undefined uVar1;
-  undefined3 extraout_var;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-
-  if (param_1 == 0x1f) {
-    (*this->vftable[1].CanHandleCityDialogActionFalse)(1,1);
-  }
-  else {
-    if (param_1 == 0x20) {
-      (*this->vftable[1].CanHandleCityDialogActionFalse)(0,1);
-      return;
-    }
-    if (param_1 == 0x21) {
-      (*this->vftable[1].CanHandleCityDialogActionFalse)((uint)(this->field_0x64 == '\0'),1);
-      return;
-    }
-    uVar1 = (*this->vftable->QueryStepValue)();
-    if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
-      (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))
-                (param_1,in_stack_00000008,in_stack_0000000c);
-      return;
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048F640
-// GHIDRA_NAME TMapDialog::GetTBehaviorClassNamePointer
-// GHIDRA_PROTO CityDialogController * __thiscall GetTBehaviorClassNamePointer(CityDialogController * pSource)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: CityDialogController * CloneCityDialogExtendedStateToNewInstance(CityDialogController *pSource)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: CityDialogController *
-   CloneCityDialogExtendedStateToNewInstance(CityDialogController *pSource) */
-
-CityDialogController * TMapDialog::GetTBehaviorClassNamePointer(CityDialogController *pSource)
-
-{
-  short sVar1;
-  int iVar2;
-  CityDialogController *this_00;
-
-  this_00 = (CityDialogController *)(**(code **)&this->vftable->field_0x24)();
-  TView::CopyCityDialogStateFromSource((TView *)this_00,(TView *)this);
-  this_00->extendedField60 = *(int *)&this->field_0x60;
-  this_00->extendedFlag64 = this->field_0x64;
-  this_00->extendedField68 = *(int *)&this->field_0x68;
-  this_00->extendedField6C = *(int *)&this->field_0x6c;
-  this_00->extendedField70 = *(int *)&this->field_0x70;
-  this_00->extendedField74 = *(int *)&this->field_0x74;
-  this_00->extendedField78 = *(int *)&this->field_0x78;
-  this_00->extendedField7C = *(int *)&this->field_0x7c;
-  this_00->extendedShort80 = *(short *)&this->field_0x80;
-  sVar1 = *(short *)&this->field_0x84;
-  this_00->extendedResourceShort84 = sVar1;
-  iVar2 = *(int *)&this->field_0x88;
-  this_00->extendedResourceHandle88 = iVar2;
-  this_00->extendedField8C = *(int *)&this->field_0x8c;
-  if (sVar1 != -1) {
-    IncrementDialogResourceRefCountByShortIdInRegistry
-              (CONCAT22((short)((uint)iVar2 >> 0x10),sVar1));
-  }
-  return this_00;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00512440
 // GHIDRA_NAME TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
 // GHIDRA_PROTO undefined ProjectTileIndexToWrappedScreenOffsetByScale()
@@ -513,7 +13,7 @@ void TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
 {
   uint uVar1;
   short sVar2;
-
+  
   uVar1 = (int)param_1 / 0x6c;
   *param_3 = (short)uVar1 * 0x40 - param_2[2];
   sVar2 = (short)((int)param_1 % 0x6c << 6) - *param_2;
@@ -545,66 +45,65 @@ void TMapDialog::SplitTileIndexToRowAndColumn(short param_1,short *param_2,short
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005199C0
-// GHIDRA_NAME TMapDialog::CreateTMapDialogInstance
-// GHIDRA_PROTO undefined CreateTMapDialogInstance()
+// GHIDRA_NAME TMapDialog::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TWorldView * TMapDialog::CreateTMapDialogInstance(void)
+int * TMapDialog::CreateObject(void)
 
 {
-  TWorldView *this;
+  int *piVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_18;
   undefined4 local_14;
-  TWorldView *local_10;
+  int *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633d92;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TWorldView *)__2_YAPAXI_Z(0x364);
+  piVar1 = (int *)operator_new(0x364);
   local_4 = 0;
-  if (this != (TWorldView *)0x0) {
-    local_10 = this;
-    TWorldView::ConstructTWorldViewBaseState(this);
-    *(undefined4 *)&this->field_0x60 = 0;
-    this[6].field_0x64 = 0;
-    *(undefined4 *)&this[6].field_0x74 = 0;
-    this->vftable = (TWorldViewVtbl *)&TMapDialogVtbl_00658a58;
-    *(undefined4 *)&this->field_0x64 = 0;
+  if (piVar1 != (int *)0x0) {
+    local_10 = piVar1;
+    func_0x004037ab();
+    piVar1[0x18] = 0;
+    *(undefined1 *)(piVar1 + 0xd3) = 0;
+    piVar1[0xd7] = 0;
+    *piVar1 = (int)&_vftable_;
+    piVar1[0x19] = 0;
     local_4 = CONCAT31(local_4._1_3_,1);
-    TMapDialog::SplitTileIndexToRowAndColumn
-              (CONCAT22((short)((uint)&local_14 >> 0x10),
-                        *(undefined2 *)&g_pGlobalMapState->field_0x6),&local_18,&local_14);
-    (*this->vftable[1].DispatchUiCommand19ToParent)(local_14,local_18);
-    *(undefined2 *)&this[6].field_0x6c = 0;
-    *(undefined2 *)&this[6].field_0x6e = 0xffff;
-    this[6].field_0x70 = 0;
-    *(undefined2 *)&this->field_0x76 = 1;
-    *(undefined2 *)&this->field_0x78 = 0x40;
-    this[6].field_0x78 = 0;
+    func_0x00406c1c(CONCAT22((short)((uint)&local_14 >> 0x10),
+                             *(undefined2 *)&g_pGlobalMapState->field_0x6),&local_18,&local_14);
+    (**(code **)(*piVar1 + 0x1e4))(local_14,local_18);
+    *(undefined2 *)(piVar1 + 0xd5) = 0;
+    *(undefined2 *)((int)piVar1 + 0x356) = 0xffff;
+    *(undefined1 *)(piVar1 + 0xd6) = 0;
+    *(undefined2 *)((int)piVar1 + 0x76) = 1;
+    *(undefined2 *)(piVar1 + 0x1e) = 0x40;
+    *(undefined1 *)(piVar1 + 0xd8) = 0;
     *unaff_FS_OFFSET = local_14;
-    return this;
+    return piVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TWorldView *)0x0;
+  return (int *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00519B30
-// GHIDRA_NAME TMapDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMapDialog::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMapDialog::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMapDialog::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMapDialog;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00519B50
 // GHIDRA_NAME TMapDialog::ConstructTMapDialogBaseState
-// GHIDRA_PROTO undefined __thiscall TMapDialog::ConstructTMapDialogBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTMapDialogBaseState(void)
 
 TMapDialog * TMapDialog::ConstructTMapDialogBaseState()
 
@@ -616,22 +115,21 @@ TMapDialog * TMapDialog::ConstructTMapDialogBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633db8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = this;
-  TWorldView::ConstructTWorldViewBaseState((TWorldView *)this);
+  func_0x004037ab();
   *(undefined4 *)&this->field_0x60 = 0;
   this->field_0x34c = 0;
   *(undefined4 *)&this->field_0x35c = 0;
-  this->vftable = &TMapDialogVtbl_00658a58;
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x64 = 0;
   local_4 = 0;
-  TMapDialog::SplitTileIndexToRowAndColumn
-            (CONCAT22((short)((uint)&local_14 >> 0x10),*(undefined2 *)&g_pGlobalMapState->field_0x6)
-             ,&local_18,&local_14);
+  func_0x00406c1c(CONCAT22((short)((uint)&local_14 >> 0x10),
+                           *(undefined2 *)&g_pGlobalMapState->field_0x6),&local_18,&local_14);
   (*this->vftable[1].DispatchUiCommand19ToParent)(local_14,local_18);
   *(undefined2 *)&this->field_0x354 = 0;
   *(undefined2 *)&this->field_0x356 = 0xffff;
@@ -650,61 +148,52 @@ TMapDialog * TMapDialog::ConstructTMapDialogBaseState()
 TMapDialog * TMapDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x0040199c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00519C90
-// GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TMapDialog::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TMapDialog::_scalar_deleting_destructor_()
+void TMapDialog::Free()
 
 {
   if (*(int *)&this->field_0x350 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x350);
+    func_0x004010e6(&this->field_0x350);
     *(undefined4 *)&this->field_0x350 = 0;
   }
   if ((DAT_006a3450 != 0) && (DAT_006a3450 != g_pPrimaryRenderSurfaceContext)) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&DAT_006a3450);
+    func_0x004010e6(&DAT_006a3450);
     DAT_006a3450 = 0;
   }
   if (*(int **)&this->field_0x35c != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x35c + 0x1c))();
   }
   *(undefined4 *)&this->field_0x35c = 0;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(this);
-  CallObjectOffset24Vslot54IfPresent();
+  func_0x00408db4();
+  func_0x00406f82();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00519D30
-// GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TMapDialog::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
+void TMapDialog::NoOpUiLifecycleHook()
 
 {
-  undefined4 local_10;
-  undefined4 local_c;
-  undefined4 local_8;
-  undefined4 local_4;
-
-  TWorldView::OrphanLeaf_NoCall_Ins07_004d8920((TWorldView *)this);
-  local_10 = 0;
-  local_c = 0;
+  func_0x004072c5();
   *(undefined2 *)&this->field_0x76 = 1;
   *(undefined2 *)&this->field_0x78 = 0x40;
-  local_4 = 0x40;
-  local_8 = 0x1680;
-  (**(code **)(*DAT_006a2158 + 0x2c))(&this->field_0x350,8,&local_10);
+  (**(code **)(*g_pDisplayMgr + 0x2c))(&this->field_0x350,8,&stack0xffffffec);
   (*this->vftable[1].vmethod_0081)();
   DAT_006a3450 = g_pPrimaryRenderSurfaceContext;
-  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x6d61696e);
-  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x444c4f47);
+  func_0x00401875(PTR_g_szEmptyString_00658990,0x6d61696e);
+  func_0x00401875(PTR_g_szEmptyString_00658990,0x444c4f47);
   return;
 }
 
@@ -743,27 +232,31 @@ void TMapDialog::OrphanRetStub_00596080()
   short sVar4;
   ushort uVar5;
   undefined4 in_EAX;
-  undefined2 uVar6;
-  int extraout_EAX;
+  int iVar6;
   short sVar7;
   TMapMgr *pTVar8;
   undefined4 unaff_EBX;
   short *psVar9;
   int iVar10;
-  int iVar11;
   short local_34;
   short local_32;
   undefined4 local_30;
   undefined4 local_2c;
   undefined4 local_28;
   undefined4 local_24;
-  RECT local_20;
-  RECT local_10;
-
+  int local_20;
+  int local_1c;
+  int local_18;
+  int local_14;
+  int local_10;
+  int local_c;
+  int local_8;
+  int local_4;
+  
   bVar2 = false;
   bVar3 = false;
   sVar4 = this->field4e;
-  uVar6 = (undefined2)((uint)in_EAX >> 0x10);
+  iVar6 = CONCAT22((short)((uint)in_EAX >> 0x10),sVar4);
   local_2c = 0xffffffff;
   local_28 = 0xffffffff;
   local_24 = 0xffffffff;
@@ -775,39 +268,36 @@ void TMapDialog::OrphanRetStub_00596080()
   if (((sVar7 == 0) || (sVar7 == 3)) || (sVar7 == 5)) {
     pTVar8 = g_pGlobalMapState;
     if (sVar4 == 0x3eb) {
-      iVar11 = *(int *)&g_pSelectedCivilianOrderState->field_0x4;
-      if (iVar11 == 0) {
-        sVar4 = 9;
-        uVar6 = 0;
+      iVar6 = *(int *)&g_pSelectedCivilianOrderState->field_0x4;
+      if (iVar6 == 0) {
+        iVar6 = 9;
       }
       else {
-        sVar4 = *(short *)(iVar11 + 4);
-        uVar6 = (undefined2)((uint)iVar11 >> 0x10);
+        iVar6 = CONCAT22((short)((uint)iVar6 >> 0x10),*(undefined2 *)(iVar6 + 4));
       }
-      if ((sVar4 == 4) &&
-         (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 5 + *(short *)&this->field_0x6c * 0x24)
-          == -1)) {
+      if (((short)iVar6 == 4) &&
+         (iVar6 = CONCAT22((short)((uint)iVar6 >> 0x10),*(short *)&this->field_0x6c),
+         *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 5 + *(short *)&this->field_0x6c * 0x24)
+         == -1)) {
         bVar3 = true;
-        ComputeHexNeighborTileIndices
-                  (*(short *)&this->field_0x6c,(short *)&local_2c,g_pGlobalMapState->field_0x20);
+        iVar6 = func_0x00405baf(iVar6,&local_2c,
+                                CONCAT31((int3)((uint)g_pGlobalMapState >> 8),
+                                         g_pGlobalMapState->field_0x20));
         psVar9 = (short *)&local_2c;
         iVar10 = 6;
-        iVar11 = extraout_EAX;
         pTVar8 = g_pGlobalMapState;
         do {
           sVar4 = *psVar9;
-          iVar11 = CONCAT22((short)((uint)iVar11 >> 0x10),sVar4);
+          iVar6 = CONCAT22((short)((uint)iVar6 >> 0x10),sVar4);
           if ((sVar4 != -1) &&
              (((cVar1 = *(char *)(*(int *)&pTVar8->field_0xc + 4 + sVar4 * 0x24),
-               sVar4 = UiRuntimeContext::GetActiveNationId(), pTVar8 = g_pGlobalMapState,
-               cVar1 != sVar4 &&
-               (iVar11 = *psVar9 * 9,
+               sVar4 = func_0x00403b16(), pTVar8 = g_pGlobalMapState, cVar1 != sVar4 &&
+               (iVar6 = *psVar9 * 9,
                *(char *)(*(int *)&g_pGlobalMapState->field_0xc + *psVar9 * 0x24) != '\x05')) ||
-              (iVar11 = *psVar9 * 9,
+              (iVar6 = *psVar9 * 9,
               *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 5 + *psVar9 * 0x24) != -1)))) {
             *psVar9 = -1;
           }
-          uVar6 = (undefined2)((uint)iVar11 >> 0x10);
           psVar9 = psVar9 + 1;
           iVar10 = iVar10 + -1;
         } while (iVar10 != 0);
@@ -816,62 +306,55 @@ void TMapDialog::OrphanRetStub_00596080()
     sVar4 = (short)*(char *)(*(int *)&pTVar8->field_0xc + 0x10 + *(short *)&this->field_0x6e * 0x24)
     ;
     if ((sVar4 != -1) && ((&this->field_0x7c)[sVar4 * 8] != '\0')) {
-      TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-                (CONCAT22(uVar6,*(short *)&this->field_0x6e),&this->field_0x60,&local_32,&local_34,1
-                );
-      local_20.left = (LONG)local_34;
-      local_20.top = (LONG)local_32;
-      local_20.right = local_20.left + 0x40;
-      local_10.right = local_20.left + 0x80;
-      local_20.bottom = local_20.top + 0x40;
-      local_10.bottom = local_20.top + 0x80;
-      local_10.left = local_20.right;
-      local_10.top = local_20.bottom;
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(DAT_006a3450 + 4),
-                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
-                 (astruct_19 *)0x0);
+      func_0x004056a5(CONCAT22((short)((uint)iVar6 >> 0x10),*(short *)&this->field_0x6e),
+                      &this->field_0x60,&local_32,&local_34,1);
+      local_20 = (int)local_34;
+      local_1c = (int)local_32;
+      local_18 = local_20 + 0x40;
+      local_8 = local_20 + 0x80;
+      local_14 = local_1c + 0x40;
+      local_4 = local_1c + 0x80;
+      local_10 = local_18;
+      local_c = local_14;
+      func_0x00405493(DAT_006a3450 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,
+                      &local_20,0,0);
       pTVar8 = g_pGlobalMapState;
     }
     psVar9 = &DAT_00697310;
-    iVar11 = 6;
+    iVar6 = 6;
     do {
       sVar4 = *psVar9;
       if (((sVar4 != -1) &&
           (sVar7 = (short)*(char *)(*(int *)&pTVar8->field_0xc + 0x10 + sVar4 * 0x24), sVar7 != -1))
          && ((&this->field_0x7c)[sVar7 * 8] != '\0')) {
-        TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-                  (sVar4,&this->field_0x60,&local_32,&local_34,1);
-        local_20.left = (LONG)local_34;
-        local_20.top = (LONG)local_32;
-        local_20.right = local_20.left + 0x40;
-        local_10.right = local_20.left + 0x80;
-        local_20.bottom = local_20.top + 0x40;
-        local_10.bottom = local_20.top + 0x80;
-        local_10.left = local_20.right;
-        local_10.top = local_20.bottom;
-        BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(DAT_006a3450 + 4),
-                   (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
-                   (astruct_19 *)0x0);
+        func_0x004056a5(sVar4,&this->field_0x60,&local_32,&local_34,1);
+        local_20 = (int)local_34;
+        local_1c = (int)local_32;
+        local_18 = local_20 + 0x40;
+        local_8 = local_20 + 0x80;
+        local_14 = local_1c + 0x40;
+        local_4 = local_1c + 0x80;
+        local_10 = local_18;
+        local_c = local_14;
+        func_0x00405493(DAT_006a3450 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,
+                        &local_20,0,0);
         pTVar8 = g_pGlobalMapState;
       }
       psVar9 = psVar9 + 1;
-      iVar11 = iVar11 + -1;
-    } while (iVar11 != 0);
+      iVar6 = iVar6 + -1;
+    } while (iVar6 != 0);
     if (((bVar2) ||
         ((uVar5 = GetAsyncKeyState(0x10), (uVar5 & 0x8000) != 0 &&
          ((char)g_apSecondaryNationStateSlots[0x17] != '\0')))) || ((short)local_30 == 5)) {
-      TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-                (CONCAT22((short)((uint)&local_34 >> 0x10),*(undefined2 *)&this->field_0x6c),
-                 &this->field_0x60,&local_32,&local_34,1);
-      local_20.top = (LONG)local_32;
-      local_20.left = (LONG)local_34;
-      local_20.bottom = local_20.top + 0x40;
-      local_20.right = local_20.left + 0x40;
+      func_0x004056a5(CONCAT22((short)((uint)&local_34 >> 0x10),*(undefined2 *)&this->field_0x6c),
+                      &this->field_0x60,&local_32,&local_34,1);
+      local_1c = (int)local_32;
+      local_20 = (int)local_34;
+      local_14 = local_1c + 0x40;
+      local_18 = local_20 + 0x40;
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x3f);
-      DrawFrameRectOrUpdateClipRegion(&local_24);
-      SetQuickDrawFillColor(0);
+      func_0x00405c27(&local_24);
+      func_0x00406b86(0);
       if ((char)((uint)unaff_EBX >> 0x10) == '\0') {
         _DAT_00697310 = 0xffffffff;
         _DAT_00697314 = 0xffffffff;
@@ -904,12 +387,11 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
   int unaff_EBX;
   short *unaff_retaddr;
   int aiStack_8 [2];
-
+  
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x3f);
   if (*unaff_retaddr != -1) {
-    TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-              (CONCAT22(extraout_var,*unaff_retaddr),&this->field_0x60,&stack0xfffffff4,aiStack_8,1)
-    ;
+    func_0x004056a5(CONCAT22(extraout_var,*unaff_retaddr),&this->field_0x60,&stack0xfffffff4,
+                    aiStack_8,1);
     SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
@@ -923,8 +405,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
     }
   }
   if (unaff_retaddr[1] != -1) {
-    TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-              (unaff_retaddr[1],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
+    func_0x004056a5(unaff_retaddr[1],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
     SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
@@ -939,8 +420,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
     }
   }
   if (unaff_retaddr[2] != -1) {
-    TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-              (unaff_retaddr[2],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
+    func_0x004056a5(unaff_retaddr[2],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
     SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX + 0x3f);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
@@ -954,8 +434,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
     }
   }
   if (unaff_retaddr[3] != -1) {
-    TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-              (unaff_retaddr[3],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
+    func_0x004056a5(unaff_retaddr[3],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
     SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX + 0x3f);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX);
@@ -969,8 +448,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
     }
   }
   if (unaff_retaddr[4] != -1) {
-    TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-              (unaff_retaddr[4],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
+    func_0x004056a5(unaff_retaddr[4],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
     SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX + 0x3f);
@@ -985,8 +463,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
     }
   }
   if (unaff_retaddr[5] != -1) {
-    TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-              (unaff_retaddr[5],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
+    func_0x004056a5(unaff_retaddr[5],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
     SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX + 0x3f);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX);
     DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
@@ -999,7 +476,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
       DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     }
   }
-  SetQuickDrawFillColor(0);
+  func_0x00406b86(0);
   return;
 }
 
@@ -1018,16 +495,15 @@ void TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(short param_1)
   int local_c;
   int local_8;
   int local_4;
-
+  
   uVar1 = _param_1;
-  TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-            (_param_1,&this->field_0x60,&local_12,&param_1,1);
+  func_0x004056a5(_param_1,&this->field_0x60,&local_12,&param_1,1);
   local_10 = (int)param_1;
   local_c = (int)local_12;
   local_8 = local_10 + 0x40;
   local_4 = local_c + 0x40;
   (*this->vftable[1].vmethod_0032)(uVar1);
-  InvalidateCityDialogRectRegion(auStack_14,1);
+  func_0x00408a03(auStack_14,1);
   return;
 }
 
@@ -1044,7 +520,7 @@ TMapDialog::OrphanRetStub_005960c0
   short sVar2;
   short sVar3;
   int iVar4;
-
+  
   uVar1 = ftol();
   *param_3 = uVar1;
   if ((uVar1 & 1) == 0) {
@@ -1088,12 +564,11 @@ void TMapDialog::OrphanRetStub_005966c0(undefined4 param_1)
   undefined4 unaff_EBX;
   short sVar2;
   short sVar3;
-
+  
   pTVar1 = this->vftable;
   (*pTVar1->Refresh)();
   (*pTVar1[1].vmethod_0032)(param_1);
-  TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-            (param_1,&this->field_0x60,&stack0xfffffff8,&stack0xfffffffa,1);
+  func_0x004056a5(param_1,&this->field_0x60,&stack0xfffffff8,&stack0xfffffffa,1);
   sVar2 = (short)unaff_EBX;
   if ((((sVar2 != -0x40 && -1 < sVar2 + 0x40) &&
        (sVar3 = (short)((uint)unaff_EBX >> 0x10), sVar3 != -0x40 && -1 < sVar3 + 0x40)) &&
@@ -1119,17 +594,16 @@ bool TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0()
   undefined1 local_20 [4];
   undefined1 auStack_1c [8];
   undefined1 auStack_14 [20];
-
-  TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale();
-  SetGlobalQuickDrawOrigin
-            (CONCAT22(extraout_var_00,(short)this->field2c),
-             CONCAT22(extraout_var,(short)this->field30));
+  
+  func_0x004056a5();
+  func_0x00409a11(CONCAT22(extraout_var_00,(short)this->field2c),
+                  CONCAT22(extraout_var,(short)this->field30));
   local_24 = local_32 + 0x40;
   pTVar1 = this->vftable;
   (*pTVar1->QueryContentBounds)(local_20);
   (**(code **)&pTVar1->field_0x14c)(&local_24,auStack_14);
-  IntersectRectWrapper(&stack0xffffffc4,auStack_1c,&stack0xffffffc4);
-  cVar2 = ProbeRectEmptyAfterCopyToLocal(&stack0xffffffc4);
+  func_0x0040633e(&stack0xffffffc4,auStack_1c,&stack0xffffffc4);
+  cVar2 = func_0x004050f1(&stack0xffffffc4);
   return cVar2 == '\0';
 }
 
@@ -1141,14 +615,14 @@ void TMapDialog::OrphanRetStub_00594fc0(int param_1)
 
 {
   int local_14 [5];
-
-  TMapDialog::SplitTileIndexToRowAndColumn(param_1,&param_1,local_14);
+  
+  func_0x00406c1c(param_1,&param_1,local_14);
   (*this->vftable[1].DispatchUiCommand19ToParent)
             (local_14[0] - (int)(short)DAT_006a33b0 / 2,param_1 + -3);
   local_14[0] = 0;
   local_14[1] = 0x1ff;
   local_14[2] = 0x1bf;
-  InvalidateCityDialogRectRegion(&stack0xffffffe8,1);
+  func_0x00408a03(&stack0xffffffe8,1);
   return;
 }
 
@@ -1161,7 +635,7 @@ int TMapDialog::HasRenderableParentAndContent()
 {
   int local_8;
   int local_4;
-
+  
   local_4 = ((int)(*(int *)&this->field_0x60 + (*(int *)&this->field_0x60 >> 0x1f & 0x3fU)) >> 6) +
             (int)(short)DAT_006a33b0 / 2;
   local_8 = ((int)(*(int *)&this->field_0x64 + (*(int *)&this->field_0x64 >> 0x1f & 0x3fU)) >> 6) +
@@ -1178,16 +652,16 @@ void TMapDialog::OrphanRetStub_005966a0(undefined4 param_1)
 
 {
   TMapDialog *local_4;
-
+  
   local_4 = this;
-  TMapDialog::SplitTileIndexToRowAndColumn(param_1,&param_1,&local_4);
+  func_0x00406c1c(param_1,&param_1,&local_4);
   (*this->vftable[1].DispatchUiCommand19ToParent)(local_4,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051ADC0
 // GHIDRA_NAME TMapDialog::OrphanRetStub_00596680
-// GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanRetStub_00596680(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596680(void)
 
 void TMapDialog::OrphanRetStub_00596680()
 
@@ -1197,12 +671,10 @@ void TMapDialog::OrphanRetStub_00596680()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051ADF0
-// GHIDRA_NAME TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, undefined4 param_2)
+// GHIDRA_NAME TMapDialog::SetMapDialogCellCoordinatesAndRefresh
+// GHIDRA_PROTO undefined __thiscall SetMapDialogCellCoordinatesAndRefresh(int param_1, undefined4 param_2)
 
-void __thiscall
-TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TMapDialog *this,int param_1,undefined4 param_2)
+void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int param_1, undefined4 param_2)
 
 {
   int iVar1;
@@ -1212,7 +684,7 @@ TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-
+  
   if (g_pGlobalMapState->field_0x20 != '\0') {
     if (0x6e - (short)DAT_006a33b0 < (int)(short)param_1) {
       param_1 = 0x6e - DAT_006a33b0;
@@ -1237,27 +709,26 @@ TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
   iVar2 = *(int *)&this->field_0x64;
   *(int *)&this->field_0x64 = (int)(short)param_2 << 6;
   *(int *)&this->field_0x60 = (int)(short)param_1 << 6;
-  uVar3 = ComputeStridedRecordAddress6C(param_1,param_2);
+  uVar3 = func_0x00401aeb(param_1,param_2);
   *(undefined2 *)&g_pGlobalMapState->field_0x6 = uVar3;
   if (this->ownerContext != (TView *)0x0) {
     local_10 = 0;
     local_c = 0;
     local_8 = 0x200;
     local_4 = 0x1c0;
-    InvalidateCityDialogRectRegion(&local_10,1);
-    InvokeViewSlotE4IfContextPresent();
+    func_0x00408a03(&local_10,1);
+    func_0x00401aff();
   }
-  TranslateListRectsAndDropNonIntersectingEntries
-            (iVar1 - *(int *)&this->field_0x60,iVar2 - *(int *)&this->field_0x64,0xffffffc0,
-             0xffffffc0,0x240,0x200);
+  func_0x00401032(iVar1 - *(int *)&this->field_0x60,iVar2 - *(int *)&this->field_0x64,0xffffffc0,
+                  0xffffffc0,0x240,0x200);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051AF60
-// GHIDRA_NAME TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
-// GHIDRA_PROTO undefined __thiscall HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(void)
+// GHIDRA_NAME TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites
+// GHIDRA_PROTO undefined __thiscall UpdateMapInteractionPreviewParityAndRenderTransientSprites(void)
 
-void TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()
+void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites()
 
 {
   TMapDialogVtbl *pTVar1;
@@ -1270,7 +741,7 @@ void TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()
   undefined1 local_a [2];
   undefined1 local_8 [4];
   undefined1 local_4 [4];
-
+  
   pTVar1 = this->vftable;
   (*pTVar1[1].CanHandleCityDialogActionFalse)(&DAT_006a3370,local_8,local_4,local_a);
   if ((unaff_SI & 1) != 0) {
@@ -1315,50 +786,8 @@ void TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()
     uVar2 = (int)uVar2 >> 1;
   }
   (*pTVar1[1].DispatchUiMouseMoveToChildren)(uVar2,uVar3,1);
-  (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x13c))();
+  (**(code **)(**(int **)(g_pDisplayMgr + 4) + 0x13c))();
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0051BEB0
-// GHIDRA_NAME TMapDialog::InitializeCitySiteView
-// GHIDRA_PROTO undefined __thiscall InitializeCitySiteView(void)
-
-TMapDialog * TMapDialog::InitializeCitySiteView()
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_18;
-  undefined4 local_14;
-  TMapDialog *local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00633f58;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_10 = this;
-  TWorldView::ConstructTWorldViewBaseState((TWorldView *)this);
-  *(undefined4 *)&this->field_0x60 = 0;
-  this->field_0x34c = 0;
-  *(undefined4 *)&this->field_0x35c = 0;
-  this->vftable = &TMapDialogVtbl_00658a58;
-  *(undefined4 *)&this->field_0x64 = 0;
-  local_4 = 0;
-  TMapDialog::SplitTileIndexToRowAndColumn
-            (CONCAT22((short)((uint)&local_14 >> 0x10),*(undefined2 *)&g_pGlobalMapState->field_0x6)
-             ,&local_18,&local_14);
-  (*this->vftable[1].DispatchUiCommand19ToParent)(local_14,local_18);
-  *(undefined2 *)&this->field_0x354 = 0;
-  *(undefined2 *)&this->field_0x356 = 0xffff;
-  this->field_0x358 = 0;
-  *(undefined2 *)&this->field_0x76 = 1;
-  *(undefined2 *)&this->field_0x78 = 0x40;
-  this->field_0x360 = 0;
-  this->vftable = (TMapDialogVtbl *)&TCitySiteViewVtbl_006591d0;
-  *unaff_FS_OFFSET = local_14;
-  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051E1A0
@@ -1370,7 +799,7 @@ void TMapDialog::OrphanCallChain_C1_I20_0051e1a0()
 {
   undefined2 *puVar1;
   int iVar2;
-
+  
   (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins08_005178c0)();
   puVar1 = (undefined2 *)&this->field_0x7e;
   iVar2 = 0x5a;
@@ -1394,7 +823,7 @@ void TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0(short param_1)
 {
   int iVar1;
   short sVar2;
-
+  
   sVar2 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + param_1 * 0x24);
   if (sVar2 != -1) {
     *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + param_1 * 0x24) = 0xff;
@@ -1408,12 +837,12 @@ void TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0(short param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051E260
-// GHIDRA_NAME TMapDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int * param_1)
+// GHIDRA_NAME TMapDialog::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(int * param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
+void TMapDialog::ApplyRectSlot110(int *param_1)
 
 {
   TMapDialogVtbl *pTVar1;
@@ -1423,35 +852,35 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
   undefined4 uVar5;
   int iVar6;
   int iVar7;
-  TCivAnimation2 *this_00;
-  int *piVar8;
-  short *psVar9;
-  int iVar10;
-  int iVar11;
+  undefined4 uVar8;
+  int iVar9;
+  undefined4 *puVar10;
+  int *piVar11;
+  short *psVar12;
+  int iVar13;
+  int unaff_ESI;
+  int iVar14;
   undefined4 *unaff_FS_OFFSET;
-  bool bVar12;
-  int local_a0;
+  bool bVar15;
+  undefined4 local_a0;
   undefined4 local_9c;
   int local_98;
   short local_92;
-  int local_90;
-  undefined4 *local_8c;
+  undefined4 local_90;
+  undefined4 local_8c;
   int local_88;
-  short local_82;
-  short local_80;
-  short local_7e;
+  undefined1 local_7e [2];
   int local_7c;
   tagRECT local_78;
   int local_68;
-  RECT local_64;
-  undefined4 local_54;
-  short local_50;
+  int local_64;
+  int local_60;
+  int local_5c;
+  int local_58;
+  undefined4 local_54 [2];
   tagRECT local_4c;
   tagRECT tStack_3c;
   int local_2c;
-  int local_28;
-  int local_24;
-  int local_20;
   int iStack_1c;
   int iStack_18;
   int iStack_14;
@@ -1459,39 +888,39 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   pTVar2 = g_pGlobalMapState;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063400b;
   *unaff_FS_OFFSET = &local_c;
   if (pTVar2 != (TMapMgr *)0x0) {
-    AcquireReusableQuickDrawSurface();
+    func_0x004021c1();
     local_4 = 0;
     local_9c = 0;
-    local_64.left = *param_1;
-    local_64.top = param_1[1];
-    local_64.right = param_1[2];
-    local_64.bottom = param_1[3];
+    local_64 = *param_1;
+    local_60 = param_1[1];
+    local_5c = param_1[2];
+    local_58 = param_1[3];
     if ((DAT_006a344c & 1) == 0) {
       DAT_006a344c = DAT_006a344c | 1;
       DAT_006a3418 = 0x40;
       DAT_006a341c = 0x40;
-      _atexit(&DAT_0051eb20);
+      AppendPointerToGlobalVectorAsStatus(&DAT_0051eb20);
     }
-    local_78.left = local_64.left;
-    local_78.top = local_64.top;
-    local_78.right = local_64.right;
-    local_78.bottom = local_64.bottom;
+    local_78.left = local_64;
+    local_78.top = local_60;
+    local_78.right = local_5c;
+    local_78.bottom = local_58;
     OffsetRect(&local_78,DAT_006a3418,DAT_006a341c);
     local_4c.right = local_78.right;
     local_4c.left = local_78.left;
     local_4c.top = local_78.top;
     local_4c.bottom = local_78.bottom;
     if (this->field_0x34c == '\0') {
-      ApplyHitRegionToClipState(local_8c);
-      GetActiveQuickDrawSurfaceContextAndFlags(&local_54,&local_9c);
-      ResetQuickDrawStrokeState();
+      func_0x0040232e(local_8c);
+      GetActiveQuickDrawSurfaceContextAndFlags(local_54,&local_9c);
+      func_0x004088aa();
       SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,local_9c);
       uVar5 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
       ReturnConstantTrueQuickDrawFlag(uVar5);
@@ -1501,68 +930,66 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
       sVar4 = ftol();
       local_a0 = 0x5a;
       local_88._0_2_ = (short)DAT_006a3448 + sVar4;
-      psVar9 = (short *)&this->field_0x80;
+      psVar12 = (short *)&this->field_0x80;
       do {
-        if ((((psVar9[-1] < sVar3) || ((short)(sVar3 + 8) < psVar9[-1])) || (*psVar9 < sVar4)) ||
-           ((short)local_88 < *psVar9)) {
-          *(undefined1 *)(psVar9 + -2) = 0;
+        if ((((psVar12[-1] < sVar3) || ((short)(sVar3 + 8) < psVar12[-1])) || (*psVar12 < sVar4)) ||
+           ((short)local_88 < *psVar12)) {
+          *(undefined1 *)(psVar12 + -2) = 0;
         }
         else {
-          *(undefined1 *)(psVar9 + -2) = 1;
+          *(undefined1 *)(psVar12 + -2) = 1;
         }
-        psVar9 = psVar9 + 4;
+        psVar12 = psVar12 + 4;
         local_a0 = local_a0 + -1;
       } while (local_a0 != 0);
       iVar6 = *(int *)&this->field_0x64 + param_1[1];
       local_90 = 0;
-      iVar10 = *(int *)&this->field_0x60 + 0x20 + *param_1;
-      iVar11 = (int)(iVar6 + (iVar6 >> 0x1f & 0x3fU)) >> 6;
+      iVar13 = *(int *)&this->field_0x60 + 0x20 + *param_1;
+      iVar14 = (int)(iVar6 + (iVar6 >> 0x1f & 0x3fU)) >> 6;
       iVar6 = param_1[3] - param_1[1];
-      local_68 = ((int)(iVar6 + (iVar6 >> 0x1f & 0x3fU)) >> 6) + 1 + iVar11;
+      local_68 = ((int)(iVar6 + (iVar6 >> 0x1f & 0x3fU)) >> 6) + 1 + iVar14;
       iVar7 = param_1[2] - *param_1;
-      iVar6 = ((int)(iVar10 + (iVar10 >> 0x1f & 0x3fU)) >> 6) + -1;
-      iVar10 = ((int)(iVar7 + (iVar7 >> 0x1f & 0x3fU)) >> 6) + 1 + iVar6;
-      local_88 = iVar10;
+      iVar6 = ((int)(iVar13 + (iVar13 >> 0x1f & 0x3fU)) >> 6) + -1;
+      iVar13 = ((int)(iVar7 + (iVar7 >> 0x1f & 0x3fU)) >> 6) + 1 + iVar6;
+      local_88 = iVar13;
       local_7c = iVar6;
       uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
-      GetSurfaceHeaderFromSurfaceObject(uVar5);
+      func_0x00405e39(uVar5);
       uVar5 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-      GetSurfaceHeaderFromSurfaceObject(uVar5);
+      func_0x00405e39(uVar5);
       uVar5 = GetSurfaceObjectAtContextOffset24
                         (*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
-      GetSurfaceHeaderFromSurfaceObject(uVar5);
-      if ((short)iVar11 < (short)local_68) {
+      func_0x00405e39(uVar5);
+      if ((short)iVar14 < (short)local_68) {
         do {
-          if (0x3b < (short)iVar11) break;
+          if (0x3b < (short)iVar14) break;
           local_98 = iVar6;
-          if ((short)local_7c <= (short)iVar10) {
+          if ((short)local_7c <= (short)iVar13) {
             do {
               if ((short)iVar6 < 0x6c) {
-                iVar10 = iVar6;
+                iVar13 = iVar6;
                 if ((short)iVar6 < 0) {
-                  iVar10 = iVar6 + 0x6c;
+                  iVar13 = iVar6 + 0x6c;
                 }
               }
               else {
-                iVar10 = iVar6 + -0x6c;
+                iVar13 = iVar6 + -0x6c;
               }
               local_98 = iVar6;
-              uVar5 = ComputeStridedRecordAddress6C(iVar10,iVar11);
-              TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-                        (uVar5,&this->field_0x60,&local_7e,&local_92,1);
+              uVar5 = func_0x00401aeb(iVar13,iVar14);
+              func_0x004056a5(uVar5,&this->field_0x60,local_7e,&local_92,1);
               if ((int)local_92 < param_1[2]) {
-                sVar3 = (short)uVar5;
-                iVar10 = sVar3 * 0x24;
-                if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar10) == -1) {
+                iVar13 = (short)uVar5 * 0x24;
+                if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar13) == -1) {
                   _DAT_006a3454 = _DAT_006a3454 + 1;
-                  bVar12 = false;
-                  sVar4 = (short)local_90;
-                  while ((sVar4 < 0x5a && (!bVar12))) {
-                    bVar12 = (&this->field_0x7c)[(short)local_90 * 8] == '\0';
-                    if (!bVar12) {
+                  bVar15 = false;
+                  sVar3 = (short)local_90;
+                  while ((sVar3 < 0x5a && (!bVar15))) {
+                    bVar15 = (&this->field_0x7c)[(short)local_90 * 8] == '\0';
+                    if (!bVar15) {
                       local_90 = local_90 + 1;
                     }
-                    sVar4 = (short)local_90;
+                    sVar3 = (short)local_90;
                   }
                   iVar7 = (int)(short)local_90;
                   if (-1 < *(short *)(&this->field_0x82 + iVar7 * 8)) {
@@ -1572,73 +999,66 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
                     iVar6 = local_98;
                   }
                   (&this->field_0x7c)[iVar7 * 8] = 1;
-                  *(short *)(&this->field_0x7e + iVar7 * 8) = (short)iVar11;
+                  *(short *)(&this->field_0x7e + iVar7 * 8) = (short)iVar14;
                   *(short *)(&this->field_0x80 + iVar7 * 8) = (short)iVar6;
-                  *(short *)(&this->field_0x82 + iVar7 * 8) = sVar3;
+                  *(short *)(&this->field_0x82 + iVar7 * 8) = (short)uVar5;
                   pTVar1 = this->vftable;
-                  *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar10) = (char)local_90;
+                  *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar13) = (char)local_90;
                   (*pTVar1[1].SetUiResourceOwner)(uVar5,0,local_90 << 6);
                 }
                 else {
-                  sVar4 = UiRuntimeContext::GetActiveNationId();
-                  piVar8 = TCivToolbar::GetTileUnitEntryByOwner
-                                     ((TCivToolbar *)g_pGlobalMapState,sVar3,sVar4);
-                  iVar6 = local_98;
-                  if (((piVar8 != (int *)0x0) && (4 < piVar8[2])) &&
-                     (iVar7 = TCivAnimation2::FindLinkedListNodeByIdFieldAt18
-                                        ((TCivAnimation2 *)g_pUiAnimator,(int)piVar8),
-                     iVar6 = local_98, iVar7 == 0)) {
-                    TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-                              (uVar5,&this->field_0x60,&local_82,&local_80,1);
-                    local_50 = (short)piVar8[1];
-                    this_00 = (TCivAnimation2 *)__2_YAPAXI_Z(0x30);
-                    if (this_00 == (TCivAnimation2 *)0x0) {
-                      this_00 = (TCivAnimation2 *)0x0;
+                  uVar8 = func_0x00403b16();
+                  iVar7 = func_0x00401e47(uVar5,uVar8);
+                  iVar6 = unaff_ESI;
+                  if (((iVar7 != 0) && (4 < *(int *)(iVar7 + 8))) &&
+                     (iVar9 = func_0x004055ec(iVar7), iVar9 == 0)) {
+                    func_0x004056a5(uVar5,&this->field_0x60,(int)&local_90 + 2,&local_8c,1);
+                    local_5c = CONCAT22(local_5c._2_2_,*(undefined2 *)(iVar7 + 4));
+                    puVar10 = (undefined4 *)operator_new(0x30);
+                    if (puVar10 == (undefined4 *)0x0) {
+                      puVar10 = (undefined4 *)0x0;
                     }
                     else {
-                      this_00->vftable = &TCivAnimation2Vtbl_0064c390;
+                      *puVar10 = &TCivAnimation2::_vftable_;
                     }
-                    local_2c = (int)local_80;
-                    local_28 = (int)local_82;
-                    local_24 = local_2c + 0x40;
-                    local_20 = local_28 + 0x40;
-                    TCivAnimation2::ConstructTCivAnimation2BaseState
-                              (this_00,this,&local_2c,(int)local_50,piVar8);
-                    TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
-                    iVar6 = local_98;
+                    tStack_3c.top = (LONG)(short)local_8c;
+                    tStack_3c.right = (LONG)local_90._2_2_;
+                    tStack_3c.bottom = tStack_3c.top + 0x40;
+                    local_2c = tStack_3c.right + 0x40;
+                    func_0x00406541(this,&tStack_3c.top,(int)(short)local_5c,iVar7);
+                    func_0x00402ec8(puVar10);
                   }
                 }
-                BlitSurfaceRectSkippingTransparentColor
-                          (*(undefined4 *)(**(int **)(DAT_006a3450 + 0x24) + 0x1c),
-                           (int)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar10) <<
-                           6,0,0x40,0x40,local_92 + 0x40,local_7e + 0x40,0xffffffff);
-                iVar10 = *(int *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar10);
-                if ((iVar10 != 0) &&
-                   (piVar8 = (int *)TCivAnimation2::FindLinkedListNodeByIdFieldAt18
-                                              ((TCivAnimation2 *)g_pUiAnimator,iVar10),
-                   piVar8 != (int *)0x0)) {
+                local_a0._2_2_ = (short)((uint)iVar14 >> 0x10);
+                func_0x004039e5(*(undefined4 *)(**(int **)(DAT_006a3450 + 0x24) + 0x1c),
+                                (int)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar13
+                                              ) << 6,0,0x40,0x40,local_a0._2_2_ + 0x40,
+                                local_8c._2_2_ + 0x40,0xffffffff);
+                iVar13 = *(int *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar13);
+                if ((iVar13 != 0) &&
+                   (piVar11 = (int *)func_0x004055ec(iVar13), piVar11 != (int *)0x0)) {
                   SetActiveQuickDrawSurfaceContext(DAT_006a3450,local_9c);
-                  iStack_18 = piVar8[8] + 0x40;
-                  iStack_10 = piVar8[10] + 0x40;
-                  iStack_1c = piVar8[7] + 0x40;
-                  iStack_14 = piVar8[9] + 0x40;
+                  iStack_18 = piVar11[8] + 0x40;
+                  iStack_10 = piVar11[10] + 0x40;
+                  iStack_1c = piVar11[7] + 0x40;
+                  iStack_14 = piVar11[9] + 0x40;
                   ApplyRectClipRegionToGlobalClipState(&iStack_1c);
                   local_78.left = 0x40;
                   local_78.top = 0x40;
-                  (**(code **)(*piVar8 + 0x2c))(&local_78);
+                  (**(code **)(*piVar11 + 0x2c))(&local_78);
                   SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,local_9c)
                   ;
                   iVar6 = local_98;
                 }
               }
               iVar6 = iVar6 + 1;
-              iVar10 = local_88;
+              iVar13 = local_88;
               local_98 = iVar6;
             } while ((short)iVar6 <= (short)local_88);
           }
-          iVar11 = iVar11 + 1;
+          iVar14 = iVar14 + 1;
           iVar6 = local_7c;
-        } while ((short)iVar11 < (short)local_68);
+        } while ((short)iVar14 < (short)local_68);
       }
       SetActiveQuickDrawSurfaceContext(DAT_006a3450,local_9c);
       CopyRect(&tStack_3c,(RECT *)*local_8c);
@@ -1646,23 +1066,798 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
       tStack_3c.right = tStack_3c.right + 0x80;
       ApplyRectClipRegionToGlobalClipState(&tStack_3c);
       (*this->vftable[1].DispatchControlEventToChildrenAndSelf)();
-      ResetQuickDrawStrokeState();
-      SetActiveQuickDrawSurfaceContext(local_54,local_9c);
-      SnapshotHitRegionToClipCache(local_8c);
+      func_0x004088aa();
+      SetActiveQuickDrawSurfaceContext(local_54[0],local_9c);
+      func_0x00405be1(local_8c);
     }
     OffsetRect(&local_4c,DAT_006a33b8 << 5,DAT_006a33b4 << 5);
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(DAT_006a3450 + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_4c,&local_64,0,
-               (astruct_19 *)0x0);
+    func_0x00405493(DAT_006a3450 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_4c,
+                    &local_64,0,0);
     uVar5 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
     NoOpQuickDrawLifecycleHookB(uVar5);
     uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
     NoOpQuickDrawLifecycleHookB(uVar5);
     local_4 = 0xffffffff;
-    ReleaseOrCacheQuickDrawSurface();
+    func_0x00409aac();
   }
   *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0051EB40
+// GHIDRA_NAME TMapDialog::RenderStrategicMapTileCell
+// GHIDRA_PROTO undefined __thiscall RenderStrategicMapTileCell(short param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Render one strategic-map tile cell including terrain/city base, route overlays, unit glyphs, and state/selection markers.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Build destination tile rectangle from nScreenX/nScreenY and tile size.
+// GHIDRA_COMMENT 2. Draw terrain/city base using tile classification and route/feature bits.
+// GHIDRA_COMMENT 3. Draw unit icons through g_pStrategicMapViewSystem virtual draw paths (+0x80/+0x84).
+// GHIDRA_COMMENT 4. Draw contextual marker overlays (including 400-series marker blit for active order highlight paths).
+// GHIDRA_COMMENT 5. When enabled and tile activity byte at tile+0x18 is valid, call ThunkBlitStrategicMapUnitActivityOverlayFrame to draw the working/activity animation overlay.
+// GHIDRA_COMMENT 6. Draw cursor/selection and special warning overlays, then restore palette state.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this: Strategic-map renderer context.
+// GHIDRA_COMMENT - nTileIndex: Tile index in map array.
+// GHIDRA_COMMENT - nScreenY: Destination Y.
+// GHIDRA_COMMENT - nScreenX: Destination X.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - Civilian icon-state IDs (400/409/418 family) are composed through indirect icon/overlay draw paths rather than a single direct switch in this function.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Render one strategic-map tile cell including terrain/city base, route overlays, unit glyphs, and
+   state/selection markers.
+   
+   Algorithm:
+   1. Build destination tile rectangle from nScreenX/nScreenY and tile size.
+   2. Draw terrain/city base using tile classification and route/feature bits.
+   3. Draw unit icons through g_pStrategicMapViewSystem virtual draw paths (+0x80/+0x84).
+   4. Draw contextual marker overlays (including 400-series marker blit for active order highlight
+   paths).
+   5. When enabled and tile activity byte at tile+0x18 is valid, call
+   ThunkBlitStrategicMapUnitActivityOverlayFrame to draw the working/activity animation overlay.
+   6. Draw cursor/selection and special warning overlays, then restore palette state.
+   
+   Parameters:
+   - this: Strategic-map renderer context.
+   - nTileIndex: Tile index in map array.
+   - nScreenY: Destination Y.
+   - nScreenX: Destination X.
+   
+   Returns:
+   - void.
+   
+   Notes:
+   - Civilian icon-state IDs (400/409/418 family) are composed through indirect icon/overlay draw
+   paths rather than a single direct switch in this function. */
+
+void TMapDialog::RenderStrategicMapTileCell(short param_1)
+
+{
+  ushort uVar1;
+  bool bVar2;
+  undefined uVar3;
+  char cVar4;
+  byte bVar5;
+  short sVar6;
+  int iVar7;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  LONG *pLVar8;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  undefined3 extraout_var_05;
+  undefined3 extraout_var_06;
+  undefined3 extraout_var_07;
+  undefined3 extraout_var_08;
+  undefined3 extraout_var_09;
+  undefined3 extraout_var_10;
+  undefined3 extraout_var_11;
+  undefined3 extraout_var_12;
+  undefined3 extraout_var_13;
+  undefined3 extraout_var_14;
+  undefined3 extraout_var_15;
+  undefined3 extraout_var_16;
+  undefined3 extraout_var_17;
+  undefined3 extraout_var_18;
+  undefined2 uVar12;
+  CDC *pCVar9;
+  HRGN pHVar10;
+  RECT *pRVar11;
+  short sVar13;
+  int iVar14;
+  char *pcVar15;
+  char cVar16;
+  int iVar17;
+  int iVar18;
+  uint uVar19;
+  LONG *unaff_ESI;
+  undefined4 unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  bool bVar20;
+  undefined2 in_stack_00000006;
+  byte bStack00000008;
+  char cStack0000000c;
+  undefined3 uStack0000000d;
+  undefined4 uStack_98;
+  LONG *pLStack_94;
+  int iStack_70;
+  LONG *local_6c;
+  undefined **local_60;
+  undefined4 local_5c;
+  int iStack_58;
+  RECT RStack_54;
+  int local_44;
+  RECT local_40;
+  undefined4 uStack_30;
+  int iStack_1c;
+  int iStack_18;
+  int iStack_14;
+  int iStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined1 *local_4;
+  
+  local_4 = (undefined1 *)0xffffffff;
+  puStack_8 = &LAB_00634070;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  func_0x004021c1();
+  local_4 = (undefined1 *)0x0;
+  if ((DAT_006a33dc & 1) == 0) {
+    DAT_006a33dc = DAT_006a33dc | 1;
+    _DAT_006a33e0 = 0;
+    _DAT_006a33e4 = 0;
+    _DAT_006a33e8 = 0x200;
+    _DAT_006a33ec = 0x1c0;
+    AppendPointerToGlobalVectorAsStatus();
+  }
+  local_60 = *(undefined ***)&this->field_0x350;
+  local_5c = GetSurfaceObjectAtContextOffset24();
+  func_0x00405e39();
+  RStack_54.right = (LONG)_cStack0000000c;
+  RStack_54.bottom = (LONG)_bStack00000008;
+  local_44 = RStack_54.right + 0x40;
+  local_40.left = RStack_54.bottom + 0x40;
+  GetSurfaceObjectAtContextOffset24();
+  iVar7 = func_0x00405e39();
+  iVar14 = param_1 * 0x24;
+  bVar20 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar14) == '\x05';
+  _cStack0000000c = _cStack0000000c & 0xffffff00;
+  if (g_pGlobalMapState->field_0x20 != '\0') {
+    iVar17 = (int)param_1 % 0x6c;
+    uVar3 = (*this->vftable[1].vmethod_0048)();
+    iVar18 = (int)(short)CONCAT31(extraout_var,uVar3) % 0x6c;
+    if (((iVar17 == 0) && (0x36 < iVar18)) || ((iVar17 == 0x6b && (iVar18 < 0x36)))) {
+      pLStack_94 = (LONG *)0x51ecd5;
+      uVar3 = (*g_pGlobalMapState->vftable->OrphanVtableAssignStub_00517520)();
+      pLStack_94 = (LONG *)((short)CONCAT31(extraout_var_00,uVar3) + iVar7);
+      uStack_98 = (RECT *)0x51ece9;
+      (*this->vftable[1].ApplyRectSlot110)();
+      cStack0000000c = 1;
+    }
+  }
+  if (cStack0000000c == '\0') {
+    pLStack_94 = _param_1;
+    if (bVar20) {
+      uStack_98 = (RECT *)0x51ed29;
+      uVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins12_005161a0)();
+      sVar13 = (short)CONCAT31(extraout_var_02,uVar3);
+    }
+    else {
+      uStack_98 = (RECT *)0x51ed21;
+      uVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins14_00516150)();
+      sVar13 = (short)CONCAT31(extraout_var_01,uVar3);
+    }
+    uStack_98 = (RECT *)((int)&this->vftable + (int)sVar13);
+    (*this->vftable[1].ApplyRectSlot110)();
+    bVar5 = *(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0xb + iVar14);
+    iStack_70 = CONCAT31(iStack_70._1_3_,bVar5);
+    cStack0000000c = *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + iVar14 + 1);
+    if (!bVar20) {
+      _bStack00000008 = 0;
+      iStack_58 = 6;
+      do {
+        pLVar8 = (LONG *)0x0;
+        uVar19 = 1 << ((byte)_bStack00000008 & 0x1f);
+        pcVar15 = (char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar14);
+        if ((uVar19 & (int)pcVar15[10]) == 0) {
+          if (((uVar19 & (int)pcVar15[0xb]) != 0) && (*pcVar15 != '\x06')) {
+            uVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins09_00516220)();
+            sVar13 = (short)CONCAT31(extraout_var_04,uVar3);
+            goto LAB_0051eddf;
+          }
+        }
+        else {
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins10_005161e0)();
+          sVar13 = (short)CONCAT31(extraout_var_03,uVar3);
+LAB_0051eddf:
+          pLVar8 = (LONG *)(sVar13 + iVar7);
+        }
+        if (pLVar8 != (LONG *)0x0) {
+          switch(_bStack00000008) {
+          case 0:
+            uStack_98 = (RECT *)0x51ee15;
+            pLStack_94 = pLVar8;
+            (*this->vftable[1].QueryOwnerContextPanel)();
+            break;
+          case 1:
+            uStack_98 = (RECT *)0x51ee29;
+            pLStack_94 = pLVar8;
+            (*this->vftable[1].RefreshControl)();
+            break;
+          case 2:
+            uStack_98 = (RECT *)0x51ee3d;
+            pLStack_94 = pLVar8;
+            (*this->vftable[1].NoOpUiCallback)();
+            break;
+          case 3:
+            uStack_98 = (RECT *)0x51ee51;
+            pLStack_94 = pLVar8;
+            (*this->vftable[1].CaptureLayout)();
+            break;
+          case 4:
+            uStack_98 = (RECT *)0x51ee65;
+            pLStack_94 = pLVar8;
+            (*this->vftable[1].CaptureLayoutF0)();
+            break;
+          case 5:
+            uStack_98 = (RECT *)0x51ee79;
+            pLStack_94 = pLVar8;
+            (*this->vftable[1].IsActionable)();
+          }
+        }
+        _bStack00000008 = _bStack00000008 + 1;
+        iStack_58 = iStack_58 + -1;
+      } while (iStack_58 != 0);
+    }
+    sVar13 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 2 + iVar14);
+    local_6c = (LONG *)CONCAT22((short)((uint)iVar14 >> 0x10),sVar13);
+    if ((bVar5 == 0) || (!bVar20)) {
+      if (sVar13 != 0) {
+        if (0x1a < sVar13) {
+          local_6c = local_6c + -4;
+        }
+        func_0x00403e18();
+        func_0x0040953e();
+      }
+    }
+    else {
+      if (((bVar5 & 0x20) != 0) || ((bVar5 & 1) != 0)) {
+        pLStack_94 = (LONG *)0x51eefa;
+        uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
+        sVar6 = (short)CONCAT31(extraout_var_05,uVar3);
+        if (sVar6 != 0) {
+          pLStack_94 = (LONG *)(sVar6 + iVar7);
+          uStack_98 = (RECT *)0x51ef16;
+          (*this->vftable[1].ReleaseMapQuickDrawDc)();
+        }
+      }
+      bStack00000008 = bVar5 & 2;
+      if (((bVar5 & 2) != 0) || ((bVar5 & 1) != 0)) {
+        if ((sVar13 == 0x33) || (sVar13 == 0x34)) {
+          pLStack_94 = (LONG *)0x51ef77;
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I49_00517480)();
+          sVar6 = (short)CONCAT31(extraout_var_07,uVar3);
+        }
+        else {
+          pLStack_94 = (LONG *)0x51ef5b;
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
+          sVar6 = (short)CONCAT31(extraout_var_06,uVar3);
+        }
+        if (sVar6 != 0) {
+          pLStack_94 = (LONG *)(sVar6 + iVar7);
+          uStack_98 = (RECT *)0x51ef93;
+          (*this->vftable[1].PostRenderSlotFC)();
+        }
+      }
+      if ((bStack00000008 != 0) || ((bVar5 & 4) != 0)) {
+        if ((sVar13 == 0x35) || (sVar13 == 0x36)) {
+          pLStack_94 = (LONG *)0x51eff0;
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I49_00517480)();
+          sVar6 = (short)CONCAT31(extraout_var_09,uVar3);
+        }
+        else {
+          pLStack_94 = (LONG *)0x51efd4;
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
+          sVar6 = (short)CONCAT31(extraout_var_08,uVar3);
+        }
+        if (sVar6 != 0) {
+          pLStack_94 = (LONG *)(sVar6 + iVar7);
+          uStack_98 = (RECT *)0x51f00c;
+          (*this->vftable[1].Refresh)();
+        }
+      }
+      bStack00000008 = bVar5 & 8;
+      if (((bVar5 & 8) != 0) || ((bVar5 & 4) != 0)) {
+        if ((sVar13 == 0x36) || (sVar13 == 0x37)) {
+          pLStack_94 = (LONG *)0x51f06d;
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I49_00517480)();
+          sVar6 = (short)CONCAT31(extraout_var_11,uVar3);
+        }
+        else {
+          pLStack_94 = (LONG *)0x51f051;
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
+          sVar6 = (short)CONCAT31(extraout_var_10,uVar3);
+        }
+        if (sVar6 != 0) {
+          pLStack_94 = (LONG *)(sVar6 + iVar7);
+          uStack_98 = (RECT *)0x51f089;
+          (*this->vftable[1].BindMapQuickDrawDc)();
+        }
+      }
+      if ((bStack00000008 != 0) || ((bVar5 & 0x10) != 0)) {
+        if ((sVar13 == 0x37) || (sVar13 == 0x39)) {
+          pLStack_94 = (LONG *)0x51f0e6;
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I49_00517480)();
+          sVar6 = (short)CONCAT31(extraout_var_13,uVar3);
+        }
+        else {
+          pLStack_94 = (LONG *)0x51f0ca;
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
+          sVar6 = (short)CONCAT31(extraout_var_12,uVar3);
+        }
+        if (sVar6 != 0) {
+          pLStack_94 = (LONG *)(sVar6 + iVar7);
+          uStack_98 = (RECT *)0x51f102;
+          (*this->vftable[1].PaintVisibleChildrenIntersectingClipRect)();
+        }
+      }
+      if (((bVar5 & 0x20) != 0) || ((bVar5 & 0x10) != 0)) {
+        if ((sVar13 == 0x38) || (sVar13 == 0x3a)) {
+          pLStack_94 = (LONG *)0x51f160;
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I49_00517480)();
+          sVar13 = (short)CONCAT31(extraout_var_15,uVar3);
+        }
+        else {
+          pLStack_94 = (LONG *)0x51f144;
+          uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
+          sVar13 = (short)CONCAT31(extraout_var_14,uVar3);
+        }
+        if (sVar13 != 0) {
+          pLStack_94 = (LONG *)(sVar13 + iVar7);
+          uStack_98 = (RECT *)0x51f17c;
+          (*this->vftable[1].EnsureField48Buffer)();
+        }
+      }
+    }
+    cVar4 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 7 + iVar14);
+    cStack0000000c = cVar4;
+    if (cVar4 != '\0') {
+      func_0x00406b86();
+      if (bVar20) {
+        func_0x00402e73();
+        if ((char)unaff_ESI != '\0') {
+          uStack_98 = (RECT *)0x2;
+          func_0x00402e73();
+          uStack_98 = (RECT *)uStack_c;
+          (*this->vftable[1].EvaluateControlInputGate)();
+        }
+      }
+      else {
+        func_0x00402e73();
+        pLStack_94 = (LONG *)_cStack0000000c;
+        uStack_98 = (RECT *)0x51f233;
+        (*this->vftable[1].ResolveControlByTag)();
+      }
+      uStack_98 = (RECT *)0x1;
+      func_0x00402e73();
+      puStack_8 = (undefined1 *)&uStack_98;
+      uStack_98 = (RECT *)0x0;
+      func_0x00406b86();
+    }
+    cVar4 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 8 + iVar14);
+    cStack0000000c = cVar4;
+    if ((!bVar20) && (cVar4 != '\0')) {
+      func_0x00406b86();
+      pLStack_94 = (LONG *)_cStack0000000c;
+      uStack_98 = (RECT *)0x51f2f3;
+      (*this->vftable[1].SwitchActiveChildAndNotify)();
+      local_4 = (undefined1 *)&uStack_98;
+      uStack_98 = (RECT *)0x0;
+      func_0x00406b86();
+    }
+    cVar4 = *(char *)(iVar14 + 6 + *(int *)&g_pGlobalMapState->field_0xc);
+    cVar16 = *(char *)(iVar14 + *(int *)&g_pGlobalMapState->field_0xc + 0x17);
+    cStack0000000c = cVar16;
+    if ((cVar4 != '\0') || (cVar16 != '\0')) {
+      bVar5 = 0;
+      iStack_58 = 6;
+      while( true ) {
+        uVar19 = 1 << (bVar5 & 0x1f);
+        if ((((int)cVar4 & uVar19) != 0) || ((uVar19 & (int)cVar16) != 0)) {
+          func_0x00403e18();
+          func_0x0040953e();
+        }
+        bVar5 = bVar5 + 1;
+        iStack_58 = iStack_58 + -1;
+        if (iStack_58 == 0) break;
+        cVar16 = cStack0000000c;
+      }
+    }
+    iVar7 = *(int *)&g_pGlobalMapState->field_0xc + iVar14;
+    if ((((*(byte *)(iVar7 + 0x1c) & 3) != 0) && (*(char *)(iVar7 + 0x13) != '\0')) &&
+       (*(short *)((int)&this->ownerContext[1].field34 + 2) != 4)) {
+      uVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins55_00517540)();
+      local_44 = (int)(short)CONCAT31(extraout_var_16,uVar3);
+      local_40.top = local_44 + 0x40;
+      local_40.left = 0;
+      local_40.right = 0x40;
+      pLStack_94 = (LONG *)0x51f432;
+      func_0x004010be();
+      uStack_98 = &RStack_54;
+      pLStack_94 = (LONG *)0x24;
+      func_0x00405493();
+      pLStack_94 = (LONG *)0x51f46a;
+      func_0x004010be();
+    }
+    uVar1 = *(ushort *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + iVar14);
+    if (((uVar1 & 0x14) != 0) && ((uVar1 & 1) == 0)) {
+      uVar3 = (*g_pGlobalMapState->vftable->OrphanCallChain_C1_I46_00517600)();
+      sVar13 = (short)CONCAT31(extraout_var_17,uVar3);
+      if (sVar13 != 0) {
+        local_40.top = (LONG)sVar13;
+        local_40.bottom = local_40.top + 0x40;
+        local_40.right = 0;
+        uStack_30 = 0x40;
+        func_0x004010be();
+        pLStack_94 = &local_40.top;
+        uStack_98 = (RECT *)(local_60 + 1);
+        func_0x00405493();
+        func_0x004010be();
+      }
+    }
+    iVar7 = *(int *)&g_pGlobalMapState->field_0xc + iVar14;
+    if (((*(byte *)(iVar7 + 0x1c) & 3) != 0) && (*(char *)(iVar7 + 0x13) != '\0')) {
+      pLStack_94 = (LONG *)0x51f550;
+      (*this->vftable[1].vmethod_0014)();
+      if (*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 3 +
+                   *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + iVar14) * 0xa8) != '\0'
+         ) {
+        uVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins04_005176a0)();
+        local_40.left = (LONG)(short)CONCAT31(extraout_var_18,uVar3);
+        local_40.right = local_40.left + 0x40;
+        local_40.top = 0;
+        local_40.bottom = 0x40;
+        func_0x004010be();
+        pLStack_94 = &RStack_54.top;
+        uStack_98 = &local_40;
+        func_0x00405493();
+        func_0x004010be();
+      }
+    }
+    if (((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + iVar14) & 3) == 0) ||
+       (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar14 + 0x13) == '\0')) {
+      (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)();
+      pLStack_94 = _param_1;
+      uStack_98 = (RECT *)0x51f625;
+      cVar4 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)();
+      local_4 = (undefined1 *)CONCAT31(local_4._1_3_,cVar4);
+      puStack_8 = (undefined1 *)
+                  CONCAT31(puStack_8._1_3_,
+                           *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x12 + iVar14));
+      switch(*(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + iVar14 + 0x11)) {
+      case 3:
+      case 4:
+      case 6:
+      case 0x15:
+      case 0x16:
+        if (cVar4 == '\0') {
+          uStack_98 = (RECT *)0x51f6b6;
+          bVar5 = func_0x00403b16();
+          pcVar15 = (char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar14);
+          if (((byte)(pcVar15[0xd] & (byte)(1 << (bVar5 & 0x1f))) == 0) &&
+             ((g_pGlobalMapState->field_0x24 == '\0' ||
+              (((cVar4 = *pcVar15, cVar4 != '\x02' && (cVar4 != '\x03')) &&
+               ((cVar4 != '\x06' && (cVar4 != '\x04')))))))) {
+            bVar2 = false;
+          }
+          else {
+            bVar2 = true;
+          }
+          local_6c = unaff_ESI;
+          if (bVar2) {
+            (**(code **)(*g_pStrategicMapViewSystem + 0x80))
+                      (unaff_ESI,(short)uStack_98._2_1_,iStack_70);
+          }
+        }
+        else {
+          uStack_98 = (RECT *)(iStack_58 + 2);
+          (**(code **)(*g_pStrategicMapViewSystem + 0x84))();
+        }
+        break;
+      default:
+        if ((char)((uint)unaff_EDI >> 0x18) != '\0') {
+          uStack_98 = (RECT *)(iStack_58 + 2);
+          (**(code **)(*g_pStrategicMapViewSystem + 0x84))();
+        }
+        uStack_98 = (RECT *)0x51f76f;
+        bVar5 = func_0x00403b16();
+        if (((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0xd + iVar14) &
+             (byte)(1 << (bVar5 & 0x1f))) == 0) &&
+           ((g_pGlobalMapState->field_0x24 == '\0' ||
+            ((((cVar4 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar14), cVar4 != '\x02'
+               && (cVar4 != '\x03')) && (cVar4 != '\x06')) && (cVar4 != '\x04')))))) {
+          bVar2 = false;
+        }
+        else {
+          bVar2 = true;
+        }
+        if ((bVar2) && (iVar7 = *(int *)&g_pSelectedCivilianOrderState->field_0x4, iVar7 != 0)) {
+          sVar13 = *(short *)(iVar7 + 4);
+          if (sVar13 != 1) {
+            if (iVar7 == 0) {
+              sVar13 = 9;
+            }
+            if (sVar13 != 0) {
+              if (iVar7 == 0) {
+                sVar13 = 9;
+              }
+              else {
+                sVar13 = *(short *)(iVar7 + 4);
+              }
+              if (sVar13 != 7) break;
+            }
+          }
+          func_0x004010be();
+          func_0x00406b86();
+          RStack_54.top = (LONG)(short)((short)iStack_70 + 5);
+          RStack_54.right = (LONG)(short)((short)local_6c + 0xc);
+          RStack_54.bottom = RStack_54.top + 0x14;
+          local_44 = RStack_54.right + 0x14;
+          local_40.left = 400;
+          local_40.top = 0;
+          local_40.right = 0x1a4;
+          local_40.bottom = 0x14;
+          func_0x00405493(g_pStrategicMapViewSystem[0x1a6] + 4,
+                          &g_pActiveQuickDrawSurfaceContext->field_0x4,&local_40,&RStack_54.top,0x24
+                         );
+          func_0x00402bdf();
+        }
+      }
+      switch((char)iStack_1c) {
+      case '\x03':
+      case '\x04':
+      case '\x15':
+      case '\x16':
+        if ((char)iStack_18 == '\0') {
+          bVar5 = func_0x00403b16();
+          if (((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0xd + iVar14) &
+               (byte)(1 << (bVar5 & 0x1f))) == 0) &&
+             ((g_pGlobalMapState->field_0x24 == '\0' ||
+              ((((cVar4 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar14), cVar4 != '\x02'
+                 && (cVar4 != '\x03')) && (cVar4 != '\x06')) && (cVar4 != '\x04')))))) {
+            bVar2 = false;
+          }
+          else {
+            bVar2 = true;
+          }
+          if (bVar2) {
+            (**(code **)(*g_pStrategicMapViewSystem + 0x80))
+                      (local_6c,(short)(char)iStack_1c,iStack_70);
+          }
+        }
+        else {
+          uVar12 = (undefined2)((uint)(iStack_70 + 2) >> 0x10);
+          (**(code **)(*g_pStrategicMapViewSystem + 0x84))
+                    (local_6c,CONCAT22(uVar12,(short)(char)iStack_1c),
+                     CONCAT22(uVar12,(short)(char)iStack_18),iStack_70 + 2);
+        }
+      }
+      if ((((char)iStack_1c != -1) && ((char)iStack_1c == '\x14')) &&
+         (((uStack_98._2_1_ == '\x03' || (uStack_98._2_1_ == '\x04')) && (uStack_98._3_1_ != '\0')))
+         ) {
+        (**(code **)(*g_pStrategicMapViewSystem + 0x84))
+                  (local_6c,0x14,
+                   CONCAT22((short)((uint)(iStack_70 + 0x1b) >> 0x10),(short)(char)iStack_18),
+                   iStack_70 + 0x1b);
+      }
+      cVar4 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)();
+      if ((cVar4 == '\0') &&
+         (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x18 + iVar14) != -1)) {
+        uStack_98 = (RECT *)0x51fa30;
+        pLStack_94 = local_6c;
+        func_0x00405880();
+      }
+    }
+  }
+  if (*(short *)((int)&this->ownerContext[1].field34 + 2) != 4) {
+    sVar13 = func_0x0040246e();
+    if (sVar13 != -1) {
+      iVar7 = *(int *)&g_pGlobalMapState->field_0xc + sVar13 * 0x24;
+      if (((*(byte *)(iVar7 + 0x1c) & 3) != 0) && (*(char *)(iVar7 + 0x13) != '\0')) {
+        CString::CString((CString *)&stack0x0000000c);
+        local_4._0_1_ = 1;
+        func_0x0040918d();
+        local_5c = 0;
+        local_60 = &CBrush::_vftable_;
+        uStack_c._0_1_ = 2;
+        pCVar9 = (CDC *)func_0x004021c6();
+        pLStack_94 = (LONG *)0x51fae7;
+        pHVar10 = CreateRectRgnIndirect(&RStack_54);
+        pLStack_94 = (LONG *)0x51faf1;
+        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_60,(int)pHVar10);
+        pLStack_94 = (LONG *)0x51fafd;
+        CDC::SelectClipRgn(pCVar9,(int)&local_60);
+        DeleteObject();
+        local_60 = &PTR_LAB_00671054;
+        uStack_c._0_1_ = 3;
+        DeleteObject();
+        local_60 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+        uStack_c = CONCAT31(uStack_c._1_3_,4);
+        pLStack_94 = (LONG *)0x51fb36;
+        func_0x0040583f();
+        pLStack_94 = (LONG *)0x51fb40;
+        func_0x00404ee9();
+        pLStack_94 = (LONG *)0x51fb4a;
+        func_0x004065a0();
+        pLStack_94 = (LONG *)0x51fb5a;
+        sVar6 = MeasureTextExtentWithCachedQuickDrawStyle();
+        iVar7 = RStack_54.left - (int)sVar6 / 2;
+        if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + sVar13 * 0x24) & 1) == 0) {
+          iVar7 = iVar7 + -10;
+        }
+        pLStack_94 = (LONG *)(iVar7 + 1);
+        uStack_98 = (RECT *)0x51fb90;
+        SetQuickDrawTextOriginWithContextOffset();
+        pLStack_94 = (LONG *)0x51fb9a;
+        func_0x0040330f();
+        pLStack_94 = (LONG *)0x51fbaa;
+        func_0x004029aa();
+        uStack_98 = (RECT *)0x51fbbb;
+        pLStack_94 = (LONG *)iVar7;
+        SetQuickDrawTextOriginWithContextOffset();
+        pLStack_94 = (LONG *)0x51fbc5;
+        func_0x0040330f();
+        pLStack_94 = (LONG *)0x51fbd5;
+        func_0x004029aa();
+        pLStack_94 = (LONG *)0x51fbdf;
+        func_0x0040330f();
+        local_4._0_1_ = 1;
+        CDC::SelectClipRgn(pCVar9,0);
+        local_4 = (undefined1 *)((uint)local_4._1_3_ << 8);
+        CString::~CString((CString *)&stack0x0000000c);
+      }
+    }
+    sVar13 = func_0x0040246e();
+    if (sVar13 != -1) {
+      iVar7 = *(int *)&g_pGlobalMapState->field_0xc + sVar13 * 0x24;
+      if (((*(byte *)(iVar7 + 0x1c) & 3) != 0) && (*(char *)(iVar7 + 0x13) != '\0')) {
+        CString::CString((CString *)&stack0x0000000c);
+        local_4._0_1_ = 5;
+        func_0x0040918d();
+        local_5c = 0;
+        local_60 = &CBrush::_vftable_;
+        uStack_c._0_1_ = 6;
+        pCVar9 = (CDC *)func_0x004021c6();
+        pLStack_94 = (LONG *)0x51fcad;
+        pHVar10 = CreateRectRgnIndirect(&RStack_54);
+        pLStack_94 = (LONG *)0x51fcb7;
+        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_60,(int)pHVar10);
+        pLStack_94 = (LONG *)0x51fcc3;
+        CDC::SelectClipRgn(pCVar9,(int)&local_60);
+        DeleteObject();
+        local_60 = &PTR_LAB_00671054;
+        uStack_c._0_1_ = 7;
+        DeleteObject();
+        local_60 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+        uStack_c = CONCAT31(uStack_c._1_3_,8);
+        pLStack_94 = (LONG *)0x51fcfc;
+        func_0x0040583f();
+        pLStack_94 = (LONG *)0x51fd06;
+        func_0x00404ee9();
+        pLStack_94 = (LONG *)0x51fd10;
+        func_0x004065a0();
+        pLStack_94 = (LONG *)0x51fd20;
+        sVar6 = MeasureTextExtentWithCachedQuickDrawStyle();
+        iVar7 = RStack_54.right - (int)sVar6 / 2;
+        if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + sVar13 * 0x24) & 1) == 0) {
+          iVar7 = iVar7 + -10;
+        }
+        pLStack_94 = (LONG *)(iVar7 + 1);
+        uStack_98 = (RECT *)0x51fd56;
+        SetQuickDrawTextOriginWithContextOffset();
+        pLStack_94 = (LONG *)0x51fd60;
+        func_0x0040330f();
+        pLStack_94 = (LONG *)0x51fd70;
+        func_0x004029aa();
+        uStack_98 = (RECT *)0x51fd81;
+        pLStack_94 = (LONG *)iVar7;
+        SetQuickDrawTextOriginWithContextOffset();
+        pLStack_94 = (LONG *)0x51fd8b;
+        func_0x0040330f();
+        pLStack_94 = (LONG *)0x51fd9b;
+        func_0x004029aa();
+        pLStack_94 = (LONG *)0x51fda5;
+        func_0x0040330f();
+        local_4._0_1_ = 5;
+        CDC::SelectClipRgn(pCVar9,0);
+        local_4 = (undefined1 *)((uint)local_4._1_3_ << 8);
+        CString::~CString((CString *)&stack0x0000000c);
+      }
+    }
+  }
+  cVar4 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0xf + iVar14);
+  if (cVar4 == '\0') {
+    if (param_1 != *(short *)&g_pGlobalMapState->field_0x22) goto LAB_0051fe9c;
+    if (bVar20) {
+      (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
+      iStack_1c = RStack_54.right + 0x20;
+      iStack_14 = RStack_54.right + 0x21;
+      iStack_18 = RStack_54.bottom + 0x20;
+      iStack_10 = RStack_54.bottom + 0x21;
+      FillRectWithQuickDrawBrushAndContextOffset();
+      goto LAB_0051fe9c;
+    }
+  }
+  else {
+    local_40.top = (LONG)(short)(cVar4 * 0x40 + -0x40);
+    local_40.bottom = local_40.top + 0x40;
+    local_40.right = 0;
+    uStack_30 = 0x40;
+    func_0x004010be();
+    pLStack_94 = &local_40.top;
+    uStack_98 = (RECT *)(local_60 + 1);
+    func_0x00405493();
+    func_0x004010be();
+LAB_0051fe9c:
+    if (bVar20) {
+      cVar4 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + iVar14);
+      if ((-1 < cVar4) && (cVar4 < '\x12')) {
+        local_40.top = (LONG)(short)((short)cVar4 << 6);
+        _cStack0000000c = &stack0xffffff78;
+        local_40.bottom = local_40.top + 0x40;
+        local_40.right = 0;
+        uStack_30 = 0x40;
+        func_0x00406b86();
+        func_0x004010be();
+        pLStack_94 = &local_40.top;
+        uStack_98 = (RECT *)(local_60 + 1);
+        func_0x00405493();
+        func_0x004010be();
+      }
+      goto LAB_0052005a;
+    }
+  }
+  func_0x00403b16();
+  pRVar11 = (RECT *)func_0x00401e47();
+  if (pRVar11 == (RECT *)0x0) {
+    pRVar11 = *(RECT **)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar14);
+  }
+  if (pRVar11 != (RECT *)0x0) {
+    cStack0000000c = *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar14);
+    sVar13 = func_0x00403b16();
+    if ((cStack0000000c == sVar13) ||
+       ('\x06' < *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar14))) {
+      pLStack_94 = (LONG *)RStack_54.bottom;
+      uStack_98 = pRVar11;
+      (*this->vftable[1].vmethod_0013)();
+    }
+  }
+  if (this->field_0x360 != '\0') {
+    CString::CString((CString *)&stack0x0000000c);
+    local_4._0_1_ = 9;
+    func_0x00406b86();
+    SetQuickDrawTextOriginWithContextOffset();
+    pLStack_94 = (LONG *)0x51ff98;
+    _Format_CString__QAAXPBDZZ();
+    func_0x004029aa();
+    local_4 = (undefined1 *)((uint)local_4._1_3_ << 8);
+    CString::~CString((CString *)&stack0x0000000c);
+  }
+LAB_0052005a:
+  local_4 = (undefined1 *)0xffffffff;
+  func_0x00409aac();
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
@@ -1680,7 +1875,7 @@ TMapDialog::RenderMapDialogBilateralRelationMarkers
   undefined2 unaff_SI;
   undefined4 unaff_retaddr;
   undefined4 in_stack_0000000c;
-
+  
   cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)();
   if (cVar1 == '\0') {
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x35);
@@ -1688,7 +1883,7 @@ TMapDialog::RenderMapDialogBilateralRelationMarkers
   else {
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
   }
-  SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2,2);
+  func_0x00402e73(2,2);
   switch(unaff_BX) {
   case 0:
     (*this->vftable[1].CallVoidSlotA0)(unaff_retaddr,param_1,1);
@@ -1772,7 +1967,7 @@ TMapDialog::DrawMapDialogGuidePatternSetA_00520970
 {
   int iVar1;
   int iVar2;
-
+  
   if (param_3 == 0) {
     SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2);
     DrawCenteredGuideLineOnMapDc(param_1 + 0x20,param_2 + 9);
@@ -1847,7 +2042,7 @@ TMapDialog::DrawMapDialogGuidePatternSetC_00520c10
   int iVar1;
   int iVar2;
   int iVar3;
-
+  
   if (param_3 == 1) {
     iVar1 = param_1 + 0x36;
     SetQuickDrawTextOriginWithContextOffset(iVar1,param_2);
@@ -1975,7 +2170,7 @@ TMapDialog::DrawMapDialogGuidePatternSetF_00521090
 {
   int iVar1;
   int iVar2;
-
+  
   if (param_3 == 1) {
     iVar1 = param_1 + 0x36;
     SetQuickDrawTextOriginWithContextOffset(iVar1,param_2 + 0x20);
@@ -2088,7 +2283,7 @@ TMapDialog::DrawMapDialogGuidePatternSetI_00521540
 
 {
   int iVar1;
-
+  
   if (param_3 == 0) {
     SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2 + 0x40);
     DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,param_2 + 0x3b);
@@ -2154,89 +2349,89 @@ void TMapDialog::DrawHexEdgeConnectionGlyphsByMask(byte param_1, undefined4 para
   TMapDialogVtbl *pTVar3;
   undefined4 in_stack_00000010;
   byte bStack_8;
-
+  
   bVar1 = param_1 & 2;
   if (bVar1 != 0) {
     if ((param_1 & 1) == 0) {
-      SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-      SetQuickDrawFillColor(0xffffff);
+      func_0x00402e73(1,1);
+      func_0x00406b86(0xffffff);
       pTVar3 = this->vftable;
       (*pTVar3[1].SetState)(param_2);
     }
     else {
-      SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-      SetQuickDrawFillColor(0xffffff);
+      func_0x00402e73(1,1);
+      func_0x00406b86(0xffffff);
       pTVar3 = this->vftable;
       (*pTVar3[1].SetEnabled)(param_2);
       if ((bStack_8 & 0x40) != 0) {
-        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-        SetQuickDrawFillColor(0xffffff);
+        func_0x00402e73(1,1);
+        func_0x00406b86(0xffffff);
         (*pTVar3[1].GetField4E)(param_2);
       }
     }
     if ((bStack_8 & 4) == 0) {
-      SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-      SetQuickDrawFillColor(0xffffff);
+      func_0x00402e73(1,1);
+      func_0x00406b86(0xffffff);
       (*pTVar3[1].RefreshCityProductionViewStateFromContext)(param_2);
     }
     else {
-      SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-      SetQuickDrawFillColor(0xffffff);
+      func_0x00402e73(1,1);
+      func_0x00406b86(0xffffff);
       (*pTVar3[1].QuerySelectedIndexSlotBC)(param_2);
       if ((param_1 & 0x80) != 0) {
-        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-        SetQuickDrawFillColor(0xffffff);
+        func_0x00402e73(1,1);
+        func_0x00406b86(0xffffff);
         (*pTVar3[1].vmethod_0073)(param_2);
       }
     }
   }
   if ((param_1 & 1) != 0) {
-    SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-    SetQuickDrawFillColor(0xffffff);
+    func_0x00402e73(1,1);
+    func_0x00406b86(0xffffff);
     pTVar3 = this->vftable;
     (*pTVar3[1].CallVoidSlotA0)(param_2);
     if (bVar1 == 0) {
-      SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-      SetQuickDrawFillColor(0xffffff);
+      func_0x00402e73(1,1);
+      func_0x00406b86(0xffffff);
       (*pTVar3[1].GetField4E)(param_2);
     }
   }
   if ((param_1 & 4) != 0) {
-    SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-    SetQuickDrawFillColor(0xffffff);
+    func_0x00402e73(1,1);
+    func_0x00406b86(0xffffff);
     pTVar3 = this->vftable;
     (*pTVar3[1].ForwardMapViewVirtualC4IfPresent)(param_2);
     if (bVar1 == 0) {
-      WrapperFor_SetQuickDrawFillColor_At0051e160(0);
+      func_0x00406262(0);
       (*pTVar3[1].vmethod_0073)(param_2);
     }
   }
   if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + (short)in_stack_00000010 * 0x24) != '\x05')
   {
-    sVar2 = GetWrappedHexNeighborTileIndexByDirection(in_stack_00000010,0);
+    sVar2 = func_0x0040246e(in_stack_00000010,0);
     if (sVar2 != -1) {
-      sVar2 = GetWrappedHexNeighborTileIndexByDirection(in_stack_00000010,0);
+      sVar2 = func_0x0040246e(in_stack_00000010,0);
       if (((*(char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar2 * 0x24) == '\x05') &&
           ((param_1 & 0x20) != 0)) && (bVar1 == 0)) {
-        WrapperFor_SetQuickDrawFillColor_At0051e160(0);
-        WrapperFor_SetQuickDrawFillColor_At0051e160(0);
+        func_0x00406262(0);
+        func_0x00406262(0);
         pTVar3 = this->vftable;
         (*pTVar3[1].CallVoidSlotA0)(param_2);
         (*pTVar3[1].GetField4E)(param_2);
       }
     }
-    sVar2 = GetWrappedHexNeighborTileIndexByDirection(in_stack_00000010,2);
+    sVar2 = func_0x0040246e(in_stack_00000010,2);
     if (sVar2 != -1) {
-      sVar2 = GetWrappedHexNeighborTileIndexByDirection(in_stack_00000010,2);
+      sVar2 = func_0x0040246e(in_stack_00000010,2);
       if (((*(char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar2 * 0x24) == '\x05') &&
           ((param_1 & 8) != 0)) && (bVar1 == 0)) {
-        WrapperFor_SetQuickDrawFillColor_At0051e160(0);
+        func_0x00406262(0);
         pTVar3 = this->vftable;
         (*pTVar3[1].vmethod_0073)(param_2);
         (*pTVar3[1].ForwardMapViewVirtualC4IfPresent)(param_2);
       }
     }
-    SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
+    func_0x00402e73(1,1);
   }
   return;
 }
@@ -2250,83 +2445,84 @@ void TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask(byte param_1, short p
 {
   _vslot_fn *p_Var1;
   short sVar2;
+  uint unaff_ESI;
   undefined2 in_stack_0000000a;
-  short in_stack_00000010;
+  _vslot_fn *in_stack_00000010;
   undefined4 uVar3;
   undefined4 uStack_4;
-
-  sVar2 = in_stack_00000010;
+  
   uStack_4._0_3_ = SUB43(this,0);
-  uStack_4 = (code *)(CONCAT13(param_1,(undefined3)uStack_4) & 0x2ffffff);
+  uStack_4 = (_vslot_fn *)(CONCAT13(param_1,(undefined3)uStack_4) & 0x2ffffff);
+  sVar2 = (short)in_stack_00000010;
   if ((param_1 & 2) == 0) goto LAB_00521bf5;
   if ((param_1 & 1) == 0) {
-    GetWrappedHexNeighborTileIndexByDirection();
-    _in_stack_00000010 = this->vftable[1].DispatchSlot9CToLinkedChildren;
+    func_0x0040246e();
+    uStack_4 = this->vftable[1].DispatchSlot9CToLinkedChildren;
     uVar3 = 2;
 LAB_00521b43:
-    (*_in_stack_00000010)(uVar3,_param_2);
+    (*uStack_4)(uVar3,_param_2);
   }
   else {
-    GetWrappedHexNeighborTileIndexByDirection();
-    _in_stack_00000010 = this->vftable[1].DispatchSlot9CToLinkedChildren;
-    (*_in_stack_00000010)(1,_param_2);
-    if ((param_1 & 0x40) != 0) {
-      GetWrappedHexNeighborTileIndexByDirection();
+    func_0x0040246e();
+    in_stack_00000010 = this->vftable[1].DispatchSlot9CToLinkedChildren;
+    (*in_stack_00000010)(1,_param_2);
+    if ((unaff_ESI & 0x40) != 0) {
+      func_0x0040246e();
       uVar3 = 3;
       goto LAB_00521b43;
     }
   }
-  if ((param_1 & 4) == 0) {
-    GetWrappedHexNeighborTileIndexByDirection();
+  if ((unaff_ESI & 4) == 0) {
+    func_0x0040246e();
     uVar3 = 6;
   }
   else {
-    GetWrappedHexNeighborTileIndexByDirection();
-    (*_in_stack_00000010)(7,_param_2);
+    func_0x0040246e();
+    (*uStack_4)(7,_param_2);
     if ((param_1 & 0x80) == 0) goto LAB_00521bf5;
-    GetWrappedHexNeighborTileIndexByDirection();
+    func_0x0040246e();
     uVar3 = 5;
   }
-  (*_in_stack_00000010)(uVar3,_param_2);
+  (*in_stack_00000010)(uVar3,_param_2);
 LAB_00521bf5:
   if ((param_1 & 1) != 0) {
-    GetWrappedHexNeighborTileIndexByDirection();
+    func_0x0040246e();
     p_Var1 = this->vftable[1].DispatchSlot9CToLinkedChildren;
     (*p_Var1)(0,_param_2);
     if (uStack_4._3_1_ == '\0') {
-      GetWrappedHexNeighborTileIndexByDirection();
+      func_0x0040246e();
       (*p_Var1)(3,_param_2);
     }
   }
   if ((param_1 & 4) != 0) {
-    GetWrappedHexNeighborTileIndexByDirection();
+    func_0x0040246e();
     p_Var1 = this->vftable[1].DispatchSlot9CToLinkedChildren;
     (*p_Var1)(9,_param_2);
     if (uStack_4._3_1_ == '\0') {
-      GetWrappedHexNeighborTileIndexByDirection();
+      func_0x0040246e();
       (*p_Var1)(5,_param_2);
     }
   }
   if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar2 * 0x24) != '\x05') {
-    sVar2 = GetWrappedHexNeighborTileIndexByDirection();
+    sVar2 = func_0x0040246e();
     if (sVar2 != -1) {
-      sVar2 = GetWrappedHexNeighborTileIndexByDirection();
+      sVar2 = func_0x0040246e();
       if (((*(char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar2 * 0x24) == '\x05') &&
           ((param_1 & 0x20) != 0)) && (uStack_4._3_1_ == '\0')) {
-        GetWrappedHexNeighborTileIndexByDirection();
+        func_0x0040246e();
         (*this->vftable[1].DispatchSlot9CToLinkedChildren)(0,_param_2);
-        GetWrappedHexNeighborTileIndexByDirection();
+        func_0x0040246e();
         (*uStack_4)(3,_param_2);
       }
     }
-    sVar2 = GetWrappedHexNeighborTileIndexByDirection();
+    sVar2 = func_0x0040246e();
     if (sVar2 != -1) {
-      sVar2 = GetWrappedHexNeighborTileIndexByDirection();
+      sVar2 = func_0x0040246e();
       if (((*(char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar2 * 0x24) == '\x05') &&
           ((param_1 & 8) != 0)) && (uStack_4._3_1_ == '\0')) {
-        GetWrappedHexNeighborTileIndexByDirection();
+        func_0x0040246e();
         (*this->vftable[1].DispatchSlot9CToLinkedChildren)(5,_param_2);
-        GetWrappedHexNeighborTileIndexByDirection();
+        func_0x0040246e();
         (*uStack_4)(9,_param_2);
       }
     }
@@ -2345,7 +2541,7 @@ TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000
 {
   byte unaff_retaddr;
   short in_stack_00000010;
-
+  
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
             (CONCAT22((short)((uint)(in_stack_00000010 * 9) >> 0x10),
                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2390,6 +2586,7 @@ TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints
   int iVar6;
   int iVar7;
   int unaff_retaddr;
+  undefined2 in_stack_0000000e;
   undefined4 uVar8;
   short local_c;
   short local_a;
@@ -2397,8 +2594,9 @@ TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints
   short local_6;
   short local_4;
   short sStack_2;
-
-  ComputeHexNeighborTileIndices(param_3,&local_c,g_pGlobalMapState->field_0x20);
+  
+  func_0x00405baf(_param_3,&local_c,
+                  CONCAT31((int3)((uint)g_pGlobalMapState >> 8),g_pGlobalMapState->field_0x20));
   uVar8 = CONCAT22(extraout_var_02,local_8);
   if (local_6 == -1) {
 LAB_0052228e:
@@ -2422,7 +2620,7 @@ LAB_0052228e:
               puVar5 = g_pUiRuntimeContext->vftable;
             }
             (**(code **)(puVar5 + 0x34))(sVar4);
-            SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2,2);
+            func_0x00402e73(2,2);
             iVar2 = param_2 + 0x40;
             SetQuickDrawTextOriginWithContextOffset(param_1 + 0x36,iVar2);
             iVar6 = param_2 + 0x36;
@@ -2444,8 +2642,8 @@ LAB_0052228e:
             SetQuickDrawTextOriginWithContextOffset(param_1 + 0x39,iVar2);
             DrawCenteredGuideLineOnMapDc(param_1 + 0x39,iVar6);
             DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x2a);
-            SetQuickDrawFillColor(0xffffff);
-            SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
+            func_0x00406b86(0xffffff);
+            func_0x00402e73(1,1);
             SetQuickDrawTextOriginWithContextOffset(param_1 + 0x38,iVar2);
             DrawCenteredGuideLineOnMapDc(param_1 + 0x38,iVar6);
             DrawCenteredGuideLineOnMapDc(param_1 + 0x33,param_2 + 0x2c);
@@ -2473,7 +2671,7 @@ LAB_0052228e:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2,2);
+          func_0x00402e73(2,2);
           iVar2 = param_2 + 0x40;
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,iVar2);
           iVar6 = param_2 + 0x38;
@@ -2493,8 +2691,8 @@ LAB_0052228e:
           (**(code **)(puVar5 + 0x34))(sVar4);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,iVar2);
           DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,iVar6);
-          SetQuickDrawFillColor(0xffffff);
-          SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
+          func_0x00406b86(0xffffff);
+          func_0x00402e73(1,1);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,iVar2);
           DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar6);
           uVar8 = CONCAT22(extraout_var_03,local_8);
@@ -2523,7 +2721,7 @@ LAB_0052228e:
                                (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar6));
             }
             (**(code **)(puVar5 + 0x34))(uVar8);
-            SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2,2);
+            func_0x00402e73(2,2);
             iVar2 = param_2 + 0x40;
             SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,iVar2);
             iVar6 = param_2 + 0x38;
@@ -2543,8 +2741,8 @@ LAB_0052228e:
             (**(code **)(puVar5 + 0x34))(sVar4);
             SetQuickDrawTextOriginWithContextOffset(param_1 + 0x19,iVar2);
             DrawCenteredGuideLineOnMapDc(param_1 + 0x19,iVar6);
-            SetQuickDrawFillColor(0xffffff);
-            SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
+            func_0x00406b86(0xffffff);
+            func_0x00402e73(1,1);
             SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,iVar2);
             DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar6);
           }
@@ -2572,7 +2770,7 @@ LAB_0052228e:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2,2);
+          func_0x00402e73(2,2);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,param_2);
           iVar2 = param_2 + 8;
           DrawCenteredGuideLineOnMapDc(param_1 + 0x16,iVar2);
@@ -2591,8 +2789,8 @@ LAB_0052228e:
           (**(code **)(puVar5 + 0x34))(sVar4);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,param_2);
           DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,iVar2);
-          SetQuickDrawFillColor(0xffffff);
-          SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
+          func_0x00406b86(0xffffff);
+          func_0x00402e73(1,1);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2);
           DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar2);
         }
@@ -2618,7 +2816,7 @@ LAB_0052228e:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2,2);
+          func_0x00402e73(2,2);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x36,param_2);
           iVar2 = param_2 + 8;
           DrawCenteredGuideLineOnMapDc(param_1 + 0x36,iVar2);
@@ -2637,8 +2835,8 @@ LAB_0052228e:
           (**(code **)(puVar5 + 0x34))(sVar4);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x3a,param_2);
           DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,iVar2);
-          SetQuickDrawFillColor(0xffffff);
-          SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
+          func_0x00406b86(0xffffff);
+          func_0x00402e73(1,1);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x38,param_2);
           DrawCenteredGuideLineOnMapDc(param_1 + 0x38,iVar2);
         }
@@ -2663,7 +2861,7 @@ LAB_00522851:
             (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
                       ((short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar6));
           }
-          SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2,2);
+          func_0x00402e73(2,2);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,param_2);
           iVar2 = param_2 + 8;
           DrawCenteredGuideLineOnMapDc(param_1 + 0x16,iVar2);
@@ -2682,15 +2880,15 @@ LAB_00522851:
           (**(code **)(puVar5 + 0x34))(sVar4);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,param_2);
           DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,iVar2);
-          SetQuickDrawFillColor(0xffffff);
-          SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
+          func_0x00406b86(0xffffff);
+          func_0x00402e73(1,1);
           SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2);
           DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar2);
         }
       }
     }
   }
-  SetQuickDrawFillColor(0);
+  func_0x00406b86(0);
   return;
 }
 
@@ -2704,7 +2902,7 @@ TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10
 
 {
   uint uVar1;
-
+  
   uVar1 = (int)param_1 - (int)param_3 >> 0x1f;
   if (0x6c < (int)(((int)param_1 - (int)param_3 ^ uVar1) - uVar1)) {
     if (param_1 < 0x6d) {
@@ -2750,8 +2948,8 @@ void TMapDialog::DrawHexNeighborConnectionMask(byte param_1, int param_2, int pa
   short local_c;
   short local_a;
   short local_8;
-
-  ComputeHexNeighborTileIndices(_bStack00000010,&local_c,g_pGlobalMapState->field_0x20);
+  
+  func_0x00405baf();
   bStack00000010 = param_1 & 2;
   if (((param_1 & 2) == 0) ||
      (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_a * 0x24) != '\x05'))
@@ -2840,7 +3038,7 @@ void TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060()
   short sVar7;
   int iVar8;
   int iVar9;
-
+  
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x3c);
   iVar1 = *(int *)&this->field_0x64;
   iVar9 = 0;
@@ -2862,7 +3060,7 @@ void TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060()
       pTVar5 = (TMapDialogVtbl *)(int)(short)g_pActiveMapOrderContext->field0c;
     } while (iVar9 < (int)pTVar5);
   }
-  SetQuickDrawFillColor(0);
+  func_0x00406b86(0);
   return;
 }
 
@@ -2904,299 +3102,300 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot
 {
   short sVar1;
   bool bVar2;
-  LONG LVar3;
-  undefined4 uVar4;
-  int *piVar5;
-  short sVar6;
+  undefined4 uVar3;
+  int *piVar4;
+  short sVar5;
+  int iVar6;
   int iVar7;
-  int iVar8;
-  uint uVar9;
-  int iVar10;
+  uint uVar8;
+  int iVar9;
   short unaff_retaddr;
   undefined4 local_5c;
   LONG local_58;
   short *local_54;
   uint local_50;
-  RECT local_4c;
+  uint local_4c;
+  int local_48;
+  LONG local_44;
+  LONG LStack_40;
   int iStack_3c;
   int iStack_38;
   int local_34;
   int local_30;
-  RECT local_2c [2];
+  uint local_2c;
+  int local_28;
+  int local_24;
+  LONG LStack_20;
   short sStack_4;
-
+  
   local_30 = (int)param_3;
-  local_2c[0].left = (LONG)param_2;
-  local_2c[0].top = local_30 + 0x40;
-  local_2c[0].right = local_2c[0].left + 0x40;
-  iVar7 = 0;
+  local_2c = (uint)param_2;
+  local_28 = local_30 + 0x40;
+  local_24 = local_2c + 0x40;
+  iVar6 = 0;
   local_58 = 0;
   GetActiveQuickDrawSurfaceContextAndFlags(&local_34,&local_58);
-  ResetQuickDrawStrokeState();
+  func_0x004088aa();
   SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,local_58);
-  uVar4 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-  ReturnConstantTrueQuickDrawFlag(uVar4);
-  uVar4 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
-  ReturnConstantTrueQuickDrawFlag(uVar4);
-  piVar5 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
-  local_4c.left = *(ushort *)(*piVar5 + 4) & 0x3fff;
-  local_4c.right = GetSurfaceHeaderFromSurfaceObject(piVar5);
-  piVar5 = (int *)GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-  uVar9 = *(ushort *)(*piVar5 + 4) & 0x3fff;
-  local_50 = uVar9;
-  local_4c.top = GetSurfaceHeaderFromSurfaceObject(piVar5);
-  iVar8 = (int)(short)uVar9;
-  local_4c.top = local_4c.top + (iVar8 + 1) * 0x40;
-  uVar4 = GetSurfaceObjectAtContextOffset24
+  uVar3 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
+  ReturnConstantTrueQuickDrawFlag(uVar3);
+  uVar3 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
+  ReturnConstantTrueQuickDrawFlag(uVar3);
+  piVar4 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
+  local_4c = *(ushort *)(*piVar4 + 4) & 0x3fff;
+  local_44 = func_0x00405e39(piVar4);
+  piVar4 = (int *)GetSurfaceObjectAtContextOffset24(DAT_006a3450);
+  uVar8 = *(ushort *)(*piVar4 + 4) & 0x3fff;
+  local_50 = uVar8;
+  local_48 = func_0x00405e39(piVar4);
+  iVar7 = (int)(short)uVar8;
+  local_48 = local_48 + (iVar7 + 1) * 0x40;
+  uVar3 = GetSurfaceObjectAtContextOffset24
                     (*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
-  GetSurfaceHeaderFromSurfaceObject(uVar4);
+  func_0x00405e39(uVar3);
   do {
-    sVar6 = (short)param_1;
-    if (*(short *)(&this->field_0x82 + (short)iVar7 * 8) == sVar6) break;
-    iVar7 = iVar7 + 1;
-  } while ((short)iVar7 < 0x5a);
-  if (0x59 < (short)iVar7) {
-    iVar7 = 0;
+    sVar5 = (short)param_1;
+    if (*(short *)(&this->field_0x82 + (short)iVar6 * 8) == sVar5) break;
+    iVar6 = iVar6 + 1;
+  } while ((short)iVar6 < 0x5a);
+  if (0x59 < (short)iVar6) {
+    iVar6 = 0;
     bVar2 = false;
     do {
       if (bVar2) break;
-      if ((&this->field_0x7c)[(short)iVar7 * 8] == '\0') {
+      if ((&this->field_0x7c)[(short)iVar6 * 8] == '\0') {
         bVar2 = true;
       }
       else {
-        iVar7 = iVar7 + 1;
+        iVar6 = iVar6 + 1;
       }
-    } while ((short)iVar7 < 0x5a);
+    } while ((short)iVar6 < 0x5a);
   }
-  iVar10 = (int)(short)iVar7;
-  local_54 = (short *)(&this->field_0x82 + iVar10 * 8);
+  iVar9 = (int)(short)iVar6;
+  local_54 = (short *)(&this->field_0x82 + iVar9 * 8);
   sVar1 = *local_54;
-  if ((-1 < sVar1) && (sVar1 != sVar6)) {
+  if ((-1 < sVar1) && (sVar1 != sVar5)) {
     *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + sVar1 * 0x24) = 0xff;
   }
-  (&this->field_0x7c)[iVar10 * 8] = 1;
-  TMapDialog::SplitTileIndexToRowAndColumn(param_1,&local_5c,(int)&local_5c + 2);
-  *(undefined2 *)(&this->field_0x7e + iVar10 * 8) = (undefined2)local_5c;
-  *(undefined2 *)(&this->field_0x80 + iVar10 * 8) = local_5c._2_2_;
-  *local_54 = sVar6;
-  iVar10 = sVar6 * 0x24;
-  *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar10) = (char)iVar7;
-  uVar4 = 0;
-  (*this->vftable[1].SetUiResourceOwner)(param_1,0,iVar7 << 6);
+  (&this->field_0x7c)[iVar9 * 8] = 1;
+  func_0x00406c1c(param_1,&local_5c,(int)&local_5c + 2);
+  *(undefined2 *)(&this->field_0x7e + iVar9 * 8) = (undefined2)local_5c;
+  *(undefined2 *)(&this->field_0x80 + iVar9 * 8) = local_5c._2_2_;
+  *local_54 = sVar5;
+  iVar9 = sVar5 * 0x24;
+  *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar9) = (char)iVar6;
+  uVar3 = 0;
+  (*this->vftable[1].SetUiResourceOwner)(param_1,0,iVar6 << 6);
   (*this->vftable[1].ApplyRectSlot110)
-            (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar10) * 0x40 + local_50,
-             (int)local_54 + (int)unaff_retaddr + iVar8 * sStack_4,local_58,local_5c);
-  iVar7 = *(int *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar10);
-  if (iVar7 != 0) {
-    piVar5 = (int *)TCivAnimation2::FindLinkedListNodeByIdFieldAt18
-                              ((TCivAnimation2 *)g_pUiAnimator,iVar7);
-    if (piVar5 != (int *)0x0) {
-      SetActiveQuickDrawSurfaceContext(DAT_006a3450,uVar4);
-      iStack_3c = piVar5[7] + 0x40;
-      iStack_38 = piVar5[8] + 0x40;
-      local_34 = piVar5[9] + 0x40;
-      local_30 = piVar5[10] + 0x40;
+            (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar9) * 0x40 + local_50,
+             (int)local_54 + (int)unaff_retaddr + iVar7 * sStack_4,local_58,local_5c);
+  iVar6 = *(int *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar9);
+  if (iVar6 != 0) {
+    piVar4 = (int *)func_0x004055ec(iVar6);
+    if (piVar4 != (int *)0x0) {
+      SetActiveQuickDrawSurfaceContext(DAT_006a3450,uVar3);
+      iStack_3c = piVar4[7] + 0x40;
+      iStack_38 = piVar4[8] + 0x40;
+      local_34 = piVar4[9] + 0x40;
+      local_30 = piVar4[10] + 0x40;
       ApplyRectClipRegionToGlobalClipState(&iStack_3c);
       local_5c = 0x40;
-      (**(code **)(*piVar5 + 0x2c))(&stack0xffffffa0);
-      SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,uVar4);
+      (**(code **)(*piVar4 + 0x2c))(&stack0xffffffa0);
+      SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,uVar3);
     }
   }
-  ResetQuickDrawStrokeState();
-  SetActiveQuickDrawSurfaceContext(local_50,uVar4);
+  func_0x004088aa();
+  SetActiveQuickDrawSurfaceContext(local_50,uVar3);
   if ((DAT_006a33f8 & 1) == 0) {
     DAT_006a33f8 = DAT_006a33f8 | 1;
     DAT_006a3440 = 0x40;
     DAT_006a3444 = 0x40;
-    _atexit(&DAT_00523620);
+    AppendPointerToGlobalVectorAsStatus(&DAT_00523620);
   }
-  LVar3 = local_4c.left;
-  local_5c = local_4c.top;
-  local_58 = local_4c.right;
-  local_54 = (short *)local_4c.bottom;
+  uVar8 = local_4c;
+  local_5c = local_48;
+  local_58 = local_44;
+  local_54 = (short *)LStack_40;
   OffsetRect((LPRECT)&stack0xffffffa0,DAT_006a3440,DAT_006a3444);
-  local_2c[0].left = LVar3;
-  local_2c[0].top = local_5c;
-  local_2c[0].bottom = (LONG)local_54;
-  local_2c[0].right = local_58;
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(DAT_006a3450 + 4),
-             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,local_2c,&local_4c,0,
-             (astruct_19 *)0x0);
-  uVar4 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-  NoOpQuickDrawLifecycleHookB(uVar4);
-  uVar4 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
-  NoOpQuickDrawLifecycleHookB(uVar4);
+  local_2c = uVar8;
+  local_28 = local_5c;
+  LStack_20 = (LONG)local_54;
+  local_24 = local_58;
+  func_0x00405493(DAT_006a3450 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_2c,&local_4c,
+                  0,0);
+  uVar3 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
+  NoOpQuickDrawLifecycleHookB(uVar3);
+  uVar3 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
+  NoOpQuickDrawLifecycleHookB(uVar3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00523640
 // GHIDRA_NAME TMapDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1, short param_2, short param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1, short param_2, short param_3, undefined4 param_4)
 
 void __thiscall
 TMapDialog::OrphanTiny_ReturnZero_0048a730
           (TMapDialog *this,int param_1,short param_2,short param_3,undefined4 param_4)
 
 {
-  astruct_18 *dstSurface;
+  int iVar1;
   POINT pt;
-  TQuickDrawSurfaceContext *pTVar1;
-  undefined uVar2;
-  short sVar3;
-  int iVar4;
-  TCivAnimation2 *this_00;
+  TQuickDrawSurfaceContext *pTVar2;
+  undefined uVar3;
+  short sVar4;
+  int iVar5;
+  undefined4 *puVar6;
   undefined3 extraout_var;
   undefined2 extraout_var_02;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
-  BOOL BVar5;
-  short sVar6;
+  BOOL BVar7;
+  int iVar8;
+  short sVar9;
   undefined4 *unaff_FS_OFFSET;
-  bool bVar7;
+  bool bVar10;
+  char unaff_retaddr;
   undefined4 in_stack_00000014;
   int local_4c;
   int local_48;
   int iStack_44;
   int iStack_40;
-  RECT local_3c;
-  RECT local_2c;
-  tagRECT local_1c;
+  int local_3c;
+  int local_38;
+  int local_34;
+  int local_30;
+  undefined1 local_2c [12];
+  int local_20;
+  int local_1c;
+  int local_18;
+  int local_14;
+  int local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
+  iVar8 = param_1;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063409a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  iVar4 = *(int *)(param_1 + 8);
-  sVar6 = *(short *)(param_1 + 0x18);
-  sVar3 = UiRuntimeContext::GetActiveNationId();
-  pTVar1 = g_pActiveQuickDrawSurfaceContext;
-  bVar7 = sVar6 != sVar3;
-  if ((iVar4 < 5) || (bVar7)) {
+  iVar5 = *(int *)(param_1 + 8);
+  sVar9 = *(short *)(param_1 + 0x18);
+  sVar4 = func_0x00403b16();
+  pTVar2 = g_pActiveQuickDrawSurfaceContext;
+  bVar10 = sVar9 == sVar4;
+  param_1 = CONCAT31(param_1._1_3_,bVar10);
+  if ((iVar5 < 5) || (!bVar10)) {
     if ((char)param_4 == '\0') {
-      iVar4 = *(int *)&this->field_0x350;
-      uVar2 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)(param_1);
-      local_2c.top = (LONG)param_2;
-      local_2c.left = (LONG)param_3;
-      local_3c.left = (LONG)(short)CONCAT31(extraout_var,uVar2);
-      local_2c.bottom = local_2c.top + 0x40;
-      local_2c.right = local_2c.left + 0x40;
-      local_3c.right = local_3c.left + 0x40;
-      local_3c.top = 0;
-      local_3c.bottom = 0x40;
-      UpdatePaletteIndexWithDefaultFallback(0x10);
-      dstSurface = (astruct_18 *)(iVar4 + 4);
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4),dstSurface,
-                 &local_3c,&local_2c,0x24,(astruct_19 *)0x0);
-      if (bVar7) {
-        uVar2 = (*g_pGlobalMapState->vftable->GetMapImprovementTierBucketOffset)
-                          (CONCAT22(extraout_var_02,*(undefined2 *)(param_1 + 0x18)));
-        local_3c.left = (LONG)(short)CONCAT31(extraout_var_00,uVar2);
-        local_3c.right = local_3c.left + 9;
-        local_3c.top = 0;
-        local_4c = local_2c.left + 0x1c;
-        local_3c.bottom = 6;
-        iVar4 = *(int *)(iVar4 + 0x20);
-        local_48 = local_2c.bottom + -8;
-        iStack_44 = local_2c.left + 0x25;
-        iStack_40 = local_2c.bottom + -2;
-        local_1c.left = local_4c;
-        local_1c.top = local_48;
-        local_1c.right = iStack_44;
-        local_1c.bottom = iStack_40;
-        if (iVar4 != 0) {
-          iVar4 = *(int *)(*(int *)(iVar4 + 0x10) + 8);
-          if (iVar4 < 1) {
-            iVar4 = -iVar4;
+      iVar1 = *(int *)&this->field_0x350;
+      uVar3 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)(iVar8);
+      local_2c._0_4_ = SEXT24((short)param_1);
+      local_30 = (int)param_2;
+      iStack_40 = (int)(short)CONCAT31(extraout_var,uVar3);
+      local_2c._8_4_ = local_2c._0_4_ + 0x40;
+      local_2c._4_4_ = local_30 + 0x40;
+      local_38 = iStack_40 + 0x40;
+      local_3c = 0;
+      local_34 = 0x40;
+      func_0x004010be(0x10);
+      iVar5 = iVar1 + 4;
+      func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4,iVar5,&iStack_40,&local_30,
+                      0x24,0);
+      if (unaff_retaddr == '\0') {
+        uVar3 = (*g_pGlobalMapState->vftable->GetMapImprovementTierBucketOffset)
+                          (CONCAT22(extraout_var_02,*(undefined2 *)(iVar8 + 0x18)));
+        iStack_44 = (int)(short)CONCAT31(extraout_var_00,uVar3);
+        local_3c = iStack_44 + 9;
+        iStack_40 = 0;
+        local_2c._8_4_ = local_34 + 0x1c;
+        local_38 = 6;
+        iVar8 = *(int *)(iVar1 + 0x20);
+        local_20 = local_2c._4_4_ + -8;
+        local_4c = local_34 + 0x25;
+        local_48 = local_2c._4_4_ + -2;
+        local_1c = local_4c;
+        local_18 = local_48;
+        if (iVar8 != 0) {
+          iVar8 = *(int *)(*(int *)(iVar8 + 0x10) + 8);
+          if (iVar8 < 1) {
+            iVar8 = -iVar8;
           }
-          OffsetRect(&local_1c,0,(iVar4 - local_48) - iStack_40);
+          OffsetRect((LPRECT)(local_2c + 8),0,(iVar8 - local_20) - local_48);
         }
-        BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6b8) + 4),dstSurface,
-                   &local_3c,&local_1c,0x24,(astruct_19 *)0x0);
-        local_48 = local_48 + -1;
-        local_4c = local_4c + -1;
-        iStack_44 = iStack_44 + 1;
-        iStack_40 = iStack_40 + 1;
-        SetQuickDrawFillColorFromPaletteIndex(0x13);
-        DrawFrameRectOrUpdateClipRegion(&local_4c);
-        UpdatePaletteIndexWithDefaultFallback(0x13);
+        func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x6b8) + 4,iVar5,&iStack_44,
+                        local_2c + 8,0x24,0);
+        local_4c = local_4c + 1;
+        local_48 = local_48 + 1;
+        func_0x0040330f(0x13);
+        func_0x00405c27(&stack0xffffffac);
+        func_0x004010be(0x13);
         goto LAB_00523a3f;
       }
     }
     else {
       if (this->field_0x74 == '\0') {
-        sVar6 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 +
-                                *(short *)(param_1 + 6) * 0x24);
-        if (sVar6 != -1) {
-          local_2c.top = (LONG)param_2;
-          local_2c.left = (LONG)param_3;
-          local_2c.bottom = local_2c.top + 0x40;
-          local_2c.right = local_2c.left + 0x40;
-          local_3c.left = (int)sVar6 << 6;
-          local_3c.right = (sVar6 + 1) * 0x40;
-          local_3c.top = 0;
-          local_3c.bottom = 0x40;
-          BlitRectWithOptionalTransparency
-                    ((astruct_17 *)(*(int *)&this->field_0x350 + 4),
-                     (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_3c,&local_2c,
-                     0,(astruct_19 *)0x0);
+        sVar9 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 +
+                                *(short *)(iVar8 + 6) * 0x24);
+        if (sVar9 != -1) {
+          local_2c._4_4_ = SEXT24(param_2);
+          local_2c._0_4_ = SEXT24(param_3);
+          local_20 = local_2c._4_4_ + 0x40;
+          local_2c._8_4_ = local_2c._0_4_ + 0x40;
+          local_3c = (int)sVar9 << 6;
+          local_34 = (sVar9 + 1) * 0x40;
+          local_38 = 0;
+          local_30 = 0x40;
+          func_0x00405493(*(int *)&this->field_0x350 + 4,
+                          &g_pActiveQuickDrawSurfaceContext->field_0x4,&local_3c,local_2c,0,0);
         }
         if ((this->field4e != -1) && (this->field4e != 0x3f0)) {
-          RenderMapOrderEntryTilePreview_Impl(&local_4c);
+          func_0x00406feb(&local_4c);
           pt.y = local_48;
           pt.x = local_4c;
-          BVar5 = PtInRect(&local_2c,pt);
-          if (BVar5 != 0) {
-            DrawFrameRectOrUpdateClipRegion(&local_2c);
+          BVar7 = PtInRect((RECT *)local_2c,pt);
+          if (BVar7 != 0) {
+            func_0x00405c27(local_2c);
           }
         }
         goto LAB_00523a3f;
       }
-      uVar2 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)(param_1);
-      local_2c.left = (LONG)param_3;
-      local_2c.top = (LONG)param_2;
-      local_2c.right = local_2c.left + 0x40;
-      local_3c.left = (LONG)(short)((short)CONCAT31(extraout_var_01,uVar2) + 0x240);
-      local_2c.bottom = local_2c.top + 0x40;
-      local_3c.right = local_3c.left + 0x40;
-      local_3c.top = 0;
-      local_3c.bottom = 0x40;
-      UpdatePaletteIndexWithDefaultFallback(0x10);
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4),
-                 (astruct_18 *)&pTVar1->field_0x4,&local_3c,&local_2c,0x24,(astruct_19 *)0x0);
+      uVar3 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)(iVar8);
+      local_30 = (int)param_2;
+      local_2c._0_4_ = SEXT24((short)param_1);
+      local_2c._4_4_ = local_30 + 0x40;
+      iStack_40 = (int)(short)((short)CONCAT31(extraout_var_01,uVar3) + 0x240);
+      local_2c._8_4_ = local_2c._0_4_ + 0x40;
+      local_38 = iStack_40 + 0x40;
+      local_3c = 0;
+      local_34 = 0x40;
+      func_0x004010be(0x10);
+      func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4,&pTVar2->field_0x4,&iStack_40,
+                      &local_30,0x24,0);
     }
-    UpdatePaletteIndexWithDefaultFallback(0x13);
+    func_0x004010be(0x13);
   }
   else {
-    iVar4 = TCivAnimation2::FindLinkedListNodeByIdFieldAt18((TCivAnimation2 *)g_pUiAnimator,param_1)
-    ;
-    if (iVar4 == 0) {
-      TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-                (in_stack_00000014,&this->field_0x60,&param_3,&param_4,1);
-      sVar6 = *(short *)(param_1 + 4);
-      this_00 = (TCivAnimation2 *)__2_YAPAXI_Z(0x30);
+    iVar5 = func_0x004055ec(iVar8);
+    if (iVar5 == 0) {
+      func_0x004056a5(in_stack_00000014,&this->field_0x60,&param_3,&param_4,1);
+      sVar9 = *(short *)(iVar8 + 4);
+      puVar6 = (undefined4 *)operator_new(0x30);
       local_4 = 0;
-      if (this_00 == (TCivAnimation2 *)0x0) {
-        this_00 = (TCivAnimation2 *)0x0;
+      if (puVar6 == (undefined4 *)0x0) {
+        puVar6 = (undefined4 *)0x0;
       }
       else {
-        InitializeRefCountedObjectBaseVtable();
-        this_00->vftable = &TCivAnimation2Vtbl_0064c390;
+        func_0x00408dc3();
+        *puVar6 = &TCivAnimation2::_vftable_;
       }
-      local_1c.top = (LONG)param_3;
-      local_1c.left = (LONG)(short)param_4;
-      local_1c.bottom = local_1c.top + 0x40;
-      local_1c.right = local_1c.left + 0x40;
+      local_18 = (int)param_3;
+      local_1c = (int)(short)param_4;
+      local_10 = local_18 + 0x40;
+      local_14 = local_1c + 0x40;
       local_4 = 0xffffffff;
-      TCivAnimation2::ConstructTCivAnimation2BaseState
-                (this_00,this,&local_1c.left,(int)sVar6,param_1);
-      TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
+      func_0x00406541(this,&local_1c,(int)sVar9,iVar8);
+      func_0x00402ec8(puVar6);
     }
   }
 LAB_00523a3f:
@@ -3205,10 +3404,10 @@ LAB_00523a3f:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00523B70
-// GHIDRA_NAME TMapDialog::DispatchReflectedControlMessageOrFallback
-// GHIDRA_PROTO undefined __thiscall DispatchReflectedControlMessageOrFallback(RECT * param_1, char param_2)
+// GHIDRA_NAME TMapDialog::VTableSlot6B
+// GHIDRA_PROTO undefined __thiscall VTableSlot6B(RECT * param_1, char param_2)
 
-void TMapDialog::DispatchReflectedControlMessageOrFallback(RECT *param_1, char param_2)
+void TMapDialog::VTableSlot6B(RECT *param_1, char param_2)
 
 {
   int iVar1;
@@ -3220,18 +3419,22 @@ void TMapDialog::DispatchReflectedControlMessageOrFallback(RECT *param_1, char p
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
-  astruct_18 *dstSurface;
-  int iVar6;
-  short sVar7;
+  undefined1 *puVar6;
+  int iVar7;
+  short sVar8;
   undefined3 in_stack_00000009;
   char in_stack_0000000c;
-  undefined1 auStack_18 [8];
-  RECT local_10;
-
+  int iStack_18;
+  int iStack_14;
+  int local_10;
+  int local_c;
+  int local_8;
+  undefined4 local_4;
+  
   pTVar2 = g_pActiveQuickDrawSurfaceContext;
-  iVar6 = (short)param_1 * 0x24;
-  sVar7 = 0;
-  sVar4 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + iVar6);
+  iVar7 = (short)param_1 * 0x24;
+  sVar8 = 0;
+  sVar4 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + iVar7);
   if ((sVar4 < 0) || (0x17f < sVar4)) {
     iVar5 = 0;
   }
@@ -3246,100 +3449,94 @@ void TMapDialog::DispatchReflectedControlMessageOrFallback(RECT *param_1, char p
     do {
       sVar4 = *(short *)(iVar5 + 4);
       if (((sVar4 != 0) && (sVar4 != 8)) && (sVar4 != 0x10)) {
-        sVar7 = sVar7 + 1;
+        sVar8 = sVar8 + 1;
       }
       iVar5 = *(int *)(iVar5 + 0x14);
     } while (iVar5 != 0);
     iVar5 = 0;
-    if (sVar7 != 0) {
-      if (sVar7 < 6) {
+    if (sVar8 != 0) {
+      if (sVar8 < 6) {
         iVar5 = 1;
       }
       else {
-        iVar5 = (10 < sVar7) + 2;
+        iVar5 = (10 < sVar8) + 2;
       }
     }
     uVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins04_005176c0)(iVar5);
-    auStack_18._4_4_ = SEXT24((short)CONCAT31(extraout_var,uVar3));
-    local_10.top = auStack_18._4_4_ + 0x12;
-    local_10.left = 0;
-    local_10.right = 0x26;
+    iStack_14 = (int)(short)CONCAT31(extraout_var,uVar3);
+    local_c = iStack_14 + 0x12;
+    local_10 = 0;
+    local_8 = 0x26;
     if (*(int *)(iVar1 + 0x20) == 0) {
-      auStack_18._0_4_ = param_1->top + 0x26;
+      iStack_18 = param_1->top + 0x26;
     }
     else {
-      auStack_18._0_4_ = param_1->bottom;
+      iStack_18 = param_1->bottom;
     }
-    UpdatePaletteIndexWithDefaultFallback(0x10);
-    dstSurface = (astruct_18 *)(iVar1 + 4);
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6b4) + 4),dstSurface,
-               (RECT *)(auStack_18 + 4),(RECT *)&stack0xffffffdc,0x24,(astruct_19 *)0x0);
+    func_0x004010be(0x10);
+    puVar6 = (undefined1 *)(iVar1 + 4);
+    func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x6b4) + 4,puVar6,&iStack_14,
+                    &stack0xffffffdc,0x24,0);
     uVar3 = (*g_pGlobalMapState->vftable->GetMapImprovementTierBucketOffset)
                       (CONCAT22((short)((uint)*(int *)&g_pGlobalMapState->field_0xc >> 0x10),
-                                (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar6))
+                                (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar7))
                       );
     sVar4 = (short)CONCAT31(extraout_var_00,uVar3);
-    iVar6 = *(int *)(g_pStrategicMapViewSystem + 0x6b8);
+    iVar7 = *(int *)(g_pStrategicMapViewSystem + 0x6b8);
   }
   else {
     if (this->field_0x74 == '\0') {
-      sVar4 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar6 + 0x10);
+      sVar4 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar7 + 0x10);
       if (sVar4 == -1) {
         return;
       }
-      local_10.left = (int)sVar4 << 6;
-      local_10.right = (sVar4 + 1) * 0x40;
-      local_10.top = 0;
-      local_10.bottom = 0x40;
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)&this->field_0x350 + 4),
-                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,_param_2,0,
-                 (astruct_19 *)0x0);
+      local_10 = (int)sVar4 << 6;
+      local_8 = (sVar4 + 1) * 0x40;
+      local_c = 0;
+      local_4 = 0x40;
+      func_0x00405493(*(int *)&this->field_0x350 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                      &local_10,_param_2,0,0);
       return;
     }
     do {
       sVar4 = *(short *)(iVar5 + 4);
       if (((sVar4 != 0) && (sVar4 != 8)) && (sVar4 != 0x10)) {
-        sVar7 = sVar7 + 1;
+        sVar8 = sVar8 + 1;
       }
       iVar5 = *(int *)(iVar5 + 0x14);
     } while (iVar5 != 0);
     iVar5 = 0;
-    if (sVar7 != 0) {
-      if (sVar7 < 6) {
+    if (sVar8 != 0) {
+      if (sVar8 < 6) {
         iVar5 = 1;
       }
       else {
-        iVar5 = (10 < sVar7) + 2;
+        iVar5 = (10 < sVar8) + 2;
       }
     }
     uVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins04_005176c0)(iVar5);
-    auStack_18._4_4_ = SEXT24((short)((short)CONCAT31(extraout_var_01,uVar3) + 0x12));
-    local_10.right = 0x26;
-    local_10.top = auStack_18._4_4_ + 0x12;
-    local_10.left = 0;
-    auStack_18._0_4_ = param_1->top + 0x26;
-    UpdatePaletteIndexWithDefaultFallback(0x10);
-    dstSurface = (astruct_18 *)&pTVar2->field_0x4;
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6b4) + 4),dstSurface,
-               (RECT *)(auStack_18 + 4),(RECT *)&stack0xffffffdc,0x24,(astruct_19 *)0x0);
+    iStack_14 = (int)(short)((short)CONCAT31(extraout_var_01,uVar3) + 0x12);
+    local_8 = 0x26;
+    local_c = iStack_14 + 0x12;
+    local_10 = 0;
+    iStack_18 = param_1->top + 0x26;
+    func_0x004010be(0x10);
+    puVar6 = &pTVar2->field_0x4;
+    func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x6b4) + 4,puVar6,&iStack_14,
+                    &stack0xffffffdc,0x24,0);
     uVar3 = (*g_pGlobalMapState->vftable->GetMapImprovementTierBucketOffset)
                       (CONCAT22((short)((uint)*(int *)&g_pGlobalMapState->field_0xc >> 0x10),
-                                (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar6))
+                                (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar7))
                       );
     sVar4 = (short)CONCAT31(extraout_var_02,uVar3);
-    iVar6 = *(int *)(g_pStrategicMapViewSystem + 0x6b8);
+    iVar7 = *(int *)(g_pStrategicMapViewSystem + 0x6b8);
   }
-  auStack_18._0_4_ = SEXT24(sVar4);
-  local_10.left = auStack_18._0_4_ + 9;
-  local_10.top = 6;
-  auStack_18._4_4_ = 0;
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(iVar6 + 4),dstSurface,(RECT *)auStack_18,(RECT *)&stack0xffffffd8,0x24,
-             (astruct_19 *)0x0);
-  UpdatePaletteIndexWithDefaultFallback(0x13);
+  iStack_18 = (int)sVar4;
+  local_10 = iStack_18 + 9;
+  local_c = 6;
+  iStack_14 = 0;
+  func_0x00405493(iVar7 + 4,puVar6,&iStack_18,&stack0xffffffd8,0x24,0);
+  func_0x004010be(0x13);
   return;
 }
 
@@ -3354,19 +3551,20 @@ void TMapDialog::OrphanRetStub_00596060(short param_1, RECT *param_2, char param
   char cVar2;
   TQuickDrawSurfaceContext *pTVar3;
   short sVar4;
-  RECT RStack_10;
-
+  int aiStack_10 [3];
+  undefined4 uStack_4;
+  
   pTVar3 = g_pActiveQuickDrawSurfaceContext;
   iVar1 = *(int *)&g_pGlobalMapState->field_0xc + param_1 * 0x24;
   cVar2 = *(char *)(iVar1 + 0x16);
   if ((-1 < cVar2) && (cVar2 < '\x13')) {
     if (param_3 == '\0') {
       pTVar3 = *(TQuickDrawSurfaceContext **)&this->field_0x350;
-      RStack_10.left = (LONG)(short)(cVar2 * 0x40);
-      RStack_10.right = RStack_10.left + 0x40;
-      RStack_10.top = 0;
-      RStack_10.bottom = 0x40;
-      UpdatePaletteIndexWithDefaultFallback(0x10);
+      aiStack_10[0] = (int)(short)(cVar2 * 0x40);
+      aiStack_10[2] = aiStack_10[0] + 0x40;
+      aiStack_10[1] = 0;
+      uStack_4 = 0x40;
+      func_0x004010be(0x10);
       iVar1 = *(int *)(g_pStrategicMapViewSystem + 0x690);
     }
     else {
@@ -3375,27 +3573,23 @@ void TMapDialog::OrphanRetStub_00596060(short param_1, RECT *param_2, char param
         if (sVar4 == -1) {
           return;
         }
-        RStack_10.left = (int)sVar4 << 6;
-        RStack_10.right = (sVar4 + 1) * 0x40;
-        RStack_10.top = 0;
-        RStack_10.bottom = 0x40;
-        BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)&this->field_0x350 + 4),
-                   (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_10,param_2,0,
-                   (astruct_19 *)0x0);
+        aiStack_10[0] = (int)sVar4 << 6;
+        aiStack_10[2] = (sVar4 + 1) * 0x40;
+        aiStack_10[1] = 0;
+        uStack_4 = 0x40;
+        func_0x00405493(*(int *)&this->field_0x350 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                        aiStack_10,param_2,0,0);
         return;
       }
-      RStack_10.left = (LONG)(short)(cVar2 * 0x40 + 0x40);
-      RStack_10.right = RStack_10.left + 0x40;
-      RStack_10.top = 0;
-      RStack_10.bottom = 0x40;
-      UpdatePaletteIndexWithDefaultFallback(0x10);
+      aiStack_10[0] = (int)(short)(cVar2 * 0x40 + 0x40);
+      aiStack_10[2] = aiStack_10[0] + 0x40;
+      aiStack_10[1] = 0;
+      uStack_4 = 0x40;
+      func_0x004010be(0x10);
       iVar1 = *(int *)(g_pStrategicMapViewSystem + 0x690);
     }
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(iVar1 + 4),(astruct_18 *)&pTVar3->field_0x4,&RStack_10,param_2,0x24,
-               (astruct_19 *)0x0);
-    UpdatePaletteIndexWithDefaultFallback(0x13);
+    func_0x00405493(iVar1 + 4,&pTVar3->field_0x4,aiStack_10,param_2,0x24,0);
+    func_0x004010be(0x13);
     return;
   }
   return;
@@ -3418,7 +3612,7 @@ TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0
   undefined4 *puVar6;
   undefined4 *puVar7;
   int iVar8;
-
+  
   puVar6 = (undefined4 *)(param_1 + 0x20);
   puVar3 = (undefined4 *)(param_2 + 0x20);
   param_1 = 8;
@@ -3488,7 +3682,7 @@ TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005242F0
 // GHIDRA_NAME TMapDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1, int param_2, short param_3, short param_4)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int param_1, int param_2, short param_3, short param_4)
 
 void __thiscall
 TMapDialog::GetTEventHandlerClassNamePointer
@@ -3506,7 +3700,7 @@ TMapDialog::GetTEventHandlerClassNamePointer
   int iVar9;
   int iVar10;
   short sVar11;
-
+  
   puVar4 = (undefined4 *)(param_2 + 0x40);
   puVar7 = (undefined4 *)(param_1 + 0x40);
   iVar2 = 0;
@@ -3640,12 +3834,10 @@ TMapDialog::GetTEventHandlerClassNamePointer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00524540
-// GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1, int param_2, short param_3, short param_4)
+// GHIDRA_NAME TMapDialog::VTableSlot97
+// GHIDRA_PROTO undefined __thiscall VTableSlot97(int param_1, int param_2, short param_3, short param_4)
 
-void __thiscall
-TMapDialog::_scalar_deleting_destructor_
-          (TMapDialog *this,int param_1,int param_2,short param_3,short param_4)
+void TMapDialog::VTableSlot97(int param_1, int param_2, short param_3, short param_4)
 
 {
   undefined4 uVar1;
@@ -3656,7 +3848,7 @@ TMapDialog::_scalar_deleting_destructor_
   int iVar6;
   int iVar7;
   int iVar8;
-
+  
   iVar5 = (int)(short)((int)((int)param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2);
   iVar7 = iVar5 * 4;
   iVar8 = (int)(short)((int)((int)param_4 + ((int)param_4 >> 0x1f & 3U)) >> 2);
@@ -3745,7 +3937,7 @@ TMapDialog::InitializeForeignMinisterStateFlags
   int iVar7;
   int iVar8;
   int iVar9;
-
+  
   iVar6 = (int)(short)((int)((int)param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2);
   iVar8 = iVar6 * 4;
   iVar9 = (int)(short)((int)((int)param_4 + ((int)param_4 >> 0x1f & 3U)) >> 2);
@@ -3834,7 +4026,7 @@ TMapDialog::AddToForeignMinisterCounterAtIndex
   undefined4 *puVar8;
   short sVar9;
   undefined4 *puVar10;
-
+  
   puVar2 = (undefined4 *)0x0;
   do {
     puVar8 = puVar2;
@@ -3967,7 +4159,7 @@ TMapDialog::AddToForeignMinisterCounterAtIndex
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005249F0
 // GHIDRA_NAME TMapDialog::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 * param_2, short param_3, short param_4)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 * param_2, short param_3, short param_4)
 
 void __thiscall
 TMapDialog::SetForeignMinisterReadyFlag14
@@ -3984,7 +4176,7 @@ TMapDialog::SetForeignMinisterReadyFlag14
   int iVar8;
   int iVar9;
   int iVar10;
-
+  
   puVar6 = param_1;
   iVar7 = 7;
   param_1 = (undefined4 *)&DAT_00000008;
@@ -4053,7 +4245,7 @@ TMapDialog::SetForeignMinisterReadyFlag14
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00524B30
 // GHIDRA_NAME TMapDialog::SelectCandidateTilesWithLowGroundUnitCount
-// GHIDRA_PROTO undefined __thiscall TGreatPower::SelectCandidateTilesWithLowGroundUnitCount(uint param_1, int param_2, short param_3, short param_4)
+// GHIDRA_PROTO undefined __thiscall SelectCandidateTilesWithLowGroundUnitCount(uint param_1, int param_2, short param_3, short param_4)
 
 void __thiscall
 TMapDialog::SelectCandidateTilesWithLowGroundUnitCount
@@ -4068,7 +4260,7 @@ TMapDialog::SelectCandidateTilesWithLowGroundUnitCount
   undefined4 *puVar6;
   undefined4 *puVar7;
   int iVar8;
-
+  
   puVar7 = (undefined4 *)(param_1 + 0x30);
   puVar3 = (undefined4 *)(param_2 + 0x30);
   iVar5 = 4;
@@ -4137,11 +4329,11 @@ TMapDialog::SelectCandidateTilesWithLowGroundUnitCount
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00524C60
-// GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1, int param_2, short param_3, short param_4)
+// GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9c
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920_9c(int param_1, int param_2, short param_3, short param_4)
 
 void __thiscall
-TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
+TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9c
           (TMapDialog *this,int param_1,int param_2,short param_3,short param_4)
 
 {
@@ -4153,7 +4345,7 @@ TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
   int iVar6;
   int iVar7;
   int iVar8;
-
+  
   iVar5 = (int)(short)((int)((int)param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2);
   iVar7 = iVar5 * 4 + -0x1c;
   iVar8 = (int)(short)((int)((int)param_4 + ((int)param_4 >> 0x1f & 3U)) >> 2);
@@ -4280,11 +4472,11 @@ TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00524E70
-// GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1, int param_2, short param_3, short param_4)
+// GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9d
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920_9d(int param_1, int param_2, short param_3, short param_4)
 
 void __thiscall
-TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
+TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9d
           (TMapDialog *this,int param_1,int param_2,short param_3,short param_4)
 
 {
@@ -4298,7 +4490,7 @@ TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
   int iVar8;
   int iVar9;
   int iVar10;
-
+  
   iVar2 = (int)param_4;
   puVar5 = (undefined4 *)(param_1 + 0x10);
   puVar4 = (undefined4 *)(param_2 + 0x10);
@@ -4435,11 +4627,11 @@ TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005250A0
-// GHIDRA_NAME TMapDialog::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int param_1, int param_2, short param_3, short param_4)
+// GHIDRA_NAME TMapDialog::CopyDiamondMaskBlockKernel
+// GHIDRA_PROTO undefined __thiscall CopyDiamondMaskBlockKernel(int param_1, int param_2, short param_3, short param_4)
 
 void __thiscall
-TMapDialog::OrphanCallChain_C11_I88_004874b0
+TMapDialog::CopyDiamondMaskBlockKernel
           (TMapDialog *this,int param_1,int param_2,short param_3,short param_4)
 
 {
@@ -4452,7 +4644,7 @@ TMapDialog::OrphanCallChain_C11_I88_004874b0
   int iVar7;
   int iVar8;
   int iVar9;
-
+  
   iVar6 = (int)(short)((int)((int)param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2);
   iVar8 = iVar6 * 4;
   iVar9 = (int)(short)((int)((int)param_4 + ((int)param_4 >> 0x1f & 3U)) >> 2);
@@ -4591,11 +4783,11 @@ TMapDialog::OrphanCallChain_C11_I88_004874b0
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005252D0
-// GHIDRA_NAME TMapDialog::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, short param_3, short param_4)
+// GHIDRA_NAME TMapDialog::CopyDiagonalMaskNarrowingBlockKernel
+// GHIDRA_PROTO undefined __thiscall CopyDiagonalMaskNarrowingBlockKernel(int param_1, int param_2, short param_3, short param_4)
 
 void __thiscall
-TMapDialog::OrphanRetStub_0059add0
+TMapDialog::CopyDiagonalMaskNarrowingBlockKernel
           (TMapDialog *this,int param_1,int param_2,short param_3,short param_4)
 
 {
@@ -4607,7 +4799,7 @@ TMapDialog::OrphanRetStub_0059add0
   int iVar6;
   int iVar7;
   int iVar8;
-
+  
   iVar5 = (int)(short)((int)((int)param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2);
   iVar7 = (int)(short)((int)((int)param_4 + ((int)param_4 >> 0x1f & 3U)) >> 2);
   iVar8 = iVar7 * 4 + -0x20;
@@ -4734,11 +4926,11 @@ TMapDialog::OrphanRetStub_0059add0
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005254A0
-// GHIDRA_NAME TMapDialog::GetTBehaviorClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(undefined4 * param_1, undefined4 * param_2, short param_3, short param_4)
+// GHIDRA_NAME TMapDialog::CopyDiagonalMaskWideningBlockKernel
+// GHIDRA_PROTO undefined __thiscall CopyDiagonalMaskWideningBlockKernel(undefined4 * param_1, undefined4 * param_2, short param_3, short param_4)
 
 void __thiscall
-TMapDialog::GetTBehaviorClassNamePointer
+TMapDialog::CopyDiagonalMaskWideningBlockKernel
           (TMapDialog *this,undefined4 *param_1,undefined4 *param_2,short param_3,short param_4)
 
 {
@@ -4750,7 +4942,7 @@ TMapDialog::GetTBehaviorClassNamePointer
   int iVar6;
   int iVar7;
   int iVar8;
-
+  
   puVar5 = param_1;
   iVar7 = 4;
   param_1 = (undefined4 *)0x4;
@@ -4872,11 +5064,11 @@ TMapDialog::GetTBehaviorClassNamePointer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525670
-// GHIDRA_NAME TMapDialog::EvaluateControlInputGate
-// GHIDRA_PROTO undefined __thiscall EvaluateControlInputGate(undefined4 * param_1, undefined4 * param_2, short param_3, short param_4)
+// GHIDRA_NAME TMapDialog::Copy64x64TileBlockWithStrideAdjustment
+// GHIDRA_PROTO undefined __thiscall Copy64x64TileBlockWithStrideAdjustment(undefined4 * param_1, undefined4 * param_2, short param_3, short param_4)
 
 void __thiscall
-TMapDialog::EvaluateControlInputGate
+TMapDialog::Copy64x64TileBlockWithStrideAdjustment
           (TMapDialog *this,undefined4 *param_1,undefined4 *param_2,short param_3,short param_4)
 
 {
@@ -4884,7 +5076,7 @@ TMapDialog::EvaluateControlInputGate
   int iVar2;
   int iVar3;
   undefined4 *puVar4;
-
+  
   iVar3 = 0x40;
   do {
     iVar2 = 2;
@@ -4917,7 +5109,7 @@ TMapDialog::EvaluateControlInputGate
 void TMapDialog::OrphanRetStub_005960e0()
 
 {
-  TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale();
+  func_0x004056a5();
   return;
 }
 

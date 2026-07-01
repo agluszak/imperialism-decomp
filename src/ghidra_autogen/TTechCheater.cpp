@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TTechCheater.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004B1880
+// GHIDRA_NAME TTechCheater::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TTechCheater::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630daa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(100);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004B18F0
 // GHIDRA_NAME TTechCheater::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,21 +40,21 @@
 TTechCheater * TTechCheater::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00407ea0();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1940
-// GHIDRA_NAME TTechCheater::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTechCheater::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTechCheater::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTechCheater::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTechCheater;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1990
@@ -35,35 +65,5 @@ void TTechCheater::OrphanRetStub_004b1410()
 
 {
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004B19B0
-// GHIDRA_NAME TTechCheater::ConstructTTechCheaterBaseState
-// GHIDRA_PROTO undefined ConstructTTechCheaterBaseState()
-
-TView * TTechCheater::ConstructTTechCheaterBaseState(void)
-
-{
-  TView *this;
-  TView *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00630dca;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(100);
-  local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TGPCheaterVtbl_0064f050;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 

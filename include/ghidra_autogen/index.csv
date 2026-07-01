@@ -5,9 +5,13 @@ category|datatype|kind|header
 /|/CArchive|structure|root_types.h
 /|/CArchiveException|structure|root_types.h
 /|/CCmdTarget|structure|root_types.h
+/|/CCommandLineInfo|structure|root_types.h
 /|/CDC|structure|root_types.h
+/|/CDocManager|structure|root_types.h
 /|/CDocTemplate|structure|root_types.h
 /|/CDocument|structure|root_types.h
+/|/CFile|structure|root_types.h
+/|/CFileDialog|structure|root_types.h
 /|/CFileException|structure|root_types.h
 /|/CFrameWnd|structure|root_types.h
 /|/CGdiObject|structure|root_types.h
@@ -15,6 +19,7 @@ category|datatype|kind|header
 /|/CityDialogController|structure|root_types.h
 /|/CivilianMapInteractionManager|structure|root_types.h
 /|/CMainFrame|structure|root_types.h
+/|/CMapPtrToPtr|structure|root_types.h
 /|/CMcWindow|structure|root_types.h
 /|/CMemFile|structure|root_types.h
 /|/CObject|structure|root_types.h
@@ -22,8 +27,11 @@ category|datatype|kind|header
 /|/CPtrArray|structure|root_types.h
 /|/CPtrList|structure|root_types.h
 /|/CRuntimeClass|structure|root_types.h
+/|/CSimpleList|structure|root_types.h
 /|/CString|structure|root_types.h
 /|/CStringData|structure|root_types.h
+/|/CThreadLocalObject|structure|root_types.h
+/|/CToolTipCtrl|structure|root_types.h
 /|/CUserException|structure|root_types.h
 /|/CWinApp|structure|root_types.h
 /|/CWnd|structure|root_types.h
@@ -50,6 +58,7 @@ category|datatype|kind|header
 /|/TAnimation|structure|root_types.h
 /|/TAnimator|structure|root_types.h
 /|/TApplication|structure|root_types.h
+/|/TApplicationUiRootControllerState_00648CA8|structure|root_types.h
 /|/TArmoryView|structure|root_types.h
 /|/TArmsForeignMinister|structure|root_types.h
 /|/TArmyBattle|structure|root_types.h
@@ -81,6 +90,7 @@ category|datatype|kind|header
 /|/TBehavior|structure|root_types.h
 /|/TBillForeignMinister|structure|root_types.h
 /|/TBismarckMinister|structure|root_types.h
+/|/TBitmapResourceLoader|structure|root_types.h
 /|/TBlockadePortMission|structure|root_types.h
 /|/TBook|structure|root_types.h
 /|/TBoycottButton|structure|root_types.h
@@ -130,6 +140,8 @@ category|datatype|kind|header
 /|/TCountry|structure|root_types.h
 /|/TCreditsPicture|structure|root_types.h
 /|/TCtlMgr|structure|root_types.h
+/|/TCViewOwnedBufferChainState_00648578|structure|root_types.h
+/|/TCViewOwnedBufferRegistryState_00648560|structure|root_types.h
 /|/TCzechBox|structure|root_types.h
 /|/TDealBookPicture|structure|root_types.h
 /|/TDealLine|structure|root_types.h
@@ -220,6 +232,7 @@ category|datatype|kind|header
 /|/TLandSaleEvent|structure|root_types.h
 /|/TLanguageMgr|structure|root_types.h
 /|/TLineData|structure|root_types.h
+/|/TLinkedBlockChainState_00650A50|structure|root_types.h
 /|/TList|structure|root_types.h
 /|/TLoadSavePicture|structure|root_types.h
 /|/TLonelyTileView|structure|root_types.h
@@ -255,6 +268,9 @@ category|datatype|kind|header
 /|/TMinorTreatyDialog|structure|root_types.h
 /|/TMission|structure|root_types.h
 /|/TModalMessageCommand|structure|root_types.h
+/|/TModuleLibraryCacheTableStateA_0064BA68|structure|root_types.h
+/|/TModuleLibraryCacheTableStateB|structure|root_types.h
+/|/TModuleLibraryCacheTableStateB_0064BA80|structure|root_types.h
 /|/TMovieView|structure|root_types.h
 /|/TMultiMessagePicture|structure|root_types.h
 /|/TMultiplayerMgr|structure|root_types.h
@@ -340,6 +356,9 @@ category|datatype|kind|header
 /|/TRemoteGreatPower|structure|root_types.h
 /|/TRemoteMinor|structure|root_types.h
 /|/TRightLeftView|structure|root_types.h
+/|/TRuntimeHeapBufferOwnerState_0066FA68|structure|root_types.h
+/|/TRuntimeLinkedBlockChainState_0063E880|structure|root_types.h
+/|/TRuntimeLinkedBlockChainState_0066FA50|structure|root_types.h
 /|/TScatteredShipsMission|structure|root_types.h
 /|/TScenarioChooser|structure|root_types.h
 /|/TScoreGraph|structure|root_types.h
@@ -347,6 +366,7 @@ category|datatype|kind|header
 /|/TScroller|structure|root_types.h
 /|/TScrollerButton|structure|root_types.h
 /|/TScrollView|structure|root_types.h
+/|/TSelectedCivilianOrderState|structure|root_types.h
 /|/TSelectoText|structure|root_types.h
 /|/TSetupRandomMapPicture|structure|root_types.h
 /|/TShip|structure|root_types.h
@@ -367,6 +387,7 @@ category|datatype|kind|header
 /|/TSortedByRelationshipList|structure|root_types.h
 /|/TSortedList|structure|root_types.h
 /|/TSortedPtrList|structure|root_types.h
+/|/TSoundChannelNode|structure|root_types.h
 /|/TSoundPlayer|structure|root_types.h
 /|/TSpaceCommand|structure|root_types.h
 /|/TSpecialQuitPicture|structure|root_types.h
@@ -436,6 +457,7 @@ category|datatype|kind|header
 /|/TTransportPicture|structure|root_types.h
 /|/TTransportView|structure|root_types.h
 /|/TTreatiesView|structure|root_types.h
+/|/TTurnEventDialogFactoryRegistryState_0064B328|structure|root_types.h
 /|/TTurnStartEvent|structure|root_types.h
 /|/TTwoPicSlider|structure|root_types.h
 /|/TUberCluster|structure|root_types.h

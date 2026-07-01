@@ -3,11 +3,62 @@
 // Program: Imperialism.exe
 // Bucket: CDC.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00612682
-// GHIDRA_NAME CDC::??0CDC@@QAE@XZ
-// GHIDRA_PROTO undefined __thiscall ??0CDC@@QAE@XZ(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6EFE
+// GHIDRA_NAME CDC::ExtTextOutA
+// GHIDRA_PROTO undefined ExtTextOutA()
 
-void CDC::__0CDC__QAE_XZ()
+void __thiscall
+CDC::ExtTextOutA(int param_1,int param_2,int param_3,UINT param_4,RECT *param_5,LPCSTR param_6,
+                UINT param_7,INT *param_8)
+
+{
+  ::ExtTextOutA(*(HDC *)(param_1 + 4),param_2,param_3,param_4,param_5,param_6,param_7,param_8);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6F23
+// GHIDRA_NAME CDC::TabbedTextOutA
+// GHIDRA_PROTO undefined TabbedTextOutA()
+
+int * __thiscall
+CDC::TabbedTextOutA(int param_1,int *param_2,int param_3,int param_4,LPCSTR param_5,int param_6,
+                   int param_7,INT *param_8,int param_9)
+
+{
+  LONG LVar1;
+  
+  LVar1 = ::TabbedTextOutA(*(HDC *)(param_1 + 4),param_3,param_4,param_5,param_6,param_7,param_8,
+                           param_9);
+  param_2[1] = (int)(short)((uint)LVar1 >> 0x10);
+  *param_2 = (int)(short)LVar1;
+  return param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6F77
+// GHIDRA_NAME CDC::GrayStringA
+// GHIDRA_PROTO undefined GrayStringA()
+
+void __thiscall
+CDC::GrayStringA(int param_1,int param_2,GRAYSTRINGPROC param_3,LPARAM param_4,int param_5,
+                int param_6,int param_7,int param_8,int param_9)
+
+{
+  HBRUSH hBrush;
+  
+  hBrush = (HBRUSH)0x0;
+  if (param_2 != 0) {
+    hBrush = *(HBRUSH *)(param_2 + 4);
+  }
+  ::GrayStringA(*(HDC *)(param_1 + 4),hBrush,param_3,param_4,param_5,param_6,param_7,param_8,param_9
+               );
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612682
+// GHIDRA_NAME CDC::CDC
+// GHIDRA_PROTO undefined __thiscall CDC(void)
+
+void CDC::CDC()
 
 {
   (this->cobject).vftable = (CObjectVtbl *)&_vftable_;
@@ -17,9 +68,659 @@ void CDC::__0CDC__QAE_XZ()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00612696
+// GHIDRA_NAME CDC::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall CDC::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  ~CDC();
+  if ((param_2 & 1) != 0) {
+    operator_delete(param_1);
+  }
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061274C
+// GHIDRA_NAME CDC::Attach
+// GHIDRA_PROTO undefined __thiscall Attach(int param_1)
+
+bool CDC::Attach(int param_1)
+
+{
+  CMapPtrToPtr *this_00;
+  undefined4 *puVar1;
+  
+  if (param_1 != 0) {
+    this_00 = (CMapPtrToPtr *)afxMapHDC(1);
+    this->m_hDC = (void *)param_1;
+    puVar1 = (undefined4 *)CMapPtrToPtr::operator[](this_00,param_1);
+    *puVar1 = this;
+    (*(this->cobject).vftable[2].slot_0x04)(this->m_hDC);
+  }
+  return param_1 != 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612783
+// GHIDRA_NAME CDC::Detach
+// GHIDRA_PROTO undefined Detach()
+
+int __fastcall CDC::Detach(int *param_1)
+
+{
+  int iVar1;
+  CMapPtrToPtr *this;
+  
+  iVar1 = param_1[1];
+  if (iVar1 != 0) {
+    this = (CMapPtrToPtr *)afxMapHDC(0);
+    if (this != (CMapPtrToPtr *)0x0) {
+      CMapPtrToPtr::RemoveKey(this,param_1[1]);
+    }
+  }
+  (**(code **)(*param_1 + 0x1c))();
+  param_1[1] = 0;
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006127CA
+// GHIDRA_NAME CDC::~CDC
+// GHIDRA_PROTO undefined ~CDC()
+
+void CDC::~CDC(void)
+
+{
+  undefined4 uVar1;
+  HDC hdc;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &_vftable_;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  if (extraout_ECX[1] != 0) {
+    hdc = (HDC)Detach();
+    DeleteDC(hdc);
+  }
+  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612828
+// GHIDRA_NAME CDC::StartDocA
+// GHIDRA_PROTO undefined __thiscall StartDocA(void)
+
+void CDC::StartDocA()
+
+{
+  DOCINFOA local_18;
+  
+  memset(&local_18,0,0x14);
+  local_18.cbSize = 0x14;
+  ::StartDocA(this->m_hDC,&local_18);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612897
+// GHIDRA_NAME CDC::RestoreDC
+// GHIDRA_PROTO undefined RestoreDC()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual int __thiscall CDC::RestoreDC(int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual int __thiscall CDC::RestoreDC(int)
+   
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall CDC::RestoreDC(int param_1,int param_2)
+
+{
+  int iVar1;
+  BOOL BVar2;
+  
+  iVar1 = 1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    iVar1 = ::RestoreDC(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    if ((iVar1 != 0) && (BVar2 = ::RestoreDC(*(HDC *)(param_1 + 8),param_2), BVar2 != 0)) {
+      return 1;
+    }
+    iVar1 = 0;
+  }
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006128EC
+// GHIDRA_NAME CDC::SelectStockObject
+// GHIDRA_PROTO undefined SelectStockObject()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual class CGdiObject * __thiscall CDC::SelectStockObject(int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual class CGdiObject * __thiscall CDC::SelectStockObject(int)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CDC::SelectStockObject(int param_1,HGDIOBJ param_2)
+
+{
+  HGDIOBJ h;
+  
+  h = GetStockObject((int)param_2);
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    param_2 = ::SelectObject(*(HDC *)(param_1 + 4),h);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    param_2 = ::SelectObject(*(HDC *)(param_1 + 8),h);
+  }
+  CGdiObject::FromHandle(param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612984
+// GHIDRA_NAME CDC::SelectObject
+// GHIDRA_PROTO undefined SelectObject()
+
+void __thiscall CDC::SelectObject(int param_1,HGDIOBJ param_2)
+
+{
+  HGDIOBJ pvVar1;
+  HGDIOBJ h;
+  
+  pvVar1 = param_2;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    if (param_2 == (HGDIOBJ)0x0) {
+      h = (HGDIOBJ)0x0;
+    }
+    else {
+      h = *(HGDIOBJ *)((int)param_2 + 4);
+    }
+    param_2 = ::SelectObject(*(HDC *)(param_1 + 4),h);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    if (pvVar1 == (HGDIOBJ)0x0) {
+      pvVar1 = (HGDIOBJ)0x0;
+    }
+    else {
+      pvVar1 = *(HGDIOBJ *)((int)pvVar1 + 4);
+    }
+    param_2 = ::SelectObject(*(HDC *)(param_1 + 8),pvVar1);
+  }
+  CGdiObject::FromHandle(param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006129D7
+// GHIDRA_NAME CDC::SelectObject
+// GHIDRA_PROTO undefined __thiscall SelectObject(HGDIOBJ param_1)
+
+void CDC::SelectObject(HGDIOBJ param_1)
+
+{
+  HGDIOBJ pvVar1;
+  HGDIOBJ h;
+  
+  pvVar1 = param_1;
+  if (this->m_hDC != this->m_hAttribDC) {
+    if (param_1 == (HGDIOBJ)0x0) {
+      h = (HGDIOBJ)0x0;
+    }
+    else {
+      h = *(HGDIOBJ *)((int)param_1 + 4);
+    }
+    param_1 = ::SelectObject(this->m_hDC,h);
+  }
+  if (this->m_hAttribDC != (HDC)0x0) {
+    if (pvVar1 == (HGDIOBJ)0x0) {
+      pvVar1 = (HGDIOBJ)0x0;
+    }
+    else {
+      pvVar1 = *(HGDIOBJ *)((int)pvVar1 + 4);
+    }
+    param_1 = ::SelectObject(this->m_hAttribDC,pvVar1);
+  }
+  CGdiObject::FromHandle(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612A9A
+// GHIDRA_NAME CDC::SetPolyFillMode
+// GHIDRA_PROTO undefined SetPolyFillMode()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetArcDirection(int)
+// GHIDRA_COMMENT  public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetBkMode(int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::SetArcDirection(int)
+    public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+    public: int __thiscall CDC::SetBkMode(int)
+    public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+     11 names - too many to list
+   
+   Library: nafxcw retail msvc500:static */
+
+COLORREF __thiscall CDC::SetPolyFillMode(COLORREF param_1,COLORREF param_2)
+
+{
+  undefined4 local_8;
+  
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetBkColor(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetBkColor(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612AD2
+// GHIDRA_NAME CDC::SetMapperFlags
+// GHIDRA_PROTO undefined SetMapperFlags()
+
+int __thiscall CDC::SetMapperFlags(int param_1,int param_2)
+
+{
+  undefined4 local_8;
+  
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetBkMode(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetBkMode(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612BEA
+// GHIDRA_NAME CDC::SetMapMode
+// GHIDRA_PROTO undefined SetMapMode()
+
+int __thiscall CDC::SetMapMode(int param_1,int param_2)
+
+{
+  undefined4 local_8;
+  
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = ::SetMapMode(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = ::SetMapMode(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612C22
+// GHIDRA_NAME CDC::OffsetWindowOrg
+// GHIDRA_PROTO undefined OffsetWindowOrg()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::MoveTo(int,int)
+// GHIDRA_COMMENT  public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+// GHIDRA_COMMENT   7 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: class CPoint __thiscall CDC::MoveTo(int,int)
+    public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+    public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+    public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+     7 names - too many to list
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CDC::OffsetWindowOrg(int param_1,int *param_2,int param_3,int param_4)
+
+{
+  tagPOINT local_c;
+  
+  local_c.x = param_1;
+  local_c.y = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    SetViewportOrgEx(*(HDC *)(param_1 + 4),param_3,param_4,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    SetViewportOrgEx(*(HDC *)(param_1 + 8),param_3,param_4,&local_c);
+  }
+  *param_2 = local_c.x;
+  param_2[1] = local_c.y;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612D06
+// GHIDRA_NAME CDC::ScaleWindowExt
+// GHIDRA_PROTO undefined ScaleWindowExt()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::ScaleViewportExt(int,int,int,int)
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::ScaleWindowExt(int,int,int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: virtual class CSize __thiscall CDC::ScaleViewportExt(int,int,int,int)
+    public: virtual class CSize __thiscall CDC::ScaleWindowExt(int,int,int,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+CDC::ScaleWindowExt(int param_1,int *param_2,int param_3,int param_4,int param_5,int param_6)
+
+{
+  tagSIZE local_c;
+  
+  local_c.cx = param_1;
+  local_c.cy = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    ScaleViewportExtEx(*(HDC *)(param_1 + 4),param_3,param_4,param_5,param_6,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    ScaleViewportExtEx(*(HDC *)(param_1 + 8),param_3,param_4,param_5,param_6,&local_c);
+  }
+  *param_2 = local_c.cx;
+  param_2[1] = local_c.cy;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612D5E
+// GHIDRA_NAME CDC::SetWindowOrg
+// GHIDRA_PROTO undefined SetWindowOrg()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::SetWindowOrg(int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: class CPoint __thiscall CDC::SetWindowOrg(int,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CDC::SetWindowOrg(int param_1,int *param_2,int param_3,int param_4)
+
+{
+  tagPOINT local_c;
+  
+  local_c.x = param_1;
+  local_c.y = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    SetWindowOrgEx(*(HDC *)(param_1 + 4),param_3,param_4,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    SetWindowOrgEx(*(HDC *)(param_1 + 8),param_3,param_4,&local_c);
+  }
+  *param_2 = local_c.x;
+  param_2[1] = local_c.y;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612E9A
+// GHIDRA_NAME CDC::GetClipBox
+// GHIDRA_PROTO undefined GetClipBox()
+
+void __thiscall CDC::GetClipBox(int param_1,LPRECT param_2)
+
+{
+  ::GetClipBox(*(HDC *)(param_1 + 4),param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612EAA
+// GHIDRA_NAME CDC::SelectClipRgn
+// GHIDRA_PROTO undefined __thiscall SelectClipRgn(int param_1)
+
+int CDC::SelectClipRgn(int param_1)
+
+{
+  int iVar1;
+  HRGN pHVar2;
+  
+  iVar1 = param_1;
+  if (this->m_hDC != this->m_hAttribDC) {
+    if (param_1 == 0) {
+      pHVar2 = (HRGN)0x0;
+    }
+    else {
+      pHVar2 = *(HRGN *)(param_1 + 4);
+    }
+    param_1 = ::SelectClipRgn(this->m_hDC,pHVar2);
+  }
+  if (this->m_hAttribDC != (HDC)0x0) {
+    if (iVar1 == 0) {
+      pHVar2 = (HRGN)0x0;
+    }
+    else {
+      pHVar2 = *(HRGN *)(iVar1 + 4);
+    }
+    param_1 = ::SelectClipRgn(this->m_hAttribDC,pHVar2);
+  }
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612EF8
+// GHIDRA_NAME CDC::IntersectClipRect
+// GHIDRA_PROTO undefined IntersectClipRect()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::ExcludeClipRect(int,int,int,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::IntersectClipRect(int,int,int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::ExcludeClipRect(int,int,int,int)
+    public: int __thiscall CDC::IntersectClipRect(int,int,int,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall CDC::IntersectClipRect(int param_1,int param_2,int param_3,int param_4,int param_5)
+
+{
+  undefined4 local_8;
+  
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = ::ExcludeClipRect(*(HDC *)(param_1 + 4),param_2,param_3,param_4,param_5);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = ::ExcludeClipRect(*(HDC *)(param_1 + 8),param_2,param_3,param_4,param_5);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612F42
+// GHIDRA_NAME CDC::ExcludeClipRect
+// GHIDRA_PROTO undefined ExcludeClipRect()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::ExcludeClipRect(struct tagRECT const *)
+// GHIDRA_COMMENT  public: int __thiscall CDC::IntersectClipRect(struct tagRECT const *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::ExcludeClipRect(struct tagRECT const *)
+    public: int __thiscall CDC::IntersectClipRect(struct tagRECT const *)
+   
+   Library: nafxcw retail msvc500:static */
+
+int * __thiscall CDC::ExcludeClipRect(int param_1,int *param_2)
+
+{
+  int *piVar1;
+  
+  piVar1 = param_2;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    param_2 = (int *)::ExcludeClipRect(*(HDC *)(param_1 + 4),*param_2,param_2[1],param_2[2],
+                                       param_2[3]);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    param_2 = (int *)::ExcludeClipRect(*(HDC *)(param_1 + 8),*piVar1,piVar1[1],piVar1[2],piVar1[3]);
+  }
+  return param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612F8E
+// GHIDRA_NAME CDC::IntersectClipRect
+// GHIDRA_PROTO undefined IntersectClipRect()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::ExcludeClipRect(int,int,int,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::IntersectClipRect(int,int,int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::ExcludeClipRect(int,int,int,int)
+    public: int __thiscall CDC::IntersectClipRect(int,int,int,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall CDC::IntersectClipRect(int param_1,int param_2,int param_3,int param_4,int param_5)
+
+{
+  undefined4 local_8;
+  
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = ::IntersectClipRect(*(HDC *)(param_1 + 4),param_2,param_3,param_4,param_5);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = ::IntersectClipRect(*(HDC *)(param_1 + 8),param_2,param_3,param_4,param_5);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613024
+// GHIDRA_NAME CDC::OffsetClipRgn
+// GHIDRA_PROTO undefined OffsetClipRgn()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::OffsetClipRgn(int,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetTextJustification(int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::OffsetClipRgn(int,int)
+    public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)
+    public: int __thiscall CDC::SetTextJustification(int,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall CDC::OffsetClipRgn(int param_1,int param_2,int param_3)
+
+{
+  undefined4 local_8;
+  
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = ::OffsetClipRgn(*(HDC *)(param_1 + 4),param_2,param_3);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = ::OffsetClipRgn(*(HDC *)(param_1 + 8),param_2,param_3);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613062
+// GHIDRA_NAME CDC::OffsetClipRgn
+// GHIDRA_PROTO undefined OffsetClipRgn()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::OffsetClipRgn(int,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetTextJustification(int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::OffsetClipRgn(int,int)
+    public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)
+    public: int __thiscall CDC::SetTextJustification(int,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall CDC::OffsetClipRgn(int param_1,int param_2,int param_3)
+
+{
+  undefined4 local_8;
+  
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = ::OffsetClipRgn(*(HDC *)(param_1 + 4),param_2,param_3);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = ::OffsetClipRgn(*(HDC *)(param_1 + 8),param_2,param_3);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613121
+// GHIDRA_NAME CDC::SetTextAlign
+// GHIDRA_PROTO undefined SetTextAlign()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: unsigned int __thiscall CDC::SetTextAlign(unsigned int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: unsigned int __thiscall CDC::SetTextAlign(unsigned int)
+   
+   Library: nafxcw retail msvc500:static */
+
+UINT __thiscall CDC::SetTextAlign(int param_1,UINT param_2)
+
+{
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    ::SetTextAlign(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    param_2 = ::SetTextAlign(*(HDC *)(param_1 + 8),param_2);
+  }
+  return param_2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00613203
-// GHIDRA_NAME CDC::?ArcTo@CDC@@QAEHHHHHHHHH@Z
-// GHIDRA_PROTO int __thiscall ?ArcTo@CDC@@QAEHHHHHHHHH@Z(int param_1, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7, int param_8)
+// GHIDRA_NAME CDC::ArcTo
+// GHIDRA_PROTO int __thiscall ArcTo(int param_1, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7, int param_8)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: int __thiscall CDC::ArcTo(int,int,int,int,int,int,int,int)
@@ -29,21 +730,18 @@ void CDC::__0CDC__QAE_XZ()
 
 /* Library Function - Single Match
     public: int __thiscall CDC::ArcTo(int,int,int,int,int,int,int,int)
-
+   
    Library: nafxcw retail msvc500:static */
 
-int __thiscall
-CDC::_ArcTo_CDC__QAEHHHHHHHHH_Z
-          (CDC *this,int param_1,int param_2,int param_3,int param_4,int param_5,int param_6,
-          int param_7,int param_8)
+int CDC::ArcTo(int param_1, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7, int param_8)
 
 {
   BOOL BVar1;
   tagPOINT local_c;
-
+  
   local_c.x = (LONG)this;
   local_c.y = (LONG)this;
-  BVar1 = ArcTo(this->m_hDC,param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8);
+  BVar1 = ::ArcTo(this->m_hDC,param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8);
   if (this->m_hDC != this->m_hAttribDC) {
     GetCurrentPositionEx(this->m_hDC,&local_c);
     MoveToEx(this->m_hAttribDC,local_c.x,local_c.y,(LPPOINT)0x0);
@@ -52,8 +750,8 @@ CDC::_ArcTo_CDC__QAEHHHHHHHHH_Z
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613293
-// GHIDRA_NAME CDC::?PolyDraw@CDC@@QAEHPBUtagPOINT@@PBEH@Z
-// GHIDRA_PROTO int __thiscall ?PolyDraw@CDC@@QAEHPBUtagPOINT@@PBEH@Z(tagPOINT * param_1, uchar * param_2, int param_3)
+// GHIDRA_NAME CDC::PolyDraw
+// GHIDRA_PROTO int __thiscall PolyDraw(tagPOINT * param_1, uchar * param_2, int param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: int __thiscall CDC::PolyDraw(struct tagPOINT const *,unsigned char const *,int)
@@ -63,22 +761,580 @@ CDC::_ArcTo_CDC__QAEHHHHHHHHH_Z
 
 /* Library Function - Single Match
     public: int __thiscall CDC::PolyDraw(struct tagPOINT const *,unsigned char const *,int)
-
+   
    Library: nafxcw retail msvc500:static */
 
-int CDC::_PolyDraw_CDC__QAEHPBUtagPOINT__PBEH_Z(tagPOINT *param_1, uchar *param_2, int param_3)
+int CDC::PolyDraw(tagPOINT *param_1, uchar *param_2, int param_3)
 
 {
   BOOL BVar1;
   tagPOINT local_c;
-
+  
   local_c.x = (LONG)this;
   local_c.y = (LONG)this;
-  BVar1 = PolyDraw(this->m_hDC,param_1,param_2,param_3);
+  BVar1 = ::PolyDraw(this->m_hDC,param_1,param_2,param_3);
   if (this->m_hDC != this->m_hAttribDC) {
     GetCurrentPositionEx(this->m_hDC,&local_c);
     MoveToEx(this->m_hAttribDC,local_c.x,local_c.y,(LPPOINT)0x0);
   }
   return BVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006132DC
+// GHIDRA_NAME CDC::PolyBezierTo
+// GHIDRA_PROTO BOOL __stdcall PolyBezierTo(HDC hdc, POINT * apt, DWORD cpt)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::PolyBezierTo(struct tagPOINT const *,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::PolylineTo(struct tagPOINT const *,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::PolyBezierTo(struct tagPOINT const *,int)
+    public: int __thiscall CDC::PolylineTo(struct tagPOINT const *,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+BOOL CDC::PolyBezierTo(HDC hdc,POINT *apt,DWORD cpt)
+
+{
+  BOOL BVar1;
+  int in_ECX;
+  tagPOINT local_c;
+  
+  local_c.x = in_ECX;
+  local_c.y = in_ECX;
+  BVar1 = PolylineTo(*(HDC *)(in_ECX + 4),(POINT *)hdc,(DWORD)apt);
+  if (*(HDC *)(in_ECX + 4) != *(HDC *)(in_ECX + 8)) {
+    GetCurrentPositionEx(*(HDC *)(in_ECX + 4),&local_c);
+    MoveToEx(*(HDC *)(in_ECX + 8),local_c.x,local_c.y,(LPPOINT)0x0);
+  }
+  return BVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006133A0
+// GHIDRA_NAME CDC::SelectClipPath
+// GHIDRA_PROTO undefined SelectClipPath()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CDC::SelectClipPath(int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CDC::SelectClipPath(int)
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall CDC::SelectClipPath(int param_1,int param_2)
+
+{
+  BOOL BVar1;
+  HRGN hrgn;
+  int iVar2;
+  undefined4 uVar3;
+  
+  BVar1 = ::SelectClipPath(*(HDC *)(param_1 + 4),param_2);
+  uVar3 = 0;
+  if ((BVar1 != 0) && (uVar3 = 1, *(int *)(param_1 + 4) != *(int *)(param_1 + 8))) {
+    hrgn = CreateRectRgn(0,0,0,0);
+    iVar2 = GetClipRgn(*(HDC *)(param_1 + 4),hrgn);
+    if ((iVar2 < 0) || (iVar2 = ::SelectClipRgn(*(HDC *)(param_1 + 8),hrgn), iVar2 == 0)) {
+      uVar3 = 0;
+    }
+    DeleteObject(hrgn);
+  }
+  return uVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006133FE
+// GHIDRA_NAME CDC::SelectClipRgn
+// GHIDRA_PROTO undefined SelectClipRgn()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CDC::SelectClipRgn(class CRgn *,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CDC::SelectClipRgn(class CRgn *,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall CDC::SelectClipRgn(int param_1,int param_2,int param_3)
+
+{
+  int iVar1;
+  HRGN pHVar2;
+  
+  iVar1 = param_2;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    if (param_2 == 0) {
+      pHVar2 = (HRGN)0x0;
+    }
+    else {
+      pHVar2 = *(HRGN *)(param_2 + 4);
+    }
+    param_2 = ExtSelectClipRgn(*(HDC *)(param_1 + 4),pHVar2,param_3);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    if (iVar1 == 0) {
+      pHVar2 = (HRGN)0x0;
+    }
+    else {
+      pHVar2 = *(HRGN *)(iVar1 + 4);
+    }
+    param_2 = ExtSelectClipRgn(*(HDC *)(param_1 + 8),pHVar2,param_3);
+  }
+  return param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006136BF
+// GHIDRA_NAME CDC::LPtoDP
+// GHIDRA_PROTO undefined LPtoDP()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDC::LPtoDP(struct tagSIZE *)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDC::LPtoDP(struct tagSIZE *)const 
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CDC::LPtoDP(int param_1,int *param_2)
+
+{
+  int iVar1;
+  int iVar2;
+  tagSIZE local_14;
+  tagSIZE local_c;
+  
+  GetWindowExtEx(*(HDC *)(param_1 + 8),&local_c);
+  GetViewportExtEx(*(HDC *)(param_1 + 8),&local_14);
+  iVar1 = ComputeAbsoluteIntValue(local_c.cx);
+  iVar2 = ComputeAbsoluteIntValue(local_14.cx);
+  iVar1 = MulDiv(*param_2,iVar2,iVar1);
+  *param_2 = iVar1;
+  iVar1 = ComputeAbsoluteIntValue(local_c.cy);
+  iVar2 = ComputeAbsoluteIntValue(local_14.cy);
+  iVar1 = MulDiv(param_2[1],iVar2,iVar1);
+  param_2[1] = iVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613728
+// GHIDRA_NAME CDC::DPtoLP
+// GHIDRA_PROTO undefined DPtoLP()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDC::DPtoLP(struct tagSIZE *)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDC::DPtoLP(struct tagSIZE *)const 
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CDC::DPtoLP(int param_1,int *param_2)
+
+{
+  int iVar1;
+  int iVar2;
+  tagSIZE local_14;
+  tagSIZE local_c;
+  
+  GetWindowExtEx(*(HDC *)(param_1 + 8),&local_14);
+  GetViewportExtEx(*(HDC *)(param_1 + 8),&local_c);
+  iVar1 = ComputeAbsoluteIntValue(local_c.cx);
+  iVar2 = ComputeAbsoluteIntValue(local_14.cx);
+  iVar1 = MulDiv(*param_2,iVar2,iVar1);
+  *param_2 = iVar1;
+  iVar1 = ComputeAbsoluteIntValue(local_c.cy);
+  iVar2 = ComputeAbsoluteIntValue(local_14.cy);
+  iVar1 = MulDiv(param_2[1],iVar2,iVar1);
+  param_2[1] = iVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061EC1A
+// GHIDRA_NAME CDC::DPtoHIMETRIC
+// GHIDRA_PROTO undefined DPtoHIMETRIC()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDC::DPtoHIMETRIC(struct tagSIZE *)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDC::DPtoHIMETRIC(struct tagSIZE *)const 
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CDC::DPtoHIMETRIC(int *param_1,int *param_2)
+
+{
+  code *pcVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar2 = DAT_006a7d1c;
+  iVar3 = DAT_006a7d18;
+  if (param_1 != (int *)0x0) {
+    iVar2 = GetMapMode((HDC)param_1[2]);
+    if ((iVar2 < 7) && (iVar2 != 1)) {
+      pcVar1 = *(code **)(*param_1 + 0x3c);
+      (*pcVar1)(3);
+      DPtoLP(param_2);
+      (*pcVar1)(iVar2);
+      return;
+    }
+    iVar2 = DAT_006a7d1c;
+    iVar3 = DAT_006a7d18;
+    if (param_1 != (int *)0x0) {
+      iVar3 = GetDeviceCaps((HDC)param_1[2],0x58);
+      iVar2 = GetDeviceCaps((HDC)param_1[2],0x5a);
+    }
+  }
+  iVar3 = MulDiv(*param_2,0x9ec,iVar3);
+  *param_2 = iVar3;
+  iVar2 = MulDiv(param_2[1],0x9ec,iVar2);
+  param_2[1] = iVar2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061ECAB
+// GHIDRA_NAME CDC::HIMETRICtoDP
+// GHIDRA_PROTO undefined HIMETRICtoDP()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDC::HIMETRICtoDP(struct tagSIZE *)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDC::HIMETRICtoDP(struct tagSIZE *)const 
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CDC::HIMETRICtoDP(int *param_1,int *param_2)
+
+{
+  code *pcVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar2 = DAT_006a7d1c;
+  iVar3 = DAT_006a7d18;
+  if (param_1 != (int *)0x0) {
+    iVar2 = GetMapMode((HDC)param_1[2]);
+    if ((iVar2 < 7) && (iVar2 != 1)) {
+      pcVar1 = *(code **)(*param_1 + 0x3c);
+      (*pcVar1)(3);
+      LPtoDP(param_2);
+      (*pcVar1)(iVar2);
+      return;
+    }
+    iVar2 = DAT_006a7d1c;
+    iVar3 = DAT_006a7d18;
+    if (param_1 != (int *)0x0) {
+      iVar3 = GetDeviceCaps((HDC)param_1[2],0x58);
+      iVar2 = GetDeviceCaps((HDC)param_1[2],0x5a);
+    }
+  }
+  iVar3 = MulDiv(*param_2,iVar3,0x9ec);
+  *param_2 = iVar3;
+  iVar2 = MulDiv(param_2[1],iVar2,0x9ec);
+  param_2[1] = iVar2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061ED3C
+// GHIDRA_NAME CDC::LPtoHIMETRIC
+// GHIDRA_PROTO undefined LPtoHIMETRIC()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDC::LPtoHIMETRIC(struct tagSIZE *)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDC::LPtoHIMETRIC(struct tagSIZE *)const 
+   
+   Library: nafxcw retail msvc500:static */
+
+void CDC::LPtoHIMETRIC(undefined4 param_1)
+
+{
+  LPtoDP(param_1);
+  DPtoHIMETRIC(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061ED57
+// GHIDRA_NAME CDC::HIMETRICtoLP
+// GHIDRA_PROTO undefined HIMETRICtoLP()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDC::HIMETRICtoLP(struct tagSIZE *)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDC::HIMETRICtoLP(struct tagSIZE *)const 
+   
+   Library: nafxcw retail msvc500:static */
+
+void CDC::HIMETRICtoLP(undefined4 param_1)
+
+{
+  HIMETRICtoDP(param_1);
+  DPtoLP(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061ED72
+// GHIDRA_NAME CDC::GetHalftoneBrush
+// GHIDRA_PROTO undefined GetHalftoneBrush()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: static class CBrush * __stdcall CDC::GetHalftoneBrush(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: static class CBrush * __stdcall CDC::GetHalftoneBrush(void)
+   
+   Library: nafxcw retail msvc500:static */
+
+void CDC::GetHalftoneBrush(void)
+
+{
+  byte bVar1;
+  undefined2 *puVar2;
+  HBITMAP hbm;
+  int iVar3;
+  undefined2 local_14 [8];
+  
+  AfxLockGlobals(8);
+  if (DAT_006a7cb8 == (HBRUSH)0x0) {
+    iVar3 = 0;
+    puVar2 = local_14;
+    do {
+      bVar1 = (byte)iVar3;
+      iVar3 = iVar3 + 1;
+      *puVar2 = (short)(0x5555 << (bVar1 & 1));
+      puVar2 = puVar2 + 1;
+    } while (iVar3 < 8);
+    hbm = CreateBitmap(8,8,1,1,local_14);
+    if (hbm != (HBITMAP)0x0) {
+      DAT_006a7cb8 = CreatePatternBrush(hbm);
+      DeleteObject(hbm);
+    }
+  }
+  AfxUnlockGlobals(8);
+  CGdiObject::FromHandle(DAT_006a7cb8);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061EDE5
+// GHIDRA_NAME CDC::DrawDragRect
+// GHIDRA_PROTO undefined DrawDragRect()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDC::DrawDragRect(struct tagRECT const *,struct tagSIZE,struct tagRECT const *,struct tagSIZE,class CBrush *,class CBrush *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDC::DrawDragRect(struct tagRECT const *,struct tagSIZE,struct tagRECT
+   const *,struct tagSIZE,class CBrush *,class CBrush *)
+   
+   Library: nafxcw retail msvc500:static */
+
+void CDC::DrawDragRect(void)
+
+{
+  RECT *lprcSrc;
+  HRGN pHVar1;
+  undefined4 uVar2;
+  int iVar3;
+  CDC *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  func_0x00403d87();
+  *(undefined ***)(unaff_EBP + -0x34) = &CBrush::_vftable_;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  func_0x00403d87();
+  *(undefined ***)(unaff_EBP + -0x1c) = &CBrush::_vftable_;
+  *(undefined1 *)(unaff_EBP + -4) = 1;
+  func_0x00403d87();
+  *(undefined ***)(unaff_EBP + -0x14) = &CBrush::_vftable_;
+  *(undefined1 *)(unaff_EBP + -4) = 2;
+  pHVar1 = CreateRectRgnIndirect(*(RECT **)(unaff_EBP + 8));
+  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x1c),(int)pHVar1);
+  CopyRect((LPRECT)(unaff_EBP + -0x44),*(RECT **)(unaff_EBP + 8));
+  InflateRect((LPRECT)(unaff_EBP + -0x44),-*(int *)(unaff_EBP + 0xc),-*(int *)(unaff_EBP + 0x10));
+  IntersectRect((LPRECT)(unaff_EBP + -0x44),(RECT *)(unaff_EBP + -0x44),*(RECT **)(unaff_EBP + 8));
+  pHVar1 = CreateRectRgnIndirect((RECT *)(unaff_EBP + -0x44));
+  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x14),(int)pHVar1);
+  pHVar1 = CreateRectRgn(0,0,0,0);
+  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x34),(int)pHVar1);
+  CombineRgn(*(HRGN *)(unaff_EBP + -0x30),
+             (HRGN)(-(uint)(unaff_EBP != 0x1c) & *(uint *)(unaff_EBP + -0x18)),
+             (HRGN)(-(uint)(unaff_EBP != 0x14) & *(uint *)(unaff_EBP + -0x10)),3);
+  if (*(int *)(unaff_EBP + 0x20) == 0) {
+    uVar2 = GetHalftoneBrush();
+    *(undefined4 *)(unaff_EBP + 0x20) = uVar2;
+  }
+  if (*(int *)(unaff_EBP + 0x24) == 0) {
+    *(undefined4 *)(unaff_EBP + 0x24) = *(undefined4 *)(unaff_EBP + 0x20);
+  }
+  func_0x00403d87();
+  *(undefined ***)(unaff_EBP + -0x24) = &CBrush::_vftable_;
+  *(undefined1 *)(unaff_EBP + -4) = 3;
+  func_0x00403d87();
+  *(undefined ***)(unaff_EBP + -0x2c) = &CBrush::_vftable_;
+  lprcSrc = *(RECT **)(unaff_EBP + 0x14);
+  *(undefined1 *)(unaff_EBP + -4) = 4;
+  if (lprcSrc != (RECT *)0x0) {
+    pHVar1 = CreateRectRgn(0,0,0,0);
+    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x24),(int)pHVar1);
+    SetRectRgn(*(HRGN *)(unaff_EBP + -0x18),lprcSrc->left,lprcSrc->top,lprcSrc->right,
+               lprcSrc->bottom);
+    CopyRect((LPRECT)(unaff_EBP + -0x44),lprcSrc);
+    InflateRect((LPRECT)(unaff_EBP + -0x44),-*(int *)(unaff_EBP + 0x18),-*(int *)(unaff_EBP + 0x1c))
+    ;
+    IntersectRect((LPRECT)(unaff_EBP + -0x44),(RECT *)(unaff_EBP + -0x44),lprcSrc);
+    SetRectRgn(*(HRGN *)(unaff_EBP + -0x10),*(int *)(unaff_EBP + -0x44),*(int *)(unaff_EBP + -0x40),
+               *(int *)(unaff_EBP + -0x3c),*(int *)(unaff_EBP + -0x38));
+    CombineRgn(*(HRGN *)(unaff_EBP + -0x20),
+               (HRGN)(-(uint)(unaff_EBP != 0x1c) & *(uint *)(unaff_EBP + -0x18)),
+               (HRGN)(-(uint)(unaff_EBP != 0x14) & *(uint *)(unaff_EBP + -0x10)),3);
+    if (*(int *)(*(int *)(unaff_EBP + 0x20) + 4) == *(int *)(*(int *)(unaff_EBP + 0x24) + 4)) {
+      pHVar1 = CreateRectRgn(0,0,0,0);
+      CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x2c),(int)pHVar1);
+      CombineRgn(*(HRGN *)(unaff_EBP + -0x28),
+                 (HRGN)(-(uint)(unaff_EBP != 0x24) & *(uint *)(unaff_EBP + -0x20)),
+                 (HRGN)(-(uint)(unaff_EBP != 0x34) & *(uint *)(unaff_EBP + -0x30)),3);
+    }
+  }
+  if ((*(int *)(*(int *)(unaff_EBP + 0x20) + 4) != *(int *)(*(int *)(unaff_EBP + 0x24) + 4)) &&
+     (lprcSrc != (RECT *)0x0)) {
+    SelectClipRgn(this,unaff_EBP + -0x24);
+    (*(this->cobject).vftable[0xb].SetForeignMinisterReadyFlag14)(unaff_EBP + -0x44);
+    uVar2 = SelectObject(*(undefined4 *)(unaff_EBP + 0x24));
+    PatBlt(this->m_hDC,*(int *)(unaff_EBP + -0x44),*(int *)(unaff_EBP + -0x40),
+           *(int *)(unaff_EBP + -0x3c) - *(int *)(unaff_EBP + -0x44),
+           *(int *)(unaff_EBP + -0x38) - *(int *)(unaff_EBP + -0x40),0x5a0049);
+    SelectObject(uVar2);
+  }
+  iVar3 = unaff_EBP + -0x2c;
+  if (*(int *)(unaff_EBP + -0x28) == 0) {
+    iVar3 = unaff_EBP + -0x34;
+  }
+  SelectClipRgn(this,iVar3);
+  (*(this->cobject).vftable[0xb].SetForeignMinisterReadyFlag14)(unaff_EBP + -0x44);
+  iVar3 = SelectObject(*(undefined4 *)(unaff_EBP + 0x20));
+  PatBlt(this->m_hDC,*(int *)(unaff_EBP + -0x44),*(int *)(unaff_EBP + -0x40),
+         *(int *)(unaff_EBP + -0x3c) - *(int *)(unaff_EBP + -0x44),
+         *(int *)(unaff_EBP + -0x38) - *(int *)(unaff_EBP + -0x40),0x5a0049);
+  if (iVar3 != 0) {
+    SelectObject(iVar3);
+  }
+  SelectClipRgn(this,0);
+  *(undefined ***)(unaff_EBP + -0x2c) = &PTR_LAB_00671054;
+  *(undefined1 *)(unaff_EBP + -4) = 5;
+  DeleteObject();
+  *(undefined ***)(unaff_EBP + -0x24) = &PTR_LAB_00671054;
+  *(char **)(unaff_EBP + -0x2c) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(undefined1 *)(unaff_EBP + -4) = 6;
+  DeleteObject();
+  *(char **)(unaff_EBP + -0x24) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(undefined ***)(unaff_EBP + -0x14) = &PTR_LAB_00671054;
+  *(undefined1 *)(unaff_EBP + -4) = 7;
+  DeleteObject();
+  *(char **)(unaff_EBP + -0x14) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(undefined ***)(unaff_EBP + -0x1c) = &PTR_LAB_00671054;
+  *(undefined1 *)(unaff_EBP + -4) = 8;
+  DeleteObject();
+  *(char **)(unaff_EBP + -0x1c) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(undefined ***)(unaff_EBP + -0x34) = &PTR_LAB_00671054;
+  *(undefined4 *)(unaff_EBP + -4) = 9;
+  DeleteObject();
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061F124
+// GHIDRA_NAME CDC::FillSolidRect
+// GHIDRA_PROTO undefined FillSolidRect()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDC::FillSolidRect(int,int,int,int,unsigned long)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDC::FillSolidRect(int,int,int,int,unsigned long)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+CDC::FillSolidRect(int param_1,int param_2,int param_3,int param_4,int param_5,COLORREF param_6)
+
+{
+  RECT local_14;
+  
+  SetBkColor(*(HDC *)(param_1 + 4),param_6);
+  local_14.left = param_2;
+  local_14.right = param_4 + param_2;
+  local_14.bottom = param_5 + param_3;
+  local_14.top = param_3;
+  ::ExtTextOutA(*(HDC *)(param_1 + 4),0,0,2,&local_14,(LPCSTR)0x0,0,(INT *)0x0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061F19B
+// GHIDRA_NAME CDC::Draw3dRect
+// GHIDRA_PROTO undefined Draw3dRect()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDC::Draw3dRect(int,int,int,int,unsigned long,unsigned long)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDC::Draw3dRect(int,int,int,int,unsigned long,unsigned long)
+   
+   Library: nafxcw retail msvc500:static */
+
+void CDC::Draw3dRect(int param_1,int param_2,int param_3,int param_4,undefined4 param_5,
+                    undefined4 param_6)
+
+{
+  FillSolidRect(param_1,param_2,param_3 + -1,1,param_5);
+  FillSolidRect(param_1,param_2,1,param_4 + -1,param_5);
+  FillSolidRect(param_1 + param_3,param_2,0xffffffff,param_4,param_6);
+  FillSolidRect(param_1,param_4 + param_2,param_3,0xffffffff,param_6);
+  return;
 }
 

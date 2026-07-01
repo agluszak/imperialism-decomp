@@ -3,44 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TTechItemLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005B1090
-// GHIDRA_NAME TTechItemLine::CreateTTechItemLineInstance
-// GHIDRA_PROTO undefined CreateTTechItemLineInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x005B1040
+// GHIDRA_NAME TTechItemLine::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLineData * TTechItemLine::CreateTTechItemLineInstance(void)
+TTechItemLine * TTechItemLine::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TLineData *this;
-  TLineData *pTVar1;
+  func_0x00408c74();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B1090
+// GHIDRA_NAME TTechItemLine::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TTechItemLine::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006389ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)__2_YAPAXI_Z(0x18);
+  puVar1 = (undefined4 *)operator_new(0x18);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (this != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(this);
-    this->vftable = (TLineDataVtbl *)&TTechItemLineVtbl_0066aec8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00408f0d();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1100
-// GHIDRA_NAME TTechItemLine::GetTLineDataClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
+// GHIDRA_NAME TTechItemLine::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTechItemLine::GetTLineDataClassNamePointer()
+CRuntimeClass * TTechItemLine::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTechItemLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1160
@@ -50,31 +64,30 @@ CRuntimeClass * TTechItemLine::GetTLineDataClassNamePointer()
 void TTechItemLine::OrphanRetStub_0056f460()
 
 {
-  TTechItemView *this_00;
-  TTechItemView *this_01;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
+  undefined4 in_stack_00000004;
   undefined4 in_stack_00000008;
+  undefined4 uVar2;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006389da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (TTechItemView *)__2_YAPAXI_Z(0x68);
+  puVar1 = (undefined4 *)operator_new(0x68);
   local_4 = 0;
-  this_01 = (TTechItemView *)0x0;
-  if (this_00 != (TTechItemView *)0x0) {
-    TView::ConstructTViewBaseState((TView *)this_00);
-    this_00->vftable = &TTechItemViewVtbl_0066af08;
-    this_01 = this_00;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &TTechItemView::_vftable_;
   }
+  uVar2 = *(undefined4 *)&this->field_0x10;
   local_4 = 0xffffffff;
-  TTechItemView::ConstructTTechItemViewBaseState
-            (this_01,in_stack_00000004,in_stack_00000008,(int)&this->field_0x8);
-  *unaff_FS_OFFSET = local_c;
+  func_0x0040679e(in_stack_00000004,in_stack_00000008,&this->field_0x8,uVar2,
+                  *(undefined4 *)&this->field_0x14);
+  *unaff_FS_OFFSET = uVar2;
   return;
 }
 

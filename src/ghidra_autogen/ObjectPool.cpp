@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00550670
 // GHIDRA_NAME ObjectPool::SelectPreferredMapOrderEntryByPriorityRules
-// GHIDRA_PROTO undefined ObjectPool::SelectPreferredMapOrderEntryByPriorityRules()
+// GHIDRA_PROTO undefined SelectPreferredMapOrderEntryByPriorityRules()
 
 int __thiscall
 ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(int param_1,int param_2,char param_3)
@@ -16,7 +16,7 @@ ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(int param_1,int param_2,
   bool bVar3;
   short sVar4;
   short sVar5;
-
+  
   if (param_3 != '\0') {
     if (*(int *)(param_1 + 0x20) != 0) {
       return param_2;
@@ -82,7 +82,7 @@ ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(int param_1,int param_2,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00550FF0
 // GHIDRA_NAME ObjectPool::RemoveNode
-// GHIDRA_PROTO void __thiscall ObjectPool::RemoveNode(int self)
+// GHIDRA_PROTO void __thiscall RemoveNode(int self)
 
 void ObjectPool::RemoveNode(int self)
 
@@ -91,12 +91,12 @@ void ObjectPool::RemoveNode(int self)
   int new_head;
   astruct_8 *owner_ctx;
   int *next_node;
-
+  
   owner_ctx = *(astruct_8 **)(this + 0xc);
   if (owner_ctx != (astruct_8 *)0x0) {
     list_head = owner_ctx->field16_0x10;
     if ((list_head != (int *)0x0) && ((ObjectPool *)*list_head != this)) {
-      list_head = ObjectPool::FindMissionOrderNodeById((ObjectPool *)list_head[1],(int)this);
+      list_head = (int *)func_0x0040635c(this);
     }
     if (list_head != (int *)0x0) {
       list_head = owner_ctx->field16_0x10;
@@ -109,11 +109,11 @@ void ObjectPool::RemoveNode(int self)
           if (list_head[2] != 0) {
             *(int *)(list_head[2] + 4) = list_head[1];
           }
-          __3_YAXPAX_Z(list_head);
+          operator_delete(list_head);
           list_head = next_node;
         }
         else {
-          RemoveLinkedOrderNodeByValueRecursive(this);
+          func_0x00406d8e(this);
         }
       }
       owner_ctx->field16_0x10 = list_head;
@@ -126,14 +126,14 @@ void ObjectPool::RemoveNode(int self)
       list_head = owner_ctx->field16_0x10;
       owner_ctx->field17_0x14 = 0;
       for (; list_head != (int *)0x0; list_head = (int *)list_head[1]) {
-        new_head = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(owner_ctx->field17_0x14,0);
+        new_head = func_0x004076fd(owner_ctx->field17_0x14,0);
         owner_ctx->field17_0x14 = new_head;
       }
     }
     *(undefined4 *)(this + 0xc) = 0;
   }
   if (self != 0) {
-    GetOrCreateTaskForceOrderNodeByTemplate(this);
+    func_0x004027de(this);
   }
   return;
 }
@@ -157,7 +157,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
   int iVar5;
   int unaff_EBP;
   int in_stack_00000010;
-
+  
   *(int *)(in_ECX + 0x768b1447) = *(int *)(in_ECX + 0x768b1447) + -1;
   *(undefined4 *)(unaff_EBP + 8) = 0;
   iVar5 = 0;
@@ -165,7 +165,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
       pTVar1 = *(TShip **)&pTVar1->field_0x24) {
     if ((*(int *)&pTVar1->field_0x8 == in_stack_00000010) &&
        (*(short *)&pTVar1->field_0x14 == *(short *)(unaff_EBP + 4))) {
-      iVar5 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(iVar5,1);
+      iVar5 = func_0x004076fd(iVar5,1);
     }
   }
   if (*(int *)(unaff_EBP + 8) != 0) {
@@ -175,7 +175,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
       iVar3 = *(int *)(iVar2 + 0x10);
       *(undefined4 *)(iVar2 + 0x14) = 0;
       for (; iVar3 != 0; iVar3 = *(int *)(iVar3 + 4)) {
-        uVar4 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar2 + 0x14),0);
+        uVar4 = func_0x004076fd(*(undefined4 *)(iVar2 + 0x14),0);
         *(undefined4 *)(iVar2 + 0x14) = uVar4;
       }
     }
@@ -188,7 +188,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
       iVar2 = *(int *)(iVar5 + 0x10);
       *(undefined4 *)(iVar5 + 0x14) = 0;
       for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
-        uVar4 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar5 + 0x14),0);
+        uVar4 = func_0x004076fd(*(undefined4 *)(iVar5 + 0x14),0);
         *(undefined4 *)(iVar5 + 0x14) = uVar4;
       }
     }
@@ -198,7 +198,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552510
 // GHIDRA_NAME ObjectPool::FindMissionOrderNodeById
-// GHIDRA_PROTO void * __thiscall ObjectPool::FindMissionOrderNodeById(int nChildNodeId)
+// GHIDRA_PROTO void * __thiscall FindMissionOrderNodeById(int nChildNodeId)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void* FindMapOrderChildNodeById(int nChildNodeId)
 // GHIDRA_COMMENT_END
@@ -231,13 +231,13 @@ int __thiscall ObjectPool::RemoveTaskForceOrderNodeById(int param_1,int param_2)
   int iVar4;
   int *piVar5;
   int iVar6;
-
+  
   piVar5 = *(int **)(param_1 + 0x10);
   if (piVar5 == (int *)0x0) {
     piVar5 = (int *)0x0;
   }
   else if (*piVar5 != param_2) {
-    piVar5 = ObjectPool::FindMissionOrderNodeById((ObjectPool *)piVar5[1],param_2);
+    piVar5 = (int *)func_0x0040635c(param_2);
   }
   iVar6 = 0;
   if (piVar5 != (int *)0x0) {
@@ -251,11 +251,11 @@ int __thiscall ObjectPool::RemoveTaskForceOrderNodeById(int param_1,int param_2)
         if (piVar5[2] != 0) {
           *(int *)(piVar5[2] + 4) = piVar5[1];
         }
-        __3_YAXPAX_Z(piVar5);
+        operator_delete(piVar5);
         piVar5 = piVar3;
       }
       else {
-        RemoveLinkedOrderNodeByValueRecursive(param_2);
+        func_0x00406d8e(param_2);
       }
     }
     *(int **)(param_1 + 0x10) = piVar5;
@@ -268,7 +268,7 @@ int __thiscall ObjectPool::RemoveTaskForceOrderNodeById(int param_1,int param_2)
     iVar4 = *(int *)(param_1 + 0x10);
     *(undefined4 *)(param_1 + 0x14) = 0;
     for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 4)) {
-      iVar6 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(param_1 + 0x14),0);
+      iVar6 = func_0x004076fd(*(undefined4 *)(param_1 + 0x14),0);
       *(int *)(param_1 + 0x14) = iVar6;
     }
   }

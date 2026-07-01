@@ -4,43 +4,43 @@
 // Bucket: TNumberedIcon.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005072E0
-// GHIDRA_NAME TNumberedIcon::CreateTNumberedIconInstance
-// GHIDRA_PROTO undefined CreateTNumberedIconInstance()
+// GHIDRA_NAME TNumberedIcon::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TMegaPicture * TNumberedIcon::CreateTNumberedIconInstance(void)
+undefined4 * TNumberedIcon::CreateObject(void)
 
 {
-  TMegaPicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006337ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMegaPicture *)__2_YAPAXI_Z(0xb0);
+  puVar1 = (undefined4 *)operator_new(0xb0);
   local_4 = 0;
-  if (this != (TMegaPicture *)0x0) {
-    TMegaPicture::ConstructTMegaPictureBaseState(this);
-    this->vftable = (TMegaPictureVtbl *)&TNumberedIconVtbl_006580b0;
-    this[1].vftable = (TMegaPictureVtbl *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004014ba();
+    *puVar1 = &_vftable_;
+    puVar1[0x2b] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TMegaPicture *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507380
-// GHIDRA_NAME TNumberedIcon::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TNumberedIcon::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNumberedIcon::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TNumberedIcon::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNumberedIcon;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005073A0
@@ -50,8 +50,8 @@ CRuntimeClass * TNumberedIcon::GetTEventHandlerClassNamePointer()
 TNumberedIcon * TNumberedIcon::ConstructTNumberedIconBaseState()
 
 {
-  TMegaPicture::ConstructTMegaPictureBaseState((TMegaPicture *)this);
-  this->vftable = &TNumberedIconVtbl_006580b0;
+  func_0x004014ba();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0xac = 0;
   return this;
 }
@@ -63,28 +63,30 @@ TNumberedIcon * TNumberedIcon::ConstructTNumberedIconBaseState()
 TNumberedIcon * TNumberedIcon::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00408ab2();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005074E0
-// GHIDRA_NAME TNumberedIcon::OrphanCallChain_C6_I49_004875d0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
+// GHIDRA_NAME TNumberedIcon::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TNumberedIcon::OrphanCallChain_C6_I49_004875d0()
+void TNumberedIcon::NoOpUiLifecycleHook()
 
 {
   TNumberedIconVtbl *pTVar1;
-
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  int iStack_1c;
+  
+  func_0x00406ba9();
   pTVar1 = this->vftable;
   (*pTVar1->OrphanCallChain_C1_I08_00573690)(5,1);
   (*pTVar1->Helper_Uses_ConstructTMyNumberTextBaseState_At00507570)();
   if (*(int **)&this->field_0xac != (int *)0x0) {
-    (**(code **)(**(int **)&this->field_0xac + 0x168))(&stack0xffffffe8,1);
+    iStack_1c = this->field34 + -0x10;
+    (**(code **)(**(int **)&this->field_0xac + 0x168))(&iStack_1c,1);
   }
   return;
 }
@@ -96,51 +98,54 @@ void TNumberedIcon::OrphanCallChain_C6_I49_004875d0()
 void TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570()
 
 {
-  TNumberTextVtbl *pTVar1;
-  TNumberText *this_00;
+  int iVar1;
+  int *piVar2;
   undefined4 *unaff_FS_OFFSET;
-  TMyNumberText *pTStack_28;
+  undefined2 uStack_28;
+  undefined2 uStack_26;
   undefined4 uStack_24;
   undefined4 uStack_20;
   undefined4 uStack_1c;
-  undefined2 uStack_18;
-  undefined2 uStack_16;
-  undefined2 uStack_14;
-  undefined4 uStack_12;
+  undefined1 uStack_12;
+  undefined1 uStack_11;
+  undefined1 uStack_10;
+  undefined1 uStack_f;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006337ea;
   *unaff_FS_OFFSET = &uStack_c;
   if (*(int *)&this->field_0xac == 0) {
     uStack_12 = 0;
-    pTStack_28 = (TMyNumberText *)__2_YAPAXI_Z(0xac);
+    uStack_11 = 0;
+    uStack_10 = 0;
+    uStack_f = 0;
+    iVar1 = operator_new();
+    uStack_28 = (undefined2)iVar1;
+    uStack_26 = (undefined2)((uint)iVar1 >> 0x10);
     uStack_4 = 0;
-    if (pTStack_28 == (TMyNumberText *)0x0) {
-      this_00 = (TNumberText *)0x0;
+    if (iVar1 == 0) {
+      piVar2 = (int *)0x0;
     }
     else {
-      this_00 = (TNumberText *)TMyNumberText::ConstructTMyNumberTextBaseState(pTStack_28);
+      piVar2 = (int *)func_0x00401f28();
     }
-    pTStack_28 = (TMyNumberText *)0x1;
+    uStack_28 = 1;
+    uStack_26 = 0;
     uStack_24 = 1;
     uStack_4 = 0xffffffff;
     uStack_20 = 0;
     uStack_1c = 0;
-    TNumberText::ConstructTNumberTextBaseState(this_00,this,&uStack_20,&pTStack_28,0,0);
-    pTVar1 = this_00->vftable;
-    pTStack_28 = (TMyNumberText *)0x0;
-    uStack_18 = 3;
-    uStack_16 = 0;
-    uStack_14 = 9;
-    uStack_12 = 0;
-    (*pTVar1[0x36].slot_0x04)(&uStack_18,0);
-    (*pTVar1[0x36].GetTEventHandlerClassNamePointer)(&stack0xffffffcf);
-    (*pTVar1[0x35].slot_0x04)(0,1);
-    *(TNumberText **)&this->field_0xac = this_00;
+    func_0x0040970f(this,&uStack_20,&uStack_28);
+    iVar1 = *piVar2;
+    uStack_28 = 0;
+    (**(code **)(iVar1 + 0x1b4))(&stack0xffffffd0,0);
+    (**(code **)(iVar1 + 0x1b0))(&stack0xffffffb7);
+    (**(code **)(iVar1 + 0x1ac))(0,1);
+    *(int **)&this->field_0xac = piVar2;
   }
   *unaff_FS_OFFSET = uStack_c;
   return;

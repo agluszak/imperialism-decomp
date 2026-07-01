@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405529
 // GHIDRA_NAME Config::InitDefaults
-// GHIDRA_PROTO undefined4 * __thiscall TMultiplayerMgr::ConstructMultiplayerManager(astruct_11 * this_obj)
+// GHIDRA_PROTO undefined4 * __thiscall ConstructMultiplayerManager(astruct_11 * this_obj)
 
 undefined4 * Config::InitDefaults(astruct_11 *this_obj)
 
@@ -14,29 +14,27 @@ undefined4 * Config::InitDefaults(astruct_11 *this_obj)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634793;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
+  func_0x00403049();
   uStack_4 = 0;
   ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x20,8,4,&LAB_00405209);
   uStack_4._0_1_ = 1;
-  CString::__0CString__QAE_XZ((CString *)&this->field_0x74);
+  CString::CString((CString *)&this->field_0x74);
   uStack_4._0_1_ = 2;
-  ___L_YGXPAXIHP6EX0_Z1_Z
-            (&this->field_0x78,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
+  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x78,4,7,&SUB_00404642);
   uStack_4._0_1_ = 3;
-  ___L_YGXPAXIHP6EX0_Z1_Z
-            (&this->field_0x94,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
+  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x94,4,7,&SUB_00404642);
   uStack_4._0_1_ = 4;
-  CString::__0CString__QAE_XZ((CString *)&this->field_0xb0);
+  CString::CString((CString *)&this->field_0xb0);
   uStack_4._0_1_ = 5;
-  CString::__0CString__QAE_XZ((CString *)&this->field_0xb4);
+  CString::CString((CString *)&this->field_0xb4);
   uStack_4 = CONCAT31(uStack_4._1_3_,6);
-  CString::__0CString__QAE_XZ((CString *)&this->field_0xb8);
-  this->vftable = (undefined *)&TMultiplayerMgrVtbl_0065c030;
+  CString::CString((CString *)&this->field_0xb8);
+  this->vftable = (undefined *)&TMultiplayerMgr::_vftable_;
   *(undefined4 *)&this->field_0x40 = 0;
   *(undefined4 *)&this->field_0x6c = 0;
   *(undefined4 *)&this->field_0x70 = 0;

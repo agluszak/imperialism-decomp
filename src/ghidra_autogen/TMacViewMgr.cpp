@@ -3,16 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TMacViewMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00484BB0
-// GHIDRA_NAME TMacViewMgr::GetTMacViewMgrRuntimeClass
-// GHIDRA_PROTO undefined GetTMacViewMgrRuntimeClass()
-
-CRuntimeClass * TMacViewMgr::GetTMacViewMgrRuntimeClass(void)
-
-{
-  return &TMacViewMgr_RuntimeClass;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00484BF0
 // GHIDRA_NAME TMacViewMgr::ConstructTMacViewMgrInPlace
 // GHIDRA_PROTO undefined __thiscall ConstructTMacViewMgrInPlace(void)
@@ -20,7 +10,7 @@ CRuntimeClass * TMacViewMgr::GetTMacViewMgrRuntimeClass(void)
 TMacViewMgr * TMacViewMgr::ConstructTMacViewMgrInPlace()
 
 {
-  __0CFrameWnd__QAE_XZ();
+  CFrameWnd();
   *(undefined4 *)&this->field_0xcc = 1;
   *(undefined4 *)&this->field_0xbc = 0;
   *(undefined4 *)&this->field_0xc4 = 0;
@@ -31,7 +21,7 @@ TMacViewMgr * TMacViewMgr::ConstructTMacViewMgrInPlace()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00484C70
 // GHIDRA_NAME TMacViewMgr::DestroyTMacViewMgrObject
-// GHIDRA_PROTO undefined __thiscall TMacViewMgr::DestroyTMacViewMgrObject(void)
+// GHIDRA_PROTO undefined __thiscall DestroyTMacViewMgrObject(void)
 
 void TMacViewMgr::DestroyTMacViewMgrObject()
 
@@ -40,7 +30,7 @@ void TMacViewMgr::DestroyTMacViewMgrObject()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   puStack_8 = &LAB_0062e8b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -53,7 +43,7 @@ void TMacViewMgr::DestroyTMacViewMgrObject()
     (**(code **)(**(int **)&this->field_0xc4 + 4))(1);
   }
   local_4 = 0xffffffff;
-  __1CFrameWnd__UAE_XZ();
+  CFrameWnd::~CFrameWnd();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -67,16 +57,16 @@ undefined4 __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE_Impl(int param_1,
 {
   int iVar1;
   undefined4 uVar2;
-
+  
   *(undefined4 *)(param_1 + 0xbc) = 0;
   iVar1 = WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(param_2);
   if (iVar1 == -1) {
     return 0xffffffff;
   }
   func_0x0040577c(param_1);
-  uVar2 = TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6();
+  uVar2 = func_0x0040492b();
   *(undefined4 *)(param_1 + 0xbc) = uVar2;
-  TryRealizeViewPaletteAndInvalidateWindow();
+  func_0x00403ec7();
   return 0;
 }
 
@@ -90,22 +80,22 @@ void TMacViewMgr::WrapperFor_PreCreateWindow_61cdb3_At00484f70(int param_1)
   *(undefined4 *)(param_1 + 8) = 0;
   *(undefined4 *)(param_1 + 0x20) = 0x2000000;
   *(undefined4 *)(param_1 + 0x1c) = 0xfffffc18;
-  _PreCreateWindow_CFrameWnd__MAEHAAUtagCREATESTRUCTA___Z(param_1);
+  CFrameWnd::PreCreateWindow(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485150
 // GHIDRA_NAME TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150
-// GHIDRA_PROTO undefined __thiscall TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(undefined4 param_1)
 
 undefined4 TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(undefined4 param_1)
 
 {
   undefined4 uVar1;
-
+  
   uVar1 = *(undefined4 *)&this->field_0xbc;
   *(undefined4 *)&this->field_0xbc = param_1;
-  TryRealizeViewPaletteAndInvalidateWindow();
+  func_0x00403ec7();
   return uVar1;
 }
 
@@ -117,10 +107,10 @@ void TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl()
 
 {
   undefined4 uVar1;
-
-  uVar1 = TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6();
+  
+  uVar1 = func_0x0040492b();
   *(undefined4 *)&this->field_0xbc = uVar1;
-  TryRealizeViewPaletteAndInvalidateWindow();
+  func_0x00403ec7();
   return;
 }
 
@@ -132,87 +122,80 @@ undefined4 __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl(int para
 
 {
   int iVar1;
-  int iVar2;
-  undefined4 *unaff_FS_OFFSET;
-  void *pvVar3;
-  undefined4 uVar4;
-  int iStack_24;
-  int iStack_20;
-  tagRECT tStack_1c;
-  undefined4 uStack_c;
+  undefined4 uVar2;
+  int iVar3;
+  int *unaff_FS_OFFSET;
+  undefined1 auStack_24 [12];
+  int iStack_18;
+  int iStack_14;
+  int iStack_10;
+  int iStack_c;
   undefined *puStack_8;
-  undefined4 uStack_4;
-
-  pvVar3 = param_2;
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
+  int iStack_4;
+  
+  iStack_c = *unaff_FS_OFFSET;
+  iStack_4 = 0xffffffff;
   puStack_8 = &UNK_0062e9da;
-  *unaff_FS_OFFSET = &uStack_c;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   if (*(int *)(param_1 + 0xc0) == 0x100005f) {
     if (*(int *)(param_1 + 0xc4) == 0) {
-      iVar1 = __2_YAPAXI_Z(0x38);
-      uStack_4 = 0;
+      iVar1 = operator_new(0x38);
+      iStack_4 = 0;
       if (iVar1 == 0) {
-        uVar4 = 0;
+        uVar2 = 0;
       }
       else {
-        uVar4 = ConstructBitmapSurfaceStateAndResetResources();
+        uVar2 = func_0x004097b4();
       }
-      uStack_4 = 0xffffffff;
-      *(undefined4 *)(param_1 + 0xc4) = uVar4;
-      LoadBitmapResourceAndInitializeSurfaceState(0x119,0);
+      iStack_4 = 0xffffffff;
+      *(undefined4 *)(param_1 + 0xc4) = uVar2;
+      func_0x0040158c(0x119,0);
     }
-    GetClientRect(*(HWND *)(param_1 + 0x1c),&tStack_1c);
-    iVar2 = (int)((tStack_1c.bottom - tStack_1c.top) +
-                 (tStack_1c.bottom - tStack_1c.top >> 0x1f & 0x7fU)) >> 7;
-    iVar1 = (int)((tStack_1c.right - tStack_1c.left) +
-                 (tStack_1c.right - tStack_1c.left >> 0x1f & 0x7fU)) >> 7;
-    SelectAndRealizeDibPalette(param_2,0);
-    iStack_20 = 0;
-    if (-1 < iVar2) {
-      param_2 = (void *)(iVar2 + 1);
+    GetClientRect(*(HWND *)(param_1 + 0x1c),(LPRECT)(auStack_24 + 8));
+    iVar3 = (int)((iStack_10 - iStack_18) + (iStack_10 - iStack_18 >> 0x1f & 0x7fU)) >> 7;
+    iVar1 = (int)((iStack_14 - auStack_24._8_4_) + (iStack_14 - auStack_24._8_4_ >> 0x1f & 0x7fU))
+            >> 7;
+    func_0x00406f69(param_2,0);
+    if (-1 < iVar3) {
+      iStack_4 = iVar3 + 1;
       do {
-        iStack_24 = 0;
         if (-1 < iVar1) {
-          iVar2 = iVar1 + 1;
+          iVar3 = iVar1 + 1;
           do {
-            StretchDibitsFromStoredBitmapToHdc(pvVar3,&iStack_24);
-            iStack_24 = iStack_24 + 0x80;
-            iVar2 = iVar2 + -1;
-          } while (iVar2 != 0);
+            func_0x00408cbf(param_2,&stack0xffffffd4);
+            iVar3 = iVar3 + -1;
+          } while (iVar3 != 0);
         }
-        iStack_20 = iStack_20 + 0x80;
-        param_2 = (void *)((int)param_2 + -1);
-      } while (param_2 != (void *)0x0);
+        iStack_4 = iStack_4 + -1;
+      } while (iStack_4 != 0);
     }
-    *unaff_FS_OFFSET = uStack_c;
+    *unaff_FS_OFFSET = iStack_14;
     return 1;
   }
-  uVar4 = 0;
-  TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(param_2,0);
-  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(pvVar3,uVar4);
-  GetClientRect(*(HWND *)(param_1 + 0x1c),&tStack_1c);
-  _FillSolidRect_CDC__QAEXPBUtagRECT__K_Z_0061f0fa(param_2,&tStack_1c,*(ulong *)(param_1 + 0xc0));
-  *unaff_FS_OFFSET = uStack_c;
+  func_0x0040492b(param_2,0);
+  func_0x00405498();
+  GetClientRect(*(HWND *)(param_1 + 0x1c),(LPRECT)auStack_24);
+  FillSolidRect(param_2,(tagRECT *)auStack_24,*(ulong *)(param_1 + 0xc0));
+  *unaff_FS_OFFSET = iStack_14;
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004995A0
 // GHIDRA_NAME TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0
-// GHIDRA_PROTO undefined TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0()
+// GHIDRA_PROTO undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0()
 
 undefined4 TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0(void)
 
 {
   int iVar1;
-
-  iVar1 = TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6();
+  
+  iVar1 = func_0x0040492b();
   return *(undefined4 *)(iVar1 + 8);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004995C0
 // GHIDRA_NAME TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6
-// GHIDRA_PROTO undefined TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6()
+// GHIDRA_PROTO undefined ResolveBmpResourceHandleWithDefault3B6()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Resolves bitmap handle for a resource entry; when id is unset it loads default bitmap 0x3B6 from cache and manages reference-counted cache nodes.
 // GHIDRA_COMMENT_END
@@ -228,78 +211,79 @@ int __fastcall TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(int *param_1)
   int *piVar3;
   int *piVar4;
   undefined4 uVar5;
-  short *psVar6;
-  int iVar7;
+  int iVar6;
+  undefined4 *puVar7;
   undefined4 *puVar8;
-  undefined4 *puVar9;
-  uint uVar10;
+  uint uVar9;
+  int *piVar10;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f9aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   if (*param_1 == 0) {
-    uVar5 = LoadBmpResourceByIdCached(0x3b6);
-    psVar6 = (short *)__2_YAPAXI_Z(0xc);
-    local_4 = 0;
-    if (psVar6 == (short *)0x0) {
-      iVar7 = 0;
+    uVar5 = func_0x00403224(0x3b6);
+    iVar6 = operator_new(0xc);
+    puStack_8 = (undefined1 *)0x0;
+    if (iVar6 == 0) {
+      iVar6 = 0;
     }
     else {
-      iVar7 = InitializePaletteHolderVtableAndReset();
+      iVar6 = func_0x004079c3();
     }
-    local_4 = 0xffffffff;
-    *param_1 = iVar7;
-    BuildPaletteFromBitmapColorTable(uVar5);
+    puStack_8 = (undefined1 *)0xffffffff;
+    *param_1 = iVar6;
+    func_0x00405fc9(uVar5);
     if (param_1[2] != 0) {
-      for (puVar8 = *(undefined4 **)(param_1[2] + (int)(0x3b % (ulonglong)(uint)param_1[3]) * 4);
-          puVar8 != (undefined4 *)0x0; puVar8 = (undefined4 *)*puVar8) {
-        if (*(short *)(puVar8 + 2) == 0x3b6) goto LAB_0049964c;
+      for (puVar7 = *(undefined4 **)(param_1[2] + (int)(0x3b % (ulonglong)(uint)param_1[3]) * 4);
+          puVar7 != (undefined4 *)0x0; puVar7 = (undefined4 *)*puVar7) {
+        if (*(short *)(puVar7 + 2) == 0x3b6) goto LAB_0049964c;
       }
     }
-    puVar8 = (undefined4 *)0x0;
+    puVar7 = (undefined4 *)0x0;
 LAB_0049964c:
-    if (puVar8 != (undefined4 *)0x0) {
-      psVar6 = (short *)puVar8[3];
+    piVar10 = param_1;
+    if (puVar7 != (undefined4 *)0x0) {
+      piVar10 = (int *)puVar7[3];
     }
-    iVar7 = *(int *)(psVar6 + 4);
-    *(int *)(psVar6 + 4) = iVar7 + -1;
-    if (iVar7 + -1 < 1) {
-      if (*(int **)(psVar6 + 2) != (int *)0x0) {
-        (**(code **)(**(int **)(psVar6 + 2) + 4))(1);
+    iVar6 = piVar10[2];
+    piVar10[2] = iVar6 + -1;
+    if (iVar6 + -1 < 1) {
+      if ((int *)piVar10[1] != (int *)0x0) {
+        (**(code **)(*(int *)piVar10[1] + 4))(1);
       }
-      iVar7 = param_1[9];
-      if (iVar7 != 0) {
-        uVar10 = (*(uint *)(psVar6 + 2) >> 4) % (uint)param_1[10];
-        piVar4 = *(int **)(iVar7 + uVar10 * 4);
-        piVar3 = (int *)(iVar7 + uVar10 * 4);
+      iVar6 = param_1[9];
+      if (iVar6 != 0) {
+        uVar9 = ((uint)piVar10[1] >> 4) % (uint)param_1[10];
+        piVar4 = *(int **)(iVar6 + uVar9 * 4);
+        piVar3 = (int *)(iVar6 + uVar9 * 4);
         while (piVar2 = piVar4, piVar2 != (int *)0x0) {
-          if (piVar2[2] == *(uint *)(psVar6 + 2)) {
+          if (piVar2[2] == piVar10[1]) {
             *piVar3 = *piVar2;
             *piVar2 = param_1[0xc];
             param_1[0xc] = (int)piVar2;
-            iVar7 = param_1[0xb];
-            param_1[0xb] = iVar7 + -1;
-            if (iVar7 + -1 == 0) {
-              puVar8 = (undefined4 *)param_1[9];
-              if (puVar8 != (undefined4 *)0x0) {
-                puVar9 = puVar8;
-                for (iVar7 = param_1[10]; iVar7 != 0; iVar7 = iVar7 + -1) {
-                  for (puVar1 = (undefined4 *)*puVar9; puVar1 != (undefined4 *)0x0;
+            iVar6 = param_1[0xb];
+            param_1[0xb] = iVar6 + -1;
+            if (iVar6 + -1 == 0) {
+              puVar7 = (undefined4 *)param_1[9];
+              if (puVar7 != (undefined4 *)0x0) {
+                puVar8 = puVar7;
+                for (iVar6 = param_1[10]; iVar6 != 0; iVar6 = iVar6 + -1) {
+                  for (puVar1 = (undefined4 *)*puVar8; puVar1 != (undefined4 *)0x0;
                       puVar1 = (undefined4 *)*puVar1) {
                   }
-                  puVar9 = puVar9 + 1;
+                  puVar8 = puVar8 + 1;
                 }
               }
-              __3_YAXPAX_Z(puVar8);
+              operator_delete(puVar7);
               param_1[9] = 0;
               param_1[0xb] = 0;
               param_1[0xc] = 0;
-              _FreeDataChain_CPlex__QAEXXZ();
+              CPlex::FreeDataChain();
               param_1[0xd] = 0;
             }
             break;
@@ -308,20 +292,20 @@ LAB_0049964c:
           piVar4 = (int *)*piVar2;
         }
       }
-      iVar7 = param_1[2];
-      if (iVar7 != 0) {
-        uVar10 = ((uint)(int)*psVar6 >> 4) % (uint)param_1[3];
-        piVar4 = *(int **)(iVar7 + uVar10 * 4);
-        piVar3 = (int *)(iVar7 + uVar10 * 4);
+      iVar6 = param_1[2];
+      if (iVar6 != 0) {
+        uVar9 = ((uint)(int)(short)*piVar10 >> 4) % (uint)param_1[3];
+        piVar4 = *(int **)(iVar6 + uVar9 * 4);
+        piVar3 = (int *)(iVar6 + uVar9 * 4);
         while (piVar2 = piVar4, piVar2 != (int *)0x0) {
-          if ((short)piVar2[2] == *psVar6) {
+          if ((short)piVar2[2] == (short)*piVar10) {
             *piVar3 = *piVar2;
             *piVar2 = param_1[5];
             param_1[5] = (int)piVar2;
-            iVar7 = param_1[4];
-            param_1[4] = iVar7 + -1;
-            if (iVar7 + -1 == 0) {
-              ResolveBmpResourceHandleWithDefault3B6_Impl();
+            iVar6 = param_1[4];
+            param_1[4] = iVar6 + -1;
+            if (iVar6 + -1 == 0) {
+              func_0x004089f9();
             }
             break;
           }
@@ -329,155 +313,116 @@ LAB_0049964c:
           piVar4 = (int *)*piVar2;
         }
       }
-      __3_YAXPAX_Z(psVar6);
+      operator_delete(piVar10);
     }
   }
-  iVar7 = *param_1;
+  iVar6 = *param_1;
   *unaff_FS_OFFSET = local_c;
-  return iVar7;
+  return iVar6;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00509C00
-// GHIDRA_NAME TMacViewMgr::CreateTMacViewMgrInstance
-// GHIDRA_PROTO undefined CreateTMacViewMgrInstance()
+// GHIDRA_NAME TMacViewMgr::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-undefined4 __fastcall TMacViewMgr::CreateTMacViewMgrInstance(undefined4 param_1)
+undefined4 __fastcall TMacViewMgr::CreateObject(undefined4 param_1)
 
 {
-  TMacViewMgr *this;
-  undefined4 uVar1;
+  int iVar1;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633a6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMacViewMgr *)__2_YAPAXI_Z(0xd84,param_1);
+  iVar1 = operator_new(0xd84,param_1);
   local_4 = 0;
-  if (this != (TMacViewMgr *)0x0) {
-    uVar1 = TMacViewMgr::ConstructStrategicMapViewSystem(this);
+  if (iVar1 != 0) {
+    uVar2 = func_0x00405a6a(iVar1);
     *unaff_FS_OFFSET = local_c;
-    return uVar1;
+    return uVar2;
   }
   *unaff_FS_OFFSET = local_c;
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00509C80
-// GHIDRA_NAME TMacViewMgr::GetTMacViewMgrClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTMacViewMgrClassNamePointer(void)
+// GHIDRA_NAME TMacViewMgr::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMacViewMgr::GetTMacViewMgrClassNamePointer()
-
-{
-  return &classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00509CA0
-// GHIDRA_NAME TMacViewMgr::ConstructStrategicMapViewSystem
-// GHIDRA_PROTO undefined __thiscall TMacViewMgr::ConstructStrategicMapViewSystem(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructor for strategic map view/render system object (allocated at startup into global g_pStrategicMapViewSystem).
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Behavior:
-// GHIDRA_COMMENT - Sets vtable pointer.
-// GHIDRA_COMMENT - Clears large internal tables/buffers for per-tile/per-nation render state.
-// GHIDRA_COMMENT - Initializes nested repeated callback-backed structures used by map render/update paths.
-// GHIDRA_COMMENT_END
-
-/* Constructor for strategic map view/render system object (allocated at startup into global
-   g_pStrategicMapViewSystem).
-
-   Behavior:
-   - Sets vtable pointer.
-   - Clears large internal tables/buffers for per-tile/per-nation render state.
-   - Initializes nested repeated callback-backed structures used by map render/update paths. */
-
-TMacViewMgr * TMacViewMgr::ConstructStrategicMapViewSystem()
+CRuntimeClass * TMacViewMgr::GetRuntimeClass()
 
 {
-  int iVar1;
-  undefined4 *puVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  puStack_8 = &LAB_00633ab8;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this->vftable = (TMacViewMgrVtbl *)&RefCountedObjectBase::_vftable_;
-  local_4 = 0;
-  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x6bc,0x30,0x18,&LAB_00404d5e);
-  local_4._0_1_ = 1;
-  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0xb3c,0x30,6,&LAB_00404d5e);
-  local_4 = CONCAT31(local_4._1_3_,2);
-  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0xc5c,0x30,6,&LAB_00404d5e);
-  this->vftable = &g_vtblStrategicMapViewSystem;
-  *(undefined4 *)&this->field_0x4 = 0;
-  puVar2 = (undefined4 *)&this->field_0x8;
-  for (iVar1 = 0x17; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
-  }
-  puVar2 = (undefined4 *)&this->field_0x64;
-  for (iVar1 = 0x180; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
-  }
-  *(undefined4 *)&this->field_0xd7c = 0;
-  *(undefined4 *)&this->field_0xd80 = 0;
-  *(undefined4 *)&this->field_0x668 = 0;
-  *(undefined4 *)&this->field_0x674 = 0;
-  *(undefined4 *)&this->field_0x678 = 0;
-  *(undefined4 *)&this->field_0x67c = 0;
-  *(undefined4 *)&this->field_0x670 = 0;
-  *(undefined4 *)&this->field_0x66c = 0;
-  *(undefined4 *)&this->field_0x680 = 0;
-  *(undefined4 *)&this->field_0x684 = 0;
-  *(undefined4 *)&this->field_0x6b4 = 0;
-  *(undefined4 *)&this->field_0x6b8 = 0;
-  *(undefined4 *)&this->field_0x68c = 0;
-  *(undefined4 *)&this->field_0x690 = 0;
-  puVar2 = (undefined4 *)&this->field_0x694;
-  for (iVar1 = 8; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return this;
+  return &classTMacViewMgr;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00509E10
-// GHIDRA_NAME TMacViewMgr::DestructTMacViewMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTMacViewMgrAndMaybeFree(short param_1)
+// GHIDRA_NAME TMacViewMgr::GetClipRegionSlotByIndex
+// GHIDRA_PROTO undefined __thiscall GetClipRegionSlotByIndex(short param_1)
 
-undefined4 TMacViewMgr::DestructTMacViewMgrAndMaybeFree(short param_1)
+undefined4 TMacViewMgr::GetClipRegionSlotByIndex(short param_1)
 
 {
   return *(undefined4 *)(&this->field_0x8 + param_1 * 4);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00509E30
-// GHIDRA_NAME TMacViewMgr::WrapperFor_FreeHeapBufferIfNotNull_At00509e30
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00509e30(byte param_1)
+// GHIDRA_NAME TMacViewMgr::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMacViewMgr * TMacViewMgr::WrapperFor_FreeHeapBufferIfNotNull_At00509e30(byte param_1)
+TMacViewMgr * TMacViewMgr::_scalar_deleting_destructor_(byte param_1)
 
 {
-  WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60();
+  func_0x00409a2a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00509F20
+// GHIDRA_NAME TMacViewMgr::InitializeStrategicMapViewSystem
+// GHIDRA_PROTO undefined InitializeStrategicMapViewSystem()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initialization pass for strategic map view system.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Behavior:
+// GHIDRA_COMMENT - Prepares map rendering dependency manager state.
+// GHIDRA_COMMENT - Calls system vfunc init chain (+0x28/+0x2C/+0x30/+0x34).
+// GHIDRA_COMMENT - Runs three follow-up initialization helpers used by strategic map rendering and overlays.
+// GHIDRA_COMMENT_END
+
+/* Initialization pass for strategic map view system.
+   
+   Behavior:
+   - Prepares map rendering dependency manager state.
+   - Calls system vfunc init chain (+0x28/+0x2C/+0x30/+0x34).
+   - Runs three follow-up initialization helpers used by strategic map rendering and overlays. */
+
+void __fastcall TMacViewMgr::InitializeStrategicMapViewSystem(int *param_1)
+
+{
+  int iVar1;
+  
+  (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df3f0)(3);
+  iVar1 = *param_1;
+  (**(code **)(iVar1 + 0x28))();
+  (**(code **)(iVar1 + 0x2c))();
+  (**(code **)(iVar1 + 0x30))();
+  (**(code **)(iVar1 + 0x34))();
+  func_0x004095ca();
+  func_0x00404804();
+  func_0x00405385();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00509F70
-// GHIDRA_NAME TMacViewMgr::DestroyStrategicMapViewSystemResources
-// GHIDRA_PROTO undefined __thiscall DestroyStrategicMapViewSystemResources(void)
+// GHIDRA_NAME TMacViewMgr::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Releases StrategicMapViewSystem-owned surfaces and resets global pointer.
 // GHIDRA_COMMENT Algorithm:
@@ -496,18 +441,18 @@ TMacViewMgr * TMacViewMgr::WrapperFor_FreeHeapBufferIfNotNull_At00509e30(byte pa
    4. Invoke base destructor path.
    Returns: void. */
 
-void TMacViewMgr::DestroyStrategicMapViewSystemResources()
+void TMacViewMgr::Free()
 
 {
   int iVar1;
   int *piVar2;
   undefined1 *puVar3;
-
+  
   iVar1 = 0x17;
   piVar2 = (int *)&this->field_0x8;
   do {
     if (*piVar2 != 0) {
-      DestroyClipStateRegionWrapperObject(*piVar2);
+      func_0x0040696a(*piVar2);
     }
     *piVar2 = 0;
     piVar2 = piVar2 + 1;
@@ -517,29 +462,29 @@ void TMacViewMgr::DestroyStrategicMapViewSystemResources()
   iVar1 = 0x180;
   do {
     if (*piVar2 != 0) {
-      DestroyClipStateRegionWrapperObject(*piVar2);
+      func_0x0040696a(*piVar2);
     }
     *piVar2 = 0;
     piVar2 = piVar2 + 1;
     iVar1 = iVar1 + -1;
   } while (iVar1 != 0);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x678);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x67c);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x674);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x668);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x66c);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x670);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x680);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x688);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x68c);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x690);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x684);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x6b4);
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x6b8);
+  func_0x004010e6(&this->field_0x678);
+  func_0x004010e6(&this->field_0x67c);
+  func_0x004010e6(&this->field_0x674);
+  func_0x004010e6(&this->field_0x668);
+  func_0x004010e6(&this->field_0x66c);
+  func_0x004010e6(&this->field_0x670);
+  func_0x004010e6(&this->field_0x680);
+  func_0x004010e6(&this->field_0x688);
+  func_0x004010e6(&this->field_0x68c);
+  func_0x004010e6(&this->field_0x690);
+  func_0x004010e6(&this->field_0x684);
+  func_0x004010e6(&this->field_0x6b4);
+  func_0x004010e6(&this->field_0x6b8);
   puVar3 = &this->field_0x694;
   iVar1 = 8;
   do {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(puVar3);
+    func_0x004010e6(puVar3);
     puVar3 = puVar3 + 4;
     iVar1 = iVar1 + -1;
   } while (iVar1 != 0);
@@ -551,34 +496,31 @@ void TMacViewMgr::DestroyStrategicMapViewSystemResources()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0050A140
-// GHIDRA_NAME TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles
-// GHIDRA_PROTO undefined __thiscall ResetNationStateUiAndRefreshCityCapabilityHandles(void)
+// GHIDRA_NAME TMacViewMgr::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(void)
 
-void TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles()
+void TMacViewMgr::ReadFrom()
 
 {
   TMacViewMgrVtbl *pTVar1;
-  TStream *in_stack_00000004;
-
+  
   *(undefined4 *)&this->field_0x4 = 0;
-  TObject::ReadFrom((TObject *)this,in_stack_00000004);
+  func_0x00403517();
   pTVar1 = this->vftable;
   (*pTVar1->RebuildMapTileNeighborHighlightPolygonsForAllTiles)();
   (*pTVar1->RenderTurnEventPalettePreviewSurfaceAndProgress)();
-  RefreshCityCapabilityUiHandlesForActiveNation();
+  func_0x00404804();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0050A180
-// GHIDRA_NAME TMacViewMgr::WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(void)
+// GHIDRA_NAME TMacViewMgr::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(void)
 
-void TMacViewMgr::WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180()
+void TMacViewMgr::WriteTo()
 
 {
-  TStream *in_stack_00000004;
-
-  TObject::WriteTo((TObject *)this,in_stack_00000004);
+  func_0x0040583a();
   return;
 }
 
@@ -612,7 +554,6 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
   ushort uVar2;
   TMacViewMgrVtbl *pTVar3;
   int *piVar4;
-  TAnimation *this_00;
   undefined4 uVar5;
   int *piVar6;
   undefined4 *puVar7;
@@ -627,7 +568,7 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
   undefined1 *local_18;
   int iStack_14;
   int local_10 [4];
-
+  
   local_20 = 0;
   local_10[1] = 0;
   local_10[0] = 0;
@@ -635,14 +576,14 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
   local_10[2] = 0x2e0;
   local_10[3] = 0x18;
   local_18 = puVar1;
-  (**(code **)(*DAT_006a2158 + 0x2c))(puVar1,8,local_10);
+  (**(code **)(*g_pDisplayMgr + 0x2c))(puVar1,8,local_10);
   GetActiveQuickDrawSurfaceContextAndFlags(&local_20,&stack0xffffffd4);
   SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_EBP);
   uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
   ReturnConstantTrueQuickDrawFlag(uVar5);
-  ResetQuickDrawStrokeState();
+  func_0x004088aa();
   piVar6 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
-  puVar7 = (undefined4 *)GetSurfaceHeaderFromSurfaceObject(piVar6);
+  puVar7 = (undefined4 *)func_0x00405e39(piVar6);
   uVar8 = (iStack_14 - iStack_1c) * (local_10[0] - (int)local_18);
   puVar10 = puVar7;
   for (uVar9 = uVar8 >> 2; uVar9 != 0; uVar9 = uVar9 - 1) {
@@ -657,7 +598,7 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
   uVar2 = *(ushort *)(*piVar6 + 4);
   puVar7 = puVar7 + -8;
   do {
-    piVar6 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(iVar11 + 700);
+    piVar6 = (int *)func_0x004047a0(iVar11 + 700);
     puVar10 = (undefined4 *)*piVar6;
     if (puVar10 != (undefined4 *)0x0) {
       (**(code **)*puVar10)();
@@ -669,14 +610,13 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
     piVar4 = (int *)*piVar6;
     (**(code **)(*piVar4 + 4))();
     *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
-    this_00 = (TAnimation *)*piVar6;
-    if (this_00 != (TAnimation *)0x0) {
-      this_00->vftable = (TAnimationVtbl *)0x64c340;
-      TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                (this_00);
-      __3_YAXPAX_Z(this_00);
+    puVar10 = (undefined4 *)*piVar6;
+    if (puVar10 != (undefined4 *)0x0) {
+      *puVar10 = 0x64c340;
+      func_0x00409124();
+      operator_delete(puVar10);
     }
-    __3_YAXPAX_Z(piVar6);
+    operator_delete(piVar6);
     iVar11 = iVar11 + 1;
   } while ((short)iVar11 < 0x17);
   uVar5 = GetSurfaceObjectAtContextOffset24(*puStack_24);
@@ -702,8 +642,8 @@ void TMacViewMgr::LoadStrategicMapUnitIconAtlas750()
 
 {
   undefined4 uVar1;
-
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ee);
+  
+  uVar1 = func_0x00401fe1(0x2ee);
   *(undefined4 *)&this->field_0x678 = uVar1;
   return;
 }
@@ -725,8 +665,8 @@ void TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751()
 
 {
   undefined4 uVar1;
-
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ef);
+  
+  uVar1 = func_0x00401fe1(0x2ef);
   *(undefined4 *)&this->field_0x67c = uVar1;
   return;
 }
@@ -748,8 +688,8 @@ void TMacViewMgr::LoadStrategicMapOverlayAtlas8699()
 
 {
   undefined4 uVar1;
-
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x21fb);
+  
+  uVar1 = func_0x00401fe1(0x21fb);
   *(undefined4 *)&this->field_0x680 = uVar1;
   return;
 }
@@ -771,9 +711,212 @@ void TMacViewMgr::LoadStrategicMapMarkerAtlas1372()
 
 {
   undefined4 uVar1;
-
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
+  
+  uVar1 = func_0x00401fe1(0x55c);
   *(undefined4 *)&this->field_0x684 = uVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0050A470
+// GHIDRA_NAME TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423
+// GHIDRA_PROTO undefined BuildStrategicMapGaugeAtlasFrom1422And1423()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Builds strategic-map gauge/status atlas from bitmap IDs 1422 and 1423.
+// GHIDRA_COMMENT Stores the assembled surface at StrategicMapViewSystem+0x688.
+// GHIDRA_COMMENT Returns: void.
+// GHIDRA_COMMENT_END
+
+/* Builds strategic-map gauge/status atlas from bitmap IDs 1422 and 1423.
+   Stores the assembled surface at StrategicMapViewSystem+0x688.
+   Returns: void. */
+
+void __fastcall TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423(int param_1)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  int *piVar3;
+  undefined4 uVar4;
+  int *piVar5;
+  undefined4 unaff_EBP;
+  undefined4 unaff_ESI;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  puVar1 = (undefined4 *)(param_1 + 0x688);
+  local_c = 0;
+  local_10 = 0;
+  local_4 = 0x10;
+  local_8 = 0x500;
+  (**(code **)(*g_pDisplayMgr + 0x2c))(puVar1,8,&local_10);
+  GetActiveQuickDrawSurfaceContextAndFlags(&stack0xffffffd0,&stack0xffffffcc);
+  SetActiveQuickDrawSurfaceContext(*puVar1,unaff_ESI);
+  uVar4 = GetSurfaceObjectAtContextOffset24(*puVar1);
+  ReturnConstantTrueQuickDrawFlag(uVar4);
+  func_0x004088aa();
+  piVar5 = (int *)func_0x004047a0(0x58e);
+  puVar2 = (undefined4 *)*piVar5;
+  if (puVar2 != (undefined4 *)0x0) {
+    (**(code **)*puVar2)();
+    *(byte *)(puVar2 + 1) = *(byte *)(puVar2 + 1) | 1;
+    CopyRect((LPRECT)&stack0xffffffd4,(RECT *)(*piVar5 + 8));
+    func_0x00404db8(piVar5,&stack0xffffffd4);
+  }
+  piVar3 = (int *)*piVar5;
+  (**(code **)(*piVar3 + 4))();
+  *(byte *)(piVar3 + 1) = *(byte *)(piVar3 + 1) & 0xfe;
+  puVar2 = (undefined4 *)*piVar5;
+  if (puVar2 != (undefined4 *)0x0) {
+    *puVar2 = 0x64c340;
+    func_0x00409124();
+    operator_delete(puVar2);
+  }
+  operator_delete(piVar5);
+  piVar5 = (int *)func_0x004047a0(0x58f);
+  puVar2 = (undefined4 *)*piVar5;
+  if (puVar2 != (undefined4 *)0x0) {
+    (**(code **)*puVar2)();
+    *(byte *)(puVar2 + 1) = *(byte *)(puVar2 + 1) | 1;
+    CopyRect((LPRECT)&stack0xffffffd4,(RECT *)(*piVar5 + 8));
+    func_0x00404db8(piVar5,&stack0xffffffd4);
+  }
+  piVar3 = (int *)*piVar5;
+  (**(code **)(*piVar3 + 4))();
+  *(byte *)(piVar3 + 1) = *(byte *)(piVar3 + 1) & 0xfe;
+  puVar2 = (undefined4 *)*piVar5;
+  if (puVar2 != (undefined4 *)0x0) {
+    *puVar2 = 0x64c340;
+    func_0x00409124();
+    operator_delete(puVar2);
+  }
+  operator_delete(piVar5);
+  uVar4 = GetSurfaceObjectAtContextOffset24(*puVar1);
+  NoOpQuickDrawLifecycleHookB(uVar4);
+  SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0050A6A0
+// GHIDRA_NAME TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation
+// GHIDRA_PROTO undefined RefreshCityCapabilityUiHandlesForActiveNation()
+
+void __fastcall TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation(int param_1)
+
+{
+  char cVar1;
+  short sVar2;
+  short sVar3;
+  undefined4 uVar4;
+  uint uVar5;
+  
+  cVar1 = func_0x00403c2e();
+  if (((cVar1 == '\0') && (param_1 != 0)) && (g_pCityOrderCapabilityState != (TTechMgr *)0x0)) {
+    if (*(int *)(param_1 + 0x68c) != 0) {
+      func_0x004010e6((undefined4 *)(param_1 + 0x68c));
+    }
+    if (*(int *)(param_1 + 0x690) != 0) {
+      func_0x004010e6((undefined4 *)(param_1 + 0x690));
+    }
+    sVar2 = func_0x00403b16();
+    if (-1 < sVar2) {
+      (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df3f0)(3);
+      sVar2 = func_0x00403b16();
+      uVar5 = (uint)((&g_pCityOrderCapabilityState->field_0x277)[sVar2 * 0x1d] != '\0');
+      sVar2 = func_0x00403b16();
+      if ((&g_pCityOrderCapabilityState->field_0x280)[sVar2 * 0x1d] != '\0') {
+        uVar5 = 2;
+      }
+      sVar2 = func_0x00403b16();
+      sVar3 = func_0x00403b16();
+      uVar4 = func_0x00401fe1(sVar2 + 0x579 + uVar5 * 7);
+      *(undefined4 *)(param_1 + 0x68c) = uVar4;
+      uVar4 = func_0x00401fe1(sVar3 + 0x564 + uVar5 * 7);
+      *(undefined4 *)(param_1 + 0x690) = uVar4;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0050A820
+// GHIDRA_NAME TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807
+// GHIDRA_PROTO undefined BuildStrategicMapTileOverlayStripSurfaces800To807()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Builds 8 strategic-map overlay strip surfaces from bitmap IDs 800..807.
+// GHIDRA_COMMENT Stores surfaces in StrategicMapViewSystem array (+0x694 + index*4).
+// GHIDRA_COMMENT These strips are reused by multiple map UI drawing paths.
+// GHIDRA_COMMENT Returns: void.
+// GHIDRA_COMMENT_END
+
+/* Builds 8 strategic-map overlay strip surfaces from bitmap IDs 800..807.
+   Stores surfaces in StrategicMapViewSystem array (+0x694 + index*4).
+   These strips are reused by multiple map UI drawing paths.
+   Returns: void. */
+
+void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  int *piVar3;
+  int *piVar4;
+  undefined4 uVar5;
+  int iVar6;
+  undefined4 unaff_ESI;
+  undefined4 local_2c;
+  int local_28;
+  undefined4 local_24;
+  LONG local_20;
+  LONG local_1c;
+  LONG local_18;
+  LONG local_14;
+  tagRECT local_10;
+  
+  iVar6 = 0;
+  local_2c = 0;
+  GetActiveQuickDrawSurfaceContextAndFlags(&local_24,&local_2c);
+  do {
+    piVar4 = (int *)func_0x004047a0(iVar6 + 800);
+    if (*piVar4 == 0) {
+      return;
+    }
+    CopyRect(&local_10,(RECT *)(*piVar4 + 8));
+    local_1c = local_10.top;
+    local_20 = local_10.left;
+    local_18 = local_10.right;
+    local_14 = local_10.bottom;
+    puVar1 = (undefined4 *)(local_28 + 0x694 + iVar6 * 4);
+    (**(code **)(*g_pDisplayMgr + 0x2c))(puVar1,8,&local_20);
+    SetActiveQuickDrawSurfaceContext(*puVar1,unaff_ESI);
+    uVar5 = GetSurfaceObjectAtContextOffset24(*puVar1);
+    ReturnConstantTrueQuickDrawFlag(uVar5);
+    func_0x004062d5(piVar4);
+    puVar2 = (undefined4 *)*piVar4;
+    if (puVar2 != (undefined4 *)0x0) {
+      (**(code **)*puVar2)();
+      *(byte *)(puVar2 + 1) = *(byte *)(puVar2 + 1) | 1;
+      func_0x004088aa();
+      func_0x00404db8(piVar4,&local_20);
+      if (iVar6 == 0) {
+        func_0x00403288();
+      }
+      piVar3 = (int *)*piVar4;
+      (**(code **)(*piVar3 + 4))();
+      *(byte *)(piVar3 + 1) = *(byte *)(piVar3 + 1) & 0xfe;
+      puVar2 = (undefined4 *)*piVar4;
+      if (puVar2 != (undefined4 *)0x0) {
+        *puVar2 = 0x64c340;
+        func_0x00409124();
+        operator_delete(puVar2);
+      }
+      operator_delete(piVar4);
+    }
+    uVar5 = GetSurfaceObjectAtContextOffset24(*puVar1);
+    NoOpQuickDrawLifecycleHookB(uVar5);
+    iVar6 = iVar6 + 1;
+  } while (iVar6 < 8);
+  SetActiveQuickDrawSurfaceContext(local_24,local_2c);
   return;
 }
 
@@ -781,537 +924,701 @@ void TMacViewMgr::LoadStrategicMapMarkerAtlas1372()
 // GHIDRA_NAME TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext
 // GHIDRA_PROTO undefined __thiscall RenderOffscreenBitmapGridStripAndRestoreContext(void)
 
+/* WARNING: Type propagation algorithm not settling */
+
 void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
 
 {
-  TAnimation_GetTAnimationClassNamePointer_0x00 *pTVar1;
-  TAnimationVtbl *pTVar2;
-  undefined4 *puVar3;
-  TAnimation *pTVar4;
+  undefined1 *puVar1;
+  undefined4 ***pppuVar2;
+  int ***pppiVar3;
+  undefined4 *puVar4;
   int *piVar5;
-  TAnimationVtbl *pTVar6;
+  int *piVar6;
   int iVar7;
-  TAnimationVtbl *pTVar8;
+  undefined4 ****ppppuVar8;
   undefined4 uVar9;
   int *piVar10;
-  undefined1 *puVar11;
-  int *piVar12;
   int unaff_EBX;
-  undefined4 *puVar13;
-  short sVar14;
-  int iVar15;
+  undefined4 *puVar11;
+  short sVar12;
+  int iVar13;
+  int ***pppiVar14;
   undefined4 uStack_68;
   undefined1 *puStack_64;
   int iStack_60;
-  TAnimationVtbl *pTStack_5c;
-  TAnimationVtbl *pTStack_58;
+  int ****ppppiStack_5c;
+  int ****ppppiStack_58;
   undefined4 *puStack_54;
-  TAnimationVtbl *pTStack_50;
-  TAnimationVtbl *pTStack_4c;
-  _vslot_fn **pp_Stack_48;
-  TAnimationVtbl *pTStack_44;
-  TAnimationVtbl *pTStack_40;
-  int local_2c;
-  TAnimation_GetTAnimationClassNamePointer_0x00 *pTStack_28;
+  int *piStack_50;
+  int *piStack_4c;
+  int *piStack_48;
+  int ***pppiStack_44;
+  undefined4 ****ppppuStack_40;
+  int local_2c [2];
   TMacViewMgr *local_24;
-  _vslot_fn *p_Stack_20;
-  _vslot_fn *p_Stack_1c;
-  _vslot_fn *p_Stack_18;
-  _vslot_fn *p_Stack_14;
-  _vslot_fn *local_10;
-  _vslot_fn *local_c;
-  _vslot_fn *local_8;
-  _vslot_fn *local_4;
-
-  puVar11 = &this->field_0x668;
-  pTStack_40 = (TAnimationVtbl *)&local_10;
-  iVar15 = 0;
-  pTStack_44 = (TAnimationVtbl *)0x8;
-  local_2c = 0;
-  local_c = (_vslot_fn *)0x0;
-  local_10 = (_vslot_fn *)0x0;
-  local_8 = (_vslot_fn *)0xcc0;
-  local_4 = (_vslot_fn *)0x40;
-  pTStack_4c = (TAnimationVtbl *)0x50aa33;
-  pp_Stack_48 = (_vslot_fn **)puVar11;
+  undefined4 uStack_20;
+  int aiStack_1c [3];
+  undefined4 ***local_10;
+  undefined4 local_c;
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  puVar1 = &this->field_0x668;
+  ppppuStack_40 = (undefined4 ****)(aiStack_1c + 3);
+  iVar13 = 0;
+  pppiStack_44 = (int ***)0x8;
+  local_2c[0] = 0;
+  local_c = 0;
+  local_10 = (undefined4 ***)0x0;
+  local_8 = 0xcc0;
+  local_4 = 0x40;
+  piStack_4c = (int *)0x50aa33;
+  piStack_48 = (int *)puVar1;
   local_24 = this;
-  (**(code **)(*DAT_006a2158 + 0x2c))();
-  pTStack_4c = (TAnimationVtbl *)&stack0xffffffc8;
-  pTStack_50 = (TAnimationVtbl *)&stack0xffffffcc;
+  (**(code **)(*g_pDisplayMgr + 0x2c))();
+  piStack_4c = (int *)&stack0xffffffc8;
+  piStack_50 = (int *)&stack0xffffffcc;
   puStack_54 = (undefined4 *)0x50aa42;
   GetActiveQuickDrawSurfaceContextAndFlags();
-  pTStack_50 = *(TAnimationVtbl **)puVar11;
+  piStack_50 = *(int **)puVar1;
   puStack_54 = (undefined4 *)0x50aa52;
   SetActiveQuickDrawSurfaceContext();
-  pTStack_4c = *(TAnimationVtbl **)puVar11;
-  pTStack_50 = (TAnimationVtbl *)0x50aa5d;
-  pTStack_4c = (TAnimationVtbl *)GetSurfaceObjectAtContextOffset24();
-  pTStack_50 = (TAnimationVtbl *)0x50aa66;
+  piStack_4c = *(int **)puVar1;
+  piStack_50 = (int *)0x50aa5d;
+  piStack_4c = (int *)GetSurfaceObjectAtContextOffset24();
+  piStack_50 = (int *)0x50aa66;
   ReturnConstantTrueQuickDrawFlag();
-  pTStack_4c = (TAnimationVtbl *)0x50aa6e;
-  ResetQuickDrawStrokeState();
-  local_2c = 0;
-  pTStack_28 = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0;
+  piStack_4c = (int *)0x50aa6e;
+  func_0x004088aa();
+  local_2c[0] = 0;
+  local_2c[1] = 0;
   local_24 = (TMacViewMgr *)0x40;
-  p_Stack_20 = (_vslot_fn *)0x40;
+  uStack_20 = 0x40;
   do {
-    pTStack_4c = (TAnimationVtbl *)(iVar15 + 10000);
-    pTStack_50 = (TAnimationVtbl *)0x50aa90;
-    pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar6->GetRuntimeClass;
-    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
-      pTStack_4c = (TAnimationVtbl *)0x50aaa1;
-      (*(code *)**(undefined4 **)pTVar1)();
-      pTStack_4c = (TAnimationVtbl *)&local_2c;
-      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
+    piStack_4c = (int *)(iVar13 + 10000);
+    piStack_50 = (int *)0x50aa90;
+    piVar6 = (int *)func_0x004047a0();
+    puVar11 = (undefined4 *)*piVar6;
+    if (puVar11 != (undefined4 *)0x0) {
+      piStack_4c = (int *)0x50aaa1;
+      (**(code **)*puVar11)();
+      piStack_4c = local_2c;
+      *(byte *)(puVar11 + 1) = *(byte *)(puVar11 + 1) | 1;
       puStack_54 = (undefined4 *)0x50aab4;
-      pTStack_50 = pTVar6;
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
+      piStack_50 = piVar6;
+      func_0x00404db8();
     }
-    pTVar1 = pTVar6->GetRuntimeClass;
-    pTStack_4c = (TAnimationVtbl *)0x50aac0;
-    (**(code **)(*(int *)pTVar1 + 4))();
-    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
-    pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
-    if (pTVar8 != (TAnimationVtbl *)0x0) {
-      pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
-      pTStack_4c = (TAnimationVtbl *)0x50aadc;
-      TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                ((TAnimation *)pTVar8);
-      pTStack_50 = (TAnimationVtbl *)0x50aae2;
-      pTStack_4c = pTVar8;
-      __3_YAXPAX_Z();
+    piVar10 = (int *)*piVar6;
+    piStack_4c = (int *)0x50aac0;
+    (**(code **)(*piVar10 + 4))();
+    *(byte *)(piVar10 + 1) = *(byte *)(piVar10 + 1) & 0xfe;
+    piVar10 = (int *)*piVar6;
+    if (piVar10 != (int *)0x0) {
+      *piVar10 = 0x64c340;
+      piStack_4c = (int *)0x50aadc;
+      func_0x00409124();
+      piStack_50 = (int *)0x50aae2;
+      piStack_4c = piVar10;
+      operator_delete();
     }
-    pTStack_50 = (TAnimationVtbl *)0x50aaeb;
-    pTStack_4c = pTVar6;
-    __3_YAXPAX_Z();
-    iVar7 = local_2c + 0x40;
-    local_24 = (TMacViewMgr *)(local_2c + 0x80);
-    iVar15 = iVar15 + 1;
-    local_2c = iVar7;
-  } while ((short)iVar15 < 0x2a);
-  iVar15 = 0;
+    piStack_50 = (int *)0x50aaeb;
+    piStack_4c = piVar6;
+    operator_delete();
+    iVar7 = local_2c[0] + 0x40;
+    local_24 = (TMacViewMgr *)(local_2c[0] + 0x80);
+    iVar13 = iVar13 + 1;
+    local_2c[0] = iVar7;
+  } while ((short)iVar13 < 0x2a);
+  iVar13 = 0;
   do {
-    pTStack_4c = (TAnimationVtbl *)(iVar15 + 0x276e);
-    pTStack_50 = (TAnimationVtbl *)0x50ab19;
-    pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar6->GetRuntimeClass;
-    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
-      pTStack_4c = (TAnimationVtbl *)0x50ab2a;
-      (*(code *)**(undefined4 **)pTVar1)();
-      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
-      pTStack_4c = (TAnimationVtbl *)&local_2c;
+    piStack_4c = (int *)(iVar13 + 0x276e);
+    piStack_50 = (int *)0x50ab19;
+    piVar6 = (int *)func_0x004047a0();
+    puVar11 = (undefined4 *)*piVar6;
+    if (puVar11 != (undefined4 *)0x0) {
+      piStack_4c = (int *)0x50ab2a;
+      (**(code **)*puVar11)();
+      *(byte *)(puVar11 + 1) = *(byte *)(puVar11 + 1) | 1;
+      piStack_4c = local_2c;
       puStack_54 = (undefined4 *)0x50ab3d;
-      pTStack_50 = pTVar6;
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
+      piStack_50 = piVar6;
+      func_0x00404db8();
     }
-    pTVar1 = pTVar6->GetRuntimeClass;
-    pTStack_4c = (TAnimationVtbl *)0x50ab49;
-    (**(code **)(*(int *)pTVar1 + 4))();
-    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
-    pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
-    if (pTVar8 != (TAnimationVtbl *)0x0) {
-      pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
-      pTStack_4c = (TAnimationVtbl *)0x50ab65;
-      TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                ((TAnimation *)pTVar8);
-      pTStack_50 = (TAnimationVtbl *)0x50ab6b;
-      pTStack_4c = pTVar8;
-      __3_YAXPAX_Z();
+    piVar10 = (int *)*piVar6;
+    piStack_4c = (int *)0x50ab49;
+    (**(code **)(*piVar10 + 4))();
+    *(byte *)(piVar10 + 1) = *(byte *)(piVar10 + 1) & 0xfe;
+    piVar10 = (int *)*piVar6;
+    if (piVar10 != (int *)0x0) {
+      *piVar10 = 0x64c340;
+      piStack_4c = (int *)0x50ab65;
+      func_0x00409124();
+      piStack_50 = (int *)0x50ab6b;
+      piStack_4c = piVar10;
+      operator_delete();
     }
-    pTStack_50 = (TAnimationVtbl *)0x50ab74;
-    pTStack_4c = pTVar6;
-    __3_YAXPAX_Z();
-    iVar7 = local_2c + 0x40;
-    local_24 = (TMacViewMgr *)(local_2c + 0x80);
-    iVar15 = iVar15 + 1;
-    local_2c = iVar7;
-  } while ((short)iVar15 < 4);
-  iVar15 = 0;
+    piStack_50 = (int *)0x50ab74;
+    piStack_4c = piVar6;
+    operator_delete();
+    iVar7 = local_2c[0] + 0x40;
+    local_24 = (TMacViewMgr *)(local_2c[0] + 0x80);
+    iVar13 = iVar13 + 1;
+    local_2c[0] = iVar7;
+  } while ((short)iVar13 < 4);
+  iVar13 = 0;
   do {
-    pTStack_4c = (TAnimationVtbl *)(iVar15 + 0x2774);
-    pTStack_50 = (TAnimationVtbl *)0x50aba2;
-    pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar6->GetRuntimeClass;
-    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
-      pTStack_4c = (TAnimationVtbl *)0x50abb3;
-      (*(code *)**(undefined4 **)pTVar1)();
-      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
-      pTStack_4c = (TAnimationVtbl *)&local_2c;
+    piStack_4c = (int *)(iVar13 + 0x2774);
+    piStack_50 = (int *)0x50aba2;
+    piVar6 = (int *)func_0x004047a0();
+    puVar11 = (undefined4 *)*piVar6;
+    if (puVar11 != (undefined4 *)0x0) {
+      piStack_4c = (int *)0x50abb3;
+      (**(code **)*puVar11)();
+      *(byte *)(puVar11 + 1) = *(byte *)(puVar11 + 1) | 1;
+      piStack_4c = local_2c;
       puStack_54 = (undefined4 *)0x50abc6;
-      pTStack_50 = pTVar6;
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
+      piStack_50 = piVar6;
+      func_0x00404db8();
     }
-    pTVar1 = pTVar6->GetRuntimeClass;
-    pTStack_4c = (TAnimationVtbl *)0x50abd2;
-    (**(code **)(*(int *)pTVar1 + 4))();
-    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
-    pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
-    if (pTVar8 != (TAnimationVtbl *)0x0) {
-      pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
-      pTStack_4c = (TAnimationVtbl *)0x50abee;
-      TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                ((TAnimation *)pTVar8);
-      pTStack_50 = (TAnimationVtbl *)0x50abf4;
-      pTStack_4c = pTVar8;
-      __3_YAXPAX_Z();
+    piVar10 = (int *)*piVar6;
+    piStack_4c = (int *)0x50abd2;
+    (**(code **)(*piVar10 + 4))();
+    *(byte *)(piVar10 + 1) = *(byte *)(piVar10 + 1) & 0xfe;
+    piVar10 = (int *)*piVar6;
+    if (piVar10 != (int *)0x0) {
+      *piVar10 = 0x64c340;
+      piStack_4c = (int *)0x50abee;
+      func_0x00409124();
+      piStack_50 = (int *)0x50abf4;
+      piStack_4c = piVar10;
+      operator_delete();
     }
-    pTStack_50 = (TAnimationVtbl *)0x50abfd;
-    pTStack_4c = pTVar6;
-    __3_YAXPAX_Z();
-    iVar7 = local_2c + 0x40;
-    local_24 = (TMacViewMgr *)(local_2c + 0x80);
-    iVar15 = iVar15 + 1;
-    local_2c = iVar7;
-  } while ((short)iVar15 < 4);
-  pTStack_4c = (TAnimationVtbl *)0x277e;
-  pTStack_50 = (TAnimationVtbl *)0x50ac27;
-  pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-  pTVar1 = pTVar6->GetRuntimeClass;
-  if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
-    pTStack_4c = (TAnimationVtbl *)0x50ac3a;
-    (*(code *)**(undefined4 **)pTVar1)();
-    pTStack_4c = (TAnimationVtbl *)&local_2c;
-    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
+    piStack_50 = (int *)0x50abfd;
+    piStack_4c = piVar6;
+    operator_delete();
+    iVar7 = local_2c[0] + 0x40;
+    local_24 = (TMacViewMgr *)(local_2c[0] + 0x80);
+    iVar13 = iVar13 + 1;
+    local_2c[0] = iVar7;
+  } while ((short)iVar13 < 4);
+  piStack_4c = (int *)0x277e;
+  piStack_50 = (int *)0x50ac27;
+  piVar6 = (int *)func_0x004047a0();
+  puVar11 = (undefined4 *)*piVar6;
+  if (puVar11 != (undefined4 *)0x0) {
+    piStack_4c = (int *)0x50ac3a;
+    (**(code **)*puVar11)();
+    piStack_4c = local_2c;
+    *(byte *)(puVar11 + 1) = *(byte *)(puVar11 + 1) | 1;
     puStack_54 = (undefined4 *)0x50ac4d;
-    pTStack_50 = pTVar6;
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
+    piStack_50 = piVar6;
+    func_0x00404db8();
   }
-  pTVar1 = pTVar6->GetRuntimeClass;
-  pTStack_4c = (TAnimationVtbl *)0x50ac59;
-  (**(code **)(*(int *)pTVar1 + 4))();
-  pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
-  pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
-  if (pTVar8 != (TAnimationVtbl *)0x0) {
-    pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
-    pTStack_4c = (TAnimationVtbl *)0x50ac75;
-    TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-              ((TAnimation *)pTVar8);
-    pTStack_50 = (TAnimationVtbl *)0x50ac7b;
-    pTStack_4c = pTVar8;
-    __3_YAXPAX_Z();
+  piVar10 = (int *)*piVar6;
+  piStack_4c = (int *)0x50ac59;
+  (**(code **)(*piVar10 + 4))();
+  *(byte *)(piVar10 + 1) = *(byte *)(piVar10 + 1) & 0xfe;
+  piVar10 = (int *)*piVar6;
+  if (piVar10 != (int *)0x0) {
+    *piVar10 = 0x64c340;
+    piStack_4c = (int *)0x50ac75;
+    func_0x00409124();
+    piStack_50 = (int *)0x50ac7b;
+    piStack_4c = piVar10;
+    operator_delete();
   }
-  pTStack_50 = (TAnimationVtbl *)0x50ac84;
-  pTStack_4c = pTVar6;
-  __3_YAXPAX_Z();
-  local_24 = (TMacViewMgr *)(local_2c + 0x80);
-  pTStack_4c = *(TAnimationVtbl **)puVar11;
-  pTStack_50 = (TAnimationVtbl *)0x50aca1;
-  local_2c = local_2c + 0x40;
-  pTStack_4c = (TAnimationVtbl *)GetSurfaceObjectAtContextOffset24();
-  pTStack_50 = (TAnimationVtbl *)0x50acaa;
+  piStack_50 = (int *)0x50ac84;
+  piStack_4c = piVar6;
+  operator_delete();
+  local_24 = (TMacViewMgr *)(local_2c[0] + 0x80);
+  piStack_4c = *(int **)puVar1;
+  piStack_50 = (int *)0x50aca1;
+  local_2c[0] = local_2c[0] + 0x40;
+  piStack_4c = (int *)GetSurfaceObjectAtContextOffset24();
+  piStack_50 = (int *)0x50acaa;
   NoOpQuickDrawLifecycleHookB();
   puStack_54 = (undefined4 *)0x50acbc;
   SetActiveQuickDrawSurfaceContext();
-  pTStack_4c = (TAnimationVtbl *)&p_Stack_1c;
-  puVar13 = (undefined4 *)(unaff_EBX + 0x66c);
-  pTStack_50 = (TAnimationVtbl *)0x8;
-  p_Stack_18 = (_vslot_fn *)0x0;
-  p_Stack_1c = (_vslot_fn *)0x0;
-  p_Stack_14 = (_vslot_fn *)0xa80;
-  local_10 = (_vslot_fn *)0x40;
-  pTStack_58 = (TAnimationVtbl *)0x50acf4;
-  puStack_54 = puVar13;
-  (**(code **)(*DAT_006a2158 + 0x2c))();
-  pTStack_58 = (TAnimationVtbl *)&pTStack_44;
-  pTStack_5c = (TAnimationVtbl *)&pTStack_40;
+  piStack_4c = aiStack_1c;
+  puVar11 = (undefined4 *)(unaff_EBX + 0x66c);
+  piStack_50 = (int *)0x8;
+  aiStack_1c[1] = 0;
+  aiStack_1c[0] = 0;
+  aiStack_1c[2] = 0xa80;
+  local_10 = (undefined4 ***)0x40;
+  ppppiStack_58 = (int ****)0x50acf4;
+  puStack_54 = puVar11;
+  (**(code **)(*g_pDisplayMgr + 0x2c))();
+  ppppiStack_58 = &pppiStack_44;
+  ppppiStack_5c = (int ****)&ppppuStack_40;
   iStack_60 = 0x50ad03;
   GetActiveQuickDrawSurfaceContextAndFlags();
-  pTStack_5c = (TAnimationVtbl *)*puVar13;
-  pTStack_58 = pTStack_44;
+  ppppiStack_5c = (int ****)*puVar11;
+  ppppiStack_58 = (int ****)pppiStack_44;
   iStack_60 = 0x50ad13;
   SetActiveQuickDrawSurfaceContext();
-  pTStack_58 = (TAnimationVtbl *)*puVar13;
-  pTStack_5c = (TAnimationVtbl *)0x50ad1e;
-  pTStack_58 = (TAnimationVtbl *)GetSurfaceObjectAtContextOffset24();
-  pTStack_5c = (TAnimationVtbl *)0x50ad27;
+  ppppiStack_58 = (int ****)*puVar11;
+  ppppiStack_5c = (undefined4 ****)0x50ad1e;
+  ppppiStack_58 = (int ****)GetSurfaceObjectAtContextOffset24();
+  ppppiStack_5c = (undefined4 ****)0x50ad27;
   ReturnConstantTrueQuickDrawFlag();
-  pTStack_58 = (TAnimationVtbl *)0x50ad2f;
-  ResetQuickDrawStrokeState();
-  local_2c = 0x40;
-  pTVar6 = (TAnimationVtbl *)0x190;
+  ppppiStack_58 = (int ****)0x50ad2f;
+  func_0x004088aa();
+  local_2c[0] = 0x40;
+  pppiVar14 = (int ***)0x190;
   do {
-    sVar14 = (short)pTVar6;
-    if (((sVar14 != 0x195) && (sVar14 != 0x19e)) && (sVar14 != 0x1a7)) {
-      pTStack_5c = (TAnimationVtbl *)0x50ad6a;
-      pTStack_58 = pTVar6;
-      pTVar8 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-      pTVar1 = pTVar8->GetRuntimeClass;
-      if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
-        pTStack_58 = (TAnimationVtbl *)0x50ad7b;
-        (*(code *)**(undefined4 **)pTVar1)();
-        pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
-        pTStack_58 = (TAnimationVtbl *)&stack0xffffffc8;
+    sVar12 = (short)pppiVar14;
+    if (((sVar12 != 0x195) && (sVar12 != 0x19e)) && (sVar12 != 0x1a7)) {
+      ppppiStack_5c = (undefined4 ****)0x50ad6a;
+      ppppiStack_58 = (int ****)pppiVar14;
+      ppppuVar8 = (undefined4 ****)func_0x004047a0();
+      pppuVar2 = *ppppuVar8;
+      if (pppuVar2 != (undefined4 ***)0x0) {
+        ppppiStack_58 = (int ****)0x50ad7b;
+        (*(code *)**pppuVar2)();
+        *(byte *)(pppuVar2 + 1) = *(byte *)(pppuVar2 + 1) | 1;
+        ppppiStack_58 = (int ****)&stack0xffffffc8;
         iStack_60 = 0x50ad8e;
-        pTStack_5c = pTVar8;
-        WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
+        ppppiStack_5c = ppppuVar8;
+        func_0x00404db8();
       }
-      pTVar1 = pTVar8->GetRuntimeClass;
-      pTStack_58 = (TAnimationVtbl *)0x50ad9a;
-      (**(code **)(*(int *)pTVar1 + 4))();
-      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
-      pTVar2 = (TAnimationVtbl *)pTVar8->GetRuntimeClass;
-      if (pTVar2 != (TAnimationVtbl *)0x0) {
-        pTVar2->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
-        pTStack_58 = (TAnimationVtbl *)0x50adb6;
-        TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                  ((TAnimation *)pTVar2);
-        pTStack_5c = (TAnimationVtbl *)0x50adbc;
-        pTStack_58 = pTVar2;
-        __3_YAXPAX_Z();
+      pppuVar2 = *ppppuVar8;
+      ppppiStack_58 = (int ****)0x50ad9a;
+      (*(code *)(*pppuVar2)[1])();
+      *(byte *)(pppuVar2 + 1) = *(byte *)(pppuVar2 + 1) & 0xfe;
+      pppiVar3 = *ppppuVar8;
+      if (pppiVar3 != (int ***)0x0) {
+        *pppiVar3 = (int **)0x64c340;
+        ppppiStack_58 = (int ****)0x50adb6;
+        func_0x00409124();
+        ppppiStack_5c = (undefined4 ****)0x50adbc;
+        ppppiStack_58 = (int ****)pppiVar3;
+        operator_delete();
       }
-      pTStack_5c = (TAnimationVtbl *)0x50adc5;
-      pTStack_58 = pTVar8;
-      __3_YAXPAX_Z();
+      ppppiStack_5c = (undefined4 ****)0x50adc5;
+      ppppiStack_58 = ppppuVar8;
+      operator_delete();
     }
-    pTVar6 = (TAnimationVtbl *)((int)&pTVar6->GetRuntimeClass + 1);
-  } while ((short)pTVar6 < 0x1ab);
-  pTVar6 = (TAnimationVtbl *)0x226;
+    pppiVar14 = (int ***)((int)pppiVar14 + 1);
+  } while ((short)pppiVar14 < 0x1ab);
+  pppiVar14 = (int ***)0x226;
   do {
-    pTStack_5c = (TAnimationVtbl *)0x50adf1;
-    pTStack_58 = pTVar6;
-    pTVar8 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar8->GetRuntimeClass;
-    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
-      pTStack_58 = (TAnimationVtbl *)0x50ae02;
-      (*(code *)**(undefined4 **)pTVar1)();
-      pTStack_58 = (TAnimationVtbl *)&stack0xffffffc8;
-      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
+    ppppiStack_5c = (undefined4 ****)0x50adf1;
+    ppppiStack_58 = (int ****)pppiVar14;
+    ppppuVar8 = (undefined4 ****)func_0x004047a0();
+    pppuVar2 = *ppppuVar8;
+    if (pppuVar2 != (undefined4 ***)0x0) {
+      ppppiStack_58 = (int ****)0x50ae02;
+      (*(code *)**pppuVar2)();
+      ppppiStack_58 = (int ****)&stack0xffffffc8;
+      *(byte *)(pppuVar2 + 1) = *(byte *)(pppuVar2 + 1) | 1;
       iStack_60 = 0x50ae15;
-      pTStack_5c = pTVar8;
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
+      ppppiStack_5c = ppppuVar8;
+      func_0x00404db8();
     }
-    pTVar1 = pTVar8->GetRuntimeClass;
-    pTStack_58 = (TAnimationVtbl *)0x50ae21;
-    (**(code **)(*(int *)pTVar1 + 4))();
-    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
-    pTVar2 = (TAnimationVtbl *)pTVar8->GetRuntimeClass;
-    if (pTVar2 != (TAnimationVtbl *)0x0) {
-      pTVar2->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
-      pTStack_58 = (TAnimationVtbl *)0x50ae3d;
-      TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                ((TAnimation *)pTVar2);
-      pTStack_5c = (TAnimationVtbl *)0x50ae43;
-      pTStack_58 = pTVar2;
-      __3_YAXPAX_Z();
+    pppuVar2 = *ppppuVar8;
+    ppppiStack_58 = (int ****)0x50ae21;
+    (*(code *)(*pppuVar2)[1])();
+    *(byte *)(pppuVar2 + 1) = *(byte *)(pppuVar2 + 1) & 0xfe;
+    pppiVar3 = *ppppuVar8;
+    if (pppiVar3 != (int ***)0x0) {
+      *pppiVar3 = (int **)0x64c340;
+      ppppiStack_58 = (int ****)0x50ae3d;
+      func_0x00409124();
+      ppppiStack_5c = (undefined4 ****)0x50ae43;
+      ppppiStack_58 = (int ****)pppiVar3;
+      operator_delete();
     }
-    pTStack_5c = (TAnimationVtbl *)0x50ae4c;
-    pTStack_58 = pTVar8;
-    __3_YAXPAX_Z();
-    pTVar6 = (TAnimationVtbl *)((int)&pTVar6->GetRuntimeClass + 1);
-  } while ((short)pTVar6 < 0x22e);
-  pTVar6 = (TAnimationVtbl *)0x230;
+    ppppiStack_5c = (undefined4 ****)0x50ae4c;
+    ppppiStack_58 = ppppuVar8;
+    operator_delete();
+    pppiVar14 = (int ***)((int)pppiVar14 + 1);
+  } while ((short)pppiVar14 < 0x22e);
+  pppiVar14 = (int ***)0x230;
   do {
-    pTStack_5c = (TAnimationVtbl *)0x50ae74;
-    pTStack_58 = pTVar6;
-    pTVar8 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar8->GetRuntimeClass;
-    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
-      pTStack_58 = (TAnimationVtbl *)0x50ae85;
-      (*(code *)**(undefined4 **)pTVar1)();
-      pTStack_58 = (TAnimationVtbl *)&stack0xffffffc8;
-      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
+    ppppiStack_5c = (undefined4 ****)0x50ae74;
+    ppppiStack_58 = (int ****)pppiVar14;
+    ppppuVar8 = (undefined4 ****)func_0x004047a0();
+    pppuVar2 = *ppppuVar8;
+    if (pppuVar2 != (undefined4 ***)0x0) {
+      ppppiStack_58 = (int ****)0x50ae85;
+      (*(code *)**pppuVar2)();
+      ppppiStack_58 = (int ****)&stack0xffffffc8;
+      *(byte *)(pppuVar2 + 1) = *(byte *)(pppuVar2 + 1) | 1;
       iStack_60 = 0x50ae98;
-      pTStack_5c = pTVar8;
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
+      ppppiStack_5c = ppppuVar8;
+      func_0x00404db8();
     }
-    pTVar1 = pTVar8->GetRuntimeClass;
-    pTStack_58 = (TAnimationVtbl *)0x50aea4;
-    (**(code **)(*(int *)pTVar1 + 4))();
-    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
-    pTVar2 = (TAnimationVtbl *)pTVar8->GetRuntimeClass;
-    if (pTVar2 != (TAnimationVtbl *)0x0) {
-      pTVar2->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
-      pTStack_58 = (TAnimationVtbl *)0x50aec0;
-      TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                ((TAnimation *)pTVar2);
-      pTStack_5c = (TAnimationVtbl *)0x50aec6;
-      pTStack_58 = pTVar2;
-      __3_YAXPAX_Z();
+    pppuVar2 = *ppppuVar8;
+    ppppiStack_58 = (int ****)0x50aea4;
+    (*(code *)(*pppuVar2)[1])();
+    *(byte *)(pppuVar2 + 1) = *(byte *)(pppuVar2 + 1) & 0xfe;
+    pppiVar3 = *ppppuVar8;
+    if (pppiVar3 != (int ***)0x0) {
+      *pppiVar3 = (int **)0x64c340;
+      ppppiStack_58 = (int ****)0x50aec0;
+      func_0x00409124();
+      ppppiStack_5c = (undefined4 ****)0x50aec6;
+      ppppiStack_58 = (int ****)pppiVar3;
+      operator_delete();
     }
-    pTStack_5c = (TAnimationVtbl *)0x50aecf;
-    pTStack_58 = pTVar8;
-    __3_YAXPAX_Z();
-    pTVar6 = (TAnimationVtbl *)((int)&pTVar6->GetRuntimeClass + 1);
-  } while ((short)pTVar6 < 0x233);
-  iVar15 = 0;
+    ppppiStack_5c = (undefined4 ****)0x50aecf;
+    ppppiStack_58 = ppppuVar8;
+    operator_delete();
+    pppiVar14 = (int ***)((int)pppiVar14 + 1);
+  } while ((short)pppiVar14 < 0x233);
+  iVar13 = 0;
   do {
-    pTStack_58 = (TAnimationVtbl *)(iVar15 + 0x2778);
-    pTStack_5c = (TAnimationVtbl *)0x50aefa;
-    pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar6->GetRuntimeClass;
-    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
-      pTStack_58 = (TAnimationVtbl *)0x50af0b;
-      (*(code *)**(undefined4 **)pTVar1)();
-      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
-      pTStack_58 = (TAnimationVtbl *)&stack0xffffffc8;
+    ppppiStack_58 = (int ****)(iVar13 + 0x2778);
+    ppppiStack_5c = (undefined4 ****)0x50aefa;
+    ppppuVar8 = (undefined4 ****)func_0x004047a0();
+    pppuVar2 = *ppppuVar8;
+    if (pppuVar2 != (undefined4 ***)0x0) {
+      ppppiStack_58 = (int ****)0x50af0b;
+      (*(code *)**pppuVar2)();
+      *(byte *)(pppuVar2 + 1) = *(byte *)(pppuVar2 + 1) | 1;
+      ppppiStack_58 = (int ****)&stack0xffffffc8;
       iStack_60 = 0x50af1e;
-      pTStack_5c = pTVar6;
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
+      ppppiStack_5c = ppppuVar8;
+      func_0x00404db8();
     }
-    pTVar1 = pTVar6->GetRuntimeClass;
-    pTStack_58 = (TAnimationVtbl *)0x50af2a;
-    (**(code **)(*(int *)pTVar1 + 4))();
-    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
-    pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
-    if (pTVar8 != (TAnimationVtbl *)0x0) {
-      pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
-      pTStack_58 = (TAnimationVtbl *)0x50af46;
-      TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                ((TAnimation *)pTVar8);
-      pTStack_5c = (TAnimationVtbl *)0x50af4c;
-      pTStack_58 = pTVar8;
-      __3_YAXPAX_Z();
+    pppuVar2 = *ppppuVar8;
+    ppppiStack_58 = (int ****)0x50af2a;
+    (*(code *)(*pppuVar2)[1])();
+    *(byte *)(pppuVar2 + 1) = *(byte *)(pppuVar2 + 1) & 0xfe;
+    pppiVar14 = *ppppuVar8;
+    if (pppiVar14 != (int ***)0x0) {
+      *pppiVar14 = (int **)0x64c340;
+      ppppiStack_58 = (int ****)0x50af46;
+      func_0x00409124();
+      ppppiStack_5c = (undefined4 ****)0x50af4c;
+      ppppiStack_58 = (int ****)pppiVar14;
+      operator_delete();
     }
-    pTStack_5c = (TAnimationVtbl *)0x50af55;
-    pTStack_58 = pTVar6;
-    __3_YAXPAX_Z();
-    iVar15 = iVar15 + 1;
-  } while ((short)iVar15 < 2);
-  iVar15 = 0;
+    ppppiStack_5c = (undefined4 ****)0x50af55;
+    ppppiStack_58 = ppppuVar8;
+    operator_delete();
+    iVar13 = iVar13 + 1;
+  } while ((short)iVar13 < 2);
+  iVar13 = 0;
   do {
-    pTStack_58 = (TAnimationVtbl *)(iVar15 + 0x242);
-    pTStack_5c = (TAnimationVtbl *)0x50af83;
-    pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar6->GetRuntimeClass;
-    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
-      pTStack_58 = (TAnimationVtbl *)0x50af94;
-      (*(code *)**(undefined4 **)pTVar1)();
-      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
-      pTStack_58 = (TAnimationVtbl *)&stack0xffffffc8;
+    ppppiStack_58 = (int ****)(iVar13 + 0x242);
+    ppppiStack_5c = (undefined4 ****)0x50af83;
+    ppppuVar8 = (undefined4 ****)func_0x004047a0();
+    pppuVar2 = *ppppuVar8;
+    if (pppuVar2 != (undefined4 ***)0x0) {
+      ppppiStack_58 = (int ****)0x50af94;
+      (*(code *)**pppuVar2)();
+      *(byte *)(pppuVar2 + 1) = *(byte *)(pppuVar2 + 1) | 1;
+      ppppiStack_58 = (int ****)&stack0xffffffc8;
       iStack_60 = 0x50afa7;
-      pTStack_5c = pTVar6;
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
+      ppppiStack_5c = ppppuVar8;
+      func_0x00404db8();
     }
-    pTVar1 = pTVar6->GetRuntimeClass;
-    pTStack_58 = (TAnimationVtbl *)0x50afb3;
-    (**(code **)(*(int *)pTVar1 + 4))();
-    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
-    pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
-    if (pTVar8 != (TAnimationVtbl *)0x0) {
-      pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
-      pTStack_58 = (TAnimationVtbl *)0x50afcf;
-      TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                ((TAnimation *)pTVar8);
-      pTStack_5c = (TAnimationVtbl *)0x50afd5;
-      pTStack_58 = pTVar8;
-      __3_YAXPAX_Z();
+    pppuVar2 = *ppppuVar8;
+    ppppiStack_58 = (int ****)0x50afb3;
+    (*(code *)(*pppuVar2)[1])();
+    *(byte *)(pppuVar2 + 1) = *(byte *)(pppuVar2 + 1) & 0xfe;
+    pppiVar14 = *ppppuVar8;
+    if (pppiVar14 != (int ***)0x0) {
+      *pppiVar14 = (int **)0x64c340;
+      ppppiStack_58 = (int ****)0x50afcf;
+      func_0x00409124();
+      ppppiStack_5c = (undefined4 ****)0x50afd5;
+      ppppiStack_58 = (int ****)pppiVar14;
+      operator_delete();
     }
-    pTStack_5c = (TAnimationVtbl *)0x50afde;
-    pTStack_58 = pTVar6;
-    __3_YAXPAX_Z();
-    iVar15 = iVar15 + 1;
-  } while ((short)iVar15 < 2);
-  pTStack_58 = *(TAnimationVtbl **)(unaff_EBX + 0x66c);
-  pTStack_5c = (TAnimationVtbl *)0x50b00a;
-  pTStack_58 = (TAnimationVtbl *)GetSurfaceObjectAtContextOffset24();
-  pTStack_5c = (TAnimationVtbl *)0x50b013;
+    ppppiStack_5c = (undefined4 ****)0x50afde;
+    ppppiStack_58 = ppppuVar8;
+    operator_delete();
+    iVar13 = iVar13 + 1;
+  } while ((short)iVar13 < 2);
+  ppppiStack_58 = *(int *****)(unaff_EBX + 0x66c);
+  ppppiStack_5c = (undefined4 ****)0x50b00a;
+  ppppiStack_58 = (int ****)GetSurfaceObjectAtContextOffset24();
+  ppppiStack_5c = (undefined4 ****)0x50b013;
   NoOpQuickDrawLifecycleHookB();
-  pTStack_58 = pTStack_44;
-  pTStack_5c = pTStack_40;
+  ppppiStack_58 = (int ****)pppiStack_44;
+  ppppiStack_5c = ppppuStack_40;
   iStack_60 = 0x50b025;
   SetActiveQuickDrawSurfaceContext();
-  pTStack_58 = (TAnimationVtbl *)&pTStack_28;
+  ppppiStack_58 = (int ****)(local_2c + 1);
   iStack_60 = unaff_EBX + 0x670;
-  pTStack_5c = (TAnimationVtbl *)0x8;
+  ppppiStack_5c = (undefined4 ****)0x8;
   local_24 = (TMacViewMgr *)0x0;
-  pTStack_28 = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0;
-  p_Stack_20 = (_vslot_fn *)0xd7;
-  p_Stack_1c = (_vslot_fn *)0x78;
+  local_2c[1] = 0;
+  uStack_20 = 0xd7;
+  aiStack_1c[0] = 0x78;
   puStack_64 = (undefined1 *)0x50b05b;
-  (**(code **)(*DAT_006a2158 + 0x2c))();
+  (**(code **)(*g_pDisplayMgr + 0x2c))();
   puStack_64 = &stack0xffffffcc;
-  puVar13 = (undefined4 *)(unaff_EBX + 0x6b4);
+  puVar11 = (undefined4 *)(unaff_EBX + 0x6b4);
   uStack_68 = 8;
-  local_2c = 0x90;
-  pTStack_28 = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x26;
-  (**(code **)(*DAT_006a2158 + 0x2c))(puVar13);
-  GetActiveQuickDrawSurfaceContextAndFlags(&pTStack_58,&pTStack_5c);
-  SetActiveQuickDrawSurfaceContext(*puVar13,pTStack_5c);
-  uVar9 = GetSurfaceObjectAtContextOffset24(*puVar13);
+  local_2c[0] = 0x90;
+  local_2c[1] = 0x26;
+  (**(code **)(*g_pDisplayMgr + 0x2c))(puVar11);
+  GetActiveQuickDrawSurfaceContextAndFlags(&ppppiStack_58,&ppppiStack_5c);
+  SetActiveQuickDrawSurfaceContext(*puVar11,ppppiStack_5c);
+  uVar9 = GetSurfaceObjectAtContextOffset24(*puVar11);
   ReturnConstantTrueQuickDrawFlag(uVar9);
-  ResetQuickDrawStrokeState();
-  pTStack_50 = (TAnimationVtbl *)0x0;
-  pTStack_4c = (TAnimationVtbl *)0x0;
-  pp_Stack_48 = (_vslot_fn **)0x12;
-  pTStack_44 = (TAnimationVtbl *)0x26;
-  iVar15 = 0x23a;
+  func_0x004088aa();
+  piStack_50 = (int *)0x0;
+  piStack_4c = (int *)0x0;
+  piStack_48 = (int *)0x12;
+  pppiStack_44 = (int ***)0x26;
+  iVar13 = 0x23a;
   do {
-    piVar10 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(iVar15);
-    puVar3 = (undefined4 *)*piVar10;
-    if (puVar3 != (undefined4 *)0x0) {
-      (**(code **)*puVar3)();
-      *(byte *)(puVar3 + 1) = *(byte *)(puVar3 + 1) | 1;
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar10,&pTStack_50);
+    piVar6 = (int *)func_0x004047a0(iVar13);
+    puVar4 = (undefined4 *)*piVar6;
+    if (puVar4 != (undefined4 *)0x0) {
+      (**(code **)*puVar4)();
+      *(byte *)(puVar4 + 1) = *(byte *)(puVar4 + 1) | 1;
+      func_0x00404db8(piVar6,&piStack_50);
     }
-    piVar12 = (int *)*piVar10;
-    (**(code **)(*piVar12 + 4))();
-    *(byte *)(piVar12 + 1) = *(byte *)(piVar12 + 1) & 0xfe;
-    pTVar4 = (TAnimation *)*piVar10;
-    if (pTVar4 != (TAnimation *)0x0) {
-      pTVar4->vftable = (TAnimationVtbl *)0x64c340;
-      TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                (pTVar4);
-      __3_YAXPAX_Z(pTVar4);
+    piVar10 = (int *)*piVar6;
+    (**(code **)(*piVar10 + 4))();
+    *(byte *)(piVar10 + 1) = *(byte *)(piVar10 + 1) & 0xfe;
+    puVar4 = (undefined4 *)*piVar6;
+    if (puVar4 != (undefined4 *)0x0) {
+      *puVar4 = 0x64c340;
+      func_0x00409124();
+      operator_delete(puVar4);
     }
-    __3_YAXPAX_Z(piVar10);
-    puVar11 = (undefined1 *)((int)&pTStack_50->Dump + 2);
-    pp_Stack_48 = &pTStack_50->ShallowFree;
-    iVar15 = iVar15 + 1;
-    pTStack_50 = (TAnimationVtbl *)puVar11;
-  } while ((short)iVar15 < 0x242);
-  uVar9 = GetSurfaceObjectAtContextOffset24(*puVar13);
+    operator_delete(piVar6);
+    piVar6 = (int *)((int)piStack_50 + 0x12);
+    piStack_48 = piStack_50 + 9;
+    iVar13 = iVar13 + 1;
+    piStack_50 = piVar6;
+  } while ((short)iVar13 < 0x242);
+  uVar9 = GetSurfaceObjectAtContextOffset24(*puVar11);
   NoOpQuickDrawLifecycleHookB(uVar9);
-  SetActiveQuickDrawSurfaceContext(pTStack_58,pTStack_5c);
-  piVar10 = puStack_54 + 0x1ae;
-  pTStack_40 = (TAnimationVtbl *)0x0;
-  if (*piVar10 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(piVar10);
+  SetActiveQuickDrawSurfaceContext(ppppiStack_58,ppppiStack_5c);
+  piVar6 = puStack_54 + 0x1ae;
+  ppppuStack_40 = (undefined4 ****)0x0;
+  if (*piVar6 != 0) {
+    func_0x004010e6(piVar6);
   }
-  (**(code **)(*DAT_006a2158 + 0x2c))(piVar10,8,&pTStack_40);
+  (**(code **)(*g_pDisplayMgr + 0x2c))(piVar6,8,&ppppuStack_40);
   GetActiveQuickDrawSurfaceContextAndFlags(&puStack_64,&uStack_68);
-  SetActiveQuickDrawSurfaceContext(*piVar10,uStack_68);
-  uVar9 = GetSurfaceObjectAtContextOffset24(*piVar10);
+  SetActiveQuickDrawSurfaceContext(*piVar6,uStack_68);
+  uVar9 = GetSurfaceObjectAtContextOffset24(*piVar6);
   ReturnConstantTrueQuickDrawFlag(uVar9);
-  ResetQuickDrawStrokeState();
-  piVar12 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(0x244);
-  puVar13 = (undefined4 *)*piVar12;
-  if (puVar13 != (undefined4 *)0x0) {
-    (**(code **)*puVar13)();
-    *(byte *)(puVar13 + 1) = *(byte *)(puVar13 + 1) | 1;
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar12,&pTStack_4c);
+  func_0x004088aa();
+  piVar10 = (int *)func_0x004047a0(0x244);
+  puVar11 = (undefined4 *)*piVar10;
+  if (puVar11 != (undefined4 *)0x0) {
+    (**(code **)*puVar11)();
+    *(byte *)(puVar11 + 1) = *(byte *)(puVar11 + 1) | 1;
+    func_0x00404db8(piVar10,&piStack_4c);
   }
-  piVar5 = (int *)*piVar12;
+  piVar5 = (int *)*piVar10;
   (**(code **)(*piVar5 + 4))();
   *(byte *)(piVar5 + 1) = *(byte *)(piVar5 + 1) & 0xfe;
-  pTVar4 = (TAnimation *)*piVar12;
-  if (pTVar4 != (TAnimation *)0x0) {
-    pTVar4->vftable = (TAnimationVtbl *)0x64c340;
-    TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-              (pTVar4);
-    __3_YAXPAX_Z(pTVar4);
+  puVar11 = (undefined4 *)*piVar10;
+  if (puVar11 != (undefined4 *)0x0) {
+    *puVar11 = 0x64c340;
+    func_0x00409124();
+    operator_delete(puVar11);
   }
-  __3_YAXPAX_Z(piVar12);
-  uVar9 = GetSurfaceObjectAtContextOffset24(*piVar10);
+  operator_delete(piVar10);
+  uVar9 = GetSurfaceObjectAtContextOffset24(*piVar6);
   NoOpQuickDrawLifecycleHookB(uVar9);
   SetActiveQuickDrawSurfaceContext(puStack_64,uStack_68);
-  iVar15 = 0;
+  iVar13 = 0;
   do {
-    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar15 + 0x2740,0x40,0x40,0x1680,0x10);
-    iVar15 = iVar15 + 1;
-  } while ((short)iVar15 < 0x10);
-  iVar15 = 0x2760;
+    func_0x00402ab3(iVar13 + 0x2740,0x40,0x40,0x1680,0x10);
+    iVar13 = iVar13 + 1;
+  } while ((short)iVar13 < 0x10);
+  iVar13 = 0x2760;
   do {
-    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar15 + -0x26,0x40,0x40,0x1680,0x10);
-    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar15,0x40,0x40,0x1680,0x10);
-    sVar14 = (short)iVar15;
-    iVar15 = iVar15 + 1;
-  } while ((short)(sVar14 + -0x275f) < 6);
-  iVar15 = 0x10;
+    func_0x00402ab3(iVar13 + -0x26,0x40,0x40,0x1680,0x10);
+    func_0x00402ab3(iVar13,0x40,0x40,0x1680,0x10);
+    sVar12 = (short)iVar13;
+    iVar13 = iVar13 + 1;
+  } while ((short)(sVar12 + -0x275f) < 6);
+  iVar13 = 0x10;
   do {
-    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar15 + 0x2756,0x40,0x40,0x1680,0x10);
-    iVar15 = iVar15 + 1;
-  } while ((short)iVar15 < 0x18);
+    func_0x00402ab3(iVar13 + 0x2756,0x40,0x40,0x1680,0x10);
+    iVar13 = iVar13 + 1;
+  } while ((short)iVar13 < 0x18);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0050B5B0
+// GHIDRA_NAME TMacViewMgr::ReloadBitmap244AndRefreshUiCaches
+// GHIDRA_PROTO undefined ReloadBitmap244AndRefreshUiCaches()
+
+void __fastcall TMacViewMgr::ReloadBitmap244AndRefreshUiCaches(int *param_1)
+
+{
+  int iVar1;
+  
+  (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df3f0)(3);
+  if (param_1[0x1ae] != 0) {
+    func_0x004010e6(param_1 + 0x1ae);
+  }
+  iVar1 = func_0x00401fe1(0x244);
+  param_1[0x1ae] = iVar1;
+  if (param_1[0x1a0] != 0) {
+    func_0x004010e6(param_1 + 0x1a0);
+  }
+  (**(code **)(*param_1 + 0x34))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0050B640
+// GHIDRA_NAME TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress
+// GHIDRA_PROTO undefined __thiscall RenderTurnEventPalettePreviewSurfaceAndProgress(void)
+
+/* WARNING: Removing unreachable block (ram,0x0050b738) */
+
+void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress()
+
+{
+  char cVar1;
+  undefined1 uVar2;
+  short sVar3;
+  int *piVar4;
+  int iVar5;
+  undefined1 *puVar6;
+  int iVar7;
+  undefined1 *puVar8;
+  char *pcVar9;
+  char *pcVar10;
+  undefined4 uVar11;
+  char cVar12;
+  uint uVar13;
+  int iVar14;
+  undefined1 *puVar15;
+  char *pcVar16;
+  char *pcVar17;
+  undefined4 uStack_28;
+  int local_24;
+  undefined4 uStack_20;
+  int *local_1c;
+  TMacViewMgr *local_18;
+  undefined1 local_14 [4];
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  local_24 = 0;
+  local_10 = 0;
+  local_c = 0;
+  local_8 = 0xd7;
+  local_4 = 0x78;
+  local_18 = this;
+  GetActiveQuickDrawSurfaceContextAndFlags(local_14,&local_24);
+  SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x670,local_24);
+  piVar4 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x670);
+  local_1c = piVar4;
+  ReturnConstantTrueQuickDrawFlag(piVar4);
+  func_0x004088aa();
+  iVar5 = func_0x00405e39(piVar4);
+  uVar13 = *(ushort *)(*piVar4 + 4) & 0x3fff;
+  func_0x00402bdf(0xffffff);
+  (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x32);
+  FillRectWithQuickDrawBrushAndContextOffset(local_14);
+  iVar14 = 0;
+  local_24 = 0;
+  do {
+    sVar3 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + (short)local_24 * 0x24);
+    if (sVar3 < 0x17) {
+      if (sVar3 == 0) {
+        sVar3 = 0x3e;
+      }
+      uVar2 = func_0x00409205(sVar3);
+      *(undefined1 *)(iVar5 + iVar14) = uVar2;
+      puVar6 = (undefined1 *)(uVar13 + iVar5 + iVar14);
+      *(undefined1 *)(iVar5 + 1 + iVar14) = uVar2;
+      *puVar6 = uVar2;
+      puVar6[1] = uVar2;
+    }
+    iVar14 = iVar14 + 2;
+    if (iVar14 == 0xd8) {
+      iVar14 = 0;
+      iVar5 = iVar5 + uVar13 * 2;
+    }
+    local_24 = local_24 + 1;
+  } while (local_24 < 0x1950);
+  local_24 = func_0x00405e39(piVar4);
+  local_24 = local_24 + uVar13 * 2;
+  puVar6 = (undefined1 *)operator_new(0x6540);
+  if (puVar6 == (undefined1 *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0x7e3);
+  }
+  func_0x00405e39(piVar4);
+  iVar14 = 0;
+  iVar5 = 0x78;
+  puVar15 = puVar6;
+  do {
+    iVar7 = func_0x00405e39(uStack_20);
+    puVar8 = (undefined1 *)(iVar7 + iVar14);
+    iVar7 = 0xd8;
+    do {
+      *puVar15 = *puVar8;
+      puVar15 = puVar15 + 1;
+      puVar8 = puVar8 + 1;
+      iVar7 = iVar7 + -1;
+    } while (iVar7 != 0);
+    iVar14 = iVar14 + uVar13;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  pcVar9 = (char *)(local_24 + 1);
+  local_24 = 0x70;
+  pcVar17 = puVar6 + 0x1b1;
+  do {
+    iVar5 = 0xd6;
+    pcVar10 = pcVar9;
+    do {
+      pcVar16 = pcVar17;
+      cVar1 = *pcVar10;
+      if ((pcVar10[-uVar13] != cVar1) &&
+         ((cVar12 = pcVar10[-1], cVar12 != cVar1 || (cVar12 = pcVar10[1], cVar12 != cVar1)))) {
+        *pcVar16 = cVar12;
+      }
+      if ((pcVar10[uVar13] != cVar1) &&
+         ((cVar12 = pcVar10[-1], cVar12 != cVar1 || (cVar12 = pcVar10[1], cVar12 != cVar1)))) {
+        *pcVar16 = cVar12;
+      }
+      pcVar10 = pcVar10 + 1;
+      iVar5 = iVar5 + -1;
+      pcVar17 = pcVar16 + 1;
+    } while (iVar5 != 0);
+    pcVar9 = pcVar9 + uVar13;
+    pcVar17 = pcVar16 + 3;
+    local_24 = local_24 + -1;
+  } while (local_24 != 0);
+  iVar14 = 0;
+  iVar5 = 0x78;
+  local_24 = 0;
+  puVar15 = puVar6;
+  do {
+    iVar7 = func_0x00405e39(uStack_20);
+    puVar8 = (undefined1 *)(iVar7 + iVar14);
+    iVar7 = 0xd8;
+    do {
+      *puVar8 = *puVar15;
+      puVar8 = puVar8 + 1;
+      puVar15 = puVar15 + 1;
+      iVar7 = iVar7 + -1;
+    } while (iVar7 != 0);
+    iVar14 = iVar14 + uVar13;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  operator_delete(puVar6);
+  func_0x00406b86(0);
+  uVar11 = GetSurfaceObjectAtContextOffset24(local_1c[0x19c]);
+  NoOpQuickDrawLifecycleHookB(uVar11);
+  SetActiveQuickDrawSurfaceContext(local_18,uStack_28);
+  if (DAT_006a4268 != 0) {
+    func_0x00401c2b();
+  }
+  func_0x00403288();
+  g_pGlobalMapState->field_0x4 = 1;
   return;
 }
 
@@ -1328,7 +1635,7 @@ void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles()
   int iVar4;
   int iVar5;
   int local_8;
-
+  
   iVar4 = 0;
   piVar2 = (int *)&this->field_0x64;
   local_8 = 0;
@@ -1336,22 +1643,22 @@ void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles()
     iVar5 = *(int *)&g_pGlobalMapState->field_0x10 + local_8;
     if (*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + local_8) != -1) {
       if (*piVar2 != 0) {
-        DestroyClipStateRegionWrapperObject(*piVar2);
+        func_0x0040696a(*piVar2);
         *piVar2 = 0;
       }
-      iVar1 = CreateClipStateRegionWrapperObject();
+      iVar1 = func_0x00401127();
       *piVar2 = iVar1;
-      RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl();
+      func_0x00409462();
       iVar1 = 0;
       if ('\0' < *(char *)(iVar5 + 0x3a)) {
         psVar3 = (short *)(iVar5 + 0x42);
         do {
-          BuildHexNeighborHighlightPolygonForTile((int)*psVar3,iVar4);
+          func_0x00406c62((int)*psVar3,iVar4);
           iVar1 = iVar1 + 1;
           psVar3 = psVar3 + 1;
         } while (iVar1 < *(char *)(iVar5 + 0x3a));
       }
-      WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(*piVar2);
+      func_0x00408701(*piVar2);
     }
     local_8 = local_8 + 0xa8;
     iVar4 = iVar4 + 1;
@@ -1372,20 +1679,20 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent()
   int iVar2;
   int iVar3;
   undefined4 *puVar4;
-
+  
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-    DispatchTaggedGameStateEvent1F20(0x72656765,0,0xfffffffd);
+    func_0x00406efb(0x72656765,0,0xfffffffd);
   }
   if (*(int *)&this->field_0x64 != 0) {
-    uVar1 = CreateClipStateRegionWrapperObject();
+    uVar1 = func_0x00401127();
     iVar2 = 0;
     do {
-      ResetClipRegionAndReadBoundingRect(uVar1);
+      func_0x0040215d(uVar1);
       iVar3 = 0;
       puVar4 = (undefined4 *)&this->field_0x64;
       do {
         if (*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + iVar3) == iVar2) {
-          CombineTwoRegionsIntoDestinationAndUpdateBox(uVar1,*puVar4,uVar1);
+          func_0x00408bac(uVar1,*puVar4,uVar1);
         }
         iVar3 = iVar3 + 0xa8;
         puVar4 = puVar4 + 1;
@@ -1393,7 +1700,7 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent()
       (**(code **)(*g_pStrategicMapViewSystem + 0x94))(uVar1,iVar2);
       iVar2 = iVar2 + 1;
     } while (iVar2 < 0x17);
-    DestroyClipStateRegionWrapperObject(uVar1);
+    func_0x0040696a(uVar1);
     (*this->vftable->RenderTurnEventPalettePreviewSurfaceAndProgress)();
   }
   return;
@@ -1412,7 +1719,7 @@ TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0
   TGreatPowerVtbl *pTVar2;
   char cVar3;
   undefined4 uVar4;
-
+  
   iVar1 = *param_1;
   cVar3 = (**(code **)(iVar1 + 0x1d8))();
   if (cVar3 != '\0') {
@@ -1441,7 +1748,7 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(int *param_1, short 
   short unaff_DI;
   undefined4 unaff_retaddr;
   short sVar6;
-
+  
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0xdc))(0);
   sVar5 = (short)param_1;
@@ -1458,9 +1765,8 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(int *param_1, short 
   }
   piVar4 = (int *)(**(code **)(iVar1 + 0x94))(0x53656c6c);
   if (piVar4 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0x8e4);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0x8e4);
   }
   if (sVar5 < 0) {
     sVar5 = sVar6;
@@ -1496,12 +1802,11 @@ int * TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C()
 
 {
   int *piVar1;
-
-  piVar1 = (int *)(**(code **)(*DAT_006a1b24 + 0x28))();
+  
+  piVar1 = (int *)(**(code **)(*g_pTurnEventDialogFactoryRegistry + 0x28))();
   if (piVar1 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0x917);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0x917);
   }
   (**(code **)(*piVar1 + 0x9c))();
   return piVar1;
@@ -1521,100 +1826,135 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
   undefined uVar5;
   int iVar6;
   int *piVar7;
-  _vslot_fn *p_Var8;
   undefined2 uVar9;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
+  int *piVar8;
+  undefined1 *extraout_ECX;
   word wVar10;
-  char *unaff_EBX;
-  _vslot_fn *p_Var11;
-  word wVar12;
+  word wVar11;
   TCity *this_00;
-  word wVar13;
-  undefined4 *unaff_FS_OFFSET;
+  word wVar12;
+  int *unaff_FS_OFFSET;
+  undefined2 in_stack_00000006;
   word wStack00000008;
   undefined2 uStack0000000a;
   undefined2 uStack0000000c;
+  undefined1 auStack_e0 [4];
+  int *piStack_dc;
+  undefined4 uStack_d8;
+  undefined4 uStack_d4;
+  undefined1 **ppuStack_d0;
+  undefined1 *puStack_cc;
+  undefined4 uStack_c8;
+  undefined1 *puStack_c4;
+  undefined4 uStack_c0;
+  int *piStack_bc;
+  undefined1 *puStack_b8;
+  undefined1 *puStack_b4;
+  CString **ppCStack_b0;
+  undefined1 *puStack_ac;
+  int *piStack_a8;
+  undefined4 uStack_a4;
+  undefined4 uStack_a0;
+  int *piStack_9c;
+  TSimMgr *pTStack_98;
+  CString *pCStack_84;
+  CString *pCVar13;
+  CString CStack_5c;
   CString local_48;
   CString local_44;
   CString local_40;
   CString local_3c;
   CString local_38;
   CString local_34;
-  _vslot_fn *local_30;
-  TMyStaticText *pTStack_2c;
-  _vslot_fn *p_Stack_28;
-  _vslot_fn *p_Stack_24;
+  int *local_30;
+  int iStack_2c;
+  int iStack_28;
+  undefined4 uStack_24;
   undefined4 uStack_20;
-  int iStack_1c;
-  byte abStack_14 [2];
+  undefined4 uStack_1c;
+  int iStack_18;
   undefined1 local_12;
   undefined1 local_11;
-  undefined1 local_10;
-  undefined1 local_f;
-  _vslot_fn *p_Stack_c;
-  CString CStack_8;
-  int local_4;
-
-  local_4 = -1;
-  CStack_8.m_pchData = &LAB_00633baa;
-  p_Stack_c = (_vslot_fn *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &p_Stack_c;
-  CString::__0CString__QAE_XZ(&local_38);
-  local_4 = 0;
+  undefined4 local_10;
+  int iStack_c;
+  undefined1 *puStack_8;
+  CString local_4;
+  
+  local_4.m_pchData = (char *)0xffffffff;
+  puStack_8 = &LAB_00633baa;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  CStack_5c.m_pchData = (char *)0x50bec5;
+  CString::CString(&local_38);
+  local_4.m_pchData = (char *)0x0;
   pTVar2 = g_apNationStates[(short)wStack00000008];
   local_12 = 0;
   local_11 = 0;
-  local_10 = 0;
-  local_f = 0;
+  local_10 = (uint)local_10._2_2_ << 0x10;
   if (param_1 == 0xffff) {
+    CStack_5c.m_pchData = (char *)0x746f7461;
     iVar6 = (**(code **)(*_uStack0000000c + 0x94))();
     if (iVar6 == 0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag();
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4();
     }
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    CStack_8.m_pchData = &stack0xffffff90;
-    AssignStringSharedRefAndReturnThis(&local_48);
-    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-    CStack_8.m_pchData = (char *)__2_YAPAXI_Z();
-    abStack_14[0] = 1;
-    if ((TMyStaticText *)CStack_8.m_pchData == (TMyStaticText *)0x0) {
+    puStack_8 = &stack0xffffff90;
+    func_0x004076b7();
+    func_0x00404d22();
+    iStack_c = operator_new();
+    iStack_18._0_1_ = 1;
+    if (iStack_c == 0) {
       piVar7 = (int *)0x0;
     }
     else {
-      piVar7 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
-                                ((TMyStaticText *)CStack_8.m_pchData);
+      piVar7 = (int *)func_0x00408814();
     }
-    pTStack_2c = (TMyStaticText *)0xb;
-    local_34.m_pchData = (char *)0x14;
-    local_30 = (_vslot_fn *)0x3c;
-    abStack_14[0] = 0;
-    local_38.m_pchData = (char *)0xa2;
-    InitializeTextEntryBaseAndOptionalStringResource(iVar6,&local_38,&local_30,5,5);
-    BuildUiTextStyleDescriptor(&p_Stack_28,0);
+    local_30 = (int *)0xb;
+    local_38.m_pchData = (char *)0x14;
+    pCStack_84 = &local_3c;
+    local_34.m_pchData = (char *)0x3c;
+    iStack_18 = (uint)iStack_18._1_3_ << 8;
+    local_3c.m_pchData = (char *)0xa2;
+    func_0x00401fd2();
+    pTStack_98 = (TSimMgr *)&local_48;
+    piStack_9c = (int *)0x50bfe8;
+    BuildUiTextStyleDescriptor();
     iVar3 = *piVar7;
     (**(code **)(iVar3 + 0x1b4))();
-    (**(code **)(iVar3 + 0x1c4))(0xffffffff,0);
+    pTStack_98 = (TSimMgr *)0xffffffff;
+    piStack_9c = (int *)0x50c008;
+    (**(code **)(iVar3 + 0x1c4))();
     piVar7[7] = 0x74657874;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,1,&stack0xffffffa8);
-    _wStack00000008 = &stack0xffffffa0;
-    AssignStringSharedRefAndReturnThis();
-    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
+    piStack_9c = (int *)&stack0xffffff88;
+    uStack_a0 = 1;
+    uStack_a4 = 0x2735;
+    piStack_a8 = (int *)0x50c029;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    local_44.m_pchData = (char *)&puStack_ac;
+    ppCStack_b0 = &pCStack_84;
+    puStack_b4 = (undefined1 *)0x50c03b;
+    puStack_ac = extraout_ECX;
+    piStack_a8 = piVar7;
+    func_0x004076b7();
+    puStack_b4 = (undefined1 *)0x50c040;
+    func_0x00404d22();
     if (pTVar2 == (TGreatPower *)0x0) {
-      wVar13 = 0;
+      wVar12 = 0;
     }
     else {
-      wVar13 = pTVar2->needCapA6;
+      wVar12 = pTVar2->needCapA6;
     }
-    *(word *)(iVar6 + 0x94) = (pTVar2->needsOverCapFlag - pTVar2->needCapA6) + wVar13;
+    *(word *)(iVar6 + 0x94) = (pTVar2->needsOverCapFlag - pTVar2->needCapA6) + wVar12;
     if (pTVar2 == (TGreatPower *)0x0) {
-      wVar13 = 0;
+      wVar12 = 0;
     }
     else {
-      wVar13 = pTVar2->needCapA6;
+      wVar12 = pTVar2->needCapA6;
     }
-    *(word *)(iVar6 + 0x96) = wVar13;
+    *(word *)(iVar6 + 0x96) = wVar12;
     *(undefined2 *)(iVar6 + 0x98) = 0xffff;
     goto LAB_0050ce6a;
   }
@@ -1626,343 +1966,392 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
   else {
     this_00 = pTVar2->city;
   }
-  CString::__0CString__QAE_XZ((CString *)&stack0x00000008);
-  local_4._0_1_ = 2;
-  CString::__0CString__QAE_XZ(&local_34);
-  local_4._0_1_ = 3;
-  CString::__0CString__QAE_XZ(&local_3c);
-  local_4._0_1_ = 4;
-  CString::__0CString__QAE_XZ(&local_40);
-  local_4._0_1_ = 5;
-  CString::__0CString__QAE_XZ(&local_44);
-  local_4._0_1_ = 6;
-  CString::__0CString__QAE_XZ(&local_48);
-  local_4 = CONCAT31(local_4._1_3_,7);
-  p_Var11 = (_vslot_fn *)(int)(short)param_1;
-  local_30 = p_Var11;
-  p_Var8 = (_vslot_fn *)(**(code **)(*_uStack0000000c + 0x94))();
-  local_30 = p_Var8;
-  if (p_Var8 == (_vslot_fn *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    p_Var8 = (_vslot_fn *)TemporarilyClearAndRestoreUiInvalidationFlag();
+  CStack_5c.m_pchData = (char *)0x50c0d6;
+  CString::CString((CString *)&stack0x00000008);
+  local_4.m_pchData._0_1_ = 2;
+  CStack_5c.m_pchData = (char *)0x50c0e4;
+  CString::CString(&local_34);
+  local_4.m_pchData._0_1_ = 3;
+  CStack_5c.m_pchData = (char *)0x50c0f2;
+  CString::CString(&local_3c);
+  local_4.m_pchData._0_1_ = 4;
+  CStack_5c.m_pchData = (char *)0x50c100;
+  CString::CString(&local_40);
+  local_4.m_pchData._0_1_ = 5;
+  CStack_5c.m_pchData = (char *)0x50c10e;
+  CString::CString(&local_44);
+  local_4.m_pchData._0_1_ = 6;
+  CStack_5c.m_pchData = (char *)0x50c11c;
+  CString::CString(&local_48);
+  local_4.m_pchData._0_1_ = 7;
+  iVar6 = (int)(short)param_1;
+  CStack_5c.m_pchData = (char *)g_pTradeSummarySelectionMap.summaryTags[iVar6];
+  local_30 = (int *)iVar6;
+  piVar7 = (int *)(**(code **)(*_uStack0000000c + 0x94))();
+  local_30 = piVar7;
+  if (piVar7 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    piVar7 = (int *)func_0x004057a4();
   }
-  uVar9 = (undefined2)((uint)p_Var8 >> 0x10);
-  wVar13 = param_1;
-  switch(p_Var11) {
-  case (_vslot_fn *)0x0:
+  uVar9 = (undefined2)((uint)piVar7 >> 0x10);
+  wVar12 = param_1;
+  pCVar13 = _param_1;
+  switch(iVar6) {
+  case 0:
     _wStack00000008 =
          (char *)CONCAT22(uVar9,pTVar2->needTargetByType[0] + pTVar2->needTargetByType[1]);
     wVar10 = pTVar2->needCurrentByType[1] + pTVar2->needCurrentByType[0];
+    pCVar13 = (CString *)0x2;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,0);
-    wVar12 = (word)iVar6;
-    wVar13 = (wVar12 * 2 - this_00->fieldB6[0]) - this_00->fieldB6[1];
-    _Format_CString__QAAXPBDZZ(&CStack_8);
-    _Format_CString__QAAXPBDZZ(&stack0xffffffb4);
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2719);
+    iVar6 = GetCityBuildingProductionValueBySlot(this_00,0);
+    wVar11 = (word)iVar6;
+    wVar12 = (wVar11 * 2 - this_00->fieldB6[0]) - this_00->fieldB6[1];
+    _Format_CString__QAAXPBDZZ();
+    _Format_CString__QAAXPBDZZ();
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     goto LAB_0050c77d;
   default:
-    wVar12 = param_1;
+    wVar11 = param_1;
     wVar10 = param_1;
     goto LAB_0050ca3b;
-  case (_vslot_fn *)0x2:
+  case 2:
     wVar10 = pTVar2->needCurrentByType[2];
     wStack00000008 = pTVar2->needTargetByType[2];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,4);
-    wVar12 = (word)iVar6;
-    wVar13 = wVar12 * 2 - this_00->fieldB6[2];
+    iVar6 = GetCityBuildingProductionValueBySlot(this_00,4);
+    wVar11 = (word)iVar6;
+    wVar12 = wVar11 * 2 - this_00->fieldB6[2];
     _Format_CString__QAAXPBDZZ();
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = (int)(short)this_00->fieldB6[2];
     break;
-  case (_vslot_fn *)0x3:
-  case (_vslot_fn *)0x4:
-    wVar10 = pTVar2->needCurrentByType[(int)p_Var11];
-    wStack00000008 = pTVar2->needTargetByType[(int)p_Var11];
+  case 3:
+  case 4:
+    wVar10 = pTVar2->needCurrentByType[iVar6];
+    wStack00000008 = pTVar2->needTargetByType[iVar6];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,2);
-    wVar12 = (word)iVar6;
-    wVar13 = wVar12 - this_00->fieldB6[(int)local_3c.m_pchData];
+    iVar6 = GetCityBuildingProductionValueBySlot(this_00,2);
+    wVar11 = (word)iVar6;
+    wVar12 = wVar11 - this_00->fieldB6[(int)local_3c.m_pchData];
     _Format_CString__QAAXPBDZZ();
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = (int)(short)this_00->fieldB6[(int)unaff_EBX];
     break;
-  case (_vslot_fn *)0x5:
+  case 5:
     wVar10 = pTVar2->needCurrentByType[5];
     wStack00000008 = pTVar2->needTargetByType[5];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     _Format_CString__QAAXPBDZZ();
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
+    pCStack_84 = &CStack_5c;
+    func_0x0040988b();
     goto LAB_0050ca20;
-  case (_vslot_fn *)0x6:
+  case 6:
     wVar10 = pTVar2->needCurrentByType[6];
     wStack00000008 = pTVar2->needTargetByType[6];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,6);
-    wVar12 = (word)iVar6;
-    wVar13 = wVar12 * 2 - this_00->fieldB6[6];
+    iVar6 = GetCityBuildingProductionValueBySlot(this_00,6);
+    wVar11 = (word)iVar6;
+    wVar12 = wVar11 * 2 - this_00->fieldB6[6];
     _Format_CString__QAAXPBDZZ();
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = (int)(short)this_00->fieldB6[6];
     break;
-  case (_vslot_fn *)0x8:
+  case 8:
     wVar10 = pTVar2->needCurrentByType[8];
     wStack00000008 = pTVar2->needTargetByType[8];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,1);
-    wVar12 = (word)iVar6;
-    wVar13 = wVar12 * 2 - this_00->fieldB6[8];
+    iVar6 = GetCityBuildingProductionValueBySlot(this_00,1);
+    wVar11 = (word)iVar6;
+    wVar12 = wVar11 * 2 - this_00->fieldB6[8];
     _Format_CString__QAAXPBDZZ();
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = (int)(short)this_00->fieldB6[8];
     break;
-  case (_vslot_fn *)0x9:
+  case 9:
     wVar10 = pTVar2->needCurrentByType[9];
     wStack00000008 = pTVar2->needTargetByType[9];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,5);
-    wVar12 = (word)iVar6;
-    wVar13 = wVar12 * 2 - this_00->fieldB6[9];
+    iVar6 = GetCityBuildingProductionValueBySlot(this_00,5);
+    wVar11 = (word)iVar6;
+    wVar12 = wVar11 * 2 - this_00->fieldB6[9];
     _Format_CString__QAAXPBDZZ();
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = (int)(short)this_00->fieldB6[9];
     break;
-  case (_vslot_fn *)0xb:
+  case 0xb:
     wVar10 = pTVar2->needCurrentByType[0xb];
     wStack00000008 = pTVar2->needTargetByType[0xb];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,3);
-    wVar12 = (word)iVar6;
-    wVar13 = wVar12 * 2 - this_00->fieldB6[0xb];
+    iVar6 = GetCityBuildingProductionValueBySlot(this_00,3);
+    wVar11 = (word)iVar6;
+    wVar12 = wVar11 * 2 - this_00->fieldB6[0xb];
     _Format_CString__QAAXPBDZZ();
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = (int)(short)this_00->fieldB6[0xb];
     break;
-  case (_vslot_fn *)0xc:
+  case 0xc:
     wVar10 = pTVar2->needCurrentByType[0xc];
     wStack00000008 = pTVar2->needTargetByType[0xc];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,0xb);
-    wVar12 = (word)iVar6;
-    wVar13 = wVar12 * 2 - this_00->fieldB6[0xc];
+    iVar6 = GetCityBuildingProductionValueBySlot(this_00,0xb);
+    wVar11 = (word)iVar6;
+    wVar12 = wVar11 * 2 - this_00->fieldB6[0xc];
     _Format_CString__QAAXPBDZZ();
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = (int)(short)this_00->fieldB6[0xc];
     break;
-  case (_vslot_fn *)0xd:
-  case (_vslot_fn *)0xe:
-  case (_vslot_fn *)0xf:
-    wVar10 = pTVar2->needCurrentByType[(int)p_Var11];
-    wStack00000008 = pTVar2->needTargetByType[(int)p_Var11];
+  case 0xd:
+  case 0xe:
+  case 0xf:
+    wVar10 = pTVar2->needCurrentByType[iVar6];
+    wStack00000008 = pTVar2->needTargetByType[iVar6];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     _Format_CString__QAAXPBDZZ();
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
+    pCStack_84 = &CStack_5c;
+    func_0x0040988b();
     goto LAB_0050ca20;
-  case (_vslot_fn *)0x11:
-  case (_vslot_fn *)0x12:
-    wVar10 = pTVar2->needCurrentByType[(int)p_Var11];
-    wStack00000008 = pTVar2->needTargetByType[(int)p_Var11];
+  case 0x11:
+  case 0x12:
+    wVar10 = pTVar2->needCurrentByType[iVar6];
+    wStack00000008 = pTVar2->needTargetByType[iVar6];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    wVar12 = 1;
+    wVar11 = 1;
     uVar5 = (*this_00->vftable->GetCitySummaryRecordSlot74)();
     sVar1 = *(short *)(CONCAT31(extraout_var_00,uVar5) + (int)local_3c.m_pchData * 2);
     _Format_CString__QAAXPBDZZ();
-    wVar13 = sVar1 - this_00->fieldB6[(int)local_3c.m_pchData];
+    wVar12 = sVar1 - this_00->fieldB6[(int)local_3c.m_pchData];
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
-    CString::__4CString__QAEABV0_ABV0__Z(&local_3c,&local_48);
+    pCStack_84 = &CStack_5c;
+    func_0x0040988b();
+    CString::operator=(&local_3c,&local_48);
     goto LAB_0050ca3b;
-  case (_vslot_fn *)0x13:
+  case 0x13:
     _wStack00000008 =
          (char *)CONCAT22(uVar9,pTVar2->needTargetByType[0x13] + pTVar2->needTargetByType[0x14]);
     wVar10 = pTVar2->needCurrentByType[0x13] + pTVar2->needCurrentByType[0x14];
+    pCVar13 = (CString *)0x3;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    wVar12 = 1;
+    wVar11 = 1;
     uVar5 = (*this_00->vftable->GetCitySummaryRecordSlot74)();
     sVar1 = *(short *)(CONCAT31(extraout_var,uVar5) + 0x28);
-    _Format_CString__QAAXPBDZZ(&stack0xffffffa8,&g_szDecimalFormat,(int)sVar1);
-    wVar13 = sVar1 - (this_00->fieldB6[0x14] + this_00->fieldB6[0x13]);
-    iVar6 = (int)(short)this_00->fieldB6[0x13] + (int)(short)this_00->fieldB6[0x14];
+    pCStack_84 = (CString *)0x50c28b;
+    _Format_CString__QAAXPBDZZ();
+    wVar12 = sVar1 - (this_00->fieldB6[0x14] + this_00->fieldB6[0x13]);
     break;
-  case (_vslot_fn *)0x15:
+  case 0x15:
     wVar10 = pTVar2->needCurrentByType[0x15];
     wStack00000008 = pTVar2->needTargetByType[0x15];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+    pCVar13 = &local_4;
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,9);
-    scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
+    pCStack_84 = pCVar13;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    func_0x0040988b();
     goto LAB_0050ca20;
-  case (_vslot_fn *)0x16:
+  case 0x16:
     wVar10 = pTVar2->needCurrentByType[0x16];
     wStack00000008 = pTVar2->needTargetByType[0x16];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+    pCVar13 = &local_4;
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,9);
-    scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
+    pCStack_84 = pCVar13;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    func_0x0040988b();
 LAB_0050ca20:
-    wVar12 = 0;
-    CString::__4CString__QAEABV0_ABV0__Z(&local_3c,(CString *)&local_48);
+    wVar11 = 0;
+    CString::operator=(&local_3c,&local_48);
     goto LAB_0050ca3b;
   }
-  _Format_CString__QAAXPBDZZ(abStack_14,&g_szDecimalFormat,iVar6);
+  pCStack_84 = (CString *)0x50c77a;
+  _Format_CString__QAAXPBDZZ();
 LAB_0050c77d:
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,7,&stack0xffffff9c);
-  scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
-  CString::__4CString__QAEABV0_ABV0__Z(&local_3c,&local_48);
+  pCStack_84 = (CString *)0x50c797;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  pCStack_84 = pCVar13;
+  pTStack_98 = g_pLocalizationTable;
+  piStack_9c = (int *)0x50c7bc;
+  func_0x0040988b();
+  CString::operator=(&local_3c,&local_48);
 LAB_0050ca3b:
-  p_Var8 = local_30;
-  if (wVar12 == 0) {
-    *(undefined2 *)(local_30 + 0x98) = 0xffff;
+  piVar7 = local_30;
+  if (wVar11 == 0) {
+    *(undefined2 *)(local_30 + 0x26) = 0xffff;
   }
-  else if ((short)wVar13 < 1) {
-    *(undefined2 *)(local_30 + 0x98) = 0;
+  else if ((short)wVar12 < 1) {
+    *(undefined2 *)(local_30 + 0x26) = 0;
   }
   else {
-    *(word *)(local_30 + 0x98) = wVar13;
+    *(word *)(local_30 + 0x26) = wVar12;
   }
-  local_30 = (_vslot_fn *)&stack0xffffff9c;
-  AssignStringSharedRefAndReturnThis();
-  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
+  local_30 = (int *)&stack0xffffff9c;
+  func_0x004076b7();
+  func_0x00404d22();
   if (wVar10 == 0) {
-    iVar6 = *(int *)p_Var8;
+    iVar6 = *piVar7;
     (**(code **)(iVar6 + 0xa4))();
     pcVar4 = *(code **)(iVar6 + 0x94);
     piVar7 = (int *)(*pcVar4)();
     if (piVar7 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag();
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4();
     }
     (**(code **)(*piVar7 + 0x1c))();
     piVar7 = (int *)(*pcVar4)();
     if (piVar7 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68);
+      pCStack_84 = (CString *)0x50cb07;
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4();
     }
     (**(code **)(*piVar7 + 0x1c))();
   }
   else {
-    pcVar4 = *(code **)(*(int *)p_Var8 + 0x94);
-    piVar7 = (int *)(*pcVar4)();
-    if (piVar7 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag();
+    pcVar4 = *(code **)(*piVar7 + 0x94);
+    piVar8 = (int *)(*pcVar4)();
+    if (piVar8 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4();
     }
-    p_Stack_28 = (_vslot_fn *)piVar7[0xd];
-    p_Stack_24 = (_vslot_fn *)piVar7[0xe];
-    local_30 = (_vslot_fn *)piVar7[9];
-    pTStack_2c = (TMyStaticText *)piVar7[10];
-    (**(code **)(*piVar7 + 0x1c))();
-    local_34.m_pchData = (char *)__2_YAPAXI_Z();
-    p_Stack_c._0_1_ = 8;
-    if ((TRightLeftView *)local_34.m_pchData == (TRightLeftView *)0x0) {
+    iStack_2c = piVar8[0xd];
+    iStack_28 = piVar8[0xe];
+    local_34.m_pchData = (char *)piVar8[9];
+    local_30 = (int *)piVar8[10];
+    (**(code **)(*piVar8 + 0x1c))();
+    local_38.m_pchData = (char *)operator_new();
+    local_10._0_1_ = 8;
+    if (local_38.m_pchData == (char *)0x0) {
       iVar6 = 0;
     }
     else {
-      iVar6 = TRightLeftView::ConstructTRightLeftViewBaseState((TRightLeftView *)local_34.m_pchData)
-      ;
+      iVar6 = func_0x00402914();
     }
-    p_Stack_c = (_vslot_fn *)CONCAT31(p_Stack_c._1_3_,7);
-    InitializeUiResourceEntryFrameAndParent(0,p_Var8,&local_30);
+    local_10 = CONCAT31(local_10._1_3_,7);
+    pCStack_84 = (CString *)0x50cbcb;
+    func_0x004096b5();
+    pCStack_84 = (CString *)0x72676874;
     *(undefined4 *)(iVar6 + 0x1c) = 0x6c656674;
-    piVar7 = (int *)(*pcVar4)();
-    if (piVar7 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag();
+    piVar8 = (int *)(*pcVar4)();
+    if (piVar8 == (int *)0x0) {
+      pTStack_98 = (TSimMgr *)0x50cbf4;
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4();
     }
-    pTStack_2c = (TMyStaticText *)piVar7[0xd];
-    p_Stack_28 = (_vslot_fn *)piVar7[0xe];
-    local_34.m_pchData = (char *)piVar7[9];
-    local_30 = (_vslot_fn *)piVar7[10];
-    (**(code **)(*piVar7 + 0x1c))();
-    local_38.m_pchData = (char *)__2_YAPAXI_Z();
-    local_10 = 9;
-    if ((TRightLeftView *)local_38.m_pchData == (TRightLeftView *)0x0) {
+    local_48.m_pchData = (char *)piVar8[0xe];
+    (**(code **)(*piVar8 + 0x1c))();
+    iVar6 = operator_new();
+    local_30._0_1_ = 9;
+    if (iVar6 == 0) {
       iVar6 = 0;
     }
     else {
-      iVar6 = TRightLeftView::ConstructTRightLeftViewBaseState((TRightLeftView *)local_38.m_pchData)
-      ;
+      iVar6 = func_0x00402914();
     }
-    local_10 = 7;
-    InitializeUiResourceEntryFrameAndParent(0,p_Var8,&local_34,&pTStack_2c);
+    pTStack_98 = (TSimMgr *)&stack0xffffffac;
+    piStack_9c = piVar7;
+    uStack_a0 = 0;
+    local_30 = (int *)CONCAT31(local_30._1_3_,7);
+    uStack_a4 = 0x50cc6f;
+    func_0x004096b5();
+    uStack_a4 = 0x94;
     *(undefined4 *)(iVar6 + 0x1c) = 0x72676874;
-    local_38.m_pchData = (char *)__2_YAPAXI_Z();
-    local_10 = 10;
-    if ((TMyStaticText *)local_38.m_pchData == (TMyStaticText *)0x0) {
-      piVar7 = (int *)0x0;
+    piStack_a8 = (int *)0x50cc80;
+    iVar6 = operator_new();
+    if (iVar6 == 0) {
+      piVar8 = (int *)0x0;
     }
     else {
-      piVar7 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
-                                ((TMyStaticText *)local_38.m_pchData);
+      uStack_a4 = 0x50cc97;
+      piVar8 = (int *)func_0x00408814();
     }
-    pTStack_2c = (TMyStaticText *)0x46;
-    p_Stack_28 = (_vslot_fn *)0xb;
-    local_34.m_pchData = (char *)0x98;
-    local_10 = 7;
-    local_30 = (_vslot_fn *)0x12;
-    InitializeTextEntryBaseAndOptionalStringResource(p_Var8,&local_34,&pTStack_2c,5);
-    BuildUiTextStyleDescriptor(&p_Stack_24);
-    iVar6 = *piVar7;
+    uStack_a4 = 0;
+    piStack_a8 = (int *)0xffffffff;
+    puStack_ac = (undefined1 *)0x5;
+    puStack_b4 = &stack0xffffff98;
+    ppCStack_b0 = (CString **)0x5;
+    puStack_b8 = &stack0xffffff90;
+    piStack_bc = piVar7;
+    uStack_c0 = 0x50cce8;
+    func_0x00401fd2();
+    uStack_c0 = 0x2b67;
+    puStack_c4 = (undefined1 *)0xa;
+    puStack_cc = &stack0xffffff84;
+    uStack_c8 = 0;
+    ppuStack_d0 = (undefined1 **)0x50ccfb;
+    BuildUiTextStyleDescriptor();
+    iVar6 = *piVar8;
+    puStack_c4 = &stack0xffffff84;
+    uStack_c0 = 0;
+    uStack_c8 = 0x50cd0f;
     (**(code **)(iVar6 + 0x1b4))();
-    (**(code **)(iVar6 + 0x1c4))(0xffffffff);
-    piVar7[7] = 0x74657874;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,4,&stack0xffffffac);
-    pTStack_2c = (TMyStaticText *)&stack0xffffffa0;
-    AssignStringSharedRefAndReturnThis();
-    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
+    uStack_c8 = 0;
+    puStack_cc = (undefined1 *)0xffffffff;
+    ppuStack_d0 = (undefined1 **)0x50cd1b;
+    (**(code **)(iVar6 + 0x1c4))();
+    piVar8[7] = 0x74657874;
+    ppuStack_d0 = &puStack_ac;
+    uStack_d4 = 4;
+    uStack_d8 = 0x2735;
+    piStack_dc = (int *)0x50cd3c;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    puStack_ac = auStack_e0;
+    piStack_dc = piVar8;
+    func_0x004076b7(&puStack_b8);
+    func_0x00404d22();
     if ((param_1 == 0x16) || (param_1 == 0x15)) {
-      pTStack_2c = (TMyStaticText *)__2_YAPAXI_Z();
-      local_4._0_1_ = 0xb;
-      if (pTStack_2c == (TMyStaticText *)0x0) {
-        piVar7 = (int *)0x0;
+      CStack_5c.m_pchData = (char *)0x94;
+      iStack_2c = operator_new();
+      local_4.m_pchData._0_1_ = 0xb;
+      if (iStack_2c == 0) {
+        piVar8 = (int *)0x0;
       }
       else {
-        piVar7 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTStack_2c);
+        CStack_5c.m_pchData = (char *)0x50cd8b;
+        piVar8 = (int *)func_0x00408814();
       }
-      iStack_1c = 0xb;
-      p_Stack_24 = (_vslot_fn *)0x14;
+      CStack_5c.m_pchData = (char *)0x0;
+      uStack_1c = 0xb;
+      uStack_24 = 0x14;
       uStack_20 = 0x3c;
-      local_4 = CONCAT31(local_4._1_3_,7);
-      p_Stack_28 = (_vslot_fn *)0x32;
-      InitializeTextEntryBaseAndOptionalStringResource(p_Var8);
-      iVar6 = *piVar7;
+      local_4.m_pchData._0_1_ = 7;
+      iStack_28 = 0x32;
+      func_0x00401fd2();
+      iVar6 = *piVar8;
       (**(code **)(iVar6 + 0x1b4))();
+      pCStack_84 = (CString *)0xfffffffe;
       (**(code **)(iVar6 + 0x1c4))();
-      piVar7[7] = 0x76616c75;
+      piVar8[7] = 0x76616c75;
     }
-    *(word *)(p_Var8 + 0x92) = param_1;
-    *(undefined2 *)(p_Var8 + 0x94) = uStack0000000c;
-    *(word *)(p_Var8 + 0x96) = wVar10;
+    *(word *)((int)piVar7 + 0x92) = param_1;
+    *(undefined2 *)(piVar7 + 0x25) = uStack0000000c;
+    *(word *)((int)piVar7 + 0x96) = wVar10;
   }
-  local_4._0_1_ = 6;
-  CString::__1CString__QAE_XZ(&local_48);
-  local_4._0_1_ = 5;
-  CString::__1CString__QAE_XZ(&local_44);
-  local_4._0_1_ = 4;
-  CString::__1CString__QAE_XZ(&local_40);
-  local_4._0_1_ = 3;
-  CString::__1CString__QAE_XZ(&local_3c);
-  local_4._0_1_ = 2;
-  CString::__1CString__QAE_XZ(&local_34);
-  local_4 = (uint)local_4._1_3_ << 8;
-  CString::__1CString__QAE_XZ((CString *)&stack0x00000008);
+  local_4.m_pchData._0_1_ = 6;
+  CStack_5c.m_pchData = (char *)0x50ce24;
+  CString::~CString(&local_48);
+  local_4.m_pchData._0_1_ = 5;
+  CStack_5c.m_pchData = (char *)0x50ce32;
+  CString::~CString(&local_44);
+  local_4.m_pchData._0_1_ = 4;
+  CStack_5c.m_pchData = (char *)0x50ce40;
+  CString::~CString(&local_40);
+  local_4.m_pchData._0_1_ = 3;
+  CStack_5c.m_pchData = (char *)0x50ce4e;
+  CString::~CString(&local_3c);
+  local_4.m_pchData._0_1_ = 2;
+  CStack_5c.m_pchData = (char *)0x50ce5c;
+  CString::~CString(&local_34);
+  local_4.m_pchData = (char *)((uint)local_4.m_pchData._1_3_ << 8);
+  CStack_5c.m_pchData = (char *)0x50ce6a;
+  CString::~CString((CString *)&stack0x00000008);
 LAB_0050ce6a:
-  local_4 = -1;
-  CString::__1CString__QAE_XZ(&local_38);
-  *unaff_FS_OFFSET = p_Stack_c;
+  local_4.m_pchData = (char *)0xffffffff;
+  CStack_5c.m_pchData = (char *)0x50ce7b;
+  CString::~CString(&local_38);
+  *unaff_FS_OFFSET = iStack_c;
   return;
 }
 
@@ -1975,11 +2364,11 @@ void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag()
 {
   short sVar1;
   int unaff_retaddr;
-
+  
   (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0x3b8);
   sVar1 = *(short *)(unaff_retaddr + 0x14);
   while (sVar1 == 0) {
-    PumpUiMessagesAndBackgroundTasks(1);
+    func_0x00405033(1);
     sVar1 = *(short *)(unaff_retaddr + 0x14);
   }
   return;
@@ -2000,15 +2389,14 @@ TMacViewMgr::CreateCityBuildingDialogBySlot
   int *piVar3;
   char unaff_SI;
   undefined4 unaff_retaddr;
-
+  
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(param_1 + 0x23f0)
   ;
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   piVar3 = (int *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
   if (piVar3 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xb4f);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xb4f);
   }
   (**(code **)(*piVar3 + 0x1d0))(unaff_retaddr,param_2,param_3,param_1);
   ((int *)CONCAT31(extraout_var,uVar2))[0xf] = 0x65;
@@ -2039,7 +2427,7 @@ int * TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 para
   undefined4 in_stack_0000000c;
   int iStack_20;
   int iStack_1c;
-
+  
   iStack_1c = param_1 + 0x23f0;
   iStack_20 = 0x50d48d;
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
@@ -2047,9 +2435,8 @@ int * TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 para
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   piVar3 = (int *)(**(code **)(iVar1 + 0x94))();
   if (piVar3 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xb72);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xb72);
   }
   (**(code **)(*piVar3 + 0x1d0))(unaff_retaddr,param_2,in_stack_0000000c,param_1);
   iStack_20 = (int)(short)unaff_retaddr;
@@ -2082,14 +2469,13 @@ void TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1)
   undefined4 uVar5;
   undefined4 unaff_EBX;
   undefined4 unaff_retaddr;
-
+  
   uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0x2404);
   iVar1 = *(int *)CONCAT31(extraout_var,uVar3);
   piVar4 = (int *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
   if (piVar4 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xb98);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xb98);
   }
   iVar2 = *piVar4;
   (**(code **)(iVar2 + 0x1cc))(unaff_EBX,unaff_retaddr,param_1);
@@ -2111,13 +2497,12 @@ TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion
 
 {
   undefined4 uVar1;
-
+  
   if (*(int *)(&this->field_0x8 + param_2 * 4) == 0) {
-    uVar1 = CreateClipStateRegionWrapperObject();
+    uVar1 = func_0x00401127();
     *(undefined4 *)(&this->field_0x8 + param_2 * 4) = uVar1;
   }
-  CombineOptionalSourceRegionIntoDestinationAndUpdateBox
-            (param_1,*(undefined4 *)(&this->field_0x8 + param_2 * 4));
+  func_0x00405d58(param_1,*(undefined4 *)(&this->field_0x8 + param_2 * 4));
   return;
 }
 
@@ -2131,9 +2516,9 @@ undefined4 TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param
   undefined4 uVar1;
   undefined2 in_stack_00000006;
   short in_stack_00000008;
-
+  
   if (*(int *)(&this->field_0x8 + in_stack_00000008 * 4) != 0) {
-    uVar1 = IsPointInsideHitRegion(_param_1,*(int *)(&this->field_0x8 + in_stack_00000008 * 4));
+    uVar1 = func_0x00403292(_param_1,*(int *)(&this->field_0x8 + in_stack_00000008 * 4));
     return uVar1;
   }
   return 0;
@@ -2148,57 +2533,56 @@ void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
 {
   undefined4 *puVar1;
   int *piVar2;
-  TAnimation *this_00;
   undefined4 uVar3;
   int *piVar4;
   undefined4 *puVar5;
   int iVar6;
-  undefined4 unaff_ESI;
   undefined4 unaff_EDI;
+  tagRECT *ptVar7;
   undefined1 local_18 [4];
   undefined1 local_14 [4];
   tagRECT local_10;
-
+  
   iVar6 = param_1;
   puVar1 = (undefined4 *)(&this->field_0x8 + (short)param_1 * 4);
-  uVar3 = CreateClipStateRegionWrapperObject();
+  uVar3 = func_0x00401127();
   *puVar1 = uVar3;
   GetActiveQuickDrawSurfaceContextAndFlags(local_14,local_18);
-  piVar4 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(iVar6 + 4000);
+  piVar4 = (int *)func_0x004047a0(iVar6 + 4000);
   CopyRect(&local_10,(RECT *)(*piVar4 + 8));
-  (**(code **)(*DAT_006a2158 + 0x2c))(&param_1,1,&local_10);
+  ptVar7 = &local_10;
+  (**(code **)(*g_pDisplayMgr + 0x2c))(&param_1,1,ptVar7);
   SetActiveQuickDrawSurfaceContext(local_10.right,unaff_EDI);
   uVar3 = GetSurfaceObjectAtContextOffset24(local_10.right);
   ReturnConstantTrueQuickDrawFlag(uVar3);
-  NoOpRuntimeCallback_00497c00(piVar4);
+  func_0x004062d5(piVar4);
   puVar5 = (undefined4 *)*piVar4;
   if (puVar5 != (undefined4 *)0x0) {
     (**(code **)*puVar5)();
     *(byte *)(puVar5 + 1) = *(byte *)(puVar5 + 1) | 1;
-    ResetQuickDrawStrokeState();
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar4,&stack0xffffffe4);
+    func_0x004088aa();
+    func_0x00404db8(piVar4,&stack0xffffffe4);
   }
   piVar2 = (int *)*piVar4;
   (**(code **)(*piVar2 + 4))();
   *(byte *)(piVar2 + 1) = *(byte *)(piVar2 + 1) & 0xfe;
-  this_00 = (TAnimation *)*piVar4;
-  if (this_00 != (TAnimation *)0x0) {
-    this_00->vftable = (TAnimationVtbl *)0x64c340;
-    TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-              (this_00);
-    __3_YAXPAX_Z(this_00);
+  puVar5 = (undefined4 *)*piVar4;
+  if (puVar5 != (undefined4 *)0x0) {
+    *puVar5 = 0x64c340;
+    func_0x00409124();
+    operator_delete(puVar5);
   }
-  __3_YAXPAX_Z(piVar4);
+  operator_delete(piVar4);
   puVar5 = (undefined4 *)GetSurfaceObjectAtContextOffset24(local_10.right);
-  iVar6 = RebuildSpriteNonTransparentPolygonRegion(*puVar1,*puVar5);
+  iVar6 = func_0x00408689(*puVar1,*puVar5);
   if (iVar6 != 0) {
-    RebuildSpriteNonTransparentPolygonRegion(*puVar1,*puVar5);
-    RebuildSpriteNonTransparentPolygonRegion(*puVar1,*puVar5);
+    func_0x00408689(*puVar1,*puVar5);
+    func_0x00408689(*puVar1,*puVar5);
   }
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&local_10.right);
-  uVar3 = GetSurfaceObjectAtContextOffset24(local_10.right);
+  func_0x004010e6(&local_10.right);
+  uVar3 = GetSurfaceObjectAtContextOffset24(local_10.top);
   NoOpQuickDrawLifecycleHookB(uVar3);
-  SetActiveQuickDrawSurfaceContext(unaff_ESI,unaff_EDI);
+  SetActiveQuickDrawSurfaceContext(unaff_EDI,ptVar7);
   return;
 }
 
@@ -2254,17 +2638,16 @@ void TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950()
 {
   int iVar1;
   int *piVar2;
-
-  piVar2 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x444c4f47);
+  
+  piVar2 = (int *)(**(code **)(**(int **)(g_pDisplayMgr + 4) + 0x94))(0x444c4f47);
   if (piVar2 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xc27);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xc27);
   }
   iVar1 = *piVar2;
   (**(code **)(iVar1 + 0x1f8))();
   (**(code **)(iVar1 + 0xe4))();
-  CallObjectOffset24Vslot54IfPresent();
+  func_0x00406f82();
   return;
 }
 
@@ -2279,7 +2662,7 @@ void TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950()
 // GHIDRA_COMMENT_END
 
 /* Copies a sprite surface into a destination buffer with destination stride adjustment.
-
+   
    Used as low-level helper by strategic-map icon/overlay render paths.
    Per-row copy supports packed width and handles positive/negative source height semantics. */
 
@@ -2295,7 +2678,7 @@ TMacViewMgr::CopySpriteSurfaceToStrideBuffer
   int iVar5;
   undefined4 *puVar6;
   undefined4 *puVar7;
-
+  
   iVar5 = *(int *)(*param_1 + 0x18);
   puVar3 = *(undefined4 **)(iVar5 + 0xc);
   sVar1 = *(short *)(*(int *)(iVar5 + 0x10) + 4);
@@ -2344,7 +2727,7 @@ TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
   short sVar7;
   int iVar8;
   char *pcVar9;
-
+  
   if (param_2 < 100) {
     piVar3 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x674);
     sVar7 = param_2 << 5;
@@ -2355,9 +2738,9 @@ TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
   }
   uVar1 = *(ushort *)(*param_1 + 4);
   ReturnConstantTrueQuickDrawFlag(piVar3);
-  iVar4 = GetSurfaceHeaderFromSurfaceObject(piVar3);
+  iVar4 = func_0x00405e39(piVar3);
   uVar2 = *(ushort *)(*piVar3 + 4);
-  iVar5 = GetSurfaceHeaderFromSurfaceObject(param_1);
+  iVar5 = func_0x00405e39(param_1);
   iVar8 = (int)(short)(uVar1 & 0x3fff);
   pcVar9 = (char *)(iVar4 + sVar7);
   pcVar6 = (char *)(param_4 * iVar8 + iVar5 + (int)param_3);
@@ -2518,14 +2901,14 @@ TMacViewMgr::DrawStrategicMapUnitIcon
   int nDstStrideBytes;
   ushort wDstStrideRaw;
   ushort wSrcStrideRaw;
-
+  
   pUnitIconAtlasSurface =
        (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x678);
   wDstStrideRaw = *(ushort *)(*pDstSurface + 4);
   ReturnConstantTrueQuickDrawFlag(pUnitIconAtlasSurface);
-  nRemainingRows = GetSurfaceHeaderFromSurfaceObject(pUnitIconAtlasSurface);
+  nRemainingRows = func_0x00405e39(pUnitIconAtlasSurface);
   wSrcStrideRaw = *(ushort *)(*pUnitIconAtlasSurface + 4);
-  pDstSurfacePixels = GetSurfaceHeaderFromSurfaceObject(pDstSurface);
+  pDstSurfacePixels = func_0x00405e39(pDstSurface);
   nDstStrideBytes = (int)(short)(wDstStrideRaw & 0x3fff);
   pbSrcRow = (char *)((short)(nIconVariant * 0x14) + nRemainingRows);
   pbDstRow = (char *)((0x28 - nYShift) * nDstStrideBytes + pDstSurfacePixels + (int)nDstX);
@@ -2655,7 +3038,7 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
   char *pbSrcCursor;
   short nOverlaySourceRow;
   ushort wDstStrideRaw;
-
+  
   pOverlayAtlasSurface =
        (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x67c);
   if ((0 < nVariantRow) &&
@@ -2664,9 +3047,9 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
      -1 < nOverlaySourceRow)) {
     wDstStrideRaw = *(ushort *)(*pDstSurface + 4);
     ReturnConstantTrueQuickDrawFlag(pOverlayAtlasSurface);
-    nRemainingRows = GetSurfaceHeaderFromSurfaceObject(pOverlayAtlasSurface);
+    nRemainingRows = func_0x00405e39(pOverlayAtlasSurface);
     wOverlayIconId = *(ushort *)(*pOverlayAtlasSurface + 4) & 0x3fff;
-    nRemainingCols = GetSurfaceHeaderFromSurfaceObject(pDstSurface);
+    nRemainingCols = func_0x00405e39(pDstSurface);
     pbSrcCursor = (char *)(nRemainingRows + (short)(nOverlaySourceRow + -0x26 + nVariantRow * 0x26))
     ;
     nDstStrideBytes = (int)(short)(wDstStrideRaw & 0x3fff);
@@ -2693,168 +3076,6 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00605E12
-// GHIDRA_NAME TMacViewMgr::?Find@CString@@QBEHD@Z
-// GHIDRA_PROTO undefined __thiscall ?Find@CString@@QBEHD@Z(undefined1 param_1)
-
-int TMacViewMgr::_Find_CString__QBEHD_Z(undefined1 param_1)
-
-{
-  int iVar1;
-
-  iVar1 = __mbschr(this->vftable,param_1);
-  if (iVar1 == 0) {
-    iVar1 = -1;
-  }
-  else {
-    iVar1 = iVar1 - (int)this->vftable;
-  }
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006064B0
-// GHIDRA_NAME TMacViewMgr::?OnIdle@CWinThread@@UAEHJ@Z
-// GHIDRA_PROTO undefined __thiscall ?OnIdle@CWinThread@@UAEHJ@Z(int param_1)
-
-bool TMacViewMgr::_OnIdle_CWinThread__UAEHJ_Z(int param_1)
-
-{
-  CFrameWnd *pCVar1;
-  BOOL BVar2;
-  int iVar3;
-  CFrameWnd *this_00;
-
-  if (param_1 < 1) {
-    pCVar1 = *(CFrameWnd **)&this->field_0x1c;
-    if ((pCVar1 != (CFrameWnd *)0x0) && (pCVar1->m_hWnd != (HWND)0x0)) {
-      BVar2 = IsWindowVisible(pCVar1->m_hWnd);
-      if (BVar2 != 0) {
-        _AfxCallWndProc__YGJPAVCWnd__PAUHWND____IIJ_Z(pCVar1,pCVar1->m_hWnd,0x363,1,0);
-        _SendMessageToDescendants_CWnd__SGXPAUHWND____IIJHH_Z(pCVar1->m_hWnd,0x363,1,0,1,1);
-      }
-    }
-    iVar3 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-    iVar3 = _GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
-                      ((TMacViewMgr *)(iVar3 + 0x1070),
-                       _CreateObject___CThreadLocal_VAFX_MODULE_THREAD_STATE____SGPAVCNoTrackObject__XZ
-                      );
-    for (this_00 = *(CFrameWnd **)(iVar3 + 8); this_00 != (CFrameWnd *)0x0;
-        this_00 = *(CFrameWnd **)&this_00->field_0x54) {
-      if ((this_00->m_hWnd != (void *)0x0) && (this_00 != pCVar1)) {
-        if (*(int *)&this_00->field_0x88 == 0) {
-          CFrameWnd::_ShowWindow_CWnd__QAEHH_Z(this_00,0);
-        }
-        BVar2 = IsWindowVisible(this_00->m_hWnd);
-        if ((BVar2 != 0) || (-1 < *(int *)&this_00->field_0x88)) {
-          _AfxCallWndProc__YGJPAVCWnd__PAUHWND____IIJ_Z(this_00,this_00->m_hWnd,0x363,1,0);
-          _SendMessageToDescendants_CWnd__SGXPAUHWND____IIJHH_Z(this_00->m_hWnd,0x363,1,0,1,1);
-        }
-        if (0 < *(int *)&this_00->field_0x88) {
-          CFrameWnd::_ShowWindow_CWnd__QAEHH_Z(this_00,*(int *)&this_00->field_0x88);
-        }
-        *(undefined4 *)&this_00->field_0x88 = 0xffffffff;
-      }
-    }
-  }
-  else {
-    iVar3 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-    iVar3 = _GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
-                      ((TMacViewMgr *)(iVar3 + 0x1070),
-                       _CreateObject___CThreadLocal_VAFX_MODULE_THREAD_STATE____SGPAVCNoTrackObject__XZ
-                      );
-    if (*(int *)(iVar3 + 0x10) == 0) {
-      IncrementAfxModuleThreadStateTempMapLockDepth();
-      _AfxUnlockTempMaps__YGHH_Z(1);
-    }
-  }
-  return param_1 < 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060986B
-// GHIDRA_NAME TMacViewMgr::?RepositionBars@CWnd@@QAEXIIIIPAUtagRECT@@PBU2@H@Z
-// GHIDRA_PROTO undefined __thiscall ?RepositionBars@CWnd@@QAEXIIIIPAUtagRECT@@PBU2@H@Z(uint param_1, uint param_2, uint param_3, int param_4, LPRECT param_5, int * param_6, int param_7)
-
-void __thiscall
-TMacViewMgr::_RepositionBars_CWnd__QAEXIIIIPAUtagRECT__PBU2_H_Z
-          (TMacViewMgr *this,uint param_1,uint param_2,uint param_3,int param_4,LPRECT param_5,
-          int *param_6,int param_7)
-
-{
-  HWND pHVar1;
-  HWND hWnd;
-  uint uVar2;
-  int iVar3;
-  int *piVar4;
-  HDWP local_28;
-  tagRECT local_24;
-  LONG local_14;
-  LONG local_10;
-  int local_c;
-  HWND local_8;
-
-  local_8 = (HWND)0x0;
-  local_c = param_7;
-  local_10 = 0;
-  local_14 = 0;
-  if (param_6 == (int *)0x0) {
-    GetClientRect(*(HWND *)&this->field_0x1c,&local_24);
-  }
-  else {
-    local_24.left = *param_6;
-    local_24.top = param_6[1];
-    local_24.right = param_6[2];
-    local_24.bottom = param_6[3];
-  }
-  if (param_4 == 1) {
-    local_28 = (HDWP)0x0;
-  }
-  else {
-    local_28 = BeginDeferWindowPos(8);
-  }
-  for (hWnd = GetTopWindow(*(HWND *)&this->field_0x1c); hWnd != (HWND)0x0; hWnd = GetWindow(hWnd,2))
-  {
-    uVar2 = GetDlgCtrlID(hWnd);
-    uVar2 = uVar2 & 0xffff;
-    iVar3 = _FromHandlePermanent_CWnd__SGPAV1_PAUHWND_____Z(hWnd);
-    pHVar1 = hWnd;
-    if ((((uVar2 != param_3) && (pHVar1 = local_8, param_1 <= uVar2)) && (uVar2 <= param_2)) &&
-       (iVar3 != 0)) {
-      SendMessageA(hWnd,0x361,0,(LPARAM)&local_28);
-      pHVar1 = local_8;
-    }
-    local_8 = pHVar1;
-  }
-  if (param_4 == 1) {
-    if (param_7 == 0) {
-      param_5->right = local_14;
-      param_5->top = 0;
-      param_5->left = 0;
-      param_5->bottom = local_10;
-    }
-    else {
-      CopyRect(param_5,&local_24);
-    }
-  }
-  else {
-    if ((param_3 != 0) && (local_8 != (HWND)0x0)) {
-      piVar4 = (int *)_FromHandle_CWnd__SGPAV1_PAUHWND_____Z(local_8);
-      if (param_4 == 2) {
-        local_24.left = local_24.left + param_5->left;
-        local_24.top = local_24.top + param_5->top;
-        local_24.right = local_24.right - param_5->right;
-        local_24.bottom = local_24.bottom - param_5->bottom;
-      }
-      (**(code **)(*piVar4 + 0x68))(&local_24,0);
-      _AfxRepositionWindow__YGXPAUAFX_SIZEPARENTPARAMS__PAUHWND____PBUtagRECT___Z
-                (&local_28,local_8,&local_24);
-    }
-    if (local_28 != (HDWP)0x0) {
-      EndDeferWindowPos(local_28);
-    }
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0060A912
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot046
 // GHIDRA_PROTO undefined TMacViewMgr_VtblSlot046()
@@ -2863,159 +3084,6 @@ undefined4 TMacViewMgr::TMacViewMgr_VtblSlot046(void)
 
 {
   return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061C5DC
-// GHIDRA_NAME TMacViewMgr::??0CFrameWnd@@QAE@XZ
-// GHIDRA_PROTO undefined ??0CFrameWnd@@QAE@XZ()
-
-undefined4 * TMacViewMgr::__0CFrameWnd__QAE_XZ(void)
-
-{
-  undefined4 *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  __0CWnd__QAE_XZ();
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(extraout_ECX + 0x1b),10);
-  *(undefined1 *)(unaff_EBP + -4) = 1;
-  CString::__0CString__QAE_XZ((CString *)(extraout_ECX + 0x2b));
-  extraout_ECX[0x10] = 0xffffffff;
-  *(undefined1 *)(unaff_EBP + -4) = 2;
-  *extraout_ECX = &PTR_LAB_0067039c;
-  extraout_ECX[0xf] = 1;
-  extraout_ECX[0x27] = 0;
-  extraout_ECX[0x11] = 0;
-  extraout_ECX[0x12] = 0;
-  extraout_ECX[0x23] = 0;
-  extraout_ECX[0x24] = 0;
-  extraout_ECX[0x25] = 0;
-  extraout_ECX[0x26] = 0;
-  extraout_ECX[0x28] = 0;
-  extraout_ECX[0x29] = 0;
-  extraout_ECX[0x1a] = 0;
-  extraout_ECX[0x2a] = 0;
-  extraout_ECX[0x2e] = 0;
-  SetRectEmpty((LPRECT)(extraout_ECX + 0x16));
-  extraout_ECX[0x22] = 0xffffffff;
-  extraout_ECX[0x14] = 0;
-  extraout_ECX[0x13] = 0;
-  extraout_ECX[0x15] = 0;
-  extraout_ECX[0x2c] = 0;
-  extraout_ECX[0x2d] = 0;
-  _AddFrameWnd_CFrameWnd__IAEXXZ();
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return extraout_ECX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061C6BE
-// GHIDRA_NAME TMacViewMgr::??1CFrameWnd@@UAE@XZ
-// GHIDRA_PROTO undefined ??1CFrameWnd@@UAE@XZ()
-
-void TMacViewMgr::__1CFrameWnd__UAE_XZ(void)
-
-{
-  CWnd *this;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  *(CWnd **)(unaff_EBP + -0x10) = this;
-  (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_0067039c;
-  *(undefined4 *)(unaff_EBP + -4) = 2;
-  _RemoveFrameWnd_CFrameWnd__IAEXXZ();
-  if (this[2].m_nModalResult != 0) {
-    __3_YAXPAX_Z(this[2].m_nModalResult);
-  }
-  *(undefined1 *)(unaff_EBP + -4) = 1;
-  CString::__1CString__QAE_XZ((CString *)&this[2].m_pCtrlCont);
-  *(undefined1 *)(unaff_EBP + -4) = 0;
-  __1CPtrList__UAE_XZ();
-  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::__1CWnd__UAE_XZ(this);
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061C76D
-// GHIDRA_NAME TMacViewMgr::?LoadAccelTable@CFrameWnd@@QAEHPBD@Z
-// GHIDRA_PROTO undefined __thiscall ?LoadAccelTable@CFrameWnd@@QAEHPBD@Z(LPCSTR param_1)
-
-bool TMacViewMgr::_LoadAccelTable_CFrameWnd__QAEHPBD_Z(LPCSTR param_1)
-
-{
-  int iVar1;
-  HACCEL pHVar2;
-
-  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-  pHVar2 = LoadAcceleratorsA(*(HINSTANCE *)(iVar1 + 0xc),param_1);
-  *(HACCEL *)&this->field_0x48 = pHVar2;
-  return pHVar2 != (HACCEL)0x0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061C793
-// GHIDRA_NAME TMacViewMgr::?GetDefaultAccelerator@CFrameWnd@@UAEPAUHACCEL__@@XZ
-// GHIDRA_PROTO undefined __thiscall ?GetDefaultAccelerator@CFrameWnd@@UAEPAUHACCEL__@@XZ(void)
-
-int TMacViewMgr::_GetDefaultAccelerator_CFrameWnd__UAEPAUHACCEL____XZ()
-
-{
-  undefined uVar1;
-  undefined3 extraout_var;
-  int iVar2;
-  int iVar3;
-
-  iVar3 = *(int *)&this->field_0x48;
-  uVar1 = (*this->vftable[1].BuildStrategicMapCommodityIconAtlasFrom700To722)();
-  if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
-    iVar2 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0xb0))();
-    if (iVar2 != 0) {
-      iVar3 = iVar2;
-    }
-  }
-  return iVar3;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061C7B7
-// GHIDRA_NAME TMacViewMgr::?PreTranslateMessage@CFrameWnd@@UAEHPAUtagMSG@@@Z
-// GHIDRA_PROTO undefined __thiscall ?PreTranslateMessage@CFrameWnd@@UAEHPAUtagMSG@@@Z(LPMSG param_1)
-
-undefined4 TMacViewMgr::_PreTranslateMessage_CFrameWnd__UAEHPAUtagMSG___Z(LPMSG param_1)
-
-{
-  undefined uVar1;
-  int iVar2;
-  undefined3 extraout_var;
-  undefined4 uVar3;
-
-  if ((param_1->message == 0x201) || (param_1->message == 0xa1)) {
-    _AfxCancelModes__YGXPAUHWND_____Z(param_1->hwnd);
-  }
-  iVar2 = TTooltipRelayWindowState::_PreTranslateMessage_CWnd__UAEHPAUtagMSG___Z
-                    ((TTooltipRelayWindowState *)this,param_1);
-  if (iVar2 == 0) {
-    if (*(int **)&this->field_0x68 != (int *)0x0) {
-      iVar2 = (**(code **)(**(int **)&this->field_0x68 + 0x5c))(param_1);
-      if (iVar2 != 0) goto LAB_0061c822;
-    }
-    if ((0xff < param_1->message) && (param_1->message < 0x109)) {
-      uVar1 = (*this->vftable[1].CreateCityBuildingDialogBySlot)();
-      if ((HACCEL)CONCAT31(extraout_var,uVar1) != (HACCEL)0x0) {
-        iVar2 = TranslateAcceleratorA
-                          (*(HWND *)&this->field_0x1c,(HACCEL)CONCAT31(extraout_var,uVar1),param_1);
-        if (iVar2 != 0) goto LAB_0061c822;
-      }
-    }
-    uVar3 = 0;
-  }
-  else {
-LAB_0061c822:
-    uVar3 = 1;
-  }
-  return uVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C82E
@@ -3031,301 +3099,6 @@ void TMacViewMgr::TMacViewMgr_VtblSlot043()
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0061C877
-// GHIDRA_NAME TMacViewMgr::?ExitHelpMode@CFrameWnd@@UAEXXZ
-// GHIDRA_PROTO undefined __thiscall ?ExitHelpMode@CFrameWnd@@UAEXXZ(void)
-
-void TMacViewMgr::_ExitHelpMode_CFrameWnd__UAEXXZ()
-
-{
-  BOOL BVar1;
-  HWND pHVar2;
-  int iVar3;
-  tagMSG tStack_1c;
-
-  if (*(int *)&this->field_0x50 != 0) {
-    BVar1 = PeekMessageA(&tStack_1c,*(HWND *)&this->field_0x1c,0x367,0x367,3);
-    if (BVar1 == 0) {
-      PostMessageA(*(HWND *)&this->field_0x1c,0x367,0,0);
-    }
-    pHVar2 = GetCapture();
-    if (pHVar2 == *(HWND *)&this->field_0x1c) {
-      ReleaseCapture();
-    }
-    iVar3 = _GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ();
-    *(undefined4 *)&this->field_0x50 = 0;
-    *(undefined4 *)(iVar3 + 0x50) = 0;
-    PostMessageA(*(HWND *)&this->field_0x1c,0x36a,0,0);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061C976
-// GHIDRA_NAME TMacViewMgr::?OnCommand@CFrameWnd@@MAEHIJ@Z
-// GHIDRA_PROTO undefined __thiscall ?OnCommand@CFrameWnd@@MAEHIJ@Z(uint param_1, int param_2)
-
-undefined4 TMacViewMgr::_OnCommand_CFrameWnd__MAEHIJ_Z(uint param_1, int param_2)
-
-{
-  int iVar1;
-  LRESULT LVar2;
-  undefined4 uVar3;
-  uint uVar4;
-
-  uVar4 = param_1 & 0xffff;
-  iVar1 = _GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ();
-  if ((((*(int *)(iVar1 + 0x50) == 0) || (param_2 != 0)) || (uVar4 == 0xe146)) ||
-     ((uVar4 == 0xe147 || (uVar4 == 0xe145)))) {
-    uVar3 = TTooltipRelayWindowState::_OnCommand_CWnd__MAEHIJ_Z
-                      ((TTooltipRelayWindowState *)this,param_1,param_2);
-  }
-  else {
-    LVar2 = SendMessageA(*(HWND *)&this->field_0x1c,0x365,0,uVar4 + 0x10000);
-    if (LVar2 == 0) {
-      SendMessageA(*(HWND *)&this->field_0x1c,0x111,0xe147,0);
-    }
-    uVar3 = 1;
-  }
-  return uVar3;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061CA0D
-// GHIDRA_NAME TMacViewMgr::?BeginModalState@CFrameWnd@@UAEXXZ
-// GHIDRA_PROTO undefined __thiscall ?BeginModalState@CFrameWnd@@UAEXXZ(void)
-
-undefined1 * TMacViewMgr::_BeginModalState_CFrameWnd__UAEXXZ()
-
-{
-  int iVar1;
-  HWND pHVar2;
-  BOOL BVar3;
-  int iVar4;
-  LRESULT LVar5;
-  undefined4 uVar6;
-  undefined1 *puVar7;
-  UINT UVar8;
-  int iStack_8;
-
-  *(int *)&this->field_0xa0 = *(int *)&this->field_0xa0 + 1;
-  puVar7 = &this->field_0xa0;
-  if (*(uint *)&this->field_0xa0 < 2) {
-    iVar1 = _GetTopLevelParent_CWnd__QBEPAV1_XZ();
-    iStack_8 = 0;
-    UVar8 = 5;
-    pHVar2 = GetDesktopWindow();
-    while( true ) {
-      pHVar2 = GetWindow(pHVar2,UVar8);
-      if (pHVar2 == (HWND)0x0) break;
-      BVar3 = IsWindowEnabled(pHVar2);
-      if (BVar3 != 0) {
-        iVar4 = _FromHandlePermanent_CWnd__SGPAV1_PAUHWND_____Z(pHVar2);
-        if (iVar4 != 0) {
-          iVar4 = _AfxIsDescendant__YGHPAUHWND____0_Z(*(undefined4 *)(iVar1 + 0x1c),pHVar2);
-          if (iVar4 != 0) {
-            LVar5 = SendMessageA(pHVar2,0x36c,0,0);
-            if (LVar5 == 0) {
-              iStack_8 = iStack_8 + 1;
-            }
-          }
-        }
-      }
-      UVar8 = 2;
-    }
-    puVar7 = (undefined1 *)0x0;
-    if (iStack_8 != 0) {
-      uVar6 = __2_YAPAXI_Z(iStack_8 * 4 + 4);
-      iStack_8 = 0;
-      UVar8 = 5;
-      *(undefined4 *)&this->field_0xa4 = uVar6;
-      pHVar2 = GetDesktopWindow();
-      for (pHVar2 = GetWindow(pHVar2,UVar8); pHVar2 != (HWND)0x0; pHVar2 = GetWindow(pHVar2,2)) {
-        BVar3 = IsWindowEnabled(pHVar2);
-        if (BVar3 != 0) {
-          iVar4 = _FromHandlePermanent_CWnd__SGPAV1_PAUHWND_____Z(pHVar2);
-          if (iVar4 != 0) {
-            iVar4 = _AfxIsDescendant__YGHPAUHWND____0_Z(*(undefined4 *)(iVar1 + 0x1c),pHVar2);
-            if (iVar4 != 0) {
-              LVar5 = SendMessageA(pHVar2,0x36c,0,0);
-              if (LVar5 == 0) {
-                EnableWindow(pHVar2,0);
-                *(HWND *)(*(int *)&this->field_0xa4 + iStack_8 * 4) = pHVar2;
-                iStack_8 = iStack_8 + 1;
-              }
-            }
-          }
-        }
-      }
-      puVar7 = *(undefined1 **)&this->field_0xa4;
-      *(undefined4 *)(puVar7 + iStack_8 * 4) = 0;
-    }
-  }
-  return puVar7;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061CDB3
-// GHIDRA_NAME TMacViewMgr::?PreCreateWindow@CFrameWnd@@MAEHAAUtagCREATESTRUCTA@@@Z
-// GHIDRA_PROTO undefined ?PreCreateWindow@CFrameWnd@@MAEHAAUtagCREATESTRUCTA@@@Z()
-
-undefined4 TMacViewMgr::_PreCreateWindow_CFrameWnd__MAEHAAUtagCREATESTRUCTA___Z(int param_1)
-
-{
-  int iVar1;
-
-  if (*(int *)(param_1 + 0x28) == 0) {
-    iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-    if ((*(byte *)(iVar1 + 0x18) & 8) == 0) {
-      iVar1 = _AfxEndDeferRegisterClass__YGHF_Z(8);
-    }
-    else {
-      iVar1 = 1;
-    }
-    if (iVar1 == 0) {
-      return 0;
-    }
-    *(char **)(param_1 + 0x28) = "AfxFrameOrView42s";
-  }
-  if ((*(uint *)(param_1 + 0x20) & 0x8000) != 0) {
-    if (DAT_006a7d5c == 0) {
-      return 1;
-    }
-    *(uint *)(param_1 + 0x20) = *(uint *)(param_1 + 0x20) | 0x4000;
-  }
-  if (DAT_006a7d5c != 0) {
-    *(byte *)(param_1 + 0x2d) = *(byte *)(param_1 + 0x2d) | 2;
-  }
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061CF1B
-// GHIDRA_NAME TMacViewMgr::?OnCreateClient@CFrameWnd@@MAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z
-// GHIDRA_PROTO undefined ?OnCreateClient@CFrameWnd@@MAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z()
-
-undefined4
-TMacViewMgr::_OnCreateClient_CFrameWnd__MAEHPAUtagCREATESTRUCTA__PAUCCreateContext___Z
-          (undefined4 param_1,int *param_2)
-
-{
-  int iVar1;
-
-  if (((param_2 != (int *)0x0) && (*param_2 != 0)) &&
-     (iVar1 = _CreateView_CFrameWnd__QAEPAVCWnd__PAUCCreateContext__I_Z(param_2,0xe900), iVar1 == 0)
-     ) {
-    return 0;
-  }
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061D01E
-// GHIDRA_NAME TMacViewMgr::?LoadFrame@CFrameWnd@@UAEHIKPAVCWnd@@PAUCCreateContext@@@Z
-// GHIDRA_PROTO undefined ?LoadFrame@CFrameWnd@@UAEHIKPAVCWnd@@PAUCCreateContext@@@Z()
-
-undefined4 TMacViewMgr::_LoadFrame_CFrameWnd__UAEHIKPAVCWnd__PAUCCreateContext___Z(void)
-
-{
-  uint uVar1;
-  int iVar2;
-  undefined4 uVar3;
-  HMENU pHVar4;
-  TMacViewMgr *this;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-
-  EstablishSehFrameProlog();
-  uVar1 = *(uint *)(unaff_EBP + 8);
-  *(uint *)&this->field_0x8c = uVar1;
-  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + 8));
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  iVar2 = _LoadStringA_CString__QAEHI_Z(uVar1);
-  if (iVar2 != 0) {
-    _AfxExtractSubString__YGHAAVCString__PBDHD_Z
-              (&this->field_0xac,*(undefined4 *)(unaff_EBP + 8),0,10);
-  }
-  iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-  if ((*(byte *)(iVar2 + 0x18) & 8) == 0) {
-    iVar2 = _AfxEndDeferRegisterClass__YGHF_Z(8);
-  }
-  else {
-    iVar2 = 1;
-  }
-  if (iVar2 != 0) {
-    uVar3 = _GetIconWndClass_CFrameWnd__IAEPBDKI_Z_0061cf9b(*(undefined4 *)(unaff_EBP + 0xc),uVar1);
-    iVar2 = _Create_CFrameWnd__QAEHPBD0KABUtagRECT__PAVCWnd__0KPAUCCreateContext___Z
-                      (uVar3,*(undefined4 *)&this->field_0xac,*(undefined4 *)(unaff_EBP + 0xc),
-                       &DAT_006a6130,*(undefined4 *)(unaff_EBP + 0x10),(LPCSTR)(uVar1 & 0xffff),0,
-                       *(undefined4 *)(unaff_EBP + 0x14));
-    if (iVar2 != 0) {
-      pHVar4 = GetMenu(*(HWND *)&this->field_0x1c);
-      *(HMENU *)&this->field_0x44 = pHVar4;
-      _LoadAccelTable_CFrameWnd__QAEHPBD_Z(this,(LPCSTR)(uVar1 & 0xffff));
-      if (*(int *)(unaff_EBP + 0x14) == 0) {
-        _SendMessageToDescendants_CWnd__SGXPAUHWND____IIJHH_Z
-                  (*(undefined4 *)&this->field_0x1c,0x364,0,0,1,1);
-      }
-      *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 8));
-      uVar3 = 1;
-      goto LAB_0061d0f8;
-    }
-  }
-  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 8));
-  uVar3 = 0;
-LAB_0061d0f8:
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return uVar3;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061D109
-// GHIDRA_NAME TMacViewMgr::?OnUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z
-// GHIDRA_PROTO undefined __thiscall ?OnUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z(HMENU param_1)
-
-void TMacViewMgr::_OnUpdateFrameMenu_CFrameWnd__UAEXPAUHMENU_____Z(HMENU param_1)
-
-{
-  undefined uVar1;
-  undefined3 extraout_var;
-
-  if (param_1 == (HMENU)0x0) {
-    uVar1 = (*this->vftable[1].BuildStrategicMapCommodityIconAtlasFrom700To722)();
-    if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
-      param_1 = (HMENU)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0xac))();
-    }
-    if (param_1 == (HMENU)0x0) {
-      param_1 = *(HMENU *)&this->field_0x44;
-    }
-  }
-  SetMenu(*(HWND *)&this->field_0x1c,param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061D37E
-// GHIDRA_NAME TMacViewMgr::?OnCmdMsg@CFrameWnd@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
-// GHIDRA_PROTO undefined __thiscall ?OnCmdMsg@CFrameWnd@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z(uint param_1, uint param_2, int param_3, undefined4 param_4)
-
-undefined4 __thiscall
-TMacViewMgr::_OnCmdMsg_CFrameWnd__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
-          (TMacViewMgr *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
-
-{
-  int *piVar1;
-  int iVar2;
-
-  piVar1 = (int *)GetObjectValueAtOffset98();
-  if (((piVar1 == (int *)0x0) ||
-      (iVar2 = (**(code **)(*piVar1 + 0x14))(param_1,param_2,param_3,param_4), iVar2 == 0)) &&
-     (iVar2 = TTooltipRelayWindowState::_OnCmdMsg_CCmdTarget__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
-                        ((TTooltipRelayWindowState *)this,param_1,param_2,param_3,param_4),
-     iVar2 == 0)) {
-    iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-    if ((*(int **)(iVar2 + 4) == (int *)0x0) ||
-       (iVar2 = (**(code **)(**(int **)(iVar2 + 4) + 0x14))(param_1,param_2,param_3,param_4),
-       iVar2 == 0)) {
-      return 0;
-    }
-  }
-  return 1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D917
 // GHIDRA_NAME TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917
 // GHIDRA_PROTO undefined WrapperFor_GetObjectValueAtOffset98_At0061d917()
@@ -3334,147 +3107,12 @@ undefined4 TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
 
 {
   int iVar1;
-
+  
   iVar1 = GetObjectValueAtOffset98();
   if (iVar1 != 0) {
     return *(undefined4 *)(iVar1 + 0x3c);
   }
   return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061DC76
-// GHIDRA_NAME TMacViewMgr::?GetMessageString@CFrameWnd@@UBEXIAAVCString@@@Z
-// GHIDRA_PROTO undefined ?GetMessageString@CFrameWnd@@UBEXIAAVCString@@@Z()
-
-void TMacViewMgr::_GetMessageString_CFrameWnd__UBEXIAAVCString___Z
-               (undefined4 param_1,CString *param_2)
-
-{
-  int iVar1;
-  int iVar2;
-  undefined1 *puVar3;
-
-  iVar1 = CString::_GetBuffer_CString__QAEPADH_Z(param_2,0xff);
-  iVar2 = _AfxLoadString__YGHIPADI_Z(param_1,iVar1,0x100);
-  if (iVar2 != 0) {
-    puVar3 = (undefined1 *)__mbschr(iVar1,10);
-    if (puVar3 != (undefined1 *)0x0) {
-      *puVar3 = 0;
-    }
-  }
-  CString::_ReleaseBuffer_CString__QAEXH_Z(param_2,-1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061DDB2
-// GHIDRA_NAME TMacViewMgr::?GetMessageBar@CFrameWnd@@UAEPAVCWnd@@XZ
-// GHIDRA_PROTO undefined ?GetMessageBar@CFrameWnd@@UAEPAVCWnd@@XZ()
-
-void __fastcall TMacViewMgr::_GetMessageBar_CFrameWnd__UAEPAVCWnd__XZ(int param_1)
-
-{
-  _GetDescendantWindow_CWnd__SGPAV1_PAUHWND____HH_Z(*(undefined4 *)(param_1 + 0x1c),0xe801,1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061E1FE
-// GHIDRA_NAME TMacViewMgr::?OnSetPreviewMode@CFrameWnd@@UAEXHPAUCPrintPreviewState@@@Z
-// GHIDRA_PROTO undefined __thiscall ?OnSetPreviewMode@CFrameWnd@@UAEXHPAUCPrintPreviewState@@@Z(int param_1, int * param_2)
-
-void __thiscall
-TMacViewMgr::_OnSetPreviewMode_CFrameWnd__UAEXHPAUCPrintPreviewState___Z
-          (TMacViewMgr *this,int param_1,int *param_2)
-
-{
-  int *piVar1;
-  undefined4 *puVar2;
-  undefined4 *puVar3;
-  undefined uVar4;
-  undefined3 extraout_var;
-  uint uVar5;
-  uint uVar6;
-  int iVar7;
-  HWND pHVar8;
-  HMENU pHVar9;
-  HWND hWnd;
-  HWND unaff_retaddr;
-  uint uStack_c;
-
-  uVar4 = (*this->vftable[1].LoadStrategicMapUnitIconAtlas750)();
-  if ((param_1 != 0) &&
-     (piVar1 = *(int **)(CONCAT31(extraout_var,uVar4) + 0x68), piVar1 != (int *)0x0)) {
-    (**(code **)(*piVar1 + 100))(0);
-  }
-  uStack_c = 0;
-  puVar3 = *(undefined4 **)&this->field_0x70;
-  while (puVar3 != (undefined4 *)0x0) {
-    puVar2 = (undefined4 *)*puVar3;
-    piVar1 = (int *)puVar3[2];
-    uVar5 = GetDlgCtrlID((HWND)piVar1[7]);
-    uVar5 = uVar5 & 0xffff;
-    puVar3 = puVar2;
-    if ((0xe7ff < uVar5) && (uVar5 < 0xe820)) {
-      uVar6 = 1 << ((byte)uVar5 & 0x1f);
-      iVar7 = (**(code **)(*piVar1 + 0xd0))();
-      if (iVar7 != 0) {
-        uStack_c = uStack_c | uVar6;
-      }
-      iVar7 = (**(code **)(*piVar1 + 0xd8))();
-      if ((iVar7 == 0) || (uVar5 != 0xe81f)) {
-        _ShowControlBar_CFrameWnd__QAEXPAVCControlBar__HH_Z(piVar1,param_2[2] & uVar6,1);
-      }
-    }
-  }
-  param_2[2] = uStack_c;
-  if (param_1 == 0) {
-    *(undefined4 *)&this->field_0x9c = 0;
-    pHVar8 = GetDlgItem(*(HWND *)&this->field_0x1c,0xea21);
-    if (pHVar8 != (HWND)0x0) {
-      hWnd = GetDlgItem(*(HWND *)&this->field_0x1c,0xe900);
-      if (hWnd != (HWND)0x0) {
-        SetWindowLongA(hWnd,-0xc,0xea21);
-      }
-      SetWindowLongA(pHVar8,-0xc,0xe900);
-    }
-    if (param_2[1] != 0) {
-      InvalidateRect(*(HWND *)&this->field_0x1c,(RECT *)0x0,1);
-      SetMenu(*(HWND *)&this->field_0x1c,(HMENU)param_2[1]);
-    }
-    piVar1 = *(int **)(CONCAT31(extraout_var,uVar4) + 0x68);
-    if (piVar1 != (int *)0x0) {
-      (**(code **)(*piVar1 + 100))(1);
-    }
-    (*this->vftable[1].LoadStrategicMapOverlayAtlas8699)(1);
-    if (*param_2 != 0xe900) {
-      unaff_retaddr = GetDlgItem(*(HWND *)&this->field_0x1c,*param_2);
-    }
-    ShowWindow(unaff_retaddr,5);
-    *(int *)&this->field_0x48 = param_2[5];
-    _ShowOwnedWindows_CFrameWnd__QAEXH_Z(1);
-  }
-  else {
-    *(int *)&this->field_0x9c = param_2[4];
-    _ShowOwnedWindows_CFrameWnd__QAEXH_Z(0);
-    pHVar8 = GetDlgItem(*(HWND *)&this->field_0x1c,*param_2);
-    ShowWindow(pHVar8,0);
-    pHVar9 = GetMenu(*(HWND *)&this->field_0x1c);
-    param_2[1] = (int)pHVar9;
-    if (pHVar9 != (HMENU)0x0) {
-      InvalidateRect(*(HWND *)&this->field_0x1c,(RECT *)0x0,1);
-      SetMenu(*(HWND *)&this->field_0x1c,(HMENU)0x0);
-      *(uint *)&this->field_0xb8 = *(uint *)&this->field_0xb8 & 0xfffffffe;
-    }
-    param_2[5] = *(int *)&this->field_0x48;
-    *(undefined4 *)&this->field_0x48 = 0;
-    _LoadAccelTable_CFrameWnd__QAEHPBD_Z(this,(LPCSTR)0x7915);
-    if (*param_2 != 0xe900) {
-      pHVar8 = GetDlgItem(*(HWND *)&this->field_0x1c,0xe900);
-    }
-    if (pHVar8 != (HWND)0x0) {
-      SetWindowLongA(pHVar8,-0xc,0xea21);
-    }
-  }
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E49C
@@ -3485,83 +3123,5 @@ TMacViewMgr * TMacViewMgr::TMacViewMgr_VtblSlot050()
 
 {
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061E6E3
-// GHIDRA_NAME TMacViewMgr::?ActivateFrame@CFrameWnd@@UAEXH@Z
-// GHIDRA_PROTO undefined __thiscall ?ActivateFrame@CFrameWnd@@UAEXH@Z(int param_1)
-
-void TMacViewMgr::_ActivateFrame_CFrameWnd__UAEXH_Z(int param_1)
-
-{
-  BOOL BVar1;
-
-  if (param_1 == -1) {
-    BVar1 = IsWindowVisible(*(HWND *)&this->field_0x1c);
-    if (BVar1 == 0) {
-      param_1 = 1;
-    }
-    else {
-      BVar1 = IsIconic(*(HWND *)&this->field_0x1c);
-      if (BVar1 != 0) {
-        param_1 = 9;
-      }
-    }
-  }
-  CFrameWnd::_BringToTop_CFrameWnd__IAEXH_Z((CFrameWnd *)this,param_1);
-  if (param_1 != -1) {
-    CFrameWnd::_ShowWindow_CWnd__QAEHH_Z((CFrameWnd *)this,param_1);
-    CFrameWnd::_BringToTop_CFrameWnd__IAEXH_Z((CFrameWnd *)this,param_1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623B4C
-// GHIDRA_NAME TMacViewMgr::?AddHead@CSimpleList@@QAEXPAX@Z
-// GHIDRA_PROTO undefined __thiscall ?AddHead@CSimpleList@@QAEXPAX@Z(TMacViewMgrVtbl * param_1)
-
-void TMacViewMgr::_AddHead_CSimpleList__QAEXPAX_Z(TMacViewMgrVtbl *param_1)
-
-{
-  *(TMacViewMgrVtbl **)((int)&param_1->GetRuntimeClass + *(int *)&this->field_0x4) = this->vftable;
-  this->vftable = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623FF6
-// GHIDRA_NAME TMacViewMgr::?GetData@CThreadLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z
-// GHIDRA_PROTO undefined __thiscall ?GetData@CThreadLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z(undefined * param_1)
-
-/* WARNING: Removing unreachable block (ram,0x0062401d) */
-
-int __thiscall
-TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
-          (TMacViewMgr *this,undefined *param_1)
-
-{
-  TMacViewMgrVtbl *pTVar1;
-  LPVOID pvVar2;
-  int iVar3;
-
-  if (this->vftable == (TMacViewMgrVtbl *)0x0) {
-    if (DAT_006a7cc0 == (DWORD *)0x0) {
-      DAT_006a7cc0 = (DWORD *)__0CThreadSlotData__QAE_XZ();
-    }
-    pTVar1 = (TMacViewMgrVtbl *)_AllocSlot_CThreadSlotData__QAEHXZ();
-    this->vftable = pTVar1;
-  }
-  pTVar1 = this->vftable;
-  pvVar2 = TlsGetValue(*DAT_006a7cc0);
-  if ((pvVar2 == (LPVOID)0x0) || (*(int *)((int)pvVar2 + 8) <= (int)pTVar1)) {
-    iVar3 = 0;
-  }
-  else {
-    iVar3 = *(int *)(*(int *)((int)pvVar2 + 0xc) + (int)pTVar1 * 4);
-  }
-  if (iVar3 == 0) {
-    iVar3 = (*(code *)param_1)();
-    _SetValue_CThreadSlotData__QAEXHPAX_Z(this->vftable,iVar3);
-  }
-  return iVar3;
 }
 

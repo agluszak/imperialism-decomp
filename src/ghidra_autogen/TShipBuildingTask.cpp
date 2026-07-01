@@ -3,44 +3,61 @@
 // Program: Imperialism.exe
 // Bucket: TShipBuildingTask.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005AE680
-// GHIDRA_NAME TShipBuildingTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005AE650
+// GHIDRA_NAME TShipBuildingTask::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TShipBuildingTask::GetTTaskClassNamePointer()
+undefined4 * TShipBuildingTask::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x18);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AE680
+// GHIDRA_NAME TShipBuildingTask::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TShipBuildingTask::GetRuntimeClass()
+
+{
+  return &classTShipBuildingTask;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE6A0
 // GHIDRA_NAME TShipBuildingTask::ConstructTShipBuildingTaskBaseState
-// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTShipBuildingTaskBaseState(void)
 
 void TShipBuildingTask::ConstructTShipBuildingTaskBaseState()
 
 {
-  this->vftable = &TShipBuildingTaskVtbl_0066a9f8;
+  this->vftable = &_vftable_;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE6C0
-// GHIDRA_NAME TShipBuildingTask::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
+// GHIDRA_NAME TShipBuildingTask::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipBuildingTask * TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
+TShipBuildingTask * TShipBuildingTask::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestroyTShipBuildingTask_Impl();
+  func_0x00407de7();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE780
 // GHIDRA_NAME TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(int * param_1)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Advances one city order context through per-turn requirement resolution and command generation.
 // GHIDRA_COMMENT
@@ -54,12 +71,12 @@ TShipBuildingTask * TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
 // GHIDRA_COMMENT_END
 
 /* Advances one city order context through per-turn requirement resolution and command generation.
-
+   
    Behavior summary:
    - Uses city/order requirement tables and current city pools.
    - Consumes available deltas, then queues remaining deficits as command objects.
    - Marks order state to avoid duplicate queueing within the same cycle.
-
+   
    Context:
    - Participates in turn processing / deferred command pipeline for city production orders. */
 
@@ -81,7 +98,7 @@ uint TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
   undefined4 *puStack_50;
   int iStack_38;
   short asStack_30 [24];
-
+  
   piVar2 = *(int **)(*(int *)&this->field_0x8 + 400);
   if (*(short *)&this->field_0x16 == 0) {
     puStack_50 = (undefined4 *)0x5ae7a9;
@@ -145,12 +162,12 @@ uint TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
         if (0 < sVar1) {
           puStack_50 = (undefined4 *)0x14;
           uStack_54 = 0x5ae8d2;
-          puStack_50 = (undefined4 *)__2_YAPAXI_Z();
+          puStack_50 = (undefined4 *)operator_new();
           if (puStack_50 == (undefined4 *)0x0) {
             puStack_50 = (undefined4 *)0x0;
           }
           else {
-            *puStack_50 = &TCityTaskVtbl_0066a9a8;
+            *puStack_50 = &TCityTask::_vftable_;
           }
           uVar4 = *(undefined4 *)&this->field_0x8;
           *(short *)(puStack_50 + 1) = sVar8;
@@ -183,17 +200,17 @@ uint TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE9E0
-// GHIDRA_NAME TShipBuildingTask::SerializeCityProductionQueueCommand
-// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::SerializeCityProductionQueueCommand(int * param_1)
+// GHIDRA_NAME TShipBuildingTask::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TShipBuildingTask::SerializeCityProductionQueueCommand(int *param_1)
+void TShipBuildingTask::WriteTo(int *param_1)
 
 {
   code *pcVar1;
-
+  
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x10,1);
-  TObject::WriteTo((TObject *)this,(TStream *)param_1);
+  func_0x0040583a(param_1);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
   (*pcVar1)(&this->field_0xc,2);
@@ -204,15 +221,15 @@ void TShipBuildingTask::SerializeCityProductionQueueCommand(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEA70
-// GHIDRA_NAME TShipBuildingTask::DeserializeCityProductionQueueCommand
-// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(int * param_1)
+// GHIDRA_NAME TShipBuildingTask::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TShipBuildingTask::DeserializeCityProductionQueueCommand(int *param_1)
+void TShipBuildingTask::ReadFrom(int *param_1)
 
 {
   code *pcVar1;
-
-  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
+  
+  func_0x00403517(param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);

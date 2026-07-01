@@ -4,44 +4,44 @@
 // Bucket: TAlwaysPictureButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570950
-// GHIDRA_NAME TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance
-// GHIDRA_PROTO undefined CreateTAlwaysPictureButtonInstance()
+// GHIDRA_NAME TAlwaysPictureButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance(void)
+undefined4 * TAlwaysPictureButton::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063636a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(undefined2 *)(this + 0x92) = 7000;
-    *(TAlwaysPictureButtonVtbl **)this = &TAlwaysPictureButtonVtbl_0065e928;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005709D0
-// GHIDRA_NAME TAlwaysPictureButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TAlwaysPictureButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAlwaysPictureButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TAlwaysPictureButton::GetRuntimeClass()
 
 {
-  return &g_pClassDescTAlwaysPictureButton;
+  return &classTAlwaysPictureButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005709F0
@@ -51,9 +51,9 @@ CRuntimeClass * TAlwaysPictureButton::GetTEventHandlerClassNamePointer()
 TAlwaysPictureButton * TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  func_0x00401122();
   *(undefined2 *)&this->field_0x92 = 7000;
-  this->vftable = &TAlwaysPictureButtonVtbl_0065e928;
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -64,25 +64,25 @@ TAlwaysPictureButton * TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseSt
 TAlwaysPictureButton * TAlwaysPictureButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004053ad();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570A70
-// GHIDRA_NAME TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00570870(char param_1)
+// GHIDRA_NAME TAlwaysPictureButton::SetControlStateFlagAndMaybeRefresh
+// GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870(char param_1)
+void TAlwaysPictureButton::SetControlStateFlagAndMaybeRefresh(char param_1)
 
 {
   TAlwaysPictureButtonVtbl *pTVar1;
   undefined4 in_EAX;
   undefined4 uVar2;
   char unaff_retaddr;
-
+  
   if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
     this->field_0x64 = param_1;
@@ -101,16 +101,13 @@ void TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870(char param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570AE0
-// GHIDRA_NAME TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(char param_1, char param_2)
+// GHIDRA_NAME TAlwaysPictureButton::Select
+// GHIDRA_PROTO undefined __thiscall Select(char param_1, char param_2)
 
-void __thiscall
-TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
-          (TAlwaysPictureButton *this,char param_1,char param_2)
+void TAlwaysPictureButton::Select(char param_1, char param_2)
 
 {
-  TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
-            ((TSoundPlayer *)this,(int)param_1,(int)param_2);
+  func_0x00404e21((int)param_1,(int)param_2);
   return;
 }
 

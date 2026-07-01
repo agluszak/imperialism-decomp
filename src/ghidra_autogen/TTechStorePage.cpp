@@ -10,21 +10,11 @@
 TTechStorePage * TTechStorePage::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00403ff8();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00479440
-// GHIDRA_NAME TTechStorePage::OrphanVtableAssignStub_00479440
-// GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_00479440(void)
-
-CRuntimeClass * TTechStorePage::OrphanVtableAssignStub_00479440()
-
-{
-  return &CAmbitDocument::classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00479460
@@ -44,9 +34,9 @@ undefined ** TTechStorePage::OrphanVtableAssignStub_00479460()
 TTechStorePage * TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0(byte param_1)
 
 {
-  DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory();
+  func_0x00404ebc();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -66,21 +56,21 @@ TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062dfc8;
   *unaff_FS_OFFSET = &uStack_c;
-  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  AfxGetModuleState();
   _BeginWaitCursor_CCmdTarget__QAEXXZ();
   uStack_4 = 0;
-  piVar1 = (int *)__2_YAPAXI_Z(8);
+  piVar1 = (int *)operator_new(8);
   if (piVar1 == (int *)0x0) {
     piVar1 = (int *)0x0;
   }
   else {
     piVar1[1] = param_1;
-    *piVar1 = (int)&PTR_LAB_00645f98;
+    *piVar1 = (int)&ArchiveStreamAdapter::_vftable_;
   }
   if ((~*(uint *)(param_1 + 0x14) & 1) == 0) {
     uVar2 = 0;
@@ -92,117 +82,102 @@ TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
   }
   (**(code **)(*piVar1 + 0x1c))();
   (*this->vftable->VTableSlot19)(1);
-  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
-  _EndWaitCursor_CCmdTarget__QAEXXZ();
+  AfxGetModuleState();
+  EndWaitCursor();
   *unaff_FS_OFFSET = uVar2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0E70
-// GHIDRA_NAME TTechStorePage::CreateTTechStorePageInstance
-// GHIDRA_PROTO undefined CreateTTechStorePageInstance()
+// GHIDRA_NAME TTechStorePage::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TPageView * TTechStorePage::CreateTTechStorePageInstance(void)
+undefined4 * TTechStorePage::CreateObject(void)
 
 {
-  TPageView *this;
-  TPageView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063897a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPageView *)__2_YAPAXI_Z(0x84);
+  puVar1 = (undefined4 *)operator_new(0x84);
   local_4 = 0;
-  pTVar1 = (TPageView *)0x0;
-  if (this != (TPageView *)0x0) {
-    TPageView::ConstructTPageViewBaseState(this);
-    this->vftable = (TPageViewVtbl *)&TTechStorePageVtbl_00645ca8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040778e();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0EF0
-// GHIDRA_NAME TTechStorePage::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTechStorePage::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTechStorePage::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTechStorePage::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTechStorePage;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0F10
 // GHIDRA_NAME TTechStorePage::ConstructTTechStorePageBaseState
-// GHIDRA_PROTO undefined TTechStorePage::ConstructTTechStorePageBaseState()
+// GHIDRA_PROTO undefined ConstructTTechStorePageBaseState()
 
-void __thiscall
-TTechStorePage::ConstructTTechStorePageBaseState(int *param_1,TLineDataVtbl *param_2)
+void __thiscall TTechStorePage::ConstructTTechStorePageBaseState(int *param_1,undefined4 param_2)
 
 {
   int iVar1;
-  TLineData *this;
-  int iVar2;
+  undefined4 *puVar2;
+  int iVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_14;
   undefined4 local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063899a;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar2 = 0x1c;
+  iVar3 = 0x1c;
   do {
-    if ((&g_pCityOrderCapabilityState->field_0x180)[(short)iVar2] != '\0') {
-      this = (TLineData *)__2_YAPAXI_Z(0x18);
+    if ((&g_pCityOrderCapabilityState->field_0x180)[(short)iVar3] != '\0') {
+      puVar2 = (undefined4 *)operator_new(0x18);
       local_4 = 0;
-      if (this == (TLineData *)0x0) {
-        this = (TLineData *)0x0;
+      if (puVar2 == (undefined4 *)0x0) {
+        puVar2 = (undefined4 *)0x0;
       }
       else {
-        TLineData::ConstructTLineDataBaseState(this);
-        this->vftable = (TLineDataVtbl *)&TTechItemLineVtbl_0066aec8;
+        func_0x00408f0d();
+        *puVar2 = &TTechItemLine::_vftable_;
       }
       local_4 = 0xffffffff;
       local_14 = 0x232;
       local_10 = 0x3f;
-      TLineData::SetLineDataRowAndBounds(this,0,0,&local_14);
+      func_0x00409025(0,0,&local_14);
       iVar1 = *param_1;
-      this[1].vftable = param_2;
-      *(int *)&this[1].field_0x4 = iVar2;
-      (**(code **)(iVar1 + 0x1a0))(this);
+      puVar2[4] = param_2;
+      puVar2[5] = iVar3;
+      (**(code **)(iVar1 + 0x1a0))(puVar2);
     }
-    iVar2 = iVar2 + -1;
-  } while (0 < iVar2);
-  iVar2 = *param_1;
-  (**(code **)(iVar2 + 0x1ac))();
-  (**(code **)(iVar2 + 0x1b0))(1);
-  UpdatePagedListNavigationButtonState((int)*(short *)((int)param_1 + 0x62));
-  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_0066ae08,param_1[7]);
-  *unaff_FS_OFFSET = local_10;
+    iVar3 = iVar3 + -1;
+  } while (0 < iVar3);
+  iVar3 = *param_1;
+  (**(code **)(iVar3 + 0x1ac))();
+  (**(code **)(iVar3 + 0x1b0))(1);
+  func_0x00404def((int)*(short *)((int)param_1 + 0x62));
+  func_0x00401875(PTR_g_szEmptyString_0066ae08,param_1[7]);
+  *unaff_FS_OFFSET = local_14;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B1040
-// GHIDRA_NAME TTechStorePage::DestructTTechStorePageAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTechStorePageAndMaybeFree(byte param_1)
-
-TTechStorePage * TTechStorePage::DestructTTechStorePageAndMaybeFree(byte param_1)
-
-{
-  DestructTTechStorePageAndMaybeFree_Impl();
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
 }
 

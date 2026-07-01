@@ -3,33 +3,51 @@
 // Program: Imperialism.exe
 // Bucket: TCapacityOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B8CC0
-// GHIDRA_NAME TCapacityOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8C90
+// GHIDRA_NAME TCapacityOrder::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TCapacityOrder::GetTProductionOrderClassNamePointer()
+undefined4 * TCapacityOrder::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x54);
+  if (puVar1 != (undefined4 *)0x0) {
+    *(undefined2 *)(puVar1 + 1) = 0;
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8CC0
+// GHIDRA_NAME TCapacityOrder::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TCapacityOrder::GetRuntimeClass()
 
 {
   return &g_pClassDescTCapacityOrder;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D00
-// GHIDRA_NAME TCapacityOrder::ConstructTItemOrderBaseState
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
+// GHIDRA_NAME TCapacityOrder::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCapacityOrder * TCapacityOrder::ConstructTItemOrderBaseState(byte param_1)
+TCapacityOrder * TCapacityOrder::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TCapacityOrder::DestructTCapacityOrderAndMaybeFree(this);
+  func_0x00401c0d();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D30
 // GHIDRA_NAME TCapacityOrder::DestructTCapacityOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTCapacityOrderAndMaybeFree(void)
 
 void TCapacityOrder::DestructTCapacityOrderAndMaybeFree()
 
@@ -39,18 +57,18 @@ void TCapacityOrder::DestructTCapacityOrderAndMaybeFree()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D50
-// GHIDRA_NAME TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50
-// GHIDRA_PROTO undefined __thiscall TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
+// GHIDRA_NAME TCapacityOrder::ICapacityOrder
+// GHIDRA_PROTO undefined __thiscall ICapacityOrder(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
-TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50
+TCapacityOrder::ICapacityOrder
           (TCapacityOrder *this,int param_1,undefined2 param_2,undefined2 param_3,undefined2 param_4
           ,undefined2 param_5)
 
 {
   int iVar1;
   undefined4 *puVar2;
-
+  
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = param_2;
@@ -72,8 +90,8 @@ TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8DD0
-// GHIDRA_NAME TCapacityOrder::OrphanRetStub_004b5160
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+// GHIDRA_NAME TCapacityOrder::CommitIfPending
+// GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Applies a pending production delta to a city slot.
 // GHIDRA_COMMENT Updates:
@@ -88,14 +106,14 @@ TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50
    - delta/mirror table at city +0x1FC + slot*2
    Handles special-slot behavior (including slot 14 branch and slot 15 derived path). */
 
-void TCapacityOrder::OrphanRetStub_004b5160()
+void TCapacityOrder::CommitIfPending()
 
 {
   short *psVar1;
   short sVar2;
   int iVar3;
   int iVar4;
-
+  
   if (*(short *)&this->field_0x4 == 0) {
     return;
   }

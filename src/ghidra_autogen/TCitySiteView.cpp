@@ -4,62 +4,61 @@
 // Bucket: TCitySiteView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BD60
-// GHIDRA_NAME TCitySiteView::CreateTCitySiteViewInstance
-// GHIDRA_PROTO undefined CreateTCitySiteViewInstance()
+// GHIDRA_NAME TCitySiteView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TWorldView * TCitySiteView::CreateTCitySiteViewInstance(void)
+int * TCitySiteView::CreateObject(void)
 
 {
-  TWorldView *this;
+  int *piVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_18;
   undefined4 local_14;
-  TWorldView *local_10;
+  int *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633f32;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TWorldView *)__2_YAPAXI_Z(0x378);
+  piVar1 = (int *)operator_new(0x378);
   local_4 = 0;
-  if (this != (TWorldView *)0x0) {
-    local_10 = this;
-    TWorldView::ConstructTWorldViewBaseState(this);
-    *(undefined4 *)&this->field_0x60 = 0;
-    this[6].field_0x64 = 0;
-    *(undefined4 *)&this[6].field_0x74 = 0;
-    this->vftable = (TWorldViewVtbl *)&TMapDialogVtbl_00658a58;
-    *(undefined4 *)&this->field_0x64 = 0;
+  if (piVar1 != (int *)0x0) {
+    local_10 = piVar1;
+    func_0x004037ab();
+    piVar1[0x18] = 0;
+    *(undefined1 *)(piVar1 + 0xd3) = 0;
+    piVar1[0xd7] = 0;
+    *piVar1 = (int)&TMapDialog::_vftable_;
+    piVar1[0x19] = 0;
     local_4 = CONCAT31(local_4._1_3_,1);
-    TMapDialog::SplitTileIndexToRowAndColumn
-              (CONCAT22((short)((uint)&local_14 >> 0x10),
-                        *(undefined2 *)&g_pGlobalMapState->field_0x6),&local_18,&local_14);
-    (*this->vftable[1].DispatchUiCommand19ToParent)(local_14,local_18);
-    *(undefined2 *)&this[6].field_0x6c = 0;
-    *(undefined2 *)&this[6].field_0x6e = 0xffff;
-    this[6].field_0x70 = 0;
-    *(undefined2 *)&this->field_0x76 = 1;
-    *(undefined2 *)&this->field_0x78 = 0x40;
-    this[6].field_0x78 = 0;
-    this->vftable = (TWorldViewVtbl *)&TCitySiteViewVtbl_006591d0;
+    func_0x00406c1c(CONCAT22((short)((uint)&local_14 >> 0x10),
+                             *(undefined2 *)&g_pGlobalMapState->field_0x6),&local_18,&local_14);
+    (**(code **)(*piVar1 + 0x1e4))(local_14,local_18);
+    *(undefined2 *)(piVar1 + 0xd5) = 0;
+    *(undefined2 *)((int)piVar1 + 0x356) = 0xffff;
+    *(undefined1 *)(piVar1 + 0xd6) = 0;
+    *(undefined2 *)((int)piVar1 + 0x76) = 1;
+    *(undefined2 *)(piVar1 + 0x1e) = 0x40;
+    *(undefined1 *)(piVar1 + 0xd8) = 0;
+    *piVar1 = (int)&_vftable_;
     *unaff_FS_OFFSET = local_14;
-    return this;
+    return piVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TWorldView *)0x0;
+  return (int *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BE90
-// GHIDRA_NAME TCitySiteView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TCitySiteView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCitySiteView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TCitySiteView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTCitySiteView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BFA0
@@ -69,76 +68,77 @@ CRuntimeClass * TCitySiteView::GetTEventHandlerClassNamePointer()
 TCitySiteView * TCitySiteView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00401280();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BFF0
-// GHIDRA_NAME TCitySiteView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TCitySiteView::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TCitySiteView::OrphanLeaf_NoCall_Ins07_004d8920()
+void TCitySiteView::NoOpUiLifecycleHook()
 
 {
   short sVar1;
-  int unaff_ESI;
   int iVar2;
-  undefined4 local_10;
-  undefined4 local_c;
-  int local_8 [2];
-
-  TWorldView::OrphanLeaf_NoCall_Ins07_004d8920((TWorldView *)this);
+  int in_stack_00000004;
+  int iStack_28;
+  undefined4 uStack_14;
+  int local_10 [4];
+  
+  iStack_28 = in_stack_00000004;
+  func_0x004072c5();
   *(undefined2 *)&this->field_0x76 = 1;
   *(undefined2 *)&this->field_0x78 = 0x40;
-  local_8[1] = 0x40;
+  local_10[2] = 0x40;
   iVar2 = 0;
-  local_10 = 0;
-  local_c = 0;
-  local_8[0] = 0x1680;
-  (**(code **)(*DAT_006a2158 + 0x2c))(&this->field_0x350,8,&local_10);
+  uStack_14 = 0;
+  local_10[0] = 0;
+  local_10[1] = 0x1680;
+  (**(code **)(*g_pDisplayMgr + 0x2c))(&this->field_0x350,8,&uStack_14);
   (**(code **)&this->vftable->field_0x1f8)();
   DAT_006a3450 = g_pPrimaryRenderSurfaceContext;
-  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x6d61696e);
-  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x444c4f47);
-  TToolBarCluster::SetMapInteractionMode((TCivToolbar *)this->ownerContext,4);
+  func_0x00401875(PTR_g_szEmptyString_00658990,0x6d61696e);
+  func_0x00401875(PTR_g_szEmptyString_00658990,0x444c4f47);
+  func_0x004032a1(4);
   *(undefined4 *)&this->field_0x370 = 1000;
   *(undefined4 *)&this->field_0x368 = 1000;
   *(undefined4 *)&this->field_0x374 = 0xfffffc18;
   *(undefined4 *)&this->field_0x36c = 0xfffffc18;
-  sVar1 = UiRuntimeContext::GetActiveNationId();
+  sVar1 = func_0x00403b16();
   do {
     if ((int)sVar1 ==
         (int)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + (short)iVar2 * 0x24)) {
-      TMapDialog::SplitTileIndexToRowAndColumn(iVar2,local_8,&stack0xffffffe0);
-      if ((int)(short)local_8[0] < *(int *)&this->field_0x370) {
-        *(int *)&this->field_0x370 = (int)(short)local_8[0];
+      func_0x00406c1c(iVar2,local_10,&iStack_28);
+      if ((int)(short)local_10[0] < *(int *)&this->field_0x370) {
+        *(int *)&this->field_0x370 = (int)(short)local_10[0];
       }
-      if ((int)(short)unaff_ESI < *(int *)&this->field_0x368) {
-        *(int *)&this->field_0x368 = (int)(short)unaff_ESI;
+      if ((int)(short)iStack_28 < *(int *)&this->field_0x368) {
+        *(int *)&this->field_0x368 = (int)(short)iStack_28;
       }
-      local_8[0] = local_8[0] + -5;
-      unaff_ESI = unaff_ESI + (3 - DAT_006a33b0);
-      if (*(int *)&this->field_0x374 < (int)(short)local_8[0]) {
-        *(int *)&this->field_0x374 = (int)(short)local_8[0];
+      local_10[0] = local_10[0] + -5;
+      iStack_28 = iStack_28 + (3 - DAT_006a33b0);
+      if (*(int *)&this->field_0x374 < (int)(short)local_10[0]) {
+        *(int *)&this->field_0x374 = (int)(short)local_10[0];
       }
-      if (*(int *)&this->field_0x36c < (int)(short)unaff_ESI) {
-        *(int *)&this->field_0x36c = (int)(short)unaff_ESI;
+      if (*(int *)&this->field_0x36c < (int)(short)iStack_28) {
+        *(int *)&this->field_0x36c = (int)(short)iStack_28;
       }
     }
     iVar2 = iVar2 + 1;
   } while (iVar2 < 0x1950);
   *(int *)&this->field_0x368 = *(int *)&this->field_0x368 + -1;
   *(int *)&this->field_0x370 = *(int *)&this->field_0x370 + -1;
-  g_pCursorControlPanel = (TControl *)(**(code **)(*(int *)DAT_006a2158[1] + 0x94))(0x63757273);
+  g_pCursorControlPanel = (TControl *)(**(code **)(*(int *)g_pDisplayMgr[1] + 0x94))(0x63757273);
   (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
   (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c,0x2b67);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x273f,9,0x63616e63);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730,3,0x71756572);
-  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x6d61696e);
-  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x444c4f47);
+  func_0x00406bc7(0x273f,9,0x63616e63);
+  func_0x00406bc7(0x2730,3,0x71756572);
+  func_0x00401875(PTR_g_szEmptyString_00658990,0x6d61696e);
+  func_0x00401875(PTR_g_szEmptyString_00658990,0x444c4f47);
   return;
 }
 
@@ -150,16 +150,16 @@ void TCitySiteView::OrphanRetStub_005966a0(undefined4 param_1)
 
 {
   TCitySiteView *pTStack_4;
-
+  
   pTStack_4 = this;
-  TMapDialog::SplitTileIndexToRowAndColumn(param_1,&param_1,&pTStack_4);
+  func_0x00406c1c(param_1,&param_1,&pTStack_4);
   (*this->vftable->OrphanRetStub_00596680)(pTStack_4,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051C2F0
 // GHIDRA_NAME TCitySiteView::OrphanRetStub_00596680
-// GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanRetStub_00596680(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596680(void)
 
 void TCitySiteView::OrphanRetStub_00596680()
 
@@ -169,27 +169,27 @@ void TCitySiteView::OrphanRetStub_00596680()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051C320
-// GHIDRA_NAME TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, undefined4 param_2)
+// GHIDRA_NAME TCitySiteView::SetMapDialogCellCoordinatesAndRefresh
+// GHIDRA_PROTO undefined __thiscall SetMapDialogCellCoordinatesAndRefresh(int param_1, undefined4 param_2)
 
 void __thiscall
-TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject
+TCitySiteView::SetMapDialogCellCoordinatesAndRefresh
           (TCitySiteView *this,int param_1,undefined4 param_2)
 
 {
   if ((int)(short)param_1 < *(int *)&this->field_0x368) {
-    param_1 = CONCAT22((short)((uint)param_1 >> 0x10),*(undefined2 *)&this->field_0x368);
+    param_1 = (int)*(ushort *)&this->field_0x368;
   }
   if ((int)(short)param_2 < *(int *)&this->field_0x370) {
-    param_2 = CONCAT22((short)((uint)param_2 >> 0x10),*(undefined2 *)&this->field_0x370);
+    param_2._0_2_ = *(short *)&this->field_0x370;
   }
   if (*(int *)&this->field_0x36c < (int)(short)param_1) {
-    param_1 = CONCAT22((short)((uint)param_1 >> 0x10),*(undefined2 *)&this->field_0x36c);
+    param_1 = (int)*(ushort *)&this->field_0x36c;
   }
   if (*(int *)&this->field_0x374 < (int)(short)param_2) {
-    param_2 = CONCAT22((short)((uint)param_2 >> 0x10),*(undefined2 *)&this->field_0x374);
+    param_2._0_2_ = *(short *)&this->field_0x374;
   }
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1,param_2);
+  func_0x0040230b(param_1,(short)param_2);
   return;
 }
 
@@ -225,7 +225,6 @@ void TCitySiteView::OrphanRetStub_00596080()
   char cVar1;
   bool bVar2;
   bool bVar3;
-  TMapMgr *extraout_EAX;
   TMapMgr *pTVar4;
   undefined2 uVar5;
   short sVar6;
@@ -237,9 +236,15 @@ void TCitySiteView::OrphanRetStub_00596080()
   undefined4 local_2c;
   undefined4 local_28;
   undefined4 local_24;
-  RECT local_20;
-  RECT local_10;
-
+  int local_20;
+  int local_1c;
+  int local_18;
+  int local_14;
+  int local_10;
+  int local_c;
+  int local_8;
+  int local_4;
+  
   bVar2 = false;
   sVar6 = *(short *)&this->field_0x6c;
   local_2c = 0xffffffff;
@@ -250,18 +255,20 @@ void TCitySiteView::OrphanRetStub_00596080()
   if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0xe + sVar6 * 0x24) == '\0') {
     bVar2 = true;
     bVar3 = true;
-    ComputeHexNeighborTileIndices(sVar6,(short *)&local_2c,g_pGlobalMapState->field_0x20);
+    pTVar4 = (TMapMgr *)
+             func_0x00405baf(sVar6,&local_2c,
+                             CONCAT31((int3)((uint)g_pGlobalMapState >> 8),
+                                      g_pGlobalMapState->field_0x20));
     psVar9 = (short *)&local_2c;
     iVar8 = 6;
-    pTVar4 = extraout_EAX;
     do {
       sVar6 = *psVar9;
       pTVar4 = (TMapMgr *)CONCAT22((short)((uint)pTVar4 >> 0x10),sVar6);
       if (((sVar6 != -1) &&
           (cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + sVar6 * 0x24),
-          pTVar4 = (TMapMgr *)UiRuntimeContext::GetActiveNationId(), (short)cVar1 != (short)pTVar4))
-         && (pTVar4 = g_pGlobalMapState,
-            *(char *)(*(int *)&g_pGlobalMapState->field_0xc + *psVar9 * 0x24) != '\x05')) {
+          pTVar4 = (TMapMgr *)func_0x00403b16(), (short)cVar1 != (short)pTVar4)) &&
+         (pTVar4 = g_pGlobalMapState,
+         *(char *)(*(int *)&g_pGlobalMapState->field_0xc + *psVar9 * 0x24) != '\x05')) {
         *psVar9 = -1;
       }
       uVar5 = (undefined2)((uint)pTVar4 >> 0x10);
@@ -272,20 +279,18 @@ void TCitySiteView::OrphanRetStub_00596080()
   sVar6 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 +
                           *(short *)&this->field_0x6e * 0x24);
   if ((sVar6 != -1) && ((&this->field_0x7c)[sVar6 * 8] != '\0')) {
-    TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-              (CONCAT22(uVar5,*(short *)&this->field_0x6e),&this->field_0x60,&local_2e,&local_30,1);
-    local_20.left = (LONG)local_30;
-    local_20.top = (LONG)local_2e;
-    local_20.right = local_20.left + 0x40;
-    local_10.right = local_20.left + 0x80;
-    local_20.bottom = local_20.top + 0x40;
-    local_10.bottom = local_20.top + 0x80;
-    local_10.left = local_20.right;
-    local_10.top = local_20.bottom;
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(DAT_006a3450 + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
-               (astruct_19 *)0x0);
+    func_0x004056a5(CONCAT22(uVar5,*(short *)&this->field_0x6e),&this->field_0x60,&local_2e,
+                    &local_30,1);
+    local_20 = (int)local_30;
+    local_1c = (int)local_2e;
+    local_18 = local_20 + 0x40;
+    local_8 = local_20 + 0x80;
+    local_14 = local_1c + 0x40;
+    local_4 = local_1c + 0x80;
+    local_10 = local_18;
+    local_c = local_14;
+    func_0x00405493(DAT_006a3450 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,
+                    &local_20,0,0);
   }
   psVar9 = &DAT_00697320;
   iVar8 = 6;
@@ -294,33 +299,29 @@ void TCitySiteView::OrphanRetStub_00596080()
     if (((sVar6 != -1) &&
         (sVar7 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + sVar6 * 0x24),
         sVar7 != -1)) && ((&this->field_0x7c)[sVar7 * 8] != '\0')) {
-      TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-                (sVar6,&this->field_0x60,&local_2e,&local_30,1);
-      local_20.left = (LONG)local_30;
-      local_20.top = (LONG)local_2e;
-      local_20.right = local_20.left + 0x40;
-      local_10.right = local_20.left + 0x80;
-      local_20.bottom = local_20.top + 0x40;
-      local_10.bottom = local_20.top + 0x80;
-      local_10.left = local_20.right;
-      local_10.top = local_20.bottom;
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(DAT_006a3450 + 4),
-                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
-                 (astruct_19 *)0x0);
+      func_0x004056a5(sVar6,&this->field_0x60,&local_2e,&local_30,1);
+      local_20 = (int)local_30;
+      local_1c = (int)local_2e;
+      local_18 = local_20 + 0x40;
+      local_8 = local_20 + 0x80;
+      local_14 = local_1c + 0x40;
+      local_4 = local_1c + 0x80;
+      local_10 = local_18;
+      local_c = local_14;
+      func_0x00405493(DAT_006a3450 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,
+                      &local_20,0,0);
     }
     psVar9 = psVar9 + 1;
     iVar8 = iVar8 + -1;
   } while (iVar8 != 0);
   if (bVar2) {
-    TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-              (CONCAT22((short)((uint)&local_30 >> 0x10),*(undefined2 *)&this->field_0x6c),
-               &this->field_0x60,&local_2e,&local_30,1);
-    local_20.left = (LONG)local_30;
-    local_20.top = (LONG)local_2e;
-    local_20.right = local_20.left + 0x40;
-    local_20.bottom = local_20.top + 0x40;
-    DrawFrameRectOrUpdateClipRegion(&local_20);
+    func_0x004056a5(CONCAT22((short)((uint)&local_30 >> 0x10),*(undefined2 *)&this->field_0x6c),
+                    &this->field_0x60,&local_2e,&local_30,1);
+    local_20 = (int)local_30;
+    local_1c = (int)local_2e;
+    local_18 = local_20 + 0x40;
+    local_14 = local_1c + 0x40;
+    func_0x00405c27(&local_20);
     if (!bVar3) {
       _DAT_00697320 = 0xffffffff;
       _DAT_00697324 = 0xffffffff;
@@ -353,29 +354,27 @@ void TCitySiteView::HandleMapClickByInteractionMode()
   char cVar3;
   short sVar4;
   undefined4 uVar5;
-  undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   short sStack00000004;
-  CString CStack_10;
+  undefined4 *puStack_24;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633f90;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   cVar3 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + sStack00000004 * 0x24);
   cVar2 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + sStack00000004 * 0x24);
-  CStack_10.m_pchData = (char *)this;
-  sVar4 = UiRuntimeContext::GetActiveNationId();
+  sVar4 = func_0x00403b16();
   if (cVar2 == sVar4) {
     if (((((cVar3 == '\0') || (cVar3 == '\a')) || (cVar3 == '\x01')) || (cVar3 == '\x06')) &&
-       (cVar2 = IsValidSecondaryNationHomeTileCandidate(), cVar2 != '\0')) {
+       (cVar2 = func_0x004081bb(), cVar2 != '\0')) {
       *(short *)(*(int *)&this->field_0x364 + 0x14) = (short)_sStack00000004;
-      CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
+      CString::CString((CString *)&stack0x00000004);
       local_4 = 3;
-      AssignSharedStringFromIndexedA8EntryNameField();
+      func_0x0040918d();
       (**(code **)(**(int **)&this->field_0x364 + 0x38))();
       cVar3 = (**(code **)(g_pUiRuntimeContext->vftable + 0xb4))();
       if (cVar3 == '\0') {
@@ -383,42 +382,41 @@ void TCitySiteView::HandleMapClickByInteractionMode()
       }
       else {
         pTVar1 = g_pGlobalMapState->vftable;
-        uVar5 = UiRuntimeContext::GetActiveNationId();
+        uVar5 = func_0x00403b16();
         (*pTVar1->SetTileTransportFlagsTo0x37AndRefreshNeighbors)(_sStack00000004,uVar5);
         (*g_pLocalizationTable->vftable[8].slot_0x04)();
       }
     }
     else {
-      PlayDefaultMessageBeep();
+      func_0x00408deb();
       if ((((cVar3 == '\0') || (cVar3 == '\a')) || ((cVar3 == '\x01' || (cVar3 == '\x06')))) &&
-         (cVar3 = TDeluxeText::CanBuildPortAtTile
-                            ((TDeluxeText *)g_pGlobalMapState,(int)_sStack00000004), cVar3 != '\0'))
-      {
-        CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
+         (cVar3 = func_0x00402b30(), cVar3 != '\0')) {
+        CString::CString((CString *)&stack0x00000004);
         local_4 = 2;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-        AssignStringSharedRefAndReturnThis(&puStack_8);
-        (**(code **)(*DAT_006a2158 + 0x4c))();
+        func_0x004076b7(&puStack_8);
+        (**(code **)(*g_pDisplayMgr + 0x4c))();
       }
       else {
-        CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
+        CString::CString((CString *)&stack0x00000004);
         local_4 = 1;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-        AssignStringSharedRefAndReturnThis(&puStack_8);
-        (**(code **)(*DAT_006a2158 + 0x4c))();
+        func_0x004076b7(&puStack_8);
+        (**(code **)(*g_pDisplayMgr + 0x4c))();
       }
     }
   }
   else {
-    PlayDefaultMessageBeep();
-    CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
+    func_0x00408deb();
+    CString::CString((CString *)&stack0x00000004);
     local_4 = 0;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    AssignStringSharedRefAndReturnThis(&puStack_8);
-    (**(code **)(*DAT_006a2158 + 0x4c))();
+    func_0x004076b7(&puStack_8);
+    (**(code **)(*g_pDisplayMgr + 0x4c))();
   }
-  CString::__1CString__QAE_XZ(&CStack_10);
-  *unaff_FS_OFFSET = unaff_EDI;
+  puStack_24 = (undefined4 *)&stack0x00000004;
+  CString::~CString((CString *)&stack0xffffffec);
+  *unaff_FS_OFFSET = puStack_24;
   return;
 }
 

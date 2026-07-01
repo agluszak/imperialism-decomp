@@ -4,41 +4,41 @@
 // Bucket: TRailCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589660
-// GHIDRA_NAME TRailCluster::CreateTradeMoveScaledControlPanel
-// GHIDRA_PROTO undefined CreateTradeMoveScaledControlPanel()
+// GHIDRA_NAME TRailCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TUberCluster * TRailCluster::CreateTradeMoveScaledControlPanel(void)
+undefined4 * TRailCluster::CreateObject(void)
 
 {
-  TUberCluster *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006379ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->vftable = (TUberClusterVtbl *)&_vftable_;
-    this[1].vftable = (TUberClusterVtbl *)0x0;
-    *(undefined2 *)((int)&this[1].field04 + 2) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00405835();
+    *puVar1 = &_vftable_;
+    puVar1[0x22] = 0;
+    *(undefined2 *)((int)puVar1 + 0x8e) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TUberCluster *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589700
-// GHIDRA_NAME TRailCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TRailCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRailCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TRailCluster::GetRuntimeClass()
 
 {
   return &g_pClassDescTRailCluster;
@@ -51,7 +51,7 @@ CRuntimeClass * TRailCluster::GetTEventHandlerClassNamePointer()
 TRailCluster * TRailCluster::TRailCluster()
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
+  func_0x00405835();
   this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x88 = 0;
   *(undefined2 *)&this->field_0x8e = 0;
@@ -65,18 +65,18 @@ TRailCluster * TRailCluster::TRailCluster()
 TRailCluster * TRailCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00403841();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005897B0
-// GHIDRA_NAME TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(short param_1)
+// GHIDRA_NAME TRailCluster::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(short param_1)
 
-void TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(short param_1)
+void TRailCluster::NoOpUiLifecycleHook(short param_1)
 
 {
   uint uVar1;
@@ -84,8 +84,9 @@ void TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(short param_1)
   int iVar3;
   undefined2 extraout_var;
   TCity *this_00;
-
-  sVar2 = UiRuntimeContext::GetActiveNationId();
+  undefined2 in_stack_00000006;
+  
+  sVar2 = func_0x00403b16();
   if (g_apNationStates[sVar2] == (TGreatPower *)0x0) {
     this_00 = (TCity *)0x0;
   }
@@ -94,49 +95,50 @@ void TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(short param_1)
   }
   uVar1 = this->controlTag;
   iVar3 = *(int *)&this_00->field_0x1d8;
+  sVar2 = param_1;
   if (uVar1 < 0x706f7076) {
     if (uVar1 == 0x706f7075) {
-      param_1 = 0x3c;
       *(undefined2 *)&this->field_0x8e = 1;
-      iVar3 = TCity::GetCityBuildingProductionValueBySlot(this_00,0xf);
+      iVar3 = GetCityBuildingProductionValueBySlot(this_00,0xf);
       *(short *)&this->field_0x8c = (short)iVar3;
+      sVar2 = 0x3c;
     }
     else if (uVar1 == 0x666f6f64) {
       *(undefined2 *)&this->field_0x8e = 2;
-      param_1 = 7;
       iVar3 = *(int *)(*(int *)&this_00->field_0x1d8 + 0x14);
       *(short *)&this->field_0x8c =
            (short)((*(short *)(iVar3 + 8) * 2 + *(short *)(iVar3 + 6)) * 2 +
                    *(short *)(*(int *)&this_00->field_0x1d8 + 0x1e) + *(short *)(iVar3 + 4)) / 2;
+      sVar2 = 7;
     }
   }
   else if (uVar1 < 0x70726f67) {
     if (uVar1 == 0x70726f66) {
       *(undefined2 *)&this->field_0x8e = 1;
-      param_1 = 0x18;
       *(undefined2 *)&this->field_0x8c = *(undefined2 *)(*(int *)(iVar3 + 0x10) + 6);
+      sVar2 = 0x18;
     }
     else if (uVar1 == 0x706f7765) {
-      param_1 = 0x34;
       *(undefined2 *)&this->field_0x8e = 6;
       *(undefined2 *)&this->field_0x8c = 999;
+      sVar2 = 0x34;
     }
   }
   else if (uVar1 == 0x7261696c) {
     *(undefined2 *)&this->field_0x8e = 1;
-    param_1 = 0x33;
     iVar3 = *(int *)(*(int *)&this_00->field_0x1d8 + 0x14);
     *(short *)&this->field_0x8c =
          (short)((*(short *)(iVar3 + 8) * 2 + *(short *)(iVar3 + 6)) * 2 + *(short *)(iVar3 + 4) +
                 *(short *)(*(int *)&this_00->field_0x1d8 + 0x1e)) / 2;
+    sVar2 = 0x33;
   }
   else if (uVar1 == 0x74726169) {
     *(undefined2 *)&this->field_0x8e = 1;
-    param_1 = 0x17;
     *(undefined2 *)&this->field_0x8c = *(undefined2 *)(*(int *)(iVar3 + 0x10) + 4);
+    sVar2 = 0x17;
   }
-  *(void **)&this->field_0x88 = this_00->orderSlotsE4[param_1];
-  TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920((TAmtBarCluster *)this);
+  *(void **)&this->field_0x88 = this_00->orderSlotsE4[sVar2];
+  func_0x004080c6(_param_1);
   (*this->vftable->UpdateTradeMoveControlsFromScaledDrag)
             (CONCAT22(extraout_var,*(undefined2 *)(*(int *)&this->field_0x88 + 4)),1);
   return;
@@ -153,11 +155,121 @@ void TRailCluster::OrphanRetStub_00586ff0()
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00589DA0
-// GHIDRA_NAME TRailCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_FUNCTION IMPERIALISM 0x005899F0
+// GHIDRA_NAME TRailCluster::UpdateTradeMoveControlsFromScaledDrag
+// GHIDRA_PROTO undefined __thiscall UpdateTradeMoveControlsFromScaledDrag(short param_1, char param_2)
 
-void TRailCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_3)
+void TRailCluster::UpdateTradeMoveControlsFromScaledDrag(short param_1, char param_2)
+
+{
+  _vslot_fn *p_Var1;
+  int *piVar2;
+  undefined uVar3;
+  short sVar4;
+  undefined3 extraout_var;
+  int *piVar6;
+  LONG LVar7;
+  undefined4 uVar8;
+  code *pcVar9;
+  int iVar10;
+  tagRECT tStack_40;
+  RECT RStack_30;
+  tagRECT atStack_20 [2];
+  int *piVar5;
+  undefined3 extraout_var_00;
+  
+  piVar5 = *(int **)&this->field_0x88;
+  iVar10 = piVar5[1];
+  if (piVar5 != (int *)0x0) {
+    (**(code **)(*piVar5 + 0x2c))();
+  }
+  if ((param_2 != '\0') || (*(short *)(*(int *)&this->field_0x88 + 4) != (short)iVar10)) {
+    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar3 = (*p_Var1)();
+    piVar5 = (int *)CONCAT31(extraout_var,uVar3);
+    if (piVar5 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4();
+    }
+    iVar10 = *piVar5;
+    (**(code **)(iVar10 + 0x1e4))();
+    (**(code **)(iVar10 + 300))(&tStack_40.top);
+    OffsetRect(&tStack_40,this->ownerOffsetX,this->ownerOffsetY);
+    RStack_30.top = tStack_40.top;
+    RStack_30.right = tStack_40.right;
+    RStack_30.left = tStack_40.left;
+    RStack_30.bottom = tStack_40.bottom;
+    CopyRect(atStack_20,&RStack_30);
+    pcVar9 = (code *)0x1;
+    func_0x00408a03(atStack_20);
+    uVar3 = (*p_Var1)(0x62617220);
+    piVar6 = (int *)CONCAT31(extraout_var_00,uVar3);
+    if (piVar6 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xcf9);
+    }
+    if ((short)piVar6[0x19] == 0) {
+      atStack_20[0].bottom = 0x461c3c00;
+    }
+    else {
+      atStack_20[0].bottom = (LONG)((float)piVar6[0xd] / (float)(int)(short)piVar6[0x19]);
+    }
+    if (*(short *)(*(int *)&this->field_0x88 + 4) == *(short *)&this->field_0x8c) {
+      *(undefined2 *)((int)piVar6 + 0x66) = 0x34;
+    }
+    else {
+      *(undefined2 *)((int)piVar6 + 0x66) = 0x3a;
+    }
+    piVar2 = *(int **)&this->field_0x88;
+    atStack_20[0].right = (LONG)(short)piVar2[1];
+    LVar7 = ftol();
+    iVar10 = *piVar6;
+    sVar4 = (**(code **)(*piVar2 + 0x30))();
+    atStack_20[0].right = (LONG)sVar4;
+    uVar8 = ftol();
+    (**(code **)(iVar10 + 0x1a4))(LVar7,uVar8);
+    (**(code **)(*piVar5 + 0xf0))(&stack0xffffffa4,1);
+    (*pcVar9)(&stack0xffffffa4);
+    OffsetRect((LPRECT)&stack0xffffffa0,this->ownerOffsetX,this->ownerOffsetY);
+    CopyRect(&tStack_40,(RECT *)&stack0xffffffb0);
+    func_0x00408a03(&tStack_40,1);
+    (*this->ownerContext->vftable[1].vmethod_0025)();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00589D10
+// GHIDRA_NAME TRailCluster::UpdateTradeBarFromSelectedMetricRatio_A
+// GHIDRA_PROTO undefined __thiscall UpdateTradeBarFromSelectedMetricRatio_A(void)
+
+void TRailCluster::UpdateTradeBarFromSelectedMetricRatio_A()
+
+{
+  int iVar1;
+  undefined uVar2;
+  short sVar3;
+  undefined3 extraout_var;
+  int *piVar4;
+  
+  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x62617220);
+  piVar4 = (int *)CONCAT31(extraout_var,uVar2);
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xd1d);
+  }
+  if ((short)piVar4[0x19] != 0) {
+    iVar1 = *piVar4;
+    sVar3 = (**(code **)(**(int **)&this->field_0x88 + 0x30))();
+    (**(code **)(iVar1 + 0x1ac))(((int)sVar3 * piVar4[0xd]) / (int)(short)piVar4[0x19]);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00589DA0
+// GHIDRA_NAME TRailCluster::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
+
+void TRailCluster::HandleEvent(int param_1, void *param_2, int param_3)
 
 {
   TRailClusterVtbl *pTVar1;
@@ -167,14 +279,13 @@ void TRailCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_
   undefined4 uVar4;
   undefined3 extraout_var_00;
   undefined2 extraout_var_01;
-
+  
   if (param_1 == 100) {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xd34);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xd34);
     }
     sVar3 = (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1e8))();
     (*pTVar1->OrphanRetStub_00586ff0)(CONCAT22(extraout_var_01,*(short *)&this->field_0x8e + sVar3))
@@ -182,15 +293,14 @@ void TRailCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_
     return;
   }
   if (param_1 != 0x65) {
-    TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this,param_1,param_2,param_3);
+    func_0x00407a90(param_1,param_2,param_3);
     return;
   }
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6d6f7665);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xd3c);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xd3c);
   }
   uVar4 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1e8))();
   (*pTVar1->OrphanRetStub_00586ff0)

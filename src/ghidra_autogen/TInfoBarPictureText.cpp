@@ -4,52 +4,52 @@
 // Bucket: TInfoBarPictureText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5AC0
-// GHIDRA_NAME TInfoBarPictureText::CreateTInfoBarPictureTextInstance
-// GHIDRA_PROTO undefined CreateTInfoBarPictureTextInstance()
+// GHIDRA_NAME TInfoBarPictureText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TStaticText * TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
+undefined4 * TInfoBarPictureText::CreateObject(void)
 
 {
-  TStaticText *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638efa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)__2_YAPAXI_Z(0xb4);
+  puVar1 = (undefined4 *)operator_new(0xb4);
   local_4 = 0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::TStaticText(this);
-    *(undefined1 *)&this[1].field04 = 0;
-    *(undefined1 *)((int)&this[1].field04 + 1) = 0;
-    *(undefined1 *)((int)&this[1].field04 + 2) = 0;
-    *(undefined1 *)((int)&this[1].field04 + 3) = 0;
-    *(undefined1 *)&this[1].padding_08_to_0b = 0;
-    *(undefined1 *)((int)&this[1].padding_08_to_0b + 1) = 0;
-    *(undefined1 *)((int)&this[1].padding_08_to_0b + 2) = 0;
-    *(undefined1 *)((int)&this[1].padding_08_to_0b + 3) = 0;
-    this[1].field04 = 0;
-    *(undefined1 *)&this[1].field0c = 0;
-    this->vftable = (TStaticTextVtbl *)&TInfoBarPictureTextVtbl_0066d288;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040541b();
+    *(undefined1 *)(puVar1 + 0x26) = 0;
+    *(undefined1 *)((int)puVar1 + 0x99) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9a) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9b) = 0;
+    *(undefined1 *)(puVar1 + 0x27) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9d) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9e) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9f) = 0;
+    puVar1[0x26] = 0;
+    *(undefined1 *)(puVar1 + 0x28) = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TStaticText *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5BB0
-// GHIDRA_NAME TInfoBarPictureText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TInfoBarPictureText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInfoBarPictureText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TInfoBarPictureText::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTInfoBarPictureText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C60
@@ -59,55 +59,56 @@ CRuntimeClass * TInfoBarPictureText::GetTEventHandlerClassNamePointer()
 TInfoBarPictureText * TInfoBarPictureText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TStaticText::~TStaticText(this);
+  func_0x00401ab4();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C90
 // GHIDRA_NAME TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TStaticText::~TStaticText(void)
+// GHIDRA_PROTO undefined TStaticText::~TStaticText()
 
-void TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree()
+void __fastcall TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(undefined4 *param_1)
 
 {
-  CString *this_00;
+  CString *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   puStack_8 = &LAB_0062f0ab;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this->vftable = (TInfoBarPictureTextVtbl *)&TStaticText::_vftable_;
-  this_00 = *(CString **)&this->field_0x84;
+  *param_1 = &TStaticText::_vftable_;
+  this = (CString *)param_1[0x21];
   uStack_4 = 0;
-  if (this_00 != (CString *)0x0) {
-    CString::__1CString__QAE_XZ(this_00);
-    __3_YAXPAX_Z(this_00);
+  if (this != (CString *)0x0) {
+    CString::~CString(this);
+    operator_delete(this);
   }
-  this->vftable = (TInfoBarPictureTextVtbl *)&TView::_vftable_;
+  *param_1 = &TView::_vftable_;
   uStack_4 = 2;
-  if ((int *)this->field44 != (int *)0x0) {
-    (**(code **)(*(int *)this->field44 + 4))(1);
+  if ((int *)param_1[0x11] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0x11] + 4))(1);
   }
-  __3_YAXPAX_Z(this->field48);
+  operator_delete(param_1[0x12]);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  CString::__1CString__QAE_XZ(&this->sharedStringRef);
-  this->vftable =
-       (TInfoBarPictureTextVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  CString::~CString((CString *)(param_1 + 0x16));
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5CB0
-// GHIDRA_NAME TInfoBarPictureText::ConstructTInfoBarTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTInfoBarTextBaseState(RECT * param_1)
+// GHIDRA_NAME TInfoBarPictureText::SerializeRecordList_0x0C_WithBlockPool_A
+// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_A(RECT * param_1)
 
-void TInfoBarPictureText::ConstructTInfoBarTextBaseState(RECT *param_1)
+void __thiscall
+TInfoBarPictureText::SerializeRecordList_0x0C_WithBlockPool_A
+          (TInfoBarPictureText *this,RECT *param_1)
 
 {
   TInfoBarPictureTextVtbl *pTVar1;
@@ -122,7 +123,7 @@ void TInfoBarPictureText::ConstructTInfoBarTextBaseState(RECT *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   puStack_8 = &LAB_00638f18;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -139,40 +140,37 @@ void TInfoBarPictureText::ConstructTInfoBarTextBaseState(RECT *param_1)
     RStack_30.right = LStack_38;
     RStack_30.bottom = LStack_34;
     CopyRect(&tStack_20,&RStack_30);
-    InvalidateCityDialogRectRegion(&tStack_20,1);
-    UpdateTextEntrySharedStringIfChanged(&stack0x00000000);
+    func_0x00408a03(&tStack_20,1);
+    func_0x00405d7b(&puStack_8);
     (*pTVar1->VTableSlot39)();
   }
   local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&param_1);
+  CString::~CString((CString *)&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5DD0
-// GHIDRA_NAME TInfoBarPictureText::Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0(void)
+// GHIDRA_NAME TInfoBarPictureText::DestructTInfoBarTextAndMaybeFree
+// GHIDRA_PROTO undefined __thiscall DestructTInfoBarTextAndMaybeFree(void)
 
-void __thiscall
-TInfoBarPictureText::Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0
-          (TInfoBarPictureText *this)
+void TInfoBarPictureText::DestructTInfoBarTextAndMaybeFree()
 
 {
   TInfoBarPictureTextVtbl *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
+  LONG *unaff_FS_OFFSET;
   LONG local_3c;
   LONG LStack_38;
   LONG LStack_34;
   RECT RStack_30;
   tagRECT tStack_20;
-  undefined4 uStack_10;
-  undefined4 uStack_c;
+  CString CStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   puStack_8 = &LAB_00638f38;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
+  CStack_c.m_pchData = (char *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (LONG)&CStack_c;
   *(undefined4 *)&this->field_0xa4 = 0;
   local_4 = 0;
   *(undefined4 *)&this->field_0xa8 = 0;
@@ -184,12 +182,12 @@ TInfoBarPictureText::Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0
   RStack_30.right = LStack_38;
   RStack_30.bottom = LStack_34;
   CopyRect(&tStack_20,&RStack_30);
-  InvalidateCityDialogRectRegion(&tStack_20,1);
-  UpdateTextEntrySharedStringIfChanged(&stack0x00000000);
+  func_0x00408a03(&tStack_20,1);
+  func_0x00405d7b(&puStack_8);
   (*pTVar1->VTableSlot39)();
-  puStack_8 = (undefined1 *)0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
-  *unaff_FS_OFFSET = uStack_10;
+  tStack_20.bottom = -1;
+  CString::~CString(&CStack_c);
+  *unaff_FS_OFFSET = tStack_20.top;
   return;
 }
 

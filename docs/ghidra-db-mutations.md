@@ -32,87 +32,77 @@ imports) and are reproducible on a new DB via the standard pipeline:
 `just push-names --apply` + `just import-ghidra` + the apply_* tools
 (`apply_mfc_datatypes`, `apply_mfc_rtti`, `apply_source_datatypes`).
 
-## Applied 2026-07-02 but NOT committed (reverted repo-side; re-run on the new DB)
+## 2026-07-02: gap-repair mutation committed (two bugs found and fixed)
 
-1. **`tools/ghidra/repair_code_gaps.py --apply`** — created **2167 missing
-   functions** (0 failures) at vtable-slot targets, ILT jmp targets, and
-   symbols.csv function addresses that Ghidra had never defined. The DB change
-   itself is good (fills the code gaps that blind xrefs/decompile and reccmp
-   extents).
-2. **`just sync-ghidra`'s `push-names --apply`** — pushed 1113 source-owned names
-   into the DB (normal, re-runnable pipeline step).
+The gap-repair mutation (`tools/ghidra/repair_code_gaps.py --apply` + ILT-range
+cleanup + `just sync-ghidra`) was attempted three times against this same live
+DB before it stuck. The first two attempts were reverted; the root causes are
+recorded here so they aren't rediscovered.
 
-**Why the repo-side fallout was reverted (commit references the incident):** the
-subsequent `sync-ghidra` export of the enlarged function set re-introduced
-thunk-range entities into `config/symbols.csv`, and `just vtable` collapsed
-(hundreds of slots stopped auto-resolving through ILT thunks; ~400 functions lost
-100% alignment). `CreateFunctionCmd` also auto-creates functions at *flow
-targets*, which defined the 5-byte ILT jmp bodies themselves as functions.
+**Attempt 1 (first session).** `repair-code-gaps --apply` created 2167 missing
+functions. Reverted because the subsequent `sync-ghidra` export re-introduced
+ILT-range (0x401000–0x409ab5) function entities into `config/symbols.csv`,
+collapsing `just vtable` (~400 functions lost 100%, hundreds of vtable slots
+stopped auto-resolving through jmp thunks).
 
-## Procedure for the new-DB folder
+**Attempt 2.** Fixed the ILT problem by directly deleting the stray Function
+entities in the live DB (`FunctionManager.removeFunction`) *before*
+`sync-ghidra`, rather than relying on `just prune-ilt-thunks` alone — that tool
+turned out to have its own bug (below). `just vtable` held 393/393 through the
+full resync this time, but `just stats` regressed hard (-34 aligned functions,
+305 lower-similarity, several functions dropping 100% → 0%, e.g.
+`CMcWindow::OnKeyDown` at 0x493b30). Reverted again (repo tree + the **live**
+Ghidra project both restored from the pre-mutation `.gzf` checkpoint).
 
-1. Restore/open the new DB; run the standard reproduction pipeline first
+**Root causes found and fixed:**
+
+1. **`tools/workflow/prune_ilt_thunks.py`** read `parts[3]` as the CSV `type`
+   column, but the schema is `address|name|symbol|size|type|prototype[|provenance]`
+   — a `symbol` column was inserted at index 2 at some point without updating
+   this tool, so it was actually comparing the `size` field against
+   `"function"` and silently pruning **zero rows on every run**, forever.
+   Fixed to read `parts[4]`.
+2. **`tools/ghidra/repair_code_gaps.py`**'s `CreateFunctionCmd(address)` call
+   bounds the new function's body from *already-disassembled* code units. On a
+   raw undisassembled gap (the normal case here — that's *why* it's a gap),
+   there are no code units yet, so Ghidra silently created a degenerate 1-byte
+   function instead of following the real instruction flow — e.g.
+   `CMcWindow::OnKeyDown` (0x493b30, real body `ret 0xc`, 3 bytes) became a
+   1-byte stub, clamping reccmp's compare window to nothing. Fixed to
+   `DisassembleCommand` the target first when no instruction exists there yet,
+   and to detect+undo (rather than silently leave behind) any function that is
+   still 1-byte after disassembling, reporting it as `DEGENERATE` instead.
+
+**Attempt 3 (this fix): committed.** Re-ran the full procedure with both fixes:
+`repair-code-gaps --apply` (493 created, 0 failed, 23 genuinely degenerate —
+removed and reported, not left corrupting anything), direct ILT-range
+Function-entity deletion (2479 removed), `push-names --apply`, `import-ghidra`,
+`just sync-ghidra` (full resync — also re-introduced 393 stale
+`'vftable'`-typed symbols.csv rows colliding with real header `// VTABLE:`
+annotations, same pattern as the merge step; deleted by address), then
+`just export-project` last. Verified: `just gates` clean, `just vtable` 393/393
+100%, `just stats` **zero regressions** vs the pre-mutation baseline (confirmed
+both mechanically and by hand: `CMcWindow::OnKeyDown` and
+`TFileBasedDocument::CreateObject` back to their correct pre-mutation scores).
+
+## Procedure for a future re-run (this DB or a newer one)
+
+1. Restore/open the DB; run the standard reproduction pipeline first
    (`push-names --apply`, datatype appliers, `import-ghidra`).
-2. Run `just repair-code-gaps` (dry-run), review, then `--apply`.
-3. **Before `just sync-ghidra`:** ensure ILT-range functions (0x401000–0x409ab5)
-   are either deleted, marked as Ghidra thunk functions, or excluded by the
-   exporter — reccmp's vtable slot resolution requires bare (entity-free) jmp
-   thunks. `just prune-ilt-thunks` handles the symbols.csv side; the failure mode
-   is thunk rows/entities surviving into the export.
+2. Run `just repair-code-gaps` (dry-run), review, then `--apply`. The tool now
+   disassembles gaps before creating functions and self-reports any residual
+   degenerate (1-byte) result — treat a nonzero `degenerate` count as worth a
+   look, not silently ignorable.
+3. **Before `just sync-ghidra`:** delete any stray Function entities in the
+   ILT range (0x401000–0x409ab5) directly in the live DB
+   (`FunctionManager.removeFunction`) — `just prune-ilt-thunks` only handles
+   the `config/symbols.csv` side and won't fix DB-side ILT function entities.
 4. Gate every step: `just symbols-integrity-gate` (dupes), `just vtable`
-   (379/379 must stay 100%), `just stats` (no mass regressions) — all three
-   caught real problems during the 2026-07-02 attempt.
-5. `just export-project` LAST (after push-names), so the committed .gzf carries
-   everything.
-
-## Re-attempted 2026-07-02 (same DB, post debug-window-asset-loading merge): still blocked
-
-Re-ran the mutation against the *same* live DB (no newer DB exists yet) after
-merging `debug-window-asset-loading`. Progress and a new, distinct blocker:
-
-1. **ILT-range fix confirmed working this time.** Directly deleted all 2479
-   stray Function entities in 0x401000–0x409ab5 via `FunctionManager.removeFunction`
-   *before* `just sync-ghidra` (rather than relying on `just prune-ilt-thunks`
-   alone) — this is the missing step from the 2026-07-02 first attempt. Also
-   found and fixed a real bug in `tools/workflow/prune_ilt_thunks.py`: it read
-   `parts[3]` as the `type` column, but the schema is
-   `address|name|symbol|size|type|prototype[|provenance]` (a `symbol` column was
-   inserted at index 2 at some point) — so `row_type` was actually reading
-   `size`, and the type check `row_type != "function"` was always true, silently
-   pruning **zero rows on every run**. Fixed to read `parts[4]`. This fix is
-   committed on its own regardless of DB-mutation status; keep it.
-2. **Result: `just vtable` held 393/393 100%** through `repair-code-gaps --apply`
-   (516 new functions this round — most of the original 2167 were already baked
-   into the live DB from before) and the full `just sync-ghidra` resync,
-   including the mechanical vtable-address-collision cleanup (393 stale
-   `'vftable'`-typed symbols.csv rows re-introduced by the resync — same
-   pattern as the first attempt, fixed the same way: delete the row).
-3. **New blocker: `just stats` regressed hard** (aligned functions 1647 → 1613,
-   -34; average similarity -0.47pp; 305 functions with lower similarity,
-   several MFC message handlers and `CreateObject` overrides dropping
-   100% → 0%). Root cause: after `sync_exports` (`just sync-ghidra`) ran
-   following `repair-code-gaps --apply`, several genuinely-real, previously
-   correctly-scoring functions (e.g. `CMcWindow::OnKeyDown` at 0x493b30) got
-   exported into `config/symbols.csv` with **`size=1`**, clamping reccmp's
-   compare window to nothing. Confirmed via `just ghidra-listing` that the live
-   Ghidra function itself reported `size=1` with no instructions past the entry
-   byte — i.e. something in the `repair-code-gaps` → `sync_exports` sequence
-   truncates/orphans nearby pre-existing function bodies for a subset of
-   addresses. Not yet root-caused to a specific line of `repair_code_gaps.py`
-   or `sync_exports.py`; needs its own investigation pass (try re-running
-   `repair-code-gaps --apply` in smaller batches with a `just vtable`/`stats`
-   gate after each batch to bisect which candidate address triggers it).
-4. **Per the gate-chasing guardrail, the whole DB mutation was rolled back**
-   rather than force-committed: reverted all repo-side changes
-   (`config/symbols.csv`, `src/ghidra_autogen/`, `include/ghidra_autogen/`,
-   `config/thunk_map.csv`, `config/vtable_gate_baseline.csv`, the `.gzf`) back
-   to the pre-mutation commit, and restored the **live** Ghidra project itself
-   from the pre-mutation `.gzf` checkpoint (delete the live program, `just
-   restore-project` from the checkpoint archive) so the working DB isn't left
-   corrupted for the next attempt. Only the `prune_ilt_thunks.py` bugfix
-   survived this round.
-5. **Next attempt should**: keep the direct-delete-ILT-Function-entities step
-   (proven this round) and the `prune_ilt_thunks.py` fix, but bisect
-   `repair-code-gaps --apply` in small batches with a `just stats` check after
-   each, to find which specific candidate(s) cause the `size=1` truncation
-   before doing the full run + `sync-ghidra` again.
+   (393/393 must stay 100%), `just stats` (no mass regressions) — all three
+   caught real problems across these attempts.
+5. After `just sync-ghidra`, check for stale `'vftable'`-typed
+   `config/symbols.csv` rows colliding with real `// VTABLE:` header
+   annotations (`just vtable-collision-gate` reports them by address) — delete
+   them; this happens on every full resync so far.
+6. `just export-project` LAST (after push-names), so the committed `.gzf`
+   carries everything.

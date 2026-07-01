@@ -4,54 +4,54 @@
 // Bucket: TSidewaysArrow.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583A90
-// GHIDRA_NAME TSidewaysArrow::CreateTSidewaysArrowInstance
-// GHIDRA_PROTO undefined CreateTSidewaysArrowInstance()
+// GHIDRA_NAME TSidewaysArrow::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TUpDownPictureButton * TSidewaysArrow::CreateTSidewaysArrowInstance(void)
+undefined4 * TSidewaysArrow::CreateObject(void)
 
 {
-  TUpDownPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063754a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUpDownPictureButton *)__2_YAPAXI_Z(0x98);
+  puVar1 = (undefined4 *)operator_new(0x98);
   local_4 = 0;
-  if (this != (TUpDownPictureButton *)0x0) {
-    TUpDownPictureButton::ConstructPictureScreenResourceEntry(this);
-    this->vftable = (TUpDownPictureButtonVtbl *)&TSidewaysArrowVtbl_00663540;
-    this[1].vftable = (TUpDownPictureButtonVtbl *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403512();
+    *puVar1 = &_vftable_;
+    puVar1[0x25] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TUpDownPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B30
-// GHIDRA_NAME TSidewaysArrow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TSidewaysArrow::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSidewaysArrow::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TSidewaysArrow::GetRuntimeClass()
 
 {
-  return &g_pClassDescTSidewaysArrow;
+  return &classTSidewaysArrow;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B50
 // GHIDRA_NAME TSidewaysArrow::ConstructTSidewaysArrowBaseState
-// GHIDRA_PROTO undefined __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTSidewaysArrowBaseState(void)
 
 TSidewaysArrow * TSidewaysArrow::ConstructTSidewaysArrowBaseState()
 
 {
-  TUpDownPictureButton::ConstructPictureScreenResourceEntry((TUpDownPictureButton *)this);
-  this->vftable = &TSidewaysArrowVtbl_00663540;
+  func_0x00403512();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x94 = 0;
   return this;
 }
@@ -63,19 +63,19 @@ TSidewaysArrow * TSidewaysArrow::ConstructTSidewaysArrowBaseState()
 TSidewaysArrow * TSidewaysArrow::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040201d();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583BD0
-// GHIDRA_NAME TSidewaysArrow::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, void * param_2, void * param_3, void * param_4)
+// GHIDRA_NAME TSidewaysArrow::DispatchPictureResourceCommand
+// GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1, void * param_2, void * param_3, void * param_4)
 
 void __thiscall
-TSidewaysArrow::QueueCityRecruitmentSupportCommandsIfDeficit
+TSidewaysArrow::DispatchPictureResourceCommand
           (TSidewaysArrow *this,int param_1,void *param_2,void *param_3,void *param_4)
 
 {
@@ -83,12 +83,12 @@ TSidewaysArrow::QueueCityRecruitmentSupportCommandsIfDeficit
   char cVar2;
   uint uVar3;
   int iVar4;
-
-  TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit((TControl *)this,param_1,param_2,param_3,param_4);
+  
+  func_0x00407978(param_1,param_2,param_3,param_4);
   if (param_1 != 2) {
-    uVar3 = GetTickCountDiv16();
+    uVar3 = func_0x004092d7();
     if (*(int *)&this->field_0x94 + 5U <= uVar3) {
-      iVar4 = GetTickCountDiv16();
+      iVar4 = func_0x004092d7();
       *(int *)&this->field_0x94 = iVar4;
       if (param_1 == 0) {
         *(int *)&this->field_0x94 = iVar4 + 10;

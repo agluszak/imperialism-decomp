@@ -3,9 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: CMcWindow.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004933D0
+// GHIDRA_NAME CMcWindow::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 __fastcall CMcWindow::CreateObject(undefined4 param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  int *unaff_FS_OFFSET;
+  int local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062f45a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&local_c;
+  iVar1 = operator_new(0x40,param_1);
+  local_4 = 0;
+  if (iVar1 != 0) {
+    uVar2 = func_0x00402bd0(0);
+    *unaff_FS_OFFSET = iVar1;
+    return uVar2;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00493450
+// GHIDRA_NAME CMcWindow::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
+
+CRuntimeClass * CMcWindow::GetRuntimeClass(void)
+
+{
+  return &classCMcWindow;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00493470
 // GHIDRA_NAME CMcWindow::CMcWindow
-// GHIDRA_PROTO undefined CMcWindow::CMcWindow()
+// GHIDRA_PROTO undefined CMcWindow()
 
 undefined4 * __thiscall CMcWindow::CMcWindow(undefined4 *param_1,int param_2)
 
@@ -31,7 +70,7 @@ undefined4 * __thiscall CMcWindow::CMcWindow(undefined4 *param_1,int param_2)
   puStack_8 = &LAB_0062f478;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  __0CWnd__QAE_XZ();
+  CWnd::CWnd();
   *param_1 = &PTR_LAB_0064b7c8;
   param_1[0xf] = param_2;
   dwExStyle = 0;
@@ -91,7 +130,7 @@ switchD_004934ce_default:
     if (DAT_006a1c70 != 0) goto switchD_004934ce_caseD_2;
     uVar5 = 0x4b;
   }
-  TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McWindow_cpp_006950d8,uVar5);
+  func_0x004057a4(g_szMcWindowSourcePath_006950D8,uVar5);
 switchD_004934ce_caseD_2:
   if (*(char *)(param_2 + 0x70) != '\0') {
     dwExStyle = dwExStyle | 8;
@@ -101,30 +140,184 @@ switchD_004934ce_caseD_2:
   local_58.right = local_58.left + *(int *)(param_2 + 0x34);
   puVar6 = local_38;
   local_58.bottom = local_58.top + *(int *)(param_2 + 0x38);
-  GetMainViewHostFromActiveThread(puVar6);
+  func_0x00405db2(puVar6);
   GetWindowPlacementFromThisHwnd(puVar6);
   CopyRect(&tStack_48,&RStack_1c);
   OffsetRect(&local_58,tStack_48.left,tStack_48.top);
   AdjustWindowRectEx(&local_58,dwStyle,0,dwExStyle);
-  pCVar3 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+  pCVar3 = AfxGetThread();
   if (pCVar3 == (CWinThread *)0x0) {
     iVar4 = 0;
   }
   else {
-    pCVar3 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
+    pCVar3 = AfxGetThread();
     iVar4 = (**(code **)(*(int *)pCVar3 + 0x7c))();
   }
   uVar5 = 0;
   if (iVar4 != 0) {
     uVar5 = *(undefined4 *)(iVar4 + 0x1c);
   }
-  _CreateEx_CWnd__QAEHKPBD0KHHHHPAUHWND____PAUHMENU____PAX_Z
-            (dwExStyle,0,0,dwStyle,local_58.left,local_58.top,local_58.right - local_58.left,
-             local_58.bottom - local_58.top,uVar5,0,0);
-  _SetWindowPos_CWnd__QAEHPBV1_HHHHI_Z(&DAT_006a7990,0,0,0,0,3);
+  CWnd::CreateEx(dwExStyle,0,0,dwStyle,local_58.left,local_58.top,local_58.right - local_58.left,
+                 local_58.bottom - local_58.top,uVar5,0,0);
+  SetWindowPos(&DAT_006a7990,0,0,0,0,3);
   BringWindowToTop((HWND)param_1[7]);
   *unaff_FS_OFFSET = uStack_c;
   return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00493800
+// GHIDRA_NAME CMcWindow::OnWindowStateMsg468
+// GHIDRA_PROTO undefined OnWindowStateMsg468()
+
+undefined4 __thiscall CMcWindow::OnWindowStateMsg468(CWnd *param_1,undefined1 param_2)
+
+{
+  CCmdTargetVtbl *pCVar1;
+  
+  switch(param_2) {
+  case 0:
+  case 1:
+    break;
+  case 2:
+    CWnd::ShowWindow(param_1,5);
+    return 0;
+  case 3:
+    CWnd::ShowWindow(param_1,0);
+    return 0;
+  case 4:
+    pCVar1 = (param_1->ccmdTarget).vftable;
+    (*pCVar1[8].SetForeignMinisterReadyFlag14)();
+    param_1[1].ccmdTarget.vftable = (CCmdTargetVtbl *)0x0;
+    if (param_1 != (CWnd *)0x0) {
+      (*pCVar1->slot_0x04)(1);
+      return 0;
+    }
+    break;
+  default:
+    if (g_nMcWindowStateMsgAssertGate_006A1C74 == 0) {
+      func_0x004057a4(g_szMcWindowSourcePath_006950D8,0xb8);
+    }
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004938C0
+// GHIDRA_NAME CMcWindow::OnPaint
+// GHIDRA_PROTO undefined OnPaint()
+
+void __fastcall CMcWindow::OnPaint(int param_1)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  RECT local_80;
+  tagRECT local_70;
+  CPaintDC local_60 [84];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062f4b8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CPaintDC::CPaintDC(param_1);
+  local_4 = 0;
+  CDC::GetClipBox(&local_80);
+  if (*(int *)(param_1 + 0x3c) != 0) {
+    CopyRect(&local_70,&local_80);
+    (**(code **)(**(int **)(param_1 + 0x3c) + 0x10c))(&local_70,local_60);
+  }
+  local_4 = 0xffffffff;
+  CPaintDC::~CPaintDC(local_60);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00493990
+// GHIDRA_NAME CMcWindow::OnLButtonDown
+// GHIDRA_PROTO undefined OnLButtonDown()
+
+void __thiscall
+CMcWindow::OnLButtonDown(CWnd *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+
+{
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  CWnd::Default(param_1);
+  BringWindowToTop(param_1->m_hWnd);
+  local_4 = param_4;
+  local_8 = param_3;
+  (**(code **)((param_1[1].ccmdTarget.vftable)->SetForeignMinisterReadyFlag14 + 0x118))
+            (&local_8,0,0,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00493B00
+// GHIDRA_NAME CMcWindow::OnClose
+// GHIDRA_PROTO undefined OnClose()
+
+void __fastcall CMcWindow::OnClose(CWnd *param_1)
+
+{
+  CCmdTargetVtbl *pCVar1;
+  
+  CWnd::Default(param_1);
+  pCVar1 = param_1[1].ccmdTarget.vftable;
+  if (pCVar1 != (CCmdTargetVtbl *)0x0) {
+    (**(code **)(pCVar1->SetForeignMinisterReadyFlag14 + 0x1d0))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00493B30
+// GHIDRA_NAME CMcWindow::OnKeyDown
+// GHIDRA_PROTO undefined OnKeyDown()
+
+void CMcWindow::OnKeyDown(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00493B50
+// GHIDRA_NAME CMcWindow::OnKeyUp
+// GHIDRA_PROTO undefined OnKeyUp()
+
+void __fastcall CMcWindow::OnKeyUp(CWnd *param_1)
+
+{
+  CWnd::Default(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00493CA0
+// GHIDRA_NAME CMcWindow::OnQueryNewPalette
+// GHIDRA_PROTO undefined OnQueryNewPalette()
+
+void __fastcall CMcWindow::OnQueryNewPalette(int *param_1)
+
+{
+  int iVar1;
+  
+  iVar1 = CThreadLocalObject::GetData
+                    ((CThreadLocalObject *)&DAT_006a7a50,
+                     CThreadLocal[_AFX_THREAD_STATE]::_AFX_THREAD_STATE>__CreateObject);
+  (**(code **)(*param_1 + 0xa8))
+            (*(undefined4 *)(iVar1 + 0x38),*(undefined4 *)(iVar1 + 0x3c),
+             *(undefined4 *)(iVar1 + 0x40));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00493CC0
+// GHIDRA_NAME CMcWindow::OnPaletteChanged
+// GHIDRA_PROTO undefined OnPaletteChanged()
+
+void __fastcall CMcWindow::OnPaletteChanged(CWnd *param_1)
+
+{
+  CWnd::Default(param_1);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006073B4
@@ -201,9 +394,9 @@ void __thiscall CMcWindow::GetWindowTextOrDelegateToOwner(int param_1,CString *p
   if (*(int **)(param_1 + 0x38) == (int *)0x0) {
     new_length = GetWindowTextLengthA(*(HWND *)(param_1 + 0x1c));
     nMaxCount = new_length + 1;
-    lpString = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z(param_2,new_length);
+    lpString = (LPSTR)CString::GetBufferSetLength(param_2,new_length);
     GetWindowTextA(*(HWND *)(param_1 + 0x1c),lpString,nMaxCount);
-    CString::_ReleaseBuffer_CString__QAEXH_Z(param_2,-1);
+    CString::ReleaseBuffer(param_2,-1);
   }
   else {
     (**(code **)(**(int **)(param_1 + 0x38) + 0x90))(param_2);

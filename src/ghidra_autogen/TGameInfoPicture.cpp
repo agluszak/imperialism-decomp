@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TGameInfoPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0056B780
+// GHIDRA_NAME TGameInfoPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TGameInfoPicture::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00635d8a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x90);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B800
 // GHIDRA_NAME TGameInfoPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,51 +40,51 @@
 TGameInfoPicture * TGameInfoPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004037c4();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B850
-// GHIDRA_NAME TGameInfoPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TGameInfoPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGameInfoPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TGameInfoPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTGameInfoPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B870
-// GHIDRA_NAME TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
+// GHIDRA_NAME TGameInfoPicture::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(CString param_1)
 
-void TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
+void TGameInfoPicture::NoOpUiLifecycleHook(CString param_1)
 
 {
   _vslot_fn *p_Var1;
   undefined uVar2;
   undefined3 extraout_var;
+  undefined4 unaff_EBX;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00635da8;
   *unaff_FS_OFFSET = &uStack_c;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  CString::__0CString__QAE_XZ(&param_1);
-  uStack_4 = 0;
+  func_0x00406ba9(param_1.m_pchData);
+  CString::CString((CString *)&stack0x00000000);
+  puStack_8 = (undefined1 *)0x0;
   iVar3 = 0;
   do {
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3 + 0xf,&param_1);
-    RefreshActiveControlThenApplyThemeStyleAndCaption
-              (iVar3 + 0x68647230,0,0xc,0x2b67,1,param_1.m_pchData);
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3 + 0xf,&stack0x00000000);
+    func_0x00409075(iVar3 + 0x68647230,0,0xc,0x2b67,1,uStack_c);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 5);
   iVar3 = 0;
@@ -62,91 +92,136 @@ void TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
   do {
     uVar2 = (*p_Var1)(iVar3 + 0x74787461);
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3,&stack0x00000000);
-    RefreshActiveControlThenApplyThemeStyleAndCaption
-              (iVar3 + 0x74787461,0,10,0x2b67,1,param_1.m_pchData);
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3,&uStack_4);
+    func_0x00409075(iVar3 + 0x74787461,0,10,0x2b67,1,unaff_EBX);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 0xe);
-  uStack_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&param_1);
-  *unaff_FS_OFFSET = uStack_c;
+  puStack_8 = (undefined1 *)0xffffffff;
+  CString::~CString((CString *)&stack0x00000000);
+  *unaff_FS_OFFSET = unaff_EBX;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B9B0
-// GHIDRA_NAME TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_NAME TGameInfoPicture::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void __thiscall
-TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TGameInfoPicture *this,int param_1,int param_2)
+void TGameInfoPicture::HandleEvent(int param_1, int param_2)
 
 {
   uint uVar1;
   char cVar2;
   undefined uVar3;
+  short sVar4;
   undefined3 extraout_var;
   undefined4 *unaff_FS_OFFSET;
+  CString *in_stack_0000000c;
+  undefined1 auStack_34 [4];
+  undefined *puStack_30;
+  undefined4 uStack_2c;
+  undefined4 uStack_28;
+  undefined4 uStack_24;
+  int iStack_20;
+  undefined1 *puStack_1c;
+  CString *pCStack_18;
   CString local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
+  undefined1 *local_4;
+  
+  local_4 = (undefined1 *)0xffffffff;
   puStack_8 = &LAB_00635dc8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
+  pCStack_18 = (CString *)0x56b9d2;
   local_10.m_pchData = (char *)this;
-  CString::__0CString__QAE_XZ(&local_10);
-  local_4 = 0;
+  CString::CString(&local_10);
+  local_4 = (undefined1 *)0x0;
   if (param_1 == 10) {
     uVar1 = *(uint *)(param_2 + 0x1c);
     if (uVar1 < 0x6f6b617a) {
       if (uVar1 == 0x6f6b6179) {
+        pCStack_18 = (CString *)0x56bb19;
         (*g_pLocalizationTable->vftable[8].slot_0x04)();
         goto LAB_0056bb37;
       }
       if (uVar1 == 0x6275746c) {
+        pCStack_18 = (CString *)0x56babe;
         uVar3 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
         if ((short)CONCAT31(extraout_var,uVar3) != 1) {
+          pCStack_18 = (CString *)0x64;
+          puStack_1c = (undefined1 *)0x56bb0c;
           (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
           goto LAB_0056bb37;
         }
+        pCStack_18 = &local_10;
+        puStack_1c = (undefined1 *)0x9;
+        iStack_20 = 0x2741;
+        uStack_24 = 0x56bade;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        uStack_2c = 0;
       }
       else {
         if (uVar1 != 0x6275746d) {
           if (uVar1 == 0x6275746e) {
             if (*(int *)&g_pInterNationEventQueueManager->field_0xef4 == 0) {
-              ShowLocalizedUiPromptByGroupAndIndex(0x275e,6,2,0);
+              pCStack_18 = (CString *)0x0;
+              puStack_1c = (undefined1 *)0x2;
+              iStack_20 = 6;
+              uStack_24 = 0x275e;
+              uStack_28 = 0x56ba53;
+              func_0x004075a9();
             }
             else {
+              pCStack_18 = (CString *)0x66;
+              puStack_1c = (undefined1 *)0x56ba38;
               (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
             }
             goto LAB_0056bb37;
           }
           goto LAB_0056bb1b;
         }
-        UiRuntimeContext::GetActiveNationId();
-        cVar2 = ScanMapContextActionEntriesForCodeMatch();
+        pCStack_18 = (CString *)0x56ba63;
+        sVar4 = func_0x00403b16();
+        pCStack_18 = (CString *)(int)sVar4;
+        puStack_1c = (undefined1 *)0x56ba72;
+        cVar2 = func_0x0040596b();
         if (cVar2 != '\0') {
+          puStack_1c = (undefined1 *)0x65;
+          iStack_20 = 0x56baae;
           (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
           goto LAB_0056bb37;
         }
+        puStack_1c = &stack0xffffffec;
+        iStack_20 = 0x12;
+        uStack_24 = 0x273d;
+        uStack_28 = 0x56ba90;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        uStack_2c = 1;
       }
-      AssignStringSharedRefAndReturnThis(&local_10);
+      local_4 = auStack_34;
+      uStack_28 = 0;
+      puStack_30 = &DAT_006a4048;
+      func_0x004076b7(&iStack_20);
+      uStack_2c = 0x56bb03;
       DispatchLocalizedUiMessageWithTemplateA13A0();
       goto LAB_0056bb37;
     }
 LAB_0056bb1b:
-    param_1 = 10;
+    iStack_20 = 10;
   }
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+  else {
+    iStack_20 = param_1;
+  }
+  pCStack_18 = in_stack_0000000c;
+  puStack_1c = (undefined1 *)param_2;
+  uStack_24 = 0x56bb37;
+  func_0x00404566();
 LAB_0056bb37:
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_10);
-  *unaff_FS_OFFSET = uStack_c;
+  puStack_8 = (undefined1 *)0xffffffff;
+  puStack_1c = (undefined1 *)0x56bb48;
+  CString::~CString((CString *)&stack0xffffffec);
+  *unaff_FS_OFFSET = local_10.m_pchData;
   return;
 }
 

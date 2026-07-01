@@ -10,43 +10,72 @@
 TLoungeDialog * TLoungeDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00407103();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0054D6D0
-// GHIDRA_NAME TLoungeDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0054D650
+// GHIDRA_NAME TLoungeDialog::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TLoungeDialog::GetTEventHandlerClassNamePointer()
+undefined4 * TLoungeDialog::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00634e7a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x98);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403328();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054D6D0
+// GHIDRA_NAME TLoungeDialog::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TLoungeDialog::GetRuntimeClass()
+
+{
+  return &classTLoungeDialog;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054D6F0
-// GHIDRA_NAME TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TLoungeDialog::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920()
+void TLoungeDialog::Free()
 
 {
-  if (DAT_00695278 != 0x4d6f696c) {
-    TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
-              ((TMultiplayerMgr *)g_pGameFlowState,this,'\0');
+  if (g_nSaveFormatVersion != 0x4d6f696c) {
+    func_0x00401776(this,0);
   }
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
+  func_0x00408db4();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054D730
-// GHIDRA_NAME TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TLoungeDialog::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920()
+void TLoungeDialog::NoOpUiLifecycleHook()
 
 {
   TLoungeDialogVtbl *pTVar1;
@@ -58,92 +87,91 @@ void TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   int iVar6;
   undefined4 uVar7;
   code *pcVar8;
-
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
-            ((TMultiplayerMgr *)g_pGameFlowState,this,'\x01');
+  undefined4 uVar9;
+  
+  func_0x00406ba9();
+  func_0x00401776(this,1);
   pTVar1 = this->vftable;
   (*pTVar1->VTableSlot15)(3);
   uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6c61626c);
   g_pCursorControlPanel = (TControl *)CONCAT31(extraout_var,uVar2);
   (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
-  pcVar8 = (code *)0x0;
   (*g_pCursorControlPanel->vftable[1].OrphanLeaf_NoCall_Ins07_004d8920)(0,0xe,0x2b6b);
-  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6b);
+  uVar9 = 0x2b6c;
+  pcVar8 = (code *)0x2b6b;
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6b,0x2b6c);
   (*g_pCursorControlPanel->vftable[1].GetTEventHandlerClassNamePointer)(1,0);
-  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_0065c160,0x6d61696e);
+  func_0x00401875(PTR_g_szEmptyString_0065c160,0x6d61696e);
   iVar6 = 0x6e616d30;
   do {
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,6,iVar6 + 0x3fff700);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,7,iVar6 + 0x207fe00);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,8,iVar6);
-    piVar4 = (int *)RefreshActiveControlThenApplyThemeStyleAndCaption
-                              (iVar6,0,0xe,0x2b6b,0xfffffffe,s___computer___006980c8);
+    func_0x00406bc7(0x2742,6,iVar6 + 0x3fff700);
+    func_0x00406bc7(0x2742,7,iVar6 + 0x207fe00);
+    func_0x00406bc7(0x2742,8,iVar6);
+    piVar4 = (int *)func_0x00409075(iVar6,0,0xe,0x2b6b,0xfffffffe,s___computer___006980c8);
     (**(code **)(*piVar4 + 0xc))();
-    ApplyUiTextStyleAndThemeFlags(piVar4,0,0xe,0x2b6b,0x2b6c);
+    func_0x0040263a(piVar4,0,0xe,0x2b6b,0x2b6c);
     iVar5 = iVar6 + -0x6e616d2f;
     iVar6 = iVar6 + 1;
   } while (iVar5 < 7);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xb,0x6d617020);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xd,0x746e616d);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xe,0x73656e64);
-  cVar3 = IsSpecialNationDialogModeActive();
+  func_0x00406bc7(0x2742,0xb,0x6d617020);
+  func_0x00406bc7(0x2742,0xd,0x746e616d);
+  func_0x00406bc7(0x2742,0xe,0x73656e64);
+  cVar3 = func_0x00408481();
   if (cVar3 == '\0') {
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,9,0x636e636c);
-    ResetNationStatusSlotsAndInitializeNameControls(this);
+    func_0x00406bc7(0x2742,9,0x636e636c);
+    func_0x00403378(this);
     if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-      SetDialogModeTagInitAndInvokeNoOpHook();
-      RefreshMapAndMessageControlsForCurrentContext();
-      DispatchTurnEventCode9WithTwoTextTokens
-                (0xfffffff3,0,PTR_g_szEmptyString_0065c160,PTR_g_szEmptyString_0065c160);
-      TSimMgr::EmitTurnEventEAnd9SessionContextPackets((TSimMgr *)g_pGameFlowState,0);
+      func_0x00407ff9();
+      func_0x00401587();
+      func_0x00402117(0xfffffff3,0,PTR_g_szEmptyString_0065c160,PTR_g_szEmptyString_0065c160);
+      func_0x00407e82(0);
     }
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xc,0x6d657373);
+    func_0x00406bc7(0x2742,0xc,0x6d657373);
   }
   else {
-    TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll(0xffffffff);
-    iVar6 = GetNationStatusCodeForSlotOrActiveNation(0xffffffff);
+    func_0x00409859(0xffffffff);
+    iVar6 = func_0x00403b6b(0xffffffff);
     if (iVar6 == 0x62757379) {
       uVar7 = 0x12;
     }
     else {
       uVar7 = 0x11;
     }
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,uVar7,0x636e636c);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xc,0x6d657373);
+    func_0x00406bc7(0x2742,uVar7,0x636e636c);
+    func_0x00406bc7(0x2742,0xc,0x6d657373);
     piVar4 = (int *)(*pcVar8)(0x636f6174);
     iVar6 = *piVar4;
     (**(code **)(iVar6 + 0xc))();
-    iVar5 = UiRuntimeContext::GetActiveNationId(0);
+    iVar5 = func_0x00403b16(0);
     (**(code **)(iVar6 + 0x1c8))(iVar5 + 0x120a);
     (**(code **)(iVar6 + 0xa4))(1,0);
-    iVar6 = GetNationStatusCodeForSlotOrActiveNation(0xffffffff);
+    iVar6 = func_0x00403b6b(0xffffffff);
     if (iVar6 != 0x62757379) {
       (*pTVar1->SetPictureResourceIdAndRefresh)(0x11f9,0);
     }
-    RefreshMapAndMessageControlsForCurrentContext();
+    func_0x00401587();
   }
   *(undefined4 *)&this->field_0x94 = 0xffffffff;
   (*pTVar1->VTableSlot13)(1);
-  cVar3 = IsSpecialNationDialogModeActive();
+  cVar3 = func_0x00408481();
   if (cVar3 == '\0') {
     iVar6 = (-(uint)(*(int *)&g_pLocalizationTable->field_0x44 == 1) & 0xfffffff8) + 0x18;
   }
   else {
-    iVar6 = GetNationStatusCodeForSlotOrActiveNation(0xffffffff);
+    iVar6 = func_0x00403b6b(0xffffffff);
     iVar6 = (-(uint)(iVar6 != 0x62757379) & 0xffffffec) + 0x24;
   }
-  uVar7 = (*(code *)0x2b6c)(0x6d657373,0,0xe,0x2b6c,1,0x2742,iVar6);
-  ConfigureUiControlStyleValueAndCaptionFromStringResource(uVar7);
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  uVar7 = (*pcVar8)(0x6d657373,0,0xe,0x2b6c,1,0x2742,iVar6);
+  func_0x00403490(uVar7);
+  func_0x00406ba9(uVar9);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054DB40
-// GHIDRA_NAME TLoungeDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TLoungeDialog::CanHandleCityDialogActionFalse
+// GHIDRA_PROTO undefined __thiscall CanHandleCityDialogActionFalse(void)
 
-uint TLoungeDialog::_scalar_deleting_destructor_()
+uint TLoungeDialog::CanHandleCityDialogActionFalse()
 
 {
   int iVar1;
@@ -155,18 +183,17 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
   int *piVar6;
   CString *src_ref;
   int iVar7;
-  int iVar8;
-  undefined3 extraout_var_00;
   uint extraout_EAX;
-  undefined2 extraout_var_01;
-  int iVar9;
+  undefined2 extraout_var_00;
+  int iVar8;
+  undefined4 unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar9;
   undefined4 uVar10;
-  undefined4 uVar11;
   CString CStack_30;
   TLoungeDialog *local_2c;
   CString CStack_28;
-  int local_24;
+  code *local_24;
   CString CStack_20;
   CString local_1c;
   _vslot_fn *local_18;
@@ -175,102 +202,100 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-
+  
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634eb0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_14 = this->vftable;
-  CStack_30.m_pchData._3_1_ = '\0';
+  CStack_30.m_pchData._3_1_ = 0;
   local_18 = local_14->OrphanLeaf_NoCall_Ins07_004d8920_25;
   local_1c.m_pchData = (char *)0x0;
-  local_24 = 0x48;
+  local_24 = (code *)0x48;
   local_2c = this;
   do {
     CVar2.m_pchData = local_1c.m_pchData;
-    iVar9 = 0;
-    iVar8 = *(int *)((int)&g_pGameFlowState->vftable + local_24);
-    if (iVar8 == 0) {
-      iVar9 = 2;
+    iVar8 = 0;
+    if (*(int *)((int)g_pGameFlowState + (int)local_24) == 0) {
+      iVar8 = 2;
     }
-    else if (iVar8 == -2) {
-      iVar9 = 3;
+    else if (*(int *)((int)g_pGameFlowState + (int)local_24) == -2) {
+      iVar8 = 3;
     }
     else {
-      uVar5 = GetNationStatusCodeForSlotOrActiveNation(local_1c.m_pchData);
+      uVar5 = func_0x00403b6b(local_1c.m_pchData);
       if (uVar5 < 0x6275737a) {
         if (uVar5 == 0x62757379) {
-          iVar9 = 0;
+          iVar8 = 0;
         }
         else if (uVar5 == 0x61776f6c) {
-          iVar9 = 3;
+          iVar8 = 3;
         }
       }
       else if (uVar5 < 0x64656362) {
         if (uVar5 == 0x64656361) {
-          iVar9 = 4;
+          iVar8 = 4;
         }
         else if (uVar5 == 0x64656164) {
-          iVar9 = 4;
+          iVar8 = 4;
         }
       }
       else if (uVar5 == 0x72656479) {
-        iVar9 = 1;
+        iVar8 = 1;
       }
       else if (uVar5 == 0x756e6173) {
-        iVar9 = 2;
+        iVar8 = 2;
       }
     }
     uVar3 = (*local_18)(CVar2.m_pchData + 0x72616430);
-    iVar8 = *(int *)CONCAT31(extraout_var,uVar3);
-    (**(code **)(iVar8 + 0xc))();
+    iVar1 = *(int *)CONCAT31(extraout_var,uVar3);
+    (**(code **)(iVar1 + 0xc))();
     if ((int)(short)((int *)CONCAT31(extraout_var,uVar3))[0x21] !=
-        *(int *)(&UNK_0065c168 + iVar9 * 4)) {
-      (**(code **)(iVar8 + 0x1c8))
-                (CONCAT22(extraout_var_01,*(undefined2 *)(&UNK_0065c168 + iVar9 * 4)),1);
+        *(int *)(&UNK_0065c168 + iVar8 * 4)) {
+      (**(code **)(iVar1 + 0x1c8))
+                (CONCAT22(extraout_var_00,*(undefined2 *)(&UNK_0065c168 + iVar8 * 4)),1);
     }
-    TouchSessionActiveNationId();
+    func_0x00402bc1();
     piVar6 = (int *)(*(code *)local_1c.m_pchData)(CVar2.m_pchData + 0x6e616d30);
-    iVar8 = *piVar6;
-    (**(code **)(iVar8 + 0xc))();
-    CString::__0CString__QAE_XZ(&CStack_30);
+    iVar1 = *piVar6;
+    (**(code **)(iVar1 + 0xc))();
+    CString::CString(&CStack_30);
     uStack_c = 0;
-    CString::__0CString__QAE_XZ(&CStack_28);
+    CString::CString(&CStack_28);
     uStack_c = CONCAT31(uStack_c._1_3_,1);
-    (**(code **)(iVar8 + 0x1d0))(&CStack_28);
-    iVar1 = local_24;
+    (**(code **)(iVar1 + 0x1d0))(&CStack_28);
+    CVar2.m_pchData = CStack_30.m_pchData;
     src_ref = (CString *)
-              NormalizeRuntimeCredentialNameToken
-                        (&CStack_10,&g_pGameFlowState->field_0x30 + local_24);
+              func_0x00402a2c(&local_1c,CStack_30.m_pchData + (int)g_pGameFlowState + 0x30);
     uStack_4._0_1_ = 2;
-    CString::__4CString__QAEABV0_ABV0__Z(&CStack_28,src_ref);
+    CString::operator=(&CStack_28,src_ref);
     uStack_4 = CONCAT31(uStack_4._1_3_,1);
-    CString::__1CString__QAE_XZ(&CStack_10);
-    iVar7 = __mbscmp(CStack_20.m_pchData,CStack_28.m_pchData);
+    CString::~CString(&CStack_10);
+    iVar7 = CompareAnsiStringsWithMbcsAwareness(CStack_20.m_pchData,CStack_28.m_pchData);
     if (iVar7 != 0) {
-      (**(code **)(iVar8 + 0x1c8))(&CStack_28,1);
-      if (iVar9 == 4) {
-        uVar11 = 0x2b6a;
-        uVar10 = 0x2b67;
+      (**(code **)(iVar1 + 0x1c8))(&CStack_28,1);
+      if (iVar8 == 4) {
+        uVar10 = 0x2b6a;
+        uVar9 = 0x2b67;
       }
-      else if (CStack_30.m_pchData._2_1_ == '\0') {
-        uVar11 = 0x2b6c;
-        uVar10 = 0x2b6b;
+      else if ((char)((uint)unaff_EBP >> 0x10) == '\0') {
+        uVar10 = 0x2b6c;
+        uVar9 = 0x2b6b;
       }
       else {
-        uVar11 = 0x2b6b;
-        uVar10 = 0x2b6c;
+        uVar10 = 0x2b6b;
+        uVar9 = 0x2b6c;
       }
-      ApplyUiTextStyleAndThemeFlags(piVar6,0,0xe,uVar10,uVar11);
+      func_0x0040263a(piVar6,0,0xe,uVar9,uVar10);
     }
     uStack_4 = uStack_4 & 0xffffff00;
-    CString::__1CString__QAE_XZ(&CStack_20);
+    CString::~CString(&CStack_20);
     uStack_4 = 0xffffffff;
-    CString::__1CString__QAE_XZ(&CStack_28);
-    local_24 = iVar1 + 4;
+    CString::~CString(&CStack_28);
+    local_24 = (code *)(CVar2.m_pchData + 4);
     local_1c.m_pchData = local_1c.m_pchData + 1;
-  } while (local_24 < 100);
-  cVar4 = IsSpecialNationDialogModeActive();
+  } while ((int)local_24 < 100);
+  cVar4 = func_0x00408481();
   if (cVar4 == '\0') {
     if ((*(int *)&g_pLocalizationTable->field_0x44 == 1) || (CStack_30.m_pchData._3_1_ != '\0')) {
       cVar4 = '\x10';
@@ -280,8 +305,8 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
     }
   }
   else {
-    iVar8 = GetNationStatusCodeForSlotOrActiveNation(0xffffffff);
-    if ((iVar8 == 0x62757379) && (g_pGameFlowState->field_0xf4 != '\0')) {
+    iVar8 = func_0x00403b6b(0xffffffff);
+    if ((iVar8 == 0x62757379) && (*(char *)((int)g_pGameFlowState + 0xf4) != '\0')) {
       cVar4 = '$';
       if (*(short *)&local_2c->field_0x84 != 0x11f8) {
         (*local_14->SetPictureResourceIdAndRefresh)(0x11f8,1);
@@ -294,26 +319,24 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
       }
     }
   }
-  CString::__0CString__QAE_XZ(&local_1c);
+  CString::CString(&local_1c);
   uStack_4 = 3;
-  LoadUiStringResourceByGroupAndIndex(&local_1c,0x2742,cVar4);
-  uVar3 = (*local_18)(0x6d657373);
-  iVar8 = *(int *)CONCAT31(extraout_var_00,uVar3);
+  func_0x00401e7e(&local_1c,0x2742,cVar4);
+  piVar6 = (int *)(*local_24)(0x6d657373);
+  iVar8 = *piVar6;
   (**(code **)(iVar8 + 0xc))();
-  (**(code **)(iVar8 + 0x1c8))(&CStack_20,1);
-  CStack_10.m_pchData = (char *)0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_28);
-  *unaff_FS_OFFSET = local_18;
+  (**(code **)(iVar8 + 0x1c8))(&local_2c,1);
+  local_1c.m_pchData = (char *)0xffffffff;
+  CString::~CString((CString *)&stack0xffffffcc);
+  *unaff_FS_OFFSET = local_24;
   return extraout_EAX & 0xffffff00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054E1F0
-// GHIDRA_NAME TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int * param_2)
+// GHIDRA_NAME TLoungeDialog::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int * param_2)
 
-void __thiscall
-TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TLoungeDialog *this,int param_1,int *param_2)
+void TLoungeDialog::HandleEvent(int param_1, int *param_2)
 
 {
   uint uVar1;
@@ -324,7 +347,8 @@ TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined3 extraout_var;
   int iVar6;
   int iVar7;
-
+  undefined4 in_stack_0000000c;
+  
   if (param_1 == 0x29a) {
     uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6f6b6179);
     iVar6 = *(int *)CONCAT31(extraout_var,uVar4);
@@ -334,41 +358,41 @@ TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
   }
   if (param_1 == 0x7069636b) {
     (**(code **)(*param_2 + 0xc))();
-    TryInvokeNationStateReplacementForSlot(param_2[0x1b]);
+    func_0x004067f8(param_2[0x1b]);
   }
   if ((((param_1 != 0x14) && (param_1 != 10)) && (param_1 != 0x22)) && (param_1 != 0xd))
   goto LAB_0054e36b;
   uVar1 = param_2[7];
   if (uVar1 < 0x636e636d) {
     if ((uVar1 == 0x636e636c) || (uVar1 == 0x63616e63)) {
-      cVar5 = IsSpecialNationDialogModeActive();
+      cVar5 = func_0x00408481();
       if (cVar5 == '\0') {
         bVar3 = false;
         iVar6 = 0x48;
         do {
-          iVar2 = *(int *)((int)&g_pGameFlowState->vftable + iVar6);
-          if ((iVar2 != 0) && (iVar7 = TouchSessionActiveNationId(), iVar2 != iVar7)) {
+          iVar2 = *(int *)((int)g_pGameFlowState + iVar6);
+          if ((iVar2 != 0) && (iVar7 = func_0x00402bc1(), iVar2 != iVar7)) {
             bVar3 = true;
           }
           iVar6 = iVar6 + 4;
         } while (iVar6 < 100);
         if (((*(int *)&g_pLocalizationTable->field_0x44 != 1) || (!bVar3)) ||
-           (cVar5 = DispatchGameStateEventIfLocalizedPromptAccepted(0x6367616d), cVar5 != '\0')) {
+           (cVar5 = func_0x0040426e(0x6367616d), cVar5 != '\0')) {
           if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-            DispatchTaggedGameStateEvent1F20(0x6367616d,0xffffffff,0xfffffffe);
+            func_0x00406efb(0x6367616d,0xffffffff,0xfffffffe);
           }
-          ResetLocalUiStateAndPostTurnEvent5E5();
+          func_0x0040346d();
         }
       }
       else {
-        iVar6 = GetNationStatusCodeForSlotOrActiveNation(0xffffffff);
+        iVar6 = func_0x00403b6b(0xffffffff);
         if (iVar6 == 0x62757379) {
           (*g_pLocalizationTable->vftable[8].slot_0x04)();
         }
         else {
-          cVar5 = DispatchGameStateEventIfLocalizedPromptAccepted(0x6e657767);
+          cVar5 = func_0x0040426e(0x6e657767);
           if (cVar5 != '\0') {
-            CreateAndQueueTurnEventPacketTagGWEN();
+            func_0x00407518();
           }
         }
       }
@@ -377,33 +401,33 @@ TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
   }
   else {
     if (uVar1 == 0x6a656469) {
-      EmitTurnEvent10ForFlaggedNationSlots();
+      func_0x00405d0d();
       goto LAB_0054e36b;
     }
     if (uVar1 == 0x6f6b6179) {
-      ResetDialogContextField40AndEmitTurnEvent3Mode18();
+      func_0x00402bfd();
       goto LAB_0054e36b;
     }
     if (uVar1 == 0x73656e64) {
-      DispatchSimpleTurnEventEsopWithParam(0xffffffff);
+      func_0x00403dff(0xffffffff);
       goto LAB_0054e36b;
     }
   }
   if ((uVar1 < 0x72616430) || (0x72616436 < uVar1)) {
     if ((uVar1 < 0x6e616d30) || (0x6e616d36 < uVar1)) {
       if ((0x70696b2f < uVar1) && (uVar1 < 0x70696b37)) {
-        TryInvokeNationStateReplacementForSlot(uVar1 + 0x8f9694d0);
+        func_0x004067f8(uVar1 + 0x8f9694d0);
       }
     }
     else {
-      TryInvokeNationStateReplacementForSlot(uVar1 + 0x919e92d0);
+      func_0x004067f8(uVar1 + 0x919e92d0);
     }
   }
   else {
-    TryInvokeNationStateReplacementForSlot(uVar1 + 0x8d9e9bd0);
+    func_0x004067f8(uVar1 + 0x8d9e9bd0);
   }
 LAB_0054e36b:
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+  func_0x00404566(param_1,param_2,in_stack_0000000c);
   return;
 }
 

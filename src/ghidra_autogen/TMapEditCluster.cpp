@@ -3,70 +3,34 @@
 // Program: Imperialism.exe
 // Bucket: TMapEditCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004023AB
-// GHIDRA_NAME TCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO void __thiscall TCluster::OrphanRetStub_0059add0(int nEventClass, void * pEventPayload, int nEventFlags)
+// GHIDRA_FUNCTION IMPERIALISM 0x005B2880
+// GHIDRA_NAME TMapEditCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-void __thiscall
-TCluster::OrphanRetStub_0059add0
-          (TMapEditCluster *this,int nEventClass,void *pEventPayload,int nEventFlags)
+TCluster * TMapEditCluster::CreateObject(void)
 
 {
-  undefined uVar1;
-  undefined3 extraout_var;
-  int *piVar2;
-  undefined4 *puVar3;
-
-  if ((nEventClass == 0xc) && (*(TMapEditCluster **)((int)pEventPayload + 0x20) == this)) {
-    if (this->field44 == 0) {
-      puVar3 = (undefined4 *)0x0;
-    }
-    else {
-      puVar3 = *(undefined4 **)(this->field44 + 4);
-    }
-    if (puVar3 == (undefined4 *)0x0) {
-      piVar2 = (int *)0x0;
-      puVar3 = (undefined4 *)0x0;
-    }
-    else {
-      piVar2 = (int *)puVar3[2];
-      puVar3 = (undefined4 *)*puVar3;
-    }
-    while (piVar2 != (int *)0x0) {
-      if (piVar2 != pEventPayload) {
-        (**(code **)(*piVar2 + 0x40))(0x20,this,0);
-      }
-      if (puVar3 == (undefined4 *)0x0) {
-        piVar2 = (int *)0x0;
-        puVar3 = (undefined4 *)0x0;
-      }
-      else {
-        piVar2 = (int *)puVar3[2];
-        puVar3 = (undefined4 *)*puVar3;
-      }
-    }
-    *(undefined4 *)&this->field_0x84 = *(undefined4 *)((int)pEventPayload + 0x1c);
+  TCluster *this;
+  TCluster *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00638baa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TCluster *)operator_new(0x88);
+  local_4 = 0;
+  pTVar1 = (TCluster *)0x0;
+  if (this != (TCluster *)0x0) {
+    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    this->vftable = (TClusterVtbl *)&_vftable_;
+    pTVar1 = this;
   }
-  if (nEventClass == 0x1f) {
-    (*this->vftable->SetControlStateFlagAndMaybeRefresh)(1,1);
-  }
-  else {
-    if (nEventClass == 0x20) {
-      (*this->vftable->SetControlStateFlagAndMaybeRefresh)(0,1);
-      return;
-    }
-    if (nEventClass == 0x21) {
-      (*this->vftable->SetControlStateFlagAndMaybeRefresh)((uint)(this->field_0x64 == '\0'),1);
-      return;
-    }
-    uVar1 = (*this->vftable->UpdateControlCachedIntFromWindowText)();
-    if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
-      (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))
-                (nEventClass,pEventPayload,nEventFlags);
-      return;
-    }
-  }
-  return;
+  *unaff_FS_OFFSET = local_c;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2900
@@ -76,64 +40,31 @@ TCluster::OrphanRetStub_0059add0
 TMapEditCluster * TMapEditCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00406e9c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2950
-// GHIDRA_NAME TMapEditCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMapEditCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMapEditCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMapEditCluster::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMapEditCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2970
-// GHIDRA_NAME TMapEditCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_NAME TMapEditCluster::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TMapEditCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_3)
+void TMapEditCluster::HandleEvent(int param_1, void *param_2, int param_3)
 
 {
-  TCluster::OrphanRetStub_0059add0(this,param_1,param_2,param_3);
+  func_0x004023ab(param_1,param_2,param_3);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B29A0
-// GHIDRA_NAME TMapEditCluster::DestructTMapEditClusterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMapEditClusterAndMaybeFree()
-
-TView * TMapEditCluster::DestructTMapEditClusterAndMaybeFree(void)
-
-{
-  TView *this;
-  TView *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00638bd2;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x60);
-  local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
-    this->vftable = (TViewVtbl *)&TMinorTradeBidsDialogVtbl_0066b7a0;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 

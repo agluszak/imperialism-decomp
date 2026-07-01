@@ -3,72 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TShipLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004AA360
-// GHIDRA_NAME TShipLine::SetArmyUnitLineActiveFlagAndNotify
-// GHIDRA_PROTO undefined __thiscall TShipLine::SetArmyUnitLineActiveFlagAndNotify(char param_1)
-
-void TShipLine::SetArmyUnitLineActiveFlagAndNotify(char param_1)
-
-{
-  if (this[4].field_0x14 != param_1) {
-    this[4].field_0x14 = param_1;
-    (*this->vftable[9].Free)();
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00564F90
-// GHIDRA_NAME TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00564f90(byte param_1)
+// GHIDRA_NAME TShipLine::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipLine * TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90(byte param_1)
+TShipLine * TShipLine::_scalar_deleting_destructor_(byte param_1)
 
 {
-  WrapperFor_FreeHeapBufferIfNotNull_At00564f90_Impl();
+  func_0x00403404();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565030
-// GHIDRA_NAME TShipLine::CreateTShipLineInstance
-// GHIDRA_PROTO undefined CreateTShipLineInstance()
+// GHIDRA_NAME TShipLine::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TLineData * TShipLine::CreateTShipLineInstance(void)
+undefined4 * TShipLine::CreateObject(void)
 
 {
-  TLineData *this;
-  TLineData *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063593a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)__2_YAPAXI_Z(0x1c);
+  puVar1 = (undefined4 *)operator_new(0x1c);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (this != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(this);
-    this->vftable = (TLineDataVtbl *)&TShipLineVtbl_0065cde8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00408f0d();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005650A0
-// GHIDRA_NAME TShipLine::GetTLineDataClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
+// GHIDRA_NAME TShipLine::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipLine::GetTLineDataClassNamePointer()
+CRuntimeClass * TShipLine::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTShipLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565100
@@ -78,98 +64,145 @@ CRuntimeClass * TShipLine::GetTLineDataClassNamePointer()
 void TShipLine::OrphanRetStub_0056f460(int param_1)
 
 {
-  _vslot_fn *p_Var1;
-  TViewVtbl *this_00;
-  TArmyCheckBox *this_01;
-  int iVar2;
+  undefined4 uVar1;
+  undefined4 *puVar2;
+  int *piVar3;
+  int iVar4;
+  undefined4 extraout_ECX;
   undefined4 *unaff_FS_OFFSET;
-  CString CStack_3c;
-  TViewVtbl *local_24;
-  undefined4 local_20;
-  undefined4 local_1c;
-  undefined4 local_18;
-  undefined4 local_14;
-  undefined1 *local_10;
+  undefined4 uStack_a8;
+  int iStack_a4;
+  undefined4 uStack_a0;
+  undefined4 uStack_9c;
+  undefined4 *puStack_98;
+  CString CStack_94;
+  undefined4 *puStack_90;
+  undefined4 *puStack_8c;
+  undefined4 *puStack_88;
+  undefined4 uStack_84;
+  undefined4 uStack_80;
+  undefined4 uStack_7c;
+  undefined4 uStack_78;
+  undefined4 uStack_74;
+  undefined4 *puStack_70;
+  undefined1 *puStack_6c;
+  CString CStack_68;
+  undefined1 *puStack_64;
+  undefined4 uStack_60;
+  undefined4 uStack_5c;
+  int iStack_58;
+  undefined4 uStack_54;
+  int iStack_50;
+  undefined1 *puStack_48;
+  undefined4 uStack_44;
+  undefined4 uStack_40;
+  int iStack_3c;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  TClickZone *local_4;
-
-  local_4 = (TClickZone *)0xffffffff;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
   puStack_8 = &LAB_00635976;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_1c = *(undefined4 *)(param_1 + 0x84);
-  CStack_3c.m_pchData = (char *)0x68;
-  this_00 = (TViewVtbl *)__2_YAPAXI_Z();
-  local_4 = (TClickZone *)0x0;
-  if (this_00 == (TViewVtbl *)0x0) {
-    this_00 = (TViewVtbl *)0x0;
+  iStack_3c = 0x68;
+  uStack_40 = 0x565133;
+  puVar2 = (undefined4 *)operator_new();
+  local_4 = 0;
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
   }
   else {
-    CStack_3c.m_pchData = (char *)0x56514d;
-    local_24 = this_00;
-    TView::ConstructTViewBaseState((TView *)this_00);
-    this_00->GetRuntimeClass =
-         (TView_GetTEventHandlerClassNamePointer_0x00 *)&TShipViewVtbl_0065ce28;
+    iStack_3c = 0x56514d;
+    func_0x004064e2();
+    *puVar2 = &TShipView::_vftable_;
   }
-  local_24 = *(TViewVtbl **)&this->field_0x10;
-  p_Var1 = *(_vslot_fn **)&this->field_0x18;
-  CStack_3c.m_pchData = (char *)0x0;
-  local_4 = (TClickZone *)0xffffffff;
-  InitializeUiResourceEntryFrameAndParent();
-  CStack_3c.m_pchData = (char *)0x94;
-  this_00->vmethod_0024 = (_vslot_fn *)local_24;
-  this_00->vmethod_0025 = p_Var1;
-  this_01 = (TArmyCheckBox *)__2_YAPAXI_Z();
-  local_4 = (TClickZone *)0x1;
-  if (this_01 == (TArmyCheckBox *)0x0) {
-    this_01 = (TArmyCheckBox *)0x0;
-  }
-  else {
-    CStack_3c.m_pchData = (char *)0x5651b5;
-    TControl::TControl((TControl *)this_01);
-    this_01->vftable = &TArmyCheckBoxVtbl_0064cec0;
-    *(undefined4 *)&this_01->field_0x88 = 0;
-    *(undefined4 *)&this_01->field_0x90 = 0;
-    *(undefined4 *)&this_01->field_0x8c = 0;
-    this_01->field_0x84 = 0;
-  }
-  local_4 = (TClickZone *)0xffffffff;
-  local_24 = (TViewVtbl *)0x50;
-  local_20 = 0x2d;
-  CStack_3c.m_pchData =
-       (char *)(int)*(short *)(&DAT_006985e8 + *(short *)(*(int *)&this->field_0x10 + 4) * 2);
-  local_14 = 0;
-  local_10 = (undefined1 *)0x0;
-  TArmyCheckBox::ConstructTArmyCheckBoxBaseState(this_01,this_00,&local_14,&local_24,5,5);
-  this_01->controlTag = 0x63686563;
-  *(undefined4 *)&this_01->field_0x60 = 4;
-  CStack_3c.m_pchData = (char *)0x0;
-  (*this_01->vftable->SetArmyUnitLineActiveFlagAndNotify)();
-  CString::__0CString__QAE_XZ((CString *)&stack0xffffffd0);
-  uStack_c = 2;
-  local_4 = (TClickZone *)__2_YAPAXI_Z();
-  uStack_c._0_1_ = 3;
-  if (local_4 == (TClickZone *)0x0) {
-    iVar2 = 0;
+  uVar1 = *(undefined4 *)&this->field_0x18;
+  iStack_3c = 0;
+  uStack_40 = 5;
+  puStack_48 = &this->field_0x8;
+  uStack_44 = 5;
+  iStack_50 = param_1;
+  uStack_54 = 0;
+  local_4 = 0xffffffff;
+  iStack_58 = 0x565185;
+  func_0x004096b5();
+  iStack_58 = 0x94;
+  puVar2[0x18] = uStack_40;
+  puVar2[0x19] = uVar1;
+  uStack_5c = 0x565199;
+  piVar3 = (int *)operator_new();
+  if (piVar3 == (int *)0x0) {
+    piVar3 = (int *)0x0;
   }
   else {
-    iVar2 = TClickZone::ConstructUiCommandTagResourceEntry(local_4);
+    iStack_58 = 0x5651b5;
+    func_0x004087fb();
+    *piVar3 = (int)&TArmyCheckBox::_vftable_;
+    piVar3[0x22] = 0;
+    piVar3[0x24] = 0;
+    piVar3[0x23] = 0;
+    *(undefined1 *)(piVar3 + 0x21) = 0;
   }
-  uStack_c = CONCAT31(uStack_c._1_3_,2);
-  local_1c = 0x80;
-  local_18 = 0x18;
-  local_24 = (TViewVtbl *)0x40;
-  local_20 = 0;
-  InitializeUiResourceEntryFrameAndParent(0,this_00);
-  *(undefined4 *)(iVar2 + 0x1c) = 0x6e616d65;
+  uStack_40 = 0x50;
+  iStack_3c = 0x2d;
+  iStack_58 = (int)*(short *)(&DAT_006985e8 + *(short *)(*(int *)&this->field_0x10 + 4) * 2);
+  uStack_60 = 5;
+  CStack_68.m_pchData = (char *)&uStack_40;
+  puStack_64 = (undefined1 *)0x5;
+  puStack_6c = &stack0xffffffd0;
+  uStack_74 = 0x565225;
+  puStack_70 = puVar2;
+  func_0x00401fcd();
+  piVar3[7] = 0x63686563;
+  piVar3[0x18] = 4;
+  uStack_74 = 0;
+  uStack_78 = CONCAT31((int3)((uint)extraout_ECX >> 8),
+                       *(undefined1 *)(*(int *)&this->field_0x14 + 0xc));
+  uStack_7c = 0x565245;
+  (**(code **)(*piVar3 + 0x1c8))();
+  uStack_7c = 0x56524e;
+  CString::CString(&CStack_68);
+  uStack_7c = 0x88;
+  uStack_44 = 2;
+  uStack_80 = 0x565260;
+  iStack_3c = operator_new();
+  uStack_44._0_1_ = 3;
+  if (iStack_3c == 0) {
+    iVar4 = 0;
+  }
+  else {
+    uStack_7c = 0x565277;
+    iVar4 = func_0x004038ff();
+  }
+  uStack_7c = 0;
+  uStack_80 = 4;
+  puStack_88 = &uStack_54;
+  uStack_84 = 4;
+  puStack_8c = &uStack_5c;
+  CStack_94.m_pchData = (char *)0x0;
+  uStack_44 = CONCAT31(uStack_44._1_3_,2);
+  uStack_54 = 0x80;
+  iStack_50 = 0x18;
+  uStack_5c = 0x40;
+  iStack_58 = 0;
+  puStack_98 = (undefined4 *)0x5652b6;
+  puStack_90 = puVar2;
+  func_0x004096b5();
+  *(undefined4 *)(iVar4 + 0x1c) = 0x6e616d65;
+  puStack_98 = &uStack_84;
+  uStack_9c = 4;
+  uStack_a0 = 0x2746;
+  iStack_a4 = 0x5652d7;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  local_10 = &stack0xffffffac;
-  AssignStringSharedRefAndReturnThis(&CStack_3c);
-  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  local_18 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_3c);
-  *unaff_FS_OFFSET = local_20;
+  puStack_64 = (undefined1 *)&uStack_a8;
+  iStack_a4 = iVar4;
+  func_0x004076b7(&puStack_90);
+  func_0x00404d22();
+  puStack_70 = (undefined4 *)0xffffffff;
+  uStack_a8 = 0x565302;
+  CString::~CString(&CStack_94);
+  *unaff_FS_OFFSET = uStack_78;
   return;
 }
 

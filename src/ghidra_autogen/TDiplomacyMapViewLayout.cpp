@@ -17,19 +17,19 @@ TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch
   int iVar3;
   TCountry **ppTVar4;
   
-  uVar1 = CreateClipStateRegionWrapperObject();
+  uVar1 = func_0x00401127();
   iVar3 = 0;
   ppTVar4 = g_apTerrainTypeDescriptorTable;
   do {
     if (*ppTVar4 != (TCountry *)0x0) {
       uVar2 = (**(code **)(*g_pStrategicMapViewSystem + 0x98))(iVar3,uVar1);
-      CombineTwoRegionsIntoDestinationAndUpdateBox(uVar1,uVar2);
+      func_0x00408bac(uVar1,uVar2);
     }
     iVar3 = iVar3 + 1;
     ppTVar4 = ppTVar4 + 1;
   } while ((short)iVar3 < 0x17);
   (**(code **)(*(int *)this + 0xc4))(uVar1);
-  DestroyClipStateRegionWrapperObject(uVar1);
+  func_0x0040696a(uVar1);
   return;
 }
 

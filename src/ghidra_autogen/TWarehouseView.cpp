@@ -4,55 +4,55 @@
 // Bucket: TWarehouseView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C71F0
-// GHIDRA_NAME TWarehouseView::CreateTWarehouseViewInstance
-// GHIDRA_PROTO undefined CreateTWarehouseViewInstance()
+// GHIDRA_NAME TWarehouseView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TNoHilitePicture * TWarehouseView::CreateTWarehouseViewInstance(void)
+undefined4 * TWarehouseView::CreateObject(void)
 
 {
-  TNoHilitePicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063158a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x104);
+  puVar1 = (undefined4 *)operator_new(0x104);
   local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
-    this[1].vftable = (TNoHilitePictureVtbl *)0x0;
-    this->vftable = (TNoHilitePictureVtbl *)&TWarehouseViewVtbl_006516a0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403328();
+    puVar1[0x25] = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TNoHilitePicture *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7290
-// GHIDRA_NAME TWarehouseView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TWarehouseView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TWarehouseView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TWarehouseView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTWarehouseView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C72B0
 // GHIDRA_NAME TWarehouseView::ConstructTWarehouseViewBaseState
-// GHIDRA_PROTO undefined __thiscall TWarehouseView::ConstructTWarehouseViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTWarehouseViewBaseState(void)
 
 TWarehouseView * TWarehouseView::ConstructTWarehouseViewBaseState()
 
 {
-  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  func_0x00403328();
   *(undefined4 *)&this->field_0x94 = 0;
-  this->vftable = &TWarehouseViewVtbl_006516a0;
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -63,21 +63,21 @@ TWarehouseView * TWarehouseView::ConstructTWarehouseViewBaseState()
 TWarehouseView * TWarehouseView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004058e9();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7330
-// GHIDRA_NAME TWarehouseView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 * param_1)
+// GHIDRA_NAME TWarehouseView::BeginMouseCaptureAndStartRepeatTimer
+// GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(undefined4 * param_1)
 
-void TWarehouseView::_scalar_deleting_destructor_(undefined4 *param_1)
+void TWarehouseView::BeginMouseCaptureAndStartRepeatTimer(undefined4 *param_1)
 
 {
-  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,param_1);
+  func_0x0040750e(param_1);
   return;
 }
 
@@ -85,14 +85,16 @@ void TWarehouseView::_scalar_deleting_destructor_(undefined4 *param_1)
 // GHIDRA_NAME TWarehouseView::OrphanRetStub_004c6fd0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fd0(void)
 
+/* WARNING: Type propagation algorithm not settling */
+
 void TWarehouseView::OrphanRetStub_004c6fd0()
 
 {
-  _vslot_fn *p_Var1;
-  int iVar2;
-  TWarehouseViewVtbl *pTVar3;
-  TGreatPower *pTVar4;
-  TView_GetTEventHandlerClassNamePointer_0x00 *pTVar5;
+  int iVar1;
+  TWarehouseViewVtbl *pTVar2;
+  TGreatPower *pTVar3;
+  char *pcVar4;
+  _vslot_fn *p_Var5;
   undefined uVar6;
   short sVar7;
   undefined3 extraout_var;
@@ -101,404 +103,472 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
   undefined3 extraout_var_02;
   undefined3 extraout_var_03;
   int *piVar8;
-  TViewVtbl *extraout_EAX;
+  CString *pCVar9;
   undefined3 extraout_var_04;
   undefined3 extraout_var_05;
   undefined3 extraout_var_06;
   undefined3 extraout_var_07;
-  TViewVtbl *extraout_EAX_00;
-  TViewVtbl *extraout_EAX_01;
-  TViewVtbl *extraout_ECX;
-  TViewVtbl *extraout_ECX_00;
-  TViewVtbl *extraout_ECX_01;
-  TViewVtbl *extraout_ECX_02;
-  TViewVtbl *extraout_ECX_03;
-  dword *pdVar9;
-  _vslot_fn **pp_Var10;
-  int unaff_EDI;
-  undefined4 *puVar11;
-  TViewVtbl *pTVar12;
+  undefined4 uVar10;
+  CString *extraout_ECX;
+  CString *extraout_ECX_00;
+  CString *extraout_ECX_01;
+  char *extraout_ECX_02;
+  char *extraout_ECX_03;
+  dword *pdVar11;
+  CString *pCVar12;
+  undefined4 *puVar13;
   undefined4 *unaff_FS_OFFSET;
-  TViewVtbl *pTStack_f8;
-  TViewVtbl *pTStack_f4;
-  TToolBarClusterVtbl *pTStack_ec;
+  CString CStack_124;
+  CString *pCStack_120;
+  CString *pCStack_11c;
+  CString *pCStack_118;
+  CString *pCStack_114;
+  undefined4 uStack_110;
+  TWarehouseView *pTStack_10c;
+  CString *pCStack_108;
+  int *piStack_104;
+  CString CStack_100;
+  undefined1 *puStack_fc;
+  CString CStack_f8;
+  CString CStack_f4;
+  undefined *puStack_f0;
+  CString **ppCStack_ec;
   TWarehouseView *pTStack_e8;
-  undefined1 *puStack_e4;
-  CString CStack_e0;
-  TView *pTStack_dc;
-  TView *pTStack_d8;
+  CString CStack_e4;
+  dword dStack_e0;
+  CString *pCStack_dc;
+  CString CStack_d8;
   CString CStack_d4;
-  CString CStack_d0;
-  TView *pTStack_cc;
+  CString *pCStack_d0;
+  CString CStack_cc;
   CString CStack_c8;
   CString CStack_c4;
-  _vslot_fn *p_Stack_c0;
+  CString *pCStack_c0;
   CString CStack_bc;
-  _vslot_fn *p_Stack_b8;
-  CString CVar13;
+  int iStack_b8;
   CString local_a4;
-  CString local_a0;
-  _vslot_fn *p_Stack_9c;
-  _vslot_fn *p_Stack_98;
-  CString CStack_94;
+  CString *local_a0;
+  int iStack_9c;
+  int iStack_98;
+  char *pcStack_94;
   _vslot_fn *p_Stack_90;
-  _vslot_fn *p_Stack_8c;
-  _vslot_fn *p_Stack_88;
-  undefined1 auStack_84 [4];
-  _vslot_fn *local_80;
-  _vslot_fn *p_Stack_7c;
-  _vslot_fn *local_78;
-  _vslot_fn *p_Stack_74;
-  int iStack_70;
-  _vslot_fn *p_Stack_6c;
-  _vslot_fn *p_Stack_68;
-  _vslot_fn *p_Stack_64;
-  _vslot_fn *p_Stack_60;
-  _vslot_fn *p_Stack_48;
-  _vslot_fn *p_Stack_40;
+  int iStack_8c;
+  char *pcStack_88;
+  CString CStack_84;
+  CString *local_80;
+  char *pcStack_7c;
+  uint local_78;
+  CString aCStack_74 [2];
+  int iStack_6c;
+  undefined4 uStack_68;
+  undefined4 uStack_64;
+  undefined4 uStack_60;
+  undefined4 uStack_4c;
+  int iStack_44;
   undefined1 uStack_34;
-  _vslot_fn *p_Stack_c;
-  _vslot_fn *p_Stack_8;
-  _vslot_fn *local_4;
-
-  local_4 = (_vslot_fn *)0xffffffff;
-  p_Stack_8 = (_vslot_fn *)&LAB_006315f3;
-  p_Stack_c = (_vslot_fn *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &p_Stack_c;
-  p_Stack_7c = (_vslot_fn *)(uint)(ushort)p_Stack_7c;
-  local_78 = (_vslot_fn *)((uint)local_78 & 0xffff0000);
-  p_Stack_b8 = (_vslot_fn *)0x4c739e;
-  CString::__0CString__QAE_XZ(&local_a4);
-  p_Stack_b8 = (_vslot_fn *)0x2b67;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006315f3;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  pcStack_7c = (char *)(uint)(ushort)pcStack_7c;
+  local_78 = local_78 & 0xffff0000;
+  iStack_b8 = 0x4c739e;
+  CString::CString(&local_a4);
+  iStack_b8 = 0x2b67;
   CStack_bc.m_pchData = (char *)0xc;
   CStack_c4.m_pchData = (char *)&local_80;
-  p_Stack_c0 = (_vslot_fn *)0x0;
-  local_4 = (_vslot_fn *)0x0;
+  pCStack_c0 = (CString *)0x0;
+  local_4 = 0;
   CStack_c8.m_pchData = (char *)0x4c73bc;
   BuildUiTextStyleDescriptor();
-  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  p_Stack_b8 = (_vslot_fn *)0x6e616d65;
+  pCVar12 = (CString *)this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  iStack_b8 = 0x6e616d65;
   CStack_bc.m_pchData = (char *)0x4c73d4;
-  local_a0.m_pchData = (char *)p_Var1;
-  uVar6 = (*p_Var1)();
-  p_Stack_c0 = (_vslot_fn *)auStack_84;
+  local_a0 = pCVar12;
+  uVar6 = (*(code *)pCVar12)();
+  pCStack_c0 = &CStack_84;
   CStack_bc.m_pchData = (char *)0x0;
-  iVar2 = *(int *)CONCAT31(extraout_var,uVar6);
+  iVar1 = *(int *)CONCAT31(extraout_var,uVar6);
   CStack_c4.m_pchData = "j";
-  (**(code **)(iVar2 + 0x1b4))();
+  (**(code **)(iVar1 + 0x1b4))();
   CStack_c4.m_pchData = (char *)0x0;
   CStack_c8.m_pchData = (char *)0x1;
-  pTStack_cc = (TView *)0x4c73f3;
-  (**(code **)(iVar2 + 0x1c4))();
-  pTStack_cc = (TView *)&p_Stack_b8;
-  CStack_d0.m_pchData = (char *)0xd;
+  CStack_cc.m_pchData = (char *)0x4c73f3;
+  (**(code **)(iVar1 + 0x1c4))();
+  CStack_cc.m_pchData = (char *)&iStack_b8;
+  pCStack_d0 = (CString *)0xd;
   CStack_d4.m_pchData = (char *)0x2719;
-  pTStack_d8 = (TView *)0x4c740d;
+  CStack_d8.m_pchData = (char *)0x4c740d;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  pTStack_dc = (TView *)&CStack_c4;
-  pTStack_d8 = (TView *)0x0;
-  CStack_e0.m_pchData = "hg+";
-  (**(code **)(iVar2 + 0x1c8))();
-  CStack_e0.m_pchData = (char *)0x2b67;
-  puStack_e4 = (undefined1 *)0xa;
-  pTStack_ec = (TToolBarClusterVtbl *)&stack0xffffff58;
+  pCStack_dc = &CStack_c4;
+  CStack_d8.m_pchData = (char *)0x0;
+  dStack_e0 = 0x4c741c;
+  (**(code **)(iVar1 + 0x1c8))();
+  dStack_e0 = 0x2b67;
+  CStack_e4.m_pchData = (char *)0xa;
+  ppCStack_ec = (CString **)&stack0xffffff58;
   pTStack_e8 = (TWarehouseView *)0x0;
+  puStack_f0 = (undefined *)0x4c742f;
   BuildUiTextStyleDescriptor();
-  pdVar9 = TradeSummarySelectionMap_006960e0.summaryTags;
-  puVar11 = (undefined4 *)&this->field_0xa0;
+  pdVar11 = g_pTradeSummarySelectionMap.summaryTags;
+  puVar13 = (undefined4 *)&this->field_0xa0;
   CStack_c4.m_pchData = (char *)0x17;
   do {
-    CStack_e0.m_pchData = (char *)*pdVar9;
-    puStack_e4 = (undefined1 *)0x4c744c;
-    uVar6 = (*p_Var1)();
+    dStack_e0 = *pdVar11;
+    CStack_e4.m_pchData = (char *)0x4c744c;
+    uVar6 = (*(code *)pCVar12)();
     piVar8 = (int *)CONCAT31(extraout_var_00,uVar6);
-    *puVar11 = piVar8;
+    *puVar13 = piVar8;
     if (piVar8 != (int *)0x0) {
-      puStack_e4 = &stack0xffffff58;
-      CStack_e0.m_pchData = (char *)0x0;
+      CStack_e4.m_pchData = &stack0xffffff58;
+      dStack_e0 = 0;
       pTStack_e8 = (TWarehouseView *)0x4c7463;
       (**(code **)(*piVar8 + 0x1b4))();
       pTStack_e8 = (TWarehouseView *)0x0;
-      pTStack_ec = (TToolBarClusterVtbl *)0x1;
-      (**(code **)(*(int *)*puVar11 + 0x1c4))();
+      ppCStack_ec = (CString **)0x1;
+      puStack_f0 = (undefined *)0x4c7471;
+      (**(code **)(*(int *)*puVar13 + 0x1c4))();
     }
-    pdVar9 = pdVar9 + 1;
-    puVar11 = puVar11 + 1;
+    pdVar11 = pdVar11 + 1;
+    puVar13 = puVar13 + 1;
     CStack_c4.m_pchData = CStack_c4.m_pchData + -1;
   } while (CStack_c4.m_pchData != (char *)0x0);
-  CStack_e0.m_pchData = (char *)0x6c61626f;
-  puStack_e4 = (undefined1 *)0x4c748b;
-  uVar6 = (*p_Var1)();
+  dStack_e0 = 0x6c61626f;
+  CStack_e4.m_pchData = (char *)0x4c748b;
+  uVar6 = (*(code *)pCVar12)();
   piVar8 = (int *)CONCAT31(extraout_var_01,uVar6);
   *(int **)&this->field_0xfc = piVar8;
   if (piVar8 != (int *)0x0) {
     pTStack_e8 = (TWarehouseView *)&stack0xffffff54;
-    puStack_e4 = (undefined1 *)0x0;
-    pTStack_ec = (TToolBarClusterVtbl *)0x4c74a6;
+    CStack_e4.m_pchData = (char *)0x0;
+    ppCStack_ec = (CString **)0x4c74a6;
     (**(code **)(*piVar8 + 0x1b4))();
-    pTStack_ec = (TToolBarClusterVtbl *)0x0;
-    pTStack_f4 = (TViewVtbl *)0x4c74b8;
+    ppCStack_ec = (CString **)0x0;
+    puStack_f0 = (undefined *)0x1;
+    CStack_f4.m_pchData = (char *)0x4c74b8;
     (**(code **)(**(int **)&this->field_0xfc + 0x1c4))();
   }
-  puStack_e4 = (undefined1 *)0x706f7765;
+  CStack_e4.m_pchData = (char *)0x706f7765;
   pTStack_e8 = (TWarehouseView *)0x4c74c1;
-  uVar6 = (*p_Var1)();
+  uVar6 = (*(code *)pCVar12)();
   piVar8 = (int *)CONCAT31(extraout_var_02,uVar6);
   *(int **)&this->field_0x100 = piVar8;
   if (piVar8 != (int *)0x0) {
-    pTStack_ec = (TToolBarClusterVtbl *)&stack0xffffff50;
+    ppCStack_ec = (CString **)&stack0xffffff50;
     pTStack_e8 = (TWarehouseView *)0x0;
+    puStack_f0 = (undefined *)0x4c74dc;
     (**(code **)(*piVar8 + 0x1b4))();
-    pTStack_f4 = (TViewVtbl *)0x1;
-    pTStack_f8 = (TViewVtbl *)0x4c74ee;
+    puStack_f0 = (undefined *)0x0;
+    CStack_f4.m_pchData = (char *)0x1;
+    CStack_f8.m_pchData = (char *)0x4c74ee;
     (**(code **)(**(int **)&this->field_0x100 + 0x1c4))();
   }
   if (g_pCityOrderCapabilityState->field_0x193 != '\0') {
-    pTVar3 = this->vftable;
+    pTVar2 = this->vftable;
     pTStack_e8 = (TWarehouseView *)0x4c7508;
-    uVar6 = (*pTVar3->SetForeignMinisterReadyFlag14)();
-    pTStack_e8 = (TWarehouseView *)&p_Stack_9c;
-    p_Stack_c0 = *(_vslot_fn **)CONCAT31(extraout_var_03,uVar6);
-    pTStack_ec = (TToolBarClusterVtbl *)0x4c751d;
-    (**(code **)(p_Stack_c0 + 300))();
-    pTStack_ec = (TToolBarClusterVtbl *)0x1;
-    pTStack_f4 = (TViewVtbl *)0x4c752f;
+    uVar6 = (*pTVar2->SetForeignMinisterReadyFlag14)();
+    pTStack_e8 = (TWarehouseView *)&iStack_9c;
+    pCStack_c0 = *(CString **)CONCAT31(extraout_var_03,uVar6);
+    ppCStack_ec = (CString **)0x4c751d;
+    (*(code *)pCStack_c0[0x4b].m_pchData)();
+    ppCStack_ec = (CString **)0x1;
+    puStack_f0 = (undefined *)0x1;
+    CStack_f4.m_pchData = (char *)0x4c752f;
     (**(code **)(**(int **)&this->field_0xb8 + 0xa4))();
-    pTStack_f4 = (TViewVtbl *)0x1;
-    pTStack_f8 = (TViewVtbl *)0x1;
+    CStack_f4.m_pchData = (char *)0x1;
+    CStack_f8.m_pchData = (char *)0x1;
+    puStack_fc = (undefined1 *)0x4c7541;
     (**(code **)(**(int **)&this->field_0xd0 + 0xa4))();
-    (**(code **)(**(int **)&this->field_0x100 + 0xa4))(1,1);
-    (*pTVar3->SetPictureResourceIdAndRefresh)(0x23ff,1);
-    piVar8 = (int *)CopyOffset10PointPairToOutOrZero(&CStack_c8);
-    CStack_94.m_pchData = DAT_006a2cbc;
-    p_Stack_98 = DAT_006a2cb8;
-    local_78 = p_Stack_c0 + *piVar8;
-    p_Stack_74 = (_vslot_fn *)(CStack_bc.m_pchData + piVar8[1]);
-    local_80 = p_Stack_c0;
-    CStack_c8.m_pchData = (char *)(p_Stack_74 + -unaff_EDI);
-    p_Stack_7c = (_vslot_fn *)CStack_bc.m_pchData;
-    (**(code **)((int)puStack_e4 + 0x168))(&local_80,1);
-    p_Stack_b8 = (_vslot_fn *)0x0;
-    (*this->vftable->GetTEventHandlerClassNamePointer_5a)(&p_Stack_b8,0);
-    p_Stack_74 = (_vslot_fn *)0x686f7273;
-    iStack_70 = 0x666f6f64;
-    p_Stack_c0 = (_vslot_fn *)(int)(short)local_a4.m_pchData;
-    p_Stack_6c = (_vslot_fn *)0x6c61626f;
-    p_Stack_68 = (_vslot_fn *)0x67726169;
-    p_Stack_64 = (_vslot_fn *)0x70726f64;
-    p_Stack_60 = (_vslot_fn *)0x6c697665;
-    pp_Var10 = &p_Stack_74;
-    pTStack_cc = (TView *)0x6;
+    puStack_fc = (undefined1 *)0x1;
+    CStack_100.m_pchData = (char *)0x1;
+    piStack_104 = (int *)0x4c7553;
+    (**(code **)(**(int **)&this->field_0x100 + 0xa4))();
+    piStack_104 = (int *)0x1;
+    pCStack_108 = (CString *)0x23ff;
+    pTStack_10c = (TWarehouseView *)0x4c7562;
+    (*pTVar2->SetPictureResourceIdAndRefresh)();
+    pTStack_10c = (TWarehouseView *)&CStack_c8;
+    uStack_110 = 0x4c7572;
+    piVar8 = (int *)func_0x004080b2();
+    iStack_98 = DAT_006a2cbc;
+    uStack_110 = 1;
+    iStack_9c = DAT_006a2cb8;
+    pcStack_7c = CStack_c4.m_pchData + *piVar8;
+    local_78 = (int)&pCStack_c0->m_pchData + piVar8[1];
+    CStack_84.m_pchData = CStack_c4.m_pchData;
+    CStack_cc.m_pchData = (char *)(local_78 - iStack_b8);
+    local_80 = pCStack_c0;
+    pCStack_114 = &CStack_84;
+    pCStack_118 = (CString *)0x4c75e7;
+    (**(code **)((int)pTStack_e8 + 0x168))();
+    CStack_bc.m_pchData = (char *)0x0;
+    iStack_b8 = 0;
+    pCStack_118 = (CString *)0x0;
+    pCStack_11c = &CStack_bc;
+    pCStack_120 = (CString *)0x4c7615;
+    (*this->vftable->GetTEventHandlerClassNamePointer_5a)();
+    aCStack_74[0].m_pchData = (char *)0x686f7273;
+    aCStack_74[1].m_pchData = (char *)0x666f6f64;
+    pCStack_c0 = (CString *)(int)(short)local_a4.m_pchData;
+    iStack_6c = 0x6c61626f;
+    uStack_68 = 0x67726169;
+    uStack_64 = 0x70726f64;
+    uStack_60 = 0x6c697665;
+    pCVar12 = aCStack_74;
+    CStack_cc.m_pchData = (char *)0x6;
     do {
-      pTStack_e8 = (TWarehouseView *)*pp_Var10;
-      pTStack_ec = (TToolBarClusterVtbl *)0x4c7669;
-      piVar8 = (int *)(*(code *)CStack_d0.m_pchData)();
-      pTStack_ec = (TToolBarClusterVtbl *)&local_a0;
-      iVar2 = *piVar8;
-      (**(code **)(iVar2 + 300))();
-      p_Stack_90 = (_vslot_fn *)(local_a0.m_pchData + (int)CStack_c8.m_pchData);
-      CStack_94.m_pchData = local_a4.m_pchData;
-      p_Stack_88 = p_Stack_98 + (int)CStack_c8.m_pchData;
-      pTStack_f4 = (TViewVtbl *)&CStack_94;
-      p_Stack_8c = p_Stack_9c;
-      pTStack_f8 = (TViewVtbl *)0x4c76b1;
-      (**(code **)(iVar2 + 0x168))();
-      pp_Var10 = pp_Var10 + 1;
-      pTStack_cc = (TView *)((int)&pTStack_cc[-1].field5c + 3);
-    } while (pTStack_cc != (TView *)0x0);
+      pTStack_e8 = (TWarehouseView *)pCVar12->m_pchData;
+      ppCStack_ec = (CString **)0x4c7669;
+      piVar8 = (int *)(*(code *)pCStack_d0)();
+      ppCStack_ec = &local_a0;
+      iVar1 = *piVar8;
+      puStack_f0 = (undefined *)0x4c767a;
+      (**(code **)(iVar1 + 300))();
+      p_Stack_90 = (_vslot_fn *)((int)&local_a0->m_pchData + (int)CStack_c8.m_pchData);
+      pcStack_94 = local_a4.m_pchData;
+      pcStack_88 = CStack_c8.m_pchData + iStack_98;
+      CStack_f4.m_pchData = (char *)&pcStack_94;
+      iStack_8c = iStack_9c;
+      puStack_f0 = (undefined *)0x0;
+      CStack_f8.m_pchData = (char *)0x4c76b1;
+      (**(code **)(iVar1 + 0x168))();
+      pCVar12 = pCVar12 + 1;
+      CStack_cc.m_pchData = CStack_cc.m_pchData + -1;
+    } while ((int *)CStack_cc.m_pchData != (int *)0x0);
   }
-  p_Stack_7c = (_vslot_fn *)0x20;
-  local_78 = (_vslot_fn *)0x18;
+  pcStack_7c = (char *)0x20;
+  local_78 = 0x18;
   pTStack_e8 = (TWarehouseView *)0x4c76da;
-  sVar7 = UiRuntimeContext::GetActiveNationId();
-  pTVar4 = g_apNationStates[sVar7];
+  sVar7 = func_0x00403b16();
+  pTVar3 = g_apNationStates[sVar7];
   pTStack_e8 = (TWarehouseView *)0x4c76ed;
-  CString::__0CString__QAE_XZ(&CStack_bc);
+  CString::CString(&CStack_bc);
   uStack_34 = 1;
   pTStack_e8 = (TWarehouseView *)0x4c76fe;
-  CString::__0CString__QAE_XZ(&CStack_c8);
+  CString::CString(&CStack_c8);
   uStack_34 = 2;
   pTStack_e8 = (TWarehouseView *)0x4c770f;
-  CString::__0CString__QAE_XZ(&CStack_c4);
-  CStack_d0.m_pchData = (char *)&pTStack_ec;
+  CString::CString(&CStack_c4);
+  pCStack_d0 = (CString *)&ppCStack_ec;
   uStack_34 = 3;
-  pTStack_f4 = (TViewVtbl *)0x4c772b;
+  puStack_f0 = PTR_g_szEmptyString_00651028;
+  CStack_f4.m_pchData = (char *)0x4c772b;
   pTStack_e8 = this;
-  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_ec,PTR_g_szEmptyString_00651028);
-  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  pTStack_e8 = (TWarehouseView *)&CStack_bc;
-  pTStack_ec = (TToolBarClusterVtbl *)0x20;
-  pTStack_f4 = (TViewVtbl *)0x4c774d;
+  func_0x00401b40();
+  CStack_f4.m_pchData = (char *)0x4c7730;
+  func_0x00404d22();
+  ppCStack_ec = &pCStack_c0;
+  puStack_f0 = (undefined *)0x20;
+  CStack_f4.m_pchData = (char *)0x2734;
+  CStack_f8.m_pchData = (char *)0x4c774d;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  pTStack_cc = (TView *)&this->field_0xa0;
-  CVar13.m_pchData = (char *)0x0;
-  pTStack_d8 = (TView *)0x0;
+  pCVar12 = (CString *)0x0;
+  pCStack_d0 = (CString *)&this->field_0xa0;
+  pCStack_dc = (CString *)0x0;
   do {
-    pTVar12 = pTStack_cc->vftable;
-    if ((pTVar12 != (TViewVtbl *)0x0) && (*(int *)&pTVar12->field_0x8 != 0)) {
-      p_Stack_c0 = pTVar12->GetBoolSlot28 + -0x14;
-      CStack_c4.m_pchData = (char *)(*(int *)&pTVar12->field_0x24 + -0xf);
-      pTStack_f4 = (TViewVtbl *)0x60;
-      pTStack_f8 = (TViewVtbl *)0x4c7791;
-      pTStack_dc = (TView *)__2_YAPAXI_Z();
-      p_Stack_40._0_1_ = 4;
-      if (pTStack_dc == (TView *)0x0) {
-        pTVar12 = (TViewVtbl *)0x0;
+    pcVar4 = pCStack_d0->m_pchData;
+    if ((pcVar4 != (char *)0x0) && (*(int *)(pcVar4 + 8) != 0)) {
+      CStack_c4.m_pchData = (char *)(*(int *)(pcVar4 + 0x28) + -0x14);
+      CStack_c8.m_pchData = (char *)(*(int *)(pcVar4 + 0x24) + -0xf);
+      CStack_f8.m_pchData = (char *)0x60;
+      puStack_fc = (undefined1 *)0x4c7791;
+      dStack_e0 = operator_new();
+      iStack_44._0_1_ = 4;
+      if (dStack_e0 == 0) {
+        pCVar9 = (CString *)0x0;
       }
       else {
-        pTStack_f4 = (TViewVtbl *)0x4c77ab;
-        TView::ConstructTViewBaseState(pTStack_dc);
-        pTVar12 = extraout_EAX;
+        CStack_f8.m_pchData = (char *)0x4c77ab;
+        pCVar9 = (CString *)func_0x004064e2();
       }
-      pTStack_f4 = (TViewVtbl *)0x0;
-      pTStack_f8 = (TViewVtbl *)0x5;
-      p_Stack_40 = (_vslot_fn *)CONCAT31(p_Stack_40._1_3_,3);
-      InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&p_Stack_88,5);
-      if ((undefined1 *)((int)&pTStack_d8[-1].sharedStringRef.m_pchData + 1U) < (undefined1 *)0x10)
-      {
-        pTStack_f8 = (TViewVtbl *)
-                     (uint)*(byte *)((int)&PTR_caseD_13_004c7b5c +
-                                    (int)((int)&pTStack_d8->vftable + 1));
-        switch(pTStack_d8) {
-        case (TView *)0x7:
-        case (TView *)0x10:
-          pTStack_f4 = (TViewVtbl *)&CStack_e0;
-          pTStack_f8 = (TViewVtbl *)CVar13.m_pchData;
+      CStack_f8.m_pchData = (char *)0x0;
+      puStack_fc = (undefined1 *)0x5;
+      piStack_104 = &iStack_8c;
+      CStack_100.m_pchData = (char *)0x5;
+      pCStack_108 = &CStack_c8;
+      uStack_110 = 0;
+      iStack_44 = CONCAT31(iStack_44._1_3_,3);
+      pCStack_114 = (CString *)0x4c77d3;
+      pTStack_10c = this;
+      func_0x004096b5();
+      if (CStack_f8.m_pchData + -7 < (char *)0x10) {
+        pCStack_118 = (CString *)
+                      (uint)*(byte *)((int)&PTR_caseD_13_004c7b5c + (int)(CStack_f8.m_pchData + 1));
+        switch(CStack_f8.m_pchData) {
+        case (char *)0x7:
+        case (char *)0x10:
+          pCStack_114 = &CStack_100;
+          pCStack_11c = (CString *)0x4c7803;
+          pCStack_118 = pCVar12;
           (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-          pTStack_f8 = extraout_ECX;
+          pCStack_118 = extraout_ECX;
           break;
         default:
           goto switchD_004c77eb_caseD_8;
-        case (TView *)0x11:
-        case (TView *)0x12:
-          pTStack_f8 = (TViewVtbl *)0x4c7814;
-          pTStack_f4 = (TViewVtbl *)CVar13.m_pchData;
-          uVar6 = (*pTVar4->vftable->ApplyJoinEmpireModeForTargetNation_47)();
-          pTStack_f8 = (TViewVtbl *)(int)(short)CONCAT31(extraout_var_04,uVar6);
-          _Format_CString__QAAXPBDZZ(&CStack_d4,&g_szDecimalFormat);
-          pTStack_f8 = (TViewVtbl *)&pTStack_d8;
-          (*g_pLocalizationTable->vftable[0xf].slot_0x04)(CVar13.m_pchData);
+        case (char *)0x11:
+        case (char *)0x12:
+          pCStack_118 = (CString *)0x4c7814;
+          pCStack_114 = pCVar12;
+          uVar6 = (*pTVar3->vftable->ApplyJoinEmpireModeForTargetNation_47)();
+          pCStack_118 = (CString *)(int)(short)CONCAT31(extraout_var_04,uVar6);
+          pCStack_120 = &CStack_f4;
+          pCStack_11c = (CString *)&g_szDecimalFormat;
+          CStack_124.m_pchData = (char *)0x4c7827;
+          _Format_CString__QAAXPBDZZ();
+          pCStack_118 = &CStack_f8;
+          pCStack_120 = (CString *)0x4c783b;
+          pCStack_11c = pCVar12;
+          (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
           goto LAB_004c7958;
-        case (TView *)0x13:
-        case (TView *)0x15:
-        case (TView *)0x16:
+        case (char *)0x13:
+        case (char *)0x15:
+        case (char *)0x16:
           break;
-        case (TView *)0x14:
-          pTStack_f4 = (TViewVtbl *)0x14;
-          p_Var1 = pTVar4->vftable->ApplyJoinEmpireModeForTargetNation_47;
-          pTStack_f8 = (TViewVtbl *)0x4c786a;
-          uVar6 = (*p_Var1)();
-          CStack_e0.m_pchData = (char *)(int)(short)CONCAT31(extraout_var_05,uVar6);
-          pTStack_f8 = (TViewVtbl *)0x13;
-          uVar6 = (*p_Var1)();
-          _Format_CString__QAAXPBDZZ
-                    (&pTStack_d8,&g_szDecimalFormat,
-                     (int)puStack_e4 + (int)(short)CONCAT31(extraout_var_06,uVar6));
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734,0x1f,&pTStack_dc);
-          scanBracketExpressions(g_pLocalizationTable,&pTStack_f4,(char *)pTStack_dc);
-          pTVar5 = pTVar12->GetRuntimeClass;
-          (**(code **)(pTVar5 + 300))(&p_Stack_6c);
-          iStack_70 = iStack_70 + -0x28;
-          (**(code **)(pTVar5 + 0x168))(&iStack_70,1);
-          pTStack_f8 = extraout_ECX_00;
+        case (char *)0x14:
+          pCStack_114 = (CString *)0x14;
+          p_Var5 = pTVar3->vftable->ApplyJoinEmpireModeForTargetNation_47;
+          pCStack_118 = (CString *)0x4c786a;
+          uVar6 = (*p_Var5)();
+          CStack_100.m_pchData = (char *)(int)(short)CONCAT31(extraout_var_05,uVar6);
+          pCStack_118 = (CString *)0x13;
+          pCStack_11c = (CString *)0x4c7877;
+          uVar6 = (*p_Var5)();
+          pCStack_11c = (CString *)((int)piStack_104 + (int)(short)CONCAT31(extraout_var_06,uVar6));
+          CStack_124.m_pchData = (char *)&CStack_f8;
+          pCStack_120 = (CString *)&g_szDecimalFormat;
+          _Format_CString__QAAXPBDZZ();
+          pCStack_11c = (CString *)&puStack_fc;
+          pCStack_120 = (CString *)0x1f;
+          CStack_124.m_pchData = (char *)0x2734;
+          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          func_0x0040988b(g_pLocalizationTable,&pCStack_114,puStack_fc,pCStack_108,piStack_104);
+          pcVar4 = pCVar9->m_pchData;
+          (**(code **)(pcVar4 + 300))(&iStack_8c);
+          p_Stack_90 = p_Stack_90 + -0x28;
+          (**(code **)(pcVar4 + 0x168))(&p_Stack_90,1);
+          pCStack_118 = extraout_ECX_00;
+          pCVar12 = pCStack_d0;
         }
       }
       else {
 switchD_004c77eb_caseD_8:
-        pTStack_f4 = (TViewVtbl *)&CStack_d4;
-        pTStack_f8 = (TViewVtbl *)CVar13.m_pchData;
+        pCStack_114 = &CStack_f4;
+        pCStack_11c = (CString *)0x4c791c;
+        pCStack_118 = pCVar12;
         (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-        uVar6 = (*pTVar4->vftable->ApplyJoinEmpireModeForTargetNation_47)(CVar13.m_pchData);
-        pTStack_f4 = (TViewVtbl *)(int)(short)CONCAT31(extraout_var_07,uVar6);
-        pTStack_f8 = (TViewVtbl *)&g_szDecimalFormat;
-        _Format_CString__QAAXPBDZZ(&CStack_d0);
+        pCStack_120 = (CString *)0x4c7928;
+        pCStack_11c = pCVar12;
+        uVar6 = (*pTVar3->vftable->ApplyJoinEmpireModeForTargetNation_47)();
+        pCStack_120 = (CString *)(int)(short)CONCAT31(extraout_var_07,uVar6);
+        CStack_124.m_pchData = &g_szDecimalFormat;
+        _Format_CString__QAAXPBDZZ(&puStack_fc);
 LAB_004c7958:
-        pTStack_f8 = (TViewVtbl *)CStack_d4.m_pchData;
-        pTStack_f4 = (TViewVtbl *)CStack_d0.m_pchData;
-        scanBracketExpressions(g_pLocalizationTable,&CStack_e0,CStack_c8.m_pchData);
-        pTStack_f8 = extraout_ECX_01;
+        CStack_124.m_pchData = CStack_100.m_pchData;
+        pCStack_120 = (CString *)puStack_fc;
+        func_0x0040988b(g_pLocalizationTable,&pTStack_10c,CStack_f4.m_pchData);
+        pCStack_118 = extraout_ECX_01;
       }
-      pTStack_dc = (TView *)&pTStack_f8;
-      pTStack_f4 = pTVar12;
-      AssignStringSharedRefAndReturnThis(&CStack_e0);
-      RunEnableAndProcessFlagWithScopedSharedStringCleanup();
+      puStack_fc = (undefined1 *)&pCStack_118;
+      pCStack_11c = &CStack_100;
+      pCStack_120 = (CString *)0x4c7972;
+      pCStack_114 = pCVar9;
+      func_0x004076b7();
+      pCStack_120 = (CString *)0x4c7977;
+      func_0x00404d22();
     }
-    CVar13.m_pchData = CVar13.m_pchData + 1;
-    pTStack_d8 = (TView *)((int)&pTStack_d8->vftable + 1);
-    pTStack_cc = (TView *)&pTStack_cc->field04;
-    if (0x16 < (short)CVar13.m_pchData) {
-      iVar2 = *(int *)&this->field_0xfc;
-      if (iVar2 != 0) {
-        p_Stack_c0 = (_vslot_fn *)(*(int *)(iVar2 + 0x28) + -0x14);
-        CStack_c4.m_pchData = (char *)(*(int *)(iVar2 + 0x24) + -0xf);
-        pTStack_f4 = (TViewVtbl *)0x60;
-        pTStack_f8 = (TViewVtbl *)0x4c79c6;
-        pTStack_dc = (TView *)__2_YAPAXI_Z();
-        p_Stack_40._0_1_ = 5;
-        if (pTStack_dc == (TView *)0x0) {
-          pTVar12 = (TViewVtbl *)0x0;
+    pCVar12 = (CString *)((int)&pCVar12->m_pchData + 1);
+    pCStack_dc = (CString *)((int)pCStack_dc + 1);
+    pCStack_d0 = pCStack_d0 + 1;
+    if (0x16 < (short)pCVar12) {
+      iVar1 = *(int *)&this->field_0xfc;
+      if (iVar1 != 0) {
+        CStack_c4.m_pchData = (char *)(*(int *)(iVar1 + 0x28) + -0x14);
+        CStack_c8.m_pchData = (char *)(*(int *)(iVar1 + 0x24) + -0xf);
+        CStack_f8.m_pchData = (char *)0x60;
+        puStack_fc = (undefined1 *)0x4c79c6;
+        dStack_e0 = operator_new();
+        iStack_44._0_1_ = 5;
+        if (dStack_e0 == 0) {
+          uVar10 = 0;
         }
         else {
-          pTStack_f4 = (TViewVtbl *)0x4c79e0;
-          TView::ConstructTViewBaseState(pTStack_dc);
-          pTVar12 = extraout_EAX_00;
+          CStack_f8.m_pchData = (char *)0x4c79e0;
+          uVar10 = func_0x004064e2();
         }
-        pTStack_f4 = (TViewVtbl *)0x0;
-        pTStack_f8 = (TViewVtbl *)0x5;
-        p_Stack_40 = (_vslot_fn *)CONCAT31(p_Stack_40._1_3_,3);
-        InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&p_Stack_88,5);
-        pTStack_f4 = (TViewVtbl *)&CStack_e0;
-        pTStack_f8 = (TViewVtbl *)0x22;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
-        pTStack_dc = (TView *)&pTStack_f8;
-        pTStack_f8 = extraout_ECX_02;
-        pTStack_f4 = pTVar12;
-        AssignStringSharedRefAndReturnThis(&CStack_e0);
-        RunEnableAndProcessFlagWithScopedSharedStringCleanup();
+        CStack_f8.m_pchData = (char *)0x0;
+        puStack_fc = (undefined1 *)0x5;
+        piStack_104 = &iStack_8c;
+        CStack_100.m_pchData = (char *)0x5;
+        pCStack_108 = &CStack_c8;
+        uStack_110 = 0;
+        iStack_44 = CONCAT31(iStack_44._1_3_,3);
+        pCStack_114 = (CString *)0x4c7a08;
+        pTStack_10c = this;
+        func_0x004096b5();
+        pCStack_114 = &CStack_100;
+        pCStack_118 = (CString *)0x22;
+        pCStack_11c = (CString *)0x2734;
+        pCStack_120 = (CString *)0x4c7a22;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        pCStack_108 = &CStack_124;
+        CStack_124.m_pchData = extraout_ECX_02;
+        pCStack_120 = (CString *)uVar10;
+        func_0x004076b7(&pTStack_10c);
+        func_0x00404d22();
       }
-      iVar2 = *(int *)&this->field_0x100;
-      if ((iVar2 != 0) && (*(int *)(iVar2 + 8) != 0)) {
-        p_Stack_c0 = (_vslot_fn *)(*(int *)(iVar2 + 0x28) + -0x14);
-        CStack_c4.m_pchData = (char *)(*(int *)(iVar2 + 0x24) + -0xf);
-        pTStack_f4 = (TViewVtbl *)0x60;
-        pTStack_f8 = (TViewVtbl *)0x4c7a70;
-        pTStack_dc = (TView *)__2_YAPAXI_Z();
-        p_Stack_40._0_1_ = 6;
-        if (pTStack_dc == (TView *)0x0) {
-          pTVar12 = (TViewVtbl *)0x0;
+      iVar1 = *(int *)&this->field_0x100;
+      if ((iVar1 != 0) && (*(int *)(iVar1 + 8) != 0)) {
+        CStack_c4.m_pchData = (char *)(*(int *)(iVar1 + 0x28) + -0x14);
+        CStack_c8.m_pchData = (char *)(*(int *)(iVar1 + 0x24) + -0xf);
+        CStack_f8.m_pchData = (char *)0x60;
+        puStack_fc = (undefined1 *)0x4c7a70;
+        dStack_e0 = operator_new();
+        iStack_44._0_1_ = 6;
+        if (dStack_e0 == 0) {
+          uVar10 = 0;
         }
         else {
-          pTStack_f4 = (TViewVtbl *)0x4c7a8a;
-          TView::ConstructTViewBaseState(pTStack_dc);
-          pTVar12 = extraout_EAX_01;
+          CStack_f8.m_pchData = (char *)0x4c7a8a;
+          uVar10 = func_0x004064e2();
         }
-        pTStack_f4 = (TViewVtbl *)0x0;
-        pTStack_f8 = (TViewVtbl *)0x5;
-        p_Stack_40 = (_vslot_fn *)CONCAT31(p_Stack_40._1_3_,3);
-        InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&p_Stack_88,5);
-        pTStack_f4 = (TViewVtbl *)&CStack_e0;
-        pTStack_f8 = (TViewVtbl *)0x21;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
-        pTStack_dc = (TView *)&pTStack_f8;
-        pTStack_f8 = extraout_ECX_03;
-        pTStack_f4 = pTVar12;
-        AssignStringSharedRefAndReturnThis(&CStack_e0);
-        RunEnableAndProcessFlagWithScopedSharedStringCleanup();
+        CStack_f8.m_pchData = (char *)0x0;
+        puStack_fc = (undefined1 *)0x5;
+        piStack_104 = &iStack_8c;
+        CStack_100.m_pchData = (char *)0x5;
+        pCStack_108 = &CStack_c8;
+        uStack_110 = 0;
+        iStack_44 = CONCAT31(iStack_44._1_3_,3);
+        pCStack_114 = (CString *)0x4c7ab2;
+        pTStack_10c = this;
+        func_0x004096b5();
+        pCStack_114 = &CStack_100;
+        pCStack_118 = (CString *)0x21;
+        pCStack_11c = (CString *)0x2734;
+        pCStack_120 = (CString *)0x4c7acc;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        pCStack_108 = &CStack_124;
+        CStack_124.m_pchData = extraout_ECX_03;
+        pCStack_120 = (CString *)uVar10;
+        func_0x004076b7(&pTStack_10c);
+        func_0x00404d22();
       }
-      p_Stack_40._0_1_ = 2;
-      pTStack_f4 = (TViewVtbl *)0x4c7af7;
-      CString::__1CString__QAE_XZ(&CStack_d0);
-      p_Stack_40._0_1_ = 1;
-      pTStack_f4 = (TViewVtbl *)0x4c7b08;
-      CString::__1CString__QAE_XZ(&CStack_d4);
-      p_Stack_40 = (_vslot_fn *)((uint)p_Stack_40._1_3_ << 8);
-      pTStack_f4 = (TViewVtbl *)0x4c7b19;
-      CString::__1CString__QAE_XZ(&CStack_c8);
-      p_Stack_40 = (_vslot_fn *)0xffffffff;
-      pTStack_f4 = (TViewVtbl *)0x4c7b2d;
-      CString::__1CString__QAE_XZ(&CStack_e0);
-      *unaff_FS_OFFSET = p_Stack_48;
+      iStack_44._0_1_ = 2;
+      CStack_f8.m_pchData = (char *)0x4c7af7;
+      CString::~CString(&CStack_d4);
+      iStack_44._0_1_ = 1;
+      CStack_f8.m_pchData = (char *)0x4c7b08;
+      CString::~CString(&CStack_d8);
+      iStack_44 = (uint)iStack_44._1_3_ << 8;
+      CStack_f8.m_pchData = (char *)0x4c7b19;
+      CString::~CString(&CStack_cc);
+      iStack_44 = 0xffffffff;
+      CStack_f8.m_pchData = (char *)0x4c7b2d;
+      CString::~CString(&CStack_e4);
+      *unaff_FS_OFFSET = uStack_4c;
       return;
     }
   } while( true );
@@ -516,7 +586,7 @@ void TWarehouseView::OrphanRetStub_004c6fb0()
   int iVar3;
   int iVar4;
   int iVar5;
-
+  
   sVar2 = 0;
   do {
     iVar5 = (int)sVar2;

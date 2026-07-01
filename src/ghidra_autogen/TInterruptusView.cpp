@@ -10,27 +10,27 @@
 TInterruptusView * __cdecl TInterruptusView::CreateObject(void)
 
 {
-  TInterruptusView *this;
   TInterruptusView *pTVar1;
+  TInterruptusView *pTVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630ada;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TInterruptusView *)__2_YAPAXI_Z(100);
+  pTVar1 = (TInterruptusView *)operator_new(100);
   local_4 = 0;
-  pTVar1 = (TInterruptusView *)0x0;
-  if (this != (TInterruptusView *)0x0) {
-    TView::ConstructTViewBaseState((TView *)this);
-    this->vftable = &TInterruptusViewVtbl_0064e7d8;
-    pTVar1 = this;
+  pTVar2 = (TInterruptusView *)0x0;
+  if (pTVar1 != (TInterruptusView *)0x0) {
+    func_0x004064e2();
+    pTVar1->vftable = &_vftable_;
+    pTVar2 = pTVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return pTVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFD30
@@ -40,59 +40,61 @@ TInterruptusView * __cdecl TInterruptusView::CreateObject(void)
 TInterruptusView * TInterruptusView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004064fb();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFD80
-// GHIDRA_NAME TInterruptusView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TInterruptusView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInterruptusView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TInterruptusView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTInterruptusView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFDA0
-// GHIDRA_NAME TInterruptusView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TInterruptusView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TInterruptusView::OrphanTiny_ReturnZero_0048a730()
+void TInterruptusView::ApplyRectSlot110()
 
 {
-  undefined4 *unaff_FS_OFFSET;
+  int *unaff_FS_OFFSET;
+  CString CStack_3c;
+  CString CStack_38;
   CString CStack_34;
   CString CStack_30;
   CString CStack_2c;
   CString CStack_28;
-  undefined4 uStack_20;
+  int iStack_20;
   CString local_1c;
   CString local_18;
   CString local_14;
   CString local_10;
-  undefined4 uStack_c;
+  int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630b18;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   CStack_28.m_pchData = (char *)0x4afdc4;
-  CString::__0CString__QAE_XZ(&local_10);
+  CString::CString(&local_10);
   local_4 = 0;
   CStack_28.m_pchData = (char *)0x4afdd5;
-  CString::__0CString__QAE_XZ(&local_14);
+  CString::CString(&local_14);
   local_4._0_1_ = 1;
   CStack_28.m_pchData = (char *)0x4afde3;
-  CString::__0CString__QAE_XZ(&local_18);
+  CString::CString(&local_18);
   local_4._0_1_ = 2;
   CStack_28.m_pchData = (char *)0x4afdf1;
-  CString::__0CString__QAE_XZ(&local_1c);
+  CString::CString(&local_1c);
   CStack_28.m_pchData = (char *)&local_14;
   local_4 = CONCAT31(local_4._1_3_,3);
   CStack_2c.m_pchData =
@@ -100,59 +102,35 @@ void TInterruptusView::OrphanTiny_ReturnZero_0048a730()
                         **(undefined2 **)&this->field_0x60);
   CStack_30.m_pchData = (char *)0x4afe0d;
   (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  CStack_38.m_pchData = (char *)&iStack_20;
   CStack_30.m_pchData = (char *)(int)*(short *)(*(int *)&this->field_0x60 + 2);
   CStack_34.m_pchData = &g_szDecimalFormat;
-  _Format_CString__QAAXPBDZZ(&uStack_20);
+  CStack_3c.m_pchData = (char *)0x4afe24;
+  _Format_CString__QAAXPBDZZ();
   CStack_30.m_pchData = (char *)0x4afe30;
-  CString::__0CString__QAE_XZ(&CStack_28);
+  CString::CString(&CStack_28);
   CStack_30.m_pchData = (char *)&CStack_28;
   CStack_34.m_pchData = (char *)0x1e;
-  uStack_c = CONCAT31(uStack_c._1_3_,4);
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273c);
-  FormatOverlayTerrainLabelText(&CStack_30);
-  scanBracketExpressions(g_pLocalizationTable,&stack0xffffffdc,CStack_34.m_pchData);
-  TItemBoyView::DestructTItemBoyViewAndMaybeFree((TItemBoyView *)this,&stack0xffffffdc);
-  local_18.m_pchData._0_1_ = 3;
-  CString::__1CString__QAE_XZ(&CStack_34);
-  local_18.m_pchData._0_1_ = 2;
-  CString::__1CString__QAE_XZ(&CStack_30);
-  local_18.m_pchData._0_1_ = 1;
-  CString::__1CString__QAE_XZ(&CStack_2c);
-  local_18.m_pchData = (char *)((uint)local_18.m_pchData._1_3_ << 8);
-  CString::__1CString__QAE_XZ(&CStack_28);
-  local_18.m_pchData = (char *)0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffdc);
-  *unaff_FS_OFFSET = uStack_20;
+  CStack_38.m_pchData = (char *)0x273c;
+  iStack_c = CONCAT31(iStack_c._1_3_,4);
+  CStack_3c.m_pchData = (char *)0x4afe4f;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  CStack_3c.m_pchData = (char *)&CStack_30;
+  func_0x00405245();
+  func_0x0040988b(g_pLocalizationTable,&CStack_28,CStack_38.m_pchData,CStack_30.m_pchData,
+                  CStack_2c.m_pchData,CStack_34.m_pchData);
+  func_0x004031e3(&CStack_28);
+  iStack_20._0_1_ = 3;
+  CString::~CString(&CStack_3c);
+  iStack_20._0_1_ = 2;
+  CString::~CString(&CStack_38);
+  iStack_20._0_1_ = 1;
+  CString::~CString(&CStack_34);
+  iStack_20 = (uint)iStack_20._1_3_ << 8;
+  CString::~CString(&CStack_30);
+  iStack_20 = -1;
+  CString::~CString(&CStack_2c);
+  *unaff_FS_OFFSET = (int)CStack_28.m_pchData;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004AFF60
-// GHIDRA_NAME TInterruptusView::DestructTInterruptusViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTInterruptusViewAndMaybeFree()
-
-TLineData * TInterruptusView::DestructTInterruptusViewAndMaybeFree(void)
-
-{
-  TLineData *this;
-  TLineData *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00630b3a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)__2_YAPAXI_Z(0x18);
-  local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (this != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(this);
-    this->vftable = (TLineDataVtbl *)&TBatRepDetLineVtbl_0064e9d0;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 

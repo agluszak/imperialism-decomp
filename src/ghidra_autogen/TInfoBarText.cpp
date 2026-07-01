@@ -3,34 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TInfoBarText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00429330
-// GHIDRA_NAME TInfoBarText::ConstructUiCursorTextResourceEntry
-// GHIDRA_PROTO undefined __thiscall ConstructUiCursorTextResourceEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Cursor/status text entry constructor. Derived from ConstructUiTextResourceEntryBase and repeatedly registered under tag 'curs' in command/control and turn-event UIs.
-// GHIDRA_COMMENT_END
-
-/* Cursor/status text entry constructor. Derived from ConstructUiTextResourceEntryBase and
-   repeatedly registered under tag 'curs' in command/control and turn-event UIs. */
-
-TInfoBarText * TInfoBarText::ConstructUiCursorTextResourceEntry()
-
-{
-  TStaticText::TStaticText((TStaticText *)this);
-  this->field_0x98 = 0;
-  this->field_0x99 = 0;
-  this->field_0x9a = 0;
-  this->field_0x9b = 0;
-  this->field_0x9c = 0;
-  this->field_0x9d = 0;
-  this->field_0x9e = 0;
-  this->field_0x9f = 0;
-  this->field_0xa0 = 0;
-  *(undefined4 *)&this->field_0x98 = 0;
-  this->vftable = &TInfoBarTextVtbl_0063eb00;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004293C0
 // GHIDRA_NAME TInfoBarText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -38,67 +10,67 @@ TInfoBarText * TInfoBarText::ConstructUiCursorTextResourceEntry()
 TInfoBarText * TInfoBarText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TStaticText::~TStaticText((TStaticText *)this);
+  func_0x00402766();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B65A0
-// GHIDRA_NAME TInfoBarText::CreateTInfoBarTextInstance
-// GHIDRA_PROTO undefined CreateTInfoBarTextInstance()
+// GHIDRA_NAME TInfoBarText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TStaticText * TInfoBarText::CreateTInfoBarTextInstance(void)
+undefined4 * TInfoBarText::CreateObject(void)
 
 {
-  TStaticText *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638ffa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)__2_YAPAXI_Z(0xb4);
+  puVar1 = (undefined4 *)operator_new(0xb4);
   local_4 = 0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::TStaticText(this);
-    *(undefined1 *)&this[1].field04 = 0;
-    *(undefined1 *)((int)&this[1].field04 + 1) = 0;
-    *(undefined1 *)((int)&this[1].field04 + 2) = 0;
-    *(undefined1 *)((int)&this[1].field04 + 3) = 0;
-    *(undefined1 *)&this[1].padding_08_to_0b = 0;
-    *(undefined1 *)((int)&this[1].padding_08_to_0b + 1) = 0;
-    *(undefined1 *)((int)&this[1].padding_08_to_0b + 2) = 0;
-    *(undefined1 *)((int)&this[1].padding_08_to_0b + 3) = 0;
-    this[1].field04 = 0;
-    *(undefined1 *)&this[1].field0c = 0;
-    this->vftable = (TStaticTextVtbl *)&TInfoBarTextVtbl_0063eb00;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040541b();
+    *(undefined1 *)(puVar1 + 0x26) = 0;
+    *(undefined1 *)((int)puVar1 + 0x99) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9a) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9b) = 0;
+    *(undefined1 *)(puVar1 + 0x27) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9d) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9e) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9f) = 0;
+    puVar1[0x26] = 0;
+    *(undefined1 *)(puVar1 + 0x28) = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TStaticText *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6690
-// GHIDRA_NAME TInfoBarText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TInfoBarText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInfoBarText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TInfoBarText::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTInfoBarText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B66B0
-// GHIDRA_NAME TInfoBarText::ConstructTInfoBarTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTInfoBarTextBaseState(RECT * param_1)
+// GHIDRA_NAME TInfoBarText::SerializeRecordList_0x0C_WithBlockPool_A
+// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_A(RECT * param_1)
 
-void TInfoBarText::ConstructTInfoBarTextBaseState(RECT *param_1)
+void TInfoBarText::SerializeRecordList_0x0C_WithBlockPool_A(RECT *param_1)
 
 {
   TInfoBarTextVtbl *pTVar1;
@@ -108,7 +80,7 @@ void TInfoBarText::ConstructTInfoBarTextBaseState(RECT *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639018;
   *unaff_FS_OFFSET = &uStack_c;
@@ -124,7 +96,7 @@ void TInfoBarText::ConstructTInfoBarTextBaseState(RECT *param_1)
     (*pTVar1->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(1);
   }
   uStack_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&param_1);
+  CString::~CString((CString *)&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -142,7 +114,7 @@ void TInfoBarText::DestructTInfoBarTextAndMaybeFree()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   CString CStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639038;
   *unaff_FS_OFFSET = &uStack_c;
@@ -155,33 +127,68 @@ void TInfoBarText::DestructTInfoBarTextAndMaybeFree()
   (*pTVar1->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)(&stack0x00000004);
   (*pTVar1->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(1);
   uStack_c = 0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_4);
+  CString::~CString(&CStack_4);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6810
-// GHIDRA_NAME TInfoBarText::OrphanCallChain_C1_I05_005b6810
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_005b6810(void)
+// GHIDRA_NAME TInfoBarText::Dump
+// GHIDRA_PROTO undefined __thiscall Dump(void)
 
-void TInfoBarText::OrphanCallChain_C1_I05_005b6810()
+void TInfoBarText::Dump()
 
 {
   (*this->vftable->InitializeMapHintTextStyleAndThemeFlags)(0x2b6c,0x2b67);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005B6930
-// GHIDRA_NAME TInfoBarText::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005B6840
+// GHIDRA_NAME TInfoBarText::AssertValid
+// GHIDRA_PROTO undefined __thiscall AssertValid(void)
 
-void TInfoBarText::OrphanLeaf_NoCall_Ins07_004d8920()
+void TInfoBarText::AssertValid()
+
+{
+  TInfoBarTextVtbl *pTVar1;
+  undefined4 unaff_EDI;
+  undefined4 local_c;
+  undefined1 local_6;
+  undefined1 local_5;
+  undefined1 local_4;
+  undefined1 local_3;
+  
+  local_6 = 0;
+  local_5 = 0;
+  local_4 = 0;
+  local_3 = 0;
+  BuildUiTextStyleDescriptor(&local_c,0,0xc);
+  pTVar1 = this->vftable;
+  (*pTVar1->ConstructTMapKeyBaseState_Impl)(&local_c,0);
+  (*pTVar1->OrphanCallChain_C1_I09_0048ff70)(0xffffffff,0);
+  *(undefined4 *)&this->field_0xa4 = 0;
+  *(undefined4 *)&this->field_0xa8 = 0;
+  *(undefined4 *)&this->field_0xac = 0;
+  *(undefined4 *)&this->field_0xb0 = 0;
+  MapUiThemeCodeToStyleFlags(local_c,&stack0xffffffe0);
+  *(undefined4 *)&this->field_0x98 = unaff_EDI;
+  MapUiThemeCodeToStyleFlags();
+  *(undefined4 *)&this->field_0x9c = unaff_EDI;
+  this->field_0xa0 = 1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B6930
+// GHIDRA_NAME TInfoBarText::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
+
+void TInfoBarText::Free()
 
 {
   if ((TInfoBarText *)g_pCursorControlPanel == this) {
     g_pCursorControlPanel = (TControl *)0x0;
   }
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
+  func_0x00408db4();
   return;
 }
 

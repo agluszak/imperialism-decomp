@@ -3,14 +3,44 @@
 // Program: Imperialism.exe
 // Bucket: TSortByPriceList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005346F0
-// GHIDRA_NAME TSortByPriceList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00534680
+// GHIDRA_NAME TSortByPriceList::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TSortByPriceList::GetTEventHandlerClassNamePointer()
+CPtrArray * TSortByPriceList::CreateObject(void)
 
 {
-  return &g_pClassDescTSortByPriceList;
+  CPtrArray *this;
+  CPtrArray *pCVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063424a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (CPtrArray *)operator_new(0x18);
+  local_4 = 0;
+  pCVar1 = (CPtrArray *)0x0;
+  if (this != (CPtrArray *)0x0) {
+    CPtrArray::CPtrArray(this);
+    *(TSortByPriceListVtbl **)this = &_vftable_;
+    pCVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return pCVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005346F0
+// GHIDRA_NAME TSortByPriceList::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TSortByPriceList::GetRuntimeClass()
+
+{
+  return &classTSortByPriceList;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534710
@@ -20,7 +50,7 @@ CRuntimeClass * TSortByPriceList::GetTEventHandlerClassNamePointer()
 TSortByPriceList * TSortByPriceList::ConstructTSortByPriceList()
 
 {
-  TIndexAndRankList::__0CPtrArray__QAE_XZ((TIndexAndRankList *)this);
+  CPtrArray::CPtrArray((CPtrArray *)this);
   this->vftable = &_vftable_;
   return this;
 }
@@ -32,16 +62,16 @@ TSortByPriceList * TSortByPriceList::ConstructTSortByPriceList()
 TSortByPriceList * TSortByPriceList::_scalar_deleting_destructor_(byte param_1)
 
 {
-  CObArray::??1CUIntArray@@UAE@XZ();
+  func_0x004023c9();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534770
 // GHIDRA_NAME TSortByPriceList::~TSortByPriceList
-// GHIDRA_PROTO undefined CObArray::??1CUIntArray@@UAE@XZ()
+// GHIDRA_PROTO undefined CPtrArray::~CPtrArray()
 
 void TSortByPriceList::~TSortByPriceList(void)
 
@@ -50,23 +80,23 @@ void TSortByPriceList::~TSortByPriceList(void)
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-
+  
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &TIndexAndRankList::_vftable_;
   uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  __3_YAXPAX_Z(uVar1);
+  operator_delete(uVar1);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005347B0
-// GHIDRA_NAME TSortByPriceList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_NAME TSortByPriceList::CompareUnsignedIntsAscending
+// GHIDRA_PROTO undefined __thiscall CompareUnsignedIntsAscending(int param_1, int param_2)
 
-int TSortByPriceList::OrphanRetStub_0059add0(int param_1, int param_2)
+int TSortByPriceList::CompareUnsignedIntsAscending(int param_1, int param_2)
 
 {
   return ((*(short *)(param_1 + 2) <= *(short *)(param_2 + 2)) - 1 & 2) - 1;

@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TRemoteGreatPower.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005417C0
+// GHIDRA_NAME TRemoteGreatPower::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TRemoteGreatPower::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063460a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x964);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004016ae();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00541840
 // GHIDRA_NAME TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlagA0(void)
@@ -14,20 +44,22 @@ undefined1 TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541860
-// GHIDRA_NAME TRemoteGreatPower::ApplyJoinEmpireModeForTargetNation
-// GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(void)
+// GHIDRA_NAME TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
+// GHIDRA_PROTO undefined __thiscall UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void)
 
-undefined1 TRemoteGreatPower::ApplyJoinEmpireModeForTargetNation()
+undefined1 __thiscall
+TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
+          (TRemoteGreatPower *this)
 
 {
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541880
-// GHIDRA_NAME TRemoteGreatPower::DispatchNationStateEventCode10
-// GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(void)
+// GHIDRA_NAME TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary
+// GHIDRA_PROTO undefined __thiscall RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void)
 
-void TRemoteGreatPower::DispatchNationStateEventCode10()
+void TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary()
 
 {
   return;
@@ -35,7 +67,7 @@ void TRemoteGreatPower::DispatchNationStateEventCode10()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005418A0
 // GHIDRA_NAME TRemoteGreatPower::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 
 void TRemoteGreatPower::OrphanRetStub_0059add0()
 
@@ -44,10 +76,10 @@ void TRemoteGreatPower::OrphanRetStub_0059add0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005418C0
-// GHIDRA_NAME TRemoteGreatPower::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TRemoteGreatPower::GetTEventHandlerClassNamePointer_38
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_38(void)
 
-void TRemoteGreatPower::GetTEventHandlerClassNamePointer()
+void TRemoteGreatPower::GetTEventHandlerClassNamePointer_38()
 
 {
   return;
@@ -74,30 +106,30 @@ void TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541920
-// GHIDRA_NAME TRemoteGreatPower::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TRemoteGreatPower::ClearFieldBlock1c6
+// GHIDRA_PROTO undefined __thiscall ClearFieldBlock1c6(void)
 
-void TRemoteGreatPower::_scalar_deleting_destructor_()
+void TRemoteGreatPower::ClearFieldBlock1c6()
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541940
-// GHIDRA_NAME TRemoteGreatPower::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
+// GHIDRA_NAME TRemoteGreatPower::ClearDiplomacyState1c6ForTarget
+// GHIDRA_PROTO undefined __thiscall ClearDiplomacyState1c6ForTarget(void)
 
-void TRemoteGreatPower::OrphanRetStub_0059add0()
+void TRemoteGreatPower::ClearDiplomacyState1c6ForTarget()
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541960
-// GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_004d87b0(void)
+// GHIDRA_NAME TRemoteGreatPower::BeginTurnDiplomacyPrePassSlot1c8
+// GHIDRA_PROTO undefined __thiscall BeginTurnDiplomacyPrePassSlot1c8(void)
 
-void TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0()
+void TRemoteGreatPower::BeginTurnDiplomacyPrePassSlot1c8()
 
 {
   return;
@@ -114,10 +146,10 @@ void TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005419A0
-// GHIDRA_NAME TRemoteGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState
-// GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(void)
+// GHIDRA_NAME TRemoteGreatPower::ResetNationDiplomacyProposalQueue
+// GHIDRA_PROTO undefined __thiscall ResetNationDiplomacyProposalQueue(void)
 
-void TRemoteGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState()
+void TRemoteGreatPower::ResetNationDiplomacyProposalQueue()
 
 {
   return;
@@ -134,10 +166,10 @@ void TRemoteGreatPower::IsDiplomacyTargetClassCode200Match()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005419E0
-// GHIDRA_NAME TRemoteGreatPower::AddRegionIdToNationOwnedRegionList
-// GHIDRA_PROTO undefined __thiscall TGreatPower::AddRegionIdToNationOwnedRegionList(void)
+// GHIDRA_NAME TRemoteGreatPower::ProcessPendingDiplomacyProposalQueue
+// GHIDRA_PROTO undefined __thiscall ProcessPendingDiplomacyProposalQueue(void)
 
-void TRemoteGreatPower::AddRegionIdToNationOwnedRegionList()
+void TRemoteGreatPower::ProcessPendingDiplomacyProposalQueue()
 
 {
                     /* WARNING: Could not recover jumptable at 0x005419e2. Too many branches */
@@ -157,20 +189,20 @@ void TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541A20
-// GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TRemoteGreatPower::ApplyMinorNationCapabilityActionType6
+// GHIDRA_PROTO undefined __thiscall ApplyMinorNationCapabilityActionType6(void)
 
-void TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920()
+void TRemoteGreatPower::ApplyMinorNationCapabilityActionType6()
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541A40
-// GHIDRA_NAME TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount
-// GHIDRA_PROTO undefined __thiscall TGreatPower::SelectCandidateTilesWithLowGroundUnitCount(void)
+// GHIDRA_NAME TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad
+// GHIDRA_PROTO undefined __thiscall SelectCandidateTilesWithLowGroundUnitCount_ad(void)
 
-void TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount()
+void TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad()
 
 {
   return;
@@ -178,7 +210,7 @@ void TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541A60
 // GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920()
 
@@ -193,16 +225,16 @@ void TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920()
 TRemoteGreatPower * TRemoteGreatPower::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TRemoteGreatPower::DestructTRemoteGreatPower(this);
+  func_0x0040978c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541AB0
 // GHIDRA_NAME TRemoteGreatPower::DestructTRemoteGreatPower
-// GHIDRA_PROTO undefined __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(void)
+// GHIDRA_PROTO undefined __thiscall DestructTRemoteGreatPower(void)
 
 void TRemoteGreatPower::DestructTRemoteGreatPower()
 
@@ -211,14 +243,14 @@ void TRemoteGreatPower::DestructTRemoteGreatPower()
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-
+  
   puStack_8 = &LAB_00634633;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  CString::__1CString__QAE_XZ((CString *)&this->field_0x8);
+  CString::~CString((CString *)&this->field_0x8);
   local_4 = local_4 & 0xffffff00;
-  CString::__1CString__QAE_XZ((CString *)&this->field_0x4);
+  CString::~CString((CString *)&this->field_0x4);
   this->vftable =
        (TRemoteGreatPowerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -226,23 +258,54 @@ void TRemoteGreatPower::DestructTRemoteGreatPower()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541B20
-// GHIDRA_NAME TRemoteGreatPower::GetTCountryClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
+// GHIDRA_NAME TRemoteGreatPower::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRemoteGreatPower::GetTCountryClassNamePointer()
+CRuntimeClass * TRemoteGreatPower::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTRemoteGreatPower;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00541B40
+// GHIDRA_NAME TRemoteGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook
+// GHIDRA_PROTO undefined __thiscall NoOpNationSelectedRegionAndMapCellLabelHook(short param_1, char * param_2)
+
+void __thiscall
+TRemoteGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook
+          (TRemoteGreatPower *this,short param_1,char *param_2)
+
+{
+  int *unaff_FS_OFFSET;
+  short *psVar1;
+  int iStack_c;
+  undefined1 *puStack_8;
+  CString CStack_4;
+  
+  iStack_c = *unaff_FS_OFFSET;
+  CStack_4.m_pchData = (char *)0xffffffff;
+  puStack_8 = &LAB_00634658;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  *(int *)&this->field_0x88 = (int)param_1;
+  CString::CString((CString *)&param_1,param_2);
+  psVar1 = &param_1;
+  CStack_4.m_pchData = (char *)0x0;
+  func_0x004083cd((int)*(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 +
+                                 *(short *)&this->field_0x88 * 0x24));
+  iStack_c = -1;
+  CString::~CString(&CStack_4);
+  *unaff_FS_OFFSET = (int)psVar1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541BE0
-// GHIDRA_NAME TRemoteGreatPower::ApplyJoinEmpireMode1TargetTransition
-// GHIDRA_PROTO undefined __thiscall TGreatPower::ApplyJoinEmpireMode1TargetTransition(void)
+// GHIDRA_NAME TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC
+// GHIDRA_PROTO undefined __thiscall DispatchTurnEvent11F8NoPayloadSlot2AC(void)
 
-void TRemoteGreatPower::ApplyJoinEmpireMode1TargetTransition()
+void TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC()
 
 {
-  RemoveNationSlotAndNotifyPeers(*(undefined2 *)&this->field_0xc);
+  func_0x004096d8(*(undefined2 *)&this->field_0xc);
   return;
 }
 

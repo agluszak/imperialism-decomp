@@ -3,21 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TMinister.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004089F4
-// GHIDRA_NAME TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
-// GHIDRA_PROTO undefined __thiscall TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(void)
-
-TMinister * TMinister::WrapperFor_thunk_ConstructTMinister_At004be840()
-
-{
-  TMinister::ConstructTMinister(this);
-  *(undefined4 *)&this[0x18].field_0xc = 0;
-  *(undefined2 *)&this[1].field_0x4 = 1;
-  *(undefined2 *)&this[1].field_0x6 = 1;
-  this->vftable = (TMinisterVtbl *)&TCityInteriorMinisterVtbl_006508a8;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE840
 // GHIDRA_NAME TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructTMinister_At004be840(void)
@@ -25,53 +10,71 @@ TMinister * TMinister::WrapperFor_thunk_ConstructTMinister_At004be840()
 TMinister * TMinister::WrapperFor_thunk_ConstructTMinister_At004be840()
 
 {
-  TMinister::ConstructTMinister(this);
+  func_0x0040433b();
   *(undefined4 *)&this[0x18].field_0xc = 0;
   *(undefined2 *)&this[1].field_0x4 = 1;
   *(undefined2 *)&this[1].field_0x6 = 1;
-  this->vftable = (TMinisterVtbl *)&TCityInteriorMinisterVtbl_006508a8;
+  this->vftable = (TMinisterVtbl *)&TCityInteriorMinister::_vftable_;
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0052EB60
-// GHIDRA_NAME TMinister::GetTMinisterClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0052EB30
+// GHIDRA_NAME TMinister::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TMinister::GetTMinisterClassNamePointer()
+undefined4 * TMinister::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x10);
+  if (puVar1 != (undefined4 *)0x0) {
+    *(undefined2 *)(puVar1 + 3) = 0;
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052EB60
+// GHIDRA_NAME TMinister::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TMinister::GetRuntimeClass()
+
+{
+  return &classTMinister;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EB80
 // GHIDRA_NAME TMinister::ConstructTMinister
-// GHIDRA_PROTO undefined __thiscall TMinister::ConstructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTMinister(void)
 
 void TMinister::ConstructTMinister()
 
 {
   *(undefined2 *)&this->field_0xc = 0;
-  this->vftable = &TMinisterVtbl_00659c00;
+  this->vftable = &_vftable_;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBA0
-// GHIDRA_NAME TMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
+// GHIDRA_NAME TMinister::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMinister * TMinister::DeletingDestructTMinister(byte param_1)
+TMinister * TMinister::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TMinister::DestructTMinister(this);
+  func_0x0040293c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBD0
 // GHIDRA_NAME TMinister::DestructTMinister
-// GHIDRA_PROTO undefined __thiscall TMinister::DestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DestructTMinister(void)
 
 void TMinister::DestructTMinister()
 
@@ -80,26 +83,43 @@ void TMinister::DestructTMinister()
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0052ECC0
-// GHIDRA_NAME TMinister::DeserializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x0052EC80
+// GHIDRA_NAME TMinister::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TMinister::DeserializeTMinisterBaseOrderArrayHeader(int *param_1)
+void TMinister::Free()
 
 {
-  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
+  if (*(int **)&this->field_0x8 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x8 + 0x24))();
+  }
+  *(undefined4 *)&this->field_0x8 = 0;
+  if (this != (TMinister *)0x0) {
+    (*this->vftable->DeletingDestructTMinister)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052ECC0
+// GHIDRA_NAME TMinister::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
+
+void TMinister::ReadFrom(int *param_1)
+
+{
+  func_0x00403517(param_1);
   (**(code **)(*param_1 + 0x3c))(&this->field_0xc,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052ECF0
-// GHIDRA_NAME TMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(int * param_1)
+// GHIDRA_NAME TMinister::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TMinister::SerializeTMinisterBaseOrderArrayHeader(int *param_1)
+void TMinister::WriteTo(int *param_1)
 
 {
-  TObject::WriteTo((TObject *)this,(TStream *)param_1);
+  func_0x0040583a(param_1);
   (**(code **)(*param_1 + 0x78))(&this->field_0xc,2);
   return;
 }
@@ -113,6 +133,156 @@ void TMinister::DispatchNationStateEventCode10(short param_1)
 {
   (*g_apNationStates[param_1]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(0x10);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052ED50
+// GHIDRA_NAME TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks
+// GHIDRA_PROTO undefined __thiscall RebuildTerrainPreferenceEntriesAndAssignRanks(void)
+
+void TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks()
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  int iVar2;
+  int *piVar3;
+  TCountry **ppTVar4;
+  short sVar5;
+  int iVar6;
+  undefined4 uStack_c;
+  undefined2 uStack_8;
+  
+  (**(code **)(**(int **)&this->field_0x8 + 0x1c))();
+  iVar6 = 0;
+  ppTVar4 = g_apTerrainTypeDescriptorTable;
+  do {
+    if (*ppTVar4 != (TCountry *)0x0) {
+      uStack_8 = (undefined2)iVar6;
+      uVar1 = (*this->vftable[5].GetTMinisterClassNamePointer)(iVar6);
+      uStack_c = CONCAT22((short)CONCAT31(extraout_var,uVar1),(undefined2)uStack_c);
+      (**(code **)(**(int **)&this->field_0x8 + 0x38))(&uStack_c);
+    }
+    iVar6 = iVar6 + 1;
+    ppTVar4 = ppTVar4 + 1;
+  } while ((short)iVar6 < 7);
+  piVar3 = *(int **)&this->field_0x8;
+  iVar6 = 1;
+  sVar5 = 1;
+  uStack_c = 1;
+  if (1 < piVar3[2]) {
+    do {
+      iVar2 = (**(code **)(*piVar3 + 0x2c))(iVar6);
+      iVar6 = (**(code **)(**(int **)&this->field_0x8 + 0x2c))(iVar6 + 1);
+      *(short *)(iVar2 + 4) = sVar5;
+      if (*(short *)(iVar6 + 2) < *(short *)(iVar2 + 2)) {
+        sVar5 = sVar5 + 1;
+      }
+      *(short *)(iVar6 + 4) = sVar5;
+      piVar3 = *(int **)&this->field_0x8;
+      uStack_c = uStack_c + 1;
+      iVar6 = (int)(short)uStack_c;
+    } while (iVar6 < piVar3[2]);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052EE20
+// GHIDRA_NAME TMinister::MapTerrainTypeToPreferenceRank
+// GHIDRA_PROTO undefined __thiscall MapTerrainTypeToPreferenceRank(short param_1)
+
+short TMinister::MapTerrainTypeToPreferenceRank(short param_1)
+
+{
+  short *psVar1;
+  int *piVar2;
+  short sVar3;
+  int iVar4;
+  
+  iVar4 = 1;
+  piVar2 = *(int **)&this->field_0x8;
+  sVar3 = param_1;
+  if (piVar2[2] < 1) {
+    return param_1;
+  }
+  do {
+    psVar1 = (short *)(**(code **)(*piVar2 + 0x2c))((int)(short)iVar4);
+    if (*psVar1 == param_1) {
+      sVar3 = psVar1[2];
+      iVar4 = *(int *)(*(int *)&this->field_0x8 + 8) + 10;
+    }
+    piVar2 = *(int **)&this->field_0x8;
+    iVar4 = iVar4 + 1;
+  } while ((int)(short)iVar4 <= piVar2[2]);
+  return sVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052EEA0
+// GHIDRA_NAME TMinister::MapPreferenceRankToTerrainType
+// GHIDRA_PROTO undefined __thiscall MapPreferenceRankToTerrainType(short param_1)
+
+short TMinister::MapPreferenceRankToTerrainType(short param_1)
+
+{
+  short *psVar1;
+  int *piVar2;
+  short sVar3;
+  int iVar4;
+  
+  iVar4 = 1;
+  piVar2 = *(int **)&this->field_0x8;
+  sVar3 = param_1;
+  if (piVar2[2] < 1) {
+    return param_1;
+  }
+  do {
+    psVar1 = (short *)(**(code **)(*piVar2 + 0x2c))((int)(short)iVar4);
+    if (psVar1[2] == param_1) {
+      sVar3 = *psVar1;
+      iVar4 = *(int *)(*(int *)&this->field_0x8 + 8) + 10;
+    }
+    piVar2 = *(int **)&this->field_0x8;
+    iVar4 = iVar4 + 1;
+  } while ((int)(short)iVar4 <= piVar2[2]);
+  return sVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052EF20
+// GHIDRA_NAME TMinister::GetPreferenceGroupRankByEntryIndex
+// GHIDRA_PROTO undefined __thiscall GetPreferenceGroupRankByEntryIndex(short param_1)
+
+undefined2 TMinister::GetPreferenceGroupRankByEntryIndex(short param_1)
+
+{
+  int iVar1;
+  
+  iVar1 = (**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)param_1);
+  return *(undefined2 *)(iVar1 + 4);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052EF50
+// GHIDRA_NAME TMinister::GetPreferenceScoreByEntryIndex
+// GHIDRA_PROTO undefined __thiscall GetPreferenceScoreByEntryIndex(short param_1)
+
+undefined2 TMinister::GetPreferenceScoreByEntryIndex(short param_1)
+
+{
+  int iVar1;
+  
+  iVar1 = (**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)param_1);
+  return *(undefined2 *)(iVar1 + 2);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052EF80
+// GHIDRA_NAME TMinister::GetPreferenceTerrainTypeByEntryIndex
+// GHIDRA_PROTO undefined __thiscall GetPreferenceTerrainTypeByEntryIndex(short param_1)
+
+undefined2 TMinister::GetPreferenceTerrainTypeByEntryIndex(short param_1)
+
+{
+  undefined2 *puVar1;
+  
+  puVar1 = (undefined2 *)(**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)param_1);
+  return *puVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EFB0

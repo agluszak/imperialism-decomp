@@ -4,43 +4,43 @@
 // Bucket: TColorKeyButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571ED0
-// GHIDRA_NAME TColorKeyButton::CreateTColorKeyButtonInstance
-// GHIDRA_PROTO undefined CreateTColorKeyButtonInstance()
+// GHIDRA_NAME TColorKeyButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TColorKeyPicture * TColorKeyButton::CreateTColorKeyButtonInstance(void)
+undefined4 * TColorKeyButton::CreateObject(void)
 
 {
-  TColorKeyPicture *this;
-  TColorKeyPicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063648a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TColorKeyPicture *)__2_YAPAXI_Z(0x9c);
+  puVar1 = (undefined4 *)operator_new(0x9c);
   local_4 = 0;
-  pTVar1 = (TColorKeyPicture *)0x0;
-  if (this != (TColorKeyPicture *)0x0) {
-    TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(this);
-    this->vftable = (TColorKeyPictureVtbl *)&TColorKeyButtonVtbl_0065fd28;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00408ee5();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571F50
-// GHIDRA_NAME TColorKeyButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TColorKeyButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TColorKeyButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TColorKeyButton::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTColorKeyButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571F70
@@ -50,8 +50,8 @@ CRuntimeClass * TColorKeyButton::GetTEventHandlerClassNamePointer()
 TColorKeyButton * TColorKeyButton::ConstructTColorKeyButtonBaseState()
 
 {
-  TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)this);
-  this->vftable = &TColorKeyButtonVtbl_0065fd28;
+  func_0x00408ee5();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,25 +62,25 @@ TColorKeyButton * TColorKeyButton::ConstructTColorKeyButtonBaseState()
 TColorKeyButton * TColorKeyButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00406703();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571FF0
-// GHIDRA_NAME TColorKeyButton::OrphanCallChain_C2_I28_00571ff0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I28_00571ff0(char param_1)
+// GHIDRA_NAME TColorKeyButton::SetControlStateFlagAndMaybeRefresh
+// GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void TColorKeyButton::OrphanCallChain_C2_I28_00571ff0(char param_1)
+void TColorKeyButton::SetControlStateFlagAndMaybeRefresh(char param_1)
 
 {
   TColorKeyButtonVtbl *pTVar1;
   undefined4 in_EAX;
   undefined4 uVar2;
   char unaff_retaddr;
-
+  
   if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
     this->field_0x64 = param_1;
@@ -107,7 +107,7 @@ void TColorKeyButton::OrphanCallChain_C1_I05_00572060()
 {
   undefined uVar1;
   undefined3 extraout_var;
-
+  
   uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
                     /* WARNING: Could not recover jumptable at 0x00572069. Too many branches */
                     /* WARNING: Treating indirect jump as call */

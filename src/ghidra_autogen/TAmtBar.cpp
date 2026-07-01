@@ -14,57 +14,57 @@ undefined2 TAmtBar::ApplyMoveClamp(undefined2 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005884C0
-// GHIDRA_NAME TAmtBar::CreateTAmtBarInstance
-// GHIDRA_PROTO undefined CreateTAmtBarInstance()
+// GHIDRA_NAME TAmtBar::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TAmtBar::CreateTAmtBarInstance(void)
+undefined4 * TAmtBar::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006378fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x68);
+  puVar1 = (undefined4 *)operator_new(0x68);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TAmtBarVtbl_00665cc8;
-    *(undefined2 *)&this[1].vftable = 0;
-    *(undefined2 *)((int)&this[1].vftable + 2) = 0;
-    *(undefined2 *)&this[1].field04 = 0;
-    *(undefined2 *)((int)&this[1].field04 + 2) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x18) = 0;
+    *(undefined2 *)((int)puVar1 + 0x62) = 0;
+    *(undefined2 *)(puVar1 + 0x19) = 0;
+    *(undefined2 *)((int)puVar1 + 0x66) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588560
-// GHIDRA_NAME TAmtBar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TAmtBar::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAmtBar::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TAmtBar::GetRuntimeClass()
 
 {
-  return &g_pClassDescTAmtBar;
+  return &classTAmtBar;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588580
 // GHIDRA_NAME TAmtBar::ConstructBaseState
-// GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
 
 TAmtBar * TAmtBar::ConstructBaseState()
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
-  this->vftable = &TAmtBarVtbl_00665cc8;
+  func_0x004064e2();
+  this->vftable = &_vftable_;
   this->rangeOrMaxValue = 0;
   this->stepOrCurrentValue = 0;
   this->auxValueA = 0;
@@ -79,21 +79,21 @@ TAmtBar * TAmtBar::ConstructBaseState()
 TAmtBar * TAmtBar::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00401e65();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588610
-// GHIDRA_NAME TAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TAmtBar::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TAmtBar::OrphanLeaf_NoCall_Ins07_004d8920()
+void TAmtBar::NoOpUiLifecycleHook()
 
 {
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  func_0x00406ba9();
   return;
 }
 
@@ -105,7 +105,7 @@ void TAmtBar::UpdateBarValuesAndRefresh(short param_1, short param_2)
 
 {
   TAmtBarVtbl *pTVar1;
-
+  
   pTVar1 = this->vftable;
   this->stepOrCurrentValue = param_2;
   this->rangeOrMaxValue = param_1;
@@ -115,10 +115,10 @@ void TAmtBar::UpdateBarValuesAndRefresh(short param_1, short param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588670
-// GHIDRA_NAME TAmtBar::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TAmtBar::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TAmtBar::OrphanTiny_ReturnZero_0048a730()
+void TAmtBar::ApplyRectSlot110()
 
 {
   (*this->vftable->RenderPrimarySurfaceOverlayPanelWithClipCache)();
@@ -138,73 +138,74 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   undefined2 extraout_var;
   undefined2 extraout_var_00;
   undefined2 extraout_var_01;
-  undefined4 unaff_EBX;
+  int unaff_EBX;
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 local_5c;
-  undefined1 *puStack_58;
+  int iStack_58;
   int iStack_54;
   int iStack_50;
-  RECT RStack_4c;
-  RECT RStack_3c;
-  LONG LStack_2c;
-  LONG LStack_28;
-  int iStack_24;
-  int iStack_20;
-  LONG LStack_1c;
-  LONG LStack_18;
+  int iStack_4c;
+  undefined4 auStack_48 [2];
+  undefined4 uStack_40;
+  undefined4 uStack_3c;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
+  undefined4 uStack_30;
+  undefined4 uStack_2c;
+  undefined4 uStack_28;
+  undefined4 uStack_24;
+  undefined4 uStack_20;
+  undefined4 uStack_1c;
+  undefined4 uStack_18;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637918;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  AcquireReusableQuickDrawSurface();
+  func_0x004021c1();
   sVar1 = this->rangeOrMaxValue;
   local_4 = 0;
-  ApplyHitRegionToClipState();
+  func_0x0040232e();
   pTVar2 = this->vftable;
   cVar3 = (*pTVar2->VTableSlot3B)();
   if (cVar3 != '\0') {
     cVar3 = (*pTVar2->GetTEventHandlerClassNamePointer_3e)();
     if (cVar3 != '\0') {
       (*pTVar2->OrphanCallChain_C11_I88_004874b0_4a)();
-      RStack_3c.left = LStack_2c;
-      RStack_4c.bottom = RStack_3c.bottom;
-      RStack_3c.top = LStack_28;
-      RStack_3c.right = iStack_24;
-      ApplyRectClipRegionToGlobalClipState(&RStack_4c.bottom);
-      (*pTVar2->OrphanRetStub_0059add0_4b)(&iStack_20);
-      iStack_54 = iStack_24;
-      RStack_4c.left = LStack_1c;
-      RStack_4c.top = LStack_18;
-      iStack_50 = iStack_20;
-      puStack_58 = (undefined1 *)DAT_006a4454;
-      local_5c = DAT_006a4450;
-      (*pTVar2->OrphanTiny_ReturnZero_0048a730_4e)(&local_5c);
-      RStack_4c.right = iStack_54 + *(int *)&this->field_0x34;
-      RStack_4c.bottom = iStack_50 + *(int *)&this->field_0x38;
-      RStack_4c.left = iStack_54;
-      RStack_4c.top = iStack_50;
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
-                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_4c,&RStack_3c,0,
-                 (astruct_19 *)0x0);
+      uStack_3c = uStack_2c;
+      uStack_40 = uStack_30;
+      uStack_38 = uStack_28;
+      uStack_34 = uStack_24;
+      ApplyRectClipRegionToGlobalClipState();
+      (*pTVar2->OrphanRetStub_0059add0_4b)();
+      iVar4 = g_nOverlayClipCacheParamX;
+      iStack_54 = uStack_24;
+      iStack_4c = uStack_1c;
+      auStack_48[0] = uStack_18;
+      iStack_50 = uStack_20;
+      iStack_58 = g_nOverlayClipCacheParamY;
+      (*pTVar2->OrphanTiny_ReturnZero_0048a730_4e)();
+      iStack_50 = unaff_EBX + *(int *)&this->field_0x34;
+      iStack_4c = iVar4 + *(int *)&this->field_0x38;
+      iStack_54 = iVar4;
+      func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,
+                      &g_pActiveQuickDrawSurfaceContext->field_0x4,&iStack_58,auStack_48,0);
       if (sVar1 < 1) {
         iVar4 = 0;
       }
       else {
         SetQuickDrawTextOriginWithContextOffset(0);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1);
+        func_0x00402e73(1,7);
         iVar4 = CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1);
         if (this->stepOrCurrentValue < sVar1) {
           iVar4 = CONCAT22(extraout_var,this->stepOrCurrentValue);
         }
-        DrawCenteredGuideLineOnMapDc(iVar4 + -1);
-        ResetQuickDrawStrokeState();
+        DrawCenteredGuideLineOnMapDc(iVar4 + -1,1);
+        func_0x004088aa();
       }
       if ((short)iVar4 < 1) {
         iVar4 = 0;
@@ -213,29 +214,28 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
         iVar4 = iVar4 + 1;
       }
       SetQuickDrawTextOriginWithContextOffset(iVar4);
-      puStack_58 = &stack0xffffff90;
-      SetQuickDrawFillColor();
-      SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1);
+      func_0x00406b86();
+      func_0x00402e73(1);
       DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x34))
       ;
       SetQuickDrawTextOriginWithContextOffset
                 (CONCAT22(extraout_var_00,this->stepOrCurrentValue));
-      ResetQuickDrawStrokeState();
+      func_0x004088aa();
       DrawCenteredGuideLineOnMapDc(this->stepOrCurrentValue + -1);
-      SnapshotHitRegionToClipCache();
+      func_0x00405be1();
     }
   }
   local_4 = 0xffffffff;
-  ReleaseOrCacheQuickDrawSurface();
+  func_0x00409aac();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588950
-// GHIDRA_NAME TAmtBar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
+// GHIDRA_NAME TAmtBar::BeginMouseCaptureAndStartRepeatTimer
+// GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(int * param_1)
 
-void TAmtBar::_scalar_deleting_destructor_(int *param_1)
+void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(int *param_1)
 
 {
   undefined uVar1;
@@ -245,7 +245,7 @@ void TAmtBar::_scalar_deleting_destructor_(int *param_1)
   int *piVar4;
   undefined2 uVar5;
   undefined2 extraout_var_00;
-
+  
   uVar5 = (undefined2)((uint)this >> 0x10);
   if ((this->auxValueA < 1) || (*(int *)&this->field_0x34 / ((int)this->auxValueA << 1) <= *param_1)
      ) {
@@ -270,131 +270,6 @@ void TAmtBar::_scalar_deleting_destructor_(int *param_1)
   }
 LAB_005889eb:
   (**(code **)(**(int **)&this->field_0x20 + 0x1d0))(uVar3);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00588C60
-// GHIDRA_NAME TAmtBar::UpdateTradeMoveControlsFromDrag
-// GHIDRA_PROTO undefined __thiscall UpdateTradeMoveControlsFromDrag(char param_1)
-
-void TAmtBar::UpdateTradeMoveControlsFromDrag(char param_1)
-
-{
-  _vslot_fn *p_Var1;
-  int *piVar2;
-  int iVar3;
-  int iVar4;
-  undefined uVar5;
-  short sVar6;
-  undefined3 extraout_var;
-  code *pcVar8;
-  int *piVar9;
-  undefined4 uVar10;
-  undefined3 in_stack_00000005;
-  char in_stack_00000008;
-  LONG LStack_58;
-  undefined1 auStack_40 [12];
-  LONG LStack_34;
-  RECT RStack_30;
-  tagRECT tStack_20;
-  int iStack_10;
-  float fStack_c;
-  int *piVar7;
-  undefined3 extraout_var_00;
-
-  piVar7 = *(int **)&this[1].field_0x20;
-  iVar4 = piVar7[1];
-  if (piVar7 != (int *)0x0) {
-    LStack_58 = _param_1;
-    (**(code **)(*piVar7 + 0x2c))();
-  }
-  if ((in_stack_00000008 != '\0') || (*(short *)(*(int *)&this[1].field_0x20 + 4) != (short)iVar4))
-  {
-    LStack_58 = 0x6d6f7665;
-    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-    uVar5 = (*p_Var1)();
-    piVar7 = (int *)CONCAT31(extraout_var,uVar5);
-    if (piVar7 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xb42);
-    }
-    iVar4 = *piVar7;
-    pcVar8 = (code *)(int)*(short *)(*(int *)&this[1].field_0x20 + 4);
-    (**(code **)(iVar4 + 0x1e4))(pcVar8,0);
-    (**(code **)(iVar4 + 300))(auStack_40 + 4);
-    OffsetRect((LPRECT)auStack_40,*(int *)&this->field_0x24,*(int *)&this->field_0x28);
-    RStack_30.top = auStack_40._4_4_;
-    RStack_30.right = auStack_40._8_4_;
-    RStack_30.left = auStack_40._0_4_;
-    RStack_30.bottom = LStack_34;
-    CopyRect(&tStack_20,&RStack_30);
-    InvalidateCityDialogRectRegion(&tStack_20,1);
-    uVar5 = (*p_Var1)(0x62617220);
-    piVar9 = (int *)CONCAT31(extraout_var_00,uVar5);
-    if (piVar9 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xb49);
-    }
-    if ((short)piVar9[0x19] == 0) {
-      fStack_c = 9999.0;
-    }
-    else {
-      fStack_c = (float)piVar9[0xd] / (float)(int)(short)piVar9[0x19];
-    }
-    if (*(short *)(*(int *)&this[1].field_0x20 + 4) == *(short *)&this[1].field_0x24) {
-      *(undefined2 *)((int)piVar9 + 0x66) = 0x34;
-    }
-    else {
-      *(undefined2 *)((int)piVar9 + 0x66) = 0x3a;
-    }
-    piVar2 = *(int **)&this[1].field_0x20;
-    iStack_10 = (int)(short)piVar2[1];
-    LStack_58 = ftol();
-    iVar4 = *piVar9;
-    sVar6 = (**(code **)(*piVar2 + 0x30))();
-    iStack_10 = (int)sVar6;
-    uVar10 = ftol();
-    (**(code **)(iVar4 + 0x1a4))(LStack_58,uVar10);
-    iVar4 = piVar9[0xe];
-    iVar3 = piVar9[10];
-    (**(code **)(*piVar7 + 0xf0))(&stack0xffffffac,1);
-    (*pcVar8)(&stack0xffffffac);
-    OffsetRect((LPRECT)&LStack_58,*(int *)&this->field_0x24,*(int *)&this->field_0x28);
-    auStack_40._0_4_ = iVar3 + iVar4;
-    CopyRect((LPRECT)(auStack_40 + 8),(RECT *)&stack0xffffffb8);
-    InvalidateCityDialogRectRegion(auStack_40 + 8,1);
-    (**(code **)(**(int **)&this->field_0x20 + 0x1d8))();
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00588F60
-// GHIDRA_NAME TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B
-// GHIDRA_PROTO undefined __thiscall UpdateTradeBarFromSelectedMetricRatio_B(void)
-
-void TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B()
-
-{
-  int iVar1;
-  undefined uVar2;
-  short sVar3;
-  undefined3 extraout_var;
-  int *piVar4;
-
-  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x62617220);
-  piVar4 = (int *)CONCAT31(extraout_var,uVar2);
-  if (piVar4 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xb73);
-  }
-  if ((short)piVar4[0x19] != 0) {
-    iVar1 = *piVar4;
-    sVar3 = (**(code **)(**(int **)&this[1].field_0x20 + 0x30))();
-    (**(code **)(iVar1 + 0x1ac))(((int)sVar3 * piVar4[0xd]) / (int)(short)piVar4[0x19]);
-  }
   return;
 }
 

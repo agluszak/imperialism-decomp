@@ -4,48 +4,48 @@
 // Bucket: TMiniMapView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A290
-// GHIDRA_NAME TMiniMapView::CreateTMiniMapViewInstance
-// GHIDRA_PROTO undefined CreateTMiniMapViewInstance()
+// GHIDRA_NAME TMiniMapView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TMiniMapView::CreateTMiniMapViewInstance(void)
+undefined4 * TMiniMapView::CreateObject(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063850a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0xa0);
+  puVar1 = (undefined4 *)operator_new(0xa0);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::TControl(this);
-    this->vftable = (TControlVtbl *)&TMiniMapViewVtbl_00669170;
-    *(undefined4 *)&this[1].field_0xc = 0;
-    *(undefined4 *)&this[1].field_0x10 = 0;
-    *(undefined4 *)&this[1].field_0x4 = 0;
-    *(undefined4 *)&this[1].field_0x8 = 0;
-    *(int *)&this[1].field_0x14 = (int)DAT_006a460c;
-    *(undefined4 *)&this[1].field_0x18 = 8;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004087fb();
+    *puVar1 = &_vftable_;
+    puVar1[0x24] = 0;
+    puVar1[0x25] = 0;
+    puVar1[0x22] = 0;
+    puVar1[0x23] = 0;
+    puVar1[0x26] = (int)DAT_006a460c;
+    puVar1[0x27] = 8;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TControl *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A360
-// GHIDRA_NAME TMiniMapView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMiniMapView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMiniMapView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMiniMapView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMiniMapView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A380
@@ -55,8 +55,8 @@ CRuntimeClass * TMiniMapView::GetTEventHandlerClassNamePointer()
 TMiniMapView * TMiniMapView::ConstructTMiniMapViewBaseState()
 
 {
-  TControl::TControl((TControl *)this);
-  this->vftable = &TMiniMapViewVtbl_00669170;
+  func_0x004087fb();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x90 = 0;
   *(undefined4 *)&this->field_0x94 = 0;
   *(undefined4 *)&this->field_0x88 = 0;
@@ -73,149 +73,150 @@ TMiniMapView * TMiniMapView::ConstructTMiniMapViewBaseState()
 TMiniMapView * TMiniMapView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004066ea();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A540
-// GHIDRA_NAME TMiniMapView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_NAME TMiniMapView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMiniMapView::OrphanCallChain_C11_I88_004874b0()
+void TMiniMapView::ApplyRectSlot110()
 
 {
   uint uVar1;
-  LONG LVar2;
+  int iVar2;
   short sVar3;
   undefined2 extraout_var;
   short sVar4;
-  RECT *dstRect;
+  int *piVar5;
   undefined2 extraout_var_00;
   undefined2 extraout_var_01;
   undefined2 extraout_var_02;
-  int iVar5;
-  undefined2 uVar7;
   int iVar6;
-  short sVar8;
-  LONG LVar9;
+  undefined2 uVar8;
+  int iVar7;
+  short sVar9;
   int iVar10;
+  int iVar11;
   short local_34;
-  RECT local_30;
-  RECT local_20;
-  RECT local_10;
-
-  iVar6 = *(int *)(g_pStrategicMapViewSystem + 0x670);
-  if (iVar6 == 0) {
+  int local_30;
+  undefined4 local_2c;
+  int local_28;
+  int local_24;
+  int local_20;
+  undefined4 local_1c;
+  int local_18;
+  int local_14;
+  int local_10;
+  int local_c;
+  int local_8;
+  int local_4;
+  
+  iVar7 = *(int *)(g_pStrategicMapViewSystem + 0x670);
+  if (iVar7 == 0) {
     return;
   }
-  local_20.bottom = this->field38;
+  local_14 = this->field38;
   local_34 = 0;
   sVar3 = *(short *)&g_pGlobalMapState->field_0x6 % 0x6c -
           (short)((this->field34 / 2 - *(int *)&this->field_0x98) / 2);
-  sVar8 = sVar3 + -1;
+  sVar9 = sVar3 + -1;
   sVar4 = (*(short *)&g_pGlobalMapState->field_0x6 / 0x6c -
-          (short)((local_20.bottom / 2 - *(int *)&this->field_0x9c) / 2)) + -1;
-  if (sVar8 < 0) {
-    sVar8 = sVar3 + 0x6b;
+          (short)((local_14 / 2 - *(int *)&this->field_0x9c) / 2)) + -1;
+  if (sVar9 < 0) {
+    sVar9 = sVar3 + 0x6b;
   }
   if (sVar4 < 0) {
     local_34 = sVar4 * 2;
     sVar4 = 0;
   }
   else {
-    sVar3 = (short)((local_20.bottom + 1) / 2);
+    sVar3 = (short)((local_14 + 1) / 2);
     if (0x3c < (int)sVar3 + (int)sVar4) {
       local_34 = (sVar4 + sVar3) * 2 + -0x78;
       sVar4 = 0x3c - sVar3;
     }
   }
   *(int *)&this->field_0x8c = (int)sVar4;
-  local_20.left = 0;
-  local_20.top = 0;
-  local_20.right = this->field34;
-  *(int *)&this->field_0x88 = (int)sVar8;
-  ResetQuickDrawStrokeState();
-  SetQuickDrawFillColor(0);
-  SetQuickDrawStrokeColor(0xffffff);
-  LVar2 = local_20.bottom;
-  LVar9 = local_20.left;
-  local_10.left = (LONG)(short)(sVar8 * 2);
-  iVar5 = (int)(short)(sVar4 * 2);
-  local_10.right = local_10.left + this->field34;
-  local_10.bottom = iVar5 + this->field38;
-  iVar10 = local_10.right + -0xd7;
-  local_10.top = iVar5;
-  if (iVar10 < 1) {
-    dstRect = &local_20;
-    LVar9 = local_10.right;
+  local_20 = 0;
+  local_1c = 0;
+  local_18 = this->field34;
+  *(int *)&this->field_0x88 = (int)sVar9;
+  func_0x004088aa();
+  func_0x00406b86(0);
+  func_0x00402bdf(0xffffff);
+  iVar2 = local_14;
+  iVar10 = local_20;
+  local_10 = (int)(short)(sVar9 * 2);
+  iVar6 = (int)(short)(sVar4 * 2);
+  local_8 = local_10 + this->field34;
+  local_4 = iVar6 + this->field38;
+  iVar11 = local_8 + -0xd7;
+  local_c = iVar6;
+  if (iVar11 < 1) {
+    piVar5 = &local_20;
+    iVar10 = local_8;
   }
   else {
-    local_30.top = local_20.top;
-    local_30.right = (local_20.left - local_10.left) + 0xd7;
-    local_10.right = 0xd7;
-    local_30.left = local_20.left;
-    local_30.bottom = local_20.bottom;
-    uVar1 = (uint)local_20.bottom >> 8;
-    if ((g_pGlobalMapState->field_0x20 == '\0') ||
-       (this->field34 / 2 < local_30.right - local_20.left)) {
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(iVar6 + 4),
-                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_30,0,
-                 (astruct_19 *)0x0);
+    local_2c = local_1c;
+    local_28 = (local_20 - local_10) + 0xd7;
+    local_8 = 0xd7;
+    local_30 = local_20;
+    local_24 = local_14;
+    uVar1 = (uint)local_14 >> 8;
+    if ((g_pGlobalMapState->field_0x20 == '\0') || (this->field34 / 2 < local_28 - local_20)) {
+      func_0x00405493(iVar7 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_30,0,0
+                     );
     }
     else {
       FillRectWithQuickDrawBrushAndContextOffset(&local_30);
     }
-    local_30.top = local_20.top;
-    local_30.bottom = local_20.bottom;
-    local_30.left = local_20.right - iVar10;
-    local_10.left = 0;
-    local_30.right = local_20.right;
-    iVar5 = CONCAT31((int3)uVar1,g_pGlobalMapState->field_0x20);
-    uVar7 = (undefined2)((uint)LVar2 >> 0x10);
-    local_10.right = iVar10;
-    if ((g_pGlobalMapState->field_0x20 != '\0') &&
-       (local_20.right - local_30.left <= this->field34 / 2)) {
+    local_2c = local_1c;
+    local_24 = local_14;
+    local_30 = local_18 - iVar11;
+    local_10 = 0;
+    local_28 = local_18;
+    iVar6 = CONCAT31((int3)uVar1,g_pGlobalMapState->field_0x20);
+    uVar8 = (undefined2)((uint)iVar2 >> 0x10);
+    local_8 = iVar11;
+    if ((g_pGlobalMapState->field_0x20 != '\0') && (local_18 - local_30 <= this->field34 / 2)) {
       FillRectWithQuickDrawBrushAndContextOffset(&local_30);
       goto LAB_0059a792;
     }
-    dstRect = &local_30;
+    piVar5 = &local_30;
   }
-  uVar7 = (undefined2)((uint)iVar5 >> 0x10);
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(iVar6 + 4),(astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,
-             &local_10,dstRect,0,(astruct_19 *)0x0);
+  uVar8 = (undefined2)((uint)iVar6 >> 0x10);
+  func_0x00405493(iVar7 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,piVar5,0,0);
 LAB_0059a792:
-  iVar6 = CONCAT22(uVar7,*(undefined2 *)&this->field_0x90);
+  iVar7 = CONCAT22(uVar8,*(undefined2 *)&this->field_0x90);
   if (DAT_006993e8 == '\0') {
     local_34 = 0;
   }
-  iVar10 = CONCAT22((short)((uint)LVar9 >> 0x10),*(short *)&this->field_0x94 + local_34);
-  SetQuickDrawFillColor(0xffffff);
-  SetQuickDrawTextOriginWithContextOffset(iVar6,iVar10);
+  iVar11 = CONCAT22((short)((uint)iVar10 >> 0x10),*(short *)&this->field_0x94 + local_34);
+  func_0x00406b86(0xffffff);
+  SetQuickDrawTextOriginWithContextOffset(iVar7,iVar11);
   DrawCenteredGuideLineOnMapDc
-            (CONCAT22(extraout_var_01,*(short *)&this->field_0x98 << 1) + iVar6,iVar10);
+            (CONCAT22(extraout_var_01,*(short *)&this->field_0x98 << 1) + iVar7,iVar11);
   DrawCenteredGuideLineOnMapDc
-            (CONCAT22(extraout_var_00,*(short *)&this->field_0x98 << 1) + iVar6,
-             CONCAT22(extraout_var,*(short *)&this->field_0x9c << 1) + iVar10);
+            (CONCAT22(extraout_var_00,*(short *)&this->field_0x98 << 1) + iVar7,
+             CONCAT22(extraout_var,*(short *)&this->field_0x9c << 1) + iVar11);
   DrawCenteredGuideLineOnMapDc
-            (iVar6,CONCAT22(extraout_var_02,*(short *)&this->field_0x9c << 1) + iVar10);
-  DrawCenteredGuideLineOnMapDc(iVar6,iVar10);
-  SetQuickDrawFillColor(0);
-  SetQuickDrawStrokeColor(0xffffff);
+            (iVar7,CONCAT22(extraout_var_02,*(short *)&this->field_0x9c << 1) + iVar11);
+  DrawCenteredGuideLineOnMapDc(iVar7,iVar11);
+  func_0x00406b86(0);
+  func_0x00402bdf(0xffffff);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A920
-// GHIDRA_NAME TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int * param_2)
+// GHIDRA_NAME TMiniMapView::DispatchPictureResourceCommand
+// GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1, int * param_2)
 
-void __thiscall
-TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit
-          (TMiniMapView *this,int param_1,int *param_2)
+void TMiniMapView::DispatchPictureResourceCommand(int param_1, int *param_2)
 
 {
   TMiniMapViewVtbl *pTVar1;
@@ -223,7 +224,7 @@ TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit
   int iVar3;
   int iVar4;
   int *in_stack_00000010;
-
+  
   if (-1 < param_1) {
     if (param_1 < 2) {
       pTVar1 = this->vftable;

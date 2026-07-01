@@ -4,47 +4,47 @@
 // Bucket: TProductionCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586840
-// GHIDRA_NAME TProductionCluster::CreateTProductionClusterInstance
-// GHIDRA_PROTO undefined CreateTProductionClusterInstance()
+// GHIDRA_NAME TProductionCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TUberCluster * TProductionCluster::CreateTProductionClusterInstance(void)
+undefined4 * TProductionCluster::CreateObject(void)
 
 {
-  TUberCluster *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063787a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)__2_YAPAXI_Z(0x98);
+  puVar1 = (undefined4 *)operator_new(0x98);
   local_4 = 0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->vftable = (TUberClusterVtbl *)&_vftable_;
-    this[1].padding_08_to_0b = 0;
-    this[1].field0c = 0;
-    this[1].vftable = (TUberClusterVtbl *)0x0;
-    *(undefined2 *)&this[1].field04 = 0;
-    *(undefined2 *)((int)&this[1].field04 + 2) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00405835();
+    *puVar1 = &_vftable_;
+    puVar1[0x24] = 0;
+    puVar1[0x25] = 0;
+    puVar1[0x22] = 0;
+    *(undefined2 *)(puVar1 + 0x23) = 0;
+    *(undefined2 *)((int)puVar1 + 0x8e) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TUberCluster *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586900
-// GHIDRA_NAME TProductionCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TProductionCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TProductionCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TProductionCluster::GetRuntimeClass()
 
 {
-  return &g_pClassDescTProductionCluster;
+  return &classTProductionCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586920
@@ -54,7 +54,7 @@ CRuntimeClass * TProductionCluster::GetTEventHandlerClassNamePointer()
 TProductionCluster * TProductionCluster::ConstructTProductionClusterBaseState()
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
+  func_0x00405835();
   this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x90 = 0;
   *(undefined4 *)&this->field_0x94 = 0;
@@ -71,36 +71,70 @@ TProductionCluster * TProductionCluster::ConstructTProductionClusterBaseState()
 TProductionCluster * TProductionCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00405420();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005869C0
-// GHIDRA_NAME TProductionCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void * param_1, int param_2)
+// GHIDRA_NAME TProductionCluster::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(void * param_1, int param_2)
 
-void TProductionCluster::OrphanRetStub_0059add0(void *param_1, int param_2)
+void TProductionCluster::HandleEvent(void *param_1, int param_2)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   int unaff_retaddr;
-
+  
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x76616c75);
   if (CONCAT31(extraout_var,uVar1) == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x6ad);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x6ad);
   }
   if ((((*(int *)&this->field_0x90 != 0) && (*(int *)&this->field_0x88 != 0)) &&
       (99 < unaff_retaddr)) && (unaff_retaddr < 0x66)) {
     (*this->ownerContext->vftable->DispatchEvent)(unaff_retaddr,this,0);
   }
-  TCluster::OrphanRetStub_0059add0
-            ((TMapEditCluster *)this,unaff_retaddr,param_1,param_2);
+  func_0x004023ab(unaff_retaddr,param_1,param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00586A60
+// GHIDRA_NAME TProductionCluster::SetTAmtBarClusterWordField8c
+// GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8c(undefined2 param_1)
+
+void TProductionCluster::SetTAmtBarClusterWordField8c(undefined2 param_1)
+
+{
+  *(undefined2 *)&this->field_0x8c = param_1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00586A80
+// GHIDRA_NAME TProductionCluster::OrphanLeaf_NoCall_Ins05_00586a80
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_00586a80(undefined4 param_1, int param_2)
+
+void __thiscall
+TProductionCluster::OrphanLeaf_NoCall_Ins05_00586a80
+          (TProductionCluster *this,undefined4 param_1,int param_2)
+
+{
+  *(undefined4 *)&this->field_0x90 = param_1;
+  *(int *)&this->field_0x94 = param_2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00586AB0
+// GHIDRA_NAME TProductionCluster::SetTAmtBarClusterWordField8e
+// GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8e(undefined2 param_1)
+
+void TProductionCluster::SetTAmtBarClusterWordField8e(undefined2 param_1)
+
+{
+  *(undefined2 *)&this->field_0x8e = param_1;
   return;
 }
 

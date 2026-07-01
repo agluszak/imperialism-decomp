@@ -3,44 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TMiniShipLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00569BB0
-// GHIDRA_NAME TMiniShipLine::CreateTMiniShipLineInstance
-// GHIDRA_PROTO undefined CreateTMiniShipLineInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x00569B60
+// GHIDRA_NAME TMiniShipLine::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLineData * TMiniShipLine::CreateTMiniShipLineInstance(void)
+TMiniShipLine * TMiniShipLine::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TLineData *this;
-  TLineData *pTVar1;
+  func_0x004041ba();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00569BB0
+// GHIDRA_NAME TMiniShipLine::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TMiniShipLine::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635c0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)__2_YAPAXI_Z(0x14);
+  puVar1 = (undefined4 *)operator_new(0x14);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (this != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(this);
-    this->vftable = (TLineDataVtbl *)&TMiniShipLineVtbl_0065db28;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00408f0d();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569C20
-// GHIDRA_NAME TMiniShipLine::GetTLineDataClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
+// GHIDRA_NAME TMiniShipLine::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMiniShipLine::GetTLineDataClassNamePointer()
+CRuntimeClass * TMiniShipLine::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMiniShipLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569C80
@@ -50,32 +64,34 @@ CRuntimeClass * TMiniShipLine::GetTLineDataClassNamePointer()
 void TMiniShipLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
 {
-  TControlVtbl *pTVar1;
-  TControl *this_00;
+  undefined4 uVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar3;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635c2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (TControl *)__2_YAPAXI_Z(0x88);
+  puVar2 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  if (this_00 == (TControl *)0x0) {
-    this_00 = (TControl *)0x0;
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
   }
   else {
-    TControl::TControl(this_00);
-    this_00->vftable = (TControlVtbl *)&TMiniShipViewVtbl_0065db68;
+    func_0x004087fb();
+    *puVar2 = &TMiniShipView::_vftable_;
   }
-  pTVar1 = *(TControlVtbl **)&this->field_0x10;
+  uVar1 = *(undefined4 *)&this->field_0x10;
+  uVar3 = 5;
   local_4 = 0xffffffff;
-  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
-  this_00[1].vftable = pTVar1;
-  this_00->hasCommandTagResource = 0x22;
-  *unaff_FS_OFFSET = local_c;
+  func_0x004096b5(0,param_1,param_2,&this->field_0x8,5,5,0);
+  puVar2[0x21] = uVar1;
+  puVar2[0x18] = 0x22;
+  *unaff_FS_OFFSET = uVar3;
   return;
 }
 

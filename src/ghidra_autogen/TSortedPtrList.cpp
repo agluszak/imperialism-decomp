@@ -3,33 +3,72 @@
 // Program: Imperialism.exe
 // Bucket: TSortedPtrList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00488400
-// GHIDRA_NAME TSortedPtrList::ConstructTSortedPtrListBaseState
-// GHIDRA_PROTO undefined ConstructTSortedPtrListBaseState()
+// GHIDRA_FUNCTION IMPERIALISM 0x00488030
+// GHIDRA_NAME TSortedPtrList::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TIndexAndRankList * TSortedPtrList::ConstructTSortedPtrListBaseState(void)
+CPtrArray * TSortedPtrList::CreateObject(void)
 
 {
-  TIndexAndRankList *this;
-  TIndexAndRankList *pTVar1;
+  CPtrArray *this;
+  CPtrArray *pCVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062eb7a;
+  puStack_8 = &LAB_0062eb5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
+  this = (CPtrArray *)operator_new(0x18);
   local_4 = 0;
-  pTVar1 = (TIndexAndRankList *)0x0;
-  if (this != (TIndexAndRankList *)0x0) {
-    TIndexAndRankList::__0CPtrArray__QAE_XZ(this);
-    this->vftable = (TIndexAndRankListVtbl *)&_vftable_;
-    pTVar1 = this;
+  pCVar1 = (CPtrArray *)0x0;
+  if (this != (CPtrArray *)0x0) {
+    CPtrArray::CPtrArray(this);
+    *(TSortedPtrListVtbl **)this = &_vftable_;
+    pCVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return pCVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488110
+// GHIDRA_NAME TSortedPtrList::ResetPtrListAndShrinkCapacity
+// GHIDRA_PROTO undefined __thiscall ResetPtrListAndShrinkCapacity(void)
+
+void TSortedPtrList::ResetPtrListAndShrinkCapacity()
+
+{
+  TSortedPtrListVtbl *pTVar1;
+  
+  pTVar1 = this->vftable;
+  (*pTVar1[3].slot_0x04)();
+  (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488390
+// GHIDRA_NAME TSortedPtrList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TSortedPtrList * TSortedPtrList::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00404c19();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004883E0
+// GHIDRA_NAME TSortedPtrList::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TSortedPtrList::GetRuntimeClass()
+
+{
+  return &classTSortedPtrList;
 }
 

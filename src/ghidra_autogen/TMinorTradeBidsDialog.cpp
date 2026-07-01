@@ -3,6 +3,39 @@
 // Program: Imperialism.exe
 // Bucket: TMinorTradeBidsDialog.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005B29A0
+// GHIDRA_NAME TMinorTradeBidsDialog::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TMinorTradeBidsDialog::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00638bd2;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x60);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    local_4 = CONCAT31(local_4._1_3_,1);
+    *puVar1 = &TDialogView::_vftable_;
+    func_0x004057a4(s_D__Ambit_Toy_h_0069633c,0x23);
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2A30
 // GHIDRA_NAME TMinorTradeBidsDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,21 +43,21 @@
 TMinorTradeBidsDialog * TMinorTradeBidsDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00401c17();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2A80
-// GHIDRA_NAME TMinorTradeBidsDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMinorTradeBidsDialog::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMinorTradeBidsDialog::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMinorTradeBidsDialog::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMinorTradeBidsDialog;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2AA0
@@ -46,12 +79,11 @@ void TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState()
   int iVar7;
   int iStack_1c;
   int iStack_18;
-
+  
   uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x436f7374);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x179);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x179);
   }
   iVar7 = 0;
   pcVar6 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
@@ -72,9 +104,8 @@ void TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState()
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + iStack_1c + 0x1c) != 0) {
       piVar5 = (int *)(*(code *)this)(*(undefined4 *)((int)&DAT_0066b13c + iStack_1c));
       if (piVar5 == (int *)0x0) {
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag
-                  (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x189);
+        MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+        func_0x004057a4(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x189);
       }
       iVar7 = 0;
       pcVar6 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
@@ -96,38 +127,5 @@ void TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState()
     iStack_18 = iStack_18 + -1;
   } while (iStack_18 != 0);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B2CA0
-// GHIDRA_NAME TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMinorTradeBidsDialogAndMaybeFree()
-
-TView * TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree(void)
-
-{
-  TView *this;
-  TView *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00638c02;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x60);
-  local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
-    this->vftable = (TViewVtbl *)&TRelationshipDialogVtbl_0066b998;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 

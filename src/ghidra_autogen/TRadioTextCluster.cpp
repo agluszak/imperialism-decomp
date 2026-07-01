@@ -4,10 +4,10 @@
 // Bucket: TRadioTextCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005795B0
-// GHIDRA_NAME TRadioTextCluster::CreateTRadioTextClusterInstance
-// GHIDRA_PROTO undefined CreateTRadioTextClusterInstance()
+// GHIDRA_NAME TRadioTextCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TCluster * TRadioTextCluster::CreateTRadioTextClusterInstance(void)
+TCluster * TRadioTextCluster::CreateObject(void)
 
 {
   TCluster *this;
@@ -15,16 +15,16 @@ TCluster * TRadioTextCluster::CreateTRadioTextClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636aea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)__2_YAPAXI_Z(0x98);
+  this = (TCluster *)operator_new(0x98);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
     TCluster::ConstructUiResourceEntryType4B0C0(this);
-    this->vftable = (TClusterVtbl *)&TRadioTextClusterVtbl_00662418;
+    this->vftable = (TClusterVtbl *)&_vftable_;
     *(undefined2 *)&this[1].field04 = 0x4b;
     *(undefined2 *)((int)&this[1].field04 + 2) = 0x49;
     *(undefined2 *)&this[1].padding_08_to_0b = 0xffff;
@@ -38,13 +38,13 @@ TCluster * TRadioTextCluster::CreateTRadioTextClusterInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579680
-// GHIDRA_NAME TRadioTextCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TRadioTextCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRadioTextCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TRadioTextCluster::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTRadioTextCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005796F0
@@ -54,28 +54,28 @@ CRuntimeClass * TRadioTextCluster::GetTEventHandlerClassNamePointer()
 TRadioTextCluster * TRadioTextCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00408729();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579740
-// GHIDRA_NAME TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TRadioTextCluster::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920()
+void TRadioTextCluster::NoOpUiLifecycleHook()
 
 {
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  func_0x00406ba9();
   *(undefined4 *)&this->field_0x88 = 0x6e616461;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579770
-// GHIDRA_NAME TRadioTextCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_NAME TRadioTextCluster::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Event-dispatch helper for selectable option controls.
 // GHIDRA_COMMENT
@@ -83,27 +83,25 @@ void TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 // GHIDRA_COMMENT_END
 
 /* Event-dispatch helper for selectable option controls.
-
+   
    On event code 0x0D, synchronizes selected tag via SetSelectedTextOptionByTag, then forwards to
    shared panel control dispatcher. */
 
-void __thiscall
-TRadioTextCluster::OrphanRetStub_0059add0
-          (TRadioTextCluster *this,int param_1,void *param_2,int param_3)
+void TRadioTextCluster::HandleEvent(int param_1, void *param_2, int param_3)
 
 {
   if (param_1 == 0xd) {
-    SetSelectedTextOptionByTag(*(undefined4 *)((int)param_2 + 0x1c),1);
+    func_0x00407c07(*(undefined4 *)((int)param_2 + 0x1c),1);
   }
-  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
+  func_0x004023ab(param_1,param_2,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579A60
-// GHIDRA_NAME TRadioTextCluster::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TRadioTextCluster::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TRadioTextCluster::OrphanTiny_ReturnZero_0048a730()
+void TRadioTextCluster::ApplyRectSlot110()
 
 {
   undefined4 in_EDX;
@@ -112,7 +110,7 @@ void TRadioTextCluster::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   int iStack_8;
   int iStack_4;
-
+  
   uStack_14 = CONCAT22((short)((uint)in_EDX >> 0x10),*(short *)&this->field_0x90);
   if (-1 < *(short *)&this->field_0x90) {
     iStack_8 = this->field34;
@@ -120,8 +118,8 @@ void TRadioTextCluster::OrphanTiny_ReturnZero_0048a730()
     uStack_10 = 0;
     uStack_c = 0;
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-    DrawFrameRectOrUpdateClipRegion(&uStack_14);
-    SetQuickDrawFillColor(0);
+    func_0x00405c27(&uStack_14);
+    func_0x00406b86(0);
   }
   return;
 }

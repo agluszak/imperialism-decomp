@@ -4,74 +4,74 @@
 // Bucket: TNextTradeCommand.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA370
-// GHIDRA_NAME TNextTradeCommand::CreateTNextTradeCommandInstance
-// GHIDRA_PROTO undefined CreateTNextTradeCommandInstance()
+// GHIDRA_NAME TNextTradeCommand::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TCommand * TNextTradeCommand::CreateTNextTradeCommandInstance(void)
+undefined4 * TNextTradeCommand::CreateObject(void)
 
 {
-  TCommand *this;
-  TCommand *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006390ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCommand *)__2_YAPAXI_Z(0x18);
+  puVar1 = (undefined4 *)operator_new(0x18);
   local_4 = 0;
-  pTVar1 = (TCommand *)0x0;
-  if (this != (TCommand *)0x0) {
-    TCommand::ConstructTurnEventPacketBase(this);
-    this->vftable = (TCommandVtbl *)&TNextTradeCommandVtbl_0066da90;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403d5f();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA3E0
-// GHIDRA_NAME TNextTradeCommand::GetTEventClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
+// GHIDRA_NAME TNextTradeCommand::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNextTradeCommand::GetTEventClassNamePointer()
+CRuntimeClass * TNextTradeCommand::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNextTradeCommand;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA400
 // GHIDRA_NAME TNextTradeCommand::ConstructTNextTradeCommandBaseState
-// GHIDRA_PROTO undefined __thiscall TNextTradeCommand::ConstructTNextTradeCommandBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTNextTradeCommandBaseState(void)
 
 TNextTradeCommand * TNextTradeCommand::ConstructTNextTradeCommandBaseState()
 
 {
-  TCommand::ConstructTurnEventPacketBase((TCommand *)this);
-  this->vftable = &TNextTradeCommandVtbl_0066da90;
+  func_0x00403d5f();
+  this->vftable = &_vftable_;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA430
-// GHIDRA_NAME TNextTradeCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
+// GHIDRA_NAME TNextTradeCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNextTradeCommand * TNextTradeCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
+TNextTradeCommand * TNextTradeCommand::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(this);
+  func_0x00405e61();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA460
 // GHIDRA_NAME TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl
-// GHIDRA_PROTO undefined __thiscall TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(void)
+// GHIDRA_PROTO undefined __thiscall DestructTNextTradeCommandAndMaybeFree_Impl(void)
 
 void TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl()
 
@@ -88,13 +88,13 @@ void TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl()
 void TNextTradeCommand::OrphanRetStub_00487a00()
 
 {
-  ProcessPendingDiplomacyTransferEntriesUntilBlocked();
+  func_0x00401ae1();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C04F0
 // GHIDRA_NAME TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt
-// GHIDRA_PROTO undefined __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(void)
+// GHIDRA_PROTO undefined __thiscall CreateNextTradeCommandAndFormatPrompt(void)
 
 void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
 
@@ -109,22 +109,24 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
-  TNextTradeCommand *this_00;
   undefined4 uVar7;
   undefined2 extraout_var_03;
   int extraout_EDX;
   int iVar8;
-  undefined1 *puVar9;
-  int unaff_EBP;
+  undefined2 uVar9;
+  int unaff_ESI;
   int *unaff_FS_OFFSET;
   CString CStack_58;
   undefined4 uStack_54;
+  TSimMgr *pTStack_50;
+  undefined1 *puStack_4c;
+  char *pcStack_48;
   int iVar10;
   CString CStack_2c;
   int iStack_c;
   CString CStack_8;
   undefined4 uStack_4;
-
+  
   iStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   CStack_8.m_pchData = &LAB_006396f2;
@@ -133,13 +135,13 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
   pTVar1 = this->vftable[3].OrphanCallChain_C1_I17_00487470;
   uVar3 = (*pTVar1)();
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   piVar6 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))();
   if (piVar6 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   cVar4 = (**(code **)(*piVar6 + 0x1cc))();
   *(short *)&this[6].field_0xa = (short)cVar4;
@@ -147,8 +149,9 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
   uVar3 = (*pTVar1)();
   piVar6 = (int *)CONCAT31(extraout_var_00,uVar3);
   if (piVar6 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    pcStack_48 = "hB\b";
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   iVar2 = *piVar6;
   sVar5 = (**(code **)(iVar2 + 0x1e8))();
@@ -160,33 +163,42 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
   else {
     iVar8 = (int)sVar5;
     if ((piVar6[0x2a] < iVar8) || (sVar5 < 0)) {
-      CString::__0CString__QAE_XZ(&CStack_8);
-      CString::__0CString__QAE_XZ((CString *)&stack0xffffffdc);
+      CString::CString(&CStack_8);
+      CString::CString((CString *)&stack0xffffffdc);
       if (this[6].field_0xd == '\0') {
-        CString::__0CString__QAE_XZ((CString *)&stack0xffffffe0);
+        CString::CString((CString *)&stack0xffffffe0);
         _Format_CString__QAAXPBDZZ();
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        puStack_4c = &stack0xffffffd0;
+        pcStack_48 = CStack_2c.m_pchData;
+        pTStack_50 = g_pLocalizationTable;
         uStack_54 = 0x5c07bd;
-        scanBracketExpressions(g_pLocalizationTable,&stack0xffffffd0,CStack_2c.m_pchData);
-        CString::__1CString__QAE_XZ(&CStack_2c);
+        func_0x0040988b();
+        CString::~CString(&CStack_2c);
       }
       else {
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       }
-      AssignStringSharedRefAndReturnThis();
-      (**(code **)(*DAT_006a2158 + 0x4c))();
-      puVar9 = &stack0xffffffe4;
+      puStack_4c = &stack0xffffffd0;
+      pTStack_50 = (TSimMgr *)0x5c07e4;
+      func_0x004076b7();
+      pTStack_50 = (TSimMgr *)0x5c07ef;
+      (**(code **)(*g_pDisplayMgr + 0x4c))();
+      pTStack_50 = (TSimMgr *)&stack0xffffffe0;
+      uStack_54 = 0x5c07fc;
       (**(code **)(iVar2 + 0x1dc))();
-      uStack_54 = *(undefined4 *)(unaff_EBP + -8);
-      CStack_58.m_pchData = (char *)0x0;
-      (**(code **)(iVar2 + 0x1d8))();
-      CString::__1CString__QAE_XZ(&CStack_58);
-      CString::__1CString__QAE_XZ((CString *)&stack0xffffffc4);
+      uStack_54 = 1;
+      CStack_58.m_pchData = *(char **)(unaff_ESI + -8);
+      (**(code **)(iVar2 + 0x1d8))(0);
+      CString::~CString(&CStack_58);
+      CString::~CString((CString *)&stack0xffffffc4);
       goto LAB_005c082f;
     }
   }
-  puVar9 = (undefined1 *)
-           CONCAT22((short)((uint)iVar8 >> 0x10),*(undefined2 *)((int)&this[6].vftable + 2));
+  uVar9 = (undefined2)((uint)iVar8 >> 0x10);
+  pcStack_48 = (char *)CONCAT22(uVar9,*(undefined2 *)&this[6].field_0x8);
+  puStack_4c = (undefined1 *)CONCAT22(uVar9,*(undefined2 *)((int)&this[6].vftable + 2));
+  pTStack_50 = (TSimMgr *)CONCAT22(uVar9,*(undefined2 *)&this[6].vftable);
   uStack_54 = 0x5c0644;
   (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)();
   uStack_54 = 0x61636365;
@@ -202,24 +214,24 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
   (**(code **)(iVar2 + 0xa8))(0,0);
   (**(code **)(iVar10 + 0xa8))(0,0);
   if (*(short *)&this[6].field_0x8 != 0) {
-    piVar6 = (int *)(**(code **)(*(int *)DAT_006a2158[1] + 0x94))(0x746f6f6c);
+    piVar6 = (int *)(**(code **)(*(int *)g_pDisplayMgr[1] + 0x94))(0x746f6f6c);
     if (piVar6 != (int *)0x0) {
       (**(code **)(*piVar6 + 0x1d0))(CONCAT22(extraout_var_03,*(undefined2 *)&this[6].vftable));
     }
   }
   if (*(int *)&g_pLocalizationTable->field_0x44 != 2) {
-    this_00 = (TNextTradeCommand *)__2_YAPAXI_Z(0x18);
-    if (this_00 == (TNextTradeCommand *)0x0) {
+    iVar10 = operator_new(0x18);
+    if (iVar10 == 0) {
       uVar7 = 0;
     }
     else {
-      uVar7 = TNextTradeCommand::ConstructTNextTradeCommandBaseState(this_00);
+      uVar7 = func_0x00404250();
     }
-    InitializeRangePairFromDiplomacyConstants();
+    func_0x00408b7f();
     (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(uVar7);
   }
 LAB_005c082f:
-  *unaff_FS_OFFSET = (int)puVar9;
+  *unaff_FS_OFFSET = (int)puStack_4c;
   return;
 }
 

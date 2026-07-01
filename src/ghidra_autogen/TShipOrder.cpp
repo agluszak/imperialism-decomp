@@ -3,33 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: TShipOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B84A0
-// GHIDRA_NAME TShipOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8470
+// GHIDRA_NAME TShipOrder::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TShipOrder::GetTProductionOrderClassNamePointer()
+undefined4 * TShipOrder::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x4c);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B84A0
+// GHIDRA_NAME TShipOrder::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TShipOrder::GetRuntimeClass()
+
+{
+  return &classTShipOrder;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B84E0
-// GHIDRA_NAME TShipOrder::ConstructTShipOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTShipOrderBaseState(byte param_1)
+// GHIDRA_NAME TShipOrder::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipOrder * TShipOrder::ConstructTShipOrderBaseState(byte param_1)
+TShipOrder * TShipOrder::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TShipOrder::DestructTShipOrderAndMaybeFree(this);
+  func_0x0040702c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8510
 // GHIDRA_NAME TShipOrder::DestructTShipOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TShipOrder::DestructTShipOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTShipOrderAndMaybeFree(void)
 
 void TShipOrder::DestructTShipOrderAndMaybeFree()
 
@@ -39,16 +56,16 @@ void TShipOrder::DestructTShipOrderAndMaybeFree()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B85A0
-// GHIDRA_NAME TShipOrder::OrphanLeaf_NoCall_Ins25_004b85a0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins25_004b85a0(void)
+// GHIDRA_NAME TShipOrder::CanMakeFromCityStock
+// GHIDRA_PROTO undefined __thiscall CanMakeFromCityStock(void)
 
-int TShipOrder::OrphanLeaf_NoCall_Ins25_004b85a0()
+int TShipOrder::CanMakeFromCityStock()
 
 {
   int iVar1;
   int iVar2;
   uint3 uVar3;
-
+  
   iVar1 = *(int *)&this->field_0x8;
   iVar2 = *(short *)&this->field_0x48 * 2;
   uVar3 = (uint3)((uint)iVar2 >> 8);
@@ -64,15 +81,15 @@ int TShipOrder::OrphanLeaf_NoCall_Ins25_004b85a0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8630
-// GHIDRA_NAME TShipOrder::OrphanLeaf_NoCall_Ins39_004b8630
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins39_004b8630(void)
+// GHIDRA_NAME TShipOrder::CanFillOrderSheet
+// GHIDRA_PROTO undefined __thiscall CanFillOrderSheet(void)
 
-uint TShipOrder::OrphanLeaf_NoCall_Ins39_004b8630()
+uint TShipOrder::CanFillOrderSheet()
 
 {
   short *psVar1;
   uint uVar2;
-
+  
   uVar2 = *(short *)&this->field_0x48 * 2;
   if (((((int)*(short *)(&g_industryActionCostWeightResCode09 + uVar2) <=
          (int)*(short *)&this->field_0x22 +
@@ -99,16 +116,16 @@ uint TShipOrder::OrphanLeaf_NoCall_Ins39_004b8630()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B86D0
-// GHIDRA_NAME TShipOrder::OrphanLeaf_NoCall_Ins02_004b50e0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
+// GHIDRA_NAME TShipOrder::MaxOrder
+// GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-int TShipOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
+int TShipOrder::MaxOrder()
 
 {
   int in_EAX;
   int iVar1;
   int iVar2;
-
+  
   iVar2 = *(short *)&this->field_0x48 * 2;
   iVar1 = 10000;
   if ((*(short *)(&g_industryActionCostWeightResCode09 + iVar2) != 0) &&
@@ -151,10 +168,10 @@ int TShipOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8800
-// GHIDRA_NAME TShipOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
+// GHIDRA_NAME TShipOrder::SetQuantity
+// GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TShipOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
+undefined4 TShipOrder::SetQuantity(short param_1)
 
 {
   short *psVar1;
@@ -164,7 +181,7 @@ undefined4 TShipOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   char cVar5;
   undefined3 extraout_var;
   short sVar6;
-
+  
   sVar6 = param_1 - *(short *)&this->field_0x4;
   uVar4 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
   if (((short)CONCAT31(extraout_var,uVar4) < param_1) || (param_1 < 0)) {
@@ -215,10 +232,10 @@ undefined4 TShipOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8970
-// GHIDRA_NAME TShipOrder::OrphanRetStub_004b5160
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+// GHIDRA_NAME TShipOrder::CommitIfPending
+// GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TShipOrder::OrphanRetStub_004b5160()
+void TShipOrder::CommitIfPending()
 
 {
   if ((*(short *)&this->field_0x48 != 0) && (*(short *)&this->field_0x4 != 0)) {
@@ -240,32 +257,28 @@ void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability()
   short *psVar1;
   int *piVar2;
   short sVar3;
-  void *pvVar4;
+  undefined4 uVar4;
   int iVar5;
   short sVar6;
-  uint uVar7;
-  undefined4 *puVar8;
-  undefined4 uVar9;
-
+  undefined4 *puVar7;
+  
   psVar1 = (short *)(*(int *)&this->field_0x8 + 0x5c + *(short *)&this->field_0x48 * 2);
   *psVar1 = *psVar1 + *(short *)&this->field_0x4;
   sVar3 = *(short *)&this->field_0x4;
   *(short *)&this->field_0x4 = sVar3 + -1;
   while (sVar3 != 0) {
-    uVar9 = 0;
-    uVar7 = (uint)*(ushort *)(*(int *)((int)*(void **)&this->field_0x8 + 0xac) + 0xc);
-    pvVar4 = FindPortZoneBySelectedTile(*(void **)&this->field_0x8);
-    CreateNavyPrimaryOrderNodeAndAssignDisplayName
-              (*(undefined2 *)&this->field_0x48,pvVar4,uVar7,uVar9);
+    uVar4 = func_0x00406456(*(int *)&this->field_0x8,
+                            *(undefined2 *)(*(int *)(*(int *)&this->field_0x8 + 0xac) + 0xc),0);
+    func_0x004093bd(*(undefined2 *)&this->field_0x48,uVar4);
     sVar3 = *(short *)&this->field_0x4;
     *(short *)&this->field_0x4 = sVar3 + -1;
   }
-  puVar8 = (undefined4 *)&this->field_0x10;
+  puVar7 = (undefined4 *)&this->field_0x10;
   for (iVar5 = 0xb; iVar5 != 0; iVar5 = iVar5 + -1) {
-    *puVar8 = 0;
-    puVar8 = puVar8 + 1;
+    *puVar7 = 0;
+    puVar7 = puVar7 + 1;
   }
-  *(undefined2 *)puVar8 = 0;
+  *(undefined2 *)puVar7 = 0;
   *(undefined2 *)&this->field_0x4 = 0;
   piVar2 = *(int **)(*(int *)&this->field_0x8 + 0xac);
   if ((char)piVar2[0x232] == '2') {
@@ -338,15 +351,15 @@ LAB_004b8b05:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8B80
-// GHIDRA_NAME TShipOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
+// GHIDRA_NAME TShipOrder::FillOrderSheet
+// GHIDRA_PROTO undefined __thiscall FillOrderSheet(void)
 
-void TShipOrder::CreateTItemOrderInstance()
+void TShipOrder::FillOrderSheet()
 
 {
   short sVar1;
   short sStack00000004;
-
+  
   (*this->vftable[7].ConstructTShipOrderBaseState)();
   sVar1 = *(short *)(&g_industryActionCostWeightResCode09 + *(short *)&this->field_0x48 * 2);
   *(short *)(_sStack00000004 + 0x12) = sVar1 * sStack00000004;

@@ -3,33 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: TPictureLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00570060
-// GHIDRA_NAME TPictureLine::GetTLineDataClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00570030
+// GHIDRA_NAME TPictureLine::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TPictureLine::GetTLineDataClassNamePointer()
+undefined4 * TPictureLine::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x14);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570060
+// GHIDRA_NAME TPictureLine::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TPictureLine::GetRuntimeClass()
+
+{
+  return &classTPictureLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005700A0
-// GHIDRA_NAME TPictureLine::ConstructTPictureLineBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTPictureLineBaseState(byte param_1)
+// GHIDRA_NAME TPictureLine::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureLine * TPictureLine::ConstructTPictureLineBaseState(byte param_1)
+TPictureLine * TPictureLine::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TPictureLine::DestructTPictureLineAndMaybeFree(this);
+  func_0x00407784();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005700D0
 // GHIDRA_NAME TPictureLine::DestructTPictureLineAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTPictureLineAndMaybeFree(void)
 
 void TPictureLine::DestructTPictureLineAndMaybeFree()
 
@@ -45,30 +62,31 @@ void TPictureLine::DestructTPictureLineAndMaybeFree()
 void TPictureLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
 {
-  thunk_TPictureButton *this_00;
+  int iVar1;
   undefined2 extraout_var;
   undefined2 extraout_var_00;
-  undefined2 uVar1;
+  undefined2 uVar2;
   undefined4 *unaff_FS_OFFSET;
+  undefined1 *puVar3;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063629a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
+  iVar1 = operator_new(0x90);
   local_4 = 0;
-  uVar1 = extraout_var;
-  if (this_00 != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this_00);
-    uVar1 = extraout_var_00;
+  uVar2 = extraout_var;
+  if (iVar1 != 0) {
+    func_0x00401122();
+    uVar2 = extraout_var_00;
   }
+  puVar3 = &this->field_0x8;
   local_4 = 0xffffffff;
-  InitializePictureEntryBaseAndRefresh
-            (param_1,param_2,&this->field_0x8,5,5,CONCAT22(uVar1,*(undefined2 *)&this->field_0x10));
-  *unaff_FS_OFFSET = local_c;
+  func_0x00403ff3(param_1,param_2,puVar3,5,5,CONCAT22(uVar2,*(undefined2 *)&this->field_0x10));
+  *unaff_FS_OFFSET = puVar3;
   return;
 }
 

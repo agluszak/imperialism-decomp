@@ -4,44 +4,44 @@
 // Bucket: TPictureRadioButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570CC0
-// GHIDRA_NAME TPictureRadioButton::CreateTPictureRadioButtonInstance
-// GHIDRA_PROTO undefined CreateTPictureRadioButtonInstance()
+// GHIDRA_NAME TPictureRadioButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TPictureRadioButton::CreateTPictureRadioButtonInstance(void)
+undefined4 * TPictureRadioButton::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006363aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TPictureRadioButtonVtbl **)this = &TPictureRadioButtonVtbl_0065ed98;
-    *(undefined4 *)(this + 0x60) = 0xc;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar1[0x18] = 0xc;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570D40
-// GHIDRA_NAME TPictureRadioButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TPictureRadioButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPictureRadioButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TPictureRadioButton::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTPictureRadioButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570D60
@@ -51,8 +51,8 @@ CRuntimeClass * TPictureRadioButton::GetTEventHandlerClassNamePointer()
 TPictureRadioButton * TPictureRadioButton::ConstructTPictureRadioButtonBaseState()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = &TPictureRadioButtonVtbl_0065ed98;
+  func_0x00401122();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x60 = 0xc;
   return this;
 }
@@ -64,9 +64,9 @@ TPictureRadioButton * TPictureRadioButton::ConstructTPictureRadioButtonBaseState
 TPictureRadioButton * TPictureRadioButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00408a80();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -85,8 +85,9 @@ TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWind
   TPictureRadioButtonVtbl *pTVar3;
   char cVar4;
   undefined4 unaff_EBP;
+  char in_stack_00000008;
   char local_4;
-
+  
   uVar1 = *(undefined2 *)&this->field_0x84;
   pTVar3 = this->vftable;
   sVar2 = (short)this->field3c;
@@ -109,7 +110,7 @@ LAB_00570e0c:
     ;
   }
 LAB_00570e4e:
-  TSoundPlayer::UpdateControlCachedIntFromWindowText((TSoundPlayer *)this,(int)param_1);
+  func_0x004026cb((int)param_1,(int)in_stack_00000008);
   return;
 }
 
@@ -126,24 +127,23 @@ TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
   int iVar2;
   TPictureRadioButtonVtbl *pTVar3;
   int *piVar4;
-  undefined1 local_20 [4];
+  int local_20;
   int iStack_1c;
   int local_18;
   int local_14;
   int local_10;
   int iStack_c;
-  int iStack_8;
-
+  
   iVar1 = this->ownerOffsetX;
   iVar2 = this->ownerOffsetY;
-  piVar4 = (int *)CopyOffset10PointPairToOutOrZero(local_20);
+  piVar4 = (int *)func_0x004080b2(&local_20);
   pTVar3 = this->vftable;
-  local_18 = iVar1 + *piVar4;
-  local_14 = iVar2 + piVar4[1];
-  (*pTVar3->OrphanRetStub_0059add0_4b)(&local_10);
-  iStack_c = (local_14 + iStack_1c) - iVar1;
-  iStack_8 = (local_10 + local_18) - iVar2;
-  (*pTVar3->GetTEventHandlerClassNamePointer_5a)(&local_14,1);
+  iStack_1c = iVar1 + *piVar4;
+  local_18 = iVar2 + piVar4[1];
+  (*pTVar3->OrphanRetStub_0059add0_4b)(&local_14);
+  local_10 = (local_18 + local_20) - iVar1;
+  iStack_c = (local_14 + iStack_1c) - iVar2;
+  (*pTVar3->GetTEventHandlerClassNamePointer_5a)(&local_18,1);
   return;
 }
 
@@ -158,7 +158,7 @@ TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh
 {
   TPictureRadioButtonVtbl *pTVar1;
   char cVar2;
-
+  
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {
@@ -173,10 +173,10 @@ TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570FB0
-// GHIDRA_NAME TPictureRadioButton::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
+// GHIDRA_NAME TPictureRadioButton::DispatchUiMouseMoveToChildren
+// GHIDRA_PROTO undefined __thiscall DispatchUiMouseMoveToChildren(void)
 
-int TPictureRadioButton::SetForeignMinisterReadyFlag14()
+int TPictureRadioButton::DispatchUiMouseMoveToChildren()
 
 {
   TPictureRadioButtonVtbl *pTVar1;
@@ -190,7 +190,7 @@ int TPictureRadioButton::SetForeignMinisterReadyFlag14()
   undefined3 extraout_var_03;
   undefined3 uVar5;
   uint3 uVar6;
-
+  
   pTVar1 = this->vftable;
   p_Var2 = pTVar1->OrphanTiny_VcallForward_Slot_ec_00571330;
   cVar3 = (*p_Var2)();

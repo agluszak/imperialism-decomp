@@ -4,55 +4,43 @@
 // Bucket: TProvinceDesirabilityList.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6500
-// GHIDRA_NAME TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstance
-// GHIDRA_PROTO undefined CreateTProvinceDesirabilityListInstance()
+// GHIDRA_NAME TProvinceDesirabilityList::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TIndexAndRankList * TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstance(void)
+CPtrArray * TProvinceDesirabilityList::CreateObject(void)
 
 {
-  TIndexAndRankList *this;
-  TIndexAndRankList *pTVar1;
+  CPtrArray *this;
+  CPtrArray *pCVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631d2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
+  this = (CPtrArray *)operator_new(0x18);
   local_4 = 0;
-  pTVar1 = (TIndexAndRankList *)0x0;
-  if (this != (TIndexAndRankList *)0x0) {
-    TIndexAndRankList::__0CPtrArray__QAE_XZ(this);
-    this->vftable = (TIndexAndRankListVtbl *)&_vftable_;
-    pTVar1 = this;
+  pCVar1 = (CPtrArray *)0x0;
+  if (this != (CPtrArray *)0x0) {
+    CPtrArray::CPtrArray(this);
+    *(TProvinceDesirabilityListVtbl **)this = &_vftable_;
+    pCVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return pCVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6570
-// GHIDRA_NAME TProvinceDesirabilityList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TProvinceDesirabilityList::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TProvinceDesirabilityList::GetTEventHandlerClassNamePointer()
-
-{
-  return &g_pClassDescTProvinceDesirabilityList;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004D6590
-// GHIDRA_NAME TProvinceDesirabilityList::ConstructObArrayWithVtable653810
-// GHIDRA_PROTO undefined __thiscall TProvinceDesirabilityList::ConstructObArrayWithVtable653810(void)
-
-TProvinceDesirabilityList * TProvinceDesirabilityList::ConstructObArrayWithVtable653810()
+CRuntimeClass * TProvinceDesirabilityList::GetRuntimeClass()
 
 {
-  TIndexAndRankList::__0CPtrArray__QAE_XZ((TIndexAndRankList *)this);
-  this->vftable = &_vftable_;
-  return this;
+  return &classTProvinceDesirabilityList;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D65C0
@@ -64,16 +52,16 @@ TProvinceDesirabilityList::_scalar_deleting_destructor_
           (TProvinceDesirabilityList *this,byte param_1)
 
 {
-  CObArray::??1CUIntArray@@UAE@XZ();
+  func_0x00404b10();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6630
 // GHIDRA_NAME TProvinceDesirabilityList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 
 int __thiscall
 TProvinceDesirabilityList::OrphanRetStub_0059add0
@@ -82,14 +70,14 @@ TProvinceDesirabilityList::OrphanRetStub_0059add0
 {
   uint uVar1;
   uint uVar2;
-
+  
   if (*(short *)(param_2 + 2) < *(short *)(param_1 + 2)) {
     return 1;
   }
   if (*(short *)(param_1 + 2) < *(short *)(param_2 + 2)) {
     return 0xffff;
   }
-  uVar1 = _rand();
+  uVar1 = GenerateThreadLocalRandom15();
   uVar2 = (int)uVar1 >> 0x1f;
   return (-(uint)(((uVar1 ^ uVar2) - uVar2 & 1 ^ uVar2) != uVar2) & 2) - 1;
 }

@@ -4,40 +4,40 @@
 // Bucket: THelpWindow.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504B50
-// GHIDRA_NAME THelpWindow::CreateTHelpWindowInstance
-// GHIDRA_PROTO undefined CreateTHelpWindowInstance()
+// GHIDRA_NAME THelpWindow::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * THelpWindow::CreateTHelpWindowInstance(void)
+undefined4 * THelpWindow::CreateObject(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063366a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0xa0);
+  puVar1 = (undefined4 *)operator_new(0xa0);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::ConstructUiWindowResourceEntryType4B340(this);
-    this->vftable = (TControlVtbl *)&THelpWindowVtbl_006572c0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004054ed();
+    *puVar1 = &THelpWindowVtbl_006572c0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504BD0
-// GHIDRA_NAME THelpWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME THelpWindow::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THelpWindow::GetTEventHandlerClassNamePointer()
+CRuntimeClass * THelpWindow::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
@@ -56,34 +56,22 @@ CRuntimeClass * THelpWindow::GetTEventHandlerClassNamePointer()
 THelpWindow * THelpWindow::ConstructUiWindowResourceEntryType572C0()
 
 {
-  TControl::ConstructUiWindowResourceEntryType4B340((TControl *)this);
+  func_0x004054ed();
   this->vftable = &THelpWindowVtbl_006572c0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504C20
-// GHIDRA_NAME THelpWindow::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// GHIDRA_NAME THelpWindow::DestructTHelpWindowAndMaybeFree
+// GHIDRA_PROTO undefined __thiscall DestructTHelpWindowAndMaybeFree(byte param_1)
 
-THelpWindow * THelpWindow::_scalar_deleting_destructor_(byte param_1)
+THelpWindow * THelpWindow::DestructTHelpWindowAndMaybeFree(byte param_1)
 
 {
-  TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
+  func_0x00408490();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00504C70
-// GHIDRA_NAME THelpWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-
-void THelpWindow::GetTEventHandlerClassNamePointer()
-
-{
-  TFloatWindow::GetTEventHandlerClassNamePointer((TFloatWindow *)this);
-  *(undefined4 *)(DAT_006a21b8 + 8) = 0;
-  return;
 }
 

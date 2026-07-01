@@ -11,32 +11,32 @@ TDocument * __cdecl TDocument::CreateObject(void)
 
 {
   TDocument *pTVar1;
-
-  pTVar1 = (TDocument *)__2_YAPAXI_Z(4);
+  
+  pTVar1 = (TDocument *)operator_new(4);
   if (pTVar1 != (TDocument *)0x0) {
-    pTVar1->vftable = &TDocumentVtbl_00648a60;
+    pTVar1->vftable = &_vftable_;
     return pTVar1;
   }
   return (TDocument *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486350
-// GHIDRA_NAME TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00486350(byte param_1)
+// GHIDRA_NAME TDocument::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDocument * TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350(byte param_1)
+TDocument * TDocument::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TDocument::CreateTDocumentInstance(this);
+  func_0x00406226();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486380
 // GHIDRA_NAME TDocument::CreateTDocumentInstance
-// GHIDRA_PROTO undefined __thiscall TDocument::CreateTDocumentInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTDocumentInstance(void)
 
 void TDocument::CreateTDocumentInstance()
 
@@ -46,27 +46,13 @@ void TDocument::CreateTDocumentInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004863A0
-// GHIDRA_NAME TDocument::GetTDocumentClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTDocumentClassNamePointer(void)
+// GHIDRA_NAME TDocument::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDocument::GetTDocumentClassNamePointer()
-
-{
-  return &classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004863F0
-// GHIDRA_NAME TDocument::ConstructTDocumentBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDocumentBaseState(byte param_1)
-
-TDocument * TDocument::ConstructTDocumentBaseState(byte param_1)
+CRuntimeClass * TDocument::GetRuntimeClass()
 
 {
-  TFileBasedDocument::CreateTFileBasedDocumentInstance((TFileBasedDocument *)this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
+  return &classTDocument;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486530

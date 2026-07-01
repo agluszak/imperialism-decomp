@@ -3,44 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TTradeBidNationLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005BD950
-// GHIDRA_NAME TTradeBidNationLine::CreateTTradeBidNationLineInstance
-// GHIDRA_PROTO undefined CreateTTradeBidNationLineInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x005BD900
+// GHIDRA_NAME TTradeBidNationLine::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLineData * TTradeBidNationLine::CreateTTradeBidNationLineInstance(void)
+TTradeBidNationLine * TTradeBidNationLine::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TLineData *this;
-  TLineData *pTVar1;
+  func_0x00409098();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005BD950
+// GHIDRA_NAME TTradeBidNationLine::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TTradeBidNationLine::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063942a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)__2_YAPAXI_Z(0x14);
+  puVar1 = (undefined4 *)operator_new(0x14);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (this != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(this);
-    this->vftable = (TLineDataVtbl *)&TTradeBidNationLineVtbl_0066e4f0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00408f0d();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD9C0
-// GHIDRA_NAME TTradeBidNationLine::GetTLineDataClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
+// GHIDRA_NAME TTradeBidNationLine::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeBidNationLine::GetTLineDataClassNamePointer()
+CRuntimeClass * TTradeBidNationLine::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTradeBidNationLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDA20
@@ -54,33 +68,34 @@ TTradeBidNationLine::OrphanRetStub_0056f460
 {
   undefined2 uVar1;
   undefined2 uVar2;
-  TView *this_00;
+  undefined4 *puVar3;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar4;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063944a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (TView *)__2_YAPAXI_Z(100);
+  puVar3 = (undefined4 *)operator_new(100);
   local_4 = 0;
-  if (this_00 == (TView *)0x0) {
-    this_00 = (TView *)0x0;
+  if (puVar3 == (undefined4 *)0x0) {
+    puVar3 = (undefined4 *)0x0;
   }
   else {
-    TView::ConstructTViewBaseState(this_00);
-    this_00->vftable = (TViewVtbl *)&TTradeBidNationViewVtbl_0066e530;
+    func_0x004064e2();
+    *puVar3 = &TTradeBidNationView::_vftable_;
   }
   uVar1 = *(undefined2 *)&this->field_0x10;
   uVar2 = *(undefined2 *)&this->field_0x12;
+  uVar4 = 5;
   local_4 = 0xffffffff;
-  InitializeUiResourceEntryFrameAndParent
-            (*(undefined4 *)(param_1 + 0x40),param_1,param_2,&this->field_0x8,5,5,0);
-  *(undefined2 *)((int)&this_00[1].vftable + 2) = uVar2;
-  *(undefined2 *)&this_00[1].vftable = uVar1;
-  *unaff_FS_OFFSET = local_c;
+  func_0x004096b5(*(undefined4 *)(param_1 + 0x40),param_1,param_2,&this->field_0x8,5,5,0);
+  *(undefined2 *)((int)puVar3 + 0x62) = uVar2;
+  *(undefined2 *)(puVar3 + 0x18) = uVar1;
+  *unaff_FS_OFFSET = uVar4;
   return;
 }
 

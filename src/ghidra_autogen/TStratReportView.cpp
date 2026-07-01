@@ -4,42 +4,40 @@
 // Bucket: TStratReportView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E330
-// GHIDRA_NAME TStratReportView::?CreateTStratReportViewInstance@@YAPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@XZ
-// GHIDRA_PROTO undefined ?CreateTStratReportViewInstance@@YAPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@XZ()
+// GHIDRA_NAME TStratReportView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TStratReportView::
-        _CreateTStratReportViewInstance__YAPAUStratReportViewState___Z_imperialismsrcgameTStratReportView_cpp126722299__XZ
-                  (void)
+undefined4 * TStratReportView::CreateObject(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637d8a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(100);
+  puVar1 = (undefined4 *)operator_new(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TStratReportViewVtbl_00667d08;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E3A0
-// GHIDRA_NAME TStratReportView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TStratReportView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TStratReportView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TStratReportView::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
@@ -55,8 +53,8 @@ _ConstructTStratReportViewBaseState__YIPAUStratReportViewState___Z_imperialismsr
           (TStratReportView *this)
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
-  this->vftable = &TStratReportViewVtbl_00667d08;
+  func_0x004064e2();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -67,168 +65,10 @@ _ConstructTStratReportViewBaseState__YIPAUStratReportViewState___Z_imperialismsr
 TStratReportView * TStratReportView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x0040309e();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0058E440
-// GHIDRA_NAME TStratReportView::OrphanTiny_SetDwordEcxOffset_60_0058e440
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_60_0058e440(undefined4 param_1)
-
-void __thiscall
-TStratReportView::OrphanTiny_SetDwordEcxOffset_60_0058e440
-          (TStratReportView *this,undefined4 param_1)
-
-{
-  *(undefined4 *)&this->field_0x60 = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0058E460
-// GHIDRA_NAME TStratReportView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
-
-void TStratReportView::OrphanTiny_ReturnZero_0048a730()
-
-{
-  CString *pCVar1;
-  undefined4 uVar2;
-  int iVar3;
-  int iVar4;
-  undefined4 *unaff_FS_OFFSET;
-  CString CStack00000004;
-  CString local_24;
-  CString local_20;
-  CString local_1c;
-  CString local_18;
-  CString local_14;
-  CString local_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  int local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00637e20;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  local_10.m_pchData = &stack0xffffffc8;
-  SetQuickDrawFillColor();
-  FillRectWithQuickDrawBrushAndContextOffset();
-  CString::__0CString__QAE_XZ(&local_24);
-  local_4 = 0;
-  CString::__0CString__QAE_XZ(&local_1c);
-  local_4._0_1_ = 1;
-  CString::__0CString__QAE_XZ(&local_20);
-  local_4._0_1_ = 2;
-  CString::__0CString__QAE_XZ(&local_18);
-  CStack00000004.m_pchData = &stack0xffffffc8;
-  local_4._0_1_ = 3;
-  SetQuickDrawFillColor();
-  SetQuickDrawStyleWord_1D4C_AndMarkDirty();
-  SetQuickDrawStyleWord_1D4E_AndMarkDirty();
-  SetQuickDrawStyleWord_1D50_AndMarkDirty();
-  SetQuickDrawTextOriginWithContextOffset(0xc);
-  AssignSharedStringFromIndexedA8EntryNameField
-            ((int)*(short *)(*(int *)&this->field_0x60 + 2));
-  pCVar1 = (CString *)__H_YG_AVCString__PBDABV0__Z(&local_14,s_Battle_of_0069935c);
-  local_4._0_1_ = 4;
-  CString::__0CString__QAE_ABV0__Z(&stack0x00000004,pCVar1);
-  local_4._0_1_ = 5;
-  CString::__4CString__QAEABV0_ABV0__Z(&local_24,&stack0x00000004);
-  local_4._0_1_ = 4;
-  CString::__1CString__QAE_XZ(&stack0x00000004);
-  local_4._0_1_ = 3;
-  CString::__1CString__QAE_XZ(&local_14);
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
-  FormatOverlayTerrainLabelText();
-  pCVar1 = (CString *)__H_YG_AVCString__PBDABV0__Z(&local_14,s_Winner__00699350);
-  local_4._0_1_ = 6;
-  CString::__0CString__QAE_ABV0__Z(&stack0x00000004,pCVar1);
-  local_4._0_1_ = 7;
-  CString::__4CString__QAEABV0_ABV0__Z(&local_24,&stack0x00000004);
-  local_4._0_1_ = 6;
-  CString::__1CString__QAE_XZ(&stack0x00000004);
-  local_4 = CONCAT31(local_4._1_3_,3);
-  CString::__1CString__QAE_XZ(&local_14);
-  SetQuickDrawTextOriginWithContextOffset(0xc);
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
-  SetQuickDrawStyleWord_1D4E_AndMarkDirty();
-  iVar3 = 0;
-  iVar4 = 4;
-  do {
-    if (*(short *)(iVar4 + *(int *)&this->field_0x60) != 0) {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2717,iVar3);
-      _Format_CString__QAAXPBDZZ(&local_1c,&g_szDecimalFormat);
-      uVar2 = __H_YG_AVCString__ABV0_PBD_Z(&local_10,&local_1c);
-      local_4._0_1_ = 8;
-      pCVar1 = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_14,uVar2);
-      local_4._0_1_ = 9;
-      CString::__0CString__QAE_ABV0__Z(&stack0x00000004,pCVar1);
-      local_4._0_1_ = 10;
-      CString::__4CString__QAEABV0_ABV0__Z(&local_24,&stack0x00000004);
-      local_4._0_1_ = 9;
-      CString::__1CString__QAE_XZ(&stack0x00000004);
-      local_4._0_1_ = 8;
-      CString::__1CString__QAE_XZ(&local_14);
-      local_4 = CONCAT31(local_4._1_3_,3);
-      CString::__1CString__QAE_XZ(&local_10);
-      SetQuickDrawTextOriginWithContextOffset(0xc);
-      THQButton::DrawTextWithCachedQuickDrawStyleState();
-    }
-    iVar4 = iVar4 + 2;
-    iVar3 = iVar3 + 1;
-  } while (iVar4 < 0x40);
-  SetQuickDrawStyleWord_1D4E_AndMarkDirty();
-  FormatOverlayTerrainLabelText();
-  pCVar1 = (CString *)__H_YG_AVCString__PBDABV0__Z(&local_10,s_Loser__00699344);
-  local_4._0_1_ = 0xb;
-  CString::__0CString__QAE_ABV0__Z(&stack0x00000004,pCVar1);
-  local_4._0_1_ = 0xc;
-  CString::__4CString__QAEABV0_ABV0__Z(&local_24,&stack0x00000004);
-  local_4._0_1_ = 0xb;
-  CString::__1CString__QAE_XZ(&stack0x00000004);
-  local_4 = CONCAT31(local_4._1_3_,3);
-  CString::__1CString__QAE_XZ(&local_10);
-  SetQuickDrawTextOriginWithContextOffset(0xc);
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
-  SetQuickDrawStyleWord_1D4E_AndMarkDirty();
-  iVar3 = 0;
-  iVar4 = 0x40;
-  do {
-    if (*(short *)(iVar4 + *(int *)&this->field_0x60) != 0) {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2717,iVar3);
-      _Format_CString__QAAXPBDZZ(&local_1c,&g_szDecimalFormat);
-      uVar2 = __H_YG_AVCString__ABV0_PBD_Z(&local_14,&local_1c);
-      local_4._0_1_ = 0xd;
-      pCVar1 = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_10,uVar2);
-      local_4._0_1_ = 0xe;
-      CString::__0CString__QAE_ABV0__Z(&stack0x00000004,pCVar1);
-      local_4._0_1_ = 0xf;
-      CString::__4CString__QAEABV0_ABV0__Z(&local_24,&stack0x00000004);
-      local_4._0_1_ = 0xe;
-      CString::__1CString__QAE_XZ(&stack0x00000004);
-      local_4._0_1_ = 0xd;
-      CString::__1CString__QAE_XZ(&local_10);
-      local_4 = CONCAT31(local_4._1_3_,3);
-      CString::__1CString__QAE_XZ(&local_14);
-      SetQuickDrawTextOriginWithContextOffset(0xc);
-      THQButton::DrawTextWithCachedQuickDrawStyleState();
-    }
-    iVar4 = iVar4 + 2;
-    iVar3 = iVar3 + 1;
-  } while (iVar4 < 0x7c);
-  local_4._0_1_ = 2;
-  CString::__1CString__QAE_XZ(&local_18);
-  local_4._0_1_ = 1;
-  CString::__1CString__QAE_XZ(&local_20);
-  local_4 = (uint)local_4._1_3_ << 8;
-  CString::__1CString__QAE_XZ(&local_1c);
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_24);
-  *unaff_FS_OFFSET = uStack_c;
-  return;
 }
 

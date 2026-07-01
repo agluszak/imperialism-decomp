@@ -3,33 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: TPopulationMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B5B70
-// GHIDRA_NAME TPopulationMgr::GetTPopulationMgrClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTPopulationMgrClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5B40
+// GHIDRA_NAME TPopulationMgr::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TPopulationMgr::GetTPopulationMgrClassNamePointer()
+undefined4 * TPopulationMgr::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x50);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5B70
+// GHIDRA_NAME TPopulationMgr::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TPopulationMgr::GetRuntimeClass()
+
+{
+  return &classTPopulationMgr;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5BB0
-// GHIDRA_NAME TPopulationMgr::ConstructTPopulationMgrBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTPopulationMgrBaseState(byte param_1)
+// GHIDRA_NAME TPopulationMgr::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPopulationMgr * TPopulationMgr::ConstructTPopulationMgrBaseState(byte param_1)
+TPopulationMgr * TPopulationMgr::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TPopulationMgr::DestructTPopulationMgrAndMaybeFree(this);
+  func_0x00408878();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5BE0
 // GHIDRA_NAME TPopulationMgr::DestructTPopulationMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTPopulationMgrAndMaybeFree(void)
 
 void TPopulationMgr::DestructTPopulationMgrAndMaybeFree()
 
@@ -84,7 +101,7 @@ TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0
   short sVar3;
   int iVar4;
   short sVar5;
-
+  
   *(short *)(*(int *)&this->field_0x10 + 4) = param_1;
   *(short *)(*(int *)&this->field_0x14 + 4) = param_1;
   *(short *)(*(int *)&this->field_0x10 + 6) = param_2;
@@ -118,7 +135,7 @@ void TPopulationMgr::OrphanCallChain_C2_I24_004b5e80()
   short sVar3;
   TPopulationMgrVtbl *pTVar4;
   int iVar5;
-
+  
   pTVar4 = this->vftable;
   (*pTVar4->OrphanLeaf_NoCall_Ins09_004b5d10)
             (*(undefined4 *)&this->field_0x10,*(undefined4 *)&this->field_0x14);
@@ -154,7 +171,7 @@ void TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed
   int local_14;
   int local_10;
   int iVar9;
-
+  
   iVar12 = 0;
   sVar8 = *(short *)&this->field_0x8;
   psVar1 = (short *)(*(int *)&this->field_0x14 + 4);
@@ -277,12 +294,12 @@ void TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed
     uVar6 = 0;
   }
   else {
-    piVar5 = (int *)__2_YAPAXI_Z(0xc);
+    piVar5 = (int *)operator_new(0xc);
     if (piVar5 == (int *)0x0) {
       piVar5 = (int *)0x0;
     }
     else {
-      *piVar5 = (int)&TLaborPoolVtbl_0064f540;
+      *piVar5 = (int)&TLaborPool::_vftable_;
       *(undefined2 *)(piVar5 + 1) = 0;
       *(undefined2 *)((int)piVar5 + 6) = 0;
       *(undefined2 *)(piVar5 + 2) = 0;
@@ -324,7 +341,7 @@ TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260
   short sVar7;
   int iVar8;
   short sVar9;
-
+  
   iVar8 = (int)*(short *)&this->field_0x8;
   sVar9 = 0;
   iVar1 = *(int *)(*(int *)&this->field_0x4 + 0xac);
@@ -407,7 +424,7 @@ float10 TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0()
 {
   short sVar1;
   float10 fVar2;
-
+  
   sVar1 = *(short *)&this->field_0x8;
   if (sVar1 < 10) {
     fVar2 = (float10)_DAT_0064f488;
@@ -455,7 +472,7 @@ undefined1 * TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0()
   short sVar3;
   int iVar4;
   short local_8 [4];
-
+  
   iVar4 = (int)*(short *)(*(int *)&this->field_0x10 + 8) +
           (int)*(short *)(*(int *)&this->field_0x10 + 6);
   local_8[0] = 0;
@@ -508,7 +525,7 @@ undefined1 TPopulationMgr::OrphanCallChain_C2_I61_004b65b0()
   undefined1 uVar5;
   int iVar6;
   short local_8 [4];
-
+  
   uVar5 = 0;
   iVar3 = (int)*(short *)(*(int *)&this->field_0x10 + 8) +
           (int)*(short *)(*(int *)&this->field_0x10 + 6);
@@ -564,7 +581,7 @@ void TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param
   short sVar2;
   int iVar3;
   short sVar4;
-
+  
   sVar4 = param_2;
   if (param_1 == 1) {
     iVar3 = *(int *)&this->field_0x10;
@@ -632,7 +649,7 @@ void TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param
 
 {
   short *psVar1;
-
+  
   if (param_1 == 1) {
     psVar1 = (short *)(*(int *)&this->field_0x14 + 4);
     *psVar1 = *psVar1 - param_2;
@@ -656,15 +673,15 @@ void TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6850
-// GHIDRA_NAME TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int * param_1)
+// GHIDRA_NAME TPopulationMgr::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int *param_1)
+void TPopulationMgr::WriteTo(int *param_1)
 
 {
   code *pcVar1;
-
-  TObject::WriteTo((TObject *)this,(TStream *)param_1);
+  
+  func_0x0040583a(param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x8,2);
   (*pcVar1)(&this->field_0x1c,2);
@@ -679,15 +696,15 @@ void TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int *param
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B68F0
-// GHIDRA_NAME TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int * param_1)
+// GHIDRA_NAME TPopulationMgr::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int *param_1)
+void TPopulationMgr::ReadFrom(int *param_1)
 
 {
   code *pcVar1;
-
-  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
+  
+  func_0x00403517(param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x8,2);
   (*pcVar1)(&this->field_0x1c,2);
@@ -702,10 +719,10 @@ void TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int *param
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6990
-// GHIDRA_NAME TPopulationMgr::OrphanCallChain_C4_I28_004b6990
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I28_004b6990(void)
+// GHIDRA_NAME TPopulationMgr::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TPopulationMgr::OrphanCallChain_C4_I28_004b6990()
+void TPopulationMgr::Free()
 
 {
   if (*(int **)&this->field_0x10 != (int *)0x0) {

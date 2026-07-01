@@ -4,54 +4,54 @@
 // Bucket: TMilitaryPageView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564860
-// GHIDRA_NAME TMilitaryPageView::CreateTMilitaryPageViewInstance
-// GHIDRA_PROTO undefined CreateTMilitaryPageViewInstance()
+// GHIDRA_NAME TMilitaryPageView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TPageView * TMilitaryPageView::CreateTMilitaryPageViewInstance(void)
+undefined4 * TMilitaryPageView::CreateObject(void)
 
 {
-  TPageView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006358da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPageView *)__2_YAPAXI_Z(0x88);
+  puVar1 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  if (this != (TPageView *)0x0) {
-    TPageView::ConstructTPageViewBaseState(this);
-    this->vftable = (TPageViewVtbl *)&TMilitaryPageViewVtbl_0065c9c0;
-    this[1].vftable = (TPageViewVtbl *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040778e();
+    *puVar1 = &_vftable_;
+    puVar1[0x21] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TPageView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564900
-// GHIDRA_NAME TMilitaryPageView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMilitaryPageView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMilitaryPageView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMilitaryPageView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMilitaryPageView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564920
 // GHIDRA_NAME TMilitaryPageView::ConstructTMilitaryPageViewBaseState
-// GHIDRA_PROTO undefined __thiscall TMilitaryPageView::ConstructTMilitaryPageViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTMilitaryPageViewBaseState(void)
 
 TMilitaryPageView * TMilitaryPageView::ConstructTMilitaryPageViewBaseState()
 
 {
-  TPageView::ConstructTPageViewBaseState((TPageView *)this);
-  this->vftable = &TMilitaryPageViewVtbl_0065c9c0;
+  func_0x0040778e();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x84 = 0;
   return this;
 }
@@ -63,51 +63,38 @@ TMilitaryPageView * TMilitaryPageView::ConstructTMilitaryPageViewBaseState()
 TMilitaryPageView * TMilitaryPageView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004085c1();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005649A0
-// GHIDRA_NAME TMilitaryPageView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TMilitaryPageView::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TMilitaryPageView::OrphanLeaf_NoCall_Ins07_004d8920()
+void TMilitaryPageView::NoOpUiLifecycleHook()
 
 {
-  undefined uVar1;
-  undefined3 extraout_var;
-  TToolBarClusterVtbl *pTStack_10;
-  TMilitaryPageView *pTStack_c;
-  undefined4 uStack_8;
-
-  pTStack_c = (TMilitaryPageView *)0x5649ad;
-  TPageView::OrphanLeaf_NoCall_Ins07_004d8920((TPageView *)this);
-  uStack_8 = 0x6f6b6179;
-  pTStack_c = (TMilitaryPageView *)0x5649bd;
-  uVar1 = (*this->ownerContext->vftable->ResolveControlByTag)();
-  pTStack_c = (TMilitaryPageView *)CONCAT31(extraout_var,uVar1);
-  pTStack_10 = (TToolBarClusterVtbl *)0x22;
-  LoadUiStringByGroupAndIndexToControlObject(0x2730);
-  pTStack_c = this;
-  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_10,(char *)&g_szEmptyString);
-  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
+  func_0x00406f8c();
+  (*this->ownerContext->vftable->ResolveControlByTag)();
+  func_0x0040807b(0x2730);
+  func_0x00401b40(&g_szEmptyString);
+  func_0x00404d22();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564BF0
-// GHIDRA_NAME TMilitaryPageView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMilitaryPageView::CallVoidSlotA0
+// GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TMilitaryPageView::GetTEventHandlerClassNamePointer()
+void TMilitaryPageView::CallVoidSlotA0()
 
 {
   int *piVar1;
-
-  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
+  
+  TView::CallVoidSlotA0((TView *)this);
   piVar1 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   *(undefined1 *)(piVar1 + 0xd3) = 0;
                     /* WARNING: Could not recover jumptable at 0x00564c0f. Too many branches */

@@ -3,23 +3,47 @@
 // Program: Imperialism.exe
 // Bucket: TNavyBattle.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A54D0
-// GHIDRA_NAME TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5480
+// GHIDRA_NAME TNavyBattle::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TNavyBattle * TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(byte param_1)
+undefined4 * TNavyBattle::CreateObject(void)
 
 {
-  TNavyBattle::CreateTNavyBattleInstance(this);
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x94);
+  if (puVar1 != (undefined4 *)0x0) {
+    puVar1[1] = 0;
+    puVar1[2] = 0;
+    puVar1[9] = 0;
+    puVar1[7] = 0;
+    puVar1[0xd] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[8] = 0;
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A54D0
+// GHIDRA_NAME TNavyBattle::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TNavyBattle * TNavyBattle::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x0040825b();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5500
 // GHIDRA_NAME TNavyBattle::CreateTNavyBattleInstance
-// GHIDRA_PROTO undefined __thiscall TNavyBattle::CreateTNavyBattleInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTNavyBattleInstance(void)
 
 void TNavyBattle::CreateTNavyBattleInstance()
 
@@ -29,13 +53,13 @@ void TNavyBattle::CreateTNavyBattleInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5520
-// GHIDRA_NAME TNavyBattle::GetTTacticalBattleClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTacticalBattleClassNamePointer(void)
+// GHIDRA_NAME TNavyBattle::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyBattle::GetTTacticalBattleClassNamePointer()
+CRuntimeClass * TNavyBattle::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNavyBattle;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A55C0
@@ -57,7 +81,7 @@ void TNavyBattle::OrphanRetStub_0059f710(TacticalBattleUnit *pUnit, int targetTi
   void *pSideListCursor;
   int targetRow;
   bool canPlace;
-
+  
   canPlace = true;
   iVar1 = targetTileIndex / 0x1d;
   if (pUnit->ownerSideIndex == 0) {
@@ -76,11 +100,11 @@ LAB_005a5610:
     if (*(int **)&this->field_0x8 != (int *)0x0) {
       (**(code **)(**(int **)&this->field_0x8 + 0x1a4))(pUnit);
     }
-    nextUnitSelection = SelectNextTacticalUnitForDoneCommand();
+    nextUnitSelection = func_0x0040809e();
     *(int *)&this->field_0x1c = nextUnitSelection;
     if (*(char *)(*(int *)(&this->field_0x14 + *(int *)&this->field_0xc * 4) + 0x10) != '\0') {
       *(uint *)&this->field_0xc = (uint)(*(int *)&this->field_0xc == 0);
-      uVar2 = SelectNextTacticalUnitForDoneCommand();
+      uVar2 = func_0x0040809e();
       *(undefined4 *)&this->field_0x1c = uVar2;
       if (*(int *)&this->field_0x8 != 0) {
         pSideListCursor =
@@ -91,8 +115,7 @@ LAB_005a5610:
         (**(code **)(targetRow + 0x13c))();
       }
       if ((char)(*(int **)(&this->field_0x14 + *(int *)&this->field_0xc * 4))[4] != '\0') {
-        TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A
-                  ((TacticalBattleView *)this);
+        func_0x00401023();
         return;
       }
       (**(code **)(**(int **)(&this->field_0x14 + *(int *)&this->field_0xc * 4) + 0x28))();
@@ -108,7 +131,6 @@ LAB_005a5610:
 // GHIDRA_COMMENT Setting prototype: void ResolveTacticalAttackAgainstTileOccupant(TacticalBattleUnit *pAttackerUnit, int targetTileIndex)
 // GHIDRA_COMMENT_END
 
-/* WARNING: Unable to use type for symbol pController */
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Setting prototype: void ResolveTacticalAttackAgainstTileOccupant(TacticalBattleUnit
    *pAttackerUnit, int targetTileIndex) */
@@ -118,80 +140,82 @@ TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
           (TNavyBattle *this,TacticalBattleUnit *pAttackerUnit,int targetTileIndex)
 
 {
-  int damageMode;
+  int *piVar1;
+  float fVar2;
+  float fVar3;
   int rollValue;
-  int iVar1;
-  float10 fVar2;
-  float10 fVar3;
-  undefined4 uVar4;
-  undefined4 uVar5;
+  int iVar4;
+  int unaff_EBP;
+  int unaff_ESI;
+  float10 fVar5;
+  undefined4 uVar6;
+  undefined4 uVar7;
   int targetDoubleColumn;
   float targetRow;
   TacticalBattleUnit *pActiveUnit;
-  TacticalBattleUnit *pController;
+  TacticalBattleController *pController;
   TacticalBattleUnit *pDefenderUnit;
   uint attackerRow;
   float rangeChanceFactor;
-
-  pController = pAttackerUnit;
-  pDefenderUnit = *(TacticalBattleUnit **)(*(int *)&this->field_0x4 + 4 + targetTileIndex * 0x14);
-  (**(code **)((int)pDefenderUnit->pVtable + 0xc))();
-  attackerRow = pAttackerUnit->tileIndex / 0x1d;
-  iVar1 = (attackerRow & 1) + (pAttackerUnit->tileIndex % 0x1d) * 2;
-  ConvertHexTileIndexToRowAndDoubleColumn
-            (targetTileIndex,(uint *)&targetRow,&targetDoubleColumn);
-  if (targetDoubleColumn < iVar1) {
-    targetDoubleColumn = iVar1 * 2 - targetDoubleColumn;
+  
+  piVar1 = *(int **)(*(int *)&this->field_0x4 + 4 + targetTileIndex * 0x14);
+  (**(code **)(*piVar1 + 0xc))();
+  iVar4 = (pAttackerUnit->tileIndex / 0x1d & 1U) + (pAttackerUnit->tileIndex % 0x1d) * 2;
+  func_0x00407b44(targetTileIndex,&targetRow,&targetDoubleColumn);
+  if (unaff_ESI < iVar4) {
+    unaff_ESI = iVar4 * 2 - unaff_ESI;
   }
-  if ((int)targetRow < (int)attackerRow) {
-    targetRow = (float)(attackerRow * 2 - (int)targetRow);
+  if (unaff_EBP < targetDoubleColumn) {
+    unaff_EBP = targetDoubleColumn * 2 - unaff_EBP;
   }
-  pAttackerUnit = (TacticalBattleUnit *)((int)targetRow - attackerRow);
-  rollValue = (targetDoubleColumn - iVar1) - (int)pAttackerUnit;
+  targetDoubleColumn = unaff_EBP - targetDoubleColumn;
+  rollValue = (unaff_ESI - iVar4) - targetDoubleColumn;
   if (0 < rollValue) {
-    pAttackerUnit = (TacticalBattleUnit *)((int)&pAttackerUnit->pVtable + rollValue / 2);
+    targetDoubleColumn = rollValue / 2 + targetDoubleColumn;
   }
-  iVar1 = (**(code **)((int)pController->pVtable + 0x2c))();
-  rangeChanceFactor = (float)(int)pAttackerUnit / ((float)iVar1 * (float)_DAT_00669ef8);
-  targetRow = (float)(pController->statAttackBase * 5) +
-              _DAT_00669f04 /
-              (rangeChanceFactor * rangeChanceFactor * rangeChanceFactor - _DAT_00669f00);
+  iVar4 = (**(code **)((int)pAttackerUnit->pVtable + 0x2c))();
+  fVar2 = (float)targetDoubleColumn;
+  targetDoubleColumn = pAttackerUnit->statAttackBase * 5;
+  rangeChanceFactor = fVar2 / ((float)iVar4 * (float)_DAT_00669ef8);
+  fVar3 = (float)targetDoubleColumn;
+  fVar2 = _DAT_00669f04 /
+          (rangeChanceFactor * rangeChanceFactor * rangeChanceFactor - _DAT_00669f00);
   if (*(int **)&this->field_0x8 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x8 + 0x1b8))
-              (pController->tileIndex,pController->unitKindId + 0xf5a,1);
+              (pAttackerUnit->tileIndex,pAttackerUnit->unitKindId + 0xf5a,1);
   }
-  iVar1 = _rand();
-  if (targetRow <= (float)(iVar1 % 100)) {
+  iVar4 = GenerateThreadLocalRandom15();
+  targetDoubleColumn = iVar4 % 100;
+  if (fVar3 + fVar2 <= (float)targetDoubleColumn) {
     if (*(int **)&this->field_0x8 == (int *)0x0) goto LAB_005a58fd;
-    iVar1 = **(int **)&this->field_0x8;
-    uVar5 = 6;
-    uVar4 = 0xf3c;
+    iVar4 = **(int **)&this->field_0x8;
+    uVar7 = 6;
+    uVar6 = 0xf3c;
   }
   else {
     pActiveUnit = *(TacticalBattleUnit **)(&this->field_0x14 + *(int *)&this->field_0xc * 4);
     (**(code **)((int)pActiveUnit->pVtable + 0xc))();
-    damageMode = pActiveUnit->unknown_2c;
-    fVar2 = (float10)(**(code **)((int)pController->pVtable + 0x30))();
-    iVar1 = pController->statHealthA;
-    fVar3 = (float10)(**(code **)((int)pDefenderUnit->pVtable + 0x34))();
-    TNavyBattle::ApplyTacticalDamageAndDeathState
-              ((TNavyBattle *)pDefenderUnit,
-               (float)(fVar3 * (float10)(float)((float10)iVar1 * fVar2)),damageMode);
+    iVar4 = pActiveUnit->unknown_2c;
+    fVar5 = (float10)(**(code **)((int)pAttackerUnit->pVtable + 0x30))();
+    targetDoubleColumn = (int)(float)((float10)pAttackerUnit->statHealthA * fVar5);
+    fVar5 = (float10)(**(code **)(*piVar1 + 0x34))();
+    targetDoubleColumn = (int)(float)(fVar5 * (float10)(float)targetDoubleColumn);
+    func_0x00406023(targetDoubleColumn,iVar4);
     if (*(int **)&this->field_0x8 != (int *)0x0) {
-      (**(code **)(**(int **)&this->field_0x8 + 0x1a4))(pDefenderUnit);
+      (**(code **)(**(int **)&this->field_0x8 + 0x1a4))(piVar1);
     }
-    if (pDefenderUnit->stateCode != 3) goto LAB_005a58fd;
-    *(undefined4 *)(*(int *)&this->field_0x4 + 4 + pDefenderUnit->tileIndex * 0x14) = 0;
-    pDefenderUnit->tileIndex = -1;
+    if (piVar1[7] != 3) goto LAB_005a58fd;
+    *(undefined4 *)(*(int *)&this->field_0x4 + 4 + piVar1[2] * 0x14) = 0;
+    piVar1[2] = -1;
     if (*(int **)&this->field_0x8 == (int *)0x0) goto LAB_005a58fd;
-    iVar1 = **(int **)&this->field_0x8;
-    uVar5 = 0xc;
-    uVar4 = 0xf42;
+    iVar4 = **(int **)&this->field_0x8;
+    uVar7 = 0xc;
+    uVar6 = 0xf42;
   }
-  (**(code **)(iVar1 + 0x1b8))(targetTileIndex,uVar4,uVar5);
+  (**(code **)(iVar4 + 0x1b8))(targetRow,uVar6,uVar7);
 LAB_005a58fd:
-  pController->isActionAvailable = 0;
-  EvaluateTacticalSideStateAndShowBattleSummaryDialog();
+  pAttackerUnit->isActionAvailable = 0;
+  func_0x00409606();
   return;
 }
 
@@ -213,7 +237,7 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
   int local_24;
   int local_1c;
   int local_18 [6];
-
+  
   iVar1 = *(int *)(param_1 + 0x28);
   iVar4 = 0;
   psVar2 = *(short **)&this->field_0x24;
@@ -234,7 +258,7 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
       if (0 < *(int *)&this->field_0x3c) {
         do {
           if (local_1c <= *psVar5) {
-            ComputeHexNeighborTileIndices_005A0420(local_24,local_18);
+            func_0x004032ec(local_24,local_18);
             piVar6 = local_18;
             psVar7 = (short *)&this->field_0x7c;
             local_28 = 6;
@@ -273,9 +297,7 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
 void TNavyBattle::CreateTTacticalBattleInstance()
 
 {
-  int *unaff_retaddr;
-
-  TSimMgr::ResolveMapOrderChainsForTurnPhase((TSimMgr *)g_pNavyOrderManager,unaff_retaddr);
+  func_0x00406398();
   return;
 }
 
@@ -289,11 +311,10 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget()
   short sVar1;
   int *piVar2;
   int iVar3;
-
+  
   (*this->vftable->EvaluateAndResolveTacticalActionAgainstTileOccupant)();
   if (*(int *)&this->field_0x44 == 0) {
-    ComputeHexNeighborTileIndices_005A0420
-              (*(undefined4 *)(*(int *)&this->field_0x1c + 8),&stack0xffffffe0);
+    func_0x004032ec(*(undefined4 *)(*(int *)&this->field_0x1c + 8),&stack0xffffffe0);
     iVar3 = 0;
     piVar2 = (int *)&stack0xffffffe0;
     do {
@@ -306,7 +327,7 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget()
       piVar2 = piVar2 + 1;
     } while (iVar3 < 6);
   }
-  TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+  func_0x0040400c();
   return;
 }
 
@@ -322,78 +343,25 @@ TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
   short sVar1;
   int *piVar2;
   int iVar3;
-  int aiStack_18 [6];
-
-  MoveTacticalUnitTowardTile(param_1,param_2);
+  
+  func_0x00403fbc(param_1,param_2);
   if (*(char *)(param_1 + 0x18) == '\0') {
-    ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(*(int *)&this->field_0x1c + 8),aiStack_18);
+    func_0x004032ec(*(undefined4 *)(*(int *)&this->field_0x1c + 8),&stack0xffffffe0);
     iVar3 = 0;
-    piVar2 = aiStack_18;
+    piVar2 = (int *)&stack0xffffffe0;
     while (((*piVar2 == -1 ||
             (sVar1 = *(short *)(*(int *)&this->field_0x24 + *piVar2 * 2), sVar1 == -1)) ||
            (*(int *)(*(int *)&this->field_0x1c + 0x28) < (int)sVar1))) {
       iVar3 = iVar3 + 1;
       piVar2 = piVar2 + 1;
       if (5 < iVar3) {
-        TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+        func_0x0040400c();
         return;
       }
     }
   }
   if ((*(int *)(param_1 + 0x1c) != 0) || (*(int *)&this->field_0x44 != 0)) {
-    TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A63C0
-// GHIDRA_NAME TNavyBattle::ApplyTacticalDamageAndDeathState
-// GHIDRA_PROTO void __thiscall ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: void ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode) */
-
-void TNavyBattle::ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode)
-
-{
-  bool bVar1;
-  float fVar2;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-
-  iVar5 = 0;
-  if (damageMode == 0) {
-    fVar2 = (float)ftol();
-    damageAmount = (float)ftol();
-  }
-  else if (damageMode == 1) {
-    fVar2 = (float)ftol();
-    damageAmount = (float)ftol();
-  }
-  else {
-    fVar2 = damageAmount;
-    if (damageMode == 2) {
-      fVar2 = (float)ftol();
-      iVar3 = _rand();
-      bVar1 = (float)(iVar3 % 10) < damageAmount;
-      damageAmount = 0.0;
-      if (bVar1) {
-        iVar5 = 10;
-      }
-    }
-  }
-  iVar4 = *(int *)&this->field_0x4 - (int)damageAmount;
-  *(int *)&this->field_0x4 = iVar4;
-  iVar3 = *(int *)&this->field_0x38 - (int)fVar2;
-  *(int *)&this->field_0x38 = iVar3;
-  *(int *)&this->field_0x3c = *(int *)&this->field_0x3c - iVar5;
-  if ((iVar4 < 1) || (iVar3 < 1)) {
-    *(undefined4 *)&this->field_0x4 = 0;
-    *(undefined4 *)&this->field_0x38 = 0;
-    *(undefined4 *)&this->field_0x1c = 3;
+    func_0x0040400c();
   }
   return;
 }

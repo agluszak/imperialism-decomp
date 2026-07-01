@@ -11,39 +11,41 @@ void TModalMessageCommand::OrphanRetStub_00487a00()
 
 {
   undefined4 in_EAX;
+  undefined1 *puVar1;
   TModalMessageCommand *pTStack_14;
   undefined *puStack_10;
   undefined4 uStack_c;
   undefined4 uStack_8;
   undefined1 *puStack_4;
-
+  
   uStack_c = CONCAT22((short)((uint)in_EAX >> 0x10),*(undefined2 *)&this->field_0x1c);
   uStack_8 = 0;
   puStack_10 = &DAT_006a5be0;
   puStack_4 = (undefined1 *)&pTStack_14;
+  puVar1 = &this->field_0x18;
   pTStack_14 = this;
-  AssignStringSharedRefAndReturnThis(&this->field_0x18);
-  DispatchLocalizedUiMessageWithTemplateA13A0();
+  func_0x004076b7(puVar1);
+  DispatchLocalizedUiMessageWithTemplateA13A0(puVar1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DCD50
-// GHIDRA_NAME TModalMessageCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
+// GHIDRA_NAME TModalMessageCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TModalMessageCommand * TModalMessageCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
+TModalMessageCommand * TModalMessageCommand::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TModalMessageCommand::CreateTModalMessageCommandInstance(this);
+  func_0x004013de();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DCD80
 // GHIDRA_NAME TModalMessageCommand::CreateTModalMessageCommandInstance
-// GHIDRA_PROTO undefined __thiscall TModalMessageCommand::CreateTModalMessageCommandInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTModalMessageCommandInstance(void)
 
 void TModalMessageCommand::CreateTModalMessageCommandInstance()
 
@@ -52,12 +54,12 @@ void TModalMessageCommand::CreateTModalMessageCommandInstance()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_0063a448;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::__1CString__QAE_XZ((CString *)&this->field_0x18);
+  CString::~CString((CString *)&this->field_0x18);
   this->vftable =
        (TModalMessageCommandVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -65,12 +67,12 @@ void TModalMessageCommand::CreateTModalMessageCommandInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DCDD0
-// GHIDRA_NAME TModalMessageCommand::GetTEventClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
+// GHIDRA_NAME TModalMessageCommand::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TModalMessageCommand::GetTEventClassNamePointer()
+CRuntimeClass * TModalMessageCommand::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTModalMessageCommand;
 }
 

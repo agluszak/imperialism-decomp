@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TSwapperDaddyView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004AC5C0
+// GHIDRA_NAME TSwapperDaddyView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TSwapperDaddyView::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063080a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(100);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    puVar1[0x18] = 0;
+    *puVar1 = &_vftable_;
+    *unaff_FS_OFFSET = local_c;
+    return puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC650
 // GHIDRA_NAME TSwapperDaddyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,21 +40,21 @@
 TSwapperDaddyView * TSwapperDaddyView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00406442();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC6A0
-// GHIDRA_NAME TSwapperDaddyView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TSwapperDaddyView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSwapperDaddyView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TSwapperDaddyView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTSwapperDaddyView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC6C0
@@ -37,33 +67,37 @@ int * TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(int param_1)
   byte bVar1;
   int *piVar2;
   int iVar3;
+  TSwapperDaddyView *unaff_EBP;
   int *piVar4;
+  int unaff_retaddr;
+  TSwapperDaddyView *local_28;
   undefined4 local_24;
   undefined4 local_20;
   undefined4 uStack_1c;
-  undefined4 uStack_18;
-
+  
+  local_28 = this;
   if (param_1 != *(int *)&this->field_0x60) {
     piVar4 = (int *)0x0;
-    InitializeSelectableTextOptionEntryIteratorContext(this);
-    piVar2 = (int *)BeginSelectableTextOptionEntryIterator();
-    iVar3 = IsSelectableTextOptionEntryIteratorValid();
+    func_0x00403bbb(this);
+    piVar2 = (int *)func_0x00405754();
+    iVar3 = func_0x00406c4e();
     while (iVar3 != 0) {
-      if (piVar2[7] == param_1) {
+      if (piVar2[7] == unaff_retaddr) {
+        local_28 = (TSwapperDaddyView *)0x0;
         local_24 = 0;
-        local_20 = 0;
-        (**(code **)(*piVar2 + 0xf0))(&local_24,1);
+        (**(code **)(*piVar2 + 0xf0))(&local_28,1);
         piVar4 = piVar2;
       }
       else {
+        local_20 = 1000;
         uStack_1c = 1000;
-        uStack_18 = 1000;
-        (**(code **)(*piVar2 + 0xf0))(&uStack_1c,0);
+        (**(code **)(*piVar2 + 0xf0))(&local_20,0);
       }
-      piVar2 = (int *)AdvanceSelectableTextOptionEntryIterator();
-      iVar3 = IsSelectableTextOptionEntryIteratorValid();
+      piVar2 = (int *)func_0x00404368();
+      iVar3 = func_0x00406c4e();
+      this = unaff_EBP;
     }
-    *(int *)&this->field_0x60 = param_1;
+    *(int *)&this->field_0x60 = unaff_retaddr;
     return piVar4;
   }
   bVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(param_1);

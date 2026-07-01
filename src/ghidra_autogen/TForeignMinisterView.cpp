@@ -4,43 +4,43 @@
 // Bucket: TForeignMinisterView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2F20
-// GHIDRA_NAME TForeignMinisterView::CreateTForeignMinisterViewInstance
-// GHIDRA_PROTO undefined CreateTForeignMinisterViewInstance()
+// GHIDRA_NAME TForeignMinisterView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TForeignMinisterView::CreateTForeignMinisterViewInstance(void)
+undefined4 * TForeignMinisterView::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632a2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x68);
+  puVar1 = (undefined4 *)operator_new(0x68);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TForeignMinisterViewVtbl_00655308;
-    this[1].vftable = (TViewVtbl *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar1[0x18] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2FB0
-// GHIDRA_NAME TForeignMinisterView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TForeignMinisterView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TForeignMinisterView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TForeignMinisterView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTForeignMinisterView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2FD0
@@ -50,8 +50,8 @@ CRuntimeClass * TForeignMinisterView::GetTEventHandlerClassNamePointer()
 TForeignMinisterView * TForeignMinisterView::ConstructTForeignMinisterViewBaseState()
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
-  this->vftable = &TForeignMinisterViewVtbl_00655308;
+  func_0x004064e2();
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x60 = 0;
   return this;
 }
@@ -63,26 +63,26 @@ TForeignMinisterView * TForeignMinisterView::ConstructTForeignMinisterViewBaseSt
 TForeignMinisterView * TForeignMinisterView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00407883();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3050
-// GHIDRA_NAME TForeignMinisterView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
+// GHIDRA_NAME TForeignMinisterView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
 void __thiscall
-TForeignMinisterView::OrphanRetStub_0059add0
+TForeignMinisterView::HandleEvent
           (TForeignMinisterView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   uint uVar1;
   TForeignMinisterViewVtbl *pTVar2;
   undefined uVar3;
-
+  
   uVar1 = *(uint *)(param_2 + 0x1c);
   if (param_1 == 0x14) {
     if (uVar1 < 0x65787070) {
@@ -115,12 +115,12 @@ TForeignMinisterView::OrphanRetStub_0059add0
     return;
   }
   if (param_1 != 10) {
-    TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
+    func_0x00408657(param_1,param_2,param_3);
     return;
   }
   if (uVar1 != 0x6261636b) {
     if (uVar1 != 0x6f6b6179) {
-      TView::OrphanRetStub_0059add0((TView *)this,10,param_2,param_3);
+      func_0x00408657(10,param_2,param_3);
       return;
     }
     pTVar2 = this->vftable;
@@ -142,7 +142,7 @@ void TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0()
 {
   TForeignMinisterViewVtbl *pTVar1;
   undefined uVar2;
-
+  
   if (g_pLocalizationTable->field_0x14 == '\0') {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();

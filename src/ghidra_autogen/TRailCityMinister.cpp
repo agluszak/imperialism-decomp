@@ -4,116 +4,75 @@
 // Bucket: TRailCityMinister.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6210
-// GHIDRA_NAME TRailCityMinister::CreateTRailCityMinisterInstance
-// GHIDRA_PROTO undefined CreateTRailCityMinisterInstance()
+// GHIDRA_NAME TRailCityMinister::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TMinister * TRailCityMinister::CreateTRailCityMinisterInstance(void)
+undefined4 * TRailCityMinister::CreateObject(void)
 
 {
-  TMinister *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063150a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMinister *)__2_YAPAXI_Z(0x1c4);
+  puVar1 = (undefined4 *)operator_new(0x1c4);
   local_4 = 0;
-  if (this != (TMinister *)0x0) {
-    TMinister::ConstructTMinister(this);
-    *(undefined4 *)&this[0x18].field_0xc = 0;
-    *(undefined2 *)&this[1].field_0x4 = 1;
-    *(undefined2 *)&this[1].field_0x6 = 1;
-    *(undefined2 *)&this->field_0xc = 1;
-    this->vftable = (TMinisterVtbl *)&TRailCityMinisterVtbl_00650e90;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040433b();
+    puVar1[99] = 0;
+    *(undefined2 *)(puVar1 + 5) = 1;
+    *(undefined2 *)((int)puVar1 + 0x16) = 1;
+    *(undefined2 *)(puVar1 + 3) = 1;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TMinister *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C62D0
-// GHIDRA_NAME TRailCityMinister::GetTMinisterClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
+// GHIDRA_NAME TRailCityMinister::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRailCityMinister::GetTMinisterClassNamePointer()
+CRuntimeClass * TRailCityMinister::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTRailCityMinister;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C62F0
 // GHIDRA_NAME TRailCityMinister::ConstructTRailCityMinisterBaseState
-// GHIDRA_PROTO undefined __thiscall TRailCityMinister::ConstructTRailCityMinisterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTRailCityMinisterBaseState(void)
 
 TRailCityMinister * TRailCityMinister::ConstructTRailCityMinisterBaseState()
 
 {
-  TMinister::ConstructTMinister((TMinister *)this);
+  func_0x0040433b();
   *(undefined4 *)&this->field_0x18c = 0;
   *(undefined2 *)&this->field_0x14 = 1;
   *(undefined2 *)&this->field_0x16 = 1;
   *(undefined2 *)&this->field_0xc = 1;
-  this->vftable = &TRailCityMinisterVtbl_00650e90;
+  this->vftable = &_vftable_;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6330
-// GHIDRA_NAME TRailCityMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
+// GHIDRA_NAME TRailCityMinister::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailCityMinister * TRailCityMinister::DeletingDestructTMinister(byte param_1)
+TRailCityMinister * TRailCityMinister::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTRailCityMinisterAndMaybeFree_Impl();
+  func_0x00404809();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C63A0
-// GHIDRA_NAME TRailCityMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-
-void TRailCityMinister::GetTEventHandlerClassNamePointer()
-
-{
-  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xe);
-  (**(code **)(**(int **)&this->field_0x28 + 0x14))(9);
-  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xf);
-  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0x10);
-  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xb);
-  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xc);
-  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xd);
-  (**(code **)(**(int **)&this->field_0x28 + 0x14))(8);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(1);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(5);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(3);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(5);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(3);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(5);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(3);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
-  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
-  return;
 }
 

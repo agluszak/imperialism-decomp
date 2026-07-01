@@ -3,81 +3,44 @@
 // Program: Imperialism.exe
 // Bucket: TNextMoveCommand.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A0D60
-// GHIDRA_NAME TNextMoveCommand::QueueTacticalEventPacket232A
-// GHIDRA_PROTO undefined __thiscall QueueTacticalEventPacket232A(void)
-
-void TNextMoveCommand::QueueTacticalEventPacket232A()
-
-{
-  TCommand *this_00;
-  TCommand *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006385ea;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this[2].field_0x10 = 0;
-  this_00 = (TCommand *)__2_YAPAXI_Z(0x1c);
-  local_4 = 0;
-  if (this_00 == (TCommand *)0x0) {
-    pTVar1 = (TCommand *)0x0;
-  }
-  else {
-    TCommand::ConstructTurnEventPacketBase(this_00);
-    this_00->vftable = (TCommandVtbl *)&TNextMoveCommandVtbl_0066a100;
-    pTVar1 = this_00;
-  }
-  local_4 = 0xffffffff;
-  InitializeRangePairAndResetCursor(0x232a,g_pGlobalUiRootController,0,0,0);
-  pTVar1[1].vftable = (TCommandVtbl *)this;
-  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(pTVar1);
-  *unaff_FS_OFFSET = this_00;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005A64D0
-// GHIDRA_NAME TNextMoveCommand::CreateTNextMoveCommandInstance
-// GHIDRA_PROTO undefined CreateTNextMoveCommandInstance()
+// GHIDRA_NAME TNextMoveCommand::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TCommand * TNextMoveCommand::CreateTNextMoveCommandInstance(void)
+undefined4 * TNextMoveCommand::CreateObject(void)
 
 {
-  TCommand *this;
-  TCommand *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063873a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCommand *)__2_YAPAXI_Z(0x1c);
+  puVar1 = (undefined4 *)operator_new(0x1c);
   local_4 = 0;
-  pTVar1 = (TCommand *)0x0;
-  if (this != (TCommand *)0x0) {
-    TCommand::ConstructTurnEventPacketBase(this);
-    this->vftable = (TCommandVtbl *)&TNextMoveCommandVtbl_0066a100;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403d5f();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6540
-// GHIDRA_NAME TNextMoveCommand::GetTEventClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
+// GHIDRA_NAME TNextMoveCommand::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNextMoveCommand::GetTEventClassNamePointer()
+CRuntimeClass * TNextMoveCommand::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNextMoveCommand;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6560
@@ -87,21 +50,21 @@ CRuntimeClass * TNextMoveCommand::GetTEventClassNamePointer()
 TNextMoveCommand * TNextMoveCommand::ConstructTNextMoveCommandBaseState()
 
 {
-  TCommand::ConstructTurnEventPacketBase((TCommand *)this);
-  this->vftable = &TNextMoveCommandVtbl_0066a100;
+  func_0x00403d5f();
+  this->vftable = &_vftable_;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6590
-// GHIDRA_NAME TNextMoveCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
+// GHIDRA_NAME TNextMoveCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNextMoveCommand * TNextMoveCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
+TNextMoveCommand * TNextMoveCommand::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTNextMoveCommandAndMaybeFree_Impl();
+  func_0x0040312f();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -115,9 +78,9 @@ void TNextMoveCommand::OrphanRetStub_00487a00()
 {
   int *piVar1;
   bool bVar2;
-
+  
   piVar1 = *(int **)&this->field_0x18;
-  if (piVar1 == *(int **)&g_pMapContextActionManager->field_0x3a4) {
+  if (piVar1 == (int *)g_pMapContextActionManager[0xe9]) {
     if (piVar1[0x11] != 0) {
       bVar2 = piVar1[0x11] == 1;
       (**(code **)(*(int *)piVar1[5] + 0x34))(bVar2);
@@ -126,7 +89,7 @@ void TNextMoveCommand::OrphanRetStub_00487a00()
       return;
     }
     *(undefined1 *)(piVar1 + 0x12) = 1;
-    AdvanceToNextTacticalUnitTurnStep();
+    func_0x00404700();
   }
   return;
 }

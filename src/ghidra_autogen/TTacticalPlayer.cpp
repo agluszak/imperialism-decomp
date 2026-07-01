@@ -3,6 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalPlayer.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0059AD40
+// GHIDRA_NAME TTacticalPlayer::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TTacticalPlayer::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x28);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AD70
 // GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059ad70
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad70(void)
@@ -35,7 +52,7 @@ void TTacticalPlayer::TArmyTacUnit_VtblSlot00()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059ADD0
 // GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 
 void TTacticalPlayer::OrphanRetStub_0059add0()
 
@@ -64,22 +81,22 @@ void TTacticalPlayer::OrphanRetStub_0059ae10()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AE30
-// GHIDRA_NAME TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(byte param_1)
+// GHIDRA_NAME TTacticalPlayer::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalPlayer * TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(byte param_1)
+TTacticalPlayer * TTacticalPlayer::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TTacticalPlayer::CreateTTacticalPlayerInstance(this);
+  func_0x0040989f();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AE60
 // GHIDRA_NAME TTacticalPlayer::CreateTTacticalPlayerInstance
-// GHIDRA_PROTO undefined __thiscall TTacticalPlayer::CreateTTacticalPlayerInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTTacticalPlayerInstance(void)
 
 void TTacticalPlayer::CreateTTacticalPlayerInstance()
 
@@ -90,20 +107,20 @@ void TTacticalPlayer::CreateTTacticalPlayerInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AE80
-// GHIDRA_NAME TTacticalPlayer::GetTTacticalPlayerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTacticalPlayerClassNamePointer(void)
+// GHIDRA_NAME TTacticalPlayer::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacticalPlayer::GetTTacticalPlayerClassNamePointer()
+CRuntimeClass * TTacticalPlayer::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTacticalPlayer;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AEE0
-// GHIDRA_NAME TTacticalPlayer::ConstructTTacticalPlayerBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTacticalPlayerBaseState(void)
+// GHIDRA_NAME TTacticalPlayer::Free
+// GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TTacticalPlayer::ConstructTTacticalPlayerBaseState()
+void TTacticalPlayer::Free()
 
 {
   if (*(int **)&this->field_0x4 != (int *)0x0) {
@@ -125,15 +142,14 @@ void TTacticalPlayer::ConstructTTacticalPlayerBaseState()
 void TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0()
 
 {
-  TAutoGreatPower *this_00;
+  CPtrList *this_00;
   int *piVar1;
   int in_stack_00000004;
-
-  this_00 = (TAutoGreatPower *)(*(int *)&this->field_0x4 + 4);
-  piVar1 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
-                            (this_00,in_stack_00000004,(undefined4 *)0x0);
+  
+  this_00 = (CPtrList *)(*(int *)&this->field_0x4 + 4);
+  piVar1 = (int *)CPtrList::Find(this_00,in_stack_00000004,(undefined4 *)0x0);
   if (piVar1 != (int *)0x0) {
-    TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar1);
+    CPtrList::RemoveAt(this_00,piVar1);
   }
   return;
 }
@@ -145,8 +161,7 @@ void TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0()
 void TTacticalPlayer::WrapperFor_AddHead_At0059afe0(int *param_1)
 
 {
-  CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
-            ((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
+  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
   (**(code **)(*param_1 + 0x3c))();
   return;
 }

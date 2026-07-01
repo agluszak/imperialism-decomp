@@ -3,33 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: TUnitOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B6F50
-// GHIDRA_NAME TUnitOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004B6F20
+// GHIDRA_NAME TUnitOrder::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TUnitOrder::GetTProductionOrderClassNamePointer()
+undefined4 * TUnitOrder::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x5c);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B6F50
+// GHIDRA_NAME TUnitOrder::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TUnitOrder::GetRuntimeClass()
+
+{
+  return &classTUnitOrder;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6F90
-// GHIDRA_NAME TUnitOrder::ConstructTUnitOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTUnitOrderBaseState(byte param_1)
+// GHIDRA_NAME TUnitOrder::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUnitOrder * TUnitOrder::ConstructTUnitOrderBaseState(byte param_1)
+TUnitOrder * TUnitOrder::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TUnitOrder::DestructTUnitOrderAndMaybeFree(this);
+  func_0x0040668b();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6FC0
 // GHIDRA_NAME TUnitOrder::DestructTUnitOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TUnitOrder::DestructTUnitOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTUnitOrderAndMaybeFree(void)
 
 void TUnitOrder::DestructTUnitOrderAndMaybeFree()
 
@@ -58,7 +75,7 @@ TUnitOrder::InitializeCityRecruitmentOrderContext
 {
   int iVar1;
   undefined4 *puVar2;
-
+  
   *(void **)&this->field_0x8 = pCityState;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)((int)pCityState + 0x1d8);
   *(short *)&this->field_0x48 = nEntryId;
@@ -83,8 +100,8 @@ TUnitOrder::InitializeCityRecruitmentOrderContext
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7080
-// GHIDRA_NAME TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0
-// GHIDRA_PROTO int __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
+// GHIDRA_NAME TUnitOrder::MaxOrder
+// GHIDRA_PROTO int __thiscall MaxOrder(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Computes max additional recruitable delta for this entry using live city/nation constraints.
 // GHIDRA_COMMENT
@@ -99,17 +116,17 @@ TUnitOrder::InitializeCityRecruitmentOrderContext
 // GHIDRA_COMMENT_END
 
 /* Computes max additional recruitable delta for this entry using live city/nation constraints.
-
+   
    Checks:
    1. Workforce mode limit (this+0x56).
    2. Primary and optional secondary resource availability (this+0x4C/+0x50 and +0x4E/+0x52).
    3. Treasury affordability when cash cost is enabled (this+0x54).
-
+   
    Outputs:
    - this+0x40 limiting factor (0=resource,1=workforce,3=treasury)
    - return value = current pending amount (+0x04) + max allowed additional delta. */
 
-int TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
+int TUnitOrder::MaxOrder()
 
 {
   short sVar1;
@@ -123,7 +140,7 @@ int TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   int nSecondaryResourceCap;
   short nRecruitmentMode;
   short nWorkerCapMode1;
-
+  
   nRecruitmentMode = *(short *)&this->field_0x56;
   if (nRecruitmentMode == 1) {
     sVar1 = *(short *)(*(int *)&this->field_0xc + 0x1c);
@@ -185,8 +202,8 @@ LAB_004b70ec:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7210
-// GHIDRA_NAME TUnitOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO bool __thiscall OrphanCallChain_C1_I16_004b5100(short nTargetOrderAmount)
+// GHIDRA_NAME TUnitOrder::SetQuantity
+// GHIDRA_PROTO bool __thiscall SetQuantity(short nTargetOrderAmount)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Applies a new target recruitment amount for a city order entry and charges/refunds deltas immediately.
 // GHIDRA_COMMENT Algorithm:
@@ -221,7 +238,7 @@ LAB_004b70ec:
    Returns:
    - true when applied; false on invalid target. */
 
-bool TUnitOrder::OrphanCallChain_C1_I16_004b5100(short nTargetOrderAmount)
+bool TUnitOrder::SetQuantity(short nTargetOrderAmount)
 
 {
   short nMaxOrderAmount;
@@ -236,7 +253,7 @@ bool TUnitOrder::OrphanCallChain_C1_I16_004b5100(short nTargetOrderAmount)
   int *pCityStateSecondary;
   short *pnCityResourceStock;
   undefined3 extraout_var;
-
+  
   nOrderDelta = nTargetOrderAmount - *(short *)&this->field_0x4;
                     /* Pending order amount is stored at entry field +0x04; changes are applied as
                        deltas. */
@@ -286,8 +303,8 @@ bool TUnitOrder::OrphanCallChain_C1_I16_004b5100(short nTargetOrderAmount)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7320
-// GHIDRA_NAME TUnitOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
+// GHIDRA_NAME TUnitOrder::FillOrderSheet
+// GHIDRA_PROTO undefined __thiscall FillOrderSheet(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds projected resource/labor cost vector for a given city-entry amount.
 // GHIDRA_COMMENT
@@ -301,20 +318,20 @@ bool TUnitOrder::OrphanCallChain_C1_I16_004b5100(short nTargetOrderAmount)
 // GHIDRA_COMMENT_END
 
 /* Builds projected resource/labor cost vector for a given city-entry amount.
-
+   
    Algorithm:
    1. Delegate to base calculator (vfunc +0x3C).
    2. Write primary/secondary resource requirements into output array.
    3. Route labor requirement into specific output slot based on entry labor group field (+0x56).
-
+   
    Notes:
    - Used for preview/requirement displays and availability checks. */
 
-void TUnitOrder::CreateTItemOrderInstance()
+void TUnitOrder::FillOrderSheet()
 
 {
   short sStack00000004;
-
+  
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   *(short *)(_sStack00000004 + *(short *)&this->field_0x4c * 2) =
        *(short *)&this->field_0x50 * sStack00000004;
@@ -334,259 +351,16 @@ void TUnitOrder::CreateTItemOrderInstance()
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B73B0
-// GHIDRA_NAME TUnitOrder::OrphanRetStub_004b5160
-// GHIDRA_PROTO void __thiscall OrphanRetStub_004b5160(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Commits pending university/city recruitment delta into persistent city/nation state.
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Read pending delta count from context field +0x04; return if zero.
-// GHIDRA_COMMENT 2. Branch on specialist mode flag (+0x58): civilian branch vs specialist branch.
-// GHIDRA_COMMENT 3. Civilian branch: add pending count into city recruitment queue slot (city +0x4A[entryId]) and spawn per-unit civilian order objects.
-// GHIDRA_COMMENT 4. Specialist branch: spawn military recruit order objects and apply nation progression gate updates for unlock tiers.
-// GHIDRA_COMMENT 5. Emit nation notification callback (+0x2C0) with mode 2 (civilian) or 3 (specialist).
-// GHIDRA_COMMENT 6. Clear pending delta (+0x04) after commit.
-// GHIDRA_COMMENT 7. For entryId==0, increment city counter at city+0x0A.
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - this (IMPLICIT): City recruitment order context.
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - None.
-// GHIDRA_COMMENT Persistence:
-// GHIDRA_COMMENT - Pending delta: context +0x04.
-// GHIDRA_COMMENT - Committed queue count: city +0x4A[entryId].
-// GHIDRA_COMMENT_END
-
-/* Commits pending university/city recruitment delta into persistent city/nation state.
-   Algorithm:
-   1. Read pending delta count from context field +0x04; return if zero.
-   2. Branch on specialist mode flag (+0x58): civilian branch vs specialist branch.
-   3. Civilian branch: add pending count into city recruitment queue slot (city +0x4A[entryId]) and
-   spawn per-unit civilian order objects.
-   4. Specialist branch: spawn military recruit order objects and apply nation progression gate
-   updates for unlock tiers.
-   5. Emit nation notification callback (+0x2C0) with mode 2 (civilian) or 3 (specialist).
-   6. Clear pending delta (+0x04) after commit.
-   7. For entryId==0, increment city counter at city+0x0A.
-   Parameters:
-   - this (IMPLICIT): City recruitment order context.
-   Returns:
-   - None.
-   Persistence:
-   - Pending delta: context +0x04.
-   - Committed queue count: city +0x4A[entryId]. */
-
-void TUnitOrder::OrphanRetStub_004b5160()
-
-{
-  short nProgressValue;
-  int nSpawnTileOrOrderObj;
-  TCivWorkOrderState *pNewCivOrderState;
-  TMilitaryUnitOrderState *this_00;
-  short sVar1;
-  undefined2 uVar2;
-  int iVar3;
-  int *unaff_FS_OFFSET;
-  undefined4 uVar4;
-  int adwTempAlloc [3];
-  int pPrevSehFrame;
-  undefined1 *pbSehCookie;
-  uint dwSehState;
-  int *pNationState;
-  int pOwnerNationState;
-  short *pnCityRecruitQueueCount;
-
-  pPrevSehFrame = *unaff_FS_OFFSET;
-  dwSehState = 0xffffffff;
-  pbSehCookie = &LAB_00630f64;
-  *unaff_FS_OFFSET = (int)&pPrevSehFrame;
-  iVar3 = 0;
-  if (*(short *)&this->field_0x4 != 0) {
-    CString::__0CString__QAE_XZ((CString *)(adwTempAlloc + 2));
-    dwSehState = 0;
-    CString::__0CString__QAE_XZ((CString *)adwTempAlloc);
-    dwSehState = CONCAT31(dwSehState._1_3_,1);
-    if (this->field_0x58 == '\0') {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2718);
-                    /* Civilian mode: commit pending count into city queue slot and instantiate
-                       per-unit civilian order objects. */
-      pnCityRecruitQueueCount =
-           (short *)(*(int *)&this->field_0x8 + 0x4a + *(short *)&this->field_0x48 * 2);
-      *pnCityRecruitQueueCount = *pnCityRecruitQueueCount + *(short *)&this->field_0x4;
-      if (0 < *(short *)&this->field_0x4) {
-        do {
-          nSpawnTileOrOrderObj = *(int *)(*(int *)&this->field_0x8 + 0xb0);
-          if (nSpawnTileOrOrderObj == 0) {
-            uVar4 = 1;
-          }
-          else {
-            uVar4 = CONCAT22((short)((uint)nSpawnTileOrOrderObj >> 0x10),
-                             *(undefined2 *)(nSpawnTileOrOrderObj + 0x14));
-          }
-          nSpawnTileOrOrderObj =
-               FindReachableRecruitSpawnTileWithVisitedReset
-                         (uVar4,*(short *)&this->field_0x48 == 4);
-          if ((short)nSpawnTileOrOrderObj != -1) {
-            adwTempAlloc[0] = __2_YAPAXI_Z(0x28);
-            if ((TCivWorkOrderState *)adwTempAlloc[0] == (TCivWorkOrderState *)0x0) {
-              pNewCivOrderState = (TCivWorkOrderState *)0x0;
-            }
-            else {
-              pNewCivOrderState =
-                   (TCivWorkOrderState *)
-                   TCivWorkOrderState::TCivWorkOrderState
-                             ((TCivWorkOrderState *)adwTempAlloc[0]);
-            }
-            pOwnerNationState = *(int *)(*(int *)&this->field_0x8 + 0xac);
-            InitializeCivWorkOrderState
-                      (pNewCivOrderState,
-                       CONCAT22((short)((uint)pOwnerNationState >> 0x10),
-                                *(undefined2 *)&this->field_0x48),nSpawnTileOrOrderObj,
-                       CONCAT22((short)((uint)*(int *)&this->field_0x8 >> 0x10),
-                                *(undefined2 *)(pOwnerNationState + 0xc)));
-          }
-          iVar3 = iVar3 + 1;
-        } while (iVar3 < *(short *)&this->field_0x4);
-      }
-    }
-    else {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)
-                (0x2717,CONCAT22((short)((uint)adwTempAlloc >> 0x10),
-                                 *(undefined2 *)&this->field_0x48),adwTempAlloc);
-      iVar3 = 0;
-      if (0 < *(short *)&this->field_0x4) {
-        do {
-          nSpawnTileOrOrderObj = *(int *)(*(int *)&this->field_0x8 + 0xb0);
-                    /* Specialist mode: instantiate military recruit-order objects and update nation
-                       unlock progression tiers. */
-          if (nSpawnTileOrOrderObj == 0) {
-            nProgressValue = 1;
-          }
-          else {
-            nProgressValue = *(short *)(nSpawnTileOrOrderObj + 0x14);
-          }
-          nProgressValue =
-               *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + nProgressValue * 0x24);
-          adwTempAlloc[0] = __2_YAPAXI_Z(0x44);
-          if ((TMilitaryUnitOrderState *)adwTempAlloc[0] == (TMilitaryUnitOrderState *)0x0) {
-            this_00 = (TMilitaryUnitOrderState *)0x0;
-          }
-          else {
-            this_00 = (TMilitaryUnitOrderState *)
-                      TMilitaryUnitOrderState::TMilitaryUnitOrderState
-                                ((TMilitaryUnitOrderState *)adwTempAlloc[0]);
-          }
-          TMilitaryUnitOrderState::InitializeRecruitOrderState
-                    (this_00,*(short *)&this->field_0x48,nProgressValue,
-                     *(short *)(*(int *)(*(int *)&this->field_0x8 + 0xac) + 0xc));
-          if ('2' < *(char *)(*(int *)(*(int *)&this->field_0x8 + 0xac) + 0x8ce)) {
-            *(undefined2 *)(this_00 + 0x38) = 100;
-          }
-          ComputeSelectedMilitaryPowerScore();
-          if (*(char *)(*(int *)(*(int *)&this->field_0x8 + 0xac) + 0x8c9) != '2') {
-            nProgressValue = ComputeSelectedMilitaryPowerScore();
-            pNationState = *(int **)(*(int *)&this->field_0x8 + 0xac);
-            if (*(char *)((int)pNationState + 0x8c9) == '\0') {
-              sVar1 = 0;
-            }
-            else {
-              sVar1 = *(char *)((int)pNationState + 0x8c9) + -0x33;
-            }
-            if (nProgressValue < 0xf) {
-              if (0x27 < nProgressValue) goto LAB_004b75ec;
-              if (0x45 < nProgressValue) goto LAB_004b7604;
-              if (0x77 < nProgressValue) goto LAB_004b7624;
-LAB_004b7636:
-              if (nProgressValue < 0xdc) {
-                if (0x10d < nProgressValue) goto LAB_004b765c;
-              }
-              else if (nProgressValue < 0x10e) {
-                if (sVar1 < 5) {
-                  (**(code **)(*pNationState + 0xb8))(1,5);
-                }
-              }
-              else {
-LAB_004b765c:
-                if ((nProgressValue < 0x140) && (sVar1 < 6)) {
-                  nSpawnTileOrOrderObj = *pNationState;
-                  uVar4 = 6;
-                  goto LAB_004b766c;
-                }
-              }
-            }
-            else if (nProgressValue < 0x28) {
-              if (sVar1 == 0) {
-                (**(code **)(*pNationState + 0xb8))(1,1);
-              }
-            }
-            else {
-LAB_004b75ec:
-              if (nProgressValue < 0x46) {
-                if (sVar1 < 2) {
-                  nSpawnTileOrOrderObj = *pNationState;
-                  uVar4 = 2;
-LAB_004b766c:
-                  (**(code **)(nSpawnTileOrOrderObj + 0xb8))(1,uVar4);
-                }
-              }
-              else {
-LAB_004b7604:
-                if (nProgressValue < 0x78) {
-                  if (sVar1 < 3) {
-                    (**(code **)(*pNationState + 0xb8))(1,3);
-                  }
-                }
-                else {
-LAB_004b7624:
-                  if (0xa9 < nProgressValue) goto LAB_004b7636;
-                  if (sVar1 < 4) {
-                    nSpawnTileOrOrderObj = *pNationState;
-                    uVar4 = 4;
-                    goto LAB_004b766c;
-                  }
-                }
-              }
-            }
-          }
-          iVar3 = iVar3 + 1;
-        } while (iVar3 < *(short *)&this->field_0x4);
-      }
-    }
-    uVar2 = (undefined2)((uint)*(int *)&this->field_0x8 >> 0x10);
-                    /* Notify owner nation of committed recruitment delta (mode 2 civilian / mode 3
-                       specialist), then clear pending +0x04. */
-    if (this->field_0x58 == '\0') {
-      uVar4 = 2;
-    }
-    else {
-      uVar4 = 3;
-    }
-    (**(code **)(**(int **)(*(int *)&this->field_0x8 + 0xac) + 0x2c0))
-              (uVar4,CONCAT22(uVar2,*(undefined2 *)&this->field_0x48),
-               CONCAT22(uVar2,*(undefined2 *)&this->field_0x4));
-    *(undefined2 *)&this->field_0x4 = 0;
-    if (*(short *)&this->field_0x48 == 0) {
-      pnCityRecruitQueueCount = (short *)(*(int *)&this->field_0x8 + 10);
-      *pnCityRecruitQueueCount = *pnCityRecruitQueueCount + 1;
-    }
-    dwSehState = dwSehState & 0xffffff00;
-    CString::__1CString__QAE_XZ((CString *)adwTempAlloc);
-    dwSehState = 0xffffffff;
-    CString::__1CString__QAE_XZ((CString *)(adwTempAlloc + 2));
-  }
-  *unaff_FS_OFFSET = pPrevSehFrame;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7850
-// GHIDRA_NAME TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int * param_1)
+// GHIDRA_NAME TUnitOrder::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int *param_1)
+void TUnitOrder::WriteTo(int *param_1)
 
 {
   code *pcVar1;
-
-  TObject::WriteTo((TObject *)this,(TStream *)param_1);
+  
+  func_0x0040583a(param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
@@ -605,8 +379,8 @@ void TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7920
-// GHIDRA_NAME TUnitOrder::SyncCityEntryOrderStateWithArchive
-// GHIDRA_PROTO void __thiscall SyncCityEntryOrderStateWithArchive(int * pArchive)
+// GHIDRA_NAME TUnitOrder::ReadFrom
+// GHIDRA_PROTO void __thiscall ReadFrom(int * pArchive)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Synchronizes one city-entry order object with archive stream state.
 // GHIDRA_COMMENT Algorithm:
@@ -631,12 +405,12 @@ void TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int *param_1)
    Returns:
    - void. */
 
-void TUnitOrder::SyncCityEntryOrderStateWithArchive(int *pArchive)
+void TUnitOrder::ReadFrom(int *pArchive)
 
 {
   code *pcVar1;
-
-  TObject::ReadFrom((TObject *)this,(TStream *)pArchive);
+  
+  func_0x00403517(pArchive);
   pcVar1 = *(code **)(*pArchive + 0x3c);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);

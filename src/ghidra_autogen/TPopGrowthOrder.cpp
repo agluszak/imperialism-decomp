@@ -4,39 +4,56 @@
 // Bucket: TPopGrowthOrder.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3050
-// GHIDRA_NAME TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004b3050(byte param_1)
+// GHIDRA_NAME TPopGrowthOrder::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPopGrowthOrder * TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050(byte param_1)
+TPopGrowthOrder * TPopGrowthOrder::_scalar_deleting_destructor_(byte param_1)
 
 {
-  WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl();
+  func_0x004020ef();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B8140
-// GHIDRA_NAME TPopGrowthOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8110
+// GHIDRA_NAME TPopGrowthOrder::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TPopGrowthOrder::GetTProductionOrderClassNamePointer()
+undefined4 * TPopGrowthOrder::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x4c);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8140
+// GHIDRA_NAME TPopGrowthOrder::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TPopGrowthOrder::GetRuntimeClass()
+
+{
+  return &classTPopGrowthOrder;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8160
 // GHIDRA_NAME TPopGrowthOrder::ConstructTPopGrowthOrderBaseState
-// GHIDRA_PROTO undefined __thiscall TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1)
+// GHIDRA_PROTO undefined __thiscall ConstructTPopGrowthOrderBaseState(int param_1)
 
 void TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1)
 
 {
   int iVar1;
   undefined4 *puVar2;
-
+  
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = 1;
@@ -54,10 +71,10 @@ void TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B81B0
-// GHIDRA_NAME TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
+// GHIDRA_NAME TPopGrowthOrder::MaxOrder
+// GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-short TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
+short TPopGrowthOrder::MaxOrder()
 
 {
   int iVar1;
@@ -65,7 +82,7 @@ short TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   short sVar3;
   short sVar4;
   short sVar5;
-
+  
   iVar1 = *(int *)&this->field_0x8;
   sVar2 = *(short *)&this->field_0x4;
   sVar4 = *(short *)(iVar1 + 0xd2) + sVar2;
@@ -87,10 +104,10 @@ short TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8230
-// GHIDRA_NAME TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
+// GHIDRA_NAME TPopGrowthOrder::SetQuantity
+// GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
+undefined4 TPopGrowthOrder::SetQuantity(short param_1)
 
 {
   short *psVar1;
@@ -100,7 +117,7 @@ undefined4 TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   char cVar5;
   undefined3 extraout_var;
   short sVar6;
-
+  
   sVar6 = param_1 - *(short *)&this->field_0x4;
   uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar4) < param_1) || (param_1 < 0)) {
@@ -132,17 +149,17 @@ undefined4 TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B82F0
-// GHIDRA_NAME TPopGrowthOrder::OrphanRetStub_004b5160
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+// GHIDRA_NAME TPopGrowthOrder::CommitIfPending
+// GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TPopGrowthOrder::OrphanRetStub_004b5160()
+void TPopGrowthOrder::CommitIfPending()
 
 {
   short *psVar1;
   short sVar2;
   int iVar3;
   int iVar4;
-
+  
   sVar2 = *(short *)&this->field_0x4;
   iVar4 = *(int *)(*(int *)&this->field_0x8 + 0x1d8);
   psVar1 = (short *)(*(int *)(iVar4 + 0x10) + 4);
@@ -180,7 +197,7 @@ void TPopGrowthOrder::OrphanRetStub_004b5160()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8420
 // GHIDRA_NAME TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop
-// GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
+// GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
 
 void TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop()
 
@@ -189,14 +206,14 @@ void TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8440
-// GHIDRA_NAME TPopGrowthOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
+// GHIDRA_NAME TPopGrowthOrder::FillOrderSheet
+// GHIDRA_PROTO undefined __thiscall FillOrderSheet(void)
 
-void TPopGrowthOrder::CreateTItemOrderInstance()
+void TPopGrowthOrder::FillOrderSheet()
 
 {
   undefined2 uStack00000004;
-
+  
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   *(undefined2 *)(_uStack00000004 + 0x1a) = uStack00000004;
   *(undefined2 *)(_uStack00000004 + 0x1c) = uStack00000004;

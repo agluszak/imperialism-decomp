@@ -3,27 +3,60 @@
 // Program: Imperialism.exe
 // Bucket: TDialogView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049D790
-// GHIDRA_NAME TDialogView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D6F0
+// GHIDRA_NAME TDialogView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TDialogView::GetTEventHandlerClassNamePointer()
+undefined4 * TDialogView::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  undefined4 uVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062fcd2;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x60);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    local_4 = CONCAT31(local_4._1_3_,1);
+    *puVar1 = &_vftable_;
+    uVar2 = func_0x004090ed(0);
+    func_0x004090ed(uVar2);
+    *unaff_FS_OFFSET = local_c;
+    return puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D790
+// GHIDRA_NAME TDialogView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TDialogView::GetRuntimeClass()
+
+{
+  return &classTDialogView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D880
-// GHIDRA_NAME TDialogView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TDialogView::EnsureField48Buffer
+// GHIDRA_PROTO undefined __thiscall EnsureField48Buffer(void)
 
-void TDialogView::OrphanTiny_ReturnZero_0048a730()
+void TDialogView::EnsureField48Buffer()
 
 {
   undefined4 uVar1;
-
-  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  
+  uVar1 = func_0x004090ed(0);
+  func_0x004090ed(uVar1);
   return;
 }
 
@@ -34,9 +67,9 @@ void TDialogView::OrphanTiny_ReturnZero_0048a730()
 TDialogView * TDialogView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00401929();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }

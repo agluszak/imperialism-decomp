@@ -4,54 +4,54 @@
 // Bucket: TGameSetupPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005757C0
-// GHIDRA_NAME TGameSetupPicture::CreateTGameSetupPictureInstance
-// GHIDRA_PROTO undefined CreateTGameSetupPictureInstance()
+// GHIDRA_NAME TGameSetupPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TNoHilitePicture * TGameSetupPicture::CreateTGameSetupPictureInstance(void)
+undefined4 * TGameSetupPicture::CreateObject(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006367ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
-    this->vftable = (TNoHilitePictureVtbl *)&TGameSetupPictureVtbl_00661b50;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403328();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575840
-// GHIDRA_NAME TGameSetupPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TGameSetupPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGameSetupPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TGameSetupPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTGameSetupPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575860
 // GHIDRA_NAME TGameSetupPicture::ConstructTGameSetupPictureBaseState
-// GHIDRA_PROTO undefined __thiscall TGameSetupPicture::ConstructTGameSetupPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTGameSetupPictureBaseState(void)
 
 TGameSetupPicture * TGameSetupPicture::ConstructTGameSetupPictureBaseState()
 
 {
-  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->vftable = &TGameSetupPictureVtbl_00661b50;
+  func_0x00403328();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,27 +62,27 @@ TGameSetupPicture * TGameSetupPicture::ConstructTGameSetupPictureBaseState()
 TGameSetupPicture * TGameSetupPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x004095de();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005758E0
-// GHIDRA_NAME TGameSetupPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TGameSetupPicture::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TGameSetupPicture::OrphanLeaf_NoCall_Ins07_004d8920()
+void TGameSetupPicture::NoOpUiLifecycleHook()
 
 {
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  func_0x00406ba9();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575900
-// GHIDRA_NAME TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO void __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
+// GHIDRA_NAME TGameSetupPicture::HandleEvent
+// GHIDRA_PROTO void __thiscall HandleEvent(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void HandleMainMenuCommandAction(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
 // GHIDRA_COMMENT_END
@@ -91,30 +91,44 @@ void TGameSetupPicture::OrphanLeaf_NoCall_Ins07_004d8920()
    int nDispatchFlags) */
 
 void __thiscall
-TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+TGameSetupPicture::HandleEvent
           (TGameSetupPicture *this,int nDialogEventCode,int pMenuCommandEvent,int nDispatchFlags)
 
 {
   int iVar1;
   char fModalAccepted;
   ushort wShiftState;
-  int nMapTileIndex;
+  undefined4 extraout_ECX;
+  undefined4 extraout_ECX_00;
+  undefined4 *unaff_EBP;
+  int *nMapTileIndex;
   undefined4 *unaff_FS_OFFSET;
-  int *pGlobalMapState;
-  undefined4 local_c;
-  TMapMgr *pTStack_8;
+  undefined4 uStack_40;
+  CString *pCStack_3c;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
+  int *piStack_30;
+  int iStack_2c;
+  TGameSetupPicture *local_14;
+  undefined4 uStack_10;
+  CString local_c;
+  CString CStack_8;
   undefined4 uStack_4;
   uint dwCommandTag;
-
+  
   iVar1 = nDialogEventCode;
   uStack_4 = 0xffffffff;
-  pTStack_8 = (TMapMgr *)&LAB_00636802;
-  local_c = *unaff_FS_OFFSET;
+  CStack_8.m_pchData = &LAB_00636802;
+  local_c.m_pchData = (char *)*unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
+  local_14 = this;
   if (((nDialogEventCode == 0x14) || (nDialogEventCode == 10)) || (nDialogEventCode == 0x22)) {
     dwCommandTag = *(uint *)(pMenuCommandEvent + 0x1c);
     if (dwCommandTag < 0x68696769) {
       if (dwCommandTag == 0x68696768) {
+        iStack_2c = 0;
+        piStack_30 = (int *)0x1b58;
+        uStack_34 = 0x575973;
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
       }
       else if (dwCommandTag != 0x636e636c) goto LAB_00575d3b;
@@ -122,62 +136,103 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     }
     if (dwCommandTag < 0x6d756c75) {
       if (dwCommandTag == 0x6d756c74) {
+        iStack_2c = 0;
+        piStack_30 = (int *)0x1b58;
+        uStack_34 = 0x575a60;
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
-        EnsureGameFlowStateAndPostTurnEvent5E5();
+        uStack_34 = 0x575a6b;
+        func_0x00405b00();
       }
       else if (dwCommandTag == 0x6c6f6164) {
+        iStack_2c = 0;
+        piStack_30 = (int *)0x1b58;
+        uStack_34 = 0x5759b1;
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
-        fModalAccepted = ReturnTrueStub();
+        uStack_34 = 0x5759bc;
+        fModalAccepted = func_0x00408594();
         while (fModalAccepted == '\0') {
-          CString::__0CString__QAE_XZ((CString *)&nDialogEventCode);
+          CString::CString((CString *)&nDialogEventCode);
+          piStack_30 = &nDialogEventCode;
+          iStack_2c = 0x2745;
           uStack_4 = 2;
-          LoadUiStringResourceByGroupAndIndex();
-          AssignStringSharedRefAndReturnThis(&nDialogEventCode);
+          uStack_34 = 0x5759ec;
+          func_0x00401e7e();
+          uStack_34 = 1;
+          uStack_38 = 1;
+          pCStack_3c = (CString *)&DAT_006a4218;
+          unaff_EBP = &uStack_40;
+          uStack_40 = extraout_ECX;
+          func_0x004076b7();
           fModalAccepted = DispatchLocalizedUiMessageWithTemplateA13A0();
-          uStack_4 = 0xffffffff;
+          local_14 = (TGameSetupPicture *)0xffffffff;
           if (fModalAccepted == '\0') goto LAB_00575d64;
-          CString::__1CString__QAE_XZ((CString *)&nDialogEventCode);
-          fModalAccepted = ReturnTrueStub();
+          uStack_38 = 0x575a26;
+          CString::~CString(&local_c);
+          uStack_38 = 0x575a31;
+          fModalAccepted = func_0x00408594();
+          unaff_EBP = &uStack_40;
         }
-        DAT_00695278 = 0xfffffffe;
+        g_nSaveFormatVersion = -2;
         goto LAB_00575d30;
       }
     }
     else if (dwCommandTag < 0x71756975) {
       if (dwCommandTag == 0x71756974) {
-        PostWmCloseToMainThreadWindow();
+        func_0x004077e3();
       }
       else if (dwCommandTag == 0x70726566) goto LAB_00575d30;
     }
     else {
       if (dwCommandTag == 0x72616e64) {
+        iStack_2c = 0x575b62;
         wShiftState = GetAsyncKeyState(0x10);
         if (((wShiftState & 0x8000) == 0) || ((char)g_apSecondaryNationStateSlots[0x17] == '\0')) {
+          iStack_2c = 0;
+          piStack_30 = (int *)0x1b58;
+          uStack_34 = 0x575c9a;
           (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
-          fModalAccepted = ReturnTrueStub();
+          uStack_34 = 0x575ca5;
+          fModalAccepted = func_0x00408594();
           while (fModalAccepted == '\0') {
-            CString::__0CString__QAE_XZ((CString *)&nDialogEventCode);
-            uStack_4 = 1;
-            LoadUiStringResourceByGroupAndIndex();
-            AssignStringSharedRefAndReturnThis(&nDialogEventCode);
+            uStack_34 = 0x575cb5;
+            CString::CString(&CStack_8);
+            uStack_34 = 10;
+            pCStack_3c = &CStack_8;
+            uStack_38 = 0x2745;
+            uStack_10 = 1;
+            uStack_40 = 0x575cd0;
+            func_0x00401e7e();
+            uStack_40 = 1;
+            func_0x004076b7(&local_14);
             fModalAccepted = DispatchLocalizedUiMessageWithTemplateA13A0();
-            uStack_4 = 0xffffffff;
+            local_14 = (TGameSetupPicture *)0xffffffff;
             if (fModalAccepted == '\0') goto LAB_00575d64;
-            CString::__1CString__QAE_XZ((CString *)&nDialogEventCode);
-            fModalAccepted = ReturnTrueStub();
+            uStack_38 = 0x575d04;
+            CString::~CString(&local_c);
+            uStack_38 = 0x575d0f;
+            fModalAccepted = func_0x00408594();
           }
-          SetSelectedIndex6AAndTriggerRefresh();
+          uStack_34 = 0;
+          uStack_38 = 0x575d1f;
+          func_0x004067df();
+          uStack_38 = 1;
+          pCStack_3c = (CString *)0x575d2b;
           (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df3f0)();
         }
         else {
-          pGlobalMapState = (int *)0x232c;
+          iStack_2c = 0;
+          piStack_30 = (int *)0x232c;
+          uStack_34 = 0x575b8f;
           (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
           if (g_pGlobalMapState == (TMapMgr *)0x0) {
             if (g_pActiveMapOrderContext != (TOcean *)0x0) {
+              uStack_34 = 0x575baa;
               (*g_pActiveMapOrderContext->vftable[1].GetRuntimeClass)();
               g_pActiveMapOrderContext = (TOcean *)0x0;
             }
-            g_pActiveMapOrderContext = (TOcean *)__2_YAPAXI_Z();
+            uStack_34 = 0x18;
+            uStack_38 = 0x575bb7;
+            g_pActiveMapOrderContext = (TOcean *)operator_new();
             if (g_pActiveMapOrderContext == (TOcean *)0x0) {
               g_pActiveMapOrderContext = (TOcean *)0x0;
             }
@@ -187,61 +242,97 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
               g_pActiveMapOrderContext->field0c = 0;
               g_pActiveMapOrderContext->keyMask = 0;
               g_pActiveMapOrderContext->field14 = 0;
-              g_pActiveMapOrderContext->vftable = &TOceanVtbl_0065c7c8;
+              g_pActiveMapOrderContext->vftable = &TOcean::_vftable_;
             }
-            ResetPortZoneGlobalContextCounters();
+            uStack_34 = 0x575be5;
+            func_0x004043d1();
             if (g_pGlobalMapState != (TMapMgr *)0x0) {
+              uStack_34 = 0x575bf4;
               (*g_pGlobalMapState->vftable->Free)();
               g_pGlobalMapState = (TMapMgr *)0x0;
             }
-            pTStack_8 = (TMapMgr *)__2_YAPAXI_Z();
-            if (pTStack_8 == (TMapMgr *)0x0) {
+            uStack_34 = 0x28;
+            uStack_38 = 0x575c01;
+            CStack_8.m_pchData = (char *)operator_new();
+            uStack_10 = 0;
+            if (CStack_8.m_pchData == (char *)0x0) {
               g_pGlobalMapState = (TMapMgr *)0x0;
             }
             else {
-              g_pGlobalMapState = TMapMgr::ConstructGlobalMapState(pTStack_8,pGlobalMapState);
+              uStack_34 = 0x575c17;
+              g_pGlobalMapState = (TMapMgr *)func_0x00401c6c();
             }
-            InitializeGlobalMapState(g_pGlobalMapState,pGlobalMapState);
+            uStack_10 = 0xffffffff;
+            uStack_34 = 0x575c2f;
+            func_0x004039bd();
           }
-          RebuildGlobalOrderManagersAndCapabilityState();
+          uStack_34 = 1;
+          uStack_38 = 0x575c3c;
+          func_0x00404cd2();
+          uStack_38 = 0x575c47;
           (*g_pGlobalMapState->vftable->WrapperFor_AllocateWithFallbackHandler_At0050e8b0)();
+          uStack_38 = 0x575c52;
           (*g_pGlobalMapState->vftable->LoadPoliticalMapRegionSubtypeTableFromResourceStream)();
-          nMapTileIndex = 0;
+          nMapTileIndex = (int *)0x0;
           do {
+            iStack_2c = 0x575c60;
             (*g_pGlobalMapState->vftable->UpdateMapTileAdjacencyMasksAndVariantForTile)();
+            iStack_2c = 0;
+            uStack_34 = 0x575c6d;
+            piStack_30 = nMapTileIndex;
             (*g_pGlobalMapState->vftable->UpdateTileNeighborBorderInfluenceCounters)();
-            nMapTileIndex = nMapTileIndex + 1;
-          } while (nMapTileIndex < 0x1950);
+            nMapTileIndex = (int *)((int)nMapTileIndex + 1);
+          } while ((int)nMapTileIndex < 0x1950);
         }
       }
       else {
         if (dwCommandTag != 0x7363656e) goto LAB_00575d3b;
+        iStack_2c = 0;
+        piStack_30 = (int *)0x1b58;
+        uStack_34 = 0x575acc;
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
-        fModalAccepted = ReturnTrueStub();
+        uStack_34 = 0x575ad7;
+        fModalAccepted = func_0x00408594();
         while (fModalAccepted == '\0') {
-          CString::__0CString__QAE_XZ((CString *)&nDialogEventCode);
+          CString::CString((CString *)&nDialogEventCode);
+          piStack_30 = &nDialogEventCode;
+          iStack_2c = 0x2745;
           uStack_4 = 3;
-          LoadUiStringResourceByGroupAndIndex();
-          AssignStringSharedRefAndReturnThis(&nDialogEventCode);
+          uStack_34 = 0x575b07;
+          func_0x00401e7e();
+          uStack_34 = 1;
+          uStack_38 = 1;
+          pCStack_3c = (CString *)&DAT_006a4218;
+          unaff_EBP = &uStack_40;
+          uStack_40 = extraout_ECX_00;
+          func_0x004076b7();
           fModalAccepted = DispatchLocalizedUiMessageWithTemplateA13A0();
-          uStack_4 = 0xffffffff;
+          local_14 = (TGameSetupPicture *)0xffffffff;
           if (fModalAccepted == '\0') goto LAB_00575d64;
-          CString::__1CString__QAE_XZ((CString *)&nDialogEventCode);
-          fModalAccepted = ReturnTrueStub();
+          uStack_38 = 0x575b41;
+          CString::~CString(&local_c);
+          uStack_38 = 0x575b4c;
+          fModalAccepted = func_0x00408594();
+          unaff_EBP = &uStack_40;
         }
       }
 LAB_00575d30:
-      PostTurnEventCodeMessage2420();
+      iStack_2c = 0x575d3b;
+      func_0x00408715();
     }
   }
 LAB_00575d3b:
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,iVar1);
+  iStack_2c = pMenuCommandEvent;
+  piStack_30 = (int *)iVar1;
+  uStack_34 = 0x575d4f;
+  func_0x00404566();
 LAB_00575d4f:
-  *unaff_FS_OFFSET = local_c;
+  *unaff_FS_OFFSET = unaff_EBP;
   return;
 LAB_00575d64:
-  uStack_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&nDialogEventCode);
+  local_14 = (TGameSetupPicture *)0xffffffff;
+  uStack_38 = 0x575d69;
+  CString::~CString(&local_c);
   goto LAB_00575d4f;
 }
 

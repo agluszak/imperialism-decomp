@@ -3,50 +3,75 @@
 // Program: Imperialism.exe
 // Bucket: CImageList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005E69E7
-// GHIDRA_NAME CImageList::?Create@CImageList@@QAEHHHIHH@Z
-// GHIDRA_PROTO int __thiscall ?Create@CImageList@@QAEHHHIHH@Z(int param_1, int param_2, uint param_3, int param_4, int param_5)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  public: int __thiscall CImageList::Create(int,int,unsigned int,int,int)
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
-// GHIDRA_COMMENT_END
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6A73
+// GHIDRA_NAME CImageList::Create
+// GHIDRA_PROTO undefined Create()
 
-/* Library Function - Single Match
-    public: int __thiscall CImageList::Create(int,int,unsigned int,int,int)
-
-   Library: nafxcw retail msvc500:static */
-
-int __thiscall
-CImageList::_Create_CImageList__QAEHHHIHH_Z
-          (CImageList *this,int param_1,int param_2,uint param_3,int param_4,int param_5)
+void __thiscall
+CImageList::Create(CImageList *param_1,int param_2,int param_3,int param_4,int param_5,int param_6,
+                  int param_7)
 
 {
   HIMAGELIST p_Var1;
-  int iVar2;
-
-  p_Var1 = ImageList_Create(param_1,param_2,param_3,param_4,param_5);
-  iVar2 = _Attach_CImageList__QAEHPAU_IMAGELIST___Z(this,(int)p_Var1);
-  return iVar2;
+  
+  p_Var1 = ImageList_Merge(*(HIMAGELIST *)(param_2 + 4),param_3,*(HIMAGELIST *)(param_4 + 4),param_5
+                           ,param_6,param_7);
+  Attach(param_1,(int)p_Var1);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6AA4
-// GHIDRA_NAME CImageList::?Attach@CImageList@@QAEHPAU_IMAGELIST@@@Z
-// GHIDRA_PROTO undefined __thiscall ?Attach@CImageList@@QAEHPAU_IMAGELIST@@@Z(int param_1)
+// GHIDRA_NAME CImageList::Attach
+// GHIDRA_PROTO undefined __thiscall Attach(int param_1)
 
-bool CImageList::_Attach_CImageList__QAEHPAU_IMAGELIST___Z(int param_1)
+bool CImageList::Attach(int param_1)
 
 {
-  TNetMgr *this_00;
+  CMapPtrToPtr *this_00;
   undefined4 *puVar1;
-
+  
   if (param_1 != 0) {
-    this_00 = (TNetMgr *)_afxMapHMENU__YAPAVCHandleMap__H_Z(1);
+    this_00 = (CMapPtrToPtr *)afxMapHMENU(1);
     *(int *)(this + 4) = param_1;
-    puVar1 = (undefined4 *)TNetMgr::__ACMapPtrToPtr__QAEAAPAXPAX_Z(this_00,param_1);
+    puVar1 = (undefined4 *)CMapPtrToPtr::operator[](this_00,param_1);
     *puVar1 = this;
   }
   return param_1 != 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6AD1
+// GHIDRA_NAME CImageList::Read
+// GHIDRA_PROTO undefined Read()
+
+bool __thiscall CImageList::Read(IStreamVtbl *param_1,undefined4 param_2)
+
+{
+  HIMAGELIST p_Var1;
+  IStream local_c;
+  IStreamVtbl *pIStack_8;
+  
+  local_c.lpVtbl = param_1;
+  pIStack_8 = param_1;
+  CArchiveStream::CArchiveStream(param_2);
+  p_Var1 = COMCTL32.DLL::ImageList_Read(&local_c);
+  param_1->AddRef = (_func_5233 *)p_Var1;
+  return p_Var1 != (HIMAGELIST)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6AFE
+// GHIDRA_NAME CImageList::Write
+// GHIDRA_PROTO undefined Write()
+
+void __thiscall CImageList::Write(IStreamVtbl *param_1,undefined4 param_2)
+
+{
+  IStream local_c;
+  IStreamVtbl *pIStack_8;
+  
+  local_c.lpVtbl = param_1;
+  pIStack_8 = param_1;
+  CArchiveStream::CArchiveStream(param_2);
+  COMCTL32.DLL::ImageList_Write((HIMAGELIST)param_1->AddRef,&local_c);
+  return;
 }
 

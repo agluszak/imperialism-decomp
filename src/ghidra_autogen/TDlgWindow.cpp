@@ -4,43 +4,43 @@
 // Bucket: TDlgWindow.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500280
-// GHIDRA_NAME TDlgWindow::CreateTDlgWindowInstance
-// GHIDRA_PROTO undefined CreateTDlgWindowInstance()
+// GHIDRA_NAME TDlgWindow::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TDlgWindow::CreateTDlgWindowInstance(void)
+undefined4 * TDlgWindow::CreateObject(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063333a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0xa0);
+  puVar1 = (undefined4 *)operator_new(0xa0);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::ConstructUiWindowResourceEntryBase(this);
-    this->vftable = (TControlVtbl *)&TDlgWindowVtbl_00656ce8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00407c43();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500300
-// GHIDRA_NAME TDlgWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TDlgWindow::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDlgWindow::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TDlgWindow::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTDlgWindow;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500320
@@ -56,8 +56,8 @@ CRuntimeClass * TDlgWindow::GetTEventHandlerClassNamePointer()
 TDlgWindow * TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop()
 
 {
-  TControl::ConstructUiWindowResourceEntryBase((TControl *)this);
-  this->vftable = &TDlgWindowVtbl_00656ce8;
+  func_0x00407c43();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -73,26 +73,24 @@ TDlgWindow * TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop()
 TDlgWindow * TDlgWindow::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
+  func_0x004027c5();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005003A0
 // GHIDRA_NAME TDlgWindow::AssertMcAppUILine2358
-// GHIDRA_PROTO undefined __thiscall TWindow::AssertMcAppUILine2358(void)
+// GHIDRA_PROTO undefined __thiscall AssertMcAppUILine2358(void)
 
 void TDlgWindow::AssertMcAppUILine2358()
 
 {
-  TWindow::AssertMcAppUILine2358((TWindow *)this);
-  TemporarilyClearAndRestoreUiInvalidationFlag
-            (s_D__Ambit_Cross_UGameWindow_cpp_00696bc0,0x27a);
-  if (*(short *)(DAT_006a2158 + 10) != 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UGameWindow_cpp_00696bc0,0x27f);
+  func_0x00408e04();
+  func_0x004057a4(g_szUGameWindowSourcePath_00696bc0,0x27a);
+  if (*(short *)(g_pDisplayMgr + 10) != 0) {
+    func_0x004057a4(g_szUGameWindowSourcePath_00696bc0,0x27f);
   }
   return;
 }

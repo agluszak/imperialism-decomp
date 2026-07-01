@@ -10,56 +10,58 @@
 TTechHistoryView * TTechHistoryView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00408698();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2230
-// GHIDRA_NAME TTechHistoryView::CreateTTechHistoryViewInstance
-// GHIDRA_PROTO undefined CreateTTechHistoryViewInstance()
+// GHIDRA_NAME TTechHistoryView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TTechHistoryView::CreateTTechHistoryViewInstance(void)
+undefined4 * TTechHistoryView::CreateObject(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638b2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x60);
+  puVar1 = (undefined4 *)operator_new(0x60);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TTechHistoryViewVtbl_00645ab0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B22A0
-// GHIDRA_NAME TTechHistoryView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTechHistoryView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTechHistoryView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTechHistoryView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTechHistoryView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B22C0
 // GHIDRA_NAME TTechHistoryView::ConstructTTechHistoryViewBaseState
-// GHIDRA_PROTO undefined __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTechHistoryViewBaseState(void)
+
+/* WARNING: Type propagation algorithm not settling */
 
 void TTechHistoryView::ConstructTTechHistoryViewBaseState()
 
@@ -67,174 +69,154 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState()
   TTechHistoryViewVtbl *pTVar1;
   _vslot_fn *p_Var2;
   int iVar3;
-  undefined4 uVar4;
-  TDeluxeTextVtbl *pTVar5;
-  undefined uVar6;
-  short sVar7;
+  undefined uVar4;
+  short sVar5;
   undefined3 extraout_var;
-  int *piVar8;
+  int *piVar6;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
-  TDeluxeText *this_00;
-  undefined4 *puVar9;
+  int *piVar7;
+  int *piVar8;
+  int unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   int unaff_retaddr;
-  int *piVar10;
+  int *piStack_88;
+  int iStack_84;
+  int iStack_80;
+  undefined4 uStack_7c;
+  undefined4 uStack_78;
+  undefined1 *puStack_74;
   int iStack_70;
-  TDeluxeText *pTStack_6c;
-  undefined1 *puStack_68;
+  int *piStack_6c;
+  int *piStack_68;
   undefined1 local_54;
   undefined1 local_53;
   undefined1 local_52;
   undefined1 local_51;
-  undefined1 local_50;
-  undefined1 local_4f;
-  undefined1 local_4e;
-  undefined1 local_4d;
-  undefined4 uStack_4c;
-  undefined4 uStack_48;
-  undefined4 uStack_44;
-  int aiStack_40 [2];
-  int iStack_38;
-  undefined1 local_32;
-  undefined1 local_31;
+  int local_50 [6];
+  undefined1 auStack_38 [4];
+  uint uStack_34;
   undefined1 local_30;
   undefined1 local_2f;
   undefined4 uStack_24;
-  int iStack_1c;
   int iStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
   undefined3 extraout_var_00;
-
+  
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00638b52;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pTVar1 = this->vftable;
-  local_32 = 0;
-  local_31 = 0;
+  uStack_34 = (uint)(ushort)uStack_34;
   local_30 = 0;
   local_2f = 0;
   local_54 = 0;
   local_53 = 0;
   local_52 = 0;
   local_51 = 0;
-  local_50 = 0;
-  local_4f = 0;
-  local_4e = 0;
-  local_4d = 0;
-  puStack_68 = (undefined1 *)0x5b2315;
-  uVar6 = (*pTVar1->SetForeignMinisterReadyFlag14)();
-  uStack_44 = CONCAT31(extraout_var,uVar6);
-  puStack_68 = &local_54;
-  pTStack_6c = (TDeluxeText *)0x2b6a;
+  local_50[0] = 0;
+  piStack_68 = (int *)0x5b2315;
+  uVar4 = (*pTVar1->SetForeignMinisterReadyFlag14)();
+  local_50[3] = CONCAT31(extraout_var,uVar4);
+  piStack_68 = (int *)&local_54;
+  piStack_6c = (int *)0x2b6a;
   iStack_70 = 0x5b2328;
   MapUiThemeCodeToStyleFlags();
-  puStack_68 = &local_50;
-  pTStack_6c = (TDeluxeText *)0x2b68;
+  piStack_68 = local_50;
+  piStack_6c = (int *)0x2b68;
   iStack_70 = 0x5b233a;
   MapUiThemeCodeToStyleFlags();
-  puStack_68 = (undefined1 *)0x2b6a;
-  pTStack_6c = (TDeluxeText *)0xc;
+  puStack_74 = auStack_38;
+  piStack_68 = (int *)0x2b6a;
+  piStack_6c = (int *)0xc;
   iStack_70 = 0;
-  BuildUiTextStyleDescriptor(&iStack_38);
+  uStack_78 = 0x5b234f;
+  BuildUiTextStyleDescriptor();
   p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  puStack_68 = (undefined1 *)0x7469746c;
-  pTStack_6c = (TDeluxeText *)0x5b2361;
-  uVar6 = (*p_Var2)();
-  piVar8 = (int *)CONCAT31(extraout_var_00,uVar6);
-  pTStack_6c = (TDeluxeText *)0x5b236a;
-  (**(code **)(*piVar8 + 0xc))();
-  pTStack_6c = (TDeluxeText *)0x1;
+  piStack_68 = (int *)0x7469746c;
+  piStack_6c = (int *)0x5b2361;
+  uVar4 = (*p_Var2)();
+  piVar6 = (int *)CONCAT31(extraout_var_00,uVar4);
+  piStack_6c = (int *)0x5b236a;
+  (**(code **)(*piVar6 + 0xc))();
+  piStack_6c = (int *)0x1;
   iStack_70 = unaff_retaddr + 1;
-  piVar10 = (int *)0x2712;
-  (**(code **)(*piVar8 + 0x1cc))();
-  ApplyUiTextStyleAndThemeFlags(piVar8,0,0x12,0x2b6a,0x2b68);
-  uVar6 = (*p_Var2)(0x70696374);
-  iVar3 = *(int *)CONCAT31(extraout_var_01,uVar6);
+  puStack_74 = (undefined1 *)0x2712;
+  uStack_78 = 0x5b2381;
+  (**(code **)(*piVar6 + 0x1cc))();
+  uStack_78 = 0x2b68;
+  uStack_7c = 0x2b6a;
+  iStack_80 = 0x12;
+  iStack_84 = 0;
+  piStack_88 = piVar6;
+  func_0x0040263a();
+  uStack_78 = 0x70696374;
+  uStack_7c = 0x5b23a0;
+  uVar4 = (*p_Var2)();
+  iVar3 = *(int *)CONCAT31(extraout_var_01,uVar4);
+  uStack_7c = 0x5b23ad;
   (**(code **)(iVar3 + 0xc))();
-  (**(code **)(iVar3 + 0x1c8))(iStack_10 + 0x944,1);
-  uVar6 = (*p_Var2)(0x73637677);
-  piVar8 = (int *)CONCAT31(extraout_var_02,uVar6);
-  (**(code **)(*piVar8 + 0xc))();
-  this_00 = (TDeluxeText *)__2_YAPAXI_Z(0xa4);
+  iStack_80 = iStack_10 + 0x944;
+  uStack_7c = 1;
+  iStack_84 = 0x5b23c6;
+  (**(code **)(iVar3 + 0x1c8))();
+  iStack_84 = 0x73637677;
+  piStack_88 = (int *)0x5b23cf;
+  uVar4 = (*p_Var2)();
+  piVar6 = (int *)CONCAT31(extraout_var_02,uVar4);
+  piStack_88 = (int *)0x5b23d9;
+  (**(code **)(*piVar6 + 0xc))();
+  piStack_88 = (int *)0xa4;
+  piVar7 = (int *)operator_new();
   uStack_24 = 0;
-  if (this_00 == (TDeluxeText *)0x0) {
-    this_00 = (TDeluxeText *)0x0;
+  if (piVar7 == (int *)0x0) {
+    piVar7 = (int *)0x0;
   }
   else {
-    pTStack_6c = this_00;
-    TStaticText::TStaticText((TStaticText *)this_00);
-    this_00->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
+    piStack_88 = (int *)0x5b23fb;
+    piStack_6c = piVar7;
+    func_0x0040541b();
+    *piVar7 = (int)&TTEView::_vftable_;
     uStack_24 = CONCAT31(uStack_24._1_3_,1);
-    this_00->field_0x98 = 0;
-    this_00->field_0x99 = 0;
-    this_00->field_0x9a = 0;
-    this_00->field_0x9b = 0;
-    ClearColorRgbaBytes();
-    this_00->vftable = &TDeluxeTextVtbl_006406d8;
-    puVar9 = (undefined4 *)SetColorRgbAndClearAlphaByte(0,0,0);
-    uVar4 = *puVar9;
-    this_00->field_0xa0 = 0;
-    *(undefined4 *)&this_00->field_0x98 = uVar4;
+    *(undefined1 *)(piVar7 + 0x26) = 0;
+    *(undefined1 *)((int)piVar7 + 0x99) = 0;
+    *(undefined1 *)((int)piVar7 + 0x9a) = 0;
+    *(undefined1 *)((int)piVar7 + 0x9b) = 0;
+    piStack_88 = (int *)0x5b2429;
+    func_0x00407bdf();
+    piStack_88 = (int *)0x0;
+    *piVar7 = (int)&TDeluxeText::_vftable_;
+    piVar8 = (int *)func_0x00404863(0,0);
+    iVar3 = *piVar8;
+    *(undefined1 *)(piVar7 + 0x28) = 0;
+    piVar7[0x26] = iVar3;
   }
-  puStack_68 = (undefined1 *)this->field38;
-  pTStack_6c = (TDeluxeText *)(piVar8[0xd] + -0x19);
+  piStack_68 = (int *)this->field38;
+  piStack_6c = (int *)(piVar6[0xd] + -0x19);
+  piVar8 = (int *)&stack0xffffffa8;
+  piStack_88 = (int *)0xfffffffe;
   uStack_24 = 0xffffffff;
-  uStack_4c = 0;
-  uStack_48 = 0;
-  uStack_44 = 0;
-  aiStack_40[0] = 0;
-  TDeluxeText::ConstructTDeluxeTextBaseState
-            (this_00,piVar8,&stack0xffffffa0,&pTStack_6c,&uStack_4c,(int)&stack0xffffffa8);
-  pTVar5 = this_00->vftable;
-  *(int **)&this_00->field_0x98 = piVar10;
-  (*pTVar5->InitializeTechHistoryViewTitleAndMapKeyControls_Impl)(iStack_1c + 0x8fc);
-  sVar7 = TTEView::DestructTTEViewAndMaybeFree((TTEView *)this_00);
-  (*pTVar5->OrphanRetStub_0059add0_4b)(aiStack_40);
-  iStack_38 = aiStack_40[0] + sVar7;
-  (*pTVar5->GetTEventHandlerClassNamePointer_5a)(&uStack_44,1);
-  piVar8[0x18] = (int)this_00;
-  SyncBoundedValueAndToggleControlStates();
-  iStack_70 = 0x8c;
-  pTStack_6c = (TDeluxeText *)(0xf0 - piVar10[0xe] / 2);
-  (**(code **)(*piVar10 + 0xf0))(&iStack_70,1);
-  *unaff_FS_OFFSET = uStack_44;
+  local_50[1] = 0;
+  local_50[2] = 0;
+  local_50[3] = 0;
+  local_50[4] = 0;
+  func_0x00408e31(piVar6,&stack0xffffffa0,&piStack_6c,local_50 + 1);
+  iVar3 = *piVar7;
+  piVar7[0x26] = (int)piVar8;
+  (**(code **)(iVar3 + 0x1dc))(uStack_34 + 0x8fc);
+  sVar5 = func_0x004065e1();
+  (**(code **)(iVar3 + 300))(&stack0xffffffa8);
+  local_50[0] = unaff_EBX + sVar5;
+  (**(code **)(iVar3 + 0x168))(&stack0xffffffa4,1);
+  piVar6[0x18] = (int)piVar7;
+  func_0x00408d82();
+  piStack_88 = (int *)0x8c;
+  iStack_84 = 0xf0 - piVar8[0xe] / 2;
+  (**(code **)(*piVar8 + 0xf0))(&piStack_88,1);
+  *unaff_FS_OFFSET = 0;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B2740
-// GHIDRA_NAME TTechHistoryView::DestructTTechHistoryViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTechHistoryViewAndMaybeFree()
-
-TView * TTechHistoryView::DestructTTechHistoryViewAndMaybeFree(void)
-
-{
-  TView *this;
-  TView *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00638b82;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x60);
-  local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
-    this->vftable = (TViewVtbl *)&TGameSetupDialogVtbl_0066b380;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 

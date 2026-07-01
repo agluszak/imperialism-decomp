@@ -4,44 +4,44 @@
 // Bucket: T2PictureButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570B10
-// GHIDRA_NAME T2PictureButton::CreateT2PictureButtonInstance
-// GHIDRA_PROTO undefined CreateT2PictureButtonInstance()
+// GHIDRA_NAME T2PictureButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * T2PictureButton::CreateT2PictureButtonInstance(void)
+undefined4 * T2PictureButton::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063638a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(undefined2 *)(this + 0x92) = 7000;
-    *(T2PictureButtonVtbl **)this = &T2PictureButtonVtbl_0065eb60;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570B90
-// GHIDRA_NAME T2PictureButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME T2PictureButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * T2PictureButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * T2PictureButton::GetRuntimeClass()
 
 {
-  return &g_pClassDescT2PictureButton;
+  return &classT2PictureButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570BB0
@@ -57,9 +57,9 @@ CRuntimeClass * T2PictureButton::GetTEventHandlerClassNamePointer()
 T2PictureButton * T2PictureButton::ConstructUiBattleTabPictureEntry()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  func_0x00401122();
   *(undefined2 *)&this->field_0x92 = 7000;
-  this->vftable = &T2PictureButtonVtbl_0065eb60;
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -70,9 +70,9 @@ T2PictureButton * T2PictureButton::ConstructUiBattleTabPictureEntry()
 T2PictureButton * T2PictureButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040250e();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -87,7 +87,7 @@ void T2PictureButton::OrphanCallChain_C3_I43_00570c30(char param_1)
   short sVar1;
   T2PictureButtonVtbl *pTVar2;
   char unaff_BP;
-
+  
   sVar1 = *(short *)&this->field_0x84;
   if (((param_1 == '\x01') && (this->field3c < (int)sVar1)) ||
      ((param_1 == '\0' && ((int)sVar1 < this->field3c)))) {

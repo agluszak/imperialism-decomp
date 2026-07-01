@@ -4,10 +4,10 @@
 // Bucket: TPurchaseCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC300
-// GHIDRA_NAME TPurchaseCluster::CreateTPurchaseClusterInstance
-// GHIDRA_PROTO undefined CreateTPurchaseClusterInstance()
+// GHIDRA_NAME TPurchaseCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TCluster * TPurchaseCluster::CreateTPurchaseClusterInstance(void)
+TCluster * TPurchaseCluster::CreateObject(void)
 
 {
   TCluster *this;
@@ -15,16 +15,16 @@ TCluster * TPurchaseCluster::CreateTPurchaseClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063183a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)__2_YAPAXI_Z(0x8c);
+  this = (TCluster *)operator_new(0x8c);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
     TCluster::ConstructUiResourceEntryType4B0C0(this);
-    this->vftable = (TClusterVtbl *)&TPurchaseClusterVtbl_00652210;
+    this->vftable = (TClusterVtbl *)&_vftable_;
     this[1].vftable = (TClusterVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
@@ -34,13 +34,13 @@ TCluster * TPurchaseCluster::CreateTPurchaseClusterInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC3A0
-// GHIDRA_NAME TPurchaseCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TPurchaseCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPurchaseCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TPurchaseCluster::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTPurchaseCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC3C0
@@ -51,7 +51,7 @@ TPurchaseCluster * TPurchaseCluster::ConstructTPurchaseClusterBaseState()
 
 {
   TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
-  this->vftable = &TPurchaseClusterVtbl_00652210;
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x88 = 0;
   return this;
 }
@@ -63,9 +63,9 @@ TPurchaseCluster * TPurchaseCluster::ConstructTPurchaseClusterBaseState()
 TPurchaseCluster * TPurchaseCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004078b5();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -84,22 +84,20 @@ void TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC470
-// GHIDRA_NAME TPurchaseCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer
+// GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(void)
 
-void TPurchaseCluster::_scalar_deleting_destructor_()
+void TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer()
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC490
-// GHIDRA_NAME TPurchaseCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_NAME TPurchaseCluster::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void __thiscall
-TPurchaseCluster::OrphanRetStub_0059add0
-          (TPurchaseCluster *this,int param_1,void *param_2,int param_3)
+void TPurchaseCluster::HandleEvent(int param_1, void *param_2, int param_3)
 
 {
   undefined uVar1;
@@ -109,7 +107,7 @@ TPurchaseCluster::OrphanRetStub_0059add0
   undefined2 extraout_var_01;
   int iVar3;
   TPurchaseClusterVtbl *pTVar4;
-
+  
   if (param_1 == 10) {
     if (*(int *)((int)param_2 + 0x1c) == 0x6c61726f) {
       pTVar4 = this->vftable;
@@ -129,7 +127,7 @@ TPurchaseCluster::OrphanRetStub_0059add0
               (CONCAT22(extraout_var_01,*(undefined2 *)(*(int *)&this->field_0x88 + 4)),1);
   }
 LAB_004cc4fb:
-  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
+  func_0x004023ab(param_1,param_2,param_3);
   return;
 }
 
@@ -173,20 +171,19 @@ TPurchaseCluster::SetCityViewValueControlAmount
   tagRECT tStack_1c;
   char cStack_4;
   int *piVar2;
-
+  
   LStack_2c = 0x76616c75;
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   piVar2 = (int *)CONCAT31(extraout_var,uVar1);
   if (piVar2 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x781);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0x781);
   }
   (**(code **)(*piVar2 + 0x1e4))((int)unaff_retaddr,0);
   if (cStack_4 != '\0') {
     LStack_2c = piVar2[9] + this->ownerOffsetX;
     CopyRect(&tStack_1c,(RECT *)&LStack_2c);
-    InvalidateCityDialogRectRegion(&tStack_1c,1);
+    func_0x00408a03(&tStack_1c,1);
     (*this->ownerContext->vftable[1].vmethod_0025)();
   }
   return;
@@ -201,12 +198,11 @@ void TPurchaseCluster::UpdateCityViewValueControl()
 {
   undefined uVar1;
   undefined3 extraout_var;
-
+  
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x76616c75);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x793);
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0x793);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1e8))();
   return;

@@ -4,10 +4,10 @@
 // Bucket: TSortedList.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487A90
-// GHIDRA_NAME TSortedList::CreateTSortedListInstance
-// GHIDRA_PROTO undefined CreateTSortedListInstance()
+// GHIDRA_NAME TSortedList::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-undefined4 * TSortedList::CreateTSortedListInstance(void)
+undefined4 * TSortedList::CreateObject(void)
 
 {
   undefined4 *puVar1;
@@ -16,17 +16,17 @@ undefined4 * TSortedList::CreateTSortedListInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062eb02;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
+  puVar1 = (undefined4 *)operator_new(0x20);
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
+    *puVar1 = &TObject::_vftable_;
     local_4 = 1;
-    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
+    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
     *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
@@ -34,28 +34,68 @@ undefined4 * TSortedList::CreateTSortedListInstance(void)
   return puVar2;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004A8640
-// GHIDRA_NAME TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640
-// GHIDRA_PROTO undefined __thiscall TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00487B10
+// GHIDRA_NAME TSortedList::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-TSortedList * __thiscall
-TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640
-          (TSortedList *this)
+CRuntimeClass * TSortedList::GetRuntimeClass()
 
 {
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
+  return &classTSortedList;
+}
 
-  puStack_8 = &LAB_006302c8;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this->vftable = (TSortedListVtbl *)&RefCountedObjectBase::_vftable_;
-  local_4 = 0;
-  TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)&this->field_0x4,10);
-  this->vftable = &_vftable_;
-  *unaff_FS_OFFSET = local_c;
+// GHIDRA_FUNCTION IMPERIALISM 0x00487B30
+// GHIDRA_NAME TSortedList::ConstructTSortedListBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTSortedListBaseState(uint param_1, uint param_2)
+
+int TSortedList::ConstructTSortedListBaseState(uint param_1, uint param_2)
+
+{
+  if (param_2 < param_1) {
+    return 1;
+  }
+  return -(uint)(param_1 < param_2);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487B60
+// GHIDRA_NAME TSortedList::DestructTSortedListAndMaybeFree
+// GHIDRA_PROTO undefined __thiscall DestructTSortedListAndMaybeFree(int param_1, int param_2, undefined4 param_3)
+
+void __thiscall
+TSortedList::DestructTSortedListAndMaybeFree
+          (TSortedList *this,int param_1,int param_2,undefined4 param_3)
+
+{
+  TSortedListVtbl *pTVar1;
+  TSortedList_OnActivateView_0x00 *pTVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  int unaff_EBX;
+  undefined4 unaff_EBP;
+  undefined4 uVar4;
+  
+  if (param_1 < param_2) {
+    pTVar1 = this->vftable;
+    uVar4 = param_3;
+    uVar3 = (*pTVar1[0xf].OnActivateView)(param_1,param_2,param_3);
+    pTVar2 = pTVar1[0xe].OnActivateView;
+    (*pTVar2)(unaff_EBP,CONCAT31(extraout_var,uVar3),param_3);
+    (*pTVar2)(unaff_EBX + 1,uVar4,param_3);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004888F0
+// GHIDRA_NAME TSortedList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TSortedList * TSortedList::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00406122();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
   return this;
 }
 

@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TMerchantBoyView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004AF6A0
+// GHIDRA_NAME TMerchantBoyView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TMerchantBoyView::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630a3a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(100);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF710
 // GHIDRA_NAME TMerchantBoyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -10,28 +40,28 @@
 TMerchantBoyView * TMerchantBoyView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004086f2();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF760
-// GHIDRA_NAME TMerchantBoyView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TMerchantBoyView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMerchantBoyView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TMerchantBoyView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTMerchantBoyView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF780
-// GHIDRA_NAME TMerchantBoyView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TMerchantBoyView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMerchantBoyView::OrphanTiny_ReturnZero_0048a730()
+void TMerchantBoyView::ApplyRectSlot110()
 
 {
   undefined2 extraout_var;
@@ -44,32 +74,32 @@ void TMerchantBoyView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630a60;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_20.m_pchData = (char *)0x2b6a;
   CStack_24.m_pchData = (char *)0xa;
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  func_0x0040448f();
   CStack_20.m_pchData = (char *)0x4af7b5;
-  CString::__0CString__QAE_XZ(&local_18);
+  CString::CString(&local_18);
   local_4 = 0;
   CStack_20.m_pchData = "j\x03hj+";
-  CString::__0CString__QAE_XZ(&local_14);
+  CString::CString(&local_14);
   CStack_20.m_pchData = (char *)0x3;
   CStack_24.m_pchData = (char *)0x2b6a;
   local_4 = CONCAT31(local_4._1_3_,1);
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw();
+  func_0x00401bf9();
   CStack_24.m_pchData = (char *)CONCAT22(extraout_var,**(undefined2 **)&this->field_0x60);
   CStack_20.m_pchData = (char *)0xffffffff;
-  FormatLocalizedCommodityCountLabelByIndex();
+  func_0x004062ee();
   CStack_20.m_pchData = (char *)0x18;
   CStack_24.m_pchData = (char *)0x50;
   SetQuickDrawTextOriginWithContextOffset();
   CStack_20.m_pchData = (char *)&local_18;
   CStack_24.m_pchData = (char *)0x4af80a;
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  func_0x004029aa();
   CStack_20.m_pchData = (char *)&local_18;
   if (*(short *)(*(int *)&this->field_0x60 + 2) == 0) {
     CStack_24.m_pchData = (char *)0x1b;
@@ -79,46 +109,16 @@ void TMerchantBoyView::OrphanTiny_ReturnZero_0048a730()
     CStack_24.m_pchData = (char *)0x1c;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   }
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1,0xc);
+  func_0x0040448f(1,0xc);
   MeasureTextExtentWithCachedQuickDrawStyle();
   SetQuickDrawTextOriginWithContextOffset(0x50);
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
-  SetQuickDrawStrokeColor();
+  func_0x004029aa();
+  func_0x00402bdf();
   uStack_10 = uStack_10 & 0xffffff00;
-  CString::__1CString__QAE_XZ(&CStack_20);
+  CString::~CString(&CStack_20);
   uStack_10 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_24);
+  CString::~CString(&CStack_24);
   *unaff_FS_OFFSET = local_18.m_pchData;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004AF910
-// GHIDRA_NAME TMerchantBoyView::DestructTMerchantBoyViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMerchantBoyViewAndMaybeFree()
-
-TView * TMerchantBoyView::DestructTMerchantBoyViewAndMaybeFree(void)
-
-{
-  TView *this;
-  TView *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00630a7a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(100);
-  local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TItemBoyViewVtbl_0064e5e0;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 

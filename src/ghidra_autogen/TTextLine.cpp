@@ -4,10 +4,10 @@
 // Bucket: TTextLine.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005701D0
-// GHIDRA_NAME TTextLine::CreateTTextLineInstance
-// GHIDRA_PROTO undefined CreateTTextLineInstance()
+// GHIDRA_NAME TTextLine::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-undefined4 * TTextLine::CreateTTextLineInstance(void)
+undefined4 * TTextLine::CreateObject(void)
 
 {
   undefined4 *puVar1;
@@ -15,21 +15,21 @@ undefined4 * TTextLine::CreateTTextLineInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006362c2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
+  puVar1 = (undefined4 *)operator_new(0x20);
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &TLineDataVtbl_0065e230;
+    *puVar1 = &TLineData::_vftable_;
     local_4 = 1;
-    CString::__0CString__QAE_XZ((CString *)(puVar1 + 4));
+    CString::CString((CString *)(puVar1 + 4));
     *(undefined1 *)((int)puVar1 + 0x1a) = 0;
     *(undefined1 *)((int)puVar1 + 0x1b) = 0;
     *(undefined1 *)(puVar1 + 7) = 0;
     *(undefined1 *)((int)puVar1 + 0x1d) = 0;
-    *puVar1 = &TTextLineVtbl_0065e4c0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
@@ -38,18 +38,18 @@ undefined4 * TTextLine::CreateTTextLineInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570270
-// GHIDRA_NAME TTextLine::GetTLineDataClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
+// GHIDRA_NAME TTextLine::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTextLine::GetTLineDataClassNamePointer()
+CRuntimeClass * TTextLine::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTextLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570290
 // GHIDRA_NAME TTextLine::ConstructTTextLineBaseState
-// GHIDRA_PROTO undefined __thiscall TTextLine::ConstructTTextLineBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTextLineBaseState(void)
 
 TTextLine * TTextLine::ConstructTTextLineBaseState()
 
@@ -58,32 +58,32 @@ TTextLine * TTextLine::ConstructTTextLineBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   puStack_8 = &LAB_006362e8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->vftable = (TTextLineVtbl *)&TLineDataVtbl_0065e230;
+  this->vftable = (TTextLineVtbl *)&TLineData::_vftable_;
   local_4 = 0;
-  CString::__0CString__QAE_XZ((CString *)&this->field_0x10);
+  CString::CString((CString *)&this->field_0x10);
   this->field_0x1a = 0;
   this->field_0x1b = 0;
   this->field_0x1c = 0;
   this->field_0x1d = 0;
-  this->vftable = &TTextLineVtbl_0065e4c0;
+  this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570310
-// GHIDRA_NAME TTextLine::DestructTTextLineAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTextLineAndMaybeFree(byte param_1)
+// GHIDRA_NAME TTextLine::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTextLine * TTextLine::DestructTTextLineAndMaybeFree(byte param_1)
+TTextLine * TTextLine::_scalar_deleting_destructor_(byte param_1)
 
 {
-  WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00570340();
+  func_0x004072de();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -96,7 +96,6 @@ void TTextLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
 {
   int iVar1;
-  TStaticText *this_00;
   int *piVar2;
   undefined2 extraout_var;
   int *unaff_FS_OFFSET;
@@ -104,22 +103,21 @@ void TTextLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063632a;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  this_00 = (TStaticText *)__2_YAPAXI_Z(0x94);
+  iVar1 = operator_new(0x94);
   local_4 = 0;
-  if (this_00 == (TStaticText *)0x0) {
+  if (iVar1 == 0) {
     piVar2 = (int *)0x0;
   }
   else {
-    piVar2 = (int *)TStaticText::TStaticText(this_00);
+    piVar2 = (int *)func_0x0040541b();
   }
   local_4 = 0xffffffff;
-  InitializeTextEntryBaseAndOptionalStringResource
-            (param_1,param_2,&this->field_0x8,5,5,0xffffffff,0);
+  func_0x00401fd2(param_1,param_2,&this->field_0x8,5,5,0xffffffff,0);
   iVar1 = *piVar2;
   puVar3 = &this->field_0x10;
   (**(code **)(iVar1 + 0x1c8))(puVar3,0);

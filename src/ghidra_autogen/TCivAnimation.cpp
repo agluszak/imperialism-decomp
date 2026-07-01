@@ -3,23 +3,40 @@
 // Program: Imperialism.exe
 // Bucket: TCivAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049F480
-// GHIDRA_NAME TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049f480(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F450
+// GHIDRA_NAME TCivAnimation::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TCivAnimation * TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480(byte param_1)
+undefined4 * TCivAnimation::CreateObject(void)
 
 {
-  TCivAnimation::CreateTCivAnimationInstance(this);
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x30);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F480
+// GHIDRA_NAME TCivAnimation::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TCivAnimation * TCivAnimation::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x004080ad();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F4B0
 // GHIDRA_NAME TCivAnimation::CreateTCivAnimationInstance
-// GHIDRA_PROTO undefined __thiscall TCivAnimation::CreateTCivAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTCivAnimationInstance(void)
 
 void TCivAnimation::CreateTCivAnimationInstance()
 
@@ -29,57 +46,43 @@ void TCivAnimation::CreateTCivAnimationInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F4D0
-// GHIDRA_NAME TCivAnimation::GetTAnimationClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
+// GHIDRA_NAME TCivAnimation::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCivAnimation::GetTAnimationClassNamePointer()
+CRuntimeClass * TCivAnimation::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTCivAnimation;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F580
-// GHIDRA_NAME TCivAnimation::ConstructTCivAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTCivAnimationBaseState(void)
+// GHIDRA_NAME TCivAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
+// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
 
-void TCivAnimation::ConstructTCivAnimationBaseState()
+void TCivAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
 
 {
   ushort uVar1;
   int iVar2;
-
+  
   iVar2 = *(int *)&this->field_0x10 + 1;
   *(int *)&this->field_0x10 = iVar2;
   if (iVar2 != *(int *)&this->field_0x14) {
     return;
   }
-  InvalidateCityDialogRectRegion(&this->field_0x1c,1);
+  func_0x00408a03(&this->field_0x1c,1);
   *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
   *(undefined4 *)&this->field_0x10 = 0;
   if (*(short *)&this->field_0x8 != *(short *)&this->field_0xa) {
     if (*(short *)&this->field_0x8 != *(short *)&this->field_0x2c) {
       return;
     }
-    uVar1 = _rand();
+    uVar1 = GenerateThreadLocalRandom15();
     if (*(short *)&this->field_0x2e <= (short)(uVar1 & 0xf)) {
       return;
     }
   }
   *(undefined2 *)&this->field_0x8 = 0;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049F630
-// GHIDRA_NAME TCivAnimation::DestructTCivAnimationAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTCivAnimationAndMaybeFree(byte param_1)
-
-TCivAnimation * TCivAnimation::DestructTCivAnimationAndMaybeFree(byte param_1)
-
-{
-  TCivAnimation2::CreateTCivAnimation2Instance((TCivAnimation2 *)this);
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
 }
 

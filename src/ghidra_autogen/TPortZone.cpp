@@ -4,150 +4,57 @@
 // Bucket: TPortZone.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005615E0
-// GHIDRA_NAME TPortZone::CreateTPortZone
-// GHIDRA_PROTO undefined CreateTPortZone()
+// GHIDRA_NAME TPortZone::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TZone * TPortZone::CreateTPortZone(void)
+undefined4 * TPortZone::CreateObject(void)
 
 {
-  TZone *this;
-  TZone *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006357ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TZone *)__2_YAPAXI_Z(0x4c);
+  puVar1 = (undefined4 *)operator_new(0x4c);
   local_4 = 0;
-  pTVar1 = (TZone *)0x0;
-  if (this != (TZone *)0x0) {
-    TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(this);
-    *(undefined2 *)&this[1].vftable = 0xffff;
-    this->vftable = (TZoneVtbl *)&_vftable_;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040405c();
+    *(undefined2 *)(puVar1 + 0x12) = 0xffff;
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005616C0
+// GHIDRA_NAME TPortZone::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall TPortZone::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  func_0x00401465();
+  if ((param_2 & 1) != 0) {
+    operator_delete(param_1);
+  }
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005617D0
-// GHIDRA_NAME TPortZone::GetTPortZoneClassNamePointer
-// GHIDRA_PROTO undefined GetTPortZoneClassNamePointer()
+// GHIDRA_NAME TPortZone::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-CRuntimeClass * TPortZone::GetTPortZoneClassNamePointer(void)
-
-{
-  return &g_pClassDescTPortZone;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005618B0
-// GHIDRA_NAME TPortZone::RefreshTPortZoneDisplayNameFromLocalization
-// GHIDRA_PROTO undefined __thiscall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(void)
-
-void TPortZone::RefreshTPortZoneDisplayNameFromLocalization()
+CRuntimeClass * TPortZone::GetRuntimeClass(void)
 
 {
-  undefined4 unaff_ESI;
-  char *unaff_EDI;
-  undefined4 *unaff_FS_OFFSET;
-  CString CStack_20;
-  CString local_14;
-  CString local_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  uStack_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00635830;
-  *unaff_FS_OFFSET = &uStack_c;
-  CStack_20.m_pchData = (char *)0x561907;
-  CString::__0CString__QAE_XZ(&local_10);
-  local_4 = 0;
-  CStack_20.m_pchData = (char *)0x561918;
-  CString::__0CString__QAE_XZ(&local_14);
-  CStack_20.m_pchData = (char *)&local_10;
-  local_4 = CONCAT31(local_4._1_3_,1);
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)
-            (0x275a,CONCAT22((short)((uint)CStack_20.m_pchData >> 0x10),
-                             *(undefined2 *)&this->field_0x4));
-  scanBracketExpressions(g_pLocalizationTable,&CStack_20,unaff_EDI);
-  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x8,&CStack_20);
-  local_10.m_pchData = local_10.m_pchData & 0xffffff00;
-  CString::__1CString__QAE_XZ(&CStack_20);
-  local_10.m_pchData = (char *)0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffe4);
-  *unaff_FS_OFFSET = unaff_ESI;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005621E0
-// GHIDRA_NAME TPortZone::DispatchNationPendingActionEventCodes
-// GHIDRA_PROTO undefined __thiscall DispatchNationPendingActionEventCodes(void)
-
-void TPortZone::DispatchNationPendingActionEventCodes()
-
-{
-  TZone *this_00;
-  TZone *pTVar1;
-  int iVar2;
-  int iVar3;
-
-  if (g_pNavyOrderManager != (TNavyMgr *)0x0) {
-    ResetPrimaryOrderActiveFlagsAndClearManagerState();
-  }
-  if (g_pMapActionContextDistanceCache != (void *)0x0) {
-    __3_YAXPAX_Z(g_pMapActionContextDistanceCache);
-    g_pMapActionContextDistanceCache = (void *)0x0;
-    DAT_006984b4 = 0xffffffff;
-    g_nMapActionContextCount = 0;
-  }
-  iVar2 = 0;
-  if (0 < *(short *)&this->field_0x4) {
-    iVar3 = 0;
-    do {
-      pTVar1 = (TZone *)(*(int *)&this->field_0x8 + iVar3);
-      if (g_pMapActionContextListHead == pTVar1) {
-        g_pMapActionContextListHead = *(TZone **)&pTVar1->field_0x18;
-      }
-      if (*(int *)&pTVar1->field_0x18 != 0) {
-        *(undefined4 *)(*(int *)&pTVar1->field_0x18 + 0x1c) = *(undefined4 *)&pTVar1->field_0x1c;
-      }
-      if (*(int *)&pTVar1->field_0x1c != 0) {
-        *(undefined4 *)(*(int *)&pTVar1->field_0x1c + 0x18) = *(undefined4 *)&pTVar1->field_0x18;
-      }
-      *(undefined4 *)&pTVar1->field_0x1c = 0;
-      *(undefined4 *)&pTVar1->field_0x18 = 0;
-      iVar2 = iVar2 + 1;
-      iVar3 = iVar3 + 0x48;
-    } while (iVar2 < *(short *)&this->field_0x4);
-  }
-  if (*(int **)&this->field_0x8 != (int *)0x0) {
-    (**(code **)(**(int **)&this->field_0x8 + 4))(3);
-  }
-  while (pTVar1 = g_pMapActionContextListHead, g_pMapActionContextListHead != (TZone *)0x0) {
-    do {
-      iVar2 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar1);
-      if (iVar2 != 0) break;
-      pTVar1 = *(TZone **)&pTVar1->field_0x18;
-    } while (pTVar1 != (TZone *)0x0);
-    this_00 = g_pMapActionContextListHead;
-    if (pTVar1 == (TZone *)0x0) break;
-    while ((this_00 != (TZone *)0x0 &&
-           (iVar2 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)this_00),
-           iVar2 == 0))) {
-      this_00 = *(TZone **)&this_00->field_0x18;
-    }
-    (*this_00->vftable->GetTCountryClassNamePointer)();
-  }
-  __3_YAXPAX_Z(*(undefined4 *)&this->field_0x10);
-  if (this != (TPortZone *)0x0) {
-    (*this->vftable->ShallowClone)(1);
-  }
-  return;
+  return &classTPortZone;
 }
 

@@ -4,43 +4,43 @@
 // Bucket: TUnitToolbarCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00585F70
-// GHIDRA_NAME TUnitToolbarCluster::CreateTUnitToolbarClusterInstance
-// GHIDRA_PROTO undefined CreateTUnitToolbarClusterInstance()
+// GHIDRA_NAME TUnitToolbarCluster::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TUberCluster * TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
+undefined4 * TUnitToolbarCluster::CreateObject(void)
 
 {
-  TUberCluster *this;
-  TUberCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006377ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
+  puVar1 = (undefined4 *)operator_new(0x88);
   local_4 = 0;
-  pTVar1 = (TUberCluster *)0x0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->vftable = (TUberClusterVtbl *)&TUnitToolbarClusterVtbl_00664d38;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00405835();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00585FF0
-// GHIDRA_NAME TUnitToolbarCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TUnitToolbarCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUnitToolbarCluster::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TUnitToolbarCluster::GetRuntimeClass()
 
 {
-  return &g_pClassDescTUnitToolbarCluster;
+  return &classTUnitToolbarCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586010
@@ -50,8 +50,8 @@ CRuntimeClass * TUnitToolbarCluster::GetTEventHandlerClassNamePointer()
 TUnitToolbarCluster * TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState()
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  this->vftable = &TUnitToolbarClusterVtbl_00664d38;
+  func_0x00405835();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,35 +62,32 @@ TUnitToolbarCluster * TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState
 TUnitToolbarCluster * TUnitToolbarCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00409200();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586090
-// GHIDRA_NAME TUnitToolbarCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_NAME TUnitToolbarCluster::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void __thiscall
-TUnitToolbarCluster::OrphanRetStub_0059add0
-          (TUnitToolbarCluster *this,int param_1,void *param_2,int param_3)
+void TUnitToolbarCluster::HandleEvent(int param_1, void *param_2, int param_3)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   int *piVar2;
-
-  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
+  
+  func_0x004023ab(param_1,param_2,param_3);
   if ((((*(int *)&g_pApplicationUiRootController->field_0x24 == 1) && (param_1 == 0x68)) ||
       (param_1 == 0x67)) || ((param_1 == 10 || (param_1 == 0xc)))) {
     uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x6d61696e);
     if (piVar2 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x57b);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x57b);
     }
     (**(code **)(*piVar2 + 0x3c))(param_1,param_2,param_3);
   }
@@ -98,10 +95,10 @@ TUnitToolbarCluster::OrphanRetStub_0059add0
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586150
-// GHIDRA_NAME TUnitToolbarCluster::OrphanVtableAssignStub_005714e0
-// GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
+// GHIDRA_NAME TUnitToolbarCluster::IsTradeControlAtMinimum
+// GHIDRA_PROTO undefined __thiscall IsTradeControlAtMinimum(void)
 
-undefined1 TUnitToolbarCluster::OrphanVtableAssignStub_005714e0()
+undefined1 TUnitToolbarCluster::IsTradeControlAtMinimum()
 
 {
   return 1;
@@ -119,30 +116,30 @@ void TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(int param_1)
   int iVar3;
   undefined3 extraout_var;
   int *piVar4;
-
-  InitializeSelectableTextOptionEntryIteratorContext(this);
+  int unaff_retaddr;
+  
+  func_0x00403bbb(this);
   piVar4 = (int *)0x0;
-  piVar2 = (int *)BeginSelectableTextOptionEntryIterator();
-  iVar3 = IsSelectableTextOptionEntryIteratorValid();
+  piVar2 = (int *)func_0x00405754();
+  iVar3 = func_0x00406c4e();
   while (iVar3 != 0) {
-    if (piVar2[7] == param_1) {
+    if (piVar2[7] == unaff_retaddr) {
       (**(code **)(*piVar2 + 0x3c))(0x1f,this,0);
       piVar4 = piVar2;
     }
     else {
       (**(code **)(*piVar2 + 0x3c))(0x20,this,0);
     }
-    piVar2 = (int *)AdvanceSelectableTextOptionEntryIterator();
-    iVar3 = IsSelectableTextOptionEntryIteratorValid();
+    piVar2 = (int *)func_0x00404368();
+    iVar3 = func_0x00406c4e();
   }
-  *(int *)&this->field_0x84 = param_1;
+  *(int *)&this->field_0x84 = unaff_retaddr;
   if (piVar4 != (int *)0x0) {
     uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x444c4f47);
     if (piVar2 == (int *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x5a7);
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x5a7);
     }
     (**(code **)(*piVar2 + 0x3c))(0xc,piVar4,0);
   }

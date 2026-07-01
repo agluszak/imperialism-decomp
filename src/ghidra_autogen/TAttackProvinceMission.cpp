@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E8B50
 // GHIDRA_NAME TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
-// GHIDRA_PROTO undefined __thiscall TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall SetMapStateByteFlag970WithRuntimeGate(int param_1, int param_2)
 
 void __thiscall
 TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
@@ -15,7 +15,7 @@ TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
   char cVar1;
   undefined4 in_EDX;
   TAttackProvinceMission TVar2;
-
+  
   TVar2 = SUB41(param_2,0);
   if (param_2 == 1) {
     cVar1 = (*g_pGlobalMapState->vftable->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext)
@@ -29,42 +29,42 @@ TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D670
-// GHIDRA_NAME TAttackProvinceMission::CreateTAttackProvinceMission
-// GHIDRA_PROTO undefined CreateTAttackProvinceMission()
+// GHIDRA_NAME TAttackProvinceMission::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TMission * TAttackProvinceMission::CreateTAttackProvinceMission(void)
+undefined4 * TAttackProvinceMission::CreateObject(void)
 
 {
-  TMission *this;
-  TMission *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063445a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)__2_YAPAXI_Z(0x34);
+  puVar1 = (undefined4 *)operator_new(0x34);
   local_4 = 0;
-  pTVar1 = (TMission *)0x0;
-  if (this != (TMission *)0x0) {
-    TMission::ConstructTArmyMissionWithNodeKey(this,0xffff);
-    *(undefined2 *)(this + 0x30) = 0xffff;
-    *(undefined2 *)(this + 0x32) = 0xffff;
-    *(undefined ***)this = &PTR_LAB_0065adf8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064a1(0xffffffff);
+    *(undefined2 *)(puVar1 + 0xc) = 0xffff;
+    *(undefined2 *)((int)puVar1 + 0x32) = 0xffff;
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D710
-// GHIDRA_NAME TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer
-// GHIDRA_PROTO undefined GetTAttackProvinceMissionClassNamePointer()
+// GHIDRA_NAME TAttackProvinceMission::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer(void)
+undefined ** TAttackProvinceMission::GetRuntimeClass(void)
 
 {
   return &PTR_s_TAttackProvinceMission_00697a40;
@@ -72,30 +72,32 @@ undefined ** TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer(v
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D780
 // GHIDRA_NAME TAttackProvinceMission::ConstructTAttackProvinceMission
-// GHIDRA_PROTO undefined __thiscall TAttackProvinceMission::ConstructTAttackProvinceMission(undefined2 param_1, undefined2 param_2)
+// GHIDRA_PROTO undefined __thiscall ConstructTAttackProvinceMission(undefined2 param_1, undefined2 param_2)
 
 TAttackProvinceMission * __thiscall
 TAttackProvinceMission::ConstructTAttackProvinceMission
           (TAttackProvinceMission *this,undefined2 param_1,undefined2 param_2)
 
 {
-  TMission::ConstructTArmyMissionWithNodeKey((TMission *)this,0xffff);
-  *(undefined2 *)(this + 0x30) = param_1;
-  *(undefined2 *)(this + 0x32) = param_2;
-  *(undefined ***)this = &PTR_LAB_0065adf8;
+  undefined2 unaff_retaddr;
+  
+  func_0x004064a1(0xffffffff);
+  *(undefined2 *)(this + 0x30) = unaff_retaddr;
+  *(undefined2 *)(this + 0x32) = param_1;
+  *(undefined ***)this = &_vftable_;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D7C0
-// GHIDRA_NAME TAttackProvinceMission::DestroyTAttackProvinceMission
-// GHIDRA_PROTO undefined __thiscall DestroyTAttackProvinceMission(byte param_1)
+// GHIDRA_NAME TAttackProvinceMission::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAttackProvinceMission * TAttackProvinceMission::DestroyTAttackProvinceMission(byte param_1)
+TAttackProvinceMission * TAttackProvinceMission::_scalar_deleting_destructor_(byte param_1)
 
 {
-  ResetTAttackProvinceMissionToSentinelVtable();
+  func_0x00405e6b();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -108,8 +110,8 @@ void TAttackProvinceMission::SerializeTAttackProvinceMission(int *param_1)
 
 {
   code *pcVar1;
-
-  SerializeTArmyMission(param_1);
+  
+  func_0x00407ec8(param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(this + 0x30,2);
   (*pcVar1)(this + 0x32,2);
@@ -124,8 +126,8 @@ void TAttackProvinceMission::DeserializeTAttackProvinceMission(int *param_1)
 
 {
   code *pcVar1;
-
-  DeserializeTArmyMission(param_1);
+  
+  func_0x00407653(param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(this + 0x30,2);
   (*pcVar1)(this + 0x32,2);
@@ -141,20 +143,17 @@ TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext
           (TAttackProvinceMission *this)
 
 {
-  TGreatPower *this_00;
   int iVar1;
   int iVar2;
-
-  this_00 = g_apNationStates[*(short *)(this + 4)];
-  (*this_00->vftable->ConstructTTaskBaseState)();
-  TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
-            ((TAttackProvinceMission *)this_00,(int)*(short *)(this + 0x30),0);
-  iVar1 = InitializeLinkedListCursorFromOwnerHead();
-  iVar2 = LinkedListCursorHasCurrent();
+  
+  (*g_apNationStates[*(short *)(this + 4)]->vftable->ConstructTTaskBaseState)();
+  func_0x00402491((int)*(short *)(this + 0x30),0);
+  iVar1 = func_0x00401118();
+  iVar2 = func_0x00403620();
   while (iVar2 != 0) {
     *(undefined4 *)(iVar1 + 0x40) = 0;
-    iVar1 = AdvanceLinkedListCursor();
-    iVar2 = LinkedListCursorHasCurrent();
+    iVar1 = func_0x00406d20();
+    iVar2 = func_0x00403620();
   }
   (**(code **)(**(int **)(this + 0x18) + 0x5c))();
   if (*(int **)(this + 0x18) != (int *)0x0) {
@@ -188,14 +187,12 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
   int iVar8;
   float *pfVar9;
   int iVar10;
-  undefined4 uVar11;
   float local_14 [5];
-
+  
   if (this[0x10] == (TAttackProvinceMission)0x0) {
     iVar8 = *(int *)this;
-    uVar11 = 0;
     uVar5 = (**(code **)(iVar8 + 0x9c))(0);
-    AccumulateMissionUnitPriorityVectorWithOptionalFilter(local_14,uVar5,uVar11);
+    func_0x004090a7(local_14,uVar5);
     fVar2 = 0.0;
     fVar3 = 0.0;
     pfVar9 = local_14;
@@ -210,43 +207,43 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
       pTVar6 = pTVar6 + 4;
     } while (iVar10 != 0);
     if (_DAT_0065a8f0 < fVar2 / fVar3) {
-      iVar10 = InitializeLinkedListCursorFromOwnerHead();
-      iVar7 = LinkedListCursorHasCurrent();
+      iVar10 = func_0x00401118();
+      iVar7 = func_0x00403620();
       while( true ) {
         if (iVar7 == 0) {
           return 0;
         }
         if ((double)(int)*(short *)(iVar10 + 0x34) * _DAT_0065aa48 < (double)_DAT_0065aa20) break;
-        iVar10 = AdvanceLinkedListCursor();
-        iVar7 = LinkedListCursorHasCurrent();
+        iVar10 = func_0x00406d20();
+        iVar7 = func_0x00403620();
       }
       local_14[1] = *(float *)(this + 0x18);
-      uVar5 = InitializeLinkedListCursorFromOwnerHead();
-      iVar10 = LinkedListCursorHasCurrent();
+      uVar5 = func_0x00401118();
+      iVar10 = func_0x00403620();
       if (iVar10 == 0) {
         return 1;
       }
       do {
-        sVar4 = GetUnitMovementClassId();
+        sVar4 = func_0x00407e64();
         if (sVar4 != 0) {
           (**(code **)(iVar8 + 0x88))(uVar5,1);
         }
-        uVar5 = AdvanceLinkedListCursor();
-        iVar10 = LinkedListCursorHasCurrent();
+        uVar5 = func_0x00406d20();
+        iVar10 = func_0x00403620();
       } while (iVar10 != 0);
       return 1;
     }
   }
   local_14[1] = *(float *)(this + 0x18);
-  uVar5 = InitializeLinkedListCursorFromOwnerHead();
-  iVar8 = LinkedListCursorHasCurrent();
+  uVar5 = func_0x00401118();
+  iVar8 = func_0x00403620();
   while (iVar8 != 0) {
-    sVar4 = GetUnitMovementClassId();
+    sVar4 = func_0x00407e64();
     if (sVar4 != 0) {
       (**(code **)(*(int *)this + 0x88))(uVar5,1);
     }
-    uVar5 = AdvanceLinkedListCursor();
-    iVar8 = LinkedListCursorHasCurrent();
+    uVar5 = func_0x00406d20();
+    iVar8 = func_0x00403620();
   }
   return 1;
 }
@@ -301,7 +298,7 @@ TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile
 void TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState()
 
 {
-  PopulateDefendProvinceMissionResourceWeightsFromTargetProvince();
+  func_0x004042d7();
   (**(code **)(**(int **)(this + 0x34) + 0x3c))();
   return;
 }
@@ -318,7 +315,7 @@ TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath
   (**(code **)(**(int **)(this + 0x34) + 0x44))();
   if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0x10 + 0xa1 + *(short *)(this + 0x30) * 0xa8) &
       '\x01' << ((byte)*(undefined2 *)(this + 4) & 0x1f)) != 0) {
-    RefreshAttackProvinceMissionTargetAndMaybeQueueUnits();
+    func_0x004028c9();
   }
   return;
 }
@@ -333,9 +330,9 @@ undefined4 TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass()
   char cVar1;
   undefined uVar2;
   undefined3 extraout_var;
-
+  
   *(undefined2 *)(this + 0x14) = 0xffff;
-  cVar1 = TryResolveAttackProvinceMissionTargetTerrainClass();
+  cVar1 = func_0x00408427();
   if (cVar1 != '\0') {
     *(undefined2 *)(this + 0x14) = 0xffff;
     return 0;
@@ -354,7 +351,7 @@ void TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh()
 
 {
   *(undefined2 *)(this + 0x14) = 0xffff;
-  TryValidateOrRetargetDefendProvinceMissionTarget();
+  func_0x004057fe();
   return;
 }
 

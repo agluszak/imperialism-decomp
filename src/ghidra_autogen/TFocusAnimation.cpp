@@ -3,23 +3,41 @@
 // Program: Imperialism.exe
 // Bucket: TFocusAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004A0050
-// GHIDRA_NAME TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a0050(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0020
+// GHIDRA_NAME TFocusAnimation::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TFocusAnimation * TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050(byte param_1)
+undefined4 * TFocusAnimation::CreateObject(void)
 
 {
-  TFocusAnimation::CreateTFocusAnimationInstance(this);
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x30);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    *(undefined1 *)(puVar1 + 0xb) = 1;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0050
+// GHIDRA_NAME TFocusAnimation::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TFocusAnimation * TFocusAnimation::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00401ab9();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0080
 // GHIDRA_NAME TFocusAnimation::CreateTFocusAnimationInstance
-// GHIDRA_PROTO undefined __thiscall TFocusAnimation::CreateTFocusAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTFocusAnimationInstance(void)
 
 void TFocusAnimation::CreateTFocusAnimationInstance()
 
@@ -30,24 +48,24 @@ void TFocusAnimation::CreateTFocusAnimationInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A00A0
-// GHIDRA_NAME TFocusAnimation::GetTAnimationClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
+// GHIDRA_NAME TFocusAnimation::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFocusAnimation::GetTAnimationClassNamePointer()
+CRuntimeClass * TFocusAnimation::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0140
-// GHIDRA_NAME TFocusAnimation::ConstructTFocusAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTFocusAnimationBaseState(void)
+// GHIDRA_NAME TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
+// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
 
-void TFocusAnimation::ConstructTFocusAnimationBaseState()
+void TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
 
 {
   int iVar1;
-
+  
   iVar1 = *(int *)&this->field_0x10 + 1;
   *(int *)&this->field_0x10 = iVar1;
   if (iVar1 == *(int *)&this->field_0x14) {
@@ -62,30 +80,26 @@ void TFocusAnimation::ConstructTFocusAnimationBaseState()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0190
-// GHIDRA_NAME TFocusAnimation::DestructTFocusAnimationAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTFocusAnimationAndMaybeFree(void)
+// GHIDRA_NAME TFocusAnimation::VTableSlot0D
+// GHIDRA_PROTO undefined __thiscall VTableSlot0D(void)
 
-void TFocusAnimation::DestructTFocusAnimationAndMaybeFree()
+void TFocusAnimation::VTableSlot0D()
 
 {
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_2c;
-  undefined4 uStack_28;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe58;
   *unaff_FS_OFFSET = &uStack_c;
   if (this->field_0x2c != '\0') {
-    ConstructScopedMapQuickDrawContext(*(undefined4 *)&this->field_0x4);
-    uStack_4 = 0;
+    func_0x00401d70(*(undefined4 *)&this->field_0x4);
+    puStack_8 = (undefined1 *)0x0;
     (**(code **)(**(int **)&this->field_0x4 + 0xf8))();
-    uStack_2c = 0;
-    uStack_28 = 0;
-    (**(code **)&this->vftable->field_0x2c)(&uStack_2c);
+    (**(code **)&this->vftable->field_0x2c)(&stack0xffffffd0);
     (**(code **)(**(int **)&this->field_0x4 + 0xfc))();
     uStack_4 = 0xffffffff;
     DestroyScopedMapQuickDrawContext();
@@ -96,13 +110,13 @@ void TFocusAnimation::DestructTFocusAnimationAndMaybeFree()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0250
 // GHIDRA_NAME TFocusAnimation::RenderBattleReportInsetWithPaletteShift
-// GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(void)
+// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(void)
 
 void TFocusAnimation::RenderBattleReportInsetWithPaletteShift()
 
 {
   TFocusAnimationVtbl *pTVar1;
-
+  
   pTVar1 = this->vftable;
   (**(code **)&pTVar1->field_0x30)();
   (**(code **)&pTVar1->field_0x38)();
@@ -122,7 +136,7 @@ void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280()
   int local_28;
   tagRECT local_24;
   tagRECT tStack_14;
-
+  
   iVar1 = *(int *)&g_pUiAnimator->field_0x20;
   local_24.left = *(LONG *)&this->field_0x20;
   local_28 = *(int *)&this->field_0x1c;
@@ -134,7 +148,7 @@ void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280()
   local_24.top = local_28;
   tStack_14.left = 0;
   tStack_14.top = 0;
-  SetQuickDrawStrokeColor(0xffffff);
+  func_0x00402bdf(0xffffff);
   if (*(int *)&g_pActiveQuickDrawSurfaceContext->field_0x20 != 0) {
     iVar2 = *(int *)(iVar1 + 0x20);
     if (iVar2 != 0) {
@@ -152,9 +166,7 @@ void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280()
       OffsetRect(&local_24,0,(iVar2 - local_24.top) - local_24.bottom);
     }
   }
-  BlitRectWithOptionalTransparency
-            ((astruct_17 *)(iVar1 + 4),(astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,
-             &tStack_14,&local_24,0,(astruct_19 *)0x0);
+  func_0x00405493(iVar1 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&tStack_14,&local_24,0,0);
   return;
 }
 

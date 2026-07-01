@@ -262,6 +262,11 @@ struct CCmdTarget {
     int m_xConnPtContainer;
 };
 
+typedef struct CCommandLineInfo CCommandLineInfo, *PCCommandLineInfo;
+
+struct CCommandLineInfo { // PlaceHolder Class Structure
+};
+
 typedef struct CDC CDC, *PCDC;
 
 typedef struct CObject CObject, *PCObject;
@@ -282,6 +287,11 @@ struct CDC {
 struct CObjectVtbl {
     undefined (*SetForeignMinisterReadyFlag14)(void);
     undefined (*slot_0x04)(void);
+};
+
+typedef struct CDocManager CDocManager, *PCDocManager;
+
+struct CDocManager { // PlaceHolder Class Structure
 };
 
 typedef struct CDocTemplate CDocTemplate, *PCDocTemplate;
@@ -358,6 +368,16 @@ struct CDocument {
     undefined field56_0x4d;
     undefined field57_0x4e;
     undefined field58_0x4f;
+};
+
+typedef struct CFile CFile, *PCFile;
+
+struct CFile { // PlaceHolder Class Structure
+};
+
+typedef struct CFileDialog CFileDialog, *PCFileDialog;
+
+struct CFileDialog { // PlaceHolder Class Structure
 };
 
 typedef struct CFileException CFileException, *PCFileException;
@@ -1027,6 +1047,11 @@ struct CMainFrameVtbl {
     undefined (*SetForeignMinisterReadyFlag14)(void);
 };
 
+typedef struct CMapPtrToPtr CMapPtrToPtr, *PCMapPtrToPtr;
+
+struct CMapPtrToPtr { // PlaceHolder Class Structure
+};
+
 typedef struct CMcWindow CMcWindow, *PCMcWindow;
 
 typedef struct CMcWindowVtbl CMcWindowVtbl, *PCMcWindowVtbl;
@@ -1411,12 +1436,27 @@ struct CRuntimeClass {
     struct CRuntimeClass *m_pNextClass;
 };
 
+typedef struct CSimpleList CSimpleList, *PCSimpleList;
+
+struct CSimpleList { // PlaceHolder Class Structure
+};
+
 typedef struct CStringData CStringData, *PCStringData;
 
 struct CStringData {
     long nRefs;
     int nDataLength;
     int nAllocLength;
+};
+
+typedef struct CThreadLocalObject CThreadLocalObject, *PCThreadLocalObject;
+
+struct CThreadLocalObject { // PlaceHolder Class Structure
+};
+
+typedef struct CToolTipCtrl CToolTipCtrl, *PCToolTipCtrl;
+
+struct CToolTipCtrl { // PlaceHolder Class Structure
 };
 
 typedef struct CUserException CUserException, *PCUserException;
@@ -3755,6 +3795,11 @@ struct TApplicationVtbl {
     undefined (*SerializeRecordList_0x0C_WithBlockPool_B)(void);
     undefined (*AssertValid_37)(void);
     undefined (*Dump_38)(void);
+};
+
+typedef struct TApplicationUiRootControllerState_00648CA8 TApplicationUiRootControllerState_00648CA8, *PTApplicationUiRootControllerState_00648CA8;
+
+struct TApplicationUiRootControllerState_00648CA8 { // PlaceHolder Class Structure
 };
 
 typedef struct TArmoryView TArmoryView, *PTArmoryView;
@@ -21024,6 +21069,11 @@ struct TBismarckMinister {
     undefined field142_0x91;
     undefined field143_0x92;
     undefined field144_0x93;
+};
+
+typedef struct TBitmapResourceLoader TBitmapResourceLoader, *PTBitmapResourceLoader;
+
+struct TBitmapResourceLoader { // PlaceHolder Class Structure
 };
 
 typedef struct TBlockadePortMission TBlockadePortMission, *PTBlockadePortMission;
@@ -42201,6 +42251,16 @@ struct TCtlMgr {
 struct TCtlMgrVtbl {
     undefined (*GetTEventHandlerClassNamePointer)(void);
     undefined (*slot_0x04)(void);
+};
+
+typedef struct TCViewOwnedBufferChainState_00648578 TCViewOwnedBufferChainState_00648578, *PTCViewOwnedBufferChainState_00648578;
+
+struct TCViewOwnedBufferChainState_00648578 { // PlaceHolder Class Structure
+};
+
+typedef struct TCViewOwnedBufferRegistryState_00648560 TCViewOwnedBufferRegistryState_00648560, *PTCViewOwnedBufferRegistryState_00648560;
+
+struct TCViewOwnedBufferRegistryState_00648560 { // PlaceHolder Class Structure
 };
 
 typedef struct TCzechBox TCzechBox, *PTCzechBox;
@@ -86475,6 +86535,11 @@ struct TLineDataVtbl {
     undefined (*OrphanRetStub_0056f480)(void);
 };
 
+typedef struct TLinkedBlockChainState_00650A50 TLinkedBlockChainState_00650A50, *PTLinkedBlockChainState_00650A50;
+
+struct TLinkedBlockChainState_00650A50 { // PlaceHolder Class Structure
+};
+
 typedef struct TList TList, *PTList;
 
 typedef struct TListVtbl TListVtbl, *PTListVtbl;
@@ -97995,6 +98060,21 @@ struct TModalMessageCommandVtbl {
     undefined (*ShallowFree)(void);
     undefined (*NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94)(void);
     undefined (*OrphanRetStub_00487a00)(void);
+};
+
+typedef struct TModuleLibraryCacheTableStateA_0064BA68 TModuleLibraryCacheTableStateA_0064BA68, *PTModuleLibraryCacheTableStateA_0064BA68;
+
+struct TModuleLibraryCacheTableStateA_0064BA68 { // PlaceHolder Class Structure
+};
+
+typedef struct TModuleLibraryCacheTableStateB TModuleLibraryCacheTableStateB, *PTModuleLibraryCacheTableStateB;
+
+struct TModuleLibraryCacheTableStateB { // PlaceHolder Class Structure
+};
+
+typedef struct TModuleLibraryCacheTableStateB_0064BA80 TModuleLibraryCacheTableStateB_0064BA80, *PTModuleLibraryCacheTableStateB_0064BA80;
+
+struct TModuleLibraryCacheTableStateB_0064BA80 { // PlaceHolder Class Structure
 };
 
 typedef struct TMovieView TMovieView, *PTMovieView;
@@ -126779,6 +126859,21 @@ struct TRightLeftView {
     undefined field66_0x87;
 };
 
+typedef struct TRuntimeHeapBufferOwnerState_0066FA68 TRuntimeHeapBufferOwnerState_0066FA68, *PTRuntimeHeapBufferOwnerState_0066FA68;
+
+struct TRuntimeHeapBufferOwnerState_0066FA68 { // PlaceHolder Class Structure
+};
+
+typedef struct TRuntimeLinkedBlockChainState_0063E880 TRuntimeLinkedBlockChainState_0063E880, *PTRuntimeLinkedBlockChainState_0063E880;
+
+struct TRuntimeLinkedBlockChainState_0063E880 { // PlaceHolder Class Structure
+};
+
+typedef struct TRuntimeLinkedBlockChainState_0066FA50 TRuntimeLinkedBlockChainState_0066FA50, *PTRuntimeLinkedBlockChainState_0066FA50;
+
+struct TRuntimeLinkedBlockChainState_0066FA50 { // PlaceHolder Class Structure
+};
+
 typedef struct TScatteredShipsMission TScatteredShipsMission, *PTScatteredShipsMission;
 
 struct TScatteredShipsMission { // PlaceHolder Class Structure
@@ -127929,6 +128024,11 @@ struct TScrollViewVtbl {
     undefined (*ReleaseRuntimeSelectionOwnerAndDestroyObject_65)(void);
     undefined (*UpdateControlCachedIntFromWindowText_66)(void);
     undefined (*OrphanRetStub_0059add0_67)(void);
+};
+
+typedef struct TSelectedCivilianOrderState TSelectedCivilianOrderState, *PTSelectedCivilianOrderState;
+
+struct TSelectedCivilianOrderState { // PlaceHolder Class Structure
 };
 
 typedef struct TSelectoText TSelectoText, *PTSelectoText;
@@ -133173,6 +133273,11 @@ struct TSortedPtrList {
 struct TSortedPtrListVtbl {
     undefined (*GetTEventHandlerClassNamePointer)(void);
     undefined (*slot_0x04)(void);
+};
+
+typedef struct TSoundChannelNode TSoundChannelNode, *PTSoundChannelNode;
+
+struct TSoundChannelNode { // PlaceHolder Class Structure
 };
 
 typedef struct TSoundPlayer TSoundPlayer, *PTSoundPlayer;
@@ -156773,6 +156878,11 @@ struct TTreatiesViewVtbl {
     undefined (*UpdateControlCachedIntFromWindowText_66)(void);
     undefined (*OrphanRetStub_0059add0_67)(void);
     undefined (*OrphanRetStub_00430550)(void);
+};
+
+typedef struct TTurnEventDialogFactoryRegistryState_0064B328 TTurnEventDialogFactoryRegistryState_0064B328, *PTTurnEventDialogFactoryRegistryState_0064B328;
+
+struct TTurnEventDialogFactoryRegistryState_0064B328 { // PlaceHolder Class Structure
 };
 
 typedef struct TTurnStartEvent TTurnStartEvent, *PTTurnStartEvent;

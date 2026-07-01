@@ -3,19 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TGWorldPartView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0045B000
-// GHIDRA_NAME TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000
-// GHIDRA_PROTO undefined __thiscall TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000(void)
-
-TGWorldPartView * TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000()
-
-{
-  TView::ConstructTViewBaseState((TView *)this);
-  *(undefined4 *)&this->field_0x60 = 0;
-  this->vftable = &TGWorldPartViewVtbl_00644ba0;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0045B030
 // GHIDRA_NAME TGWorldPartView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -23,76 +10,77 @@ TGWorldPartView * TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase
 TGWorldPartView * TGWorldPartView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00406d25();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC7D0
-// GHIDRA_NAME TGWorldPartView::CreateTGWorldPartViewInstance
-// GHIDRA_PROTO undefined CreateTGWorldPartViewInstance()
+// GHIDRA_NAME TGWorldPartView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TGWorldPartView::CreateTGWorldPartViewInstance(void)
+undefined4 * TGWorldPartView::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063082a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x74);
+  puVar1 = (undefined4 *)operator_new(0x74);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this[1].vftable = (TViewVtbl *)0x0;
-    this->vftable = (TViewVtbl *)&TGWorldPartViewVtbl_00644ba0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    puVar1[0x18] = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC860
-// GHIDRA_NAME TGWorldPartView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TGWorldPartView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGWorldPartView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TGWorldPartView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTGWorldPartView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC880
-// GHIDRA_NAME TGWorldPartView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TGWorldPartView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TGWorldPartView::OrphanTiny_ReturnZero_0048a730()
+void TGWorldPartView::ApplyRectSlot110()
 
 {
-  LONG local_20;
-  LONG LStack_1c;
-  LONG LStack_18;
-  RECT RStack_14;
-
+  undefined4 local_20;
+  undefined4 uStack_1c;
+  undefined4 uStack_18;
+  undefined1 auStack_14 [4];
+  undefined4 uStack_10;
+  undefined4 uStack_c;
+  undefined4 uStack_8;
+  
   if (*(int *)&this->field_0x60 != 0) {
     (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)(&local_20);
-    RStack_14.top = local_20;
-    RStack_14.right = LStack_1c;
-    RStack_14.bottom = LStack_18;
-    UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)&this->field_0x60 + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,(RECT *)&this->field_0x64,
-               &RStack_14,0x24,(astruct_19 *)0x0);
-    UpdatePaletteIndexWithDefaultFallback(0x13);
+    uStack_10 = local_20;
+    uStack_c = uStack_1c;
+    uStack_8 = uStack_18;
+    func_0x004010be(0x10);
+    func_0x00405493(*(int *)&this->field_0x60 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                    &this->field_0x64,auStack_14,0x24,0);
+    func_0x004010be(0x13);
   }
   return;
 }

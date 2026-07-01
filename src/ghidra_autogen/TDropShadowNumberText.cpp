@@ -4,45 +4,45 @@
 // Bucket: TDropShadowNumberText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5820
-// GHIDRA_NAME TDropShadowNumberText::CreateTDropShadowNumberTextInstance
-// GHIDRA_PROTO undefined CreateTDropShadowNumberTextInstance()
+// GHIDRA_NAME TDropShadowNumberText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TEditText * TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
+undefined4 * TDropShadowNumberText::CreateObject(void)
 
 {
-  TEditText *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638eba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TEditText *)__2_YAPAXI_Z(0xb0);
+  puVar1 = (undefined4 *)operator_new(0xb0);
   local_4 = 0;
-  if (this != (TEditText *)0x0) {
-    TEditText::ConstructUiNumericTextEntryBase(this);
-    this[1].vftable = (TEditTextVtbl *)0x0;
-    *(undefined1 *)&this[1].field0c = 0;
-    *(undefined1 *)((int)&this[1].field0c + 1) = 0;
-    *(undefined1 *)((int)&this[1].field0c + 2) = 0;
-    *(undefined1 *)((int)&this[1].field0c + 3) = 0;
-    this->vftable = (TEditTextVtbl *)&TDropShadowNumberTextVtbl_0066d038;
-    this[1].field0c = DAT_006a58c8;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040913d();
+    puVar1[0x28] = 0;
+    *(undefined1 *)(puVar1 + 0x2b) = 0;
+    *(undefined1 *)((int)puVar1 + 0xad) = 0;
+    *(undefined1 *)((int)puVar1 + 0xae) = 0;
+    *(undefined1 *)((int)puVar1 + 0xaf) = 0;
+    *puVar1 = &TDropShadowNumberTextVtbl_0066d038;
+    puVar1[0x2b] = DAT_006a58c8;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TEditText *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B58F0
-// GHIDRA_NAME TDropShadowNumberText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TDropShadowNumberText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDropShadowNumberText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TDropShadowNumberText::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
@@ -50,12 +50,12 @@ CRuntimeClass * TDropShadowNumberText::GetTEventHandlerClassNamePointer()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5910
 // GHIDRA_NAME TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTDropShadowNumberTextBaseState(void)
 
 TDropShadowNumberText * TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState()
 
 {
-  TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
+  func_0x0040913d();
   *(undefined4 *)&this->field_0xa0 = 0;
   this->field_0xac = 0;
   this->field_0xad = 0;
@@ -67,50 +67,55 @@ TDropShadowNumberText * TDropShadowNumberText::ConstructTDropShadowNumberTextBas
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5960
-// GHIDRA_NAME TDropShadowNumberText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// GHIDRA_NAME TDropShadowNumberText::DestructTDropShadowNumberTextAndMaybeFree
+// GHIDRA_PROTO undefined __thiscall DestructTDropShadowNumberTextAndMaybeFree(byte param_1)
 
-TDropShadowNumberText * TDropShadowNumberText::_scalar_deleting_destructor_(byte param_1)
+TDropShadowNumberText * __thiscall
+TDropShadowNumberText::DestructTDropShadowNumberTextAndMaybeFree
+          (TDropShadowNumberText *this,byte param_1)
 
 {
-  TView::DestructTEditTextAndMaybeFree((TView *)this);
+  func_0x00408b57();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B59B0
-// GHIDRA_NAME TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TDropShadowNumberText::RenderDropShadowNumberTextValue
+// GHIDRA_PROTO undefined __thiscall RenderDropShadowNumberTextValue(void)
 
-void TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730()
+void TDropShadowNumberText::RenderDropShadowNumberTextValue()
 
 {
   TDropShadowNumberTextVtbl *pTVar1;
-  int unaff_EDI;
   int *unaff_FS_OFFSET;
-  CString aCStack_14 [2];
+  int in_stack_00000004;
+  int iStack_28;
+  CString aCStack_18 [3];
   int iStack_c;
   undefined1 *puStack_8;
-  int local_4;
-
+  undefined4 local_4;
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638ed8;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  TEditText::OrphanTiny_ReturnZero_0048a730((TEditText *)this);
-  SetQuickDrawColorAndPropagateIfChanged(*(undefined4 *)&this->field_0xac);
-  CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
+  iStack_28 = in_stack_00000004;
+  func_0x00405182();
+  func_0x004011cc(*(undefined4 *)&this->field_0xac);
+  CString::CString((CString *)&stack0x00000000);
   pTVar1 = this->vftable;
-  local_4 = 0;
-  (*pTVar1[0x3b].slot_0x04)(&stack0x00000004);
-  (*pTVar1[0x34].slot_0x04)(&stack0xffffffe0);
+  puStack_8 = (undefined1 *)0x0;
+  (*pTVar1[0x3b].slot_0x04)(&stack0x00000000);
+  (*pTVar1[0x34].slot_0x04)(&stack0xffffffdc);
+  iStack_28 = iStack_28 + -1;
   (*pTVar1[0x3a].slot_0x04)
-            (local_4,*(undefined4 *)(local_4 + -8),&stack0xffffffdc,
-             CONCAT22((short)((uint)(unaff_EDI + -1) >> 0x10),*(undefined2 *)&this->field_0x90));
-  CString::__1CString__QAE_XZ(aCStack_14);
-  *unaff_FS_OFFSET = unaff_EDI + -1;
+            (puStack_8,*(undefined4 *)((int)puStack_8 + -8),&iStack_28,
+             CONCAT22((short)((uint)iStack_28 >> 0x10),*(undefined2 *)&this->field_0x90));
+  CString::~CString(aCStack_18);
+  *unaff_FS_OFFSET = iStack_28;
   return;
 }
 

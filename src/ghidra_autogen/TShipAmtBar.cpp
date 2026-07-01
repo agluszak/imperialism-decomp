@@ -4,43 +4,43 @@
 // Bucket: TShipAmtBar.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AAA0
-// GHIDRA_NAME TShipAmtBar::CreateTShipAmtBarInstance
-// GHIDRA_PROTO undefined CreateTShipAmtBarInstance()
+// GHIDRA_NAME TShipAmtBar::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TShipAmtBar::CreateTShipAmtBarInstance(void)
+undefined4 * TShipAmtBar::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637a5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x6c);
+  puVar1 = (undefined4 *)operator_new(0x6c);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    *(undefined2 *)&this[1].vftable = 0;
-    *(undefined2 *)((int)&this[1].vftable + 2) = 0;
-    *(undefined2 *)&this[1].field04 = 0;
-    *(undefined2 *)((int)&this[1].field04 + 2) = 0;
-    this->vftable = (TViewVtbl *)&TShipAmtBarVtbl_00666998;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *(undefined2 *)(puVar1 + 0x18) = 0;
+    *(undefined2 *)((int)puVar1 + 0x62) = 0;
+    *(undefined2 *)(puVar1 + 0x19) = 0;
+    *(undefined2 *)((int)puVar1 + 0x66) = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AB40
-// GHIDRA_NAME TShipAmtBar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TShipAmtBar::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipAmtBar::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TShipAmtBar::GetRuntimeClass()
 
 {
   return &g_pClassDescTShipAmtBar;
@@ -48,13 +48,13 @@ CRuntimeClass * TShipAmtBar::GetTEventHandlerClassNamePointer()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AB60
 // GHIDRA_NAME TShipAmtBar::ConstructBaseState
-// GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
 
 TShipAmtBar * TShipAmtBar::ConstructBaseState()
 
 {
-  TView::ConstructTViewBaseState((TView *)this);
-  this->vftable = &TShipAmtBarVtbl_00666998;
+  func_0x004064e2();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x60 = 0;
   *(undefined2 *)&this->field_0x62 = 0;
   *(undefined2 *)&this->field_0x64 = 0;
@@ -69,24 +69,25 @@ TShipAmtBar * TShipAmtBar::ConstructBaseState()
 TShipAmtBar * TShipAmtBar::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004041e7();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058ABF0
-// GHIDRA_NAME TShipAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TShipAmtBar::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TShipAmtBar::OrphanLeaf_NoCall_Ins07_004d8920()
+void TShipAmtBar::NoOpUiLifecycleHook()
 
 {
   short sVar1;
   TCity *pTVar2;
-
-  sVar1 = UiRuntimeContext::GetActiveNationId();
+  undefined4 in_stack_00000004;
+  
+  sVar1 = func_0x00403b16();
   if (g_apNationStates[sVar1] == (TGreatPower *)0x0) {
     pTVar2 = (TCity *)0x0;
   }
@@ -99,7 +100,7 @@ void TShipAmtBar::OrphanLeaf_NoCall_Ins07_004d8920()
   *(short *)&this->field_0x64 = sVar1;
   *(undefined2 *)&this->field_0x66 = 0x3a;
   *(short *)&this->field_0x60 = (short)(0 / (longlong)(int)sVar1);
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  func_0x00406ba9(in_stack_00000004);
   return;
 }
 
@@ -130,14 +131,14 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637a78;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  AcquireReusableQuickDrawSurface();
+  func_0x004021c1();
   local_4 = 0;
-  ApplyHitRegionToClipState(local_48);
+  func_0x0040232e(local_48);
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->VTableSlot3B)();
   if (cVar2 != '\0') {
@@ -155,18 +156,18 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
         SetQuickDrawTextOriginWithContextOffset(0,1);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
                   (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x66));
-        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,4);
+        func_0x00402e73(1,4);
         DrawCenteredGuideLineOnMapDc
                   (CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x60),1);
-        ResetQuickDrawStrokeState();
+        func_0x004088aa();
       }
-      SnapshotHitRegionToClipCache(puVar4);
+      func_0x00405be1(puVar4);
       uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
     }
   }
   local_4 = 0xffffffff;
-  ReleaseOrCacheQuickDrawSurface();
+  func_0x00409aac();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

@@ -3,194 +3,9 @@
 // Program: Imperialism.exe
 // Bucket: TSpaceCommand.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0050EC90
-// GHIDRA_NAME TSpaceCommand::BuildOrLoadGlobalMapStateForSession
-// GHIDRA_PROTO undefined __thiscall BuildOrLoadGlobalMapStateForSession(CString param_1, char * param_2)
-
-undefined4 __thiscall
-TSpaceCommand::BuildOrLoadGlobalMapStateForSession
-          (TSpaceCommand *this,CString param_1,char *param_2)
-
-{
-  TSpaceCommandVtbl *pTVar1;
-  TSpaceCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar2;
-  _vslot_fn *p_Var3;
-  bool bVar4;
-  char cVar5;
-  TMapMaker *this_00;
-  undefined4 uVar6;
-  int iVar7;
-  int iVar8;
-  int iVar9;
-  int iVar10;
-  int iVar11;
-  int iVar12;
-  undefined4 *unaff_FS_OFFSET;
-  TSpaceCommand *pTStack_14;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00633c92;
-  *unaff_FS_OFFSET = &uStack_c;
-  iVar10 = 0;
-  if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
-  }
-  pTVar1 = this->vftable;
-  (*pTVar1->NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94)();
-  if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
-  }
-  this_00 = (TMapMaker *)__2_YAPAXI_Z(0x2a8);
-  uStack_4 = 0;
-  if (this_00 == (TMapMaker *)0x0) {
-    pTStack_14 = (TSpaceCommand *)0x0;
-  }
-  else {
-    pTStack_14 = (TSpaceCommand *)TMapMaker::ConstructTMapMaker(this_00);
-  }
-  uStack_4 = 0xffffffff;
-  if ((g_pLocalizationTable->field_0x112 != '\0') ||
-     (bVar4 = false, *(short *)&g_pLocalizationTable->field_0x114 != 0)) {
-    bVar4 = true;
-  }
-  *(undefined1 *)((int)&pTStack_14[0x15].vftable + 1) = *(undefined1 *)&this[1].vftable;
-  if (bVar4) {
-    if (g_pLocalizationTable->field_0x112 == '\0') {
-      cVar5 = LoadScenarioMapStateFromTableResource
-                        (*(short *)&g_pLocalizationTable->field_0x114 + -1);
-      if (cVar5 == '\0') {
-        if (pTStack_14 != (TSpaceCommand *)0x0) {
-          (*pTStack_14->vftable->QueueCityRecruitmentSupportCommandsIfDeficit)();
-        }
-        (*pTVar1->QueueCityRecruitmentSupportCommandsIfDeficit)();
-        g_pGlobalMapState = (TMapMgr *)0x0;
-        uVar6 = 0;
-        goto LAB_0050efe5;
-      }
-    }
-    else {
-      (*pTVar1[1].GetTEventClassNamePointer)();
-      pTVar2 = pTVar1[1].OrphanCallChain_C1_I17_00487470;
-      p_Var3 = pTVar1[1].AssertValid;
-      do {
-        (*pTVar2)(iVar10);
-        (*p_Var3)(iVar10,0);
-        iVar10 = iVar10 + 1;
-      } while ((short)iVar10 < 0x1950);
-      (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0x3c0,0);
-    }
-    *(undefined4 *)&pTStack_14->field_0x8 = *(undefined4 *)&this->field_0xc;
-    (*pTStack_14->vftable[2].OrphanCallChain_C1_I17_00487470)(1);
-  }
-  else if (param_1.m_pchData == (char *)0x0) {
-    if (param_2 == (char *)0x0) {
-      GenerateMappedFlavorTextByCurrentContextNation(&this->field_0x1c);
-    }
-    else {
-      CString::__0CString__QAE_PBD_Z(&param_1,param_2);
-      uStack_4 = 1;
-      CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x1c,&param_1);
-      uStack_4 = 0xffffffff;
-      CString::__1CString__QAE_XZ(&param_1);
-    }
-    TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
-              (pTStack_14,*(undefined4 *)&this->field_0xc,*(undefined4 **)&this->field_0x10,
-               (undefined4 *)&this->field_0x1c);
-  }
-  if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
-  }
-  if (!bVar4) {
-    iVar11 = 0;
-    iVar10 = 0;
-    p_Var3 = this->vftable[1].Dump;
-    do {
-      (*p_Var3)(iVar11);
-      iVar7 = *(int *)&this->field_0xc + iVar10;
-      iVar11 = iVar11 + 1;
-      iVar10 = iVar10 + 0x24;
-      *(undefined1 *)(iVar7 + 3) = *(undefined1 *)(iVar7 + 4);
-    } while ((short)iVar11 < 0x1950);
-  }
-  if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
-  }
-  RebuildTileOwnerNeighborCachesAndFallbackAssignments();
-  if (bVar4) {
-    iVar11 = 0;
-    iVar10 = 0;
-    do {
-      iVar8 = *(int *)&this->field_0x10 + iVar11;
-      iVar7 = iVar10;
-      if (((*(short *)(iVar8 + 0x42) != -1) && (*(char *)(iVar8 + 0xa3) == -1)) &&
-         (iVar7 = iVar10 + 1, *(char *)(iVar8 + 0xa3) != iVar10)) {
-        *(char *)(iVar8 + 0xa3) = (char)iVar10;
-        iVar8 = *(int *)&this->field_0x10;
-        iVar12 = 0;
-        if ('\0' < *(char *)(iVar11 + 8 + iVar8)) {
-          iVar9 = iVar11 + 10;
-          do {
-            TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(this,(int)*(short *)(iVar9 + iVar8),iVar10);
-            iVar8 = *(int *)&this->field_0x10;
-            iVar12 = iVar12 + 1;
-            iVar9 = iVar9 + 2;
-          } while (iVar12 < *(char *)(iVar11 + 8 + iVar8));
-        }
-      }
-      iVar11 = iVar11 + 0xa8;
-      iVar10 = iVar7;
-    } while (iVar11 < 0xfc00);
-  }
-  iVar10 = 0;
-  if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
-  }
-  if (!bVar4) {
-    (*this->vftable[1].WriteTo)();
-  }
-  if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
-  }
-  RebuildUMapperRouteRecordsAndActiveMapRects();
-  (*g_pLocalizationTable->vftable[0x10].GetTSimMgrClassNamePointer)();
-  DAT_006a5aec = 0;
-  DAT_006a5aec = _time(0);
-  if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
-  }
-  if (!bVar4) {
-    pTVar2 = this->vftable[1].OrphanCallChain_C1_I17_00487470;
-    p_Var3 = this->vftable[1].AssertValid;
-    do {
-      (*pTVar2)(iVar10);
-      (*p_Var3)(iVar10,0);
-      iVar10 = iVar10 + 1;
-    } while ((short)iVar10 < 0x1950);
-  }
-  if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
-  }
-  (**(code **)(g_pUiRuntimeContext->vftable + 0xc4))();
-  if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
-  }
-  this->field_0x8 = 1;
-  if (pTStack_14 != (TSpaceCommand *)0x0) {
-    (*pTStack_14->vftable->QueueCityRecruitmentSupportCommandsIfDeficit)();
-  }
-  uVar6 = 1;
-LAB_0050efe5:
-  *unaff_FS_OFFSET = uStack_c;
-  return uVar6;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0050F6B0
 // GHIDRA_NAME TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren
-// GHIDRA_PROTO undefined __thiscall TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall SetMapRecordFlagA3AndPropagateToChildren(int param_1, int param_2)
 
 void TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(int param_1, int param_2)
 
@@ -199,7 +14,7 @@ void TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(int param_1, int pa
   int iVar2;
   int iVar3;
   int iVar4;
-
+  
   iVar3 = param_1 * 0xa8;
   if (*(char *)(*(int *)&this->field_0x10 + 0xa3 + iVar3) != param_2) {
     *(char *)(*(int *)&this->field_0x10 + 0xa3 + iVar3) = (char)param_2;
@@ -208,7 +23,7 @@ void TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(int param_1, int pa
     if ('\0' < *(char *)(iVar1 + 8 + iVar3)) {
       iVar2 = iVar3 + 10;
       do {
-        TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(this,(int)*(short *)(iVar2 + iVar1),param_2);
+        func_0x00403c5b((int)*(short *)(iVar2 + iVar1),param_2);
         iVar1 = *(int *)&this->field_0x10;
         iVar4 = iVar4 + 1;
         iVar2 = iVar2 + 2;
@@ -220,7 +35,7 @@ void TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(int param_1, int pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525A30
 // GHIDRA_NAME TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
-// GHIDRA_PROTO undefined __thiscall TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides(undefined4 param_1, undefined4 * param_2, undefined4 * param_3)
+// GHIDRA_PROTO undefined __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(undefined4 param_1, undefined4 * param_2, undefined4 * param_3)
 
 void __thiscall
 TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
@@ -238,7 +53,7 @@ TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
   uint uVar9;
   int iVar10;
   bool bVar11;
-
+  
   *(undefined4 *)&this->field_0x8 = param_1;
   iVar10 = 0x96;
   iVar8 = 0xfa;
@@ -348,28 +163,28 @@ LAB_00525acd:
     cVar2 = *pcVar4;
   }
   if (DAT_006a38e8 == 0) {
-    DAT_006a38e8 = _time(0);
+    DAT_006a38e8 = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
   }
   DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
   DAT_006a5aec = DAT_006a38e8 >> 0xc & 0x7fff;
   if (DAT_006a5aec == 0) {
-    DAT_006a5aec = _time(0);
+    DAT_006a5aec = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
   }
   pTVar1 = this->vftable;
   do {
     do {
-      if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-        TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+      if (DAT_006a4268 != 0) {
+        func_0x00401c2b();
       }
       (*pTVar1->OrphanRetStub_00487a00)();
       cVar2 = (*pTVar1[2].Serialize)();
       if (cVar2 == '\0') {
-        cVar2 = ValidateAllColumnsHaveAssignedRegionClass();
+        cVar2 = func_0x00402536();
         if (cVar2 == '\0') {
           bVar11 = true;
         }
         else {
-          cVar2 = ValidateTerrainClassAdjacencyCoverageMask();
+          cVar2 = func_0x00404d45();
           bVar11 = cVar2 == '\0';
         }
       }
@@ -377,8 +192,8 @@ LAB_00525acd:
         bVar11 = true;
       }
     } while (bVar11);
-    if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    if (DAT_006a4268 != 0) {
+      func_0x00401c2b();
     }
     pTVar3 = this + 0x10;
     iVar10 = 0x17;
@@ -391,26 +206,24 @@ LAB_00525acd:
       pTVar3 = (TSpaceCommand *)&pTVar3->field_0x4;
       iVar10 = iVar10 + -1;
     } while (iVar10 != 0);
-    if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    if (DAT_006a4268 != 0) {
+      func_0x00401c2b();
     }
     (*pTVar1[1].Serialize)();
-    if ((DAT_006a4268 != (TSpaceCommand *)0x0) &&
-       (TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268), DAT_006a4268 != (TSpaceCommand *)0x0)
-       ) {
-      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    if ((DAT_006a4268 != 0) && (func_0x00401c2b(), DAT_006a4268 != 0)) {
+      func_0x00401c2b();
     }
     (*pTVar1[2].ReadFrom)();
-    if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    if (DAT_006a4268 != 0) {
+      func_0x00401c2b();
     }
     (*pTVar1[1].AssertValid)();
-    if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    if (DAT_006a4268 != 0) {
+      func_0x00401c2b();
     }
-    RotateMapColumnsByPeakCityTileDensity();
-    if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    func_0x00406d4d();
+    if (DAT_006a4268 != 0) {
+      func_0x00401c2b();
     }
     (*pTVar1[2].OrphanCallChain_C1_I17_00487470)(0);
     pcVar5 = (char *)*param_2;
@@ -713,21 +526,51 @@ LAB_00526242:
       } while (iVar10 != 0);
     }
 LAB_005262cf:
-    if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    if (DAT_006a4268 != 0) {
+      func_0x00401c2b();
     }
-    cVar2 = ValidateSeedCandidateExistsForEachTerrainClass();
+    cVar2 = func_0x00406091();
     if (cVar2 != '\0') {
-      if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-        TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+      if (DAT_006a4268 != 0) {
+        func_0x00401c2b();
       }
       return;
     }
     (*g_pGlobalMapState->vftable->WrapperFor_AllocateWithFallbackHandler_At0050e8b0)();
-    if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    if (DAT_006a4268 != 0) {
+      func_0x00401c2b();
     }
   } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00575180
+// GHIDRA_NAME TSpaceCommand::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TSpaceCommand::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063673a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x20);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403d5f();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005751F0
@@ -737,27 +580,27 @@ LAB_005262cf:
 void TSpaceCommand::OrphanRetStub_00487a00()
 
 {
-  TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(*(TSpaceCommand **)&this->field_0x18);
+  func_0x004035f8(this->field_0x1c);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575210
-// GHIDRA_NAME TSpaceCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
+// GHIDRA_NAME TSpaceCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSpaceCommand * TSpaceCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
+TSpaceCommand * TSpaceCommand::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TSpaceCommand::CreateTSpaceCommandInstance(this);
+  func_0x004094b2();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575240
 // GHIDRA_NAME TSpaceCommand::CreateTSpaceCommandInstance
-// GHIDRA_PROTO undefined __thiscall TSpaceCommand::CreateTSpaceCommandInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTSpaceCommandInstance(void)
 
 void TSpaceCommand::CreateTSpaceCommandInstance()
 
@@ -767,87 +610,18 @@ void TSpaceCommand::CreateTSpaceCommandInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575260
-// GHIDRA_NAME TSpaceCommand::GetTEventClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
+// GHIDRA_NAME TSpaceCommand::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSpaceCommand::GetTEventClassNamePointer()
-
-{
-  return &classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00575280
-// GHIDRA_NAME TSpaceCommand::ConstructTSpaceCommandBaseState
-// GHIDRA_PROTO undefined ConstructTSpaceCommandBaseState()
-
-TNoHilitePicture * TSpaceCommand::ConstructTSpaceCommandBaseState(void)
+CRuntimeClass * TSpaceCommand::GetRuntimeClass()
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063675a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x1fc);
-  local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
-    this->vftable = (TNoHilitePictureVtbl *)&THighScoresPictureVtbl_00643ea8;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00578230
-// GHIDRA_NAME TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam
-// GHIDRA_PROTO undefined __thiscall CreateTurnEventPacket_Vtbl00661b10WithInitParam(undefined1 param_1)
-
-void __thiscall
-TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam
-          (TSpaceCommand *this,undefined1 param_1)
-
-{
-  TCommand *this_00;
-  TCommand *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00636a2a;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this_00 = (TCommand *)__2_YAPAXI_Z(0x20);
-  local_4 = 0;
-  if (this_00 == (TCommand *)0x0) {
-    pTVar1 = (TCommand *)0x0;
-  }
-  else {
-    TCommand::ConstructTurnEventPacketBase(this_00);
-    this_00->vftable = (TCommandVtbl *)&TSpaceCommandVtbl_00661b10;
-    pTVar1 = this_00;
-  }
-  local_4 = 0xffffffff;
-  InitializeRangePairAndResetCursor(0x4e415341,g_pGlobalUiRootController,0,0,0);
-  pTVar1[1].vftable = (TCommandVtbl *)this;
-  pTVar1[1].field_0x4 = param_1;
-  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(pTVar1);
-  *unaff_FS_OFFSET = this_00;
-  return;
+  return &classTSpaceCommand;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578330
 // GHIDRA_NAME TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview
-// GHIDRA_PROTO undefined __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(void)
+// GHIDRA_PROTO undefined __thiscall GenerateRandomMapAndRefreshSetupPreview(void)
 
 void TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview()
 
@@ -864,113 +638,164 @@ void TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview()
   undefined3 extraout_var_04;
   undefined3 extraout_var_05;
   undefined4 *unaff_FS_OFFSET;
-  CString CStack_a4;
+  CString CStack_c0;
+  undefined4 uStack_bc;
+  CString CStack_b8;
+  undefined4 uStack_b4;
+  undefined4 uStack_b0;
+  undefined4 uStack_ac;
+  undefined4 uStack_a8;
+  code *pcStack_a4;
   undefined4 uStack_a0;
-  CString CStack_9c;
+  code *pcStack_9c;
   undefined4 uStack_98;
   undefined4 uStack_94;
-  CString CStack_5c;
-  int *piStack_58;
-  int iStack_54;
+  code *pcStack_90;
+  code *pcStack_8c;
+  code *pcStack_88;
+  undefined4 uStack_84;
+  undefined1 *puStack_80;
+  undefined4 uStack_7c;
+  CString CStack_78;
+  int *piStack_74;
+  code *pcStack_70;
+  undefined4 uStack_6c;
+  undefined4 uStack_68;
+  int *piStack_64;
+  int iStack_60;
+  undefined1 *puStack_5c;
+  _vslot_fn *p_Stack_58;
+  code *pcStack_54;
   undefined4 uStack_50;
-  TLoadSavePicture *pTStack_3c;
-  undefined4 uStack_38;
-  undefined4 uStack_34;
-  undefined4 uStack_30;
-  code *pcStack_24;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636a50;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_50 = 0x686f7421;
   pTVar1 = this->vftable[3].OrphanCallChain_C1_I17_00487470;
-  iStack_54 = 0x57835d;
+  pcStack_54 = (code *)0x57835d;
   uVar3 = (*pTVar1)();
   iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
-  iStack_54 = 0x578367;
+  pcStack_54 = (code *)0x578367;
   (**(code **)(iVar2 + 0xc))();
-  iStack_54 = 0x578370;
-  CString::__0CString__QAE_XZ((CString *)&stack0xffffffc0);
-  iStack_54 = 7;
-  CStack_5c.m_pchData = &stack0xffffffc0;
-  piStack_58 = (int *)0x2758;
+  pcStack_54 = (code *)0x578370;
+  CString::CString((CString *)&stack0xffffffc0);
+  pcStack_54 = (code *)0x7;
+  puStack_5c = &stack0xffffffc0;
+  p_Stack_58 = (_vslot_fn *)0x2758;
   puStack_8 = (undefined1 *)0x0;
-  LoadUiStringResourceByGroupAndIndex();
-  pcStack_24 = *(code **)(iVar2 + 0x1ec);
-  piStack_58 = (int *)&stack0xffffffc0;
-  iStack_54 = 1;
-  CStack_5c.m_pchData = (char *)0x5783a4;
-  (*pcStack_24)();
-  CStack_5c.m_pchData = (char *)0x1;
+  iStack_60 = 0x57838f;
+  func_0x00401e7e();
+  piStack_64 = (int *)&stack0xffffffb4;
+  iStack_60 = 1;
+  uStack_68 = 0x5783a4;
+  (**(code **)(iVar2 + 0x1ec))();
+  uStack_68 = 1;
+  uStack_6c = 0x5783ae;
   (**(code **)(iVar2 + 0x1f8))();
+  uStack_6c = 0x636f756e;
+  pcStack_70 = (code *)0x5783b7;
   uVar3 = (*pTVar1)();
+  pcStack_70 = (code *)0x5783c0;
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xc))();
+  pcStack_70 = (code *)0x0;
+  piStack_74 = (int *)0x0;
+  CStack_78.m_pchData = (char *)0x5783d4;
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xa4))();
+  CStack_78.m_pchData = (char *)0x73747566;
+  uStack_7c = 0x5783dd;
   uVar3 = (*pTVar1)();
-  piStack_58 = (int *)CONCAT31(extraout_var_01,uVar3);
-  iStack_54 = *piStack_58;
-  (**(code **)(iStack_54 + 0xc))();
-  uStack_34 = 0x120;
-  uStack_30 = 4;
-  pTStack_3c = (TLoadSavePicture *)0x7d0;
-  uStack_38 = 0x898;
-  (**(code **)(iStack_54 + 0xf0))();
-  (*this->vftable[9].ReadFrom)();
+  piStack_64 = (int *)CONCAT31(extraout_var_01,uVar3);
+  iStack_60 = *piStack_64;
+  uStack_7c = 0x5783ec;
+  (**(code **)(iStack_60 + 0xc))();
+  puStack_80 = &stack0xffffffb8;
+  uStack_7c = 0;
+  pcStack_54 = *(code **)(iStack_60 + 0xf0);
+  uStack_84 = 0x578427;
+  (*pcStack_54)();
+  uStack_84 = 1;
+  pcStack_88 = (code *)0x1195;
+  p_Stack_58 = this->vftable[9].ReadFrom;
+  pcStack_8c = (code *)0x57843e;
+  (*p_Stack_58)();
+  pcStack_8c = (code *)0x636f6174;
+  pcStack_90 = (code *)0x578447;
   uVar3 = (*pTVar1)();
-  iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0x1c8))();
-  if ((char)uStack_38 != '\0') {
-    uVar3 = (*this->vftable[1].NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94)();
-    (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0x13c))();
-  }
+  piStack_74 = (int *)CONCAT31(extraout_var_02,uVar3);
+  pcStack_70 = (code *)*piStack_74;
+  pcStack_90 = (code *)0x578456;
+  (**(code **)((int)pcStack_70 + 0xc))();
+  pcStack_90 = (code *)0x1;
+  uStack_94 = 0x11cd;
+  pcStack_70 = *(code **)((int)pcStack_70 + 0x1c8);
+  uStack_98 = 0x578471;
+  (*pcStack_70)();
+  uStack_98 = 0x578480;
+  uVar3 = (*this->vftable[1].NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94)();
+  uStack_98 = 0x57848a;
+  (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0x13c))();
+  uStack_98 = 0x578495;
   DAT_006a4268 = this;
-  uVar4 = GetTickCountDiv16();
+  uVar4 = func_0x004092d7();
   *(undefined4 *)&this[4].field_0x1c = uVar4;
   this[5].vftable = (TSpaceCommandVtbl *)0x0;
-  TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(this);
-  uStack_94 = 1;
-  uStack_98 = 0x5784c7;
-  RebuildMapContextAndGlobalMapState();
-  DAT_006a4268 = (TSpaceCommand *)0x0;
-  TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(this);
-  uVar3 = (*pTVar1)();
-  pTStack_3c = (TLoadSavePicture *)CONCAT31(extraout_var_04,uVar3);
-  (*pTStack_3c->vftable->AssertValid)();
-  uStack_94 = 0x5784f7;
-  TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(pTStack_3c,0);
-  ApplyPaletteMaskToTileBufferByEventCode();
-  uStack_94 = 1;
-  uStack_98 = 0x57850a;
-  (*(code *)0x73747566)();
-  CStack_9c.m_pchData = (char *)&CStack_5c;
-  uStack_98 = 0;
-  uStack_a0 = 0x578519;
-  (*(code *)0x0)();
+  uStack_98 = 0x5784ac;
+  uVar4 = func_0x00401c2b();
+  uStack_98 = CONCAT31((int3)((uint)uVar4 >> 8),this[4].field_0x18);
+  pcStack_9c = *(code **)&this[4].field_0x14;
   uStack_a0 = 1;
-  CStack_a4.m_pchData = (char *)0x11bc;
-  (*(code *)&pTStack_3c)();
-  (*(code *)0x11cd)(*(short *)&this[4].field_0x1a + 0x11c6,1);
-  CString::__0CString__QAE_PBD_Z(&CStack_5c,(char *)&g_szEmptyString);
-  CString::__4CString__QAEABV0_ABV0__Z(&CStack_9c,&CStack_5c);
-  CString::__1CString__QAE_XZ(&CStack_5c);
-  (*(code *)0x636f6174)(&CStack_9c,1);
+  pcStack_a4 = (code *)0x5784c7;
+  func_0x00405704();
+  DAT_006a4268 = (TSpaceCommand *)0x0;
+  pcStack_a4 = (code *)0x5784d8;
+  func_0x00401c2b();
+  pcStack_a4 = (code *)0x6d617020;
+  uStack_a8 = 0x5784e1;
+  uVar3 = (*pTVar1)();
+  pcStack_54 = (code *)CONCAT31(extraout_var_04,uVar3);
+  uStack_a8 = 0x5784ec;
+  (**(code **)(*(int *)pcStack_54 + 0xc))();
+  uStack_a8 = 0;
+  uStack_ac = 0x5784f7;
+  func_0x004099d0();
+  uStack_ac = 0x578500;
+  func_0x0040686b();
+  uStack_ac = 0;
+  uStack_b0 = 1;
+  uStack_b4 = 0x57850a;
+  (*pcStack_88)();
+  CStack_b8.m_pchData = (char *)&CStack_78;
+  uStack_b4 = 0;
+  uStack_bc = 0x578519;
+  (*pcStack_8c)();
+  uStack_bc = 1;
+  CStack_c0.m_pchData = (char *)0x11bc;
+  (*pcStack_90)();
+  (*pcStack_a4)(*(short *)&this[4].field_0x1a + 0x11c6,1);
+  CString::CString(&CStack_78,(char *)&g_szEmptyString);
+  puStack_80._0_1_ = 1;
+  CString::operator=(&CStack_b8,&CStack_78);
+  puStack_80 = (undefined1 *)((uint)puStack_80._1_3_ << 8);
+  CString::~CString(&CStack_78);
+  (*pcStack_9c)(&CStack_b8,1);
   if ((this[5].field_0x4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 == 0)) {
     uVar3 = (*pTVar1)(0x636f756e);
     (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar3) + 0xc))();
   }
-  CString::__1CString__QAE_XZ(&CStack_a4);
-  *unaff_FS_OFFSET = &pTStack_3c;
+  pcStack_88 = (code *)0xffffffff;
+  CString::~CString(&CStack_c0);
+  *unaff_FS_OFFSET = pcStack_90;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578680
 // GHIDRA_NAME TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame
-// GHIDRA_PROTO undefined __thiscall TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(void)
+// GHIDRA_PROTO undefined __thiscall UpdateMapGenerationProgressSpinnerFrame(void)
 
 void TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame()
 
@@ -982,21 +807,22 @@ void TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame()
   undefined3 extraout_var;
   TSpaceCommandVtbl *pTVar5;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_48;
   undefined4 uStack_44;
-  undefined4 uStack_20;
+  undefined4 uStack_24;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636a68;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_44 = 0x5786a2;
-  uVar3 = GetTickCountDiv16();
+  uVar3 = func_0x004092d7();
   if (*(uint *)&this[4].field_0x1c < uVar3) {
     uStack_44 = 0x5786af;
-    uVar4 = GetTickCountDiv16();
+    uVar4 = func_0x004092d7();
     pTVar5 = this[5].vftable;
     *(undefined4 *)&this[4].field_0x1c = uVar4;
     pTVar5 = (TSpaceCommandVtbl *)((int)&pTVar5->GetTEventClassNamePointer + 1);
@@ -1009,16 +835,19 @@ void TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame()
     this[5].vftable = (TSpaceCommandVtbl *)0x0;
   }
   uStack_44 = 0x676c6f62;
+  uStack_48 = 0x5786f5;
   uVar2 = (*this->vftable[3].OrphanCallChain_C1_I17_00487470)();
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
+  uStack_48 = 0x5786fe;
   (**(code **)(iVar1 + 0xc))();
-  (**(code **)(iVar1 + 0x1c8))(*(short *)&this[5].vftable + 0x11d0,0);
-  ConstructScopedMapQuickDrawContext((int *)CONCAT31(extraout_var,uVar2));
+  uStack_48 = 0;
+  (**(code **)(iVar1 + 0x1c8))(*(short *)&this[5].vftable + 0x11d0);
+  func_0x00401d70((int *)CONCAT31(extraout_var,uVar2));
   (**(code **)(iVar1 + 0xf8))();
-  (**(code **)(iVar1 + 300))(&stack0xffffffc0);
-  (**(code **)(iVar1 + 0x110))(&uStack_44);
+  (**(code **)(iVar1 + 300))(&uStack_44);
+  (**(code **)(iVar1 + 0x110))(&uStack_48);
   DestroyScopedMapQuickDrawContext();
-  *unaff_FS_OFFSET = uStack_20;
+  *unaff_FS_OFFSET = uStack_24;
   return;
 }
 

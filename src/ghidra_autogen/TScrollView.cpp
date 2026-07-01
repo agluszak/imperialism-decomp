@@ -10,114 +10,117 @@
 TScrollView * TScrollView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00404223();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573C20
-// GHIDRA_NAME TScrollView::CreateTScrollViewInstance
-// GHIDRA_PROTO undefined CreateTScrollViewInstance()
+// GHIDRA_NAME TScrollView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TScrollView::CreateTScrollViewInstance(void)
+undefined4 * TScrollView::CreateObject(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063663a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x68);
+  puVar1 = (undefined4 *)operator_new(0x68);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TScrollViewVtbl_006417e0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573C90
-// GHIDRA_NAME TScrollView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TScrollView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TScrollView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TScrollView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTScrollView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573CB0
 // GHIDRA_NAME TScrollView::ConstructTScrollViewBaseState
-// GHIDRA_PROTO undefined TScrollView::ConstructTScrollViewBaseState()
+// GHIDRA_PROTO undefined ConstructTScrollViewBaseState()
 
 void TScrollView::ConstructTScrollViewBaseState
                (undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,5,5,0);
+  func_0x004096b5(0,param_1,param_2,param_3,5,5,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573CE0
-// GHIDRA_NAME TScrollView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TScrollView::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TScrollView::OrphanLeaf_NoCall_Ins07_004d8920()
+void TScrollView::NoOpUiLifecycleHook()
 
 {
-  undefined uVar1;
+  int iVar1;
+  undefined uVar2;
   undefined3 extraout_var;
-  TControl *this_00;
-  undefined4 *unaff_FS_OFFSET;
-  int aiStack_18 [3];
-  undefined4 uStack_c;
+  undefined4 *puVar3;
+  int *unaff_FS_OFFSET;
+  int aiStack_1c [4];
+  int iStack_c;
   undefined1 *puStack_8;
-  undefined4 uStack_4;
-
-  uStack_4 = 0xffffffff;
+  undefined4 *puStack_4;
+  
+  puStack_4 = (undefined4 *)0xffffffff;
   puStack_8 = &LAB_0063665a;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7363726f);
-  *(uint *)&this->field_0x60 = CONCAT31(extraout_var,uVar1);
-  this_00 = (TControl *)__2_YAPAXI_Z(0x94);
-  puStack_8 = (undefined1 *)0x0;
-  if (this_00 == (TControl *)0x0) {
-    this_00 = (TControl *)0x0;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  func_0x00406ba9();
+  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7363726f);
+  *(uint *)&this->field_0x60 = CONCAT31(extraout_var,uVar2);
+  puVar3 = (undefined4 *)operator_new(0x94);
+  iStack_c = 0;
+  puStack_4 = puVar3;
+  if (puVar3 == (undefined4 *)0x0) {
+    puVar3 = (undefined4 *)0x0;
   }
   else {
-    TControl::TControl(this_00);
-    this_00->vftable = (TControlVtbl *)&TScrollBarViewVtbl_006614c8;
-    *(undefined4 *)&this_00[1].field_0xc = 0;
+    func_0x004087fb();
+    *puVar3 = &TScrollBarView::_vftable_;
+    puVar3[0x24] = 0;
   }
-  aiStack_18[0] = this->field34 + -0x19;
-  puStack_8 = (undefined1 *)0xffffffff;
-  aiStack_18[1] = 0;
-  TScrollBarView::ConstructTScrollBarViewBaseState(this,aiStack_18,&stack0xffffffe0);
-  *(TControl **)&this->field_0x64 = this_00;
-  *unaff_FS_OFFSET = aiStack_18[2];
+  iVar1 = this->field38;
+  aiStack_1c[0] = this->field34 + -0x19;
+  iStack_c = -1;
+  aiStack_1c[1] = 0;
+  func_0x00407bb2(this,aiStack_1c,&stack0xffffffdc);
+  *(undefined4 **)&this->field_0x64 = puVar3;
+  *unaff_FS_OFFSET = iVar1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005742B0
-// GHIDRA_NAME TScrollView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1, TDropShadowText * param_2)
+// GHIDRA_NAME TScrollView::PaintVisibleChildrenIntersectingClipRect
+// GHIDRA_PROTO undefined __thiscall PaintVisibleChildrenIntersectingClipRect(undefined4 param_1, TDropShadowText * param_2)
 
 void __thiscall
-TScrollView::_scalar_deleting_destructor_
-          (TScrollView *this,undefined4 param_1,TDropShadowText *param_2)
+TScrollView::PaintVisibleChildrenIntersectingClipRect
+          (TScrollView *this,CDC *param_1,TDropShadowText *param_2)
 
 {
   TScrollViewVtbl *pTVar1;
@@ -125,40 +128,35 @@ TScrollView::_scalar_deleting_destructor_
   int iVar3;
   HRGN pHVar4;
   undefined4 *unaff_FS_OFFSET;
-  undefined **ppuStack_24;
-  undefined4 uStack_20;
-  RECT RStack_1c;
+  undefined4 unaff_retaddr;
+  RECT RStack_20;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006366a8;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar3 = NoOpRuntimeCallback_00489a70();
+  iVar3 = func_0x00403486();
   if (iVar3 != 0) {
     pTVar1 = this->vftable;
     cVar2 = (*pTVar1->VTableSlot3B)();
     if (cVar2 != '\0') {
       cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
       if (cVar2 != '\0') {
-        (*pTVar1->VTableSlot57)(&RStack_1c);
-        uStack_20 = 0;
-        ppuStack_24 = &CBrush::_vftable_;
-        uStack_4 = 0;
-        pHVar4 = CreateRectRgnIndirect(&RStack_1c);
-        CBrush::_Attach_CGdiObject__QAEHPAX_Z((CBrush *)&ppuStack_24,(int)pHVar4);
-        TDropShadowText::_SelectClipRgn_CDC__QAEHPAVCRgn___Z(param_2,(int)&ppuStack_24);
-        _DeleteObject_CGdiObject__QAEHXZ();
-        ppuStack_24 = &PTR_LAB_00671054;
-        uStack_4 = 1;
-        _DeleteObject_CGdiObject__QAEHXZ();
-        ppuStack_24 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-        uStack_4 = 2;
-        TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920((TSoundPlayer *)this,param_1);
+        (*pTVar1->VTableSlot57)(&RStack_20.top);
+        puStack_8 = (undefined1 *)0x0;
+        pHVar4 = CreateRectRgnIndirect(&RStack_20);
+        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&stack0xffffffd8,(int)pHVar4);
+        CDC::SelectClipRgn(param_1,(int)&stack0xffffffd8);
+        DeleteObject();
+        puStack_8 = (undefined1 *)0x1;
+        DeleteObject();
+        puStack_8 = (undefined1 *)0x2;
+        func_0x00406ef1(unaff_retaddr,param_1);
         uStack_4 = 0xffffffff;
-        TDropShadowText::_SelectClipRgn_CDC__QAEHPAVCRgn___Z(param_2,0);
+        CDC::SelectClipRgn(param_1,0);
       }
     }
   }

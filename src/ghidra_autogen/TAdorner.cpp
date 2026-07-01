@@ -4,10 +4,10 @@
 // Bucket: TAdorner.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D650
-// GHIDRA_NAME TAdorner::CreateTAdornerInstance
-// GHIDRA_PROTO undefined CreateTAdornerInstance()
+// GHIDRA_NAME TAdorner::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-undefined4 * TAdorner::CreateTAdornerInstance(void)
+undefined4 * TAdorner::CreateObject(void)
 
 {
   undefined4 *puVar1;
@@ -17,18 +17,18 @@ undefined4 * TAdorner::CreateTAdornerInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fca2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0xc);
+  puVar1 = (undefined4 *)operator_new(0xc);
   puVar3 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     local_4 = 1;
-    *puVar1 = &TAdornerVtbl_0064bdd0;
-    uVar2 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-    SetGlobalUiInvalidationFlagAndReturnPrevious(uVar2);
+    *puVar1 = &_vftable_;
+    uVar2 = func_0x004090ed(0);
+    func_0x004090ed(uVar2);
     puVar3 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -36,46 +36,13 @@ undefined4 * TAdorner::CreateTAdornerInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D6D0
-// GHIDRA_NAME TAdorner::GetTAdornerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTAdornerClassNamePointer(void)
+// GHIDRA_NAME TAdorner::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAdorner::GetTAdornerClassNamePointer()
-
-{
-  return &classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049D6F0
-// GHIDRA_NAME TAdorner::ConstructTAdornerBaseState
-// GHIDRA_PROTO undefined ConstructTAdornerBaseState()
-
-TView * TAdorner::ConstructTAdornerBaseState(void)
+CRuntimeClass * TAdorner::GetRuntimeClass()
 
 {
-  TView *this;
-  undefined4 uVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062fcd2;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x60);
-  local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-    SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return &classTAdorner;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D900
@@ -86,9 +53,9 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-
-  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  
+  uVar1 = func_0x004090ed(0);
+  func_0x004090ed(uVar1);
   return;
 }
 
@@ -100,37 +67,37 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-
-  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  
+  uVar1 = func_0x004090ed(0);
+  func_0x004090ed(uVar1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D960
-// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(void)
+// GHIDRA_NAME TAdorner::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(void)
 
-void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960()
+void TAdorner::ReadFrom()
 
 {
   undefined4 uVar1;
-
-  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  
+  uVar1 = func_0x004090ed(0);
+  func_0x004090ed(uVar1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D990
-// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990(void)
+// GHIDRA_NAME TAdorner::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(void)
 
-void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990()
+void TAdorner::WriteTo()
 
 {
   undefined4 uVar1;
-
-  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  
+  uVar1 = func_0x004090ed(0);
+  func_0x004090ed(uVar1);
   return;
 }
 
@@ -142,9 +109,9 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-
-  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  
+  uVar1 = func_0x004090ed(0);
+  func_0x004090ed(uVar1);
   return;
 }
 
@@ -156,9 +123,9 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-
-  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  
+  uVar1 = func_0x004090ed(0);
+  func_0x004090ed(uVar1);
   return;
 }
 
@@ -170,9 +137,9 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-
-  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  
+  uVar1 = func_0x004090ed(0);
+  func_0x004090ed(uVar1);
   return;
 }
 
@@ -184,9 +151,9 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-
-  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  
+  uVar1 = func_0x004090ed(0);
+  func_0x004090ed(uVar1);
   return;
 }
 
@@ -199,22 +166,22 @@ uint TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 {
   undefined4 uVar1;
   uint uVar2;
-
-  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  uVar2 = SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  
+  uVar1 = func_0x004090ed(0);
+  uVar2 = func_0x004090ed(uVar1);
   return uVar2 & 0xffffff00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DAB0
-// GHIDRA_NAME TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(byte param_1)
+// GHIDRA_NAME TAdorner::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAdorner * TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(byte param_1)
+TAdorner * TAdorner::_scalar_deleting_destructor_(byte param_1)
 
 {
-  WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl();
+  func_0x00404151();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }

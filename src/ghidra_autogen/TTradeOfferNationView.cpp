@@ -10,141 +10,150 @@
 TTradeOfferNationView * TTradeOfferNationView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00407a77();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD1F0
-// GHIDRA_NAME TTradeOfferNationView::CreateTTradeOfferNationViewInstance
-// GHIDRA_PROTO undefined CreateTTradeOfferNationViewInstance()
+// GHIDRA_NAME TTradeOfferNationView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TTradeOfferNationView::CreateTTradeOfferNationViewInstance(void)
+undefined4 * TTradeOfferNationView::CreateObject(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063937a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(100);
+  puVar1 = (undefined4 *)operator_new(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TTradeOfferNationViewVtbl_0066e2f8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD260
-// GHIDRA_NAME TTradeOfferNationView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTradeOfferNationView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeOfferNationView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTradeOfferNationView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTradeOfferNationView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD2D0
-// GHIDRA_NAME TTradeOfferNationView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_NAME TTradeOfferNationView::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTradeOfferNationView::OrphanCallChain_C11_I88_004874b0()
+void TTradeOfferNationView::ApplyRectSlot110()
 
 {
   int iVar1;
   undefined uVar2;
   short sVar3;
+  undefined2 extraout_var_00;
   CString *src_ref;
   undefined3 extraout_var;
   int iVar4;
-  char *unaff_ESI;
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
-  RECT local_40;
-  RECT local_30;
-  undefined4 uStack_20;
-  int iStack_18;
+  CString CStack_58;
+  CString CStack_54;
+  CString local_40;
+  CString local_3c;
+  CString local_38;
+  CString local_34;
+  char local_30 [8];
+  undefined4 uStack_28;
+  int iStack_20;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006393b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::__0CString__QAE_XZ((CString *)&local_40);
+  CStack_54.m_pchData = (char *)0x5bd2f7;
+  CString::CString(&local_40);
   local_4 = 0;
-  CString::__0CString__QAE_XZ((CString *)&local_40.right);
+  CStack_54.m_pchData = (char *)0x5bd306;
+  CString::CString(&local_38);
   local_4._0_1_ = 1;
-  CString::__0CString__QAE_XZ((CString *)&local_40.top);
+  CStack_54.m_pchData = (char *)0x5bd314;
+  CString::CString(&local_3c);
   local_4._0_1_ = 2;
-  CString::__0CString__QAE_XZ((CString *)&local_40.bottom);
-  local_4._0_1_ = 3;
+  CStack_54.m_pchData = (char *)0x5bd322;
+  CString::CString(&local_34);
+  CStack_54.m_pchData = (char *)CONCAT22(extraout_var_00,*(short *)&this->field_0x62);
+  local_4 = CONCAT31(local_4._1_3_,3);
+  CStack_58.m_pchData = local_30;
   sVar3 = *(short *)(&g_pNationInteractionStateManager->field_0x1c +
                     (*(short *)&this->field_0x60 * 0x50 + (int)*(short *)&this->field_0x62) * 2);
-  src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot();
-  local_4._0_1_ = 4;
-  CString::__4CString__QAEABV0_ABV0__Z((CString *)&local_40.top,src_ref);
-  local_4 = CONCAT31(local_4._1_3_,3);
-  CString::__1CString__QAE_XZ((CString *)&local_30);
+  src_ref = (CString *)func_0x00405b14();
+  uStack_c._0_1_ = 4;
+  CString::operator=((CString *)&stack0xffffffbc,src_ref);
+  uStack_c = CONCAT31(uStack_c._1_3_,3);
+  CString::~CString(&local_38);
   if (sVar3 == 1) {
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
+    func_0x0040988b(g_pLocalizationTable);
   }
   else {
     _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
+    func_0x0040988b(g_pLocalizationTable,&stack0xffffffb4);
   }
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  func_0x0040448f();
   SetQuickDrawTextOriginWithContextOffset();
-  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  func_0x004029aa();
   uVar2 = (*g_pNationInteractionStateManager->vftable[0x10].GetTTradeMgrClassNamePointer)();
-  UpdatePaletteIndexWithDefaultFallback(0x10);
+  func_0x004010be();
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   iVar5 = 1;
   do {
     iVar4 = (**(code **)(iVar1 + 0x28))();
     if (iVar4 < iVar5) break;
     sVar3 = (**(code **)(iVar1 + 0x24))();
-    local_30.left = (LONG)(short)(sVar3 << 5);
-    local_30.right = local_30.left + 0x20;
-    local_40.left = (LONG)(short)((short)(iVar5 << 5) + -0x20);
-    local_40.right = local_40.left + 0x20;
-    local_30.top = 0;
-    local_30.bottom = 0x18;
-    local_40.top = 0xc;
-    local_40.bottom = 0x24;
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x680) + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_30,&local_40,0x24,
-               (astruct_19 *)0x0);
+    local_3c.m_pchData = (char *)(int)(short)(sVar3 << 5);
+    local_34.m_pchData = local_3c.m_pchData + 0x20;
+    local_38.m_pchData = (char *)0x0;
+    local_30[0] = '\x18';
+    local_30[1] = '\0';
+    local_30[2] = '\0';
+    local_30[3] = '\0';
+    local_40.m_pchData = (char *)0x24;
+    func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x680) + 4,
+                    &g_pActiveQuickDrawSurfaceContext->field_0x4,&local_3c,&stack0xffffffb4,0x24,0);
     iVar5 = iVar5 + 1;
   } while (iVar5 < 8);
-  SetQuickDrawStrokeColor();
+  func_0x00402bdf();
   (**(code **)(iVar1 + 0x38))();
-  iStack_18._0_1_ = 2;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb8);
-  iStack_18._0_1_ = 1;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb0);
-  iStack_18 = (uint)iStack_18._1_3_ << 8;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb4);
-  iStack_18 = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffac);
-  *unaff_FS_OFFSET = uStack_20;
+  iStack_20._0_1_ = 2;
+  CString::~CString((CString *)&stack0xffffffb0);
+  iStack_20._0_1_ = 1;
+  CString::~CString(&CStack_58);
+  iStack_20 = (uint)iStack_20._1_3_ << 8;
+  CString::~CString(&CStack_54);
+  iStack_20 = 0xffffffff;
+  CString::~CString((CString *)&stack0xffffffa4);
+  *unaff_FS_OFFSET = uStack_28;
   return;
 }
 

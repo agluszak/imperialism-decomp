@@ -8,10 +8,15 @@ Candidate function starts come from evidence the binary itself provides:
   3. every `function`-typed config/symbols.csv row with no Ghidra function.
 
 For each candidate inside an executable block that is neither a defined function
-nor inside an existing function's body, run CreateFunctionCmd. Dry-run by default;
-pass --apply to write + save the program. After an --apply run: `just export-project`
-to refresh the LFS archive and `just sync-ghidra` so symbols.csv picks up real
-names/sizes for the new functions (sizes bound reccmp's compare windows).
+nor inside an existing function's body: disassemble the target first (a raw gap
+has no code units yet, so CreateFunctionCmd alone bounds the body to a
+degenerate 1 byte instead of following the real instruction flow), then run
+CreateFunctionCmd. Any function that still ends up 1-byte after disassembling
+is removed again and reported rather than left corrupting reccmp's compare
+window. Dry-run by default; pass --apply to write + save the program. After an
+--apply run: `just export-project` to refresh the LFS archive and
+`just sync-ghidra` so symbols.csv picks up real names/sizes for the new
+functions (sizes bound reccmp's compare windows).
 
 Also REPORTS (never deletes) suspicious case-body pseudo-functions: defined
 functions whose entry is the target of an in-function jump table dword — the
@@ -73,6 +78,7 @@ def main() -> int:
     import pyghidra
 
     project = ghidra_env.open_project()
+    from ghidra.app.cmd.disassemble import DisassembleCommand
     from ghidra.app.cmd.function import CreateFunctionCmd
 
     consumer, program = ghidra_env.open_program(project, writable=args.apply)
@@ -80,6 +86,7 @@ def main() -> int:
         af = program.getAddressFactory().getDefaultAddressSpace()
         fm = program.getFunctionManager()
         mem = program.getMemory()
+        listing = program.getListing()
 
         def byte_at(a: int) -> int | None:
             try:
@@ -178,25 +185,40 @@ def main() -> int:
             print("dry-run; pass --apply to create + save")
             return 0
 
-        created, failed = [], []
+        created, failed, degenerate = [], [], []
         txid = program.startTransaction("repair code gaps: create missing functions")
         try:
             for t, why in missing:
                 if args.limit and len(created) >= args.limit:
                     break
                 taddr = af.getAddress(t)
+                # CreateFunctionCmd bounds the function body from existing code
+                # units; on a raw undisassembled gap (the common case here) it
+                # silently creates a degenerate 1-byte function instead of
+                # disassembling first. Disassemble the target before creating.
+                if listing.getInstructionAt(taddr) is None:
+                    DisassembleCommand(taddr, None, True).applyTo(program, pyghidra.task_monitor())
                 cmd = CreateFunctionCmd(taddr)
                 ok = cmd.applyTo(program, pyghidra.task_monitor())
-                if ok and fm.getFunctionAt(taddr) is not None:
-                    created.append(t)
-                else:
+                func = fm.getFunctionAt(taddr) if ok else None
+                if func is None:
                     failed.append((t, why))
+                elif func.getBody().getNumAddresses() <= 1:
+                    # Leaving a 1-byte function behind is worse than not
+                    # creating one at all (it corrupts the real, larger
+                    # function that should own these bytes). Undo it.
+                    fm.removeFunction(taddr)
+                    degenerate.append((t, why))
+                else:
+                    created.append(t)
         finally:
             program.endTransaction(txid, True)
 
-        print(f"created: {len(created)}  failed: {len(failed)}")
+        print(f"created: {len(created)}  failed: {len(failed)}  degenerate (1-byte body): {len(degenerate)}")
         for t, why in failed[:20]:
             print(f"  FAILED 0x{t:08x}  ({why})")
+        for t, why in degenerate[:20]:
+            print(f"  DEGENERATE 0x{t:08x}  ({why})")
 
         if created:
             program.getDomainFile().save(pyghidra.task_monitor())

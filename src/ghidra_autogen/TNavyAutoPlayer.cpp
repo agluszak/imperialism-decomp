@@ -3,9 +3,40 @@
 // Program: Imperialism.exe
 // Bucket: TNavyAutoPlayer.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0059F040
+// GHIDRA_NAME TNavyAutoPlayer::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TNavyAutoPlayer::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x30);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059F070
+// GHIDRA_NAME TNavyAutoPlayer::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+TNavyAutoPlayer * TNavyAutoPlayer::_scalar_deleting_destructor_(byte param_1)
+
+{
+  func_0x00409043();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F0A0
 // GHIDRA_NAME TNavyAutoPlayer::CreateTNavyAutoPlayerInstance
-// GHIDRA_PROTO undefined __thiscall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTNavyAutoPlayerInstance(void)
 
 void TNavyAutoPlayer::CreateTNavyAutoPlayerInstance()
 
@@ -16,13 +47,13 @@ void TNavyAutoPlayer::CreateTNavyAutoPlayerInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F0C0
-// GHIDRA_NAME TNavyAutoPlayer::GetTTacticalPlayerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTacticalPlayerClassNamePointer(void)
+// GHIDRA_NAME TNavyAutoPlayer::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyAutoPlayer::GetTTacticalPlayerClassNamePointer()
+CRuntimeClass * TNavyAutoPlayer::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTNavyAutoPlayer;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F110
@@ -34,7 +65,7 @@ void TNavyAutoPlayer::OrphanRetStub_0059ad70()
 {
   char cVar1;
   int iVar2;
-
+  
   if (this->field_0xc == '\0') {
     iVar2 = 0x29;
   }
@@ -59,19 +90,18 @@ void TNavyAutoPlayer::OrphanRetStub_0059ad90()
 {
   code *pcVar1;
   undefined4 uVar2;
-  undefined4 uVar3;
+  int *piVar3;
   int iVar4;
   int *piVar5;
   int iVar6;
   int iVar7;
-  _vslot_fn *unaff_EBX;
+  int unaff_EBX;
   int *piVar8;
-  _vslot_fn *p_Var9;
-  TNextMoveCommandVtbl *pTVar10;
-  _vslot_fn *p_Var11;
-  int iStack_20;
-  TNextMoveCommandVtbl *pTStack_18;
-
+  undefined4 unaff_EBP;
+  int unaff_ESI;
+  int *piStack_20;
+  int iStack_18;
+  
   if (this->field_0xc == '\0') {
     piVar8 = *(int **)(*(int *)(*(int *)&this->field_0x14 + 0x14) + 4);
   }
@@ -81,67 +111,65 @@ void TNavyAutoPlayer::OrphanRetStub_0059ad90()
   iVar7 = *piVar8;
   pcVar1 = *(code **)(iVar7 + 0x48);
   iVar4 = (*pcVar1)();
-  piVar5 = (int *)__2_YAPAXI_Z(iVar4 << 2);
+  piVar5 = (int *)operator_new(iVar4 << 2);
   uVar2 = *(undefined4 *)(*(int *)(*(int *)&this->field_0x14 + 0x1c) + 8);
-  iVar4 = InitializeLinkedListCursorFromOwnerHead();
-  iVar6 = LinkedListCursorHasCurrent();
+  iVar4 = func_0x00401118();
+  iVar6 = func_0x00403620();
   piVar8 = piVar5;
   while (iVar6 != 0) {
-    iVar4 = ComputeHexTileDistanceFromIndices(uVar2,*(undefined4 *)(iVar4 + 8));
+    iVar4 = func_0x004074dc(uVar2,*(undefined4 *)(iVar4 + 8));
     *piVar8 = iVar4;
     piVar8 = piVar8 + 1;
-    iVar4 = AdvanceLinkedListCursor();
-    iVar6 = LinkedListCursorHasCurrent();
+    iVar4 = func_0x00406d20();
+    iVar6 = func_0x00403620();
   }
-  pTStack_18 = (TNextMoveCommandVtbl *)0xffffffff;
-  iStack_20 = 999;
-  pTVar10 = (TNextMoveCommandVtbl *)0x0;
+  iStack_18 = -1;
+  piStack_20 = (int *)0x3e7;
+  iVar6 = 0;
   iVar4 = (*pcVar1)();
+  piVar8 = piVar5;
   if (0 < iVar4) {
     do {
-      if (*piVar5 < iStack_20) {
-        iStack_20 = *piVar5;
-        pTStack_18 = pTVar10;
+      if (*piVar8 < (int)piStack_20) {
+        piStack_20 = (int *)*piVar8;
+        iStack_18 = iVar6;
       }
-      pTVar10 = (TNextMoveCommandVtbl *)((int)&pTVar10->GetTEventClassNamePointer + 1);
-      piVar5 = piVar5 + 1;
+      iVar6 = iVar6 + 1;
       iVar4 = (*pcVar1)();
-    } while ((int)pTVar10 < iVar4);
+      piVar8 = piVar8 + 1;
+    } while (iVar6 < iVar4);
   }
-  iVar7 = (**(code **)(iVar7 + 0x4c))
-                    ((undefined1 *)((int)&pTStack_18->GetTEventClassNamePointer + 1));
-  uVar3 = *(undefined4 *)(iVar7 + 8);
-  iVar4 = ComputeHexTileDistanceFromIndices(unaff_EBX,uVar3);
+  iVar7 = (**(code **)(iVar7 + 0x4c))(iStack_18 + 1);
+  iVar4 = func_0x004074dc(unaff_EBX,*(undefined4 *)(iVar7 + 8));
   iVar7 = *(int *)&this->field_0x14;
-  p_Var11 = (_vslot_fn *)0x0;
-  p_Var9 = unaff_EBX;
+  iVar6 = 0;
   if (0 < *(int *)(iVar7 + 0x3c)) {
     do {
-      if ((*(short *)(*(int *)(iVar7 + 0x24) + (int)p_Var11 * 2) != -1) &&
-         (iVar7 = ComputeHexTileDistanceFromIndices(p_Var11,uVar3), iVar7 < iVar4)) {
-        p_Var9 = p_Var11;
+      if ((*(short *)(*(int *)(iVar7 + 0x24) + iVar6 * 2) != -1) &&
+         (iVar7 = func_0x004074dc(iVar6,piVar5), iVar7 < iVar4)) {
+        unaff_EBX = iVar6;
         iVar4 = iVar7;
       }
       iVar7 = *(int *)&this->field_0x14;
-      p_Var11 = p_Var11 + 1;
-    } while ((int)p_Var11 < *(int *)(iVar7 + 0x3c));
+      iVar6 = iVar6 + 1;
+    } while (iVar6 < *(int *)(iVar7 + 0x3c));
   }
-  if (p_Var9 != unaff_EBX) {
+  if (unaff_EBX != unaff_ESI) {
     piVar8 = *(int **)&this->field_0x14;
-    pTVar10 = (TNextMoveCommandVtbl *)piVar8[7];
-    while ((pTVar10 == pTStack_18 && (pTStack_18->Serialize != p_Var9))) {
-      (**(code **)(*piVar8 + 0x34))(pTStack_18,p_Var9);
+    piVar3 = (int *)piVar8[7];
+    while ((piVar3 == piStack_20 && (piStack_20[2] != unaff_EBX))) {
+      (**(code **)(*piVar8 + 0x34))(piStack_20,unaff_EBX);
       piVar8 = *(int **)&this->field_0x14;
-      pTVar10 = (TNextMoveCommandVtbl *)piVar8[7];
+      piVar3 = (int *)piVar8[7];
     }
   }
-  iVar7 = (**(code **)(pTStack_18->GetTEventClassNamePointer + 0x2c))();
-  if ((iVar4 <= iVar7) && ((TNextMoveCommandVtbl *)(*(int **)&this->field_0x14)[7] == pTStack_18)) {
-    (**(code **)(**(int **)&this->field_0x14 + 0x40))(pTStack_18,uVar3);
+  iVar7 = (**(code **)(*piStack_20 + 0x2c))();
+  if ((iVar4 <= iVar7) && ((int *)(*(int **)&this->field_0x14)[7] == piStack_20)) {
+    (**(code **)(**(int **)&this->field_0x14 + 0x40))(piStack_20,piVar5);
   }
-  __3_YAXPAX_Z(uVar2);
-  if ((*(TNextMoveCommand **)&this->field_0x14)[1].vftable == pTStack_18) {
-    TNextMoveCommand::QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
+  operator_delete(unaff_EBP);
+  if (*(int **)(*(int *)&this->field_0x14 + 0x1c) == piStack_20) {
+    func_0x0040400c();
   }
   return;
 }

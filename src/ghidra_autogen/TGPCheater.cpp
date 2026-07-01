@@ -5,57 +5,96 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1710
 // GHIDRA_NAME TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
-// GHIDRA_PROTO undefined __thiscall TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(int * param_1, undefined4 param_2, short param_3, int param_4)
+// GHIDRA_PROTO undefined __thiscall ConstructNumericEntryDialogCoreAndValueLabel(int * param_1, undefined4 param_2, short param_3, int param_4)
 
 void __thiscall
 TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
           (TGPCheater *this,int *param_1,undefined4 param_2,short param_3,int param_4)
 
 {
-  TNumberText *pTVar1;
-  TStaticText *this_00;
-  undefined4 *unaff_FS_OFFSET;
-  TNumberText *local_24;
-  int local_20;
-  int local_1c [5];
+  undefined4 *puVar1;
+  int *unaff_FS_OFFSET;
+  int iStack_3c;
+  int iStack_38;
+  int iStack_34;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  int local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630d84;
-  local_1c[4] = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = local_1c + 4;
-  local_1c[0] = 0x20;
-  local_1c[1] = 0x16;
-  local_1c[2] = 0x80;
-  local_1c[3] = 0x18;
-  pTVar1 = (TNumberText *)__2_YAPAXI_Z(0xac);
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&local_c;
+  iStack_34 = 0xac;
+  local_1c = 0x20;
+  local_18 = 0x16;
+  local_14 = 0x80;
+  local_10 = 0x18;
+  iStack_38 = 0x4b1757;
+  puVar1 = (undefined4 *)operator_new();
   local_4 = 0;
-  local_24 = pTVar1;
-  if (pTVar1 == (TNumberText *)0x0) {
-    pTVar1 = (TNumberText *)0x0;
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
   }
   else {
-    TEditText::ConstructUiNumericTextEntryBase((TEditText *)pTVar1);
-    *(undefined4 *)&pTVar1->field_0xa0 = 0;
-    pTVar1->vftable = (TNumberTextVtbl *)&DAT_0063e8b0;
+    iStack_34 = 0x4b1771;
+    func_0x0040913d();
+    puVar1[0x28] = 0;
+    *puVar1 = &TNumberText::_vftable_;
   }
+  iStack_3c = (int)param_3;
+  iStack_34 = 3000;
+  iStack_38 = 0xffff8ad0;
   local_4 = 0xffffffff;
-  TNumberText::ConstructTNumberTextBaseState(pTVar1,this,param_1,local_1c,(int)param_3,0xffff8ad0);
-  pTVar1->controlTag = param_4;
-  this_00 = (TStaticText *)__2_YAPAXI_Z(0x94);
-  local_4 = 1;
-  if (this_00 != (TStaticText *)0x0) {
-    TStaticText::TStaticText(this_00);
+  func_0x0040970f(this,param_1);
+  puVar1[7] = puStack_8;
+  local_c = operator_new(0x94);
+  local_1c = 1;
+  if (local_c != 0) {
+    func_0x0040541b();
   }
-  local_24 = (TNumberText *)(*param_1 + local_1c[0]);
-  local_20 = param_1[1];
-  local_4 = 0xffffffff;
-  InitializeTextEntryBaseAndOptionalStringResource
-            (this,&local_24,local_1c + 2,5,5,
-             CONCAT22((short)((uint)local_20 >> 0x10),*(undefined2 *)&this->field_0x60),param_2);
-  *unaff_FS_OFFSET = local_1c[4];
+  iStack_3c = *param_1 + iStack_34;
+  iStack_38 = param_1[1];
+  local_1c = 0xffffffff;
+  func_0x00401fd2(this,&iStack_3c,&stack0xffffffd4,5,5,
+                  CONCAT22((short)((uint)iStack_38 >> 0x10),*(undefined2 *)&this->field_0x60),
+                  local_10);
+  *unaff_FS_OFFSET = (int)&local_1c;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B19B0
+// GHIDRA_NAME TGPCheater::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TGPCheater::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630dca;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(100);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1A20
@@ -65,89 +104,140 @@ TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
 TGPCheater * TGPCheater::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00408c97();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1A70
-// GHIDRA_NAME TGPCheater::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TGPCheater::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGPCheater::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TGPCheater::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTGPCheater;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1A90
 // GHIDRA_NAME TGPCheater::ConstructTGPCheaterBaseState
 // GHIDRA_PROTO undefined ConstructTGPCheaterBaseState()
 
-void __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *param_1,undefined4 param_2)
+void __thiscall TGPCheater::ConstructTGPCheaterBaseState(int *param_1,undefined4 param_2)
 
 {
-  undefined uVar1;
-  TStaticText *this;
-  int iVar2;
-  undefined3 extraout_var;
+  int iVar1;
+  int *piVar2;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 *puStack_94;
+  undefined4 uStack_90;
+  undefined4 uStack_8c;
+  undefined4 uStack_88;
+  undefined4 *puStack_84;
+  undefined4 uStack_80;
+  undefined4 uStack_7c;
+  undefined4 uStack_78;
+  undefined4 **ppuStack_74;
+  undefined4 uStack_70;
+  undefined4 uStack_6c;
+  undefined4 uStack_68;
+  undefined4 *puStack_64;
+  undefined4 uStack_60;
+  undefined4 uStack_5c;
+  undefined4 uStack_58;
+  int *piStack_54;
+  undefined4 *puStack_50;
+  undefined1 *puStack_4c;
+  undefined4 uStack_48;
+  undefined4 uStack_44;
+  undefined4 uStack_40;
+  undefined4 uStack_3c;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
   undefined4 local_24;
   undefined4 local_20;
-  int local_1c;
-  undefined4 local_18;
-  undefined4 uStack_14;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
-
+  int local_4;
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630dea;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TCheater::ConstructTCheaterBaseState(param_2,0x2728);
-  this = (TStaticText *)__2_YAPAXI_Z(0x94);
-  local_4 = 0;
-  if (this == (TStaticText *)0x0) {
-    iVar2 = 0;
+  uStack_34 = 0x2728;
+  uStack_38 = param_2;
+  uStack_3c = 0x4b1abc;
+  func_0x00404985();
+  uStack_3c = 0x94;
+  uStack_40 = 0x4b1ac6;
+  local_4 = operator_new();
+  uStack_c = 0;
+  if (local_4 == 0) {
+    iVar1 = 0;
   }
   else {
-    iVar2 = TStaticText::TStaticText(this);
+    uStack_3c = 0x4b1ae0;
+    iVar1 = func_0x0040541b();
   }
-  local_4 = 0xffffffff;
-  local_24 = 0x80;
-  local_20 = 0x18;
-  local_1c = 4;
-  local_18 = 0x20;
-  InitializeTextEntryBaseAndOptionalStringResource(param_1,&local_1c,&local_24,5,5,0xffffffff,0);
-  *(undefined4 *)(iVar2 + 0x1c) = 0x6e616d65;
-  local_1c = 2;
-  local_18 = 0x40;
-  TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,2,0,0x74726561);
-  local_1c = 2;
-  local_18 = 0x58;
-  TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,3,0,0x6d657263);
-  local_1c = 2;
-  local_18 = 0x70;
-  TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,4,0,0x74636170);
-  local_1c = 2;
-  local_18 = 0x88;
-  TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,5,0,0x73616c65);
-  local_1c = 2;
-  local_18 = 0x9e;
-  TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,6,0,0x70757263);
-  uVar1 = (*param_1->vftable->SetForeignMinisterReadyFlag14)();
-  iVar2 = *(int *)CONCAT31(extraout_var,uVar1);
-  (**(code **)(iVar2 + 300))(&local_1c);
-  local_1c = 0x94;
-  local_20 = 0xc0;
-  local_18 = 0x1c0;
-  uStack_14 = 0x14c;
-  (**(code **)(iVar2 + 0x168))(&local_20,1);
-  TLaborPool::CreateTLaborPoolInstance(0);
-  *unaff_FS_OFFSET = local_18;
+  uStack_3c = 0;
+  uStack_40 = 0xffffffff;
+  uStack_44 = 5;
+  puStack_4c = &stack0xffffffd4;
+  uStack_48 = 5;
+  puStack_50 = &local_24;
+  uStack_c = 0xffffffff;
+  local_24 = 4;
+  local_20 = 0x20;
+  uStack_58 = 0x4b1b28;
+  piStack_54 = param_1;
+  func_0x00401fd2();
+  *(undefined4 *)(iVar1 + 0x1c) = 0x6e616d65;
+  uStack_58 = 0x74726561;
+  uStack_5c = 0;
+  puStack_64 = &uStack_40;
+  uStack_60 = 2;
+  uStack_40 = 2;
+  uStack_3c = 0x40;
+  uStack_68 = 0x4b1b54;
+  func_0x00403981();
+  uStack_68 = 0x6d657263;
+  uStack_6c = 0;
+  ppuStack_74 = &puStack_50;
+  uStack_70 = 3;
+  puStack_50 = (undefined4 *)0x2;
+  puStack_4c = (undefined1 *)0x58;
+  uStack_78 = 0x4b1b75;
+  func_0x00403981();
+  uStack_78 = 0x74636170;
+  uStack_7c = 0;
+  puStack_84 = &uStack_60;
+  uStack_80 = 4;
+  uStack_60 = 2;
+  uStack_5c = 0x70;
+  uStack_88 = 0x4b1b96;
+  func_0x00403981();
+  uStack_88 = 0x73616c65;
+  uStack_8c = 0;
+  puStack_94 = &uStack_70;
+  uStack_90 = 5;
+  uStack_70 = 2;
+  uStack_6c = 0x88;
+  func_0x00403981();
+  uStack_80 = 2;
+  uStack_7c = 0x9e;
+  func_0x00403981(&uStack_80,6,0,0x70757263);
+  piVar2 = (int *)(**(code **)(*param_1 + 0x58))();
+  iVar1 = *piVar2;
+  (**(code **)(iVar1 + 300))(&uStack_90);
+  uStack_90 = 0x94;
+  puStack_94 = (undefined4 *)0xc0;
+  uStack_8c = 0x1c0;
+  uStack_88 = 0x14c;
+  (**(code **)(iVar1 + 0x168))(&puStack_94,1);
+  func_0x00401a00(0);
+  *unaff_FS_OFFSET = uStack_90;
   return;
 }
 

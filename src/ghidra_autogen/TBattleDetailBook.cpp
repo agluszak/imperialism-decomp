@@ -10,100 +10,70 @@
 TBattleDetailBook * TBattleDetailBook::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040896d();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AE9D0
-// GHIDRA_NAME TBattleDetailBook::CreateTBattleDetailBookInstance
-// GHIDRA_PROTO undefined CreateTBattleDetailBookInstance()
+// GHIDRA_NAME TBattleDetailBook::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TBattleDetailBook::CreateTBattleDetailBookInstance(void)
+undefined4 * TBattleDetailBook::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063091a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x98);
+  puVar1 = (undefined4 *)operator_new(0x98);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(undefined4 *)(this + 0x90) = 0;
-    *(undefined4 *)(this + 0x94) = 0;
-    *(TBattleDetailBookVtbl **)this = &TBattleDetailBookVtbl_0063f428;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    puVar1[0x24] = 0;
+    puVar1[0x25] = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEA70
-// GHIDRA_NAME TBattleDetailBook::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TBattleDetailBook::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBattleDetailBook::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TBattleDetailBook::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTBattleDetailBook;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEA90
-// GHIDRA_NAME TBattleDetailBook::OrphanCallChain_C1_I05_00415050
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_00415050(int param_1, int param_2)
+// GHIDRA_NAME TBattleDetailBook::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TBattleDetailBook::OrphanCallChain_C1_I05_00415050(int param_1, int param_2)
+void TBattleDetailBook::HandleEvent(int param_1, int param_2)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-
+  
   if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x6f6b6179)) {
     uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))(*(undefined4 *)(param_2 + 0x1c),1);
     return;
   }
-  TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject((TBook *)this,param_1,param_2);
+  func_0x00404570(param_1,param_2);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004AEAE0
-// GHIDRA_NAME TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree
-// GHIDRA_PROTO undefined DestructTBattleDetailBookAndMaybeFree()
-
-TView * TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree(void)
-
-{
-  TView *this;
-  TView *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063093a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(100);
-  local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&TArmyBoyViewVtbl_0064dff8;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 

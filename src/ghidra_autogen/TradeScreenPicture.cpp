@@ -3,45 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TradeScreenPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005BA680
-// GHIDRA_NAME TradeScreenPicture::CreateTradeScreenPictureInstance
-// GHIDRA_PROTO undefined CreateTradeScreenPictureInstance()
-
-thunk_TPictureButton * TradeScreenPicture::CreateTradeScreenPictureInstance(void)
-
-{
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006390da;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
-  local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TTradeScreenPictureVtbl **)this = &TTradeScreenPictureVtbl_0066dd98;
-    ptVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return ptVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA720
 // GHIDRA_NAME TradeScreenPicture::ConstructTradeScreenPictureBaseState
-// GHIDRA_PROTO undefined __thiscall TradeScreenPicture::ConstructTradeScreenPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTradeScreenPictureBaseState(void)
 
 TradeScreenPicture * TradeScreenPicture::ConstructTradeScreenPictureBaseState()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  *(TTradeScreenPictureVtbl **)this = &TTradeScreenPictureVtbl_0066dd98;
+  func_0x00401122();
+  *(TTradeScreenPictureVtbl **)this = &TTradeScreenPicture::_vftable_;
   return this;
 }
 

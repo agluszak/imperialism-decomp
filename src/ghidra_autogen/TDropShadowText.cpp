@@ -3,14 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: TDropShadowText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005B5570
-// GHIDRA_NAME TDropShadowText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005B54A0
+// GHIDRA_NAME TDropShadowText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TDropShadowText::GetTEventHandlerClassNamePointer()
+undefined4 * TDropShadowText::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00638e6a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x98);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040541b();
+    *(undefined1 *)(puVar1 + 0x25) = 0;
+    *(undefined1 *)((int)puVar1 + 0x95) = 0;
+    *(undefined1 *)((int)puVar1 + 0x96) = 0;
+    *(undefined1 *)((int)puVar1 + 0x97) = 0;
+    puVar1[0x25] = 0;
+    *puVar1 = &_vftable_;
+    *unaff_FS_OFFSET = local_c;
+    return puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B5570
+// GHIDRA_NAME TDropShadowText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TDropShadowText::GetRuntimeClass()
+
+{
+  return &classTDropShadowText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5590
@@ -26,7 +60,7 @@ CRuntimeClass * TDropShadowText::GetTEventHandlerClassNamePointer()
 // GHIDRA_COMMENT_END
 
 /* Base constructor for selectable text option entries.
-
+   
    Algorithm:
    1. Calls ConstructUiTextResourceEntryBase.
    2. Clears option-state bytes used by selection logic.
@@ -35,12 +69,12 @@ CRuntimeClass * TDropShadowText::GetTEventHandlerClassNamePointer()
 TDropShadowText * TDropShadowText::ConstructSelectableTextOptionEntryBase()
 
 {
-  TStaticText::TStaticText((TStaticText *)this);
+  func_0x0040541b();
   this->field_0x94 = 0;
   this->field_0x95 = 0;
   this->field_0x96 = 0;
   this->field_0x97 = 0;
-  this->vftable = &TDropShadowTextVtbl_0066ce00;
+  this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x94 = 0;
   return this;
 }
@@ -52,24 +86,25 @@ TDropShadowText * TDropShadowText::ConstructSelectableTextOptionEntryBase()
 TDropShadowText * TDropShadowText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TStaticText::~TStaticText((TStaticText *)this);
+  func_0x00401ad7();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5650
-// GHIDRA_NAME TDropShadowText::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TDropShadowText::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TDropShadowText::OrphanTiny_ReturnZero_0048a730()
+void TDropShadowText::ApplyRectSlot110()
 
 {
   TDropShadowTextVtbl *pTVar1;
-  TDropShadowText *this_00;
+  CDC *this_00;
   HRGN pHVar2;
-  undefined4 *unaff_FS_OFFSET;
+  int *unaff_FS_OFFSET;
+  undefined4 unaff_retaddr;
   undefined **ppuStack_38;
   int iStack_34;
   int iStack_30;
@@ -77,83 +112,51 @@ void TDropShadowText::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_28;
   undefined4 uStack_24;
   RECT RStack_20;
-  undefined4 uStack_c;
+  int iStack_c;
   undefined1 *puStack_8;
-  undefined4 uStack_4;
-
-  uStack_4 = 0xffffffff;
+  CString CStack_4;
+  
+  CStack_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_00638e98;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   pTVar1 = this->vftable;
   (*pTVar1->VTableSlot57)(&RStack_20.top);
   iStack_30 = 1;
   iStack_2c = 1;
   uStack_28 = 0;
   uStack_24 = 0;
-  _InflateRect_CRect__QAEXPBUtagRECT___Z(&iStack_30);
-  InitializeBrushStateVtableAndClearHandle();
+  CRect::InflateRect(&iStack_30);
+  func_0x00403d87();
   ppuStack_38 = &CBrush::_vftable_;
   puStack_8 = (undefined1 *)0x0;
-  this_00 = (TDropShadowText *)NoOpQuickDrawContextSelectionHook();
+  this_00 = (CDC *)func_0x004021c6();
   pHVar2 = CreateRectRgnIndirect(&RStack_20);
-  CBrush::_Attach_CGdiObject__QAEHPAX_Z((CBrush *)&ppuStack_38,(int)pHVar2);
-  _SelectClipRgn_CDC__QAEHPAVCRgn___Z(this_00,(int)&ppuStack_38);
-  _DeleteObject_CGdiObject__QAEHXZ();
+  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&ppuStack_38,(int)pHVar2);
+  CDC::SelectClipRgn(this_00,(int)&ppuStack_38);
+  DeleteObject();
   puStack_8 = (undefined1 *)0xffffffff;
   ppuStack_38 = &CBrush::_vftable_;
-  WrapperFor_DeleteRegionHandleFromClipState_At0047cb60();
+  func_0x00408a21();
   puStack_8 = (undefined1 *)0x1;
-  TStaticText::OrphanTiny_ReturnZero_0048a730((TStaticText *)this);
-  SetQuickDrawColorAndPropagateIfChanged(*(undefined4 *)&this->field_0x94);
-  CString::__0CString__QAE_XZ((CString *)&stack0x00000000);
-  puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
-  (*pTVar1->AssignSharedStringFromField84)(&stack0x00000000);
-  (*pTVar1->DeserializeCityProductionQueueCommand)(&iStack_34);
-  iStack_34 = iStack_34 + -1;
-  iStack_2c = iStack_2c + -1;
+  func_0x00406f9b(unaff_retaddr);
+  func_0x004011cc(*(undefined4 *)&this->field_0x94);
+  CString::CString(&CStack_4);
+  iStack_c = CONCAT31(iStack_c._1_3_,2);
+  (*pTVar1->AssignSharedStringFromField84)(&CStack_4);
+  (*pTVar1->DeserializeCityProductionQueueCommand)(&ppuStack_38);
   ppuStack_38 = (undefined **)((int)ppuStack_38 + -1);
   iStack_30 = iStack_30 + -1;
+  iStack_34 = iStack_34 + -1;
   (*pTVar1->RenderControlStateTextBySelectionCode)
-            (puStack_8,*(undefined4 *)((int)puStack_8 + -8),&ppuStack_38,
-             CONCAT22((short)((uint)ppuStack_38 >> 0x10),*(undefined2 *)&this->field_0x90));
-  RStack_20.left = CONCAT31(RStack_20.left._1_3_,1);
-  CString::__1CString__QAE_XZ((CString *)&RStack_20.right);
-  RStack_20.left = -1;
-  _SelectClipRgn_CDC__QAEHPAVCRgn___Z(this_00,0);
-  *unaff_FS_OFFSET = uStack_28;
+            (iStack_c,*(undefined4 *)(iStack_c + -8),&stack0xffffffc4,
+             CONCAT22((short)((uint)((int)&this_00[-1].m_bPrinting + 3) >> 0x10),
+                      *(undefined2 *)&this->field_0x90));
+  uStack_24 = CONCAT31(uStack_24._1_3_,1);
+  CString::~CString((CString *)&RStack_20.top);
+  uStack_24 = 0xffffffff;
+  CDC::SelectClipRgn(this_00,0);
+  *unaff_FS_OFFSET = iStack_2c;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00612EAA
-// GHIDRA_NAME TDropShadowText::?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z
-// GHIDRA_PROTO undefined __thiscall ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z(int param_1)
-
-int TDropShadowText::_SelectClipRgn_CDC__QAEHPAVCRgn___Z(int param_1)
-
-{
-  int iVar1;
-  HRGN pHVar2;
-
-  iVar1 = param_1;
-  if ((HDC)this->field04 != (HDC)this->padding_08_to_0b) {
-    if (param_1 == 0) {
-      pHVar2 = (HRGN)0x0;
-    }
-    else {
-      pHVar2 = *(HRGN *)(param_1 + 4);
-    }
-    param_1 = SelectClipRgn((HDC)this->field04,pHVar2);
-  }
-  if ((HDC)this->padding_08_to_0b != (HDC)0x0) {
-    if (iVar1 == 0) {
-      pHVar2 = (HRGN)0x0;
-    }
-    else {
-      pHVar2 = *(HRGN *)(iVar1 + 4);
-    }
-    param_1 = SelectClipRgn((HDC)this->padding_08_to_0b,pHVar2);
-  }
-  return param_1;
 }
 

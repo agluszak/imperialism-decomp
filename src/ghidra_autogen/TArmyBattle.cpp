@@ -4,15 +4,15 @@
 // Bucket: TArmyBattle.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A5C50
-// GHIDRA_NAME TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(byte param_1)
+// GHIDRA_NAME TArmyBattle::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyBattle * TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(byte param_1)
+TArmyBattle * TArmyBattle::_scalar_deleting_destructor_(byte param_1)
 
 {
-  WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl();
+  func_0x004040e3();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -29,16 +29,16 @@ void TArmyBattle::ConstructTArmyBattleBaseStateImpl()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006385c2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
+  puVar1 = (undefined4 *)operator_new(0x20);
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
+    *puVar1 = &TObject::_vftable_;
     local_4 = 1;
-    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
+    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
     *(undefined4 **)&this->field_0x20 = puVar1;
     *unaff_FS_OFFSET = local_c;
@@ -51,14 +51,14 @@ void TArmyBattle::ConstructTArmyBattleBaseStateImpl()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4690
 // GHIDRA_NAME TArmyBattle::CreateTArmyBattleInstance
-// GHIDRA_PROTO undefined TArmyBattle::CreateTArmyBattleInstance()
+// GHIDRA_PROTO undefined CreateTArmyBattleInstance()
 
 uint __thiscall TArmyBattle::CreateTArmyBattleInstance(int param_1,int param_2)
 
 {
   uint uVar1;
   uint uVar2;
-
+  
   uVar1 = param_2 / 0x1d;
   uVar2 = (uVar1 & 1) + (param_2 % 0x1d) * 2;
   if ((((uVar1 == 5) || (uVar1 == 7)) || (uVar1 == 9)) &&
@@ -68,14 +68,38 @@ uint __thiscall TArmyBattle::CreateTArmyBattleInstance(int param_1,int param_2)
   return uVar2 & 0xffffff00;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A4750
-// GHIDRA_NAME TArmyBattle::GetTTacticalBattleClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTacticalBattleClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005A4710
+// GHIDRA_NAME TArmyBattle::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TArmyBattle::GetTTacticalBattleClassNamePointer()
+undefined4 * TArmyBattle::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x78);
+  if (puVar1 != (undefined4 *)0x0) {
+    puVar1[1] = 0;
+    puVar1[2] = 0;
+    puVar1[9] = 0;
+    puVar1[7] = 0;
+    puVar1[0xd] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[8] = 0;
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A4750
+// GHIDRA_NAME TArmyBattle::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TArmyBattle::GetRuntimeClass()
+
+{
+  return &classTArmyBattle;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4770
@@ -90,16 +114,16 @@ void TArmyBattle::ConstructTArmyBattleBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006385c2;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
+  puVar1 = (undefined4 *)operator_new(0x20);
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
+    *puVar1 = &TObject::_vftable_;
     uStack_4 = 1;
-    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
+    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
     *(undefined4 **)&this->field_0x20 = puVar1;
     *unaff_FS_OFFSET = uStack_c;
@@ -111,30 +135,27 @@ void TArmyBattle::ConstructTArmyBattleBaseState()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4990
-// GHIDRA_NAME TArmyBattle::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int * param_1)
+// GHIDRA_NAME TArmyBattle::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TArmyBattle::OrphanCallChain_C11_I88_004874b0(int *param_1)
+void TArmyBattle::ReadFrom(int *param_1)
 
 {
-  code *pcVar1;
-  undefined1 uVar2;
-  int iVar3;
-  int *piVar4;
-  int iVar5;
-  TArmyStack *pTVar6;
+  short sVar1;
+  code *pcVar2;
+  undefined1 uVar3;
+  int iVar4;
+  int *piVar5;
+  int iVar6;
+  undefined4 uVar7;
   short unaff_BP;
-  TArmyStack *this_00;
+  undefined4 uVar8;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 uVar7;
-  short sVar8;
-  undefined2 uVar9;
-  undefined2 uVar10;
-  undefined1 **ppuVar11;
-  undefined4 *puVar12;
-  undefined2 uVar13;
-  undefined4 uVar14;
-  TArmyBattle **ppTVar15;
+  undefined4 uVar9;
+  undefined4 uVar10;
+  undefined1 *puVar11;
+  undefined4 uVar12;
+  undefined1 **ppuVar13;
   undefined1 *puStack_7c;
   undefined4 uStack_78;
   undefined1 *puStack_74;
@@ -151,153 +172,141 @@ void TArmyBattle::OrphanCallChain_C11_I88_004874b0(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006386f4;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pTStack_50 = (TArmyBattleVtbl *)0x4;
   puStack_54 = &this->field_0xc;
-  pcVar1 = *(code **)(*param_1 + 0x3c);
+  pcVar2 = *(code **)(*param_1 + 0x3c);
   uStack_58 = 0x5a49c6;
   local_3c[0] = this;
-  (*pcVar1)();
+  (*pcVar2)();
   puStack_5c = &this->field_0x10;
   uStack_58 = 4;
   uStack_60 = 0x5a49d0;
-  (*pcVar1)();
+  (*pcVar2)();
   puStack_64 = &stack0xffffffb8;
   uStack_60 = 4;
   uStack_68 = 0x5a49db;
-  (*pcVar1)();
+  (*pcVar2)();
   puStack_6c = &stack0xffffffc0;
   uStack_68 = 4;
   uStack_70 = 0x5a49e6;
-  (*pcVar1)();
+  (*pcVar2)();
   puStack_74 = &stack0xffffffb4;
   uStack_70 = 4;
   uStack_78 = 0x5a49f1;
-  (*pcVar1)();
+  (*pcVar2)();
   puStack_7c = &stack0xffffffbc;
   uStack_78 = 4;
-  (*pcVar1)();
-  (*pcVar1)();
-  (*pcVar1)(&puStack_5c,4);
-  ppTVar15 = local_3c;
-  (*pcVar1)(ppTVar15,2);
+  (*pcVar2)();
+  (*pcVar2)();
+  (*pcVar2)(&puStack_5c,4);
+  (*pcVar2)(local_3c,2);
   while (unaff_BP != 0) {
     unaff_BP = unaff_BP + -1;
-    ppuVar11 = &puStack_7c;
-    (*pcVar1)(ppuVar11,4);
-    iVar3 = InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl
-                      ((TArmyBattle *)&pTStack_50);
-    piVar4 = (int *)__2_YAPAXI_Z(0x58);
-    if (piVar4 == (int *)0x0) {
-      piVar4 = (int *)0x0;
+    ppuVar13 = &puStack_7c;
+    (*pcVar2)(ppuVar13,4);
+    iVar4 = func_0x004033ff((TArmyBattle *)&pTStack_50);
+    piVar5 = (int *)operator_new(0x58);
+    if (piVar5 == (int *)0x0) {
+      piVar5 = (int *)0x0;
     }
     else {
-      *piVar4 = (int)&TArmyTacUnitVtbl_00669660;
+      *piVar5 = (int)&TArmyTacUnit::_vftable_;
     }
-    piVar4[3] = (int)*(short *)(iVar3 + 4);
-    piVar4[2] = -2;
-    *(undefined1 *)(piVar4 + 6) = 0;
-    piVar4[7] = 0;
-    iVar5 = (**(code **)(*piVar4 + 0x28))();
-    piVar4[10] = iVar5;
-    piVar4[0xb] = 0;
-    piVar4[0xc] = 0;
-    sVar8 = *(short *)(iVar3 + 0x34);
-    piVar4[1] = (int)sVar8;
-    piVar4[0xd] = (int)sVar8;
-    sVar8 = *(short *)(iVar3 + 0x38);
-    piVar4[4] = (int)(short)((sVar8 / 100 + (sVar8 >> 0xf)) -
-                            (short)((longlong)(int)sVar8 * 0x51eb851f >> 0x3f));
-    piVar4[5] = (int)*(short *)(iVar3 + 0x18);
-    piVar4[0x10] = -1;
-    piVar4[0xe] = iVar3;
-    if ((*(int *)(iVar3 + 8) == 2) && (*(short *)(&DAT_00669858 + piVar4[3] * 2) == 0)) {
-      uVar2 = 1;
+    piVar5[3] = (int)*(short *)(iVar4 + 4);
+    piVar5[2] = -2;
+    *(undefined1 *)(piVar5 + 6) = 0;
+    piVar5[7] = 0;
+    iVar6 = (**(code **)(*piVar5 + 0x28))();
+    piVar5[10] = iVar6;
+    piVar5[0xb] = 0;
+    piVar5[0xc] = 0;
+    sVar1 = *(short *)(iVar4 + 0x34);
+    piVar5[1] = (int)sVar1;
+    piVar5[0xd] = (int)sVar1;
+    sVar1 = *(short *)(iVar4 + 0x38);
+    piVar5[4] = (int)(short)((sVar1 / 100 + (sVar1 >> 0xf)) -
+                            (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f));
+    piVar5[5] = (int)*(short *)(iVar4 + 0x18);
+    piVar5[0x10] = -1;
+    piVar5[0xe] = iVar4;
+    if ((*(int *)(iVar4 + 8) == 2) && (*(short *)(&DAT_00669858 + piVar5[3] * 2) == 0)) {
+      uVar3 = 1;
     }
     else {
-      uVar2 = 0;
+      uVar3 = 0;
     }
-    *(undefined1 *)(piVar4 + 0xf) = uVar2;
-    (*pcVar1)(piVar4 + 8,4);
-    (*pcVar1)(piVar4 + 9,2);
-    (**(code **)(*(int *)ppuVar11[8] + 0x30))(piVar4);
+    *(undefined1 *)(piVar5 + 0xf) = uVar3;
+    (*pcVar2)(piVar5 + 8,4);
+    (*pcVar2)(piVar5 + 9,2);
+    (**(code **)(*(int *)ppuVar13[8] + 0x30))(piVar5);
     this = (TArmyBattle *)&pTStack_50;
   }
-  puVar12 = &uStack_78;
-  uVar14 = 4;
-  (*pcVar1)();
+  (*pcVar2)(&uStack_78,4);
   puStack_64 = *(undefined1 **)&this->field_0x20;
-  iVar3 = InitializeLinkedListCursorFromOwnerHead();
-  iVar5 = LinkedListCursorHasCurrent();
-  while( true ) {
-    uVar10 = SUB42(puVar12,0);
-    uVar13 = (undefined2)uVar14;
-    uVar2 = SUB41(ppTVar15,0);
-    if (iVar5 == 0) break;
-    if ((iVar3 == 0) || (*(int *)(iVar3 + 0x38) == 0)) {
-      iVar5 = 0;
+  iVar4 = func_0x00401118();
+  iVar6 = func_0x00403620();
+  while (iVar6 != 0) {
+    if ((iVar4 == 0) || (*(int *)(iVar4 + 0x38) == 0)) {
+      iVar6 = 0;
     }
     else {
-      iVar5 = *(int *)(*(int *)(iVar3 + 0x38) + 0x20);
+      iVar6 = *(int *)(*(int *)(iVar4 + 0x38) + 0x20);
     }
-    if (iVar5 == 4) goto LAB_005a4b8e;
-    iVar3 = AdvanceLinkedListCursor();
-    iVar5 = LinkedListCursorHasCurrent();
+    if (iVar6 == 4) goto LAB_005a4b8e;
+    iVar4 = func_0x00406d20();
+    iVar6 = func_0x00403620();
   }
-  iVar3 = 0;
+  iVar4 = 0;
 LAB_005a4b8e:
-  *(int *)&this->field_0x1c = iVar3;
-  sVar8 = (short)this + 0x38;
-  uVar9 = 4;
-  (*pcVar1)();
-  (*pcVar1)(&this->field_0x44,4);
-  uVar7 = 1;
-  (*pcVar1)(&this->field_0x49);
-  (*pcVar1)(&this->field_0x4c,4);
-  (*pcVar1)(&this->field_0x50,4);
-  pTVar6 = (TArmyStack *)__2_YAPAXI_Z(0x1c);
-  this_00 = (TArmyStack *)0x0;
+  *(int *)&this->field_0x1c = iVar4;
+  puVar11 = &this->field_0x38;
+  uVar12 = 4;
+  (*pcVar2)(puVar11,4);
+  uVar10 = 4;
+  (*pcVar2)(&this->field_0x44,4);
+  uVar9 = 1;
+  (*pcVar2)(&this->field_0x49);
+  (*pcVar2)(&this->field_0x4c,4);
+  (*pcVar2)(&this->field_0x50,4);
+  iVar4 = operator_new(0x1c);
+  uVar8 = 0;
   puStack_7c = (undefined1 *)0x0;
-  if (pTVar6 != (TArmyStack *)0x0) {
-    this_00 = (TArmyStack *)TArmyStack::ConstructTArmyStackBaseState(pTVar6);
+  if (iVar4 != 0) {
+    uVar8 = func_0x00407e00();
   }
   puStack_7c = (undefined1 *)0xffffffff;
-  TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
-            (this_00,uVar7,uVar9,sVar8);
-  pTVar6 = (TArmyStack *)__2_YAPAXI_Z(0x1c);
-  puStack_7c = (undefined1 *)0x1;
-  if (pTVar6 == (TArmyStack *)0x0) {
-    pTVar6 = (TArmyStack *)0x0;
+  func_0x004036c5(uVar9,uVar12);
+  iVar4 = operator_new(0x1c);
+  if (iVar4 == 0) {
+    uVar7 = 0;
   }
   else {
-    pTVar6 = (TArmyStack *)TArmyStack::ConstructTArmyStackBaseState(pTVar6);
+    uVar7 = func_0x00407e00();
   }
-  puStack_7c = (undefined1 *)0xffffffff;
-  TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
-            (pTVar6,uVar2,uVar13,uVar10);
-  iVar3 = InitializeLinkedListCursorFromOwnerHead();
-  iVar5 = LinkedListCursorHasCurrent();
-  while (iVar5 != 0) {
-    WrapperFor_AllocateWithFallbackHandler_At004a7b20(*(undefined4 *)(iVar3 + 0x38));
-    iVar3 = AdvanceLinkedListCursor();
-    iVar5 = LinkedListCursorHasCurrent();
+  func_0x004036c5(uVar12,puVar11,uVar10);
+  iVar4 = func_0x00401118();
+  iVar6 = func_0x00403620();
+  while (iVar6 != 0) {
+    func_0x004019b5(*(undefined4 *)(iVar4 + 0x38));
+    iVar4 = func_0x00406d20();
+    iVar6 = func_0x00403620();
   }
-  TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
-            ((TArmyPlayer *)this,(int)this_00,(int)pTVar6,*(undefined4 *)&this->field_0x50,
-             (int)(char)this->field_0x49,*(undefined4 *)&this->field_0x38);
-  *unaff_FS_OFFSET = 4;
+  func_0x00404f25(uVar8,uVar7,*(undefined4 *)&this->field_0x50,(int)(char)this->field_0x49,
+                  *(undefined4 *)&this->field_0x38);
+  *unaff_FS_OFFSET = uVar9;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4DA0
-// GHIDRA_NAME TArmyBattle::OrphanRetStub_0059ad90
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(int * param_1)
+// GHIDRA_NAME TArmyBattle::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TArmyBattle::OrphanRetStub_0059ad90(int *param_1)
+void TArmyBattle::WriteTo(int *param_1)
 
 {
   code *pcVar1;
@@ -320,7 +329,7 @@ void TArmyBattle::OrphanRetStub_0059ad90(int *param_1)
   int iStack_2c;
   int aiStack_14 [2];
   int aiStack_c [3];
-
+  
   iStack_2c = 4;
   puStack_30 = &this->field_0xc;
   pcVar1 = *(code **)(*param_1 + 0x78);
@@ -363,8 +372,8 @@ void TArmyBattle::OrphanRetStub_0059ad90(int *param_1)
   puStack_50 = (undefined1 *)(**(code **)(**(int **)&this->field_0x20 + 0x48))();
   (*pcVar1)(&puStack_50,2);
   puStack_50 = *(undefined1 **)&this->field_0x20;
-  iVar3 = InitializeLinkedListCursorFromOwnerHead();
-  iVar4 = LinkedListCursorHasCurrent();
+  iVar3 = func_0x00401118();
+  iVar4 = func_0x00403620();
   while (iVar4 != 0) {
     if ((iVar3 == 0) || (*(int *)(iVar3 + 0x38) == 0)) {
       piStack_60 = (int *)0x0;
@@ -375,8 +384,8 @@ void TArmyBattle::OrphanRetStub_0059ad90(int *param_1)
     (*pcVar1)(&piStack_60,4);
     (*pcVar1)(iVar3 + 0x20,4);
     (*pcVar1)(iVar3 + 0x24,2);
-    iVar3 = AdvanceLinkedListCursor();
-    iVar4 = LinkedListCursorHasCurrent();
+    iVar3 = func_0x00406d20();
+    iVar4 = func_0x00403620();
   }
   if ((*(int *)&this->field_0x1c == 0) ||
      (iVar3 = *(int *)(*(int *)&this->field_0x1c + 0x38), iVar3 == 0)) {
@@ -404,7 +413,7 @@ int * TArmyBattle::OrphanRetStub_0059f710(int *param_1, int param_2)
   int *piVar1;
   undefined4 uVar2;
   int iVar3;
-
+  
   (**(code **)(*param_1 + 0xc))();
   piVar1 = (int *)(param_2 / 0x1d);
   iVar3 = param_2 % 0x1d;
@@ -428,9 +437,9 @@ int * TArmyBattle::OrphanRetStub_0059f710(int *param_1, int param_2)
         return (int *)((int)piVar1 + -5);
       }
     }
-    HandleTacticalCommandTag_depl(param_1,param_2,0);
-    uVar2 = SelectNextTacticalUnitForDoneCommand();
-    ApplyTacticalDoneSelectionAndRefreshUi(uVar2);
+    func_0x004015dc(param_1,param_2,0);
+    uVar2 = func_0x0040809e();
+    func_0x00407333(uVar2);
     iVar3 = 0;
     if (0 < *(int *)&this->field_0x3c) {
       do {
@@ -439,7 +448,7 @@ int * TArmyBattle::OrphanRetStub_0059f710(int *param_1, int param_2)
       } while (iVar3 < *(int *)&this->field_0x3c);
     }
     if (*(char *)(*(int *)(&this->field_0x14 + *(int *)&this->field_0xc * 4) + 0x10) != '\0') {
-      piVar1 = (int *)HandleTacticalCommandTag_retr();
+      piVar1 = (int *)func_0x004057f9();
       return piVar1;
     }
     piVar1 = (int *)0x0;
@@ -461,25 +470,26 @@ void TArmyBattle::CreateTTacticalBattleInstance(undefined4 param_1)
 
 {
   int *piVar1;
-  int *piVar2;
-  int iVar3;
-  int *piVar4;
-
+  int iVar2;
+  int *piVar3;
+  int *unaff_EBP;
+  undefined4 unaff_retaddr;
+  
   piVar1 = *(int **)&this->field_0x14;
   *(undefined4 *)&this->field_0x44 = 1;
   (**(code **)(*piVar1 + 0xc))();
-  piVar2 = *(int **)&this->field_0x18;
-  (**(code **)(*piVar2 + 0xc))();
-  TMovieView::HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem,'\0');
+  piVar3 = *(int **)&this->field_0x18;
+  (**(code **)(*piVar3 + 0xc))();
+  func_0x00405614(0);
   if (*(int *)&this->field_0x8 != 0) {
-    piVar4 = (int *)(**(code **)(**(int **)(*(int *)&this->field_0x8 + 0x20) + 0x94))(0x746f6f6c);
-    iVar3 = *piVar4;
-    (**(code **)(iVar3 + 0xc))();
-    (**(code **)(iVar3 + 0x1d0))(0);
-    (**(code **)(iVar3 + 0x1cc))(0);
+    piVar3 = (int *)(**(code **)(**(int **)(*(int *)&this->field_0x8 + 0x20) + 0x94))(0x746f6f6c);
+    iVar2 = *piVar3;
+    (**(code **)(iVar2 + 0xc))();
+    (**(code **)(iVar2 + 0x1d0))(0);
+    (**(code **)(iVar2 + 0x1cc))(0);
+    piVar3 = unaff_EBP;
   }
-  WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl
-            (piVar1[10],piVar2[10],param_1,*(undefined4 *)&this->field_0x38);
+  func_0x00403e68(piVar1[10],piVar3[10],unaff_retaddr,*(undefined4 *)&this->field_0x38);
   return;
 }
 

@@ -3,290 +3,41 @@
 // Program: Imperialism.exe
 // Bucket: TCouncilView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00429470
-// GHIDRA_NAME TCouncilView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
-
-void TCouncilView::OrphanRetStub_0059add0()
-
-{
-  if (g_McAppUiFlag_006A143C == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x56f);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00430630
-// GHIDRA_NAME TCouncilView::ConstructPictureResourceEntry_Vtbl00640258
-// GHIDRA_PROTO undefined __thiscall TCouncilView::ConstructPictureResourceEntry_Vtbl00640258(void)
-
-TCouncilView * TCouncilView::ConstructPictureResourceEntry_Vtbl00640258()
-
-{
-  TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState((TDiplomacyMapView *)this);
-  this->vftable = &TCouncilViewVtbl_00640258;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00430660
-// GHIDRA_NAME TCouncilView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
-
-TCouncilView * TCouncilView::_scalar_deleting_destructor_(byte param_1)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl();
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004307A0
-// GHIDRA_NAME TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0(undefined1 param_1)
-
-void __thiscall
-TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0
-          (TCouncilView *this,undefined1 param_1)
-
-{
-  int iVar1;
-  uint uVar2;
-  uint uVar3;
-  int iVar4;
-  uint uVar5;
-
-  uVar2 = this->field0c;
-  if ((uint)this->padding_08_to_0b <= uVar2) {
-    iVar1 = uVar2 + 1;
-    uVar3 = iVar1 * 2;
-    uVar5 = uVar3;
-    if (0x7fffffff < uVar3) {
-      uVar5 = 0x7fffffff;
-    }
-    iVar4 = _realloc(this->field04,uVar3);
-    if (iVar4 == 0) {
-      iVar4 = _realloc(this->field04,iVar1);
-      this->field04 = iVar4;
-      this->padding_08_to_0b = iVar1;
-    }
-    else {
-      this->field04 = iVar4;
-      this->padding_08_to_0b = uVar5;
-    }
-  }
-  if ((uint)this->field0c <= uVar2) {
-    this->field0c = uVar2 + 1;
-  }
-  *(undefined1 *)(this->field04 + uVar2) = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00430830
-// GHIDRA_NAME TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830
-// GHIDRA_PROTO undefined __thiscall WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830(undefined4 param_1)
-
-void __thiscall
-TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830
-          (TCouncilView *this,undefined4 param_1)
-
-{
-  int iVar1;
-  uint uVar2;
-  int iVar3;
-  uint uVar4;
-
-  uVar2 = this->field0c;
-  if ((uint)this->padding_08_to_0b <= uVar2) {
-    iVar1 = uVar2 + 1;
-    uVar4 = iVar1 * 2;
-    if (0x7fffffff < uVar4) {
-      uVar4 = 0x7fffffff;
-    }
-    iVar3 = _realloc(this->field04,iVar1 * 8);
-    if (iVar3 == 0) {
-      iVar3 = _realloc(this->field04,iVar1 * 4);
-      this->field04 = iVar3;
-      this->padding_08_to_0b = iVar1;
-    }
-    else {
-      this->field04 = iVar3;
-      this->padding_08_to_0b = uVar4;
-    }
-  }
-  if ((uint)this->field0c <= uVar2) {
-    this->field0c = uVar2 + 1;
-  }
-  *(undefined4 *)(this->field04 + uVar2 * 4) = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048E850
-// GHIDRA_NAME TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA, void* pEventDataB)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void*
-   pEventDataA, void* pEventDataB) */
-
-void __thiscall
-TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit
-          (TCouncilView *this,int nEventType,void *pEventSender,void *pEventDataA,void *pEventDataB)
-
-{
-  TCouncilViewVtbl *pTVar1;
-  TCouncilView_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
-  char cVar3;
-  undefined uVar4;
-  undefined3 extraout_var;
-
-  if (nEventType == 0) {
-    (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(1,1);
-  }
-  else {
-    if (nEventType == 1) {
-      pTVar1 = this->vftable;
-      uVar4 = (*pTVar1[0x2d].slot_0x04)(pEventDataB,1);
-      (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(CONCAT31(extraout_var,uVar4));
-      return;
-    }
-    if (nEventType == 2) {
-      pTVar1 = this->vftable;
-      cVar3 = (*pTVar1[0x2d].slot_0x04)(pEventDataB);
-      if (cVar3 != '\0') {
-        if (*(int *)&this->field_0x60 == 4) {
-          pTVar2 = pTVar1[8].GetTEventHandlerClassNamePointer;
-          (*pTVar2)(0x21,this,0);
-          (*pTVar2)(*(undefined4 *)&this->field_0x60,this,0);
-          return;
-        }
-        pTVar2 = pTVar1[8].GetTEventHandlerClassNamePointer;
-        if (*(int *)&this->field_0x60 != 0xc) {
-          (*pTVar2)(0x20,this,0);
-          (*pTVar2)(*(undefined4 *)&this->field_0x60,this,0);
-          return;
-        }
-        (*pTVar2)(0x1f,this,0);
-        (*pTVar2)(*(undefined4 *)&this->field_0x60,this,0);
-        return;
-      }
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048E980
-// GHIDRA_NAME TCouncilView::DeserializeCityProductionQueueCommand
-// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(TTEView * param_1)
-
-void TCouncilView::DeserializeCityProductionQueueCommand(TTEView *param_1)
-
-{
-  (*this->vftable[0x25].GetTEventHandlerClassNamePointer)(param_1);
-  TTEView::_DeflateRect_CRect__QAEXPBUtagRECT___Z(param_1,(int *)&this->field_0x68);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048E9E0
-// GHIDRA_NAME TCouncilView::OrphanRetStub_00487a00
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
-
-void TCouncilView::OrphanRetStub_00487a00()
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004F3E30
-// GHIDRA_NAME TCouncilView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-
-void TCouncilView::GetTEventHandlerClassNamePointer()
-
-{
-  *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 0;
-  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004F3E60
-// GHIDRA_NAME TCouncilView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
-
-void TCouncilView::_scalar_deleting_destructor_()
-
-{
-  if (*(int *)&this->field_0x9c != 0) {
-    DestroyClipStateRegionWrapperObject(*(int *)&this->field_0x9c);
-  }
-  *(undefined4 *)&this->field_0x9c = 0;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004F5F90
-// GHIDRA_NAME TCouncilView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-
-void TCouncilView::GetTEventHandlerClassNamePointer()
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004F7130
-// GHIDRA_NAME TCouncilView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
-
-void TCouncilView::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
-
-{
-  if (*(int *)&this->field_0xb8 == 5) {
-    (**(code **)(**(int **)&this->field_0xb4 + 0x48))(param_1);
-    return;
-  }
-  TMapDialog::OrphanTiny_ReturnZero_0048a730((TControl *)this,param_1);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB9D0
-// GHIDRA_NAME TCouncilView::CreateTCouncilViewInstance
-// GHIDRA_PROTO undefined CreateTCouncilViewInstance()
+// GHIDRA_NAME TCouncilView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TDiplomacyMapView * TCouncilView::CreateTCouncilViewInstance(void)
+undefined4 * TCouncilView::CreateObject(void)
 
 {
-  TDiplomacyMapView *this;
-  TDiplomacyMapView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063303a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TDiplomacyMapView *)__2_YAPAXI_Z(0x24e0);
+  puVar1 = (undefined4 *)operator_new(0x24e0);
   local_4 = 0;
-  pTVar1 = (TDiplomacyMapView *)0x0;
-  if (this != (TDiplomacyMapView *)0x0) {
-    TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState(this);
-    this->vftable = (TDiplomacyMapViewVtbl *)&TCouncilViewVtbl_00640258;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403ecc();
+    *puVar1 = &TCouncilViewVtbl_00640258;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBA50
-// GHIDRA_NAME TCouncilView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TCouncilView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCouncilView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TCouncilView::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
@@ -306,74 +57,74 @@ void TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels()
   short sVar5;
   undefined3 extraout_var;
   undefined4 *unaff_FS_OFFSET;
+  CString CStack_44;
   CString CStack_40;
   CString CStack_3c;
-  CString CStack_38;
+  undefined4 uStack_38;
   undefined4 uStack_34;
-  undefined4 uStack_30;
-  char *pcStack_2c;
+  int iStack_30;
+  undefined4 uStack_2c;
   CString local_18;
   CString local_14;
   CString local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633068;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  pcStack_2c = (char *)0x4fba97;
-  CString::__0CString__QAE_XZ(&local_10);
+  uStack_2c = 0x4fba97;
+  CString::CString(&local_10);
   local_4 = 0;
-  pcStack_2c = (char *)0x4fbaa6;
-  CString::__0CString__QAE_XZ(&local_14);
+  uStack_2c = 0x4fbaa6;
+  CString::CString(&local_14);
   local_4._0_1_ = 1;
-  pcStack_2c = (char *)0x4fbab4;
-  CString::__0CString__QAE_XZ(&local_18);
+  uStack_2c = 0x4fbab4;
+  CString::CString(&local_18);
   local_4 = CONCAT31(local_4._1_3_,2);
-  uStack_30 = 0x4fbac5;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  pcStack_2c = (char *)0x4fbacc;
-  TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks((TDiplomacyMapView *)this);
+  iStack_30 = 0x4fbac5;
+  func_0x00406ba9();
+  iStack_30 = 0x4fbacc;
+  func_0x00406d61();
   *(undefined4 *)&this->field_0x94 = 5;
   *(undefined4 *)&this->field_0x24ca = 0;
   pTVar2 = this->vftable[0x12].slot_0x04;
   *(undefined4 *)&this->field_0x24ce = 0;
   *(undefined4 *)&this->field_0x24d2 = 0;
-  pcStack_2c = (char *)0x7469746c;
+  iStack_30 = 0x7469746c;
   *(undefined4 *)&this->field_0x24d6 = 0;
   *(undefined2 *)&this->field_0x24dc = 0;
   *(undefined2 *)&this->field_0x24da = 0;
-  uStack_30 = 0x4fbb0f;
+  uStack_34 = 0x4fbb0f;
   uVar4 = (*pTVar2)();
   iVar3 = *(int *)CONCAT31(extraout_var,uVar4);
-  uStack_30 = 0x4fbb18;
+  uStack_34 = 0x4fbb18;
   (**(code **)(iVar3 + 0xc))();
-  uStack_30 = 0x2b67;
-  uStack_34 = 0x2b6c;
-  CStack_38.m_pchData = (char *)0x10;
-  CStack_3c.m_pchData = (char *)0x0;
-  CStack_40.m_pchData = (char *)CONCAT31(extraout_var,uVar4);
-  ApplyUiTextStyleAndThemeFlags();
-  uStack_30 = 0;
-  uStack_34 = 0xfffffffe;
-  CStack_38.m_pchData = (char *)0x4fbb3b;
+  uStack_34 = 0x2b67;
+  uStack_38 = 0x2b6c;
+  CStack_3c.m_pchData = (char *)0x10;
+  CStack_40.m_pchData = (char *)0x0;
+  CStack_44.m_pchData = (char *)CONCAT31(extraout_var,uVar4);
+  func_0x0040263a();
+  uStack_34 = 0;
+  uStack_38 = 0xfffffffe;
+  CStack_3c.m_pchData = (char *)0x4fbb3b;
   (**(code **)(iVar3 + 0x1c4))();
   if ((*(short *)&g_pLocalizationTable->field_0x8 == 0x17) ||
      (*(short *)&g_pLocalizationTable->field_0x8 == 0x16)) {
-    CStack_38.m_pchData = &stack0xffffffe4;
-    CStack_3c.m_pchData = (char *)0x4fbbdc;
-    FormatOverlayTerrainLabelText();
-    CStack_38.m_pchData = &stack0xffffffe0;
-    CStack_3c.m_pchData = (char *)0x3;
-    CStack_40.m_pchData = (char *)0x275d;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    scanBracketExpressions(g_pLocalizationTable,&uStack_30,pcStack_2c);
-    (**(code **)(iVar3 + 0x1c8))(&uStack_30,0);
-    BuildDiplomacyMapHintOverlayTextAndMetrics();
+    CStack_3c.m_pchData = &stack0xffffffe0;
+    CStack_40.m_pchData = (char *)0x4fbbdc;
+    func_0x00405245();
+    CStack_40.m_pchData = &stack0xffffffd8;
+    CStack_44.m_pchData = (char *)0x3;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x275d);
+    func_0x0040988b(g_pLocalizationTable,&uStack_38,uStack_34,iStack_30);
+    (**(code **)(iVar3 + 0x1c8))(&uStack_38,0);
+    func_0x004014f6();
     sVar1 = *(short *)&g_pDiplomacyTurnStateManager->field_0x78e;
-    sVar5 = UiRuntimeContext::GetActiveNationId();
+    sVar5 = func_0x00403b16();
     if (sVar1 == sVar5) {
       (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x1f43,0,1);
     }
@@ -382,42 +133,41 @@ void TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels()
     }
   }
   else {
-    CStack_38.m_pchData = &stack0xffffffdc;
-    CStack_3c.m_pchData = (char *)0x5e;
-    CStack_40.m_pchData = (char *)0x2733;
+    CStack_3c.m_pchData = &stack0xffffffd8;
+    CStack_40.m_pchData = (char *)0x5e;
+    CStack_44.m_pchData = (char *)0x2733;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    (**(code **)(iVar3 + 0x1c8))(&uStack_30,0);
-    InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00654ec8,0x6d61696e);
+    (**(code **)(iVar3 + 0x1c8))(&uStack_34,0);
+    func_0x00401875(PTR_g_szEmptyString_00654ec8,0x6d61696e);
     uVar4 = (*pTVar2)(0x656e6420);
-    LoadUiStringByGroupAndIndexToControlObject(0x2746,6,uVar4);
+    func_0x0040807b(0x2746,6,uVar4);
     uVar4 = (*pTVar2)(0x71756572);
-    LoadUiStringByGroupAndIndexToControlObject(0x2730,3,uVar4);
+    func_0x0040807b(0x2730,3,uVar4);
   }
-  pcStack_2c._0_1_ = 1;
-  CString::__1CString__QAE_XZ(&CStack_40);
-  pcStack_2c = (char *)((uint)pcStack_2c._1_3_ << 8);
-  CString::__1CString__QAE_XZ(&CStack_3c);
-  pcStack_2c = (char *)0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_38);
-  *unaff_FS_OFFSET = uStack_34;
+  iStack_30._0_1_ = 1;
+  CString::~CString(&CStack_44);
+  iStack_30 = (uint)iStack_30._1_3_ << 8;
+  CString::~CString(&CStack_40);
+  iStack_30 = 0xffffffff;
+  CString::~CString(&CStack_3c);
+  *unaff_FS_OFFSET = uStack_38;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBD60
-// GHIDRA_NAME TCouncilView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_NAME TCouncilView::DestructTCouncilViewAndMaybeFree
+// GHIDRA_PROTO undefined __thiscall DestructTCouncilViewAndMaybeFree(int param_1, int param_2)
 
-void TCouncilView::OrphanRetStub_0059add0(int param_1, int param_2)
+void TCouncilView::DestructTCouncilViewAndMaybeFree(int param_1, int param_2)
 
 {
   int *piVar1;
   undefined *puVar2;
   undefined *unaff_ESI;
-
+  
   if (param_1 == 10) {
     if (*(int *)(param_2 + 0x1c) == 0x73746172) {
-      TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
-                ((TCouncilTickerAnimation *)this);
+      func_0x004098d6();
       return;
     }
   }
@@ -435,7 +185,7 @@ void TCouncilView::OrphanRetStub_0059add0(int param_1, int param_2)
     }
   }
   else {
-    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+    func_0x00404566(param_1,param_2);
   }
   return;
 }
@@ -449,8 +199,7 @@ TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallba
           (TCouncilView *this,undefined4 *param_1,undefined4 param_2)
 
 {
-  TMapDialog::SetForeignMinisterReadyFlag14
-            ((TControl *)this,param_1,param_2);
+  func_0x00408b07(param_1,param_2);
   if ((int)*(short *)&this->field_0x528 < *(short *)&this->field_0x24c8 + 2) {
     SetCursor(*(HCURSOR *)&g_pUiRuntimeContext->field_0x7c);
   }

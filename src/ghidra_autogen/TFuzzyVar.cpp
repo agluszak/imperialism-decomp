@@ -3,33 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: TFuzzyVar.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FF490
-// GHIDRA_NAME TFuzzyVar::GetTFuzzyVarClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTFuzzyVarClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF460
+// GHIDRA_NAME TFuzzyVar::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TFuzzyVar::GetTFuzzyVarClassNamePointer()
+undefined4 * TFuzzyVar::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x14);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF490
+// GHIDRA_NAME TFuzzyVar::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TFuzzyVar::GetRuntimeClass()
+
+{
+  return &classTFuzzyVar;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF4D0
-// GHIDRA_NAME TFuzzyVar::ConstructTFuzzyVarBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTFuzzyVarBaseState(byte param_1)
+// GHIDRA_NAME TFuzzyVar::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFuzzyVar * TFuzzyVar::ConstructTFuzzyVarBaseState(byte param_1)
+TFuzzyVar * TFuzzyVar::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TFuzzySet::CreateTFuzzySetInstance((TFuzzySet *)this);
+  func_0x004057bd();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF7D0
 // GHIDRA_NAME TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
-// GHIDRA_PROTO undefined __thiscall TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall AllocateAndAppendTFuzzyVarRecord_004ff7d0(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 void __thiscall
 TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
@@ -38,13 +55,13 @@ TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
 
 {
   undefined4 *puVar1;
-
-  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x14);
+  
+  puVar1 = (undefined4 *)operator_new(0x14);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
   else {
-    *puVar1 = &TFuzzyVarVtbl_00656998;
+    *puVar1 = &_vftable_;
   }
   puVar1[1] = param_1;
   puVar1[2] = param_2;

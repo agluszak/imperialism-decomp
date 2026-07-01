@@ -10,31 +10,61 @@
 TMadnessButton * TMadnessButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040551a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0054EAD0
-// GHIDRA_NAME TMadnessButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0054EA30
+// GHIDRA_NAME TMadnessButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TMadnessButton::GetTEventHandlerClassNamePointer()
+undefined4 * TMadnessButton::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00634f6a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x9c);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040481d();
+    puVar1[0x26] = 0;
+    *puVar1 = &_vftable_;
+    *unaff_FS_OFFSET = local_c;
+    return puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054EAD0
+// GHIDRA_NAME TMadnessButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TMadnessButton::GetRuntimeClass()
+
+{
+  return &classTMadnessButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054EAF0
-// GHIDRA_NAME TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TMadnessButton::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920()
+void TMadnessButton::NoOpUiLifecycleHook()
 
 {
-  TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920((TCzechBox *)this);
+  func_0x00407563();
   *(int *)&this->field_0x98 = (int)*(short *)&this->field_0x84;
   (*this->vftable->OrphanCallChain_C1_I10_00571e00)(1,0);
   return;
@@ -55,7 +85,7 @@ void TMadnessButton::OrphanCallChain_C4_I45_00571d40(char param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634f88;
@@ -79,9 +109,9 @@ void TMadnessButton::OrphanCallChain_C4_I45_00571d40(char param_1)
     (*pTVar1->SetPictureResourceIdAndRefresh)(iVar3,0);
     if (param_1 != '\0') {
       (*pTVar1->OrphanCallChain_C11_I88_004874b0_4a)(auStack_34);
-      ConstructScopedMapQuickDrawContext(this);
-      puStack_8 = (undefined1 *)0x0;
-      (*pTVar1->OrphanTiny_ReturnZero_0048a730_44)(&stack0xffffffc8);
+      func_0x00401d70(this);
+      uStack_c = 0;
+      (*pTVar1->OrphanTiny_ReturnZero_0048a730_44)(&stack0xffffffc4);
       uStack_4 = 0xffffffff;
       DestroyScopedMapQuickDrawContext();
     }

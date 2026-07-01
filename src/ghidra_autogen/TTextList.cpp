@@ -10,62 +10,61 @@
 TTextList * TTextList::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004045f7();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AB70
-// GHIDRA_NAME TTextList::CreateTTextListInstance
-// GHIDRA_PROTO undefined CreateTTextListInstance()
+// GHIDRA_NAME TTextList::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TView * TTextList::CreateTTextListInstance(void)
+undefined4 * TTextList::CreateObject(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636bda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)__2_YAPAXI_Z(0x1070);
+  puVar1 = (undefined4 *)operator_new(0x1070);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::ConstructTViewBaseState(this);
-    this->vftable = (TViewVtbl *)&g_vtblTTextList;
-    this[0x2b].flag4c = 0x10;
-    this[0x2b].flag4d = 0;
-    this[0x2b].padding_40_to_43 = 0;
-    this[0x2b].field44 = 0;
-    this[0x2b].field48 = -1;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004064e2();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x41b) = 0x10;
+    puVar1[0x418] = 0;
+    puVar1[0x419] = 0;
+    puVar1[0x41a] = 0xffffffff;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AC30
-// GHIDRA_NAME TTextList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTextList::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTextList::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTextList::GetRuntimeClass()
 
 {
-  return &g_pClassDescTTextList;
+  return &classTTextList;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057ACC0
-// GHIDRA_NAME TTextList::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TTextList::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTextList::OrphanTiny_ReturnZero_0048a730()
+void TTextList::ApplyRectSlot110()
 
 {
   short sVar1;
@@ -85,7 +84,7 @@ void TTextList::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636bf8;
   local_c = *unaff_FS_OFFSET;
@@ -97,12 +96,12 @@ void TTextList::OrphanTiny_ReturnZero_0048a730()
   local_24 = iVar3;
   MapUiThemeCodeToStyleFlags(0x2b6c,&local_2c);
   MapUiThemeCodeToStyleFlags(0x2b6a,&local_30);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b6c);
+  func_0x0040448f(0,0xe,0x2b6c);
   if ((int)*(short *)&this->field_0x106c < this->field38) {
     local_20 = &this->field_0x60 + iVar3 * 0x40;
     do {
       if (*(int *)&this->field_0x1060 <= iVar3) break;
-      CString::__0CString__QAE_PBD_Z(&local_28,local_20);
+      CString::CString(&local_28,local_20);
       local_4 = 0;
       if (iVar3 == *(int *)&this->field_0x1068) {
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(5);
@@ -114,17 +113,17 @@ void TTextList::OrphanTiny_ReturnZero_0048a730()
       }
       sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_28);
       iVar3 = this->field34 / 2 - (int)sVar1 / 2;
-      SetQuickDrawColorAndSyncGlobals(local_30);
+      func_0x00409444(local_30);
       SetQuickDrawTextOriginWithContextOffset(iVar3 + 1,iVar2 + 0xc);
-      THQButton::DrawTextWithCachedQuickDrawStyleState(&local_28);
-      SetQuickDrawColorAndSyncGlobals(local_2c);
+      func_0x004029aa(&local_28);
+      func_0x00409444(local_2c);
       SetQuickDrawTextOriginWithContextOffset(iVar3,iVar2 + 0xb);
-      THQButton::DrawTextWithCachedQuickDrawStyleState(&local_28);
+      func_0x004029aa(&local_28);
       iVar2 = iVar2 + CONCAT22(extraout_var,*(undefined2 *)&this->field_0x106c);
       local_24 = local_24 + 1;
       local_20 = local_20 + 0x40;
       local_4 = 0xffffffff;
-      CString::__1CString__QAE_XZ(&local_28);
+      CString::~CString(&local_28);
       iVar3 = local_24;
     } while ((int)(short)iVar2 + (int)*(short *)&this->field_0x106c < this->field38);
   }
@@ -133,10 +132,10 @@ void TTextList::OrphanTiny_ReturnZero_0048a730()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AF20
-// GHIDRA_NAME TTextList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
+// GHIDRA_NAME TTextList::BeginMouseCaptureAndStartRepeatTimer
+// GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(int param_1)
 
-void TTextList::_scalar_deleting_destructor_(int param_1)
+void TTextList::BeginMouseCaptureAndStartRepeatTimer(int param_1)
 
 {
   TTextListVtbl *pTVar1;
@@ -146,7 +145,7 @@ void TTextList::_scalar_deleting_destructor_(int param_1)
   LONG LStack_28;
   RECT RStack_24;
   tagRECT tStack_14;
-
+  
   iVar2 = (int)(short)(*(int *)(param_1 + 4) / (int)*(short *)&this->field_0x106c) +
           *(int *)&this->field_0x1064;
   if (iVar2 < *(int *)&this->field_0x1060) {
@@ -158,7 +157,7 @@ void TTextList::_scalar_deleting_destructor_(int param_1)
     RStack_24.right = LStack_2c;
     RStack_24.bottom = LStack_28;
     CopyRect(&tStack_14,&RStack_24);
-    InvalidateCityDialogRectRegion(&tStack_14,1);
+    func_0x00408a03(&tStack_14,1);
     (*pTVar1->InvokeSlot13C)();
     (*this->ownerContext->vftable->DispatchEvent)(4,this,0);
   }

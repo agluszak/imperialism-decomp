@@ -3,23 +3,40 @@
 // Program: Imperialism.exe
 // Bucket: CPtrList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00601F40
-// GHIDRA_NAME CPtrList::??_GCGdiObject@@UAEPAXI@Z
-// GHIDRA_PROTO undefined __thiscall ??_GCGdiObject@@UAEPAXI@Z(byte param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x00601F1D
+// GHIDRA_NAME CPtrList::CPtrList
+// GHIDRA_PROTO undefined __thiscall CPtrList(undefined4 param_1)
 
-CPtrList * CPtrList::___GCGdiObject__UAEPAXI_Z(byte param_1)
+void CPtrList::CPtrList(int param_1)
 
 {
-  __1CPtrList__UAE_XZ();
+  this->m_nCount = 0;
+  this->m_pNodeFree = (void *)0x0;
+  this->m_pNodeTail = (void *)0x0;
+  this->m_pNodeHead = (void *)0x0;
+  this->m_pBlocks = (void *)0x0;
+  this->vftable = &_vftable_;
+  this->m_nBlockSize = param_1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00601F40
+// GHIDRA_NAME CPtrList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+CPtrList * CPtrList::_scalar_deleting_destructor_(byte param_1)
+
+{
+  ~CPtrList();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601F5C
-// GHIDRA_NAME CPtrList::?RemoveAll@CPtrList@@QAEXXZ
-// GHIDRA_PROTO undefined __thiscall ?RemoveAll@CPtrList@@QAEXXZ(void)
+// GHIDRA_NAME CPtrList::RemoveAll
+// GHIDRA_PROTO undefined __thiscall RemoveAll(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
 // GHIDRA_COMMENT  public: void __thiscall CObList::RemoveAll(void)
@@ -31,36 +48,57 @@ CPtrList * CPtrList::___GCGdiObject__UAEPAXI_Z(byte param_1)
 /* Library Function - Multiple Matches With Same Base Name
     public: void __thiscall CObList::RemoveAll(void)
     public: void __thiscall CPtrList::RemoveAll(void)
-
+   
    Library: nafxcw retail msvc500:static */
 
-void CPtrList::_RemoveAll_CPtrList__QAEXXZ()
+void CPtrList::RemoveAll()
 
 {
   this->m_nCount = 0;
   this->m_pNodeFree = (void *)0x0;
   this->m_pNodeTail = (void *)0x0;
   this->m_pNodeHead = (void *)0x0;
-  _FreeDataChain_CPlex__QAEXXZ();
+  CPlex::FreeDataChain();
   this->m_pBlocks = (void *)0x0;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00601FAF
-// GHIDRA_NAME CPtrList::?NewNode@CPtrList@@IAEPAUCNode@1@PAU21@0@Z
-// GHIDRA_PROTO undefined __thiscall ?NewNode@CPtrList@@IAEPAUCNode@1@PAU21@0@Z(undefined4 param_1, undefined4 param_2)
+// GHIDRA_FUNCTION IMPERIALISM 0x00601F7C
+// GHIDRA_NAME CPtrList::~CPtrList
+// GHIDRA_PROTO undefined ~CPtrList()
 
-void __thiscall
-CPtrList::_NewNode_CPtrList__IAEPAUCNode_1_PAU21_0_Z
-          (CPtrList *this,undefined4 param_1,undefined4 param_2)
+void CPtrList::~CPtrList(void)
+
+{
+  undefined4 uVar1;
+  CPtrList *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(CPtrList **)(unaff_EBP + -0x10) = this;
+  this->vftable = &_vftable_;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  RemoveAll(this);
+  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
+  this->vftable = (CPtrListVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00601FAF
+// GHIDRA_NAME CPtrList::NewNode
+// GHIDRA_PROTO undefined __thiscall NewNode(undefined4 param_1, undefined4 param_2)
+
+void CPtrList::NewNode(undefined4 param_1, undefined4 param_2)
 
 {
   int iVar1;
   undefined4 *puVar2;
   int iVar3;
-
+  
   if (this->m_pNodeFree == (void *)0x0) {
-    iVar1 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(&this->m_pBlocks,this->m_nBlockSize,0xc);
+    iVar1 = CPlex::Create(&this->m_pBlocks,this->m_nBlockSize,0xc);
     iVar3 = this->m_nBlockSize;
     puVar2 = (undefined4 *)(iVar1 + -8 + iVar3 * 0xc);
     if (-1 < iVar3 + -1) {
@@ -81,9 +119,28 @@ CPtrList::_NewNode_CPtrList__IAEPAUCNode_1_PAU21_0_Z
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00602004
+// GHIDRA_NAME CPtrList::FreeNode
+// GHIDRA_PROTO undefined __thiscall FreeNode(undefined4 * param_1)
+
+void CPtrList::FreeNode(undefined4 *param_1)
+
+{
+  int *piVar1;
+  
+  *param_1 = this->m_pNodeFree;
+  piVar1 = &this->m_nCount;
+  *piVar1 = *piVar1 + -1;
+  this->m_pNodeFree = param_1;
+  if (*piVar1 == 0) {
+    RemoveAll(this);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0060201D
-// GHIDRA_NAME CPtrList::?AddHead@CPtrList@@QAEPAU__POSITION@@PAX@Z
-// GHIDRA_PROTO undefined __thiscall ?AddHead@CPtrList@@QAEPAU__POSITION@@PAX@Z(undefined4 param_1)
+// GHIDRA_NAME CPtrList::AddHead
+// GHIDRA_PROTO undefined __thiscall AddHead(undefined4 param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
 // GHIDRA_COMMENT  public: struct __POSITION * __thiscall CObList::AddHead(class CObject *)
@@ -95,15 +152,15 @@ CPtrList::_NewNode_CPtrList__IAEPAUCNode_1_PAU21_0_Z
 /* Library Function - Multiple Matches With Same Base Name
     public: struct __POSITION * __thiscall CObList::AddHead(class CObject *)
     public: struct __POSITION * __thiscall CPtrList::AddHead(void *)
-
+   
    Library: nafxcw retail msvc500:static */
 
-void CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z(undefined4 param_1)
+void CPtrList::AddHead(undefined4 param_1)
 
 {
   void *pvVar1;
-
-  pvVar1 = (void *)_NewNode_CPtrList__IAEPAUCNode_1_PAU21_0_Z(this,0,this->m_pNodeHead);
+  
+  pvVar1 = (void *)NewNode(this,0,this->m_pNodeHead);
   *(undefined4 *)((int)pvVar1 + 8) = param_1;
   if (this->m_pNodeHead == (void *)0x0) {
     this->m_pNodeTail = pvVar1;
@@ -116,8 +173,8 @@ void CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00602047
-// GHIDRA_NAME CPtrList::?AddTail@CPtrList@@QAEPAU__POSITION@@PAX@Z
-// GHIDRA_PROTO undefined __thiscall ?AddTail@CPtrList@@QAEPAU__POSITION@@PAX@Z(undefined4 param_1)
+// GHIDRA_NAME CPtrList::AddTail
+// GHIDRA_PROTO undefined __thiscall AddTail(undefined4 param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: struct __POSITION * __thiscall CPtrList::AddTail(void *)
@@ -127,15 +184,15 @@ void CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z(undefined4 param_1)
 
 /* Library Function - Single Match
     public: struct __POSITION * __thiscall CPtrList::AddTail(void *)
-
+   
    Library: nafxcw retail msvc500:static */
 
-void CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z(undefined4 param_1)
+void CPtrList::AddTail(undefined4 param_1)
 
 {
   void *pvVar1;
-
-  pvVar1 = (void *)_NewNode_CPtrList__IAEPAUCNode_1_PAU21_0_Z(this,this->m_pNodeTail,0);
+  
+  pvVar1 = (void *)NewNode(this,this->m_pNodeTail,0);
   *(undefined4 *)((int)pvVar1 + 8) = param_1;
   if (this->m_pNodeTail == (int *)0x0) {
     this->m_pNodeHead = pvVar1;
@@ -147,15 +204,140 @@ void CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z(undefined4 param_1)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006021B4
-// GHIDRA_NAME CPtrList::?FindIndex@CStringList@@QBEPAU__POSITION@@H@Z
-// GHIDRA_PROTO undefined __thiscall ?FindIndex@CStringList@@QBEPAU__POSITION@@H@Z(int param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x006020B9
+// GHIDRA_NAME CPtrList::RemoveHead
+// GHIDRA_PROTO undefined RemoveHead()
 
-undefined4 * CPtrList::_FindIndex_CStringList__QBEPAU__POSITION__H_Z(int param_1)
+int __fastcall CPtrList::RemoveHead(CPtrList *param_1)
+
+{
+  int *piVar1;
+  void *pvVar2;
+  int iVar3;
+  
+  piVar1 = param_1->m_pNodeHead;
+  pvVar2 = (void *)*piVar1;
+  iVar3 = piVar1[2];
+  param_1->m_pNodeHead = pvVar2;
+  if (pvVar2 == (void *)0x0) {
+    param_1->m_pNodeTail = (void *)0x0;
+  }
+  else {
+    *(undefined4 *)((int)pvVar2 + 4) = 0;
+  }
+  FreeNode(param_1,piVar1);
+  return iVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006020DD
+// GHIDRA_NAME CPtrList::RemoveTail
+// GHIDRA_PROTO undefined RemoveTail()
+
+undefined4 __fastcall CPtrList::RemoveTail(CPtrList *param_1)
 
 {
   undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 uVar3;
+  
+  puVar1 = param_1->m_pNodeTail;
+  puVar2 = (undefined4 *)puVar1[1];
+  uVar3 = puVar1[2];
+  param_1->m_pNodeTail = puVar2;
+  if (puVar2 == (undefined4 *)0x0) {
+    param_1->m_pNodeHead = (void *)0x0;
+  }
+  else {
+    *puVar2 = 0;
+  }
+  FreeNode(param_1,puVar1);
+  return uVar3;
+}
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00602101
+// GHIDRA_NAME CPtrList::InsertBefore
+// GHIDRA_PROTO undefined InsertBefore()
+
+void __thiscall CPtrList::InsertBefore(CPtrList *param_1,int param_2,undefined4 param_3)
+
+{
+  void *pvVar1;
+  
+  if (param_2 == 0) {
+    AddHead(param_1,param_3);
+  }
+  else {
+    pvVar1 = (void *)NewNode(param_1,*(undefined4 *)(param_2 + 4),param_2);
+    *(undefined4 *)((int)pvVar1 + 8) = param_3;
+    if (*(int **)(param_2 + 4) == (int *)0x0) {
+      param_1->m_pNodeHead = pvVar1;
+    }
+    else {
+      **(int **)(param_2 + 4) = (int)pvVar1;
+    }
+    *(void **)(param_2 + 4) = pvVar1;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00602140
+// GHIDRA_NAME CPtrList::InsertAfter
+// GHIDRA_PROTO undefined InsertAfter()
+
+void __thiscall CPtrList::InsertAfter(CPtrList *param_1,int *param_2,undefined4 param_3)
+
+{
+  void *pvVar1;
+  
+  if (param_2 == (int *)0x0) {
+    AddTail(param_1,param_3);
+  }
+  else {
+    pvVar1 = (void *)NewNode(param_1,param_2,*param_2);
+    *(undefined4 *)((int)pvVar1 + 8) = param_3;
+    if (*param_2 == 0) {
+      param_1->m_pNodeTail = pvVar1;
+    }
+    else {
+      *(void **)(*param_2 + 4) = pvVar1;
+    }
+    *param_2 = (int)pvVar1;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060217D
+// GHIDRA_NAME CPtrList::RemoveAt
+// GHIDRA_PROTO undefined __thiscall RemoveAt(int * param_1)
+
+void CPtrList::RemoveAt(int *param_1)
+
+{
+  if (param_1 == this->m_pNodeHead) {
+    this->m_pNodeHead = (void *)*param_1;
+  }
+  else {
+    *(int *)param_1[1] = *param_1;
+  }
+  if (param_1 == this->m_pNodeTail) {
+    this->m_pNodeTail = (void *)param_1[1];
+  }
+  else {
+    *(int *)(*param_1 + 4) = param_1[1];
+  }
+  FreeNode(this,param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006021B4
+// GHIDRA_NAME CPtrList::FindIndex
+// GHIDRA_PROTO undefined __thiscall FindIndex(int param_1)
+
+undefined4 * CPtrList::FindIndex(int param_1)
+
+{
+  undefined4 *puVar1;
+  
   if (param_1 < this->m_nCount) {
     puVar1 = this->m_pNodeHead;
     for (; param_1 != 0; param_1 = param_1 + -1) {
@@ -168,11 +350,31 @@ undefined4 * CPtrList::_FindIndex_CStringList__QBEPAU__POSITION__H_Z(int param_1
   return puVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00623B3A
-// GHIDRA_NAME CPtrList::CPtrList::GetRuntimeClass
-// GHIDRA_PROTO undefined __thiscall CPtrList::GetRuntimeClass(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x006021D6
+// GHIDRA_NAME CPtrList::Find
+// GHIDRA_PROTO undefined __thiscall Find(int param_1, undefined4 * param_2)
 
-CRuntimeClass * CPtrList::CPtrList__GetRuntimeClass()
+undefined4 * CPtrList::Find(int param_1, undefined4 *param_2)
+
+{
+  if (param_2 != (undefined4 *)0x0) goto LAB_006021e3;
+  param_2 = this->m_pNodeHead;
+  while( true ) {
+    if (param_2 == (undefined4 *)0x0) {
+      return (undefined4 *)0x0;
+    }
+    if (param_2[2] == param_1) break;
+LAB_006021e3:
+    param_2 = (undefined4 *)*param_2;
+  }
+  return param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00623B3A
+// GHIDRA_NAME CPtrList::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * CPtrList::GetRuntimeClass()
 
 {
   return &classRuntimeClass;

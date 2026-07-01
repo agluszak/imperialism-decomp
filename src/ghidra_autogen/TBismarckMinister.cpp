@@ -3,15 +3,44 @@
 // Program: Imperialism.exe
 // Bucket: TBismarckMinister.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004ED740
+// GHIDRA_NAME TBismarckMinister::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TBismarckMinister::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006327da;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x94);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040433b();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 3) = 1;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED7C0
-// GHIDRA_NAME TBismarckMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(char param_1)
+// GHIDRA_NAME TBismarckMinister::CreateTBismarckMinisterInstance
+// GHIDRA_PROTO undefined __thiscall CreateTBismarckMinisterInstance(char param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 __thiscall
-TBismarckMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-          (TBismarckMinister *this,char param_1)
+float10 TBismarckMinister::CreateTBismarckMinisterInstance(char param_1)
 
 {
   if (param_1 != '\0') {
@@ -21,39 +50,83 @@ TBismarckMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED7F0
-// GHIDRA_NAME TBismarckMinister::GetTMinisterClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
+// GHIDRA_NAME TBismarckMinister::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBismarckMinister::GetTMinisterClassNamePointer()
+CRuntimeClass * TBismarckMinister::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTBismarckMinister;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED810
 // GHIDRA_NAME TBismarckMinister::ConstructTBismarckMinisterBaseState
-// GHIDRA_PROTO undefined __thiscall TBismarckMinister::ConstructTBismarckMinisterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTBismarckMinisterBaseState(void)
 
 TBismarckMinister * TBismarckMinister::ConstructTBismarckMinisterBaseState()
 
 {
-  TMinister::ConstructTMinister((TMinister *)this);
-  this->vftable = &TBismarckMinisterVtbl_00654aa0;
+  func_0x0040433b();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0xc = 1;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED840
-// GHIDRA_NAME TBismarckMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
+// GHIDRA_NAME TBismarckMinister::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBismarckMinister * TBismarckMinister::DeletingDestructTMinister(byte param_1)
+TBismarckMinister * TBismarckMinister::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTBismarckMinisterAndMaybeFree_Impl();
+  func_0x004062bc();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004ED950
+// GHIDRA_NAME TBismarckMinister::InitializeRecruitQueuePatternB_Type2x2_Bonus5
+// GHIDRA_PROTO undefined __thiscall InitializeRecruitQueuePatternB_Type2x2_Bonus5(int param_1)
+
+void __thiscall
+TBismarckMinister::InitializeRecruitQueuePatternB_Type2x2_Bonus5
+          (TBismarckMinister *this,int param_1)
+
+{
+  int iVar1;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 uVar2;
+  undefined4 unaff_EBP;
+  int iVar3;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  int *piStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  piStack_8 = (int *)&LAB_006327fa;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  (**(code **)(**(int **)(param_1 + 0x1d8) + 0x2c))(9,4,1);
+  *(undefined2 *)(param_1 + 0x62) = 1;
+  iVar3 = 2;
+  do {
+    iVar1 = operator_new(0x44);
+    uVar2 = extraout_var;
+    if (iVar1 != 0) {
+      func_0x004054e3();
+      uVar2 = extraout_var_00;
+    }
+    func_0x00407a72(2,0,CONCAT22(uVar2,*(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),0);
+    *(short *)&this->field_0x18 = *(short *)&this->field_0x18 + 1;
+    iVar3 = iVar3 + -1;
+  } while (iVar3 != 0);
+  *(short *)((int)piStack_8 + 0xd6) = *(short *)((int)piStack_8 + 0xd6) + 5;
+  (**(code **)(*piStack_8 + 0x80))();
+  *unaff_FS_OFFSET = unaff_EBP;
+  return;
 }
 

@@ -4,54 +4,54 @@
 // Bucket: TGWorldButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572080
-// GHIDRA_NAME TGWorldButton::CreateTGWorldButtonInstance
-// GHIDRA_PROTO undefined CreateTGWorldButtonInstance()
+// GHIDRA_NAME TGWorldButton::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TControl * TGWorldButton::CreateTGWorldButtonInstance(void)
+undefined4 * TGWorldButton::CreateObject(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006364aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)__2_YAPAXI_Z(0x8c);
+  puVar1 = (undefined4 *)operator_new(0x8c);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::TControl(this);
-    this->vftable = (TControlVtbl *)&TGWorldButtonVtbl_0065ff60;
-    *(undefined2 *)&this[1].vftable = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004087fb();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x21) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TControl *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572110
-// GHIDRA_NAME TGWorldButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TGWorldButton::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGWorldButton::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TGWorldButton::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTGWorldButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572130
 // GHIDRA_NAME TGWorldButton::ConstructTGWorldButtonBaseState
-// GHIDRA_PROTO undefined __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTGWorldButtonBaseState(void)
 
 TGWorldButton * TGWorldButton::ConstructTGWorldButtonBaseState()
 
 {
-  TControl::TControl((TControl *)this);
-  this->vftable = &TGWorldButtonVtbl_0065ff60;
+  func_0x004087fb();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x84 = 0;
   return this;
 }
@@ -63,22 +63,22 @@ TGWorldButton * TGWorldButton::ConstructTGWorldButtonBaseState()
 TGWorldButton * TGWorldButton::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x004082f1();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572200
-// GHIDRA_NAME TGWorldButton::OrphanCallChain_C2_I25_00572200
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I25_00572200(char param_1, char param_2)
+// GHIDRA_NAME TGWorldButton::SetControlStateFlagAndMaybeRefresh
+// GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1, char param_2)
 
-void TGWorldButton::OrphanCallChain_C2_I25_00572200(char param_1, char param_2)
+void TGWorldButton::SetControlStateFlagAndMaybeRefresh(char param_1, char param_2)
 
 {
   TGWorldButtonVtbl *pTVar1;
-
+  
   if (param_1 != this->field_0x64) {
     this->field_0x64 = param_1;
     if (param_1 == '\0') {
@@ -97,34 +97,38 @@ void TGWorldButton::OrphanCallChain_C2_I25_00572200(char param_1, char param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572270
-// GHIDRA_NAME TGWorldButton::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TGWorldButton::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TGWorldButton::OrphanTiny_ReturnZero_0048a730()
+void TGWorldButton::ApplyRectSlot110()
 
 {
-  LONG local_30;
-  LONG LStack_2c;
-  LONG LStack_28;
-  RECT RStack_24;
-  RECT RStack_14;
+  undefined4 local_30;
+  undefined4 uStack_2c;
+  undefined4 uStack_28;
+  undefined1 auStack_24 [4];
+  undefined4 uStack_20;
+  undefined4 uStack_1c;
+  undefined4 uStack_18;
+  undefined1 auStack_14 [4];
+  int local_10;
+  undefined4 local_c;
+  int local_8;
   int local_4;
-
+  
   if (*(int *)&this->field_0x88 != 0) {
-    RStack_14.top = (LONG)*(short *)&this->field_0x84;
+    local_10 = (int)*(short *)&this->field_0x84;
     local_4 = this->field38;
-    RStack_14.bottom = this->field34 + RStack_14.top;
-    RStack_14.right = 0;
+    local_8 = this->field34 + local_10;
+    local_c = 0;
     (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)(&local_30);
-    RStack_24.top = local_30;
-    RStack_24.right = LStack_2c;
-    RStack_24.bottom = LStack_28;
-    UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)&this->field_0x88 + 4),
-               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_14,&RStack_24,0x24
-               ,(astruct_19 *)0x0);
-    UpdatePaletteIndexWithDefaultFallback(0x13);
+    uStack_20 = local_30;
+    uStack_1c = uStack_2c;
+    uStack_18 = uStack_28;
+    func_0x004010be(0x10);
+    func_0x00405493(*(int *)&this->field_0x88 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
+                    auStack_14,auStack_24,0x24,0);
+    func_0x004010be(0x13);
   }
   return;
 }

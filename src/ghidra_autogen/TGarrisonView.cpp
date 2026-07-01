@@ -4,55 +4,55 @@
 // Bucket: TGarrisonView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8770
-// GHIDRA_NAME TGarrisonView::CreateTGarrisonViewInstance
-// GHIDRA_PROTO undefined CreateTGarrisonViewInstance()
+// GHIDRA_NAME TGarrisonView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TMilitaryPageView * TGarrisonView::CreateTGarrisonViewInstance(void)
+undefined4 * TGarrisonView::CreateObject(void)
 
 {
-  TMilitaryPageView *this;
-  TMilitaryPageView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006302ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMilitaryPageView *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  pTVar1 = (TMilitaryPageView *)0x0;
-  if (this != (TMilitaryPageView *)0x0) {
-    TMilitaryPageView::ConstructTMilitaryPageViewBaseState(this);
-    this->vftable = (TMilitaryPageViewVtbl *)&TGarrisonViewVtbl_0064cc70;
-    *(undefined2 *)&this[1].field04 = 0xffff;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x004032ab();
+    *puVar1 = &_vftable_;
+    *(undefined2 *)(puVar1 + 0x23) = 0xffff;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A87F0
-// GHIDRA_NAME TGarrisonView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TGarrisonView::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGarrisonView::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TGarrisonView::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTGarrisonView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8810
 // GHIDRA_NAME TGarrisonView::ConstructTGarrisonViewBaseState
-// GHIDRA_PROTO undefined __thiscall TGarrisonView::ConstructTGarrisonViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTGarrisonViewBaseState(void)
 
 TGarrisonView * TGarrisonView::ConstructTGarrisonViewBaseState()
 
 {
-  TMilitaryPageView::ConstructTMilitaryPageViewBaseState((TMilitaryPageView *)this);
-  this->vftable = &TGarrisonViewVtbl_0064cc70;
+  func_0x004032ab();
+  this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x8c = 0xffff;
   return this;
 }
@@ -64,18 +64,18 @@ TGarrisonView * TGarrisonView::ConstructTGarrisonViewBaseState()
 TGarrisonView * TGarrisonView::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructTViewBaseState((TView *)this);
+  func_0x00403eae();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8A20
-// GHIDRA_NAME TGarrisonView::InvalidateWindowRectFromHandleField1C
-// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
+// GHIDRA_NAME TGarrisonView::CallVoidSlotA0
+// GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TGarrisonView::InvalidateWindowRectFromHandleField1C()
+void TGarrisonView::CallVoidSlotA0()
 
 {
   int *piVar1;
@@ -86,14 +86,13 @@ void TGarrisonView::InvalidateWindowRectFromHandleField1C()
   int iVar6;
   undefined3 extraout_var;
   undefined4 *unaff_FS_OFFSET;
-  CString *pCVar7;
   CString local_18;
   CString local_14;
   TGarrisonView *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630340;
   uStack_c = *unaff_FS_OFFSET;
@@ -117,7 +116,7 @@ void TGarrisonView::InvalidateWindowRectFromHandleField1C()
     if (cVar3 != '\0') {
 LAB_004a8aa3:
       if (*(short *)&g_pLocalizationTable->field_0x58 != 0) {
-        cVar3 = ShowLocalizedUiPromptByGroupAndIndex(0x2746,9,1,1);
+        cVar3 = func_0x004075a9(0x2746,9,1,1);
       }
       if (cVar3 != '\0') {
         sVar5 = *(short *)&this->field_0x8c;
@@ -130,19 +129,18 @@ LAB_004a8aa3:
         while (piVar2 != (int *)0x0) {
           if (piVar2[2] == 0xe) {
             piVar1 = (int *)piVar2[5];
-            CString::__0CString__QAE_XZ(&local_14);
+            CString::CString(&local_14);
             local_4 = 0;
-            CString::__4CString__QAEABV0_ABV0__Z(&local_14,(CString *)(piVar2 + 9));
-            iVar6 = __mbscmp(local_14.m_pchData,s_Snidely_0069584c);
+            CString::operator=(&local_14,(CString *)(piVar2 + 9));
+            iVar6 = CompareAnsiStringsWithMbcsAwareness(local_14.m_pchData,s_Snidely_0069584c);
             if (iVar6 == 0) {
-              CString::__0CString__QAE_XZ(&local_18);
-              pCVar7 = &local_18;
+              CString::CString(&local_18);
               local_4 = CONCAT31(local_4._1_3_,1);
-              UiRuntimeContext::GetActiveNationId(pCVar7);
-              FormatOverlayTerrainLabelText(pCVar7);
-              iVar6 = __mbscmp(local_18.m_pchData,&DAT_00695844);
+              func_0x00403b16(&local_18);
+              func_0x00405245();
+              iVar6 = CompareAnsiStringsWithMbcsAwareness(local_18.m_pchData,&DAT_00695844);
               if (iVar6 == 0) {
-                sVar5 = UiRuntimeContext::GetActiveNationId();
+                sVar5 = func_0x00403b16();
                 uVar4 = (*g_apTerrainTypeDescriptorTable[sVar5]->vftable->
                           OrphanLeaf_NoCall_Ins06_004d87b0_10)();
                 if (CONCAT31(extraout_var,uVar4) == (int)*(short *)&this->field_0x8c) {
@@ -150,13 +148,13 @@ LAB_004a8aa3:
                 }
               }
               local_4 = local_4 & 0xffffff00;
-              CString::__1CString__QAE_XZ(&local_18);
+              CString::~CString(&local_18);
             }
             iVar6 = *piVar2;
             (**(code **)(iVar6 + 0x30))();
             (**(code **)(iVar6 + 0x1c))();
             local_4 = 0xffffffff;
-            CString::__1CString__QAE_XZ(&local_14);
+            CString::~CString(&local_14);
             this = local_10;
             piVar2 = piVar1;
           }
@@ -167,7 +165,7 @@ LAB_004a8aa3:
       }
     }
   }
-  TMilitaryPageView::GetTEventHandlerClassNamePointer((TMilitaryPageView *)this);
+  func_0x0040354e();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

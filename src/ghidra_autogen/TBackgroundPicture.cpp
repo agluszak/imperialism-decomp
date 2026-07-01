@@ -4,43 +4,43 @@
 // Bucket: TBackgroundPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572BD0
-// GHIDRA_NAME TBackgroundPicture::CreateTBackgroundPictureInstance
-// GHIDRA_PROTO undefined CreateTBackgroundPictureInstance()
+// GHIDRA_NAME TBackgroundPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TBackgroundPicture::CreateTBackgroundPictureInstance(void)
+undefined4 * TBackgroundPicture::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063657a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    this[0x90] = (thunk_TPictureButton)0x0;
-    *(TBackgroundPictureVtbl **)this = &TBackgroundPictureVtbl_00660918;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *(undefined1 *)(puVar1 + 0x24) = 0;
+    *puVar1 = &_vftable_;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (thunk_TPictureButton *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572C60
-// GHIDRA_NAME TBackgroundPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TBackgroundPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBackgroundPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TBackgroundPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTBackgroundPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572C80
@@ -50,9 +50,9 @@ CRuntimeClass * TBackgroundPicture::GetTEventHandlerClassNamePointer()
 TBackgroundPicture * TBackgroundPicture::ConstructTBackgroundPictureBaseState()
 
 {
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  func_0x00401122();
   this->field_0x90 = 0;
-  this->vftable = &TBackgroundPictureVtbl_00660918;
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -63,21 +63,21 @@ TBackgroundPicture * TBackgroundPicture::ConstructTBackgroundPictureBaseState()
 TBackgroundPicture * TBackgroundPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00408cf1();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572D00
-// GHIDRA_NAME TBackgroundPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TBackgroundPicture::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TBackgroundPicture::OrphanTiny_ReturnZero_0048a730()
+void TBackgroundPicture::ApplyRectSlot110()
 
 {
-  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
+  func_0x00404fe8();
   return;
 }
 

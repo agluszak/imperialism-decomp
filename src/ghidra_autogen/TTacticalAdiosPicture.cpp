@@ -10,58 +10,58 @@
 TTacticalAdiosPicture * TTacticalAdiosPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00408e9a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD430
-// GHIDRA_NAME TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance
-// GHIDRA_PROTO undefined CreateTTacticalAdiosPictureInstance()
+// GHIDRA_NAME TTacticalAdiosPicture::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-thunk_TPictureButton * TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance(void)
+undefined4 * TTacticalAdiosPicture::CreateObject(void)
 
 {
-  thunk_TPictureButton *this;
-  thunk_TPictureButton *ptVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063885a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
+  puVar1 = (undefined4 *)operator_new(0x90);
   local_4 = 0;
-  ptVar1 = (thunk_TPictureButton *)0x0;
-  if (this != (thunk_TPictureButton *)0x0) {
-    thunk_TPictureButton::TPictureButton(this);
-    *(TTacticalAdiosPictureVtbl **)this = &TTacticalAdiosPictureVtbl_00645428;
-    ptVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00401122();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return ptVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD4B0
-// GHIDRA_NAME TTacticalAdiosPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTacticalAdiosPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacticalAdiosPicture::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTacticalAdiosPicture::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTacticalAdiosPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD4D0
-// GHIDRA_NAME TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TTacticalAdiosPicture::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920()
+void TTacticalAdiosPicture::NoOpUiLifecycleHook()
 
 {
   _vslot_fn *p_Var1;
@@ -72,112 +72,112 @@ void TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
+  undefined4 uStack_60;
   undefined4 uStack_5c;
   undefined4 uStack_58;
-  undefined4 uStack_54;
-  undefined1 *puStack_50;
+  undefined1 *puStack_54;
+  undefined4 uStack_50;
   undefined4 uStack_4c;
-  undefined4 uStack_48;
-  undefined1 *puStack_44;
-  undefined4 uStack_40;
-  undefined1 *puStack_3c;
+  undefined1 *puStack_48;
+  undefined4 uStack_44;
+  undefined1 *puStack_40;
+  undefined4 uStack_3c;
   undefined4 uStack_38;
-  undefined4 uStack_34;
-  undefined1 *puStack_30;
+  undefined1 *puStack_34;
+  undefined4 uStack_30;
   undefined4 uStack_2c;
-  undefined4 uStack_28;
-  undefined1 auStack_10 [10];
-  undefined1 local_6;
-  undefined1 local_5;
-  undefined1 local_4;
-  undefined1 local_3;
-
+  undefined1 auStack_28 [4];
+  undefined1 auStack_14 [10];
+  undefined1 uStack_a;
+  undefined1 uStack_9;
+  undefined1 uStack_8;
+  undefined1 uStack_7;
+  
   uStack_2c = 0x5ad4e3;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  uStack_28 = 0x7469746c;
-  local_6 = 0;
+  func_0x00406ba9();
+  uStack_2c = 0x7469746c;
+  uStack_a = 0;
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  local_5 = 0;
-  local_4 = 0;
-  local_3 = 0;
-  uStack_2c = 0x5ad508;
+  uStack_9 = 0;
+  uStack_8 = 0;
+  uStack_7 = 0;
+  uStack_30 = 0x5ad508;
   uVar4 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var,uVar4);
-  uStack_2c = 0x5ad511;
+  uStack_30 = 0x5ad511;
   (**(code **)(iVar2 + 0xc))();
-  uStack_2c = 1;
-  puStack_30 = (undefined1 *)0x2b6b;
-  uStack_34 = 0xe;
-  puStack_3c = auStack_10;
-  uStack_38 = 0;
-  uStack_40 = 0x5ad526;
+  uStack_30 = 1;
+  puStack_34 = (undefined1 *)0x2b6b;
+  uStack_38 = 0xe;
+  puStack_40 = auStack_14;
+  uStack_3c = 0;
+  uStack_44 = 0x5ad526;
   InitializeUiTextStyleDescriptor();
-  puStack_30 = auStack_10;
-  uStack_2c = 0;
-  uStack_34 = 0x5ad538;
+  puStack_34 = auStack_14;
+  uStack_30 = 0;
+  uStack_38 = 0x5ad538;
   (**(code **)(iVar2 + 0x1b4))();
-  uStack_34 = 0;
-  uStack_38 = 1;
-  puStack_3c = (undefined1 *)0x5ad544;
+  uStack_38 = 0;
+  uStack_3c = 1;
+  puStack_40 = (undefined1 *)0x5ad544;
   (**(code **)(iVar2 + 0x1c4))();
-  puStack_3c = (undefined1 *)0x6c6f6361;
-  uStack_40 = 0x5ad54d;
+  puStack_40 = (undefined1 *)0x6c6f6361;
+  uStack_44 = 0x5ad54d;
   uVar4 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var_00,uVar4);
-  uStack_40 = 0x5ad556;
+  uStack_44 = 0x5ad556;
   (**(code **)(iVar2 + 0xc))();
-  uStack_40 = 1;
-  puStack_44 = (undefined1 *)0x2b6b;
-  uStack_48 = 0xc;
-  puStack_50 = &stack0xffffffdc;
-  uStack_4c = 2;
-  uStack_54 = 0x5ad56b;
+  uStack_44 = 1;
+  puStack_48 = (undefined1 *)0x2b6b;
+  uStack_4c = 0xc;
+  puStack_54 = auStack_28;
+  uStack_50 = 2;
+  uStack_58 = 0x5ad56b;
   InitializeUiTextStyleDescriptor();
-  puStack_44 = &stack0xffffffdc;
-  uStack_40 = 0;
-  uStack_48 = 0x5ad57d;
+  puStack_48 = auStack_28;
+  uStack_44 = 0;
+  uStack_4c = 0x5ad57d;
   (**(code **)(iVar2 + 0x1b4))();
-  uStack_48 = 0;
-  uStack_4c = 1;
-  puStack_50 = (undefined1 *)0x5ad589;
+  uStack_4c = 0;
+  uStack_50 = 1;
+  puStack_54 = (undefined1 *)0x5ad589;
   (**(code **)(iVar2 + 0x1c4))();
-  puStack_50 = (undefined1 *)0x696e666f;
-  uStack_54 = 0x5ad592;
+  puStack_54 = (undefined1 *)0x696e666f;
+  uStack_58 = 0x5ad592;
   uVar4 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var_01,uVar4);
-  uStack_54 = 0x5ad59b;
+  uStack_58 = 0x5ad59b;
   (**(code **)(iVar2 + 0xc))();
-  uStack_54 = 0x2b6b;
-  uStack_58 = 10;
-  uStack_5c = 0;
+  uStack_58 = 0x2b6b;
+  uStack_5c = 10;
+  uStack_60 = 0;
   (**(code **)(iVar2 + 0x1e0))();
   (**(code **)(iVar2 + 0x1c4))(1,0);
   p_Var1 = this->vftable->SetForeignMinisterReadyFlag14;
   puVar3 = g_pUiRuntimeContext->vftable;
-  uVar4 = (*p_Var1)(&uStack_54);
+  uVar4 = (*p_Var1)(&uStack_58);
   (**(code **)(puVar3 + 0x44))(uVar4);
   uVar4 = (*p_Var1)();
-  (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar4) + 0xf0))(&uStack_5c,0);
+  (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar4) + 0xf0))(&uStack_60,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD650
-// GHIDRA_NAME TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_NAME TTacticalAdiosPicture::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void __thiscall
-TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TTacticalAdiosPicture *this,int param_1,int param_2)
+void TTacticalAdiosPicture::HandleEvent(int param_1, int param_2)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-
+  undefined4 in_stack_0000000c;
+  
   if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x6f6b6179)) {
     uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))(*(undefined4 *)(param_2 + 0x1c),1);
   }
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
+  func_0x00404566(param_1,param_2,in_stack_0000000c);
   return;
 }
 

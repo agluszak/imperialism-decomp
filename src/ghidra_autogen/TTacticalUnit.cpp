@@ -3,9 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalUnit.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5D10
+// GHIDRA_NAME TTacticalUnit::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TTacticalUnit::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x34);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5D40
 // GHIDRA_NAME TTacticalUnit::OrphanTiny_ReturnZero_005a5d40
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d40(void)
 
 undefined4 TTacticalUnit::OrphanTiny_ReturnZero_005a5d40()
 
@@ -48,22 +65,22 @@ float10 TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5DC0
-// GHIDRA_NAME TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(byte param_1)
+// GHIDRA_NAME TTacticalUnit::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalUnit * TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(byte param_1)
+TTacticalUnit * TTacticalUnit::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TTacticalUnit::CreateTTacticalUnitInstance(this);
+  func_0x0040443a();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5DF0
 // GHIDRA_NAME TTacticalUnit::CreateTTacticalUnitInstance
-// GHIDRA_PROTO undefined __thiscall TTacticalUnit::CreateTTacticalUnitInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTTacticalUnitInstance(void)
 
 void TTacticalUnit::CreateTTacticalUnitInstance()
 
@@ -73,13 +90,13 @@ void TTacticalUnit::CreateTTacticalUnitInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E10
-// GHIDRA_NAME TTacticalUnit::GetTTacticalUnitClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTacticalUnitClassNamePointer(void)
+// GHIDRA_NAME TTacticalUnit::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacticalUnit::GetTTacticalUnitClassNamePointer()
+CRuntimeClass * TTacticalUnit::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTacticalUnit;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E30
@@ -91,7 +108,7 @@ void TTacticalUnit::ConstructTTacticalUnitBaseState()
 {
   undefined uVar1;
   undefined3 extraout_var;
-
+  
   *(undefined4 *)&this->field_0x8 = 0xfffffffe;
   this->field_0x18 = 0;
   *(undefined4 *)&this->field_0x1c = 0;
@@ -103,20 +120,31 @@ void TTacticalUnit::ConstructTTacticalUnitBaseState()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E70
-// GHIDRA_NAME TTacticalUnit::DestructTTacticalUnitAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTacticalUnitAndMaybeFree(int param_1)
+// GHIDRA_NAME TTacticalUnit::VTableSlot0E
+// GHIDRA_PROTO undefined __thiscall VTableSlot0E(int param_1)
 
-void TTacticalUnit::DestructTTacticalUnitAndMaybeFree(int param_1)
+void TTacticalUnit::VTableSlot0E(int param_1)
 
 {
   int iVar1;
-
+  
   iVar1 = *(int *)&this->field_0x4 - param_1;
   *(int *)&this->field_0x4 = iVar1;
   if (iVar1 < 1) {
     *(undefined4 *)&this->field_0x4 = 0;
     *(undefined4 *)&this->field_0x1c = 3;
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5EB0
+// GHIDRA_NAME TTacticalUnit::CreateTArmyTacUnitInstance
+// GHIDRA_PROTO undefined __thiscall CreateTArmyTacUnitInstance(void)
+
+void TTacticalUnit::CreateTArmyTacUnitInstance()
+
+{
+  *(uint *)&this->field_0x20 = (uint)(*(int *)&this->field_0x20 == 0);
   return;
 }
 

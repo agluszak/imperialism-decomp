@@ -4,54 +4,54 @@
 // Bucket: TIconBar.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505F50
-// GHIDRA_NAME TIconBar::CreateTIconBarInstance
-// GHIDRA_PROTO undefined CreateTIconBarInstance()
+// GHIDRA_NAME TIconBar::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TNoHilitePicture * TIconBar::CreateTIconBarInstance(void)
+undefined4 * TIconBar::CreateObject(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063376a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x9c);
+  puVar1 = (undefined4 *)operator_new(0x9c);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
-    this->vftable = (TNoHilitePictureVtbl *)&TIconBarVtbl_00657a28;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403328();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505FD0
-// GHIDRA_NAME TIconBar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TIconBar::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TIconBar::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TIconBar::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTIconBar;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505FF0
 // GHIDRA_NAME TIconBar::ConstructTIconBarBaseState
-// GHIDRA_PROTO undefined __thiscall TIconBar::ConstructTIconBarBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTIconBarBaseState(void)
 
 TIconBar * TIconBar::ConstructTIconBarBaseState()
 
 {
-  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->vftable = &TIconBarVtbl_00657a28;
+  func_0x00403328();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,65 +62,11 @@ TIconBar * TIconBar::ConstructTIconBarBaseState()
 TIconBar * TIconBar::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x0040715d();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00506070
-// GHIDRA_NAME TIconBar::AddCityCommodityIconControl
-// GHIDRA_PROTO void __thiscall TIconBar::AddCityCommodityIconControl(int * pCityView, int * pRect, int * pLayoutData, int nXPad, int nYPad, int nIconId, int nAmount)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Adds one city commodity icon control entry.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Build and place a UI control using rectangle/layout parameters.
-// GHIDRA_COMMENT 2. Apply the commodity icon id (700 + commodity index in callers).
-// GHIDRA_COMMENT 3. Set the displayed quantity/value on the created control.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - this: Commodity icon UI control instance.
-// GHIDRA_COMMENT - pCityView: Parent city view/dialog object.
-// GHIDRA_COMMENT - pRect: Target rectangle/position data.
-// GHIDRA_COMMENT - pLayoutData: Supplemental layout data.
-// GHIDRA_COMMENT - nXPad/nYPad: Placement offsets.
-// GHIDRA_COMMENT - nIconId: Bitmap icon id.
-// GHIDRA_COMMENT - nAmount: Quantity/value to display.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - None.
-// GHIDRA_COMMENT_END
-
-/* Adds one city commodity icon control entry.
-
-   Algorithm:
-   1. Build and place a UI control using rectangle/layout parameters.
-   2. Apply the commodity icon id (700 + commodity index in callers).
-   3. Set the displayed quantity/value on the created control.
-
-   Parameters:
-   - this: Commodity icon UI control instance.
-   - pCityView: Parent city view/dialog object.
-   - pRect: Target rectangle/position data.
-   - pLayoutData: Supplemental layout data.
-   - nXPad/nYPad: Placement offsets.
-   - nIconId: Bitmap icon id.
-   - nAmount: Quantity/value to display.
-
-   Returns:
-   - None. */
-
-void __thiscall
-TIconBar::AddCityCommodityIconControl
-          (TIconBar *this,int *pCityView,int *pRect,int *pLayoutData,int nXPad,int nYPad,int nIconId
-          ,int nAmount)
-
-{
-  InitializePictureEntryBaseAndRefresh(pCityView,pRect,pLayoutData,nXPad,nYPad,nIconId);
-  (*this->vftable->OrphanTiny_SetWordEcxOffset_96_005060f0)(nAmount);
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005060C0
@@ -130,10 +76,11 @@ TIconBar::AddCityCommodityIconControl
 void TIconBar::SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
 {
-  undefined2 unaff_retaddr;
-
+  undefined2 in_stack_00000006;
+  undefined3 in_stack_00000009;
+  
   *(short *)&this->field_0x94 = param_1 + -700;
-  TPicture::SetPictureResourceIdAndRefresh((TPicture *)this,param_1,param_2,unaff_retaddr);
+  func_0x00408454(_param_1,_param_2);
   return;
 }
 
@@ -157,7 +104,7 @@ void TIconBar::OrphanCallChain_C2_I15_00506110(char param_1)
 {
   TIconBarVtbl *pTVar1;
   undefined3 in_stack_00000005;
-
+  
   pTVar1 = this->vftable;
   (*pTVar1->OrphanTiny_SetWordEcxOffset_96_005060f0)(_param_1);
   if (param_1 != '\0') {
@@ -167,41 +114,41 @@ void TIconBar::OrphanCallChain_C2_I15_00506110(char param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506150
-// GHIDRA_NAME TIconBar::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TIconBar::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TIconBar::OrphanTiny_ReturnZero_0048a730()
+void TIconBar::ApplyRectSlot110()
 
 {
   short sVar1;
   short sStack_24;
   undefined1 local_20 [4];
   short sStack_1c;
-  RECT RStack_14;
-
+  int aiStack_14 [3];
+  undefined4 uStack_8;
+  
   (*this->vftable->DeserializeCityProductionQueueCommand)(local_20);
   sVar1 = (short)((int)(short)(sStack_1c - sStack_24) / (*(short *)&this->field_0x96 + 1));
   if (0x20 < sVar1) {
     sVar1 = 0x20;
   }
-  RStack_14.left = *(short *)&this->field_0x94 * 0x20;
-  RStack_14.right = RStack_14.left + 0x20;
+  aiStack_14[0] = *(short *)&this->field_0x94 * 0x20;
+  aiStack_14[2] = aiStack_14[0] + 0x20;
   *(short *)&this->field_0x98 = sVar1;
-  RStack_14.top = 0;
-  RStack_14.bottom = 0x18;
-  ResetQuickDrawStrokeState();
-  UpdatePaletteIndexWithDefaultFallback(0x10);
+  aiStack_14[1] = 0;
+  uStack_8 = 0x18;
+  func_0x004088aa();
+  func_0x004010be(0x10);
   sVar1 = 0;
   if (0 < *(short *)&this->field_0x96) {
     do {
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4),
-                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_14,
-                 (RECT *)&stack0xffffffcc,0x24,(astruct_19 *)0x0);
+      func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4,
+                      &g_pActiveQuickDrawSurfaceContext->field_0x4,aiStack_14,&stack0xffffffcc,0x24,
+                      0);
       sVar1 = sVar1 + 1;
     } while (sVar1 < *(short *)&this->field_0x96);
   }
-  UpdatePaletteIndexWithDefaultFallback(0x13);
+  func_0x004010be(0x13);
   return;
 }
 

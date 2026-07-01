@@ -5,98 +5,61 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8890
 // GHIDRA_NAME TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection
-// GHIDRA_PROTO undefined TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection()
+// GHIDRA_PROTO undefined PopulateTurnEventDialogArmyUnitLinesForTileSelection()
 
-void __thiscall
-TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param_1,short param_2)
+void __fastcall TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(int *param_1)
 
 {
-  TLineDataVtbl *pTVar1;
-  TLineData *this;
-  TLineDataVtbl *pTVar2;
+  int iVar1;
+  undefined4 *puVar2;
+  int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  CString local_1c;
-  CString local_18;
-  undefined4 local_14;
-  undefined4 local_10;
+  undefined4 local_18;
   undefined4 uStack_c;
-  undefined1 *puStack_8;
-  int local_4;
-
+  undefined4 *puStack_8;
+  undefined4 local_4;
+  
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063031a;
+  puStack_8 = (undefined4 *)&LAB_0063031a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TLineData::RenderUiBitmapOnRuntimeSurfaceContext(param_1,0xdb8);
-  CString::__0CString__QAE_XZ(&local_18);
-  local_4 = 0;
-  CString::__0CString__QAE_XZ(&local_1c);
-  local_4._0_1_ = 1;
-  *(short *)&param_1[8].field_0xc = param_2;
-  if ((param_2 < 0) || (0x17f < param_2)) {
-    pTVar2 = (TLineDataVtbl *)0x0;
+  func_0x00407c6b(0xdb8,0xeff,0x30);
+  CString::CString((CString *)&stack0xffffffdc);
+  CString::CString((CString *)&stack0xffffffd8);
+  *(short *)(param_1 + 0x23) = (short)puStack_8;
+  if (((short)puStack_8 < 0) || (0x17f < (short)puStack_8)) {
+    iVar3 = 0;
   }
   else {
-    pTVar2 = *(TLineDataVtbl **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_2 * 0xa8);
+    iVar3 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + (short)puStack_8 * 0xa8);
   }
-  for (; pTVar2 != (TLineDataVtbl *)0x0; pTVar2 = (TLineDataVtbl *)pTVar2->WriteTo) {
-    if (*(short *)&pTVar2->Serialize != 1) {
-      this = (TLineData *)__2_YAPAXI_Z(0x14);
-      local_4._0_1_ = 2;
-      if (this == (TLineData *)0x0) {
-        this = (TLineData *)0x0;
+  for (; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x14)) {
+    if (*(short *)(iVar3 + 8) != 1) {
+      puVar2 = (undefined4 *)operator_new(0x14);
+      puStack_8 = puVar2;
+      if (puVar2 == (undefined4 *)0x0) {
+        puVar2 = (undefined4 *)0x0;
       }
       else {
-        TLineData::ConstructTLineDataBaseState(this);
-        this->vftable = (TLineDataVtbl *)&TArmyUnitLineVtbl_0064ce80;
+        func_0x00408f0d();
+        *puVar2 = &TArmyUnitLine::_vftable_;
       }
-      local_4._0_1_ = 1;
-      local_14 = 0xec;
-      local_10 = 0x31;
-      TLineData::SetLineDataRowAndBounds(this,0,0,&local_14);
-      pTVar1 = param_1->vftable;
-      this[1].vftable = pTVar2;
-      (*pTVar1[8].ShallowClone)(this);
+      func_0x00409025(0,0,&stack0xffffffe0);
+      iVar1 = *param_1;
+      puVar2[4] = iVar3;
+      (**(code **)(iVar1 + 0x1a0))(puVar2);
     }
   }
-  WrapperFor_thunk_UpdatePagedListNavigationButtonState_At00564a10();
-  local_4 = (uint)local_4._1_3_ << 8;
-  CString::__1CString__QAE_XZ(&local_1c);
-  local_4 = 0xffffffff;
-  CString::__1CString__QAE_XZ(&local_18);
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C6F30
-// GHIDRA_NAME TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
-// GHIDRA_PROTO undefined __thiscall ApplyCityViewSelectionPayloadAndRefreshControls(undefined4 param_1, undefined1 param_2, undefined4 param_3, undefined2 param_4)
-
-void __thiscall
-TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
-          (TLineData *this,undefined4 param_1,undefined1 param_2,undefined4 param_3,
-          undefined2 param_4)
-
-{
-  TLineDataVtbl *pTVar1;
-  undefined uVar2;
-  undefined3 extraout_var;
-
-  pTVar1 = this->vftable;
-  *(undefined4 *)&this[9].field_0x4 = param_1;
-  this[9].field_0xc = param_2;
-  *(undefined4 *)&this[9].field_0x8 = param_3;
-  *(undefined2 *)&this[9].field_0xe = param_4;
-  uVar2 = (*pTVar1[1].OrphanRetStub_0056f460)();
-  *(undefined4 *)(CONCAT31(extraout_var,uVar2) + 0x3c) = 0x65;
-  (*pTVar1[9].ShallowFree)();
-  (*pTVar1[9].OrphanRetStub_0056f460)();
+  func_0x0040138e();
+  CString::~CString((CString *)&stack0xffffffd8);
+  CString::~CString((CString *)&stack0xffffffdc);
+  *unaff_FS_OFFSET = local_18;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564A60
 // GHIDRA_NAME TLineData::RenderUiBitmapOnRuntimeSurfaceContext
-// GHIDRA_PROTO undefined __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
 
 void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
 
@@ -105,7 +68,6 @@ void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
   int iVar2;
   undefined4 *puVar3;
   int *piVar4;
-  TAnimation *this_00;
   undefined1 uVar5;
   int *piVar6;
   undefined4 uVar7;
@@ -113,159 +75,99 @@ void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
   undefined4 uStack_14;
   undefined4 uStack_10;
   undefined4 uStack_c;
-
+  
   piVar6 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   iVar2 = *piVar6;
   *(int *)&this[8].field_0x4 = piVar6[0xd4];
   *(undefined1 *)(piVar6 + 0xd3) = 1;
   (**(code **)(iVar2 + 0x1f8))();
-  piVar6 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1);
+  piVar6 = (int *)func_0x004047a0(param_1);
   uStack_10 = 0;
   uStack_c = 0;
   GetActiveQuickDrawSurfaceContextAndFlags(&uStack_14,&uStack_18);
   SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this[8].field_0x4,uStack_18);
   uVar7 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[8].field_0x4);
   ReturnConstantTrueQuickDrawFlag(uVar7);
-  NoOpRuntimeCallback_00497c00(piVar6);
+  func_0x004062d5(piVar6);
   if (*piVar6 != 0) {
-    uVar5 = RenderUiBitmapOnRuntimeSurfaceContext_Impl(piVar6);
+    uVar5 = func_0x004078b0(piVar6);
     puVar3 = (undefined4 *)*piVar6;
     (**(code **)*puVar3)();
     pbVar1 = (byte *)(puVar3 + 1);
     *pbVar1 = *pbVar1 | 1;
-    ResetQuickDrawStrokeState();
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar6,&uStack_10);
-    RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400(piVar6,uVar5);
+    func_0x004088aa();
+    func_0x00404db8(piVar6,&uStack_10);
+    func_0x004098cc(piVar6,uVar5);
   }
   piVar4 = (int *)*piVar6;
   (**(code **)(*piVar4 + 4))();
   *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
-  this_00 = (TAnimation *)*piVar6;
-  if (this_00 != (TAnimation *)0x0) {
-    this_00->vftable = (TAnimationVtbl *)0x64c340;
-    TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-              (this_00);
-    __3_YAXPAX_Z(this_00);
+  puVar3 = (undefined4 *)*piVar6;
+  if (puVar3 != (undefined4 *)0x0) {
+    *puVar3 = 0x64c340;
+    func_0x00409124();
+    operator_delete(puVar3);
   }
-  __3_YAXPAX_Z(piVar6);
+  operator_delete(piVar6);
   SetActiveQuickDrawSurfaceContext(uStack_14,uStack_18);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00564DC0
-// GHIDRA_NAME TLineData::InitializePagedListLineDataControlsAndHeaderBitmap
-// GHIDRA_PROTO undefined __thiscall InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x0056F360
+// GHIDRA_NAME TLineData::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-void TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 param_1)
+undefined4 * TLineData::CreateObject(void)
 
 {
-  _vslot_fn *p_Var1;
-  TLineDataVtbl *pTVar2;
-  TLineData *pTVar3;
-  int iVar4;
-  undefined4 *puVar5;
-  undefined4 *unaff_FS_OFFSET;
-  int local_18;
-  undefined4 uStack_14;
-  undefined4 uStack_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0063591a;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  TLineData::RenderUiBitmapOnRuntimeSurfaceContext(this,0xdba);
-  iVar4 = 0x636c7330;
-  *(undefined4 *)&this[8].field_0x8 = param_1;
-  pTVar3 = this + 9;
-  local_18 = 4;
-  do {
-    pTVar2 = (TLineDataVtbl *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(iVar4);
-    if (pTVar2 == (TLineDataVtbl *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag
-                (s_D__Ambit_Cross_UOceanViews_cpp_00698650,0x114);
-    }
-    pTVar3->vftable = pTVar2;
-    pTVar3 = (TLineData *)&pTVar3->field_0x4;
-    iVar4 = iVar4 + 1;
-    local_18 = local_18 + -1;
-  } while (local_18 != 0);
-  puVar5 = *(undefined4 **)(*(int *)&this[8].field_0x8 + 0x10);
-  if (puVar5 != (undefined4 *)0x0) {
-    p_Var1 = this->vftable[8].ShallowClone;
-    do {
-      pTVar3 = (TLineData *)__2_YAPAXI_Z(0x1c);
-      uStack_4 = 0;
-      if (pTVar3 == (TLineData *)0x0) {
-        pTVar3 = (TLineData *)0x0;
-      }
-      else {
-        TLineData::ConstructTLineDataBaseState(pTVar3);
-        pTVar3->vftable = (TLineDataVtbl *)&TShipLineVtbl_0065cde8;
-      }
-      uStack_4 = 0xffffffff;
-      uStack_14 = 0xec;
-      uStack_10 = 0x31;
-      TLineData::SetLineDataRowAndBounds(pTVar3,0,0,&uStack_14);
-      *(undefined4 **)&pTVar3[1].field_0x4 = puVar5;
-      pTVar2 = (TLineDataVtbl *)*puVar5;
-      *(undefined4 *)&pTVar3[1].field_0x8 = param_1;
-      pTVar3[1].vftable = pTVar2;
-      (*p_Var1)(pTVar3);
-      puVar5 = (undefined4 *)puVar5[1];
-    } while (puVar5 != (undefined4 *)0x0);
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x10);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
   }
-  pTVar2 = this->vftable;
-  *(undefined2 *)&this[6].field_0x4 = 2;
-  (*pTVar2[8].OrphanRetStub_0056f480)();
-  (*pTVar2[9].GetRuntimeClass)(1);
-  (**(code **)((this[2].vftable)->GetRuntimeClass + 0xc))();
-  UpdatePagedListNavigationButtonState((int)*(short *)((int)&this[6].vftable + 2));
-  *unaff_FS_OFFSET = uStack_10;
-  return;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F390
-// GHIDRA_NAME TLineData::GetTLineDataClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
+// GHIDRA_NAME TLineData::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TLineData::GetTLineDataClassNamePointer()
+CRuntimeClass * TLineData::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTLineData;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F3B0
 // GHIDRA_NAME TLineData::ConstructTLineDataBaseState
-// GHIDRA_PROTO undefined __thiscall TLineData::ConstructTLineDataBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTLineDataBaseState(void)
 
 void TLineData::ConstructTLineDataBaseState()
 
 {
-  this->vftable = &TLineDataVtbl_0065e230;
+  this->vftable = &_vftable_;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F3D0
-// GHIDRA_NAME TLineData::DestructTLineDataAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTLineDataAndMaybeFree(byte param_1)
+// GHIDRA_NAME TLineData::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLineData * TLineData::DestructTLineDataAndMaybeFree(byte param_1)
+TLineData * TLineData::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTLineDataAndMaybeFree_Impl();
+  func_0x00407ba8();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F420
 // GHIDRA_NAME TLineData::SetLineDataRowAndBounds
-// GHIDRA_PROTO undefined __thiscall TLineData::SetLineDataRowAndBounds(undefined2 param_1, undefined2 param_2, undefined4 * param_3)
+// GHIDRA_PROTO undefined __thiscall SetLineDataRowAndBounds(undefined2 param_1, undefined2 param_2, undefined4 * param_3)
 
 void __thiscall
 TLineData::SetLineDataRowAndBounds
@@ -310,20 +212,20 @@ TLineData * TLineData::ConstructPictureScreenVariantEntry()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636518;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
-  this->vftable = (TLineDataVtbl *)&TUpDownPictureButtonVtbl_0065f440;
+  func_0x00401122();
+  this->vftable = (TLineDataVtbl *)&TUpDownPictureButton::_vftable_;
   *(undefined2 *)((int)&this[9].vftable + 2) = 7000;
   local_4 = 0;
-  CString::__0CString__QAE_XZ((CString *)&this[9].field_0x4);
+  CString::CString((CString *)&this[9].field_0x4);
   *(undefined2 *)&this[9].field_0x8 = 0;
   *(undefined2 *)&this[9].field_0xa = 0;
   *(undefined2 *)&this[9].field_0xc = 0;
-  this->vftable = (TLineDataVtbl *)&TTextPictureButtonVtbl_006603a8;
+  this->vftable = (TLineDataVtbl *)&TTextPictureButton::_vftable_;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -342,7 +244,7 @@ TLineData * TLineData::ConstructUiGoldLabelResourceEntry()
 
 {
   TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
-  this->vftable = (TLineDataVtbl *)&TRadioTextClusterVtbl_00662418;
+  this->vftable = (TLineDataVtbl *)&TRadioTextCluster::_vftable_;
   *(undefined2 *)&this[8].field_0xc = 0x4b;
   *(undefined2 *)&this[8].field_0xe = 0x49;
   *(undefined2 *)&this[9].vftable = 0xffff;
@@ -351,321 +253,47 @@ TLineData * TLineData::ConstructUiGoldLabelResourceEntry()
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005BB2E0
-// GHIDRA_NAME TLineData::BuildSelectedNationOrderCapabilityRows
-// GHIDRA_PROTO undefined __thiscall BuildSelectedNationOrderCapabilityRows(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005DD900
+// GHIDRA_NAME TLineData::HandleTurnEventDialogFactorySlotEC
+// GHIDRA_PROTO undefined __thiscall HandleTurnEventDialogFactorySlotEC(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT TurnEventState vtable slot +0xEC handler. Opens dialog id 0x0DAC, updates PAGE/widget values, commits, then updates active-item widget selection.
+// GHIDRA_COMMENT_END
 
-void TLineData::BuildSelectedNationOrderCapabilityRows()
+/* TurnEventState vtable slot +0xEC handler. Opens dialog id 0x0DAC, updates PAGE/widget values,
+   commits, then updates active-item widget selection. */
+
+void TLineData::HandleTurnEventDialogFactorySlotEC()
 
 {
-  short sVar1;
-  int iVar2;
-  undefined uVar3;
+  int iVar1;
+  undefined uVar2;
   undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  TLineData *pTVar4;
-  TTextLine *pTVar5;
-  undefined3 extraout_var_01;
-  undefined4 uVar6;
-  undefined3 extraout_var_02;
-  CString *src_ref;
-  undefined4 uVar7;
-  undefined3 extraout_var_03;
-  TLineData *this_00;
-  undefined2 uVar8;
-  int iVar9;
-  int iVar10;
-  short sVar11;
-  int *unaff_FS_OFFSET;
-  undefined1 *puVar12;
-  undefined1 auStack_6c [2];
-  undefined1 auStack_6a [2];
-  int local_68;
-  CString local_64;
-  CString CStack_60;
-  TCountry **ppTStack_5c;
-  TLineData *pTStack_58;
-  undefined4 uStack_54;
-  TLineData *pTStack_50;
-  CString CStack_48;
-  int iStack_44;
-  CString CStack_40;
-  undefined4 uStack_3c;
-  TTextLine *pTStack_38;
-  undefined1 auStack_34 [4];
-  TTextLine *pTStack_30;
-  undefined4 uStack_2c;
-  undefined4 uStack_28;
-  undefined4 uStack_24;
-  undefined4 uStack_20;
-  int iStack_1c;
-  undefined1 local_12;
-  undefined1 local_11;
-  undefined1 local_10;
-  undefined1 local_f;
-  int iStack_c;
-  undefined1 *puStack_8;
+  int iVar4;
   undefined4 uStack_4;
-
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_006391d8;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  local_12 = 0;
-  local_11 = 0;
-  *(undefined1 *)&this[0xb].vftable = 1;
-  local_10 = 0;
-  local_f = 0;
-  iVar9 = 0;
-  local_64.m_pchData = (char *)0x0;
-  local_68 = 0;
-  if ((char)g_apNationStates[*(short *)&this[9].vftable]->field_0x8fc < '\x01') {
-    uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable->
-              AdvanceNationPendingActionStateMachine_60)();
-    if (CONCAT31(extraout_var,uVar3) == 0) goto LAB_005bb355;
+  int *piVar3;
+  
+  uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0xdac);
+  piVar3 = (int *)CONCAT31(extraout_var,uVar2);
+  if (piVar3 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x1e2);
   }
-  *(undefined1 *)&this[0xb].vftable = 0;
-LAB_005bb355:
-  do {
-    uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable->
-              HandleCityDialogHintClusterUpdate_6d)(iVar9);
-    sVar11 = (short)CONCAT31(extraout_var_00,uVar3);
-    if (sVar11 != 0) {
-      *(undefined1 *)&this[0xb].vftable = 0;
-      puVar12 = auStack_6c;
-      (*g_apNationStates[*(short *)&this[9].vftable]->vftable->ApplyJoinEmpireModeForTargetNation_6f
-      )(iVar9,1,auStack_6a,auStack_6c,puVar12,auStack_34);
-      uVar8 = (undefined2)iVar9;
-      if ((short)((uint)puVar12 >> 0x10) == 1) {
-        *(undefined1 *)&this[0xb].vftable = 0;
-        pTVar4 = (TLineData *)__2_YAPAXI_Z(0x14);
-        iStack_1c = 0;
-        pTStack_50 = pTVar4;
-        if (pTVar4 == (TLineData *)0x0) {
-          pTVar4 = (TLineData *)0x0;
-        }
-        else {
-          TLineData::ConstructTLineDataBaseState(pTVar4);
-          pTVar4->vftable = (TLineDataVtbl *)&TCommodityLineVtbl_0066e278;
-        }
-        iStack_1c = 0xffffffff;
-        CStack_48.m_pchData = (char *)0xc8;
-        iStack_44 = 0x1e;
-        TLineData::SetLineDataRowAndBounds(pTVar4,0,0x1e,&CStack_48);
-        *(undefined2 *)&pTVar4[1].vftable = uVar8;
-        (**(code **)(**(int **)&this[9].field_0x8 + 0x1a4))(pTVar4);
-        CStack_48.m_pchData = (char *)(int)sVar11;
-        sVar11 = 1;
-        do {
-          pTVar5 = (TTextLine *)__2_YAPAXI_Z(0x18);
-          uStack_4 = 1;
-          pTStack_38 = pTVar5;
-          if (pTVar5 == (TTextLine *)0x0) {
-            pTVar5 = (TTextLine *)0x0;
-          }
-          else {
-            TLineData::ConstructTLineDataBaseState((TLineData *)pTVar5);
-            pTVar5->vftable = (TTextLineVtbl *)&TDealLineVtbl_0066e238;
-          }
-          iStack_44 = CONCAT22(iStack_44._2_2_,*(undefined2 *)&this[9].vftable);
-          uStack_4 = 0xffffffff;
-          CStack_40.m_pchData = (char *)0xc8;
-          uStack_3c = 0x1e;
-          TLineData::SetLineDataRowAndBounds((TLineData *)pTVar5,(short)local_64.m_pchData,0,&CStack_40);
-          *(undefined2 *)&pTVar5->field_0x10 = uVar8;
-          *(undefined2 *)&pTVar5->field_0x12 = (undefined2)iStack_44;
-          *(short *)&pTVar5->field_0x14 = sVar11;
-          (**(code **)(**(int **)&this[9].field_0x8 + 0x1a0))(pTVar5);
-          sVar11 = sVar11 + 1;
-          CStack_48.m_pchData = CStack_48.m_pchData + -1;
-        } while (CStack_48.m_pchData != (char *)0x0);
-        CStack_48.m_pchData = (char *)0x0;
-      }
-      else {
-        *(undefined1 *)&this[0xb].vftable = 0;
-        pTVar4 = (TLineData *)__2_YAPAXI_Z(0x14);
-        iStack_1c = 2;
-        pTStack_50 = pTVar4;
-        if (pTVar4 == (TLineData *)0x0) {
-          pTVar4 = (TLineData *)0x0;
-        }
-        else {
-          TLineData::ConstructTLineDataBaseState(pTVar4);
-          pTVar4->vftable = (TLineDataVtbl *)&TCommodityLineVtbl_0066e278;
-        }
-        iStack_1c = 0xffffffff;
-        local_68 = 200;
-        local_64.m_pchData = (char *)0x1e;
-        TLineData::SetLineDataRowAndBounds(pTVar4,0,0x1e,&local_68);
-        *(undefined2 *)&pTVar4[1].vftable = uVar8;
-        (**(code **)(**(int **)&this[9].field_0xc + 0x1a4))(pTVar4);
-        CStack_48.m_pchData = (char *)(int)sVar11;
-        sVar11 = 1;
-        do {
-          pTVar5 = (TTextLine *)__2_YAPAXI_Z(0x18);
-          uStack_4 = 3;
-          pTStack_38 = pTVar5;
-          if (pTVar5 == (TTextLine *)0x0) {
-            pTVar5 = (TTextLine *)0x0;
-          }
-          else {
-            TLineData::ConstructTLineDataBaseState((TLineData *)pTVar5);
-            pTVar5->vftable = (TTextLineVtbl *)&TDealLineVtbl_0066e238;
-          }
-          iStack_44 = CONCAT22(iStack_44._2_2_,*(undefined2 *)&this[9].vftable);
-          uStack_4 = 0xffffffff;
-          pTStack_58 = (TLineData *)0xc8;
-          uStack_54 = 0x1e;
-          TLineData::SetLineDataRowAndBounds((TLineData *)pTVar5,(short)local_68,0,&pTStack_58);
-          *(undefined2 *)&pTVar5->field_0x10 = uVar8;
-          *(undefined2 *)&pTVar5->field_0x12 = (undefined2)iStack_44;
-          *(short *)&pTVar5->field_0x14 = sVar11;
-          (**(code **)(**(int **)&this[9].field_0xc + 0x1a0))(pTVar5);
-          sVar11 = sVar11 + 1;
-          CStack_48.m_pchData = CStack_48.m_pchData + -1;
-        } while (CStack_48.m_pchData != (char *)0x0);
-      }
-    }
-    iVar9 = iVar9 + 1;
-  } while ((short)iVar9 < 0x11);
-  uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable->
-            PromoteNationPendingActionSlot5IfCapabilityActive_5f)();
-  if (CONCAT31(extraout_var_01,uVar3) != 0) {
-    CString::__0CString__QAE_XZ(&CStack_48);
-    uStack_4 = 4;
-    *(undefined1 *)&this[0xb].vftable = 0;
-    pTStack_38 = (TTextLine *)__2_YAPAXI_Z(0x20);
-    uStack_4._0_1_ = 5;
-    if (pTStack_38 == (TTextLine *)0x0) {
-      uVar6 = 0;
-    }
-    else {
-      uVar6 = TTextLine::ConstructTTextLineBaseState(pTStack_38);
-    }
-    uStack_4 = CONCAT31(uStack_4._1_3_,4);
-    pTStack_30 = (TTextLine *)0xc8;
-    uStack_2c = 0x1e;
-    WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0x3c,&pTStack_30,0xffffffff,0);
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2741,7,&CStack_48);
-    WrapperFor_StringShared_AssignFromPtr_At00570420(&uStack_54);
-    BuildUiTextStyleDescriptor(&uStack_24,0,0xe,0x2b67);
-    CopyTwoDwordsAndWordToObjectOffset14(&uStack_24);
-    SetObjectField1EWord(1);
-    (**(code **)(**(int **)&this[9].field_0xc + 0x1a0))(uVar6);
-    iStack_44 = 0;
-    pTStack_50 = (TLineData *)0x0;
-    do {
-      iVar9 = iStack_44;
-      uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable->
-                SumAidAllocationMatrixColumnForTarget)(iStack_44);
-      if (CONCAT31(extraout_var_02,uVar3) != 0) {
-        local_68 = local_68 + 1;
-        *(undefined1 *)&this[0xb].vftable = 0;
-        pTVar4 = (TLineData *)__2_YAPAXI_Z(0x14);
-        uStack_4._0_1_ = 6;
-        if (pTVar4 == (TLineData *)0x0) {
-          this_00 = (TLineData *)0x0;
-          pTStack_58 = pTVar4;
-        }
-        else {
-          pTStack_58 = pTVar4;
-          TLineData::ConstructTLineDataBaseState(pTVar4);
-          pTVar4->vftable = (TLineDataVtbl *)&TCommodityLineVtbl_0066e278;
-          this_00 = pTVar4;
-        }
-        uStack_4 = CONCAT31(uStack_4._1_3_,4);
-        uStack_28 = 200;
-        uStack_24 = 0x1e;
-        TLineData::SetLineDataRowAndBounds(this_00,0,0x1e,&uStack_28);
-        *(short *)&this_00[1].vftable = (short)iVar9;
-        (**(code **)(**(int **)&this[9].field_0xc + 0x1a4))(this_00);
-        iVar10 = 7;
-        pTStack_58 = (TLineData *)0xa1;
-        ppTStack_5c = g_apTerrainTypeDescriptorTable + 7;
-        do {
-          if ((*ppTStack_5c != (TCountry *)0x0) &&
-             (iVar2 = *(int *)((int)g_apNationStates[*(short *)&this[9].vftable] +
-                              ((int)&pTStack_50->vftable + (int)pTStack_58) * 4 + -4), iVar2 != 0))
-          {
-            CString::__0CString__QAE_XZ(&local_64);
-            uStack_4._0_1_ = 7;
-            CString::__0CString__QAE_XZ(&CStack_60);
-            uStack_4._0_1_ = 8;
-            pTStack_30 = (TTextLine *)__2_YAPAXI_Z(0x20);
-            uStack_4._0_1_ = 9;
-            if (pTStack_30 == (TTextLine *)0x0) {
-              uVar6 = 0;
-            }
-            else {
-              uVar6 = TTextLine::ConstructTTextLineBaseState(pTStack_30);
-            }
-            uStack_4._0_1_ = 8;
-            uStack_20 = 200;
-            iStack_1c = 0x1e;
-            WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390
-                      (local_68,0,&uStack_20,0xffffffff,0);
-            src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot(&CStack_40,iVar10);
-            uStack_4._0_1_ = 10;
-            CString::__4CString__QAEABV0_ABV0__Z(&local_64,src_ref);
-            uStack_4._0_1_ = 8;
-            CString::__1CString__QAE_XZ(&CStack_40);
-            (*g_pLocalizationTable->vftable[0xe].slot_0x04)(iVar2,&CStack_60);
-            uVar7 = __H_YG_AVCString__PBDABV0__Z(&CStack_40,&DAT_00699320,&local_68);
-            iStack_c._0_1_ = 0xb;
-            __YCString__QAEABV0_ABV0__Z(uVar7);
-            iStack_c = CONCAT31(iStack_c._1_3_,8);
-            CString::__1CString__QAE_XZ(&CStack_40);
-            WrapperFor_StringShared_AssignFromPtr_At00570420(auStack_6c);
-            (**(code **)(**(int **)&this[9].field_0xc + 0x1a0))(uVar6);
-            uStack_4._0_1_ = 7;
-            CString::__1CString__QAE_XZ(&CStack_60);
-            uStack_4 = CONCAT31(uStack_4._1_3_,4);
-            CString::__1CString__QAE_XZ(&local_64);
-            iVar9 = iStack_44;
-          }
-          iVar10 = iVar10 + 1;
-          ppTStack_5c = ppTStack_5c + 1;
-          pTStack_58 = (TLineData *)&pTStack_58[1].field_0x7;
-        } while ((short)iVar10 < 0x17);
-      }
-      iStack_44 = iVar9 + 1;
-      pTStack_50 = (TLineData *)((int)&pTStack_50->vftable + 1);
-    } while ((short)iStack_44 < 0x17);
-    uStack_4 = 0xffffffff;
-    CString::__1CString__QAE_XZ(&CStack_48);
+  iVar1 = *piVar3;
+  iVar4 = (**(code **)(iVar1 + 0x94))(0x70616765);
+  if (iVar4 == 0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x1e3);
   }
-  pTVar5 = (TTextLine *)__2_YAPAXI_Z(0x14);
-  uStack_4 = 0xe;
-  pTStack_30 = pTVar5;
-  if (pTVar5 == (TTextLine *)0x0) {
-    pTVar5 = (TTextLine *)0x0;
-  }
-  else {
-    TLineData::ConstructTLineDataBaseState((TLineData *)pTVar5);
-    pTVar5->vftable = (TTextLineVtbl *)&TTradeTotalsLineVtbl_0066e1f8;
-  }
-  sVar11 = *(short *)&this[9].vftable;
-  uStack_4 = 0xffffffff;
-  uStack_20 = 200;
-  iStack_1c = (('\0' < (char)g_apNationStates[sVar11]->field_0x8fc) + 4) * 0x1e;
-  TLineData::SetLineDataRowAndBounds((TLineData *)pTVar5,0,0,&uStack_20);
-  *(short *)&pTVar5->field_0x10 = sVar11;
-  (**(code **)(**(int **)&this[9].field_0xc + 0x1a0))(pTVar5);
-  (**(code **)(**(int **)&this[9].field_0x8 + 0x1ac))();
-  (**(code **)(**(int **)&this[9].field_0xc + 0x1ac))();
-  sVar11 = *(short *)(*(int *)&this[9].field_0x8 + 0x60);
-  sVar1 = *(short *)(*(int *)&this[9].field_0xc + 0x60);
-  if (sVar1 < sVar11) {
-    *(short *)((int)&this[9].vftable + 2) = sVar11 + -1;
-  }
-  else {
-    *(short *)((int)&this[9].vftable + 2) = sVar1 + -1;
-  }
-  uVar3 = (*this->vftable[3].~TLineData)(0x74616273);
-  iVar9 = *(int *)CONCAT31(extraout_var_03,uVar3);
-  (**(code **)(iVar9 + 0xc))();
-  (**(code **)(iVar9 + 0x1c4))(0x2266,g_pCityOrderCapabilityState->field_0x193);
-  *unaff_FS_OFFSET = iStack_1c;
+  func_0x00402216(uStack_4);
+  (*this->vftable[1].WriteTo)(piVar3,&stack0xffffffec);
+  (**(code **)(iVar1 + 0xf0))(&stack0xffffffe4,0);
+  (**(code **)(iVar1 + 0x1a0))(1);
+  (**(code **)(iVar1 + 0x1ac))();
+  (**(code **)(iVar1 + 0xa0))();
+  (**(code **)(iVar1 + 0x1c))();
+  (**(code **)(*(int *)(&this[0xf].vftable[3].ShallowClone)
+                       [*(short *)((int)&this[0xf].vftable[3].~TLineData + 2)] + 0x1d0))(uStack_4);
   return;
 }
 

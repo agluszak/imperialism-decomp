@@ -4,43 +4,43 @@
 // Bucket: TTownNameDialog.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BA70
-// GHIDRA_NAME TTownNameDialog::CreateTTownNameDialogInstance
-// GHIDRA_PROTO undefined CreateTTownNameDialogInstance()
+// GHIDRA_NAME TTownNameDialog::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TNoHilitePicture * TTownNameDialog::CreateTTownNameDialogInstance(void)
+undefined4 * TTownNameDialog::CreateObject(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633eea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
+  puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
-    this->vftable = (TNoHilitePictureVtbl *)&TTownNameDialogVtbl_00658fa0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403328();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BAF0
-// GHIDRA_NAME TTownNameDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TTownNameDialog::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTownNameDialog::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TTownNameDialog::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTTownNameDialog;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BB10
@@ -50,8 +50,8 @@ CRuntimeClass * TTownNameDialog::GetTEventHandlerClassNamePointer()
 TTownNameDialog * TTownNameDialog::ConstructTTownNameDialogBaseState()
 
 {
-  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->vftable = &TTownNameDialogVtbl_00658fa0;
+  func_0x00403328();
+  this->vftable = &_vftable_;
   return this;
 }
 
@@ -62,18 +62,18 @@ TTownNameDialog * TTownNameDialog::ConstructTTownNameDialogBaseState()
 TTownNameDialog * TTownNameDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  func_0x00401456();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BB90
-// GHIDRA_NAME TTownNameDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TTownNameDialog::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTownNameDialog::OrphanLeaf_NoCall_Ins07_004d8920()
+void TTownNameDialog::NoOpUiLifecycleHook()
 
 {
   int iVar1;
@@ -83,64 +83,68 @@ void TTownNameDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   int iVar4;
   uint uVar5;
   int *unaff_FS_OFFSET;
-  CString CStack_30;
+  CString CStack_34;
   undefined1 *puVar6;
   CString local_10;
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633f08;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   local_10.m_pchData = (char *)this;
-  CString::__0CString__QAE_XZ(&local_10);
+  CString::CString(&local_10);
   local_4 = 0;
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  func_0x00406ba9();
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
-    CStack_30.m_pchData = (char *)0x51bbef;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    CStack_34.m_pchData = (char *)0x51bbef;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
-  uVar3 = _rand();
+  uVar3 = GenerateThreadLocalRandom15();
   uVar5 = (int)uVar3 >> 0x1f;
   iVar4 = (((uVar3 ^ uVar5) - uVar5 & 7 ^ uVar5) - uVar5) + 1;
   (**(code **)(iVar1 + 0x1cc))();
-  CStack_30.m_pchData = (char *)0x51bc2c;
-  UpdatePaletteIndexWithDefaultFallback(0x50);
+  CStack_34.m_pchData = (char *)0x51bc2c;
+  func_0x004010be();
   (**(code **)(iVar1 + 0x7c))();
-  puVar6 = &stack0xffffffe0;
-  CStack_30.m_pchData = (char *)0x51bc41;
+  puVar6 = &stack0xffffffdc;
+  CStack_34.m_pchData = (char *)0x51bc41;
   (**(code **)(iVar1 + 0x1dc))();
-  CStack_30.m_pchData = (char *)0x1;
+  CStack_34.m_pchData = (char *)0x1;
   (**(code **)(iVar1 + 0x1d8))(0,*(undefined4 *)(iVar4 + -8));
-  CString::__1CString__QAE_XZ(&CStack_30);
+  CString::~CString(&CStack_34);
   *unaff_FS_OFFSET = (int)puVar6;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BCC0
-// GHIDRA_NAME TTownNameDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TTownNameDialog::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTownNameDialog::OrphanTiny_ReturnZero_0048a730()
+void TTownNameDialog::ApplyRectSlot110()
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-  undefined1 auStack_14 [20];
-
-  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
+  undefined4 in_stack_00000004;
+  undefined4 uStack_28;
+  undefined4 auStack_18 [6];
+  
+  uStack_28 = in_stack_00000004;
+  func_0x00404fe8();
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6e616d65);
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
-    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 300))(&stack0xffffffdc);
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 300))(&uStack_28);
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0xf);
-    FillRectWithQuickDrawBrushAndContextOffset(auStack_14);
+    auStack_18[0] = uStack_28;
+    FillRectWithQuickDrawBrushAndContextOffset(auStack_18);
   }
-  UpdatePaletteIndexWithDefaultFallback(0x50);
+  func_0x004010be(0x50);
   return;
 }
 

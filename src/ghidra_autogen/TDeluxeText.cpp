@@ -3,49 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TDeluxeText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00430950
-// GHIDRA_NAME TDeluxeText::ConstructUiColorTextResourceEntry
-// GHIDRA_PROTO undefined __thiscall ConstructUiColorTextResourceEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructs a color-text UI resource entry.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Calls ConstructUiTextResourceEntryBase.
-// GHIDRA_COMMENT 2. Clears per-channel style/color bytes.
-// GHIDRA_COMMENT 3. Installs the color-text vtable used by interactive text controls.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - this pointer.
-// GHIDRA_COMMENT_END
-
-/* Constructs a color-text UI resource entry.
-
-   Algorithm:
-   1. Calls ConstructUiTextResourceEntryBase.
-   2. Clears per-channel style/color bytes.
-   3. Installs the color-text vtable used by interactive text controls.
-
-   Returns:
-   - this pointer. */
-
-TDeluxeText * TDeluxeText::ConstructUiColorTextResourceEntry()
-
-{
-  TStaticText::TStaticText((TStaticText *)this);
-  this->field_0x98 = 0;
-  this->field_0x99 = 0;
-  this->field_0x9a = 0;
-  this->field_0x9b = 0;
-  this->field_0x9c = 0;
-  this->field_0x9d = 0;
-  this->field_0x9e = 0;
-  this->field_0x9f = 0;
-  this->field_0xa0 = 0;
-  this->vftable = &TDeluxeTextVtbl_006406d8;
-  *(undefined4 *)&this->field_0x98 = 0;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004309E0
 // GHIDRA_NAME TDeluxeText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -53,9 +10,9 @@ TDeluxeText * TDeluxeText::ConstructUiColorTextResourceEntry()
 TDeluxeText * TDeluxeText::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TStaticText::~TStaticText((TStaticText *)this);
+  func_0x004091c9();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -84,490 +41,470 @@ TDeluxeText * TDeluxeText::_scalar_deleting_destructor_(byte param_1)
 void TDeluxeText::BuildCityViewProductionControls(short nBuildingSlotId)
 
 {
-  undefined1 *puVar1;
-  undefined4 uVar2;
-  TDeluxeTextVtbl *pTVar3;
-  byte bVar4;
-  undefined uVar5;
-  char cVar6;
-  char cVar7;
-  short sVar8;
-  short sVar9;
-  short sVar10;
-  int iVar11;
+  byte bVar1;
+  undefined uVar2;
+  char cVar3;
+  char cVar4;
+  short sVar5;
+  short sVar6;
+  int iVar7;
   undefined3 extraout_var;
+  short *psVar8;
+  int *piVar9;
+  int *piVar10;
+  int iVar11;
   short *psVar12;
-  undefined3 extraout_var_00;
-  int *piVar13;
-  TDeluxeText *pTVar14;
-  undefined4 *puVar15;
-  TIconBar *pTVar16;
-  short *psVar17;
-  TMapMgr *pTVar18;
-  int unaff_EBX;
-  int iVar19;
-  int iVar20;
-  short *psVar21;
+  TMapMgr *pTVar13;
+  undefined4 unaff_EBX;
+  undefined4 unaff_EBP;
+  int iVar14;
+  int iVar15;
+  int unaff_EDI;
+  undefined4 *puVar16;
+  undefined2 *puVar17;
   undefined4 *unaff_FS_OFFSET;
-  int unaff_retaddr;
+  short unaff_retaddr;
+  int *piStack_104;
+  char cVar18;
   undefined4 uStack_e0;
-  int local_dc;
-  undefined1 auStack_d8 [10];
+  undefined1 local_dc [14];
   undefined2 local_ce;
-  LONG local_cc;
-  int iStack_c8;
-  tagRECT tStack_c0;
-  undefined1 auStack_b0 [12];
-  undefined1 local_a4 [4];
-  uint uStack_a0;
+  undefined4 local_cc [3];
+  undefined1 auStack_c0 [4];
+  TDeluxeTextVtbl *local_bc;
+  TDeluxeText *pTStack_b8;
+  TDeluxeText *local_b4;
+  int aiStack_b0 [2];
+  int iStack_a8;
+  undefined1 local_9e;
+  undefined1 local_9d;
   undefined1 local_9c;
   undefined1 local_9b;
-  int local_98;
-  int local_94 [6];
-  short asStack_7c [6];
+  undefined4 local_98;
+  undefined4 local_94;
+  undefined4 local_90;
+  undefined4 local_8c;
+  short asStack_7c [4];
+  short asStack_74 [2];
   short asStack_70 [7];
-  short asStack_62 [17];
-  short asStack_40 [8];
-  undefined4 uStack_30;
+  short asStack_62 [11];
+  undefined4 uStack_4c;
+  short asStack_44 [2];
+  undefined4 auStack_40 [5];
+  undefined4 uStack_2c;
   short sStack_1a;
-  undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
+  cVar18 = (char)((uint)unaff_EBP >> 0x18);
+  cVar4 = (char)((uint)unaff_EBX >> 0x18);
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00631b2b;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_94[1] = 0x26;
-  local_94[0] = 0x26;
-  local_94[2] = 0x20;
+  local_90 = 0x26;
+  local_94 = 0x26;
+  local_8c = 0x20;
   local_98 = 0xec;
-  local_dc = nBuildingSlotId * 0x24;
-  puVar1 = &this->field_0x60;
-  bVar4 = (byte)*(undefined2 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + local_dc);
-  iVar19 = 0x28;
-  local_cc = 0x28;
+  local_dc._0_4_ = nBuildingSlotId * 0x24;
+  bVar1 = (byte)*(undefined2 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + local_dc._0_4_);
+  local_cc[0] = 0x28;
   stack0xffffff30 =
-       CONCAT22(CONCAT11(local_ce._1_1_,(bVar4 >> 4 & 1) == 0),
-                CONCAT11((bVar4 >> 2 & 1) == 0,auStack_d8[8]));
-  uStack_e0 = (TIconBar *)CONCAT13(1,(undefined3)uStack_e0);
-  uStack_a0 = (uint)(ushort)uStack_a0;
+       CONCAT22(CONCAT11(local_ce._1_1_,(bVar1 >> 4 & 1) == 0),
+                CONCAT11((bVar1 >> 2 & 1) == 0,local_dc[0xc]));
+  uStack_e0 = CONCAT13(1,(undefined3)uStack_e0);
+  local_9e = 0;
+  local_9d = 0;
   local_9c = 0;
   local_9b = 0;
-  tStack_c0.bottom = (LONG)this;
-  if (*(int *)puVar1 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(puVar1);
+  local_b4 = this;
+  if (*(int *)&this->field_0x60 != 0) {
+    func_0x004010e6();
   }
   if (*(int *)&this->field_0x64 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x64);
+    func_0x004010e6();
   }
   if (*(int *)&this->field_0x68 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x68);
+    func_0x004010e6();
   }
-  iVar11 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c30);
-  *(int *)puVar1 = iVar11;
-  if (iVar11 == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xcef);
+  iVar7 = func_0x00401fe1();
+  *(int *)&this->field_0x60 = iVar7;
+  if (iVar7 == 0) {
+    piStack_104 = (int *)0x4d0921;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
-  iVar11 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c31);
-  *(int *)&this->field_0x64 = iVar11;
-  if (iVar11 == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xcf0);
+  iVar7 = func_0x00401fe1();
+  *(int *)&this->field_0x64 = iVar7;
+  if (iVar7 == 0) {
+    piStack_104 = (int *)0x4d0955;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
-  iVar11 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c32);
-  *(int *)&this->field_0x68 = iVar11;
-  if (iVar11 == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xcf1);
+  iVar7 = func_0x00401fe1();
+  *(int *)&this->field_0x68 = iVar7;
+  if (iVar7 == 0) {
+    piStack_104 = (int *)0x4d098a;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
   }
-  BuildUiTextStyleDescriptor(local_a4,0,10,0x2b6a);
-  tStack_c0.top = (LONG)this->vftable;
-  uVar5 = (*((TDeluxeTextVtbl *)tStack_c0.top)->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7469746c);
-  (**(code **)(*(int *)CONCAT31(extraout_var,uVar5) + 0xc))();
-  ConfigureUiControlStyleValueAndCaptionFromStringResource
-            ((int *)CONCAT31(extraout_var,uVar5),0,0xe,0x2b6a,1,0x1c20,6);
-  sVar8 = UiRuntimeContext::GetActiveNationId();
-  tStack_c0.top = (LONG)TDeluxeText::BuildCityInfluenceLevelMap((TDeluxeText *)g_apNationStates[sVar8]);
-  sVar8 = (short)unaff_retaddr;
-  ComputeHexNeighborTileIndices(sVar8,asStack_7c,g_pGlobalMapState->field_0x20);
-  if ((auStack_d8[6] != '\0') && (auStack_d8[5] != '\0')) {
-    psVar12 = asStack_7c;
-    iVar11 = 6;
+  piStack_104 = (int *)0x4d09af;
+  BuildUiTextStyleDescriptor();
+  local_bc = this->vftable;
+  iVar7 = 0x7469746c;
+  uVar2 = (*local_bc->OrphanLeaf_NoCall_Ins07_004d8920_25)();
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
+  piStack_104 = (int *)0x2b6a;
+  func_0x00403490((int *)CONCAT31(extraout_var,uVar2),0,0xe);
+  func_0x00403b16();
+  local_bc = (TDeluxeTextVtbl *)func_0x00401343();
+  piStack_104 = (int *)0x4d0a23;
+  func_0x00405baf();
+  if ((local_dc[10] != '\0') && (local_dc[9] != '\0')) {
+    psVar8 = asStack_7c;
+    iVar15 = 6;
     do {
-      if ((*psVar12 != -1) &&
-         ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + *psVar12 * 0x24) & 0x14) != 0))
-      {
+      if ((*psVar8 != -1) &&
+         ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + *psVar8 * 0x24) & 0x14) != 0)) {
         unaff_EBX = 0;
       }
-      psVar12 = psVar12 + 1;
-      iVar11 = iVar11 + -1;
-    } while (iVar11 != 0);
+      cVar4 = (char)((uint)unaff_EBX >> 0x18);
+      psVar8 = psVar8 + 1;
+      iVar15 = iVar15 + -1;
+    } while (iVar15 != 0);
   }
-  psVar12 = asStack_70;
-  for (iVar11 = 0xb; iVar11 != 0; iVar11 = iVar11 + -1) {
-    psVar12[0] = 0;
-    psVar12[1] = 0;
-    psVar12 = psVar12 + 2;
+  psVar8 = asStack_70;
+  for (iVar15 = 0xb; iVar15 != 0; iVar15 = iVar15 + -1) {
+    psVar8[0] = 0;
+    psVar8[1] = 0;
+    psVar8 = psVar8 + 2;
   }
-  *psVar12 = 0;
-  psVar12 = asStack_40;
-  for (iVar11 = 0xb; iVar11 != 0; iVar11 = iVar11 + -1) {
-    psVar12[0] = 0;
-    psVar12[1] = 0;
-    psVar12 = psVar12 + 2;
+  *psVar8 = 0;
+  puVar16 = auStack_40;
+  for (iVar15 = 0xb; iVar15 != 0; iVar15 = iVar15 + -1) {
+    *puVar16 = 0;
+    puVar16 = puVar16 + 1;
   }
-  psVar21 = psVar12 + 1;
-  *psVar12 = 0;
-  cVar7 = (char)((uint)unaff_EBX >> 0x18);
-  pTVar18 = g_pGlobalMapState;
-  if ((auStack_d8[6] != '\0') && (cVar7 != '\0')) {
-    auStack_d8._0_4_ = (short *)0x0;
-    iVar11 = iVar19;
+  puVar17 = (undefined2 *)((int)puVar16 + 2);
+  *(undefined2 *)puVar16 = 0;
+  pTVar13 = g_pGlobalMapState;
+  iVar15 = 0x28;
+  if ((local_dc[10] != '\0') && (cVar4 != '\0')) {
+    local_dc._4_4_ = 0;
     do {
-      iVar20 = unaff_retaddr;
-      if ((short)auStack_d8._0_4_ != 6) {
-        iVar20 = CONCAT22((short)((uint)iVar11 >> 0x10),asStack_7c[(short)auStack_d8._0_4_]);
+      sVar6 = unaff_retaddr;
+      if ((short)local_dc._4_4_ != 6) {
+        sVar6 = asStack_7c[(short)local_dc._4_4_];
       }
-      sVar10 = (short)iVar20;
-      if ((sVar10 != -1) && (*(char *)(tStack_c0.top + sVar10) == '\0')) {
-        iVar11 = sVar10 * 0x24;
-        iVar19 = *(int *)&pTVar18->field_0xc + iVar11;
-        if (*(char *)(iVar19 + 0x13) != '\0') {
-          auStack_d8[7] = *(undefined1 *)(iVar19 + 4);
-          sVar9 = UiRuntimeContext::GetActiveNationId();
-          pTVar18 = g_pGlobalMapState;
-          if (auStack_d8[7] == sVar9) {
-            psVar21 = (short *)0x0;
+      if ((sVar6 != -1) &&
+         (*(char *)((int)&local_bc->GetTEventHandlerClassNamePointer + (int)sVar6) == '\0')) {
+        iVar14 = sVar6 * 0x24;
+        iVar15 = *(int *)&pTVar13->field_0xc + iVar14;
+        if (*(char *)(iVar15 + 0x13) != '\0') {
+          local_dc[0xb] = *(undefined1 *)(iVar15 + 4);
+          sVar5 = func_0x00403b16();
+          pTVar13 = g_pGlobalMapState;
+          if (local_dc[0xb] == sVar5) {
+            puVar17 = (undefined2 *)0x0;
             do {
-              sVar9 = (short)*(char *)(*(int *)&pTVar18->field_0xc + (int)(short)psVar21 + 0x11 +
-                                      iVar11);
-              if (sVar9 != -1) {
-                cVar6 = (*pTVar18->vftable->OrphanLeaf_NoCall_Ins14_00513610)(iVar20,psVar21);
-                asStack_70[sVar9] = asStack_70[sVar9] + (short)cVar6;
-                pTVar18 = g_pGlobalMapState;
+              sVar5 = (short)*(char *)(*(int *)&pTVar13->field_0xc + (int)(short)puVar17 + 0x11 +
+                                      iVar14);
+              if (sVar5 != -1) {
+                cVar3 = (*pTVar13->vftable->OrphanLeaf_NoCall_Ins14_00513610)();
+                asStack_70[sVar5] = asStack_70[sVar5] + (short)cVar3;
+                pTVar13 = g_pGlobalMapState;
               }
-              psVar21 = (short *)((int)psVar21 + 1);
-            } while ((int)psVar21 < 2);
-            iVar19 = (int)*(short *)(*(int *)&pTVar18->field_0xc + 0x14 + iVar11);
-            if (*(short *)(*(int *)&pTVar18->field_0x10 + 4 + iVar19 * 0xa8) == sVar10) {
-              psVar12 = asStack_62;
-              psVar17 = (short *)(*(int *)&pTVar18->field_0x10 + iVar19 * 0xa8 + 0x82);
-              iVar19 = 10;
+              puVar17 = (undefined2 *)((int)puVar17 + 1);
+            } while ((int)puVar17 < 2);
+            iVar15 = (int)*(short *)(*(int *)&pTVar13->field_0xc + 0x14 + iVar14);
+            if (*(short *)(*(int *)&pTVar13->field_0x10 + 4 + iVar15 * 0xa8) == sVar6) {
+              psVar8 = asStack_62;
+              psVar12 = (short *)(*(int *)&pTVar13->field_0x10 + iVar15 * 0xa8 + 0x82);
+              iVar15 = 10;
               do {
-                sVar10 = *psVar17;
-                psVar21 = (short *)CONCAT22((short)((uint)psVar21 >> 0x10),sVar10);
-                psVar17 = psVar17 + 1;
-                *psVar12 = *psVar12 + sVar10;
+                sVar6 = *psVar12;
+                puVar17 = (undefined2 *)CONCAT22((short)((uint)puVar17 >> 0x10),sVar6);
                 psVar12 = psVar12 + 1;
-                iVar19 = iVar19 + -1;
-              } while (iVar19 != 0);
+                *psVar8 = *psVar8 + sVar6;
+                psVar8 = psVar8 + 1;
+                iVar15 = iVar15 + -1;
+              } while (iVar15 != 0);
             }
           }
         }
       }
-      auStack_d8._0_4_ = auStack_d8._0_4_ + 1;
-      iVar19 = stack0xffffff30;
-      iVar11 = iVar20;
-      this = (TDeluxeText *)tStack_c0.right;
-    } while ((short)auStack_d8._0_4_ < 7);
+      local_dc._4_4_ = local_dc._4_4_ + 1;
+      iVar15 = stack0xffffff30;
+      this = pTStack_b8;
+    } while ((short)local_dc._4_4_ < 7);
   }
-  if ((auStack_d8[5] != '\0') && (cVar7 != '\0')) {
-    psVar21 = (short *)0x0;
+  if ((local_dc[9] != '\0') && (cVar4 != '\0')) {
+    puVar17 = (undefined2 *)0x0;
     do {
-      sVar10 = sVar8;
-      if ((short)psVar21 != 6) {
-        sVar10 = asStack_7c[(short)psVar21];
+      sVar6 = unaff_retaddr;
+      if ((short)puVar17 != 6) {
+        sVar6 = asStack_7c[(short)puVar17];
       }
-      if ((sVar10 != -1) && (*(char *)(tStack_c0.top + sVar10) == '\0')) {
-        iVar11 = sVar10 * 0x24;
-        auStack_d8[7] = *(undefined1 *)(*(int *)&pTVar18->field_0xc + 4 + iVar11);
-        sVar10 = UiRuntimeContext::GetActiveNationId();
-        pTVar18 = g_pGlobalMapState;
-        if (((auStack_d8[7] == sVar10) &&
-            (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 2 + iVar11) != '\0')) ||
-           (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar11) == '\0')) {
+      if ((sVar6 != -1) &&
+         (*(char *)((int)&local_bc->GetTEventHandlerClassNamePointer + (int)sVar6) == '\0')) {
+        iVar14 = sVar6 * 0x24;
+        local_dc[0xb] = *(undefined1 *)(*(int *)&pTVar13->field_0xc + 4 + iVar14);
+        sVar6 = func_0x00403b16();
+        pTVar13 = g_pGlobalMapState;
+        if (((local_dc[0xb] == sVar6) &&
+            (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 2 + iVar14) != '\0')) ||
+           (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar14) == '\0')) {
           sStack_1a = sStack_1a + 1;
         }
       }
-      psVar21 = (short *)((int)psVar21 + 1);
-    } while ((short)psVar21 < 7);
+      puVar17 = (undefined2 *)((int)puVar17 + 1);
+    } while ((short)puVar17 < 7);
   }
-  pTVar16 = uStack_e0;
-  sVar9 = (short)*(char *)(*(int *)&pTVar18->field_0x10 + 3 +
-                          *(short *)((int)&uStack_e0->field14 + *(int *)&pTVar18->field_0xc) * 0xa8)
-  ;
-  sVar10 = UiRuntimeContext::GetActiveNationId();
-  cVar7 = TDeluxeText::GetNationFortLevelCap((TDeluxeText *)g_pCityOrderCapabilityState,(int)sVar10);
-  if ((sVar9 < (short)CONCAT31(extraout_var_00,cVar7)) &&
+  sVar5 = (short)*(char *)(*(int *)&pTVar13->field_0x10 + 3 +
+                          *(short *)(*(int *)&pTVar13->field_0xc + 0x14 + uStack_e0) * 0xa8);
+  sVar6 = func_0x00403b16();
+  iVar14 = (int)sVar6;
+  sVar6 = func_0x00403116();
+  if ((sVar5 < sVar6) &&
      (*(short *)(*(int *)&g_pGlobalMapState->field_0x10 + 4 +
-                *(short *)((int)&pTVar16->field14 + *(int *)&g_pGlobalMapState->field_0xc) * 0xa8)
-      == sVar8)) {
-    uStack_e0 = (TIconBar *)__2_YAPAXI_Z(0x94);
-    puStack_8 = (undefined1 *)0x0;
-    if (uStack_e0 == (TIconBar *)0x0) {
-      piVar13 = (int *)0x0;
+                *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + uStack_e0) * 0xa8) ==
+      (short)uStack_4)) {
+    iVar7 = operator_new();
+    uStack_c = 0;
+    if (iVar7 == 0) {
+      piVar9 = (int *)0x0;
     }
     else {
-      piVar13 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry
-                                 ((TUpDownPictureButton *)uStack_e0);
+      piVar9 = (int *)func_0x00403512();
     }
-    puStack_8 = (undefined1 *)0xffffffff;
-    uStack_e0 = (TIconBar *)0x11;
-    local_dc = 0x29;
-    InitializePictureEntryBaseAndRefresh(this,&uStack_e0,local_94,5,5,0x1c2a);
-    piVar13[7] = 0x666f7274;
-    (**(code **)(*piVar13 + 0xa8))(1,0);
-    piVar13[0x18] = 0x22;
-    pTVar14 = (TDeluxeText *)__2_YAPAXI_Z(0xa4);
-    uStack_10 = 1;
-    if (pTVar14 == (TDeluxeText *)0x0) {
-      pTVar14 = (TDeluxeText *)0x0;
+    piStack_104 = (int *)0x5;
+    uStack_c = 0xffffffff;
+    func_0x00403ff3(this,&stack0xffffff1c,&local_98);
+    piVar9[7] = 0x666f7274;
+    (**(code **)(*piVar9 + 0xa8))(1,0);
+    piVar9[0x18] = 0x22;
+    piVar9 = (int *)operator_new(0xa4);
+    uStack_2c = 1;
+    piStack_104 = piVar9;
+    if (piVar9 == (int *)0x0) {
+      piVar9 = (int *)0x0;
     }
     else {
-      TStaticText::TStaticText((TStaticText *)pTVar14);
-      pTVar14->field_0x98 = 0;
-      pTVar14->field_0x99 = 0;
-      pTVar14->field_0x9a = 0;
-      pTVar14->field_0x9b = 0;
-      pTVar14->field_0x9c = 0;
-      pTVar14->field_0x9d = 0;
-      pTVar14->field_0x9e = 0;
-      pTVar14->field_0x9f = 0;
-      uStack_10 = CONCAT31(uStack_10._1_3_,2);
-      pTVar14->vftable = &TDeluxeTextVtbl_006406d8;
-      puVar15 = (undefined4 *)SetColorRgbAndClearAlphaByte(0,0,0);
-      uVar2 = *puVar15;
-      pTVar14->field_0xa0 = 0;
-      *(undefined4 *)&pTVar14->field_0x98 = uVar2;
+      func_0x0040541b();
+      *(undefined1 *)(piVar9 + 0x26) = 0;
+      *(undefined1 *)((int)piVar9 + 0x99) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9a) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9b) = 0;
+      *(undefined1 *)(piVar9 + 0x27) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9d) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9e) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9f) = 0;
+      uStack_2c = CONCAT31(uStack_2c._1_3_,2);
+      *piVar9 = (int)&_vftable_;
+      piVar10 = (int *)func_0x00404863(0,0,0);
+      iVar7 = *piVar10;
+      *(undefined1 *)(piVar9 + 0x28) = 0;
+      piVar9[0x26] = iVar7;
     }
-    uStack_10 = 0xffffffff;
-    auStack_d8._0_4_ = (short *)0x0;
-    auStack_d8._4_4_ = 0;
-    stack0xffffff30 = 0;
-    local_cc = 0;
-    CopyRect(&tStack_c0,(RECT *)auStack_d8);
-    unaff_EBX = 0;
-    TDeluxeText::ConstructTDeluxeTextBaseState
-              (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
-    pTVar3 = pTVar14->vftable;
-    (*pTVar3->BuildCityViewProductionControls_Impl)
-              (0x1c20,CONCAT22((short)((uint)psVar21 >> 0x10),sVar9) + 3);
-    (*pTVar3->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(0);
-    iVar19 = 0x52;
+    uStack_2c = 0xffffffff;
+    iVar7 = 0;
+    unaff_EDI = 0;
+    cVar18 = '\0';
+    CopyRect((LPRECT)local_dc,(RECT *)&stack0xffffff0c);
+    piStack_104 = (int *)0x54;
+    func_0x00408e31(this,&piStack_104,auStack_c0,local_dc,local_cc,0xfffffffe);
+    iVar15 = *piVar9;
+    (**(code **)(iVar15 + 0x1e8))(0x1c20,CONCAT22((short)((uint)puVar17 >> 0x10),sVar5) + 3);
+    (**(code **)(iVar15 + 0x1f8))(0);
+    iVar15 = 0x52;
   }
-  if ((auStack_d8[6] != '\0') && ((char)((uint)unaff_EBX >> 0x18) != '\0')) {
-    uStack_e0 = (TIconBar *)__2_YAPAXI_Z(0x94);
-    puStack_8 = (undefined1 *)0x3;
-    if (uStack_e0 == (TIconBar *)0x0) {
-      piVar13 = (int *)0x0;
+  if ((local_dc[6] != '\0') && (cVar18 != '\0')) {
+    iVar7 = operator_new();
+    uStack_c = 3;
+    if (iVar7 == 0) {
+      piVar9 = (int *)0x0;
     }
     else {
-      piVar13 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry
-                                 ((TUpDownPictureButton *)uStack_e0);
+      piVar9 = (int *)func_0x00403512();
     }
-    unaff_EBX = (int)(short)iVar19;
-    local_dc = unaff_EBX + 1;
-    puStack_8 = (undefined1 *)0xffffffff;
-    uStack_e0 = (TIconBar *)0x11;
-    InitializePictureEntryBaseAndRefresh(this,&uStack_e0,local_94,5,5,0x1c2c);
-    piVar13[7] = 0x7261696c;
-    (**(code **)(*piVar13 + 0xa8))(1,0);
-    piVar13[0x18] = 0x22;
-    pTVar14 = (TDeluxeText *)__2_YAPAXI_Z(0xa4);
-    uStack_10 = 4;
-    if (pTVar14 == (TDeluxeText *)0x0) {
-      pTVar14 = (TDeluxeText *)0x0;
+    piStack_104 = (int *)0x5;
+    uStack_c = 0xffffffff;
+    func_0x00403ff3(this,&stack0xffffff1c,&local_98);
+    piVar9[7] = 0x7261696c;
+    (**(code **)(*piVar9 + 0xa8))(1,0);
+    piVar9[0x18] = 0x22;
+    piVar9 = (int *)operator_new(0xa4);
+    uStack_2c = 4;
+    piStack_104 = piVar9;
+    if (piVar9 == (int *)0x0) {
+      piVar9 = (int *)0x0;
     }
     else {
-      TStaticText::TStaticText((TStaticText *)pTVar14);
-      pTVar14->field_0x98 = 0;
-      pTVar14->field_0x99 = 0;
-      pTVar14->field_0x9a = 0;
-      pTVar14->field_0x9b = 0;
-      pTVar14->field_0x9c = 0;
-      pTVar14->field_0x9d = 0;
-      pTVar14->field_0x9e = 0;
-      pTVar14->field_0x9f = 0;
-      uStack_10 = CONCAT31(uStack_10._1_3_,5);
-      pTVar14->vftable = &TDeluxeTextVtbl_006406d8;
-      puVar15 = (undefined4 *)SetColorRgbAndClearAlphaByte(0,0,0);
-      uVar2 = *puVar15;
-      pTVar14->field_0xa0 = 0;
-      *(undefined4 *)&pTVar14->field_0x98 = uVar2;
+      func_0x0040541b();
+      *(undefined1 *)(piVar9 + 0x26) = 0;
+      *(undefined1 *)((int)piVar9 + 0x99) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9a) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9b) = 0;
+      *(undefined1 *)(piVar9 + 0x27) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9d) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9e) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9f) = 0;
+      uStack_2c = CONCAT31(uStack_2c._1_3_,5);
+      *piVar9 = (int)&_vftable_;
+      piVar10 = (int *)func_0x00404863(0,0,0);
+      iVar7 = *piVar10;
+      *(undefined1 *)(piVar9 + 0x28) = 0;
+      piVar9[0x26] = iVar7;
     }
-    uStack_10 = 0xffffffff;
-    auStack_d8._0_4_ = 0;
-    auStack_d8._4_4_ = 0;
-    stack0xffffff30 = 0;
-    local_cc = 0;
-    CopyRect(&tStack_c0,(RECT *)auStack_d8);
-    TDeluxeText::ConstructTDeluxeTextBaseState
-              (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
-    pTVar3 = pTVar14->vftable;
-    (*pTVar3->BuildCityViewProductionControls_Impl)(0x1c20,1);
-    (*pTVar3->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(0);
-    auStack_d8._0_4_ = asStack_70;
-    iVar19 = iVar19 + 0x2a;
-    iVar11 = 0;
+    uStack_2c = 0xffffffff;
+    iVar7 = 0;
+    unaff_EDI = 0;
+    cVar18 = '\0';
+    CopyRect((LPRECT)local_dc,(RECT *)&stack0xffffff0c);
+    piStack_104 = (int *)0x54;
+    func_0x00408e31(this,&piStack_104,auStack_c0,local_dc,local_cc,0xfffffffe);
+    iVar11 = *piVar9;
+    (**(code **)(iVar11 + 0x1e8))(0x1c20,1);
+    (**(code **)(iVar11 + 0x1f8))(0);
+    local_dc._0_4_ = asStack_74;
+    iVar15 = iVar15 + 0x2a;
+    sVar6 = 0;
     do {
-      sVar8 = *(short *)auStack_d8._0_4_;
-      if (sVar8 != 0) {
-        uStack_e0 = (TIconBar *)__2_YAPAXI_Z(0x9c);
-        puStack_8 = (undefined1 *)0x6;
-        if (uStack_e0 == (TIconBar *)0x0) {
-          pTVar16 = (TIconBar *)0x0;
+      if (*(short *)local_dc._0_4_ != 0) {
+        iVar11 = operator_new();
+        uStack_c = 6;
+        if (iVar11 != 0) {
+          func_0x0040827e();
         }
-        else {
-          pTVar16 = (TIconBar *)TIconBar::ConstructTIconBarBaseState(uStack_e0);
-        }
-        puStack_8 = (undefined1 *)0xffffffff;
-        register0x00000004 = this->field34 + -0x60;
-        local_cc = 0x18;
-        tStack_c0.bottom = (LONG)(short)iVar19;
+        uStack_c = 0xffffffff;
+        local_dc._8_4_ = this->field34 + -0x60;
+        stack0xffffff30 = 0x18;
+        pTStack_b8 = (TDeluxeText *)(int)(short)iVar15;
                     /* Commodity icon base is BMP 700 plus local commodity index. Confirmed IDs: 700
                        cotton, 703 coal, 704 iron, 707 canned food, 708 fabric, 711 steel, 713
                        clothing, 714 furniture, 715 tools, 718 fruit, 719 fish, 720 cattle, 721
                        diamonds, 722 gold. */
-        tStack_c0.right = 0x54;
-        TIconBar::AddCityCommodityIconControl
-                  (pTVar16,(int *)this,&tStack_c0.right,(int *)(auStack_d8 + 8),5,5,iVar11 + 700,
-                   (int)sVar8);
-        iVar19 = iVar19 + 0x1c;
+        piStack_104 = (int *)0x5;
+        local_bc = (TDeluxeTextVtbl *)0x54;
+        func_0x0040308a(this,&local_bc,local_dc + 8,5);
+        iVar15 = iVar15 + 0x1c;
       }
-      iVar11 = iVar11 + 1;
-      auStack_d8._0_4_ = auStack_d8._0_4_ + 2;
-    } while ((short)iVar11 < 0x17);
+      sVar6 = sVar6 + 1;
+      local_dc._0_4_ = local_dc._0_4_ + 2;
+    } while (sVar6 < 0x17);
   }
-  sVar8 = (short)iVar19;
-  if (((auStack_d8[5] != '\0') &&
-      (cVar7 = TDeluxeText::CanBuildPortAtTile((TDeluxeText *)g_pGlobalMapState,unaff_retaddr), cVar7 != '\0'))
-     && ((char)((uint)unaff_EBX >> 0x18) != '\0')) {
-    uStack_e0 = (TIconBar *)__2_YAPAXI_Z(0x94);
-    puStack_8 = (undefined1 *)0x7;
-    if (uStack_e0 == (TIconBar *)0x0) {
-      piVar13 = (int *)0x0;
+  sVar6 = (short)iVar15;
+  if (((local_dc[5] != '\0') && (cVar4 = func_0x00402b30(), cVar4 != '\0')) && (cVar18 != '\0')) {
+    iVar7 = operator_new();
+    uStack_c = 7;
+    if (iVar7 == 0) {
+      piVar9 = (int *)0x0;
     }
     else {
-      piVar13 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry
-                                 ((TUpDownPictureButton *)uStack_e0);
+      piVar9 = (int *)func_0x00403512();
     }
-    local_dc = sVar8 + 1;
-    puStack_8 = (undefined1 *)0xffffffff;
-    uStack_e0 = (TIconBar *)0x11;
-    InitializePictureEntryBaseAndRefresh(this,&uStack_e0,local_94,5,5,0x1c2e);
-    piVar13[7] = 0x706f7274;
-    (**(code **)(*piVar13 + 0xa8))(1,0);
-    piVar13[0x18] = 0x22;
-    pTVar14 = (TDeluxeText *)__2_YAPAXI_Z(0xa4);
-    uStack_10 = 8;
-    if (pTVar14 == (TDeluxeText *)0x0) {
-      pTVar14 = (TDeluxeText *)0x0;
+    piStack_104 = (int *)0x5;
+    uStack_c = 0xffffffff;
+    func_0x00403ff3(this,&stack0xffffff1c,&local_98);
+    piVar9[7] = 0x706f7274;
+    (**(code **)(*piVar9 + 0xa8))(1,0);
+    piVar9[0x18] = 0x22;
+    piVar9 = (int *)operator_new(0xa4);
+    uStack_2c = 8;
+    piStack_104 = piVar9;
+    if (piVar9 == (int *)0x0) {
+      piVar9 = (int *)0x0;
     }
     else {
-      TStaticText::TStaticText((TStaticText *)pTVar14);
-      uStack_e0 = (TIconBar *)0x0;
-      pTVar14->field_0x98 = 0;
-      pTVar14->field_0x99 = 0;
-      pTVar14->field_0x9a = 0;
-      pTVar14->field_0x9b = 0;
-      pTVar14->field_0x9c = 0;
-      pTVar14->field_0x9d = 0;
-      pTVar14->field_0x9e = 0;
-      pTVar14->field_0x9f = 0;
-      *(undefined4 *)&pTVar14->field_0x98 = 0;
-      pTVar14->vftable = &TDeluxeTextVtbl_006406d8;
-      pTVar14->field_0xa0 = 0;
+      func_0x0040541b();
+      *(undefined1 *)(piVar9 + 0x26) = 0;
+      *(undefined1 *)((int)piVar9 + 0x99) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9a) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9b) = 0;
+      *(undefined1 *)(piVar9 + 0x27) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9d) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9e) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9f) = 0;
+      piVar9[0x26] = 0;
+      *piVar9 = (int)&_vftable_;
+      *(undefined1 *)(piVar9 + 0x28) = 0;
     }
-    uStack_10 = 0xffffffff;
-    auStack_d8._0_4_ = 0;
-    auStack_d8._4_4_ = 0;
-    stack0xffffff30 = 0;
-    local_cc = 0;
-    CopyRect(&tStack_c0,(RECT *)auStack_d8);
-    TDeluxeText::ConstructTDeluxeTextBaseState
-              (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
-    pTVar3 = pTVar14->vftable;
-    (*pTVar3->BuildCityViewProductionControls_Impl)(0x1c20,2);
-    (*pTVar3->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(0);
-    auStack_d8._0_4_ = asStack_40;
-    iVar19 = iVar19 + 0x2a;
-    iVar11 = 0;
+    uStack_2c = 0xffffffff;
+    iVar7 = 0;
+    unaff_EDI = 0;
+    CopyRect((LPRECT)local_dc,(RECT *)&stack0xffffff0c);
+    piStack_104 = (int *)0x54;
+    func_0x00408e31(this,&piStack_104,auStack_c0,local_dc,local_cc,0xfffffffe);
+    iVar11 = *piVar9;
+    (**(code **)(iVar11 + 0x1e8))(0x1c20,2);
+    (**(code **)(iVar11 + 0x1f8))(0);
+    local_dc._0_4_ = asStack_44;
+    iVar15 = iVar15 + 0x2a;
+    sVar5 = 0;
     do {
-      sVar8 = *(short *)auStack_d8._0_4_;
-      if (sVar8 != 0) {
-        uStack_e0 = (TIconBar *)__2_YAPAXI_Z(0x9c);
-        puStack_8 = (undefined1 *)0x9;
-        if (uStack_e0 == (TIconBar *)0x0) {
-          pTVar16 = (TIconBar *)0x0;
+      if (*(short *)local_dc._0_4_ != 0) {
+        iVar11 = operator_new();
+        uStack_c = 9;
+        if (iVar11 != 0) {
+          func_0x0040827e();
         }
-        else {
-          pTVar16 = (TIconBar *)TIconBar::ConstructTIconBarBaseState(uStack_e0);
-        }
-        puStack_8 = (undefined1 *)0xffffffff;
-        register0x00000004 = this->field34 + -0x60;
-        local_cc = 0x18;
-        tStack_c0.bottom = (LONG)(short)iVar19;
+        uStack_c = 0xffffffff;
+        local_dc._8_4_ = this->field34 + -0x60;
+        stack0xffffff30 = 0x18;
+        pTStack_b8 = (TDeluxeText *)(int)(short)iVar15;
                     /* Secondary row uses same commodity icon mapping (700 + index). */
-        tStack_c0.right = 0x54;
-        TIconBar::AddCityCommodityIconControl
-                  (pTVar16,(int *)this,&tStack_c0.right,(int *)(auStack_d8 + 8),5,5,iVar11 + 700,
-                   (int)sVar8);
-        iVar19 = iVar19 + 0x1c;
+        piStack_104 = (int *)0x5;
+        local_bc = (TDeluxeTextVtbl *)0x54;
+        func_0x0040308a(this,&local_bc,local_dc + 8,5);
+        iVar15 = iVar15 + 0x1c;
       }
-      sVar8 = (short)iVar19;
-      iVar11 = iVar11 + 1;
-      auStack_d8._0_4_ = auStack_d8._0_4_ + 2;
-    } while ((short)iVar11 < 0x17);
+      sVar6 = (short)iVar15;
+      sVar5 = sVar5 + 1;
+      local_dc._0_4_ = local_dc._0_4_ + 2;
+    } while (sVar5 < 0x17);
   }
-  uStack_e0 = (TIconBar *)__2_YAPAXI_Z(0x94);
-  puStack_8 = (undefined1 *)0xa;
-  if (uStack_e0 == (TIconBar *)0x0) {
-    piVar13 = (int *)0x0;
+  iVar15 = operator_new();
+  uStack_c = 10;
+  if (iVar15 == 0) {
+    piVar9 = (int *)0x0;
   }
   else {
-    piVar13 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry
-                               ((TUpDownPictureButton *)uStack_e0);
+    piVar9 = (int *)func_0x00403512();
   }
-  local_cc = sVar8 + -2;
-  puStack_8 = (undefined1 *)0xffffffff;
-  uStack_e0 = (TIconBar *)0x3d;
-  local_dc = 0x18;
-  stack0xffffff30 = 0x11;
-  InitializePictureEntryBaseAndRefresh(this,auStack_d8 + 8,&uStack_e0,5,5,0x24c4);
-  piVar13[7] = 0x636e636c;
-  piVar13[0x18] = 0x22;
-  (**(code **)(*piVar13 + 0xa8))(1,0);
-  piVar13 = (int *)(**(code **)(iStack_c8 + 0x58))();
-  if (piVar13 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xd88);
+  piStack_104 = (int *)0x5;
+  register0x00000000 = sVar6 + -2;
+  uStack_c = 0xffffffff;
+  local_dc._8_4_ = 0x11;
+  func_0x00403ff3(this,local_dc + 8,&stack0xffffff1c);
+  piVar9[7] = 0x636e636c;
+  piVar9[0x18] = 0x22;
+  (**(code **)(*piVar9 + 0xa8))(1,0);
+  piVar9 = (int *)(*pcRam00000095)();
+  if (piVar9 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0xd88);
   }
-  iVar19 = *piVar13;
-  (**(code **)(iVar19 + 300))(local_94);
-  local_94[2] = local_94[0] + (short)(sVar8 + 0x1e);
-  (**(code **)(iVar19 + 0x168))(&local_98,1);
-  (**(code **)(auStack_d8._4_4_ + 300))(&uStack_a0);
-  local_98 = uStack_a0 + (int)(short)(sVar8 + 0x1e);
-  (**(code **)(auStack_d8._0_4_ + 0x168))(local_a4,1);
-  iVar19 = (**(code **)(iVar19 + 0x1b8))();
-  if (iVar19 != 0) {
-    *(undefined4 *)(iVar19 + 0x14) = 0x636e636c;
+  iVar15 = *piVar9;
+  (**(code **)(iVar15 + 300))(aiStack_b0);
+  iStack_a8 = aiStack_b0[0] + (short)(sVar6 + 0x1e);
+  (**(code **)(iVar15 + 0x168))(&local_b4,1);
+  (**(code **)(unaff_EDI + 300))(&local_bc);
+  local_b4 = (TDeluxeText *)
+             ((int)&local_bc->GetTEventHandlerClassNamePointer + (int)(short)(sVar6 + 0x1e));
+  (**(code **)(iVar7 + 0x168))(auStack_c0,1);
+  iVar7 = (**(code **)(iVar15 + 0x1b8))();
+  if (iVar7 != 0) {
+    *(undefined4 *)(iVar7 + 0x14) = 0x636e636c;
   }
-  __3_YAXPAX_Z(local_dc);
-  *unaff_FS_OFFSET = uStack_30;
+  operator_delete(iVar14);
+  *unaff_FS_OFFSET = uStack_4c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004DBBB0
 // GHIDRA_NAME TDeluxeText::BuildCityInfluenceLevelMap
-// GHIDRA_PROTO char * __thiscall TDeluxeText::BuildCityInfluenceLevelMap(void)
+// GHIDRA_PROTO char * __thiscall BuildCityInfluenceLevelMap(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds and returns a per-tile city influence level map (0x1950 bytes).
 // GHIDRA_COMMENT
@@ -587,7 +524,7 @@ void TDeluxeText::BuildCityViewProductionControls(short nBuildingSlotId)
 // GHIDRA_COMMENT_END
 
 /* Builds and returns a per-tile city influence level map (0x1950 bytes).
-
+   
    Algorithm:
    1. Clear a newly allocated map buffer to 0.
    2. Iterate active city records from the city manager iterator.
@@ -595,68 +532,70 @@ void TDeluxeText::BuildCityViewProductionControls(short nBuildingSlotId)
    4. Mark the city tile with that influence level.
    5. Compute six neighboring hex tiles and propagate influence to eligible neighbors.
    6. Keep the stronger level when multiple cities overlap.
-
+   
    Parameters:
    - this: City manager/context object.
-
+   
    Returns:
    - char* pointer to allocated influence map (caller frees via FUN_00606faf). */
 
 char * TDeluxeText::BuildCityInfluenceLevelMap()
 
 {
-  char *pcVar1;
-  int iVar2;
+  short sVar1;
+  char *pcVar2;
   int iVar3;
   int iVar4;
-  short *psVar5;
-  char cVar6;
-  char *pcVar7;
+  int iVar5;
+  short *psVar6;
+  char cVar7;
+  char *pcVar8;
   int iStack_20;
   short asStack_10 [8];
-
+  
   (*this->vftable->SetForeignMinisterReadyFlag14_34)(0);
-  pcVar1 = (char *)__2_YAPAXI_Z(0x1950);
-  pcVar7 = pcVar1;
-  for (iVar4 = 0x654; iVar4 != 0; iVar4 = iVar4 + -1) {
-    pcVar7[0] = '\0';
-    pcVar7[1] = '\0';
-    pcVar7[2] = '\0';
-    pcVar7[3] = '\0';
-    pcVar7 = pcVar7 + 4;
+  pcVar2 = (char *)operator_new(0x1950);
+  pcVar8 = pcVar2;
+  for (iVar5 = 0x654; iVar5 != 0; iVar5 = iVar5 + -1) {
+    pcVar8[0] = '\0';
+    pcVar8[1] = '\0';
+    pcVar8[2] = '\0';
+    pcVar8[3] = '\0';
+    pcVar8 = pcVar8 + 4;
   }
-  iVar4 = InitializeLinkedListCursorFromOwnerHead();
-  iVar2 = LinkedListCursorHasCurrent();
-  while (iVar2 != 0) {
-    if ((iVar4 != 0) && (*(char *)(iVar4 + 0x4c) != '\0')) {
-      cVar6 = (*(char *)(iVar4 + 0x4d) != '\0') + '\x01';
-      pcVar1[*(short *)(iVar4 + 0x14)] = cVar6;
-      ComputeHexNeighborTileIndices
-                (*(short *)(iVar4 + 0x14),asStack_10,g_pGlobalMapState->field_0x20);
-      psVar5 = asStack_10;
-      iVar4 = 6;
+  iVar5 = func_0x00401118();
+  iVar3 = func_0x00403620();
+  while (iVar3 != 0) {
+    if ((iVar5 != 0) && (*(char *)(iVar5 + 0x4c) != '\0')) {
+      sVar1 = *(short *)(iVar5 + 0x14);
+      cVar7 = (*(char *)(iVar5 + 0x4d) != '\0') + '\x01';
+      pcVar2[sVar1] = cVar7;
+      func_0x00405baf(CONCAT22(sVar1 >> 0xf,*(undefined2 *)(iVar5 + 0x14)),asStack_10,
+                      CONCAT31((int3)((uint)g_pGlobalMapState >> 8),g_pGlobalMapState->field_0x20));
+      psVar6 = asStack_10;
+      iVar5 = 6;
       do {
-        if (*psVar5 != -1) {
-          iVar3 = (int)*psVar5;
-          iVar2 = *(int *)&g_pGlobalMapState->field_0xc + iVar3 * 0x24;
-          if ((((short)*(char *)(iVar2 + 4) == *(short *)(iStack_20 + 0xc)) ||
-              (*(char *)(iVar2 + 0x13) == '\0')) && (pcVar1[iVar3] < cVar6)) {
-            pcVar1[iVar3] = cVar6;
+        if (*psVar6 != -1) {
+          iVar4 = (int)*psVar6;
+          iVar3 = *(int *)&g_pGlobalMapState->field_0xc + iVar4 * 0x24;
+          if ((((short)*(char *)(iVar3 + 4) == *(short *)(iStack_20 + 0xc)) ||
+              (*(char *)(iVar3 + 0x13) == '\0')) && (pcVar2[iVar4] < cVar7)) {
+            pcVar2[iVar4] = cVar7;
           }
         }
-        psVar5 = psVar5 + 1;
-        iVar4 = iVar4 + -1;
-      } while (iVar4 != 0);
+        psVar6 = psVar6 + 1;
+        iVar5 = iVar5 + -1;
+      } while (iVar5 != 0);
     }
-    iVar4 = AdvanceLinkedListCursor();
-    iVar2 = LinkedListCursorHasCurrent();
+    iVar5 = func_0x00406d20();
+    iVar3 = func_0x00403620();
   }
-  return pcVar1;
+  return pcVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005137B0
 // GHIDRA_NAME TDeluxeText::CanBuildPortAtTile
-// GHIDRA_PROTO char __thiscall TDeluxeText::CanBuildPortAtTile(int nTileIndex)
+// GHIDRA_PROTO char __thiscall CanBuildPortAtTile(int nTileIndex)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Checks whether a tile is eligible for port construction.
 // GHIDRA_COMMENT
@@ -674,16 +613,16 @@ char * TDeluxeText::BuildCityInfluenceLevelMap()
 // GHIDRA_COMMENT_END
 
 /* Checks whether a tile is eligible for port construction.
-
+   
    Algorithm:
    1. Reject disallowed base terrain types (2 and 3).
    2. Scan six neighboring hexes for adjacent water/coastal terrain type (5).
    3. If no adjacent water is found, allow a fallback path for special river/canal tiles.
-
+   
    Parameters:
    - this: World/map context.
    - nTileIndex: Candidate tile index.
-
+   
    Returns:
    - char boolean: non-zero when port construction is allowed. */
 
@@ -698,7 +637,7 @@ char TDeluxeText::CanBuildPortAtTile(int nTileIndex)
   short sVar6;
   short sVar7;
   char local_5;
-
+  
   local_5 = '\0';
   pcVar1 = (char *)(*(int *)&g_pGlobalMapState->field_0xc + (short)nTileIndex * 0x24);
   cVar3 = *pcVar1;
@@ -758,106 +697,64 @@ char TDeluxeText::CanBuildPortAtTile(int nTileIndex)
     } while (sVar7 < 6);
   }
   if (((local_5 == '\0') && (pcVar1[2] != '\0')) &&
-     (cVar3 = EvaluateTerrainFlowCrossNationBoundaryToSea(nTileIndex), cVar3 == '\0')) {
+     (cVar3 = func_0x0040419c(nTileIndex), cVar3 == '\0')) {
     local_5 = '\x01';
   }
   return local_5;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005B0CA0
-// GHIDRA_NAME TDeluxeText::GetNationFortLevelCap
-// GHIDRA_PROTO char __thiscall TDeluxeText::GetNationFortLevelCap(int nNationId)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns the maximum fortification level allowed for a nation.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Check advanced fortification flag for nation; if set, return level 3.
-// GHIDRA_COMMENT 2. Otherwise check intermediate fortification flag; return level 2 when set.
-// GHIDRA_COMMENT 3. Default to level 1 when neither upgrade flag is present.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - this: Nation/rules state table.
-// GHIDRA_COMMENT - nNationId: Nation index.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - char level in range 1..3.
-// GHIDRA_COMMENT_END
-
-/* Returns the maximum fortification level allowed for a nation.
-
-   Algorithm:
-   1. Check advanced fortification flag for nation; if set, return level 3.
-   2. Otherwise check intermediate fortification flag; return level 2 when set.
-   3. Default to level 1 when neither upgrade flag is present.
-
-   Parameters:
-   - this: Nation/rules state table.
-   - nNationId: Nation index.
-
-   Returns:
-   - char level in range 1..3. */
-
-char TDeluxeText::GetNationFortLevelCap(int nNationId)
-
-{
-  if ((&this[3].field_0x92)[nNationId * 0x1d] != '\0') {
-    return '\x03';
-  }
-  return ((&this[3].field_0x87)[nNationId * 0x1d] != '\0') + '\x01';
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5EE0
-// GHIDRA_NAME TDeluxeText::CreateTDeluxeTextInstance
-// GHIDRA_PROTO undefined CreateTDeluxeTextInstance()
+// GHIDRA_NAME TDeluxeText::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-TStaticText * TDeluxeText::CreateTDeluxeTextInstance(void)
+undefined4 * TDeluxeText::CreateObject(void)
 
 {
-  TStaticText *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638f5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)__2_YAPAXI_Z(0xa4);
+  puVar1 = (undefined4 *)operator_new(0xa4);
   local_4 = 0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::TStaticText(this);
-    *(undefined1 *)&this[1].field04 = 0;
-    *(undefined1 *)((int)&this[1].field04 + 1) = 0;
-    *(undefined1 *)((int)&this[1].field04 + 2) = 0;
-    *(undefined1 *)((int)&this[1].field04 + 3) = 0;
-    *(undefined1 *)&this[1].padding_08_to_0b = 0;
-    *(undefined1 *)((int)&this[1].padding_08_to_0b + 1) = 0;
-    *(undefined1 *)((int)&this[1].padding_08_to_0b + 2) = 0;
-    *(undefined1 *)((int)&this[1].padding_08_to_0b + 3) = 0;
-    this[1].field04 = 0;
-    this->vftable = (TStaticTextVtbl *)&TDeluxeTextVtbl_006406d8;
-    *(undefined1 *)&this[1].field0c = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x0040541b();
+    *(undefined1 *)(puVar1 + 0x26) = 0;
+    *(undefined1 *)((int)puVar1 + 0x99) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9a) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9b) = 0;
+    *(undefined1 *)(puVar1 + 0x27) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9d) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9e) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9f) = 0;
+    puVar1[0x26] = 0;
+    *puVar1 = &_vftable_;
+    *(undefined1 *)(puVar1 + 0x28) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TStaticText *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5FD0
-// GHIDRA_NAME TDeluxeText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TDeluxeText::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDeluxeText::GetTEventHandlerClassNamePointer()
+CRuntimeClass * TDeluxeText::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTDeluxeText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5FF0
 // GHIDRA_NAME TDeluxeText::ConstructTDeluxeTextBaseState
-// GHIDRA_PROTO undefined __thiscall TDeluxeText::ConstructTDeluxeTextBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 * param_4, int param_5)
+// GHIDRA_PROTO undefined __thiscall ConstructTDeluxeTextBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 * param_4, int param_5)
 
 void __thiscall
 TDeluxeText::ConstructTDeluxeTextBaseState
@@ -865,21 +762,20 @@ TDeluxeText::ConstructTDeluxeTextBaseState
           undefined4 *param_4,int param_5)
 
 {
-  TTEView::ConstructTTEViewBaseState
-            ((TTEView *)this,0,param_1,param_2,param_3,5,(undefined4 *)0x5,param_4,(short)param_5);
+  func_0x004047eb(0,param_1,param_2,param_3,5,5,param_4,param_5);
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(param_5 + 6);
   (*this->vftable->OrphanCallChain_C1_I08_005b60a0)(0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6060
-// GHIDRA_NAME TDeluxeText::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME TDeluxeText::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TDeluxeText::OrphanLeaf_NoCall_Ins07_004d8920()
+void TDeluxeText::NoOpUiLifecycleHook()
 
 {
-  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
+  func_0x00406ba9();
   this->field_0x95 = 0;
   (*this->vftable->OrphanCallChain_C1_I08_005b60a0)(0);
   return;
@@ -899,42 +795,44 @@ void TDeluxeText::OrphanCallChain_C1_I08_005b60a0(char param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B60D0
 // GHIDRA_NAME TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl
-// GHIDRA_PROTO undefined __thiscall TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(short param_1)
+// GHIDRA_PROTO undefined __thiscall InitializeTechHistoryViewTitleAndMapKeyControls_Impl(short param_1)
 
 void TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(short param_1)
 
 {
-  undefined4 unaff_ESI;
-  undefined4 *unaff_FS_OFFSET;
-  CString CStack_18;
+  int *unaff_FS_OFFSET;
+  CString CStack_20;
+  CString *pCStack_1c;
+  int iStack_18;
   CString local_10;
-  undefined4 uStack_c;
+  int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638f78;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  CStack_18.m_pchData = (char *)0x5b60f2;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  iStack_18 = 0x5b60f2;
   local_10.m_pchData = (char *)this;
-  CString::__0CString__QAE_XZ(&local_10);
-  CStack_18.m_pchData = (char *)(int)param_1;
+  CString::CString(&local_10);
+  iStack_18 = (int)param_1;
+  pCStack_1c = &local_10;
   local_4 = 0;
-  InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440(&local_10);
-  CStack_18.m_pchData = (char *)0x1;
-  (*this->vftable->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0)(&local_10);
-  uStack_c = 0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_18);
-  *unaff_FS_OFFSET = unaff_ESI;
+  CStack_20.m_pchData = (char *)0x5b6110;
+  func_0x00406933();
+  CStack_20.m_pchData = (char *)0x1;
+  (*this->vftable->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0)(&iStack_18);
+  CString::~CString(&CStack_20);
+  *unaff_FS_OFFSET = (int)pCStack_1c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6170
-// GHIDRA_NAME TDeluxeText::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_NAME TDeluxeText::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TDeluxeText::OrphanTiny_ReturnZero_0048a730()
+void TDeluxeText::ApplyRectSlot110()
 
 {
   TDeluxeTextVtbl *pTVar1;
@@ -946,44 +844,42 @@ void TDeluxeText::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638f98;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::__0CString__QAE_XZ(local_30);
+  CString::CString(local_30);
   pTVar1 = this->vftable;
   local_4 = 0;
   (*pTVar1->AssignSharedStringFromField84)();
   if (this->field_0xa0 != '\0') {
-    SetQuickDrawColorAndPropagateIfChanged();
+    func_0x004011cc();
     (*pTVar1->DeserializeCityProductionQueueCommand)();
     OffsetRect((LPRECT)&stack0xffffffcc,1,1);
     (*pTVar1->RenderControlStateTextBySelectionCode)(unaff_EDI,*(undefined4 *)(unaff_EDI + -8));
   }
   (*pTVar1->DeserializeCityProductionQueueCommand)();
-  SetQuickDrawColorAndPropagateIfChanged();
+  func_0x004011cc();
   (*pTVar1->RenderControlStateTextBySelectionCode)(unaff_EDI,*(undefined4 *)(unaff_EDI + -8));
   uStack_1c = 0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb8);
+  CString::~CString((CString *)&stack0xffffffb8);
   *unaff_FS_OFFSET = uStack_24;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B62A0
 // GHIDRA_NAME TDeluxeText::ConstructTMapKeyBaseState_Impl
-// GHIDRA_PROTO undefined __thiscall TDeluxeText::ConstructTMapKeyBaseState_Impl(int param_1, undefined4 param_2)
+// GHIDRA_PROTO undefined __thiscall ConstructTMapKeyBaseState_Impl(int param_1, undefined4 param_2)
 
 void TDeluxeText::ConstructTMapKeyBaseState_Impl(int param_1, undefined4 param_2)
 
 {
   undefined4 uVar1;
-  undefined4 uVar2;
-
+  
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(param_1 + 6);
-  uVar2 = 0xf;
-  uVar1 = NoOpUiStyleBridge_004862b0(0xf,param_1,param_2);
-  CallThisVslot1B4NoArgs(0,uVar1,uVar2,param_1,param_2);
+  uVar1 = func_0x0040350d(0xf,param_1,param_2);
+  func_0x004093a4(0,uVar1);
   return;
 }
 
@@ -995,20 +891,14 @@ void TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0()
 
 {
   undefined4 uVar1;
-  undefined4 uVar2;
-  undefined1 *puVar3;
-  undefined4 uVar4;
   undefined1 local_c [6];
   undefined4 local_6;
-
+  
   local_6 = 0;
   BuildUiTextStyleDescriptor(local_c);
-  puVar3 = local_c;
   *(undefined4 *)&this->field_0x98 = local_6;
-  uVar4 = 1;
-  uVar2 = 0xf;
-  uVar1 = NoOpUiStyleBridge_004862b0(0xf,puVar3,1);
-  CallThisVslot1B4NoArgs(0,uVar1,uVar2,puVar3,uVar4);
+  uVar1 = func_0x0040350d(0xf,local_c,1);
+  func_0x004093a4(0,uVar1);
   return;
 }
 
@@ -1026,23 +916,23 @@ TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-
+  
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00638fb8;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::__0CString__QAE_PBD_Z(&param_1,param_1.m_pchData);
+  CString::CString(&param_1,param_1.m_pchData);
   uStack_4 = 0;
   (*this->vftable->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)(&param_1);
   puStack_8 = (undefined1 *)0xffffffff;
-  CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
+  CString::~CString((CString *)&stack0x00000000);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B63E0
 // GHIDRA_NAME TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate
-// GHIDRA_PROTO undefined __thiscall TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)
+// GHIDRA_PROTO undefined __thiscall RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)
 
 undefined4 TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)
 
@@ -1052,14 +942,15 @@ undefined4 TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char par
   undefined2 extraout_var;
   undefined2 extraout_var_00;
   undefined2 uVar3;
+  char unaff_retaddr;
   undefined4 local_10;
   int local_c;
   int local_8;
   int local_4;
-
+  
   *(undefined4 *)&this->field_0x74 = 0;
   *(undefined4 *)&this->field_0x6c = 0;
-  iVar2 = TTEView::DestructTTEViewAndMaybeFree((TTEView *)this);
+  iVar2 = func_0x004065e1();
   local_4 = this->field38;
   if (iVar2 < local_4) {
     sVar1 = (short)((local_4 - iVar2) / 2);
@@ -1073,9 +964,9 @@ undefined4 TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char par
   *(int *)&this->field_0x74 = local_c;
   *(int *)&this->field_0x6c = local_c;
   local_4 = local_4 - local_c;
-  NoOpTextPostLayoutHook(&local_10);
+  func_0x004099ad(&local_10);
   uVar3 = extraout_var;
-  if (param_1 != '\0') {
+  if (unaff_retaddr != '\0') {
     (*this->vftable->VTableSlot39)();
     uVar3 = extraout_var_00;
   }
@@ -1084,28 +975,28 @@ undefined4 TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6480
 // GHIDRA_NAME TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
-// GHIDRA_PROTO undefined __thiscall TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1)
 
 void __thiscall
 TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
           (TDeluxeText *this,undefined4 param_1)
 
 {
-  UpdateTextEntrySharedStringIfChanged(param_1);
+  func_0x00405d7b(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B64A0
 // GHIDRA_NAME TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
-// GHIDRA_PROTO undefined __thiscall TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2)
 
 void __thiscall
 TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
           (TDeluxeText *this,undefined4 param_1,char param_2)
 
 {
-  UpdateTextEntrySharedStringIfChanged(param_1);
-  if (param_2 != '\0') {
+  func_0x00405d7b(param_1);
+  if ((char)param_1 != '\0') {
     (*this->vftable->VTableSlot39)();
   }
   return;
@@ -1113,35 +1004,36 @@ TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B64E0
 // GHIDRA_NAME TDeluxeText::BuildCityViewProductionControls_Impl
-// GHIDRA_PROTO undefined __thiscall TDeluxeText::BuildCityViewProductionControls_Impl(undefined4 param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall BuildCityViewProductionControls_Impl(undefined4 param_1, int param_2)
 
-void TDeluxeText::BuildCityViewProductionControls_Impl(undefined4 param_1, int param_2)
+void TDeluxeText::BuildCityViewProductionControls_Impl(char *param_1, int param_2)
 
 {
   int *unaff_FS_OFFSET;
-  CString CStack_1c;
+  CString CStack_20;
+  int iStack_1c;
   CString *pCStack_18;
   CString local_10;
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-
+  
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638fd8;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   pCStack_18 = (CString *)0x5b6502;
   local_10.m_pchData = (char *)this;
-  CString::__0CString__QAE_XZ(&local_10);
+  CString::CString(&local_10);
   pCStack_18 = &local_10;
-  CStack_1c.m_pchData = (char *)(param_2 + -1);
+  iStack_1c = param_2 + -1;
+  CStack_20.m_pchData = param_1;
   local_4 = 0;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(param_1);
-  UpdateTextEntrySharedStringIfChanged(&CStack_1c);
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  func_0x00405d7b(&iStack_1c);
   (*this->vftable->VTableSlot39)();
-  local_10.m_pchData = (char *)0xffffffff;
-  CString::__1CString__QAE_XZ(&CStack_1c);
-  *unaff_FS_OFFSET = (int)pCStack_18;
+  CString::~CString(&CStack_20);
+  *unaff_FS_OFFSET = iStack_1c;
   return;
 }
 

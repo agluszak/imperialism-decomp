@@ -3,44 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: TTechMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005AEF60
-// GHIDRA_NAME TTechMgr::GetTTechMgrClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTechMgrClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005AEF30
+// GHIDRA_NAME TTechMgr::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TTechMgr::GetTTechMgrClassNamePointer()
+undefined4 * TTechMgr::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x63c);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005AEF80
-// GHIDRA_NAME TTechMgr::ConstructCityOrderCapabilityStateVtable
-// GHIDRA_PROTO undefined __thiscall TTechMgr::ConstructCityOrderCapabilityStateVtable(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005AEF60
+// GHIDRA_NAME TTechMgr::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-void TTechMgr::ConstructCityOrderCapabilityStateVtable()
+CRuntimeClass * TTechMgr::GetRuntimeClass()
 
 {
-  this->vftable = &TTechMgrVtbl_0066ad28;
-  return;
+  return &classTTechMgr;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEFA0
-// GHIDRA_NAME TTechMgr::DestructTTechMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTechMgrAndMaybeFree(byte param_1)
+// GHIDRA_NAME TTechMgr::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTechMgr * TTechMgr::DestructTTechMgrAndMaybeFree(byte param_1)
+TTechMgr * TTechMgr::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTTechMgrAndMaybeFree_Impl();
+  func_0x00406c6c();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AF460
-// GHIDRA_NAME TTechMgr::DeserializeCityOrderCapabilityState
-// GHIDRA_PROTO undefined __thiscall DeserializeCityOrderCapabilityState(int * param_1)
+// GHIDRA_NAME TTechMgr::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Deserializes CityOrderCapabilityState from persistence/archive stream with version handling.
 // GHIDRA_COMMENT
@@ -58,7 +64,7 @@ TTechMgr * TTechMgr::DestructTTechMgrAndMaybeFree(byte param_1)
 // GHIDRA_COMMENT_END
 
 /* Deserializes CityOrderCapabilityState from persistence/archive stream with version handling.
-
+   
    Algorithm:
    1. Read base capability blocks into this+0x004 and this+0x03E.
    2. Read scalar capability metadata blocks (+0x1D2, +0x1D4, +0x180, +0x19D, +0x1AB, +0x1C9).
@@ -68,10 +74,10 @@ TTechMgr * TTechMgr::DestructTTechMgrAndMaybeFree(byte param_1)
       - +0x467 (recruitment/city-order availability table)
    4. Apply byte-swap compatibility paths for older build versions.
    5. Recompute derived averages via RecomputeGlobalCapabilityAverages().
-
+   
    This function is a key source for persisted city/university capability state. */
 
-void TTechMgr::DeserializeCityOrderCapabilityState(int *param_1)
+void TTechMgr::ReadFrom(int *param_1)
 
 {
   undefined1 uVar1;
@@ -79,9 +85,9 @@ void TTechMgr::DeserializeCityOrderCapabilityState(int *param_1)
   int iVar3;
   code *pcVar4;
   undefined4 uVar5;
-
-  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
-  if (DAT_00695278 < 0x27) {
+  
+  func_0x00403517(param_1);
+  if (g_nSaveFormatVersion < 0x27) {
     pcVar4 = *(code **)(*param_1 + 0x3c);
     (*pcVar4)(&this->field_0x4,0x3a);
     (*pcVar4)(&this->field_0x3e,0x2e);
@@ -121,13 +127,13 @@ void TTechMgr::DeserializeCityOrderCapabilityState(int *param_1)
     (*pcVar4)(&this->field_0x19d,0xe);
     (*pcVar4)(&this->field_0x1ab,0x1e);
     (*pcVar4)(&this->field_0x1c9,9);
-    if (DAT_00695278 < 0x35) goto LAB_005af590;
+    if (g_nSaveFormatVersion < 0x35) goto LAB_005af590;
     puVar2 = &this->field_0x264;
     uVar5 = 4;
   }
   (*pcVar4)(puVar2,uVar5);
 LAB_005af590:
-  if (0xf < DAT_00695278) {
+  if (0xf < g_nSaveFormatVersion) {
     puVar2 = &this->field_0x1d6;
     (*pcVar4)(puVar2,0x8c);
     iVar3 = 0x46;
@@ -139,7 +145,7 @@ LAB_005af590:
       iVar3 = iVar3 + -1;
     } while (iVar3 != 0);
   }
-  if (0x17 < DAT_00695278) {
+  if (0x17 < g_nSaveFormatVersion) {
     (*pcVar4)(&this->field_0x268,0xcb);
     (*pcVar4)(&this->field_0x333,0x62);
     (*pcVar4)(&this->field_0x395,0xd2);
@@ -155,7 +161,7 @@ LAB_005af590:
       iVar3 = iVar3 + -1;
     } while (iVar3 != 0);
   }
-  if (0x18 < DAT_00695278) {
+  if (0x18 < g_nSaveFormatVersion) {
     puVar2 = &this->field_0x3e;
     (*pcVar4)(puVar2,0x142);
     iVar3 = 0xa1;
@@ -167,16 +173,16 @@ LAB_005af590:
       iVar3 = iVar3 + -1;
     } while (iVar3 != 0);
   }
-  if (0x1e < DAT_00695278) {
+  if (0x1e < g_nSaveFormatVersion) {
     (*pcVar4)(&this->field_0x262,2);
   }
-  RecomputeGlobalCapabilityAverages();
+  func_0x00406640();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AF710
-// GHIDRA_NAME TTechMgr::SerializeCityOrderCapabilityState
-// GHIDRA_PROTO undefined __thiscall SerializeCityOrderCapabilityState(void)
+// GHIDRA_NAME TTechMgr::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Serializes CityOrderCapabilityState to persistence/archive stream.
 // GHIDRA_COMMENT
@@ -193,7 +199,7 @@ LAB_005af590:
 // GHIDRA_COMMENT_END
 
 /* Serializes CityOrderCapabilityState to persistence/archive stream.
-
+   
    Algorithm:
    1. Write core capability blocks (+0x004, +0x03E).
    2. Write scalar and small metadata blocks (+0x1D2, +0x1D4, +0x180, +0x19D, +0x1AB, +0x1C9,
@@ -203,151 +209,126 @@ LAB_005af590:
       - +0x395 (era capability availability)
       - +0x467 (recruitment/city-order availability)
    4. Write remaining extended arrays (+0x4A6 etc.) and terminal fields.
-
+   
    This function is the persistence writeback counterpart of DeserializeCityOrderCapabilityState. */
 
-void TTechMgr::SerializeCityOrderCapabilityState()
+void TTechMgr::WriteTo()
 
 {
-  TStream_GetTStreamClassNamePointer_0x00 *pTVar1;
+  code *pcVar1;
   undefined4 extraout_ECX;
   undefined4 extraout_ECX_00;
-  undefined4 extraout_ECX_01;
-  undefined4 extraout_ECX_02;
-  undefined4 extraout_ECX_03;
   undefined4 uVar2;
-  undefined4 extraout_ECX_04;
+  undefined4 extraout_ECX_01;
   undefined4 extraout_EDX;
   undefined4 extraout_EDX_00;
   undefined2 *puVar3;
-  undefined1 uStack00000004;
-  undefined1 uStack00000005;
-  int iVar4;
+  int *in_stack_00000004;
+  undefined4 uStack_58;
   undefined4 uStack_54;
-  undefined4 uStack_50;
-  undefined1 *puStack_4c;
-  undefined4 uStack_48;
-  undefined1 *puStack_44;
-  undefined4 uStack_40;
-  undefined1 *puStack_3c;
+  undefined1 *puStack_50;
+  undefined4 uStack_4c;
+  undefined1 *puStack_48;
+  undefined4 uStack_44;
+  undefined1 *puStack_40;
+  undefined4 uStack_3c;
   undefined4 uStack_38;
   undefined4 uStack_34;
-  undefined4 uStack_30;
-  undefined1 *puStack_2c;
-  undefined4 uStack_28;
-  undefined1 *puStack_24;
-  undefined4 uStack_20;
-  undefined4 *puStack_1c;
-  int local_4;
-
-  puStack_1c = (undefined4 *)0x5af721;
-  TObject::WriteTo((TObject *)this,_uStack00000004);
-  puVar3 = (undefined2 *)&this->field_0x4;
-  local_4 = 0x1d;
-  pTVar1 = _uStack00000004->vftable[0xf].GetTStreamClassNamePointer;
-  uVar2 = extraout_ECX;
+  undefined1 *puStack_30;
+  undefined4 uStack_2c;
+  undefined1 *puStack_28;
+  undefined4 uStack_24;
+  int iVar4;
+  
+  func_0x0040583a();
+  iVar4 = 0x1d;
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
   do {
-    uStack00000004 = (undefined1)*puVar3;
-    uStack00000005 = (undefined1)((ushort)*puVar3 >> 8);
-    puStack_1c = (undefined4 *)&stack0x00000004;
-    _uStack00000004 =
-         (TStream *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
-    uStack_20 = 0x5af753;
-    (*pTVar1)();
-    puVar3 = puVar3 + 1;
-    local_4 = local_4 + -1;
-    uVar2 = extraout_ECX_00;
-  } while (local_4 != 0);
-  puVar3 = (undefined2 *)&this->field_0x3e;
-  local_4 = 0xa1;
+    uStack_24 = 0x5af753;
+    (*pcVar1)();
+    iVar4 = iVar4 + -1;
+  } while (iVar4 != 0);
+  iVar4 = 0xa1;
   do {
-    uStack00000004 = (undefined1)*puVar3;
-    uStack00000005 = (undefined1)((ushort)*puVar3 >> 8);
-    puStack_1c = (undefined4 *)&stack0x00000004;
-    _uStack00000004 =
-         (TStream *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
-    uStack_20 = 0x5af78e;
-    (*pTVar1)();
-    puVar3 = puVar3 + 1;
-    local_4 = local_4 + -1;
-    uVar2 = extraout_ECX_01;
-  } while (local_4 != 0);
-  puStack_1c = (undefined4 *)&this->field_0x1d2;
-  uStack_20 = 0x5af7a9;
-  (*pTVar1)();
-  puStack_24 = &this->field_0x1d4;
-  uStack_20 = 2;
-  uStack_28 = 0x5af7b6;
-  (*pTVar1)();
-  puStack_2c = &this->field_0x180;
-  uStack_28 = 0x1d;
-  uStack_30 = 0x5af7c3;
-  (*pTVar1)();
-  uStack_34 = &this->field_0x19d;
-  uStack_30 = 0xe;
-  uStack_38 = 0x5af7d0;
-  (*pTVar1)();
-  puStack_3c = &this->field_0x1ab;
-  uStack_38 = 0x1e;
-  uStack_40 = 0x5af7dd;
-  (*pTVar1)();
-  puStack_44 = &this->field_0x1c9;
-  uStack_40 = 9;
-  uStack_48 = 0x5af7ea;
-  (*pTVar1)();
-  puStack_4c = &this->field_0x264;
-  uStack_48 = 4;
-  uStack_50 = 0x5af7f7;
-  (*pTVar1)();
+    uStack_24 = 0x5af78e;
+    (*pcVar1)();
+    iVar4 = iVar4 + -1;
+  } while (iVar4 != 0);
+  uStack_24 = 0x5af7a9;
+  (*pcVar1)();
+  puStack_28 = &this->field_0x1d4;
+  uStack_24 = 2;
+  uStack_2c = 0x5af7b6;
+  (*pcVar1)();
+  puStack_30 = &this->field_0x180;
+  uStack_2c = 0x1d;
+  uStack_34 = 0x5af7c3;
+  (*pcVar1)();
+  uStack_38 = &this->field_0x19d;
+  uStack_34 = 0xe;
+  uStack_3c = 0x5af7d0;
+  (*pcVar1)();
+  puStack_40 = &this->field_0x1ab;
+  uStack_3c = 0x1e;
+  uStack_44 = 0x5af7dd;
+  (*pcVar1)();
+  puStack_48 = &this->field_0x1c9;
+  uStack_44 = 9;
+  uStack_4c = 0x5af7ea;
+  (*pcVar1)();
+  puStack_50 = &this->field_0x264;
+  uStack_4c = 4;
+  uStack_54 = 0x5af7f7;
+  (*pcVar1)();
   puVar3 = (undefined2 *)&this->field_0x1d6;
-  puStack_3c = (undefined1 *)0x46;
+  puStack_40 = (undefined1 *)0x46;
   uVar2 = extraout_EDX;
   do {
-    uStack_50 = 2;
-    uStack_34._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
-    uStack_34._0_1_ = (undefined1)*puVar3;
-    uStack_54 = &uStack_34;
-    uStack_34._0_2_ = CONCAT11((undefined1)uStack_34,uStack_34._1_1_);
-    uStack_34 = (undefined1 *)CONCAT22((short)((uint)uVar2 >> 0x10),(undefined2)uStack_34);
-    (*pTVar1)();
+    uStack_54 = 2;
+    uStack_38._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
+    uStack_38._0_1_ = (undefined1)*puVar3;
+    uStack_58 = &uStack_38;
+    uStack_38._0_2_ = CONCAT11((undefined1)uStack_38,uStack_38._1_1_);
+    uStack_38 = (undefined1 *)CONCAT22((short)((uint)uVar2 >> 0x10),(undefined2)uStack_38);
+    (*pcVar1)();
     puVar3 = puVar3 + 1;
-    puStack_3c = (undefined1 *)((int)puStack_3c + -1);
+    puStack_40 = (undefined1 *)((int)puStack_40 + -1);
     uVar2 = extraout_EDX_00;
-  } while (puStack_3c != (undefined1 *)0x0);
-  uStack_54 = (undefined4 *)&this->field_0x268;
-  uStack_50 = 0xcb;
-  (*pTVar1)();
-  (*pTVar1)(&this->field_0x333,0x62);
-  (*pTVar1)(&this->field_0x395,0xd2);
-  (*pTVar1)(&this->field_0x467,0x3f);
+  } while (puStack_40 != (undefined1 *)0x0);
+  uStack_58 = (undefined4 *)&this->field_0x268;
+  uStack_54 = 0xcb;
+  (*pcVar1)();
+  (*pcVar1)(&this->field_0x333,0x62);
+  (*pcVar1)(&this->field_0x395,0xd2);
+  (*pcVar1)(&this->field_0x467,0x3f);
   puVar3 = (undefined2 *)&this->field_0x4a6;
   iVar4 = 0xcb;
-  uVar2 = extraout_ECX_02;
+  uVar2 = extraout_ECX;
   do {
-    uStack_54._0_1_ = (undefined1)*puVar3;
-    uStack_54._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
-    uStack_54 = (undefined4 *)
-                CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_54),
-                         uStack_54._1_1_);
-    (*pTVar1)(&uStack_54,2);
+    uStack_58._0_1_ = (undefined1)*puVar3;
+    uStack_58._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
+    uStack_58 = (undefined4 *)
+                CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_58),
+                         uStack_58._1_1_);
+    (*pcVar1)(&uStack_58,2);
     puVar3 = puVar3 + 1;
     iVar4 = iVar4 + -1;
-    uVar2 = extraout_ECX_03;
+    uVar2 = extraout_ECX_00;
   } while (iVar4 != 0);
   puVar3 = (undefined2 *)&this->field_0x3e;
   iVar4 = 0xa1;
   do {
-    uStack_54._0_1_ = (undefined1)*puVar3;
-    uStack_54._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
-    uStack_54 = (undefined4 *)
-                CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_54),
-                         uStack_54._1_1_);
-    (*pTVar1)(&uStack_54,2);
+    uStack_58._0_1_ = (undefined1)*puVar3;
+    uStack_58._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
+    uStack_58 = (undefined4 *)
+                CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_58),
+                         uStack_58._1_1_);
+    (*pcVar1)(&uStack_58,2);
     puVar3 = puVar3 + 1;
     iVar4 = iVar4 + -1;
-    uVar2 = extraout_ECX_04;
+    uVar2 = extraout_ECX_01;
   } while (iVar4 != 0);
-  (*pTVar1)(&this->field_0x262,2);
+  (*pcVar1)(&this->field_0x262,2);
   return;
 }
 

@@ -3,30 +3,44 @@
 // Program: Imperialism.exe
 // Bucket: TDialogBehavior.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004872C0
-// GHIDRA_NAME TDialogBehavior::CreateTDialogBehaviorInstance
-// GHIDRA_PROTO undefined __thiscall CreateTDialogBehaviorInstance(undefined1 param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x00487300
+// GHIDRA_NAME TDialogBehavior::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-void TDialogBehavior::CreateTDialogBehaviorInstance(undefined1 param_1)
+undefined4 * TDialogBehavior::CreateObject(void)
 
 {
-  this->field_0xc = param_1;
-  return;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x24);
+  if (puVar1 != (undefined4 *)0x0) {
+    puVar1[1] = 0x20202020;
+    puVar1[2] = 0;
+    *(undefined1 *)(puVar1 + 3) = 1;
+    *puVar1 = &_vftable_;
+    *(undefined1 *)(puVar1 + 4) = 0;
+    puVar1[5] = 0x20202020;
+    puVar1[6] = 0x20202020;
+    puVar1[7] = 0x20202020;
+    *(undefined1 *)(puVar1 + 8) = 1;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487350
-// GHIDRA_NAME TDialogBehavior::GetTBehaviorClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
+// GHIDRA_NAME TDialogBehavior::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDialogBehavior::GetTBehaviorClassNamePointer()
+CRuntimeClass * TDialogBehavior::GetRuntimeClass()
 
 {
-  return &classRuntimeClass;
+  return &classTDialogBehavior;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487370
 // GHIDRA_NAME TDialogBehavior::ConstructTDialogBehaviorBaseState
-// GHIDRA_PROTO undefined __thiscall TDialogBehavior::ConstructTDialogBehaviorBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTDialogBehaviorBaseState(void)
 
 void TDialogBehavior::ConstructTDialogBehaviorBaseState()
 
@@ -34,7 +48,7 @@ void TDialogBehavior::ConstructTDialogBehaviorBaseState()
   *(undefined4 *)&this->field_0x4 = 0x20202020;
   *(undefined4 *)&this->field_0x8 = 0;
   this->field_0xc = 1;
-  this->vftable = &TDialogBehaviorVtbl_00648da8;
+  this->vftable = &_vftable_;
   this->field_0x10 = 0;
   *(undefined4 *)&this->field_0x14 = 0x20202020;
   *(undefined4 *)&this->field_0x18 = 0x20202020;
@@ -44,15 +58,15 @@ void TDialogBehavior::ConstructTDialogBehaviorBaseState()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004873B0
-// GHIDRA_NAME TDialogBehavior::DestructTDialogBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTDialogBehaviorAndMaybeFree(byte param_1)
+// GHIDRA_NAME TDialogBehavior::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDialogBehavior * TDialogBehavior::DestructTDialogBehaviorAndMaybeFree(byte param_1)
+TDialogBehavior * TDialogBehavior::_scalar_deleting_destructor_(byte param_1)
 
 {
-  DestructTDialogBehaviorAndMaybeFree_Impl();
+  func_0x00403af8();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
@@ -89,7 +103,7 @@ void TDialogBehavior::OrphanCallChain_C1_I17_00487470(int param_1, int param_2)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004874B0
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int param_1)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(int param_1)
 
 void TDialogBehavior::OrphanCallChain_C11_I88_004874b0(int param_1)
 
@@ -100,7 +114,7 @@ void TDialogBehavior::OrphanCallChain_C11_I88_004874b0(int param_1)
   char cVar4;
   int *piVar5;
   undefined4 uVar6;
-
+  
   piVar2 = *(int **)&this->field_0x8;
   if (piVar2 != (int *)0x0) {
     iVar3 = *piVar2;
@@ -155,7 +169,7 @@ void TDialogBehavior::OrphanCallChain_C6_I49_004875d0(int param_1)
   char cVar3;
   int *piVar4;
   undefined4 uVar5;
-
+  
   piVar1 = *(int **)&this->field_0x8;
   if (piVar1 != (int *)0x0) {
     iVar2 = *piVar1;
@@ -181,49 +195,31 @@ void TDialogBehavior::OrphanCallChain_C6_I49_004875d0(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487660
-// GHIDRA_NAME TDialogBehavior::GetTBehaviorClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
+// GHIDRA_NAME TDialogBehavior::CreateTCommandInstance
+// GHIDRA_PROTO undefined __thiscall CreateTCommandInstance(void)
 
-void TDialogBehavior::GetTBehaviorClassNamePointer()
+void TDialogBehavior::CreateTCommandInstance()
 
 {
   TMovieView *this_00;
-  TCommand *pTVar1;
-  int iVar2;
-  int *piVar3;
-  int iVar4;
-  uint uVar5;
-
-  uVar5 = 0;
-  pTVar1 = (TCommand *)GetMainViewHostFromActiveThread();
-  iVar2 = TCommand::RunCommandModalLoopAndFinalizeState_Impl(pTVar1,uVar5);
-  piVar3 = (int *)(**(code **)(**(int **)&this->field_0x8 + 0x58))();
-  (**(code **)(*piVar3 + 0x9c))();
-  iVar4 = (**(code **)(**(int **)&this->field_0x8 + 0x58))();
-  this_00 = *(TMovieView **)(iVar4 + 0x50);
+  int iVar1;
+  int *piVar2;
+  int iVar3;
+  
+  func_0x00405db2(0);
+  iVar1 = func_0x004012c1();
+  piVar2 = (int *)(**(code **)(**(int **)&this->field_0x8 + 0x58))();
+  (**(code **)(*piVar2 + 0x9c))();
+  iVar3 = (**(code **)(**(int **)&this->field_0x8 + 0x58))();
+  this_00 = *(TMovieView **)(iVar3 + 0x50);
   this->field_0x20 = 0;
   *(undefined4 *)&this->field_0x1c = 0x20202020;
   CMcWindow::EnableWindowOrDelegateToOwner(1);
-  TMovieView::_RunModalLoop_CWnd__QAEHK_Z(this_00,0);
-  if (iVar2 != 0) {
-    uVar5 = 1;
-    pTVar1 = (TCommand *)GetMainViewHostFromActiveThread();
-    TCommand::RunCommandModalLoopAndFinalizeState_Impl(pTVar1,uVar5);
+  TMovieView::RunModalLoop(this_00,0);
+  if (iVar1 != 0) {
+    func_0x00405db2(1);
+    func_0x004012c1();
   }
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00487850
-// GHIDRA_NAME TDialogBehavior::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
-
-TDialogBehavior * TDialogBehavior::OrphanCallChain_C1_I17_00487470(byte param_1)
-
-{
-  DestructTCommandAndMaybeFree_Impl();
-  if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
-  }
-  return this;
 }
 

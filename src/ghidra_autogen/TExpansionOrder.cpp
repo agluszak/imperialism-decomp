@@ -3,33 +3,51 @@
 // Program: Imperialism.exe
 // Bucket: TExpansionOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B8F80
-// GHIDRA_NAME TExpansionOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8F50
+// GHIDRA_NAME TExpansionOrder::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-CRuntimeClass * TExpansionOrder::GetTProductionOrderClassNamePointer()
+undefined4 * TExpansionOrder::CreateObject(void)
 
 {
-  return &classRuntimeClass;
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(0x54);
+  if (puVar1 != (undefined4 *)0x0) {
+    *(undefined2 *)(puVar1 + 1) = 0;
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8F80
+// GHIDRA_NAME TExpansionOrder::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * TExpansionOrder::GetRuntimeClass()
+
+{
+  return &classTExpansionOrder;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8FC0
-// GHIDRA_NAME TExpansionOrder::ConstructTItemOrderBaseState
-// GHIDRA_PROTO undefined __thiscall TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
+// GHIDRA_NAME TExpansionOrder::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TExpansionOrder * TExpansionOrder::ConstructTItemOrderBaseState(byte param_1)
+TExpansionOrder * TExpansionOrder::_scalar_deleting_destructor_(byte param_1)
 
 {
-  TExpansionOrder::DestructTExpansionOrderAndMaybeFree(this);
+  func_0x004059ca();
   if ((param_1 & 1) != 0) {
-    __3_YAXPAX_Z(this);
+    operator_delete(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8FF0
 // GHIDRA_NAME TExpansionOrder::DestructTExpansionOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTExpansionOrderAndMaybeFree(void)
 
 void TExpansionOrder::DestructTExpansionOrderAndMaybeFree()
 
@@ -41,7 +59,7 @@ void TExpansionOrder::DestructTExpansionOrderAndMaybeFree()
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B9010
 // GHIDRA_NAME TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
-// GHIDRA_PROTO undefined __thiscall TExpansionOrder::InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
 TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
@@ -51,7 +69,7 @@ TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
 {
   int iVar1;
   undefined4 *puVar2;
-
+  
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = param_2;
@@ -73,8 +91,8 @@ TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B9090
-// GHIDRA_NAME TExpansionOrder::OrphanRetStub_004b5160
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+// GHIDRA_NAME TExpansionOrder::CommitIfPending
+// GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Simplified variant of production-delta application.
 // GHIDRA_COMMENT Writes final slot value into city +0x1DC and updates mirror/delta table at +0x1FC.
@@ -85,14 +103,14 @@ TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
    Writes final slot value into city +0x1DC and updates mirror/delta table at +0x1FC.
    Used in command paths that do not require the slot 14 special branch. */
 
-void TExpansionOrder::OrphanRetStub_004b5160()
+void TExpansionOrder::CommitIfPending()
 
 {
   short *psVar1;
   short sVar2;
   int iVar3;
   int iVar4;
-
+  
   if (*(short *)&this->field_0x4 == 0) {
     return;
   }
@@ -135,17 +153,17 @@ LAB_004b9154:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B91F0
-// GHIDRA_NAME TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
+// GHIDRA_NAME TExpansionOrder::MaxOrder
+// GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-uint TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
+uint TExpansionOrder::MaxOrder()
 
 {
   short sVar1;
   ushort uVar2;
   uint uVar3;
   ushort uVar4;
-
+  
   uVar2 = *(short *)(&this->field_0x10 + *(short *)&this->field_0x4e * 2) +
           *(short *)(*(int *)&this->field_0x8 + 0xb6 + *(short *)&this->field_0x4e * 2);
   uVar3 = (uint)uVar2;
@@ -164,10 +182,10 @@ uint TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B9260
-// GHIDRA_NAME TExpansionOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
+// GHIDRA_NAME TExpansionOrder::SetQuantity
+// GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TExpansionOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
+undefined4 TExpansionOrder::SetQuantity(short param_1)
 
 {
   short *psVar1;
@@ -176,7 +194,7 @@ undefined4 TExpansionOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   char cVar4;
   undefined3 extraout_var;
   short sVar5;
-
+  
   sVar5 = param_1 - *(short *)&this->field_0x4;
   uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar3) < param_1) || (param_1 < 0)) {
@@ -207,14 +225,14 @@ undefined4 TExpansionOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B9360
-// GHIDRA_NAME TExpansionOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
+// GHIDRA_NAME TExpansionOrder::FillOrderSheet
+// GHIDRA_PROTO undefined __thiscall FillOrderSheet(void)
 
-void TExpansionOrder::CreateTItemOrderInstance()
+void TExpansionOrder::FillOrderSheet()
 
 {
   undefined2 uStack00000004;
-
+  
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   *(undefined2 *)(_uStack00000004 + *(short *)&this->field_0x4e * 2) = uStack00000004;
   if (*(short *)(_uStack00000004 + *(short *)&this->field_0x4e * 2) < 0) {

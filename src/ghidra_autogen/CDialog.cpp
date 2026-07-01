@@ -3,9 +3,22 @@
 // Program: Imperialism.exe
 // Bucket: CDialog.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00604CC6
+// GHIDRA_NAME CDialog::CDialog
+// GHIDRA_PROTO undefined CDialog()
+
+undefined4 * __fastcall CDialog::CDialog(undefined4 *param_1)
+
+{
+  CWnd::CWnd();
+  *param_1 = &PTR_LAB_0066fc2c;
+  memset(param_1 + 0xf,0,0x20);
+  return param_1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00604D04
-// GHIDRA_NAME CDialog::??1CDialog@@UAE@XZ
-// GHIDRA_PROTO void __thiscall CDialog::??1CDialog@@UAE@XZ(void)
+// GHIDRA_NAME CDialog::~CDialog
+// GHIDRA_PROTO void __thiscall CDialog::~CDialog(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: virtual __thiscall CDialog::~CDialog(void)
@@ -18,7 +31,7 @@
    
    Library: nafxcw retail msvc500:static */
 
-void CDialog::__1CDialog__UAE_XZ()
+void CDialog::~CDialog()
 
 {
   CWnd *this_00;
@@ -30,11 +43,323 @@ void CDialog::__1CDialog__UAE_XZ()
   (this_00->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_0066fc2c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (this_00->m_hWnd != (void *)0x0) {
-    CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
+    OrphanCallChain_C1_I09_0048ff70();
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::__1CWnd__UAE_XZ(this_00);
+  CWnd::~CWnd(this_00);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00604D42
+// GHIDRA_NAME CDialog::Create
+// GHIDRA_PROTO undefined Create()
+
+void __thiscall CDialog::Create(int param_1,LPCSTR param_2,undefined4 param_3)
+
+{
+  HMODULE hModule;
+  int iVar1;
+  HRSRC hResInfo;
+  HGLOBAL pvVar2;
+  
+  *(LPCSTR *)(param_1 + 0x40) = param_2;
+  if (((short)((uint)param_2 >> 0x10) == 0) && (*(int *)(param_1 + 0x3c) == 0)) {
+    *(uint *)(param_1 + 0x3c) = (uint)*(ushort *)(param_1 + 0x40);
+  }
+  iVar1 = AfxGetModuleState();
+  hModule = *(HMODULE *)(iVar1 + 0xc);
+  hResInfo = FindResourceA(hModule,param_2,(LPCSTR)0x5);
+  pvVar2 = LoadResource(hModule,hResInfo);
+  CreateIndirect(pvVar2,param_3,hModule);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00604DA4
+// GHIDRA_NAME CDialog::CreateIndirect
+// GHIDRA_PROTO undefined CreateIndirect()
+
+void CDialog::CreateIndirect(HGLOBAL param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  LPVOID pvVar1;
+  
+  pvVar1 = LockResource(param_1);
+  CreateIndirect(pvVar1,param_2,0,param_3);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00604DDD
+// GHIDRA_NAME CDialog::CreateIndirect
+// GHIDRA_PROTO undefined CreateIndirect()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Creates dialog from template pointer with owner fallback.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT If explicit owner is null, resolves current app window owner. Stores caller init context and forwards to CreateDialogIndirectAndAttach.
+// GHIDRA_COMMENT_END
+
+/* Creates dialog from template pointer with owner fallback.
+   
+   If explicit owner is null, resolves current app window owner. Stores caller init context and
+   forwards to CreateDialogIndirectAndAttach. */
+
+void __thiscall
+CDialog::CreateIndirect
+          (int param_1,undefined4 param_2,int param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  if (param_3 == 0) {
+    param_3 = AfxGetMainWnd();
+  }
+  *(undefined4 *)(param_1 + 0x4c) = param_4;
+  CWnd::CreateDlgIndirect(param_2,param_3,param_5);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060508E
+// GHIDRA_NAME CDialog::CDialog
+// GHIDRA_PROTO undefined __thiscall CDialog(undefined4 param_1, undefined4 param_2)
+
+CDialog * CDialog::CDialog(undefined4 param_1, undefined4 param_2)
+
+{
+  CWnd::CWnd();
+  *(undefined ***)this = &PTR_LAB_0066fc2c;
+  memset(this + 0x3c,0,0x20);
+  *(undefined4 *)(this + 0x50) = param_2;
+  *(undefined4 *)(this + 0x40) = param_1;
+  if ((short)((uint)param_1 >> 0x10) == 0) {
+    *(uint *)(this + 0x3c) = (uint)*(ushort *)(this + 0x40);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00605144
+// GHIDRA_NAME CDialog::PreModal
+// GHIDRA_PROTO undefined PreModal()
+
+undefined4 __fastcall CDialog::PreModal(int param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  
+  AfxGetModuleState();
+  CWinApp::EnableModeless(0);
+  iVar1 = CWnd::GetSafeOwner(*(undefined4 *)(param_1 + 0x50),param_1 + 0x54);
+  AfxHookWindowCreate(param_1);
+  if (iVar1 == 0) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = *(undefined4 *)(iVar1 + 0x1c);
+  }
+  return uVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060517B
+// GHIDRA_NAME CDialog::PostModal
+// GHIDRA_PROTO undefined PostModal()
+
+void __fastcall CDialog::PostModal(int param_1)
+
+{
+  BOOL BVar1;
+  
+  AfxUnhookWindowCreate();
+  CWnd::Detach();
+  BVar1 = IsWindow(*(HWND *)(param_1 + 0x54));
+  if (BVar1 != 0) {
+    EnableWindow(*(HWND *)(param_1 + 0x54),1);
+  }
+  *(undefined4 *)(param_1 + 0x54) = 0;
+  AfxGetModuleState();
+  CWinApp::EnableModeless(1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060531E
+// GHIDRA_NAME CDialog::EndDialog
+// GHIDRA_PROTO undefined EndDialog()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDialog::EndDialog(int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDialog::EndDialog(int)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CDialog::EndDialog(int *param_1,INT_PTR param_2)
+
+{
+  if ((*(byte *)(param_1 + 9) & 0x18) != 0) {
+    (**(code **)(*param_1 + 0x7c))(param_2);
+  }
+  ::EndDialog((HWND)param_1[7],param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00605366
+// GHIDRA_NAME CDialog::HandleInitDialog
+// GHIDRA_PROTO undefined HandleInitDialog()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  protected: long __thiscall CDialog::HandleInitDialog(unsigned int,long)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    protected: long __thiscall CDialog::HandleInitDialog(unsigned int,long)
+   
+   Library: nafxcw retail msvc500:static */
+
+int __fastcall CDialog::HandleInitDialog(CWnd *param_1)
+
+{
+  int *piVar1;
+  void *pvVar2;
+  int iVar3;
+  HWND pHVar4;
+  int iVar5;
+  
+  (*(param_1->ccmdTarget).vftable[0x11].slot_0x08)();
+  iVar3 = AfxGetModuleState();
+  piVar1 = *(int **)(iVar3 + 0x1038);
+  if ((piVar1 != (int *)0x0) && (pvVar2 = param_1[1].m_hWnd, pvVar2 != (void *)0x0)) {
+    iVar3 = param_1[1].ccmdTarget.m_xDispatch;
+    if (iVar3 == 0) {
+      iVar3 = (**(code **)(*piVar1 + 0x20))(param_1,param_1[1].ccmdTarget.m_dwRef,pvVar2);
+    }
+    else {
+      iVar3 = (**(code **)(*piVar1 + 0x1c))(param_1,iVar3,pvVar2);
+    }
+    if (iVar3 == 0) {
+      EndDialog(0xffffffff);
+      return 0;
+    }
+  }
+  iVar3 = CWnd::Default(param_1);
+  if ((iVar3 != 0) && ((param_1->m_nFlags & 0x100) != 0)) {
+    pHVar4 = GetNextDlgTabItem(param_1->m_hWnd,(HWND)0x0,0);
+    iVar5 = FromHandle(pHVar4);
+    if (iVar5 != 0) {
+      CWnd::SetFocus();
+      iVar3 = 0;
+    }
+  }
+  return iVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00605445
+// GHIDRA_NAME CDialog::OnInitDialog
+// GHIDRA_PROTO undefined OnInitDialog()
+
+undefined4 __fastcall CDialog::OnInitDialog(int param_1)
+
+{
+  int iVar1;
+  CWnd *this;
+  
+  if (*(int *)(param_1 + 0x4c) == 0) {
+    iVar1 = CWnd::ExecuteDlgInit(*(undefined4 *)(param_1 + 0x40));
+  }
+  else {
+    iVar1 = CWnd::ExecuteDlgInit(*(int *)(param_1 + 0x4c));
+  }
+  if (iVar1 != 0) {
+    iVar1 = UpdateData(0);
+    if (iVar1 != 0) {
+      this = (CWnd *)CWnd::GetDlgItem(0xe146);
+      if (this != (CWnd *)0x0) {
+        iVar1 = AfxHelpEnabled();
+        CWnd::ShowWindow(this,-(uint)(iVar1 != 0) & 5);
+      }
+      return 1;
+    }
+  }
+  EndDialog(0xffffffff);
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006054AA
+// GHIDRA_NAME CDialog::OnOK
+// GHIDRA_PROTO undefined __thiscall OnOK(void)
+
+void CDialog::OnOK()
+
+{
+  int iVar1;
+  
+  iVar1 = UpdateData(1);
+  if (iVar1 != 0) {
+    EndDialog(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006054CB
+// GHIDRA_NAME CDialog::CheckAutoCenter
+// GHIDRA_PROTO undefined CheckAutoCenter()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual int __thiscall CDialog::CheckAutoCenter(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual int __thiscall CDialog::CheckAutoCenter(void)
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __fastcall CDialog::CheckAutoCenter(int param_1)
+
+{
+  short sVar1;
+  HMODULE hModule;
+  int iVar2;
+  HRSRC hResInfo;
+  HGLOBAL hResData;
+  uint *puVar3;
+  undefined4 uVar4;
+  uint uVar5;
+  short sVar6;
+  
+  puVar3 = *(uint **)(param_1 + 0x48);
+  hResData = *(HGLOBAL *)(param_1 + 0x44);
+  if (*(int *)(param_1 + 0x40) != 0) {
+    iVar2 = AfxGetModuleState();
+    hModule = *(HMODULE *)(iVar2 + 0xc);
+    hResInfo = FindResourceA(hModule,*(LPCSTR *)(param_1 + 0x40),(LPCSTR)0x5);
+    hResData = LoadResource(hModule,hResInfo);
+  }
+  if (hResData != (HGLOBAL)0x0) {
+    puVar3 = LockResource(hResData);
+  }
+  uVar4 = 1;
+  if (puVar3 != (uint *)0x0) {
+    uVar5 = *puVar3;
+    if (*(short *)((int)puVar3 + 2) == -1) {
+      uVar5 = puVar3[3];
+      sVar1 = *(short *)((int)puVar3 + 0x12);
+      sVar6 = (short)puVar3[5];
+    }
+    else {
+      sVar1 = *(short *)((int)puVar3 + 10);
+      sVar6 = (short)puVar3[3];
+    }
+    if ((((uVar5 & 0x1801) == 0) && (sVar1 == 0)) && (sVar6 == 0)) {
+      uVar4 = 1;
+    }
+    else {
+      uVar4 = 0;
+    }
+  }
+  return uVar4;
 }
 
