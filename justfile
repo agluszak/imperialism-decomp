@@ -123,6 +123,16 @@ ghidra-function-slice *args: _require-ghidra-install
 ghidra-decompile *args: _require-ghidra-install
   uv run python -m tools.ghidra.decompile_one {{args}}
 
+# Linear disassembly by address, ignoring Ghidra's (sometimes wrong) function
+# boundaries. `just ghidra-linear-disasm 0xADDR [count]`.
+ghidra-linear-disasm *args: _require-ghidra-install
+  uv run python -m tools.ghidra.linear_disasm {{args}}
+
+# Whole-binary search for a value in disassembled instruction text or raw data
+# (message-map/handler hunting). `just ghidra-search text|dword <value> [limit]`.
+ghidra-search *args: _require-ghidra-install
+  uv run python -m tools.ghidra.search_whole_binary {{args}}
+
 # Decompile benchmark gate: must-keep patterns for curated Ghidra typing work.
 # Pass --strict to also fail on missing should-improve patterns.
 ghidra-decomp-check *args: _require-ghidra-install
