@@ -9,13 +9,17 @@ silently never pairs and `reccmp-vtable <Class>` shows nothing.
 
 Two ways that second claim sneaks in, both gated here:
 
-1. A `global`/`data`/`string`/... row in `config/symbols.csv` whose address equals a
-   `// VTABLE:` address. (Historically these were stale `X::'vftable'` rows typed
-   `global`, left over from before the class was modeled with real inheritance.) reccmp
-   ingests symbols.csv as ORIG-image entities, so a non-vtable row pre-seeds DATA at the
-   address and the annotation is dropped. Such a row should be deleted (the annotation
-   owns the address) or, if you really need symbols.csv to name the vtable, typed
-   `vtable`.
+1. ANY row in `config/symbols.csv` whose address equals a `// VTABLE:` address --
+   including rows typed `vtable` themselves. reccmp ingests symbols.csv as ORIG-image
+   entities *after* the source markers, so any row here overwrites the `name` attribute
+   the `// VTABLE:` marker + class declaration already derived correctly. In practice
+   these were stale `X::'vftable'` (or worse, plain `'vftable'`-suffixed) rows left over
+   from before the class was modeled with real inheritance; even when the embedded class
+   name happened to still be correct, the row's `name` value was the whole
+   `"Class::'vftable'"` string rather than the bare class name reccmp's vtable matcher
+   expects, so it broke the match regardless. (This silently cost 64 vtables -- see
+   commit history.) The fix is always to delete the row; the annotation is the only
+   source of truth for a vtable's name.
 
 2. A `// GLOBAL:` annotation in the source at a `// VTABLE:` address -- typically left on
    a legacy `PTR_Get*RuntimeClass*` vptr-write stand-in. Remove the `// GLOBAL:` marker;
@@ -51,22 +55,6 @@ VTABLE_MARKER_RE = re.compile(
 GLOBAL_MARKER_RE = re.compile(
     r"^\s*//\s*GLOBAL\s*:\s*(?P<module>[A-Za-z0-9_]+)\s+(?P<offset>(?:0x)?[0-9a-fA-F]+)"
 )
-
-# symbols.csv `type` values that are *not* a vtable. Any of these at a VTABLE address is
-# a collision. (Mirrors reccmp/compare/csv.py _entity_type_map aliases.)
-NON_VTABLE_TYPES = {
-    "global",
-    "data",
-    "string",
-    "widechar",
-    "float",
-    "function",
-    "template",
-    "synthetic",
-    "library",
-    "stub",
-}
-
 
 def parse_args() -> argparse.Namespace:
     repo_root = repo_root_from_file(__file__)
@@ -110,7 +98,8 @@ def main() -> int:
 
     violations: list[str] = []
 
-    # (1) symbols.csv non-vtable rows at a VTABLE address.
+    # (1) any symbols.csv row at a VTABLE address (including type 'vtable' itself --
+    # it always overwrites the marker-derived name and breaks the match; see module docstring).
     from pathlib import Path
 
     symbols_path = Path(args.symbols_csv)
@@ -120,12 +109,11 @@ def main() -> int:
             row_type = (row.get("type") or "").strip().lower()
             if addr is None or addr not in vtable_addrs:
                 continue
-            if row_type in NON_VTABLE_TYPES:
-                name = (row.get("name") or "").strip()
-                violations.append(
-                    f"symbols.csv: 0x{addr:x} typed '{row_type}' ({name!r}) collides with the "
-                    f"// VTABLE: at {vtable_addrs[addr]} -- delete the row or type it 'vtable'"
-                )
+            name = (row.get("name") or "").strip()
+            violations.append(
+                f"symbols.csv: 0x{addr:x} typed '{row_type}' ({name!r}) collides with the "
+                f"// VTABLE: at {vtable_addrs[addr]} -- delete the row"
+            )
 
     # (2) // GLOBAL: annotation at a VTABLE address.
     for addr, loc in global_markers:
