@@ -12,7 +12,7 @@ TBattleReportView * TBattleReportView::_scalar_deleting_destructor_(byte param_1
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -37,7 +37,7 @@ void TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle()
   LONG LStack_c;
   LONG LStack_8;
   LONG LStack_4;
-  
+
   local_28 = 0;
   uVar5 = *(undefined4 *)&g_pUiAnimator->field_0x20;
   GetActiveQuickDrawSurfaceContextAndFlags(&local_24,&local_28);
@@ -66,9 +66,9 @@ void TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle()
       this_00->vftable = (TAnimationVtbl *)0x64c340;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
                 (this_00);
-      FreeHeapBufferIfNotNull(this_00);
+      __3_YAXPAX_Z(this_00);
     }
-    FreeHeapBufferIfNotNull(piVar3);
+    __3_YAXPAX_Z(piVar3);
     uVar5 = GetSurfaceObjectAtContextOffset24(uVar5);
     NoOpQuickDrawLifecycleHookB(uVar5);
     SetActiveQuickDrawSurfaceContext(local_24,local_28);
@@ -87,7 +87,7 @@ void TBattleReportView::RemoveUiTransientRegistryObjectByTag(int param_1)
   int *piVar1;
   int iVar2;
   int *piVar3;
-  
+
   if (this != (TBattleReportView *)0x0) {
     piVar1 = (int *)InitializeLinkedListCursorFromOwnerHead();
     iVar2 = LinkedListCursorHasCurrent();
@@ -101,9 +101,10 @@ void TBattleReportView::RemoveUiTransientRegistryObjectByTag(int param_1)
 LAB_004a0ff7:
   if (piVar1 != (int *)0x0) {
     this_00 = (TAutoGreatPower *)(this->ownerOffsetX + 4);
-    piVar3 = (int *)TAutoGreatPower::Find(this_00,(int)piVar1,(undefined4 *)0x0);
+    piVar3 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                              (this_00,(int)piVar1,(undefined4 *)0x0);
     if (piVar3 != (int *)0x0) {
-      TAutoGreatPower::RemoveAt_60217d(this_00,piVar3);
+      TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar3);
     }
     (**(code **)(*piVar1 + 0x1c))();
   }
@@ -122,12 +123,12 @@ TDiplomacyMapView * TBattleReportView::CreateTBattleReportViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063084a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TDiplomacyMapView *)AllocateWithFallbackHandler(0x24d0);
+  this = (TDiplomacyMapView *)__2_YAPAXI_Z(0x24d0);
   local_4 = 0;
   if (this != (TDiplomacyMapView *)0x0) {
     TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState(this);
@@ -201,7 +202,7 @@ void TBattleReportView::ConstructTBattleReportViewBaseState()
   undefined1 *puStack_1c;
   int iStack_18;
   int iStack_14;
-  
+
   ProbeStackPagesForLargeFrameAllocation();
   iStack_18 = 0x4acb7d;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this_01);
@@ -286,7 +287,7 @@ void TBattleReportView::ConstructTBattleReportViewBaseState()
       pcVar8 = (char *)(**(code **)(**(int **)&g_pMapContextActionManager->field_0x4 + 0x2c))();
       TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(this_01,pcVar8);
       (*this_01->vftable[10].slot_0x04)();
-      this_00 = (TAnimation *)AllocateWithFallbackHandler();
+      this_00 = (TAnimation *)__2_YAPAXI_Z();
       if (this_00 == (TAnimation *)0x0) {
         this_00 = (TAnimation *)0x0;
       }
@@ -504,7 +505,7 @@ uint TBattleReportView::DispatchReflectedControlMessageOrFallback(uint param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00630868;
@@ -591,7 +592,7 @@ void TBattleReportView::_scalar_deleting_destructor_(int param_1, int param_2)
   _vslot_fn *p_Stack_c;
   undefined1 *puStack_8;
   int iStack_4;
-  
+
   p_Stack_c = (_vslot_fn *)*unaff_FS_OFFSET;
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_00630890;
@@ -710,7 +711,7 @@ void TBattleReportView::_scalar_deleting_destructor_(int param_1, int param_2)
         (**(code **)(CVar11.m_pchData + 0x1c8))();
         iStack_54 = -1;
         piStack_8c = (int *)0x4ad9f1;
-        CString::~CString((CString *)&stack0xffffffb4);
+        CString::__1CString__QAE_XZ((CString *)&stack0xffffffb4);
         piStack_8c = aiStack_74;
         piStack_90 = (int *)0x4ada02;
         InitializeOutSharedStringWithEmptyRefAndCopyBuffer();
@@ -721,7 +722,7 @@ void TBattleReportView::_scalar_deleting_destructor_(int param_1, int param_2)
         (*(code *)pTStack_78[4].field48)();
         iStack_5c = -1;
         piStack_94 = (int *)0x4ada2a;
-        CString::~CString(&CStack_7c);
+        CString::__1CString__QAE_XZ(&CStack_7c);
         piStack_94 = piVar4;
         TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
                   ((TToolBarCluster *)&pTStack_98,PTR_g_szEmptyString_0064dc30);
@@ -791,7 +792,7 @@ TBattleReportView::WrapperFor_thunk_RefreshMapContextSelectionPanelAndInfoLabels
   char *pcVar1;
   char *pcVar2;
   int iVar3;
-  
+
   pcVar2 = (char *)0x0;
   for (iVar3 = *(int *)(*(int *)&g_pMapContextActionManager->field_0x4 + 8); 0 < iVar3;
       iVar3 = iVar3 + -1) {
@@ -870,7 +871,7 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
   undefined4 local_c;
   undefined1 *puStack_8;
   int iStack_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_006308f0;
@@ -920,31 +921,31 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
     uVar2 = (*this->vftable[0x12].slot_0x04)();
     iVar5 = *(int *)CONCAT31(extraout_var,uVar2);
     (**(code **)(iVar5 + 0xc))();
-    CString::CString(&CStack_30);
+    CString::__0CString__QAE_XZ(&CStack_30);
     puStack_8 = (undefined1 *)0x0;
-    CString::CString(&CStack_34);
+    CString::__0CString__QAE_XZ(&CStack_34);
     puStack_8._0_1_ = 1;
     AssignSharedStringFromIndexedA8EntryNameField();
     FormatOverlayTerrainLabelText();
-    CString::CString(&CStack_38);
+    CString::__0CString__QAE_XZ(&CStack_38);
     puStack_8._0_1_ = 2;
-    CString::CString((CString *)&uStack_3c);
+    CString::__0CString__QAE_XZ((CString *)&uStack_3c);
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     CStack_74.m_pchData = (char *)0x4ae1ea;
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffb8,unaff_EDI);
-    CString::AssignFromCStr
+    CString::__YCString__QAEABV0_PBD_Z
               ((CString *)&stack0xffffffb8,(char *)g_Build_Map_Order_LookupTable_00695794);
     (**(code **)(iVar5 + 0x1c8))();
     iStack_4._0_1_ = 2;
     iStack_50 = 0x4ae218;
-    CString::~CString(&CStack_38);
+    CString::__1CString__QAE_XZ(&CStack_38);
     iStack_4._0_1_ = 1;
     iStack_50 = 0x4ae226;
-    CString::~CString(&CStack_34);
+    CString::__1CString__QAE_XZ(&CStack_34);
     iStack_4 = (uint)iStack_4._1_3_ << 8;
     iStack_50 = 0x4ae234;
-    CString::~CString(&CStack_30);
+    CString::__1CString__QAE_XZ(&CStack_30);
     break;
   case 1:
   case 2:
@@ -952,7 +953,7 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
     uVar2 = (*this->vftable[0x12].slot_0x04)();
     iVar5 = *(int *)CONCAT31(extraout_var_00,uVar2);
     (**(code **)(iVar5 + 0xc))();
-    CString::CString(&CStack_30);
+    CString::__0CString__QAE_XZ(&CStack_30);
     puStack_8 = (undefined1 *)0x4;
     (**(code **)(**(int **)(param_1 + 8) + 0x2c))();
     (**(code **)(iVar5 + 0x1c8))();
@@ -962,7 +963,7 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
   }
   iStack_4 = 0xffffffff;
   iStack_50 = 0x4ae298;
-  CString::~CString(&CStack_2c);
+  CString::__1CString__QAE_XZ(&CStack_2c);
 switchD_004ae117_default:
   iStack_50 = 0x66666c67;
   pTVar1 = this->vftable[0x12].slot_0x04;
@@ -1008,7 +1009,7 @@ LAB_004ae3ee:
       (*g_apTerrainTypeDescriptorTable[cVar9]->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_10)();
     }
   }
-  CString::CString((CString *)&stack0xffffffc0);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffc0);
   iStack_1c = 5;
   CStack_74.m_pchData = (char *)0x4ae4da;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -1037,14 +1038,14 @@ LAB_004ae3ee:
   CStack_8c.m_pchData = (char *)0x4ae546;
   (**(code **)(CStack_30.m_pchData + 0x1c8))();
   CStack_8c.m_pchData = (char *)0x4ae554;
-  CString::~CString((CString *)&stack0xffffff98);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff98);
   CStack_8c.m_pchData = (char *)0x66736870;
   uVar2 = (*pTVar1)();
   uStack_3c = *(char **)CONCAT31(extraout_var_05,uVar2);
   (**(code **)(uStack_3c + 0xc))();
   RefreshMapContextSelectionPanelAndInfoLabels_Impl(&stack0xffffff94);
   (**(code **)(uStack_3c + 0x1c8))(&stack0xffffff94,1);
-  CString::~CString(&CStack_74);
+  CString::__1CString__QAE_XZ(&CStack_74);
   uVar2 = (*pTVar1)(0x6561646d);
   iVar5 = *(int *)CONCAT31(extraout_var_06,uVar2);
   (**(code **)(iVar5 + 0xc))();
@@ -1053,13 +1054,13 @@ LAB_004ae3ee:
   iStack_50 = CONCAT31(iStack_50._1_3_,8);
   (**(code **)(iVar5 + 0x1c8))(puVar8,1);
   cVar9 = (char)((uint)puVar8 >> 0x18);
-  CString::~CString(&CStack_80);
+  CString::__1CString__QAE_XZ(&CStack_80);
   uVar2 = (*pTVar1)();
   iVar5 = *(int *)CONCAT31(extraout_var_07,uVar2);
   (**(code **)(iVar5 + 0xc))();
   RefreshMapContextSelectionPanelAndInfoLabels_Impl(&puStack_84);
   (**(code **)(iVar5 + 0x1c8))(&puStack_84,1);
-  CString::~CString(&CStack_8c);
+  CString::__1CString__QAE_XZ(&CStack_8c);
   uVar2 = (*pTVar1)(0x70726576);
   iVar5 = *(int *)CONCAT31(extraout_var_08,uVar2);
   (**(code **)(iVar5 + 0xc))();
@@ -1086,7 +1087,7 @@ LAB_004ae3ee:
   (**(code **)(iVar5 + 0xa4))(uVar7,1);
   iStack_4 = 0xffffffff;
   iStack_50 = 0x4ae760;
-  CString::~CString(&CStack_28);
+  CString::__1CString__QAE_XZ(&CStack_28);
 LAB_004ae762:
   *unaff_FS_OFFSET = local_c;
   return;
@@ -1100,7 +1101,7 @@ void TBattleReportView::OrphanLeaf_NoCall_Ins05_004f6820()
 
 {
   short sVar1;
-  
+
   sVar1 = 0;
   do {
     sVar1 = sVar1 + 1;
@@ -1118,7 +1119,7 @@ TBattleReportView::WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080
 
 {
   undefined *unaff_ESI;
-  
+
   WrapperFor_InvalidateCityDialogRectRegion_At004f6d90((undefined *)0x5,unaff_ESI);
   (**(code **)(**(int **)&this->field_0xb4 + 0x1a4))(param_1,param_2,param_3);
   return;

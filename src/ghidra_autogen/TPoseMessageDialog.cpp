@@ -101,7 +101,7 @@ TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(TSimMgr *param_1,
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634baf;
   local_c = *unaff_FS_OFFSET;
@@ -135,7 +135,7 @@ TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(TSimMgr *param_1,
     iVar34 = -1;
 LAB_00546c48:
     if (iVar34 == -1) {
-      pTVar26 = (TCommand *)AllocateWithFallbackHandler();
+      pTVar26 = (TCommand *)__2_YAPAXI_Z();
       local_4 = 0x12;
       local_1c4.m_pchData = (char *)pTVar26;
       if (pTVar26 != (TCommand *)0x0) {
@@ -250,7 +250,7 @@ LAB_00546c48:
         UiRuntimeContext::GetActiveNationId();
         local_120 = param_2[1];
         local_f = 0xff;
-        CString::CString(&local_1d0);
+        CString::__0CString__QAE_XZ(&local_1d0);
         local_4 = 2;
         LoadUiStringResourceByGroupAndIndex();
         uVar37 = 0xffffffff;
@@ -278,7 +278,7 @@ LAB_00546c48:
         }
         EnqueueOrSendTurnEventPacketToNation();
         local_4 = 0xffffffff;
-        CString::~CString(&local_1d0);
+        CString::__1CString__QAE_XZ(&local_1d0);
         uVar17 = 1;
       }
       break;
@@ -415,18 +415,19 @@ LAB_00546c48:
       pcVar38 = (char *)param_2[7];
       iVar35 = (int)(char)cVar2;
       local_1d4.m_pchData = pcVar38;
-      CString::CString(&local_154,(char *)(param_2 + 8));
+      CString::__0CString__QAE_PBD_Z(&local_154,(char *)(param_2 + 8));
       CVar46.m_pchData = local_1d0.m_pchData;
       local_4 = 3;
-      CString::AssignFromPtr((CString *)(local_1d0.m_pchData + iVar35 * 4 + 0x78),&local_154);
+      CString::__4CString__QAEABV0_ABV0__Z
+                ((CString *)(local_1d0.m_pchData + iVar35 * 4 + 0x78),&local_154);
       local_4 = 0xffffffff;
-      CString::~CString(&local_154);
-      CString::CString(&local_14c,(char *)((int)param_2 + 0x41));
+      CString::__1CString__QAE_XZ(&local_154);
+      CString::__0CString__QAE_PBD_Z(&local_14c,(char *)((int)param_2 + 0x41));
       this = (CString *)(CVar46.m_pchData + iVar35 * 4 + 0x94);
       local_4 = 4;
-      CString::AssignFromPtr(this,&local_14c);
+      CString::__4CString__QAEABV0_ABV0__Z(this,&local_14c);
       local_4 = 0xffffffff;
-      CString::~CString(&local_14c);
+      CString::__1CString__QAE_XZ(&local_14c);
                     /* WARNING: Load size is inaccurate */
       local_1bc.m_pchData = CVar46.m_pchData[iVar35 * 4 + 0x48];
       *(char **)(CVar46.m_pchData + iVar35 * 4 + 0x48) = pcVar38;
@@ -438,14 +439,14 @@ LAB_00546c48:
       else {
         local_1c9 = 0;
       }
-      CString::CString(&local_1c0);
+      CString::__0CString__QAE_XZ(&local_1c0);
       local_4 = 5;
       if (pcVar38 == (char *)0x0) {
         LoadUiStringResourceByGroupAndIndex();
         *(undefined4 *)(CVar46.m_pchData + iVar35 * 4 + 0xbc) = 0x756e6173;
       }
       else {
-        CString::AssignFromPtr(&local_1c0,this);
+        CString::__4CString__QAEABV0_ABV0__Z(&local_1c0,this);
         if ((*(int *)(CVar46.m_pchData + 0xd8) == 0x676f696e) &&
            (sVar16 = UiRuntimeContext::GetActiveNationId(), sVar16 != -1)) {
           bVar9 = 1;
@@ -455,10 +456,11 @@ LAB_00546c48:
         }
         *(uint *)(CVar46.m_pchData + iVar35 * 4 + 0xbc) = (-(uint)bVar9 & 0xf0100f00) + 0x72656479;
       }
-      CString::AssignFromPtr(this,&local_1c0);
-      CString::AssignFromPtr((CString *)(CVar46.m_pchData + iVar35 * 4 + 0x78),this);
+      CString::__4CString__QAEABV0_ABV0__Z(this,&local_1c0);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)(CVar46.m_pchData + iVar35 * 4 + 0x78),this);
       this_00 = *(CObject **)(CVar46.m_pchData + 0x40);
-      if ((this_00 == (CObject *)0x0) || (iVar35 = CObject::IsKindOf(this_00), iVar35 == 0)) {
+      if ((this_00 == (CObject *)0x0) ||
+         (iVar35 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(this_00), iVar35 == 0)) {
         iVar35 = 0;
       }
       else {
@@ -528,11 +530,12 @@ LAB_00546c48:
           piVar25 = (int *)(*(code *)local_1d0.m_pchData)();
           iVar35 = *piVar25;
           (**(code **)(iVar35 + 0xc))();
-          CString::CString((CString *)&stack0xfffffe28);
+          CString::__0CString__QAE_XZ((CString *)&stack0xfffffe28);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,8);
           LoadUiStringResourceByGroupAndIndex();
           if (bVar10) {
-            CString::AssignFromPtr((CString *)(piVar25 + 0x25),(CString *)&stack0xfffffe28);
+            CString::__4CString__QAEABV0_ABV0__Z
+                      ((CString *)(piVar25 + 0x25),(CString *)&stack0xfffffe28);
             (**(code **)(iVar35 + 0xe4))();
           }
           (**(code **)(iVar35 + 0xa8))();
@@ -549,13 +552,13 @@ LAB_00546c48:
           (*pCVar5[1].slot_0x04)();
           (*pCVar5[0x39].SetForeignMinisterReadyFlag14)();
           local_4 = CONCAT31(local_4._1_3_,6);
-          CString::~CString(&local_1d4);
+          CString::__1CString__QAE_XZ(&local_1d4);
         }
         local_4 = CONCAT31(local_4._1_3_,5);
-        CString::~CString(&local_1c4);
+        CString::__1CString__QAE_XZ(&local_1c4);
       }
       local_4 = 0xffffffff;
-      CString::~CString(&local_1c0);
+      CString::__1CString__QAE_XZ(&local_1c0);
       uVar17 = 1;
       break;
     }
@@ -655,16 +658,16 @@ LAB_00545aa0:
          (cVar13 = (*(*ppTVar39)->vftable->ReturnFalseNationStateCapabilityFlagA0)(), cVar13 != '\0'
          )) {
         (*(*ppTVar39)->vftable->NoOpNationSelectedRegionAndMapCellLabelHook)();
-        CString::CString(&CStack_150,pcVar38);
+        CString::__0CString__QAE_PBD_Z(&CStack_150,pcVar38);
         local_4 = 0;
         SetNationDisplayNameAndLocalizationSlotRef();
         local_4 = 0xffffffff;
-        CString::~CString(&CStack_150);
-        CString::CString(&CStack_148,pcVar38);
+        CString::__1CString__QAE_XZ(&CStack_150);
+        CString::__0CString__QAE_PBD_Z(&CStack_148,pcVar38);
         local_4 = 1;
-        CString::AssignFromPtr((CString *)&(*ppTVar39)->field_0x8,&CStack_148);
+        CString::__4CString__QAEABV0_ABV0__Z((CString *)&(*ppTVar39)->field_0x8,&CStack_148);
         local_4 = 0xffffffff;
-        CString::~CString(&CStack_148);
+        CString::__1CString__QAE_XZ(&CStack_148);
         if (*(short *)&g_pLocalizationTable->field_0x114 == 0) {
           (*g_pGlobalMapState->vftable->SetTileTransportFlagsTo0x37AndRefreshNeighbors)();
         }
@@ -705,11 +708,11 @@ LAB_005464fd:
     CVar46.m_pchData = local_1d4.m_pchData;
     pTVar36 = (TCommandVtbl *)(int)*(char *)((int)param_2 + 0x119);
     local_1c8.m_pchData = (char *)pTVar36;
-    CString::CString(&local_1bc,(char *)(param_2 + 6));
+    CString::__0CString__QAE_PBD_Z(&local_1bc,(char *)(param_2 + 6));
     local_4 = 9;
-    CString::CString(&local_1c0);
+    CString::__0CString__QAE_XZ(&local_1c0);
     local_4._0_1_ = 10;
-    CString::CString(&local_1d0);
+    CString::__0CString__QAE_XZ(&local_1d0);
     local_4 = CONCAT31(local_4._1_3_,0xb);
     if ((pTVar36 == (TCommandVtbl *)0xffffffff) || (pTVar36 == (TCommandVtbl *)CVar46.m_pchData)) {
       BuildUiMessageTextFromBracketTemplate();
@@ -784,7 +787,7 @@ LAB_005464fd:
     (**(code **)(iVar35 + 0xa0))();
     (**(code **)(iVar35 + 0x1c))();
     if (iVar34 == 0x72737670) {
-      pTVar26 = (TCommand *)AllocateWithFallbackHandler();
+      pTVar26 = (TCommand *)__2_YAPAXI_Z();
       local_4._0_1_ = 0xc;
       local_1c4.m_pchData = (char *)pTVar26;
       if (pTVar26 == (TCommand *)0x0) {
@@ -801,11 +804,11 @@ LAB_005464fd:
     }
     local_4._0_1_ = 10;
     g_pGameFlowState->field_0x68 = local_1c9;
-    CString::~CString(&local_1d0);
+    CString::__1CString__QAE_XZ(&local_1d0);
     local_4 = CONCAT31(local_4._1_3_,9);
-    CString::~CString(&local_1c0);
+    CString::__1CString__QAE_XZ(&local_1c0);
     local_4 = 0xffffffff;
-    CString::~CString(&local_1bc);
+    CString::__1CString__QAE_XZ(&local_1bc);
     uVar17 = 1;
     break;
   case 0xd:
@@ -815,11 +818,11 @@ LAB_005464fd:
   case 0xe:
     SetStateCodeAndUpdateZeroOrOutOfRangeFlag();
     g_pLocalizationTable->field_0x68 = *(undefined1 *)((int)param_2 + 0x65);
-    CString::CString(local_144,(char *)((int)param_2 + 0x3a));
+    CString::__0CString__QAE_PBD_Z(local_144,(char *)((int)param_2 + 0x3a));
     local_4 = 0xd;
-    CString::AssignFromPtr((CString *)&param_1->field_0x74,local_144);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&param_1->field_0x74,local_144);
     local_4 = 0xffffffff;
-    CString::~CString(local_144);
+    CString::__1CString__QAE_XZ(local_144);
     uVar37 = param_2[0x18];
     *(uint *)&param_1->field_0xe0 = uVar37;
     *(undefined4 *)&param_1->field_0x64 = param_2[0x17];
@@ -827,13 +830,13 @@ LAB_005464fd:
     if (uVar37 == 0x6c6f6164) {
       cVar13 = BuildSaveSlotPathAndProbeMetadata();
       if (cVar13 == '\0') {
-        CString::CString(&local_1d4);
+        CString::__0CString__QAE_XZ(&local_1d4);
         local_4 = 0xe;
         LoadUiStringResourceByGroupAndIndex();
         local_1c4.m_pchData = &stack0xfffffe0c;
         AssignStringSharedRefAndReturnThis();
         DispatchLocalizedUiMessageWithTemplateA13A0();
-        pTVar26 = (TCommand *)AllocateWithFallbackHandler();
+        pTVar26 = (TCommand *)__2_YAPAXI_Z();
         local_4._0_1_ = 0xf;
         local_1c4.m_pchData = (char *)pTVar26;
         if (pTVar26 != (TCommand *)0x0) {
@@ -844,7 +847,7 @@ LAB_005464fd:
         InitializeRangePairAndResetCursor();
         (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
         local_4 = 0xffffffff;
-        CString::~CString(&local_1d4);
+        CString::__1CString__QAE_XZ(&local_1d4);
         uVar17 = 1;
       }
       else {
@@ -866,13 +869,13 @@ LAB_005464fd:
                          ((TOcean *)g_pLocalizationTable,
                           (short)*(undefined4 *)&param_1->field_0xe0 + -0x6e30);
       if (cVar13 == '\0') {
-        CString::CString(&local_1d4);
+        CString::__0CString__QAE_XZ(&local_1d4);
         local_4 = 0x10;
         LoadUiStringResourceByGroupAndIndex();
         local_1c4.m_pchData = &stack0xfffffe0c;
         AssignStringSharedRefAndReturnThis();
         DispatchLocalizedUiMessageWithTemplateA13A0();
-        pTVar26 = (TCommand *)AllocateWithFallbackHandler();
+        pTVar26 = (TCommand *)__2_YAPAXI_Z();
         local_4._0_1_ = 0x11;
         local_1c4.m_pchData = (char *)pTVar26;
         if (pTVar26 != (TCommand *)0x0) {
@@ -883,13 +886,14 @@ LAB_005464fd:
         InitializeRangePairAndResetCursor();
         (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
         local_4 = 0xffffffff;
-        CString::~CString(&local_1d4);
+        CString::__1CString__QAE_XZ(&local_1d4);
         uVar17 = 1;
         break;
       }
     }
     if ((*(CObject **)&param_1->field_0x40 == (CObject *)0x0) ||
-       (iVar35 = CObject::IsKindOf(*(CObject **)&param_1->field_0x40), iVar35 == 0)) {
+       (iVar35 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z
+                           (*(CObject **)&param_1->field_0x40), iVar35 == 0)) {
       RefreshMapAndMessageControlsForCurrentContext();
       uVar17 = 1;
     }
@@ -1131,7 +1135,7 @@ LAB_005464fd:
   case 0x1c:
     (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)();
     if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-      local_1c4.m_pchData = (char *)AllocateWithFallbackHandler();
+      local_1c4.m_pchData = (char *)__2_YAPAXI_Z();
       local_4 = 0x14;
       if ((TNextTradeCommand *)local_1c4.m_pchData != (TNextTradeCommand *)0x0) {
         TNextTradeCommand::ConstructTNextTradeCommandBaseState
@@ -1194,7 +1198,7 @@ LAB_005464fd:
         }
       }
     }
-    pTVar26 = (TCommand *)AllocateWithFallbackHandler();
+    pTVar26 = (TCommand *)__2_YAPAXI_Z();
     local_4 = 0x13;
     local_1c4.m_pchData = (char *)pTVar26;
     if (pTVar26 != (TCommand *)0x0) {
@@ -1211,11 +1215,11 @@ LAB_005464fd:
       if (uVar37 == 0x61636564) {
         sVar16 = UiRuntimeContext::GetActiveNationId();
         iVar35 = param_2[7];
-        CString::CString(&local_1d0);
+        CString::__0CString__QAE_XZ(&local_1d0);
         local_4 = 0x1f;
-        CString::CString(&local_1c8);
+        CString::__0CString__QAE_XZ(&local_1c8);
         local_4._0_1_ = 0x20;
-        CString::CString(&local_1d4);
+        CString::__0CString__QAE_XZ(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x21);
         LoadUiStringResourceByGroupAndIndex();
         FormatOverlayTerrainLabelText();
@@ -1225,20 +1229,20 @@ LAB_005464fd:
           CreateAndQueueTurnEventPacketTagGWEN();
         }
         local_4._0_1_ = 0x20;
-        CString::~CString(&local_1d4);
+        CString::__1CString__QAE_XZ(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x1f);
-        CString::~CString(&local_1c8);
+        CString::__1CString__QAE_XZ(&local_1c8);
         local_4 = 0xffffffff;
-        CString::~CString(&local_1d0);
+        CString::__1CString__QAE_XZ(&local_1d0);
         uVar17 = 1;
         break;
       }
       if (uVar37 == 0x61626469) {
-        CString::CString(&local_1d0);
+        CString::__0CString__QAE_XZ(&local_1d0);
         local_4 = 0x1c;
-        CString::CString(&local_1c8);
+        CString::__0CString__QAE_XZ(&local_1c8);
         local_4._0_1_ = 0x1d;
-        CString::CString(&local_1d4);
+        CString::__0CString__QAE_XZ(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x1e);
         LoadUiStringResourceByGroupAndIndex();
         FormatOverlayTerrainLabelText();
@@ -1248,11 +1252,11 @@ LAB_005464fd:
           ReplaceNationStateForSlotAndRefreshStatus();
         }
         local_4._0_1_ = 0x1d;
-        CString::~CString(&local_1d4);
+        CString::__1CString__QAE_XZ(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x1c);
-        CString::~CString(&local_1c8);
+        CString::__1CString__QAE_XZ(&local_1c8);
         local_4 = 0xffffffff;
-        CString::~CString(&local_1d0);
+        CString::__1CString__QAE_XZ(&local_1d0);
         uVar17 = 1;
         break;
       }
@@ -1264,7 +1268,7 @@ LAB_005464fd:
         break;
       }
       if (uVar37 == 0x6367616d) {
-        pTVar26 = (TCommand *)AllocateWithFallbackHandler();
+        pTVar26 = (TCommand *)__2_YAPAXI_Z();
         local_4 = 0x25;
         local_1c4.m_pchData = (char *)pTVar26;
         if (pTVar26 != (TCommand *)0x0) {
@@ -1274,12 +1278,12 @@ LAB_005464fd:
         local_4 = 0xffffffff;
         InitializeRangePairAndResetCursor();
         (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
-        CString::CString(&local_1d4);
+        CString::__0CString__QAE_XZ(&local_1d4);
         local_4 = 0x26;
         LoadUiStringResourceByGroupAndIndex();
         CreateModalMessageCommandAndQueue();
         local_4 = 0xffffffff;
-        CString::~CString(&local_1d4);
+        CString::__1CString__QAE_XZ(&local_1d4);
         uVar17 = 1;
         break;
       }
@@ -1291,11 +1295,11 @@ LAB_005464fd:
         break;
       }
       if (uVar37 == 0x666f6666) {
-        CString::CString(&local_1d4);
+        CString::__0CString__QAE_XZ(&local_1d4);
         local_4 = 0x1a;
         LoadUiStringResourceByGroupAndIndex();
         CreateModalMessageCommandAndQueue();
-        pTVar26 = (TCommand *)AllocateWithFallbackHandler();
+        pTVar26 = (TCommand *)__2_YAPAXI_Z();
         local_4._0_1_ = 0x1b;
         local_1c4.m_pchData = (char *)pTVar26;
         if (pTVar26 != (TCommand *)0x0) {
@@ -1306,7 +1310,7 @@ LAB_005464fd:
         InitializeRangePairAndResetCursor();
         (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
         local_4 = 0xffffffff;
-        CString::~CString(&local_1d4);
+        CString::__1CString__QAE_XZ(&local_1d4);
         uVar17 = 1;
         break;
       }
@@ -1321,11 +1325,11 @@ LAB_005464fd:
         uVar37 = param_2[7];
         sVar16 = UiRuntimeContext::GetActiveNationId();
         local_1c9 = (uVar37 & 0xff) == (int)sVar16;
-        CString::CString(&local_1d0);
+        CString::__0CString__QAE_XZ(&local_1d0);
         local_4 = 0x22;
-        CString::CString(&local_1c8);
+        CString::__0CString__QAE_XZ(&local_1c8);
         local_4._0_1_ = 0x23;
-        CString::CString(&local_1d4);
+        CString::__0CString__QAE_XZ(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x24);
         LoadUiStringResourceByGroupAndIndex();
         FormatOverlayTerrainLabelText();
@@ -1335,11 +1339,11 @@ LAB_005464fd:
           CreateAndQueueTurnEventPacketTagGWEN();
         }
         local_4._0_1_ = 0x23;
-        CString::~CString(&local_1d4);
+        CString::__1CString__QAE_XZ(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x22);
-        CString::~CString(&local_1c8);
+        CString::__1CString__QAE_XZ(&local_1c8);
         local_4 = 0xffffffff;
-        CString::~CString(&local_1d0);
+        CString::__1CString__QAE_XZ(&local_1d0);
         uVar17 = 1;
         break;
       }
@@ -1347,12 +1351,12 @@ LAB_005464fd:
     else if (uVar37 < 0x71756975) {
       if ((uVar37 == 0x71756974) || (uVar37 == 0x6e657767)) {
         if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
-          CString::CString(&local_1d0);
+          CString::__0CString__QAE_XZ(&local_1d0);
           local_4 = 0x16;
           LoadUiStringResourceByGroupAndIndex();
           CreateModalMessageCommandAndQueue();
           local_4 = 0xffffffff;
-          CString::~CString(&local_1d0);
+          CString::__1CString__QAE_XZ(&local_1d0);
         }
         if ((*(int *)&g_pLocalizationTable->field_0x44 == 2) || (param_2[6] == 0x6e657767)) {
           CreateAndQueueTurnEventPacketTagGWEN();
@@ -1441,12 +1445,12 @@ LAB_005464fd:
           }
           local_19c = uVar17;
           EnqueueOrSendTurnEventPacketToNation();
-          CString::CString(&local_1c8);
+          CString::__0CString__QAE_XZ(&local_1c8);
           local_4 = 0x17;
-          CString::CString(&local_1d4);
+          CString::__0CString__QAE_XZ(&local_1d4);
           local_4._0_1_ = 0x18;
           LoadUiStringResourceByGroupAndIndex();
-          CString::StringSharedRef_AssignFromPtr(&local_1bc,(CString *)local_1d0.m_pchData);
+          CString::__0CString__QAE_ABV0__Z(&local_1bc,(CString *)local_1d0.m_pchData);
           local_4 = CONCAT31(local_4._1_3_,0x19);
           scanBracketExpressions(g_pLocalizationTable,&local_1c8,local_1d4.m_pchData);
           local_118 = 0x74696d65;
@@ -1485,11 +1489,11 @@ LAB_005464fd:
           local_10 = -1 - ('\x01' << (sbyte)uVar37);
           EnqueueOrSendTurnEventPacketToNation();
           local_4._0_1_ = 0x18;
-          CString::~CString(&local_1bc);
+          CString::__1CString__QAE_XZ(&local_1bc);
           local_4 = CONCAT31(local_4._1_3_,0x17);
-          CString::~CString(&local_1d4);
+          CString::__1CString__QAE_XZ(&local_1d4);
           local_4 = 0xffffffff;
-          CString::~CString(&local_1c8);
+          CString::__1CString__QAE_XZ(&local_1c8);
           uVar17 = 1;
         }
         else {
@@ -1675,9 +1679,9 @@ LAB_0054833b:
     DAT_00695278 = 0x6e657458;
     hMem = GlobalAlloc(2,param_2[3]);
     GlobalLock(hMem);
-    MoveMemoryOverlapSafe();
+    _memmove();
     GlobalUnlock(hMem);
-    local_1c4.m_pchData = (char *)AllocateWithFallbackHandler();
+    local_1c4.m_pchData = (char *)__2_YAPAXI_Z();
     local_4 = 0x15;
     if ((THandleStream *)local_1c4.m_pchData == (THandleStream *)0x0) {
       piVar25 = (int *)0x0;
@@ -1916,7 +1920,7 @@ TPoseMessageDialog * TPoseMessageDialog::OrphanCallChain_C1_I17_00487470(byte pa
 {
   DestructPoseMessageDialogTurnEventPacket();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

@@ -12,7 +12,7 @@ CFrameWnd * CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0(byte param_
 {
   CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,7 +29,7 @@ void CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e7c8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -42,7 +42,7 @@ void CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482
   *(undefined4 *)&this->field_0x10 = 0;
   *(undefined4 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0x4 = 0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   *(undefined4 *)&this->field_0x14 = 0;
   this->vftable = (CFrameWndVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -65,18 +65,19 @@ void CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CArchive *param_1)
   undefined4 *puVar7;
   undefined4 *puVar8;
   undefined4 local_18 [6];
-  
+
   if ((~param_1->m_nMode & 1U) == 0) {
-    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
+    for (iVar2 = _ReadCount_CArchive__QAEKXZ(); iVar2 != 0; iVar2 = iVar2 + -1) {
       if ((~param_1->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(param_1,(int)local_18,0x18);
+        CArchive::_Read_CArchive__QAEIPAXI_Z(param_1,(int)local_18,0x18);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)param_1,(int)local_18,0x18);
+        TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)param_1,(int)local_18,0x18);
       }
       uVar1 = *(undefined4 *)&this->field_0x8;
       if (*(int *)&this->field_0x10 == 0) {
-        iVar3 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0x20);
+        iVar3 = _Create_CPlex__SGPAU1_AAPAU1_II_Z
+                          (&this->field_0x14,*(undefined4 *)&this->field_0x18,0x20);
         iVar5 = *(int *)&this->field_0x18;
         puVar4 = (undefined4 *)(iVar5 * 0x20 + -0x1c + iVar3);
         if (-1 < iVar5 + -1) {
@@ -115,16 +116,16 @@ void CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CArchive *param_1)
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)param_1,
-                        *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)&this->field_0xc);
+    TNetMgr::_WriteCount_CArchive__QAEXK_Z
+              ((TNetMgr *)param_1,*(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)&this->field_0xc);
     piVar6 = *(int **)&this->field_0x4;
     if (piVar6 != (int *)0x0) {
       do {
         if ((~param_1->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(param_1,(int)(piVar6 + 2),0x18);
+          CArchive::_Read_CArchive__QAEIPAXI_Z(param_1,(int)(piVar6 + 2),0x18);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)param_1,(int)(piVar6 + 2),0x18);
+          TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)param_1,(int)(piVar6 + 2),0x18);
         }
         piVar6 = (int *)*piVar6;
       } while (piVar6 != (int *)0x0);
@@ -143,7 +144,7 @@ CFrameWnd * CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0(byte param_
 {
   CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -160,7 +161,7 @@ void CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00484
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e878;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -173,7 +174,7 @@ void CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00484
   *(undefined4 *)&this->field_0x10 = 0;
   *(undefined4 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0x4 = 0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   *(undefined4 *)&this->field_0x14 = 0;
   this->vftable = (CFrameWndVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -181,8 +182,8 @@ void CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00484
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006074F9
-// GHIDRA_NAME CFrameWnd::ShowWindow
-// GHIDRA_PROTO undefined __thiscall ShowWindow(int param_1)
+// GHIDRA_NAME CFrameWnd::?ShowWindow@CWnd@@QAEHH@Z
+// GHIDRA_PROTO undefined __thiscall ?ShowWindow@CWnd@@QAEHH@Z(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards to site virtual Show handler (+0xA8).
 // GHIDRA_COMMENT_END
@@ -190,11 +191,11 @@ void CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00484
 /* Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards
    to site virtual Show handler (+0xA8). */
 
-void CFrameWnd::ShowWindow(int param_1)
+void CFrameWnd::_ShowWindow_CWnd__QAEHH_Z(int param_1)
 
 {
   if (this->m_pCtrlSite == (int *)0x0) {
-    ::ShowWindow(this->m_hWnd,param_1);
+    ShowWindow(this->m_hWnd,param_1);
   }
   else {
     (**(code **)(*(int *)this->m_pCtrlSite + 0xa8))(param_1);
@@ -203,8 +204,8 @@ void CFrameWnd::ShowWindow(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061419F
-// GHIDRA_NAME CFrameWnd::OnEndPrintPreview
-// GHIDRA_PROTO undefined __thiscall OnEndPrintPreview(int * param_1)
+// GHIDRA_NAME CFrameWnd::?OnEndPrintPreview@CView@@MAEXPAVCDC@@PAUCPrintInfo@@UtagPOINT@@PAVCPreviewView@@@Z
+// GHIDRA_PROTO undefined __thiscall ?OnEndPrintPreview@CView@@MAEXPAVCDC@@PAUCPrintInfo@@UtagPOINT@@PAVCPreviewView@@@Z(int * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Activates target view in frame context, updates active view focus/state, sends WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update.
 // GHIDRA_COMMENT_END
@@ -212,7 +213,9 @@ void CFrameWnd::ShowWindow(int param_1)
 /* Activates target view in frame context, updates active view focus/state, sends
    WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update. */
 
-void CFrameWnd::OnEndPrintPreview(int *param_1)
+void __thiscall
+CFrameWnd::_OnEndPrintPreview_CView__MAEXPAVCDC__PAUCPrintInfo__UtagPOINT__PAVCPreviewView___Z
+          (CFrameWnd *this,int *param_1)
 
 {
   CFrameWndVtbl *pCVar1;
@@ -222,23 +225,24 @@ void CFrameWnd::OnEndPrintPreview(int *param_1)
   CWinThread *pCVar4;
   CFrameWnd *pCVar5;
   int *in_stack_00000014;
-  
+
   if ((int *)in_stack_00000014[0x1c] != (int *)0x0) {
     (**(code **)(*(int *)in_stack_00000014[0x1c] + 0x108))(param_1);
   }
-  uVar2 = GetParentFrame();
-  this_00 = (CFrameWnd *)AfxDynamicDownCast(&classRuntimeClass,uVar2);
+  uVar2 = _GetParentFrame_CWnd__QBEPAVCFrameWnd__XZ();
+  this_00 = (CFrameWnd *)
+            _AfxDynamicDownCast__YAPAVCObject__PAUCRuntimeClass__PAV1__Z(&classRuntimeClass,uVar2);
   if (this_00 != (CFrameWnd *)0x0) {
     BVar3 = IsIconic(this_00->m_hWnd);
     if (BVar3 == 0) goto LAB_006141f0;
   }
-  pCVar4 = AfxGetThread();
+  pCVar4 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   this_00 = *(CFrameWnd **)(pCVar4 + 0x1c);
 LAB_006141f0:
   pCVar1 = this_00->vftable;
   (*pCVar1[0x36].OnEndPrintPreview)(0,in_stack_00000014[0x22]);
-  SetActiveView(this_00,*(CView **)(in_stack_00000014[0x22] + 0xc),1);
-  pCVar5 = (CFrameWnd *)GetParentFrame();
+  _SetActiveView_CFrameWnd__QAEXPAVCView__H_Z(this_00,*(CView **)(in_stack_00000014[0x22] + 0xc),1);
+  pCVar5 = (CFrameWnd *)_GetParentFrame_CWnd__QBEPAVCFrameWnd__XZ();
   if (this_00 != pCVar5) {
     (*this->vftable[0x3b].OnEndPrintPreview)(1,this,this);
   }
@@ -249,33 +253,175 @@ LAB_006141f0:
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0061DDC2
-// GHIDRA_NAME CFrameWnd::OnEnterIdle_61ddc2
-// GHIDRA_PROTO undefined __thiscall OnEnterIdle_61ddc2(int param_1, undefined4 param_2)
+// GHIDRA_FUNCTION IMPERIALISM 0x006194DF
+// GHIDRA_NAME CFrameWnd::?CanEnterHelpMode@CFrameWnd@@QAEHXZ
+// GHIDRA_PROTO int __thiscall ?CanEnterHelpMode@CFrameWnd@@QAEHXZ(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CFrameWnd::CanEnterHelpMode(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
 
-void CFrameWnd::OnEnterIdle_61ddc2(int param_1, undefined4 param_2)
+/* Library Function - Single Match
+    public: int __thiscall CFrameWnd::CanEnterHelpMode(void)
+
+   Library: nafxcw retail msvc500:static */
+
+int CFrameWnd::_CanEnterHelpMode_CFrameWnd__QAEHXZ()
 
 {
-  OnEnterIdle(param_1,param_2);
+  undefined uVar1;
+  int iVar2;
+  undefined3 extraout_var;
+  CFrameWnd *local_8;
+  CFrameWnd *pCStack_4;
+
+  local_8 = this;
+  pCStack_4 = this;
+  if ((DAT_006a7d44 == (HCURSOR)0x0) &&
+     (DAT_006a7d44 = LoadCursorA((HINSTANCE)0x0,(LPCSTR)0x7f8b), DAT_006a7d44 == (HCURSOR)0x0)) {
+    iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    DAT_006a7d44 = LoadCursorA(*(HINSTANCE *)(iVar2 + 0xc),(LPCSTR)0x7901);
+    if (DAT_006a7d44 == (HCURSOR)0x0) {
+      return 0;
+    }
+  }
+  uVar1 = (*this->vftable[5].OnEndPrintPreview)(0xe145,0,0,&local_8);
+  return CONCAT31(extraout_var,uVar1);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061D8A2
+// GHIDRA_NAME CFrameWnd::?SetActiveView@CFrameWnd@@QAEXPAVCView@@H@Z
+// GHIDRA_PROTO void __thiscall ?SetActiveView@CFrameWnd@@QAEXPAVCView@@H@Z(CView * param_1, int param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CFrameWnd::SetActiveView(class CView *,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CFrameWnd::SetActiveView(class CView *,int)
+
+   Library: nafxcw retail msvc500:static */
+
+void CFrameWnd::_SetActiveView_CFrameWnd__QAEXPAVCView__H_Z(CView *param_1, int param_2)
+
+{
+  CView *pCVar1;
+
+  pCVar1 = *(CView **)&this->field_0x98;
+  if (param_1 != pCVar1) {
+    *(undefined4 *)&this->field_0x98 = 0;
+    if (pCVar1 != (CView *)0x0) {
+      (**(code **)(*(int *)pCVar1 + 0xec))(0,param_1,pCVar1);
+    }
+    if (((*(int *)&this->field_0x98 == 0) &&
+        (*(CView **)&this->field_0x98 = param_1, param_1 != (CView *)0x0)) && (param_2 != 0)) {
+      (**(code **)(*(int *)param_1 + 0xec))(1,param_1,pCVar1);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061DDC2
+// GHIDRA_NAME CFrameWnd::?OnEnterIdle@CFrameWnd@@IAEXIPAVCWnd@@@Z
+// GHIDRA_PROTO undefined __thiscall ?OnEnterIdle@CFrameWnd@@IAEXIPAVCWnd@@@Z(int param_1, undefined4 param_2)
+
+void CFrameWnd::_OnEnterIdle_CFrameWnd__IAEXIPAVCWnd___Z(int param_1, undefined4 param_2)
+
+{
+  _OnEnterIdle_CWnd__IAEXIPAV1__Z(param_1,param_2);
   if ((param_1 == 2) && (*(int *)&this->field_0x90 != *(int *)&this->field_0x94)) {
-    SetMessageText(*(int *)&this->field_0x90);
+    _SetMessageText_CFrameWnd__QAEXI_Z(*(int *)&this->field_0x90);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061DE0A
-// GHIDRA_NAME CFrameWnd::SetMessageText
-// GHIDRA_PROTO undefined SetMessageText()
+// GHIDRA_NAME CFrameWnd::?SetMessageText@CFrameWnd@@QAEXI@Z
+// GHIDRA_PROTO undefined ?SetMessageText@CFrameWnd@@QAEXI@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sends WM_SETMESSAGESTRING-like message 0x362 with wParam to this->HWND.
 // GHIDRA_COMMENT_END
 
 /* Sends WM_SETMESSAGESTRING-like message 0x362 with wParam to this->HWND. */
 
-void __thiscall CFrameWnd::SetMessageText(int param_1,WPARAM param_2)
+void __thiscall CFrameWnd::_SetMessageText_CFrameWnd__QAEXI_Z(int param_1,WPARAM param_2)
 
 {
   SendMessageA(*(HWND *)(param_1 + 0x1c),0x362,param_2,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061E0BD
+// GHIDRA_NAME CFrameWnd::?OnUpdateFrameTitle@CFrameWnd@@UAEXH@Z
+// GHIDRA_PROTO void __thiscall ?OnUpdateFrameTitle@CFrameWnd@@UAEXH@Z(int param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual void __thiscall CFrameWnd::OnUpdateFrameTitle(int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual void __thiscall CFrameWnd::OnUpdateFrameTitle(int)
+
+   Library: nafxcw retail msvc500:static */
+
+void CFrameWnd::_OnUpdateFrameTitle_CFrameWnd__UAEXH_Z(int param_1)
+
+{
+  undefined uVar1;
+  uint uVar2;
+  int iVar3;
+  undefined3 extraout_var;
+  undefined4 uVar4;
+
+  uVar2 = _GetStyle_CWnd__QBEKXZ();
+  if ((uVar2 & 0x8000) != 0) {
+    if ((*(int **)&this->field_0x68 != (int *)0x0) &&
+       (iVar3 = (**(code **)(**(int **)&this->field_0x68 + 0x70))(), iVar3 != 0)) {
+      return;
+    }
+    uVar1 = (*this->vftable[0x31].OnEndPrintPreview)();
+    if ((param_1 == 0) || (CONCAT31(extraout_var,uVar1) == 0)) {
+      uVar4 = 0;
+    }
+    else {
+      uVar4 = *(undefined4 *)(CONCAT31(extraout_var,uVar1) + 0x1c);
+    }
+    _UpdateFrameTitleForDocument_CFrameWnd__IAEXPBD_Z(uVar4);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061E733
+// GHIDRA_NAME CFrameWnd::?BringToTop@CFrameWnd@@IAEXH@Z
+// GHIDRA_PROTO void __thiscall ?BringToTop@CFrameWnd@@IAEXH@Z(int param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  protected: void __thiscall CFrameWnd::BringToTop(int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    protected: void __thiscall CFrameWnd::BringToTop(int)
+
+   Library: nafxcw retail msvc500:static */
+
+void CFrameWnd::_BringToTop_CFrameWnd__IAEXH_Z(int param_1)
+
+{
+  HWND hWnd;
+
+  if ((((param_1 != 0) && (param_1 != 6)) && (param_1 != 7)) && ((param_1 != 8 && (param_1 != 4))))
+  {
+    hWnd = GetLastActivePopup(this->m_hWnd);
+    BringWindowToTop(hWnd);
+  }
   return;
 }
 

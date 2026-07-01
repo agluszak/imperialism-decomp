@@ -16,12 +16,12 @@ TNoHilitePicture * TIconBar::CreateTIconBarInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063376a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x9c);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x9c);
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
@@ -64,7 +64,7 @@ TIconBar * TIconBar::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -94,12 +94,12 @@ TIconBar * TIconBar::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_COMMENT_END
 
 /* Adds one city commodity icon control entry.
-   
+
    Algorithm:
    1. Build and place a UI control using rectangle/layout parameters.
    2. Apply the commodity icon id (700 + commodity index in callers).
    3. Set the displayed quantity/value on the created control.
-   
+
    Parameters:
    - this: Commodity icon UI control instance.
    - pCityView: Parent city view/dialog object.
@@ -108,7 +108,7 @@ TIconBar * TIconBar::_scalar_deleting_destructor_(byte param_1)
    - nXPad/nYPad: Placement offsets.
    - nIconId: Bitmap icon id.
    - nAmount: Quantity/value to display.
-   
+
    Returns:
    - None. */
 
@@ -131,7 +131,7 @@ void TIconBar::SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
 {
   undefined2 unaff_retaddr;
-  
+
   *(short *)&this->field_0x94 = param_1 + -700;
   TPicture::SetPictureResourceIdAndRefresh((TPicture *)this,param_1,param_2,unaff_retaddr);
   return;
@@ -157,7 +157,7 @@ void TIconBar::OrphanCallChain_C2_I15_00506110(char param_1)
 {
   TIconBarVtbl *pTVar1;
   undefined3 in_stack_00000005;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1->OrphanTiny_SetWordEcxOffset_96_005060f0)(_param_1);
   if (param_1 != '\0') {
@@ -178,7 +178,7 @@ void TIconBar::OrphanTiny_ReturnZero_0048a730()
   undefined1 local_20 [4];
   short sStack_1c;
   RECT RStack_14;
-  
+
   (*this->vftable->DeserializeCityProductionQueueCommand)(local_20);
   sVar1 = (short)((int)(short)(sStack_1c - sStack_24) / (*(short *)&this->field_0x96 + 1));
   if (0x20 < sVar1) {

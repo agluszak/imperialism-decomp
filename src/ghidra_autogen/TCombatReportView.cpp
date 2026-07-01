@@ -19,12 +19,12 @@ _CreateTCombatReportViewInstance__YAPAUCombatReportViewState___Z_imperialismincl
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637bfa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0xa0);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0xa0);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -70,7 +70,7 @@ TCombatReportView * TCombatReportView::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -126,17 +126,17 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637c88;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_3c.m_pchData = (char *)0x58c977;
-  CString::CString(&local_24);
+  CString::__0CString__QAE_XZ(&local_24);
   iVar10 = 0;
   local_4 = 0;
   CStack_3c.m_pchData = (char *)0x58c986;
-  CString::CString(&local_28);
+  CString::__0CString__QAE_XZ(&local_28);
   sVar5 = 0;
   *(char **)&this->field_0x90 = param_1;
   local_18 = 0;
@@ -181,7 +181,7 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   }
   CStack_3c.m_pchData = (char *)&local_24;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  CString::AssignFromCStr((CString *)&stack0xffffffd0,s_Report_00699334);
+  CString::__YCString__QAEABV0_PBD_Z((CString *)&stack0xffffffd0,s_Report_00699334);
   p_Stack_1c = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar4 = (*p_Stack_1c)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
@@ -192,11 +192,11 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   puVar12 = &stack0xffffffcc;
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0x1c8))();
   FormatOverlayTerrainLabelText();
-  CString::AssignFromCStr(&CStack_3c,&DAT_00699330);
+  CString::__YCString__QAEABV0_PBD_Z(&CStack_3c,&DAT_00699330);
   sVar5 = UiRuntimeContext::GetActiveNationId();
   cVar1 = *param_1;
   pTVar2 = g_pLocalizationTable->vftable;
-  GenerateThreadLocalRandom15();
+  _rand();
   pcStack_60 = (code *)0x58cb6b;
   iStack_5c = (cVar1 != sVar5) + 0x2721;
   (*pTVar2[0x10].slot_0x04)();
@@ -204,27 +204,27 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   pcStack_60 = g_Build_Map_Order_LookupTable_00695794;
   pCStack_68 = &CStack_40;
   puStack_6c = (undefined1 *)0x58cb7f;
-  pcStack_60 = (code *)AssignSharedStringConcatRefAndCStr();
+  pcStack_60 = (code *)__H_YG_AVCString__ABV0_PBD_Z();
   local_28.m_pchData._0_1_ = 2;
   CStack_64.m_pchData = (char *)0x58cb8e;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   local_28.m_pchData._0_1_ = 1;
   pcStack_60 = (code *)0x58cb9c;
-  CString::~CString(&CStack_40);
+  CString::__1CString__QAE_XZ(&CStack_40);
   pcStack_60 = (code *)&stack0xffffffb4;
   pTVar2 = g_pLocalizationTable->vftable;
   CStack_64.m_pchData = (char *)0x58cbae;
-  iVar7 = GenerateThreadLocalRandom15();
+  iVar7 = _rand();
   CStack_64.m_pchData = (char *)(iVar7 % 6);
   pCStack_68 = (CString *)0x2720;
   puStack_6c = (undefined1 *)0x58cbc8;
   (*pTVar2[0x10].slot_0x04)();
   puStack_6c = &stack0xffffffa8;
   uStack_70 = 0x58cbd6;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   puStack_6c = (undefined1 *)0xa;
   uStack_70 = 0x58cbe1;
-  AppendSingleByteToSharedStringFromArg();
+  __YCString__QAEABV0_D_Z();
   if (iVar10 == 0) {
     iVar10 = 1;
     puVar12 = (undefined1 *)0x1;
@@ -245,10 +245,10 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   pCStack_78 = &CStack_64;
   CStack_7c.m_pchData = (char *)0x58cc40;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   pCStack_78 = (CString *)0xa;
   CStack_7c.m_pchData = (char *)0x58cc4b;
-  AppendSingleByteToSharedStringFromArg();
+  __YCString__QAEABV0_D_Z();
   pCStack_78 = &CStack_64;
   CStack_7c.m_pchData = (char *)0x58cc60;
   FormatOverlayTerrainLabelText();
@@ -256,34 +256,34 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   pCStack_78 = (CString *)&DAT_00699330;
   pcStack_80 = &stack0xffffffa8;
   CStack_84.m_pchData = (char *)0x58cc74;
-  pCStack_78 = (CString *)AssignSharedStringConcatRefAndCStr();
+  pCStack_78 = (CString *)__H_YG_AVCString__ABV0_PBD_Z();
   CStack_40.m_pchData._0_1_ = 3;
   CStack_7c.m_pchData = (char *)0x58cc83;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   CStack_40.m_pchData._0_1_ = 1;
   pCStack_78 = (CString *)0x58cc91;
-  CString::~CString((CString *)&stack0xffffffa8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa8);
   pCStack_78 = (CString *)0x58cc9c;
   sVar5 = UiRuntimeContext::GetActiveNationId();
   pCStack_78 = &CStack_64;
   pTVar2 = g_pLocalizationTable->vftable;
   CStack_7c.m_pchData = (char *)0x58ccc5;
   CVar3.m_pchData = (char *)((param_1[1] != sVar5) + 0x2721);
-  iVar7 = GenerateThreadLocalRandom15();
+  iVar7 = _rand();
   pcStack_80 = CVar3.m_pchData;
   CStack_7c.m_pchData = (char *)(iVar7 % 6);
   CStack_84.m_pchData = (char *)0x58ccdf;
   (*pTVar2[0x10].slot_0x04)();
   CStack_84.m_pchData = (char *)g_Build_Map_Order_LookupTable_00695794;
-  CStack_84.m_pchData = (char *)AssignSharedStringConcatRefAndCStr();
-  AssignStringSharedFromRef();
+  CStack_84.m_pchData = (char *)__H_YG_AVCString__ABV0_PBD_Z();
+  __YCString__QAEABV0_ABV0__Z();
   CStack_84.m_pchData = (char *)0x58cd10;
-  CString::~CString(&CStack_64);
+  CString::__1CString__QAE_XZ(&CStack_64);
   CStack_84.m_pchData = (char *)&uStack_70;
   pTVar2 = g_pLocalizationTable->vftable;
-  iVar7 = GenerateThreadLocalRandom15();
+  iVar7 = _rand();
   (*pTVar2[0x10].slot_0x04)();
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   piVar8 = (int *)(*(code *)CStack_64.m_pchData)();
   if (piVar8 == (int *)0x0) {
     pCStack_a4 = (CString *)0x58cd6e;
@@ -292,19 +292,19 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   }
   uVar11 = 1;
   (**(code **)(*piVar8 + 0x1c8))();
-  CString::CString(&CStack_7c,s_Losses_00699324);
+  CString::__0CString__QAE_PBD_Z(&CStack_7c,s_Losses_00699324);
   CStack_64.m_pchData._0_1_ = 5;
-  CString::AssignFromPtr(&CStack_84,&CStack_7c);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_84,&CStack_7c);
   CStack_64.m_pchData._0_1_ = 1;
-  CString::~CString(&CStack_7c);
+  CString::__1CString__QAE_XZ(&CStack_7c);
   FormatOverlayTerrainLabelText();
   pCStack_a4 = &CStack_7c;
   CStack_a8.m_pchData = (char *)0x58cde8;
-  AssignSharedStringConcatRefAndCStr();
+  __H_YG_AVCString__ABV0_PBD_Z();
   CStack_64.m_pchData._0_1_ = 6;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   CStack_64.m_pchData._0_1_ = 1;
-  CString::~CString(&CStack_7c);
+  CString::__1CString__QAE_XZ(&CStack_7c);
   sVar5 = 0;
   iVar6 = DAT_00698eb8;
   while (iVar6 < (iVar10 * 100) / (int)pCStack_78) {
@@ -317,26 +317,26 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   CStack_ac.m_pchData = &stack0xffffff6c;
   CStack_a8.m_pchData = &DAT_00695880;
   CStack_b0.m_pchData = (char *)&CStack_84;
-  CStack_a8.m_pchData = (char *)AssignSharedStringConcatRefAndCStr();
+  CStack_a8.m_pchData = (char *)__H_YG_AVCString__ABV0_PBD_Z();
   uStack_70._0_1_ = 7;
   CStack_ac.m_pchData = (char *)0x58ce6a;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   uStack_70._0_1_ = 1;
   CStack_a8.m_pchData = (char *)0x58ce78;
-  CString::~CString(&CStack_84);
+  CString::__1CString__QAE_XZ(&CStack_84);
   CStack_a8.m_pchData = &stack0xffffff6c;
   CStack_ac.m_pchData = (char *)0x58ce8d;
   FormatOverlayTerrainLabelText();
   CStack_ac.m_pchData = &stack0xffffff6c;
   CStack_a8.m_pchData = &DAT_00699320;
   CStack_b0.m_pchData = (char *)&CStack_84;
-  CStack_a8.m_pchData = (char *)AssignSharedStringConcatRefAndCStr();
+  CStack_a8.m_pchData = (char *)__H_YG_AVCString__ABV0_PBD_Z();
   uStack_70._0_1_ = 8;
   CStack_ac.m_pchData = (char *)0x58ceb0;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   uStack_70 = CONCAT31(uStack_70._1_3_,1);
   CStack_a8.m_pchData = (char *)0x58cebe;
-  CString::~CString(&CStack_84);
+  CString::__1CString__QAE_XZ(&CStack_84);
   CStack_ac.m_pchData = (char *)0x0;
   iVar10 = DAT_00698eb8;
   while (iVar10 < ((int)pCStack_68 * 100) / (int)pcStack_80) {
@@ -346,11 +346,11 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   CStack_a8.m_pchData = &stack0xffffff6c;
   CStack_b0.m_pchData = (char *)0x271f;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  uVar9 = AssignSharedStringConcatRefAndCStr(&CStack_74,&stack0xffffff60,&DAT_00695880);
+  uVar9 = __H_YG_AVCString__ABV0_PBD_Z(&CStack_74,&stack0xffffff60,&DAT_00695880);
   CStack_7c.m_pchData._0_1_ = 9;
-  AssignStringSharedFromRef(uVar9);
+  __YCString__QAEABV0_ABV0__Z(uVar9);
   CStack_7c.m_pchData._0_1_ = 1;
-  CString::~CString(&CStack_74);
+  CString::__1CString__QAE_XZ(&CStack_74);
   piVar8 = (int *)(*(code *)(iVar7 % 6))(0x6c6f7373);
   if (piVar8 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -361,26 +361,24 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   *(undefined2 *)&this->field_0x94 = 0;
   piVar8 = (int *)(*(code *)(iVar7 % 6))(0x70616765);
   if (piVar8 != (int *)0x0) {
-    CString::CString(&CStack_a8);
-    CString::CString(&CStack_84);
-    FormatStringWithVarArgsToSharedRef
-              (&CStack_84,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
-    uVar9 = AssignSharedStringConcatCStrAndRef(&stack0xffffff60,s_Page_00699318,&CStack_84);
-    src_ref = (CString *)AssignSharedStringConcatRefAndCStr(&stack0xffffff64,uVar9,&DAT_00698448);
-    CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffff68,src_ref);
-    CString::AssignFromPtr(&CStack_a8,(CString *)&stack0xffffff68);
-    CString::~CString((CString *)&stack0xffffff68);
-    CString::~CString((CString *)&stack0xffffff64);
-    CString::~CString((CString *)&stack0xffffff60);
-    FormatStringWithVarArgsToSharedRef
-              (&CStack_84,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
-    AssignStringSharedFromRef(&CStack_84);
+    CString::__0CString__QAE_XZ(&CStack_a8);
+    CString::__0CString__QAE_XZ(&CStack_84);
+    _Format_CString__QAAXPBDZZ(&CStack_84,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
+    uVar9 = __H_YG_AVCString__PBDABV0__Z(&stack0xffffff60,s_Page_00699318,&CStack_84);
+    src_ref = (CString *)__H_YG_AVCString__ABV0_PBD_Z(&stack0xffffff64,uVar9,&DAT_00698448);
+    CString::__0CString__QAE_ABV0__Z((CString *)&stack0xffffff68,src_ref);
+    CString::__4CString__QAEABV0_ABV0__Z(&CStack_a8,(CString *)&stack0xffffff68);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff68);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff64);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff60);
+    _Format_CString__QAAXPBDZZ(&CStack_84,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
+    __YCString__QAEABV0_ABV0__Z(&CStack_84);
     (**(code **)(*piVar8 + 0x1c8))(&CStack_a8,1);
-    CString::~CString(&CStack_84);
-    CString::~CString(&CStack_a8);
+    CString::__1CString__QAE_XZ(&CStack_84);
+    CString::__1CString__QAE_XZ(&CStack_a8);
   }
-  CString::~CString(&CStack_b0);
-  CString::~CString(&CStack_ac);
+  CString::__1CString__QAE_XZ(&CStack_b0);
+  CString::__1CString__QAE_XZ(&CStack_ac);
   *unaff_FS_OFFSET = uVar11;
   return;
 }
@@ -413,13 +411,13 @@ void TCombatReportView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637ce8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_38._0_4_ = this;
-  CString::CString(&local_50);
+  CString::__0CString__QAE_XZ(&local_50);
   local_4 = 0;
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   if (*(short *)&this->field_0x94 != 0) {
@@ -447,7 +445,7 @@ void TCombatReportView::OrphanTiny_ReturnZero_0048a730()
       iVar3 = local_4c;
       if (local_44 <= sVar5) break;
       SetQuickDrawTextOriginWithContextOffset(6);
-      CString::CString(&local_48);
+      CString::__0CString__QAE_XZ(&local_48);
       local_4._0_1_ = 1;
       if (*(short *)&this->field_0x94 < *(short *)&this->field_0x9c) {
         pcVar6 = (char *)(sVar5 * 0x20 + *(int *)(*(int *)&this->field_0x90 + 8));
@@ -455,22 +453,22 @@ void TCombatReportView::OrphanTiny_ReturnZero_0048a730()
       else {
         pcVar6 = (char *)(sVar5 * 0x20 + *(int *)(*(int *)&this->field_0x90 + 0xc));
       }
-      CString::CString(&local_40,pcVar6);
+      CString::__0CString__QAE_PBD_Z(&local_40,pcVar6);
       local_4._0_1_ = 2;
-      CString::AssignFromPtr(&local_50,&local_40);
+      CString::__4CString__QAEABV0_ABV0__Z(&local_50,&local_40);
       local_4 = CONCAT31(local_4._1_3_,1);
-      CString::~CString(&local_40);
+      CString::__1CString__QAE_XZ(&local_40);
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)
                 (0x2717,CONCAT22((short)((uint)&local_48 >> 0x10),(short)pcVar6[0x14]));
-      uVar2 = AssignSharedStringConcatCStrAndRef(&local_3c,&DAT_00699340,&stack0xffffffac);
+      uVar2 = __H_YG_AVCString__PBDABV0__Z(&local_3c,&DAT_00699340,&stack0xffffffac);
       uStack_10._0_1_ = 3;
-      uVar2 = AssignSharedStringConcatRefAndCStr(&local_40,uVar2,&DAT_006973c8);
+      uVar2 = __H_YG_AVCString__ABV0_PBD_Z(&local_40,uVar2,&DAT_006973c8);
       uStack_10._0_1_ = 4;
-      AssignStringSharedFromRef(uVar2);
+      __YCString__QAEABV0_ABV0__Z(uVar2);
       uStack_10._0_1_ = 3;
-      CString::~CString(&local_40);
+      CString::__1CString__QAE_XZ(&local_40);
       uStack_10 = CONCAT31(uStack_10._1_3_,1);
-      CString::~CString(&local_3c);
+      CString::__1CString__QAE_XZ(&local_3c);
       THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffa4);
       auStack_28._0_4_ = 0;
       auStack_28._12_4_ = 6;
@@ -542,12 +540,12 @@ void TCombatReportView::OrphanTiny_ReturnZero_0048a730()
       pcVar6 = local_3c.m_pchData + 1;
       local_4 = local_4 & 0xffffff00;
       local_3c.m_pchData = pcVar6;
-      CString::~CString(&local_48);
+      CString::__1CString__QAE_XZ(&local_48);
       this = (TCombatReportView *)local_38._0_4_;
     } while ((short)pcVar6 < 4);
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_50);
+  CString::__1CString__QAE_XZ(&local_50);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -586,7 +584,7 @@ TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int iStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_00637d28;
@@ -676,33 +674,31 @@ LAB_0058dbdf:
   }
   uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x70616765);
   if ((int *)CONCAT31(extraout_var_05,uVar3) != (int *)0x0) {
-    CString::CString(&CStack_3c);
+    CString::__0CString__QAE_XZ(&CStack_3c);
     iStack_4 = 0;
-    CString::CString(&CStack_40);
+    CString::__0CString__QAE_XZ(&CStack_40);
     iStack_4._0_1_ = 1;
-    FormatStringWithVarArgsToSharedRef
-              (&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
-    uVar4 = AssignSharedStringConcatCStrAndRef(&CStack_30,s_Page_00699318,&CStack_40);
+    _Format_CString__QAAXPBDZZ(&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
+    uVar4 = __H_YG_AVCString__PBDABV0__Z(&CStack_30,s_Page_00699318,&CStack_40);
     iStack_4._0_1_ = 2;
-    src_ref = (CString *)AssignSharedStringConcatRefAndCStr(&CStack_34,uVar4,&DAT_00698448);
+    src_ref = (CString *)__H_YG_AVCString__ABV0_PBD_Z(&CStack_34,uVar4,&DAT_00698448);
     iStack_4._0_1_ = 3;
-    CString::StringSharedRef_AssignFromPtr(&CStack_38,src_ref);
+    CString::__0CString__QAE_ABV0__Z(&CStack_38,src_ref);
     iStack_4._0_1_ = 4;
-    CString::AssignFromPtr(&CStack_3c,&CStack_38);
+    CString::__4CString__QAEABV0_ABV0__Z(&CStack_3c,&CStack_38);
     iStack_4._0_1_ = 3;
-    CString::~CString(&CStack_38);
+    CString::__1CString__QAE_XZ(&CStack_38);
     iStack_4._0_1_ = 2;
-    CString::~CString(&CStack_34);
+    CString::__1CString__QAE_XZ(&CStack_34);
     iStack_4._0_1_ = 1;
-    CString::~CString(&CStack_30);
-    FormatStringWithVarArgsToSharedRef
-              (&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
-    AssignStringSharedFromRef(&CStack_40);
+    CString::__1CString__QAE_XZ(&CStack_30);
+    _Format_CString__QAAXPBDZZ(&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
+    __YCString__QAEABV0_ABV0__Z(&CStack_40);
     (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar3) + 0x1c8))(&CStack_3c,1);
     iStack_4 = (uint)iStack_4._1_3_ << 8;
-    CString::~CString(&CStack_40);
+    CString::__1CString__QAE_XZ(&CStack_40);
     iStack_4 = 0xffffffff;
-    CString::~CString(&CStack_3c);
+    CString::__1CString__QAE_XZ(&CStack_3c);
   }
 LAB_0058dd08:
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);

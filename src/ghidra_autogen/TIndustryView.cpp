@@ -37,7 +37,7 @@ TIndustryView * TIndustryView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -83,22 +83,22 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006318b0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_54.m_pchData = (char *)0x4cc847;
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   local_4 = 0;
   CStack_54.m_pchData = (char *)0x4cc858;
-  CString::CString(local_34);
+  CString::__0CString__QAE_XZ(local_34);
   local_4._0_1_ = 1;
   CStack_54.m_pchData = (char *)0x4cc866;
-  CString::CString(&local_3c);
+  CString::__0CString__QAE_XZ(&local_3c);
   local_4._0_1_ = 2;
   CStack_54.m_pchData = (char *)0x4cc874;
-  CString::CString(&local_38);
+  CString::__0CString__QAE_XZ(&local_38);
   local_4 = CONCAT31(local_4._1_3_,3);
   local_26 = 0;
   local_25 = 0;
@@ -150,7 +150,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
     TCity::GetCityBuildingProductionValueBySlot(this->pCity,*(short *)&this->field_0x9e);
     CStack_60.m_pchData = &g_szDecimalFormat;
     pCStack_68 = (CString *)0x4cc99d;
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
     CStack_60.m_pchData = (char *)0x10;
     pCStack_68 = (CString *)0x4cc9ba;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -168,7 +168,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
     CStack_60.m_pchData =
          (char *)(**(code **)(**(int **)(*(int *)&this->pCity->field_0xac + 0x90) + 0x28))();
     pCStack_68 = (CString *)&stack0xffffffbc;
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
     CStack_60.m_pchData = &stack0xffffffb8;
     pCStack_68 = (CString *)0x2738;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -189,12 +189,12 @@ void TIndustryView::OrphanRetStub_004c6fd0()
     (**(code **)(iVar6 + 0x1c8))(&stack0xffffff94,0);
   }
   pCStack_68 = (CString *)0x4ccb07;
-  CString::CString(&local_40,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_40,(char *)&g_szEmptyString);
   uStack_14 = 4;
   pCStack_68 = (CString *)0x4ccb1a;
-  CString::AssignFromPtr((CString *)&stack0xffffffb0,&local_40);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffb0,&local_40);
   uStack_14 = 3;
-  CString::~CString(&local_40);
+  CString::__1CString__QAE_XZ(&local_40);
   local_40.m_pchData = (char *)&pCStack_68;
   AssignStringSharedRefAndReturnThis();
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
@@ -212,11 +212,11 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   if ((int *)CONCAT31(extraout_var_04,uVar3) != (int *)0x0) {
     cVar4 = (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar3) + 0xec))();
     if (cVar4 == '\0') {
-      CString::CString((CString *)&stack0xffffffb8,(char *)&g_szEmptyString);
+      CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffb8,(char *)&g_szEmptyString);
       uStack_1c = 5;
-      CString::AssignFromPtr(&CStack_58,(CString *)&stack0xffffffb8);
+      CString::__4CString__QAEABV0_ABV0__Z(&CStack_58,(CString *)&stack0xffffffb8);
       uStack_1c = 3;
-      CString::~CString((CString *)&stack0xffffffb8);
+      CString::__1CString__QAE_XZ((CString *)&stack0xffffffb8);
     }
     else {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -235,11 +235,11 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   if ((int *)CONCAT31(extraout_var_06,uVar3) != (int *)0x0) {
     iVar6 = *(int *)CONCAT31(extraout_var_06,uVar3);
     (**(code **)(iVar6 + 0x1b4))(&stack0xffffffb4);
-    CString::CString(&CStack_58,&DAT_00696674);
+    CString::__0CString__QAE_PBD_Z(&CStack_58,&DAT_00696674);
     local_2c = CONCAT31(local_2c._1_3_,6);
     (**(code **)(iVar6 + 0x1c8))(&CStack_58,0);
     local_24 = CONCAT31(local_24._1_3_,3);
-    CString::~CString((CString *)&stack0xffffffb0);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffffb0);
   }
   InitializeSelectableTextOptionEntryIteratorContext();
   piVar5 = (int *)BeginSelectableTextOptionEntryIterator();
@@ -251,11 +251,11 @@ void TIndustryView::OrphanRetStub_004c6fd0()
       if ((*pdVar7 == piVar5[7]) && (piVar5[0x11] == 0)) {
         iVar2 = *piVar5;
         (**(code **)(iVar2 + 0x1b4))(&stack0xffffffb4);
-        CString::CString(&CStack_58,&DAT_00696674);
+        CString::__0CString__QAE_PBD_Z(&CStack_58,&DAT_00696674);
         local_2c = CONCAT31(local_2c._1_3_,7);
         (**(code **)(iVar2 + 0x1c8))(&CStack_58,0);
         local_24 = CONCAT31(local_24._1_3_,3);
-        CString::~CString((CString *)&stack0xffffffb0);
+        CString::__1CString__QAE_XZ((CString *)&stack0xffffffb0);
       }
       pdVar7 = pdVar7 + 1;
       iVar6 = iVar6 + -1;
@@ -265,13 +265,13 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   }
   local_24._1_3_ = (uint3)((uint)local_24 >> 8);
   local_24._0_1_ = 2;
-  CString::~CString(&CStack_58);
+  CString::__1CString__QAE_XZ(&CStack_58);
   local_24._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffffa4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa4);
   local_24 = (uint)local_24._1_3_ << 8;
-  CString::~CString(&CStack_54);
+  CString::__1CString__QAE_XZ(&CStack_54);
   local_24 = 0xffffffff;
-  CString::~CString(&CStack_60);
+  CString::__1CString__QAE_XZ(&CStack_60);
   *unaff_FS_OFFSET = local_2c;
   return;
 }
@@ -286,11 +286,11 @@ void TIndustryView::OrphanRetStub_0059add0(int param_1, int param_2)
   _vslot_fn *p_Var1;
   int iVar2;
   int iVar3;
-  
+
   if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x65787061)) {
     p_Var1 = this->vftable->SetForeignMinisterReadyFlag14;
     (*p_Var1)();
-    iVar2 = FUN_0060753b(0);
+    iVar2 = CMcWindow::EnableWindowOrDelegateToOwner(0);
     iVar3 = (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x6d61696e);
     if (iVar3 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -301,7 +301,7 @@ void TIndustryView::OrphanRetStub_0059add0(int param_1, int param_2)
               (CONCAT22((short)((uint)this->pCity >> 0x10),*(undefined2 *)&this->field_0x9e),
                this->pCity,iVar3);
     (*p_Var1)();
-    FUN_0060753b(iVar2 == 0);
+    CMcWindow::EnableWindowOrDelegateToOwner(iVar2 == 0);
     return;
   }
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
@@ -375,7 +375,7 @@ void TIndustryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
   undefined4 local_c;
   undefined1 *puStack_8;
   int iStack_4;
-  
+
   uVar7 = (ushort)uStack_48;
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_006318e0;
@@ -601,16 +601,16 @@ LAB_004cd50b:
     } while (local_38.m_pchData != (char *)0x0);
   }
   uVar9 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
-  CString::CString(&CStack_40);
+  CString::__0CString__QAE_XZ(&CStack_40);
   iStack_4 = 0;
   if ((int *)CONCAT31(extraout_var_03,uVar9) != (int *)0x0) {
     cVar8 = (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar9) + 0xec))();
     if (cVar8 == '\0') {
-      CString::CString(&local_38,(char *)&g_szEmptyString);
+      CString::__0CString__QAE_PBD_Z(&local_38,(char *)&g_szEmptyString);
       iStack_4._0_1_ = 1;
-      CString::AssignFromPtr(&CStack_40,&local_38);
+      CString::__4CString__QAEABV0_ABV0__Z(&CStack_40,&local_38);
       iStack_4 = (uint)iStack_4._1_3_ << 8;
-      CString::~CString(&local_38);
+      CString::__1CString__QAE_XZ(&local_38);
     }
     else {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2738);
@@ -620,7 +620,7 @@ LAB_004cd50b:
     EnableAndProcessFlagWithSharedStringCleanup();
   }
   iStack_4 = 0xffffffff;
-  CString::~CString(&CStack_40);
+  CString::__1CString__QAE_XZ(&CStack_40);
 LAB_004cd5d7:
   *unaff_FS_OFFSET = local_c;
   return;

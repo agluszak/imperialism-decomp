@@ -12,7 +12,7 @@ TSelectoText * TSelectoText::_scalar_deleting_destructor_(byte param_1)
 {
   TStaticText::~TStaticText(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,7 +29,7 @@ void TSelectoText::CreateTSelectoTextInstance()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   puStack_8 = &LAB_0062f0ab;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -37,17 +37,17 @@ void TSelectoText::CreateTSelectoTextInstance()
   this_00 = *(CString **)&this->field_0x84;
   uStack_4 = 0;
   if (this_00 != (CString *)0x0) {
-    CString::~CString(this_00);
-    FreeHeapBufferIfNotNull(this_00);
+    CString::__1CString__QAE_XZ(this_00);
+    __3_YAXPAX_Z(this_00);
   }
   this->vftable = (TSelectoTextVtbl *)&TView::_vftable_;
   uStack_4 = 2;
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TSelectoTextVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;

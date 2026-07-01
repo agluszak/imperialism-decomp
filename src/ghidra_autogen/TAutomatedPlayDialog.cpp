@@ -12,7 +12,7 @@ TAutomatedPlayDialog * TAutomatedPlayDialog::_scalar_deleting_destructor_(byte p
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -36,7 +36,7 @@ void TAutomatedPlayDialog::GetTEventHandlerClassNamePointer()
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6e756d20);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

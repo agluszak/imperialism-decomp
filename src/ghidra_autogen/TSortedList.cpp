@@ -16,17 +16,17 @@ undefined4 * TSortedList::CreateTSortedListInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062eb02;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
@@ -47,13 +47,13 @@ TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_006302c8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TSortedListVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  TGreatPower::CPtrList((TGreatPower *)&this->field_0x4,10);
+  TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)&this->field_0x4,10);
   this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
   return this;

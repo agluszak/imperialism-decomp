@@ -22,7 +22,7 @@ TIncludeView * TIncludeView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTIncludeViewAndMaybeFree_Impl((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -44,7 +44,7 @@ void TIncludeView::OrphanCallChain_C6_I49_004875d0(int *pEventPacket)
   undefined2 extraout_var;
   undefined2 uVar3;
   int iVar2;
-  
+
   if (*(short *)&this->field_0x60 != -1) {
     uVar3 = 0;
     if (this->ownerContext != (TView *)0x0) {

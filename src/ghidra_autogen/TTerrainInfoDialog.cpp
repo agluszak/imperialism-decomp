@@ -16,12 +16,12 @@ TNoHilitePicture * TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633dda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
@@ -64,7 +64,7 @@ TTerrainInfoDialog * TTerrainInfoDialog::_scalar_deleting_destructor_(byte param
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

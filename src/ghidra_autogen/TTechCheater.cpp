@@ -12,7 +12,7 @@ TTechCheater * TTechCheater::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -50,12 +50,12 @@ TView * TTechCheater::ConstructTTechCheaterBaseState(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630dca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {

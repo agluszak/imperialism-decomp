@@ -45,7 +45,7 @@ THelpMgr * THelpMgr::DestructTHelpMgrAndMaybeFree(byte param_1)
 {
   DestructTHelpMgrAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -94,7 +94,7 @@ void THelpMgr::InitializeHelpManagerIndexArrayAndState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063335a;
   local_c = *unaff_FS_OFFSET;
@@ -102,7 +102,7 @@ void THelpMgr::InitializeHelpManagerIndexArrayAndState()
   uStack_34 = (undefined2 *)0x18;
   *(undefined2 *)&this->field_0x2e = 1;
   uStack_38 = (undefined4 *)0x5006ae;
-  pTVar1 = (TIndexAndRankList *)AllocateWithFallbackHandler();
+  pTVar1 = (TIndexAndRankList *)__2_YAPAXI_Z();
   local_4 = 0;
   local_20 = pTVar1;
   if (pTVar1 == (TIndexAndRankList *)0x0) {
@@ -110,7 +110,7 @@ void THelpMgr::InitializeHelpManagerIndexArrayAndState()
   }
   else {
     uStack_34 = (undefined2 *)0x5006c8;
-    TIndexAndRankList::CPtrArray(pTVar1);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(pTVar1);
     pTVar1->vftable = (TIndexAndRankListVtbl *)&TSortedPtrList::_vftable_;
   }
   *(undefined2 *)&pTVar1->field_0x14 = 0xe;
@@ -342,7 +342,7 @@ void THelpMgr::OrphanCallChain_C1_I22_00500f10()
   int iVar1;
   int *piVar2;
   int iVar3;
-  
+
   iVar3 = 1;
   piVar2 = *(int **)&this->field_0x4;
   if (0 < piVar2[2]) {
@@ -367,7 +367,7 @@ void THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(int *param_1)
   undefined1 uVar1;
   undefined1 *puVar2;
   int iVar3;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   (**(code **)(**(int **)&this->field_0x4 + 0x20))();
   (**(code **)(**(int **)&this->field_0x4 + 0x18))(param_1);
@@ -399,7 +399,7 @@ void THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(int *param_1)
   code *pcVar1;
   int unaff_EBX;
   int iVar2;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   (**(code **)(**(int **)&this->field_0x4 + 0x14))(param_1);
   iVar2 = 5;

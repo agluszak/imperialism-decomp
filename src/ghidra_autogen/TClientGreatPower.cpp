@@ -32,7 +32,7 @@ TClientGreatPower * TClientGreatPower::_scalar_deleting_destructor_(byte param_1
 {
   TClientGreatPower::DestructTClientGreatPower(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -48,14 +48,14 @@ void TClientGreatPower::DestructTClientGreatPower()
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_006345e3;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  CString::~CString((CString *)&this->field_0x8);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x8);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString((CString *)&this->field_0x4);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x4);
   this->vftable =
        (TClientGreatPowerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -87,7 +87,7 @@ void TClientGreatPower::ApplyJoinEmpireModeForTargetNation()
   undefined1 local_c;
   undefined2 local_8;
   undefined1 local_6;
-  
+
   local_10 = 0x74696d65;
   local_c = UiRuntimeContext::GetActiveNationId();
   local_8 = *(undefined2 *)&this->field_0xc;
@@ -115,7 +115,7 @@ void TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers()
   undefined1 local_c;
   undefined2 local_8;
   undefined1 local_6;
-  
+
   local_10 = 0x74696d65;
   local_c = UiRuntimeContext::GetActiveNationId();
   local_8 = *(undefined2 *)&this->field_0xc;
@@ -142,7 +142,7 @@ void TClientGreatPower::AddRegionIdToNationOwnedRegionList()
   undefined4 local_10;
   undefined1 local_c;
   undefined2 local_4;
-  
+
   TGreatPower::AddRegionIdToNationOwnedRegionList((TGreatPower *)this);
   local_10 = 0x74696d65;
   local_c = UiRuntimeContext::GetActiveNationId();
@@ -176,7 +176,7 @@ int TClientGreatPower::GetTEventHandlerClassNamePointer(char param_1)
   char local_7;
   undefined1 local_5;
   undefined1 local_3;
-  
+
   iVar1 = TGreatPower::GetTEventHandlerClassNamePointer((TGreatPower *)this,param_1);
   local_14 = 0x74696d65;
   local_10 = UiRuntimeContext::GetActiveNationId();
@@ -211,7 +211,7 @@ int TClientGreatPower::OrphanRetStub_0059add0()
   undefined1 local_8;
   undefined1 local_5;
   undefined1 local_3;
-  
+
   iVar1 = TGreatPower::OrphanRetStub_0059add0((TGreatPower *)this);
   local_14 = 0x74696d65;
   local_10 = UiRuntimeContext::GetActiveNationId();

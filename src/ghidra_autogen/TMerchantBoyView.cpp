@@ -12,7 +12,7 @@ TMerchantBoyView * TMerchantBoyView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -44,7 +44,7 @@ void TMerchantBoyView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630a60;
   uStack_c = *unaff_FS_OFFSET;
@@ -53,10 +53,10 @@ void TMerchantBoyView::OrphanTiny_ReturnZero_0048a730()
   CStack_24.m_pchData = (char *)0xa;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   CStack_20.m_pchData = (char *)0x4af7b5;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_4 = 0;
   CStack_20.m_pchData = "j\x03hj+";
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   CStack_20.m_pchData = (char *)0x3;
   CStack_24.m_pchData = (char *)0x2b6a;
   local_4 = CONCAT31(local_4._1_3_,1);
@@ -85,9 +85,9 @@ void TMerchantBoyView::OrphanTiny_ReturnZero_0048a730()
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawStrokeColor();
   uStack_10 = uStack_10 & 0xffffff00;
-  CString::~CString(&CStack_20);
+  CString::__1CString__QAE_XZ(&CStack_20);
   uStack_10 = 0xffffffff;
-  CString::~CString(&CStack_24);
+  CString::__1CString__QAE_XZ(&CStack_24);
   *unaff_FS_OFFSET = local_18.m_pchData;
   return;
 }
@@ -105,12 +105,12 @@ TView * TMerchantBoyView::DestructTMerchantBoyViewAndMaybeFree(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630a7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {

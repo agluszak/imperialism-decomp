@@ -12,7 +12,7 @@ TMinorTradeBidsDialog * TMinorTradeBidsDialog::_scalar_deleting_destructor_(byte
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -46,7 +46,7 @@ void TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState()
   int iVar7;
   int iStack_1c;
   int iStack_18;
-  
+
   uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x436f7374);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -111,12 +111,12 @@ TView * TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638c02;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)__2_YAPAXI_Z(0x60);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {

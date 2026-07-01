@@ -544,7 +544,16 @@ char g_szEmptyString[1] = {0};
 extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16] = {0};
 
 // GLOBAL: IMPERIALISM 0x698f58
-extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {0};
+extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
+    8, 9, -1, -1, -1,
+    8, 9, 10, 11, 12,
+    6, 5, 2, -1, -1,
+    13, -1, -1, -1, -1,
+    -1, -1, -1, -1, 0,
+    3, 7, -1, -1, -1,
+    -1, -1, -1, -1, 0,
+    -1, -1, -1, -1, 0,
+    10, 11, 12, -1, -1};
 
 // Turn-flow cooldown defer counter and side flag (IsTurnCooldownCounterActiveOrResetFlag).
 // GLOBAL: IMPERIALISM 0x006a43c4

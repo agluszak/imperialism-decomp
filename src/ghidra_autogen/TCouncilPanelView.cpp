@@ -25,7 +25,7 @@ TCouncilPanelView * TCouncilPanelView::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -42,12 +42,12 @@ TView * TCouncilPanelView::CreateTCouncilPanelViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632faa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -93,16 +93,16 @@ void TCouncilPanelView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632fd8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_20);
+  CString::__0CString__QAE_XZ(&local_20);
   local_4 = 0;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4._0_1_ = 1;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = CONCAT31(local_4._1_3_,2);
   local_18 = 0;
   local_1c.m_pchData._0_1_ = 0;
@@ -126,7 +126,7 @@ void TCouncilPanelView::OrphanTiny_ReturnZero_0048a730()
   }
   else {
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,0x35,&local_20);
-    FormatStringWithVarArgsToSharedRef
+    _Format_CString__QAAXPBDZZ
               (&local_20,&g_szDecimalFormat,
                ((int)(short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
                                   ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U))
@@ -142,7 +142,7 @@ void TCouncilPanelView::OrphanTiny_ReturnZero_0048a730()
     THQButton::DrawTextWithCachedQuickDrawStyleState(&local_1c);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b68);
     FormatOverlayTerrainLabelText(&stack0xffffffd4);
-    CString::AssignFromCStr((CString *)&stack0xffffffd4,&DAT_00696b10);
+    CString::__YCString__QAEABV0_PBD_Z((CString *)&stack0xffffffd4,&DAT_00696b10);
     iVar4 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar4) + 1,0x3d);
@@ -150,7 +150,7 @@ void TCouncilPanelView::OrphanTiny_ReturnZero_0048a730()
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar4,0x3c);
     THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
-    FormatStringWithVarArgsToSharedRef
+    _Format_CString__QAAXPBDZZ
               (&local_20,&g_szDecimalFormat,
                (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x788);
     iVar4 = iVar3 + 4;
@@ -161,7 +161,7 @@ void TCouncilPanelView::OrphanTiny_ReturnZero_0048a730()
     SetQuickDrawTextOriginWithContextOffset(iVar4,0x3c);
     THQButton::DrawTextWithCachedQuickDrawStyleState(&local_20);
     FormatOverlayTerrainLabelText(&stack0xffffffd4);
-    CString::AssignFromCStr((CString *)&stack0xffffffd4,&DAT_00696b10);
+    CString::__YCString__QAEABV0_PBD_Z((CString *)&stack0xffffffd4,&DAT_00696b10);
     iVar2 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar2) + 1,0x4d);
@@ -169,7 +169,7 @@ void TCouncilPanelView::OrphanTiny_ReturnZero_0048a730()
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar2,0x4c);
     THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
-    FormatStringWithVarArgsToSharedRef
+    _Format_CString__QAAXPBDZZ
               (&local_20,&g_szDecimalFormat,
                (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x78a);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
@@ -186,7 +186,7 @@ void TCouncilPanelView::OrphanTiny_ReturnZero_0048a730()
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar2,0x5c);
     THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
-    FormatStringWithVarArgsToSharedRef
+    _Format_CString__QAAXPBDZZ
               (&local_20,&g_szDecimalFormat,
                (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x78c);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
@@ -197,11 +197,11 @@ void TCouncilPanelView::OrphanTiny_ReturnZero_0048a730()
     THQButton::DrawTextWithCachedQuickDrawStyleState(&local_20);
   }
   local_10.m_pchData._0_1_ = 1;
-  CString::~CString(&local_1c);
+  CString::__1CString__QAE_XZ(&local_1c);
   local_10.m_pchData = (char *)((uint)local_10.m_pchData._1_3_ << 8);
-  CString::~CString(&local_20);
+  CString::__1CString__QAE_XZ(&local_20);
   local_10.m_pchData = (char *)0xffffffff;
-  CString::~CString((CString *)&stack0xffffffd4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
   *unaff_FS_OFFSET = local_18;
   return;
 }

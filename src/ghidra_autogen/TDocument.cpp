@@ -11,8 +11,8 @@ TDocument * __cdecl TDocument::CreateObject(void)
 
 {
   TDocument *pTVar1;
-  
-  pTVar1 = (TDocument *)AllocateWithFallbackHandler(4);
+
+  pTVar1 = (TDocument *)__2_YAPAXI_Z(4);
   if (pTVar1 != (TDocument *)0x0) {
     pTVar1->vftable = &TDocumentVtbl_00648a60;
     return pTVar1;
@@ -29,7 +29,7 @@ TDocument * TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350(byte param_
 {
   TDocument::CreateTDocumentInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -64,7 +64,7 @@ TDocument * TDocument::ConstructTDocumentBaseState(byte param_1)
 {
   TFileBasedDocument::CreateTFileBasedDocumentInstance((TFileBasedDocument *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

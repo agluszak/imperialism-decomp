@@ -22,7 +22,7 @@ TTradeScreenPicture * TTradeScreenPicture::_scalar_deleting_destructor_(byte par
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -54,7 +54,7 @@ void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
   undefined1 *puStack_8;
   undefined4 local_4;
   int iVar4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639100;
   local_c = *unaff_FS_OFFSET;
@@ -76,7 +76,7 @@ void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
     pcVar5 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
     local_30 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
     do {
-      CString::CString(&param_1);
+      CString::__0CString__QAE_XZ(&param_1);
       local_4 = 0;
       uVar2 = (*local_30)(*(undefined4 *)pcVar5);
       iVar4 = CONCAT31(extraout_var,uVar2);
@@ -95,16 +95,17 @@ void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
         sVar3 = UiRuntimeContext::GetActiveNationId();
         uVar2 = (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar6);
         if ((short)CONCAT31(extraout_var_00,uVar2) == 0) {
-          CString::CString((CString *)&stack0xffffffc4,&DAT_0069aa90);
+          CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffc4,&DAT_0069aa90);
           puStack_8._0_1_ = 1;
-          CString::AssignFromPtr((CString *)&stack0x00000000,(CString *)&stack0xffffffc4);
+          CString::__4CString__QAEABV0_ABV0__Z
+                    ((CString *)&stack0x00000000,(CString *)&stack0xffffffc4);
           puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-          CString::~CString((CString *)&stack0xffffffc4);
+          CString::__1CString__QAE_XZ((CString *)&stack0xffffffc4);
         }
         else {
           sVar3 = UiRuntimeContext::GetActiveNationId();
           uVar2 = (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar6);
-          FormatStringWithVarArgsToSharedRef
+          _Format_CString__QAAXPBDZZ
                     (&stack0x00000000,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var_01,uVar2)
                     );
         }
@@ -123,7 +124,7 @@ void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
         RenderTradeScreenCommoditySummaryRows_Impl(&param_1,&iStack_2c,0xffffffff,0);
       }
       local_4 = 0xffffffff;
-      CString::~CString(&param_1);
+      CString::__1CString__QAE_XZ(&param_1);
       pcVar5 = pcVar5 + 4;
       iVar6 = iVar6 + 1;
     } while ((int)pcVar5 < 0x66db14);

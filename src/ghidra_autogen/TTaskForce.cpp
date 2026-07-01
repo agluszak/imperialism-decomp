@@ -45,7 +45,7 @@ TTaskForce * TTaskForce::DestroyTTaskForce(byte param_1)
 {
   ResetTTaskForceToSentinelVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

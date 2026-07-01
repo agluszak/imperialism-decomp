@@ -12,7 +12,7 @@ TScrollBarView * TScrollBarView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,12 +29,12 @@ TControl * TScrollBarView::CreateTScrollBarViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006366ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x94);
+  this = (TControl *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::TControl(this);
@@ -80,7 +80,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006366f4;
   uStack_c = *unaff_FS_OFFSET;
@@ -103,7 +103,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
   uStack_1c = 0;
   uStack_18 = 0;
   (**(code **)(*DAT_006a2158 + 0x2c))();
-  this = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (TPictureButton *)__2_YAPAXI_Z(0x94);
   pTStack_10 = (TPictureButton *)0x0;
   if (this == (TPictureButton *)0x0) {
     piVar2 = (int *)0x0;
@@ -117,7 +117,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
   piVar2[7] = 0x73637570;
   (**(code **)(iVar1 + 0xa4))(0,1);
   (**(code **)(iVar1 + 0xa8))(1,0);
-  pTStack_10 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  pTStack_10 = (TPictureButton *)__2_YAPAXI_Z(0x94);
   if (pTStack_10 == (TPictureButton *)0x0) {
     piVar2 = (int *)0x0;
   }
@@ -161,7 +161,7 @@ void TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   int iStack_8;
   int iStack_4;
-  
+
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(TView **)&this->field_0x84 = this->ownerContext;
   (**(code **)&this->ownerContext->vftable->field_0xc)();
@@ -186,7 +186,7 @@ TScrollBarView::ReleaseRuntimeSelectionOwnerAndDestroyObject
 
 {
   undefined4 uVar1;
-  
+
   if (param_1 == 10) {
     if (*(int *)(param_2 + 0x1c) == 0x73637570) {
       uVar1 = 0xc;
@@ -213,7 +213,7 @@ void TScrollBarView::_scalar_deleting_destructor_(POINT *param_1)
   BOOL BVar2;
   undefined2 extraout_var;
   RECT local_10;
-  
+
   local_10.top = (LONG)*(short *)&this->field_0x8c;
   local_10.right = this->field34;
   local_10.bottom = local_10.top + 0x12;
@@ -248,7 +248,7 @@ void TScrollBarView::OrphanTiny_ReturnZero_0048a730(LONG *param_1)
   int iVar1;
   tagRECT local_20;
   tagRECT local_10;
-  
+
   ResetQuickDrawStrokeState();
   SetQuickDrawFillColor(0);
   SetQuickDrawStrokeColor(0xffffff);
@@ -348,7 +348,7 @@ TScrollBarView::QueueCityRecruitmentSupportCommandsIfDeficit
   int in_stack_00000010;
   int iStack_8;
   int iStack_4;
-  
+
   sVar3 = *(short *)(in_stack_00000010 + 4) + -9;
   if ((0 < param_1) && (param_1 < 3)) {
     sVar2 = *(short *)&this->field_0x8a;

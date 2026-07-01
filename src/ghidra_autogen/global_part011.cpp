@@ -3,173 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part011.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005C2920
-// GHIDRA_NAME DestroyCivUnitOrderObject_Impl
-// GHIDRA_PROTO undefined DestroyCivUnitOrderObject_Impl()
-
-void __fastcall DestroyCivUnitOrderObject_Impl(undefined4 *param_1)
-
-{
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005C2940
-// GHIDRA_NAME InitializeCivWorkOrderState
-// GHIDRA_PROTO void __thiscall InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initialize civilian work-order object base registration fields.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Register unit order with owner manager using order type/context/owner values.
-// GHIDRA_COMMENT 2. Clear remaining-turn counter at +0x24.
-// GHIDRA_COMMENT 3. Clear completion marker/message field at +0x26 to -1.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - this (IMPLICIT): Civilian order object.
-// GHIDRA_COMMENT - nOrderType: Initial order type.
-// GHIDRA_COMMENT - pOwnerContext: Owner/manager context argument forwarded to registration.
-// GHIDRA_COMMENT - nOrderOwnerNationId: Owning nation/order owner id.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - void.
-// GHIDRA_COMMENT_END
-
-/* Initialize civilian work-order object base registration fields.
-   
-   Algorithm:
-   1. Register unit order with owner manager using order type/context/owner values.
-   2. Clear remaining-turn counter at +0x24.
-   3. Clear completion marker/message field at +0x26 to -1.
-   
-   Parameters:
-   - this (IMPLICIT): Civilian order object.
-   - nOrderType: Initial order type.
-   - pOwnerContext: Owner/manager context argument forwarded to registration.
-   - nOrderOwnerNationId: Owning nation/order owner id.
-   
-   Returns:
-   - void. */
-
-void __thiscall
-InitializeCivWorkOrderState(void *this,int nOrderType,int pOwnerContext,int nOrderOwnerNationId)
-
-{
-  TUnitOrderState::RegisterUnitOrderWithOwnerManager
-            (this,(short)nOrderType,(short)pOwnerContext);
-  *(undefined2 *)((int)this + 0x24) = 0;
-  *(undefined2 *)((int)this + 0x26) = 0xffff;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005C2980
-// GHIDRA_NAME IsCivilianOrderInIdleSelectionState
-// GHIDRA_PROTO bool __thiscall IsCivilianOrderInIdleSelectionState(void * pCivilianOrderEntry)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Check whether a civilian order type should be handled as an idle/basic-selection state (not the active work-report flow).
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Rule:
-// GHIDRA_COMMENT - Returns true only for order types 0, 2, and 3.
-// GHIDRA_COMMENT - Returns false for order type 1 and all order types >= 4.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - pCivilianOrderEntry: Civilian order object.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - bool true when click handling should treat this unit as idle/basic selection.
-// GHIDRA_COMMENT - bool false when caller should route into active-order/report handling.
-// GHIDRA_COMMENT_END
-
-/* Check whether a civilian order type should be handled as an idle/basic-selection state (not the
-   active work-report flow).
-   
-   Rule:
-   - Returns true only for order types 0, 2, and 3.
-   - Returns false for order type 1 and all order types >= 4.
-   
-   Parameters:
-   - pCivilianOrderEntry: Civilian order object.
-   
-   Returns:
-   - bool true when click handling should treat this unit as idle/basic selection.
-   - bool false when caller should route into active-order/report handling. */
-
-bool __thiscall IsCivilianOrderInIdleSelectionState(void *this,void *pCivilianOrderEntry)
-
-{
-  int iVar1;
-  
-  iVar1 = *(int *)((int)this + 8);
-  if ((iVar1 != 0) && ((iVar1 < 2 || (3 < iVar1)))) {
-    return false;
-  }
-  return true;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005C29B0
-// GHIDRA_NAME TickCivWorkOrderCountdownAndComplete
-// GHIDRA_PROTO undefined TickCivWorkOrderCountdownAndComplete()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Advances one turn of a civilian productive work order.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Decrement remaining-turn counter (+0x24).
-// GHIDRA_COMMENT 2. When counter reaches 0, apply completion effects to map/state.
-// GHIDRA_COMMENT 3. Reset active order state field (+0x08) to idle.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - this: Civ order object.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - void.
-// GHIDRA_COMMENT_END
-
-/* Advances one turn of a civilian productive work order.
-   
-   Algorithm:
-   1. Decrement remaining-turn counter (+0x24).
-   2. When counter reaches 0, apply completion effects to map/state.
-   3. Reset active order state field (+0x08) to idle.
-   
-   Parameters:
-   - this: Civ order object.
-   
-   Returns:
-   - void. */
-
-void __fastcall TickCivWorkOrderCountdownAndComplete(int *param_1)
-
-{
-  *(short *)(param_1 + 9) = (short)param_1[9] + -1;
-  if ((short)param_1[9] < 1) {
-    ApplyCompletedCivWorkOrderToMapState(param_1);
-    param_1[2] = 0;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005C2F00
-// GHIDRA_NAME WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00
-// GHIDRA_PROTO undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00()
-
-void __fastcall WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00(undefined4 *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_c = *unaff_FS_OFFSET;
-  puStack_8 = &LAB_00639938;
-  *unaff_FS_OFFSET = &local_c;
-  local_4 = 0;
-  CString::~CString((CString *)(param_1 + 9));
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005C3400
 // GHIDRA_NAME GetCityActionGateValueFromOrderTemplate
 // GHIDRA_PROTO undefined GetCityActionGateValueFromOrderTemplate()
@@ -178,7 +11,7 @@ undefined2 __fastcall GetCityActionGateValueFromOrderTemplate(int param_1)
 
 {
   short sVar1;
-  
+
   sVar1 = *(short *)(param_1 + 4);
   if (((sVar1 != 0x1b) && (sVar1 != 0x1c)) && (sVar1 != 0x1d)) {
     if (*(short *)(&DAT_00695cd2 + sVar1 * 0xe) == 0x10) {
@@ -197,7 +30,7 @@ int GetCityActionGateValueBySlot(int param_1)
 
 {
   ushort uVar1;
-  
+
   param_1 = param_1 * 0xe;
   uVar1 = (ushort)((uint)param_1 >> 0x10);
   if (*(short *)(&DAT_00695cd2 + param_1) == 0x10) {
@@ -294,17 +127,17 @@ int GetNormalizedCityActionResourceCostPercent(short param_1,short param_2)
 // GHIDRA_COMMENT_END
 
 /* Resolves an era-dependent fallback capability slot for the current slot context.
-   
+
    Inputs (inferred):
    - current slot id at +0x04
    - era/state index at +0x18
-   
+
    Algorithm:
    1. Build fallback candidate slot (primary pattern: +8; special cases: +1).
    2. Check fallback availability in g_pCityOrderCapabilityState[0x395 + era*0x1E + candidate].
    3. If fallback unavailable but current slot still available, return -1.
    4. Otherwise return fallback candidate slot.
-   
+
    This routine is used in city development path selection. */
 
 short __fastcall ResolveEraCapabilityFallbackSlot(int param_1)
@@ -313,7 +146,7 @@ short __fastcall ResolveEraCapabilityFallbackSlot(int param_1)
   short sVar1;
   short sVar2;
   int iVar3;
-  
+
   sVar1 = *(short *)(param_1 + 4);
   if (sVar1 < 0x10) {
     sVar2 = sVar1 + 8;
@@ -342,7 +175,7 @@ bool WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650(void)
 
 {
   short sVar1;
-  
+
   sVar1 = ResolveEraCapabilityFallbackSlot();
   return sVar1 != -1;
 }
@@ -367,7 +200,7 @@ bool __fastcall ApplyEraCapabilityCostAndSetSelection(int param_1)
   undefined3 extraout_var_02;
   int unaff_EBP;
   int iVar8;
-  
+
   sVar5 = ResolveEraCapabilityFallbackSlot();
   if (sVar5 == -1) {
     return sVar5 != -1;
@@ -414,7 +247,7 @@ void WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840
 
 {
   short sVar1;
-  
+
   sVar1 = ResolveEraCapabilityFallbackSlot();
   *param_1 = sVar1;
   *param_2 = *(undefined2 *)(&g_Classify_Nation_Military_LookupTable_00695CD4 + sVar1 * 0xe);
@@ -437,7 +270,7 @@ int InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl(int param_1)
   int iVar1;
   int iVar2;
   TCountry **ppTVar3;
-  
+
   if (param_1 == 0) {
     return 0;
   }
@@ -488,7 +321,7 @@ void WrapperFor_thunk_GetTickCountDiv16_At005c3b00(void)
 
 {
   int iVar1;
-  
+
   iVar1 = GetTickCountDiv16();
   if (iVar1 != 0) {
     DAT_006a5aec = iVar1;
@@ -530,7 +363,7 @@ LONG * LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(undefined4 param_1)
   LONG local_18;
   LONG local_14;
   tagRECT local_10;
-  
+
   local_28 = 0;
   GetActiveQuickDrawSurfaceContextAndFlags(local_24,&local_28);
   piVar3 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1);
@@ -561,9 +394,9 @@ LONG * LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(undefined4 param_1)
         this->vftable = (TAnimationVtbl *)0x64c340;
         TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
                   (this);
-        FreeHeapBufferIfNotNull(this);
+        __3_YAXPAX_Z(this);
       }
-      FreeHeapBufferIfNotNull(piVar3);
+      __3_YAXPAX_Z(piVar3);
       uVar4 = GetSurfaceObjectAtContextOffset24(pLVar5);
       NoOpQuickDrawLifecycleHookB(uVar4);
       SetActiveQuickDrawSurfaceContext(unaff_ESI,unaff_EDI);
@@ -649,13 +482,13 @@ void BuildUiTextStyleDescriptor
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639958;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_14 = 0;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   param_1[1] = 0;
   MapUiThemeCodeToStyleFlags(param_4,&local_14);
@@ -668,7 +501,7 @@ void BuildUiTextStyleDescriptor
     *param_1 = 1;
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -694,13 +527,13 @@ void InitializeUiTextStyleDescriptor
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639978;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_14 = 0;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   param_1[1] = param_2;
   MapUiThemeCodeToStyleFlags(param_4,&local_14);
@@ -708,7 +541,7 @@ void InitializeUiTextStyleDescriptor
   *(undefined4 *)(param_1 + 3) = local_14;
   *param_1 = param_5;
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -735,7 +568,7 @@ int * ApplyControlThemeStyleAndOptionalCaption
   undefined4 uStack_c;
   undefined1 *puStack_8;
   CString CStack_4;
-  
+
   piVar2 = param_1;
   CStack_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_006399a0;
@@ -748,7 +581,7 @@ int * ApplyControlThemeStyleAndOptionalCaption
   local_f = 0;
   (**(code **)(iVar1 + 0xc))();
   param_1 = (int *)0x0;
-  CString::CString(&CStack_1c);
+  CString::__0CString__QAE_XZ(&CStack_1c);
   CStack_4.m_pchData = (char *)0x0;
   uStack_16 = 0;
   MapUiThemeCodeToStyleFlags(param_4,&param_1);
@@ -762,11 +595,11 @@ int * ApplyControlThemeStyleAndOptionalCaption
     uStack_18 = 1;
   }
   CStack_4.m_pchData = (char *)0xffffffff;
-  CString::~CString(&CStack_1c);
+  CString::__1CString__QAE_XZ(&CStack_1c);
   (**(code **)(iVar1 + 0x1b4))(&uStack_18,0);
   (**(code **)(iVar1 + 0x1c4))(param_3,0);
   if (param_2 != (char *)0x0) {
-    CString::CString(&CStack_4,param_2);
+    CString::__0CString__QAE_PBD_Z(&CStack_4,param_2);
     sStack_14 = 1;
     local_12 = 0;
     local_11 = 0;
@@ -774,7 +607,7 @@ int * ApplyControlThemeStyleAndOptionalCaption
     sStack_14 = 0xffff;
     local_12 = 0xff;
     local_11 = 0xff;
-    CString::~CString(&CStack_4);
+    CString::__1CString__QAE_XZ(&CStack_4);
   }
   *unaff_FS_OFFSET = CStack_1c.m_pchData;
   return piVar2;
@@ -804,12 +637,12 @@ int * ConfigureUiControlStyleValueAndCaptionFromStringResource
   undefined4 uStack_c;
   undefined1 *puStack_8;
   CString local_4;
-  
+
   local_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_006399c8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   local_4.m_pchData = (char *)0x0;
   LoadUiStringResourceByGroupAndIndex(&local_1c,param_6.m_pchData,param_7);
   text_or_resource_id.m_pchData = local_1c.m_pchData;
@@ -835,21 +668,21 @@ int * ConfigureUiControlStyleValueAndCaptionFromStringResource
     uStack_18 = 1;
   }
   local_4.m_pchData = (char *)((uint)local_4.m_pchData._1_3_ << 8);
-  CString::~CString(&param_6);
+  CString::__1CString__QAE_XZ(&param_6);
   (**(code **)(iVar1 + 0x1b4))(&uStack_18,0);
   (**(code **)(iVar1 + 0x1c4))(param_3,0);
   if (text_or_resource_id.m_pchData != (char *)0x0) {
-    CString::CString(&local_4,text_or_resource_id.m_pchData);
+    CString::__0CString__QAE_PBD_Z(&local_4,text_or_resource_id.m_pchData);
     uStack_14 = 2;
     (**(code **)(iVar1 + 0x1c8))(&local_4,0);
     uStack_14 = 0;
-    CString::~CString(&local_4);
+    CString::__1CString__QAE_XZ(&local_4);
   }
   uStack_14 = 0xff;
   uStack_13 = 0xff;
   local_12 = 0xff;
   local_11 = 0xff;
-  CString::~CString((CString *)&stack0xffffffd4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
   *unaff_FS_OFFSET = local_1c.m_pchData;
   return param_1;
 }
@@ -864,7 +697,7 @@ void RefreshActiveControlThenApplyThemeStyleAndCaption
 
 {
   int *piVar1;
-  
+
   piVar1 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(param_1);
   (**(code **)(*piVar1 + 0xc))();
   ApplyControlThemeStyleAndOptionalCaption(piVar1,param_1,param_2,param_3,param_4,param_5);
@@ -881,8 +714,8 @@ void DispatchToSelectableTextOptionEntries(CObject *param_1,undefined4 param_2,u
   CObjectVtbl *pCVar1;
   int iVar2;
   undefined4 uVar3;
-  
-  iVar2 = CObject::IsKindOf(param_1);
+
+  iVar2 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(param_1);
   if (iVar2 != 0) {
     pCVar1 = param_1->vftable;
     (*pCVar1[1].slot_0x04)();
@@ -914,7 +747,7 @@ void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor
   undefined1 uStack_5;
   undefined1 uStack_4;
   undefined1 uStack_3;
-  
+
   local_6 = 0;
   uStack_5 = 0;
   uStack_4 = 0;
@@ -942,7 +775,7 @@ void InitializeUiTextStyleDescriptorAndApplyQuickDraw
   undefined1 uStack_5;
   undefined1 uStack_4;
   undefined1 uStack_3;
-  
+
   local_6 = 0;
   uStack_5 = 0;
   uStack_4 = 0;
@@ -969,7 +802,7 @@ void ApplyUiTextStyleAndThemeFlags
   undefined1 local_5;
   undefined1 local_4;
   undefined1 local_3;
-  
+
   local_6 = 0;
   local_5 = 0;
   local_4 = 0;
@@ -994,7 +827,7 @@ void ApplyControlTextStyleDescriptorFromThemeCode
   undefined1 local_5;
   undefined1 local_4;
   undefined1 local_3;
-  
+
   local_6 = 0;
   local_5 = 0;
   local_4 = 0;
@@ -1019,13 +852,13 @@ void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006399e8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_14.m_pchData = (char *)0x5c46cf;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   CStack_14.m_pchData = (char *)(int)param_2;
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex();
@@ -1034,7 +867,7 @@ void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply
   AssignStringSharedRefAndReturnThis(&CStack_14);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   puStack_8 = (undefined1 *)0xffffffff;
-  CString::~CString(&CStack_14);
+  CString::__1CString__QAE_XZ(&CStack_14);
   *unaff_FS_OFFSET = local_10.m_pchData;
   return;
 }
@@ -1052,13 +885,13 @@ void LoadUiStringByGroupAndIndexToGlobalControlTag(undefined4 param_1,short para
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639a08;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_14.m_pchData = (char *)0x5c479f;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   CStack_14.m_pchData = (char *)(int)param_2;
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex();
@@ -1067,7 +900,7 @@ void LoadUiStringByGroupAndIndexToGlobalControlTag(undefined4 param_1,short para
   AssignStringSharedRefAndReturnThis(&CStack_14);
   EnableAndProcessFlagWithSharedStringCleanup();
   puStack_8 = (undefined1 *)0xffffffff;
-  CString::~CString(&CStack_14);
+  CString::__1CString__QAE_XZ(&CStack_14);
   *unaff_FS_OFFSET = local_10.m_pchData;
   return;
 }
@@ -1084,18 +917,18 @@ void LoadUiStringByGroupAndIndexToControlObject(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639a28;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex(&local_10);
   AssignStringSharedRefAndReturnThis(&local_10);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -1112,18 +945,18 @@ void LoadUiStringAndDispatchSharedMessageCommand(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639a48;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex(&local_10);
   AssignStringSharedRefAndReturnThis(&local_10);
   EnableAndProcessFlagWithSharedStringCleanup();
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -1139,14 +972,14 @@ void RunEnableAndProcessFlagWithScopedSharedStringCleanup(undefined4 param_1,TVi
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639a68;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
   TView::EnableAndProcessFlag(param_2,(CString *)&param_1);
   local_4 = 0xffffffff;
-  CString::~CString((CString *)&param_1);
+  CString::__1CString__QAE_XZ((CString *)&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -1162,14 +995,14 @@ void EnableAndProcessFlagWithSharedStringCleanup(undefined4 param_1,TView *param
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639a88;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
   TView::EnableAndProcessFlag(param_2,(CString *)&param_1);
   local_4 = 0xffffffff;
-  CString::~CString((CString *)&param_1);
+  CString::__1CString__QAE_XZ((CString *)&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -1189,13 +1022,13 @@ int * InitializeMainRoutineContextAndRun(CString param_1,undefined4 param_2)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639aa8;
   *unaff_FS_OFFSET = &uStack_c;
   piStack_18 = (int *)0x5c4ad4;
-  CString::CString(&param_1,param_1.m_pchData);
+  CString::__0CString__QAE_PBD_Z(&param_1,param_1.m_pchData);
   local_4 = 0;
   piStack_18 = (int *)0x5c4af2;
   piVar1 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
@@ -1207,7 +1040,7 @@ int * InitializeMainRoutineContextAndRun(CString param_1,undefined4 param_2)
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   puStack_8 = (undefined1 *)0xffffffff;
   piStack_18 = (int *)0x5c4b26;
-  CString::~CString((CString *)&stack0x00000000);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
   *unaff_FS_OFFSET = unaff_ESI;
   return piVar1;
 }
@@ -1227,13 +1060,13 @@ int * AssignSharedStringToTaggedControlAndProcessState(CString param_1,undefined
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639ac8;
   *unaff_FS_OFFSET = &uStack_c;
   piStack_18 = (int *)0x5c4b94;
-  CString::CString(&param_1,param_1.m_pchData);
+  CString::__0CString__QAE_PBD_Z(&param_1,param_1.m_pchData);
   local_4 = 0;
   piStack_18 = (int *)0x5c4bb2;
   piVar1 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
@@ -1245,7 +1078,7 @@ int * AssignSharedStringToTaggedControlAndProcessState(CString param_1,undefined
   EnableAndProcessFlagWithSharedStringCleanup();
   puStack_8 = (undefined1 *)0xffffffff;
   piStack_18 = (int *)0x5c4be6;
-  CString::~CString((CString *)&stack0x00000000);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
   *unaff_FS_OFFSET = unaff_ESI;
   return piVar1;
 }
@@ -1354,17 +1187,17 @@ char ** BuildMapContextStatusStringVariantA(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639aeb;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_2f0,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_2f0,(char *)&g_szEmptyString);
   iVar10 = 0;
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_2f0);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_2f0);
   local_4 = 0xffffffff;
-  CString::~CString(&local_2f0);
+  CString::__1CString__QAE_XZ(&local_2f0);
   uVar8 = DAT_006a5aec * 0x15a4e35 + 1;
   uVar4 = uVar8 >> 0xc & 0x7fff;
   local_2ec[7] = &DAT_0069ac90;
@@ -1661,7 +1494,7 @@ char ** BuildMapContextStatusStringVariantA(CString *param_1)
     case 'w':
       text = &DAT_0069ab08;
     }
-    CString::AssignFromCStr(param_1,text);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,text);
     uVar8 = DAT_006a5aec;
 switchD_005c4d8d_caseD_4c:
     local_2f0.m_pchData = local_2f0.m_pchData + 1;
@@ -1740,16 +1573,16 @@ char ** BuildMapContextStatusStringVariantB(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639b0b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_1ec,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_1ec,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_1ec);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_1ec);
   local_4 = 0xffffffff;
-  CString::~CString(&local_1ec);
+  CString::__1CString__QAE_XZ(&local_1ec);
   local_1ec.m_pchData = (char *)0x0;
   uVar7 = DAT_006a5aec * 0x15a4e35 + 1;
   uVar3 = uVar7 >> 0xc & 0x7fff;
@@ -2010,7 +1843,7 @@ char ** BuildMapContextStatusStringVariantB(CString *param_1)
     }
     local_1ec.m_pchData = (char *)0x0;
 LAB_005c5f22:
-    CString::AssignFromCStr(param_1,text);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,text);
     uVar7 = DAT_006a5aec;
 switchD_005c5953_caseD_4c:
     local_1e8 = (char **)((int)local_1e8 + 1);
@@ -2094,17 +1927,17 @@ undefined ** BuildMapContextStatusStringVariantC(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639b2b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_218,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_218,(char *)&g_szEmptyString);
   iVar12 = 0;
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_218);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_218);
   local_4 = 0xffffffff;
-  CString::~CString(&local_218);
+  CString::__1CString__QAE_XZ(&local_218);
   uVar10 = DAT_006a5aec * 0x15a4e35 + 1;
   uVar5 = uVar10 >> 0xc & 0x7fff;
   local_214[0] = s_Kvj_Gw_0069ad84;
@@ -2400,7 +2233,7 @@ undefined ** BuildMapContextStatusStringVariantC(CString *param_1)
       }
       text = (code *)local_18c[iVar11];
     }
-    CString::AssignFromCStr(param_1,(char *)text);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,(char *)text);
     uVar10 = DAT_006a5aec;
 switchD_005c62e0_caseD_30:
     local_218.m_pchData = local_218.m_pchData + 1;
@@ -2496,16 +2329,16 @@ char ** BuildMapContextStatusStringVariantD(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639b4b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_2b0,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_2b0,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_2b0);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_2b0);
   local_4 = 0xffffffff;
-  CString::~CString(&local_2b0);
+  CString::__1CString__QAE_XZ(&local_2b0);
   uVar8 = DAT_006a5aec * 0x15a4e35 + 1;
   local_2ac[1] = (undefined *)0x6;
   local_2ac[3] = (undefined *)0x6;
@@ -2813,7 +2646,7 @@ char ** BuildMapContextStatusStringVariantD(CString *param_1)
       }
       text = local_24c[iVar10];
     }
-    ppcVar5 = (char **)CString::AssignFromCStr(param_1,text);
+    ppcVar5 = (char **)CString::__YCString__QAEABV0_PBD_Z(param_1,text);
     uVar8 = DAT_006a5aec;
 switchD_005c6db5_caseD_4c:
     local_2b0.m_pchData = local_2b0.m_pchData + 1;
@@ -2898,16 +2731,16 @@ undefined ** BuildMapContextStatusStringVariantE(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639b6b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_228,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_228,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_228);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_228);
   local_4 = 0xffffffff;
-  CString::~CString(&local_228);
+  CString::__1CString__QAE_XZ(&local_228);
   uVar9 = DAT_006a5aec * 0x15a4e35 + 1;
   local_200[6] = (undefined *)0x5;
   local_200[7] = (undefined *)0x5;
@@ -3176,7 +3009,7 @@ undefined ** BuildMapContextStatusStringVariantE(CString *param_1)
       }
       text = local_19c[iVar11];
     }
-    ppuVar5 = (undefined **)CString::AssignFromCStr(param_1,text);
+    ppuVar5 = (undefined **)CString::__YCString__QAEABV0_PBD_Z(param_1,text);
     uVar9 = DAT_006a5aec;
 switchD_005c7945_caseD_4c:
     local_228.m_pchData = local_228.m_pchData + 1;
@@ -3254,16 +3087,16 @@ char ** BuildMapContextStatusStringVariantF(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639b8b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_1e8,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_1e8,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_1e8);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_1e8);
   local_4 = 0xffffffff;
-  CString::~CString(&local_1e8);
+  CString::__1CString__QAE_XZ(&local_1e8);
   uVar8 = DAT_006a5aec * 0x15a4e35 + 1;
   uVar4 = uVar8 >> 0xc & 0x7fff;
   ppcVar5 = (char **)(uVar4 / 0x33);
@@ -3497,7 +3330,7 @@ char ** BuildMapContextStatusStringVariantF(CString *param_1)
       }
       text = local_15c[iVar9];
     }
-    CString::AssignFromCStr(param_1,text);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,text);
     uVar8 = DAT_006a5aec;
 switchD_005c832c_caseD_44:
     local_1e8.m_pchData = local_1e8.m_pchData + 1;
@@ -3619,16 +3452,16 @@ undefined ** BuildMapContextStatusStringVariantG(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639bab;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_384,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_384,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_384);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_384);
   local_4 = 0xffffffff;
-  CString::~CString(&local_384);
+  CString::__1CString__QAE_XZ(&local_384);
   uVar7 = DAT_006a5aec * 0x15a4e35 + 1;
   local_334[1] = (undefined *)0x3;
   local_334[5] = (undefined *)0x3;
@@ -4060,7 +3893,7 @@ undefined ** BuildMapContextStatusStringVariantG(CString *param_1)
     }
     local_384.m_pchData = (char *)0x0;
 LAB_005c9728:
-    CString::AssignFromCStr(param_1,(char *)text);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,(char *)text);
     uVar7 = DAT_006a5aec;
 switchD_005c8cc3_caseD_30:
     local_380 = (undefined **)((int)local_380 + 1);
@@ -4189,17 +4022,17 @@ char * BuildMapContextStatusStringVariantH(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639bcb;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_35c,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_35c,(char *)&g_szEmptyString);
   iVar7 = 0;
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_35c);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_35c);
   local_4 = 0xffffffff;
-  CString::~CString(&local_35c);
+  CString::__1CString__QAE_XZ(&local_35c);
   uVar5 = DAT_006a5aec * 0x15a4e35 + 1;
   local_330[0] = &DAT_0069ac80;
   uVar2 = uVar5 >> 0xc & 0x7fff;
@@ -4520,7 +4353,7 @@ char * BuildMapContextStatusStringVariantH(CString *param_1)
       pcVar3 = local_2e4[iVar7];
     }
     local_35c.m_pchData = (char *)0x0;
-    CString::AssignFromCStr(param_1,pcVar3);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar3);
     uVar5 = DAT_006a5aec;
 switchD_005c9c3d_caseD_4c:
     local_358 = local_358 + 1;
@@ -4595,17 +4428,17 @@ char ** BuildMapContextStatusStringVariantI(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639beb;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_1d0,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_1d0,(char *)&g_szEmptyString);
   iVar10 = 0;
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_1d0);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_1d0);
   local_4 = 0xffffffff;
-  CString::~CString(&local_1d0);
+  CString::__1CString__QAE_XZ(&local_1d0);
   uVar8 = DAT_006a5aec * 0x15a4e35 + 1;
   local_1cc[9] = (undefined *)0x6;
   local_1cc[10] = (undefined *)0x6;
@@ -4831,7 +4664,7 @@ char ** BuildMapContextStatusStringVariantI(CString *param_1)
       }
       text = local_16c[iVar9];
     }
-    CString::AssignFromCStr(param_1,text);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,text);
     uVar8 = DAT_006a5aec;
 switchD_005ca997_caseD_4c:
     local_1d0.m_pchData = local_1d0.m_pchData + 1;
@@ -4903,16 +4736,16 @@ undefined ** BuildMapContextStatusStringVariantJ(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639c0b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_1b8,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_1b8,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_1b8);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_1b8);
   local_4 = 0xffffffff;
-  CString::~CString(&local_1b8);
+  CString::__1CString__QAE_XZ(&local_1b8);
   uVar8 = DAT_006a5aec * 0x15a4e35 + 1;
   iVar10 = 0;
   uVar4 = uVar8 >> 0xc & 0x7fff;
@@ -5142,7 +4975,7 @@ undefined ** BuildMapContextStatusStringVariantJ(CString *param_1)
       }
       text = local_18c[iVar9];
     }
-    CString::AssignFromCStr(param_1,text);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,text);
     uVar8 = DAT_006a5aec;
 switchD_005cb21e_caseD_4c:
     local_1b8.m_pchData = local_1b8.m_pchData + 1;
@@ -5243,16 +5076,16 @@ undefined ** BuildMapContextStatusStringVariantK(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639c2b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_2b0,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_2b0,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_2b0);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_2b0);
   local_4 = 0xffffffff;
-  CString::~CString(&local_2b0);
+  CString::__1CString__QAE_XZ(&local_2b0);
   uVar9 = DAT_006a5aec * 0x15a4e35 + 1;
   uVar4 = uVar9 >> 0xc & 0x7fff;
   ppuVar5 = (undefined **)(uVar4 / 0x4a);
@@ -5561,7 +5394,7 @@ undefined ** BuildMapContextStatusStringVariantK(CString *param_1)
       }
       text = (code *)local_270[iVar11 + 0xf];
     }
-    ppuVar5 = (undefined **)CString::AssignFromCStr(param_1,(char *)text);
+    ppuVar5 = (undefined **)CString::__YCString__QAEABV0_PBD_Z(param_1,(char *)text);
     uVar9 = DAT_006a5aec;
 switchD_005cbb0d_caseD_30:
     local_2b0.m_pchData = local_2b0.m_pchData + 1;
@@ -5628,17 +5461,17 @@ undefined ** BuildMapContextStatusStringVariantL(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639c4b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_168,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_168,(char *)&g_szEmptyString);
   iVar10 = 0;
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_168);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_168);
   local_4 = 0xffffffff;
-  CString::~CString(&local_168);
+  CString::__1CString__QAE_XZ(&local_168);
   uVar7 = DAT_006a5aec * 0x15a4e35 + 1;
   uVar4 = uVar7 >> 0xc & 0x7fff;
   local_164[0] = &DAT_0069ac80;
@@ -5830,7 +5663,7 @@ undefined ** BuildMapContextStatusStringVariantL(CString *param_1)
       }
       text = local_100[iVar8];
     }
-    CString::AssignFromCStr(param_1,text);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,text);
     uVar7 = DAT_006a5aec;
 switchD_005cc6ac_caseD_4c:
     local_168.m_pchData = local_168.m_pchData + 1;
@@ -5973,7 +5806,7 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639c6b;
   local_c = *unaff_FS_OFFSET;
@@ -6023,11 +5856,11 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString *param_1)
   }
   local_484[7] = (undefined *)0x0;
   local_48c = local_48c + 3;
-  CString::CString(&local_490,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_490,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_490);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_490);
   local_4 = 0xffffffff;
-  CString::~CString(&local_490);
+  CString::__1CString__QAE_XZ(&local_490);
   if (local_488 == 0) {
     DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1;
     local_484[8] = &DAT_0069872c;
@@ -6130,7 +5963,7 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString *param_1)
     }
   }
   local_490.m_pchData = (char *)0x0;
-  CString::AssignFromCStr(param_1,pcVar8);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar8);
   if (1 < local_48c + -1) {
     local_48c = local_48c + -2;
     do {
@@ -6400,7 +6233,7 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString *param_1)
         }
       }
       local_490.m_pchData = (char *)0x0;
-      CString::AssignFromCStr(param_1,pcVar8);
+      CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar8);
       local_48c = local_48c + -1;
     } while (local_48c != 0);
   }
@@ -6492,7 +6325,7 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString *param_1)
     }
     pcVar8 = local_484[iVar7];
   }
-  CString::AssignFromCStr(param_1,pcVar8);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar8);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -6510,19 +6343,19 @@ CString * GenerateMappedFlavorTextVariantEToSharedString(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639c9b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = 0;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 1;
   GenerateMappedFlavorTextVariantE_005ccce0(&local_14);
-  CString::StringSharedRef_AssignFromPtr(param_1,&local_14);
+  CString::__0CString__QAE_ABV0__Z(param_1,&local_14);
   local_10 = 1;
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -6601,7 +6434,7 @@ void BuildRandomMapContextStatusBaseString(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639cbb;
   local_c = *unaff_FS_OFFSET;
@@ -6653,11 +6486,11 @@ void BuildRandomMapContextStatusBaseString(CString *param_1)
     }
   }
   local_1d4[7] = (undefined *)0x0;
-  CString::CString(&local_1dc,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_1dc,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_1dc);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_1dc);
   local_4 = 0xffffffff;
-  CString::~CString(&local_1dc);
+  CString::__1CString__QAE_XZ(&local_1dc);
   if (local_1d8 == 0) {
     local_1d4[7] = (undefined *)0xe;
     local_1d4[2] = (undefined *)0x42;
@@ -6740,7 +6573,7 @@ void BuildRandomMapContextStatusBaseString(CString *param_1)
     }
     pcVar8 = local_1d4[iVar6 + 0x14];
   }
-  CString::AssignFromCStr(param_1,pcVar8);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar8);
   if (1 < local_1e0 + 2) {
     local_1dc.m_pchData = (char *)(local_1e0 + 1);
     do {
@@ -6871,7 +6704,7 @@ void BuildRandomMapContextStatusBaseString(CString *param_1)
         }
         pcVar8 = local_a0[iVar6];
       }
-      CString::AssignFromCStr(param_1,pcVar8);
+      CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar8);
       local_1dc.m_pchData = local_1dc.m_pchData + -1;
     } while (local_1dc.m_pchData != (char *)0x0);
   }
@@ -6953,7 +6786,7 @@ void BuildRandomMapContextStatusBaseString(CString *param_1)
     }
     pcVar8 = local_1d4[iVar6];
   }
-  CString::AssignFromCStr(param_1,pcVar8);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar8);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -6971,19 +6804,19 @@ CString * AssignRandomMapContextStatusBaseString(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639ceb;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = 0;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 1;
   BuildRandomMapContextStatusBaseString(&local_14);
-  CString::StringSharedRef_AssignFromPtr(param_1,&local_14);
+  CString::__0CString__QAE_ABV0__Z(param_1,&local_14);
   local_10 = 1;
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -7001,7 +6834,7 @@ void AppendRandomMapContextStatusSuffixWithProbability(CString param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   this.m_pchData = param_1.m_pchData;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
@@ -7011,12 +6844,12 @@ void AppendRandomMapContextStatusSuffixWithProbability(CString param_1)
                     /* WARNING: Load size is inaccurate */
   if ((*(int *)(*this.m_pchData + -8) < 9) &&
      (DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1, (DAT_006a5aec >> 0xc & 0x7fff) % 10 == 0)) {
-    CString::AssignFromCStr((CString *)this.m_pchData,&DAT_0069b2c4);
+    CString::__YCString__QAEABV0_PBD_Z((CString *)this.m_pchData,&DAT_0069b2c4);
     uVar1 = AssignRandomMapContextStatusBaseString(&param_1);
     local_4 = 0;
-    AssignStringSharedFromRef(uVar1);
+    __YCString__QAEABV0_ABV0__Z(uVar1);
     local_4 = 0xffffffff;
-    CString::~CString(&param_1);
+    CString::__1CString__QAE_XZ(&param_1);
   }
   *unaff_FS_OFFSET = local_c;
   return;
@@ -7037,28 +6870,28 @@ CString * BuildMapContextStatusStringWithRandomSuffix(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639d47;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = 0;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_4 = 1;
   BuildRandomMapContextStatusBaseString(&local_18);
   if ((*(int *)(local_18.m_pchData + -8) < 9) &&
      (DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1, (DAT_006a5aec >> 0xc & 0x7fff) % 10 == 0)) {
-    CString::AssignFromCStr(&local_18,&DAT_0069b2c4);
+    CString::__YCString__QAEABV0_PBD_Z(&local_18,&DAT_0069b2c4);
     uVar1 = AssignRandomMapContextStatusBaseString(&local_14);
     local_4._0_1_ = 2;
-    AssignStringSharedFromRef(uVar1);
+    __YCString__QAEABV0_ABV0__Z(uVar1);
     local_4 = CONCAT31(local_4._1_3_,1);
-    CString::~CString(&local_14);
+    CString::__1CString__QAE_XZ(&local_14);
   }
-  CString::StringSharedRef_AssignFromPtr(param_1,&local_18);
+  CString::__0CString__QAE_ABV0__Z(param_1,&local_18);
   local_10 = 1;
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_18);
+  CString::__1CString__QAE_XZ(&local_18);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -7131,7 +6964,7 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639d6b;
   local_c = *unaff_FS_OFFSET;
@@ -7183,11 +7016,11 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString *param_1)
   local_1a4[7] = (undefined *)0x0;
   local_1a4[6] = (undefined *)0x0;
   local_1ac = local_1ac + 3;
-  CString::CString(&local_1b0,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_1b0,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_1b0);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_1b0);
   local_4 = 0xffffffff;
-  CString::~CString(&local_1b0);
+  CString::__1CString__QAE_XZ(&local_1b0);
   if (local_1a8 == 0) {
     DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1;
     local_1a4[0] = &DAT_0069872c;
@@ -7261,7 +7094,7 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString *param_1)
     }
   }
   local_1b0.m_pchData = (char *)0x0;
-  CString::AssignFromCStr(param_1,text);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,text);
   if (1 < local_1ac + -1) {
     local_1ac = local_1ac + -2;
     do {
@@ -7295,7 +7128,7 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString *param_1)
             iVar7 = iVar7 - (int)*ppuVar4;
           } while (-1 < iVar7);
         }
-        CString::AssignFromCStr(param_1,local_1a4[iVar6 + 0xe]);
+        CString::__YCString__QAEABV0_PBD_Z(param_1,local_1a4[iVar6 + 0xe]);
       }
       else {
         local_118[0x11] = 6;
@@ -7377,7 +7210,7 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString *param_1)
             iVar6 = iVar6 - *piVar2;
           } while (-1 < iVar6);
         }
-        CString::AssignFromCStr(param_1,local_94[iVar7]);
+        CString::__YCString__QAEABV0_PBD_Z(param_1,local_94[iVar7]);
       }
       local_1ac = local_1ac + -1;
     } while (local_1ac != 0);
@@ -7405,7 +7238,7 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString *param_1)
         iVar6 = iVar6 - (int)*ppuVar1;
       } while (-1 < iVar6);
     }
-    CString::AssignFromCStr(param_1,local_1a4[iVar7 + 0xe]);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,local_1a4[iVar7 + 0xe]);
   }
   *unaff_FS_OFFSET = local_c;
   return;
@@ -7424,19 +7257,19 @@ CString * GenerateMappedFlavorTextVariantCToSharedString(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639d9b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = 0;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 1;
   GenerateMappedFlavorTextVariantC_005cf1b0(&local_14);
-  CString::StringSharedRef_AssignFromPtr(param_1,&local_14);
+  CString::__0CString__QAE_ABV0__Z(param_1,&local_14);
   local_10 = 1;
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -7518,7 +7351,7 @@ void GenerateMappedFlavorTextVariantB_005cfc40(CString *param_1)
   undefined *local_164 [87];
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639dbb;
   local_164[0x56] = (undefined *)*unaff_FS_OFFSET;
@@ -7571,11 +7404,11 @@ void GenerateMappedFlavorTextVariantB_005cfc40(CString *param_1)
     }
   }
   local_2f4[7] = (undefined *)0x0;
-  CString::CString(&local_2f8,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_2f8,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_2f8);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_2f8);
   local_4 = 0xffffffff;
-  CString::~CString(&local_2f8);
+  CString::__1CString__QAE_XZ(&local_2f8);
   if (uVar3 == 0) {
     DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1;
     iVar7 = 0;
@@ -7724,7 +7557,7 @@ void GenerateMappedFlavorTextVariantB_005cfc40(CString *param_1)
     }
     pcVar9 = local_2bc[iVar7];
   }
-  CString::AssignFromCStr(param_1,pcVar9);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar9);
   if (1 < local_2fc + 2) {
     local_2fc = local_2fc + 1;
     do {
@@ -7947,7 +7780,7 @@ void GenerateMappedFlavorTextVariantB_005cfc40(CString *param_1)
         }
       }
       local_2f8.m_pchData = (char *)0x0;
-      CString::AssignFromCStr(param_1,pcVar9);
+      CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar9);
       local_2fc = local_2fc + -1;
     } while (local_2fc != 0);
   }
@@ -8063,7 +7896,7 @@ void GenerateMappedFlavorTextVariantB_005cfc40(CString *param_1)
     }
     pcVar9 = local_2d0[iVar7];
   }
-  CString::AssignFromCStr(param_1,pcVar9);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar9);
   *unaff_FS_OFFSET = local_164[0x56];
   return;
 }
@@ -8081,19 +7914,19 @@ CString * GenerateMappedFlavorTextVariantBToSharedString(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639deb;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = 0;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 1;
   GenerateMappedFlavorTextVariantB_005cfc40(&local_14);
-  CString::StringSharedRef_AssignFromPtr(param_1,&local_14);
+  CString::__0CString__QAE_ABV0__Z(param_1,&local_14);
   local_10 = 1;
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -8315,7 +8148,7 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639e0b;
   local_c = *unaff_FS_OFFSET;
@@ -8368,11 +8201,11 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString *param_1)
   }
   local_784[7] = (undefined *)0x0;
   local_78c = local_78c + 3;
-  CString::CString(&local_790,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_790,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_790);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_790);
   local_4 = 0xffffffff;
-  CString::~CString(&local_790);
+  CString::__1CString__QAE_XZ(&local_790);
   if (local_788 == 0) {
     DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1;
     local_784[0] = &DAT_0069872c;
@@ -8492,7 +8325,7 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString *param_1)
     }
   }
   local_790.m_pchData = (char *)0x0;
-  CString::AssignFromCStr(param_1,pcVar7);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar7);
   iVar6 = local_78c + -1;
   if (1 < local_78c + -1) {
     local_78c = local_78c + -2;
@@ -8883,7 +8716,7 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString *param_1)
         }
       }
       local_790.m_pchData = (char *)0x0;
-      CString::AssignFromCStr(param_1,pcVar7);
+      CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar7);
       local_78c = local_78c + -1;
       iVar6 = local_78c;
     } while (local_78c != 0);
@@ -9067,7 +8900,7 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString *param_1)
     }
     pcVar7 = local_784[iVar6 + 0xd];
   }
-  CString::AssignFromCStr(param_1,pcVar7);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar7);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -9085,19 +8918,19 @@ CString * GenerateMappedFlavorTextVariantAToSharedString(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639e3b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = 0;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 1;
   GenerateMappedFlavorTextVariantA_005d13d0(&local_14);
-  CString::StringSharedRef_AssignFromPtr(param_1,&local_14);
+  CString::__0CString__QAE_ABV0__Z(param_1,&local_14);
   local_10 = 1;
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -9192,7 +9025,7 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639e9d;
   local_c = *unaff_FS_OFFSET;
@@ -9244,11 +9077,11 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString *param_1)
   local_278[7] = (undefined *)0x0;
   local_278[2] = (undefined *)0x12;
   local_280.m_pchData = local_280.m_pchData + 3;
-  CString::CString(&local_284,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_284,(char *)&g_szEmptyString);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_284);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_284);
   local_4 = 0xffffffff;
-  CString::~CString(&local_284);
+  CString::__1CString__QAE_XZ(&local_284);
   iVar7 = 0;
   if (local_27c.m_pchData == (char *)0x0) {
     local_278[0] = &DAT_0069872c;
@@ -9331,7 +9164,7 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString *param_1)
       pcVar9 = local_23c[iVar8];
     }
   }
-  CString::AssignFromCStr(param_1,pcVar9);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar9);
   if (1 < (int)(local_280.m_pchData + -1)) {
     local_280.m_pchData = local_280.m_pchData + -2;
     do {
@@ -9485,7 +9318,7 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString *param_1)
         }
       }
       local_284.m_pchData = (char *)0x0;
-      CString::AssignFromCStr(param_1,pcVar9);
+      CString::__YCString__QAEABV0_PBD_Z(param_1,pcVar9);
       local_280.m_pchData = local_280.m_pchData + -1;
     } while (local_280.m_pchData != (char *)0x0);
   }
@@ -9514,7 +9347,7 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString *param_1)
         iVar8 = iVar8 - (int)*ppuVar1;
       } while (-1 < iVar8);
     }
-    CString::AssignFromCStr(param_1,local_278[iVar7 + 8]);
+    CString::__YCString__QAEABV0_PBD_Z(param_1,local_278[iVar7 + 8]);
   }
   DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1;
   if ((DAT_006a5aec >> 0xc & 0x7fff) % 10 == 0) {
@@ -9522,34 +9355,34 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString *param_1)
     if (iVar7 < 10) {
       cVar2 = param_1->m_pchData[iVar7 + -1];
       if (cVar2 == 'o') {
-        CString::CString(&local_27c,&DAT_0069b534);
+        CString::__0CString__QAE_PBD_Z(&local_27c,&DAT_0069b534);
         local_4 = 1;
-        pCVar5 = (CString *)AssignSharedStringConcatRefAndRef(&local_280,&local_27c,param_1);
+        pCVar5 = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_280,&local_27c,param_1);
         local_4._0_1_ = 2;
-        CString::StringSharedRef_AssignFromPtr(&local_284,pCVar5);
+        CString::__0CString__QAE_ABV0__Z(&local_284,pCVar5);
         local_4._0_1_ = 3;
-        CString::AssignFromPtr(param_1,&local_284);
+        CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_284);
         local_4._0_1_ = 2;
-        CString::~CString(&local_284);
+        CString::__1CString__QAE_XZ(&local_284);
         local_4 = CONCAT31(local_4._1_3_,1);
-        CString::~CString(&local_280);
+        CString::__1CString__QAE_XZ(&local_280);
       }
       else {
         if (cVar2 != 'a') goto LAB_005d3eb1;
-        CString::CString(&local_27c,s_Santa_0069b52c);
+        CString::__0CString__QAE_PBD_Z(&local_27c,s_Santa_0069b52c);
         local_4 = 4;
-        pCVar5 = (CString *)AssignSharedStringConcatRefAndRef(&local_280,&local_27c,param_1);
+        pCVar5 = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_280,&local_27c,param_1);
         local_4._0_1_ = 5;
-        CString::StringSharedRef_AssignFromPtr(&local_284,pCVar5);
+        CString::__0CString__QAE_ABV0__Z(&local_284,pCVar5);
         local_4._0_1_ = 6;
-        CString::AssignFromPtr(param_1,&local_284);
+        CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_284);
         local_4._0_1_ = 5;
-        CString::~CString(&local_284);
+        CString::__1CString__QAE_XZ(&local_284);
         local_4 = CONCAT31(local_4._1_3_,4);
-        CString::~CString(&local_280);
+        CString::__1CString__QAE_XZ(&local_280);
       }
       local_4 = 0xffffffff;
-      CString::~CString(&local_27c);
+      CString::__1CString__QAE_XZ(&local_27c);
     }
   }
 LAB_005d3eb1:
@@ -9570,19 +9403,19 @@ CString * GenerateMappedFlavorTextVariantDToSharedString(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639edb;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = 0;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 1;
   GenerateMappedFlavorTextVariantD_005d33a0(&local_14);
-  CString::StringSharedRef_AssignFromPtr(param_1,&local_14);
+  CString::__0CString__QAE_ABV0__Z(param_1,&local_14);
   local_10 = 1;
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -9600,11 +9433,11 @@ undefined4 ShouldRetryMappedFlavorTextGeneration(void)
   undefined *puVar2;
   uint uVar3;
   undefined4 local_84 [33];
-  
+
   puVar2 = &DAT_0069b640;
   puVar1 = &stack0xffffff74;
   do {
-    uVar3 = FindCharIndexInStringPtrOrMinusOne(puVar2);
+    uVar3 = _FindOneOf_CString__QBEHPBD_Z(puVar2);
     if (uVar3 < 0x80000000) {
       return 1;
     }
@@ -9628,7 +9461,7 @@ void SetSharedStringFromMappedFlavorTextWithLengthClamp(int *param_1,undefined4 
   undefined4 local_c;
   CString *pCStack_8;
   CString local_4;
-  
+
   local_4.m_pchData = (char *)0xffffffff;
   pCStack_8 = (CString *)&LAB_00639f00;
   local_c = *unaff_FS_OFFSET;
@@ -9648,16 +9481,16 @@ void SetSharedStringFromMappedFlavorTextWithLengthClamp(int *param_1,undefined4 
     *unaff_FS_OFFSET = local_c;
     return;
   }
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4.m_pchData = (char *)0x0;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2715,param_2,&local_10);
-  CString::StringSharedRef_AssignFromPtr(&local_4,(CString *)&stack0xffffffe4);
+  CString::__0CString__QAE_ABV0__Z(&local_4,(CString *)&stack0xffffffe4);
   local_10.m_pchData._0_1_ = 1;
-  CString::AssignFromPtr(pCStack_8,&local_4);
+  CString::__4CString__QAEABV0_ABV0__Z(pCStack_8,&local_4);
   local_10.m_pchData = (char *)((uint)local_10.m_pchData._1_3_ << 8);
-  CString::~CString(&local_4);
+  CString::__1CString__QAE_XZ(&local_4);
   local_10.m_pchData = (char *)0xffffffff;
-  CString::~CString((CString *)&stack0xffffffe4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffe4);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }
@@ -9681,7 +9514,7 @@ void SetSharedStringFromRotatingFlavorTextBySlot(undefined4 param_1,CString para
   undefined4 local_c;
   CString *pCStack_8;
   CString local_4;
-  
+
   CVar3.m_pchData = param_2.m_pchData;
   local_4.m_pchData = (char *)0xffffffff;
   pCStack_8 = (CString *)&LAB_00639f20;
@@ -9700,7 +9533,7 @@ void SetSharedStringFromRotatingFlavorTextBySlot(undefined4 param_1,CString para
   }
   if (g_pLocalizationTable->field_0x68 != '\0') {
     CStack_1c.m_pchData = (char *)0x5d45ac;
-    CString::CString(&param_2);
+    CString::__0CString__QAE_XZ(&param_2);
     CStack_1c.m_pchData = (char *)&param_2;
     pTVar2 = g_pLocalizationTable->vftable;
     psVar1 = (short *)((int)&DAT_006a5af0 + sVar5 * 2);
@@ -9709,10 +9542,10 @@ void SetSharedStringFromRotatingFlavorTextBySlot(undefined4 param_1,CString para
     (*pTVar2[0x10].slot_0x04)
               (CVar3.m_pchData + 8000,
                CONCAT22(sVar5 >> 0xf,*(undefined2 *)((int)&DAT_006a5af0 + sVar5 * 2)));
-    CString::StringSharedRef_AssignFromPtr(&CStack_1c,&local_4);
-    CString::AssignFromPtr(pCStack_8,&CStack_1c);
-    CString::~CString(&CStack_1c);
-    CString::~CString(&local_4);
+    CString::__0CString__QAE_ABV0__Z(&CStack_1c,&local_4);
+    CString::__4CString__QAEABV0_ABV0__Z(pCStack_8,&CStack_1c);
+    CString::__1CString__QAE_XZ(&CStack_1c);
+    CString::__1CString__QAE_XZ(&local_4);
     *unaff_FS_OFFSET = unaff_EDI;
     return;
   }
@@ -9744,7 +9577,7 @@ void GenerateMappedFlavorTextByCurrentContextNation(undefined4 param_1)
 
 {
   short sVar1;
-  
+
   if (DAT_006a327c == 0) {
     sVar1 = 2;
   }
@@ -9763,7 +9596,7 @@ void GenerateMappedFlavorTextUntilValidationPasses(undefined4 param_1,short para
 
 {
   char cVar1;
-  
+
   do {
     switch((int)param_2 % 0x12) {
     case 0:
@@ -9843,14 +9676,14 @@ void GenerateMappedFlavorTextUntilValidationPasses(undefined4 param_1,short para
 // GHIDRA_COMMENT_END
 
 /* Returns whether a mapped shortcut key is currently pressed.
-   
+
    Behavior:
    - For nShortcutCode == 2, remaps to virtual key 0x44 ('D').
    - Calls GetAsyncKeyState(vk) and returns high-bit pressed state.
-   
+
    Parameters:
    - nShortcutCode: legacy shortcut code or direct virtual-key code.
-   
+
    Returns:
    - true if key is currently pressed, false otherwise. */
 
@@ -9858,7 +9691,7 @@ bool __cdecl IsMappedShortcutKeyPressed(short nShortcutCode)
 
 {
   SHORT SVar1;
-  
+
   if (nShortcutCode == 2) {
     nShortcutCode = 0x44;
   }
@@ -9885,50 +9718,50 @@ void FormatAndAssignTurnStateSharedTextFromTemplate
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639f50;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4._0_1_ = 1;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_4._0_1_ = 2;
-  FormatStringWithVarArgsToSharedRef(&local_10);
-  FormatStringWithVarArgsToSharedRef(&local_14);
-  FormatStringWithVarArgsToSharedRef(&local_18);
-  CString::CString(&local_1c);
+  _Format_CString__QAAXPBDZZ(&local_10);
+  _Format_CString__QAAXPBDZZ(&local_14);
+  _Format_CString__QAAXPBDZZ(&local_18);
+  CString::__0CString__QAE_XZ(&local_1c);
   local_4._0_1_ = 3;
-  CString::AssignFromCStr(&local_1c,s_ERROR___0069b69c);
-  CString::AssignFromCStr(&local_1c,param_3);
-  CString::AssignFromCStr(&local_1c,&DAT_00698c14);
-  AssignStringSharedFromRef();
-  CString::AssignFromCStr(&local_1c,&DAT_00698c14);
-  AssignStringSharedFromRef();
-  CString::AssignFromCStr(&local_1c,&DAT_0069b698);
-  CString::AssignFromCStr(&local_1c,s_Please_record_this_information__0069b670);
-  CString::AssignFromCStr(&local_1c,&DAT_0069b66c);
-  CString::AssignFromCStr(&local_1c,param_4);
-  CString::AssignFromCStr(&local_1c,s____line_0069b660);
-  AssignStringSharedFromRef();
-  CString::AssignFromCStr(&local_1c,s___compiled_0069b650);
-  CString::AssignFromCStr(&local_1c,param_6);
-  CString::AssignFromCStr(&local_1c,&DAT_0069b648);
-  CString::AssignFromCStr(&local_1c,param_7);
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,s_ERROR___0069b69c);
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,param_3);
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,&DAT_00698c14);
+  __YCString__QAEABV0_ABV0__Z();
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,&DAT_00698c14);
+  __YCString__QAEABV0_ABV0__Z();
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,&DAT_0069b698);
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,s_Please_record_this_information__0069b670);
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,&DAT_0069b66c);
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,param_4);
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,s____line_0069b660);
+  __YCString__QAEABV0_ABV0__Z();
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,s___compiled_0069b650);
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,param_6);
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,&DAT_0069b648);
+  CString::__YCString__QAEABV0_PBD_Z(&local_1c,param_7);
   puVar1 = extraout_ECX;
   AssignStringSharedRefAndReturnThis(&local_1c);
   TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
             ((TViewMgr *)g_pUiRuntimeContext,puVar1);
   local_4._0_1_ = 2;
-  CString::~CString(&local_1c);
+  CString::__1CString__QAE_XZ(&local_1c);
   local_4._0_1_ = 1;
-  CString::~CString(&local_18);
+  CString::__1CString__QAE_XZ(&local_18);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -9947,8 +9780,8 @@ void QueueDeferredUiEventPacket(int *param_1,short param_2,undefined4 param_3)
 
 {
   undefined4 *puVar1;
-  
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x14);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
@@ -9976,11 +9809,11 @@ void ReadLineFromBufferedStreamUntilTerminator(char *param_1,int param_2,int par
 {
   char cVar1;
   int iVar2;
-  
+
   iVar2 = 0;
   if (0 < param_2) {
     while ((*(byte *)(param_3 + 0xc) & 0x10) == 0) {
-      cVar1 = ReadNextByteFromBufferedStreamWithLock(param_3);
+      cVar1 = _fgetc(param_3);
       *param_1 = cVar1;
       if (((cVar1 == '\n') || (cVar1 == '\r')) || (cVar1 == '\0')) {
         *param_1 = '\0';
@@ -10004,8 +9837,8 @@ void TryGetFileMetadataForPath(undefined4 *param_1)
 
 {
   undefined1 local_118 [280];
-  
-  GetStatus_60b9ea(*param_1,local_118);
+
+  _GetStatus_CFile__SGHPBDAAUCFileStatus___Z(*param_1,local_118);
   return;
 }
 
@@ -10016,7 +9849,7 @@ void TryGetFileMetadataForPath(undefined4 *param_1)
 void DeleteFileWithErrorReporting(undefined4 *param_1)
 
 {
-  DeleteFileOrReportLastError(*param_1);
+  _Remove_CFile__SGXPBD_Z(*param_1);
   return;
 }
 
@@ -10068,196 +9901,21 @@ HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639fa8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
-  FormatStringWithVarArgsToSharedRef(&local_10,&DAT_0069b6b4,(int)param_1);
-  AfxGetModuleState();
-  iVar1 = AfxGetModuleState();
+  _Format_CString__QAAXPBDZZ(&local_10,&DAT_0069b6b4,(int)param_1);
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   pHVar2 = LoadCursorA(*(HINSTANCE *)(iVar1 + 0xc),local_10.m_pchData);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return pHVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005D5270
-// GHIDRA_NAME MapTurnEventCodeToPaletteIndex
-// GHIDRA_PROTO undefined MapTurnEventCodeToPaletteIndex()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Maps turn-event/state code to palette index (0..0xFF class). Returns 0xFF for unmapped/default cases.
-// GHIDRA_COMMENT_END
-
-/* Maps turn-event/state code to palette index (0..0xFF class). Returns 0xFF for unmapped/default
-   cases. */
-
-undefined4 MapTurnEventCodeToPaletteIndex(short param_1)
-
-{
-  int iVar1;
-  
-  iVar1 = (int)param_1;
-  if (200 < iVar1) {
-    if (iVar1 < 0x2b68) {
-      if (iVar1 == 0x2b67) {
-        return 0;
-      }
-      switch(iVar1) {
-      case 0xc9:
-        goto switchD_005d5297_caseD_33;
-      case 0xca:
-        return 0x30;
-      case 0xcb:
-        goto switchD_005d5297_caseD_6;
-      case 0xcc:
-        goto switchD_005d5297_caseD_3b;
-      case 0xcd:
-        return 0x24;
-      case 0xce:
-        return 0x26;
-      case 0xcf:
-        goto switchD_005d5297_caseD_34;
-      case 0xd0:
-        return 0x14;
-      }
-    }
-    else {
-      switch(iVar1) {
-      case 0x2b68:
-        return 0x13;
-      case 0x2b69:
-        return 0xcb;
-      case 0x2b6a:
-        return 0x5c;
-      case 0x2b6b:
-        return 0xd2;
-      case 0x2b6c:
-        return 0x28;
-      case 0x2b6d:
-        return 1;
-      }
-    }
-switchD_005d5297_caseD_17:
-    return 0xff;
-  }
-  if (iVar1 != 200) {
-    switch(iVar1) {
-    case 0:
-      return 0x16;
-    case 1:
-      return 0x2a;
-    case 2:
-    case 0x40:
-      return 0x22;
-    case 3:
-    case 0x3c:
-    case 0x4e:
-      return 0x1c;
-    case 4:
-      return 0x2b;
-    case 5:
-      return 0x1e;
-    case 6:
-switchD_005d5297_caseD_6:
-      return 0x2e;
-    case 7:
-    case 0x35:
-      return 10;
-    case 8:
-    case 0x3d:
-      return 0xb;
-    case 9:
-      return 0xd;
-    case 10:
-    case 0x43:
-      return 0x29;
-    case 0xb:
-      return 0xde;
-    case 0xc:
-    case 0x47:
-      return 0xdf;
-    case 0xd:
-    case 0x49:
-      return 0xfa;
-    case 0xe:
-    case 0x38:
-      return 0x2c;
-    case 0xf:
-    case 0x4a:
-      return 0x31;
-    case 0x10:
-      return 0x33;
-    case 0x11:
-      return 0x41;
-    case 0x12:
-      return 0x48;
-    case 0x13:
-      return 0xd0;
-    case 0x14:
-      return 0xcd;
-    case 0x15:
-      return 0xce;
-    case 0x16:
-      return 0xcf;
-    default:
-      goto switchD_005d5297_caseD_17;
-    case 0x25:
-    case 0x3f:
-      break;
-    case 0x32:
-      return 0x1a;
-    case 0x33:
-switchD_005d5297_caseD_33:
-      return 0x2d;
-    case 0x34:
-switchD_005d5297_caseD_34:
-      return 0x18;
-    case 0x37:
-      return 0xbd;
-    case 0x3a:
-      return 0xc6;
-    case 0x3b:
-switchD_005d5297_caseD_3b:
-      return 0x27;
-    case 0x3e:
-      return 0x15;
-    case 0x41:
-      return 0x1b;
-    case 0x42:
-      return 0x21;
-    case 0x44:
-      return 0x17;
-    case 0x45:
-      return 0x5f;
-    case 0x46:
-      return 0xbe;
-    case 0x48:
-      return 100;
-    case 0x4b:
-      return 0x66;
-    case 0x4c:
-      return 0x89;
-    case 0x4d:
-      return 0xad;
-    case 0x4f:
-      return 0xe7;
-    case 0x50:
-      return 0xe6;
-    case 0x51:
-      return 0xf6;
-    case 0x52:
-      return 0xc;
-    case 0x53:
-      return 0xef;
-    case 0x54:
-      return 0xf9;
-    }
-  }
-  return 0x20;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D5710
@@ -10268,7 +9926,7 @@ void UpdateTurnEventPaletteByCode(undefined4 param_1,char param_2)
 
 {
   uint palette_index;
-  
+
   palette_index = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(param_1);
   if (param_2 != '\0') {
     SetQuickDrawFillColorFromPaletteIndex();
@@ -10303,7 +9961,7 @@ DispatchLocalizedUiMessageWithTemplateA13A0
   int local_c;
   TView *pTStack_8;
   int local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   pTStack_8 = (TView *)&LAB_00639ff0;
   *unaff_FS_OFFSET = (int)&local_c;
@@ -10323,7 +9981,7 @@ DispatchLocalizedUiMessageWithTemplateA13A0
   uVar1 = DispatchLocalizedUiMessageWithTemplate(3);
   local_4 = -1;
   iStack_18 = 0x5d5b75;
-  CString::~CString((CString *)&param_1);
+  CString::__1CString__QAE_XZ((CString *)&param_1);
   *unaff_FS_OFFSET = local_c;
   return uVar1;
 }
@@ -10349,7 +10007,7 @@ DispatchLocalizedUiMessageWithTemplate
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_0063a030;
   *unaff_FS_OFFSET = &local_c;
@@ -10366,10 +10024,10 @@ DispatchLocalizedUiMessageWithTemplate
   uVar1 = TCivToolbar::RunNationInfoModalAndReturnNonCancel(param_1);
   local_4 = local_4 & 0xffffff00;
   uStack_18 = 0x5d5cb1;
-  CString::~CString((CString *)&param_2);
+  CString::__1CString__QAE_XZ((CString *)&param_2);
   local_4 = 0xffffffff;
   uStack_18 = 0x5d5cc2;
-  CString::~CString((CString *)&param_3);
+  CString::__1CString__QAE_XZ((CString *)&param_3);
   *unaff_FS_OFFSET = local_c;
   return uVar1;
 }
@@ -10407,7 +10065,7 @@ void HandleTurnEvent8FC_RebuildPageTabsAndTitles(void)
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063a148;
   iStack_c = *unaff_FS_OFFSET;
@@ -10436,14 +10094,14 @@ void HandleTurnEvent8FC_RebuildPageTabsAndTitles(void)
   (**(code **)(iVar5 + 0x1cc))();
   iVar5 = 0;
   do {
-    CString::CString((CString *)&stack0xffffffe8);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffffe8);
     piVar2 = (int *)(*pcVar4)(iVar5 + 0x74746c31);
     iVar1 = *piVar2;
     (**(code **)(iVar1 + 0xc))();
     ApplyUiTextStyleAndThemeFlags(piVar2,0,0xe,0x2b6a,0x2b68);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x274f,iVar5 + 4,&stack0xffffffe4);
     (**(code **)(iVar1 + 0x1c8))(aiStack_28,1);
-    CString::~CString((CString *)&stack0xffffffe8);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffffe8);
     iVar5 = iVar5 + 1;
     pcVar4 = pcVar3;
   } while (iVar5 < 3);
@@ -10481,7 +10139,7 @@ void __thiscall HandleTurnStateExitAndPostFollowupEventCode(int param_1,short pa
   char cVar1;
   undefined4 uVar2;
   undefined2 extraout_var;
-  
+
   *(short *)(param_1 + 0xf8) = param_2;
   if (param_2 == 0) {
     (*g_pSfxPlaybackSystem->vftable->RequestDirectSoundInitIfAllowed)();
@@ -10554,7 +10212,7 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a320;
   uStack_c = *unaff_FS_OFFSET;
@@ -10565,7 +10223,7 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   local_10 = 0;
   local_f = 0;
   uStack_38 = 0x5dbe91;
-  CString::CString(local_24);
+  CString::__0CString__QAE_XZ(local_24);
   uStack_38 = 0x6d61696e;
   local_4 = 0;
   pcVar1 = *(code **)(*piVar3 + 0x94);
@@ -10649,17 +10307,17 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   (*pcVar1)();
   pCStack_a8 = (CString *)0x5dc05b;
-  CString::CString(&CStack_8c,s_These_books_are_for_show_0069b6fc);
+  CString::__0CString__QAE_PBD_Z(&CStack_8c,s_These_books_are_for_show_0069b6fc);
   ppuStack_70._0_1_ = 1;
   pCStack_a8 = (CString *)0x5dc06e;
-  CString::AssignFromPtr(&CStack_90,&CStack_8c);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_90,&CStack_8c);
   ppuStack_70 = (undefined1 **)((uint)ppuStack_70._1_3_ << 8);
-  CString::~CString(&CStack_8c);
+  CString::__1CString__QAE_XZ(&CStack_8c);
   ppuStack_88 = &pCStack_a8;
   AssignStringSharedRefAndReturnThis(&CStack_90);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   ppuStack_70 = (undefined1 **)0xffffffff;
-  CString::~CString(&CStack_90);
+  CString::__1CString__QAE_XZ(&CStack_90);
   *unaff_FS_OFFSET = puStack_78;
   return;
 }
@@ -10676,7 +10334,7 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView(void)
   undefined3 extraout_var;
   undefined4 uStack_14;
   int *piVar3;
-  
+
   uStack_14 = 0x102c;
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
@@ -10720,18 +10378,18 @@ TCommand * Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a422;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCommand *)AllocateWithFallbackHandler(0x20);
+  this = (TCommand *)__2_YAPAXI_Z(0x20);
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
     TCommand::ConstructTurnEventPacketBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    CString::CString((CString *)(this + 1));
+    CString::__0CString__QAE_XZ((CString *)(this + 1));
     this->vftable = (TCommandVtbl *)&TModalMessageCommandVtbl_0066f2f0;
     pTVar1 = this;
   }
@@ -10781,7 +10439,7 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
   undefined1 *puStack_8;
   undefined4 uStack_4;
   int *piVar4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063a510;
   uStack_c = *unaff_FS_OFFSET;
@@ -10813,7 +10471,7 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
   CVar9.m_pchData = (char *)0x0;
   (**(code **)(iVar1 + 0x1b4))();
   pCStack_5c = (CString *)0x5de0e7;
-  CString::CString(&local_10,local_10.m_pchData);
+  CString::__0CString__QAE_PBD_Z(&local_10,local_10.m_pchData);
   pCStack_5c = &local_10;
   text_or_resource_id.m_pchData = (char *)0x0;
   CStack_18.m_pchData = (char *)0x0;
@@ -10821,15 +10479,15 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
   (**(code **)(iVar1 + 0x1c8))();
   uStack_20 = 0xffffffff;
   CStack_60.m_pchData = (char *)0x5de10f;
-  CString::~CString(&CStack_18);
+  CString::__1CString__QAE_XZ(&CStack_18);
   CStack_60.m_pchData = (char *)0x706c616e;
   piVar6 = (int *)(*pcVar2)();
   iVar1 = *piVar6;
   (**(code **)(iVar1 + 0xc))();
-  CString::CString((CString *)&stack0xffffffb0);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffb0);
   pcStack_24 = (code *)0x1;
   puStack_68 = (undefined1 *)0x5de140;
-  CString::AssignFromPtr((CString *)&stack0xffffffb0,(CString *)CStack_18.m_pchData);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffb0,(CString *)CStack_18.m_pchData);
   puStack_68 = (undefined1 *)0xc;
   pcStack_70 = (code *)&stack0xffffffc8;
   uStack_6c = 0;
@@ -10870,22 +10528,22 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
     CVar9.m_pchData = (char *)(*pcStack_70)();
     iStack_78 = *(int *)CVar9.m_pchData;
     (**(code **)(iStack_78 + 0xc))();
-    CString::CString(&CStack_7c,text_or_resource_id_00);
+    CString::__0CString__QAE_PBD_Z(&CStack_7c,text_or_resource_id_00);
     text_or_resource_id.m_pchData._1_3_ = (undefined3)((uint)text_or_resource_id.m_pchData >> 8);
     text_or_resource_id.m_pchData._0_1_ = 2;
     (**(code **)(iStack_78 + 0x1c8))(&CStack_7c,0);
     CStack_60.m_pchData._0_1_ = 1;
-    CString::~CString(&CStack_84);
+    CString::__1CString__QAE_XZ(&CStack_84);
     ApplyUiTextStyleAndThemeFlags(text_or_resource_id.m_pchData,0,0xc,0x2b6b,0x2b6c);
     (*(code *)piStack_80[0x71])(1,0);
     pcVar8 = (code *)(*(code *)CStack_84.m_pchData)(0x74776f32);
     iVar5 = *(int *)pcVar8;
     (**(code **)(iVar5 + 0xc))();
-    CString::CString((CString *)&stack0xffffffa8,text_or_resource_id.m_pchData);
+    CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffa8,text_or_resource_id.m_pchData);
     uStack_6c = CONCAT31(uStack_6c._1_3_,3);
     (**(code **)(iVar5 + 0x1c8))(&stack0xffffffa8,0);
     uStack_74 = CONCAT31(uStack_74._1_3_,1);
-    CString::~CString(&CStack_60);
+    CString::__1CString__QAE_XZ(&CStack_60);
     ApplyUiTextStyleAndThemeFlags(uStack_6c,0,0xc,0x2b6b,0x2b6c);
     (**(code **)(iVar7 + 0x1c4))(1,0);
     SetSelectedTextOptionByTag((-(uint)(unaff_EBX != (int *)0x0) & 0x5090a01) + 0x6f6e6531,0);
@@ -10899,11 +10557,11 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
   }
   (**(code **)(*piVar4 + 0x1ac))();
   (**(code **)(iVar1 + 0x1dc))(&iStack_78);
-  CString::AssignFromPtr((CString *)0x3ba,&CStack_7c);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)0x3ba,&CStack_7c);
   iVar1 = *piVar4;
   (**(code **)(iVar1 + 0xa0))();
   (**(code **)(iVar1 + 0x1c))();
-  CString::~CString(&CStack_7c);
+  CString::__1CString__QAE_XZ(&CStack_7c);
   *unaff_FS_OFFSET = text_or_resource_id.m_pchData;
   return unaff_EBX;
 }
@@ -10922,7 +10580,7 @@ bool __fastcall RefreshCurrentUiViewAndActivePanelState(int *param_1)
   int iVar5;
   undefined4 uStack_8;
   int *piVar3;
-  
+
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
@@ -10953,7 +10611,7 @@ void __fastcall DispatchUiRuntimeMessage101AAndRefreshActiveView(int *param_1)
   undefined3 extraout_var;
   undefined4 uStack_14;
   int *piVar3;
-  
+
   uStack_14 = 0x101a;
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
@@ -10991,18 +10649,18 @@ char ShowLocalizedUiPromptByGroupAndIndex
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a568;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex();
   AssignStringSharedRefAndReturnThis(&local_10);
   promptResult = DispatchLocalizedUiMessageWithTemplateA13A0();
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return promptResult;
 }
@@ -11020,12 +10678,12 @@ void CreateModalMessageCommandAndQueue(CString *param_1,undefined4 param_2)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a592;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this = (TCommand *)AllocateWithFallbackHandler(0x20);
+  this = (TCommand *)__2_YAPAXI_Z(0x20);
   local_4 = 0;
   if (this == (TCommand *)0x0) {
     pTVar1 = (TCommand *)0x0;
@@ -11033,12 +10691,12 @@ void CreateModalMessageCommandAndQueue(CString *param_1,undefined4 param_2)
   else {
     TCommand::ConstructTurnEventPacketBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    CString::CString((CString *)(this + 1));
+    CString::__0CString__QAE_XZ((CString *)(this + 1));
     this->vftable = (TCommandVtbl *)&TModalMessageCommandVtbl_0066f2f0;
     pTVar1 = this;
   }
   local_4 = 0xffffffff;
-  CString::AssignFromPtr((CString *)(pTVar1 + 1),param_1);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)(pTVar1 + 1),param_1);
   *(undefined4 *)&pTVar1[1].field_0x4 = param_2;
   InitializeRangePairAndResetCursor(0x48657921,g_pGlobalUiRootController,0,0,0);
   (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(pTVar1);
@@ -11059,12 +10717,12 @@ char DispatchGameStateEventIfLocalizedPromptAccepted(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a5b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex();
   AssignStringSharedRefAndReturnThis(&local_10);
@@ -11074,7 +10732,7 @@ char DispatchGameStateEventIfLocalizedPromptAccepted(void)
     DispatchTaggedGameStateEvent1F20();
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return cVar1;
 }
@@ -11102,13 +10760,13 @@ void WrapperFor_ftol_At005dee20(void)
 // GHIDRA_COMMENT_END
 
 /* Template-E0 dialog constructor helper.
-   
+
    Initializes CDialog-derived instance with template ID 0xE0 and vtable for this dialog type. */
 
 TControl * __thiscall InitializeDialogTemplateE0(TControl *param_1,undefined4 param_2)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1,0xe0,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xe0,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0064b960;
   return param_1;
 }
@@ -11142,7 +10800,7 @@ void WrapperFor_EnsureMainFrameClassNameAssigned_At005def40(int param_1)
 {
   *(undefined4 *)(param_1 + 0x18) = 0xfffffc18;
   *(undefined4 *)(param_1 + 0x1c) = 0xfffffc18;
-  TTooltipRelayWindowState::PreCreateWindow(param_1);
+  TTooltipRelayWindowState::_PreCreateWindow_CWnd__UAEHAAUtagCREATESTRUCTA___Z(param_1);
   return;
 }
 
@@ -11161,12 +10819,12 @@ undefined4 SetCursorFromResourceE4AndClampRange(void)
 {
   int iVar1;
   HCURSOR hCursor;
-  
-  OnInitDialog();
-  iVar1 = AfxGetModuleState();
+
+  _OnInitDialog_CDialog__UAEHXZ();
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   hCursor = LoadCursorA(*(HINSTANCE *)(iVar1 + 8),(LPCSTR)0xe4);
   SetCursor(hCursor);
-  MoveWindow(0,0,2000,2000,1);
+  _MoveWindow_CWnd__QAEXHHHHH_Z(0,0,2000,2000,1);
   return 1;
 }
 
@@ -11178,9 +10836,9 @@ void __fastcall NoOpOnPaintWithCPaintDCScope_005df040(undefined4 param_1)
 
 {
   CPaintDC local_54 [84];
-  
-  CPaintDC(param_1);
-  CPaintDC::~CPaintDC(local_54);
+
+  __0CPaintDC__QAE_PAVCWnd___Z(param_1);
+  CPaintDC::__1CPaintDC__UAE_XZ(local_54);
   return;
 }
 
@@ -11238,7 +10896,7 @@ int * LoadTableResourceStreamByName(CString param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   puStack_8 = &LAB_0063a67c;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -11247,20 +10905,20 @@ int * LoadTableResourceStreamByName(CString param_1)
   hModule = LoadLibraryA(*(LPCSTR *)(DAT_006a1348 + 0xd4));
   hResInfo = FindResourceA(hModule,param_1.m_pchData,s_TABLE_0069b7b0);
   if (hResInfo == (HRSRC)0x0) {
-    iVar3 = AllocateWithFallbackHandler(0x10);
+    iVar3 = __2_YAPAXI_Z(0x10);
     local_4._0_1_ = 2;
     if (iVar3 != 0) {
-      piVar4 = (int *)CFileException::ConstructCFileException();
+      piVar4 = (int *)CFileException::__0CFile__QAE_XZ();
     }
     local_4._0_1_ = 0;
-    ConstructSerializedDataExceptionBase();
+    __0CException__QAE_XZ();
     local_4._0_1_ = 3;
-    CString::CString(&local_10);
+    CString::__0CString__QAE_XZ(&local_10);
     local_4._0_1_ = 4;
     local_20[0] = &PTR_GetCFileExceptionRuntimeClass_00672234;
     local_18 = 0;
     local_14 = 0xffffffff;
-    CString::CopyFromCStr(&local_10,(char *)0x0);
+    CString::__4CString__QAEABV0_PBD_Z(&local_10,(char *)0x0);
     local_4 = CONCAT31(local_4._1_3_,5);
     iVar3 = (**(code **)(*piVar4 + 0x28))(param_1.m_pchData,2,local_20);
     if ((iVar3 == 0) && (DAT_006a5d20 == 0)) {
@@ -11268,24 +10926,24 @@ int * LoadTableResourceStreamByName(CString param_1)
     }
     local_20[0] = &PTR_GetCFileExceptionRuntimeClass_00672234;
     local_4 = CONCAT31(local_4._1_3_,6);
-    CString::~CString(&local_10);
+    CString::__1CString__QAE_XZ(&local_10);
     local_20[0] = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   }
   else {
     hResData = LoadResource(hModule,hResInfo);
-    this = (CFileException *)AllocateWithFallbackHandler(0x28);
+    this = (CFileException *)__2_YAPAXI_Z(0x28);
     local_4._0_1_ = 1;
     if (this != (CFileException *)0x0) {
-      piVar4 = (int *)CFileException::CMemFile(this,0x400);
+      piVar4 = (int *)CFileException::__0CMemFile__QAE_I_Z(this,0x400);
     }
     local_4 = (uint)local_4._1_3_ << 8;
     pvVar1 = LockResource(hResData);
     uVar5 = 0;
     DVar2 = SizeofResource(hModule,hResInfo);
-    FUN_00619b34(pvVar1,DVar2,uVar5);
+    _Attach_CMemFile__QAEXPAEII_Z(pvVar1,DVar2,uVar5);
   }
   local_4 = 0xffffffff;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   *unaff_FS_OFFSET = local_c;
   return piVar4;
 }
@@ -11310,7 +10968,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005df630(undefined4 p
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -11326,13 +10984,13 @@ void __fastcall WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660(undefined
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_0063a6a8;
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &PTR_GetCFileExceptionRuntimeClass_00672234;
   local_4 = 0;
-  CString::~CString((CString *)(param_1 + 4));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 4));
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -11366,7 +11024,7 @@ ReadResourceStreamIntoBufferAndAdvance(int *param_1,undefined4 param_2,undefined
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = (**(code **)(*param_1 + 0x3c))(param_2,*param_3);
   *param_3 = uVar1;
   return 0;
@@ -11415,29 +11073,29 @@ uint QueryVolumeInformationForDriveIndex(char param_1,CString *param_2,LPDWORD p
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a6c8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   uMode = SetErrorMode(1);
-  FUN_005feb3b(param_1 + 'A',1);
+  __0CString__QAE_DH_Z(param_1 + 'A',1);
   local_4 = 0;
-  CString::AssignFromCStr(&local_14,&DAT_0069b7b8);
+  CString::__YCString__QAEABV0_PBD_Z(&local_14,&DAT_0069b7b8);
   nFileSystemNameSize = 0;
   lpFileSystemFlags = &local_10;
   lpFileSystemNameBuffer = (LPSTR)0x0;
   lpMaximumComponentLength = &local_10;
   nVolumeNameSize = 0x1e;
-  lpVolumeNameBuffer = (LPSTR)CString::EnsureCapacityPreserveLength(param_2,0x1e);
+  lpVolumeNameBuffer = (LPSTR)CString::_GetBuffer_CString__QAEPADH_Z(param_2,0x1e);
   uVar1 = GetVolumeInformationA
                     (local_14.m_pchData,lpVolumeNameBuffer,nVolumeNameSize,param_3,
                      lpMaximumComponentLength,lpFileSystemFlags,lpFileSystemNameBuffer,
                      nFileSystemNameSize);
   SetErrorMode(uMode);
-  CString::SetLengthAndTerminator(param_2,-1);
+  CString::_ReleaseBuffer_CString__QAEXH_Z(param_2,-1);
   local_4 = 0xffffffff;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return uVar1 & 0xff;
 }
@@ -11452,7 +11110,7 @@ bool QueryDriveTypeByDriveIndex(char param_1)
   UINT UVar1;
   char local_4;
   undefined3 uStack_3;
-  
+
   _local_4 = CONCAT31((int3)((uint)DAT_0069b7bc >> 8),param_1 + 'A');
   UVar1 = GetDriveTypeA(&local_4);
   return UVar1 == 5;
@@ -11489,24 +11147,24 @@ void BuildScenarioPathForModeAndIndex(CString param_1,int param_2,CString *param
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a768;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 0;
-  FormatStringWithVarArgsToSharedRef(&local_14,&g_szDecimalFormat,param_1.m_pchData);
-  pCVar1 = (CString *)AssignSharedStringConcatCStrAndRef(&local_10,s_Scenario_s_0069b7ec,&local_14);
+  _Format_CString__QAAXPBDZZ(&local_14,&g_szDecimalFormat,param_1.m_pchData);
+  pCVar1 = (CString *)__H_YG_AVCString__PBDABV0__Z(&local_10,s_Scenario_s_0069b7ec,&local_14);
   local_4._0_1_ = 1;
-  CString::StringSharedRef_AssignFromPtr(&param_1,pCVar1);
+  CString::__0CString__QAE_ABV0__Z(&param_1,pCVar1);
   pCVar1 = param_3;
   local_4._0_1_ = 2;
-  CString::AssignFromPtr(param_3,&param_1);
+  CString::__4CString__QAEABV0_ABV0__Z(param_3,&param_1);
   local_4._0_1_ = 1;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   if (param_2 == 0) {
     text = &DAT_0069b7d4;
   }
@@ -11517,10 +11175,10 @@ void BuildScenarioPathForModeAndIndex(CString param_1,int param_2,CString *param
     if (param_2 != 2) goto LAB_005dfe2e;
     text = &DAT_0069b7e4;
   }
-  CString::AssignFromCStr(pCVar1,text);
+  CString::__YCString__QAEABV0_PBD_Z(pCVar1,text);
 LAB_005dfe2e:
   local_4 = 0xffffffff;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -11537,16 +11195,16 @@ void AssignScoresDatPathToSharedString(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a788;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10,s_Data_scores_dat_0069b7fc);
+  CString::__0CString__QAE_PBD_Z(&local_10,s_Data_scores_dat_0069b7fc);
   local_4 = 0;
-  CString::AssignFromPtr(param_1,&local_10);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_10);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -11567,31 +11225,30 @@ void EnsurePictWvDataGobLoadedBySlot(CString param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a7b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 0;
-  FormatStringWithVarArgsToSharedRef(&local_14,s_Data_PictWv_d_gob_00698bf4,param_1.m_pchData);
+  _Format_CString__QAAXPBDZZ(&local_14,s_Data_PictWv_d_gob_00698bf4,param_1.m_pchData);
   iVar1 = CMainFrame::LoadModuleLibrarySlotWithErrorDialog
                     (g_pModuleLibraryCacheState,local_14.m_pchData,(CString)0x2);
   if (iVar1 == 0) {
-    uVar2 = AssignSharedStringConcatCStrAndRef
+    uVar2 = __H_YG_AVCString__PBDABV0__Z
                       (&local_10,s_A_file_required_by_the_program____0069b820,&local_14);
     local_4._0_1_ = 1;
-    puVar3 = (undefined4 *)
-             AssignSharedStringConcatRefAndCStr(&param_1,uVar2,s___is_missing__0069b810);
+    puVar3 = (undefined4 *)__H_YG_AVCString__ABV0_PBD_Z(&param_1,uVar2,s___is_missing__0069b810);
     local_4._0_1_ = 2;
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(*puVar3,0,0);
+    _AfxMessageBox__YGHPBDII_Z(*puVar3,0,0);
     local_4._0_1_ = 1;
-    CString::~CString(&param_1);
+    CString::__1CString__QAE_XZ(&param_1);
     local_4 = (uint)local_4._1_3_ << 8;
-    CString::~CString(&local_10);
+    CString::__1CString__QAE_XZ(&local_10);
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -11619,26 +11276,26 @@ undefined1 ShowSavedStatusDialogAndReturnAccepted(CString param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a7e0;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::StringSharedRef_AssignFromPtr(&param_1,(CString *)param_1.m_pchData);
+  CString::__0CString__QAE_ABV0__Z(&param_1,(CString *)param_1.m_pchData);
   local_4 = 0;
-  pCVar3 = AfxGetThread();
+  pCVar3 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar3 == (CWinThread *)0x0) {
     piVar4 = (int *)0x0;
   }
   else {
-    pCVar3 = AfxGetThread();
+    pCVar3 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     piVar4 = (int *)(**(code **)(*(int *)pCVar3 + 0x7c))();
   }
   (**(code **)(*piVar4 + 0xc))();
   iVar5 = GetObjectValueAtOffset98();
   piVar4 = *(int **)(iVar5 + 0x3c);
-  AfxGetModuleState();
-  BeginWaitCursor();
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  _BeginWaitCursor_CCmdTarget__QAEXXZ();
   iVar5 = *piVar4;
   pcVar1 = *(code **)(iVar5 + 0x5c);
   local_4 = CONCAT31(local_4._1_3_,1);
@@ -11646,9 +11303,9 @@ undefined1 ShowSavedStatusDialogAndReturnAccepted(CString param_1)
   (*pcVar1)(param_1.m_pchData,0);
   uVar2 = (**(code **)(iVar5 + 0xa0))(piVar4[8],1);
   (*pcVar1)(s___saved_0069b848,0);
-  AfxGetModuleState();
-  EndWaitCursor();
-  CString::~CString((CString *)&stack0xffffffec);
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  _EndWaitCursor_CCmdTarget__QAEXXZ();
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffec);
   *unaff_FS_OFFSET = CVar6.m_pchData;
   return uVar2;
 }
@@ -11661,7 +11318,7 @@ undefined4 SetLoadedTagOnLocalizationEntryIfPresent(undefined4 *param_1)
 
 {
   int *piVar1;
-  
+
   piVar1 = (int *)(**(code **)(*DAT_006a1348 + 0x84))(*param_1);
   if (piVar1 == (int *)0x0) {
     return 0;
@@ -11682,7 +11339,7 @@ void LoadProfileStringAndAssignSharedRef(CString *param_1,CString param_2,CStrin
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a800;
@@ -11691,13 +11348,13 @@ void LoadProfileStringAndAssignSharedRef(CString *param_1,CString param_2,CStrin
             TToolBarCluster::WrapperFor_GetProfileStringA_At00415540
                       (&param_2,param_2.m_pchData,param_3.m_pchData);
   local_4 = 0;
-  CString::StringSharedRef_AssignFromPtr(&param_3,src_ref);
+  CString::__0CString__QAE_ABV0__Z(&param_3,src_ref);
   local_4._0_1_ = 1;
-  CString::AssignFromPtr(param_1,&param_3);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&param_3);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&param_3);
+  CString::__1CString__QAE_XZ(&param_3);
   local_4 = 0xffffffff;
-  CString::~CString(&param_2);
+  CString::__1CString__QAE_XZ(&param_2);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -11721,7 +11378,7 @@ void LoadSettingValueByKeyIntoOut(undefined4 *param_1,undefined4 param_2,undefin
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = GetSettingValueFromSettingsSection(param_2,param_3);
   *param_1 = uVar1;
   return;
@@ -11747,8 +11404,8 @@ bool WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0(void)
 {
   int iVar1;
   undefined1 local_118 [280];
-  
-  iVar1 = FindFirstFileAndPopulateFileInfoRecord(PTR_s_save_cli___imp_0069b768,local_118);
+
+  iVar1 = __findfirst(PTR_s_save_cli___imp_0069b768,local_118);
   WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(iVar1);
   return iVar1 != -1;
 }
@@ -11773,27 +11430,27 @@ int DeleteLegacyCliSaveImpFiles(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   puVar1 = PTR_s_save_cli___imp_0069b768;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a826;
   *unaff_FS_OFFSET = &local_c;
   iVar4 = 0;
-  iVar2 = FindFirstFileAndPopulateFileInfoRecord(puVar1,local_124);
+  iVar2 = __findfirst(puVar1,local_124);
   WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(iVar2);
   while (iVar2 != -1) {
-    CString::CString(&local_12c,s_save__0069b860);
+    CString::__0CString__QAE_PBD_Z(&local_12c,s_save__0069b860);
     local_4 = 0;
-    puVar3 = (undefined4 *)AssignSharedStringConcatRefAndCStr(&local_128,extraout_EAX,local_110);
+    puVar3 = (undefined4 *)__H_YG_AVCString__ABV0_PBD_Z(&local_128,extraout_EAX,local_110);
     local_4._0_1_ = 1;
-    DeleteFileOrReportLastError(*puVar3);
+    _Remove_CFile__SGXPBD_Z(*puVar3);
     local_4 = (uint)local_4._1_3_ << 8;
-    CString::~CString(&local_128);
+    CString::__1CString__QAE_XZ(&local_128);
     local_4 = 0xffffffff;
-    CString::~CString(&local_12c);
+    CString::__1CString__QAE_XZ(&local_12c);
     iVar4 = iVar4 + 1;
-    iVar2 = FindFirstFileAndPopulateFileInfoRecord(PTR_s_save_cli___imp_0069b768,local_124);
+    iVar2 = __findfirst(PTR_s_save_cli___imp_0069b768,local_124);
     WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(iVar2);
   }
   *unaff_FS_OFFSET = local_c;
@@ -11811,7 +11468,7 @@ void DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot
   char cVar1;
   CWinThread *pCVar2;
   int iVar3;
-  
+
   param_3 = param_3 + -0xa000;
   if (((param_3 < 0) || (9 < param_3)) || (*(code **)(&DAT_006a5cf8 + param_3 * 4) == (code *)0x0))
   {
@@ -11822,12 +11479,12 @@ void DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot
   else {
     cVar1 = (**(code **)(&DAT_006a5cf8 + param_3 * 4))();
     if (cVar1 == '\0') {
-      pCVar2 = AfxGetThread();
+      pCVar2 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       if (pCVar2 == (CWinThread *)0x0) {
         iVar3 = 0;
       }
       else {
-        pCVar2 = AfxGetThread();
+        pCVar2 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
         iVar3 = (**(code **)(*(int *)pCVar2 + 0x7c))();
       }
       KillTimer(*(HWND *)(iVar3 + 0x1c),*(UINT_PTR *)(&DAT_006a5c98 + param_3 * 4));
@@ -11849,14 +11506,14 @@ void ScheduleTimerSlotCallbackWithInterval(undefined4 param_1,UINT param_2,int p
   CWinThread *pCVar1;
   int iVar2;
   UINT_PTR UVar3;
-  
+
   *(undefined4 *)(&DAT_006a5cf8 + param_3 * 4) = param_1;
-  pCVar1 = AfxGetThread();
+  pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar1 == (CWinThread *)0x0) {
     iVar2 = 0;
   }
   else {
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
   }
   UVar3 = SetTimer(*(HWND *)(iVar2 + 0x1c),param_3 + 0xa000,param_2,(TIMERPROC)&LAB_004037e7);
@@ -11880,13 +11537,13 @@ CString * FormatVersionStringFromVersionResource(CString *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a85f;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = 0;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 1;
   hResInfo = FindResourceA((HMODULE)0x0,(LPCSTR)0x1,(LPCSTR)0x10);
   if (hResInfo != (HRSRC)0x0) {
@@ -11901,16 +11558,16 @@ CString * FormatVersionStringFromVersionResource(CString *param_1)
       else {
         pcVar2 = s__v___d__d__d__d__0069b888;
       }
-      FormatStringWithVarArgsToSharedRef
+      _Format_CString__QAAXPBDZZ
                 (&local_14,pcVar2,*(uint *)((int)pvVar1 + 0x38) >> 0x10,
                  *(undefined2 *)((int)pvVar1 + 0x38),*(uint *)((int)pvVar1 + 0x3c) >> 0x10,
                  *(short *)((int)pvVar1 + 0x3c));
     }
   }
-  CString::StringSharedRef_AssignFromPtr(param_1,&local_14);
+  CString::__0CString__QAE_ABV0__Z(param_1,&local_14);
   local_10 = 1;
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -11934,7 +11591,7 @@ MMRESULT OpenWaveMmioReadFmtChunkAndAllocateHeader
   undefined4 local_1c;
   undefined4 local_18;
   _MMCKINFO local_14;
-  
+
   *param_3 = 0;
   hmmio = mmioOpenA(param_1,param_5,0x10000);
   if (hmmio == (HMMIO)0x0) {
@@ -12015,7 +11672,7 @@ uint ReadMmioBytesToBufferAndUpdateChunkRemaining
   HPSTR pcVar4;
   uint uVar5;
   _MMIOINFO local_48;
-  
+
   MVar2 = mmioGetInfo(param_1,&local_48,0);
   uVar3 = (uint)(MVar2 != 0);
   if (uVar3 == 0) {
@@ -12068,7 +11725,7 @@ MMRESULT CreateWaveFileAndWriteFmtFactChunks
   LONG LVar3;
   char local_18 [4];
   _MMCKINFO local_14;
-  
+
   local_18[0] = -1;
   local_18[1] = -1;
   local_18[2] = -1;
@@ -12130,7 +11787,7 @@ undefined4 CopyMmioChunkByFourCCViaGlobalBuffer(HMMIO param_1,HMMIO param_2,FOUR
   FOURCC FVar3;
   FOURCC FVar4;
   _MMCKINFO local_14;
-  
+
   pvVar1 = GlobalAlloc(0x42,param_3[1]);
   pch = GlobalLock(pvVar1);
   if (pch == (HPSTR)0x0) {
@@ -12178,7 +11835,7 @@ MMRESULT LoadWaveDataAndFormatFromFilePath
   HGLOBAL pvVar4;
   _MMCKINFO local_28;
   MMCKINFO local_14;
-  
+
   pHVar2 = param_5;
   puVar1 = param_4;
   param_5->unused = 0;
@@ -12234,7 +11891,7 @@ undefined4 ProbeAuxOutputDeviceIndexByPidMask(void)
   UINT_PTR uDeviceID;
   MMRESULT MVar4;
   tagAUXCAPSA local_30;
-  
+
   MVar4 = 0;
   UVar3 = auxGetNumDevs();
   uDeviceID = 0;
@@ -12283,7 +11940,7 @@ bool SetAuxOutputVolumeAcrossCompatibleDevices(int param_1)
   UINT_PTR uDeviceID;
   MMRESULT MVar3;
   tagAUXCAPSA local_30;
-  
+
   MVar3 = 0;
   UVar2 = auxGetNumDevs();
   uDeviceID = 0;
@@ -12312,7 +11969,7 @@ undefined4 GetAuxOutputVolumeFromFirstCompatibleDevice(uint *param_1)
   UINT_PTR uDeviceID;
   uint local_34;
   tagAUXCAPSA local_30;
-  
+
   uDeviceID = 0;
   UVar1 = auxGetNumDevs();
   if ((int)UVar1 < 1) {
@@ -12344,7 +12001,7 @@ bool SendMciStatusCommand814AndIgnoreFailure(MCIDEVICEID param_1)
   undefined1 local_10 [4];
   int local_c;
   undefined4 local_8;
-  
+
   local_8 = 4;
   MVar1 = mciSendCommandA(param_1,0x814,0x100,(DWORD_PTR)local_10);
   if (MVar1 != 0) {
@@ -12364,7 +12021,7 @@ uint QueryMciStatusField5ViaCommand814(MCIDEVICEID param_1)
   undefined1 local_10 [4];
   uint local_c;
   undefined4 local_8;
-  
+
   local_8 = 5;
   MVar1 = mciSendCommandA(param_1,0x814,0x100,(DWORD_PTR)local_10);
   return ~-(uint)(MVar1 != 0) & local_c;
@@ -12381,7 +12038,7 @@ uint QueryMciStatusField8ViaCommand814(MCIDEVICEID param_1)
   undefined1 local_10 [4];
   uint local_c;
   undefined4 local_8;
-  
+
   local_8 = 8;
   MVar1 = mciSendCommandA(param_1,0x814,0x100,(DWORD_PTR)local_10);
   return ~-(uint)(MVar1 != 0) & local_c;
@@ -12398,7 +12055,7 @@ uint QueryMciStatusField3ViaCommand814(MCIDEVICEID param_1)
   undefined1 local_10 [4];
   uint local_c;
   undefined4 local_8;
-  
+
   local_8 = 3;
   MVar1 = mciSendCommandA(param_1,0x814,0x100,(DWORD_PTR)local_10);
   return ~-(uint)(MVar1 != 0) & local_c;
@@ -12417,7 +12074,7 @@ void SetMciPlaybackRangeByTrackIndexAndDevice(byte param_1,MCIDEVICEID param_2)
   uint local_10;
   undefined1 local_c [4];
   undefined4 local_8;
-  
+
   local_8 = 10;
   MVar1 = mciSendCommandA(param_2,0x80d,0x400,(DWORD_PTR)local_c);
   if (MVar1 == 0) {
@@ -12451,7 +12108,7 @@ uint OpenCdAudioAndProbeAuxOutputDevice(void)
   undefined4 local_38;
   undefined4 local_34;
   tagAUXCAPSA local_30;
-  
+
   local_44 = 0;
   uDeviceID = 0;
   local_38 = 0;
@@ -12492,7 +12149,7 @@ bool SendMciCommand804ToDevice(MCIDEVICEID param_1)
 
 {
   MCIERROR MVar1;
-  
+
   MVar1 = mciSendCommandA(param_1,0x804,0,0);
   return MVar1 == 0;
 }
@@ -12532,12 +12189,12 @@ TControl * __thiscall InitializeDialogTemplate98WithSharedText(TControl *param_1
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a893;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0x98,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0x98,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -12546,10 +12203,10 @@ TControl * __thiscall InitializeDialogTemplate98WithSharedText(TControl *param_1
   param_1->padding_65_to_67[1] = 0;
   param_1->padding_65_to_67[2] = 0;
   local_4 = 0;
-  CString::CString((CString *)&param_1->field74);
+  CString::__0CString__QAE_XZ((CString *)&param_1->field74);
   local_4 = CONCAT31(local_4._1_3_,1);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0066f5d8;
-  CString::CopyFromCStr((CString *)&param_1->field74,(char *)&g_szEmptyString);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)&param_1->field74,(char *)&g_szEmptyString);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -12563,7 +12220,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e1c60(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -12575,7 +12232,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e1c60(undefined4 p
 void __thiscall WrapperFor_DDX_Text_618cbd_At005e1c90(int param_1,undefined4 param_2)
 
 {
-  DDX_Text_618cbd(param_2,0x3ee,param_1 + 0x74);
+  _DDX_Text__YGXPAVCDataExchange__HAAVCString___Z(param_2,0x3ee,param_1 + 0x74);
   return;
 }
 
@@ -12601,18 +12258,18 @@ undefined4 UpdateCursorHelperWindowTextFromUiString(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a8b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  OnInitDialog();
-  CString::CString(&local_10);
+  _OnInitDialog_CDialog__UAEHXZ();
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex(&local_10,0x275c,1);
-  SetWindowTextOrDelegateToOwner(local_10.m_pchData);
+  CMcWindow::SetWindowTextOrDelegateToOwner(local_10.m_pchData);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return 1;
 }
@@ -12647,7 +12304,7 @@ void __fastcall IncrementPlaybackCounterAndNotifyOwnerCallback(int *param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = *param_1;
   *param_1 = iVar1 + 1;
   (**(code **)(*(int *)param_1[1] + 0x2c))(iVar1);
@@ -12664,7 +12321,7 @@ WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0(int param_1,undefined4 pa
 {
   uint in_EAX;
   uint uVar1;
-  
+
   if (*(int *)(param_1 + 0x90) != 0) {
     uVar1 = SendMessage499AndDetachOnSuccess(param_2);
     return uVar1;
@@ -12720,8 +12377,8 @@ void WrapperFor_ftol_At005e26a0(void)
 void InitializeRuntimeClassState_0066FA50_AndRegisterAtExit(void)
 
 {
-  InitializeRuntimeClassVtablePointer_0066FA50_State(&DAT_006a5f40,10);
-  AppendPointerToGlobalVectorAsStatus(DestroyRuntimeClassState_0066FA50_AtExit);
+  __0CStringList__QAE_H_Z(&DAT_006a5f40,10);
+  _atexit(DestroyRuntimeClassState_0066FA50_AtExit);
   return;
 }
 
@@ -12755,7 +12412,7 @@ void InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da
 
 {
   TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State((TNetMgr *)&DAT_006a5f28);
-  AppendPointerToGlobalVectorAsStatus(&LAB_005e2750);
+  _atexit(&LAB_005e2750);
   return;
 }
 
@@ -12778,7 +12435,7 @@ void InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da
 
 {
   TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State((TNetMgr *)&DAT_006a5f10);
-  AppendPointerToGlobalVectorAsStatus(&LAB_005e27a0);
+  _atexit(&LAB_005e27a0);
   return;
 }
 
@@ -12800,7 +12457,7 @@ void TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
 void __fastcall ReleaseSharedStringRefOnly_005e2850(int param_1)
 
 {
-  CString::~CString((CString *)(param_1 + 0x10));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x10));
   return;
 }
 
@@ -12818,7 +12475,7 @@ undefined4 WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900(int
   undefined4 uVar3;
   int in_stack_00000014;
   undefined4 local_4;
-  
+
   iVar1 = param_1;
   local_4 = 4;
   iVar2 = WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900_Impl
@@ -12845,7 +12502,7 @@ undefined4 __fastcall StartAsyncWNetOperationWithErrorCallback(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = **(int **)(param_1 + 4);
   *(undefined4 *)(param_1 + 100) = 0;
   iVar1 = (**(code **)(iVar1 + 0x30))(*(int **)(param_1 + 4),0,&LAB_00406393,param_1,0x10);
@@ -12864,7 +12521,7 @@ void InitializeNetManagerInstanceAndRegisterAtExit(void)
 
 {
   TNetMgr::CreateTNetMgrInstance((TNetMgr *)&DAT_006a5f60);
-  AppendPointerToGlobalVectorAsStatus(DestroyGlobalState_006A5F60_AtExit);
+  _atexit(DestroyGlobalState_006A5F60_AtExit);
   return;
 }
 
@@ -12892,7 +12549,7 @@ void __fastcall DestructRuntimeSelectionRecordBufferState(undefined4 *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_0063a976;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -12903,8 +12560,8 @@ void __fastcall DestructRuntimeSelectionRecordBufferState(undefined4 *param_1)
     do {
       iVar1 = *(int *)(DAT_006a5f2c + iVar2 * 4);
       if (iVar1 != 0) {
-        CString::~CString((CString *)(iVar1 + 0x10));
-        FreeHeapBufferIfNotNull(iVar1);
+        CString::__1CString__QAE_XZ((CString *)(iVar1 + 0x10));
+        __3_YAXPAX_Z(iVar1);
       }
       iVar2 = iVar2 + 1;
     } while (iVar2 < DAT_006a5f30);
@@ -12915,15 +12572,15 @@ void __fastcall DestructRuntimeSelectionRecordBufferState(undefined4 *param_1)
     do {
       iVar1 = *(int *)(DAT_006a5f14 + iVar2 * 4);
       if (iVar1 != 0) {
-        CString::~CString((CString *)(iVar1 + 0x10));
-        FreeHeapBufferIfNotNull(iVar1);
+        CString::__1CString__QAE_XZ((CString *)(iVar1 + 0x10));
+        __3_YAXPAX_Z(iVar1);
       }
       iVar2 = iVar2 + 1;
     } while (iVar2 < DAT_006a5f18);
   }
   ResizeDwordPointerArrayAndZeroNewSlots(0,0xffffffff);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString((CString *)(param_1 + 0x2a));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x2a));
   local_4 = 0xffffffff;
   *param_1 = &PTR_LAB_0066f9c0;
   ResetRuntimeSelectionRecordBuffer();
@@ -12976,7 +12633,7 @@ void __fastcall ResetJoinableGameDescriptorBuffer(int param_1)
 {
   int iVar1;
   int iVar2;
-  
+
   *(undefined4 *)(param_1 + 0xac) = 0;
   iVar2 = 0;
   *(undefined4 *)(param_1 + 0x28) = DAT_0066f968;
@@ -12989,13 +12646,13 @@ void __fastcall ResetJoinableGameDescriptorBuffer(int param_1)
       iVar1 = *(int *)(DAT_006a5f2c + iVar2 * 4);
       if (iVar1 != 0) {
         ReleaseSharedStringRefOnly_005e2850();
-        FreeHeapBufferIfNotNull(iVar1);
+        __3_YAXPAX_Z(iVar1);
       }
       iVar2 = iVar2 + 1;
     } while (iVar2 < DAT_006a5f30);
   }
   if (DAT_006a5f2c != 0) {
-    FreeHeapBufferIfNotNull(DAT_006a5f2c);
+    __3_YAXPAX_Z(DAT_006a5f2c);
     DAT_006a5f2c = 0;
   }
   DAT_006a5f34 = 0;
@@ -13017,7 +12674,7 @@ void __fastcall InitializeJoinGameSelectionDialogState(int param_1)
 
 {
   undefined4 uVar1;
-  
+
   *(undefined4 *)(param_1 + 0xac) = 1;
   *(undefined4 *)(param_1 + 0x28) = DAT_0066f968;
   *(undefined4 *)(param_1 + 0x2c) = DAT_0066f96c;
@@ -13054,32 +12711,32 @@ undefined4 AppendJoinableGameDescriptorEntry(uint param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a99b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_14 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+  local_14 = (undefined4 *)__2_YAPAXI_Z(0x14);
   local_4 = 0;
   if (local_14 == (undefined4 *)0x0) {
     local_14 = (undefined4 *)0x0;
   }
   else {
-    CString::CString((CString *)(local_14 + 4));
+    CString::__0CString__QAE_XZ((CString *)(local_14 + 4));
   }
   local_4 = 0xffffffff;
   *local_14 = *(undefined4 *)(param_1 + 8);
   local_14[1] = *(undefined4 *)(param_1 + 0xc);
   local_14[2] = *(undefined4 *)(param_1 + 0x10);
   local_14[3] = *(undefined4 *)(param_1 + 0x14);
-  CString::CopyFromCStr((CString *)(local_14 + 4),*(char **)(param_1 + 0x30));
+  CString::__4CString__QAEABV0_PBD_Z((CString *)(local_14 + 4),*(char **)(param_1 + 0x30));
   uVar2 = DAT_006a5f30;
   uVar1 = DAT_006a5f30;
   if (!SBORROW4(DAT_006a5f30,DAT_006a5f30)) {
     uVar1 = DAT_006a5f30 + 1;
     if (uVar1 == 0) {
       if (DAT_006a5f2c != (undefined4 *)0x0) {
-        FreeHeapBufferIfNotNull(DAT_006a5f2c);
+        __3_YAXPAX_Z(DAT_006a5f2c);
         DAT_006a5f2c = (undefined4 *)0x0;
       }
       DAT_006a5f34 = 0;
@@ -13087,7 +12744,7 @@ undefined4 AppendJoinableGameDescriptorEntry(uint param_1)
       uVar1 = DAT_006a5f30;
     }
     else if (DAT_006a5f2c == (undefined4 *)0x0) {
-      DAT_006a5f2c = (undefined4 *)AllocateWithFallbackHandler(uVar1 * 4);
+      DAT_006a5f2c = (undefined4 *)__2_YAPAXI_Z(uVar1 * 4);
       puVar6 = DAT_006a5f2c;
       for (uVar4 = uVar1 & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
         *puVar6 = 0;
@@ -13113,7 +12770,7 @@ undefined4 AppendJoinableGameDescriptorEntry(uint param_1)
       if ((int)(iVar5 + DAT_006a5f34) <= (int)uVar1) {
         param_1 = uVar1;
       }
-      puVar3 = (undefined4 *)AllocateWithFallbackHandler(param_1 * 4);
+      puVar3 = (undefined4 *)__2_YAPAXI_Z(param_1 * 4);
       puVar6 = DAT_006a5f2c;
       puVar7 = puVar3;
       for (uVar4 = DAT_006a5f30; uVar4 != 0; uVar4 = uVar4 - 1) {
@@ -13126,7 +12783,7 @@ undefined4 AppendJoinableGameDescriptorEntry(uint param_1)
         *puVar6 = 0;
         puVar6 = puVar6 + 1;
       }
-      FreeHeapBufferIfNotNull(DAT_006a5f2c);
+      __3_YAXPAX_Z(DAT_006a5f2c);
       DAT_006a5f34 = param_1;
       DAT_006a5f2c = puVar3;
     }
@@ -13161,7 +12818,7 @@ undefined4 CreateRuntimeSelectionRecordEntryIfTagNotReserved(char *param_1,char 
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063a9bb;
@@ -13190,20 +12847,20 @@ undefined4 CreateRuntimeSelectionRecordEntryIfTagNotReserved(char *param_1,char 
       pcVar5 = pcVar5 + 1;
     } while (bVar6);
     if (!bVar6) {
-      puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+      puVar1 = (undefined4 *)__2_YAPAXI_Z(0x14);
       uStack_4 = 0;
       if (puVar1 == (undefined4 *)0x0) {
         puVar1 = (undefined4 *)0x0;
       }
       else {
-        CString::CString((CString *)(puVar1 + 4));
+        CString::__0CString__QAE_XZ((CString *)(puVar1 + 4));
       }
       uStack_4 = 0xffffffff;
       *puVar1 = *(undefined4 *)param_1;
       puVar1[1] = *(undefined4 *)(param_1 + 4);
       puVar1[2] = *(undefined4 *)(param_1 + 8);
       puVar1[3] = *(undefined4 *)(param_1 + 0xc);
-      CString::CopyFromCStr((CString *)(puVar1 + 4),param_2);
+      CString::__4CString__QAEABV0_PBD_Z((CString *)(puVar1 + 4),param_2);
       iVar3 = DAT_006a5f18;
       ResizeDwordPointerArrayAndZeroNewSlots(DAT_006a5f18 + 1,0xffffffff);
       *(undefined4 **)(DAT_006a5f14 + iVar3 * 4) = puVar1;
@@ -13232,10 +12889,10 @@ undefined4 CreateRuntimeSelectionRecordEntryIfTagNotReserved(char *param_1,char 
 
 /* Shows the join-game selection dialog, populates entries from the discovered-game array, and
    captures user choice.
-   
+
    Returns:
    - true when user confirms selection (OK path), false on no-games or cancel path.
-   
+
    Side effects:
    - writes selected game descriptor into output globals used by the network join flow. */
 
@@ -13254,7 +12911,7 @@ bool ShowJoinGameSelectionDialogAndCaptureChoice(void)
   undefined4 *puVar10;
   undefined1 local_10 [16];
   int *piVar3;
-  
+
   if (DAT_006a5f30 < 1) {
     TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
               ((TToolBarCluster *)&stack0xffffffe0,s_No_games_found_to_join__0069b8c8);
@@ -13303,14 +12960,14 @@ bool ShowJoinGameSelectionDialogAndCaptureChoice(void)
     do {
       iVar1 = *(int *)(DAT_006a5f2c + iVar7 * 4);
       if (iVar1 != 0) {
-        CString::~CString((CString *)(iVar1 + 0x10));
-        FreeHeapBufferIfNotNull(iVar1);
+        CString::__1CString__QAE_XZ((CString *)(iVar1 + 0x10));
+        __3_YAXPAX_Z(iVar1);
       }
       iVar7 = iVar7 + 1;
     } while (iVar7 < DAT_006a5f30);
   }
   if (DAT_006a5f2c != 0) {
-    FreeHeapBufferIfNotNull(DAT_006a5f2c);
+    __3_YAXPAX_Z(DAT_006a5f2c);
     DAT_006a5f2c = 0;
   }
   iVar7 = *piVar3;
@@ -13390,12 +13047,12 @@ void ReportWNetManagerErrorCodeAndNotifyUi(CString param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063aa00;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_14,s_DirectPlay_Error__0069bcd4);
+  CString::__0CString__QAE_PBD_Z(&local_14,s_DirectPlay_Error__0069bcd4);
   local_4 = 0;
   if ((int)param_1.m_pchData < -0x7ff8fff1) {
     if (param_1.m_pchData == (char *)0x8007000e) {
@@ -13563,11 +13220,11 @@ void ReportWNetManagerErrorCodeAndNotifyUi(CString param_1)
     else {
       if (param_1.m_pchData != (char *)0x88770410) {
 LAB_005e3803:
-        CString::CString(&param_1,s_A_network_error_has_occured_0069b91c);
+        CString::__0CString__QAE_PBD_Z(&param_1,s_A_network_error_has_occured_0069b91c);
         local_4._0_1_ = 1;
-        CString::AssignFromPtr(&local_14,&param_1);
+        CString::__4CString__QAEABV0_ABV0__Z(&local_14,&param_1);
         local_4 = (uint)local_4._1_3_ << 8;
-        CString::~CString(&param_1);
+        CString::__1CString__QAE_XZ(&param_1);
         puVar1 = extraout_ECX;
         goto LAB_005e3849;
       }
@@ -13581,7 +13238,7 @@ LAB_005e3803:
     if (param_1.m_pchData != (char *)0x0) goto LAB_005e3803;
     text = s_DP_OK_0069b914;
   }
-  CString::AssignFromCStr(&local_14,text);
+  CString::__YCString__QAEABV0_PBD_Z(&local_14,text);
   puVar1 = extraout_ECX_00;
 LAB_005e3849:
   local_10 = &stack0xffffffe4;
@@ -13592,7 +13249,7 @@ LAB_005e3849:
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -13608,7 +13265,7 @@ void ResetRuntimeProtocolOptionsAndRebuildSelectionSource(int *param_1)
 {
   int iVar1;
   int iVar2;
-  
+
   _DAT_006a6010 = (int *)(**(code **)(*param_1 + 0x94))(0x70726f74);
   (**(code **)(*_DAT_006a6010 + 0xc))();
   iVar2 = 0;
@@ -13617,13 +13274,13 @@ void ResetRuntimeProtocolOptionsAndRebuildSelectionSource(int *param_1)
       iVar1 = *(int *)(DAT_006a5f14 + iVar2 * 4);
       if (iVar1 != 0) {
         ReleaseSharedStringRefOnly_005e2850();
-        FreeHeapBufferIfNotNull(iVar1);
+        __3_YAXPAX_Z(iVar1);
       }
       iVar2 = iVar2 + 1;
     } while (iVar2 < DAT_006a5f18);
   }
   if (DAT_006a5f14 != 0) {
-    FreeHeapBufferIfNotNull(DAT_006a5f14);
+    __3_YAXPAX_Z(DAT_006a5f14);
     DAT_006a5f14 = 0;
   }
   _DAT_006a5f1c = 0;
@@ -13641,8 +13298,8 @@ uint OpenRuntimeSelectionSourceByIndexAndCopyPath(int param_1,undefined4 param_2
 
 {
   uint uVar1;
-  
-  strncpy(&DAT_006a5fe8,param_3,0x20);
+
+  _strncpy(&DAT_006a5fe8,param_3,0x20);
   uVar1 = OpenRuntimeSelectionSourceWithOptionalSeed(*(undefined4 *)(DAT_006a5f14 + param_1 * 4));
   if (uVar1 == 0) {
     ReportWNetManagerErrorCodeAndNotifyUi(DAT_006a5f6c);
@@ -13666,23 +13323,23 @@ uint OpenRuntimeSelectionSourceAndApplyActiveNationState
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063aa18;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  strncpy(&DAT_006a5fc8,param_3.m_pchData,0x20);
-  strncpy(&DAT_006a5fe8,param_1,0x20);
+  _strncpy(&DAT_006a5fc8,param_3.m_pchData,0x20);
+  _strncpy(&DAT_006a5fe8,param_1,0x20);
   iVar2 = OpenRuntimeSelectionSourceFromCurrentContext();
   uVar3 = 0;
   if (iVar2 != 0) {
-    CString::CString(&param_3,param_2);
+    CString::__0CString__QAE_PBD_Z(&param_3,param_2);
     local_4 = 0;
-    iVar2 = CString::EnsureCapacityPreserveLength(&param_3,1);
+    iVar2 = CString::_GetBuffer_CString__QAEPADH_Z(&param_3,1);
     cVar1 = CacheObjectVslot18ResultToField0C(&local_10,iVar2);
-    CString::SetLengthAndTerminator(&param_3,-1);
+    CString::_ReleaseBuffer_CString__QAEXH_Z(&param_3,-1);
     local_4 = 0xffffffff;
-    CString::~CString(&param_3);
+    CString::__1CString__QAE_XZ(&param_3);
     uVar3 = 0;
     if (cVar1 != '\0') {
       DAT_006a5fc0 = local_10;
@@ -13717,15 +13374,15 @@ OpenJoinGameRuntimeSelectionAndStartSession(undefined4 param_1,CString *param_2,
 {
   char cVar1;
   int iVar2;
-  
-  strncpy(&DAT_006a5fc8,param_3,0x20);
-  CString::AssignFromPtr((CString *)&DAT_006a6008,param_2);
+
+  _strncpy(&DAT_006a5fc8,param_3,0x20);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&DAT_006a6008,param_2);
   iVar2 = OpenRuntimeSelectionSourceWithUserChoice();
   if (iVar2 != 0) {
-    CString::AssignFromPtr(param_2,(CString *)&DAT_006a6008);
-    iVar2 = CString::EnsureCapacityPreserveLength((CString *)&DAT_006a6008,1);
+    CString::__4CString__QAEABV0_ABV0__Z(param_2,(CString *)&DAT_006a6008);
+    iVar2 = CString::_GetBuffer_CString__QAEPADH_Z((CString *)&DAT_006a6008,1);
     cVar1 = CacheObjectVslot18ResultToField0C(&param_3,iVar2);
-    CString::SetLengthAndTerminator((CString *)&DAT_006a6008,-1);
+    CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)&DAT_006a6008,-1);
     if (cVar1 != '\0') {
       DAT_006a5fc0 = param_3;
       iVar2 = CacheObjectVslot74ResultToField0C(&DAT_006a600c,4);
@@ -13758,7 +13415,7 @@ undefined4 EnqueueOrSendTurnEventPacketToNation(undefined4 *param_1,char param_2
   uint uVar6;
   uint uVar7;
   undefined4 *puVar8;
-  
+
   dwBytes = param_1[3];
   param_1[1] = DAT_006a5fc0;
   iVar5 = param_1[2];
@@ -13782,7 +13439,7 @@ undefined4 EnqueueOrSendTurnEventPacketToNation(undefined4 *param_1,char param_2
     }
     puVar4 = DAT_006a5f50;
     if (DAT_006a5f50 == (undefined4 *)0x0) {
-      iVar3 = AllocateAndLinkBlockHead(&DAT_006a5f54,DAT_006a5f58,0xc);
+      iVar3 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(&DAT_006a5f54,DAT_006a5f58,0xc);
       puVar4 = DAT_006a5f50;
       puVar8 = (undefined4 *)(iVar3 + -8 + DAT_006a5f58 * 0xc);
       iVar3 = DAT_006a5f58;
@@ -13859,7 +13516,7 @@ uint * __fastcall PopNextTurnEventPacketOrProcessSpecialQueueRecords(undefined4 
   uint local_c;
   undefined4 local_8;
   uint local_4;
-  
+
   piVar4 = DAT_006a5f44;
   if (DAT_006a5f64 == 0) {
     return (uint *)0x0;
@@ -13885,7 +13542,7 @@ uint * __fastcall PopNextTurnEventPacketOrProcessSpecialQueueRecords(undefined4 
       DAT_006a5f50 = (int *)0x0;
       DAT_006a5f48 = 0;
       DAT_006a5f44 = (undefined4 *)0x0;
-      FreeDataChain();
+      _FreeDataChain_CPlex__QAEXXZ();
       DAT_006a5f54 = 0;
     }
     return puVar2;
@@ -13989,7 +13646,7 @@ undefined4 CheckConnectivityOrShowLocalizedWarningAndReturnReady(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   pTVar1 = g_pLocalizationTable;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
@@ -14004,7 +13661,7 @@ undefined4 CheckConnectivityOrShowLocalizedWarningAndReturnReady(void)
     }
   }
   uStack_18 = 0x5e4345;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   uStack_18 = 0x19;
   uStack_1c = 0x2742;
   local_4 = 0;
@@ -14019,7 +13676,7 @@ undefined4 CheckConnectivityOrShowLocalizedWarningAndReturnReady(void)
   DispatchLocalizedUiMessageWithTemplateA13A0();
   local_4 = 0xffffffff;
   uStack_18 = 0x5e439a;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return 0;
 }
@@ -14045,7 +13702,7 @@ int ProbeNationReachabilityAndMarkAwolBitmask(void)
   undefined1 local_8;
   undefined1 local_4;
   undefined1 local_3;
-  
+
   iVar4 = 0;
   local_c = 0x74696d65;
   local_8 = UiRuntimeContext::GetActiveNationId();
@@ -14087,10 +13744,10 @@ int ProbeNationReachabilityAndMarkAwolBitmask(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4540
-// GHIDRA_NAME InitializeRuntimeClassVtablePointer_0066FA50_State
-// GHIDRA_PROTO undefined __thiscall InitializeRuntimeClassVtablePointer_0066FA50_State(undefined4 param_1)
+// GHIDRA_NAME ??0CStringList@@QAE@H@Z
+// GHIDRA_PROTO undefined __thiscall ??0CStringList@@QAE@H@Z(undefined4 param_1)
 
-void __thiscall InitializeRuntimeClassVtablePointer_0066FA50_State(void *this,undefined4 param_1)
+void __thiscall __0CStringList__QAE_H_Z(void *this,undefined4 param_1)
 
 {
   *(undefined4 *)((int)this + 0xc) = 0;
@@ -14116,13 +13773,13 @@ void __thiscall ResizeDwordPointerArrayAndZeroNewSlots(int param_1,uint param_2,
   int iVar4;
   int iVar5;
   undefined4 *puVar6;
-  
+
   if (param_3 != -1) {
     *(uint *)(param_1 + 0x10) = param_3;
   }
   if (param_2 == 0) {
     if (*(int *)(param_1 + 4) != 0) {
-      FreeHeapBufferIfNotNull(*(int *)(param_1 + 4));
+      __3_YAXPAX_Z(*(int *)(param_1 + 4));
       *(undefined4 *)(param_1 + 4) = 0;
     }
     *(undefined4 *)(param_1 + 0xc) = 0;
@@ -14130,7 +13787,7 @@ void __thiscall ResizeDwordPointerArrayAndZeroNewSlots(int param_1,uint param_2,
     return;
   }
   if (*(int *)(param_1 + 4) == 0) {
-    puVar1 = (undefined4 *)AllocateWithFallbackHandler(param_2 * 4);
+    puVar1 = (undefined4 *)__2_YAPAXI_Z(param_2 * 4);
     uVar3 = param_2 & 0x3fffffff;
     *(undefined4 **)(param_1 + 4) = puVar1;
     for (; uVar3 != 0; uVar3 = uVar3 - 1) {
@@ -14171,7 +13828,7 @@ void __thiscall ResizeDwordPointerArrayAndZeroNewSlots(int param_1,uint param_2,
   if ((int)param_3 <= (int)param_2) {
     param_3 = param_2;
   }
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(param_3 * 4);
+  puVar2 = (undefined4 *)__2_YAPAXI_Z(param_3 * 4);
   puVar1 = *(undefined4 **)(param_1 + 4);
   puVar6 = puVar2;
   for (uVar3 = *(uint *)(param_1 + 8) & 0x3fffffff; uVar3 != 0; uVar3 = uVar3 - 1) {
@@ -14189,7 +13846,7 @@ void __thiscall ResizeDwordPointerArrayAndZeroNewSlots(int param_1,uint param_2,
     *puVar1 = 0;
     puVar1 = puVar1 + 1;
   }
-  FreeHeapBufferIfNotNull(*(undefined4 *)(param_1 + 4));
+  __3_YAXPAX_Z(*(undefined4 *)(param_1 + 4));
   *(uint *)(param_1 + 8) = param_2;
   *(undefined4 **)(param_1 + 4) = puVar2;
   *(uint *)(param_1 + 0xc) = param_3;
@@ -14220,7 +13877,7 @@ void WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80(void)
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   _DAT_006a60c0 = 0;
   _DAT_006a60f0 = 0;
   puVar2 = &DAT_006a60c4;
@@ -14228,8 +13885,7 @@ void WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80(void)
     *puVar2 = 0;
     puVar2 = puVar2 + 1;
   }
-  AppendPointerToGlobalVectorAsStatus
-            (thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0);
+  _atexit(thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0);
   return;
 }
 
@@ -14252,7 +13908,7 @@ void InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
 
 {
   ResetAndOpenCdAudioDeviceHandle();
-  AppendPointerToGlobalVectorAsStatus(&LAB_005e4e10);
+  _atexit(&LAB_005e4e10);
   return;
 }
 
@@ -14268,18 +13924,18 @@ void SendMciCommand804IfDeviceOpenAndClearHandle(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E539C
-// GHIDRA_NAME AfxGetMainWnd
-// GHIDRA_PROTO undefined AfxGetMainWnd()
+// GHIDRA_NAME ?AfxGetMainWnd@@YGPAVCWnd@@XZ
+// GHIDRA_PROTO undefined ?AfxGetMainWnd@@YGPAVCWnd@@XZ()
 
-undefined4 AfxGetMainWnd(void)
+undefined4 _AfxGetMainWnd__YGPAVCWnd__XZ(void)
 
 {
   CWinThread *pCVar1;
   undefined4 uVar2;
-  
-  pCVar1 = AfxGetThread();
+
+  pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar1 != (CWinThread *)0x0) {
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     uVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     return uVar2;
   }
@@ -14287,25 +13943,24 @@ undefined4 AfxGetMainWnd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E53BC
-// GHIDRA_NAME WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc
-// GHIDRA_PROTO undefined WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc()
+// GHIDRA_NAME ??_GCNoTrackObject@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_GCNoTrackObject@@UAEPAXI@Z()
 
-undefined4 * __thiscall
-WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc(undefined4 *param_1,byte param_2)
+undefined4 * __thiscall ___GCNoTrackObject__UAEPAXI_Z(undefined4 *param_1,byte param_2)
 
 {
-  *param_1 = &PTR_WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc_0066fdf4;
+  *param_1 = &PTR____GCNoTrackObject__UAEPAXI_Z_0066fdf4;
   if ((param_2 & 1) != 0) {
-    FreeLocalAllocHandleIfNotNull(param_1);
+    __3CNoTrackObject__SGXPAX_Z(param_1);
   }
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E53D8
-// GHIDRA_NAME CreateObject
-// GHIDRA_PROTO undefined CreateObject()
+// GHIDRA_NAME ?CreateObject@?$CThreadLocal@VAFX_MODULE_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ
+// GHIDRA_PROTO undefined ?CreateObject@?$CThreadLocal@VAFX_MODULE_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ()
 
-void CreateObject(void)
+void _CreateObject___CThreadLocal_VAFX_MODULE_THREAD_STATE____SGPAVCNoTrackObject__XZ(void)
 
 {
   int iVar1;
@@ -14313,24 +13968,24 @@ void CreateObject(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar2;
-  
+
   EstablishSehFrameProlog();
   uVar2 = extraout_ECX;
-  iVar1 = WrapperFor_ThrowMfcResourceException_At00623baa(0x84);
+  iVar1 = __2CNoTrackObject__SGPAXI_Z(0x84);
   *(int *)(unaff_EBP + -0x10) = iVar1;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (iVar1 != 0) {
-    AFX_MODULE_THREAD_STATE(uVar2);
+    __0AFX_MODULE_THREAD_STATE__QAE_XZ(uVar2);
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E540C
-// GHIDRA_NAME CreateObject_5e540c
-// GHIDRA_PROTO undefined CreateObject_5e540c()
+// GHIDRA_NAME ?CreateObject@?$CThreadLocal@V_AFX_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ
+// GHIDRA_PROTO undefined ?CreateObject@?$CThreadLocal@V_AFX_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ()
 
-void CreateObject_5e540c(void)
+void _CreateObject___CThreadLocal_V_AFX_THREAD_STATE____SGPAVCNoTrackObject__XZ(void)
 
 {
   int iVar1;
@@ -14338,88 +13993,86 @@ void CreateObject_5e540c(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar2;
-  
+
   EstablishSehFrameProlog();
   uVar2 = extraout_ECX;
-  iVar1 = WrapperFor_ThrowMfcResourceException_At00623baa(0x118);
+  iVar1 = __2CNoTrackObject__SGPAXI_Z(0x118);
   *(int *)(unaff_EBP + -0x10) = iVar1;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (iVar1 != 0) {
-    AFX_THREAD_STATE(uVar2);
+    __0_AFX_THREAD_STATE__QAE_XZ(uVar2);
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5440
-// GHIDRA_NAME WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440
-// GHIDRA_PROTO undefined WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440()
+// GHIDRA_NAME ?CreateObject@?$CProcessLocal@V_AFX_CTL3D_STATE@@@@SGPAVCNoTrackObject@@XZ
+// GHIDRA_PROTO undefined ?CreateObject@?$CProcessLocal@V_AFX_CTL3D_STATE@@@@SGPAVCNoTrackObject@@XZ()
 
-undefined4 * WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440(void)
+undefined4 * _CreateObject___CProcessLocal_V_AFX_CTL3D_STATE____SGPAVCNoTrackObject__XZ(void)
 
 {
   undefined4 *puVar1;
-  
-  puVar1 = (undefined4 *)WrapperFor_ThrowMfcResourceException_At00623baa(0x30);
+
+  puVar1 = (undefined4 *)__2CNoTrackObject__SGPAXI_Z(0x30);
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &PTR_DestroyTurnStateObjectWithModuleHandleFinalizer_00670554;
+    *puVar1 = &PTR____G_AFX_CTL3D_STATE__UAEPAXI_Z_00670554;
     return puVar1;
   }
   return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5455
-// GHIDRA_NAME DestroyTurnStateObjectWithModuleHandleFinalizer
-// GHIDRA_PROTO undefined DestroyTurnStateObjectWithModuleHandleFinalizer()
+// GHIDRA_NAME ??_G_AFX_CTL3D_STATE@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_G_AFX_CTL3D_STATE@@UAEPAXI@Z()
 
-undefined4 __thiscall
-DestroyTurnStateObjectWithModuleHandleFinalizer(undefined4 param_1,byte param_2)
+undefined4 __thiscall ___G_AFX_CTL3D_STATE__UAEPAXI_Z(undefined4 param_1,byte param_2)
 
 {
-  FinalizeTurnStateObjectModuleHandleResources();
+  __1_AFX_CTL3D_STATE__UAE_XZ();
   if ((param_2 & 1) != 0) {
-    FreeLocalAllocHandleIfNotNull(param_1);
+    __3CNoTrackObject__SGXPAX_Z(param_1);
   }
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5470
-// GHIDRA_NAME WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5470
-// GHIDRA_PROTO undefined WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5470()
+// GHIDRA_NAME ?CreateObject@?$CThreadLocal@V_AFX_CTL3D_THREAD@@@@SGPAVCNoTrackObject@@XZ
+// GHIDRA_PROTO undefined ?CreateObject@?$CThreadLocal@V_AFX_CTL3D_THREAD@@@@SGPAVCNoTrackObject@@XZ()
 
-undefined4 * WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5470(void)
+undefined4 * _CreateObject___CThreadLocal_V_AFX_CTL3D_THREAD____SGPAVCNoTrackObject__XZ(void)
 
 {
   undefined4 *puVar1;
-  
-  puVar1 = (undefined4 *)WrapperFor_ThrowMfcResourceException_At00623baa(4);
+
+  puVar1 = (undefined4 *)__2CNoTrackObject__SGPAXI_Z(4);
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &PTR_WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485_0067055c;
+    *puVar1 = &PTR____G_AFX_CTL3D_THREAD__UAEPAXI_Z_0067055c;
     return puVar1;
   }
   return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5485
-// GHIDRA_NAME WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485
-// GHIDRA_PROTO undefined WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485()
+// GHIDRA_NAME ??_G_AFX_CTL3D_THREAD@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_G_AFX_CTL3D_THREAD@@UAEPAXI@Z()
 
-undefined4 __thiscall
-WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485(undefined4 param_1,byte param_2)
+undefined4 __thiscall ___G_AFX_CTL3D_THREAD__UAEPAXI_Z(undefined4 param_1,byte param_2)
 
 {
-  WrapperFor_EstablishSehFrameProlog_At00624325();
+  __1_AFX_CTL3D_THREAD__UAE_XZ();
   if ((param_2 & 1) != 0) {
-    FreeLocalAllocHandleIfNotNull(param_1);
+    __3CNoTrackObject__SGXPAX_Z(param_1);
   }
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E54A0
-// GHIDRA_NAME CreateObject_5e54a0
-// GHIDRA_PROTO undefined CreateObject_5e54a0()
+// GHIDRA_NAME ?CreateObject@?$CProcessLocal@V_AFX_WIN_STATE@@@@SGPAVCNoTrackObject@@XZ
+// GHIDRA_PROTO undefined ?CreateObject@?$CProcessLocal@V_AFX_WIN_STATE@@@@SGPAVCNoTrackObject@@XZ()
 
-void CreateObject_5e54a0(void)
+void _CreateObject___CProcessLocal_V_AFX_WIN_STATE____SGPAVCNoTrackObject__XZ(void)
 
 {
   int iVar1;
@@ -14427,15 +14080,48 @@ void CreateObject_5e54a0(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar2;
-  
+
   EstablishSehFrameProlog();
   uVar2 = extraout_ECX;
-  iVar1 = WrapperFor_ThrowMfcResourceException_At00623baa(0x10);
+  iVar1 = __2CNoTrackObject__SGPAXI_Z(0x10);
   *(int *)(unaff_EBP + -0x10) = iVar1;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (iVar1 != 0) {
     InitializeThreadObjectVtableProxy(uVar2);
   }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5529
+// GHIDRA_NAME ??1CDragListBox@@UAE@XZ@005e5529
+// GHIDRA_PROTO undefined ??1CDragListBox@@UAE@XZ@005e5529()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual __thiscall CDragListBox::~CDragListBox(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual __thiscall CDragListBox::~CDragListBox(void)
+
+   Library: nafxcw retail msvc500:static */
+
+void __1CDragListBox__UAE_XZ_005e5529(void)
+
+{
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &PTR_LAB_00670f64;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  __1CListBox__UAE_XZ_0061e8cb();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -14452,16 +14138,15 @@ void __fastcall WrapperFor_Ordinal13_FromField1C_At005e5561(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E556B
-// GHIDRA_NAME WrapperFor_Ordinal14_AndDispatchCallbackD8_At005e556b
-// GHIDRA_PROTO undefined WrapperFor_Ordinal14_AndDispatchCallbackD8_At005e556b()
+// GHIDRA_NAME ?BeginDrag@CDragListBox@@UAEHVCPoint@@@Z
+// GHIDRA_PROTO undefined ?BeginDrag@CDragListBox@@UAEHVCPoint@@@Z()
 
 undefined4 __thiscall
-WrapperFor_Ordinal14_AndDispatchCallbackD8_At005e556b
-          (int *param_1,undefined4 param_2,undefined4 param_3)
+_BeginDrag_CDragListBox__UAEHVCPoint___Z(int *param_1,undefined4 param_2,undefined4 param_3)
 
 {
   undefined4 uVar1;
-  
+
   param_1[0xf] = -1;
   uVar1 = Ordinal_14(param_1[7],param_2,param_3,1);
   (**(code **)(*param_1 + 0xd8))(uVar1);
@@ -14492,7 +14177,7 @@ void Dropped(void)
   int *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   (**(code **)(*extraout_ECX + 0xd8))(0xffffffff);
   WVar1 = Ordinal_14(extraout_ECX[7],*(undefined4 *)(unaff_EBP + 0xc),
@@ -14501,9 +14186,9 @@ void Dropped(void)
   *(WPARAM *)(unaff_EBP + 0x10) = WVar1;
   if ((((WVar3 != 0xffffffff) && (WVar1 != 0xffffffff)) && (WVar1 != WVar3)) && (WVar1 != WVar3 + 1)
      ) {
-    CString::CString((CString *)(unaff_EBP + -0x10));
+    CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
     *(undefined4 *)(unaff_EBP + -4) = 0;
-    GetText_61e9ba(WVar3,unaff_EBP + -0x10);
+    _GetText_CListBox__QBEXHAAVCString___Z(WVar3,unaff_EBP + -0x10);
     LVar2 = SendMessageA((HWND)extraout_ECX[7],0x199,WVar3,0);
     *(LRESULT *)(unaff_EBP + 8) = LVar2;
     SendMessageA((HWND)extraout_ECX[7],0x182,WVar3,0);
@@ -14515,7 +14200,7 @@ void Dropped(void)
     SendMessageA((HWND)extraout_ECX[7],0x19a,WVar3,*(LPARAM *)(unaff_EBP + 8));
     SendMessageA((HWND)extraout_ECX[7],0x186,WVar3,0);
     *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    CString::~CString((CString *)(unaff_EBP + -0x10));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
@@ -14534,7 +14219,7 @@ void MoveListBoxEntryPreserveItemData(void)
   code *unaff_ESI;
   int unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  
+
   uVar1 = (*unaff_ESI)(*(undefined4 *)(unaff_EDI + 0x1c),0x199);
   *(undefined4 *)(unaff_EBP + 8) = uVar1;
   (*unaff_ESI)(*(undefined4 *)(unaff_EDI + 0x1c),0x182);
@@ -14546,31 +14231,31 @@ void MoveListBoxEntryPreserveItemData(void)
   (*unaff_ESI)(*(undefined4 *)(unaff_EDI + 0x1c),0x19a,uVar1,*(undefined4 *)(unaff_EBP + 8));
   (*unaff_ESI)(*(undefined4 *)(unaff_EDI + 0x1c),0x186,uVar1,0);
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(unaff_EBP + -0x10));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E56CD
-// GHIDRA_NAME DrawInsert
-// GHIDRA_PROTO undefined DrawInsert()
+// GHIDRA_NAME ?DrawInsert@CDragListBox@@UAEXH@Z
+// GHIDRA_PROTO undefined ?DrawInsert@CDragListBox@@UAEXH@Z()
 
-void __thiscall DrawInsert(int param_1,int param_2)
+void __thiscall _DrawInsert_CDragListBox__UAEXH_Z(int param_1,int param_2)
 
 {
   if (*(int *)(param_1 + 0x3c) != param_2) {
-    DrawSingle(*(int *)(param_1 + 0x3c));
-    DrawSingle(param_2);
+    _DrawSingle_CDragListBox__QAEXH_Z(*(int *)(param_1 + 0x3c));
+    _DrawSingle_CDragListBox__QAEXH_Z(param_2);
     *(int *)(param_1 + 0x3c) = param_2;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E56F2
-// GHIDRA_NAME DrawSingle
-// GHIDRA_PROTO undefined DrawSingle()
+// GHIDRA_NAME ?DrawSingle@CDragListBox@@QAEXH@Z
+// GHIDRA_PROTO undefined ?DrawSingle@CDragListBox@@QAEXH@Z()
 
-void DrawSingle(void)
+void _DrawSingle_CDragListBox__QAEXH_Z(void)
 
 {
   int iVar1;
@@ -14581,40 +14266,82 @@ void DrawSingle(void)
   int extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   if (*(int *)(unaff_EBP + 8) != -1) {
-    uVar2 = FUN_0061ed72();
+    uVar2 = _GetHalftoneBrush_CDC__SGPAVCBrush__XZ();
     GetClientRect(*(HWND *)(extraout_ECX + 0x1c),(LPRECT)(unaff_EBP + -0x24));
     *(undefined4 *)(unaff_EBP + -0x10) = 0;
     *(undefined ***)(unaff_EBP + -0x14) = &CBrush::_vftable_;
     *(undefined4 *)(unaff_EBP + -4) = 0;
     pHVar3 = CreateRectRgnIndirect((RECT *)(unaff_EBP + -0x24));
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x14),(int)pHVar3);
+    CBrush::_Attach_CGdiObject__QAEHPAX_Z((CBrush *)(unaff_EBP + -0x14),(int)pHVar3);
     pHVar4 = GetDC(*(HWND *)(extraout_ECX + 0x1c));
-    this = (TDropShadowText *)FromHandle_612736(pHVar4);
-    TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this,unaff_EBP + -0x14);
+    this = (TDropShadowText *)_FromHandle_CDC__SGPAV1_PAUHDC_____Z(pHVar4);
+    TDropShadowText::_SelectClipRgn_CDC__QAEHPAVCRgn___Z(this,unaff_EBP + -0x14);
     SendMessageA(*(HWND *)(extraout_ECX + 0x1c),0x198,*(WPARAM *)(unaff_EBP + 8),unaff_EBP + -0x24);
     iVar1 = *(int *)(unaff_EBP + -0x20);
     *(int *)(unaff_EBP + -0x20) = *(int *)(unaff_EBP + -0x20) + -2;
     *(int *)(unaff_EBP + -0x18) = iVar1 + 2;
-    uVar2 = SelectObject_612984(uVar2);
+    uVar2 = _SelectObject_CDC__QAEPAVCBrush__PAV2__Z(uVar2);
     PatBlt((HDC)this->field04,*(int *)(unaff_EBP + -0x24),*(int *)(unaff_EBP + -0x20),
            *(int *)(unaff_EBP + -0x1c) - *(int *)(unaff_EBP + -0x24),
            *(int *)(unaff_EBP + -0x18) - *(int *)(unaff_EBP + -0x20),0x5a0049);
-    SelectObject_612984(uVar2);
+    _SelectObject_CDC__QAEPAVCBrush__PAV2__Z(uVar2);
     ReleaseDC(*(HWND *)(extraout_ECX + 0x1c),(HDC)this->field04);
     *(undefined ***)(unaff_EBP + -0x14) = &PTR_LAB_00671054;
     *(undefined4 *)(unaff_EBP + -4) = 1;
-    DeleteObject();
+    _DeleteObject_CGdiObject__QAEHXZ();
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E58AB
+// GHIDRA_NAME ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
+// GHIDRA_PROTO undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_Create_CHotKeyCtrl__QAEHKABUtagRECT__PAVCWnd__I_Z
+          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  int iVar1;
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  if ((*(byte *)(iVar1 + 0x18) & 0x10) == 0) {
+    _AfxEndDeferRegisterClass__YGHF_Z(0x10);
+  }
+  (**(code **)(*param_1 + 0x5c))("ToolbarWindow32",0,param_2,param_3,param_4,param_5,0);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E58E4
-// GHIDRA_NAME ~CHotKeyCtrl
-// GHIDRA_PROTO undefined ~CHotKeyCtrl()
+// GHIDRA_NAME ??1CProgressCtrl@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CProgressCtrl@@UAE@XZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
 // GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
@@ -14632,46 +14359,80 @@ void DrawSingle(void)
     public: virtual __thiscall CComboBox::~CComboBox(void)
     public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
      21 names - too many to list
-   
+
    Library: Visual Studio 2003 Release */
 
-void ~CHotKeyCtrl(void)
+void __1CProgressCtrl__UAE_XZ(void)
 
 {
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00671094;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
+  CWnd::__1CWnd__UAE_XZ(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E591C
+// GHIDRA_NAME ?AddBitmap@CToolBarCtrl@@QAEHHPAVCBitmap@@@Z@005e591c
+// GHIDRA_PROTO int __thiscall ?AddBitmap@CToolBarCtrl@@QAEHHPAVCBitmap@@@Z@005e591c(int param_1, CBitmap * param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CToolBarCtrl::AddBitmap(int,class CBitmap *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CToolBarCtrl::AddBitmap(int,class CBitmap *)
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall
+_AddBitmap_CToolBarCtrl__QAEHHPAVCBitmap___Z_005e591c(void *this,int param_1,CBitmap *param_2)
+
+{
+  LRESULT LVar1;
+  undefined4 local_c;
+  undefined4 local_8;
+
+  local_c = 0;
+  if (param_2 == (CBitmap *)0x0) {
+    local_8 = 0;
+  }
+  else {
+    local_8 = *(undefined4 *)(param_2 + 4);
+  }
+  LVar1 = SendMessageA(*(HWND *)((int)this + 0x1c),0x413,param_1,(LPARAM)&local_c);
+  return LVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5950
-// GHIDRA_NAME AddBitmap
-// GHIDRA_PROTO undefined AddBitmap()
+// GHIDRA_NAME ?AddBitmap@CToolBarCtrl@@QAEHHI@Z
+// GHIDRA_PROTO undefined ?AddBitmap@CToolBarCtrl@@QAEHHI@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds module/context pair and sends control message 0x413 to this->HWND.
 // GHIDRA_COMMENT_END
 
 /* Builds module/context pair and sends control message 0x413 to this->HWND. */
 
-void __thiscall AddBitmap(int param_1,WPARAM param_2,undefined4 param_3)
+void __thiscall _AddBitmap_CToolBarCtrl__QAEHHI_Z(int param_1,WPARAM param_2,undefined4 param_3)
 
 {
   int iVar1;
   int local_c;
   int local_8;
-  
+
   local_c = param_1;
   local_8 = param_1;
-  iVar1 = AfxGetModuleState();
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   local_c = *(int *)(iVar1 + 0xc);
   if (local_c != 0) {
     local_8 = param_3;
@@ -14680,30 +14441,166 @@ void __thiscall AddBitmap(int param_1,WPARAM param_2,undefined4 param_3)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5987
+// GHIDRA_NAME ?SaveState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e5987
+// GHIDRA_PROTO void __thiscall ?SaveState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e5987(HKEY__ * param_1, char * param_2, char * param_3)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CToolBarCtrl::SaveState(struct HKEY__ *,char const *,char const *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CToolBarCtrl::SaveState(struct HKEY__ *,char const *,char const *)
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_SaveState_CToolBarCtrl__QAEXPAUHKEY____PBD1_Z_005e5987
+          (void *this,HKEY__ *param_1,char *param_2,char *param_3)
+
+{
+  HKEY__ *local_10;
+  char *local_c;
+  char *local_8;
+
+  local_10 = param_1;
+  local_c = param_2;
+  local_8 = param_3;
+  SendMessageA(*(HWND *)((int)this + 0x1c),0x41a,1,(LPARAM)&local_10);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E59B7
+// GHIDRA_NAME ?RestoreState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e59b7
+// GHIDRA_PROTO void __thiscall ?RestoreState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e59b7(HKEY__ * param_1, char * param_2, char * param_3)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CToolBarCtrl::RestoreState(struct HKEY__ *,char const *,char const *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CToolBarCtrl::RestoreState(struct HKEY__ *,char const *,char const *)
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_RestoreState_CToolBarCtrl__QAEXPAUHKEY____PBD1_Z_005e59b7
+          (void *this,HKEY__ *param_1,char *param_2,char *param_3)
+
+{
+  HKEY__ *local_10;
+  char *local_c;
+  char *local_8;
+
+  local_10 = param_1;
+  local_c = param_2;
+  local_8 = param_3;
+  SendMessageA(*(HWND *)((int)this + 0x1c),0x41a,0,(LPARAM)&local_10);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E59E7
-// GHIDRA_NAME AddString
-// GHIDRA_PROTO undefined AddString()
+// GHIDRA_NAME ?AddString@CToolBarCtrl@@QAEHI@Z
+// GHIDRA_PROTO undefined ?AddString@CToolBarCtrl@@QAEHI@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sends control message 0x41C using module-thread HINSTANCE as wParam when available.
 // GHIDRA_COMMENT_END
 
 /* Sends control message 0x41C using module-thread HINSTANCE as wParam when available. */
 
-void __thiscall AddString(int param_1,LPARAM param_2)
+void __thiscall _AddString_CToolBarCtrl__QAEHI_Z(int param_1,LPARAM param_2)
 
 {
   int iVar1;
-  
-  iVar1 = AfxGetModuleState();
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   if (*(WPARAM *)(iVar1 + 0xc) != 0) {
     SendMessageA(*(HWND *)(param_1 + 0x1c),0x41c,*(WPARAM *)(iVar1 + 0xc),param_2);
   }
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5A0D
+// GHIDRA_NAME ?OnCreate@CToolBarCtrl@@IAEHPAUtagCREATESTRUCTA@@@Z@005e5a0d
+// GHIDRA_PROTO undefined ?OnCreate@CToolBarCtrl@@IAEHPAUtagCREATESTRUCTA@@@Z@005e5a0d()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  protected: int __thiscall CToolBarCtrl::OnCreate(struct tagCREATESTRUCTA *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    protected: int __thiscall CToolBarCtrl::OnCreate(struct tagCREATESTRUCTA *)
+
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __fastcall _OnCreate_CToolBarCtrl__IAEHPAUtagCREATESTRUCTA___Z_005e5a0d(CWnd *param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+
+  iVar1 = CWnd::_Default_CWnd__IAEJXZ(param_1);
+  if (iVar1 == -1) {
+    uVar2 = 0xffffffff;
+  }
+  else {
+    SendMessageA(param_1->m_hWnd,0x41e,0x14,0);
+    uVar2 = 0;
+  }
+  return uVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5A36
+// GHIDRA_NAME ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
+// GHIDRA_PROTO undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_Create_CHotKeyCtrl__QAEHKABUtagRECT__PAVCWnd__I_Z
+          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  int iVar1;
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  if ((*(byte *)(iVar1 + 0x18) & 0x10) == 0) {
+    _AfxEndDeferRegisterClass__YGHF_Z(0x10);
+  }
+  (**(code **)(*param_1 + 0x5c))("msctls_statusbar32",0,param_2,param_3,param_4,param_5,0);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5A6F
-// GHIDRA_NAME ~CHotKeyCtrl
-// GHIDRA_PROTO undefined ~CHotKeyCtrl()
+// GHIDRA_NAME ??1CProgressCtrl@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CProgressCtrl@@UAE@XZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
 // GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
@@ -14721,30 +14618,30 @@ void __thiscall AddString(int param_1,LPARAM param_2)
     public: virtual __thiscall CComboBox::~CComboBox(void)
     public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
      21 names - too many to list
-   
+
    Library: Visual Studio 2003 Release */
 
-void ~CHotKeyCtrl(void)
+void __1CProgressCtrl__UAE_XZ(void)
 
 {
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_0067116c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
+  CWnd::__1CWnd__UAE_XZ(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5AD2
-// GHIDRA_NAME GetText
-// GHIDRA_PROTO undefined GetText()
+// GHIDRA_NAME ?GetText@CStatusBarCtrl@@QBE?AVCString@@HPAH@Z
+// GHIDRA_PROTO undefined ?GetText@CStatusBarCtrl@@QBE?AVCString@@HPAH@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sends control message 0x403 to get size hint, allocates buffer, sends 0x402 to fill buffer, and optionally returns extracted high-word length/value.
 // GHIDRA_COMMENT_END
@@ -14752,7 +14649,7 @@ void ~CHotKeyCtrl(void)
 /* Sends control message 0x403 to get size hint, allocates buffer, sends 0x402 to fill buffer, and
    optionally returns extracted high-word length/value. */
 
-undefined4 GetText(void)
+undefined4 _GetText_CStatusBarCtrl__QBE_AVCString__HPAH_Z(void)
 
 {
   undefined4 uVar1;
@@ -14761,31 +14658,106 @@ undefined4 GetText(void)
   int extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   uVar2 = SendMessageA(*(HWND *)(extraout_ECX + 0x1c),0x403,*(WPARAM *)(unaff_EBP + 0xc),0);
-  CString::CString((CString *)(unaff_EBP + -0x10));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 1;
-  lParam = CString::EnsureCapacityAndSetLength((CString *)(unaff_EBP + -0x10),(uVar2 & 0xffff) + 1);
+  lParam = CString::_GetBufferSetLength_CString__QAEPADH_Z
+                     ((CString *)(unaff_EBP + -0x10),(uVar2 & 0xffff) + 1);
   uVar2 = SendMessageA(*(HWND *)(extraout_ECX + 0x1c),0x402,*(WPARAM *)(unaff_EBP + 0xc),lParam);
-  CString::SetLengthAndTerminator((CString *)(unaff_EBP + -0x10),-1);
+  CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(unaff_EBP + -0x10),-1);
   if (*(uint **)(unaff_EBP + 0x10) != (uint *)0x0) {
     **(uint **)(unaff_EBP + 0x10) = uVar2 >> 0x10;
   }
-  CString::StringSharedRef_AssignFromPtr
-            (*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + -0x10));
+  CString::__0CString__QAE_ABV0__Z(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -0x14) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + -0x10));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   uVar1 = *(undefined4 *)(unaff_EBP + 8);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return uVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5B9A
+// GHIDRA_NAME ?GetBorders@CStatusBarCtrl@@QBEHAAH00@Z@005e5b9a
+// GHIDRA_PROTO int __thiscall ?GetBorders@CStatusBarCtrl@@QBEHAAH00@Z@005e5b9a(int * param_1, int * param_2, int * param_3)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CStatusBarCtrl::GetBorders(int &,int &,int &)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CStatusBarCtrl::GetBorders(int &,int &,int &)const
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall
+_GetBorders_CStatusBarCtrl__QBEHAAH00_Z_005e5b9a(void *this,int *param_1,int *param_2,int *param_3)
+
+{
+  LRESULT LVar1;
+  int local_10;
+  int local_c;
+  int local_8;
+
+  LVar1 = SendMessageA(*(HWND *)((int)this + 0x1c),0x407,0,(LPARAM)&local_10);
+  if (LVar1 != 0) {
+    *param_1 = local_10;
+    *param_2 = local_c;
+    *param_3 = local_8;
+  }
+  return LVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5C0B
+// GHIDRA_NAME ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
+// GHIDRA_PROTO undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_Create_CHotKeyCtrl__QAEHKABUtagRECT__PAVCWnd__I_Z
+          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  int iVar1;
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  if ((*(byte *)(iVar1 + 0x18) & 0x10) == 0) {
+    _AfxEndDeferRegisterClass__YGHF_Z(0x10);
+  }
+  (**(code **)(*param_1 + 0x5c))("SysListView32",0,param_2,param_3,param_4,param_5,0);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5C44
-// GHIDRA_NAME ~CHotKeyCtrl
-// GHIDRA_PROTO undefined ~CHotKeyCtrl()
+// GHIDRA_NAME ??1CProgressCtrl@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CProgressCtrl@@UAE@XZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
 // GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
@@ -14803,30 +14775,30 @@ undefined4 GetText(void)
     public: virtual __thiscall CComboBox::~CComboBox(void)
     public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
      21 names - too many to list
-   
+
    Library: Visual Studio 2003 Release */
 
-void ~CHotKeyCtrl(void)
+void __1CProgressCtrl__UAE_XZ(void)
 
 {
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00671244;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
+  CWnd::__1CWnd__UAE_XZ(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5C9C
-// GHIDRA_NAME InsertColumn
-// GHIDRA_PROTO undefined InsertColumn()
+// GHIDRA_NAME ?InsertColumn@CListCtrl@@QAEHHPBDHHH@Z
+// GHIDRA_PROTO undefined ?InsertColumn@CListCtrl@@QAEHHPBDHHH@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds option struct and sends control message 0x101B to this->HWND.
 // GHIDRA_COMMENT_END
@@ -14834,8 +14806,8 @@ void ~CHotKeyCtrl(void)
 /* Builds option struct and sends control message 0x101B to this->HWND. */
 
 void __thiscall
-InsertColumn(int param_1,WPARAM param_2,undefined4 param_3,undefined4 param_4,int param_5,
-            int param_6)
+_InsertColumn_CListCtrl__QAEHHPBDHHH_Z
+          (int param_1,WPARAM param_2,undefined4 param_3,undefined4 param_4,int param_5,int param_6)
 
 {
   uint local_24;
@@ -14843,7 +14815,7 @@ InsertColumn(int param_1,WPARAM param_2,undefined4 param_3,undefined4 param_4,in
   int local_1c;
   undefined4 local_18;
   int local_10;
-  
+
   local_24 = 5;
   local_18 = param_3;
   local_20 = param_4;
@@ -14860,8 +14832,8 @@ InsertColumn(int param_1,WPARAM param_2,undefined4 param_3,undefined4 param_4,in
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5CEF
-// GHIDRA_NAME InsertItem
-// GHIDRA_PROTO undefined InsertItem()
+// GHIDRA_NAME ?InsertItem@CListCtrl@@QAEHIHPBDIIHJ@Z
+// GHIDRA_PROTO undefined ?InsertItem@CListCtrl@@QAEHIHPBDIIHJ@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds payload struct and sends control message 0x1007 to this->HWND.
 // GHIDRA_COMMENT_END
@@ -14869,7 +14841,8 @@ InsertColumn(int param_1,WPARAM param_2,undefined4 param_3,undefined4 param_4,in
 /* Builds payload struct and sends control message 0x1007 to this->HWND. */
 
 void __thiscall
-InsertItem(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5,
+_InsertItem_CListCtrl__QAEHIHPBDIIHJ_Z
+          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5,
           undefined4 param_6,undefined4 param_7,undefined4 param_8)
 
 {
@@ -14881,7 +14854,7 @@ InsertItem(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
   undefined4 local_18;
   undefined4 local_10;
   undefined4 local_c;
-  
+
   local_24 = 0;
   local_2c = param_2;
   local_28 = param_3;
@@ -14894,9 +14867,86 @@ InsertItem(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5D3B
+// GHIDRA_NAME ?HitTest@CListCtrl@@QBEHVCPoint@@PAI@Z@005e5d3b
+// GHIDRA_PROTO int __thiscall ?HitTest@CListCtrl@@QBEHVCPoint@@PAI@Z@005e5d3b(CPoint param_1, uint * param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CListCtrl::HitTest(class CPoint,unsigned int *)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CListCtrl::HitTest(class CPoint,unsigned int *)const
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall
+_HitTest_CListCtrl__QBEHVCPoint__PAI_Z_005e5d3b
+          (void *this,undefined4 param_2,undefined4 param_3,undefined4 *param_4)
+
+{
+  LRESULT LVar1;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+
+  local_18 = param_2;
+  local_14 = param_3;
+  LVar1 = SendMessageA(*(HWND *)((int)this + 0x1c),0x1012,0,(LPARAM)&local_18);
+  if (param_4 != (undefined4 *)0x0) {
+    *param_4 = local_10;
+  }
+  return LVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5D71
+// GHIDRA_NAME ?SetItem@CListCtrl@@QAEHHHIPBDHIIJ@Z@005e5d71
+// GHIDRA_PROTO undefined ?SetItem@CListCtrl@@QAEHHHIPBDHIIJ@Z@005e5d71()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CListCtrl::SetItem(int,int,unsigned int,char const *,int,unsigned int,unsigned int,long)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CListCtrl::SetItem(int,int,unsigned int,char const *,int,unsigned
+   int,unsigned int,long)
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_SetItem_CListCtrl__QAEHHHIPBDHIIJ_Z_005e5d71
+          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5,
+          undefined4 param_6,undefined4 param_7,undefined4 param_8,undefined4 param_9)
+
+{
+  undefined4 local_2c;
+  undefined4 local_28;
+  undefined4 local_24;
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_10;
+  undefined4 local_c;
+
+  local_2c = param_4;
+  local_28 = param_2;
+  local_24 = param_3;
+  local_1c = param_8;
+  local_20 = param_7;
+  local_18 = param_5;
+  local_10 = param_6;
+  local_c = param_9;
+  SendMessageA(*(HWND *)(param_1 + 0x1c),0x1006,0,(LPARAM)&local_2c);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5DBF
-// GHIDRA_NAME GetItemText
-// GHIDRA_PROTO undefined GetItemText()
+// GHIDRA_NAME ?GetItemText@CListCtrl@@QBE?AVCString@@HH@Z
+// GHIDRA_PROTO undefined ?GetItemText@CListCtrl@@QBE?AVCString@@HH@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Retrieves variable-length text via repeated message 0x102D calls with growing buffer until returned length fits.
 // GHIDRA_COMMENT_END
@@ -14904,7 +14954,7 @@ InsertItem(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
 /* Retrieves variable-length text via repeated message 0x102D calls with growing buffer until
    returned length fits. */
 
-undefined4 GetItemText(void)
+undefined4 _GetItemText_CListCtrl__QBE_AVCString__HH_Z(void)
 
 {
   undefined4 uVar1;
@@ -14914,36 +14964,36 @@ undefined4 GetItemText(void)
   int unaff_EBP;
   int new_length;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
-  CDocTemplate::memset((void *)(unaff_EBP + -0x3c),0,0x28);
+  CDocTemplate::_memset((void *)(unaff_EBP + -0x3c),0,0x28);
   *(undefined4 *)(unaff_EBP + -0x34) = *(undefined4 *)(unaff_EBP + 0x10);
-  CString::CString((CString *)(unaff_EBP + -0x10));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   new_length = 0x80;
   *(undefined4 *)(unaff_EBP + -4) = 1;
   do {
     new_length = new_length * 2;
     *(int *)(unaff_EBP + -0x24) = new_length;
-    iVar2 = CString::EnsureCapacityAndSetLength((CString *)(unaff_EBP + -0x10),new_length);
+    iVar2 = CString::_GetBufferSetLength_CString__QAEPADH_Z
+                      ((CString *)(unaff_EBP + -0x10),new_length);
     *(int *)(unaff_EBP + -0x28) = iVar2;
     LVar3 = SendMessageA(*(HWND *)(extraout_ECX + 0x1c),0x102d,*(WPARAM *)(unaff_EBP + 0xc),
                          unaff_EBP + -0x3c);
   } while (LVar3 == new_length + -1);
-  CString::SetLengthAndTerminator((CString *)(unaff_EBP + -0x10),-1);
-  CString::StringSharedRef_AssignFromPtr
-            (*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + -0x10));
+  CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(unaff_EBP + -0x10),-1);
+  CString::__0CString__QAE_ABV0__Z(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -0x14) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + -0x10));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   uVar1 = *(undefined4 *)(unaff_EBP + 8);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5E64
-// GHIDRA_NAME GetItemText_5e5e64
-// GHIDRA_PROTO undefined GetItemText_5e5e64()
+// GHIDRA_NAME ?GetItemText@CListCtrl@@QBEHHHPADH@Z
+// GHIDRA_PROTO undefined ?GetItemText@CListCtrl@@QBEHHHPADH@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds payload struct and sends control message 0x102D with caller-provided fields.
 // GHIDRA_COMMENT_END
@@ -14951,16 +15001,16 @@ undefined4 GetItemText(void)
 /* Builds payload struct and sends control message 0x102D with caller-provided fields. */
 
 void __thiscall
-GetItemText_5e5e64(int param_1,WPARAM param_2,undefined4 param_3,undefined4 param_4,
-                  undefined4 param_5)
+_GetItemText_CListCtrl__QBEHHHPADH_Z
+          (int param_1,WPARAM param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
 
 {
   undefined1 local_2c [8];
   undefined4 local_24;
   undefined4 local_18;
   undefined4 local_14;
-  
-  CDocTemplate::memset(local_2c,0,0x28);
+
+  CDocTemplate::_memset(local_2c,0,0x28);
   local_24 = param_3;
   local_14 = param_5;
   local_18 = param_4;
@@ -14969,8 +15019,8 @@ GetItemText_5e5e64(int param_1,WPARAM param_2,undefined4 param_3,undefined4 para
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5F1C
-// GHIDRA_NAME RemoveImageList
-// GHIDRA_PROTO undefined RemoveImageList()
+// GHIDRA_NAME ?RemoveImageList@CListCtrl@@IAEXH@Z
+// GHIDRA_PROTO undefined ?RemoveImageList@CListCtrl@@IAEXH@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sends message 0x1002; if result passes FUN_005E69CB predicate, sends follow-up message 0x1003 with same wParam.
 // GHIDRA_COMMENT_END
@@ -14978,23 +15028,92 @@ GetItemText_5e5e64(int param_1,WPARAM param_2,undefined4 param_3,undefined4 para
 /* Sends message 0x1002; if result passes FUN_005E69CB predicate, sends follow-up message 0x1003
    with same wParam. */
 
-void __thiscall RemoveImageList(int param_1,WPARAM param_2)
+void __thiscall _RemoveImageList_CListCtrl__IAEXH_Z(int param_1,WPARAM param_2)
 
 {
   LRESULT LVar1;
   int iVar2;
-  
+
   LVar1 = SendMessageA(*(HWND *)(param_1 + 0x1c),0x1002,param_2,0);
-  iVar2 = FromHandlePermanent(LVar1);
+  iVar2 = _FromHandlePermanent_CImageList__SGPAV1_PAU_IMAGELIST___Z(LVar1);
   if (iVar2 != 0) {
     SendMessageA(*(HWND *)(param_1 + 0x1c),0x1003,param_2,0);
   }
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5F55
+// GHIDRA_NAME ?OnNcDestroy@CListCtrl@@IAEXXZ
+// GHIDRA_PROTO undefined ?OnNcDestroy@CListCtrl@@IAEXXZ()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  protected: void __thiscall CListCtrl::OnNcDestroy(void)
+// GHIDRA_COMMENT  public: void __thiscall CListView::OnNcDestroy(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    protected: void __thiscall CListCtrl::OnNcDestroy(void)
+    public: void __thiscall CListView::OnNcDestroy(void)
+
+   Library: nafxcw retail msvc500:static */
+
+void _OnNcDestroy_CListCtrl__IAEXXZ(void)
+
+{
+  _RemoveImageList_CListCtrl__IAEXH_Z(0);
+  _RemoveImageList_CListCtrl__IAEXH_Z(1);
+  _RemoveImageList_CListCtrl__IAEXH_Z(2);
+  _OnNcDestroy_CWnd__IAEXXZ();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5FE5
+// GHIDRA_NAME ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
+// GHIDRA_PROTO undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_Create_CHotKeyCtrl__QAEHKABUtagRECT__PAVCWnd__I_Z
+          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  int iVar1;
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  if ((*(byte *)(iVar1 + 0x18) & 0x10) == 0) {
+    _AfxEndDeferRegisterClass__YGHF_Z(0x10);
+  }
+  (**(code **)(*param_1 + 0x5c))("SysTreeView32",0,param_2,param_3,param_4,param_5,0);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E601E
-// GHIDRA_NAME ~CHotKeyCtrl
-// GHIDRA_PROTO undefined ~CHotKeyCtrl()
+// GHIDRA_NAME ??1CProgressCtrl@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CProgressCtrl@@UAE@XZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
 // GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
@@ -15012,30 +15131,30 @@ void __thiscall RemoveImageList(int param_1,WPARAM param_2)
     public: virtual __thiscall CComboBox::~CComboBox(void)
     public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
      21 names - too many to list
-   
+
    Library: Visual Studio 2003 Release */
 
-void ~CHotKeyCtrl(void)
+void __1CProgressCtrl__UAE_XZ(void)
 
 {
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_0067131c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
+  CWnd::__1CWnd__UAE_XZ(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6076
-// GHIDRA_NAME GetItemText_5e6076
-// GHIDRA_PROTO undefined GetItemText_5e6076()
+// GHIDRA_NAME ?GetItemText@CTreeCtrl@@QBE?AVCString@@PAU_TREEITEM@@@Z
+// GHIDRA_PROTO undefined ?GetItemText@CTreeCtrl@@QBE?AVCString@@PAU_TREEITEM@@@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Retrieves variable-length text via repeated message 0x110C calls with growing buffer until returned length stabilizes below capacity.
 // GHIDRA_COMMENT_END
@@ -15043,7 +15162,7 @@ void ~CHotKeyCtrl(void)
 /* Retrieves variable-length text via repeated message 0x110C calls with growing buffer until
    returned length stabilizes below capacity. */
 
-undefined4 GetItemText_5e6076(void)
+undefined4 _GetItemText_CTreeCtrl__QBE_AVCString__PAU_TREEITEM___Z(void)
 
 {
   undefined4 uVar1;
@@ -15052,42 +15171,45 @@ undefined4 GetItemText_5e6076(void)
   int unaff_EBP;
   int new_length;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -0x10) = 0;
   *(undefined4 *)(unaff_EBP + -0x34) = *(undefined4 *)(unaff_EBP + 0xc);
   *(undefined4 *)(unaff_EBP + -0x38) = 1;
-  CString::CString((CString *)(unaff_EBP + 0xc));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + 0xc));
   *(undefined4 *)(unaff_EBP + -4) = 1;
   new_length = 0x80;
   do {
     new_length = new_length * 2;
-    iVar2 = CString::EnsureCapacityAndSetLength((CString *)(unaff_EBP + 0xc),new_length);
+    iVar2 = CString::_GetBufferSetLength_CString__QAEPADH_Z((CString *)(unaff_EBP + 0xc),new_length)
+    ;
     *(int *)(unaff_EBP + -0x28) = iVar2;
     *(int *)(unaff_EBP + -0x24) = new_length;
     SendMessageA(*(HWND *)(extraout_ECX + 0x1c),0x110c,0,unaff_EBP + -0x38);
     iVar2 = lstrlenA(*(LPCSTR *)(unaff_EBP + -0x28));
   } while (iVar2 == new_length + -1);
-  CString::SetLengthAndTerminator((CString *)(unaff_EBP + 0xc),-1);
-  CString::StringSharedRef_AssignFromPtr(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + 0xc));
+  CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(unaff_EBP + 0xc),-1);
+  CString::__0CString__QAE_ABV0__Z(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + 0xc));
   *(undefined4 *)(unaff_EBP + -0x10) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + 0xc));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 0xc));
   uVar1 = *(undefined4 *)(unaff_EBP + 8);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6116
-// GHIDRA_NAME GetItemImage
-// GHIDRA_PROTO undefined GetItemImage()
+// GHIDRA_NAME ?GetItemImage@CTreeCtrl@@QBEHPAU_TREEITEM@@AAH1@Z
+// GHIDRA_PROTO undefined ?GetItemImage@CTreeCtrl@@QBEHPAU_TREEITEM@@AAH1@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sends query message 0x110C (mode 0x22) and writes returned pair outputs when call succeeds.
 // GHIDRA_COMMENT_END
 
 /* Sends query message 0x110C (mode 0x22) and writes returned pair outputs when call succeeds. */
 
-void __thiscall GetItemImage(int param_1,undefined4 param_2,undefined4 *param_3,undefined4 *param_4)
+void __thiscall
+_GetItemImage_CTreeCtrl__QBEHPAU_TREEITEM__AAH1_Z
+          (int param_1,undefined4 param_2,undefined4 *param_3,undefined4 *param_4)
 
 {
   LRESULT LVar1;
@@ -15095,7 +15217,7 @@ void __thiscall GetItemImage(int param_1,undefined4 param_2,undefined4 *param_3,
   undefined4 local_28;
   undefined4 local_14;
   undefined4 local_10;
-  
+
   local_2c = 0x22;
   local_28 = param_2;
   LVar1 = SendMessageA(*(HWND *)(param_1 + 0x1c),0x110c,0,(LPARAM)&local_2c);
@@ -15107,22 +15229,23 @@ void __thiscall GetItemImage(int param_1,undefined4 param_2,undefined4 *param_3,
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6155
-// GHIDRA_NAME GetItemState
-// GHIDRA_PROTO undefined GetItemState()
+// GHIDRA_NAME ?GetItemState@CTreeCtrl@@QBEIPAU_TREEITEM@@I@Z
+// GHIDRA_PROTO undefined ?GetItemState@CTreeCtrl@@QBEIPAU_TREEITEM@@I@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sends query message 0x110C (mode 0x08) and returns output value from local struct.
 // GHIDRA_COMMENT_END
 
 /* Sends query message 0x110C (mode 0x08) and returns output value from local struct. */
 
-undefined4 __thiscall GetItemState(int param_1,undefined4 param_2,undefined4 param_3)
+undefined4 __thiscall
+_GetItemState_CTreeCtrl__QBEIPAU_TREEITEM__I_Z(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
   undefined4 local_2c;
   undefined4 local_28;
   undefined4 local_24;
   undefined4 local_20;
-  
+
   local_24 = 0;
   local_28 = param_2;
   local_20 = param_3;
@@ -15132,235 +15255,24 @@ undefined4 __thiscall GetItemState(int param_1,undefined4 param_2,undefined4 par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E618D
-// GHIDRA_NAME GetItemData_5e618d
-// GHIDRA_PROTO undefined GetItemData_5e618d()
+// GHIDRA_NAME ?GetItemData@CTreeCtrl@@QBEKPAU_TREEITEM@@@Z
+// GHIDRA_PROTO undefined ?GetItemData@CTreeCtrl@@QBEKPAU_TREEITEM@@@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sends query message 0x110C (mode 0x04) and returns output value from local struct.
 // GHIDRA_COMMENT_END
 
 /* Sends query message 0x110C (mode 0x04) and returns output value from local struct. */
 
-undefined4 __thiscall GetItemData_5e618d(int param_1,undefined4 param_2)
+undefined4 __thiscall _GetItemData_CTreeCtrl__QBEKPAU_TREEITEM___Z(int param_1,undefined4 param_2)
 
 {
   undefined4 local_2c;
   undefined4 local_28;
   undefined4 local_8;
-  
+
   local_2c = 4;
   local_28 = param_2;
   SendMessageA(*(HWND *)(param_1 + 0x1c),0x110c,0,(LPARAM)&local_2c);
   return local_8;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E61BB
-// GHIDRA_NAME ItemHasChildren
-// GHIDRA_PROTO undefined ItemHasChildren()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sends query message 0x110C (mode 0x40) and returns output value from local struct.
-// GHIDRA_COMMENT_END
-
-/* Sends query message 0x110C (mode 0x40) and returns output value from local struct. */
-
-undefined4 __thiscall ItemHasChildren(int param_1,undefined4 param_2)
-
-{
-  undefined4 local_2c;
-  undefined4 local_28;
-  undefined4 local_c;
-  
-  local_2c = 0x40;
-  local_28 = param_2;
-  SendMessageA(*(HWND *)(param_1 + 0x1c),0x110c,0,(LPARAM)&local_2c);
-  return local_c;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E6237
-// GHIDRA_NAME InsertItem_5e6237
-// GHIDRA_PROTO undefined InsertItem_5e6237()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds payload struct and sends control message 0x1100 to this->HWND.
-// GHIDRA_COMMENT_END
-
-/* Builds payload struct and sends control message 0x1100 to this->HWND. */
-
-void __thiscall
-InsertItem_5e6237(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
-                 undefined4 param_5,undefined4 param_6,undefined4 param_7,undefined4 param_8,
-                 undefined4 param_9,undefined4 param_10)
-
-{
-  undefined4 local_34;
-  undefined4 local_30;
-  undefined4 local_2c;
-  undefined4 local_24;
-  undefined4 local_20;
-  undefined4 local_1c;
-  undefined4 local_14;
-  undefined4 local_10;
-  undefined4 local_8;
-  
-  local_34 = param_9;
-  local_30 = param_10;
-  local_2c = param_2;
-  local_1c = param_3;
-  local_14 = param_4;
-  local_10 = param_5;
-  local_24 = param_6;
-  local_20 = param_7;
-  local_8 = param_8;
-  SendMessageA(*(HWND *)(param_1 + 0x1c),0x1100,0,(LPARAM)&local_34);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E628B
-// GHIDRA_NAME HitTest_005E628B
-// GHIDRA_PROTO _TREEITEM * __thiscall HitTest_005E628B(CPoint param_1, uint * param_2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  public: struct _TREEITEM * __thiscall CTreeCtrl::HitTest(class CPoint,unsigned int *)const
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Library: Visual Studio 2003 Release
-// GHIDRA_COMMENT_END
-
-/* Library Function - Single Match
-    public: struct _TREEITEM * __thiscall CTreeCtrl::HitTest(class CPoint,unsigned int *)const 
-   
-   Library: Visual Studio 2003 Release */
-
-_TREEITEM * __thiscall
-HitTest_005E628B(void *this,undefined4 param_2,undefined4 param_3,undefined4 *param_4)
-
-{
-  _TREEITEM *p_Var1;
-  undefined4 local_14;
-  undefined4 local_10;
-  undefined4 local_c;
-  
-  local_14 = param_2;
-  local_10 = param_3;
-  p_Var1 = (_TREEITEM *)SendMessageA(*(HWND *)((int)this + 0x1c),0x1111,0,(LPARAM)&local_14);
-  if (param_4 != (undefined4 *)0x0) {
-    *param_4 = local_c;
-  }
-  return p_Var1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E62C1
-// GHIDRA_NAME RemoveImageList_5e62c1
-// GHIDRA_PROTO undefined RemoveImageList_5e62c1()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sends message 0x1108; if result passes FUN_005E69CB predicate, sends follow-up message 0x1109 with same wParam.
-// GHIDRA_COMMENT_END
-
-/* Sends message 0x1108; if result passes FUN_005E69CB predicate, sends follow-up message 0x1109
-   with same wParam. */
-
-void __thiscall RemoveImageList_5e62c1(int param_1,WPARAM param_2)
-
-{
-  LRESULT LVar1;
-  int iVar2;
-  
-  LVar1 = SendMessageA(*(HWND *)(param_1 + 0x1c),0x1108,param_2,0);
-  iVar2 = FromHandlePermanent(LVar1);
-  if (iVar2 != 0) {
-    SendMessageA(*(HWND *)(param_1 + 0x1c),0x1109,param_2,0);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E63B2
-// GHIDRA_NAME ~CHotKeyCtrl
-// GHIDRA_PROTO undefined ~CHotKeyCtrl()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
-// GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
-// GHIDRA_COMMENT  public: virtual __thiscall CButton::~CButton(void)
-// GHIDRA_COMMENT  public: virtual __thiscall CComboBox::~CComboBox(void)
-// GHIDRA_COMMENT  public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
-// GHIDRA_COMMENT   21 names - too many to list
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Library: Visual Studio 2003 Release
-// GHIDRA_COMMENT_END
-
-/* Library Function - Multiple Matches With Different Base Names
-    public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
-    public: virtual __thiscall CButton::~CButton(void)
-    public: virtual __thiscall CComboBox::~CComboBox(void)
-    public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
-     21 names - too many to list
-   
-   Library: Visual Studio 2003 Release */
-
-void ~CHotKeyCtrl(void)
-
-{
-  CWnd *this;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(CWnd **)(unaff_EBP + -0x10) = this;
-  (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_006713f4;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
-  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E64BE
-// GHIDRA_NAME SetRange
-// GHIDRA_PROTO undefined SetRange()
-
-void __thiscall SetRange(int param_1,LPARAM param_2,LPARAM param_3,WPARAM param_4)
-
-{
-  SendMessageA(*(HWND *)(param_1 + 0x1c),0x407,param_4,param_2);
-  SendMessageA(*(HWND *)(param_1 + 0x1c),0x408,param_4,param_3);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E6590
-// GHIDRA_NAME ~CHotKeyCtrl
-// GHIDRA_PROTO undefined ~CHotKeyCtrl()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
-// GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
-// GHIDRA_COMMENT  public: virtual __thiscall CButton::~CButton(void)
-// GHIDRA_COMMENT  public: virtual __thiscall CComboBox::~CComboBox(void)
-// GHIDRA_COMMENT  public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
-// GHIDRA_COMMENT   21 names - too many to list
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Library: Visual Studio 2003 Release
-// GHIDRA_COMMENT_END
-
-/* Library Function - Multiple Matches With Different Base Names
-    public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
-    public: virtual __thiscall CButton::~CButton(void)
-    public: virtual __thiscall CComboBox::~CComboBox(void)
-    public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
-     21 names - too many to list
-   
-   Library: Visual Studio 2003 Release */
-
-void ~CHotKeyCtrl(void)
-
-{
-  CWnd *this;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(CWnd **)(unaff_EBP + -0x10) = this;
-  (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_006715a4;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
-  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
 }
 

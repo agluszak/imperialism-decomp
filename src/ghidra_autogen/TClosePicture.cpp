@@ -16,12 +16,12 @@ TPictureButton * TClosePicture::CreateTClosePictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063789a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   pTVar1 = (TPictureButton *)0x0;
   if (this != (TPictureButton *)0x0) {
@@ -64,7 +64,7 @@ TClosePicture * TClosePicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -82,7 +82,7 @@ TClosePicture::InvalidateWindowRectFromHandleField1C
   undefined1 uVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  
+
   uVar1 = TControl::DispatchUiMouseEventToChildrenOrSelf
                     ((TControl *)this,param_1,param_2,param_3,param_4);
   uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();

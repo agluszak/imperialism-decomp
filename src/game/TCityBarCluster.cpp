@@ -14,10 +14,6 @@
 #include "game/GameAssert.h"
 #include <new>
 
-extern "C" {
-char g_vtblTCityBarCluster = 0;
-}
-
 const int kAssertLineTradeSummaryRtnu = 0x67d;
 const int kAssertLineTradeSummaryIart = 0x682;
 const int kAssertLineTradeSummaryProf = 0x687;

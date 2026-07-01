@@ -12,7 +12,7 @@ TGWorldPeeker * TGWorldPeeker::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -36,7 +36,7 @@ void TGWorldPeeker::OrphanTiny_ReturnZero_0048a730(LONG *param_1)
 {
   RECT local_20;
   RECT local_10;
-  
+
   if (*(int *)&this->field_0x60 != 0) {
     local_10.left = *param_1;
     local_10.top = param_1[1];

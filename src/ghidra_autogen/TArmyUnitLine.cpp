@@ -16,12 +16,12 @@ TLineData * TArmyUnitLine::CreateTArmyUnitLineInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063035a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)AllocateWithFallbackHandler(0x14);
+  this = (TLineData *)__2_YAPAXI_Z(0x14);
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (this != (TLineData *)0x0) {
@@ -64,7 +64,7 @@ TArmyUnitLine * TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(byte param_1)
 {
   DestructTArmyUnitLineAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -109,7 +109,7 @@ void TArmyUnitLine::OrphanRetStub_0056f460(int param_1)
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006303d0;
   iStack_c = *unaff_FS_OFFSET;
@@ -117,7 +117,7 @@ void TArmyUnitLine::OrphanRetStub_0056f460(int param_1)
   uVar2 = *(undefined4 *)(param_1 + 0x84);
   uStack_50 = 100;
   CStack_54.m_pchData = (char *)0x4a8e23;
-  pTVar7 = (TView *)AllocateWithFallbackHandler();
+  pTVar7 = (TView *)__2_YAPAXI_Z();
   local_4 = 0;
   local_1c.m_pchData = (char *)pTVar7;
   if (pTVar7 == (TView *)0x0) {
@@ -140,7 +140,7 @@ void TArmyUnitLine::OrphanRetStub_0056f460(int param_1)
   uStack_50 = 0x94;
   pTVar7[1].vftable = pTVar3;
   CStack_54.m_pchData = (char *)0x4a8e7b;
-  this_00 = (TControl *)AllocateWithFallbackHandler();
+  this_00 = (TControl *)__2_YAPAXI_Z();
   local_4 = 1;
   if (this_00 == (TControl *)0x0) {
     this_00 = (TControl *)0x0;
@@ -192,7 +192,7 @@ void TArmyUnitLine::OrphanRetStub_0056f460(int param_1)
   (*pTVar4[1].VTableSlot01)();
 LAB_004a8f66:
   uStack_58 = (CString *)0x4a8f6f;
-  CString::CString(&CStack_3c);
+  CString::__0CString__QAE_XZ(&CStack_3c);
   uStack_58 = &CStack_3c;
   iStack_c = 2;
   pTVar5 = g_pLocalizationTable->vftable;
@@ -210,7 +210,7 @@ LAB_004a8f66:
   if (cVar6 != '\0') {
     pTStack_64 = (TControl *)0x8c;
     pCStack_68 = (CString *)0x4a8fd2;
-    CStack_38.m_pchData = (char *)AllocateWithFallbackHandler();
+    CStack_38.m_pchData = (char *)__2_YAPAXI_Z();
     local_18._0_1_ = 3;
     if ((TGWorldButton *)CStack_38.m_pchData == (TGWorldButton *)0x0) {
       piVar8 = (int *)0x0;
@@ -232,33 +232,33 @@ LAB_004a8f66:
     pCStack_68 = (CString *)0x1;
     (**(code **)(*piVar8 + 0xa8))();
     piVar8[7] = 0x75706772;
-    CString::CString((CString *)&stack0xffffffbc);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffffbc);
     local_20._0_1_ = 4;
-    CString::CString(&CStack_54);
+    CString::__0CString__QAE_XZ(&CStack_54);
     local_20._0_1_ = 5;
-    CString::CString((CString *)&stack0xffffffb8);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffffb8);
     local_20._0_1_ = 6;
-    CString::CString((CString *)&stack0xffffffb4);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffffb4);
     local_20._0_1_ = 7;
-    CString::CString(&CStack_38);
+    CString::__0CString__QAE_XZ(&CStack_38);
     local_20 = CONCAT31(local_20._1_3_,8);
     WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840((int)&uStack_58 + 2);
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
     if ((short)local_20 == 0) {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2746,2);
       scanBracketExpressions(g_pLocalizationTable,&CStack_3c,unaff_EDI);
     }
     else {
-      CString::CString((CString *)&stack0xffffffb8);
+      CString::__0CString__QAE_XZ((CString *)&stack0xffffffb8);
       iStack_28 = CONCAT31(iStack_28._1_3_,9);
-      FormatStringWithVarArgsToSharedRef(&stack0xffffffb8,&g_szDecimalFormat);
+      _Format_CString__QAAXPBDZZ(&stack0xffffffb8,&g_szDecimalFormat);
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2746,6);
       pCStack_68 = (CString *)CStack_38.m_pchData;
       scanBracketExpressions(g_pLocalizationTable,&CStack_3c,unaff_EDI);
       local_18._0_1_ = 8;
       pTStack_64 = (TControl *)0x4a918e;
-      CString::~CString(&CStack_38);
+      CString::__1CString__QAE_XZ(&CStack_38);
     }
     CStack_38.m_pchData = (char *)&pCStack_68;
     pTStack_64 = (TControl *)piVar8;
@@ -266,23 +266,23 @@ LAB_004a8f66:
     RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     local_18._0_1_ = 7;
     pTStack_64 = (TControl *)0x4a91b6;
-    CString::~CString(&CStack_30);
+    CString::__1CString__QAE_XZ(&CStack_30);
     local_18._0_1_ = 6;
     pTStack_64 = (TControl *)0x4a91c4;
-    CString::~CString((CString *)&stack0xffffffbc);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffffbc);
     local_18._0_1_ = 5;
     pTStack_64 = (TControl *)0x4a91d2;
-    CString::~CString((CString *)&stack0xffffffc0);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffffc0);
     local_18._0_1_ = 4;
     pTStack_64 = (TControl *)0x4a91e0;
-    CString::~CString((CString *)&stack0xffffffb4);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffffb4);
     local_18 = CONCAT31(local_18._1_3_,2);
     pTStack_64 = (TControl *)0x4a91ee;
-    CString::~CString(&CStack_3c);
+    CString::__1CString__QAE_XZ(&CStack_3c);
   }
   pTStack_64 = (TControl *)0x88;
   pCStack_68 = (CString *)0x4a91f8;
-  pTStack_10 = (TClickZone *)AllocateWithFallbackHandler();
+  pTStack_10 = (TClickZone *)__2_YAPAXI_Z();
   local_18._0_1_ = 10;
   if (pTStack_10 == (TClickZone *)0x0) {
     iVar9 = 0;
@@ -307,7 +307,7 @@ LAB_004a8f66:
   AssignStringSharedRefAndReturnThis(&CStack_54);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_24 = -1;
-  CString::~CString(&CStack_54);
+  CString::__1CString__QAE_XZ(&CStack_54);
   *unaff_FS_OFFSET = iStack_2c;
   return;
 }

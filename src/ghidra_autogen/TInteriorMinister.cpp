@@ -66,7 +66,7 @@ TInteriorMinister * TInteriorMinister::DeletingDestructTMinister(byte param_1)
 {
   DestructTInteriorMinisterAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -82,7 +82,7 @@ void TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader(int *param_1)
   code *pcVar2;
   undefined1 *puVar3;
   int iVar4;
-  
+
   TMinister::DeserializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
   pcVar2 = *(code **)(*param_1 + 0x3c);
   (*pcVar2)(&this->field_0x10,2);
@@ -117,7 +117,7 @@ void TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(int *param_1)
   undefined2 *puVar4;
   undefined4 uStack_1c;
   undefined1 *puStack_18;
-  
+
   puStack_18 = (undefined1 *)0x4be330;
   TMinister::SerializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
   puStack_18 = &this->field_0x10;
@@ -204,7 +204,7 @@ void TInteriorMinister::OrphanCallChain_C7_I57_004be5b0()
   undefined3 extraout_var_01;
   short sVar6;
   int iVar7;
-  
+
   sVar6 = 0;
   p_Var1 = this->vftable->InteriorSlot17;
   uVar3 = (*p_Var1)();
@@ -298,7 +298,7 @@ TInteriorMinister::UpdateDiplomatProgressFromProductionSlots2And4
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006312e4;
   uStack_c = *unaff_FS_OFFSET;
@@ -333,7 +333,7 @@ TInteriorMinister::UpdateDiplomatProgressFromProductionSlots2And4
     if (sVar9 < sVar8) {
       sVar8 = sVar9;
     }
-    pTVar6 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+    pTVar6 = (TCityTask *)__2_YAPAXI_Z(0x14);
     uStack_4 = 1;
     if (pTVar6 == (TCityTask *)0x0) {
       this_00 = (void *)0x0;
@@ -350,7 +350,7 @@ TInteriorMinister::UpdateDiplomatProgressFromProductionSlots2And4
     if ((9 < (int)sVar8 + (int)sVar7) && (sVar7 != 9)) {
       sVar8 = 9 - sVar7;
     }
-    pTVar6 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+    pTVar6 = (TCityTask *)__2_YAPAXI_Z(0x14);
     uStack_4 = 0;
     if (pTVar6 == (TCityTask *)0x0) {
       this_00 = (void *)0x0;
@@ -383,7 +383,7 @@ TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
   int iVar4;
   undefined4 uVar5;
   uint local_4;
-  
+
   uVar2 = *(uint *)&this->field_0xc;
   if (*(uint *)&this->field_0x8 <= uVar2) {
     iVar1 = uVar2 + 1;
@@ -392,9 +392,9 @@ TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
     if (0x7fffffff < uVar3) {
       local_4 = 0x7fffffff;
     }
-    iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 4);
+    iVar4 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 4);
     if (iVar4 == 0) {
-      uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,uVar3);
+      uVar5 = _realloc(*(undefined4 *)&this->field_0x4,uVar3);
       *(undefined4 *)&this->field_0x4 = uVar5;
       *(int *)&this->field_0x8 = iVar1;
     }
@@ -419,7 +419,7 @@ TInteriorMinister * TInteriorMinister::_scalar_deleting_destructor_(byte param_1
 {
   TInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -438,7 +438,7 @@ TInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00631528;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -451,7 +451,7 @@ TInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad
   *(undefined4 *)&this->field_0x10 = 0;
   *(undefined4 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0x4 = 0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   *(undefined4 *)&this->field_0x14 = 0;
   this->vftable =
        (TInteriorMinisterVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;

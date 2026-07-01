@@ -16,12 +16,12 @@ TNoHilitePicture * TShipPlacard::CreateTShipPlacardInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635b5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
@@ -64,7 +64,7 @@ TShipPlacard * TShipPlacard::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -81,7 +81,7 @@ void TShipPlacard::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635b78;
@@ -89,9 +89,9 @@ void TShipPlacard::OrphanTiny_ReturnZero_0048a730()
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   sVar1 = (short)this->ownerContext[1].ownerOffsetY;
   if (0 < sVar1) {
-    CString::CString((CString *)&stack0x00000004);
+    CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
     local_4 = 0;
-    FormatStringWithVarArgsToSharedRef(&stack0x00000004,&g_szDecimalFormat,(int)sVar1);
+    _Format_CString__QAAXPBDZZ(&stack0x00000004,&g_szDecimalFormat,(int)sVar1);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b67);
     sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0x00000004);
     SetQuickDrawTextOriginWithContextOffset(0x51 - (int)sVar1 / 2,0x2f);
@@ -100,7 +100,7 @@ void TShipPlacard::OrphanTiny_ReturnZero_0048a730()
     SetQuickDrawTextOriginWithContextOffset(0x50 - (int)sVar1 / 2,0x2e);
     THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
     local_4 = 0xffffffff;
-    CString::~CString((CString *)&stack0x00000004);
+    CString::__1CString__QAE_XZ((CString *)&stack0x00000004);
   }
   *unaff_FS_OFFSET = local_c;
   return;

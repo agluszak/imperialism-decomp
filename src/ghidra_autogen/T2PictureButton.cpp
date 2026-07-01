@@ -16,12 +16,12 @@ thunk_TPictureButton * T2PictureButton::CreateT2PictureButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063638a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -72,7 +72,7 @@ T2PictureButton * T2PictureButton::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -87,7 +87,7 @@ void T2PictureButton::OrphanCallChain_C3_I43_00570c30(char param_1)
   short sVar1;
   T2PictureButtonVtbl *pTVar2;
   char unaff_BP;
-  
+
   sVar1 = *(short *)&this->field_0x84;
   if (((param_1 == '\x01') && (this->field3c < (int)sVar1)) ||
      ((param_1 == '\0' && ((int)sVar1 < this->field3c)))) {

@@ -15,12 +15,12 @@ TUberCluster * TRailCluster::CreateTradeMoveScaledControlPanel(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006379ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x90);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   if (this != (TUberCluster *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState(this);
@@ -67,7 +67,7 @@ TRailCluster * TRailCluster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -84,7 +84,7 @@ void TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(short param_1)
   int iVar3;
   undefined2 extraout_var;
   TCity *this_00;
-  
+
   sVar2 = UiRuntimeContext::GetActiveNationId();
   if (g_apNationStates[sVar2] == (TGreatPower *)0x0) {
     this_00 = (TCity *)0x0;
@@ -167,7 +167,7 @@ void TRailCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_
   undefined4 uVar4;
   undefined3 extraout_var_00;
   undefined2 extraout_var_01;
-  
+
   if (param_1 == 100) {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6d6f7665);

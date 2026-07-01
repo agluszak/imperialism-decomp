@@ -15,12 +15,12 @@ thunk_TPictureButton * THelpPicture::CreateTHelpPictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006335da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -73,7 +73,7 @@ THelpPicture * THelpPicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -106,7 +106,7 @@ void THelpPicture::OrphanCallChain_C6_I49_004875d0()
   undefined1 *puStack_8;
   undefined4 uStack_4;
   int *piVar3;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00633602;
   uStack_c = *unaff_FS_OFFSET;
@@ -119,7 +119,7 @@ void THelpPicture::OrphanCallChain_C6_I49_004875d0()
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7377696e);
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(*piVar3 + 0xc))();
-  this_00 = (TDeluxeText *)AllocateWithFallbackHandler(0xa4);
+  this_00 = (TDeluxeText *)__2_YAPAXI_Z(0xa4);
   puStack_8 = (undefined1 *)0x0;
   if (this_00 == (TDeluxeText *)0x0) {
     this_00 = (TDeluxeText *)0x0;
@@ -165,7 +165,7 @@ void THelpPicture::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   uint uVar1;
-  
+
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   if (param_1 == 0xd) {
     uVar1 = *(uint *)(param_2 + 0x1c);
@@ -230,7 +230,7 @@ void THelpPicture::OrphanCallChain_C2_I34_00504120()
   int iVar3;
   THelpPicture *pTVar4;
   int iVar5;
-  
+
   iVar3 = DAT_006a21b8;
   sVar1 = *(short *)(*(int *)&this->field_0x90 + 4);
   bVar2 = false;
@@ -261,7 +261,7 @@ void THelpPicture::OrphanCallChain_C2_I34_005041a0()
   int iVar3;
   THelpPicture *pTVar4;
   int iVar5;
-  
+
   iVar3 = DAT_006a21b8;
   sVar1 = *(short *)(*(int *)&this->field_0x90 + 2);
   bVar2 = false;
@@ -363,7 +363,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633648;
   uStack_c = *unaff_FS_OFFSET;
@@ -382,7 +382,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   local_1c = 0;
   local_1b = 0;
   uStack_58 = 0x50472f;
-  CString::CString(local_40);
+  CString::__0CString__QAE_XZ(local_40);
   uStack_58 = 3;
   uStack_5c = 0x2b6d;
   uStack_60 = 0xc;
@@ -569,7 +569,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   (**(code **)(iStack_10c + 0xe4))();
   (**(code **)(*piStack_108 + 0x13c))();
   uStack_d8 = 0xffffffff;
-  CString::~CString(&CStack_114);
+  CString::__1CString__QAE_XZ(&CStack_114);
   *unaff_FS_OFFSET = uStack_e0;
   return;
 }

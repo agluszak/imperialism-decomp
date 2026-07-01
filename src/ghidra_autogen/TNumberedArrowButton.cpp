@@ -15,12 +15,12 @@ TControl * TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637bba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x88);
+  this = (TControl *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::TControl(this);
@@ -67,7 +67,7 @@ TNumberedArrowButton * TNumberedArrowButton::_scalar_deleting_destructor_(byte p
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -105,12 +105,12 @@ void TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637bd8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_34);
+  CString::__0CString__QAE_XZ(&local_34);
   local_4 = 0;
   UpdatePaletteIndexWithDefaultFallback(0x10);
   local_30 = &stack0xffffffbc;
@@ -141,7 +141,7 @@ void TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730()
              (astruct_19 *)0x0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
-  FormatStringWithVarArgsToSharedRef(&local_34,&g_szDecimalFormat);
+  _Format_CString__QAAXPBDZZ(&local_34,&g_szDecimalFormat);
   sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
   SetQuickDrawTextOriginWithContextOffset(7 - (int)sVar1 / 2);
   THQButton::DrawTextWithCachedQuickDrawStyleState();
@@ -149,7 +149,7 @@ void TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730()
   SetQuickDrawTextOriginWithContextOffset(6 - (int)sVar1 / 2);
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   local_4 = 0xffffffff;
-  CString::~CString(&local_34);
+  CString::__1CString__QAE_XZ(&local_34);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -170,7 +170,7 @@ TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
   int unaff_retaddr;
   int in_stack_00000010;
   short sStack_10;
-  
+
   sVar4 = 0;
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->PointInBoundsAndActionable)();
@@ -224,7 +224,7 @@ TNumberedArrowButton::SetForeignMinisterReadyFlag14
 
 {
   char cVar1;
-  
+
   cVar1 = (*this->vftable->VTableSlot3B)();
   if (cVar1 != '\0') {
     if ((int)param_1[1] < this->field38 / 2) {

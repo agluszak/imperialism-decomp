@@ -16,12 +16,12 @@ thunk_TPictureButton * TArmyPlacard::CreateTArmyPlacardInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637b7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -66,7 +66,7 @@ TArmyPlacard * TArmyPlacard::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -82,7 +82,7 @@ void TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(short param_1)
   short sVar2;
   int iVar3;
   char unaff_retaddr;
-  
+
   sVar2 = UiRuntimeContext::GetActiveNationId();
   iVar3 = CONCAT22((short)((uint)g_pCityOrderCapabilityState >> 0x10),
                    *(short *)(&g_pCityOrderCapabilityState[0x50032].field_0x3be +
@@ -115,19 +115,18 @@ void TArmyPlacard::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637b98;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10.m_pchData = (char *)this;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   if (*(short *)&this->field_0x90 != 0) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b67);
-    FormatStringWithVarArgsToSharedRef
-              (&local_10,&g_szDecimalFormat,(int)*(short *)&this->field_0x90);
+    _Format_CString__QAAXPBDZZ(&local_10,&g_szDecimalFormat,(int)*(short *)&this->field_0x90);
     sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_10);
     SetQuickDrawTextOriginWithContextOffset
               ((short)this->field34 - sVar1,(short)this->field38 + -2);
@@ -138,7 +137,7 @@ void TArmyPlacard::OrphanTiny_ReturnZero_0048a730()
     THQButton::DrawTextWithCachedQuickDrawStyleState(&local_10);
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -152,7 +151,7 @@ void TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 {
   undefined4 uVar1;
   int in_stack_00000008;
-  
+
   if (*(int *)(in_stack_00000008 + 0x1c) == 0x706c7573) {
     uVar1 = ActivateFirstActiveTacticalUnitByCategoryAtTile
                       (CONCAT22(0x706c,(short)this->controlTag + -0x6330),

@@ -15,12 +15,12 @@ TMission * TEscortMission::CreateTEscortMission(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063436a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x3c);
+  this = (TMission *)__2_YAPAXI_Z(0x3c);
   local_4 = 0;
   if (this != (TMission *)0x0) {
     TMission::ConstructTMission(this);
@@ -51,7 +51,7 @@ TEscortMission * TEscortMission::DestroyTEscortMission(byte param_1)
 {
   ResetTEscortMissionToSentinelVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -98,7 +98,7 @@ void TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAvera
   void *unaff_EDI;
   float local_c;
   int local_4;
-  
+
   if (g_apNationStates[*(short *)(this + 4)] == (TGreatPower *)0x0) {
     wVar2 = 0;
   }
@@ -111,9 +111,9 @@ void TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAvera
   }
   iVar4 = FindFirstPortZoneContextByNation(*(short *)(this + 4));
   if (*(int *)(iVar4 + 0x2c) == 0) {
-    iVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar4 + 0x28),8);
+    iVar5 = _realloc(*(undefined4 *)(iVar4 + 0x28),8);
     if (iVar5 == 0) {
-      uVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar4 + 0x28),4);
+      uVar6 = _realloc(*(undefined4 *)(iVar4 + 0x28),4);
       *(undefined4 *)(iVar4 + 0x28) = uVar6;
       *(undefined4 *)(iVar4 + 0x2c) = 1;
     }
@@ -131,9 +131,9 @@ void TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAvera
   for (this_01 = GetFirstPortZone(); this_01 != (TZone *)0x0;
       this_01 = TZone::GetNextPortZone(this_01,unaff_EDI)) {
     if (*(int *)&this_01->field_0x2c == 0) {
-      iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this_01->field_0x28,8);
+      iVar4 = _realloc(*(undefined4 *)&this_01->field_0x28,8);
       if (iVar4 == 0) {
-        uVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this_01->field_0x28,4);
+        uVar6 = _realloc(*(undefined4 *)&this_01->field_0x28,4);
         *(undefined4 *)&this_01->field_0x28 = uVar6;
         *(undefined4 *)&this_01->field_0x2c = 1;
       }
@@ -194,7 +194,7 @@ TEscortMission::PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressu
   float local_20;
   TMinor **local_1c;
   float local_10 [4];
-  
+
   local_20 = DAT_0065a9b8;
   sVar1 = *(short *)&g_pLocalizationTable->field_0x2c;
   iVar17 = 7;
@@ -230,9 +230,9 @@ TEscortMission::PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressu
       if (bVar18) {
         iVar9 = FindFirstPortZoneContextByNation(iVar17);
         if (*(int *)(iVar9 + 0x2c) == 0) {
-          iVar10 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar9 + 0x28),8);
+          iVar10 = _realloc(*(undefined4 *)(iVar9 + 0x28),8);
           if (iVar10 == 0) {
-            uVar11 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar9 + 0x28),4);
+            uVar11 = _realloc(*(undefined4 *)(iVar9 + 0x28),4);
             *(undefined4 *)(iVar9 + 0x28) = uVar11;
             *(undefined4 *)(iVar9 + 0x2c) = 1;
           }
@@ -327,7 +327,7 @@ TEscortMission::HandleBeachheadMissionActionType0Or3ForTargetPort
 
 {
   int in_stack_0000000c;
-  
+
   if (((param_1 == 0) || (param_1 == 3)) && (in_stack_0000000c == *(int *)(this + 0x14))) {
     return 1;
   }
@@ -342,7 +342,7 @@ void TEscortMission::ResetBeachheadMissionChildFlagsAndDispatchField5Context()
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(this + 0x24);
   if (iVar1 != 0) {
     *(undefined1 *)(iVar1 + 0xc) = 0;

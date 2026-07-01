@@ -16,7 +16,7 @@ TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader
   code *pcVar2;
   undefined1 *puVar3;
   int iVar4;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar2 = *(code **)(*param_1 + 0x3c);
   (*pcVar2)(&this->field_0xc,2);
@@ -92,7 +92,7 @@ TArmsForeignMinister::SerializeTMinisterBaseOrderArrayHeader
   undefined1 *puStack_24;
   undefined4 uStack_20;
   undefined1 *puStack_1c;
-  
+
   puStack_1c = (undefined1 *)0x52f2c1;
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   puStack_1c = &this->field_0xc;
@@ -177,7 +177,7 @@ int TArmsForeignMinister::DispatchNationStateEventCode10(short param_1)
   int iVar2;
   short sVar3;
   TCountry **ppTVar4;
-  
+
   sVar3 = 0;
   sVar1 = 0;
   iVar2 = 0;
@@ -204,7 +204,7 @@ undefined4 TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0()
 {
   int iVar1;
   short sVar2;
-  
+
   iVar1 = (*(int **)&this->field_0x4)[0x29];
   sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x78))(0xd);
   if (sVar2 < (short)iVar1) {
@@ -241,14 +241,14 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006340fa;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_10 = this;
   if (*(short *)&this->field_0x10 != -10) {
-    local_10 = (TArmsForeignMinister *)AllocateWithFallbackHandler(0x18);
+    local_10 = (TArmsForeignMinister *)__2_YAPAXI_Z(0x18);
     local_4 = 0;
     if (local_10 == (TArmsForeignMinister *)0x0) {
       piVar4 = (int *)0x0;
@@ -277,7 +277,7 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
     iVar8 = 1;
     do {
       if (bVar2) goto LAB_0052f8bf;
-      iVar6 = GenerateThreadLocalRandom15();
+      iVar6 = _rand();
       local_10 = (TArmsForeignMinister *)(iVar6 % 7);
       cVar3 = IsNationSlotEligibleForEventProcessing(local_10);
       if (cVar3 != '\0') {
@@ -324,7 +324,7 @@ void TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject()
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   iVar3 = (int)*(short *)(*(int *)&this->field_0x4 + 0xc);
   iVar5 = (int)&g_pCityOrderCapabilityState->vftable + iVar3;
   local_18 = 0;
@@ -337,7 +337,7 @@ void TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject()
   if (local_1c != 0) {
     puVar4 = &local_18;
     do {
-      iVar3 = GenerateThreadLocalRandom15();
+      iVar3 = _rand();
       iVar5 = CONCAT22((short)((uint)iVar5 >> 0x10),*(undefined2 *)puVar4);
       uVar1 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(iVar5);
       if (iVar3 % 100 + 200 < (int)(short)CONCAT31(extraout_var,uVar1)) {
@@ -358,7 +358,7 @@ void TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject()
       local_1c = local_1c + -1;
     } while (local_1c != 0);
   }
-  iVar3 = GenerateThreadLocalRandom15();
+  iVar3 = _rand();
   uVar1 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(5);
   if (iVar3 % 100 + 200 < (int)(short)CONCAT31(extraout_var_00,uVar1)) {
     sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x78))(5);
@@ -386,7 +386,7 @@ void TArmsForeignMinister::OrphanRetStub_0059add0()
   short sVar1;
   int iVar2;
   undefined4 *puVar3;
-  
+
   *(undefined2 *)&this->field_0x12 = 0;
   *(undefined2 *)&this->field_0x14 = 0;
   *(undefined2 *)&this->field_0x10 = 0xfff6;
@@ -414,7 +414,7 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
   undefined uVar2;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  
+
   uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
   if ((short)CONCAT31(extraout_var,uVar2) == 1) {
     (*this->vftable[0xc].GetTMinisterClassNamePointer)();
@@ -463,7 +463,7 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
   int iVar3;
   short sVar4;
   int iVar5;
-  
+
   bVar1 = false;
   sVar4 = 7;
   do {
@@ -520,14 +520,14 @@ void TArmsForeignMinister::_scalar_deleting_destructor_()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063411a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   iVar3 = ftol();
   if (1000 < iVar3) {
-    this_00 = (TSortedByRelationshipList *)AllocateWithFallbackHandler(0x18);
+    this_00 = (TSortedByRelationshipList *)__2_YAPAXI_Z(0x18);
     local_4 = 0;
     if (this_00 == (TSortedByRelationshipList *)0x0) {
       local_18 = (int *)0x0;
@@ -669,7 +669,7 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063413a;
   uStack_c = *unaff_FS_OFFSET;
@@ -770,7 +770,7 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
     } while (iVar13 < 7);
     if (uStack_40._3_1_ != '\0') {
       ppTStack_38 = (TGreatPower **)0xffffffff;
-      pTStack_2c = (TSortedByRelationshipList *)AllocateWithFallbackHandler(0x18);
+      pTStack_2c = (TSortedByRelationshipList *)__2_YAPAXI_Z(0x18);
       piVar12 = (int *)0x0;
       uStack_4 = 0;
       if (pTStack_2c != (TSortedByRelationshipList *)0x0) {
@@ -883,7 +883,7 @@ undefined1 TArmsForeignMinister::GetTEventHandlerClassNamePointer(float param_1)
   undefined1 local_2d;
   int local_28 [9];
   float local_4;
-  
+
   local_28[0] = 0x15;
   local_28[1] = 0x12;
   local_28[2] = 0xf;
@@ -945,7 +945,7 @@ void TArmsForeignMinister::_scalar_deleting_destructor_()
 {
   char cVar1;
   int iVar2;
-  
+
   iVar2 = 0;
   do {
     cVar1 = (**(code **)(**(int **)&this->field_0x4 + 0x20c))();
@@ -992,7 +992,7 @@ void TArmsForeignMinister::_scalar_deleting_destructor_()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634164;
   uStack_c = *unaff_FS_OFFSET;
@@ -1001,7 +1001,7 @@ void TArmsForeignMinister::_scalar_deleting_destructor_()
   if ((((*(ushort *)&g_pLocalizationTable->field_0x2c ^ uVar2) - uVar2 & 3 ^ uVar2) == uVar2) &&
      (cVar4 = (**(code **)(**(int **)&this->field_0x4 + 0x1a0))(), cVar4 == '\0')) {
     bVar3 = true;
-    pTVar8 = (TSortedByRelationshipList *)AllocateWithFallbackHandler(0x18);
+    pTVar8 = (TSortedByRelationshipList *)__2_YAPAXI_Z(0x18);
     uStack_4 = 0;
     if (pTVar8 == (TSortedByRelationshipList *)0x0) {
       piVar9 = (int *)0x0;
@@ -1051,7 +1051,7 @@ void TArmsForeignMinister::_scalar_deleting_destructor_()
     if (iVar12 != -1) {
 LAB_00530d24:
       iStack_18 = -1;
-      pTVar8 = (TSortedByRelationshipList *)AllocateWithFallbackHandler(0x18);
+      pTVar8 = (TSortedByRelationshipList *)__2_YAPAXI_Z(0x18);
       uStack_4 = 1;
       if (pTVar8 == (TSortedByRelationshipList *)0x0) {
         piVar9 = (int *)0x0;
@@ -1143,7 +1143,7 @@ void TArmsForeignMinister::_scalar_deleting_destructor_(short param_1)
   undefined3 extraout_var;
   undefined2 extraout_var_00;
   undefined4 unaff_retaddr;
-  
+
   cVar4 = '\0';
   psVar5 = (short *)(**(code **)(**(int **)(*(int *)&this->field_0x4 + 0x84c) + 0x2c))((int)param_1)
   ;
@@ -1220,7 +1220,7 @@ TArmsForeignMinister * TArmsForeignMinister::ConstructTArmsForeignMinister()
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(undefined4 *)&this->field_0x49 = 0x1010101;
   *(undefined2 *)&this->field_0x4d = 0x101;
   this->field_0x4f = 1;
@@ -1248,7 +1248,7 @@ TArmsForeignMinister * TArmsForeignMinister::DeletingDestructTMinister(byte para
 {
   TArmsForeignMinister::DestructTArmsForeignMinister(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -1274,7 +1274,7 @@ void TArmsForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
 {
   uint uVar1;
   uint uVar2;
-  
+
   if ((&g_pCityOrderCapabilityState->field_0x27b)[*(short *)(*(int *)&this->field_0x4 + 0xc) * 0x1d]
       == '\x02') {
     *(undefined2 *)&this->field_0x40 = 6;
@@ -1287,7 +1287,7 @@ void TArmsForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
   *(undefined2 *)&this->field_0x40 = 2;
   *(undefined2 *)&this->field_0x42 = 3;
   *(undefined2 *)&this->field_0x44 = 4;
-  uVar1 = GenerateThreadLocalRandom15();
+  uVar1 = _rand();
   uVar2 = (int)uVar1 >> 0x1f;
   if (((uVar1 ^ uVar2) - uVar2 & 1 ^ uVar2) != uVar2) {
     *(undefined2 *)&this->field_0x46 = 0;
@@ -1332,7 +1332,7 @@ void TArmsForeignMinister::SetForeignMinisterReadyFlag14()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063422a;
@@ -1361,14 +1361,14 @@ void TArmsForeignMinister::SetForeignMinisterReadyFlag14()
     puVar12 = puVar12 + 1;
     iVar10 = iVar10 + -1;
   } while (iVar10 != 0);
-  pTStack_20 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  pTStack_20 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   uStack_4 = 0;
   pTStack_10 = pTStack_20;
   if (pTStack_20 == (TIndexAndRankList *)0x0) {
     pTStack_20 = (TIndexAndRankList *)0x0;
   }
   else {
-    TIndexAndRankList::CPtrArray(pTStack_20);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(pTStack_20);
     pTStack_20->vftable = (TIndexAndRankListVtbl *)&TSortByPriceList::_vftable_;
   }
   pTStack_14 = pTStack_20->vftable;
@@ -1449,7 +1449,7 @@ TArmsForeignMinister::UpdateControlCachedIntFromWindowText
   int iVar5;
   undefined2 in_stack_00000012;
   short sVar6;
-  
+
   iVar5 = (int)param_4;
   sVar6 = (short)param_2;
   if (*(short *)(&this->field_0x1e + iVar5 * 2) != 0) {

@@ -16,7 +16,7 @@ void TModalMessageCommand::OrphanRetStub_00487a00()
   undefined4 uStack_c;
   undefined4 uStack_8;
   undefined1 *puStack_4;
-  
+
   uStack_c = CONCAT22((short)((uint)in_EAX >> 0x10),*(undefined2 *)&this->field_0x1c);
   uStack_8 = 0;
   puStack_10 = &DAT_006a5be0;
@@ -36,7 +36,7 @@ TModalMessageCommand * TModalMessageCommand::OrphanCallChain_C1_I17_00487470(byt
 {
   TModalMessageCommand::CreateTModalMessageCommandInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -52,12 +52,12 @@ void TModalMessageCommand::CreateTModalMessageCommandInstance()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_0063a448;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::~CString((CString *)&this->field_0x18);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x18);
   this->vftable =
        (TModalMessageCommandVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;

@@ -15,12 +15,12 @@ TMegaPicture * TNumberedIcon::CreateTNumberedIconInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006337ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMegaPicture *)AllocateWithFallbackHandler(0xb0);
+  this = (TMegaPicture *)__2_YAPAXI_Z(0xb0);
   local_4 = 0;
   if (this != (TMegaPicture *)0x0) {
     TMegaPicture::ConstructTMegaPictureBaseState(this);
@@ -65,7 +65,7 @@ TNumberedIcon * TNumberedIcon::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -78,7 +78,7 @@ void TNumberedIcon::OrphanCallChain_C6_I49_004875d0()
 
 {
   TNumberedIconVtbl *pTVar1;
-  
+
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable;
   (*pTVar1->OrphanCallChain_C1_I08_00573690)(5,1);
@@ -110,14 +110,14 @@ void TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006337ea;
   *unaff_FS_OFFSET = &uStack_c;
   if (*(int *)&this->field_0xac == 0) {
     uStack_12 = 0;
-    pTStack_28 = (TMyNumberText *)AllocateWithFallbackHandler(0xac);
+    pTStack_28 = (TMyNumberText *)__2_YAPAXI_Z(0xac);
     uStack_4 = 0;
     if (pTStack_28 == (TMyNumberText *)0x0) {
       this_00 = (TNumberText *)0x0;

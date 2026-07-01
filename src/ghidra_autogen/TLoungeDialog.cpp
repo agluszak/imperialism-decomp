@@ -12,7 +12,7 @@ TLoungeDialog * TLoungeDialog::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -58,7 +58,7 @@ void TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   int iVar6;
   undefined4 uVar7;
   code *pcVar8;
-  
+
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
             ((TMultiplayerMgr *)g_pGameFlowState,this,'\x01');
@@ -175,7 +175,7 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634eb0;
   uStack_c = *unaff_FS_OFFSET;
@@ -233,9 +233,9 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
     piVar6 = (int *)(*(code *)local_1c.m_pchData)(CVar2.m_pchData + 0x6e616d30);
     iVar8 = *piVar6;
     (**(code **)(iVar8 + 0xc))();
-    CString::CString(&CStack_30);
+    CString::__0CString__QAE_XZ(&CStack_30);
     uStack_c = 0;
-    CString::CString(&CStack_28);
+    CString::__0CString__QAE_XZ(&CStack_28);
     uStack_c = CONCAT31(uStack_c._1_3_,1);
     (**(code **)(iVar8 + 0x1d0))(&CStack_28);
     iVar1 = local_24;
@@ -243,10 +243,10 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
               NormalizeRuntimeCredentialNameToken
                         (&CStack_10,&g_pGameFlowState->field_0x30 + local_24);
     uStack_4._0_1_ = 2;
-    CString::AssignFromPtr(&CStack_28,src_ref);
+    CString::__4CString__QAEABV0_ABV0__Z(&CStack_28,src_ref);
     uStack_4 = CONCAT31(uStack_4._1_3_,1);
-    CString::~CString(&CStack_10);
-    iVar7 = CompareAnsiStringsWithMbcsAwareness(CStack_20.m_pchData,CStack_28.m_pchData);
+    CString::__1CString__QAE_XZ(&CStack_10);
+    iVar7 = __mbscmp(CStack_20.m_pchData,CStack_28.m_pchData);
     if (iVar7 != 0) {
       (**(code **)(iVar8 + 0x1c8))(&CStack_28,1);
       if (iVar9 == 4) {
@@ -264,9 +264,9 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
       ApplyUiTextStyleAndThemeFlags(piVar6,0,0xe,uVar10,uVar11);
     }
     uStack_4 = uStack_4 & 0xffffff00;
-    CString::~CString(&CStack_20);
+    CString::__1CString__QAE_XZ(&CStack_20);
     uStack_4 = 0xffffffff;
-    CString::~CString(&CStack_28);
+    CString::__1CString__QAE_XZ(&CStack_28);
     local_24 = iVar1 + 4;
     local_1c.m_pchData = local_1c.m_pchData + 1;
   } while (local_24 < 100);
@@ -294,7 +294,7 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
       }
     }
   }
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   uStack_4 = 3;
   LoadUiStringResourceByGroupAndIndex(&local_1c,0x2742,cVar4);
   uVar3 = (*local_18)(0x6d657373);
@@ -302,7 +302,7 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
   (**(code **)(iVar8 + 0xc))();
   (**(code **)(iVar8 + 0x1c8))(&CStack_20,1);
   CStack_10.m_pchData = (char *)0xffffffff;
-  CString::~CString(&CStack_28);
+  CString::__1CString__QAE_XZ(&CStack_28);
   *unaff_FS_OFFSET = local_18;
   return extraout_EAX & 0xffffff00;
 }
@@ -324,7 +324,7 @@ TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined3 extraout_var;
   int iVar6;
   int iVar7;
-  
+
   if (param_1 == 0x29a) {
     uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6f6b6179);
     iVar6 = *(int *)CONCAT31(extraout_var,uVar4);

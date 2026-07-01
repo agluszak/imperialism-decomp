@@ -12,7 +12,7 @@ TNavyBattle * TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(byte pa
 {
   TNavyBattle::CreateTNavyBattleInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -57,7 +57,7 @@ void TNavyBattle::OrphanRetStub_0059f710(TacticalBattleUnit *pUnit, int targetTi
   void *pSideListCursor;
   int targetRow;
   bool canPlace;
-  
+
   canPlace = true;
   iVar1 = targetTileIndex / 0x1d;
   if (pUnit->ownerSideIndex == 0) {
@@ -132,7 +132,7 @@ TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
   TacticalBattleUnit *pDefenderUnit;
   uint attackerRow;
   float rangeChanceFactor;
-  
+
   pController = pAttackerUnit;
   pDefenderUnit = *(TacticalBattleUnit **)(*(int *)&this->field_0x4 + 4 + targetTileIndex * 0x14);
   (**(code **)((int)pDefenderUnit->pVtable + 0xc))();
@@ -160,7 +160,7 @@ TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
     (**(code **)(**(int **)&this->field_0x8 + 0x1b8))
               (pController->tileIndex,pController->unitKindId + 0xf5a,1);
   }
-  iVar1 = GenerateThreadLocalRandom15();
+  iVar1 = _rand();
   if (targetRow <= (float)(iVar1 % 100)) {
     if (*(int **)&this->field_0x8 == (int *)0x0) goto LAB_005a58fd;
     iVar1 = **(int **)&this->field_0x8;
@@ -213,7 +213,7 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
   int local_24;
   int local_1c;
   int local_18 [6];
-  
+
   iVar1 = *(int *)(param_1 + 0x28);
   iVar4 = 0;
   psVar2 = *(short **)&this->field_0x24;
@@ -274,7 +274,7 @@ void TNavyBattle::CreateTTacticalBattleInstance()
 
 {
   int *unaff_retaddr;
-  
+
   TSimMgr::ResolveMapOrderChainsForTurnPhase((TSimMgr *)g_pNavyOrderManager,unaff_retaddr);
   return;
 }
@@ -289,7 +289,7 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget()
   short sVar1;
   int *piVar2;
   int iVar3;
-  
+
   (*this->vftable->EvaluateAndResolveTacticalActionAgainstTileOccupant)();
   if (*(int *)&this->field_0x44 == 0) {
     ComputeHexNeighborTileIndices_005A0420
@@ -323,7 +323,7 @@ TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
   int *piVar2;
   int iVar3;
   int aiStack_18 [6];
-  
+
   MoveTacticalUnitTowardTile(param_1,param_2);
   if (*(char *)(param_1 + 0x18) == '\0') {
     ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(*(int *)&this->field_0x1c + 8),aiStack_18);
@@ -363,7 +363,7 @@ void TNavyBattle::ApplyTacticalDamageAndDeathState(float damageAmount, int damag
   int iVar3;
   int iVar4;
   int iVar5;
-  
+
   iVar5 = 0;
   if (damageMode == 0) {
     fVar2 = (float)ftol();
@@ -377,7 +377,7 @@ void TNavyBattle::ApplyTacticalDamageAndDeathState(float damageAmount, int damag
     fVar2 = damageAmount;
     if (damageMode == 2) {
       fVar2 = (float)ftol();
-      iVar3 = GenerateThreadLocalRandom15();
+      iVar3 = _rand();
       bVar1 = (float)(iVar3 % 10) < damageAmount;
       damageAmount = 0.0;
       if (bVar1) {

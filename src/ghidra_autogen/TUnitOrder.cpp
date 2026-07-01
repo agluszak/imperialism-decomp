@@ -22,7 +22,7 @@ TUnitOrder * TUnitOrder::ConstructTUnitOrderBaseState(byte param_1)
 {
   TUnitOrder::DestructTUnitOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -58,7 +58,7 @@ TUnitOrder::InitializeCityRecruitmentOrderContext
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(void **)&this->field_0x8 = pCityState;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)((int)pCityState + 0x1d8);
   *(short *)&this->field_0x48 = nEntryId;
@@ -99,12 +99,12 @@ TUnitOrder::InitializeCityRecruitmentOrderContext
 // GHIDRA_COMMENT_END
 
 /* Computes max additional recruitable delta for this entry using live city/nation constraints.
-   
+
    Checks:
    1. Workforce mode limit (this+0x56).
    2. Primary and optional secondary resource availability (this+0x4C/+0x50 and +0x4E/+0x52).
    3. Treasury affordability when cash cost is enabled (this+0x54).
-   
+
    Outputs:
    - this+0x40 limiting factor (0=resource,1=workforce,3=treasury)
    - return value = current pending amount (+0x04) + max allowed additional delta. */
@@ -123,7 +123,7 @@ int TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   int nSecondaryResourceCap;
   short nRecruitmentMode;
   short nWorkerCapMode1;
-  
+
   nRecruitmentMode = *(short *)&this->field_0x56;
   if (nRecruitmentMode == 1) {
     sVar1 = *(short *)(*(int *)&this->field_0xc + 0x1c);
@@ -236,7 +236,7 @@ bool TUnitOrder::OrphanCallChain_C1_I16_004b5100(short nTargetOrderAmount)
   int *pCityStateSecondary;
   short *pnCityResourceStock;
   undefined3 extraout_var;
-  
+
   nOrderDelta = nTargetOrderAmount - *(short *)&this->field_0x4;
                     /* Pending order amount is stored at entry field +0x04; changes are applied as
                        deltas. */
@@ -301,12 +301,12 @@ bool TUnitOrder::OrphanCallChain_C1_I16_004b5100(short nTargetOrderAmount)
 // GHIDRA_COMMENT_END
 
 /* Builds projected resource/labor cost vector for a given city-entry amount.
-   
+
    Algorithm:
    1. Delegate to base calculator (vfunc +0x3C).
    2. Write primary/secondary resource requirements into output array.
    3. Route labor requirement into specific output slot based on entry labor group field (+0x56).
-   
+
    Notes:
    - Used for preview/requirement displays and availability checks. */
 
@@ -314,7 +314,7 @@ void TUnitOrder::CreateTItemOrderInstance()
 
 {
   short sStack00000004;
-  
+
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   *(short *)(_sStack00000004 + *(short *)&this->field_0x4c * 2) =
        *(short *)&this->field_0x50 * sStack00000004;
@@ -394,16 +394,16 @@ void TUnitOrder::OrphanRetStub_004b5160()
   int *pNationState;
   int pOwnerNationState;
   short *pnCityRecruitQueueCount;
-  
+
   pPrevSehFrame = *unaff_FS_OFFSET;
   dwSehState = 0xffffffff;
   pbSehCookie = &LAB_00630f64;
   *unaff_FS_OFFSET = (int)&pPrevSehFrame;
   iVar3 = 0;
   if (*(short *)&this->field_0x4 != 0) {
-    CString::CString((CString *)(adwTempAlloc + 2));
+    CString::__0CString__QAE_XZ((CString *)(adwTempAlloc + 2));
     dwSehState = 0;
-    CString::CString((CString *)adwTempAlloc);
+    CString::__0CString__QAE_XZ((CString *)adwTempAlloc);
     dwSehState = CONCAT31(dwSehState._1_3_,1);
     if (this->field_0x58 == '\0') {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2718);
@@ -426,7 +426,7 @@ void TUnitOrder::OrphanRetStub_004b5160()
                FindReachableRecruitSpawnTileWithVisitedReset
                          (uVar4,*(short *)&this->field_0x48 == 4);
           if ((short)nSpawnTileOrOrderObj != -1) {
-            adwTempAlloc[0] = AllocateWithFallbackHandler(0x28);
+            adwTempAlloc[0] = __2_YAPAXI_Z(0x28);
             if ((TCivWorkOrderState *)adwTempAlloc[0] == (TCivWorkOrderState *)0x0) {
               pNewCivOrderState = (TCivWorkOrderState *)0x0;
             }
@@ -466,7 +466,7 @@ void TUnitOrder::OrphanRetStub_004b5160()
           }
           nProgressValue =
                *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + nProgressValue * 0x24);
-          adwTempAlloc[0] = AllocateWithFallbackHandler(0x44);
+          adwTempAlloc[0] = __2_YAPAXI_Z(0x44);
           if ((TMilitaryUnitOrderState *)adwTempAlloc[0] == (TMilitaryUnitOrderState *)0x0) {
             this_00 = (TMilitaryUnitOrderState *)0x0;
           }
@@ -569,9 +569,9 @@ LAB_004b7624:
       *pnCityRecruitQueueCount = *pnCityRecruitQueueCount + 1;
     }
     dwSehState = dwSehState & 0xffffff00;
-    CString::~CString((CString *)adwTempAlloc);
+    CString::__1CString__QAE_XZ((CString *)adwTempAlloc);
     dwSehState = 0xffffffff;
-    CString::~CString((CString *)(adwTempAlloc + 2));
+    CString::__1CString__QAE_XZ((CString *)(adwTempAlloc + 2));
   }
   *unaff_FS_OFFSET = pPrevSehFrame;
   return;
@@ -585,7 +585,7 @@ void TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int *param_1)
 
 {
   code *pcVar1;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
@@ -635,7 +635,7 @@ void TUnitOrder::SyncCityEntryOrderStateWithArchive(int *pArchive)
 
 {
   code *pcVar1;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)pArchive);
   pcVar1 = *(code **)(*pArchive + 0x3c);
   (*pcVar1)(&this->field_0x48,2);

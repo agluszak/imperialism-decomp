@@ -49,30 +49,30 @@ undefined4 CMainFrame::OnEndPrintPreview()
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00627f81;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  _DAT_006a1354 = SetGlobalCallback6A7FACAndReturnPrevious(&LAB_004025f9);
-  TControl::SetRegistryKey((TControl *)this,PTR_DAT_0063e038);
-  CString::CString(&local_5c);
+  _DAT_006a1354 = __set_new_handler__YAP6AHI_ZP6AHI_Z_Z(&LAB_004025f9);
+  TControl::_SetRegistryKey_CWinApp__IAEXPBD_Z((TControl *)this,PTR_DAT_0063e038);
+  CString::__0CString__QAE_XZ(&local_5c);
   local_4 = 0;
-  CCommandLineInfo();
+  __0CCommandLineInfo__QAE_XZ();
   local_2c = &local_5c;
   local_4._0_1_ = 1;
   local_28 = 0x20;
   local_24 = 0;
   local_20 = 0;
   local_1c.m_pchData = (char *)0x0;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_14 = 0;
   local_10 = 0;
   local_50 = &CObjectVtbl_0063e478;
   local_4._0_1_ = 2;
-  ParseCommandLine(&local_50);
+  _ParseCommandLine_CWinApp__QAEXAAVCCommandLineInfo___Z(&local_50);
   if ((local_1c.m_pchData == (char *)0x0) && (local_40 != 5)) {
-    local_54 = (CMainFrame *)AllocateWithFallbackHandler(0x50);
+    local_54 = (CMainFrame *)__2_YAPAXI_Z(0x50);
     local_4._0_1_ = 5;
     if (local_54 == (CMainFrame *)0x0) {
       g_pModuleLibraryCacheState = (CMainFrame *)0x0;
@@ -123,27 +123,27 @@ undefined4 CMainFrame::OnEndPrintPreview()
               }
               PostMessageA((HWND)0xffff,0x1d,0,0);
               SetGlobalDword6A2018(local_4c);
-              local_54 = (CMainFrame *)AllocateWithFallbackHandler(0x68);
+              local_54 = (CMainFrame *)__2_YAPAXI_Z(0x68);
               local_4._0_1_ = 0xb;
               if (local_54 == (CMainFrame *)0x0) {
                 uVar4 = 0;
               }
               else {
-                uVar4 = CSingleDocTemplate(0x80,&CAmbitDocument::classRuntimeClass,
-                                           &TMacViewMgr_RuntimeClass,
-                                           &CIncludeView::classRuntimeClass);
+                uVar4 = __0CSingleDocTemplate__QAE_IPAUCRuntimeClass__00_Z
+                                  (0x80,&CAmbitDocument::classRuntimeClass,&TMacViewMgr_RuntimeClass
+                                   ,&CIncludeView::classRuntimeClass);
               }
               local_4._0_1_ = 2;
-              AddDocTemplate(uVar4);
+              _AddDocTemplate_CWinApp__QAEXPAVCDocTemplate___Z(uVar4);
               iVar2 = WarnLowDiskSpaceAndConfirmContinue();
               if (iVar2 == 0) {
                 local_4._0_1_ = 0xc;
               }
               else {
-                iVar2 = ProcessShellCommand(&local_50);
+                iVar2 = _ProcessShellCommand_CWinApp__QAEHAAVCCommandLineInfo___Z(&local_50);
                 if (iVar2 != 0) {
                   DAT_006a1348 = &DAT_006a1210;
-                  this_00 = (TApplication *)AllocateWithFallbackHandler(0x54);
+                  this_00 = (TApplication *)__2_YAPAXI_Z(0x54);
                   local_4._0_1_ = 0xe;
                   local_54 = (CMainFrame *)this_00;
                   if (this_00 == (TApplication *)0x0) {
@@ -156,7 +156,7 @@ undefined4 CMainFrame::OnEndPrintPreview()
                   }
                   local_4._0_1_ = 2;
                   InitializeGlobalRuntimeSystemsFromConfig();
-                  local_54 = (CMainFrame *)AllocateWithFallbackHandler(0x84);
+                  local_54 = (CMainFrame *)__2_YAPAXI_Z(0x84);
                   local_4._0_1_ = 0xf;
                   if (local_54 == (CMainFrame *)0x0) {
                     g_pSfxPlaybackSystem = (TSoundPlayer *)0x0;
@@ -170,29 +170,29 @@ undefined4 CMainFrame::OnEndPrintPreview()
                   local_4 = CONCAT31(local_4._1_3_,2);
                   (*g_pSfxPlaybackSystem->vftable->InitializeSoundSubsystemAndAllocateChannelLists)
                             (0xf);
-                  pCVar5 = AfxGetThread();
+                  pCVar5 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
                   if (pCVar5 != (CWinThread *)0x0) {
-                    pCVar5 = AfxGetThread();
+                    pCVar5 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
                     (**(code **)(*(int *)pCVar5 + 0x7c))();
                   }
                   GetObjectValueAtOffset98();
                   SetUiRuntimeContextAndActivateMain(*(undefined4 *)(DAT_006a2158 + 4));
-                  iVar2 = CompareAnsiStringsWithMbcsAwareness(local_1c.m_pchData,&g_szEmptyString);
+                  iVar2 = __mbscmp(local_1c.m_pchData,&g_szEmptyString);
                   if (iVar2 != 0) {
-                    pCVar5 = AfxGetThread();
+                    pCVar5 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
                     if (pCVar5 != (CWinThread *)0x0) {
-                      pCVar5 = AfxGetThread();
+                      pCVar5 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
                       (**(code **)(*(int *)pCVar5 + 0x7c))();
                     }
-                    SetWindowTextOrDelegateToOwner(local_1c.m_pchData);
+                    CMcWindow::SetWindowTextOrDelegateToOwner(local_1c.m_pchData);
                   }
                   PostMessageA(*(HWND *)(*(int *)(DAT_006a1348 + 0x1c) + 0x1c),0x111,100,0);
                   puStack_8._0_1_ = 0x10;
-                  CString::~CString(&local_1c);
+                  CString::__1CString__QAE_XZ(&local_1c);
                   puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-                  DestructCommandLineParseContext();
+                  __1CCommandLineInfo__UAE_XZ();
                   puStack_8 = (undefined1 *)0xffffffff;
-                  CString::~CString((CString *)&stack0xffffffa0);
+                  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa0);
                   *unaff_FS_OFFSET = local_10;
                   return 1;
                 }
@@ -238,11 +238,11 @@ undefined4 CMainFrame::OnEndPrintPreview()
     RegCloseKey((HKEY)pCVar1);
     local_4._0_1_ = 4;
   }
-  CString::~CString(&local_18);
+  CString::__1CString__QAE_XZ(&local_18);
   local_4 = (uint)local_4._1_3_ << 8;
-  DestructCommandLineParseContext();
+  __1CCommandLineInfo__UAE_XZ();
   local_4 = 0xffffffff;
-  CString::~CString(&local_5c);
+  CString::__1CString__QAE_XZ(&local_5c);
   *unaff_FS_OFFSET = local_c;
   return 0;
 }
@@ -257,7 +257,7 @@ CMainFrame * CMainFrame::AdjustWindowRectForClientAndScrollStyles(byte param_1)
   TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
             ((TApplication *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -280,7 +280,7 @@ void CMainFrame::OnEndPrintPreview(undefined4 param_1)
 
 {
   undefined4 *puVar1;
-  
+
   puVar1 = this->m_pDropTarget;
   while (puVar1 != (undefined4 *)0x0) {
     puVar1 = (undefined4 *)*puVar1;
@@ -297,11 +297,11 @@ undefined4 * CMainFrame::UpdateControlCachedIntFromWindowText()
 
 {
   undefined4 *puVar1;
-  
+
   if (DAT_006a1ae4 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x2ef);
   }
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     puVar1[1] = *(undefined4 *)&this->field_0x4;
@@ -371,7 +371,7 @@ bool CMainFrame::LoadModuleLibrarySlotWithErrorDialog(LPCSTR param_1, CString pa
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   CVar2.m_pchData = param_2.m_pchData;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
@@ -384,13 +384,12 @@ bool CMainFrame::LoadModuleLibrarySlotWithErrorDialog(LPCSTR param_1, CString pa
   pHVar3 = LoadLibraryExA(param_1,(HANDLE)0x0,2);
   *(HMODULE *)(&this->field_0x3c + (int)CVar2.m_pchData * 4) = pHVar3;
   if (pHVar3 == (HMODULE)0x0) {
-    CString::CString(&param_2);
+    CString::__0CString__QAE_XZ(&param_2);
     local_4 = 0;
-    FormatStringWithVarArgsToSharedRef
-              (&param_2,s_A_file_required_by_the_program____00695188,param_1);
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(param_2.m_pchData,0,0);
+    _Format_CString__QAAXPBDZZ(&param_2,s_A_file_required_by_the_program____00695188,param_1);
+    _AfxMessageBox__YGHPBDII_Z(param_2.m_pchData,0,0);
     local_4 = 0xffffffff;
-    CString::~CString(&param_2);
+    CString::__1CString__QAE_XZ(&param_2);
   }
   iVar1 = *(int *)(&this->field_0x3c + (int)CVar2.m_pchData * 4);
   *unaff_FS_OFFSET = local_c;

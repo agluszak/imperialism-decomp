@@ -22,7 +22,7 @@ THighScoresPicture * THighScoresPicture::_scalar_deleting_destructor_(byte param
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -53,19 +53,19 @@ void THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636778;
   *unaff_FS_OFFSET = &local_c;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  CString::CString(&param_1);
+  CString::__0CString__QAE_XZ(&param_1);
   local_4 = 0;
   ResetDualAudioCuePools();
   PushCueToDualAudioCuePools(0xb);
   SelectAndScheduleRandomAudioCue();
   AssignScoresDatPathToSharedString(&param_1);
-  iVar1 = OpenBufferedStreamWithMode40(param_1.m_pchData,&DAT_00698720);
+  iVar1 = __wfopen(param_1.m_pchData,&DAT_00698720);
   if (iVar1 == 0) {
     puVar4 = (undefined4 *)&this->field_0x94;
     for (iVar1 = 10; iVar1 != 0; iVar1 = iVar1 + -1) {
@@ -78,21 +78,21 @@ void THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
     puVar4 = (undefined4 *)&this->field_0x94;
     iVar3 = 10;
     do {
-      iVar2 = ReadBufferedStreamLocked(puVar4,4,1,iVar1);
+      iVar2 = _fread(puVar4,4,1,iVar1);
       if (iVar2 == 0) {
         *puVar4 = 0;
       }
       else {
-        ReadBufferedStreamLocked(puVar5,0x20,1,iVar1);
+        _fread(puVar5,0x20,1,iVar1);
       }
       puVar4 = puVar4 + 1;
       puVar5 = puVar5 + 0x20;
       iVar3 = iVar3 + -1;
     } while (iVar3 != 0);
-    CloseBufferedStreamAndReleaseResources(iVar1);
+    _fclose(iVar1);
   }
   local_4 = 0xffffffff;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -117,7 +117,7 @@ void THighScoresPicture::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006367a8;
   local_c = *unaff_FS_OFFSET;
@@ -125,10 +125,10 @@ void THighScoresPicture::OrphanTiny_ReturnZero_0048a730()
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   local_1c = 0;
   local_20 = 0;
-  CString::CString((CString *)&stack0x00000004);
+  CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
   iVar3 = 0;
   local_4 = 0;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = CONCAT31(local_4._1_3_,1);
   MapUiThemeCodeToStyleFlags(0x2b68,&local_1c);
   MapUiThemeCodeToStyleFlags(0x2b67,&local_20);
@@ -139,8 +139,8 @@ void THighScoresPicture::OrphanTiny_ReturnZero_0048a730()
   do {
     if (*piVar2 < 1) break;
     iVar3 = iVar3 + 1;
-    FormatStringWithVarArgsToSharedRef(&stack0x00000004,&g_szDecimalFormat,iVar3);
-    CString::AssignFromCStr((CString *)&stack0x00000004,&DAT_00698ab4);
+    _Format_CString__QAAXPBDZZ(&stack0x00000004,&g_szDecimalFormat,iVar3);
+    CString::__YCString__QAEABV0_PBD_Z((CString *)&stack0x00000004,&DAT_00698ab4);
     SetQuickDrawColorAndSyncGlobals(local_20);
     iVar1 = iVar4 + 1;
     SetQuickDrawTextOriginWithContextOffset(0x97,iVar1);
@@ -148,18 +148,18 @@ void THighScoresPicture::OrphanTiny_ReturnZero_0048a730()
     SetQuickDrawColorAndSyncGlobals(local_1c);
     SetQuickDrawTextOriginWithContextOffset(0x96,iVar4);
     THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
-    CString::CString(&local_14,local_18);
+    CString::__0CString__QAE_PBD_Z(&local_14,local_18);
     local_4._0_1_ = 2;
-    CString::AssignFromPtr((CString *)&stack0x00000004,&local_14);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0x00000004,&local_14);
     local_4 = CONCAT31(local_4._1_3_,1);
-    CString::~CString(&local_14);
+    CString::__1CString__QAE_XZ(&local_14);
     SetQuickDrawColorAndSyncGlobals(local_20);
     SetQuickDrawTextOriginWithContextOffset(0xbf,iVar1);
     THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
     SetQuickDrawColorAndSyncGlobals(local_1c);
     SetQuickDrawTextOriginWithContextOffset(0xbe,iVar4);
     THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
-    FormatStringWithVarArgsToSharedRef(&stack0x00000004,&g_szDecimalFormat,*piVar2);
+    _Format_CString__QAAXPBDZZ(&stack0x00000004,&g_szDecimalFormat,*piVar2);
     SetQuickDrawColorAndSyncGlobals(local_20);
     SetQuickDrawTextOriginWithContextOffset(0x1af,iVar1);
     THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
@@ -171,9 +171,9 @@ void THighScoresPicture::OrphanTiny_ReturnZero_0048a730()
     local_18 = local_18 + 0x20;
   } while (iVar3 < 10);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   local_4 = 0xffffffff;
-  CString::~CString((CString *)&stack0x00000004);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000004);
   *unaff_FS_OFFSET = local_c;
   return;
 }

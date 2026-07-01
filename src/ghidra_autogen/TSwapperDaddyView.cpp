@@ -12,7 +12,7 @@ TSwapperDaddyView * TSwapperDaddyView::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -42,7 +42,7 @@ int * TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(int param_1)
   undefined4 local_20;
   undefined4 uStack_1c;
   undefined4 uStack_18;
-  
+
   if (param_1 != *(int *)&this->field_0x60) {
     piVar4 = (int *)0x0;
     InitializeSelectableTextOptionEntryIteratorContext(this);

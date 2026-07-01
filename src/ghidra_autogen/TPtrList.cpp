@@ -14,8 +14,8 @@ void TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(undefined4 *param_1)
   undefined4 *puVar2;
   uint uVar3;
   undefined4 *puVar4;
-  
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
+
+  puVar2 = (undefined4 *)__2_YAPAXI_Z((int)*(short *)&this->field_0x14);
   sVar1 = *(short *)&this->field_0x14;
   puVar4 = puVar2;
   for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
@@ -28,7 +28,7 @@ void TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(undefined4 *param_1)
     param_1 = (undefined4 *)((int)param_1 + 1);
     puVar4 = (undefined4 *)((int)puVar4 + 1);
   }
-  InsertAt(0,puVar2,1);
+  _InsertAt_CPtrArray__QAEXHPAXH_Z(0,puVar2,1);
   return;
 }
 
@@ -39,9 +39,9 @@ void TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(undefined4 *param_1)
 TPtrList * TPtrList::_scalar_deleting_destructor_(byte param_1)
 
 {
-  CObArray::DestructCObArray();
+  CObArray::??1CUIntArray@@UAE@XZ();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

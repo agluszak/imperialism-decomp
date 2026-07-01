@@ -22,7 +22,7 @@ TBillForeignMinister * TBillForeignMinister::ConstructTBillForeignMinister()
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(undefined4 *)&this->field_0x49 = 0x1010101;
   *(undefined2 *)&this->field_0x4d = 0x101;
   this->field_0x4f = 1;
@@ -51,7 +51,7 @@ TBillForeignMinister * TBillForeignMinister::DeletingDestructTMinister(byte para
 {
   TBillForeignMinister::DestructTBillForeignMinister(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -109,7 +109,7 @@ void TBillForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
   short sVar2;
   undefined4 unaff_EDI;
   short sVar3;
-  
+
   piVar1 = *(int **)&this->field_0x4;
   sVar3 = (short)((uint)unaff_EDI >> 0x10);
   if ((&g_pCityOrderCapabilityState->field_0x27b)[*(short *)(*(int *)&this->field_0x4 + 0xc) * 0x1d]
@@ -190,7 +190,7 @@ void TBillForeignMinister::SetForeignMinisterReadyFlag14()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063418a;
@@ -226,14 +226,14 @@ void TBillForeignMinister::SetForeignMinisterReadyFlag14()
   else {
     uStack_40 = (int)*(short *)(iVar14 + 0xa4) / 2;
   }
-  pTStack_48 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  pTStack_48 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   uStack_4 = 0;
   pTStack_34 = pTStack_48;
   if (pTStack_48 == (TIndexAndRankList *)0x0) {
     pTStack_48 = (TIndexAndRankList *)0x0;
   }
   else {
-    TIndexAndRankList::CPtrArray(pTStack_48);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(pTStack_48);
     pTStack_48->vftable = (TIndexAndRankListVtbl *)&TSortByPriceList::_vftable_;
   }
   pTStack_38 = pTStack_48->vftable;
@@ -331,7 +331,7 @@ TBillForeignMinister::UpdateControlCachedIntFromWindowText
   undefined4 uVar9;
   undefined4 uVar10;
   undefined4 uVar11;
-  
+
   if (*(short *)(&this->field_0x1e + in_stack_00000010 * 2) != 0) {
     TForeignMinister::UpdateControlCachedIntFromWindowText
               ((TForeignMinister *)this,param_1,(short)param_2);
@@ -485,7 +485,7 @@ void TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
   int iVar6;
   short sVar7;
   short asStack_4 [2];
-  
+
   sVar7 = 0;
   sVar4 = 0;
   asStack_4[0] = 0;
@@ -495,7 +495,7 @@ void TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
       return;
     }
     sVar4 = sVar4 + 1;
-    uVar2 = GenerateThreadLocalRandom15();
+    uVar2 = _rand();
     uVar3 = (int)uVar2 >> 0x1f;
     iVar6 = (((uVar2 ^ uVar3) - uVar3 & 0xf ^ uVar3) - uVar3) + 7;
     sVar5 = (short)iVar6;
@@ -525,7 +525,7 @@ void TBillForeignMinister::_scalar_deleting_destructor_()
   undefined4 unaff_ESI;
   int iVar3;
   undefined4 unaff_EDI;
-  
+
   sVar2 = 0;
   iVar3 = 7;
   do {
@@ -559,7 +559,7 @@ TBillForeignMinister::UpdateDiplomatProgressFromProductionSlots2And4
   short sVar3;
   int iVar4;
   undefined3 extraout_var;
-  
+
   *(undefined2 *)&param_1->field_0x5e = 3;
   iVar4 = TCity::GetCityBuildingProductionValueBySlot(param_1,2);
   sVar3 = (short)iVar4 + 2;

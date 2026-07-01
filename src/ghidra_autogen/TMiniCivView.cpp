@@ -22,7 +22,7 @@ TMiniCivView * TMiniCivView::_scalar_deleting_destructor_(byte param_1)
 {
   DestructTMiniCivLineAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -40,18 +40,18 @@ TControl * TMiniCivView::CreateTMiniCivViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006306d2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x8c);
+  this = (TControl *)__2_YAPAXI_Z(0x8c);
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
     TControl::TControl(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    CString::CString((CString *)&this[1].field_0x4);
+    CString::__0CString__QAE_XZ((CString *)&this[1].field_0x4);
     this->vftable = (TControlVtbl *)&TMiniCivViewVtbl_0064d9d0;
     pTVar1 = this;
   }
@@ -97,7 +97,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
   int iStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = -1;
   puStack_8 = &LAB_00630758;
   iStack_c = *unaff_FS_OFFSET;
@@ -111,58 +111,58 @@ TMiniCivView::ConstructTMiniCivViewBaseState
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&stack0xffffffb8,PTR_g_szEmptyString_0064cb18);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  CString::CString(&param_3);
+  CString::__0CString__QAE_XZ(&param_3);
   local_4 = 0;
-  CString::CString(&param_4);
+  CString::__0CString__QAE_XZ(&param_4);
   local_4._0_1_ = 1;
-  CString::CString(&local_2c);
+  CString::__0CString__QAE_XZ(&local_2c);
   local_4._0_1_ = 2;
-  CString::CString(&param_2);
+  CString::__0CString__QAE_XZ(&param_2);
   local_4._0_1_ = 3;
-  CString::CString(&local_30);
+  CString::__0CString__QAE_XZ(&local_30);
   sVar1 = *(short *)(CVar2.m_pchData + 6);
   local_4._0_1_ = 4;
-  CString::CString(&param_5,PTR_g_szEmptyString_0064cb18);
+  CString::__0CString__QAE_PBD_Z(&param_5,PTR_g_szEmptyString_0064cb18);
   local_4._0_1_ = 5;
-  CString::AssignFromPtr(&param_3,&param_5);
+  CString::__4CString__QAEABV0_ABV0__Z(&param_3,&param_5);
   local_4._0_1_ = 4;
-  CString::~CString(&param_5);
+  CString::__1CString__QAE_XZ(&param_5);
   switch(*(undefined4 *)(CVar2.m_pchData + 8)) {
   case 1:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     break;
   case 5:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-    AssignSharedStringConcatRefAndCStr(&CStack_28);
+    __H_YG_AVCString__ABV0_PBD_Z(&CStack_28);
     local_4._0_1_ = 6;
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     local_4._0_1_ = 4;
-    CString::~CString(&CStack_28);
+    CString::__1CString__QAE_XZ(&CStack_28);
     break;
   case 6:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-    AssignSharedStringConcatRefAndCStr(&CStack_24);
+    __H_YG_AVCString__ABV0_PBD_Z(&CStack_24);
     local_4._0_1_ = 7;
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     local_4._0_1_ = 4;
-    CString::~CString(&CStack_24);
+    CString::__1CString__QAE_XZ(&CStack_24);
     break;
   case 7:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-    AssignSharedStringConcatRefAndCStr(&CStack_20);
+    __H_YG_AVCString__ABV0_PBD_Z(&CStack_20);
     local_4._0_1_ = 8;
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     local_4._0_1_ = 4;
-    CString::~CString(&CStack_20);
+    CString::__1CString__QAE_XZ(&CStack_20);
     break;
   case 8:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-    AssignSharedStringConcatRefAndCStr(&CStack_1c);
+    __H_YG_AVCString__ABV0_PBD_Z(&CStack_1c);
     local_4._0_1_ = 9;
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     local_4._0_1_ = 4;
-    CString::~CString(&CStack_1c);
+    CString::__1CString__QAE_XZ(&CStack_1c);
     break;
   case 10:
     if ((*(short *)(CVar2.m_pchData + 4) == 0) &&
@@ -187,11 +187,11 @@ TMiniCivView::ConstructTMiniCivViewBaseState
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
         scanBracketExpressions(g_pLocalizationTable,&local_30,param_2.m_pchData);
       }
-      AssignSharedStringConcatRefAndCStr(&CStack_18);
+      __H_YG_AVCString__ABV0_PBD_Z(&CStack_18);
       local_4._0_1_ = 10;
-      AssignStringSharedFromRef();
+      __YCString__QAEABV0_ABV0__Z();
       local_4._0_1_ = 4;
-      CString::~CString(&CStack_18);
+      CString::__1CString__QAE_XZ(&CStack_18);
     }
     else {
       uVar5 = (undefined2)((uint)&stack0x00000000 >> 0x10);
@@ -200,36 +200,36 @@ TMiniCivView::ConstructTMiniCivViewBaseState
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)
                   (0x2725,CONCAT22(uVar5,*(undefined2 *)(CVar2.m_pchData + 4)),&stack0x00000000);
         scanBracketExpressions(g_pLocalizationTable,&local_30,param_2.m_pchData);
-        AssignSharedStringConcatRefAndCStr(&CStack_14);
+        __H_YG_AVCString__ABV0_PBD_Z(&CStack_14);
         local_4._0_1_ = 0xb;
-        AssignStringSharedFromRef();
+        __YCString__QAEABV0_ABV0__Z();
         local_4._0_1_ = 4;
-        CString::~CString(&CStack_14);
+        CString::__1CString__QAE_XZ(&CStack_14);
       }
       else {
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)
                   (0x2725,CONCAT22(uVar5,*(undefined2 *)(CVar2.m_pchData + 4)),&stack0x00000000);
         scanBracketExpressions(g_pLocalizationTable,&local_30,param_2.m_pchData);
-        AssignSharedStringConcatRefAndCStr(&CStack_10);
+        __H_YG_AVCString__ABV0_PBD_Z(&CStack_10);
         local_4._0_1_ = 0xc;
-        AssignStringSharedFromRef();
+        __YCString__QAEABV0_ABV0__Z();
         local_4._0_1_ = 4;
-        CString::~CString(&CStack_10);
+        CString::__1CString__QAE_XZ(&CStack_10);
       }
     }
   }
-  CString::AssignFromPtr((CString *)(param_1 + 0x88),&param_3);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)(param_1 + 0x88),&param_3);
   local_4._0_1_ = 3;
-  CString::~CString(&local_30);
+  CString::__1CString__QAE_XZ(&local_30);
   local_4._0_1_ = 2;
-  CString::~CString(&param_2);
+  CString::__1CString__QAE_XZ(&param_2);
   local_4._0_1_ = 1;
-  CString::~CString(&local_2c);
+  CString::__1CString__QAE_XZ(&local_2c);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&param_4);
+  CString::__1CString__QAE_XZ(&param_4);
   local_4 = -1;
-  CString::~CString(&param_3);
+  CString::__1CString__QAE_XZ(&param_3);
   *unaff_FS_OFFSET = iStack_c;
   return;
 }
@@ -258,7 +258,7 @@ void TMiniCivView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006307b0;
   uStack_c = *unaff_FS_OFFSET;
@@ -267,10 +267,10 @@ void TMiniCivView::OrphanTiny_ReturnZero_0048a730()
   CStack_58.m_pchData = (char *)0x2b67;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
   CStack_54.m_pchData = (char *)0x4ac039;
-  CString::CString(&local_48);
+  CString::__0CString__QAE_XZ(&local_48);
   local_4 = 0;
   CStack_54.m_pchData = (char *)0x4ac046;
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   CStack_54.m_pchData = (char *)&local_48;
   local_4 = CONCAT31(local_4._1_3_,1);
   CStack_58.m_pchData =
@@ -279,23 +279,23 @@ void TMiniCivView::OrphanTiny_ReturnZero_0048a730()
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   SetQuickDrawTextOriginWithContextOffset();
   THQButton::DrawTextWithCachedQuickDrawStyleState();
-  CString::CString((CString *)&stack0xffffffb0);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffb0);
   uStack_10 = 2;
   FormatOverlayTerrainLabelText();
   AssignSharedStringFromIndexedA8EntryNameField();
-  AssignSharedStringConcatRefAndCStr(&local_40);
+  __H_YG_AVCString__ABV0_PBD_Z(&local_40);
   uStack_10 = 3;
-  src_ref = (CString *)AssignSharedStringConcatRefAndRef(&CStack_44);
+  src_ref = (CString *)__H_YG_AVCString__ABV0_0_Z(&CStack_44);
   uStack_10 = 4;
-  CString::StringSharedRef_AssignFromPtr(&local_48,src_ref);
+  CString::__0CString__QAE_ABV0__Z(&local_48,src_ref);
   uStack_10 = 5;
-  CString::AssignFromPtr(&CStack_54,&local_48);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_54,&local_48);
   uStack_10 = 4;
-  CString::~CString(&local_48);
+  CString::__1CString__QAE_XZ(&local_48);
   uStack_10 = 3;
-  CString::~CString(&CStack_44);
+  CString::__1CString__QAE_XZ(&CStack_44);
   uStack_10 = 2;
-  CString::~CString(&local_40);
+  CString::__1CString__QAE_XZ(&local_40);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xc);
   SetQuickDrawTextOriginWithContextOffset();
   THQButton::DrawTextWithCachedQuickDrawStyleState();
@@ -318,11 +318,11 @@ void TMiniCivView::OrphanTiny_ReturnZero_0048a730()
   local_40.m_pchData = &stack0xffffff9c;
   SetQuickDrawStrokeColor();
   iStack_14._0_1_ = 1;
-  CString::~CString(&CStack_54);
+  CString::__1CString__QAE_XZ(&CStack_54);
   iStack_14 = (uint)iStack_14._1_3_ << 8;
-  CString::~CString((CString *)&stack0xffffffb0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb0);
   iStack_14 = 0xffffffff;
-  CString::~CString(&CStack_58);
+  CString::__1CString__QAE_XZ(&CStack_58);
   *unaff_FS_OFFSET = uStack_1c;
   return;
 }
@@ -335,7 +335,7 @@ void TMiniCivView::OrphanRetStub_0059add0(int param_1, TMiniCivView *param_2)
 
 {
   TView *pTVar1;
-  
+
   if (param_2 == this) {
     pTVar1 = this->ownerContext;
     (**(code **)&pTVar1->vftable->field_0xc)();

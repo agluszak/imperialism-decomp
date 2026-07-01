@@ -4,14 +4,14 @@
 // Bucket: CArchive.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D04
-// GHIDRA_NAME CArchive::WriteByteToSerializedBuffer
-// GHIDRA_PROTO undefined __thiscall WriteByteToSerializedBuffer(byte param_1)
+// GHIDRA_NAME CArchive::??6CArchive@@QAEAAV0@E@Z
+// GHIDRA_PROTO undefined __thiscall ??6CArchive@@QAEAAV0@E@Z(byte param_1)
 
-CArchive * CArchive::WriteByteToSerializedBuffer(byte param_1)
+CArchive * CArchive::__6CArchive__QAEAAV0_E_Z(byte param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 1) {
-    Flush();
+    _Flush_CArchive__QAEXXZ();
   }
   *this->m_lpBufCur = param_1;
   this->m_lpBufCur = this->m_lpBufCur + 1;
@@ -19,14 +19,14 @@ CArchive * CArchive::WriteByteToSerializedBuffer(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6DA3
-// GHIDRA_NAME CArchive::ReadWordFromSerializedBuffer
-// GHIDRA_PROTO undefined __thiscall ReadWordFromSerializedBuffer(undefined2 * param_1)
+// GHIDRA_NAME CArchive::??5CArchive@@QAEAAV0@AAG@Z
+// GHIDRA_PROTO undefined __thiscall ??5CArchive@@QAEAAV0@AAG@Z(undefined2 * param_1)
 
-CArchive * CArchive::ReadWordFromSerializedBuffer(undefined2 *param_1)
+CArchive * CArchive::__5CArchive__QAEAAV0_AAG_Z(undefined2 *param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 2) {
-    FillBuffer(this,(uint)(this->m_lpBufCur + (2 - (int)this->m_lpBufMax)));
+    _FillBuffer_CArchive__QAEXI_Z(this,(uint)(this->m_lpBufCur + (2 - (int)this->m_lpBufMax)));
   }
   *param_1 = *(undefined2 *)this->m_lpBufCur;
   this->m_lpBufCur = this->m_lpBufCur + 2;
@@ -34,14 +34,14 @@ CArchive * CArchive::ReadWordFromSerializedBuffer(undefined2 *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6DD6
-// GHIDRA_NAME CArchive::ReadDwordFromSerializedBuffer
-// GHIDRA_PROTO undefined __thiscall ReadDwordFromSerializedBuffer(undefined4 * param_1)
+// GHIDRA_NAME CArchive::??5CArchive@@QAEAAV0@AAK@Z
+// GHIDRA_PROTO undefined __thiscall ??5CArchive@@QAEAAV0@AAK@Z(undefined4 * param_1)
 
-CArchive * CArchive::ReadDwordFromSerializedBuffer(undefined4 *param_1)
+CArchive * CArchive::__5CArchive__QAEAAV0_AAK_Z(undefined4 *param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 4) {
-    FillBuffer(this,(uint)(this->m_lpBufCur + (4 - (int)this->m_lpBufMax)));
+    _FillBuffer_CArchive__QAEXI_Z(this,(uint)(this->m_lpBufCur + (4 - (int)this->m_lpBufMax)));
   }
   *param_1 = *(undefined4 *)this->m_lpBufCur;
   this->m_lpBufCur = this->m_lpBufCur + 4;
@@ -49,10 +49,10 @@ CArchive * CArchive::ReadDwordFromSerializedBuffer(undefined4 *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611D26
-// GHIDRA_NAME CArchive::ReadBytesFromSerializedBuffer
-// GHIDRA_PROTO undefined __thiscall ReadBytesFromSerializedBuffer(int param_1, uint param_2)
+// GHIDRA_NAME CArchive::?Read@CArchive@@QAEIPAXI@Z
+// GHIDRA_PROTO undefined __thiscall ?Read@CArchive@@QAEIPAXI@Z(int param_1, uint param_2)
 
-int CArchive::ReadBytesFromSerializedBuffer(int param_1, uint param_2)
+int CArchive::_Read_CArchive__QAEIPAXI_Z(int param_1, uint param_2)
 
 {
   int iVar1;
@@ -62,7 +62,7 @@ int CArchive::ReadBytesFromSerializedBuffer(int param_1, uint param_2)
   uint uVar5;
   byte *local_c;
   uint local_8;
-  
+
   if (param_2 == 0) {
     iVar1 = 0;
   }
@@ -71,7 +71,7 @@ int CArchive::ReadBytesFromSerializedBuffer(int param_1, uint param_2)
     if (param_2 < uVar4) {
       uVar4 = param_2;
     }
-    CopyMemoryPossiblyOverlapping(param_1,this->m_lpBufCur,uVar4);
+    _memcpy(param_1,this->m_lpBufCur,uVar4);
     this->m_lpBufCur = this->m_lpBufCur + uVar4;
     param_1 = param_1 + uVar4;
     uVar4 = param_2 - uVar4;
@@ -116,7 +116,7 @@ int CArchive::ReadBytesFromSerializedBuffer(int param_1, uint param_2)
         if (uVar4 < uVar5) {
           uVar5 = uVar4;
         }
-        CopyMemoryPossiblyOverlapping(param_1,pbVar3,uVar5);
+        _memcpy(param_1,pbVar3,uVar5);
         this->m_lpBufCur = this->m_lpBufCur + uVar5;
         uVar4 = uVar4 - uVar5;
       }
@@ -127,10 +127,10 @@ int CArchive::ReadBytesFromSerializedBuffer(int param_1, uint param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611F3E
-// GHIDRA_NAME CArchive::FillBuffer
-// GHIDRA_PROTO undefined __thiscall FillBuffer(uint param_1)
+// GHIDRA_NAME CArchive::?FillBuffer@CArchive@@QAEXI@Z
+// GHIDRA_PROTO undefined __thiscall ?FillBuffer@CArchive@@QAEXI@Z(uint param_1)
 
-void CArchive::FillBuffer(uint param_1)
+void CArchive::_FillBuffer_CArchive__QAEXI_Z(uint param_1)
 
 {
   byte *pbVar1;
@@ -139,7 +139,7 @@ void CArchive::FillBuffer(uint param_1)
   int iVar4;
   byte *pbVar5;
   uint local_8;
-  
+
   pbVar1 = this->m_lpBufCur;
   local_8 = (int)this->m_lpBufMax - (int)pbVar1;
   uVar2 = param_1 + local_8;
@@ -147,7 +147,7 @@ void CArchive::FillBuffer(uint param_1)
     pbVar5 = this->m_lpBufStart;
     if (pbVar5 < pbVar1) {
       if (0 < (int)local_8) {
-        MoveMemoryOverlapSafe(pbVar5,pbVar1,local_8);
+        _memmove(pbVar5,pbVar1,local_8);
         pbVar5 = this->m_lpBufStart;
         this->m_lpBufCur = pbVar5;
         this->m_lpBufMax = pbVar5 + local_8;
@@ -174,7 +174,7 @@ void CArchive::FillBuffer(uint param_1)
     this->m_lpBufCur = this->m_lpBufStart;
   }
   if ((uint)((int)this->m_lpBufMax - (int)this->m_lpBufCur) < uVar2) {
-    AfxThrowArchiveException(3,0);
+    _AfxThrowArchiveException__YGXHPBD_Z(3,0);
   }
   return;
 }

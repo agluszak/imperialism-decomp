@@ -20,7 +20,7 @@ CRuntimeClass * TMacViewMgr::GetTMacViewMgrRuntimeClass(void)
 TMacViewMgr * TMacViewMgr::ConstructTMacViewMgrInPlace()
 
 {
-  CFrameWnd();
+  __0CFrameWnd__QAE_XZ();
   *(undefined4 *)&this->field_0xcc = 1;
   *(undefined4 *)&this->field_0xbc = 0;
   *(undefined4 *)&this->field_0xc4 = 0;
@@ -40,7 +40,7 @@ void TMacViewMgr::DestroyTMacViewMgrObject()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e8b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -53,7 +53,7 @@ void TMacViewMgr::DestroyTMacViewMgrObject()
     (**(code **)(**(int **)&this->field_0xc4 + 4))(1);
   }
   local_4 = 0xffffffff;
-  DestroyTMacViewMgrBase();
+  __1CFrameWnd__UAE_XZ();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -67,7 +67,7 @@ undefined4 __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE_Impl(int param_1,
 {
   int iVar1;
   undefined4 uVar2;
-  
+
   *(undefined4 *)(param_1 + 0xbc) = 0;
   iVar1 = WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(param_2);
   if (iVar1 == -1) {
@@ -90,7 +90,7 @@ void TMacViewMgr::WrapperFor_PreCreateWindow_61cdb3_At00484f70(int param_1)
   *(undefined4 *)(param_1 + 8) = 0;
   *(undefined4 *)(param_1 + 0x20) = 0x2000000;
   *(undefined4 *)(param_1 + 0x1c) = 0xfffffc18;
-  PreCreateWindow_61cdb3(param_1);
+  _PreCreateWindow_CFrameWnd__MAEHAAUtagCREATESTRUCTA___Z(param_1);
   return;
 }
 
@@ -102,7 +102,7 @@ undefined4 TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(undefin
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = *(undefined4 *)&this->field_0xbc;
   *(undefined4 *)&this->field_0xbc = param_1;
   TryRealizeViewPaletteAndInvalidateWindow();
@@ -117,7 +117,7 @@ void TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl()
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6();
   *(undefined4 *)&this->field_0xbc = uVar1;
   TryRealizeViewPaletteAndInvalidateWindow();
@@ -142,7 +142,7 @@ undefined4 __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl(int para
   undefined4 uStack_c;
   undefined *puStack_8;
   undefined4 uStack_4;
-  
+
   pvVar3 = param_2;
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
@@ -150,7 +150,7 @@ undefined4 __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl(int para
   *unaff_FS_OFFSET = &uStack_c;
   if (*(int *)(param_1 + 0xc0) == 0x100005f) {
     if (*(int *)(param_1 + 0xc4) == 0) {
-      iVar1 = AllocateWithFallbackHandler(0x38);
+      iVar1 = __2_YAPAXI_Z(0x38);
       uStack_4 = 0;
       if (iVar1 == 0) {
         uVar4 = 0;
@@ -192,7 +192,7 @@ undefined4 __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl(int para
   TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(param_2,0);
   TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(pvVar3,uVar4);
   GetClientRect(*(HWND *)(param_1 + 0x1c),&tStack_1c);
-  FillSolidRect(param_2,&tStack_1c,*(ulong *)(param_1 + 0xc0));
+  _FillSolidRect_CDC__QAEXPBUtagRECT__K_Z_0061f0fa(param_2,&tStack_1c,*(ulong *)(param_1 + 0xc0));
   *unaff_FS_OFFSET = uStack_c;
   return 1;
 }
@@ -205,7 +205,7 @@ undefined4 TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_
 
 {
   int iVar1;
-  
+
   iVar1 = TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6();
   return *(undefined4 *)(iVar1 + 8);
 }
@@ -237,14 +237,14 @@ int __fastcall TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(int *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f9aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   if (*param_1 == 0) {
     uVar5 = LoadBmpResourceByIdCached(0x3b6);
-    psVar6 = (short *)AllocateWithFallbackHandler(0xc);
+    psVar6 = (short *)__2_YAPAXI_Z(0xc);
     local_4 = 0;
     if (psVar6 == (short *)0x0) {
       iVar7 = 0;
@@ -295,11 +295,11 @@ LAB_0049964c:
                   puVar9 = puVar9 + 1;
                 }
               }
-              FreeHeapBufferIfNotNull(puVar8);
+              __3_YAXPAX_Z(puVar8);
               param_1[9] = 0;
               param_1[0xb] = 0;
               param_1[0xc] = 0;
-              FreeDataChain();
+              _FreeDataChain_CPlex__QAEXXZ();
               param_1[0xd] = 0;
             }
             break;
@@ -329,7 +329,7 @@ LAB_0049964c:
           piVar4 = (int *)*piVar2;
         }
       }
-      FreeHeapBufferIfNotNull(psVar6);
+      __3_YAXPAX_Z(psVar6);
     }
   }
   iVar7 = *param_1;
@@ -350,12 +350,12 @@ undefined4 __fastcall TMacViewMgr::CreateTMacViewMgrInstance(undefined4 param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633a6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMacViewMgr *)AllocateWithFallbackHandler(0xd84,param_1);
+  this = (TMacViewMgr *)__2_YAPAXI_Z(0xd84,param_1);
   local_4 = 0;
   if (this != (TMacViewMgr *)0x0) {
     uVar1 = TMacViewMgr::ConstructStrategicMapViewSystem(this);
@@ -390,7 +390,7 @@ CRuntimeClass * TMacViewMgr::GetTMacViewMgrClassNamePointer()
 
 /* Constructor for strategic map view/render system object (allocated at startup into global
    g_pStrategicMapViewSystem).
-   
+
    Behavior:
    - Sets vtable pointer.
    - Clears large internal tables/buffers for per-tile/per-nation render state.
@@ -405,17 +405,17 @@ TMacViewMgr * TMacViewMgr::ConstructStrategicMapViewSystem()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00633ab8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TMacViewMgrVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  CallCallbackRepeatedly(&this->field_0x6bc,0x30,0x18,&LAB_00404d5e);
+  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x6bc,0x30,0x18,&LAB_00404d5e);
   local_4._0_1_ = 1;
-  CallCallbackRepeatedly(&this->field_0xb3c,0x30,6,&LAB_00404d5e);
+  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0xb3c,0x30,6,&LAB_00404d5e);
   local_4 = CONCAT31(local_4._1_3_,2);
-  CallCallbackRepeatedly(&this->field_0xc5c,0x30,6,&LAB_00404d5e);
+  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0xc5c,0x30,6,&LAB_00404d5e);
   this->vftable = &g_vtblStrategicMapViewSystem;
   *(undefined4 *)&this->field_0x4 = 0;
   puVar2 = (undefined4 *)&this->field_0x8;
@@ -470,7 +470,7 @@ TMacViewMgr * TMacViewMgr::WrapperFor_FreeHeapBufferIfNotNull_At00509e30(byte pa
 {
   WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -502,7 +502,7 @@ void TMacViewMgr::DestroyStrategicMapViewSystemResources()
   int iVar1;
   int *piVar2;
   undefined1 *puVar3;
-  
+
   iVar1 = 0x17;
   piVar2 = (int *)&this->field_0x8;
   do {
@@ -559,7 +559,7 @@ void TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles()
 {
   TMacViewMgrVtbl *pTVar1;
   TStream *in_stack_00000004;
-  
+
   *(undefined4 *)&this->field_0x4 = 0;
   TObject::ReadFrom((TObject *)this,in_stack_00000004);
   pTVar1 = this->vftable;
@@ -577,7 +577,7 @@ void TMacViewMgr::WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180()
 
 {
   TStream *in_stack_00000004;
-  
+
   TObject::WriteTo((TObject *)this,in_stack_00000004);
   return;
 }
@@ -627,7 +627,7 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
   undefined1 *local_18;
   int iStack_14;
   int local_10 [4];
-  
+
   local_20 = 0;
   local_10[1] = 0;
   local_10[0] = 0;
@@ -674,9 +674,9 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
       this_00->vftable = (TAnimationVtbl *)0x64c340;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
                 (this_00);
-      FreeHeapBufferIfNotNull(this_00);
+      __3_YAXPAX_Z(this_00);
     }
-    FreeHeapBufferIfNotNull(piVar6);
+    __3_YAXPAX_Z(piVar6);
     iVar11 = iVar11 + 1;
   } while ((short)iVar11 < 0x17);
   uVar5 = GetSurfaceObjectAtContextOffset24(*puStack_24);
@@ -702,7 +702,7 @@ void TMacViewMgr::LoadStrategicMapUnitIconAtlas750()
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ee);
   *(undefined4 *)&this->field_0x678 = uVar1;
   return;
@@ -725,7 +725,7 @@ void TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751()
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ef);
   *(undefined4 *)&this->field_0x67c = uVar1;
   return;
@@ -748,7 +748,7 @@ void TMacViewMgr::LoadStrategicMapOverlayAtlas8699()
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x21fb);
   *(undefined4 *)&this->field_0x680 = uVar1;
   return;
@@ -771,7 +771,7 @@ void TMacViewMgr::LoadStrategicMapMarkerAtlas1372()
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
   *(undefined4 *)&this->field_0x684 = uVar1;
   return;
@@ -822,7 +822,7 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
   _vslot_fn *local_c;
   _vslot_fn *local_8;
   _vslot_fn *local_4;
-  
+
   puVar11 = &this->field_0x668;
   pTStack_40 = (TAnimationVtbl *)&local_10;
   iVar15 = 0;
@@ -880,11 +880,11 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
                 ((TAnimation *)pTVar8);
       pTStack_50 = (TAnimationVtbl *)0x50aae2;
       pTStack_4c = pTVar8;
-      FreeHeapBufferIfNotNull();
+      __3_YAXPAX_Z();
     }
     pTStack_50 = (TAnimationVtbl *)0x50aaeb;
     pTStack_4c = pTVar6;
-    FreeHeapBufferIfNotNull();
+    __3_YAXPAX_Z();
     iVar7 = local_2c + 0x40;
     local_24 = (TMacViewMgr *)(local_2c + 0x80);
     iVar15 = iVar15 + 1;
@@ -917,11 +917,11 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
                 ((TAnimation *)pTVar8);
       pTStack_50 = (TAnimationVtbl *)0x50ab6b;
       pTStack_4c = pTVar8;
-      FreeHeapBufferIfNotNull();
+      __3_YAXPAX_Z();
     }
     pTStack_50 = (TAnimationVtbl *)0x50ab74;
     pTStack_4c = pTVar6;
-    FreeHeapBufferIfNotNull();
+    __3_YAXPAX_Z();
     iVar7 = local_2c + 0x40;
     local_24 = (TMacViewMgr *)(local_2c + 0x80);
     iVar15 = iVar15 + 1;
@@ -954,11 +954,11 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
                 ((TAnimation *)pTVar8);
       pTStack_50 = (TAnimationVtbl *)0x50abf4;
       pTStack_4c = pTVar8;
-      FreeHeapBufferIfNotNull();
+      __3_YAXPAX_Z();
     }
     pTStack_50 = (TAnimationVtbl *)0x50abfd;
     pTStack_4c = pTVar6;
-    FreeHeapBufferIfNotNull();
+    __3_YAXPAX_Z();
     iVar7 = local_2c + 0x40;
     local_24 = (TMacViewMgr *)(local_2c + 0x80);
     iVar15 = iVar15 + 1;
@@ -989,11 +989,11 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
               ((TAnimation *)pTVar8);
     pTStack_50 = (TAnimationVtbl *)0x50ac7b;
     pTStack_4c = pTVar8;
-    FreeHeapBufferIfNotNull();
+    __3_YAXPAX_Z();
   }
   pTStack_50 = (TAnimationVtbl *)0x50ac84;
   pTStack_4c = pTVar6;
-  FreeHeapBufferIfNotNull();
+  __3_YAXPAX_Z();
   local_24 = (TMacViewMgr *)(local_2c + 0x80);
   pTStack_4c = *(TAnimationVtbl **)puVar11;
   pTStack_50 = (TAnimationVtbl *)0x50aca1;
@@ -1058,11 +1058,11 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
                   ((TAnimation *)pTVar2);
         pTStack_5c = (TAnimationVtbl *)0x50adbc;
         pTStack_58 = pTVar2;
-        FreeHeapBufferIfNotNull();
+        __3_YAXPAX_Z();
       }
       pTStack_5c = (TAnimationVtbl *)0x50adc5;
       pTStack_58 = pTVar8;
-      FreeHeapBufferIfNotNull();
+      __3_YAXPAX_Z();
     }
     pTVar6 = (TAnimationVtbl *)((int)&pTVar6->GetRuntimeClass + 1);
   } while ((short)pTVar6 < 0x1ab);
@@ -1093,11 +1093,11 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
                 ((TAnimation *)pTVar2);
       pTStack_5c = (TAnimationVtbl *)0x50ae43;
       pTStack_58 = pTVar2;
-      FreeHeapBufferIfNotNull();
+      __3_YAXPAX_Z();
     }
     pTStack_5c = (TAnimationVtbl *)0x50ae4c;
     pTStack_58 = pTVar8;
-    FreeHeapBufferIfNotNull();
+    __3_YAXPAX_Z();
     pTVar6 = (TAnimationVtbl *)((int)&pTVar6->GetRuntimeClass + 1);
   } while ((short)pTVar6 < 0x22e);
   pTVar6 = (TAnimationVtbl *)0x230;
@@ -1127,11 +1127,11 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
                 ((TAnimation *)pTVar2);
       pTStack_5c = (TAnimationVtbl *)0x50aec6;
       pTStack_58 = pTVar2;
-      FreeHeapBufferIfNotNull();
+      __3_YAXPAX_Z();
     }
     pTStack_5c = (TAnimationVtbl *)0x50aecf;
     pTStack_58 = pTVar8;
-    FreeHeapBufferIfNotNull();
+    __3_YAXPAX_Z();
     pTVar6 = (TAnimationVtbl *)((int)&pTVar6->GetRuntimeClass + 1);
   } while ((short)pTVar6 < 0x233);
   iVar15 = 0;
@@ -1161,11 +1161,11 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
                 ((TAnimation *)pTVar8);
       pTStack_5c = (TAnimationVtbl *)0x50af4c;
       pTStack_58 = pTVar8;
-      FreeHeapBufferIfNotNull();
+      __3_YAXPAX_Z();
     }
     pTStack_5c = (TAnimationVtbl *)0x50af55;
     pTStack_58 = pTVar6;
-    FreeHeapBufferIfNotNull();
+    __3_YAXPAX_Z();
     iVar15 = iVar15 + 1;
   } while ((short)iVar15 < 2);
   iVar15 = 0;
@@ -1195,11 +1195,11 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
                 ((TAnimation *)pTVar8);
       pTStack_5c = (TAnimationVtbl *)0x50afd5;
       pTStack_58 = pTVar8;
-      FreeHeapBufferIfNotNull();
+      __3_YAXPAX_Z();
     }
     pTStack_5c = (TAnimationVtbl *)0x50afde;
     pTStack_58 = pTVar6;
-    FreeHeapBufferIfNotNull();
+    __3_YAXPAX_Z();
     iVar15 = iVar15 + 1;
   } while ((short)iVar15 < 2);
   pTStack_58 = *(TAnimationVtbl **)(unaff_EBX + 0x66c);
@@ -1252,9 +1252,9 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
       pTVar4->vftable = (TAnimationVtbl *)0x64c340;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
                 (pTVar4);
-      FreeHeapBufferIfNotNull(pTVar4);
+      __3_YAXPAX_Z(pTVar4);
     }
-    FreeHeapBufferIfNotNull(piVar10);
+    __3_YAXPAX_Z(piVar10);
     puVar11 = (undefined1 *)((int)&pTStack_50->Dump + 2);
     pp_Stack_48 = &pTStack_50->ShallowFree;
     iVar15 = iVar15 + 1;
@@ -1289,9 +1289,9 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
     pTVar4->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
               (pTVar4);
-    FreeHeapBufferIfNotNull(pTVar4);
+    __3_YAXPAX_Z(pTVar4);
   }
-  FreeHeapBufferIfNotNull(piVar12);
+  __3_YAXPAX_Z(piVar12);
   uVar9 = GetSurfaceObjectAtContextOffset24(*piVar10);
   NoOpQuickDrawLifecycleHookB(uVar9);
   SetActiveQuickDrawSurfaceContext(puStack_64,uStack_68);
@@ -1328,7 +1328,7 @@ void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles()
   int iVar4;
   int iVar5;
   int local_8;
-  
+
   iVar4 = 0;
   piVar2 = (int *)&this->field_0x64;
   local_8 = 0;
@@ -1372,7 +1372,7 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent()
   int iVar2;
   int iVar3;
   undefined4 *puVar4;
-  
+
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
     DispatchTaggedGameStateEvent1F20(0x72656765,0,0xfffffffd);
   }
@@ -1412,7 +1412,7 @@ TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0
   TGreatPowerVtbl *pTVar2;
   char cVar3;
   undefined4 uVar4;
-  
+
   iVar1 = *param_1;
   cVar3 = (**(code **)(iVar1 + 0x1d8))();
   if (cVar3 != '\0') {
@@ -1441,7 +1441,7 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(int *param_1, short 
   short unaff_DI;
   undefined4 unaff_retaddr;
   short sVar6;
-  
+
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0xdc))(0);
   sVar5 = (short)param_1;
@@ -1496,7 +1496,7 @@ int * TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C()
 
 {
   int *piVar1;
-  
+
   piVar1 = (int *)(**(code **)(*DAT_006a1b24 + 0x28))();
   if (piVar1 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -1555,12 +1555,12 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
   _vslot_fn *p_Stack_c;
   CString CStack_8;
   int local_4;
-  
+
   local_4 = -1;
   CStack_8.m_pchData = &LAB_00633baa;
   p_Stack_c = (_vslot_fn *)*unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &p_Stack_c;
-  CString::CString(&local_38);
+  CString::__0CString__QAE_XZ(&local_38);
   local_4 = 0;
   pTVar2 = g_apNationStates[(short)wStack00000008];
   local_12 = 0;
@@ -1577,7 +1577,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     CStack_8.m_pchData = &stack0xffffff90;
     AssignStringSharedRefAndReturnThis(&local_48);
     RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-    CStack_8.m_pchData = (char *)AllocateWithFallbackHandler();
+    CStack_8.m_pchData = (char *)__2_YAPAXI_Z();
     abStack_14[0] = 1;
     if ((TMyStaticText *)CStack_8.m_pchData == (TMyStaticText *)0x0) {
       piVar7 = (int *)0x0;
@@ -1626,17 +1626,17 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
   else {
     this_00 = pTVar2->city;
   }
-  CString::CString((CString *)&stack0x00000008);
+  CString::__0CString__QAE_XZ((CString *)&stack0x00000008);
   local_4._0_1_ = 2;
-  CString::CString(&local_34);
+  CString::__0CString__QAE_XZ(&local_34);
   local_4._0_1_ = 3;
-  CString::CString(&local_3c);
+  CString::__0CString__QAE_XZ(&local_3c);
   local_4._0_1_ = 4;
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   local_4._0_1_ = 5;
-  CString::CString(&local_44);
+  CString::__0CString__QAE_XZ(&local_44);
   local_4._0_1_ = 6;
-  CString::CString(&local_48);
+  CString::__0CString__QAE_XZ(&local_48);
   local_4 = CONCAT31(local_4._1_3_,7);
   p_Var11 = (_vslot_fn *)(int)(short)param_1;
   local_30 = p_Var11;
@@ -1657,8 +1657,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,0);
     wVar12 = (word)iVar6;
     wVar13 = (wVar12 * 2 - this_00->fieldB6[0]) - this_00->fieldB6[1];
-    FormatStringWithVarArgsToSharedRef(&CStack_8);
-    FormatStringWithVarArgsToSharedRef(&stack0xffffffb4);
+    _Format_CString__QAAXPBDZZ(&CStack_8);
+    _Format_CString__QAAXPBDZZ(&stack0xffffffb4);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2719);
     goto LAB_0050c77d;
   default:
@@ -1672,8 +1672,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,4);
     wVar12 = (word)iVar6;
     wVar13 = wVar12 * 2 - this_00->fieldB6[2];
-    FormatStringWithVarArgsToSharedRef();
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[2];
     break;
@@ -1685,8 +1685,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,2);
     wVar12 = (word)iVar6;
     wVar13 = wVar12 - this_00->fieldB6[(int)local_3c.m_pchData];
-    FormatStringWithVarArgsToSharedRef();
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[(int)unaff_EBX];
     break;
@@ -1694,8 +1694,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     wVar10 = pTVar2->needCurrentByType[5];
     wStack00000008 = pTVar2->needTargetByType[5];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    FormatStringWithVarArgsToSharedRef();
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
     goto LAB_0050ca20;
@@ -1706,8 +1706,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,6);
     wVar12 = (word)iVar6;
     wVar13 = wVar12 * 2 - this_00->fieldB6[6];
-    FormatStringWithVarArgsToSharedRef();
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[6];
     break;
@@ -1718,8 +1718,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,1);
     wVar12 = (word)iVar6;
     wVar13 = wVar12 * 2 - this_00->fieldB6[8];
-    FormatStringWithVarArgsToSharedRef();
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[8];
     break;
@@ -1730,8 +1730,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,5);
     wVar12 = (word)iVar6;
     wVar13 = wVar12 * 2 - this_00->fieldB6[9];
-    FormatStringWithVarArgsToSharedRef();
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[9];
     break;
@@ -1742,8 +1742,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,3);
     wVar12 = (word)iVar6;
     wVar13 = wVar12 * 2 - this_00->fieldB6[0xb];
-    FormatStringWithVarArgsToSharedRef();
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[0xb];
     break;
@@ -1754,8 +1754,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,0xb);
     wVar12 = (word)iVar6;
     wVar13 = wVar12 * 2 - this_00->fieldB6[0xc];
-    FormatStringWithVarArgsToSharedRef();
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[0xc];
     break;
@@ -1765,8 +1765,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     wVar10 = pTVar2->needCurrentByType[(int)p_Var11];
     wStack00000008 = pTVar2->needTargetByType[(int)p_Var11];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    FormatStringWithVarArgsToSharedRef();
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
     goto LAB_0050ca20;
@@ -1778,12 +1778,12 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     wVar12 = 1;
     uVar5 = (*this_00->vftable->GetCitySummaryRecordSlot74)();
     sVar1 = *(short *)(CONCAT31(extraout_var_00,uVar5) + (int)local_3c.m_pchData * 2);
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
     wVar13 = sVar1 - this_00->fieldB6[(int)local_3c.m_pchData];
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
-    CString::AssignFromPtr(&local_3c,&local_48);
+    CString::__4CString__QAEABV0_ABV0__Z(&local_3c,&local_48);
     goto LAB_0050ca3b;
   case (_vslot_fn *)0x13:
     _wStack00000008 =
@@ -1793,7 +1793,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     wVar12 = 1;
     uVar5 = (*this_00->vftable->GetCitySummaryRecordSlot74)();
     sVar1 = *(short *)(CONCAT31(extraout_var,uVar5) + 0x28);
-    FormatStringWithVarArgsToSharedRef(&stack0xffffffa8,&g_szDecimalFormat,(int)sVar1);
+    _Format_CString__QAAXPBDZZ(&stack0xffffffa8,&g_szDecimalFormat,(int)sVar1);
     wVar13 = sVar1 - (this_00->fieldB6[0x14] + this_00->fieldB6[0x13]);
     iVar6 = (int)(short)this_00->fieldB6[0x13] + (int)(short)this_00->fieldB6[0x14];
     break;
@@ -1814,14 +1814,14 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
 LAB_0050ca20:
     wVar12 = 0;
-    CString::AssignFromPtr(&local_3c,(CString *)&local_48);
+    CString::__4CString__QAEABV0_ABV0__Z(&local_3c,(CString *)&local_48);
     goto LAB_0050ca3b;
   }
-  FormatStringWithVarArgsToSharedRef(abStack_14,&g_szDecimalFormat,iVar6);
+  _Format_CString__QAAXPBDZZ(abStack_14,&g_szDecimalFormat,iVar6);
 LAB_0050c77d:
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,7,&stack0xffffff9c);
   scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
-  CString::AssignFromPtr(&local_3c,&local_48);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_3c,&local_48);
 LAB_0050ca3b:
   p_Var8 = local_30;
   if (wVar12 == 0) {
@@ -1865,7 +1865,7 @@ LAB_0050ca3b:
     local_30 = (_vslot_fn *)piVar7[9];
     pTStack_2c = (TMyStaticText *)piVar7[10];
     (**(code **)(*piVar7 + 0x1c))();
-    local_34.m_pchData = (char *)AllocateWithFallbackHandler();
+    local_34.m_pchData = (char *)__2_YAPAXI_Z();
     p_Stack_c._0_1_ = 8;
     if ((TRightLeftView *)local_34.m_pchData == (TRightLeftView *)0x0) {
       iVar6 = 0;
@@ -1887,7 +1887,7 @@ LAB_0050ca3b:
     local_34.m_pchData = (char *)piVar7[9];
     local_30 = (_vslot_fn *)piVar7[10];
     (**(code **)(*piVar7 + 0x1c))();
-    local_38.m_pchData = (char *)AllocateWithFallbackHandler();
+    local_38.m_pchData = (char *)__2_YAPAXI_Z();
     local_10 = 9;
     if ((TRightLeftView *)local_38.m_pchData == (TRightLeftView *)0x0) {
       iVar6 = 0;
@@ -1899,7 +1899,7 @@ LAB_0050ca3b:
     local_10 = 7;
     InitializeUiResourceEntryFrameAndParent(0,p_Var8,&local_34,&pTStack_2c);
     *(undefined4 *)(iVar6 + 0x1c) = 0x72676874;
-    local_38.m_pchData = (char *)AllocateWithFallbackHandler();
+    local_38.m_pchData = (char *)__2_YAPAXI_Z();
     local_10 = 10;
     if ((TMyStaticText *)local_38.m_pchData == (TMyStaticText *)0x0) {
       piVar7 = (int *)0x0;
@@ -1924,7 +1924,7 @@ LAB_0050ca3b:
     AssignStringSharedRefAndReturnThis();
     RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     if ((param_1 == 0x16) || (param_1 == 0x15)) {
-      pTStack_2c = (TMyStaticText *)AllocateWithFallbackHandler();
+      pTStack_2c = (TMyStaticText *)__2_YAPAXI_Z();
       local_4._0_1_ = 0xb;
       if (pTStack_2c == (TMyStaticText *)0x0) {
         piVar7 = (int *)0x0;
@@ -1948,20 +1948,20 @@ LAB_0050ca3b:
     *(word *)(p_Var8 + 0x96) = wVar10;
   }
   local_4._0_1_ = 6;
-  CString::~CString(&local_48);
+  CString::__1CString__QAE_XZ(&local_48);
   local_4._0_1_ = 5;
-  CString::~CString(&local_44);
+  CString::__1CString__QAE_XZ(&local_44);
   local_4._0_1_ = 4;
-  CString::~CString(&local_40);
+  CString::__1CString__QAE_XZ(&local_40);
   local_4._0_1_ = 3;
-  CString::~CString(&local_3c);
+  CString::__1CString__QAE_XZ(&local_3c);
   local_4._0_1_ = 2;
-  CString::~CString(&local_34);
+  CString::__1CString__QAE_XZ(&local_34);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString((CString *)&stack0x00000008);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000008);
 LAB_0050ce6a:
   local_4 = -1;
-  CString::~CString(&local_38);
+  CString::__1CString__QAE_XZ(&local_38);
   *unaff_FS_OFFSET = p_Stack_c;
   return;
 }
@@ -1975,7 +1975,7 @@ void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag()
 {
   short sVar1;
   int unaff_retaddr;
-  
+
   (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0x3b8);
   sVar1 = *(short *)(unaff_retaddr + 0x14);
   while (sVar1 == 0) {
@@ -2000,7 +2000,7 @@ TMacViewMgr::CreateCityBuildingDialogBySlot
   int *piVar3;
   char unaff_SI;
   undefined4 unaff_retaddr;
-  
+
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(param_1 + 0x23f0)
   ;
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
@@ -2039,7 +2039,7 @@ int * TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 para
   undefined4 in_stack_0000000c;
   int iStack_20;
   int iStack_1c;
-  
+
   iStack_1c = param_1 + 0x23f0;
   iStack_20 = 0x50d48d;
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
@@ -2082,7 +2082,7 @@ void TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1)
   undefined4 uVar5;
   undefined4 unaff_EBX;
   undefined4 unaff_retaddr;
-  
+
   uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0x2404);
   iVar1 = *(int *)CONCAT31(extraout_var,uVar3);
   piVar4 = (int *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
@@ -2111,7 +2111,7 @@ TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion
 
 {
   undefined4 uVar1;
-  
+
   if (*(int *)(&this->field_0x8 + param_2 * 4) == 0) {
     uVar1 = CreateClipStateRegionWrapperObject();
     *(undefined4 *)(&this->field_0x8 + param_2 * 4) = uVar1;
@@ -2131,7 +2131,7 @@ undefined4 TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param
   undefined4 uVar1;
   undefined2 in_stack_00000006;
   short in_stack_00000008;
-  
+
   if (*(int *)(&this->field_0x8 + in_stack_00000008 * 4) != 0) {
     uVar1 = IsPointInsideHitRegion(_param_1,*(int *)(&this->field_0x8 + in_stack_00000008 * 4));
     return uVar1;
@@ -2158,7 +2158,7 @@ void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
   undefined1 local_18 [4];
   undefined1 local_14 [4];
   tagRECT local_10;
-  
+
   iVar6 = param_1;
   puVar1 = (undefined4 *)(&this->field_0x8 + (short)param_1 * 4);
   uVar3 = CreateClipStateRegionWrapperObject();
@@ -2186,9 +2186,9 @@ void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
     this_00->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
               (this_00);
-    FreeHeapBufferIfNotNull(this_00);
+    __3_YAXPAX_Z(this_00);
   }
-  FreeHeapBufferIfNotNull(piVar4);
+  __3_YAXPAX_Z(piVar4);
   puVar5 = (undefined4 *)GetSurfaceObjectAtContextOffset24(local_10.right);
   iVar6 = RebuildSpriteNonTransparentPolygonRegion(*puVar1,*puVar5);
   if (iVar6 != 0) {
@@ -2254,7 +2254,7 @@ void TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950()
 {
   int iVar1;
   int *piVar2;
-  
+
   piVar2 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x444c4f47);
   if (piVar2 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -2279,7 +2279,7 @@ void TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950()
 // GHIDRA_COMMENT_END
 
 /* Copies a sprite surface into a destination buffer with destination stride adjustment.
-   
+
    Used as low-level helper by strategic-map icon/overlay render paths.
    Per-row copy supports packed width and handles positive/negative source height semantics. */
 
@@ -2295,7 +2295,7 @@ TMacViewMgr::CopySpriteSurfaceToStrideBuffer
   int iVar5;
   undefined4 *puVar6;
   undefined4 *puVar7;
-  
+
   iVar5 = *(int *)(*param_1 + 0x18);
   puVar3 = *(undefined4 **)(iVar5 + 0xc);
   sVar1 = *(short *)(*(int *)(iVar5 + 0x10) + 4);
@@ -2344,7 +2344,7 @@ TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
   short sVar7;
   int iVar8;
   char *pcVar9;
-  
+
   if (param_2 < 100) {
     piVar3 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x674);
     sVar7 = param_2 << 5;
@@ -2518,7 +2518,7 @@ TMacViewMgr::DrawStrategicMapUnitIcon
   int nDstStrideBytes;
   ushort wDstStrideRaw;
   ushort wSrcStrideRaw;
-  
+
   pUnitIconAtlasSurface =
        (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x678);
   wDstStrideRaw = *(ushort *)(*pDstSurface + 4);
@@ -2655,7 +2655,7 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
   char *pbSrcCursor;
   short nOverlaySourceRow;
   ushort wDstStrideRaw;
-  
+
   pOverlayAtlasSurface =
        (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x67c);
   if ((0 < nVariantRow) &&
@@ -2694,15 +2694,15 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605E12
-// GHIDRA_NAME TMacViewMgr::Find_605e12
-// GHIDRA_PROTO undefined __thiscall Find_605e12(undefined1 param_1)
+// GHIDRA_NAME TMacViewMgr::?Find@CString@@QBEHD@Z
+// GHIDRA_PROTO undefined __thiscall ?Find@CString@@QBEHD@Z(undefined1 param_1)
 
-int TMacViewMgr::Find_605e12(undefined1 param_1)
+int TMacViewMgr::_Find_CString__QBEHD_Z(undefined1 param_1)
 
 {
   int iVar1;
-  
-  iVar1 = FindCharWithMbcsLeadByteSupport(this->vftable,param_1);
+
+  iVar1 = __mbschr(this->vftable,param_1);
   if (iVar1 == 0) {
     iVar1 = -1;
   }
@@ -2713,63 +2713,69 @@ int TMacViewMgr::Find_605e12(undefined1 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006064B0
-// GHIDRA_NAME TMacViewMgr::OnIdle_6064b0
-// GHIDRA_PROTO undefined __thiscall OnIdle_6064b0(int param_1)
+// GHIDRA_NAME TMacViewMgr::?OnIdle@CWinThread@@UAEHJ@Z
+// GHIDRA_PROTO undefined __thiscall ?OnIdle@CWinThread@@UAEHJ@Z(int param_1)
 
-bool TMacViewMgr::OnIdle_6064b0(int param_1)
+bool TMacViewMgr::_OnIdle_CWinThread__UAEHJ_Z(int param_1)
 
 {
   CFrameWnd *pCVar1;
   BOOL BVar2;
   int iVar3;
   CFrameWnd *this_00;
-  
+
   if (param_1 < 1) {
     pCVar1 = *(CFrameWnd **)&this->field_0x1c;
     if ((pCVar1 != (CFrameWnd *)0x0) && (pCVar1->m_hWnd != (HWND)0x0)) {
       BVar2 = IsWindowVisible(pCVar1->m_hWnd);
       if (BVar2 != 0) {
-        AfxCallWndProc(pCVar1,pCVar1->m_hWnd,0x363,1,0);
-        SendMessageToDescendants(pCVar1->m_hWnd,0x363,1,0,1,1);
+        _AfxCallWndProc__YGJPAVCWnd__PAUHWND____IIJ_Z(pCVar1,pCVar1->m_hWnd,0x363,1,0);
+        _SendMessageToDescendants_CWnd__SGXPAUHWND____IIJHH_Z(pCVar1->m_hWnd,0x363,1,0,1,1);
       }
     }
-    iVar3 = AfxGetModuleState();
-    iVar3 = GetData((TMacViewMgr *)(iVar3 + 0x1070),CreateObject);
+    iVar3 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    iVar3 = _GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
+                      ((TMacViewMgr *)(iVar3 + 0x1070),
+                       _CreateObject___CThreadLocal_VAFX_MODULE_THREAD_STATE____SGPAVCNoTrackObject__XZ
+                      );
     for (this_00 = *(CFrameWnd **)(iVar3 + 8); this_00 != (CFrameWnd *)0x0;
         this_00 = *(CFrameWnd **)&this_00->field_0x54) {
       if ((this_00->m_hWnd != (void *)0x0) && (this_00 != pCVar1)) {
         if (*(int *)&this_00->field_0x88 == 0) {
-          ::CFrameWnd::ShowWindow(this_00,0);
+          CFrameWnd::_ShowWindow_CWnd__QAEHH_Z(this_00,0);
         }
         BVar2 = IsWindowVisible(this_00->m_hWnd);
         if ((BVar2 != 0) || (-1 < *(int *)&this_00->field_0x88)) {
-          AfxCallWndProc(this_00,this_00->m_hWnd,0x363,1,0);
-          SendMessageToDescendants(this_00->m_hWnd,0x363,1,0,1,1);
+          _AfxCallWndProc__YGJPAVCWnd__PAUHWND____IIJ_Z(this_00,this_00->m_hWnd,0x363,1,0);
+          _SendMessageToDescendants_CWnd__SGXPAUHWND____IIJHH_Z(this_00->m_hWnd,0x363,1,0,1,1);
         }
         if (0 < *(int *)&this_00->field_0x88) {
-          ::CFrameWnd::ShowWindow(this_00,*(int *)&this_00->field_0x88);
+          CFrameWnd::_ShowWindow_CWnd__QAEHH_Z(this_00,*(int *)&this_00->field_0x88);
         }
         *(undefined4 *)&this_00->field_0x88 = 0xffffffff;
       }
     }
   }
   else {
-    iVar3 = AfxGetModuleState();
-    iVar3 = GetData((TMacViewMgr *)(iVar3 + 0x1070),CreateObject);
+    iVar3 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    iVar3 = _GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
+                      ((TMacViewMgr *)(iVar3 + 0x1070),
+                       _CreateObject___CThreadLocal_VAFX_MODULE_THREAD_STATE____SGPAVCNoTrackObject__XZ
+                      );
     if (*(int *)(iVar3 + 0x10) == 0) {
       IncrementAfxModuleThreadStateTempMapLockDepth();
-      AfxUnlockTempMaps(1);
+      _AfxUnlockTempMaps__YGHH_Z(1);
     }
   }
   return param_1 < 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060986B
-// GHIDRA_NAME TMacViewMgr::RepositionBars
-// GHIDRA_PROTO undefined __thiscall RepositionBars(uint param_1, uint param_2, uint param_3, int param_4, LPRECT param_5, int * param_6, int param_7)
+// GHIDRA_NAME TMacViewMgr::?RepositionBars@CWnd@@QAEXIIIIPAUtagRECT@@PBU2@H@Z
+// GHIDRA_PROTO undefined __thiscall ?RepositionBars@CWnd@@QAEXIIIIPAUtagRECT@@PBU2@H@Z(uint param_1, uint param_2, uint param_3, int param_4, LPRECT param_5, int * param_6, int param_7)
 
 void __thiscall
-TMacViewMgr::RepositionBars
+TMacViewMgr::_RepositionBars_CWnd__QAEXIIIIPAUtagRECT__PBU2_H_Z
           (TMacViewMgr *this,uint param_1,uint param_2,uint param_3,int param_4,LPRECT param_5,
           int *param_6,int param_7)
 
@@ -2785,7 +2791,7 @@ TMacViewMgr::RepositionBars
   LONG local_10;
   int local_c;
   HWND local_8;
-  
+
   local_8 = (HWND)0x0;
   local_c = param_7;
   local_10 = 0;
@@ -2809,7 +2815,7 @@ TMacViewMgr::RepositionBars
   {
     uVar2 = GetDlgCtrlID(hWnd);
     uVar2 = uVar2 & 0xffff;
-    iVar3 = FromHandlePermanent_607b57(hWnd);
+    iVar3 = _FromHandlePermanent_CWnd__SGPAV1_PAUHWND_____Z(hWnd);
     pHVar1 = hWnd;
     if ((((uVar2 != param_3) && (pHVar1 = local_8, param_1 <= uVar2)) && (uVar2 <= param_2)) &&
        (iVar3 != 0)) {
@@ -2831,7 +2837,7 @@ TMacViewMgr::RepositionBars
   }
   else {
     if ((param_3 != 0) && (local_8 != (HWND)0x0)) {
-      piVar4 = (int *)FromHandle(local_8);
+      piVar4 = (int *)_FromHandle_CWnd__SGPAV1_PAUHWND_____Z(local_8);
       if (param_4 == 2) {
         local_24.left = local_24.left + param_5->left;
         local_24.top = local_24.top + param_5->top;
@@ -2839,7 +2845,8 @@ TMacViewMgr::RepositionBars
         local_24.bottom = local_24.bottom - param_5->bottom;
       }
       (**(code **)(*piVar4 + 0x68))(&local_24,0);
-      AfxRepositionWindow(&local_28,local_8,&local_24);
+      _AfxRepositionWindow__YGXPAUAFX_SIZEPARENTPARAMS__PAUHWND____PBUtagRECT___Z
+                (&local_28,local_8,&local_24);
     }
     if (local_28 != (HDWP)0x0) {
       EndDeferWindowPos(local_28);
@@ -2859,23 +2866,23 @@ undefined4 TMacViewMgr::TMacViewMgr_VtblSlot046(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C5DC
-// GHIDRA_NAME TMacViewMgr::CFrameWnd
-// GHIDRA_PROTO undefined CFrameWnd()
+// GHIDRA_NAME TMacViewMgr::??0CFrameWnd@@QAE@XZ
+// GHIDRA_PROTO undefined ??0CFrameWnd@@QAE@XZ()
 
-undefined4 * TMacViewMgr::CFrameWnd(void)
+undefined4 * TMacViewMgr::__0CFrameWnd__QAE_XZ(void)
 
 {
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  TGreatPower::CPtrList((TGreatPower *)(extraout_ECX + 0x1b),10);
+  TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(extraout_ECX + 0x1b),10);
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  CString::CString((CString *)(extraout_ECX + 0x2b));
+  CString::__0CString__QAE_XZ((CString *)(extraout_ECX + 0x2b));
   extraout_ECX[0x10] = 0xffffffff;
   *(undefined1 *)(unaff_EBP + -4) = 2;
   *extraout_ECX = &PTR_LAB_0067039c;
@@ -2899,68 +2906,68 @@ undefined4 * TMacViewMgr::CFrameWnd(void)
   extraout_ECX[0x15] = 0;
   extraout_ECX[0x2c] = 0;
   extraout_ECX[0x2d] = 0;
-  AddFrameWnd();
+  _AddFrameWnd_CFrameWnd__IAEXXZ();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return extraout_ECX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C6BE
-// GHIDRA_NAME TMacViewMgr::DestroyTMacViewMgrBase
-// GHIDRA_PROTO undefined DestroyTMacViewMgrBase()
+// GHIDRA_NAME TMacViewMgr::??1CFrameWnd@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CFrameWnd@@UAE@XZ()
 
-void TMacViewMgr::DestroyTMacViewMgrBase(void)
+void TMacViewMgr::__1CFrameWnd__UAE_XZ(void)
 
 {
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_0067039c;
   *(undefined4 *)(unaff_EBP + -4) = 2;
-  RemoveFrameWnd();
+  _RemoveFrameWnd_CFrameWnd__IAEXXZ();
   if (this[2].m_nModalResult != 0) {
-    FreeHeapBufferIfNotNull(this[2].m_nModalResult);
+    __3_YAXPAX_Z(this[2].m_nModalResult);
   }
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  CString::~CString((CString *)&this[2].m_pCtrlCont);
+  CString::__1CString__QAE_XZ((CString *)&this[2].m_pCtrlCont);
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  DestructCPtrListBaseState();
+  __1CPtrList__UAE_XZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
+  CWnd::__1CWnd__UAE_XZ(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C76D
-// GHIDRA_NAME TMacViewMgr::LoadAccelTable
-// GHIDRA_PROTO undefined __thiscall LoadAccelTable(LPCSTR param_1)
+// GHIDRA_NAME TMacViewMgr::?LoadAccelTable@CFrameWnd@@QAEHPBD@Z
+// GHIDRA_PROTO undefined __thiscall ?LoadAccelTable@CFrameWnd@@QAEHPBD@Z(LPCSTR param_1)
 
-bool TMacViewMgr::LoadAccelTable(LPCSTR param_1)
+bool TMacViewMgr::_LoadAccelTable_CFrameWnd__QAEHPBD_Z(LPCSTR param_1)
 
 {
   int iVar1;
   HACCEL pHVar2;
-  
-  iVar1 = AfxGetModuleState();
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   pHVar2 = LoadAcceleratorsA(*(HINSTANCE *)(iVar1 + 0xc),param_1);
   *(HACCEL *)&this->field_0x48 = pHVar2;
   return pHVar2 != (HACCEL)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C793
-// GHIDRA_NAME TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0
-// GHIDRA_PROTO undefined __thiscall ResolveField12ValueFromActiveChildSlotB0(void)
+// GHIDRA_NAME TMacViewMgr::?GetDefaultAccelerator@CFrameWnd@@UAEPAUHACCEL__@@XZ
+// GHIDRA_PROTO undefined __thiscall ?GetDefaultAccelerator@CFrameWnd@@UAEPAUHACCEL__@@XZ(void)
 
-int TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0()
+int TMacViewMgr::_GetDefaultAccelerator_CFrameWnd__UAEPAUHACCEL____XZ()
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   int iVar2;
   int iVar3;
-  
+
   iVar3 = *(int *)&this->field_0x48;
   uVar1 = (*this->vftable[1].BuildStrategicMapCommodityIconAtlasFrom700To722)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
@@ -2973,21 +2980,21 @@ int TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C7B7
-// GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot038
-// GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot038(LPMSG param_1)
+// GHIDRA_NAME TMacViewMgr::?PreTranslateMessage@CFrameWnd@@UAEHPAUtagMSG@@@Z
+// GHIDRA_PROTO undefined __thiscall ?PreTranslateMessage@CFrameWnd@@UAEHPAUtagMSG@@@Z(LPMSG param_1)
 
-undefined4 TMacViewMgr::TMacViewMgr_VtblSlot038(LPMSG param_1)
+undefined4 TMacViewMgr::_PreTranslateMessage_CFrameWnd__UAEHPAUtagMSG___Z(LPMSG param_1)
 
 {
   undefined uVar1;
   int iVar2;
   undefined3 extraout_var;
   undefined4 uVar3;
-  
+
   if ((param_1->message == 0x201) || (param_1->message == 0xa1)) {
-    AfxCancelModes(param_1->hwnd);
+    _AfxCancelModes__YGXPAUHWND_____Z(param_1->hwnd);
   }
-  iVar2 = TTooltipRelayWindowState::PreTranslateMessage_6084b2
+  iVar2 = TTooltipRelayWindowState::_PreTranslateMessage_CWnd__UAEHPAUtagMSG___Z
                     ((TTooltipRelayWindowState *)this,param_1);
   if (iVar2 == 0) {
     if (*(int **)&this->field_0x68 != (int *)0x0) {
@@ -3025,17 +3032,17 @@ void TMacViewMgr::TMacViewMgr_VtblSlot043()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C877
-// GHIDRA_NAME TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877
-// GHIDRA_PROTO undefined __thiscall ReleaseCaptureAndPostMouseRepeatMessages_0061c877(void)
+// GHIDRA_NAME TMacViewMgr::?ExitHelpMode@CFrameWnd@@UAEXXZ
+// GHIDRA_PROTO undefined __thiscall ?ExitHelpMode@CFrameWnd@@UAEXXZ(void)
 
-void TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877()
+void TMacViewMgr::_ExitHelpMode_CFrameWnd__UAEXXZ()
 
 {
   BOOL BVar1;
   HWND pHVar2;
   int iVar3;
   tagMSG tStack_1c;
-  
+
   if (*(int *)&this->field_0x50 != 0) {
     BVar1 = PeekMessageA(&tStack_1c,*(HWND *)&this->field_0x1c,0x367,0x367,3);
     if (BVar1 == 0) {
@@ -3045,7 +3052,7 @@ void TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877()
     if (pHVar2 == *(HWND *)&this->field_0x1c) {
       ReleaseCapture();
     }
-    iVar3 = GetTopLevelFrame();
+    iVar3 = _GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ();
     *(undefined4 *)&this->field_0x50 = 0;
     *(undefined4 *)(iVar3 + 0x50) = 0;
     PostMessageA(*(HWND *)&this->field_0x1c,0x36a,0,0);
@@ -3054,22 +3061,23 @@ void TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C976
-// GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot032
-// GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot032(uint param_1, int param_2)
+// GHIDRA_NAME TMacViewMgr::?OnCommand@CFrameWnd@@MAEHIJ@Z
+// GHIDRA_PROTO undefined __thiscall ?OnCommand@CFrameWnd@@MAEHIJ@Z(uint param_1, int param_2)
 
-undefined4 TMacViewMgr::TMacViewMgr_VtblSlot032(uint param_1, int param_2)
+undefined4 TMacViewMgr::_OnCommand_CFrameWnd__MAEHIJ_Z(uint param_1, int param_2)
 
 {
   int iVar1;
   LRESULT LVar2;
   undefined4 uVar3;
   uint uVar4;
-  
+
   uVar4 = param_1 & 0xffff;
-  iVar1 = GetTopLevelFrame();
+  iVar1 = _GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ();
   if ((((*(int *)(iVar1 + 0x50) == 0) || (param_2 != 0)) || (uVar4 == 0xe146)) ||
      ((uVar4 == 0xe147 || (uVar4 == 0xe145)))) {
-    uVar3 = TTooltipRelayWindowState::OnCommand((TTooltipRelayWindowState *)this,param_1,param_2);
+    uVar3 = TTooltipRelayWindowState::_OnCommand_CWnd__MAEHIJ_Z
+                      ((TTooltipRelayWindowState *)this,param_1,param_2);
   }
   else {
     LVar2 = SendMessageA(*(HWND *)&this->field_0x1c,0x365,0,uVar4 + 0x10000);
@@ -3082,10 +3090,10 @@ undefined4 TMacViewMgr::TMacViewMgr_VtblSlot032(uint param_1, int param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CA0D
-// GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot036
-// GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot036(void)
+// GHIDRA_NAME TMacViewMgr::?BeginModalState@CFrameWnd@@UAEXXZ
+// GHIDRA_PROTO undefined __thiscall ?BeginModalState@CFrameWnd@@UAEXXZ(void)
 
-undefined1 * TMacViewMgr::TMacViewMgr_VtblSlot036()
+undefined1 * TMacViewMgr::_BeginModalState_CFrameWnd__UAEXXZ()
 
 {
   int iVar1;
@@ -3097,11 +3105,11 @@ undefined1 * TMacViewMgr::TMacViewMgr_VtblSlot036()
   undefined1 *puVar7;
   UINT UVar8;
   int iStack_8;
-  
+
   *(int *)&this->field_0xa0 = *(int *)&this->field_0xa0 + 1;
   puVar7 = &this->field_0xa0;
   if (*(uint *)&this->field_0xa0 < 2) {
-    iVar1 = GetTopLevelParent();
+    iVar1 = _GetTopLevelParent_CWnd__QBEPAV1_XZ();
     iStack_8 = 0;
     UVar8 = 5;
     pHVar2 = GetDesktopWindow();
@@ -3110,9 +3118,9 @@ undefined1 * TMacViewMgr::TMacViewMgr_VtblSlot036()
       if (pHVar2 == (HWND)0x0) break;
       BVar3 = IsWindowEnabled(pHVar2);
       if (BVar3 != 0) {
-        iVar4 = FromHandlePermanent_607b57(pHVar2);
+        iVar4 = _FromHandlePermanent_CWnd__SGPAV1_PAUHWND_____Z(pHVar2);
         if (iVar4 != 0) {
-          iVar4 = AfxIsDescendant(*(undefined4 *)(iVar1 + 0x1c),pHVar2);
+          iVar4 = _AfxIsDescendant__YGHPAUHWND____0_Z(*(undefined4 *)(iVar1 + 0x1c),pHVar2);
           if (iVar4 != 0) {
             LVar5 = SendMessageA(pHVar2,0x36c,0,0);
             if (LVar5 == 0) {
@@ -3125,7 +3133,7 @@ undefined1 * TMacViewMgr::TMacViewMgr_VtblSlot036()
     }
     puVar7 = (undefined1 *)0x0;
     if (iStack_8 != 0) {
-      uVar6 = AllocateWithFallbackHandler(iStack_8 * 4 + 4);
+      uVar6 = __2_YAPAXI_Z(iStack_8 * 4 + 4);
       iStack_8 = 0;
       UVar8 = 5;
       *(undefined4 *)&this->field_0xa4 = uVar6;
@@ -3133,9 +3141,9 @@ undefined1 * TMacViewMgr::TMacViewMgr_VtblSlot036()
       for (pHVar2 = GetWindow(pHVar2,UVar8); pHVar2 != (HWND)0x0; pHVar2 = GetWindow(pHVar2,2)) {
         BVar3 = IsWindowEnabled(pHVar2);
         if (BVar3 != 0) {
-          iVar4 = FromHandlePermanent_607b57(pHVar2);
+          iVar4 = _FromHandlePermanent_CWnd__SGPAV1_PAUHWND_____Z(pHVar2);
           if (iVar4 != 0) {
-            iVar4 = AfxIsDescendant(*(undefined4 *)(iVar1 + 0x1c),pHVar2);
+            iVar4 = _AfxIsDescendant__YGHPAUHWND____0_Z(*(undefined4 *)(iVar1 + 0x1c),pHVar2);
             if (iVar4 != 0) {
               LVar5 = SendMessageA(pHVar2,0x36c,0,0);
               if (LVar5 == 0) {
@@ -3155,18 +3163,18 @@ undefined1 * TMacViewMgr::TMacViewMgr_VtblSlot036()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CDB3
-// GHIDRA_NAME TMacViewMgr::PreCreateWindow_61cdb3
-// GHIDRA_PROTO undefined PreCreateWindow_61cdb3()
+// GHIDRA_NAME TMacViewMgr::?PreCreateWindow@CFrameWnd@@MAEHAAUtagCREATESTRUCTA@@@Z
+// GHIDRA_PROTO undefined ?PreCreateWindow@CFrameWnd@@MAEHAAUtagCREATESTRUCTA@@@Z()
 
-undefined4 TMacViewMgr::PreCreateWindow_61cdb3(int param_1)
+undefined4 TMacViewMgr::_PreCreateWindow_CFrameWnd__MAEHAAUtagCREATESTRUCTA___Z(int param_1)
 
 {
   int iVar1;
-  
+
   if (*(int *)(param_1 + 0x28) == 0) {
-    iVar1 = AfxGetModuleState();
+    iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
     if ((*(byte *)(iVar1 + 0x18) & 8) == 0) {
-      iVar1 = AfxEndDeferRegisterClass(8);
+      iVar1 = _AfxEndDeferRegisterClass__YGHF_Z(8);
     }
     else {
       iVar1 = 1;
@@ -3189,26 +3197,29 @@ undefined4 TMacViewMgr::PreCreateWindow_61cdb3(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CF1B
-// GHIDRA_NAME TMacViewMgr::WrapperFor_CreateView_At0061cf1b
-// GHIDRA_PROTO undefined WrapperFor_CreateView_At0061cf1b()
+// GHIDRA_NAME TMacViewMgr::?OnCreateClient@CFrameWnd@@MAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z
+// GHIDRA_PROTO undefined ?OnCreateClient@CFrameWnd@@MAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z()
 
-undefined4 TMacViewMgr::WrapperFor_CreateView_At0061cf1b(undefined4 param_1,int *param_2)
+undefined4
+TMacViewMgr::_OnCreateClient_CFrameWnd__MAEHPAUtagCREATESTRUCTA__PAUCCreateContext___Z
+          (undefined4 param_1,int *param_2)
 
 {
   int iVar1;
-  
+
   if (((param_2 != (int *)0x0) && (*param_2 != 0)) &&
-     (iVar1 = CreateView(param_2,0xe900), iVar1 == 0)) {
+     (iVar1 = _CreateView_CFrameWnd__QAEPAVCWnd__PAUCCreateContext__I_Z(param_2,0xe900), iVar1 == 0)
+     ) {
     return 0;
   }
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D01E
-// GHIDRA_NAME TMacViewMgr::LoadFrame
-// GHIDRA_PROTO undefined LoadFrame()
+// GHIDRA_NAME TMacViewMgr::?LoadFrame@CFrameWnd@@UAEHIKPAVCWnd@@PAUCCreateContext@@@Z
+// GHIDRA_PROTO undefined ?LoadFrame@CFrameWnd@@UAEHIKPAVCWnd@@PAUCCreateContext@@@Z()
 
-undefined4 TMacViewMgr::LoadFrame(void)
+undefined4 TMacViewMgr::_LoadFrame_CFrameWnd__UAEHIKPAVCWnd__PAUCCreateContext___Z(void)
 
 {
   uint uVar1;
@@ -3218,44 +3229,46 @@ undefined4 TMacViewMgr::LoadFrame(void)
   TMacViewMgr *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   uVar1 = *(uint *)(unaff_EBP + 8);
   *(uint *)&this->field_0x8c = uVar1;
-  CString::CString((CString *)(unaff_EBP + 8));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + 8));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  iVar2 = LoadStringA(uVar1);
+  iVar2 = _LoadStringA_CString__QAEHI_Z(uVar1);
   if (iVar2 != 0) {
-    AfxExtractSubString(&this->field_0xac,*(undefined4 *)(unaff_EBP + 8),0,10);
+    _AfxExtractSubString__YGHAAVCString__PBDHD_Z
+              (&this->field_0xac,*(undefined4 *)(unaff_EBP + 8),0,10);
   }
-  iVar2 = AfxGetModuleState();
+  iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   if ((*(byte *)(iVar2 + 0x18) & 8) == 0) {
-    iVar2 = AfxEndDeferRegisterClass(8);
+    iVar2 = _AfxEndDeferRegisterClass__YGHF_Z(8);
   }
   else {
     iVar2 = 1;
   }
   if (iVar2 != 0) {
-    uVar3 = GetIconWndClass(*(undefined4 *)(unaff_EBP + 0xc),uVar1);
-    iVar2 = CreateWindowWithOptionalMenuResource
+    uVar3 = _GetIconWndClass_CFrameWnd__IAEPBDKI_Z_0061cf9b(*(undefined4 *)(unaff_EBP + 0xc),uVar1);
+    iVar2 = _Create_CFrameWnd__QAEHPBD0KABUtagRECT__PAVCWnd__0KPAUCCreateContext___Z
                       (uVar3,*(undefined4 *)&this->field_0xac,*(undefined4 *)(unaff_EBP + 0xc),
                        &DAT_006a6130,*(undefined4 *)(unaff_EBP + 0x10),(LPCSTR)(uVar1 & 0xffff),0,
                        *(undefined4 *)(unaff_EBP + 0x14));
     if (iVar2 != 0) {
       pHVar4 = GetMenu(*(HWND *)&this->field_0x1c);
       *(HMENU *)&this->field_0x44 = pHVar4;
-      LoadAccelTable(this,(LPCSTR)(uVar1 & 0xffff));
+      _LoadAccelTable_CFrameWnd__QAEHPBD_Z(this,(LPCSTR)(uVar1 & 0xffff));
       if (*(int *)(unaff_EBP + 0x14) == 0) {
-        SendMessageToDescendants(*(undefined4 *)&this->field_0x1c,0x364,0,0,1,1);
+        _SendMessageToDescendants_CWnd__SGXPAUHWND____IIJHH_Z
+                  (*(undefined4 *)&this->field_0x1c,0x364,0,0,1,1);
       }
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      CString::~CString((CString *)(unaff_EBP + 8));
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 8));
       uVar3 = 1;
       goto LAB_0061d0f8;
     }
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(unaff_EBP + 8));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 8));
   uVar3 = 0;
 LAB_0061d0f8:
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -3263,15 +3276,15 @@ LAB_0061d0f8:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D109
-// GHIDRA_NAME TMacViewMgr::SetWindowMenuFromParamOrActiveChildOrFallback
-// GHIDRA_PROTO undefined __thiscall SetWindowMenuFromParamOrActiveChildOrFallback(HMENU param_1)
+// GHIDRA_NAME TMacViewMgr::?OnUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z
+// GHIDRA_PROTO undefined __thiscall ?OnUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z(HMENU param_1)
 
-void TMacViewMgr::SetWindowMenuFromParamOrActiveChildOrFallback(HMENU param_1)
+void TMacViewMgr::_OnUpdateFrameMenu_CFrameWnd__UAEXPAUHMENU_____Z(HMENU param_1)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   if (param_1 == (HMENU)0x0) {
     uVar1 = (*this->vftable[1].BuildStrategicMapCommodityIconAtlasFrom700To722)();
     if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
@@ -3286,24 +3299,24 @@ void TMacViewMgr::SetWindowMenuFromParamOrActiveChildOrFallback(HMENU param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D37E
-// GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot005
-// GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot005(uint param_1, uint param_2, int param_3, undefined4 param_4)
+// GHIDRA_NAME TMacViewMgr::?OnCmdMsg@CFrameWnd@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
+// GHIDRA_PROTO undefined __thiscall ?OnCmdMsg@CFrameWnd@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
 undefined4 __thiscall
-TMacViewMgr::TMacViewMgr_VtblSlot005
+TMacViewMgr::_OnCmdMsg_CFrameWnd__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
           (TMacViewMgr *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
 
 {
   int *piVar1;
   int iVar2;
-  
+
   piVar1 = (int *)GetObjectValueAtOffset98();
   if (((piVar1 == (int *)0x0) ||
       (iVar2 = (**(code **)(*piVar1 + 0x14))(param_1,param_2,param_3,param_4), iVar2 == 0)) &&
-     (iVar2 = TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
+     (iVar2 = TTooltipRelayWindowState::_OnCmdMsg_CCmdTarget__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
                         ((TTooltipRelayWindowState *)this,param_1,param_2,param_3,param_4),
      iVar2 == 0)) {
-    iVar2 = AfxGetModuleState();
+    iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
     if ((*(int **)(iVar2 + 4) == (int *)0x0) ||
        (iVar2 = (**(code **)(**(int **)(iVar2 + 4) + 0x14))(param_1,param_2,param_3,param_4),
        iVar2 == 0)) {
@@ -3321,7 +3334,7 @@ undefined4 TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
 
 {
   int iVar1;
-  
+
   iVar1 = GetObjectValueAtOffset98();
   if (iVar1 != 0) {
     return *(undefined4 *)(iVar1 + 0x3c);
@@ -3330,44 +3343,47 @@ undefined4 TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061DC76
-// GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot051
-// GHIDRA_PROTO undefined TMacViewMgr_VtblSlot051()
+// GHIDRA_NAME TMacViewMgr::?GetMessageString@CFrameWnd@@UBEXIAAVCString@@@Z
+// GHIDRA_PROTO undefined ?GetMessageString@CFrameWnd@@UBEXIAAVCString@@@Z()
 
-void TMacViewMgr::TMacViewMgr_VtblSlot051(undefined4 param_1,CString *param_2)
+void TMacViewMgr::_GetMessageString_CFrameWnd__UBEXIAAVCString___Z
+               (undefined4 param_1,CString *param_2)
 
 {
   int iVar1;
   int iVar2;
   undefined1 *puVar3;
-  
-  iVar1 = CString::EnsureCapacityPreserveLength(param_2,0xff);
-  iVar2 = AfxLoadString(param_1,iVar1,0x100);
+
+  iVar1 = CString::_GetBuffer_CString__QAEPADH_Z(param_2,0xff);
+  iVar2 = _AfxLoadString__YGHIPADI_Z(param_1,iVar1,0x100);
   if (iVar2 != 0) {
-    puVar3 = (undefined1 *)FindCharWithMbcsLeadByteSupport(iVar1,10);
+    puVar3 = (undefined1 *)__mbschr(iVar1,10);
     if (puVar3 != (undefined1 *)0x0) {
       *puVar3 = 0;
     }
   }
-  CString::SetLengthAndTerminator(param_2,-1);
+  CString::_ReleaseBuffer_CString__QAEXH_Z(param_2,-1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061DDB2
-// GHIDRA_NAME TMacViewMgr::WrapperFor_GetDescendantWindow_At0061ddb2
-// GHIDRA_PROTO undefined WrapperFor_GetDescendantWindow_At0061ddb2()
+// GHIDRA_NAME TMacViewMgr::?GetMessageBar@CFrameWnd@@UAEPAVCWnd@@XZ
+// GHIDRA_PROTO undefined ?GetMessageBar@CFrameWnd@@UAEPAVCWnd@@XZ()
 
-void __fastcall TMacViewMgr::WrapperFor_GetDescendantWindow_At0061ddb2(int param_1)
+void __fastcall TMacViewMgr::_GetMessageBar_CFrameWnd__UAEPAVCWnd__XZ(int param_1)
 
 {
-  GetDescendantWindow(*(undefined4 *)(param_1 + 0x1c),0xe801,1);
+  _GetDescendantWindow_CWnd__SGPAV1_PAUHWND____HH_Z(*(undefined4 *)(param_1 + 0x1c),0xe801,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E1FE
-// GHIDRA_NAME TMacViewMgr::OnSetPreviewMode
-// GHIDRA_PROTO undefined __thiscall OnSetPreviewMode(int param_1, int * param_2)
+// GHIDRA_NAME TMacViewMgr::?OnSetPreviewMode@CFrameWnd@@UAEXHPAUCPrintPreviewState@@@Z
+// GHIDRA_PROTO undefined __thiscall ?OnSetPreviewMode@CFrameWnd@@UAEXHPAUCPrintPreviewState@@@Z(int param_1, int * param_2)
 
-void TMacViewMgr::OnSetPreviewMode(int param_1, int *param_2)
+void __thiscall
+TMacViewMgr::_OnSetPreviewMode_CFrameWnd__UAEXHPAUCPrintPreviewState___Z
+          (TMacViewMgr *this,int param_1,int *param_2)
 
 {
   int *piVar1;
@@ -3383,7 +3399,7 @@ void TMacViewMgr::OnSetPreviewMode(int param_1, int *param_2)
   HWND hWnd;
   HWND unaff_retaddr;
   uint uStack_c;
-  
+
   uVar4 = (*this->vftable[1].LoadStrategicMapUnitIconAtlas750)();
   if ((param_1 != 0) &&
      (piVar1 = *(int **)(CONCAT31(extraout_var,uVar4) + 0x68), piVar1 != (int *)0x0)) {
@@ -3405,7 +3421,7 @@ void TMacViewMgr::OnSetPreviewMode(int param_1, int *param_2)
       }
       iVar7 = (**(code **)(*piVar1 + 0xd8))();
       if ((iVar7 == 0) || (uVar5 != 0xe81f)) {
-        FUN_0061d927(piVar1,param_2[2] & uVar6,1);
+        _ShowControlBar_CFrameWnd__QAEXPAVCControlBar__HH_Z(piVar1,param_2[2] & uVar6,1);
       }
     }
   }
@@ -3434,11 +3450,11 @@ void TMacViewMgr::OnSetPreviewMode(int param_1, int *param_2)
     }
     ShowWindow(unaff_retaddr,5);
     *(int *)&this->field_0x48 = param_2[5];
-    ShowOwnedWindows(1);
+    _ShowOwnedWindows_CFrameWnd__QAEXH_Z(1);
   }
   else {
     *(int *)&this->field_0x9c = param_2[4];
-    ShowOwnedWindows(0);
+    _ShowOwnedWindows_CFrameWnd__QAEXH_Z(0);
     pHVar8 = GetDlgItem(*(HWND *)&this->field_0x1c,*param_2);
     ShowWindow(pHVar8,0);
     pHVar9 = GetMenu(*(HWND *)&this->field_0x1c);
@@ -3450,7 +3466,7 @@ void TMacViewMgr::OnSetPreviewMode(int param_1, int *param_2)
     }
     param_2[5] = *(int *)&this->field_0x48;
     *(undefined4 *)&this->field_0x48 = 0;
-    LoadAccelTable(this,(LPCSTR)0x7915);
+    _LoadAccelTable_CFrameWnd__QAEHPBD_Z(this,(LPCSTR)0x7915);
     if (*param_2 != 0xe900) {
       pHVar8 = GetDlgItem(*(HWND *)&this->field_0x1c,0xe900);
     }
@@ -3472,14 +3488,14 @@ TMacViewMgr * TMacViewMgr::TMacViewMgr_VtblSlot050()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E6E3
-// GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot053
-// GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot053(int param_1)
+// GHIDRA_NAME TMacViewMgr::?ActivateFrame@CFrameWnd@@UAEXH@Z
+// GHIDRA_PROTO undefined __thiscall ?ActivateFrame@CFrameWnd@@UAEXH@Z(int param_1)
 
-void TMacViewMgr::TMacViewMgr_VtblSlot053(int param_1)
+void TMacViewMgr::_ActivateFrame_CFrameWnd__UAEXH_Z(int param_1)
 
 {
   BOOL BVar1;
-  
+
   if (param_1 == -1) {
     BVar1 = IsWindowVisible(*(HWND *)&this->field_0x1c);
     if (BVar1 == 0) {
@@ -3492,19 +3508,19 @@ void TMacViewMgr::TMacViewMgr_VtblSlot053(int param_1)
       }
     }
   }
-  ::CFrameWnd::BringToTop((CFrameWnd *)this,param_1);
+  CFrameWnd::_BringToTop_CFrameWnd__IAEXH_Z((CFrameWnd *)this,param_1);
   if (param_1 != -1) {
-    ::CFrameWnd::ShowWindow((CFrameWnd *)this,param_1);
-    ::CFrameWnd::BringToTop((CFrameWnd *)this,param_1);
+    CFrameWnd::_ShowWindow_CWnd__QAEHH_Z((CFrameWnd *)this,param_1);
+    CFrameWnd::_BringToTop_CFrameWnd__IAEXH_Z((CFrameWnd *)this,param_1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00623B4C
-// GHIDRA_NAME TMacViewMgr::AddHead_623b4c
-// GHIDRA_PROTO undefined __thiscall AddHead_623b4c(TMacViewMgrVtbl * param_1)
+// GHIDRA_NAME TMacViewMgr::?AddHead@CSimpleList@@QAEXPAX@Z
+// GHIDRA_PROTO undefined __thiscall ?AddHead@CSimpleList@@QAEXPAX@Z(TMacViewMgrVtbl * param_1)
 
-void TMacViewMgr::AddHead_623b4c(TMacViewMgrVtbl *param_1)
+void TMacViewMgr::_AddHead_CSimpleList__QAEXPAX_Z(TMacViewMgrVtbl *param_1)
 
 {
   *(TMacViewMgrVtbl **)((int)&param_1->GetRuntimeClass + *(int *)&this->field_0x4) = this->vftable;
@@ -3513,23 +3529,25 @@ void TMacViewMgr::AddHead_623b4c(TMacViewMgrVtbl *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00623FF6
-// GHIDRA_NAME TMacViewMgr::GetData
-// GHIDRA_PROTO undefined __thiscall GetData(undefined * param_1)
+// GHIDRA_NAME TMacViewMgr::?GetData@CThreadLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z
+// GHIDRA_PROTO undefined __thiscall ?GetData@CThreadLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z(undefined * param_1)
 
 /* WARNING: Removing unreachable block (ram,0x0062401d) */
 
-int TMacViewMgr::GetData(undefined *param_1)
+int __thiscall
+TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
+          (TMacViewMgr *this,undefined *param_1)
 
 {
   TMacViewMgrVtbl *pTVar1;
   LPVOID pvVar2;
   int iVar3;
-  
+
   if (this->vftable == (TMacViewMgrVtbl *)0x0) {
     if (DAT_006a7cc0 == (DWORD *)0x0) {
-      DAT_006a7cc0 = (DWORD *)CThreadSlotData();
+      DAT_006a7cc0 = (DWORD *)__0CThreadSlotData__QAE_XZ();
     }
-    pTVar1 = (TMacViewMgrVtbl *)AllocSlot();
+    pTVar1 = (TMacViewMgrVtbl *)_AllocSlot_CThreadSlotData__QAEHXZ();
     this->vftable = pTVar1;
   }
   pTVar1 = this->vftable;
@@ -3542,7 +3560,7 @@ int TMacViewMgr::GetData(undefined *param_1)
   }
   if (iVar3 == 0) {
     iVar3 = (*(code *)param_1)();
-    SetValue(this->vftable,iVar3);
+    _SetValue_CThreadSlotData__QAEXHPAX_Z(this->vftable,iVar3);
   }
   return iVar3;
 }

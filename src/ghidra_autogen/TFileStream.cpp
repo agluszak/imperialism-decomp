@@ -14,7 +14,7 @@ void TFileStream::CreateTFileStreamInstance(char *param_1)
   TFileStreamVtbl *pTVar2;
   uint uVar3;
   char *pcVar4;
-  
+
   uVar3 = 0xffffffff;
   pTVar2 = this->vftable;
   pcVar4 = param_1;
@@ -60,7 +60,7 @@ TFileStream * TFileStream::ConstructTStreamBaseState(byte param_1)
 {
   TObject::DestructTObjectAndMaybeFree((TObject *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -133,12 +133,12 @@ void TFileStream::OrphanRetStub_00488b40()
 {
   int in_stack_00000004;
   uint in_stack_00000008;
-  
+
   if (*(int *)&this->field_0x4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x3cc);
   }
-  CArchive::ReadBytesFromSerializedBuffer
+  CArchive::_Read_CArchive__QAEIPAXI_Z
             (*(CArchive **)(*(int *)&this->field_0x4 + 4),in_stack_00000004,in_stack_00000008);
   return;
 }
@@ -152,12 +152,12 @@ void TFileStream::OrphanRetStub_00488e70()
 {
   int in_stack_00000004;
   uint in_stack_00000008;
-  
+
   if (*(int *)&this->field_0x4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x410);
   }
-  TNetMgr::WriteBytesToSerializedBuffer
+  TNetMgr::_Write_CArchive__QAEXPBXI_Z
             (*(TNetMgr **)(*(int *)&this->field_0x4 + 4),in_stack_00000004,in_stack_00000008);
   return;
 }
@@ -170,8 +170,8 @@ undefined4 TFileStream::OrphanLeaf_NoCall_Ins02_00489980(undefined4 *param_1)
 
 {
   undefined4 uVar1;
-  
-  uVar1 = ReadObject(0);
+
+  uVar1 = _ReadObject_CArchive__QAEPAVCObject__PBUCRuntimeClass___Z(0);
   *param_1 = uVar1;
   return 1;
 }
@@ -184,8 +184,9 @@ void TFileStream::OrphanRetStub_004899a0()
 
 {
   int *in_stack_00000004;
-  
-  TNetMgr::WriteObject(*(TNetMgr **)(*(int *)&this->field_0x4 + 4),in_stack_00000004);
+
+  TNetMgr::_WriteObject_CArchive__QAEXPBVCObject___Z
+            (*(TNetMgr **)(*(int *)&this->field_0x4 + 4),in_stack_00000004);
   return;
 }
 
@@ -196,7 +197,7 @@ void TFileStream::OrphanRetStub_004899a0()
 void TFileStream::WrapperFor_operator_At00489360(undefined4 param_1)
 
 {
-  FUN_006119aa(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);
+  __5_YGAAVCArchive__AAV0_AAVCString___Z(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);
   return;
 }
 
@@ -207,7 +208,7 @@ void TFileStream::WrapperFor_operator_At00489360(undefined4 param_1)
 void TFileStream::OrphanCallChain_C2_I21_00489030(undefined4 param_1)
 
 {
-  WriteVariableLengthPrefixedByteBuffer(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);
+  __6_YGAAVCArchive__AAV0_ABVCString___Z(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);
   return;
 }
 

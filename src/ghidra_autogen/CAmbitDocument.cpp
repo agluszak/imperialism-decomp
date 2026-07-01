@@ -21,7 +21,7 @@ void CAmbitDocument::SetForeignMinisterReadyFlag14()
   int iVar1;
   LPCSTR lpFileName;
   undefined **ppuVar2;
-  
+
   if (*(int *)&this[2].field_0x20 != 0) {
     ChangeDisplaySettingsA((DEVMODEA *)0x0,0);
   }
@@ -32,7 +32,7 @@ void CAmbitDocument::SetForeignMinisterReadyFlag14()
   iVar1 = g_pModuleLibraryCacheState;
   if (g_pModuleLibraryCacheState != 0) {
     DestructModuleLibraryCacheDualTableAndUnloadModules();
-    FreeHeapBufferIfNotNull(iVar1);
+    __3_YAXPAX_Z(iVar1);
   }
   g_pModuleLibraryCacheState = 0;
   if (g_pStrategicMapViewSystem != (int *)0x0) {
@@ -62,7 +62,7 @@ void CAmbitDocument::SetForeignMinisterReadyFlag14()
     } while (lpFileName != (LPCSTR)0x0);
   }
   PostMessageA((HWND)0xffff,0x1d,0,0);
-  ExitInstance();
+  _ExitInstance_CWinApp__UAEHXZ();
   return;
 }
 
@@ -76,7 +76,7 @@ CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive
 
 {
   RefreshBackdropOnInputMessages(param_1);
-  FUN_00606640(param_1);
+  _PreTranslateMessage_CWinThread__UAEHPAUtagMSG___Z(param_1);
   return;
 }
 
@@ -87,7 +87,7 @@ CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive
 undefined4 CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 
 {
-  FUN_0060567e(param_1);
+  _OnIdle_CWinApp__UAEHJ_Z(param_1);
   if (param_1 == 0) {
     (*g_pGlobalUiRootController->vftable->OnEndPrintPreview)(0);
   }
@@ -96,8 +96,8 @@ undefined4 CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006055AE
-// GHIDRA_NAME CAmbitDocument::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME CAmbitDocument::?Run@CWinApp@@UAEHXZ
+// GHIDRA_PROTO undefined __thiscall ?Run@CWinApp@@UAEHXZ(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Run-stage lifecycle method (called from DispatchMfcAppLifecycle after successful InitInstance).
 // GHIDRA_COMMENT Posts quit if no main window and app shutdown condition is met, then executes RunMfcThreadMessageLoopCore for the active app thread.
@@ -107,24 +107,24 @@ undefined4 CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
    Posts quit if no main window and app shutdown condition is met, then executes
    RunMfcThreadMessageLoopCore for the active app thread. */
 
-void CAmbitDocument::_scalar_deleting_destructor_()
+void CAmbitDocument::_Run_CWinApp__UAEHXZ()
 
 {
   int iVar1;
-  
+
   if (*(int *)&this->field_0x1c == 0) {
     iVar1 = GetMfcThreadStateFlagDword30();
     if (iVar1 != 0) {
-      AfxPostQuitMessage(0);
+      _AfxPostQuitMessage__YGXH_Z_00626b90(0);
     }
   }
-  RunMfcThreadMessageLoopCore();
+  _Run_CWinThread__UAEHXZ();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006055D0
-// GHIDRA_NAME CAmbitDocument::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined TShipBuildingTask::ConstructTTaskBaseState()
+// GHIDRA_NAME CAmbitDocument::?WinHelpA@CWinApp@@UAEXKI@Z
+// GHIDRA_PROTO undefined ?WinHelpA@CWinApp@@UAEXKI@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Clears local pending state and posts custom message 0x36A to active thread window before invoking thread callback +0x74.
 // GHIDRA_COMMENT_END
@@ -133,12 +133,12 @@ void CAmbitDocument::_scalar_deleting_destructor_()
    thread callback +0x74. */
 
 void __thiscall
-CAmbitDocument::ConstructTTaskBaseState(int param_1,undefined4 param_2,undefined4 param_3)
+CAmbitDocument::_WinHelpA_CWinApp__UAEXKI_Z(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
   int *piVar1;
-  
-  piVar1 = (int *)AfxGetMainWnd();
+
+  piVar1 = (int *)_AfxGetMainWnd__YGPAVCWnd__XZ();
   *(undefined4 *)(param_1 + 0x84) = 0;
   PostMessageA((HWND)piVar1[7],0x36a,0,0);
   (**(code **)(*piVar1 + 0x74))(param_2,param_3);
@@ -159,14 +159,14 @@ void __fastcall CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606451
-// GHIDRA_NAME CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
+// GHIDRA_NAME CAmbitDocument::?IsIdleMessage@CWinThread@@UAEHPAUtagMSG@@@Z
+// GHIDRA_PROTO undefined __thiscall ?IsIdleMessage@CWinThread@@UAEHPAUtagMSG@@@Z(int param_1)
 
-undefined4 CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
+undefined4 CAmbitDocument::_IsIdleMessage_CWinThread__UAEHPAUtagMSG___Z(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(param_1 + 4);
   if ((iVar1 == 0x200) || (iVar1 == 0xa0)) {
     if ((this[1].m_pOuterUnknown == *(void **)(param_1 + 0x14)) &&
@@ -184,11 +184,11 @@ undefined4 CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006067A2
-// GHIDRA_NAME CAmbitDocument::SerializeNodeMapEntries_Key16Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key16Value32_WithArchive(int param_1, undefined4 * param_2)
+// GHIDRA_NAME CAmbitDocument::?ProcessMessageFilter@CWinThread@@UAEHHPAUtagMSG@@@Z
+// GHIDRA_PROTO undefined __thiscall ?ProcessMessageFilter@CWinThread@@UAEHHPAUtagMSG@@@Z(int param_1, undefined4 * param_2)
 
 undefined4 __thiscall
-CAmbitDocument::SerializeNodeMapEntries_Key16Value32_WithArchive
+CAmbitDocument::_ProcessMessageFilter_CWinThread__UAEHHPAUtagMSG___Z
           (CAmbitDocument *this,int param_1,undefined4 *param_2)
 
 {
@@ -201,7 +201,7 @@ CAmbitDocument::SerializeNodeMapEntries_Key16Value32_WithArchive
   HWND hWnd;
   undefined4 local_24 [7];
   CAmbitDocument *local_8;
-  
+
   if (param_2 == (undefined4 *)0x0) {
     return 0;
   }
@@ -210,22 +210,25 @@ CAmbitDocument::SerializeNodeMapEntries_Key16Value32_WithArchive
     if (param_1 != 2) {
       return 0;
     }
-    iVar3 = FromHandle(*param_2);
-    if (((((iVar3 != 0) && (iVar3 = GetTopLevelFrame(), iVar3 != 0)) &&
-         (iVar4 = IsTracking(), iVar4 != 0)) &&
+    iVar3 = _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(*param_2);
+    if (((((iVar3 != 0) && (iVar3 = _GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ(), iVar3 != 0)) &&
+         (iVar4 = _IsTracking_CFrameWnd__QBEHXZ(), iVar4 != 0)) &&
         ((*(int *)(iVar3 + 0x50) != 0 &&
-         (iVar3 = AfxGetMainWnd(), *(int *)&local_8->field_0x1c != 0)))) &&
+         (iVar3 = _AfxGetMainWnd__YGPAVCWnd__XZ(), *(int *)&local_8->field_0x1c != 0)))) &&
        (((param_2[1] == 0x100 && (param_2[2] == 0xd)) || (param_2[1] == 0x202)))) {
       hWnd = *(HWND *)(iVar3 + 0x1c);
       goto LAB_0060685d;
     }
   }
-  iVar3 = AfxGetMainWnd();
-  if (((0x332 < DAT_006a7d54) || (iVar3 == 0)) || (iVar4 = FUN_006068e9(param_2), iVar4 == 0)) {
+  iVar3 = _AfxGetMainWnd__YGPAVCWnd__XZ();
+  if (((0x332 < DAT_006a7d54) || (iVar3 == 0)) ||
+     (iVar4 = _IsHelpKey__YGHPAUtagMSG___Z(param_2), iVar4 == 0)) {
     if ((((param_1 != 0) || (*(int *)&local_8->field_0x20 == 0)) || ((uint)param_2[1] < 0x100)) ||
        ((0x108 < (uint)param_2[1] ||
-        (iVar3 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c),
-        *(int *)(iVar3 + 0xbc) != 0)))) {
+        (iVar3 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
+                           ((TMacViewMgr *)&DAT_006a7a50,
+                            _CreateObject___CThreadLocal_V_AFX_THREAD_STATE____SGPAVCNoTrackObject__XZ
+                           ), *(int *)(iVar3 + 0xbc) != 0)))) {
       return 0;
     }
     *(undefined4 *)(iVar3 + 0xbc) = 1;
@@ -235,7 +238,7 @@ CAmbitDocument::SerializeNodeMapEntries_Key16Value32_WithArchive
       param_2 = param_2 + 1;
       puVar5 = puVar5 + 1;
     }
-    iVar4 = IsWindowEnabled();
+    iVar4 = _IsWindowEnabled_CWnd__QBEHXZ();
     if ((iVar4 != 0) &&
        (uVar2 = (*pCVar1->vftable[3].ConstructTTaskBaseState)(local_24),
        CONCAT31(extraout_var,uVar2) != 0)) {
@@ -252,24 +255,24 @@ LAB_0060685d:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606934
-// GHIDRA_NAME CAmbitDocument::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined TShipBuildingTask::ConstructTTaskBaseState()
+// GHIDRA_NAME CAmbitDocument::?GetMainWnd@CWinThread@@UAEPAVCWnd@@XZ
+// GHIDRA_PROTO undefined ?GetMainWnd@CWinThread@@UAEPAVCWnd@@XZ()
 
-void __fastcall CAmbitDocument::ConstructTTaskBaseState(int param_1)
+void __fastcall CAmbitDocument::_GetMainWnd_CWinThread__UAEPAVCWnd__XZ(int param_1)
 
 {
   HWND pHVar1;
-  
+
   if ((*(int *)(param_1 + 0x20) == 0) && (*(int *)(param_1 + 0x1c) == 0)) {
     pHVar1 = GetActiveWindow();
-    FromHandle(pHVar1);
+    _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060694F
-// GHIDRA_NAME CAmbitDocument::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
+// GHIDRA_NAME CAmbitDocument::?PumpMessage@CWinThread@@UAEHXZ
+// GHIDRA_PROTO undefined __thiscall ?PumpMessage@CWinThread@@UAEHXZ(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Core thread message pump step.
 // GHIDRA_COMMENT Calls GetMessageA, optional pre-translation hook, then TranslateMessage/DispatchMessageA unless message 0x36A is filtered.
@@ -279,7 +282,7 @@ void __fastcall CAmbitDocument::ConstructTTaskBaseState(int param_1)
    Calls GetMessageA, optional pre-translation hook, then TranslateMessage/DispatchMessageA unless
    message 0x36A is filtered. */
 
-undefined4 CAmbitDocument::ConstructTTaskBaseState()
+undefined4 CAmbitDocument::_PumpMessage_CWinThread__UAEHXZ()
 
 {
   undefined1 *lpMsg;
@@ -287,7 +290,7 @@ undefined4 CAmbitDocument::ConstructTTaskBaseState()
   BOOL BVar2;
   undefined3 extraout_var;
   undefined4 uVar3;
-  
+
   lpMsg = &this->field_0x30;
   BVar2 = GetMessageA((LPMSG)lpMsg,(HWND)0x0,0,0);
   uVar3 = 0;
@@ -305,15 +308,15 @@ undefined4 CAmbitDocument::ConstructTTaskBaseState()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061849D
-// GHIDRA_NAME CAmbitDocument::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined TSoundPlayer::OrphanRetStub_0059add0()
+// GHIDRA_NAME CAmbitDocument::?DoWaitCursor@CWinApp@@UAEXH@Z
+// GHIDRA_PROTO undefined ?DoWaitCursor@CWinApp@@UAEXH@Z()
 
-void __thiscall CAmbitDocument::OrphanRetStub_0059add0(int param_1,int param_2)
+void __thiscall CAmbitDocument::_DoWaitCursor_CWinApp__UAEXH_Z(int param_1,int param_2)
 
 {
   HCURSOR pHVar1;
-  
-  AfxLockGlobals(2);
+
+  _AfxLockGlobals__YGXH_Z(2);
   *(int *)(param_1 + 0xa0) = *(int *)(param_1 + 0xa0) + param_2;
   if (*(int *)(param_1 + 0xa0) < 1) {
     *(undefined4 *)(param_1 + 0xa0) = 0;
@@ -325,16 +328,16 @@ void __thiscall CAmbitDocument::OrphanRetStub_0059add0(int param_1,int param_2)
       *(HCURSOR *)(param_1 + 0xa4) = pHVar1;
     }
   }
-  AfxUnlockGlobals(2);
+  _AfxUnlockGlobals__YGXH_Z(2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061852A
-// GHIDRA_NAME CAmbitDocument::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(LPCSTR param_1, uint param_2, int param_3)
+// GHIDRA_NAME CAmbitDocument::?DoMessageBox@CWinApp@@UAEHPBDII@Z
+// GHIDRA_PROTO undefined __thiscall ?DoMessageBox@CWinApp@@UAEHPBDII@Z(LPCSTR param_1, uint param_2, int param_3)
 
 int __thiscall
-CAmbitDocument::OrphanCallChain_C11_I88_004874b0
+CAmbitDocument::_DoMessageBox_CWinApp__UAEHPBDII_Z
           (CAmbitDocument *this,LPCSTR param_1,uint param_2,int param_3)
 
 {
@@ -345,13 +348,13 @@ CAmbitDocument::OrphanCallChain_C11_I88_004874b0
   HWND hWnd;
   int *piVar5;
   CAmbitDocument *local_8;
-  
+
   local_8 = this;
-  FUN_006184fc(0);
-  iVar1 = FUN_00609437(0,&local_8);
+  _EnableModeless_CWinApp__QAEXH_Z(0);
+  iVar1 = _GetSafeOwner_CWnd__SGPAV1_PAV1_PAPAUHWND_____Z(0,&local_8);
   piVar5 = (int *)&this[1].field_0x48;
   if (iVar1 != 0) {
-    piVar2 = (int *)GetTopLevelParent();
+    piVar2 = (int *)_GetTopLevelParent_CWnd__QBEPAV1_XZ();
     iVar3 = (**(code **)(*piVar2 + 0xb8))();
     if (iVar3 != 0) {
       piVar5 = piVar2 + 0x13;
@@ -365,7 +368,7 @@ CAmbitDocument::OrphanCallChain_C11_I88_004874b0
      ((uVar4 = param_2 & 0xf, uVar4 < 2 || ((2 < uVar4 && (uVar4 < 5)))))) {
     param_2 = param_2 | 0x30;
   }
-  AfxGetThreadState();
+  _AfxGetThreadState__YGPAV_AFX_THREAD_STATE__XZ();
   hWnd = (HWND)0x0;
   if (iVar1 != 0) {
     hWnd = *(HWND *)(iVar1 + 0x1c);
@@ -375,7 +378,7 @@ CAmbitDocument::OrphanCallChain_C11_I88_004874b0
   if (local_8 != (CAmbitDocument *)0x0) {
     EnableWindow((HWND)local_8,1);
   }
-  FUN_006184fc(1);
+  _EnableModeless_CWinApp__QAEXH_Z(1);
   return iVar1;
 }
 
@@ -387,7 +390,7 @@ undefined4 __fastcall CAmbitDocument::OrphanCallChain_C11_I88_004874b0(int param
 
 {
   undefined4 uVar1;
-  
+
   if (*(int **)(param_1 + 0x80) != (int *)0x0) {
                     /* WARNING: Could not recover jumptable at 0x006186b0. Too many branches */
                     /* WARNING: Treating indirect jump as call */
@@ -398,18 +401,16 @@ undefined4 __fastcall CAmbitDocument::OrphanCallChain_C11_I88_004874b0(int param
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006186B7
-// GHIDRA_NAME CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 param_1)
+// GHIDRA_NAME CAmbitDocument::?AddToRecentFileList@CWinApp@@UAEXPBD@Z
+// GHIDRA_PROTO undefined __thiscall ?AddToRecentFileList@CWinApp@@UAEXPBD@Z(undefined4 param_1)
 
-void __thiscall
-CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (CAmbitDocument *this,undefined4 param_1)
+void CAmbitDocument::_AddToRecentFileList_CWinApp__UAEXPBD_Z(undefined4 param_1)
 
 {
   undefined1 local_108 [260];
-  
+
   if (this[2].vftable != (CAmbitDocumentVtbl *)0x0) {
-    AfxFullPath(local_108,param_1);
+    _AfxFullPath__YGHPADPBD_Z(local_108,param_1);
     (**(code **)((this[2].vftable)->OnEndPrintPreview + 4))(local_108);
   }
   return;
@@ -427,14 +428,14 @@ void __thiscall CAmbitDocument::GetTEventHandlerClassNamePointer(int param_1,und
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061873C
-// GHIDRA_NAME CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_NAME CAmbitDocument::CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c
+// GHIDRA_PROTO undefined __thiscall CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c(void)
 
-undefined4 CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject()
+undefined4 CAmbitDocument::CWinApp__CallField80VirtualSlot38OrReturnFalse_0061873c()
 
 {
   undefined4 uVar1;
-  
+
   if (*(int **)&this[1].field_0x2c == (int *)0x0) {
     uVar1 = 0;
   }
@@ -445,8 +446,8 @@ undefined4 CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622572
-// GHIDRA_NAME CAmbitDocument::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_NAME CAmbitDocument::?InitApplication@CWinApp@@UAEHXZ
+// GHIDRA_PROTO undefined ?InitApplication@CWinApp@@UAEHXZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Lifecycle slot +0x8C handler during app startup.
 // GHIDRA_COMMENT If a pending global doc-template manager exists (DAT_006a6120), attach it to app->0x80, clear the global, then invoke manager vfunc +0x14 with NULL to flush pending templates from DAT_006a6124 into the active app manager context. Returns success (1).
@@ -457,7 +458,7 @@ undefined4 CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject()
    global, then invoke manager vfunc +0x14 with NULL to flush pending templates from DAT_006a6124
    into the active app manager context. Returns success (1). */
 
-undefined4 __fastcall CAmbitDocument::_scalar_deleting_destructor_(int param_1)
+undefined4 __fastcall CAmbitDocument::_InitApplication_CWinApp__UAEHXZ(int param_1)
 
 {
   if (DAT_006a6120 != 0) {

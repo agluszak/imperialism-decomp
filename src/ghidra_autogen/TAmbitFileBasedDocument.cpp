@@ -33,7 +33,7 @@ TAmbitFileBasedDocument * TAmbitFileBasedDocument::ConstructTDocumentBaseState(b
 {
   DestructTAmbitFileBasedDocumentAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -94,13 +94,13 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486530(void *pLoadContext)
   undefined4 local_10;
   undefined1 *puStack_c;
   undefined4 local_8;
-  
+
   puStack_c = &LAB_0062fde2;
   local_10 = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_10;
   this_01 = (TFileStream *)0x0;
   local_8 = 0;
-  this_00 = (TFileStream *)AllocateWithFallbackHandler();
+  this_00 = (TFileStream *)__2_YAPAXI_Z();
   local_8._0_1_ = 1;
   if (this_00 != (TFileStream *)0x0) {
     this_01 = (TFileStream *)TFileStream::ConstructTFileStreamBaseState(this_00);
@@ -115,14 +115,14 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486530(void *pLoadContext)
   bVar2 = false;
   if (local_18 == 0x414d4249) {
     if (0x22 < DAT_00695278) goto LAB_0049e7e4;
-    CString::CString((CString *)&pLoadContext);
+    CString::__0CString__QAE_XZ((CString *)&pLoadContext);
     local_8._0_1_ = 3;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     AssignStringSharedRefAndReturnThis(&pLoadContext);
     DispatchLocalizedUiMessageWithTemplateA13A0();
   }
   else {
-    CString::CString((CString *)&pLoadContext);
+    CString::__0CString__QAE_XZ((CString *)&pLoadContext);
     local_8._0_1_ = 2;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     AssignStringSharedRefAndReturnThis(&pLoadContext);
@@ -130,29 +130,29 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486530(void *pLoadContext)
   }
   local_8._0_1_ = 0;
   bVar2 = true;
-  CString::~CString((CString *)&pLoadContext);
+  CString::__1CString__QAE_XZ((CString *)&pLoadContext);
 LAB_0049e7e4:
   if (!bVar2) {
     if ((*(int *)&g_pLocalizationTable->field_0x44 == 2) &&
        (local_1c != *(int *)&g_pGameFlowState->field_0x64)) {
-      CString::CString((CString *)&pLoadContext);
+      CString::__0CString__QAE_XZ((CString *)&pLoadContext);
       local_8._0_1_ = 4;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       AssignStringSharedRefAndReturnThis(&pLoadContext);
       DispatchLocalizedUiMessageWithTemplateA13A0();
       bVar2 = true;
       local_8._0_1_ = 0;
-      CString::~CString((CString *)&pLoadContext);
+      CString::__1CString__QAE_XZ((CString *)&pLoadContext);
     }
     if (!bVar2) {
-      iVar4 = AllocateWithFallbackHandler();
+      iVar4 = __2_YAPAXI_Z();
       if (iVar4 == 0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       (*p_Var1)();
       (*p_Var1)();
-      FreeHeapBufferIfNotNull(iVar4);
+      __3_YAXPAX_Z(iVar4);
       (*g_pGlobalUiRootController->vftable->ReadFrom)(this_01);
       (*g_pLocalizationTable->vftable[3].GetTSimMgrClassNamePointer)(this_01);
       (*g_pUiAnimator->vftable->GetTEventHandlerClassNamePointer_06)(this_01);
@@ -232,12 +232,12 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe12;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  pTVar2 = (TFileStream *)AllocateWithFallbackHandler();
+  pTVar2 = (TFileStream *)__2_YAPAXI_Z();
   iVar5 = 0;
   local_4 = 0;
   if (pTVar2 == (TFileStream *)0x0) {
@@ -253,7 +253,7 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
   (*p_Var1)();
   (*p_Var1)();
   (*p_Var1)();
-  puVar3 = (undefined1 *)AllocateWithFallbackHandler();
+  puVar3 = (undefined1 *)__2_YAPAXI_Z();
   if (puVar3 == (undefined1 *)0x0) {
     CStack_64.m_pchData = (char *)0x49ebed;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -267,19 +267,19 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
     puVar3 = puVar3 + 1;
   } while (iVar4 != 0);
   (*p_Var1)();
-  FreeHeapBufferIfNotNull();
+  __3_YAXPAX_Z();
   CStack_64.m_pchData = (char *)0x49ec51;
   (*p_Var1)();
   CStack_64.m_pchData = (char *)0x1;
   (*p_Var1)();
   UiRuntimeContext::GetActiveNationId();
   (*p_Var1)();
-  CString::CString((CString *)&stack0xffffffa4);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffa4);
   FormatOverlayTerrainLabelText();
-  CString::EnsureCapacityPreserveLength((CString *)&stack0xffffffa4,0x21);
+  CString::_GetBuffer_CString__QAEPADH_Z((CString *)&stack0xffffffa4,0x21);
   (*p_Var1)();
   pTStack_80 = (TFileStream *)0x49ecc7;
-  CString::SetLengthAndTerminator(&CStack_64,-1);
+  CString::_ReleaseBuffer_CString__QAEXH_Z(&CStack_64,-1);
   pTStack_80 = (TFileStream *)0x49ecd3;
   pTVar7 = pTVar2;
   (*g_pGlobalUiRootController->vftable->WriteTo)();
@@ -322,7 +322,7 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
   (**(code **)(*DAT_006a21b8 + 0x14))(pTVar2);
   (**(code **)&pTVar7[3].field_0x4)();
   pTStack_84 = (TFileStream *)0xffffffff;
-  CString::~CString(&CStack_9c);
+  CString::__1CString__QAE_XZ(&CStack_9c);
   *unaff_FS_OFFSET = pTStack_8c;
   return;
 }

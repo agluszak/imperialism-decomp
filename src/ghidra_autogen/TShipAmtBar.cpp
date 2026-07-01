@@ -15,12 +15,12 @@ TView * TShipAmtBar::CreateTShipAmtBarInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637a5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x6c);
+  this = (TView *)__2_YAPAXI_Z(0x6c);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -71,7 +71,7 @@ TShipAmtBar * TShipAmtBar::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -85,7 +85,7 @@ void TShipAmtBar::OrphanLeaf_NoCall_Ins07_004d8920()
 {
   short sVar1;
   TCity *pTVar2;
-  
+
   sVar1 = UiRuntimeContext::GetActiveNationId();
   if (g_apNationStates[sVar1] == (TGreatPower *)0x0) {
     pTVar2 = (TCity *)0x0;
@@ -130,7 +130,7 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637a78;
   uStack_c = *unaff_FS_OFFSET;

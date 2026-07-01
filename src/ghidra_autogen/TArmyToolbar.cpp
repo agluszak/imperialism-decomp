@@ -19,12 +19,12 @@ _CreateTArmyToolbarInstance__YAPAUArmyToolbarState___Z_imperialismsrcgameTArmyTo
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637d4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x8c);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x8c);
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
@@ -70,7 +70,7 @@ TArmyToolbar * TArmyToolbar::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -107,12 +107,12 @@ TArmyToolbar::Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637d68;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_60);
+  CString::__0CString__QAE_XZ(&local_60);
   piVar8 = local_34;
   for (iVar7 = 10; iVar7 != 0; iVar7 = iVar7 + -1) {
     *piVar8 = 0;
@@ -172,7 +172,7 @@ LAB_0058e021:
   (**(code **)(iVar7 + 0x1c8))((-(uint)bVar4 & 0x2020) + 0x4b5,1);
   (**(code **)(g_pUiRuntimeContext->vftable + 0x48))();
   uStack_10 = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffff94);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff94);
   *unaff_FS_OFFSET = uStack_18;
   return;
 }
@@ -189,7 +189,7 @@ void TArmyToolbar::OrphanRetStub_0059add0(int param_1, int *param_2)
   undefined4 uVar3;
   undefined2 extraout_var;
   TArmyMgrVtbl *pTVar4;
-  
+
   uVar1 = param_2[7];
   if ((0x6172722f < uVar1) && (uVar1 < 0x6172723a)) {
     uVar3 = CONCAT22((short)(uVar1 >> 0x10),(short)param_2[7] + -0x7230);

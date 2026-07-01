@@ -14,13 +14,13 @@ void __fastcall WrapperFor_DeleteRegionHandleFromClipState_At0047cac0(undefined4
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e118;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &PTR_LAB_00671054;
   local_4 = 0;
-  DeleteObject();
+  _DeleteObject_CGdiObject__QAEHXZ();
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -37,13 +37,13 @@ void __fastcall WrapperFor_DeleteRegionHandleFromClipState_At0047cb60(undefined4
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e138;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &PTR_LAB_00671054;
   local_4 = 0;
-  DeleteObject();
+  _DeleteObject_CGdiObject__QAEHXZ();
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -57,7 +57,7 @@ uint * __fastcall ResetAndOpenCdAudioDeviceHandle(uint *param_1)
 
 {
   uint uVar1;
-  
+
   *param_1 = 0;
   uVar1 = OpenCdAudioAndProbeAuxOutputDevice();
   *param_1 = uVar1 & 0xffff;
@@ -86,7 +86,7 @@ void __fastcall EnsureCdAudioDeviceHandleInitialized(uint *param_1)
 
 {
   uint uVar1;
-  
+
   if (*param_1 == 0) {
     uVar1 = OpenCdAudioAndProbeAuxOutputDevice();
     *param_1 = uVar1 & 0xffff;
@@ -165,12 +165,12 @@ TControl * __thiscall InitializeDialogTemplateC2WithTextState(TControl *param_1,
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e163;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xc2,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xc2,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -179,10 +179,10 @@ TControl * __thiscall InitializeDialogTemplateC2WithTextState(TControl *param_1,
   param_1->padding_65_to_67[1] = 0;
   param_1->padding_65_to_67[2] = 0;
   local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   param_1->field74 = (int)&PTR_LAB_006714cc;
   local_4 = CONCAT31(local_4._1_3_,1);
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   *(undefined ***)&param_1[1].field_0x2c = &PTR_LAB_00671d1c;
   param_1->vftable = (TControlVtbl *)&PTR_LAB_006461f0;
   *unaff_FS_OFFSET = local_c;
@@ -198,7 +198,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047d090(undefined4 p
 {
   DestroyDialogWithListBoxAndHotKeyControl_Alias();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -214,21 +214,21 @@ void __fastcall DestroyDialogWithListBoxAndHotKeyControl_Alias(CDialog *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_0062e19b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  Dtor_CListBox_FID_61e8cb();
+  __1CListBox__UAE_XZ_0061e8cb();
   local_4 = local_4 & 0xffffff00;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 2;
   if (*(int *)(param_1 + 100) != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -241,8 +241,8 @@ void __thiscall
 WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160(int param_1,undefined4 param_2)
 
 {
-  DDX_Control(param_2,0x3fc,param_1 + 0x74);
-  DDX_Control(param_2,0x40a,param_1 + 0xb0);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x3fc,param_1 + 0x74);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x40a,param_1 + 0xb0);
   return;
 }
 
@@ -267,12 +267,12 @@ TControl * __thiscall InitializeDialogTemplateD2WithTextState(TControl *param_1,
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e1b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xd2,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xd2,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -281,7 +281,7 @@ TControl * __thiscall InitializeDialogTemplateD2WithTextState(TControl *param_1,
   param_1->padding_65_to_67[1] = 0;
   param_1->padding_65_to_67[2] = 0;
   local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   param_1->field74 = (int)&PTR_LAB_00671d1c;
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00646300;
   *unaff_FS_OFFSET = local_c;
@@ -297,7 +297,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047d250(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -313,19 +313,19 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e1e0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  Dtor_CListBox_FID_61e8cb();
+  __1CListBox__UAE_XZ_0061e8cb();
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 1;
   if (*(int *)(param_1 + 100) != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -338,7 +338,7 @@ void __thiscall
 WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310(int param_1,undefined4 param_2)
 
 {
-  DDX_Control(param_2,0x41e,param_1 + 0x74);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x41e,param_1 + 0x74);
   return;
 }
 
@@ -363,12 +363,12 @@ TControl * __thiscall InitializeDialogTemplateDBWithTextState(TControl *param_1,
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e1f8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xdb,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xdb,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -377,7 +377,7 @@ TControl * __thiscall InitializeDialogTemplateDBWithTextState(TControl *param_1,
   param_1->padding_65_to_67[1] = 0;
   param_1->padding_65_to_67[2] = 0;
   local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   param_1->field74 = (int)&PTR_LAB_006714cc;
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00646410;
   *unaff_FS_OFFSET = local_c;
@@ -393,7 +393,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -406,7 +406,7 @@ void __thiscall
 WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420(int param_1,undefined4 param_2)
 
 {
-  DDX_Control(param_2,0x3f8,param_1 + 0x74);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x3f8,param_1 + 0x74);
   return;
 }
 
@@ -427,7 +427,7 @@ undefined ** OrphanVtableAssignStub_0047d450(void)
 TControl * __thiscall InitializeDialogTemplateDCBaseState(TControl *param_1,undefined4 param_2)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1,0xdc,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xdc,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00646520;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -448,7 +448,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0(undefined4 p
 {
   WrapperFor_CDialog_At00414070();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -460,9 +460,8 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0(undefined4 p
 void __thiscall WrapperFor_DDX_Text_At0047d4e0(int param_1,undefined4 param_2)
 
 {
-  DDX_Text_618c30(param_2,0x421,(undefined4 *)(param_1 + 0x74));
-  WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1
-            (param_2,*(undefined4 *)(param_1 + 0x74),0,999);
+  _DDX_Text__YGXPAVCDataExchange__HAAK_Z(param_2,0x421,(undefined4 *)(param_1 + 0x74));
+  _DDV_MinMaxUInt__YGXPAVCDataExchange__III_Z(param_2,*(undefined4 *)(param_1 + 0x74),0,999);
   return;
 }
 
@@ -483,7 +482,7 @@ undefined ** OrphanVtableAssignStub_0047d520(void)
 TControl * __thiscall InitializeDialogTemplateDDPictureState(TControl *param_1,undefined4 param_2)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1,0xdd,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xdd,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e6b0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -552,12 +551,12 @@ void __fastcall RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(int param_
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e248;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CPaintDC(param_1);
+  __0CPaintDC__QAE_PAVCWnd___Z(param_1);
   local_4 = 0;
   h = *(undefined ***)(*(int *)(param_1 + 0x74) + 8);
   if (h == (undefined **)0x0) {
@@ -610,7 +609,8 @@ void __fastcall RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(int param_
     uVar8 = 0;
     uVar7 = 0x10;
     uVar12 = uVar5;
-    uVar3 = FromHandle_612736(-(uint)(&stack0x00000000 != (undefined1 *)0x60) & (uint)local_5c);
+    uVar3 = _FromHandle_CDC__SGPAV1_PAUHDC_____Z
+                      (-(uint)(&stack0x00000000 != (undefined1 *)0x60) & (uint)local_5c);
     StretchDibitsWithCopiedPaletteTable
               (uVar3,uVar7,uVar8,uVar9,uVar5,iVar2,uVar10,uVar11,uVar12,iVar1);
   }
@@ -618,14 +618,14 @@ void __fastcall RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(int param_
     DeleteObject(h);
   }
   if (*(int *)(param_1 + 0x78) != 0) {
-    FUN_00613ab9(0,1,0xff);
+    __0CPen__QAE_HHK_Z(0,1,0xff);
     local_4._0_1_ = 1;
-    uVar5 = SelectObject(&local_68);
+    uVar5 = _SelectObject_CDC__QAEPAVCBrush__PAV2__Z(&local_68);
     Polyline(local_5c,(POINT *)(*(int **)(param_1 + 0x8c) + 2),**(int **)(param_1 + 0x8c));
-    SelectObject(uVar5);
+    _SelectObject_CDC__QAEPAVCBrush__PAV2__Z(uVar5);
     local_68 = &PTR_LAB_00671054;
     local_4 = CONCAT31(local_4._1_3_,2);
-    DeleteObject();
+    _DeleteObject_CGdiObject__QAEHXZ();
   }
   if (*(int *)(param_1 + 0x7c) != 0) {
     local_6c = 0;
@@ -633,23 +633,23 @@ void __fastcall RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(int param_
     local_4._0_1_ = 3;
     pHVar6 = CreatePolygonRgn((POINT *)(*(int **)(param_1 + 0x8c) + 2),**(int **)(param_1 + 0x8c),2)
     ;
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_70,(int)pHVar6);
-    FUN_00613b5f(0xff);
+    CBrush::_Attach_CGdiObject__QAEHPAX_Z((CBrush *)&local_70,(int)pHVar6);
+    __0CBrush__QAE_K_Z(0xff);
     local_4._0_1_ = 4;
     FillRgn(local_5c,(HRGN)(-(uint)(&stack0x00000000 != (undefined1 *)0x70) & local_6c),
             (HBRUSH)(-(uint)(&stack0x00000000 != (undefined1 *)0x68) & local_64));
-    DeleteObject();
+    _DeleteObject_CGdiObject__QAEHXZ();
     local_68 = &PTR_LAB_00671054;
     local_4._0_1_ = 5;
-    DeleteObject();
+    _DeleteObject_CGdiObject__QAEHXZ();
     local_70 = &PTR_LAB_00671054;
     local_68 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
     local_4 = CONCAT31(local_4._1_3_,6);
-    DeleteObject();
+    _DeleteObject_CGdiObject__QAEHXZ();
     local_70 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   }
   local_4 = 0xffffffff;
-  CPaintDC::~CPaintDC(local_60);
+  CPaintDC::__1CPaintDC__UAE_XZ(local_60);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -665,13 +665,13 @@ void __fastcall WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0(undefined4
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e298;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &PTR_LAB_00671054;
   local_4 = 0;
-  DeleteObject();
+  _DeleteObject_CGdiObject__QAEHXZ();
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -688,13 +688,13 @@ void __fastcall WrapperFor_DeleteRegionHandleFromClipState_At0047da70(undefined4
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e2b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &PTR_LAB_00671054;
   local_4 = 0;
-  DeleteObject();
+  _DeleteObject_CGdiObject__QAEHXZ();
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -709,12 +709,12 @@ undefined4 __fastcall UpdateCursorHelperWindowLayoutAndMask(int param_1)
 {
   int *piVar1;
   undefined1 local_8 [8];
-  
-  OnInitDialog();
+
+  _OnInitDialog_CDialog__UAEHXZ();
   piVar1 = (int *)CopyOffset10PointPairToOutOrZero(local_8);
-  MoveWindow(0,0,*piVar1 + 0x1e,piVar1[1] + 0x32,1);
-  CenterWindow(0);
-  SetWindowTextOrDelegateToOwner(*(undefined4 *)(param_1 + 0x90));
+  _MoveWindow_CWnd__QAEXHHHHH_Z(0,0,*piVar1 + 0x1e,piVar1[1] + 0x32,1);
+  _CenterWindow_CWnd__QAEXPAV1__Z(0);
+  CMcWindow::SetWindowTextOrDelegateToOwner(*(undefined4 *)(param_1 + 0x90));
   *(uint *)(param_1 + 0x84) = *(uint *)(param_1 + 0x88) & 1;
   if ((*(int *)(param_1 + 0x78) != 0) || (*(int *)(param_1 + 0x7c) != 0)) {
     piVar1 = TTransFocusAnimation::Sprite__CollectNonTransparentPixels
@@ -735,12 +735,12 @@ TControl * __thiscall InitializeDialogTemplateDEWithTextState(TControl *param_1,
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e2d8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xde,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xde,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -749,7 +749,7 @@ TControl * __thiscall InitializeDialogTemplateDEWithTextState(TControl *param_1,
   param_1->padding_65_to_67[1] = 0;
   param_1->padding_65_to_67[2] = 0;
   local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   param_1->field74 = (int)&PTR_LAB_006714cc;
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00646630;
   *(undefined4 *)&param_1[1].field_0x2c = 0;
@@ -767,7 +767,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047dc40(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -779,9 +779,9 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047dc40(undefined4 p
 void __thiscall Helper_Uses_DDX_Text_At0047dc70(int param_1,undefined4 param_2)
 
 {
-  DDX_Control(param_2,0x3f8,param_1 + 0x74);
-  DDX_Text_618c01(param_2,0x422,param_1 + 0xb0);
-  DDX_Text_618c01(param_2,0x421,param_1 + 0xb4);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x3f8,param_1 + 0x74);
+  _DDX_Text__YGXPAVCDataExchange__HAAJ_Z(param_2,0x422,param_1 + 0xb0);
+  _DDX_Text__YGXPAVCDataExchange__HAAJ_Z(param_2,0x421,param_1 + 0xb4);
   return;
 }
 
@@ -802,7 +802,7 @@ undefined ** OrphanVtableAssignStub_0047dcc0(void)
 TControl * __thiscall InitializeDialogTemplateDFBaseState(TControl *param_1,undefined4 param_2)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1,0xdf,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xdf,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00646740;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -823,12 +823,12 @@ TControl * __thiscall InitializeDialogTemplateDFBaseState(TControl *param_1,unde
 void __thiscall Helper_Uses_DDX_Text_618c5f_At0047dd60(int param_1,undefined4 param_2)
 
 {
-  DDX_Text_618c5f(param_2,0x421,param_1 + 0x5c);
-  DDX_Check(param_2,0x3f5,param_1 + 0x60);
-  DDX_Check(param_2,0x422,param_1 + 100);
-  DDX_Check(param_2,0x423,param_1 + 0x68);
-  DDX_Check(param_2,0x424,param_1 + 0x6c);
-  DDX_Check(param_2,0x427,param_1 + 0x70);
+  _DDX_Text__YGXPAVCDataExchange__HAAJ_Z(param_2,0x421,param_1 + 0x5c);
+  _DDX_Check__YGXPAVCDataExchange__HAAH_Z(param_2,0x3f5,param_1 + 0x60);
+  _DDX_Check__YGXPAVCDataExchange__HAAH_Z(param_2,0x422,param_1 + 100);
+  _DDX_Check__YGXPAVCDataExchange__HAAH_Z(param_2,0x423,param_1 + 0x68);
+  _DDX_Check__YGXPAVCDataExchange__HAAH_Z(param_2,0x424,param_1 + 0x6c);
+  _DDX_Check__YGXPAVCDataExchange__HAAH_Z(param_2,0x427,param_1 + 0x70);
   return;
 }
 
@@ -849,8 +849,8 @@ undefined ** OrphanVtableAssignStub_0047ddf0(void)
 undefined4 OrphanCallChain_C2_I09_0047de10(void)
 
 {
-  OnInitDialog();
-  UpdateData(0);
+  _OnInitDialog_CDialog__UAEHXZ();
+  _UpdateData_CWnd__QAEHH_Z(0);
   return 1;
 }
 
@@ -863,7 +863,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047ded0(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -879,19 +879,19 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e320;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  Dtor_CListBox_FID_61e8cb();
+  __1CListBox__UAE_XZ_0061e8cb();
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 1;
   if (*(int *)(param_1 + 100) != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -928,12 +928,12 @@ InitializeDialogTemplateFBWithDualTextState(TControl *param_1,undefined4 param_2
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e343;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xfb,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xfb,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -942,10 +942,10 @@ InitializeDialogTemplateFBWithDualTextState(TControl *param_1,undefined4 param_2
   param_1->padding_65_to_67[1] = 0;
   param_1->padding_65_to_67[2] = 0;
   local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   param_1->field74 = (int)&PTR_LAB_00671c4c;
   local_4 = CONCAT31(local_4._1_3_,1);
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   *(undefined ***)&param_1[1].field_0x2c = &PTR_LAB_00671d1c;
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00646958;
   param_1[1].field68 = 0;
@@ -962,7 +962,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047e090(undefined4 p
 {
   DestroyDialogWithListBoxAndHotKeyControl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -975,8 +975,8 @@ void __thiscall
 WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0(int param_1,undefined4 param_2)
 
 {
-  DDX_Control(param_2,0x434,param_1 + 0x74);
-  DDX_Check(param_2,0x434,param_1 + 0xec);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x434,param_1 + 0x74);
+  _DDX_Check__YGXPAVCDataExchange__HAAH_Z(param_2,0x434,param_1 + 0xec);
   return;
 }
 
@@ -1002,21 +1002,21 @@ undefined4 RefreshNewGameCommandWindowTextAndData(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e368;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  OnInitDialog();
-  CString::CString(&local_10);
+  _OnInitDialog_CDialog__UAEHXZ();
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex(&local_10,0x2763,0x11);
-  SetWindowTextOrDelegateToOwner(local_10.m_pchData);
+  CMcWindow::SetWindowTextOrDelegateToOwner(local_10.m_pchData);
   LoadUiStringResourceByGroupAndIndex(&local_10,0x2763,0x13);
-  SetWindowTextOrDelegateToOwner(local_10.m_pchData);
-  UpdateData(0);
+  CMcWindow::SetWindowTextOrDelegateToOwner(local_10.m_pchData);
+  _UpdateData_CWnd__QAEHH_Z(0);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return 1;
 }
@@ -1043,7 +1043,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047e390(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At0047e390_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -1059,18 +1059,18 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At0047e390_Impl(undefined4 *p
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e388;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &PTR_LAB_00646a68;
   if (param_1[2] != 0) {
-    FreeHeapBlockWithAllocatorTracking(param_1[2]);
+    _free(param_1[2]);
   }
   *param_1 = &PTR_LAB_00671054;
   local_4 = 0;
-  DeleteObject();
+  _DeleteObject_CGdiObject__QAEHXZ();
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -1090,16 +1090,16 @@ undefined4 __thiscall BuildPaletteFromBitmapColorTable(CBrush *param_1,int param
   HPALETTE pHVar5;
   undefined4 uVar6;
   int iVar7;
-  
+
   iVar1 = *(int *)(param_2 + 0x24);
   if (iVar1 == 0) {
     return 0;
   }
   iVar2 = *(int *)(param_2 + 4);
   if (*(int *)(param_1 + 8) != 0) {
-    FreeHeapBlockWithAllocatorTracking(*(int *)(param_1 + 8));
+    _free(*(int *)(param_1 + 8));
   }
-  puVar3 = (undefined2 *)AllocateWithGlobalNewMode(iVar1 * 4 + 8);
+  puVar3 = (undefined2 *)_malloc(iVar1 * 4 + 8);
   *(undefined2 **)(param_1 + 8) = puVar3;
   if (puVar3 == (undefined2 *)0x0) {
     return 0;
@@ -1120,7 +1120,7 @@ undefined4 __thiscall BuildPaletteFromBitmapColorTable(CBrush *param_1,int param
     } while (param_2 != 0);
   }
   pHVar5 = CreatePalette(*(LOGPALETTE **)(param_1 + 8));
-  uVar6 = CBrush::AttachRegionHandleToClipStateAndRegister(param_1,(int)pHVar5);
+  uVar6 = CBrush::_Attach_CGdiObject__QAEHPAX_Z(param_1,(int)pHVar5);
   return uVar6;
 }
 
@@ -1149,7 +1149,7 @@ DrawPalettePreviewGridRectanglesToViewDc
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int iStack_4;
-  
+
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062e3b0;
   uStack_c = *unaff_FS_OFFSET;
@@ -1173,15 +1173,15 @@ DrawPalettePreviewGridRectanglesToViewDc
       iVar1 = iVar3 + 1;
       iVar4 = *(int *)(unaff_retaddr + 8) * iVar1;
       iVar4 = ((int)(iVar4 + (iVar4 >> 0x1f & 0xfU)) >> 4) + 1;
-      FUN_00613b5f(iStack_4 * 0x10 + iVar3 & 0xffffU | 0x1000000);
+      __0CBrush__QAE_K_Z(iStack_4 * 0x10 + iVar3 & 0xffffU | 0x1000000);
       uStack_c = 0;
-      local_28 = SelectObject_612984(appuStack_1c);
+      local_28 = _SelectObject_CDC__QAEPAVCBrush__PAV2__Z(appuStack_1c);
       Rectangle(*(HDC *)(param_2 + 4),iVar5 + -1,iVar2 + -1,iVar4,bottom);
-      SelectObject_612984(local_28);
+      _SelectObject_CDC__QAEPAVCBrush__PAV2__Z(local_28);
       appuStack_1c[0] = &PTR_LAB_00671054;
       unaff_EBP = unaff_EBP + -1;
       uStack_c = 1;
-      DeleteObject();
+      _DeleteObject_CGdiObject__QAEHXZ();
       uStack_c = 0xffffffff;
       appuStack_1c[0] = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
       iVar3 = iVar1;
@@ -1218,34 +1218,35 @@ int OpenPaletteFileDialogAndLoadPaletteFromMmio(char *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e402;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_264);
+  CString::__0CString__QAE_XZ(&local_264);
   local_4 = 0;
   if (param_1 == (char *)0x0) {
 LAB_0047e9bb:
-    CFileDialog(1,0,0,0x1004,s_Palette_files____PAL____PAL_All_f_00694c84,0);
+    __0CFileDialog__QAE_HPBD0K0PAVCWnd___Z
+              (1,0,0,0x1004,s_Palette_files____PAL____PAL_All_f_00694c84,0);
     local_4._0_1_ = 1;
-    iVar2 = DoModal();
+    iVar2 = _DoModal_CFileDialog__UAEHXZ();
     if (iVar2 == 1) {
-      src_ref = (CString *)GetPathName(local_260);
+      src_ref = (CString *)_GetPathName_CFileDialog__QBE_AVCString__XZ(local_260);
       local_4._0_1_ = 2;
-      CString::AssignFromPtr(&local_264,src_ref);
+      CString::__4CString__QAEABV0_ABV0__Z(&local_264,src_ref);
       local_4._0_1_ = 1;
-      CString::~CString(local_260);
+      CString::__1CString__QAE_XZ(local_260);
       local_4._0_1_ = 4;
-      CString::~CString(local_158);
+      CString::__1CString__QAE_XZ(local_158);
       local_4 = (uint)local_4._1_3_ << 8;
-      CDialog::~CDialog(local_204);
+      CDialog::__1CDialog__UAE_XZ(local_204);
       goto LAB_0047ea45;
     }
     local_4._0_1_ = 3;
-    CString::~CString(local_158);
+    CString::__1CString__QAE_XZ(local_158);
     local_4 = (uint)local_4._1_3_ << 8;
-    CDialog::~CDialog(local_204);
+    CDialog::__1CDialog__UAE_XZ(local_204);
   }
   else {
     iVar2 = -1;
@@ -1257,11 +1258,11 @@ LAB_0047e9bb:
       pcVar3 = pcVar3 + 1;
     } while (cVar1 != '\0');
     if (iVar2 == -2) goto LAB_0047e9bb;
-    CString::CopyFromCStr(&local_264,param_1);
+    CString::__4CString__QAEABV0_PBD_Z(&local_264,param_1);
 LAB_0047ea45:
-    CFileException::ConstructCFileException();
+    CFileException::__0CFile__QAE_XZ();
     local_4._0_1_ = 5;
-    iVar2 = OpenFileHandleWithMfcFlags(local_264.m_pchData,0x20,0);
+    iVar2 = _Open_CFile__UAEHPBDIPAVCFileException___Z(local_264.m_pchData,0x20,0);
     if (iVar2 != 0) {
       p_Var4 = &local_24c;
       for (iVar2 = 0x12; iVar2 != 0; iVar2 = iVar2 + -1) {
@@ -1277,22 +1278,22 @@ LAB_0047ea45:
         iVar2 = LoadPaletteChunkFromMmioAndRegisterPaletteHandle(hmmio);
         mmioClose(hmmio,0x10);
       }
-      CloseFileHandleAndThrowMfcExceptionOnError();
+      _Close_CFile__UAEXXZ();
       if (iVar2 == 0) {
-        WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(s_Failed_to_load_file_00694c54,0,0);
+        _AfxMessageBox__YGHPBDII_Z(s_Failed_to_load_file_00694c54,0,0);
       }
       local_4 = (uint)local_4._1_3_ << 8;
-      CFileException::DestructCFileException();
+      CFileException::__1CFile__UAE_XZ();
       local_4 = 0xffffffff;
-      CString::~CString(&local_264);
+      CString::__1CString__QAE_XZ(&local_264);
       goto LAB_0047eb4c;
     }
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(s_Failed_to_open_file_00694c6c,0,0);
+    _AfxMessageBox__YGHPBDII_Z(s_Failed_to_open_file_00694c6c,0,0);
     local_4 = (uint)local_4._1_3_ << 8;
-    CFileException::DestructCFileException();
+    CFileException::__1CFile__UAE_XZ();
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_264);
+  CString::__1CString__QAE_XZ(&local_264);
   iVar2 = 0;
 LAB_0047eb4c:
   *unaff_FS_OFFSET = local_c;
@@ -1310,14 +1311,14 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_0062e428;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::~CString((CString *)(param_1 + 0xac));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0xac));
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -1334,7 +1335,7 @@ undefined4 Helper_Uses_thunk_Cluster_MapTileHint_0047ed70_At0047ec70(int param_1
   int iVar2;
   _MMIOINFO *p_Var3;
   _MMIOINFO local_48;
-  
+
   p_Var3 = &local_48;
   for (iVar2 = 0x12; iVar2 != 0; iVar2 = iVar2 + -1) {
     p_Var3->dwFlags = 0;
@@ -1362,7 +1363,7 @@ undefined4 Helper_Uses_thunk_Cluster_MapTileHint_0047ed70_At0047ecf0(DWORD param
   int iVar2;
   _MMIOINFO *p_Var3;
   _MMIOINFO local_48;
-  
+
   p_Var3 = &local_48;
   for (iVar2 = 0x12; iVar2 != 0; iVar2 = iVar2 + -1) {
     p_Var3->dwFlags = 0;
@@ -1393,7 +1394,7 @@ LoadPaletteChunkFromMmioAndRegisterPaletteHandle(CBrush *param_1,HMMIO param_2)
   undefined4 uVar4;
   _MMCKINFO local_28;
   _MMCKINFO local_14;
-  
+
   local_28.fccType = 0x204c4150;
   MVar1 = mmioDescend(param_2,&local_28,(MMCKINFO *)0x0,0x20);
   if (MVar1 != 0) {
@@ -1404,25 +1405,25 @@ LoadPaletteChunkFromMmioAndRegisterPaletteHandle(CBrush *param_1,HMMIO param_2)
   if (MVar1 != 0) {
     return 0;
   }
-  plpal = (LOGPALETTE *)AllocateWithGlobalNewMode(local_14.cksize);
+  plpal = (LOGPALETTE *)_malloc(local_14.cksize);
   if (plpal == (LOGPALETTE *)0x0) {
     return 0;
   }
   DVar2 = mmioRead(param_2,(HPSTR)plpal,local_14.cksize);
   if (DVar2 != local_14.cksize) {
-    FreeHeapBlockWithAllocatorTracking(plpal);
+    _free(plpal);
     return 0;
   }
   if (plpal->palVersion != 0x300) {
-    FreeHeapBlockWithAllocatorTracking(plpal);
+    _free(plpal);
     return 0;
   }
   if (plpal->palNumEntries == 0) {
-    FreeHeapBlockWithAllocatorTracking();
+    _free();
     return 0;
   }
   pHVar3 = CreatePalette(plpal);
-  uVar4 = CBrush::AttachRegionHandleToClipStateAndRegister(param_1,(int)pHVar3);
+  uVar4 = CBrush::_Attach_CGdiObject__QAEHPAX_Z(param_1,(int)pHVar3);
   return uVar4;
 }
 
@@ -1438,7 +1439,7 @@ undefined4 Helper_Uses_thunk_WritePaletteChunkToMmioFromPaletteHandle_At0047eea0
   int iVar2;
   _MMIOINFO *p_Var3;
   _MMIOINFO local_48;
-  
+
   p_Var3 = &local_48;
   for (iVar2 = 0x12; iVar2 != 0; iVar2 = iVar2 + -1) {
     p_Var3->dwFlags = 0;
@@ -1466,7 +1467,7 @@ undefined4 Helper_Uses_thunk_WritePaletteChunkToMmioFromPaletteHandle_At0047ef20
   int iVar2;
   _MMIOINFO *p_Var3;
   _MMIOINFO local_48;
-  
+
   p_Var3 = &local_48;
   for (iVar2 = 0x12; iVar2 != 0; iVar2 = iVar2 + -1) {
     p_Var3->dwFlags = 0;
@@ -1498,7 +1499,7 @@ undefined4 __thiscall WritePaletteChunkToMmioFromPaletteHandle(int param_1,HMMIO
   DWORD DVar3;
   _MMCKINFO local_28;
   _MMCKINFO local_14;
-  
+
   hmmio = param_2;
   local_14.cksize = 0;
   local_14.fccType = 0x204c4150;
@@ -1510,7 +1511,7 @@ undefined4 __thiscall WritePaletteChunkToMmioFromPaletteHandle(int param_1,HMMIO
   iVar2 = GetObjectA(*(HANDLE *)(param_1 + 4),4,&param_2);
   cEntries = -(uint)(iVar2 != 0) & (uint)param_2;
   cch = cEntries * 4 + 4;
-  pch = (char *)AllocateWithGlobalNewMode(cch);
+  pch = (char *)_malloc(cch);
   pch[0] = '\0';
   pch[1] = '\x03';
   *(short *)(pch + 2) = (short)cEntries;
@@ -1523,10 +1524,10 @@ undefined4 __thiscall WritePaletteChunkToMmioFromPaletteHandle(int param_1,HMMIO
   }
   DVar3 = mmioWrite(hmmio,pch,cch);
   if (DVar3 != cch) {
-    FreeHeapBlockWithAllocatorTracking(pch);
+    _free(pch);
     return 0;
   }
-  FreeHeapBlockWithAllocatorTracking(pch);
+  _free(pch);
   mmioAscend(hmmio,&local_28,0);
   mmioAscend(hmmio,&local_14,0);
   return 1;
@@ -1618,7 +1619,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047f4e0(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At0047f4e0_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -1634,19 +1635,19 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At0047f4e0_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e470;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  Dtor_CListBox_FID_61e8cb();
+  __1CListBox__UAE_XZ_0061e8cb();
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 1;
   if (*(int *)(param_1 + 100) != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -1659,7 +1660,7 @@ void __thiscall
 WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047f5d0(int param_1,undefined4 param_2)
 
 {
-  DDX_Control(param_2,0x3ff,param_1 + 0x74);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x3ff,param_1 + 0x74);
   return;
 }
 
@@ -1680,7 +1681,7 @@ undefined ** OrphanVtableAssignStub_0047f600(void)
 undefined4 WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At0047f620(void)
 
 {
-  OnInitDialog();
+  _OnInitDialog_CDialog__UAEHXZ();
   return 1;
 }
 
@@ -1692,7 +1693,7 @@ void InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit(void)
 
 {
   InitializeRuntimeSelectionRecordArrayRuntimeClassFields();
-  AppendPointerToGlobalVectorAsStatus(DestroyRuntimeSelectionRecordArrayStateAtExit);
+  _atexit(DestroyRuntimeSelectionRecordArrayStateAtExit);
   return;
 }
 
@@ -1725,7 +1726,7 @@ void DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass(void)
 void __fastcall ReleaseSharedStringRefOnly_0047f7f0(int param_1)
 
 {
-  CString::~CString((CString *)(param_1 + 0x10));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x10));
   return;
 }
 
@@ -1783,32 +1784,32 @@ undefined4 AppendRuntimeSelectionRecordEntry(undefined4 *param_1,char *param_2)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e48b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_10 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+  local_10 = (undefined4 *)__2_YAPAXI_Z(0x14);
   local_4 = 0;
   if (local_10 == (undefined4 *)0x0) {
     local_10 = (undefined4 *)0x0;
   }
   else {
-    CString::CString((CString *)(local_10 + 4));
+    CString::__0CString__QAE_XZ((CString *)(local_10 + 4));
   }
   local_4 = 0xffffffff;
   *local_10 = *param_1;
   local_10[1] = param_1[1];
   local_10[2] = param_1[2];
   local_10[3] = param_1[3];
-  CString::CopyFromCStr((CString *)(local_10 + 4),param_2);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)(local_10 + 4),param_2);
   uVar2 = DAT_006a15e8;
   uVar1 = DAT_006a15e8;
   if (!SBORROW4(DAT_006a15e8,DAT_006a15e8)) {
     uVar1 = DAT_006a15e8 + 1;
     if (uVar1 == 0) {
       if (DAT_006a15e4 != (undefined4 *)0x0) {
-        FreeHeapBufferIfNotNull(DAT_006a15e4);
+        __3_YAXPAX_Z(DAT_006a15e4);
         DAT_006a15e4 = (undefined4 *)0x0;
       }
       DAT_006a15ec = 0;
@@ -1816,7 +1817,7 @@ undefined4 AppendRuntimeSelectionRecordEntry(undefined4 *param_1,char *param_2)
       uVar1 = DAT_006a15e8;
     }
     else if (DAT_006a15e4 == (undefined4 *)0x0) {
-      DAT_006a15e4 = (undefined4 *)AllocateWithFallbackHandler(uVar1 * 4);
+      DAT_006a15e4 = (undefined4 *)__2_YAPAXI_Z(uVar1 * 4);
       puVar6 = DAT_006a15e4;
       for (uVar4 = uVar1 & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
         *puVar6 = 0;
@@ -1842,7 +1843,7 @@ undefined4 AppendRuntimeSelectionRecordEntry(undefined4 *param_1,char *param_2)
       if ((int)(iVar5 + DAT_006a15ec) <= (int)uVar1) {
         param_1 = (undefined4 *)uVar1;
       }
-      puVar3 = (undefined4 *)AllocateWithFallbackHandler((int)param_1 * 4);
+      puVar3 = (undefined4 *)__2_YAPAXI_Z((int)param_1 * 4);
       puVar6 = DAT_006a15e4;
       puVar7 = puVar3;
       for (uVar4 = DAT_006a15e8; uVar4 != 0; uVar4 = uVar4 - 1) {
@@ -1855,7 +1856,7 @@ undefined4 AppendRuntimeSelectionRecordEntry(undefined4 *param_1,char *param_2)
         *puVar6 = 0;
         puVar6 = puVar6 + 1;
       }
-      FreeHeapBufferIfNotNull(DAT_006a15e4);
+      __3_YAXPAX_Z(DAT_006a15e4);
       DAT_006a15ec = (uint)param_1;
       DAT_006a15e4 = puVar3;
     }
@@ -1903,7 +1904,7 @@ bool __fastcall WrapperFor_Ordinal_4_At0047fb80(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = DPLAYX.DLL::Ordinal_4(0,param_1 + 8,0,0,0);
   *(int *)(param_1 + 0xc) = iVar1;
   return -1 < iVar1;
@@ -1921,7 +1922,7 @@ bool __thiscall CacheObjectVslot18ResultToField0C(int param_1,undefined4 param_2
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   local_c = 0;
   local_8 = param_3;
   local_4 = 0;
@@ -1940,7 +1941,7 @@ bool __thiscall NotifyIfNationMatchesSessionActiveNation_Impl(int param_1,undefi
 
 {
   int iVar1;
-  
+
   iVar1 = (**(code **)(**(int **)(param_1 + 4) + 0x24))(*(int **)(param_1 + 4),param_2);
   *(int *)(param_1 + 0xc) = iVar1;
   return -1 < iVar1;
@@ -1970,20 +1971,20 @@ bool __fastcall RebuildRuntimeSelectionSource(int param_1)
 {
   int iVar1;
   int iVar2;
-  
+
   iVar2 = 0;
   if (0 < DAT_006a15e8) {
     do {
       iVar1 = *(int *)(DAT_006a15e4 + iVar2 * 4);
       if (iVar1 != 0) {
         ReleaseSharedStringRefOnly_0047f7f0();
-        FreeHeapBufferIfNotNull(iVar1);
+        __3_YAXPAX_Z(iVar1);
       }
       iVar2 = iVar2 + 1;
     } while (iVar2 < DAT_006a15e8);
   }
   if (DAT_006a15e4 != 0) {
-    FreeHeapBufferIfNotNull(DAT_006a15e4);
+    __3_YAXPAX_Z(DAT_006a15e4);
     DAT_006a15e4 = 0;
   }
   DAT_006a15ec = 0;
@@ -2014,7 +2015,7 @@ bool __thiscall OpenRuntimeSelectionSourceWithOptionalSeed(int *param_1,undefine
   undefined4 uStack_c;
   int *piStack_8;
   undefined4 uStack_4;
-  
+
   puVar3 = param_2;
   iVar4 = 0;
   if ((param_2 != (undefined4 *)0x0) && (piVar1 = (int *)param_1[1], piVar1 != (int *)0x0)) {
@@ -2032,7 +2033,7 @@ bool __thiscall OpenRuntimeSelectionSourceWithOptionalSeed(int *param_1,undefine
         iVar2 = *(int *)(DAT_006a15e4 + iVar4 * 4);
         if (iVar2 != 0) {
           ReleaseSharedStringRefOnly_0047f7f0();
-          FreeHeapBufferIfNotNull(iVar2);
+          __3_YAXPAX_Z(iVar2);
         }
         iVar4 = iVar4 + 1;
       } while (iVar4 < DAT_006a15e8);
@@ -2066,13 +2067,13 @@ bool __thiscall OpenRuntimeSelectionSourceWithOptionalSeed(int *param_1,undefine
       iVar2 = *(int *)(DAT_006a15e4 + iVar4 * 4);
       if (iVar2 != 0) {
         ReleaseSharedStringRefOnly_0047f7f0();
-        FreeHeapBufferIfNotNull(iVar2);
+        __3_YAXPAX_Z(iVar2);
       }
       iVar4 = iVar4 + 1;
     } while (iVar4 < DAT_006a15e8);
   }
   if (DAT_006a15e4 != 0) {
-    FreeHeapBufferIfNotNull(DAT_006a15e4);
+    __3_YAXPAX_Z(DAT_006a15e4);
     DAT_006a15e4 = 0;
   }
   DAT_006a15ec = 0;
@@ -2091,7 +2092,7 @@ bool __fastcall OpenRuntimeSelectionSourceFromCurrentContext(int *param_1)
   int *piVar2;
   int iVar3;
   int *piVar4;
-  
+
   OpenRuntimeSelectionSourceWithOptionalSeed(0);
   piVar2 = param_1 + 4;
   piVar4 = piVar2;
@@ -2111,13 +2112,13 @@ bool __fastcall OpenRuntimeSelectionSourceFromCurrentContext(int *param_1)
         iVar1 = *(int *)(DAT_006a15e4 + iVar3 * 4);
         if (iVar1 != 0) {
           ReleaseSharedStringRefOnly_0047f7f0();
-          FreeHeapBufferIfNotNull(iVar1);
+          __3_YAXPAX_Z(iVar1);
         }
         iVar3 = iVar3 + 1;
       } while (iVar3 < DAT_006a15e8);
     }
     if (DAT_006a15e4 != 0) {
-      FreeHeapBufferIfNotNull(DAT_006a15e4);
+      __3_YAXPAX_Z(DAT_006a15e4);
       DAT_006a15e4 = 0;
     }
     DAT_006a15ec = 0;
@@ -2159,7 +2160,7 @@ undefined4 __fastcall OpenRuntimeSelectionSourceWithUserChoice(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062e4a8;
   uStack_c = *unaff_FS_OFFSET;
@@ -2178,9 +2179,9 @@ undefined4 __fastcall OpenRuntimeSelectionSourceWithUserChoice(int *param_1)
   iStack_30 = 0x480190;
   (**(code **)(iVar4 + 0x10))();
   iStack_30 = 0x480195;
-  AfxGetModuleState();
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   iStack_30 = 0x48019d;
-  BeginWaitCursor();
+  _BeginWaitCursor_CCmdTarget__QAEXXZ();
   iStack_30 = 1;
   puVar6 = &LAB_0040561e;
   iVar3 = *(int *)param_1[1];
@@ -2190,16 +2191,16 @@ undefined4 __fastcall OpenRuntimeSelectionSourceWithUserChoice(int *param_1)
   iVar3 = (**(code **)(iVar3 + 0x34))
                     (param_1[1],piVar1,(-(uint)((uVar2 & 0x8000) != 0) & 4000) + 1000,puVar6);
   param_1[3] = iVar3;
-  AfxGetModuleState();
-  EndWaitCursor();
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  _EndWaitCursor_CCmdTarget__QAEXXZ();
   if (param_1[3] < 0) {
     iVar4 = 0;
     if (0 < DAT_006a15e8) {
       do {
         iVar3 = *(int *)(DAT_006a15e4 + iVar4 * 4);
         if (iVar3 != 0) {
-          CString::~CString((CString *)(iVar3 + 0x10));
-          FreeHeapBufferIfNotNull(iVar3);
+          CString::__1CString__QAE_XZ((CString *)(iVar3 + 0x10));
+          __3_YAXPAX_Z(iVar3);
         }
         iVar4 = iVar4 + 1;
       } while (iVar4 < DAT_006a15e8);
@@ -2213,8 +2214,8 @@ undefined4 __fastcall OpenRuntimeSelectionSourceWithUserChoice(int *param_1)
         do {
           iVar3 = *(int *)(DAT_006a15e4 + iVar4 * 4);
           if (iVar3 != 0) {
-            CString::~CString((CString *)(iVar3 + 0x10));
-            FreeHeapBufferIfNotNull(iVar3);
+            CString::__1CString__QAE_XZ((CString *)(iVar3 + 0x10));
+            __3_YAXPAX_Z(iVar3);
           }
           iVar4 = iVar4 + 1;
         } while (iVar4 < DAT_006a15e8);
@@ -2242,8 +2243,8 @@ undefined4 __fastcall OpenRuntimeSelectionSourceWithUserChoice(int *param_1)
         do {
           iVar3 = *(int *)(DAT_006a15e4 + iVar4 * 4);
           if (iVar3 != 0) {
-            CString::~CString((CString *)(iVar3 + 0x10));
-            FreeHeapBufferIfNotNull(iVar3);
+            CString::__1CString__QAE_XZ((CString *)(iVar3 + 0x10));
+            __3_YAXPAX_Z(iVar3);
           }
           iVar4 = iVar4 + 1;
         } while (iVar4 < DAT_006a15e8);
@@ -2274,7 +2275,7 @@ bool __fastcall CheckConnectivityOrShowLocalizedWarningAndReturnReady_Impl(int p
 
 {
   int iVar1;
-  
+
   iVar1 = (**(code **)(**(int **)(param_1 + 4) + 0x60))(*(int **)(param_1 + 4),param_1 + 0x10,1);
   *(int *)(param_1 + 0xc) = iVar1;
   return -1 < iVar1;
@@ -2296,20 +2297,20 @@ void __fastcall ResetRuntimeSelectionRecordBuffer(int param_1)
   int iVar1;
   int *piVar2;
   int iVar3;
-  
+
   iVar3 = 0;
   if (0 < DAT_006a15e8) {
     do {
       iVar1 = *(int *)(DAT_006a15e4 + iVar3 * 4);
       if (iVar1 != 0) {
         ReleaseSharedStringRefOnly_0047f7f0();
-        FreeHeapBufferIfNotNull(iVar1);
+        __3_YAXPAX_Z(iVar1);
       }
       iVar3 = iVar3 + 1;
     } while (iVar3 < DAT_006a15e8);
   }
   if (DAT_006a15e4 != 0) {
-    FreeHeapBufferIfNotNull(DAT_006a15e4);
+    __3_YAXPAX_Z(DAT_006a15e4);
     DAT_006a15e4 = 0;
   }
   DAT_006a15ec = 0;
@@ -2342,7 +2343,7 @@ undefined4 ApplyCtrlScrollAccelerationToListStep(int *param_1)
 
 {
   ushort uVar1;
-  
+
   uVar1 = GetAsyncKeyState(0x11);
   if ((uVar1 & 0x8000) != 0) {
     *param_1 = *param_1 + 500;
@@ -2375,14 +2376,14 @@ undefined4 ShowRuntimeSelectionDialogAndReturnRecord(undefined4 *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e502;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   InitializeDialogTemplateBaseState(0x104,0);
   local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   local_bc.field74 = (int)&PTR_LAB_00671d1c;
   local_bc.vftable = (TControlVtbl *)&PTR_LAB_00646ea0;
   local_4 = 1;
@@ -2404,26 +2405,26 @@ undefined4 ShowRuntimeSelectionDialogAndReturnRecord(undefined4 *param_1)
     param_1[2] = puVar2[2];
     param_1[3] = puVar2[3];
     local_4 = 2;
-    Dtor_CListBox_FID_61e8cb();
+    __1CListBox__UAE_XZ_0061e8cb();
     local_bc.vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
     local_4 = 3;
     if (local_bc._100_4_ != 0) {
       WrapperFor_CleanupDialogModalCreateState_At0049d510();
     }
     local_4 = 0xffffffff;
-    CDialog::~CDialog((CDialog *)&local_bc);
+    CDialog::__1CDialog__UAE_XZ((CDialog *)&local_bc);
     uVar3 = 1;
   }
   else {
     local_4 = 4;
-    Dtor_CListBox_FID_61e8cb();
+    __1CListBox__UAE_XZ_0061e8cb();
     local_bc.vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
     local_4 = 5;
     if (local_bc._100_4_ != 0) {
       WrapperFor_CleanupDialogModalCreateState_At0049d510();
     }
     local_4 = 0xffffffff;
-    CDialog::~CDialog((CDialog *)&local_bc);
+    CDialog::__1CDialog__UAE_XZ((CDialog *)&local_bc);
     uVar3 = 0;
   }
   *unaff_FS_OFFSET = local_c;
@@ -2446,20 +2447,20 @@ undefined4 CopyListBoxItemDataStructByIndex(int param_1,undefined4 param_2,undef
   undefined4 in_stack_000000b0;
   undefined4 uStack000000b8;
   undefined4 *in_stack_000000c0;
-  
+
   puVar1 = (undefined4 *)(*unaff_EDI)();
   *in_stack_000000c0 = *puVar1;
   in_stack_000000c0[1] = puVar1[1];
   in_stack_000000c0[2] = puVar1[2];
   in_stack_000000c0[3] = puVar1[3];
   uStack000000b8 = 2;
-  Dtor_CListBox_FID_61e8cb();
+  __1CListBox__UAE_XZ_0061e8cb();
   uStack000000b8 = 3;
   if (in_stack_00000064 != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   uStack000000b8 = 0xffffffff;
-  CDialog::~CDialog((CDialog *)&stack0x00000000);
+  CDialog::__1CDialog__UAE_XZ((CDialog *)&stack0x00000000);
   *unaff_FS_OFFSET = in_stack_000000b0;
   return 1;
 }
@@ -2472,7 +2473,7 @@ TControl * __thiscall
 InitializeDialogTemplateBaseState(TControl *param_1,uint param_2,undefined4 param_3)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1,param_2,param_3);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,param_2,param_3);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -2494,19 +2495,19 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00480aa0_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e530;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  Dtor_CListBox_FID_61e8cb();
+  __1CListBox__UAE_XZ_0061e8cb();
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 1;
   if (*(int *)(param_1 + 100) != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2538,7 +2539,7 @@ TrySendNetworkPacketViaManagerContext
 {
   int *piVar1;
   int iVar2;
-  
+
   piVar1 = *(int **)(param_1 + 4);
   if (piVar1 != (int *)0x0) {
     iVar2 = (**(code **)(*piVar1 + 0x68))
@@ -2561,7 +2562,7 @@ TryReceiveNetworkPacketIntoResizableBuffer
   int *piVar1;
   HGLOBAL pvVar2;
   int iVar3;
-  
+
   piVar1 = param_4;
   if (*(int *)(param_1 + 4) == 0) {
     return true;
@@ -2598,7 +2599,7 @@ bool __thiscall CacheObjectVslot74ResultToField0C(int param_1,undefined4 param_2
 
 {
   int iVar1;
-  
+
   iVar1 = (**(code **)(**(int **)(param_1 + 4) + 0x74))
                     (*(int **)(param_1 + 4),*(undefined4 *)(param_1 + 0x60),param_2,param_3,2);
   *(int *)(param_1 + 0xc) = iVar1;
@@ -2615,7 +2616,7 @@ WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900_Impl
 
 {
   int iVar1;
-  
+
   iVar1 = (**(code **)(**(int **)(param_1 + 4) + 0x50))
                     (*(int **)(param_1 + 4),param_2,param_3,param_4,0);
   *(int *)(param_1 + 0xc) = iVar1;
@@ -2631,7 +2632,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00480aa0(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00480aa0_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -2644,7 +2645,7 @@ void __thiscall
 WrapperFor_EnsureWindowSubclassAndParentConsistency_At00480ad0(int param_1,undefined4 param_2)
 
 {
-  DDX_Control(param_2,0x435,param_1 + 0x74);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x435,param_1 + 0x74);
   return;
 }
 
@@ -2685,14 +2686,14 @@ DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass(undefined4 *p
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e568;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &CObjectVtbl_00646fb0;
   local_4 = 0;
   if (param_1[1] != 0) {
-    FreeHeapBufferIfNotNull(param_1[1]);
+    __3_YAXPAX_Z(param_1[1]);
   }
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -2712,13 +2713,13 @@ void __thiscall ResizeDynamicPointerArrayWithGrowthStep(int param_1,uint param_2
   int iVar4;
   int iVar5;
   undefined4 *puVar6;
-  
+
   if (param_3 != -1) {
     *(uint *)(param_1 + 0x10) = param_3;
   }
   if (param_2 == 0) {
     if (*(int *)(param_1 + 4) != 0) {
-      FreeHeapBufferIfNotNull(*(int *)(param_1 + 4));
+      __3_YAXPAX_Z(*(int *)(param_1 + 4));
       *(undefined4 *)(param_1 + 4) = 0;
     }
     *(undefined4 *)(param_1 + 0xc) = 0;
@@ -2726,7 +2727,7 @@ void __thiscall ResizeDynamicPointerArrayWithGrowthStep(int param_1,uint param_2
     return;
   }
   if (*(int *)(param_1 + 4) == 0) {
-    puVar1 = (undefined4 *)AllocateWithFallbackHandler(param_2 * 4);
+    puVar1 = (undefined4 *)__2_YAPAXI_Z(param_2 * 4);
     uVar3 = param_2 & 0x3fffffff;
     *(undefined4 **)(param_1 + 4) = puVar1;
     for (; uVar3 != 0; uVar3 = uVar3 - 1) {
@@ -2767,7 +2768,7 @@ void __thiscall ResizeDynamicPointerArrayWithGrowthStep(int param_1,uint param_2
   if ((int)param_3 <= (int)param_2) {
     param_3 = param_2;
   }
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(param_3 * 4);
+  puVar2 = (undefined4 *)__2_YAPAXI_Z(param_3 * 4);
   puVar1 = *(undefined4 **)(param_1 + 4);
   puVar6 = puVar2;
   for (uVar3 = *(uint *)(param_1 + 8) & 0x3fffffff; uVar3 != 0; uVar3 = uVar3 - 1) {
@@ -2785,7 +2786,7 @@ void __thiscall ResizeDynamicPointerArrayWithGrowthStep(int param_1,uint param_2
     *puVar1 = 0;
     puVar1 = puVar1 + 1;
   }
-  FreeHeapBufferIfNotNull(*(undefined4 *)(param_1 + 4));
+  __3_YAXPAX_Z(*(undefined4 *)(param_1 + 4));
   *(uint *)(param_1 + 8) = param_2;
   *(undefined4 **)(param_1 + 4) = puVar2;
   *(uint *)(param_1 + 0xc) = param_3;
@@ -2814,7 +2815,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00481130(undefined4 p
 {
   WrapperFor_CDialog_At00481160();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -2830,7 +2831,7 @@ void __fastcall WrapperFor_CDialog_At00481160(CDialog *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e588;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -2840,7 +2841,7 @@ void __fastcall WrapperFor_CDialog_At00481160(CDialog *param_1)
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2872,7 +2873,7 @@ undefined ** OrphanVtableAssignStub_00481200(void)
 undefined4 WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220(void)
 
 {
-  OnInitDialog();
+  _OnInitDialog_CDialog__UAEHXZ();
   return 1;
 }
 
@@ -2908,20 +2909,20 @@ InitializeHotKeyDialogTemplateA1WithTripleTextState(TControl *param_1,undefined4
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e5c1;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xa1,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xa1,param_2);
   local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   *(undefined ***)&param_1->field_0x5c = &PTR_LAB_006714cc;
   local_4._0_1_ = 1;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   *(undefined ***)&param_1[1].field_0x14 = &PTR_LAB_006714cc;
   local_4 = CONCAT31(local_4._1_3_,2);
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   *(undefined ***)&param_1[1].field_0x50 = &PTR_LAB_006714cc;
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00647428;
   *(undefined4 *)&param_1[2].field_0x8 = 0;
@@ -2939,7 +2940,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00481480(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00481480_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -2955,18 +2956,18 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00481480_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   puStack_8 = &LAB_0062e601;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 2;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   local_4._0_1_ = 1;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   local_4 = (uint)local_4._1_3_ << 8;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2979,11 +2980,11 @@ void __thiscall
 Helper_Uses_EnsureWindowSubclassAndParentConsistency_At00481540(int param_1,undefined4 param_2)
 
 {
-  DDX_Control(param_2,0x3fa,param_1 + 0x5c);
-  DDX_Control(param_2,0x406,param_1 + 0x98);
-  DDX_Control(param_2,0x3f9,param_1 + 0xd4);
-  DDX_Check(param_2,0x404,param_1 + 0x110);
-  DDX_Check(param_2,0x405,param_1 + 0x114);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x3fa,param_1 + 0x5c);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x406,param_1 + 0x98);
+  _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(param_2,0x3f9,param_1 + 0xd4);
+  _DDX_Check__YGXPAVCDataExchange__HAAH_Z(param_2,0x404,param_1 + 0x110);
+  _DDX_Check__YGXPAVCDataExchange__HAAH_Z(param_2,0x405,param_1 + 0x114);
   return;
 }
 
@@ -3046,7 +3047,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00481800(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00481800_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -3062,14 +3063,14 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00481800_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_0062e658;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::~CString((CString *)(param_1 + 0x5c));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x5c));
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -3081,7 +3082,7 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00481800_Impl(CDialog *para
 void __thiscall WrapperFor_DDX_Text_618cbd_At004818a0(int param_1,undefined4 param_2)
 
 {
-  DDX_Text_618cbd(param_2,0x3fc,param_1 + 0x5c);
+  _DDX_Text__YGXPAVCDataExchange__HAAVCString___Z(param_2,0x3fc,param_1 + 0x5c);
   return;
 }
 
@@ -3164,7 +3165,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00481bf0(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00481bf0_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -3180,16 +3181,16 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00481bf0_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_0062e6c3;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  CString::~CString((CString *)(param_1 + 0x60));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x60));
   local_4 = local_4 & 0xffffff00;
-  CString::~CString((CString *)(param_1 + 0x5c));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x5c));
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -3201,8 +3202,8 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00481bf0_Impl(CDialog *para
 void __thiscall WrapperFor_DDX_Text_At00481ca0(int param_1,undefined4 param_2)
 
 {
-  DDX_Text_618cbd(param_2,0x3fd,param_1 + 0x5c);
-  DDX_Text_618cbd(param_2,0x3fe,param_1 + 0x60);
+  _DDX_Text__YGXPAVCDataExchange__HAAVCString___Z(param_2,0x3fd,param_1 + 0x5c);
+  _DDX_Text__YGXPAVCDataExchange__HAAVCString___Z(param_2,0x3fe,param_1 + 0x60);
   return;
 }
 
@@ -3245,7 +3246,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00481e80(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00481e80_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -3261,16 +3262,16 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00481e80_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_0062e733;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  CString::~CString((CString *)(param_1 + 0x60));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x60));
   local_4 = local_4 & 0xffffff00;
-  CString::~CString((CString *)(param_1 + 0x5c));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x5c));
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -3282,8 +3283,8 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00481e80_Impl(CDialog *para
 void __thiscall WrapperFor_DDX_Text_At00481f30(int param_1,undefined4 param_2)
 
 {
-  DDX_Text_618cbd(param_2,0x400,param_1 + 0x5c);
-  DDX_Text_618cbd(param_2,0x401,param_1 + 0x60);
+  _DDX_Text__YGXPAVCDataExchange__HAAVCString___Z(param_2,0x400,param_1 + 0x5c);
+  _DDX_Text__YGXPAVCDataExchange__HAAVCString___Z(param_2,0x401,param_1 + 0x60);
   return;
 }
 
@@ -3326,7 +3327,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004820e0(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004820e0_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -3342,14 +3343,14 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At004820e0_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_0062e788;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::~CString((CString *)(param_1 + 0x5c));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x5c));
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -3361,7 +3362,7 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At004820e0_Impl(CDialog *para
 void __thiscall WrapperFor_DDX_Text_618cbd_At00482180(int param_1,undefined4 param_2)
 
 {
-  DDX_Text_618cbd(param_2,0x403,param_1 + 0x5c);
+  _DDX_Text__YGXPAVCDataExchange__HAAVCString___Z(param_2,0x403,param_1 + 0x5c);
   return;
 }
 
@@ -3400,15 +3401,15 @@ HandleTurnEventVtableSlot2CInitializeHotKeyDialog_Impl(int param_1,undefined4 pa
 undefined4 __fastcall SyncTripleSelectionControlsFromState(int param_1)
 
 {
-  OnInitDialog();
+  _OnInitDialog_CDialog__UAEHXZ();
   *(uint *)(param_1 + 0x110) = (uint)(*(short *)(*(int *)(param_1 + 0x118) + 2) == 1);
-  SetRange(0,5,0);
-  SetRange(0,5,0);
-  SetRange(0,5,0);
+  _SetRange_CSliderCtrl__QAEXHHH_Z(0,5,0);
+  _SetRange_CSliderCtrl__QAEXHHH_Z(0,5,0);
+  _SetRange_CSliderCtrl__QAEXHHH_Z(0,5,0);
   SendMessageA(*(HWND *)(param_1 + 0x78),0x405,1,(int)*(short *)(*(int *)(param_1 + 0x118) + 0x10));
   SendMessageA(*(HWND *)(param_1 + 0xb4),0x405,1,(int)*(short *)(*(int *)(param_1 + 0x118) + 0x1e));
   SendMessageA(*(HWND *)(param_1 + 0xf0),0x405,1,(int)*(short *)(*(int *)(param_1 + 0x118) + 0x2c));
-  UpdateData(0);
+  _UpdateData_CWnd__QAEHH_Z(0);
   return 1;
 }
 
@@ -3430,8 +3431,8 @@ void __fastcall SyncTripleSelectionStateViaMessage400(TNewGameCommand *param_1)
 
 {
   LRESULT LVar1;
-  
-  TNewGameCommand::OnOK_6054aa(param_1);
+
+  TNewGameCommand::_OnOK_CDialog__MAEXXZ(param_1);
   *(ushort *)(*(int *)&param_1[0xb].field_0x10 + 2) =
        2 - (ushort)(*(int *)&param_1[0xb].field_0x8 != 0);
   LVar1 = SendMessageA((HWND)param_1[5].vftable,0x400,0,0);
@@ -3489,18 +3490,18 @@ void InitializeChildWindowSurfaceAndTickTimer_Impl(HWND param_1)
   CWinThread *pCVar4;
   int iVar5;
   tagPOINT local_8;
-  
+
   GetCursorPos(&local_8);
   ScreenToClient(param_1,&local_8);
   if (g_pGlobalUiRootController != (TApplication *)0x0) {
     pHVar2 = GetForegroundWindow();
-    iVar3 = FromHandle(pHVar2);
-    pCVar4 = AfxGetThread();
+    iVar3 = _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar2);
+    pCVar4 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     if (pCVar4 == (CWinThread *)0x0) {
       iVar5 = 0;
     }
     else {
-      pCVar4 = AfxGetThread();
+      pCVar4 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       iVar5 = (**(code **)(*(int *)pCVar4 + 0x7c))();
     }
     if (iVar3 == iVar5) {
@@ -3538,15 +3539,15 @@ undefined4 * CreateCViewOwnedBufferRegistryState(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e7aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    CView();
+    __0CView__IAE_XZ();
     puVar1[0x10] = 0;
     puVar1[0x11] = 0;
     puVar1[0x12] = 0;
@@ -3586,7 +3587,7 @@ CRuntimeClass * OrphanVtableAssignStub_00482930(void)
 void * __thiscall ConstructCViewOwnedBufferRegistryState(void *this)
 
 {
-  CView();
+  __0CView__IAE_XZ();
   *(undefined4 *)((int)this + 0x40) = 0;
   *(undefined4 *)((int)this + 0x44) = 0;
   *(undefined4 *)((int)this + 0x48) = 0;
@@ -3618,7 +3619,7 @@ void __thiscall DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers(void
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e7fb;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -3649,11 +3650,11 @@ void __thiscall DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers(void
   *(undefined4 *)((int)this + 0x5c) = 0;
   *(undefined4 *)((int)this + 0x54) = 0;
   *(undefined4 *)((int)this + 0x50) = 0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   *(undefined4 *)((int)this + 0x60) = 0;
   *(undefined4 *)((int)this + 0x4c) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   local_4 = 0xffffffff;
-  FUN_00613ce3();
+  __1CView__UAE_XZ();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -3678,7 +3679,7 @@ void __thiscall WrapperFor_NoOpRuntimeCallback_00489a70_At00482c90(int param_1,i
   int iVar1;
   undefined1 local_20 [12];
   tagRECT tStack_14;
-  
+
   (**(code **)(*param_2 + 0x58))(local_20);
   if (*(int *)(param_1 + 0x40) != 0) {
     iVar1 = NoOpRuntimeCallback_00489a70();
@@ -3706,10 +3707,10 @@ void __thiscall BlitMapDialogSurfaceToHdcWithClipBounds(int param_1,int *param_2
   RECT RStack_34;
   undefined1 auStack_24 [16];
   RECT RStack_14;
-  
+
   if (param_2 == (int *)0x0) {
     pHVar1 = GetDC(*(HWND *)(param_1 + 0x1c));
-    param_2 = (int *)FromHandle_612736(pHVar1);
+    param_2 = (int *)_FromHandle_CDC__SGPAV1_PAUHDC_____Z(pHVar1);
   }
   if (param_3 == (RECT *)0x0) {
     GetClientRect(*(HWND *)(param_1 + 0x1c),(LPRECT)(auStack_24 + 4));
@@ -3763,7 +3764,7 @@ Helper_Uses_BlitSurfaceRectSkippingTransparentColor_At00482ed0(int param_1,RECT 
   int *piVar1;
   undefined1 local_18 [8];
   RECT local_10;
-  
+
   piVar1 = (int *)CopyOffset10PointPairToOutOrZero(local_18);
   local_10.right = *piVar1;
   local_10.bottom = piVar1[1];
@@ -3801,7 +3802,7 @@ void __thiscall UpdateAndRenderMapTileHintOverlayQueue(void *this,int param_1)
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   *(undefined4 *)((int)this + 0x68) = *(undefined4 *)((int)this + 0x50);
   piVar7 = (int *)((int)this + 0x68);
   do {
@@ -3835,7 +3836,7 @@ LAB_0048309c:
           iVar6 = param_1;
           if (param_1 == 0) {
             pHVar5 = GetDC(*(HWND *)((int)this + 0x1c));
-            iVar6 = FromHandle_612736(pHVar5);
+            iVar6 = _FromHandle_CDC__SGPAV1_PAUHDC_____Z(pHVar5);
           }
           *(undefined4 *)((int)this + 0x68) = *(undefined4 *)((int)this + 0x50);
           while (piVar7 = *(int **)((int)this + 0x68), piVar7 != (int *)0x0) {
@@ -3898,7 +3899,7 @@ void __thiscall ComputeRectSpanFromStoredBounds(int *param_1,int *param_2)
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = param_1[3];
   iVar2 = param_1[1];
   *param_2 = param_1[2] - *param_1;
@@ -3948,7 +3949,7 @@ undefined4 __fastcall ReinitializeIncludeViewMainPaneAndRedrawWindow(int param_1
   undefined4 uStack_10;
   undefined4 uStack_c;
   undefined4 uStack_8;
-  
+
   *(undefined4 *)(param_1 + 0x44) = 0;
   if (*(int *)(param_1 + 0x40) != 0) {
     uVar1 = ClearQuickDrawModeFlag950AC();
@@ -3974,12 +3975,12 @@ undefined4 __fastcall ReinitializeIncludeViewMainPaneAndRedrawWindow(int param_1
   InvalidateRect(*(HWND *)(param_1 + 0x1c),(RECT *)0x0,1);
   RedrawWindow(*(HWND *)(param_1 + 0x1c),(RECT *)0x0,(HRGN)0x0,1);
   if (DAT_006a17c0 == 0) {
-    pCVar4 = AfxGetThread();
+    pCVar4 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     if (pCVar4 == (CWinThread *)0x0) {
       this = (TMacViewMgr *)0x0;
     }
     else {
-      pCVar4 = AfxGetThread();
+      pCVar4 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       this = (TMacViewMgr *)(**(code **)(*(int *)pCVar4 + 0x7c))();
     }
     uVar1 = ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl();
@@ -4001,7 +4002,7 @@ WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530(int par
 
 {
   undefined4 uVar1;
-  
+
   *(undefined4 *)(param_1 + 0x44) = 0;
   if (*(int *)(param_1 + 0x40) != 0) {
     uVar1 = ClearQuickDrawModeFlag950AC();
@@ -4024,7 +4025,7 @@ undefined4 __thiscall OrphanCallChain_C2_I17_004835a0(int param_1,int *param_2)
 {
   undefined1 local_20 [12];
   tagRECT tStack_14;
-  
+
   (**(code **)(*param_2 + 0x58))(local_20);
   GetClientRect(*(HWND *)(param_1 + 0x1c),&tStack_14);
   return 1;
@@ -4040,9 +4041,9 @@ void __thiscall SelectPaletteAndResolveHandleMapEntry_004835e0(int param_1,int *
   int iVar1;
   HDC pHVar2;
   int iVar3;
-  
+
   pHVar2 = GetDC(*(HWND *)(param_1 + 0x1c));
-  iVar3 = FromHandle_612736(pHVar2);
+  iVar3 = _FromHandle_CDC__SGPAV1_PAUHDC_____Z(pHVar2);
   SelectAndRealizeDibPalette(iVar3,0);
   iVar1 = param_2[1];
   BlitDibBitsWithStretchDIBits
@@ -4059,7 +4060,7 @@ void WrapperFor_SetFocusViaSiteOrHandle_At00483720
                (undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  OnActivateView(param_1,param_2,param_3);
+  _OnActivateView_CView__MAEXHPAV1_0_Z(param_1,param_2,param_3);
   return;
 }
 
@@ -4079,7 +4080,7 @@ void __fastcall InitializeChildWindowSurfaceAndTickTimer(int param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062e81a;
   uStack_c = *unaff_FS_OFFSET;
@@ -4087,7 +4088,7 @@ void __fastcall InitializeChildWindowSurfaceAndTickTimer(int param_1)
   if (*(int **)(param_1 + 0x48) != (int *)0x0) {
     (**(code **)(**(int **)(param_1 + 0x48) + 4))(1);
   }
-  iVar1 = AllocateWithFallbackHandler(0x38);
+  iVar1 = __2_YAPAXI_Z(0x38);
   uStack_4 = 0;
   if (iVar1 == 0) {
     uVar2 = 0;
@@ -4098,16 +4099,16 @@ void __fastcall InitializeChildWindowSurfaceAndTickTimer(int param_1)
   uStack_4 = 0xffffffff;
   *(undefined4 *)(param_1 + 0x48) = uVar2;
   pHVar3 = GetDC(*(HWND *)(param_1 + 0x1c));
-  iVar1 = FromHandle_612736(pHVar3);
+  iVar1 = _FromHandle_CDC__SGPAV1_PAUHDC_____Z(pHVar3);
   EnsureBitmapSurfaceDibSectionCreated(iVar1);
   ReleaseDC(*(HWND *)(param_1 + 0x1c),*(HDC *)(iVar1 + 4));
-  pCVar4 = AfxGetThread();
+  pCVar4 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar4 != (CWinThread *)0x0) {
-    pCVar4 = AfxGetThread();
+    pCVar4 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     (**(code **)(*(int *)pCVar4 + 0x7c))();
   }
-  SetWindowPos(0,0,0,0,0,7);
-  SetWindowPos(0,0,0,0x280,0x1e0,0x16);
+  _SetWindowPos_CWnd__QAEHPBV1_HHHHI_Z(0,0,0,0,0,7);
+  _SetWindowPos_CWnd__QAEHPBV1_HHHHI_Z(0,0,0,0x280,0x1e0,0x16);
   if (*(int *)(param_1 + 0x6c) == 0) {
     UVar5 = SetTimer(*(HWND *)(param_1 + 0x1c),0xd00d,0x11,(TIMERPROC)&LAB_00405d94);
     *(UINT_PTR *)(param_1 + 0x6c) = UVar5;
@@ -4129,7 +4130,7 @@ HandleIncludeViewPointerUpdateAndNotifyChildren
   undefined4 uVar1;
   undefined4 uVar2;
   int iVar3;
-  
+
   uVar2 = param_3;
   uVar1 = param_2;
   if (*(int *)((int)this + 0x90) != 0) {
@@ -4183,7 +4184,7 @@ WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e838;
@@ -4237,7 +4238,7 @@ WrapperFor_AllocateAndLinkBlockHead_At00483ba0
   tagRECT local_18;
   uint local_8;
   undefined4 local_4;
-  
+
   iVar5 = *(int *)(param_1 + 4);
   if (((iVar5 == 0) || (lprcSrc1 = (LPRECT)(iVar5 + 8), *(int *)(iVar5 + 0x18) == 2)) ||
      (BVar2 = IntersectRect(&local_18,lprcSrc1,param_2), BVar2 == 0)) {
@@ -4249,7 +4250,8 @@ WrapperFor_AllocateAndLinkBlockHead_At00483ba0
     local_4 = param_4;
     local_8 = (uint)(param_3 != 0);
     if (*(int *)(param_1 + 0x10) == 0) {
-      iVar3 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0x20);
+      iVar3 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0x20)
+      ;
       iVar5 = *(int *)(param_1 + 0x18);
       puVar4 = (undefined4 *)(iVar5 * 0x20 + -0x1c + iVar3);
       if (-1 < iVar5 + -1) {
@@ -4316,27 +4318,27 @@ void RegisterAmbitGameWindowClass(int param_1)
   HICON local_14;
   undefined4 local_c;
   char *local_4;
-  
+
   ppcVar2 = local_28;
   for (iVar1 = 10; iVar1 != 0; iVar1 = iVar1 + -1) {
     *ppcVar2 = (code *)0x0;
     ppcVar2 = ppcVar2 + 1;
   }
   local_28[1] = DefWindowProcA_exref;
-  iVar1 = AfxGetModuleState();
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   local_18 = *(undefined4 *)(iVar1 + 8);
   local_28[0] = (code *)0x3;
   local_c = 5;
   local_4 = "AmbitGameWindow";
-  iVar1 = AfxGetModuleState();
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   local_14 = LoadIconA(*(HINSTANCE *)(iVar1 + 0xc),(LPCSTR)0x7a02);
   if (local_14 == (HICON)0x0) {
     local_14 = LoadIconA((HINSTANCE)0x0,&DAT_00007f00);
   }
-  AfxRegisterClass(local_28);
+  _AfxRegisterClass__YGHPAUtagWNDCLASSA___Z(local_28);
   *(char **)(param_1 + 0x28) = "AmbitGameWindow";
   *(uint *)(param_1 + 0x20) = *(uint *)(param_1 + 0x20) | 0x6000000;
-  PreCreateWindow_613d23(param_1);
+  _PreCreateWindow_CView__MAEHAAUtagCREATESTRUCTA___Z(param_1);
   return;
 }
 
@@ -4350,7 +4352,7 @@ WrapperFor_RouteCommandByIdWithUiProbe_At00483e80
 
 {
   int *piVar1;
-  
+
   if (param_2 >> 0x10 == 0x400) {
     piVar1 = (int *)GetWindowLongA(param_3,-0x15);
     if (piVar1 != (int *)0x0) {
@@ -4358,7 +4360,7 @@ WrapperFor_RouteCommandByIdWithUiProbe_At00483e80
       (**(code **)(**(int **)(param_1 + 0x40) + 0x13c))();
     }
   }
-  TTooltipRelayWindowState::OnCommand(param_1,param_2,(int)param_3);
+  TTooltipRelayWindowState::_OnCommand_CWnd__MAEHIJ_Z(param_1,param_2,(int)param_3);
   return;
 }
 
@@ -4382,7 +4384,7 @@ void WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0(LPRECT param_1)
   int iVar1;
   DWORD dwExStyle;
   tagRECT local_10;
-  
+
   CopyRect(&local_10,param_1);
   iVar1 = ((local_10.right - local_10.left) + -0x280) / 2;
   param_1->left = iVar1;
@@ -4396,7 +4398,7 @@ void WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0(LPRECT param_1)
   }
   param_1->right = param_1->left + 0x280;
   param_1->bottom = param_1->top + 0x1e0;
-  dwExStyle = GetExStyle();
+  dwExStyle = _GetExStyle_CWnd__QBEKXZ();
   AdjustWindowRectEx(param_1,0,0,dwExStyle);
   return;
 }
@@ -4413,8 +4415,8 @@ HandleParentNotifyAndEndMouseCapture_00484190(CWnd *param_1,uint param_2,uint pa
   uint uVar2;
   uint local_8;
   uint local_4;
-  
-  CWnd::OnParentNotify(param_1,param_2,param_3);
+
+  CWnd::_OnParentNotify_CWnd__IAEXIJ_Z(param_1,param_2,param_3);
   uVar2 = param_3 & 0xffff;
   param_3 = param_3 >> 0x10;
   if ((short)param_2 == 0x201) {
@@ -4455,7 +4457,7 @@ int DereferencePointerCellInPlace(int *param_1)
 
 {
   int *piVar1;
-  
+
   piVar1 = (int *)*param_1;
   *param_1 = *piVar1;
   return (int)(piVar1 + 2);
@@ -4470,7 +4472,7 @@ void __thiscall WrapperFor_FreeLinkedBlockChain_At00484860(int param_1,undefined
 {
   undefined4 *puVar1;
   int iVar2;
-  
+
   *param_2 = *(undefined4 *)(param_1 + 0x10);
   *(undefined4 **)(param_1 + 0x10) = param_2;
   iVar2 = *(int *)(param_1 + 0xc) + -1;
@@ -4483,7 +4485,7 @@ void __thiscall WrapperFor_FreeLinkedBlockChain_At00484860(int param_1,undefined
     *(undefined4 *)(param_1 + 0x10) = 0;
     *(undefined4 *)(param_1 + 8) = 0;
     *(undefined4 *)(param_1 + 4) = 0;
-    FreeDataChain();
+    _FreeDataChain_CPlex__QAEXXZ();
     *(undefined4 *)(param_1 + 0x14) = 0;
   }
   return;
@@ -4509,7 +4511,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00484990(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00484990_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -4571,15 +4573,15 @@ CMainFrame * __cdecl CreateTMacViewMgrObject(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e89a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pCVar1 = (CMainFrame *)AllocateWithFallbackHandler(0xd0);
+  pCVar1 = (CMainFrame *)__2_YAPAXI_Z(0xd0);
   local_4 = 0;
   if (pCVar1 != (CMainFrame *)0x0) {
-    TMacViewMgr::CFrameWnd();
+    TMacViewMgr::__0CFrameWnd__QAE_XZ();
     *(undefined4 *)&pCVar1->field_0xbc = 0;
     *(undefined4 *)&pCVar1->field_0xcc = 1;
     pCVar1->vftable = (CMainFrameVtbl *)&PTR_LAB_006488d8;
@@ -4610,7 +4612,7 @@ void OrphanDeadLeaf_NoRefs_00484c10(void)
 
 {
   undefined4 *unaff_ESI;
-  
+
   *unaff_ESI = &PTR_LAB_006488d8;
   unaff_ESI[0x30] = 0x100005f;
   return;
@@ -4632,29 +4634,30 @@ void __thiscall ConfigureTopLevelWindowStyleAndPlacement(int param_1,int param_2
   int local_24;
   undefined4 local_18;
   undefined4 local_14;
-  
+
   *(undefined4 *)(param_1 + 0xcc) = 0;
-  ModifyStyle(0xc00000,0,0);
-  ModifyStyleEx(0x200,0,0);
+  _ModifyStyle_CWnd__QAEHKKI_Z(0xc00000,0,0);
+  _ModifyStyleEx_CWnd__QAEHKKI_Z(0x200,0,0);
   iVar1 = GetObjectValueAtOffset98();
   if (iVar1 != 0) {
     uVar4 = 0;
     uVar3 = 0;
     uVar2 = 0x200;
     GetObjectValueAtOffset98(0x200,0,0);
-    ModifyStyleEx(uVar2,uVar3,uVar4);
+    _ModifyStyleEx_CWnd__QAEHKKI_Z(uVar2,uVar3,uVar4);
     uVar4 = 0;
     uVar3 = 0;
     uVar2 = 0x300;
     GetObjectValueAtOffset98(0x300,0,0);
-    ModifyStyleEx(uVar2,uVar3,uVar4);
+    _ModifyStyleEx_CWnd__QAEHKKI_Z(uVar2,uVar3,uVar4);
   }
   local_3c.left = 0;
   local_3c.top = 0;
   local_3c.right = param_2;
   local_3c.bottom = param_3;
   AdjustWindowRectEx(&local_3c,0x14cf0000,1,0x100);
-  SetWindowPos(0,0,0,local_3c.right - local_3c.left,local_3c.bottom - local_3c.top,0x16);
+  _SetWindowPos_CWnd__QAEHPBV1_HHHHI_Z
+            (0,0,0,local_3c.right - local_3c.left,local_3c.bottom - local_3c.top,0x16);
   local_2c[0] = 0x2c;
   GetWindowPlacementFromThisHwnd(local_2c);
   if (local_24 != 3) {
@@ -4714,7 +4717,7 @@ undefined4 __fastcall TryRealizeViewPaletteAndInvalidateWindow(int param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e8d8;
@@ -4723,19 +4726,19 @@ undefined4 __fastcall TryRealizeViewPaletteAndInvalidateWindow(int param_1)
     *unaff_FS_OFFSET = local_c;
     return 0;
   }
-  ConstructCClientDCFromViewHandle(param_1);
+  __0CWindowDC__QAE_PAVCWnd___Z(param_1);
   local_4 = 0;
-  iVar1 = GetCurrentMessage();
+  iVar1 = _GetCurrentMessage_CWnd__KGPBUtagMSG__XZ();
   uVar2 = thunk_DispatchHandleMapLookupWithReadPtrProbe
                     (*(undefined4 *)(param_1 + 0xbc),*(int *)(iVar1 + 4) == 0x311);
   UVar3 = RealizePalette(unaff_EBX);
   thunk_DispatchHandleMapLookupWithReadPtrProbe(uVar2,1);
   if (UVar3 == 0) {
-    DestroyCClientDCAndReleaseHandle();
+    __1CWindowDC__UAE_XZ();
     *unaff_FS_OFFSET = uStack_1c;
     return 0;
   }
-  DestroyCClientDCAndReleaseHandle();
+  __1CWindowDC__UAE_XZ();
   InvalidateRect(*(HWND *)(param_1 + 0x1c),(RECT *)0x0,1);
   *unaff_FS_OFFSET = uStack_1c;
   return 1;
@@ -4750,7 +4753,7 @@ void __thiscall WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485110(int param_1,int
 {
   HWND hWnd;
   BOOL BVar1;
-  
+
   if (param_2 != param_1) {
     hWnd = (HWND)0x0;
     if (param_2 != 0) {
@@ -4789,7 +4792,7 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e91c;
   uStack_c = *unaff_FS_OFFSET;
@@ -4797,7 +4800,7 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void)
   InitializeDialogTemplateC2WithTextState(0);
   local_4 = 0;
   PrepareAndCreateDialogFromTemplateResource();
-  SetRange(0,6,0);
+  _SetRange_CSliderCtrl__QAEXHHH_Z(0,6,0);
   SendMessageA(local_68,0x405,1,(int)*(short *)&g_pUiRuntimeContext->field_0x6);
   SendMessageA(local_2c,0x180,0,0x694e18);
   SendMessageA(local_2c,0x180,0,0x694e08);
@@ -4828,16 +4831,16 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void)
     (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(LVar3,LVar2);
   }
   local_4 = 2;
-  Dtor_CListBox_FID_61e8cb();
+  __1CListBox__UAE_XZ_0061e8cb();
   local_4 = CONCAT31(local_4._1_3_,1);
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   local_f8.vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   local_4 = 3;
   if (local_f8._100_4_ != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog((CDialog *)&local_f8);
+  CDialog::__1CDialog__UAE_XZ((CDialog *)&local_f8);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -4874,7 +4877,7 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
   undefined4 uStack_c;
   undefined *puStack_8;
   int iStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   iStack_4 = 0xffffffff;
   puStack_8 = &UNK_0062e9a3;
@@ -4886,38 +4889,38 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
     wParam = 0;
     ppTVar3 = g_apTerrainTypeDescriptorTable;
     do {
-      CString::CString(&CStack_c0);
+      CString::__0CString__QAE_XZ(&CStack_c0);
       iStack_4._0_1_ = 1;
-      CString::CString(&CStack_c8);
+      CString::__0CString__QAE_XZ(&CStack_c8);
       iStack_4._0_1_ = 2;
       FormatOverlayTerrainLabelText(&CStack_c8);
-      FormatStringWithVarArgsToSharedRef
+      _Format_CString__QAAXPBDZZ
                 (&CStack_c0,s_Great_Power__2d___s_00694e70,wParam,CStack_c8.m_pchData);
       SendMessageA(pHStack_2c,0x180,0,(LPARAM)CStack_c0.m_pchData);
       SendMessageA(pHStack_2c,0x19a,wParam,wParam);
       iStack_4._0_1_ = 1;
-      CString::~CString(&CStack_c8);
+      CString::__1CString__QAE_XZ(&CStack_c8);
       iStack_4 = (uint)iStack_4._1_3_ << 8;
-      CString::~CString(&CStack_c0);
+      CString::__1CString__QAE_XZ(&CStack_c0);
       ppTVar3 = ppTVar3 + 1;
       wParam = wParam + 1;
     } while ((int)ppTVar3 < 0x6a432c);
     if ((int)wParam < 0x17) {
       ppTVar3 = g_apTerrainTypeDescriptorTable + wParam;
       do {
-        CString::CString(&CStack_c4);
+        CString::__0CString__QAE_XZ(&CStack_c4);
         iStack_4._0_1_ = 3;
-        CString::CString(&CStack_cc);
+        CString::__0CString__QAE_XZ(&CStack_cc);
         iStack_4._0_1_ = 4;
         FormatOverlayTerrainLabelText(&CStack_cc);
-        FormatStringWithVarArgsToSharedRef
+        _Format_CString__QAAXPBDZZ
                   (&CStack_c4,s_Minor_Nation__2d___s_00694e54,wParam,CStack_cc.m_pchData);
         SendMessageA(pHStack_2c,0x180,0,(LPARAM)CStack_c4.m_pchData);
         SendMessageA(pHStack_2c,0x19a,wParam,wParam);
         iStack_4._0_1_ = 3;
-        CString::~CString(&CStack_cc);
+        CString::__1CString__QAE_XZ(&CStack_cc);
         iStack_4 = (uint)iStack_4._1_3_ << 8;
-        CString::~CString(&CStack_c4);
+        CString::__1CString__QAE_XZ(&CStack_c4);
         ppTVar3 = ppTVar3 + 1;
         wParam = wParam + 1;
       } while ((int)ppTVar3 < 0x6a436c);
@@ -4931,25 +4934,25 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
       TemporarilyClearAndRestoreUiInvalidationFlag(s_d__Ambit_MainFrm_cpp_00694e38,0x26e);
     }
     iStack_4 = 7;
-    Dtor_CListBox_FID_61e8cb();
+    __1CListBox__UAE_XZ_0061e8cb();
     TStack_bc.vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
     iStack_4 = 8;
     if (TStack_bc._100_4_ != 0) {
       WrapperFor_CleanupDialogModalCreateState_At0049d510();
     }
     iStack_4 = 0xffffffff;
-    CDialog::~CDialog((CDialog *)&TStack_bc);
+    CDialog::__1CDialog__UAE_XZ((CDialog *)&TStack_bc);
   }
   PostCommand100ToMainWindow();
   iStack_4 = 5;
-  Dtor_CListBox_FID_61e8cb();
+  __1CListBox__UAE_XZ_0061e8cb();
   TStack_bc.vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   iStack_4 = 6;
   if (TStack_bc._100_4_ != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   iStack_4 = 0xffffffff;
-  CDialog::~CDialog((CDialog *)&TStack_bc);
+  CDialog::__1CDialog__UAE_XZ((CDialog *)&TStack_bc);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -4970,7 +4973,7 @@ undefined4 HandleCustomMessage2420DispatchTurnEvent(undefined4 param_1)
 {
   undefined *puVar1;
   undefined4 uVar2;
-  
+
   puVar1 = g_pUiRuntimeContext->vftable;
   uVar2 = UiRuntimeContext::GetActiveNationId();
   (**(code **)(puVar1 + 0x4c))(param_1,uVar2);
@@ -4985,7 +4988,7 @@ undefined4 TMacViewMgr_OnMsg_0x0BC0_Impl(undefined4 param_1,int *param_2)
 
 {
   int iVar1;
-  
+
   iVar1 = *param_2;
   (**(code **)(iVar1 + 0xc))();
   (**(code **)(iVar1 + 0x28))();
@@ -5000,9 +5003,9 @@ void __fastcall ConstructAndDestroyCPaintDC_NoOpPaintHandler(undefined4 param_1)
 
 {
   CPaintDC local_54 [84];
-  
-  CPaintDC(param_1);
-  CPaintDC::~CPaintDC(local_54);
+
+  __0CPaintDC__QAE_PAVCWnd___Z(param_1);
+  CPaintDC::__1CPaintDC__UAE_XZ(local_54);
   return;
 }
 
@@ -5013,7 +5016,7 @@ void __fastcall ConstructAndDestroyCPaintDC_NoOpPaintHandler(undefined4 param_1)
 void __fastcall WrapperFor_Default_At00485c00(CWnd *param_1)
 
 {
-  CWnd::Default(param_1);
+  CWnd::_Default_CWnd__IAEJXZ(param_1);
   return;
 }
 
@@ -5030,10 +5033,10 @@ void SendF1KeyDownToActiveMainWindow(void)
 
 {
   int iVar1;
-  
-  iVar1 = InvokeAfxThreadVslot7CAndGetValueAtOffset98();
+
+  iVar1 = GetMainViewHostFromActiveThread();
   if (iVar1 != 0) {
-    iVar1 = InvokeAfxThreadVslot7CAndGetValueAtOffset98();
+    iVar1 = GetMainViewHostFromActiveThread();
     SendMessageA(*(HWND *)(iVar1 + 0x1c),0x100,0x70,0);
   }
   return;
@@ -5047,7 +5050,7 @@ void WrapperFor_SwitchActiveFrameAndNotifyHandlers_At00485c60
                (undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  OnActivate(param_1,param_2,param_3);
+  _OnActivate_CFrameWnd__IAEXIPAVCWnd__H_Z(param_1,param_2,param_3);
   return;
 }
 
@@ -5058,7 +5061,7 @@ void WrapperFor_SwitchActiveFrameAndNotifyHandlers_At00485c60
 void WrapperFor_AFX_CLASSINIT_At00485e40(void)
 
 {
-  FUN_0060704b(&PTR_s_TObject_00694eb8);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TObject_00694eb8);
   return;
 }
 
@@ -5075,22 +5078,22 @@ void __thiscall AssignTextFromResourceIdAndMaybeInvalidate(TStaticText *param_1,
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ea60;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
                     /* WARNING: Load size is inaccurate */
   local_10.m_pchData = (char *)param_1;
-  CString::CString(&local_10,*param_2.m_pchData);
+  CString::__0CString__QAE_PBD_Z(&local_10,*param_2.m_pchData);
   local_4 = 0;
-  CString::StringSharedRef_AssignFromPtr(&param_2,src_ref);
+  CString::__0CString__QAE_ABV0__Z(&param_2,src_ref);
   local_4._0_1_ = 1;
   TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(param_1,&param_2,'\0');
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&param_2);
+  CString::__1CString__QAE_XZ(&param_2);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -5125,7 +5128,7 @@ void __thiscall CallThisVslot1B4NoArgs(int *param_1)
 {
   undefined4 in_stack_00000010;
   undefined4 in_stack_00000014;
-  
+
   (**(code **)(*param_1 + 0x1b4))(in_stack_00000010,in_stack_00000014);
   return;
 }
@@ -5152,12 +5155,12 @@ ApplicationUiRootController * CreateTApplicationInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ea9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (ApplicationUiRootController *)AllocateWithFallbackHandler(0x48);
+  this = (ApplicationUiRootController *)__2_YAPAXI_Z(0x48);
   local_4 = 0;
   if (this != (ApplicationUiRootController *)0x0) {
     TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
@@ -5196,23 +5199,23 @@ int PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode)
   int iVar3;
   int iVar4;
   tagMSG local_1c;
-  
+
   bVar1 = true;
   iVar4 = 0;
   do {
     BVar2 = PeekMessageA(&local_1c,(HWND)0x0,0,0,0);
     if (BVar2 != 0) break;
-    iVar3 = AfxGetModuleState();
+    iVar3 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
     iVar3 = (**(code **)(**(int **)(iVar3 + 4) + 0x68))(iVar4);
     if (iVar3 == 0) {
       bVar1 = false;
     }
     iVar4 = iVar4 + 1;
   } while (bVar1);
-  iVar4 = AfxGetModuleState();
+  iVar4 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   iVar4 = (**(code **)(**(int **)(iVar4 + 4) + 100))();
   if (iVar4 == 0) {
-    iVar4 = AfxGetModuleState();
+    iVar4 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
     iVar4 = (**(code **)(**(int **)(iVar4 + 4) + 0x70))();
     return iVar4;
   }
@@ -5227,8 +5230,8 @@ bool InvokeAfxThreadAndCallSecondaryRefresh(void)
 
 {
   int iVar1;
-  
-  InvokeAfxThreadVslot7CAndGetValueAtOffset98();
+
+  GetMainViewHostFromActiveThread();
   iVar1 = InvokeAfxThreadAndCallSecondaryRefresh_Impl();
   return iVar1 == 0;
 }
@@ -5341,7 +5344,7 @@ int __thiscall FindOneBasedNodeIndexByValueInLinkedList(int param_1,int param_2)
 {
   undefined4 *puVar1;
   int iVar2;
-  
+
   puVar1 = *(undefined4 **)(param_1 + 8);
   iVar2 = 1;
   while( true ) {
@@ -5363,7 +5366,7 @@ void __fastcall InitializeLinkedListCursorFromOwnerHead(int *param_1)
 
 {
   int *piVar1;
-  
+
   piVar1 = *(int **)(param_1[1] + 8);
   *param_1 = (int)piVar1;
   if (piVar1 != (int *)0x0) {
@@ -5393,7 +5396,7 @@ void __fastcall AdvanceLinkedListCursor(int *param_1)
 
 {
   int *piVar1;
-  
+
   piVar1 = (int *)*param_1;
   if (piVar1 != (int *)0x0) {
     *param_1 = *piVar1;
@@ -5412,7 +5415,7 @@ void __fastcall ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fb
 
 {
   int *piVar1;
-  
+
   piVar1 = *(int **)(param_1[1] + 4);
   *param_1 = (int)piVar1;
   if (piVar1 != (int *)0x0) {
@@ -5442,7 +5445,7 @@ void __fastcall ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl(int *para
 
 {
   int *piVar1;
-  
+
   piVar1 = (int *)*param_1;
   if (piVar1 != (int *)0x0) {
     *param_1 = *piVar1;
@@ -5466,16 +5469,16 @@ TIndexAndRankList * Helper_Uses_CPtrArray_ctor_At00488030(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062eb5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  this = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   pTVar1 = (TIndexAndRankList *)0x0;
   if (this != (TIndexAndRankList *)0x0) {
-    TIndexAndRankList::CPtrArray(this);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(this);
     this->vftable = (TIndexAndRankListVtbl *)&TSortedPtrListVtbl_00649010;
     pTVar1 = this;
   }
@@ -5484,23 +5487,23 @@ TIndexAndRankList * Helper_Uses_CPtrArray_ctor_At00488030(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004884F0
-// GHIDRA_NAME CObArray::DestructCObArray
-// GHIDRA_PROTO undefined CObArray::DestructCObArray()
+// GHIDRA_NAME CObArray::??1CUIntArray@@UAE@XZ
+// GHIDRA_PROTO undefined CObArray::??1CUIntArray@@UAE@XZ()
 
-void CObArray::DestructCObArray(void)
+void CObArray::??1CUIntArray@@UAE@XZ(void)
 
 {
   undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &TIndexAndRankList::_vftable_;
   uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull(uVar1);
+  __3_YAXPAX_Z(uVar1);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
@@ -5517,12 +5520,12 @@ void __fastcall WrapperFor_DestructCPtrListBaseState_At004888a0(undefined4 *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_0062eb98;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  DestructCPtrListBaseState();
+  __1CPtrList__UAE_XZ();
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -5536,8 +5539,8 @@ undefined4 * CreateTStreamWithAllocFallback(void)
 
 {
   undefined4 *puVar1;
-  
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(4);
+
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(4);
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &TStream::vftable;
     return puVar1;
@@ -5553,8 +5556,8 @@ undefined4 * CreateTFileStreamWithAllocFallback(void)
 
 {
   undefined4 *puVar1;
-  
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(8);
+
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(8);
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &TFileStream::_vftable_;
     puVar1[1] = 0;
@@ -5571,8 +5574,8 @@ undefined4 * CreateTCountingStreamWithAllocFallback(void)
 
 {
   undefined4 *puVar1;
-  
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xc);
+
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0xc);
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &TCountingStream::_vftable_;
     puVar1[1] = 0;
@@ -5600,8 +5603,8 @@ undefined4 * CreateTHandleStreamWithAllocFallback(void)
 
 {
   undefined4 *puVar1;
-  
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x18);
+
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x18);
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &THandleStream::_vftable_;
     puVar1[4] = 1;
@@ -5623,7 +5626,7 @@ AttachGlobalMemoryHandleAndResetPosition(int param_1,HGLOBAL param_2,undefined4 
 
 {
   SIZE_T SVar1;
-  
+
   *(undefined4 *)(param_1 + 0x10) = param_3;
   *(undefined4 *)(param_1 + 8) = 0;
   if (param_2 != (HGLOBAL)0x0) {
@@ -5655,7 +5658,7 @@ int SetGlobalUiInvalidationFlagAndReturnPrevious(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = g_McAppUiActiveFlag_006950AC;
   g_McAppUiActiveFlag_006950AC = param_1;
   return iVar1;

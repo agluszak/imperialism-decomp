@@ -195,7 +195,7 @@ TRemoteGreatPower * TRemoteGreatPower::_scalar_deleting_destructor_(byte param_1
 {
   TRemoteGreatPower::DestructTRemoteGreatPower(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -211,14 +211,14 @@ void TRemoteGreatPower::DestructTRemoteGreatPower()
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_00634633;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  CString::~CString((CString *)&this->field_0x8);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x8);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString((CString *)&this->field_0x4);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x4);
   this->vftable =
        (TRemoteGreatPowerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;

@@ -11,8 +11,8 @@ TIdleMeAnimation * __cdecl TIdleMeAnimation::CreateObject(void)
 
 {
   TIdleMeAnimation *pTVar1;
-  
-  pTVar1 = (TIdleMeAnimation *)AllocateWithFallbackHandler(0x2c);
+
+  pTVar1 = (TIdleMeAnimation *)__2_YAPAXI_Z(0x2c);
   if (pTVar1 != (TIdleMeAnimation *)0x0) {
     pTVar1->vftable = &TIdleMeAnimationVtbl_0064dfb8;
     return pTVar1;
@@ -29,7 +29,7 @@ TIdleMeAnimation * TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac9
 {
   TIdleMeAnimation::CreateTIdleMeAnimationInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -68,7 +68,7 @@ void TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(undefined4 param_1)
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   uVar1 = s_0TUATIdleMeAnimation_00695934._0_4_;
   s_0TUATIdleMeAnimation_00695934._0_4_ = s_0TUATIdleMeAnimation_00695934._0_4_ + 1;
   local_10 = 0;
@@ -88,7 +88,7 @@ void TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree()
 
 {
   char cVar1;
-  
+
   cVar1 = (**(code **)(**(int **)&this->field_0x4 + 0x4c))(1);
   if ((cVar1 != '\0') && (this != (TIdleMeAnimation *)0x0)) {
     TBattleReportView::RemoveUiTransientRegistryObjectByTag

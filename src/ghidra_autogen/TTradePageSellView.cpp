@@ -12,7 +12,7 @@ TTradePageSellView * TTradePageSellView::_scalar_deleting_destructor_(byte param
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TPageView * TTradePageSellView::CreateTTradePageSellViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006392da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPageView *)AllocateWithFallbackHandler(0x88);
+  this = (TPageView *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   pTVar1 = (TPageView *)0x0;
   if (this != (TPageView *)0x0) {
@@ -88,7 +88,7 @@ void TTradePageSellView::ConstructTTradePageSellViewBaseState(short param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063930e;
   local_c = *unaff_FS_OFFSET;
@@ -100,7 +100,7 @@ void TTradePageSellView::ConstructTTradePageSellViewBaseState(short param_1)
   (*this->vftable->OrphanCallChain_C4_I18_0056ff90)();
   if (param_1 == -1) {
 LAB_005bcdec:
-    this_01 = (TTextLine *)AllocateWithFallbackHandler(0x20);
+    this_01 = (TTextLine *)__2_YAPAXI_Z(0x20);
     uStack_4 = 2;
     if (this_01 == (TTextLine *)0x0) {
       uVar5 = 0;
@@ -131,7 +131,7 @@ LAB_005bcdec:
       cVar3 = (*pTVar1[0xf].slot_0x04)((int)param_1,(int)sVar4);
       if (cVar3 == '\0') goto LAB_005bcdec;
     }
-    pTStack_28 = (TTextLine *)AllocateWithFallbackHandler(0x20);
+    pTStack_28 = (TTextLine *)__2_YAPAXI_Z(0x20);
     uStack_4 = 0;
     if (pTStack_28 == (TTextLine *)0x0) {
       uVar5 = 0;
@@ -155,7 +155,7 @@ LAB_005bcdec:
     do {
       cVar3 = (*g_pNationInteractionStateManager->vftable[0xf].slot_0x04)(unaff_ESI,iVar6);
       if (cVar3 != '\0') {
-        this_00 = (TLineData *)AllocateWithFallbackHandler(0x14);
+        this_00 = (TLineData *)__2_YAPAXI_Z(0x14);
         puStack_8 = (undefined1 *)0x1;
         if (this_00 == (TLineData *)0x0) {
           this_00 = (TLineData *)0x0;
@@ -191,7 +191,7 @@ TTradePageSellView * TTradePageSellView::DestructTTradePageSellViewAndMaybeFree(
 {
   TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

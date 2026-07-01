@@ -16,12 +16,12 @@ TMission * TDefendProvinceMission::CreateTDefendProvinceMission(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063447a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x30);
+  this = (TMission *)__2_YAPAXI_Z(0x30);
   local_4 = 0;
   pTVar1 = (TMission *)0x0;
   if (this != (TMission *)0x0) {
@@ -55,7 +55,7 @@ TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext
   TGreatPower *this_00;
   int iVar1;
   int iVar2;
-  
+
   this_00 = g_apNationStates[*(short *)(this + 4)];
   (*this_00->vftable->ConstructTTaskBaseState)();
   TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
@@ -89,7 +89,7 @@ TDefendProvinceMission::UpdateDefendProvinceMissionStateByNationTargetMatch
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*g_apNationStates[*(short *)(this + 4)]->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_10)();
   if (CONCAT31(extraout_var,uVar1) == (int)*(short *)(this + 0x14)) {
     this[8] = (TDefendProvinceMission)0x0;
@@ -119,7 +119,7 @@ TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTil
   short *psVar7;
   int local_c;
   float local_8;
-  
+
   iVar6 = 0;
   local_c = 0;
   sVar2 = *(short *)(this + 4);
@@ -170,7 +170,7 @@ TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyC
   int iVar9;
   float10 fVar10;
   float fStack_c;
-  
+
   pTVar1 = g_apNationStates[*(short *)(this + 4)];
   (*pTVar1->vftable->ConstructTTaskBaseState)();
   fStack_c = *(float *)&pTVar1[1].field_0x204;

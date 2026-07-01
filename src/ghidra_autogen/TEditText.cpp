@@ -18,12 +18,12 @@ TView * TEditText::CreateTEditTextInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f13d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0xa0);
+  this = (TView *)__2_YAPAXI_Z(0xa0);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -43,13 +43,13 @@ TView * TEditText::CreateTEditTextInstance(void)
     *(undefined2 *)&this[1].field30 = 0;
     this->vftable = (TViewVtbl *)&TStaticText::_vftable_;
     this[1].vftable = (TViewVtbl *)0xd;
-    this_00 = (CString *)AllocateWithFallbackHandler(4);
+    this_00 = (CString *)__2_YAPAXI_Z(4);
     local_4 = CONCAT31(local_4._1_3_,2);
     if (this_00 == (CString *)0x0) {
       iVar1 = 0;
     }
     else {
-      CString::CString(this_00);
+      CString::__0CString__QAE_XZ(this_00);
       iVar1 = extraout_EAX;
     }
     this[1].ownerOffsetX = iVar1;
@@ -96,7 +96,7 @@ TEditText * TEditText::ConstructUiNumericTextEntryBase()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f163;
   local_c = *unaff_FS_OFFSET;
@@ -118,13 +118,13 @@ TEditText * TEditText::ConstructUiNumericTextEntryBase()
   *(undefined2 *)&this->field_0x90 = 0;
   this->vftable = (TEditTextVtbl *)&TStaticText::_vftable_;
   *(undefined4 *)&this->field_0x60 = 0xd;
-  this_00 = (CString *)AllocateWithFallbackHandler(4);
+  this_00 = (CString *)__2_YAPAXI_Z(4);
   local_4 = CONCAT31(local_4._1_3_,1);
   if (this_00 == (CString *)0x0) {
     uVar1 = 0;
   }
   else {
-    CString::CString(this_00);
+    CString::__0CString__QAE_XZ(this_00);
     uVar1 = extraout_EAX;
   }
   *(undefined4 *)&this->field_0x84 = uVar1;
@@ -165,7 +165,7 @@ void TEditText::OrphanTiny_ReturnZero_0048a730()
 {
   int iVar1;
   astruct_10 *unaff_ESI;
-  
+
   iVar1 = TEditText::OrphanCallChain_C11_I88_004874b0(this,unaff_ESI);
   if (iVar1 == 0) {
     TStaticText::OrphanTiny_ReturnZero_0048a730((TStaticText *)this);
@@ -191,10 +191,10 @@ void TEditText::OrphanRetStub_0059ad90(char param_1)
 
 {
   astruct_10 *unaff_retaddr;
-  
+
   this->field04 = (int)param_1;
   if (*(int *)&this->field_0x94 != 0) {
-    FUN_0060753b((int)param_1);
+    CMcWindow::EnableWindowOrDelegateToOwner((int)param_1);
     return;
   }
   TEditText::OrphanCallChain_C11_I88_004874b0(this,unaff_retaddr);
@@ -209,14 +209,14 @@ void TEditText::_scalar_deleting_destructor_(int param_1, int param_2)
 
 {
   astruct_10 *unaff_ESI;
-  
+
   if (param_1 != this->padding_08_to_0b) {
     this->padding_08_to_0b = param_1;
     if (param_2 != 0) {
       (*this->vftable->VTableSlot39)();
     }
     if (*(CFrameWnd **)&this->field_0x94 != (CFrameWnd *)0x0) {
-      CFrameWnd::ShowWindow
+      CFrameWnd::_ShowWindow_CWnd__QAEHH_Z
                 (*(CFrameWnd **)&this->field_0x94,-(uint)(this->padding_08_to_0b != 0) & 5);
       return;
     }
@@ -248,20 +248,20 @@ int TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 *ui_ctx)
   undefined1 *seh_handler;
   undefined4 seh_state;
   int parent_hwnd;
-  
+
   seh_prev = *unaff_FS_OFFSET;
   seh_state = 0xffffffff;
   seh_handler = &LAB_0062f1ca;
   *unaff_FS_OFFSET = &seh_prev;
   if ((((*(int *)&this->field_0x94 == 0) && (this->padding_08_to_0b != 0)) && (this->field04 != 0))
      && (this->field50 != 0)) {
-    dlg_obj = (undefined4 *)AllocateWithFallbackHandler(0x3c);
+    dlg_obj = (undefined4 *)__2_YAPAXI_Z(0x3c);
     seh_state = 0;
     if (dlg_obj == (undefined4 *)0x0) {
       dlg_obj = (undefined4 *)0x0;
     }
     else {
-      ConstructObjectVtable00670b4cBase();
+      __0CWnd__QAE_XZ();
       *dlg_obj = &PTR_LAB_0064afd8;
     }
     seh_state = 0xffffffff;
@@ -303,10 +303,10 @@ int TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 *ui_ctx)
     SendMessageA(*(HWND *)(*(int *)&this->field_0x94 + 0x1c),0x30,icon_wparam,0);
     if ((*(int **)&this->field_0x84 != (int *)0x0) &&
        (iface = **(int **)&this->field_0x84, *(int *)(iface + -8) != 0)) {
-      SetWindowTextOrDelegateToOwner(iface);
+      CMcWindow::SetWindowTextOrDelegateToOwner(iface);
     }
-    ModifyStyleEx(0,0x20,0);
-    ModifyStyle(0x2000000,0,0);
+    _ModifyStyleEx_CWnd__QAEHKKI_Z(0,0x20,0);
+    _ModifyStyle_CWnd__QAEHKKI_Z(0x2000000,0,0);
     dlg_hwnd = (HWND)0x0;
     if (*(int *)&this->field_0x94 != 0) {
       dlg_hwnd = *(HWND *)(*(int *)&this->field_0x94 + 0x1c);
@@ -334,7 +334,7 @@ void TEditText::SetEditSelectionAndScrollCaret(short param_1, short param_2)
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)&this->field_0x94;
   if (iVar1 != 0) {
     SendMessageA(*(HWND *)(iVar1 + 0x1c),0xb1,(int)param_1,(int)param_2);
@@ -351,7 +351,7 @@ undefined1 TEditText::_scalar_deleting_destructor_()
 
 {
   if (*(int *)&this->field_0x94 != 0) {
-    SetFocus();
+    _SetFocus_CWnd__QAEPAV1_XZ();
   }
   return 1;
 }
@@ -368,7 +368,7 @@ void TEditText::_scalar_deleting_destructor_()
   TEditText *pTVar3;
   undefined3 extraout_var;
   ApplicationUiRootController *pAVar4;
-  
+
   if (*(int **)&this->field_0x94 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x94 + 4))(1);
     *(undefined4 *)&this->field_0x94 = 0;
@@ -420,7 +420,7 @@ TEditText::SetForeignMinisterReadyFlag14
 {
   uint uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = TView::SetForeignMinisterReadyFlag14((TView *)this,param_1,param_2,param_3,param_4);
   if ((char)uVar1 != '\0') {
     (*this->vftable->OrphanTiny_ReturnZero_0048a730)(*(undefined4 *)&this->field_0x60,this,0);
@@ -437,7 +437,7 @@ void TEditText::OrphanRetStub_0059add0()
 
 {
   if (*(int *)&this->field_0x94 != 0) {
-    SetFocus();
+    _SetFocus_CWnd__QAEPAV1_XZ();
     return;
   }
   return;
@@ -451,7 +451,7 @@ void TEditText::OrphanRetStub_0059add0(undefined4 param_1)
 
 {
   if (*(int *)&this->field_0x94 != 0) {
-    SetFocus();
+    _SetFocus_CWnd__QAEPAV1_XZ();
   }
   (*this->vftable->SetEditSelectionAndScrollCaret)(0,0x7fff,param_1);
   return;
@@ -465,10 +465,10 @@ void TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString *param_
 
 {
   if (*(int *)&this->field_0x94 != 0) {
-    FUN_0060859f(param_1);
+    CMcWindow::GetWindowTextOrDelegateToOwner(param_1);
     return;
   }
-  CString::AssignFromPtr(param_1,*(CString **)&this->field_0x84);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,*(CString **)&this->field_0x84);
   return;
 }
 
@@ -494,12 +494,12 @@ void TEditText::_scalar_deleting_destructor_()
 
 {
   tagRECT local_10;
-  
+
   TSoundPlayer::_scalar_deleting_destructor_((TSoundPlayer *)this);
   if (*(int *)&this->field_0x94 != 0) {
     GetClientRect(*(HWND *)(*(int *)&this->field_0x94 + 0x1c),&local_10);
     if ((local_10.left != this->field2c) || (local_10.top != this->field30)) {
-      SetWindowPos(0,this->field2c,this->field30,0,0,0x215);
+      _SetWindowPos_CWnd__QAEHPBV1_HHHHI_Z(0,this->field2c,this->field30,0,0,0x215);
     }
   }
   return;
@@ -514,7 +514,7 @@ TEditText * TEditText::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTEditTextAndMaybeFree((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

@@ -18,7 +18,7 @@ TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
   int iStack_10;
   int iStack_c;
   int iStack_8;
-  
+
   if (g_pLocalizationTable->field_0x7a == '\0') {
     if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
       if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
@@ -107,7 +107,7 @@ TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   iStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00631e2a;
@@ -116,7 +116,7 @@ TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
   iVar5 = *param_1;
   (**(code **)(iVar5 + 0x70))();
   puStack_34 = (undefined1 *)0x4d6c3d;
-  CString::AssignFromPtr
+  CString::__4CString__QAEABV0_ABV0__Z
             ((CString *)(&g_pLocalizationTable->field_0x7c + *(short *)&this->field_0xc * 4),
              (CString *)&this->field_0x4);
   puStack_34 = &this->field_0x8;
@@ -187,7 +187,7 @@ TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
   iStack_70 = 1;
   if (0 < iStack_58) {
     do {
-      pTStack_6c = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
+      pTStack_6c = (TMilitaryUnitOrderState *)__2_YAPAXI_Z(0x44);
       this_00 = (TMilitaryUnitOrderState *)0x0;
       uStack_60 = 0;
       if (pTStack_6c != (TMilitaryUnitOrderState *)0x0) {
@@ -279,15 +279,15 @@ TCountry * TCountry::ConstructTCountryBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00631d83;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TCountryVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  CString::CString((CString *)&this->field_0x4);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x4);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString::CString((CString *)&this->field_0x8);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x8);
   this->vftable = &TCountryVtbl_00653868;
   *unaff_FS_OFFSET = local_c;
   return this;
@@ -302,7 +302,7 @@ TCountry * TCountry::DestructTCountryAndMaybeFree(byte param_1)
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -341,7 +341,7 @@ void TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(int *param_1)
   undefined4 uStack_24;
   undefined4 uStack_20;
   int iVar6;
-  
+
   uStack_20 = (undefined1 *)0x4d6e73;
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar6 = *param_1;
@@ -460,7 +460,7 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(undefined4 param_1, int param_
   undefined2 uVar1;
   undefined2 extraout_var;
   undefined2 extraout_var_00;
-  
+
   uVar1 = (undefined2)((uint)in_EDX >> 0x10);
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
     DispatchJoinEmpireModeEventPacket24_27((int)*(short *)&this->field_0xc,param_1,param_2);
@@ -497,7 +497,7 @@ void TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(int param_1)
   char cVar1;
   TCountry **ppTVar2;
   int iVar3;
-  
+
   iVar3 = 0;
   *(short *)&this->field_0xe = (short)param_1 + 100;
   ppTVar2 = g_apTerrainTypeDescriptorTable;
@@ -524,7 +524,7 @@ void TCountry::ApplyJoinEmpireMode1TargetTransition(int param_1)
   char cVar1;
   TCountry **ppTVar2;
   int iVar3;
-  
+
   *(short *)&this->field_0xe = (short)param_1 + 200;
   (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_12)(param_1,100);
   iVar3 = 0;
@@ -550,7 +550,7 @@ undefined4 TCountry::IsDiplomacyTargetClassCode200Match(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = *(short *)&this->field_0xe + -200;
   return CONCAT31((int3)((uint)iVar1 >> 8),iVar1 == param_1);
 }
@@ -562,7 +562,7 @@ undefined4 TCountry::IsDiplomacyTargetClassCode200Match(int param_1)
 void TCountry::ApplyJoinEmpireMode2FinalizeNationNameState()
 
 {
-  CString::AssignFromPtr((CString *)&this->field_0x4,(CString *)&this->field_0x8);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x4,(CString *)&this->field_0x8);
   return;
 }
 
@@ -596,7 +596,7 @@ void TCountry::SetNationPercentFieldByModeAndDescriptorLinks(int param_1, int pa
 
 {
   short sVar1;
-  
+
   if (param_2 == 500) {
     *(undefined2 *)(&this->field_0x14 + param_1 * 2) = 100;
     return;
@@ -735,7 +735,7 @@ int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes()
   undefined3 extraout_var_00;
   int iVar3;
   int iVar4;
-  
+
   iVar3 = 0;
   iVar4 = 1;
   uVar1 = (*this->ownedRegionList->vftable[5].GetTEventHandlerClassNamePointer)();
@@ -780,7 +780,7 @@ void TCountry::SelectCandidateTilesWithLowGroundUnitCount()
   int iVar6;
   short sVar7;
   int iStack_8;
-  
+
   uVar1 = *(ushort *)&g_pLocalizationTable->field_0x2c;
   if ((((int)((int)(short)uVar1 + ((int)(short)uVar1 >> 0x1f & 3U)) >> 2 & 1U) != 0) &&
      (uVar2 = (short)uVar1 >> 0xf, (ushort)(((uVar1 ^ uVar2) - uVar2 & 3 ^ uVar2) - uVar2) == 2)) {
@@ -893,7 +893,7 @@ void TCountry::HandleCityDialogHintClusterUpdate(int *param_1)
   undefined1 *puStack_28;
   undefined4 uStack_24;
   undefined1 *puStack_20;
-  
+
   puStack_20 = (undefined1 *)0x4d9c83;
   TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(this,param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
@@ -1286,7 +1286,7 @@ void TCountry::RebuildDiplomacyEconomicPressureFromMapState()
   int local_c;
   undefined1 *local_8;
   undefined4 local_4;
-  
+
   iVar11 = 0x17;
   *(undefined2 *)&this[2].field_0x6 = 0xfff6;
   *(undefined2 *)&this[2].field_0x8 = 0;
@@ -1415,14 +1415,14 @@ void TCountry::HandleNetworkPortConstructionOrder(int nNationId)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006324ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + (short)this->ownerNationSlot * 0x24)
        >> 2 & 1) == 0) {
-    this_00 = (TTown *)AllocateWithFallbackHandler(0x50);
+    this_00 = (TTown *)__2_YAPAXI_Z(0x50);
     local_4 = 0;
     if (this_00 == (TTown *)0x0) {
       iVar1 = 0;
@@ -1450,7 +1450,7 @@ void TCountry::SetNationRowDisplayValueByDiplomacyPredicate(int param_1)
 {
   char cVar1;
   int iVar2;
-  
+
   iVar2 = 0;
   do {
     cVar1 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(param_1,iVar2);
@@ -1494,7 +1494,7 @@ void TCountry::QueueInterNationEvent17ForState300AffectedNations()
   undefined4 local_14;
   char local_10 [8];
   undefined1 auStack_8 [8];
-  
+
   local_10[0] = '\0';
   local_10[1] = 0;
   local_10[2] = 0;
@@ -1585,7 +1585,7 @@ void TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(int param_1)
   short sStack_14;
   TCountry *local_c;
   char acStack_8 [8];
-  
+
   iVar10 = param_1;
   if (param_1 == -1) {
     sVar5 = *(short *)&this->field_0xe;
@@ -1699,7 +1699,7 @@ int TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(POINT *param_1)
   int iVar5;
   undefined1 local_18 [8];
   RECT local_10;
-  
+
   if ((DAT_006a2fbc & 1) == 0) {
     DAT_006a2fbc = DAT_006a2fbc | 1;
     local_10.left = 0x31;
@@ -1707,7 +1707,7 @@ int TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(POINT *param_1)
     local_10.right = 0x24d;
     local_10.bottom = 0x159;
     CopyRect((LPRECT)&DAT_006a3008,&local_10);
-    AppendPointerToGlobalVectorAsStatus(&DAT_004f5f70);
+    _atexit(&DAT_004f5f70);
   }
   iVar3 = 0;
   BVar2 = PtInRect((RECT *)&DAT_006a3008,*param_1);
@@ -1767,7 +1767,7 @@ int TCountry::SetTileTransportFlags(short nTileIndex, ushort wTileTransportFlags
   int iVar2;
   int iVar3;
   undefined2 unaff_DI;
-  
+
   iVar2 = *(int *)&this->field_0xc;
   iVar3 = nTileIndex * 0x24;
   if (((*(byte *)(iVar2 + 0x1c + iVar3) & 4) != 0) && ((wTileTransportFlags & 4) == 0)) {

@@ -11,7 +11,7 @@ TCommandVtbl * TCommand::RunCommandModalLoopAndFinalizeState_Impl(uint param_1)
 
 {
   TCommandVtbl *pTVar1;
-  
+
   pTVar1 = this[6].vftable;
   this[6].vftable = (TCommandVtbl *)(param_1 & 0xff);
   return pTVar1;
@@ -89,18 +89,18 @@ void TCommand::_scalar_deleting_destructor_()
   undefined3 extraout_var_00;
   int iVar4;
   int iVar3;
-  
+
   iVar4 = 1;
   p_Var1 = this->vftable->OrphanRetStub_00487a00;
   uVar2 = (*p_Var1)(1);
   iVar3 = CONCAT31(extraout_var,uVar2);
   while (iVar3 != 0) {
-    FreeHeapBufferIfNotNull(iVar3);
+    __3_YAXPAX_Z(iVar3);
     iVar4 = iVar4 + 1;
     uVar2 = (*p_Var1)(iVar4);
     iVar3 = CONCAT31(extraout_var_00,uVar2);
   }
-  SetSize(0,0xffffffff);
+  _SetSize_CPtrArray__QAEXHH_Z(0,0xffffffff);
   return;
 }
 
@@ -125,7 +125,7 @@ void TCommand::_scalar_deleting_destructor_()
 
 {
   TCommandVtbl *pTVar1;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1->QueueCityRecruitmentSupportCommandsIfDeficit)();
   (*pTVar1->NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94)();
@@ -167,10 +167,10 @@ void TCommand::OrphanCallChain_C11_I88_004874b0()
 {
   undefined uVar1;
   int in_stack_00000004;
-  
+
   uVar1 = (*this->vftable->OrphanRetStub_00487a00)();
-  CPtrArray::RemoveAt((CPtrArray *)this,in_stack_00000004 + -1,1);
-  FreeHeapBufferIfNotNull(uVar1);
+  CPtrArray::_RemoveAt_CUIntArray__QAEXHH_Z((CPtrArray *)this,in_stack_00000004 + -1,1);
+  __3_YAXPAX_Z(uVar1);
   return;
 }
 
@@ -205,7 +205,7 @@ void TCommand::SetForeignMinisterReadyFlag14()
   undefined4 *puVar9;
   undefined4 *unaff_retaddr;
   int iVar5;
-  
+
   iVar8 = 1;
   p_Var1 = this->vftable->OrphanRetStub_00487a00;
   uVar3 = (*p_Var1)(1);
@@ -218,7 +218,7 @@ void TCommand::SetForeignMinisterReadyFlag14()
   do {
     sVar4 = (*pcVar2)(unaff_retaddr,iVar5);
     if (sVar4 != 1) {
-      puVar6 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
+      puVar6 = (undefined4 *)__2_YAPAXI_Z((int)*(short *)&this->field_0x14);
       sVar4 = *(short *)&this->field_0x14;
       puVar9 = puVar6;
       for (uVar7 = (uint)(int)sVar4 >> 2; uVar7 != 0; uVar7 = uVar7 - 1) {
@@ -231,7 +231,7 @@ void TCommand::SetForeignMinisterReadyFlag14()
         unaff_retaddr = (undefined4 *)((int)unaff_retaddr + 1);
         puVar9 = (undefined4 *)((int)puVar9 + 1);
       }
-      InsertAt(iVar8 + -1,puVar6,1);
+      _InsertAt_CPtrArray__QAEXHPAXH_Z(iVar8 + -1,puVar6,1);
       return;
     }
     iVar8 = iVar8 + 1;
@@ -253,8 +253,8 @@ void TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 *param_1)
   undefined4 *puVar2;
   uint uVar3;
   undefined4 *puVar4;
-  
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
+
+  puVar2 = (undefined4 *)__2_YAPAXI_Z((int)*(short *)&this->field_0x14);
   sVar1 = *(short *)&this->field_0x14;
   puVar4 = puVar2;
   for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
@@ -267,7 +267,7 @@ void TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 *param_1)
     param_1 = (undefined4 *)((int)param_1 + 1);
     puVar4 = (undefined4 *)((int)puVar4 + 1);
   }
-  CPtrArray::SetAtGrow((CPtrArray *)this,*(int *)&this->field_0x8,puVar2);
+  CPtrArray::_SetAtGrow_CUIntArray__QAEXHI_Z((CPtrArray *)this,*(int *)&this->field_0x8,puVar2);
   return;
 }
 
@@ -282,8 +282,8 @@ void TCommand::UpdateControlCachedIntFromWindowText(undefined4 *param_1)
   undefined4 *puVar2;
   uint uVar3;
   undefined4 *puVar4;
-  
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
+
+  puVar2 = (undefined4 *)__2_YAPAXI_Z((int)*(short *)&this->field_0x14);
   sVar1 = *(short *)&this->field_0x14;
   puVar4 = puVar2;
   for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
@@ -296,7 +296,7 @@ void TCommand::UpdateControlCachedIntFromWindowText(undefined4 *param_1)
     param_1 = (undefined4 *)((int)param_1 + 1);
     puVar4 = (undefined4 *)((int)puVar4 + 1);
   }
-  InsertAt(0,puVar2,1);
+  _InsertAt_CPtrArray__QAEXHPAXH_Z(0,puVar2,1);
   return;
 }
 
@@ -320,9 +320,9 @@ int TCommand::OrphanRetStub_0059add0(uint param_1, uint param_2)
 TCommand * TCommand::_scalar_deleting_destructor_(byte param_1)
 
 {
-  CObArray::DestructCObArray();
+  CObArray::??1CUIntArray@@UAE@XZ();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -345,8 +345,9 @@ void TCommand::InvalidateWindowRectFromHandleField1C()
 
 {
   undefined4 in_stack_00000004;
-  
-  CPtrList::AddHead((CPtrList *)&this->field_0x4,in_stack_00000004);
+
+  CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
+            ((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -358,8 +359,9 @@ void TCommand::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   undefined4 in_stack_00000004;
-  
-  CPtrList::AddHead((CPtrList *)&this->field_0x4,in_stack_00000004);
+
+  CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
+            ((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -371,8 +373,9 @@ void TCommand::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined4 in_stack_00000004;
-  
-  CPtrList::AddTail((CPtrList *)&this->field_0x4,in_stack_00000004);
+
+  CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z
+            ((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -384,8 +387,9 @@ void TCommand::GetTEventHandlerClassNamePointer()
 
 {
   undefined4 in_stack_00000004;
-  
-  CPtrList::AddTail((CPtrList *)&this->field_0x4,in_stack_00000004);
+
+  CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z
+            ((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -398,7 +402,7 @@ TCommand * TCommand::_scalar_deleting_destructor_(byte param_1)
 {
   TStream::CreateTStreamInstance((TStream *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -416,12 +420,12 @@ void TCommand::GetTEventHandlerClassNamePointer(int *param_1)
   code *unaff_EBX;
   code *unaff_EBP;
   short sVar4;
-  
+
   iVar2 = *param_1;
   puVar1 = &this->field_0x14;
   (**(code **)(iVar2 + 0x3c))(puVar1,2);
   iVar2 = (**(code **)(iVar2 + 0x50))();
-  uVar3 = AllocateWithFallbackHandler((int)*(short *)puVar1);
+  uVar3 = __2_YAPAXI_Z((int)*(short *)puVar1);
   sVar4 = 1;
   if (0 < iVar2) {
     do {
@@ -430,7 +434,7 @@ void TCommand::GetTEventHandlerClassNamePointer(int *param_1)
       sVar4 = sVar4 + 1;
     } while (sVar4 <= iVar2);
   }
-  FreeHeapBufferIfNotNull(uVar3);
+  __3_YAXPAX_Z(uVar3);
   return;
 }
 
@@ -446,7 +450,7 @@ void TCommand::_scalar_deleting_destructor_(int *param_1)
   int iVar3;
   short sVar4;
   code *unaff_EDI;
-  
+
   iVar3 = *param_1;
   (**(code **)(iVar3 + 0x78))(&this->field_0x14,2);
   (**(code **)(iVar3 + 0x8c))(*(undefined4 *)&this->field_0x8);

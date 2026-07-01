@@ -15,12 +15,12 @@ TNoHilitePicture * TBuildingView::CreateTBuildingViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063154a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa0);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0xa0);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
@@ -65,7 +65,7 @@ TBuildingView * TBuildingView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -100,7 +100,7 @@ void TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(int *param_1)
   int iVar1;
   RECT RStack_30;
   tagRECT atStack_20 [2];
-  
+
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0x1cc))();
   (**(code **)(iVar1 + 300))(&stack0xffffffc4);

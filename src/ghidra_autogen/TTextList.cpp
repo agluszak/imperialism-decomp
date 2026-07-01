@@ -12,7 +12,7 @@ TTextList * TTextList::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,12 +29,12 @@ TView * TTextList::CreateTTextListInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636bda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x1070);
+  this = (TView *)__2_YAPAXI_Z(0x1070);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -85,7 +85,7 @@ void TTextList::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636bf8;
   local_c = *unaff_FS_OFFSET;
@@ -102,7 +102,7 @@ void TTextList::OrphanTiny_ReturnZero_0048a730()
     local_20 = &this->field_0x60 + iVar3 * 0x40;
     do {
       if (*(int *)&this->field_0x1060 <= iVar3) break;
-      CString::CString(&local_28,local_20);
+      CString::__0CString__QAE_PBD_Z(&local_28,local_20);
       local_4 = 0;
       if (iVar3 == *(int *)&this->field_0x1068) {
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(5);
@@ -124,7 +124,7 @@ void TTextList::OrphanTiny_ReturnZero_0048a730()
       local_24 = local_24 + 1;
       local_20 = local_20 + 0x40;
       local_4 = 0xffffffff;
-      CString::~CString(&local_28);
+      CString::__1CString__QAE_XZ(&local_28);
       iVar3 = local_24;
     } while ((int)(short)iVar2 + (int)*(short *)&this->field_0x106c < this->field38);
   }
@@ -146,7 +146,7 @@ void TTextList::_scalar_deleting_destructor_(int param_1)
   LONG LStack_28;
   RECT RStack_24;
   tagRECT tStack_14;
-  
+
   iVar2 = (int)(short)(*(int *)(param_1 + 4) / (int)*(short *)&this->field_0x106c) +
           *(int *)&this->field_0x1064;
   if (iVar2 < *(int *)&this->field_0x1060) {

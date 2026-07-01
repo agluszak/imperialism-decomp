@@ -3,345 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part010.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00580060
-// GHIDRA_NAME BuildUiMessageTextFromBracketTemplate
-// GHIDRA_PROTO undefined BuildUiMessageTextFromBracketTemplate()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Expands a bracket-token template into a final UI message string by substituting token values via localization/theme callbacks and appending text chunks.
-// GHIDRA_COMMENT_END
-
-/* Expands a bracket-token template into a final UI message string by substituting token values via
-   localization/theme callbacks and appending text chunks. */
-
-void BuildUiMessageTextFromBracketTemplate(int *param_1,CString *param_2)
-
-{
-  char *pcVar1;
-  code *pcVar2;
-  char cVar3;
-  undefined4 unaff_EBX;
-  int unaff_ESI;
-  int iVar4;
-  undefined4 *unaff_FS_OFFSET;
-  CString local_14;
-  CString local_10;
-  undefined4 uStack_c;
-  CString CStack_8;
-  CString local_4;
-  
-  local_4.m_pchData = (char *)0xffffffff;
-  CStack_8.m_pchData = &LAB_006370f0;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_10,(char *)&g_szEmptyString);
-  iVar4 = 0;
-  local_4.m_pchData = (char *)0x0;
-  CString::AssignFromPtr(param_2,&local_10);
-  local_4.m_pchData = (char *)0xffffffff;
-  CString::~CString(&local_10);
-  CString::CString(&local_14);
-  local_4.m_pchData = (char *)0x1;
-  pcVar2 = *(code **)(*param_1 + 0x84);
-  (*pcVar2)();
-  if (0 < *(int *)(unaff_ESI + -8)) {
-    do {
-      cVar3 = *(char *)(unaff_ESI + iVar4);
-      if (cVar3 == '[') {
-        do {
-          if (cVar3 == '\0') break;
-          cVar3 = *(char *)(unaff_ESI + 1 + iVar4);
-          iVar4 = iVar4 + 1;
-          if (('/' < cVar3) && (cVar3 < ':')) {
-            CString::CString(&local_4);
-            local_10.m_pchData._0_1_ = 2;
-            (*pcVar2)();
-            cVar3 = *(char *)(unaff_ESI + 1 + iVar4);
-            if ((cVar3 < 'a') || ('z' < cVar3)) {
-              AssignStringSharedFromRef();
-            }
-            else {
-              TToolBarCluster::BuildMappedSharedStringFromByteStateTable
-                        (DAT_006a327c,&CStack_8,(byte *)local_4.m_pchData);
-              local_10.m_pchData._0_1_ = 3;
-              AssignStringSharedFromRef();
-              local_10.m_pchData._0_1_ = 2;
-              CString::~CString(&CStack_8);
-            }
-            local_10.m_pchData._0_1_ = 1;
-            CString::~CString(&local_4);
-            break;
-          }
-        } while (cVar3 != ']');
-        if (*(char *)(unaff_ESI + iVar4) != ']') {
-          do {
-            if (*(int *)(unaff_ESI + -8) <= iVar4) break;
-            pcVar1 = (char *)(unaff_ESI + 1 + iVar4);
-            iVar4 = iVar4 + 1;
-          } while (*pcVar1 != ']');
-        }
-      }
-      else {
-        AppendSingleByteToSharedStringFromArg();
-      }
-      iVar4 = iVar4 + 1;
-    } while (iVar4 < *(int *)(unaff_ESI + -8));
-  }
-  local_10.m_pchData = (char *)0xffffffff;
-  CString::~CString((CString *)&stack0xffffffe0);
-  *unaff_FS_OFFSET = unaff_EBX;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00580280
-// GHIDRA_NAME AppendInterNationEventSummaryTextEntry_Impl
-// GHIDRA_PROTO undefined AppendInterNationEventSummaryTextEntry_Impl()
-
-undefined4 * AppendInterNationEventSummaryTextEntry_Impl(undefined4 param_1,char *param_2)
-
-{
-  uint uVar1;
-  char cVar2;
-  CString CVar3;
-  char *pcVar4;
-  int iVar5;
-  int iVar6;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 auStackY_b8 [27];
-  undefined4 uStackY_4c;
-  CString local_2c;
-  undefined4 local_28;
-  undefined4 local_24;
-  undefined4 local_20;
-  undefined4 *local_1c;
-  undefined4 local_18;
-  undefined4 local_14;
-  undefined4 local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  int local_4;
-  
-  puStack_8 = &LAB_00637120;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_18 = 0;
-  local_14 = 0;
-  local_10 = 0;
-  local_1c = (undefined4 *)&DAT_00662b00;
-  iVar5 = 0;
-  local_4 = 0;
-  cVar2 = *param_2;
-joined_r0x005802bd:
-  if (cVar2 == '\0') {
-    (*(code *)*local_1c)();
-    *unaff_FS_OFFSET = local_10;
-    return local_1c;
-  }
-  cVar2 = param_2[iVar5];
-  iVar6 = iVar5;
-  if (cVar2 == '[') {
-LAB_005802cf:
-    iVar5 = iVar6;
-    if (cVar2 != '\0') {
-      cVar2 = param_2[iVar6 + 1];
-      iVar5 = iVar6 + 1;
-      if ((cVar2 < '0') || ('9' < cVar2)) goto LAB_005802e4;
-      if ((param_2[iVar6 + 2] < 'a') || ('z' < param_2[iVar6 + 2])) {
-        pcVar4 = (char *)auStackY_b8[param_2[iVar5]];
-        cVar2 = *pcVar4;
-        while (cVar2 != '\0') {
-          uVar1 = (uint)local_24 >> 8;
-          local_24 = CONCAT31((int3)uVar1,cVar2);
-          pcVar4 = pcVar4 + 1;
-          (*(code *)*local_1c)();
-          cVar2 = *pcVar4;
-        }
-      }
-      else {
-        uStackY_4c = 0x580313;
-        TToolBarCluster::BuildMappedSharedStringFromByteStateTable
-                  (DAT_006a327c,&local_2c,(byte *)auStackY_b8[param_2[iVar5]]);
-        local_4._0_1_ = 1;
-        cVar2 = *local_2c.m_pchData;
-        CVar3.m_pchData = local_2c.m_pchData;
-        while (cVar2 != '\0') {
-          uVar1 = (uint)local_28 >> 8;
-          local_28 = CONCAT31((int3)uVar1,cVar2);
-          CVar3.m_pchData = CVar3.m_pchData + 1;
-          (*(code *)*local_1c)();
-          cVar2 = *CVar3.m_pchData;
-        }
-        local_4 = (uint)local_4._1_3_ << 8;
-        CString::~CString(&local_2c);
-      }
-    }
-    goto LAB_00580377;
-  }
-  uVar1 = (uint)local_20 >> 8;
-  local_20 = CONCAT31((int3)uVar1,cVar2);
-  (*(code *)*local_1c)();
-  goto LAB_005803a0;
-LAB_005802e4:
-  iVar6 = iVar5;
-  if (cVar2 == ']') goto LAB_00580377;
-  goto LAB_005802cf;
-LAB_00580377:
-  cVar2 = param_2[iVar5];
-  if (cVar2 != ']') {
-    while (cVar2 != '\0') {
-      cVar2 = param_2[iVar5 + 1];
-      iVar5 = iVar5 + 1;
-      if (cVar2 == ']') break;
-    }
-  }
-LAB_005803a0:
-  cVar2 = param_2[iVar5 + 1];
-  iVar5 = iVar5 + 1;
-  goto joined_r0x005802bd;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005804F0
-// GHIDRA_NAME ExpandBracketMappedStringToSinkCallback
-// GHIDRA_PROTO undefined ExpandBracketMappedStringToSinkCallback()
-
-code * ExpandBracketMappedStringToSinkCallback(int *param_1)
-
-{
-  byte bVar1;
-  code *pcVar2;
-  uint uVar3;
-  char cVar4;
-  CString *src_ref;
-  char *unaff_ESI;
-  int iVar5;
-  int iVar6;
-  CString CVar7;
-  code *pcVar8;
-  undefined4 *unaff_FS_OFFSET;
-  CString local_34;
-  code *pcStack_30;
-  undefined4 uStack_2c;
-  undefined4 *puStack_28;
-  code *local_24;
-  undefined4 uStack_20;
-  undefined *local_1c;
-  undefined4 local_18;
-  undefined4 local_14;
-  uint local_10;
-  undefined4 uStack_c;
-  CString CStack_8;
-  undefined4 local_4;
-  
-  CStack_8.m_pchData = &LAB_00637150;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  local_18 = 0;
-  local_14 = 0;
-  local_10 = 0;
-  local_1c = &DAT_00662b00;
-  local_4 = 0;
-  CString::CString(&local_34);
-  local_4 = CONCAT31(local_4._1_3_,1);
-  pcVar8 = *(code **)(*param_1 + 0x84);
-  local_24 = pcVar8;
-  (*pcVar8)();
-  iVar5 = 0;
-  cVar4 = *unaff_ESI;
-  pcVar2 = local_24;
-joined_r0x00580560:
-  if (cVar4 == '\0') {
-    local_24 = (code *)0x0;
-    uStack_20 = 0;
-    local_1c = (undefined *)0x0;
-    local_10 = local_10 & 0xffffff00;
-    CString::~CString((CString *)&stack0xffffffc0);
-    puStack_28 = (undefined4 *)&DAT_00662b00;
-    if (local_24 != (code *)0x0) {
-      FreeHeapBlockWithAllocatorTracking();
-    }
-    *unaff_FS_OFFSET = local_18;
-    return pcVar2;
-  }
-  local_24 = pcVar2;
-  if (unaff_ESI[iVar5] == '[') {
-    cVar4 = '[';
-    iVar6 = iVar5;
-LAB_00580579:
-    iVar5 = iVar6;
-    if (cVar4 != '\0') {
-      cVar4 = unaff_ESI[iVar6 + 1];
-      iVar5 = iVar6 + 1;
-      if ((cVar4 < '0') || ('9' < cVar4)) goto LAB_0058058e;
-      CString::CString(&CStack_8);
-      local_10._0_1_ = 2;
-      (*pcVar8)();
-      if (('`' < unaff_ESI[iVar6 + 2]) && (unaff_ESI[iVar6 + 2] < '{')) {
-        src_ref = (CString *)
-                  TToolBarCluster::BuildMappedSharedStringFromByteStateTable
-                            (DAT_006a327c,(CString *)&stack0xffffffc8,(byte *)CStack_8.m_pchData);
-        local_10._0_1_ = 3;
-        CString::AssignFromPtr(&CStack_8,src_ref);
-        local_10._0_1_ = 2;
-        CString::~CString((CString *)&stack0xffffffc8);
-      }
-      bVar1 = *CStack_8.m_pchData;
-      CVar7.m_pchData = CStack_8.m_pchData;
-      while (bVar1 != 0) {
-        local_34.m_pchData._1_3_ = (undefined3)((uint)local_34.m_pchData >> 8);
-        local_34.m_pchData._0_1_ = bVar1;
-        CVar7.m_pchData = CVar7.m_pchData + 1;
-        (*(code *)*puStack_28)();
-        bVar1 = *CVar7.m_pchData;
-      }
-      local_10 = CONCAT31(local_10._1_3_,1);
-      CString::~CString(&CStack_8);
-      pcVar8 = pcStack_30;
-    }
-    goto LAB_00580654;
-  }
-  uVar3 = (uint)uStack_2c >> 8;
-  uStack_2c = CONCAT31((int3)uVar3,unaff_ESI[iVar5]);
-  (*(code *)*puStack_28)();
-  goto LAB_00580681;
-LAB_0058058e:
-  iVar6 = iVar5;
-  if (cVar4 == ']') goto LAB_00580654;
-  goto LAB_00580579;
-LAB_00580654:
-  cVar4 = unaff_ESI[iVar5];
-  if (cVar4 == ']') goto LAB_00580681;
-  do {
-    if (cVar4 == '\0') break;
-    cVar4 = unaff_ESI[iVar5 + 1];
-    iVar5 = iVar5 + 1;
-  } while (cVar4 != ']');
-LAB_00580681:
-  cVar4 = unaff_ESI[iVar5 + 1];
-  iVar5 = iVar5 + 1;
-  pcVar2 = local_24;
-  goto joined_r0x00580560;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005811E0
-// GHIDRA_NAME GetInt32Field30
-// GHIDRA_PROTO undefined GetInt32Field30()
-
-undefined4 __fastcall GetInt32Field30(int param_1)
-
-{
-  return *(undefined4 *)(param_1 + 0x30);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00581200
-// GHIDRA_NAME DecrementField30Value
-// GHIDRA_PROTO undefined DecrementField30Value()
-
-void __fastcall DecrementField30Value(int param_1)
-
-{
-  *(int *)(param_1 + 0x30) = *(int *)(param_1 + 0x30) + -1;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00581240
 // GHIDRA_NAME GetSumField34PlusField30
 // GHIDRA_PROTO undefined GetSumField34PlusField30()
@@ -379,7 +40,7 @@ uint IsNationSlotEligibleForEventProcessing(short param_1)
   uint in_EAX;
   uint uVar2;
   TCountry *pTVar3;
-  
+
   if (param_1 == -1) {
     return in_EAX & 0xffffff00;
   }
@@ -418,7 +79,7 @@ void __thiscall RemoveNationSlotAndNotifyPeers(int param_1,undefined4 param_2)
   short sVar3;
   int iVar4;
   TGreatPower **ppTVar5;
-  
+
   iVar2 = (int)(short)param_2;
   iVar4 = 0;
   ppTVar5 = g_apNationStates;
@@ -460,7 +121,7 @@ void __thiscall InitializeOrLoadEntryArray14AndClampLimits(int param_1,char para
   int iVar3;
   int iVar4;
   undefined4 *puVar5;
-  
+
   if (param_2 != '\0') {
     iVar3 = 0;
     do {
@@ -541,24 +202,24 @@ void __fastcall UpdatePersistentTopTenNationScores(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637361;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_17c = param_1;
-  CString::CString(&local_184);
+  CString::__0CString__QAE_XZ(&local_184);
   local_4 = 0;
-  CString::CString(&local_180);
+  CString::__0CString__QAE_XZ(&local_180);
   local_4 = CONCAT31(local_4._1_3_,1);
   (**(code **)(*param_1 + 0x84))(0x2737,0xd,&local_180);
   AssignScoresDatPathToSharedString(&stack0xfffffe70);
-  iVar2 = OpenBufferedStreamWithMode40(unaff_EBX,&DAT_00698720);
+  iVar2 = __wfopen(unaff_EBX,&DAT_00698720);
   pcVar10 = acStack_158;
   pCVar4 = &local_180;
   CVar14.m_pchData = (char *)0xa;
   do {
-    if ((iVar2 == 0) || (iVar3 = ReadBufferedStreamLocked(pCVar4,4,1,iVar2), iVar3 == 0)) {
+    if ((iVar2 == 0) || (iVar3 = _fread(pCVar4,4,1,iVar2), iVar3 == 0)) {
       uVar6 = 0xffffffff;
       pCVar4->m_pchData = (char *)0x0;
       CVar12.m_pchData = CStack_18c.m_pchData;
@@ -585,14 +246,14 @@ void __fastcall UpdatePersistentTopTenNationScores(int *param_1)
       }
     }
     else {
-      ReadBufferedStreamLocked(pcVar10,0x20,1,iVar2);
+      _fread(pcVar10,0x20,1,iVar2);
     }
     pCVar4 = pCVar4 + 1;
     pcVar10 = pcVar10 + 0x20;
     CVar14.m_pchData = CVar14.m_pchData + -1;
   } while (CVar14.m_pchData != (char *)0x0);
   if (iVar2 != 0) {
-    CloseBufferedStreamAndReleaseResources(iVar2);
+    _fclose(iVar2);
   }
   RecomputeNationEconomyAndDiplomacySummaryMetrics();
   pcVar10 = (char *)0x0;
@@ -639,7 +300,7 @@ void __fastcall UpdatePersistentTopTenNationScores(int *param_1)
       } while (iVar2 != 0);
     }
     (&local_180)[(int)pcVar10].m_pchData = local_184.m_pchData;
-    CString::CString((CString *)&stack0xfffffe68);
+    CString::__0CString__QAE_XZ((CString *)&stack0xfffffe68);
     uStack_10 = CONCAT31(uStack_10._1_3_,2);
     FormatOverlayTerrainLabelText(&stack0xfffffe68);
     uVar6 = 0xffffffff;
@@ -665,25 +326,25 @@ void __fastcall UpdatePersistentTopTenNationScores(int *param_1)
       pcVar9 = pcVar9 + 1;
       pcVar10 = pcVar10 + 1;
     }
-    uVar5 = OpenBufferedStreamWithMode40(unaff_EBX,&DAT_006976e0);
+    uVar5 = __wfopen(unaff_EBX,&DAT_006976e0);
     pcVar10 = acStack_158;
     pCVar4 = &local_180;
     iVar2 = 10;
     do {
-      WriteBufferItemsToStreamLocked(pCVar4,4,1,uVar5);
-      WriteBufferItemsToStreamLocked(pcVar10,0x20,1,uVar5);
+      _fwrite(pCVar4,4,1,uVar5);
+      _fwrite(pcVar10,0x20,1,uVar5);
       pCVar4 = pCVar4 + 1;
       pcVar10 = pcVar10 + 0x20;
       iVar2 = iVar2 + -1;
     } while (iVar2 != 0);
-    CloseBufferedStreamAndReleaseResources(uVar5);
+    _fclose(uVar5);
     uStack_10 = CONCAT31(uStack_10._1_3_,1);
-    CString::~CString((CString *)&stack0xfffffe68);
+    CString::__1CString__QAE_XZ((CString *)&stack0xfffffe68);
   }
   uStack_10 = uStack_10 & 0xffffff00;
-  CString::~CString(&CStack_18c);
+  CString::__1CString__QAE_XZ(&CStack_18c);
   uStack_10 = 0xffffffff;
-  CString::~CString((CString *)&stack0xfffffe70);
+  CString::__1CString__QAE_XZ((CString *)&stack0xfffffe70);
   *unaff_FS_OFFSET = uStack_18;
   return;
 }
@@ -710,7 +371,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   iVar1 = DAT_006a21b8;
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
@@ -721,7 +382,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int param_1)
   }
   if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
     (**(code **)(g_pGameFlowState->vftable + 0x1c))();
-    this = (Config *)AllocateWithFallbackHandler(0xf8);
+    this = (Config *)__2_YAPAXI_Z(0xf8);
     uStack_4 = 0;
     if (this == (Config *)0x0) {
       g_pGameFlowState = (Config *)0x0;
@@ -746,14 +407,14 @@ void ReinitializeGameFlowAndPostTurnEventCode(int param_1)
     *(undefined2 *)&pTVar2->field_0x77 = 0x101;
     pTVar2->field_0x79 = 1;
     pTVar2->field_0x78 = 2;
-    GetStatus_60b9ea(s_Conan_00698bec,local_124);
+    _GetStatus_CFile__SGHPBDAAUCFileStatus___Z(s_Conan_00698bec,local_124);
     g_apSecondaryNationStateSlots[0x17]._0_1_ = 0;
     (*pTVar2->vftable[0x10].GetTSimMgrClassNamePointer)();
     *(undefined4 *)&g_pLocalizationTable->field_0x4 = 3;
   }
   else {
     (*g_pLocalizationTable->vftable[3].slot_0x04)();
-    pTVar2 = (TSimMgr *)AllocateWithFallbackHandler(0x118);
+    pTVar2 = (TSimMgr *)__2_YAPAXI_Z(0x118);
     uStack_4 = 1;
     if (pTVar2 == (TSimMgr *)0x0) {
       pTVar2 = (TSimMgr *)0x0;
@@ -775,7 +436,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int param_1)
     pTVar2->field_0x79 = 1;
     uStack_4 = 0xffffffff;
     pTVar2->field_0x78 = 2;
-    GetStatus_60b9ea(s_Conan_00698bec,local_124);
+    _GetStatus_CFile__SGHPBDAAUCFileStatus___Z(s_Conan_00698bec,local_124);
     g_apSecondaryNationStateSlots[0x17]._0_1_ = 0;
     (*pTVar2->vftable[0x10].GetTSimMgrClassNamePointer)();
     *(undefined4 *)&pTVar2->field_0x40 = 0;
@@ -818,16 +479,16 @@ AssignNormalizedCredentialTokenToIndexedSlot(int param_1,CString *param_2,short 
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006373cb;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   NormalizeRuntimeCredentialNameToken(&param_3,param_1 + 0x7c + param_3 * 4);
   local_4 = 1;
-  CString::StringSharedRef_AssignFromPtr(param_2,(CString *)&param_3);
+  CString::__0CString__QAE_ABV0__Z(param_2,(CString *)&param_3);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString((CString *)&param_3);
+  CString::__1CString__QAE_XZ((CString *)&param_3);
   *unaff_FS_OFFSET = local_c;
   return param_2;
 }
@@ -839,7 +500,7 @@ AssignNormalizedCredentialTokenToIndexedSlot(int param_1,CString *param_2,short 
 CString * __thiscall AssignSharedStringFromIndexedSlot7C(int param_1,CString *param_2,short param_3)
 
 {
-  CString::StringSharedRef_AssignFromPtr(param_2,(CString *)(param_1 + 0x7c + param_3 * 4));
+  CString::__0CString__QAE_ABV0__Z(param_2,(CString *)(param_1 + 0x7c + param_3 * 4));
   return param_2;
 }
 
@@ -868,7 +529,7 @@ void __fastcall RefreshNationAdvisorLabelStrings(int *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637418;
   local_c = *unaff_FS_OFFSET;
@@ -877,28 +538,28 @@ void __fastcall RefreshNationAdvisorLabelStrings(int *param_1)
   local_14 = g_apTerrainTypeDescriptorTable;
   do {
     ppTVar2 = local_14;
-    CString::CString(&local_18);
+    CString::__0CString__QAE_XZ(&local_18);
     local_4 = 0;
-    CString::CString(&local_20);
+    CString::__0CString__QAE_XZ(&local_20);
     local_4._0_1_ = 1;
-    CString::CString(&local_24);
+    CString::__0CString__QAE_XZ(&local_24);
     local_4._0_1_ = 2;
-    CString::CString(&local_28);
+    CString::__0CString__QAE_XZ(&local_28);
     local_4._0_1_ = 3;
-    CString::CString(&local_2c);
+    CString::__0CString__QAE_XZ(&local_2c);
     pTVar1 = *ppTVar2;
     local_4._0_1_ = 4;
     if (pTVar1 == (TCountry *)0x0) {
       local_4._0_1_ = 3;
-      CString::~CString(&local_2c);
+      CString::__1CString__QAE_XZ(&local_2c);
       local_4._0_1_ = 2;
-      CString::~CString(&local_28);
+      CString::__1CString__QAE_XZ(&local_28);
       local_4._0_1_ = 1;
-      CString::~CString(&local_24);
+      CString::__1CString__QAE_XZ(&local_24);
       local_4 = (uint)local_4._1_3_ << 8;
-      CString::~CString(&local_20);
+      CString::__1CString__QAE_XZ(&local_20);
       local_4 = 0xffffffff;
-      CString::~CString(&local_18);
+      CString::__1CString__QAE_XZ(&local_18);
       local_14 = ppTVar2;
     }
     else {
@@ -906,26 +567,26 @@ void __fastcall RefreshNationAdvisorLabelStrings(int *param_1)
       (**(code **)(*param_1 + 0x84))(0x272a,0,&local_2c);
       src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot(&CStack_10,iVar4);
       local_4._0_1_ = 5;
-      CString::AssignFromPtr(&local_20,src_ref);
+      CString::__4CString__QAEABV0_ABV0__Z(&local_20,src_ref);
       local_4._0_1_ = 4;
-      CString::~CString(&CStack_10);
+      CString::__1CString__QAE_XZ(&CStack_10);
       scanBracketExpressions(param_1,&local_28,local_2c.m_pchData);
-      CString::StringSharedRef_AssignFromPtr(&CStack_1c,&local_28);
+      CString::__0CString__QAE_ABV0__Z(&CStack_1c,&local_28);
       local_4._0_1_ = 6;
-      CString::AssignFromPtr(&local_24,&CStack_1c);
+      CString::__4CString__QAEABV0_ABV0__Z(&local_24,&CStack_1c);
       local_4._0_1_ = 4;
-      CString::~CString(&CStack_1c);
+      CString::__1CString__QAE_XZ(&CStack_1c);
       SetGlobalMapCellSharedLabel((int)(short)CONCAT31(extraout_var,uVar3),&local_24);
       local_4._0_1_ = 3;
-      CString::~CString(&local_2c);
+      CString::__1CString__QAE_XZ(&local_2c);
       local_4._0_1_ = 2;
-      CString::~CString(&local_28);
+      CString::__1CString__QAE_XZ(&local_28);
       local_4._0_1_ = 1;
-      CString::~CString(&local_24);
+      CString::__1CString__QAE_XZ(&local_24);
       local_4 = (uint)local_4._1_3_ << 8;
-      CString::~CString(&local_20);
+      CString::__1CString__QAE_XZ(&local_20);
       local_4 = 0xffffffff;
-      CString::~CString(&local_18);
+      CString::__1CString__QAE_XZ(&local_18);
     }
     local_14 = local_14 + 1;
     iVar4 = iVar4 + 1;
@@ -965,12 +626,12 @@ void __fastcall ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637450;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   *(undefined1 *)(param_1 + 0x7a) = 1;
   DAT_00695278 = 0xfffffffd;
   DAT_006a4398 = '\0';
@@ -979,19 +640,19 @@ void __fastcall ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
   BuildScenarioPathForModeAndIndex(*(short *)(param_1 + 0x114) + -1,2);
   for (pTVar1 = g_pMapActionContextListHead; pTVar1 != (TZone *)0x0;
       pTVar1 = *(TZone **)&pTVar1->field_0x18) {
-    CString::CString(&local_1c);
+    CString::__0CString__QAE_XZ(&local_1c);
     local_4._0_1_ = 1;
     GetShortAtOffset14OrInvalid();
-    FormatStringWithVarArgsToSharedRef(&local_1c,&g_szDecimalFormat);
-    CString::AssignFromPtr((CString *)&pTVar1->field_0x8,&local_1c);
+    _Format_CString__QAAXPBDZZ(&local_1c,&g_szDecimalFormat);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&pTVar1->field_0x8,&local_1c);
     local_4 = (uint)local_4._1_3_ << 8;
-    CString::~CString(&local_1c);
+    CString::__1CString__QAE_XZ(&local_1c);
   }
   local_1c.m_pchData = &stack0xffffffd0;
-  CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffffd0,&local_10);
+  CString::__0CString__QAE_ABV0__Z((CString *)&stack0xffffffd0,&local_10);
   uVar4 = LoadTableResourceStreamByName();
   local_14 = GetResourceStreamSize();
-  puVar5 = (undefined4 *)AllocateWithFallbackHandler();
+  puVar5 = (undefined4 *)__2_YAPAXI_Z();
   ReadResourceStreamIntoBufferAndAdvance(uVar4,puVar5);
   ReleaseResourceStreamIfNotNull();
   CVar8.m_pchData = (char *)0x0;
@@ -1015,7 +676,7 @@ void __fastcall ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
       DAT_006a43b8 = DAT_006a43b8 + 1;
       if (local_1c.m_pchData != (char *)0x5445524d) {
         iVar7 = 0;
-        pcVar6 = 
+        pcVar6 =
         "obalapacerawymraivicpihsnartevedliartrophcetcirpabmesbusaertraeyvorpenozmancalermanphsacgalfreytrabtrlctnuoc"
         ;
         do {
@@ -1027,7 +688,7 @@ void __fastcall ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
       }
     } while (local_18 < (undefined4 *)(local_14 + (int)puVar5));
   }
-  FreeHeapBufferIfNotNull();
+  __3_YAXPAX_Z();
   if (DAT_006a4398 != '\0') {
     PostWmCloseToMainThreadWindow();
   }
@@ -1040,7 +701,7 @@ void __fastcall ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
   *(undefined1 *)(param_1 + 0x7a) = 0;
   DAT_00695278 = 0xffffffff;
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -1062,7 +723,7 @@ void HandleTurnInstruction_Labo_SetNationLaborTierCounts(int *param_1)
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   piVar4 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
@@ -1140,7 +801,7 @@ void HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(int *param_1)
   undefined2 local_4;
   undefined1 uStack_2;
   undefined1 uStack_1;
-  
+
   piVar5 = param_1;
   puVar2 = (undefined4 *)*param_1;
   uVar3 = *puVar2;
@@ -1192,7 +853,7 @@ void HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(int *param_1)
   undefined2 local_4;
   undefined1 uStack_2;
   undefined1 uStack_1;
-  
+
   piVar4 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
@@ -1246,7 +907,7 @@ void HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(int *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   piVar5 = param_1;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063746a;
@@ -1278,7 +939,7 @@ void HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(int *param_1)
   cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0x10 + (int)param_1 * 0xa8);
   if (0 < local_14) {
     do {
-      this = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
+      this = (TMilitaryUnitOrderState *)__2_YAPAXI_Z(0x44);
       this_00 = (TMilitaryUnitOrderState *)0x0;
       local_4 = 0;
       if (this != (TMilitaryUnitOrderState *)0x0) {
@@ -1313,7 +974,7 @@ void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(int *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063748a;
   local_c = *unaff_FS_OFFSET;
@@ -1336,7 +997,7 @@ void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(int *param_1)
   param_1._2_2_ = (undefined2)((uint)uVar3 >> 0x10);
   param_1._0_2_ = CONCAT11(uVar4,uVar5);
   cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + (short)param_1 * 0x24);
-  pTVar6 = (TCivWorkOrderState *)AllocateWithFallbackHandler(0x28);
+  pTVar6 = (TCivWorkOrderState *)__2_YAPAXI_Z(0x28);
   local_4 = 0;
   if (pTVar6 == (TCivWorkOrderState *)0x0) {
     pTVar6 = (TCivWorkOrderState *)0x0;
@@ -1368,7 +1029,7 @@ word * HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(int *param_1
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   piVar3 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar6 = *puVar1;
@@ -1434,7 +1095,7 @@ void HandleTurnInstruction_Tran_SetNationTransportStat(int *param_1)
   undefined2 local_4;
   undefined1 uStack_2;
   undefined1 uStack_1;
-  
+
   piVar4 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
@@ -1471,7 +1132,7 @@ void HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(int *param_1)
   uint local_c;
   undefined1 uStack_5;
   undefined3 uStack_4;
-  
+
   piVar5 = param_1;
   uVar4 = local_c >> 8;
   local_c = local_c & 0xffffff00;
@@ -1509,7 +1170,7 @@ void HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(int *param_1)
   undefined1 uVar3;
   undefined1 uVar4;
   int iVar5;
-  
+
   uVar2 = *(undefined4 *)*param_1;
   *param_1 = (int)((undefined4 *)*param_1 + 1);
   param_1._3_1_ = (undefined1)((uint)uVar2 >> 0x18);
@@ -1539,7 +1200,7 @@ void HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(int *param_1)
   undefined1 uVar3;
   undefined1 uVar4;
   int iVar5;
-  
+
   uVar2 = *(undefined4 *)*param_1;
   *param_1 = (int)((undefined4 *)*param_1 + 1);
   param_1._3_1_ = (undefined1)((uint)uVar2 >> 0x18);
@@ -1569,7 +1230,7 @@ void HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(int *param_1)
   undefined2 uVar3;
   int *piVar4;
   undefined4 uStack_4;
-  
+
   piVar4 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
@@ -1604,7 +1265,7 @@ void HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(int *param_1)
   undefined1 uVar3;
   undefined1 uVar4;
   undefined4 uStack_4;
-  
+
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
   uStack_4._3_1_ = (undefined1)((uint)uVar2 >> 0x18);
@@ -1642,7 +1303,7 @@ void HandleTurnInstruction_Emba_SetEmbassyRelationFlags(int *param_1)
   undefined2 local_4;
   undefined1 uStack_2;
   undefined1 uStack_1;
-  
+
   piVar5 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
@@ -1688,7 +1349,7 @@ void HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(int *param_1)
   undefined1 uVar6;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   piVar4 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
@@ -1735,7 +1396,7 @@ void HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(int *param_1)
   undefined1 uVar7;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   piVar6 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
@@ -1786,7 +1447,7 @@ HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(int param_1,int *par
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = *(undefined4 *)*param_2;
   *param_2 = (int)((undefined4 *)*param_2 + 1);
   param_2._3_1_ = (undefined1)((uint)uVar1 >> 0x18);
@@ -1808,7 +1469,7 @@ void HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(int *param_1)
   undefined1 uVar3;
   undefined1 uVar4;
   undefined4 uStack_4;
-  
+
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
   uStack_4._3_1_ = (undefined1)((uint)uVar2 >> 0x18);
@@ -1849,7 +1510,7 @@ void HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(int *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   piVar2 = param_1;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006374a8;
@@ -1864,16 +1525,16 @@ void HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(int *param_1)
   param_1._2_2_ = (undefined2)((uint)uVar1 >> 0x10);
   *piVar2 = (int)text_or_resource_id;
   param_1 = (int *)CONCAT31(CONCAT21(param_1._2_2_,uVar3),uVar4);
-  CString::CString(&local_10,text_or_resource_id);
+  CString::__0CString__QAE_PBD_Z(&local_10,text_or_resource_id);
   local_4 = 0;
   *piVar2 = *piVar2 + 0x40;
   iVar5 = FindMapActionContextByNodeId(param_1);
   if (iVar5 != 0) {
     iVar5 = FindMapActionContextByNodeId(param_1);
-    CString::AssignFromPtr((CString *)(iVar5 + 8),&local_10);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)(iVar5 + 8),&local_10);
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -1897,7 +1558,7 @@ void HandleTurnInstruction_Cnam_AssignCountryName(int *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   piVar3 = param_1;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006374e0;
@@ -1912,26 +1573,26 @@ void HandleTurnInstruction_Cnam_AssignCountryName(int *param_1)
   uVar2 = CONCAT11(param_1._0_1_,param_1._1_1_);
   *piVar3 = (int)text_or_resource_id;
   param_1 = (int *)CONCAT22(uVar2,CONCAT11(param_1._2_1_,param_1._3_1_));
-  CString::CString(&local_1c,text_or_resource_id);
+  CString::__0CString__QAE_PBD_Z(&local_1c,text_or_resource_id);
   local_4 = 0;
   *piVar3 = *piVar3 + 0x40;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4._0_1_ = 1;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4._0_1_ = 2;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_4._0_1_ = 3;
   SetNationDisplayNameAndLocalizationSlotRef(&local_1c);
-  CString::AssignFromPtr
+  CString::__4CString__QAEABV0_ABV0__Z
             ((CString *)&g_apTerrainTypeDescriptorTable[(int)param_1]->field_0x8,&local_1c);
   local_4._0_1_ = 2;
-  CString::~CString(&local_18);
+  CString::__1CString__QAE_XZ(&local_18);
   local_4._0_1_ = 1;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   local_4 = 0xffffffff;
-  CString::~CString(&local_1c);
+  CString::__1CString__QAE_XZ(&local_1c);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -1949,7 +1610,7 @@ void HandleTurnInstruction_Rela_SetNationRelationValue(int *param_1)
   undefined1 uVar4;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
   local_4._3_1_ = (undefined1)((uint)uVar2 >> 0x18);
@@ -1992,7 +1653,7 @@ void HandleTurnInstruction_Cash_SetNationCash(int *param_1)
   undefined2 uVar3;
   int *piVar4;
   undefined4 uStack_4;
-  
+
   piVar4 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
@@ -2023,7 +1684,7 @@ void __thiscall HandleTurnInstruction_Flag_SetNationFlagAndRefresh(int param_1,i
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = *(undefined4 *)*param_2;
   *param_2 = (int)((undefined4 *)*param_2 + 1);
   param_2._3_1_ = (undefined1)((uint)uVar1 >> 0x18);
@@ -2049,7 +1710,7 @@ void HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(int *param_1)
   int *piVar5;
   undefined1 uVar6;
   undefined4 local_4;
-  
+
   piVar5 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
@@ -2089,7 +1750,7 @@ void HandleTurnInstruction_Tbar_SetNationRelationBarValue(int *param_1)
   int iVar6;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   piVar5 = param_1;
   puVar2 = (undefined4 *)*param_1;
   uVar3 = *puVar2;
@@ -2148,7 +1809,7 @@ void HandleTurnInstruction_Tclr_ResetNationRelationBars(int *param_1)
   int *piVar4;
   undefined1 uVar5;
   int iVar6;
-  
+
   piVar4 = param_1;
   puVar1 = (undefined4 *)*param_1;
   uVar2 = *puVar1;
@@ -2184,7 +1845,7 @@ void __thiscall HandleTurnInstruction_Coun_SetCountrySlotState(int param_1,int *
   int *piVar4;
   undefined1 uVar5;
   undefined4 uStack_4;
-  
+
   piVar4 = param_2;
   puVar1 = (undefined4 *)*param_2;
   uVar2 = *puVar1;
@@ -2250,7 +1911,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2259,9 +1920,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2278,7 +1939,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2287,9 +1948,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2306,7 +1967,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2315,9 +1976,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2334,7 +1995,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2343,9 +2004,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2362,7 +2023,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2371,9 +2032,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2390,7 +2051,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2399,9 +2060,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2418,7 +2079,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2427,9 +2088,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2446,7 +2107,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2455,9 +2116,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2474,7 +2135,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2483,9 +2144,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2502,7 +2163,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2511,9 +2172,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2530,7 +2191,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2539,9 +2200,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2558,7 +2219,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2567,9 +2228,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2586,7 +2247,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2595,9 +2256,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2614,7 +2275,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2623,9 +2284,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2642,7 +2303,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2651,9 +2312,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2670,7 +2331,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2679,9 +2340,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2698,7 +2359,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2707,9 +2368,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2726,7 +2387,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2735,9 +2396,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2754,7 +2415,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2763,9 +2424,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2782,7 +2443,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint uStack_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -2791,9 +2452,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2810,7 +2471,7 @@ _OrphanCallChain_C2_I23_0058c360__YIXPAUNumberedArrowButtonState___Z_imperialism
 {
   int iVar1;
   undefined1 auStack_10 [16];
-  
+
   if (*(short *)((int)param_1 + 0x86) != param_2) {
     if (param_3 != '\0') {
       iVar1 = *param_1;
@@ -2846,7 +2507,7 @@ undefined1 Helper_Uses_ForwardMciCommand808ToDevice_At00593210(void)
   uint uVar2;
   undefined1 uVar3;
   int iVar4;
-  
+
   pTVar1 = g_pSfxPlaybackSystem;
   if (g_pSfxPlaybackSystem == (TSoundPlayer *)0x0) {
     return 0;
@@ -2880,7 +2541,7 @@ void __fastcall UpdateTurnAudioPlaybackStateAndScheduleCue(int param_1)
   short sVar1;
   char cVar2;
   int iVar3;
-  
+
   if ((*(char *)(param_1 + 0x80) != '\0') && (*(int *)(param_1 + 0x7c) == 0)) {
     iVar3 = (**(code **)(**(int **)(param_1 + 0x6c) + 0x28))();
     if (0 < iVar3) {
@@ -2965,7 +2626,7 @@ void __fastcall SelectAndScheduleRandomAudioCue(int param_1)
   undefined4 uVar4;
   short sVar5;
   int iVar6;
-  
+
   if ((*(short *)&g_pLocalizationTable->field_0x4e != 0) &&
      (cVar2 = IsTurnCooldownCounterActiveOrResetFlag(), cVar2 == '\0')) {
     iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x28))();
@@ -2986,7 +2647,7 @@ void __fastcall SelectAndScheduleRandomAudioCue(int param_1)
       *(undefined2 *)(param_1 + 0x74) = 0;
     }
     iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x28))();
-    iVar6 = GenerateThreadLocalRandom15();
+    iVar6 = _rand();
     iVar6 = iVar6 % iVar3 + 1;
     iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x24))(iVar6);
     (**(code **)(**(int **)(param_1 + 0x70) + 0x2c))(iVar6);
@@ -3039,7 +2700,7 @@ void __fastcall Helper_Uses_thunk_GetTickCountDiv16_At00593ce0(int param_1)
 
 {
   undefined4 uVar1;
-  
+
   if (*(int *)(param_1 + 0x7c) == 0) {
     uVar1 = GetTickCountDiv16();
     *(undefined4 *)(param_1 + 0x7c) = uVar1;
@@ -3069,7 +2730,7 @@ void Helper_Uses_SetQuickDrawFillColor_At00594790(short param_1,short param_2)
 
 {
   tagRECT local_10;
-  
+
   local_10.top = param_1 + 1;
   local_10.bottom = param_1 + 0xd;
   local_10.left = 0x98;
@@ -3099,7 +2760,7 @@ void __fastcall RecomputeNationComparisonValuesAndNormalizeScale(TStatusPicture 
   TGreatPower **ppTVar8;
   int iVar9;
   int local_c;
-  
+
   iVar6 = 0;
   puVar1 = &param_1->field_0x94;
   local_c = 0;
@@ -3230,67 +2891,67 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage(void)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006383c0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_24);
+  CString::__0CString__QAE_XZ(&local_24);
   local_4 = 0;
-  CString::CString(&local_20);
+  CString::__0CString__QAE_XZ(&local_20);
   local_4 = CONCAT31(local_4._1_3_,1);
-  iVar1 = CompareAnsiStringsWithMbcsAwareness();
+  iVar1 = __mbscmp();
   if (iVar1 != 0) {
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&local_24,local_20.m_pchData);
   }
   if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
-    CString::CString(&local_1c);
+    CString::__0CString__QAE_XZ(&local_1c);
     local_4._0_1_ = 2;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&local_1c,local_20.m_pchData);
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     local_4 = CONCAT31(local_4._1_3_,1);
-    CString::~CString(&local_1c);
+    CString::__1CString__QAE_XZ(&local_1c);
   }
   FormatVersionStringFromVersionResource();
   local_4._0_1_ = 3;
-  iVar1 = CompareAnsiStringsWithMbcsAwareness();
+  iVar1 = __mbscmp();
   if (iVar1 != 0) {
-    iVar1 = CompareAnsiStringsWithMbcsAwareness();
+    iVar1 = __mbscmp();
     if (iVar1 != 0) {
-      pCVar2 = (CString *)AssignSharedStringConcatRefAndCStr();
+      pCVar2 = (CString *)__H_YG_AVCString__ABV0_PBD_Z();
       local_4._0_1_ = 4;
-      CString::StringSharedRef_AssignFromPtr(&CStack_18,pCVar2);
+      CString::__0CString__QAE_ABV0__Z(&CStack_18,pCVar2);
       local_4._0_1_ = 5;
-      CString::AssignFromPtr(&local_24,&CStack_18);
+      CString::__4CString__QAEABV0_ABV0__Z(&local_24,&CStack_18);
       local_4._0_1_ = 4;
-      CString::~CString(&CStack_18);
+      CString::__1CString__QAE_XZ(&CStack_18);
       local_4._0_1_ = 3;
-      CString::~CString(&CStack_14);
+      CString::__1CString__QAE_XZ(&CStack_14);
     }
   }
-  pCVar2 = (CString *)AssignSharedStringConcatRefAndRef();
+  pCVar2 = (CString *)__H_YG_AVCString__ABV0_0_Z();
   local_4._0_1_ = 6;
-  CString::StringSharedRef_AssignFromPtr(&CStack_18,pCVar2);
+  CString::__0CString__QAE_ABV0__Z(&CStack_18,pCVar2);
   local_4._0_1_ = 7;
-  CString::AssignFromPtr(&local_24,&CStack_18);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_24,&CStack_18);
   local_4._0_1_ = 6;
-  CString::~CString(&CStack_18);
+  CString::__1CString__QAE_XZ(&CStack_18);
   local_4._0_1_ = 3;
-  CString::~CString(&CStack_14);
+  CString::__1CString__QAE_XZ(&CStack_14);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString::~CString(&local_1c);
-  iVar1 = CompareAnsiStringsWithMbcsAwareness();
+  CString::__1CString__QAE_XZ(&local_1c);
+  iVar1 = __mbscmp();
   if (iVar1 != 0) {
     puStack_10 = &stack0xffffffc8;
     AssignStringSharedRefAndReturnThis(&local_24);
     DispatchLocalizedUiMessageWithTemplateA13A0();
   }
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_20);
+  CString::__1CString__QAE_XZ(&local_20);
   local_4 = 0xffffffff;
-  CString::~CString(&local_24);
+  CString::__1CString__QAE_XZ(&local_24);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -3308,13 +2969,13 @@ void Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4
   undefined1 auStack_c [4];
   undefined *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0;
   puStack_8 = &DAT_006a45c0;
   puStack00000020 = auStack_c;
   AssignStringSharedRefAndReturnThis(&stack0x00000024);
   DispatchLocalizedUiMessageWithTemplateA13A0();
-  CString::~CString((CString *)&stack0x00000024);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000024);
   *unaff_FS_OFFSET = param_3;
   return;
 }
@@ -3333,7 +2994,7 @@ void ReinitializeGameFlowAndPostTurnEvent5DD(undefined4 param_1,undefined4 param
 
 {
   undefined4 *unaff_FS_OFFSET;
-  
+
   ReinitializeGameFlowAndPostTurnEventCode(0x5dd);
   *unaff_FS_OFFSET = param_2;
   return;
@@ -3378,7 +3039,7 @@ void PromptAndQueueMilitaryProvincePurgeOrders(short param_1)
   int local_c;
   undefined1 *puStack_8;
   CString CStack_4;
-  
+
   CStack_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_0063846a;
   local_c = *unaff_FS_OFFSET;
@@ -3417,7 +3078,7 @@ void PromptAndQueueMilitaryProvincePurgeOrders(short param_1)
       sVar11 = (short)iVar1;
       if ((0 < sVar6) && (iVar10 = (int)sVar6, 0 < iVar10)) {
         do {
-          pTVar8 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler();
+          pTVar8 = (TMilitaryUnitOrderState *)__2_YAPAXI_Z();
           if (pTVar8 == (TMilitaryUnitOrderState *)0x0) {
             pTVar8 = (TMilitaryUnitOrderState *)0x0;
           }
@@ -3472,12 +3133,12 @@ void __thiscall CreateCivilianWorkOrderAndRegisterSelection(int *param_1,int par
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063848a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this = (TCivWorkOrderState *)AllocateWithFallbackHandler(0x28);
+  this = (TCivWorkOrderState *)__2_YAPAXI_Z(0x28);
   local_4 = 0;
   if (this == (TCivWorkOrderState *)0x0) {
     this_00 = (TCivWorkOrderState *)0x0;
@@ -3517,7 +3178,7 @@ void RunNavyPrimaryOrderCreationDialogAndApplyResults(int param_1)
   undefined1 local_d;
   int iStack_c;
   int *piVar3;
-  
+
   if (param_1 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -3618,18 +3279,18 @@ void RunNavyPrimaryOrderCreationDialogAndApplyResults(int param_1)
 // GHIDRA_COMMENT_END
 
 /* Opens map context action dialog flow for action codes 2..8.
-   
+
    Call context:
    - TryHandleMapContextAction resolves action code and calls this with:
      param0=tile action context pointer,
      param1=actionCode-2,
      param2=cached context state (g_pCachedMapActionContext / DAT_006A3ED8).
-   
+
    Behavior (current confidence):
    - Builds localized dialog text/labels (zone/title/lab1..lab4 keys),
    - Chooses branch based on mode/context availability,
    - Commits dialog result into map order manager state.
-   
+
    TODO:
    - Recover exact prototype and parameter names once struct types are finalized. */
 
@@ -3716,7 +3377,7 @@ void OpenMapContextActionDialogByType(void)
   undefined1 *puStack_8;
   undefined4 uStack_4;
   int *piVar6;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006384c8;
   iStack_c = *unaff_FS_OFFSET;
@@ -3771,9 +3432,9 @@ void OpenMapContextActionDialogByType(void)
   }
   iVar1 = *piVar6;
   (**(code **)(iVar1 + 0x1a0))();
-  CString::CString(&CStack_48);
+  CString::__0CString__QAE_XZ(&CStack_48);
   iStack_c = 0;
-  CString::CString((CString *)&stack0xffffffb4);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffb4);
   pcVar2 = *(code **)(iVar1 + 0x94);
   iStack_c = CONCAT31(iStack_c._1_3_,1);
   piVar7 = (int *)(*pcVar2)();
@@ -3838,17 +3499,17 @@ void OpenMapContextActionDialogByType(void)
     pCStack_b0 = aCStack_40;
     pCStack_ac = (CString *)&DAT_00695798;
     puStack_b4 = (undefined4 *)0x599351;
-    pCStack_ac = (CString *)AssignSharedStringConcatCStrAndRef();
+    pCStack_ac = (CString *)__H_YG_AVCString__PBDABV0__Z();
     pCStack_b0 = &CStack_44;
     puStack_b4 = (undefined4 *)0x599366;
-    src_ref = (CString *)AssignSharedStringConcatRefAndCStr();
+    src_ref = (CString *)__H_YG_AVCString__ABV0_PBD_Z();
     pCStack_ac = (CString *)0x599375;
-    CString::StringSharedRef_AssignFromPtr(&CStack_48,src_ref);
+    CString::__0CString__QAE_ABV0__Z(&CStack_48,src_ref);
     pCStack_ac = (CString *)0x599388;
-    CString::AssignFromPtr(&CStack_8c,&CStack_48);
-    CString::~CString(&CStack_48);
-    CString::~CString(&CStack_44);
-    CString::~CString(aCStack_40);
+    CString::__4CString__QAEABV0_ABV0__Z(&CStack_8c,&CStack_48);
+    CString::__1CString__QAE_XZ(&CStack_48);
+    CString::__1CString__QAE_XZ(&CStack_44);
+    CString::__1CString__QAE_XZ(aCStack_40);
   }
   else {
     pCStack_ac = (CString *)0x59930a;
@@ -3959,9 +3620,9 @@ void OpenMapContextActionDialogByType(void)
   (**(code **)(iVar1 + 0xa0))();
   (**(code **)(iVar1 + 0x1c))();
   uStack_100 = uStack_100 & 0xffffff00;
-  CString::~CString(&CStack_140);
+  CString::__1CString__QAE_XZ(&CStack_140);
   uStack_100 = 0xffffffff;
-  CString::~CString(&CStack_13c);
+  CString::__1CString__QAE_XZ(&CStack_13c);
   *unaff_FS_OFFSET = iStack_108;
   return;
 }
@@ -3997,7 +3658,7 @@ void __fastcall NotifyTaskForceSelectionListenerByWord62(int param_1)
 
 {
   int *piVar1;
-  
+
   piVar1 = *(int **)(param_1 + 0xa0);
   if (piVar1 != (int *)0x0) {
     (**(code **)(*piVar1 + 0x1b0))(*(undefined2 *)((int)piVar1 + 0x62));
@@ -4015,7 +3676,7 @@ void __thiscall CommitPendingUiModeChangeAndRefreshViews(int *param_1,int *param
   int iVar1;
   int *piVar2;
   undefined4 uVar3;
-  
+
   if ((char)param_1[0x25] != '\0') {
     CallObjectOffset24Vslot54IfPresent();
     if (param_2 == (int *)0x0) {
@@ -4083,7 +3744,7 @@ void __fastcall SelectNextTacticalUnitForDoneCommand(int param_1)
   int iVar1;
   int iVar2;
   int iVar3;
-  
+
   iVar1 = *(int *)(param_1 + 0x18);
   iVar2 = iVar1;
   do {
@@ -4110,7 +3771,7 @@ undefined4 __fastcall IsTacticalControllerOwnedByActiveNation(int param_1)
 
 {
   short sVar1;
-  
+
   sVar1 = UiRuntimeContext::GetActiveNationId();
   return CONCAT31((int3)(char)((ushort)sVar1 >> 8),*(int *)(param_1 + 0x1c) == (int)sVar1);
 }
@@ -4139,7 +3800,7 @@ int CompareTacticalCursorEntriesByActionClassPriority(int *param_1,int *param_2)
 
 {
   short local_c [6];
-  
+
   local_c[1] = 0;
   local_c[3] = 0;
   local_c[4] = 0;
@@ -4173,7 +3834,7 @@ InitializeTacticalSideFromArmyUnitList
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638544;
@@ -4186,7 +3847,7 @@ InitializeTacticalSideFromArmyUnitList
   *(undefined1 *)(param_1 + 0xf) = 0;
   *(undefined1 *)(param_1 + 0x20) = 0;
   *(undefined4 *)(param_1 + 0x24) = 0;
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar3 = (undefined4 *)__2_YAPAXI_Z(0x20);
   local_4 = 0;
   if (puVar3 == (undefined4 *)0x0) {
     puVar3 = (undefined4 *)0x0;
@@ -4194,13 +3855,13 @@ InitializeTacticalSideFromArmyUnitList
   else {
     InitializeRefCountedObjectBaseVtable();
     local_4 = CONCAT31(local_4._1_3_,1);
-    TGreatPower::CPtrList((TGreatPower *)(puVar3 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar3 + 1),10);
     *puVar3 = &TList::_vftable_;
   }
   local_4 = 0xffffffff;
   *(undefined4 **)(param_1 + 4) = puVar3;
   *(undefined1 *)(param_1 + 0x10) = 0;
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar3 = (undefined4 *)__2_YAPAXI_Z(0x20);
   local_4 = 2;
   if (puVar3 == (undefined4 *)0x0) {
     puVar3 = (undefined4 *)0x0;
@@ -4208,7 +3869,7 @@ InitializeTacticalSideFromArmyUnitList
   else {
     InitializeRefCountedObjectBaseVtable();
     local_4 = CONCAT31(local_4._1_3_,3);
-    TGreatPower::CPtrList((TGreatPower *)(puVar3 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar3 + 1),10);
     *puVar3 = &TList::_vftable_;
   }
   *(undefined4 **)(param_1 + 8) = puVar3;
@@ -4229,14 +3890,14 @@ joined_r0x0059b28f:
       *(char *)(param_1 + 0xd) = param_4;
       *(bool *)(param_1 + 0xe) = param_4 == '\0';
       *(undefined4 *)(param_1 + 0x44) = 0xffffffff;
-      bVar2 = GenerateThreadLocalRandom15();
+      bVar2 = _rand();
       *(undefined4 *)(param_1 + 0x4c) = 0xffffffff;
       *(byte *)(param_1 + 0x50) = bVar2 & 1;
       *(undefined1 *)(param_1 + 0x51) = 0;
       *unaff_FS_OFFSET = local_c;
       return;
     }
-    this = (TArmyTacUnit *)AllocateWithFallbackHandler(0x58);
+    this = (TArmyTacUnit *)__2_YAPAXI_Z(0x58);
     if (this == (TArmyTacUnit *)0x0) {
       this = (TArmyTacUnit *)0x0;
     }
@@ -4292,7 +3953,7 @@ void __fastcall AccumulateTacticalCursorActionClassProfileMetrics(int param_1)
   float10 fVar8;
   float10 fVar9;
   undefined3 extraout_var_00;
-  
+
   *(undefined2 *)(param_1 + 0x42) = 0;
   *(undefined2 *)(param_1 + 0x40) = 0;
   *(undefined4 *)(param_1 + 0x2c) = 0;
@@ -4364,25 +4025,28 @@ void __fastcall RebuildListFromProviderAndDeduplicateByKey(int param_1)
   int iVar2;
   int iVar3;
   int *piVar4;
-  
+
   for (iVar2 = (**(code **)(**(int **)(param_1 + 4) + 0x48))(); 0 < iVar2; iVar2 = iVar2 + -1) {
     iVar3 = (**(code **)(**(int **)(param_1 + 4) + 0x4c))(iVar2);
     if (*(int *)(iVar3 + 8) == -2) {
       pTVar1 = (TAutoGreatPower *)(*(int *)(param_1 + 4) + 4);
-      piVar4 = (int *)TAutoGreatPower::Find(pTVar1,iVar3,(undefined4 *)0x0);
+      piVar4 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                                (pTVar1,iVar3,(undefined4 *)0x0);
       if (piVar4 != (int *)0x0) {
-        TAutoGreatPower::RemoveAt_60217d(pTVar1,piVar4);
+        TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(pTVar1,piVar4);
       }
-      CPtrList::AddHead((CPtrList *)(*(int *)(param_1 + 8) + 4),iVar3);
+      CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
+                ((CPtrList *)(*(int *)(param_1 + 8) + 4),iVar3);
     }
   }
   iVar2 = InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
   while (iVar3 != 0) {
     pTVar1 = (TAutoGreatPower *)(*(int *)(*(int *)(param_1 + 0x14) + 0x20) + 4);
-    piVar4 = (int *)TAutoGreatPower::Find(pTVar1,iVar2,(undefined4 *)0x0);
+    piVar4 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                              (pTVar1,iVar2,(undefined4 *)0x0);
     if (piVar4 != (int *)0x0) {
-      TAutoGreatPower::RemoveAt_60217d(pTVar1,piVar4);
+      TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(pTVar1,piVar4);
     }
     iVar2 = AdvanceLinkedListCursor();
     iVar3 = LinkedListCursorHasCurrent();
@@ -4412,7 +4076,7 @@ void __thiscall RecomputeTacticalCursorProjectionScoresAndPruneList(int param_1,
   float10 fVar11;
   float unaff_retaddr;
   float afStack_18 [6];
-  
+
   for (iVar4 = (**(code **)(**(int **)(param_1 + 4) + 0x48))(); 0 < iVar4; iVar4 = iVar4 + -1) {
     this = (TArmyTacUnit *)(**(code **)(**(int **)(param_1 + 4) + 0x4c))(iVar4);
     (*this->vftable->AssertValid)();
@@ -4428,9 +4092,10 @@ void __thiscall RecomputeTacticalCursorProjectionScoresAndPruneList(int param_1,
       if (iVar5 == 0) break;
       if (*(short *)(&DAT_00695528 + *(int *)(iVar4 + 0xc) * 2) == 9) {
         pTVar1 = (TAutoGreatPower *)(*(int *)(param_1 + 8) + 4);
-        piVar6 = (int *)TAutoGreatPower::Find(pTVar1,iVar4,(undefined4 *)0x0);
+        piVar6 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                                  (pTVar1,iVar4,(undefined4 *)0x0);
         if (piVar6 != (int *)0x0) {
-          TAutoGreatPower::RemoveAt_60217d(pTVar1,piVar6);
+          TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(pTVar1,piVar6);
         }
         (**(code **)(**(int **)(param_1 + 4) + 0x30))(iVar4);
         bVar3 = true;
@@ -4501,9 +4166,10 @@ void __thiscall RecomputeTacticalCursorProjectionScoresAndPruneList(int param_1,
   iVar5 = LinkedListCursorHasCurrent();
   while (iVar5 != 0) {
     pTVar1 = (TAutoGreatPower *)(*(int *)(*(int *)(param_1 + 0x14) + 0x20) + 4);
-    piVar6 = (int *)TAutoGreatPower::Find(pTVar1,iVar4,(undefined4 *)0x0);
+    piVar6 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                              (pTVar1,iVar4,(undefined4 *)0x0);
     if (piVar6 != (int *)0x0) {
-      TAutoGreatPower::RemoveAt_60217d(pTVar1,piVar6);
+      TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(pTVar1,piVar6);
     }
     iVar4 = AdvanceLinkedListCursor();
     iVar5 = LinkedListCursorHasCurrent();
@@ -4527,7 +4193,7 @@ void __fastcall BuildTacticalActionPriorityBucketsWithGridGuard(int param_1)
   int iVar7;
   int iStack_90;
   int local_54 [21];
-  
+
   local_54[7] = 0x14;
   local_54[10] = 0x14;
   local_54[0x10] = 0x14;
@@ -4593,7 +4259,7 @@ void __fastcall DispatchTacticalActionClassSelectionAcrossCursorList(int param_1
   int iVar1;
   int iVar2;
   undefined4 uVar3;
-  
+
   (**(code **)(**(int **)(param_1 + 4) + 0x68))(&LAB_004091ab,0);
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
@@ -4632,7 +4298,7 @@ int __fastcall SelectTacticalTileIndexByColumnPriorityVariantA(int param_1)
   int local_20;
   int local_1c;
   int local_18 [6];
-  
+
   iVar6 = 0;
   local_20 = 0;
   local_1c = -1;
@@ -4696,7 +4362,7 @@ int __fastcall SelectTacticalTileByActionClassAdjacencyPriority(int param_1)
   int local_20;
   int local_1c;
   int local_18 [6];
-  
+
   iVar8 = 0;
   local_20 = 0;
   local_1c = -1;
@@ -4757,7 +4423,7 @@ int __fastcall SelectTacticalTileIndexByColumnPriorityVariantB(int param_1)
   int local_20;
   int local_1c;
   int local_18 [6];
-  
+
   iVar7 = 0;
   local_20 = 0;
   local_1c = -1;
@@ -4816,7 +4482,7 @@ void __fastcall SelectAndApplyTacticalCursorModeProfile(int param_1)
   int iVar10;
   bool bVar11;
   float local_14 [5];
-  
+
   iVar8 = *(int *)(param_1 + 0x14);
   bVar11 = (int)*(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 +
                           (short)g_apTerrainTypeDescriptorTable[*(int *)(param_1 + 0x1c)]->
@@ -5009,7 +4675,7 @@ void __fastcall SetLinkedListEntryState2CForTacticalCategory0(int param_1)
   int iVar2;
   undefined4 unaff_EBX;
   undefined4 uStack00000010;
-  
+
   uStack00000010 = *(undefined4 *)(param_1 + 4);
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
@@ -5040,7 +4706,7 @@ void IterateLinkedListCursorAndAdvanceToEnd_0059c9d7(void)
   int iVar2;
   undefined4 unaff_EBX;
   undefined4 unaff_EDI;
-  
+
   while( true ) {
     iVar1 = AdvanceLinkedListCursor();
     iVar2 = LinkedListCursorHasCurrent();
@@ -5120,7 +4786,7 @@ void __fastcall SetLinkedListEntryState2CTo13ForAllNodes(int param_1)
   int iVar1;
   int iVar2;
   undefined4 uStack00000010;
-  
+
   uStack00000010 = *(undefined4 *)(param_1 + 4);
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
@@ -5144,7 +4810,7 @@ void ApplyTacticalCursorModeProfile0_ByActionClassCounts(void)
   int iVar3;
   int iVar4;
   int local_14 [5];
-  
+
   local_14[1] = 0;
   local_14[2] = 0;
   iVar4 = 0;
@@ -5206,7 +4872,7 @@ void IterateLinkedListCursorEntries_0059cc70(void)
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
   while (iVar2 != 0) {
@@ -5234,7 +4900,7 @@ void ApplyTacticalCursorModeProfile2_ByActionClassCounts(void)
   int iVar3;
   int iVar4;
   int local_14 [5];
-  
+
   local_14[0] = 0;
   local_14[1] = 0;
   local_14[2] = 0;
@@ -5303,7 +4969,7 @@ void __fastcall ApplyTacticalCursorModeProfile3_ClassAware(int param_1)
   char cVar2;
   int *piVar3;
   int iVar4;
-  
+
   if (*(char *)(param_1 + 0xc) == '\0') {
     iVar4 = *(int *)(*(int *)(param_1 + 0x14) + 0x14);
   }
@@ -5370,7 +5036,7 @@ void __fastcall ApplyTacticalCursorModeProfile4_ClassAware(int param_1)
   char cVar2;
   int *piVar3;
   int iVar4;
-  
+
   if (*(char *)(param_1 + 0xc) == '\0') {
     iVar4 = *(int *)(*(int *)(param_1 + 0x14) + 0x14);
   }
@@ -5433,7 +5099,7 @@ void __fastcall ApplyTacticalCursorModeProfile5_ClassAware(int param_1)
   char cVar2;
   int *piVar3;
   int iVar4;
-  
+
   if (*(char *)(param_1 + 0xc) == '\0') {
     iVar4 = *(int *)(*(int *)(param_1 + 0x14) + 0x14);
   }
@@ -5494,7 +5160,7 @@ void ApplyTacticalCursorModeProfile6_DefaultByActionClass(void)
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
   while (iVar2 != 0) {
@@ -5533,7 +5199,7 @@ void SetLinkedListNodeField2CTo13ForAllNodes(void)
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
   while (iVar2 != 0) {
@@ -5553,7 +5219,7 @@ undefined4 HasReachableActiveArtilleryClassCursorEntry(void)
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
   if (iVar2 == 0) {
@@ -5587,7 +5253,7 @@ SelectBestTacticalTileByWeightedHeuristics(int param_1,undefined4 param_2,int *p
   int local_c;
   int local_8;
   int local_4;
-  
+
   iVar1 = param_3[8];
   local_4 = -1;
   local_8 = -99999;
@@ -5661,7 +5327,7 @@ EvaluateTacticalTileScore_EnemyReachabilityAndBestTargetProximity
   undefined4 uVar6;
   int iVar7;
   int iStack_8;
-  
+
   piVar3 = param_2;
   pcVar1 = *(code **)(*param_2 + 0x2c);
   (*pcVar1)();
@@ -5703,7 +5369,7 @@ EvaluateTacticalTileScore_Column6OwnershipAdjacencyBias(int param_1,int param_2,
   int iVar2;
   uint uVar3;
   int iVar4;
-  
+
   if (param_3 % 0x1d != 6) {
     return 0;
   }
@@ -5734,7 +5400,7 @@ EvaluateTacticalTileScore_AnyAdjacentEnemyCandidateBonus(int param_1,int param_2
   int *piVar2;
   int iVar3;
   int local_18 [6];
-  
+
   ComputeHexNeighborTileIndices_005A0420(param_3,local_18);
   iVar3 = 0;
   piVar2 = local_18;
@@ -5764,7 +5430,7 @@ int EvaluateTacticalTileScore_ReachableCursorEntryCount(undefined4 param_1,undef
   undefined4 uVar4;
   undefined4 uVar5;
   int local_10;
-  
+
   local_10 = 0;
   piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
@@ -5813,7 +5479,7 @@ EvaluateTacticalTileScore_TileType1Or2Bonus(int param_1,undefined4 param_2,int p
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(*(int *)(*(int *)(param_1 + 0x14) + 4) + param_3 * 0x14);
   if ((iVar1 != 1) && (iVar1 != 2)) {
     return 0;
@@ -5834,7 +5500,7 @@ EvaluateTacticalTileScore_AnyAdjacentAlliedUnitAboveThresholdBonus
   int *piVar2;
   int iVar3;
   int local_18 [6];
-  
+
   ComputeHexNeighborTileIndices_005A0420(param_3,local_18);
   iVar3 = 0;
   piVar2 = local_18;
@@ -5860,7 +5526,7 @@ EvaluateTacticalTileScore_InverseDistanceField(int param_1,undefined4 param_2,in
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(*(int *)(*(int *)(param_1 + 0x14) + 0x30) + param_3 * 4);
   if (iVar1 != -1) {
     return 100 - iVar1;
@@ -5878,7 +5544,7 @@ int EvaluateTacticalTileScore_ArtilleryClassStandOffDistance(undefined4 param_1,
   int iVar1;
   int iVar2;
   int iVar3;
-  
+
   iVar3 = 0;
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
@@ -5915,7 +5581,7 @@ EvaluateTacticalTileScore_RightwardOpenColumnBias(int param_1,undefined4 param_2
   int iVar3;
   int iVar4;
   int *piVar5;
-  
+
   iVar4 = param_3 % 0x1d;
   iVar2 = *(int *)(param_1 + 0x14);
   iVar1 = *(int *)(iVar2 + 0x34) + -6;
@@ -5949,7 +5615,7 @@ int EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount
   undefined4 uVar4;
   undefined4 uVar5;
   int local_10;
-  
+
   local_10 = 0;
   piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
@@ -5986,7 +5652,7 @@ EvaluateTacticalTileScore_ClosestReachableEnemyDistance(int param_1,int *param_2
   int iVar7;
   int iVar8;
   int iStack_c;
-  
+
   uVar2 = (**(code **)(*param_2 + 0x2c))();
   iVar7 = 0;
   iVar3 = SelectBestTacticalTargetTileByActionHeuristics(param_2,0);
@@ -6046,7 +5712,7 @@ EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus
   int iVar5;
   int iVar6;
   undefined4 uVar7;
-  
+
   uVar2 = (**(code **)(*param_2 + 0x2c))();
   iVar5 = *(int *)(param_1 + 0x14);
   iVar6 = 0;
@@ -6105,7 +5771,7 @@ int __thiscall SelectBestTacticalTargetTileByActionHeuristics(int param_1,int *p
   int local_50;
   int local_40 [6];
   int aiStack_28 [10];
-  
+
   local_58 = -1;
   local_50 = 0;
   ComputeHexNeighborTileIndices_005A0420(param_2[2],local_40);
@@ -6120,7 +5786,7 @@ int __thiscall SelectBestTacticalTargetTileByActionHeuristics(int param_1,int *p
         if (*(int *)(param_1 + 0x4c) == -1) {
           do {
             iVar5 = *(int *)(param_1 + 0x14);
-            iVar6 = GenerateThreadLocalRandom15();
+            iVar6 = _rand();
             iVar5 = (iVar6 % 0xd) * 0x1d + 0x17 + *(int *)(iVar5 + 0x34);
             *(int *)(param_1 + 0x4c) = iVar5;
             cVar4 = TArmyBattle::CreateTArmyBattleInstance(iVar5);
@@ -6199,7 +5865,7 @@ BuildTacticalActionClassAndPositionFlags(int param_1,undefined4 param_2,uint par
   uint uVar2;
   char cVar3;
   uint uVar4;
-  
+
   iVar1 = *(int *)(param_3 + 8);
   uVar4 = param_3;
   switch(*(undefined2 *)(&DAT_006693b8 + *(int *)(param_3 + 0xc) * 2)) {
@@ -6246,7 +5912,7 @@ int IterateLinkedListCursorEntries_0059e9c0(void)
   int *piVar2;
   int iVar3;
   int iVar4;
-  
+
   iVar4 = 1000;
   piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
@@ -6297,7 +5963,7 @@ short OrphanCallChain_C4_I70_0059f610(int *param_1,int *param_2)
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0xc))();
   iVar2 = *param_2;
@@ -6347,7 +6013,7 @@ void __thiscall BuildTacticalBattleStateFromBothSides(int param_1,int param_2,in
   undefined4 uVar5;
   int *piVar6;
   undefined4 *puVar7;
-  
+
   *(int *)(param_1 + 0x14) = param_2;
   *(int *)(param_1 + 0x18) = param_3;
   *(int *)(param_2 + 0x14) = param_1;
@@ -6356,7 +6022,7 @@ void __thiscall BuildTacticalBattleStateFromBothSides(int param_1,int param_2,in
   iVar4 = LinkedListCursorHasCurrent();
   while (iVar4 != 0) {
     *(undefined4 *)(iVar3 + 0x20) = 0;
-    uVar2 = GenerateThreadLocalRandom15();
+    uVar2 = _rand();
     *(undefined2 *)(iVar3 + 0x24) = uVar2;
     (**(code **)(**(int **)(param_1 + 0x20) + 0x30))(iVar3);
     iVar3 = AdvanceLinkedListCursor();
@@ -6366,7 +6032,7 @@ void __thiscall BuildTacticalBattleStateFromBothSides(int param_1,int param_2,in
   iVar4 = LinkedListCursorHasCurrent();
   while (iVar4 != 0) {
     *(undefined4 *)(iVar3 + 0x20) = 1;
-    uVar2 = GenerateThreadLocalRandom15();
+    uVar2 = _rand();
     *(undefined2 *)(iVar3 + 0x24) = uVar2;
     (**(code **)(**(int **)(param_1 + 0x20) + 0x30))(iVar3);
     iVar3 = AdvanceLinkedListCursor();
@@ -6390,7 +6056,7 @@ void __thiscall BuildTacticalBattleStateFromBothSides(int param_1,int param_2,in
     iVar4 = LinkedListCursorHasCurrent();
   }
   *(int *)(param_1 + 0x34) = iVar3 + 0xb;
-  uVar5 = AllocateWithFallbackHandler(*(int *)(param_1 + 0x3c) << 1);
+  uVar5 = __2_YAPAXI_Z(*(int *)(param_1 + 0x3c) << 1);
   *(undefined4 *)(param_1 + 0x24) = uVar5;
   iVar3 = 0;
   if (0 < *(int *)(param_1 + 0x3c)) {
@@ -6399,7 +6065,7 @@ void __thiscall BuildTacticalBattleStateFromBothSides(int param_1,int param_2,in
       *(undefined2 *)(*(int *)(param_1 + 0x24) + -2 + iVar3 * 2) = 0xffff;
     } while (iVar3 < *(int *)(param_1 + 0x3c));
   }
-  uVar5 = AllocateWithFallbackHandler(*(undefined4 *)(param_1 + 0x3c));
+  uVar5 = __2_YAPAXI_Z(*(undefined4 *)(param_1 + 0x3c));
   *(undefined4 *)(param_1 + 0x28) = uVar5;
   iVar3 = 0;
   if (0 < *(int *)(param_1 + 0x3c)) {
@@ -6409,7 +6075,7 @@ void __thiscall BuildTacticalBattleStateFromBothSides(int param_1,int param_2,in
       iVar3 = iVar4;
     } while (iVar4 < *(int *)(param_1 + 0x3c));
   }
-  uVar5 = AllocateWithFallbackHandler(*(int *)(param_1 + 0x3c) << 2);
+  uVar5 = __2_YAPAXI_Z(*(int *)(param_1 + 0x3c) << 2);
   *(undefined4 *)(param_1 + 0x2c) = uVar5;
   iVar3 = 0;
   if (0 < *(int *)(param_1 + 0x3c)) {
@@ -6418,7 +6084,7 @@ void __thiscall BuildTacticalBattleStateFromBothSides(int param_1,int param_2,in
       *(undefined4 *)(*(int *)(param_1 + 0x2c) + -4 + iVar3 * 4) = 0;
     } while (iVar3 < *(int *)(param_1 + 0x3c));
   }
-  uVar5 = AllocateWithFallbackHandler(*(int *)(param_1 + 0x3c) << 2);
+  uVar5 = __2_YAPAXI_Z(*(int *)(param_1 + 0x3c) << 2);
   *(undefined4 *)(param_1 + 0x30) = uVar5;
   iVar3 = 0;
   if (0 < *(int *)(param_1 + 0x3c)) {
@@ -6428,9 +6094,9 @@ void __thiscall BuildTacticalBattleStateFromBothSides(int param_1,int param_2,in
     } while (iVar3 < *(int *)(param_1 + 0x3c));
   }
   if (*(int *)(param_1 + 4) != 0) {
-    FreeHeapBufferIfNotNull(*(int *)(param_1 + 4));
+    __3_YAXPAX_Z(*(int *)(param_1 + 4));
   }
-  puVar7 = (undefined4 *)AllocateWithFallbackHandler(*(int *)(param_1 + 0x3c) * 0x14);
+  puVar7 = (undefined4 *)__2_YAPAXI_Z(*(int *)(param_1 + 0x3c) * 0x14);
   iVar3 = 0;
   *(undefined4 **)(param_1 + 4) = puVar7;
   if (0 < *(int *)(param_1 + 0x3c)) {
@@ -6472,7 +6138,7 @@ void __fastcall IterateLinkedListCursorEntries_0059fc40(int param_1)
   int *piVar2;
   int iVar3;
   int iVar4;
-  
+
   iVar4 = 0;
   piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
@@ -6515,7 +6181,7 @@ void __fastcall HandleTacticalCommandTag_retr(TacticalBattleView *param_1)
   int iVar1;
   undefined4 uVar2;
   int *piVar3;
-  
+
   *(uint *)(param_1 + 0xc) = (uint)(*(int *)(param_1 + 0xc) == 0);
   uVar2 = SelectNextTacticalUnitForDoneCommand();
   *(undefined4 *)(param_1 + 0x1c) = uVar2;
@@ -6545,7 +6211,7 @@ void __thiscall ApplyTacticalDoneSelectionAndRefreshUi(int *param_1,int param_2)
   uint uVar2;
   int *piVar3;
   int iVar4;
-  
+
   param_1[7] = param_2;
   (**(code **)(*param_1 + 0x28))(param_2);
   if (param_1[2] != 0) {
@@ -6574,7 +6240,7 @@ void __thiscall ComputeHexNeighborTileIndices_005A0420(int param_1,int param_2,i
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(param_1 + 0x40);
   if ((param_2 / iVar1 & 1U) == 0) {
     *param_3 = param_2 - iVar1;
@@ -6627,7 +6293,7 @@ uint IsHexNeighborTileIndex(undefined4 param_1,int param_2)
   uint uVar1;
   int *piVar2;
   int local_18 [6];
-  
+
   ComputeHexNeighborTileIndices_005A0420(param_1,local_18);
   piVar2 = local_18;
   uVar1 = 0;
@@ -6658,7 +6324,7 @@ int __thiscall ComputeTacticalHoverCursorStateIndex(int param_1,int param_2)
   int iVar6;
   int local_1c;
   int local_18 [6];
-  
+
   local_1c = 0;
   cVar1 = IsTacticalControllerOwnedByActiveNation();
   if (cVar1 == '\0') {
@@ -6812,7 +6478,7 @@ int __thiscall ResolveTacticalHoverCursorToken(int param_1,int param_2)
   undefined4 uVar7;
   undefined4 uVar8;
   undefined2 local_1c [14];
-  
+
   local_1c[0] = 0;
   local_1c[1] = 0x402;
   local_1c[2] = 0x3f0;
@@ -6870,7 +6536,7 @@ void __fastcall AdvanceToNextTacticalUnitTurnStep(TNextMoveCommand *param_1)
   int iVar2;
   int *piVar3;
   int iVar4;
-  
+
   if (param_1[1].vftable == (TNextMoveCommandVtbl *)0x0) {
     iVar4 = 1;
   }
@@ -6928,7 +6594,7 @@ void __thiscall SetCurrentTacticalUnitSelection(int param_1,int *param_2,char pa
 
 {
   int iVar1;
-  
+
   if ((param_3 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
     NoOpCallbackRet10(0x73656c65,param_2,0,0);
   }
@@ -6970,7 +6636,7 @@ void __thiscall ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_1,int 
   int iVar8;
   float10 fVar9;
   int local_1c;
-  
+
   iVar7 = 999;
   iVar1 = param_2[2];
   BuildTacticalDistanceFieldForSide(param_2[8] == 0);
@@ -6980,8 +6646,7 @@ void __thiscall ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_1,int 
     do {
       if (((*(short *)(*(int *)&param_1[1].field_0x8 + iVar8 * 2) != -1) &&
           (iVar5 = *(int *)(*(int *)&param_1[1].field_0x14 + iVar8 * 4), iVar5 != -1)) &&
-         ((iVar5 < iVar7 ||
-          ((iVar5 == iVar7 && (uVar3 = GenerateThreadLocalRandom15(), (uVar3 & 1) != 0)))))) {
+         ((iVar5 < iVar7 || ((iVar5 == iVar7 && (uVar3 = _rand(), (uVar3 & 1) != 0)))))) {
         iVar7 = *(int *)(*(int *)&param_1[1].field_0x14 + iVar8 * 4);
         local_1c = iVar8;
       }
@@ -7030,7 +6695,7 @@ void __thiscall ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_1,int 
   if (param_2[2] != iVar1) {
     if (local_1c < 1) goto LAB_005a1345;
     iVar1 = param_2[1];
-    iVar8 = GenerateThreadLocalRandom15();
+    iVar8 = _rand();
     fVar9 = (float10)(*pcVar2)();
     if ((float10)(iVar8 % local_1c) <= fVar9 * (float10)iVar1) goto LAB_005a1345;
   }
@@ -7063,7 +6728,7 @@ void __thiscall MoveTacticalUnitTowardTile(int *param_1,int *param_2,int param_3
   int iVar5;
   int *piVar6;
   int local_30 [12];
-  
+
   local_30[0] = param_3;
   iVar4 = BuildPathToTargetByDistanceField(param_3,0,param_2[2],local_30);
   if (iVar4 != -1) {
@@ -7141,7 +6806,7 @@ BuildPathToTargetByDistanceField(int param_1,int param_2,int param_3,int param_4
   int local_38;
   int local_30 [6];
   int local_18 [6];
-  
+
   if (param_2 == param_4) {
     *(int *)(param_5 + param_3 * 4) = param_2;
     return param_3;
@@ -7200,7 +6865,7 @@ LAB_005a17e0:
                     if (cVar2 != '\0') goto LAB_005a17eb;
                     goto LAB_005a17e0;
                   }
-                  bVar8 = GenerateThreadLocalRandom15();
+                  bVar8 = _rand();
                   bVar8 = bVar8 & 1;
                 }
               }
@@ -7281,7 +6946,7 @@ undefined4 __thiscall ResolveTacticalReactionChecksForTile(int *param_1,int para
   undefined4 uVar5;
   int iVar6;
   undefined1 local_11;
-  
+
   local_11 = 0;
   iVar1 = *(int *)(param_1[1] + 4 + param_2 * 0x14);
   piVar3 = (int *)InitializeLinkedListCursorFromOwnerHead();
@@ -7325,7 +6990,7 @@ uint __fastcall WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1b50(int pa
   uint *puVar3;
   int iVar4;
   uint local_18 [6];
-  
+
   ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(*(int *)(param_1 + 0x1c) + 8),local_18);
   iVar4 = 0;
   puVar3 = local_18;
@@ -7362,7 +7027,7 @@ undefined4 __fastcall HasValidTacticalFollowupTargetForCurrentAction(int param_1
   uint *puVar6;
   int iVar7;
   uint local_18 [6];
-  
+
   iVar7 = *(int *)(param_1 + 0x1c);
   if (*(short *)(&DAT_00695528 + *(int *)(iVar7 + 0xc) * 2) == 9) {
     ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(iVar7 + 8),local_18);
@@ -7423,7 +7088,7 @@ ApplyTacticalActionEffectsAndMaybeRemoveUnit
 
 {
   int unaff_EBX;
-  
+
   if ((param_8 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
     NoOpCallbackRet18(0x66697265,param_2,param_3,param_5,param_6,(int)param_7);
   }
@@ -7475,7 +7140,7 @@ float10 Helper_Uses_thunk_AdvanceLinkedListCursor_At005a2630(void)
   int iVar2;
   int iVar3;
   float local_10;
-  
+
   local_10 = 2.0;
   iVar2 = InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
@@ -7554,7 +7219,7 @@ void __fastcall EvaluateTacticalSideStateAndShowBattleSummaryDialog(int param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006386a0;
   uStack_c = *unaff_FS_OFFSET;
@@ -7632,7 +7297,7 @@ LAB_005a280a:
       pcStack_6c = (char *)0x1;
     }
     CStack_a4.m_pchData = (char *)0x5a2927;
-    CString::CString(&CStack_7c);
+    CString::__0CString__QAE_XZ(&CStack_7c);
     CStack_a4.m_pchData = (char *)&CStack_7c;
     CStack_a8.m_pchData = pcStack_6c;
     CStack_ac.m_pchData = (char *)0x273d;
@@ -7655,7 +7320,7 @@ LAB_005a280a:
     (**(code **)(iVar8 + 0x1c8))();
     uStack_34 = 0xffffffff;
     CStack_c0.m_pchData = (char *)0x5a2997;
-    CString::~CString(aCStack_9c + 1);
+    CString::__1CString__QAE_XZ(aCStack_9c + 1);
     CStack_c0.m_pchData = (char *)0x6c6f6361;
     CStack_c4.m_pchData = (char *)0x5a29a0;
     piVar7 = (int *)(*pcVar1)();
@@ -7663,10 +7328,10 @@ LAB_005a280a:
     CStack_c4.m_pchData = (char *)0x5a29a9;
     (**(code **)(iVar8 + 0xc))();
     CStack_c4.m_pchData = (char *)0x5a29b2;
-    CString::CString(&CStack_a8);
+    CString::__0CString__QAE_XZ(&CStack_a8);
     iStack_38 = 1;
     CStack_c4.m_pchData = (char *)0x5a29c6;
-    CString::CString(&CStack_a4);
+    CString::__0CString__QAE_XZ(&CStack_a4);
     CStack_c4.m_pchData = (char *)&CStack_a8;
     iStack_38._0_1_ = 2;
                     /* WARNING: Load size is inaccurate */
@@ -7677,10 +7342,10 @@ LAB_005a280a:
     CStack_c8.m_pchData = (char *)0x5a2a14;
     FormatOverlayTerrainLabelText();
     CStack_c4.m_pchData = (char *)0x5a2a1d;
-    CString::CString(&CStack_a0);
+    CString::__0CString__QAE_XZ(&CStack_a0);
     iStack_38._0_1_ = 3;
     CStack_c4.m_pchData = (char *)0x5a2a2e;
-    CString::CString(aCStack_9c);
+    CString::__0CString__QAE_XZ(aCStack_9c);
     CStack_c4.m_pchData = (char *)&CStack_a0;
     iStack_38 = CONCAT31(iStack_38._1_3_,4);
     CStack_c8.m_pchData = (char *)0x7;
@@ -7699,31 +7364,31 @@ LAB_005a280a:
     CVar12.m_pchData = (char *)0x1;
     (**(code **)(iVar8 + 0x1c8))();
     uStack_54._0_1_ = 3;
-    CString::~CString(&CStack_b8);
+    CString::__1CString__QAE_XZ(&CStack_b8);
     uStack_54._0_1_ = 2;
-    CString::~CString(&CStack_bc);
+    CString::__1CString__QAE_XZ(&CStack_bc);
     uStack_54 = CONCAT31(uStack_54._1_3_,1);
-    CString::~CString(&CStack_c0);
+    CString::__1CString__QAE_XZ(&CStack_c0);
     uStack_54 = 0xffffffff;
-    CString::~CString(&CStack_c4);
+    CString::__1CString__QAE_XZ(&CStack_c4);
     piVar7 = (int *)(*pcVar1)();
     iVar8 = *piVar7;
     (**(code **)(iVar8 + 0xc))();
-    CString::CString(&CStack_a4);
+    CString::__0CString__QAE_XZ(&CStack_a4);
     uStack_58 = 5;
-    CString::CString((CString *)&stack0xffffff70);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffff70);
     uStack_58._0_1_ = 6;
-    CString::CString(&CStack_cc);
+    CString::__0CString__QAE_XZ(&CStack_cc);
     uStack_58._0_1_ = 7;
-    CString::CString((CString *)&stack0xffffff6c);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffff6c);
     uStack_58._0_1_ = 8;
     CStack_e8.m_pchData = (char *)0x5a2b57;
-    CString::CString(&CStack_a8,PTR_g_szEmptyString_00669db8);
+    CString::__0CString__QAE_PBD_Z(&CStack_a8,PTR_g_szEmptyString_00669db8);
     uStack_58._0_1_ = 9;
     CStack_e8.m_pchData = (char *)0x5a2b6d;
-    CString::AssignFromPtr(&CStack_a4,&CStack_a8);
+    CString::__4CString__QAEABV0_ABV0__Z(&CStack_a4,&CStack_a8);
     uStack_58 = CONCAT31(uStack_58._1_3_,8);
-    CString::~CString(&CStack_a8);
+    CString::__1CString__QAE_XZ(&CStack_a8);
     CStack_e8.m_pchData = (char *)0xa;
     CStack_f0.m_pchData = &stack0xffffff7c;
     CStack_ec.m_pchData = (char *)0x0;
@@ -7741,19 +7406,19 @@ LAB_005a280a:
       piVar7 = (int *)AdvanceLinkedListCursor();
       iVar9 = LinkedListCursorHasCurrent();
     }
-    CString::CString(&CStack_bc);
+    CString::__0CString__QAE_XZ(&CStack_bc);
     uStack_58._0_1_ = 10;
-    CString::CString(&CStack_c0);
+    CString::__0CString__QAE_XZ(&CStack_c0);
     uStack_58._0_1_ = 0xb;
-    CString::CString(&CStack_ac);
+    CString::__0CString__QAE_XZ(&CStack_ac);
     uStack_58._0_1_ = 0xc;
-    CString::CString(&CStack_b0);
+    CString::__0CString__QAE_XZ(&CStack_b0);
     uStack_58._0_1_ = 0xd;
-    CString::CString(&CStack_c4);
+    CString::__0CString__QAE_XZ(&CStack_c4);
     uStack_58._0_1_ = 0xe;
-    CString::CString(&CStack_c8);
+    CString::__0CString__QAE_XZ(&CStack_c8);
     uStack_58._0_1_ = 0xf;
-    CString::CString(&CStack_b4);
+    CString::__0CString__QAE_XZ(&CStack_b4);
     uStack_58 = CONCAT31(uStack_58._1_3_,0x10);
     CStack_e8.m_pchData = (char *)0x5a2c82;
     FormatOverlayTerrainLabelText();
@@ -7778,7 +7443,7 @@ LAB_005a280a:
       CStack_f0.m_pchData = (char *)0x5a2ca5;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       CStack_f0.m_pchData = CVar3.m_pchData;
-      FormatStringWithVarArgsToSharedRef();
+      _Format_CString__QAAXPBDZZ();
       CStack_f0.m_pchData = CStack_b8.m_pchData;
       scanBracketExpressions(g_pLocalizationTable,&CStack_d0,CVar12.m_pchData);
     }
@@ -7792,36 +7457,36 @@ LAB_005a280a:
     }
     else {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      FormatStringWithVarArgsToSharedRef(&CStack_c8,&g_szDecimalFormat,CVar12.m_pchData);
+      _Format_CString__QAAXPBDZZ(&CStack_c8,&g_szDecimalFormat,CVar12.m_pchData);
       scanBracketExpressions(g_pLocalizationTable,&stack0xffffff20,(char *)pCVar11);
     }
-    uVar10 = AssignSharedStringConcatRefAndCStr(&CStack_b4,&stack0xffffff24,&DAT_00699438);
+    uVar10 = __H_YG_AVCString__ABV0_PBD_Z(&CStack_b4,&stack0xffffff24,&DAT_00699438);
     acStack_70[0] = '\x11';
-    pCVar11 = (CString *)AssignSharedStringConcatRefAndRef(&CStack_b8,uVar10,&stack0xffffff20);
+    pCVar11 = (CString *)__H_YG_AVCString__ABV0_0_Z(&CStack_b8,uVar10,&stack0xffffff20);
     acStack_70[0] = '\x12';
-    CString::StringSharedRef_AssignFromPtr(&CStack_c0,pCVar11);
+    CString::__0CString__QAE_ABV0__Z(&CStack_c0,pCVar11);
     acStack_70[0] = '\x13';
-    CString::AssignFromPtr(&CStack_cc,&CStack_c0);
+    CString::__4CString__QAEABV0_ABV0__Z(&CStack_cc,&CStack_c0);
     acStack_70[0] = '\x12';
-    CString::~CString(&CStack_c0);
+    CString::__1CString__QAE_XZ(&CStack_c0);
     acStack_70[0] = '\x11';
-    CString::~CString(&CStack_b8);
+    CString::__1CString__QAE_XZ(&CStack_b8);
     acStack_70[0] = '\x10';
-    CString::~CString(&CStack_b4);
+    CString::__1CString__QAE_XZ(&CStack_b4);
     (**(code **)(iVar8 + 0x1e4))(aCStack_9c,0);
     (**(code **)(iVar8 + 0x1ec))(&pcStack_d4,0);
     (**(code **)(iVar8 + 0x1f8))(0);
-    CString::~CString((CString *)&stack0xffffff20);
-    CString::~CString((CString *)&stack0xffffff0c);
-    CString::~CString(&CStack_f0);
-    CString::~CString((CString *)&stack0xffffff24);
-    CString::~CString((CString *)&stack0xffffff28);
-    CString::~CString(&CStack_ec);
-    CString::~CString(&CStack_e8);
-    CString::~CString(&CStack_c0);
-    CString::~CString((CString *)&stack0xffffff08);
-    CString::~CString(&CStack_bc);
-    CString::~CString(&CStack_d0);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff20);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff0c);
+    CString::__1CString__QAE_XZ(&CStack_f0);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff24);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff28);
+    CString::__1CString__QAE_XZ(&CStack_ec);
+    CString::__1CString__QAE_XZ(&CStack_e8);
+    CString::__1CString__QAE_XZ(&CStack_c0);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff08);
+    CString::__1CString__QAE_XZ(&CStack_bc);
+    CString::__1CString__QAE_XZ(&CStack_d0);
     CVar12.m_pchData = CStack_b4.m_pchData;
     (**(code **)(CStack_b4.m_pchData + 0x1a0))(1);
     iVar8 = (**(code **)(CVar12.m_pchData + 0x1b8))();
@@ -7848,7 +7513,7 @@ void __thiscall DispatchTacticalActionByHoverStateIndex(TNextMoveCommand *param_
   int *piVar1;
   int iVar2;
   undefined4 uVar3;
-  
+
   uVar3 = ComputeTacticalHoverCursorStateIndex(param_2);
   *(undefined4 *)&param_1[2].field_0x14 = uVar3;
   switch(uVar3) {
@@ -7922,7 +7587,7 @@ void __thiscall HandleTacticalCommandTag_digg(int param_1,int param_2,int param_
   int iVar5;
   int iVar6;
   int local_18 [6];
-  
+
   if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
     NoOpCallbackRet10(0x64696767,param_2,param_3,0);
   }
@@ -7976,7 +7641,7 @@ int ComputeHexTileDistanceFromIndices(int param_1,int param_2)
   int iVar3;
   int iVar4;
   uint uVar5;
-  
+
   uVar1 = param_1 / 0x1d;
   iVar2 = (uVar1 & 1) + (param_1 % 0x1d) * 2;
   uVar5 = param_2 / 0x1d;
@@ -8010,7 +7675,7 @@ int __thiscall TestGridSegmentCrossesViewportThreshold(int param_1,int param_2,i
   int iVar6;
   int iVar7;
   int iVar8;
-  
+
   iVar1 = *(int *)(param_1 + 0x34);
   fVar2 = (float)(iVar1 * 2 + -0xc);
   iVar4 = (param_2 / 0x1d & 1U) + (param_2 % 0x1d) * 2;
@@ -8052,7 +7717,7 @@ IsTacticalTargetTileReachableForAction(int param_1,int param_2,int param_3,char 
   int iVar5;
   uint uVar6;
   int local_18 [6];
-  
+
   uVar1 = param_2 / 0x1d;
   iVar2 = (uVar1 & 1) + (param_2 % 0x1d) * 2;
   uVar6 = param_3 / 0x1d;
@@ -8116,7 +7781,7 @@ uint __thiscall ApplyGridColumnSelectionGuard(int param_1,int param_2)
 {
   int *piVar1;
   int iVar2;
-  
+
   piVar1 = (int *)(param_2 / 0x1d);
   iVar2 = param_2 % 0x1d;
   if (((0x1c < param_2) && (piVar1 = (int *)(*(int *)(param_1 + 4) + param_2 * 0x14), *piVar1 != 4))
@@ -8146,7 +7811,7 @@ RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0(int param_1,int 
 
 {
   uint uVar1;
-  
+
   uVar1 = param_2 * 5;
   if ((1 < *(int *)(*(int *)(param_1 + 4) + 8 + param_2 * 0x14)) &&
      (uVar1 = param_2 / 0x3a, 0 < *(int *)(param_1 + 0x54 + uVar1 * 4))) {
@@ -8164,7 +7829,7 @@ undefined4 __fastcall IsTacticalSideCategoryCoverageIncompleteOrFlagOff(int para
 {
   int iVar1;
   int *piVar2;
-  
+
   if (*(char *)(param_1 + 0x49) == '\0') {
     return 1;
   }
@@ -8190,7 +7855,7 @@ void __thiscall HandleTacticalCommandTag_depl(int param_1,int param_2,int param_
   int iVar1;
   int *piVar2;
   int local_18 [6];
-  
+
   if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
     NoOpCallbackRet10(0x6465706c,param_2,param_3,0);
   }
@@ -8233,7 +7898,7 @@ void __thiscall BuildTacticalDistanceFieldForSide(int param_1,char param_2)
   int local_24;
   int local_20;
   int local_18 [6];
-  
+
   iVar4 = 0;
   if (0 < *(int *)(param_1 + 0x3c)) {
     do {
@@ -8320,24 +7985,24 @@ void __thiscall LoadBattleSetupTabDataByIndex(int param_1,CString param_2,int pa
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638720;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_5c);
+  CString::__0CString__QAE_XZ(&local_5c);
   local_58 = *(int *)(param_1 + 0x3c) + 0xf;
   local_4 = 0;
-  ScanFormattedInputIntoBufferAndTerminate(local_4c,s_data__03d_tab_00699e20);
-  CString::CString(&param_2,local_4c);
+  _sprintf(local_4c,s_data__03d_tab_00699e20);
+  CString::__0CString__QAE_PBD_Z(&param_2,local_4c);
   local_4._0_1_ = 1;
-  CString::AssignFromPtr(&local_5c,&param_2);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_5c,&param_2);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&param_2);
-  pcVar2 = (char *)AllocateWithFallbackHandler();
+  CString::__1CString__QAE_XZ(&param_2);
+  pcVar2 = (char *)__2_YAPAXI_Z();
   local_54 = &stack0xffffff90;
   local_50 = pcVar2;
-  CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffff90,&local_5c);
+  CString::__0CString__QAE_ABV0__Z((CString *)&stack0xffffff90,&local_5c);
   uVar3 = LoadTableResourceStreamByName();
   ReadResourceStreamIntoBufferAndAdvance(uVar3,pcVar2);
   ReleaseResourceStreamIfNotNull();
@@ -8368,7 +8033,7 @@ void __thiscall LoadBattleSetupTabDataByIndex(int param_1,CString param_2,int pa
     piVar4 = piVar4 + (0x1d - *(int *)(param_1 + 0x34)) * 5;
     local_54 = (undefined1 *)((int)local_54 + -1);
   } while (local_54 != (undefined1 *)0x0);
-  FreeHeapBufferIfNotNull();
+  __3_YAXPAX_Z();
   if (iVar1 != 0) {
     iVar6 = *(int *)(param_1 + 0x34) + -6;
     if (iVar6 < 0x1b3) {
@@ -8387,7 +8052,7 @@ void __thiscall LoadBattleSetupTabDataByIndex(int param_1,CString param_2,int pa
     } while (iVar6 != 0);
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_5c);
+  CString::__1CString__QAE_XZ(&local_5c);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -8401,7 +8066,7 @@ int SeekLinkedListCursorByNestedId(int param_1)
 {
   int iVar1;
   int iVar2;
-  
+
   if (param_1 != 0) {
     iVar1 = InitializeLinkedListCursorFromOwnerHead();
     iVar2 = LinkedListCursorHasCurrent();
@@ -8454,7 +8119,7 @@ WrapperFor_ComputeOrderNodeDerivedScoreFromQuantityAndWord18_At005a6290(int *par
 {
   short sVar1;
   int iVar2;
-  
+
   iVar2 = *(int *)(&DAT_00669d80 + *(short *)(param_2 + 4) * 4);
   param_1[2] = -2;
   param_1[3] = iVar2;
@@ -9359,7 +9024,7 @@ ConvertScreenPointToHexGridCoordClamped(int param_1,int *param_2,byte *param_3,i
 
 {
   int iVar1;
-  
+
   iVar1 = param_2[1] / *(int *)(param_1 + 0x8c);
   *(int *)param_3 = iVar1;
   if (iVar1 < 0) {
@@ -9400,7 +9065,7 @@ void __fastcall HandleTurnEventVtableSlotA0SyncStatusPanel_Impl(int *param_1)
   undefined4 local_c;
   int local_8;
   int local_4;
-  
+
   local_4 = param_1[0xe];
   local_10 = 0;
   local_c = 0;
@@ -9419,7 +9084,7 @@ EvaluateAndResolveTacticalActionAgainstTileOccupant_Impl(int param_1,int *param_
 {
   uint uVar1;
   int iVar2;
-  
+
   uVar1 = param_3 / *(int *)(param_1 + 0x80);
   iVar2 = (param_3 % *(int *)(param_1 + 0x80)) * *(int *)(param_1 + 0x88) -
           (int)*(short *)(param_1 + 0x78);
@@ -9446,7 +9111,7 @@ void __thiscall InvalidateTacticalHexTileRect(int param_1,int param_2)
   int local_c;
   int local_8;
   int local_4;
-  
+
   uVar1 = param_2 / *(int *)(param_1 + 0x80);
   local_8 = *(int *)(param_1 + 0x88);
   local_10 = (param_2 % *(int *)(param_1 + 0x80)) * local_8 - (int)*(short *)(param_1 + 0x78);
@@ -9471,7 +9136,7 @@ void __thiscall CenterViewportAroundGridIndexAndSnap(int *param_1,int param_2)
   int iVar2;
   short sVar3;
   int iVar4;
-  
+
   iVar2 = (int)(short)param_1[0x1e] / param_1[0x22];
   iVar1 = param_1[0xd];
   iVar4 = (int)((param_2 / 0x1d & 1U) + (param_2 % 0x1d) * 2) / 2;
@@ -9517,7 +9182,7 @@ void DrawHexSelectionOutlineSegments(short *param_1)
   undefined2 extraout_var_11;
   undefined2 extraout_var_12;
   undefined2 extraout_var_13;
-  
+
   iVar1 = *(int *)(param_1 + 4);
   iVar2 = *(int *)(param_1 + 6);
   *(int *)(param_1 + 6) = iVar2 + -1;
@@ -9554,7 +9219,7 @@ void __fastcall UpdateTacticalActionControlBitmapForCurrentUnit(int param_1)
 {
   int iVar1;
   int *piVar2;
-  
+
   piVar2 = (int *)(**(code **)(**(int **)(param_1 + 0x20) + 0x94))(0x636f6174);
   iVar1 = *piVar2;
   (**(code **)(iVar1 + 0xc))();
@@ -9589,12 +9254,12 @@ TacticalBattleView * CreateTacticalBattleViewDerivedState_Vtbl00644fd0(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063879a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TacticalBattleView *)AllocateWithFallbackHandler(0xdc);
+  this = (TacticalBattleView *)__2_YAPAXI_Z(0xdc);
   local_4 = 0;
   pTVar1 = (TacticalBattleView *)0x0;
   if (this != (TacticalBattleView *)0x0) {
@@ -9618,12 +9283,12 @@ TCluster * Helper_Uses_thunk_ConstructUiResourceEntryType4B0C0_At005ad030(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063881a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x98);
+  this = (TCluster *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
     TCluster::ConstructUiResourceEntryType4B0C0(this);
@@ -9781,7 +9446,7 @@ void __fastcall OrphanCallChain_C6_I47_005aecc0(int *param_1)
   int iVar5;
   code *unaff_EBX;
   int iVar6;
-  
+
   iVar5 = *param_1;
   iVar6 = 1;
   iVar3 = (**(code **)(iVar5 + 0x48))();
@@ -9860,7 +9525,7 @@ void __fastcall InitializeCityOrderCapabilityStateDefaults(int param_1)
   undefined4 *local_c;
   undefined4 *local_8;
   undefined1 *local_4;
-  
+
   *(undefined1 *)(param_1 + 0x180) = 1;
   *(undefined1 *)(param_1 + 0x181) = 1;
   *(undefined1 *)(param_1 + 0x182) = 1;
@@ -10039,13 +9704,13 @@ void __thiscall GenerateRandomCapabilityPrioritySlots(void *this,void *pCapabili
   bool fUniqueCandidate;
   short nRangeEndGroup;
   short nRangeStartGroup;
-  
+
   *(undefined2 *)((int)this + 6) = 0;
   *(undefined2 *)((int)this + 8) = 0;
   *(short *)((int)this + 4) = 0;
   if ((*(int *)&g_pLocalizationTable->field_0x44 == 0) ||
      (dwRandomSeed = *(uint *)&g_pGameFlowState->field_0x64, dwRandomSeed == 0)) {
-    dwRandomSeed = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
+    dwRandomSeed = _time(0);
   }
   pnOutputSlotCursor = (short *)((int)this + 10);
   nSelectedSlotCount = 3;
@@ -10127,7 +9792,7 @@ void __fastcall UpdateCityOrderCapabilityUnlockProgress(void *param_1)
   int iStack_1c;
   int *piStack_18;
   short sStack_c;
-  
+
   uVar1 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
   puVar3 = (undefined2 *)((int)param_1 + 0x4ac);
   pcVar5 = (char *)((int)param_1 + 0x183);
@@ -10177,7 +9842,7 @@ void __thiscall ApplyTechUnlockAndQueueNationAbilityNotices(void *param_1,int pa
   undefined2 *puVar1;
   int action_id;
   TGreatPower **ppTVar2;
-  
+
   ApplyCityOrderCapabilityUnlockByTechId(param_1,param_2);
   action_id = 0;
   ppTVar2 = g_apNationStates;
@@ -10289,7 +9954,7 @@ void __thiscall HandleAbilityUnlock(void *this,int menu_state,int action_id)
   int entry_stride;
   int iVar1;
   int entry_idx;
-  
+
   if (*(char *)((int)this + menu_state + action_id * 0x1d + 0x268) == '\x02') {
     return;
   }
@@ -10496,7 +10161,7 @@ void __thiscall ActivateSlotAndUpdateUI(void *this,int base_ptr,int slot_idx)
   undefined2 extraout_var_00;
   astruct_28 *slot_obj;
   short slot_group;
-  
+
   slot_group = *(short *)(&DAT_00695528 + base_ptr * 2);
   *(undefined1 *)((int)this + slot_idx * 0x1e + base_ptr + 0x395) = 1;
   *(short *)((int)this + ((int)slot_group + slot_idx * 10) * 2 + 0x1d6) = (short)base_ptr;
@@ -10566,7 +10231,7 @@ void UpdateSelectionAndRecalculateScores(int slot_idx,int player_idx)
   undefined1 *puStack_8;
   int local_4;
   int slot_idx_copy;
-  
+
   slot_idx_copy = slot_idx;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638958;
@@ -10690,13 +10355,13 @@ LAB_005b06f1:
       mapped_slot = player_idx;
       slot_idx_copy = matching_count;
       if ((player_idx == slot_group_id) && (0 < slot_idx)) {
-        CString::CString(&board_base);
+        CString::__0CString__QAE_XZ(&board_base);
         local_4 = 0;
-        CString::CString((CString *)&slot_idx);
+        CString::__0CString__QAE_XZ((CString *)&slot_idx);
         local_4._0_1_ = 1;
-        CString::CString((CString *)&player_idx);
+        CString::__0CString__QAE_XZ((CString *)&player_idx);
         local_4 = CONCAT31(local_4._1_3_,2);
-        FormatStringWithVarArgsToSharedRef();
+        _Format_CString__QAAXPBDZZ();
         slot_idx_copy = matching_count;
         if (matching_count < 1) {
           (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -10710,11 +10375,11 @@ LAB_005b06f1:
         AssignStringSharedRefAndReturnThis(&player_idx);
         DispatchLocalizedUiMessageWithTemplateA13A0();
         local_4._0_1_ = 1;
-        CString::~CString((CString *)&player_idx);
+        CString::__1CString__QAE_XZ((CString *)&player_idx);
         local_4 = (uint)local_4._1_3_ << 8;
-        CString::~CString((CString *)&slot_idx);
+        CString::__1CString__QAE_XZ((CString *)&slot_idx);
         local_4 = 0xffffffff;
-        CString::~CString(&board_base);
+        CString::__1CString__QAE_XZ(&board_base);
       }
       for (pvVar3 = (void *)GetNavyPrimaryOrderListHead(); pvVar3 != (void *)0x0;
           pvVar3 = *(void **)((int)pvVar3 + 0x24)) {
@@ -10737,7 +10402,7 @@ int __thiscall AreTechItemPrerequisitePairCompleted(int param_1,int param_2,int 
 
 {
   uint3 uVar1;
-  
+
   param_3 = param_3 * 0x1d;
   uVar1 = (uint3)((uint)param_3 >> 8);
   if ((*(char *)(*(short *)(&DAT_0066ac10 + param_2 * 4) + param_1 + 0x268 + param_3) == '\x02') &&
@@ -10807,7 +10472,7 @@ uint __thiscall ConsumeFirstPendingAbilityUnlock(void *param_1,short param_2)
 
 {
   uint menu_state;
-  
+
   menu_state = 0;
   do {
     if (*(char *)((int)param_1 + menu_state + param_2 * 0x1d + 0x268) == '\x01') {
@@ -10880,12 +10545,12 @@ TView * Helper_Uses_thunk_ConstructTViewBaseState_At005b3300(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638c52;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)__2_YAPAXI_Z(0x60);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -10913,12 +10578,12 @@ TView * Helper_Uses_thunk_ConstructTViewBaseState_At005b3ae0(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638ca2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)__2_YAPAXI_Z(0x60);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -10944,12 +10609,12 @@ void __fastcall WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005b4bd0(int *para
   int unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
   undefined4 unaff_retaddr;
-  
+
   (**(code **)(*param_1 + 0x84))
             (6000,CONCAT22((short)((uint)&stack0x00000020 >> 0x10),*(short *)(unaff_ESI + 0x90) + -1
                           ),&stack0x00000020);
   (**(code **)(unaff_EBX + 0x1f0))(&stack0x00000014);
-  CString::~CString((CString *)&stack0x00000010);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000010);
   *unaff_FS_OFFSET = unaff_retaddr;
   return;
 }
@@ -10963,7 +10628,7 @@ void HandleCitySiteShowAnimation_TailEpilogueRetC(void)
 {
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000010;
-  
+
   *unaff_FS_OFFSET = in_stack_00000010;
   return;
 }
@@ -10993,12 +10658,12 @@ TStaticText * CreateSelectableTextOptionEntryBase(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638e6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0x98);
+  this = (TStaticText *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (TStaticText *)0x0) {
     TStaticText::TStaticText(this);
@@ -11056,7 +10721,7 @@ InitializeFrogCityMarkerFields
   int iVar5;
   char *pcVar6;
   char *pcVar7;
-  
+
   uVar3 = 0xffffffff;
   do {
     pcVar7 = param_2;
@@ -11110,7 +10775,7 @@ undefined4 __fastcall IsOrderEntryTransportLinkedAndEnabled(int param_1)
 
 {
   char cVar1;
-  
+
   if (*(char *)(param_1 + 0x4d) != '\0') {
     cVar1 = HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(*(undefined2 *)(param_1 + 0x14));
     if (cVar1 != '\0') {
@@ -11166,7 +10831,7 @@ void __fastcall ProcessPendingDiplomacyTransferEntriesUntilBlocked(int param_1)
   undefined4 unaff_EBP;
   char local_5;
   undefined4 uVar5;
-  
+
   local_5 = '\0';
   do {
     if (0x10 < *(short *)(param_1 + 4)) break;
@@ -11224,7 +10889,7 @@ void __fastcall RefreshNationStateAndEmitTurnEvent3Mode18(int param_1)
   TGreatPower **ppTVar3;
   short *psVar4;
   int iVar5;
-  
+
   ppTVar3 = g_apNationStates;
   do {
     if (*ppTVar3 != (TGreatPower *)0x0) {
@@ -11267,7 +10932,7 @@ int __fastcall BuildInterNationEventSummaryRowsForAdvisorDialog_Impl(int param_1
   short *psVar3;
   int iVar4;
   int iVar5;
-  
+
   psVar3 = (short *)(param_1 + 8);
   iVar5 = 0;
   iVar4 = 0x11;
@@ -11282,23 +10947,23 @@ int __fastcall BuildInterNationEventSummaryRowsForAdvisorDialog_Impl(int param_1
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA220
-// GHIDRA_NAME CObArray::DestructCObArray
-// GHIDRA_PROTO undefined CObArray::DestructCObArray()
+// GHIDRA_NAME CObArray::??1CUIntArray@@UAE@XZ
+// GHIDRA_PROTO undefined CObArray::??1CUIntArray@@UAE@XZ()
 
-void CObArray::DestructCObArray(void)
+void CObArray::??1CUIntArray@@UAE@XZ(void)
 
 {
   undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &TIndexAndRankList::_vftable_;
   uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull(uVar1);
+  __3_YAXPAX_Z(uVar1);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
@@ -11348,7 +11013,7 @@ void __fastcall RefreshHudNationTitleControlsAndTheme(int *param_1)
   LONG LStack_78;
   LONG LStack_74;
   LONG LStack_70;
-  
+
   pcVar1 = *(code **)(*param_1 + 0x94);
   piVar3 = (int *)(*pcVar1)();
   iVar4 = *piVar3;
@@ -11471,7 +11136,7 @@ void __fastcall RefreshTradeSelectionHeaderAndNationOfferBidLines(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00639298;
@@ -11493,27 +11158,27 @@ void __fastcall RefreshTradeSelectionHeaderAndNationOfferBidLines(int *param_1)
     piVar2 = (int *)(*pcVar1)();
     iVar5 = *piVar2;
     (**(code **)(iVar5 + 0xc))();
-    CString::CString((CString *)&stack0xffffff90);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffff90);
     uStack_14 = 0;
-    CString::CString((CString *)&stack0xffffff94);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffff94);
     uStack_14 = CONCAT31(uStack_14._1_3_,1);
-    FormatStringWithVarArgsToSharedRef(&stack0xffffff94,&g_szDecimalFormat);
+    _Format_CString__QAAXPBDZZ(&stack0xffffff94,&g_szDecimalFormat);
     CVar6.m_pchData = &stack0xffffff90;
     (*g_pLocalizationTable->vftable[6].slot_0x04)();
-    uVar3 = AssignSharedStringConcatRefAndCStr
+    uVar3 = __H_YG_AVCString__ABV0_PBD_Z
                       (&local_50,&stack0xffffff8c,g_Build_Map_Order_LookupTable_00695794);
     uStack_18 = 2;
-    pCVar4 = (CString *)AssignSharedStringConcatRefAndRef(&local_54,uVar3,&stack0xffffff90);
+    pCVar4 = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_54,uVar3,&stack0xffffff90);
     uStack_18 = 3;
-    CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffff94,pCVar4);
+    CString::__0CString__QAE_ABV0__Z((CString *)&stack0xffffff94,pCVar4);
     uStack_18 = 4;
-    CString::AssignFromPtr((CString *)&stack0xffffff8c,(CString *)&stack0xffffff94);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffff8c,(CString *)&stack0xffffff94);
     uStack_18 = 3;
-    CString::~CString((CString *)&stack0xffffff94);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff94);
     uStack_18 = 2;
-    CString::~CString(&local_54);
+    CString::__1CString__QAE_XZ(&local_54);
     uStack_18 = 1;
-    CString::~CString(&local_50);
+    CString::__1CString__QAE_XZ(&local_50);
     pCVar4 = (CString *)0x0;
     (**(code **)(iVar5 + 0x1c8))(&stack0xffffff8c,0);
     (**(code **)(iVar5 + 300))(local_48);
@@ -11526,9 +11191,9 @@ void __fastcall RefreshTradeSelectionHeaderAndNationOfferBidLines(int *param_1)
     uVar3 = (*pcVar1)(0x74616273);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740,4,uVar3);
     uStack_28 = uStack_28 & 0xffffff00;
-    CString::~CString((CString *)&stack0xffffff80);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff80);
     uStack_28 = 0xffffffff;
-    CString::~CString((CString *)&stack0xffffff7c);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
   }
   else {
     local_4c = param_1[0x27];
@@ -11612,7 +11277,7 @@ void __thiscall UpdatePagerButtonStatesAndRefreshPanels(int param_1,int param_2)
 {
   bool bVar1;
   int iVar2;
-  
+
   if (param_2 != 1) {
     (**(code **)(**(int **)(param_1 + 0x60) + 0xa8))(1,0);
     iVar2 = **(int **)(param_1 + 0x60);
@@ -11695,7 +11360,7 @@ void __fastcall RefreshSelectedNationOrderCompatibilityInfo(int *param_1)
   undefined4 local_4;
   short sVar6;
   LONG LVar9;
-  
+
   LStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639690;
@@ -11710,40 +11375,40 @@ void __fastcall RefreshSelectedNationOrderCompatibilityInfo(int *param_1)
   CStack_84.m_pchData._3_1_ = 0;
   CStack_84.m_pchData._2_1_ = 0;
   CStack_98.m_pchData = (char *)0x5bf985;
-  CString::CString(&local_7c);
+  CString::__0CString__QAE_XZ(&local_7c);
   local_4 = 0;
   CStack_98.m_pchData = (char *)0x5bf995;
-  CString::CString(&local_74);
+  CString::__0CString__QAE_XZ(&local_74);
   local_4._0_1_ = 1;
   CStack_98.m_pchData = (char *)0x5bf9a6;
-  CString::CString((CString *)&local_48);
+  CString::__0CString__QAE_XZ((CString *)&local_48);
   local_4._0_1_ = 2;
   CStack_98.m_pchData = (char *)0x5bf9b7;
-  CString::CString((CString *)&local_58.bottom);
+  CString::__0CString__QAE_XZ((CString *)&local_58.bottom);
   local_4._0_1_ = 3;
   CStack_98.m_pchData = (char *)0x5bf9c8;
-  CString::CString((CString *)&local_58.right);
+  CString::__0CString__QAE_XZ((CString *)&local_58.right);
   local_4._0_1_ = 4;
   CStack_98.m_pchData = (char *)0x5bf9d9;
-  CString::CString((CString *)&local_58.top);
+  CString::__0CString__QAE_XZ((CString *)&local_58.top);
   local_4._0_1_ = 5;
   CStack_98.m_pchData = (char *)0x5bf9ea;
-  CString::CString((CString *)&local_58);
+  CString::__0CString__QAE_XZ((CString *)&local_58);
   local_4._0_1_ = 6;
   CStack_98.m_pchData = (char *)0x5bf9fb;
-  CString::CString(&local_64);
+  CString::__0CString__QAE_XZ(&local_64);
   local_4._0_1_ = 7;
   CStack_98.m_pchData = (char *)0x5bfa0c;
-  CString::CString(&local_60);
+  CString::__0CString__QAE_XZ(&local_60);
   local_4._0_1_ = 8;
   CStack_98.m_pchData = (char *)0x5bfa1d;
-  CString::CString(&local_68);
+  CString::__0CString__QAE_XZ(&local_68);
   local_4._0_1_ = 9;
   CStack_98.m_pchData = (char *)0x5bfa2e;
-  CString::CString(&local_78);
+  CString::__0CString__QAE_XZ(&local_78);
   local_4._0_1_ = 10;
   CStack_98.m_pchData = (char *)0x5bfa3f;
-  CString::CString(&local_80);
+  CString::__0CString__QAE_XZ(&local_80);
   CStack_98.m_pchData = (char *)0x696e666f;
   local_4 = CONCAT31(local_4._1_3_,0xb);
   CStack_9c.m_pchData = (char *)0x5bfa56;
@@ -11757,9 +11422,9 @@ void __fastcall RefreshSelectedNationOrderCompatibilityInfo(int *param_1)
   (*pcVar2)();
   pCVar8 = (CString *)AssignNormalizedCredentialTokenToIndexedSlot();
   uStack_10 = 0xc;
-  CString::AssignFromPtr((CString *)&stack0xffffff78,pCVar8);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffff78,pCVar8);
   uStack_10 = 0xb;
-  CString::~CString((CString *)&local_58.bottom);
+  CString::__1CString__QAE_XZ((CString *)&local_58.bottom);
   pCVar8 = &local_80;
   input_str.m_pchData =
        (char *)CONCAT22((short)((uint)pCVar8 >> 0x10),*(undefined2 *)((int)param_1 + 0x96));
@@ -11843,23 +11508,23 @@ void __fastcall RefreshSelectedNationOrderCompatibilityInfo(int *param_1)
       }
       (*pTVar13[0x10].slot_0x04)(0x2764,uVar14,&stack0xffffff58);
       scanBracketExpressions(g_pLocalizationTable,&uStack_a0,input_str.m_pchData);
-      uVar14 = AssignSharedStringConcatRefAndRef(&CStack_6c,&stack0xffffff78,&stack0xffffff70);
+      uVar14 = __H_YG_AVCString__ABV0_0_Z(&CStack_6c,&stack0xffffff78,&stack0xffffff70);
       uStack_2c = 0xd;
-      pCVar8 = (CString *)AssignSharedStringConcatRefAndRef(&local_68,uVar14,&uStack_a0);
+      pCVar8 = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_68,uVar14,&uStack_a0);
       uStack_2c = 0xe;
-      CString::StringSharedRef_AssignFromPtr(&CStack_84,pCVar8);
+      CString::__0CString__QAE_ABV0__Z(&CStack_84,pCVar8);
       uStack_2c = 0xf;
-      CString::AssignFromPtr((CString *)&stack0xffffff74,&CStack_84);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffff74,&CStack_84);
       uStack_2c = 0xe;
-      CString::~CString(&CStack_84);
+      CString::__1CString__QAE_XZ(&CStack_84);
       uStack_2c = 0xd;
-      CString::~CString(&local_68);
+      CString::__1CString__QAE_XZ(&local_68);
       pCVar8 = &CStack_6c;
     }
     else {
-      CString::CString(&local_80);
+      CString::__0CString__QAE_XZ(&local_80);
       uStack_18 = 0x10;
-      CString::CString(&local_70);
+      CString::__0CString__QAE_XZ(&local_70);
       uStack_18 = 0x11;
       if ((*(short *)((int)param_1 + 0x96) == 0) || (*(short *)((int)param_1 + 0x96) == 1)) {
         uVar4 = (*pTVar1->vftable->OrphanCallChain_C1_I42_004dd7f0)();
@@ -11869,10 +11534,10 @@ void __fastcall RefreshSelectedNationOrderCompatibilityInfo(int *param_1)
         uVar4 = (*pTVar1->vftable->OrphanCallChain_C1_I42_004dd7f0)();
         LStack_5c = CONCAT31(extraout_var_02,uVar4);
       }
-      FormatStringWithVarArgsToSharedRef(&local_64);
-      FormatStringWithVarArgsToSharedRef(&local_68);
-      FormatStringWithVarArgsToSharedRef(&CStack_6c);
-      FormatStringWithVarArgsToSharedRef(&local_70);
+      _Format_CString__QAAXPBDZZ(&local_64);
+      _Format_CString__QAAXPBDZZ(&local_68);
+      _Format_CString__QAAXPBDZZ(&CStack_6c);
+      _Format_CString__QAAXPBDZZ(&local_70);
       if (*(short *)((int)param_1 + 0x92) < 7) {
         input_str_00.m_pchData = (char *)&CStack_98;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2764);
@@ -11883,9 +11548,9 @@ void __fastcall RefreshSelectedNationOrderCompatibilityInfo(int *param_1)
         uVar4 = (*g_pDiplomacyTurnStateManager->vftable[0x13].slot_0x04)();
         src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot(&local_60);
         uStack_20 = 0x12;
-        CString::AssignFromPtr(&local_64,src_ref);
+        CString::__4CString__QAEABV0_ABV0__Z(&local_64,src_ref);
         uStack_20 = 0x11;
-        CString::~CString(&local_60);
+        CString::__1CString__QAE_XZ(&local_60);
         if ((short)CONCAT31(extraout_var_04,uVar4) == (short)param_1[0x24]) {
           (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2764,0xe);
           scanBracketExpressions(g_pLocalizationTable,&stack0xffffff70,(char *)pCVar8);
@@ -11919,25 +11584,25 @@ void __fastcall RefreshSelectedNationOrderCompatibilityInfo(int *param_1)
       scanBracketExpressions(g_pLocalizationTable,&stack0xffffff74,input_str_00.m_pchData);
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2764,0xd,&stack0xffffff50);
       scanBracketExpressions(g_pLocalizationTable,&uStack_a0,input_str.m_pchData);
-      uVar14 = AssignSharedStringConcatRefAndRef(&CStack_98,&stack0xffffff6c,&CStack_84);
+      uVar14 = __H_YG_AVCString__ABV0_0_Z(&CStack_98,&stack0xffffff6c,&CStack_84);
       uStack_2c = 0x13;
-      pCVar8 = (CString *)AssignSharedStringConcatRefAndRef(&CStack_6c,uVar14,&uStack_a0);
+      pCVar8 = (CString *)__H_YG_AVCString__ABV0_0_Z(&CStack_6c,uVar14,&uStack_a0);
       uStack_2c = 0x14;
-      CString::StringSharedRef_AssignFromPtr(&local_68,pCVar8);
+      CString::__0CString__QAE_ABV0__Z(&local_68,pCVar8);
       uStack_2c = 0x15;
-      CString::AssignFromPtr((CString *)&stack0xffffff74,&local_68);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffff74,&local_68);
       uStack_2c = 0x14;
-      CString::~CString(&local_68);
+      CString::__1CString__QAE_XZ(&local_68);
       uStack_2c = 0x13;
-      CString::~CString(&CStack_6c);
+      CString::__1CString__QAE_XZ(&CStack_6c);
       uStack_2c = 0x11;
-      CString::~CString(&CStack_98);
+      CString::__1CString__QAE_XZ(&CStack_98);
       uStack_2c = 0x10;
-      CString::~CString(&CStack_84);
+      CString::__1CString__QAE_XZ(&CStack_84);
       pCVar8 = (CString *)&stack0xffffff6c;
     }
     uStack_2c = 0xb;
-    CString::~CString(pCVar8);
+    CString::__1CString__QAE_XZ(pCVar8);
   }
   iVar11 = *piVar7;
   (**(code **)(iVar11 + 300))(&local_64);
@@ -11951,29 +11616,29 @@ void __fastcall RefreshSelectedNationOrderCompatibilityInfo(int *param_1)
   InvalidateCityDialogRectRegion(&local_48,1);
   (**(code **)(iVar11 + 0x1c8))(&stack0xffffff70,1);
   iStack_38._0_1_ = 10;
-  CString::~CString((CString *)&stack0xffffff4c);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff4c);
   iStack_38._0_1_ = 9;
-  CString::~CString((CString *)&stack0xffffff54);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff54);
   iStack_38._0_1_ = 8;
-  CString::~CString(&CStack_9c);
+  CString::__1CString__QAE_XZ(&CStack_9c);
   iStack_38._0_1_ = 7;
-  CString::~CString((CString *)&stack0xffffff6c);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff6c);
   iStack_38._0_1_ = 6;
-  CString::~CString(&CStack_98);
+  CString::__1CString__QAE_XZ(&CStack_98);
   iStack_38._0_1_ = 5;
-  CString::~CString((CString *)&stack0xffffff74);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff74);
   iStack_38._0_1_ = 4;
-  CString::~CString((CString *)&stack0xffffff78);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff78);
   iStack_38._0_1_ = 3;
-  CString::~CString(&CStack_84);
+  CString::__1CString__QAE_XZ(&CStack_84);
   iStack_38._0_1_ = 2;
-  CString::~CString(&local_80);
+  CString::__1CString__QAE_XZ(&local_80);
   iStack_38._0_1_ = 1;
-  CString::~CString(&local_7c);
+  CString::__1CString__QAE_XZ(&local_7c);
   iStack_38 = (uint)iStack_38._1_3_ << 8;
-  CString::~CString((CString *)&stack0xffffff58);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff58);
   iStack_38 = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffff50);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff50);
   *unaff_FS_OFFSET = local_48.right;
   return;
 }
@@ -12010,6 +11675,173 @@ void WrapperFor_ftol_At005c2400(void)
 
 {
   _DAT_006a5a90 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2920
+// GHIDRA_NAME DestroyCivUnitOrderObject_Impl
+// GHIDRA_PROTO undefined DestroyCivUnitOrderObject_Impl()
+
+void __fastcall DestroyCivUnitOrderObject_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2940
+// GHIDRA_NAME InitializeCivWorkOrderState
+// GHIDRA_PROTO void __thiscall InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initialize civilian work-order object base registration fields.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Register unit order with owner manager using order type/context/owner values.
+// GHIDRA_COMMENT 2. Clear remaining-turn counter at +0x24.
+// GHIDRA_COMMENT 3. Clear completion marker/message field at +0x26 to -1.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this (IMPLICIT): Civilian order object.
+// GHIDRA_COMMENT - nOrderType: Initial order type.
+// GHIDRA_COMMENT - pOwnerContext: Owner/manager context argument forwarded to registration.
+// GHIDRA_COMMENT - nOrderOwnerNationId: Owning nation/order owner id.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Initialize civilian work-order object base registration fields.
+
+   Algorithm:
+   1. Register unit order with owner manager using order type/context/owner values.
+   2. Clear remaining-turn counter at +0x24.
+   3. Clear completion marker/message field at +0x26 to -1.
+
+   Parameters:
+   - this (IMPLICIT): Civilian order object.
+   - nOrderType: Initial order type.
+   - pOwnerContext: Owner/manager context argument forwarded to registration.
+   - nOrderOwnerNationId: Owning nation/order owner id.
+
+   Returns:
+   - void. */
+
+void __thiscall
+InitializeCivWorkOrderState(void *this,int nOrderType,int pOwnerContext,int nOrderOwnerNationId)
+
+{
+  TUnitOrderState::RegisterUnitOrderWithOwnerManager
+            (this,(short)nOrderType,(short)pOwnerContext);
+  *(undefined2 *)((int)this + 0x24) = 0;
+  *(undefined2 *)((int)this + 0x26) = 0xffff;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2980
+// GHIDRA_NAME IsCivilianOrderInIdleSelectionState
+// GHIDRA_PROTO bool __thiscall IsCivilianOrderInIdleSelectionState(void * pCivilianOrderEntry)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Check whether a civilian order type should be handled as an idle/basic-selection state (not the active work-report flow).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Rule:
+// GHIDRA_COMMENT - Returns true only for order types 0, 2, and 3.
+// GHIDRA_COMMENT - Returns false for order type 1 and all order types >= 4.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pCivilianOrderEntry: Civilian order object.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - bool true when click handling should treat this unit as idle/basic selection.
+// GHIDRA_COMMENT - bool false when caller should route into active-order/report handling.
+// GHIDRA_COMMENT_END
+
+/* Check whether a civilian order type should be handled as an idle/basic-selection state (not the
+   active work-report flow).
+
+   Rule:
+   - Returns true only for order types 0, 2, and 3.
+   - Returns false for order type 1 and all order types >= 4.
+
+   Parameters:
+   - pCivilianOrderEntry: Civilian order object.
+
+   Returns:
+   - bool true when click handling should treat this unit as idle/basic selection.
+   - bool false when caller should route into active-order/report handling. */
+
+bool __thiscall IsCivilianOrderInIdleSelectionState(void *this,void *pCivilianOrderEntry)
+
+{
+  int iVar1;
+
+  iVar1 = *(int *)((int)this + 8);
+  if ((iVar1 != 0) && ((iVar1 < 2 || (3 < iVar1)))) {
+    return false;
+  }
+  return true;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C29B0
+// GHIDRA_NAME TickCivWorkOrderCountdownAndComplete
+// GHIDRA_PROTO undefined TickCivWorkOrderCountdownAndComplete()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Advances one turn of a civilian productive work order.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Decrement remaining-turn counter (+0x24).
+// GHIDRA_COMMENT 2. When counter reaches 0, apply completion effects to map/state.
+// GHIDRA_COMMENT 3. Reset active order state field (+0x08) to idle.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this: Civ order object.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Advances one turn of a civilian productive work order.
+
+   Algorithm:
+   1. Decrement remaining-turn counter (+0x24).
+   2. When counter reaches 0, apply completion effects to map/state.
+   3. Reset active order state field (+0x08) to idle.
+
+   Parameters:
+   - this: Civ order object.
+
+   Returns:
+   - void. */
+
+void __fastcall TickCivWorkOrderCountdownAndComplete(int *param_1)
+
+{
+  *(short *)(param_1 + 9) = (short)param_1[9] + -1;
+  if ((short)param_1[9] < 1) {
+    ApplyCompletedCivWorkOrderToMapState(param_1);
+    param_1[2] = 0;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2F00
+// GHIDRA_NAME WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00
+// GHIDRA_PROTO undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00()
+
+void __fastcall WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00(undefined4 *param_1)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+
+  local_c = *unaff_FS_OFFSET;
+  puStack_8 = &LAB_00639938;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 0;
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 9));
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
   return;
 }
 

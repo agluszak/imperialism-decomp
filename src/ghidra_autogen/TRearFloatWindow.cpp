@@ -16,12 +16,12 @@ TControl * TRearFloatWindow::CreateTRearFloatWindowInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632aaa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0xa0);
+  this = (TControl *)__2_YAPAXI_Z(0xa0);
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
@@ -64,7 +64,7 @@ TRearFloatWindow * TRearFloatWindow::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -87,7 +87,7 @@ TRearFloatWindow::SetForeignMinisterReadyFlag14
   undefined3 extraout_var_02;
   uint3 extraout_var_03;
   int iVar3;
-  
+
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1[0x2f].slot_0x04)(param_1);
   iVar3 = CONCAT31(extraout_var,uVar2);

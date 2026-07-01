@@ -12,7 +12,7 @@ TArmyBattle * TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(byte pa
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,16 +29,16 @@ void TArmyBattle::ConstructTArmyBattleBaseStateImpl()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006385c2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
     *(undefined4 **)&this->field_0x20 = puVar1;
     *unaff_FS_OFFSET = local_c;
@@ -58,7 +58,7 @@ uint __thiscall TArmyBattle::CreateTArmyBattleInstance(int param_1,int param_2)
 {
   uint uVar1;
   uint uVar2;
-  
+
   uVar1 = param_2 / 0x1d;
   uVar2 = (uVar1 & 1) + (param_2 % 0x1d) * 2;
   if ((((uVar1 == 5) || (uVar1 == 7)) || (uVar1 == 9)) &&
@@ -90,16 +90,16 @@ void TArmyBattle::ConstructTArmyBattleBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006385c2;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     uStack_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
     *(undefined4 **)&this->field_0x20 = puVar1;
     *unaff_FS_OFFSET = uStack_c;
@@ -151,7 +151,7 @@ void TArmyBattle::OrphanCallChain_C11_I88_004874b0(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006386f4;
   uStack_c = *unaff_FS_OFFSET;
@@ -191,7 +191,7 @@ void TArmyBattle::OrphanCallChain_C11_I88_004874b0(int *param_1)
     (*pcVar1)(ppuVar11,4);
     iVar3 = InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl
                       ((TArmyBattle *)&pTStack_50);
-    piVar4 = (int *)AllocateWithFallbackHandler(0x58);
+    piVar4 = (int *)__2_YAPAXI_Z(0x58);
     if (piVar4 == (int *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -259,7 +259,7 @@ LAB_005a4b8e:
   (*pcVar1)(&this->field_0x49);
   (*pcVar1)(&this->field_0x4c,4);
   (*pcVar1)(&this->field_0x50,4);
-  pTVar6 = (TArmyStack *)AllocateWithFallbackHandler(0x1c);
+  pTVar6 = (TArmyStack *)__2_YAPAXI_Z(0x1c);
   this_00 = (TArmyStack *)0x0;
   puStack_7c = (undefined1 *)0x0;
   if (pTVar6 != (TArmyStack *)0x0) {
@@ -268,7 +268,7 @@ LAB_005a4b8e:
   puStack_7c = (undefined1 *)0xffffffff;
   TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
             (this_00,uVar7,uVar9,sVar8);
-  pTVar6 = (TArmyStack *)AllocateWithFallbackHandler(0x1c);
+  pTVar6 = (TArmyStack *)__2_YAPAXI_Z(0x1c);
   puStack_7c = (undefined1 *)0x1;
   if (pTVar6 == (TArmyStack *)0x0) {
     pTVar6 = (TArmyStack *)0x0;
@@ -320,7 +320,7 @@ void TArmyBattle::OrphanRetStub_0059ad90(int *param_1)
   int iStack_2c;
   int aiStack_14 [2];
   int aiStack_c [3];
-  
+
   iStack_2c = 4;
   puStack_30 = &this->field_0xc;
   pcVar1 = *(code **)(*param_1 + 0x78);
@@ -404,7 +404,7 @@ int * TArmyBattle::OrphanRetStub_0059f710(int *param_1, int param_2)
   int *piVar1;
   undefined4 uVar2;
   int iVar3;
-  
+
   (**(code **)(*param_1 + 0xc))();
   piVar1 = (int *)(param_2 / 0x1d);
   iVar3 = param_2 % 0x1d;
@@ -464,7 +464,7 @@ void TArmyBattle::CreateTTacticalBattleInstance(undefined4 param_1)
   int *piVar2;
   int iVar3;
   int *piVar4;
-  
+
   piVar1 = *(int **)&this->field_0x14;
   *(undefined4 *)&this->field_0x44 = 1;
   (**(code **)(*piVar1 + 0xc))();

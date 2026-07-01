@@ -36,7 +36,7 @@ TMission * TMission::DeletingDestructTMission(byte param_1)
 {
   TMission::DestructTMission(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -88,15 +88,15 @@ TMission::ConstructBlockadePortMissionForContext(TMission *param_1,int *param_2)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006343c8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   if (param_2[0xb] == 0) {
-    iVar2 = ReallocateHeapBlockWithAllocatorTracking(param_2[10],8);
+    iVar2 = _realloc(param_2[10],8);
     if (iVar2 == 0) {
-      iVar2 = ReallocateHeapBlockWithAllocatorTracking(param_2[10],4);
+      iVar2 = _realloc(param_2[10],4);
       param_2[10] = iVar2;
       param_2[0xb] = 1;
     }
@@ -141,7 +141,7 @@ TMission * TMission::ConstructTArmyMissionWithNodeKey(undefined2 param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063443a;
   local_c = *unaff_FS_OFFSET;
@@ -150,14 +150,14 @@ TMission * TMission::ConstructTArmyMissionWithNodeKey(undefined2 param_1)
   local_4 = 0;
   *(undefined ***)this = &g_vtblTArmyMission;
   *(undefined2 *)(this + 0x14) = param_1;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
   else {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = CONCAT31(local_4._1_3_,2);
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   local_4 = local_4 & 0xffffff00;
@@ -190,7 +190,7 @@ TMission::ConstructTInvadeMissionWithOptionalBeachhead
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006344d2;
   local_c = *unaff_FS_OFFSET;
@@ -202,7 +202,7 @@ TMission::ConstructTInvadeMissionWithOptionalBeachhead
   *(undefined4 *)(this + 0x34) = 0;
   *(undefined ***)this = &PTR_LAB_0065aec0;
   if (param_1 != 0) {
-    this_00 = (TMission *)AllocateWithFallbackHandler(0x40);
+    this_00 = (TMission *)__2_YAPAXI_Z(0x40);
     local_4 = CONCAT31(local_4._1_3_,1);
     if (this_00 == (TMission *)0x0) {
       this_00 = (TMission *)0x0;
@@ -243,7 +243,7 @@ void __thiscall TMission::DeserializeTInvadeMission(int param_1,int *param_2)
   TMission *pTStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   pTStack_c = (TMission *)*unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006344fa;
@@ -256,7 +256,7 @@ void __thiscall TMission::DeserializeTInvadeMission(int param_1,int *param_2)
   if (*(int **)(param_1 + 0x34) != (int *)0x0) {
     (**(code **)(**(int **)(param_1 + 0x34) + 0x1c))();
   }
-  pTVar3 = (TMission *)AllocateWithFallbackHandler(0x40);
+  pTVar3 = (TMission *)__2_YAPAXI_Z(0x40);
   pTStack_c = pTVar3;
   if (pTVar3 == (TMission *)0x0) {
     pTVar3 = (TMission *)0x0;

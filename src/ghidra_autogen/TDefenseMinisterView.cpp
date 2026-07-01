@@ -15,12 +15,12 @@ TView * TDefenseMinisterView::CreateTDefenseMinisterViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632a4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)__2_YAPAXI_Z(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -65,7 +65,7 @@ TDefenseMinisterView * TDefenseMinisterView::_scalar_deleting_destructor_(byte p
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -92,7 +92,7 @@ TDefenseMinisterView::OrphanRetStub_0059add0
   int local_c;
   undefined1 *puStack_8;
   undefined1 *local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = (undefined1 *)0xffffffff;
   puStack_8 = &LAB_00632a68;
@@ -103,7 +103,7 @@ TDefenseMinisterView::OrphanRetStub_0059add0
       UiRuntimeContext::GetActiveNationId();
       cVar3 = ScanMapContextActionEntriesForCodeMatch();
       if (cVar3 == '\0') {
-        CString::CString(&param_3);
+        CString::__0CString__QAE_XZ(&param_3);
         pCVar4 = &param_3;
         local_4 = (undefined1 *)0x0;
         uStack_24 = 0x4f34c6;
@@ -115,7 +115,7 @@ TDefenseMinisterView::OrphanRetStub_0059add0
         AssignStringSharedRefAndReturnThis(&stack0x00000000);
         DispatchLocalizedUiMessageWithTemplateA13A0();
         uStack_24 = 0x4f34fc;
-        CString::~CString((CString *)&stack0x00000000);
+        CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
         *unaff_FS_OFFSET = (int)pCVar4;
         return;
       }

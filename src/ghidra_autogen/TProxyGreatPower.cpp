@@ -55,7 +55,7 @@ TProxyGreatPower * TProxyGreatPower::_scalar_deleting_destructor_(byte param_1)
 {
   TProxyGreatPower::DestructTProxyGreatPower(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -71,14 +71,14 @@ void TProxyGreatPower::DestructTProxyGreatPower()
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_00634543;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  CString::~CString((CString *)&this->field_0x8);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x8);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString((CString *)&this->field_0x4);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x4);
   this->vftable =
        (TProxyGreatPowerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -112,7 +112,7 @@ TProxyGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers
   undefined1 local_c;
   undefined2 local_8;
   int local_4;
-  
+
   TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers((TGreatPower *)this,param_1);
   local_10 = 0x74696d65;
   local_c = UiRuntimeContext::GetActiveNationId();
@@ -151,7 +151,7 @@ void TProxyGreatPower::OrphanRetStub_004d7fe0()
   undefined4 local_10;
   undefined1 local_c;
   short local_8;
-  
+
   TGreatPower::OrphanRetStub_004d7fe0((TGreatPower *)this);
   local_10 = 0x74696d65;
   local_c = UiRuntimeContext::GetActiveNationId();
@@ -188,7 +188,7 @@ TProxyGreatPower::ReturnFalseNationStateActionStub
   char cVar2;
   undefined4 unaff_retaddr;
   undefined4 in_stack_00000010;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins02_004d7fc0)();
   if (cVar2 != '\0') {
@@ -254,7 +254,7 @@ undefined4 TProxyGreatPower::OrphanRetStub_0059add0()
   undefined4 local_10;
   undefined1 local_c;
   undefined1 local_4;
-  
+
   local_10 = 0x74696d65;
   local_c = UiRuntimeContext::GetActiveNationId();
   local_1c = 0;
@@ -283,7 +283,7 @@ undefined4 TProxyGreatPower::GetTEventHandlerClassNamePointer()
   undefined4 local_10;
   undefined1 local_c;
   undefined1 local_4;
-  
+
   local_10 = 0x74696d65;
   local_c = UiRuntimeContext::GetActiveNationId();
   local_1c = 0;

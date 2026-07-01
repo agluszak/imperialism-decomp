@@ -67,7 +67,7 @@ TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639fc8;
   *unaff_FS_OFFSET = &uStack_c;
@@ -83,7 +83,7 @@ TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
   DispatchLocalizedUiMessageWithTemplateA13A0();
   uStack_4 = 0xffffffff;
   uStack_14 = 0x5d5ac6;
-  CString::~CString((CString *)&param_1);
+  CString::__1CString__QAE_XZ((CString *)&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -184,7 +184,7 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
   int *pSelectedCivilianOrderEntry;
   ushort wActionFinalizeFlags;
   uint dwSfxToken;
-  
+
   sVar2 = nTileIndex;
   wActionFinalizeFlags = (ushort)((uint)unaff_EBX >> 0x10);
   local_4 = 0xffffffff;
@@ -206,11 +206,11 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
       uVar1 = *(int *)&g_apNationStates[nNationId]->field_0x8f0 / 100 +
               *(int *)&g_apNationStates[nNationId]->field_0x10;
       if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < (int)sVar2) {
-        CString::CString(&pszFormattedText);
+        CString::__0CString__QAE_XZ(&pszFormattedText);
         puStack_8 = (undefined1 *)0x6;
-        CString::CString(&pszTemplateText);
+        CString::__0CString__QAE_XZ(&pszTemplateText);
         puStack_8._0_1_ = 7;
-        CString::CString((CString *)&stack0x00000000);
+        CString::__0CString__QAE_XZ((CString *)&stack0x00000000);
         puStack_8._0_1_ = 8;
         (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
@@ -219,11 +219,11 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
         AssignStringSharedRefAndReturnThis(&stack0x00000000);
         DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 7;
-        CString::~CString((CString *)&stack0x00000000);
+        CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
-        CString::~CString(&pszTemplateText);
+        CString::__1CString__QAE_XZ(&pszTemplateText);
         puStack_8 = (undefined1 *)0xffffffff;
-        CString::~CString(&pszFormattedText);
+        CString::__1CString__QAE_XZ(&pszFormattedText);
         this = (TViewMgr *)pThisAlias;
                     /* Same-tile depot/port/fort handling branch after affordability checks. */
         goto finalize_engineer_action_and_refresh;
@@ -241,11 +241,11 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
       uVar1 = *(int *)&g_apNationStates[sVar2]->field_0x8f0 / 100 +
               *(int *)&g_apNationStates[sVar2]->field_0x10;
       if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 3000) {
-        CString::CString(&pszFormattedText);
+        CString::__0CString__QAE_XZ(&pszFormattedText);
         puStack_8 = (undefined1 *)0x3;
-        CString::CString(&pszTemplateText);
+        CString::__0CString__QAE_XZ(&pszTemplateText);
         puStack_8._0_1_ = 4;
-        CString::CString((CString *)&stack0x00000000);
+        CString::__0CString__QAE_XZ((CString *)&stack0x00000000);
         puStack_8._0_1_ = 5;
         (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
@@ -254,12 +254,12 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
         AssignStringSharedRefAndReturnThis(&stack0x00000000);
         DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 4;
-        CString::~CString((CString *)&stack0x00000000);
+        CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
-        CString::~CString(&pszTemplateText);
+        CString::__1CString__QAE_XZ(&pszTemplateText);
                     /* Alternate same-tile option affordability/cancel branch. */
         puStack_8 = (undefined1 *)0xffffffff;
-        CString::~CString(&pszFormattedText);
+        CString::__1CString__QAE_XZ(&pszFormattedText);
         this = (TViewMgr *)pThisAlias;
         goto finalize_engineer_action_and_refresh;
       }
@@ -279,13 +279,13 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
            *(int *)&g_apNationStates[nCostOrNationId]->field_0x8f0 / 100 +
            *(int *)&g_apNationStates[nCostOrNationId]->field_0x10;
       if ((int)(dwAvailableNationCash & ((int)dwAvailableNationCash < 1) - 1) < 2000) {
-        CString::CString(&pszTemplateText);
+        CString::__0CString__QAE_XZ(&pszTemplateText);
         puStack_8 = (undefined1 *)0x0;
                     /* Construction-option affordability failure path (selected same-tile action).
                         */
-        CString::CString(&pszFormattedText);
+        CString::__0CString__QAE_XZ(&pszFormattedText);
         puStack_8._0_1_ = 1;
-        CString::CString((CString *)&stack0x00000000);
+        CString::__0CString__QAE_XZ((CString *)&stack0x00000000);
         puStack_8._0_1_ = 2;
         (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
@@ -294,12 +294,12 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
         AssignStringSharedRefAndReturnThis(&stack0x00000000);
         DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 1;
-        CString::~CString((CString *)&stack0x00000000);
+        CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
         puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-        CString::~CString(&pszFormattedText);
+        CString::__1CString__QAE_XZ(&pszFormattedText);
         puStack_8 = (undefined1 *)0xffffffff;
                     /* Abort branch for unaffordable or canceled same-tile construction option. */
-        CString::~CString(&pszTemplateText);
+        CString::__1CString__QAE_XZ(&pszTemplateText);
         goto finalize_engineer_action_and_refresh;
       }
       sVar2 = UiRuntimeContext::GetActiveNationId();
@@ -320,11 +320,11 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
             *(int *)&g_apNationStates[sVar2]->field_0x10;
     if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < iVar4) {
                     /* Adjacent-tile rail branch affordability check and warning path. */
-      CString::CString(&pszTemplateText);
+      CString::__0CString__QAE_XZ(&pszTemplateText);
       local_4 = 9;
-      CString::CString((CString *)&pThisAlias);
+      CString::__0CString__QAE_XZ((CString *)&pThisAlias);
       local_4 = CONCAT31(local_4._1_3_,10);
-      CString::CString((CString *)&nTileIndex);
+      CString::__0CString__QAE_XZ((CString *)&nTileIndex);
       local_4 = CONCAT31(local_4._1_3_,0xb);
       (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -333,11 +333,11 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
       AssignStringSharedRefAndReturnThis(&stack0x00000000);
       DispatchLocalizedUiMessageWithTemplateA13A0();
       puStack_8._0_1_ = 10;
-      CString::~CString((CString *)&stack0x00000000);
+      CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
       puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,9);
-      CString::~CString(&pszTemplateText);
+      CString::__1CString__QAE_XZ(&pszTemplateText);
       puStack_8 = (undefined1 *)0xffffffff;
-      CString::~CString(&pszFormattedText);
+      CString::__1CString__QAE_XZ(&pszFormattedText);
       this = (TViewMgr *)pThisAlias;
       goto finalize_engineer_action_and_refresh;
     }
@@ -386,7 +386,7 @@ void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   this.m_pchData = param_1.m_pchData;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
@@ -395,7 +395,7 @@ void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
   sVar2 = MeasureTextExtentWithCachedQuickDrawStyle(param_1.m_pchData);
   sVar1 = (short)param_2.m_pchData;
   if ((short)param_2.m_pchData < sVar2) {
-    CString::CString(&param_2);
+    CString::__0CString__QAE_XZ(&param_2);
     local_4._0_1_ = 0;
     local_4._1_3_ = 0;
     do {
@@ -403,24 +403,24 @@ void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
       src_ref = (CString *)
                 AssignSharedStringFromMidSubstring(&param_1,1,*(int *)(*this.m_pchData + -8) + -1);
       local_4._0_1_ = 1;
-      CString::AssignFromPtr(&param_2,src_ref);
+      CString::__4CString__QAEABV0_ABV0__Z(&param_2,src_ref);
       local_4._0_1_ = 0;
-      CString::~CString(&param_1);
-      CString::AssignFromPtr((CString *)this.m_pchData,&param_2);
-      CString::AssignFromCStr(&param_2,&DAT_0069587c);
+      CString::__1CString__QAE_XZ(&param_1);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)this.m_pchData,&param_2);
+      CString::__YCString__QAEABV0_PBD_Z(&param_2,&DAT_0069587c);
       sVar2 = MeasureTextExtentWithCachedQuickDrawStyle(&param_2);
       if (sVar2 <= sVar1) break;
     } while (4 < *(int *)(param_2.m_pchData + -8));
     if (*(int *)(param_2.m_pchData + -8) < 5) {
-      CString::CString(&param_1,PTR_g_szEmptyString_0066ef28);
+      CString::__0CString__QAE_PBD_Z(&param_1,PTR_g_szEmptyString_0066ef28);
       local_4._0_1_ = 2;
-      CString::AssignFromPtr(&param_2,&param_1);
+      CString::__4CString__QAEABV0_ABV0__Z(&param_2,&param_1);
       local_4._0_1_ = 0;
-      CString::~CString(&param_1);
+      CString::__1CString__QAE_XZ(&param_1);
     }
-    CString::AssignFromPtr((CString *)this.m_pchData,&param_2);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)this.m_pchData,&param_2);
     local_4 = 0xffffffff;
-    CString::~CString(&param_2);
+    CString::__1CString__QAE_XZ(&param_2);
   }
   *unaff_FS_OFFSET = local_c;
   return;
@@ -482,7 +482,7 @@ TViewMgr * TViewMgr::DestroyTurnEventState(byte param_1)
 {
   SetTurnEventStateBaseVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -503,7 +503,7 @@ void TViewMgr::LoadTurnEventCursorTable()
   undefined4 uVar1;
   int iVar2;
   undefined4 *puVar3;
-  
+
   iVar2 = 0;
   puVar3 = (undefined4 *)&this->field_0x14;
   do {
@@ -548,7 +548,7 @@ void TViewMgr::DeserializeTurnEventDispatchState()
 
 {
   TStream *in_stack_00000004;
-  
+
   TObject::ReadFrom((TObject *)this,in_stack_00000004);
   *(undefined2 *)&this->field_0xec = 0;
   *(undefined2 *)&this->field_0x4 = 0;
@@ -572,9 +572,184 @@ void TViewMgr::SerializeTurnEventDispatchState()
 
 {
   TStream *in_stack_00000004;
-  
+
   TObject::WriteTo((TObject *)this,in_stack_00000004);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5270
+// GHIDRA_NAME TViewMgr::MapTurnEventCodeToPaletteIndex
+// GHIDRA_PROTO undefined TViewMgr::MapTurnEventCodeToPaletteIndex()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Maps turn-event/state code to palette index (0..0xFF class). Returns 0xFF for unmapped/default cases.
+// GHIDRA_COMMENT_END
+
+/* Maps turn-event/state code to palette index (0..0xFF class). Returns 0xFF for unmapped/default
+   cases. */
+
+undefined4 TViewMgr::MapTurnEventCodeToPaletteIndex(short param_1)
+
+{
+  int iVar1;
+
+  iVar1 = (int)param_1;
+  if (200 < iVar1) {
+    if (iVar1 < 0x2b68) {
+      if (iVar1 == 0x2b67) {
+        return 0;
+      }
+      switch(iVar1) {
+      case 0xc9:
+        goto switchD_005d5297_caseD_33;
+      case 0xca:
+        return 0x30;
+      case 0xcb:
+        goto switchD_005d5297_caseD_6;
+      case 0xcc:
+        goto switchD_005d5297_caseD_3b;
+      case 0xcd:
+        return 0x24;
+      case 0xce:
+        return 0x26;
+      case 0xcf:
+        goto switchD_005d5297_caseD_34;
+      case 0xd0:
+        return 0x14;
+      }
+    }
+    else {
+      switch(iVar1) {
+      case 0x2b68:
+        return 0x13;
+      case 0x2b69:
+        return 0xcb;
+      case 0x2b6a:
+        return 0x5c;
+      case 0x2b6b:
+        return 0xd2;
+      case 0x2b6c:
+        return 0x28;
+      case 0x2b6d:
+        return 1;
+      }
+    }
+switchD_005d5297_caseD_17:
+    return 0xff;
+  }
+  if (iVar1 != 200) {
+    switch(iVar1) {
+    case 0:
+      return 0x16;
+    case 1:
+      return 0x2a;
+    case 2:
+    case 0x40:
+      return 0x22;
+    case 3:
+    case 0x3c:
+    case 0x4e:
+      return 0x1c;
+    case 4:
+      return 0x2b;
+    case 5:
+      return 0x1e;
+    case 6:
+switchD_005d5297_caseD_6:
+      return 0x2e;
+    case 7:
+    case 0x35:
+      return 10;
+    case 8:
+    case 0x3d:
+      return 0xb;
+    case 9:
+      return 0xd;
+    case 10:
+    case 0x43:
+      return 0x29;
+    case 0xb:
+      return 0xde;
+    case 0xc:
+    case 0x47:
+      return 0xdf;
+    case 0xd:
+    case 0x49:
+      return 0xfa;
+    case 0xe:
+    case 0x38:
+      return 0x2c;
+    case 0xf:
+    case 0x4a:
+      return 0x31;
+    case 0x10:
+      return 0x33;
+    case 0x11:
+      return 0x41;
+    case 0x12:
+      return 0x48;
+    case 0x13:
+      return 0xd0;
+    case 0x14:
+      return 0xcd;
+    case 0x15:
+      return 0xce;
+    case 0x16:
+      return 0xcf;
+    default:
+      goto switchD_005d5297_caseD_17;
+    case 0x25:
+    case 0x3f:
+      break;
+    case 0x32:
+      return 0x1a;
+    case 0x33:
+switchD_005d5297_caseD_33:
+      return 0x2d;
+    case 0x34:
+switchD_005d5297_caseD_34:
+      return 0x18;
+    case 0x37:
+      return 0xbd;
+    case 0x3a:
+      return 0xc6;
+    case 0x3b:
+switchD_005d5297_caseD_3b:
+      return 0x27;
+    case 0x3e:
+      return 0x15;
+    case 0x41:
+      return 0x1b;
+    case 0x42:
+      return 0x21;
+    case 0x44:
+      return 0x17;
+    case 0x45:
+      return 0x5f;
+    case 0x46:
+      return 0xbe;
+    case 0x48:
+      return 100;
+    case 0x4b:
+      return 0x66;
+    case 0x4c:
+      return 0x89;
+    case 0x4d:
+      return 0xad;
+    case 0x4f:
+      return 0xe7;
+    case 0x50:
+      return 0xe6;
+    case 0x51:
+      return 0xf6;
+    case 0x52:
+      return 0xc;
+    case 0x53:
+      return 0xef;
+    case 0x54:
+      return 0xf9;
+    }
+  }
+  return 0x20;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D5750
@@ -590,7 +765,7 @@ void TViewMgr::ApplyTurnEventPaletteColorByEventCode(undefined4 param_1)
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(param_1);
   SetQuickDrawFillColorFromPaletteIndex(uVar1);
   return;
@@ -610,7 +785,7 @@ void TViewMgr::UpdatePaletteIndexFromTurnEventCode(undefined4 param_1)
 
 {
   uint palette_index;
-  
+
   palette_index = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(param_1);
   UpdatePaletteIndexWithDefaultFallback(palette_index);
   return;
@@ -640,7 +815,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog()
   int *piVar6;
   undefined1 uVar7;
   int *unaff_EBP;
-  
+
   cVar3 = IsTurnCooldownCounterActiveOrResetFlag();
   if (cVar3 == '\0') {
     uVar4 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0x7e5);
@@ -739,7 +914,7 @@ void TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(undefined4 *p
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639fc8;
   *unaff_FS_OFFSET = &uStack_c;
@@ -755,7 +930,7 @@ void TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(undefined4 *p
   DispatchLocalizedUiMessageWithTemplateA13A0();
   local_4 = 0xffffffff;
   uStack_14 = 0x5d5ac6;
-  CString::~CString((CString *)&param_1);
+  CString::__1CString__QAE_XZ((CString *)&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -785,9 +960,9 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode()
   int iStack_10;
   int iStack_c;
   short sStack_4;
-  
+
   (**(code **)(**(int **)(DAT_006a2158 + 4) + 300))(local_30);
-  iVar2 = InvokeAfxThreadVslot7CAndGetValueAtOffset98();
+  iVar2 = GetMainViewHostFromActiveThread();
   GetClientRect(*(HWND *)(iVar2 + 0x1c),&tStack_24);
   (**(code **)(*unaff_retaddr + 300))(&iStack_14);
   sVar1 = *(short *)&this->field_0x4;
@@ -847,7 +1022,7 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent()
   int iVar1;
   int *piVar2;
   undefined4 uVar3;
-  
+
   piVar2 = *(int **)(DAT_006a2158 + 4);
   if (piVar2 != (int *)0x0) {
     if (*(short *)&this->field_0x4 == 0x7dd) {
@@ -890,14 +1065,14 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a3ec;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   InitializeHotKeyDialogTemplateA1WithTripleTextState(0);
   local_4 = 0;
-  iVar1 = AllocateWithFallbackHandler(0x3e);
+  iVar1 = __2_YAPAXI_Z(0x3e);
   puVar5 = (undefined2 *)(iVar1 + 0x10);
   puVar2 = &DAT_00698b1a;
   do {
@@ -910,19 +1085,19 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog()
     puVar2 = puVar3;
   } while ((int)puVar3 < 0x698b52);
   HandleTurnEventVtableSlot2CInitializeHotKeyDialog_Impl(iVar1);
-  iVar4 = DoModal_6051b9();
+  iVar4 = _DoModal_CDialog__UAEHXZ();
   if (iVar4 != 0) {
     (*g_pLocalizationTable->vftable[7].GetTSimMgrClassNamePointer)(iVar1);
   }
-  FreeHeapBufferIfNotNull(iVar1);
+  __3_YAXPAX_Z(iVar1);
   local_4 = 3;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   local_4._0_1_ = 2;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   local_4 = CONCAT31(local_4._1_3_,1);
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   local_4 = 0xffffffff;
-  CDialog::~CDialog(local_128);
+  CDialog::__1CDialog__UAE_XZ(local_128);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

@@ -15,7 +15,7 @@ void TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize()
   undefined4 uVar3;
   undefined4 *puVar4;
   undefined1 local_8 [8];
-  
+
   if (*(int *)&this->field_0x18 == 0) {
     iVar2 = LoadBmpResourceByIdCached(*(undefined2 *)&this->field_0x1c);
     *(int *)&this->field_0x18 = iVar2;
@@ -61,7 +61,7 @@ TAnimation * TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050(byte para
 {
   TAnimation::CreateTAnimationInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -119,7 +119,7 @@ void TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)&this->field_0x10 + 1;
   *(int *)&this->field_0x10 = iVar1;
   if (iVar1 == *(int *)&this->field_0x14) {
@@ -144,7 +144,7 @@ void TAnimation::RenderBattleReportInsetWithPaletteShift(int *param_1)
   int iVar2;
   tagRECT tStack_20;
   tagRECT tStack_10;
-  
+
   iVar1 = *(int *)&g_pUiAnimator->field_0x20;
   (*this->vftable->RenderBattleReportViewSurfaceSpriteWithResourceHandle)();
   tStack_20.top = *(int *)&this->field_0x20 + param_1[1];
@@ -205,7 +205,7 @@ void TAnimation::SpawnTacticalUiMarkerAtUnitTile()
   int local_c;
   int local_8;
   int local_4;
-  
+
   TBattleReportView::RemoveUiTransientRegistryObjectByTag((TBattleReportView *)g_pUiAnimator,0x2711)
   ;
   iVar1 = *(int *)(*(int *)&this[2].field_0x8 + 0x1c);
@@ -219,7 +219,7 @@ void TAnimation::SpawnTacticalUiMarkerAtUnitTile()
     local_8 = local_10 + local_8;
     local_c = uVar2 * *(int *)&this[3].field_0x8;
     local_4 = local_c + *(int *)&this[3].field_0x8;
-    this_00 = (TAnimation *)AllocateWithFallbackHandler(0x2c);
+    this_00 = (TAnimation *)__2_YAPAXI_Z(0x2c);
     if (this_00 == (TAnimation *)0x0) {
       this_00 = (TAnimation *)0x0;
     }

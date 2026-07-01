@@ -12,7 +12,7 @@ TFocusAnimation * TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050
 {
   TFocusAnimation::CreateTFocusAnimationInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -47,7 +47,7 @@ void TFocusAnimation::ConstructTFocusAnimationBaseState()
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)&this->field_0x10 + 1;
   *(int *)&this->field_0x10 = iVar1;
   if (iVar1 == *(int *)&this->field_0x14) {
@@ -74,7 +74,7 @@ void TFocusAnimation::DestructTFocusAnimationAndMaybeFree()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe58;
@@ -102,7 +102,7 @@ void TFocusAnimation::RenderBattleReportInsetWithPaletteShift()
 
 {
   TFocusAnimationVtbl *pTVar1;
-  
+
   pTVar1 = this->vftable;
   (**(code **)&pTVar1->field_0x30)();
   (**(code **)&pTVar1->field_0x38)();
@@ -122,7 +122,7 @@ void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280()
   int local_28;
   tagRECT local_24;
   tagRECT tStack_14;
-  
+
   iVar1 = *(int *)&g_pUiAnimator->field_0x20;
   local_24.left = *(LONG *)&this->field_0x20;
   local_28 = *(int *)&this->field_0x1c;

@@ -37,7 +37,7 @@ TCouncilView * TCouncilView::_scalar_deleting_destructor_(byte param_1)
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -56,7 +56,7 @@ TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0
   uint uVar3;
   int iVar4;
   uint uVar5;
-  
+
   uVar2 = this->field0c;
   if ((uint)this->padding_08_to_0b <= uVar2) {
     iVar1 = uVar2 + 1;
@@ -65,9 +65,9 @@ TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0
     if (0x7fffffff < uVar3) {
       uVar5 = 0x7fffffff;
     }
-    iVar4 = ReallocateHeapBlockWithAllocatorTracking(this->field04,uVar3);
+    iVar4 = _realloc(this->field04,uVar3);
     if (iVar4 == 0) {
-      iVar4 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar1);
+      iVar4 = _realloc(this->field04,iVar1);
       this->field04 = iVar4;
       this->padding_08_to_0b = iVar1;
     }
@@ -96,7 +96,7 @@ TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830
   uint uVar2;
   int iVar3;
   uint uVar4;
-  
+
   uVar2 = this->field0c;
   if ((uint)this->padding_08_to_0b <= uVar2) {
     iVar1 = uVar2 + 1;
@@ -104,9 +104,9 @@ TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830
     if (0x7fffffff < uVar4) {
       uVar4 = 0x7fffffff;
     }
-    iVar3 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar1 * 8);
+    iVar3 = _realloc(this->field04,iVar1 * 8);
     if (iVar3 == 0) {
-      iVar3 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar1 * 4);
+      iVar3 = _realloc(this->field04,iVar1 * 4);
       this->field04 = iVar3;
       this->padding_08_to_0b = iVar1;
     }
@@ -142,7 +142,7 @@ TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit
   char cVar3;
   undefined uVar4;
   undefined3 extraout_var;
-  
+
   if (nEventType == 0) {
     (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(1,1);
   }
@@ -186,7 +186,7 @@ void TCouncilView::DeserializeCityProductionQueueCommand(TTEView *param_1)
 
 {
   (*this->vftable[0x25].GetTEventHandlerClassNamePointer)(param_1);
-  TTEView::DeflateRect(param_1,(int *)&this->field_0x68);
+  TTEView::_DeflateRect_CRect__QAEXPBUtagRECT___Z(param_1,(int *)&this->field_0x68);
   return;
 }
 
@@ -265,12 +265,12 @@ TDiplomacyMapView * TCouncilView::CreateTCouncilViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063303a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TDiplomacyMapView *)AllocateWithFallbackHandler(0x24e0);
+  this = (TDiplomacyMapView *)__2_YAPAXI_Z(0x24e0);
   local_4 = 0;
   pTVar1 = (TDiplomacyMapView *)0x0;
   if (this != (TDiplomacyMapView *)0x0) {
@@ -318,19 +318,19 @@ void TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633068;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pcStack_2c = (char *)0x4fba97;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   pcStack_2c = (char *)0x4fbaa6;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4._0_1_ = 1;
   pcStack_2c = (char *)0x4fbab4;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_4 = CONCAT31(local_4._1_3_,2);
   uStack_30 = 0x4fbac5;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
@@ -394,11 +394,11 @@ void TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels()
     LoadUiStringByGroupAndIndexToControlObject(0x2730,3,uVar4);
   }
   pcStack_2c._0_1_ = 1;
-  CString::~CString(&CStack_40);
+  CString::__1CString__QAE_XZ(&CStack_40);
   pcStack_2c = (char *)((uint)pcStack_2c._1_3_ << 8);
-  CString::~CString(&CStack_3c);
+  CString::__1CString__QAE_XZ(&CStack_3c);
   pcStack_2c = (char *)0xffffffff;
-  CString::~CString(&CStack_38);
+  CString::__1CString__QAE_XZ(&CStack_38);
   *unaff_FS_OFFSET = uStack_34;
   return;
 }
@@ -413,7 +413,7 @@ void TCouncilView::OrphanRetStub_0059add0(int param_1, int param_2)
   int *piVar1;
   undefined *puVar2;
   undefined *unaff_ESI;
-  
+
   if (param_1 == 10) {
     if (*(int *)(param_2 + 0x1c) == 0x73746172) {
       TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker

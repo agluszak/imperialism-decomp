@@ -11,7 +11,7 @@ void TCancelGameOptionsCommand::OrphanRetStub_00487a00()
 
 {
   Config *pCVar1;
-  
+
   pCVar1 = g_pGameFlowState;
   *(undefined4 *)&g_pGameFlowState->field_0x40 = 0;
   ResetNationStatusArraysAndTurnEventContext();
@@ -31,7 +31,7 @@ TCancelGameOptionsCommand::OrphanCallChain_C1_I17_00487470
 {
   DestructCancelGameOptionsCommand();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

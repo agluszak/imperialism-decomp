@@ -12,7 +12,7 @@ TButton * TButton::_scalar_deleting_destructor_(byte param_1)
 {
   TButton::CreateTButtonInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -28,7 +28,7 @@ void TButton::CreateTButtonInstance()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_0062eef3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -37,9 +37,9 @@ void TButton::CreateTButtonInstance()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TButtonVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -67,12 +67,12 @@ TView * TButton::ConstructTButtonBaseState(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ef22;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x84);
+  this = (TView *)__2_YAPAXI_Z(0x84);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);

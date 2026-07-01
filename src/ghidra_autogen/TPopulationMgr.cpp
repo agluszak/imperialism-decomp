@@ -22,7 +22,7 @@ TPopulationMgr * TPopulationMgr::ConstructTPopulationMgrBaseState(byte param_1)
 {
   TPopulationMgr::DestructTPopulationMgrAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -84,7 +84,7 @@ TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0
   short sVar3;
   int iVar4;
   short sVar5;
-  
+
   *(short *)(*(int *)&this->field_0x10 + 4) = param_1;
   *(short *)(*(int *)&this->field_0x14 + 4) = param_1;
   *(short *)(*(int *)&this->field_0x10 + 6) = param_2;
@@ -118,7 +118,7 @@ void TPopulationMgr::OrphanCallChain_C2_I24_004b5e80()
   short sVar3;
   TPopulationMgrVtbl *pTVar4;
   int iVar5;
-  
+
   pTVar4 = this->vftable;
   (*pTVar4->OrphanLeaf_NoCall_Ins09_004b5d10)
             (*(undefined4 *)&this->field_0x10,*(undefined4 *)&this->field_0x14);
@@ -154,7 +154,7 @@ void TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed
   int local_14;
   int local_10;
   int iVar9;
-  
+
   iVar12 = 0;
   sVar8 = *(short *)&this->field_0x8;
   psVar1 = (short *)(*(int *)&this->field_0x14 + 4);
@@ -277,7 +277,7 @@ void TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed
     uVar6 = 0;
   }
   else {
-    piVar5 = (int *)AllocateWithFallbackHandler(0xc);
+    piVar5 = (int *)__2_YAPAXI_Z(0xc);
     if (piVar5 == (int *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -324,7 +324,7 @@ TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260
   short sVar7;
   int iVar8;
   short sVar9;
-  
+
   iVar8 = (int)*(short *)&this->field_0x8;
   sVar9 = 0;
   iVar1 = *(int *)(*(int *)&this->field_0x4 + 0xac);
@@ -407,7 +407,7 @@ float10 TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0()
 {
   short sVar1;
   float10 fVar2;
-  
+
   sVar1 = *(short *)&this->field_0x8;
   if (sVar1 < 10) {
     fVar2 = (float10)_DAT_0064f488;
@@ -455,7 +455,7 @@ undefined1 * TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0()
   short sVar3;
   int iVar4;
   short local_8 [4];
-  
+
   iVar4 = (int)*(short *)(*(int *)&this->field_0x10 + 8) +
           (int)*(short *)(*(int *)&this->field_0x10 + 6);
   local_8[0] = 0;
@@ -508,7 +508,7 @@ undefined1 TPopulationMgr::OrphanCallChain_C2_I61_004b65b0()
   undefined1 uVar5;
   int iVar6;
   short local_8 [4];
-  
+
   uVar5 = 0;
   iVar3 = (int)*(short *)(*(int *)&this->field_0x10 + 8) +
           (int)*(short *)(*(int *)&this->field_0x10 + 6);
@@ -564,7 +564,7 @@ void TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param
   short sVar2;
   int iVar3;
   short sVar4;
-  
+
   sVar4 = param_2;
   if (param_1 == 1) {
     iVar3 = *(int *)&this->field_0x10;
@@ -632,7 +632,7 @@ void TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param
 
 {
   short *psVar1;
-  
+
   if (param_1 == 1) {
     psVar1 = (short *)(*(int *)&this->field_0x14 + 4);
     *psVar1 = *psVar1 - param_2;
@@ -663,7 +663,7 @@ void TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int *param
 
 {
   code *pcVar1;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x8,2);
@@ -686,7 +686,7 @@ void TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int *param
 
 {
   code *pcVar1;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x8,2);

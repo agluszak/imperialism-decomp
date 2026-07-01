@@ -53,12 +53,12 @@ TView * TPageView::CreateTPageViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063623a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x84);
+  this = (TView *)__2_YAPAXI_Z(0x84);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -109,7 +109,7 @@ TPageView * TPageView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -127,13 +127,13 @@ void TPageView::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636274;
   *unaff_FS_OFFSET = &local_c;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
   local_4 = 0;
   puStack00000004 = puVar1;
   if (puVar1 == (undefined4 *)0x0) {
@@ -142,12 +142,12 @@ void TPageView::OrphanLeaf_NoCall_Ins07_004d8920()
   else {
     InitializeRefCountedObjectBaseVtable();
     local_4 = CONCAT31(local_4._1_3_,1);
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   local_4 = 0xffffffff;
   *(undefined4 **)&this->field_0x7c = puVar1;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
   puStack00000004 = puVar1;
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
@@ -155,12 +155,12 @@ void TPageView::OrphanLeaf_NoCall_Ins07_004d8920()
   else {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 3;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   local_4 = 0xffffffff;
   *(undefined4 **)&this->field_0x78 = puVar1;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x1c);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
@@ -213,7 +213,7 @@ void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay()
 {
   int *piVar1;
   int iVar2;
-  
+
   InitializeSelectableTextOptionEntryIteratorContext(this);
   piVar1 = (int *)BeginSelectableTextOptionEntryIterator();
   iVar2 = IsSelectableTextOptionEntryIteratorValid();
@@ -242,7 +242,7 @@ void TPageView::OrphanCallChain_C8_I82_0056fc80()
   short unaff_BP;
   int iVar4;
   short sVar5;
-  
+
   (**(code **)(**(int **)&this->field_0x80 + 0x30))();
   sVar5 = *(short *)&this->field_0x6c;
   iVar4 = 1;
@@ -300,7 +300,7 @@ void TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1)
   int iVar12;
   int iStack_8;
   int iStack_4;
-  
+
   sVar5 = 0;
   if ((0 < param_1) && (param_1 <= *(short *)&this->field_0x60)) {
     pTVar4 = this->vftable;

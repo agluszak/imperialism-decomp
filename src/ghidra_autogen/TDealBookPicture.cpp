@@ -15,12 +15,12 @@ thunk_TPictureButton * TDealBookPicture::CreateTDealBookPictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063911a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0xb4);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0xb4);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -67,7 +67,7 @@ TDealBookPicture * TDealBookPicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -108,7 +108,7 @@ TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int iStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_00639250;
@@ -157,13 +157,13 @@ TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     CStack_74.m_pchData = (char *)0x5bbcd4;
     (**(code **)(iVar7 + 0xc))();
     CStack_74.m_pchData = (char *)0x5bbcdd;
-    CString::CString((CString *)&RStack_54.top);
+    CString::__0CString__QAE_XZ((CString *)&RStack_54.top);
     puStack_8 = (undefined1 *)0x0;
     CStack_74.m_pchData = (char *)0x5bbcee;
-    CString::CString((CString *)&RStack_54);
+    CString::__0CString__QAE_XZ((CString *)&RStack_54);
     puStack_8._0_1_ = 1;
     CStack_74.m_pchData = (char *)0x5bbcfc;
-    CString::CString(&CStack_58);
+    CString::__0CString__QAE_XZ(&CStack_58);
     CStack_74.m_pchData = (char *)&CStack_58;
     uStack_7c = 0x2741;
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
@@ -188,44 +188,44 @@ TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     cVar4 = (**(code **)(iVar7 + 0xec))();
     if (cVar4 == '\0') {
       ApplyUiTextStyleAndThemeFlags((int *)CONCAT31(extraout_var_00,uVar3),0,0x12,0x2b6b,0x2b6c);
-      CString::CString(&CStack_88);
+      CString::__0CString__QAE_XZ(&CStack_88);
       uStack_30 = 3;
-      CString::CString(&CStack_84);
+      CString::__0CString__QAE_XZ(&CStack_84);
       uStack_30 = 4;
-      FormatStringWithVarArgsToSharedRef
+      _Format_CString__QAAXPBDZZ
                 (&CStack_84,&g_szDecimalFormat,
                  (short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
                               ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2)
                  + 0x717);
       (*g_pLocalizationTable->vftable[6].slot_0x04)(&CStack_88);
-      uVar5 = AssignSharedStringConcatRefAndCStr
+      uVar5 = __H_YG_AVCString__ABV0_PBD_Z
                         (&stack0xffffff90,&CStack_8c,g_Build_Map_Order_LookupTable_00695794);
       uStack_34 = 5;
-      src_ref = (CString *)AssignSharedStringConcatRefAndRef(&CStack_74,uVar5,&CStack_88);
+      src_ref = (CString *)__H_YG_AVCString__ABV0_0_Z(&CStack_74,uVar5,&CStack_88);
       uStack_34 = 6;
-      CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffff88,src_ref);
+      CString::__0CString__QAE_ABV0__Z((CString *)&stack0xffffff88,src_ref);
       uStack_34 = 7;
-      CString::AssignFromPtr(&CStack_8c,(CString *)&stack0xffffff88);
+      CString::__4CString__QAEABV0_ABV0__Z(&CStack_8c,(CString *)&stack0xffffff88);
       uStack_34 = 6;
-      CString::~CString((CString *)&stack0xffffff88);
+      CString::__1CString__QAE_XZ((CString *)&stack0xffffff88);
       uStack_34 = 5;
-      CString::~CString(&CStack_74);
+      CString::__1CString__QAE_XZ(&CStack_74);
       uStack_34 = 4;
-      CString::~CString((CString *)&stack0xffffff90);
+      CString::__1CString__QAE_XZ((CString *)&stack0xffffff90);
       (**(code **)(iVar7 + 0x1c8))(&CStack_8c,0);
       (**(code **)(iVar7 + 0xa4))(1,1);
       uStack_30 = 3;
-      CString::~CString(&CStack_84);
+      CString::__1CString__QAE_XZ(&CStack_84);
       uStack_30 = 2;
-      CString::~CString(&CStack_88);
+      CString::__1CString__QAE_XZ(&CStack_88);
     }
     (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x13f0,0,1);
     iStack_4._0_1_ = 1;
-    CString::~CString((CString *)&RStack_54);
+    CString::__1CString__QAE_XZ((CString *)&RStack_54);
     iStack_4 = (uint)iStack_4._1_3_ << 8;
-    CString::~CString((CString *)&RStack_54.top);
+    CString::__1CString__QAE_XZ((CString *)&RStack_54.top);
     iStack_4 = 0xffffffff;
-    CString::~CString((CString *)&RStack_54.right);
+    CString::__1CString__QAE_XZ((CString *)&RStack_54.right);
   }
   CStack_74.m_pchData = (char *)param_2;
   uStack_7c = 0x5bbfc1;

@@ -22,7 +22,7 @@ TTextileForeignMinister * TTextileForeignMinister::ConstructTTextileForeignMinis
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(undefined4 *)&this->field_0x49 = 0x1010101;
   *(undefined2 *)&this->field_0x4d = 0x101;
   this->field_0x4f = 1;
@@ -50,7 +50,7 @@ TTextileForeignMinister * TTextileForeignMinister::DeletingDestructTMinister(byt
 {
   TTextileForeignMinister::DestructTTextileForeignMinister(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -89,7 +89,7 @@ void TTextileForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006341ca;
   iStack_c = *unaff_FS_OFFSET;
@@ -98,14 +98,14 @@ void TTextileForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
   *(undefined2 *)&this->field_0x40 = 0;
   *(undefined2 *)&this->field_0x42 = 1;
   puStack_2c = (undefined1 *)0x533201;
-  this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler();
+  this_00 = (TIndexAndRankList *)__2_YAPAXI_Z();
   local_4 = 0;
   if (this_00 == (TIndexAndRankList *)0x0) {
     this_00 = (TIndexAndRankList *)0x0;
   }
   else {
     uStack_28 = 0x533219;
-    TIndexAndRankList::CPtrArray(this_00);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(this_00);
     this_00->vftable = (TIndexAndRankListVtbl *)&TSortByPriceList::_vftable_;
   }
   *(undefined2 *)&this_00->field_0x14 = 4;
@@ -168,7 +168,7 @@ void TTextileForeignMinister::SetForeignMinisterReadyFlag14()
   int iVar10;
   undefined4 uVar11;
   undefined2 *puVar12;
-  
+
   pTVar1 = this->vftable;
   sVar7 = *(short *)(*(int *)&this->field_0x4 + 0xa4);
   (*pTVar1[9].GetTMinisterClassNamePointer)();
@@ -270,7 +270,7 @@ TTextileForeignMinister::UpdateControlCachedIntFromWindowText
   undefined4 unaff_EBX;
   undefined4 unaff_retaddr;
   short in_stack_00000010;
-  
+
   if (*(short *)(&this->field_0x1e + in_stack_00000010 * 2) != 0) {
     TForeignMinister::UpdateControlCachedIntFromWindowText
               ((TForeignMinister *)this,param_1,(short)param_2);
@@ -308,7 +308,7 @@ TTextileForeignMinister::UpdateTextileProgressFromProductionSlots1And2
 {
   short sVar1;
   int iVar2;
-  
+
   *(short *)&param_1->field_0x60 = *(short *)&param_1->field_0x60 + 2;
   *(short *)&param_1->field_0x5e = *(short *)&param_1->field_0x5e + 1;
   iVar2 = TCity::GetCityBuildingProductionValueBySlot(param_1,2);

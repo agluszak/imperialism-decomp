@@ -16,12 +16,12 @@ thunk_TPictureButton * TTradeOrderPicture::CreateTTradeOrderPictureInstance(void
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006375ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -64,7 +64,7 @@ TTradeOrderPicture * TTradeOrderPicture::_scalar_deleting_destructor_(byte param
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -88,7 +88,7 @@ void TTradeOrderPicture::_scalar_deleting_destructor_()
 
 {
   char cVar1;
-  
+
   cVar1 = (*this->vftable->VTableSlot3B)();
   if (cVar1 != '\0') {
     if (this->controlTag == 0x63617264) {

@@ -12,7 +12,7 @@ TOcean * TOcean::DestroyTPortZoneManager(byte param_1)
 {
   ResetTPortZoneManagerToSentinelVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -55,13 +55,13 @@ void TOcean::ReadFrom(int *param_1)
   TZone *pTStack_c;
   undefined1 *puStack_8;
   short *psStack_4;
-  
+
   psStack_4 = (short *)0xffffffff;
   puStack_8 = &LAB_00635855;
   pTStack_c = (TZone *)*unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&pTStack_c;
   if (g_pMapActionContextDistanceCache != (void *)0x0) {
-    FreeHeapBufferIfNotNull(g_pMapActionContextDistanceCache);
+    __3_YAXPAX_Z(g_pMapActionContextDistanceCache);
     g_pMapActionContextDistanceCache = (void *)0x0;
     g_nMapActionContextCount = -1;
   }
@@ -93,14 +93,15 @@ void TOcean::ReadFrom(int *param_1)
   }
   while (pTVar4 = g_pMapActionContextListHead, g_pMapActionContextListHead != (TZone *)0x0) {
     do {
-      iVar8 = CObject::IsKindOf((CObject *)pTVar4);
+      iVar8 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar4);
       if (iVar8 != 0) break;
       pTVar4 = *(TZone **)&pTVar4->field_0x18;
     } while (pTVar4 != (TZone *)0x0);
     pTVar11 = g_pMapActionContextListHead;
     if (pTVar4 == (TZone *)0x0) break;
-    while ((pTVar11 != (TZone *)0x0 && (iVar8 = CObject::IsKindOf((CObject *)pTVar11), iVar8 == 0)))
-    {
+    while ((pTVar11 != (TZone *)0x0 &&
+           (iVar8 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar11),
+           iVar8 == 0))) {
       pTVar11 = *(TZone **)&pTVar11->field_0x18;
     }
     (*pTVar11->vftable->GetTCountryClassNamePointer)();
@@ -109,7 +110,7 @@ void TOcean::ReadFrom(int *param_1)
   pwVar13 = pwVar1;
   (*pcVar2)(pwVar1,2);
   iVar8 = (int)(short)*pwVar1;
-  piVar5 = (int *)AllocateWithFallbackHandler(iVar8 * 0x48 + 4);
+  piVar5 = (int *)__2_YAPAXI_Z(iVar8 * 0x48 + 4);
   pTStack_c = (TZone *)0x0;
   if (piVar5 == (int *)0x0) {
     piVar6 = (int *)0x0;
@@ -117,7 +118,7 @@ void TOcean::ReadFrom(int *param_1)
   else {
     piVar6 = piVar5 + 1;
     *piVar5 = iVar8;
-    CallCallbackRepeatedly
+    ___L_YGXPAXIHP6EX0_Z1_Z
               (piVar6,0x48,iVar8,TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList);
   }
   iVar8 = 0;
@@ -139,7 +140,7 @@ void TOcean::ReadFrom(int *param_1)
   (*pcVar2)(puVar12,2);
   sVar3 = (short)unaff_ESI;
   while (unaff_ESI = unaff_ESI + -1, sVar3 != 0) {
-    pTVar4 = (TZone *)AllocateWithFallbackHandler(0x4c);
+    pTVar4 = (TZone *)__2_YAPAXI_Z(0x4c);
     pTStack_c = pTVar4;
     if (pTVar4 == (TZone *)0x0) {
       pTVar4 = (TZone *)0x0;
@@ -157,8 +158,8 @@ void TOcean::ReadFrom(int *param_1)
   pTVar11 = pTVar4;
   pTStack_c = pTVar4;
   (*pcVar2)(pTVar4,2);
-  FreeHeapBufferIfNotNull(*(undefined4 *)(unaff_EDI + 0x10));
-  dVar7 = AllocateWithFallbackHandler((int)*(short *)&pTVar4->vftable << 4);
+  __3_YAXPAX_Z(*(undefined4 *)(unaff_EDI + 0x10));
+  dVar7 = __2_YAPAXI_Z((int)*(short *)&pTVar4->vftable << 4);
   if (dVar7 == 0) {
     dVar7 = 0;
   }
@@ -188,14 +189,14 @@ void TOcean::ReadFrom(int *param_1)
         *(undefined4 *)&pTVar4->field_0x28 = 0;
         *(undefined4 *)&pTVar4->field_0x2c = 0;
         *(undefined4 *)&pTVar4->field_0x30 = 0;
-        FreeHeapBlockWithAllocatorTracking(iVar8);
+        _free(iVar8);
       }
       iVar8 = *(int *)&pTVar4->field_0x38;
       if (iVar8 != 0) {
         *(undefined4 *)&pTVar4->field_0x38 = 0;
         *(undefined4 *)&pTVar4->field_0x3c = 0;
         *(undefined4 *)&pTVar4->field_0x40 = 0;
-        FreeHeapBlockWithAllocatorTracking(iVar8);
+        _free(iVar8);
       }
     }
   }
@@ -222,7 +223,7 @@ void TOcean::WriteTo(int *param_1)
   code *pcVar7;
   word *pwVar8;
   code *pcVar9;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pwVar1 = &this->nationCount;
   pwVar8 = pwVar1;
@@ -240,7 +241,7 @@ void TOcean::WriteTo(int *param_1)
   pTVar5 = g_pMapActionContextListHead;
   if (g_pMapActionContextListHead != (TZone *)0x0) {
     do {
-      iVar4 = CObject::IsKindOf((CObject *)pTVar5);
+      iVar4 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar5);
       if (iVar4 != 0) break;
       pTVar5 = *(TZone **)&pTVar5->field_0x18;
     } while (pTVar5 != (TZone *)0x0);
@@ -250,7 +251,7 @@ joined_r0x0056295f:
       pTVar5 = *(TZone **)&pTVar5->field_0x18;
       if (pTVar5 == (TZone *)0x0) goto LAB_0056298c;
       do {
-        iVar4 = CObject::IsKindOf((CObject *)pTVar5);
+        iVar4 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar5);
         if (iVar4 != 0) break;
         pTVar5 = *(TZone **)&pTVar5->field_0x18;
       } while (pTVar5 != (TZone *)0x0);
@@ -262,7 +263,8 @@ LAB_0056298c:
   (*(code *)this)(pcVar7,2);
   pTVar5 = g_pMapActionContextListHead;
   while ((this_00 = pTVar5, pTVar5 != (TZone *)0x0 &&
-         (iVar4 = CObject::IsKindOf((CObject *)pTVar5), iVar4 == 0))) {
+         (iVar4 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar5),
+         iVar4 == 0))) {
     pTVar5 = *(TZone **)&pTVar5->field_0x18;
   }
   do {
@@ -270,7 +272,7 @@ LAB_0056298c:
     if ((pTVar2 == (TZone *)0x0) ||
        (this_00 = *(TZone **)&pTVar2->field_0x18, pTVar5 = pTVar2, this_00 == (TZone *)0x0)) break;
     do {
-      iVar4 = CObject::IsKindOf((CObject *)this_00);
+      iVar4 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)this_00);
       if (iVar4 != 0) break;
       this_00 = *(TZone **)&this_00->field_0x18;
     } while (this_00 != (TZone *)0x0);
@@ -299,7 +301,7 @@ LAB_00562a16:
   pTVar5 = *(TZone **)&pTVar5->field_0x1c;
   if (pTVar5 == (TZone *)0x0) goto LAB_00562a16;
   do {
-    iVar4 = CObject::IsKindOf((CObject *)pTVar5);
+    iVar4 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar5);
     if (iVar4 != 0) break;
     pTVar5 = *(TZone **)&pTVar5->field_0x1c;
   } while (pTVar5 != (TZone *)0x0);
@@ -320,7 +322,7 @@ void TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636dda;
@@ -330,7 +332,7 @@ void TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
     (*g_pActiveMapOrderContext->vftable[1].GetRuntimeClass)();
     g_pActiveMapOrderContext = (TOcean *)0x0;
   }
-  g_pActiveMapOrderContext = (TOcean *)AllocateWithFallbackHandler(0x18);
+  g_pActiveMapOrderContext = (TOcean *)__2_YAPAXI_Z(0x18);
   if (g_pActiveMapOrderContext == (TOcean *)0x0) {
     g_pActiveMapOrderContext = (TOcean *)0x0;
   }
@@ -347,7 +349,7 @@ void TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
     (*g_pGlobalMapState->vftable->Free)();
     g_pGlobalMapState = (TMapMgr *)0x0;
   }
-  this_00 = (TMapMgr *)AllocateWithFallbackHandler(0x28);
+  this_00 = (TMapMgr *)__2_YAPAXI_Z(0x28);
   uStack_4 = 0;
   if (this_00 == (TMapMgr *)0x0) {
     g_pGlobalMapState = (TMapMgr *)0x0;

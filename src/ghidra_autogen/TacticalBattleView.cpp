@@ -45,19 +45,19 @@ void TacticalBattleView::InitializeCityViewActionButtons()
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631698;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   LStack_64 = 0x4c8d97;
-  CString::CString((CString *)&local_40);
+  CString::__0CString__QAE_XZ((CString *)&local_40);
   local_4 = 0;
   LStack_64 = 0x4c8da6;
-  CString::CString((CString *)&RStack_50.bottom);
+  CString::__0CString__QAE_XZ((CString *)&RStack_50.bottom);
   local_4._0_1_ = 1;
   LStack_64 = 0x4c8db4;
-  CString::CString((CString *)&RStack_50.right);
+  CString::__0CString__QAE_XZ((CString *)&RStack_50.right);
   LStack_64 = 0x73706963;
   local_4 = CONCAT31(local_4._1_3_,2);
   RStack_50.top = *(LONG *)&g_pActiveQuickDrawSurfaceContext->field_0x2c;
@@ -140,11 +140,11 @@ void TacticalBattleView::InitializeCityViewActionButtons()
   InvalidateCityDialogRectRegion(&LStack_64,1);
   SetGlobalBlitTransparentColorRaw(puVar8);
   local_40.top._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffff80);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff80);
   local_40.top = (uint)local_40.top._1_3_ << 8;
-  CString::~CString((CString *)&stack0xffffff84);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff84);
   local_40.top = -1;
-  CString::~CString((CString *)&stack0xffffff88);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff88);
   *unaff_FS_OFFSET = RStack_50.bottom;
   return;
 }
@@ -165,12 +165,12 @@ void TacticalBattleView::InitializeCityViewActionButtons()
 // GHIDRA_COMMENT_END
 
 /* Transitions map interaction into overlay/selection mode and updates linked UI views.
-   
+
    Behavior:
    1. If not already in overlay mode, resolves/initializes overlay view handle.
    2. Sets overlay-active flag (this+0x25).
    3. Synchronizes child views, cursor marker widget, and active panel references.
-   
+
    Notes:
    - Called when switching from civilian-selection mode to order/overlay interaction. */
 
@@ -180,7 +180,7 @@ void TacticalBattleView::EnterMapInteractionOverlayMode(int *param_1)
   int iVar1;
   int *piVar2;
   undefined4 uVar3;
-  
+
   if (this[0x94] == (TacticalBattleView)0x0) {
     if (param_1 == (int *)0x0) {
       param_1 = (int *)(**(code **)(*(int *)this + 0x94))(0x5a6d496e);
@@ -223,7 +223,7 @@ void TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A()
   int iVar1;
   TTacArmyView *this_00;
   undefined4 uVar2;
-  
+
   RebuildListFromProviderAndDeduplicateByKey();
   RebuildListFromProviderAndDeduplicateByKey();
   (**(code **)(**(int **)(this + 0x20) + 0x68))(&LAB_004083f0,this);
@@ -257,7 +257,7 @@ void TacticalBattleView::HandleTacticalBattleCommandTag(int commandTag)
   int *piVar1;
   char cVar2;
   undefined4 uVar3;
-  
+
   if (*(char *)((int)*(int **)(this + *(int *)(this + 0xc) * 4 + 0x14) + 0xd) != '\0') {
     if (commandTag < 0x646f6e66) {
       if (commandTag == 0x646f6e65) {
@@ -324,7 +324,7 @@ void TacticalBattleView::HandleTacticalCommandTag_targ()
   int *local_18;
   int local_14;
   int *local_10;
-  
+
   iVar9 = *(int *)(this + 0x1c);
   local_10 = (int *)0x0;
   if ((iVar9 != 0) && (*(int *)(this + 8) != 0)) {
@@ -426,12 +426,12 @@ undefined4 __fastcall TacticalBattleView::CreateTacticalBattleViewInstance(undef
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063875a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TacticalBattleView *)AllocateWithFallbackHandler(0xd8,param_1);
+  this = (TacticalBattleView *)__2_YAPAXI_Z(0xd8,param_1);
   local_4 = 0;
   if (this != (TacticalBattleView *)0x0) {
     uVar1 = TacticalBattleView::ConstructTacticalBattleViewBaseState(this);
@@ -479,7 +479,7 @@ TacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8900
   int local_c;
   int local_8;
   int local_4;
-  
+
   uVar1 = param_1 / *(int *)(this + 0x80);
   local_8 = *(int *)(this + 0x88);
   local_10 = (param_1 % *(int *)(this + 0x80)) * local_8 - (int)*(short *)(this + 0x78);
@@ -534,8 +534,8 @@ TacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
 {
   char cVar1;
   TOneTimeAnimation *this_00;
-  
-  this_00 = (TOneTimeAnimation *)AllocateWithFallbackHandler(0x30);
+
+  this_00 = (TOneTimeAnimation *)__2_YAPAXI_Z(0x30);
   if (this_00 == (TOneTimeAnimation *)0x0) {
     this_00 = (TOneTimeAnimation *)0x0;
   }
@@ -583,7 +583,7 @@ TacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a9240
   int iStack_18;
   int iStack_14;
   int iStack_c;
-  
+
   if (*(short *)&g_pLocalizationTable->field_0x52 != 0) {
     uVar1 = param_2 / *(int *)(this + 0x80);
     iVar5 = (param_2 % *(int *)(this + 0x80)) * *(int *)(this + 0x88) - (int)*(short *)(this + 0x78)
@@ -661,7 +661,7 @@ TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
   short sVar2;
   uint uVar3;
   int iVar4;
-  
+
   iVar1 = *(int *)(param_1 + 8);
   uVar3 = iVar1 / *(int *)(this + 0x80);
   iVar4 = (iVar1 % *(int *)(this + 0x80)) * *(int *)(this + 0x88) - (int)*(short *)(this + 0x78);
@@ -704,7 +704,7 @@ void TacticalBattleView::InitializeMapHintTextStyleAndThemeFlags()
   undefined1 local_5;
   undefined1 local_4;
   undefined1 local_3;
-  
+
   local_6 = 0;
   local_5 = 0;
   local_4 = 0;
@@ -726,19 +726,19 @@ void TacticalBattleView::InitializeMapHintTextStyleAndThemeFlags()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CC4B
-// GHIDRA_NAME TacticalBattleView::OnEnable
-// GHIDRA_PROTO undefined __thiscall OnEnable(int param_1)
+// GHIDRA_NAME TacticalBattleView::?OnEnable@CFrameWnd@@IAEXH@Z
+// GHIDRA_PROTO undefined __thiscall ?OnEnable@CFrameWnd@@IAEXH@Z(int param_1)
 
-void TacticalBattleView::OnEnable(int param_1)
+void TacticalBattleView::_OnEnable_CFrameWnd__IAEXH_Z(int param_1)
 
 {
   HWND pHVar1;
   int iVar2;
   HWND pHVar3;
-  
+
   if ((param_1 == 0) || (((byte)this[0x24] & 4) == 0)) {
     pHVar1 = GetParent(*(HWND *)(this + 0x1c));
-    iVar2 = FromHandle(pHVar1);
+    iVar2 = _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar1);
     if (iVar2 == 0) {
       if ((param_1 == 0) && (*(int *)(this + 0xa0) == 0)) {
         this[0x24] = (TacticalBattleView)((byte)this[0x24] | 0x80);
@@ -756,11 +756,11 @@ void TacticalBattleView::OnEnable(int param_1)
       if ((param_1 != 0) && (((byte)this[0x24] & 0x20) != 0)) {
         SendMessageA(*(HWND *)(this + 0x1c),0x86,1,0);
       }
-      NotifyFloatingWindows((-(uint)(param_1 != 0) & 0xfffffff0) + 0x20);
+      _NotifyFloatingWindows_CFrameWnd__QAEXK_Z((-(uint)(param_1 != 0) & 0xfffffff0) + 0x20);
     }
   }
   else {
-    FUN_0060753b(0);
+    CMcWindow::EnableWindowOrDelegateToOwner(0);
     SetFocus((HWND)0x0);
   }
   return;

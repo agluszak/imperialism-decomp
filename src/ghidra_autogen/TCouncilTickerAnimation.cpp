@@ -14,7 +14,7 @@ TCouncilTickerAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049ff20
 {
   TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -72,7 +72,7 @@ void TCouncilTickerAnimation::TickAndAdvanceCivilianTerrainSelectionStep()
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)&this->field_0x10 + 1;
   *(int *)&this->field_0x10 = iVar1;
   if (iVar1 == *(int *)&this->field_0x14) {
@@ -130,13 +130,13 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
   undefined1 *puStack_8;
   undefined4 local_4;
   undefined3 extraout_var_04;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006330a8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_30 = 0x4fc307;
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   uStack_30 = 0x2b6a;
   puStack_34 = (undefined1 *)0xe;
   local_4 = 0;
@@ -236,7 +236,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
       iVar5 = iVar5 + 2;
     } while (iVar5 < 0x784);
     *(undefined2 *)&this[0x1e].vftable = 0;
-    this_00 = (TCouncilTickerAnimation *)AllocateWithFallbackHandler(0x2c);
+    this_00 = (TCouncilTickerAnimation *)__2_YAPAXI_Z(0x2c);
     if (this_00 == (TCouncilTickerAnimation *)0x0) {
       this_00 = (TCouncilTickerAnimation *)0x0;
     }
@@ -252,7 +252,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
     (**(code **)(iVar5 + 0xa8))(0,0);
   }
   uStack_50 = 0xffffffff;
-  CString::~CString(&CStack_68);
+  CString::__1CString__QAE_XZ(&CStack_68);
   *unaff_FS_OFFSET = uStack_58;
   return;
 }

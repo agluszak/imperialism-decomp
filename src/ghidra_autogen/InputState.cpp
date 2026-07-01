@@ -34,7 +34,7 @@ void InputState::HandleKeyDown(int key_id)
   int slots_remaining;
   bool slot_is_active;
   uint slot_count;
-  
+
   if (((byte)this[0x10] & '\x01' << ((byte)key_id & 0x1f)) == 0) {
     *(ushort *)(this + 0x10) = *(ushort *)(this + 0x10) | (ushort)(1 << ((byte)key_id & 0x1f));
     controller_id = (astruct *)UiRuntimeContext::GetActiveNationId();
@@ -123,7 +123,7 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063589b;
   uStack_c = *unaff_FS_OFFSET;
@@ -133,7 +133,7 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
     (**(code **)(**(int **)(param_1 + 8) + 4))(3);
   }
   iteration_count = (int)param_2;
-  piVar2 = (int *)AllocateWithFallbackHandler(iteration_count * 0x48 + 4);
+  piVar2 = (int *)__2_YAPAXI_Z(iteration_count * 0x48 + 4);
   uStack_4 = 0;
   if (piVar2 == (int *)0x0) {
     piVar6 = (int *)0x0;
@@ -141,7 +141,7 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
   else {
     piVar6 = piVar2 + 1;
     *piVar2 = iteration_count;
-    CallCallbackRepeatedly
+    ___L_YGXPAXIHP6EX0_Z1_Z
               (piVar6,0x48,iteration_count,
                TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList);
   }
@@ -151,7 +151,7 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x87f);
   }
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x32a0);
+  puVar3 = (undefined4 *)__2_YAPAXI_Z(0x32a0);
   puVar7 = puVar3;
   for (iVar4 = 0xca8; iVar4 != 0; iVar4 = iVar4 + -1) {
     *puVar7 = 0;
@@ -172,7 +172,7 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
       iVar5 = iVar5 + 0x48;
     } while (iVar4 < iteration_count);
   }
-  FreeHeapBufferIfNotNull(puVar3);
+  __3_YAXPAX_Z(puVar3);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

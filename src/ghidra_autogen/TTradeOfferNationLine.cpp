@@ -16,12 +16,12 @@ TLineData * TTradeOfferNationLine::CreateTTradeOfferNationLineInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063933a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)AllocateWithFallbackHandler(0x14);
+  this = (TLineData *)__2_YAPAXI_Z(0x14);
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (this != (TLineData *)0x0) {
@@ -63,12 +63,12 @@ TTradeOfferNationLine::OrphanRetStub_0056f460
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063935a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this_00 = (TView *)AllocateWithFallbackHandler(100);
+  this_00 = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   if (this_00 == (TView *)0x0) {
     this_00 = (TView *)0x0;

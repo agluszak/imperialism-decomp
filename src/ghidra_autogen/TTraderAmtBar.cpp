@@ -15,12 +15,12 @@ TView * TTraderAmtBar::CreateTTraderAmtBarInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637a9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)__2_YAPAXI_Z(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -71,7 +71,7 @@ TTraderAmtBar * TTraderAmtBar::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -89,7 +89,7 @@ void TTraderAmtBar::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   int iVar4;
-  
+
   sVar3 = UiRuntimeContext::GetActiveNationId();
   iVar4 = 0;
   pTVar1 = g_apNationStates[sVar3];
@@ -130,7 +130,7 @@ void TTraderAmtBar::UpdateFromScaleOrRatio(void)
 
 {
   code *pcVar1;
-  
+
   pcVar1 = (code *)swi(3);
   (*pcVar1)();
   return;
@@ -146,7 +146,7 @@ undefined2 TTraderAmtBar::ApplyMoveClamp(undefined2 param_1, short param_2)
   undefined uVar1;
   short sVar2;
   undefined3 extraout_var;
-  
+
   if (0 < param_2) {
     sVar2 = UiRuntimeContext::GetActiveNationId();
     if ((int)param_2 < this->field34 / (int)*(short *)&g_apNationStates[sVar2]->field_0xa4) {
@@ -187,7 +187,7 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637ad0;
   uStack_c = *unaff_FS_OFFSET;
@@ -212,12 +212,12 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       uStack_c._0_1_ = 1;
       this_00 = (TDropShadowText *)NoOpQuickDrawContextSelectionHook();
       pHVar4 = CreateRectRgnIndirect(&RStack_44);
-      CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_54,(int)pHVar4);
-      TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_00,(int)&local_54);
-      DeleteObject();
+      CBrush::_Attach_CGdiObject__QAEHPAX_Z((CBrush *)&local_54,(int)pHVar4);
+      TDropShadowText::_SelectClipRgn_CDC__QAEHPAVCRgn___Z(this_00,(int)&local_54);
+      _DeleteObject_CGdiObject__QAEHXZ();
       local_54 = &PTR_LAB_00671054;
       uStack_c._0_1_ = 2;
-      DeleteObject();
+      _DeleteObject_CGdiObject__QAEHXZ();
       local_54 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
       uStack_c = CONCAT31(uStack_c._1_3_,3);
       (*pTVar1->OrphanRetStub_0059add0_4b)(auStack_24);
@@ -236,7 +236,7 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
       local_4 = local_4 & 0xffffff00;
-      TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_00,0);
+      TDropShadowText::_SelectClipRgn_CDC__QAEHPAVCRgn___Z(this_00,0);
     }
   }
   local_4 = 0xffffffff;

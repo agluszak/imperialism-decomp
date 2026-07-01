@@ -15,13 +15,13 @@ undefined2 __fastcall UiRuntimeContext::GetActiveNationId(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409205
 // GHIDRA_NAME UiRuntimeContext::MapTurnEventCodeToPaletteIndex
-// GHIDRA_PROTO undefined MapTurnEventCodeToPaletteIndex()
+// GHIDRA_PROTO undefined TViewMgr::MapTurnEventCodeToPaletteIndex()
 
 undefined4 UiRuntimeContext::MapTurnEventCodeToPaletteIndex(short param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = (int)param_1;
   if (200 < iVar1) {
     if (iVar1 < 0x2b68) {

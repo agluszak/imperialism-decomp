@@ -35,7 +35,7 @@ TCountingStream * TCountingStream::ConstructTStreamBaseState(byte param_1)
 {
   TCountingStream::~TCountingStream(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -109,7 +109,7 @@ void TCountingStream::OrphanRetStub_00488e70(int param_1)
 {
   int iVar1;
   int in_stack_00000008;
-  
+
   iVar1 = *(int *)&this->field_0x4 + in_stack_00000008;
   *(int *)&this->field_0x4 = iVar1;
   if (*(int *)&this->field_0x8 < iVar1) {

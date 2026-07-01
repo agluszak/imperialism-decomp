@@ -15,12 +15,12 @@ TBehavior * TDropShadowTextBehavior::CreateTDropShadowTextBehaviorInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630cda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TBehavior *)AllocateWithFallbackHandler(0x14);
+  this = (TBehavior *)__2_YAPAXI_Z(0x14);
   local_4 = 0;
   if (this != (TBehavior *)0x0) {
     TBehavior::ConstructTBehaviorBaseState(this);
@@ -73,7 +73,7 @@ TDropShadowTextBehavior::DestructTDropShadowTextBehaviorAndMaybeFree
 {
   DestructTDropShadowTextBehaviorAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -100,7 +100,7 @@ void TDropShadowTextBehavior::OrphanRetStub_004872e0()
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630cf8;
   iStack_c = *unaff_FS_OFFSET;
@@ -110,7 +110,7 @@ void TDropShadowTextBehavior::OrphanRetStub_004872e0()
   pCStack_30 = (CString *)0x4b1176;
   SetQuickDrawColorAndPropagateIfChanged();
   pCStack_2c = (CString *)0x4b1182;
-  CString::CString(&local_20);
+  CString::__0CString__QAE_XZ(&local_20);
   iVar2 = *piVar1;
   pCStack_2c = &local_20;
   local_4 = 0;
@@ -126,7 +126,7 @@ void TDropShadowTextBehavior::OrphanRetStub_004872e0()
   CStack_38.m_pchData = &stack0xffffffdc;
   (**(code **)(iVar2 + 0x1d4))(unaff_EDI,*(undefined4 *)(unaff_EDI + -8));
   iStack_1c = 0xffffffff;
-  CString::~CString(&CStack_38);
+  CString::__1CString__QAE_XZ(&CStack_38);
   *unaff_FS_OFFSET = unaff_ESI + -1;
   return;
 }

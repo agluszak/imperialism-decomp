@@ -20,7 +20,7 @@ CRuntimeClass * TSortByPriceList::GetTEventHandlerClassNamePointer()
 TSortByPriceList * TSortByPriceList::ConstructTSortByPriceList()
 
 {
-  TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
+  TIndexAndRankList::__0CPtrArray__QAE_XZ((TIndexAndRankList *)this);
   this->vftable = &_vftable_;
   return this;
 }
@@ -32,16 +32,16 @@ TSortByPriceList * TSortByPriceList::ConstructTSortByPriceList()
 TSortByPriceList * TSortByPriceList::_scalar_deleting_destructor_(byte param_1)
 
 {
-  CObArray::DestructCObArray();
+  CObArray::??1CUIntArray@@UAE@XZ();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534770
 // GHIDRA_NAME TSortByPriceList::~TSortByPriceList
-// GHIDRA_PROTO undefined CObArray::DestructCObArray()
+// GHIDRA_PROTO undefined CObArray::??1CUIntArray@@UAE@XZ()
 
 void TSortByPriceList::~TSortByPriceList(void)
 
@@ -50,13 +50,13 @@ void TSortByPriceList::~TSortByPriceList(void)
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &TIndexAndRankList::_vftable_;
   uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull(uVar1);
+  __3_YAXPAX_Z(uVar1);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;

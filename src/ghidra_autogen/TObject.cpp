@@ -24,12 +24,12 @@ TObject * TObject::ShallowFree()
   uint uVar4;
   uint uVar5;
   TObject *pTVar6;
-  
+
   pcVar1 = (code *)**(undefined4 **)this;
   iVar2 = (*pcVar1)();
   uVar5 = *(uint *)(iVar2 + 4);
   (*pcVar1)();
-  pTVar3 = (TObject *)CreateObject_606ff2();
+  pTVar3 = (TObject *)_CreateObject_CRuntimeClass__QAEPAVCObject__XZ();
   pTVar6 = pTVar3;
   for (uVar4 = uVar5 >> 2; uVar4 != 0; uVar4 = uVar4 - 1) {
     *(undefined4 *)pTVar6 = *(undefined4 *)this;
@@ -70,7 +70,7 @@ TObject * TObject::ShallowClone()
 
 {
   TObject *pTVar1;
-  
+
                     /* WARNING: Could not recover jumptable at 0x004798d2. Too many branches */
                     /* WARNING: Treating indirect jump as call */
   pTVar1 = (TObject *)(**(code **)(*(int *)this + 0x24))();
@@ -99,8 +99,8 @@ void TObject::CreateTObjectInstance(int param_1)
   int local_24;
   undefined4 local_20;
   undefined4 local_1c;
-  
-  CWnd::Default((CWnd *)this);
+
+  CWnd::_Default_CWnd__IAEJXZ((CWnd *)this);
   local_2c = 0x2c;
   GetWindowPlacementFromThisHwnd(&local_2c);
   if ((param_1 == 0) && (local_24 != 2)) {
@@ -145,7 +145,7 @@ void TObject::Serialize(CArchive *archive)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062ea00;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -216,7 +216,7 @@ TObject::RunRegisteredDialogFactoriesByEventCode
   int *piVar3;
   int iStack_8;
   int iStack_4;
-  
+
   piVar3 = (int *)0x0;
   puVar2 = *(undefined4 **)(this + 8);
   do {
@@ -259,7 +259,7 @@ TObject::InvokeDialogFactoryFromPacket
   int iVar1;
   int iVar2;
   int *piVar3;
-  
+
   iVar2 = g_McAppUiActiveFlag_006950AC;
   g_McAppUiActiveFlag_006950AC = 0;
   piVar3 = (int *)(**(code **)(*(int *)this + 0x30))

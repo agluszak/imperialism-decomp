@@ -26,7 +26,7 @@ TFlagOptionsPicture * TFlagOptionsPicture::_scalar_deleting_destructor_(byte par
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -44,12 +44,12 @@ thunk_TPictureButton * TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(vo
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635d2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -94,7 +94,7 @@ TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635d50;
@@ -105,7 +105,7 @@ TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     *unaff_FS_OFFSET = local_c;
     return;
   }
-  CString::CString(&param_1);
+  CString::__0CString__QAE_XZ(&param_1);
   local_4 = 0;
   uVar1 = *(uint *)(param_2 + 0x1c);
   if (uVar1 < 0x676f777a) {
@@ -168,13 +168,13 @@ LAB_0056b526:
       uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar2) + 0x1b4))();
       if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
-        CString::CString((CString *)&stack0x0000000c);
+        CString::__0CString__QAE_XZ((CString *)&stack0x0000000c);
         local_4._0_1_ = 1;
         LoadUiStringResourceByGroupAndIndex();
         AssignStringSharedRefAndReturnThis(&stack0x0000000c);
         DispatchLocalizedUiMessageWithTemplateA13A0();
         local_4 = (uint)local_4._1_3_ << 8;
-        CString::~CString((CString *)&stack0x0000000c);
+        CString::__1CString__QAE_XZ((CString *)&stack0x0000000c);
       }
       else {
         (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
@@ -185,7 +185,7 @@ LAB_0056b526:
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,10);
 LAB_0056b529:
   local_4 = 0xffffffff;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -208,13 +208,13 @@ void TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635d68;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  CString::CString((CString *)&stack0x00000004);
+  CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
   iVar3 = 0;
   local_4 = 0;
   do {
@@ -238,7 +238,7 @@ void TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
     iVar3 = iVar3 + 1;
   } while (iVar3 < 8);
   local_4 = 0xffffffff;
-  CString::~CString((CString *)&stack0x00000004);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000004);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

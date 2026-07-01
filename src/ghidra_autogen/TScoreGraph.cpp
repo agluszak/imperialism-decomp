@@ -12,7 +12,7 @@ TScoreGraph * TScoreGraph::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -41,7 +41,7 @@ void TScoreGraph::OrphanCallChain_C6_I49_004875d0()
   TToolBarClusterVtbl **ppTStack00000004;
   TToolBarClusterVtbl *pTStack_14;
   TToolBarClusterVtbl *pTStack_10;
-  
+
   pTStack_14 = (TToolBarClusterVtbl *)0x4fe2bf;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTStack_10 = (TToolBarClusterVtbl *)0x4fe2ca;
@@ -104,7 +104,7 @@ void TScoreGraph::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00633228;
   uStack_c = *unaff_FS_OFFSET;
@@ -154,7 +154,7 @@ void TScoreGraph::OrphanTiny_ReturnZero_0048a730()
         iVar4 = iVar4 + 4;
       } while (iVar5 < 4);
       local_48 = (CString *)0x4fe4a6;
-      CString::CString(&CStack_28);
+      CString::__0CString__QAE_XZ(&CStack_28);
       local_48 = &CStack_28;
       uStack_4 = 0;
       FormatOverlayTerrainLabelText();
@@ -168,7 +168,7 @@ void TScoreGraph::OrphanTiny_ReturnZero_0048a730()
       local_2c = local_2c + 0x34;
       uStack_4 = 0xffffffff;
       local_48 = (CString *)0x4fe50e;
-      CString::~CString(&CStack_28);
+      CString::__1CString__QAE_XZ(&CStack_28);
     }
     local_24 = local_24 + 0x10;
     local_34 = local_34 + 4;

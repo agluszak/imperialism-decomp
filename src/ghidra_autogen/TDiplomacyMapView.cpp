@@ -18,7 +18,7 @@ void TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(uint param_1)
   int *piVar6;
   int iVar7;
   uint in_stack_00000008;
-  
+
   iVar1 = (in_stack_00000008 & 0xff) * 0x1010101;
   if (this->ownerOffsetX == 0) {
     WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0(1);
@@ -72,9 +72,9 @@ void TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(uint param_1)
     if (0x7fffffff < uVar4) {
       in_stack_00000008 = 0x7fffffff;
     }
-    iVar7 = ReallocateHeapBlockWithAllocatorTracking(this->field04,uVar4);
+    iVar7 = _realloc(this->field04,uVar4);
     if (iVar7 == 0) {
-      iVar7 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar1);
+      iVar7 = _realloc(this->field04,iVar1);
       this->field04 = iVar7;
       this->padding_08_to_0b = iVar1;
     }
@@ -137,7 +137,7 @@ TDiplomacyMapView::BuildTurnEventFactoryPacket
   *(undefined2 *)&this->field_0x60 = param_3;
   *(undefined4 *)&this->field_0x64 = *param_4;
   *(undefined4 *)&this->field_0x68 = param_4[1];
-  CString::AssignFromPtr((CString *)&this->field_0x6c,param_5);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x6c,param_5);
   *(undefined2 *)&this->field_0x70 = param_6;
   return;
 }
@@ -156,12 +156,12 @@ void TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState(int *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f700;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  FUN_00613b5f(g_Quick_Draw_Color_State_006950FC);
+  __0CBrush__QAE_K_Z(g_Quick_Draw_Color_State_006950FC);
   local_4 = 0;
   pvVar1 = DAT_006a1da0;
   if (DAT_006a1da0 == (void *)0x0) {
@@ -180,7 +180,7 @@ void TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState(int *param_1)
              (HBRUSH)(-(uint)(&stack0x00000000 != (undefined1 *)0x14) & local_10),1,1);
   }
   local_4 = 1;
-  DeleteObject();
+  _DeleteObject_CGdiObject__QAEHXZ();
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -215,7 +215,7 @@ TDiplomacyMapView::WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFi
   TDiplomacyMapViewVtbl *pTVar5;
   tagRECT tStack_20;
   RECT RStack_10;
-  
+
   pTVar1 = this[1].vftable;
   for (pTVar5 = *(TDiplomacyMapViewVtbl **)(*(int *)&g_pMapContextActionManager->field_0x4 + 8);
       (int)(uint)(pTVar1 == (TDiplomacyMapViewVtbl *)0x0) <= (int)pTVar5;
@@ -269,7 +269,7 @@ void TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(uint param_1)
   int *piVar6;
   int iVar7;
   uint in_stack_00000008;
-  
+
   iVar1 = (in_stack_00000008 & 0xff) * 0x1010101;
   if (this->ownerOffsetX == 0) {
     WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0(1);
@@ -323,9 +323,9 @@ void TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(uint param_1)
     if (0x7fffffff < uVar4) {
       in_stack_00000008 = 0x7fffffff;
     }
-    iVar7 = ReallocateHeapBlockWithAllocatorTracking(this->field04,uVar4);
+    iVar7 = _realloc(this->field04,uVar4);
     if (iVar7 == 0) {
-      iVar7 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar1);
+      iVar7 = _realloc(this->field04,iVar1);
       this->field04 = iVar7;
       this->padding_08_to_0b = iVar1;
     }
@@ -354,12 +354,12 @@ undefined4 __fastcall TDiplomacyMapView::CreateTDiplomacyMapViewInstance(undefin
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632aca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TDiplomacyMapView *)AllocateWithFallbackHandler(0x24c8,param_1);
+  this = (TDiplomacyMapView *)__2_YAPAXI_Z(0x24c8,param_1);
   local_4 = 0;
   if (this != (TDiplomacyMapView *)0x0) {
     uVar1 = TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState(this);
@@ -391,16 +391,16 @@ TDiplomacyMapView * TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632b00;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
   local_4 = 0;
-  CallCallbackRepeatedly(&this->field_0x1eac,0x14,0x17,&LAB_00408436);
+  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x1eac,0x14,0x17,&LAB_00408436);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CallCallbackRepeatedly(&this->field_0x2078,0x30,0x17,&LAB_00404d5e);
+  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x2078,0x30,0x17,&LAB_00404d5e);
   this->vftable = (TDiplomacyMapViewVtbl *)&PTR_LAB_00655b68;
   *(undefined4 *)&this->field_0x94 = 0;
   *(undefined2 *)&this->field_0x98 = 0;
@@ -435,7 +435,7 @@ TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree_004F3C90
 {
   TDiplomacyMapView::DestructTDiplomacyMapViewBaseState(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -451,14 +451,14 @@ void TDiplomacyMapView::DestructTDiplomacyMapViewBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_00632b40;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  InvokeCallbackNTimesWithSehGuard(&this->field_0x2078,0x30,0x17,&LAB_004038a0);
+  ___M_YGXPAXIHP6EX0_Z_Z(&this->field_0x2078,0x30,0x17,&LAB_004038a0);
   local_4 = local_4 & 0xffffff00;
-  InvokeCallbackNTimesWithSehGuard(&this->field_0x1eac,0x14,0x17,&LAB_004077bb);
+  ___M_YGXPAXIHP6EX0_Z_Z(&this->field_0x1eac,0x14,0x17,&LAB_004077bb);
   local_4 = 0xffffffff;
   TView::DestructCityDialogSharedBaseState((TView *)this);
   *unaff_FS_OFFSET = local_c;
@@ -519,7 +519,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00632b6b;
   uStack_c = *unaff_FS_OFFSET;
@@ -581,10 +581,9 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks()
     CopyRect(lprcDst,(RECT *)*puVar9);
     LVar2 = *pLVar16;
     lprcDst->right = lprcDst->left + ((lprcDst->right - lprcDst->left) + 7 >> 3) * 8;
-    FreeHeapBufferIfNotNull(LVar2);
-    pcVar10 = (char *)AllocateWithFallbackHandler
-                                ((lprcDst->right - lprcDst->left) * (lprcDst->bottom - lprcDst->top)
-                                );
+    __3_YAXPAX_Z(LVar2);
+    pcVar10 = (char *)__2_YAPAXI_Z((lprcDst->right - lprcDst->left) *
+                                   (lprcDst->bottom - lprcDst->top));
     iVar12 = lprcDst->top;
     *pLVar16 = (LONG)pcVar10;
     if (iVar12 < ptStack_e4->bottom) {
@@ -613,7 +612,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks()
     }
     WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0
               (pLVar16,g_pPrimaryRenderSurfaceContext,1);
-    CString::CString(&CStack_c0);
+    CString::__0CString__QAE_XZ(&CStack_c0);
     ppTVar14 = ppTStack_c4;
     uStack_4 = 0;
     if (*ppTStack_c4 != (TCountry *)0x0) {
@@ -707,7 +706,7 @@ LAB_004f4159:
     piVar17 = piStack_cc;
 LAB_004f4343:
     uStack_4 = 0xffffffff;
-    CString::~CString(&CStack_c0);
+    CString::__1CString__QAE_XZ(&CStack_c0);
     pTVar3 = local_d4;
     iStack_e0 = iStack_e0 + 1;
     lprcDst = (LPRECT)&ptStack_e4[1].top;
@@ -767,14 +766,14 @@ void TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined1 *local_4;
-  
+
   local_4 = (undefined1 *)0xffffffff;
   puStack_8 = &LAB_00632ba8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_1c = 0x4f48e3;
   local_10.m_pchData = (char *)this;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   iVar1 = *(int *)&this->field_0x94;
   local_4 = (undefined1 *)0x0;
   if (iVar1 == 1) {
@@ -814,7 +813,7 @@ void TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill()
   }
   uStack_c = 0xffffffff;
   uStack_24 = 0x4f49c0;
-  CString::~CString((CString *)&stack0xffffffe8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffe8);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }
@@ -852,7 +851,7 @@ void TDiplomacyMapView::HandleDiplomacySelectedNationActionCommand()
   undefined4 uStack_c;
   undefined4 uStack_8;
   undefined4 uStack_4;
-  
+
   iVar6 = TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget
                     ((TCountry *)this,in_stack_00000004);
   uVar8 = (undefined2)((uint)(iVar6 + -2) >> 0x10);
@@ -1182,7 +1181,7 @@ TDiplomacyMapView::UpdateDiplomacyMapHoverCursorFromActionSelection
   LONG local_28;
   LONG local_24;
   short local_20 [16];
-  
+
   local_28 = param_1->x;
   local_24 = param_1->y;
   local_20[0] = 0x41b;
@@ -1255,7 +1254,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined1 *local_4;
-  
+
   local_4 = (undefined1 *)0xffffffff;
   puStack_8 = &LAB_00632bf8;
   uStack_c = *unaff_FS_OFFSET;
@@ -1350,7 +1349,7 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit
   undefined4 local_1c;
   int local_18 [2];
   RECT local_10;
-  
+
   local_10.left = *param_2;
   local_10.top = param_2[1];
   local_10.right = param_2[2];
@@ -1421,7 +1420,7 @@ TDiplomacyMapView::BlitMonochromeMaskBytePatternToSurface
   int iVar6;
   int iVar7;
   int iVar8;
-  
+
   pTVar4 = this->vftable;
   if (pTVar4 != (TDiplomacyMapViewVtbl *)0x0) {
     if (param_4 == '\0') {
@@ -1516,17 +1515,17 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632c30;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_3c = this;
-  CString::CString(&local_28);
+  CString::__0CString__QAE_XZ(&local_28);
   local_4 = 0;
-  CString::CString(&local_2c);
+  CString::__0CString__QAE_XZ(&local_2c);
   local_4._0_1_ = 1;
-  CString::CString(&local_30);
+  CString::__0CString__QAE_XZ(&local_30);
   local_4._0_1_ = 2;
   AcquireReusableQuickDrawSurface();
   *(undefined2 *)&this->field_0x98 = param_1._0_2_;
@@ -1581,11 +1580,11 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
   local_4._0_1_ = 2;
   ReleaseOrCacheQuickDrawSurface();
   local_4._0_1_ = 1;
-  CString::~CString(&local_30);
+  CString::__1CString__QAE_XZ(&local_30);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_2c);
+  CString::__1CString__QAE_XZ(&local_2c);
   local_4 = 0xffffffff;
-  CString::~CString(&local_28);
+  CString::__1CString__QAE_XZ(&local_28);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -1605,7 +1604,7 @@ TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers
   int *piVar3;
   char cVar4;
   int local_8 [2];
-  
+
   local_8[0] = 0;
   local_8[1] = 0;
   piVar3 = local_8;
@@ -1647,7 +1646,7 @@ TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface
   int iVar13;
   undefined1 *puVar14;
   int iVar15;
-  
+
   pTVar7 = g_pActiveQuickDrawSurfaceContext;
   puVar14 = &g_pActiveQuickDrawSurfaceContext->field_0x4;
   puVar1 = (undefined4 *)(&this->field_0x1eac + param_1 * 0x14);
@@ -1728,7 +1727,7 @@ TDiplomacyMapView::HandleDiplomacyMapControlTagToggleOrForward
   int *piVar1;
   undefined *puVar2;
   undefined *unaff_ESI;
-  
+
   if (param_2 == 0x14) {
     puVar2 = (undefined *)0x0;
     piVar1 = &DAT_00696978;
@@ -1765,7 +1764,7 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames()
   int local_24;
   tagRECT tStack_20;
   RECT RStack_10;
-  
+
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
   local_28 = 0;
@@ -1871,7 +1870,7 @@ void TDiplomacyMapView::AddToForeignMinisterCounterAtIndex()
   int *piVar2;
   char *pcVar3;
   int iVar4;
-  
+
   iVar4 = 0;
   pcVar3 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
   pcVar1 = *(code **)(**(int **)(DAT_006a2158 + 4) + 0x94);
@@ -1906,7 +1905,7 @@ void TDiplomacyMapView::OrphanRetStub_0059add0()
   int iVar1;
   int iVar2;
   int *piVar3;
-  
+
   piVar3 = (int *)(**(code **)(*DAT_006a1b24 + 0x28))();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -1940,7 +1939,7 @@ void TDiplomacyMapView::GetTBehaviorClassNamePointer()
   int iVar1;
   int iVar2;
   int *piVar3;
-  
+
   piVar3 = (int *)(**(code **)(*DAT_006a1b24 + 0x28))();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -1992,7 +1991,7 @@ void TDiplomacyMapView::EvaluateControlInputGate()
   int iVar1;
   int iVar2;
   int *piVar3;
-  
+
   piVar3 = (int *)(**(code **)(*DAT_006a1b24 + 0x28))();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -2029,7 +2028,7 @@ void TDiplomacyMapView::HasRenderableParentAndContent()
   int iVar1;
   int iVar2;
   int *piVar3;
-  
+
   piVar3 = (int *)(**(code **)(*DAT_006a1b24 + 0x28))();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -2066,7 +2065,7 @@ void TDiplomacyMapView::ReleaseRuntimeSelectionOwnerAndDestroyObject()
   int iVar1;
   int iVar2;
   int *piVar3;
-  
+
   piVar3 = (int *)(**(code **)(*DAT_006a1b24 + 0x28))();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -2102,7 +2101,7 @@ void TDiplomacyMapView::DispatchTurnEvent7D8AndUpdateMainViewSelection()
 {
   int iVar1;
   int *piVar2;
-  
+
   piVar2 = *(int **)(DAT_006a2158 + 4);
   (*this->vftable[1].OrphanRetStub_0059add0)(0x7d8);
   piVar2 = (int *)(**(code **)(*piVar2 + 0x94))(0x6d61696e);
@@ -2130,7 +2129,7 @@ undefined4 TDiplomacyMapView::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
   undefined4 uVar3;
   undefined4 unaff_EDI;
   undefined4 unaff_retaddr;
-  
+
   cVar1 = IsTurnCooldownCounterActiveOrResetFlag();
   if (cVar1 != '\0') {
     return 1;
@@ -2178,7 +2177,7 @@ TDiplomacyMapView::_scalar_deleting_destructor_
   int iVar1;
   int *piVar2;
   undefined4 unaff_retaddr;
-  
+
   piVar2 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x6d61696e);
   iVar1 = *piVar2;
   (**(code **)(iVar1 + 0xc))();
@@ -2224,7 +2223,7 @@ TDiplomacyMapView::GetTEventHandlerClassNamePointer
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063a0c2;
   uStack_c = *unaff_FS_OFFSET;
@@ -2255,7 +2254,7 @@ switchD_005d72b4_default:
   iVar5 = (int)(short)this->field04;
   if (iVar5 < 0x2135) {
     if (iVar5 == 0x2134) {
-      ModifyStyle(0,0x2000000);
+      _ModifyStyle_CWnd__QAEHKKI_Z(0,0x2000000);
     }
     else {
       switch(iVar5) {
@@ -2277,15 +2276,15 @@ switchD_005d72b4_default:
     *(undefined2 *)&this->field04 = 0;
     *(undefined2 *)(DAT_006a2158 + 7) = 0;
     (**(code **)(iVar5 + 0xa0))();
-    InitializeUiWindowTraversalState();
-    piVar8 = (int *)LoadFirstUiWindowTraversalEntry();
-    iVar5 = IsUiWindowTraversalEntryValid();
+    CWMgrIterator::Reset();
+    piVar8 = (int *)CWMgrIterator::FirstWindow();
+    iVar5 = CWMgrIterator::More();
     while (iVar5 != 0) {
       if ((piVar8[7] == 0x6d617057) || (piVar8[7] == 0x74726e57)) {
         (**(code **)(*piVar8 + 0x1d0))();
       }
-      piVar8 = (int *)LoadNextUiWindowTraversalEntry();
-      iVar5 = IsUiWindowTraversalEntryValid();
+      piVar8 = (int *)CWMgrIterator::NextWindow();
+      iVar5 = CWMgrIterator::More();
     }
     goto LAB_005d79b8;
   }
@@ -2306,7 +2305,8 @@ switchD_005d72b4_default:
         (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c,0x2b67);
         pCVar6 = (CObject *)(*pcVar1)(0x6d61696e);
         (*pCVar6->vftable[1].slot_0x04)();
-        if ((pCVar6 != (CObject *)0x0) && (iVar5 = CObject::IsKindOf(pCVar6), iVar5 != 0)) {
+        if ((pCVar6 != (CObject *)0x0) &&
+           (iVar5 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(pCVar6), iVar5 != 0)) {
           *(short *)&pCVar6[0x24].vftable = param_2;
         }
       }
@@ -2370,7 +2370,7 @@ switchD_005d72b4_default:
   if ((short)param_1 != 0x898) {
     *(undefined2 *)((int)&this->field04 + 2) = unaff_retaddr;
   }
-  this_00 = (TControl *)AllocateWithFallbackHandler(0x74);
+  this_00 = (TControl *)__2_YAPAXI_Z(0x74);
   uStack_c = 0;
   if (this_00 == (TControl *)0x0) {
     this_01 = (TDiplomacyMapView *)0x0;
@@ -2379,13 +2379,13 @@ switchD_005d72b4_default:
     this_01 = (TDiplomacyMapView *)TControl::ConstructTurnEventUiEntryBase(this_00);
   }
   uStack_c = 0xffffffff;
-  CString::CString((CString *)&stack0x00000000,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0x00000000,(char *)&g_szEmptyString);
   uStack_c = 1;
   TDiplomacyMapView::BuildTurnEventFactoryPacket
             (this_01,0,piVar8,(short)uStack_4,(undefined4 *)&stack0xffffffd8,
              (CString *)&stack0x00000000,1);
   uStack_c = 0xffffffff;
-  CString::~CString((CString *)&stack0x00000000);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
   pTVar2 = this_01->vftable;
   (*pTVar2[5].SelectCandidateTilesWithLowGroundUnitCount)(0);
   this_01->controlTag = 0x496e636c;
@@ -2409,7 +2409,8 @@ switchD_005d72b4_default:
         (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c,0x2b67);
         pCVar6 = (CObject *)(*pcVar1)(0x6d61696e);
         (*pCVar6->vftable[1].slot_0x04)();
-        if ((pCVar6 == (CObject *)0x0) || (iVar5 = CObject::IsKindOf(pCVar6), iVar5 == 0)) {
+        if ((pCVar6 == (CObject *)0x0) ||
+           (iVar5 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(pCVar6), iVar5 == 0)) {
 LAB_005d785e:
           *(undefined1 *)&g_pGlobalUiRootController[1].field04 = 1;
         }
@@ -2544,7 +2545,7 @@ void TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion()
   short sVar1;
   int iVar2;
   int unaff_retaddr;
-  
+
   (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0x3b8);
   sVar1 = *(short *)(unaff_retaddr + 0x14);
   while (sVar1 == 0) {
@@ -2592,14 +2593,14 @@ void TDiplomacyMapView::HandleTurnEvent7DB_SelectCityAndRefreshView()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a0f0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pCVar1 = *(CString **)(DAT_006a2158 + 4);
   iStack_2c = 0x5d7cdd;
-  CString::CString(local_18);
+  CString::__0CString__QAE_XZ(local_18);
   iStack_2c = 0x10;
   local_4 = 0;
   uStack_30 = 0x5d7cf2;
@@ -2669,12 +2670,12 @@ void TDiplomacyMapView::HandleTurnEvent7DB_SelectCityAndRefreshView()
   piVar3 = (int *)(*pcVar2)();
   (**(code **)(*piVar3 + 0xc))();
   pCStack_58 = (CString *)0x5d7e34;
-  CString::CString(&CStack_3c,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&CStack_3c,(char *)&g_szEmptyString);
   iStack_2c._0_1_ = 1;
   pCStack_58 = (CString *)0x5d7e47;
-  CString::AssignFromPtr(&CStack_40,&CStack_3c);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_40,&CStack_3c);
   iStack_2c = (uint)iStack_2c._1_3_ << 8;
-  CString::~CString(&CStack_3c);
+  CString::__1CString__QAE_XZ(&CStack_3c);
   puStack_38 = (undefined1 *)&pCStack_58;
   AssignStringSharedRefAndReturnThis(&CStack_40);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
@@ -2693,7 +2694,7 @@ void TDiplomacyMapView::HandleTurnEvent7DB_SelectCityAndRefreshView()
   pCStack_58 = pCVar1;
   (**(code **)(iVar4 + 0x1d8))(pTVar5);
   puStack_38 = (undefined1 *)0xffffffff;
-  CString::~CString(&CStack_4c);
+  CString::__1CString__QAE_XZ(&CStack_4c);
   *unaff_FS_OFFSET = CStack_40.m_pchData;
   return;
 }
@@ -2747,7 +2748,7 @@ void TDiplomacyMapView::_scalar_deleting_destructor_()
 {
   code *pcVar1;
   TCouncilTickerAnimation *this_00;
-  
+
   pcVar1 = *(code **)(**(int **)(DAT_006a2158 + 4) + 0x94);
   g_pCursorControlPanel = (TControl *)(*pcVar1)(0x63757273);
   (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
@@ -2791,14 +2792,14 @@ void TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a110;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   piVar2 = *(int **)(DAT_006a2158 + 4);
   iStack_30 = 0x5d806d;
-  CString::CString(local_1c);
+  CString::__0CString__QAE_XZ(local_1c);
   iStack_30 = 1;
   local_4 = 0;
   uStack_34 = 0x5d8082;
@@ -2856,10 +2857,10 @@ void TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView()
   piVar4 = (int *)(*pcVar1)();
   (**(code **)(*piVar4 + 0xc))();
   pCStack_5c = (CRuntimeClass *)0x5d81c3;
-  CString::CString(&CStack_40,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&CStack_40,(char *)&g_szEmptyString);
   pCStack_5c = (CRuntimeClass *)0x5d81d6;
-  CString::AssignFromPtr(&CStack_44,&CStack_40);
-  CString::~CString(&CStack_40);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_44,&CStack_40);
+  CString::__1CString__QAE_XZ(&CStack_40);
   puStack_38 = (undefined1 *)&pCStack_5c;
   AssignStringSharedRefAndReturnThis(&CStack_44);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
@@ -2872,14 +2873,14 @@ void TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView()
   this_00 = (CObject *)(*pcVar1)();
   if (this_00 != (CObject *)0x0) {
     pCStack_5c = &classRuntimeClass;
-    iVar3 = CObject::IsKindOf(this_00);
+    iVar3 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(this_00);
     if (iVar3 != 0) {
       *(undefined2 *)&this_00[0x24].vftable = unaff_SI;
     }
   }
   iStack_30 = 0xffffffff;
   pCStack_5c = (CRuntimeClass *)0x5d825c;
-  CString::~CString(&CStack_48);
+  CString::__1CString__QAE_XZ(&CStack_48);
   *unaff_FS_OFFSET = puStack_38;
   return;
 }
@@ -2930,14 +2931,14 @@ TDiplomacyMapView::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a130;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   piVar2 = *(int **)(DAT_006a2158 + 4);
   puStack_2c = (undefined1 *)0x5d83dd;
-  CString::CString(local_18);
+  CString::__0CString__QAE_XZ(local_18);
   puStack_2c = (undefined1 *)0x6d61696e;
   local_4 = 0;
   pcVar1 = *(code **)(*piVar2 + 0x94);
@@ -3016,12 +3017,12 @@ TDiplomacyMapView::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
     RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   }
   ppiStack_58 = (int **)0x5d8551;
-  CString::CString(&CStack_3c,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&CStack_3c,(char *)&g_szEmptyString);
   puStack_2c._0_1_ = 1;
   ppiStack_58 = (int **)0x5d8564;
-  CString::AssignFromPtr(&CStack_40,&CStack_3c);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_40,&CStack_3c);
   puStack_2c = (undefined1 *)((uint)puStack_2c._1_3_ << 8);
-  CString::~CString(&CStack_3c);
+  CString::__1CString__QAE_XZ(&CStack_3c);
   puStack_38 = (undefined1 *)&ppiStack_58;
   pCStack_5c = &CStack_40;
   uStack_60 = 0x5d8584;
@@ -3076,7 +3077,7 @@ TDiplomacyMapView::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
     iVar4 = iVar4 + 1;
   } while ((short)iVar4 < 0x17);
   piStack_68 = (int *)0xffffffff;
-  CString::~CString(&CStack_7c);
+  CString::__1CString__QAE_XZ(&CStack_7c);
   *unaff_FS_OFFSET = (int)ppCStack_70;
   return;
 }
@@ -3133,7 +3134,7 @@ void TDiplomacyMapView::OrphanRetStub_0059add0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a170;
   uStack_c = *unaff_FS_OFFSET;
@@ -3144,10 +3145,10 @@ void TDiplomacyMapView::OrphanRetStub_0059add0()
   local_10 = 0;
   local_f = 0;
   uStack_44 = 0x5d89c1;
-  CString::CString(&local_30);
+  CString::__0CString__QAE_XZ(&local_30);
   local_4 = 0;
   uStack_44 = 0x5d89d2;
-  CString::CString(&local_2c);
+  CString::__0CString__QAE_XZ(&local_2c);
   local_20 = *piVar3;
   uStack_44 = 0x6d61696e;
   local_4 = CONCAT31(local_4._1_3_,1);
@@ -3217,13 +3218,13 @@ void TDiplomacyMapView::OrphanRetStub_0059add0()
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   CStack_84.m_pchData = (char *)0xd;
   CStack_88.m_pchData = (char *)0x5d8b17;
-  AppendSingleByteToSharedStringFromArg();
+  __YCString__QAEABV0_D_Z();
   CStack_84.m_pchData = (char *)0xd;
   CStack_88.m_pchData = (char *)0x5d8b22;
-  AppendSingleByteToSharedStringFromArg();
+  __YCString__QAEABV0_D_Z();
   CStack_84.m_pchData = (char *)&ppuStack_6c;
   CStack_88.m_pchData = (char *)0x5d8b30;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   CStack_88.m_pchData = (char *)&iStack_70;
   CStack_84.m_pchData = (char *)0x1;
   (**(code **)(iVar2 + 0x1c8))();
@@ -3232,9 +3233,9 @@ void TDiplomacyMapView::OrphanRetStub_0059add0()
   (**(code **)(iVar2 + 0x1c4))(0xfffffffe,0);
   (*(code *)puStack_78[0x4f])();
   uStack_5c = uStack_5c & 0xffffff00;
-  CString::~CString(&CStack_84);
+  CString::__1CString__QAE_XZ(&CStack_84);
   uStack_5c = 0xffffffff;
-  CString::~CString(&CStack_88);
+  CString::__1CString__QAE_XZ(&CStack_88);
   *unaff_FS_OFFSET = uStack_64;
   return;
 }
@@ -3255,7 +3256,7 @@ void TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate()
   int iVar1;
   int *piVar2;
   undefined4 unaff_EDI;
-  
+
   iVar1 = **(int **)(DAT_006a2158 + 4);
   piVar2 = (int *)(**(code **)(iVar1 + 0x94))(0x6d61696e);
   (**(code **)(*piVar2 + 0xc))();
@@ -3296,7 +3297,7 @@ void TDiplomacyMapView::SetCityDialogValueDword10()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a188;
   uStack_c = *unaff_FS_OFFSET;
@@ -3393,14 +3394,14 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a1f0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   puStack_44 = (undefined1 *)0x5d8df9;
   local_20 = this;
-  CString::CString(&local_30);
+  CString::__0CString__QAE_XZ(&local_30);
   puStack_44 = (undefined1 *)0x100;
   local_4 = 0;
   piVar5 = *(int **)(DAT_006a2158 + 4);
@@ -3458,12 +3459,12 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
   piVar5 = (int *)(*pcVar2)();
   (**(code **)(*piVar5 + 0xc))();
   puStack_70 = (undefined4 *)0x5d8f57;
-  CString::CString(&CStack_4c,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&CStack_4c,(char *)&g_szEmptyString);
   uStack_2c = 1;
   puStack_70 = (undefined4 *)0x5d8f6a;
-  CString::AssignFromPtr(&CStack_58,&CStack_4c);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_58,&CStack_4c);
   uStack_2c = 0;
-  CString::~CString(&CStack_4c);
+  CString::__1CString__QAE_XZ(&CStack_4c);
   puStack_44 = (undefined1 *)&puStack_70;
   AssignStringSharedRefAndReturnThis();
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
@@ -3596,10 +3597,10 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
   else {
     (**(code **)(*piVar11 + 0xa4))();
     CStack_170.m_pchData = (char *)0x5d94de;
-    CString::CString((CString *)&stack0xfffffeb0,PTR_g_szEmptyString_0066f050);
+    CString::__0CString__QAE_PBD_Z((CString *)&stack0xfffffeb0,PTR_g_szEmptyString_0066f050);
     CStack_170.m_pchData = (char *)0x5d94f1;
-    CString::AssignFromPtr(&CStack_158,(CString *)&stack0xfffffeb0);
-    CString::~CString((CString *)&stack0xfffffeb0);
+    CString::__4CString__QAEABV0_ABV0__Z(&CStack_158,(CString *)&stack0xfffffeb0);
+    CString::__1CString__QAE_XZ((CString *)&stack0xfffffeb0);
     pCStack_174 = &CStack_158;
     piStack_178 = (int *)0x5d9511;
     AssignStringSharedRefAndReturnThis();
@@ -3632,11 +3633,11 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
     CStack_188.m_pchData = (char *)0x0;
     ppiStack_18c = (int **)0x5d95d7;
     (**(code **)(*piVar5 + 0xa4))();
-    CString::CString(&CStack_170,PTR_g_szEmptyString_0066f050);
+    CString::__0CString__QAE_PBD_Z(&CStack_170,PTR_g_szEmptyString_0066f050);
     CStack_158.m_pchData._0_1_ = 3;
-    CString::AssignFromPtr((CString *)&stack0xfffffe7c,&CStack_170);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xfffffe7c,&CStack_170);
     CStack_158.m_pchData = (char *)((uint)CStack_158.m_pchData._1_3_ << 8);
-    CString::~CString(&CStack_170);
+    CString::__1CString__QAE_XZ(&CStack_170);
   }
   CStack_170.m_pchData = &stack0xfffffe64;
   CStack_1a0.m_pchData = &stack0xfffffe7c;
@@ -3661,11 +3662,11 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
     CStack_1a0.m_pchData = (char *)0x0;
     puStack_1a4 = (undefined4 *)0x5d96b2;
     (**(code **)(*(int *)CVar8.m_pchData + 0xa4))();
-    CString::CString(&CStack_188,PTR_g_szEmptyString_0066f050);
+    CString::__0CString__QAE_PBD_Z(&CStack_188,PTR_g_szEmptyString_0066f050);
     CStack_170.m_pchData._0_1_ = 4;
-    CString::AssignFromPtr((CString *)&stack0xfffffe64,&CStack_188);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xfffffe64,&CStack_188);
     CStack_170.m_pchData = (char *)((uint)CStack_170.m_pchData._1_3_ << 8);
-    CString::~CString(&CStack_188);
+    CString::__1CString__QAE_XZ(&CStack_188);
   }
   CStack_188.m_pchData = &stack0xfffffe4c;
   CStack_1b8.m_pchData = &stack0xfffffe64;
@@ -3690,11 +3691,11 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
     CStack_1b8.m_pchData = (char *)0x0;
     puStack_1bc = (undefined4 *)0x5d978d;
     (**(code **)(*(int *)CVar8.m_pchData + 0xa4))();
-    CString::CString(&CStack_1a0,PTR_g_szEmptyString_0066f050);
+    CString::__0CString__QAE_PBD_Z(&CStack_1a0,PTR_g_szEmptyString_0066f050);
     CStack_188.m_pchData._0_1_ = 5;
-    CString::AssignFromPtr((CString *)&stack0xfffffe4c,&CStack_1a0);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xfffffe4c,&CStack_1a0);
     CStack_188.m_pchData = (char *)((uint)CStack_188.m_pchData._1_3_ << 8);
-    CString::~CString(&CStack_1a0);
+    CString::__1CString__QAE_XZ(&CStack_1a0);
   }
   CStack_1a0.m_pchData = &stack0xfffffe34;
   CStack_1d0.m_pchData = &stack0xfffffe4c;
@@ -3719,11 +3720,11 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
     CStack_1d0.m_pchData = (char *)0x0;
     puStack_1d4 = (undefined4 *)0x5d986a;
     (**(code **)(*(int *)CVar8.m_pchData + 0xa4))();
-    CString::CString(&CStack_1b8,PTR_g_szEmptyString_0066f050);
+    CString::__0CString__QAE_PBD_Z(&CStack_1b8,PTR_g_szEmptyString_0066f050);
     CStack_1a0.m_pchData._0_1_ = 6;
-    CString::AssignFromPtr((CString *)&stack0xfffffe34,&CStack_1b8);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xfffffe34,&CStack_1b8);
     CStack_1a0.m_pchData = (char *)((uint)CStack_1a0.m_pchData._1_3_ << 8);
-    CString::~CString(&CStack_1b8);
+    CString::__1CString__QAE_XZ(&CStack_1b8);
   }
   CStack_1b8.m_pchData = &stack0xfffffe1c;
   CStack_1e8.m_pchData = &stack0xfffffe34;
@@ -3748,11 +3749,11 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
     CStack_1e8.m_pchData = (char *)0x0;
     puStack_1ec = (undefined4 *)0x5d9947;
     (**(code **)(*(int *)CVar8.m_pchData + 0xa4))();
-    CString::CString(&CStack_1d0,PTR_g_szEmptyString_0066f050);
+    CString::__0CString__QAE_PBD_Z(&CStack_1d0,PTR_g_szEmptyString_0066f050);
     CStack_1b8.m_pchData._0_1_ = 7;
-    CString::AssignFromPtr((CString *)&stack0xfffffe1c,&CStack_1d0);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xfffffe1c,&CStack_1d0);
     CStack_1b8.m_pchData = (char *)((uint)CStack_1b8.m_pchData._1_3_ << 8);
-    CString::~CString(&CStack_1d0);
+    CString::__1CString__QAE_XZ(&CStack_1d0);
   }
   CStack_1d0.m_pchData = &stack0xfffffe04;
   CStack_200.m_pchData = &stack0xfffffe1c;
@@ -3777,11 +3778,11 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
     CStack_200.m_pchData = (char *)0x0;
     pcStack_204 = (char *)0x5d9a24;
     (**(code **)(*(int *)CVar8.m_pchData + 0xa4))();
-    CString::CString(&CStack_1e8,PTR_g_szEmptyString_0066f050);
+    CString::__0CString__QAE_PBD_Z(&CStack_1e8,PTR_g_szEmptyString_0066f050);
     CStack_1d0.m_pchData._0_1_ = 8;
-    CString::AssignFromPtr((CString *)&stack0xfffffe04,&CStack_1e8);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xfffffe04,&CStack_1e8);
     CStack_1d0.m_pchData = (char *)((uint)CStack_1d0.m_pchData._1_3_ << 8);
-    CString::~CString(&CStack_1e8);
+    CString::__1CString__QAE_XZ(&CStack_1e8);
   }
   CStack_1e8.m_pchData = &stack0xfffffdec;
   puStack_218 = &stack0xfffffe04;
@@ -3809,11 +3810,11 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
     puStack_218 = (undefined1 *)0x0;
     ppuStack_21c = (undefined1 **)0x5d9b10;
     (**(code **)(*(int *)CVar8.m_pchData + 0xa4))();
-    CString::CString(&CStack_200,PTR_g_szEmptyString_0066f050);
+    CString::__0CString__QAE_PBD_Z(&CStack_200,PTR_g_szEmptyString_0066f050);
     CStack_1e8.m_pchData._0_1_ = 9;
-    CString::AssignFromPtr((CString *)&stack0xfffffdec,&CStack_200);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xfffffdec,&CStack_200);
     CStack_1e8.m_pchData = (char *)((uint)CStack_1e8.m_pchData._1_3_ << 8);
-    CString::~CString(&CStack_200);
+    CString::__1CString__QAE_XZ(&CStack_200);
     puStack_208 = &stack0xfffffdd4;
     AssignStringSharedRefAndReturnThis(&stack0xfffffdec);
     RunEnableAndProcessFlagWithScopedSharedStringCleanup();
@@ -3851,7 +3852,7 @@ void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
     pcStack_204 = pcStack_204 + 4;
   } while ((short)iVar7 < 0x11);
   CStack_1e8.m_pchData = (char *)0xffffffff;
-  CString::~CString((CString *)&stack0xfffffdec);
+  CString::__1CString__QAE_XZ((CString *)&stack0xfffffdec);
   *unaff_FS_OFFSET = uStack_1f0;
   return;
 }
@@ -3881,12 +3882,12 @@ void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a220;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_4 = 0;
   pcVar1 = *(code **)(**(int **)(DAT_006a2158 + 4) + 0x94);
   piVar3 = (int *)(*pcVar1)();
@@ -3896,15 +3897,15 @@ void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount()
   g_pCursorControlPanel = (TControl *)(*pcVar1)();
   (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
   (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)();
-  CString::CString((CString *)&stack0xffffffdc,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffdc,(char *)&g_szEmptyString);
   iStack_14._0_1_ = 1;
-  CString::AssignFromPtr((CString *)&stack0xffffffd8,(CString *)&stack0xffffffdc);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffd8,(CString *)&stack0xffffffdc);
   iStack_14 = (uint)iStack_14._1_3_ << 8;
-  CString::~CString((CString *)&stack0xffffffdc);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffdc);
   AssignStringSharedRefAndReturnThis(&stack0xffffffd8);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   iStack_14 = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffffd8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd8);
   *unaff_FS_OFFSET = unaff_EBX;
   return;
 }
@@ -3937,14 +3938,14 @@ void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a240;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   piVar3 = *(int **)(DAT_006a2158 + 4);
   CStack_28.m_pchData = (char *)0x5da1ac;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   CStack_28.m_pchData = (char *)0x63757273;
   local_4 = 0;
   pcVar1 = *(code **)(*piVar3 + 0x94);
@@ -3955,12 +3956,12 @@ void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920()
   iVar2 = *piVar3;
   (**(code **)(iVar2 + 0xc))();
   uStack_3c = 0x5da209;
-  CString::CString((CString *)&stack0xffffffdc,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffdc,(char *)&g_szEmptyString);
   uStack_14 = 1;
   uStack_3c = 0x5da21c;
-  CString::AssignFromPtr(&CStack_28,(CString *)&stack0xffffffdc);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_28,(CString *)&stack0xffffffdc);
   uStack_14 = 0;
-  CString::~CString((CString *)&stack0xffffffdc);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffdc);
   pCStack_40 = &CStack_28;
   uStack_44 = 0x5da23c;
   AssignStringSharedRefAndReturnThis();
@@ -3993,7 +3994,7 @@ void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920()
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2741);
   (**(code **)(iVar2 + 0x1c8))(&uStack_44,0);
   RefreshHudNationTitleControlsAndTheme(0x2b6c);
-  CString::~CString(&CStack_4c);
+  CString::__1CString__QAE_XZ(&CStack_4c);
   *unaff_FS_OFFSET = pCStack_40;
   return;
 }
@@ -4047,7 +4048,7 @@ void TDiplomacyMapView::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a270;
   uStack_c = *unaff_FS_OFFSET;
@@ -4056,7 +4057,7 @@ void TDiplomacyMapView::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()
   uStack_38 = 0x5da395;
   local_1c = piVar2;
   local_14 = this;
-  CString::CString(&local_24);
+  CString::__0CString__QAE_XZ(&local_24);
   local_4 = 0;
   uStack_38 = 0x5da3a8;
   uStack_38 = UiRuntimeContext::GetActiveNationId();
@@ -4183,11 +4184,11 @@ void TDiplomacyMapView::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(iStack_70 + 500))();
-  CString::CString(&CStack_54,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&CStack_54,(char *)&g_szEmptyString);
   iStack_5c._0_1_ = 1;
-  CString::AssignFromPtr(&CStack_7c,&CStack_54);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_7c,&CStack_54);
   iStack_5c = (uint)iStack_5c._1_3_ << 8;
-  CString::~CString(&CStack_54);
+  CString::__1CString__QAE_XZ(&CStack_54);
   CStack_54.m_pchData = &stack0xffffff6c;
   AssignStringSharedRefAndReturnThis();
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
@@ -4312,9 +4313,9 @@ void TDiplomacyMapView::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  CString::CString((CString *)&stack0xffffff34,(char *)&g_szEmptyString);
-  CString::AssignFromPtr((CString *)&stack0xffffff0c,(CString *)&stack0xffffff34);
-  CString::~CString((CString *)&stack0xffffff34);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff34,(char *)&g_szEmptyString);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffff0c,(CString *)&stack0xffffff34);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff34);
   AssignStringSharedRefAndReturnThis();
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   iVar3 = (*pcVar6)();
@@ -4363,9 +4364,9 @@ void TDiplomacyMapView::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  CString::CString((CString *)&stack0xffffff08,(char *)&g_szEmptyString);
-  CString::AssignFromPtr((CString *)&stack0xfffffee0,(CString *)&stack0xffffff08);
-  CString::~CString((CString *)&stack0xffffff08);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff08,(char *)&g_szEmptyString);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xfffffee0,(CString *)&stack0xffffff08);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff08);
   AssignStringSharedRefAndReturnThis();
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   iVar3 = (*pcVar6)();
@@ -4409,7 +4410,7 @@ void TDiplomacyMapView::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UViewMgr_cpp_0069b6bc);
   }
   TCivToolbar::CycleMapInteractionSelectionAfterHandledClick(this_00);
-  CString::~CString((CString *)&stack0xfffffe9c);
+  CString::__1CString__QAE_XZ((CString *)&stack0xfffffe9c);
   *unaff_FS_OFFSET = pTVar5;
   return;
 }
@@ -4442,21 +4443,21 @@ void TDiplomacyMapView::SetUiResourceOwner()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a2b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   piVar2 = *(int **)(DAT_006a2158 + 4);
-  CString::CString(&local_10,&DAT_0069b6f4);
+  CString::__0CString__QAE_PBD_Z(&local_10,&DAT_0069b6f4);
   local_4 = 0;
-  CString::CString(&local_14,&DAT_0069b6ec);
+  CString::__0CString__QAE_PBD_Z(&local_14,&DAT_0069b6ec);
   local_4._0_1_ = 1;
-  CString::CString(&local_18,&DAT_0069b6e8);
+  CString::__0CString__QAE_PBD_Z(&local_18,&DAT_0069b6e8);
   local_4._0_1_ = 2;
-  CString::CString(&local_1c,&DAT_0069b6e0);
+  CString::__0CString__QAE_PBD_Z(&local_1c,&DAT_0069b6e0);
   local_4._0_1_ = 3;
-  CString::CString(&local_20,PTR_g_szEmptyString_0066f050);
+  CString::__0CString__QAE_PBD_Z(&local_20,PTR_g_szEmptyString_0066f050);
   CVar5.m_pchData = (char *)0x6d6f7669;
   local_4 = CONCAT31(local_4._1_3_,4);
   piVar2 = (int *)(**(code **)(*piVar2 + 0x94))();
@@ -4466,7 +4467,7 @@ void TDiplomacyMapView::SetUiResourceOwner()
   (**(code **)(iVar4 + 0x13c))();
   switch(*(undefined4 *)&g_pLocalizationTable->field_0x8) {
   case 1:
-    CString::AssignFromPtr((CString *)&stack0xffffffd4,&local_1c);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffd4,&local_1c);
     (**(code **)(*(int *)piVar2[8] + 0xa8))(0,0);
     goto LAB_005db4dd;
   default:
@@ -4488,23 +4489,23 @@ switchD_005db479_caseD_17:
     if (cVar1 == '\0') goto switchD_005db479_caseD_17;
     src_ref = (CString *)&stack0xffffffdc;
   }
-  CString::AssignFromPtr((CString *)&stack0xffffffd4,src_ref);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffd4,src_ref);
 LAB_005db4dd:
-  iVar4 = CompareAnsiStringsWithMbcsAwareness(CVar5.m_pchData,PTR_g_szEmptyString_0066f050);
+  iVar4 = __mbscmp(CVar5.m_pchData,PTR_g_szEmptyString_0066f050);
   if (iVar4 != 0) {
     (*g_pUiViewManager->vftable->PlayMovieClipAndDispatchTurnStateFollowup)
               (&stack0xffffffd4,piVar2,0);
   }
   local_10.m_pchData._0_1_ = 3;
-  CString::~CString((CString *)&stack0xffffffd4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
   local_10.m_pchData._0_1_ = 2;
-  CString::~CString((CString *)&stack0xffffffd8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd8);
   local_10.m_pchData._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffffdc);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffdc);
   local_10.m_pchData = (char *)((uint)local_10.m_pchData._1_3_ << 8);
-  CString::~CString(&local_20);
+  CString::__1CString__QAE_XZ(&local_20);
   local_10.m_pchData = (char *)0xffffffff;
-  CString::~CString(&local_1c);
+  CString::__1CString__QAE_XZ(&local_1c);
   *unaff_FS_OFFSET = local_18.m_pchData;
   return;
 }
@@ -4541,7 +4542,7 @@ void TDiplomacyMapView::CtrlSlot43_GetWordField4E_Impl()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a2e0;
   uStack_c = *unaff_FS_OFFSET;
@@ -4552,7 +4553,7 @@ void TDiplomacyMapView::CtrlSlot43_GetWordField4E_Impl()
   local_f = 0;
   piVar3 = *(int **)(DAT_006a2158 + 4);
   puStack_3c = (undefined1 *)0x5db7bf;
-  CString::CString(&local_28);
+  CString::__0CString__QAE_XZ(&local_28);
   local_4 = 0;
   puStack_3c = (undefined1 *)0x5db7ce;
   ResetDualAudioCuePools();
@@ -4584,11 +4585,11 @@ void TDiplomacyMapView::CtrlSlot43_GetWordField4E_Impl()
   pTVar2[1].field_0x1c = 1;
   piVar3 = (int *)(*pcVar1)();
   (**(code **)(*piVar3 + 0xc))();
-  CString::CString(&CStack_40,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&CStack_40,(char *)&g_szEmptyString);
   uStack_24 = 1;
-  CString::AssignFromPtr(&CStack_48,&CStack_40);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_48,&CStack_40);
   uStack_24 = 0;
-  CString::~CString(&CStack_40);
+  CString::__1CString__QAE_XZ(&CStack_40);
   puStack_3c = &stack0xffffffa0;
   AssignStringSharedRefAndReturnThis();
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
@@ -4649,7 +4650,7 @@ void TDiplomacyMapView::CtrlSlot43_GetWordField4E_Impl()
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   AssignStringSharedRefAndReturnThis(&stack0xffffff48);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  CString::~CString((CString *)&stack0xffffff48);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff48);
   *unaff_FS_OFFSET = puVar5;
   return;
 }
@@ -4689,21 +4690,21 @@ void TDiplomacyMapView::HandleTurnEvent5DE_RefreshMainView()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a2f8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   piVar2 = *(int **)(DAT_006a2158 + 4);
   local_10.m_pchData = (char *)this;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   piVar2 = (int *)(**(code **)(*piVar2 + 0x94))(0x6d61696e);
   iVar1 = *piVar2;
   (**(code **)(iVar1 + 0xc))();
   (**(code **)(iVar1 + 0xe4))();
   puStack_8 = (undefined1 *)0xffffffff;
-  CString::~CString((CString *)&stack0xffffffec);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffec);
   *unaff_FS_OFFSET = local_10.m_pchData;
   return;
 }
@@ -4719,7 +4720,7 @@ TDiplomacyMapView::HandleTurnEventTable66F220_Slot04_InvokeMainViewSlots0C_E4
 {
   int iVar1;
   int *piVar2;
-  
+
   piVar2 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x6d61696e);
   iVar1 = *piVar2;
   (**(code **)(iVar1 + 0xc))();
@@ -4738,7 +4739,7 @@ TDiplomacyMapView::HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4
 {
   int iVar1;
   int *piVar2;
-  
+
   piVar2 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x6d61696e);
   iVar1 = *piVar2;
   (**(code **)(iVar1 + 0xc))();
@@ -4860,7 +4861,7 @@ void TDiplomacyMapView::InvokeVslotF4WithZeroArgs()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063a348;
   uStack_c = *unaff_FS_OFFSET;
@@ -4905,9 +4906,9 @@ void TDiplomacyMapView::InvokeVslotF4WithZeroArgs()
   CStack_4c.m_pchData = (char *)0x5dc2b0;
   (**(code **)(iVar2 + 500))();
   CStack_4c.m_pchData = (char *)0x5dc2b9;
-  CString::CString(&CStack_34);
+  CString::__0CString__QAE_XZ(&CStack_34);
   CStack_4c.m_pchData = (char *)0x5dc2ca;
-  CString::CString(&CStack_38);
+  CString::__0CString__QAE_XZ(&CStack_38);
   CStack_4c.m_pchData = (char *)&CStack_34;
   CStack_50.m_pchData = (char *)0x4;
   uStack_54 = 0x273f;
@@ -4931,10 +4932,10 @@ void TDiplomacyMapView::InvokeVslotF4WithZeroArgs()
   DispatchLocalizedUiMessageWithTemplate(4);
   CStack_38.m_pchData = (char *)((uint)CStack_38.m_pchData._1_3_ << 8);
   uStack_64 = 0x5dc351;
-  CString::~CString(&CStack_50);
+  CString::__1CString__QAE_XZ(&CStack_50);
   CStack_38.m_pchData = (char *)0xffffffff;
   uStack_64 = 0x5dc362;
-  CString::~CString(&CStack_4c);
+  CString::__1CString__QAE_XZ(&CStack_4c);
   *unaff_FS_OFFSET = uStack_40;
   return;
 }
@@ -4950,7 +4951,7 @@ TDiplomacyMapView::HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_1
 {
   int iVar1;
   int *piVar2;
-  
+
   piVar2 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x444c4f47);
   iVar1 = *piVar2;
   (**(code **)(iVar1 + 0xc))();
@@ -4983,7 +4984,7 @@ void TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0()
   undefined4 uStack_8;
   undefined4 uStack_4;
   int *piVar4;
-  
+
   uStack_20 = 0x2405;
   uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar4 = (int *)CONCAT31(extraout_var,uVar3);
@@ -5046,16 +5047,16 @@ void TDiplomacyMapView::HandleTurnEventF3D_PopulateRecentTurnMessages()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   CString local_4;
-  
+
   local_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_0063a3a0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_34);
+  CString::__0CString__QAE_XZ(&local_34);
   local_4.m_pchData = (char *)0x0;
-  CString::CString(&local_38);
+  CString::__0CString__QAE_XZ(&local_38);
   local_4.m_pchData._0_1_ = 1;
-  CString::CString(&local_30);
+  CString::__0CString__QAE_XZ(&local_30);
   local_4.m_pchData._0_1_ = 2;
   local_18 = *(int **)(DAT_006a2158 + 4);
   local_14 = *(code **)(*local_18 + 0x94);
@@ -5077,7 +5078,7 @@ void TDiplomacyMapView::HandleTurnEventF3D_PopulateRecentTurnMessages()
       local_30.m_pchData = *(char **)(*(int *)pcVar5 + 0x2c);
       do {
         psVar3 = (short *)(*(code *)local_30.m_pchData)(iVar6);
-        FormatStringWithVarArgsToSharedRef(&local_38,&g_szDecimalFormat,(int)psVar3[3]);
+        _Format_CString__QAAXPBDZZ(&local_38,&g_szDecimalFormat,(int)psVar3[3]);
         switch(psVar3[1]) {
         case 0:
         case 1:
@@ -5105,30 +5106,30 @@ void TDiplomacyMapView::HandleTurnEventF3D_PopulateRecentTurnMessages()
                     (g_pLocalizationTable,&stack0xffffffc0,0x2747,1 < psVar3[3],0x2717,
                      (int)psVar3[2]);
         }
-        FormatStringWithVarArgsToSharedRef(&stack0xffffffc4,&g_szDecimalFormat,(int)*psVar3);
-        uVar4 = AssignSharedStringConcatCStrAndRef(&CStack_2c,s_Turn_0069b71c,&stack0xffffffc4);
+        _Format_CString__QAAXPBDZZ(&stack0xffffffc4,&g_szDecimalFormat,(int)*psVar3);
+        uVar4 = __H_YG_AVCString__PBDABV0__Z(&CStack_2c,s_Turn_0069b71c,&stack0xffffffc4);
         uStack_c._0_1_ = 3;
-        src_ref = (CString *)AssignSharedStringConcatRefAndCStr(&local_30,uVar4,&DAT_00699320);
+        src_ref = (CString *)__H_YG_AVCString__ABV0_PBD_Z(&local_30,uVar4,&DAT_00699320);
         uStack_c._0_1_ = 4;
-        CString::StringSharedRef_AssignFromPtr(&local_4,src_ref);
+        CString::__0CString__QAE_ABV0__Z(&local_4,src_ref);
         uStack_c._0_1_ = 5;
-        CString::AssignFromPtr((CString *)&stack0xffffffc4,&local_4);
+        CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffc4,&local_4);
         uStack_c._0_1_ = 4;
-        CString::~CString(&local_4);
+        CString::__1CString__QAE_XZ(&local_4);
         uStack_c._0_1_ = 3;
-        CString::~CString(&local_30);
+        CString::__1CString__QAE_XZ(&local_30);
         uStack_c._0_1_ = 2;
-        CString::~CString(&CStack_2c);
-        uVar4 = AssignSharedStringConcatRefAndCStr
+        CString::__1CString__QAE_XZ(&CStack_2c);
+        uVar4 = __H_YG_AVCString__ABV0_PBD_Z
                           (aCStack_24,&local_38,g_Build_Map_Order_LookupTable_00695794);
         uStack_c._0_1_ = 6;
-        uVar4 = AssignSharedStringConcatRefAndRef(&CStack_28,uVar4,&stack0xffffffc0);
+        uVar4 = __H_YG_AVCString__ABV0_0_Z(&CStack_28,uVar4,&stack0xffffffc0);
         uStack_c._0_1_ = 7;
-        AssignStringSharedFromRef(uVar4);
+        __YCString__QAEABV0_ABV0__Z(uVar4);
         uStack_c._0_1_ = 6;
-        CString::~CString(&CStack_28);
+        CString::__1CString__QAE_XZ(&CStack_28);
         uStack_c = CONCAT31(uStack_c._1_3_,2);
-        CString::~CString(aCStack_24);
+        CString::__1CString__QAE_XZ(aCStack_24);
         piVar2 = (int *)(*pcStack_1c)(iVar6 + 0x74787440);
         if (piVar2 != (int *)0x0) {
           iVar1 = *piVar2;
@@ -5141,11 +5142,11 @@ void TDiplomacyMapView::HandleTurnEventF3D_PopulateRecentTurnMessages()
     }
   }
   puStack_8._0_1_ = 1;
-  CString::~CString(&local_34);
+  CString::__1CString__QAE_XZ(&local_34);
   puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-  CString::~CString((CString *)&stack0xffffffc4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffc4);
   puStack_8 = (undefined1 *)0xffffffff;
-  CString::~CString(&local_38);
+  CString::__1CString__QAE_XZ(&local_38);
   *unaff_FS_OFFSET = uStack_10;
   return;
 }
@@ -5169,7 +5170,7 @@ bool TDiplomacyMapView::SetUiResourceOwner()
   int *piVar4;
   int iVar5;
   int *piVar3;
-  
+
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
@@ -5211,7 +5212,7 @@ void TDiplomacyMapView::DetachActiveCityProductionChildIfMatches()
   int *piVar3;
   undefined3 extraout_var;
   int *piVar4;
-  
+
   piVar3 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -5262,7 +5263,7 @@ undefined4 TDiplomacyMapView::ExecuteUiFactoryModalDialogAndReturnResultTag()
   undefined4 uVar5;
   undefined4 uStack_4;
   int *piVar3;
-  
+
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
@@ -5297,7 +5298,7 @@ void TDiplomacyMapView::HandleGlobalMapNationContextSelection(undefined4 param_1
   int iVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  
+
   if ((short)param_1 == *(short *)&g_pGlobalMapState->field_0x22) {
     uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0x24f9);
     if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
@@ -5334,7 +5335,7 @@ void TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl()
   int *piVar3;
   int *piVar4;
   undefined4 unaff_EDI;
-  
+
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0x1c52);
   piVar4 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar4 == (int *)0x0) {
@@ -5379,7 +5380,7 @@ int * TDiplomacyMapView::DetachActiveCityProductionChildIfMatches()
   undefined4 uStack_1c;
   undefined4 uStack_4;
   int *piVar3;
-  
+
   uStack_1c = 0x2506;
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
@@ -5422,7 +5423,7 @@ void TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl()
   int *piVar3;
   undefined3 extraout_var;
   int *piVar4;
-  
+
   piVar3 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -5472,7 +5473,7 @@ void TDiplomacyMapView::GetTEventHandlerClassNamePointer()
   int iVar4;
   undefined4 uStack_4;
   int *piVar3;
-  
+
   uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0xdac);
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
@@ -5500,10 +5501,10 @@ void TDiplomacyMapView::GetTEventHandlerClassNamePointer()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E7E10
-// GHIDRA_NAME TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
-// GHIDRA_PROTO undefined InvokeCallbackNTimesWithSehGuard()
+// GHIDRA_NAME TDiplomacyMapView::??_M@YGXPAXIHP6EX0@Z@Z
+// GHIDRA_PROTO undefined ??_M@YGXPAXIHP6EX0@Z@Z()
 
-void TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
+void TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z
                (undefined4 param_1,undefined4 param_2,int param_3,code *param_4)
 
 {
@@ -5512,7 +5513,7 @@ void TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
   undefined1 *puStack_10;
   undefined *puStack_c;
   undefined4 local_8;
-  
+
   puStack_c = &DAT_00673820;
   puStack_10 = &LAB_005eddb8;
   local_14 = *unaff_FS_OFFSET;
@@ -5524,7 +5525,7 @@ void TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
     (*param_4)();
   }
   local_8 = 0xffffffff;
-  SehCleanup_InvokeCallbackNTimes();
+  _L12052();
   *unaff_FS_OFFSET = local_14;
   return;
 }

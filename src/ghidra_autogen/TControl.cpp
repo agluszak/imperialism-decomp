@@ -15,7 +15,7 @@ TControl::LookupOrderCompatibilityMatrixValue
 {
   undefined2 in_stack_00000006;
   undefined2 in_stack_0000000a;
-  
+
   return *(short *)(this[0x26].padding_65_to_67 + _nTargetClass * 2 + _nSourceClass * 0x2e + 5);
 }
 
@@ -28,7 +28,7 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->UpdateControlCachedIntFromWindowText)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x48))(param_1);
@@ -54,7 +54,7 @@ TControl::DispatchUiMouseEventToChildrenOrSelf
   TControl *pTStack_c;
   undefined4 uStack_8;
   undefined4 uStack_4;
-  
+
   if (*(int *)&this->field_0x44 == 0) {
     iVar4 = 0;
   }
@@ -133,7 +133,7 @@ TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit
   char cVar3;
   undefined uVar4;
   undefined3 extraout_var;
-  
+
   if (nEventType == 0) {
     (*this->vftable->SetControlStateFlagAndMaybeRefresh)(1,1);
   }
@@ -177,7 +177,7 @@ TControl * TControl::TControl()
 
 {
   ushort uVar1;
-  
+
   TView::ConstructTViewBaseState((TView *)this);
   this->hasCommandTagResource = 1;
   this->commandTagResourceByte = 0;
@@ -210,7 +210,7 @@ TMapDialog::SetForeignMinisterReadyFlag14
   TControl *pTStack_c;
   undefined4 uStack_8;
   undefined4 uStack_4;
-  
+
   pTVar1 = this->vftable;
   pTStack_c = this;
   cVar3 = (*pTVar1->SetForeignMinisterReadyFlag14_34)();
@@ -296,12 +296,12 @@ TControl * TControl::InitializeDialogTemplateFAWithTextState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e2f8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(this,0xfa,in_stack_00000004);
+  __0CDialog__QAE_IPAVCWnd___Z(this,0xfa,in_stack_00000004);
   this->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&this->field_0x5c = 0;
   this->hasCommandTagResource = 0;
@@ -310,7 +310,7 @@ TControl * TControl::InitializeDialogTemplateFAWithTextState()
   this->padding_65_to_67[1] = 0;
   this->padding_65_to_67[2] = 0;
   local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   this->field74 = (int)&PTR_LAB_00671d1c;
   this->vftable = (TControlVtbl *)&PTR_LAB_00646848;
   *unaff_FS_OFFSET = local_c;
@@ -329,12 +329,12 @@ TControl * TControl::InitializeDialogTemplateADWithTextState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e448;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(this,0xad,in_stack_00000004);
+  __0CDialog__QAE_IPAVCWnd___Z(this,0xad,in_stack_00000004);
   this->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&this->field_0x5c = 0;
   this->hasCommandTagResource = 0;
@@ -343,7 +343,7 @@ TControl * TControl::InitializeDialogTemplateADWithTextState()
   this->padding_65_to_67[1] = 0;
   this->padding_65_to_67[2] = 0;
   local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   this->field74 = (int)&PTR_LAB_00671d1c;
   this->vftable = (TControlVtbl *)&PTR_LAB_00646d68;
   *unaff_FS_OFFSET = local_c;
@@ -362,12 +362,12 @@ TControl * TControl::InitializeDialogTemplate104WithRegionState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e548;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(this,0x104,in_stack_00000004);
+  __0CDialog__QAE_IPAVCWnd___Z(this,0x104,in_stack_00000004);
   this->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&this->field_0x5c = 0;
   this->hasCommandTagResource = 0;
@@ -376,7 +376,7 @@ TControl * TControl::InitializeDialogTemplate104WithRegionState()
   this->padding_65_to_67[1] = 0;
   this->padding_65_to_67[2] = 0;
   local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   this->field74 = (int)&PTR_LAB_00671d1c;
   this->vftable = (TControlVtbl *)&PTR_LAB_00646ea0;
   *unaff_FS_OFFSET = local_c;
@@ -395,17 +395,17 @@ TControl * TControl::InitializeDialogTemplateA7WithSharedText()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e633;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(this,0xa7,in_stack_00000004);
+  __0CDialog__QAE_IPAVCWnd___Z(this,0xa7,in_stack_00000004);
   local_4 = 0;
-  CString::CString((CString *)&this->field_0x5c);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x5c);
   local_4 = CONCAT31(local_4._1_3_,1);
   this->vftable = (TControlVtbl *)&PTR_LAB_00647740;
-  CString::CopyFromCStr((CString *)&this->field_0x5c,(char *)&g_szEmptyString);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)&this->field_0x5c,(char *)&g_szEmptyString);
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -422,20 +422,21 @@ TControl::InitializeDialogTemplateABWithDualTextState(TControl *param_1,undefine
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e68e;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(param_1,0xab,param_2);
+  __0CDialog__QAE_IPAVCWnd___Z(param_1,0xab,param_2);
   local_4 = 0;
-  CString::CString((CString *)&param_1->field_0x5c);
+  CString::__0CString__QAE_XZ((CString *)&param_1->field_0x5c);
   local_4._0_1_ = 1;
-  CString::CString((CString *)&param_1->hasCommandTagResource);
+  CString::__0CString__QAE_XZ((CString *)&param_1->hasCommandTagResource);
   local_4 = CONCAT31(local_4._1_3_,2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00647b60;
-  CString::CopyFromCStr((CString *)&param_1->field_0x5c,(char *)&g_szEmptyString);
-  CString::CopyFromCStr((CString *)&param_1->hasCommandTagResource,(char *)&g_szEmptyString);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)&param_1->field_0x5c,(char *)&g_szEmptyString);
+  CString::__4CString__QAEABV0_PBD_Z
+            ((CString *)&param_1->hasCommandTagResource,(char *)&g_szEmptyString);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -452,20 +453,21 @@ TControl::InitializeDialogTemplateAEWithDualTextState(TControl *param_1,undefine
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e6fe;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(param_1,0xae,param_2);
+  __0CDialog__QAE_IPAVCWnd___Z(param_1,0xae,param_2);
   local_4 = 0;
-  CString::CString((CString *)&param_1->field_0x5c);
+  CString::__0CString__QAE_XZ((CString *)&param_1->field_0x5c);
   local_4._0_1_ = 1;
-  CString::CString((CString *)&param_1->hasCommandTagResource);
+  CString::__0CString__QAE_XZ((CString *)&param_1->hasCommandTagResource);
   local_4 = CONCAT31(local_4._1_3_,2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00647d70;
-  CString::CopyFromCStr((CString *)&param_1->field_0x5c,(char *)&g_szEmptyString);
-  CString::CopyFromCStr((CString *)&param_1->hasCommandTagResource,(char *)&g_szEmptyString);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)&param_1->field_0x5c,(char *)&g_szEmptyString);
+  CString::__4CString__QAEABV0_PBD_Z
+            ((CString *)&param_1->hasCommandTagResource,(char *)&g_szEmptyString);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -482,17 +484,17 @@ TControl * TControl::InitializeDialogTemplateB1WithSharedText()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e763;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(this,0xb1,in_stack_00000004);
+  __0CDialog__QAE_IPAVCWnd___Z(this,0xb1,in_stack_00000004);
   local_4 = 0;
-  CString::CString((CString *)&this->field_0x5c);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x5c);
   local_4 = CONCAT31(local_4._1_3_,1);
   this->vftable = (TControlVtbl *)&PTR_LAB_00647f80;
-  CString::CopyFromCStr((CString *)&this->field_0x5c,(char *)&g_szEmptyString);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)&this->field_0x5c,(char *)&g_szEmptyString);
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -516,7 +518,7 @@ TControl * TControl::ConstructTurnEventUiEntryBase()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ed5b;
   local_c = *unaff_FS_OFFSET;
@@ -524,7 +526,7 @@ TControl * TControl::ConstructTurnEventUiEntryBase()
   local_10 = this;
   TView::ConstructTViewBaseState((TView *)this);
   local_4 = 0;
-  CString::CString((CString *)&this->field6C);
+  CString::__0CString__QAE_XZ((CString *)&this->field6C);
   this->commandTagResourceByte = 0;
   this->padding_65_to_67[0] = 0;
   this->padding_65_to_67[1] = 0;
@@ -533,11 +535,11 @@ TControl * TControl::ConstructTurnEventUiEntryBase()
   local_4._0_1_ = 1;
   this->vftable = (TControlVtbl *)&TIncludeViewVtbl_00649c60;
   *(undefined2 *)&this->hasCommandTagResource = 0xffff;
-  CString::CString(&local_14,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_14,(char *)&g_szEmptyString);
   local_4._0_1_ = 2;
-  CString::AssignFromPtr((CString *)&this->field6C,&local_14);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field6C,&local_14);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *(undefined2 *)&this->field70 = 1;
   *(undefined4 *)&this->field_0x4 = 0;
   *unaff_FS_OFFSET = local_c;
@@ -561,13 +563,13 @@ TControl * TControl::ConstructTurnEventUiEntryBase()
 // GHIDRA_COMMENT_END
 
 /* Base constructor for tracked UI window resource entries.
-   
+
    Algorithm:
    1. Calls ConstructUiResourceEntryBase.
    2. Initializes window-entry specific fields and vtable.
    3. Links this node into the global window-resource linked list.
    4. Applies default color/tag state for subsequent registration.
-   
+
    Returns:
    - this pointer. */
 
@@ -582,7 +584,7 @@ TControl * TControl::ConstructUiWindowResourceEntryBase()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ede3;
   local_c = *unaff_FS_OFFSET;
@@ -596,7 +598,7 @@ TControl * TControl::ConstructUiWindowResourceEntryBase()
   local_4 = CONCAT31(local_4._1_3_,1);
   piVar4 = DAT_006a1a50;
   if (DAT_006a1a50 == (int *)0x0) {
-    iVar3 = AllocateAndLinkBlockHead(&DAT_006a1a54,DAT_006a1a58,0xc);
+    iVar3 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(&DAT_006a1a54,DAT_006a1a58,0xc);
     piVar4 = DAT_006a1a50;
     piVar2 = (int *)(iVar3 + -8 + DAT_006a1a58 * 0xc);
     iVar3 = DAT_006a1a58;
@@ -643,12 +645,12 @@ TView * TControl::CreateTControlInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ee6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x84);
+  this = (TView *)__2_YAPAXI_Z(0x84);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -695,7 +697,7 @@ TControl * TControl::TControl()
 
 {
   ushort uVar1;
-  
+
   TView::ConstructTViewBaseState((TView *)this);
   this->hasCommandTagResource = 1;
   this->commandTagResourceByte = 0;
@@ -720,7 +722,7 @@ TControl * TControl::_scalar_deleting_destructor_(byte param_1)
 {
   TControl::DestructTControlBaseState(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -823,7 +825,7 @@ TControl * TControl::ConstructUiWindowResourceEntryType4B340()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f333;
   local_c = *unaff_FS_OFFSET;
@@ -837,7 +839,7 @@ TControl * TControl::ConstructUiWindowResourceEntryType4B340()
   local_4 = CONCAT31(local_4._1_3_,1);
   piVar4 = DAT_006a1a50;
   if (DAT_006a1a50 == (int *)0x0) {
-    iVar3 = AllocateAndLinkBlockHead(&DAT_006a1a54,DAT_006a1a58,0xc);
+    iVar3 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(&DAT_006a1a54,DAT_006a1a58,0xc);
     piVar4 = DAT_006a1a50;
     piVar2 = (int *)(iVar3 + -8 + DAT_006a1a58 * 0xc);
     iVar3 = DAT_006a1a58;
@@ -883,7 +885,7 @@ void TControl::DestructTControlBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_0062f3e3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -892,9 +894,9 @@ void TControl::DestructTControlBaseState()
   if (*(int **)&this->field_0x44 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(*(undefined4 *)&this->field_0x48);
+  __3_YAXPAX_Z(*(undefined4 *)&this->field_0x48);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString((CString *)&this->field_0x58);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x58);
   this->vftable = (TControlVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -911,20 +913,20 @@ undefined4 TControl::FinalizeModalDialogAndRestoreOwnerFocus()
   uint uVar2;
   HWND pHVar3;
   byte bVar4;
-  
+
   if (*(int *)&this->field_0x5c == 0) {
     (*this->vftable->SetForeignMinisterReadyFlag14_36)();
   }
   if (this->hasCommandTagResource != 0) {
     if ((this->field_0x24 & 0x10) != 0) {
       bVar4 = 4;
-      uVar2 = GetStyle();
+      uVar2 = _GetStyle_CWnd__QBEKXZ();
       if ((uVar2 & 0x100) != 0) {
         bVar4 = 5;
       }
-      TMovieView::RunModalLoop((TMovieView *)this,bVar4);
+      TMovieView::_RunModalLoop_CWnd__QAEHK_Z((TMovieView *)this,bVar4);
     }
-    SetWindowPos(0,0,0,0,0,0x97);
+    _SetWindowPos_CWnd__QAEHPBV1_HHHHI_Z(0,0,0,0,0,0x97);
   }
   if (this->field68 != 0) {
     EnableWindow((HWND)this->field6C,1);
@@ -1064,7 +1066,7 @@ TControl::OpenCityViewProductionDialog
   int nCapacityControlStyleId;
   int *pSelectedBuildingOrderEntry;
   int *pSelectedCityStateData;
-  
+
   nSehFrameState = -1;
   puStack_8 = &LAB_006319b8;
   dwPrevSehFrame = *unaff_FS_OFFSET;
@@ -1073,13 +1075,13 @@ TControl::OpenCityViewProductionDialog
   local_11 = 0;
   local_10 = local_10 & 0xffff0000;
   iStack_40 = 0x4ce5db;
-  CString::CString((CString *)&nNameControlStyleId);
+  CString::__0CString__QAE_XZ((CString *)&nNameControlStyleId);
   nSehFrameState = 0;
   iStack_40 = 0x4ce5ec;
-  CString::CString(local_24);
+  CString::__0CString__QAE_XZ(local_24);
   nSehFrameState = CONCAT31(nSehFrameState._1_3_,1);
   iStack_40 = 0x4ce5fa;
-  CString::CString(&local_28);
+  CString::__0CString__QAE_XZ(&local_28);
   iStack_40 = nBuildingSlotId;
   iVar1 = *pCityStateData;
   nSehFrameState = CONCAT31(nSehFrameState._1_3_,2);
@@ -1150,7 +1152,7 @@ TControl::OpenCityViewProductionDialog
   ppuStack_a4 = (uint **)(int)nBuildingCostValue;
   puStack_a8 = &g_szDecimalFormat;
   pUpgradeStateDeltaRight = (void *)0x4ce796;
-  FormatStringWithVarArgsToSharedRef();
+  _Format_CString__QAAXPBDZZ();
   ppuStack_a4 = &puStack_8c;
   puStack_a8 = (undefined *)0x10;
   puStack_ac = (undefined1 *)0x2738;
@@ -1264,11 +1266,11 @@ TControl::OpenCityViewProductionDialog
                        routing. */
   *(undefined2 *)((int)piVar3 + 0x92) = 0xbc7;
   ppvStack_e4._0_1_ = 1;
-  CString::~CString((CString *)&stack0xfffffef8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xfffffef8);
   ppvStack_e4 = (void **)((uint)ppvStack_e4._1_3_ << 8);
-  CString::~CString(&CStack_104);
+  CString::__1CString__QAE_XZ(&CStack_104);
   ppvStack_e4 = (void **)0xffffffff;
-  CString::~CString((CString *)&stack0xfffffef4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xfffffef4);
   *unaff_FS_OFFSET = uStack_ec;
   return;
 }
@@ -1319,7 +1321,7 @@ void TControl::ApplyCityProductionDialogChanges(int nDialogActionTag)
   int nEntryVtableOrUpdatedValue;
   int *pCityEntryVtable;
   int *pSelectedCityEntry;
-  
+
   pSelectedCityEntry =
        *(int **)(*(int *)&this[1].field_0x10 + 0xe4 +
                 (short)(*(short *)&this[1].field_0xc + 0x35) * 4);
@@ -1441,27 +1443,27 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   undefined1 *puStack_8;
   int local_4;
   undefined3 extraout_var_00;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631a58;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&local_c;
-  CString::CString(&local_5c);
+  CString::__0CString__QAE_XZ(&local_5c);
   local_4 = 0;
-  CString::CString(&local_6c);
+  CString::__0CString__QAE_XZ(&local_6c);
   local_4._0_1_ = 1;
-  CString::CString(&local_68);
+  CString::__0CString__QAE_XZ(&local_68);
   local_4c.right = (LONG)(ushort)local_4c.right;
   local_4c.bottom = (uint)local_4c.bottom._2_2_ << 0x10;
   iVar2 = *(int *)(*(int *)&this[1].field_0x10 + 0xe4 + (short)(nBuildingSlotId + 0x19) * 4);
   local_4 = CONCAT31(local_4._1_3_,2);
   if (*(int *)&this[1].field_0x24 == iVar2) {
     local_4._0_1_ = 1;
-    CString::~CString(&local_68);
+    CString::__1CString__QAE_XZ(&local_68);
     local_4 = (uint)local_4._1_3_ << 8;
-    CString::~CString(&local_6c);
+    CString::__1CString__QAE_XZ(&local_6c);
     local_4 = 0xffffffff;
-    CString::~CString(&local_5c);
+    CString::__1CString__QAE_XZ(&local_5c);
     *unaff_FS_OFFSET = local_c;
     return;
   }
@@ -1500,33 +1502,33 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   pCStack_b0 = (CString *)&stack0xffffff6c;
   puStack_ac = &g_szDecimalFormat;
   RStack_c0.bottom = 0x4cfdbf;
-  FormatStringWithVarArgsToSharedRef();
+  _Format_CString__QAAXPBDZZ();
   puStack_ac = &stack0xffffff6c;
   pCStack_b0 = &CStack_8c;
   RStack_c0.bottom = 0x4cfdd6;
-  puStack_ac = (undefined *)AssignSharedStringConcatRefAndCStr();
+  puStack_ac = (undefined *)__H_YG_AVCString__ABV0_PBD_Z();
   uStack_2c = 3;
   pCStack_b0 = &CStack_80;
   RStack_c0.bottom = 0x4cfdeb;
-  puStack_ac = (undefined *)AssignSharedStringConcatRefAndRef();
+  puStack_ac = (undefined *)__H_YG_AVCString__ABV0_0_Z();
   pCStack_b0 = (CString *)&stack0xffffff84;
   uStack_2c = 4;
   RStack_c0.bottom = 0x4cfe03;
-  src_ref = (CString *)AssignSharedStringConcatRefAndCStr();
+  src_ref = (CString *)__H_YG_AVCString__ABV0_PBD_Z();
   uStack_2c = 5;
   puStack_ac = (undefined *)0x4cfe12;
-  CString::StringSharedRef_AssignFromPtr(&CStack_88,src_ref);
+  CString::__0CString__QAE_ABV0__Z(&CStack_88,src_ref);
   uStack_2c = 6;
   puStack_ac = (undefined *)0x4cfe25;
-  CString::AssignFromPtr(&CStack_84,&CStack_88);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_84,&CStack_88);
   uStack_2c = 5;
-  CString::~CString(&CStack_88);
+  CString::__1CString__QAE_XZ(&CStack_88);
   uStack_2c = 4;
-  CString::~CString((CString *)&stack0xffffff84);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff84);
   uStack_2c = 3;
-  CString::~CString(&CStack_80);
+  CString::__1CString__QAE_XZ(&CStack_80);
   uStack_2c = 2;
-  CString::~CString(&CStack_8c);
+  CString::__1CString__QAE_XZ(&CStack_8c);
   puStack_ac = (undefined *)0x4cfe66;
   uVar5 = (*p_Var3)();
   CStack_80.m_pchData = (char *)CONCAT31(extraout_var_01,uVar5);
@@ -1673,11 +1675,11 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   InvalidateCityDialogRectRegion(auStack_e8,1);
   (**(code **)(iVar7 + 0x1d8))();
   auStack_d4[4] = 1;
-  CString::~CString(&CStack_134);
+  CString::__1CString__QAE_XZ(&CStack_134);
   stack0xffffff30 = (uint)uStack_cf << 8;
-  CString::~CString((CString *)&stack0xfffffec8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xfffffec8);
   stack0xffffff30 = -1;
-  CString::~CString((CString *)&stack0xfffffed8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xfffffed8);
   *unaff_FS_OFFSET = LStack_d8;
   return;
 }
@@ -1702,7 +1704,7 @@ TControl * TControl::DeleteCivilianMapInteractionManager(byte param_1)
 {
   InitializeCivilianMapInteractionManagerBaseVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -1726,15 +1728,15 @@ TControl * TControl::DeleteCivilianMapInteractionManager(byte param_1)
 // GHIDRA_COMMENT_END
 
 /* Returns one entry from the order-compatibility matrix stored in the map/order manager.
-   
+
    Algorithm:
    1. Compute row offset: this + 0x1402 + (nSourceClass * 0x2E).
    2. Return 16-bit matrix value at column nTargetClass.
-   
+
    Parameters:
    - nSourceClass: source class/index (for example civilian/resource class).
    - nTargetClass: target class/index (for example terrain/order class).
-   
+
    Returns:
    - 16-bit compatibility code used by order-assignment logic. */
 
@@ -1746,7 +1748,7 @@ TControl::LookupOrderCompatibilityMatrixValue
 {
   undefined2 in_stack_00000006;
   undefined2 in_stack_0000000a;
-  
+
   return *(short *)(this[0x26].padding_65_to_67 + _nTargetClass * 2 + _nSourceClass * 0x2e + 5);
 }
 
@@ -1766,7 +1768,7 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short param_1)
   undefined4 uVar5;
   short local_c [4];
   _vslot_fn *local_4;
-  
+
   iVar4 = 0;
   local_c[1] = 2;
   pTVar1 = this->vftable;
@@ -1824,7 +1826,7 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
   undefined3 extraout_var_08;
   int unaff_retaddr;
   undefined3 extraout_var_03;
-  
+
   if (param_1 == 0) {
     iVar4 = 0;
   }
@@ -1976,7 +1978,7 @@ void TControl::RefreshOrderViewSupplyAndUseControlValues()
   undefined2 extraout_var_10;
   undefined2 extraout_var_11;
   undefined2 extraout_var_12;
-  
+
   p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar4 = (*p_Var2)(0x73757031);
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
@@ -2075,7 +2077,7 @@ void TControl::RecomputeTownAdjacentTileYieldTotals()
   short sVar10;
   undefined4 *puVar11;
   int local_8;
-  
+
   this->field_0x4e = 0;
   puVar11 = (undefined4 *)&this->field_0x1e;
   for (iVar7 = 0xb; iVar7 != 0; iVar7 = iVar7 + -1) {
@@ -2168,7 +2170,7 @@ void TControl::UpdateSelectionRect(astruct_4 *this_obj)
   int cleanup_state;
   astruct_3 *gfx_ifc_vtbl;
   short sVar1;
-  
+
   paVar1 = this_obj;
   seh_prev = *seh_chain;
   cleanup_state = 0xffffffff;
@@ -2193,11 +2195,11 @@ void TControl::UpdateSelectionRect(astruct_4 *this_obj)
     gfx_iface = (astruct_2 *)CONCAT31(gfx_iface._1_3_,gfx_iface._0_1_);
     gfx_ifc_vtbl = gfx_iface->field0_0x0;
     (*(code *)gfx_ifc_vtbl->field12_0xc)();
-    CString::CString(&CStack_44);
+    CString::__0CString__QAE_XZ(&CStack_44);
     state_flags = (undefined1 *)0x0;
-    CString::CString((CString *)&stack0xffffffb8);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffffb8);
     state_flags._0_1_ = 1;
-    CString::CString((CString *)&stack0x00000000);
+    CString::__0CString__QAE_XZ((CString *)&stack0x00000000);
     draw_flags = (char *)0x3;
     state_flags = (undefined1 *)CONCAT31(state_flags._1_3_,2);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2741);
@@ -2214,11 +2216,11 @@ void TControl::UpdateSelectionRect(astruct_4 *this_obj)
     draw_flags = (char *)0x5be299;
     InvalidateCityDialogRectRegion();
     cleanup_state._0_1_ = 1;
-    CString::~CString((CString *)&this_obj);
+    CString::__1CString__QAE_XZ((CString *)&this_obj);
     cleanup_state = (uint)cleanup_state._1_3_ << 8;
-    CString::~CString(&CStack_44);
+    CString::__1CString__QAE_XZ(&CStack_44);
     cleanup_state = 0xffffffff;
-    CString::~CString(&CStack_40);
+    CString::__1CString__QAE_XZ(&CStack_40);
   }
   this->field74 = 0;
   UpdatePagerButtonStatesAndRefreshPanels();
@@ -2227,8 +2229,8 @@ void TControl::UpdateSelectionRect(astruct_4 *this_obj)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006050D0
-// GHIDRA_NAME TControl::InitializeDialogTemplateFromId
-// GHIDRA_PROTO undefined __thiscall InitializeDialogTemplateFromId(uint param_1, undefined4 param_2)
+// GHIDRA_NAME TControl::??0CDialog@@QAE@IPAVCWnd@@@Z
+// GHIDRA_PROTO undefined __thiscall ??0CDialog@@QAE@IPAVCWnd@@@Z(uint param_1, undefined4 param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes base dialog object state from template ID and init parameter.
 // GHIDRA_COMMENT
@@ -2236,16 +2238,16 @@ void TControl::UpdateSelectionRect(astruct_4 *this_obj)
 // GHIDRA_COMMENT_END
 
 /* Initializes base dialog object state from template ID and init parameter.
-   
+
    Sets template/resource identifiers and clears per-dialog scratch fields used before
    modal/modeless creation. */
 
-TControl * TControl::InitializeDialogTemplateFromId(uint param_1, undefined4 param_2)
+TControl * TControl::__0CDialog__QAE_IPAVCWnd___Z(uint param_1, undefined4 param_2)
 
 {
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   this->vftable = (TControlVtbl *)&PTR_LAB_0066fc2c;
-  CDocTemplate::memset(&this->field_0x3c,0,0x20);
+  CDocTemplate::_memset(&this->field_0x3c,0,0x20);
   *(undefined4 *)&this->field_0x50 = param_2;
   *(uint *)&this->field_0x3c = param_1;
   *(uint *)&this->field_0x40 = param_1 & 0xffff;
@@ -2253,10 +2255,10 @@ TControl * TControl::InitializeDialogTemplateFromId(uint param_1, undefined4 par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615152
-// GHIDRA_NAME TControl::GetScrollPosition
-// GHIDRA_PROTO undefined GetScrollPosition()
+// GHIDRA_NAME TControl::?GetScrollPosition@CScrollView@@QBE?AVCPoint@@XZ
+// GHIDRA_PROTO undefined ?GetScrollPosition@CScrollView@@QBE?AVCPoint@@XZ()
 
-void TControl::GetScrollPosition(void)
+void TControl::_GetScrollPosition_CScrollView__QBE_AVCPoint__XZ(void)
 
 {
   undefined4 *puVar1;
@@ -2264,7 +2266,7 @@ void TControl::GetScrollPosition(void)
   TControl *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   if (*(int *)&this->field_0x40 == -1) {
     puVar1 = *(undefined4 **)(unaff_EBP + 8);
@@ -2272,15 +2274,15 @@ void TControl::GetScrollPosition(void)
     puVar1[1] = 0;
   }
   else {
-    GetDeviceScrollPosition(this,(int *)(unaff_EBP + -0x14));
+    _GetDeviceScrollPosition_CScrollView__QBE_AVCPoint__XZ(this,(int *)(unaff_EBP + -0x14));
     if (*(int *)&this->field_0x40 != 1) {
-      CWindowDC(0);
+      __0CWindowDC__QAE_PAVCWnd___Z(0);
       uVar2 = *(undefined4 *)&this->field_0x40;
       *(undefined4 *)(unaff_EBP + -4) = 0;
-      SetMapMode(uVar2);
+      _SetMapMode_CDC__UAEHH_Z(uVar2);
       DPtoLP(*(HDC *)(unaff_EBP + -0x20),(LPPOINT)(unaff_EBP + -0x14),1);
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      DestroyCWindowDCAndReleaseHandle();
+      __1CWindowDC__UAE_XZ();
     }
     puVar1 = *(undefined4 **)(unaff_EBP + 8);
     *puVar1 = *(undefined4 *)(unaff_EBP + -0x14);
@@ -2291,19 +2293,19 @@ void TControl::GetScrollPosition(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615277
-// GHIDRA_NAME TControl::GetDeviceScrollPosition
-// GHIDRA_PROTO undefined __thiscall GetDeviceScrollPosition(int * param_1)
+// GHIDRA_NAME TControl::?GetDeviceScrollPosition@CScrollView@@QBE?AVCPoint@@XZ
+// GHIDRA_PROTO undefined __thiscall ?GetDeviceScrollPosition@CScrollView@@QBE?AVCPoint@@XZ(int * param_1)
 
-void TControl::GetDeviceScrollPosition(int *param_1)
+void TControl::_GetDeviceScrollPosition_CScrollView__QBE_AVCPoint__XZ(int *param_1)
 
 {
   int iVar1;
   int iVar2;
   int iVar3;
   tagRECT local_14;
-  
-  iVar2 = FUN_00609602(1);
-  iVar3 = FUN_00609602(0);
+
+  iVar2 = _GetScrollPos_CWnd__QBEHH_Z(1);
+  iVar3 = _GetScrollPos_CWnd__QBEHH_Z(0);
   iVar1._0_1_ = this->commandTagResourceByte;
   iVar1._1_1_ = this->padding_65_to_67[0];
   iVar1._2_1_ = this->padding_65_to_67[1];
@@ -2323,10 +2325,10 @@ void TControl::GetDeviceScrollPosition(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006153FE
-// GHIDRA_NAME TControl::ResizeParentToFit
-// GHIDRA_PROTO undefined __thiscall ResizeParentToFit(int param_1)
+// GHIDRA_NAME TControl::?ResizeParentToFit@CScrollView@@QAEXH@Z
+// GHIDRA_PROTO undefined __thiscall ?ResizeParentToFit@CScrollView@@QAEXH@Z(int param_1)
 
-void TControl::ResizeParentToFit(int param_1)
+void TControl::_ResizeParentToFit_CScrollView__QAEXH_Z(int param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -2338,7 +2340,7 @@ void TControl::ResizeParentToFit(int param_1)
   int local_28;
   tagRECT local_24;
   tagRECT local_14;
-  
+
   GetWindowRect(*(HWND *)&this->field_0x1c,&local_14);
   local_34 = local_14.left;
   local_30 = local_14.top;
@@ -2373,28 +2375,29 @@ void TControl::ResizeParentToFit(int param_1)
       local_24.bottom = local_14.bottom;
     }
   }
-  iVar2 = GetParentFrame();
+  iVar2 = _GetParentFrame_CWnd__QBEPAVCFrameWnd__XZ();
   GetWindowRect(*(HWND *)(iVar2 + 0x1c),&local_44);
-  SetWindowPos(0,0,0,((local_44.right - local_14.right) - local_44.left) + local_24.right,
-               ((local_44.bottom - local_14.bottom) - local_44.top) + local_24.bottom,0x16);
+  _SetWindowPos_CWnd__QAEHPBV1_HHHHI_Z
+            (0,0,0,((local_44.right - local_14.right) - local_44.left) + local_24.right,
+             ((local_44.bottom - local_14.bottom) - local_44.top) + local_24.bottom,0x16);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00623061
-// GHIDRA_NAME TControl::SetRegistryKey
-// GHIDRA_PROTO undefined __thiscall SetRegistryKey(undefined4 param_1)
+// GHIDRA_NAME TControl::?SetRegistryKey@CWinApp@@IAEXPBD@Z
+// GHIDRA_PROTO undefined __thiscall ?SetRegistryKey@CWinApp@@IAEXPBD@Z(undefined4 param_1)
 
-void TControl::SetRegistryKey(undefined4 param_1)
+void TControl::_SetRegistryKey_CWinApp__IAEXPBD_Z(undefined4 param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
-  
-  FreeHeapBlockWithAllocatorTracking(this->commandTagDefaultParam1);
-  iVar1 = AllocateAnsiStringCopyWithGlobalNewMode(param_1);
+
+  _free(this->commandTagDefaultParam1);
+  iVar1 = __strdup(param_1);
   this->commandTagDefaultParam1 = iVar1;
-  FreeHeapBlockWithAllocatorTracking(*(undefined4 *)&this[1].field_0xc);
-  uVar2 = AllocateAnsiStringCopyWithGlobalNewMode(this->commandTagDefaultParam0);
+  _free(*(undefined4 *)&this[1].field_0xc);
+  uVar2 = __strdup(this->commandTagDefaultParam0);
   *(undefined4 *)&this[1].field_0xc = uVar2;
   return;
 }

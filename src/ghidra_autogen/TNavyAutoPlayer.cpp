@@ -34,7 +34,7 @@ void TNavyAutoPlayer::OrphanRetStub_0059ad70()
 {
   char cVar1;
   int iVar2;
-  
+
   if (this->field_0xc == '\0') {
     iVar2 = 0x29;
   }
@@ -71,7 +71,7 @@ void TNavyAutoPlayer::OrphanRetStub_0059ad90()
   _vslot_fn *p_Var11;
   int iStack_20;
   TNextMoveCommandVtbl *pTStack_18;
-  
+
   if (this->field_0xc == '\0') {
     piVar8 = *(int **)(*(int *)(*(int *)&this->field_0x14 + 0x14) + 4);
   }
@@ -81,7 +81,7 @@ void TNavyAutoPlayer::OrphanRetStub_0059ad90()
   iVar7 = *piVar8;
   pcVar1 = *(code **)(iVar7 + 0x48);
   iVar4 = (*pcVar1)();
-  piVar5 = (int *)AllocateWithFallbackHandler(iVar4 << 2);
+  piVar5 = (int *)__2_YAPAXI_Z(iVar4 << 2);
   uVar2 = *(undefined4 *)(*(int *)(*(int *)&this->field_0x14 + 0x1c) + 8);
   iVar4 = InitializeLinkedListCursorFromOwnerHead();
   iVar6 = LinkedListCursorHasCurrent();
@@ -139,7 +139,7 @@ void TNavyAutoPlayer::OrphanRetStub_0059ad90()
   if ((iVar4 <= iVar7) && ((TNextMoveCommandVtbl *)(*(int **)&this->field_0x14)[7] == pTStack_18)) {
     (**(code **)(**(int **)&this->field_0x14 + 0x40))(pTStack_18,uVar3);
   }
-  FreeHeapBufferIfNotNull(uVar2);
+  __3_YAXPAX_Z(uVar2);
   if ((*(TNextMoveCommand **)&this->field_0x14)[1].vftable == pTStack_18) {
     TNextMoveCommand::QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
   }

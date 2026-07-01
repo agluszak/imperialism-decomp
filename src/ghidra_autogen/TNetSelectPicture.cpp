@@ -12,7 +12,7 @@ TNetSelectPicture * TNetSelectPicture::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -53,7 +53,7 @@ TNetSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined3 extraout_var;
   undefined4 uVar4;
   undefined3 extraout_var_00;
-  
+
   if (DAT_006a4264 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USetupScreens_cpp_00698ab8,0x2e6);

@@ -38,7 +38,7 @@ TAdmiral * TAdmiral::TAdmiral(undefined2 param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00635133;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -46,7 +46,7 @@ TAdmiral * TAdmiral::TAdmiral(undefined2 param_1)
   local_4 = 0;
   *(undefined2 *)&this->field_0x4 = param_1;
   *(undefined4 *)&this->field_0x8 = 0;
-  CString::CString((CString *)&this->field_0xc);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0xc);
   *(undefined2 *)&this->field_0x10 = 0;
   *(TAdmiral **)&this->field_0x14 = g_pNavySecondaryOrderListHead;
   *(undefined4 *)&this->field_0x18 = 0;
@@ -62,8 +62,7 @@ TAdmiral * TAdmiral::TAdmiral(undefined2 param_1)
     for (pTVar1 = g_pNavySecondaryOrderListHead; pTVar1 != (TAdmiral *)0x0;
         pTVar1 = *(TAdmiral **)&pTVar1->field_0x14) {
       if ((pTVar1 != this) &&
-         (iVar2 = CompareAnsiStringsWithMbcsAwareness
-                            (*(undefined4 *)&pTVar1->field_0xc,*(undefined4 *)&this->field_0xc),
+         (iVar2 = __mbscmp(*(undefined4 *)&pTVar1->field_0xc,*(undefined4 *)&this->field_0xc),
          iVar2 == 0)) {
         RemoveDuplicateNavySecondaryOrdersByDisplayName();
       }
@@ -84,12 +83,12 @@ void TAdmiral::DestructTAdmiral()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00635158;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::~CString((CString *)&this->field_0xc);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0xc);
   this->vftable = (TAdmiralVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;

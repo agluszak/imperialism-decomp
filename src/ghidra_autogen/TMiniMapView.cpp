@@ -15,12 +15,12 @@ TControl * TMiniMapView::CreateTMiniMapViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063850a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0xa0);
+  this = (TControl *)__2_YAPAXI_Z(0xa0);
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::TControl(this);
@@ -75,7 +75,7 @@ TMiniMapView * TMiniMapView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -106,7 +106,7 @@ void TMiniMapView::OrphanCallChain_C11_I88_004874b0()
   RECT local_30;
   RECT local_20;
   RECT local_10;
-  
+
   iVar6 = *(int *)(g_pStrategicMapViewSystem + 0x670);
   if (iVar6 == 0) {
     return;
@@ -223,7 +223,7 @@ TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit
   int iVar3;
   int iVar4;
   int *in_stack_00000010;
-  
+
   if (-1 < param_1) {
     if (param_1 < 2) {
       pTVar1 = this->vftable;

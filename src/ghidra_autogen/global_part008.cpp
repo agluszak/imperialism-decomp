@@ -3,58 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part008.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00535590
-// GHIDRA_NAME ResetTNavyMissionToSentinelVtable
-// GHIDRA_PROTO undefined ResetTNavyMissionToSentinelVtable()
-
-void __fastcall ResetTNavyMissionToSentinelVtable(undefined4 *param_1)
-
-{
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005355B0
-// GHIDRA_NAME ReturnTrueForControlSeaZoneMissionCapabilityFlagA
-// GHIDRA_PROTO undefined ReturnTrueForControlSeaZoneMissionCapabilityFlagA()
-
-undefined1 ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
-
-{
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005355D0
-// GHIDRA_NAME ReturnFalseForControlSeaZoneMissionCapabilityFlagB
-// GHIDRA_PROTO undefined ReturnFalseForControlSeaZoneMissionCapabilityFlagB()
-
-undefined1 ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00535620
-// GHIDRA_NAME ResetTControlSeaZoneMissionToSentinelVtable
-// GHIDRA_PROTO undefined ResetTControlSeaZoneMissionToSentinelVtable()
-
-void __fastcall ResetTControlSeaZoneMissionToSentinelVtable(undefined4 *param_1)
-
-{
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00535640
-// GHIDRA_NAME ReturnTrueForScatteredShipsMissionCapabilityFlagA
-// GHIDRA_PROTO undefined ReturnTrueForScatteredShipsMissionCapabilityFlagA()
-
-undefined1 ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
-
-{
-  return 1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00535660
 // GHIDRA_NAME ReturnTrueForScatteredShipsMissionCapabilityFlagB
 // GHIDRA_PROTO undefined ReturnTrueForScatteredShipsMissionCapabilityFlagB()
@@ -166,7 +114,7 @@ undefined4 __thiscall DestroyTDefendProvinceMission(undefined4 param_1,byte para
 {
   ResetTDefendProvinceMissionToSentinelVtable();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -190,7 +138,7 @@ void __thiscall SerializeTMission(TObject *param_1,TStream *param_2)
 
 {
   TStream_GetTStreamClassNamePointer_0x00 *pTVar1;
-  
+
   TObject::WriteTo(param_1,param_2);
   pTVar1 = param_2->vftable[0xf].GetTStreamClassNamePointer;
   (*pTVar1)(param_1 + 4,2);
@@ -210,7 +158,7 @@ void __thiscall DeserializeTMission(TObject *param_1,TStream *param_2)
 
 {
   TStream_ConstructTStreamBaseState_0x04 *pTVar1;
-  
+
   TObject::ReadFrom(param_1,param_2);
   pTVar1 = param_2->vftable[7].ConstructTStreamBaseState;
   (*pTVar1)(param_1 + 4,2);
@@ -242,7 +190,7 @@ int * FindFirstTrackedHandlerMatchingModeAndShortKey
   char cVar1;
   int *piVar2;
   int iVar3;
-  
+
   piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
   if (iVar3 == 0) {
@@ -277,7 +225,7 @@ undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(undefined4 param
   int iVar6;
   TZone *pTVar7;
   int iVar8;
-  
+
   iVar8 = (int)(short)param_1;
   bVar1 = *(byte *)(*(int *)&g_pGlobalMapState->field_0x10 + iVar8 * 0xa8);
   uVar3 = (*g_apTerrainTypeDescriptorTable[(short)(char)bVar1]->vftable->
@@ -333,7 +281,7 @@ undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(undefined4 param
 // GHIDRA_COMMENT_END
 
 /* Selects the best city development action from current resource pools and capability availability.
-   
+
    High-level flow:
    1. Evaluate base development candidates using capability-table formulas and current resource
    pools.
@@ -341,12 +289,12 @@ undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(undefined4 param
    3. Evaluate class-based industry candidates via GetEnabledIndustryCapabilitySlotByClass.
    4. Choose max-scoring candidate and mark output type flags.
    5. Deduct the chosen action's resource costs from the caller-provided pools.
-   
+
    Outputs:
    - selected slot id (param_6)
    - selection class flags (param_4 / param_5)
    - optional score/value (param_8)
-   
+
    Returns 1 when an action was selected and applied; 0 otherwise. */
 
 undefined4
@@ -367,7 +315,7 @@ SelectBestCityDevelopmentFromResourcePools
   float local_14;
   int *local_10;
   int local_c;
-  
+
   *param_6 = -1;
   iVar4 = 0;
   piVar5 = param_2;
@@ -515,7 +463,7 @@ short CompareMissionOrderEntriesByMovementClassThenEfficiency(int *param_1,int *
   short sVar6;
   float10 fVar7;
   float10 fVar8;
-  
+
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0xc))();
   iVar2 = *param_2;
@@ -554,7 +502,7 @@ undefined2 CompareMissionOrderEntriesByPriorityScore(int *param_1,int *param_2)
   int iVar2;
   float10 fVar3;
   float10 fVar4;
-  
+
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0xc))();
   iVar2 = *param_2;
@@ -610,7 +558,7 @@ float10 ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
   float10 fVar3;
   float10 fVar4;
   float10 fVar5;
-  
+
   fVar3 = (float10)g_Recompute_Nation_Order_LookupTable_0065A9E8;
   pfVar1 = param_1;
   iVar2 = param_3;
@@ -649,7 +597,7 @@ float10 ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
 void WrapperFor_AFX_CLASSINIT_At00536470(void)
 
 {
-  FUN_0060704b(&PTR_s_TNavyMission_00697998);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TNavyMission_00697998);
   return;
 }
 
@@ -662,7 +610,7 @@ void __fastcall CleanupTMissionAndReleaseOwnedOrders(int *param_1)
 {
   int *piVar1;
   int *unaff_EDI;
-  
+
   if ((int *)param_1[8] != (int *)0x0) {
     (**(code **)(*(int *)param_1[8] + 0x1c))();
   }
@@ -696,7 +644,7 @@ void __thiscall SerializeTNavyMissionCommon(int param_1,int *param_2)
   code *unaff_EBP;
   undefined4 *puVar7;
   undefined4 local_4;
-  
+
   local_4 = param_1;
   SerializeTMission(param_2);
   if (*(int *)(param_1 + 0x14) == 0) {
@@ -756,7 +704,7 @@ void __thiscall DeserializeTNavyMissionCommon(int *param_1,int *param_2)
   undefined1 *puVar6;
   code *unaff_EBX;
   int iVar7;
-  
+
   DeserializeTMission(param_2);
   iVar7 = *param_2;
   pcVar2 = *(code **)(iVar7 + 0x4c);
@@ -807,7 +755,7 @@ undefined4 __fastcall ClearMissionQueuedOrderLinksAndOwnerPointers(int param_1)
 {
   int *piVar1;
   int *unaff_EDI;
-  
+
   piVar1 = *(int **)(param_1 + 0x24);
   while (piVar1 != (int *)0x0) {
     *(undefined4 *)(**(int **)(param_1 + 0x24) + 0x2c) = 0;
@@ -827,7 +775,7 @@ AttachMissionOrderAsQueuedChildAndNotify(int *param_1,int param_2,undefined4 par
 
 {
   int iVar1;
-  
+
   if (*(int **)(param_2 + 0x2c) != (int *)0x0) {
     (**(code **)(**(int **)(param_2 + 0x2c) + 0x8c))(param_2,param_3);
   }
@@ -848,7 +796,7 @@ void __thiscall DetachMissionOrderChildAndClearPrimaryIfMatch(int param_1,int pa
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = RemoveLinkedOrderNodeByValueRecursive(param_2);
   *(undefined4 *)(param_1 + 0x24) = uVar1;
   *(undefined4 *)(param_2 + 0x2c) = 0;
@@ -884,7 +832,7 @@ int __thiscall BuildMissionQueuedOrderCategoryWeightsAndReturnTotal(int *param_1
   int iVar4;
   int *piVar5;
   int local_20;
-  
+
   iVar4 = param_1[9];
   local_20 = 0;
   if (iVar4 != 0) {
@@ -933,7 +881,7 @@ void __fastcall UpdateMissionOrderSelectionStateByNationSimilarityThresholds(int
   float *pfVar6;
   int iVar7;
   float afStack_10 [4];
-  
+
   iVar4 = *param_1;
   (**(code **)(iVar4 + 0x34))();
   (**(code **)(iVar4 + 0x38))();
@@ -1031,7 +979,7 @@ void __thiscall RebuildMapOrderEntryChildrenForContext(int param_1,int param_2,i
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063432a;
@@ -1044,7 +992,7 @@ void __thiscall RebuildMapOrderEntryChildrenForContext(int param_1,int param_2,i
   for (piVar1 = *(int **)(param_1 + 0x24); piVar1 != (int *)0x0; piVar1 = (int *)piVar1[1]) {
     if (*(int *)(*piVar1 + 8) == param_2) {
       if (*param_3 == 0) {
-        this = (TTaskForce *)AllocateWithFallbackHandler(0x34);
+        this = (TTaskForce *)__2_YAPAXI_Z(0x34);
         uStack_4 = 0;
         if (this == (TTaskForce *)0x0) {
           iVar2 = 0;
@@ -1081,7 +1029,7 @@ void __fastcall ProcessMapOrderEntryContextMode(int *param_1)
   void *this;
   int iVar2;
   int *piVar3;
-  
+
   iVar2 = param_1[9];
   if (iVar2 != 0) {
     *(undefined1 *)(iVar2 + 0xc) = 0;
@@ -1151,7 +1099,7 @@ undefined4 __fastcall GetMissionOrderBudgetByMode(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(param_1 + 0x28);
   if (iVar1 == 0) {
     return *(undefined4 *)(param_1 + 0x18);
@@ -1180,7 +1128,7 @@ void QueueMissionOrderEntriesAcrossSelectionRange(int param_1,int *param_2,int *
   int in_stack_00000014;
   int *in_stack_0000001c;
   int *in_stack_00000020;
-  
+
   sVar1 = ComputeOrderNodeDistanceQuotientByDescriptorWord24();
   sVar2 = ComputeOrderNodeDistanceQuotientByDescriptorWord24();
   if (sVar2 <= sVar1) {
@@ -1223,7 +1171,7 @@ void QueueMissionOrderEntryAndPropagateSelectionRange(int param_1,undefined4 *pa
   int *unaff_retaddr;
   int in_stack_00000010;
   undefined4 *in_stack_0000001c;
-  
+
   do {
     SetMapOrderType9AndQueue(in_ECX,unaff_retaddr);
     while( true ) {
@@ -1252,7 +1200,7 @@ void __thiscall ConsolidateMissionOrderEntriesByTargetAndQueue(int param_1,int *
   undefined4 *puVar1;
   int *piVar2;
   void *this;
-  
+
   for (puVar1 = *(undefined4 **)(param_1 + 0x24); puVar1 != (undefined4 *)0x0;
       puVar1 = (undefined4 *)puVar1[1]) {
     if (*(char *)(puVar1 + 3) == '\0') {
@@ -1294,7 +1242,7 @@ float10 __thiscall ComputeMissionOrderMatchDeltaWithCandidateNavyOrder(int *para
   undefined4 *puVar12;
   float10 fVar13;
   float local_10 [4];
-  
+
   if ((char)param_1[4] != '\0') {
     return (float10)g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
@@ -1446,7 +1394,7 @@ ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile(int *param_1,int para
   short sVar12;
   float10 fVar13;
   float local_10 [4];
-  
+
   sVar8 = GetNavyOrderNormalizationBaseByNationType();
   if ((float)((int)*(short *)(param_2 + 0x1c) / (int)sVar8) < _DAT_0065aa20) {
     cVar7 = (**(code **)(*param_1 + 0x28))();
@@ -1530,7 +1478,7 @@ float10 __fastcall ComputeMissionWeightDotProductWithBaselineProfile(int param_1
   float *pfVar3;
   float *pfVar4;
   float10 fVar5;
-  
+
   fVar5 = (float10)g_Recompute_Nation_Order_LookupTable_0065A9E8;
   pfVar3 = (float *)&DAT_0065a910;
   pfVar4 = (float *)(param_1 + 0x2c);
@@ -1558,7 +1506,7 @@ BuildNavyOrderCategoryVectorForNationWithExclusion
   float fVar3;
   short sVar4;
   short sVar5;
-  
+
   sVar4 = param_4;
   *param_2 = 0.0;
   param_2[1] = 0.0;
@@ -1615,7 +1563,7 @@ void AccumulateNavyOrderCategoryVectorWithScale(int param_1,float *param_2,float
 {
   float fVar1;
   short sVar2;
-  
+
   sVar2 = GetNavyOrderNormalizationBaseByNationType();
   fVar1 = (float)((int)*(short *)(param_1 + 0x1c) / (int)sVar2) * param_3;
   sVar2 = ComputeNavyOrderPriorityContributionPercentByCategory(0);
@@ -1644,7 +1592,7 @@ void __thiscall BuildMissionQueuedOrderCategoryVector(int *param_1,float *param_
   int iVar6;
   undefined4 uVar7;
   int *piVar8;
-  
+
   *param_2 = 0.0;
   param_2[1] = 0.0;
   param_2[2] = 0.0;
@@ -1697,7 +1645,7 @@ ComputeMissionQueuedOrderSimilarityForTargetNation(int param_1,undefined4 param_
   float10 fVar5;
   float10 fVar6;
   float local_10 [4];
-  
+
   BuildNavyOrderCategoryVectorForNationWithExclusion
             (local_10,*(undefined4 *)(param_1 + 0x14),param_2,*(undefined4 *)(param_1 + 0x18));
   fVar5 = (float10)0.0;
@@ -1739,7 +1687,7 @@ float10 __fastcall ComputeMissionQueuedOrderSimilarityWithFloorAdjustedCandidate
   float10 fVar12;
   float10 fVar13;
   float local_10 [4];
-  
+
   fVar2 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   local_10[0] = 0.0;
   piVar11 = (int *)param_1[9];
@@ -1814,7 +1762,7 @@ float10 __thiscall ComputeMissionOrderMatchScoreWithCandidateNavyOrder(int *para
   float10 fVar11;
   float10 fVar12;
   float local_10 [4];
-  
+
   local_10[0] = 0.0;
   piVar10 = (int *)param_1[9];
   local_10[1] = 0.0;
@@ -1912,7 +1860,7 @@ ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(int *param_1,int param
   float10 fVar12;
   float10 fVar13;
   float local_10 [4];
-  
+
   local_10[0] = 0.0;
   piVar11 = (int *)param_1[9];
   local_10[1] = 0.0;
@@ -1994,7 +1942,7 @@ ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(int *param_1,int param
 void WrapperFor_AFX_CLASSINIT_At005387a0(void)
 
 {
-  FUN_0060704b(&PTR_s_TControlSeaZoneMission_006979b0);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TControlSeaZoneMission_006979b0);
   return;
 }
 
@@ -2015,16 +1963,16 @@ void __fastcall RecomputeAndClearMissionScoreUsingPortZoneContextAverage(int par
   undefined4 uVar4;
   void *unaff_EBX;
   float local_4;
-  
+
   this = *(TGreatPower **)(param_1 + 0x14);
   iVar3 = TGreatPower::ComputeMapActionContextNodeValueAverage(this);
   local_4 = (float)iVar3;
   for (this_00 = GetFirstPortZone(); this_00 != (TZone *)0x0;
       this_00 = TZone::GetNextPortZone(this_00,unaff_EBX)) {
     if (*(int *)&this_00->field_0x2c == 0) {
-      iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this_00->field_0x28,8);
+      iVar3 = _realloc(*(undefined4 *)&this_00->field_0x28,8);
       if (iVar3 == 0) {
-        uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this_00->field_0x28,4);
+        uVar4 = _realloc(*(undefined4 *)&this_00->field_0x28,4);
         *(undefined4 *)&this_00->field_0x28 = uVar4;
         *(undefined4 *)&this_00->field_0x2c = 1;
       }
@@ -2064,7 +2012,7 @@ uint __fastcall ValidateMissionTerrainCoverageAndRefreshTargetContext(int *param
   TCountry **ppTVar4;
   int iVar5;
   undefined4 uVar6;
-  
+
   bVar1 = false;
   iVar5 = 0;
   ppTVar4 = g_apTerrainTypeDescriptorTable;
@@ -2125,7 +2073,7 @@ float10 ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter
   float10 fVar9;
   float10 fVar10;
   float local_10 [4];
-  
+
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
@@ -2196,7 +2144,7 @@ float10 ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation(short pa
   float10 fVar7;
   float10 fVar8;
   float local_10 [4];
-  
+
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
@@ -2265,7 +2213,7 @@ ComputeNavyOrderDistributionSimilarityScoreForMissionNation(int param_1,int para
   float10 fVar10;
   float10 fVar11;
   float local_10 [4];
-  
+
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   uVar1 = *(undefined2 *)(param_1 + 4);
@@ -2343,12 +2291,12 @@ void __fastcall UpdateControlSeaZoneMissionStateFromTargetNavySimilarity(int par
   short *psVar12;
   undefined4 unaff_EDI;
   float local_10 [4];
-  
+
   iVar7 = FindFirstPortZoneContextByNation(*(undefined2 *)(param_1 + 4));
   if (*(int *)(iVar7 + 0x2c) == 0) {
-    iVar8 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar7 + 0x28),8);
+    iVar8 = _realloc(*(undefined4 *)(iVar7 + 0x28),8);
     if (iVar8 == 0) {
-      uVar9 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar7 + 0x28),4);
+      uVar9 = _realloc(*(undefined4 *)(iVar7 + 0x28),4);
       *(undefined4 *)(iVar7 + 0x28) = uVar9;
       *(undefined4 *)(iVar7 + 0x2c) = 1;
     }
@@ -2440,16 +2388,16 @@ void __fastcall ComputeMissionScoreUsingPortZoneContextAverage(int param_1)
   undefined4 uVar4;
   void *unaff_EDI;
   float fStack_4;
-  
+
   this = *(TGreatPower **)(param_1 + 0x14);
   iVar3 = TGreatPower::ComputeMapActionContextNodeValueAverage(this);
   fStack_4 = (float)iVar3;
   for (this_00 = GetFirstPortZone(); this_00 != (TZone *)0x0;
       this_00 = TZone::GetNextPortZone(this_00,unaff_EDI)) {
     if (*(int *)&this_00->field_0x2c == 0) {
-      iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this_00->field_0x28,8);
+      iVar3 = _realloc(*(undefined4 *)&this_00->field_0x28,8);
       if (iVar3 == 0) {
-        uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this_00->field_0x28,4);
+        uVar4 = _realloc(*(undefined4 *)&this_00->field_0x28,4);
         *(undefined4 *)&this_00->field_0x28 = uVar4;
         *(undefined4 *)&this_00->field_0x2c = 1;
       }
@@ -2495,18 +2443,18 @@ void __fastcall ComputeMissionScoreUsingPortZoneContextAverage(int param_1)
 // GHIDRA_COMMENT_END
 
 /* Resolves a port-zone context command into a queued order type.
-   
+
    Behavior:
    1. Build nation bitmask of valid contexts for requested port-zone selector.
    2. Track first matching context whose root node matches active entry context.
    3. If active entry nation mask has no overlap and matching context exists -> queue type 6 with
    that context.
    4. Otherwise queue type 3 (context-zone default path).
-   
+
    Parameters:
    - param_1: Port-zone context selector/message state.
    - param_2: Active map-order entry.
-   
+
    Returns:
    - void. */
 
@@ -2520,7 +2468,7 @@ void __thiscall ResolveAndQueuePortZoneMapOrder(int param_1,TControlSeaZoneMissi
   uint uVar5;
   int iVar6;
   int local_8;
-  
+
   SetTaskForceOwnerPointer(1);
   iVar6 = 0;
   uVar5 = 0;
@@ -2532,9 +2480,9 @@ void __thiscall ResolveAndQueuePortZoneMapOrder(int param_1,TControlSeaZoneMissi
       uVar5 = uVar5 | 1 << ((byte)iVar6 & 0x1f);
       iVar2 = FindFirstPortZoneContextByNation(iVar6);
       if (*(int *)(iVar2 + 0x2c) == 0) {
-        iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar2 + 0x28),8);
+        iVar3 = _realloc(*(undefined4 *)(iVar2 + 0x28),8);
         if (iVar3 == 0) {
-          uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar2 + 0x28),4);
+          uVar4 = _realloc(*(undefined4 *)(iVar2 + 0x28),4);
           *(undefined4 *)(iVar2 + 0x28) = uVar4;
           *(undefined4 *)(iVar2 + 0x2c) = 1;
         }
@@ -2574,13 +2522,13 @@ void __fastcall ResolveAndCacheMissionPortZoneContextForNationTarget(int param_1
   undefined2 extraout_var_00;
   undefined2 extraout_var_01;
   undefined2 uVar4;
-  
+
   iVar1 = FindFirstPortZoneContextByNation(*(undefined2 *)(param_1 + 4));
   uVar4 = extraout_var;
   if (*(int *)(iVar1 + 0x2c) == 0) {
-    iVar2 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar1 + 0x28),8);
+    iVar2 = _realloc(*(undefined4 *)(iVar1 + 0x28),8);
     if (iVar2 == 0) {
-      uVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar1 + 0x28),4);
+      uVar3 = _realloc(*(undefined4 *)(iVar1 + 0x28),4);
       *(undefined4 *)(iVar1 + 0x28) = uVar3;
       *(undefined4 *)(iVar1 + 0x2c) = 1;
       uVar4 = extraout_var_01;
@@ -2652,7 +2600,7 @@ void __fastcall ResetTEscortMissionToSentinelVtable(undefined4 *param_1)
 void WrapperFor_AFX_CLASSINIT_At005399d0(void)
 
 {
-  FUN_0060704b(&PTR_s_TEscortMission_006979c8);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TEscortMission_006979c8);
   return;
 }
 
@@ -2676,7 +2624,7 @@ float10 __thiscall ComputeNavyOrderDistributionSimilarityScoreForNation(int para
   float10 fVar10;
   float10 fVar11;
   float local_10 [4];
-  
+
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
@@ -2761,7 +2709,7 @@ undefined4 __thiscall DestroyTBeachheadMission(undefined4 param_1,byte param_2)
 {
   ResetTBeachheadMissionToSentinelVtable();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -2784,7 +2732,7 @@ void __fastcall ResetTBeachheadMissionToSentinelVtable(undefined4 *param_1)
 void WrapperFor_AFX_CLASSINIT_At0053a440(void)
 
 {
-  FUN_0060704b(&PTR_s_TBeachheadMission_006979e0);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TBeachheadMission_006979e0);
   return;
 }
 
@@ -2806,14 +2754,14 @@ void WrapperFor_AFX_CLASSINIT_At0053a440(void)
 // GHIDRA_COMMENT_END
 
 /* Queues province-target map-order entry from context message.
-   
+
    Behavior:
    1. If nation/province predicate (+0x48) passes, queue type 5 using province context pointer.
    2. Otherwise run fallback diplomacy/relationship update branch (relation code 0x131) when needed.
-   
+
    Parameters:
    - msg_ctx: Context message payload containing province tile reference.
-   
+
    Returns:
    - void. */
 
@@ -2824,7 +2772,7 @@ void __thiscall TryQueueProvinceOrderFromContextMessage(void *this,int msg_ctx)
   char cVar2;
   int iVar2;
   void *unaff_ESI;
-  
+
   iVar2 = (int)*(short *)(*(int *)((int)this + 0x3c) + 0x30);
   cVar1 = (bool)(*g_pDiplomacyTurnStateManager->vftable[9].GetTDiplomacyMgrClassNamePointer)
                           (CONCAT22((short)((uint)*(int *)&g_pGlobalMapState->field_0x10 >> 0x10),
@@ -2906,7 +2854,7 @@ void __fastcall ResetTBlockadePortMissionToSentinelVtable(undefined4 *param_1)
 void WrapperFor_AFX_CLASSINIT_At0053ab00(void)
 
 {
-  FUN_0060704b(&PTR_s_TBlockadePortMission_006979f8);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TBlockadePortMission_006979f8);
   return;
 }
 
@@ -2930,7 +2878,7 @@ float10 __fastcall ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(
   TGreatPower **ppTVar11;
   float local_20;
   float local_10 [4];
-  
+
   local_20 = 0.0;
   sVar5 = GetPortZoneOwnerNationCodeFromMissionField48();
   if (6 < sVar5) {
@@ -3064,7 +3012,7 @@ float10 ComputeNavyOrderDistributionScoreForNation(short param_1)
   float10 fVar8;
   float10 fVar9;
   float local_10 [4];
-  
+
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
@@ -3131,7 +3079,7 @@ void __thiscall QueueMapOrderType6FromContextPointer(int param_1,TControlSeaZone
 void WrapperFor_AFX_CLASSINIT_At0053bb40(void)
 
 {
-  FUN_0060704b(&PTR_s_TScatteredShipsMission_00697a10);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TScatteredShipsMission_00697a10);
   return;
 }
 
@@ -3143,7 +3091,7 @@ void __fastcall ResetScatteredShipsMissionStateAndScoreDefault(int param_1)
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = DAT_0065a9c8;
   *(undefined1 *)(param_1 + 0x11) = 0;
   *(undefined4 *)(param_1 + 0xc) = uVar1;
@@ -3196,12 +3144,12 @@ undefined4 __fastcall AllocateAndConstructTArmyMissionWithNodeKey(undefined4 par
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063440a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x30,param_1);
+  this = (TMission *)__2_YAPAXI_Z(0x30,param_1);
   local_4 = 0;
   if (this != (TMission *)0x0) {
     uVar1 = TMission::ConstructTArmyMissionWithNodeKey(this,0xffff);
@@ -3219,7 +3167,7 @@ undefined4 __fastcall AllocateAndConstructTArmyMissionWithNodeKey(undefined4 par
 void WrapperFor_AFX_CLASSINIT_At0053c050(void)
 
 {
-  FUN_0060704b(&PTR_s_TArmyMission_00697a28);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TArmyMission_00697a28);
   return;
 }
 
@@ -3258,7 +3206,7 @@ void __thiscall SerializeTArmyMission(int param_1,int *param_2)
   undefined4 *puVar5;
   int iVar6;
   undefined4 uStack_4;
-  
+
   SerializeTMission(param_2);
   pcVar1 = *(code **)(*param_2 + 0x78);
   (*pcVar1)(param_1 + 0x14,2);
@@ -3306,7 +3254,7 @@ void __thiscall DeserializeTArmyMission(int param_1,int *param_2)
   undefined1 *puVar5;
   int iVar6;
   undefined4 uVar7;
-  
+
   DeserializeTMission(param_2);
   pcVar2 = *(code **)(*param_2 + 0x3c);
   (*pcVar2)(param_1 + 0x14,2);
@@ -3350,7 +3298,7 @@ undefined4 __fastcall EvaluateMissionAndQueueEligibleUnitsByMovementClass(int *p
   short sVar1;
   undefined4 uVar2;
   int iVar3;
-  
+
   uVar2 = InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
   while (iVar3 != 0) {
@@ -3393,11 +3341,12 @@ void __thiscall ReleaseMissionOwnerLinkAtOffset40(int param_1,int param_2)
 {
   TAutoGreatPower *this;
   int *piVar1;
-  
+
   this = (TAutoGreatPower *)(*(int *)(param_1 + 0x18) + 4);
-  piVar1 = (int *)TAutoGreatPower::Find(this,param_2,(undefined4 *)0x0);
+  piVar1 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                            (this,param_2,(undefined4 *)0x0);
   if (piVar1 != (int *)0x0) {
-    TAutoGreatPower::RemoveAt_60217d(this,piVar1);
+    TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this,piVar1);
   }
   *(undefined4 *)(param_2 + 0x40) = 0;
   return;
@@ -3423,7 +3372,7 @@ int __thiscall BuildMissionPriorityVectorAndReturnTotal(int *param_1,int *param_
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   piVar8 = param_2;
   local_14 = 0;
   local_10 = 0;
@@ -3470,7 +3419,7 @@ void PropagateTargetTileToLinkedUnitsIfDifferent(undefined4 param_1)
 {
   int *piVar1;
   int iVar2;
-  
+
   piVar1 = (int *)InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
   while (iVar2 != 0) {
@@ -3497,7 +3446,7 @@ AccumulateMissionUnitPriorityVectorWithOptionalFilter
   int *piVar3;
   int iVar4;
   undefined4 uVar5;
-  
+
   *param_2 = 0;
   param_2[1] = 0;
   param_2[2] = 0;
@@ -3535,7 +3484,7 @@ float10 __thiscall ComputeMissionPrioritySimilarityScoreForFilter(int *param_1,u
   float10 fVar6;
   float10 fVar7;
   float afStack_14 [5];
-  
+
   uVar2 = (**(code **)(*param_1 + 0x9c))(param_2);
   AccumulateMissionUnitPriorityVectorWithOptionalFilter(afStack_14,uVar2,param_2);
   fVar6 = (float10)0.0;
@@ -3570,7 +3519,7 @@ AccumulateMissionUnitPriorityContributionWithScaleMode
   double dVar3;
   short sVar4;
   undefined4 uVar5;
-  
+
   pcVar2 = *(code **)(*param_1 + 0x9c);
   uVar5 = (*pcVar2)();
   sVar4 = NoOpRuntimeCallback_005c34d0(uVar5);
@@ -3605,7 +3554,7 @@ void AccumulateUnitOrderPriorityVectorContribution
   float fVar4;
   short sVar5;
   short sVar6;
-  
+
   sVar6 = *(short *)(param_1 + 0x38);
   fVar2 = (float)_DAT_0065aa38;
   fVar3 = (float)g_Recompute_Nation_Order_LookupTable_0065AA08;
@@ -3644,7 +3593,7 @@ void __thiscall AccumulateMissionUnitPriorityVector(int *param_1,undefined4 *par
   int iVar4;
   undefined4 uVar5;
   undefined4 uVar6;
-  
+
   *param_2 = 0;
   param_2[1] = 0;
   param_2[2] = 0;
@@ -3693,7 +3642,7 @@ float10 __fastcall ComputeArmyMissionCompositionAlignmentScore(int *param_1)
   float10 fVar10;
   float10 fVar11;
   float local_14 [5];
-  
+
   local_14[0] = 0.0;
   local_14[1] = 0.0;
   local_14[2] = 0.0;
@@ -3758,7 +3707,7 @@ float10 __thiscall ComputeArmyMissionScoreDeltaWithCandidateUnit(int *param_1,un
   float10 fVar10;
   float10 fVar11;
   float local_14 [5];
-  
+
   local_14[0] = 0.0;
   local_14[1] = 0.0;
   local_14[2] = 0.0;
@@ -3835,7 +3784,7 @@ ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(int *param_1,undefined4 para
   float10 fVar11;
   float10 fVar12;
   float local_14 [5];
-  
+
   local_14[0] = 0.0;
   local_14[1] = 0.0;
   local_14[2] = 0.0;
@@ -3902,7 +3851,7 @@ float10 __fastcall ComputeArmyMissionDotProductScore(int param_1)
   float *pfVar3;
   float *pfVar4;
   float10 fVar5;
-  
+
   fVar5 = (float10)g_Recompute_Nation_Order_LookupTable_0065A9E8;
   pfVar3 = (float *)&DAT_00697980;
   pfVar4 = (float *)(param_1 + 0x1c);
@@ -3925,7 +3874,7 @@ float10 __thiscall ComputeArmyMissionScoreDeltaAgainstCurrentSelection(int *para
 {
   float10 fVar1;
   float10 fVar2;
-  
+
   if ((char)param_1[4] != '\0') {
     return (float10)g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
@@ -3961,7 +3910,7 @@ ComputeArmyMissionCandidateVectorDistanceScore(int *param_1,int param_2,float *p
   float10 fVar10;
   float10 fVar11;
   float local_14 [5];
-  
+
   if ((double)(int)*(short *)(param_2 + 0x34) * _DAT_0065aa48 < (double)_DAT_0065aa20) {
     cVar3 = (**(code **)(*param_1 + 0x28))();
     if (cVar3 == '\0') {
@@ -4016,7 +3965,7 @@ uint __fastcall ReturnMissionIfMovementClassMatchesTargetTile(uint param_1)
 
 {
   short sVar1;
-  
+
   sVar1 = GetTileNormalizedMovementClassId((int)*(short *)(param_1 + 0x14));
   return ~-(uint)(sVar1 != *(short *)(param_1 + 4)) & param_1;
 }
@@ -4038,7 +3987,7 @@ undefined1 ReturnFalseForAttackProvinceMissionCapabilityFlag(void)
 void WrapperFor_AFX_CLASSINIT_At0053d730(void)
 
 {
-  FUN_0060704b(&PTR_s_TAttackProvinceMission_00697a40);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TAttackProvinceMission_00697a40);
   return;
 }
 
@@ -4076,7 +4025,7 @@ bool __fastcall TryResolveAttackProvinceMissionTargetTerrainClass(int param_1)
   short *local_18;
   float local_10;
   int local_c;
-  
+
   local_10 = 0.0;
   *(undefined2 *)(param_1 + 0x14) = 0xffff;
   local_c = 0;
@@ -4168,7 +4117,7 @@ void __fastcall RefreshAttackProvinceMissionTargetAndMaybeQueueUnits(int *param_
   undefined4 uVar11;
   float fStack_14;
   int iStack_10;
-  
+
   if ((short)param_1[5] == -1) {
     (**(code **)(*param_1 + 0xa0))();
   }
@@ -4250,7 +4199,7 @@ int * __fastcall TryValidateOrRetargetDefendProvinceMissionTarget(int *param_1)
   int iVar5;
   undefined2 extraout_var;
   int iVar6;
-  
+
   if ((short)param_1[5] == -1) {
     (**(code **)(*param_1 + 0xa0))();
   }
@@ -4315,7 +4264,7 @@ void __fastcall ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile30(int 
   short *psVar7;
   int local_c;
   float local_8;
-  
+
   iVar6 = 0;
   local_c = 0;
   sVar2 = *(short *)(param_1 + 4);
@@ -4358,7 +4307,7 @@ void __fastcall PopulateDefendProvinceMissionResourceWeightsFromTargetProvince(i
   short *psVar8;
   int iVar9;
   float local_14 [5];
-  
+
   local_14[0] = 0.0;
   local_14[1] = 0.0;
   local_14[2] = 0.0;
@@ -4443,7 +4392,7 @@ float10 ComputeDefendProvinceMissionScoreWithEarlyThreatGate(undefined4 param_1,
 {
   short sVar1;
   float10 fVar2;
-  
+
   if (g_Recompute_Nation_Order_LookupTable_0065A9E8 < *(float *)(param_2 + 8)) {
     sVar1 = NoOpRuntimeCallback_005c3530(2);
     if (sVar1 < 10) {
@@ -4461,7 +4410,7 @@ float10 ComputeDefendProvinceMissionScoreWithEarlyThreatGate(undefined4 param_1,
 void WrapperFor_AFX_CLASSINIT_At0053e690(void)
 
 {
-  FUN_0060704b(&PTR_s_TDefendProvinceMission_00697a58);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TDefendProvinceMission_00697a58);
   return;
 }
 
@@ -4491,7 +4440,7 @@ float10 ComputeDefendProvinceMissionCrossNationSupportVectorScore(undefined4 par
   int local_40;
   float local_30 [5];
   int local_1c [7];
-  
+
   local_30[0] = 0.0;
   local_30[1] = 0.0;
   local_30[2] = 0.0;
@@ -4604,7 +4553,7 @@ float10 ComputeDefendProvinceMissionLocalSupportVectorScore(undefined4 param_1)
   float10 fVar7;
   float10 fVar8;
   float local_14 [5];
-  
+
   local_14[0] = 0.0;
   local_14[1] = 0.0;
   local_14[2] = 0.0;
@@ -4668,7 +4617,7 @@ uint __fastcall ReturnInvadeMissionIfMovementClassMatchesTargetTile(uint param_1
 
 {
   short sVar1;
-  
+
   sVar1 = GetTileNormalizedMovementClassId((int)*(short *)(param_1 + 0x14));
   return ~-(uint)(sVar1 != *(short *)(param_1 + 4)) & param_1;
 }
@@ -4710,7 +4659,7 @@ undefined1 ReturnFalseForInvadeMissionCapabilityFlag(void)
 void WrapperFor_AFX_CLASSINIT_At0053f280(void)
 
 {
-  FUN_0060704b(&PTR_s_TInvadeMission_00697a70);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_s_TInvadeMission_00697a70);
   return;
 }
 
@@ -4754,7 +4703,7 @@ float10 __fastcall ComputeInvadeMissionPriorityScore(int *param_1)
   undefined4 local_a0;
   undefined4 local_9c [9];
   undefined4 auStack_78 [30];
-  
+
   local_b8 = param_1[6];
   local_d4 = 0.0;
   InitializeLinkedListCursorFromOwnerHead();
@@ -4850,13 +4799,13 @@ undefined1 ReturnTrueForInvadeMissionCapabilityFlag(void)
 // GHIDRA_COMMENT_END
 
 /* Recomputes nation-level order priority metrics from queued map-order distributions.
-   
+
    Algorithm:
    1. Aggregate weighted queue demand vectors per active nation.
    2. Compute divergence/pressure scores against reference distributions.
    3. Store per-nation score caches in global metric arrays.
    4. Trigger nation virtual callback at vfunc +0x2B4 for each active nation.
-   
+
    This runs in game-flow state 0x15 before per-nation +0x2B8/+0x108 passes. */
 
 void RecomputeNationOrderPriorityMetrics(void)
@@ -4877,7 +4826,7 @@ void RecomputeNationOrderPriorityMetrics(void)
   TGreatPower **ppTVar12;
   int iVar13;
   float local_14 [5];
-  
+
   iVar13 = 0;
   pfVar11 = (float *)&DAT_006a3ae0;
   do {
@@ -5089,7 +5038,7 @@ float ComputeBestNationTileDevelopmentScore(int param_1)
   int iStack_20;
   float fStack_1c;
   code *pcStack_8;
-  
+
   pTVar1 = g_apNationStates[param_1];
   if ((pTVar1 != (TGreatPower *)0x0) && (pTVar1->field_0xa0 == '\0')) {
     (*pTVar1->vftable->ConstructTTaskBaseState)();
@@ -5184,12 +5133,12 @@ TGreatPower * CreateNationStateVariantVtable65B078(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063451a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TGreatPower *)AllocateWithFallbackHandler(0x964);
+  this = (TGreatPower *)__2_YAPAXI_Z(0x964);
   local_4 = 0;
   pTVar1 = (TGreatPower *)0x0;
   if (this != (TGreatPower *)0x0) {
@@ -5213,12 +5162,12 @@ TGreatPower * CreateNationStateVariantVtable65B3D0(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063456a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TGreatPower *)AllocateWithFallbackHandler(0x968);
+  this = (TGreatPower *)__2_YAPAXI_Z(0x968);
   local_4 = 0;
   if (this != (TGreatPower *)0x0) {
     TGreatPower::TGreatPower(this);
@@ -5244,12 +5193,12 @@ TGreatPower * CreateNationStateVariantVtable65B728(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006345ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TGreatPower *)AllocateWithFallbackHandler(0x964);
+  this = (TGreatPower *)__2_YAPAXI_Z(0x964);
   local_4 = 0;
   pTVar1 = (TGreatPower *)0x0;
   if (this != (TGreatPower *)0x0) {
@@ -5274,12 +5223,12 @@ TGreatPower * CreateNationStateVariantVtable65BA80(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063460a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TGreatPower *)AllocateWithFallbackHandler(0x964);
+  this = (TGreatPower *)__2_YAPAXI_Z(0x964);
   local_4 = 0;
   pTVar1 = (TGreatPower *)0x0;
   if (this != (TGreatPower *)0x0) {
@@ -5304,12 +5253,12 @@ TMinor * AllocateAndConstructTRemoteMinor(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063467a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMinor *)AllocateWithFallbackHandler(0x2dc);
+  this = (TMinor *)__2_YAPAXI_Z(0x2dc);
   local_4 = 0;
   pTVar1 = (TMinor *)0x0;
   if (this != (TMinor *)0x0) {
@@ -5350,7 +5299,7 @@ TRemoteMinor * __thiscall DeletingDestructTRemoteMinor(TRemoteMinor *param_1,byt
 {
   TRemoteMinor::DestructTRemoteMinor(param_1);
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -5419,7 +5368,7 @@ int FindActiveNationSlotIndexInGameFlowList(void)
   int iVar1;
   int iVar2;
   int *piVar3;
-  
+
   iVar1 = GetSessionActiveNationId();
   iVar2 = 0;
   piVar3 = (int *)&g_pGameFlowState->field_0x48;
@@ -5446,12 +5395,12 @@ TCommand * AllocateAndConstructTurnEventPacket_Vtbl0065bff0(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006346ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCommand *)AllocateWithFallbackHandler(0x18);
+  this = (TCommand *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
@@ -5487,12 +5436,12 @@ undefined4 * __fastcall AllocateAndInitConfigDefaultsObjectF8(undefined4 param_1
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063470a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (Config *)AllocateWithFallbackHandler(0xf8,param_1);
+  this = (Config *)__2_YAPAXI_Z(0xf8,param_1);
   local_4 = 0;
   if (this != (Config *)0x0) {
     puVar1 = Config::InitDefaults(this,(astruct_11 *)this);
@@ -5523,7 +5472,7 @@ void __fastcall FreePointerIfNotNull(int *param_1)
 
 {
   if (*param_1 != 0) {
-    FreeHeapBufferIfNotNull(*param_1);
+    __3_YAXPAX_Z(*param_1);
   }
   return;
 }
@@ -5539,24 +5488,24 @@ void __fastcall DestructMultiplayerManager(undefined4 *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   puStack_8 = &LAB_00634833;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 6;
-  CString::~CString((CString *)(param_1 + 0x2e));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x2e));
   local_4._0_1_ = 5;
-  CString::~CString((CString *)(param_1 + 0x2d));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x2d));
   local_4._0_1_ = 4;
-  CString::~CString((CString *)(param_1 + 0x2c));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x2c));
   local_4._0_1_ = 3;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(param_1 + 0x25,4,7,&LAB_00405fa1);
+  TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z(param_1 + 0x25,4,7,&LAB_00405fa1);
   local_4._0_1_ = 2;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(param_1 + 0x1e,4,7,&LAB_00405fa1);
+  TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z(param_1 + 0x1e,4,7,&LAB_00405fa1);
   local_4._0_1_ = 1;
-  CString::~CString((CString *)(param_1 + 0x1d));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x1d));
   local_4 = (uint)local_4._1_3_ << 8;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(param_1 + 8,8,4,&LAB_0040208b);
+  TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z(param_1 + 8,8,4,&LAB_0040208b);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -5572,7 +5521,7 @@ ConfigureTurnResumeStateAndNationMask(int param_1,undefined4 param_2,undefined4 
 {
   TCountry **ppTVar1;
   byte bVar2;
-  
+
   *(undefined4 *)(param_1 + 0xf0) = param_2;
   *(undefined4 *)(param_1 + 0xec) = param_3;
   *(undefined4 *)(param_1 + 0xe8) = 0;
@@ -5603,7 +5552,7 @@ ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(TNextDiplomationCommand *p
   undefined4 local_c;
   undefined1 local_8;
   undefined4 local_4;
-  
+
   *(uint *)&param_1[9].field_0x10 = *(uint *)&param_1[9].field_0x10 & ~(1 << (param_2 & 0x1f));
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
     local_c = 0x74696d65;
@@ -5654,7 +5603,7 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006348d8;
@@ -5708,13 +5657,13 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
     local_32 = (undefined2)g_apTerrainTypeDescriptorTable[cVar1]->ownerNationSlot;
     uVar3 = (*g_apTerrainTypeDescriptorTable[cVar1]->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_10)()
     ;
-    CString::CString(&CStack_54);
+    CString::__0CString__QAE_XZ(&CStack_54);
     uStack_4 = 0;
     AssignSharedStringFromIndexedA8EntryNameField(uVar3,&CStack_54);
-    strncpy(acStack_30,CStack_54.m_pchData,0x21);
+    _strncpy(acStack_30,CStack_54.m_pchData,0x21);
     EnqueueOrSendTurnEventPacketToNation(&local_50,0);
     uStack_4 = 0xffffffff;
-    CString::~CString(&CStack_54);
+    CString::__1CString__QAE_XZ(&CStack_54);
   default:
     goto switchD_005433b3_caseD_3;
   case (TNextDiplomationCommandVtbl *)0x5:
@@ -5805,7 +5754,7 @@ int __fastcall InitializeEmitEventHeaderWithActiveNation(int param_1)
 
 {
   undefined1 uVar1;
-  
+
   *(undefined4 *)(param_1 + 0x10) = 0x74696d65;
   uVar1 = UiRuntimeContext::GetActiveNationId();
   *(undefined1 *)(param_1 + 0x14) = uVar1;
@@ -5825,13 +5774,13 @@ void __fastcall EnsureGameFlowStateAndPostTurnEvent5E5(Config *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063494a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   if (param_1 == (Config *)0x0) {
-    this = (Config *)AllocateWithFallbackHandler(0xf8);
+    this = (Config *)__2_YAPAXI_Z(0xf8);
     local_4 = 0;
     if (this == (Config *)0x0) {
       g_pGameFlowState = (Config *)0x0;
@@ -5885,7 +5834,7 @@ void EmitTurnEvent3Mode18WithActiveNation(void)
   undefined4 local_c;
   undefined4 local_8;
   undefined1 local_4;
-  
+
   local_8 = 0x74696d65;
   local_4 = UiRuntimeContext::GetActiveNationId();
   local_14 = 0;
@@ -5911,7 +5860,7 @@ void __fastcall EmitTurnEvent10ForFlaggedNationSlots(int param_1)
   undefined4 local_c;
   undefined4 local_8;
   undefined1 local_4;
-  
+
   bVar2 = 0;
   iVar1 = 0x48;
   do {
@@ -5945,7 +5894,7 @@ void BuildTurnEvent2ArraySyncPacketDeltaOrFull(uint param_1,short *param_2,int p
   undefined4 *puVar5;
   uint uVar6;
   int iVar7;
-  
+
   bVar2 = true;
   iVar7 = 0;
   if (param_3 != 0) {
@@ -5967,7 +5916,7 @@ void BuildTurnEvent2ArraySyncPacketDeltaOrFull(uint param_1,short *param_2,int p
   }
   if (!bVar2) {
     iVar7 = iVar7 * 4 + 0x24;
-    puVar5 = (undefined4 *)AllocateWithFallbackHandler(iVar7);
+    puVar5 = (undefined4 *)__2_YAPAXI_Z(iVar7);
     *puVar5 = 0;
     puVar5[1] = 0;
     puVar5[2] = 0;
@@ -5996,7 +5945,7 @@ void BuildTurnEvent2ArraySyncPacketDeltaOrFull(uint param_1,short *param_2,int p
     return;
   }
   iVar7 = param_1 * 2 + 0x24;
-  puVar4 = (undefined4 *)AllocateWithFallbackHandler(iVar7);
+  puVar4 = (undefined4 *)__2_YAPAXI_Z(iVar7);
   *puVar4 = 0;
   puVar4[1] = 0;
   puVar4[2] = 0;
@@ -6035,7 +5984,7 @@ void __thiscall ApplyEncodedDeltaPayloadToBufferByMode(int param_1,undefined4 *p
   uint uVar5;
   int iVar6;
   undefined4 *puVar7;
-  
+
   switch(*(undefined1 *)(param_1 + 0x21)) {
   case 0:
     uVar4 = *(int *)(param_1 + 0xc) - 0x24;
@@ -6104,7 +6053,7 @@ undefined4 __thiscall InitializeProtocolOptionControlFromProvider(int param_1,in
   int iVar3;
   undefined4 unaff_ESI;
   undefined4 unaff_retaddr;
-  
+
   piVar2 = param_2;
   *(int **)(param_1 + 0x40) = param_2;
   cVar1 = ResetRuntimeProtocolOptionsAndRebuildSelectionSource(param_2);
@@ -6176,14 +6125,14 @@ InitializeRuntimeSelectionCredentialsFromProviderAndConnect(int param_1,int *par
   undefined4 uStack_c;
   CString CStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   CStack_8.m_pchData = &LAB_00634998;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   ReturnTrueRuntimeCredentialInitStub();
   *(int **)(param_1 + 0x40) = param_2;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 0;
   pcVar1 = *(code **)(*param_2 + 0x94);
   piVar4 = (int *)(*pcVar1)();
@@ -6191,21 +6140,21 @@ InitializeRuntimeSelectionCredentialsFromProviderAndConnect(int param_1,int *par
   (**(code **)(local_14.m_pchData + 0xc))();
   src_ref = (CString *)NormalizeRuntimeCredentialNameToken(&stack0x00000000);
   CStack_8.m_pchData._0_1_ = 1;
-  CString::AssignFromPtr((CString *)&stack0xffffffe8,src_ref);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffe8,src_ref);
   CStack_8.m_pchData = (char *)((uint)CStack_8.m_pchData._1_3_ << 8);
-  CString::~CString((CString *)&stack0x00000000);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
   (**(code **)(local_14.m_pchData + 0x1e0))(&stack0xffffffe8);
-  CString::CString(&CStack_8,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&CStack_8,(char *)&g_szEmptyString);
   uStack_10 = 2;
-  CString::AssignFromPtr((CString *)&stack0xffffffe0,&CStack_8);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffe0,&CStack_8);
   uStack_10 = 0;
-  CString::~CString(&CStack_8);
+  CString::__1CString__QAE_XZ(&CStack_8);
   piVar4 = (int *)(*pcVar1)(0x70617373);
   iVar2 = *piVar4;
   (**(code **)(iVar2 + 0xc))();
   (**(code **)(iVar2 + 0x1e0))(&stack0xffffffdc,0);
   uVar3 = ReturnTrueRuntimeCredentialFinalizeStub();
-  CString::~CString((CString *)&stack0xffffffd4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
   *unaff_FS_OFFSET = unaff_EDI;
   return uVar3;
 }
@@ -6245,33 +6194,33 @@ undefined4 __thiscall ApplyJoinGameSelectionAndPostTurnEvent5E4(int param_1,unde
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006349c0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 0;
-  CString::CString(&local_10,&DAT_00695844);
+  CString::__0CString__QAE_PBD_Z(&local_10,&DAT_00695844);
   local_4._0_1_ = 1;
-  CString::AssignFromPtr(&local_14,&local_10);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_14,&local_10);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   this = (CString *)(param_1 + 0xb0);
   cVar1 = OpenJoinGameRuntimeSelectionAndStartSession(param_2,this,local_14.m_pchData);
   if (cVar1 != '\0') {
-    CString::AssignFromPtr((CString *)(param_1 + 0xb4),this);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)(param_1 + 0xb4),this);
     *(undefined4 *)(param_1 + 0x40) = 0;
     *(undefined4 *)&g_pLocalizationTable->field_0x44 = 2;
     PostTurnEventCodeMessage2420(0x5e4);
     local_4 = 0xffffffff;
-    CString::~CString(&local_14);
+    CString::__1CString__QAE_XZ(&local_14);
     *unaff_FS_OFFSET = local_c;
     return 1;
   }
-  CString::AssignFromPtr(this,(CString *)(param_1 + 0xb4));
+  CString::__4CString__QAEABV0_ABV0__Z(this,(CString *)(param_1 + 0xb4));
   local_4 = 0xffffffff;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return 0;
 }
@@ -6283,7 +6232,7 @@ undefined4 __thiscall ApplyJoinGameSelectionAndPostTurnEvent5E4(int param_1,unde
 undefined4 __fastcall AssignStringAtB4FromB0AndResetState40(int param_1)
 
 {
-  CString::AssignFromPtr((CString *)(param_1 + 0xb4),(CString *)(param_1 + 0xb0));
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)(param_1 + 0xb4),(CString *)(param_1 + 0xb0));
   *(undefined4 *)(param_1 + 0x40) = 0;
   return 1;
 }
@@ -6311,7 +6260,7 @@ undefined4 __thiscall ResetNationStatusSlotsAndInitializeNameControls(int param_
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006349d8;
   uStack_c = *unaff_FS_OFFSET;
@@ -6324,7 +6273,7 @@ undefined4 __thiscall ResetNationStatusSlotsAndInitializeNameControls(int param_
   do {
     puVar4[-0x1d] = 0;
     *puVar4 = 0x756e6173;
-    CString::CString(&local_2c);
+    CString::__0CString__QAE_XZ(&local_2c);
     local_4 = 0;
     LoadUiStringResourceByGroupAndIndex(&local_2c,0x2759,1);
     piVar2 = (int *)(*local_28)(iVar5 + 0x6e616d30);
@@ -6332,7 +6281,7 @@ undefined4 __thiscall ResetNationStatusSlotsAndInitializeNameControls(int param_
     (**(code **)(iVar1 + 0xc))();
     (**(code **)(iVar1 + 0x1c8))(&stack0xffffffd0,1);
     local_4 = 0xffffffff;
-    CString::~CString(&local_2c);
+    CString::__1CString__QAE_XZ(&local_2c);
     iVar5 = iVar5 + 1;
     puVar4 = puVar4 + 1;
   } while (iVar5 < 7);
@@ -6387,7 +6336,7 @@ undefined4 __fastcall ResetDialogContextField40AndEmitTurnEvent3Mode18(int param
   undefined4 local_c;
   undefined4 local_8;
   undefined1 local_4;
-  
+
   *(undefined4 *)(param_1 + 0x40) = 0;
   local_8 = 0x74696d65;
   local_4 = UiRuntimeContext::GetActiveNationId();
@@ -6420,7 +6369,7 @@ void __thiscall AppendNodeToTurnEventLinkedListAt6C(int param_1,int param_2)
 {
   int iVar1;
   int *piVar2;
-  
+
   piVar2 = (int *)(param_1 + 0x6c);
   *(undefined4 *)(param_2 + 0x10) = 0;
   for (iVar1 = *piVar2; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x10)) {
@@ -6449,7 +6398,7 @@ void CreateAndSendTurnEvent11_MapOffsetAndFlags
   int local_8;
   undefined2 local_4;
   undefined2 local_2;
-  
+
   local_18 = 0x74696d65;
   local_14 = UiRuntimeContext::GetActiveNationId();
   local_10 = param_1;
@@ -6487,7 +6436,7 @@ void CreateAndSendTurnEvent12_TwoShorts(undefined2 param_1,undefined2 param_2)
   undefined1 local_8;
   undefined2 local_4;
   undefined2 local_2;
-  
+
   local_c = 0x74696d65;
   local_8 = UiRuntimeContext::GetActiveNationId();
   local_18 = 0;
@@ -6517,7 +6466,7 @@ void CreateAndSendTurnEvent13_NationAndNineDwords(int param_1,undefined4 *param_
   undefined1 local_2c;
   undefined2 local_28;
   undefined4 local_24 [9];
-  
+
   local_30 = 0x74696d65;
   local_2c = UiRuntimeContext::GetActiveNationId();
   local_3c = 0;
@@ -6552,7 +6501,7 @@ void CreateAndSendTurnEvent20_ShortAndTwoBytes
   undefined2 local_4;
   undefined1 local_2;
   undefined1 local_1;
-  
+
   local_c = 0x74696d65;
   local_8 = UiRuntimeContext::GetActiveNationId();
   local_4 = param_1;
@@ -6582,7 +6531,7 @@ void CreateAndSendTurnEvent21_ThreeBytes(undefined1 param_1,undefined1 param_2,u
   undefined1 local_4;
   undefined1 local_3;
   undefined1 local_2;
-  
+
   local_c = 0x74696d65;
   local_8 = UiRuntimeContext::GetActiveNationId();
   local_4 = param_1;
@@ -6611,7 +6560,7 @@ void CreateAndSendTurnEvent22_ByteAndShort(undefined1 param_1,undefined2 param_2
   undefined1 local_8;
   undefined1 local_4;
   undefined2 local_2;
-  
+
   local_c = 0x74696d65;
   local_8 = UiRuntimeContext::GetActiveNationId();
   local_18 = 0;
@@ -6653,7 +6602,7 @@ void DispatchTurnEvent1AWithNationActionPayload
   undefined4 local_a;
   undefined4 local_6;
   undefined2 local_2;
-  
+
   local_24 = 0x74696d65;
   local_20 = UiRuntimeContext::GetActiveNationId();
   puVar3 = &local_e;
@@ -6706,7 +6655,7 @@ void CreateAndSendTurnEvent1B_FiveShortsAndDword
   undefined2 local_a;
   undefined2 local_8;
   undefined4 local_4;
-  
+
   local_1c = 0x74696d65;
   local_18 = UiRuntimeContext::GetActiveNationId();
   local_2c = 0x1b;
@@ -6746,7 +6695,7 @@ void CreateAndSendTurnEvent1C_BoolAndSixShorts
   undefined2 local_6;
   undefined2 local_4;
   undefined2 local_2;
-  
+
   local_18 = 0x74696d65;
   local_14 = UiRuntimeContext::GetActiveNationId();
   local_28 = 0x1c;
@@ -6773,7 +6722,7 @@ void DispatchTurnEvent31TaggedPayload(undefined4 param_1,undefined4 param_2,unde
 {
   undefined4 local_8;
   undefined4 local_4;
-  
+
   local_8 = param_1;
   local_4 = param_2;
   DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x31,param_3,&local_8);
@@ -6800,12 +6749,12 @@ void DispatchTurnEventPacketWithCodeAndPayloadBuffer
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634c44;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this = (TCountingStream *)AllocateWithFallbackHandler(0xc);
+  this = (TCountingStream *)__2_YAPAXI_Z(0xc);
   piVar4 = (int *)0x0;
   local_4 = 0;
   if (this != (TCountingStream *)0x0) {
@@ -6818,7 +6767,7 @@ void DispatchTurnEventPacketWithCodeAndPayloadBuffer
   dwBytes = (**(code **)(iVar1 + 0x28))();
   (**(code **)(iVar1 + 0x1c))();
   hMem = GlobalAlloc(2,dwBytes);
-  this_00 = (THandleStream *)AllocateWithFallbackHandler(0x18);
+  this_00 = (THandleStream *)__2_YAPAXI_Z(0x18);
   local_4 = 1;
   if (this_00 == (THandleStream *)0x0) {
     piVar4 = (int *)0x0;
@@ -6855,7 +6804,7 @@ void SerializeOrderDataIntoTurnEventByTag(int *param_1,int *param_2,short param_
   int local_1c [5];
   undefined1 local_8;
   undefined2 local_4;
-  
+
   local_1c[4] = 0x74696d65;
   local_8 = UiRuntimeContext::GetActiveNationId();
   local_1c[1] = 0;
@@ -6926,7 +6875,7 @@ void DispatchTaggedGameStateEvent1F20(undefined4 param_1,undefined4 param_2,int 
   undefined1 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   local_10 = 0x74696d65;
   local_c = UiRuntimeContext::GetActiveNationId();
   local_20 = 0x1f;
@@ -6968,7 +6917,7 @@ void __thiscall DispatchTextPairEvent8FromContext(int param_1,undefined1 param_2
   undefined1 local_44;
   char local_43 [33];
   char local_22 [34];
-  
+
   local_4c = 0x74696d65;
   local_48 = UiRuntimeContext::GetActiveNationId();
   local_44 = param_2;
@@ -7037,7 +6986,7 @@ void PublishTerrainDescriptorAndNotifyOrderListeners(int *param_1,int param_2)
   undefined4 uVar2;
   int *piVar3;
   int iVar4;
-  
+
   iVar4 = *param_1;
   pcVar1 = *(code **)(iVar4 + 0x7c);
   (*pcVar1)((char)param_2 + 'a');
@@ -7076,7 +7025,7 @@ void PublishNationDescriptorAndNotifyOrderListeners(int *param_1,int param_2)
   int iVar4;
   TGreatPower **ppTVar5;
   int iVar6;
-  
+
   iVar6 = 0;
   ppTVar5 = g_apNationStates;
   do {
@@ -7126,7 +7075,7 @@ void CreateMilitaryRecruitOrdersForSelectedTerrain(int *param_1,int param_2)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634cba;
@@ -7147,7 +7096,7 @@ void CreateMilitaryRecruitOrdersForSelectedTerrain(int *param_1,int param_2)
     }
     sVar2 = (**(code **)(iVar5 + 0x4c))();
     for (iVar5 = (int)sVar2; iVar5 != 0; iVar5 = iVar5 + -1) {
-      this = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
+      this = (TMilitaryUnitOrderState *)__2_YAPAXI_Z(0x44);
       this_00 = (TMilitaryUnitOrderState *)0x0;
       uStack_4 = 0;
       if (this != (TMilitaryUnitOrderState *)0x0) {
@@ -7184,7 +7133,7 @@ void CreateCivilianWorkOrdersForSelectedNations(int *param_1,int param_2)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634cda;
   uStack_c = *unaff_FS_OFFSET;
@@ -7210,7 +7159,7 @@ void CreateCivilianWorkOrdersForSelectedNations(int *param_1,int param_2)
     }
     sVar3 = (**(code **)(*param_1 + 0x4c))();
     for (iVar5 = (int)sVar3; iVar5 != 0; iVar5 = iVar5 + -1) {
-      this = (TCivWorkOrderState *)AllocateWithFallbackHandler(0x28);
+      this = (TCivWorkOrderState *)__2_YAPAXI_Z(0x28);
       this_00 = (TCivWorkOrderState *)0x0;
       uStack_4 = 0;
       if (this != (TCivWorkOrderState *)0x0) {
@@ -7242,7 +7191,7 @@ undefined4 __fastcall IsSpecialNationDialogModeActive(int param_1)
 
 {
   short sVar1;
-  
+
   if (*(int *)(param_1 + 0xd8) == 0x676f696e) {
     sVar1 = UiRuntimeContext::GetActiveNationId();
     if (sVar1 != -1) {
@@ -7274,7 +7223,7 @@ void CreateAndSendTurnEvent0C_Text256AndTwoFlags
   char local_104 [256];
   undefined1 local_4;
   undefined1 local_3;
-  
+
   local_10c = 0x74696d65;
   local_108 = UiRuntimeContext::GetActiveNationId();
   local_118 = 0;
@@ -7354,7 +7303,7 @@ void __cdecl DispatchTileRedrawInvalidateEvent(short nTileIndex)
   undefined2 wUiTurnToken;
   short nTileIndexCopy;
   undefined4 adwTileRecordSnapshot [9];
-  
+
   dwEmitTag = 0x74696d65;
   bActiveNationId = UiRuntimeContext::GetActiveNationId();
   nEventType = 0x23;
@@ -7443,14 +7392,14 @@ void __cdecl DispatchCityRedrawInvalidateEvent(short nCityId)
   undefined1 *puStack_8;
   undefined4 local_4;
   int nCityRecordBase;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634cfb;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_c4 = 0x74696d65;
   bActiveNationId = UiRuntimeContext::GetActiveNationId();
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   nEventType = 0x24;
   local_d0 = 0;
   local_4 = 0;
@@ -7506,10 +7455,10 @@ void __cdecl DispatchCityRedrawInvalidateEvent(short nCityId)
   local_13 = *(undefined1 *)(nCityRecordBase + 0xa1);
   local_12 = *(undefined1 *)(nCityRecordBase + 0xa2);
   local_11 = *(undefined1 *)(nCityRecordBase + 0xa3);
-  CString::AssignFromPtr(&local_10,(CString *)(nCityRecordBase + 0xa4));
+  CString::__4CString__QAEABV0_ABV0__Z(&local_10,(CString *)(nCityRecordBase + 0xa4));
   EnqueueOrSendTurnEventPacketToNation(&nEventType,0);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -7524,7 +7473,7 @@ undefined1 * __thiscall CopyA8RecordWithSharedStringAtA4(undefined1 *param_1,und
   int iVar1;
   undefined2 *puVar2;
   int iVar3;
-  
+
   *param_1 = *param_2;
   param_1[1] = param_2[1];
   param_1[2] = param_2[2];
@@ -7572,7 +7521,7 @@ undefined1 * __thiscall CopyA8RecordWithSharedStringAtA4(undefined1 *param_1,und
   param_1[0xa1] = param_2[0xa1];
   param_1[0xa2] = param_2[0xa2];
   param_1[0xa3] = param_2[0xa3];
-  CString::AssignFromPtr((CString *)(param_1 + 0xa4),(CString *)(param_2 + 0xa4));
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)(param_1 + 0xa4),(CString *)(param_2 + 0xa4));
   return param_1;
 }
 
@@ -7600,12 +7549,12 @@ TCommand * AllocateAndConstructPoseMessageDialogTurnEventPacket(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634d1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCommand *)AllocateWithFallbackHandler(0x1c);
+  this = (TCommand *)__2_YAPAXI_Z(0x1c);
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
@@ -7630,12 +7579,12 @@ void DispatchSimpleTurnEventEsopWithParam(TCommandVtbl *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634d3a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this = (TCommand *)AllocateWithFallbackHandler(0x1c);
+  this = (TCommand *)__2_YAPAXI_Z(0x1c);
   local_4 = 0;
   if (this == (TCommand *)0x0) {
     pTVar1 = (TCommand *)0x0;
@@ -7681,7 +7630,7 @@ void RefreshPoseMessageDialogNationSelectionControls(void)
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   iStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634d58;
@@ -7705,14 +7654,14 @@ void RefreshPoseMessageDialogNationSelectionControls(void)
   iVar7 = -1;
 LAB_0054b217:
   if (iVar7 == -1) {
-    CString::CString((CString *)&stack0x00000004);
+    CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
     uStack_4 = 0;
     LoadUiStringResourceByGroupAndIndex();
     puStack_1c = &stack0xffffffb4;
     AssignStringSharedRefAndReturnThis(&stack0x00000004);
     DispatchLocalizedUiMessageWithTemplateA13A0();
     uStack_4 = 0xffffffff;
-    CString::~CString((CString *)&stack0x00000004);
+    CString::__1CString__QAE_XZ((CString *)&stack0x00000004);
   }
   else {
     uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
@@ -7787,7 +7736,7 @@ void DispatchTurnEventCode9WithTwoTextTokens
   undefined4 local_48;
   char local_44 [33];
   char local_23 [35];
-  
+
   local_54 = 0x74696d65;
   local_50 = UiRuntimeContext::GetActiveNationId();
   local_4c = param_1;
@@ -7893,7 +7842,7 @@ void EmitNationDiplomacyNeedStateSnapshotEvent15(char param_1,int param_2)
   undefined1 local_c;
   undefined4 local_8;
   undefined1 local_4;
-  
+
   local_6d4 = 0x74696d65;
   local_6d0 = UiRuntimeContext::GetActiveNationId();
   local_6e4 = 0x15;
@@ -7964,7 +7913,7 @@ SetNationStatusCodeForSlotOrActiveAndEmitEvent25(int param_1,undefined4 param_2,
   undefined4 local_24;
   undefined1 local_20;
   undefined4 local_1c [7];
-  
+
   if (param_3 == -1) {
     sVar1 = UiRuntimeContext::GetActiveNationId();
     param_3 = (int)sVar1;
@@ -7999,7 +7948,7 @@ undefined4 __thiscall GetNationStatusCodeForSlotOrActiveNation(int param_1,int p
   short sVar1;
   int iVar2;
   int *piVar3;
-  
+
   if (param_2 == -1) {
     sVar1 = UiRuntimeContext::GetActiveNationId();
     param_2 = (int)sVar1;
@@ -8053,7 +8002,7 @@ void __thiscall SetNationStatusAwolByNationIdAndDispatchNotices(Config *param_1,
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634d9e;
@@ -8135,12 +8084,13 @@ void __thiscall SetNationStatusAwolByNationIdAndDispatchNotices(Config *param_1,
         EnqueueOrSendTurnEventPacketToNation();
       }
       else {
-        CString::CString(&local_b4);
+        CString::__0CString__QAE_XZ(&local_b4);
         local_4 = 0;
-        CString::CString(&local_b0);
+        CString::__0CString__QAE_XZ(&local_b0);
         local_4._0_1_ = 1;
-        CString::AssignFromPtr(&local_b0,(CString *)(&param_1->field_0x78 + iVar5 * 4));
-        CString::CString(&local_ac);
+        CString::__4CString__QAEABV0_ABV0__Z
+                  (&local_b0,(CString *)(&param_1->field_0x78 + iVar5 * 4));
+        CString::__0CString__QAE_XZ(&local_ac);
         local_4._0_1_ = 2;
         LoadUiStringResourceByGroupAndIndex();
         scanBracketExpressions(g_pLocalizationTable,&local_b4,local_ac.m_pchData);
@@ -8148,7 +8098,7 @@ void __thiscall SetNationStatusAwolByNationIdAndDispatchNotices(Config *param_1,
         AssignStringSharedRefAndReturnThis(&local_b4);
         DispatchLocalizedUiMessageWithTemplateA13A0();
         if ((g_pGameFlowState != param_1) || (param_1->field_0xf4 == '\0')) {
-          this = (TCommand *)AllocateWithFallbackHandler();
+          this = (TCommand *)__2_YAPAXI_Z();
           local_4._0_1_ = 3;
           local_a8 = this;
           if (this != (TCommand *)0x0) {
@@ -8160,11 +8110,11 @@ void __thiscall SetNationStatusAwolByNationIdAndDispatchNotices(Config *param_1,
           (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
         }
         local_4._0_1_ = 1;
-        CString::~CString(&local_ac);
+        CString::__1CString__QAE_XZ(&local_ac);
         local_4 = (uint)local_4._1_3_ << 8;
-        CString::~CString(&local_b0);
+        CString::__1CString__QAE_XZ(&local_b0);
         local_4 = 0xffffffff;
-        CString::~CString(&local_b4);
+        CString::__1CString__QAE_XZ(&local_b4);
       }
     }
     iVar5 = iVar5 + 1;
@@ -8184,7 +8134,7 @@ void __fastcall InitializeNationStatusEvent25PayloadDefaults(undefined4 *param_1
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *param_1 = 0;
   param_1[1] = 0;
   param_1[2] = 0;
@@ -8235,7 +8185,7 @@ ReplaceNationStateForSlotAndRefreshStatus(TNextDiplomationCommand *param_1,int p
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634dca;
   uStack_c = *unaff_FS_OFFSET;
@@ -8256,11 +8206,11 @@ ReplaceNationStateForSlotAndRefreshStatus(TNextDiplomationCommand *param_1,int p
     }
     pTVar1 = g_apNationStates[param_2];
     if (((pTVar1 != (TGreatPower *)0x0) && (pTVar1->field_0xa0 != '\0')) && (param_2 != sVar7)) {
-      iVar8 = GenerateThreadLocalRandom15();
-      iVar9 = GenerateThreadLocalRandom15();
-      uVar10 = GenerateThreadLocalRandom15();
+      iVar8 = _rand();
+      iVar9 = _rand();
+      uVar10 = _rand();
       uVar5 = (ushort)((int)uVar10 >> 0x1f);
-      this = (TAutoGreatPower *)AllocateWithFallbackHandler(0xb70);
+      this = (TAutoGreatPower *)__2_YAPAXI_Z(0xb70);
       this_00 = (TGreatPower *)0x0;
       local_4 = 0;
       if (this != (TAutoGreatPower *)0x0) {
@@ -8270,8 +8220,10 @@ ReplaceNationStateForSlotAndRefreshStatus(TNextDiplomationCommand *param_1,int p
       TList::InitializeNationMinisterSubsystemsByPolicyIds
                 ((TList *)this_00,param_2,2,(((ushort)uVar10 ^ uVar5) - uVar5 & 3 ^ uVar5) - uVar5,
                  (short)(iVar9 % 6),(short)(iVar8 % 5));
-      CString::AssignFromPtr((CString *)&this_00->field_0x4,(CString *)&pTVar1->field_0x4);
-      CString::AssignFromPtr((CString *)&this_00->field_0x8,(CString *)&pTVar1->field_0x8);
+      CString::__4CString__QAEABV0_ABV0__Z
+                ((CString *)&this_00->field_0x4,(CString *)&pTVar1->field_0x4);
+      CString::__4CString__QAEABV0_ABV0__Z
+                ((CString *)&this_00->field_0x8,(CString *)&pTVar1->field_0x8);
       *(undefined2 *)&this_00->field_0xc = *(undefined2 *)&pTVar1->field_0xc;
       *(undefined2 *)&this_00->field_0xe = *(undefined2 *)&pTVar1->field_0xe;
       *(undefined4 *)&this_00->field_0x10 = *(undefined4 *)&pTVar1->field_0x10;
@@ -8515,7 +8467,7 @@ void EmitTurnEvent26DiplomacyMatrixSnapshot(void)
   undefined4 local_78;
   undefined2 local_74;
   undefined4 local_70 [28];
-  
+
   local_804 = 0x74696d65;
   local_800 = UiRuntimeContext::GetActiveNationId();
   local_810 = 0;
@@ -8573,7 +8525,7 @@ void DispatchJoinEmpireModeEventPacket24_27
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   local_14 = 0x74696d65;
   local_10 = UiRuntimeContext::GetActiveNationId();
   local_c = param_1;
@@ -8644,13 +8596,13 @@ void __fastcall ResetNationStatusArraysAndTurnEventContext(int param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634de8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = param_1;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex(&local_14,0x2759,1);
   this = (CString *)(param_1 + 0x94);
@@ -8658,8 +8610,8 @@ void __fastcall ResetNationStatusArraysAndTurnEventContext(int param_1)
   do {
     this[-0x13].m_pchData = (char *)0x0;
     this[10].m_pchData = (char *)0x756e6173;
-    CString::AssignFromPtr(this,&local_14);
-    CString::AssignFromPtr(this + -7,this);
+    CString::__4CString__QAEABV0_ABV0__Z(this,&local_14);
+    CString::__4CString__QAEABV0_ABV0__Z(this + -7,this);
     this = this + 1;
     iVar1 = iVar1 + -1;
   } while (iVar1 != 0);
@@ -8668,7 +8620,7 @@ void __fastcall ResetNationStatusArraysAndTurnEventContext(int param_1)
   *(undefined4 *)(local_10 + 100) = 0;
   ResetTurnEventQueueRuntimeRecordBuffer();
   local_4 = 0xffffffff;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -8684,7 +8636,7 @@ undefined4 __fastcall HandleActiveNationAwolTransitionOrRecovery(int param_1)
   char cVar2;
   short sVar3;
   undefined4 uVar4;
-  
+
   sVar3 = UiRuntimeContext::GetActiveNationId();
   *(undefined4 *)(param_1 + 0x48 + sVar3 * 4) = 0xfffffffe;
   cVar2 = CheckConnectivityOrShowLocalizedWarningAndReturnReady();
@@ -8726,12 +8678,12 @@ void CreateAndQueueTurnEventPacketTagPOGC(void)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634e3a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this = (TCommand *)AllocateWithFallbackHandler(0x18);
+  this = (TCommand *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   if (this == (TCommand *)0x0) {
     pTVar1 = (TCommand *)0x0;
@@ -8800,7 +8752,7 @@ void EmitTurnEvent2CNationStateCompositeForSlot(int param_1,int param_2)
   undefined2 local_6;
   undefined2 local_4;
   undefined2 local_2;
-  
+
   local_17c = 0x74696d65;
   local_178 = UiRuntimeContext::GetActiveNationId();
   local_188 = 0;
@@ -8955,7 +8907,7 @@ void EmitTurnEvent19NationStateArraysForSlot(undefined4 param_1,int param_2)
   word awStack_8c [23];
   word awStack_5e [23];
   word awStack_30 [24];
-  
+
   local_108 = 0x74696d65;
   local_104 = UiRuntimeContext::GetActiveNationId();
   local_118 = 0x19;
@@ -9034,7 +8986,7 @@ void CreateAndSendTurnEvent2D_TableRowShortArray(short param_1,int param_2)
   undefined2 local_34;
   short local_30;
   undefined2 local_2e [23];
-  
+
   local_3c = 0x74696d65;
   local_38 = UiRuntimeContext::GetActiveNationId();
   local_48 = 0;
@@ -9079,7 +9031,7 @@ undefined4 TrySaveGameAndMaybeShowFailureDialog(undefined4 param_1,undefined4 pa
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634e58;
@@ -9091,12 +9043,12 @@ undefined4 TrySaveGameAndMaybeShowFailureDialog(undefined4 param_1,undefined4 pa
   }
   uVar2 = (undefined3)((uint)iVar1 >> 8);
   if ((param_3 != '\0') && (cVar3 == '\0')) {
-    CString::CString((CString *)&param_3);
+    CString::__0CString__QAE_XZ((CString *)&param_3);
     local_4 = 0;
     LoadUiStringResourceByGroupAndIndex(&param_3,0x2742,0x28);
     CreateModalMessageCommandAndQueue(&param_3,0);
     local_4 = 0xffffffff;
-    CString::~CString((CString *)&param_3);
+    CString::__1CString__QAE_XZ((CString *)&param_3);
     uVar2 = extraout_var;
   }
   *unaff_FS_OFFSET = local_c;
@@ -9129,12 +9081,12 @@ TNoHilitePicture * AllocateAndConstructTLoungeDialog(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634e7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x98);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
@@ -9163,7 +9115,7 @@ void TryInvokeNationStateReplacementForSlot(CString param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int iStack_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634ee8;
@@ -9184,11 +9136,11 @@ void TryInvokeNationStateReplacementForSlot(CString param_1)
           return;
         }
         if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-          CString::CString(&CStack_14);
+          CString::__0CString__QAE_XZ(&CStack_14);
           iStack_4 = 0;
-          CString::CString(&CStack_18);
+          CString::__0CString__QAE_XZ(&CStack_18);
           iStack_4._0_1_ = 1;
-          CString::CString(&param_1);
+          CString::__0CString__QAE_XZ(&param_1);
           iStack_4 = CONCAT31(iStack_4._1_3_,2);
           FormatOverlayTerrainLabelText();
           LoadUiStringResourceByGroupAndIndex();
@@ -9201,11 +9153,11 @@ void TryInvokeNationStateReplacementForSlot(CString param_1)
             ReplaceNationStateForSlotAndRefreshStatus();
           }
           iStack_4._0_1_ = 1;
-          CString::~CString(&param_1);
+          CString::__1CString__QAE_XZ(&param_1);
           iStack_4 = (uint)iStack_4._1_3_ << 8;
-          CString::~CString(&CStack_18);
+          CString::__1CString__QAE_XZ(&CStack_18);
           iStack_4 = 0xffffffff;
-          CString::~CString(&CStack_14);
+          CString::__1CString__QAE_XZ(&CStack_14);
           *unaff_FS_OFFSET = local_c;
           return;
         }
@@ -9242,15 +9194,15 @@ void __fastcall RefreshMapAndMessageControlsForCurrentContext(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634f10;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_48.m_pchData = (char *)0x54e4e3;
-  AfxGetModuleState();
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   CStack_48.m_pchData = (char *)0x54e4eb;
-  BeginWaitCursor();
+  _BeginWaitCursor_CCmdTarget__QAEXXZ();
   local_4 = 0;
   CStack_48.m_pchData = *(char **)&g_pGameFlowState->field_0x74;
   piVar5 = (int *)RefreshActiveControlThenApplyThemeStyleAndCaption(0x746e616d,0,0xe,0x2b6b,1);
@@ -9275,16 +9227,16 @@ void __fastcall RefreshMapAndMessageControlsForCurrentContext(int *param_1)
   piVar5 = (int *)(*pcVar2)(0x6d657373);
   iVar4 = *piVar5;
   (**(code **)(iVar4 + 0xc))();
-  CString::CString((CString *)&stack0xffffffc0);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffc0);
   uStack_10 = 1;
   LoadUiStringResourceByGroupAndIndex(&stack0xffffffc0,0x2742,0x10);
   (**(code **)(iVar4 + 0x1c8))(&stack0xffffffc0,1);
   (**(code **)(iVar1 + 0xe4))();
   uStack_18 = uStack_18 & 0xffffff00;
-  CString::~CString(&CStack_48);
+  CString::__1CString__QAE_XZ(&CStack_48);
   uStack_18 = 0xffffffff;
-  AfxGetModuleState();
-  EndWaitCursor();
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  _EndWaitCursor_CCmdTarget__QAEXXZ();
   *unaff_FS_OFFSET = uStack_20;
   return;
 }
@@ -9302,12 +9254,12 @@ TNoHilitePicture * AllocateAndConstructTJoinSelectorDialog(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634f2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
@@ -9329,7 +9281,7 @@ TNoHilitePicture * AllocateAndConstructTJoinSelectorDialog(void)
 // GHIDRA_COMMENT_END
 
 /* Adds one joinable-game option entry into the join-game dialog's selectable game list.
-   
+
    Builds/locates the 'game' list container, creates a selectable text option child entry, applies
    style mapping, and marks the inserted row active. */
 
@@ -9338,7 +9290,7 @@ void __thiscall AddJoinableGameOptionEntry(int *param_1,undefined4 param_2)
 {
   int *piVar1;
   undefined4 unaff_retaddr;
-  
+
   piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x67616d65);
   (**(code **)(*piVar1 + 0xc))();
   piVar1 = (int *)CreateSelectableTextOptionChildEntry
@@ -9362,7 +9314,7 @@ int __fastcall GetSelectedJoinableGameTag(int *param_1)
 
 {
   int *piVar1;
-  
+
   piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x67616d65);
   (**(code **)(*piVar1 + 0xc))();
   return piVar1[0x22];
@@ -9380,12 +9332,12 @@ TCzechBox * AllocateAndConstructTMadnessButton(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634f6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCzechBox *)AllocateWithFallbackHandler(0x9c);
+  this = (TCzechBox *)__2_YAPAXI_Z(0x9c);
   local_4 = 0;
   if (this != (TCzechBox *)0x0) {
     TCzechBox::ConstructTCzechBoxBaseState(this);
@@ -9411,12 +9363,12 @@ thunk_TPictureButton * AllocateAndConstructTMultiMessagePicture(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634faa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -9469,12 +9421,12 @@ BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState,int nSideIndex,int pOrd
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634ff0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   iVar6 = pOrderEntry;
   iVar8 = 0;
   local_4 = 0;
@@ -9511,7 +9463,7 @@ BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState,int nSideIndex,int pOrd
   }
   iVar8 = (int)sVar2;
   *(short *)(pBattleSnapshotState + 0x24a + nSideIndex * 2) = sVar2;
-  iVar5 = AllocateWithFallbackHandler(iVar8 * 0x2c);
+  iVar5 = __2_YAPAXI_Z(iVar8 * 0x2c);
   if (iVar5 == 0) {
     iVar5 = 0;
   }
@@ -9532,9 +9484,9 @@ BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState,int nSideIndex,int pOrd
       puVar9 = (undefined2 *)(iVar6 + *(int *)(pBattleSnapshotState + 0x250 + nSideIndex * 4));
       *puVar9 = *(undefined2 *)(iVar5 + 4);
       puVar9[1] = *(undefined2 *)(iVar5 + 0x1c);
-      CString::CString((CString *)&pOrderEntry);
+      CString::__0CString__QAE_XZ((CString *)&pOrderEntry);
       local_4._0_1_ = 1;
-      CString::AssignFromPtr((CString *)&pOrderEntry,(CString *)(iVar5 + 0x18));
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)&pOrderEntry,(CString *)(iVar5 + 0x18));
       iVar8 = 0;
       do {
         cVar1 = *(char *)(pOrderEntry + iVar8);
@@ -9547,13 +9499,13 @@ BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState,int nSideIndex,int pOrd
       local_4 = (uint)local_4._1_3_ << 8;
       puVar9[0x12] = (sVar2 / 100 + (sVar2 >> 0xf)) -
                      (short)((longlong)(int)sVar2 * 0x51eb851f >> 0x3f);
-      CString::~CString((CString *)&pOrderEntry);
+      CString::__1CString__QAE_XZ((CString *)&pOrderEntry);
       piVar7 = (int *)piVar7[1];
       iVar6 = iVar6 + 0x2c;
     } while (piVar7 != (int *)0x0);
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -9578,7 +9530,7 @@ RefreshMapOrderBattleSideSnapshot(int pBattleSnapshotState,int nSideIndex,int pO
   int iVar3;
   int iVar4;
   int local_4;
-  
+
   pCityState = pBattleSnapshotState;
   local_4 = 0;
   if (0 < *(short *)(pBattleSnapshotState + 0x24a + nSideIndex * 2)) {
@@ -9629,12 +9581,12 @@ undefined4 __fastcall CreateNavyPrimaryOrderNode(undefined4 param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063500a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TShip *)AllocateWithFallbackHandler(0x38,param_1);
+  this = (TShip *)__2_YAPAXI_Z(0x38,param_1);
   local_4 = 0;
   if (this != (TShip *)0x0) {
     uVar1 = TShip::ConstructAndLinkNavyPrimaryOrderNode(this);
@@ -9663,7 +9615,7 @@ TShip * CreateNavyPrimaryOrderNodeAndAssignDisplayName
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635092;
   local_c = *unaff_FS_OFFSET;
@@ -9674,7 +9626,7 @@ TShip * CreateNavyPrimaryOrderNodeAndAssignDisplayName
     *unaff_FS_OFFSET = local_c;
     return (TShip *)0x0;
   }
-  param_1.m_pchData = (char *)AllocateWithFallbackHandler(0x38);
+  param_1.m_pchData = (char *)__2_YAPAXI_Z(0x38);
   local_4 = 0;
   if ((TShip *)param_1.m_pchData == (TShip *)0x0) {
     pTVar4 = (TShip *)0x0;
@@ -9697,8 +9649,7 @@ TShip * CreateNavyPrimaryOrderNodeAndAssignDisplayName
     for (pTVar1 = g_pNavyPrimaryOrderListHead; pTVar1 != (TShip *)0x0;
         pTVar1 = *(TShip **)&pTVar1->field_0x24) {
       if ((pTVar1 != pTVar4) &&
-         (iVar5 = CompareAnsiStringsWithMbcsAwareness
-                            (*(undefined4 *)&pTVar1->field_0x18,*(undefined4 *)&pTVar4->field_0x18),
+         (iVar5 = __mbscmp(*(undefined4 *)&pTVar1->field_0x18,*(undefined4 *)&pTVar4->field_0x18),
          iVar5 == 0)) {
         RegenerateNavyPrimaryOrderDisplayNameUntilUnique();
         break;
@@ -9706,11 +9657,11 @@ TShip * CreateNavyPrimaryOrderNodeAndAssignDisplayName
     }
   }
   else {
-    CString::CString(&param_1,param_4);
+    CString::__0CString__QAE_PBD_Z(&param_1,param_4);
     local_4 = 1;
-    CString::AssignFromPtr((CString *)&pTVar4->field_0x18,&param_1);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&pTVar4->field_0x18,&param_1);
     local_4 = 0xffffffff;
-    CString::~CString(&param_1);
+    CString::__1CString__QAE_XZ(&param_1);
   }
   *(undefined2 *)&pTVar4->field_0x1c = *(undefined2 *)(&DAT_00698114 + iVar3 * 0x24);
   if (*(InputState **)&pTVar4->field_0x8 != (InputState *)0x0) {
@@ -9729,7 +9680,7 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip *param_1)
 {
   int iVar1;
   TShip *pTVar2;
-  
+
 LAB_0054fbf8:
   TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
             ((TAdmiral *)g_apTerrainTypeDescriptorTable[*(short *)&param_1->field_0x14]);
@@ -9739,8 +9690,7 @@ LAB_0054fbf8:
       return;
     }
     if (pTVar2 != param_1) {
-      iVar1 = CompareAnsiStringsWithMbcsAwareness
-                        (*(undefined4 *)&pTVar2->field_0x18,*(undefined4 *)&param_1->field_0x18);
+      iVar1 = __mbscmp(*(undefined4 *)&pTVar2->field_0x18,*(undefined4 *)&param_1->field_0x18);
       if (iVar1 == 0) goto LAB_0054fbf8;
     }
     pTVar2 = *(TShip **)&pTVar2->field_0x24;
@@ -9766,13 +9716,13 @@ LAB_0054fbf8:
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Recomputes global capability baseline averages used by AI/evaluation heuristics.
-   
+
    Algorithm:
    1. Iterate capability records (DAT_0069812c stride 9).
    2. Include only capabilities enabled in g_pCityOrderCapabilityState[0x19d + slotId].
    3. Accumulate four metric channels into DAT_006A3EC8..DAT_006A3ED4.
    4. Normalize each channel by active-capability count.
-   
+
    Notes:
    - Depends on per-slot enable flags at offset +0x19d in CityOrderCapabilityState.
    - Called after capability-state rebuild to refresh derived scoring constants. */
@@ -9787,7 +9737,7 @@ void RecomputeGlobalCapabilityAverages(void)
   int iVar5;
   int iVar6;
   int iVar7;
-  
+
   if (g_pCityOrderCapabilityState != (TTechMgr *)0x0) {
     DAT_006a3ec8 = 0;
     DAT_006a3ecc = 0;
@@ -9859,7 +9809,7 @@ uint __thiscall ComputeNavyOrderPriorityContributionPercentByCategory(int param_
   int iVar1;
   short sVar2;
   int iVar3;
-  
+
   iVar3 = (&DAT_006a3ec8)[param_2];
   switch(param_2) {
   case 0:
@@ -9901,7 +9851,7 @@ int GetNormalizedIndustryActionResourceCostPercent(int param_1,short param_2)
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = (&DAT_006a3ec8)[param_1];
   switch(param_1) {
   case 0:
@@ -9940,7 +9890,7 @@ int __thiscall CalculateMissionOrderPriorityScore(void *this,int nScoreProfileId
   short sVar3;
   int iVar4;
   int local_4;
-  
+
   iVar4 = 0;
   local_4 = 0;
   do {
@@ -10026,7 +9976,7 @@ ComputeOrderNodeDistanceQuotientByDescriptorWord24(int param_1,TScatteredShipsMi
 
 {
   short sVar1;
-  
+
   sVar1 = TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute
                     (*(TScatteredShipsMission **)(param_1 + 8),param_2);
   return (*(short *)(&DAT_00698124 + *(short *)(param_1 + 4) * 0x24) + -1 + (int)sVar1) /
@@ -10063,12 +10013,119 @@ int __fastcall GetNavyPrimaryOrderListIndexOfNode(TShip *param_1)
 {
   TShip *pTVar1;
   int iVar2;
-  
+
   iVar2 = 0;
   for (pTVar1 = g_pNavyPrimaryOrderListHead; (pTVar1 != (TShip *)0x0 && (pTVar1 != param_1));
       pTVar1 = *(TShip **)&pTVar1->field_0x24) {
     iVar2 = iVar2 + 1;
   }
   return iVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550640
+// GHIDRA_NAME GetNavyPrimaryOrderNodeByIndex
+// GHIDRA_PROTO undefined GetNavyPrimaryOrderNodeByIndex()
+
+void GetNavyPrimaryOrderNodeByIndex(short param_1)
+
+{
+  TShip *pTVar1;
+
+  pTVar1 = g_pNavyPrimaryOrderListHead;
+  for (; (pTVar1 != (TShip *)0x0 && (param_1 != 0)); param_1 = param_1 + -1) {
+    pTVar1 = *(TShip **)&pTVar1->field_0x24;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550820
+// GHIDRA_NAME GetOrderNodeDescriptorWord0CByResourceType
+// GHIDRA_PROTO undefined GetOrderNodeDescriptorWord0CByResourceType()
+
+undefined4 __fastcall GetOrderNodeDescriptorWord0CByResourceType(int param_1)
+
+{
+  return CONCAT22((short)((uint)(*(short *)(param_1 + 4) * 9) >> 0x10),
+                  *(undefined2 *)
+                   (&g_Calculate_Mission_Order_LookupTable_0069810C + *(short *)(param_1 + 4) * 9));
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550840
+// GHIDRA_NAME ComputeOrderNodeDerivedScoreFromQuantityAndWord18
+// GHIDRA_PROTO undefined ComputeOrderNodeDerivedScoreFromQuantityAndWord18()
+
+int __fastcall ComputeOrderNodeDerivedScoreFromQuantityAndWord18(int param_1)
+
+{
+  short sVar1;
+
+  sVar1 = *(short *)(param_1 + 0x30);
+  return ((short)((sVar1 / 100 + (sVar1 >> 0xf)) -
+                 (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) + 5 +
+         (&g_Navy_Order_Priority_LookupTable_00698118)[*(short *)(param_1 + 4) * 9] * 10) / 10;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550970
+// GHIDRA_NAME GetIndustryActionCostWeightByResourceType
+// GHIDRA_PROTO undefined GetIndustryActionCostWeightByResourceType()
+
+undefined4 GetIndustryActionCostWeightByResourceType(short param_1)
+
+{
+  return CONCAT22(param_1 >> 0xf,*(undefined2 *)(&g_industryActionCostWeightResCode10 + param_1 * 2)
+                 );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005509C0
+// GHIDRA_NAME PruneOrPromoteOrderNodeWhenChildCostDepleted
+// GHIDRA_PROTO undefined PruneOrPromoteOrderNodeWhenChildCostDepleted()
+
+void __fastcall PruneOrPromoteOrderNodeWhenChildCostDepleted(int *param_1)
+
+{
+  int iVar1;
+  void *this;
+  int *piVar2;
+  undefined4 uVar3;
+  int *unaff_EDI;
+
+  iVar1 = param_1[3];
+  *(undefined2 *)(param_1 + 7) = 0xfd66;
+  if (iVar1 == 0) {
+    (**(code **)(*param_1 + 0x1c))();
+  }
+  else {
+    piVar2 = *(int **)(iVar1 + 0x10);
+    if (piVar2 != (int *)0x0) {
+      if (*(short *)(*piVar2 + 0x1c) < 1) {
+        *(undefined4 *)(*piVar2 + 0xc) = 0;
+        (**(code **)(*(int *)*piVar2 + 0x1c))();
+        this = (void *)piVar2[1];
+        if (this != (void *)0x0) {
+          *(int *)((int)this + 8) = piVar2[2];
+        }
+        if (piVar2[2] != 0) {
+          *(int *)(piVar2[2] + 4) = piVar2[1];
+        }
+        __3_YAXPAX_Z(piVar2);
+        piVar2 = PruneDefeatedMapOrderChildrenAndReturnHead(this,unaff_EDI);
+      }
+      else {
+        PruneDefeatedMapOrderChildrenAndReturnHead((void *)piVar2[1],unaff_EDI);
+      }
+    }
+    *(int **)(iVar1 + 0x10) = piVar2;
+    *(undefined4 *)(iVar1 + 0x14) = 0;
+    for (; piVar2 != (int *)0x0; piVar2 = (int *)piVar2[1]) {
+      uVar3 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules
+                        (*(undefined4 *)(iVar1 + 0x14),0);
+      *(undefined4 *)(iVar1 + 0x14) = uVar3;
+    }
+    if (*(int *)(iVar1 + 0x10) == 0) {
+      *(undefined1 *)(iVar1 + 0x26) = 1;
+      return;
+    }
+  }
+  return;
 }
 

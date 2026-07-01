@@ -1,0 +1,55 @@
+2026-07-01 00:55:33 INFO  (LoggingInitialization) Using log config file: jar:file:/home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml  
+2026-07-01 00:55:33 INFO  (LoggingInitialization) Using log file: /home/agluszak/code/decomp/imperialism-decomp/vendor/msvc500/fid-generation/logs/fidb-populate.log  
+2026-07-01 00:55:33 DEBUG (GhidraObjectInputFilter) Including serial input filter: FileSystem/data/client.rmi.serial.filter  
+2026-07-01 00:55:33 INFO  (Preferences) Loading user preferences: /home/agluszak/.config/ghidra/ghidra_12.1.2_PUBLIC/preferences  
+2026-07-01 00:55:33 INFO  (Preferences) Loading previous preferences: /home/agluszak/.config/ghidra/ghidra_12.1_PUBLIC/preferences  
+2026-07-01 00:55:33 INFO  (ClassSearcher) Searching for classes...  
+2026-07-01 00:55:34 INFO  (ClassSearcher) Class search complete (478 ms)  
+2026-07-01 00:55:34 INFO  (DefaultSSLContextInitializer) Initializing SSL Context  
+2026-07-01 00:55:34 INFO  (SecureRandomFactory) Initializing Random Number Generator...  
+2026-07-01 00:55:34 INFO  (SecureRandomFactory) Random Number Generator initialization complete: NativePRNGNonBlocking  
+2026-07-01 00:55:34 INFO  (DefaultTrustManagerFactory) Trust manager disabled, cacerts have not been set  
+2026-07-01 00:55:34 WARN  (HeadlessAnalyzer) Neither the -import parameter nor the -process parameter was specified; therefore, the specified prescripts and/or postscripts will be executed without any type of program context.  
+2026-07-01 00:55:34 INFO  (AnalyzeHeadless) Headless startup complete (1000 ms)  
+2026-07-01 00:55:34 INFO  (ClassSearcher) Class searcher loaded 59 extension points (20 false positives)  
+2026-07-01 00:55:34 INFO  (HeadlessAnalyzer) HEADLESS Script Paths:
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Processors/DATA/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/VersionTracking/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/FileFormats/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Debug/Debugger/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/GnuDemangler/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Processors/JVM/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/DecompilerDependent/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Processors/8051/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/PyGhidra/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/PDB/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Debug/Debugger-rmi-trace/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/WildcardAssembler/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/SwiftDemangler/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/BSim/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/Base/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/BytePatterns/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Processors/PIC/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/MicrosoftCodeAnalyzer/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/SystemEmulation/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/Decompiler/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/FunctionID/ghidra_scripts
+    /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Processors/Atmel/ghidra_scripts  
+2026-07-01 00:55:34 INFO  (HeadlessAnalyzer) HEADLESS: execution starts  
+2026-07-01 00:55:34 INFO  (HeadlessAnalyzer) Opening existing project: /home/agluszak/code/decomp/imperialism-decomp/vendor/msvc500/fid-generation/project/msvc500-fid  
+2026-07-01 00:55:34 INFO  (HeadlessProject) Opening project: /home/agluszak/code/decomp/imperialism-decomp/vendor/msvc500/fid-generation/project/msvc500-fid  
+2026-07-01 00:55:34 INFO  (HeadlessAnalyzer) REPORT: Execute script: CreateMultipleLibraries.java '/home/agluszak/code/decomp/imperialism-decomp/vendor/msvc500/fid-generation/duplicate_results.txt' 'true' '/home/agluszak/code/decomp/imperialism-decomp/vendor/msvc500/fid-generation/fidb/msvc500.fidb' '/msvc500' '/home/agluszak/code/decomp/imperialism-decomp/vendor/msvc500/fid-generation/common.txt' 'x86:LE:32:default'   
+2026-07-01 00:55:34 INFO  (HeadlessAnalyzer) SCRIPT: /home/agluszak/Downloads/ghidra_12.1.2_PUBLIC_20260605/ghidra_12.1.2_PUBLIC/Ghidra/Features/FunctionID/ghidra_scripts/CreateMultipleLibraries.java  
+2026-07-01 00:55:35 ERROR (HeadlessAnalyzer) REPORT SCRIPT ERROR:  java.io.FileNotFoundException: Could not find any fidb files that can be populated
+	at CreateMultipleLibraries.run(CreateMultipleLibraries.java:354)
+	at ghidra.app.script.GhidraScript.executeNormal(GhidraScript.java:460)
+	at ghidra.app.script.GhidraScript.doExecute(GhidraScript.java:314)
+	at ghidra.app.script.GhidraScript.execute(GhidraScript.java:290)
+	at ghidra.app.util.headless.HeadlessAnalyzer.runScript(HeadlessAnalyzer.java:597)
+	at ghidra.app.util.headless.HeadlessAnalyzer.runScriptsList(HeadlessAnalyzer.java:941)
+	at ghidra.app.util.headless.HeadlessAnalyzer.processWithImport(HeadlessAnalyzer.java:1791)
+	at ghidra.app.util.headless.HeadlessAnalyzer.processLocal(HeadlessAnalyzer.java:464)
+	at ghidra.app.util.headless.AnalyzeHeadless.launch(AnalyzeHeadless.java:199)
+	at ghidra.GhidraLauncher.launch(GhidraLauncher.java:81)
+	at ghidra.Ghidra.main(Ghidra.java:54)
+ 

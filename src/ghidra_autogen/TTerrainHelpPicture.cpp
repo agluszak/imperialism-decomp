@@ -26,7 +26,7 @@ TTerrainHelpPicture * TTerrainHelpPicture::_scalar_deleting_destructor_(byte par
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -44,12 +44,12 @@ thunk_TPictureButton * TTerrainHelpPicture::CreateTTerrainHelpPictureInstance(vo
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006336aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0xac);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0xac);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -139,7 +139,7 @@ TTerrainHelpPicture::BuildMapTileActionContextMenu
   undefined1 *puStack_8;
   undefined4 uStack_4;
   short sVar6;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006336f8;
   uStack_c = *unaff_FS_OFFSET;
@@ -375,16 +375,16 @@ LAB_00505041:
   pTStack_30 = (TTerrainHelpPictureVtbl *)(uint)(uVar2 & 0xffff);
   local_2c[0] = local_2c[0] & 0xffff0000;
   uStack_78 = 0x5052fc;
-  CString::CString((CString *)&stack0xffffffb4);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffb4);
   uStack_20 = 0;
   uStack_78 = 0x50530d;
-  CString::CString(&CStack_64);
+  CString::__0CString__QAE_XZ(&CStack_64);
   uStack_20._0_1_ = 1;
   uStack_78 = 0x50531b;
-  CString::CString(&CStack_5c);
+  CString::__0CString__QAE_XZ(&CStack_5c);
   uStack_20._0_1_ = 2;
   uStack_78 = 0x505329;
-  CString::CString(&CStack_60);
+  CString::__0CString__QAE_XZ(&CStack_60);
   uStack_78 = 1;
   puStack_7c = (undefined1 *)0x2b67;
   CStack_80.m_pchData = (char *)0xc;
@@ -432,28 +432,28 @@ LAB_00505041:
     scanBracketExpressions(g_pLocalizationTable,&puStack_88,pcStack_8c);
     if ((char *)(int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 1 + sVar10 * 0xa8) !=
         CStack_40.m_pchData) {
-      CString::CString(&CStack_40);
+      CString::__0CString__QAE_XZ(&CStack_40);
       src_ref = (CString *)
                 AssignNormalizedCredentialTokenToIndexedSlot
                           (&CStack_70,
                            (int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 1 + sVar10 * 0xa8
                                          ));
-      CString::AssignFromPtr(&CStack_84,src_ref);
-      CString::~CString(&CStack_70);
+      CString::__4CString__QAEABV0_ABV0__Z(&CStack_84,src_ref);
+      CString::__1CString__QAE_XZ(&CStack_70);
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2755,0x1f,&pcStack_8c);
       scanBracketExpressions(g_pLocalizationTable,&CStack_40,pcStack_8c);
-      uVar14 = AssignSharedStringConcatCStrAndRef(&CStack_70,&DAT_00695880,&CStack_40);
-      AssignStringSharedFromRef(uVar14);
-      CString::~CString(&CStack_70);
-      CString::~CString(&CStack_40);
+      uVar14 = __H_YG_AVCString__PBDABV0__Z(&CStack_70,&DAT_00695880,&CStack_40);
+      __YCString__QAEABV0_ABV0__Z(uVar14);
+      CString::__1CString__QAE_XZ(&CStack_70);
+      CString::__1CString__QAE_XZ(&CStack_40);
     }
   }
   (**(code **)(iVar8 + 0x1c8))(&puStack_88,1);
   (**(code **)((int)puStack_74 + 0x1cc))(0);
-  CString::~CString(&CStack_94);
-  CString::~CString(&CStack_90);
-  CString::~CString(&CStack_98);
-  CString::~CString(&CStack_80);
+  CString::__1CString__QAE_XZ(&CStack_94);
+  CString::__1CString__QAE_XZ(&CStack_90);
+  CString::__1CString__QAE_XZ(&CStack_98);
+  CString::__1CString__QAE_XZ(&CStack_80);
   *unaff_FS_OFFSET = CStack_5c.m_pchData;
   return;
 }
@@ -506,7 +506,7 @@ void TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00633728;
   uStack_c = *unaff_FS_OFFSET;
@@ -599,7 +599,7 @@ void TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree()
     iVar5 = iVar5 + 1;
   } while (iVar5 < 0xc);
   pCStack_7c = (CString *)0x5058dc;
-  CString::CString(&CStack_68);
+  CString::__0CString__QAE_XZ(&CStack_68);
   pCStack_7c = &CStack_68;
   uStack_80 = CONCAT22((short)((uint)pCStack_7c >> 0x10),
                        *(short *)(&this->field_0x94 + iVar4 * 2) + -1);
@@ -608,7 +608,7 @@ void TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree()
   (**(code **)(**(int **)&this->field_0x90 + 0x1ec))(&uStack_74,1);
   (**(code **)(**(int **)&this->field_0x90 + 0xa4))(1,1);
   uStack_50 = 0xffffffff;
-  CString::~CString(&CStack_84);
+  CString::__1CString__QAE_XZ(&CStack_84);
   *unaff_FS_OFFSET = uStack_58;
   return;
 }
@@ -621,7 +621,7 @@ void TTerrainHelpPicture::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   undefined2 extraout_var;
-  
+
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   if (((param_1 == 0xd) && (0x69303060 < *(uint *)(param_2 + 0x1c))) &&
      (*(uint *)(param_2 + 0x1c) < 0x6930306d)) {

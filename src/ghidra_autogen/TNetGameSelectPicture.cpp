@@ -12,7 +12,7 @@ TNetGameSelectPicture * TNetGameSelectPicture::_scalar_deleting_destructor_(byte
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -54,7 +54,7 @@ TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined3 extraout_var;
   undefined4 uVar4;
   undefined3 extraout_var_00;
-  
+
   if (((param_1 == 0x14) || (param_1 == 10)) || (param_1 == 0x22)) {
     iVar1 = *(int *)(param_2 + 0x1c);
     if (iVar1 == 0x636e636c) {

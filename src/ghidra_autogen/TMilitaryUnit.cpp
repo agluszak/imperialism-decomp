@@ -17,12 +17,12 @@ undefined4 * TMilitaryUnit::CreateTMilitaryUnitInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006398e5;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x44);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x44);
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &TUnitOrderState::_vftable_;
     puVar1[4] = 0;
@@ -32,7 +32,7 @@ undefined4 * TMilitaryUnit::CreateTMilitaryUnitInstance(void)
     local_4._0_1_ = 1;
     local_4._1_3_ = 0;
     local_10 = puVar1;
-    CString::CString((CString *)(puVar1 + 9));
+    CString::__0CString__QAE_XZ((CString *)(puVar1 + 9));
     local_4._0_1_ = 2;
     *(undefined2 *)(puVar1 + 0xe) = 0;
     *(undefined2 *)((int)puVar1 + 0x3a) = 0;
@@ -42,11 +42,11 @@ undefined4 * TMilitaryUnit::CreateTMilitaryUnitInstance(void)
     *(undefined1 *)(puVar1 + 7) = 1;
     *(undefined2 *)(puVar1 + 0xd) = 500;
     *(undefined2 *)((int)puVar1 + 0x36) = 0;
-    CString::CString(&local_14,(char *)&g_szEmptyString);
+    CString::__0CString__QAE_PBD_Z(&local_14,(char *)&g_szEmptyString);
     local_4._0_1_ = 3;
-    CString::AssignFromPtr((CString *)(puVar1 + 9),&local_14);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)(puVar1 + 9),&local_14);
     local_4 = CONCAT31(local_4._1_3_,2);
-    CString::~CString(&local_14);
+    CString::__1CString__QAE_XZ(&local_14);
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
@@ -73,7 +73,7 @@ TMilitaryUnit * TMilitaryUnit::DestroyMilitaryUnitOrderObject(byte param_1)
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -89,7 +89,7 @@ void TMilitaryUnit::DeserializeMilitaryUnitOrderState(int *param_1)
   code *pcVar2;
   undefined1 *puVar3;
   int iVar4;
-  
+
   TUnit::DeserializeUnitOrderCoreState((TUnit *)this,param_1);
   iVar4 = *param_1;
   (**(code **)(iVar4 + 0x70))(&this->field_0x24,0x20);
@@ -131,7 +131,7 @@ void TMilitaryUnit::SerializeMilitaryUnitOrderState(int *param_1)
   code *pcVar1;
   int unaff_EBX;
   int iVar2;
-  
+
   TUnit::SerializeUnitOrderCoreState((TUnit *)this,param_1);
   iVar2 = *param_1;
   (**(code **)(iVar2 + 0xac))(&this->field_0x24);
@@ -161,7 +161,7 @@ void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset()
 
 {
   TMilitaryUnitVtbl *pTVar1;
-  
+
   if (*(int **)&this->field_0x40 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x40 + 0x88))(this,1);
   }
@@ -184,7 +184,7 @@ void TMilitaryUnit::RelinkMilitaryUnitByTileIndex(short param_1)
   int iVar4;
   int iVar5;
   int iVar6;
-  
+
   sVar1 = *(short *)&this->field_0x6;
   if (sVar1 != -1) {
     if (*(int *)&this->field_0x10 == 0) {

@@ -22,7 +22,7 @@ TCivUnit * TCivUnit::ConstructTUnitBaseState(byte param_1)
 {
   DestroyCivUnitOrderObject_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -65,7 +65,7 @@ void TCivUnit::SetUnitOrderTypeAndOwnerIndex(int nOrderType, short nTargetTileIn
 {
   short anOrderDurationByType [14];
   short nOrderDurationTurns;
-  
+
   anOrderDurationByType[0] = 0;
   anOrderDurationByType[1] = 0;
   anOrderDurationByType[2] = 0;
@@ -169,15 +169,15 @@ void TCivUnit::NormalizeUnitOrderStateAfterLoad(int *pCivUnitOrderState)
 // GHIDRA_COMMENT_END
 
 /* Deserialize civilian-order state.
-   
+
    Algorithm:
    1. Deserialize shared unit-order core fields via DeserializeUnitOrderCoreState.
    2. Read civilian-specific remaining-turn counter at offset +0x24 (2 bytes).
-   
+
    Parameters:
    - this (IMPLICIT): Civilian unit-order state object.
    - pArchiveStream: Load/archive stream interface.
-   
+
    Returns:
    - void. */
 
@@ -208,15 +208,15 @@ void TCivUnit::DeserializeUnitOrderCoreState(int *pArchiveStream)
 // GHIDRA_COMMENT_END
 
 /* Serialize civilian-order state.
-   
+
    Algorithm:
    1. Serialize shared unit-order core fields via SerializeUnitOrderCoreState.
    2. Write civilian-specific remaining-turn counter at offset +0x24 (2 bytes).
-   
+
    Parameters:
    - this (IMPLICIT): Civilian unit-order state object.
    - pArchiveStream: Save/archive stream interface.
-   
+
    Returns:
    - void. */
 
@@ -244,12 +244,12 @@ void TCivUnit::SerializeUnitOrderCoreState(int *pArchiveStream)
 // GHIDRA_COMMENT_END
 
 /* Relinks a civilian unit object into per-tile occupant chain (tile record +0x20 linked list).
-   
+
    Behavior:
    - Unlinks from previous tile chain.
    - Inserts into target tile head list when target tile index is valid.
    - Updates unit prev/next pointers and stored tile index field.
-   
+
    Persistence significance:
    - This controls when/where a unit becomes attached to a concrete map tile. */
 
@@ -257,7 +257,7 @@ void TCivUnit::OrphanRetStub_005c2610(short param_1)
 
 {
   undefined4 uVar1;
-  
+
   if (*(short *)&this->field_0x6 != -1) {
     if (*(int *)&this->field_0x10 == 0) {
       *(undefined4 *)
@@ -320,15 +320,15 @@ void TCivUnit::OrphanRetStub_005c2470()
 // GHIDRA_COMMENT_END
 
 /* Reset civilian work-order runtime state and refresh dependent counters/owner links.
-   
+
    Algorithm:
    1. Call order vfunc +0x30 to reset/detach active runtime assignment state.
    2. For non-type-7 state, call thunk_FUN_004b6a30(1) to refresh dependent counters.
    3. Call order vfunc +0x1C to finalize/reset base object state.
-   
+
    Parameters:
    - pCivUnitOrderState: Civilian order object.
-   
+
    Returns:
    - void. */
 
@@ -337,7 +337,7 @@ void TCivUnit::ResetCivWorkOrderAndRefreshCounters(int *pCivUnitOrderState)
 {
   TCivUnitVtbl *pTVar1;
   TCity *pTVar2;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1->OrphanRetStub_005c2470)();
   if (*(short *)&this->field_0x4 != 7) {

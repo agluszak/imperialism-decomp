@@ -16,12 +16,12 @@ TZone * TPortZone::CreateTPortZone(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006357ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TZone *)AllocateWithFallbackHandler(0x4c);
+  this = (TZone *)__2_YAPAXI_Z(0x4c);
   local_4 = 0;
   pTVar1 = (TZone *)0x0;
   if (this != (TZone *)0x0) {
@@ -60,27 +60,27 @@ void TPortZone::RefreshTPortZoneDisplayNameFromLocalization()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635830;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_20.m_pchData = (char *)0x561907;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   CStack_20.m_pchData = (char *)0x561918;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   CStack_20.m_pchData = (char *)&local_10;
   local_4 = CONCAT31(local_4._1_3_,1);
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)
             (0x275a,CONCAT22((short)((uint)CStack_20.m_pchData >> 0x10),
                              *(undefined2 *)&this->field_0x4));
   scanBracketExpressions(g_pLocalizationTable,&CStack_20,unaff_EDI);
-  CString::AssignFromPtr((CString *)&this->field_0x8,&CStack_20);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x8,&CStack_20);
   local_10.m_pchData = local_10.m_pchData & 0xffffff00;
-  CString::~CString(&CStack_20);
+  CString::__1CString__QAE_XZ(&CStack_20);
   local_10.m_pchData = (char *)0xffffffff;
-  CString::~CString((CString *)&stack0xffffffe4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffe4);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }
@@ -96,12 +96,12 @@ void TPortZone::DispatchNationPendingActionEventCodes()
   TZone *pTVar1;
   int iVar2;
   int iVar3;
-  
+
   if (g_pNavyOrderManager != (TNavyMgr *)0x0) {
     ResetPrimaryOrderActiveFlagsAndClearManagerState();
   }
   if (g_pMapActionContextDistanceCache != (void *)0x0) {
-    FreeHeapBufferIfNotNull(g_pMapActionContextDistanceCache);
+    __3_YAXPAX_Z(g_pMapActionContextDistanceCache);
     g_pMapActionContextDistanceCache = (void *)0x0;
     DAT_006984b4 = 0xffffffff;
     g_nMapActionContextCount = 0;
@@ -131,19 +131,20 @@ void TPortZone::DispatchNationPendingActionEventCodes()
   }
   while (pTVar1 = g_pMapActionContextListHead, g_pMapActionContextListHead != (TZone *)0x0) {
     do {
-      iVar2 = CObject::IsKindOf((CObject *)pTVar1);
+      iVar2 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar1);
       if (iVar2 != 0) break;
       pTVar1 = *(TZone **)&pTVar1->field_0x18;
     } while (pTVar1 != (TZone *)0x0);
     this_00 = g_pMapActionContextListHead;
     if (pTVar1 == (TZone *)0x0) break;
-    while ((this_00 != (TZone *)0x0 && (iVar2 = CObject::IsKindOf((CObject *)this_00), iVar2 == 0)))
-    {
+    while ((this_00 != (TZone *)0x0 &&
+           (iVar2 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)this_00),
+           iVar2 == 0))) {
       this_00 = *(TZone **)&this_00->field_0x18;
     }
     (*this_00->vftable->GetTCountryClassNamePointer)();
   }
-  FreeHeapBufferIfNotNull(*(undefined4 *)&this->field_0x10);
+  __3_YAXPAX_Z(*(undefined4 *)&this->field_0x10);
   if (this != (TPortZone *)0x0) {
     (*this->vftable->ShallowClone)(1);
   }

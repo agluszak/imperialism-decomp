@@ -19,12 +19,12 @@ TView * TWindow::CreateTWindowInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062edbd;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0xa0);
+  this = (TView *)__2_YAPAXI_Z(0xa0);
   local_4 = 0;
   if (this == (TView *)0x0) {
     *unaff_FS_OFFSET = local_c;
@@ -39,7 +39,7 @@ TView * TWindow::CreateTWindowInstance(void)
   local_4 = CONCAT31(local_4._1_3_,2);
   piVar4 = DAT_006a1a50;
   if (DAT_006a1a50 == (int *)0x0) {
-    iVar3 = AllocateAndLinkBlockHead(&DAT_006a1a54,DAT_006a1a58,0xc);
+    iVar3 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(&DAT_006a1a54,DAT_006a1a58,0xc);
     piVar4 = DAT_006a1a50;
     piVar2 = (int *)(iVar3 + -8 + DAT_006a1a58 * 0xc);
     iVar3 = DAT_006a1a58;
@@ -92,16 +92,16 @@ TWindow * TWindow::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D8A0
-// GHIDRA_NAME TWindow::OrphanLeaf_NoCall_Ins05_0048d8a0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_0048d8a0(undefined4 param_1, undefined4 param_2)
+// GHIDRA_NAME TWindow::SetField88And8c
+// GHIDRA_PROTO undefined __thiscall SetField88And8c(undefined4 param_1, undefined4 param_2)
 
-void TWindow::OrphanLeaf_NoCall_Ins05_0048d8a0(undefined4 param_1, undefined4 param_2)
+void TWindow::SetField88And8c(undefined4 param_1, undefined4 param_2)
 
 {
   *(undefined4 *)&this->field_0x88 = param_1;
@@ -132,7 +132,7 @@ void TWindow::OrphanCallChain_C2_I39_0048d900(char param_1, char param_2)
   int iVar1;
   int iVar2;
   WPARAM wParam;
-  
+
   iVar1 = this->field50;
   if (iVar1 != 0) {
     if (iVar1 == 0) {
@@ -173,37 +173,37 @@ undefined4 TWindow::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D9C0
-// GHIDRA_NAME TWindow::WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(undefined4 * param_1)
+// GHIDRA_NAME TWindow::SetWindowText
+// GHIDRA_PROTO undefined __thiscall SetWindowText(undefined4 * param_1)
 
-void TWindow::WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(undefined4 *param_1)
+void TWindow::SetWindowText(undefined4 *param_1)
 
 {
-  SetWindowTextOrDelegateToOwner(*param_1);
+  CMcWindow::SetWindowTextOrDelegateToOwner(*param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D9F0
-// GHIDRA_NAME TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(undefined4 param_1)
+// GHIDRA_NAME TWindow::GetWindowText
+// GHIDRA_PROTO undefined __thiscall GetWindowText(undefined4 param_1)
 
-void TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(undefined4 param_1)
+void TWindow::GetWindowText(undefined4 param_1)
 
 {
-  FUN_0060859f(param_1);
+  CMcWindow::GetWindowTextOrDelegateToOwner(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048DA10
-// GHIDRA_NAME TWindow::OrphanCallChain_C1_I08_0048da10
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_0048da10(void)
+// GHIDRA_NAME TWindow::GetDialogBehaviorByte10
+// GHIDRA_PROTO undefined __thiscall GetDialogBehaviorByte10(void)
 
-int TWindow::OrphanCallChain_C1_I08_0048da10()
+int TWindow::GetDialogBehaviorByte10()
 
 {
   undefined uVar1;
   uint3 extraout_var;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins02_0048dcc0)();
   if (CONCAT31(extraout_var,uVar1) != 0) {
     return CONCAT31(extraout_var,*(undefined1 *)(CONCAT31(extraout_var,uVar1) + 0x10));
@@ -212,10 +212,10 @@ int TWindow::OrphanCallChain_C1_I08_0048da10()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048DA40
-// GHIDRA_NAME TWindow::OrphanLeaf_NoCall_Ins03_0048da40
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins03_0048da40(undefined1 param_1)
+// GHIDRA_NAME TWindow::SetField84
+// GHIDRA_PROTO undefined __thiscall SetField84(undefined1 param_1)
 
-void TWindow::OrphanLeaf_NoCall_Ins03_0048da40(undefined1 param_1)
+void TWindow::SetField84(undefined1 param_1)
 
 {
   this->field_0x84 = param_1;
@@ -238,7 +238,7 @@ int TWindow::ExecuteViewModalStateWithPushPopChain()
   int iVar6;
   int *piVar7;
   int *piVar8;
-  
+
   pTVar1 = this->vftable;
   uVar5 = (*pTVar1->OrphanLeaf_NoCall_Ins02_0048dcc0)();
   piVar7 = (int *)CONCAT31(extraout_var,uVar5);
@@ -248,12 +248,12 @@ int TWindow::ExecuteViewModalStateWithPushPopChain()
   }
   if ((DAT_006a1ac4 != (int *)0x0) &&
      (piVar2 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar2 + 0xc))(), piVar2[0x14] != 0)) {
-    FUN_0060753b(0);
+    CMcWindow::EnableWindowOrDelegateToOwner(0);
   }
   piVar2 = DAT_006a1ac4;
   piVar8 = DAT_006a1ad0;
   if (DAT_006a1ad0 == (int *)0x0) {
-    iVar6 = AllocateAndLinkBlockHead(&DAT_006a1ad4,DAT_006a1ad8,0xc);
+    iVar6 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(&DAT_006a1ad4,DAT_006a1ad8,0xc);
     piVar4 = (int *)(iVar6 + -8 + DAT_006a1ad8 * 0xc);
     piVar8 = DAT_006a1ad0;
     iVar6 = DAT_006a1ad8;
@@ -303,7 +303,7 @@ LAB_0048db5a:
     WrapperFor_FreeLinkedBlockChain_At00492b00(piVar7);
     if ((DAT_006a1ac4 != (int *)0x0) &&
        (piVar7 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar7 + 0xc))(), piVar7[0x14] != 0)) {
-      FUN_0060753b(1);
+      CMcWindow::EnableWindowOrDelegateToOwner(1);
     }
   }
   if ((char)iVar3 == '\0') {
@@ -314,15 +314,15 @@ LAB_0048db5a:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048DC60
-// GHIDRA_NAME TWindow::OrphanCallChain_C1_I08_0048dc60
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_0048dc60(void)
+// GHIDRA_NAME TWindow::GetDialogBehaviorByte20
+// GHIDRA_PROTO undefined __thiscall GetDialogBehaviorByte20(void)
 
-undefined4 TWindow::OrphanCallChain_C1_I08_0048dc60()
+undefined4 TWindow::GetDialogBehaviorByte20()
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins02_0048dcc0)();
   if (CONCAT31(extraout_var,uVar1) != 0) {
     return CONCAT31(extraout_var,*(undefined1 *)(CONCAT31(extraout_var,uVar1) + 0x20));
@@ -339,7 +339,7 @@ void TWindow::OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 par
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins02_0048dcc0)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x38))(param_1,param_2);
@@ -348,10 +348,10 @@ void TWindow::OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048DCC0
-// GHIDRA_NAME TWindow::OrphanLeaf_NoCall_Ins02_0048dcc0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_0048dcc0(void)
+// GHIDRA_NAME TWindow::GetEmbeddedDialogBehavior
+// GHIDRA_PROTO undefined __thiscall GetEmbeddedDialogBehavior(void)
 
-undefined1 * TWindow::OrphanLeaf_NoCall_Ins02_0048dcc0()
+undefined1 * TWindow::GetEmbeddedDialogBehavior()
 
 {
   return &this->field_0x74;
@@ -393,7 +393,7 @@ void TWindow::OrphanRetStub_0059add0(int param_1)
   undefined3 extraout_var;
   undefined4 in_stack_00000008;
   undefined4 in_stack_0000000c;
-  
+
   if (param_1 == 0x1a) {
     if (DAT_006a1b0c == 0) {
       TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xa1a);
@@ -418,7 +418,7 @@ void TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow *param_1)
 
 {
   TWindowVtbl *pTVar1;
-  
+
   if (param_1 == (TWindow *)0x0) {
     param_1 = this;
   }
@@ -451,19 +451,19 @@ void TWindow::OrphanCallChain_C11_I88_004874b0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ee4a;
   *unaff_FS_OFFSET = &uStack_c;
   if (this->field50 == 0) {
-    iVar3 = AllocateWithFallbackHandler(0x40);
+    iVar3 = __2_YAPAXI_Z(0x40);
     local_4 = 0;
     if (iVar3 == 0) {
       iVar3 = 0;
     }
     else {
-      iVar3 = CreateMcWindowFromDescriptorAndShow(this);
+      iVar3 = CMcWindow::CMcWindow(this);
     }
     this->field50 = iVar3;
     local_18 = 1;
@@ -557,7 +557,7 @@ void TWindow::GetTEventHandlerClassNamePointer()
   int iVar1;
   int *piVar2;
   undefined4 *puVar3;
-  
+
   iVar1 = this->field50;
   *(undefined4 *)&this->field_0x98 = 0;
   if ((iVar1 != 0) && (*(int *)(iVar1 + 0x1c) != 0)) {
@@ -600,7 +600,7 @@ void TWindow::OrphanCallChain_C2_I10_0048e120()
 
 {
   TWindowVtbl *pTVar1;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1->GetTEventHandlerClassNamePointer_28)();
   (*pTVar1->VTableSlot07)();
@@ -617,7 +617,7 @@ TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150
 
 {
   if (this->field50 != 0) {
-    CenterWindow(0);
+    _CenterWindow_CWnd__QAEXPAV1__Z(0);
     return;
   }
   if (param_1 != '\0') {
@@ -707,12 +707,12 @@ void TWindow::_scalar_deleting_destructor_()
   TWindow *pTVar4;
   undefined3 extraout_var;
   ApplicationUiRootController *pAVar5;
-  
+
   this_00 = (CObject *)this->field50;
   if (this_00 != (CObject *)0x0) {
     if (this_00[7].vftable == (CObjectVtbl *)0x0) {
       if (this_00 != (CObject *)0x0) {
-        iVar3 = CObject::IsKindOf(this_00);
+        iVar3 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(this_00);
         if (iVar3 == 0) {
           if ((int *)this->field50 != (int *)0x0) {
             (**(code **)(*(int *)this->field50 + 4))(1);

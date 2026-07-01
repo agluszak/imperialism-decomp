@@ -29,7 +29,7 @@ int * TTransFocusAnimation::Sprite__CollectNonTransparentPixels(uint this_ptr)
   int row_idx;
   int pair_count;
   byte *row_ptr;
-  
+
   header_ptr = *(int *)&this->field_0x10;
   if (*(short *)(header_ptr + 0xe) != 1) {
     width = *(int *)(header_ptr + 4);
@@ -50,7 +50,7 @@ LAB_0047c603:
         col_idx = -header_ptr;
       }
       if (col_idx <= scan_offset) {
-        out_pairs = (int *)AllocateWithFallbackHandler((row_idx + 1) * 0x10);
+        out_pairs = (int *)__2_YAPAXI_Z((row_idx + 1) * 0x10);
         *out_pairs = row_idx * 2 + 1;
         pair_count = 1;
         header_ptr = 0;
@@ -162,7 +162,7 @@ LAB_0047c453:
       row_idx = row_idx + col_idx;
     }
   }
-  out_pairs = (int *)AllocateWithFallbackHandler((this_ptr + 1) * 0x10);
+  out_pairs = (int *)__2_YAPAXI_Z((this_ptr + 1) * 0x10);
   width = 0;
   *out_pairs = this_ptr * 2 + 1;
   this_ptr = 1;
@@ -252,8 +252,8 @@ TTransFocusAnimation * __cdecl TTransFocusAnimation::CreateObject(void)
 
 {
   TTransFocusAnimation *pTVar1;
-  
-  pTVar1 = (TTransFocusAnimation *)AllocateWithFallbackHandler(0x38);
+
+  pTVar1 = (TTransFocusAnimation *)__2_YAPAXI_Z(0x38);
   if (pTVar1 != (TTransFocusAnimation *)0x0) {
     pTVar1->field_0x2c = 1;
     pTVar1->vftable = &TTransFocusAnimationVtbl_0064c498;
@@ -275,7 +275,7 @@ TTransFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0430
 {
   TTransFocusAnimation::CreateTTransFocusAnimationInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -319,7 +319,7 @@ TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
   undefined4 local_c;
   int local_8;
   int local_4;
-  
+
   *(undefined4 *)&this->field_0x4 = param_1;
   *(int *)&this->field_0x1c = *param_2;
   *(int *)&this->field_0x20 = param_2[1];
@@ -376,7 +376,7 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe78;
   local_c = *unaff_FS_OFFSET;
@@ -435,7 +435,7 @@ void TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe98;
   uStack_c = *unaff_FS_OFFSET;
@@ -469,7 +469,7 @@ void TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift()
   RECT local_30;
   tagRECT local_20;
   RECT local_10;
-  
+
   sVar4 = *(short *)&this->field_0x24 - *(short *)&this->field_0x1c;
   local_38 = *(astruct_18 **)&g_pUiAnimator->field_0x20;
   iVar3 = (int)(short)(*(short *)&this->field_0x28 - *(short *)&this->field_0x20);
@@ -516,20 +516,20 @@ void TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607840
-// GHIDRA_NAME TTransFocusAnimation::WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840
-// GHIDRA_PROTO undefined WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840()
+// GHIDRA_NAME TTransFocusAnimation::?ModifyStyle@CWnd@@SGHPAUHWND__@@KKI@Z
+// GHIDRA_PROTO undefined ?ModifyStyle@CWnd@@SGHPAUHWND__@@KKI@Z()
 
-void TTransFocusAnimation::WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840
+void TTransFocusAnimation::_ModifyStyle_CWnd__SGHPAUHWND____KKI_Z
                (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  AfxModifyStyle(param_1,0xfffffff0,param_2,param_3,param_4);
+  __AfxModifyStyle__YGHPAUHWND____HKKI_Z(param_1,0xfffffff0,param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060785A
-// GHIDRA_NAME TTransFocusAnimation::AfxModifyStyle
-// GHIDRA_PROTO undefined AfxModifyStyle()
+// GHIDRA_NAME TTransFocusAnimation::?_AfxModifyStyle@@YGHPAUHWND__@@HKKI@Z
+// GHIDRA_PROTO undefined ?_AfxModifyStyle@@YGHPAUHWND__@@HKKI@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Updates a window long field using clear/set masks, and optionally forces non-client refresh via SetWindowPos with SWP_NOSIZE/NOMOVE/NOZORDER frame flags.
 // GHIDRA_COMMENT_END
@@ -538,13 +538,13 @@ void TTransFocusAnimation::WrapperFor_UpdateWindowLongMaskedAndRefresh_At0060784
    SetWindowPos with SWP_NOSIZE/NOMOVE/NOZORDER frame flags. */
 
 undefined4
-TTransFocusAnimation::AfxModifyStyle
+TTransFocusAnimation::__AfxModifyStyle__YGHPAUHWND____HKKI_Z
           (HWND param_1,int param_2,uint param_3,uint param_4,uint param_5)
 
 {
   uint uVar1;
   undefined4 uVar2;
-  
+
   uVar1 = GetWindowLongA(param_1,param_2);
   param_4 = ~param_3 & uVar1 | param_4;
   if (uVar1 == param_4) {
@@ -561,14 +561,14 @@ TTransFocusAnimation::AfxModifyStyle
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006078A9
-// GHIDRA_NAME TTransFocusAnimation::ModifyStyleEx_6078a9
-// GHIDRA_PROTO undefined ModifyStyleEx_6078a9()
+// GHIDRA_NAME TTransFocusAnimation::?ModifyStyleEx@CWnd@@SGHPAUHWND__@@KKI@Z
+// GHIDRA_PROTO undefined ?ModifyStyleEx@CWnd@@SGHPAUHWND__@@KKI@Z()
 
-void TTransFocusAnimation::ModifyStyleEx_6078a9
+void TTransFocusAnimation::_ModifyStyleEx_CWnd__SGHPAUHWND____KKI_Z
                (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  AfxModifyStyle(param_1,0xffffffec,param_2,param_3,param_4);
+  __AfxModifyStyle__YGHPAUHWND____HKKI_Z(param_1,0xffffffec,param_2,param_3,param_4);
   return;
 }
 

@@ -33,7 +33,7 @@ TShipBuildingTask * TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
 {
   DestroyTShipBuildingTask_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -54,12 +54,12 @@ TShipBuildingTask * TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
 // GHIDRA_COMMENT_END
 
 /* Advances one city order context through per-turn requirement resolution and command generation.
-   
+
    Behavior summary:
    - Uses city/order requirement tables and current city pools.
    - Consumes available deltas, then queues remaining deficits as command objects.
    - Marks order state to avoid duplicate queueing within the same cycle.
-   
+
    Context:
    - Participates in turn processing / deferred command pipeline for city production orders. */
 
@@ -81,7 +81,7 @@ uint TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
   undefined4 *puStack_50;
   int iStack_38;
   short asStack_30 [24];
-  
+
   piVar2 = *(int **)(*(int *)&this->field_0x8 + 400);
   if (*(short *)&this->field_0x16 == 0) {
     puStack_50 = (undefined4 *)0x5ae7a9;
@@ -145,7 +145,7 @@ uint TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
         if (0 < sVar1) {
           puStack_50 = (undefined4 *)0x14;
           uStack_54 = 0x5ae8d2;
-          puStack_50 = (undefined4 *)AllocateWithFallbackHandler();
+          puStack_50 = (undefined4 *)__2_YAPAXI_Z();
           if (puStack_50 == (undefined4 *)0x0) {
             puStack_50 = (undefined4 *)0x0;
           }
@@ -190,7 +190,7 @@ void TShipBuildingTask::SerializeCityProductionQueueCommand(int *param_1)
 
 {
   code *pcVar1;
-  
+
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x10,1);
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
@@ -211,7 +211,7 @@ void TShipBuildingTask::DeserializeCityProductionQueueCommand(int *param_1)
 
 {
   code *pcVar1;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);

@@ -12,7 +12,7 @@ TRailheadDialog * TRailheadDialog::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -41,7 +41,7 @@ void TRailheadDialog::ConstructTRailheadDialogBaseState(int param_1)
   undefined uVar3;
   undefined3 extraout_var;
   int *piVar4;
-  
+
   *(int *)&this->field_0x60 = param_1;
   uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63686f69);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
@@ -104,7 +104,7 @@ void TRailheadDialog::DestructTRailheadDialogAndMaybeFree(int param_1)
   undefined3 extraout_var;
   dword dVar2;
   int iVar3;
-  
+
   if (param_1 == 0x6f6b6179) {
     uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63686f69);
     if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {

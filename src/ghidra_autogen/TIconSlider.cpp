@@ -29,12 +29,12 @@ TNoHilitePicture * TIconSlider::CreateTIconSliderInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063378a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xbc);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0xbc);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
@@ -93,7 +93,7 @@ TIconSlider * TIconSlider::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -108,7 +108,7 @@ void TIconSlider::OrphanCallChain_C6_I49_004875d0()
   short sVar1;
   int *piVar2;
   tagRECT local_10;
-  
+
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   piVar2 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(0x3eb);
   *(int **)&this->field_0xa0 = piVar2;
@@ -156,7 +156,7 @@ void TIconSlider::OrphanCallChain_C2_I15_005065b0()
 {
   POINT *unaff_retaddr;
   RECT RStack_14;
-  
+
   RStack_14.left = (LONG)&RStack_14.top;
   (*this->vftable->OrphanCallChain_C1_I36_00506710)();
   PtInRect(&RStack_14,*unaff_retaddr);
@@ -175,7 +175,7 @@ TIconSlider::SetForeignMinisterReadyFlag14
   TIconSliderVtbl *pTVar1;
   char cVar2;
   int iVar3;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->OrphanCallChain_C2_I15_005065b0)(param_1);
   if (cVar2 != '\0') {
@@ -215,7 +215,7 @@ TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6
 
 {
   undefined1 local_10 [16];
-  
+
   (*this->vftable->OrphanCallChain_C1_I36_00506710)(local_10);
   NoOpRuntimeCallback_00497c00(*(undefined4 *)&this->field_0xa0);
   WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
@@ -260,7 +260,7 @@ TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit
   LONG LStack_20;
   LONG LStack_18;
   undefined1 auStack_14 [20];
-  
+
   local_44.left = (LONG)this->vftable->OrphanCallChain_C1_I36_00506710;
   (*(code *)local_44.left)(&tStack_34.top);
   local_44.top = tStack_34.top;

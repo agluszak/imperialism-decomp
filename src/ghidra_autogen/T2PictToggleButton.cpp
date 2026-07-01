@@ -16,12 +16,12 @@ TToggleButton * T2PictToggleButton::CreateT2PictToggleButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063762a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TToggleButton *)AllocateWithFallbackHandler(0x90);
+  this = (TToggleButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   pTVar1 = (TToggleButton *)0x0;
   if (this != (TToggleButton *)0x0) {
@@ -64,7 +64,7 @@ T2PictToggleButton * T2PictToggleButton::_scalar_deleting_destructor_(byte param
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -89,7 +89,7 @@ void T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh(char param_1)
 {
   short sVar1;
   T2PictToggleButtonVtbl *pTVar2;
-  
+
   sVar1 = *(short *)&this->field_0x84;
   if (((param_1 == '\0') && (this->field3c < (int)sVar1)) ||
      ((param_1 == '\x01' && ((int)sVar1 < this->field3c)))) {

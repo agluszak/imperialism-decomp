@@ -26,7 +26,7 @@ void TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng()
   short *local_34;
   short local_30 [4];
   short local_28;
-  
+
   local_38 = 0;
   do {
     pcVar5 = (char *)this->field10;
@@ -39,7 +39,7 @@ void TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng()
       pcVar5 = pcVar5 + 0xa8;
       iVar7 = iVar7 + -1;
     } while (iVar7 != 0);
-    psVar6 = (short *)AllocateWithFallbackHandler(iVar10 * 2);
+    psVar6 = (short *)__2_YAPAXI_Z(iVar10 * 2);
     iVar7 = 0;
     local_34 = psVar6;
     do {
@@ -158,7 +158,7 @@ void TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng()
       *(undefined1 *)(this->field0c + 0x13 + psVar6[iVar12] * 0x24) = uVar4;
     }
 LAB_00511d8b:
-    FreeHeapBufferIfNotNull(psVar6);
+    __3_YAXPAX_Z(psVar6);
     local_38 = local_38 + 1;
     if (6 < local_38) {
       return;
@@ -192,7 +192,7 @@ TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
   int iVar9;
   int iVar10;
   int iVar11;
-  
+
   iVar9 = (int)param_1;
   iVar10 = 1;
   uVar3 = (*g_apTerrainTypeDescriptorTable[iVar9]->ownedRegionList->vftable[5].
@@ -313,7 +313,7 @@ TMapMaker * TMapMaker::_scalar_deleting_destructor_(byte param_1)
 {
   TMapMaker::DestructTMapMaker(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -371,7 +371,7 @@ void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject()
   int local_28;
   undefined4 *puStack_20;
   int iStack_14;
-  
+
   piVar1 = &this->field10;
   puVar15 = (undefined4 *)&this->field_0x200;
   piVar9 = piVar1;
@@ -529,7 +529,7 @@ int TMapMaker::UpdateControlCachedIntFromWindowText(int param_1, int param_2)
   int local_24;
   int aiStack_20 [7];
   int iStack_4;
-  
+
   local_24 = param_2;
   if ((((param_2 != 0) && (0 < param_1 / 0x1b)) && (param_1 / 0x1b < 0xe)) &&
      (*(char *)((int)&this->field10 + param_1) == -1)) {
@@ -631,7 +631,7 @@ uint TMapMaker::OrphanRetStub_0059add0(undefined4 param_1, int param_2)
   int *piVar6;
   int iVar7;
   int local_8;
-  
+
   local_8 = 0;
   p_Var1 = this->vftable->VTableSlot1D;
   do {
@@ -719,7 +719,7 @@ uint TMapMaker::OrphanTiny_ReturnZero_0048a730(undefined4 param_1, int param_2)
   int iVar5;
   int iVar6;
   int iVar7;
-  
+
   iVar7 = 0;
   p_Var1 = this->vftable->VTableSlot1D;
   do {
@@ -768,7 +768,7 @@ void TMapMaker::OrphanCallChain_C11_I88_004874b0()
   int iVar7;
   int local_c;
   int local_8;
-  
+
   local_8 = 0;
   local_c = 0;
   do {
@@ -866,7 +866,7 @@ void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject()
   char *pcStack_1c;
   int local_18;
   uint local_c;
-  
+
   iVar14 = DAT_006a38f8;
   iVar8 = DAT_006a38e0;
   local_18 = DAT_006a38c0;
@@ -1051,7 +1051,7 @@ uint TMapMaker::_scalar_deleting_destructor_()
   uint uVar7;
   uint uVar8;
   undefined1 *local_c;
-  
+
   local_c = &LAB_004c4b40;
   iVar1 = DAT_006a38e4;
   do {
@@ -1133,7 +1133,7 @@ TMapMaker::InvalidateWindowRectFromHandleField1C
   undefined3 in_stack_00000011;
   char in_stack_00000014;
   uint uVar5;
-  
+
   iVar7 = param_1;
   iVar4 = param_1 * 0x24;
   pcVar6 = (char *)(this->padding_08_to_0b + iVar4);
@@ -1229,7 +1229,7 @@ int TMapMaker::SetForeignMinisterReadyFlag14(int param_1, int param_2, char para
   int iVar7;
   int iVar8;
   undefined3 in_stack_0000000d;
-  
+
   iVar2 = param_2;
   iVar7 = this->padding_08_to_0b;
   iVar8 = param_1 * 0x24;
@@ -1329,7 +1329,7 @@ int TMapMaker::OrphanTiny_ReturnZero_0048a730(int param_1, int param_2, int para
   int iVar5;
   int iVar6;
   int iVar7;
-  
+
   if ((param_1 < 0) || (0x1950 < param_1)) {
     return 0;
   }
@@ -1455,7 +1455,7 @@ void TMapMaker::_scalar_deleting_destructor_()
   int local_c;
   int local_8;
   int local_4;
-  
+
   iVar6 = 0xfa;
   local_4 = 5;
   local_c = 0;
@@ -1502,7 +1502,7 @@ int TMapMaker::OrphanTiny_ReturnZero_0048a730(int param_1, int param_2)
   int iVar5;
   int iVar6;
   int iStack_4;
-  
+
   iVar5 = param_1;
   iVar6 = 0;
   param_1 = 0;
@@ -1573,7 +1573,7 @@ int TMapMaker::_scalar_deleting_destructor_(int param_1, int param_2)
   int local_14;
   int local_10;
   int local_4;
-  
+
   local_14 = 0;
   pcVar5 = (char *)(this->padding_08_to_0b + param_1 * 0xf30);
   iVar2 = 0;
@@ -1690,7 +1690,7 @@ int TMapMaker::_scalar_deleting_destructor_(int param_1, int param_2)
 {
   int iVar1;
   int iVar2;
-  
+
   if ((param_1 / 0x1b & 1U) == 0) {
     iVar1 = *(int *)(&DAT_00697498 + param_2 * 4);
   }
@@ -1732,7 +1732,7 @@ void TMapMaker::_scalar_deleting_destructor_()
   int local_1c;
   int local_18;
   int local_c;
-  
+
   local_1c = 0x6c;
   local_18 = 0xf30;
   do {
@@ -1912,7 +1912,7 @@ void TMapMaker::OrphanCallChain_C11_I88_004874b0()
   undefined4 uStack_10;
   undefined4 uStack_c;
   undefined4 uStack_8;
-  
+
   iVar4 = 0;
   pTVar2 = this->vftable;
   p_Var3 = pTVar2->VTableSlot1D;
@@ -1950,7 +1950,7 @@ void TMapMaker::OrphanRetStub_0059add0(short param_1, short param_2, short param
   undefined2 in_stack_00000006;
   short in_stack_00000010;
   undefined4 *puVar2;
-  
+
   uVar1 = (*this->vftable->VTableSlot21)(_param_1);
   puVar2 = (undefined4 *)CONCAT31(extraout_var,uVar1);
   puVar4 = puVar2 + -0x3c3;
@@ -2032,7 +2032,7 @@ void TMapMaker::GetTEventHandlerClassNamePointer(short param_1)
   undefined4 *puVar7;
   undefined2 in_stack_00000006;
   undefined3 extraout_var_00;
-  
+
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1->VTableSlot1D)(_param_1,2);
   uVar2 = (*pTVar1->VTableSlot21)(CONCAT31(extraout_var,uVar2));
@@ -2075,7 +2075,7 @@ int TMapMaker::_scalar_deleting_destructor_(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = ((int)(short)(param_1 % 0x1b) + (short)(param_1 / 0x1b) * 0x6c) * 0x90 +
           this->padding_08_to_0b;
   if ((param_1 / 0x1b & 1U) != 0) {
@@ -2094,7 +2094,7 @@ void TMapMaker::OrphanRetStub_0059add0(char param_1)
   int iVar1;
   int iVar2;
   undefined4 *puVar3;
-  
+
   if (param_1 == '\0') {
     GenerateCityRegionIdsBySeedAndNeighborPropagation();
   }
@@ -2153,7 +2153,7 @@ void TMapMaker::_scalar_deleting_destructor_()
   int iVar3;
   uint uVar4;
   undefined4 *puVar5;
-  
+
   uVar1 = this->field0c;
   if ((uint)this->padding_08_to_0b <= uVar1) {
     iVar3 = uVar1 + 1;
@@ -2161,9 +2161,9 @@ void TMapMaker::_scalar_deleting_destructor_()
     if (0x7fffffff < uVar4) {
       uVar4 = 0x7fffffff;
     }
-    iVar2 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar3 * 0x30);
+    iVar2 = _realloc(this->field04,iVar3 * 0x30);
     if (iVar2 == 0) {
-      iVar2 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar3 * 0x18);
+      iVar2 = _realloc(this->field04,iVar3 * 0x18);
       this->field04 = iVar2;
       this->padding_08_to_0b = iVar3;
     }
@@ -2199,7 +2199,7 @@ TMapMaker::GetTEventHandlerClassNamePointer
   int iVar3;
   uint uVar4;
   undefined4 *puVar5;
-  
+
   uVar2 = this->field0c;
   if ((uint)this->padding_08_to_0b <= uVar2) {
     iVar1 = uVar2 + 1;
@@ -2207,9 +2207,9 @@ TMapMaker::GetTEventHandlerClassNamePointer
     if (0x7fffffff < uVar4) {
       uVar4 = 0x7fffffff;
     }
-    iVar3 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar1 * 0x20);
+    iVar3 = _realloc(this->field04,iVar1 * 0x20);
     if (iVar3 == 0) {
-      iVar3 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar1 * 0x10);
+      iVar3 = _realloc(this->field04,iVar1 * 0x10);
       this->field04 = iVar3;
       this->padding_08_to_0b = iVar1;
     }
@@ -2239,7 +2239,7 @@ undefined4 TMapMaker::GetTEventHandlerClassNamePointer()
   int *piVar1;
   int iVar2;
   undefined1 uVar3;
-  
+
   uVar3 = 0;
   (*this->vftable->GetTEventHandlerClassNamePointer_1c)(0);
   piVar1 = &this->field10;
@@ -2272,7 +2272,7 @@ void TMapMaker::GetTEventHandlerClassNamePointer(short param_1)
   undefined3 extraout_var;
   int iVar5;
   int iVar6;
-  
+
   iVar5 = (int)param_1;
   iVar6 = 0;
   pTVar1 = this->vftable;
@@ -2307,7 +2307,7 @@ void TMapMaker::_scalar_deleting_destructor_()
   int local_8;
   int local_4;
   int iVar4;
-  
+
   piVar1 = &this->field10;
   local_8 = 0;
   local_4 = 0x195;

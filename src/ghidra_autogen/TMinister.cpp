@@ -64,7 +64,7 @@ TMinister * TMinister::DeletingDestructTMinister(byte param_1)
 {
   TMinister::DestructTMinister(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

@@ -28,7 +28,7 @@ void TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates()
   undefined1 local_20;
   int local_18;
   int *local_10;
-  
+
   sVar12 = 0;
   local_18 = 0;
   do {
@@ -78,7 +78,7 @@ void TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates()
             }
           }
           if (!bVar5) {
-            local_10 = (int *)AllocateWithFallbackHandler(0x1c);
+            local_10 = (int *)__2_YAPAXI_Z(0x1c);
             if (local_10 == (int *)0x0) {
               local_10 = (int *)0x0;
             }
@@ -95,7 +95,8 @@ void TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates()
             *(undefined1 *)(local_10 + 3) = 0;
             *(short *)((int)local_10 + 0xe) = sVar1;
             *(short *)(local_10 + 4) = sVar12;
-            CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0xc + 4),local_10);
+            CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
+                      ((CPtrList *)(*(int *)&this->field_0xc + 4),local_10);
           }
 LAB_004a20db:
           sVar11 = sVar1;
@@ -106,7 +107,7 @@ LAB_004a20db:
                       (s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0x333);
           }
         }
-        puVar9 = (undefined4 *)AllocateWithFallbackHandler(8);
+        puVar9 = (undefined4 *)__2_YAPAXI_Z(8);
         if (puVar9 == (undefined4 *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag
@@ -166,7 +167,7 @@ LAB_004a223f:
       }
     }
     *(short *)(iVar8 + 4) = (short)*(char *)(sVar11 + 0x6953c0 + sVar12 * 4);
-    uVar6 = GenerateThreadLocalRandom15();
+    uVar6 = _rand();
     *(ushort *)(iVar8 + 6) = (uVar6 & 0xff) + *(short *)(iVar8 + 4) * 0x100;
     iVar8 = AdvanceLinkedListCursor();
     iVar10 = LinkedListCursorHasCurrent();
@@ -185,7 +186,7 @@ void TArmyStack::CreateTArmyStackInstance(void)
   short sVar2;
   int iVar3;
   int *piVar4;
-  
+
   sVar2 = ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fb0();
   iVar3 = ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0();
   while (iVar3 != 0) {
@@ -244,7 +245,7 @@ TArmyStack * TArmyStack::DestructTArmyStackAndMaybeFree(byte param_1)
 {
   DestructTArmyStackAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -292,7 +293,7 @@ void TArmyStack::BuildTerrainLinkedSelectionListFromSerializedCounts(int *param_
   undefined4 uStack_30;
   undefined1 *puStack_2c;
   undefined4 uStack_28;
-  
+
   uStack_28 = 2;
   puStack_2c = &this->field_0x4;
   pcVar1 = *(code **)(*param_1 + 0x3c);
@@ -328,7 +329,7 @@ void TArmyStack::BuildTerrainLinkedSelectionListFromSerializedCounts(int *param_
       iVar4 = LinkedListCursorHasCurrent();
       while (iVar4 != 0) {
         if (*(short *)(iVar3 + 0x1a) == (short)uVar2) {
-          piVar5 = (int *)AllocateWithFallbackHandler(8);
+          piVar5 = (int *)__2_YAPAXI_Z(8);
           if (piVar5 == (int *)0x0) {
             MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
             TemporarilyClearAndRestoreUiInvalidationFlag
@@ -372,7 +373,7 @@ void TArmyStack::OrphanCallChain_C9_I80_004a7960(int *param_1)
   undefined4 uStack_18;
   undefined1 *puStack_14;
   undefined4 uStack_10;
-  
+
   uStack_10 = 2;
   puStack_14 = &this->field_0x4;
   pcVar1 = *(code **)(*param_1 + 0x78);
@@ -436,11 +437,11 @@ void TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20()
 {
   int iVar1;
   int iVar2;
-  
+
   iVar2 = *(int *)&this->field_0x14;
   while (iVar2 != 0) {
     iVar1 = *(int *)(iVar2 + 4);
-    FreeHeapBufferIfNotNull(iVar2);
+    __3_YAXPAX_Z(iVar2);
     iVar2 = iVar1;
   }
   if (this != (TArmyStack *)0x0) {
@@ -474,7 +475,7 @@ void TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
   int *local_34;
   int local_20;
   int local_18 [6];
-  
+
   puVar2 = *(undefined2 **)&this[1].field_0x8;
   sVar1 = *(short *)(&DAT_00695528 + *(int *)(param_1 + 0xc) * 2);
   iVar3 = *(int *)(param_1 + 0x28);
@@ -587,7 +588,7 @@ void TArmyStack::PropagateTileAccessibilityStrengthLevels(char *param_1)
   int local_20;
   int local_1c;
   int local_18 [6];
-  
+
   cVar1 = param_1[0x20];
   pcVar5 = *(char **)&this[1].field_0xc;
   local_1c = 0;
@@ -650,7 +651,7 @@ void TArmyStack::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1)
   int iVar3;
   int iVar4;
   int in_stack_00000008;
-  
+
   iVar3 = *(int *)(in_stack_00000008 + 0x1c);
   iVar4 = *(int *)(in_stack_00000008 + 0x34);
   if (iVar3 == 0) {
@@ -658,7 +659,7 @@ void TArmyStack::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1)
   }
   else if (iVar3 == 1) {
     iVar1 = *(int *)(param_1 + 0x10);
-    iVar2 = GenerateThreadLocalRandom15();
+    iVar2 = _rand();
     if (iVar2 % 100 < (iVar1 + 5) * 10) {
       iVar3 = 0;
       iVar4 = *(int *)(in_stack_00000008 + 4) / 10 + 0x14;

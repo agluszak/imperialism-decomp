@@ -22,7 +22,7 @@ TShipOrder * TShipOrder::ConstructTShipOrderBaseState(byte param_1)
 {
   TShipOrder::DestructTShipOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -48,7 +48,7 @@ int TShipOrder::OrphanLeaf_NoCall_Ins25_004b85a0()
   int iVar1;
   int iVar2;
   uint3 uVar3;
-  
+
   iVar1 = *(int *)&this->field_0x8;
   iVar2 = *(short *)&this->field_0x48 * 2;
   uVar3 = (uint3)((uint)iVar2 >> 8);
@@ -72,7 +72,7 @@ uint TShipOrder::OrphanLeaf_NoCall_Ins39_004b8630()
 {
   short *psVar1;
   uint uVar2;
-  
+
   uVar2 = *(short *)&this->field_0x48 * 2;
   if (((((int)*(short *)(&g_industryActionCostWeightResCode09 + uVar2) <=
          (int)*(short *)&this->field_0x22 +
@@ -108,7 +108,7 @@ int TShipOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   int in_EAX;
   int iVar1;
   int iVar2;
-  
+
   iVar2 = *(short *)&this->field_0x48 * 2;
   iVar1 = 10000;
   if ((*(short *)(&g_industryActionCostWeightResCode09 + iVar2) != 0) &&
@@ -164,7 +164,7 @@ undefined4 TShipOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   char cVar5;
   undefined3 extraout_var;
   short sVar6;
-  
+
   sVar6 = param_1 - *(short *)&this->field_0x4;
   uVar4 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
   if (((short)CONCAT31(extraout_var,uVar4) < param_1) || (param_1 < 0)) {
@@ -246,7 +246,7 @@ void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability()
   uint uVar7;
   undefined4 *puVar8;
   undefined4 uVar9;
-  
+
   psVar1 = (short *)(*(int *)&this->field_0x8 + 0x5c + *(short *)&this->field_0x48 * 2);
   *psVar1 = *psVar1 + *(short *)&this->field_0x4;
   sVar3 = *(short *)&this->field_0x4;
@@ -346,7 +346,7 @@ void TShipOrder::CreateTItemOrderInstance()
 {
   short sVar1;
   short sStack00000004;
-  
+
   (*this->vftable[7].ConstructTShipOrderBaseState)();
   sVar1 = *(short *)(&g_industryActionCostWeightResCode09 + *(short *)&this->field_0x48 * 2);
   *(short *)(_sStack00000004 + 0x12) = sVar1 * sStack00000004;

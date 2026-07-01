@@ -17,12 +17,12 @@ undefined4 * TAdorner::CreateTAdornerInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fca2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xc);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0xc);
   puVar3 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     local_4 = 1;
@@ -58,12 +58,12 @@ TView * TAdorner::ConstructTAdornerBaseState(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fcd2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)__2_YAPAXI_Z(0x60);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -86,7 +86,7 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
@@ -100,7 +100,7 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
@@ -114,7 +114,7 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
@@ -128,7 +128,7 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
@@ -142,7 +142,7 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
@@ -156,7 +156,7 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
@@ -170,7 +170,7 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
@@ -184,7 +184,7 @@ void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
@@ -199,7 +199,7 @@ uint TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0
 {
   undefined4 uVar1;
   uint uVar2;
-  
+
   uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   uVar2 = SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return uVar2 & 0xffffff00;
@@ -214,7 +214,7 @@ TAdorner * TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(byte param_1)
 {
   WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

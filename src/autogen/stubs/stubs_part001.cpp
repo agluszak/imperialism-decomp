@@ -19,14 +19,6 @@ undefined4 thunk_InvalidateMapRegionForOrderEntry(void)
   return 0;
 }
 
-// ghidra_name thunk_ReleaseHashIndexedRecordByHandle
-// ghidra_proto undefined thunk_ReleaseHashIndexedRecordByHandle()
-// FUNCTION: IMPERIALISM 0x004020fe
-undefined4 thunk_ReleaseHashIndexedRecordByHandle(void)
-{
-  return 0;
-}
-
 // ghidra_name TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
 // ghidra_proto undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()
 // FUNCTION: IMPERIALISM 0x0040231a
@@ -67,14 +59,6 @@ undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void)
   return 0;
 }
 
-// ghidra_name thunk_RelaxMapTileCostFieldByNeighborTerrain
-// ghidra_proto undefined thunk_RelaxMapTileCostFieldByNeighborTerrain()
-// FUNCTION: IMPERIALISM 0x004029d2
-undefined4 thunk_RelaxMapTileCostFieldByNeighborTerrain(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_InitializeUiTextStyleDescriptor
 // ghidra_proto undefined thunk_InitializeUiTextStyleDescriptor()
 // FUNCTION: IMPERIALISM 0x00402a7c
@@ -107,14 +91,6 @@ undefined4 thunk_GetMapActionContextByTileIndex(void)
   return 0;
 }
 
-// ghidra_name thunk_LoadBmpResourceByIdCached
-// ghidra_proto undefined thunk_LoadBmpResourceByIdCached()
-// FUNCTION: IMPERIALISM 0x00403224
-undefined4 thunk_LoadBmpResourceByIdCached(void)
-{
-  return 0;
-}
-
 // ghidra_name TCivToolbar::thunk_SetMapInteractionMode
 // ghidra_proto void __thiscall thunk_SetMapInteractionMode(short nMode)
 // FUNCTION: IMPERIALISM 0x004032a1
@@ -123,10 +99,10 @@ undefined4 thunk_SetMapInteractionMode(void)
   return 0;
 }
 
-// ghidra_name thunk_SelectBestSeedTileForNationFromCostField
-// ghidra_proto undefined thunk_SelectBestSeedTileForNationFromCostField()
-// FUNCTION: IMPERIALISM 0x00403765
-undefined4 thunk_SelectBestSeedTileForNationFromCostField(void)
+// ghidra_name UiRuntimeContext::GetActiveNationId
+// ghidra_proto undefined GetActiveNationId()
+// FUNCTION: IMPERIALISM 0x00403b16
+undefined4 GetActiveNationId(void)
 {
   return 0;
 }
@@ -155,14 +131,6 @@ undefined4 thunk_ConstructUiResourceEntryType4B0C0(void)
   return 0;
 }
 
-// ghidra_name thunk_DecrementDialogResourceRefCountByShortIdAndCleanup
-// ghidra_proto undefined thunk_DecrementDialogResourceRefCountByShortIdAndCleanup()
-// FUNCTION: IMPERIALISM 0x004046bf
-undefined4 thunk_DecrementDialogResourceRefCountByShortIdAndCleanup(void)
-{
-  return 0;
-}
-
 // ghidra_name TDiplomacyMapView::thunk_AppendPackedColorDwordToMaskBuffers
 // ghidra_proto undefined thunk_AppendPackedColorDwordToMaskBuffers()
 // FUNCTION: IMPERIALISM 0x00404a25
@@ -171,26 +139,10 @@ undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void)
   return 0;
 }
 
-// ghidra_name thunk_CreateMissionObjectByKindAndNodeContext
-// ghidra_proto undefined thunk_CreateMissionObjectByKindAndNodeContext()
-// FUNCTION: IMPERIALISM 0x00404e99
-undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_GetSurfaceObjectAtContextOffset24
 // ghidra_proto undefined thunk_GetSurfaceObjectAtContextOffset24()
 // FUNCTION: IMPERIALISM 0x0040520e
 undefined4 thunk_GetSurfaceObjectAtContextOffset24(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
-// ghidra_proto undefined thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias()
-// FUNCTION: IMPERIALISM 0x00405344
-undefined4 thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(void)
 {
   return 0;
 }

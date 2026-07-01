@@ -12,11 +12,12 @@ void TArmyTacUnit::TArmyTacUnit_VtblSlot02(int param_1)
 {
   TAutoGreatPower *this_00;
   int *piVar1;
-  
+
   this_00 = (TAutoGreatPower *)(*(int *)&this->field_0x4 + 4);
-  piVar1 = (int *)TAutoGreatPower::Find(this_00,param_1,(undefined4 *)0x0);
+  piVar1 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                            (this_00,param_1,(undefined4 *)0x0);
   if (piVar1 != (int *)0x0) {
-    TAutoGreatPower::RemoveAt_60217d(this_00,piVar1);
+    TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar1);
   }
   WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0(*(undefined4 *)(param_1 + 0x38));
   return;
@@ -30,8 +31,9 @@ void TArmyTacUnit::TArmyTacUnit_VtblSlot03(int *param_1)
 
 {
   int *piVar1;
-  
-  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
+
+  CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
+            ((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
   (**(code **)(*param_1 + 0x3c))();
   piVar1 = (int *)param_1[0xe];
   *(short *)(piVar1 + 6) = (short)*(undefined4 *)&this->field_0x1c;
@@ -50,7 +52,7 @@ void TArmyTacUnit::TArmyTacUnit_VtblSlot06()
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(*(TArmyTacUnit **)&this->field_0x14);
   iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x48))();
   if (iVar1 < iVar2) {
@@ -76,7 +78,7 @@ void TArmyTacUnit::TArmyTacUnit_VtblSlot07(undefined4 param_1)
   int iVar1;
   int iVar2;
   int iVar3;
-  
+
   iVar3 = 1;
   do {
     iVar1 = (**(code **)(**(int **)&this->field_0x4 + 0x4c))(iVar3);
@@ -109,7 +111,7 @@ void TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit()
   int iVar7;
   undefined *puVar8;
   int local_18 [6];
-  
+
   iVar2 = *(int *)(*(int *)&this->field_0x14 + 0x1c);
   if ((*(short *)(&DAT_006693b8 + *(int *)(iVar2 + 0xc) * 2) != 2) || (*(int *)(iVar2 + 0x20) == 1))
   {
@@ -253,14 +255,14 @@ undefined1 TArmyTacUnit::TArmyTacUnit_VtblSlot09()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00638568;
   *unaff_FS_OFFSET = &uStack_c;
   if (this->field_0xe != '\0') {
     pCStack_1c = (CString *)0x59ea89;
-    CString::CString(&CStack_14);
+    CString::__0CString__QAE_XZ(&CStack_14);
     pCStack_1c = &CStack_14;
     CStack_20.m_pchData = (char *)0x0;
     uStack_24 = 0x273d;
@@ -275,7 +277,7 @@ undefined1 TArmyTacUnit::TArmyTacUnit_VtblSlot09()
     uVar1 = DispatchLocalizedUiMessageWithTemplateA13A0();
     uStack_10 = 0xffffffff;
     uStack_28 = 0x59eae3;
-    CString::~CString(&CStack_20);
+    CString::__1CString__QAE_XZ(&CStack_20);
     *unaff_FS_OFFSET = unaff_EBX;
     return uVar1;
   }
@@ -296,7 +298,7 @@ int TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl()
   int iVar4;
   int iVar5;
   int local_4;
-  
+
   iVar4 = 0;
   iVar5 = 0;
   local_4 = 0;
@@ -359,7 +361,7 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(int param_1)
   undefined uVar2;
   undefined3 extraout_var;
   undefined1 uVar3;
-  
+
   uVar3 = 0;
   *(int *)&this->field_0xc = (int)*(short *)(param_1 + 4);
   *(undefined4 *)&this->field_0x8 = 0xfffffffe;
@@ -400,7 +402,7 @@ void TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree()
   float fVar2;
   float fVar3;
   short sVar4;
-  
+
   sVar4 = *(short *)(*(int *)&this->field_0x38 + 0x38);
   fVar1 = (float)_DAT_00669ec8;
   fVar2 = (float)_DAT_00669ed0;
@@ -440,7 +442,7 @@ int TArmyTacUnit::OrphanTiny_ReturnZero_005a5d60()
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(&DAT_006699e8 + *(int *)&this->field_0xc * 4);
   if ((*(int *)&this->field_0x20 == 1) &&
      (*(short *)(&DAT_00669858 + *(int *)&this->field_0xc * 2) == 2)) {
@@ -470,16 +472,18 @@ float10 TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060962A
-// GHIDRA_NAME TArmyTacUnit::SetScrollRange
-// GHIDRA_PROTO undefined __thiscall SetScrollRange(int param_1, int param_2, int param_3, BOOL param_4)
+// GHIDRA_NAME TArmyTacUnit::?SetScrollRange@CWnd@@QAEXHHHH@Z
+// GHIDRA_PROTO undefined __thiscall ?SetScrollRange@CWnd@@QAEXHHHH@Z(int param_1, int param_2, int param_3, BOOL param_4)
 
-void TArmyTacUnit::SetScrollRange(int param_1, int param_2, int param_3, BOOL param_4)
+void __thiscall
+TArmyTacUnit::_SetScrollRange_CWnd__QAEXHHHH_Z
+          (TArmyTacUnit *this,int param_1,int param_2,int param_3,BOOL param_4)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   HWND hWnd;
-  
+
   uVar1 = (*this->vftable[1].OrphanLeaf_NoCall_Ins02_005a5d80)(param_1);
   if (CONCAT31(extraout_var,uVar1) == 0) {
     hWnd = *(HWND *)&this->field_0x1c;
@@ -488,24 +492,24 @@ void TArmyTacUnit::SetScrollRange(int param_1, int param_2, int param_3, BOOL pa
     param_1 = 2;
     hWnd = *(HWND *)(CONCAT31(extraout_var,uVar1) + 0x1c);
   }
-  ::SetScrollRange(hWnd,param_1,param_2,param_3,param_4);
+  SetScrollRange(hWnd,param_1,param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060968D
-// GHIDRA_NAME TArmyTacUnit::EnableScrollBarCtrl
-// GHIDRA_PROTO undefined __thiscall EnableScrollBarCtrl(int param_1)
+// GHIDRA_NAME TArmyTacUnit::?EnableScrollBarCtrl@CWnd@@QAEXHH@Z
+// GHIDRA_PROTO undefined __thiscall ?EnableScrollBarCtrl@CWnd@@QAEXHH@Z(int param_1)
 
-void TArmyTacUnit::EnableScrollBarCtrl(int param_1)
+void TArmyTacUnit::_EnableScrollBarCtrl_CWnd__QAEXHH_Z(int param_1)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   int wBar;
-  
+
   wBar = param_1;
   if (param_1 == 3) {
-    EnableScrollBarCtrl(this,0);
+    _EnableScrollBarCtrl_CWnd__QAEXHH_Z(this,0);
     wBar = 1;
   }
   uVar1 = (*this->vftable[1].OrphanLeaf_NoCall_Ins02_005a5d80)(wBar);
@@ -513,14 +517,14 @@ void TArmyTacUnit::EnableScrollBarCtrl(int param_1)
     ShowScrollBar(*(HWND *)&this->field_0x1c,wBar,param_1);
   }
   else {
-    FUN_0060753b(param_1);
+    CMcWindow::EnableWindowOrDelegateToOwner(param_1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006097AE
-// GHIDRA_NAME TArmyTacUnit::ScrollWindow
-// GHIDRA_PROTO undefined __thiscall ScrollWindow(int param_1, int param_2, RECT * param_3, RECT * param_4)
+// GHIDRA_NAME TArmyTacUnit::?ScrollWindow@CWnd@@QAEXHHPBUtagRECT@@0@Z
+// GHIDRA_PROTO undefined __thiscall ?ScrollWindow@CWnd@@QAEXHHPBUtagRECT@@0@Z(int param_1, int param_2, RECT * param_3, RECT * param_4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Scrolls client area by delta or repositions child windows when invisible/no clip rects.
 // GHIDRA_COMMENT Also forwards scroll delta to attached helper object (+0x34 -> vfunc +0x60).
@@ -529,13 +533,15 @@ void TArmyTacUnit::EnableScrollBarCtrl(int param_1)
 /* Scrolls client area by delta or repositions child windows when invisible/no clip rects.
    Also forwards scroll delta to attached helper object (+0x34 -> vfunc +0x60). */
 
-void TArmyTacUnit::ScrollWindow(int param_1, int param_2, RECT *param_3, RECT *param_4)
+void __thiscall
+TArmyTacUnit::_ScrollWindow_CWnd__QAEXHHPBUtagRECT__0_Z
+          (TArmyTacUnit *this,int param_1,int param_2,RECT *param_3,RECT *param_4)
 
 {
   BOOL BVar1;
   HWND hWnd;
   undefined1 local_14 [16];
-  
+
   BVar1 = IsWindowVisible(*(HWND *)&this->field_0x1c);
   if (((BVar1 == 0) && (param_3 == (RECT *)0x0)) && (param_4 == (RECT *)0x0)) {
     for (hWnd = GetWindow(*(HWND *)&this->field_0x1c,5); hWnd != (HWND)0x0; hWnd = GetWindow(hWnd,2)
@@ -547,7 +553,7 @@ void TArmyTacUnit::ScrollWindow(int param_1, int param_2, RECT *param_3, RECT *p
     }
   }
   else {
-    ::ScrollWindow(*(HWND *)&this->field_0x1c,param_1,param_2,param_3,param_4);
+    ScrollWindow(*(HWND *)&this->field_0x1c,param_1,param_2,param_3,param_4);
   }
   if ((*(int **)&this->field_0x34 != (int *)0x0) && (param_3 == (RECT *)0x0)) {
     (**(code **)(**(int **)&this->field_0x34 + 0x60))(param_1,param_2);
@@ -556,41 +562,43 @@ void TArmyTacUnit::ScrollWindow(int param_1, int param_2, RECT *param_3, RECT *p
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614F95
-// GHIDRA_NAME TArmyTacUnit::SetScaleToFitSize
-// GHIDRA_PROTO undefined __thiscall SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
+// GHIDRA_NAME TArmyTacUnit::?SetScaleToFitSize@CScrollView@@QAEXUtagSIZE@@@Z
+// GHIDRA_PROTO undefined __thiscall ?SetScaleToFitSize@CScrollView@@QAEXUtagSIZE@@@Z(undefined4 param_1, undefined4 param_2)
 
-void TArmyTacUnit::SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
+void __thiscall
+TArmyTacUnit::_SetScaleToFitSize_CScrollView__QAEXUtagSIZE___Z
+          (TArmyTacUnit *this,undefined4 param_1,undefined4 param_2)
 
 {
   uint uVar1;
   tagRECT local_14;
-  
+
   *(undefined4 *)&this->field_0x40 = 0xffffffff;
   *(undefined4 *)&this->field_0x44 = param_1;
   *(undefined4 *)&this->field_0x48 = param_2;
   if (*(int *)&this->field_0x1c != 0) {
-    uVar1 = GetStyle();
+    uVar1 = _GetStyle_CWnd__QBEKXZ();
     if ((uVar1 & 0x300000) != 0) {
-      SetScrollPos(0,0,1);
-      SetScrollPos(1,0,1);
-      EnableScrollBarCtrl(this,3);
+      _SetScrollPos_CWnd__QAEHHHH_Z(0,0,1);
+      _SetScrollPos_CWnd__QAEHHHH_Z(1,0,1);
+      _EnableScrollBarCtrl_CWnd__QAEXHH_Z(this,3);
     }
   }
   GetClientRect(*(HWND *)&this->field_0x1c,&local_14);
   *(LONG *)&this->field_0x4c = local_14.right - local_14.left;
   *(LONG *)&this->field_0x50 = local_14.bottom - local_14.top;
   if (*(int *)&this->field_0x1c != 0) {
-    UpdateBars(this);
+    _UpdateBars_CScrollView__IAEXXZ(this);
     InvalidateRect(*(HWND *)&this->field_0x1c,(RECT *)0x0,1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615020
-// GHIDRA_NAME TArmyTacUnit::SetScrollSizes
-// GHIDRA_PROTO undefined SetScrollSizes()
+// GHIDRA_NAME TArmyTacUnit::?SetScrollSizes@CScrollView@@QAEXHUtagSIZE@@ABU2@1@Z
+// GHIDRA_PROTO undefined ?SetScrollSizes@CScrollView@@QAEXHUtagSIZE@@ABU2@1@Z()
 
-void TArmyTacUnit::SetScrollSizes(void)
+void TArmyTacUnit::_SetScrollSizes_CScrollView__QAEXHUtagSIZE__ABU2_1_Z(void)
 
 {
   undefined1 *lppt;
@@ -600,16 +608,16 @@ void TArmyTacUnit::SetScrollSizes(void)
   TArmyTacUnit *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -0x10) = *(undefined4 *)&this->field_0x40;
   *(undefined4 *)&this->field_0x40 = *(undefined4 *)(unaff_EBP + 8);
   *(undefined4 *)&this->field_0x44 = *(undefined4 *)(unaff_EBP + 0xc);
   *(undefined4 *)&this->field_0x48 = *(undefined4 *)(unaff_EBP + 0x10);
-  CWindowDC(0);
+  __0CWindowDC__QAE_PAVCWnd___Z(0);
   uVar1 = *(undefined4 *)&this->field_0x40;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  SetMapMode(uVar1);
+  _SetMapMode_CDC__UAEHH_Z(uVar1);
   pHVar2 = *(HDC *)(unaff_EBP + -0x1c);
   *(undefined4 *)&this->field_0x4c = *(undefined4 *)&this->field_0x44;
   *(undefined4 *)&this->field_0x50 = *(undefined4 *)&this->field_0x48;
@@ -635,7 +643,7 @@ void TArmyTacUnit::SetScrollSizes(void)
     *(int *)&this[1].field_0x8 = -*(int *)&this[1].field_0x8;
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  DestroyCWindowDCAndReleaseHandle();
+  __1CWindowDC__UAE_XZ();
   if (*(int *)lppt == 0) {
     *(int *)lppt = *(int *)&this->field_0x4c / 10;
   }
@@ -649,7 +657,7 @@ void TArmyTacUnit::SetScrollSizes(void)
     *(int *)&this[1].field_0x8 = (int)this[1].vftable / 10;
   }
   if (*(int *)&this->field_0x1c != 0) {
-    UpdateBars(this);
+    _UpdateBars_CScrollView__IAEXXZ(this);
     if (*(int *)(unaff_EBP + -0x10) != *(int *)&this->field_0x40) {
       InvalidateRect(*(HWND *)&this->field_0x1c,(RECT *)0x0,1);
     }
@@ -659,10 +667,10 @@ void TArmyTacUnit::SetScrollSizes(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006151D6
-// GHIDRA_NAME TArmyTacUnit::ScrollToPosition
-// GHIDRA_PROTO undefined ScrollToPosition()
+// GHIDRA_NAME TArmyTacUnit::?ScrollToPosition@CScrollView@@QAEXUtagPOINT@@@Z
+// GHIDRA_PROTO undefined ?ScrollToPosition@CScrollView@@QAEXUtagPOINT@@@Z()
 
-void TArmyTacUnit::ScrollToPosition(void)
+void TArmyTacUnit::_ScrollToPosition_CScrollView__QAEXUtagPOINT___Z(void)
 
 {
   undefined4 uVar1;
@@ -671,19 +679,19 @@ void TArmyTacUnit::ScrollToPosition(void)
   TArmyTacUnit *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   if (*(int *)&this->field_0x40 != 1) {
-    CWindowDC(0);
+    __0CWindowDC__QAE_PAVCWnd___Z(0);
     uVar1 = *(undefined4 *)&this->field_0x40;
     *(undefined4 *)(unaff_EBP + -4) = 0;
-    SetMapMode(uVar1);
+    _SetMapMode_CDC__UAEHH_Z(uVar1);
     LPtoDP(*(HDC *)(unaff_EBP + -0x18),(LPPOINT)(unaff_EBP + 8),1);
     *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    DestroyCWindowDCAndReleaseHandle();
+    __1CWindowDC__UAE_XZ();
   }
-  iVar2 = GetScrollLimit(0);
-  iVar3 = GetScrollLimit(1);
+  iVar2 = _GetScrollLimit_CWnd__QAEHH_Z(0);
+  iVar3 = _GetScrollLimit_CWnd__QAEHH_Z(1);
   if (*(int *)(unaff_EBP + 8) < 0) {
     *(undefined4 *)(unaff_EBP + 8) = 0;
   }
@@ -696,34 +704,38 @@ void TArmyTacUnit::ScrollToPosition(void)
   else if (iVar3 < *(int *)(unaff_EBP + 0xc)) {
     *(int *)(unaff_EBP + 0xc) = iVar3;
   }
-  ScrollToDevicePosition(this,*(int *)(unaff_EBP + 8),*(int *)(unaff_EBP + 0xc));
+  _ScrollToDevicePosition_CScrollView__IAEXUtagPOINT___Z
+            (this,*(int *)(unaff_EBP + 8),*(int *)(unaff_EBP + 0xc));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615329
-// GHIDRA_NAME TArmyTacUnit::ScrollToDevicePosition
-// GHIDRA_PROTO undefined __thiscall ScrollToDevicePosition(int param_1, int param_2)
+// GHIDRA_NAME TArmyTacUnit::?ScrollToDevicePosition@CScrollView@@IAEXUtagPOINT@@@Z
+// GHIDRA_PROTO undefined __thiscall ?ScrollToDevicePosition@CScrollView@@IAEXUtagPOINT@@@Z(int param_1, int param_2)
 
-void TArmyTacUnit::ScrollToDevicePosition(int param_1, int param_2)
+void __thiscall
+TArmyTacUnit::_ScrollToDevicePosition_CScrollView__IAEXUtagPOINT___Z
+          (TArmyTacUnit *this,int param_1,int param_2)
 
 {
   int iVar1;
   int iVar2;
-  
-  iVar1 = FUN_00609602(0);
-  SetScrollPos(0,param_1,1);
-  iVar2 = FUN_00609602(1);
-  SetScrollPos(1,param_2,1);
-  ScrollWindow(this,iVar1 - param_1,iVar2 - param_2,(RECT *)0x0,(RECT *)0x0);
+
+  iVar1 = _GetScrollPos_CWnd__QBEHH_Z(0);
+  _SetScrollPos_CWnd__QAEHHHH_Z(0,param_1,1);
+  iVar2 = _GetScrollPos_CWnd__QBEHH_Z(1);
+  _SetScrollPos_CWnd__QAEHHHH_Z(1,param_2,1);
+  _ScrollWindow_CWnd__QAEXHHPBUtagRECT__0_Z
+            (this,iVar1 - param_1,iVar2 - param_2,(RECT *)0x0,(RECT *)0x0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006155ED
-// GHIDRA_NAME TArmyTacUnit::GetScrollBarSizes
-// GHIDRA_PROTO undefined __thiscall GetScrollBarSizes(int * param_1)
+// GHIDRA_NAME TArmyTacUnit::?GetScrollBarSizes@CScrollView@@IAEXAAVCSize@@@Z
+// GHIDRA_PROTO undefined __thiscall ?GetScrollBarSizes@CScrollView@@IAEXAAVCSize@@@Z(int * param_1)
 
-void TArmyTacUnit::GetScrollBarSizes(int *param_1)
+void TArmyTacUnit::_GetScrollBarSizes_CScrollView__IAEXAAVCSize___Z(int *param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -731,10 +743,10 @@ void TArmyTacUnit::GetScrollBarSizes(int *param_1)
   uint uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  
+
   param_1[1] = 0;
   *param_1 = 0;
-  uVar3 = GetStyle();
+  uVar3 = _GetStyle_CWnd__QBEKXZ();
   p_Var1 = this->vftable[1].OrphanLeaf_NoCall_Ins02_005a5d80;
   uVar2 = (*p_Var1)(1);
   if ((CONCAT31(extraout_var,uVar2) == 0) && (*param_1 = DAT_006a7d00, (uVar3 & 0x800000) != 0)) {
@@ -749,21 +761,23 @@ void TArmyTacUnit::GetScrollBarSizes(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615647
-// GHIDRA_NAME TArmyTacUnit::GetTrueClientSize
-// GHIDRA_PROTO undefined __thiscall GetTrueClientSize(int * param_1, int * param_2)
+// GHIDRA_NAME TArmyTacUnit::?GetTrueClientSize@CScrollView@@IAEHAAVCSize@@0@Z
+// GHIDRA_PROTO undefined __thiscall ?GetTrueClientSize@CScrollView@@IAEHAAVCSize@@0@Z(int * param_1, int * param_2)
 
-undefined4 TArmyTacUnit::GetTrueClientSize(int *param_1, int *param_2)
+undefined4 __thiscall
+TArmyTacUnit::_GetTrueClientSize_CScrollView__IAEHAAVCSize__0_Z
+          (TArmyTacUnit *this,int *param_1,int *param_2)
 
 {
   uint uVar1;
   undefined4 uVar2;
   tagRECT local_14;
-  
+
   GetClientRect(*(HWND *)&this->field_0x1c,&local_14);
   *param_1 = local_14.right;
   param_1[1] = local_14.bottom;
-  uVar1 = GetStyle();
-  GetScrollBarSizes(this,param_2);
+  uVar1 = _GetStyle_CWnd__QBEKXZ();
+  _GetScrollBarSizes_CScrollView__IAEXAAVCSize___Z(this,param_2);
   if ((*param_2 != 0) && ((uVar1 & 0x200000) != 0)) {
     *param_1 = *param_1 + *param_2;
   }
@@ -780,11 +794,11 @@ undefined4 TArmyTacUnit::GetTrueClientSize(int *param_1, int *param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006156BC
-// GHIDRA_NAME TArmyTacUnit::GetScrollBarState
-// GHIDRA_PROTO undefined __thiscall GetScrollBarState(int param_1, int param_2, uint * param_3, int * param_4, int * param_5, int param_6)
+// GHIDRA_NAME TArmyTacUnit::?GetScrollBarState@CScrollView@@IAEXVCSize@@AAV2@1AAVCPoint@@H@Z
+// GHIDRA_PROTO undefined __thiscall ?GetScrollBarState@CScrollView@@IAEXVCSize@@AAV2@1AAVCPoint@@H@Z(int param_1, int param_2, uint * param_3, int * param_4, int * param_5, int param_6)
 
 void __thiscall
-TArmyTacUnit::GetScrollBarState
+TArmyTacUnit::_GetScrollBarState_CScrollView__IAEXVCSize__AAV2_1AAVCPoint__H_Z
           (TArmyTacUnit *this,int param_1,int param_2,uint *param_3,int *param_4,int *param_5,
           int param_6)
 
@@ -796,15 +810,16 @@ TArmyTacUnit::GetScrollBarState
   uint uVar5;
   TArmyTacUnit *local_c;
   TArmyTacUnit *local_8;
-  
+
   local_c = this;
   local_8 = this;
-  GetScrollBarSizes(this,(int *)&local_c);
+  _GetScrollBarSizes_CScrollView__IAEXAAVCSize___Z(this,(int *)&local_c);
   piVar2 = param_4;
   iVar1 = *(int *)&this->field_0x50;
   *param_4 = *(int *)&this->field_0x4c - param_1;
   param_4[1] = iVar1 - param_2;
-  piVar3 = (int *)TControl::GetDeviceScrollPosition((TControl *)this,&param_1);
+  piVar3 = (int *)TControl::_GetDeviceScrollPosition_CScrollView__QBE_AVCPoint__XZ
+                            ((TControl *)this,&param_1);
   *param_5 = *piVar3;
   param_5[1] = piVar3[1];
   uVar4 = (uint)(0 < *piVar2);
@@ -839,10 +854,10 @@ TArmyTacUnit::GetScrollBarState
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615778
-// GHIDRA_NAME TArmyTacUnit::UpdateBars
-// GHIDRA_PROTO undefined __thiscall UpdateBars(void)
+// GHIDRA_NAME TArmyTacUnit::?UpdateBars@CScrollView@@IAEXXZ
+// GHIDRA_PROTO undefined __thiscall ?UpdateBars@CScrollView@@IAEXXZ(void)
 
-void TArmyTacUnit::UpdateBars()
+void TArmyTacUnit::_UpdateBars_CScrollView__IAEXXZ()
 
 {
   HWND pHVar1;
@@ -869,7 +884,7 @@ void TArmyTacUnit::UpdateBars()
   int local_10;
   int local_c;
   int local_8;
-  
+
   if (*(int *)&this[1].field_0x10 != 0) {
     return;
   }
@@ -877,52 +892,53 @@ void TArmyTacUnit::UpdateBars()
   *(undefined4 *)&this[1].field_0x10 = 1;
   local_8 = 1;
   pHVar1 = GetParent(pHVar1);
-  iVar2 = FromHandle(pHVar1);
+  iVar2 = _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar1);
   if ((iVar2 != 0) &&
      (LVar3 = SendMessageA(*(HWND *)(iVar2 + 0x1c),0x368,0,(LPARAM)&local_40), LVar3 != 0)) {
     local_8 = 0;
   }
   if (local_8 == 0) {
-    GetScrollBarSizes(this,&local_20);
+    _GetScrollBarSizes_CScrollView__IAEXAAVCSize___Z(this,&local_20);
     local_10 = local_38 - local_40;
     local_c = local_34 - local_3c;
   }
   else {
-    iVar2 = GetTrueClientSize(this,&local_10,&local_20);
+    iVar2 = _GetTrueClientSize_CScrollView__IAEHAAVCSize__0_Z(this,&local_10,&local_20);
     if (iVar2 == 0) {
       GetClientRect(*(HWND *)&this->field_0x1c,&local_50);
       if ((0 < local_50.right) && (0 < local_50.bottom)) {
-        EnableScrollBarCtrl(this,3);
+        _EnableScrollBarCtrl_CWnd__QAEXHH_Z(this,3);
       }
       goto LAB_006158e6;
     }
   }
-  GetScrollBarState(this,local_10,local_c,&local_18,&local_30,&local_28,local_8);
+  _GetScrollBarState_CScrollView__IAEXVCSize__AAV2_1AAVCPoint__H_Z
+            (this,local_10,local_c,&local_18,&local_30,&local_28,local_8);
   if (local_18 != 0) {
     local_c = local_c - local_1c;
   }
   if (local_14 != 0) {
     local_10 = local_10 - local_20;
   }
-  ScrollToDevicePosition(this,local_28,local_24);
+  _ScrollToDevicePosition_CScrollView__IAEXUtagPOINT___Z(this,local_28,local_24);
   local_68 = 3;
   local_64 = 0;
-  EnableScrollBarCtrl(this,0);
+  _EnableScrollBarCtrl_CWnd__QAEXHH_Z(this,0);
   if (local_18 != 0) {
     local_5c = local_10;
     local_60 = *(int *)&this->field_0x4c + -1;
-    iVar2 = SetScrollInfo(0,local_6c,1);
+    iVar2 = _SetScrollInfo_CWnd__QAEHHPAUtagSCROLLINFO__H_Z(0,local_6c,1);
     if (iVar2 == 0) {
-      SetScrollRange(this,0,0,local_30,1);
+      _SetScrollRange_CWnd__QAEXHHHH_Z(this,0,0,local_30,1);
     }
   }
-  EnableScrollBarCtrl(this,1);
+  _EnableScrollBarCtrl_CWnd__QAEXHH_Z(this,1);
   if (local_14 != 0) {
     local_5c = local_c;
     local_60 = *(int *)&this->field_0x50 + -1;
-    iVar2 = SetScrollInfo(1,local_6c,1);
+    iVar2 = _SetScrollInfo_CWnd__QAEHHPAUtagSCROLLINFO__H_Z(1,local_6c,1);
     if (iVar2 == 0) {
-      SetScrollRange(this,1,0,local_2c,1);
+      _SetScrollRange_CWnd__QAEXHHHH_Z(this,1,0,local_2c,1);
     }
   }
 LAB_006158e6:

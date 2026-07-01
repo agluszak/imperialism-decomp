@@ -12,7 +12,7 @@ TShipView * TShipView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TView * TShipView::CreateTShipViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063599a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)__2_YAPAXI_Z(0x68);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -80,35 +80,35 @@ void TShipView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006359eb;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   iVar3 = 0;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
-  CString::CString(&local_5c);
+  CString::__0CString__QAE_XZ(&local_5c);
   local_4 = 0;
-  CString::CString(&local_60);
+  CString::__0CString__QAE_XZ(&local_60);
   local_4._0_1_ = 1;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(2,0xc,0x2b6a);
-  CString::AssignFromPtr(&local_60,(CString *)(*(int *)&this->field_0x60 + 0x18));
-  CallCallbackRepeatedly(local_2c,4,8,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_60,(CString *)(*(int *)&this->field_0x60 + 0x18));
+  ___L_YGXPAXIHP6EX0_Z1_Z(local_2c,4,8,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
   local_4._0_1_ = 2;
   do {
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2760,iVar3);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 8);
-  CString::AssignFromPtr
+  CString::__4CString__QAEABV0_ABV0__Z
             (&local_5c,
              local_2c +
              (int)(&TPortZone::vftable.ExecuteNationPendingActionStateMachine)
                   [*(short *)(*(int *)&this->field_0x60 + 4)]);
-  AssignSharedStringConcatCStrAndRef(&CStack_58,g_Build_Map_Order_LookupTable_00695794);
+  __H_YG_AVCString__PBDABV0__Z(&CStack_58,g_Build_Map_Order_LookupTable_00695794);
   local_4._0_1_ = 3;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   local_4._0_1_ = 2;
-  CString::~CString(&CStack_58);
+  CString::__1CString__QAE_XZ(&CStack_58);
   SetQuickDrawTextOriginWithContextOffset(0x50);
   CStack_54.m_pchData = &stack0xffffff90;
   SetQuickDrawFillColor();
@@ -117,15 +117,15 @@ void TShipView::OrphanTiny_ReturnZero_0048a730()
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   if (*(int *)(*(int *)&this->field_0x60 + 0x20) != 0) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,9);
-    src_ref = (CString *)AssignSharedStringConcatCStrAndRef(&CStack_54,s_Adm__0069578c);
+    src_ref = (CString *)__H_YG_AVCString__PBDABV0__Z(&CStack_54,s_Adm__0069578c);
     local_4._0_1_ = 4;
-    CString::StringSharedRef_AssignFromPtr(&CStack_58,src_ref);
+    CString::__0CString__QAE_ABV0__Z(&CStack_58,src_ref);
     local_4._0_1_ = 5;
-    CString::AssignFromPtr(&local_60,&CStack_58);
+    CString::__4CString__QAEABV0_ABV0__Z(&local_60,&CStack_58);
     local_4._0_1_ = 4;
-    CString::~CString(&CStack_58);
+    CString::__1CString__QAE_XZ(&CStack_58);
     local_4._0_1_ = 2;
-    CString::~CString(&CStack_54);
+    CString::__1CString__QAE_XZ(&CStack_54);
     SetQuickDrawTextOriginWithContextOffset(0x50);
     THQButton::DrawTextWithCachedQuickDrawStyleState();
   }
@@ -161,11 +161,11 @@ void TShipView::OrphanTiny_ReturnZero_0048a730()
   DrawCenteredGuideLineOnMapDc(0xa2);
   DrawCenteredGuideLineOnMapDc(0xa2);
   local_4._0_1_ = 1;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(local_2c,4,8);
+  TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z(local_2c,4,8);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_60);
+  CString::__1CString__QAE_XZ(&local_60);
   local_4 = 0xffffffff;
-  CString::~CString(&local_5c);
+  CString::__1CString__QAE_XZ(&local_5c);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -184,7 +184,7 @@ void TShipView::OrphanRetStub_0059add0(undefined4 param_1, int param_2, undefine
   undefined2 extraout_var;
   int iVar5;
   short sVar6;
-  
+
   if (*(int *)(param_2 + 0x1c) == 0x63686563) {
     pvVar3 = ObjectPool::FindMissionOrderNodeById
                        (*(ObjectPool **)(*(int *)&this->field_0x64 + 0x10),*(int *)&this->field_0x60

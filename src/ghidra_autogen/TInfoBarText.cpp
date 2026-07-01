@@ -40,7 +40,7 @@ TInfoBarText * TInfoBarText::_scalar_deleting_destructor_(byte param_1)
 {
   TStaticText::~TStaticText((TStaticText *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -57,12 +57,12 @@ TStaticText * TInfoBarText::CreateTInfoBarTextInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638ffa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0xb4);
+  this = (TStaticText *)__2_YAPAXI_Z(0xb4);
   local_4 = 0;
   if (this != (TStaticText *)0x0) {
     TStaticText::TStaticText(this);
@@ -108,7 +108,7 @@ void TInfoBarText::ConstructTInfoBarTextBaseState(RECT *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639018;
   *unaff_FS_OFFSET = &uStack_c;
@@ -124,7 +124,7 @@ void TInfoBarText::ConstructTInfoBarTextBaseState(RECT *param_1)
     (*pTVar1->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(1);
   }
   uStack_4 = 0xffffffff;
-  CString::~CString((CString *)&param_1);
+  CString::__1CString__QAE_XZ((CString *)&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -142,7 +142,7 @@ void TInfoBarText::DestructTInfoBarTextAndMaybeFree()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   CString CStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639038;
   *unaff_FS_OFFSET = &uStack_c;
@@ -155,7 +155,7 @@ void TInfoBarText::DestructTInfoBarTextAndMaybeFree()
   (*pTVar1->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)(&stack0x00000004);
   (*pTVar1->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(1);
   uStack_c = 0xffffffff;
-  CString::~CString(&CStack_4);
+  CString::__1CString__QAE_XZ(&CStack_4);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }

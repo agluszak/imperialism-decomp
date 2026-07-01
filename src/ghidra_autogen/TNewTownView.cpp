@@ -12,7 +12,7 @@ TNewTownView * TNewTownView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -56,13 +56,13 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631162;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   iVar6 = 0;
-  CString::CString((CString *)&local_3c);
+  CString::__0CString__QAE_XZ((CString *)&local_3c);
   local_4 = 0;
   *(int **)&this->field_0x60 = param_1;
   (**(code **)(*param_1 + 0x28))();
@@ -117,7 +117,7 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   do {
     psVar9 = (short *)(local_3c.right + 0x1e + (short)iVar3 * 2);
     if (*(short *)(local_3c.right + 0x1e + (short)iVar3 * 2) != 0) {
-      pTVar5 = (TIconBar *)AllocateWithFallbackHandler();
+      pTVar5 = (TIconBar *)__2_YAPAXI_Z();
       local_3c.left._0_1_ = 1;
       if (pTVar5 == (TIconBar *)0x0) {
         pTVar5 = (TIconBar *)0x0;
@@ -149,7 +149,7 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   (**(code **)(iVar3 + 0x7c))();
   (**(code **)(iVar3 + 0x1dc))(&stack0xffffff88);
   (**(code **)(iVar3 + 0x1d8))(0,*(undefined4 *)(puVar7 + -8),1);
-  CString::~CString((CString *)&stack0xffffff78);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff78);
   *unaff_FS_OFFSET = (int)piVar10;
   return;
 }
@@ -170,14 +170,14 @@ void TNewTownView::GetTEventHandlerClassNamePointer()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631188;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_1c.m_pchData = (char *)0x4bdc33;
   local_10.m_pchData = (char *)this;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   CStack_1c.m_pchData = (char *)0x6e616d65;
   local_4 = 0;
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
@@ -190,7 +190,7 @@ void TNewTownView::GetTEventHandlerClassNamePointer()
   (**(code **)(**(int **)&this->field_0x60 + 0x38))(unaff_EDI);
   TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
   local_10.m_pchData = (char *)0xffffffff;
-  CString::~CString(&CStack_1c);
+  CString::__1CString__QAE_XZ(&CStack_1c);
   *unaff_FS_OFFSET = unaff_EDI;
   return;
 }

@@ -19,12 +19,12 @@ _CreateTWarningViewInstance__YAPAUWarningViewState___Z_imperialismsrcgameTWarnin
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006380fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -70,7 +70,7 @@ TWarningView * TWarningView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -86,7 +86,7 @@ TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
 {
   TSimMgrVtbl *pTVar1;
   undefined4 uVar2;
-  
+
   if (param_1 == 0x22) {
     switch(*(undefined4 *)(param_2 + 0x1c)) {
     case 0x70696331:
@@ -145,7 +145,7 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00638140;
   iStack_c = *unaff_FS_OFFSET;
@@ -165,11 +165,11 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(iVar2 + 0x1b4))();
-  CString::CString((CString *)&stack0xffffffd4,s_Ministers_request_orders__006993a4);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffd4,s_Ministers_request_orders__006993a4);
   uStack_48 = 0x592b34;
   (**(code **)(iVar2 + 0x1c8))();
   uStack_48 = 0x592b45;
-  CString::~CString(&CStack_34);
+  CString::__1CString__QAE_XZ(&CStack_34);
   uStack_48 = 0;
   uStack_4c = 1;
   CStack_50.m_pchData = "j";
@@ -189,12 +189,12 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
   }
   puVar6 = &stack0xffffffc0;
   (**(code **)(iVar2 + 0x1b4))();
-  CString::CString(&CStack_50,s_End_Turn_Now_00699394);
+  CString::__0CString__QAE_PBD_Z(&CStack_50,s_End_Turn_Now_00699394);
   CStack_34.m_pchData = (char *)0x1;
   uStack_6c = 0x592bcc;
   (**(code **)(iVar2 + 0x1c8))();
   uStack_6c = 0x592bdd;
-  CString::~CString(&CStack_58);
+  CString::__1CString__QAE_XZ(&CStack_58);
   uStack_6c = 0;
   uStack_70 = 1;
   (**(code **)(iVar2 + 0xa4))();
@@ -218,10 +218,10 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1aee);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
-    CString::CString((CString *)&stack0xffffff84,s_Diplomacy_00699388);
+    CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff84,s_Diplomacy_00699388);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
     uStack_6c = 0xffffffff;
-    CString::~CString((CString *)&stack0xffffff7c);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar5 = (int *)(*pcVar1)(0x70696331);
     iVar2 = *piVar5;
@@ -244,10 +244,10 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1afc);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
-    CString::CString((CString *)&stack0xffffff84,s_Transport_00694b14);
+    CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff84,s_Transport_00694b14);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
     uStack_6c = 0xffffffff;
-    CString::~CString((CString *)&stack0xffffff7c);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar5 = (int *)(*pcVar1)(0x70696334);
     iVar2 = *piVar5;
@@ -270,10 +270,10 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b0a);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
-    CString::CString((CString *)&stack0xffffff84,s_Trade_00699380);
+    CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff84,s_Trade_00699380);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
     uStack_6c = 0xffffffff;
-    CString::~CString((CString *)&stack0xffffff7c);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar5 = (int *)(*pcVar1)(0x70696332);
     iVar2 = *piVar5;
@@ -296,10 +296,10 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b18);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
-    CString::CString((CString *)&stack0xffffff84,s_Industry_00699374);
+    CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff84,s_Industry_00699374);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
     uStack_6c = 0xffffffff;
-    CString::~CString((CString *)&stack0xffffff7c);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar5 = (int *)(*pcVar1)(0x70696333);
     iVar2 = *piVar5;

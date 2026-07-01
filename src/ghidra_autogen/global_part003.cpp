@@ -20,7 +20,7 @@ void __thiscall BuildTacticalDistanceFieldForSide(int param_1,char param_2)
   int iStack_24;
   int iStack_20;
   int aiStack_18 [6];
-  
+
   iVar4 = 0;
   if (0 < *(int *)(param_1 + 0x3c)) {
     do {
@@ -93,7 +93,7 @@ uint __fastcall GetMinActionThresholdFromEntryChildren(int param_1)
 {
   int *piVar1;
   uint uVar2;
-  
+
   uVar2 = 10000;
   for (piVar1 = *(int **)(param_1 + 0x10); piVar1 != (int *)0x0; piVar1 = (int *)piVar1[1]) {
     if (((char)piVar1[3] != '\0') &&
@@ -129,14 +129,14 @@ InitializeDialogTemplateD0WithTextState(TControl *param_1,undefined4 param_2)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062fbb8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xd0,param_2);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z(param_1,0xd0,param_2);
   uStack_4 = 0;
-  ConstructObjectVtable00670b4cBase();
+  __0CWnd__QAE_XZ();
   *(undefined ***)&param_1->field_0x5c = &PTR_LAB_00671d1c;
   *(undefined4 *)&param_1[1].field_0x14 = 0;
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0064bac0;
@@ -162,7 +162,7 @@ short __cdecl GetHexDirectionBetweenTiles(short nFromTileIndex,short nToTileInde
   short sVar3;
   short sVar4;
   ushort uVar5;
-  
+
   uVar5 = (nFromTileIndex / 0x6c + (nFromTileIndex >> 0xf)) -
           (short)((longlong)(int)nFromTileIndex * 0x4bda12f7 >> 0x3f);
   uVar1 = (short)uVar5 >> 0xf;
@@ -232,14 +232,14 @@ undefined4 ReadScenarioIndexFromSaveHeader(undefined4 param_1)
   undefined4 uVar3;
   undefined1 auStack_40 [8];
   undefined4 uStack_38;
-  
-  uVar1 = OpenBufferedStreamWithMode40(param_1,&DAT_00698720);
-  iVar2 = ReadBufferedStreamLocked(auStack_40,1,0xc,uVar1);
+
+  uVar1 = __wfopen(param_1,&DAT_00698720);
+  iVar2 = _fread(auStack_40,1,0xc,uVar1);
   uVar3 = 0xfffffffd;
   if (iVar2 == 0xc) {
     uVar3 = uStack_38;
   }
-  CloseBufferedStreamAndReleaseResources(uVar1);
+  _fclose(uVar1);
   return uVar3;
 }
 
@@ -254,7 +254,7 @@ TToolBarCluster::QueueDepotConstructionOrder
 
 {
   int iVar1;
-  
+
   iVar1 = QueueDepotConstructionOrder(this,pMapContext,nTileIndex,nNationId,param_4);
   return iVar1;
 }
@@ -287,7 +287,7 @@ TDiplomacyMapView::BuildTurnEventFactoryPacket
   *(undefined2 *)&this->field_0x60 = param_3;
   *(undefined4 *)&this->field_0x64 = *param_4;
   *(undefined4 *)&this->field_0x68 = param_4[1];
-  CString::AssignFromPtr((CString *)&this->field_0x6c,param_5);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x6c,param_5);
   *(undefined2 *)&this->field_0x70 = param_6;
   return;
 }
@@ -313,7 +313,7 @@ void SetQuickDrawTextOriginWithContextOffset(short param_1,short param_2)
 {
   int iVar1;
   undefined1 auStack_8 [8];
-  
+
   iVar1 = NoOpRuntimeCallback_00489a70();
   if (iVar1 != 0) {
     DAT_006a1d00 = (int)param_1;
@@ -324,7 +324,7 @@ void SetQuickDrawTextOriginWithContextOffset(short param_1,short param_2)
     else {
       DAT_006a1d04 = (int)param_2;
     }
-    FUN_006130a0(auStack_8,DAT_006a1d00,DAT_006a1d04);
+    _OffsetViewportOrg_CDC__UAE_AVCPoint__HH_Z_006130a0(auStack_8,DAT_006a1d00,DAT_006a1d04);
   }
   return;
 }
@@ -341,7 +341,7 @@ void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   TMapDialog *pTVar3;
   undefined3 extraout_var;
   ApplicationUiRootController *pAVar4;
-  
+
   iVar1 = this->field44;
   while (iVar1 != 0) {
     (**(code **)(**(int **)(*(int *)(iVar1 + 4) + 8) + 0x1c))();
@@ -401,7 +401,7 @@ void __thiscall AddJoinableGameOptionEntry(int *param_1,undefined4 param_2)
 {
   int *piVar1;
   undefined4 unaff_retaddr;
-  
+
   piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x67616d65);
   (**(code **)(*piVar1 + 0xc))();
   piVar1 = (int *)CreateSelectableTextOptionChildEntry
@@ -438,7 +438,7 @@ void TSimMgr::ApplyMapOrderTypeExecutionEffects(void *pMapOrderEntry)
   int iVar1;
   int unaff_EDI;
   int *piVar2;
-  
+
   if (this->field_0x26 == '\0') {
     iVar1 = *(int *)&this->field_0x8;
     if (iVar1 != 1) {
@@ -501,7 +501,7 @@ int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes()
   undefined3 extraout_var_00;
   int iVar3;
   int iVar4;
-  
+
   iVar3 = 0;
   iVar4 = 1;
   uVar1 = (*this->ownedRegionList->vftable[5].GetTEventHandlerClassNamePointer)();
@@ -540,7 +540,7 @@ void TacticalBattleView::HandleTacticalBattleCommandTag(int commandTag)
   int *piVar1;
   char cVar2;
   undefined4 uVar3;
-  
+
   if (*(char *)((int)*(int **)(this + *(int *)(this + 0xc) * 4 + 0x14) + 0xd) != '\0') {
     if (commandTag < 0x646f6e66) {
       if (commandTag == 0x646f6e65) {
@@ -621,9 +621,11 @@ void * __cdecl FindPortZoneByTile(short nTileIndex)
 {
   TZone *this;
   int iVar1;
-  
+
   this = g_pMapActionContextListHead;
-  while ((this != (TZone *)0x0 && (iVar1 = CObject::IsKindOf((CObject *)this), iVar1 == 0))) {
+  while ((this != (TZone *)0x0 &&
+         (iVar1 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)this), iVar1 == 0)
+         )) {
     this = *(TZone **)&this->field_0x18;
   }
   while( true ) {
@@ -638,7 +640,9 @@ void * __cdecl FindPortZoneByTile(short nTileIndex)
     }
     if (*(short *)&this[1].vftable == nTileIndex) break;
     this = *(TZone **)&this->field_0x18;
-    while ((this != (TZone *)0x0 && (iVar1 = CObject::IsKindOf((CObject *)this), iVar1 == 0))) {
+    while ((this != (TZone *)0x0 &&
+           (iVar1 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)this),
+           iVar1 == 0))) {
       this = *(TZone **)&this->field_0x18;
     }
   }
@@ -655,7 +659,7 @@ void ApplyUiResourceColorTripletFromContext
 {
   code *pcVar1;
   int *piVar2;
-  
+
   pcVar1 = *(code **)(*g_pUiResourceContext + 0x1b8);
   piVar2 = (int *)(*pcVar1)();
   (**(code **)(*piVar2 + 0x30))(param_1);
@@ -672,7 +676,7 @@ void __fastcall AdvanceSpiralSearchStateAndStepHexCoordinates(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(param_1 + 0x10) + 1;
   *(int *)(param_1 + 0x10) = iVar1;
   if (*(int *)(param_1 + 8) <= iVar1) {
@@ -713,7 +717,7 @@ int SetGlobalUiInvalidationFlagAndReturnPrevious(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = g_McAppUiActiveFlag_006950AC;
   g_McAppUiActiveFlag_006950AC = param_1;
   return iVar1;
@@ -744,7 +748,7 @@ void BuildSavePathStringForMode(CString *param_1,CString param_2,CString param_3
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int iStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636008;
@@ -754,28 +758,28 @@ void BuildSavePathStringForMode(CString *param_1,CString param_2,CString param_3
      (text.m_pchData = PTR_DAT_0065ddd4, *(int *)&g_pLocalizationTable->field_0x44 == 0)) {
     text.m_pchData = PTR_DAT_0065ddd0;
   }
-  CString::CString(&param_3);
+  CString::__0CString__QAE_XZ(&param_3);
   iStack_4 = 0;
   if (param_2.m_pchData == (char *)0xa1) {
-    CString::CString(&param_2,&DAT_0069872c);
+    CString::__0CString__QAE_PBD_Z(&param_2,&DAT_0069872c);
     iStack_4._0_1_ = 1;
-    CString::AssignFromPtr(&param_3,&param_2);
+    CString::__4CString__QAEABV0_ABV0__Z(&param_3,&param_2);
     iStack_4 = (uint)iStack_4._1_3_ << 8;
-    CString::~CString(&param_2);
+    CString::__1CString__QAE_XZ(&param_2);
   }
   else {
-    FormatStringWithVarArgsToSharedRef(&param_3,&g_szDecimalFormat,param_2.m_pchData);
+    _Format_CString__QAAXPBDZZ(&param_3,&g_szDecimalFormat,param_2.m_pchData);
   }
-  CString::CString(&param_2,s_Save__00698724);
+  CString::__0CString__QAE_PBD_Z(&param_2,s_Save__00698724);
   iStack_4._0_1_ = 2;
-  CString::AssignFromPtr(param_1,&param_2);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&param_2);
   iStack_4 = (uint)iStack_4._1_3_ << 8;
-  CString::~CString(&param_2);
-  CString::AssignFromCStr(param_1,text.m_pchData);
-  AssignStringSharedFromRef(&param_3);
-  CString::AssignFromCStr(param_1,PTR_DAT_0065ddd8);
+  CString::__1CString__QAE_XZ(&param_2);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,text.m_pchData);
+  __YCString__QAEABV0_ABV0__Z(&param_3);
+  CString::__YCString__QAEABV0_PBD_Z(param_1,PTR_DAT_0065ddd8);
   iStack_4 = 0xffffffff;
-  CString::~CString(&param_3);
+  CString::__1CString__QAE_XZ(&param_3);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -793,7 +797,7 @@ void __fastcall SelectAndScheduleRandomAudioCue(int param_1)
   undefined4 uVar4;
   short sVar5;
   int iVar6;
-  
+
   if ((*(short *)&g_pLocalizationTable->field_0x4e != 0) &&
      (cVar2 = IsTurnCooldownCounterActiveOrResetFlag(), cVar2 == '\0')) {
     iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x28))();
@@ -814,7 +818,7 @@ void __fastcall SelectAndScheduleRandomAudioCue(int param_1)
       *(undefined2 *)(param_1 + 0x74) = 0;
     }
     iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x28))();
-    iVar6 = GenerateThreadLocalRandom15();
+    iVar6 = _rand();
     iVar6 = iVar6 % iVar3 + 1;
     iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x24))(iVar6);
     (**(code **)(**(int **)(param_1 + 0x70) + 0x2c))(iVar6);
@@ -862,7 +866,7 @@ TEditText * TEditText::ConstructUiNumericTextEntryBase()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062f163;
   uStack_c = *unaff_FS_OFFSET;
@@ -884,13 +888,13 @@ TEditText * TEditText::ConstructUiNumericTextEntryBase()
   *(undefined2 *)&this->field_0x90 = 0;
   this->vftable = (TEditTextVtbl *)&TStaticText::_vftable_;
   *(undefined4 *)&this->field_0x60 = 0xd;
-  this_00 = (CString *)AllocateWithFallbackHandler(4);
+  this_00 = (CString *)__2_YAPAXI_Z(4);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   if (this_00 == (CString *)0x0) {
     uVar1 = 0;
   }
   else {
-    CString::CString(this_00);
+    CString::__0CString__QAE_XZ(this_00);
     uVar1 = extraout_EAX;
   }
   *(undefined4 *)&this->field_0x84 = uVar1;
@@ -914,7 +918,7 @@ QueueNationPairWarTransition(int *param_1,undefined4 param_2,undefined4 param_3)
 {
   undefined4 uVar1;
   undefined4 uVar2;
-  
+
   uVar2 = param_3;
   uVar1 = param_2;
   param_2 = CONCAT22((short)param_3,(short)param_2);
@@ -931,7 +935,8 @@ void __thiscall
 AssignSharedStringFromIndexedA8EntryNameField(int param_1,int param_2,CString *param_3)
 
 {
-  CString::AssignFromPtr(param_3,(CString *)(*(int *)(param_1 + 0x10) + 0xa4 + param_2 * 0xa8));
+  CString::__4CString__QAEABV0_ABV0__Z
+            (param_3,(CString *)(*(int *)(param_1 + 0x10) + 0xa4 + param_2 * 0xa8));
   return;
 }
 
@@ -989,7 +994,7 @@ undefined4 __thiscall EnsureSelectedTaskForceForOrderOwnerAndRefresh(int param_1
   short sVar2;
   undefined4 uVar3;
   int iVar4;
-  
+
   if ((*(int *)(param_1 + 0x14) != 0) && (*(int *)(*(int *)(param_1 + 0x14) + 0x18) != param_2)) {
     iVar4 = param_2;
     sVar2 = UiRuntimeContext::GetActiveNationId(param_2);
@@ -1055,16 +1060,16 @@ uint GetTickCountDiv16(void)
 
 {
   DWORD DVar1;
-  
+
   DVar1 = timeGetTime();
   return DVar1 >> 4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409304
-// GHIDRA_NAME IsUiWindowTraversalEntryValid
-// GHIDRA_PROTO undefined IsUiWindowTraversalEntryValid()
+// GHIDRA_NAME CWMgrIterator::More
+// GHIDRA_PROTO undefined CWMgrIterator::More()
 
-bool __fastcall IsUiWindowTraversalEntryValid(int param_1)
+bool __fastcall CWMgrIterator::More(int param_1)
 
 {
   return *(int *)(param_1 + 8) != 0;
@@ -1080,7 +1085,7 @@ TOrItemOrder::OrphanCallChain_C1_I16_004b5100
 
 {
   bool bVar1;
-  
+
   bVar1 = OrphanCallChain_C1_I16_004b5100(this,nNewOrderAmount);
   return bVar1;
 }
@@ -1095,7 +1100,7 @@ TryResolveMapOrderEntryPairExecution(int *param_1,int *param_2,undefined4 *param
 {
   int iVar1;
   short sVar2;
-  
+
   sVar2 = 0;
   if (param_1 != (int *)0x0) {
     sVar2 = 0;
@@ -1145,7 +1150,7 @@ TShip * CreateNavyPrimaryOrderNodeAndAssignDisplayName
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00635092;
   uStack_c = *unaff_FS_OFFSET;
@@ -1156,7 +1161,7 @@ TShip * CreateNavyPrimaryOrderNodeAndAssignDisplayName
     *unaff_FS_OFFSET = uStack_c;
     return (TShip *)0x0;
   }
-  param_1.m_pchData = (char *)AllocateWithFallbackHandler(0x38);
+  param_1.m_pchData = (char *)__2_YAPAXI_Z(0x38);
   uStack_4 = 0;
   if ((TShip *)param_1.m_pchData == (TShip *)0x0) {
     pTVar4 = (TShip *)0x0;
@@ -1179,8 +1184,7 @@ TShip * CreateNavyPrimaryOrderNodeAndAssignDisplayName
     for (pTVar1 = g_pNavyPrimaryOrderListHead; pTVar1 != (TShip *)0x0;
         pTVar1 = *(TShip **)&pTVar1->field_0x24) {
       if ((pTVar1 != pTVar4) &&
-         (iVar5 = CompareAnsiStringsWithMbcsAwareness
-                            (*(undefined4 *)&pTVar1->field_0x18,*(undefined4 *)&pTVar4->field_0x18),
+         (iVar5 = __mbscmp(*(undefined4 *)&pTVar1->field_0x18,*(undefined4 *)&pTVar4->field_0x18),
          iVar5 == 0)) {
         RegenerateNavyPrimaryOrderDisplayNameUntilUnique();
         break;
@@ -1188,11 +1192,11 @@ TShip * CreateNavyPrimaryOrderNodeAndAssignDisplayName
     }
   }
   else {
-    CString::CString(&param_1,param_4);
+    CString::__0CString__QAE_PBD_Z(&param_1,param_4);
     uStack_4 = 1;
-    CString::AssignFromPtr((CString *)&pTVar4->field_0x18,&param_1);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&pTVar4->field_0x18,&param_1);
     uStack_4 = 0xffffffff;
-    CString::~CString(&param_1);
+    CString::__1CString__QAE_XZ(&param_1);
   }
   *(undefined2 *)&pTVar4->field_0x1c = *(undefined2 *)(&DAT_00698114 + iVar3 * 0x24);
   if (*(InputState **)&pTVar4->field_0x8 != (InputState *)0x0) {
@@ -1274,7 +1278,7 @@ TrySaveGameAndMaybeShowFailureDialog(undefined4 param_1,undefined4 param_2,char 
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634e58;
@@ -1286,12 +1290,12 @@ TrySaveGameAndMaybeShowFailureDialog(undefined4 param_1,undefined4 param_2,char 
   }
   uVar2 = (undefined3)((uint)iVar1 >> 8);
   if ((param_3 != '\0') && (cVar3 == '\0')) {
-    CString::CString((CString *)&param_3);
+    CString::__0CString__QAE_XZ((CString *)&param_3);
     uStack_4 = 0;
     LoadUiStringResourceByGroupAndIndex(&param_3,0x2742,0x28);
     CreateModalMessageCommandAndQueue(&param_3,0);
     uStack_4 = 0xffffffff;
-    CString::~CString((CString *)&param_3);
+    CString::__1CString__QAE_XZ((CString *)&param_3);
     uVar2 = extraout_var;
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -1353,7 +1357,7 @@ TCivToolbar::ApplyEngineerRailCostDeltaForConnectedTiles
 {
   char *pcVar1;
   short sVar2;
-  
+
   sVar2 = GetHexDirectionBetweenTiles(nSourceTileIndex,nTargetTileIndex);
   *(char *)(this->field0c + 0x17 + nSourceTileIndex * 0x24) =
        *(char *)(this->field0c + 0x17 + nSourceTileIndex * 0x24) - (&DAT_00696ec2)[(sVar2 + 3) * 2];
@@ -1375,7 +1379,7 @@ int TCountry::SetTileTransportFlags(short nTileIndex, ushort wTileTransportFlags
   int iVar2;
   int iVar3;
   undefined2 unaff_DI;
-  
+
   iVar2 = *(int *)&this->field_0xc;
   iVar3 = nTileIndex * 0x24;
   if (((*(byte *)(iVar2 + 0x1c + iVar3) & 4) != 0) && ((wTileTransportFlags & 4) == 0)) {
@@ -1415,7 +1419,7 @@ DispatchLocalizedUiMessageWithTemplateA13A0
   int iStack_c;
   TView *pTStack_8;
   int iStack_4;
-  
+
   iStack_c = *unaff_FS_OFFSET;
   pTStack_8 = (TView *)&LAB_00639ff0;
   *unaff_FS_OFFSET = (int)&iStack_c;
@@ -1435,7 +1439,7 @@ DispatchLocalizedUiMessageWithTemplateA13A0
   uVar1 = DispatchLocalizedUiMessageWithTemplate(3);
   iStack_4 = -1;
   iStack_18 = 0x5d5b75;
-  CString::~CString((CString *)&param_1);
+  CString::__1CString__QAE_XZ((CString *)&param_1);
   *unaff_FS_OFFSET = iStack_c;
   return uVar1;
 }
@@ -1480,7 +1484,7 @@ void __thiscall RemoveNationSlotAndNotifyPeers(int param_1,undefined4 param_2)
   short sVar3;
   int iVar4;
   TGreatPower **ppTVar5;
-  
+
   iVar2 = (int)(short)param_2;
   iVar4 = 0;
   ppTVar5 = g_apNationStates;
@@ -1530,7 +1534,7 @@ RefreshMapOrderBattleSideSnapshot(int pBattleSnapshotState,int nSideIndex,int pO
   int iVar3;
   int iVar4;
   int iStack_4;
-  
+
   pCityState = pBattleSnapshotState;
   iStack_4 = 0;
   if (0 < *(short *)(pBattleSnapshotState + 0x24a + nSideIndex * 2)) {
@@ -1590,15 +1594,15 @@ CMainFrame * __cdecl CreateTMacViewMgrObject(void)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062e89a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  pCVar1 = (CMainFrame *)AllocateWithFallbackHandler(0xd0);
+  pCVar1 = (CMainFrame *)__2_YAPAXI_Z(0xd0);
   uStack_4 = 0;
   if (pCVar1 != (CMainFrame *)0x0) {
-    TMacViewMgr::CFrameWnd();
+    TMacViewMgr::__0CFrameWnd__QAE_XZ();
     *(undefined4 *)&pCVar1->field_0xbc = 0;
     *(undefined4 *)&pCVar1->field_0xcc = 1;
     pCVar1->vftable = (CMainFrameVtbl *)&PTR_LAB_006488d8;
@@ -1620,7 +1624,7 @@ undefined4 HandleCustomMessage2420DispatchTurnEvent(undefined4 param_1)
 {
   undefined *puVar1;
   undefined4 uVar2;
-  
+
   puVar1 = g_pUiRuntimeContext->vftable;
   uVar2 = UiRuntimeContext::GetActiveNationId();
   (**(code **)(puVar1 + 0x4c))(param_1,uVar2);
@@ -1670,7 +1674,7 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006348d8;
@@ -1724,13 +1728,13 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
     uStack_32 = (undefined2)g_apTerrainTypeDescriptorTable[cVar1]->ownerNationSlot;
     uVar3 = (*g_apTerrainTypeDescriptorTable[cVar1]->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_10)()
     ;
-    CString::CString(&CStack_54);
+    CString::__0CString__QAE_XZ(&CStack_54);
     uStack_4 = 0;
     AssignSharedStringFromIndexedA8EntryNameField(uVar3,&CStack_54);
-    strncpy(acStack_30,CStack_54.m_pchData,0x21);
+    _strncpy(acStack_30,CStack_54.m_pchData,0x21);
     EnqueueOrSendTurnEventPacketToNation(&uStack_50,0);
     uStack_4 = 0xffffffff;
-    CString::~CString(&CStack_54);
+    CString::__1CString__QAE_XZ(&CStack_54);
   default:
     goto switchD_005433b3_caseD_3;
   case (TNextDiplomationCommandVtbl *)0x5:
@@ -1879,7 +1883,7 @@ void __fastcall RefreshNationAdvisorLabelStrings(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int iStack_4;
-  
+
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_00637418;
   uStack_c = *unaff_FS_OFFSET;
@@ -1888,28 +1892,28 @@ void __fastcall RefreshNationAdvisorLabelStrings(int *param_1)
   ppTStack_14 = g_apTerrainTypeDescriptorTable;
   do {
     ppTVar2 = ppTStack_14;
-    CString::CString(&CStack_18);
+    CString::__0CString__QAE_XZ(&CStack_18);
     iStack_4 = 0;
-    CString::CString(&CStack_20);
+    CString::__0CString__QAE_XZ(&CStack_20);
     iStack_4._0_1_ = 1;
-    CString::CString(&CStack_24);
+    CString::__0CString__QAE_XZ(&CStack_24);
     iStack_4._0_1_ = 2;
-    CString::CString(&CStack_28);
+    CString::__0CString__QAE_XZ(&CStack_28);
     iStack_4._0_1_ = 3;
-    CString::CString(&CStack_2c);
+    CString::__0CString__QAE_XZ(&CStack_2c);
     pTVar1 = *ppTVar2;
     iStack_4._0_1_ = 4;
     if (pTVar1 == (TCountry *)0x0) {
       iStack_4._0_1_ = 3;
-      CString::~CString(&CStack_2c);
+      CString::__1CString__QAE_XZ(&CStack_2c);
       iStack_4._0_1_ = 2;
-      CString::~CString(&CStack_28);
+      CString::__1CString__QAE_XZ(&CStack_28);
       iStack_4._0_1_ = 1;
-      CString::~CString(&CStack_24);
+      CString::__1CString__QAE_XZ(&CStack_24);
       iStack_4 = (uint)iStack_4._1_3_ << 8;
-      CString::~CString(&CStack_20);
+      CString::__1CString__QAE_XZ(&CStack_20);
       iStack_4 = 0xffffffff;
-      CString::~CString(&CStack_18);
+      CString::__1CString__QAE_XZ(&CStack_18);
       ppTStack_14 = ppTVar2;
     }
     else {
@@ -1917,26 +1921,26 @@ void __fastcall RefreshNationAdvisorLabelStrings(int *param_1)
       (**(code **)(*param_1 + 0x84))(0x272a,0,&CStack_2c);
       src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot(&CStack_10,iVar4);
       iStack_4._0_1_ = 5;
-      CString::AssignFromPtr(&CStack_20,src_ref);
+      CString::__4CString__QAEABV0_ABV0__Z(&CStack_20,src_ref);
       iStack_4._0_1_ = 4;
-      CString::~CString(&CStack_10);
+      CString::__1CString__QAE_XZ(&CStack_10);
       scanBracketExpressions(param_1,&CStack_28,CStack_2c.m_pchData);
-      CString::StringSharedRef_AssignFromPtr(&CStack_1c,&CStack_28);
+      CString::__0CString__QAE_ABV0__Z(&CStack_1c,&CStack_28);
       iStack_4._0_1_ = 6;
-      CString::AssignFromPtr(&CStack_24,&CStack_1c);
+      CString::__4CString__QAEABV0_ABV0__Z(&CStack_24,&CStack_1c);
       iStack_4._0_1_ = 4;
-      CString::~CString(&CStack_1c);
+      CString::__1CString__QAE_XZ(&CStack_1c);
       SetGlobalMapCellSharedLabel((int)(short)CONCAT31(extraout_var,uVar3),&CStack_24);
       iStack_4._0_1_ = 3;
-      CString::~CString(&CStack_2c);
+      CString::__1CString__QAE_XZ(&CStack_2c);
       iStack_4._0_1_ = 2;
-      CString::~CString(&CStack_28);
+      CString::__1CString__QAE_XZ(&CStack_28);
       iStack_4._0_1_ = 1;
-      CString::~CString(&CStack_24);
+      CString::__1CString__QAE_XZ(&CStack_24);
       iStack_4 = (uint)iStack_4._1_3_ << 8;
-      CString::~CString(&CStack_20);
+      CString::__1CString__QAE_XZ(&CStack_20);
       iStack_4 = 0xffffffff;
-      CString::~CString(&CStack_18);
+      CString::__1CString__QAE_XZ(&CStack_18);
     }
     ppTStack_14 = ppTStack_14 + 1;
     iVar4 = iVar4 + 1;
@@ -2008,7 +2012,7 @@ void TSoundPlayer::GetTEventHandlerClassNamePointer()
 {
   int *piVar1;
   undefined4 *puVar2;
-  
+
   if (*(int *)&this->field_0x44 == 0) {
     puVar2 = (undefined4 *)0x0;
   }
@@ -2078,7 +2082,7 @@ HKEY OrphanCallChain_C5_I60_00412640(LPCSTR param_1,LPCSTR param_2)
   HKEY local_c;
   HKEY local_8;
   HKEY local_4;
-  
+
   local_4 = (HKEY)0x0;
   local_c = (HKEY)0x0;
   local_8 = (HKEY)0x0;
@@ -2114,7 +2118,7 @@ undefined4 OrphanCallChain_C7_I93_00412720(LPCSTR param_1,LPCSTR param_2,LPCSTR 
   HKEY local_c;
   HKEY local_8;
   DWORD local_4;
-  
+
   local_8 = (HKEY)0x0;
   local_c = (HKEY)0x0;
   local_14 = (HKEY)0x0;
@@ -2169,7 +2173,7 @@ CString * ReadOrCreateRegistryStringValueWithFallback
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00627dcf;
   local_c = *unaff_FS_OFFSET;
@@ -2203,46 +2207,46 @@ CString * ReadOrCreateRegistryStringValueWithFallback
     pHVar2 = local_20;
   }
   if (pHVar2 == (HKEY)0x0) {
-    CString::CString(param_1,param_6);
+    CString::__0CString__QAE_PBD_Z(param_1,param_6);
   }
   else {
-    CString::CString(&local_30);
+    CString::__0CString__QAE_XZ(&local_30);
     lpValueName = param_5;
     local_4 = 1;
     LVar1 = RegQueryValueExA(pHVar2,param_5,(LPDWORD)0x0,local_1c + 2,(LPBYTE)0x0,local_1c);
     if (LVar1 == 0) {
       lpcbData = local_1c;
-      lpData = (LPBYTE)CString::EnsureCapacityPreserveLength(&local_30,local_1c[0]);
+      lpData = (LPBYTE)CString::_GetBuffer_CString__QAEPADH_Z(&local_30,local_1c[0]);
       LVar1 = RegQueryValueExA(pHVar2,lpValueName,(LPDWORD)0x0,local_1c + 2,lpData,lpcbData);
-      CString::SetLengthAndTerminator(&local_30,-1);
+      CString::_ReleaseBuffer_CString__QAEXH_Z(&local_30,-1);
     }
     RegCloseKey(pHVar2);
     if (LVar1 == 0) {
-      CString::StringSharedRef_AssignFromPtr(param_1,&local_30);
+      CString::__0CString__QAE_ABV0__Z(param_1,&local_30);
     }
     else {
-      CString::CString(param_1,param_6);
+      CString::__0CString__QAE_PBD_Z(param_1,param_6);
     }
     local_1c[1] = 1;
     local_4 = local_4 & 0xffffff00;
-    CString::~CString(&local_30);
+    CString::__1CString__QAE_XZ(&local_30);
   }
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00412A70
-// GHIDRA_NAME InvokeAfxThreadVslot7CAndGetValueAtOffset98
-// GHIDRA_PROTO undefined InvokeAfxThreadVslot7CAndGetValueAtOffset98()
+// GHIDRA_NAME GetMainViewHostFromActiveThread
+// GHIDRA_PROTO undefined GetMainViewHostFromActiveThread()
 
-void InvokeAfxThreadVslot7CAndGetValueAtOffset98(void)
+void GetMainViewHostFromActiveThread(void)
 
 {
   CWinThread *pCVar1;
-  
-  pCVar1 = AfxGetThread();
+
+  pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar1 != (CWinThread *)0x0) {
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     (**(code **)(*(int *)pCVar1 + 0x7c))();
   }
   GetObjectValueAtOffset98();
@@ -2280,28 +2284,28 @@ undefined4 * __fastcall ConstructImperialismApplicationSingleton(undefined4 *par
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00627e4c;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CWinThread::CWinApp(0);
+  CWinThread::__0CWinApp__QAE_PBD_Z(0);
   local_4 = 0;
   param_1[0x30] = 0;
-  CString::CString((CString *)(param_1 + 0x31));
+  CString::__0CString__QAE_XZ((CString *)(param_1 + 0x31));
   local_4._0_1_ = 1;
   param_1[0x32] = 0;
-  CString::CString((CString *)(param_1 + 0x33));
+  CString::__0CString__QAE_XZ((CString *)(param_1 + 0x33));
   local_4._0_1_ = 2;
-  CString::CString((CString *)(param_1 + 0x34));
+  CString::__0CString__QAE_XZ((CString *)(param_1 + 0x34));
   local_4._0_1_ = 3;
-  CString::CString((CString *)(param_1 + 0x35));
+  CString::__0CString__QAE_XZ((CString *)(param_1 + 0x35));
   local_4._0_1_ = 4;
-  CString::CString((CString *)(param_1 + 0x36));
+  CString::__0CString__QAE_XZ((CString *)(param_1 + 0x36));
   local_4._0_1_ = 5;
-  CString::CString((CString *)(param_1 + 0x37));
+  CString::__0CString__QAE_XZ((CString *)(param_1 + 0x37));
   local_4 = CONCAT31(local_4._1_3_,6);
-  CString::CString((CString *)(param_1 + 0x38));
+  CString::__0CString__QAE_XZ((CString *)(param_1 + 0x38));
   *param_1 = &PTR_LAB_0063e2d0;
   *unaff_FS_OFFSET = local_c;
   return param_1;
@@ -2316,7 +2320,7 @@ undefined4 __thiscall ReleaseImperialismApplicationSingleton(undefined4 param_1,
 {
   DestroyImperialismApplicationSingleton();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -2332,26 +2336,26 @@ void __fastcall DestroyImperialismApplicationSingleton(int param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   puStack_8 = &LAB_00627ecc;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 6;
-  CString::~CString((CString *)(param_1 + 0xe0));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0xe0));
   local_4._0_1_ = 5;
-  CString::~CString((CString *)(param_1 + 0xdc));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0xdc));
   local_4._0_1_ = 4;
-  CString::~CString((CString *)(param_1 + 0xd8));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0xd8));
   local_4._0_1_ = 3;
-  CString::~CString((CString *)(param_1 + 0xd4));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0xd4));
   local_4._0_1_ = 2;
-  CString::~CString((CString *)(param_1 + 0xd0));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0xd0));
   local_4._0_1_ = 1;
-  CString::~CString((CString *)(param_1 + 0xcc));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0xcc));
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString((CString *)(param_1 + 0xc4));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0xc4));
   local_4 = 0xffffffff;
-  FUN_006228de();
+  __1CWinApp__UAE_XZ();
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2373,7 +2377,7 @@ void InitializeImperialismAppSingletonGlobal(void)
 
 {
   ConstructImperialismApplicationSingleton();
-  AppendPointerToGlobalVectorAsStatus(DestroyImperialismAppSingletonGlobal);
+  _atexit(DestroyImperialismAppSingletonGlobal);
   return;
 }
 
@@ -2422,14 +2426,14 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl(int param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00627fe8;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::~CString((CString *)(param_1 + 0x38));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x38));
   local_4 = 0xffffffff;
-  DestructCommandLineParseContext();
+  __1CCommandLineInfo__UAE_XZ();
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2466,7 +2470,7 @@ void ShowDialogTemplate64Modal(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4._0_1_ = 0xff;
   local_4._1_1_ = 0xff;
   local_4._2_1_ = 0xff;
@@ -2474,18 +2478,18 @@ void ShowDialogTemplate64Modal(void)
   puStack_8 = &LAB_00628008;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId((TControl *)local_68,100,0);
+  TControl::__0CDialog__QAE_IPAVCWnd___Z((TControl *)local_68,100,0);
   local_68[0] = &PTR_LAB_0063e498;
   local_4._0_1_ = 0;
   local_4._1_1_ = 0;
   local_4._2_1_ = 0;
   local_4._3_1_ = 0;
-  DoModal_6051b9();
+  _DoModal_CDialog__UAEHXZ();
   local_4._0_1_ = 0xff;
   local_4._1_1_ = 0xff;
   local_4._2_1_ = 0xff;
   local_4._3_1_ = 0xff;
-  CDialog::~CDialog((CDialog *)local_68);
+  CDialog::__1CDialog__UAE_XZ((CDialog *)local_68);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2526,21 +2530,21 @@ void __fastcall HandleStartupCommand100(int param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00628028;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_10 = param_1;
-  AfxGetModuleState();
-  BeginWaitCursor();
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  _BeginWaitCursor_CCmdTarget__QAEXXZ();
   local_4 = 0;
   *(int **)(param_1 + 0xc0) = &local_10;
   (*g_pLocalizationTable->vftable[9].slot_0x04)();
   *(undefined4 *)(param_1 + 0xc0) = 0;
   local_4 = 0xffffffff;
-  AfxGetModuleState();
-  EndWaitCursor();
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  _EndWaitCursor_CCmdTarget__QAEXXZ();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -2553,8 +2557,8 @@ void __fastcall WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(int param_
 
 {
   if (*(int *)(param_1 + 0xc0) != 0) {
-    AfxGetModuleState();
-    RestoreWaitCursor();
+    _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    _RestoreWaitCursor_CCmdTarget__QAEXXZ();
     return;
   }
   return;
@@ -2570,7 +2574,7 @@ void __fastcall WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(int param_
 // GHIDRA_COMMENT_END
 
 /* Opens template DD modal dialog to preview selected DIB parameters.
-   
+
    Initializes DD picture-state dialog object, copies caller display params, runs modal dialog, and
    releases temporary dialog resources. */
 
@@ -2584,7 +2588,7 @@ void ShowSelectedDibInTemplateDDDialog(int param_1,CString param_2)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   puStack_8 = &LAB_00628069;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -2598,16 +2602,16 @@ void ShowSelectedDibInTemplateDDDialog(int param_1,CString param_2)
   TControl::FinalizeModalDialogAndRestoreOwnerFocus(&local_a0);
   local_a0.vftable = (TControlVtbl *)&PTR_LAB_0063e6b0;
   local_4._0_1_ = 2;
-  FreeHeapBufferIfNotNull(local_14);
+  __3_YAXPAX_Z(local_14);
   local_a0.vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   local_4._0_1_ = 3;
   if (local_a0._100_4_ != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = (uint)local_4._1_3_ << 8;
-  CDialog::~CDialog((CDialog *)&local_a0);
+  CDialog::__1CDialog__UAE_XZ((CDialog *)&local_a0);
   local_4 = 0xffffffff;
-  CString::~CString(&param_2);
+  CString::__1CString__QAE_XZ(&param_2);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2623,7 +2627,7 @@ void __fastcall WrapperFor_CDialog_At00413b80(CDialog *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00628088;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -2633,7 +2637,7 @@ void __fastcall WrapperFor_CDialog_At00413b80(CDialog *param_1)
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2647,7 +2651,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00413c00(undefined4 p
 {
   WrapperFor_CDialog_At00413b80();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -2663,20 +2667,20 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_006280b0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   *(undefined ***)param_1 = &PTR_LAB_0063e6b0;
   local_4 = 0;
-  FreeHeapBufferIfNotNull(*(undefined4 *)(param_1 + 0x8c));
+  __3_YAXPAX_Z(*(undefined4 *)(param_1 + 0x8c));
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 1;
   if (*(int *)(param_1 + 100) != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2690,7 +2694,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00413cd0(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -2721,7 +2725,7 @@ void ShowNationSelectDialogAndRedispatchCurrentTurnEvent(void)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006280e1;
   uStack_c = *unaff_FS_OFFSET;
@@ -2729,7 +2733,7 @@ void ShowNationSelectDialogAndRedispatchCurrentTurnEvent(void)
   InitializeDialogTemplateDBWithTextState(0);
   local_4 = 0;
   PrepareAndCreateDialogFromTemplateResource();
-  SetRange(0,6,0);
+  _SetRange_CSliderCtrl__QAEXHHH_Z(0,6,0);
   sVar3 = UiRuntimeContext::GetActiveNationId();
   SendMessageA(local_2c,0x405,1,(int)sVar3);
   iVar4 = TControl::FinalizeModalDialogAndRestoreOwnerFocus(&local_bc);
@@ -2746,14 +2750,14 @@ void ShowNationSelectDialogAndRedispatchCurrentTurnEvent(void)
     (**(code **)(puVar2 + 0x4c))(uVar1,uVar6);
   }
   local_4 = 1;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   local_bc.vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   local_4 = 2;
   if (local_bc._100_4_ != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog((CDialog *)&local_bc);
+  CDialog::__1CDialog__UAE_XZ((CDialog *)&local_bc);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -2769,19 +2773,19 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00628110;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 1;
   if (*(int *)(param_1 + 100) != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2805,7 +2809,7 @@ void __fastcall HandleDialogResultAndPostCommand100(int param_1)
   int iVar1;
   int *unaff_FS_OFFSET;
   TControl local_84;
-  
+
   local_84.commandTagDefaultParam2 = -1;
   local_84._130_2_ = 0xffff;
   local_84.commandTagDefaultParam1 = (int)&LAB_00628136;
@@ -2830,7 +2834,7 @@ void __fastcall HandleDialogResultAndPostCommand100(int param_1)
   }
   local_84.commandTagDefaultParam2 = -1;
   local_84._130_2_ = 0xffff;
-  CDialog::~CDialog((CDialog *)&local_84);
+  CDialog::__1CDialog__UAE_XZ((CDialog *)&local_84);
   *unaff_FS_OFFSET = local_84.commandTagDefaultParam0;
   return;
 }
@@ -2846,7 +2850,7 @@ void __fastcall WrapperFor_CDialog_At00414070(CDialog *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00628158;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -2856,7 +2860,7 @@ void __fastcall WrapperFor_CDialog_At00414070(CDialog *param_1)
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2882,7 +2886,7 @@ void ApplyDialogSelectionToNationState(void)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00628191;
   uStack_c = *unaff_FS_OFFSET;
@@ -2890,7 +2894,7 @@ void ApplyDialogSelectionToNationState(void)
   InitializeDialogTemplateDEWithTextState(0);
   local_4 = 0;
   PrepareAndCreateDialogFromTemplateResource();
-  SetRange(0,6,0);
+  _SetRange_CSliderCtrl__QAEXHHH_Z(0,6,0);
   sVar1 = UiRuntimeContext::GetActiveNationId();
   SendMessageA(local_34,0x405,1,(int)sVar1);
   iVar2 = TControl::FinalizeModalDialogAndRestoreOwnerFocus(&local_c4);
@@ -2931,14 +2935,14 @@ void ApplyDialogSelectionToNationState(void)
     (**(code **)(**(int **)&pTVar4->field_0x1d8 + 0x34))(4,-iStack_24);
   }
   local_4 = 1;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   local_c4.vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   local_4 = 2;
   if (local_c4._100_4_ != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog((CDialog *)&local_c4);
+  CDialog::__1CDialog__UAE_XZ((CDialog *)&local_c4);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -2954,19 +2958,19 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_006281c0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_005e644f();
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 1;
   if (*(int *)(param_1 + 100) != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2994,14 +2998,14 @@ void LoadAndPreviewDibFromDialogInput(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006281f9;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   InitializeDialogTemplateDFBaseState(0);
   local_4 = 0;
-  iVar1 = DoModal_6051b9();
+  iVar1 = _DoModal_CDialog__UAEHXZ();
   if (iVar1 != 1) goto LAB_0041452f;
   this = local_24;
   if ((int)local_24 < 20000) {
@@ -3012,9 +3016,9 @@ LAB_004144fd:
     MessageBoxA((HWND)0x0,s_You_Fool__00694258,s_That_s_No_Dib_00694264,0);
   }
   else {
-    iVar1 = AfxIsValidAddress(this,0x38,0);
+    iVar1 = _AfxIsValidAddress__YGHPBXIH_Z(this,0x38,0);
     if (iVar1 == 0) goto LAB_004144fd;
-    iVar1 = CObject::IsKindOf(this);
+    iVar1 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(this);
     if (iVar1 == 0) goto LAB_004144fd;
     InitializeDialogTemplateDDPictureState(0);
     local_4._0_1_ = 1;
@@ -3030,21 +3034,21 @@ LAB_004144fd:
     TControl::FinalizeModalDialogAndRestoreOwnerFocus(&local_114);
     local_114.vftable = (TControlVtbl *)&PTR_LAB_0063e6b0;
     local_4._0_1_ = 2;
-    FreeHeapBufferIfNotNull(local_88);
+    __3_YAXPAX_Z(local_88);
     local_114.vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
     local_4._0_1_ = 3;
     if (local_114._100_4_ != 0) {
       WrapperFor_CleanupDialogModalCreateState_At0049d510();
     }
     local_4 = (uint)local_4._1_3_ << 8;
-    CDialog::~CDialog((CDialog *)&local_114);
+    CDialog::__1CDialog__UAE_XZ((CDialog *)&local_114);
   }
   if (((int)local_24 < 20000) && (this != (CObject *)0x0)) {
     DecrementDialogResourceRefCountByShortIdAndCleanup(local_24);
   }
 LAB_0041452f:
   local_4 = 0xffffffff;
-  CDialog::~CDialog(local_80);
+  CDialog::__1CDialog__UAE_XZ(local_80);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -3082,10 +3086,10 @@ void PostWmCloseToMainThreadWindow(void)
 {
   CWinThread *pCVar1;
   int iVar2;
-  
-  pCVar1 = AfxGetThread();
+
+  pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar1 != (CWinThread *)0x0) {
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x10,0,0);
     return;
@@ -3109,13 +3113,13 @@ void PostTurnEventCodeMessage2420(short param_1)
 {
   CWinThread *pCVar1;
   int iVar2;
-  
-  pCVar1 = AfxGetThread();
+
+  pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar1 == (CWinThread *)0x0) {
     iVar2 = 0;
   }
   else {
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
   }
   PostMessageA(*(HWND *)(iVar2 + 0x1c),0x2420,(int)param_1,0);
@@ -3149,32 +3153,30 @@ char * __fastcall DetectImperialismInstallDriveAndSetPathPrefix(int param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00628218;
   *unaff_FS_OFFSET = &local_c;
-  iVar3 = CompareAnsiStringsWithMbcsAwareness(*(undefined4 *)(param_1 + 0xc4),&g_szEmptyString);
+  iVar3 = __mbscmp(*(undefined4 *)(param_1 + 0xc4),&g_szEmptyString);
   if (iVar3 == 0) {
     iVar3 = 2;
     do {
       cVar2 = QueryDriveTypeByDriveIndex(iVar3);
       if (cVar2 != '\0') {
-        CString::CString(&local_14);
+        CString::__0CString__QAE_XZ(&local_14);
         local_4 = 0;
         cVar2 = QueryVolumeInformationForDriveIndex(iVar3,&local_14,local_10);
         if ((cVar2 != '\0') &&
-           (iVar4 = CompareAnsiStringsWithMbcsAwareness
-                              (local_14.m_pchData,PTR_s_IMPERIALISM_0063e050), iVar4 == 0)) {
-          WrapperFor_CopyMemoryPossiblyOverlapping_At005feba9
-                    (CONCAT31((int3)((uint)iVar3 >> 8),(char)iVar3 + 'A'));
-          CString::AssignFromCStr((CString *)(param_1 + 0xc4),&DAT_006942b0);
+           (iVar4 = __mbscmp(local_14.m_pchData,PTR_s_IMPERIALISM_0063e050), iVar4 == 0)) {
+          __4CString__QAEABV0_D_Z(CONCAT31((int3)((uint)iVar3 >> 8),(char)iVar3 + 'A'));
+          CString::__YCString__QAEABV0_PBD_Z((CString *)(param_1 + 0xc4),&DAT_006942b0);
           local_4 = 0xffffffff;
-          CString::~CString(&local_14);
+          CString::__1CString__QAE_XZ(&local_14);
           break;
         }
         local_4 = 0xffffffff;
-        CString::~CString(&local_14);
+        CString::__1CString__QAE_XZ(&local_14);
       }
       iVar3 = iVar3 + 1;
     } while ((short)iVar3 < 0x1a);
@@ -3233,131 +3235,136 @@ bool __fastcall LoadLanguageResourcesFromIrgFiles(int param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006282a9;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  FUN_00623212(&local_178,PTR_s_Settings_0063e040,PTR_s_Language_0063e04c,0);
+  _GetProfileStringA_CWinApp__QAE_AVCString__PBD00_Z
+            (&local_178,PTR_s_Settings_0063e040,PTR_s_Language_0063e04c,0);
   local_4 = 0;
-  CCommandLineInfo();
+  __0CCommandLineInfo__QAE_XZ();
   local_148 = &local_178;
   local_4._0_1_ = 1;
   local_144 = 0x20;
   local_140 = 0;
   local_13c = 0;
   local_138 = 0;
-  CString::CString(&local_134);
+  CString::__0CString__QAE_XZ(&local_134);
   local_130 = 0;
   local_12c = 0;
   local_16c[0] = &CObjectVtbl_0063e478;
   local_4._0_1_ = 2;
-  ParseCommandLine(local_16c);
+  _ParseCommandLine_CWinApp__QAEXAAVCCommandLineInfo___Z(local_16c);
   local_128 = -1;
   local_4._0_1_ = 3;
-  CString::CString(&local_174,s_Data__006942a8);
+  CString::__0CString__QAE_PBD_Z(&local_174,s_Data__006942a8);
   local_4 = CONCAT31(local_4._1_3_,4);
-  puVar3 = (undefined4 *)AssignSharedStringConcatRefAndCStr(&local_17c,&local_174,s___irg_006942fc);
+  puVar3 = (undefined4 *)__H_YG_AVCString__ABV0_PBD_Z(&local_17c,&local_174,s___irg_006942fc);
   uVar1 = *puVar3;
   if (local_128 != -1) {
     WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(local_128);
     local_128 = -1;
   }
-  local_128 = FindFirstFileAndPopulateFileInfoRecord(uVar1,local_124);
-  CString::~CString(&local_17c);
+  local_128 = __findfirst(uVar1,local_124);
+  CString::__1CString__QAE_XZ(&local_17c);
   if (local_128 == -1) {
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-              (s_No_language_files_are_present__U_006942b4,0,0);
+    _AfxMessageBox__YGHPBDII_Z(s_No_language_files_are_present__U_006942b4,0,0);
     local_4 = CONCAT31(local_4._1_3_,3);
-    CString::~CString(&local_174);
+    CString::__1CString__QAE_XZ(&local_174);
     if (local_128 != -1) {
       WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(local_128);
       local_128 = -1;
     }
     local_4._0_1_ = 7;
-    CString::~CString(&local_134);
+    CString::__1CString__QAE_XZ(&local_134);
     local_4 = (uint)local_4._1_3_ << 8;
-    DestructCommandLineParseContext();
+    __1CCommandLineInfo__UAE_XZ();
     local_4 = 0xffffffff;
-    CString::~CString(&local_178);
+    CString::__1CString__QAE_XZ(&local_178);
     bVar6 = false;
   }
   else {
-    puVar3 = (undefined4 *)AssignSharedStringConcatRefAndCStr(&local_170,&local_174,local_110);
+    puVar3 = (undefined4 *)__H_YG_AVCString__ABV0_PBD_Z(&local_170,&local_174,local_110);
     local_4._0_1_ = 5;
     pHVar4 = LoadLibraryA((LPCSTR)*puVar3);
     local_4._0_1_ = 4;
-    CString::~CString(&local_170);
-    CString::CString(&local_17c);
+    CString::__1CString__QAE_XZ(&local_170);
+    CString::__0CString__QAE_XZ(&local_17c);
     iVar7 = 0x20;
     local_4._0_1_ = 6;
-    pCVar5 = (LPSTR)CString::EnsureCapacityAndSetLength(&local_17c,0x21);
+    pCVar5 = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z(&local_17c,0x21);
     LoadStringA(pHVar4,0x1e36,pCVar5,iVar7);
-    CString::SetLengthAndTerminator(&local_17c,-1);
+    CString::_ReleaseBuffer_CString__QAEXH_Z(&local_17c,-1);
     FreeLibrary(pHVar4);
-    CString::AssignFromPtr(&local_178,&local_17c);
+    CString::__4CString__QAEABV0_ABV0__Z(&local_178,&local_17c);
     local_4 = CONCAT31(local_4._1_3_,4);
-    CString::~CString(&local_17c);
-    WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52();
-    puVar3 = (undefined4 *)
-             AssignSharedStringConcatRefAndCStr(&local_170,&local_174,s___irg_006942fc);
+    CString::__1CString__QAE_XZ(&local_17c);
+    _MakeReverse_CString__QAEXXZ();
+    puVar3 = (undefined4 *)__H_YG_AVCString__ABV0_PBD_Z(&local_170,&local_174,s___irg_006942fc);
     uVar1 = *puVar3;
     if (local_128 != -1) {
       WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(local_128);
       local_128 = -1;
     }
-    local_128 = FindFirstFileAndPopulateFileInfoRecord(uVar1,local_124);
-    CString::~CString(&local_170);
+    local_128 = __findfirst(uVar1,local_124);
+    CString::__1CString__QAE_XZ(&local_170);
     while (local_128 != -1) {
-      puVar3 = (undefined4 *)AssignSharedStringConcatRefAndCStr(&local_170,&local_174,local_110);
+      puVar3 = (undefined4 *)__H_YG_AVCString__ABV0_PBD_Z(&local_170,&local_174,local_110);
       local_4._0_1_ = 8;
       pHVar4 = LoadLibraryA((LPCSTR)*puVar3);
       local_4._0_1_ = 4;
-      CString::~CString(&local_170);
-      CString::CString(&local_17c);
+      CString::__1CString__QAE_XZ(&local_170);
+      CString::__0CString__QAE_XZ(&local_17c);
       iVar7 = 0x20;
       local_4 = CONCAT31(local_4._1_3_,9);
-      pCVar5 = (LPSTR)CString::EnsureCapacityAndSetLength(&local_17c,0x21);
+      pCVar5 = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z(&local_17c,0x21);
       LoadStringA(pHVar4,0x1e36,pCVar5,iVar7);
-      CString::SetLengthAndTerminator(&local_17c,-1);
-      WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52();
-      iVar7 = CompareAnsiStringsWithMbcsAwareness(local_178.m_pchData,local_17c.m_pchData);
+      CString::_ReleaseBuffer_CString__QAEXH_Z(&local_17c,-1);
+      _MakeReverse_CString__QAEXXZ();
+      iVar7 = __mbscmp(local_178.m_pchData,local_17c.m_pchData);
       if (iVar7 == 0) {
-        FUN_00618884(PTR_s_Settings_0063e040,PTR_s_Language_0063e04c,local_178.m_pchData);
+        _WriteProfileStringA_CWinApp__QAEHPBD00_Z
+                  (PTR_s_Settings_0063e040,PTR_s_Language_0063e04c,local_178.m_pchData);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)CString::EnsureCapacityAndSetLength((CString *)(param_1 + 0xcc),0x21);
+        pCVar5 = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z
+                                  ((CString *)(param_1 + 0xcc),0x21);
         LoadStringA(pHVar4,0x1e36,pCVar5,iVar7);
-        CString::SetLengthAndTerminator((CString *)(param_1 + 0xcc),-1);
+        CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(param_1 + 0xcc),-1);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)CString::EnsureCapacityAndSetLength((CString *)(param_1 + 0xd0),0x21);
+        pCVar5 = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z
+                                  ((CString *)(param_1 + 0xd0),0x21);
         LoadStringA(pHVar4,0x2c6,pCVar5,iVar7);
-        CString::SetLengthAndTerminator((CString *)(param_1 + 0xd0),-1);
+        CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(param_1 + 0xd0),-1);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)CString::EnsureCapacityAndSetLength((CString *)(param_1 + 0xd4),0x21);
+        pCVar5 = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z
+                                  ((CString *)(param_1 + 0xd4),0x21);
         LoadStringA(pHVar4,0x840,pCVar5,iVar7);
-        CString::SetLengthAndTerminator((CString *)(param_1 + 0xd4),-1);
+        CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(param_1 + 0xd4),-1);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)CString::EnsureCapacityAndSetLength((CString *)(param_1 + 0xd8),0x21);
+        pCVar5 = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z
+                                  ((CString *)(param_1 + 0xd8),0x21);
         LoadStringA(pHVar4,0x297,pCVar5,iVar7);
-        CString::SetLengthAndTerminator((CString *)(param_1 + 0xd8),-1);
+        CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(param_1 + 0xd8),-1);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)CString::EnsureCapacityAndSetLength((CString *)(param_1 + 0xdc),0x21);
+        pCVar5 = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z
+                                  ((CString *)(param_1 + 0xdc),0x21);
         LoadStringA(pHVar4,0x80,pCVar5,iVar7);
-        CString::SetLengthAndTerminator((CString *)(param_1 + 0xdc),-1);
+        CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(param_1 + 0xdc),-1);
         this = (CString *)(param_1 + 0xe0);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)CString::EnsureCapacityAndSetLength(this,0x21);
+        pCVar5 = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z(this,0x21);
         LoadStringA(pHVar4,0x323,pCVar5,iVar7);
-        CString::SetLengthAndTerminator(this,-1);
+        CString::_ReleaseBuffer_CString__QAEXH_Z(this,-1);
         pbVar2 = (byte *)this->m_pchData;
         *(uint *)(param_1 + 0xe4) =
              ((uint)pbVar2[2] * 0x100 + (uint)pbVar2[1]) * 0x100 + (uint)*pbVar2;
       }
       FreeLibrary(pHVar4);
       local_4 = CONCAT31(local_4._1_3_,4);
-      CString::~CString(&local_17c);
+      CString::__1CString__QAE_XZ(&local_17c);
       if (local_128 == -1) break;
-      iVar7 = FindNextFileAndPopulateFileInfoRecord(local_128,local_124);
+      iVar7 = __findnext(local_128,local_124);
       if (iVar7 == -1) {
         if (local_128 == -1) break;
         WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(local_128);
@@ -3366,17 +3373,17 @@ bool __fastcall LoadLanguageResourcesFromIrgFiles(int param_1)
     }
     bVar6 = local_140 == 0;
     local_4 = CONCAT31(local_4._1_3_,3);
-    CString::~CString(&local_174);
+    CString::__1CString__QAE_XZ(&local_174);
     if (local_128 != -1) {
       WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(local_128);
       local_128 = -1;
     }
     local_4._0_1_ = 10;
-    CString::~CString(&local_134);
+    CString::__1CString__QAE_XZ(&local_134);
     local_4 = (uint)local_4._1_3_ << 8;
-    DestructCommandLineParseContext();
+    __1CCommandLineInfo__UAE_XZ();
     local_4 = 0xffffffff;
-    CString::~CString(&local_178);
+    CString::__1CString__QAE_XZ(&local_178);
   }
   *unaff_FS_OFFSET = local_c;
   return bVar6;
@@ -3442,7 +3449,7 @@ void __fastcall OrphanCallChain_C1_I05_00415070(int param_1)
 // GHIDRA_COMMENT_END
 
 /* Loads AutoRes setting and conditionally shows template FB dialog.
-   
+
    Behavior:
    - Reads Settings/AutoRes value.
    - Builds temporary dialog/controller state.
@@ -3469,27 +3476,28 @@ int ShowAutoResolutionDialogIfNeeded(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00628338;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  iVar1 = FUN_006231a6(PTR_s_Settings_0063e040,PTR_s_AutoRes_0063e048,0x29a);
-  CString::CString(&local_144);
+  iVar1 = _GetProfileIntA_CWinApp__QAEIPBD0H_Z(PTR_s_Settings_0063e040,PTR_s_AutoRes_0063e048,0x29a)
+  ;
+  CString::__0CString__QAE_XZ(&local_144);
   local_4 = 0;
-  CCommandLineInfo();
+  __0CCommandLineInfo__QAE_XZ();
   local_11c = &local_144;
   local_4._0_1_ = 1;
   local_118 = 0x20;
   local_114 = 0;
   local_110 = 0;
   local_10c = 0;
-  CString::CString(&local_108);
+  CString::__0CString__QAE_XZ(&local_108);
   local_104 = 0;
   local_100 = 0;
   local_140[0] = &CObjectVtbl_0063e478;
   local_4._0_1_ = 2;
-  ParseCommandLine(local_140);
+  _ParseCommandLine_CWinApp__QAEXAAVCCommandLineInfo___Z(local_140);
   if (local_100 != 0) {
     iVar1 = 0;
   }
@@ -3501,28 +3509,28 @@ int ShowAutoResolutionDialogIfNeeded(void)
     local_4._0_1_ = 3;
     PrepareAndCreateDialogFromTemplateResource();
     local_10 = iVar1;
-    UpdateData(0);
+    _UpdateData_CWnd__QAEHH_Z(0);
     TControl::FinalizeModalDialogAndRestoreOwnerFocus(&local_fc);
     iVar1 = local_10;
     local_4._0_1_ = 5;
-    Dtor_CListBox_FID_61e8cb();
+    __1CListBox__UAE_XZ_0061e8cb();
     local_4._0_1_ = 4;
-    FID_conflict__CHotKeyCtrl();
+    __1CProgressCtrl__UAE_XZ_0061e819();
     local_fc.vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
     local_4._0_1_ = 6;
     if (local_fc._100_4_ != 0) {
       WrapperFor_CleanupDialogModalCreateState_At0049d510();
     }
     local_4._0_1_ = 2;
-    CDialog::~CDialog((CDialog *)&local_fc);
+    CDialog::__1CDialog__UAE_XZ((CDialog *)&local_fc);
   }
-  FUN_0061880f(PTR_s_Settings_0063e040,PTR_s_AutoRes_0063e048,iVar1);
+  _WriteProfileInt_CWinApp__QAEHPBD0H_Z(PTR_s_Settings_0063e040,PTR_s_AutoRes_0063e048,iVar1);
   local_4._0_1_ = 7;
-  CString::~CString(&local_108);
+  CString::__1CString__QAE_XZ(&local_108);
   local_4 = (uint)local_4._1_3_ << 8;
-  DestructCommandLineParseContext();
+  __1CCommandLineInfo__UAE_XZ();
   local_4 = 0xffffffff;
-  CString::~CString(&local_144);
+  CString::__1CString__QAE_XZ(&local_144);
   *unaff_FS_OFFSET = local_c;
   return iVar1;
 }
@@ -3538,21 +3546,21 @@ void __fastcall DestroyDialogWithListBoxAndHotKeyControl(CDialog *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_0062837b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  Dtor_CListBox_FID_61e8cb();
+  __1CListBox__UAE_XZ_0061e8cb();
   local_4 = local_4 & 0xffffff00;
-  FID_conflict__CHotKeyCtrl();
+  __1CProgressCtrl__UAE_XZ_0061e819();
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 2;
   if (*(int *)(param_1 + 100) != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -3564,7 +3572,7 @@ void __fastcall DestroyDialogWithListBoxAndHotKeyControl(CDialog *param_1)
 undefined4 WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380(void)
 
 {
-  OnInitDialog();
+  _OnInitDialog_CDialog__UAEHXZ();
   return 1;
 }
 
@@ -3581,17 +3589,17 @@ undefined4 ReadSettingsPrefIntByIndex(undefined4 param_1,undefined4 param_2)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00628398;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
-  FormatStringWithVarArgsToSharedRef(&local_10,s_Pref_d_00694304,param_1);
-  uVar1 = FUN_006231a6(PTR_s_Settings_0063e044,local_10.m_pchData,param_2);
+  _Format_CString__QAAXPBDZZ(&local_10,s_Pref_d_00694304,param_1);
+  uVar1 = _GetProfileIntA_CWinApp__QAEIPBD0H_Z(PTR_s_Settings_0063e044,local_10.m_pchData,param_2);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return uVar1;
 }
@@ -3608,17 +3616,17 @@ void WriteSettingsPrefIntByIndex(undefined4 param_1,undefined4 param_2)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006283b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
-  FormatStringWithVarArgsToSharedRef(&local_10,s_Pref_d_00694304,param_1);
-  FUN_0061880f(PTR_s_Settings_0063e044,local_10.m_pchData,param_2);
+  _Format_CString__QAAXPBDZZ(&local_10,s_Pref_d_00694304,param_1);
+  _WriteProfileInt_CWinApp__QAEHPBD0H_Z(PTR_s_Settings_0063e044,local_10.m_pchData,param_2);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -3630,7 +3638,7 @@ void WriteSettingsPrefIntByIndex(undefined4 param_1,undefined4 param_2)
 void GetSettingValueFromSettingsSection(undefined4 param_1,undefined4 param_2)
 
 {
-  FUN_006231a6(PTR_s_Settings_0063e044,param_1,param_2);
+  _GetProfileIntA_CWinApp__QAEIPBD0H_Z(PTR_s_Settings_0063e044,param_1,param_2);
   return;
 }
 
@@ -3641,7 +3649,7 @@ void GetSettingValueFromSettingsSection(undefined4 param_1,undefined4 param_2)
 void SetSettingValueInSettingsSection(undefined4 param_1,undefined4 param_2)
 
 {
-  FUN_00618884(PTR_s_Settings_0063e044,param_1,param_2);
+  _WriteProfileStringA_CWinApp__QAEHPBD00_Z(PTR_s_Settings_0063e044,param_1,param_2);
   return;
 }
 
@@ -3657,7 +3665,7 @@ undefined4 __thiscall ApplyAutoResolutionModeAndPersist(int param_1,int param_2)
   DWORD iModeNum;
   DEVMODEA *pDVar3;
   DEVMODEA local_9c;
-  
+
   if (*(int *)(param_1 + 200) == param_2) {
     return 1;
   }
@@ -3697,7 +3705,8 @@ undefined4 __thiscall ApplyAutoResolutionModeAndPersist(int param_1,int param_2)
     }
   }
   if (*(int *)(param_1 + 200) == param_2) {
-    FUN_0061880f(PTR_s_Settings_0063e040,PTR_s_AutoRes_0063e048,*(int *)(param_1 + 200));
+    _WriteProfileInt_CWinApp__QAEHPBD0H_Z
+              (PTR_s_Settings_0063e040,PTR_s_AutoRes_0063e048,*(int *)(param_1 + 200));
     return 1;
   }
   return 0;
@@ -3716,7 +3725,7 @@ undefined4 __thiscall ApplyAutoResolutionModeAndPersist(int param_1,int param_2)
 // GHIDRA_COMMENT_END
 
 /* Checks free disk space and warns user with template 0x98 dialog when below threshold.
-   
+
    Behavior:
    - Reads Windows directory and free space.
    - If free space is below threshold (~0x19 MB), formats warning text and opens dialog.
@@ -3743,7 +3752,7 @@ undefined4 WarnLowDiskSpaceAndConfirmContinue(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00628433;
@@ -3751,11 +3760,11 @@ undefined4 WarnLowDiskSpaceAndConfirmContinue(void)
   iVar4 = 0;
   uSize = GetWindowsDirectoryA((LPSTR)0x0,0);
   if (uSize != 0) {
-    CString::CString(&local_138);
+    CString::__0CString__QAE_XZ(&local_138);
     local_4 = 0;
-    lpBuffer = (LPSTR)CString::EnsureCapacityPreserveLength(&local_138,uSize);
+    lpBuffer = (LPSTR)CString::_GetBuffer_CString__QAEPADH_Z(&local_138,uSize);
     GetWindowsDirectoryA(lpBuffer,uSize);
-    CString::SetLengthAndTerminator(&local_138,-1);
+    CString::_ReleaseBuffer_CString__QAEXH_Z(&local_138,-1);
     auStack_118._120_4_ = 0x94;
     GetVersionExA((LPOSVERSIONINFOA)(auStack_118 + 0x78));
     if ((1000 < local_94) &&
@@ -3772,59 +3781,59 @@ undefined4 WarnLowDiskSpaceAndConfirmContinue(void)
     if (((iVar4 != 0) ||
         ((BVar2 = GetDiskFreeSpaceA(local_138.m_pchData,(LPDWORD)&local_134,(LPDWORD)local_130,
                                     (LPDWORD)local_120,local_128), BVar2 != 0 && (BVar2 != 0)))) &&
-       (iVar4 = aullshr(), iVar4 < 0x19)) {
-      CString::CString(local_130);
+       (iVar4 = __aullshr(), iVar4 < 0x19)) {
+      CString::__0CString__QAE_XZ(local_130);
       local_4._0_1_ = 1;
-      CString::CString(local_120);
+      CString::__0CString__QAE_XZ(local_120);
       local_4._0_1_ = 2;
-      CString::CString(&local_134);
+      CString::__0CString__QAE_XZ(&local_134);
       local_4._0_1_ = 3;
       LoadUiStringResourceByGroupAndIndex(local_120,0x2763,0x19);
-      FormatStringWithVarArgsToSharedRef(&local_134,&g_szDecimalFormat,iVar4);
+      _Format_CString__QAAXPBDZZ(&local_134,&g_szDecimalFormat,iVar4);
       scanBracketExpressions(g_pLocalizationTable,local_130,local_120[0].m_pchData);
       InitializeDialogTemplate98WithSharedText(0);
       local_4._0_1_ = 4;
-      CString::AssignFromPtr((CString *)(auStack_118 + 0x74),local_130);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)(auStack_118 + 0x74),local_130);
       iVar4 = TControl::FinalizeModalDialogAndRestoreOwnerFocus((TControl *)auStack_118);
       if (iVar4 != 1) {
         local_4._0_1_ = 5;
-        CString::~CString((CString *)(auStack_118 + 0x74));
+        CString::__1CString__QAE_XZ((CString *)(auStack_118 + 0x74));
         auStack_118._0_4_ = &PTR_LAB_0063e5a0;
         local_4._0_1_ = 6;
         if (auStack_118._100_4_ != 0) {
           WrapperFor_CleanupDialogModalCreateState_At0049d510();
         }
         local_4._0_1_ = 3;
-        CDialog::~CDialog((CDialog *)auStack_118);
+        CDialog::__1CDialog__UAE_XZ((CDialog *)auStack_118);
         local_4._0_1_ = 2;
-        CString::~CString(&local_134);
+        CString::__1CString__QAE_XZ(&local_134);
         local_4._0_1_ = 1;
-        CString::~CString(local_120);
+        CString::__1CString__QAE_XZ(local_120);
         local_4 = (uint)local_4._1_3_ << 8;
-        CString::~CString(local_130);
+        CString::__1CString__QAE_XZ(local_130);
         local_4 = 0xffffffff;
-        CString::~CString(&local_138);
+        CString::__1CString__QAE_XZ(&local_138);
         uVar3 = 0;
         goto LAB_00415a87;
       }
       local_4._0_1_ = 7;
-      CString::~CString((CString *)(auStack_118 + 0x74));
+      CString::__1CString__QAE_XZ((CString *)(auStack_118 + 0x74));
       auStack_118._0_4_ = &PTR_LAB_0063e5a0;
       local_4._0_1_ = 8;
       if (auStack_118._100_4_ != 0) {
         WrapperFor_CleanupDialogModalCreateState_At0049d510();
       }
       local_4._0_1_ = 3;
-      CDialog::~CDialog((CDialog *)auStack_118);
+      CDialog::__1CDialog__UAE_XZ((CDialog *)auStack_118);
       local_4._0_1_ = 2;
-      CString::~CString(&local_134);
+      CString::__1CString__QAE_XZ(&local_134);
       local_4._0_1_ = 1;
-      CString::~CString(local_120);
+      CString::__1CString__QAE_XZ(local_120);
       local_4 = (uint)local_4._1_3_ << 8;
-      CString::~CString(local_130);
+      CString::__1CString__QAE_XZ(local_130);
     }
     local_4 = 0xffffffff;
-    CString::~CString(&local_138);
+    CString::__1CString__QAE_XZ(&local_138);
   }
   uVar3 = 1;
 LAB_00415a87:
@@ -3843,19 +3852,19 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl(CDialog *para
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00628470;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::~CString((CString *)(param_1 + 0x74));
+  CString::__1CString__QAE_XZ((CString *)(param_1 + 0x74));
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 1;
   if (*(int *)(param_1 + 100) != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
   local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -3881,7 +3890,7 @@ void InitializeUiResourcePoolStateAndRegisterAtExit(void)
 
 {
   InitializeUiResourcePoolRuntimeClassFields();
-  AppendPointerToGlobalVectorAsStatus(DestroyUiResourcePoolStateAtExit);
+  _atexit(DestroyUiResourcePoolStateAtExit);
   return;
 }
 
@@ -3917,7 +3926,7 @@ WrapperFor_FreeHeapBufferIfNotNull_At00415f00(undefined4 *param_1,byte param_2)
 {
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -4049,7 +4058,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
   TArmoryView *local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = (TArmoryView *)*unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00628785;
@@ -4058,7 +4067,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
   if (nDialogTypeTag == 0x23f8) {
     piStack_38 = (int *)0xa0;
     uStack_3c = 0x416029;
-    this = (TControl *)AllocateWithFallbackHandler();
+    this = (TControl *)__2_YAPAXI_Z();
     local_4 = 0;
     if (this == (TControl *)0x0) {
       piVar4 = (int *)0x0;
@@ -4131,7 +4140,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piStack_4c = (int *)0xac;
     g_pUiResourceContext = (int *)0x0;
     uStack_50 = 0x41614c;
-    local_c = (TArmoryView *)AllocateWithFallbackHandler();
+    local_c = (TArmoryView *)__2_YAPAXI_Z();
     local_18 = 1;
     if (local_c == (TArmoryView *)0x0) {
       piVar4 = (int *)0x0;
@@ -4178,7 +4187,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_24 = (TStaticText *)AllocateWithFallbackHandler();
+    local_24 = (TStaticText *)__2_YAPAXI_Z();
     if (local_24 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -4216,7 +4225,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar6 = (TCluster *)AllocateWithFallbackHandler();
+    pTVar6 = (TCluster *)__2_YAPAXI_Z();
     uStack_40 = 3;
     if (pTVar6 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
@@ -4252,7 +4261,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTStack_44 = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_44 = (TCluster *)__2_YAPAXI_Z();
     uStack_50 = 4;
     if (pTStack_44 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
@@ -4286,7 +4295,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptStack_54 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptStack_54 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (ptStack_54 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -4319,7 +4328,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar7 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar7 = (TEditText *)__2_YAPAXI_Z();
     if (pTVar7 == (TEditText *)0x0) {
       pTVar7 = (TEditText *)0x0;
     }
@@ -4350,8 +4359,8 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
     piVar4 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    iVar8 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    iVar8 = __2_YAPAXI_Z();
     if (iVar8 == 0) {
       iVar8 = 0;
     }
@@ -4385,7 +4394,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -4424,7 +4433,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -4464,7 +4473,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_b4 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTStack_b4 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTStack_b4 == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -4503,7 +4512,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_cc = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_cc = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_cc == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -4540,7 +4549,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptVar10 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar10 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     puStack_e8 = (undefined1 *)0xc;
     if (ptVar10 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -4577,7 +4586,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar7 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar7 = (TEditText *)__2_YAPAXI_Z();
     puStack_100 = (undefined1 *)0xd;
     if (pTVar7 == (TEditText *)0x0) {
       pTVar7 = (TEditText *)0x0;
@@ -4635,7 +4644,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_118 = (undefined1 *)0xe;
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -4676,7 +4685,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -4716,7 +4725,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_13c = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTStack_13c = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTStack_13c == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -4755,7 +4764,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_154 = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_154 = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_154 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -4792,7 +4801,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptVar10 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar10 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     puStack_170 = (undefined1 *)0x12;
     if (ptVar10 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -4829,7 +4838,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar7 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar7 = (TEditText *)__2_YAPAXI_Z();
     puStack_188 = (undefined1 *)0x13;
     if (pTVar7 == (TEditText *)0x0) {
       pTVar7 = (TEditText *)0x0;
@@ -4887,7 +4896,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_1a0 = (undefined1 *)0x14;
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -4928,7 +4937,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -4968,7 +4977,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_1c4 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTStack_1c4 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTStack_1c4 == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -5007,7 +5016,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_1dc = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_1dc = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_1dc == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -5044,7 +5053,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptVar10 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar10 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     puStack_1f8 = (undefined1 *)0x18;
     if (ptVar10 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -5081,7 +5090,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar7 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar7 = (TEditText *)__2_YAPAXI_Z();
     puStack_210 = (undefined1 *)0x19;
     if (pTVar7 == (TEditText *)0x0) {
       pTVar7 = (TEditText *)0x0;
@@ -5139,7 +5148,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_228 = (undefined1 *)0x1a;
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -5180,7 +5189,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -5220,7 +5229,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_24c = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTStack_24c = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTStack_24c == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -5259,7 +5268,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_264 = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_264 = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_264 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -5296,7 +5305,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptVar10 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar10 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     puStack_280 = (undefined1 *)0x1e;
     if (ptVar10 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -5333,7 +5342,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar7 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar7 = (TEditText *)__2_YAPAXI_Z();
     puStack_298 = (undefined1 *)0x1f;
     if (pTVar7 == (TEditText *)0x0) {
       pTVar7 = (TEditText *)0x0;
@@ -5391,7 +5400,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_2b0 = (undefined1 *)0x20;
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -5432,7 +5441,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -5472,7 +5481,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_2d4 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTStack_2d4 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTStack_2d4 == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -5510,7 +5519,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_2ec = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_2ec = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_2ec == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -5542,7 +5551,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptVar10 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar10 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     puStack_308 = (undefined1 *)0x24;
     if (ptVar10 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -5578,7 +5587,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar7 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar7 = (TEditText *)__2_YAPAXI_Z();
     puStack_320 = (undefined1 *)0x25;
     if (pTVar7 == (TEditText *)0x0) {
       pTVar7 = (TEditText *)0x0;
@@ -5626,7 +5635,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -6174,7 +6183,7 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
 void AllocateUiResourceNode(undefined4 param_1)
 
 {
-  AllocateWithFallbackHandler(param_1);
+  __2_YAPAXI_Z(param_1);
   return;
 }
 
@@ -6197,7 +6206,7 @@ void RegisterUiResourceEntry
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   puVar2 = DAT_006a13e8;
   g_pUiResourceContext = param_3;
   if (g_pUiResourceHead == (int *)0x0) {
@@ -6209,7 +6218,7 @@ void RegisterUiResourceEntry
   }
   puVar4 = DAT_006a13f0;
   if (DAT_006a13f0 == (undefined4 *)0x0) {
-    iVar3 = AllocateAndLinkBlockHead(&DAT_006a13f4,DAT_006a13f8,0xc);
+    iVar3 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(&DAT_006a13f4,DAT_006a13f8,0xc);
     puVar4 = DAT_006a13f0;
     puVar1 = (undefined4 *)(iVar3 + -8 + DAT_006a13f8 * 0xc);
     iVar3 = DAT_006a13f8;
@@ -6257,7 +6266,7 @@ void SetUiResourceStateFlags(undefined1 param_1,undefined1 param_2)
 
 {
   int *piVar1;
-  
+
   piVar1 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = param_1;
   *(undefined1 *)((int)piVar1 + 0x4d) = param_2;
@@ -6312,7 +6321,7 @@ void SetUiResourceLayoutValues(int param_1,int param_2,int param_3,int param_4,i
 
 {
   int *piVar1;
-  
+
   piVar1 = g_pUiResourceContext;
   g_pUiResourceContext[0x18] = param_1;
   piVar1[0x1a] = param_2;
@@ -6344,19 +6353,19 @@ void BindUiResourceTextAndStyle
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00628858;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   piVar2 = g_pUiResourceContext;
-  CString::CString(&param_3,param_3.m_pchData);
+  CString::__0CString__QAE_PBD_Z(&param_3,param_3.m_pchData);
   iVar1 = *piVar2;
   uVar3 = 0;
   local_4 = 0;
   (**(code **)(iVar1 + 0x1c8))(&param_3);
   uStack_c = 0xffffffff;
-  CString::~CString((CString *)&param_1);
+  CString::__1CString__QAE_XZ((CString *)&param_1);
   (**(code **)(iVar1 + 0x1b4))(&stack0xffffffe0,0);
   (**(code **)(iVar1 + 0x1c4))(param_4,0);
   *unaff_FS_OFFSET = uVar3;
@@ -6377,7 +6386,7 @@ void UpdateUiResourceContextMetricWord27(undefined2 param_1)
 
 {
   int *piVar1;
-  
+
   piVar1 = g_pUiResourceContext;
   (**(code **)(*g_pUiResourceContext + 0xc))();
   *(undefined2 *)(piVar1 + 0x27) = param_1;
@@ -6393,7 +6402,7 @@ void DispatchUiResourceContextVslot1E4WithCoords(undefined4 param_1,int param_2,
 {
   int iVar1;
   int *piVar2;
-  
+
   piVar2 = g_pUiResourceContext;
   iVar1 = *g_pUiResourceContext;
   (**(code **)(iVar1 + 0xc))();
@@ -6424,14 +6433,14 @@ void ClearUiResourceContext(void)
 // GHIDRA_COMMENT_END
 
 /* Pops the current node from the temporary UI resource pool list.
-   
+
    When the pool counter reaches zero, clears global pool pointers and releases backing storage. */
 
 void PopUiResourcePoolNode(void)
 
 {
   undefined4 *puVar1;
-  
+
   puVar1 = DAT_006a13e8;
   DAT_006a13e8 = (undefined4 *)DAT_006a13e8[1];
   if (DAT_006a13e8 == (undefined4 *)0x0) {
@@ -6450,7 +6459,7 @@ void PopUiResourcePoolNode(void)
     DAT_006a13f0 = (undefined4 *)0x0;
     DAT_006a13e8 = (undefined4 *)0x0;
     DAT_006a13e4 = (undefined4 *)0x0;
-    FreeDataChain();
+    _FreeDataChain_CPlex__QAEXXZ();
     DAT_006a13f4 = 0;
   }
   return;
@@ -6523,7 +6532,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00629452;
@@ -7083,7 +7092,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     ClearUiResourceContext();
     break;
   case 0x23f3:
-    pTVar14 = (TControl *)AllocateWithFallbackHandler();
+    pTVar14 = (TControl *)__2_YAPAXI_Z();
     local_4 = 0;
     if (pTVar14 == (TControl *)0x0) {
       piVar2 = (int *)0x0;
@@ -7126,7 +7135,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     (**(code **)(*piVar2 + 0x1b8))();
     SetUiColorDescriptorGoldTriplet();
     g_pUiResourceContext = (int *)0x0;
-    pTVar8 = (TIndustryView *)AllocateWithFallbackHandler();
+    pTVar8 = (TIndustryView *)__2_YAPAXI_Z();
     uStack_18 = 1;
     if (pTVar8 == (TIndustryView *)0x0) {
       piVar2 = (int *)0x0;
@@ -7164,7 +7173,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     piVar2[0x1d] = piVar3[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar9 = (TView *)AllocateWithFallbackHandler();
+    pTVar9 = (TView *)__2_YAPAXI_Z();
     uStack_30 = 2;
     if (pTVar9 == (TView *)0x0) {
       piVar2 = (int *)0x0;
@@ -7208,7 +7217,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     PopUiResourcePoolNode_00479A80();
     piStack_160 = (int *)0x94;
     uStack_164 = 0x41ba43;
-    pTVar16 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar16 = (TStaticText *)__2_YAPAXI_Z();
     uStack_40 = 3;
     if (pTVar16 == (TStaticText *)0x0) {
       piVar2 = (int *)0x0;
@@ -7258,7 +7267,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_15c = (TIndustryCluster *)AllocateWithFallbackHandler();
+    pTStack_15c = (TIndustryCluster *)__2_YAPAXI_Z();
     auStack_50[0] = 4;
     if (pTStack_15c == (TIndustryCluster *)0x0) {
       piVar2 = (int *)0x0;
@@ -7295,7 +7304,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     piVar2[0x1d] = piVar3[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar11 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTVar11 = (TSidewaysArrow *)__2_YAPAXI_Z();
     uStack_60 = 5;
     if (pTVar11 == (TSidewaysArrow *)0x0) {
       piVar2 = (int *)0x0;
@@ -7333,7 +7342,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTVar11 = (TSidewaysArrow *)__2_YAPAXI_Z();
     uStack_78 = 6;
     if (pTVar11 == (TSidewaysArrow *)0x0) {
       piVar2 = (int *)0x0;
@@ -7367,7 +7376,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this = (TEditText *)AllocateWithFallbackHandler();
+    this = (TEditText *)__2_YAPAXI_Z();
     uStack_90 = 7;
     if (this == (TEditText *)0x0) {
       this = (TEditText *)0x0;
@@ -7412,7 +7421,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     (**(code **)(*piVar2 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar18 = (TIndustryAmtBar *)AllocateWithFallbackHandler(0x6c);
+    pTVar18 = (TIndustryAmtBar *)__2_YAPAXI_Z(0x6c);
     uStack_a8 = 8;
     if (pTVar18 == (TIndustryAmtBar *)0x0) {
       piVar2 = (int *)0x0;
@@ -7442,7 +7451,7 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar17 = (TIndustryCluster *)AllocateWithFallbackHandler(0x90);
+    pTVar17 = (TIndustryCluster *)__2_YAPAXI_Z(0x90);
     auStack_b8[0] = 9;
     if (pTVar17 == (TIndustryCluster *)0x0) {
       piVar2 = (int *)0x0;
@@ -9759,10 +9768,10 @@ void __thiscall PushUiLinkedListNodeWithPayload(int param_1,undefined4 param_2)
   int iVar2;
   undefined4 *puVar3;
   int iVar4;
-  
+
   uVar1 = *(undefined4 *)(param_1 + 8);
   if (*(int *)(param_1 + 0x10) == 0) {
-    iVar2 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
+    iVar2 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
     iVar4 = *(int *)(param_1 + 0x18);
     puVar3 = (undefined4 *)(iVar2 + -8 + iVar4 * 0xc);
     if (-1 < iVar4 + -1) {
@@ -9821,7 +9830,7 @@ void NoOpRuntimeCallback_00426f80(void)
 // GHIDRA_COMMENT_END
 
 /* Writes flag/metric fields into g_pUiResourceContext before registration.
-   
+
    Updates packed booleans and two word-sized metrics consumed by RegisterUiResourceEntry paths. */
 
 void SetUiResourceContextFlagsAndMetrics
@@ -9830,7 +9839,7 @@ void SetUiResourceContextFlagsAndMetrics
 
 {
   int *piVar1;
-  
+
   piVar1 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x1c) = param_3;
   *(undefined1 *)((int)piVar1 + 0x6f) = param_4;
@@ -9859,7 +9868,7 @@ void ApplyUiResourceColorTripletFromContext
 {
   code *pcVar1;
   int *piVar2;
-  
+
   pcVar1 = *(code **)(*g_pUiResourceContext + 0x1b8);
   piVar2 = (int *)(*pcVar1)();
   (**(code **)(*piVar2 + 0x30))(param_1);
@@ -9877,10 +9886,10 @@ void ReplaceUiResourceContextPairBuffer(undefined4 param_1,undefined4 param_2)
 {
   int *piVar1;
   undefined1 *puVar2;
-  
+
   piVar1 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull(g_pUiResourceContext[0x12]);
-  puVar2 = (undefined1 *)AllocateWithFallbackHandler(8);
+  __3_YAXPAX_Z(g_pUiResourceContext[0x12]);
+  puVar2 = (undefined1 *)__2_YAPAXI_Z(8);
   if (puVar2 == (undefined1 *)0x0) {
     puVar2 = (undefined1 *)0x0;
   }
@@ -9985,7 +9994,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
   undefined4 local_c;
   TCityProductionView *pTStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   pTStack_8 = (TCityProductionView *)&LAB_00629879;
@@ -9994,7 +10003,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
   if (param_2 == 0x7db) {
     pTStack_38 = (TPlacard *)0x60;
     uStack_3c = 0x4273a6;
-    this = (TView *)AllocateWithFallbackHandler();
+    this = (TView *)__2_YAPAXI_Z();
     local_4 = 0;
     if (this == (TView *)0x0) {
       piVar1 = (int *)0x0;
@@ -10045,7 +10054,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     uStack_4c = 0x427461;
-    pTStack_8 = (TCityProductionView *)AllocateWithFallbackHandler();
+    pTStack_8 = (TCityProductionView *)__2_YAPAXI_Z();
     uStack_14 = 1;
     if (pTStack_8 == (TCityProductionView *)0x0) {
       piVar1 = (int *)0x0;
@@ -10083,8 +10092,8 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar1 + 0x4d) = 1;
     piVar1 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    local_18 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    local_18 = __2_YAPAXI_Z();
     local_24 = 2;
     if (local_18 == 0) {
       iVar2 = 0;
@@ -10106,7 +10115,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     piVar1[0x1d] = piVar3[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_20 = (TPlacard *)AllocateWithFallbackHandler();
+    local_20 = (TPlacard *)__2_YAPAXI_Z();
     if (local_20 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10149,7 +10158,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_38 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_38 = (TPlacard *)__2_YAPAXI_Z();
     puStack_44 = (undefined4 *)0x4;
     if (pTStack_38 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
@@ -10190,7 +10199,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_50 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_50 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_50 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10229,7 +10238,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_68 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_68 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_68 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10268,7 +10277,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_80 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_80 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_80 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10307,7 +10316,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_98 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_98 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_98 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10346,7 +10355,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_b0 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_b0 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_b0 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10385,7 +10394,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_c8 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_c8 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_c8 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10424,7 +10433,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_e0 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_e0 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_e0 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10463,7 +10472,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_f8 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_f8 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_f8 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10502,7 +10511,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_110 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_110 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_110 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10541,7 +10550,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_128 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_128 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_128 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10580,7 +10589,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_140 = (TPlacard *)AllocateWithFallbackHandler();
+    pTStack_140 = (TPlacard *)__2_YAPAXI_Z();
     if (pTStack_140 == (TPlacard *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10618,7 +10627,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_158 = (TToolBarCluster *)AllocateWithFallbackHandler();
+    pTStack_158 = (TToolBarCluster *)__2_YAPAXI_Z();
     if (pTStack_158 == (TToolBarCluster *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10650,7 +10659,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     piVar1[0x1d] = piVar3[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar4 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTVar4 = (TPictureButton *)__2_YAPAXI_Z();
     puStack_174 = (undefined1 *)0x11;
     if (pTVar4 == (TPictureButton *)0x0) {
       piVar1 = (int *)0x0;
@@ -10687,7 +10696,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar5 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar5 = (TDropShadowText *)__2_YAPAXI_Z();
     puStack_18c = (undefined1 *)0x12;
     if (pTVar5 == (TDropShadowText *)0x0) {
       piVar1 = (int *)0x0;
@@ -10723,7 +10732,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     BindUiResourceTextAndStyle(0xce4,1);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar5 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar5 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar5 == (TDropShadowText *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -10759,7 +10768,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar6 = (TToolBarCluster *)AllocateWithFallbackHandler();
+    pTVar6 = (TToolBarCluster *)__2_YAPAXI_Z();
     if (pTVar6 == (TToolBarCluster *)0x0) {
       uVar7 = 0;
     }
@@ -10779,7 +10788,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     piVar1[0x1d] = piVar3[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar8 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar8 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar8 == (TUpDownPictureButton *)0x0) {
       uVar7 = 0;
     }
@@ -10792,7 +10801,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x94);
+    pTVar8 = (TUpDownPictureButton *)__2_YAPAXI_Z(0x94);
     if (pTVar8 == (TUpDownPictureButton *)0x0) {
       uVar7 = 0;
     }
@@ -10805,7 +10814,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24ed,0);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x94);
+    pTVar8 = (TUpDownPictureButton *)__2_YAPAXI_Z(0x94);
     if (pTVar8 == (TUpDownPictureButton *)0x0) {
       uVar7 = 0;
     }
@@ -10818,7 +10827,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24eb,0);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x94);
+    pTVar8 = (TUpDownPictureButton *)__2_YAPAXI_Z(0x94);
     if (pTVar8 == (TUpDownPictureButton *)0x0) {
       uVar7 = 0;
     }
@@ -10832,7 +10841,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar6 = (TToolBarCluster *)AllocateWithFallbackHandler(0x88);
+    pTVar6 = (TToolBarCluster *)__2_YAPAXI_Z(0x88);
     if (pTVar6 == (TToolBarCluster *)0x0) {
       uVar7 = 0;
     }
@@ -10844,7 +10853,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     SetUiResourceLayoutValues(5,0,0,0,0);
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar4 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+    pTVar4 = (TPictureButton *)__2_YAPAXI_Z(0x94);
     if (pTVar4 == (TPictureButton *)0x0) {
       uVar7 = 0;
     }
@@ -10858,7 +10867,7 @@ int * InitializeIndustryOverviewPlacardsAndTradeStatusTags(undefined4 param_1,sh
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    this_00 = (TInfoBarText *)AllocateWithFallbackHandler(0xb4);
+    this_00 = (TInfoBarText *)__2_YAPAXI_Z(0xb4);
     if (this_00 == (TInfoBarText *)0x0) {
       uVar7 = 0;
     }
@@ -10944,7 +10953,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
   TBook *local_c;
   TDiplomacyMapView *pTStack_8;
   undefined4 local_4;
-  
+
   local_c = (TBook *)*unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   pTStack_8 = (TDiplomacyMapView *)&LAB_00629ddc;
@@ -12124,7 +12133,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       goto LAB_0042ec3a;
     }
     if (param_2 == 0x547) {
-      pTVar17 = (TView *)AllocateWithFallbackHandler();
+      pTVar17 = (TView *)__2_YAPAXI_Z();
       local_4 = 7;
       if (pTVar17 == (TView *)0x0) {
         piVar10 = (int *)0x0;
@@ -12163,7 +12172,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
       g_pUiResourceContext = (int *)0x0;
       pTStack_4c = (TBook *)0x42a17b;
-      pTVar18 = (TDiplomacyMapView *)AllocateWithFallbackHandler();
+      pTVar18 = (TDiplomacyMapView *)__2_YAPAXI_Z();
       uStack_14 = 8;
       pTStack_8 = pTVar18;
       if (pTVar18 == (TDiplomacyMapView *)0x0) {
@@ -12205,8 +12214,8 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
       *(undefined1 *)((int)piVar10 + 0x4d) = 1;
       piVar10 = g_pUiResourceContext;
-      FreeHeapBufferIfNotNull();
-      local_18 = AllocateWithFallbackHandler();
+      __3_YAXPAX_Z();
+      local_18 = __2_YAPAXI_Z();
       local_24 = (TColorKeyPicture *)0x9;
       if (local_18 == 0) {
         iVar19 = 0;
@@ -12227,7 +12236,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       piVar10[0x1d] = piVar12[3];
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
-      pTVar20 = (TDeluxeText *)AllocateWithFallbackHandler();
+      pTVar20 = (TDeluxeText *)__2_YAPAXI_Z();
       local_20 = pTVar20;
       if (pTVar20 == (TDeluxeText *)0x0) {
         pTVar20 = (TDeluxeText *)0x0;
@@ -12255,7 +12264,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 0;
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar21 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+      pTVar21 = (TUpDownPictureButton *)__2_YAPAXI_Z();
       if (pTVar21 == (TUpDownPictureButton *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12290,7 +12299,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTStack_48 = (TDiplomacyMapView *)AllocateWithFallbackHandler();
+      pTStack_48 = (TDiplomacyMapView *)__2_YAPAXI_Z();
       pTStack_54 = (TPictureButton *)0xc;
       if (pTStack_48 == (TDiplomacyMapView *)0x0) {
         piVar10 = (int *)0x0;
@@ -12326,7 +12335,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar22 = (TPictureButton *)AllocateWithFallbackHandler();
+      pTVar22 = (TPictureButton *)__2_YAPAXI_Z();
       if (pTVar22 == (TPictureButton *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12359,7 +12368,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar21 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+      pTVar21 = (TUpDownPictureButton *)__2_YAPAXI_Z();
       if (pTVar21 == (TUpDownPictureButton *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12392,7 +12401,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar23 = (TMyStaticText *)AllocateWithFallbackHandler();
+      pTVar23 = (TMyStaticText *)__2_YAPAXI_Z();
       if (pTVar23 == (TMyStaticText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12426,7 +12435,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       BindUiResourceTextAndStyle();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      ptVar14 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+      ptVar14 = (thunk_TPictureButton *)__2_YAPAXI_Z();
       if (ptVar14 == (thunk_TPictureButton *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12459,7 +12468,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar23 = (TMyStaticText *)AllocateWithFallbackHandler();
+      pTVar23 = (TMyStaticText *)__2_YAPAXI_Z();
       if (pTVar23 == (TMyStaticText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12493,7 +12502,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       BindUiResourceTextAndStyle();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      ptVar14 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+      ptVar14 = (thunk_TPictureButton *)__2_YAPAXI_Z();
       if (ptVar14 == (thunk_TPictureButton *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12526,7 +12535,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar23 = (TMyStaticText *)AllocateWithFallbackHandler();
+      pTVar23 = (TMyStaticText *)__2_YAPAXI_Z();
       if (pTVar23 == (TMyStaticText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12560,7 +12569,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       BindUiResourceTextAndStyle();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar23 = (TMyStaticText *)AllocateWithFallbackHandler();
+      pTVar23 = (TMyStaticText *)__2_YAPAXI_Z();
       if (pTVar23 == (TMyStaticText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12594,7 +12603,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       BindUiResourceTextAndStyle();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar23 = (TMyStaticText *)AllocateWithFallbackHandler();
+      pTVar23 = (TMyStaticText *)__2_YAPAXI_Z();
       if (pTVar23 == (TMyStaticText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12628,7 +12637,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       BindUiResourceTextAndStyle(0x5e5,0xffffffff);
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar23 = (TMyStaticText *)AllocateWithFallbackHandler();
+      pTVar23 = (TMyStaticText *)__2_YAPAXI_Z();
       if (pTVar23 == (TMyStaticText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12662,7 +12671,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       BindUiResourceTextAndStyle(0x5e5,0xffffffff,&g_szEmptyString,0,0,0);
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar24 = (TToolBarCluster *)AllocateWithFallbackHandler();
+      pTVar24 = (TToolBarCluster *)__2_YAPAXI_Z();
       if (pTVar24 == (TToolBarCluster *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12696,7 +12705,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       piVar10[0x1d] = piVar12[3];
       g_pUiResourceContext[0x21] = 0x20202020;
       g_pUiResourceContext = (int *)0x0;
-      pTVar22 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+      pTVar22 = (TPictureButton *)__2_YAPAXI_Z(0x94);
       if (pTVar22 == (TPictureButton *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -12738,7 +12747,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       goto LAB_0042ec5c;
     }
     if (param_2 != 0x548) goto LAB_0042d600;
-    this = (TControl *)AllocateWithFallbackHandler();
+    this = (TControl *)__2_YAPAXI_Z();
     local_4 = 0x19;
     if (this == (TControl *)0x0) {
       piVar10 = (int *)0x0;
@@ -12797,7 +12806,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     pTStack_4c = (TBook *)0x98;
     g_pUiResourceContext = (int *)0x0;
     pTStack_50 = (TStaticText *)0x42971a;
-    pTVar11 = (TBook *)AllocateWithFallbackHandler();
+    pTVar11 = (TBook *)__2_YAPAXI_Z();
     local_18 = 0x1a;
     local_c = pTVar11;
     if (pTVar11 == (TBook *)0x0) {
@@ -12843,7 +12852,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     piVar10[0x1d] = piVar12[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar13 = (TColorKeyPicture *)AllocateWithFallbackHandler();
+    pTVar13 = (TColorKeyPicture *)__2_YAPAXI_Z();
     local_24 = pTVar13;
     if (pTVar13 == (TColorKeyPicture *)0x0) {
       pTVar13 = (TColorKeyPicture *)0x0;
@@ -12881,7 +12890,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar13 = (TColorKeyPicture *)AllocateWithFallbackHandler();
+    pTVar13 = (TColorKeyPicture *)__2_YAPAXI_Z();
     pTStack_48 = (TDiplomacyMapView *)0x1c;
     if (pTVar13 == (TColorKeyPicture *)0x0) {
       pTVar13 = (TColorKeyPicture *)0x0;
@@ -12917,7 +12926,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_54 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTStack_54 = (TPictureButton *)__2_YAPAXI_Z();
     if (pTStack_54 == (TPictureButton *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -12950,7 +12959,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    ptVar14 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar14 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (ptVar14 == (thunk_TPictureButton *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -12983,7 +12992,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    ptVar14 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar14 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (ptVar14 == (thunk_TPictureButton *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -13016,7 +13025,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar15 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar15 == (TDropShadowText *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -13050,7 +13059,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar15 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar15 == (TDropShadowText *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -13122,7 +13131,7 @@ LAB_0042d600:
         *unaff_FS_OFFSET = local_c;
         return (int *)0x0;
       }
-      pTVar17 = (TView *)AllocateWithFallbackHandler();
+      pTVar17 = (TView *)__2_YAPAXI_Z();
       local_4 = 0;
       if (pTVar17 == (TView *)0x0) {
         piVar10 = (int *)0x0;
@@ -13161,7 +13170,7 @@ LAB_0042d600:
       *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
       g_pUiResourceContext = (int *)0x0;
       pTStack_4c = (TBook *)0x42d6d8;
-      pTVar18 = (TDiplomacyMapView *)AllocateWithFallbackHandler();
+      pTVar18 = (TDiplomacyMapView *)__2_YAPAXI_Z();
       uStack_14 = 1;
       pTStack_8 = pTVar18;
       if (pTVar18 == (TDiplomacyMapView *)0x0) {
@@ -13201,8 +13210,8 @@ LAB_0042d600:
       *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
       *(undefined1 *)((int)piVar10 + 0x4d) = 1;
       piVar10 = g_pUiResourceContext;
-      FreeHeapBufferIfNotNull();
-      local_18 = AllocateWithFallbackHandler();
+      __3_YAXPAX_Z();
+      local_18 = __2_YAPAXI_Z();
       local_24 = (TColorKeyPicture *)0x2;
       if (local_18 == 0) {
         iVar19 = 0;
@@ -13223,7 +13232,7 @@ LAB_0042d600:
       piVar10[0x1d] = piVar12[3];
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
-      local_20 = (TDeluxeText *)AllocateWithFallbackHandler();
+      local_20 = (TDeluxeText *)__2_YAPAXI_Z();
       if (local_20 == (TDeluxeText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -13260,7 +13269,7 @@ LAB_0042d600:
       BindUiResourceTextAndStyle();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar29 = (TStaticText *)AllocateWithFallbackHandler();
+      pTVar29 = (TStaticText *)__2_YAPAXI_Z();
       if (pTVar29 == (TStaticText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -13296,7 +13305,7 @@ LAB_0042d600:
       BindUiResourceTextAndStyle();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar29 = (TStaticText *)AllocateWithFallbackHandler();
+      pTVar29 = (TStaticText *)__2_YAPAXI_Z();
       pTStack_4c = (TBook *)0x5;
       if (pTVar29 == (TStaticText *)0x0) {
         piVar10 = (int *)0x0;
@@ -13333,7 +13342,7 @@ LAB_0042d600:
       BindUiResourceTextAndStyle();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTStack_50 = (TStaticText *)AllocateWithFallbackHandler();
+      pTStack_50 = (TStaticText *)__2_YAPAXI_Z();
       if (pTStack_50 == (TStaticText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -13973,7 +13982,7 @@ int * InitializeCityTradeDiplomacyUiEntries(void)
   TInfoBarText *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000030;
-  
+
   RegisterUiResourceEntry(0x70696374,0x63697479);
   SetUiResourceStateFlags();
   SetUiResourceLayoutValues(10);
@@ -14088,7 +14097,7 @@ int * BuildOrderStateStaticTextUiResourceEntries(void)
   TInfoBarText *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000040;
-  
+
   RegisterUiResourceEntry(0x73746174,0x74746c31);
   SetUiResourceStateFlags();
   SetUiResourceLayoutValues();
@@ -14371,7 +14380,7 @@ int * BuildUiResourceTree_MultiTextOptionComposite_0042e494(void)
   TInfoBarText *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000040;
-  
+
   RegisterUiResourceEntry(0x73746174,0x6e756d31);
   SetUiResourceStateFlags();
   SetUiResourceLayoutValues();
@@ -14570,7 +14579,7 @@ int * BuildUiResourceTree_TextPictureCursorComposite_0042e864(void)
   TInfoBarText *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000040;
-  
+
   RegisterUiResourceEntry(0x73746174,0x6e756d35);
   SetUiResourceStateFlags();
   SetUiResourceLayoutValues();
@@ -14682,16 +14691,14 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl(TView *param_
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_00629f50;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
-            (&param_1[0x56].field38,0x30,0x17,&LAB_004038a0);
+  TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z(&param_1[0x56].field38,0x30,0x17,&LAB_004038a0);
   local_4 = local_4 & 0xffffff00;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(&param_1[0x51].flag4c,0x14,0x17,&LAB_004077bb)
-  ;
+  TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z(&param_1[0x51].flag4c,0x14,0x17,&LAB_004077bb);
   local_4 = 0xffffffff;
   TView::DestructCityDialogSharedBaseState(param_1);
   *unaff_FS_OFFSET = local_c;
@@ -14705,7 +14712,7 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl(TView *param_
 void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00430730(undefined4 *param_1)
 
 {
-  FreeHeapBufferIfNotNull(*param_1);
+  __3_YAXPAX_Z(*param_1);
   return;
 }
 
@@ -14718,11 +14725,11 @@ void __fastcall WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750(undefin
 {
   param_1[7] = &DAT_006404a8;
   if (param_1[8] != 0) {
-    FreeHeapBlockWithAllocatorTracking(param_1[8]);
+    _free(param_1[8]);
   }
   *param_1 = &DAT_006404a4;
   if (param_1[1] != 0) {
-    FreeHeapBlockWithAllocatorTracking(param_1[1]);
+    _free(param_1[1]);
   }
   return;
 }
@@ -14738,16 +14745,14 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl(TView *param_
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_00629f90;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
-            (&param_1[0x56].field38,0x30,0x17,&LAB_004038a0);
+  TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z(&param_1[0x56].field38,0x30,0x17,&LAB_004038a0);
   local_4 = local_4 & 0xffffff00;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(&param_1[0x51].flag4c,0x14,0x17,&LAB_004077bb)
-  ;
+  TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z(&param_1[0x51].flag4c,0x14,0x17,&LAB_004077bb);
   local_4 = 0xffffffff;
   TView::DestructCityDialogSharedBaseState(param_1);
   *unaff_FS_OFFSET = local_c;
@@ -14829,7 +14834,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
   undefined4 local_c;
   TDealBookPicture *pTStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   pTStack_8 = (TDealBookPicture *)&LAB_0062a23b;
@@ -15179,7 +15184,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       }
       piStack_38 = (int *)0x60;
       uStack_3c = 0x430cb0;
-      pTVar9 = (TView *)AllocateWithFallbackHandler();
+      pTVar9 = (TView *)__2_YAPAXI_Z();
       local_4 = 0;
       if (pTVar9 == (TView *)0x0) {
         piVar10 = (int *)0x0;
@@ -15230,7 +15235,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
       g_pUiResourceContext = (int *)0x0;
       pcStack_4c = (char *)0x430d6c;
-      pTStack_8 = (TDealBookPicture *)AllocateWithFallbackHandler();
+      pTStack_8 = (TDealBookPicture *)__2_YAPAXI_Z();
       uStack_14 = 1;
       if (pTStack_8 == (TDealBookPicture *)0x0) {
         piVar10 = (int *)0x0;
@@ -15276,7 +15281,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       piVar10[0x1d] = piVar11[3];
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
-      local_20 = (TToolBarCluster *)AllocateWithFallbackHandler();
+      local_20 = (TToolBarCluster *)__2_YAPAXI_Z();
       if (local_20 == (TToolBarCluster *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -15312,7 +15317,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       piVar10[0x1d] = piVar11[3];
       g_pUiResourceContext[0x21] = 0x20202020;
       g_pUiResourceContext = (int *)0x0;
-      pTVar12 = (TPictureButton *)AllocateWithFallbackHandler();
+      pTVar12 = (TPictureButton *)__2_YAPAXI_Z();
       uStack_3c = 3;
       if (pTVar12 == (TPictureButton *)0x0) {
         piVar10 = (int *)0x0;
@@ -15349,7 +15354,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTStack_48 = (TDropShadowText *)AllocateWithFallbackHandler();
+      pTStack_48 = (TDropShadowText *)__2_YAPAXI_Z();
       puStack_54 = (undefined1 *)0x4;
       if (pTStack_48 == (TDropShadowText *)0x0) {
         piVar10 = (int *)0x0;
@@ -15385,7 +15390,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       BindUiResourceTextAndStyle();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar13 = (TDropShadowText *)AllocateWithFallbackHandler();
+      pTVar13 = (TDropShadowText *)__2_YAPAXI_Z();
       if (pTVar13 == (TDropShadowText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -15420,7 +15425,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
       PopUiResourcePoolNode_00479A80();
-      pTVar14 = (TColorKeyPicture *)AllocateWithFallbackHandler();
+      pTVar14 = (TColorKeyPicture *)__2_YAPAXI_Z();
       if (pTVar14 == (TColorKeyPicture *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -15453,7 +15458,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar14 = (TColorKeyPicture *)AllocateWithFallbackHandler();
+      pTVar14 = (TColorKeyPicture *)__2_YAPAXI_Z();
       if (pTVar14 == (TColorKeyPicture *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -15486,7 +15491,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar15 = (TPageView *)AllocateWithFallbackHandler();
+      pTVar15 = (TPageView *)__2_YAPAXI_Z();
       if (pTVar15 == (TPageView *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -15518,7 +15523,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       PopUiResourcePoolNode_00479A80();
       pTStack_e8 = (TPageView *)0x84;
       puStack_ec = (undefined *)0x4315f2;
-      pTVar15 = (TPageView *)AllocateWithFallbackHandler();
+      pTVar15 = (TPageView *)__2_YAPAXI_Z();
       if (pTVar15 == (TPageView *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -15549,7 +15554,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar13 = (TDropShadowText *)AllocateWithFallbackHandler();
+      pTVar13 = (TDropShadowText *)__2_YAPAXI_Z();
       if (pTVar13 == (TDropShadowText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -15584,7 +15589,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       BindUiResourceTextAndStyle();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar16 = (TControl *)AllocateWithFallbackHandler();
+      pTVar16 = (TControl *)__2_YAPAXI_Z();
       if (pTVar16 == (TControl *)0x0) {
         pTVar16 = (TControl *)0x0;
       }
@@ -15625,7 +15630,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       piVar10[0x1d] = piVar11[3];
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar15 = (TPageView *)AllocateWithFallbackHandler();
+      pTVar15 = (TPageView *)__2_YAPAXI_Z();
       if (pTVar15 == (TPageView *)0x0) {
         pTVar15 = (TPageView *)0x0;
       }
@@ -15659,7 +15664,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       PopUiResourcePoolNode_00479A80();
       pTStack_128 = (TMyStaticText *)0x88;
       puStack_12c = (undefined1 *)0x4319f8;
-      pTVar15 = (TPageView *)AllocateWithFallbackHandler();
+      pTVar15 = (TPageView *)__2_YAPAXI_Z();
       pTStack_e8 = pTVar15;
       if (pTVar15 == (TPageView *)0x0) {
         pTVar15 = (TPageView *)0x0;
@@ -15693,7 +15698,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar13 = (TDropShadowText *)AllocateWithFallbackHandler();
+      pTVar13 = (TDropShadowText *)__2_YAPAXI_Z();
       if (pTVar13 == (TDropShadowText *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -15727,7 +15732,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       BindUiResourceTextAndStyle();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar12 = (TPictureButton *)AllocateWithFallbackHandler();
+      pTVar12 = (TPictureButton *)__2_YAPAXI_Z();
       if (pTVar12 == (TPictureButton *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -15762,7 +15767,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar17 = (TToolBarCluster *)AllocateWithFallbackHandler();
+      pTVar17 = (TToolBarCluster *)__2_YAPAXI_Z();
       puStack_12c = (undefined1 *)0x10;
       if (pTVar17 == (TToolBarCluster *)0x0) {
         piVar10 = (int *)0x0;
@@ -15796,7 +15801,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       piVar10[0x1d] = piVar11[3];
       g_pUiResourceContext[0x21] = 0x20202020;
       g_pUiResourceContext = (int *)0x0;
-      pTVar12 = (TPictureButton *)AllocateWithFallbackHandler();
+      pTVar12 = (TPictureButton *)__2_YAPAXI_Z();
       if (pTVar12 == (TPictureButton *)0x0) {
         piVar10 = (int *)0x0;
       }
@@ -15831,7 +15836,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       PopUiResourcePoolNode_00479A80();
       PopUiResourcePoolNode_00479A80();
       PopUiResourcePoolNode_00479A80();
-      this = (TDeluxeText *)AllocateWithFallbackHandler();
+      this = (TDeluxeText *)__2_YAPAXI_Z();
       if (this == (TDeluxeText *)0x0) {
         this = (TDeluxeText *)0x0;
       }
@@ -15870,7 +15875,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     }
     piStack_38 = (int *)0x60;
     uStack_3c = 0x432024;
-    pTVar9 = (TView *)AllocateWithFallbackHandler();
+    pTVar9 = (TView *)__2_YAPAXI_Z();
     local_4 = 0x13;
     if (pTVar9 == (TView *)0x0) {
       piVar10 = (int *)0x0;
@@ -15921,7 +15926,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     pcStack_4c = (char *)0x4320e6;
-    pTStack_8 = (TDealBookPicture *)AllocateWithFallbackHandler();
+    pTStack_8 = (TDealBookPicture *)__2_YAPAXI_Z();
     uStack_14 = 0x14;
     if (pTStack_8 == (TDealBookPicture *)0x0) {
       piVar10 = (int *)0x0;
@@ -15968,7 +15973,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     piVar10[0x1d] = piVar11[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_20 = (TToolBarCluster *)AllocateWithFallbackHandler();
+    local_20 = (TToolBarCluster *)__2_YAPAXI_Z();
     if (local_20 == (TToolBarCluster *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16004,7 +16009,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     piVar10[0x1d] = piVar11[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar13 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar13 = (TDropShadowText *)__2_YAPAXI_Z();
     uStack_3c = 0x16;
     if (pTVar13 == (TDropShadowText *)0x0) {
       piVar10 = (int *)0x0;
@@ -16043,7 +16048,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_40 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTStack_40 = (TDropShadowText *)__2_YAPAXI_Z();
     pcStack_4c = (char *)0x17;
     if (pTStack_40 == (TDropShadowText *)0x0) {
       piVar10 = (int *)0x0;
@@ -16081,7 +16086,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar16 = (TControl *)AllocateWithFallbackHandler();
+    pTVar16 = (TControl *)__2_YAPAXI_Z();
     pTStack_50 = pTVar16;
     if (pTVar16 == (TControl *)0x0) {
       pTVar16 = (TControl *)0x0;
@@ -16120,7 +16125,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     piVar10[0x1d] = piVar11[3];
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_00 = (TCluster *)AllocateWithFallbackHandler();
+    this_00 = (TCluster *)__2_YAPAXI_Z();
     if (this_00 == (TCluster *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16152,7 +16157,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     piVar10[0x1d] = piVar11[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    this_01 = (TDropShadowNumberText *)AllocateWithFallbackHandler();
+    this_01 = (TDropShadowNumberText *)__2_YAPAXI_Z();
     if (this_01 == (TDropShadowNumberText *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16195,7 +16200,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     (**(code **)(iVar18 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_02 = (TEditText *)AllocateWithFallbackHandler();
+    this_02 = (TEditText *)__2_YAPAXI_Z();
     if (this_02 == (TEditText *)0x0) {
       this_02 = (TEditText *)0x0;
     }
@@ -16221,8 +16226,8 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar10 + 0x4d) = 0;
     piVar10 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    iVar18 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    iVar18 = __2_YAPAXI_Z();
     if (iVar18 == 0) {
       iVar18 = 0;
     }
@@ -16255,7 +16260,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     (**(code **)(iVar18 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_03 = (TUberCluster *)AllocateWithFallbackHandler();
+    this_03 = (TUberCluster *)__2_YAPAXI_Z();
     if (this_03 == (TUberCluster *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16292,7 +16297,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     piVar10[0x1d] = piVar11[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    this_04 = (TToggleButton *)AllocateWithFallbackHandler();
+    this_04 = (TToggleButton *)__2_YAPAXI_Z();
     if (this_04 == (TToggleButton *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16326,7 +16331,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar12 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTVar12 = (TPictureButton *)__2_YAPAXI_Z();
     if (pTVar12 == (TPictureButton *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16362,7 +16367,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar12 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTVar12 = (TPictureButton *)__2_YAPAXI_Z();
     puStack_ec = (undefined *)0x20;
     if (pTVar12 == (TPictureButton *)0x0) {
       piVar10 = (int *)0x0;
@@ -16402,7 +16407,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTVar19 = (TMyStaticText *)__2_YAPAXI_Z();
     if (pTVar19 == (TMyStaticText *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16436,7 +16441,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTVar19 = (TMyStaticText *)__2_YAPAXI_Z();
     if (pTVar19 == (TMyStaticText *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16472,7 +16477,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTVar19 = (TMyStaticText *)__2_YAPAXI_Z();
     if (pTVar19 == (TMyStaticText *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16507,7 +16512,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_128 = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTStack_128 = (TMyStaticText *)__2_YAPAXI_Z();
     if (pTStack_128 == (TMyStaticText *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16542,7 +16547,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar14 = (TColorKeyPicture *)AllocateWithFallbackHandler();
+    pTVar14 = (TColorKeyPicture *)__2_YAPAXI_Z();
     if (pTVar14 == (TColorKeyPicture *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16576,7 +16581,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TView *)AllocateWithFallbackHandler();
+    pTVar9 = (TView *)__2_YAPAXI_Z();
     if (pTVar9 == (TView *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16616,7 +16621,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     PopUiResourcePoolNode_00479A80();
     piStack_1a0 = (int *)0x98;
     uStack_1a4 = 0x433599;
-    pTVar13 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar13 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar13 == (TDropShadowText *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16664,7 +16669,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    ptVar20 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar20 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (ptVar20 == (thunk_TPictureButton *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16699,7 +16704,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     piVar10[0x1d] = piVar11[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar19 = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTVar19 = (TMyStaticText *)__2_YAPAXI_Z();
     if (pTVar19 == (TMyStaticText *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -16741,7 +16746,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     BindUiResourceTextAndStyle(4000,0xffffffff,&g_szEmptyString,0,0,0);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_198 = (TColorKeyPicture *)AllocateWithFallbackHandler();
+    pTStack_198 = (TColorKeyPicture *)__2_YAPAXI_Z();
     uStack_1a4 = 0x2a;
     if (pTStack_198 == (TColorKeyPicture *)0x0) {
       piVar10 = (int *)0x0;
@@ -16779,7 +16784,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TView *)AllocateWithFallbackHandler(0x78);
+    pTVar9 = (TView *)__2_YAPAXI_Z(0x78);
     if (pTVar9 == (TView *)0x0) {
       pTVar9 = (TView *)0x0;
     }
@@ -16809,7 +16814,7 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
-    pTVar13 = (TDropShadowText *)AllocateWithFallbackHandler(0x98);
+    pTVar13 = (TDropShadowText *)__2_YAPAXI_Z(0x98);
     if (pTVar13 == (TDropShadowText *)0x0) {
       piVar10 = (int *)0x0;
     }
@@ -17333,7 +17338,7 @@ int * __cdecl BuildTurnEventDialogUiByCode(int nContextSlot,int nEventCode)
   THelpPicture *local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = (THelpPicture *)*unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062a8f6;
@@ -17620,7 +17625,7 @@ LAB_0043b084:
       if ((short)nEventCode < 0x7e5) {
         if ((short)nEventCode != 0x7e4) {
           if ((short)nEventCode == 0x7d1) {
-            pTVar16 = (TGreatPower *)AllocateWithFallbackHandler();
+            pTVar16 = (TGreatPower *)__2_YAPAXI_Z();
             local_4 = 1;
             if (pTVar16 == (TGreatPower *)0x0) {
               piVar28 = (int *)0x0;
@@ -17659,8 +17664,8 @@ LAB_0043b084:
             *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
             *(undefined1 *)((int)piVar28 + 0x4d) = 1;
             piVar28 = g_pUiResourceContext;
-            FreeHeapBufferIfNotNull();
-            iVar17 = AllocateWithFallbackHandler();
+            __3_YAXPAX_Z();
+            iVar17 = __2_YAPAXI_Z();
             local_4 = 2;
             if (iVar17 == 0) {
               iVar17 = 0;
@@ -17683,7 +17688,7 @@ LAB_0043b084:
           }
           else {
             if ((short)nEventCode != 0x7d2) goto LAB_0043b084;
-            pTVar16 = (TGreatPower *)AllocateWithFallbackHandler();
+            pTVar16 = (TGreatPower *)__2_YAPAXI_Z();
             local_4 = 3;
             if (pTVar16 == (TGreatPower *)0x0) {
               piVar28 = (int *)0x0;
@@ -17722,8 +17727,8 @@ LAB_0043b084:
             *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
             *(undefined1 *)((int)piVar28 + 0x4d) = 1;
             piVar28 = g_pUiResourceContext;
-            FreeHeapBufferIfNotNull();
-            iVar17 = AllocateWithFallbackHandler();
+            __3_YAXPAX_Z();
+            iVar17 = __2_YAPAXI_Z();
             local_4 = 4;
             if (iVar17 == 0) {
               iVar17 = 0;
@@ -17902,7 +17907,7 @@ LAB_0043b084:
       else if ((short)nEventCode < 0xbbe) {
         if ((short)nEventCode != 0xbbd) {
           if ((short)nEventCode != 3000) goto LAB_0043b084;
-          this_04 = (THelpWindow *)AllocateWithFallbackHandler();
+          this_04 = (THelpWindow *)__2_YAPAXI_Z();
           local_4 = 6;
           if (this_04 == (THelpWindow *)0x0) {
             piVar28 = (int *)0x0;
@@ -17964,7 +17969,7 @@ LAB_0043b084:
           pTStack_4c = (THelpPicture *)0x98;
           g_pUiResourceContext = (int *)0x0;
           uStack_50 = 0x437061;
-          local_c = (THelpPicture *)AllocateWithFallbackHandler();
+          local_c = (THelpPicture *)__2_YAPAXI_Z();
           local_18 = 7;
           if (local_c == (THelpPicture *)0x0) {
             piVar28 = (int *)0x0;
@@ -18011,7 +18016,7 @@ LAB_0043b084:
           piVar28[0x1d] = piVar19[3];
           (**(code **)(*g_pUiResourceContext + 0x1c8))();
           g_pUiResourceContext = (int *)0x0;
-          pTVar20 = (TPictureButton *)AllocateWithFallbackHandler();
+          pTVar20 = (TPictureButton *)__2_YAPAXI_Z();
           local_24 = pTVar20;
           if (pTVar20 == (TPictureButton *)0x0) {
             pTVar20 = (TPictureButton *)0x0;
@@ -18045,7 +18050,7 @@ LAB_0043b084:
           *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar14 = (TNoHiliteText *)AllocateWithFallbackHandler();
+          pTVar14 = (TNoHiliteText *)__2_YAPAXI_Z();
           if (pTVar14 == (TNoHiliteText *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -18081,7 +18086,7 @@ LAB_0043b084:
           BindUiResourceTextAndStyle();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar14 = (TNoHiliteText *)AllocateWithFallbackHandler();
+          pTVar14 = (TNoHiliteText *)__2_YAPAXI_Z();
           uStack_50 = 10;
           if (pTVar14 == (TNoHiliteText *)0x0) {
             piVar28 = (int *)0x0;
@@ -18119,7 +18124,7 @@ LAB_0043b084:
           BindUiResourceTextAndStyle();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTStack_54 = (TNoHiliteText *)AllocateWithFallbackHandler();
+          pTStack_54 = (TNoHiliteText *)__2_YAPAXI_Z();
           if (pTStack_54 == (TNoHiliteText *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -18156,7 +18161,7 @@ LAB_0043b084:
           BindUiResourceTextAndStyle();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar14 = (TNoHiliteText *)AllocateWithFallbackHandler();
+          pTVar14 = (TNoHiliteText *)__2_YAPAXI_Z();
           pppTStack_70 = (TPictureButton ***)0xc;
           if (pTVar14 == (TNoHiliteText *)0x0) {
             piVar28 = (int *)0x0;
@@ -18192,7 +18197,7 @@ LAB_0043b084:
           BindUiResourceTextAndStyle();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar14 = (TNoHiliteText *)AllocateWithFallbackHandler();
+          pTVar14 = (TNoHiliteText *)__2_YAPAXI_Z();
           if (pTVar14 == (TNoHiliteText *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -18225,7 +18230,7 @@ LAB_0043b084:
           BindUiResourceTextAndStyle();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar14 = (TNoHiliteText *)AllocateWithFallbackHandler();
+          pTVar14 = (TNoHiliteText *)__2_YAPAXI_Z();
           if (pTVar14 == (TNoHiliteText *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -18258,7 +18263,7 @@ LAB_0043b084:
           BindUiResourceTextAndStyle();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar14 = (TNoHiliteText *)AllocateWithFallbackHandler();
+          pTVar14 = (TNoHiliteText *)__2_YAPAXI_Z();
           if (pTVar14 == (TNoHiliteText *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -18292,7 +18297,7 @@ LAB_0043b084:
           BindUiResourceTextAndStyle();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar14 = (TNoHiliteText *)AllocateWithFallbackHandler();
+          pTVar14 = (TNoHiliteText *)__2_YAPAXI_Z();
           if (pTVar14 == (TNoHiliteText *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -18326,7 +18331,7 @@ LAB_0043b084:
           BindUiResourceTextAndStyle();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar11 = (TStaticText *)AllocateWithFallbackHandler();
+          pTVar11 = (TStaticText *)__2_YAPAXI_Z();
           if (pTVar11 == (TStaticText *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -18360,7 +18365,7 @@ LAB_0043b084:
           BindUiResourceTextAndStyle(0x5e5,0xffffffff);
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar14 = (TNoHiliteText *)AllocateWithFallbackHandler();
+          pTVar14 = (TNoHiliteText *)__2_YAPAXI_Z();
           if (pTVar14 == (TNoHiliteText *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -18394,7 +18399,7 @@ LAB_0043b084:
           BindUiResourceTextAndStyle(0x3e9,0x19,s_Show_Topics_0069443c,3,4,9);
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          ptVar8 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+          ptVar8 = (thunk_TPictureButton *)__2_YAPAXI_Z();
           if (ptVar8 == (thunk_TPictureButton *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -18430,7 +18435,7 @@ LAB_0043b084:
           (**(code **)(*g_pUiResourceContext + 0x1c8))(0x251c,0);
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar11 = (TStaticText *)AllocateWithFallbackHandler(0x94);
+          pTVar11 = (TStaticText *)__2_YAPAXI_Z(0x94);
           if (pTVar11 == (TStaticText *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -19819,7 +19824,7 @@ LAB_0043b084:
           else {
             if ((short)nEventCode != 0x11f8) {
               if ((short)nEventCode != 15000) goto LAB_0043b084;
-              pTVar7 = (TControl *)AllocateWithFallbackHandler();
+              pTVar7 = (TControl *)__2_YAPAXI_Z();
               local_4 = 5;
               if (pTVar7 == (TControl *)0x0) {
                 piVar28 = (int *)0x0;
@@ -20359,7 +20364,7 @@ LAB_0043b084:
         }
         else {
           if ((short)nEventCode != 0x101a) goto LAB_0043b084;
-          pTVar7 = (TControl *)AllocateWithFallbackHandler();
+          pTVar7 = (TControl *)__2_YAPAXI_Z();
           local_4 = 0x15;
           if (pTVar7 == (TControl *)0x0) {
             piVar28 = (int *)0x0;
@@ -20420,7 +20425,7 @@ LAB_0043b084:
           pTStack_4c = (THelpPicture *)0x90;
           g_pUiResourceContext = (int *)0x0;
           uStack_50 = 0x438d74;
-          pTVar22 = (THelpPicture *)AllocateWithFallbackHandler();
+          pTVar22 = (THelpPicture *)__2_YAPAXI_Z();
           local_18 = 0x16;
           local_c = pTVar22;
           if (pTVar22 == (THelpPicture *)0x0) {
@@ -20469,7 +20474,7 @@ LAB_0043b084:
           piVar28[0x1d] = piVar19[3];
           (**(code **)(*g_pUiResourceContext + 0x1c8))();
           g_pUiResourceContext = (int *)0x0;
-          local_24 = (TPictureButton *)AllocateWithFallbackHandler();
+          local_24 = (TPictureButton *)__2_YAPAXI_Z();
           if (local_24 == (TPictureButton *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -20510,7 +20515,7 @@ LAB_0043b084:
           (**(code **)(*g_pUiResourceContext + 0x1c8))();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar23 = (T2PictureButton *)AllocateWithFallbackHandler();
+          pTVar23 = (T2PictureButton *)__2_YAPAXI_Z();
           ppTStack_48 = (TPictureButton **)0x18;
           if (pTVar23 == (T2PictureButton *)0x0) {
             piVar28 = (int *)0x0;
@@ -20545,7 +20550,7 @@ LAB_0043b084:
           (**(code **)(*g_pUiResourceContext + 0x1c8))();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTStack_54 = (TNoHiliteText *)AllocateWithFallbackHandler();
+          pTStack_54 = (TNoHiliteText *)__2_YAPAXI_Z();
           if (pTStack_54 == (TNoHiliteText *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -20579,7 +20584,7 @@ LAB_0043b084:
           (**(code **)(*g_pUiResourceContext + 0x1c8))();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTStack_6c = (T2PictureButton *)AllocateWithFallbackHandler();
+          pTStack_6c = (T2PictureButton *)__2_YAPAXI_Z();
           if (pTStack_6c == (T2PictureButton *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -20612,7 +20617,7 @@ LAB_0043b084:
           (**(code **)(*g_pUiResourceContext + 0x1c8))();
           g_pUiResourceContext = (int *)0x0;
           PopUiResourcePoolNode_00479A80();
-          pTVar23 = (T2PictureButton *)AllocateWithFallbackHandler();
+          pTVar23 = (T2PictureButton *)__2_YAPAXI_Z();
           if (pTVar23 == (T2PictureButton *)0x0) {
             piVar28 = (int *)0x0;
           }
@@ -20909,7 +20914,7 @@ LAB_0043b084:
     }
     if ((short)nEventCode != 0x5de) {
       if ((short)nEventCode != 0x3ea) goto LAB_0043b084;
-      pTVar13 = (TView *)AllocateWithFallbackHandler();
+      pTVar13 = (TView *)__2_YAPAXI_Z();
       local_4 = 0;
       if (pTVar13 == (TView *)0x0) {
         piVar28 = (int *)0x0;
@@ -21387,7 +21392,7 @@ int * InitializeArmyNavyReportViewsAndCommandTags(undefined4 param_1,short param
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062b486;
@@ -22542,7 +22547,7 @@ int * InitializeArmyNavyReportViewsAndCommandTags(undefined4 param_1,short param
         PopUiResourcePoolNode_00479A80();
         goto LAB_00447d9f;
       }
-      local_80 = (TMapDialog *)AllocateWithFallbackHandler();
+      local_80 = (TMapDialog *)__2_YAPAXI_Z();
       local_4 = 0;
       if (local_80 == (TMapDialog *)0x0) {
         piVar4 = (int *)0x0;
@@ -22585,7 +22590,7 @@ int * InitializeArmyNavyReportViewsAndCommandTags(undefined4 param_1,short param
       (**(code **)(*piVar4 + 0x1b8))();
       SetUiColorDescriptorGoldTriplet();
       g_pUiResourceContext = (int *)0x0;
-      this = (TArmyInfoView *)AllocateWithFallbackHandler();
+      this = (TArmyInfoView *)__2_YAPAXI_Z();
       uStack_18 = 1;
       if (this == (TArmyInfoView *)0x0) {
         piVar4 = (int *)0x0;
@@ -22624,7 +22629,7 @@ int * InitializeArmyNavyReportViewsAndCommandTags(undefined4 param_1,short param
       piVar4[0x1d] = piVar2[3];
       (**(code **)(*g_pUiResourceContext + 0x1c8))();
       g_pUiResourceContext = (int *)0x0;
-      pTVar3 = (TStaticText *)AllocateWithFallbackHandler();
+      pTVar3 = (TStaticText *)__2_YAPAXI_Z();
       uStack_30 = 2;
       if (pTVar3 == (TStaticText *)0x0) {
         piVar4 = (int *)0x0;
@@ -22661,7 +22666,7 @@ int * InitializeArmyNavyReportViewsAndCommandTags(undefined4 param_1,short param
       BindUiResourceTextAndStyle(0x5e5,0x24,s_Army_Report_006948e0,3,1,0x12);
       g_pUiResourceContext = (int *)0x0;
       PopUiResourcePoolNode_00479A80();
-      pTVar3 = (TStaticText *)AllocateWithFallbackHandler();
+      pTVar3 = (TStaticText *)__2_YAPAXI_Z();
       CStack_40.m_pchData = (char *)0x3;
       if (pTVar3 == (TStaticText *)0x0) {
         piVar4 = (int *)0x0;
@@ -24974,7 +24979,7 @@ LAB_00447dc8:
 // GHIDRA_COMMENT_END
 
 /* Builds the large shared command-control panel used by map/city interaction modes.
-   
+
    Algorithm:
    1. Creates tagged UI entries for common command buttons (next/done/back/disband/sleep and arrow
    groups).
@@ -24984,10 +24989,10 @@ LAB_00447dc8:
    controls.
    4. Wires tooltip/status text resources and secondary state labels.
    5. Finalizes control flags/layout and propagates context to child entries.
-   
+
    Parameters:
    - None (uses global UI resource context/pool).
-   
+
    Returns:
    - Pointer to root UI resource entry list for this panel. */
 
@@ -25000,7 +25005,7 @@ int * BuildMainMapAndCityCommandControls(void)
   TCivDescription *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_0000008c;
-  
+
   RegisterUiResourceEntry(0x70696374,0x63697479);
   SetUiResourceStateFlags();
   SetUiResourceLayoutValues(10);
@@ -25865,7 +25870,7 @@ int * BuildMainMapAndCityCommandControls(void)
 /* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* Build UI resource tree for the Civilian Report dialog shown when opening an already-ordered
    civilian.
-   
+
    Algorithm:
    1. Register root dialog container resource and set layout/state flags.
    2. Add background frame resource (report backdrop bitmap set).
@@ -25873,13 +25878,13 @@ int * BuildMainMapAndCityCommandControls(void)
    4. Add two action buttons with control tags 'okay' and 'canc'.
    5. Add info panel resource used for order/status description text.
    6. Finalize child resource propagation and return g_pUiResourceHead.
-   
+
    Parameters:
    - None.
-   
+
    Returns:
    - int* pointer to root UI resource tree (g_pUiResourceHead).
-   
+
    Tags and Anchors:
    - 'okay' => Confirm Orders.
    - 'canc' => Rescind Orders / close path.
@@ -25895,7 +25900,7 @@ int * BuildCivilianReportDialogResources(undefined4 param_1)
   undefined4 uStack00000008;
   TDeluxeText *pTStack0000003c;
   undefined4 in_stack_000000b0;
-  
+
   RegisterUiResourceEntry();
   SetUiResourceStateFlags();
   uStack00000008 = 0x440baa;
@@ -26030,7 +26035,7 @@ int * InitializeTGarrisonViewBitmapAndControlResources(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000094;
   undefined4 uStack0000009c;
-  
+
   uStack0000009c = 0xffffffff;
   RegisterUiResourceEntry(0x77696e64,0x57494e44);
   SetUiResourceStateFlags();
@@ -26134,7 +26139,7 @@ int * BuildGarrisonViewBaseAndTabCursorUiResources(void)
   TPageCorner *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000094;
-  
+
   RegisterUiResourceEntry(0x70696374,0x444c4f47);
   SetUiResourceStateFlags();
   SetUiResourceLayoutValues(10);
@@ -26221,7 +26226,7 @@ int * BuildConstructionOptionsDialogResources(undefined4 param_1)
   undefined4 *unaff_FS_OFFSET;
   TStaticText *pTStack00000014;
   undefined4 in_stack_00000088;
-  
+
   ApplyUiResourceColorTripletFromContext(1,1);
   ClearUiResourceContext();
   pTStack00000014 = (TStaticText *)AllocateUiResourceNode();
@@ -26273,7 +26278,7 @@ int * InitializeTNavyRosterBitmapAndControlResources(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000094;
   undefined4 uStack0000009c;
-  
+
   uStack0000009c = 0xffffffff;
   RegisterUiResourceEntry(0x77696e64,0x57494e44);
   SetUiResourceStateFlags();
@@ -26409,7 +26414,7 @@ int * BuildTurnEventDialogResources_2508(undefined4 param_1,short param_2)
   thunk_TPictureButton *local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = (thunk_TPictureButton *)*unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062b74c;
@@ -26418,7 +26423,7 @@ int * BuildTurnEventDialogResources_2508(undefined4 param_1,short param_2)
   if (param_2 == 0x2508) {
     piStack_38 = (int *)0xa0;
     ptStack_3c = (thunk_TPictureButton *)0x44a859;
-    this = (TControl *)AllocateWithFallbackHandler();
+    this = (TControl *)__2_YAPAXI_Z();
     local_4 = 0;
     if (this == (TControl *)0x0) {
       piVar3 = (int *)0x0;
@@ -26491,7 +26496,7 @@ int * BuildTurnEventDialogResources_2508(undefined4 param_1,short param_2)
     piStack_4c = (int *)0x90;
     g_pUiResourceContext = (int *)0x0;
     uStack_50 = 0x44a97d;
-    local_c = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    local_c = (thunk_TPictureButton *)__2_YAPAXI_Z();
     local_18 = 1;
     if (local_c == (thunk_TPictureButton *)0x0) {
       piVar3 = (int *)0x0;
@@ -26539,7 +26544,7 @@ int * BuildTurnEventDialogResources_2508(undefined4 param_1,short param_2)
     piVar3[0x1d] = piVar4[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_24 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    local_24 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (local_24 == (TUpDownPictureButton *)0x0) {
       piVar3 = (int *)0x0;
     }
@@ -26583,7 +26588,7 @@ int * BuildTurnEventDialogResources_2508(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24c2,0);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    ptStack_3c = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+    ptStack_3c = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
     puStack_48 = (undefined4 *)0x3;
     if (ptStack_3c == (thunk_TPictureButton *)0x0) {
       piVar3 = (int *)0x0;
@@ -26620,7 +26625,7 @@ int * BuildTurnEventDialogResources_2508(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))(0x2508,0);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    ptStack_54 = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+    ptStack_54 = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
     if (ptStack_54 == (thunk_TPictureButton *)0x0) {
       uVar5 = 0;
     }
@@ -26636,7 +26641,7 @@ int * BuildTurnEventDialogResources_2508(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))(0x251c,0);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_00 = (TDeluxeText *)AllocateWithFallbackHandler(0xa4);
+    this_00 = (TDeluxeText *)__2_YAPAXI_Z(0xa4);
     if (this_00 == (TDeluxeText *)0x0) {
       uVar5 = 0;
     }
@@ -26729,7 +26734,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
   TNoHilitePicture *local_c;
   TNoHilitePicture *pTStack_8;
   undefined4 local_4;
-  
+
   local_c = (TNoHilitePicture *)*unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   pTStack_8 = (TNoHilitePicture *)&LAB_0062ba10;
@@ -26739,7 +26744,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
   case 0x5e3:
     pTStack_38 = (TStaticText *)0xa0;
     pTStack_3c = (TUpDownPictureButton *)0x44bd9f;
-    pTVar13 = (TControl *)AllocateWithFallbackHandler();
+    pTVar13 = (TControl *)__2_YAPAXI_Z();
     local_4 = 0xd;
     if (pTVar13 == (TControl *)0x0) {
       piVar17 = (int *)0x0;
@@ -26810,7 +26815,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTStack_4c = (TNoHilitePicture *)0x94;
     g_pUiResourceContext = (int *)0x0;
     uStack_50 = 0x44bec5;
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     local_18 = 0xe;
     local_c = pTVar8;
     if (pTVar8 == (TNoHilitePicture *)0x0) {
@@ -26858,7 +26863,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     piVar17[0x1d] = piVar6[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_24 = (TStaticText *)AllocateWithFallbackHandler();
+    local_24 = (TStaticText *)__2_YAPAXI_Z();
     if (local_24 == (TStaticText *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -26899,7 +26904,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar15 = (TEditText *)__2_YAPAXI_Z();
     uStack_40 = 0x10;
     if (pTVar15 == (TEditText *)0x0) {
       piVar17 = (int *)0x0;
@@ -26940,7 +26945,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     *(undefined2 *)(piVar17 + 0x27) = 0x1e;
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_44 = (TStaticText *)AllocateWithFallbackHandler();
+    pTStack_44 = (TStaticText *)__2_YAPAXI_Z();
     uStack_50 = 0x11;
     if (pTStack_44 == (TStaticText *)0x0) {
       piVar17 = (int *)0x0;
@@ -26978,7 +26983,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_54 = (TEditText *)AllocateWithFallbackHandler();
+    pTStack_54 = (TEditText *)__2_YAPAXI_Z();
     if (pTStack_54 == (TEditText *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27011,7 +27016,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar14 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar14 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar14 == (TUpDownPictureButton *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27045,7 +27050,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar14 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar14 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar14 == (TUpDownPictureButton *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27084,7 +27089,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
   case 0x5e4:
     pTStack_38 = (TStaticText *)0x60;
     pTStack_3c = (TUpDownPictureButton *)0x44c6b7;
-    this = (TView *)AllocateWithFallbackHandler();
+    this = (TView *)__2_YAPAXI_Z();
     local_4 = 0x15;
     if (this == (TView *)0x0) {
       piVar17 = (int *)0x0;
@@ -27135,7 +27140,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     pTStack_4c = (TNoHilitePicture *)0x44c779;
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     uStack_14 = 0x16;
     pTStack_8 = pTVar8;
     if (pTVar8 == (TNoHilitePicture *)0x0) {
@@ -27175,8 +27180,8 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 1;
     piVar17 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    local_18 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    local_18 = __2_YAPAXI_Z();
     local_24 = (TStaticText *)0x17;
     if (local_18 == 0) {
       iVar7 = 0;
@@ -27197,7 +27202,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     piVar17[0x1d] = piVar6[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_20 = (TLineData *)AllocateWithFallbackHandler();
+    local_20 = (TLineData *)__2_YAPAXI_Z();
     if (local_20 == (TLineData *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27236,7 +27241,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_38 = (TStaticText *)AllocateWithFallbackHandler();
+    pTStack_38 = (TStaticText *)__2_YAPAXI_Z();
     pTStack_44 = (TStaticText *)0x19;
     if (pTStack_38 == (TStaticText *)0x0) {
       piVar17 = (int *)0x0;
@@ -27273,7 +27278,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_48 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTStack_48 = (TNoHilitePicture *)__2_YAPAXI_Z();
     pTStack_54 = (TEditText *)0x1a;
     if (pTStack_48 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
@@ -27309,7 +27314,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     ppTStack_6c = (TStaticText **)0x1b;
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
@@ -27344,7 +27349,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27379,7 +27384,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27414,7 +27419,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27449,7 +27454,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27484,7 +27489,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27519,7 +27524,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27554,7 +27559,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27590,7 +27595,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27629,7 +27634,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27668,7 +27673,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar8 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTVar8 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27707,7 +27712,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_168 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTStack_168 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTStack_168 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27746,7 +27751,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_180 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTStack_180 = (TNoHilitePicture *)__2_YAPAXI_Z();
     if (pTStack_180 == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27784,7 +27789,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_198 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTStack_198 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTStack_198 == (TDropShadowText *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -27818,7 +27823,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     BindUiResourceTextAndStyle(0x3e9,0xffffffff);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar9 = (TDropShadowText *)__2_YAPAXI_Z();
     puStack_1b4 = (undefined1 *)0x29;
     if (pTVar9 == (TDropShadowText *)0x0) {
       piVar17 = (int *)0x0;
@@ -27856,7 +27861,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     BindUiResourceTextAndStyle(0x3e9,0xffffffff,&g_szEmptyString,0,0,0);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar9 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar9 == (TDropShadowText *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -28372,7 +28377,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
   case 0x5e6:
     pTStack_38 = (TStaticText *)0xa0;
     pTStack_3c = (TUpDownPictureButton *)0x44afd8;
-    pTVar13 = (TControl *)AllocateWithFallbackHandler();
+    pTVar13 = (TControl *)__2_YAPAXI_Z();
     local_4 = 0;
     if (pTVar13 == (TControl *)0x0) {
       piVar17 = (int *)0x0;
@@ -28443,7 +28448,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTStack_4c = (TNoHilitePicture *)0x90;
     g_pUiResourceContext = (int *)0x0;
     uStack_50 = 0x44b0fc;
-    local_c = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    local_c = (TNoHilitePicture *)__2_YAPAXI_Z();
     local_18 = 1;
     if (local_c == (TNoHilitePicture *)0x0) {
       piVar17 = (int *)0x0;
@@ -28489,7 +28494,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     piVar17[0x1d] = piVar6[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_24 = (TStaticText *)AllocateWithFallbackHandler();
+    local_24 = (TStaticText *)__2_YAPAXI_Z();
     if (local_24 == (TStaticText *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -28530,7 +28535,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_3c = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTStack_3c = (TUpDownPictureButton *)__2_YAPAXI_Z();
     pTStack_48 = (TNoHilitePicture *)0x3;
     if (pTStack_3c == (TUpDownPictureButton *)0x0) {
       piVar17 = (int *)0x0;
@@ -28565,7 +28570,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_54 = (TEditText *)AllocateWithFallbackHandler();
+    pTStack_54 = (TEditText *)__2_YAPAXI_Z();
     if (pTStack_54 == (TEditText *)0x0) {
       piVar17 = (int *)0x0;
     }
@@ -28589,8 +28594,8 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 0;
     piVar17 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    iVar7 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    iVar7 = __2_YAPAXI_Z();
     if (iVar7 == 0) {
       iVar7 = 0;
     }
@@ -28615,7 +28620,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     *(undefined2 *)(piVar17 + 0x27) = 0xff;
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar16 = (TCzechBox *)AllocateWithFallbackHandler();
+    pTVar16 = (TCzechBox *)__2_YAPAXI_Z();
     if (pTVar16 == (TCzechBox *)0x0) {
       pTVar16 = (TCzechBox *)0x0;
     }
@@ -28651,7 +28656,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar16 = (TCzechBox *)AllocateWithFallbackHandler();
+    pTVar16 = (TCzechBox *)__2_YAPAXI_Z();
     if (pTVar16 == (TCzechBox *)0x0) {
       pTVar16 = (TCzechBox *)0x0;
     }
@@ -28690,7 +28695,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar16 = (TCzechBox *)AllocateWithFallbackHandler();
+    pTVar16 = (TCzechBox *)__2_YAPAXI_Z();
     if (pTVar16 == (TCzechBox *)0x0) {
       pTVar16 = (TCzechBox *)0x0;
     }
@@ -28729,7 +28734,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar16 = (TCzechBox *)AllocateWithFallbackHandler();
+    pTVar16 = (TCzechBox *)__2_YAPAXI_Z();
     if (pTVar16 == (TCzechBox *)0x0) {
       pTVar16 = (TCzechBox *)0x0;
     }
@@ -28768,7 +28773,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar16 = (TCzechBox *)AllocateWithFallbackHandler();
+    pTVar16 = (TCzechBox *)__2_YAPAXI_Z();
     pTStack_c4 = pTVar16;
     if (pTVar16 == (TCzechBox *)0x0) {
       pTVar16 = (TCzechBox *)0x0;
@@ -28808,7 +28813,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar16 = (TCzechBox *)AllocateWithFallbackHandler();
+    pTVar16 = (TCzechBox *)__2_YAPAXI_Z();
     pTStack_dc = pTVar16;
     if (pTVar16 == (TCzechBox *)0x0) {
       pTVar16 = (TCzechBox *)0x0;
@@ -28848,7 +28853,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar16 = (TCzechBox *)AllocateWithFallbackHandler();
+    pTVar16 = (TCzechBox *)__2_YAPAXI_Z();
     pTStack_f4 = pTVar16;
     if (pTVar16 == (TCzechBox *)0x0) {
       pTVar16 = (TCzechBox *)0x0;
@@ -29479,7 +29484,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
   TShipyardView *local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = (TShipyardView *)*unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062bcba;
@@ -29488,7 +29493,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
   if (param_2 == 0x23f7) {
     piStack_38 = (int *)0xa0;
     uStack_3c = 0x44fc09;
-    this = (TControl *)AllocateWithFallbackHandler();
+    this = (TControl *)__2_YAPAXI_Z();
     local_4 = 0;
     if (this == (TControl *)0x0) {
       piVar7 = (int *)0x0;
@@ -29561,7 +29566,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTStack_4c = (TCluster *)0xcc;
     g_pUiResourceContext = (int *)0x0;
     uStack_50 = 0x44fd2c;
-    local_c = (TShipyardView *)AllocateWithFallbackHandler();
+    local_c = (TShipyardView *)__2_YAPAXI_Z();
     local_18 = 1;
     if (local_c == (TShipyardView *)0x0) {
       piVar7 = (int *)0x0;
@@ -29609,7 +29614,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     piVar7[0x1d] = piVar8[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_24 = (TCluster *)AllocateWithFallbackHandler();
+    local_24 = (TCluster *)__2_YAPAXI_Z();
     if (local_24 == (TCluster *)0x0) {
       piVar7 = (int *)0x0;
     }
@@ -29650,7 +29655,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     piVar7[0x1d] = piVar8[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar9 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TCivilianButton *)__2_YAPAXI_Z();
     uStack_40 = 3;
     if (pTVar9 == (TCivilianButton *)0x0) {
       pTVar9 = (TCivilianButton *)0x0;
@@ -29690,7 +29695,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_4c = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_4c = (TCluster *)__2_YAPAXI_Z();
     puStack_58 = (undefined1 *)0x4;
     if (pTStack_4c == (TCluster *)0x0) {
       piVar7 = (int *)0x0;
@@ -29731,7 +29736,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     piVar7[0x1d] = piVar8[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar10 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar10 = (TEditText *)__2_YAPAXI_Z();
     if (pTVar10 == (TEditText *)0x0) {
       pTVar10 = (TEditText *)0x0;
     }
@@ -29780,7 +29785,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(iVar1 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
     }
@@ -29821,7 +29826,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     pppuStack_98 = (undefined4 ***)0x7;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -29863,7 +29868,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TCivilianButton *)0x0) {
       pTVar9 = (TCivilianButton *)0x0;
     }
@@ -29904,7 +29909,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_bc = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_bc = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_bc == (TCluster *)0x0) {
       piVar7 = (int *)0x0;
     }
@@ -29941,7 +29946,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     piVar7[0x1d] = piVar8[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar10 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar10 = (TEditText *)__2_YAPAXI_Z();
     puStack_d8 = (undefined1 *)0xa;
     if (pTVar10 == (TEditText *)0x0) {
       pTVar10 = (TEditText *)0x0;
@@ -29993,7 +29998,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(iVar1 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_f0 = (undefined1 *)0xb;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -30036,7 +30041,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_108 = (undefined1 *)0xc;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -30078,7 +30083,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TCivilianButton *)0x0) {
       pTVar9 = (TCivilianButton *)0x0;
     }
@@ -30119,7 +30124,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_12c = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_12c = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_12c == (TCluster *)0x0) {
       piVar7 = (int *)0x0;
     }
@@ -30156,7 +30161,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     piVar7[0x1d] = piVar8[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar10 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar10 = (TEditText *)__2_YAPAXI_Z();
     puStack_148 = (undefined1 *)0xf;
     if (pTVar10 == (TEditText *)0x0) {
       pTVar10 = (TEditText *)0x0;
@@ -30208,7 +30213,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(iVar1 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_160 = (undefined1 *)0x10;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -30251,7 +30256,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_178 = (undefined1 *)0x11;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -30293,7 +30298,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TCivilianButton *)0x0) {
       pTVar9 = (TCivilianButton *)0x0;
     }
@@ -30334,7 +30339,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_19c = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_19c = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_19c == (TCluster *)0x0) {
       piVar7 = (int *)0x0;
     }
@@ -30371,7 +30376,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     piVar7[0x1d] = piVar8[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar10 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar10 = (TEditText *)__2_YAPAXI_Z();
     puStack_1b8 = (undefined1 *)0x14;
     if (pTVar10 == (TEditText *)0x0) {
       pTVar10 = (TEditText *)0x0;
@@ -30423,7 +30428,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(iVar1 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_1d0 = (undefined1 *)0x15;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -30466,7 +30471,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_1e8 = (undefined1 *)0x16;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -30508,7 +30513,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TCivilianButton *)0x0) {
       pTVar9 = (TCivilianButton *)0x0;
     }
@@ -30549,7 +30554,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_20c = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_20c = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_20c == (TCluster *)0x0) {
       piVar7 = (int *)0x0;
     }
@@ -30586,7 +30591,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     piVar7[0x1d] = piVar8[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar10 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar10 = (TEditText *)__2_YAPAXI_Z();
     puStack_228 = (undefined1 *)0x19;
     if (pTVar10 == (TEditText *)0x0) {
       pTVar10 = (TEditText *)0x0;
@@ -30638,7 +30643,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(iVar1 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_240 = (undefined1 *)0x1a;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -30681,7 +30686,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_258 = (undefined1 *)0x1b;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -30723,7 +30728,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TCivilianButton *)0x0) {
       pTVar9 = (TCivilianButton *)0x0;
     }
@@ -30764,7 +30769,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_27c = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_27c = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_27c == (TCluster *)0x0) {
       piVar7 = (int *)0x0;
     }
@@ -30801,7 +30806,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     piVar7[0x1d] = piVar8[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar10 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar10 = (TEditText *)__2_YAPAXI_Z();
     puStack_298 = (undefined1 *)0x1e;
     if (pTVar10 == (TEditText *)0x0) {
       pTVar10 = (TEditText *)0x0;
@@ -30853,7 +30858,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(iVar1 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_2b0 = (undefined1 *)0x1f;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -30895,7 +30900,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_2c8 = (undefined1 *)0x20;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar7 = (int *)0x0;
@@ -30931,7 +30936,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTVar9 != (TCivilianButton *)0x0) {
       TRadioPictureButton::TRadioPictureButton(pTVar9);
       pTVar9->vftable = (TCivilianButtonVtbl *)&TRadioPictureButton::_vftable_;
@@ -30945,7 +30950,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar12 = (TCluster *)AllocateWithFallbackHandler();
+    pTVar12 = (TCluster *)__2_YAPAXI_Z();
     if (pTVar12 != (TCluster *)0x0) {
       TCluster::ConstructUiResourceEntryType4B0C0(pTVar12);
     }
@@ -30956,7 +30961,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     SetUiResourceLayoutValues();
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar13 = (TNumberText *)AllocateWithFallbackHandler();
+    pTVar13 = (TNumberText *)__2_YAPAXI_Z();
     if (pTVar13 != (TNumberText *)0x0) {
       TNumberText::ConstructUiNumericTextEntry(pTVar13);
     }
@@ -30969,7 +30974,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     DispatchUiResourceContextVslot1E4WithCoords();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar11 != (TUpDownPictureButton *)0x0) {
       TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
@@ -30979,7 +30984,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     ppuStack_2f0 = (undefined1 **)0x25;
     if (pTVar11 != (TUpDownPictureButton *)0x0) {
       TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
@@ -30992,7 +30997,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_2ec = (TOverlayRadioButton *)AllocateWithFallbackHandler();
+    pTStack_2ec = (TOverlayRadioButton *)__2_YAPAXI_Z();
     if (pTStack_2ec == (TOverlayRadioButton *)0x0) {
       uVar14 = 0;
     }
@@ -31006,7 +31011,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar12 = (TCluster *)AllocateWithFallbackHandler();
+    pTVar12 = (TCluster *)__2_YAPAXI_Z();
     if (pTVar12 == (TCluster *)0x0) {
       uVar14 = 0;
     }
@@ -31018,7 +31023,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     SetUiResourceLayoutValues();
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar13 = (TNumberText *)AllocateWithFallbackHandler();
+    pTVar13 = (TNumberText *)__2_YAPAXI_Z();
     if (pTVar13 == (TNumberText *)0x0) {
       uVar14 = 0;
     }
@@ -31034,7 +31039,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     DispatchUiResourceContextVslot1E4WithCoords();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       uVar14 = 0;
     }
@@ -31047,7 +31052,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       uVar14 = 0;
     }
@@ -31062,7 +31067,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar15 = (TStaticText *)__2_YAPAXI_Z();
     if (pTVar15 == (TStaticText *)0x0) {
       uVar14 = 0;
     }
@@ -31076,7 +31081,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     BindUiResourceTextAndStyle(4000,0xffffffff,&g_szEmptyString,3,1,9);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar15 = (TStaticText *)__2_YAPAXI_Z();
     if (pTVar15 == (TStaticText *)0x0) {
       uVar14 = 0;
     }
@@ -31090,7 +31095,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     BindUiResourceTextAndStyle(4000,1,s_Cost__006949d8,3,1,0xc);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar15 = (TStaticText *)__2_YAPAXI_Z();
     if (pTVar15 == (TStaticText *)0x0) {
       uVar14 = 0;
     }
@@ -31104,7 +31109,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     BindUiResourceTextAndStyle(4000,2,s_Available__006949c8,3,1,0xc);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar15 = (TStaticText *)__2_YAPAXI_Z();
     if (pTVar15 == (TStaticText *)0x0) {
       uVar14 = 0;
     }
@@ -31118,7 +31123,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     BindUiResourceTextAndStyle(4000,0xffffffff,&g_szEmptyString,3,0,10);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar15 = (TStaticText *)__2_YAPAXI_Z();
     if (pTVar15 == (TStaticText *)0x0) {
       uVar14 = 0;
     }
@@ -31132,7 +31137,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     BindUiResourceTextAndStyle(4000,4,s_Shipyard_006949bc,3,1,0x18);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_00 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    this_00 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (this_00 == (thunk_TPictureButton *)0x0) {
       uVar14 = 0;
     }
@@ -31239,7 +31244,7 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
   undefined4 local_c;
   TNoHilitePicture *pTStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   pTStack_8 = (TNoHilitePicture *)&LAB_0062c2e5;
@@ -31631,7 +31636,7 @@ switchD_004543e3_caseD_5de:
       *unaff_FS_OFFSET = local_c;
       return (int *)0x0;
     }
-    pTVar12 = (TView *)AllocateWithFallbackHandler();
+    pTVar12 = (TView *)__2_YAPAXI_Z();
     local_4 = 0x19;
     if (pTVar12 == (TView *)0x0) {
       piVar27 = (int *)0x0;
@@ -31670,7 +31675,7 @@ switchD_004543e3_caseD_5de:
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     pcStack_4c = (char *)0x458db4;
-    pTVar25 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar25 = (TNoHilitePicture *)__2_YAPAXI_Z();
     uStack_14 = 0x1a;
     pTStack_8 = pTVar25;
     if (pTVar25 == (TNoHilitePicture *)0x0) {
@@ -31711,8 +31716,8 @@ switchD_004543e3_caseD_5de:
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar27 + 0x4d) = 1;
     piVar27 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    local_18 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    local_18 = __2_YAPAXI_Z();
     local_24 = 0x1b;
     if (local_18 == 0) {
       iVar8 = 0;
@@ -31734,7 +31739,7 @@ switchD_004543e3_caseD_5de:
     piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar10 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar10 = (TStaticText *)__2_YAPAXI_Z();
     local_20 = pTVar10;
     if (pTVar10 == (TStaticText *)0x0) {
       pTVar10 = (TStaticText *)0x0;
@@ -31775,7 +31780,7 @@ switchD_004543e3_caseD_5de:
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 0;
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar13 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTVar13 = (TPictureButton *)__2_YAPAXI_Z();
     if (pTVar13 == (TPictureButton *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -31810,7 +31815,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_48 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTStack_48 = (TPictureButton *)__2_YAPAXI_Z();
     puStack_54 = (undefined1 *)0x1f;
     if (pTStack_48 == (TPictureButton *)0x0) {
       piVar27 = (int *)0x0;
@@ -31847,7 +31852,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_08 = (TMapKey *)AllocateWithFallbackHandler();
+    this_08 = (TMapKey *)__2_YAPAXI_Z();
     puStack_6c = (undefined1 *)0x20;
     if (this_08 == (TMapKey *)0x0) {
       this_08 = (TMapKey *)0x0;
@@ -33432,7 +33437,7 @@ switchD_004543e3_caseD_5de:
     ClearUiResourceContext();
     break;
   case 0x5e0:
-    pTVar12 = (TView *)AllocateWithFallbackHandler();
+    pTVar12 = (TView *)__2_YAPAXI_Z();
     local_4 = 0x15;
     if (pTVar12 == (TView *)0x0) {
       piVar27 = (int *)0x0;
@@ -33471,7 +33476,7 @@ switchD_004543e3_caseD_5de:
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     pcStack_4c = (char *)0x455a7a;
-    pTVar25 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar25 = (TNoHilitePicture *)__2_YAPAXI_Z();
     uStack_14 = 0x16;
     pTStack_8 = pTVar25;
     if (pTVar25 == (TNoHilitePicture *)0x0) {
@@ -33511,8 +33516,8 @@ switchD_004543e3_caseD_5de:
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar27 + 0x4d) = 1;
     piVar27 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    local_18 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    local_18 = __2_YAPAXI_Z();
     local_24 = 0x17;
     if (local_18 == 0) {
       iVar8 = 0;
@@ -33534,7 +33539,7 @@ switchD_004543e3_caseD_5de:
     piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_20 = (TStaticText *)AllocateWithFallbackHandler();
+    local_20 = (TStaticText *)__2_YAPAXI_Z();
     if (local_20 == (TStaticText *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -33580,7 +33585,7 @@ switchD_004543e3_caseD_5de:
     BindUiResourceTextAndStyle();
     goto LAB_00455cdb;
   case 0x5e2:
-    pTVar12 = (TView *)AllocateWithFallbackHandler();
+    pTVar12 = (TView *)__2_YAPAXI_Z();
     local_4 = 0;
     if (pTVar12 == (TView *)0x0) {
       piVar27 = (int *)0x0;
@@ -33619,7 +33624,7 @@ switchD_004543e3_caseD_5de:
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     pcStack_4c = (char *)0x4544ad;
-    pTVar25 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar25 = (TNoHilitePicture *)__2_YAPAXI_Z();
     uStack_14 = 1;
     pTStack_8 = pTVar25;
     if (pTVar25 == (TNoHilitePicture *)0x0) {
@@ -33659,8 +33664,8 @@ switchD_004543e3_caseD_5de:
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar27 + 0x4d) = 1;
     piVar27 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    local_18 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    local_18 = __2_YAPAXI_Z();
     local_24 = 2;
     if (local_18 == 0) {
       iVar8 = 0;
@@ -33682,7 +33687,7 @@ switchD_004543e3_caseD_5de:
     piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_20 = (TStaticText *)AllocateWithFallbackHandler();
+    local_20 = (TStaticText *)__2_YAPAXI_Z();
     if (local_20 == (TStaticText *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -33723,7 +33728,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar13 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTVar13 = (TPictureButton *)__2_YAPAXI_Z();
     if (pTVar13 == (TPictureButton *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -33756,7 +33761,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_50 = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTStack_50 = (TMyStaticText *)__2_YAPAXI_Z();
     if (pTStack_50 == (TMyStaticText *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -33790,7 +33795,7 @@ switchD_004543e3_caseD_5de:
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar17 = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTVar17 = (TMyStaticText *)__2_YAPAXI_Z();
     puStack_6c = (undefined1 *)0x6;
     if (pTVar17 == (TMyStaticText *)0x0) {
       piVar27 = (int *)0x0;
@@ -33826,7 +33831,7 @@ switchD_004543e3_caseD_5de:
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar17 = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTVar17 = (TMyStaticText *)__2_YAPAXI_Z();
     if (pTVar17 == (TMyStaticText *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -33860,7 +33865,7 @@ switchD_004543e3_caseD_5de:
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar17 = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTVar17 = (TMyStaticText *)__2_YAPAXI_Z();
     if (pTVar17 == (TMyStaticText *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -33894,7 +33899,7 @@ switchD_004543e3_caseD_5de:
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar18 = (TCluster *)AllocateWithFallbackHandler();
+    pTVar18 = (TCluster *)__2_YAPAXI_Z();
     if (pTVar18 == (TCluster *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -33926,7 +33931,7 @@ switchD_004543e3_caseD_5de:
     piVar27[0x1d] = piVar26[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar19 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar19 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTVar19 == (TCivilianButton *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -33960,7 +33965,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar19 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTVar19 == (TCivilianButton *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -33999,7 +34004,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar19 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTVar19 == (TCivilianButton *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -34038,7 +34043,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTVar19 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTVar19 == (TCivilianButton *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -34078,7 +34083,7 @@ switchD_004543e3_caseD_5de:
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_100 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTStack_100 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTStack_100 == (TUpDownPictureButton *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -34117,7 +34122,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_118 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTStack_118 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTStack_118 == (TUpDownPictureButton *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -34156,7 +34161,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_130 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTStack_130 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTStack_130 == (TUpDownPictureButton *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -34195,7 +34200,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_148 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTStack_148 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTStack_148 == (TUpDownPictureButton *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -34234,7 +34239,7 @@ switchD_004543e3_caseD_5de:
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_160 = (TStaticText *)AllocateWithFallbackHandler();
+    pTStack_160 = (TStaticText *)__2_YAPAXI_Z();
     if (pTStack_160 == (TStaticText *)0x0) {
       piVar27 = (int *)0x0;
     }
@@ -34273,7 +34278,7 @@ switchD_004543e3_caseD_5de:
     BindUiResourceTextAndStyle(0x514,0xf);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar20 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar20 = (TEditText *)__2_YAPAXI_Z();
     puStack_17c = (undefined1 *)0x13;
     if (pTVar20 == (TEditText *)0x0) {
       piVar27 = (int *)0x0;
@@ -34314,7 +34319,7 @@ switchD_004543e3_caseD_5de:
     *(undefined2 *)(piVar27 + 0x27) = 0xff;
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar28 = (TDeluxeText *)AllocateWithFallbackHandler();
+    pTVar28 = (TDeluxeText *)__2_YAPAXI_Z();
     if (pTVar28 == (TDeluxeText *)0x0) {
       pTVar28 = (TDeluxeText *)0x0;
     }
@@ -34563,7 +34568,7 @@ int * BuildDifficultyAndNamesSetupUiResources(void)
   TRadioText *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000040;
-  
+
   RegisterUiResourceEntry(0x70696374,0x6f6b6179);
   SetUiResourceStateFlags();
   SetUiResourceLayoutValues();
@@ -34826,7 +34831,7 @@ int * BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000028;
   undefined4 uStack00000030;
-  
+
   uStack00000030 = 0xffffffff;
   RegisterUiResourceEntry(0x76696577,0x62617365);
   SetUiResourceStateFlags();
@@ -34983,7 +34988,7 @@ int * BuildMainStatsScoreboardAndDoneUiResourceTree(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000028;
   undefined4 uStack00000030;
-  
+
   uStack00000030 = 0xffffffff;
   RegisterUiResourceEntry(0x76696577,0x62617365);
   SetUiResourceStateFlags();
@@ -35485,7 +35490,7 @@ int * BuildMainStatsScoreboardAndDoneUiResourceTree(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000028;
   undefined4 uStack00000030;
-  
+
   uStack00000030 = 0xffffffff;
   RegisterUiResourceEntry(0x76696577,0x62617365);
   SetUiResourceStateFlags();
@@ -35996,8 +36001,8 @@ int * AllocateAndConstructTViewDerivedState_00458ced
   undefined4 uVar10;
   undefined4 **ppuStack_48;
   undefined4 *puStack_20;
-  
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     piVar7 = (int *)0x0;
   }
@@ -36021,7 +36026,7 @@ int * AllocateAndConstructTViewDerivedState_00458ced
   (**(code **)(iVar4 + 0xa8))();
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     pTVar3 = (TDeluxeText *)0x0;
   }
@@ -36051,8 +36056,8 @@ int * AllocateAndConstructTViewDerivedState_00458ced
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar7 + 0x4d) = 1;
   piVar7 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     iVar4 = 0;
   }
@@ -36071,7 +36076,7 @@ int * AllocateAndConstructTViewDerivedState_00458ced
   piVar7[0x1c] = piVar5[2];
   piVar7[0x1d] = piVar5[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   param_2 = 0x1c;
   uVar9 = SUB41(unaff_EBX,0);
   if (pTVar3 == unaff_EBX) {
@@ -36106,7 +36111,7 @@ int * AllocateAndConstructTViewDerivedState_00458ced
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = uVar9;
   PopUiResourcePoolNode_00479A80();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     piVar7 = (int *)0x0;
   }
@@ -36144,7 +36149,7 @@ int * AllocateAndConstructTViewDerivedState_00458ced
   piVar7[0x1d] = piVar5[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   puStack_20 = (undefined4 *)0x1f;
   if (pTVar3 == unaff_EBX) {
     piVar7 = (int *)0x0;
@@ -36180,7 +36185,7 @@ int * AllocateAndConstructTViewDerivedState_00458ced
   piVar7[0x1d] = piVar5[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     pTVar3 = (TDeluxeText *)0x0;
   }
@@ -36292,7 +36297,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   undefined4 uVar10;
   undefined4 **ppuStack_48;
   undefined4 *puStack_20;
-  
+
   uStack00000030 = 0xffffffff;
   piVar7 = unaff_EDI;
   if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
@@ -36310,7 +36315,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   (**(code **)(iVar4 + 0xa8))();
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     pTVar3 = (TDeluxeText *)0x0;
   }
@@ -36340,8 +36345,8 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar7 + 0x4d) = 1;
   piVar7 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     iVar4 = 0;
   }
@@ -36360,7 +36365,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   piVar7[0x1c] = piVar5[2];
   piVar7[0x1d] = piVar5[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   param_2 = 0x1c;
   uVar9 = SUB41(unaff_EBX,0);
   if (pTVar3 == unaff_EBX) {
@@ -36395,7 +36400,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = uVar9;
   PopUiResourcePoolNode_00479A80();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     piVar7 = (int *)0x0;
   }
@@ -36433,7 +36438,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   piVar7[0x1d] = piVar5[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   puStack_20 = (undefined4 *)0x1f;
   if (pTVar3 == unaff_EBX) {
     piVar7 = (int *)0x0;
@@ -36469,7 +36474,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   piVar7[0x1d] = piVar5[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     pTVar3 = (TDeluxeText *)0x0;
   }
@@ -36581,7 +36586,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   undefined4 uVar10;
   undefined4 **ppuStack_48;
   undefined4 *puStack_20;
-  
+
   uStack00000030 = 0xffffffff;
   piVar7 = unaff_EDI;
   if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
@@ -36599,7 +36604,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   (**(code **)(iVar4 + 0xa8))();
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     pTVar3 = (TDeluxeText *)0x0;
   }
@@ -36629,8 +36634,8 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar7 + 0x4d) = 1;
   piVar7 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     iVar4 = 0;
   }
@@ -36649,7 +36654,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   piVar7[0x1c] = piVar5[2];
   piVar7[0x1d] = piVar5[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   param_2 = 0x1c;
   uVar9 = SUB41(unaff_EBX,0);
   if (pTVar3 == unaff_EBX) {
@@ -36684,7 +36689,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = uVar9;
   PopUiResourcePoolNode_00479A80();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     piVar7 = (int *)0x0;
   }
@@ -36722,7 +36727,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   piVar7[0x1d] = piVar5[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   puStack_20 = (undefined4 *)0x1f;
   if (pTVar3 == unaff_EBX) {
     piVar7 = (int *)0x0;
@@ -36758,7 +36763,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   piVar7[0x1d] = piVar5[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar3 = (TDeluxeText *)__2_YAPAXI_Z();
   if (pTVar3 == unaff_EBX) {
     pTVar3 = (TDeluxeText *)0x0;
   }
@@ -36958,7 +36963,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
   thunk_TPictureButton *local_c;
   TOffLimitsPicture *pTStack_8;
   undefined4 local_4;
-  
+
   local_c = (thunk_TPictureButton *)*unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   pTStack_8 = (TOffLimitsPicture *)&LAB_0062c595;
@@ -36967,7 +36972,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
   if (param_2 == 0xed8) {
     piStack_38 = (int *)0x60;
     pTStack_3c = (TMapKey *)0x45bded;
-    this_00 = (TView *)AllocateWithFallbackHandler();
+    this_00 = (TView *)__2_YAPAXI_Z();
     local_4 = 7;
     if (this_00 == (TView *)0x0) {
       piVar12 = (int *)0x0;
@@ -37018,7 +37023,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     pTStack_4c = (TMyStaticText *)0x45beaa;
-    pTVar16 = (TOffLimitsPicture *)AllocateWithFallbackHandler();
+    pTVar16 = (TOffLimitsPicture *)__2_YAPAXI_Z();
     uStack_14 = 8;
     pTStack_8 = pTVar16;
     if (pTVar16 == (TOffLimitsPicture *)0x0) {
@@ -37059,8 +37064,8 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar12 + 0x4d) = 1;
     piVar12 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    local_18 = (TDeluxeText *)AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    local_18 = (TDeluxeText *)__2_YAPAXI_Z();
     local_24 = (TUpDownPictureButton *)0x9;
     if (local_18 == (TDeluxeText *)0x0) {
       iVar17 = 0;
@@ -37081,7 +37086,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     piVar12[0x1d] = piVar14[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar18 = (TDeluxeText *)AllocateWithFallbackHandler();
+    pTVar18 = (TDeluxeText *)__2_YAPAXI_Z();
     local_20 = pTVar18;
     if (pTVar18 == (TDeluxeText *)0x0) {
       pTVar18 = (TDeluxeText *)0x0;
@@ -37111,7 +37116,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 0;
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_01 = (TacticalBattleView *)AllocateWithFallbackHandler();
+    this_01 = (TacticalBattleView *)__2_YAPAXI_Z();
     pTStack_3c = (TMapKey *)0xb;
     if (this_01 == (TacticalBattleView *)0x0) {
       this_01 = (TacticalBattleView *)0x0;
@@ -37146,7 +37151,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     puStack_84 = (undefined4 *)0x45c1ac;
-    pTVar19 = (TCluster *)AllocateWithFallbackHandler();
+    pTVar19 = (TCluster *)__2_YAPAXI_Z();
     pTStack_4c = (TMyStaticText *)0xc;
     pTStack_40 = pTVar19;
     if (pTVar19 == (TCluster *)0x0) {
@@ -37194,7 +37199,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     piVar12[0x1d] = piVar14[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTStack_50 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTStack_50 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTStack_50 == (TUpDownPictureButton *)0x0) {
       piVar12 = (int *)0x0;
     }
@@ -37228,7 +37233,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar20 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar20 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar20 == (TUpDownPictureButton *)0x0) {
       piVar12 = (int *)0x0;
     }
@@ -37269,7 +37274,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar20 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar20 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     piStack_8c = (int *)0xf;
     if (pTVar20 == (TUpDownPictureButton *)0x0) {
       piVar12 = (int *)0x0;
@@ -37310,7 +37315,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar20 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar20 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar20 == (TUpDownPictureButton *)0x0) {
       piVar12 = (int *)0x0;
     }
@@ -37349,7 +37354,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    ptStack_b0 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptStack_b0 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (ptStack_b0 == (thunk_TPictureButton *)0x0) {
       piVar12 = (int *)0x0;
     }
@@ -37388,7 +37393,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    ptStack_c8 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptStack_c8 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (ptStack_c8 == (thunk_TPictureButton *)0x0) {
       piVar12 = (int *)0x0;
     }
@@ -37427,7 +37432,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_e0 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTStack_e0 = (TPictureButton *)__2_YAPAXI_Z();
     if (pTStack_e0 == (TPictureButton *)0x0) {
       piVar12 = (int *)0x0;
     }
@@ -37467,7 +37472,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))(0xed6,0);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    ptStack_f8 = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+    ptStack_f8 = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
     if (ptStack_f8 == (thunk_TPictureButton *)0x0) {
       piVar12 = (int *)0x0;
     }
@@ -37506,7 +37511,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
   else if (param_2 == 0xeed) {
     piStack_38 = (int *)0xa0;
     pTStack_3c = (TMapKey *)0x45b757;
-    pTVar11 = (TControl *)AllocateWithFallbackHandler();
+    pTVar11 = (TControl *)__2_YAPAXI_Z();
     local_4 = 0;
     if (pTVar11 == (TControl *)0x0) {
       piVar12 = (int *)0x0;
@@ -37577,7 +37582,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     pTStack_4c = (TMyStaticText *)0x90;
     g_pUiResourceContext = (int *)0x0;
     pTStack_50 = (TUpDownPictureButton *)0x45b87b;
-    ptVar13 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar13 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     local_18 = (TDeluxeText *)0x1;
     local_c = ptVar13;
     if (ptVar13 == (thunk_TPictureButton *)0x0) {
@@ -37624,7 +37629,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     piVar12[0x1d] = piVar14[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_24 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    local_24 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (local_24 == (TUpDownPictureButton *)0x0) {
       piVar12 = (int *)0x0;
     }
@@ -37662,7 +37667,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TMapKey *)AllocateWithFallbackHandler();
+    pTVar15 = (TMapKey *)__2_YAPAXI_Z();
     pTStack_48 = (TOffLimitsPicture *)0x3;
     pTStack_3c = pTVar15;
     if (pTVar15 == (TMapKey *)0x0) {
@@ -37708,7 +37713,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     piStack_8c = (int *)0x45bb9c;
     PopUiResourcePoolNode_00479A80();
     piStack_8c = (int *)0x94;
-    pTStack_4c = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTStack_4c = (TMyStaticText *)__2_YAPAXI_Z();
     if (pTStack_4c == (TMyStaticText *)0x0) {
       piVar12 = (int *)0x0;
     }
@@ -37748,7 +37753,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this = (TMyStaticText *)AllocateWithFallbackHandler();
+    this = (TMyStaticText *)__2_YAPAXI_Z();
     if (this == (TMyStaticText *)0x0) {
       piVar12 = (int *)0x0;
     }
@@ -37798,7 +37803,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     }
     piStack_38 = (int *)0xa0;
     pTStack_3c = (TMapKey *)0x45b161;
-    pTVar11 = (TControl *)AllocateWithFallbackHandler();
+    pTVar11 = (TControl *)__2_YAPAXI_Z();
     local_4 = 0x15;
     if (pTVar11 == (TControl *)0x0) {
       piVar12 = (int *)0x0;
@@ -37863,7 +37868,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     g_pUiResourceContext = (int *)0x0;
     pTStack_48 = (TOffLimitsPicture *)0x90;
     pTStack_4c = (TMyStaticText *)0x45b266;
-    pTStack_8 = (TOffLimitsPicture *)AllocateWithFallbackHandler();
+    pTStack_8 = (TOffLimitsPicture *)__2_YAPAXI_Z();
     uStack_14 = 0x16;
     if (pTStack_8 != (TOffLimitsPicture *)0x0) {
       pTStack_48 = (TOffLimitsPicture *)0x45b280;
@@ -37892,7 +37897,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     pTStack_50 = (TUpDownPictureButton *)0x70;
     g_pUiResourceContext = (int *)0x0;
     puStack_54 = (undefined1 *)0x45b2eb;
-    pTStack_10 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTStack_10 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     local_1c = 0x17;
     if (pTStack_10 != (TUpDownPictureButton *)0x0) {
       pTStack_50 = (TUpDownPictureButton *)0x45b305;
@@ -37910,7 +37915,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     PopUiResourcePoolNode_00479A80();
     pTStack_50 = (TUpDownPictureButton *)0x94;
     puStack_54 = (undefined1 *)0x45b35d;
-    pTStack_10 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTStack_10 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     local_1c = 0x18;
     if (pTStack_10 != (TUpDownPictureButton *)0x0) {
       pTStack_50 = (TUpDownPictureButton *)0x45b377;
@@ -37931,7 +37936,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    local_18 = (TDeluxeText *)AllocateWithFallbackHandler();
+    local_18 = (TDeluxeText *)__2_YAPAXI_Z();
     local_24 = (TUpDownPictureButton *)0x19;
     if (local_18 != (TDeluxeText *)0x0) {
       TDeluxeText::ConstructUiColorTextResourceEntry(local_18);
@@ -37942,7 +37947,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     SetUiResourceStateFlags();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    local_18 = (TDeluxeText *)AllocateWithFallbackHandler();
+    local_18 = (TDeluxeText *)__2_YAPAXI_Z();
     local_24 = (TUpDownPictureButton *)0x1a;
     if (local_18 != (TDeluxeText *)0x0) {
       TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8((TMyStaticText *)local_18);
@@ -37957,7 +37962,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    local_18 = (TDeluxeText *)AllocateWithFallbackHandler();
+    local_18 = (TDeluxeText *)__2_YAPAXI_Z();
     local_24 = (TUpDownPictureButton *)0x1b;
     if (local_18 != (TDeluxeText *)0x0) {
       TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8((TMyStaticText *)local_18);
@@ -37972,7 +37977,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    local_18 = (TDeluxeText *)AllocateWithFallbackHandler();
+    local_18 = (TDeluxeText *)__2_YAPAXI_Z();
     local_24 = (TUpDownPictureButton *)0x1c;
     if (local_18 != (TDeluxeText *)0x0) {
       TUpDownPictureButton::ConstructPictureScreenResourceEntry
@@ -37986,7 +37991,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    local_20 = (TDeluxeText *)AllocateWithFallbackHandler();
+    local_20 = (TDeluxeText *)__2_YAPAXI_Z();
     if (local_20 != (TDeluxeText *)0x0) {
       thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)local_20);
     }
@@ -37999,7 +38004,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    ptVar13 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar13 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (ptVar13 == (thunk_TPictureButton *)0x0) {
       puStack_88 = (undefined1 *)0x0;
     }
@@ -38061,7 +38066,7 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
   undefined4 local_c;
   thunk_TPictureButton *ptStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   ptStack_8 = (thunk_TPictureButton *)&LAB_0062c655;
@@ -38070,7 +38075,7 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
   if (param_2 == 0x898) {
     piStack_38 = (int *)0x60;
     uStack_3c = 0x45d566;
-    this = (TView *)AllocateWithFallbackHandler();
+    this = (TView *)__2_YAPAXI_Z();
     local_4 = 0;
     if (this == (TView *)0x0) {
       piVar1 = (int *)0x0;
@@ -38121,7 +38126,7 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     uStack_4c = 0x45d621;
-    ptStack_8 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptStack_8 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     uStack_14 = 1;
     if (ptStack_8 == (thunk_TPictureButton *)0x0) {
       piVar1 = (int *)0x0;
@@ -38159,8 +38164,8 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar1 + 0x4d) = 1;
     piVar1 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    local_18 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    local_18 = __2_YAPAXI_Z();
     local_24 = 2;
     if (local_18 == 0) {
       iVar2 = 0;
@@ -38181,7 +38186,7 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar3[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_20 = (TStaticText *)AllocateWithFallbackHandler();
+    local_20 = (TStaticText *)__2_YAPAXI_Z();
     if (local_20 == (TStaticText *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -38219,7 +38224,7 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_00 = (TToolBarCluster *)AllocateWithFallbackHandler();
+    this_00 = (TToolBarCluster *)__2_YAPAXI_Z();
     uStack_3c = 4;
     if (this_00 == (TToolBarCluster *)0x0) {
       piVar1 = (int *)0x0;
@@ -38255,7 +38260,7 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar3[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTStack_40 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTStack_40 = (TPictureButton *)__2_YAPAXI_Z();
     uStack_4c = 5;
     if (pTStack_40 == (TPictureButton *)0x0) {
       piVar1 = (int *)0x0;
@@ -38290,7 +38295,7 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar4 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar4 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar4 == (TDropShadowText *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -38324,7 +38329,7 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
     BindUiResourceTextAndStyle(0xce4,1);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar4 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar4 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar4 == (TDropShadowText *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -38360,7 +38365,7 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    this_01 = (TInfoBarText *)AllocateWithFallbackHandler();
+    this_01 = (TInfoBarText *)__2_YAPAXI_Z();
     if (this_01 == (TInfoBarText *)0x0) {
       uVar5 = 0;
     }
@@ -38371,7 +38376,7 @@ int * BuildTurnEventDialogResourcesForEvent898(undefined4 param_1,short param_2)
     SetUiResourceStateFlags();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_02 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    this_02 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (this_02 == (thunk_TPictureButton *)0x0) {
       uVar5 = 0;
     }
@@ -38448,7 +38453,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
   TView *local_c;
   thunk_TPictureButton *ptStack_8;
   undefined4 local_4;
-  
+
   local_c = (TView *)*unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   ptStack_8 = (thunk_TPictureButton *)&LAB_0062c799;
@@ -38457,7 +38462,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
   if (param_2 == 0x8fc) {
     piStack_38 = (int *)0x60;
     uStack_3c = 0x45e813;
-    pTVar6 = (TView *)AllocateWithFallbackHandler();
+    pTVar6 = (TView *)__2_YAPAXI_Z();
     local_4 = 7;
     if (pTVar6 == (TView *)0x0) {
       piVar5 = (int *)0x0;
@@ -38508,7 +38513,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     pTStack_4c = (TView *)0x45e8d0;
-    ptVar10 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar10 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     uStack_14 = 8;
     ptStack_8 = ptVar10;
     if (ptVar10 == (thunk_TPictureButton *)0x0) {
@@ -38550,8 +38555,8 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar5 + 0x4d) = 1;
     piVar5 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    local_18 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    local_18 = __2_YAPAXI_Z();
     local_24 = 9;
     if (local_18 == 0) {
       iVar11 = 0;
@@ -38573,7 +38578,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     piVar5[0x1d] = piVar7[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_20 = (TToolBarCluster *)AllocateWithFallbackHandler();
+    local_20 = (TToolBarCluster *)__2_YAPAXI_Z();
     if (local_20 == (TToolBarCluster *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -38612,7 +38617,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     piVar5[0x1d] = piVar7[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar12 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTVar12 = (TPictureButton *)__2_YAPAXI_Z();
     uStack_3c = 0xb;
     if (pTVar12 == (TPictureButton *)0x0) {
       piVar5 = (int *)0x0;
@@ -38649,7 +38654,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_48 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTStack_48 = (TDropShadowText *)__2_YAPAXI_Z();
     puStack_54 = (undefined1 *)0xc;
     if (pTStack_48 == (TDropShadowText *)0x0) {
       piVar5 = (int *)0x0;
@@ -38686,7 +38691,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar8 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar8 == (TDropShadowText *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -38722,7 +38727,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_68 = (TToolBarCluster *)AllocateWithFallbackHandler();
+    pTStack_68 = (TToolBarCluster *)__2_YAPAXI_Z();
     if (pTStack_68 == (TToolBarCluster *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -38754,7 +38759,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     piVar5[0x1d] = piVar7[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -38789,7 +38794,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -38828,7 +38833,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -38867,7 +38872,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -38906,7 +38911,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_d8 = (TToolBarCluster *)AllocateWithFallbackHandler(0x88);
+    pTStack_d8 = (TToolBarCluster *)__2_YAPAXI_Z(0x88);
     if (pTStack_d8 == (TToolBarCluster *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -38940,7 +38945,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     piVar5[0x1d] = piVar7[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar12 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+    pTVar12 = (TPictureButton *)__2_YAPAXI_Z(0x94);
     puStack_f4 = (undefined1 *)0x14;
     if (pTVar12 == (TPictureButton *)0x0) {
       piVar5 = (int *)0x0;
@@ -38974,7 +38979,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    this_00 = (TPageView *)AllocateWithFallbackHandler(0x84);
+    this_00 = (TPageView *)__2_YAPAXI_Z(0x84);
     puStack_10c = (undefined1 *)0x15;
     if (this_00 == (TPageView *)0x0) {
       uVar13 = 0;
@@ -38988,7 +38993,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     SetUiResourceStateFlags(1,1);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_01 = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+    this_01 = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
     puStack_10c = (undefined1 *)0x16;
     if (this_01 == (TNoHilitePicture *)0x0) {
       uVar13 = 0;
@@ -39004,7 +39009,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))(0x939,0);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_108 = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+    pTStack_108 = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
     if (pTStack_108 == (TNoHilitePicture *)0x0) {
       uVar13 = 0;
     }
@@ -39018,7 +39023,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))(0x93a,0);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar8 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar8 != (TDropShadowText *)0x0) {
       TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar8);
     }
@@ -39035,7 +39040,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar8 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar8 != (TDropShadowText *)0x0) {
       TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar8);
     }
@@ -39052,7 +39057,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar8 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar8 != (TDropShadowText *)0x0) {
       TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar8);
     }
@@ -39069,7 +39074,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    this_02 = (TInfoBarText *)AllocateWithFallbackHandler();
+    this_02 = (TInfoBarText *)__2_YAPAXI_Z();
     if (this_02 != (TInfoBarText *)0x0) {
       TInfoBarText::ConstructUiCursorTextResourceEntry(this_02);
     }
@@ -39087,7 +39092,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     }
     piStack_38 = (int *)0xa0;
     uStack_3c = 0x45e108;
-    this = (TControl *)AllocateWithFallbackHandler();
+    this = (TControl *)__2_YAPAXI_Z();
     local_4 = 0;
     if (this == (TControl *)0x0) {
       piVar5 = (int *)0x0;
@@ -39158,7 +39163,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     pTStack_4c = (TView *)0x60;
     g_pUiResourceContext = (int *)0x0;
     uStack_50 = 0x45e227;
-    pTVar6 = (TView *)AllocateWithFallbackHandler();
+    pTVar6 = (TView *)__2_YAPAXI_Z();
     local_18 = 1;
     local_c = pTVar6;
     if (pTVar6 == (TView *)0x0) {
@@ -39197,7 +39202,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
-    local_1c = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    local_1c = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (local_1c == (thunk_TPictureButton *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -39235,7 +39240,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     piVar5[0x1d] = piVar7[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar8 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar8 = (TDropShadowText *)__2_YAPAXI_Z();
     uStack_40 = 3;
     if (pTVar8 == (TDropShadowText *)0x0) {
       piVar5 = (int *)0x0;
@@ -39273,7 +39278,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    ptStack_44 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptStack_44 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     uStack_50 = 4;
     if (ptStack_44 == (thunk_TPictureButton *)0x0) {
       piVar5 = (int *)0x0;
@@ -39309,7 +39314,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar6 = (TView *)AllocateWithFallbackHandler();
+    pTVar6 = (TView *)__2_YAPAXI_Z();
     pTStack_68 = (TToolBarCluster *)0x5;
     if (pTVar6 == (TView *)0x0) {
       pTVar6 = (TView *)0x0;
@@ -39336,7 +39341,7 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar9 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar9 == (TUpDownPictureButton *)0x0) {
       piVar5 = (int *)0x0;
     }
@@ -39403,13 +39408,13 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   TInfoBarText *unaff_ESI;
   undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  
+
   RegisterUiResourceEntry();
   SetUiResourceStateFlags();
   ReplaceUiResourceContextPairBuffer();
   SetUiResourceLayoutValues();
   g_pUiResourceContext[0x21] = unaff_EBX;
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 != unaff_ESI) {
     TMyNumberText::ConstructTMyNumberTextBaseState((TMyNumberText *)pTVar2);
   }
@@ -39423,7 +39428,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   DispatchUiResourceContextVslot1E4WithCoords();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 != unaff_ESI) {
     TTradeOrderPicture::ConstructTTradeOrderPictureBaseState((TTradeOrderPicture *)pTVar2);
   }
@@ -39433,7 +39438,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 != unaff_ESI) {
     TTradeOrderPicture::ConstructTTradeOrderPictureBaseState((TTradeOrderPicture *)pTVar2);
   }
@@ -39443,7 +39448,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 != unaff_ESI) {
     TSidewaysArrow::ConstructTSidewaysArrowBaseState((TSidewaysArrow *)pTVar2);
   }
@@ -39453,7 +39458,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39466,7 +39471,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39478,7 +39483,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceLayoutValues();
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39489,7 +39494,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceStateFlags();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39503,7 +39508,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle(0x5e5,1,s_Board_of_Trade_00694af8);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39517,7 +39522,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle(0x5e5,2,s_Commodity_00694aec);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39531,7 +39536,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle(0x5e5,3,s_Orders_006948a4);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39544,7 +39549,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle(0x5e5,4,s_Price_00694ae4);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39557,7 +39562,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle(0x5e5,5,s_Available_00694ad8);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39571,7 +39576,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   BindUiResourceTextAndStyle(0x5e5,6,s_Quantity_to_Offer_00694ac0);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39583,7 +39588,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceLayoutValues(5);
   g_pUiResourceContext[0x21] = unaff_EBX;
   g_pUiResourceContext = (int *)unaff_ESI;
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39595,7 +39600,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceLayoutValues(10);
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39609,7 +39614,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceContextTagWord(unaff_ESI);
   BindUiResourceTextAndStyle(0xce4,1,s_Winter__1888_006943bc,3);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39624,7 +39629,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   BindUiResourceTextAndStyle(0xce4,2,s__55_555_006943b0,3);
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39635,7 +39640,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   RegisterUiResourceEntry(0x76696577,0x6d506963,uVar3,0x254,0x6a,0x23,0x1a);
   SetUiResourceStateFlags();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39652,7 +39657,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   DispatchUiResourceContextVslot1E4WithCoords(0xb9);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39665,7 +39670,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -39679,7 +39684,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39692,7 +39697,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52c);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39705,7 +39710,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x528);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39718,7 +39723,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x529);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39731,7 +39736,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52a);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39744,7 +39749,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52b);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39757,7 +39762,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52d);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39770,7 +39775,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52e);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39784,7 +39789,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x88);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x88);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39796,7 +39801,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   SetUiResourceLayoutValues(5);
   g_pUiResourceContext[0x21] = unaff_EBX;
   g_pUiResourceContext = (int *)unaff_ESI;
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x94);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39810,7 +39815,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24ef);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x94);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39824,7 +39829,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24ed);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x94);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39838,7 +39843,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24eb);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x94);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39852,7 +39857,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24e9);
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0xb4);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0xb4);
   if (pTVar2 == unaff_ESI) {
     uVar4 = 0;
   }
@@ -39928,7 +39933,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
 
 /* Initializes and registers a large batch of UI resource entries, then returns the global
    resource-head pointer.
-   
+
    Algorithm:
    1. Reset g_pUiResourceContext and invoke pre-initialization helpers.
    2. Allocate an entry object using size-class constants (for example 0x88/0x94/0xB4/0x60/0x90).
@@ -39942,7 +39947,7 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
    7. Branch to shared tail cleanup at 0x0046CA6E for final synchronization calls.
    8. If g_pUiResourceHead is non-null, invoke cleanup/finalization helper before return.
    9. Restore saved FS exception-frame value and return g_pUiResourceHead.
-   
+
    Parameters:
    - (none explicit in prototype)
    - IMPLICIT int nOwnerId (EBX), propagated into entry state.
@@ -39950,33 +39955,33 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
    - IMPLICIT int* pNull (ESI), null baseline for allocation checks and argument pushes.
    - IMPLICIT uint* pdwFsExceptionFrame (FS:[0]), exception-chain head pointer.
    - IMPLICIT uint dwSavedExceptionFrame (stack spill), restored on exit.
-   
+
    Returns:
    - int* pResourceHead: g_pUiResourceHead after batch initialization.
    - If no valid head exists, returned value may equal the null baseline pointer.
-   
+
    Special Cases:
    - Allocation failure path explicitly zeroes constructor/factory result before registration.
    - A shared jump-to-tail path (0x00466566 -> 0x0046CA6E) consolidates final cleanup logic.
    - Many blocks are template-like and differ primarily by immediate constants/callback targets.
    - One residual assembly-derived temporary may reappear as generic uVar1 after decompiler
    refreshes; treat as EAX register-reuse artifact.
-   
+
    Magic Numbers Reference:
    - 0x88, 0x94, 0xB4, 0x60, 0x90: object allocation sizes.
    - 0x1C8: virtual callback slot offset used for post-build notifications.
    - 0x52D, 0x52F and nearby constants: resource/control identifiers.
    - 0x14B and nearby constants: per-entry slot/index identifiers.
-   
+
    Error Handling:
    - Each allocation is followed by CMP EAX,ESI and JZ fallback handling.
    - Fallback path preserves control-flow continuity by passing zero constructor result.
-   
+
    Structure Layout (Inferred):
    Offset | Size | Field | Type | Description
    +0x84  | 4    | nOwnerId | int | Entry-owner/state value propagated from EBX.
    +0x1C8 | 4    | pfnPostBuildCallback | code* | Virtual callback invoked after registration.
-   
+
    Flag Bits:
    - No explicit bitmask decode identified in this function body; behavior is driven mainly by
    immediate IDs and callback dispatch. */
@@ -40004,12 +40009,12 @@ int * __cdecl InitializeUiResourceEntries(void)
   int *pResourceEntryNation;
   int *pResourceEntryPrimary;
   int *pResourceHead;
-  
+
   g_pUiResourceContext = pNull;
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
                     /* Allocate entry object for the next UI resource template. */
-  pResourceEntryTemp = (TToolBarCluster *)AllocateWithFallbackHandler(0x88);
+  pResourceEntryTemp = (TToolBarCluster *)__2_YAPAXI_Z(0x88);
                     /* If allocation failed, force factory result to zero and continue shared
                        registration flow. */
   if (pResourceEntryTemp == (TToolBarCluster *)pNull) {
@@ -40025,7 +40030,7 @@ int * __cdecl InitializeUiResourceEntries(void)
   SetUiResourceLayoutValues(5);
   g_pUiResourceContext[0x21] = nOwnerId;
   g_pUiResourceContext = pNull;
-  pTVar1 = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x94);
+  pTVar1 = (TUpDownPictureButton *)__2_YAPAXI_Z(0x94);
   if (pTVar1 == (TUpDownPictureButton *)pNull) {
     dwCtorResult = 0;
   }
@@ -40040,7 +40045,7 @@ int * __cdecl InitializeUiResourceEntries(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24ef);
   g_pUiResourceContext = pNull;
   PopUiResourcePoolNode_00479A80();
-  pTVar1 = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x94);
+  pTVar1 = (TUpDownPictureButton *)__2_YAPAXI_Z(0x94);
   if (pTVar1 == (TUpDownPictureButton *)pNull) {
     dwCtorResultAlt = 0;
   }
@@ -40056,7 +40061,7 @@ int * __cdecl InitializeUiResourceEntries(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24ed);
   g_pUiResourceContext = pNull;
   PopUiResourcePoolNode_00479A80();
-  pTVar1 = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x94);
+  pTVar1 = (TUpDownPictureButton *)__2_YAPAXI_Z(0x94);
   if (pTVar1 == (TUpDownPictureButton *)pNull) {
     dwCtorResultFallback = 0;
   }
@@ -40070,7 +40075,7 @@ int * __cdecl InitializeUiResourceEntries(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24eb);
   g_pUiResourceContext = pNull;
   PopUiResourcePoolNode_00479A80();
-  pTVar1 = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x94);
+  pTVar1 = (TUpDownPictureButton *)__2_YAPAXI_Z(0x94);
   if (pTVar1 == (TUpDownPictureButton *)pNull) {
     dwCtorResultResidual = 0;
   }
@@ -40084,7 +40089,7 @@ int * __cdecl InitializeUiResourceEntries(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24e9);
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  this = (TInfoBarText *)AllocateWithFallbackHandler(0xb4);
+  this = (TInfoBarText *)__2_YAPAXI_Z(0xb4);
   if (this == (TInfoBarText *)pNull) {
     uVar2 = 0;
   }
@@ -40120,13 +40125,13 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   TInfoBarText *unaff_ESI;
   undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  
+
   RegisterUiResourceEntry();
   SetUiResourceStateFlags();
   ReplaceUiResourceContextPairBuffer();
   SetUiResourceLayoutValues();
   g_pUiResourceContext[0x21] = unaff_EBX;
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 != unaff_ESI) {
     TMyNumberText::ConstructTMyNumberTextBaseState((TMyNumberText *)pTVar2);
   }
@@ -40140,7 +40145,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   DispatchUiResourceContextVslot1E4WithCoords();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 != unaff_ESI) {
     TTradeOrderPicture::ConstructTTradeOrderPictureBaseState((TTradeOrderPicture *)pTVar2);
   }
@@ -40150,7 +40155,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 != unaff_ESI) {
     TTradeOrderPicture::ConstructTTradeOrderPictureBaseState((TTradeOrderPicture *)pTVar2);
   }
@@ -40160,7 +40165,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40173,7 +40178,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40186,7 +40191,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40198,7 +40203,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   SetUiResourceLayoutValues(10);
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40209,7 +40214,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   SetUiResourceStateFlags();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40223,7 +40228,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   SetUiResourceContextTagWord(unaff_ESI);
   BindUiResourceTextAndStyle(0x5e5,1,s_Board_of_Trade_00694af8);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40237,7 +40242,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   SetUiResourceContextTagWord(unaff_ESI);
   BindUiResourceTextAndStyle(0x5e5,2,s_Commodity_00694aec);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40251,7 +40256,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   SetUiResourceContextTagWord(unaff_ESI);
   BindUiResourceTextAndStyle(0x5e5,3,s_Orders_006948a4);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40264,7 +40269,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   SetUiResourceContextTagWord(unaff_ESI);
   BindUiResourceTextAndStyle(0x5e5,4,s_Price_00694ae4);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40277,7 +40282,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   SetUiResourceContextTagWord(unaff_ESI);
   BindUiResourceTextAndStyle(0x5e5,5,s_Available_00694ad8);
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40291,7 +40296,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   BindUiResourceTextAndStyle(0x5e5,6,s_Quantity_to_Offer_00694ac0);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40303,7 +40308,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   SetUiResourceLayoutValues(5);
   g_pUiResourceContext[0x21] = unaff_EBX;
   g_pUiResourceContext = (int *)unaff_ESI;
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler();
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z();
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40317,7 +40322,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x94);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40333,7 +40338,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24ed);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x94);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40347,7 +40352,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24eb);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x94);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40361,7 +40366,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24e9);
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0xb4);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0xb4);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40372,7 +40377,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   SetUiResourceStateFlags(1);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40385,7 +40390,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x528);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40398,7 +40403,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x529);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40411,7 +40416,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52a);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40424,7 +40429,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52b);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40437,7 +40442,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52d);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40450,7 +40455,7 @@ int * BuildTradeBoardDialogUiLayoutVariantB(void)
   (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52e);
   g_pUiResourceContext = (int *)unaff_ESI;
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TInfoBarText *)AllocateWithFallbackHandler(0x90);
+  pTVar2 = (TInfoBarText *)__2_YAPAXI_Z(0x90);
   if (pTVar2 == unaff_ESI) {
     uVar3 = 0;
   }
@@ -40577,7 +40582,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
   undefined4 local_c;
   thunk_TPictureButton *ptStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   ptStack_8 = (thunk_TPictureButton *)&LAB_0062db46;
@@ -40586,7 +40591,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
   if (param_2 == 0x7de) {
     piStack_38 = (int *)0x60;
     uStack_3c = 0x46fd56;
-    this = (TView *)AllocateWithFallbackHandler();
+    this = (TView *)__2_YAPAXI_Z();
     local_4 = 0;
     if (this == (TView *)0x0) {
       piVar1 = (int *)0x0;
@@ -40637,7 +40642,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     uStack_4c = 0x46fe11;
-    ptStack_8 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptStack_8 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     uStack_14 = 1;
     if (ptStack_8 == (thunk_TPictureButton *)0x0) {
       piVar1 = (int *)0x0;
@@ -40684,7 +40689,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_20 = (TToolBarCluster *)AllocateWithFallbackHandler();
+    local_20 = (TToolBarCluster *)__2_YAPAXI_Z();
     if (local_20 == (TToolBarCluster *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -40725,7 +40730,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar3 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar3 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     uStack_3c = 3;
     if (pTVar3 == (TUpDownPictureButton *)0x0) {
       piVar1 = (int *)0x0;
@@ -40763,7 +40768,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_48 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTStack_48 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_54 = (undefined1 *)0x4;
     if (pTStack_48 == (TUpDownPictureButton *)0x0) {
       piVar1 = (int *)0x0;
@@ -40806,7 +40811,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar3 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar3 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     ppuStack_6c = (undefined4 **)0x5;
     if (pTVar3 == (TUpDownPictureButton *)0x0) {
       piVar1 = (int *)0x0;
@@ -40847,7 +40852,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar3 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar3 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar3 == (TUpDownPictureButton *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -40886,7 +40891,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_90 = (TToolBarCluster *)AllocateWithFallbackHandler();
+    pTStack_90 = (TToolBarCluster *)__2_YAPAXI_Z();
     if (pTStack_90 == (TToolBarCluster *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -40918,7 +40923,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar4 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTVar4 = (TPictureButton *)__2_YAPAXI_Z();
     puStack_ac = (undefined1 *)0x8;
     if (pTVar4 == (TPictureButton *)0x0) {
       piVar1 = (int *)0x0;
@@ -40956,7 +40961,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    this_00 = (TToolBarCluster *)AllocateWithFallbackHandler();
+    this_00 = (TToolBarCluster *)__2_YAPAXI_Z();
     puStack_c4 = (undefined1 *)0x9;
     if (this_00 == (TToolBarCluster *)0x0) {
       piVar1 = (int *)0x0;
@@ -40990,7 +40995,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar4 = (TPictureButton *)AllocateWithFallbackHandler();
+    pTVar4 = (TPictureButton *)__2_YAPAXI_Z();
     if (pTVar4 == (TPictureButton *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41023,7 +41028,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar5 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar5 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar5 == (TDropShadowText *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41057,7 +41062,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar5 = (TDropShadowText *)AllocateWithFallbackHandler();
+    pTVar5 = (TDropShadowText *)__2_YAPAXI_Z();
     if (pTVar5 == (TDropShadowText *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41093,7 +41098,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar6 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTVar6 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTVar6 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41129,7 +41134,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar6 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTVar6 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTVar6 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41169,7 +41174,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar7 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTVar7 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTVar7 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41208,7 +41213,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTVar7 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTVar7 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41248,7 +41253,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_160 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTStack_160 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTStack_160 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41288,7 +41293,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTStack_178 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_178 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_178 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41327,7 +41332,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_190 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_190 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_190 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41367,7 +41372,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_1a8 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTStack_1a8 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTStack_1a8 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41407,7 +41412,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTStack_1c0 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_1c0 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_1c0 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41446,7 +41451,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_1d8 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_1d8 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_1d8 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41486,7 +41491,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_1f0 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTStack_1f0 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTStack_1f0 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41526,7 +41531,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTStack_208 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_208 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_208 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41565,7 +41570,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_220 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_220 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_220 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41605,7 +41610,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_238 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTStack_238 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTStack_238 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41645,7 +41650,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTStack_250 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_250 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_250 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41684,7 +41689,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_268 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_268 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_268 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41724,7 +41729,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_280 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTStack_280 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTStack_280 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41764,7 +41769,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTStack_298 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_298 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_298 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41803,7 +41808,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_2b0 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_2b0 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_2b0 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41843,7 +41848,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_2c8 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTStack_2c8 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTStack_2c8 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41883,7 +41888,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTStack_2e0 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_2e0 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_2e0 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41922,7 +41927,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_2f8 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_2f8 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_2f8 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -41962,7 +41967,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_310 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTStack_310 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTStack_310 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -42002,7 +42007,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTStack_328 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_328 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_328 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -42041,7 +42046,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_340 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_340 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_340 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -42081,7 +42086,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_358 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTStack_358 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTStack_358 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -42121,7 +42126,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     piVar1[0x1d] = piVar2[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTStack_370 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_370 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_370 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -42161,7 +42166,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_388 = (TSidewaysArrow *)AllocateWithFallbackHandler();
+    pTStack_388 = (TSidewaysArrow *)__2_YAPAXI_Z();
     if (pTStack_388 == (TSidewaysArrow *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -42198,7 +42203,7 @@ int * BuildTurnEventDialogResourcesForEvent7DE(undefined4 param_1,short param_2)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_3a0 = (TTransportPicture *)AllocateWithFallbackHandler();
+    pTStack_3a0 = (TTransportPicture *)__2_YAPAXI_Z();
     if (pTStack_3a0 == (TTransportPicture *)0x0) {
       piVar1 = (int *)0x0;
     }
@@ -42780,7 +42785,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
   TUniversityView *local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = (TUniversityView *)*unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062de95;
@@ -42789,7 +42794,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
   if (nDialogTypeTag == 0x23fa) {
     piStack_38 = (int *)0xa0;
     pTStack_3c = (TEditText *)0x4749e9;
-    this = (TControl *)AllocateWithFallbackHandler();
+    this = (TControl *)__2_YAPAXI_Z();
     local_4 = 0;
     if (this == (TControl *)0x0) {
       piVar4 = (int *)0x0;
@@ -42862,7 +42867,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piStack_4c = (int *)0xac;
     g_pUiResourceContext = (int *)0x0;
     uStack_50 = 0x474b0c;
-    local_c = (TUniversityView *)AllocateWithFallbackHandler();
+    local_c = (TUniversityView *)__2_YAPAXI_Z();
     local_18 = 1;
     if (local_c == (TUniversityView *)0x0) {
       piVar4 = (int *)0x0;
@@ -42910,7 +42915,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar6 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar6 = (TEditText *)__2_YAPAXI_Z();
     local_24 = pTVar6;
     if (pTVar6 == (TEditText *)0x0) {
       pTVar6 = (TEditText *)0x0;
@@ -42968,7 +42973,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     (**(code **)(iVar10 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar6 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar6 = (TEditText *)__2_YAPAXI_Z();
     puStack_48 = (undefined4 *)0x3;
     pTStack_3c = pTVar6;
     if (pTVar6 == (TEditText *)0x0) {
@@ -43022,7 +43027,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     (**(code **)(iVar10 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_54 = (TStaticText *)AllocateWithFallbackHandler();
+    pTStack_54 = (TStaticText *)__2_YAPAXI_Z();
     if (pTStack_54 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43056,7 +43061,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar7 = (TStaticText *)__2_YAPAXI_Z();
     ppuStack_70 = (undefined4 **)0x5;
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
@@ -43094,7 +43099,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar7 = (TStaticText *)__2_YAPAXI_Z();
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43129,7 +43134,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_84 = (TStaticText *)AllocateWithFallbackHandler();
+    pTStack_84 = (TStaticText *)__2_YAPAXI_Z();
     if (pTStack_84 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43163,7 +43168,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar7 = (TStaticText *)__2_YAPAXI_Z();
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43197,7 +43202,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar7 = (TStaticText *)__2_YAPAXI_Z();
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43231,7 +43236,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar7 = (TStaticText *)__2_YAPAXI_Z();
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43265,7 +43270,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
+    pTVar7 = (TStaticText *)__2_YAPAXI_Z();
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43299,7 +43304,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TCluster *)AllocateWithFallbackHandler();
+    pTVar8 = (TCluster *)__2_YAPAXI_Z();
     if (pTVar8 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43331,7 +43336,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar8 = (TCluster *)AllocateWithFallbackHandler();
+    pTVar8 = (TCluster *)__2_YAPAXI_Z();
     if (pTVar8 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43363,7 +43368,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptVar9 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar9 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     if (ptVar9 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43396,7 +43401,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar6 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar6 = (TEditText *)__2_YAPAXI_Z();
     if (pTVar6 == (TEditText *)0x0) {
       pTVar6 = (TEditText *)0x0;
     }
@@ -43427,8 +43432,8 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
     piVar4 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    iVar10 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    iVar10 = __2_YAPAXI_Z();
     if (iVar10 == 0) {
       iVar10 = 0;
     }
@@ -43462,7 +43467,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43501,7 +43506,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43541,7 +43546,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_154 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTStack_154 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTStack_154 == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43580,7 +43585,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_16c = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTStack_16c = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTStack_16c == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43619,7 +43624,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_184 = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_184 = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_184 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43656,7 +43661,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptVar9 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar9 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     puStack_1a0 = (undefined1 *)0x16;
     if (ptVar9 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -43693,7 +43698,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar6 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar6 = (TEditText *)__2_YAPAXI_Z();
     puStack_1b8 = (undefined1 *)0x17;
     if (pTVar6 == (TEditText *)0x0) {
       pTVar6 = (TEditText *)0x0;
@@ -43728,8 +43733,8 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
     piVar4 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    iVar10 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    iVar10 = __2_YAPAXI_Z();
     if (iVar10 == 0) {
       iVar10 = 0;
     }
@@ -43763,7 +43768,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_1d0 = (undefined1 *)0x19;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -43804,7 +43809,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43844,7 +43849,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_1f4 = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTStack_1f4 = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTStack_1f4 == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43883,7 +43888,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_20c = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_20c = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_20c == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -43920,7 +43925,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptVar9 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar9 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     puStack_228 = (undefined1 *)0x1d;
     if (ptVar9 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -43957,7 +43962,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar6 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar6 = (TEditText *)__2_YAPAXI_Z();
     puStack_240 = (undefined1 *)0x1e;
     if (pTVar6 == (TEditText *)0x0) {
       pTVar6 = (TEditText *)0x0;
@@ -43992,8 +43997,8 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
     piVar4 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    iVar10 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    iVar10 = __2_YAPAXI_Z();
     if (iVar10 == 0) {
       iVar10 = 0;
     }
@@ -44027,7 +44032,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_258 = (undefined1 *)0x20;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -44068,7 +44073,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -44108,7 +44113,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_27c = (TCivilianButton *)AllocateWithFallbackHandler();
+    pTStack_27c = (TCivilianButton *)__2_YAPAXI_Z();
     if (pTStack_27c == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -44147,7 +44152,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_294 = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_294 = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_294 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -44184,7 +44189,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptVar9 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar9 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     puStack_2b0 = (undefined1 *)0x24;
     if (ptVar9 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -44221,7 +44226,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar6 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar6 = (TEditText *)__2_YAPAXI_Z();
     puStack_2c8 = (undefined1 *)0x25;
     if (pTVar6 == (TEditText *)0x0) {
       pTVar6 = (TEditText *)0x0;
@@ -44256,8 +44261,8 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
     piVar4 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    iVar10 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    iVar10 = __2_YAPAXI_Z();
     if (iVar10 == 0) {
       iVar10 = 0;
     }
@@ -44291,7 +44296,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     puStack_2e0 = (undefined1 *)0x27;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -44332,7 +44337,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+    pTVar11 = (TUpDownPictureButton *)__2_YAPAXI_Z();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -44371,7 +44376,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTStack_304 = (TCluster *)AllocateWithFallbackHandler();
+    pTStack_304 = (TCluster *)__2_YAPAXI_Z();
     if (pTStack_304 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -44403,7 +44408,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    ptVar9 = (thunk_TPictureButton *)AllocateWithFallbackHandler();
+    ptVar9 = (thunk_TPictureButton *)__2_YAPAXI_Z();
     puStack_320 = (undefined *)0x2a;
     if (ptVar9 == (thunk_TPictureButton *)0x0) {
       piVar4 = (int *)0x0;
@@ -44439,7 +44444,7 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar6 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar6 = (TEditText *)__2_YAPAXI_Z();
     puStack_338 = (undefined1 *)0x2b;
     if (pTVar6 == (TEditText *)0x0) {
       pTVar6 = (TEditText *)0x0;
@@ -44467,8 +44472,8 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
     piVar4 = g_pUiResourceContext;
-    FreeHeapBufferIfNotNull();
-    iVar10 = AllocateWithFallbackHandler();
+    __3_YAXPAX_Z();
+    iVar10 = __2_YAPAXI_Z();
     if (iVar10 == 0) {
       iVar12 = 0;
     }
@@ -44787,17 +44792,17 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
 // GHIDRA_COMMENT_END
 
 /* Builds static University dialog controls and base panel assets.
-   
+
    Algorithm:
    1. Initializes the university dialog root/resource context.
    2. Creates static background/header/status controls.
    3. Binds 9900-series bitmap resources (university backgrounds/panels).
    4. Creates fixed text/numeric fields used by recruitment rows.
    5. Registers controls into the UI resource tree and propagates context.
-   
+
    Parameters:
    - internal context from global UI resource pool.
-   
+
    Returns:
    - Pointer to root UI entry for the university dialog block. */
 
@@ -44829,14 +44834,14 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   undefined1 *puStack_15c;
   undefined1 *puStack_144;
   undefined *puStack_12c;
-  
+
   *(undefined2 *)(in_EAX + 0x60) = 8000;
   pcVar1 = *(code **)(*g_pUiResourceContext + 0x1b8);
   piVar4 = (int *)(*pcVar1)();
   (**(code **)(*piVar4 + 0x30))();
   (*pcVar1)();
   SetUiColorDescriptorGoldTriplet();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -44869,7 +44874,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TUniversityView *)0x0;
   }
@@ -44914,7 +44919,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x2a] = 0xff;
   (**(code **)(iVar7 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   param_2 = pTVar5;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TUniversityView *)0x0;
@@ -44959,7 +44964,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x2a] = 0xff;
   (**(code **)(iVar7 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -44993,7 +44998,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45027,7 +45032,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45061,7 +45066,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45095,7 +45100,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45129,7 +45134,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45163,7 +45168,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45197,7 +45202,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45231,7 +45236,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   SetUiResourceContextTagWord();
   BindUiResourceTextAndStyle();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45263,7 +45268,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45295,7 +45300,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45327,7 +45332,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TUniversityView *)0x0;
   }
@@ -45353,8 +45358,8 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar7 = 0;
   }
@@ -45385,7 +45390,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   (**(code **)(iVar7 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45422,7 +45427,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45459,7 +45464,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45495,7 +45500,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45531,7 +45536,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45563,7 +45568,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   puStack_15c = (undefined1 *)0x16;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -45598,7 +45603,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   puStack_174 = (undefined1 *)0x17;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TUniversityView *)0x0;
@@ -45626,8 +45631,8 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar7 = 0;
   }
@@ -45658,7 +45663,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   (**(code **)(iVar7 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45694,7 +45699,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45731,7 +45736,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45767,7 +45772,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45799,7 +45804,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   puStack_1e4 = (undefined1 *)0x1d;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -45834,7 +45839,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   puStack_1fc = (undefined1 *)0x1e;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TUniversityView *)0x0;
@@ -45862,8 +45867,8 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar7 = 0;
   }
@@ -45894,7 +45899,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   (**(code **)(iVar7 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45930,7 +45935,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -45967,7 +45972,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -46003,7 +46008,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -46035,7 +46040,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   puStack_26c = (undefined1 *)0x24;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -46070,7 +46075,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   puStack_284 = (undefined1 *)0x25;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TUniversityView *)0x0;
@@ -46098,8 +46103,8 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar7 = 0;
   }
@@ -46130,7 +46135,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   (**(code **)(iVar7 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -46166,7 +46171,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -46203,7 +46208,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -46235,7 +46240,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   puStack_2dc = (undefined *)0x2a;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -46270,7 +46275,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   piVar4[0x1c] = piVar6[2];
   piVar4[0x1d] = piVar6[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   puStack_2f4 = (undefined1 *)0x2b;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TUniversityView *)0x0;
@@ -46299,8 +46304,8 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TUniversityView *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar7 = 0;
   }
@@ -46636,7 +46641,7 @@ int * BuildUniversityRecruitmentRows
   undefined1 *puStack_98;
   undefined *puStack_80;
   undefined4 *puStack_10;
-  
+
   uStack00000030 = 0xffffffff;
   piVar4 = unaff_ESI;
   if ((TNumberText *)g_pUiResourceHead != unaff_EBX) {
@@ -46670,7 +46675,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  param_9 = (TNumberText *)AllocateWithFallbackHandler();
+  param_9 = (TNumberText *)__2_YAPAXI_Z();
   param_6 = 0x14;
   if (param_9 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -46706,7 +46711,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  param_3 = (TNumberText *)AllocateWithFallbackHandler();
+  param_3 = (TNumberText *)__2_YAPAXI_Z();
   if (param_3 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -46738,7 +46743,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_10 = (undefined4 *)0x16;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -46772,7 +46777,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
   }
@@ -46799,8 +46804,8 @@ int * BuildUniversityRecruitmentRows
   uVar8 = SUB41(unaff_EBX,0);
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -46831,7 +46836,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(iVar6 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -46867,7 +46872,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -46904,7 +46909,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -46940,7 +46945,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -46972,7 +46977,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_98 = (undefined1 *)0x1d;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -47007,7 +47012,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_b0 = (undefined1 *)0x1e;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
@@ -47035,8 +47040,8 @@ int * BuildUniversityRecruitmentRows
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -47067,7 +47072,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(iVar6 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -47103,7 +47108,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -47140,7 +47145,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -47176,7 +47181,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -47208,7 +47213,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_120 = (undefined1 *)0x24;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -47243,7 +47248,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_138 = (undefined1 *)0x25;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
@@ -47271,8 +47276,8 @@ int * BuildUniversityRecruitmentRows
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -47303,7 +47308,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(iVar6 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -47339,7 +47344,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -47376,7 +47381,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -47408,7 +47413,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_190 = (undefined *)0x2a;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -47443,7 +47448,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_1a8 = (undefined1 *)0x2b;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
@@ -47472,8 +47477,8 @@ int * BuildUniversityRecruitmentRows
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -47808,7 +47813,7 @@ int * BuildUniversityRecruitControls
   undefined1 *puStack_98;
   undefined *puStack_80;
   undefined4 *puStack_10;
-  
+
   uStack00000030 = 0xffffffff;
   g_pUiResourceContext = (int *)0x0;
   if ((TNumberText *)g_pUiResourceHead == unaff_EBX) {
@@ -47839,7 +47844,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  param_9 = (TNumberText *)AllocateWithFallbackHandler();
+  param_9 = (TNumberText *)__2_YAPAXI_Z();
   param_6 = 0x14;
   if (param_9 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -47875,7 +47880,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  param_3 = (TNumberText *)AllocateWithFallbackHandler();
+  param_3 = (TNumberText *)__2_YAPAXI_Z();
   if (param_3 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -47907,7 +47912,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_10 = (undefined4 *)0x16;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -47941,7 +47946,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
   }
@@ -47968,8 +47973,8 @@ int * BuildUniversityRecruitControls
   uVar8 = SUB41(unaff_EBX,0);
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -48000,7 +48005,7 @@ int * BuildUniversityRecruitControls
   (**(code **)(iVar6 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48036,7 +48041,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48073,7 +48078,7 @@ int * BuildUniversityRecruitControls
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48109,7 +48114,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48141,7 +48146,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_98 = (undefined1 *)0x1d;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -48176,7 +48181,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_b0 = (undefined1 *)0x1e;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
@@ -48204,8 +48209,8 @@ int * BuildUniversityRecruitControls
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -48236,7 +48241,7 @@ int * BuildUniversityRecruitControls
   (**(code **)(iVar6 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48272,7 +48277,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48309,7 +48314,7 @@ int * BuildUniversityRecruitControls
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48345,7 +48350,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48377,7 +48382,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_120 = (undefined1 *)0x24;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -48412,7 +48417,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_138 = (undefined1 *)0x25;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
@@ -48440,8 +48445,8 @@ int * BuildUniversityRecruitControls
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -48472,7 +48477,7 @@ int * BuildUniversityRecruitControls
   (**(code **)(iVar6 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48508,7 +48513,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48545,7 +48550,7 @@ int * BuildUniversityRecruitControls
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -48577,7 +48582,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_190 = (undefined *)0x2a;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -48612,7 +48617,7 @@ int * BuildUniversityRecruitControls
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_1a8 = (undefined1 *)0x2b;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
@@ -48641,8 +48646,8 @@ int * BuildUniversityRecruitControls
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -49011,7 +49016,7 @@ int * BuildUniversityRecruitmentRows
   undefined1 *puStack_98;
   undefined *puStack_80;
   undefined4 *puStack_10;
-  
+
   uStack00000030 = 0xffffffff;
   piVar4 = unaff_ESI;
   if ((TNumberText *)g_pUiResourceHead != unaff_EBX) {
@@ -49046,7 +49051,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  param_9 = (TNumberText *)AllocateWithFallbackHandler();
+  param_9 = (TNumberText *)__2_YAPAXI_Z();
   param_6 = 0x14;
   if (param_9 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -49083,7 +49088,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  param_3 = (TNumberText *)AllocateWithFallbackHandler();
+  param_3 = (TNumberText *)__2_YAPAXI_Z();
   if (param_3 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49115,7 +49120,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_10 = (undefined4 *)0x16;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -49149,7 +49154,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
   }
@@ -49176,8 +49181,8 @@ int * BuildUniversityRecruitmentRows
   uVar8 = SUB41(unaff_EBX,0);
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -49208,7 +49213,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(iVar6 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49244,7 +49249,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49281,7 +49286,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49318,7 +49323,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49350,7 +49355,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_98 = (undefined1 *)0x1d;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -49385,7 +49390,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_b0 = (undefined1 *)0x1e;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
@@ -49413,8 +49418,8 @@ int * BuildUniversityRecruitmentRows
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -49445,7 +49450,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(iVar6 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49481,7 +49486,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49518,7 +49523,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49554,7 +49559,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49586,7 +49591,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_120 = (undefined1 *)0x24;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -49621,7 +49626,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_138 = (undefined1 *)0x25;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
@@ -49649,8 +49654,8 @@ int * BuildUniversityRecruitmentRows
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -49681,7 +49686,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(iVar6 + 0x1e4))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49717,7 +49722,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49754,7 +49759,7 @@ int * BuildUniversityRecruitmentRows
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
   }
@@ -49786,7 +49791,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   g_pUiResourceContext[0x21] = 0x20202020;
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_190 = (undefined *)0x2a;
   if (pTVar5 == unaff_EBX) {
     piVar4 = (int *)0x0;
@@ -49821,7 +49826,7 @@ int * BuildUniversityRecruitmentRows
   piVar4[0x1c] = piVar3[2];
   piVar4[0x1d] = piVar3[3];
   (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   puStack_1a8 = (undefined1 *)0x2b;
   if (pTVar5 == unaff_EBX) {
     pTVar5 = (TNumberText *)0x0;
@@ -49850,8 +49855,8 @@ int * BuildUniversityRecruitmentRows
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
   piVar4 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar5 = (TNumberText *)AllocateWithFallbackHandler();
+  __3_YAXPAX_Z();
+  pTVar5 = (TNumberText *)__2_YAPAXI_Z();
   if (pTVar5 == unaff_EBX) {
     iVar6 = 0;
   }
@@ -50168,12 +50173,12 @@ int * __fastcall CreateTurnEventDialogFactoryRegistryObject(undefined4 param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062df5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pFactoryBootstrap = (void *)AllocateWithFallbackHandler(0x54,param_1);
+  pFactoryBootstrap = (void *)__2_YAPAXI_Z(0x54,param_1);
   local_4 = 0;
   if (pFactoryBootstrap != (void *)0x0) {
     piVar1 = InitializeTurnEventDialogFactoryRegistry(pFactoryBootstrap,pFactoryBootstrap);
@@ -50204,15 +50209,15 @@ int * __thiscall InitializeTurnEventDialogFactoryRegistry(void *this,int *pFacto
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062df8c;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CDocument::CDocument();
+  CDocument::__0CDocument__QAE_XZ();
   local_4 = 0;
   *(undefined4 *)this = 0x645eb8;
-  this_00 = (TAmbitFileBasedDocument *)AllocateWithFallbackHandler(4);
+  this_00 = (TAmbitFileBasedDocument *)__2_YAPAXI_Z(4);
   local_4._0_1_ = 1;
   if (this_00 == (TAmbitFileBasedDocument *)0x0) {
     uVar1 = 0;
@@ -50222,7 +50227,7 @@ int * __thiscall InitializeTurnEventDialogFactoryRegistry(void *this,int *pFacto
   }
   local_4._0_1_ = 0;
   *(undefined4 *)((int)this + 0x50) = uVar1;
-  this_01 = (void *)AllocateWithFallbackHandler(0x20);
+  this_01 = (void *)__2_YAPAXI_Z(0x20);
   local_4._0_1_ = 2;
   if (this_01 == (void *)0x0) {
     DAT_006a1b24 = (void *)0x0;
@@ -50263,7 +50268,7 @@ void __fastcall DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory(und
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062dfa8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -50275,7 +50280,7 @@ void __fastcall DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory(und
   DAT_006a1b24 = (int *)0x0;
   (**(code **)(*(int *)param_1[0x14] + 0x1c))();
   local_4 = 0xffffffff;
-  CDocument::DestructCDocumentBaseState();
+  CDocument::__1CDocument__UAE_XZ();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -50288,9 +50293,9 @@ bool __fastcall WrapperFor_OnNewDocument_At004797a0(CDocument *param_1)
 
 {
   int iVar1;
-  
+
   DAT_006a43f0 = 0;
-  iVar1 = CDocument::OrphanLeaf_NoCall_Ins04_005adc30(param_1);
+  iVar1 = CDocument::_OnNewDocument_CDocument__UAEHXZ(param_1);
   return iVar1 != 0;
 }
 
@@ -50303,7 +50308,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004798f0(undefined4 p
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -50327,9 +50332,9 @@ bool WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960(undefined
 
 {
   int iVar1;
-  
+
   DAT_006a43f0 = 1;
-  iVar1 = CDocument::_scalar_deleting_destructor_(param_1);
+  iVar1 = CDocument::_OnOpenDocument_CDocument__UAEHPBD_Z(param_1);
   return iVar1 != 0;
 }
 
@@ -50349,13 +50354,13 @@ undefined4 CreateParentDirectoryAndRunArchiveOperation_Mode1012(CString param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   CVar1.m_pchData = param_1.m_pchData;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062dff0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&param_1,param_1.m_pchData);
+  CString::__0CString__QAE_PBD_Z(&param_1,param_1.m_pchData);
   local_4 = 0;
   iVar2 = *(int *)(param_1.m_pchData + -8) + -1;
   if (0 < iVar2) {
@@ -50364,17 +50369,17 @@ undefined4 CreateParentDirectoryAndRunArchiveOperation_Mode1012(CString param_1)
       iVar2 = iVar2 + -1;
     } while (0 < iVar2);
     if (0 < iVar2) {
-      src_ref = (CString *)FUN_005fedad(&local_10,iVar2 + 1);
+      src_ref = (CString *)_Left_CString__QBE_AV1_H_Z(&local_10,iVar2 + 1);
       local_4._0_1_ = 1;
-      CString::AssignFromPtr(&param_1,src_ref);
+      CString::__4CString__QAEABV0_ABV0__Z(&param_1,src_ref);
       local_4 = (uint)local_4._1_3_ << 8;
-      CString::~CString(&local_10);
+      CString::__1CString__QAE_XZ(&local_10);
       CreateDirectoryA(param_1.m_pchData,(LPSECURITY_ATTRIBUTES)0x0);
     }
   }
-  uVar3 = CDocument::OnSaveDocument(CVar1.m_pchData);
+  uVar3 = CDocument::_OnSaveDocument_CDocument__UAEHPBD_Z(CVar1.m_pchData);
   local_4 = 0xffffffff;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   *unaff_FS_OFFSET = local_c;
   return uVar3;
 }
@@ -50390,7 +50395,7 @@ undefined4 __fastcall PopUiResourcePoolNode_00479A80(int param_1)
   undefined4 *puVar2;
   undefined4 uVar3;
   int iVar4;
-  
+
   puVar1 = *(undefined4 **)(param_1 + 8);
   puVar2 = (undefined4 *)puVar1[1];
   uVar3 = puVar1[2];
@@ -50413,7 +50418,7 @@ undefined4 __fastcall PopUiResourcePoolNode_00479A80(int param_1)
     *(undefined4 *)(param_1 + 0x10) = 0;
     *(undefined4 *)(param_1 + 8) = 0;
     *(undefined4 *)(param_1 + 4) = 0;
-    FreeDataChain();
+    _FreeDataChain_CPlex__QAEXXZ();
     *(undefined4 *)(param_1 + 0x14) = 0;
   }
   return uVar3;
@@ -50437,10 +50442,10 @@ void __thiscall PushUiResourcePoolNode(int param_1,undefined4 param_2)
   int iVar2;
   undefined4 *puVar3;
   int iVar4;
-  
+
   uVar1 = *(undefined4 *)(param_1 + 8);
   if (*(int *)(param_1 + 0x10) == 0) {
-    iVar2 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
+    iVar2 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
     iVar4 = *(int *)(param_1 + 0x18);
     puVar3 = (undefined4 *)(iVar2 + -8 + iVar4 * 0xc);
     if (-1 < iVar4 + -1) {
@@ -50516,12 +50521,12 @@ undefined4 * WrapperFor_AllocateWithFallbackHandler_At00479e40(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062e032;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x38);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x38);
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     local_4 = 1;
@@ -50545,7 +50550,7 @@ undefined4 * WrapperFor_AllocateWithFallbackHandler_At00479e40(void)
 void WrapperFor_AFX_CLASSINIT_At00479ef0(void)
 
 {
-  FUN_0060704b(&PTR_DAT_00694b48);
+  __0AFX_CLASSINIT__QAE_PAUCRuntimeClass___Z(&PTR_DAT_00694b48);
   return;
 }
 
@@ -50560,7 +50565,7 @@ undefined4 * __fastcall ConstructBitmapSurfaceStateAndResetResources(undefined4 
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e058;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -50585,7 +50590,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00479fb0(undefined4 p
 {
   DestructBitmapSurfaceStateAndRestoreRuntimeClass();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
@@ -50608,7 +50613,7 @@ AllocateBitmapSurfaceHeaderAndPixelBuffer
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e078;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -50640,7 +50645,7 @@ AllocateBitmapSurfaceHeaderAndPixelBuffer
   else {
     param_1[9] = iVar4;
   }
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(param_2 * param_3 + 0x28 + param_1[9] * 4);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(param_2 * param_3 + 0x28 + param_1[9] * 4);
   param_1[4] = puVar1;
   param_1[6] = 1;
   *puVar1 = 0x28;
@@ -50704,7 +50709,7 @@ ConstructBitmapBlitBufferFromSourceDescriptor(undefined4 *param_1,int param_2)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e098;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -50725,7 +50730,7 @@ ConstructBitmapBlitBufferFromSourceDescriptor(undefined4 *param_1,int param_2)
   param_1[0xc] = 0;
   param_1[0xd] = 0;
   *param_1 = &PTR_LAB_00645fc8;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(iVar3 * 4 + 0x28);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(iVar3 * 4 + 0x28);
   param_1[4] = puVar1;
   puVar6 = *(undefined4 **)(param_2 + 0x10);
   for (uVar2 = param_1[9] * 4 + 0x28U >> 2; uVar2 != 0; uVar2 = uVar2 - 1) {
@@ -50755,7 +50760,7 @@ ConstructBitmapBlitBufferFromSourceDescriptor(undefined4 *param_1,int param_2)
     param_1[8] = uVar5 * 4 * iVar4;
   }
   param_1[1] = iVar3 + 0x28;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(param_1[8]);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(param_1[8]);
   uVar2 = param_1[8];
   param_1[3] = puVar1;
   puVar6 = *(undefined4 **)(param_2 + 0xc);
@@ -50784,7 +50789,7 @@ void __fastcall DestructBitmapSurfaceStateAndRestoreRuntimeClass(undefined4 *par
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e0b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -50805,7 +50810,7 @@ void __thiscall CopyOffset10PointPairToOutOrZero(int param_1,undefined4 *param_2
 {
   int iVar1;
   undefined4 uVar2;
-  
+
   iVar1 = *(int *)(param_1 + 0x10);
   if (iVar1 == 0) {
     *param_2 = 0;
@@ -50831,19 +50836,19 @@ BuildPaletteAndReleaseBitmapSurfaceResources(int param_1,LPCSTR param_2,int para
   short *psVar1;
   int iVar2;
   uint uVar3;
-  
+
   hFile = CreateFileA(param_2,0x80000000,(uint)(param_3 != 0),(LPSECURITY_ATTRIBUTES)0x0,3,0x80,
                       (HANDLE)0x0);
   GetFileSize(hFile,(LPDWORD)0x0);
   hFileMappingObject = CreateFileMappingA(hFile,(LPSECURITY_ATTRIBUTES)0x0,2,0,0,(LPCSTR)0x0);
   GetLastError();
   if (hFileMappingObject == (HANDLE)0x0) {
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(s_Empty_bitmap_file_00694b84,0,0);
+    _AfxMessageBox__YGHPBDII_Z(s_Empty_bitmap_file_00694b84,0,0);
     return 0;
   }
   psVar1 = MapViewOfFile(hFileMappingObject,4,0,0,0);
   if (*psVar1 != 0x4d42) {
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(s_Invalid_bitmap_file_00694b6c,0,0);
+    _AfxMessageBox__YGHPBDII_Z(s_Invalid_bitmap_file_00694b6c,0,0);
     return 0;
   }
   ReleaseBitmapSurfaceResourcesAndResetState();
@@ -50913,7 +50918,7 @@ Helper_Uses_BuildPaletteFromRgbQuadBuffer_At0047a630(int param_1,LPCSTR param_2)
   undefined4 *puVar9;
   undefined2 uStack_e;
   undefined2 uStack_4;
-  
+
   iVar3 = *(int *)(param_1 + 0x24) * 4;
   uVar5 = iVar3 + 0x36 + *(int *)(param_1 + 0x20);
   iVar3 = iVar3 + 0x36;
@@ -51018,7 +51023,7 @@ Helper_Uses_BuildPaletteFromRgbQuadBuffer_At0047a8a0
   uint uVar1;
   int iVar2;
   uint uVar3;
-  
+
   ReleaseBitmapSurfaceResourcesAndResetState();
   *(int *)(param_1 + 0x14) = param_4;
   if (param_3 == 0) {
@@ -51077,7 +51082,7 @@ UINT __thiscall SelectAndRealizeDibPalette(int param_1,int param_2,BOOL param_3)
 {
   UINT UVar1;
   HDC hdc;
-  
+
   if (*(HPALETTE *)(param_1 + 0x34) == (HPALETTE)0x0) {
     if (DAT_006a1480 == 0) {
       TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_CDib_cpp_00694b9c,0xe9);
@@ -51106,7 +51111,7 @@ StretchDibitsFromStoredBitmapToHdcSimple
 {
   BITMAPINFO *lpbmi;
   HDC hdc;
-  
+
   lpbmi = *(BITMAPINFO **)(param_1 + 0x10);
   if (lpbmi == (BITMAPINFO *)0x0) {
     return 0;
@@ -51131,7 +51136,7 @@ BlitDibBitsWithStretchDIBits
 
 {
   HDC hdc;
-  
+
   if (*(BITMAPINFO **)(param_1 + 0x10) == (BITMAPINFO *)0x0) {
     return 0;
   }
@@ -51155,7 +51160,7 @@ undefined4 __thiscall StretchDibitsFromStoredBitmapToHdc(int param_1,int param_2
   int DestHeight;
   int DestWidth;
   HDC hdc;
-  
+
   lpbmi = *(BITMAPINFO **)(param_1 + 0x10);
   if (lpbmi == (BITMAPINFO *)0x0) {
     return 0;
@@ -51184,7 +51189,7 @@ RenderHintHelperWithCtrlModifierOverlay_Impl
 
 {
   HDC hdc;
-  
+
   hdc = (HDC)0x0;
   if (param_2 != 0) {
     hdc = *(HDC *)(param_2 + 4);
@@ -51212,8 +51217,8 @@ StretchDibitsWithCopiedPaletteTable
   undefined4 uVar6;
   undefined4 *puVar7;
   undefined4 *puVar8;
-  
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x400);
+
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x400);
   puVar7 = *(undefined4 **)(param_1 + 4);
   puVar8 = puVar1;
   for (uVar3 = *(uint *)(param_1 + 0x24) & 0x3fffffff; uVar3 != 0; uVar3 = uVar3 - 1) {
@@ -51286,7 +51291,7 @@ LAB_0047ad90:
     puVar7 = (undefined4 *)((int)puVar7 + 1);
     puVar8 = (undefined4 *)((int)puVar8 + 1);
   }
-  FreeHeapBufferIfNotNull(puVar1);
+  __3_YAXPAX_Z(puVar1);
   return uVar6;
 }
 
@@ -51299,7 +51304,7 @@ HBITMAP __thiscall EnsureBitmapSurfaceDibSectionCreated(int param_1,int param_2)
 {
   HDC hdc;
   HBITMAP pHVar1;
-  
+
   if (*(BITMAPINFO **)(param_1 + 0x10) == (BITMAPINFO *)0x0) {
     return (HBITMAP)0x0;
   }
@@ -51328,14 +51333,14 @@ undefined4 __fastcall BuildPaletteFromRgbQuadBuffer(int param_1)
   HPALETTE pHVar2;
   BYTE *pBVar3;
   int iVar4;
-  
+
   if (*(int *)(param_1 + 0x24) == 0) {
     return 0;
   }
   if (*(HGDIOBJ *)(param_1 + 0x34) != (HGDIOBJ)0x0) {
     DeleteObject(*(HGDIOBJ *)(param_1 + 0x34));
   }
-  plpal = (LOGPALETTE *)AllocateWithFallbackHandler(*(int *)(param_1 + 0x24) * 4 + 4);
+  plpal = (LOGPALETTE *)__2_YAPAXI_Z(*(int *)(param_1 + 0x24) * 4 + 4);
   iVar4 = 0;
   plpal->palVersion = 0x300;
   plpal->palNumEntries = *(WORD *)(param_1 + 0x24);
@@ -51354,7 +51359,7 @@ undefined4 __fastcall BuildPaletteFromRgbQuadBuffer(int param_1)
   }
   pHVar2 = CreatePalette(plpal);
   *(HPALETTE *)(param_1 + 0x34) = pHVar2;
-  FreeHeapBufferIfNotNull(plpal);
+  __3_YAXPAX_Z(plpal);
   return 1;
 }
 
@@ -51372,11 +51377,11 @@ CBrush * __fastcall ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl(int para
   BYTE *pBVar4;
   CBrush *this;
   int iVar5;
-  
+
   if (*(int *)(param_1 + 0x24) == 0) {
     return (CBrush *)0x0;
   }
-  plpal = (LOGPALETTE *)AllocateWithFallbackHandler(*(int *)(param_1 + 0x24) * 4 + 4);
+  plpal = (LOGPALETTE *)__2_YAPAXI_Z(*(int *)(param_1 + 0x24) * 4 + 4);
   iVar5 = 0;
   plpal->palVersion = 0x300;
   plpal->palNumEntries = *(WORD *)(param_1 + 0x24);
@@ -51393,7 +51398,7 @@ CBrush * __fastcall ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl(int para
       pBVar4 = pBVar4 + 4;
     } while (iVar5 < *(int *)(param_1 + 0x24));
   }
-  pCVar2 = (CBrush *)AllocateWithFallbackHandler(8);
+  pCVar2 = (CBrush *)__2_YAPAXI_Z(8);
   this = (CBrush *)0x0;
   if (pCVar2 != (CBrush *)0x0) {
     *(undefined4 *)(pCVar2 + 4) = 0;
@@ -51401,8 +51406,8 @@ CBrush * __fastcall ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl(int para
     this = pCVar2;
   }
   pHVar3 = CreatePalette(plpal);
-  CBrush::AttachRegionHandleToClipStateAndRegister(this,(int)pHVar3);
-  FreeHeapBufferIfNotNull(plpal);
+  CBrush::_Attach_CGdiObject__QAEHPAX_Z(this,(int)pHVar3);
+  __3_YAXPAX_Z(plpal);
   return this;
 }
 
@@ -51416,7 +51421,7 @@ void __thiscall CopyRgbQuadTableToBitmapSurfacePalette(int param_1,int param_2)
   undefined1 *puVar1;
   undefined1 *puVar2;
   int iVar3;
-  
+
   iVar3 = 0;
   puVar1 = *(undefined1 **)(param_1 + 4);
   if (0 < *(int *)(param_1 + 0x24)) {
@@ -51445,7 +51450,7 @@ void __thiscall OrphanDeadLeaf_NoRefs_0047b130(int param_1,int param_2)
   undefined1 *puVar2;
   undefined1 *puVar3;
   int iVar4;
-  
+
   if (param_2 == 0) {
     uVar1 = 0;
   }
@@ -51479,7 +51484,7 @@ HBITMAP __thiscall CreateDibBitmapFromStoredInfo(int param_1,int param_2)
 {
   HBITMAP pHVar1;
   HDC hdc;
-  
+
   if (*(int *)(param_1 + 0x20) == 0) {
     return (HBITMAP)0x0;
   }
@@ -51511,7 +51516,7 @@ void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b
   int unaff_EBP;
   HDC in_stack_00000010;
   HPALETTE in_stack_00000018;
-  
+
   *(undefined4 *)(unaff_EBP + 0x24) = 2;
   iVar2 = *(int *)(unaff_EBX + 0x14);
   *(int *)(unaff_EBP + 0x20) = iVar2;
@@ -51550,7 +51555,7 @@ void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544
   int unaff_EBP;
   HDC in_stack_00000010;
   HPALETTE in_stack_00000018;
-  
+
   *(undefined4 *)(unaff_EBP + 0x24) = 0x10;
   iVar2 = *(int *)(unaff_EBX + 0x14);
   *(int *)(unaff_EBP + 0x20) = iVar2;
@@ -51589,7 +51594,7 @@ void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d
   int unaff_EBP;
   HDC in_stack_00000010;
   HPALETTE in_stack_00000018;
-  
+
   *(undefined4 *)(unaff_EBP + 0x24) = 0x100;
   iVar2 = *(int *)(unaff_EBX + 0x14);
   *(int *)(unaff_EBP + 0x20) = iVar2;
@@ -51627,7 +51632,7 @@ void WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d(HDC param_1,HPALETTE pa
   int unaff_EBP;
   HDC in_stack_00000010;
   HPALETTE in_stack_00000018;
-  
+
   iVar2 = *(int *)(unaff_EBX + 0x14);
   *(int *)(unaff_EBP + 0x20) = iVar2;
   if (iVar2 == 0) {
@@ -51668,20 +51673,20 @@ undefined4 __thiscall ReadBitmapStreamIntoSurfaceState(int param_1,int *param_2)
   undefined4 local_10;
   undefined1 *puStack_c;
   undefined4 local_8;
-  
+
   local_8 = 0xffffffff;
   puStack_c = &LAB_0062e0d8;
   local_10 = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_10;
   local_14 = &stack0xffffffc4;
   ReleaseBitmapSurfaceResourcesAndResetState();
-  AFX_EXCEPTION_LINK();
+  __0AFX_EXCEPTION_LINK__QAE_XZ();
   local_8 = 1;
   pcVar1 = *(code **)(*param_2 + 0x3c);
   iVar2 = (*pcVar1)(local_30,0xe);
   if (iVar2 == 0xe) {
     if (local_30[0] == 0x4d42) {
-      uVar3 = AllocateWithFallbackHandler(local_26 + -0xe);
+      uVar3 = __2_YAPAXI_Z(local_26 + -0xe);
       *(undefined4 *)(param_1 + 0x1c) = 1;
       *(undefined4 *)(param_1 + 0x18) = 1;
       *(undefined4 *)(param_1 + 0x10) = uVar3;
@@ -51702,11 +51707,11 @@ undefined4 __thiscall ReadBitmapStreamIntoSurfaceState(int param_1,int *param_2)
         *(uint *)(param_1 + 0x20) = uVar6 * 4 * iVar5;
       }
       *(int *)(param_1 + 4) = iVar2 + 0x28;
-      uVar3 = AllocateWithFallbackHandler(*(undefined4 *)(param_1 + 0x20));
+      uVar3 = __2_YAPAXI_Z(*(undefined4 *)(param_1 + 0x20));
       *(undefined4 *)(param_1 + 0xc) = uVar3;
       (*pcVar1)(uVar3,*(undefined4 *)(param_1 + 0x20));
       local_8 = 0xffffffff;
-      AfxTryCleanup();
+      _AfxTryCleanup__YGXXZ();
       iVar2 = *(int *)(param_1 + 0x10);
       if ((iVar2 != 0) && (*(int *)(iVar2 + 0x20) != 0)) {
         *(int *)(param_1 + 0x24) = *(int *)(iVar2 + 0x20);
@@ -51739,13 +51744,13 @@ undefined4 __thiscall ReadBitmapStreamIntoSurfaceState(int param_1,int *param_2)
       *unaff_FS_OFFSET = local_10;
       return 1;
     }
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(s_Invalid_bitmap_file_00694b6c,0,0);
+    _AfxMessageBox__YGHPBDII_Z(s_Invalid_bitmap_file_00694b6c,0,0);
   }
   else {
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(s_read_error_1_00694c30,0,0);
+    _AfxMessageBox__YGHPBDII_Z(s_read_error_1_00694c30,0,0);
   }
   local_8 = 0xffffffff;
-  AfxTryCleanup();
+  _AfxTryCleanup__YGXXZ();
   *unaff_FS_OFFSET = local_10;
   return 0;
 }
@@ -51769,7 +51774,7 @@ undefined4 __thiscall WriteBmpHeaderAndDataOffsetToStreamWithSehGuard(int param_
   undefined4 local_10;
   undefined1 *puStack_c;
   undefined4 local_8;
-  
+
   local_8 = 0xffffffff;
   puStack_c = &LAB_0062e0f8;
   local_10 = *unaff_FS_OFFSET;
@@ -51781,13 +51786,13 @@ undefined4 __thiscall WriteBmpHeaderAndDataOffsetToStreamWithSehGuard(int param_
   local_26 = *(int *)(param_1 + 0x24) * 4 + 0x36;
   local_2a = 0;
   local_2e = iVar1 + 0xe;
-  AFX_EXCEPTION_LINK();
+  __0AFX_EXCEPTION_LINK__QAE_XZ();
   local_8 = 1;
   pcVar2 = *(code **)(*param_2 + 0x40);
   (*pcVar2)(&local_30,0xe);
   (*pcVar2)(*(undefined4 *)(param_1 + 0x10),iVar1);
   local_8 = 0xffffffff;
-  AfxTryCleanup();
+  _AfxTryCleanup__YGXXZ();
   *unaff_FS_OFFSET = local_10;
   return 1;
 }
@@ -51799,7 +51804,7 @@ undefined4 __thiscall WriteBmpHeaderAndDataOffsetToStreamWithSehGuard(int param_
 void ReadBitmapStreamStateAndWriteBmpHeaderThunk(int param_1)
 
 {
-  Flush();
+  _Flush_CArchive__QAEXXZ();
   if ((~*(uint *)(param_1 + 0x14) & 1) != 0) {
     WriteBmpHeaderAndDataOffsetToStreamWithSehGuard(*(undefined4 *)(param_1 + 0x20));
     return;
@@ -51822,14 +51827,14 @@ void __fastcall ReleaseBitmapSurfaceResourcesAndResetState(int param_1)
     *(undefined4 *)(param_1 + 0x28) = 0;
   }
   if (*(int *)(param_1 + 0x18) == 1) {
-    FreeHeapBufferIfNotNull(*(undefined4 *)(param_1 + 0x10));
+    __3_YAXPAX_Z(*(undefined4 *)(param_1 + 0x10));
   }
   else if (*(int *)(param_1 + 0x18) == 2) {
     GlobalUnlock(*(HGLOBAL *)(param_1 + 0x14));
     GlobalFree(*(HGLOBAL *)(param_1 + 0x14));
   }
   if (*(int *)(param_1 + 0x1c) == 1) {
-    FreeHeapBufferIfNotNull(*(undefined4 *)(param_1 + 0xc));
+    __3_YAXPAX_Z(*(undefined4 *)(param_1 + 0xc));
   }
   if (*(HGDIOBJ *)(param_1 + 0x34) != (HGDIOBJ)0x0) {
     DeleteObject(*(HGDIOBJ *)(param_1 + 0x34));
@@ -51892,7 +51897,7 @@ BlitSurfaceRectSkippingTransparentColor
   int iVar11;
   uint uVar12;
   char *pcVar13;
-  
+
   if (param_5 == 0) {
     return;
   }
@@ -51993,7 +51998,7 @@ int __thiscall LoadBmpResourceByIdCached_Impl(int param_1,int param_2,int param_
   int iVar1;
   int iVar2;
   int iVar3;
-  
+
   iVar1 = *(int *)(*(int *)(param_1 + 0x10) + 4);
   if (param_2 < iVar1) {
     iVar2 = *(int *)(*(int *)(param_1 + 0x10) + 8);
@@ -52025,7 +52030,7 @@ LoadBitmapResourceAndInitializeSurfaceState(int param_1,LPCSTR param_2,HMODULE p
   uint uVar2;
   int iVar3;
   uint uVar4;
-  
+
   hResInfo = FindResourceA(param_3,param_2,(LPCSTR)0x2);
   if (hResInfo == (HRSRC)0x0) {
     return 0;
@@ -52094,7 +52099,7 @@ undefined4 __fastcall LoadAndPreviewDibFromDialogInput_Impl(int param_1)
   int iVar10;
   undefined4 *puVar11;
   int iVar12;
-  
+
   iVar2 = *(int *)(param_1 + 0x10);
   if (*(short *)(iVar2 + 0xe) == 1) {
     iVar1 = *(int *)(iVar2 + 4) + 0x1f;
@@ -52105,7 +52110,7 @@ undefined4 __fastcall LoadAndPreviewDibFromDialogInput_Impl(int param_1)
       iVar2 = -iVar2;
     }
     iVar2 = iVar9 * iVar2;
-    puVar3 = (undefined4 *)AllocateWithFallbackHandler(iVar2);
+    puVar3 = (undefined4 *)__2_YAPAXI_Z(iVar2);
     uVar6 = *(uint *)(param_1 + 0x20);
     pbVar4 = *(byte **)(param_1 + 0xc);
     puVar11 = puVar3;
@@ -52150,7 +52155,7 @@ undefined4 __fastcall LoadAndPreviewDibFromDialogInput_Impl(int param_1)
         } while (iVar2 != 0);
       }
     }
-    FreeHeapBufferIfNotNull(puVar3);
+    __3_YAXPAX_Z(puVar3);
     return 1;
   }
   return 0;
@@ -52173,9 +52178,8 @@ void __fastcall RebuildSurfaceRowsWithTemporaryRowBuffer(int param_1)
   undefined4 *puVar8;
   undefined4 *puVar9;
   undefined4 *puVar10;
-  
-  puVar1 = (undefined4 *)
-           AllocateWithGlobalNewMode(*(int *)(*(int *)(param_1 + 0x10) + 4) + 3U & 0xfffffffc);
+
+  puVar1 = (undefined4 *)_malloc(*(int *)(*(int *)(param_1 + 0x10) + 4) + 3U & 0xfffffffc);
   puVar3 = *(undefined4 **)(param_1 + 0xc);
   iVar2 = *(int *)(*(int *)(param_1 + 0x10) + 8);
   uVar5 = *(int *)(*(int *)(param_1 + 0x10) + 4) + 3;
@@ -52230,7 +52234,7 @@ void __fastcall RebuildSurfaceRowsWithTemporaryRowBuffer(int param_1)
       puVar10 = (undefined4 *)((int)puVar10 + 1);
     }
   }
-  FreeHeapBlockWithAllocatorTracking(puVar1);
+  _free(puVar1);
   return;
 }
 

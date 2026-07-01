@@ -16,12 +16,12 @@ TUberCluster * TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006377ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
@@ -64,7 +64,7 @@ TUnitToolbarCluster * TUnitToolbarCluster::_scalar_deleting_destructor_(byte par
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -81,7 +81,7 @@ TUnitToolbarCluster::OrphanRetStub_0059add0
   undefined uVar1;
   undefined3 extraout_var;
   int *piVar2;
-  
+
   TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
   if ((((*(int *)&g_pApplicationUiRootController->field_0x24 == 1) && (param_1 == 0x68)) ||
       (param_1 == 0x67)) || ((param_1 == 10 || (param_1 == 0xc)))) {
@@ -119,7 +119,7 @@ void TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(int param_1)
   int iVar3;
   undefined3 extraout_var;
   int *piVar4;
-  
+
   InitializeSelectableTextOptionEntryIteratorContext(this);
   piVar4 = (int *)0x0;
   piVar2 = (int *)BeginSelectableTextOptionEntryIterator();

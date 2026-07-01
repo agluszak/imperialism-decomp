@@ -24,7 +24,7 @@ TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState
 {
   TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -52,7 +52,7 @@ TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = 7;
@@ -81,7 +81,7 @@ int TFoodProcessingOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   short sVar3;
   undefined4 unaff_EBX;
   int iVar4;
-  
+
   iVar1 = *(int *)&this->field_0x8;
   sVar3 = *(short *)(iVar1 + 0xdc) + *(short *)(iVar1 + 0xde);
   iVar2 = (int)*(short *)(iVar1 + 0xd8) / 2;
@@ -113,7 +113,7 @@ undefined4 TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100(ushort param_1)
   char cVar6;
   undefined3 extraout_var;
   int *piVar7;
-  
+
   if ((param_1 & 1) != 0) {
     param_1 = param_1 + 1;
   }
@@ -165,7 +165,7 @@ void TFoodProcessingOrder::OrphanRetStub_004b5160()
 {
   int *piVar1;
   int *piVar2;
-  
+
   piVar2 = *(int **)&this->field_0x8;
   piVar1 = piVar2 + 0x31;
   *(short *)piVar1 = (short)*piVar1 + *(short *)&this->field_0x4;

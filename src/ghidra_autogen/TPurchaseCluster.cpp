@@ -15,12 +15,12 @@ TCluster * TPurchaseCluster::CreateTPurchaseClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063183a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x8c);
+  this = (TCluster *)__2_YAPAXI_Z(0x8c);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
     TCluster::ConstructUiResourceEntryType4B0C0(this);
@@ -65,7 +65,7 @@ TPurchaseCluster * TPurchaseCluster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -109,7 +109,7 @@ TPurchaseCluster::OrphanRetStub_0059add0
   undefined2 extraout_var_01;
   int iVar3;
   TPurchaseClusterVtbl *pTVar4;
-  
+
   if (param_1 == 10) {
     if (*(int *)((int)param_2 + 0x1c) == 0x6c61726f) {
       pTVar4 = this->vftable;
@@ -173,7 +173,7 @@ TPurchaseCluster::SetCityViewValueControlAmount
   tagRECT tStack_1c;
   char cStack_4;
   int *piVar2;
-  
+
   LStack_2c = 0x76616c75;
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   piVar2 = (int *)CONCAT31(extraout_var,uVar1);
@@ -201,7 +201,7 @@ void TPurchaseCluster::UpdateCityViewValueControl()
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x76616c75);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

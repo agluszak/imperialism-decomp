@@ -12,7 +12,7 @@ TForeignMinister * TForeignMinister::ConstructTForeignMinister()
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(undefined2 *)&this->field_0xc = 0;
   this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x49 = 0x1010101;
@@ -50,7 +50,7 @@ TForeignMinister * TForeignMinister::ConstructTForeignMinister()
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(undefined2 *)&this->field_0xc = 0;
   this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x49 = 0x1010101;
@@ -78,7 +78,7 @@ TForeignMinister * TForeignMinister::DeletingDestructTMinister(byte param_1)
 {
   TForeignMinister::DestructTForeignMinister(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -178,19 +178,19 @@ void TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006340da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  this_00 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   sVar7 = 0;
   local_4 = 0;
   if (this_00 == (TIndexAndRankList *)0x0) {
     this_00 = (TIndexAndRankList *)0x0;
   }
   else {
-    TIndexAndRankList::CPtrArray(this_00);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(this_00);
     this_00->vftable = &TIndexAndRankListVtbl_00659c58;
   }
   local_4 = 0xffffffff;
@@ -263,7 +263,7 @@ void TForeignMinister::SetForeignMinisterReadyFlag14()
   undefined2 extraout_var_00;
   undefined2 uVar3;
   undefined2 extraout_var_01;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1[9].GetTMinisterClassNamePointer)();
   uVar3 = extraout_var;
@@ -305,7 +305,7 @@ TForeignMinister::UpdateControlCachedIntFromWindowText
   undefined4 unaff_retaddr;
   undefined2 in_stack_0000000a;
   short in_stack_00000010;
-  
+
   uVar5 = (undefined2)((uint)in_EAX >> 0x10);
   uVar4 = _param_2;
   if (in_stack_00000010 == *(short *)&this->field_0x10) {

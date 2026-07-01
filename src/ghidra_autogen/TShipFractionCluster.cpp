@@ -12,7 +12,7 @@ TShipFractionCluster * TShipFractionCluster::_scalar_deleting_destructor_(byte p
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TCluster * TShipFractionCluster::CreateTShipFractionClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x98);
+  this = (TCluster *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
@@ -81,7 +81,7 @@ void TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920()
   int iStack_20;
   code *pcStack_1c;
   int iStack_18;
-  
+
   pcStack_1c = (code *)0x568d81;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable;
@@ -151,7 +151,7 @@ TShipFractionCluster::OrphanRetStub_0059add0
   undefined2 extraout_var_00;
   undefined2 uVar3;
   undefined4 uVar4;
-  
+
   if (param_1 == 100) {
     if ((short)*(ushort *)&this->field_0x94 < *(short *)&this->field_0x88) {
       iVar2 = *(ushort *)&this->field_0x94 + 1;

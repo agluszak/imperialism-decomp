@@ -15,12 +15,12 @@ TMission * TInvadeMission::CreateTInvadeMission(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006344a2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x38);
+  this = (TMission *)__2_YAPAXI_Z(0x38);
   local_4 = 0;
   if (this != (TMission *)0x0) {
     TMission::ConstructTArmyMissionWithNodeKey(this,0xffff);
@@ -81,7 +81,7 @@ float10 TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead()
   float *pfVar4;
   TInvadeMission *pTVar5;
   float10 fVar6;
-  
+
   pfVar4 = (float *)&DAT_00697980;
   pTVar5 = this + 0x1c;
   fVar3 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
@@ -115,7 +115,7 @@ TInvadeMission * TInvadeMission::DestroyTInvadeMission(byte param_1)
 {
   ResetTInvadeMissionToSentinelVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -130,7 +130,7 @@ void TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders()
   TGreatPower *this_00;
   int iVar1;
   int iVar2;
-  
+
   (**(code **)(**(int **)(this + 0x34) + 0x1c))();
   this_00 = g_apNationStates[*(short *)(this + 4)];
   (*this_00->vftable->ConstructTTaskBaseState)();
@@ -165,7 +165,7 @@ uint TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits()
   uint uVar2;
   undefined4 uVar3;
   int iVar4;
-  
+
   uVar2 = (**(code **)(**(int **)(this + 0x34) + 0x98))();
   if ((char)uVar2 == '\0') {
     return uVar2 & 0xffffff00;
@@ -219,7 +219,7 @@ void TInvadeMission::SerializeTInvadeMission(int *param_1)
 
 {
   code *pcVar1;
-  
+
   SerializeTArmyMission(param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(this + 0x30,2);
@@ -236,7 +236,7 @@ void TInvadeMission::AdvanceInvadeMissionCompositeHandlers()
 
 {
   int iVar1;
-  
+
   (**(code **)(**(int **)(this + 0x34) + 0x40))();
   iVar1 = *(int *)this;
   (**(code **)(iVar1 + 0x34))();
@@ -257,7 +257,7 @@ float10 TInvadeMission::ComputeInvadeMissionWeightedScoreDelta(float param_1)
   char cVar1;
   float10 fVar2;
   float10 fVar3;
-  
+
   if (this[0x10] == (TInvadeMission)0x0) {
     if (*(TInvadeMission **)((int)param_1 + 0x40) == this) {
       fVar2 = (float10)(**(code **)(*(int *)this + 0x68))();
@@ -289,7 +289,7 @@ float10 TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled()
 
 {
   float10 fVar1;
-  
+
   if (this[0x10] != (TInvadeMission)0x0) {
     return (float10)g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
@@ -319,7 +319,7 @@ TInvadeMission::HandleInvadeMissionActionOnTargetViaBeachhead
 
 {
   char cVar1;
-  
+
   if (((param_1 == 2) && (param_2 == *(short *)(this + 0x30))) &&
      (*(int **)(this + 0x34) != (int *)0x0)) {
     cVar1 = (**(code **)(**(int **)(this + 0x34) + 0x4c))(2,param_2);
@@ -353,7 +353,7 @@ TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   local_14 = 0;
   local_10 = 0;
   local_c = 0;

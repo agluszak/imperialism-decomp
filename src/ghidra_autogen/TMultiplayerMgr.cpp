@@ -35,28 +35,28 @@ undefined4 * TMultiplayerMgr::ConstructMultiplayerManager(astruct_11 *this_obj)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634793;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
   uStack_4 = 0;
-  CallCallbackRepeatedly(&this->field_0x20,8,4,&LAB_00405209);
+  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x20,8,4,&LAB_00405209);
   uStack_4._0_1_ = 1;
-  CString::CString((CString *)&this->field_0x74);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x74);
   uStack_4._0_1_ = 2;
-  CallCallbackRepeatedly
+  ___L_YGXPAXIHP6EX0_Z1_Z
             (&this->field_0x78,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
   uStack_4._0_1_ = 3;
-  CallCallbackRepeatedly
+  ___L_YGXPAXIHP6EX0_Z1_Z
             (&this->field_0x94,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
   uStack_4._0_1_ = 4;
-  CString::CString((CString *)&this->field_0xb0);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0xb0);
   uStack_4._0_1_ = 5;
-  CString::CString((CString *)&this->field_0xb4);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0xb4);
   uStack_4 = CONCAT31(uStack_4._1_3_,6);
-  CString::CString((CString *)&this->field_0xb8);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0xb8);
   this->vftable = &TMultiplayerMgrVtbl_0065c030;
   *(undefined4 *)&this->field_0x40 = 0;
   *(undefined4 *)&this->field_0x6c = 0;
@@ -76,7 +76,7 @@ TMultiplayerMgr * TMultiplayerMgr::DeletingDestructMultiplayerManager(byte param
 {
   DestructMultiplayerManager();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -97,7 +97,7 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063487a;
@@ -108,7 +108,7 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
   this->field_0xe4 = 0;
   this->field_0x68 = 1;
   this->field_0x69 = 1;
-  param_1.m_pchData = (char *)AllocateWithFallbackHandler(4);
+  param_1.m_pchData = (char *)__2_YAPAXI_Z(4);
   local_4 = 0;
   if ((TNetMgr *)param_1.m_pchData == (TNetMgr *)0x0) {
     DAT_006a6014 = 0;
@@ -118,7 +118,7 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
   }
   local_4 = 0xffffffff;
   NoOpInitializeGlobalTurnEventQueueManager();
-  CString::CString(&param_1);
+  CString::__0CString__QAE_XZ(&param_1);
   local_4 = 1;
   LoadUiStringResourceByGroupAndIndex(&param_1,0x2759,1);
   this_00 = (CString *)&this->field_0x94;
@@ -126,7 +126,7 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
   do {
     this_00[-0x13].m_pchData = (char *)0x0;
     this_00[10].m_pchData = (char *)0x756e6173;
-    CString::AssignFromPtr(this_00,&param_1);
+    CString::__4CString__QAEABV0_ABV0__Z(this_00,&param_1);
     AssignStringSharedRefFromPointer(this_00);
     this_00 = this_00 + 1;
     iVar2 = iVar2 + -1;
@@ -136,20 +136,20 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
   *(undefined4 *)&this->field_0xf0 = 0xffffffff;
   ResetTurnEventQueueRuntimeRecordBuffer();
   local_4 = 0xffffffff;
-  CString::~CString(&param_1);
-  CString::CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
+  CString::__0CString__QAE_XZ(&param_1);
   puVar1 = &this->field_0xb0;
   local_4 = 2;
   GenerateMappedFlavorTextByCurrentContextNation(puVar1);
   LoadProfileStringAndAssignSharedRef(&param_1,s_PlayerName_0069801c,*(undefined4 *)puVar1);
-  CString::AssignFromPtr((CString *)puVar1,&param_1);
-  CString::AssignFromPtr((CString *)&this->field_0xb4,(CString *)puVar1);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)puVar1,&param_1);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0xb4,(CString *)puVar1);
   puVar1 = &this->field_0x74;
   GenerateMappedFlavorTextByCurrentContextNation(puVar1);
   LoadProfileStringAndAssignSharedRef(&param_1,s_GameName_00698010,*(undefined4 *)puVar1);
-  CString::AssignFromPtr((CString *)puVar1,&param_1);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)puVar1,&param_1);
   local_4 = 0xffffffff;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -167,17 +167,17 @@ void TMultiplayerMgr::ShutdownRuntimeSelectionAndPersistPlayerName()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00634898;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_10.m_pchData = (char *)this;
-  CString::StringSharedRef_AssignFromPtr(&local_10,(CString *)&this->field_0xb0);
+  CString::__0CString__QAE_ABV0__Z(&local_10,(CString *)&this->field_0xb0);
   local_4 = 0;
   SaveSettingValueFromPointerByKey(&local_10,s_PlayerName_0069801c);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)(this,0);
   g_pGameFlowState = (Config *)0x0;
   (**(code **)(*DAT_006a6014 + 0x1c))();
@@ -224,7 +224,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   undefined4 uStack_c;
   undefined1 *puStack_8;
   char *pcStack_4;
-  
+
   pcStack_4 = (char *)0xffffffff;
   puStack_8 = &LAB_006348b8;
   uStack_c = *unaff_FS_OFFSET;
@@ -269,7 +269,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   CStack_6c.m_pchData = (char *)0x542cbe;
   (*pcVar2)();
   CStack_6c.m_pchData = (char *)0x542cc7;
-  CString::CString(&local_50);
+  CString::__0CString__QAE_XZ(&local_50);
   CStack_6c.m_pchData = (char *)0x20;
   uStack_c = 0;
   (*pcVar2)(&local_50);
@@ -313,7 +313,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   iStack_48 = 0xffffffff;
   EnqueueOrSendTurnEventPacketToNation(&stack0xffffff9c,sVar7 == -3);
   uStack_28 = 0xffffffff;
-  CString::~CString(&CStack_6c);
+  CString::__1CString__QAE_XZ(&CStack_6c);
   *unaff_FS_OFFSET = uStack_30;
   return;
 }
@@ -330,7 +330,7 @@ void TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(int *param
   code *pcVar3;
   int *piVar4;
   undefined1 *puVar5;
-  
+
   piVar4 = param_1;
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
@@ -380,7 +380,7 @@ uint TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue()
 
 {
   uint uVar1;
-  
+
   if (*(int **)&this->field_0x44 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x44 + 0x4c))();
   }
@@ -400,7 +400,7 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue()
   int *piVar3;
   int iVar4;
   undefined4 *puVar5;
-  
+
   if (this->field_0x68 != '\0') {
     if (*(int *)&this->field_0xf0 != -1) {
       while ((iVar4 = *(int *)&this->field_0x6c, iVar4 != 0 &&

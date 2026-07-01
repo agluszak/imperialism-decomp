@@ -3,20 +3,49 @@
 // Program: Imperialism.exe
 // Bucket: CWnd.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005FFFFD
-// GHIDRA_NAME CWnd::Default
-// GHIDRA_PROTO undefined __thiscall CWnd::Default(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005E54D1
+// GHIDRA_NAME CWnd::?GetOwner@CWnd@@QBEPAV1@XZ
+// GHIDRA_PROTO CWnd * __thiscall ?GetOwner@CWnd@@QBEPAV1@XZ(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: class CWnd * __thiscall CWnd::GetOwner(void)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
 
-void CWnd::Default()
+/* Library Function - Single Match
+    public: class CWnd * __thiscall CWnd::GetOwner(void)const
+
+   Library: nafxcw retail msvc500:static */
+
+CWnd * CWnd::_GetOwner_CWnd__QBEPAV1_XZ()
 
 {
-  Default(this);
+  HWND pHVar1;
+  CWnd *pCVar2;
+
+  pHVar1 = this->m_hWndOwner;
+  if (pHVar1 == (HWND)0x0) {
+    pHVar1 = GetParent(this->m_hWnd);
+  }
+  pCVar2 = (CWnd *)_FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar1);
+  return pCVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005FFFFD
+// GHIDRA_NAME CWnd::?Default@CWnd@@IAEJXZ
+// GHIDRA_PROTO undefined __thiscall CWnd::?Default@CWnd@@IAEJXZ(void)
+
+void __thiscall CWnd::?Default@CWnd@@IAEJXZ(CWnd *this)
+
+{
+  _Default_CWnd__IAEJXZ(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00603516
-// GHIDRA_NAME CWnd::GetValueAt
-// GHIDRA_PROTO undefined __thiscall GetValueAt(uint param_1)
+// GHIDRA_NAME CWnd::?GetValueAt@CMapPtrToPtr@@QBEPAXPAX@Z
+// GHIDRA_PROTO undefined __thiscall ?GetValueAt@CMapPtrToPtr@@QBEPAXPAX@Z(uint param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Lookup helper for handle-map buckets: finds object entry by HWND key and returns mapped object pointer.
 // GHIDRA_COMMENT_END
@@ -24,12 +53,12 @@ void CWnd::Default()
 /* Lookup helper for handle-map buckets: finds object entry by HWND key and returns mapped object
    pointer. */
 
-undefined4 CWnd::GetValueAt(uint param_1)
+undefined4 CWnd::_GetValueAt_CMapPtrToPtr__QBEPAXPAX_Z(uint param_1)
 
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   iVar1 = (this->ccmdTarget).m_dwRef;
   if (iVar1 != 0) {
     for (puVar2 = *(undefined4 **)
@@ -43,19 +72,51 @@ undefined4 CWnd::GetValueAt(uint param_1)
   return 0;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00607673
-// GHIDRA_NAME CWnd::AttachControlSite_607673
-// GHIDRA_PROTO undefined __thiscall AttachControlSite_607673(int param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x00607643
+// GHIDRA_NAME CWnd::?AttachControlSite@CWnd@@IAEXPAVCHandleMap@@@Z
+// GHIDRA_PROTO void __thiscall ?AttachControlSite@CWnd@@IAEXPAVCHandleMap@@@Z(CHandleMap * param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  protected: void __thiscall CWnd::AttachControlSite(class CHandleMap *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
 
-void CWnd::AttachControlSite_607673(int param_1)
+/* Library Function - Single Match
+    protected: void __thiscall CWnd::AttachControlSite(class CHandleMap *)
+
+   Library: nafxcw retail msvc500:static */
+
+void CWnd::_AttachControlSite_CWnd__IAEXPAVCHandleMap___Z(CHandleMap *param_1)
+
+{
+  HWND pHVar1;
+  int iVar2;
+
+  if ((this != (CWnd *)0x0) && (this->m_pCtrlSite == (void *)0x0)) {
+    pHVar1 = GetParent(this->m_hWnd);
+    iVar2 = _GetValueAt_CMapPtrToPtr__QBEPAXPAX_Z((CWnd *)param_1,(uint)pHVar1);
+    if (iVar2 != 0) {
+      _AttachControlSite_CWnd__QAEXPAV1__Z(this,iVar2);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00607673
+// GHIDRA_NAME CWnd::?AttachControlSite@CWnd@@QAEXPAV1@@Z
+// GHIDRA_PROTO undefined __thiscall ?AttachControlSite@CWnd@@QAEXPAV1@@Z(int param_1)
+
+void CWnd::_AttachControlSite_CWnd__QAEXPAV1__Z(int param_1)
 
 {
   int iVar1;
   void *pvVar2;
-  
+
   if ((((this != (CWnd *)0x0) && (this->m_pCtrlSite == (void *)0x0)) && (param_1 != 0)) &&
      (*(int *)(param_1 + 0x34) != 0)) {
-    pvVar2 = (void *)GetValueAt((CWnd *)(*(int *)(param_1 + 0x34) + 0x20),(uint)this->m_hWnd);
+    pvVar2 = (void *)_GetValueAt_CMapPtrToPtr__QBEPAXPAX_Z
+                               ((CWnd *)(*(int *)(param_1 + 0x34) + 0x20),(uint)this->m_hWnd);
     if (pvVar2 != (void *)0x0) {
       iVar1 = *(int *)((int)pvVar2 + 0x24);
       if ((iVar1 != 0) && (*(void **)(iVar1 + 0x38) == pvVar2)) {
@@ -70,61 +131,238 @@ void CWnd::AttachControlSite_607673(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607706
 // GHIDRA_NAME CWnd::CWnd
-// GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
+// GHIDRA_PROTO void __thiscall CWnd::??1CWnd@@UAE@XZ(void)
 
 void CWnd::CWnd()
 
 {
-  ~CWnd(this);
+  __1CWnd__UAE_XZ(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607744
 // GHIDRA_NAME CWnd::CWnd_00607744
-// GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
+// GHIDRA_PROTO void __thiscall CWnd::??1CWnd@@UAE@XZ(void)
 
 void CWnd::CWnd_00607744()
 
 {
-  ~CWnd(this);
+  __1CWnd__UAE_XZ(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607782
 // GHIDRA_NAME CWnd::CWnd_00607782
-// GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
+// GHIDRA_PROTO void __thiscall CWnd::??1CWnd@@UAE@XZ(void)
 
 void CWnd::CWnd_00607782()
 
 {
-  ~CWnd(this);
+  __1CWnd__UAE_XZ(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006077C0
 // GHIDRA_NAME CWnd::CWnd_006077C0
-// GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
+// GHIDRA_PROTO void __thiscall CWnd::??1CWnd@@UAE@XZ(void)
 
 void CWnd::CWnd_006077C0()
 
 {
-  ~CWnd(this);
+  __1CWnd__UAE_XZ(this);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00607A84
-// GHIDRA_NAME CWnd::Default
-// GHIDRA_PROTO undefined __thiscall Default(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x006077F0
+// GHIDRA_NAME CWnd::??_GCWnd@@UAEPAXI@Z
+// GHIDRA_PROTO void * __thiscall ??_GCWnd@@UAEPAXI@Z(uint param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual void * __thiscall CWnd::`scalar deleting destructor'(unsigned int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
 
-void CWnd::Default()
+/* Library Function - Single Match
+    public: virtual void * __thiscall CWnd::`scalar deleting destructor'(unsigned int)
+
+   Library: nafxcw retail msvc500:static */
+
+void * CWnd::___GCWnd__UAEPAXI_Z(uint param_1)
+
+{
+  __1CWnd__UAE_XZ(this);
+  if ((param_1 & 1) != 0) {
+    __3_YAXPAX_Z(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00607A84
+// GHIDRA_NAME CWnd::?Default@CWnd@@IAEJXZ
+// GHIDRA_PROTO undefined __thiscall ?Default@CWnd@@IAEJXZ(void)
+
+void CWnd::_Default_CWnd__IAEJXZ()
 
 {
   int iVar1;
-  
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
+
+  iVar1 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
+                    ((TMacViewMgr *)&DAT_006a7a50,
+                     _CreateObject___CThreadLocal_V_AFX_THREAD_STATE____SGPAVCNoTrackObject__XZ);
   (*(this->ccmdTarget).vftable[0xe].SetForeignMinisterReadyFlag14)
             (*(undefined4 *)(iVar1 + 0x38),*(undefined4 *)(iVar1 + 0x3c),
              *(undefined4 *)(iVar1 + 0x40));
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00608257
+// GHIDRA_NAME CWnd::??1CWnd@@UAE@XZ
+// GHIDRA_PROTO void __thiscall ??1CWnd@@UAE@XZ(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual __thiscall CWnd::~CWnd(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual __thiscall CWnd::~CWnd(void)
+
+   Library: nafxcw retail msvc500:static */
+
+void CWnd::__1CWnd__UAE_XZ()
+
+{
+  int iVar1;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &PTR_LAB_00670b4c;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  if ((((extraout_ECX[7] != 0) && (extraout_ECX != (undefined4 *)&DAT_006a7950)) &&
+      (extraout_ECX != (undefined4 *)&DAT_006a7a10)) &&
+     ((extraout_ECX != (undefined4 *)&DAT_006a7990 && (extraout_ECX != (undefined4 *)&DAT_006a79d0))
+     )) {
+    CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
+  }
+  if ((int *)extraout_ECX[0xd] != (int *)0x0) {
+    (**(code **)(*(int *)extraout_ECX[0xd] + 4))(1);
+  }
+  iVar1 = extraout_ECX[0xe];
+  if ((iVar1 != 0) && (*(undefined4 **)(iVar1 + 0x24) == extraout_ECX)) {
+    *(undefined4 *)(iVar1 + 0x24) = 0;
+  }
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  __1CCmdTarget__UAE_XZ();
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006093B6
+// GHIDRA_NAME CWnd::?ActivateTopParent@CWnd@@QAEXXZ
+// GHIDRA_PROTO void __thiscall ?ActivateTopParent@CWnd@@QAEXXZ(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CWnd::ActivateTopParent(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CWnd::ActivateTopParent(void)
+
+   Library: nafxcw retail msvc500:static */
+
+void CWnd::_ActivateTopParent_CWnd__QAEXXZ()
+
+{
+  int iVar1;
+  HWND pHVar2;
+  int iVar3;
+  BOOL BVar4;
+
+  iVar1 = _GetTopLevelParent_CWnd__QBEPAV1_XZ();
+  pHVar2 = GetForegroundWindow();
+  iVar3 = _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar2);
+  if (iVar3 != 0) {
+    if (*(HWND *)(iVar3 + 0x1c) == this->m_hWnd) {
+      return;
+    }
+    BVar4 = IsChild(*(HWND *)(iVar3 + 0x1c),this->m_hWnd);
+    if (BVar4 != 0) {
+      return;
+    }
+  }
+  SetForegroundWindow(*(HWND *)(iVar1 + 0x1c));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00609D88
+// GHIDRA_NAME CWnd::?OnParentNotify@CWnd@@IAEXIJ@Z
+// GHIDRA_PROTO void __thiscall ?OnParentNotify@CWnd@@IAEXIJ@Z(uint param_1, long param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  protected: void __thiscall CWnd::OnParentNotify(unsigned int,long)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    protected: void __thiscall CWnd::OnParentNotify(unsigned int,long)
+
+   Library: nafxcw retail msvc500:static */
+
+void CWnd::_OnParentNotify_CWnd__IAEXIJ_Z(uint param_1, long param_2)
+
+{
+  int iVar1;
+
+  if ((((short)param_1 == 1) || ((short)param_1 == 2)) &&
+     (iVar1 = _ReflectLastMsg_CWnd__KGHPAUHWND____PAJ_Z(param_2,0), iVar1 != 0)) {
+    return;
+  }
+  _Default_CWnd__IAEJXZ(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00609FBA
+// GHIDRA_NAME CWnd::?OnDisplayChange@CWnd@@IAEJIJ@Z
+// GHIDRA_PROTO long __thiscall ?OnDisplayChange@CWnd@@IAEJIJ@Z(uint param_1, long param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  protected: long __thiscall CWnd::OnDisplayChange(unsigned int,long)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    protected: long __thiscall CWnd::OnDisplayChange(unsigned int,long)
+
+   Library: nafxcw retail msvc500:static */
+
+long CWnd::_OnDisplayChange_CWnd__IAEJIJ_Z(uint param_1, long param_2)
+
+{
+  int iVar1;
+  uint uVar2;
+  long lVar3;
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  if (*(CWnd **)(*(int *)(iVar1 + 4) + 0x1c) == this) {
+    _UpdateSysMetrics_AUX_DATA__QAEXXZ();
+  }
+  uVar2 = _GetStyle_CWnd__QBEKXZ();
+  if ((uVar2 & 0x40000000) == 0) {
+    iVar1 = _GetCurrentMessage_CWnd__KGPBUtagMSG__XZ();
+    _SendMessageToDescendants_CWnd__SGXPAUHWND____IIJHH_Z
+              (this->m_hWnd,*(undefined4 *)(iVar1 + 4),*(undefined4 *)(iVar1 + 8),
+               *(undefined4 *)(iVar1 + 0xc),1,1);
+  }
+  lVar3 = _Default_CWnd__IAEJXZ(this);
+  return lVar3;
 }
 

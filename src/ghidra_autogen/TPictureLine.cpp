@@ -22,7 +22,7 @@ TPictureLine * TPictureLine::ConstructTPictureLineBaseState(byte param_1)
 {
   TPictureLine::DestructTPictureLineAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -53,12 +53,12 @@ void TPictureLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063629a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  this_00 = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   uVar1 = extraout_var;
   if (this_00 != (thunk_TPictureButton *)0x0) {

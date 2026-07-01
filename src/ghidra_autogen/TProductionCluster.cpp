@@ -15,12 +15,12 @@ TUberCluster * TProductionCluster::CreateTProductionClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063787a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x98);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (TUberCluster *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState(this);
@@ -73,7 +73,7 @@ TProductionCluster * TProductionCluster::_scalar_deleting_destructor_(byte param
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -88,7 +88,7 @@ void TProductionCluster::OrphanRetStub_0059add0(void *param_1, int param_2)
   undefined uVar1;
   undefined3 extraout_var;
   int unaff_retaddr;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x76616c75);
   if (CONCAT31(extraout_var,uVar1) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

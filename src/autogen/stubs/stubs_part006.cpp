@@ -11,14 +11,6 @@ undefined4 thunk_FillRectWithQuickDrawBrushAndContextOffset(void)
   return 0;
 }
 
-// ghidra_name thunk_StepHexRowColByDirectionWithWrapRules
-// ghidra_proto undefined thunk_StepHexRowColByDirectionWithWrapRules()
-// FUNCTION: IMPERIALISM 0x0040678f
-undefined4 thunk_StepHexRowColByDirectionWithWrapRules(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DestructCityDialogSharedBaseState
 // ghidra_proto undefined thunk_DestructCityDialogSharedBaseState()
 // FUNCTION: IMPERIALISM 0x004067c1
@@ -51,6 +43,14 @@ undefined4 thunk_SplitTileIndexToRowAndColumn(void)
   return 0;
 }
 
+// ghidra_name thunk_HandleEngineerConstructionAction
+// ghidra_proto bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
+// FUNCTION: IMPERIALISM 0x00406ccb
+undefined4 thunk_HandleEngineerConstructionAction(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_SetActiveQuickDrawSurfaceContext
 // ghidra_proto undefined thunk_SetActiveQuickDrawSurfaceContext()
 // FUNCTION: IMPERIALISM 0x00406f5f
@@ -63,22 +63,6 @@ undefined4 thunk_SetActiveQuickDrawSurfaceContext(void)
 // ghidra_proto undefined thunk_ReturnConstantTrueQuickDrawFlag()
 // FUNCTION: IMPERIALISM 0x0040761c
 undefined4 thunk_ReturnConstantTrueQuickDrawFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RebuildMinorNationDispositionLookupTables
-// ghidra_proto undefined thunk_RebuildMinorNationDispositionLookupTables()
-// FUNCTION: IMPERIALISM 0x004079aa
-undefined4 thunk_RebuildMinorNationDispositionLookupTables(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetUnitMovementClassId
-// ghidra_proto undefined thunk_GetUnitMovementClassId()
-// FUNCTION: IMPERIALISM 0x00407e64
-undefined4 thunk_GetUnitMovementClassId(void)
 {
   return 0;
 }
@@ -131,18 +115,10 @@ undefined4 thunk_GetResourceTypeRandomDrawBlockFlag(void)
   return 0;
 }
 
-// ghidra_name thunk_FindPortZoneByTile
-// ghidra_proto void * __cdecl thunk_FindPortZoneByTile(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x00409048
-undefined4 thunk_FindPortZoneByTile(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_AdvanceSpiralSearchStateAndStepHexCoordinates
-// ghidra_proto undefined thunk_AdvanceSpiralSearchStateAndStepHexCoordinates()
-// FUNCTION: IMPERIALISM 0x004090a2
-undefined4 thunk_AdvanceSpiralSearchStateAndStepHexCoordinates(void)
+// ghidra_name UiRuntimeContext::MapTurnEventCodeToPaletteIndex
+// ghidra_proto undefined MapTurnEventCodeToPaletteIndex()
+// FUNCTION: IMPERIALISM 0x00409205
+undefined4 MapTurnEventCodeToPaletteIndex(void)
 {
   return 0;
 }

@@ -44,7 +44,7 @@ TFuzzySet * TFuzzySet::DestructTFuzzySetAndMaybeFree(byte param_1)
 {
   DestructTFuzzySetAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -58,7 +58,7 @@ void TFuzzySet::OrphanCallChain_C2_I27_004ff780()
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   iVar1 = 0;
   if (0 < *(int *)&this->field_0x4) {
     puVar2 = (undefined4 *)&this->field_0x8;

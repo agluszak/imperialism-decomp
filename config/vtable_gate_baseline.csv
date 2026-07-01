@@ -4,12 +4,11 @@ src/game/TDealList.cpp|0|3|0|0|3
 src/game/TMapDialog.cpp|0|1|0|0|1
 src/game/TMapOrderEntry.cpp|0|1|0|0|1
 src/game/TUberCluster.cpp|1|0|0|0|1
-src/game/TViewMgr.cpp|0|0|1|0|1
 src/game/TWorldView.cpp|0|5|0|0|5
 src/ghidra_autogen/CAmbitDocument.cpp|0|0|2|0|2
 src/ghidra_autogen/CCmdTarget.cpp|0|0|3|0|3
 src/ghidra_autogen/CDocument.cpp|0|0|9|0|9
-src/ghidra_autogen/CFrameWnd.cpp|0|0|1|0|1
+src/ghidra_autogen/CFrameWnd.cpp|0|0|3|0|3
 src/ghidra_autogen/CWnd.cpp|0|0|1|0|1
 src/ghidra_autogen/LinkedListQueryOwner.cpp|0|0|4|0|4
 src/ghidra_autogen/TAmbitApplication.cpp|0|0|1|0|1
@@ -183,5 +182,5 @@ src/ghidra_autogen/global_part008.cpp|0|0|18|0|18
 src/ghidra_autogen/global_part009.cpp|0|0|38|0|38
 src/ghidra_autogen/global_part010.cpp|0|0|47|0|47
 src/ghidra_autogen/global_part011.cpp|0|0|9|0|9
-src/ghidra_autogen/global_part014.cpp|0|0|3|0|3
-src/ghidra_autogen/global_part015.cpp|0|0|3|0|3
+src/ghidra_autogen/global_part014.cpp|0|0|2|0|2
+src/ghidra_autogen/global_part015.cpp|0|0|4|0|4

@@ -62,7 +62,7 @@ bool TMapMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex, undefined2 p
   undefined1 *puStack_8;
   CString CStack_4;
   uint dwAvailableNationCash;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   CStack_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_00631c18;
@@ -89,13 +89,13 @@ bool TMapMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex, undefined2 p
   if ((int)(((int)dwAvailableNationCash < 1) - 1 & dwAvailableNationCash) <
       *(int *)(&g_adwCivilianWorkOrderCostByClass + (char)bTileWorkOrderCostClass * 4)) {
     CStack_48.m_pchData = (char *)0x4d349f;
-    CString::CString((CString *)&stack0xffffffd0);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffffd0);
     uStack_c = 0;
     CStack_48.m_pchData = (char *)0x4d34ac;
-    CString::CString((CString *)&stack0xffffffcc);
+    CString::__0CString__QAE_XZ((CString *)&stack0xffffffcc);
     uStack_c._0_1_ = 1;
     CStack_48.m_pchData = (char *)0x4d34ba;
-    CString::CString(&CStack_4);
+    CString::__0CString__QAE_XZ(&CStack_4);
     CStack_48.m_pchData = &stack0xffffffd0;
     uStack_c = CONCAT31(uStack_c._1_3_,2);
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
@@ -104,9 +104,9 @@ bool TMapMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex, undefined2 p
     puStack_40 = &stack0xffffff98;
     AssignStringSharedRefAndReturnThis(&awOrderQueuedSfxByClass);
     DispatchLocalizedUiMessageWithTemplateA13A0();
-    CString::~CString(&awOrderQueuedSfxByClass);
-    CString::~CString(&CStack_48);
-    CString::~CString(&CStack_44);
+    CString::__1CString__QAE_XZ(&awOrderQueuedSfxByClass);
+    CString::__1CString__QAE_XZ(&CStack_48);
+    CString::__1CString__QAE_XZ(&CStack_44);
   }
   else {
     CStack_48.m_pchData =
@@ -156,17 +156,17 @@ undefined4 * TMapMgr::CreateTMapMgrInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633bf2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x28);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x28);
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
     puVar1[4] = 0;
-    CString::CString((CString *)(puVar1 + 7));
+    CString::__0CString__QAE_XZ((CString *)(puVar1 + 7));
     *puVar1 = &g_vtblGlobalMapState;
     *(undefined1 *)(puVar1 + 2) = 0;
     *(undefined1 *)(puVar1 + 1) = 0;
@@ -207,14 +207,14 @@ void * TMapMgr::ConstructGlobalMapState(void *pGlobalMapState)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00633c18;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TMapMgrVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
   *(undefined4 *)&this->field_0x10 = 0;
-  CString::CString((CString *)&this->field_0x1c);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x1c);
   this->vftable = &g_vtblGlobalMapState;
   this->field_0x8 = 0;
   this->field_0x4 = 0;
@@ -235,7 +235,7 @@ TMapMgr * TMapMgr::DestructTMapMgrAndMaybeFree(byte param_1)
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -248,15 +248,14 @@ void TMapMgr::Helper_Uses_FreeHeapBufferIfNotNull_At0050e510()
 
 {
   int iVar1;
-  
+
   if (*(int *)&this->field_0xc != 0) {
-    FreeHeapBufferIfNotNull(*(int *)&this->field_0xc);
+    __3_YAXPAX_Z(*(int *)&this->field_0xc);
   }
   iVar1 = *(int *)&this->field_0x10;
   if (iVar1 != 0) {
-    TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
-              (iVar1,0xa8,*(undefined4 *)(iVar1 + -4),&LAB_004089e5);
-    FreeHeapBufferIfNotNull(iVar1 + -4);
+    TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z(iVar1,0xa8,*(undefined4 *)(iVar1 + -4),&LAB_004089e5);
+    __3_YAXPAX_Z(iVar1 + -4);
   }
   if (this != (TMapMgr *)0x0) {
     (*this->vftable->~TMapMgr)(1);
@@ -277,7 +276,7 @@ void TMapMgr::WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(int *param_1)
   int iVar4;
   code *pcVar5;
   int iVar6;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   iVar4 = *param_1;
   pcVar1 = *(code **)(iVar4 + 0x3c);
@@ -341,7 +340,7 @@ void TMapMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0(int *param_1)
   int iVar2;
   int iVar3;
   undefined4 uVar4;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar2 = *param_1;
   pcVar1 = *(code **)(iVar2 + 0x78);
@@ -382,13 +381,13 @@ void TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00633c63;
   *unaff_FS_OFFSET = &uStack_c;
   if (*(int *)&this->field_0xc == 0) {
-    iVar1 = AllocateWithFallbackHandler(0x38f40);
+    iVar1 = __2_YAPAXI_Z(0x38f40);
     *(int *)&this->field_0xc = iVar1;
     if (iVar1 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -432,7 +431,7 @@ void TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0()
     iVar1 = iVar1 + 0x24;
   } while (CStack_14.m_pchData != (char *)0x0);
   if (*(int *)&this->field_0x10 == 0) {
-    puStack_10 = (undefined4 *)AllocateWithFallbackHandler(0xfc04);
+    puStack_10 = (undefined4 *)__2_YAPAXI_Z(0xfc04);
     uStack_4 = 0;
     if (puStack_10 == (undefined4 *)0x0) {
       puVar2 = (undefined4 *)0x0;
@@ -440,7 +439,7 @@ void TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0()
     else {
       puVar2 = puStack_10 + 1;
       *puStack_10 = 0x180;
-      CallCallbackRepeatedly(puVar2,0xa8,0x180,InitializeSharedStringRefAndReturnThis);
+      ___L_YGXPAXIHP6EX0_Z1_Z(puVar2,0xa8,0x180,InitializeSharedStringRefAndReturnThis);
     }
     uStack_4 = 0xffffffff;
     *(undefined4 **)&this->field_0x10 = puVar2;
@@ -489,11 +488,12 @@ void TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0()
     } while (iVar4 != 0);
     *(undefined4 *)(iVar1 + 0x98 + *(int *)&this->field_0x10) = 0;
     *(undefined1 *)(iVar1 + 0xa3 + *(int *)&this->field_0x10) = 0xff;
-    CString::CString(&CStack_14,(char *)&g_szEmptyString);
+    CString::__0CString__QAE_PBD_Z(&CStack_14,(char *)&g_szEmptyString);
     uStack_4 = 1;
-    CString::AssignFromPtr((CString *)(iVar1 + 0xa4 + *(int *)&this->field_0x10),&CStack_14);
+    CString::__4CString__QAEABV0_ABV0__Z
+              ((CString *)(iVar1 + 0xa4 + *(int *)&this->field_0x10),&CStack_14);
     uStack_4 = 0xffffffff;
-    CString::~CString(&CStack_14);
+    CString::__1CString__QAE_XZ(&CStack_14);
     iVar1 = iVar1 + 0xa8;
     puStack_10 = (undefined4 *)((int)puStack_10 + -1);
   } while (puStack_10 != (undefined4 *)0x0);
@@ -523,23 +523,23 @@ void TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream()
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633cc0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   iVar6 = 0;
   local_4 = 0;
-  CString::CString(&local_18,s_political_map_00697108);
+  CString::__0CString__QAE_PBD_Z(&local_18,s_political_map_00697108);
   local_4._0_1_ = 1;
-  CString::AssignFromPtr(&local_1c,&local_18);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_1c,&local_18);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_18);
+  CString::__1CString__QAE_XZ(&local_18);
   local_10 = &stack0xffffffd0;
-  CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffffd0,&local_1c);
+  CString::__0CString__QAE_ABV0__Z((CString *)&stack0xffffffd0,&local_1c);
   uVar3 = LoadTableResourceStreamByName();
-  puVar4 = (undefined1 *)AllocateWithFallbackHandler();
+  puVar4 = (undefined1 *)__2_YAPAXI_Z();
   local_14 = 0x1950;
   local_10 = puVar4;
   ReadResourceStreamIntoBufferAndAdvance(uVar3,puVar4);
@@ -571,7 +571,7 @@ void TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream()
     puVar4 = local_10;
   } while (iVar7 < 0x38f40);
   local_4 = 0xffffffff;
-  CString::~CString(&local_1c);
+  CString::__1CString__QAE_XZ(&local_1c);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -593,7 +593,7 @@ void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int param_1)
   short sVar8;
   char local_14 [8];
   short local_c [6];
-  
+
   iVar2 = param_1 * 0xa8;
   iVar6 = -1;
   sVar8 = 1;
@@ -665,7 +665,7 @@ void TMapMgr::UpdateTileNeighborBorderInfluenceCounters(short param_1, short par
   int iVar6;
   int iVar7;
   short local_c [6];
-  
+
   sVar3 = param_1;
   ComputeHexNeighborTileIndices(param_1,local_c,this->field_0x20);
   iVar6 = 0;
@@ -799,7 +799,7 @@ byte * TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1)
   int iVar11;
   int iVar12;
   short local_c [6];
-  
+
   sVar10 = (short)param_1;
   iVar11 = sVar10 * 0x24;
   if (*(char *)(*(int *)&this->field_0xc + iVar11) == '\x05') {
@@ -1029,7 +1029,7 @@ void TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded(int param_1)
   int iVar6;
   int iVar7;
   short local_c [6];
-  
+
   iVar7 = param_1 * 0x24;
   puVar4 = (undefined1 *)(*(int *)&this->field_0xc + iVar7);
   if (puVar4[0x13] != '\x01') {
@@ -1076,7 +1076,7 @@ void TMapMgr::OrphanLeaf_NoCall_Ins01_00511610(short param_1)
   short sVar5;
   int iVar6;
   short asStack_c [6];
-  
+
   iVar6 = param_1 * 0x24;
   switch(*(undefined1 *)(*(int *)&this->field_0xc + iVar6)) {
   case 0:
@@ -1215,7 +1215,7 @@ void TMapMgr::DispatchTurnEvent7DDForActiveNation()
 {
   undefined *puVar1;
   undefined4 uVar2;
-  
+
   (*this->vftable->TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress)();
   puVar1 = g_pUiRuntimeContext->vftable;
   uVar2 = UiRuntimeContext::GetActiveNationId();
@@ -1252,7 +1252,7 @@ TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext
   short *psVar5;
   undefined1 local_35;
   undefined1 local_30 [48];
-  
+
   iVar2 = *(int *)&this->field_0x10;
   iVar4 = 0;
   local_35 = 0;
@@ -1290,7 +1290,7 @@ ushort TMapMgr::IsShiftKeyDown()
 
 {
   ushort uVar1;
-  
+
   uVar1 = GetAsyncKeyState(0x10);
   return uVar1 & 0x8000;
 }
@@ -1303,7 +1303,7 @@ ushort TMapMgr::IsAltKeyDown()
 
 {
   ushort uVar1;
-  
+
   uVar1 = GetAsyncKeyState(0x12);
   return uVar1 & 0x8000;
 }
@@ -1321,7 +1321,7 @@ int TMapMgr::OrphanCallChain_C3_I43_00513170(short param_1)
   code *unaff_EBX;
   int iVar4;
   short unaff_retaddr;
-  
+
   if (g_apNationStates[(short)*(char *)(*(int *)&this->field_0xc + 4 + param_1 * 0x24)] !=
       (TGreatPower *)0x0) {
     sVar3 = 1;
@@ -1366,7 +1366,7 @@ TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12
   undefined4 unaff_EBP;
   char *pcVar7;
   int iVar8;
-  
+
   iVar8 = 0;
   pcVar1 = (char *)(*(int *)&this->field_0x10 + param_1 * 0xa8);
   cVar2 = *pcVar1;
@@ -1421,7 +1421,7 @@ void TMapMgr::SetTileOwnerAndInvalidateNeighborState(short param_1, short param_
   short asStack_14 [2];
   undefined4 local_10;
   short sStack_8;
-  
+
   iVar5 = param_1 * 0x24;
   sVar4 = (short)*(char *)(iVar5 + 4 + *(int *)&this->field_0xc);
   local_10 = CONCAT22((short)((uint)in_EDX >> 0x10),sVar4);
@@ -1472,7 +1472,7 @@ undefined1 TMapMgr::OrphanCallChain_C1_I29_005135a0(short param_1, char param_2)
   undefined uVar1;
   int iVar2;
   undefined2 in_stack_00000006;
-  
+
   iVar2 = 0;
   do {
     if (*(char *)((short)iVar2 + 0x11 + *(int *)&this->field_0xc + param_1 * 0x24) == param_2) {
@@ -1494,7 +1494,7 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins14_00513610(short param_1, short param_
   int iVar1;
   char cVar2;
   int iVar3;
-  
+
   iVar1 = *(int *)&this->field_0xc + param_1 * 0x24;
   iVar3 = (int)*(char *)(iVar1 + 0x11 + (int)param_2);
   cVar2 = *(char *)(iVar1 + 0xc);
@@ -1517,10 +1517,10 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins14_00513610(short param_1, short param_
 // GHIDRA_COMMENT_END
 
 /* Returns per-tile civilian work-order cost-class nibble from tile byte at +0x0C.
-   
+
    If fUseHighNibble!=0: returns high nibble ((byte>>4)&0x0F).
    Else: returns low nibble (byte&0x0F).
-   
+
    Used by QueueCivilianWorkOrderWithCostCheck to select g_adwCivilianWorkOrderCostByClass index. */
 
 byte TMapMgr::GetTileCivilianWorkOrderCostClassNibble(short nTileIndex, char fUseHighNibble)
@@ -1544,7 +1544,7 @@ TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0
   byte bVar1;
   int iVar2;
   byte bVar3;
-  
+
   iVar2 = param_1 * 0x24;
   bVar1 = *(byte *)(*(int *)&this->field_0xc + 0xc + iVar2);
   if (param_2 == '\0') {
@@ -1572,7 +1572,7 @@ void TMapMgr::OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2, int 
   short sVar1;
   short sVar2;
   char *pcVar3;
-  
+
   pcVar3 = (char *)(*(int *)&this->field_0xc + 0x11 + param_1 * 0x24);
   sVar1 = 0;
   _param_1 = 2;
@@ -1600,7 +1600,7 @@ void TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(short param_1, short para
 {
   byte *pbVar1;
   short sVar2;
-  
+
   sVar2 = GetHexDirectionBetweenTiles(param_1,param_2);
   *(byte *)(*(int *)&this->field_0xc + 6 + param_1 * 0x24) =
        *(byte *)(*(int *)&this->field_0xc + 6 + param_1 * 0x24) | (&DAT_00696ea2)[(sVar2 + 3) * 2];
@@ -1620,7 +1620,7 @@ int TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(short param_1)
   char cVar2;
   ushort uVar3;
   short sVar4;
-  
+
   puVar1 = (undefined1 *)(*(int *)&this->field_0xc + param_1 * 0x24);
   uVar3 = (ushort)((uint)puVar1 >> 0x10);
   switch(*puVar1) {
@@ -1675,7 +1675,7 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins18_00514310(short param_1, short param_
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(*(int *)&this->field_0xc + 0x20 + param_1 * 0x24);
   if (iVar1 == 0) {
     return 0;
@@ -1697,7 +1697,7 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins31_00514360(short param_1, short param_
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(*(int *)&this->field_0xc + 0x20 + param_1 * 0x24);
   if (iVar1 == 0) {
     return 0;
@@ -1737,7 +1737,7 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId)
   undefined1 uVar4;
   short *psVar5;
   short local_c [6];
-  
+
   uVar4 = (undefined1)DAT_00696d90;
   *(undefined1 *)(nTileIndex * 0x24 + 5 + *(int *)&this->field_0xc) = uVar4;
   iVar3 = nTileIndex * 0x24 + *(int *)&this->field_0xc;
@@ -1801,12 +1801,12 @@ LAB_00514527:
 // GHIDRA_COMMENT_END
 
 /* Queues port construction order.
-   
+
    Behavior:
    - For new port order, enqueues order object and marks tile pending port (flag bit 0x04).
    - Deducts 3000 from player treasury immediately when order is queued.
    - Ensures/refreshes port-zone linkage for tile.
-   
+
    Used later by Civilian Report rescind logic (order-type refund case 7 -> 3000). */
 
 void __thiscall
@@ -1832,7 +1832,7 @@ TMapMgr::QueuePortConstructionOrder
   undefined1 *puStack_8;
   undefined4 local_4;
   int *piVar7;
-  
+
   piVar7 = pMapContext;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633d2a;
@@ -1842,7 +1842,7 @@ TMapMgr::QueuePortConstructionOrder
   iVar5 = nTileIndex_00 * 0x24;
   if ((*(byte *)(*(int *)&this->field_0xc + 0x1c + iVar5) >> 4 & 1) == 0) {
                     /* Create and queue new bit-0x04 order object. */
-    this_00 = (TTown *)AllocateWithFallbackHandler(0x50);
+    this_00 = (TTown *)__2_YAPAXI_Z(0x50);
     local_4 = 0;
     if (this_00 == (TTown *)0x0) {
                     /* Existing order path: update status flag on current order. */
@@ -1908,7 +1908,7 @@ void TMapMgr::SetProvinceCapitalTileFlagBit08(short nProvinceId)
 {
   byte *pbVar1;
   char *pcVar2;
-  
+
   pbVar1 = (byte *)(*(int *)&this->field_0xc + 0x1c +
                    *(short *)(*(int *)&this->field_0x10 + nProvinceId * 0xa8 + 4) * 0x24);
   *pbVar1 = *pbVar1 | 8;
@@ -1960,7 +1960,7 @@ void TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex)
   int iVar15;
   undefined4 unaff_retaddr;
   TMapMgrVtbl *pTVar16;
-  
+
   iVar12 = (int)nTileIndex;
   iVar11 = iVar12 * 0x24;
   pTVar16 = this->vftable;
@@ -2061,7 +2061,7 @@ void TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(shor
   char cVar1;
   char *pcVar2;
   int iVar3;
-  
+
   pcVar2 = *(char **)&this->field_0xc;
   this->field_0x9 = 1;
   iVar3 = 0;
@@ -2089,7 +2089,7 @@ void TMapMgr::OrphanLeaf_NoCall_Ins15_00514e40(short param_1)
 {
   int iVar1;
   int iVar2;
-  
+
   this->field_0x9 = 1;
   iVar1 = *(int *)&this->field_0xc + 0xe;
   iVar2 = 0x1950;
@@ -2111,7 +2111,7 @@ void TMapMgr::OrphanLeaf_NoCall_Ins28_00514e80()
   byte *pbVar1;
   short sVar2;
   int iVar3;
-  
+
   sVar2 = 0;
   pbVar1 = (byte *)(*(int *)&this->field_0xc + 0xe);
   this->field_0x9 = 1;
@@ -2141,7 +2141,7 @@ void TMapMgr::OrphanLeaf_NoCall_Ins09_00514ef0()
 {
   undefined1 *puVar1;
   int iVar2;
-  
+
   iVar2 = 0x1950;
   puVar1 = (undefined1 *)(*(int *)&this->field_0xc + 0xe);
   do {
@@ -2175,7 +2175,7 @@ void TMapMgr::OrphanCallChain_C5_I115_00514f20(int param_1)
   TCountry **ppTVar10;
   short sVar11;
   code *unaff_retaddr;
-  
+
   sVar8 = *(short *)(param_1 + 6);
   iVar7 = sVar8 * 0x24;
   iVar9 = 0x1950;
@@ -2260,7 +2260,7 @@ void TMapMgr::OrphanCallChain_C1_I159_005150e0(int *param_1, short param_2)
   int iVar12;
   short sVar13;
   int *piVar14;
-  
+
   piVar8 = param_1;
   iVar10 = 6;
   piVar6 = param_1;
@@ -2382,7 +2382,7 @@ void TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(int para
   int local_14;
   char local_10 [12];
   uint local_4;
-  
+
   local_10[0] = '\0';
   local_10[1] = '\0';
   local_10[2] = '\0';
@@ -2463,7 +2463,7 @@ void TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(int para
   undefined4 unaff_EDI;
   int iVar6;
   int local_8;
-  
+
   local_8 = 0x1950;
   cVar1 = (&g_pCityOrderCapabilityState->field_0x27b)[*(short *)(param_1 + 0x18) * 0x1d];
   pcVar5 = *(char **)&this->field_0xc;
@@ -2513,7 +2513,7 @@ void TMapMgr::OrphanLeaf_NoCall_Ins83_005155c0(int param_1)
   int local_20;
   int local_1c;
   char local_18 [24];
-  
+
   local_18[0] = '\0';
   local_18[1] = '\0';
   local_18[2] = '\0';
@@ -2608,7 +2608,7 @@ void TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability(int param_1)
   code *pcStack_18;
   code *pcStack_14;
   code *apcStack_10 [4];
-  
+
   sVar7 = *(short *)(param_1 + 0x18);
   iVar4 = 0x1950;
   puVar2 = (undefined1 *)(*(int *)&this->field_0xc + 0xe);
@@ -2666,7 +2666,7 @@ void TMapMgr::OrphanLeaf_NoCall_Ins69_00515890(int param_1)
   char *pcVar4;
   short sVar5;
   int iVar6;
-  
+
   this->field_0x9 = 1;
   sVar1 = *(short *)(param_1 + 0x18);
   sVar2 = *(short *)(param_1 + 4);
@@ -2713,7 +2713,7 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(int param
   byte bVar6;
   int iVar7;
   short *psVar8;
-  
+
   sVar2 = *(short *)(param_1 + 0x18);
   nCenterTileIndex = *(short *)(param_1 + 6);
   this->field_0x9 = 1;
@@ -2752,7 +2752,7 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(int param
       psVar8 = psVar8 + 1;
       param_1 = param_1 + -1;
     } while (param_1 != 0);
-    FreeHeapBufferIfNotNull(psVar5);
+    __3_YAXPAX_Z(psVar5);
   }
   return;
 }
@@ -2775,7 +2775,7 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int param
   char *pcVar8;
   short *psVar9;
   char local_8 [8];
-  
+
   nCenterTileIndex = *(short *)(param_1 + 6);
   sVar2 = *(short *)(param_1 + 0x18);
   local_8[0] = '\x01';
@@ -2828,7 +2828,7 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int param
       psVar9 = psVar9 + 1;
       param_1 = param_1 + -1;
     } while (param_1 != 0);
-    FreeHeapBufferIfNotNull(psVar5);
+    __3_YAXPAX_Z(psVar5);
   }
   return;
 }
@@ -2874,7 +2874,7 @@ TMapMgr::WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80
   int iVar7;
   int iVar8;
   int iVar9;
-  
+
   iVar7 = param_1 * 0xa8;
   sVar3 = *(short *)(iVar7 + 4 + *(int *)&this->field_0x10);
   if (sVar3 != -1) {
@@ -2920,7 +2920,7 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins27_00516090(int param_1, int param_2)
   int iVar1;
   int iVar2;
   short *psVar3;
-  
+
   iVar1 = *(int *)&this->field_0x10 + param_1 * 0xa8;
   iVar2 = 0;
   psVar3 = (short *)(iVar1 + 10);
@@ -2958,7 +2958,7 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins14_00516150(short param_1)
 
 {
   char *pcVar1;
-  
+
   pcVar1 = (char *)(*(int *)&this->field_0xc + param_1 * 0x24);
   if (*pcVar1 == '\x03') {
     return CONCAT22((short)((uint)(pcVar1[1] * 2) >> 0x10),
@@ -2976,7 +2976,7 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins12_005161a0(short param_1)
 {
   int iVar1;
   undefined2 uVar2;
-  
+
   iVar1 = *(int *)&this->field_0xc + param_1 * 0x24;
   uVar2 = (undefined2)((uint)iVar1 >> 0x10);
   if (*(char *)(iVar1 + 0xb) != '\0') {
@@ -2994,7 +2994,7 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins10_005161e0(short param_1)
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = *(int *)&this->field_0xc + param_1 * 0x24;
   iVar2 = *(char *)(iVar1 + 1) * 2;
   return CONCAT22((short)((uint)iVar2 >> 0x10),
@@ -3009,7 +3009,7 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins09_00516220(short param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = *(char *)(*(int *)&this->field_0xc + param_1 * 0x24 + 1) * 2;
   return CONCAT22((short)((uint)iVar1 >> 0x10),
                   *(undefined2 *)
@@ -3026,7 +3026,7 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins464_00516260(char param_1, char param_2
 {
   undefined2 auStack_b80 [1022];
   undefined2 auStack_380 [448];
-  
+
   auStack_380[0] = 0;
   auStack_380[1] = 0;
   auStack_380[2] = 0;
@@ -3490,7 +3490,7 @@ int TMapMgr::OrphanCallChain_C3_I41_00517410(char param_1)
   byte bVar3;
   undefined3 extraout_var;
   undefined3 in_stack_00000005;
-  
+
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins464_00516260;
   uVar2 = (*p_Var1)(_param_1);
   if ((short)CONCAT31(extraout_var,uVar2) == 0) {
@@ -3519,7 +3519,7 @@ uint TMapMgr::OrphanCallChain_C3_I49_00517480()
   undefined4 unaff_ESI;
   ushort uVar4;
   short sVar5;
-  
+
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins464_00516260;
   uVar2 = (*p_Var1)();
   if ((short)CONCAT31(extraout_var,uVar2) == 0) {
@@ -3557,7 +3557,7 @@ undefined4 TMapMgr::OrphanLeaf_NoCall_Ins55_00517540(short param_1, short param_
   char cVar1;
   ushort uVar2;
   undefined4 uVar3;
-  
+
   uVar3 = 0;
   uVar2 = *(ushort *)(*(int *)&this->field_0xc + 0x1c + param_1 * 0x24);
   if (param_2 < 7) {
@@ -3601,7 +3601,7 @@ int TMapMgr::OrphanCallChain_C1_I46_00517600(short param_1)
   char cVar3;
   uint3 extraout_var;
   undefined2 in_stack_00000006;
-  
+
   uVar1 = *(ushort *)(*(int *)&this->field_0xc + 0x1c + param_1 * 0x24);
   uVar2 = (*this->vftable->OrphanCallChain_C3_I43_00513170)(_param_1);
   if (CONCAT31(extraout_var,uVar2) == 0) {
@@ -3656,7 +3656,7 @@ int TMapMgr::GetMapImprovementTierBucketOffset(short param_1)
 
 {
   undefined2 in_stack_00000006;
-  
+
   if (param_1 < 7) {
     return _param_1 * 9;
   }
@@ -3682,7 +3682,7 @@ void TMapMgr::ApplyMapImprovementSelectionState(void *param_1)
   undefined3 extraout_var;
   void *unaff_EBX;
   undefined4 unaff_EDI;
-  
+
   if (*(char *)((int)param_1 + 0x1c) != '\0') {
     (*this->vftable->GetMapImprovementSpriteBaseOffset)
               (CONCAT22((short)((uint)param_1 >> 0x10),*(undefined2 *)((int)param_1 + 4)),1,0);
@@ -3710,7 +3710,7 @@ int TMapMgr::GetMapImprovementSpriteBaseOffset(short param_1, char param_2, char
 
 {
   int iVar1;
-  
+
   if (param_2 == '\0') {
     iVar1 = CONCAT22(param_1 >> 0xf,*(short *)(&DAT_00697040 + param_1 * 2) << 6);
     if (param_3 == '\0') {
@@ -3750,7 +3750,7 @@ int TMapMgr::GetMapImprovementTileSpriteOffset(short param_1)
   ushort uVar2;
   int iVar3;
   byte bVar4;
-  
+
   iVar3 = 0;
   iVar1 = *(int *)&this->field_0xc + param_1 * 0x24;
   uVar2 = *(ushort *)(*(int *)&this->field_0xc + 0x1c + param_1 * 0x24);
@@ -3785,7 +3785,7 @@ void TMapMgr::OrphanLeaf_NoCall_Ins08_005178c0()
 {
   undefined1 *puVar1;
   int iVar2;
-  
+
   puVar1 = (undefined1 *)(*(int *)&this->field_0xc + 0x10);
   iVar2 = 0x1950;
   do {

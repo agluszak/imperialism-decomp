@@ -4,22 +4,22 @@
 // Bucket: CFileException.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ABAC
-// GHIDRA_NAME CFileException::ConstructCFileException
-// GHIDRA_PROTO undefined ConstructCFileException()
+// GHIDRA_NAME CFileException::??0CFile@@QAE@XZ
+// GHIDRA_PROTO undefined ??0CFile@@QAE@XZ()
 
-undefined4 * CFileException::ConstructCFileException(void)
+undefined4 * CFileException::__0CFile__QAE_XZ(void)
 
 {
   undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::CString((CString *)(extraout_ECX + 3));
+  CString::__0CString__QAE_XZ((CString *)(extraout_ECX + 3));
   extraout_ECX[1] = 0xffffffff;
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
   extraout_ECX[2] = 0;
@@ -29,24 +29,24 @@ undefined4 * CFileException::ConstructCFileException(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ABEC
-// GHIDRA_NAME CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0060abec(byte param_1)
+// GHIDRA_NAME CFileException::??_GCFile@@UAEPAXI@Z
+// GHIDRA_PROTO undefined __thiscall ??_GCFile@@UAEPAXI@Z(byte param_1)
 
-CFileException * CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec(byte param_1)
+CFileException * CFileException::___GCFile__UAEPAXI_Z(byte param_1)
 
 {
-  DestructCFileException();
+  __1CFile__UAE_XZ();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ACF6
-// GHIDRA_NAME CFileException::DestructCFileException
-// GHIDRA_PROTO undefined DestructCFileException()
+// GHIDRA_NAME CFileException::??1CFile@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CFile@@UAE@XZ()
 
-void CFileException::DestructCFileException(void)
+void CFileException::__1CFile__UAE_XZ(void)
 
 {
   int iVar1;
@@ -54,17 +54,17 @@ void CFileException::DestructCFileException(void)
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_006727e4;
   iVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 1;
   if ((iVar1 != -1) && (extraout_ECX[2] != 0)) {
-    CloseFileHandleAndThrowMfcExceptionOnError();
+    _Close_CFile__UAEXXZ();
   }
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(extraout_ECX + 3));
+  CString::__1CString__QAE_XZ((CString *)(extraout_ECX + 3));
   uVar2 = *(undefined4 *)(unaff_EBP + -0xc);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uVar2;
@@ -72,33 +72,33 @@ void CFileException::DestructCFileException(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006113C6
-// GHIDRA_NAME CFileException::DestructFileExceptionAndReleaseMessageString
-// GHIDRA_PROTO undefined DestructFileExceptionAndReleaseMessageString()
+// GHIDRA_NAME CFileException::??1CMirrorFile@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CMirrorFile@@UAE@XZ()
 
-void CFileException::DestructFileExceptionAndReleaseMessageString(void)
+void CFileException::__1CMirrorFile__UAE_XZ(void)
 
 {
   int extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(extraout_ECX + 0x10));
+  CString::__1CString__QAE_XZ((CString *)(extraout_ECX + 0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  DestructCFileException();
+  __1CFile__UAE_XZ();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619AAC
-// GHIDRA_NAME CFileException::CMemFile
-// GHIDRA_PROTO undefined __thiscall CMemFile(undefined4 param_1)
+// GHIDRA_NAME CFileException::??0CMemFile@@QAE@I@Z
+// GHIDRA_PROTO undefined __thiscall ??0CMemFile@@QAE@I@Z(undefined4 param_1)
 
-CFileException * CFileException::CMemFile(undefined4 param_1)
+CFileException * CFileException::__0CMemFile__QAE_I_Z(undefined4 param_1)
 
 {
-  ConstructCFileException();
+  __0CFile__QAE_XZ();
   this->vftable = (CFileExceptionVtbl *)&CMemFileVtbl_00672f7c;
   *(undefined4 *)&this->field_0x10 = param_1;
   this[1].vftable = (CFileExceptionVtbl *)0x0;
@@ -110,13 +110,15 @@ CFileException * CFileException::CMemFile(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619AF8
-// GHIDRA_NAME CFileException::CMemFile_619af8
-// GHIDRA_PROTO undefined __thiscall CMemFile_619af8(undefined4 param_1, uint param_2, int param_3)
+// GHIDRA_NAME CFileException::??0CMemFile@@QAE@PAEII@Z
+// GHIDRA_PROTO undefined __thiscall ??0CMemFile@@QAE@PAEII@Z(undefined4 param_1, uint param_2, int param_3)
 
-CFileException * CFileException::CMemFile_619af8(undefined4 param_1, uint param_2, int param_3)
+CFileException * __thiscall
+CFileException::__0CMemFile__QAE_PAEII_Z
+          (CFileException *this,undefined4 param_1,uint param_2,int param_3)
 
 {
-  ConstructCFileException();
+  __0CFile__QAE_XZ();
   this[1].vftable = (CFileExceptionVtbl *)0x0;
   *(int *)&this->field_0x10 = param_3;
   *(undefined4 *)&this[1].field_0x10 = 0;

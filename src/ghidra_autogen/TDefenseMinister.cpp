@@ -58,7 +58,7 @@ TDefenseMinister * TDefenseMinister::DeletingDestructTMinister(byte param_1)
 {
   DestructTDefenseMinisterAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -73,7 +73,7 @@ void TDefenseMinister::SetForeignMinisterPrimaryAndSecondaryTargets(int *param_1
   code *pcVar1;
   int iVar2;
   int unaff_EDI;
-  
+
   TMinister::SerializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x10,2);
@@ -106,7 +106,7 @@ void TDefenseMinister::GetTEventHandlerClassNamePointer(int *param_1)
   code *pcVar2;
   undefined1 *puVar3;
   int iVar4;
-  
+
   TMinister::DeserializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
   pcVar2 = *(code **)(*param_1 + 0x3c);
   (*pcVar2)(&this->field_0x10,2);
@@ -152,7 +152,7 @@ undefined2 TDefenseMinister::GetTEventHandlerClassNamePointer(short param_1)
   undefined2 uVar5;
   int iVar7;
   int iVar6;
-  
+
   iVar6 = 0;
   uVar5 = 0;
   piVar1 = *(int **)&g_apNationStates[param_1]->field_0x44;
@@ -181,15 +181,15 @@ int TDefenseMinister::OrphanCallChain_C11_I88_004874b0()
   undefined3 extraout_var;
   int iVar2;
   int iVar3;
-  
+
   uVar1 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
   iVar3 = CONCAT31(extraout_var,uVar1);
   if (6 < (short)iVar3) {
-    iVar2 = GenerateThreadLocalRandom15();
+    iVar2 = _rand();
     iVar3 = iVar2 / 100;
     if (iVar2 % 100 < 0x21) {
       iVar3 = **(int **)(*(int *)&this->field_0x4 + 0x98);
-      iVar2 = GenerateThreadLocalRandom15();
+      iVar2 = _rand();
       iVar3 = (**(code **)(iVar3 + 0x70))(iVar2 % 7 + 1);
     }
   }
@@ -205,7 +205,7 @@ void TDefenseMinister::GetTEventHandlerClassNamePointer()
 {
   int *piVar1;
   int iVar2;
-  
+
   (**(code **)(**(int **)&this->field_0x4 + 0xc))();
   piVar1 = (int *)InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
@@ -256,7 +256,7 @@ void TDefenseMinister::SetForeignMinisterReadyFlag14()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00632766;
   uStack_c = *unaff_FS_OFFSET;
@@ -264,7 +264,7 @@ void TDefenseMinister::SetForeignMinisterReadyFlag14()
   (**(code **)(**(int **)(*(int *)&this->field_0x4 + 0x44) + 0x48))();
   iVar16 = 0;
   sVar4 = *(short *)(*(int *)&this->field_0x4 + 0xc);
-  piVar6 = (int *)AllocateWithFallbackHandler(0x1c);
+  piVar6 = (int *)__2_YAPAXI_Z(0x1c);
   if (piVar6 == (int *)0x0) {
     piVar6 = (int *)0x0;
   }
@@ -286,14 +286,14 @@ void TDefenseMinister::SetForeignMinisterReadyFlag14()
   } while (iVar16 < 0x1950);
   uVar3 = (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject)(piVar6);
   piVar6 = *(int **)(*(int *)&this->field_0x4 + 0x44);
-  piVar7 = (int *)AllocateWithFallbackHandler(0x20);
+  piVar7 = (int *)__2_YAPAXI_Z(0x20);
   if (piVar7 == (int *)0x0) {
     piVar7 = (int *)0x0;
   }
   else {
     *piVar7 = (int)&RefCountedObjectBase::_vftable_;
     puStack_8 = (undefined1 *)0x1;
-    TGreatPower::CPtrList((TGreatPower *)(piVar7 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(piVar7 + 1),10);
     *piVar7 = (int)&TList::_vftable_;
   }
   puStack_8 = (undefined1 *)0xffffffff;
@@ -302,14 +302,14 @@ void TDefenseMinister::SetForeignMinisterReadyFlag14()
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDefenseMinister__00696860,0x12f);
   }
-  piStack_3c = (int *)AllocateWithFallbackHandler(0x20);
+  piStack_3c = (int *)__2_YAPAXI_Z(0x20);
   if (piStack_3c == (int *)0x0) {
     piStack_3c = (int *)0x0;
   }
   else {
     *piStack_3c = (int)&RefCountedObjectBase::_vftable_;
     puStack_8 = (undefined1 *)0x3;
-    TGreatPower::CPtrList((TGreatPower *)(piStack_3c + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(piStack_3c + 1),10);
     *piStack_3c = (int)&TList::_vftable_;
   }
   puStack_8 = (undefined1 *)0xffffffff;
@@ -318,14 +318,14 @@ void TDefenseMinister::SetForeignMinisterReadyFlag14()
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDefenseMinister__00696860,0x130);
   }
-  piStack_34 = (int *)AllocateWithFallbackHandler(0x20);
+  piStack_34 = (int *)__2_YAPAXI_Z(0x20);
   if (piStack_34 == (int *)0x0) {
     piStack_34 = (int *)0x0;
   }
   else {
     *piStack_34 = (int)&RefCountedObjectBase::_vftable_;
     puStack_8 = (undefined1 *)0x5;
-    TGreatPower::CPtrList((TGreatPower *)(piStack_34 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(piStack_34 + 1),10);
     *piStack_34 = (int)&TList::_vftable_;
   }
   puStack_8 = (undefined1 *)0xffffffff;
@@ -383,7 +383,7 @@ void TDefenseMinister::SetForeignMinisterReadyFlag14()
   }
   pcVar15 = (code *)(iVar8 / 2 + -2);
   if (0 < (int)pcVar15) {
-    pcVar10 = (code *)AllocateWithFallbackHandler((int)pcVar15 * 2);
+    pcVar10 = (code *)__2_YAPAXI_Z((int)pcVar15 * 2);
     if (pcVar10 == (code *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
@@ -463,7 +463,7 @@ void TDefenseMinister::SetForeignMinisterReadyFlag14()
   if (piStack_34 != (int *)0x0) {
     (**(code **)(*piStack_34 + 0x1c))();
   }
-  FreeHeapBufferIfNotNull((short *)CONCAT31(extraout_var,uVar3));
+  __3_YAXPAX_Z((short *)CONCAT31(extraout_var,uVar3));
   if (unaff_EBX != (int *)0x0) {
     (**(code **)(*unaff_EBX + 0x38))();
   }
@@ -492,11 +492,11 @@ undefined4 * TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(int 
   undefined4 *puVar11;
   int local_10;
   short asStack_c [6];
-  
+
   sVar4 = *(short *)(*(int *)&this->field_0x4 + 0xc);
   iVar9 = *param_1;
   iVar5 = (**(code **)(iVar9 + 0x28))();
-  puVar6 = (undefined4 *)AllocateWithFallbackHandler(0x1950);
+  puVar6 = (undefined4 *)__2_YAPAXI_Z(0x1950);
   if (puVar6 == (undefined4 *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -621,9 +621,9 @@ int * TDefenseMinister::UpdateControlCachedIntFromWindowText()
   int *piVar6;
   int iVar7;
   short nCenterTileIndex;
-  
+
   sVar1 = *(short *)(*(int *)&this->field_0x4 + 0xc);
-  piVar2 = (int *)AllocateWithFallbackHandler(0x6540);
+  piVar2 = (int *)__2_YAPAXI_Z(0x6540);
   piVar6 = piVar2;
   for (iVar4 = 0x1950; iVar4 != 0; iVar4 = iVar4 + -1) {
     *piVar6 = 0;
@@ -645,7 +645,7 @@ int * TDefenseMinister::UpdateControlCachedIntFromWindowText()
           psVar5 = psVar5 + 1;
           iVar7 = iVar7 + -1;
         } while (iVar7 != 0);
-        FreeHeapBufferIfNotNull(psVar3);
+        __3_YAXPAX_Z(psVar3);
         psVar3 = BuildHexAreaTileIndexList(nCenterTileIndex,2);
         iVar7 = 0xc;
         psVar5 = psVar3;
@@ -654,7 +654,7 @@ int * TDefenseMinister::UpdateControlCachedIntFromWindowText()
           psVar5 = psVar5 + 1;
           iVar7 = iVar7 + -1;
         } while (iVar7 != 0);
-        FreeHeapBufferIfNotNull(psVar3);
+        __3_YAXPAX_Z(psVar3);
       }
     }
     else if (*(char *)(iVar7 + 6) != '\0') {
@@ -694,7 +694,7 @@ int * TDefenseMinister::OrphanRetStub_0059add0(char param_1)
   int iStack_44;
   int aiStack_38 [8];
   char acStack_18 [24];
-  
+
   sVar1 = *(short *)(*(int *)&this->field_0x4 + 0xc);
   iVar12 = 0;
   do {
@@ -708,13 +708,13 @@ int * TDefenseMinister::OrphanRetStub_0059add0(char param_1)
     }
     iVar12 = iVar12 + 1;
   } while (iVar12 < 0x17);
-  piVar6 = (int *)AllocateWithFallbackHandler(0x6540);
+  piVar6 = (int *)__2_YAPAXI_Z(0x6540);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDefenseMinister__00696860,0x24a);
   }
-  piVar7 = (int *)AllocateWithFallbackHandler(0x6540);
+  piVar7 = (int *)__2_YAPAXI_Z(0x6540);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -819,7 +819,7 @@ int * TDefenseMinister::OrphanRetStub_0059add0(char param_1)
     piVar8 = piVar8 + 1;
     iVar12 = iVar12 + -1;
   } while (iVar12 != 0);
-  FreeHeapBufferIfNotNull(piVar7);
+  __3_YAXPAX_Z(piVar7);
   return piVar6;
 }
 
@@ -837,7 +837,7 @@ void TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
   undefined4 uStack_c;
   TMilitaryUnitOrderState *pTStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   pTStack_8 = (TMilitaryUnitOrderState *)&LAB_006327b4;
@@ -846,7 +846,7 @@ void TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
   *(undefined2 *)(param_1 + 0x62) = 1;
   iVar2 = 3;
   do {
-    pTStack_8 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
+    pTStack_8 = (TMilitaryUnitOrderState *)__2_YAPAXI_Z(0x44);
     if (pTStack_8 == (TMilitaryUnitOrderState *)0x0) {
       pTVar1 = (TMilitaryUnitOrderState *)0x0;
     }
@@ -861,7 +861,7 @@ void TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
   } while (iVar2 != 0);
   iVar2 = 2;
   do {
-    pTStack_8 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
+    pTStack_8 = (TMilitaryUnitOrderState *)__2_YAPAXI_Z(0x44);
     if (pTStack_8 == (TMilitaryUnitOrderState *)0x0) {
       pTVar1 = (TMilitaryUnitOrderState *)0x0;
     }
@@ -892,7 +892,7 @@ void TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
   undefined4 uStack_c;
   int *piStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   piStack_8 = (int *)&LAB_006327fa;
   uStack_c = *unaff_FS_OFFSET;
@@ -901,7 +901,7 @@ void TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
   *(undefined2 *)(param_1 + 0x62) = 1;
   iVar2 = 2;
   do {
-    pTVar1 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
+    pTVar1 = (TMilitaryUnitOrderState *)__2_YAPAXI_Z(0x44);
     if (pTVar1 == (TMilitaryUnitOrderState *)0x0) {
       pTVar1 = (TMilitaryUnitOrderState *)0x0;
     }
@@ -952,7 +952,7 @@ void TDefenseMinister::_scalar_deleting_destructor_()
   int iVar6;
   undefined4 uStack_c;
   undefined2 uStack_8;
-  
+
   (**(code **)(**(int **)&this->field_0x8 + 0x1c))();
   iVar6 = 0;
   ppTVar4 = g_apTerrainTypeDescriptorTable;
@@ -998,7 +998,7 @@ short TDefenseMinister::GetTEventHandlerClassNamePointer(short param_1)
   int *piVar2;
   short sVar3;
   int iVar4;
-  
+
   iVar4 = 1;
   piVar2 = *(int **)&this->field_0x8;
   sVar3 = param_1;
@@ -1028,7 +1028,7 @@ short TDefenseMinister::_scalar_deleting_destructor_(short param_1)
   int *piVar2;
   short sVar3;
   int iVar4;
-  
+
   iVar4 = 1;
   piVar2 = *(int **)&this->field_0x8;
   sVar3 = param_1;
@@ -1055,7 +1055,7 @@ undefined2 TDefenseMinister::_scalar_deleting_destructor_(short param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = (**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)param_1);
   return *(undefined2 *)(iVar1 + 4);
 }
@@ -1068,7 +1068,7 @@ undefined2 TDefenseMinister::OrphanCallChain_C11_I88_004874b0(short param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = (**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)param_1);
   return *(undefined2 *)(iVar1 + 2);
 }
@@ -1081,7 +1081,7 @@ undefined2 TDefenseMinister::GetTEventHandlerClassNamePointer(short param_1)
 
 {
   undefined2 *puVar1;
-  
+
   puVar1 = (undefined2 *)(**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)param_1);
   return *puVar1;
 }

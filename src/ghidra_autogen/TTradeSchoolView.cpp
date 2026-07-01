@@ -15,12 +15,12 @@ TNoHilitePicture * TTradeSchoolView::CreateTTradeSchoolViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006318fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa8);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0xa8);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
@@ -69,7 +69,7 @@ TTradeSchoolView * TTradeSchoolView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -144,16 +144,16 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631958;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   puStack_38 = (undefined1 *)0x4cd8f7;
-  CString::CString(&local_24);
+  CString::__0CString__QAE_XZ(&local_24);
   local_4 = 0;
   puStack_38 = (undefined1 *)0x4cd908;
-  CString::CString(local_1c);
+  CString::__0CString__QAE_XZ(local_1c);
   pTVar1 = this->vftable;
   puStack_38 = (undefined1 *)0x0;
   uStack_3c = 0;
@@ -184,12 +184,12 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     (**(code **)(iVar3 + 0x1c8))();
   }
   puStack_48 = (undefined1 *)0x4cd9b5;
-  CString::CString((CString *)&stack0xffffffd4,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffd4,(char *)&g_szEmptyString);
   local_10 = 2;
   puStack_48 = (undefined1 *)0x4cd9c8;
-  CString::AssignFromPtr((CString *)&stack0xffffffd0,(CString *)&stack0xffffffd4);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffd0,(CString *)&stack0xffffffd4);
   local_10 = 1;
-  CString::~CString((CString *)&stack0xffffffd4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
   CStack_4c.m_pchData = &stack0xffffffd0;
   puStack_50 = (undefined4 *)0x4cd9e8;
   AssignStringSharedRefAndReturnThis();
@@ -253,10 +253,10 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   }
   iVar3 = *(int *)CONCAT31(extraout_var_04,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::CString(&CStack_4c,&DAT_00696674);
+  CString::__0CString__QAE_PBD_Z(&CStack_4c,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
   puStack_38 = (undefined1 *)CONCAT31(puStack_38._1_3_,1);
-  CString::~CString(&CStack_54);
+  CString::__1CString__QAE_XZ(&CStack_54);
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_05,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -264,10 +264,10 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   }
   iVar3 = *(int *)CONCAT31(extraout_var_05,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::CString((CString *)&stack0xffffffa0,&DAT_00696674);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffa0,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
   CStack_4c.m_pchData._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffff98);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff98);
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_06,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -275,9 +275,9 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   }
   iVar3 = *(int *)CONCAT31(extraout_var_06,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::CString((CString *)&stack0xffffff8c,&DAT_00696674);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff8c,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
-  CString::~CString((CString *)&stack0xffffff84);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff84);
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_07,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -285,9 +285,9 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   }
   iVar3 = *(int *)CONCAT31(extraout_var_07,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::CString((CString *)&stack0xffffff78,&DAT_00696674);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff78,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
-  CString::~CString((CString *)&stack0xffffff70);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff70);
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_08,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -295,9 +295,9 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   }
   iVar3 = *(int *)CONCAT31(extraout_var_08,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::CString((CString *)&stack0xffffff64,&DAT_00696674);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff64,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
-  CString::~CString((CString *)&stack0xffffff5c);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff5c);
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_09,uVar4) == (int *)0x0) {
     uStack_d0 = 0x4cdd71;
@@ -306,11 +306,11 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   }
   iVar3 = *(int *)CONCAT31(extraout_var_09,uVar4);
   (**(code **)(iVar3 + 0x1b4))();
-  CString::CString((CString *)&stack0xffffff50,&DAT_00696674);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffff50,&DAT_00696674);
   uStack_d0 = 0x4cddb7;
   (**(code **)(iVar3 + 0x1c8))();
   uStack_d0 = 0x4cddc5;
-  CString::~CString((CString *)&stack0xffffff48);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff48);
   uStack_d0 = 0x2b67;
   BuildUiTextStyleDescriptor();
   uStack_d0 = 0x636f7331;
@@ -339,8 +339,8 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   iVar3 = *(int *)CONCAT31(extraout_var_11,uVar4);
   (**(code **)(iVar3 + 0x1b4))(&stack0xffffff28,0);
   (**(code **)(iVar3 + 0x1c8))(&CStack_ec,0);
-  CString::~CString(&CStack_ec);
-  CString::~CString((CString *)&stack0xffffff0c);
+  CString::__1CString__QAE_XZ(&CStack_ec);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff0c);
   *unaff_FS_OFFSET = uVar5;
   return;
 }
@@ -367,7 +367,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fb0()
   int iVar7;
   undefined4 uVar8;
   int iVar9;
-  
+
   if (*(int *)&this->field_0x94 == 0) {
     return;
   }

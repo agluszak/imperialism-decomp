@@ -12,7 +12,7 @@ TControlSeaZoneMission * TControlSeaZoneMission::DestroyTControlSeaZoneMission(b
 {
   ResetTControlSeaZoneMissionToSentinelVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,12 +29,12 @@ TMission * TControlSeaZoneMission::CreateTControlSeaZoneMission(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063434a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x3c);
+  this = (TMission *)__2_YAPAXI_Z(0x3c);
   local_4 = 0;
   if (this != (TMission *)0x0) {
     TMission::ConstructTMission(this);
@@ -92,7 +92,7 @@ TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNa
   TControlSeaZoneMission *pTVar12;
   undefined4 unaff_EDI;
   float local_10 [4];
-  
+
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
@@ -172,7 +172,7 @@ TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort
 
 {
   int in_stack_0000000c;
-  
+
   if (((param_1 == 0) || (param_1 == 3)) && (in_stack_0000000c == *(int *)(this + 0x14))) {
     return 1;
   }
@@ -200,7 +200,7 @@ void TControlSeaZoneMission::SetMapOrderType6AndQueue(int nOrderTarget)
   TNavyMgr *pTVar7;
   undefined4 uVar8;
   short sVar9;
-  
+
   *(int *)(this + 0xc) = nOrderTarget;
   *(undefined4 *)(this + 8) = 6;
   *(undefined4 *)(this + 0x14) = 0;
@@ -221,7 +221,7 @@ void TControlSeaZoneMission::SetMapOrderType6AndQueue(int nOrderTarget)
       if (piVar6[2] != 0) {
         *(int *)(piVar6[2] + 4) = piVar6[1];
       }
-      FreeHeapBufferIfNotNull(piVar6);
+      __3_YAXPAX_Z(piVar6);
       piVar6 = piVar1;
     }
     else {

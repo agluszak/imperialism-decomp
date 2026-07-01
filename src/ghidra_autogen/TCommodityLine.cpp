@@ -16,12 +16,12 @@ TLineData * TCommodityLine::CreateTCommodityLineInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006397aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)AllocateWithFallbackHandler(0x14);
+  this = (TLineData *)__2_YAPAXI_Z(0x14);
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (this != (TLineData *)0x0) {
@@ -64,7 +64,7 @@ TCommodityLine * TCommodityLine::DestructTCommodityLineAndMaybeFree(byte param_1
 {
   DestructTCommodityLineAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -108,19 +108,19 @@ void TCommodityLine::OrphanRetStub_0056f460()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639804;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_54.m_pchData = (char *)0x5c15a7;
-  CString::CString(local_38);
+  CString::__0CString__QAE_XZ(local_38);
   local_4 = 0;
   CStack_54.m_pchData = (char *)0x5c15b6;
-  CString::CString(&local_3c);
+  CString::__0CString__QAE_XZ(&local_3c);
   local_4._0_1_ = 1;
   CStack_54.m_pchData = "hg+";
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   CStack_54.m_pchData = (char *)0x2b67;
   uStack_58 = 0xe;
   CStack_60.m_pchData = local_18;
@@ -144,21 +144,21 @@ void TCommodityLine::OrphanRetStub_0056f460()
   uVar3 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)();
   CStack_64.m_pchData = (char *)(int)(short)CONCAT31(extraout_var,uVar3);
   (*pTVar1[0xe].slot_0x04)();
-  uVar4 = AssignSharedStringConcatRefAndCStr
+  uVar4 = __H_YG_AVCString__ABV0_PBD_Z
                     (local_38,&stack0xffffffb4,g_Build_Map_Order_LookupTable_00695794);
   local_18[0] = '\x03';
-  src_ref = (CString *)AssignSharedStringConcatRefAndRef(&local_40,uVar4,&stack0xffffffb0);
+  src_ref = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_40,uVar4,&stack0xffffffb0);
   local_18[0] = '\x04';
-  CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffffb8,src_ref);
+  CString::__0CString__QAE_ABV0__Z((CString *)&stack0xffffffb8,src_ref);
   local_18[0] = '\x05';
-  CString::AssignFromPtr(&CStack_54,(CString *)&stack0xffffffb8);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_54,(CString *)&stack0xffffffb8);
   local_18[0] = '\x04';
-  CString::~CString((CString *)&stack0xffffffb8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb8);
   local_18[0] = '\x03';
-  CString::~CString(&local_40);
+  CString::__1CString__QAE_XZ(&local_40);
   local_18[0] = '\x02';
-  CString::~CString(local_38);
-  local_38[0].m_pchData = (char *)AllocateWithFallbackHandler(0x94);
+  CString::__1CString__QAE_XZ(local_38);
+  local_38[0].m_pchData = (char *)__2_YAPAXI_Z(0x94);
   local_18[0] = '\x06';
   if ((TMyStaticText *)local_38[0].m_pchData == (TMyStaticText *)0x0) {
     piVar5 = (int *)0x0;
@@ -176,7 +176,7 @@ void TCommodityLine::OrphanRetStub_0056f460()
   (**(code **)(iVar2 + 0x1b4))(auStack_2c,0);
   (**(code **)(iVar2 + 0x1c8))(&CStack_5c,1);
   local_40.m_pchData = (char *)0x18;
-  this_00 = (TColorKeyPicture *)AllocateWithFallbackHandler(0x98);
+  this_00 = (TColorKeyPicture *)__2_YAPAXI_Z(0x98);
   iStack_28._0_1_ = 7;
   uVar6 = extraout_var_00;
   if (this_00 != (TColorKeyPicture *)0x0) {
@@ -188,11 +188,11 @@ void TCommodityLine::OrphanRetStub_0056f460()
             (uStack_20,uStack_1c,&stack0xffffffbc,5,5,
              CONCAT22(uVar6,*(short *)&this->field_0x10 + 700));
   iStack_28._0_1_ = 1;
-  CString::~CString(&CStack_64);
+  CString::__1CString__QAE_XZ(&CStack_64);
   iStack_28 = (uint)iStack_28._1_3_ << 8;
-  CString::~CString(&CStack_60);
+  CString::__1CString__QAE_XZ(&CStack_60);
   iStack_28 = 0xffffffff;
-  CString::~CString(&CStack_5c);
+  CString::__1CString__QAE_XZ(&CStack_5c);
   *unaff_FS_OFFSET = uStack_30;
   return;
 }

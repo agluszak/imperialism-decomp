@@ -16,12 +16,12 @@ thunk_TPictureButton * TPictureRadioButton::CreateTPictureRadioButtonInstance(vo
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006363aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -66,7 +66,7 @@ TPictureRadioButton * TPictureRadioButton::_scalar_deleting_destructor_(byte par
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -86,7 +86,7 @@ TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWind
   char cVar4;
   undefined4 unaff_EBP;
   char local_4;
-  
+
   uVar1 = *(undefined2 *)&this->field_0x84;
   pTVar3 = this->vftable;
   sVar2 = (short)this->field3c;
@@ -133,7 +133,7 @@ TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
   int local_10;
   int iStack_c;
   int iStack_8;
-  
+
   iVar1 = this->ownerOffsetX;
   iVar2 = this->ownerOffsetY;
   piVar4 = (int *)CopyOffset10PointPairToOutOrZero(local_20);
@@ -158,7 +158,7 @@ TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh
 {
   TPictureRadioButtonVtbl *pTVar1;
   char cVar2;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {
@@ -190,7 +190,7 @@ int TPictureRadioButton::SetForeignMinisterReadyFlag14()
   undefined3 extraout_var_03;
   undefined3 uVar5;
   uint3 uVar6;
-  
+
   pTVar1 = this->vftable;
   p_Var2 = pTVar1->OrphanTiny_VcallForward_Slot_ec_00571330;
   cVar3 = (*p_Var2)();

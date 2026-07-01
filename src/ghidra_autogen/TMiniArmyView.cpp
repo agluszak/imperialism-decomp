@@ -22,7 +22,7 @@ TMiniArmyView * TMiniArmyView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -40,12 +40,12 @@ TControl * TMiniArmyView::CreateTMiniArmyViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063059a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x88);
+  this = (TControl *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
@@ -88,35 +88,35 @@ void TMiniArmyView::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006305d0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   local_4 = 0;
-  CString::CString(&local_38);
+  CString::__0CString__QAE_XZ(&local_38);
   local_4._0_1_ = 1;
-  CString::AssignFromPtr(&local_38,(CString *)(*(int *)&this->field_0x84 + 0x24));
-  CString::AssignFromPtr(&local_40,&local_38);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_38,(CString *)(*(int *)&this->field_0x84 + 0x24));
+  CString::__4CString__QAEABV0_ABV0__Z(&local_40,&local_38);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xc,0x2b6a);
   sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
   if (100 < sVar1) {
-    CString::CString(&local_3c);
+    CString::__0CString__QAE_XZ(&local_3c);
     local_4._0_1_ = 2;
     do {
       src_ref = (CString *)AssignSharedStringFromMidSubstring(&local_34,1);
       local_4._0_1_ = 3;
-      CString::AssignFromPtr(&local_3c,src_ref);
+      CString::__4CString__QAEABV0_ABV0__Z(&local_3c,src_ref);
       local_4._0_1_ = 2;
-      CString::~CString(&local_34);
-      CString::AssignFromPtr(&local_40,&local_3c);
-      CString::AssignFromCStr(&local_3c,&DAT_0069587c);
+      CString::__1CString__QAE_XZ(&local_34);
+      CString::__4CString__QAEABV0_ABV0__Z(&local_40,&local_3c);
+      CString::__YCString__QAEABV0_PBD_Z(&local_3c,&DAT_0069587c);
       sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
     } while (100 < sVar1);
-    CString::AssignFromPtr(&local_40,&local_3c);
+    CString::__4CString__QAEABV0_ABV0__Z(&local_40,&local_3c);
     local_4._0_1_ = 1;
-    CString::~CString(&local_3c);
+    CString::__1CString__QAE_XZ(&local_3c);
   }
   SetQuickDrawTextOriginWithContextOffset(10);
   THQButton::DrawTextWithCachedQuickDrawStyleState();
@@ -150,9 +150,9 @@ void TMiniArmyView::OrphanTiny_ReturnZero_0048a730()
   DrawCenteredGuideLineOnMapDc(0xdc);
   DrawCenteredGuideLineOnMapDc(0xdc);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_38);
+  CString::__1CString__QAE_XZ(&local_38);
   local_4 = 0xffffffff;
-  CString::~CString(&local_40);
+  CString::__1CString__QAE_XZ(&local_40);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -174,7 +174,7 @@ void TMiniArmyView::OrphanRetStub_0059add0(int param_1, CString param_2)
   int iStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   CVar3.m_pchData = param_2.m_pchData;
   local_4 = -1;
   puStack_8 = &LAB_006305f8;
@@ -183,14 +183,14 @@ void TMiniArmyView::OrphanRetStub_0059add0(int param_1, CString param_2)
   if (*(int *)(param_2.m_pchData + 0x1c) == 0x75706772) {
     cVar4 = ApplyEraCapabilityCostAndSetSelection();
     if (cVar4 == '\0') {
-      CString::CString(&param_2);
+      CString::__0CString__QAE_XZ(&param_2);
       local_4 = 0;
       pTStack_30 = (TToolBarClusterVtbl *)0x4ab298;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       AssignStringSharedRefAndReturnThis(&param_2);
       DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = -1;
-      CString::~CString(&param_2);
+      CString::__1CString__QAE_XZ(&param_2);
     }
     else {
       (**(code **)(*(int *)CVar3.m_pchData + 0xa4))();

@@ -12,7 +12,7 @@ TEvent * TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(byte param_1)
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -46,7 +46,7 @@ TEvent * TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70(byte param_1)
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

@@ -22,7 +22,7 @@ TPicture * TPicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -54,7 +54,7 @@ void TPicture::OrphanTiny_ReturnZero_0048a730()
   int local_10;
   int iStack_c;
   int iStack_8;
-  
+
   uVar3 = GetAsyncKeyState(0x11);
   if ((uVar3 & 0x8000) != 0) {
     (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
@@ -113,7 +113,7 @@ TPicture::SetPictureResourceIdAndRefresh
   TPictureVtbl *pTVar1;
   undefined4 uVar2;
   undefined2 in_stack_00000006;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1->ResetPictureResourceEntry)();
   *(short *)&this->field_0x84 = nPictureId;

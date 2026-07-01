@@ -16,12 +16,12 @@ TUberCluster * TTradePolicyCluster::CreateTTradePolicyClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006375ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
@@ -64,7 +64,7 @@ TTradePolicyCluster * TTradePolicyCluster::_scalar_deleting_destructor_(byte par
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -82,7 +82,7 @@ TTradePolicyCluster::OrphanRetStub_0059add0
   undefined uVar2;
   undefined3 extraout_var;
   int *piVar3;
-  
+
   if (param_1 != 0x67) {
     TCluster::OrphanRetStub_0059add0
               ((TMapEditCluster *)this,param_1,param_2,param_3);

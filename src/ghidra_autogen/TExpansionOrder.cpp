@@ -22,7 +22,7 @@ TExpansionOrder * TExpansionOrder::ConstructTItemOrderBaseState(byte param_1)
 {
   TExpansionOrder::DestructTExpansionOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -51,7 +51,7 @@ TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = param_2;
@@ -92,7 +92,7 @@ void TExpansionOrder::OrphanRetStub_004b5160()
   short sVar2;
   int iVar3;
   int iVar4;
-  
+
   if (*(short *)&this->field_0x4 == 0) {
     return;
   }
@@ -145,7 +145,7 @@ uint TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   ushort uVar2;
   uint uVar3;
   ushort uVar4;
-  
+
   uVar2 = *(short *)(&this->field_0x10 + *(short *)&this->field_0x4e * 2) +
           *(short *)(*(int *)&this->field_0x8 + 0xb6 + *(short *)&this->field_0x4e * 2);
   uVar3 = (uint)uVar2;
@@ -176,7 +176,7 @@ undefined4 TExpansionOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   char cVar4;
   undefined3 extraout_var;
   short sVar5;
-  
+
   sVar5 = param_1 - *(short *)&this->field_0x4;
   uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar3) < param_1) || (param_1 < 0)) {
@@ -214,7 +214,7 @@ void TExpansionOrder::CreateTItemOrderInstance()
 
 {
   undefined2 uStack00000004;
-  
+
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   *(undefined2 *)(_uStack00000004 + *(short *)&this->field_0x4e * 2) = uStack00000004;
   if (*(short *)(_uStack00000004 + *(short *)&this->field_0x4e * 2) < 0) {

@@ -29,7 +29,7 @@ TNewGameCommand * TNewGameCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
 {
   TNewGameCommand::CreateTNewGameCommandInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -69,12 +69,12 @@ TApplication * TNewGameCommand::ConstructTNewGameCommandBaseState(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fd1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TApplication *)AllocateWithFallbackHandler(0x54);
+  this = (TApplication *)__2_YAPAXI_Z(0x54);
   local_4 = 0;
   pTVar1 = (TApplication *)0x0;
   if (this != (TApplication *)0x0) {
@@ -107,7 +107,7 @@ TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
   byte bVar4;
   int local_8;
   int local_4;
-  
+
   iVar3 = InvokeAfxThreadAndCallSecondaryRefresh();
   if (((iVar3 == 0) && (this[3].vftable != (TNewGameCommandVtbl *)0x0)) &&
      ((sVar1 = *(short *)&g_pUiRuntimeContext->field_0x4, sVar1 == 0x7dd ||
@@ -161,7 +161,7 @@ TNewGameCommand::InitializeBasicCityOrderContext
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this[3].vftable = param_2;
@@ -179,17 +179,17 @@ TNewGameCommand::InitializeBasicCityOrderContext
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006054AA
-// GHIDRA_NAME TNewGameCommand::OnOK_6054aa
-// GHIDRA_PROTO undefined __thiscall OnOK_6054aa(void)
+// GHIDRA_NAME TNewGameCommand::?OnOK@CDialog@@MAEXXZ
+// GHIDRA_PROTO undefined __thiscall ?OnOK@CDialog@@MAEXXZ(void)
 
-void TNewGameCommand::OnOK_6054aa()
+void TNewGameCommand::_OnOK_CDialog__MAEXXZ()
 
 {
   int iVar1;
-  
-  iVar1 = UpdateData(1);
+
+  iVar1 = _UpdateData_CWnd__QAEHH_Z(1);
   if (iVar1 != 0) {
-    FUN_0060531e(1);
+    _EndDialog_CDialog__QAEXH_Z(1);
   }
   return;
 }

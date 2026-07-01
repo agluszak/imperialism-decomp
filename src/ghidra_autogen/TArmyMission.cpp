@@ -22,7 +22,7 @@ TArmyMission * TArmyMission::DestroyTArmyMission(byte param_1)
 {
   ResetTArmyMissionToSentinelVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -36,7 +36,7 @@ void TArmyMission::CleanupTArmyMissionAndReleaseChildContext()
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
   while (iVar2 != 0) {

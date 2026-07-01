@@ -15,12 +15,12 @@ TEventHandler * TAnimator::CreateTAnimatorInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062feba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TEventHandler *)AllocateWithFallbackHandler(0x30);
+  this = (TEventHandler *)__2_YAPAXI_Z(0x30);
   local_4 = 0;
   if (this != (TEventHandler *)0x0) {
     TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults(this);
@@ -69,7 +69,7 @@ TAnimator * TAnimator::DestructTAnimatorAndMaybeFree(byte param_1)
 {
   DestructTAnimatorAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -97,7 +97,7 @@ uint TAnimator::_scalar_deleting_destructor_(int param_1)
   uint in_EAX;
   int *piVar2;
   int iVar3;
-  
+
   if (param_1 == 1) {
     if ((*(int **)&this->field_0x2c != (int *)0x0) &&
        (cVar1 = (**(code **)(**(int **)&this->field_0x2c + 0x1ec))(), cVar1 != '\0')) {
@@ -146,7 +146,7 @@ void TAnimator::GetTEventHandlerClassNamePointer(int *param_1)
 {
   int iVar1;
   undefined4 uVar2;
-  
+
   iVar1 = *param_1;
   *(undefined4 *)&this->field_0x2c = 0;
   *(undefined4 *)&this->field_0x10 = 0x7fffffff;

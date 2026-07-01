@@ -16,12 +16,12 @@ TView * TLonelyTileView::CreateTLonelyTileViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063374a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -64,7 +64,7 @@ TLonelyTileView * TLonelyTileView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -84,7 +84,7 @@ void TLonelyTileView::OrphanTiny_ReturnZero_0048a730()
   int local_10;
   LONG LStack_c;
   LONG LStack_8;
-  
+
   iVar1 = *(int *)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)(&local_10);
   RStack_24.left = LStack_14;

@@ -16,12 +16,12 @@ TToggleButton * TBoycottButton::CreateTBoycottButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063760a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TToggleButton *)AllocateWithFallbackHandler(0x90);
+  this = (TToggleButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   pTVar1 = (TToggleButton *)0x0;
   if (this != (TToggleButton *)0x0) {
@@ -64,7 +64,7 @@ TBoycottButton * TBoycottButton::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -81,7 +81,7 @@ TBoycottButton::HandleToggleButtonStateChangeAndRefresh
   undefined uVar1;
   undefined3 extraout_var;
   int *piVar2;
-  
+
   if (param_1 != '\0') {
     uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x636c7573);

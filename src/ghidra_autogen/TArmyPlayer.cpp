@@ -19,7 +19,7 @@ void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(int param_1,und
   undefined4 uStack_c;
   undefined4 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = (undefined4 *)&LAB_0062fee2;
   uStack_c = *unaff_FS_OFFSET;
@@ -31,7 +31,7 @@ void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(int param_1,und
   local_14 = DAT_006a2228;
   local_18 = 0;
   (**(code **)(*DAT_006a2158 + 0x2c))(param_1 + 0x20,8,&local_1c);
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
@@ -39,7 +39,7 @@ void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(int param_1,und
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_10 = 1;
     puStack_8 = puVar1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   *(undefined4 **)(param_1 + 0x24) = puVar1;
@@ -57,7 +57,7 @@ TArmyPlayer * TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140(byte pa
 {
   TArmyPlayer::CreateTArmyPlayerInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -92,7 +92,7 @@ TArmyPlayer * TArmyPlayer::ConstructTTacticalPlayerBaseState(byte param_1)
 {
   DestructTArmyPlayerAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -107,7 +107,7 @@ void TArmyPlayer::OrphanRetStub_0059add0()
   int *piVar1;
   int iVar2;
   int iVar3;
-  
+
   iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x48))();
   if (0 < iVar2) {
     iVar2 = InitializeLinkedListCursorFromOwnerHead();
@@ -151,7 +151,7 @@ void TArmyPlayer::OrphanRetStub_0059ad70()
   undefined3 extraout_var;
   TTask *this_00;
   int iVar3;
-  
+
   if (this->field_0xe != '\0') {
     SelectAndApplyTacticalCursorModeProfile(1);
     (*this->vftable->TArmyTacUnit_VtblSlot06)();
@@ -188,7 +188,7 @@ void TArmyPlayer::OrphanRetStub_0059ad90()
   ushort uVar1;
   int iVar2;
   int iVar3;
-  
+
   if (this->field_0x20 == '\0') {
     if (this->field_0xe != '\0') {
       if ((this->field_0xd != '\0') && (uVar1 = GetAsyncKeyState(0x5c), (uVar1 & 0x8000) != 0)) {
@@ -257,7 +257,7 @@ TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
   int iVar4;
   TTacArmyView *this_00;
   char cVar5;
-  
+
   *(undefined4 *)&this->field_0x3c = 0x1b3;
   *(undefined4 *)&this->field_0x40 = 0x1d;
   cVar5 = '\0';
@@ -272,7 +272,7 @@ TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
       cVar1 = '\0';
     }
   }
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x54);
+  puVar2 = (undefined4 *)__2_YAPAXI_Z(0x54);
   if (puVar2 == (undefined4 *)0x0) {
     puVar2 = (undefined4 *)0x0;
   }
@@ -280,7 +280,7 @@ TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
     *puVar2 = &TArmyPlayerVtbl_006695f0;
   }
   InitializeTacticalSideFromArmyUnitList(param_1,1,cVar5,(int)*(char *)(param_1 + 8));
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x54);
+  puVar3 = (undefined4 *)__2_YAPAXI_Z(0x54);
   if (puVar3 == (undefined4 *)0x0) {
     puVar3 = (undefined4 *)0x0;
   }
@@ -296,7 +296,7 @@ TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
   if (((DAT_006a4758 != '\0') || (cVar1 != '\0')) || (cVar5 != '\0')) {
     cVar5 = '\0';
     g_nTurnCooldownDeferCounter006A43C4 = 0;
-    iVar4 = GenerateThreadLocalRandom15();
+    iVar4 = _rand();
     TOceanDialog::RequestAudioPresetChangeWithDeferredApply
               ((TOceanDialog *)g_pSfxPlaybackSystem,iVar4 % 3 + 6,cVar5);
     (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0xed8,0);
@@ -316,7 +316,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit(int param_1, int pa
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)&this->field_0x34 - param_2;
   *(int *)&this->field_0x34 = iVar1;
   if (iVar1 < 1) {

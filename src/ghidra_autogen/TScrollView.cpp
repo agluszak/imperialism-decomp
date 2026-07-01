@@ -12,7 +12,7 @@ TScrollView * TScrollView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TView * TScrollView::CreateTScrollViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063663a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)__2_YAPAXI_Z(0x68);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -84,7 +84,7 @@ void TScrollView::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063665a;
   uStack_c = *unaff_FS_OFFSET;
@@ -92,7 +92,7 @@ void TScrollView::OrphanLeaf_NoCall_Ins07_004d8920()
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7363726f);
   *(uint *)&this->field_0x60 = CONCAT31(extraout_var,uVar1);
-  this_00 = (TControl *)AllocateWithFallbackHandler(0x94);
+  this_00 = (TControl *)__2_YAPAXI_Z(0x94);
   puStack_8 = (undefined1 *)0x0;
   if (this_00 == (TControl *)0x0) {
     this_00 = (TControl *)0x0;
@@ -131,7 +131,7 @@ TScrollView::_scalar_deleting_destructor_
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006366a8;
@@ -148,17 +148,17 @@ TScrollView::_scalar_deleting_destructor_
         ppuStack_24 = &CBrush::_vftable_;
         uStack_4 = 0;
         pHVar4 = CreateRectRgnIndirect(&RStack_1c);
-        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&ppuStack_24,(int)pHVar4);
-        TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(param_2,(int)&ppuStack_24);
-        DeleteObject();
+        CBrush::_Attach_CGdiObject__QAEHPAX_Z((CBrush *)&ppuStack_24,(int)pHVar4);
+        TDropShadowText::_SelectClipRgn_CDC__QAEHPAVCRgn___Z(param_2,(int)&ppuStack_24);
+        _DeleteObject_CGdiObject__QAEHXZ();
         ppuStack_24 = &PTR_LAB_00671054;
         uStack_4 = 1;
-        DeleteObject();
+        _DeleteObject_CGdiObject__QAEHXZ();
         ppuStack_24 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
         uStack_4 = 2;
         TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920((TSoundPlayer *)this,param_1);
         uStack_4 = 0xffffffff;
-        TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(param_2,0);
+        TDropShadowText::_SelectClipRgn_CDC__QAEHPAVCRgn___Z(param_2,0);
       }
     }
   }

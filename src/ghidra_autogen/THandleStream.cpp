@@ -38,7 +38,7 @@ THandleStream * THandleStream::ConstructTStreamBaseState(byte param_1)
 {
   THandleStream::~THandleStream(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -64,7 +64,7 @@ void THandleStream::OrphanCallChain_C1_I06_00488ab0()
   THandleStreamVtbl *pTVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  
+
   if (*(int *)&this->field_0x4 != 0) {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1->OrphanTiny_ReturnZero_00488ad0)();
@@ -104,7 +104,7 @@ int THandleStream::OrphanLeaf_NoCall_Ins06_00489720(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)&this->field_0x10;
   if (*(int *)&this->field_0x10 <= param_1) {
     iVar1 = param_1;
@@ -147,14 +147,14 @@ void THandleStream::OrphanRetStub_00488b40(undefined4 param_1, int param_2)
 {
   int iVar1;
   LPVOID pvVar2;
-  
+
   iVar1 = *(int *)&this->field_0xc - *(int *)&this->field_0x8;
   if (iVar1 < param_2) {
     param_2 = iVar1;
   }
   if (0 < param_2) {
     pvVar2 = GlobalLock(*(HGLOBAL *)&this->field_0x4);
-    MoveMemoryOverlapSafe(param_1,(int)pvVar2 + *(int *)&this->field_0x8,param_2);
+    _memmove(param_1,(int)pvVar2 + *(int *)&this->field_0x8,param_2);
     GlobalUnlock(*(HGLOBAL *)&this->field_0x4);
     *(int *)&this->field_0x8 = *(int *)&this->field_0x8 + param_2;
   }
@@ -173,7 +173,7 @@ void THandleStream::OrphanRetStub_00488e70(undefined4 param_1, int param_2)
   int iVar3;
   undefined3 extraout_var;
   LPVOID pvVar4;
-  
+
   iVar3 = *(int *)&this->field_0xc - *(int *)&this->field_0x8;
   if (iVar3 < param_2) {
     pTVar1 = this->vftable;
@@ -181,7 +181,7 @@ void THandleStream::OrphanRetStub_00488e70(undefined4 param_1, int param_2)
     (*pTVar1->OrphanRetStub_00488e50)(CONCAT31(extraout_var,uVar2) + *(int *)&this->field_0xc);
   }
   pvVar4 = GlobalLock(*(HGLOBAL *)&this->field_0x4);
-  MoveMemoryOverlapSafe((int)pvVar4 + *(int *)&this->field_0x8,param_1,param_2);
+  _memmove((int)pvVar4 + *(int *)&this->field_0x8,param_1,param_2);
   GlobalUnlock(*(HGLOBAL *)&this->field_0x4);
   iVar3 = *(int *)&this->field_0x8 + param_2;
   *(int *)&this->field_0x8 = iVar3;

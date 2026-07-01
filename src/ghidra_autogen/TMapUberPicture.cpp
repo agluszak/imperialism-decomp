@@ -15,7 +15,7 @@ void TMapUberPicture::TMapUberPicture_VtblSlot127()
   undefined3 extraout_var;
   int *piVar3;
   char unaff_BL;
-  
+
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x746f6f6c);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -54,12 +54,12 @@ TOffLimitsPicture * TMapUberPicture::CreateTMapUberPictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063831a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TOffLimitsPicture *)AllocateWithFallbackHandler(0xc4);
+  this = (TOffLimitsPicture *)__2_YAPAXI_Z(0xc4);
   local_4 = 0;
   if (this != (TOffLimitsPicture *)0x0) {
     TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
@@ -114,7 +114,7 @@ TMapUberPicture * TMapUberPicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -139,7 +139,7 @@ void TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined3 extraout_var_04;
   undefined4 uStack_34;
   undefined3 extraout_var_00;
-  
+
   TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920((TOffLimitsPicture *)this);
   pTVar1 = this->vftable;
   uStack_34 = 0x444c4f47;
@@ -224,7 +224,7 @@ TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   int iStack_c;
   undefined1 *puStack_8;
   undefined1 *puStack_4;
-  
+
   iStack_c = *unaff_FS_OFFSET;
   puStack_4 = (undefined1 *)0xffffffff;
   puStack_8 = &LAB_006383e8;
@@ -258,7 +258,7 @@ TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           *unaff_FS_OFFSET = iStack_c;
           return;
         }
-        CString::CString((CString *)&stack0x0000000c);
+        CString::__0CString__QAE_XZ((CString *)&stack0x0000000c);
         puVar3 = &stack0x0000000c;
         puStack_4 = (undefined1 *)0x0;
         uStack_24 = 0x5974a2;
@@ -270,7 +270,7 @@ TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
         AssignStringSharedRefAndReturnThis(&stack0x00000000);
         DispatchLocalizedUiMessageWithTemplateA13A0();
         uStack_24 = 0x5974d8;
-        CString::~CString((CString *)&stack0x00000000);
+        CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
         *unaff_FS_OFFSET = (int)puVar3;
         return;
       }
@@ -319,7 +319,7 @@ void TMapUberPicture::_scalar_deleting_destructor_(int param_1)
   undefined4 uVar5;
   undefined3 extraout_var;
   int iVar6;
-  
+
   if (param_1 == 0x406) {
     sVar1 = *(short *)&this->field_0x96;
     switch(sVar1) {
@@ -391,7 +391,7 @@ void TMapUberPicture::OrphanRetStub_0045d2a0(byte param_1)
 
 {
   undefined3 in_stack_00000005;
-  
+
   if (this->field_0x94 == '\0') {
     TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay
               (*(TOceanDialog **)&this->field_0xa4,param_1);
@@ -414,7 +414,7 @@ bool TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10()
 {
   short sVar1;
   bool bVar2;
-  
+
   sVar1 = *(short *)&this->field_0x96;
   bVar2 = false;
   if (sVar1 == 0) {
@@ -557,7 +557,7 @@ void TMapUberPicture::CreateToolWindow_00599CF0(astruct_20 *this_obj)
   undefined4 uStack_4;
   undefined **iVar1;
   int *piVar1;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006384ea;
   seh_prev = *seh_frame;
@@ -573,7 +573,7 @@ void TMapUberPicture::CreateToolWindow_00599CF0(astruct_20 *this_obj)
   }
   rect_x = 4;
   rect_y = 0x31;
-  child_ctrl = (astruct_21 *)AllocateWithFallbackHandler(0xa0);
+  child_ctrl = (astruct_21 *)__2_YAPAXI_Z(0xa0);
   puStack_8 = (undefined1 *)0x0;
   if (child_ctrl == (astruct_21 *)0x0) {
     child_ctrl = (astruct_21 *)0x0;
@@ -637,7 +637,7 @@ void TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion()
   undefined4 uVar4;
   int *piVar5;
   undefined1 auStack_14 [20];
-  
+
   pTVar1 = this->vftable;
   uVar3 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x746f6f6c);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
@@ -680,7 +680,7 @@ void TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag()
   undefined3 extraout_var;
   int *piVar3;
   char unaff_BL;
-  
+
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x746f6f6c);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

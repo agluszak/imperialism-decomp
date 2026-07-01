@@ -12,7 +12,7 @@ TBattleDetailBook * TBattleDetailBook::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,12 +29,12 @@ thunk_TPictureButton * TBattleDetailBook::CreateTBattleDetailBookInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063091a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -67,7 +67,7 @@ void TBattleDetailBook::OrphanCallChain_C1_I05_00415050(int param_1, int param_2
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x6f6b6179)) {
     uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))(*(undefined4 *)(param_2 + 0x1c),1);
@@ -90,12 +90,12 @@ TView * TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063093a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {

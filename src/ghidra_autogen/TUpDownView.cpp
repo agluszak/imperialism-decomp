@@ -15,12 +15,12 @@ TControl * TUpDownView::CreateTUpDownViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063756a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x88);
+  this = (TControl *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::TControl(this);
@@ -65,7 +65,7 @@ TUpDownView * TUpDownView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -82,7 +82,7 @@ void TUpDownView::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int 
   uint uVar3;
   int iVar4;
   int in_stack_00000010;
-  
+
   if (param_1 != 2) {
     uVar3 = GetTickCountDiv16();
     if (*(int *)&this->field_0x84 + 5U <= uVar3) {

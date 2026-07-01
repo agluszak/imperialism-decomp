@@ -44,7 +44,7 @@ TApplication * TApplication::DestructTApplicationAndMaybeFree(byte param_1)
 {
   TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -63,7 +63,7 @@ TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At0
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062eac0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -78,7 +78,7 @@ TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At0
   *(undefined4 *)&this->field_0x3c = 0;
   *(undefined4 *)&this->field_0x34 = 0;
   *(undefined4 *)&this->field_0x30 = 0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   *(undefined4 *)&this->field_0x40 = 0;
   *(char **)&this->field_0x2c = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   this->vftable = (TApplicationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -121,11 +121,12 @@ TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0
   undefined4 *puVar3;
   int *piVar4;
   int iVar5;
-  
+
   if (param_2 != '\0') {
     uVar1 = *(undefined4 *)&this->field_0x30;
     if (*(int *)&this->field_0x3c == 0) {
-      iVar2 = AllocateAndLinkBlockHead(&this->field_0x40,*(undefined4 *)&this->field_0x44,0xc);
+      iVar2 = _Create_CPlex__SGPAU1_AAPAU1_II_Z
+                        (&this->field_0x40,*(undefined4 *)&this->field_0x44,0xc);
       iVar5 = *(int *)&this->field_0x44;
       puVar3 = (undefined4 *)(iVar2 + -8 + iVar5 * 0xc);
       if (-1 < iVar5 + -1) {
@@ -183,7 +184,7 @@ LAB_00486a4b:
       *(undefined4 *)&this->field_0x3c = 0;
       *(undefined4 *)&this->field_0x34 = 0;
       *(undefined4 *)&this->field_0x30 = 0;
-      FreeDataChain();
+      _FreeDataChain_CPlex__QAEXXZ();
       *(undefined4 *)&this->field_0x40 = 0;
     }
   }
@@ -204,13 +205,13 @@ void TApplication::_scalar_deleting_destructor_(LPARAM param_1)
 {
   CWinThread *pCVar1;
   int iVar2;
-  
-  pCVar1 = AfxGetThread();
+
+  pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar1 == (CWinThread *)0x0) {
     iVar2 = 0;
   }
   else {
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
   }
   PostMessageA(*(HWND *)(iVar2 + 0x1c),0xbc0,0,param_1);
@@ -226,15 +227,15 @@ void TApplication::DispatchReflectedControlMessageOrFallback(undefined4 param_1)
 {
   CWinThread *pCVar1;
   int iVar2;
-  
+
   switch(param_1) {
   case 1:
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = AfxGetThread();
+      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe140,0);
@@ -252,12 +253,12 @@ void TApplication::DispatchReflectedControlMessageOrFallback(undefined4 param_1)
   case 0x11:
   case 0x12:
   case 0x13:
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = AfxGetThread();
+      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe100,0);
@@ -272,55 +273,55 @@ void TApplication::DispatchReflectedControlMessageOrFallback(undefined4 param_1)
   case 0x1b:
   case 0x1c:
   case 0x1d:
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = AfxGetThread();
+      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     break;
   case 0x1e:
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = AfxGetThread();
+      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe103,0);
     return;
   case 0x1f:
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = AfxGetThread();
+      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe102,0);
     return;
   case 0x20:
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = AfxGetThread();
+      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe104,0);
     return;
   case 0x24:
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     if (pCVar1 == (CWinThread *)0x0) {
       iVar2 = 0;
     }
     else {
-      pCVar1 = AfxGetThread();
+      pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
     }
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x10,0,0);
@@ -345,20 +346,21 @@ void TApplication::SerializeRecordList_0x0C_WithBlockPool_B(CArchive *param_1)
   undefined4 *puVar5;
   int iVar6;
   int *piVar7;
-  
+
   this_00 = param_1;
   if ((~param_1->m_nMode & 1U) == 0) {
-    for (iVar3 = FUN_0061202e(); iVar3 != 0; iVar3 = iVar3 + -1) {
+    for (iVar3 = _ReadCount_CArchive__QAEKXZ(); iVar3 != 0; iVar3 = iVar3 + -1) {
       if ((~this_00->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(this_00,(int)&param_1,4);
+        CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)&param_1,4);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)&param_1,4);
+        TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)&param_1,4);
       }
       pCVar2 = param_1;
       uVar1 = this->padding_08_to_0b;
       if (*(int *)&this->field_0x10 == 0) {
-        iVar4 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
+        iVar4 = _Create_CPlex__SGPAU1_AAPAU1_II_Z
+                          (&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
         iVar6 = *(int *)&this->field_0x18;
         puVar5 = (undefined4 *)(iVar4 + -8 + iVar6 * 0xc);
         if (-1 < iVar6 + -1) {
@@ -387,16 +389,16 @@ void TApplication::SerializeRecordList_0x0C_WithBlockPool_B(CArchive *param_1)
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c)
-    ;
+    TNetMgr::_WriteCount_CArchive__QAEXK_Z
+              ((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c);
     piVar7 = (int *)this->field04;
     if (piVar7 != (int *)0x0) {
       do {
         if ((~this_00->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)(piVar7 + 2),4);
+          CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)(piVar7 + 2),4);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)(piVar7 + 2),4);
+          TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)(piVar7 + 2),4);
         }
         piVar7 = (int *)*piVar7;
       } while (piVar7 != (int *)0x0);
@@ -415,7 +417,7 @@ TApplication * TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(byte 
 {
   TBehavior::CreateTBehaviorInstance((TBehavior *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

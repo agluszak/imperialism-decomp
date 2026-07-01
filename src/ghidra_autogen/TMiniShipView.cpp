@@ -22,7 +22,7 @@ TMiniShipView * TMiniShipView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -40,12 +40,12 @@ TControl * TMiniShipView::CreateTMiniShipViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635c4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x88);
+  this = (TControl *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
@@ -89,23 +89,24 @@ void TMiniShipView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635c78;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
-  CString::CString((CString *)&local_5c);
+  CString::__0CString__QAE_XZ((CString *)&local_5c);
   local_4 = 0;
-  CString::CString((CString *)&local_5c.top);
+  CString::__0CString__QAE_XZ((CString *)&local_5c.top);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString::AssignFromPtr((CString *)&local_5c.top,(CString *)(*(int *)&this->field_0x84 + 0x18));
+  CString::__4CString__QAEABV0_ABV0__Z
+            ((CString *)&local_5c.top,(CString *)(*(int *)&this->field_0x84 + 0x18));
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  AssignSharedStringConcatCStrAndRef(&stack0xffffffa0,g_Build_Map_Order_LookupTable_00695794);
+  __H_YG_AVCString__PBDABV0__Z(&stack0xffffffa0,g_Build_Map_Order_LookupTable_00695794);
   uStack_10._0_1_ = 2;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   uStack_10 = CONCAT31(uStack_10._1_3_,1);
-  CString::~CString((CString *)&stack0xffffffa0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa0);
   TViewMgr::CreateTViewMgrInstance(&stack0xffffff98);
   SetQuickDrawTextOriginWithContextOffset(10);
   THQButton::DrawTextWithCachedQuickDrawStyleState();
@@ -183,9 +184,9 @@ void TMiniShipView::OrphanTiny_ReturnZero_0048a730()
     }
   }
   uStack_10 = uStack_10 & 0xffffff00;
-  CString::~CString((CString *)&stack0xffffff9c);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff9c);
   uStack_10 = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffff98);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff98);
   *unaff_FS_OFFSET = uStack_18;
   return;
 }
@@ -199,7 +200,7 @@ void TMiniShipView::_scalar_deleting_destructor_(undefined4 *param_1)
 {
   TView *pTVar1;
   int iVar2;
-  
+
   pTVar1 = this->ownerContext;
   (**(code **)&pTVar1->vftable->field_0xc)();
   iVar2 = *(int *)(*(int *)&this->field_0x84 + 0xc);

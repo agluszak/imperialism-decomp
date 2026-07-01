@@ -15,12 +15,12 @@ TView * TOrderView::CreateTOrderViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006337aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)__2_YAPAXI_Z(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -65,7 +65,7 @@ TOrderView * TOrderView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -85,7 +85,7 @@ TOrderView::OrphanRetStub_0059add0
   undefined2 extraout_var_00;
   undefined2 extraout_var_01;
   undefined2 uVar3;
-  
+
   if (param_1 == 0x6c) {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x736c6964);

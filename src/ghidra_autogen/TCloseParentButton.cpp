@@ -16,12 +16,12 @@ TControl * TCloseParentButton::CreateTCloseParentButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637672;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x84);
+  this = (TControl *)__2_YAPAXI_Z(0x84);
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
@@ -57,7 +57,7 @@ TCloseParentButton * TCloseParentButton::ConstructTCloseParentButtonBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637698;
   local_c = *unaff_FS_OFFSET;
@@ -80,7 +80,7 @@ TCloseParentButton * TCloseParentButton::_scalar_deleting_destructor_(byte param
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -99,7 +99,7 @@ TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
   char cVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  
+
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1->VTableSlot2F)();
   if (param_1 == CONCAT31(extraout_var,uVar2)) {

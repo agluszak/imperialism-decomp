@@ -29,12 +29,12 @@ thunk_TPictureButton * TOffLimitsPicture::CreateTOffLimitsPictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006365fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -79,7 +79,7 @@ TOffLimitsPicture * TOffLimitsPicture::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -92,7 +92,7 @@ void TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   undefined4 uVar1;
-  
+
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uVar1 = CreateClipStateRegionWrapperObject();
   *(undefined4 *)&this->field_0x90 = uVar1;
@@ -110,17 +110,17 @@ void TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730()
   int iVar1;
   undefined4 uVar2;
   undefined4 uVar3;
-  
+
   if (*(int **)&this->field_0x90 != (int *)0x0) {
     uVar2 = 4;
     iVar1 = **(int **)&this->field_0x90 + 0x14;
     NoOpQuickDrawContextSelectionHook(iVar1,4);
-    FUN_006133fe(iVar1,uVar2);
+    _SelectClipRgn_CDC__QAEHPAVCRgn__H_Z(iVar1,uVar2);
     TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
     uVar3 = 5;
     uVar2 = 0;
     NoOpQuickDrawContextSelectionHook(0,5);
-    FUN_006133fe(uVar2,uVar3);
+    _SelectClipRgn_CDC__QAEHPAVCRgn__H_Z(uVar2,uVar3);
   }
   return;
 }

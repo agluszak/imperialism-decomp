@@ -22,7 +22,7 @@ TSpecialQuitPicture * TSpecialQuitPicture::_scalar_deleting_destructor_(byte par
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -39,12 +39,12 @@ thunk_TPictureButton * TSpecialQuitPicture::CreateTSpecialQuitPictureInstance(vo
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638d6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -104,13 +104,13 @@ void TSpecialQuitPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638d88;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_34 = 0x5b4837;
-  CString::CString(local_20);
+  CString::__0CString__QAE_XZ(local_20);
   local_4 = 0;
   uStack_38 = 0x5b484b;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
@@ -177,7 +177,7 @@ void TSpecialQuitPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(iVar2 + 0x1e0))(0,0xe);
   (**(code **)(iVar2 + 0x1c4))(1,1);
   uStack_5c = 0xffffffff;
-  CString::~CString(&CStack_78);
+  CString::__1CString__QAE_XZ(&CStack_78);
   *unaff_FS_OFFSET = puStack_64;
   return;
 }
@@ -269,7 +269,7 @@ TSpecialQuitPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined4 uStack_c;
   undefined1 *puStack_8;
   CString CStack_4;
-  
+
   iVar4 = pUiEvent;
   uStack_c = *unaff_FS_OFFSET;
   CStack_4.m_pchData = (char *)0xffffffff;
@@ -332,13 +332,13 @@ TSpecialQuitPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       (**(code **)(iVar4 + 0xa4))(1,1);
       *(undefined2 *)&this->field_0x90 = 1;
       (*pTVar2->SetPictureResourceIdAndRefresh)(0x3e9,1);
-      CString::CString(&CStack_58);
+      CString::__0CString__QAE_XZ(&CStack_58);
       uStack_60 = 0;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(6000,0,&CStack_58);
       (**(code **)(iVar4 + 0x1f0))(&uStack_64);
       CStack_4.m_pchData = (char *)0xffffffff;
       uStack_20 = 0x5b4b6e;
-      CString::~CString((CString *)&nMessage);
+      CString::__1CString__QAE_XZ((CString *)&nMessage);
     }
     else {
       sVar1 = *(short *)&this->field_0x90;
@@ -351,7 +351,7 @@ TSpecialQuitPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           uStack_28 = 0x5b4ba3;
           (*pTVar2->SetPictureResourceIdAndRefresh)();
           uStack_28 = 0x5b4bac;
-          CString::CString(&CStack_4);
+          CString::__0CString__QAE_XZ(&CStack_4);
           uStack_28 = 0x7469746c;
           uStack_c = 1;
           ppuStack_2c = (undefined1 **)0x5b4bc1;
@@ -369,7 +369,7 @@ TSpecialQuitPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           (**(code **)(iVar4 + 0x1f0))();
           CStack_4.m_pchData = (char *)0xffffffff;
           uStack_20 = 0x5b4c0a;
-          CString::~CString((CString *)&nMessage);
+          CString::__1CString__QAE_XZ((CString *)&nMessage);
         }
         else {
           pTVar2 = this->vftable;

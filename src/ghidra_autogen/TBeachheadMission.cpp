@@ -15,12 +15,12 @@ TMission * TBeachheadMission::CreateTBeachheadMission(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063438a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x40);
+  this = (TMission *)__2_YAPAXI_Z(0x40);
   local_4 = 0;
   if (this != (TMission *)0x0) {
     TMission::ConstructTMission(this);
@@ -103,7 +103,7 @@ void TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext()
   undefined4 unaff_EDI;
   float10 fVar13;
   float local_10 [4];
-  
+
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
@@ -205,7 +205,7 @@ undefined4 TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady()
 {
   int *piVar1;
   int *unaff_ESI;
-  
+
   if ((this[0x10] == (TBeachheadMission)0x0) && (*(int *)(this + 0x28) != 0)) {
     return 0;
   }

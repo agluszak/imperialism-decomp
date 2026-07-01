@@ -14,7 +14,7 @@ TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
 {
   TOneTimeAnimation::CreateTOneTimeAnimationInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -79,7 +79,7 @@ void TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe38;

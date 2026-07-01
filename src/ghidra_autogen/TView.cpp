@@ -27,20 +27,20 @@ void TView::GetTEventHandlerClassNamePointer(CArchive *param_1)
   int iVar4;
   int *piVar5;
   int iVar6;
-  
+
   this_00 = param_1;
   if ((~param_1->m_nMode & 1U) == 0) {
-    for (iVar3 = FUN_0061202e(); iVar3 != 0; iVar3 = iVar3 + -1) {
+    for (iVar3 = _ReadCount_CArchive__QAEKXZ(); iVar3 != 0; iVar3 = iVar3 + -1) {
       if ((~this_00->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(this_00,(int)&param_1,4);
+        CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)&param_1,4);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)&param_1,4);
+        TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)&param_1,4);
       }
       pCVar2 = param_1;
       iVar1 = this->padding_08_to_0b;
       if (this->field10 == 0) {
-        iVar4 = AllocateAndLinkBlockHead(&this->field14,this->field18,0xc);
+        iVar4 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(&this->field14,this->field18,0xc);
         iVar6 = this->field18;
         piVar5 = (int *)(iVar4 + -8 + iVar6 * 0xc);
         if (-1 < iVar6 + -1) {
@@ -69,16 +69,16 @@ void TView::GetTEventHandlerClassNamePointer(CArchive *param_1)
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c)
-    ;
+    TNetMgr::_WriteCount_CArchive__QAEXK_Z
+              ((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c);
     piVar5 = (int *)this->field04;
     if (piVar5 != (int *)0x0) {
       do {
         if ((~this_00->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)(piVar5 + 2),4);
+          CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)(piVar5 + 2),4);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)(piVar5 + 2),4);
+          TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)(piVar5 + 2),4);
         }
         piVar5 = (int *)*piVar5;
       } while (piVar5 != (int *)0x0);
@@ -97,7 +97,7 @@ void TView::OrphanRetStub_0059add0(undefined4 param_1, undefined4 param_2, undef
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->QueryStepValue)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))(param_1,param_2,param_3);
@@ -118,12 +118,12 @@ undefined4 __fastcall TView::CreateTViewInstance(undefined4 param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ebda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60,param_1);
+  this = (TView *)__2_YAPAXI_Z(0x60,param_1);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -155,7 +155,7 @@ void TView::ConstructTViewBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062ebf8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -176,7 +176,7 @@ void TView::ConstructTViewBaseState()
   this->field4e = -1;
   this->field50 = 0;
   this->field54 = 1;
-  CString::CString(&this->sharedStringRef);
+  CString::__0CString__QAE_XZ(&this->sharedStringRef);
   this->field5c = 0;
   this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
@@ -192,7 +192,7 @@ TView * TView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -208,7 +208,7 @@ void TView::DestructTViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -217,9 +217,9 @@ void TView::DestructTViewBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -234,7 +234,7 @@ TView * TView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -251,7 +251,7 @@ void TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062ec48;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -264,7 +264,7 @@ void TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0()
   this->field10 = 0;
   this->padding_08_to_0b = 0;
   this->field04 = 0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   this->field14 = 0;
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -288,7 +288,7 @@ void TView::CopyCityDialogStateFromSource(TView *pSource)
   int *piVar3;
   undefined4 uVar4;
   int *piVar5;
-  
+
   this->field04 = pSource->field04;
   this->padding_08_to_0b = pSource->padding_08_to_0b;
   this->controlTag = pSource->controlTag;
@@ -328,7 +328,7 @@ TView * TView::OrphanCallChain_C11_I88_004874b0()
 
 {
   TView *this_00;
-  
+
   this_00 = (TView *)(**(code **)&this->vftable->field_0x24)();
   TView::CopyCityDialogStateFromSource(this_00,this);
   return this_00;
@@ -342,7 +342,7 @@ void TView::EnableAndProcessFlag(CString *sharedString)
 
 {
   this->field5c = 1;
-  CString::AssignFromPtr(&this->sharedStringRef,sharedString);
+  CString::__4CString__QAEABV0_ABV0__Z(&this->sharedStringRef,sharedString);
   return;
 }
 
@@ -370,7 +370,7 @@ TView::SetForeignMinisterReadyFlag14
   TView *local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   if (this->field44 == 0) {
     iVar4 = 0;
   }
@@ -427,20 +427,20 @@ void TView::DestructTIncludeViewAndMaybeFree_Impl()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062ed8b;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_4 = 0;
-  CString::~CString((CString *)&this[1].field0c);
+  CString::__1CString__QAE_XZ((CString *)&this[1].field0c);
   this->vftable = &_vftable_;
   local_4 = 2;
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -459,7 +459,7 @@ void TView::DestructTWindowViewAndUnlinkGlobalLists()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062ee26;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -493,7 +493,7 @@ LAB_0048d6b8:
     DAT_006a1a50 = (int *)0x0;
     DAT_006a1a48 = (int *)0x0;
     DAT_006a1a44 = (int *)0x0;
-    FreeDataChain();
+    _FreeDataChain_CPlex__QAEXXZ();
     DAT_006a1a54 = 0;
     puVar2 = DAT_006a1ac4;
   }
@@ -505,7 +505,7 @@ LAB_0048d750:
   if (((puVar2 != (undefined4 *)0x0) &&
       (UnlinkNodeFromDoublyLinkedListAndRecycle(puVar2), DAT_006a1ac4 != (undefined4 *)0x0)) &&
      (piVar1 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar1 + 0xc))(), piVar1[0x14] != 0)) {
-    FUN_0060753b(1);
+    CMcWindow::EnableWindowOrDelegateToOwner(1);
   }
   this[1].field14 = (int)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   this->vftable = &_vftable_;
@@ -513,9 +513,9 @@ LAB_0048d750:
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   local_4 = CONCAT31(local_4._1_3_,2);
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -533,7 +533,7 @@ void TView::DestructCityDialogSharedBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062efcb;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -552,9 +552,9 @@ void TView::DestructCityDialogSharedBaseState()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -572,7 +572,7 @@ void TView::DestructTEditTextAndMaybeFree()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062f1a3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -588,17 +588,17 @@ void TView::DestructTEditTextAndMaybeFree()
   this_00 = (CString *)this[1].ownerOffsetX;
   local_4 = 1;
   if (this_00 != (CString *)0x0) {
-    CString::~CString(this_00);
-    FreeHeapBufferIfNotNull(this_00);
+    CString::__1CString__QAE_XZ(this_00);
+    __3_YAXPAX_Z(this_00);
   }
   this->vftable = &_vftable_;
   local_4 = 3;
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   local_4 = CONCAT31(local_4._1_3_,2);
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -615,7 +615,7 @@ void TView::DestructTClusterAndMaybeFree_Impl()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_0062f2b3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -624,9 +624,9 @@ void TView::DestructTClusterAndMaybeFree_Impl()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -645,7 +645,7 @@ void TView::DestructTWindowAndUnlinkGlobalWindowNode()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062f376;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -684,7 +684,7 @@ LAB_004921ef:
   if (((puVar2 != (undefined4 *)0x0) &&
       (UnlinkNodeFromDoublyLinkedListAndRecycle(puVar2), DAT_006a1ac4 != (undefined4 *)0x0)) &&
      (piVar1 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar1 + 0xc))(), piVar1[0x14] != 0)) {
-    FUN_0060753b(1);
+    CMcWindow::EnableWindowOrDelegateToOwner(1);
   }
   this[1].field14 = (int)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   this->vftable = &_vftable_;
@@ -692,9 +692,9 @@ LAB_004921ef:
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   local_4 = CONCAT31(local_4._1_3_,2);
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -711,7 +711,7 @@ void TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_0062f413;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -720,9 +720,9 @@ void TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl()
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;

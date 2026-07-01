@@ -34,7 +34,7 @@ TBuildingExpansionView * TBuildingExpansionView::_scalar_deleting_destructor_(by
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

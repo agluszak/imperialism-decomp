@@ -52,7 +52,7 @@ TDialogBehavior * TDialogBehavior::DestructTDialogBehaviorAndMaybeFree(byte para
 {
   DestructTDialogBehaviorAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -100,7 +100,7 @@ void TDialogBehavior::OrphanCallChain_C11_I88_004874b0(int param_1)
   char cVar4;
   int *piVar5;
   undefined4 uVar6;
-  
+
   piVar2 = *(int **)&this->field_0x8;
   if (piVar2 != (int *)0x0) {
     iVar3 = *piVar2;
@@ -155,7 +155,7 @@ void TDialogBehavior::OrphanCallChain_C6_I49_004875d0(int param_1)
   char cVar3;
   int *piVar4;
   undefined4 uVar5;
-  
+
   piVar1 = *(int **)&this->field_0x8;
   if (piVar1 != (int *)0x0) {
     iVar2 = *piVar1;
@@ -193,9 +193,9 @@ void TDialogBehavior::GetTBehaviorClassNamePointer()
   int *piVar3;
   int iVar4;
   uint uVar5;
-  
+
   uVar5 = 0;
-  pTVar1 = (TCommand *)InvokeAfxThreadVslot7CAndGetValueAtOffset98();
+  pTVar1 = (TCommand *)GetMainViewHostFromActiveThread();
   iVar2 = TCommand::RunCommandModalLoopAndFinalizeState_Impl(pTVar1,uVar5);
   piVar3 = (int *)(**(code **)(**(int **)&this->field_0x8 + 0x58))();
   (**(code **)(*piVar3 + 0x9c))();
@@ -203,11 +203,11 @@ void TDialogBehavior::GetTBehaviorClassNamePointer()
   this_00 = *(TMovieView **)(iVar4 + 0x50);
   this->field_0x20 = 0;
   *(undefined4 *)&this->field_0x1c = 0x20202020;
-  FUN_0060753b(1);
-  TMovieView::RunModalLoop(this_00,0);
+  CMcWindow::EnableWindowOrDelegateToOwner(1);
+  TMovieView::_RunModalLoop_CWnd__QAEHK_Z(this_00,0);
   if (iVar2 != 0) {
     uVar5 = 1;
-    pTVar1 = (TCommand *)InvokeAfxThreadVslot7CAndGetValueAtOffset98();
+    pTVar1 = (TCommand *)GetMainViewHostFromActiveThread();
     TCommand::RunCommandModalLoopAndFinalizeState_Impl(pTVar1,uVar5);
   }
   return;
@@ -222,7 +222,7 @@ TDialogBehavior * TDialogBehavior::OrphanCallChain_C1_I17_00487470(byte param_1)
 {
   DestructTCommandAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

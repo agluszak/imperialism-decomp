@@ -12,7 +12,7 @@ TSuperNavyRoster * TSuperNavyRoster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -53,7 +53,7 @@ TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635bec;
   uStack_c = *unaff_FS_OFFSET;
@@ -71,9 +71,9 @@ TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
         pTVar5 != (TLineDataVtbl *)0x0; pTVar5 = (TLineDataVtbl *)pTVar5->ShallowFree) {
       if (((TZone *)pTVar5->Serialize == pTVar2) && (*(short *)&pTVar5->WriteTo == param_1)) {
         if (!bVar3) {
-          CString::CString(&param_2);
+          CString::__0CString__QAE_XZ(&param_2);
           local_4 = 0;
-          this_00 = (TTextLine *)AllocateWithFallbackHandler(0x20);
+          this_00 = (TTextLine *)__2_YAPAXI_Z(0x20);
           local_4._0_1_ = 1;
           if (this_00 == (TTextLine *)0x0) {
             uVar6 = 0;
@@ -90,9 +90,9 @@ TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
           (*this->vftable->OrphanCallChain_C1_I06_0056fbb0)(uVar6);
           bVar3 = true;
           local_4 = 0xffffffff;
-          CString::~CString(&param_2);
+          CString::__1CString__QAE_XZ(&param_2);
         }
-        this_01 = (TLineData *)AllocateWithFallbackHandler(0x14);
+        this_01 = (TLineData *)__2_YAPAXI_Z(0x14);
         local_4 = 2;
         if (this_01 == (TLineData *)0x0) {
           this_01 = (TLineData *)0x0;
@@ -130,7 +130,7 @@ TSuperNavyRoster * TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree(byte p
 {
   DestructTSuperNavyRosterAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -162,7 +162,7 @@ void TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult()
   undefined1 *puStack_8;
   undefined4 uStack_4;
   int *piVar4;
-  
+
   iStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063a474;
@@ -183,7 +183,7 @@ void TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult()
   }
   aiStack_30[0] = piVar5[8];
   (**(code **)(*piVar5 + 0x1c))();
-  this_00 = (TPageView *)AllocateWithFallbackHandler(0x8c);
+  this_00 = (TPageView *)__2_YAPAXI_Z(0x8c);
   iStack_c = 0;
   if (this_00 == (TPageView *)0x0) {
     this_00 = (TPageView *)0x0;
@@ -200,7 +200,7 @@ void TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult()
   (*this_00->vftable[1].GetTEventHandlerClassNamePointer)
             (aiStack_30[0],aiStack_30 + 1,&stack0xffffffc8);
   this_00->controlTag = 0x70616765;
-  this_01 = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  this_01 = (TStaticText *)__2_YAPAXI_Z(0x94);
   uStack_18 = 1;
   if (this_01 == (TStaticText *)0x0) {
     uVar6 = 0;

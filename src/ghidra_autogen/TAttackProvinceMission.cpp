@@ -15,7 +15,7 @@ TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
   char cVar1;
   undefined4 in_EDX;
   TAttackProvinceMission TVar2;
-  
+
   TVar2 = SUB41(param_2,0);
   if (param_2 == 1) {
     cVar1 = (*g_pGlobalMapState->vftable->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext)
@@ -41,12 +41,12 @@ TMission * TAttackProvinceMission::CreateTAttackProvinceMission(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063445a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x34);
+  this = (TMission *)__2_YAPAXI_Z(0x34);
   local_4 = 0;
   pTVar1 = (TMission *)0x0;
   if (this != (TMission *)0x0) {
@@ -95,7 +95,7 @@ TAttackProvinceMission * TAttackProvinceMission::DestroyTAttackProvinceMission(b
 {
   ResetTAttackProvinceMissionToSentinelVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -108,7 +108,7 @@ void TAttackProvinceMission::SerializeTAttackProvinceMission(int *param_1)
 
 {
   code *pcVar1;
-  
+
   SerializeTArmyMission(param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(this + 0x30,2);
@@ -124,7 +124,7 @@ void TAttackProvinceMission::DeserializeTAttackProvinceMission(int *param_1)
 
 {
   code *pcVar1;
-  
+
   DeserializeTArmyMission(param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(this + 0x30,2);
@@ -144,7 +144,7 @@ TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext
   TGreatPower *this_00;
   int iVar1;
   int iVar2;
-  
+
   this_00 = g_apNationStates[*(short *)(this + 4)];
   (*this_00->vftable->ConstructTTaskBaseState)();
   TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
@@ -190,7 +190,7 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
   int iVar10;
   undefined4 uVar11;
   float local_14 [5];
-  
+
   if (this[0x10] == (TAttackProvinceMission)0x0) {
     iVar8 = *(int *)this;
     uVar11 = 0;
@@ -333,7 +333,7 @@ undefined4 TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass()
   char cVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  
+
   *(undefined2 *)(this + 0x14) = 0xffff;
   cVar1 = TryResolveAttackProvinceMissionTargetTerrainClass();
   if (cVar1 != '\0') {

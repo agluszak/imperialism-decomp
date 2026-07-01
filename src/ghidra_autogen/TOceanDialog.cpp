@@ -15,12 +15,12 @@ TWorldView * TOceanDialog::CreateTOceanDialogInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635a3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TWorldView *)AllocateWithFallbackHandler(0x80);
+  this = (TWorldView *)__2_YAPAXI_Z(0x80);
   local_4 = 0;
   if (this != (TWorldView *)0x0) {
     TWorldView::ConstructTWorldViewBaseState(this);
@@ -75,7 +75,7 @@ TOceanDialog * TOceanDialog::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -108,7 +108,7 @@ TOceanDialog::OrphanRetStub_005960c0
   int iVar4;
   undefined2 extraout_var;
   undefined2 extraout_var_00;
-  
+
   uVar2 = *(short *)&this->field_0x7c +
           (short)((int)((param_1[1] >> 0x1f & 0xfU) + param_1[1]) >> 4);
   *param_3 = uVar2;
@@ -153,7 +153,7 @@ void TOceanDialog::OrphanRetStub_00596080()
   undefined4 local_2c;
   undefined1 local_14 [2];
   undefined1 local_12 [18];
-  
+
   if (*(short *)((int)&this->ownerContext[1].field34 + 2) == 0) {
     local_2c = 0;
     puStack_30 = (undefined1 *)0x566622;
@@ -198,7 +198,7 @@ void TOceanDialog::OrphanRetStub_005966c0(short param_1)
   int iStack_c;
   int iStack_8;
   int iStack_4;
-  
+
   if (-1 < param_1) {
     uVar1 = (int)param_1 / 0x6c;
     iStack_10 = ((((int)param_1 - (int)*(short *)&this->field_0x7e) + 0x6c) % 0x6c) * 0x10;
@@ -233,7 +233,7 @@ void TOceanDialog::OrphanRetStub_005966c0(short param_1)
 // GHIDRA_COMMENT_END
 
 /* Renders the strategic-map viewport tile grid and optional overlay layers.
-   
+
    Algorithm:
    1. Initializes viewport/render context and palette state.
    2. Iterates visible map cells (0x1C rows x 0x21 columns) and draws per-tile terrain base.
@@ -242,7 +242,7 @@ void TOceanDialog::OrphanRetStub_005966c0(short param_1)
    5. Draws additional optional overlay groups (order-entry labels, target markers, debug overlays)
    based on global flags.
    6. Restores render state and exits.
-   
+
    Notes:
    - Reads strategic-map tile bytes from g_pGlobalMapState with 0x24-byte tile stride.
    - Uses g_pMapActionContextListHead for order-entry overlay annotations. */
@@ -332,7 +332,7 @@ void TOceanDialog::OrphanTiny_ReturnZero_0048a730()
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635a81;
   iStack_c = *unaff_FS_OFFSET;
@@ -872,7 +872,7 @@ LAB_00566ad9:
           pTVar5 = pTVar6->vftable;
           cVar8 = (*pTVar5->ApplyJoinEmpireModeForTargetNation)();
           SetQuickDrawFillColorFromPaletteIndex((-(uint)(cVar8 != '\0') & 0xffffffed) + 0x13);
-          CString::CString(&CStack_118);
+          CString::__0CString__QAE_XZ(&CStack_118);
           puStack_8._0_1_ = 3;
           (*pTVar5->GetTEventHandlerClassNamePointer_0b)(&CStack_118);
           sVar9 = WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20
@@ -881,7 +881,7 @@ LAB_00566ad9:
           SetQuickDrawTextOriginWithContextOffset(iVar19 - (int)sVar9 / 2);
           THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_118);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
-          CString::~CString(&CStack_118);
+          CString::__1CString__QAE_XZ(&CStack_118);
         }
       }
     }
@@ -901,7 +901,7 @@ LAB_00566ad9:
                  ((int)(char)(iVar19 / 0x6c) & 1U) * 8;
         if (((*unaff_retaddr <= iVar19) && (iVar19 <= unaff_retaddr[2])) &&
            ((unaff_retaddr[1] <= iVar11 && (iVar11 <= unaff_retaddr[3])))) {
-          CString::CString(&CStack_118);
+          CString::__0CString__QAE_XZ(&CStack_118);
           puStack_8._0_1_ = 4;
           FormatOverlayTerrainLabelText(&CStack_118);
           sVar9 = MeasureTextExtentWithCachedQuickDrawStyle(&CStack_118);
@@ -913,7 +913,7 @@ LAB_00566ad9:
           SetQuickDrawTextOriginWithContextOffset(iVar19,iVar11);
           THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_118);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
-          CString::~CString(&CStack_118);
+          CString::__1CString__QAE_XZ(&CStack_118);
         }
       }
       uStack_104 = uStack_104 + 1;
@@ -956,7 +956,7 @@ TOceanDialog::OrphanTiny_ReturnZero_0048a730
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635aa8;
   local_c = *unaff_FS_OFFSET;
@@ -1016,7 +1016,7 @@ TOceanDialog::DispatchReflectedControlMessageOrFallback
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00635ac8;
@@ -1079,7 +1079,7 @@ void TOceanDialog::OrphanRetStub_00596060(short param_1, RECT *param_2)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635af8;
   local_c = *unaff_FS_OFFSET;
@@ -1170,7 +1170,7 @@ void TOceanDialog::OrphanRetStub_005960e0(short param_1, short *param_2, short *
   short sVar1;
   int iVar2;
   short *in_stack_00000010;
-  
+
   sVar1 = *(short *)&this->field_0x7e;
   iVar2 = (int)param_1 / 0x6c;
   *param_3 = ((short)iVar2 - *(short *)&this->field_0x7c) * 0x10;
@@ -1190,7 +1190,7 @@ undefined4 TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0(short param_1)
   short sVar1;
   short sVar2;
   short sVar3;
-  
+
   sVar3 = (param_1 / 0x6c + (param_1 >> 0xf)) - (short)((longlong)(int)param_1 * 0x4bda12f7 >> 0x3f)
   ;
   sVar2 = param_1 % 0x6c;
@@ -1219,7 +1219,7 @@ void TOceanDialog::OrphanRetStub_00596680(short param_1, short param_2)
   undefined4 uStack_c;
   undefined4 uStack_8;
   undefined4 uStack_4;
-  
+
   if (g_pGlobalMapState->field_0x20 != '\0') {
     if (param_1 < 0x4d) {
       if (param_1 < 0) {
@@ -1283,7 +1283,7 @@ void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(byte param_1)
   int iVar1;
   undefined4 unaff_ESI;
   int iVar2;
-  
+
   iVar1 = CONCAT22((short)((uint)in_EAX >> 0x10),*(undefined2 *)&this->field_0x7e);
   iVar2 = CONCAT22((short)((uint)unaff_ESI >> 0x10),*(undefined2 *)&this->field_0x7c);
   if ((param_1 & 1) == 0) {
@@ -1317,7 +1317,7 @@ int TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E()
   undefined4 in_EAX;
   int local_8;
   int local_4;
-  
+
   local_8 = CONCAT22((short)((uint)in_EAX >> 0x10),*(short *)&this->field_0x7c + 0xe);
   local_4 = CONCAT22((short)((uint)this >> 0x10),*(short *)&this->field_0x7e + 0x10);
   NormalizeWrappedMapCoord108x60(&local_4,&local_8);
@@ -1334,7 +1334,7 @@ void TOceanDialog::RequestAudioPresetChangeWithDeferredApply(int param_1, char p
   char cVar1;
   short sVar2;
   undefined4 uVar3;
-  
+
   if (*(short *)&g_pLocalizationTable->field_0x4e != 0) {
     cVar1 = IsTurnCooldownCounterActiveOrResetFlag();
     if (cVar1 == '\0') {
@@ -1375,9 +1375,9 @@ TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate(int param_1,BOOL p
 
 {
   HPALETTE unaff_retaddr;
-  
+
   SelectPalette(*(HDC *)(param_1 + 4),unaff_retaddr,param_2);
-  FromHandle_613a36();
+  _FromHandle_CGdiObject__SGPAV1_PAX_Z();
   return;
 }
 
@@ -1389,13 +1389,13 @@ void TOceanDialog::DispatchHandleMapLookupWithReadPtrProbe()
 
 {
   BOOL BVar1;
-  
+
   BVar1 = IsBadReadPtr(this,8);
   if (BVar1 == 0) {
     SelectPaletteThenLookupHandleMapEntryWithCreate();
     return;
   }
-  FromHandle_613a36();
+  _FromHandle_CGdiObject__SGPAV1_PAX_Z();
   return;
 }
 

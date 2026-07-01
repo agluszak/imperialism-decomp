@@ -15,12 +15,12 @@ thunk_TPictureButton * TColorKeyPicture::CreateTColorKeyPictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063659a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -67,7 +67,7 @@ TColorKeyPicture * TColorKeyPicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -97,7 +97,7 @@ void TColorKeyPicture::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006365ba;
@@ -105,7 +105,7 @@ void TColorKeyPicture::OrphanTiny_ReturnZero_0048a730()
   if (DAT_006a4194 != (int *)0x0) {
     (**(code **)(*DAT_006a4194 + 4))(1);
   }
-  iStack_18 = AllocateWithFallbackHandler(0x38);
+  iStack_18 = __2_YAPAXI_Z(0x38);
   uStack_4 = 0;
   if (iStack_18 == 0) {
     DAT_006a4194 = (int *)0x0;
@@ -157,7 +157,7 @@ void TColorKeyPicture::SetPictureResourceIdAndRefresh(short param_1, bool param_
 
 {
   undefined2 unaff_DI;
-  
+
   if (*(int *)&this->field_0x94 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x94);
   }

@@ -14,28 +14,28 @@ undefined4 * Config::InitDefaults(astruct_11 *this_obj)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634793;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
   uStack_4 = 0;
-  CallCallbackRepeatedly(&this->field_0x20,8,4,&LAB_00405209);
+  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x20,8,4,&LAB_00405209);
   uStack_4._0_1_ = 1;
-  CString::CString((CString *)&this->field_0x74);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x74);
   uStack_4._0_1_ = 2;
-  CallCallbackRepeatedly
+  ___L_YGXPAXIHP6EX0_Z1_Z
             (&this->field_0x78,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
   uStack_4._0_1_ = 3;
-  CallCallbackRepeatedly
+  ___L_YGXPAXIHP6EX0_Z1_Z
             (&this->field_0x94,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
   uStack_4._0_1_ = 4;
-  CString::CString((CString *)&this->field_0xb0);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0xb0);
   uStack_4._0_1_ = 5;
-  CString::CString((CString *)&this->field_0xb4);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0xb4);
   uStack_4 = CONCAT31(uStack_4._1_3_,6);
-  CString::CString((CString *)&this->field_0xb8);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0xb8);
   this->vftable = (undefined *)&TMultiplayerMgrVtbl_0065c030;
   *(undefined4 *)&this->field_0x40 = 0;
   *(undefined4 *)&this->field_0x6c = 0;

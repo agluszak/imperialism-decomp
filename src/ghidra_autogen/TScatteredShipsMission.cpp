@@ -12,7 +12,7 @@ TScatteredShipsMission * TScatteredShipsMission::DestroyTScatteredShipsMission(b
 {
   ResetTScatteredShipsMissionToSentinelVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -59,7 +59,7 @@ TScatteredShipsMission::QueueMissionOrdersByPriorityForContext
   int *unaff_EDI;
   int iVar7;
   TScatteredShipsMission *pTVar8;
-  
+
   if ((*ppSelectedChildNode != 0) &&
      (pvVar4 = ObjectPool::FindMissionOrderNodeById
                          (*(ObjectPool **)(this + 0x24),*ppSelectedChildNode), pvVar4 == (void *)0x0
@@ -120,12 +120,12 @@ TMission * TScatteredShipsMission::CreateTScatteredShipsMission(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006343ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x3c);
+  this = (TMission *)__2_YAPAXI_Z(0x3c);
   local_4 = 0;
   if (this != (TMission *)0x0) {
     TMission::ConstructTMission(this);
@@ -165,7 +165,7 @@ void TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline()
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)this;
   (**(code **)(iVar1 + 0x34))();
   (**(code **)(iVar1 + 0x38))();
@@ -209,7 +209,7 @@ TScatteredShipsMission::PopulateScatteredShipsMissionResourceWeightsFromNationNa
   float fVar3;
   short *psVar4;
   TScatteredShipsMission *pTVar5;
-  
+
   pTVar2 = g_apNationStates[*(short *)(this + 4)];
   (*pTVar2->vftable->ConstructTTaskBaseState)();
   fVar3 = *(float *)&pTVar2[1].field_0x208 + DAT_0065a9b8;
@@ -249,7 +249,7 @@ TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain
   TScatteredShipsMission *pTVar9;
   TZone *pTVar10;
   TZone *pMapOrderEntry;
-  
+
   iVar8 = *(int *)(this + 0x24);
   if (iVar8 != 0) {
     *(undefined1 *)(iVar8 + 0xc) = 0;
@@ -349,7 +349,7 @@ void * TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode()
   short sVar7;
   int *this_00;
   int *unaff_EDI;
-  
+
   this_00 = *(int **)(this + 0xc);
   if ((this_00 != (int *)0x0) && ((**(code **)(*this_00 + 0xc))(), this_00 != (int *)0x0)) {
     sVar7 = 0;
@@ -381,7 +381,7 @@ void * TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode()
       return this_00;
     }
   }
-  puVar6 = (undefined4 *)AllocateWithFallbackHandler(0x34);
+  puVar6 = (undefined4 *)__2_YAPAXI_Z(0x34);
   if (puVar6 == (undefined4 *)0x0) {
     puVar6 = (undefined4 *)0x0;
   }
@@ -424,7 +424,7 @@ TScatteredShipsMission::SetMapOrderActiveChildEntry
 
 {
   short sVar1;
-  
+
   *(int **)(this + 0xc) = pActiveChildEntry;
   if (pActiveChildEntry != (int *)0x0) {
     (**(code **)(*pActiveChildEntry + 0xc))();
@@ -469,7 +469,7 @@ TScatteredShipsMission::ApplyMapOrderTypeAndQueue
   short sVar6;
   TShip *this_00;
   int *unaff_EDI;
-  
+
   switch(nOrderType) {
   case 1:
     *(undefined4 *)(this + 8) = 1;
@@ -579,7 +579,7 @@ TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive
   uint uVar6;
   short sVar7;
   uint local_8;
-  
+
   pTVar1 = g_pMapActionContextListHead;
   if (param_1 == -1) {
     for (; pTVar1 != (TZone *)0x0; pTVar1 = *(TZone **)&pTVar1->field_0x18) {
@@ -601,10 +601,9 @@ TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive
           if (0x7fffffff < uVar5) {
             local_8 = 0x7fffffff;
           }
-          iVar2 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(this + 0x28),_param_1);
+          iVar2 = _realloc(*(undefined4 *)(this + 0x28),_param_1);
           if (iVar2 == 0) {
-            uVar3 = ReallocateHeapBlockWithAllocatorTracking
-                              (*(undefined4 *)(this + 0x28),uVar6 * 4 + 4);
+            uVar3 = _realloc(*(undefined4 *)(this + 0x28),uVar6 * 4 + 4);
             *(undefined4 *)(this + 0x28) = uVar3;
             *(int *)(this + 0x2c) = iVar4;
           }
@@ -643,7 +642,7 @@ TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute
   int iVar4;
   uint uVar5;
   short sVar6;
-  
+
   if (param_1 == this) {
     return 0;
   }
@@ -651,7 +650,7 @@ TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute
      (g_nMapActionContextCount != DAT_006984b4)) {
     DAT_006984b4 = g_nMapActionContextCount;
     g_pMapActionContextDistanceCache =
-         (void *)AllocateWithFallbackHandler(g_nMapActionContextCount * g_nMapActionContextCount);
+         (void *)__2_YAPAXI_Z(g_nMapActionContextCount * g_nMapActionContextCount);
     iVar4 = 0;
     if (0 < g_nMapActionContextCount * g_nMapActionContextCount) {
       do {

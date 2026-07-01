@@ -37,7 +37,7 @@ TEngineerDialog * TEngineerDialog::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -87,7 +87,7 @@ void TEngineerDialog::OrphanTiny_ReturnZero_0048a730()
   short sVar2;
   RECT local_20;
   RECT local_10;
-  
+
   if (*(int *)&this->field_0x60 != 0) {
     ResetQuickDrawStrokeState();
     SetQuickDrawStrokeColor(0xffffff);

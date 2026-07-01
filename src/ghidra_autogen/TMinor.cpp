@@ -26,20 +26,20 @@ undefined4 * TMinor::CreateTMinorInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063243d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x2dc);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x2dc);
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4._0_1_ = 1;
     local_4._1_3_ = 0;
-    CString::CString((CString *)(puVar1 + 1));
+    CString::__0CString__QAE_XZ((CString *)(puVar1 + 1));
     local_4 = CONCAT31(local_4._1_3_,2);
-    CString::CString((CString *)(puVar1 + 2));
+    CString::__0CString__QAE_XZ((CString *)(puVar1 + 2));
     *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
@@ -68,15 +68,15 @@ TMinor * TMinor::TMinor()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00632463;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TMinorVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  CString::CString((CString *)&this->field_0x4);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x4);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString::CString((CString *)&this->field_0x8);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x8);
   this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
   return this;
@@ -93,7 +93,7 @@ void TMinor::DeserializeRecruitScenarioAndInstantiateOrders(int *param_1)
   code *pcVar2;
   undefined1 *puVar3;
   int iVar4;
-  
+
   TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
             ((TCountry *)this,param_1);
   puVar3 = &this->field_0x94;
@@ -171,7 +171,7 @@ undefined1 TMinor::ReturnFalseNationStateCapabilityFlag90(short param_1)
 
 {
   undefined1 uVar1;
-  
+
   uVar1 = 0;
   if ((((param_1 == *(short *)&this->field_0x134) || (param_1 == *(short *)&this->field_0x136)) ||
       (param_1 == *(short *)&this->field_0x138)) || (param_1 == *(short *)&this->field_0x13a)) {
@@ -188,7 +188,7 @@ short TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0(short param_1)
 
 {
   short sVar1;
-  
+
   sVar1 = *(short *)(&this->field_0x94 + param_1 * 2) + *(short *)(&this->field_0xf0 + param_1 * 2);
   if (sVar1 < 0) {
     sVar1 = 0;
@@ -229,7 +229,7 @@ void TMinor::OrphanRetStub_004d7fa0(undefined4 param_1, short param_2)
   int iVar4;
   short sVar5;
   int local_10;
-  
+
   sVar5 = (short)param_1;
   if (((param_2 < 1) || (sVar5 < 0xd)) || (0x10 < sVar5)) {
     if ((sVar5 < 0) || (6 < sVar5)) {
@@ -296,12 +296,12 @@ void TMinor::Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0()
   short sVar5;
   undefined2 *puVar6;
   undefined4 unaff_EBP;
-  
+
   sVar1 = *(short *)&this->field_0x12c;
   iVar4 = CONCAT22((short)((uint)unaff_EBP >> 0x10),sVar1);
   if (((this != (TMinor *)0x0) && (99 < *(short *)&this->field_0xe)) &&
      (*(short *)&this->field_0xe < 200)) goto LAB_004e4d5e;
-  iVar3 = GenerateThreadLocalRandom15();
+  iVar3 = _rand();
   sVar5 = (short)(iVar3 % 100);
   if (sVar5 < 0x19) {
     iVar3 = 0;
@@ -369,7 +369,7 @@ LAB_004e4d0f:
 LAB_004e4d5e:
   if (sVar1 == *(short *)&this->field_0x12c) {
     do {
-      iVar4 = GenerateThreadLocalRandom15();
+      iVar4 = _rand();
       iVar4 = iVar4 % 100;
       if (iVar4 < 0x1e) {
         iVar4 = 0xd;
@@ -417,7 +417,7 @@ bool TMinor::OrphanLeaf_NoCall_Ins02_004d7fc0(short param_1)
 
 {
   short sVar1;
-  
+
   sVar1 = 0;
   if ((0xc < param_1) && (param_1 < 0x11)) {
     if (param_1 == *(short *)&this->field_0x12c) {
@@ -442,7 +442,7 @@ int TMinor::ReturnFalseNationStateActionStub(undefined4 param_1, undefined4 para
   uint3 extraout_var_00;
   uint3 uVar2;
   undefined4 unaff_retaddr;
-  
+
   cVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004d7fc0)();
   uVar2 = extraout_var;
   if (cVar1 != '\0') {
@@ -483,7 +483,7 @@ undefined1 TMinor::CanInitiateJoinEmpireProposalToTarget(short param_1, short pa
   undefined1 uVar4;
   short *psVar5;
   TCountry **ppTVar6;
-  
+
   if ((param_2 == 0x12d) && (*(short *)&this->field_0xe == -1)) {
     if (0xf9 < *(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
                          (*(short *)&this->field_0xc * 0x17 + (int)param_1) * 2)) {
@@ -530,7 +530,7 @@ void TMinor::OrphanRetStub_004d7fe0(short param_1, int param_2)
   short sVar5;
   int iVar6;
   undefined2 in_stack_00000006;
-  
+
   uVar4 = (undefined2)((uint)in_EDX >> 0x10);
   sVar5 = (short)param_2;
   if (sVar5 == 0x12d) {
@@ -606,7 +606,7 @@ void TMinor::OrphanRetStub_004d7f80(short param_1)
 {
   TMinorVtbl *pTVar1;
   short in_stack_00000008;
-  
+
   if ((this != (TMinor *)0x0) && (in_stack_00000008 == 0x131)) {
     pTVar1 = this->vftable;
     (*pTVar1->ApplyDiplomacyRelationMaskToProvinceLinkedObjects)(0xffffffff);
@@ -648,7 +648,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(short param_1)
   int unaff_retaddr;
   undefined2 in_stack_00000006;
   undefined4 local_2c;
-  
+
   sVar3 = *(short *)&this->field_0xe;
   if (sVar3 < 200) {
     if (sVar3 < 100) {
@@ -822,14 +822,14 @@ void TMinor::ApplyJoinEmpireMode1TargetTransition(int param_1)
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632508;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   uStack_24 = 0x4e5865;
   local_10.m_pchData = (char *)this;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   iVar2 = 0;
   uStack_24 = 100;
   iStack_28 = param_1;
@@ -878,7 +878,7 @@ void TMinor::ApplyJoinEmpireMode1TargetTransition(int param_1)
             ((TCountry *)g_pInterNationEventQueueManager,0x1b,param_1,
              (int)*(short *)&this->field_0xc,'\0');
   iStack_2c = 0xffffffff;
-  CString::~CString(&CStack_38);
+  CString::__1CString__QAE_XZ(&CStack_38);
   *unaff_FS_OFFSET = iStack_34;
   return;
 }
@@ -894,7 +894,7 @@ void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState()
   _vslot_fn *p_Var2;
   short sVar3;
   int iVar4;
-  
+
   sVar3 = *(short *)&this->field_0xe;
   if (sVar3 < 200) {
     if (sVar3 < 100) {
@@ -943,7 +943,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int param_1)
   int iVar3;
   short *psVar4;
   int iVar5;
-  
+
   if (param_1 == -1) {
     iVar5 = 1;
     iVar2 = (**(code **)(**(int **)&this->field_0x90 + 0x28))();
@@ -998,7 +998,7 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int param_1)
   int unaff_EBX;
   int iVar5;
   int unaff_retaddr;
-  
+
   iVar5 = 1;
   iVar1 = *(int *)&g_apTerrainTypeDescriptorTable[param_1]->field_0x44;
   iVar3 = (**(code **)(**(int **)&this->field_0x90 + 0x28))();
@@ -1015,9 +1015,10 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int param_1)
         if (*(short *)(iVar3 + 0x18) == unaff_retaddr) {
           this_00 = (TAutoGreatPower *)(iVar1 + 4);
           *(undefined2 *)(iVar3 + 0x18) = *(undefined2 *)&this->field_0xc;
-          piVar4 = (int *)TAutoGreatPower::Find(this_00,iVar3,(undefined4 *)0x0);
+          piVar4 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                                    (this_00,iVar3,(undefined4 *)0x0);
           if (piVar4 != (int *)0x0) {
-            TAutoGreatPower::RemoveAt_60217d(this_00,piVar4);
+            TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar4);
           }
           (**(code **)(**(int **)&this->field_0x44 + 0x30))(iVar3);
         }
@@ -1046,12 +1047,12 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int param_1)
 // GHIDRA_COMMENT_END
 
 /* Reassigns unit orders when a country target context changes.
-   
+
    Behavior:
    - Builds an allowed-target mask for active nation profiles.
    - Iterates tile unit chains and retargets or clears incompatible orders.
    - Supports global pass (target=-1) and tile-scoped pass.
-   
+
    This function mutates queued unit-order targets during diplomacy/ownership transitions. */
 
 void TMinor::ReassignUnitOrdersForCountryTargetChange(short *param_1, char param_2)
@@ -1071,7 +1072,7 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short *param_1, char param
   TMinor *local_10;
   int iStack_c;
   char acStack_8 [8];
-  
+
   if (param_2 == '\0') {
     (*this->vftable->QueueInterNationEvent17ForState300AffectedNations)();
   }
@@ -1194,7 +1195,7 @@ void TMinor::RemoveRegionIdFromNationOwnedRegionList()
 
 {
   TMinorVtbl *pTVar1;
-  
+
   (**(code **)(**(int **)&this->field_0x90 + 0x34))();
   pTVar1 = this->vftable;
   (*pTVar1->ClearTileActivityOverlayByProvinceId)();
@@ -1230,13 +1231,13 @@ void TMinor::AddRegionIdToNationOwnedRegionList()
 // GHIDRA_COMMENT_END
 
 /* Relinks all current tile units to the selected country order manager.
-   
+
    Algorithm:
    1. Resolve destination manager pointer from country profile table (+0x44).
    2. Iterate all tile-linked unit objects in current list.
    3. Remove each unit from its existing manager chain.
    4. Add each unit to destination manager via manager vfunc +0x30.
-   
+
    Used during country ownership/order-manager transitions. */
 
 void TMinor::GetTCountryClassNamePointer(int param_1)
@@ -1247,7 +1248,7 @@ void TMinor::GetTCountryClassNamePointer(int param_1)
   int iVar2;
   int iVar3;
   int *piVar4;
-  
+
   piVar4 = *(int **)&g_apTerrainTypeDescriptorTable[param_1]->field_0x44;
   iVar2 = InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
@@ -1256,9 +1257,10 @@ void TMinor::GetTCountryClassNamePointer(int param_1)
     do {
       *(short *)(iVar2 + 0x18) = (short)param_1;
       this_00 = (TAutoGreatPower *)(*(int *)&this->field_0x44 + 4);
-      piVar4 = (int *)TAutoGreatPower::Find(this_00,iVar2,(undefined4 *)0x0);
+      piVar4 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                                (this_00,iVar2,(undefined4 *)0x0);
       if (piVar4 != (int *)0x0) {
-        TAutoGreatPower::RemoveAt_60217d(this_00,piVar4);
+        TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar4);
       }
       (*pcVar1)(iVar2);
       iVar2 = AdvanceLinkedListCursor();
@@ -1287,7 +1289,7 @@ TMinor * TMinor::ApplyJoinEmpireModeForTargetNation(byte param_1)
 {
   TTurnStartEvent::CreateTTurnStartEventInstance((TTurnStartEvent *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

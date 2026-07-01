@@ -11,7 +11,7 @@ void TEventHandler::CreateTEventHandlerInstance()
 
 {
   int iVar1;
-  
+
   iVar1 = this->field0c;
   while (iVar1 != 0) {
     (**(code **)(**(int **)(this->field04 + 8) + 0x1c))();
@@ -54,7 +54,7 @@ TEventHandler * TEventHandler::DestructTEventHandlerAndMaybeFree(byte param_1)
 {
   DestructTEventHandlerAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -70,7 +70,7 @@ void TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject()
   undefined uVar2;
   TEventHandler *pTVar3;
   undefined3 extraout_var;
-  
+
   if ((g_pApplicationUiRootController != (ApplicationUiRootController *)0x0) &&
      (g_pApplicationUiRootController != (ApplicationUiRootController *)this)) {
     pTVar3 = (TEventHandler *)(**(code **)(g_pApplicationUiRootController->vftable + 0x9c))();

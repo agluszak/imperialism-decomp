@@ -16,7 +16,7 @@ int * TNavyRoster::BuildNavyRosterDialogUiResourceTree(void)
   TNavyRoster *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000094;
-  
+
   RegisterUiResourceEntry(0x70696374,0x444c4f47);
   SetUiResourceStateFlags();
   SetUiResourceLayoutValues(10);
@@ -96,12 +96,12 @@ TPageView * TNavyRoster::CreateTNavyRosterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006358fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPageView *)AllocateWithFallbackHandler(0xd0);
+  this = (TPageView *)__2_YAPAXI_Z(0xd0);
   local_4 = 0;
   if (this != (TPageView *)0x0) {
     TPageView::ConstructTPageViewBaseState(this);
@@ -158,7 +158,7 @@ TNavyRoster * TNavyRoster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -171,7 +171,7 @@ void TNavyRoster::GetTEventHandlerClassNamePointer()
 
 {
   int *piVar1;
-  
+
   TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
   piVar1 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   *(undefined1 *)(piVar1 + 0xd3) = 0;

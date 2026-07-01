@@ -4,34 +4,34 @@
 // Bucket: CString.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605797
-// GHIDRA_NAME CString::CString
-// GHIDRA_PROTO void __thiscall CString(void)
+// GHIDRA_NAME CString::??0CString@@QAE@XZ
+// GHIDRA_PROTO void __thiscall ??0CString@@QAE@XZ(void)
 
-void CString::CString()
+void CString::__0CString__QAE_XZ()
 
 {
   undefined4 *puVar1;
-  
+
   puVar1 = (undefined4 *)GetSharedEmptyStringRef();
   this->m_pchData = (char *)*puVar1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006057A7
-// GHIDRA_NAME CString::StringSharedRef_AssignFromPtr
-// GHIDRA_PROTO CString * __thiscall StringSharedRef_AssignFromPtr(CString * src_ref)
+// GHIDRA_NAME CString::??0CString@@QAE@ABV0@@Z
+// GHIDRA_PROTO CString * __thiscall ??0CString@@QAE@ABV0@@Z(CString * src_ref)
 
-CString * CString::StringSharedRef_AssignFromPtr(CString *src_ref)
+CString * CString::__0CString__QAE_ABV0__Z(CString *src_ref)
 
 {
   char *pcVar1;
   undefined4 *puVar2;
-  
+
   pcVar1 = src_ref->m_pchData;
   if (*(int *)(pcVar1 + -0xc) < 0) {
     puVar2 = (undefined4 *)GetSharedEmptyStringRef();
     this->m_pchData = (char *)*puVar2;
-    CopyFromCStr(this,src_ref->m_pchData);
+    __4CString__QAEABV0_PBD_Z(this,src_ref->m_pchData);
   }
   else {
     this->m_pchData = pcVar1;
@@ -41,21 +41,21 @@ CString * CString::StringSharedRef_AssignFromPtr(CString *src_ref)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006057DE
-// GHIDRA_NAME CString::AllocateBufferForLength
-// GHIDRA_PROTO void __thiscall AllocateBufferForLength(int text_length)
+// GHIDRA_NAME CString::?AllocBuffer@CString@@IAEXH@Z
+// GHIDRA_PROTO void __thiscall ?AllocBuffer@CString@@IAEXH@Z(int text_length)
 
-void CString::AllocateBufferForLength(int text_length)
+void CString::_AllocBuffer_CString__IAEXH_Z(int text_length)
 
 {
   undefined4 *puVar1;
   char *pcVar2;
-  
+
   if (text_length == 0) {
     puVar1 = (undefined4 *)GetSharedEmptyStringRef();
     pcVar2 = (char *)*puVar1;
   }
   else {
-    puVar1 = (undefined4 *)AllocateWithFallbackHandler(text_length + 0xd);
+    puVar1 = (undefined4 *)__2_YAPAXI_Z(text_length + 0xd);
     *puVar1 = 1;
     *(undefined1 *)((int)puVar1 + text_length + 0xc) = 0;
     puVar1[1] = text_length;
@@ -67,59 +67,59 @@ void CString::AllocateBufferForLength(int text_length)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060588B
-// GHIDRA_NAME CString::EnsureUniqueSharedStringBuffer
-// GHIDRA_PROTO void __thiscall EnsureUniqueSharedStringBuffer(void)
+// GHIDRA_NAME CString::?CopyBeforeWrite@CString@@IAEXXZ
+// GHIDRA_PROTO void __thiscall ?CopyBeforeWrite@CString@@IAEXXZ(void)
 
-void CString::EnsureUniqueSharedStringBuffer()
+void CString::_CopyBeforeWrite_CString__IAEXXZ()
 
 {
   char *pcVar1;
-  
+
   pcVar1 = this->m_pchData;
   if (1 < *(int *)(pcVar1 + -0xc)) {
-    FUN_00605818();
-    AllocateBufferForLength(this,*(int *)(pcVar1 + -8));
-    CopyMemoryPossiblyOverlapping(this->m_pchData,pcVar1,*(int *)(pcVar1 + -8) + 1);
+    _Release_CString__IAEXXZ();
+    _AllocBuffer_CString__IAEXH_Z(this,*(int *)(pcVar1 + -8));
+    _memcpy(this->m_pchData,pcVar1,*(int *)(pcVar1 + -8) + 1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006058B9
-// GHIDRA_NAME CString::EnsureCapacityOrAllocate
-// GHIDRA_PROTO void __thiscall EnsureCapacityOrAllocate(int required_capacity)
+// GHIDRA_NAME CString::?AllocBeforeWrite@CString@@IAEXH@Z
+// GHIDRA_PROTO void __thiscall ?AllocBeforeWrite@CString@@IAEXH@Z(int required_capacity)
 
-void CString::EnsureCapacityOrAllocate(int required_capacity)
+void CString::_AllocBeforeWrite_CString__IAEXH_Z(int required_capacity)
 
 {
   if ((1 < *(int *)(this->m_pchData + -0xc)) || (*(int *)(this->m_pchData + -4) < required_capacity)
      ) {
-    FUN_00605818();
-    AllocateBufferForLength(this,required_capacity);
+    _Release_CString__IAEXXZ();
+    _AllocBuffer_CString__IAEXH_Z(this,required_capacity);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006058E2
-// GHIDRA_NAME CString::~CString
-// GHIDRA_PROTO void __thiscall CString::~CString(void)
+// GHIDRA_NAME CString::??1CString@@QAE@XZ
+// GHIDRA_PROTO void __thiscall CString::??1CString@@QAE@XZ(void)
 
-void CString::~CString()
+void CString::__1CString__QAE_XZ()
 
 {
   LONG LVar1;
-  
+
   if (this->m_pchData + -0xc != PTR_DAT_0069be08) {
     LVar1 = InterlockedDecrement((LONG *)(this->m_pchData + -0xc));
     if (LVar1 < 1) {
-      FreeHeapBufferIfNotNull(this->m_pchData + -0xc);
+      __3_YAXPAX_Z(this->m_pchData + -0xc);
     }
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605950
-// GHIDRA_NAME CString::CString
-// GHIDRA_PROTO void __thiscall CString(char * text_or_resource_id)
+// GHIDRA_NAME CString::??0CString@@QAE@PBD@Z
+// GHIDRA_PROTO void __thiscall ??0CString@@QAE@PBD@Z(char * text_or_resource_id)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes a shared-string ref from either an ANSI C-string pointer or (when high word is zero) a resource/string-table id in the low word.
 // GHIDRA_COMMENT_END
@@ -127,17 +127,17 @@ void CString::~CString()
 /* Initializes a shared-string ref from either an ANSI C-string pointer or (when high word is zero)
    a resource/string-table id in the low word. */
 
-void CString::CString(char *text_or_resource_id)
+void CString::__0CString__QAE_PBD_Z(char *text_or_resource_id)
 
 {
   undefined4 *puVar1;
   int text_length;
-  
+
   puVar1 = (undefined4 *)GetSharedEmptyStringRef();
   this->m_pchData = (char *)*puVar1;
   if (text_or_resource_id != (char *)0x0) {
     if ((short)((uint)text_or_resource_id >> 0x10) == 0) {
-      LoadStringA((uint)text_or_resource_id & 0xffff);
+      _LoadStringA_CString__QAEHI_Z((uint)text_or_resource_id & 0xffff);
       return;
     }
     if (text_or_resource_id != (char *)0x0) {
@@ -148,45 +148,45 @@ void CString::CString(char *text_or_resource_id)
   text_length = 0;
 LAB_0060598e:
   if (text_length != 0) {
-    AllocateBufferForLength(this,text_length);
-    CopyMemoryPossiblyOverlapping(this->m_pchData,text_or_resource_id,text_length);
+    _AllocBuffer_CString__IAEXH_Z(this,text_length);
+    _memcpy(this->m_pchData,text_or_resource_id,text_length);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006059FC
-// GHIDRA_NAME CString::CopyBufferAndSetLength
-// GHIDRA_PROTO void __thiscall CopyBufferAndSetLength(int new_length, char * src_text)
+// GHIDRA_NAME CString::?AssignCopy@CString@@IAEXHPBD@Z
+// GHIDRA_PROTO void __thiscall ?AssignCopy@CString@@IAEXHPBD@Z(int new_length, char * src_text)
 
-void CString::CopyBufferAndSetLength(int new_length, char *src_text)
+void CString::_AssignCopy_CString__IAEXHPBD_Z(int new_length, char *src_text)
 
 {
-  EnsureCapacityOrAllocate(this,new_length);
-  CopyMemoryPossiblyOverlapping(this->m_pchData,src_text,new_length);
+  _AllocBeforeWrite_CString__IAEXH_Z(this,new_length);
+  _memcpy(this->m_pchData,src_text,new_length);
   *(int *)(this->m_pchData + -8) = new_length;
   this->m_pchData[new_length] = '\0';
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605A29
-// GHIDRA_NAME CString::AssignFromPtr
-// GHIDRA_PROTO CString * __thiscall AssignFromPtr(CString * src_ref)
+// GHIDRA_NAME CString::??4CString@@QAEABV0@ABV0@@Z
+// GHIDRA_PROTO CString * __thiscall ??4CString@@QAEABV0@ABV0@@Z(CString * src_ref)
 
-CString * CString::AssignFromPtr(CString *src_ref)
+CString * CString::__4CString__QAEABV0_ABV0__Z(CString *src_ref)
 
 {
   char *pcVar1;
   astruct_29 *piVar2;
-  
+
   pcVar1 = src_ref->m_pchData;
   if (this->m_pchData != pcVar1) {
     piVar2 = (astruct_29 *)(this->m_pchData + -0xc);
     if (((piVar2->field0_0x0 < 0) && (piVar2 != (astruct_29 *)PTR_DAT_0069be08)) ||
        (*(int *)(pcVar1 + -0xc) < 0)) {
-      CopyBufferAndSetLength(this,*(int *)(pcVar1 + -8),pcVar1);
+      _AssignCopy_CString__IAEXHPBD_Z(this,*(int *)(pcVar1 + -8),pcVar1);
     }
     else {
-      FUN_00605818();
+      _Release_CString__IAEXXZ();
       pcVar1 = src_ref->m_pchData;
       this->m_pchData = pcVar1;
       InterlockedIncrement((LONG *)(pcVar1 + -0xc));
@@ -196,115 +196,118 @@ CString * CString::AssignFromPtr(CString *src_ref)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605A78
-// GHIDRA_NAME CString::CopyFromCStr
-// GHIDRA_PROTO CString * __thiscall CopyFromCStr(char * src_text)
+// GHIDRA_NAME CString::??4CString@@QAEABV0@PBD@Z
+// GHIDRA_PROTO CString * __thiscall ??4CString@@QAEABV0@PBD@Z(char * src_text)
 
-CString * CString::CopyFromCStr(char *src_text)
+CString * CString::__4CString__QAEABV0_PBD_Z(char *src_text)
 
 {
   int new_length;
-  
+
   if (src_text == (char *)0x0) {
     new_length = 0;
   }
   else {
     new_length = lstrlenA(src_text);
   }
-  CopyBufferAndSetLength(this,new_length,src_text);
+  _AssignCopy_CString__IAEXHPBD_Z(this,new_length,src_text);
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605AE0
-// GHIDRA_NAME CString::ConcatenateBuffers
-// GHIDRA_PROTO void __thiscall ConcatenateBuffers(int lhs_len, char * lhs_text, int rhs_len, char * rhs_text)
+// GHIDRA_NAME CString::?ConcatCopy@CString@@IAEXHPBDH0@Z
+// GHIDRA_PROTO void __thiscall ?ConcatCopy@CString@@IAEXHPBDH0@Z(int lhs_len, char * lhs_text, int rhs_len, char * rhs_text)
 
-void CString::ConcatenateBuffers(int lhs_len, char *lhs_text, int rhs_len, char *rhs_text)
+void __thiscall
+CString::_ConcatCopy_CString__IAEXHPBDH0_Z
+          (CString *this,int lhs_len,char *lhs_text,int rhs_len,char *rhs_text)
 
 {
   if (rhs_len + lhs_len != 0) {
-    AllocateBufferForLength(this,rhs_len + lhs_len);
-    CopyMemoryPossiblyOverlapping(this->m_pchData,lhs_text,lhs_len);
-    CopyMemoryPossiblyOverlapping(this->m_pchData + lhs_len,rhs_text,rhs_len);
+    _AllocBuffer_CString__IAEXH_Z(this,rhs_len + lhs_len);
+    _memcpy(this->m_pchData,lhs_text,lhs_len);
+    _memcpy(this->m_pchData + lhs_len,rhs_text,rhs_len);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605C6F
-// GHIDRA_NAME CString::AppendBuffer
-// GHIDRA_PROTO void __thiscall AppendBuffer(int append_len, char * append_text)
+// GHIDRA_NAME CString::?ConcatInPlace@CString@@IAEXHPBD@Z
+// GHIDRA_PROTO void __thiscall ?ConcatInPlace@CString@@IAEXHPBD@Z(int append_len, char * append_text)
 
-void CString::AppendBuffer(int append_len, char *append_text)
+void CString::_ConcatInPlace_CString__IAEXHPBD_Z(int append_len, char *append_text)
 
 {
   char *lhs_text;
-  
+
   if (append_len != 0) {
     lhs_text = this->m_pchData;
     if ((*(int *)(lhs_text + -0xc) < 2) &&
        (append_len + *(int *)(lhs_text + -8) <= *(int *)(lhs_text + -4))) {
-      CopyMemoryPossiblyOverlapping(lhs_text + *(int *)(lhs_text + -8),append_text,append_len);
+      _memcpy(lhs_text + *(int *)(lhs_text + -8),append_text,append_len);
       *(int *)(this->m_pchData + -8) = *(int *)(this->m_pchData + -8) + append_len;
       this->m_pchData[*(int *)(this->m_pchData + -8)] = '\0';
     }
     else {
-      ConcatenateBuffers(this,*(int *)(lhs_text + -8),lhs_text,append_len,append_text);
-      DecrementSharedStringRefCountAndFree(lhs_text + -0xc);
+      _ConcatCopy_CString__IAEXHPBDH0_Z
+                (this,*(int *)(lhs_text + -8),lhs_text,append_len,append_text);
+      _Release_CString__KGXPAUCStringData___Z(lhs_text + -0xc);
     }
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605CCE
-// GHIDRA_NAME CString::AssignFromCStr
-// GHIDRA_PROTO undefined4 __thiscall AssignFromCStr(char * text)
+// GHIDRA_NAME CString::??YCString@@QAEABV0@PBD@Z
+// GHIDRA_PROTO undefined4 __thiscall ??YCString@@QAEABV0@PBD@Z(char * text)
 
-CString * CString::AssignFromCStr(char *text)
+CString * CString::__YCString__QAEABV0_PBD_Z(char *text)
 
 {
   int append_len;
-  
+
   if (text == (char *)0x0) {
     append_len = 0;
   }
   else {
     append_len = lstrlenA(text);
   }
-  AppendBuffer(this,append_len,text);
+  _ConcatInPlace_CString__IAEXHPBD_Z(this,append_len,text);
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605D22
-// GHIDRA_NAME CString::EnsureCapacityPreserveLength
-// GHIDRA_PROTO int __thiscall EnsureCapacityPreserveLength(int min_capacity)
+// GHIDRA_NAME CString::?GetBuffer@CString@@QAEPADH@Z
+// GHIDRA_PROTO int __thiscall ?GetBuffer@CString@@QAEPADH@Z(int min_capacity)
 
-int CString::EnsureCapacityPreserveLength(int min_capacity)
+int CString::_GetBuffer_CString__QAEPADH_Z(int min_capacity)
 
 {
   char *pcVar1;
   int iVar2;
-  
+
   pcVar1 = this->m_pchData;
   if ((1 < *(int *)(pcVar1 + -0xc)) || (*(int *)(pcVar1 + -4) < min_capacity)) {
     iVar2 = *(int *)(pcVar1 + -8);
     if (min_capacity < iVar2) {
       min_capacity = iVar2;
     }
-    AllocateBufferForLength(this,min_capacity);
-    CopyMemoryPossiblyOverlapping(this->m_pchData,pcVar1,iVar2 + 1);
+    _AllocBuffer_CString__IAEXH_Z(this,min_capacity);
+    _memcpy(this->m_pchData,pcVar1,iVar2 + 1);
     *(int *)(this->m_pchData + -8) = iVar2;
-    DecrementSharedStringRefCountAndFree(pcVar1 + -0xc);
+    _Release_CString__KGXPAUCStringData___Z(pcVar1 + -0xc);
   }
   return (int)this->m_pchData;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605D71
-// GHIDRA_NAME CString::SetLengthAndTerminator
-// GHIDRA_PROTO void __thiscall SetLengthAndTerminator(int new_length)
+// GHIDRA_NAME CString::?ReleaseBuffer@CString@@QAEXH@Z
+// GHIDRA_PROTO void __thiscall ?ReleaseBuffer@CString@@QAEXH@Z(int new_length)
 
-void CString::SetLengthAndTerminator(int new_length)
+void CString::_ReleaseBuffer_CString__QAEXH_Z(int new_length)
 
 {
-  EnsureUniqueSharedStringBuffer(this);
+  _CopyBeforeWrite_CString__IAEXXZ(this);
   if (new_length == -1) {
     new_length = lstrlenA(this->m_pchData);
   }
@@ -314,13 +317,13 @@ void CString::SetLengthAndTerminator(int new_length)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605D99
-// GHIDRA_NAME CString::EnsureCapacityAndSetLength
-// GHIDRA_PROTO int __thiscall EnsureCapacityAndSetLength(int new_length)
+// GHIDRA_NAME CString::?GetBufferSetLength@CString@@QAEPADH@Z
+// GHIDRA_PROTO int __thiscall ?GetBufferSetLength@CString@@QAEPADH@Z(int new_length)
 
-int CString::EnsureCapacityAndSetLength(int new_length)
+int CString::_GetBufferSetLength_CString__QAEPADH_Z(int new_length)
 
 {
-  EnsureCapacityPreserveLength(this,new_length);
+  _GetBuffer_CString__QAEPADH_Z(this,new_length);
   *(int *)(this->m_pchData + -8) = new_length;
   this->m_pchData[new_length] = '\0';
   return (int)this->m_pchData;

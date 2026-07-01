@@ -15,12 +15,12 @@ TNoHilitePicture * TWarehouseView::CreateTWarehouseViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063158a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x104);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x104);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
@@ -65,7 +65,7 @@ TWarehouseView * TWarehouseView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -160,7 +160,7 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
   _vslot_fn *p_Stack_c;
   _vslot_fn *p_Stack_8;
   _vslot_fn *local_4;
-  
+
   local_4 = (_vslot_fn *)0xffffffff;
   p_Stack_8 = (_vslot_fn *)&LAB_006315f3;
   p_Stack_c = (_vslot_fn *)*unaff_FS_OFFSET;
@@ -168,7 +168,7 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
   p_Stack_7c = (_vslot_fn *)(uint)(ushort)p_Stack_7c;
   local_78 = (_vslot_fn *)((uint)local_78 & 0xffff0000);
   p_Stack_b8 = (_vslot_fn *)0x4c739e;
-  CString::CString(&local_a4);
+  CString::__0CString__QAE_XZ(&local_a4);
   p_Stack_b8 = (_vslot_fn *)0x2b67;
   CStack_bc.m_pchData = (char *)0xc;
   CStack_c4.m_pchData = (char *)&local_80;
@@ -313,13 +313,13 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
   sVar7 = UiRuntimeContext::GetActiveNationId();
   pTVar4 = g_apNationStates[sVar7];
   pTStack_e8 = (TWarehouseView *)0x4c76ed;
-  CString::CString(&CStack_bc);
+  CString::__0CString__QAE_XZ(&CStack_bc);
   uStack_34 = 1;
   pTStack_e8 = (TWarehouseView *)0x4c76fe;
-  CString::CString(&CStack_c8);
+  CString::__0CString__QAE_XZ(&CStack_c8);
   uStack_34 = 2;
   pTStack_e8 = (TWarehouseView *)0x4c770f;
-  CString::CString(&CStack_c4);
+  CString::__0CString__QAE_XZ(&CStack_c4);
   CStack_d0.m_pchData = (char *)&pTStack_ec;
   uStack_34 = 3;
   pTStack_f4 = (TViewVtbl *)0x4c772b;
@@ -341,7 +341,7 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
       CStack_c4.m_pchData = (char *)(*(int *)&pTVar12->field_0x24 + -0xf);
       pTStack_f4 = (TViewVtbl *)0x60;
       pTStack_f8 = (TViewVtbl *)0x4c7791;
-      pTStack_dc = (TView *)AllocateWithFallbackHandler();
+      pTStack_dc = (TView *)__2_YAPAXI_Z();
       p_Stack_40._0_1_ = 4;
       if (pTStack_dc == (TView *)0x0) {
         pTVar12 = (TViewVtbl *)0x0;
@@ -376,7 +376,7 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
           pTStack_f4 = (TViewVtbl *)CVar13.m_pchData;
           uVar6 = (*pTVar4->vftable->ApplyJoinEmpireModeForTargetNation_47)();
           pTStack_f8 = (TViewVtbl *)(int)(short)CONCAT31(extraout_var_04,uVar6);
-          FormatStringWithVarArgsToSharedRef(&CStack_d4,&g_szDecimalFormat);
+          _Format_CString__QAAXPBDZZ(&CStack_d4,&g_szDecimalFormat);
           pTStack_f8 = (TViewVtbl *)&pTStack_d8;
           (*g_pLocalizationTable->vftable[0xf].slot_0x04)(CVar13.m_pchData);
           goto LAB_004c7958;
@@ -392,7 +392,7 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
           CStack_e0.m_pchData = (char *)(int)(short)CONCAT31(extraout_var_05,uVar6);
           pTStack_f8 = (TViewVtbl *)0x13;
           uVar6 = (*p_Var1)();
-          FormatStringWithVarArgsToSharedRef
+          _Format_CString__QAAXPBDZZ
                     (&pTStack_d8,&g_szDecimalFormat,
                      (int)puStack_e4 + (int)(short)CONCAT31(extraout_var_06,uVar6));
           (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734,0x1f,&pTStack_dc);
@@ -412,7 +412,7 @@ switchD_004c77eb_caseD_8:
         uVar6 = (*pTVar4->vftable->ApplyJoinEmpireModeForTargetNation_47)(CVar13.m_pchData);
         pTStack_f4 = (TViewVtbl *)(int)(short)CONCAT31(extraout_var_07,uVar6);
         pTStack_f8 = (TViewVtbl *)&g_szDecimalFormat;
-        FormatStringWithVarArgsToSharedRef(&CStack_d0);
+        _Format_CString__QAAXPBDZZ(&CStack_d0);
 LAB_004c7958:
         pTStack_f8 = (TViewVtbl *)CStack_d4.m_pchData;
         pTStack_f4 = (TViewVtbl *)CStack_d0.m_pchData;
@@ -434,7 +434,7 @@ LAB_004c7958:
         CStack_c4.m_pchData = (char *)(*(int *)(iVar2 + 0x24) + -0xf);
         pTStack_f4 = (TViewVtbl *)0x60;
         pTStack_f8 = (TViewVtbl *)0x4c79c6;
-        pTStack_dc = (TView *)AllocateWithFallbackHandler();
+        pTStack_dc = (TView *)__2_YAPAXI_Z();
         p_Stack_40._0_1_ = 5;
         if (pTStack_dc == (TView *)0x0) {
           pTVar12 = (TViewVtbl *)0x0;
@@ -463,7 +463,7 @@ LAB_004c7958:
         CStack_c4.m_pchData = (char *)(*(int *)(iVar2 + 0x24) + -0xf);
         pTStack_f4 = (TViewVtbl *)0x60;
         pTStack_f8 = (TViewVtbl *)0x4c7a70;
-        pTStack_dc = (TView *)AllocateWithFallbackHandler();
+        pTStack_dc = (TView *)__2_YAPAXI_Z();
         p_Stack_40._0_1_ = 6;
         if (pTStack_dc == (TView *)0x0) {
           pTVar12 = (TViewVtbl *)0x0;
@@ -488,16 +488,16 @@ LAB_004c7958:
       }
       p_Stack_40._0_1_ = 2;
       pTStack_f4 = (TViewVtbl *)0x4c7af7;
-      CString::~CString(&CStack_d0);
+      CString::__1CString__QAE_XZ(&CStack_d0);
       p_Stack_40._0_1_ = 1;
       pTStack_f4 = (TViewVtbl *)0x4c7b08;
-      CString::~CString(&CStack_d4);
+      CString::__1CString__QAE_XZ(&CStack_d4);
       p_Stack_40 = (_vslot_fn *)((uint)p_Stack_40._1_3_ << 8);
       pTStack_f4 = (TViewVtbl *)0x4c7b19;
-      CString::~CString(&CStack_c8);
+      CString::__1CString__QAE_XZ(&CStack_c8);
       p_Stack_40 = (_vslot_fn *)0xffffffff;
       pTStack_f4 = (TViewVtbl *)0x4c7b2d;
-      CString::~CString(&CStack_e0);
+      CString::__1CString__QAE_XZ(&CStack_e0);
       *unaff_FS_OFFSET = p_Stack_48;
       return;
     }
@@ -516,7 +516,7 @@ void TWarehouseView::OrphanRetStub_004c6fb0()
   int iVar3;
   int iVar4;
   int iVar5;
-  
+
   sVar2 = 0;
   do {
     iVar5 = (int)sVar2;

@@ -16,17 +16,17 @@ undefined4 * TAssetMgr::CreateTAssetMgrInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a5e2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x58);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x58);
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    CallCallbackRepeatedly
+    ___L_YGXPAXIHP6EX0_Z1_Z
               (puVar1 + 8,4,0xd,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
     *puVar1 = &g_vtblUiViewManager;
     puVar2 = puVar1;
@@ -61,13 +61,13 @@ void * TAssetMgr::ConstructUiViewManager(void *pUiViewManager)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0063a608;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TAssetMgrVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  CallCallbackRepeatedly
+  ___L_YGXPAXIHP6EX0_Z1_Z
             (&this->field_0x20,4,0xd,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
   this->vftable = &g_vtblUiViewManager;
   *unaff_FS_OFFSET = local_c;
@@ -83,7 +83,7 @@ TAssetMgr * TAssetMgr::DestructTAssetMgrAndMaybeFree(byte param_1)
 {
   TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -99,12 +99,12 @@ void TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_0063a628;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(&this->field_0x20,4,0xd,&LAB_00405fa1);
+  TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z(&this->field_0x20,4,0xd,&LAB_00405fa1);
   this->vftable = (TAssetMgrVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -169,19 +169,19 @@ TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a738;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  uVar2 = AssignSharedStringConcatCStrAndRef(&local_10,s_Movies__0069b7c8,param_1.m_pchData);
+  uVar2 = __H_YG_AVCString__PBDABV0__Z(&local_10,s_Movies__0069b7c8,param_1.m_pchData);
   local_4 = 0;
-  AssignSharedStringConcatRefAndCStr(&param_1,uVar2,&DAT_0069b7c0);
+  __H_YG_AVCString__ABV0_PBD_Z(&param_1,uVar2,&DAT_0069b7c0);
   local_4._0_1_ = 2;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   pCVar3 = &param_1;
   uVar2 = DetectImperialismInstallDriveAndSetPathPrefix(pCVar3);
-  AssignSharedStringConcatCStrAndRef(&local_14,uVar2,pCVar3);
+  __H_YG_AVCString__PBDABV0__Z(&local_14,uVar2,pCVar3);
   local_4 = CONCAT31(local_4._1_3_,3);
   *(undefined4 *)&g_pUiRuntimeContext->field_0xf4 = param_2;
   cVar1 = WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0(param_1.m_pchData);
@@ -197,9 +197,9 @@ TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup
   SendMessage806IfSelectionStateActive();
 LAB_005dfce3:
   local_4 = CONCAT31(local_4._1_3_,2);
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   local_4 = 0xffffffff;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }

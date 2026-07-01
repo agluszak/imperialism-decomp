@@ -36,7 +36,7 @@ TArmoryView * TArmoryView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -108,7 +108,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   int iVar8;
   int iStack_34;
   int dwCountControlTag;
-  
+
   iStack_34 = 0x2b6b;
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
   BuildUiTextStyleDescriptor();
@@ -279,7 +279,7 @@ void TArmoryView::OrphanRetStub_0059add0(int param_1, int param_2)
   int *unaff_EDI;
   RECT local_34;
   tagRECT atStack_24 [2];
-  
+
   uVar7 = (undefined2)((uint)param_2 >> 0x10);
   if (param_1 == 0xc) {
     sVar5 = *(short *)(param_2 + 0x1c) + -0x7630;
@@ -394,16 +394,16 @@ void TArmoryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631a08;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString((CString *)&tStack_50.right);
+  CString::__0CString__QAE_XZ((CString *)&tStack_50.right);
   local_4 = 0;
-  CString::CString((CString *)local_40);
+  CString::__0CString__QAE_XZ((CString *)local_40);
   local_4._0_1_ = 1;
-  CString::CString((CString *)&tStack_50.bottom);
+  CString::__0CString__QAE_XZ((CString *)&tStack_50.bottom);
   local_4 = CONCAT31(local_4._1_3_,2);
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
   tStack_50.top = (LONG)p_Var1;
@@ -510,11 +510,11 @@ clamp_to_available_worker_pool:
   (**(code **)(**(int **)&this->field_0x98 + 0x1dc))();
 LAB_004cfa43:
   puStack_8._0_1_ = 1;
-  CString::~CString((CString *)&tStack_50.right);
+  CString::__1CString__QAE_XZ((CString *)&tStack_50.right);
   puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-  CString::~CString((CString *)&tStack_50.bottom);
+  CString::__1CString__QAE_XZ((CString *)&tStack_50.bottom);
   puStack_8 = (undefined1 *)0xffffffff;
-  CString::~CString((CString *)&tStack_50.top);
+  CString::__1CString__QAE_XZ((CString *)&tStack_50.top);
   *unaff_FS_OFFSET = uStack_10;
   return;
 }

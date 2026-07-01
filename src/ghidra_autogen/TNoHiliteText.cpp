@@ -16,12 +16,12 @@ TStaticText * TNoHiliteText::CreateTNoHiliteTextInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063905a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  this = (TStaticText *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   pTVar1 = (TStaticText *)0x0;
   if (this != (TStaticText *)0x0) {
@@ -59,11 +59,11 @@ CRuntimeClass * TNoHiliteText::GetTEventHandlerClassNamePointer()
 
 /* Constructs a status-list text entry used by turn-event status row builders and related list text
    panels.
-   
+
    Algorithm:
    1. Calls ConstructUiTextResourceEntryBase.
    2. Installs status-list text vtable.
-   
+
    Returns:
    - this pointer. */
 
@@ -84,7 +84,7 @@ TNoHiliteText * TNoHiliteText::_scalar_deleting_destructor_(byte param_1)
 {
   TStaticText::~TStaticText((TStaticText *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

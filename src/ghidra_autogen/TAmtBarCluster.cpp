@@ -52,12 +52,12 @@ TUberCluster * TAmtBarCluster::CreateTradeMoveControlPanelBasic(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006378ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
@@ -100,7 +100,7 @@ TAmtBarCluster * TAmtBarCluster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -118,7 +118,7 @@ void TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   uint local_4;
-  
+
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   local_4 = local_4 & 0xffff0000;
   uVar3 = (*p_Var1)(0x6d6f7665);
@@ -154,7 +154,7 @@ void TAmtBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int para
   int iVar5;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
-  
+
   if (param_1 == 100) {
     pTVar1 = this->vftable;
     p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
@@ -212,7 +212,7 @@ void TAmtBarCluster::QueryTradeSellControlQuantity()
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x53656c6c);
                     /* WARNING: Could not recover jumptable at 0x00587961. Too many branches */
                     /* WARNING: Treating indirect jump as call */
@@ -239,7 +239,7 @@ undefined4 TAmtBarCluster::IsTradeBidControlActionable()
   char cVar2;
   undefined3 extraout_var;
   int *piVar3;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63617264);
   piVar3 = (int *)CONCAT31(extraout_var,uVar1);
   if (piVar3 == (int *)0x0) {
@@ -275,7 +275,7 @@ undefined4 TAmtBarCluster::IsTradeOfferControlActionable()
   char cVar2;
   undefined3 extraout_var;
   int *piVar3;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6f666672);
   piVar3 = (int *)CONCAT31(extraout_var,uVar1);
   if (piVar3 == (int *)0x0) {
@@ -312,7 +312,7 @@ void TAmtBarCluster::SetTradeBidSecondaryBitmapState()
   short sVar3;
   undefined3 extraout_var;
   undefined4 uVar4;
-  
+
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63617264);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -370,7 +370,7 @@ void TAmtBarCluster::SetTradeBidControlBitmapState()
   int iVar7;
   undefined4 uVar8;
   int *piVar5;
-  
+
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar3 = (*p_Var1)(0x63617264);
   piVar5 = (int *)CONCAT31(extraout_var,uVar3);
@@ -451,7 +451,7 @@ void TAmtBarCluster::SetTradeOfferControlBitmapState()
   int iVar6;
   int *piVar7;
   undefined4 uVar8;
-  
+
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar3 = (*p_Var1)(0x6f666672);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
@@ -535,7 +535,7 @@ void TAmtBarCluster::SetTradeOfferSecondaryBitmapState()
   int iStack_30;
   undefined4 uStack_c;
   undefined4 uStack_8;
-  
+
   iStack_30 = 0x6f666672;
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar4 = (*p_Var1)();

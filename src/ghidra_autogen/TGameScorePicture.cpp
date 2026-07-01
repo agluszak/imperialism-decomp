@@ -12,7 +12,7 @@ TGameScorePicture * TGameScorePicture::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TNoHilitePicture * TGameScorePicture::CreateTGameScorePictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636c1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
@@ -97,7 +97,7 @@ void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636c58;
   uStack_c = *unaff_FS_OFFSET;
@@ -106,14 +106,14 @@ void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
   local_1c[0] = this;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   CStack_4c.m_pchData = (char *)0x57b0d5;
-  CString::CString(&local_30);
+  CString::__0CString__QAE_XZ(&local_30);
   iVar5 = 0;
   local_4 = 0;
   CStack_4c.m_pchData = (char *)0x57b0e4;
-  CString::CString(&local_34);
+  CString::__0CString__QAE_XZ(&local_34);
   local_4._0_1_ = 1;
   CStack_4c.m_pchData = (char *)0x57b0f2;
-  CString::CString((CString *)&stack0x00000004);
+  CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
   local_4 = CONCAT31(local_4._1_3_,2);
   CStack_14.m_pchData._2_1_ = 0;
   CStack_14.m_pchData._3_1_ = 0;
@@ -161,7 +161,7 @@ void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
     ((int *)CONCAT31(extraout_var,uVar2))[0x25] = unaff_ESI;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     if (iVar5 == 10) {
-      CString::AssignFromPtr((CString *)&stack0xffffffb8,&CStack_14);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffb8,&CStack_14);
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       CStack_74.m_pchData = (char *)0x57b242;
       scanBracketExpressions(g_pLocalizationTable,&CStack_14,unaff_EDI);
@@ -178,25 +178,25 @@ void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
       sVar3 = UiRuntimeContext::GetActiveNationId();
       pCStack_50 = *(CString **)&g_apNationStates[sVar3]->field_0x958;
       if ((int)pCStack_50 % 10 < 1) {
-        FormatStringWithVarArgsToSharedRef(aCStack_28,&g_szDecimalFormat,(int)pCStack_50 / 10);
+        _Format_CString__QAAXPBDZZ(aCStack_28,&g_szDecimalFormat,(int)pCStack_50 / 10);
       }
       else {
         pCStack_50 = (CString *)((float)(int)pCStack_50 * _DAT_00661ab8);
         FormatFloatToLocalizedSharedString(pCStack_50,aCStack_28);
       }
-      src_ref = (CString *)AssignSharedStringConcatCStrAndRef(&CStack_4c,&DAT_00698b0c,aCStack_28);
+      src_ref = (CString *)__H_YG_AVCString__PBDABV0__Z(&CStack_4c,&DAT_00698b0c,aCStack_28);
       local_30.m_pchData._0_1_ = 3;
-      CString::StringSharedRef_AssignFromPtr(&CStack_54,src_ref);
+      CString::__0CString__QAE_ABV0__Z(&CStack_54,src_ref);
       local_30.m_pchData._0_1_ = 4;
-      CString::AssignFromPtr(aCStack_28,&CStack_54);
+      CString::__4CString__QAEABV0_ABV0__Z(aCStack_28,&CStack_54);
       local_30.m_pchData._0_1_ = 3;
-      CString::~CString(&CStack_54);
+      CString::__1CString__QAE_XZ(&CStack_54);
       local_30.m_pchData._0_1_ = 2;
-      CString::~CString(&CStack_4c);
+      CString::__1CString__QAE_XZ(&CStack_4c);
     }
     else {
       sVar3 = UiRuntimeContext::GetActiveNationId();
-      FormatStringWithVarArgsToSharedRef
+      _Format_CString__QAAXPBDZZ
                 (aCStack_28,&g_szDecimalFormat,
                  *(undefined4 *)(&g_apNationStates[sVar3]->field_0x930 + iVar5 * 4));
     }
@@ -231,9 +231,9 @@ void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
   BuildUiTextStyleDescriptor(&pCStack_50,0,0xe,0x2b68);
   (**(code **)(iVar5 + 0x1b4))(&pCStack_50,1);
   ((int *)CONCAT31(extraout_var_01,uVar2))[0x25] = iVar6;
-  CString::~CString((CString *)&stack0xffffffc4);
-  CString::~CString(&CStack_74);
-  CString::~CString((CString *)&stack0xffffff90);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffc4);
+  CString::__1CString__QAE_XZ(&CStack_74);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff90);
   *unaff_FS_OFFSET = CStack_4c.m_pchData;
   return;
 }

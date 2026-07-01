@@ -16,12 +16,12 @@ TUberCluster * TTradeCluster::CreateTradeSellControlPanel(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006378da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x8c);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x8c);
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
@@ -64,7 +64,7 @@ TTradeCluster * TTradeCluster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -95,7 +95,7 @@ void TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined1 local_15;
   undefined1 local_14;
   undefined1 local_13;
-  
+
   local_16 = 0;
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   local_15 = 0;
@@ -181,7 +181,7 @@ void TTradeCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param
   char *pcVar9;
   int iVar10;
   int unaff_EBP;
-  
+
   pTVar1 = this->vftable;
   uVar4 = (*pTVar1->SetForeignMinisterReadyFlag14)();
   piVar8 = (int *)CONCAT31(extraout_var,uVar4);
@@ -327,7 +327,7 @@ bool TTradeCluster::OrphanVtableAssignStub_005714e0()
   short sVar2;
   undefined3 extraout_var;
   int iVar3;
-  
+
   sVar2 = (**(code **)(g_pUiRuntimeContext->vftable + 0x54))();
   if (3 < sVar2) {
     return false;
@@ -355,7 +355,7 @@ void TTradeCluster::OrphanRetStub_00586ff0()
   short unaff_DI;
   short sStack_4;
   undefined3 extraout_var_00;
-  
+
   sVar3 = UiRuntimeContext::GetActiveNationId();
   (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)
             (CONCAT22(sVar3 >> 0xf,*(undefined2 *)&this->field_0x88));

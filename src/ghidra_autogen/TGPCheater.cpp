@@ -20,7 +20,7 @@ TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
   int local_1c [5];
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630d84;
   local_1c[4] = *unaff_FS_OFFSET;
@@ -29,7 +29,7 @@ TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
   local_1c[1] = 0x16;
   local_1c[2] = 0x80;
   local_1c[3] = 0x18;
-  pTVar1 = (TNumberText *)AllocateWithFallbackHandler(0xac);
+  pTVar1 = (TNumberText *)__2_YAPAXI_Z(0xac);
   local_4 = 0;
   local_24 = pTVar1;
   if (pTVar1 == (TNumberText *)0x0) {
@@ -43,7 +43,7 @@ TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
   local_4 = 0xffffffff;
   TNumberText::ConstructTNumberTextBaseState(pTVar1,this,param_1,local_1c,(int)param_3,0xffff8ad0);
   pTVar1->controlTag = param_4;
-  this_00 = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  this_00 = (TStaticText *)__2_YAPAXI_Z(0x94);
   local_4 = 1;
   if (this_00 != (TStaticText *)0x0) {
     TStaticText::TStaticText(this_00);
@@ -67,7 +67,7 @@ TGPCheater * TGPCheater::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -102,13 +102,13 @@ void __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *param_1,und
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630dea;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   TCheater::ConstructTCheaterBaseState(param_2,0x2728);
-  this = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  this = (TStaticText *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this == (TStaticText *)0x0) {
     iVar2 = 0;

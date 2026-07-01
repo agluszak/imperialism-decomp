@@ -14,13 +14,13 @@ void CGdiObject::~CGdiObject()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e278;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   *(undefined ***)this = &PTR_LAB_00671054;
   local_4 = 0;
-  DeleteObject();
+  _DeleteObject_CGdiObject__QAEHXZ();
   *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;

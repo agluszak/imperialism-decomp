@@ -72,7 +72,7 @@ TTacticalPlayer * TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30
 {
   TTacticalPlayer::CreateTTacticalPlayerInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -128,11 +128,12 @@ void TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0()
   TAutoGreatPower *this_00;
   int *piVar1;
   int in_stack_00000004;
-  
+
   this_00 = (TAutoGreatPower *)(*(int *)&this->field_0x4 + 4);
-  piVar1 = (int *)TAutoGreatPower::Find(this_00,in_stack_00000004,(undefined4 *)0x0);
+  piVar1 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                            (this_00,in_stack_00000004,(undefined4 *)0x0);
   if (piVar1 != (int *)0x0) {
-    TAutoGreatPower::RemoveAt_60217d(this_00,piVar1);
+    TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar1);
   }
   return;
 }
@@ -144,7 +145,8 @@ void TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0()
 void TTacticalPlayer::WrapperFor_AddHead_At0059afe0(int *param_1)
 
 {
-  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
+  CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
+            ((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
   (**(code **)(*param_1 + 0x3c))();
   return;
 }

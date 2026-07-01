@@ -12,7 +12,7 @@ TQueryFloater * TQueryFloater::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ thunk_TPictureButton * TQueryFloater::CreateTQueryFloaterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063619a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -80,7 +80,7 @@ void TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_28;
   undefined4 uStack_24;
   undefined4 uStack_20;
-  
+
   uStack_24 = 0x56e8f3;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uStack_20 = 0x7469746c;
@@ -152,13 +152,13 @@ TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006361b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_10.m_pchData = (char *)this;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   if (param_1 != 10) goto LAB_0056ecbe;
   uVar1 = *(uint *)(param_2 + 0x1c);
@@ -232,7 +232,7 @@ LAB_0056ec87:
   (*pTVar4[9].GetTSimMgrClassNamePointer)();
 LAB_0056ecbe:
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

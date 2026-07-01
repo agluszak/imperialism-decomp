@@ -32,7 +32,7 @@ TTacNavyToolbar * TTacNavyToolbar::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -69,7 +69,7 @@ void TTacNavyToolbar::OrphanRetStub_0059add0(int param_1, void *param_2, int par
   int iVar1;
   uint commandTag;
   undefined4 uVar2;
-  
+
   if (param_1 == 0xc) {
     iVar1 = *(int *)((int)param_2 + 0x1c);
     if (iVar1 == 0x63726577) {

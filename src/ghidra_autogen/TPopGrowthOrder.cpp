@@ -12,7 +12,7 @@ TPopGrowthOrder * TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -36,7 +36,7 @@ void TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1)
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = 1;
@@ -65,7 +65,7 @@ short TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   short sVar3;
   short sVar4;
   short sVar5;
-  
+
   iVar1 = *(int *)&this->field_0x8;
   sVar2 = *(short *)&this->field_0x4;
   sVar4 = *(short *)(iVar1 + 0xd2) + sVar2;
@@ -100,7 +100,7 @@ undefined4 TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   char cVar5;
   undefined3 extraout_var;
   short sVar6;
-  
+
   sVar6 = param_1 - *(short *)&this->field_0x4;
   uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar4) < param_1) || (param_1 < 0)) {
@@ -142,7 +142,7 @@ void TPopGrowthOrder::OrphanRetStub_004b5160()
   short sVar2;
   int iVar3;
   int iVar4;
-  
+
   sVar2 = *(short *)&this->field_0x4;
   iVar4 = *(int *)(*(int *)&this->field_0x8 + 0x1d8);
   psVar1 = (short *)(*(int *)(iVar4 + 0x10) + 4);
@@ -196,7 +196,7 @@ void TPopGrowthOrder::CreateTItemOrderInstance()
 
 {
   undefined2 uStack00000004;
-  
+
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   *(undefined2 *)(_uStack00000004 + 0x1a) = uStack00000004;
   *(undefined2 *)(_uStack00000004 + 0x1c) = uStack00000004;

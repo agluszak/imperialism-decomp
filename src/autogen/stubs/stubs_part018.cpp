@@ -526,7 +526,7 @@ undefined4 GetSumField34PlusField30(void)
 // ghidra_name GetActiveNationId
 // ghidra_proto undefined GetActiveNationId()
 // FUNCTION: IMPERIALISM 0x00581260
-undefined4 GetActiveNationId(void)
+undefined4 GetActiveNationId_00581260(void)
 {
   return 0;
 }

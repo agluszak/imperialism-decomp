@@ -56,7 +56,7 @@ TTacticalUnit * TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(byt
 {
   TTacticalUnit::CreateTTacticalUnitInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -91,7 +91,7 @@ void TTacticalUnit::ConstructTTacticalUnitBaseState()
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   *(undefined4 *)&this->field_0x8 = 0xfffffffe;
   this->field_0x18 = 0;
   *(undefined4 *)&this->field_0x1c = 0;
@@ -110,7 +110,7 @@ void TTacticalUnit::DestructTTacticalUnitAndMaybeFree(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)&this->field_0x4 - param_1;
   *(int *)&this->field_0x4 = iVar1;
   if (iVar1 < 1) {

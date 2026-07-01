@@ -12,7 +12,7 @@ TTradeBookView * TTradeBookView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,12 +29,12 @@ TView * TTradeBookView::CreateTTradeBookViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006394aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x78);
+  this = (TView *)__2_YAPAXI_Z(0x78);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -89,7 +89,7 @@ void TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920(uint this_obj)
   undefined4 seh_state;
   _vslot_fn *getResourceByTag;
   int iVar1;
-  
+
   seh_state = 0xffffffff;
   seh_handler = &LAB_006394e8;
   seh_prev = *seh_chain;
@@ -133,30 +133,30 @@ void TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920(uint this_obj)
   CStack_48.m_pchData = (char *)0x2b6c;
   ApplyUiTextStyleAndThemeFlags(lit_resource2,0,0x12,0x2b6b);
   CStack_48.m_pchData = (char *)0x5bdfac;
-  CString::CString(tmp_buf8);
+  CString::__0CString__QAE_XZ(tmp_buf8);
   CStack_48.m_pchData = (char *)0x5bdfbd;
-  CString::CString(&tag_or_handle);
+  CString::__0CString__QAE_XZ(&tag_or_handle);
   CStack_48.m_pchData =
        (char *)((short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
                              ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2)
                + 0x717);
-  FormatStringWithVarArgsToSharedRef(&tag_or_handle,&g_szDecimalFormat);
+  _Format_CString__QAAXPBDZZ(&tag_or_handle,&g_szDecimalFormat);
   CStack_48.m_pchData = (char *)tmp_buf8;
   (*g_pLocalizationTable->vftable[6].slot_0x04)();
-  text_handle = AssignSharedStringConcatRefAndCStr
+  text_handle = __H_YG_AVCString__ABV0_PBD_Z
                           (&stack0xffffffd4,&tmp_buf4,g_Build_Map_Order_LookupTable_00695794);
-  src_ref = (CString *)AssignSharedStringConcatRefAndRef(&color_or_tag,text_handle,&temp_tag);
-  CString::StringSharedRef_AssignFromPtr(&tag_or_handle,src_ref);
-  CString::AssignFromPtr(&tmp_buf4,&tag_or_handle);
-  CString::~CString(&tag_or_handle);
-  CString::~CString(&color_or_tag);
-  CString::~CString((CString *)&stack0xffffffd4);
+  src_ref = (CString *)__H_YG_AVCString__ABV0_0_Z(&color_or_tag,text_handle,&temp_tag);
+  CString::__0CString__QAE_ABV0__Z(&tag_or_handle,src_ref);
+  CString::__4CString__QAEABV0_ABV0__Z(&tmp_buf4,&tag_or_handle);
+  CString::__1CString__QAE_XZ(&tag_or_handle);
+  CString::__1CString__QAE_XZ(&color_or_tag);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
   (**(code **)(iVar1 + 0x1c8))(&tmp_buf4,0);
   (**(code **)(iVar1 + 0xa4))(1,1);
   color_or_tag.m_pchData = color_or_tag.m_pchData & 0xffffff00;
-  CString::~CString(&CStack_48);
+  CString::__1CString__QAE_XZ(&CStack_48);
   color_or_tag.m_pchData = (char *)0xffffffff;
-  CString::~CString((CString *)&stack0xffffffd8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd8);
   *seh_chain = temp_tag;
   return;
 }
@@ -171,7 +171,7 @@ TTradeBookView::OrphanRetStub_0059add0
 
 {
   int iVar1;
-  
+
   if (param_1 == 10) {
     if (*(int *)(param_2 + 0x1c) == 0x72636f72) {
       iVar1 = *(int *)&this->field_0x74 + 1;

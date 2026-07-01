@@ -15,12 +15,12 @@ void TNumberedItem::_scalar_deleting_destructor_(undefined4 *param_1)
   undefined4 uVar1;
   undefined4 uVar2;
   HWND pHVar3;
-  
+
   uVar1 = *param_1;
   uVar2 = param_1[1];
   g_McAppUiMouseCaptureControl_006A1A80 = this;
   pHVar3 = SetCapture(*(HWND *)(this->field50 + 0x1c));
-  FromHandle(pHVar3);
+  _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar3);
   _g_McAppUiMouseCaptureStartPoint_006A1A68 = uVar1;
   _DAT_006a1a6c = uVar2;
   _g_McAppUiMouseCaptureLastPoint_006A1A70 = uVar1;
@@ -46,7 +46,7 @@ void TNumberedItem::_scalar_deleting_destructor_()
 {
   POINT *unaff_retaddr;
   RECT RStack_14;
-  
+
   RStack_14.left = (LONG)&RStack_14.top;
   (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)();
   PtInRect(&RStack_14,*unaff_retaddr);
@@ -91,14 +91,14 @@ void TNumberedItem::BuildCityViewResourceRows(int *param_1)
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631baa;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  CString::CString((CString *)&tStack_4c.right);
+  CString::__0CString__QAE_XZ((CString *)&tStack_4c.right);
   local_4 = 0;
-  CString::CString((CString *)&tStack_4c.top);
+  CString::__0CString__QAE_XZ((CString *)&tStack_4c.top);
   sVar9 = 0;
   local_4 = CONCAT31(local_4._1_3_,1);
   iVar8 = *param_1;
@@ -164,7 +164,7 @@ void TNumberedItem::BuildCityViewResourceRows(int *param_1)
       if (this->field34 + -0x10 < (int)sVar9) {
         sVar9 = 0x10;
       }
-      pTStack_78 = (TNumberedItem *)AllocateWithFallbackHandler();
+      pTStack_78 = (TNumberedItem *)__2_YAPAXI_Z();
       tStack_3c.left._0_1_ = 2;
       if (pTStack_78 != (TNumberedItem *)0x0) {
         TNumberedItem::ConstructTNumberedItemBaseState(pTStack_78);
@@ -203,12 +203,12 @@ void TNumberedItem::BuildCityViewResourceRows(int *param_1)
       pTStack_78 = (TNumberedItem *)&pTStack_78[-1].field_0xaf;
     } while (pTStack_78 != (TNumberedItem *)0x0);
   }
-  CString::CString((CString *)&stack0xffffff74);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffff74);
   tStack_3c.left._0_1_ = 3;
-  CString::CString((CString *)&stack0xffffff7c);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffff7c);
   tStack_3c.left = CONCAT31(tStack_3c.left._1_3_,4);
-  FormatStringWithVarArgsToSharedRef();
-  FormatStringWithVarArgsToSharedRef();
+  _Format_CString__QAAXPBDZZ();
+  _Format_CString__QAAXPBDZZ();
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   CStack_c0.m_pchData = (char *)0x4d1c13;
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffff70,input_str);
@@ -238,10 +238,10 @@ void TNumberedItem::BuildCityViewResourceRows(int *param_1)
   CStack_cc.m_pchData = &stack0xffffff48;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273f,7);
   (**(code **)(iVar8 + 0x1c8))(&CStack_c4,1);
-  CString::~CString(&CStack_c4);
-  CString::~CString(&CStack_cc);
-  CString::~CString(&CStack_c0);
-  CString::~CString((CString *)&stack0xffffff44);
+  CString::__1CString__QAE_XZ(&CStack_c4);
+  CString::__1CString__QAE_XZ(&CStack_cc);
+  CString::__1CString__QAE_XZ(&CStack_c0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff44);
   *unaff_FS_OFFSET = (int)CVar12.m_pchData;
   return;
 }
@@ -258,12 +258,12 @@ TMegaPicture * TNumberedItem::CreateTNumberedItemInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063380a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMegaPicture *)AllocateWithFallbackHandler(0xb0);
+  this = (TMegaPicture *)__2_YAPAXI_Z(0xb0);
   local_4 = 0;
   if (this != (TMegaPicture *)0x0) {
     TMegaPicture::ConstructTMegaPictureBaseState(this);
@@ -310,7 +310,7 @@ TNumberedItem * TNumberedItem::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -331,12 +331,12 @@ void TNumberedItem::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633828;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_30);
+  CString::__0CString__QAE_XZ(&local_30);
   local_1c.left = *(short *)&this->field_0xac * 0x20;
   local_1c.right = local_1c.left + 0x1f;
   local_4 = 0;
@@ -367,10 +367,10 @@ void TNumberedItem::OrphanTiny_ReturnZero_0048a730()
     sVar1 = (short)this->field34 + -0x18;
   }
   SetQuickDrawTextOriginWithContextOffset(sVar1,sVar2);
-  FormatStringWithVarArgsToSharedRef(&local_30,&g_szDecimalFormat,(int)*(short *)&this->field_0xae);
+  _Format_CString__QAAXPBDZZ(&local_30,&g_szDecimalFormat,(int)*(short *)&this->field_0xae);
   THQButton::DrawTextWithCachedQuickDrawStyleState(&local_30);
   local_4 = 0xffffffff;
-  CString::~CString(&local_30);
+  CString::__1CString__QAE_XZ(&local_30);
   *unaff_FS_OFFSET = local_c;
   return;
 }

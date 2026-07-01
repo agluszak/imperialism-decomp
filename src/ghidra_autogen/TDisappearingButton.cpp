@@ -16,12 +16,12 @@ thunk_TPictureButton * TDisappearingButton::CreateTDisappearingButtonInstance(vo
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635b1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -64,7 +64,7 @@ TDisappearingButton * TDisappearingButton::_scalar_deleting_destructor_(byte par
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -78,7 +78,7 @@ void TDisappearingButton::OrphanCallChain_C2_I24_00568c40(char param_1)
 {
   TDisappearingButtonVtbl *pTVar1;
   char unaff_retaddr;
-  
+
   if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
     this->field_0x64 = param_1;
@@ -100,7 +100,7 @@ void TDisappearingButton::OrphanCallChain_C2_I18_00568c90()
   undefined uVar1;
   undefined3 extraout_var;
   undefined1 local_10 [16];
-  
+
   uVar1 = (*this->vftable->GetTEventHandlerClassNamePointer_58)(local_10);
   RedrawWindow(*(HWND *)(this->field50 + 0x1c),(RECT *)CONCAT31(extraout_var,uVar1),(HRGN)0x0,0x101)
   ;

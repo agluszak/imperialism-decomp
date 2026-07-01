@@ -18,12 +18,12 @@ TWorldView * TCitySiteView::CreateTCitySiteViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633f32;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TWorldView *)AllocateWithFallbackHandler(0x378);
+  this = (TWorldView *)__2_YAPAXI_Z(0x378);
   local_4 = 0;
   if (this != (TWorldView *)0x0) {
     local_10 = this;
@@ -71,7 +71,7 @@ TCitySiteView * TCitySiteView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -89,7 +89,7 @@ void TCitySiteView::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 local_10;
   undefined4 local_c;
   int local_8 [2];
-  
+
   TWorldView::OrphanLeaf_NoCall_Ins07_004d8920((TWorldView *)this);
   *(undefined2 *)&this->field_0x76 = 1;
   *(undefined2 *)&this->field_0x78 = 0x40;
@@ -150,7 +150,7 @@ void TCitySiteView::OrphanRetStub_005966a0(undefined4 param_1)
 
 {
   TCitySiteView *pTStack_4;
-  
+
   pTStack_4 = this;
   TMapDialog::SplitTileIndexToRowAndColumn(param_1,&param_1,&pTStack_4);
   (*this->vftable->OrphanRetStub_00596680)(pTStack_4,param_1);
@@ -239,7 +239,7 @@ void TCitySiteView::OrphanRetStub_00596080()
   undefined4 local_24;
   RECT local_20;
   RECT local_10;
-  
+
   bVar2 = false;
   sVar6 = *(short *)&this->field_0x6c;
   local_2c = 0xffffffff;
@@ -360,7 +360,7 @@ void TCitySiteView::HandleMapClickByInteractionMode()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633f90;
   uStack_c = *unaff_FS_OFFSET;
@@ -373,7 +373,7 @@ void TCitySiteView::HandleMapClickByInteractionMode()
     if (((((cVar3 == '\0') || (cVar3 == '\a')) || (cVar3 == '\x01')) || (cVar3 == '\x06')) &&
        (cVar2 = IsValidSecondaryNationHomeTileCandidate(), cVar2 != '\0')) {
       *(short *)(*(int *)&this->field_0x364 + 0x14) = (short)_sStack00000004;
-      CString::CString((CString *)&stack0x00000004);
+      CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
       local_4 = 3;
       AssignSharedStringFromIndexedA8EntryNameField();
       (**(code **)(**(int **)&this->field_0x364 + 0x38))();
@@ -394,14 +394,14 @@ void TCitySiteView::HandleMapClickByInteractionMode()
          (cVar3 = TDeluxeText::CanBuildPortAtTile
                             ((TDeluxeText *)g_pGlobalMapState,(int)_sStack00000004), cVar3 != '\0'))
       {
-        CString::CString((CString *)&stack0x00000004);
+        CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
         local_4 = 2;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
         AssignStringSharedRefAndReturnThis(&puStack_8);
         (**(code **)(*DAT_006a2158 + 0x4c))();
       }
       else {
-        CString::CString((CString *)&stack0x00000004);
+        CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
         local_4 = 1;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
         AssignStringSharedRefAndReturnThis(&puStack_8);
@@ -411,13 +411,13 @@ void TCitySiteView::HandleMapClickByInteractionMode()
   }
   else {
     PlayDefaultMessageBeep();
-    CString::CString((CString *)&stack0x00000004);
+    CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
     local_4 = 0;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     AssignStringSharedRefAndReturnThis(&puStack_8);
     (**(code **)(*DAT_006a2158 + 0x4c))();
   }
-  CString::~CString(&CStack_10);
+  CString::__1CString__QAE_XZ(&CStack_10);
   *unaff_FS_OFFSET = unaff_EDI;
   return;
 }

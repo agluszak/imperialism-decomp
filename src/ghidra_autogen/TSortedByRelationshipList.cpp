@@ -36,18 +36,18 @@ TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063292a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  this_00 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   uStack_4 = 0;
   if (this_00 == (TIndexAndRankList *)0x0) {
     this_00 = (TIndexAndRankList *)0x0;
   }
   else {
-    TIndexAndRankList::CPtrArray(this_00);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(this_00);
     this_00->vftable = (TIndexAndRankListVtbl *)&TSortedPtrList::_vftable_;
   }
   *(undefined2 *)&this_00->field_0x14 = 4;
@@ -108,7 +108,7 @@ TSortedByRelationshipList::WrapperFor_IsNationSlotEligibleForEventProcessing_At0
   bool bVar8;
   int iStack_c;
   TGreatPower **ppTStack_8;
-  
+
   uVar1 = param_1;
   iVar5 = 0;
   iStack_c = -1;
@@ -159,16 +159,16 @@ TIndexAndRankList * TSortedByRelationshipList::CreateTSortedByRelationshipListIn
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006328ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  this = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   pTVar1 = (TIndexAndRankList *)0x0;
   if (this != (TIndexAndRankList *)0x0) {
-    TIndexAndRankList::CPtrArray(this);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(this);
     this->vftable = (TIndexAndRankListVtbl *)&_vftable_;
     pTVar1 = this;
   }
@@ -193,7 +193,7 @@ CRuntimeClass * TSortedByRelationshipList::GetTEventHandlerClassNamePointer()
 TSortedByRelationshipList * TSortedByRelationshipList::ConstructObArrayWithVtable654D38()
 
 {
-  TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
+  TIndexAndRankList::__0CPtrArray__QAE_XZ((TIndexAndRankList *)this);
   this->vftable = &_vftable_;
   return this;
 }
@@ -207,9 +207,9 @@ TSortedByRelationshipList::_scalar_deleting_destructor_
           (TSortedByRelationshipList *this,byte param_1)
 
 {
-  CObArray::DestructCObArray();
+  CObArray::??1CUIntArray@@UAE@XZ();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -225,14 +225,14 @@ TSortedByRelationshipList::OrphanRetStub_0059add0
 {
   uint uVar1;
   uint uVar2;
-  
+
   if (*(short *)(param_2 + 2) < *(short *)(param_1 + 2)) {
     return 1;
   }
   if (*(short *)(param_1 + 2) < *(short *)(param_2 + 2)) {
     return 0xffff;
   }
-  uVar1 = GenerateThreadLocalRandom15();
+  uVar1 = _rand();
   uVar2 = (int)uVar1 >> 0x1f;
   return (-(uint)(((uVar1 ^ uVar2) - uVar2 & 1 ^ uVar2) != uVar2) & 2) - 1;
 }
@@ -257,18 +257,18 @@ TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063292a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  this_00 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   if (this_00 == (TIndexAndRankList *)0x0) {
     this_00 = (TIndexAndRankList *)0x0;
   }
   else {
-    TIndexAndRankList::CPtrArray(this_00);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(this_00);
     this_00->vftable = (TIndexAndRankListVtbl *)&TSortedPtrList::_vftable_;
   }
   *(undefined2 *)&this_00->field_0x14 = 4;
@@ -322,7 +322,7 @@ TSortedByRelationshipList::DeserializeRelationshipSortedListBuffersFromStreamSwa
   code *pcVar2;
   undefined1 *puVar3;
   int iVar4;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   puVar3 = &this[0x51].field_0x4;
   pcVar2 = *(code **)(*param_1 + 0x3c);
@@ -434,7 +434,7 @@ TSortedByRelationshipList::HasWarRelationTurnStampOutOfDate
   undefined3 extraout_var;
   undefined2 in_stack_00000006;
   undefined2 in_stack_0000000a;
-  
+
   cVar1 = (*this->vftable[8].slot_0x04)(_param_1,_param_2);
   if (cVar1 != '\0') {
     uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
@@ -457,7 +457,7 @@ TSortedByRelationshipList::HasAnyWarRelationTurnStampOutOfDateForNation
   TSortedByRelationshipList_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
   char cVar2;
   int iVar3;
-  
+
   iVar3 = 0;
   pTVar1 = this->vftable[9].GetTEventHandlerClassNamePointer;
   do {
@@ -491,7 +491,7 @@ TSortedByRelationshipList::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectC
   undefined2 in_stack_00000006;
   undefined2 in_stack_0000000a;
   undefined1 uVar6;
-  
+
   if (param_2 == param_1) {
     *(undefined2 *)&g_pDiplomacyTurnStateManager->field_0x18d8 = 0xe;
     return 0;
@@ -645,7 +645,7 @@ TSortedByRelationshipList::HasAsymmetricWarRelationForPrimaryNation
   TSortedByRelationshipList_slot_0x04_0x04 *pTVar1;
   char cVar2;
   int iVar3;
-  
+
   cVar2 = (*g_pDiplomacyTurnStateManager->vftable[9].slot_0x04)(param_1);
   if (cVar2 == '\0') {
     return 0;
@@ -685,7 +685,7 @@ TSortedByRelationshipList::SetNationPairDiplomacyStandingScoreClampedAndNotifyMi
   TCountry **ppTVar8;
   undefined4 unaff_retaddr;
   undefined2 in_stack_0000000a;
-  
+
   sVar6 = (short)param_1;
   iVar5 = (int)param_2;
   puVar1 = (ushort *)((int)this + (sVar6 * 0x17 + iVar5) * 2 + 0x79c);
@@ -756,7 +756,7 @@ TSortedByRelationshipList::CopyDiplomacyStandingMatrixRowAndColumn
   undefined2 *puVar4;
   undefined2 *puVar5;
   int iVar6;
-  
+
   puVar5 = (undefined2 *)(&this[0x51].field_0x4 + param_1 * 2);
   puVar4 = (undefined2 *)((int)this + param_1 * 0x2e + 0x79c);
   puVar2 = (undefined2 *)((int)this + param_2 * 0x2e + 0x79c);
@@ -788,7 +788,7 @@ TSortedByRelationshipList::ApplyRelationCode4AndQueueEvent18ForTargetNation
   char unaff_retaddr;
   undefined2 in_stack_00000006;
   short in_stack_00000008;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1[0xf].GetTEventHandlerClassNamePointer)(_param_1);
   if (unaff_retaddr == '\x01') {
@@ -829,7 +829,7 @@ TSortedByRelationshipList::AdjustNationPairDiplomacyStandingAndPropagate
   TCountry **ppTStack_10;
   int iStack_c;
   int iStack_4;
-  
+
   sVar6 = (short)_param_2;
   sVar4 = *(short *)((int)this + ((short)param_1 * 0x17 + (int)sVar6) * 2 + 0x79c);
   iVar7 = CONCAT22((short)((uint)unaff_EBP >> 0x10),sVar4);
@@ -930,7 +930,7 @@ void TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int iStack_4;
-  
+
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_00632960;
   uStack_c = *unaff_FS_OFFSET;
@@ -947,14 +947,14 @@ void TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn()
       iVar8 = iVar8 + -1;
     } while (iVar8 != 0);
   }
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   iVar8 = 0;
   iStack_4 = 0;
-  CString::CString(&CStack_14);
+  CString::__0CString__QAE_XZ(&CStack_14);
   iStack_4._0_1_ = 1;
-  CString::CString(&CStack_18);
+  CString::__0CString__QAE_XZ(&CStack_18);
   iStack_4._0_1_ = 2;
-  CString::CString(&CStack_1c);
+  CString::__0CString__QAE_XZ(&CStack_1c);
   iStack_4 = CONCAT31(iStack_4._1_3_,3);
   if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
     ppTVar6 = g_apNationStates + 6;
@@ -1042,13 +1042,13 @@ void TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn()
     } while ((short)iStack_30 < 7);
   }
   iStack_4._0_1_ = 2;
-  CString::~CString(&CStack_1c);
+  CString::__1CString__QAE_XZ(&CStack_1c);
   iStack_4._0_1_ = 1;
-  CString::~CString(&CStack_18);
+  CString::__1CString__QAE_XZ(&CStack_18);
   iStack_4 = (uint)iStack_4._1_3_ << 8;
-  CString::~CString(&CStack_14);
+  CString::__1CString__QAE_XZ(&CStack_14);
   iStack_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -1090,7 +1090,7 @@ TSortedByRelationshipList::SelectPriorityNationIndicesForMinorCapabilityRows
   TGreatPower **ppTStack_10;
   uint uStack_c;
   uint uStack_4;
-  
+
   bVar4 = true;
   bVar3 = true;
   ppTVar10 = g_apNationStates;
@@ -1264,7 +1264,7 @@ TSortedByRelationshipList::RebuildDiplomacyStandingAndInfluenceMatrices
   int local_c4;
   int aiStack_c0 [23];
   int aiStack_64 [25];
-  
+
   local_d8 = (TSortedByRelationshipList *)0x0;
   local_d4 = 0;
   local_c4 = 0;
@@ -1292,10 +1292,10 @@ TSortedByRelationshipList::RebuildDiplomacyStandingAndInfluenceMatrices
   do {
     pTVar1 = g_apTerrainTypeDescriptorTable[iVar8];
     if (pTVar1 == (TCountry *)0x0) {
-      iVar5 = GenerateThreadLocalRandom15();
+      iVar5 = _rand();
       aiStack_c0[iVar8] = iVar5 % 0x32 + 0x32;
 LAB_004f0ee1:
-      iVar5 = GenerateThreadLocalRandom15();
+      iVar5 = _rand();
       *piVar10 = iVar5 % 0x32 + 0x32;
     }
     else if ((*(short *)&pTVar1->field_0xe < 100) || (199 < *(short *)&pTVar1->field_0xe)) {
@@ -1313,7 +1313,7 @@ LAB_004f0ee1:
         aiStack_c0[iVar8] = 1;
       }
       else {
-        iVar5 = GenerateThreadLocalRandom15();
+        iVar5 = _rand();
         aiStack_c0[iVar8] = iVar5 % 0x32 + 0x32;
       }
       if (local_e4 != uStack_f0) goto LAB_004f0ee1;
@@ -1417,7 +1417,7 @@ LAB_004f10cf:
   do {
     sVar4 = *psVar11;
     if (sVar4 == 0) {
-      iVar5 = GenerateThreadLocalRandom15();
+      iVar5 = _rand();
       *psVar11 = (short)(iVar5 % 0xf) + 1;
     }
     else if (0 < sVar4) {
@@ -1485,7 +1485,7 @@ TSortedByRelationshipList::InitializeDiplomacyStandingBaselineRandom
   undefined2 uVar8;
   int iVar9;
   int iVar10;
-  
+
   iVar6 = 0;
   puVar7 = (undefined2 *)&this->field_0x4;
   do {
@@ -1496,7 +1496,7 @@ TSortedByRelationshipList::InitializeDiplomacyStandingBaselineRandom
         iVar9 = 0xe;
         iVar10 = 3;
         do {
-          iVar2 = GenerateThreadLocalRandom15();
+          iVar2 = _rand();
           iVar3 = iVar2 / 6;
           iVar9 = iVar9 + iVar2 % 6;
           uVar8 = (undefined2)iVar9;
@@ -1507,7 +1507,7 @@ TSortedByRelationshipList::InitializeDiplomacyStandingBaselineRandom
         iVar9 = 8;
         iVar10 = 3;
         do {
-          uVar4 = GenerateThreadLocalRandom15();
+          uVar4 = _rand();
           uVar5 = (int)uVar4 >> 0x1f;
           iVar3 = ((uVar4 ^ uVar5) - uVar5 & 3 ^ uVar5) - uVar5;
           iVar9 = iVar9 + iVar3;
@@ -1546,7 +1546,7 @@ TSortedByRelationshipList::BuildMajorNationDiplomacyStandingRanking
   int local_38 [7];
   int local_1c;
   undefined1 auStack_18 [24];
-  
+
   RecomputeNationComparativePowerMetrics();
   iVar10 = 0;
   piVar5 = &local_1c;
@@ -1580,8 +1580,7 @@ TSortedByRelationshipList::BuildMajorNationDiplomacyStandingRanking
       do {
         iVar2 = *(int *)(auStack_18 + iVar8 + -4);
         bVar4 = false;
-        if ((*piVar5 < iVar2) ||
-           ((iVar2 == *piVar5 && (uVar6 = GenerateThreadLocalRandom15(), (uVar6 & 1) != 0)))) {
+        if ((*piVar5 < iVar2) || ((iVar2 == *piVar5 && (uVar6 = _rand(), (uVar6 & 1) != 0)))) {
           bVar4 = true;
         }
         if (bVar4) {
@@ -1612,7 +1611,7 @@ TSortedByRelationshipList::GetNationPairDiplomacyStandingTierCode
 
 {
   short sVar1;
-  
+
   sVar1 = *(short *)((int)this + (param_1 * 0x17 + (int)param_2) * 2 + 0x79c);
   if (sVar1 < 0x15) {
     return '\0';
@@ -1648,7 +1647,7 @@ TSortedByRelationshipList::ShowRelationCodeNoticeForNationPairIfRelevant
 
 {
   undefined2 uVar1;
-  
+
   uVar1 = *(undefined2 *)((int)this + (param_1 * 0x17 + (int)param_2) * 2 + 0xbbe);
   switch(uVar1) {
   case 2:
@@ -1670,7 +1669,7 @@ TSortedByRelationshipList::GetNationPairDiplomacyRelationCode
 
 {
   int iVar1;
-  
+
   iVar1 = (int)this + param_1 * 0x2e + 0xbbe;
   return CONCAT22((short)((uint)iVar1 >> 0x10),*(undefined2 *)(iVar1 + param_2 * 2));
 }
@@ -1722,7 +1721,7 @@ TSortedByRelationshipList::SetNationPairDiplomacyRelationAndApplySideEffects
   int iVar11;
   undefined4 uVar12;
   TSortedByRelationshipList_slot_0x04_0x04 *pTVar13;
-  
+
   uVar4 = _param_1;
   iVar9 = (int)param_1;
   iVar10 = (int)param_2;
@@ -1831,7 +1830,7 @@ TSortedByRelationshipList::CollectMinorNationStandingEntriesForMajorNation
   TCountry **ppTVar2;
   ushort uVar3;
   int iVar4;
-  
+
   piVar1 = param_3;
   if (param_2 == 0) {
     uVar3 = 7;
@@ -1871,7 +1870,7 @@ TSortedByRelationshipList::CountNationAllianceRelationsForNation
   int iVar1;
   short *psVar2;
   int iVar3;
-  
+
   iVar1 = 0;
   iVar3 = 7;
   psVar2 = (short *)((int)this + param_1 * 0x2e + 0xbbe);
@@ -1896,7 +1895,7 @@ TSortedByRelationshipList::GetNthAlliedMajorNationSlotForNation
 {
   int iVar1;
   int iVar2;
-  
+
   iVar2 = 0;
   iVar1 = 0;
   do {
@@ -1933,19 +1932,19 @@ TSortedByRelationshipList::SelectNationSlotFromCollectedStandingEntries
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006329aa;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  this_00 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   if (this_00 == (TIndexAndRankList *)0x0) {
     this_00 = (TIndexAndRankList *)0x0;
     uVar5 = extraout_var_00;
   }
   else {
-    TIndexAndRankList::CPtrArray(this_00);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(this_00);
     this_00->vftable = (TIndexAndRankListVtbl *)&_vftable_;
     uVar5 = extraout_var_01;
   }
@@ -1993,7 +1992,7 @@ TSortedByRelationshipList::SelectDiplomacyTargetNationFromCandidateSet
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006329ca;
   uStack_c = *unaff_FS_OFFSET;
@@ -2003,14 +2002,14 @@ TSortedByRelationshipList::SelectDiplomacyTargetNationFromCandidateSet
     unaff_EBP = (uint)bVar2;
   }
   else {
-    this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+    this_00 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
     local_4 = 0;
     if (this_00 == (TIndexAndRankList *)0x0) {
       this_00 = (TIndexAndRankList *)0x0;
       uVar4 = extraout_var_00;
     }
     else {
-      TIndexAndRankList::CPtrArray(this_00);
+      TIndexAndRankList::__0CPtrArray__QAE_XZ(this_00);
       this_00->vftable = (TIndexAndRankListVtbl *)&_vftable_;
       uVar4 = extraout_var_01;
     }

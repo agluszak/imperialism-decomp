@@ -16,12 +16,12 @@ TInterruptusView * __cdecl TInterruptusView::CreateObject(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630ada;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TInterruptusView *)AllocateWithFallbackHandler(100);
+  this = (TInterruptusView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TInterruptusView *)0x0;
   if (this != (TInterruptusView *)0x0) {
@@ -42,7 +42,7 @@ TInterruptusView * TInterruptusView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -77,22 +77,22 @@ void TInterruptusView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630b18;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_28.m_pchData = (char *)0x4afdc4;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   CStack_28.m_pchData = (char *)0x4afdd5;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4._0_1_ = 1;
   CStack_28.m_pchData = (char *)0x4afde3;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_4._0_1_ = 2;
   CStack_28.m_pchData = (char *)0x4afdf1;
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   CStack_28.m_pchData = (char *)&local_14;
   local_4 = CONCAT31(local_4._1_3_,3);
   CStack_2c.m_pchData =
@@ -102,9 +102,9 @@ void TInterruptusView::OrphanTiny_ReturnZero_0048a730()
   (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
   CStack_30.m_pchData = (char *)(int)*(short *)(*(int *)&this->field_0x60 + 2);
   CStack_34.m_pchData = &g_szDecimalFormat;
-  FormatStringWithVarArgsToSharedRef(&uStack_20);
+  _Format_CString__QAAXPBDZZ(&uStack_20);
   CStack_30.m_pchData = (char *)0x4afe30;
-  CString::CString(&CStack_28);
+  CString::__0CString__QAE_XZ(&CStack_28);
   CStack_30.m_pchData = (char *)&CStack_28;
   CStack_34.m_pchData = (char *)0x1e;
   uStack_c = CONCAT31(uStack_c._1_3_,4);
@@ -113,15 +113,15 @@ void TInterruptusView::OrphanTiny_ReturnZero_0048a730()
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffffdc,CStack_34.m_pchData);
   TItemBoyView::DestructTItemBoyViewAndMaybeFree((TItemBoyView *)this,&stack0xffffffdc);
   local_18.m_pchData._0_1_ = 3;
-  CString::~CString(&CStack_34);
+  CString::__1CString__QAE_XZ(&CStack_34);
   local_18.m_pchData._0_1_ = 2;
-  CString::~CString(&CStack_30);
+  CString::__1CString__QAE_XZ(&CStack_30);
   local_18.m_pchData._0_1_ = 1;
-  CString::~CString(&CStack_2c);
+  CString::__1CString__QAE_XZ(&CStack_2c);
   local_18.m_pchData = (char *)((uint)local_18.m_pchData._1_3_ << 8);
-  CString::~CString(&CStack_28);
+  CString::__1CString__QAE_XZ(&CStack_28);
   local_18.m_pchData = (char *)0xffffffff;
-  CString::~CString((CString *)&stack0xffffffdc);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffdc);
   *unaff_FS_OFFSET = uStack_20;
   return;
 }
@@ -139,12 +139,12 @@ TLineData * TInterruptusView::DestructTInterruptusViewAndMaybeFree(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)AllocateWithFallbackHandler(0x18);
+  this = (TLineData *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (this != (TLineData *)0x0) {

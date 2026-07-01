@@ -16,12 +16,12 @@ TView * TCluster::CreateTClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f28a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x88);
+  this = (TView *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -63,7 +63,7 @@ TCluster * TCluster::ConstructUiResourceEntryType4B0C0()
 
 {
   ushort uVar1;
-  
+
   TView::ConstructTViewBaseState((TView *)this);
   *(undefined4 *)&this->field_0x60 = 1;
   this->field_0x64 = 0;
@@ -90,7 +90,7 @@ TCluster * TCluster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTClusterAndMaybeFree_Impl((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -112,7 +112,7 @@ void TCluster::OrphanRetStub_0059add0(int nEventClass, void *pEventPayload, int 
   undefined3 extraout_var;
   int *piVar2;
   undefined4 *puVar3;
-  
+
   if ((nEventClass == 0xc) && (*(TCluster **)((int)pEventPayload + 0x20) == this)) {
     if (this->field44 == 0) {
       puVar3 = (undefined4 *)0x0;
@@ -184,7 +184,7 @@ void TCluster::OrphanCallChain_C2_I51_00491790(int param_1)
 {
   int *piVar1;
   undefined4 *puVar2;
-  
+
   if (this->field44 == 0) {
     puVar2 = (undefined4 *)0x0;
   }
@@ -229,7 +229,7 @@ TView * TCluster::OrphanCallChain_C11_I88_004874b0()
   undefined uVar1;
   undefined3 extraout_var;
   TView *this_00;
-  
+
   uVar1 = (*this->vftable->OrphanRetStub_0059add0)();
   this_00 = (TView *)CONCAT31(extraout_var,uVar1);
   TView::CopyCityDialogStateFromSource(this_00,(TView *)this);

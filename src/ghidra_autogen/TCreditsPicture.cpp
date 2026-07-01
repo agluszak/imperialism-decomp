@@ -40,7 +40,7 @@ TCreditsPicture * TCreditsPicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -58,12 +58,12 @@ thunk_TPictureButton * TCreditsPicture::CreateTCreditsPictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006361da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -106,7 +106,7 @@ void TCreditsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined1 local_5;
   undefined1 local_4;
   undefined1 local_3;
-  
+
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uStack00000004 = 0;
   local_6 = 0;
@@ -164,7 +164,7 @@ TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined1 uStack_4;
   undefined1 uStack_3;
   int *piVar4;
-  
+
   if ((param_1 == 10) && (param_2 == this)) {
     if (DAT_006a4084 == 0) {
       piStack_24 = &iStack_10;

@@ -4,10 +4,10 @@
 // Bucket: CWinThread.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0062246C
-// GHIDRA_NAME CWinThread::CWinApp
-// GHIDRA_PROTO undefined CWinApp()
+// GHIDRA_NAME CWinThread::??0CWinApp@@QAE@PBD@Z
+// GHIDRA_PROTO undefined ??0CWinApp@@QAE@PBD@Z()
 
-undefined4 * CWinThread::CWinApp(void)
+undefined4 * CWinThread::__0CWinApp__QAE_PBD_Z(void)
 
 {
   undefined4 uVar1;
@@ -18,21 +18,24 @@ undefined4 * CWinThread::CWinApp(void)
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  CWinThread();
+  __0CWinThread__QAE_XZ();
   *extraout_ECX = &PTR_LAB_0066fdfc;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (*(int *)(unaff_EBP + 8) == 0) {
     extraout_ECX[0x1e] = 0;
   }
   else {
-    uVar1 = AllocateAnsiStringCopyWithGlobalNewMode(*(undefined4 *)(unaff_EBP + 8));
+    uVar1 = __strdup(*(undefined4 *)(unaff_EBP + 8));
     extraout_ECX[0x1e] = uVar1;
   }
-  iVar2 = AfxGetModuleState();
-  iVar3 = TMacViewMgr::GetData((TMacViewMgr *)(iVar2 + 0x1070),CreateObject);
+  iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  iVar3 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
+                    ((TMacViewMgr *)(iVar2 + 0x1070),
+                     _CreateObject___CThreadLocal_VAFX_MODULE_THREAD_STATE____SGPAVCNoTrackObject__XZ
+                    );
   *(undefined4 **)(iVar3 + 4) = extraout_ECX;
   pvVar4 = GetCurrentThread();
   extraout_ECX[10] = pvVar4;
@@ -63,26 +66,93 @@ undefined4 * CWinThread::CWinApp(void)
   return extraout_ECX;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00622B58
-// GHIDRA_NAME CWinThread::CWinThread
-// GHIDRA_PROTO undefined CWinThread()
+// GHIDRA_FUNCTION IMPERIALISM 0x00622B3C
+// GHIDRA_NAME CWinThread::??_GCWinThread@@UAEPAXI@Z
+// GHIDRA_PROTO void * __thiscall ??_GCWinThread@@UAEPAXI@Z(uint param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual void * __thiscall CWinThread::`scalar deleting destructor'(unsigned int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
 
-undefined4 * CWinThread::CWinThread(void)
+/* Library Function - Single Match
+    public: virtual void * __thiscall CWinThread::`scalar deleting destructor'(unsigned int)
+
+   Library: nafxcw retail msvc500:static */
+
+void * CWinThread::___GCWinThread__UAEPAXI_Z(uint param_1)
+
+{
+  __1CWinThread__UAE_XZ(this);
+  if ((param_1 & 1) != 0) {
+    __3_YAXPAX_Z(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00622B58
+// GHIDRA_NAME CWinThread::??0CWinThread@@QAE@XZ
+// GHIDRA_PROTO undefined ??0CWinThread@@QAE@XZ()
+
+undefined4 * CWinThread::__0CWinThread__QAE_XZ(void)
 
 {
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  CCmdTarget();
+  __0CCmdTarget__QAE_XZ();
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *extraout_ECX = &PTR_LAB_006704cc;
   extraout_ECX[0x13] = 0;
   extraout_ECX[0x14] = 0;
-  FUN_00622b95();
+  _CommonConstruct_CWinThread__QAEXXZ();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return extraout_ECX;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00626BB3
+// GHIDRA_NAME CWinThread::??1CWinThread@@UAE@XZ
+// GHIDRA_PROTO void __thiscall ??1CWinThread@@UAE@XZ(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: virtual __thiscall CWinThread::~CWinThread(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: virtual __thiscall CWinThread::~CWinThread(void)
+
+   Library: nafxcw retail msvc500:static */
+
+void CWinThread::__1CWinThread__UAE_XZ()
+
+{
+  HANDLE hObject;
+  AFX_MODULE_THREAD_STATE *pAVar1;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &PTR_LAB_006704cc;
+  hObject = (HANDLE)extraout_ECX[10];
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  if (hObject != (HANDLE)0x0) {
+    CloseHandle(hObject);
+  }
+  pAVar1 = _AfxGetModuleThreadState__YGPAVAFX_MODULE_THREAD_STATE__XZ_006238ac();
+  if (*(undefined4 **)(pAVar1 + 4) == extraout_ECX) {
+    *(undefined4 *)(pAVar1 + 4) = 0;
+  }
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  __1CCmdTarget__UAE_XZ();
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
 }
 

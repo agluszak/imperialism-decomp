@@ -35,7 +35,7 @@ void TTask::CreateTTaskInstance()
   undefined1 *puStack_8;
   undefined4 uStack_4;
   undefined3 extraout_var_02;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006388b0;
   iStack_c = *unaff_FS_OFFSET;
@@ -62,13 +62,13 @@ void TTask::CreateTTaskInstance()
   pCStack_48 = (CString *)0x5ad7d2;
   (**(code **)(iVar2 + 0x1c8))();
   pCStack_48 = (CString *)0x5ad7db;
-  CString::CString(&CStack_30);
+  CString::__0CString__QAE_XZ(&CStack_30);
   pCStack_48 = (CString *)0x5ad7ec;
-  CString::CString((CString *)&stack0xffffffd8);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffd8);
   pCStack_48 = (CString *)0x5ad7fa;
-  CString::CString(&CStack_34);
+  CString::__0CString__QAE_XZ(&CStack_34);
   pCStack_48 = (CString *)0x5ad808;
-  CString::CString((CString *)&stack0xffffffd4);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffd4);
   if (iStack_c == 0) {
     pCStack_48 = &CStack_30;
     iStack_4c = 0xd;
@@ -109,13 +109,13 @@ void TTask::CreateTTaskInstance()
   *(char **)&this_00->field_0x64 = CStack_30.m_pchData;
   (*pTVar3->VTableSlot39)();
   puStack_44._0_1_ = 2;
-  CString::~CString(&CStack_54);
+  CString::__1CString__QAE_XZ(&CStack_54);
   puStack_44._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffffa4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa4);
   puStack_44 = (undefined1 *)((uint)puStack_44._1_3_ << 8);
-  CString::~CString(&CStack_50);
+  CString::__1CString__QAE_XZ(&CStack_50);
   puStack_44 = (undefined1 *)0xffffffff;
-  CString::~CString(&CStack_58);
+  CString::__1CString__QAE_XZ(&CStack_58);
   *unaff_FS_OFFSET = iStack_4c;
   return;
 }
@@ -139,7 +139,7 @@ TTask * TTask::ConstructTTaskBaseState(byte param_1)
 {
   TTask::DestructTTaskAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -174,7 +174,7 @@ void TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(int *param_1)
 
 {
   code *pcVar1;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x4,2);
@@ -190,7 +190,7 @@ void TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(int *param_1)
 
 {
   code *pcVar1;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);

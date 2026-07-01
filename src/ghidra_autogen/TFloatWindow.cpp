@@ -19,12 +19,12 @@ TView * TFloatWindow::CreateTFloatWindowInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f30d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0xa0);
+  this = (TView *)__2_YAPAXI_Z(0xa0);
   local_4 = 0;
   if (this == (TView *)0x0) {
     *unaff_FS_OFFSET = local_c;
@@ -39,7 +39,7 @@ TView * TFloatWindow::CreateTFloatWindowInstance(void)
   local_4 = CONCAT31(local_4._1_3_,2);
   piVar4 = DAT_006a1a50;
   if (DAT_006a1a50 == (int *)0x0) {
-    iVar3 = AllocateAndLinkBlockHead(&DAT_006a1a54,DAT_006a1a58,0xc);
+    iVar3 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(&DAT_006a1a54,DAT_006a1a58,0xc);
     piVar4 = DAT_006a1a50;
     piVar2 = (int *)(iVar3 + -8 + DAT_006a1a58 * 0xc);
     iVar3 = DAT_006a1a58;
@@ -93,7 +93,7 @@ TFloatWindow * TFloatWindow::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTWindowAndUnlinkGlobalWindowNode((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -125,7 +125,7 @@ void TFloatWindow::GetTEventHandlerClassNamePointer()
   int iVar1;
   int *piVar2;
   undefined4 *puVar3;
-  
+
   iVar1 = this->field50;
   *(undefined4 *)&this->field_0x98 = 0;
   if ((iVar1 != 0) && (*(int *)(iVar1 + 0x1c) != 0)) {
@@ -174,20 +174,20 @@ void TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(CArchive *param_1)
   int iVar4;
   int *piVar5;
   int iVar6;
-  
+
   this_00 = param_1;
   if ((~param_1->m_nMode & 1U) == 0) {
-    for (iVar3 = FUN_0061202e(); iVar3 != 0; iVar3 = iVar3 + -1) {
+    for (iVar3 = _ReadCount_CArchive__QAEKXZ(); iVar3 != 0; iVar3 = iVar3 + -1) {
       if ((~this_00->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(this_00,(int)&param_1,4);
+        CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)&param_1,4);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)&param_1,4);
+        TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)&param_1,4);
       }
       pCVar2 = param_1;
       iVar1 = this->padding_08_to_0b;
       if (this->field10 == 0) {
-        iVar4 = AllocateAndLinkBlockHead(&this->field14,this->field18,0xc);
+        iVar4 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(&this->field14,this->field18,0xc);
         iVar6 = this->field18;
         piVar5 = (int *)(iVar4 + -8 + iVar6 * 0xc);
         if (-1 < iVar6 + -1) {
@@ -216,16 +216,16 @@ void TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(CArchive *param_1)
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c)
-    ;
+    TNetMgr::_WriteCount_CArchive__QAEXK_Z
+              ((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c);
     piVar5 = (int *)this->field04;
     if (piVar5 != (int *)0x0) {
       do {
         if ((~this_00->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)(piVar5 + 2),4);
+          CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)(piVar5 + 2),4);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)(piVar5 + 2),4);
+          TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)(piVar5 + 2),4);
         }
         piVar5 = (int *)*piVar5;
       } while (piVar5 != (int *)0x0);
@@ -244,7 +244,7 @@ TFloatWindow * TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950(byte 
 {
   DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

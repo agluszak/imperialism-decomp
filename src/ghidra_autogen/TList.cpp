@@ -16,17 +16,17 @@ undefined4 * TList::CreateTListInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062eb32;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
@@ -53,7 +53,7 @@ TList * TList::_scalar_deleting_destructor_(byte param_1)
 {
   WrapperFor_DestructCPtrListBaseState_At004888a0();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -92,7 +92,7 @@ TList::InitializeNationMinisterSubsystemsByPolicyIds
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632678;
@@ -104,7 +104,7 @@ TList::InitializeNationMinisterSubsystemsByPolicyIds
   *(undefined4 *)&this[0x4b].field_0xc = 0;
   switch(param_5) {
   case 0:
-    this_00 = (TNapoleonMinister *)AllocateWithFallbackHandler(0x94);
+    this_00 = (TNapoleonMinister *)__2_YAPAXI_Z(0x94);
     local_4 = 0;
     if (this_00 == (TNapoleonMinister *)0x0) {
       uVar1 = 0;
@@ -118,7 +118,7 @@ TList::InitializeNationMinisterSubsystemsByPolicyIds
     }
     break;
   case 1:
-    this_01 = (TBismarckMinister *)AllocateWithFallbackHandler(0x94);
+    this_01 = (TBismarckMinister *)__2_YAPAXI_Z(0x94);
     local_4 = 1;
     if (this_01 == (TBismarckMinister *)0x0) {
       uVar1 = 0;
@@ -132,7 +132,7 @@ TList::InitializeNationMinisterSubsystemsByPolicyIds
     }
     break;
   case 2:
-    this_02 = (TPirateMinister *)AllocateWithFallbackHandler(0x94);
+    this_02 = (TPirateMinister *)__2_YAPAXI_Z(0x94);
     local_4 = 2;
     if (this_02 == (TPirateMinister *)0x0) {
       uVar1 = 0;
@@ -146,7 +146,7 @@ TList::InitializeNationMinisterSubsystemsByPolicyIds
     }
     break;
   case 3:
-    this_03 = (TDefenderMinister *)AllocateWithFallbackHandler(0x94);
+    this_03 = (TDefenderMinister *)__2_YAPAXI_Z(0x94);
     local_4 = 3;
     if (this_03 == (TDefenderMinister *)0x0) {
       uVar1 = 0;
@@ -160,7 +160,7 @@ TList::InitializeNationMinisterSubsystemsByPolicyIds
     }
     break;
   case 4:
-    this_04 = (TBullyMinister *)AllocateWithFallbackHandler(0x94);
+    this_04 = (TBullyMinister *)__2_YAPAXI_Z(0x94);
     local_4 = 4;
     if (this_04 == (TBullyMinister *)0x0) {
       uVar1 = 0;
@@ -178,7 +178,7 @@ TList::InitializeNationMinisterSubsystemsByPolicyIds
 switchD_004e6c77_default:
   switch(param_4) {
   case 0:
-    this_05 = (TArmsForeignMinister *)AllocateWithFallbackHandler(0x80);
+    this_05 = (TArmsForeignMinister *)__2_YAPAXI_Z(0x80);
     local_4 = 5;
     if (this_05 == (TArmsForeignMinister *)0x0) {
 LAB_004e6ef0:
@@ -189,31 +189,31 @@ LAB_004e6ef0:
     }
     break;
   case 1:
-    this_06 = (TTraderForeignMinister *)AllocateWithFallbackHandler(0x80);
+    this_06 = (TTraderForeignMinister *)__2_YAPAXI_Z(0x80);
     local_4 = 6;
     if (this_06 == (TTraderForeignMinister *)0x0) goto LAB_004e6ef0;
     uVar1 = TTraderForeignMinister::ConstructTTraderForeignMinister(this_06);
     break;
   case 2:
-    this_07 = (TTextileForeignMinister *)AllocateWithFallbackHandler(0x80);
+    this_07 = (TTextileForeignMinister *)__2_YAPAXI_Z(0x80);
     local_4 = 7;
     if (this_07 == (TTextileForeignMinister *)0x0) goto LAB_004e6ef0;
     uVar1 = TTextileForeignMinister::ConstructTTextileForeignMinister(this_07);
     break;
   case 3:
-    this_08 = (TDiplomatForeignMinister *)AllocateWithFallbackHandler(0x80);
+    this_08 = (TDiplomatForeignMinister *)__2_YAPAXI_Z(0x80);
     local_4 = 8;
     if (this_08 == (TDiplomatForeignMinister *)0x0) goto LAB_004e6ef0;
     uVar1 = TDiplomatForeignMinister::ConstructTDiplomatForeignMinister(this_08);
     break;
   case 4:
-    this_09 = (TBillForeignMinister *)AllocateWithFallbackHandler(0x84);
+    this_09 = (TBillForeignMinister *)__2_YAPAXI_Z(0x84);
     local_4 = 9;
     if (this_09 == (TBillForeignMinister *)0x0) goto LAB_004e6ef0;
     uVar1 = TBillForeignMinister::ConstructTBillForeignMinister(this_09);
     break;
   case 5:
-    this_10 = (TTedForeignMinister *)AllocateWithFallbackHandler(0x80);
+    this_10 = (TTedForeignMinister *)__2_YAPAXI_Z(0x80);
     local_4 = 10;
     if (this_10 == (TTedForeignMinister *)0x0) goto LAB_004e6ef0;
     uVar1 = TTedForeignMinister::ConstructTTedForeignMinister(this_10);
@@ -227,7 +227,7 @@ LAB_004e6ef0:
 switchD_004e6de7_default:
   switch(param_3) {
   case 0:
-    this_11 = (TSteelCityMinister *)AllocateWithFallbackHandler(0x1c4);
+    this_11 = (TSteelCityMinister *)__2_YAPAXI_Z(0x1c4);
     local_4 = 0xb;
     if (this_11 == (TSteelCityMinister *)0x0) {
       piVar2 = (int *)0x0;
@@ -241,7 +241,7 @@ switchD_004e6de7_default:
     }
     break;
   case 1:
-    this_12 = (TRailCityMinister *)AllocateWithFallbackHandler(0x1c4);
+    this_12 = (TRailCityMinister *)__2_YAPAXI_Z(0x1c4);
     local_4 = 0xc;
     if (this_12 == (TRailCityMinister *)0x0) {
       piVar2 = (int *)0x0;
@@ -255,7 +255,7 @@ switchD_004e6de7_default:
     }
     goto LAB_004e7026;
   case 2:
-    this_13 = (TShipBuilderCityMinister *)AllocateWithFallbackHandler(0x1c4);
+    this_13 = (TShipBuilderCityMinister *)__2_YAPAXI_Z(0x1c4);
     local_4 = 0xd;
     if (this_13 == (TShipBuilderCityMinister *)0x0) {
       piVar2 = (int *)0x0;
@@ -267,7 +267,7 @@ switchD_004e6de7_default:
     WrapperFor_thunk_InitializeCityInteriorMinister_At004c5d70(this);
     break;
   case 3:
-    this_14 = (TEvenCityMinister *)AllocateWithFallbackHandler(0x1c4);
+    this_14 = (TEvenCityMinister *)__2_YAPAXI_Z(0x1c4);
     local_4 = 0xe;
     if (this_14 == (TEvenCityMinister *)0x0) {
       piVar2 = (int *)0x0;
@@ -298,14 +298,14 @@ switchD_004e6f12_default:
     *puVar5 = 0;
     puVar5 = puVar5 + 1;
   }
-  pTVar3 = (TListVtbl *)AllocateWithFallbackHandler(0x20);
+  pTVar3 = (TListVtbl *)__2_YAPAXI_Z(0x20);
   if (pTVar3 == (TListVtbl *)0x0) {
     pTVar3 = (TListVtbl *)0x0;
   }
   else {
     pTVar3->OnActivateView = (TList_OnActivateView_0x00 *)&RefCountedObjectBase::_vftable_;
     local_4 = 0x10;
-    TGreatPower::CPtrList((TGreatPower *)&pTVar3->slot_0x04,10);
+    TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)&pTVar3->slot_0x04,10);
     pTVar3->OnActivateView = (TList_OnActivateView_0x00 *)&_vftable_;
   }
   this[0x5b].vftable = pTVar3;

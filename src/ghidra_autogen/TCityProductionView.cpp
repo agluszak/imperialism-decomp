@@ -22,7 +22,7 @@ TCityProductionView * TCityProductionView::InitializeCityProductionView()
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TCityProductionViewVtbl_0064fc20;
   *(undefined2 *)&this->field_0xa4 = 0xffff;
@@ -55,7 +55,7 @@ TCityProductionView * TCityProductionView::_scalar_deleting_destructor_(byte par
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -96,7 +96,7 @@ TCityProductionView * TCityProductionView::_scalar_deleting_destructor_(byte par
    2) Control/icon resource formula: 7100 + (level * 16) + slotId.
    3) Position controls with g_anCityBuildingSlotCoords + slot offset indices.
    4) Build action controls from g_aCityBuildingActionRects and g_awCityBuildingActionResourceIds.
-   
+
    SlotId to building type:
    0 Textile Mill
    1 Clothing Factory
@@ -137,7 +137,7 @@ void TCityProductionView::OrphanCallChain_C6_I49_004875d0(void *pInitContext)
   int iStack_24;
   int iStack_1c;
   tagRECT tStack_10;
-  
+
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 1;
   sVar3 = UiRuntimeContext::GetActiveNationId();
@@ -163,11 +163,11 @@ void TCityProductionView::OrphanCallChain_C6_I49_004875d0(void *pInitContext)
     pTVar6 = (TTransFocusAnimation *)
              LoadBmpResourceByIdCached(CONCAT31(extraout_var,uVar2) * 0x10 + 0x1bbc + iVar12);
     piVar7 = TTransFocusAnimation::Sprite__CollectNonTransparentPixels(pTVar6,0xffffffff);
-    DeleteObject();
+    _DeleteObject_CGdiObject__QAEHXZ();
     iVar14 = *(int *)*puVar13;
     pHVar8 = CreatePolygonRgn((POINT *)(piVar7 + 2),*piVar7,2);
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar14 + 0x14),(int)pHVar8);
-    FreeHeapBufferIfNotNull(piVar7);
+    CBrush::_Attach_CGdiObject__QAEHPAX_Z((CBrush *)(iVar14 + 0x14),(int)pHVar8);
+    __3_YAXPAX_Z(piVar7);
     ReleaseHashIndexedRecordByHandle(pTVar6);
     InitializeCityBuildingControlRegions_Impl
               (*puVar13,(int)(short)(&g_anCityBuildingSlotCoords)
@@ -178,7 +178,7 @@ void TCityProductionView::OrphanCallChain_C6_I49_004875d0(void *pInitContext)
     puVar13 = puVar13 + 1;
   } while (iVar12 < 0x10);
   (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-  ModifyStyle(0,0x2000000,0);
+  _ModifyStyle_CWnd__QAEHKKI_Z(0,0x2000000,0);
   iStack_1c = 0;
   iStack_24 = 0;
   do {
@@ -205,7 +205,7 @@ void TCityProductionView::OrphanCallChain_C6_I49_004875d0(void *pInitContext)
           OffsetRect(&tStack_10,0x32,0x23);
           sVar4 = (sVar3 + -1) * 3 + (short)iVar14 + ((short)iStack_1c + 0x5dc) * 10;
           uVar1 = *puStack_28;
-          pTVar10 = (TTransFocusAnimation *)AllocateWithFallbackHandler(0x38);
+          pTVar10 = (TTransFocusAnimation *)__2_YAPAXI_Z(0x38);
           pTVar6 = (TTransFocusAnimation *)0x0;
           if (pTVar10 != (TTransFocusAnimation *)0x0) {
             *(undefined4 *)&pTVar10->field_0x30 = 0;
@@ -248,7 +248,7 @@ void TCityProductionView::_scalar_deleting_destructor_()
   undefined4 uVar1;
   undefined4 *puVar2;
   int iVar3;
-  
+
   CallObjectOffset24Vslot54IfPresent();
   puVar2 = (undefined4 *)&this->field_0xec;
   iVar3 = 0x10;
@@ -309,7 +309,7 @@ void TCityProductionView::_scalar_deleting_destructor_()
       - slot 11 (Power Plant): 7011/7027 special toggle
    4) Draw at g_anCityBuildingSlotCoords using draw offsets.
    5) Draw extra overlays 7070/7071 for late Railyard/Capitol states.
-   
+
    SlotId to building type:
    0 Textile Mill
    1 Clothing Factory
@@ -327,7 +327,7 @@ void TCityProductionView::_scalar_deleting_destructor_()
    13 Warehouse
    14 Railyard
    15 Capitol
-   
+
    City entry index mapping used by logic: buildingEnum = slotId + 0x35. */
 
 void TCityProductionView::OrphanTiny_ReturnZero_0048a730(tagRECT *pTargetRect)
@@ -357,7 +357,7 @@ void TCityProductionView::OrphanTiny_ReturnZero_0048a730(tagRECT *pTargetRect)
   undefined1 local_1c [8];
   TCityProductionView *local_14;
   RECT local_10;
-  
+
   local_14 = this;
   if (((short)DAT_006a2158[7] == 0x7db) && (this->field_0xa6 == '\0')) {
     local_10.left = pTargetRect->left;
@@ -386,9 +386,9 @@ void TCityProductionView::OrphanTiny_ReturnZero_0048a730(tagRECT *pTargetRect)
     this_00->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
               (this_00);
-    FreeHeapBufferIfNotNull(this_00);
+    __3_YAXPAX_Z(this_00);
   }
-  FreeHeapBufferIfNotNull(piVar7);
+  __3_YAXPAX_Z(piVar7);
   SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
   uVar8 = GetSurfaceObjectAtContextOffset24(local_10.right);
   ReturnConstantTrueQuickDrawFlag(uVar8);
@@ -495,7 +495,7 @@ TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette
   int iVar4;
   undefined4 in_stack_0000001c;
   tagRECT tStack_10;
-  
+
   piVar3 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(param_5);
   puVar1 = (undefined4 *)*piVar3;
   if (puVar1 != (undefined4 *)0x0) {
@@ -512,9 +512,9 @@ TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette
     this_00->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
               (this_00);
-    FreeHeapBufferIfNotNull(this_00);
+    __3_YAXPAX_Z(this_00);
   }
-  FreeHeapBufferIfNotNull(piVar3);
+  __3_YAXPAX_Z(piVar3);
   tStack_10.left = param_1->left;
   tStack_10.top = param_1->top;
   tStack_10.right = param_1->right;
@@ -553,7 +553,7 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh()
   TCity *pTVar7;
   short sVar8;
   bool bVar9;
-  
+
   sVar3 = UiRuntimeContext::GetActiveNationId();
   if (g_apNationStates[sVar3] == (TGreatPower *)0x0) {
     pTVar7 = (TCity *)0x0;
@@ -566,8 +566,8 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh()
   iVar4 = (-(uint)bVar9 & 0xffffffe9) + 0x213;
   sVar3 = (-(ushort)bVar9 & 0x14) + 0x6b;
   if (*(short *)&this->field_0xa8 < 0) {
-    GetCurrentLocalEpochSecondsWithTimezoneCache(&stack0xfffffff8);
-    iVar5 = ConvertEpochSecondsToLocalTmWithDstAdjust(&stack0xfffffff8);
+    _time(&stack0xfffffff8);
+    iVar5 = _localtime(&stack0xfffffff8);
     iVar6 = *(int *)(iVar5 + 4);
     sVar8 = ((short)(iVar6 / 5) + (short)(iVar6 >> 0x1f)) -
             (short)((longlong)iVar6 * 0x66666667 >> 0x3f);
@@ -636,7 +636,7 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh()
    2) Iterate slotIds in g_anCityBuildingSlotOrder and hit-test each slot control.
    3) On hit, resolve city building entry via (slotId + 0x35) index.
    4) Build tooltip/detail text and update selection highlight.
-   
+
    SlotId to building type:
    0 Textile Mill
    1 Clothing Factory
@@ -690,7 +690,7 @@ TCityProductionView::_scalar_deleting_destructor_
   undefined4 uStack_c;
   undefined1 *puStack_8;
   char *local_4;
-  
+
   local_4 = (char *)0xffffffff;
   puStack_8 = &LAB_00630fe0;
   uStack_c = *unaff_FS_OFFSET;
@@ -701,9 +701,9 @@ TCityProductionView::_scalar_deleting_destructor_
   local_4 = (char *)0x0;
   local_28 = pCursorPoint[1];
   local_2c = *pCursorPoint;
-  CString::CString(&local_4c);
+  CString::__0CString__QAE_XZ(&local_4c);
   local_4._0_1_ = 1;
-  CString::CString(&local_44);
+  CString::__0CString__QAE_XZ(&local_44);
   local_4._0_1_ = 2;
   uVar4 = local_4._0_1_;
   local_4._0_1_ = 2;
@@ -721,13 +721,13 @@ TCityProductionView::_scalar_deleting_destructor_
       nBuildingSlotId = *(short *)((int)&g_nCityBuildingSlotOrderLast + local_38);
       iVar7 = IsPointInsideHitRegion();
       if (iVar7 != 0) {
-        CString::CString(&local_54);
+        CString::__0CString__QAE_XZ(&local_54);
         local_4._0_1_ = 3;
-        CString::CString(&local_48);
+        CString::__0CString__QAE_XZ(&local_48);
         local_4._0_1_ = 4;
-        CString::CString(&local_50);
+        CString::__0CString__QAE_XZ(&local_50);
         local_4._0_1_ = 5;
-        CString::CString((CString *)&nEventFlags);
+        CString::__0CString__QAE_XZ((CString *)&nEventFlags);
         local_4 = (char *)CONCAT31(local_4._1_3_,6);
         sVar6 = UiRuntimeContext::GetActiveNationId();
         if (g_apNationStates[sVar6] == (TGreatPower *)0x0) {
@@ -762,30 +762,33 @@ LAB_004bb114:
                 }
               }
               else {
-                FormatStringWithVarArgsToSharedRef(&stack0xffffffa8);
+                _Format_CString__QAAXPBDZZ(&stack0xffffffa8);
                 (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
                 (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734,0x1d,auStack_10);
                 scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,local_4);
               }
-              CString::AssignFromPtr((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
+              CString::__4CString__QAEABV0_ABV0__Z
+                        ((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
             }
             else if ((short)local_48.m_pchData == 0) {
               if (*(short *)((int)this_00->orderSlotsE4[(short)(nBuildingSlotId + 0x35)] + 4) < 1) {
                 (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
                 scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,local_4);
-                CString::AssignFromPtr((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
+                CString::__4CString__QAEABV0_ABV0__Z
+                          ((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
               }
               else {
                 (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
                 scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,local_4);
-                CString::AssignFromPtr((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
+                CString::__4CString__QAEABV0_ABV0__Z
+                          ((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
               }
             }
             else {
               pvVar2 = this_00->orderSlotsE4[(short)(nBuildingSlotId + 0x35)];
               TCity::GetCityBuildingProductionValueBySlot(this_00,nBuildingSlotId);
-              FormatStringWithVarArgsToSharedRef(&stack0xffffffa8);
-              FormatStringWithVarArgsToSharedRef(&local_50);
+              _Format_CString__QAAXPBDZZ(&stack0xffffffa8);
+              _Format_CString__QAAXPBDZZ(&local_50);
               (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
               if (*(short *)((int)pvVar2 + 4) < 1) {
                 uVar9 = 0x1b;
@@ -795,7 +798,8 @@ LAB_004bb114:
               }
               (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734,uVar9,auStack_10);
               scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,local_4);
-              CString::AssignFromPtr((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
+              CString::__4CString__QAEABV0_ABV0__Z
+                        ((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
               this = local_40;
             }
           }
@@ -837,13 +841,13 @@ LAB_004bb114:
         }
         bVar3 = true;
         local_4._0_1_ = 5;
-        CString::~CString((CString *)&nEventFlags);
+        CString::__1CString__QAE_XZ((CString *)&nEventFlags);
         local_4._0_1_ = 4;
-        CString::~CString(&local_50);
+        CString::__1CString__QAE_XZ(&local_50);
         local_4._0_1_ = 3;
-        CString::~CString(&local_48);
+        CString::__1CString__QAE_XZ(&local_48);
         local_4._0_1_ = 2;
-        CString::~CString(&local_54);
+        CString::__1CString__QAE_XZ(&local_54);
         iVar8 = local_38;
       }
       local_38 = iVar8 + -2;
@@ -860,9 +864,9 @@ LAB_004bb114:
   }
 LAB_004bb5bb:
   local_4._0_1_ = 1;
-  CString::~CString(&local_44);
+  CString::__1CString__QAE_XZ(&local_44);
   local_4 = (char *)((uint)local_4._1_3_ << 8);
-  CString::~CString(&local_4c);
+  CString::__1CString__QAE_XZ(&local_4c);
   local_4 = (char *)0xffffffff;
   ReleaseOrCacheQuickDrawSurface();
   *unaff_FS_OFFSET = uStack_c;
@@ -907,7 +911,7 @@ void TCityProductionView::UpdateCityProductionDialogCommodityValueControls()
   undefined2 uVar6;
   undefined3 extraout_var_01;
   undefined3 extraout_var_03;
-  
+
   (**(code **)(g_pUiRuntimeContext->vftable + 0x48))();
   piVar5 = *(int **)&this->pCity->field_0x1d8;
   pTVar1 = this->vftable[0x12].slot_0x04;
@@ -1035,7 +1039,7 @@ void TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators()
   int *piVar3;
   bool bVar4;
   int iVar5;
-  
+
   (*this->vftable[0x3b].slot_0x04)();
   piVar3 = (int *)&this->field_0xac;
   iVar5 = 0x10;
@@ -1120,7 +1124,7 @@ void TCityProductionView::_scalar_deleting_destructor_(undefined4 *param_1)
   undefined4 *puVar8;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   local_4 = param_1[1];
   local_8 = *param_1;
   bVar1 = false;
@@ -1193,7 +1197,7 @@ TCityProductionView::QueueCityRecruitmentSupportCommandsIfDeficit
   undefined4 *in_stack_00000010;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   if (param_1 == 2) {
     bVar1 = false;
     iVar3 = 0;
@@ -1229,7 +1233,7 @@ void TCityProductionView::OrphanCallChain_C5_I49_004bc910()
   undefined2 uVar3;
   int iVar4;
   int *piVar5;
-  
+
   iVar4 = 0;
   piVar5 = (int *)&this->field_0xac;
   do {
@@ -1275,7 +1279,7 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631048;
   uStack_c = *unaff_FS_OFFSET;
@@ -1328,29 +1332,29 @@ void TCityProductionView::RefreshCityDialogSummaryValues()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006310a0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(local_1c);
+  CString::__0CString__QAE_XZ(local_1c);
   local_4 = 0;
-  CString::CString(&local_20);
+  CString::__0CString__QAE_XZ(&local_20);
   local_4._0_1_ = 1;
   iVar5 = 0xe;
   do {
     iVar5 = iVar5 + -1;
   } while (iVar5 != 0);
-  FormatStringWithVarArgsToSharedRef();
-  pCVar3 = (CString *)AssignSharedStringConcatCStrAndRef();
+  _Format_CString__QAAXPBDZZ();
+  pCVar3 = (CString *)__H_YG_AVCString__PBDABV0__Z();
   local_4._0_1_ = 2;
-  CString::StringSharedRef_AssignFromPtr(&local_24,pCVar3);
+  CString::__0CString__QAE_ABV0__Z(&local_24,pCVar3);
   local_4._0_1_ = 3;
-  CString::AssignFromPtr(&local_20,&local_24);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_20,&local_24);
   local_4._0_1_ = 2;
-  CString::~CString(&local_24);
+  CString::__1CString__QAE_XZ(&local_24);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   local_10 = this->vftable;
   local_14.m_pchData = (char *)local_10[0x12].slot_0x04;
   uVar2 = (*(code *)local_14.m_pchData)();
@@ -1370,16 +1374,16 @@ void TCityProductionView::RefreshCityDialogSummaryValues()
     iVar5 = iVar5 + 4;
     local_24.m_pchData = local_24.m_pchData + -1;
   } while (local_24.m_pchData != (char *)0x0);
-  FormatStringWithVarArgsToSharedRef(&stack0xffffffd8,&g_szDecimalFormat);
-  pCVar3 = (CString *)AssignSharedStringConcatCStrAndRef(&stack0xffffffd0,s_Armory__00696320);
+  _Format_CString__QAAXPBDZZ(&stack0xffffffd8,&g_szDecimalFormat);
+  pCVar3 = (CString *)__H_YG_AVCString__PBDABV0__Z(&stack0xffffffd0,s_Armory__00696320);
   local_10._0_1_ = 4;
-  CString::StringSharedRef_AssignFromPtr(&local_24,pCVar3);
+  CString::__0CString__QAE_ABV0__Z(&local_24,pCVar3);
   local_10._0_1_ = 5;
-  CString::AssignFromPtr((CString *)&stack0xffffffd4,&local_24);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffd4,&local_24);
   local_10._0_1_ = 4;
-  CString::~CString(&local_24);
+  CString::__1CString__QAE_XZ(&local_24);
   local_10 = (TCityProductionViewVtbl *)CONCAT31(local_10._1_3_,1);
-  CString::~CString((CString *)&stack0xffffffd0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd0);
   piVar4 = (int *)(*(code *)local_20.m_pchData)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -1401,19 +1405,17 @@ void TCityProductionView::RefreshCityDialogSummaryValues()
     iVar5 = iVar5 + 4;
     CVar7.m_pchData = CVar7.m_pchData + -1;
   } while (CVar7.m_pchData != (char *)0x0);
-  FormatStringWithVarArgsToSharedRef
-            (&stack0xffffffcc,&g_szDecimalFormat,(int)(short)CVar6.m_pchData);
+  _Format_CString__QAAXPBDZZ(&stack0xffffffcc,&g_szDecimalFormat,(int)(short)CVar6.m_pchData);
   pCVar3 = (CString *)
-           AssignSharedStringConcatCStrAndRef
-                     (&stack0xffffffc4,s_University__00696310,&stack0xffffffcc);
+           __H_YG_AVCString__PBDABV0__Z(&stack0xffffffc4,s_University__00696310,&stack0xffffffcc);
   local_1c[0].m_pchData._0_1_ = 6;
-  CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffffd0,pCVar3);
+  CString::__0CString__QAE_ABV0__Z((CString *)&stack0xffffffd0,pCVar3);
   local_1c[0].m_pchData._0_1_ = 7;
-  CString::AssignFromPtr((CString *)&stack0xffffffc8,(CString *)&stack0xffffffd0);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffc8,(CString *)&stack0xffffffd0);
   local_1c[0].m_pchData._0_1_ = 6;
-  CString::~CString((CString *)&stack0xffffffd0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd0);
   local_1c[0].m_pchData._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffffc4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffc4);
   piVar4 = (int *)(*unaff_EBP)(0x75756e69);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -1422,8 +1424,8 @@ void TCityProductionView::RefreshCityDialogSummaryValues()
   }
   (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffc4,1);
   (**(code **)(unaff_EDI + 0x1e0))();
-  CString::~CString((CString *)&stack0xffffffbc);
-  CString::~CString((CString *)&stack0xffffffc0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffbc);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffc0);
   *unaff_FS_OFFSET = 0;
   return;
 }

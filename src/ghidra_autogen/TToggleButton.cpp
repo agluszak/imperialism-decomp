@@ -11,7 +11,7 @@ void TToggleButton::TToggleButton_VtblSlot116(char param_1, char param_2)
 
 {
   TToggleButtonVtbl *pTVar1;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)((int)param_1,(int)param_2);
   if (param_1 != '\0') {
@@ -35,12 +35,12 @@ thunk_TPictureButton * TToggleButton::CreateTToggleButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006363ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -83,7 +83,7 @@ TToggleButton * TToggleButton::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -101,7 +101,7 @@ TToggleButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
   uint uVar2;
   char cVar3;
   undefined4 in_stack_0000000c;
-  
+
   if (param_1 != 0x20) {
     if (param_1 == 0x1f) {
       return;
@@ -162,7 +162,7 @@ undefined4 TToggleButton::SetForeignMinisterReadyFlag14()
   TToggleButtonVtbl *pTVar1;
   char cVar2;
   char cVar3;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 == '\0') {
@@ -204,7 +204,7 @@ TToggleButton::HandleToggleButtonStateChangeAndRefresh
 
 {
   TToggleButtonVtbl *pTVar1;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)((int)param_1,(int)param_2);
   if (param_1 != '\0') {

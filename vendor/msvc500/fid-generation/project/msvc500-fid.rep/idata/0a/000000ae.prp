@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FILE_INFO>
+    <BASIC_INFO>
+        <STATE NAME="CONTENT_TYPE" TYPE="string" VALUE="Program" />
+        <STATE NAME="PARENT" TYPE="string" VALUE="/msvc500/libcmt/mt/static/build_intel_mt_obj" />
+        <STATE NAME="FILE_ID" TYPE="string" VALUE="c0a8324f8eab6041691183325" />
+        <STATE NAME="FILE_TYPE" TYPE="int" VALUE="0" />
+        <STATE NAME="READ_ONLY" TYPE="boolean" VALUE="false" />
+        <STATE NAME="NAME" TYPE="string" VALUE="typinfo.obj" />
+    </BASIC_INFO>
+</FILE_INFO>

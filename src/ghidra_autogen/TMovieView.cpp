@@ -11,7 +11,7 @@ int TMovieView::SetFieldC0AndInvalidateWindowIfChanged(int param_1)
 
 {
   int iVar1;
-  
+
   iVar1 = this[1].field2c;
   if (iVar1 != param_1) {
     this[1].field2c = param_1;
@@ -29,7 +29,7 @@ void TMovieView::HandleBlinkStateAndScheduleTimerTick(char param_1)
 {
   int iVar1;
   undefined4 uVar2;
-  
+
   iVar1 = (**(code **)(**(int **)&this->field_0x6c + 0x28))();
   if (0 < iVar1) {
     (**(code **)(**(int **)&this->field_0x6c + 0x30))();
@@ -66,12 +66,12 @@ thunk_TPictureButton * TMovieView::CreateTMovieViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a8e2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this == (thunk_TPictureButton *)0x0) {
     *unaff_FS_OFFSET = local_c;
@@ -82,9 +82,9 @@ thunk_TPictureButton * TMovieView::CreateTMovieViewInstance(void)
   local_4 = CONCAT31(local_4._1_3_,1);
   (*g_pSfxPlaybackSystem->vftable->ClearDirectSoundInitPendingAndResetState)();
   TMovieView::HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem,'\x01');
-  pCVar1 = AfxGetThread();
+  pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar1 != (CWinThread *)0x0) {
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     this_00 = (TMovieView *)(**(code **)(*(int *)pCVar1 + 0x7c))();
     TMovieView::SetFieldC0AndInvalidateWindowIfChanged(this_00,0x1000000);
     *unaff_FS_OFFSET = local_c;
@@ -118,7 +118,7 @@ TMovieView * TMovieView::ConstructTMovieViewBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063a908;
   uStack_c = *unaff_FS_OFFSET;
@@ -128,12 +128,12 @@ TMovieView * TMovieView::ConstructTMovieViewBaseState()
   local_4 = 0;
   (*g_pSfxPlaybackSystem->vftable->ClearDirectSoundInitPendingAndResetState)();
   TMovieView::HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem,'\x01');
-  pCVar1 = AfxGetThread();
+  pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar1 == (CWinThread *)0x0) {
     this_00 = (TMovieView *)0x0;
   }
   else {
-    pCVar1 = AfxGetThread();
+    pCVar1 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     this_00 = (TMovieView *)(**(code **)(*(int *)pCVar1 + 0x7c))();
   }
   TMovieView::SetFieldC0AndInvalidateWindowIfChanged(this_00,0x1000000);
@@ -150,7 +150,7 @@ TMovieView * TMovieView::_scalar_deleting_destructor_(byte param_1)
 {
   TMovieView::DestructMovieViewAndCloseOwnedWindow(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -169,7 +169,7 @@ void TMovieView::DestructMovieViewAndCloseOwnedWindow()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0063a928;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -178,14 +178,14 @@ void TMovieView::DestructMovieViewAndCloseOwnedWindow()
   local_4 = 0;
   if (iVar1 != 0) {
     SendWmCloseToWindowHandle();
-    FreeHeapBufferIfNotNull(iVar1);
+    __3_YAXPAX_Z(iVar1);
   }
-  pCVar2 = AfxGetThread();
+  pCVar2 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   if (pCVar2 == (CWinThread *)0x0) {
     this_00 = (TMovieView *)0x0;
   }
   else {
-    pCVar2 = AfxGetThread();
+    pCVar2 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
     this_00 = (TMovieView *)(**(code **)(*(int *)pCVar2 + 0x7c))();
   }
   TMovieView::SetFieldC0AndInvalidateWindowIfChanged(this_00,0x100005f);
@@ -212,7 +212,7 @@ void TMovieView::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063a94b;
@@ -226,7 +226,7 @@ void TMovieView::OrphanLeaf_NoCall_Ins07_004d8920()
   else {
     uVar3 = *(undefined4 *)(iVar1 + 0x1c);
   }
-  iStack00000004 = AllocateWithFallbackHandler(8);
+  iStack00000004 = __2_YAPAXI_Z(8);
   uStack_4 = 0;
   if (iStack00000004 == 0) {
     uVar3 = 0;
@@ -267,8 +267,8 @@ TMovieView::SetForeignMinisterReadyFlag14
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060A60A
-// GHIDRA_NAME TMovieView::RunModalLoop
-// GHIDRA_PROTO undefined __thiscall RunModalLoop(byte param_1)
+// GHIDRA_NAME TMovieView::?RunModalLoop@CWnd@@QAEHK@Z
+// GHIDRA_PROTO undefined __thiscall ?RunModalLoop@CWnd@@QAEHK@Z(byte param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Runs modal loop with idle/message pumping.
 // GHIDRA_COMMENT Handles idle/show-on-first-input behavior, dispatches queued messages, sends WM_ENTERIDLE/0x36A notifications, and exits on modal completion.
@@ -278,7 +278,7 @@ TMovieView::SetForeignMinisterReadyFlag14
    Handles idle/show-on-first-input behavior, dispatches queued messages, sends WM_ENTERIDLE/0x36A
    notifications, and exits on modal completion. */
 
-int TMovieView::RunModalLoop(byte param_1)
+int TMovieView::_RunModalLoop_CWnd__QAEHK_Z(byte param_1)
 
 {
   bool bVar1;
@@ -294,11 +294,11 @@ int TMovieView::RunModalLoop(byte param_1)
   undefined3 extraout_var;
   LPMSG lpMsg;
   int local_c;
-  
+
   bVar1 = true;
   local_c = 0;
   if ((param_1 & 4) != 0) {
-    uVar4 = GetStyle();
+    uVar4 = _GetStyle_CWnd__QBEKXZ();
     bVar2 = true;
     if ((uVar4 & 0x10000000) == 0) goto LAB_0060a63b;
   }
@@ -306,19 +306,19 @@ int TMovieView::RunModalLoop(byte param_1)
 LAB_0060a63b:
   hWnd = GetParent((HWND)this->controlTag);
   this->ownerOffsetX = this->ownerOffsetX | 0x18;
-  pCVar5 = AfxGetThread();
+  pCVar5 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
   lpMsg = (LPMSG)(pCVar5 + 0x30);
 LAB_0060a65c:
   while ((!bVar1 || (BVar6 = PeekMessageA(lpMsg,(HWND)0x0,0,0,0), BVar6 != 0))) {
     do {
-      pCVar8 = AfxGetThread();
+      pCVar8 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       iVar9 = (**(code **)(*(int *)pCVar8 + 100))();
       if (iVar9 == 0) {
-        AfxPostQuitMessage(0);
+        _AfxPostQuitMessage__YGXH_Z_00626b90(0);
         return -1;
       }
       if ((bVar2) && ((*(int *)(pCVar5 + 0x34) == 0x118 || (*(int *)(pCVar5 + 0x34) == 0x104)))) {
-        CFrameWnd::ShowWindow((CFrameWnd *)this,1);
+        CFrameWnd::_ShowWindow_CWnd__QAEHH_Z((CFrameWnd *)this,1);
         UpdateWindow((HWND)this->controlTag);
         bVar2 = false;
       }
@@ -327,7 +327,7 @@ LAB_0060a65c:
         this->ownerOffsetX = this->ownerOffsetX & 0xffffffe7;
         return this->field2c;
       }
-      pCVar8 = AfxGetThread();
+      pCVar8 = _AfxGetThread__YGPAVCWinThread__XZ_006060bc();
       iVar9 = (**(code **)(*(int *)pCVar8 + 0x6c))(lpMsg);
       if (iVar9 != 0) {
         bVar1 = true;
@@ -337,7 +337,7 @@ LAB_0060a65c:
     } while (BVar6 != 0);
   }
   if (bVar2) {
-    CFrameWnd::ShowWindow((CFrameWnd *)this,1);
+    CFrameWnd::_ShowWindow_CWnd__QAEHH_Z((CFrameWnd *)this,1);
     UpdateWindow((HWND)this->controlTag);
     bVar2 = false;
   }

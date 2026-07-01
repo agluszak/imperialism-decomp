@@ -16,12 +16,12 @@ thunk_TPictureButton * TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance(
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063636a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -66,7 +66,7 @@ TAlwaysPictureButton * TAlwaysPictureButton::_scalar_deleting_destructor_(byte p
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -82,7 +82,7 @@ void TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870(char param_1)
   undefined4 in_EAX;
   undefined4 uVar2;
   char unaff_retaddr;
-  
+
   if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
     this->field_0x64 = param_1;

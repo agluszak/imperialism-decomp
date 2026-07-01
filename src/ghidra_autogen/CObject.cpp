@@ -55,7 +55,7 @@ void CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00628488;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -69,7 +69,7 @@ void CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70()
   this[4].vftable = (CObjectVtbl *)0x0;
   this[2].vftable = (CObjectVtbl *)0x0;
   this[1].vftable = (CObjectVtbl *)0x0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   this[5].vftable = (CObjectVtbl *)0x0;
   this->vftable = (CObjectVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -85,7 +85,7 @@ CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At00415f90(byte param_1)
 {
   CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -99,7 +99,7 @@ CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At00479d50(byte param_1)
 {
   CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -116,7 +116,7 @@ void CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062e008;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -130,7 +130,7 @@ void CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80()
   this[4].vftable = (CObjectVtbl *)0x0;
   this[2].vftable = (CObjectVtbl *)0x0;
   this[1].vftable = (CObjectVtbl *)0x0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   this[5].vftable = (CObjectVtbl *)0x0;
   this->vftable = (CObjectVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -152,19 +152,19 @@ void CObject::SerializeDwordArrayWithAutoReallocFromArchive(CArchive *param_1)
   CObjectVtbl *pCVar6;
   CObject_SetForeignMinisterReadyFlag14_0x00 **ppCVar7;
   CObjectVtbl *local_8;
-  
+
   if ((~param_1->m_nMode & 1U) == 0) {
-    pCVar1 = (CObjectVtbl *)FUN_0061202e();
+    pCVar1 = (CObjectVtbl *)_ReadCount_CArchive__QAEKXZ();
     if (pCVar1 == (CObjectVtbl *)0x0) {
       if (this[1].vftable != (CObjectVtbl *)0x0) {
-        FreeHeapBufferIfNotNull(this[1].vftable);
+        __3_YAXPAX_Z(this[1].vftable);
         this[1].vftable = (CObjectVtbl *)0x0;
       }
       this[3].vftable = (CObjectVtbl *)0x0;
       this[2].vftable = (CObjectVtbl *)0x0;
     }
     else if (this[1].vftable == (CObjectVtbl *)0x0) {
-      pCVar2 = (CObjectVtbl *)AllocateWithFallbackHandler((int)pCVar1 * 4);
+      pCVar2 = (CObjectVtbl *)__2_YAPAXI_Z((int)pCVar1 * 4);
       this[1].vftable = pCVar2;
       for (uVar4 = (uint)pCVar1 & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
         pCVar2->SetForeignMinisterReadyFlag14 = (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
@@ -196,7 +196,7 @@ void CObject::SerializeDwordArrayWithAutoReallocFromArchive(CArchive *param_1)
       if ((int)local_8 <= (int)pCVar1) {
         local_8 = pCVar1;
       }
-      pCVar3 = (CObjectVtbl *)AllocateWithFallbackHandler((int)local_8 * 4);
+      pCVar3 = (CObjectVtbl *)__2_YAPAXI_Z((int)local_8 * 4);
       pCVar2 = this[1].vftable;
       pCVar6 = pCVar3;
       for (uVar4 = (uint)this[2].vftable & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
@@ -215,7 +215,7 @@ void CObject::SerializeDwordArrayWithAutoReallocFromArchive(CArchive *param_1)
         *ppCVar7 = (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
         ppCVar7 = ppCVar7 + 1;
       }
-      FreeHeapBufferIfNotNull(this[1].vftable);
+      __3_YAXPAX_Z(this[1].vftable);
       this[1].vftable = pCVar3;
       this[2].vftable = pCVar1;
       this[3].vftable = local_8;
@@ -233,15 +233,15 @@ void CObject::SerializeDwordArrayWithAutoReallocFromArchive(CArchive *param_1)
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)param_1,
-                        (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[2].vftable);
+    TNetMgr::_WriteCount_CArchive__QAEXK_Z
+              ((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[2].vftable);
   }
   if ((~param_1->m_nMode & 1U) != 0) {
-    TNetMgr::WriteBytesToSerializedBuffer
+    TNetMgr::_Write_CArchive__QAEXPBXI_Z
               ((TNetMgr *)param_1,(int)this[1].vftable,(int)this[2].vftable << 2);
     return;
   }
-  CArchive::ReadBytesFromSerializedBuffer(param_1,(int)this[1].vftable,(int)this[2].vftable * 4);
+  CArchive::_Read_CArchive__QAEIPAXI_Z(param_1,(int)this[1].vftable,(int)this[2].vftable * 4);
   return;
 }
 
@@ -254,7 +254,7 @@ CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(byte param_1)
 {
   DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -273,20 +273,20 @@ void CObject::SerializeRecordList_0x0C_WithBlockPool_D(CArchive *param_1)
   CObjectVtbl *pCVar4;
   CObjectVtbl *pCVar5;
   CObjectVtbl *pCVar6;
-  
+
   this_00 = param_1;
   if ((~param_1->m_nMode & 1U) == 0) {
-    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
+    for (iVar2 = _ReadCount_CArchive__QAEKXZ(); iVar2 != 0; iVar2 = iVar2 + -1) {
       if ((~this_00->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(this_00,(int)&param_1,4);
+        CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)&param_1,4);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)&param_1,4);
+        TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)&param_1,4);
       }
       pCVar1 = param_1;
       pCVar6 = this[2].vftable;
       if (this[4].vftable == (CObjectVtbl *)0x0) {
-        iVar3 = AllocateAndLinkBlockHead(this + 5,this[6].vftable,0xc);
+        iVar3 = _Create_CPlex__SGPAU1_AAPAU1_II_Z(this + 5,this[6].vftable,0xc);
         pCVar5 = this[6].vftable;
         pCVar4 = (CObjectVtbl *)(iVar3 + -8 + (int)pCVar5 * 0xc);
         if (-1 < (int)((int)&pCVar5[-1].slot_0x04 + 3)) {
@@ -318,16 +318,16 @@ void CObject::SerializeRecordList_0x0C_WithBlockPool_D(CArchive *param_1)
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)param_1,
-                        (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[3].vftable);
+    TNetMgr::_WriteCount_CArchive__QAEXK_Z
+              ((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[3].vftable);
     pCVar6 = this[1].vftable;
     if (pCVar6 != (CObjectVtbl *)0x0) {
       do {
         if ((~this_00->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)(pCVar6 + 1),4);
+          CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)(pCVar6 + 1),4);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)(pCVar6 + 1),4);
+          TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)(pCVar6 + 1),4);
         }
         pCVar6 = (CObjectVtbl *)pCVar6->SetForeignMinisterReadyFlag14;
       } while (pCVar6 != (CObjectVtbl *)0x0);
@@ -346,7 +346,7 @@ CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980(byte param_1)
 {
   CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -363,7 +363,7 @@ void CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062f3b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -377,7 +377,7 @@ void CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_
   this[4].vftable = (CObjectVtbl *)0x0;
   this[2].vftable = (CObjectVtbl *)0x0;
   this[1].vftable = (CObjectVtbl *)0x0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   this[5].vftable = (CObjectVtbl *)0x0;
   this->vftable = (CObjectVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -399,7 +399,7 @@ void CObject::DestructModuleLibraryCacheTableStateBAndFree()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062fb58;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -417,11 +417,11 @@ void CObject::DestructModuleLibraryCacheTableStateBAndFree()
       pCVar3 = (CObjectVtbl *)&pCVar3->slot_0x04;
     }
   }
-  FreeHeapBufferIfNotNull(pCVar1);
+  __3_YAXPAX_Z(pCVar1);
   this[1].vftable = (CObjectVtbl *)0x0;
   this[3].vftable = (CObjectVtbl *)0x0;
   this[4].vftable = (CObjectVtbl *)0x0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   this[5].vftable = (CObjectVtbl *)0x0;
   this->vftable = (CObjectVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -443,7 +443,7 @@ void CObject::DestructModuleLibraryCacheTableStateAAndFree()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062fb78;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -461,11 +461,11 @@ void CObject::DestructModuleLibraryCacheTableStateAAndFree()
       pCVar3 = (CObjectVtbl *)&pCVar3->slot_0x04;
     }
   }
-  FreeHeapBufferIfNotNull(pCVar1);
+  __3_YAXPAX_Z(pCVar1);
   this[1].vftable = (CObjectVtbl *)0x0;
   this[3].vftable = (CObjectVtbl *)0x0;
   this[4].vftable = (CObjectVtbl *)0x0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   this[5].vftable = (CObjectVtbl *)0x0;
   this->vftable = (CObjectVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -481,7 +481,7 @@ CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(byte param_1)
 {
   CObject::DestructModuleLibraryCacheTableStateBAndFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -495,7 +495,7 @@ CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b600(byte param_1)
 {
   CObject::DestructModuleLibraryCacheTableStateAAndFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -511,8 +511,8 @@ CRuntimeClass * CObject::GetRuntimeClass()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606FC0
-// GHIDRA_NAME CObject::IsKindOf
-// GHIDRA_PROTO undefined __thiscall IsKindOf(void)
+// GHIDRA_NAME CObject::?IsKindOf@CObject@@QBEHPBUCRuntimeClass@@@Z
+// GHIDRA_PROTO undefined __thiscall ?IsKindOf@CObject@@QBEHPBUCRuntimeClass@@@Z(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Traverses a forward-linked chain using next pointer at +0x10 and returns true if the target node pointer is present.
 // GHIDRA_COMMENT_END
@@ -520,32 +520,35 @@ CRuntimeClass * CObject::GetRuntimeClass()
 /* Traverses a forward-linked chain using next pointer at +0x10 and returns true if the target node
    pointer is present. */
 
-void CObject::IsKindOf()
+void CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z()
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   CRuntimeClass *in_stack_00000004;
-  
+
   uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
-  CRuntimeClass::IsDerivedFrom((CRuntimeClass *)CONCAT31(extraout_var,uVar1),in_stack_00000004);
+  CRuntimeClass::_IsDerivedFrom_CRuntimeClass__QBEHPBU1__Z
+            ((CRuntimeClass *)CONCAT31(extraout_var,uVar1),in_stack_00000004);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622778
-// GHIDRA_NAME CObject::ParseParam
-// GHIDRA_PROTO undefined __thiscall ParseParam(undefined4 param_1, int param_2, undefined4 param_3)
+// GHIDRA_NAME CObject::?ParseParam@CCommandLineInfo@@UAEXPBDHH@Z
+// GHIDRA_PROTO undefined __thiscall ?ParseParam@CCommandLineInfo@@UAEXPBDHH@Z(undefined4 param_1, int param_2, undefined4 param_3)
 
-void CObject::ParseParam(undefined4 param_1, int param_2, undefined4 param_3)
+void __thiscall
+CObject::_ParseParam_CCommandLineInfo__UAEXPBDHH_Z
+          (CObject *this,undefined4 param_1,int param_2,undefined4 param_3)
 
 {
   if (param_2 == 0) {
-    ParseParamNotFlag(param_1);
+    _ParseParamNotFlag_CCommandLineInfo__IAEXPBD_Z(param_1);
   }
   else {
-    FUN_006227a1(param_1);
+    _ParseParamFlag_CCommandLineInfo__IAEXPBD_Z(param_1);
   }
-  FUN_006228af(param_3);
+  _ParseLast_CCommandLineInfo__IAEXH_Z(param_3);
   return;
 }
 

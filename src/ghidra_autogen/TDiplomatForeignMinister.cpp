@@ -22,7 +22,7 @@ TDiplomatForeignMinister * TDiplomatForeignMinister::ConstructTDiplomatForeignMi
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(undefined4 *)&this->field_0x49 = 0x1010101;
   *(undefined2 *)&this->field_0x4d = 0x101;
   this->field_0x4f = 1;
@@ -50,7 +50,7 @@ TDiplomatForeignMinister * TDiplomatForeignMinister::DeletingDestructTMinister(b
 {
   TDiplomatForeignMinister::DestructTDiplomatForeignMinister(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -79,8 +79,8 @@ TDiplomatForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
   int iVar1;
   int iVar2;
   int iVar3;
-  
-  iVar2 = GenerateThreadLocalRandom15();
+
+  iVar2 = _rand();
   iVar2 = iVar2 % 100;
   if (iVar2 < 0x19) {
     iVar2 = 7;
@@ -131,13 +131,13 @@ void TDiplomatForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
   uint uVar9;
   uint uVar10;
   short unaff_BP;
-  
+
   bVar3 = false;
   cVar1 = (&g_pCityOrderCapabilityState->field_0x27b)
           [*(short *)(*(int *)&this->field_0x4 + 0xc) * 0x1d];
   *(undefined2 *)&this->field_0x40 = 2;
   if (cVar1 == '\x02') {
-    uVar9 = GenerateThreadLocalRandom15();
+    uVar9 = _rand();
     uVar10 = (int)uVar9 >> 0x1f;
     if (((uVar9 ^ uVar10) - uVar10 & 1 ^ uVar10) == uVar10) {
       *(undefined2 *)&this->field_0x46 = 1;
@@ -189,7 +189,7 @@ void TDiplomatForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
   if (!bVar3) {
     *(undefined2 *)&this->field_0x42 = 0;
     *(undefined2 *)&this->field_0x44 = 1;
-    iVar8 = GenerateThreadLocalRandom15();
+    iVar8 = _rand();
     if (iVar8 < 0x3ffe) {
       *(undefined2 *)&this->field_0x46 = 3;
       TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920((TForeignMinister *)this);
@@ -289,7 +289,7 @@ void TDiplomatForeignMinister::SetForeignMinisterReadyFlag14()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006341aa;
@@ -325,14 +325,14 @@ void TDiplomatForeignMinister::SetForeignMinisterReadyFlag14()
   else {
     uStack_40 = (int)*(short *)(iVar14 + 0xa4) / 2;
   }
-  pTStack_48 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  pTStack_48 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   uStack_4 = 0;
   pTStack_34 = pTStack_48;
   if (pTStack_48 == (TIndexAndRankList *)0x0) {
     pTStack_48 = (TIndexAndRankList *)0x0;
   }
   else {
-    TIndexAndRankList::CPtrArray(pTStack_48);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(pTStack_48);
     pTStack_48->vftable = (TIndexAndRankListVtbl *)&TSortByPriceList::_vftable_;
   }
   pTStack_38 = pTStack_48->vftable;
@@ -406,7 +406,7 @@ TDiplomatForeignMinister::UpdateControlCachedIntFromWindowText
   int iVar2;
   undefined4 unaff_retaddr;
   short in_stack_00000010;
-  
+
   if (*(short *)(&this->field_0x1e + in_stack_00000010 * 2) == 0) {
     sVar1 = (short)(*(int **)&this->field_0x4)[0x29];
     if (sVar1 < 0xc) {

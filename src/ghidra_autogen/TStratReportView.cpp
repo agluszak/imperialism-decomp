@@ -18,12 +18,12 @@ TView * TStratReportView::
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637d8a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -69,7 +69,7 @@ TStratReportView * TStratReportView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -109,7 +109,7 @@ void TStratReportView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637e20;
   uStack_c = *unaff_FS_OFFSET;
@@ -117,13 +117,13 @@ void TStratReportView::OrphanTiny_ReturnZero_0048a730()
   local_10.m_pchData = &stack0xffffffc8;
   SetQuickDrawFillColor();
   FillRectWithQuickDrawBrushAndContextOffset();
-  CString::CString(&local_24);
+  CString::__0CString__QAE_XZ(&local_24);
   local_4 = 0;
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   local_4._0_1_ = 1;
-  CString::CString(&local_20);
+  CString::__0CString__QAE_XZ(&local_20);
   local_4._0_1_ = 2;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   CStack00000004.m_pchData = &stack0xffffffc8;
   local_4._0_1_ = 3;
   SetQuickDrawFillColor();
@@ -133,26 +133,26 @@ void TStratReportView::OrphanTiny_ReturnZero_0048a730()
   SetQuickDrawTextOriginWithContextOffset(0xc);
   AssignSharedStringFromIndexedA8EntryNameField
             ((int)*(short *)(*(int *)&this->field_0x60 + 2));
-  pCVar1 = (CString *)AssignSharedStringConcatCStrAndRef(&local_14,s_Battle_of_0069935c);
+  pCVar1 = (CString *)__H_YG_AVCString__PBDABV0__Z(&local_14,s_Battle_of_0069935c);
   local_4._0_1_ = 4;
-  CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar1);
+  CString::__0CString__QAE_ABV0__Z(&stack0x00000004,pCVar1);
   local_4._0_1_ = 5;
-  CString::AssignFromPtr(&local_24,&stack0x00000004);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_24,&stack0x00000004);
   local_4._0_1_ = 4;
-  CString::~CString(&stack0x00000004);
+  CString::__1CString__QAE_XZ(&stack0x00000004);
   local_4._0_1_ = 3;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   FormatOverlayTerrainLabelText();
-  pCVar1 = (CString *)AssignSharedStringConcatCStrAndRef(&local_14,s_Winner__00699350);
+  pCVar1 = (CString *)__H_YG_AVCString__PBDABV0__Z(&local_14,s_Winner__00699350);
   local_4._0_1_ = 6;
-  CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar1);
+  CString::__0CString__QAE_ABV0__Z(&stack0x00000004,pCVar1);
   local_4._0_1_ = 7;
-  CString::AssignFromPtr(&local_24,&stack0x00000004);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_24,&stack0x00000004);
   local_4._0_1_ = 6;
-  CString::~CString(&stack0x00000004);
+  CString::__1CString__QAE_XZ(&stack0x00000004);
   local_4 = CONCAT31(local_4._1_3_,3);
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   SetQuickDrawTextOriginWithContextOffset(0xc);
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawStyleWord_1D4E_AndMarkDirty();
@@ -161,20 +161,20 @@ void TStratReportView::OrphanTiny_ReturnZero_0048a730()
   do {
     if (*(short *)(iVar4 + *(int *)&this->field_0x60) != 0) {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2717,iVar3);
-      FormatStringWithVarArgsToSharedRef(&local_1c,&g_szDecimalFormat);
-      uVar2 = AssignSharedStringConcatRefAndCStr(&local_10,&local_1c);
+      _Format_CString__QAAXPBDZZ(&local_1c,&g_szDecimalFormat);
+      uVar2 = __H_YG_AVCString__ABV0_PBD_Z(&local_10,&local_1c);
       local_4._0_1_ = 8;
-      pCVar1 = (CString *)AssignSharedStringConcatRefAndRef(&local_14,uVar2);
+      pCVar1 = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_14,uVar2);
       local_4._0_1_ = 9;
-      CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar1);
+      CString::__0CString__QAE_ABV0__Z(&stack0x00000004,pCVar1);
       local_4._0_1_ = 10;
-      CString::AssignFromPtr(&local_24,&stack0x00000004);
+      CString::__4CString__QAEABV0_ABV0__Z(&local_24,&stack0x00000004);
       local_4._0_1_ = 9;
-      CString::~CString(&stack0x00000004);
+      CString::__1CString__QAE_XZ(&stack0x00000004);
       local_4._0_1_ = 8;
-      CString::~CString(&local_14);
+      CString::__1CString__QAE_XZ(&local_14);
       local_4 = CONCAT31(local_4._1_3_,3);
-      CString::~CString(&local_10);
+      CString::__1CString__QAE_XZ(&local_10);
       SetQuickDrawTextOriginWithContextOffset(0xc);
       THQButton::DrawTextWithCachedQuickDrawStyleState();
     }
@@ -183,15 +183,15 @@ void TStratReportView::OrphanTiny_ReturnZero_0048a730()
   } while (iVar4 < 0x40);
   SetQuickDrawStyleWord_1D4E_AndMarkDirty();
   FormatOverlayTerrainLabelText();
-  pCVar1 = (CString *)AssignSharedStringConcatCStrAndRef(&local_10,s_Loser__00699344);
+  pCVar1 = (CString *)__H_YG_AVCString__PBDABV0__Z(&local_10,s_Loser__00699344);
   local_4._0_1_ = 0xb;
-  CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar1);
+  CString::__0CString__QAE_ABV0__Z(&stack0x00000004,pCVar1);
   local_4._0_1_ = 0xc;
-  CString::AssignFromPtr(&local_24,&stack0x00000004);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_24,&stack0x00000004);
   local_4._0_1_ = 0xb;
-  CString::~CString(&stack0x00000004);
+  CString::__1CString__QAE_XZ(&stack0x00000004);
   local_4 = CONCAT31(local_4._1_3_,3);
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   SetQuickDrawTextOriginWithContextOffset(0xc);
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawStyleWord_1D4E_AndMarkDirty();
@@ -200,20 +200,20 @@ void TStratReportView::OrphanTiny_ReturnZero_0048a730()
   do {
     if (*(short *)(iVar4 + *(int *)&this->field_0x60) != 0) {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2717,iVar3);
-      FormatStringWithVarArgsToSharedRef(&local_1c,&g_szDecimalFormat);
-      uVar2 = AssignSharedStringConcatRefAndCStr(&local_14,&local_1c);
+      _Format_CString__QAAXPBDZZ(&local_1c,&g_szDecimalFormat);
+      uVar2 = __H_YG_AVCString__ABV0_PBD_Z(&local_14,&local_1c);
       local_4._0_1_ = 0xd;
-      pCVar1 = (CString *)AssignSharedStringConcatRefAndRef(&local_10,uVar2);
+      pCVar1 = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_10,uVar2);
       local_4._0_1_ = 0xe;
-      CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar1);
+      CString::__0CString__QAE_ABV0__Z(&stack0x00000004,pCVar1);
       local_4._0_1_ = 0xf;
-      CString::AssignFromPtr(&local_24,&stack0x00000004);
+      CString::__4CString__QAEABV0_ABV0__Z(&local_24,&stack0x00000004);
       local_4._0_1_ = 0xe;
-      CString::~CString(&stack0x00000004);
+      CString::__1CString__QAE_XZ(&stack0x00000004);
       local_4._0_1_ = 0xd;
-      CString::~CString(&local_10);
+      CString::__1CString__QAE_XZ(&local_10);
       local_4 = CONCAT31(local_4._1_3_,3);
-      CString::~CString(&local_14);
+      CString::__1CString__QAE_XZ(&local_14);
       SetQuickDrawTextOriginWithContextOffset(0xc);
       THQButton::DrawTextWithCachedQuickDrawStyleState();
     }
@@ -221,13 +221,13 @@ void TStratReportView::OrphanTiny_ReturnZero_0048a730()
     iVar3 = iVar3 + 1;
   } while (iVar4 < 0x7c);
   local_4._0_1_ = 2;
-  CString::~CString(&local_18);
+  CString::__1CString__QAE_XZ(&local_18);
   local_4._0_1_ = 1;
-  CString::~CString(&local_20);
+  CString::__1CString__QAE_XZ(&local_20);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_1c);
+  CString::__1CString__QAE_XZ(&local_1c);
   local_4 = 0xffffffff;
-  CString::~CString(&local_24);
+  CString::__1CString__QAE_XZ(&local_24);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

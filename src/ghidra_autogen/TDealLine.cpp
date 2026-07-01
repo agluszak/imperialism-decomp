@@ -16,12 +16,12 @@ TLineData * TDealLine::CreateTDealLineInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063971a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)AllocateWithFallbackHandler(0x18);
+  this = (TLineData *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (this != (TLineData *)0x0) {
@@ -64,7 +64,7 @@ TDealLine * TDealLine::DestructTDealLineAndMaybeFree(byte param_1)
 {
   DestructTDealLineAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -122,36 +122,36 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063977a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_60.m_pchData = (char *)0x5c0e77;
-  CString::CString(&local_3c);
+  CString::__0CString__QAE_XZ(&local_3c);
   local_4 = 0;
   CStack_60.m_pchData = (char *)0x5c0e86;
-  CString::CString(&local_44);
+  CString::__0CString__QAE_XZ(&local_44);
   local_4._0_1_ = 1;
   CStack_60.m_pchData = (char *)0x5c0e94;
-  CString::CString(&local_48);
+  CString::__0CString__QAE_XZ(&local_48);
   local_4._0_1_ = 2;
   local_12 = 0;
   local_11 = 0;
   local_10 = 0;
   local_f = 0;
   CStack_60.m_pchData = (char *)0x5c0eb2;
-  CString::CString(&local_38);
+  CString::__0CString__QAE_XZ(&local_38);
   local_4._0_1_ = 3;
   CStack_60.m_pchData = (char *)0x5c0ec0;
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   local_4._0_1_ = 4;
   CStack_60.m_pchData = (char *)0x5c0ece;
-  CString::CString(local_34);
+  CString::__0CString__QAE_XZ(local_34);
   CStack_60.m_pchData = (char *)0x94;
   local_4._0_1_ = 5;
   pCStack_64 = (CString *)0x5c0edd;
-  local_28 = (TMyStaticText *)AllocateWithFallbackHandler();
+  local_28 = (TMyStaticText *)__2_YAPAXI_Z();
   local_4._0_1_ = 6;
   if (local_28 == (TMyStaticText *)0x0) {
     piVar3 = (int *)0x0;
@@ -199,9 +199,9 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
   src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot();
   local_24._0_1_ = 7;
   CStack_84.m_pchData = (char *)0x5c0fbb;
-  CString::AssignFromPtr(&CStack_60,src_ref);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_60,src_ref);
   local_24 = CONCAT31(local_24._1_3_,5);
-  CString::~CString(&local_18);
+  CString::__1CString__QAE_XZ(&local_18);
   CVar8.m_pchData = &stack0xffffffa4;
   CStack_84.m_pchData =
        (char *)CONCAT22((short)((uint)CVar8.m_pchData >> 0x10),*(undefined2 *)&this->field_0x10);
@@ -229,12 +229,12 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
       }
       if (iVar4 != 0) {
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740,iVar4 + -1,&CStack_88);
-        uVar5 = AssignSharedStringConcatCStrAndRef
+        uVar5 = __H_YG_AVCString__PBDABV0__Z
                           (&local_38,g_Build_Map_Order_LookupTable_00695794,&CStack_88);
         local_44.m_pchData._0_1_ = 8;
-        AssignStringSharedFromRef(uVar5);
+        __YCString__QAEABV0_ABV0__Z(uVar5);
         local_44.m_pchData._0_1_ = 5;
-        CString::~CString(&local_38);
+        CString::__1CString__QAE_XZ(&local_38);
       }
     }
     else {
@@ -249,7 +249,7 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
     CStack_88.m_pchData = (char *)(int)CStack_74.m_pchData._2_2_;
     CStack_90.m_pchData = (char *)&CStack_60;
     CStack_8c.m_pchData = &g_szDecimalFormat;
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
     CStack_88.m_pchData = (char *)CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x10);
     CStack_8c.m_pchData = (char *)0x5c1012;
     uVar2 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)();
@@ -282,12 +282,12 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
   }
   (**(code **)(iVar1 + 0x1c8))(&CStack_84,1);
   SetQuickDrawFillColorFromPaletteIndex(0);
-  CString::~CString(&CStack_7c);
-  CString::~CString(&CStack_88);
-  CString::~CString((CString *)&stack0xffffff80);
-  CString::~CString(&CStack_90);
-  CString::~CString(&CStack_8c);
-  CString::~CString(&CStack_84);
+  CString::__1CString__QAE_XZ(&CStack_7c);
+  CString::__1CString__QAE_XZ(&CStack_88);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff80);
+  CString::__1CString__QAE_XZ(&CStack_90);
+  CString::__1CString__QAE_XZ(&CStack_8c);
+  CString::__1CString__QAE_XZ(&CStack_84);
   *unaff_FS_OFFSET = unaff_EBP;
   return;
 }

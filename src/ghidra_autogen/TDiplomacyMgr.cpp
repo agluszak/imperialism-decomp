@@ -37,7 +37,7 @@ TDiplomacyMgr * TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree(byte param_1)
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004ee730();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -80,7 +80,7 @@ void TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback()
   int iVar4;
   undefined1 uStack00000004;
   undefined1 uStack00000005;
-  
+
   TObject::WriteTo((TObject *)this,_uStack00000004);
   puVar3 = (undefined2 *)&this->field_0x79c;
   iVar4 = 0x211;
@@ -173,7 +173,7 @@ undefined4 TDiplomacyMgr::IsNationPairAtWar(short param_1, short param_2)
   undefined3 extraout_var;
   undefined2 in_stack_00000006;
   undefined2 in_stack_0000000a;
-  
+
   if ((g_apTerrainTypeDescriptorTable[param_1] != (TCountry *)0x0) &&
      (g_apTerrainTypeDescriptorTable[param_2] != (TCountry *)0x0)) {
     uVar1 = (*this->vftable[0xe].GetTDiplomacyMgrClassNamePointer)(_param_1,_param_2);
@@ -192,7 +192,7 @@ undefined1 TDiplomacyMgr::HasAnyWarRelationForNation()
   TDiplomacyMgr_slot_0x04_0x04 *pTVar1;
   char cVar2;
   int iVar3;
-  
+
   iVar3 = 0;
   pTVar1 = this->vftable[8].slot_0x04;
   do {
@@ -235,7 +235,7 @@ int TDiplomacyMgr::HasState300LinkBetweenNationPair(short param_1, short param_2
 
 {
   uint3 uVar1;
-  
+
   uVar1 = (uint3)(char)((ushort)param_1 >> 8);
   if ((*(short *)(&g_apTerrainTypeDescriptorTable[param_1]->field_0x14 + param_2 * 2) != 300) &&
      (*(short *)(&g_apTerrainTypeDescriptorTable[param_2]->field_0x14 + param_1 * 2) != 300)) {

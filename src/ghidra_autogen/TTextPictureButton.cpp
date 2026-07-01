@@ -22,7 +22,7 @@ TTextPictureButton * TTextPictureButton::_scalar_deleting_destructor_(byte param
 {
   DestructTTextPictureButtonAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -43,7 +43,7 @@ void TTextPictureButton::OrphanTiny_ReturnZero_0048a730()
   undefined2 extraout_var_01;
   undefined4 uStack00000004;
   tagSIZE local_8;
-  
+
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   uVar4 = (uint)(this->field_0x64 != '\0');
   uStack00000004 = 0;

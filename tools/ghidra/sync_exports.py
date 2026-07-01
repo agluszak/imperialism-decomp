@@ -18,6 +18,7 @@ from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.ghidra.merge_curated_symbols import (
     apply_function_names_to_symbols_txt,
+    collect_source_vtable_addresses,
     function_names_from_symbols_rows,
     load_curated_symbols,
     merge_curated_symbols_csv,
@@ -307,7 +308,10 @@ def main() -> int:
             if not fieldnames:
                 fieldnames = curated_fieldnames
             merged_rows, merge_stats = merge_curated_symbols_csv(
-                fieldnames, exported_rows, curated_by_addr
+                fieldnames,
+                exported_rows,
+                curated_by_addr,
+                collect_source_vtable_addresses(repo_root),
             )
             write_symbols_csv(symbols_csv, fieldnames, merged_rows)
             renamed_txt = apply_function_names_to_symbols_txt(
@@ -319,6 +323,7 @@ def main() -> int:
                 f"prototypes {merge_stats.preserved_prototypes}, "
                 f"new {merge_stats.new_from_export}, "
                 f"retained orphans {merge_stats.retained_orphans}, "
+                f"vtable rows {merge_stats.coerced_vtables}, "
                 f"symbols.txt names {renamed_txt}"
             )
         elif curated_by_addr and args.no_preserve_curated_symbols:

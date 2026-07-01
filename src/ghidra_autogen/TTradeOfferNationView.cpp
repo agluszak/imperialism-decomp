@@ -12,7 +12,7 @@ TTradeOfferNationView * TTradeOfferNationView::_scalar_deleting_destructor_(byte
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TView * TTradeOfferNationView::CreateTTradeOfferNationViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063937a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -80,32 +80,32 @@ void TTradeOfferNationView::OrphanCallChain_C11_I88_004874b0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006393b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString((CString *)&local_40);
+  CString::__0CString__QAE_XZ((CString *)&local_40);
   local_4 = 0;
-  CString::CString((CString *)&local_40.right);
+  CString::__0CString__QAE_XZ((CString *)&local_40.right);
   local_4._0_1_ = 1;
-  CString::CString((CString *)&local_40.top);
+  CString::__0CString__QAE_XZ((CString *)&local_40.top);
   local_4._0_1_ = 2;
-  CString::CString((CString *)&local_40.bottom);
+  CString::__0CString__QAE_XZ((CString *)&local_40.bottom);
   local_4._0_1_ = 3;
   sVar3 = *(short *)(&g_pNationInteractionStateManager->field_0x1c +
                     (*(short *)&this->field_0x60 * 0x50 + (int)*(short *)&this->field_0x62) * 2);
   src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot();
   local_4._0_1_ = 4;
-  CString::AssignFromPtr((CString *)&local_40.top,src_ref);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&local_40.top,src_ref);
   local_4 = CONCAT31(local_4._1_3_,3);
-  CString::~CString((CString *)&local_30);
+  CString::__1CString__QAE_XZ((CString *)&local_30);
   if (sVar3 == 1) {
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
   }
   else {
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
   }
@@ -137,13 +137,13 @@ void TTradeOfferNationView::OrphanCallChain_C11_I88_004874b0()
   SetQuickDrawStrokeColor();
   (**(code **)(iVar1 + 0x38))();
   iStack_18._0_1_ = 2;
-  CString::~CString((CString *)&stack0xffffffb8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb8);
   iStack_18._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffffb0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb0);
   iStack_18 = (uint)iStack_18._1_3_ << 8;
-  CString::~CString((CString *)&stack0xffffffb4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb4);
   iStack_18 = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffffac);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffac);
   *unaff_FS_OFFSET = uStack_20;
   return;
 }

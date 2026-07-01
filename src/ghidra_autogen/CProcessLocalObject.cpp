@@ -4,24 +4,50 @@
 // Bucket: CProcessLocalObject.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622AAC
-// GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
-// GHIDRA_PROTO void __thiscall CProcessLocalObject::~CProcessLocalObject(void)
+// GHIDRA_NAME CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ
+// GHIDRA_PROTO void __thiscall CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ(void)
 
-void CProcessLocalObject::~CProcessLocalObject()
+void __thiscall CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ(CProcessLocalObject *this)
 
 {
-  ~CProcessLocalObject(this);
+  __1CProcessLocalObject__QAE_XZ(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00624123
+// GHIDRA_NAME CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ
+// GHIDRA_PROTO void __thiscall ??1CProcessLocalObject@@QAE@XZ(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: __thiscall CProcessLocalObject::~CProcessLocalObject(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: __thiscall CProcessLocalObject::~CProcessLocalObject(void)
+
+   Library: nafxcw retail msvc500:static */
+
+void CProcessLocalObject::__1CProcessLocalObject__QAE_XZ()
+
+{
+  if (*(int *)this != 0) {
+    if (*(undefined4 **)this != (undefined4 *)0x0) {
+      (**(code **)**(undefined4 **)this)(1);
+    }
+  }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006244CE
-// GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
-// GHIDRA_PROTO void __thiscall CProcessLocalObject::~CProcessLocalObject(void)
+// GHIDRA_NAME CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ
+// GHIDRA_PROTO void __thiscall CProcessLocalObject::??1CProcessLocalObject@@QAE@XZ(void)
 
 void CProcessLocalObject::thunk__CProcessLocalObject()
 
 {
-  ~CProcessLocalObject(this);
+  __1CProcessLocalObject__QAE_XZ(this);
   return;
 }
 

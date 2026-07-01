@@ -15,12 +15,12 @@ TNoHilitePicture * TUnitsView::CreateTUnitsViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063162a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa0);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0xa0);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
@@ -65,7 +65,7 @@ TUnitsView * TUnitsView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -93,7 +93,7 @@ void TUnitsView::OrphanRetStub_004c6fd0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063164a;
@@ -115,7 +115,7 @@ void TUnitsView::OrphanRetStub_004c6fd0()
     sVar1 = *(short *)(*(int *)&this->field_0x94 + local_3c);
     if ((sVar1 != 0) && (sVar5 = 0, 0 < sVar1)) {
       do {
-        this_00 = (TColorKeyPicture *)AllocateWithFallbackHandler(0x98);
+        this_00 = (TColorKeyPicture *)__2_YAPAXI_Z(0x98);
         iVar3 = 0;
         uStack_4 = 0;
         if (this_00 != (TColorKeyPicture *)0x0) {

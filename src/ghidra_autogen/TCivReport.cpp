@@ -19,12 +19,12 @@ _CreateTCivReportInstance__YAPAUCivReportState___Z_imperialismsrcgameTCivReport_
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637f1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -70,7 +70,7 @@ TCivReport * TCivReport::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -117,29 +117,29 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637f98;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pCStack_68 = (CString *)0x590cd9;
   local_40.m_pchData = (char *)this;
-  CString::CString(&local_4c);
+  CString::__0CString__QAE_XZ(&local_4c);
   local_4 = 0;
   pCStack_68 = (CString *)0x590cea;
-  CString::CString(&local_50);
+  CString::__0CString__QAE_XZ(&local_50);
   local_4._0_1_ = 1;
   pCStack_68 = (CString *)0x590cf8;
-  CString::CString(&local_48);
+  CString::__0CString__QAE_XZ(&local_48);
   local_4._0_1_ = 2;
   pCStack_68 = (CString *)0x590d06;
-  CString::CString(&local_54);
+  CString::__0CString__QAE_XZ(&local_54);
   local_4._0_1_ = 3;
   pCStack_68 = (CString *)0x590d14;
-  CString::CString(&local_38);
+  CString::__0CString__QAE_XZ(&local_38);
   local_4._0_1_ = 4;
   pCStack_68 = (CString *)0x590d22;
-  CString::CString(&local_3c);
+  CString::__0CString__QAE_XZ(&local_3c);
   pCStack_68 = &local_50;
   cVar7 = '\x01';
   sVar1 = *(short *)(param_1 + 6);
@@ -154,44 +154,44 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   AssignSharedStringFromIndexedA8EntryNameField();
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffff9c,(char *)pCStack_68);
-  AppendSingleByteToSharedStringFromArg();
+  __YCString__QAEABV0_D_Z();
   switch(*(undefined4 *)(param_1 + 8)) {
   case 1:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     cVar7 = '\0';
     break;
   case 5:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    AssignSharedStringConcatRefAndCStr();
+    __H_YG_AVCString__ABV0_PBD_Z();
     uStack_1c = 6;
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     uStack_1c = 5;
-    CString::~CString(&local_4c);
+    CString::__1CString__QAE_XZ(&local_4c);
     break;
   case 6:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    AssignSharedStringConcatRefAndCStr();
+    __H_YG_AVCString__ABV0_PBD_Z();
     uStack_1c = 7;
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     uStack_1c = 5;
-    CString::~CString(&local_48);
+    CString::__1CString__QAE_XZ(&local_48);
     break;
   case 7:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    AssignSharedStringConcatRefAndCStr();
+    __H_YG_AVCString__ABV0_PBD_Z();
     uStack_1c = 8;
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     uStack_1c = 5;
-    CString::~CString(&CStack_44);
+    CString::__1CString__QAE_XZ(&CStack_44);
     break;
   case 8:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    AssignSharedStringConcatRefAndCStr();
+    __H_YG_AVCString__ABV0_PBD_Z();
     uStack_1c = 9;
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
     uStack_1c = 5;
-    CString::~CString(&local_40);
+    CString::__1CString__QAE_XZ(&local_40);
     break;
   case 10:
     if ((*(short *)(param_1 + 4) == 0) &&
@@ -216,39 +216,39 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
         scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa0,(char *)pCStack_68);
       }
-      AssignSharedStringConcatRefAndCStr();
+      __H_YG_AVCString__ABV0_PBD_Z();
       uStack_1c = 10;
-      AssignStringSharedFromRef();
+      __YCString__QAEABV0_ABV0__Z();
       uStack_1c = 5;
-      CString::~CString(&local_3c);
+      CString::__1CString__QAE_XZ(&local_3c);
       cVar7 = cStack_14;
     }
     else if (*(short *)(param_1 + 4) == 7) {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2725);
       scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa0,(char *)pCStack_68);
-      AssignSharedStringConcatRefAndCStr();
+      __H_YG_AVCString__ABV0_PBD_Z();
       uStack_1c = 0xb;
-      AssignStringSharedFromRef();
+      __YCString__QAEABV0_ABV0__Z();
       uStack_1c = 5;
-      CString::~CString(&local_38);
+      CString::__1CString__QAE_XZ(&local_38);
     }
     else {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2725);
       scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa0,(char *)pCStack_68);
-      AssignSharedStringConcatRefAndCStr();
+      __H_YG_AVCString__ABV0_PBD_Z();
       uStack_1c = 0xc;
-      AssignStringSharedFromRef();
+      __YCString__QAEABV0_ABV0__Z();
       uStack_1c = 5;
-      CString::~CString(aCStack_34);
+      CString::__1CString__QAE_XZ(aCStack_34);
     }
   }
   if (cVar7 != '\0') {
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    FormatStringWithVarArgsToSharedRef();
+    _Format_CString__QAAXPBDZZ();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa0,(char *)pCStack_68);
-    AssignStringSharedFromRef();
+    __YCString__QAEABV0_ABV0__Z();
   }
   pcVar2 = *(code **)(*unaff_EBX + 0x94);
   piVar6 = (int *)(*pcVar2)();
@@ -280,17 +280,17 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
     iVar8 = iVar8 + 1;
   } while (iVar8 < 3);
   local_40.m_pchData._0_1_ = 4;
-  CString::~CString(&CStack_78);
+  CString::__1CString__QAE_XZ(&CStack_78);
   local_40.m_pchData._0_1_ = 3;
-  CString::~CString(&CStack_74);
+  CString::__1CString__QAE_XZ(&CStack_74);
   local_40.m_pchData._0_1_ = 2;
-  CString::~CString((CString *)&stack0xffffff70);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff70);
   local_40.m_pchData._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffff7c);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
   local_40.m_pchData = (char *)((uint)local_40.m_pchData._1_3_ << 8);
-  CString::~CString((CString *)&stack0xffffff74);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff74);
   local_40.m_pchData = (char *)0xffffffff;
-  CString::~CString((CString *)&stack0xffffff78);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff78);
   *unaff_FS_OFFSET = local_48.m_pchData;
   return;
 }

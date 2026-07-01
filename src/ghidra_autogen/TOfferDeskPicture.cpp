@@ -15,12 +15,12 @@ thunk_TPictureButton * TOfferDeskPicture::CreateTOfferDeskPictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063953a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0xa8);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0xa8);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -69,7 +69,7 @@ TOfferDeskPicture * TOfferDeskPicture::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -122,7 +122,7 @@ void TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   int *piStack_28;
   int iStack_24;
   undefined3 extraout_var_00;
-  
+
   piStack_28 = (int *)0x5be613;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   iStack_24 = 0x74726561;
@@ -298,7 +298,7 @@ TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined uVar3;
   undefined3 extraout_var;
   undefined4 unaff_EBX;
-  
+
   iVar2 = *(int *)(param_2 + 0x1c);
   if (param_1 < 11000) {
     if (param_1 == 10) {
@@ -347,7 +347,7 @@ void TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(int param_1)
   undefined3 extraout_var_00;
   undefined2 extraout_var_01;
   int iVar3;
-  
+
   sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
     uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x61636365);
@@ -381,7 +381,7 @@ TOfferDeskPicture::UpdateControlCachedIntFromWindowText
 
 {
   char cVar1;
-  
+
   if (*(int **)&this->field_0xa0 != (int *)0x0) {
     cVar1 = (**(code **)(**(int **)&this->field_0xa0 + 0xec))();
     if (cVar1 != '\0') {

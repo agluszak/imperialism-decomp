@@ -3,6 +3,2495 @@
 // Program: Imperialism.exe
 // Bucket: global_part015.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x006110FA
+// GHIDRA_NAME ?Open@CMirrorFile@@UAEHPBDIPAVCFileException@@@Z
+// GHIDRA_PROTO undefined ?Open@CMirrorFile@@UAEHPBDIPAVCFileException@@@Z()
+
+undefined4 _Open_CMirrorFile__UAEHPBDIPAVCFileException___Z(void)
+
+{
+  CString *this;
+  int iVar1;
+  BOOL BVar2;
+  LPSTR lpTempFileName;
+  PSECURITY_DESCRIPTOR pSecurityDescriptor;
+  undefined4 uVar3;
+  int extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  this = (CString *)(extraout_ECX + 0x10);
+  _Empty_CString__QAEXXZ();
+  if ((*(byte *)(unaff_EBP + 0xd) & 0x10) != 0) {
+    iVar1 = _GetStatus_CFile__SGHPBDAAUCFileStatus___Z
+                      (*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x148);
+    if (iVar1 != 0) {
+      CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
+      iVar1 = 0;
+      *(undefined4 *)(unaff_EBP + -4) = 0;
+      _AfxGetRoot__YGXPBDAAVCString___Z(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x10);
+      BVar2 = GetDiskFreeSpaceA(*(LPCSTR *)(unaff_EBP + -0x10),(LPDWORD)(unaff_EBP + -0x14),
+                                (LPDWORD)(unaff_EBP + -0x2c),(LPDWORD)(unaff_EBP + -0x30),
+                                (LPDWORD)(unaff_EBP + -0x24));
+      if (BVar2 != 0) {
+        iVar1 = *(int *)(unaff_EBP + -0x2c) * *(int *)(unaff_EBP + -0x30) *
+                *(int *)(unaff_EBP + -0x14);
+      }
+      if (*(int *)(unaff_EBP + -0x13c) * 2 < iVar1) {
+        GetFullPathNameA(*(LPCSTR *)(unaff_EBP + 8),0x104,(LPSTR)(unaff_EBP + -0x24c),
+                         (LPSTR *)(unaff_EBP + -0x1c));
+        **(undefined1 **)(unaff_EBP + -0x1c) = 0;
+        lpTempFileName = (LPSTR)CString::_GetBuffer_CString__QAEPADH_Z(this,0x105);
+        GetTempFileNameA((LPCSTR)(unaff_EBP + -0x24c),"MFC",0,lpTempFileName);
+        CString::_ReleaseBuffer_CString__QAEXH_Z(this,-1);
+      }
+      *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
+    }
+  }
+  if (*(int *)(this->m_pchData + -8) != 0) {
+    iVar1 = _Open_CFile__UAEHPBDIPAVCFileException___Z
+                      (this->m_pchData,*(undefined4 *)(unaff_EBP + 0xc),
+                       *(undefined4 *)(unaff_EBP + 0x10));
+    if (iVar1 != 0) {
+      CString::__4CString__QAEABV0_PBD_Z((CString *)(extraout_ECX + 0xc),*(char **)(unaff_EBP + 8));
+      BVar2 = GetFileTime(*(HANDLE *)(extraout_ECX + 4),(LPFILETIME)(unaff_EBP + -0x28),
+                          (LPFILETIME)(unaff_EBP + -0x18),(LPFILETIME)(unaff_EBP + -0x20));
+      if (BVar2 != 0) {
+        _AfxTimeToFileTime__YAXABVCTime__PAU_FILETIME___Z(unaff_EBP + -0x148,unaff_EBP + -0x28);
+        SetFileTime(*(HANDLE *)(extraout_ECX + 4),(FILETIME *)(unaff_EBP + -0x28),
+                    (FILETIME *)(unaff_EBP + -0x18),(FILETIME *)(unaff_EBP + -0x20));
+      }
+      *(undefined4 *)(unaff_EBP + 0xc) = 0;
+      BVar2 = GetFileSecurityA(*(LPCSTR *)(unaff_EBP + 8),4,(PSECURITY_DESCRIPTOR)0x0,0,
+                               (LPDWORD)(unaff_EBP + 0xc));
+      if (BVar2 != 0) {
+        pSecurityDescriptor = (PSECURITY_DESCRIPTOR)__2_YAPAXI_Z(*(undefined4 *)(unaff_EBP + 0xc));
+        BVar2 = GetFileSecurityA(*(LPCSTR *)(unaff_EBP + 8),4,pSecurityDescriptor,
+                                 *(DWORD *)(unaff_EBP + 0xc),(LPDWORD)(unaff_EBP + 0xc));
+        if (BVar2 != 0) {
+          SetFileSecurityA(this->m_pchData,4,pSecurityDescriptor);
+        }
+        __3_YAXPAX_Z(pSecurityDescriptor);
+      }
+      uVar3 = 1;
+      goto LAB_006112b0;
+    }
+  }
+  _Empty_CString__QAEXXZ();
+  uVar3 = _Open_CFile__UAEHPBDIPAVCFileException___Z
+                    (*(undefined4 *)(unaff_EBP + 8),*(undefined4 *)(unaff_EBP + 0xc),
+                     *(undefined4 *)(unaff_EBP + 0x10));
+LAB_006112b0:
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return uVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006112C1
+// GHIDRA_NAME ?Abort@CMirrorFile@@UAEXXZ
+// GHIDRA_PROTO undefined ?Abort@CMirrorFile@@UAEXXZ()
+
+void __fastcall _Abort_CMirrorFile__UAEXXZ(int param_1)
+
+{
+  _Abort_CFile__UAEXXZ();
+  if (*(int *)(*(int *)(param_1 + 0x10) + -8) != 0) {
+    _Remove_CFile__SGXPBD_Z(*(int *)(param_1 + 0x10));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006112DA
+// GHIDRA_NAME ?Close@CMirrorFile@@UAEXXZ
+// GHIDRA_PROTO undefined ?Close@CMirrorFile@@UAEXXZ()
+
+void _Close_CMirrorFile__UAEXXZ(void)
+
+{
+  int extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  CString::__0CString__QAE_ABV0__Z((CString *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 0xc));
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  _Close_CFile__UAEXXZ();
+  if (*(int *)(*(int *)(extraout_ECX + 0x10) + -8) != 0) {
+    _Remove_CFile__SGXPBD_Z(*(undefined4 *)(unaff_EBP + -0x10));
+    _Rename_CFile__SGXPBD0_Z
+              (*(undefined4 *)(extraout_ECX + 0x10),*(undefined4 *)(unaff_EBP + -0x10));
+  }
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006113AA
+// GHIDRA_NAME ??_GCCtrlView@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_GCCtrlView@@UAEPAXI@Z()
+
+undefined4 __thiscall ___GCCtrlView__UAEPAXI_Z(undefined4 param_1,byte param_2)
+
+{
+  CFileException::__1CMirrorFile__UAE_XZ();
+  if ((param_2 & 1) != 0) {
+    __3_YAXPAX_Z(param_1);
+  }
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611930
+// GHIDRA_NAME ??6@YGAAVCArchive@@AAV0@ABVCString@@@Z
+// GHIDRA_PROTO undefined ??6@YGAAVCArchive@@AAV0@ABVCString@@@Z()
+
+CArchive * __6_YGAAVCArchive__AAV0_ABVCString___Z(CArchive *param_1,int *param_2)
+
+{
+  int iVar1;
+
+  iVar1 = *(int *)(*param_2 + -8);
+  if (iVar1 < 0xff) {
+    CArchive::__6CArchive__QAEAAV0_E_Z(param_1,*(byte *)(*param_2 + -8));
+  }
+  else if (iVar1 < 0xfffe) {
+    CArchive::__6CArchive__QAEAAV0_E_Z(param_1,0xff);
+    TNetMgr::__6CArchive__QAEAAV0_G_Z((TNetMgr *)param_1,*(undefined2 *)(*param_2 + -8));
+  }
+  else {
+    CArchive::__6CArchive__QAEAAV0_E_Z(param_1,0xff);
+    TNetMgr::__6CArchive__QAEAAV0_G_Z((TNetMgr *)param_1,0xffff);
+    TNetMgr::__6CArchive__QAEAAV0_K_Z
+              ((TNetMgr *)param_1,*(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)(*param_2 + -8));
+  }
+  TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)param_1,*param_2,*(uint *)(*param_2 + -8));
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611A9E
+// GHIDRA_NAME ?SerializeElements@@YGXAAVCArchive@@PAVCString@@H@Z
+// GHIDRA_PROTO undefined ?SerializeElements@@YGXAAVCArchive@@PAVCString@@H@Z()
+
+void _SerializeElements__YGXAAVCArchive__PAVCString__H_Z(int param_1,int param_2,int param_3)
+
+{
+  if ((~*(uint *)(param_1 + 0x14) & 1) == 0) {
+    for (; param_3 != 0; param_3 = param_3 + -1) {
+      __5_YGAAVCArchive__AAV0_AAVCString___Z(param_1,param_2);
+      param_2 = param_2 + 4;
+    }
+  }
+  else {
+    for (; param_3 != 0; param_3 = param_3 + -1) {
+      __6_YGAAVCArchive__AAV0_ABVCString___Z(param_1,param_2);
+      param_2 = param_2 + 4;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611AEC
+// GHIDRA_NAME ?Load@CRuntimeClass@@SGPAU1@AAVCArchive@@PAI@Z
+// GHIDRA_PROTO undefined ?Load@CRuntimeClass@@SGPAU1@AAVCArchive@@PAI@Z()
+
+undefined4 * _Load_CRuntimeClass__SGPAU1_AAVCArchive__PAI_Z(CArchive *param_1,uint *param_2)
+
+{
+  uint uVar1;
+  int iVar2;
+  undefined4 *puVar3;
+  CHAR local_48 [64];
+  ushort local_8;
+  ushort local_6;
+
+  CArchive::__5CArchive__QAEAAV0_AAG_Z(param_1,&local_8);
+  *param_2 = (uint)local_8;
+  CArchive::__5CArchive__QAEAAV0_AAG_Z(param_1,&local_6);
+  if (local_6 < 0x40) {
+    uVar1 = CArchive::_Read_CArchive__QAEIPAXI_Z(param_1,(int)local_48,(uint)local_6);
+    if (uVar1 == local_6) {
+      local_48[local_6] = '\0';
+      iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+      _AfxLockGlobals__YGXH_Z(0);
+      for (puVar3 = *(undefined4 **)(iVar2 + 0x1c); puVar3 != (undefined4 *)0x0;
+          puVar3 = (undefined4 *)puVar3[5]) {
+        iVar2 = lstrcmpA(local_48,(LPCSTR)*puVar3);
+        if (iVar2 == 0) {
+          _AfxUnlockGlobals__YGXH_Z(0);
+          return puVar3;
+        }
+      }
+      _AfxUnlockGlobals__YGXH_Z(0);
+    }
+  }
+  return (undefined4 *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611B7C
+// GHIDRA_NAME ?Store@CRuntimeClass@@QBEXAAVCArchive@@@Z
+// GHIDRA_PROTO undefined ?Store@CRuntimeClass@@QBEXAAVCArchive@@@Z()
+
+void __thiscall _Store_CRuntimeClass__QBEXAAVCArchive___Z(int *param_1,TNetMgr *param_2)
+
+{
+  undefined2 uVar1;
+  TNetMgr *this;
+  uint uVar2;
+
+  uVar2 = lstrlenA((LPCSTR)*param_1);
+  uVar1 = (undefined2)uVar2;
+  this = (TNetMgr *)TNetMgr::__6CArchive__QAEAAV0_G_Z(param_2,(short)param_1[2]);
+  TNetMgr::__6CArchive__QAEAAV0_G_Z(this,uVar1);
+  TNetMgr::_Write_CArchive__QAEXPBXI_Z(param_2,*param_1,uVar2 & 0xffff);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611CD6
+// GHIDRA_NAME ?Abort@CArchive@@QAEXXZ
+// GHIDRA_PROTO undefined ?Abort@CArchive@@QAEXXZ()
+
+void __fastcall _Abort_CArchive__QAEXXZ(int param_1)
+
+{
+  *(undefined4 *)(param_1 + 0x20) = 0;
+  if (*(int *)(param_1 + 0x18) == 0) {
+    __3_YAXPAX_Z(*(undefined4 *)(param_1 + 0x2c));
+    *(undefined4 *)(param_1 + 0x2c) = 0;
+    *(undefined4 *)(param_1 + 0x24) = 0;
+  }
+  if (*(int **)(param_1 + 0x38) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 0x38) + 4))(1);
+  }
+  *(undefined4 *)(param_1 + 0x38) = 0;
+  if (*(int **)(param_1 + 0x34) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 0x34) + 4))(1);
+  }
+  *(undefined4 *)(param_1 + 0x34) = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611EC4
+// GHIDRA_NAME ?Flush@CArchive@@QAEXXZ
+// GHIDRA_PROTO undefined ?Flush@CArchive@@QAEXXZ()
+
+void __fastcall _Flush_CArchive__QAEXXZ(int param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+
+  if ((*(byte *)(param_1 + 0x14) & 1) == 0) {
+    iVar1 = *(int *)(param_1 + 0x2c);
+    if ((iVar1 != 0) && (*(int *)(param_1 + 0x24) == iVar1)) {
+      return;
+    }
+    if (*(int *)(param_1 + 8) == 0) {
+      (**(code **)(**(int **)(param_1 + 0x20) + 0x40))(iVar1,*(int *)(param_1 + 0x24) - iVar1);
+    }
+    else {
+      (**(code **)(**(int **)(param_1 + 0x20) + 0x58))(2,*(int *)(param_1 + 0x24) - iVar1,0,0);
+      (**(code **)(**(int **)(param_1 + 0x20) + 0x58))
+                (1,*(undefined4 *)(param_1 + 0x1c),(undefined4 *)(param_1 + 0x2c),param_1 + 0x28);
+    }
+    uVar2 = *(undefined4 *)(param_1 + 0x2c);
+  }
+  else {
+    if (*(int *)(param_1 + 0x28) != *(int *)(param_1 + 0x24)) {
+      (**(code **)(**(int **)(param_1 + 0x20) + 0x30))
+                (*(int *)(param_1 + 0x24) - *(int *)(param_1 + 0x28),1);
+    }
+    uVar2 = *(undefined4 *)(param_1 + 0x28);
+  }
+  *(undefined4 *)(param_1 + 0x24) = uVar2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061207B
+// GHIDRA_NAME ?ReadString@CArchive@@QAEPADPADI@Z
+// GHIDRA_PROTO undefined ?ReadString@CArchive@@QAEPADPADI@Z()
+
+int _ReadString_CArchive__QAEPADPADI_Z(void)
+
+{
+  char cVar1;
+  int iVar2;
+  undefined1 uVar3;
+  undefined4 extraout_ECX;
+  int iVar4;
+  int unaff_EBP;
+  int iVar5;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  iVar4 = *(int *)(unaff_EBP + 0xc);
+  iVar5 = 0;
+  *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe0;
+  *(undefined4 *)(unaff_EBP + -0x1c) = extraout_ECX;
+  if (iVar4 < 0) {
+    iVar4 = -iVar4;
+  }
+  iVar2 = *(int *)(unaff_EBP + 8);
+  *(undefined4 *)(unaff_EBP + -0x18) = 0;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  do {
+    if (iVar4 <= iVar5) {
+LAB_0061211b:
+      *(undefined1 *)(iVar5 + iVar2) = 0;
+      *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+      return iVar2;
+    }
+    __5CArchive__QAEAAV0_AAE_Z(unaff_EBP + -0x11);
+    cVar1 = *(char *)(unaff_EBP + -0x11);
+    if (cVar1 == '\n') {
+      uVar3 = 10;
+LAB_006120dd:
+      if (*(int *)(unaff_EBP + 0xc) != iVar4) {
+        *(undefined1 *)(iVar5 + iVar2) = uVar3;
+        iVar5 = iVar5 + 1;
+      }
+      goto LAB_0061211b;
+    }
+    if (cVar1 == '\r') {
+      __5CArchive__QAEAAV0_AAE_Z(unaff_EBP + -0x11);
+      uVar3 = *(undefined1 *)(unaff_EBP + -0x11);
+      goto LAB_006120dd;
+    }
+    *(char *)(iVar5 + iVar2) = cVar1;
+    iVar5 = iVar5 + 1;
+    *(int *)(unaff_EBP + -0x18) = iVar5;
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006121CD
+// GHIDRA_NAME ?CheckCount@CArchive@@QAEXXZ
+// GHIDRA_PROTO undefined ?CheckCount@CArchive@@QAEXXZ()
+
+void __fastcall _CheckCount_CArchive__QAEXXZ(int param_1)
+
+{
+  if (0x3ffffffd < *(uint *)(param_1 + 0x30)) {
+    _AfxThrowArchiveException__YGXHPBD_Z(5,*(undefined4 *)(param_1 + 0x10));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061225E
+// GHIDRA_NAME ?ReadObject@CArchive@@QAEPAVCObject@@PBUCRuntimeClass@@@Z
+// GHIDRA_PROTO undefined ?ReadObject@CArchive@@QAEPAVCObject@@PBUCRuntimeClass@@@Z()
+
+CObject * __thiscall
+_ReadObject_CArchive__QAEPAVCObject__PBUCRuntimeClass___Z(uint param_1,int param_2)
+
+{
+  undefined4 uVar1;
+  int iVar2;
+  CObject *this;
+  uint local_c;
+  uint local_8;
+
+  local_c = param_1;
+  local_8 = param_1;
+  iVar2 = NodeScanner::_ReadClass_CArchive__QAEPAUCRuntimeClass__PBU2_PAIPAK_Z
+                    (param_2,&local_c,&local_8);
+  if (iVar2 == 0) {
+    if (*(int *)(*(int *)(param_1 + 0x34) + 8) - 1U < local_8) {
+      _AfxThrowArchiveException__YGXHPBD_Z(5,*(undefined4 *)(param_1 + 0x10));
+    }
+    this = *(CObject **)(*(int *)(*(int *)(param_1 + 0x34) + 4) + local_8 * 4);
+    if ((this != (CObject *)0x0) && (param_2 != 0)) {
+      iVar2 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(this);
+      if (iVar2 == 0) {
+        _AfxThrowArchiveException__YGXHPBD_Z(6,*(undefined4 *)(param_1 + 0x10));
+      }
+    }
+  }
+  else {
+    this = (CObject *)_CreateObject_CRuntimeClass__QAEPAVCObject__XZ();
+    if (this == (CObject *)0x0) {
+      _AfxThrowMemoryException__YGXXZ();
+    }
+    _CheckCount_CArchive__QAEXXZ();
+    iVar2 = *(int *)(param_1 + 0x30);
+    *(int *)(param_1 + 0x30) = iVar2 + 1;
+    _InsertAt_CPtrArray__QAEXHPAXH_Z(iVar2,this,1);
+    uVar1 = *(undefined4 *)(param_1 + 0xc);
+    *(uint *)(param_1 + 0xc) = local_c;
+    (*this->vftable[1].SetForeignMinisterReadyFlag14)(param_1);
+    *(undefined4 *)(param_1 + 0xc) = uVar1;
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612696
+// GHIDRA_NAME ??_GCDC@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_GCDC@@UAEPAXI@Z()
+
+undefined4 __thiscall ___GCDC__UAEPAXI_Z(undefined4 param_1,byte param_2)
+
+{
+  __1CDC__UAE_XZ();
+  if ((param_2 & 1) != 0) {
+    __3_YAXPAX_Z(param_1);
+  }
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006126B2
+// GHIDRA_NAME ?DeleteTempMap@CMenu@@SGXXZ
+// GHIDRA_PROTO undefined ?DeleteTempMap@CMenu@@SGXXZ()
+
+void _DeleteTempMap_CMenu__SGXXZ(void)
+
+{
+  int iVar1;
+
+  iVar1 = _afxMapHDC__YAPAVCHandleMap__H_Z(0);
+  if (iVar1 != 0) {
+    _DeleteTemp_CHandleMap__QAEXXZ();
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006126C6
+// GHIDRA_NAME ?afxMapHDC@@YAPAVCHandleMap@@H@Z
+// GHIDRA_PROTO undefined ?afxMapHDC@@YAPAVCHandleMap@@H@Z()
+
+undefined4 _afxMapHDC__YAPAVCHandleMap__H_Z(void)
+
+{
+  AFX_MODULE_THREAD_STATE *pAVar1;
+  undefined4 uVar2;
+  int iVar3;
+  undefined4 uVar4;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  pAVar1 = _AfxGetModuleThreadState__YGPAVAFX_MODULE_THREAD_STATE__XZ_006238ac();
+  if ((*(int *)(pAVar1 + 0x1c) == 0) && (*(int *)(unaff_EBP + 8) != 0)) {
+    uVar2 = _AfxSetNewHandler__YGP6AHI_ZP6AHI_Z_Z(EnsureMfcModuleThreadBufferCapacity);
+    iVar3 = __2_YAPAXI_Z(0x44);
+    *(int *)(unaff_EBP + 8) = iVar3;
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    if (iVar3 == 0) {
+      uVar4 = 0;
+    }
+    else {
+      uVar4 = __0CHandleMap__QAE_PAUCRuntimeClass__IH_Z(&CDC::classRuntimeClass,4,2);
+    }
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    *(undefined4 *)(pAVar1 + 0x1c) = uVar4;
+    _AfxSetNewHandler__YGP6AHI_ZP6AHI_Z_Z(uVar2);
+  }
+  uVar2 = *(undefined4 *)(pAVar1 + 0x1c);
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return uVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612736
+// GHIDRA_NAME ?FromHandle@CDC@@SGPAV1@PAUHDC__@@@Z
+// GHIDRA_PROTO undefined ?FromHandle@CDC@@SGPAV1@PAUHDC__@@@Z()
+
+void _FromHandle_CDC__SGPAV1_PAUHDC_____Z(undefined4 param_1)
+
+{
+  _afxMapHDC__YAPAVCHandleMap__H_Z(1);
+  _FromHandle_CHandleMap__QAEPAVCObject__PAX_Z(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612783
+// GHIDRA_NAME ?Detach@CDC@@QAEPAUHDC__@@XZ
+// GHIDRA_PROTO undefined ?Detach@CDC@@QAEPAUHDC__@@XZ()
+
+int __fastcall _Detach_CDC__QAEPAUHDC____XZ(int *param_1)
+
+{
+  int iVar1;
+  TTooltipRelayWindowState *this;
+
+  iVar1 = param_1[1];
+  if (iVar1 != 0) {
+    this = (TTooltipRelayWindowState *)_afxMapHDC__YAPAVCHandleMap__H_Z(0);
+    if (this != (TTooltipRelayWindowState *)0x0) {
+      TTooltipRelayWindowState::_RemoveKey_CMapPtrToPtr__QAEHPAX_Z(this,param_1[1]);
+    }
+  }
+  (**(code **)(*param_1 + 0x1c))();
+  param_1[1] = 0;
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006127CA
+// GHIDRA_NAME ??1CDC@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CDC@@UAE@XZ()
+
+void __1CDC__UAE_XZ(void)
+
+{
+  undefined4 uVar1;
+  HDC hdc;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &CDC::_vftable_;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  if (extraout_ECX[1] != 0) {
+    hdc = (HDC)_Detach_CDC__QAEPAUHDC____XZ();
+    DeleteDC(hdc);
+  }
+  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612860
+// GHIDRA_NAME SaveDcStateForWindowAndBackupHdc_00612860
+// GHIDRA_PROTO undefined SaveDcStateForWindowAndBackupHdc_00612860()
+
+int __fastcall SaveDcStateForWindowAndBackupHdc_00612860(int param_1)
+
+{
+  int iVar1;
+  int iVar2;
+
+  iVar1 = param_1;
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    iVar1 = SaveDC(*(HDC *)(param_1 + 8));
+  }
+  if ((*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) &&
+     (iVar2 = SaveDC(*(HDC *)(param_1 + 4)), iVar2 != 0)) {
+    iVar1 = -1;
+  }
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612878
+// GHIDRA_NAME CallDcCallbackIfPrimaryHdcDiffers
+// GHIDRA_PROTO undefined CallDcCallbackIfPrimaryHdcDiffers()
+
+undefined4 CallDcCallbackIfPrimaryHdcDiffers(void)
+
+{
+  int iVar1;
+  undefined4 unaff_EBX;
+  int unaff_ESI;
+  code *unaff_EDI;
+
+  if (*(int *)(unaff_ESI + 4) != *(int *)(unaff_ESI + 8)) {
+    iVar1 = (*unaff_EDI)(*(int *)(unaff_ESI + 4));
+    if (iVar1 != 0) {
+      unaff_EBX = 0xffffffff;
+    }
+  }
+  return unaff_EBX;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061287E
+// GHIDRA_NAME CallDcCallbackIfPrimaryHdcDiffers
+// GHIDRA_PROTO undefined CallDcCallbackIfPrimaryHdcDiffers()
+
+undefined4 CallDcCallbackIfPrimaryHdcDiffers(void)
+
+{
+  int iVar1;
+  undefined4 unaff_EBX;
+  int unaff_ESI;
+  code *unaff_EDI;
+
+  if (*(int *)(unaff_ESI + 4) != *(int *)(unaff_ESI + 8)) {
+    iVar1 = (*unaff_EDI)(*(int *)(unaff_ESI + 4));
+    if (iVar1 != 0) {
+      unaff_EBX = 0xffffffff;
+    }
+  }
+  return unaff_EBX;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612931
+// GHIDRA_NAME ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z
+// GHIDRA_PROTO undefined ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z()
+
+void __thiscall _SelectObject_CDC__QAEPAVCBrush__PAV2__Z(int param_1,HGDIOBJ param_2)
+
+{
+  HGDIOBJ pvVar1;
+  HGDIOBJ h;
+
+  pvVar1 = param_2;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    if (param_2 == (HGDIOBJ)0x0) {
+      h = (HGDIOBJ)0x0;
+    }
+    else {
+      h = *(HGDIOBJ *)((int)param_2 + 4);
+    }
+    param_2 = SelectObject(*(HDC *)(param_1 + 4),h);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    if (pvVar1 == (HGDIOBJ)0x0) {
+      pvVar1 = (HGDIOBJ)0x0;
+    }
+    else {
+      pvVar1 = *(HGDIOBJ *)((int)pvVar1 + 4);
+    }
+    param_2 = SelectObject(*(HDC *)(param_1 + 8),pvVar1);
+  }
+  _FromHandle_CGdiObject__SGPAV1_PAX_Z(param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612984
+// GHIDRA_NAME ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z
+// GHIDRA_PROTO undefined ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z()
+
+void __thiscall _SelectObject_CDC__QAEPAVCBrush__PAV2__Z(int param_1,HGDIOBJ param_2)
+
+{
+  HGDIOBJ pvVar1;
+  HGDIOBJ h;
+
+  pvVar1 = param_2;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    if (param_2 == (HGDIOBJ)0x0) {
+      h = (HGDIOBJ)0x0;
+    }
+    else {
+      h = *(HGDIOBJ *)((int)param_2 + 4);
+    }
+    param_2 = SelectObject(*(HDC *)(param_1 + 4),h);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    if (pvVar1 == (HGDIOBJ)0x0) {
+      pvVar1 = (HGDIOBJ)0x0;
+    }
+    else {
+      pvVar1 = *(HGDIOBJ *)((int)pvVar1 + 4);
+    }
+    param_2 = SelectObject(*(HDC *)(param_1 + 8),pvVar1);
+  }
+  _FromHandle_CGdiObject__SGPAV1_PAX_Z(param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612A2A
+// GHIDRA_NAME ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z@00612a2a
+// GHIDRA_PROTO undefined ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z@00612a2a()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::SelectClipRgn(class CRgn *)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SelectObject(class CRgn *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::SelectClipRgn(class CRgn *)
+    public: int __thiscall CDC::SelectObject(class CRgn *)
+
+   Library: nafxcw retail msvc500:static */
+
+HGDIOBJ __thiscall _SelectClipRgn_CDC__QAEHPAVCRgn___Z_00612a2a(int param_1,HGDIOBJ param_2)
+
+{
+  HGDIOBJ pvVar1;
+  HGDIOBJ h;
+
+  pvVar1 = param_2;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    if (param_2 == (HGDIOBJ)0x0) {
+      h = (HGDIOBJ)0x0;
+    }
+    else {
+      h = *(HGDIOBJ *)((int)param_2 + 4);
+    }
+    param_2 = SelectObject(*(HDC *)(param_1 + 4),h);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    if (pvVar1 == (HGDIOBJ)0x0) {
+      pvVar1 = (HGDIOBJ)0x0;
+    }
+    else {
+      pvVar1 = *(HGDIOBJ *)((int)pvVar1 + 4);
+    }
+    param_2 = SelectObject(*(HDC *)(param_1 + 8),pvVar1);
+  }
+  return param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612A78
+// GHIDRA_NAME thunk_DispatchHandleMapLookupWithReadPtrProbe
+// GHIDRA_PROTO undefined thunk_DispatchHandleMapLookupWithReadPtrProbe()
+
+void __fastcall thunk_DispatchHandleMapLookupWithReadPtrProbe(TOceanDialog *param_1)
+
+{
+  TOceanDialog::DispatchHandleMapLookupWithReadPtrProbe(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612A9A
+// GHIDRA_NAME ?SetMapperFlags@CDC@@QAEKK@Z@00612a9a
+// GHIDRA_PROTO undefined ?SetMapperFlags@CDC@@QAEKK@Z@00612a9a()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetArcDirection(int)
+// GHIDRA_COMMENT  public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetBkMode(int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::SetArcDirection(int)
+    public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+    public: int __thiscall CDC::SetBkMode(int)
+    public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+COLORREF __thiscall _SetMapperFlags_CDC__QAEKK_Z_00612a9a(COLORREF param_1,COLORREF param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetBkColor(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetBkColor(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612AD2
+// GHIDRA_NAME ?SetMapperFlags@CDC@@QAEKK@Z
+// GHIDRA_PROTO undefined ?SetMapperFlags@CDC@@QAEKK@Z()
+
+int __thiscall _SetMapperFlags_CDC__QAEKK_Z(int param_1,int param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetBkMode(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetBkMode(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612B0A
+// GHIDRA_NAME ?SetMapperFlags@CDC@@QAEKK@Z@00612b0a
+// GHIDRA_PROTO undefined ?SetMapperFlags@CDC@@QAEKK@Z@00612b0a()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetArcDirection(int)
+// GHIDRA_COMMENT  public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetBkMode(int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::SetArcDirection(int)
+    public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+    public: int __thiscall CDC::SetBkMode(int)
+    public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall _SetMapperFlags_CDC__QAEKK_Z_00612b0a(int param_1,int param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetPolyFillMode(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetPolyFillMode(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612B42
+// GHIDRA_NAME ?SetMapperFlags@CDC@@QAEKK@Z@00612b42
+// GHIDRA_PROTO undefined ?SetMapperFlags@CDC@@QAEKK@Z@00612b42()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetArcDirection(int)
+// GHIDRA_COMMENT  public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetBkMode(int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::SetArcDirection(int)
+    public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+    public: int __thiscall CDC::SetBkMode(int)
+    public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall _SetMapperFlags_CDC__QAEKK_Z_00612b42(int param_1,int param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetROP2(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetROP2(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612B7A
+// GHIDRA_NAME ?SetMapperFlags@CDC@@QAEKK@Z@00612b7a
+// GHIDRA_PROTO undefined ?SetMapperFlags@CDC@@QAEKK@Z@00612b7a()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetArcDirection(int)
+// GHIDRA_COMMENT  public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetBkMode(int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::SetArcDirection(int)
+    public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+    public: int __thiscall CDC::SetBkMode(int)
+    public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall _SetMapperFlags_CDC__QAEKK_Z_00612b7a(int param_1,int param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetStretchBltMode(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetStretchBltMode(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612BB2
+// GHIDRA_NAME ?SetMapperFlags@CDC@@QAEKK@Z@00612bb2
+// GHIDRA_PROTO undefined ?SetMapperFlags@CDC@@QAEKK@Z@00612bb2()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetArcDirection(int)
+// GHIDRA_COMMENT  public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetBkMode(int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::SetArcDirection(int)
+    public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+    public: int __thiscall CDC::SetBkMode(int)
+    public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+COLORREF __thiscall _SetMapperFlags_CDC__QAEKK_Z_00612bb2(COLORREF param_1,COLORREF param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetTextColor(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetTextColor(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612BEA
+// GHIDRA_NAME ?SetMapMode@CDC@@UAEHH@Z
+// GHIDRA_PROTO undefined ?SetMapMode@CDC@@UAEHH@Z()
+
+int __thiscall _SetMapMode_CDC__UAEHH_Z(int param_1,int param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetMapMode(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetMapMode(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612C22
+// GHIDRA_NAME ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612c22
+// GHIDRA_PROTO undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612c22()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::MoveTo(int,int)
+// GHIDRA_COMMENT  public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+// GHIDRA_COMMENT   7 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: class CPoint __thiscall CDC::MoveTo(int,int)
+    public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+    public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+    public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+     7 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_OffsetViewportOrg_CDC__UAE_AVCPoint__HH_Z_00612c22
+          (int param_1,int *param_2,int param_3,int param_4)
+
+{
+  tagPOINT local_c;
+
+  local_c.x = param_1;
+  local_c.y = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    SetViewportOrgEx(*(HDC *)(param_1 + 4),param_3,param_4,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    SetViewportOrgEx(*(HDC *)(param_1 + 8),param_3,param_4,&local_c);
+  }
+  *param_2 = local_c.x;
+  param_2[1] = local_c.y;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612C6E
+// GHIDRA_NAME ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612c6e
+// GHIDRA_PROTO undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612c6e()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::MoveTo(int,int)
+// GHIDRA_COMMENT  public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+// GHIDRA_COMMENT   7 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: class CPoint __thiscall CDC::MoveTo(int,int)
+    public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+    public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+    public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+     7 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_OffsetViewportOrg_CDC__UAE_AVCPoint__HH_Z_00612c6e
+          (int param_1,int *param_2,int param_3,int param_4)
+
+{
+  tagPOINT local_c;
+
+  local_c.x = param_1;
+  local_c.y = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    OffsetViewportOrgEx(*(HDC *)(param_1 + 4),param_3,param_4,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    OffsetViewportOrgEx(*(HDC *)(param_1 + 8),param_3,param_4,&local_c);
+  }
+  *param_2 = local_c.x;
+  param_2[1] = local_c.y;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612CBA
+// GHIDRA_NAME ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612cba
+// GHIDRA_PROTO undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612cba()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::MoveTo(int,int)
+// GHIDRA_COMMENT  public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+// GHIDRA_COMMENT   7 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: class CPoint __thiscall CDC::MoveTo(int,int)
+    public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+    public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+    public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+     7 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_OffsetViewportOrg_CDC__UAE_AVCPoint__HH_Z_00612cba
+          (int param_1,int *param_2,int param_3,int param_4)
+
+{
+  tagSIZE local_c;
+
+  local_c.cx = param_1;
+  local_c.cy = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    SetViewportExtEx(*(HDC *)(param_1 + 4),param_3,param_4,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    SetViewportExtEx(*(HDC *)(param_1 + 8),param_3,param_4,&local_c);
+  }
+  *param_2 = local_c.cx;
+  param_2[1] = local_c.cy;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612D06
+// GHIDRA_NAME ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z@00612d06
+// GHIDRA_PROTO undefined ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z@00612d06()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::ScaleViewportExt(int,int,int,int)
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::ScaleWindowExt(int,int,int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: virtual class CSize __thiscall CDC::ScaleViewportExt(int,int,int,int)
+    public: virtual class CSize __thiscall CDC::ScaleWindowExt(int,int,int,int)
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_ScaleWindowExt_CDC__UAE_AVCSize__HHHH_Z_00612d06
+          (int param_1,int *param_2,int param_3,int param_4,int param_5,int param_6)
+
+{
+  tagSIZE local_c;
+
+  local_c.cx = param_1;
+  local_c.cy = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    ScaleViewportExtEx(*(HDC *)(param_1 + 4),param_3,param_4,param_5,param_6,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    ScaleViewportExtEx(*(HDC *)(param_1 + 8),param_3,param_4,param_5,param_6,&local_c);
+  }
+  *param_2 = local_c.cx;
+  param_2[1] = local_c.cy;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612DAA
+// GHIDRA_NAME ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612daa
+// GHIDRA_PROTO undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612daa()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::MoveTo(int,int)
+// GHIDRA_COMMENT  public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+// GHIDRA_COMMENT   7 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: class CPoint __thiscall CDC::MoveTo(int,int)
+    public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+    public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+    public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+     7 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_OffsetViewportOrg_CDC__UAE_AVCPoint__HH_Z_00612daa
+          (int param_1,int *param_2,int param_3,int param_4)
+
+{
+  tagPOINT local_c;
+
+  local_c.x = param_1;
+  local_c.y = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    OffsetWindowOrgEx(*(HDC *)(param_1 + 4),param_3,param_4,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    OffsetWindowOrgEx(*(HDC *)(param_1 + 8),param_3,param_4,&local_c);
+  }
+  *param_2 = local_c.x;
+  param_2[1] = local_c.y;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612DF6
+// GHIDRA_NAME ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612df6
+// GHIDRA_PROTO undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612df6()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::MoveTo(int,int)
+// GHIDRA_COMMENT  public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+// GHIDRA_COMMENT   7 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: class CPoint __thiscall CDC::MoveTo(int,int)
+    public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+    public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+    public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+     7 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_OffsetViewportOrg_CDC__UAE_AVCPoint__HH_Z_00612df6
+          (int param_1,int *param_2,int param_3,int param_4)
+
+{
+  tagSIZE local_c;
+
+  local_c.cx = param_1;
+  local_c.cy = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    SetWindowExtEx(*(HDC *)(param_1 + 4),param_3,param_4,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    SetWindowExtEx(*(HDC *)(param_1 + 8),param_3,param_4,&local_c);
+  }
+  *param_2 = local_c.cx;
+  param_2[1] = local_c.cy;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612E42
+// GHIDRA_NAME ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z@00612e42
+// GHIDRA_PROTO undefined ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z@00612e42()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::ScaleViewportExt(int,int,int,int)
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::ScaleWindowExt(int,int,int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: virtual class CSize __thiscall CDC::ScaleViewportExt(int,int,int,int)
+    public: virtual class CSize __thiscall CDC::ScaleWindowExt(int,int,int,int)
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_ScaleWindowExt_CDC__UAE_AVCSize__HHHH_Z_00612e42
+          (int param_1,int *param_2,int param_3,int param_4,int param_5,int param_6)
+
+{
+  tagSIZE local_c;
+
+  local_c.cx = param_1;
+  local_c.cy = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    ScaleWindowExtEx(*(HDC *)(param_1 + 4),param_3,param_4,param_5,param_6,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    ScaleWindowExtEx(*(HDC *)(param_1 + 8),param_3,param_4,param_5,param_6,&local_c);
+  }
+  *param_2 = local_c.cx;
+  param_2[1] = local_c.cy;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612E9A
+// GHIDRA_NAME GetClipBoxFromThisHdcField
+// GHIDRA_PROTO undefined GetClipBoxFromThisHdcField()
+
+void __thiscall GetClipBoxFromThisHdcField(int param_1,LPRECT param_2)
+
+{
+  GetClipBox(*(HDC *)(param_1 + 4),param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612EF8
+// GHIDRA_NAME ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612ef8
+// GHIDRA_PROTO undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612ef8()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::ExcludeClipRect(int,int,int,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::IntersectClipRect(int,int,int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::ExcludeClipRect(int,int,int,int)
+    public: int __thiscall CDC::IntersectClipRect(int,int,int,int)
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall
+_IntersectClipRect_CDC__QAEHHHHH_Z_00612ef8
+          (int param_1,int param_2,int param_3,int param_4,int param_5)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = ExcludeClipRect(*(HDC *)(param_1 + 4),param_2,param_3,param_4,param_5);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = ExcludeClipRect(*(HDC *)(param_1 + 8),param_2,param_3,param_4,param_5);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612F42
+// GHIDRA_NAME ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612f42
+// GHIDRA_PROTO undefined ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612f42()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::ExcludeClipRect(struct tagRECT const *)
+// GHIDRA_COMMENT  public: int __thiscall CDC::IntersectClipRect(struct tagRECT const *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::ExcludeClipRect(struct tagRECT const *)
+    public: int __thiscall CDC::IntersectClipRect(struct tagRECT const *)
+
+   Library: nafxcw retail msvc500:static */
+
+int * __thiscall _IntersectClipRect_CDC__QAEHPBUtagRECT___Z_00612f42(int param_1,int *param_2)
+
+{
+  int *piVar1;
+
+  piVar1 = param_2;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    param_2 = (int *)ExcludeClipRect(*(HDC *)(param_1 + 4),*param_2,param_2[1],param_2[2],param_2[3]
+                                    );
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    param_2 = (int *)ExcludeClipRect(*(HDC *)(param_1 + 8),*piVar1,piVar1[1],piVar1[2],piVar1[3]);
+  }
+  return param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612F8E
+// GHIDRA_NAME ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612f8e
+// GHIDRA_PROTO undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612f8e()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::ExcludeClipRect(int,int,int,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::IntersectClipRect(int,int,int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::ExcludeClipRect(int,int,int,int)
+    public: int __thiscall CDC::IntersectClipRect(int,int,int,int)
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall
+_IntersectClipRect_CDC__QAEHHHHH_Z_00612f8e
+          (int param_1,int param_2,int param_3,int param_4,int param_5)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = IntersectClipRect(*(HDC *)(param_1 + 4),param_2,param_3,param_4,param_5);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = IntersectClipRect(*(HDC *)(param_1 + 8),param_2,param_3,param_4,param_5);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612FD8
+// GHIDRA_NAME ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z
+// GHIDRA_PROTO undefined ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z()
+
+int * __thiscall _IntersectClipRect_CDC__QAEHPBUtagRECT___Z(int param_1,int *param_2)
+
+{
+  int *piVar1;
+
+  piVar1 = param_2;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    param_2 = (int *)IntersectClipRect(*(HDC *)(param_1 + 4),*param_2,param_2[1],param_2[2],
+                                       param_2[3]);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    param_2 = (int *)IntersectClipRect(*(HDC *)(param_1 + 8),*piVar1,piVar1[1],piVar1[2],piVar1[3]);
+  }
+  return param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613024
+// GHIDRA_NAME ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613024
+// GHIDRA_PROTO undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613024()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::OffsetClipRgn(int,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetTextJustification(int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::OffsetClipRgn(int,int)
+    public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)
+    public: int __thiscall CDC::SetTextJustification(int,int)
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall _OffsetClipRgn_CDC__QAEHUtagSIZE___Z_00613024(int param_1,int param_2,int param_3)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = OffsetClipRgn(*(HDC *)(param_1 + 4),param_2,param_3);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = OffsetClipRgn(*(HDC *)(param_1 + 8),param_2,param_3);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613062
+// GHIDRA_NAME ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613062
+// GHIDRA_PROTO undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613062()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::OffsetClipRgn(int,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetTextJustification(int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::OffsetClipRgn(int,int)
+    public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)
+    public: int __thiscall CDC::SetTextJustification(int,int)
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall _OffsetClipRgn_CDC__QAEHUtagSIZE___Z_00613062(int param_1,int param_2,int param_3)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = OffsetClipRgn(*(HDC *)(param_1 + 4),param_2,param_3);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = OffsetClipRgn(*(HDC *)(param_1 + 8),param_2,param_3);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006130A0
+// GHIDRA_NAME ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@006130a0
+// GHIDRA_PROTO undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@006130a0()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::MoveTo(int,int)
+// GHIDRA_COMMENT  public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+// GHIDRA_COMMENT  public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+// GHIDRA_COMMENT  public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+// GHIDRA_COMMENT   7 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: class CPoint __thiscall CDC::MoveTo(int,int)
+    public: virtual class CPoint __thiscall CDC::OffsetViewportOrg(int,int)
+    public: class CPoint __thiscall CDC::OffsetWindowOrg(int,int)
+    public: virtual class CSize __thiscall CDC::SetViewportExt(int,int)
+     7 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_OffsetViewportOrg_CDC__UAE_AVCPoint__HH_Z_006130a0
+          (int param_1,int *param_2,int param_3,int param_4)
+
+{
+  tagPOINT local_c;
+
+  local_c.x = param_1;
+  local_c.y = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    MoveToEx(*(HDC *)(param_1 + 4),param_3,param_4,&local_c);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    MoveToEx(*(HDC *)(param_1 + 8),param_3,param_4,&local_c);
+  }
+  *param_2 = local_c.x;
+  param_2[1] = local_c.y;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006130EC
+// GHIDRA_NAME ?LineTo@CDC@@QAEHHH@Z@006130ec
+// GHIDRA_PROTO int __thiscall ?LineTo@CDC@@QAEHHH@Z@006130ec(int param_1, int param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CDC::LineTo(int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CDC::LineTo(int,int)
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall _LineTo_CDC__QAEHHH_Z_006130ec(void *this,int param_1,int param_2)
+
+{
+  HDC hdc;
+  BOOL BVar1;
+
+  hdc = *(HDC *)((int)this + 8);
+  if ((hdc != (HDC)0x0) && (*(HDC *)((int)this + 4) != hdc)) {
+    MoveToEx(hdc,param_1,param_2,(LPPOINT)0x0);
+  }
+  BVar1 = LineTo(*(HDC *)((int)this + 4),param_1,param_2);
+  return BVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613155
+// GHIDRA_NAME ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613155
+// GHIDRA_PROTO undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613155()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::OffsetClipRgn(int,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetTextJustification(int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::OffsetClipRgn(int,int)
+    public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)
+    public: int __thiscall CDC::SetTextJustification(int,int)
+
+   Library: nafxcw retail msvc500:static */
+
+BOOL __thiscall _OffsetClipRgn_CDC__QAEHUtagSIZE___Z_00613155(int param_1,int param_2,int param_3)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetTextJustification(*(HDC *)(param_1 + 4),param_2,param_3);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetTextJustification(*(HDC *)(param_1 + 8),param_2,param_3);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613193
+// GHIDRA_NAME ?SetMapperFlags@CDC@@QAEKK@Z@00613193
+// GHIDRA_PROTO undefined ?SetMapperFlags@CDC@@QAEKK@Z@00613193()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetArcDirection(int)
+// GHIDRA_COMMENT  public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetBkMode(int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::SetArcDirection(int)
+    public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+    public: int __thiscall CDC::SetBkMode(int)
+    public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall _SetMapperFlags_CDC__QAEKK_Z_00613193(int param_1,int param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetTextCharacterExtra(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetTextCharacterExtra(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006131CB
+// GHIDRA_NAME ?SetMapperFlags@CDC@@QAEKK@Z
+// GHIDRA_PROTO undefined ?SetMapperFlags@CDC@@QAEKK@Z()
+
+DWORD __thiscall _SetMapperFlags_CDC__QAEKK_Z(DWORD param_1,DWORD param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetMapperFlags(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetMapperFlags(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061325B
+// GHIDRA_NAME ?SetMapperFlags@CDC@@QAEKK@Z@0061325b
+// GHIDRA_PROTO undefined ?SetMapperFlags@CDC@@QAEKK@Z@0061325b()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetArcDirection(int)
+// GHIDRA_COMMENT  public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetBkMode(int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::SetArcDirection(int)
+    public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+    public: int __thiscall CDC::SetBkMode(int)
+    public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall _SetMapperFlags_CDC__QAEKK_Z_0061325b(int param_1,int param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetArcDirection(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetArcDirection(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006132DC
+// GHIDRA_NAME ?PolylineTo@CDC@@QAEHPBUtagPOINT@@H@Z@006132dc
+// GHIDRA_PROTO BOOL __stdcall ?PolylineTo@CDC@@QAEHPBUtagPOINT@@H@Z@006132dc(HDC hdc, POINT * apt, DWORD cpt)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::PolyBezierTo(struct tagPOINT const *,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::PolylineTo(struct tagPOINT const *,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::PolyBezierTo(struct tagPOINT const *,int)
+    public: int __thiscall CDC::PolylineTo(struct tagPOINT const *,int)
+
+   Library: nafxcw retail msvc500:static */
+
+BOOL _PolylineTo_CDC__QAEHPBUtagPOINT__H_Z_006132dc(HDC hdc,POINT *apt,DWORD cpt)
+
+{
+  BOOL BVar1;
+  int in_ECX;
+  tagPOINT local_c;
+
+  local_c.x = in_ECX;
+  local_c.y = in_ECX;
+  BVar1 = PolylineTo(*(HDC *)(in_ECX + 4),(POINT *)hdc,(DWORD)apt);
+  if (*(HDC *)(in_ECX + 4) != *(HDC *)(in_ECX + 8)) {
+    GetCurrentPositionEx(*(HDC *)(in_ECX + 4),&local_c);
+    MoveToEx(*(HDC *)(in_ECX + 8),local_c.x,local_c.y,(LPPOINT)0x0);
+  }
+  return BVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613322
+// GHIDRA_NAME ?SetMapperFlags@CDC@@QAEKK@Z@00613322
+// GHIDRA_PROTO undefined ?SetMapperFlags@CDC@@QAEKK@Z@00613322()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetArcDirection(int)
+// GHIDRA_COMMENT  public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetBkMode(int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::SetArcDirection(int)
+    public: virtual unsigned long __thiscall CDC::SetBkColor(unsigned long)
+    public: int __thiscall CDC::SetBkMode(int)
+    public: int __thiscall CDC::SetColorAdjustment(struct tagCOLORADJUSTMENT const *)
+     11 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+BOOL __thiscall _SetMapperFlags_CDC__QAEKK_Z_00613322(int param_1,COLORADJUSTMENT *param_2)
+
+{
+  undefined4 local_8;
+
+  local_8 = param_1;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    local_8 = SetColorAdjustment(*(HDC *)(param_1 + 4),param_2);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    local_8 = SetColorAdjustment(*(HDC *)(param_1 + 8),param_2);
+  }
+  return local_8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061335A
+// GHIDRA_NAME ?PolylineTo@CDC@@QAEHPBUtagPOINT@@H@Z@0061335a
+// GHIDRA_PROTO BOOL __stdcall ?PolylineTo@CDC@@QAEHPBUtagPOINT@@H@Z@0061335a(HDC hdc, POINT * apt, DWORD cpt)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: int __thiscall CDC::PolyBezierTo(struct tagPOINT const *,int)
+// GHIDRA_COMMENT  public: int __thiscall CDC::PolylineTo(struct tagPOINT const *,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: int __thiscall CDC::PolyBezierTo(struct tagPOINT const *,int)
+    public: int __thiscall CDC::PolylineTo(struct tagPOINT const *,int)
+
+   Library: nafxcw retail msvc500:static */
+
+BOOL _PolylineTo_CDC__QAEHPBUtagPOINT__H_Z_0061335a(HDC hdc,POINT *apt,DWORD cpt)
+
+{
+  BOOL BVar1;
+  int in_ECX;
+  tagPOINT local_c;
+
+  local_c.x = in_ECX;
+  local_c.y = in_ECX;
+  BVar1 = PolyBezierTo(*(HDC *)(in_ECX + 4),(POINT *)hdc,(DWORD)apt);
+  if (*(HDC *)(in_ECX + 4) != *(HDC *)(in_ECX + 8)) {
+    GetCurrentPositionEx(*(HDC *)(in_ECX + 4),&local_c);
+    MoveToEx(*(HDC *)(in_ECX + 8),local_c.x,local_c.y,(LPPOINT)0x0);
+  }
+  return BVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613452
+// GHIDRA_NAME ?AfxEnumMetaFileProc@@YGHPAUHDC__@@PAUtagHANDLETABLE@@PAUtagMETARECORD@@HJ@Z
+// GHIDRA_PROTO undefined ?AfxEnumMetaFileProc@@YGHPAUHDC__@@PAUtagHANDLETABLE@@PAUtagMETARECORD@@HJ@Z()
+
+undefined4
+_AfxEnumMetaFileProc__YGHPAUHDC____PAUtagHANDLETABLE__PAUtagMETARECORD__HJ_Z
+          (HDC param_1,LPHANDLETABLE param_2,LPMETARECORD param_3,UINT param_4,int *param_5)
+
+{
+  ushort uVar1;
+  HGDIOBJ h;
+  int iVar2;
+  DWORD DVar3;
+  HGDIOBJ h_00;
+  undefined4 uVar4;
+  undefined1 local_44 [8];
+  undefined1 local_3c [8];
+  undefined1 local_34 [8];
+  undefined1 local_2c [8];
+  undefined1 local_24 [8];
+  undefined1 local_1c [8];
+  undefined1 local_14 [8];
+  HGDIOBJ local_c;
+  HGDIOBJ local_8;
+
+  uVar1 = param_3->rdFunction;
+  if (uVar1 < 0x104) {
+    if (uVar1 == 0x103) {
+      (**(code **)(*param_5 + 0x3c))((int)(short)param_3->rdParm[0]);
+      return 1;
+    }
+    if (uVar1 == 0x1e) {
+      (**(code **)(*param_5 + 0x24))();
+      return 1;
+    }
+  }
+  else if (uVar1 < 0x12e) {
+    if (uVar1 == 0x12d) {
+      h = param_2[param_3->rdParm[0]].objectHandle[0];
+      DVar3 = GetObjectType(h);
+      if (DVar3 == 0) {
+        local_8 = GetStockObject(0xd);
+        h_00 = SelectObject((HDC)param_5[1],local_8);
+        local_c = SelectObject((HDC)param_5[1],h);
+        if (local_c == local_8) {
+          iVar2 = *param_5;
+          uVar4 = _FromHandle_CGdiObject__SGPAV1_PAX_Z(h);
+          (**(code **)(iVar2 + 0x30))(uVar4);
+          return 1;
+        }
+        SelectObject((HDC)param_5[1],h_00);
+        SelectObject((HDC)param_5[1],local_c);
+      }
+      else if (DVar3 == 6) {
+        iVar2 = *param_5;
+        uVar4 = _FromHandle_CGdiObject__SGPAV1_PAX_Z(h);
+        (**(code **)(iVar2 + 0x30))(uVar4);
+        return 1;
+      }
+    }
+    else if (uVar1 == 0x127) {
+      (**(code **)(*param_5 + 0x28))((int)(short)param_3->rdParm[0]);
+      return 1;
+    }
+  }
+  else if (uVar1 < 0x20a) {
+    if (uVar1 == 0x209) {
+      (**(code **)(*param_5 + 0x38))(*(undefined4 *)param_3->rdParm);
+      return 1;
+    }
+    if (uVar1 == 0x201) {
+      (**(code **)(*param_5 + 0x34))(*(undefined4 *)param_3->rdParm);
+      return 1;
+    }
+  }
+  else {
+    if (uVar1 == 0x20b) {
+      _SetWindowOrg_CDC__QAE_AVCPoint__HH_Z
+                (local_44,(int)(short)param_3[1].rdSize,(int)(short)param_3->rdParm[0]);
+      return 1;
+    }
+    if (uVar1 == 0x20c) {
+      (**(code **)(*param_5 + 0x50))
+                (local_3c,(int)(short)param_3[1].rdSize,(int)(short)param_3->rdParm[0]);
+      return 1;
+    }
+    if (uVar1 == 0x20d) {
+      (**(code **)(*param_5 + 0x40))
+                (local_34,(int)(short)param_3[1].rdSize,(int)(short)param_3->rdParm[0]);
+      return 1;
+    }
+    if (uVar1 == 0x20e) {
+      (**(code **)(*param_5 + 0x48))
+                (local_2c,(int)(short)param_3[1].rdSize,(int)(short)param_3->rdParm[0]);
+      return 1;
+    }
+    if (uVar1 == 0x211) {
+      (**(code **)(*param_5 + 0x44))
+                (local_24,(int)(short)param_3[1].rdSize,(int)(short)param_3->rdParm[0]);
+      return 1;
+    }
+    if (uVar1 == 0x410) {
+      (**(code **)(*param_5 + 0x54))
+                (local_1c,(int)(short)param_3[1].rdFunction,
+                 (int)*(short *)((int)&param_3[1].rdSize + 2),(int)(short)param_3[1].rdSize,
+                 (int)(short)param_3->rdParm[0]);
+      return 1;
+    }
+    if (uVar1 == 0x412) {
+      (**(code **)(*param_5 + 0x4c))
+                (local_14,(int)(short)param_3[1].rdFunction,
+                 (int)*(short *)((int)&param_3[1].rdSize + 2),(int)(short)param_3[1].rdSize,
+                 (int)(short)param_3->rdParm[0]);
+      return 1;
+    }
+  }
+  PlayMetaFileRecord(param_1,param_2,param_3,param_4);
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613686
+// GHIDRA_NAME ?PlayMetaFile@CDC@@QAEHPAUHMETAFILE__@@@Z@00613686
+// GHIDRA_PROTO int __thiscall ?PlayMetaFile@CDC@@QAEHPAUHMETAFILE__@@@Z@00613686(HMETAFILE__ * param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CDC::PlayMetaFile(struct HMETAFILE__ *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CDC::PlayMetaFile(struct HMETAFILE__ *)
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall _PlayMetaFile_CDC__QAEHPAUHMETAFILE_____Z_00613686(void *this,HMETAFILE__ *param_1)
+
+{
+  int iVar1;
+
+  iVar1 = GetDeviceCaps(*(HDC *)((int)this + 4),2);
+  if (iVar1 == 5) {
+    iVar1 = PlayMetaFile(*(HDC *)((int)this + 4),param_1);
+  }
+  else {
+    iVar1 = EnumMetaFile(*(HDC *)((int)this + 4),param_1,
+                         _AfxEnumMetaFileProc__YGHPAUHDC____PAUtagHANDLETABLE__PAUtagMETARECORD__HJ_Z
+                         ,(LPARAM)this);
+  }
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613791
+// GHIDRA_NAME ??0CWindowDC@@QAE@PAVCWnd@@@Z
+// GHIDRA_PROTO undefined ??0CWindowDC@@QAE@PAVCWnd@@@Z()
+
+TCivDescription * __0CWindowDC__QAE_PAVCWnd___Z(void)
+
+{
+  HWND hWnd;
+  HDC pHVar1;
+  int iVar2;
+  TCivDescription *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(TCivDescription **)(unaff_EBP + -0x10) = this;
+  CDC::__0CDC__QAE_XZ((CDC *)this);
+  iVar2 = *(int *)(unaff_EBP + 8);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  this->vftable = (TCivDescriptionVtbl *)&CClientDC::_vftable_;
+  hWnd = (HWND)0x0;
+  if (iVar2 != 0) {
+    hWnd = *(HWND *)(iVar2 + 0x1c);
+  }
+  this->field10 = (int)hWnd;
+  pHVar1 = GetDC(hWnd);
+  iVar2 = TCivDescription::_Attach_CDC__QAEHPAUHDC_____Z(this,(int)pHVar1);
+  if (iVar2 == 0) {
+    _AfxThrowResourceException__YGXXZ();
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006137E7
+// GHIDRA_NAME ??_GCClientDC@@UAEPAXI@Z@006137e7
+// GHIDRA_PROTO undefined ??_GCClientDC@@UAEPAXI@Z@006137e7()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: virtual void * __thiscall CClientDC::`scalar deleting destructor'(unsigned int)
+// GHIDRA_COMMENT  public: virtual void * __thiscall CWindowDC::`scalar deleting destructor'(unsigned int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: virtual void * __thiscall CClientDC::`scalar deleting destructor'(unsigned int)
+    public: virtual void * __thiscall CWindowDC::`scalar deleting destructor'(unsigned int)
+
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall ___GCClientDC__UAEPAXI_Z_006137e7(undefined4 param_1,byte param_2)
+
+{
+  __1CWindowDC__UAE_XZ();
+  if ((param_2 & 1) != 0) {
+    __3_YAXPAX_Z(param_1);
+  }
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613803
+// GHIDRA_NAME ??1CWindowDC@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CWindowDC@@UAE@XZ()
+
+void __1CWindowDC__UAE_XZ(void)
+
+{
+  HDC hDC;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &CClientDC::_vftable_;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  hDC = (HDC)_Detach_CDC__QAEPAUHDC____XZ();
+  ReleaseDC((HWND)extraout_ECX[4],hDC);
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  __1CDC__UAE_XZ();
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613845
+// GHIDRA_NAME ??0CWindowDC@@QAE@PAVCWnd@@@Z
+// GHIDRA_PROTO undefined ??0CWindowDC@@QAE@PAVCWnd@@@Z()
+
+TCivDescription * __0CWindowDC__QAE_PAVCWnd___Z(void)
+
+{
+  HWND hWnd;
+  HDC pHVar1;
+  int iVar2;
+  TCivDescription *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(TCivDescription **)(unaff_EBP + -0x10) = this;
+  CDC::__0CDC__QAE_XZ((CDC *)this);
+  iVar2 = *(int *)(unaff_EBP + 8);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  this->vftable = (TCivDescriptionVtbl *)&PTR_LAB_0067251c;
+  hWnd = (HWND)0x0;
+  if (iVar2 != 0) {
+    hWnd = *(HWND *)(iVar2 + 0x1c);
+  }
+  this->field10 = (int)hWnd;
+  pHVar1 = GetWindowDC(hWnd);
+  iVar2 = TCivDescription::_Attach_CDC__QAEHPAUHDC_____Z(this,(int)pHVar1);
+  if (iVar2 == 0) {
+    _AfxThrowResourceException__YGXXZ();
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061389B
+// GHIDRA_NAME ??_GCClientDC@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_GCClientDC@@UAEPAXI@Z()
+
+undefined4 __thiscall ___GCClientDC__UAEPAXI_Z(undefined4 param_1,byte param_2)
+
+{
+  __1CWindowDC__UAE_XZ();
+  if ((param_2 & 1) != 0) {
+    __3_YAXPAX_Z(param_1);
+  }
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006138B7
+// GHIDRA_NAME ??1CWindowDC@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CWindowDC@@UAE@XZ()
+
+void __1CWindowDC__UAE_XZ(void)
+
+{
+  HDC hDC;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &PTR_LAB_0067251c;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  hDC = (HDC)_Detach_CDC__QAEPAUHDC____XZ();
+  ReleaseDC((HWND)extraout_ECX[4],hDC);
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  __1CDC__UAE_XZ();
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006138F9
+// GHIDRA_NAME ??0CPaintDC@@QAE@PAVCWnd@@@Z
+// GHIDRA_PROTO undefined ??0CPaintDC@@QAE@PAVCWnd@@@Z()
+
+TCivDescription * __0CPaintDC__QAE_PAVCWnd___Z(void)
+
+{
+  HWND hWnd;
+  HDC pHVar1;
+  int iVar2;
+  TCivDescription *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(TCivDescription **)(unaff_EBP + -0x10) = this;
+  CDC::__0CDC__QAE_XZ((CDC *)this);
+  iVar2 = *(int *)(unaff_EBP + 8);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  this->vftable = (TCivDescriptionVtbl *)&PTR_LAB_0067259c;
+  hWnd = *(HWND *)(iVar2 + 0x1c);
+  this->field10 = (int)hWnd;
+  pHVar1 = BeginPaint(hWnd,(LPPAINTSTRUCT)&this->field14);
+  iVar2 = TCivDescription::_Attach_CDC__QAEHPAUHDC_____Z(this,(int)pHVar1);
+  if (iVar2 == 0) {
+    _AfxThrowResourceException__YGXXZ();
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006139B2
+// GHIDRA_NAME ?DeleteTempMap@CMenu@@SGXXZ
+// GHIDRA_PROTO undefined ?DeleteTempMap@CMenu@@SGXXZ()
+
+void _DeleteTempMap_CMenu__SGXXZ(void)
+
+{
+  int iVar1;
+
+  iVar1 = _afxMapHMENU__YAPAVCHandleMap__H_Z(0);
+  if (iVar1 != 0) {
+    _DeleteTemp_CHandleMap__QAEXXZ();
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006139C6
+// GHIDRA_NAME ?afxMapHMENU@@YAPAVCHandleMap@@H@Z
+// GHIDRA_PROTO undefined ?afxMapHMENU@@YAPAVCHandleMap@@H@Z()
+
+undefined4 _afxMapHMENU__YAPAVCHandleMap__H_Z(void)
+
+{
+  AFX_MODULE_THREAD_STATE *pAVar1;
+  undefined4 uVar2;
+  int iVar3;
+  undefined4 uVar4;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  pAVar1 = _AfxGetModuleThreadState__YGPAVAFX_MODULE_THREAD_STATE__XZ_006238ac();
+  if ((*(int *)(pAVar1 + 0x20) == 0) && (*(int *)(unaff_EBP + 8) != 0)) {
+    uVar2 = _AfxSetNewHandler__YGP6AHI_ZP6AHI_Z_Z(EnsureMfcModuleThreadBufferCapacity);
+    iVar3 = __2_YAPAXI_Z(0x44);
+    *(int *)(unaff_EBP + 8) = iVar3;
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    if (iVar3 == 0) {
+      uVar4 = 0;
+    }
+    else {
+      uVar4 = __0CHandleMap__QAE_PAUCRuntimeClass__IH_Z(&CGdiObject::classRuntimeClass,4,1);
+    }
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    *(undefined4 *)(pAVar1 + 0x20) = uVar4;
+    _AfxSetNewHandler__YGP6AHI_ZP6AHI_Z_Z(uVar2);
+  }
+  uVar2 = *(undefined4 *)(pAVar1 + 0x20);
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return uVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613A36
+// GHIDRA_NAME ?FromHandle@CGdiObject@@SGPAV1@PAX@Z
+// GHIDRA_PROTO undefined ?FromHandle@CGdiObject@@SGPAV1@PAX@Z()
+
+void _FromHandle_CGdiObject__SGPAV1_PAX_Z(undefined4 param_1)
+
+{
+  _afxMapHMENU__YAPAVCHandleMap__H_Z(1);
+  _FromHandle_CHandleMap__QAEPAVCObject__PAX_Z(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613A79
+// GHIDRA_NAME ?Detach@CMenu@@QAEPAUHMENU__@@XZ
+// GHIDRA_PROTO undefined ?Detach@CMenu@@QAEPAUHMENU__@@XZ()
+
+int __fastcall _Detach_CMenu__QAEPAUHMENU____XZ(int param_1)
+
+{
+  int iVar1;
+  TTooltipRelayWindowState *this;
+
+  iVar1 = *(int *)(param_1 + 4);
+  if (iVar1 != 0) {
+    this = (TTooltipRelayWindowState *)_afxMapHMENU__YAPAVCHandleMap__H_Z(0);
+    if (this != (TTooltipRelayWindowState *)0x0) {
+      TTooltipRelayWindowState::_RemoveKey_CMapPtrToPtr__QAEHPAX_Z(this,*(uint *)(param_1 + 4));
+    }
+  }
+  *(undefined4 *)(param_1 + 4) = 0;
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613AA3
+// GHIDRA_NAME ?DeleteObject@CGdiObject@@QAEHXZ
+// GHIDRA_PROTO undefined ?DeleteObject@CGdiObject@@QAEHXZ()
+
+BOOL __fastcall _DeleteObject_CGdiObject__QAEHXZ(int param_1)
+
+{
+  HGDIOBJ ho;
+  BOOL BVar1;
+
+  if (*(int *)(param_1 + 4) == 0) {
+    return 0;
+  }
+  ho = (HGDIOBJ)_Detach_CMenu__QAEPAUHMENU____XZ();
+  BVar1 = DeleteObject(ho);
+  return BVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613B09
+// GHIDRA_NAME ??0CPen@@QAE@HHPBUtagLOGBRUSH@@HPBK@Z
+// GHIDRA_PROTO undefined ??0CPen@@QAE@HHPBUtagLOGBRUSH@@HPBK@Z()
+
+CBrush * __0CPen__QAE_HHPBUtagLOGBRUSH__HPBK_Z(void)
+
+{
+  DWORD *pstyle;
+  HPEN pHVar1;
+  int iVar2;
+  CBrush *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(CBrush **)(unaff_EBP + -0x10) = this;
+  *(undefined4 *)(this + 4) = 0;
+  pstyle = *(DWORD **)(unaff_EBP + 0x18);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  *(undefined ***)this = &PTR_LAB_0067261c;
+  pHVar1 = ExtCreatePen(*(DWORD *)(unaff_EBP + 8),*(DWORD *)(unaff_EBP + 0xc),
+                        *(LOGBRUSH **)(unaff_EBP + 0x10),*(DWORD *)(unaff_EBP + 0x14),pstyle);
+  iVar2 = CBrush::_Attach_CGdiObject__QAEHPAX_Z(this,(int)pHVar1);
+  if (iVar2 == 0) {
+    _AfxThrowResourceException__YGXXZ();
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613BA9
+// GHIDRA_NAME ??0CBrush@@QAE@HK@Z
+// GHIDRA_PROTO undefined ??0CBrush@@QAE@HK@Z()
+
+CBrush * __0CBrush__QAE_HK_Z(void)
+
+{
+  COLORREF color;
+  HBRUSH pHVar1;
+  int iVar2;
+  CBrush *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(CBrush **)(unaff_EBP + -0x10) = this;
+  *(undefined4 *)(this + 4) = 0;
+  color = *(COLORREF *)(unaff_EBP + 0xc);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  *(undefined ***)this = &PTR_LAB_00672634;
+  pHVar1 = CreateHatchBrush(*(int *)(unaff_EBP + 8),color);
+  iVar2 = CBrush::_Attach_CGdiObject__QAEHPAX_Z(this,(int)pHVar1);
+  if (iVar2 == 0) {
+    _AfxThrowResourceException__YGXXZ();
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613BF6
+// GHIDRA_NAME ??0CBrush@@QAE@PAVCBitmap@@@Z
+// GHIDRA_PROTO undefined ??0CBrush@@QAE@PAVCBitmap@@@Z()
+
+CBrush * __0CBrush__QAE_PAVCBitmap___Z(void)
+
+{
+  HBRUSH pHVar1;
+  int iVar2;
+  CBrush *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(CBrush **)(unaff_EBP + -0x10) = this;
+  *(undefined4 *)(this + 4) = 0;
+  iVar2 = *(int *)(unaff_EBP + 8);
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  *(undefined ***)this = &PTR_LAB_00672634;
+  pHVar1 = CreatePatternBrush(*(HBITMAP *)(iVar2 + 4));
+  iVar2 = CBrush::_Attach_CGdiObject__QAEHPAX_Z(this,(int)pHVar1);
+  if (iVar2 == 0) {
+    _AfxThrowResourceException__YGXXZ();
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613C75
+// GHIDRA_NAME ?AfxThrowResourceException@@YGXXZ
+// GHIDRA_PROTO undefined ?AfxThrowResourceException@@YGXXZ()
+
+void _AfxThrowResourceException__YGXXZ(void)
+
+{
+  undefined *local_8;
+
+  local_8 = &DAT_006a7af0;
+  __CxxThrowException_8(&local_8,&DAT_0068db88);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613C90
+// GHIDRA_NAME ?AfxThrowUserException@@YGXXZ
+// GHIDRA_PROTO undefined ?AfxThrowUserException@@YGXXZ()
+
+void _AfxThrowUserException__YGXXZ(void)
+
+{
+  undefined *local_8;
+
+  local_8 = &DAT_006a7a58;
+  __CxxThrowException_8(&local_8,&DAT_0068dbd0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613CB1
+// GHIDRA_NAME ??0CView@@IAE@XZ
+// GHIDRA_PROTO undefined ??0CView@@IAE@XZ()
+
+undefined4 * __fastcall __0CView__IAE_XZ(undefined4 *param_1)
+
+{
+  __0CWnd__QAE_XZ();
+  param_1[0xf] = 0;
+  *param_1 = &PTR_LAB_00672c54;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613CC7
+// GHIDRA_NAME ??_GCView@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_GCView@@UAEPAXI@Z()
+
+undefined4 __thiscall ___GCView__UAEPAXI_Z(undefined4 param_1,byte param_2)
+
+{
+  __1CView__UAE_XZ();
+  if ((param_2 & 1) != 0) {
+    __3_YAXPAX_Z(param_1);
+  }
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613D23
+// GHIDRA_NAME ?PreCreateWindow@CView@@MAEHAAUtagCREATESTRUCTA@@@Z
+// GHIDRA_PROTO undefined ?PreCreateWindow@CView@@MAEHAAUtagCREATESTRUCTA@@@Z()
+
+undefined4 _PreCreateWindow_CView__MAEHAAUtagCREATESTRUCTA___Z(int param_1)
+
+{
+  int iVar1;
+
+  if (*(int *)(param_1 + 0x28) == 0) {
+    iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    if ((*(byte *)(iVar1 + 0x18) & 8) == 0) {
+      iVar1 = _AfxEndDeferRegisterClass__YGHF_Z(8);
+    }
+    else {
+      iVar1 = 1;
+    }
+    if (iVar1 == 0) {
+      return 0;
+    }
+    *(char **)(param_1 + 0x28) = "AfxFrameOrView42s";
+  }
+  if ((DAT_006a7d5c != 0) && ((*(uint *)(param_1 + 0x20) & 0x800000) != 0)) {
+    *(byte *)(param_1 + 0x2d) = *(byte *)(param_1 + 0x2d) | 2;
+    *(uint *)(param_1 + 0x20) = *(uint *)(param_1 + 0x20) & 0xff7fffff;
+  }
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613D76
+// GHIDRA_NAME ?OnCreate@CView@@IAEHPAUtagCREATESTRUCTA@@@Z
+// GHIDRA_PROTO undefined ?OnCreate@CView@@IAEHPAUtagCREATESTRUCTA@@@Z()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  protected: int __thiscall CView::OnCreate(struct tagCREATESTRUCTA *)
+// GHIDRA_COMMENT  protected: int __thiscall CView::OnCreate(struct tagCREATESTRUCTW *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Libraries: Visual Studio 2003 Release, Visual Studio 2005 Release
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    protected: int __thiscall CView::OnCreate(struct tagCREATESTRUCTA *)
+    protected: int __thiscall CView::OnCreate(struct tagCREATESTRUCTW *)
+
+   Libraries: Visual Studio 2003 Release, Visual Studio 2005 Release */
+
+undefined4 __thiscall _OnCreate_CView__IAEHPAUtagCREATESTRUCTA___Z(CWnd *param_1,int *param_2)
+
+{
+  CDocument *this;
+  int iVar1;
+  undefined4 uVar2;
+
+  iVar1 = CWnd::_Default_CWnd__IAEJXZ(param_1);
+  if (iVar1 == -1) {
+    uVar2 = 0xffffffff;
+  }
+  else {
+    if ((*param_2 != 0) && (this = *(CDocument **)(*param_2 + 4), this != (CDocument *)0x0)) {
+      CDocument::_AddView_CDocument__QAEXPAVCView___Z(this,(int)param_1);
+    }
+    uVar2 = 0;
+  }
+  return uVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613DA6
+// GHIDRA_NAME ?OnDestroy@CView@@IAEXXZ
+// GHIDRA_PROTO undefined ?OnDestroy@CView@@IAEXXZ()
+
+void __fastcall _OnDestroy_CView__IAEXXZ(int param_1)
+
+{
+  CFrameWnd *this;
+  int iVar1;
+
+  this = (CFrameWnd *)_GetParentFrame_CWnd__QBEPAVCFrameWnd__XZ();
+  if (this != (CFrameWnd *)0x0) {
+    iVar1 = GetObjectValueAtOffset98();
+    if (iVar1 == param_1) {
+      CFrameWnd::_SetActiveView_CFrameWnd__QAEXPAVCView__H_Z(this,(CView *)0x0,1);
+    }
+  }
+  _OnDestroy_CWnd__IAEXXZ();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613DD5
+// GHIDRA_NAME DeleteObjectViaVirtualDtorIfNonNull_00613dd5
+// GHIDRA_PROTO undefined DeleteObjectViaVirtualDtorIfNonNull_00613dd5()
+
+void __fastcall DeleteObjectViaVirtualDtorIfNonNull_00613dd5(int *param_1)
+
+{
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613DE1
+// GHIDRA_NAME AdjustWindowRectForClientAndScrollStyles
+// GHIDRA_PROTO undefined AdjustWindowRectForClientAndScrollStyles()
+
+void AdjustWindowRectForClientAndScrollStyles(LPRECT param_1,int param_2)
+
+{
+  DWORD dwExStyle;
+  uint uVar1;
+  int iVar2;
+
+  if (param_2 == 0) {
+    _CalcWindowRect_CWnd__UAEXPAUtagRECT__I_Z(param_1,0);
+  }
+  else {
+    dwExStyle = _GetExStyle_CWnd__QBEKXZ();
+    AdjustWindowRectEx(param_1,0,0,dwExStyle);
+    uVar1 = _GetStyle_CWnd__QBEKXZ();
+    if ((uVar1 & 0x200000) != 0) {
+      iVar2 = DAT_006a7d00;
+      if ((uVar1 & 0x800000) != 0) {
+        iVar2 = DAT_006a7d00 + -1;
+      }
+      param_1->right = param_1->right + iVar2;
+    }
+    if ((uVar1 & 0x100000) != 0) {
+      iVar2 = DAT_006a7d04;
+      if ((uVar1 & 0x800000) != 0) {
+        iVar2 = DAT_006a7d04 + -1;
+      }
+      param_1->bottom = param_1->bottom + iVar2;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613E36
+// GHIDRA_NAME NoOpVirtualStub_00613e44
+// GHIDRA_PROTO undefined NoOpVirtualStub_00613e44()
+
+void NoOpVirtualStub_00613e44(void)
+
+{
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00613E44
 // GHIDRA_NAME NoOpVirtualStub_00613e44
 // GHIDRA_PROTO undefined NoOpVirtualStub_00613e44()
@@ -47,28 +2536,28 @@ void __thiscall CMainFrame::DispatchVirtualSlotF8_WithArg(int *param_1,undefined
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613F39
-// GHIDRA_NAME OnActivateView
-// GHIDRA_PROTO undefined OnActivateView()
+// GHIDRA_NAME ?OnActivateView@CView@@MAEXHPAV1@0@Z
+// GHIDRA_PROTO undefined ?OnActivateView@CView@@MAEXHPAV1@0@Z()
 
-void OnActivateView(int param_1)
+void _OnActivateView_CView__MAEXHPAV1_0_Z(int param_1)
 
 {
   int iVar1;
-  
+
   if (param_1 != 0) {
-    iVar1 = FUN_00609382();
+    iVar1 = _IsTopParentActive_CWnd__QBEHXZ();
     if (iVar1 != 0) {
-      SetFocus();
+      _SetFocus_CWnd__QAEPAV1_XZ();
     }
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613F5A
-// GHIDRA_NAME OnMouseActivate
-// GHIDRA_PROTO undefined OnMouseActivate()
+// GHIDRA_NAME ?OnMouseActivate@CView@@IAEHPAVCWnd@@II@Z
+// GHIDRA_PROTO undefined ?OnMouseActivate@CView@@IAEHPAVCWnd@@II@Z()
 
-int __fastcall OnMouseActivate(CWnd *param_1)
+int __fastcall _OnMouseActivate_CView__IAEHPAVCWnd__II_Z(CWnd *param_1)
 
 {
   int iVar1;
@@ -76,10 +2565,10 @@ int __fastcall OnMouseActivate(CWnd *param_1)
   CWnd *pCVar2;
   HWND hWnd;
   BOOL BVar3;
-  
-  iVar1 = CWnd::Default(param_1);
+
+  iVar1 = CWnd::_Default_CWnd__IAEJXZ(param_1);
   if (((iVar1 != 3) && (iVar1 != 4)) &&
-     (this = (CFrameWnd *)GetParentFrame(), this != (CFrameWnd *)0x0)) {
+     (this = (CFrameWnd *)_GetParentFrame_CWnd__QBEPAVCFrameWnd__XZ(), this != (CFrameWnd *)0x0)) {
     pCVar2 = (CWnd *)GetObjectValueAtOffset98();
     hWnd = GetFocus();
     if (((pCVar2 == param_1) && (param_1->m_hWnd != hWnd)) &&
@@ -87,43 +2576,43 @@ int __fastcall OnMouseActivate(CWnd *param_1)
       (*(param_1->ccmdTarget).vftable[0x13].slot_0x08)(1,param_1,param_1);
       return iVar1;
     }
-    CFrameWnd::SetActiveView(this,(CView *)param_1,1);
+    CFrameWnd::_SetActiveView_CFrameWnd__QAEXPAVCView__H_Z(this,(CView *)param_1,1);
   }
   return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006142C0
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At006142c0
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At006142c0()
+// GHIDRA_NAME ??_GCCtrlView@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_GCCtrlView@@UAEPAXI@Z()
 
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At006142c0(undefined4 param_1,byte param_2)
+undefined4 __thiscall ___GCCtrlView__UAEPAXI_Z(undefined4 param_1,byte param_2)
 
 {
-  FUN_005e709d();
+  __1CCtrlView__UAE_XZ_005e709d();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614331
-// GHIDRA_NAME AfxCustomLogFont
-// GHIDRA_PROTO undefined AfxCustomLogFont()
+// GHIDRA_NAME ?AfxCustomLogFont@@YGHIPAUtagLOGFONTA@@@Z
+// GHIDRA_PROTO undefined ?AfxCustomLogFont@@YGHIPAUtagLOGFONTA@@@Z()
 
-undefined4 AfxCustomLogFont(undefined4 param_1,int *param_2)
+undefined4 _AfxCustomLogFont__YGHIPAUtagLOGFONTA___Z(undefined4 param_1,int *param_2)
 
 {
   int iVar1;
   undefined1 *puVar2;
   undefined4 uVar3;
   CHAR local_104 [256];
-  
-  iVar1 = AfxLoadString(param_1,local_104,0x100);
+
+  iVar1 = _AfxLoadString__YGHIPADI_Z(param_1,local_104,0x100);
   uVar3 = 0;
   if (iVar1 != 0) {
-    puVar2 = (undefined1 *)FindCharWithMbcsLeadByteSupport(local_104,10);
+    puVar2 = (undefined1 *)__mbschr(local_104,10);
     if (puVar2 != (undefined1 *)0x0) {
-      iVar1 = ParseSignedIntAndDiscardResult(puVar2 + 1);
+      iVar1 = _atoi(puVar2 + 1);
       *param_2 = iVar1;
       iVar1 = MulDiv(iVar1,DAT_006a7d1c,0x48);
       *param_2 = iVar1;
@@ -136,16 +2625,16 @@ undefined4 AfxCustomLogFont(undefined4 param_1,int *param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006143A9
-// GHIDRA_NAME AfxIsComboBoxControl
-// GHIDRA_PROTO undefined AfxIsComboBoxControl()
+// GHIDRA_NAME ?_AfxIsComboBoxControl@@YGHPAUHWND__@@I@Z
+// GHIDRA_PROTO undefined ?_AfxIsComboBoxControl@@YGHPAUHWND__@@I@Z()
 
-bool AfxIsComboBoxControl(HWND param_1,uint param_2)
+bool __AfxIsComboBoxControl__YGHPAUHWND____I_Z(HWND param_1,uint param_2)
 
 {
   uint uVar1;
   int iVar2;
   CHAR local_10 [12];
-  
+
   if ((param_1 != (HWND)0x0) && (uVar1 = GetWindowLongA(param_1,-0x10), (uVar1 & 0xf) == param_2)) {
     GetClassNameA(param_1,local_10,10);
     iVar2 = lstrcmpiA(local_10,"combobox");
@@ -155,25 +2644,26 @@ bool AfxIsComboBoxControl(HWND param_1,uint param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006143F3
-// GHIDRA_NAME AfxCompareClassName
-// GHIDRA_PROTO undefined AfxCompareClassName()
+// GHIDRA_NAME ?_AfxCompareClassName@@YGHPAUHWND__@@PBD@Z
+// GHIDRA_PROTO undefined ?_AfxCompareClassName@@YGHPAUHWND__@@PBD@Z()
 
-bool AfxCompareClassName(HWND param_1,LPCSTR param_2)
+bool __AfxCompareClassName__YGHPAUHWND____PBD_Z(HWND param_1,LPCSTR param_2)
 
 {
   int iVar1;
   CHAR local_24 [32];
-  
+
   GetClassNameA(param_1,local_24,0x20);
   iVar1 = lstrcmpiA(local_24,param_2);
   return iVar1 == 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061441E
-// GHIDRA_NAME AfxChildWindowFromPoint
-// GHIDRA_PROTO undefined AfxChildWindowFromPoint()
+// GHIDRA_NAME ?_AfxChildWindowFromPoint@@YGPAUHWND__@@PAU1@UtagPOINT@@@Z
+// GHIDRA_PROTO undefined ?_AfxChildWindowFromPoint@@YGPAUHWND__@@PAU1@UtagPOINT@@@Z()
 
-HWND AfxChildWindowFromPoint(HWND param_1,LONG param_2,LONG param_3)
+HWND __AfxChildWindowFromPoint__YGPAUHWND____PAU1_UtagPOINT___Z
+               (HWND param_1,LONG param_2,LONG param_3)
 
 {
   POINT pt;
@@ -182,7 +2672,7 @@ HWND AfxChildWindowFromPoint(HWND param_1,LONG param_2,LONG param_3)
   BOOL BVar3;
   UINT uCmd;
   tagRECT local_14;
-  
+
   ClientToScreen(param_1,(LPPOINT)&param_2);
   uCmd = 5;
   do {
@@ -206,17 +2696,17 @@ HWND AfxChildWindowFromPoint(HWND param_1,LONG param_2,LONG param_3)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614493
-// GHIDRA_NAME AfxSetWindowText
-// GHIDRA_PROTO undefined AfxSetWindowText()
+// GHIDRA_NAME ?AfxSetWindowText@@YGXPAUHWND__@@PBD@Z
+// GHIDRA_PROTO undefined ?AfxSetWindowText@@YGXPAUHWND__@@PBD@Z()
 
-void AfxSetWindowText(HWND param_1,LPCSTR param_2)
+void _AfxSetWindowText__YGXPAUHWND____PBD_Z(HWND param_1,LPCSTR param_2)
 
 {
   uint uVar1;
   uint uVar2;
   int iVar3;
   CHAR local_104 [256];
-  
+
   uVar1 = lstrlenA(param_2);
   if (((uVar1 < 0x101) && (uVar2 = GetWindowTextA(param_1,local_104,0x100), uVar2 == uVar1)) &&
      (iVar3 = lstrcmpA(local_104,param_2), iVar3 == 0)) {
@@ -227,10 +2717,10 @@ void AfxSetWindowText(HWND param_1,LPCSTR param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006144EB
-// GHIDRA_NAME AfxDeleteObject
-// GHIDRA_PROTO undefined AfxDeleteObject()
+// GHIDRA_NAME ?AfxDeleteObject@@YGXPAPAX@Z
+// GHIDRA_PROTO undefined ?AfxDeleteObject@@YGXPAPAX@Z()
 
-void AfxDeleteObject(undefined4 *param_1)
+void _AfxDeleteObject__YGXPAPAX_Z(undefined4 *param_1)
 
 {
   if ((HGDIOBJ)*param_1 != (HGDIOBJ)0x0) {
@@ -241,10 +2731,10 @@ void AfxDeleteObject(undefined4 *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614504
-// GHIDRA_NAME AfxCancelModes
-// GHIDRA_PROTO undefined AfxCancelModes()
+// GHIDRA_NAME ?AfxCancelModes@@YGXPAUHWND__@@@Z
+// GHIDRA_PROTO undefined ?AfxCancelModes@@YGXPAUHWND__@@@Z()
 
-void AfxCancelModes(HWND param_1)
+void _AfxCancelModes__YGXPAUHWND_____Z(HWND param_1)
 
 {
   HWND hWnd;
@@ -252,7 +2742,7 @@ void AfxCancelModes(HWND param_1)
   uint uVar2;
   HWND pHVar3;
   HWND pHVar4;
-  
+
   hWnd = GetFocus();
   if (hWnd == (HWND)0x0) {
     return;
@@ -260,13 +2750,13 @@ void AfxCancelModes(HWND param_1)
   if (hWnd == param_1) {
     return;
   }
-  iVar1 = AfxIsComboBoxControl(hWnd,3);
+  iVar1 = __AfxIsComboBoxControl__YGHPAUHWND____I_Z(hWnd,3);
   if (iVar1 == 0) {
     hWnd = GetParent(hWnd);
     if (hWnd == param_1) {
       return;
     }
-    iVar1 = AfxIsComboBoxControl(hWnd,2);
+    iVar1 = __AfxIsComboBoxControl__YGHPAUHWND____I_Z(hWnd,2);
     if (iVar1 == 0) {
       return;
     }
@@ -284,15 +2774,15 @@ void AfxCancelModes(HWND param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061457B
-// GHIDRA_NAME AfxGlobalFree
-// GHIDRA_PROTO undefined AfxGlobalFree()
+// GHIDRA_NAME ?AfxGlobalFree@@YGXPAX@Z
+// GHIDRA_PROTO undefined ?AfxGlobalFree@@YGXPAX@Z()
 
-void AfxGlobalFree(HGLOBAL param_1)
+void _AfxGlobalFree__YGXPAX_Z(HGLOBAL param_1)
 
 {
   UINT UVar1;
   uint uVar2;
-  
+
   if (param_1 != (HGLOBAL)0x0) {
     UVar1 = GlobalFlags(param_1);
     for (uVar2 = UVar1 & 0xff; uVar2 != 0; uVar2 = uVar2 - 1) {
@@ -312,21 +2802,21 @@ undefined4 EnsureMfcModuleThreadBufferCapacity(int param_1)
 {
   int iVar1;
   uint uVar2;
-  
-  iVar1 = AfxGetThreadState();
+
+  iVar1 = _AfxGetThreadState__YGPAV_AFX_THREAD_STATE__XZ();
   if ((iVar1 != 0) && (*(int *)(iVar1 + 0xc) != 0)) {
-    uVar2 = QueryAllocationSizeWithCustomAllocatorFallback(*(int *)(iVar1 + 0xc));
+    uVar2 = __msize(*(int *)(iVar1 + 0xc));
     if (param_1 + 4U < uVar2) {
       WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0
                 (*(undefined4 *)(iVar1 + 0xc),(uVar2 - param_1) + -4);
     }
     else {
-      FreeHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar1 + 0xc));
+      _free(*(undefined4 *)(iVar1 + 0xc));
       *(undefined4 *)(iVar1 + 0xc) = 0;
     }
     return 1;
   }
-  AfxThrowMemoryException();
+  _AfxThrowMemoryException__YGXXZ();
   return 0;
 }
 
@@ -357,13 +2847,13 @@ undefined4 ReturnOneStub_006145f5(void)
 undefined4 WrapperFor_ThrowMfcResourceException_At006145fa(void)
 
 {
-  AfxThrowMemoryException();
+  _AfxThrowMemoryException__YGXXZ();
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614790
-// GHIDRA_NAME CDocTemplate
-// GHIDRA_PROTO undefined CDocTemplate()
+// GHIDRA_NAME ??0CDocTemplate@@IAE@IPAUCRuntimeClass@@00@Z
+// GHIDRA_PROTO undefined ??0CDocTemplate@@IAE@IPAUCRuntimeClass@@00@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base constructor for CSingleDocTemplate-like object. Stores ctor args into template fields corresponding to resource id, document runtime class, frame runtime class, and view runtime class. This confirms startup doc-template registration uses runtime class pointers provided by caller.
 // GHIDRA_COMMENT_END
@@ -373,7 +2863,7 @@ undefined4 WrapperFor_ThrowMfcResourceException_At006145fa(void)
    class. This confirms startup doc-template registration uses runtime class pointers provided by
    caller. */
 
-CCmdTarget * CDocTemplate(void)
+CCmdTarget * __0CDocTemplate__IAE_IPAUCRuntimeClass__00_Z(void)
 
 {
   long lVar1;
@@ -384,12 +2874,12 @@ CCmdTarget * CDocTemplate(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   bool bVar4;
-  
+
   EstablishSehFrameProlog();
   *(CCmdTarget **)(unaff_EBP + -0x10) = this_00;
-  CCmdTarget();
+  __0CCmdTarget__QAE_XZ();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::CString((CString *)&this_00[3].m_xInnerUnknown);
+  CString::__0CString__QAE_XZ((CString *)&this_00[3].m_xInnerUnknown);
   lVar1 = *(long *)(unaff_EBP + 8);
   this_00->vftable = (CCmdTargetVtbl *)&PTR_LAB_006733e4;
   this_00[2].m_dwRef = lVar1;
@@ -413,66 +2903,66 @@ CCmdTarget * CDocTemplate(void)
   *(undefined1 *)(unaff_EBP + -4) = 1;
   if (bVar4) {
     this_00[1].vftable = (CCmdTargetVtbl *)0x1;
-    CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(this_00);
+    CCmdTarget::_LoadTemplate_CDocTemplate__UAEXXZ(this_00);
   }
   else {
     this_00[1].vftable = (CCmdTargetVtbl *)0x0;
     if (DAT_006a6124 == (CPtrList *)0x0) {
-      this = (TGreatPower *)AllocateWithFallbackHandler(0x1c);
+      this = (TGreatPower *)__2_YAPAXI_Z(0x1c);
       *(TGreatPower **)(unaff_EBP + 8) = this;
       *(undefined1 *)(unaff_EBP + -4) = 2;
       if (this == (TGreatPower *)0x0) {
         DAT_006a6124 = (CPtrList *)0x0;
       }
       else {
-        DAT_006a6124 = (CPtrList *)TGreatPower::CPtrList(this,10);
+        DAT_006a6124 = (CPtrList *)TGreatPower::__0CPtrList__QAE_H_Z(this,10);
       }
       *(undefined1 *)(unaff_EBP + -4) = 1;
     }
     if (DAT_006a6120 == 0) {
-      iVar3 = AllocateWithFallbackHandler(0x20);
+      iVar3 = __2_YAPAXI_Z(0x20);
       *(int *)(unaff_EBP + 8) = iVar3;
       *(undefined1 *)(unaff_EBP + -4) = 3;
       if (iVar3 == 0) {
         DAT_006a6120 = 0;
       }
       else {
-        DAT_006a6120 = CDocManager();
+        DAT_006a6120 = __0CDocManager__QAE_XZ();
       }
       *(undefined1 *)(unaff_EBP + -4) = 1;
     }
-    CPtrList::AddTail(DAT_006a6124,this_00);
+    CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z(DAT_006a6124,this_00);
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return this_00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614893
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00614893
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00614893()
+// GHIDRA_NAME ??_GCDocTemplate@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_GCDocTemplate@@UAEPAXI@Z()
 
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00614893(undefined4 param_1,byte param_2)
+undefined4 __thiscall ___GCDocTemplate__UAEPAXI_Z(undefined4 param_1,byte param_2)
 
 {
-  DestructMenuOwnerAndReleaseCaptionString();
+  __1CDocTemplate__UAE_XZ();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061499C
-// GHIDRA_NAME DestructMenuOwnerAndReleaseCaptionString
-// GHIDRA_PROTO undefined DestructMenuOwnerAndReleaseCaptionString()
+// GHIDRA_NAME ??1CDocTemplate@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CDocTemplate@@UAE@XZ()
 
-void DestructMenuOwnerAndReleaseCaptionString(void)
+void __1CDocTemplate__UAE_XZ(void)
 
 {
   HMENU hMenu;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_006733e4;
@@ -488,18 +2978,18 @@ void DestructMenuOwnerAndReleaseCaptionString(void)
     DestroyMenu((HMENU)extraout_ECX[0xd]);
   }
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(extraout_ECX + 0x18));
+  CString::__1CString__QAE_XZ((CString *)(extraout_ECX + 0x18));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  WrapperFor_EstablishSehFrameProlog_At006069cb();
+  __1CCmdTarget__UAE_XZ();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614CFA
-// GHIDRA_NAME AfxGetMouseScrollLines
-// GHIDRA_PROTO undefined AfxGetMouseScrollLines()
+// GHIDRA_NAME ?_AfxGetMouseScrollLines@@YAIH@Z
+// GHIDRA_PROTO undefined ?_AfxGetMouseScrollLines@@YAIH@Z()
 
-LRESULT AfxGetMouseScrollLines(HKEY param_1)
+LRESULT __AfxGetMouseScrollLines__YAIH_Z(HKEY param_1)
 
 {
   HWND hWnd;
@@ -508,7 +2998,7 @@ LRESULT AfxGetMouseScrollLines(HKEY param_1)
   BYTE local_120 [128];
   _OSVERSIONINFOA local_a0;
   DWORD local_c [2];
-  
+
   if ((param_1 != (HKEY)0x0) || (DAT_006a7f7c == 0)) {
     DAT_006a7f7c = 1;
     if (DAT_006a7f88 == 0) {
@@ -520,7 +3010,7 @@ LRESULT AfxGetMouseScrollLines(HKEY param_1)
       DAT_006a7f80 = SendMessageA(hWnd,DAT_006a7f84,0,0);
     }
     else {
-      CDocTemplate::memset(&local_a0,0,0x94);
+      CDocTemplate::_memset(&local_a0,0,0x94);
       local_a0.dwOSVersionInfoSize = 0x94;
       DAT_006a7f80 = 3;
       BVar1 = GetVersionExA(&local_a0);
@@ -532,7 +3022,7 @@ LRESULT AfxGetMouseScrollLines(HKEY param_1)
             LVar2 = RegQueryValueExA(param_1,"WheelScrollLines",(LPDWORD)0x0,local_c,local_120,
                                      local_c + 1);
             if (LVar2 == 0) {
-              DAT_006a7f80 = ParseSignedLongFromStringWithBase(local_120,0,10);
+              DAT_006a7f80 = _strtoul(local_120,0,10);
             }
             RegCloseKey(param_1);
           }
@@ -547,15 +3037,15 @@ LRESULT AfxGetMouseScrollLines(HKEY param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614E71
-// GHIDRA_NAME CScrollView
-// GHIDRA_PROTO undefined CScrollView()
+// GHIDRA_NAME ??0CScrollView@@IAE@XZ
+// GHIDRA_PROTO undefined ??0CScrollView@@IAE@XZ()
 
-undefined4 * __fastcall CScrollView(undefined4 *param_1)
+undefined4 * __fastcall __0CScrollView__IAE_XZ(undefined4 *param_1)
 
 {
-  CView();
+  __0CView__IAE_XZ();
   *param_1 = &PTR_LAB_0067358c;
-  CDocTemplate::memset(param_1 + 0x10,0,0x2c);
+  CDocTemplate::_memset(param_1 + 0x10,0,0x2c);
   param_1[0x10] = 0;
   return param_1;
 }
@@ -568,15 +3058,16 @@ void __fastcall DestructCViewAndResetVtable_0067358c(undefined4 *param_1)
 
 {
   *param_1 = &PTR_LAB_0067358c;
-  FUN_00613ce3();
+  __1CView__UAE_XZ();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614EBF
-// GHIDRA_NAME OnPrepareDC_614ebf
-// GHIDRA_PROTO undefined __thiscall OnPrepareDC_614ebf(int * param_1, undefined4 param_2)
+// GHIDRA_NAME ?OnPrepareDC@CScrollView@@UAEXPAVCDC@@PAUCPrintInfo@@@Z
+// GHIDRA_PROTO undefined __thiscall ?OnPrepareDC@CScrollView@@UAEXPAVCDC@@PAUCPrintInfo@@@Z(int * param_1, undefined4 param_2)
 
-void __thiscall OnPrepareDC_614ebf(void *this,int *param_1,undefined4 param_2)
+void __thiscall
+_OnPrepareDC_CScrollView__UAEXPAVCDC__PAUCPrintInfo___Z(void *this,int *param_1,undefined4 param_2)
 
 {
   int iVar1;
@@ -584,7 +3075,7 @@ void __thiscall OnPrepareDC_614ebf(void *this,int *param_1,undefined4 param_2)
   tagRECT local_1c;
   int local_c;
   int local_8;
-  
+
   iVar1 = *param_1;
   if (*(int *)((int)this + 0x40) == -1) {
     (**(code **)(iVar1 + 0x3c))(8);
@@ -599,7 +3090,8 @@ void __thiscall OnPrepareDC_614ebf(void *this,int *param_1,undefined4 param_2)
   local_c = 0;
   local_8 = 0;
   if (param_1[3] == 0) {
-    piVar2 = (int *)TControl::GetDeviceScrollPosition(this,&local_1c.right);
+    piVar2 = (int *)TControl::_GetDeviceScrollPosition_CScrollView__QBE_AVCPoint__XZ
+                              (this,&local_1c.right);
     local_c = -*piVar2;
     local_8 = -piVar2[1];
     if (*(int *)((int)this + 100) != 0) {
@@ -613,21 +3105,22 @@ void __thiscall OnPrepareDC_614ebf(void *this,int *param_1,undefined4 param_2)
     }
   }
   (**(code **)(iVar1 + 0x40))(&local_1c.right,local_c,local_8);
-  FUN_0061416e(param_1,param_2);
+  _OnPrepareDC_CView__UAEXPAVCDC__PAUCPrintInfo___Z(param_1,param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061537B
-// GHIDRA_NAME FillOutsideRect
-// GHIDRA_PROTO undefined FillOutsideRect()
+// GHIDRA_NAME ?FillOutsideRect@CScrollView@@QAEXPAVCDC@@PAVCBrush@@@Z
+// GHIDRA_PROTO undefined ?FillOutsideRect@CScrollView@@QAEXPAVCDC@@PAVCBrush@@@Z()
 
-void __thiscall FillOutsideRect(int param_1,int param_2,int param_3)
+void __thiscall
+_FillOutsideRect_CScrollView__QAEXPAVCDC__PAVCBrush___Z(int param_1,int param_2,int param_3)
 
 {
   BOOL BVar1;
   HBRUSH pHVar2;
   tagRECT local_14;
-  
+
   GetClientRect(*(HWND *)(param_1 + 0x1c),&local_14);
   local_14.left = *(LONG *)(param_1 + 0x4c);
   BVar1 = IsRectEmpty(&local_14);
@@ -653,25 +3146,25 @@ void __thiscall FillOutsideRect(int param_1,int param_2,int param_3)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061553F
-// GHIDRA_NAME CenterOnPoint
-// GHIDRA_PROTO undefined CenterOnPoint()
+// GHIDRA_NAME ?CenterOnPoint@CScrollView@@IAEXVCPoint@@@Z
+// GHIDRA_PROTO undefined ?CenterOnPoint@CScrollView@@IAEXVCPoint@@@Z()
 
-void __thiscall CenterOnPoint(int param_1,int param_2,int param_3)
+void __thiscall _CenterOnPoint_CScrollView__IAEXVCPoint___Z(int param_1,int param_2,int param_3)
 
 {
   uint uVar1;
   int iVar2;
   tagRECT local_14;
-  
+
   GetClientRect(*(HWND *)(param_1 + 0x1c),&local_14);
   param_2 = param_2 - (local_14.right - local_14.left) / 2;
   param_3 = param_3 - (local_14.bottom - local_14.top) / 2;
-  uVar1 = GetStyle();
+  uVar1 = _GetStyle_CWnd__QBEKXZ();
   if (((uVar1 & 0x100000) == 0) || (param_2 < 0)) {
     param_2 = 0;
   }
   else {
-    iVar2 = GetScrollLimit(0);
+    iVar2 = _GetScrollLimit_CWnd__QAEHH_Z(0);
     if (iVar2 < param_2) {
       param_2 = iVar2;
     }
@@ -680,30 +3173,31 @@ void __thiscall CenterOnPoint(int param_1,int param_2,int param_3)
     param_3 = 0;
   }
   else {
-    iVar2 = GetScrollLimit(1);
+    iVar2 = _GetScrollLimit_CWnd__QAEHH_Z(1);
     if (iVar2 < param_3) {
       param_3 = iVar2;
     }
   }
-  FUN_00609602(0);
-  SetScrollPos(0,param_2,1);
-  FUN_00609602(1);
-  SetScrollPos(1,param_3,1);
+  _GetScrollPos_CWnd__QBEHH_Z(0);
+  _SetScrollPos_CWnd__QAEHHHH_Z(0,param_2,1);
+  _GetScrollPos_CWnd__QBEHH_Z(1);
+  _SetScrollPos_CWnd__QAEHHHH_Z(1,param_3,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615B58
-// GHIDRA_NAME OnScroll
-// GHIDRA_PROTO undefined OnScroll()
+// GHIDRA_NAME ?OnScroll@CScrollView@@UAEHIIH@Z
+// GHIDRA_PROTO undefined ?OnScroll@CScrollView@@UAEHIIH@Z()
 
-int __thiscall OnScroll(int *param_1,undefined4 param_2,int param_3,int param_4)
+int __thiscall
+_OnScroll_CScrollView__UAEHIIH_Z(int *param_1,undefined4 param_2,int param_3,int param_4)
 
 {
   int iVar1;
   int iVar2;
   int iVar3;
-  
-  iVar1 = FUN_00609602(0);
+
+  iVar1 = _GetScrollPos_CWnd__QBEHH_Z(0);
   if ((char)param_2 == '\0') {
     iVar3 = iVar1 - param_1[0x17];
   }
@@ -730,7 +3224,7 @@ int __thiscall OnScroll(int *param_1,undefined4 param_2,int param_3,int param_4)
       }
     }
   }
-  iVar2 = FUN_00609602(1);
+  iVar2 = _GetScrollPos_CWnd__QBEHH_Z(1);
   if (param_2._1_1_ == '\0') {
     param_3 = iVar2 - param_1[0x18];
   }
@@ -762,44 +3256,44 @@ int __thiscall OnScroll(int *param_1,undefined4 param_2,int param_3,int param_4)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615D2B
-// GHIDRA_NAME GetErrorMessage_615d2b
-// GHIDRA_PROTO undefined GetErrorMessage_615d2b()
+// GHIDRA_NAME ?GetErrorMessage@CArchiveException@@UAEHPADIPAI@Z
+// GHIDRA_PROTO undefined ?GetErrorMessage@CArchiveException@@UAEHPADIPAI@Z()
 
-undefined4 GetErrorMessage_615d2b(void)
+undefined4 _GetErrorMessage_CArchiveException__UAEHPADIPAI_Z(void)
 
 {
   int extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   if (*(int **)(unaff_EBP + 0x10) != (int *)0x0) {
     **(int **)(unaff_EBP + 0x10) = *(int *)(extraout_ECX + 8) + 0xf1b0;
   }
-  CString::CString((CString *)(unaff_EBP + -0x10));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::StringSharedRef_AssignFromPtr
-            ((CString *)(unaff_EBP + 0x10),(CString *)(extraout_ECX + 0xc));
+  CString::__0CString__QAE_ABV0__Z((CString *)(unaff_EBP + 0x10),(CString *)(extraout_ECX + 0xc));
   *(undefined1 *)(unaff_EBP + -4) = 1;
   if (*(int *)(*(int *)(unaff_EBP + 0x10) + -8) == 0) {
-    LoadStringA(0xf006);
+    _LoadStringA_CString__QAEHI_Z(0xf006);
   }
-  AfxFormatString1(unaff_EBP + -0x10,*(int *)(extraout_ECX + 8) + 0xf1b0,
-                   *(undefined4 *)(unaff_EBP + 0x10));
+  _AfxFormatString1__YGXAAVCString__IPBD_Z
+            (unaff_EBP + -0x10,*(int *)(extraout_ECX + 8) + 0xf1b0,*(undefined4 *)(unaff_EBP + 0x10)
+            );
   lstrcpynA(*(LPSTR *)(unaff_EBP + 8),*(LPCSTR *)(unaff_EBP + -0x10),*(int *)(unaff_EBP + 0xc));
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + 0x10));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(unaff_EBP + -0x10));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615DCB
-// GHIDRA_NAME AfxThrowArchiveException
-// GHIDRA_PROTO undefined AfxThrowArchiveException()
+// GHIDRA_NAME ?AfxThrowArchiveException@@YGXHPBD@Z
+// GHIDRA_PROTO undefined ?AfxThrowArchiveException@@YGXHPBD@Z()
 
-void AfxThrowArchiveException(void)
+void _AfxThrowArchiveException__YGXHPBD_Z(void)
 
 {
   undefined4 uVar1;
@@ -807,37 +3301,37 @@ void AfxThrowArchiveException(void)
   undefined4 *puVar2;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x10);
+  puVar2 = (undefined4 *)__2_YAPAXI_Z(0x10);
   *(undefined4 **)(unaff_EBP + -0x14) = puVar2;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (puVar2 == (undefined4 *)0x0) {
     puVar2 = (undefined4 *)0x0;
   }
   else {
-    ConstructSerializedDataExceptionBase();
+    __0CException__QAE_XZ();
     *(undefined1 *)(unaff_EBP + -4) = 1;
-    CString::CString((CString *)(puVar2 + 3));
+    CString::__0CString__QAE_XZ((CString *)(puVar2 + 3));
     uVar1 = *(undefined4 *)(unaff_EBP + 8);
     src_text = *(char **)(unaff_EBP + 0xc);
     *(undefined1 *)(unaff_EBP + -4) = 2;
     *puVar2 = &PTR_LAB_00673734;
     puVar2[2] = uVar1;
-    CString::CopyFromCStr((CString *)(puVar2 + 3),src_text);
+    CString::__4CString__QAEABV0_PBD_Z((CString *)(puVar2 + 3),src_text);
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   *(undefined4 **)(unaff_EBP + -0x10) = puVar2;
-  RaiseMfcSehExceptionWithArgs(unaff_EBP + -0x10,&DAT_0068ea58);
+  __CxxThrowException_8(unaff_EBP + -0x10,&DAT_0068ea58);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061842F
-// GHIDRA_NAME OnFileNew
-// GHIDRA_PROTO undefined OnFileNew()
+// GHIDRA_NAME ?OnFileNew@CWinApp@@IAEXXZ
+// GHIDRA_PROTO undefined ?OnFileNew@CWinApp@@IAEXXZ()
 
-void __fastcall OnFileNew(int param_1)
+void __fastcall _OnFileNew_CWinApp__IAEXXZ(int param_1)
 
 {
   if (*(int **)(param_1 + 0x80) != (int *)0x0) {
@@ -850,25 +3344,24 @@ void __fastcall OnFileNew(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006185E4
-// GHIDRA_NAME WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-// GHIDRA_PROTO undefined WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4()
+// GHIDRA_NAME ?AfxMessageBox@@YGHPBDII@Z
+// GHIDRA_PROTO undefined ?AfxMessageBox@@YGHPBDII@Z()
 
-void WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-               (undefined4 param_1,undefined4 param_2,undefined4 param_3)
+void _AfxMessageBox__YGHPBDII_Z(undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
   int iVar1;
-  
-  iVar1 = AfxGetModuleState();
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   (**(code **)(**(int **)(iVar1 + 4) + 0x94))(param_1,param_2,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618605
-// GHIDRA_NAME FormatResourceStringAndDispatchViaThreadState
-// GHIDRA_PROTO undefined FormatResourceStringAndDispatchViaThreadState()
+// GHIDRA_NAME ?AfxMessageBox@@YGHIII@Z
+// GHIDRA_PROTO undefined ?AfxMessageBox@@YGHIII@Z()
 
-undefined4 FormatResourceStringAndDispatchViaThreadState(void)
+undefined4 _AfxMessageBox__YGHIII_Z(void)
 
 {
   int iVar1;
@@ -876,20 +3369,20 @@ undefined4 FormatResourceStringAndDispatchViaThreadState(void)
   int unaff_EBP;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
-  CString::CString((CString *)(unaff_EBP + -0x10));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  LoadStringA(*(undefined4 *)(unaff_EBP + 8));
+  _LoadStringA_CString__QAEHI_Z(*(undefined4 *)(unaff_EBP + 8));
   iVar3 = *(int *)(unaff_EBP + 0x10);
   if (iVar3 == -1) {
     iVar3 = *(int *)(unaff_EBP + 8);
   }
-  iVar1 = AfxGetModuleState();
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   uVar2 = (**(code **)(**(int **)(iVar1 + 4) + 0x94))
                     (*(undefined4 *)(unaff_EBP + -0x10),*(undefined4 *)(unaff_EBP + 0xc),iVar3);
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(unaff_EBP + -0x10));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return uVar2;
 }
@@ -915,8 +3408,8 @@ void NoOpVirtualStub_00618753(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061878F
-// GHIDRA_NAME AddDocTemplate
-// GHIDRA_PROTO undefined AddDocTemplate()
+// GHIDRA_NAME ?AddDocTemplate@CWinApp@@QAEXPAVCDocTemplate@@@Z
+// GHIDRA_PROTO undefined ?AddDocTemplate@CWinApp@@QAEXPAVCDocTemplate@@@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT App helper that ensures app->documentTemplateList exists (this+0x80) and appends provided doc-template object. Called in startup after ConstructImperialismSingleDocTemplate.
 // GHIDRA_COMMENT_END
@@ -924,7 +3417,7 @@ void NoOpVirtualStub_00618753(void)
 /* App helper that ensures app->documentTemplateList exists (this+0x80) and appends provided
    doc-template object. Called in startup after ConstructImperialismSingleDocTemplate. */
 
-void AddDocTemplate(void)
+void _AddDocTemplate_CWinApp__QAEXPAVCDocTemplate___Z(void)
 
 {
   int iVar1;
@@ -932,17 +3425,17 @@ void AddDocTemplate(void)
   int extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   if (*(int *)(extraout_ECX + 0x80) == 0) {
-    iVar1 = AllocateWithFallbackHandler(0x20);
+    iVar1 = __2_YAPAXI_Z(0x20);
     *(int *)(unaff_EBP + -0x10) = iVar1;
     *(undefined4 *)(unaff_EBP + -4) = 0;
     if (iVar1 == 0) {
       uVar2 = 0;
     }
     else {
-      uVar2 = CDocManager();
+      uVar2 = __0CDocManager__QAE_XZ();
     }
     *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
     *(undefined4 *)(extraout_ECX + 0x80) = uVar2;
@@ -953,15 +3446,15 @@ void AddDocTemplate(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006189DC
-// GHIDRA_NAME PrepareCtrl
-// GHIDRA_PROTO undefined PrepareCtrl()
+// GHIDRA_NAME ?PrepareCtrl@CDataExchange@@QAEPAUHWND__@@H@Z
+// GHIDRA_PROTO undefined ?PrepareCtrl@CDataExchange@@QAEPAUHWND__@@H@Z()
 
-void __thiscall PrepareCtrl(int param_1,int param_2)
+void __thiscall _PrepareCtrl_CDataExchange__QAEPAUHWND____H_Z(int param_1,int param_2)
 
 {
-  GetDlgItem_60713b(param_2,&param_2);
+  _GetDlgItem_CWnd__QBEXHPAPAUHWND_____Z(param_2,&param_2);
   if (param_2 == 0) {
-    AfxThrowNotSupportedException();
+    _AfxThrowNotSupportedException__YGXXZ();
   }
   *(undefined4 *)(param_1 + 0xc) = 0;
   *(int *)(param_1 + 8) = param_2;
@@ -969,8 +3462,8 @@ void __thiscall PrepareCtrl(int param_1,int param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618A0B
-// GHIDRA_NAME Fail
-// GHIDRA_PROTO undefined Fail()
+// GHIDRA_NAME ?Fail@CDataExchange@@QAEXXZ
+// GHIDRA_PROTO undefined ?Fail@CDataExchange@@QAEXXZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT If child control exists, sets focus and optionally selects all text (EM_SETSEL 0,-1), then runs follow-up helper FUN_00613C90.
 // GHIDRA_COMMENT_END
@@ -978,7 +3471,7 @@ void __thiscall PrepareCtrl(int param_1,int param_2)
 /* If child control exists, sets focus and optionally selects all text (EM_SETSEL 0,-1), then runs
    follow-up helper FUN_00613C90. */
 
-void __fastcall Fail(int *param_1)
+void __fastcall _Fail_CDataExchange__QAEXXZ(int *param_1)
 
 {
   if ((*param_1 != 0) && ((HWND)param_1[2] != (HWND)0x0)) {
@@ -987,29 +3480,30 @@ void __fastcall Fail(int *param_1)
       SendMessageA((HWND)param_1[2],0xb1,0,-1);
     }
   }
-  AfxThrowUserException();
+  _AfxThrowUserException__YGXXZ();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618A40
-// GHIDRA_NAME DDX_Text
-// GHIDRA_PROTO undefined DDX_Text()
+// GHIDRA_NAME ?DDX_Text@@YGXPAVCDataExchange@@HAAE@Z
+// GHIDRA_PROTO undefined ?DDX_Text@@YGXPAVCDataExchange@@HAAE@Z()
 
-void DDX_Text(int *param_1,undefined4 param_2,byte *param_3)
+void _DDX_Text__YGXPAVCDataExchange__HAAE_Z(int *param_1,undefined4 param_2,byte *param_3)
 
 {
   byte *pbVar1;
-  
+
   pbVar1 = param_3;
   param_3 = (byte *)(uint)*param_3;
   if (*param_1 == 0) {
-    FUN_00618ab1(param_1,param_2,&DAT_00672768,0xf116,param_3);
+    _DDX_TextWithFormat__YAXPAVCDataExchange__HPBDIZZ(param_1,param_2,&DAT_00672768,0xf116,param_3);
   }
   else {
-    FUN_00618ab1(param_1,param_2,&DAT_00672768,0xf116,&param_3);
+    _DDX_TextWithFormat__YAXPAVCDataExchange__HPBDIZZ(param_1,param_2,&DAT_00672768,0xf116,&param_3)
+    ;
     if (0xff < (int)param_3) {
-      FormatResourceStringAndDispatchViaThreadState(0xf116,0,0xffffffff);
-      Fail();
+      _AfxMessageBox__YGHIII_Z(0xf116,0,0xffffffff);
+      _Fail_CDataExchange__QAEXXZ();
     }
     *pbVar1 = (byte)param_3;
   }
@@ -1017,17 +3511,17 @@ void DDX_Text(int *param_1,undefined4 param_2,byte *param_3)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618B21
-// GHIDRA_NAME AfxSimpleScanf
-// GHIDRA_PROTO undefined AfxSimpleScanf()
+// GHIDRA_NAME ?AfxSimpleScanf@@YGHPBD0PAD@Z
+// GHIDRA_PROTO undefined ?AfxSimpleScanf@@YGHPBD0PAD@Z()
 
-undefined4 AfxSimpleScanf(char *param_1,int param_2,undefined4 *param_3)
+undefined4 _AfxSimpleScanf__YGHPBD0PAD_Z(char *param_1,int param_2,undefined4 *param_3)
 
 {
   char cVar1;
   bool bVar2;
   char *pcVar3;
   int iVar4;
-  
+
   pcVar3 = (char *)(param_2 + 1);
   bVar2 = false;
   if (*pcVar3 != 'l') {
@@ -1040,13 +3534,13 @@ LAB_00618b3f:
   }
   cVar1 = *param_1;
   if (*pcVar3 == 'd') {
-    iVar4 = WrapperFor_ParseUnsignedLongFromStringWithBase_At005eaa40(param_1,&param_1,10);
+    iVar4 = _strtol(param_1,&param_1,10);
   }
   else {
     if (cVar1 == '-') {
       return 0;
     }
-    iVar4 = ParseSignedLongFromStringWithBase(param_1,&param_1,10);
+    iVar4 = _strtoul(param_1,&param_1,10);
   }
   if ((iVar4 != 0) || (cVar1 == '0')) {
     for (; (*param_1 == ' ' || (*param_1 == '\t')); param_1 = param_1 + 1) {
@@ -1068,14 +3562,14 @@ LAB_00618b3f:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618BC6
-// GHIDRA_NAME DDX_Text_618bc6
-// GHIDRA_PROTO undefined DDX_Text_618bc6()
+// GHIDRA_NAME ?DDX_Text@@YGXPAVCDataExchange@@HAAF@Z
+// GHIDRA_PROTO undefined ?DDX_Text@@YGXPAVCDataExchange@@HAAF@Z()
 
-void DDX_Text_618bc6(int *param_1,undefined4 param_2,short *param_3)
+void _DDX_Text__YGXPAVCDataExchange__HAAF_Z(int *param_1,undefined4 param_2,short *param_3)
 
 {
   undefined *puVar1;
-  
+
   if (*param_1 == 0) {
     param_3 = (short *)(int)*param_3;
     puVar1 = &DAT_0067276c;
@@ -1083,13 +3577,13 @@ void DDX_Text_618bc6(int *param_1,undefined4 param_2,short *param_3)
   else {
     puVar1 = &DAT_00672770;
   }
-  FUN_00618ab1(param_1,param_2,puVar1,0xf110,param_3);
+  _DDX_TextWithFormat__YAXPAVCDataExchange__HPBDIZZ(param_1,param_2,puVar1,0xf110,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618C01
-// GHIDRA_NAME DDX_Text_618c01
-// GHIDRA_PROTO undefined DDX_Text_618c01()
+// GHIDRA_NAME ?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z
+// GHIDRA_PROTO undefined ?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
 // GHIDRA_COMMENT  void __stdcall DDX_Text(class CDataExchange *,int,int &)
@@ -1101,23 +3595,24 @@ void DDX_Text_618bc6(int *param_1,undefined4 param_2,short *param_3)
 /* Library Function - Multiple Matches With Same Base Name
     void __stdcall DDX_Text(class CDataExchange *,int,int &)
     void __stdcall DDX_Text(class CDataExchange *,int,long &)
-   
+
    Libraries: Visual Studio 2003 Release, Visual Studio 2005 Release, Visual Studio 2008 Release,
    Visual Studio 2010 Release */
 
-void DDX_Text_618c01(int *param_1,undefined4 param_2,undefined4 *param_3)
+void _DDX_Text__YGXPAVCDataExchange__HAAJ_Z(int *param_1,undefined4 param_2,undefined4 *param_3)
 
 {
   if (*param_1 == 0) {
     param_3 = (undefined4 *)*param_3;
   }
-  FUN_00618ab1(param_1,param_2,&g_szDecimalFormat,0xf110,param_3);
+  _DDX_TextWithFormat__YAXPAVCDataExchange__HPBDIZZ
+            (param_1,param_2,&g_szDecimalFormat,0xf110,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618C30
-// GHIDRA_NAME DDX_Text_618c30
-// GHIDRA_PROTO undefined DDX_Text_618c30()
+// GHIDRA_NAME ?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z
+// GHIDRA_PROTO undefined ?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
 // GHIDRA_COMMENT  void __stdcall DDX_Text(class CDataExchange *,int,unsigned int &)
@@ -1129,23 +3624,23 @@ void DDX_Text_618c01(int *param_1,undefined4 param_2,undefined4 *param_3)
 /* Library Function - Multiple Matches With Same Base Name
     void __stdcall DDX_Text(class CDataExchange *,int,unsigned int &)
     void __stdcall DDX_Text(class CDataExchange *,int,unsigned long &)
-   
+
    Libraries: Visual Studio 2003 Release, Visual Studio 2005 Release, Visual Studio 2008 Release,
    Visual Studio 2010 Release */
 
-void DDX_Text_618c30(int *param_1,undefined4 param_2,undefined4 *param_3)
+void _DDX_Text__YGXPAVCDataExchange__HAAK_Z(int *param_1,undefined4 param_2,undefined4 *param_3)
 
 {
   if (*param_1 == 0) {
     param_3 = (undefined4 *)*param_3;
   }
-  FUN_00618ab1(param_1,param_2,&DAT_00672768,0xf117,param_3);
+  _DDX_TextWithFormat__YAXPAVCDataExchange__HPBDIZZ(param_1,param_2,&DAT_00672768,0xf117,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618C5F
-// GHIDRA_NAME DDX_Text_618c5f
-// GHIDRA_PROTO undefined DDX_Text_618c5f()
+// GHIDRA_NAME ?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z
+// GHIDRA_PROTO undefined ?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
 // GHIDRA_COMMENT  void __stdcall DDX_Text(class CDataExchange *,int,int &)
@@ -1157,23 +3652,23 @@ void DDX_Text_618c30(int *param_1,undefined4 param_2,undefined4 *param_3)
 /* Library Function - Multiple Matches With Same Base Name
     void __stdcall DDX_Text(class CDataExchange *,int,int &)
     void __stdcall DDX_Text(class CDataExchange *,int,long &)
-   
+
    Libraries: Visual Studio 2003 Release, Visual Studio 2005 Release, Visual Studio 2008 Release,
    Visual Studio 2010 Release */
 
-void DDX_Text_618c5f(int *param_1,undefined4 param_2,undefined4 *param_3)
+void _DDX_Text__YGXPAVCDataExchange__HAAJ_Z(int *param_1,undefined4 param_2,undefined4 *param_3)
 
 {
   if (*param_1 == 0) {
     param_3 = (undefined4 *)*param_3;
   }
-  FUN_00618ab1(param_1,param_2,&DAT_00672774,0xf110,param_3);
+  _DDX_TextWithFormat__YAXPAVCDataExchange__HPBDIZZ(param_1,param_2,&DAT_00672774,0xf110,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618C8E
-// GHIDRA_NAME DDX_Text_618c8e
-// GHIDRA_PROTO undefined DDX_Text_618c8e()
+// GHIDRA_NAME ?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z
+// GHIDRA_PROTO undefined ?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
 // GHIDRA_COMMENT  void __stdcall DDX_Text(class CDataExchange *,int,unsigned int &)
@@ -1185,23 +3680,23 @@ void DDX_Text_618c5f(int *param_1,undefined4 param_2,undefined4 *param_3)
 /* Library Function - Multiple Matches With Same Base Name
     void __stdcall DDX_Text(class CDataExchange *,int,unsigned int &)
     void __stdcall DDX_Text(class CDataExchange *,int,unsigned long &)
-   
+
    Libraries: Visual Studio 2003 Release, Visual Studio 2005 Release, Visual Studio 2008 Release,
    Visual Studio 2010 Release */
 
-void DDX_Text_618c8e(int *param_1,undefined4 param_2,undefined4 *param_3)
+void _DDX_Text__YGXPAVCDataExchange__HAAK_Z(int *param_1,undefined4 param_2,undefined4 *param_3)
 
 {
   if (*param_1 == 0) {
     param_3 = (undefined4 *)*param_3;
   }
-  FUN_00618ab1(param_1,param_2,&DAT_00672778,0xf117,param_3);
+  _DDX_TextWithFormat__YAXPAVCDataExchange__HPBDIZZ(param_1,param_2,&DAT_00672778,0xf117,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618CBD
-// GHIDRA_NAME DDX_Text_618cbd
-// GHIDRA_PROTO undefined DDX_Text_618cbd()
+// GHIDRA_NAME ?DDX_Text@@YGXPAVCDataExchange@@HAAVCString@@@Z
+// GHIDRA_PROTO undefined ?DDX_Text@@YGXPAVCDataExchange@@HAAVCString@@@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
 // GHIDRA_COMMENT  void __stdcall DDX_Text(class CDataExchange *,int,class ATL::CStringT<char,class StrTraitMFC<char,class ATL::ChTraitsCRT<char> > > &)
@@ -1215,42 +3710,43 @@ void DDX_Text_618c8e(int *param_1,undefined4 param_2,undefined4 *param_3)
    StrTraitMFC<char,class ATL::ChTraitsCRT<char> > > &)
     void __stdcall DDX_Text(class CDataExchange *,int,class ATL::CStringT<wchar_t,class
    StrTraitMFC<wchar_t,class ATL::ChTraitsCRT<wchar_t> > > &)
-   
+
    Libraries: Visual Studio 2003 Release, Visual Studio 2005 Release, Visual Studio 2008 Release */
 
-void DDX_Text_618cbd(int *param_1,undefined4 param_2,CString *param_3)
+void _DDX_Text__YGXPAVCDataExchange__HAAVCString___Z
+               (int *param_1,undefined4 param_2,CString *param_3)
 
 {
   HWND hWnd;
   int new_length;
   LPSTR lpString;
   int nMaxCount;
-  
-  hWnd = (HWND)FUN_006189c5(param_2);
+
+  hWnd = (HWND)_PrepareEditCtrl_CDataExchange__QAEPAUHWND____H_Z(param_2);
   if (*param_1 == 0) {
-    AfxSetWindowText(hWnd,param_3->m_pchData);
+    _AfxSetWindowText__YGXPAUHWND____PBD_Z(hWnd,param_3->m_pchData);
   }
   else {
     new_length = GetWindowTextLengthA(hWnd);
     nMaxCount = new_length + 1;
-    lpString = (LPSTR)CString::EnsureCapacityAndSetLength(param_3,new_length);
+    lpString = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z(param_3,new_length);
     GetWindowTextA(hWnd,lpString,nMaxCount);
-    CString::SetLengthAndTerminator(param_3,-1);
+    CString::_ReleaseBuffer_CString__QAEXH_Z(param_3,-1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618D0F
-// GHIDRA_NAME DDX_Check
-// GHIDRA_PROTO undefined DDX_Check()
+// GHIDRA_NAME ?DDX_Check@@YGXPAVCDataExchange@@HAAH@Z
+// GHIDRA_PROTO undefined ?DDX_Check@@YGXPAVCDataExchange@@HAAH@Z()
 
-void DDX_Check(int *param_1,undefined4 param_2,WPARAM *param_3)
+void _DDX_Check__YGXPAVCDataExchange__HAAH_Z(int *param_1,undefined4 param_2,WPARAM *param_3)
 
 {
   HWND hWnd;
   WPARAM WVar1;
-  
-  hWnd = (HWND)PrepareCtrl(param_2);
+
+  hWnd = (HWND)_PrepareCtrl_CDataExchange__QAEPAUHWND____H_Z(param_2);
   if (*param_1 == 0) {
     if (((int)*param_3 < 0) || (2 < (int)*param_3)) {
       *param_3 = 0;
@@ -1265,18 +3761,18 @@ void DDX_Check(int *param_1,undefined4 param_2,WPARAM *param_3)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618D61
-// GHIDRA_NAME DDX_Radio
-// GHIDRA_PROTO undefined DDX_Radio()
+// GHIDRA_NAME ?DDX_Radio@@YGXPAVCDataExchange@@HAAH@Z
+// GHIDRA_PROTO undefined ?DDX_Radio@@YGXPAVCDataExchange@@HAAH@Z()
 
-void DDX_Radio(int *param_1,undefined4 param_2,int *param_3)
+void _DDX_Radio__YGXPAVCDataExchange__HAAH_Z(int *param_1,undefined4 param_2,int *param_3)
 
 {
   HWND hWnd;
   uint uVar1;
   LRESULT LVar2;
   int iVar3;
-  
-  hWnd = (HWND)PrepareCtrl(param_2);
+
+  hWnd = (HWND)_PrepareCtrl_CDataExchange__QAEPAUHWND____H_Z(param_2);
   if (*param_1 != 0) {
     *param_3 = -1;
   }
@@ -1306,32 +3802,34 @@ void DDX_Radio(int *param_1,undefined4 param_2,int *param_3)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618DF2
-// GHIDRA_NAME DDX_LBString
-// GHIDRA_PROTO void __stdcall DDX_LBString(astruct_1 * itemCountPtr, undefined4 controlId, LPARAM * itemDataPtr)
+// GHIDRA_NAME ?DDX_LBString@@YGXPAVCDataExchange@@HAAVCString@@@Z
+// GHIDRA_PROTO void __stdcall ?DDX_LBString@@YGXPAVCDataExchange@@HAAVCString@@@Z(astruct_1 * itemCountPtr, undefined4 controlId, LPARAM * itemDataPtr)
 
-void DDX_LBString(astruct_1 *itemCountPtr,undefined4 controlId,LPARAM *itemDataPtr)
+void _DDX_LBString__YGXPAVCDataExchange__HAAVCString___Z
+               (astruct_1 *itemCountPtr,undefined4 controlId,LPARAM *itemDataPtr)
 
 {
   HWND listboxHwnd;
   WPARAM selIndex;
   LRESULT rawItemData;
   int normalizedItemData;
-  
-  listboxHwnd = (HWND)PrepareCtrl(controlId);
+
+  listboxHwnd = (HWND)_PrepareCtrl_CDataExchange__QAEPAUHWND____H_Z(controlId);
   if (itemCountPtr->field0_0x0 == 0) {
     SendMessageA(listboxHwnd,0x18c,0xffffffff,*itemDataPtr);
   }
   else {
     selIndex = SendMessageA(listboxHwnd,0x188,0,0);
     if (selIndex == 0xffffffff) {
-      Empty();
+      _Empty_CString__QAEXXZ();
     }
     else {
       rawItemData = SendMessageA(listboxHwnd,0x18a,selIndex,0);
-      normalizedItemData = CString::EnsureCapacityAndSetLength((CString *)itemDataPtr,rawItemData);
+      normalizedItemData =
+           CString::_GetBufferSetLength_CString__QAEPADH_Z((CString *)itemDataPtr,rawItemData);
       SendMessageA(listboxHwnd,0x189,selIndex,normalizedItemData);
     }
-    CString::SetLengthAndTerminator((CString *)itemDataPtr,-1);
+    CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)itemDataPtr,-1);
   }
   return;
 }
@@ -1345,8 +3843,8 @@ void DDX_LBStringExact(int *state_flag,undefined4 owner_id,LPARAM *lparam_in)
 {
   HWND target_hwnd;
   WPARAM item_index;
-  
-  target_hwnd = (HWND)PrepareCtrl(owner_id);
+
+  target_hwnd = (HWND)_PrepareCtrl_CDataExchange__QAEPAUHWND____H_Z(owner_id);
   if (*state_flag == 0) {
     item_index = SendMessageA(target_hwnd,0x1a2,0xffffffff,*lparam_in);
     if (-1 < (int)item_index) {
@@ -1354,7 +3852,7 @@ void DDX_LBStringExact(int *state_flag,undefined4 owner_id,LPARAM *lparam_in)
     }
   }
   else {
-    DDX_LBString((astruct_1 *)state_flag,owner_id,lparam_in);
+    _DDX_LBString__YGXPAVCDataExchange__HAAVCString___Z((astruct_1 *)state_flag,owner_id,lparam_in);
   }
   return;
 }
@@ -1368,7 +3866,7 @@ void SelectListBoxStringExactIfPresent(void)
 {
   int iVar1;
   code *unaff_ESI;
-  
+
   iVar1 = (*unaff_ESI)();
   if (-1 < iVar1) {
     (*unaff_ESI)();
@@ -1377,10 +3875,11 @@ void SelectListBoxStringExactIfPresent(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618EC3
-// GHIDRA_NAME DDX_CBString
-// GHIDRA_PROTO undefined DDX_CBString()
+// GHIDRA_NAME ?DDX_CBString@@YGXPAVCDataExchange@@HAAVCString@@@Z
+// GHIDRA_PROTO undefined ?DDX_CBString@@YGXPAVCDataExchange@@HAAVCString@@@Z()
 
-void DDX_CBString(int *param_1,undefined4 param_2,CString *param_3)
+void _DDX_CBString__YGXPAVCDataExchange__HAAVCString___Z
+               (int *param_1,undefined4 param_2,CString *param_3)
 
 {
   HWND hWnd;
@@ -1388,41 +3887,42 @@ void DDX_CBString(int *param_1,undefined4 param_2,CString *param_3)
   LPSTR lpString;
   LRESULT LVar1;
   int nMaxCount;
-  
-  hWnd = (HWND)PrepareCtrl(param_2);
+
+  hWnd = (HWND)_PrepareCtrl_CDataExchange__QAEPAUHWND____H_Z(param_2);
   if (*param_1 == 0) {
     LVar1 = SendMessageA(hWnd,0x14d,0xffffffff,(LPARAM)param_3->m_pchData);
     if (LVar1 == -1) {
-      AfxSetWindowText(hWnd,param_3->m_pchData);
+      _AfxSetWindowText__YGXPAUHWND____PBD_Z(hWnd,param_3->m_pchData);
     }
   }
   else {
     new_length = GetWindowTextLengthA(hWnd);
     if (new_length == -1) {
       nMaxCount = 0x100;
-      lpString = (LPSTR)CString::EnsureCapacityPreserveLength(param_3,0xff);
+      lpString = (LPSTR)CString::_GetBuffer_CString__QAEPADH_Z(param_3,0xff);
     }
     else {
       nMaxCount = new_length + 1;
-      lpString = (LPSTR)CString::EnsureCapacityAndSetLength(param_3,new_length);
+      lpString = (LPSTR)CString::_GetBufferSetLength_CString__QAEPADH_Z(param_3,new_length);
     }
     GetWindowTextA(hWnd,lpString,nMaxCount);
-    CString::SetLengthAndTerminator(param_3,-1);
+    CString::_ReleaseBuffer_CString__QAEXH_Z(param_3,-1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618F43
-// GHIDRA_NAME DDX_CBStringExact
-// GHIDRA_PROTO undefined DDX_CBStringExact()
+// GHIDRA_NAME ?DDX_CBStringExact@@YGXPAVCDataExchange@@HAAVCString@@@Z
+// GHIDRA_PROTO undefined ?DDX_CBStringExact@@YGXPAVCDataExchange@@HAAVCString@@@Z()
 
-void DDX_CBStringExact(int *param_1,undefined4 param_2,LPARAM *param_3)
+void _DDX_CBStringExact__YGXPAVCDataExchange__HAAVCString___Z
+               (int *param_1,undefined4 param_2,LPARAM *param_3)
 
 {
   HWND hWnd;
   WPARAM wParam;
-  
-  hWnd = (HWND)PrepareCtrl(param_2);
+
+  hWnd = (HWND)_PrepareCtrl_CDataExchange__QAEPAUHWND____H_Z(param_2);
   if (*param_1 == 0) {
     wParam = SendMessageA(hWnd,0x158,0xffffffff,*param_3);
     if (-1 < (int)wParam) {
@@ -1430,22 +3930,22 @@ void DDX_CBStringExact(int *param_1,undefined4 param_2,LPARAM *param_3)
     }
   }
   else {
-    DDX_CBString(param_1,param_2,param_3);
+    _DDX_CBString__YGXPAVCDataExchange__HAAVCString___Z(param_1,param_2,param_3);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618F94
-// GHIDRA_NAME GetOrSetListBoxCurrentSelection
-// GHIDRA_PROTO undefined GetOrSetListBoxCurrentSelection()
+// GHIDRA_NAME ?DDX_LBIndex@@YGXPAVCDataExchange@@HAAH@Z
+// GHIDRA_PROTO undefined ?DDX_LBIndex@@YGXPAVCDataExchange@@HAAH@Z()
 
-void GetOrSetListBoxCurrentSelection(int *param_1,undefined4 param_2,WPARAM *param_3)
+void _DDX_LBIndex__YGXPAVCDataExchange__HAAH_Z(int *param_1,undefined4 param_2,WPARAM *param_3)
 
 {
   HWND hWnd;
   WPARAM WVar1;
-  
-  hWnd = (HWND)PrepareCtrl(param_2);
+
+  hWnd = (HWND)_PrepareCtrl_CDataExchange__QAEPAUHWND____H_Z(param_2);
   if (*param_1 == 0) {
     SendMessageA(hWnd,0x186,*param_3,0);
   }
@@ -1457,16 +3957,16 @@ void GetOrSetListBoxCurrentSelection(int *param_1,undefined4 param_2,WPARAM *par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618FD6
-// GHIDRA_NAME GetOrSetComboBoxCurrentSelection
-// GHIDRA_PROTO undefined GetOrSetComboBoxCurrentSelection()
+// GHIDRA_NAME ?DDX_CBIndex@@YGXPAVCDataExchange@@HAAH@Z
+// GHIDRA_PROTO undefined ?DDX_CBIndex@@YGXPAVCDataExchange@@HAAH@Z()
 
-void GetOrSetComboBoxCurrentSelection(int *param_1,undefined4 param_2,WPARAM *param_3)
+void _DDX_CBIndex__YGXPAVCDataExchange__HAAH_Z(int *param_1,undefined4 param_2,WPARAM *param_3)
 
 {
   HWND hWnd;
   WPARAM WVar1;
-  
-  hWnd = (HWND)PrepareCtrl(param_2);
+
+  hWnd = (HWND)_PrepareCtrl_CDataExchange__QAEPAUHWND____H_Z(param_2);
   if (*param_1 == 0) {
     SendMessageA(hWnd,0x14e,*param_3,0);
   }
@@ -1478,130 +3978,138 @@ void GetOrSetComboBoxCurrentSelection(int *param_1,undefined4 param_2,WPARAM *pa
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619053
-// GHIDRA_NAME DDV_MinMaxByte
-// GHIDRA_PROTO undefined DDV_MinMaxByte()
+// GHIDRA_NAME ?DDV_MinMaxByte@@YGXPAVCDataExchange@@EEE@Z
+// GHIDRA_PROTO undefined ?DDV_MinMaxByte@@YGXPAVCDataExchange@@EEE@Z()
 
-void DDV_MinMaxByte(undefined4 param_1,byte param_2,byte param_3,byte param_4)
+void _DDV_MinMaxByte__YGXPAVCDataExchange__EEE_Z
+               (undefined4 param_1,byte param_2,byte param_3,byte param_4)
 
 {
   if ((param_2 < param_3) || (param_4 < param_2)) {
-    FailMinMaxWithFormat(param_1,param_3,param_4,&DAT_00672768,0xf112);
+    _FailMinMaxWithFormat__YGXPAVCDataExchange__JJPBDI_Z
+              (param_1,param_3,param_4,&DAT_00672768,0xf112);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619083
-// GHIDRA_NAME FailMinMaxWithFormat
-// GHIDRA_PROTO undefined FailMinMaxWithFormat()
+// GHIDRA_NAME ?FailMinMaxWithFormat@@YGXPAVCDataExchange@@JJPBDI@Z
+// GHIDRA_PROTO undefined ?FailMinMaxWithFormat@@YGXPAVCDataExchange@@JJPBDI@Z()
 
-void FailMinMaxWithFormat(void)
+void _FailMinMaxWithFormat__YGXPAVCDataExchange__JJPBDI_Z(void)
 
 {
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   if (**(int **)(unaff_EBP + 8) != 0) {
     wsprintfA((LPSTR)(unaff_EBP + -0x4c),*(LPCSTR *)(unaff_EBP + 0x14),
               *(undefined4 *)(unaff_EBP + 0xc));
     wsprintfA((LPSTR)(unaff_EBP + -0x2c),*(LPCSTR *)(unaff_EBP + 0x14),
               *(undefined4 *)(unaff_EBP + 0x10));
-    CString::CString((CString *)(unaff_EBP + 8));
+    CString::__0CString__QAE_XZ((CString *)(unaff_EBP + 8));
     *(undefined4 *)(unaff_EBP + -4) = 0;
-    AfxFormatString2(unaff_EBP + 8,*(undefined4 *)(unaff_EBP + 0x18),unaff_EBP + -0x4c,
-                     unaff_EBP + -0x2c);
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
+    _AfxFormatString2__YGXAAVCString__IPBD1_Z
+              (unaff_EBP + 8,*(undefined4 *)(unaff_EBP + 0x18),unaff_EBP + -0x4c,unaff_EBP + -0x2c);
+    _AfxMessageBox__YGHPBDII_Z
               (*(undefined4 *)(unaff_EBP + 8),0x30,*(undefined4 *)(unaff_EBP + 0x18));
-    Empty();
-    Fail();
+    _Empty_CString__QAEXXZ();
+    _Fail_CDataExchange__QAEXXZ();
     *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    CString::~CString((CString *)(unaff_EBP + 8));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 8));
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619116
-// GHIDRA_NAME DDV_MinMaxShort
-// GHIDRA_PROTO undefined DDV_MinMaxShort()
+// GHIDRA_NAME ?DDV_MinMaxShort@@YGXPAVCDataExchange@@FFF@Z
+// GHIDRA_PROTO undefined ?DDV_MinMaxShort@@YGXPAVCDataExchange@@FFF@Z()
 
-void DDV_MinMaxShort(undefined4 param_1,short param_2,short param_3,short param_4)
+void _DDV_MinMaxShort__YGXPAVCDataExchange__FFF_Z
+               (undefined4 param_1,short param_2,short param_3,short param_4)
 
 {
   if ((param_2 < param_3) || (param_4 < param_2)) {
-    FailMinMaxWithFormat(param_1,(int)param_3,(int)param_4,&DAT_00672774,0xf112);
+    _FailMinMaxWithFormat__YGXPAVCDataExchange__JJPBDI_Z
+              (param_1,(int)param_3,(int)param_4,&DAT_00672774,0xf112);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619149
-// GHIDRA_NAME WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149
-// GHIDRA_PROTO undefined WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149()
+// GHIDRA_NAME ?DDV_MinMaxLong@@YGXPAVCDataExchange@@JJJ@Z
+// GHIDRA_PROTO undefined ?DDV_MinMaxLong@@YGXPAVCDataExchange@@JJJ@Z()
 
-void WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149
+void _DDV_MinMaxLong__YGXPAVCDataExchange__JJJ_Z
                (undefined4 param_1,int param_2,int param_3,int param_4)
 
 {
   if ((param_2 < param_3) || (param_4 < param_2)) {
-    FailMinMaxWithFormat(param_1,param_3,param_4,&DAT_00672774,0xf112);
+    _FailMinMaxWithFormat__YGXPAVCDataExchange__JJPBDI_Z
+              (param_1,param_3,param_4,&DAT_00672774,0xf112);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619175
-// GHIDRA_NAME WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175
-// GHIDRA_PROTO undefined WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175()
+// GHIDRA_NAME ?DDV_MinMaxLong@@YGXPAVCDataExchange@@JJJ@Z
+// GHIDRA_PROTO undefined ?DDV_MinMaxLong@@YGXPAVCDataExchange@@JJJ@Z()
 
-void WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175
+void _DDV_MinMaxLong__YGXPAVCDataExchange__JJJ_Z
                (undefined4 param_1,int param_2,int param_3,int param_4)
 
 {
   if ((param_2 < param_3) || (param_4 < param_2)) {
-    FailMinMaxWithFormat(param_1,param_3,param_4,&DAT_00672774,0xf112);
+    _FailMinMaxWithFormat__YGXPAVCDataExchange__JJPBDI_Z
+              (param_1,param_3,param_4,&DAT_00672774,0xf112);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006191A1
-// GHIDRA_NAME WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1
-// GHIDRA_PROTO undefined WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1()
+// GHIDRA_NAME ?DDV_MinMaxUInt@@YGXPAVCDataExchange@@III@Z
+// GHIDRA_PROTO undefined ?DDV_MinMaxUInt@@YGXPAVCDataExchange@@III@Z()
 
-void WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1
+void _DDV_MinMaxUInt__YGXPAVCDataExchange__III_Z
                (undefined4 param_1,uint param_2,uint param_3,uint param_4)
 
 {
   if ((param_2 < param_3) || (param_4 < param_2)) {
-    FailMinMaxWithFormat(param_1,param_3,param_4,&DAT_00672778,0xf112);
+    _FailMinMaxWithFormat__YGXPAVCDataExchange__JJPBDI_Z
+              (param_1,param_3,param_4,&DAT_00672778,0xf112);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006191CD
-// GHIDRA_NAME WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd
-// GHIDRA_PROTO undefined WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd()
+// GHIDRA_NAME ?DDV_MinMaxUInt@@YGXPAVCDataExchange@@III@Z
+// GHIDRA_PROTO undefined ?DDV_MinMaxUInt@@YGXPAVCDataExchange@@III@Z()
 
-void WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd
+void _DDV_MinMaxUInt__YGXPAVCDataExchange__III_Z
                (undefined4 param_1,uint param_2,uint param_3,uint param_4)
 
 {
   if ((param_2 < param_3) || (param_4 < param_2)) {
-    FailMinMaxWithFormat(param_1,param_3,param_4,&DAT_00672778,0xf112);
+    _FailMinMaxWithFormat__YGXPAVCDataExchange__JJPBDI_Z
+              (param_1,param_3,param_4,&DAT_00672778,0xf112);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006191F9
-// GHIDRA_NAME DDV_MaxChars
-// GHIDRA_PROTO undefined DDV_MaxChars()
+// GHIDRA_NAME ?DDV_MaxChars@@YGXPAVCDataExchange@@ABVCString@@H@Z
+// GHIDRA_PROTO undefined ?DDV_MaxChars@@YGXPAVCDataExchange@@ABVCString@@H@Z()
 
-void DDV_MaxChars(void)
+void _DDV_MaxChars__YGXPAVCDataExchange__ABVCString__H_Z(void)
 
 {
   WPARAM wParam;
   int *piVar1;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   wParam = *(WPARAM *)(unaff_EBP + 0x10);
   piVar1 = *(int **)(unaff_EBP + 8);
@@ -1612,42 +4120,41 @@ void DDV_MaxChars(void)
   }
   else {
     wsprintfA((LPSTR)(unaff_EBP + -0x2c),&g_szDecimalFormat,wParam);
-    CString::CString((CString *)(unaff_EBP + 8));
+    CString::__0CString__QAE_XZ((CString *)(unaff_EBP + 8));
     *(undefined4 *)(unaff_EBP + -4) = 0;
-    AfxFormatString1(unaff_EBP + 8,0xf114,unaff_EBP + -0x2c);
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-              (*(undefined4 *)(unaff_EBP + 8),0x30,0xf114);
-    Empty();
-    Fail();
+    _AfxFormatString1__YGXAAVCString__IPBD_Z(unaff_EBP + 8,0xf114,unaff_EBP + -0x2c);
+    _AfxMessageBox__YGHPBDII_Z(*(undefined4 *)(unaff_EBP + 8),0x30,0xf114);
+    _Empty_CString__QAEXXZ();
+    _Fail_CDataExchange__QAEXXZ();
     *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    CString::~CString((CString *)(unaff_EBP + 8));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 8));
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006192A1
-// GHIDRA_NAME DDX_Control
-// GHIDRA_PROTO undefined DDX_Control()
+// GHIDRA_NAME ?DDX_Control@@YGXPAVCDataExchange@@HAAVCWnd@@@Z
+// GHIDRA_PROTO undefined ?DDX_Control@@YGXPAVCDataExchange@@HAAVCWnd@@@Z()
 
-void DDX_Control(int param_1,undefined4 param_2,CWnd *param_3)
+void _DDX_Control__YGXPAVCDataExchange__HAAVCWnd___Z(int param_1,undefined4 param_2,CWnd *param_3)
 
 {
   undefined4 uVar1;
   int iVar2;
   HWND pHVar3;
-  
+
   if (param_3->m_hWnd == (void *)0x0) {
-    uVar1 = PrepareCtrl(param_2);
-    iVar2 = SubclassWindow(uVar1);
+    uVar1 = _PrepareCtrl_CDataExchange__QAEPAUHWND____H_Z(param_2);
+    iVar2 = _SubclassWindow_CWnd__QAEHPAUHWND_____Z(uVar1);
     if (iVar2 == 0) {
-      AfxThrowNotSupportedException();
+      _AfxThrowNotSupportedException__YGXXZ();
     }
     else {
       iVar2 = *(int *)(param_1 + 4);
       pHVar3 = GetParent(param_3->m_hWnd);
       if (*(HWND *)(iVar2 + 0x1c) != pHVar3) {
-        CWnd::AttachControlSite_607673(param_3,iVar2);
+        CWnd::_AttachControlSite_CWnd__QAEXPAV1__Z(param_3,iVar2);
       }
     }
   }
@@ -1655,78 +4162,78 @@ void DDX_Control(int param_1,undefined4 param_2,CWnd *param_3)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006192ED
-// GHIDRA_NAME AfxFailMaxChars
-// GHIDRA_PROTO undefined AfxFailMaxChars()
+// GHIDRA_NAME ?AfxFailMaxChars@@YGXPAVCDataExchange@@H@Z
+// GHIDRA_PROTO undefined ?AfxFailMaxChars@@YGXPAVCDataExchange@@H@Z()
 
-void AfxFailMaxChars(void)
+void _AfxFailMaxChars__YGXPAVCDataExchange__H_Z(void)
 
 {
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   wsprintfA((LPSTR)(unaff_EBP + -0x2c),&g_szDecimalFormat,*(undefined4 *)(unaff_EBP + 0xc));
-  CString::CString((CString *)(unaff_EBP + 0xc));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + 0xc));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  AfxFormatString1(unaff_EBP + 0xc,0xf114,unaff_EBP + -0x2c);
-  WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-            (*(undefined4 *)(unaff_EBP + 0xc),0x30,0xf114);
-  Empty();
-  Fail();
+  _AfxFormatString1__YGXAAVCString__IPBD_Z(unaff_EBP + 0xc,0xf114,unaff_EBP + -0x2c);
+  _AfxMessageBox__YGHPBDII_Z(*(undefined4 *)(unaff_EBP + 0xc),0x30,0xf114);
+  _Empty_CString__QAEXXZ();
+  _Fail_CDataExchange__QAEXXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(unaff_EBP + 0xc));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 0xc));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619365
-// GHIDRA_NAME AfxFailRadio
-// GHIDRA_PROTO undefined AfxFailRadio()
+// GHIDRA_NAME ?AfxFailRadio@@YGXPAVCDataExchange@@@Z
+// GHIDRA_PROTO undefined ?AfxFailRadio@@YGXPAVCDataExchange@@@Z()
 
-void AfxFailRadio(void)
+void _AfxFailRadio__YGXPAVCDataExchange___Z(void)
 
 {
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
-  CString::CString((CString *)(unaff_EBP + -0x10));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  AfxFormatStrings(unaff_EBP + -0x10,0xf115,0,0);
-  WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-            (*(undefined4 *)(unaff_EBP + -0x10),0x30,0xf115);
-  Empty();
-  Fail();
+  _AfxFormatStrings__YGXAAVCString__IPBQBDH_Z(unaff_EBP + -0x10,0xf115,0,0);
+  _AfxMessageBox__YGHPBDII_Z(*(undefined4 *)(unaff_EBP + -0x10),0x30,0xf115);
+  _Empty_CString__QAEXXZ();
+  _Fail_CDataExchange__QAEXXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(unaff_EBP + -0x10));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006193C5
-// GHIDRA_NAME OnHelp
-// GHIDRA_PROTO undefined OnHelp()
+// GHIDRA_NAME ?OnHelp@CWnd@@QAEXXZ
+// GHIDRA_PROTO undefined ?OnHelp@CWnd@@QAEXXZ()
 
-void __fastcall OnHelp(int param_1)
+void __fastcall _OnHelp_CWnd__QAEXXZ(int param_1)
 
 {
   HWND pHVar1;
   LRESULT LVar2;
   int iVar3;
-  
-  for (pHVar1 = GetCapture(); pHVar1 != (HWND)0x0; pHVar1 = AfxGetParentOwner(pHVar1)) {
+
+  for (pHVar1 = GetCapture(); pHVar1 != (HWND)0x0;
+      pHVar1 = _AfxGetParentOwner__YGPAUHWND____PAU1__Z_00609297(pHVar1)) {
     LVar2 = SendMessageA(pHVar1,0x365,0,0);
     if (LVar2 != 0) {
       return;
     }
   }
-  for (pHVar1 = GetFocus(); pHVar1 != (HWND)0x0; pHVar1 = AfxGetParentOwner(pHVar1)) {
+  for (pHVar1 = GetFocus(); pHVar1 != (HWND)0x0;
+      pHVar1 = _AfxGetParentOwner__YGPAUHWND____PAU1__Z_00609297(pHVar1)) {
     LVar2 = SendMessageA(pHVar1,0x365,0,0);
     if (LVar2 != 0) {
       return;
     }
   }
-  iVar3 = GetTopLevelParent();
+  iVar3 = _GetTopLevelParent_CWnd__QBEPAV1_XZ();
   if (iVar3 == 0) {
     pHVar1 = (HWND)0x0;
   }
@@ -1741,25 +4248,25 @@ void __fastcall OnHelp(int param_1)
     }
     LVar2 = SendMessageA(pHVar1,0x365,0,0);
     if (LVar2 != 0) break;
-    pHVar1 = AfxGetParentOwner(pHVar1);
+    pHVar1 = _AfxGetParentOwner__YGPAUHWND____PAU1__Z_00609297(pHVar1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619467
-// GHIDRA_NAME OnHelp_619467
-// GHIDRA_PROTO undefined OnHelp_619467()
+// GHIDRA_NAME ?OnHelp@CFrameWnd@@IAEXXZ
+// GHIDRA_PROTO undefined ?OnHelp@CFrameWnd@@IAEXXZ()
 
-void __fastcall OnHelp_619467(int param_1)
+void __fastcall _OnHelp_CFrameWnd__IAEXXZ(int param_1)
 
 {
   int iVar1;
-  
+
   if (*(int *)(param_1 + 0x4c) == 0) {
-    OnHelp();
+    _OnHelp_CWnd__QAEXXZ();
   }
   else if (*(int *)(param_1 + 0x4c) != 0x3f107) {
-    iVar1 = AfxGetModuleState();
+    iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
     (**(code **)(**(int **)(iVar1 + 4) + 0xa0))(*(undefined4 *)(param_1 + 0x4c),1);
     return;
   }
@@ -1767,8 +4274,8 @@ void __fastcall OnHelp_619467(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619539
-// GHIDRA_NAME OnContextHelp
-// GHIDRA_PROTO undefined OnContextHelp()
+// GHIDRA_NAME ?OnContextHelp@CFrameWnd@@QAEXXZ
+// GHIDRA_PROTO undefined ?OnContextHelp@CFrameWnd@@QAEXXZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Enters frame context-help mode and tracks help-hit selection.
 // GHIDRA_COMMENT Sets help mode flags, pumps help-tracking messages, restores capture/status text, and posts follow-up completion message.
@@ -1778,7 +4285,7 @@ void __fastcall OnHelp_619467(int param_1)
    Sets help mode flags, pumps help-tracking messages, restores capture/status text, and posts
    follow-up completion message. */
 
-void __fastcall OnContextHelp(CFrameWnd *param_1)
+void __fastcall _OnContextHelp_CFrameWnd__QAEXXZ(CFrameWnd *param_1)
 
 {
   int *piVar1;
@@ -1792,9 +4299,9 @@ void __fastcall OnContextHelp(CFrameWnd *param_1)
   WPARAM local_10;
   int local_c;
   int local_8;
-  
+
   if (((*(int *)&param_1->field_0x50 != 1) &&
-      (iVar2 = CFrameWnd::CanEnterHelpMode(param_1), iVar2 != 0)) &&
+      (iVar2 = CFrameWnd::_CanEnterHelpMode_CFrameWnd__QAEHXZ(param_1), iVar2 != 0)) &&
      (BVar3 = PeekMessageA(&local_38,param_1->m_hWnd,0x367,0x367,3), BVar3 == 0)) {
     iVar2 = *(int *)&param_1->field_0x50;
     *(undefined4 *)&param_1->field_0x50 = 1;
@@ -1811,9 +4318,9 @@ void __fastcall OnContextHelp(CFrameWnd *param_1)
         }
         local_c = 0;
         GetCursorPos(&local_1c);
-        FUN_006196e1(local_1c.x,local_1c.y,0);
+        _SetHelpCapture_CFrameWnd__IAEPAUHWND____UtagPOINT__PAH_Z(local_1c.x,local_1c.y,0);
         local_8 = 0;
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         piVar1 = *(int **)(iVar2 + 4);
         local_14 = piVar1;
         do {
@@ -1829,13 +4336,13 @@ void __fastcall OnContextHelp(CFrameWnd *param_1)
               WaitMessage();
             }
           }
-          iVar2 = ProcessHelpMsg(&local_38,&local_c);
+          iVar2 = _ProcessHelpMsg_CFrameWnd__IAEHAAUtagMSG__PAK_Z(&local_38,&local_c);
         } while (iVar2 != 0);
 LAB_00619662:
         *(undefined4 *)&param_1->field_0x50 = 0;
         ReleaseCapture();
         pHVar5 = SetCapture(param_1->m_hWnd);
-        FromHandle(pHVar5);
+        _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar5);
         ReleaseCapture();
         SendMessageA(param_1->m_hWnd,0x362,local_10,0);
         if (*(int **)&param_1->field_0x68 != (int *)0x0) {
@@ -1861,8 +4368,8 @@ LAB_00619662:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006197F7
-// GHIDRA_NAME ProcessHelpMsg
-// GHIDRA_PROTO undefined ProcessHelpMsg()
+// GHIDRA_NAME ?ProcessHelpMsg@CFrameWnd@@IAEHAAUtagMSG@@PAK@Z
+// GHIDRA_PROTO undefined ?ProcessHelpMsg@CFrameWnd@@IAEHAAUtagMSG@@PAK@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Processes one message step for context-help tracking loop.
 // GHIDRA_COMMENT Consumes abort/escape events, routes mouse/nonclient tracking messages, computes help target id, and controls continuation/termination of help mode.
@@ -1872,7 +4379,8 @@ LAB_00619662:
    Consumes abort/escape events, routes mouse/nonclient tracking messages, computes help target id,
    and controls continuation/termination of help mode. */
 
-undefined4 __thiscall ProcessHelpMsg(int *param_1,LPMSG param_2,undefined4 *param_3)
+undefined4 __thiscall
+_ProcessHelpMsg_CFrameWnd__IAEHAAUtagMSG__PAK_Z(int *param_1,LPMSG param_2,undefined4 *param_3)
 
 {
   uint uVar1;
@@ -1886,7 +4394,7 @@ undefined4 __thiscall ProcessHelpMsg(int *param_1,LPMSG param_2,undefined4 *para
   tagMSG local_2c;
   tagPOINT local_10;
   int *local_8;
-  
+
   lpMsg = param_2;
   UVar7 = param_2->message;
   local_8 = param_1;
@@ -1918,7 +4426,7 @@ LAB_006199ed:
       }
       GetCursorPos(&local_10);
 LAB_006199d4:
-      FUN_006196e1(local_10.x,local_10.y,0);
+      _SetHelpCapture_CFrameWnd__IAEPAUHWND____UtagPOINT__PAH_Z(local_10.x,local_10.y,0);
       return 1;
     }
     BVar5 = PeekMessageA(param_2,(HWND)0x0,UVar7,UVar7,1);
@@ -1927,7 +4435,8 @@ LAB_006199d4:
     }
   }
   else {
-    pHVar2 = (HWND)FUN_006196e1((param_2->pt).x,(param_2->pt).y,&param_2);
+    pHVar2 = (HWND)_SetHelpCapture_CFrameWnd__IAEPAUHWND____UtagPOINT__PAH_Z
+                             ((param_2->pt).x,(param_2->pt).y,&param_2);
     if (pHVar2 == (HWND)0x0) {
       return 1;
     }
@@ -1940,10 +4449,10 @@ LAB_006199d4:
       LVar3 = SendMessageA(pHVar2,0x84,0,CONCAT22((short)(lpMsg->pt).y,(short)(lpMsg->pt).x));
       if ((LVar3 != 5) && (LVar3 != 3)) {
         if (LVar3 == 1) {
-          uVar4 = MapClientArea(pHVar2,(lpMsg->pt).x,(lpMsg->pt).y);
+          uVar4 = _MapClientArea__YGKPAUHWND____UtagPOINT___Z(pHVar2,(lpMsg->pt).x,(lpMsg->pt).y);
         }
         else {
-          uVar4 = FUN_00619a92(LVar3);
+          uVar4 = _MapNonClientArea__YGKH_Z(LVar3);
         }
         *param_3 = uVar4;
         UVar7 = lpMsg->message;
@@ -1962,8 +4471,8 @@ LAB_006199d4:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006199FD
-// GHIDRA_NAME MapClientArea
-// GHIDRA_PROTO undefined MapClientArea()
+// GHIDRA_NAME ?MapClientArea@@YGKPAUHWND__@@UtagPOINT@@@Z
+// GHIDRA_PROTO undefined ?MapClientArea@@YGKPAUHWND__@@UtagPOINT@@@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Walks parent chain to query help target id using message 0x366 with point lParam.
 // GHIDRA_COMMENT Returns -1 when no handler returns a non-zero id.
@@ -1972,13 +4481,14 @@ LAB_006199d4:
 /* Walks parent chain to query help target id using message 0x366 with point lParam.
    Returns -1 when no handler returns a non-zero id. */
 
-LRESULT MapClientArea(HWND param_1,undefined2 param_2,undefined2 param_3)
+LRESULT _MapClientArea__YGKPAUHWND____UtagPOINT___Z
+                  (HWND param_1,undefined2 param_2,undefined2 param_3)
 
 {
   LPARAM lParam;
   LRESULT LVar1;
   uint uVar2;
-  
+
   ScreenToClient(param_1,(LPPOINT)&param_2);
   lParam = CONCAT22(param_3,param_2);
   while( true ) {
@@ -1998,31 +4508,31 @@ LRESULT MapClientArea(HWND param_1,undefined2 param_2,undefined2 param_3)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619B71
-// GHIDRA_NAME DestructCMemFileLikeStateWithCloseIfOpen
-// GHIDRA_PROTO undefined DestructCMemFileLikeStateWithCloseIfOpen()
+// GHIDRA_NAME ??1CMemFile@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CMemFile@@UAE@XZ()
 
-void DestructCMemFileLikeStateWithCloseIfOpen(void)
+void __1CMemFile__UAE_XZ(void)
 
 {
   int iVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &CMemFileVtbl_00672f7c;
   iVar1 = extraout_ECX[8];
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (iVar1 != 0) {
-    FUN_00619d58();
+    _Close_CMemFile__UAEXXZ();
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   extraout_ECX[4] = 0;
   extraout_ECX[5] = 0;
   extraout_ECX[6] = 0;
   extraout_ECX[7] = 0;
-  CFileException::DestructCFileException();
+  CFileException::__1CFile__UAE_XZ();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -2034,7 +4544,7 @@ void DestructCMemFileLikeStateWithCloseIfOpen(void)
 void WrapperFor_AllocateWithGlobalNewMode_At00619bbd(undefined4 param_1)
 
 {
-  AllocateWithGlobalNewMode(param_1);
+  _malloc(param_1);
   return;
 }
 
@@ -2046,7 +4556,7 @@ void WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca
                (undefined4 param_1,undefined4 param_2)
 
 {
-  ReallocateHeapBlockWithAllocatorTracking(param_1,param_2);
+  _realloc(param_1,param_2);
   return;
 }
 
@@ -2057,15 +4567,15 @@ void WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca
 void WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01(undefined4 param_1)
 
 {
-  FreeHeapBlockWithAllocatorTracking(param_1);
+  _free(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619C6B
-// GHIDRA_NAME SetWriteCursorWithCapacityClamp_00619c6b
-// GHIDRA_PROTO undefined SetWriteCursorWithCapacityClamp_00619c6b()
+// GHIDRA_NAME ?SetLength@CMemFile@@UAEXK@Z
+// GHIDRA_PROTO undefined ?SetLength@CMemFile@@UAEXK@Z()
 
-void __thiscall SetWriteCursorWithCapacityClamp_00619c6b(int *param_1,uint param_2)
+void __thiscall _SetLength_CMemFile__UAEXK_Z(int *param_1,uint param_2)
 
 {
   if ((uint)param_1[6] < param_2) {
@@ -2090,7 +4600,7 @@ CopyIntoStreamBufferFromSourceWithClamp_00619ca0
   uint in_EAX;
   int *unaff_ESI;
   int unaff_EDI;
-  
+
   if (in_EAX < param_1) {
     unaff_EDI = 0;
   }
@@ -2125,10 +4635,10 @@ void NoOpVirtualStub_00619cca(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619CCF
-// GHIDRA_NAME AppendToStreamBufferWithGrowth_00619ccf
-// GHIDRA_PROTO undefined AppendToStreamBufferWithGrowth_00619ccf()
+// GHIDRA_NAME ?Write@CMemFile@@UAEXPBXI@Z
+// GHIDRA_PROTO undefined ?Write@CMemFile@@UAEXPBXI@Z()
 
-void __thiscall AppendToStreamBufferWithGrowth_00619ccf(int *param_1,undefined4 param_2,int param_3)
+void __thiscall _Write_CMemFile__UAEXPBXI_Z(int *param_1,undefined4 param_2,int param_3)
 
 {
   if (param_3 != 0) {
@@ -2145,14 +4655,14 @@ void __thiscall AppendToStreamBufferWithGrowth_00619ccf(int *param_1,undefined4 
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619D11
-// GHIDRA_NAME Seek_619d11
-// GHIDRA_PROTO undefined Seek_619d11()
+// GHIDRA_NAME ?Seek@CMemFile@@UAEJJI@Z
+// GHIDRA_PROTO undefined ?Seek@CMemFile@@UAEJJI@Z()
 
-int __thiscall Seek_619d11(int param_1,int param_2,int param_3)
+int __thiscall _Seek_CMemFile__UAEJJI_Z(int param_1,int param_2,int param_3)
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(param_1 + 0x14);
   if (param_3 != 0) {
     if (param_3 != 1) {
@@ -2164,7 +4674,7 @@ int __thiscall Seek_619d11(int param_1,int param_2,int param_3)
     param_2 = iVar1 + param_2;
   }
   if (param_2 < 0) {
-    AfxThrowFileException(9,0xffffffff,0);
+    _AfxThrowFileException__YGXHJPBD_Z(9,0xffffffff,0);
   }
   *(int *)(param_1 + 0x14) = param_2;
   return param_2;
@@ -2190,7 +4700,7 @@ void __fastcall DispatchVirtualSlot54_NoArgs(int *param_1)
 void WrapperFor_AfxThrowNotSupportedException_At00619d87(void)
 
 {
-  AfxThrowNotSupportedException();
+  _AfxThrowNotSupportedException__YGXXZ();
   return;
 }
 
@@ -2201,7 +4711,7 @@ void WrapperFor_AfxThrowNotSupportedException_At00619d87(void)
 void WrapperFor_AfxThrowNotSupportedException_At00619d8f(void)
 
 {
-  AfxThrowNotSupportedException();
+  _AfxThrowNotSupportedException__YGXXZ();
   return;
 }
 
@@ -2212,7 +4722,7 @@ void WrapperFor_AfxThrowNotSupportedException_At00619d8f(void)
 undefined4 WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619d97(void)
 
 {
-  AfxThrowNotSupportedException();
+  _AfxThrowNotSupportedException__YGXXZ();
   return 0;
 }
 
@@ -2232,10 +4742,10 @@ undefined4 OnInitDialog_619e4e(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar5;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -0x10) = extraout_ECX;
-  iVar1 = GetDlgItem(100);
+  iVar1 = _GetDlgItem_CWnd__QBEPAV1_H_Z(100);
   SendMessageA(*(HWND *)(iVar1 + 0x1c),0x184,0,0);
   puVar2 = *(undefined4 **)(*(int *)(*(int *)(unaff_EBP + -0x10) + 0x5c) + 4);
   if (puVar2 != (undefined4 *)0x0) {
@@ -2243,23 +4753,23 @@ undefined4 OnInitDialog_619e4e(void)
       uVar5 = puVar2[2];
       *(undefined4 *)(unaff_EBP + -0x1c) = *puVar2;
       *(undefined4 *)(unaff_EBP + -0x18) = uVar5;
-      CString::CString((CString *)(unaff_EBP + -0x14));
+      CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
       iVar3 = **(int **)(unaff_EBP + -0x18);
       *(undefined4 *)(unaff_EBP + -4) = 0;
       iVar3 = (**(code **)(iVar3 + 0x6c))(unaff_EBP + -0x14,2);
       if ((iVar3 != 0) && (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) != 0)) {
         wParam = SendMessageA(*(HWND *)(iVar1 + 0x1c),0x180,0,*(int *)(unaff_EBP + -0x14));
         if (wParam == 0xffffffff) {
-          FUN_0060531e(0xffffffff);
+          _EndDialog_CDialog__QAEXH_Z(0xffffffff);
           *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-          CString::~CString((CString *)(unaff_EBP + -0x14));
+          CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
           uVar5 = 0;
           goto LAB_00619f39;
         }
         SendMessageA(*(HWND *)(iVar1 + 0x1c),0x19a,wParam,*(LPARAM *)(unaff_EBP + -0x18));
       }
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      CString::~CString((CString *)(unaff_EBP + -0x14));
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
       if (*(int *)(unaff_EBP + -0x1c) == 0) break;
       puVar2 = *(undefined4 **)(unaff_EBP + -0x1c);
     }
@@ -2277,9 +4787,9 @@ undefined4 OnInitDialog_619e4e(void)
     uVar5 = 1;
     *(LRESULT *)(*(int *)(unaff_EBP + -0x10) + 0x60) = LVar4;
   }
-  FUN_0060531e(uVar5);
+  _EndDialog_CDialog__QAEXH_Z(uVar5);
 LAB_00619f31:
-  uVar5 = OnInitDialog();
+  uVar5 = _OnInitDialog_CDialog__UAEHXZ();
 LAB_00619f39:
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return uVar5;
@@ -2303,11 +4813,11 @@ void SendMessage199Minus1AndRefreshSelection(void)
   code *unaff_ESI;
   int unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  
+
   uVar1 = (*unaff_ESI)(*(undefined4 *)(unaff_EDI + 0x1c),0x199);
   *(undefined4 *)(*(int *)(unaff_EBP + -0x10) + 0x60) = uVar1;
-  FUN_0060531e(1);
-  OnInitDialog();
+  _EndDialog_CDialog__QAEXH_Z(1);
+  _OnInitDialog_CDialog__UAEHXZ();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -2323,8 +4833,8 @@ WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62(TNewGameCo
   int iVar1;
   WPARAM wParam;
   TNewGameCommandVtbl *pTVar2;
-  
-  iVar1 = GetDlgItem(100);
+
+  iVar1 = _GetDlgItem_CWnd__QBEPAV1_H_Z(100);
   wParam = SendMessageA(*(HWND *)(iVar1 + 0x1c),0x188,0,0);
   if (wParam == 0xffffffff) {
     param_1[4].vftable = (TNewGameCommandVtbl *)0x0;
@@ -2333,7 +4843,7 @@ WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62(TNewGameCo
     pTVar2 = (TNewGameCommandVtbl *)SendMessageA(*(HWND *)(iVar1 + 0x1c),0x199,wParam,0);
     param_1[4].vftable = pTVar2;
   }
-  TNewGameCommand::OnOK_6054aa(param_1);
+  TNewGameCommand::_OnOK_CDialog__MAEXXZ(param_1);
   return;
 }
 
@@ -2354,16 +4864,16 @@ void SendMessage199AndFinalizeSelection(void)
   code *unaff_EBX;
   TNewGameCommand *unaff_ESI;
   int unaff_EDI;
-  
+
   pTVar1 = (TNewGameCommandVtbl *)(*unaff_EBX)(*(undefined4 *)(unaff_EDI + 0x1c),0x199);
   unaff_ESI[4].vftable = pTVar1;
-  TNewGameCommand::OnOK_6054aa(unaff_ESI);
+  TNewGameCommand::_OnOK_CDialog__MAEXXZ(unaff_ESI);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619FAA
-// GHIDRA_NAME FlushPendingOrAppendDocTemplate
-// GHIDRA_PROTO undefined FlushPendingOrAppendDocTemplate()
+// GHIDRA_NAME ?AddDocTemplate@CDocManager@@UAEXPAVCDocTemplate@@@Z
+// GHIDRA_PROTO undefined ?AddDocTemplate@CDocManager@@UAEXPAVCDocTemplate@@@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Doc-template manager operation used by app startup flush path.
 // GHIDRA_COMMENT - param_2 != NULL: initializes and appends a template node.
@@ -2375,13 +4885,13 @@ void SendMessage199AndFinalizeSelection(void)
    - param_2 == NULL: drains pending global template list DAT_006a6124, invokes callback for each
    entry, finalizes list, then clears pending globals and DAT_0069BD58 flag. */
 
-void __thiscall FlushPendingOrAppendDocTemplate(int *param_1,int *param_2)
+void __thiscall _AddDocTemplate_CDocManager__UAEXPAVCDocTemplate___Z(int *param_1,int *param_2)
 
 {
   code *pcVar1;
   int *piVar2;
   int *piVar3;
-  
+
   if (param_2 == (int *)0x0) {
     if (DAT_006a6124 != (int *)0x0) {
       if ((int *)DAT_006a6124[1] != (int *)0x0) {
@@ -2402,22 +4912,22 @@ void __thiscall FlushPendingOrAppendDocTemplate(int *param_1,int *param_2)
   }
   else {
     (**(code **)(*param_2 + 0x58))();
-    CPtrList::AddTail((CPtrList *)(param_1 + 1),param_2);
+    CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z((CPtrList *)(param_1 + 1),param_2);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061A027
-// GHIDRA_NAME AreAllLinkedRecordsSlot80ChecksTrue_0061a027
-// GHIDRA_PROTO undefined AreAllLinkedRecordsSlot80ChecksTrue_0061a027()
+// GHIDRA_NAME ?SaveAllModified@CDocManager@@UAEHXZ
+// GHIDRA_PROTO undefined ?SaveAllModified@CDocManager@@UAEHXZ()
 
-undefined4 __fastcall AreAllLinkedRecordsSlot80ChecksTrue_0061a027(int param_1)
+undefined4 __fastcall _SaveAllModified_CDocManager__UAEHXZ(int param_1)
 
 {
   undefined4 *puVar1;
   int iVar2;
   undefined4 *puVar3;
-  
+
   puVar3 = *(undefined4 **)(param_1 + 8);
   do {
     if (puVar3 == (undefined4 *)0x0) {
@@ -2439,7 +4949,7 @@ void DispatchVslot84ForLinkedNodeChain(undefined4 param_1,undefined4 param_2)
 {
   undefined4 *puVar1;
   undefined4 *unaff_ESI;
-  
+
   while (unaff_ESI != (undefined4 *)0x0) {
     puVar1 = (undefined4 *)*unaff_ESI;
     (**(code **)(*(int *)unaff_ESI[2] + 0x84))(param_2);
@@ -2449,10 +4959,10 @@ void DispatchVslot84ForLinkedNodeChain(undefined4 param_1,undefined4 param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061A06A
-// GHIDRA_NAME DoPromptFileName_61a06a
-// GHIDRA_PROTO undefined DoPromptFileName_61a06a()
+// GHIDRA_NAME ?DoPromptFileName@CDocManager@@UAEHAAVCString@@IKHPAVCDocTemplate@@@Z
+// GHIDRA_PROTO undefined ?DoPromptFileName@CDocManager@@UAEHAAVCString@@IKHPAVCDocTemplate@@@Z()
 
-bool DoPromptFileName_61a06a(void)
+bool _DoPromptFileName_CDocManager__UAEHAAVCString__IKHPAVCDocTemplate___Z(void)
 
 {
   undefined4 *puVar1;
@@ -2462,65 +4972,67 @@ bool DoPromptFileName_61a06a(void)
   int unaff_EBP;
   undefined4 *puVar4;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
-  CFileDialog(*(undefined4 *)(unaff_EBP + 0x14),0,0,6,0,0);
+  __0CFileDialog__QAE_HPBD0K0PAVCWnd___Z(*(undefined4 *)(unaff_EBP + 0x14),0,0,6,0,0);
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::CString((CString *)(unaff_EBP + -0x14));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
+  _LoadStringA_CString__QAEHI_Z(*(undefined4 *)(unaff_EBP + 0xc));
   *(uint *)(unaff_EBP + -0x180) = *(uint *)(unaff_EBP + -0x180) | *(uint *)(unaff_EBP + 0x10);
-  CString::CString((CString *)(unaff_EBP + 0x14));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + 0x14));
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  CString::CString((CString *)(unaff_EBP + -0x10));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   *(undefined1 *)(unaff_EBP + -4) = 3;
   if (*(int *)(unaff_EBP + 0x18) == 0) {
     bVar2 = 1;
     puVar4 = *(undefined4 **)(extraout_ECX + 8);
     while (puVar4 != (undefined4 *)0x0) {
       puVar1 = (undefined4 *)*puVar4;
-      FUN_0061a216(unaff_EBP + 0x14,unaff_EBP + -0x1b4,puVar4[2],-(uint)bVar2 & unaff_EBP - 0x10U);
+      _AppendFilterSuffix__YAXAAVCString__AAUtagOFNA__PAVCDocTemplate__PAV1__Z
+                (unaff_EBP + 0x14,unaff_EBP + -0x1b4,puVar4[2],-(uint)bVar2 & unaff_EBP - 0x10U);
       bVar2 = 0;
       puVar4 = puVar1;
     }
   }
   else {
-    FUN_0061a216(unaff_EBP + 0x14,unaff_EBP + -0x1b4,*(undefined4 *)(unaff_EBP + 0x18),
-                 unaff_EBP + -0x10);
+    _AppendFilterSuffix__YAXAAVCString__AAUtagOFNA__PAVCDocTemplate__PAV1__Z
+              (unaff_EBP + 0x14,unaff_EBP + -0x1b4,*(undefined4 *)(unaff_EBP + 0x18),
+               unaff_EBP + -0x10);
   }
-  CString::CString((CString *)(unaff_EBP + -0x18));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
   *(undefined1 *)(unaff_EBP + -4) = 4;
-  LoadStringA(0xf002);
-  AssignStringSharedFromRef(unaff_EBP + -0x18);
-  AppendSingleByteToSharedStringFromArg(0);
-  CString::AssignFromCStr((CString *)(unaff_EBP + 0x14),"*.*");
-  AppendSingleByteToSharedStringFromArg(0);
+  _LoadStringA_CString__QAEHI_Z(0xf002);
+  __YCString__QAEABV0_ABV0__Z(unaff_EBP + -0x18);
+  __YCString__QAEABV0_D_Z(0);
+  CString::__YCString__QAEABV0_PBD_Z((CString *)(unaff_EBP + 0x14),"*.*");
+  __YCString__QAEABV0_D_Z(0);
   *(int *)(unaff_EBP + -0x1a0) = *(int *)(unaff_EBP + -0x1a0) + 1;
   *(undefined4 *)(unaff_EBP + -0x1a8) = *(undefined4 *)(unaff_EBP + 0x14);
   *(undefined4 *)(unaff_EBP + -0x184) = *(undefined4 *)(unaff_EBP + -0x14);
-  iVar3 = CString::EnsureCapacityPreserveLength(*(CString **)(unaff_EBP + 8),0x104);
+  iVar3 = CString::_GetBuffer_CString__QAEPADH_Z(*(CString **)(unaff_EBP + 8),0x104);
   *(int *)(unaff_EBP + -0x198) = iVar3;
-  iVar3 = DoModal();
-  CString::SetLengthAndTerminator(*(CString **)(unaff_EBP + 8),-1);
+  iVar3 = _DoModal_CFileDialog__UAEHXZ();
+  CString::_ReleaseBuffer_CString__QAEXH_Z(*(CString **)(unaff_EBP + 8),-1);
   *(undefined1 *)(unaff_EBP + -4) = 3;
-  CString::~CString((CString *)(unaff_EBP + -0x18));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  CString::~CString((CString *)(unaff_EBP + -0x10));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  CString::~CString((CString *)(unaff_EBP + 0x14));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 0x14));
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + -0x14));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
   *(undefined4 *)(unaff_EBP + -4) = 5;
-  CString::~CString((CString *)(unaff_EBP + -0x164));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x164));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CDialog::~CDialog((CDialog *)(unaff_EBP + -0x210));
+  CDialog::__1CDialog__UAE_XZ((CDialog *)(unaff_EBP + -0x210));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return iVar3 == 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061A2EF
-// GHIDRA_NAME OnDDECommand
-// GHIDRA_PROTO undefined OnDDECommand()
+// GHIDRA_NAME ?OnDDECommand@CDocManager@@UAEHPAD@Z
+// GHIDRA_PROTO undefined ?OnDDECommand@CDocManager@@UAEHPAD@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Parses shell DDE execute commands ([open], [print], [printto]) and dispatches them to the MFC app/frame.
 // GHIDRA_COMMENT Handles quoting/token extraction, foreground/show behavior, and posts WM_COMMAND/WM_CLOSE follow-ups as needed.
@@ -2531,7 +5043,7 @@ bool DoPromptFileName_61a06a(void)
    Handles quoting/token extraction, foreground/show behavior, and posts WM_COMMAND/WM_CLOSE
    follow-ups as needed. */
 
-undefined4 OnDDECommand(void)
+undefined4 _OnDDECommand_CDocManager__UAEHPAD_Z(void)
 
 {
   CFrameWnd *this;
@@ -2544,148 +5056,157 @@ undefined4 OnDDECommand(void)
   undefined4 uVar7;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
-  CString::CString((CString *)(unaff_EBP + 8),*(char **)(unaff_EBP + 8));
+  CString::__0CString__QAE_PBD_Z((CString *)(unaff_EBP + 8),*(char **)(unaff_EBP + 8));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCommandLineInfo();
+  __0CCommandLineInfo__QAE_XZ();
   *(undefined1 *)(unaff_EBP + -4) = 1;
   *(undefined4 *)(unaff_EBP + -0x2c) = 4;
-  puVar1 = (undefined4 *)FUN_005fedad(unaff_EBP + -0x14,7);
-  iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,"[open(\"");
-  CString::~CString((CString *)(unaff_EBP + -0x14));
+  puVar1 = (undefined4 *)_Left_CString__QBE_AV1_H_Z(unaff_EBP + -0x14,7);
+  iVar2 = __mbscmp(*puVar1,"[open(\"");
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
   if (iVar2 == 0) {
     *(undefined4 *)(unaff_EBP + -0x2c) = 1;
-    pCVar3 = (CString *)FUN_005fed30(unaff_EBP + -0x14,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -7);
+    pCVar3 = (CString *)
+             _Right_CString__QBE_AV1_H_Z
+                       (unaff_EBP + -0x14,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -7);
     *(undefined1 *)(unaff_EBP + -4) = 2;
-    CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + 8),pCVar3);
     *(undefined1 *)(unaff_EBP + -4) = 1;
 LAB_0061a3e4:
-    CString::~CString((CString *)(unaff_EBP + -0x14));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
 LAB_0061a456:
-    iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8),0x22);
+    iVar2 = TMacViewMgr::_Find_CString__QBEHD_Z((TMacViewMgr *)(unaff_EBP + 8),0x22);
     if (iVar2 != -1) {
-      pCVar3 = (CString *)FUN_005fedad(unaff_EBP + -0x14,iVar2);
+      pCVar3 = (CString *)_Left_CString__QBE_AV1_H_Z(unaff_EBP + -0x14,iVar2);
       *(undefined1 *)(unaff_EBP + -4) = 5;
-      CString::AssignFromPtr((CString *)(unaff_EBP + -0x28),pCVar3);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + -0x28),pCVar3);
       *(undefined1 *)(unaff_EBP + -4) = 1;
-      CString::~CString((CString *)(unaff_EBP + -0x14));
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
       pCVar3 = (CString *)
-               FUN_005fed30(unaff_EBP + -0x14,*(int *)(*(int *)(unaff_EBP + 8) + -8) - iVar2);
+               _Right_CString__QBE_AV1_H_Z
+                         (unaff_EBP + -0x14,*(int *)(*(int *)(unaff_EBP + 8) + -8) - iVar2);
       *(undefined1 *)(unaff_EBP + -4) = 6;
-      CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + 8),pCVar3);
       *(undefined1 *)(unaff_EBP + -4) = 1;
-      CString::~CString((CString *)(unaff_EBP + -0x14));
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
       *(undefined4 *)(unaff_EBP + -0x14) = 0;
       *(undefined4 *)(unaff_EBP + -0x10) = 1;
-      iVar2 = AfxGetModuleState();
+      iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
       if (*(int *)(*(int *)(iVar2 + 4) + 0xac) == 0) {
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         *(undefined4 *)(unaff_EBP + -0x14) = *(undefined4 *)(*(int *)(iVar2 + 4) + 0xac);
       }
       else {
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         iVar2 = *(int *)(iVar2 + 4);
-        iVar4 = AfxGetModuleState();
+        iVar4 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         *(undefined4 *)(*(int *)(iVar4 + 4) + 0x74) = *(undefined4 *)(iVar2 + 0xac);
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         *(int *)(*(int *)(iVar2 + 4) + 0xac) = unaff_EBP + -0x3c;
       }
       if (*(int *)(unaff_EBP + -0x2c) == 1) {
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         this = *(CFrameWnd **)(*(int *)(iVar2 + 4) + 0x1c);
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         iVar2 = *(int *)(*(int *)(iVar2 + 4) + 0x74);
         if ((iVar2 == -1) || (iVar2 == 1)) {
           BVar5 = IsIconic(this->m_hWnd);
           iVar2 = (-(uint)(BVar5 != 0) & 4) + 5;
         }
-        CFrameWnd::ShowWindow(this,iVar2);
+        CFrameWnd::_ShowWindow_CWnd__QAEHH_Z(this,iVar2);
         if (iVar2 != 6) {
           SetForegroundWindow(this->m_hWnd);
         }
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         (**(code **)(**(int **)(iVar2 + 4) + 0x84))(*(undefined4 *)(unaff_EBP + -0x28));
         iVar2 = GetMfcThreadStateFlagDword30();
         if (iVar2 == 0) {
-          AfxOleSetUserCtrl(1);
+          _AfxOleSetUserCtrl__YGXH_Z(1);
         }
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         *(undefined4 *)(*(int *)(iVar2 + 4) + 0x74) = 0xffffffff;
       }
       else if (*(int *)(unaff_EBP + -0x2c) == 3) {
-        puVar1 = (undefined4 *)FUN_005fedad(unaff_EBP + -0x18,3);
-        iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,&DAT_006732b4);
-        CString::~CString((CString *)(unaff_EBP + -0x18));
+        puVar1 = (undefined4 *)_Left_CString__QBE_AV1_H_Z(unaff_EBP + -0x18,3);
+        iVar2 = __mbscmp(*puVar1,&DAT_006732b4);
+        CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
         if (iVar2 == 0) {
           pCVar3 = (CString *)
-                   FUN_005fed30(unaff_EBP + -0x18,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -3);
+                   _Right_CString__QBE_AV1_H_Z
+                             (unaff_EBP + -0x18,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -3);
           *(undefined1 *)(unaff_EBP + -4) = 7;
-          CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
+          CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + 8),pCVar3);
           *(undefined1 *)(unaff_EBP + -4) = 1;
-          CString::~CString((CString *)(unaff_EBP + -0x18));
-          iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8),0x22);
+          CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
+          iVar2 = TMacViewMgr::_Find_CString__QBEHD_Z((TMacViewMgr *)(unaff_EBP + 8),0x22);
           if (iVar2 != -1) {
-            pCVar3 = (CString *)FUN_005fedad(unaff_EBP + -0x18,iVar2);
+            pCVar3 = (CString *)_Left_CString__QBE_AV1_H_Z(unaff_EBP + -0x18,iVar2);
             *(undefined1 *)(unaff_EBP + -4) = 8;
-            CString::AssignFromPtr((CString *)(unaff_EBP + -0x24),pCVar3);
+            CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + -0x24),pCVar3);
             *(undefined1 *)(unaff_EBP + -4) = 1;
-            CString::~CString((CString *)(unaff_EBP + -0x18));
+            CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
             pCVar3 = (CString *)
-                     FUN_005fed30(unaff_EBP + -0x18,*(int *)(*(int *)(unaff_EBP + 8) + -8) - iVar2);
+                     _Right_CString__QBE_AV1_H_Z
+                               (unaff_EBP + -0x18,*(int *)(*(int *)(unaff_EBP + 8) + -8) - iVar2);
             *(undefined1 *)(unaff_EBP + -4) = 9;
-            CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
+            CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + 8),pCVar3);
             *(undefined1 *)(unaff_EBP + -4) = 1;
-            CString::~CString((CString *)(unaff_EBP + -0x18));
-            puVar1 = (undefined4 *)FUN_005fedad(unaff_EBP + -0x18,3);
-            iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,&DAT_006732b4);
-            CString::~CString((CString *)(unaff_EBP + -0x18));
+            CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
+            puVar1 = (undefined4 *)_Left_CString__QBE_AV1_H_Z(unaff_EBP + -0x18,3);
+            iVar2 = __mbscmp(*puVar1,&DAT_006732b4);
+            CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
             if (iVar2 == 0) {
               pCVar3 = (CString *)
-                       FUN_005fed30(unaff_EBP + -0x18,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -3);
+                       _Right_CString__QBE_AV1_H_Z
+                                 (unaff_EBP + -0x18,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -3);
               *(undefined1 *)(unaff_EBP + -4) = 10;
-              CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
+              CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + 8),pCVar3);
               *(undefined1 *)(unaff_EBP + -4) = 1;
-              CString::~CString((CString *)(unaff_EBP + -0x18));
-              iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8),0x22);
+              CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
+              iVar2 = TMacViewMgr::_Find_CString__QBEHD_Z((TMacViewMgr *)(unaff_EBP + 8),0x22);
               if (iVar2 != -1) {
-                pCVar3 = (CString *)FUN_005fedad(unaff_EBP + -0x18,iVar2);
+                pCVar3 = (CString *)_Left_CString__QBE_AV1_H_Z(unaff_EBP + -0x18,iVar2);
                 *(undefined1 *)(unaff_EBP + -4) = 0xb;
-                CString::AssignFromPtr((CString *)(unaff_EBP + -0x20),pCVar3);
+                CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + -0x20),pCVar3);
                 *(undefined1 *)(unaff_EBP + -4) = 1;
-                CString::~CString((CString *)(unaff_EBP + -0x18));
+                CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
                 pCVar3 = (CString *)
-                         FUN_005fed30(unaff_EBP + -0x18,
-                                      *(int *)(*(int *)(unaff_EBP + 8) + -8) - iVar2);
+                         _Right_CString__QBE_AV1_H_Z
+                                   (unaff_EBP + -0x18,*(int *)(*(int *)(unaff_EBP + 8) + -8) - iVar2
+                                   );
                 *(undefined1 *)(unaff_EBP + -4) = 0xc;
-                CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
+                CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + 8),pCVar3);
                 *(undefined1 *)(unaff_EBP + -4) = 1;
-                CString::~CString((CString *)(unaff_EBP + -0x18));
-                puVar1 = (undefined4 *)FUN_005fedad(unaff_EBP + -0x18,3);
-                iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,&DAT_006732b4);
-                CString::~CString((CString *)(unaff_EBP + -0x18));
+                CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
+                puVar1 = (undefined4 *)_Left_CString__QBE_AV1_H_Z(unaff_EBP + -0x18,3);
+                iVar2 = __mbscmp(*puVar1,&DAT_006732b4);
+                CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
                 if (iVar2 == 0) {
                   pCVar3 = (CString *)
-                           FUN_005fed30(unaff_EBP + -0x18,
-                                        *(int *)(*(int *)(unaff_EBP + 8) + -8) + -3);
+                           _Right_CString__QBE_AV1_H_Z
+                                     (unaff_EBP + -0x18,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -3)
+                  ;
                   *(undefined1 *)(unaff_EBP + -4) = 0xd;
-                  CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
+                  CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + 8),pCVar3);
                   *(undefined1 *)(unaff_EBP + -4) = 1;
-                  CString::~CString((CString *)(unaff_EBP + -0x18));
-                  iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8),0x22);
+                  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
+                  iVar2 = TMacViewMgr::_Find_CString__QBEHD_Z((TMacViewMgr *)(unaff_EBP + 8),0x22);
                   if (iVar2 != -1) {
-                    pCVar3 = (CString *)FUN_005fedad(unaff_EBP + -0x18,iVar2);
+                    pCVar3 = (CString *)_Left_CString__QBE_AV1_H_Z(unaff_EBP + -0x18,iVar2);
                     *(undefined1 *)(unaff_EBP + -4) = 0xe;
-                    CString::AssignFromPtr((CString *)(unaff_EBP + -0x1c),pCVar3);
+                    CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + -0x1c),pCVar3);
                     *(undefined1 *)(unaff_EBP + -4) = 1;
-                    CString::~CString((CString *)(unaff_EBP + -0x18));
+                    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
                     pCVar3 = (CString *)
-                             FUN_005fed30(unaff_EBP + -0x18,
-                                          *(int *)(*(int *)(unaff_EBP + 8) + -8) - iVar2);
+                             _Right_CString__QBE_AV1_H_Z
+                                       (unaff_EBP + -0x18,
+                                        *(int *)(*(int *)(unaff_EBP + 8) + -8) - iVar2);
                     *(undefined1 *)(unaff_EBP + -4) = 0xf;
-                    CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
+                    CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + 8),pCVar3);
                     *(undefined1 *)(unaff_EBP + -4) = 1;
-                    CString::~CString((CString *)(unaff_EBP + -0x18));
+                    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
                     goto LAB_0061a804;
                   }
                 }
@@ -2697,64 +5218,66 @@ LAB_0061a456:
       }
       else {
 LAB_0061a804:
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         piVar6 = (int *)(**(code **)(**(int **)(iVar2 + 4) + 0x84))
                                   (*(undefined4 *)(unaff_EBP + -0x28));
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         *(int *)(*(int *)(iVar2 + 4) + 0xac) = unaff_EBP + -0x3c;
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         SendMessageA(*(HWND *)(*(int *)(*(int *)(iVar2 + 4) + 0x1c) + 0x1c),0x111,0xe108,0);
-        iVar2 = AfxGetModuleState();
+        iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
         *(undefined4 *)(*(int *)(iVar2 + 4) + 0xac) = 0;
         (**(code **)(*piVar6 + 0x84))();
         iVar2 = GetMfcThreadStateFlagDword30();
         if (iVar2 == 0) {
-          iVar2 = AfxGetModuleState();
+          iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
           PostMessageA(*(HWND *)(*(int *)(*(int *)(iVar2 + 4) + 0x1c) + 0x1c),0x10,0,0);
         }
       }
-      iVar2 = AfxGetModuleState();
+      iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
       iVar2 = *(int *)(iVar2 + 4);
       *(undefined1 *)(unaff_EBP + -4) = 0;
       *(undefined4 *)(iVar2 + 0xac) = *(undefined4 *)(unaff_EBP + -0x14);
-      DestructCommandLineParseContext();
+      __1CCommandLineInfo__UAE_XZ();
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      CString::~CString((CString *)(unaff_EBP + 8));
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 8));
       uVar7 = *(undefined4 *)(unaff_EBP + -0x10);
       goto LAB_0061a8cc;
     }
   }
   else {
-    puVar1 = (undefined4 *)FUN_005fedad(unaff_EBP + -0x14,8);
-    iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,"[print(\"");
-    CString::~CString((CString *)(unaff_EBP + -0x14));
+    puVar1 = (undefined4 *)_Left_CString__QBE_AV1_H_Z(unaff_EBP + -0x14,8);
+    iVar2 = __mbscmp(*puVar1,"[print(\"");
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
     if (iVar2 == 0) {
       *(undefined4 *)(unaff_EBP + -0x2c) = 2;
       pCVar3 = (CString *)
-               FUN_005fed30(unaff_EBP + -0x14,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -8);
+               _Right_CString__QBE_AV1_H_Z
+                         (unaff_EBP + -0x14,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -8);
       *(undefined1 *)(unaff_EBP + -4) = 3;
-      CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + 8),pCVar3);
       *(undefined1 *)(unaff_EBP + -4) = 1;
       goto LAB_0061a3e4;
     }
-    puVar1 = (undefined4 *)FUN_005fedad(unaff_EBP + -0x14,10);
-    iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,"[printto(\"");
-    CString::~CString((CString *)(unaff_EBP + -0x14));
+    puVar1 = (undefined4 *)_Left_CString__QBE_AV1_H_Z(unaff_EBP + -0x14,10);
+    iVar2 = __mbscmp(*puVar1,"[printto(\"");
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
     if (iVar2 == 0) {
       *(undefined4 *)(unaff_EBP + -0x2c) = 3;
       pCVar3 = (CString *)
-               FUN_005fed30(unaff_EBP + -0x14,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -10);
+               _Right_CString__QBE_AV1_H_Z
+                         (unaff_EBP + -0x14,*(int *)(*(int *)(unaff_EBP + 8) + -8) + -10);
       *(undefined1 *)(unaff_EBP + -4) = 4;
-      CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)(unaff_EBP + 8),pCVar3);
       *(undefined1 *)(unaff_EBP + -4) = 1;
-      CString::~CString((CString *)(unaff_EBP + -0x14));
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
       goto LAB_0061a456;
     }
   }
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  DestructCommandLineParseContext();
+  __1CCommandLineInfo__UAE_XZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(unaff_EBP + 8));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 8));
   uVar7 = 0;
 LAB_0061a8cc:
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -2762,10 +5285,10 @@ LAB_0061a8cc:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061A8DD
-// GHIDRA_NAME OnFileNew_61a8dd
-// GHIDRA_PROTO undefined OnFileNew_61a8dd()
+// GHIDRA_NAME ?OnFileNew@CDocManager@@UAEXXZ
+// GHIDRA_PROTO undefined ?OnFileNew@CDocManager@@UAEXXZ()
 
-void OnFileNew_61a8dd(void)
+void _OnFileNew_CDocManager__UAEXXZ(void)
 
 {
   int iVar1;
@@ -2773,30 +5296,30 @@ void OnFileNew_61a8dd(void)
   int *piVar2;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   if (*(int *)(extraout_ECX + 0x10) == 0) {
-    FormatResourceStringAndDispatchViaThreadState(0xf104,0,0xffffffff);
+    _AfxMessageBox__YGHIII_Z(0xf104,0,0xffffffff);
   }
   else {
     piVar2 = *(int **)(*(int *)(extraout_ECX + 8) + 8);
     if (1 < *(int *)(extraout_ECX + 0x10)) {
-      TControl::InitializeDialogTemplateFromId((TControl *)(unaff_EBP + -0x70),0x7801,0);
+      TControl::__0CDialog__QAE_IPAVCWnd___Z((TControl *)(unaff_EBP + -0x70),0x7801,0);
       *(undefined4 *)(unaff_EBP + -0x10) = 0;
       *(undefined ***)(unaff_EBP + -0x70) = &PTR_LAB_006732dc;
       *(int *)(unaff_EBP + -0x14) = extraout_ECX + 4;
       *(undefined4 *)(unaff_EBP + -4) = 0;
-      iVar1 = DoModal_6051b9();
+      iVar1 = _DoModal_CDialog__UAEHXZ();
       if (iVar1 != 1) {
         *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
         *(undefined ***)(unaff_EBP + -0x70) = &PTR_LAB_006732dc;
-        CDialog::~CDialog((CDialog *)(unaff_EBP + -0x70));
+        CDialog::__1CDialog__UAE_XZ((CDialog *)(unaff_EBP + -0x70));
         goto LAB_0061a962;
       }
       piVar2 = *(int **)(unaff_EBP + -0x10);
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
       *(undefined ***)(unaff_EBP + -0x70) = &PTR_LAB_006732dc;
-      CDialog::~CDialog((CDialog *)(unaff_EBP + -0x70));
+      CDialog::__1CDialog__UAE_XZ((CDialog *)(unaff_EBP + -0x70));
     }
     (**(code **)(*piVar2 + 0x88))(0,1);
   }
@@ -2813,7 +5336,7 @@ void __fastcall DestructCDialogAndResetVtable_006732dc(CDialog *param_1)
 
 {
   *(undefined ***)param_1 = &PTR_LAB_006732dc;
-  CDialog::~CDialog(param_1);
+  CDialog::__1CDialog__UAE_XZ(param_1);
   return;
 }
 
@@ -2826,33 +5349,35 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0061a98d(undefined4 p
 {
   DestructCDialogAndResetVtable_006732dc();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061AA0E
-// GHIDRA_NAME AfxFormatStrings
-// GHIDRA_PROTO undefined AfxFormatStrings()
+// GHIDRA_NAME ?AfxFormatStrings@@YGXAAVCString@@IPBQBDH@Z
+// GHIDRA_PROTO undefined ?AfxFormatStrings@@YGXAAVCString@@IPBQBDH@Z()
 
-void AfxFormatStrings(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+void _AfxFormatStrings__YGXAAVCString__IPBQBDH_Z
+               (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
   int iVar1;
   undefined1 local_104 [256];
-  
-  iVar1 = AfxLoadString(param_2,local_104,0x100);
+
+  iVar1 = _AfxLoadString__YGHIPADI_Z(param_2,local_104,0x100);
   if (iVar1 != 0) {
-    AfxFormatStrings_61aa48(param_1,local_104,param_3,param_4);
+    _AfxFormatStrings__YGXAAVCString__PBDPBQBDH_Z(param_1,local_104,param_3,param_4);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061AA48
-// GHIDRA_NAME AfxFormatStrings_61aa48
-// GHIDRA_PROTO undefined AfxFormatStrings_61aa48()
+// GHIDRA_NAME ?AfxFormatStrings@@YGXAAVCString@@PBDPBQBDH@Z
+// GHIDRA_PROTO undefined ?AfxFormatStrings@@YGXAAVCString@@PBDPBQBDH@Z()
 
-void AfxFormatStrings_61aa48(CString *param_1,byte *param_2,int param_3,int param_4)
+void _AfxFormatStrings__YGXAAVCString__PBDPBQBDH_Z
+               (CString *param_1,byte *param_2,int param_3,int param_4)
 
 {
   byte bVar1;
@@ -2861,7 +5386,7 @@ void AfxFormatStrings_61aa48(CString *param_1,byte *param_2,int param_3,int para
   int iVar4;
   int iVar5;
   byte *pbVar6;
-  
+
   iVar5 = 0;
   bVar1 = *param_2;
   pbVar6 = param_2;
@@ -2897,11 +5422,11 @@ LAB_0061aab0:
     }
     bVar1 = *pbVar6;
   }
-  pbVar6 = (byte *)CString::EnsureCapacityPreserveLength(param_1,iVar5);
+  pbVar6 = (byte *)CString::_GetBuffer_CString__QAEPADH_Z(param_1,iVar5);
   do {
     while( true ) {
       if (*param_2 == 0) {
-        CString::SetLengthAndTerminator(param_1,(int)pbVar6 - (int)param_1->m_pchData);
+        CString::_ReleaseBuffer_CString__QAEXH_Z(param_1,(int)pbVar6 - (int)param_1->m_pchData);
         return;
       }
       bVar1 = *param_2;
@@ -2943,29 +5468,30 @@ LAB_0061aaee:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061AB47
-// GHIDRA_NAME AfxFormatString1
-// GHIDRA_PROTO undefined AfxFormatString1()
+// GHIDRA_NAME ?AfxFormatString1@@YGXAAVCString@@IPBD@Z
+// GHIDRA_PROTO undefined ?AfxFormatString1@@YGXAAVCString@@IPBD@Z()
 
-void AfxFormatString1(undefined4 param_1,undefined4 param_2)
+void _AfxFormatString1__YGXAAVCString__IPBD_Z(undefined4 param_1,undefined4 param_2)
 
 {
-  AfxFormatStrings(param_1,param_2,&stack0x0000000c,1);
+  _AfxFormatStrings__YGXAAVCString__IPBQBDH_Z(param_1,param_2,&stack0x0000000c,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061AB5E
-// GHIDRA_NAME AfxFormatString2
-// GHIDRA_PROTO undefined AfxFormatString2()
+// GHIDRA_NAME ?AfxFormatString2@@YGXAAVCString@@IPBD1@Z
+// GHIDRA_PROTO undefined ?AfxFormatString2@@YGXAAVCString@@IPBD1@Z()
 
-void AfxFormatString2(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+void _AfxFormatString2__YGXAAVCString__IPBD1_Z
+               (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
   undefined4 local_c;
   undefined4 local_8;
-  
+
   local_c = param_3;
   local_8 = param_4;
-  AfxFormatStrings(param_1,param_2,&local_c,2);
+  _AfxFormatStrings__YGXAAVCString__IPBQBDH_Z(param_1,param_2,&local_c,2);
   return;
 }
 
@@ -3011,7 +5537,7 @@ void RegisterMouseWheelRollMessageForLegacyWindows(void)
 
 {
   DWORD DVar1;
-  
+
   DVar1 = GetVersion();
   if ((DVar1 & 0x80000000) == 0) {
 LAB_0061c5a4:
@@ -3041,7 +5567,7 @@ void RegisterMouseWheelRollMessageForLegacyWindows(void)
 
 {
   DWORD DVar1;
-  
+
   DVar1 = GetVersion();
   if ((DVar1 & 0x80000000) == 0) {
 LAB_0061c5a4:
@@ -3062,43 +5588,48 @@ LAB_0061c5ba:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C725
-// GHIDRA_NAME AddFrameWnd
-// GHIDRA_PROTO undefined AddFrameWnd()
+// GHIDRA_NAME ?AddFrameWnd@CFrameWnd@@IAEXXZ
+// GHIDRA_PROTO undefined ?AddFrameWnd@CFrameWnd@@IAEXXZ()
 
-void __fastcall AddFrameWnd(TMacViewMgrVtbl *param_1)
+void __fastcall _AddFrameWnd_CFrameWnd__IAEXXZ(TMacViewMgrVtbl *param_1)
 
 {
   int iVar1;
-  
-  iVar1 = AfxGetModuleState();
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)(iVar1 + 0x1070),CreateObject);
-  TMacViewMgr::AddHead_623b4c((TMacViewMgr *)(iVar1 + 8),param_1);
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  iVar1 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
+                    ((TMacViewMgr *)(iVar1 + 0x1070),
+                     _CreateObject___CThreadLocal_VAFX_MODULE_THREAD_STATE____SGPAVCNoTrackObject__XZ
+                    );
+  TMacViewMgr::_AddHead_CSimpleList__QAEXPAX_Z((TMacViewMgr *)(iVar1 + 8),param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C749
-// GHIDRA_NAME RemoveFrameWnd
-// GHIDRA_PROTO undefined RemoveFrameWnd()
+// GHIDRA_NAME ?RemoveFrameWnd@CFrameWnd@@IAEXXZ
+// GHIDRA_PROTO undefined ?RemoveFrameWnd@CFrameWnd@@IAEXXZ()
 
-void __fastcall RemoveFrameWnd(undefined4 param_1)
+void __fastcall _RemoveFrameWnd_CFrameWnd__IAEXXZ(undefined4 param_1)
 
 {
   int iVar1;
-  
-  iVar1 = AfxGetModuleState();
-  TMacViewMgr::GetData((TMacViewMgr *)(iVar1 + 0x1070),CreateObject);
-  RemoveNodeFromOffsetLinkedList(param_1);
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
+            ((TMacViewMgr *)(iVar1 + 0x1070),
+             _CreateObject___CThreadLocal_VAFX_MODULE_THREAD_STATE____SGPAVCNoTrackObject__XZ);
+  _Remove_CSimpleList__QAEHPAX_Z(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C83A
-// GHIDRA_NAME OnPaletteChanged
-// GHIDRA_PROTO undefined OnPaletteChanged()
+// GHIDRA_NAME ?OnPaletteChanged@CFrameWnd@@IAEXPAVCWnd@@@Z
+// GHIDRA_PROTO undefined ?OnPaletteChanged@CFrameWnd@@IAEXPAVCWnd@@@Z()
 
-void __thiscall OnPaletteChanged(CWnd *param_1,undefined4 param_2)
+void __thiscall _OnPaletteChanged_CFrameWnd__IAEXPAVCWnd___Z(CWnd *param_1,undefined4 param_2)
 
 {
-  CWnd::Default(param_1);
+  CWnd::_Default_CWnd__IAEJXZ(param_1);
   if ((int *)param_1[1].m_nModalResult != (int *)0x0) {
     (**(code **)(*(int *)param_1[1].m_nModalResult + 0x74))(param_2);
   }
@@ -3106,38 +5637,38 @@ void __thiscall OnPaletteChanged(CWnd *param_1,undefined4 param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C856
-// GHIDRA_NAME OnQueryNewPalette
-// GHIDRA_PROTO undefined OnQueryNewPalette()
+// GHIDRA_NAME ?OnQueryNewPalette@CFrameWnd@@IAEHXZ
+// GHIDRA_PROTO undefined ?OnQueryNewPalette@CFrameWnd@@IAEHXZ()
 
-undefined4 __fastcall OnQueryNewPalette(CWnd *param_1)
+undefined4 __fastcall _OnQueryNewPalette_CFrameWnd__IAEHXZ(CWnd *param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
-  
+
   if ((int *)param_1[1].m_nModalResult != (int *)0x0) {
     iVar1 = (**(code **)(*(int *)param_1[1].m_nModalResult + 0x78))();
     if (iVar1 != 0) {
       return 1;
     }
   }
-  uVar2 = CWnd::Default(param_1);
+  uVar2 = CWnd::_Default_CWnd__IAEJXZ(param_1);
   return uVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C8E2
-// GHIDRA_NAME OnSetCursor
-// GHIDRA_PROTO undefined OnSetCursor()
+// GHIDRA_NAME ?OnSetCursor@CFrameWnd@@IAEHPAVCWnd@@II@Z
+// GHIDRA_PROTO undefined ?OnSetCursor@CFrameWnd@@IAEHPAVCWnd@@II@Z()
 
-undefined4 __fastcall OnSetCursor(CWnd *param_1)
+undefined4 __fastcall _OnSetCursor_CFrameWnd__IAEHPAVCWnd__II_Z(CWnd *param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
-  
-  iVar1 = GetTopLevelFrame();
+
+  iVar1 = _GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ();
   if (*(int *)(iVar1 + 0x50) == 0) {
-    uVar2 = CWnd::Default(param_1);
+    uVar2 = CWnd::_Default_CWnd__IAEJXZ(param_1);
   }
   else {
     SetCursor(DAT_006a7d44);
@@ -3147,16 +5678,16 @@ undefined4 __fastcall OnSetCursor(CWnd *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C90C
-// GHIDRA_NAME DispatchCommandUsingStoredFrameIds
-// GHIDRA_PROTO undefined DispatchCommandUsingStoredFrameIds()
+// GHIDRA_NAME ?OnCommandHelp@CFrameWnd@@IAEJIJ@Z
+// GHIDRA_PROTO undefined ?OnCommandHelp@CFrameWnd@@IAEJIJ@Z()
 
-undefined4 __thiscall DispatchCommandUsingStoredFrameIds(int param_1,undefined4 param_2,int param_3)
+undefined4 __thiscall _OnCommandHelp_CFrameWnd__IAEJIJ_Z(int param_1,undefined4 param_2,int param_3)
 
 {
   int iVar1;
-  
+
   if (param_3 == 0) {
-    iVar1 = IsTracking();
+    iVar1 = _IsTracking_CFrameWnd__QBEHXZ();
     if (iVar1 == 0) {
       param_3 = *(int *)(param_1 + 0x8c) + 0x20000;
     }
@@ -3167,38 +5698,38 @@ undefined4 __thiscall DispatchCommandUsingStoredFrameIds(int param_1,undefined4 
       return 0;
     }
   }
-  iVar1 = AfxGetModuleState();
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   (**(code **)(**(int **)(iVar1 + 4) + 0xa0))(param_3,1);
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C9ED
-// GHIDRA_NAME AfxIsDescendant
-// GHIDRA_PROTO undefined AfxIsDescendant()
+// GHIDRA_NAME ?AfxIsDescendant@@YGHPAUHWND__@@0@Z
+// GHIDRA_PROTO undefined ?AfxIsDescendant@@YGHPAUHWND__@@0@Z()
 
-undefined4 AfxIsDescendant(HWND__ *param_1,HWND__ *param_2)
+undefined4 _AfxIsDescendant__YGHPAUHWND____0_Z(HWND__ *param_1,HWND__ *param_2)
 
 {
   do {
     if (param_1 == param_2) {
       return 1;
     }
-    param_2 = AfxGetParentOwner(param_2);
+    param_2 = _AfxGetParentOwner__YGPAUHWND____PAU1__Z_00609297(param_2);
   } while (param_2 != (HWND__ *)0x0);
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CB3A
-// GHIDRA_NAME EndModalState
-// GHIDRA_PROTO undefined EndModalState()
+// GHIDRA_NAME ?EndModalState@CFrameWnd@@UAEXXZ
+// GHIDRA_PROTO undefined ?EndModalState@CFrameWnd@@UAEXXZ()
 
-void __fastcall EndModalState(int param_1)
+void __fastcall _EndModalState_CFrameWnd__UAEXXZ(int param_1)
 
 {
   int *piVar1;
   BOOL BVar2;
   int iVar3;
-  
+
   if (((*(int *)(param_1 + 0xa0) != 0) &&
       (iVar3 = *(int *)(param_1 + 0xa0) + -1, *(int *)(param_1 + 0xa0) = iVar3, iVar3 == 0)) &&
      (piVar1 = *(int **)(param_1 + 0xa4), piVar1 != (int *)0x0)) {
@@ -3213,15 +5744,15 @@ void __fastcall EndModalState(int param_1)
         iVar3 = iVar3 + 4;
       } while (*(int *)(iVar3 + (int)piVar1) != 0);
     }
-    FreeHeapBufferIfNotNull(*(undefined4 *)(param_1 + 0xa4));
+    __3_YAXPAX_Z(*(undefined4 *)(param_1 + 0xa4));
     *(undefined4 *)(param_1 + 0xa4) = 0;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CBA9
-// GHIDRA_NAME ShowOwnedWindows
-// GHIDRA_PROTO undefined ShowOwnedWindows()
+// GHIDRA_NAME ?ShowOwnedWindows@CFrameWnd@@QAEXH@Z
+// GHIDRA_PROTO undefined ?ShowOwnedWindows@CFrameWnd@@QAEXH@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Toggles visibility of overlapping sibling windows based on ownership/overlap checks.
 // GHIDRA_COMMENT Hides matching windows on disable path and restores previously hidden ones on enable path.
@@ -3230,7 +5761,7 @@ void __fastcall EndModalState(int param_1)
 /* Toggles visibility of overlapping sibling windows based on ownership/overlap checks.
    Hides matching windows on disable path and restores previously hidden ones on enable path. */
 
-void __thiscall ShowOwnedWindows(int param_1,int param_2)
+void __thiscall _ShowOwnedWindows_CFrameWnd__QAEXH_Z(int param_1,int param_2)
 
 {
   HWND pHVar1;
@@ -3238,13 +5769,14 @@ void __thiscall ShowOwnedWindows(int param_1,int param_2)
   int iVar3;
   uint uVar4;
   UINT uCmd;
-  
+
   uCmd = 5;
   pHVar1 = GetDesktopWindow();
   for (pHVar1 = GetWindow(pHVar1,uCmd); pHVar1 != (HWND)0x0; pHVar1 = GetWindow(pHVar1,2)) {
-    iVar2 = FromHandlePermanent_607b57(pHVar1);
+    iVar2 = _FromHandlePermanent_CWnd__SGPAV1_PAUHWND_____Z(pHVar1);
     if (((iVar2 != 0) && (*(HWND *)(param_1 + 0x1c) != pHVar1)) &&
-       (iVar3 = AfxIsDescendant(*(HWND *)(param_1 + 0x1c),pHVar1), iVar3 != 0)) {
+       (iVar3 = _AfxIsDescendant__YGHPAUHWND____0_Z(*(HWND *)(param_1 + 0x1c),pHVar1), iVar3 != 0))
+    {
       uVar4 = GetWindowLongA(pHVar1,-0x10);
       if (param_2 == 0) {
         if ((uVar4 & 0x18000000) == 0x10000000) {
@@ -3262,10 +5794,10 @@ void __thiscall ShowOwnedWindows(int param_1,int param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CD09
-// GHIDRA_NAME NotifyFloatingWindows
-// GHIDRA_PROTO undefined NotifyFloatingWindows()
+// GHIDRA_NAME ?NotifyFloatingWindows@CFrameWnd@@QAEXK@Z
+// GHIDRA_PROTO undefined ?NotifyFloatingWindows@CFrameWnd@@QAEXK@Z()
 
-void __thiscall NotifyFloatingWindows(int param_1,uint param_2)
+void __thiscall _NotifyFloatingWindows_CFrameWnd__QAEXK_Z(int param_1,uint param_2)
 
 {
   uint uVar1;
@@ -3273,14 +5805,14 @@ void __thiscall NotifyFloatingWindows(int param_1,uint param_2)
   int iVar3;
   HWND hWnd;
   UINT uCmd;
-  
-  uVar1 = GetStyle();
+
+  uVar1 = _GetStyle_CWnd__QBEKXZ();
   iVar2 = param_1;
   if ((uVar1 & 0x40000000) == 0) {
-    iVar2 = GetTopLevelFrame();
+    iVar2 = _GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ();
   }
   if ((param_2 & 0xc) != 0) {
-    iVar3 = IsWindowEnabled();
+    iVar3 = _IsWindowEnabled_CWnd__QBEHXZ();
     if ((((~param_2 & 8) == 0) || (iVar3 == 0)) || (iVar2 == param_1)) {
       SendMessageA(*(HWND *)(iVar2 + 0x1c),0x86,0,0);
     }
@@ -3293,7 +5825,7 @@ void __thiscall NotifyFloatingWindows(int param_1,uint param_2)
   uCmd = 5;
   hWnd = GetDesktopWindow();
   while (hWnd = GetWindow(hWnd,uCmd), hWnd != (HWND)0x0) {
-    iVar3 = AfxIsDescendant(*(undefined4 *)(iVar2 + 0x1c),hWnd);
+    iVar3 = _AfxIsDescendant__YGHPAUHWND____0_Z(*(undefined4 *)(iVar2 + 0x1c),hWnd);
     if (iVar3 != 0) {
       SendMessageA(hWnd,0x36d,param_2,0);
     }
@@ -3303,11 +5835,11 @@ void __thiscall NotifyFloatingWindows(int param_1,uint param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CE0B
-// GHIDRA_NAME CreateWindowWithOptionalMenuResource
-// GHIDRA_PROTO undefined CreateWindowWithOptionalMenuResource()
+// GHIDRA_NAME ?Create@CFrameWnd@@QAEHPBD0KABUtagRECT@@PAVCWnd@@0KPAUCCreateContext@@@Z
+// GHIDRA_PROTO undefined ?Create@CFrameWnd@@QAEHPBD0KABUtagRECT@@PAVCWnd@@0KPAUCCreateContext@@@Z()
 
 undefined4 __thiscall
-CreateWindowWithOptionalMenuResource
+_Create_CFrameWnd__QAEHPBD0KABUtagRECT__PAVCWnd__0KPAUCCreateContext___Z
           (int *param_1,undefined4 param_2,char *param_3,undefined4 param_4,int *param_5,int param_6
           ,LPCSTR param_7,undefined4 param_8,undefined4 param_9)
 
@@ -3315,23 +5847,24 @@ CreateWindowWithOptionalMenuResource
   int iVar1;
   HMENU hMenu;
   undefined4 uVar2;
-  
+
   uVar2 = 0;
   hMenu = (HMENU)0x0;
   if (param_7 != (LPCSTR)0x0) {
-    iVar1 = AfxGetModuleState();
+    iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
     hMenu = LoadMenuA(*(HINSTANCE *)(iVar1 + 0xc),param_7);
     if (hMenu == (HMENU)0x0) {
       (**(code **)(*param_1 + 0xac))();
       return 0;
     }
   }
-  CString::CopyFromCStr((CString *)(param_1 + 0x2b),param_3);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)(param_1 + 0x2b),param_3);
   if (param_6 != 0) {
     uVar2 = *(undefined4 *)(param_6 + 0x1c);
   }
-  iVar1 = CreateEx_608115(param_8,param_2,param_3,param_4,*param_5,param_5[1],param_5[2] - *param_5,
-                          param_5[3] - param_5[1],uVar2,hMenu,param_9);
+  iVar1 = _CreateEx_CWnd__QAEHKPBD0KHHHHPAUHWND____PAUHMENU____PAX_Z
+                    (param_8,param_2,param_3,param_4,*param_5,param_5[1],param_5[2] - *param_5,
+                     param_5[3] - param_5[1],uVar2,hMenu,param_9);
   if (iVar1 == 0) {
     if (hMenu != (HMENU)0x0) {
       DestroyMenu(hMenu);
@@ -3342,10 +5875,11 @@ CreateWindowWithOptionalMenuResource
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CEA3
-// GHIDRA_NAME CreateView
-// GHIDRA_PROTO undefined CreateView()
+// GHIDRA_NAME ?CreateView@CFrameWnd@@QAEPAVCWnd@@PAUCCreateContext@@I@Z
+// GHIDRA_PROTO undefined ?CreateView@CFrameWnd@@QAEPAVCWnd@@PAUCCreateContext@@I@Z()
 
-int * CreateView(undefined4 param_1,undefined4 param_2)
+int * _CreateView_CFrameWnd__QAEPAVCWnd__PAUCCreateContext__I_Z
+                (undefined4 param_1,undefined4 param_2)
 
 {
   int *piVar1;
@@ -3356,8 +5890,8 @@ int * CreateView(undefined4 param_1,undefined4 param_2)
   undefined4 local_10;
   undefined4 local_c;
   undefined4 local_8;
-  
-  piVar1 = (int *)CreateObject_606ff2();
+
+  piVar1 = (int *)_CreateObject_CRuntimeClass__QAEPAVCObject__XZ();
   if (piVar1 != (int *)0x0) {
     local_18 = 0;
     local_14 = 0;
@@ -3368,11 +5902,11 @@ int * CreateView(undefined4 param_1,undefined4 param_2)
       if (DAT_006a7d5c == 0) {
         return piVar1;
       }
-      uVar3 = GetExStyle();
+      uVar3 = _GetExStyle_CWnd__QBEKXZ();
       if ((uVar3 & 0x200) == 0) {
         return piVar1;
       }
-      ModifyStyleEx(0x200,0,0x20);
+      _ModifyStyleEx_CWnd__QAEHKKI_Z(0x200,0,0x20);
       return piVar1;
     }
   }
@@ -3386,13 +5920,13 @@ int * CreateView(undefined4 param_1,undefined4 param_2)
 void WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(undefined4 *param_1)
 
 {
-  OnCreateHelper(param_1,*param_1);
+  _OnCreateHelper_CFrameWnd__IAEHPAUtagCREATESTRUCTA__PAUCCreateContext___Z(param_1,*param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CF4C
-// GHIDRA_NAME OnCreateHelper
-// GHIDRA_PROTO undefined OnCreateHelper()
+// GHIDRA_NAME ?OnCreateHelper@CFrameWnd@@IAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z
+// GHIDRA_PROTO undefined ?OnCreateHelper@CFrameWnd@@IAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT After command handling succeeds, posts message 0x362 with token 0xE001 and triggers view/frame refresh callback (+0xD0).
 // GHIDRA_COMMENT_END
@@ -3400,15 +5934,17 @@ void WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(undefined4 *para
 /* After command handling succeeds, posts message 0x362 with token 0xE001 and triggers view/frame
    refresh callback (+0xD0). */
 
-undefined4 __thiscall OnCreateHelper(CWnd *param_1,undefined4 param_2,undefined4 param_3)
+undefined4 __thiscall
+_OnCreateHelper_CFrameWnd__IAEHPAUtagCREATESTRUCTA__PAUCCreateContext___Z
+          (CWnd *param_1,undefined4 param_2,undefined4 param_3)
 
 {
   CCmdTargetVtbl *pCVar1;
   undefined uVar2;
   int iVar3;
   undefined3 extraout_var;
-  
-  iVar3 = CWnd::Default(param_1);
+
+  iVar3 = CWnd::_Default_CWnd__IAEJXZ(param_1);
   if (iVar3 != -1) {
     pCVar1 = (param_1->ccmdTarget).vftable;
     uVar2 = (*pCVar1[0x13].SetForeignMinisterReadyFlag14)(param_2,param_3);
@@ -3421,18 +5957,65 @@ undefined4 __thiscall OnCreateHelper(CWnd *param_1,undefined4 param_2,undefined4
   return 0xffffffff;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0061D30E
-// GHIDRA_NAME OnDestroy_61d30e
-// GHIDRA_PROTO undefined OnDestroy_61d30e()
+// GHIDRA_FUNCTION IMPERIALISM 0x0061CF9B
+// GHIDRA_NAME ?GetIconWndClass@CFrameWnd@@IAEPBDKI@Z@0061cf9b
+// GHIDRA_PROTO undefined ?GetIconWndClass@CFrameWnd@@IAEPBDKI@Z@0061cf9b()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  protected: char const * __thiscall CFrameWnd::GetIconWndClass(unsigned long,unsigned int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
 
-void __fastcall OnDestroy_61d30e(int param_1)
+/* Library Function - Single Match
+    protected: char const * __thiscall CFrameWnd::GetIconWndClass(unsigned long,unsigned int)
+
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall
+_GetIconWndClass_CFrameWnd__IAEPBDKI_Z_0061cf9b(int *param_1,undefined4 param_2,ushort param_3)
+
+{
+  int iVar1;
+  HICON pHVar2;
+  BOOL BVar3;
+  undefined4 uVar4;
+  undefined1 local_5c [32];
+  undefined4 local_3c;
+  LPCSTR local_34;
+  tagWNDCLASSA local_2c;
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  pHVar2 = LoadIconA(*(HINSTANCE *)(iVar1 + 0xc),(LPCSTR)(uint)param_3);
+  if (pHVar2 != (HICON)0x0) {
+    CDocTemplate::_memset(local_5c,0,0x30);
+    local_3c = param_2;
+    (**(code **)(*param_1 + 100))(local_5c);
+    if (local_34 != (LPCSTR)0x0) {
+      iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+      BVar3 = GetClassInfoA(*(HINSTANCE *)(iVar1 + 8),local_34,&local_2c);
+      if ((BVar3 != 0) && (local_2c.hIcon != pHVar2)) {
+        uVar4 = _AfxRegisterWndClass__YGPBDIPAUHICON____PAUHBRUSH____0_Z
+                          (local_2c.style,local_2c.hCursor,local_2c.hbrBackground,pHVar2);
+        return uVar4;
+      }
+    }
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061D30E
+// GHIDRA_NAME ?OnDestroy@CFrameWnd@@IAEXXZ
+// GHIDRA_PROTO undefined ?OnDestroy@CFrameWnd@@IAEXXZ()
+
+void __fastcall _OnDestroy_CFrameWnd__IAEXXZ(int param_1)
 
 {
   HMENU hMenu;
   HMENU pHVar1;
   int iVar2;
-  
-  FUN_0061de21();
+
+  _DestroyDockBars_CFrameWnd__QAEXXZ();
   if (*(int *)(param_1 + 0x44) != 0) {
     hMenu = *(HMENU *)(param_1 + 0x44);
     pHVar1 = GetMenu(*(HWND *)(param_1 + 0x1c));
@@ -3440,19 +6023,20 @@ void __fastcall OnDestroy_61d30e(int param_1)
       SetMenu(*(HWND *)(param_1 + 0x1c),hMenu);
     }
   }
-  iVar2 = AfxGetModuleState();
+  iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   if (*(int *)(*(int *)(iVar2 + 4) + 0x1c) == param_1) {
     WinHelpA(*(HWND *)(param_1 + 0x1c),(LPCSTR)0x0,2,0);
   }
-  OnDestroy_6082d3();
+  _OnDestroy_CWnd__IAEXXZ();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D4B8
-// GHIDRA_NAME OnActivate
-// GHIDRA_PROTO undefined OnActivate()
+// GHIDRA_NAME ?OnActivate@CFrameWnd@@IAEXIPAVCWnd@@H@Z
+// GHIDRA_PROTO undefined ?OnActivate@CFrameWnd@@IAEXIPAVCWnd@@H@Z()
 
-void __thiscall OnActivate(CWnd *param_1,int param_2,CWnd *param_3,int param_4)
+void __thiscall
+_OnActivate_CFrameWnd__IAEXIPAVCWnd__H_Z(CWnd *param_1,int param_2,CWnd *param_3,int param_4)
 
 {
   bool bVar1;
@@ -3461,18 +6045,18 @@ void __thiscall OnActivate(CWnd *param_1,int param_2,CWnd *param_3,int param_4)
   CWnd *pCVar4;
   LRESULT LVar5;
   int *piVar6;
-  
-  CWnd::Default(param_1);
-  uVar2 = GetStyle();
+
+  CWnd::_Default_CWnd__IAEJXZ(param_1);
+  uVar2 = _GetStyle_CWnd__QBEKXZ();
   pCVar3 = param_1;
   if ((uVar2 & 0x40000000) == 0) {
-    pCVar3 = (CWnd *)GetTopLevelFrame();
+    pCVar3 = (CWnd *)_GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ();
   }
   if (param_2 != 0) {
     param_3 = param_1;
   }
   if ((pCVar3 == param_3) ||
-     ((pCVar4 = (CWnd *)GetTopLevelFrame(), pCVar3 == pCVar4 &&
+     ((pCVar4 = (CWnd *)_GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ(), pCVar3 == pCVar4 &&
       (LVar5 = SendMessageA(param_3->m_hWnd,0x36d,0x40,0), LVar5 != 0)))) {
     bVar1 = true;
   }
@@ -3483,7 +6067,7 @@ void __thiscall OnActivate(CWnd *param_1,int param_2,CWnd *param_3,int param_4)
   if (bVar1) {
     pCVar3->m_nFlags = pCVar3->m_nFlags | 0x20;
   }
-  NotifyFloatingWindows((-(uint)bVar1 & 0xfffffffc) + 8);
+  _NotifyFloatingWindows_CFrameWnd__QAEXK_Z((-(uint)bVar1 & 0xfffffffc) + 8);
   piVar6 = (int *)GetObjectValueAtOffset98();
   if (piVar6 == (int *)0x0) {
     (*(param_1->ccmdTarget).vftable[0x10].slot_0x08)();
@@ -3500,18 +6084,18 @@ void __thiscall OnActivate(CWnd *param_1,int param_2,CWnd *param_3,int param_4)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D58C
-// GHIDRA_NAME OnNcActivate
-// GHIDRA_PROTO undefined OnNcActivate()
+// GHIDRA_NAME ?OnNcActivate@CFrameWnd@@IAEHH@Z
+// GHIDRA_PROTO undefined ?OnNcActivate@CFrameWnd@@IAEHH@Z()
 
-void __thiscall OnNcActivate(int *param_1,undefined4 param_2)
+void __thiscall _OnNcActivate_CFrameWnd__IAEHH_Z(int *param_1,undefined4 param_2)
 
 {
   int iVar1;
-  
+
   if ((*(byte *)(param_1 + 9) & 0x20) != 0) {
     param_2 = 1;
   }
-  iVar1 = IsWindowEnabled();
+  iVar1 = _IsWindowEnabled_CWnd__QBEHXZ();
   if (iVar1 == 0) {
     param_2 = 0;
   }
@@ -3520,8 +6104,8 @@ void __thiscall OnNcActivate(int *param_1,undefined4 param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D5C3
-// GHIDRA_NAME OnSysCommand
-// GHIDRA_PROTO undefined OnSysCommand()
+// GHIDRA_NAME ?OnSysCommand@CFrameWnd@@IAEXIJ@Z
+// GHIDRA_PROTO undefined ?OnSysCommand@CFrameWnd@@IAEXIJ@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles selected WM_SYSCOMMAND routes while in context-help mode.
 // GHIDRA_COMMENT Maps system-command ids to help/status token and sends messages 0x365 / WM_COMMAND 0xE147 as fallback.
@@ -3531,17 +6115,17 @@ void __thiscall OnNcActivate(int *param_1,undefined4 param_2)
    Maps system-command ids to help/status token and sends messages 0x365 / WM_COMMAND 0xE147 as
    fallback. */
 
-void __thiscall OnSysCommand(CWnd *param_1,uint param_2)
+void __thiscall _OnSysCommand_CFrameWnd__IAEXIJ_Z(CWnd *param_1,uint param_2)
 
 {
   int iVar1;
   LRESULT LVar2;
-  
-  iVar1 = GetTopLevelFrame();
+
+  iVar1 = _GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ();
   param_2 = param_2 & 0xfff0;
   if (*(int *)(iVar1 + 0x50) == 0) {
 LAB_0061d5ef:
-    CWnd::Default(param_1);
+    CWnd::_Default_CWnd__IAEJXZ(param_1);
   }
   else {
     if (param_2 < 0xf011) {
@@ -3560,16 +6144,16 @@ LAB_0061d5ef:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D6D5
-// GHIDRA_NAME OnQueryEndSession
-// GHIDRA_PROTO undefined OnQueryEndSession()
+// GHIDRA_NAME ?OnQueryEndSession@CFrameWnd@@IAEHXZ
+// GHIDRA_PROTO undefined ?OnQueryEndSession@CFrameWnd@@IAEHXZ()
 
-undefined4 __fastcall OnQueryEndSession(int param_1)
+undefined4 __fastcall _OnQueryEndSession_CFrameWnd__IAEHXZ(int param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
-  
-  iVar1 = AfxGetModuleState();
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   if ((*(int **)(iVar1 + 4))[7] == param_1) {
     uVar2 = (**(code **)(**(int **)(iVar1 + 4) + 0x90))();
     return uVar2;
@@ -3578,8 +6162,8 @@ undefined4 __fastcall OnQueryEndSession(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D72A
-// GHIDRA_NAME OnDDEInitiate
-// GHIDRA_PROTO undefined OnDDEInitiate()
+// GHIDRA_NAME ?OnDDEInitiate@CFrameWnd@@IAEJIJ@Z
+// GHIDRA_PROTO undefined ?OnDDEInitiate@CFrameWnd@@IAEJIJ@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT For matching DDE atom pair in thread state, refreshes atom refs and forwards command via message 0x3E4 to target window.
 // GHIDRA_COMMENT_END
@@ -3587,15 +6171,15 @@ undefined4 __fastcall OnQueryEndSession(int param_1)
 /* For matching DDE atom pair in thread state, refreshes atom refs and forwards command via message
    0x3E4 to target window. */
 
-undefined4 OnDDEInitiate(HWND param_1,undefined4 param_2)
+undefined4 _OnDDEInitiate_CFrameWnd__IAEJIJ_Z(HWND param_1,undefined4 param_2)
 
 {
   int iVar1;
   short sVar2;
   CHAR local_10c [260];
   int local_8;
-  
-  iVar1 = AfxGetModuleState();
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   iVar1 = *(int *)(iVar1 + 4);
   if (((((ATOM)param_2 != 0) && (sVar2 = (short)((uint)param_2 >> 0x10), sVar2 != 0)) &&
       ((ATOM)param_2 == *(ATOM *)(iVar1 + 0xb0))) && (sVar2 == *(short *)(iVar1 + 0xb2))) {
@@ -3609,8 +6193,8 @@ undefined4 OnDDEInitiate(HWND param_1,undefined4 param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D7E5
-// GHIDRA_NAME OnDDEExecute
-// GHIDRA_PROTO undefined OnDDEExecute()
+// GHIDRA_NAME ?OnDDEExecute@CFrameWnd@@IAEJIJ@Z
+// GHIDRA_PROTO undefined ?OnDDEExecute@CFrameWnd@@IAEJIJ@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Unpacks DDE execute lParam (0x3E8/1000), rewrites it for message 0x3E4, posts to target window, and optionally forwards parsed command string to app callback.
 // GHIDRA_COMMENT_END
@@ -3618,7 +6202,7 @@ undefined4 OnDDEInitiate(HWND param_1,undefined4 param_2)
 /* Unpacks DDE execute lParam (0x3E8/1000), rewrites it for message 0x3E4, posts to target window,
    and optionally forwards parsed command string to app callback. */
 
-undefined4 __thiscall OnDDEExecute(int param_1,HWND param_2,LPARAM param_3)
+undefined4 __thiscall _OnDDEExecute_CFrameWnd__IAEJIJ_Z(int param_1,HWND param_2,LPARAM param_3)
 
 {
   LPCSTR lpString2;
@@ -3627,16 +6211,16 @@ undefined4 __thiscall OnDDEExecute(int param_1,HWND param_2,LPARAM param_3)
   CHAR local_214 [520];
   uint local_c;
   HGLOBAL local_8;
-  
+
   USER32.DLL::UnpackDDElParam(1000,param_3,&local_c,(PUINT_PTR)&local_8);
   lpString2 = GlobalLock(local_8);
   lstrcpynA(local_214,lpString2,0x208);
   GlobalUnlock(local_8);
   lParam = USER32.DLL::ReuseDDElParam(param_3,1000,0x3e4,0x8000,(UINT_PTR)local_8);
   PostMessageA(param_2,0x3e4,*(WPARAM *)(param_1 + 0x1c),lParam);
-  iVar1 = IsWindowEnabled();
+  iVar1 = _IsWindowEnabled_CWnd__QBEHXZ();
   if (iVar1 != 0) {
-    iVar1 = AfxGetModuleState();
+    iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
     (**(code **)(**(int **)(iVar1 + 4) + 0x9c))(local_214);
   }
   return 0;
@@ -3653,8 +6237,8 @@ undefined4 __fastcall GetObjectValueAtOffset98(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061DB87
-// GHIDRA_NAME OnMenuSelect
-// GHIDRA_PROTO undefined OnMenuSelect()
+// GHIDRA_NAME ?OnMenuSelect@CFrameWnd@@IAEXIIPAUHMENU__@@@Z
+// GHIDRA_PROTO undefined ?OnMenuSelect@CFrameWnd@@IAEXIIPAUHMENU__@@@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Updates status-bar/help message command id, notifies parent frame via WM_SETMESSAGESTRING (0x362), and posts 0x36A refresh notification when message state changed.
 // GHIDRA_COMMENT_END
@@ -3662,13 +6246,14 @@ undefined4 __fastcall GetObjectValueAtOffset98(int param_1)
 /* Updates status-bar/help message command id, notifies parent frame via WM_SETMESSAGESTRING
    (0x362), and posts 0x36A refresh notification when message state changed. */
 
-void __thiscall OnMenuSelect(int *param_1,uint param_2,uint param_3)
+void __thiscall
+_OnMenuSelect_CFrameWnd__IAEXIIPAUHMENU_____Z(int *param_1,uint param_2,uint param_3)
 
 {
   int iVar1;
   HWND pHVar2;
-  
-  iVar1 = GetTopLevelFrame();
+
+  iVar1 = _GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ();
   if (param_3 == 0xffff) {
     param_1[9] = param_1[9] & 0xffffffbf;
     if (*(int *)(iVar1 + 0x50) == 0) {
@@ -3704,7 +6289,7 @@ LAB_0061dc3b:
 LAB_0061dc3f:
   if (param_1[0x24] != param_1[0x25]) {
     pHVar2 = GetParent((HWND)param_1[7]);
-    iVar1 = FromHandle(pHVar2);
+    iVar1 = _FromHandle_CWnd__SGPAV1_PAUHWND_____Z(pHVar2);
     if (iVar1 != 0) {
       PostMessageA((HWND)param_1[7],0x36a,0,0);
     }
@@ -3713,8 +6298,8 @@ LAB_0061dc3f:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061DF4C
-// GHIDRA_NAME OnToolTipText
-// GHIDRA_PROTO undefined OnToolTipText()
+// GHIDRA_NAME ?OnToolTipText@CFrameWnd@@IAEHIPAUtagNMHDR@@PAJ@Z
+// GHIDRA_PROTO undefined ?OnToolTipText@CFrameWnd@@IAEHIPAUtagNMHDR@@PAJ@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles control-bar button state command.
 // GHIDRA_COMMENT Updates label/text fields, clears external state output, and forces non-client refresh via SetWindowPos(..., SWP_FRAMECHANGED-style flags 0x213).
@@ -3724,7 +6309,7 @@ LAB_0061dc3f:
    Updates label/text fields, clears external state output, and forces non-client refresh via
    SetWindowPos(..., SWP_FRAMECHANGED-style flags 0x213). */
 
-undefined4 OnToolTipText(void)
+undefined4 _OnToolTipText_CFrameWnd__IAEHIPAUtagNMHDR__PAJ_Z(void)
 
 {
   undefined4 *puVar1;
@@ -3734,11 +6319,11 @@ undefined4 OnToolTipText(void)
   HWND hWnd;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   iVar2 = WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b();
   if (iVar2 == 0) {
-    CString::CString((CString *)(unaff_EBP + -0x10));
+    CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
     puVar1 = *(undefined4 **)(unaff_EBP + 0xc);
     iVar2 = puVar1[2];
     hWnd = (HWND)puVar1[1];
@@ -3749,19 +6334,19 @@ undefined4 OnToolTipText(void)
       hWnd = (HWND)(uVar4 & 0xffff);
     }
     if (hWnd != (HWND)0x0) {
-      AfxLoadString(hWnd,unaff_EBP + -0x110,0x100);
-      AfxExtractSubString(unaff_EBP + -0x10,unaff_EBP + -0x110,1,10);
+      _AfxLoadString__YGHIPADI_Z(hWnd,unaff_EBP + -0x110,0x100);
+      _AfxExtractSubString__YGHAAVCString__PBDHD_Z(unaff_EBP + -0x10,unaff_EBP + -0x110,1,10);
     }
     if (puVar1[2] == -0x208) {
       lstrcpynA((LPSTR)(puVar1 + 4),*(LPCSTR *)(unaff_EBP + -0x10),0x50);
     }
     else {
-      mbstowcsz();
+      __mbstowcsz__YAHPAGPBDI_Z();
     }
     **(undefined4 **)(unaff_EBP + 0x10) = 0;
     SetWindowPos((HWND)*puVar1,(HWND)0x0,0,0,0,0,0x213);
     *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    CString::~CString((CString *)(unaff_EBP + -0x10));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
     uVar3 = 1;
   }
   else {
@@ -3772,8 +6357,8 @@ undefined4 OnToolTipText(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E42D
-// GHIDRA_NAME OnIdleUpdateCmdUI
-// GHIDRA_PROTO undefined OnIdleUpdateCmdUI()
+// GHIDRA_NAME ?OnIdleUpdateCmdUI@CFrameWnd@@IAEXXZ
+// GHIDRA_PROTO undefined ?OnIdleUpdateCmdUI@CFrameWnd@@IAEXXZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Applies deferred frame/UI state bits (+0x2E flags), executes requested callbacks, forces UpdateWindow when needed, syncs status message string, then clears pending flags.
 // GHIDRA_COMMENT_END
@@ -3781,7 +6366,7 @@ undefined4 OnToolTipText(void)
 /* Applies deferred frame/UI state bits (+0x2E flags), executes requested callbacks, forces
    UpdateWindow when needed, syncs status message string, then clears pending flags. */
 
-void __fastcall OnIdleUpdateCmdUI(int *param_1)
+void __fastcall _OnIdleUpdateCmdUI_CFrameWnd__IAEXXZ(int *param_1)
 
 {
   if ((*(byte *)(param_1 + 0x2e) & 1) != 0) {
@@ -3795,20 +6380,20 @@ void __fastcall OnIdleUpdateCmdUI(int *param_1)
     UpdateWindow((HWND)param_1[7]);
   }
   if (param_1[0x24] != param_1[0x25]) {
-    CFrameWnd::SetMessageText(param_1[0x24]);
+    CFrameWnd::_SetMessageText_CFrameWnd__QAEXI_Z(param_1[0x24]);
   }
   param_1[0x2e] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E606
-// GHIDRA_NAME OnSize_61e606
-// GHIDRA_PROTO undefined OnSize_61e606()
+// GHIDRA_NAME ?OnSize@CFrameWnd@@IAEXIHH@Z
+// GHIDRA_PROTO undefined ?OnSize@CFrameWnd@@IAEXIHH@Z()
 
-void __thiscall OnSize_61e606(CWnd *param_1,int param_2)
+void __thiscall _OnSize_CFrameWnd__IAEXIHH_Z(CWnd *param_1,int param_2)
 
 {
-  CWnd::Default(param_1);
+  CWnd::_Default_CWnd__IAEJXZ(param_1);
   if (param_2 != 1) {
     (*(param_1->ccmdTarget).vftable[0x11].slot_0x04)(1);
   }
@@ -3816,10 +6401,11 @@ void __thiscall OnSize_61e606(CWnd *param_1,int param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E63B
-// GHIDRA_NAME OnRegisteredMouseWheel
-// GHIDRA_PROTO undefined OnRegisteredMouseWheel()
+// GHIDRA_NAME ?OnRegisteredMouseWheel@CFrameWnd@@IAEJIJ@Z
+// GHIDRA_PROTO undefined ?OnRegisteredMouseWheel@CFrameWnd@@IAEJIJ@Z()
 
-LRESULT __thiscall OnRegisteredMouseWheel(int param_1,int param_2,LRESULT param_3)
+LRESULT __thiscall
+_OnRegisteredMouseWheel_CFrameWnd__IAEJIJ_Z(int param_1,int param_2,LRESULT param_3)
 
 {
   LPARAM LVar1;
@@ -3829,7 +6415,7 @@ LRESULT __thiscall OnRegisteredMouseWheel(int param_1,int param_2,LRESULT param_
   HWND pHVar4;
   LRESULT LVar5;
   uint uVar6;
-  
+
   SVar2 = GetKeyState(0x11);
   if (SVar2 < 0) {
     uVar6 = 8;
@@ -3869,15 +6455,15 @@ LRESULT __thiscall OnRegisteredMouseWheel(int param_1,int param_2,LRESULT param_
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E762
-// GHIDRA_NAME GetDockingFrame
-// GHIDRA_PROTO undefined GetDockingFrame()
+// GHIDRA_NAME ?GetDockingFrame@CControlBar@@QBEPAVCFrameWnd@@XZ
+// GHIDRA_PROTO undefined ?GetDockingFrame@CControlBar@@QBEPAVCFrameWnd@@XZ()
 
-int __fastcall GetDockingFrame(int param_1)
+int __fastcall _GetDockingFrame_CControlBar__QBEPAVCFrameWnd__XZ(int param_1)
 
 {
   int iVar1;
-  
-  iVar1 = GetParentFrame();
+
+  iVar1 = _GetParentFrame_CWnd__QBEPAVCFrameWnd__XZ();
   if (iVar1 == 0) {
     iVar1 = *(int *)(param_1 + 0x6c);
   }
@@ -3885,8 +6471,8 @@ int __fastcall GetDockingFrame(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E79D
-// GHIDRA_NAME CreateStaticClassControl
-// GHIDRA_PROTO undefined CreateStaticClassControl()
+// GHIDRA_NAME ?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z
+// GHIDRA_PROTO undefined ?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
 // GHIDRA_COMMENT  public: int __thiscall CButton::Create(char const *,unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
@@ -3900,11 +6486,11 @@ int __fastcall GetDockingFrame(int param_1)
    CWnd *,unsigned int)
     public: int __thiscall CStatic::Create(char const *,unsigned long,struct tagRECT const &,class
    CWnd *,unsigned int)
-   
+
    Library: Visual Studio 1998 Release */
 
 void __thiscall
-CreateStaticClassControl
+_Create_CButton__QAEHPBDKABUtagRECT__PAVCWnd__I_Z
           (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5,
           undefined4 param_6)
 
@@ -3914,8 +6500,8 @@ CreateStaticClassControl
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E7BF
-// GHIDRA_NAME ~CHotKeyCtrl
-// GHIDRA_PROTO undefined ~CHotKeyCtrl()
+// GHIDRA_NAME ??1CProgressCtrl@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CProgressCtrl@@UAE@XZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
 // GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
@@ -3933,30 +6519,30 @@ CreateStaticClassControl
     public: virtual __thiscall CComboBox::~CComboBox(void)
     public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
      21 names - too many to list
-   
+
    Library: Visual Studio 2003 Release */
 
-void ~CHotKeyCtrl(void)
+void __1CProgressCtrl__UAE_XZ(void)
 
 {
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00671b7c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
+  CWnd::__1CWnd__UAE_XZ(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E7F7
-// GHIDRA_NAME CreateButtonClassControl
-// GHIDRA_PROTO undefined CreateButtonClassControl()
+// GHIDRA_NAME ?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z
+// GHIDRA_PROTO undefined ?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
 // GHIDRA_COMMENT  public: int __thiscall CButton::Create(char const *,unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
@@ -3970,11 +6556,11 @@ void ~CHotKeyCtrl(void)
    CWnd *,unsigned int)
     public: int __thiscall CStatic::Create(char const *,unsigned long,struct tagRECT const &,class
    CWnd *,unsigned int)
-   
+
    Library: Visual Studio 1998 Release */
 
 void __thiscall
-CreateButtonClassControl
+_Create_CButton__QAEHPBDKABUtagRECT__PAVCWnd__I_Z
           (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5,
           undefined4 param_6)
 
@@ -3983,9 +6569,50 @@ CreateButtonClassControl
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0061E819
+// GHIDRA_NAME ??1CProgressCtrl@@UAE@XZ@0061e819
+// GHIDRA_PROTO undefined ??1CProgressCtrl@@UAE@XZ@0061e819()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
+// GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
+// GHIDRA_COMMENT  public: virtual __thiscall CButton::~CButton(void)
+// GHIDRA_COMMENT  public: virtual __thiscall CComboBox::~CComboBox(void)
+// GHIDRA_COMMENT  public: virtual __thiscall CEdit::~CEdit(void)
+// GHIDRA_COMMENT   18 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Different Base Names
+    public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
+    public: virtual __thiscall CButton::~CButton(void)
+    public: virtual __thiscall CComboBox::~CComboBox(void)
+    public: virtual __thiscall CEdit::~CEdit(void)
+     18 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+void __1CProgressCtrl__UAE_XZ_0061e819(void)
+
+{
+  CWnd *this;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+
+  EstablishSehFrameProlog();
+  *(CWnd **)(unaff_EBP + -0x10) = this;
+  (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00671c4c;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  CWnd::__1CWnd__UAE_XZ(this);
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E8CB
-// GHIDRA_NAME Dtor_CListBox_FID_61e8cb
-// GHIDRA_PROTO undefined Dtor_CListBox_FID_61e8cb()
+// GHIDRA_NAME ??1CListBox@@UAE@XZ@0061e8cb
+// GHIDRA_PROTO undefined ??1CListBox@@UAE@XZ@0061e8cb()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
 // GHIDRA_COMMENT  public: virtual __thiscall CComboBox::~CComboBox(void)
@@ -3997,23 +6624,23 @@ CreateButtonClassControl
 /* Library Function - Multiple Matches With Different Base Names
     public: virtual __thiscall CComboBox::~CComboBox(void)
     public: virtual __thiscall CListBox::~CListBox(void)
-   
+
    Library: Visual Studio 2003 Release */
 
-void Dtor_CListBox_FID_61e8cb(void)
+void __1CListBox__UAE_XZ_0061e8cb(void)
 
 {
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00671d1c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
+  CWnd::__1CWnd__UAE_XZ(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -4025,7 +6652,7 @@ void Dtor_CListBox_FID_61e8cb(void)
 void __fastcall WrapperFor_Default_At0061e911(CWnd *param_1)
 
 {
-  CWnd::Default(param_1);
+  CWnd::_Default_CWnd__IAEJXZ(param_1);
   return;
 }
 
@@ -4036,30 +6663,30 @@ void __fastcall WrapperFor_Default_At0061e911(CWnd *param_1)
 void __fastcall WrapperFor_Default_At0061e919(CWnd *param_1)
 
 {
-  CWnd::Default(param_1);
+  CWnd::_Default_CWnd__IAEJXZ(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E9BA
-// GHIDRA_NAME GetText_61e9ba
-// GHIDRA_PROTO undefined GetText_61e9ba()
+// GHIDRA_NAME ?GetText@CListBox@@QBEXHAAVCString@@@Z
+// GHIDRA_PROTO undefined ?GetText@CListBox@@QBEXHAAVCString@@@Z()
 
-void __thiscall GetText_61e9ba(int param_1,WPARAM param_2,CString *param_3)
+void __thiscall _GetText_CListBox__QBEXHAAVCString___Z(int param_1,WPARAM param_2,CString *param_3)
 
 {
   LRESULT new_length;
   int lParam;
-  
+
   new_length = SendMessageA(*(HWND *)(param_1 + 0x1c),0x18a,param_2,0);
-  lParam = CString::EnsureCapacityAndSetLength(param_3,new_length);
+  lParam = CString::_GetBufferSetLength_CString__QAEPADH_Z(param_3,new_length);
   SendMessageA(*(HWND *)(param_1 + 0x1c),0x189,param_2,lParam);
-  CString::SetLengthAndTerminator(param_3,-1);
+  CString::_ReleaseBuffer_CString__QAEXH_Z(param_3,-1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061EA56
-// GHIDRA_NAME Dtor_CHeaderCtrl_FID_61ea56
-// GHIDRA_PROTO undefined Dtor_CHeaderCtrl_FID_61ea56()
+// GHIDRA_NAME ??1CProgressCtrl@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CProgressCtrl@@UAE@XZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
 // GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
@@ -4077,23 +6704,23 @@ void __thiscall GetText_61e9ba(int param_1,WPARAM param_2,CString *param_3)
     public: virtual __thiscall CComboBox::~CComboBox(void)
     public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
      21 names - too many to list
-   
+
    Library: Visual Studio 2003 Release */
 
-void Dtor_CHeaderCtrl_FID_61ea56(void)
+void __1CProgressCtrl__UAE_XZ(void)
 
 {
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00671e04;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
+  CWnd::__1CWnd__UAE_XZ(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -4112,8 +6739,8 @@ InvokeDialogCreateVslot5CWithTemplate45
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061EB67
-// GHIDRA_NAME Dtor_CHeaderCtrl_FID_61eb67
-// GHIDRA_PROTO undefined Dtor_CHeaderCtrl_FID_61eb67()
+// GHIDRA_NAME ??1CProgressCtrl@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CProgressCtrl@@UAE@XZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
 // GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
@@ -4131,30 +6758,30 @@ InvokeDialogCreateVslot5CWithTemplate45
     public: virtual __thiscall CComboBox::~CComboBox(void)
     public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
      21 names - too many to list
-   
+
    Library: Visual Studio 2003 Release */
 
-void Dtor_CHeaderCtrl_FID_61eb67(void)
+void __1CProgressCtrl__UAE_XZ(void)
 
 {
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00671ee4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
+  CWnd::__1CWnd__UAE_XZ(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061EBC0
-// GHIDRA_NAME Dtor_CHeaderCtrl_FID_61ebc0
-// GHIDRA_PROTO undefined Dtor_CHeaderCtrl_FID_61ebc0()
+// GHIDRA_NAME ??1CProgressCtrl@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CProgressCtrl@@UAE@XZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Different Base Names
 // GHIDRA_COMMENT  public: virtual __thiscall CAnimateCtrl::~CAnimateCtrl(void)
@@ -4172,23 +6799,23 @@ void Dtor_CHeaderCtrl_FID_61eb67(void)
     public: virtual __thiscall CComboBox::~CComboBox(void)
     public: virtual __thiscall CDateTimeCtrl::~CDateTimeCtrl(void)
      21 names - too many to list
-   
+
    Library: Visual Studio 2003 Release */
 
-void Dtor_CHeaderCtrl_FID_61ebc0(void)
+void __1CProgressCtrl__UAE_XZ(void)
 
 {
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00671fb4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CCmdTarget::OrphanCallChain_C1_I09_0048ff70();
+  CCmdTarget::_DestroyWindow_CWnd__UAEHXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CWnd::~CWnd(this);
+  CWnd::__1CWnd__UAE_XZ(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -4233,7 +6860,7 @@ void NoOpVirtualStub_0061ec02(void)
 void WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 
 {
-  AppendPointerToGlobalVectorAsStatus(WrapperFor_AfxDeleteObject_At0061ec0f);
+  _atexit(WrapperFor_AfxDeleteObject_At0061ec0f);
   return;
 }
 
@@ -4244,26 +6871,50 @@ void WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 void WrapperFor_AfxDeleteObject_At0061ec0f(void)
 
 {
-  AfxDeleteObject(&DAT_006a7cb8);
+  _AfxDeleteObject__YGXPAPAX_Z(&DAT_006a7cb8);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061F0FA
+// GHIDRA_NAME ?FillSolidRect@CDC@@QAEXPBUtagRECT@@K@Z@0061f0fa
+// GHIDRA_PROTO void __thiscall ?FillSolidRect@CDC@@QAEXPBUtagRECT@@K@Z@0061f0fa(tagRECT * param_1, ulong param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CDC::FillSolidRect(struct tagRECT const *,unsigned long)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CDC::FillSolidRect(struct tagRECT const *,unsigned long)
+
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+_FillSolidRect_CDC__QAEXPBUtagRECT__K_Z_0061f0fa(void *this,tagRECT *param_1,ulong param_2)
+
+{
+  SetBkColor(*(HDC *)((int)this + 4),param_2);
+  ExtTextOutA(*(HDC *)((int)this + 4),0,0,2,param_1,(LPCSTR)0x0,0,(INT *)0x0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061F423
-// GHIDRA_NAME AfxOleCanExitApp
-// GHIDRA_PROTO undefined AfxOleCanExitApp()
+// GHIDRA_NAME ?AfxOleCanExitApp@@YGHXZ
+// GHIDRA_PROTO undefined ?AfxOleCanExitApp@@YGHXZ()
 
-bool AfxOleCanExitApp(void)
+bool _AfxOleCanExitApp__YGHXZ(void)
 
 {
   int iVar1;
-  
-  iVar1 = AfxGetModuleState();
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   return *(int *)(iVar1 + 0x2c) == 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061F45C
-// GHIDRA_NAME AfxOleSetUserCtrl
-// GHIDRA_PROTO undefined AfxOleSetUserCtrl()
+// GHIDRA_NAME ?AfxOleSetUserCtrl@@YGXH@Z
+// GHIDRA_PROTO undefined ?AfxOleSetUserCtrl@@YGXH@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Writes thread-state field +0x30 in MFC module-thread storage. Used as a simple per-thread startup/DDE state flag.
 // GHIDRA_COMMENT_END
@@ -4271,12 +6922,12 @@ bool AfxOleCanExitApp(void)
 /* Writes thread-state field +0x30 in MFC module-thread storage. Used as a simple per-thread
    startup/DDE state flag. */
 
-void AfxOleSetUserCtrl(undefined4 param_1)
+void _AfxOleSetUserCtrl__YGXH_Z(undefined4 param_1)
 
 {
   int iVar1;
-  
-  iVar1 = AfxGetModuleState();
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   *(undefined4 *)(iVar1 + 0x30) = param_1;
   return;
 }
@@ -4295,9 +6946,174 @@ undefined4 GetMfcThreadStateFlagDword30(void)
 
 {
   int iVar1;
-  
-  iVar1 = AfxGetModuleState();
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   return *(undefined4 *)(iVar1 + 0x30);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00621176
+// GHIDRA_NAME ??6CDumpContext@@QAEAAV0@H@Z
+// GHIDRA_PROTO undefined ??6CDumpContext@@QAEAAV0@H@Z()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(int)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(long)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)
+// GHIDRA_COMMENT   5 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(int)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(long)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)
+     5 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall __6CDumpContext__QAEAAV0_H_Z(undefined4 param_1,undefined4 param_2)
+
+{
+  CHAR local_24 [32];
+
+  wsprintfA(local_24,"0x%X",param_2);
+  _OutputString_CDumpContext__IAEXPBD_Z(local_24);
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006211A6
+// GHIDRA_NAME ??6CDumpContext@@QAEAAV0@H@Z
+// GHIDRA_PROTO undefined ??6CDumpContext@@QAEAAV0@H@Z()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(int)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(long)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)
+// GHIDRA_COMMENT   5 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(int)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(long)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)
+     5 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall __6CDumpContext__QAEAAV0_H_Z(undefined4 param_1,undefined4 param_2)
+
+{
+  CHAR local_24 [32];
+
+  wsprintfA(local_24,"%ld",param_2);
+  _OutputString_CDumpContext__IAEXPBD_Z(local_24);
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006211D6
+// GHIDRA_NAME ??6CDumpContext@@QAEAAV0@H@Z
+// GHIDRA_PROTO undefined ??6CDumpContext@@QAEAAV0@H@Z()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(int)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(long)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)
+// GHIDRA_COMMENT   5 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(int)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(long)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)
+     5 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall __6CDumpContext__QAEAAV0_H_Z(undefined4 param_1,undefined4 param_2)
+
+{
+  CHAR local_24 [32];
+
+  wsprintfA(local_24,"%lu",param_2);
+  _OutputString_CDumpContext__IAEXPBD_Z(local_24);
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00621206
+// GHIDRA_NAME ??6CDumpContext@@QAEAAV0@H@Z
+// GHIDRA_PROTO undefined ??6CDumpContext@@QAEAAV0@H@Z()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(int)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(long)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)
+// GHIDRA_COMMENT   5 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(int)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(long)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)
+     5 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall __6CDumpContext__QAEAAV0_H_Z(undefined4 param_1,undefined4 param_2)
+
+{
+  CHAR local_24 [32];
+
+  wsprintfA(local_24,&g_szDecimalFormat,param_2);
+  _OutputString_CDumpContext__IAEXPBD_Z(local_24);
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00621267
+// GHIDRA_NAME ??6CDumpContext@@QAEAAV0@H@Z
+// GHIDRA_PROTO undefined ??6CDumpContext@@QAEAAV0@H@Z()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(int)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(long)
+// GHIDRA_COMMENT  public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)
+// GHIDRA_COMMENT   5 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(int)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(long)
+    public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)
+     5 names - too many to list
+
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall __6CDumpContext__QAEAAV0_H_Z(undefined4 param_1,undefined4 param_2)
+
+{
+  CHAR local_24 [32];
+
+  wsprintfA(local_24,"$%lX",param_2);
+  _OutputString_CDumpContext__IAEXPBD_Z(local_24);
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622448
@@ -4307,41 +7123,41 @@ undefined4 GetMfcThreadStateFlagDword30(void)
 void __fastcall InitializeThreadObjectVtableProxy(undefined4 *param_1)
 
 {
-  *param_1 = &PTR_DestroyTurnStateObjectWithMfcDeleteFinalizer_0066fdec;
+  *param_1 = &PTR____G_AFX_WIN_STATE__UAEPAXI_Z_0066fdec;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622451
-// GHIDRA_NAME DestroyTurnStateObjectWithMfcDeleteFinalizer
-// GHIDRA_PROTO undefined DestroyTurnStateObjectWithMfcDeleteFinalizer()
+// GHIDRA_NAME ??_G_AFX_WIN_STATE@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_G_AFX_WIN_STATE@@UAEPAXI@Z()
 
-undefined4 __thiscall DestroyTurnStateObjectWithMfcDeleteFinalizer(undefined4 param_1,byte param_2)
+undefined4 __thiscall ___G_AFX_WIN_STATE__UAEPAXI_Z(undefined4 param_1,byte param_2)
 
 {
-  FinalizeTurnStateObjectMfcDeleteResources();
+  __1_AFX_WIN_STATE__UAE_XZ();
   if ((param_2 & 1) != 0) {
-    FreeLocalAllocHandleIfNotNull(param_1);
+    __3CNoTrackObject__SGXPAX_Z(param_1);
   }
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622556
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00622556
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00622556()
+// GHIDRA_NAME ??_GCWinApp@@UAEPAXI@Z
+// GHIDRA_PROTO undefined ??_GCWinApp@@UAEPAXI@Z()
 
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00622556(undefined4 param_1,byte param_2)
+undefined4 __thiscall ___GCWinApp__UAEPAXI_Z(undefined4 param_1,byte param_2)
 
 {
-  FUN_006228de();
+  __1CWinApp__UAE_XZ();
   if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+    __3_YAXPAX_Z(param_1);
   }
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622632
-// GHIDRA_NAME ParseCommandLine
-// GHIDRA_PROTO undefined ParseCommandLine()
+// GHIDRA_NAME ?ParseCommandLine@CWinApp@@QAEXAAVCCommandLineInfo@@@Z
+// GHIDRA_PROTO undefined ?ParseCommandLine@CWinApp@@QAEXAAVCCommandLineInfo@@@Z()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Parses argv-style startup arguments and dispatches each token to a parser callback.
 // GHIDRA_COMMENT - Iterates DAT_006A7FEC argument vector from index 1 to DAT_006A7FE8-1.
@@ -4354,7 +7170,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00622556(undefined4 p
    - Strips leading '-' or '/' and passes a flag indicating option-prefixed input.
    - Invokes parser vfunc slot +0x14 for each argument and marks final-argument on last dispatch. */
 
-void ParseCommandLine(int *param_1)
+void _ParseCommandLine_CWinApp__QAEXAAVCCommandLineInfo___Z(int *param_1)
 
 {
   int iVar1;
@@ -4362,7 +7178,7 @@ void ParseCommandLine(int *param_1)
   int iVar3;
   char *pcVar4;
   undefined4 uVar5;
-  
+
   if (1 < DAT_006a7fe8) {
     pcVar2 = *(code **)(*param_1 + 0x14);
     iVar3 = 1;
@@ -4382,28 +7198,28 @@ void ParseCommandLine(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622690
-// GHIDRA_NAME CCommandLineInfo
-// GHIDRA_PROTO undefined CCommandLineInfo()
+// GHIDRA_NAME ??0CCommandLineInfo@@QAE@XZ
+// GHIDRA_PROTO undefined ??0CCommandLineInfo@@QAE@XZ()
 
-undefined4 * CCommandLineInfo(void)
+undefined4 * __0CCommandLineInfo__QAE_XZ(void)
 
 {
   undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::CString((CString *)(extraout_ECX + 5));
+  CString::__0CString__QAE_XZ((CString *)(extraout_ECX + 5));
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  CString::CString((CString *)(extraout_ECX + 6));
+  CString::__0CString__QAE_XZ((CString *)(extraout_ECX + 6));
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  CString::CString((CString *)(extraout_ECX + 7));
+  CString::__0CString__QAE_XZ((CString *)(extraout_ECX + 7));
   *(undefined1 *)(unaff_EBP + -4) = 3;
-  CString::CString((CString *)(extraout_ECX + 8));
+  CString::__0CString__QAE_XZ((CString *)(extraout_ECX + 8));
   extraout_ECX[2] = 0;
   extraout_ECX[3] = 0;
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
@@ -4415,1915 +7231,31 @@ undefined4 * CCommandLineInfo(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0062271B
-// GHIDRA_NAME DestructCommandLineParseContext
-// GHIDRA_PROTO undefined DestructCommandLineParseContext()
+// GHIDRA_NAME ??1CCommandLineInfo@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CCommandLineInfo@@UAE@XZ()
 
-void DestructCommandLineParseContext(void)
+void __1CCommandLineInfo__UAE_XZ(void)
 
 {
   undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &CObjectVtbl_0066fea4;
   *(undefined4 *)(unaff_EBP + -4) = 3;
-  CString::~CString((CString *)(extraout_ECX + 8));
+  CString::__1CString__QAE_XZ((CString *)(extraout_ECX + 8));
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  CString::~CString((CString *)(extraout_ECX + 7));
+  CString::__1CString__QAE_XZ((CString *)(extraout_ECX + 7));
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  CString::~CString((CString *)(extraout_ECX + 6));
+  CString::__1CString__QAE_XZ((CString *)(extraout_ECX + 6));
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(extraout_ECX + 5));
+  CString::__1CString__QAE_XZ((CString *)(extraout_ECX + 5));
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uVar1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0062285F
-// GHIDRA_NAME ParseParamNotFlag
-// GHIDRA_PROTO undefined ParseParamNotFlag()
-
-void __thiscall ParseParamNotFlag(int param_1,char *param_2)
-
-{
-  CString *this;
-  
-  this = (CString *)(param_1 + 0x14);
-  if ((*(int *)(*(int *)(param_1 + 0x14) + -8) == 0) ||
-     ((*(int *)(param_1 + 0x10) == 3 &&
-      (((this = (CString *)(param_1 + 0x18), *(int *)(*(int *)(param_1 + 0x18) + -8) == 0 ||
-        (this = (CString *)(param_1 + 0x1c), *(int *)(*(int *)(param_1 + 0x1c) + -8) == 0)) ||
-       (this = (CString *)(param_1 + 0x20), *(int *)(*(int *)(param_1 + 0x20) + -8) == 0)))))) {
-    CString::CopyFromCStr(this,param_2);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622A13
-// GHIDRA_NAME SaveStdProfileSettings
-// GHIDRA_PROTO undefined SaveStdProfileSettings()
-
-void __fastcall SaveStdProfileSettings(int param_1)
-
-{
-  int iVar1;
-  
-  if (*(int **)(param_1 + 0xa8) != (int *)0x0) {
-    (**(code **)(**(int **)(param_1 + 0xa8) + 0x10))();
-  }
-  if (*(int *)(param_1 + 0xb4) != 0) {
-    iVar1 = AfxGetModuleState();
-    FUN_0061880f("Settings","PreviewPages",*(undefined4 *)(*(int *)(iVar1 + 4) + 0xb4));
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622A4F
-// GHIDRA_NAME ExitInstance
-// GHIDRA_PROTO undefined ExitInstance()
-
-undefined4 __fastcall ExitInstance(int param_1)
-
-{
-  int iVar1;
-  
-  if ((*(int *)(param_1 + 0xac) == 0) || (*(int *)(*(int *)(param_1 + 0xac) + 0x10) != 5)) {
-    iVar1 = AfxGetModuleState();
-    if (*(char *)(iVar1 + 0x14) == '\0') {
-      SaveStdProfileSettings();
-    }
-  }
-  if (*(code **)(param_1 + 0xbc) != (code *)0x0) {
-    (**(code **)(param_1 + 0xbc))();
-  }
-  return *(undefined4 *)(param_1 + 0x38);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622A8B
-// GHIDRA_NAME WrapperFor_NoOpThreadInitializationStub_At00622a8b
-// GHIDRA_PROTO undefined WrapperFor_NoOpThreadInitializationStub_At00622a8b()
-
-void WrapperFor_NoOpThreadInitializationStub_At00622a8b(void)
-
-{
-  NoOpThreadInitializationStub();
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622A90
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96(void)
-
-{
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622A95
-// GHIDRA_NAME NoOpThreadInitializationStub
-// GHIDRA_PROTO undefined NoOpThreadInitializationStub()
-
-void NoOpThreadInitializationStub(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622A96
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96(void)
-
-{
-  AppendPointerToGlobalVectorAsStatus(thunk_thunk_CProcessLocalObject_At00622aa2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622AA2
-// GHIDRA_NAME thunk_thunk_CProcessLocalObject_At00622aa2
-// GHIDRA_PROTO undefined thunk_thunk_CProcessLocalObject_At00622aa2()
-
-void thunk_thunk_CProcessLocalObject_At00622aa2(void)
-
-{
-  CProcessLocalObject::~CProcessLocalObject((CProcessLocalObject *)&DAT_006a611c);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622BCD
-// GHIDRA_NAME AfxLoadDotBitmap
-// GHIDRA_PROTO undefined AfxLoadDotBitmap()
-
-void AfxLoadDotBitmap(void)
-
-{
-  byte bVar1;
-  LONG LVar2;
-  uint uVar3;
-  undefined1 *puVar4;
-  int nWidth;
-  int iVar5;
-  int iVar6;
-  undefined1 local_94 [132];
-  int local_10;
-  int local_c;
-  byte *local_8;
-  
-  LVar2 = GetMenuCheckMarkDimensions();
-  nWidth = (int)(short)LVar2;
-  local_10 = (int)(short)((uint)LVar2 >> 0x10);
-  if (0x20 < nWidth) {
-    nWidth = 0x20;
-  }
-  iVar5 = nWidth + 0xf >> 4;
-  iVar6 = ((nWidth + -4) / 2 + iVar5 * 0x10) - nWidth;
-  if (0xc < iVar6) {
-    iVar6 = 0xc;
-  }
-  if (0x20 < local_10) {
-    local_10 = 0x20;
-  }
-  CDocTemplate::memset(local_94,0xff,0x80);
-  local_8 = &DAT_00670638;
-  local_c = 5;
-  puVar4 = local_94 + (local_10 + -6 >> 1) * iVar5 * 2;
-  do {
-    bVar1 = *local_8;
-    uVar3 = (uint)local_8 >> 0x10;
-    local_8 = local_8 + 1;
-    uVar3 = ~(CONCAT22((short)uVar3,(ushort)bVar1) << ((byte)iVar6 & 0x1f));
-    puVar4[1] = (char)uVar3;
-    *puVar4 = (char)(uVar3 >> 8);
-    puVar4 = puVar4 + iVar5 * 2;
-    local_c = local_c + -1;
-  } while (local_c != 0);
-  DAT_006a7d50 = CreateBitmap(nWidth,local_10,1,1,local_94);
-  if (DAT_006a7d50 == (HBITMAP)0x0) {
-    DAT_006a7d50 = LoadBitmapA((HINSTANCE)0x0,(LPCSTR)0x7fe3);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622CAD
-// GHIDRA_NAME GetCCmdTargetRuntimeClass
-// GHIDRA_PROTO undefined GetCCmdTargetRuntimeClass()
-
-CRuntimeClass * GetCCmdTargetRuntimeClass(void)
-
-{
-  return &CCmdTarget::classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622CB3
-// GHIDRA_NAME ProcessShellCommand
-// GHIDRA_PROTO undefined ProcessShellCommand()
-
-undefined4 ProcessShellCommand(void)
-
-{
-  int iVar1;
-  int iVar2;
-  int *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar3;
-  
-  EstablishSehFrameProlog();
-  iVar2 = *(int *)(unaff_EBP + 8);
-  iVar1 = *(int *)(iVar2 + 0x10);
-  *(undefined4 *)(unaff_EBP + -0x10) = 1;
-  if (iVar1 == 0) {
-    iVar2 = AfxGetModuleState();
-    iVar2 = (**(code **)(**(int **)(iVar2 + 4) + 0x14))(0xe100,0,0,0);
-    if (iVar2 == 0) {
-      OnFileNew();
-    }
-    iVar2 = extraout_ECX[7];
-  }
-  else {
-    if (iVar1 != 1) {
-      if (1 < iVar1) {
-        if (iVar1 < 4) {
-          extraout_ECX[0x1d] = 0;
-          (**(code **)(*extraout_ECX + 0x84))(*(undefined4 *)(iVar2 + 0x14));
-          extraout_ECX[0x2b] = iVar2;
-          SendMessageA(*(HWND *)(extraout_ECX[7] + 0x1c),0x111,0xe108,0);
-          extraout_ECX[0x2b] = 0;
-          *(undefined4 *)(unaff_EBP + -0x10) = 0;
-        }
-        else if (iVar1 == 4) {
-          iVar2 = extraout_ECX[0x1d];
-          extraout_ECX[0x1d] = 0;
-          extraout_ECX[0x2b] = iVar2;
-        }
-        else if (iVar1 == 5) {
-          RunFileAssociationShellCommandCleanup();
-          iVar1 = Unregister();
-          if (*(int *)(iVar2 + 8) == 0) {
-            if (iVar1 == 0) {
-              uVar3 = 0xf10c;
-            }
-            else {
-              uVar3 = 0xf10b;
-            }
-            FormatResourceStringAndDispatchViaThreadState(uVar3,0,0xffffffff);
-          }
-          iVar2 = extraout_ECX[0x2b];
-          *(undefined4 *)(unaff_EBP + -0x10) = 0;
-          if (iVar2 == 0) {
-            iVar2 = AllocateWithFallbackHandler(0x24);
-            *(int *)(unaff_EBP + 8) = iVar2;
-            *(undefined4 *)(unaff_EBP + -4) = 0;
-            if (iVar2 == 0) {
-              iVar2 = 0;
-            }
-            else {
-              iVar2 = CCommandLineInfo();
-            }
-            extraout_ECX[0x2b] = iVar2;
-            *(undefined4 *)(iVar2 + 0x10) = 5;
-          }
-        }
-      }
-      goto LAB_00622de8;
-    }
-    iVar2 = (**(code **)(*extraout_ECX + 0x84))(*(undefined4 *)(iVar2 + 0x14));
-  }
-  if (iVar2 == 0) {
-    *(undefined4 *)(unaff_EBP + -0x10) = 0;
-  }
-LAB_00622de8:
-  uVar3 = *(undefined4 *)(unaff_EBP + -0x10);
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return uVar3;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00622DFC
-// GHIDRA_NAME Unregister
-// GHIDRA_PROTO undefined Unregister()
-
-undefined4 Unregister(void)
-
-{
-  char *text;
-  undefined4 uVar1;
-  int iVar2;
-  int *piVar3;
-  undefined4 uVar4;
-  LSTATUS LVar5;
-  int extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined4 *)(unaff_EBP + -0x14) = 0;
-  iVar2 = FUN_006187eb();
-  *(int *)(unaff_EBP + -0x1c) = iVar2;
-  while (iVar2 != 0) {
-    piVar3 = (int *)FUN_006187fd(unaff_EBP + -0x1c);
-    if (piVar3 != (int *)0x0) {
-      (**(code **)(*piVar3 + 0x14))(0,0xfffffffc,0,0);
-    }
-    iVar2 = *(int *)(unaff_EBP + -0x1c);
-  }
-  if (*(int *)(extraout_ECX + 0x7c) != 0) {
-    CString::CString((CString *)(unaff_EBP + -0x10),"Software\\");
-    text = *(char **)(extraout_ECX + 0x7c);
-    *(undefined4 *)(unaff_EBP + -4) = 0;
-    CString::AssignFromCStr((CString *)(unaff_EBP + -0x10),text);
-    uVar4 = AssignSharedStringConcatRefAndCStr(unaff_EBP + -0x20,unaff_EBP + -0x10,&DAT_00670708);
-    uVar1 = *(undefined4 *)(extraout_ECX + 0x90);
-    *(undefined1 *)(unaff_EBP + -4) = 1;
-    AssignSharedStringConcatRefAndCStr(unaff_EBP + -0x18,uVar4,uVar1);
-    *(undefined1 *)(unaff_EBP + -4) = 3;
-    CString::~CString((CString *)(unaff_EBP + -0x20));
-    FUN_00622f2b(0x80000001,unaff_EBP + -0x18);
-    LVar5 = RegOpenKeyA((HKEY)0x80000001,*(LPCSTR *)(unaff_EBP + -0x10),(PHKEY)(unaff_EBP + -0x14));
-    if (LVar5 == 0) {
-      LVar5 = RegEnumKeyA(*(HKEY *)(unaff_EBP + -0x14),0,(LPSTR)(unaff_EBP + -300),0x104);
-      if (LVar5 == 0x103) {
-        FUN_00622f2b(0x80000001,unaff_EBP + -0x10);
-      }
-      RegCloseKey(*(HKEY *)(unaff_EBP + -0x14));
-    }
-    RegQueryValueA((HKEY)0x80000001,*(LPCSTR *)(unaff_EBP + -0x18),(LPSTR)(unaff_EBP + -300),
-                   (PLONG)(unaff_EBP + -0x24));
-    *(undefined1 *)(unaff_EBP + -4) = 0;
-    CString::~CString((CString *)(unaff_EBP + -0x18));
-    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    CString::~CString((CString *)(unaff_EBP + -0x10));
-  }
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623006
-// GHIDRA_NAME InitializeThreadNameAndSystemAtoms
-// GHIDRA_PROTO undefined InitializeThreadNameAndSystemAtoms()
-
-void __fastcall InitializeThreadNameAndSystemAtoms(int param_1)
-
-{
-  ATOM AVar1;
-  
-  AVar1 = GlobalAddAtomA(*(LPCSTR *)(param_1 + 0x88));
-  *(ATOM *)(param_1 + 0xb0) = AVar1;
-  AVar1 = GlobalAddAtomA("system");
-  *(ATOM *)(param_1 + 0xb2) = AVar1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623050
-// GHIDRA_NAME RunFileAssociationShellCommandCleanup
-// GHIDRA_PROTO undefined RunFileAssociationShellCommandCleanup()
-
-void RunFileAssociationShellCommandCleanup(void)
-
-{
-  UnregisterShellFileTypes();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623099
-// GHIDRA_NAME SetRegistryKey_623099
-// GHIDRA_PROTO undefined SetRegistryKey_623099()
-
-void __thiscall SetRegistryKey_623099(TControl *param_1,undefined4 param_2)
-
-{
-  undefined1 local_104 [256];
-  
-  AfxLoadString(param_2,local_104,0x100);
-  TControl::SetRegistryKey(param_1,local_104);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0062343F
-// GHIDRA_NAME CreateObject_62343f
-// GHIDRA_PROTO undefined CreateObject_62343f()
-
-void CreateObject_62343f(void)
-
-{
-  int iVar1;
-  undefined4 extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  iVar1 = AllocateWithFallbackHandler(0x3c,extraout_ECX);
-  *(int *)(unaff_EBP + -0x10) = iVar1;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  if (iVar1 != 0) {
-    ConstructObjectVtable00670b4cBase();
-  }
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623477
-// GHIDRA_NAME AFX_THREAD_STATE
-// GHIDRA_PROTO undefined AFX_THREAD_STATE()
-
-void __fastcall AFX_THREAD_STATE(undefined4 *param_1)
-
-{
-  param_1[0x35] = 0xffffffff;
-  param_1[0x41] = 0xffffffff;
-  *param_1 = &PTR_WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At0062348e_00670c4c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0062348E
-// GHIDRA_NAME WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At0062348e
-// GHIDRA_PROTO undefined WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At0062348e()
-
-undefined4 __thiscall
-WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At0062348e(undefined4 param_1,byte param_2)
-
-{
-  FUN_006234a9();
-  if ((param_2 & 1) != 0) {
-    FreeLocalAllocHandleIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623523
-// GHIDRA_NAME AfxGetThreadState
-// GHIDRA_PROTO undefined AfxGetThreadState()
-
-void AfxGetThreadState(void)
-
-{
-  TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006235BD
-// GHIDRA_NAME WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006235bd
-// GHIDRA_PROTO undefined WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006235bd()
-
-undefined4 __thiscall
-WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006235bd(undefined4 param_1,byte param_2)
-
-{
-  FUN_006235d8();
-  if ((param_2 & 1) != 0) {
-    FreeLocalAllocHandleIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0062368B
-// GHIDRA_NAME AFX_MODULE_THREAD_STATE
-// GHIDRA_PROTO undefined AFX_MODULE_THREAD_STATE()
-
-undefined4 * AFX_MODULE_THREAD_STATE(void)
-
-{
-  undefined4 uVar1;
-  undefined4 *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &PTR_WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc_0066fdf4;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  extraout_ECX[2] = 0;
-  extraout_ECX[3] = 0;
-  TNetMgr::CMapPtrToPtr_ctor((TNetMgr *)(extraout_ECX + 0xc),(TNetMgrVtbl *)0xa);
-  *(undefined1 *)(unaff_EBP + -4) = 1;
-  TNetMgr::CMapPtrToPtr_ctor((TNetMgr *)(extraout_ECX + 0x13),(TNetMgrVtbl *)0xa);
-  *(undefined1 *)(unaff_EBP + -4) = 2;
-  TGreatPower::CPtrList((TGreatPower *)(extraout_ECX + 0x1a),10);
-  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
-  *extraout_ECX = &PTR_WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006236f6_00670c5c;
-  extraout_ECX[3] = 0x54;
-  extraout_ECX[10] = WrapperFor_ThrowMfcResourceException_At00606f4e;
-  *unaff_FS_OFFSET = uVar1;
-  return extraout_ECX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006236F6
-// GHIDRA_NAME WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006236f6
-// GHIDRA_PROTO undefined WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006236f6()
-
-undefined4 __thiscall
-WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006236f6(undefined4 param_1,byte param_2)
-
-{
-  FUN_00623711();
-  if ((param_2 & 1) != 0) {
-    FreeLocalAllocHandleIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623824
-// GHIDRA_NAME AllocateMfcModuleStateNode_1074
-// GHIDRA_PROTO undefined AllocateMfcModuleStateNode_1074()
-
-undefined4 * AllocateMfcModuleStateNode_1074(void)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  puVar1 = (undefined4 *)WrapperFor_ThrowMfcResourceException_At00623baa(0x1074);
-  *(undefined4 **)(unaff_EBP + -0x10) = puVar1;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    FUN_00623559(1);
-    *puVar1 = &PTR_WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623866_00670c64;
-    puVar2 = puVar1;
-  }
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return puVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623866
-// GHIDRA_NAME WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623866
-// GHIDRA_PROTO undefined WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623866()
-
-undefined4 __thiscall
-WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623866(undefined4 param_1,byte param_2)
-
-{
-  FUN_006235d8();
-  if ((param_2 & 1) != 0) {
-    FreeLocalAllocHandleIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623886
-// GHIDRA_NAME AfxGetModuleState
-// GHIDRA_PROTO undefined AfxGetModuleState()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns module/thread MFC state object, creating/attaching it on first use via FUN_00623FF6 + FUN_006240B8.
-// GHIDRA_COMMENT_END
-
-/* Returns module/thread MFC state object, creating/attaching it on first use via FUN_00623FF6 +
-   FUN_006240B8. */
-
-void AfxGetModuleState(void)
-
-{
-  int iVar1;
-  
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
-  if (*(int *)(iVar1 + 4) == 0) {
-    GetData_6240b8(AllocateMfcModuleStateNode_1074);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006239AE
-// GHIDRA_NAME WrapperFor_E350_At006239ae
-// GHIDRA_PROTO undefined WrapperFor_E350_At006239ae()
-
-void WrapperFor_E350_At006239ae(void)
-
-{
-  FUN_006239b8();
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006239B3
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca(void)
-
-{
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006239CA
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca(void)
-
-{
-  AppendPointerToGlobalVectorAsStatus(&LAB_006239d6);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006239DB
-// GHIDRA_NAME InitializeRuntimeClassVtablePointer_0066FEC4_VariantA
-// GHIDRA_PROTO undefined InitializeRuntimeClassVtablePointer_0066FEC4_VariantA()
-
-void InitializeRuntimeClassVtablePointer_0066FEC4_VariantA(void)
-
-{
-  InitializeRuntimeClassVtablePointer_0066FEC4_VariantA();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006239E6
-// GHIDRA_NAME WrapperFor_E355_At006239e6
-// GHIDRA_PROTO undefined WrapperFor_E355_At006239e6()
-
-void WrapperFor_E355_At006239e6(void)
-
-{
-  FUN_006239f0();
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006239EB
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02(void)
-
-{
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623A02
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02(void)
-
-{
-  AppendPointerToGlobalVectorAsStatus(&LAB_00623a0e);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623A13
-// GHIDRA_NAME InitializeRuntimeClassVtablePointer_0066FEC4_VariantB
-// GHIDRA_PROTO undefined InitializeRuntimeClassVtablePointer_0066FEC4_VariantB()
-
-void InitializeRuntimeClassVtablePointer_0066FEC4_VariantB(void)
-
-{
-  InitializeRuntimeClassVtablePointer_0066FEC4_VariantB();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623AB2
-// GHIDRA_NAME WrapperFor_E350_At00623ab2
-// GHIDRA_PROTO undefined WrapperFor_E350_At00623ab2()
-
-void WrapperFor_E350_At00623ab2(void)
-
-{
-  FUN_00623abc();
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623AB7
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace(void)
-
-{
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623ACE
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace(void)
-
-{
-  AppendPointerToGlobalVectorAsStatus(&LAB_00623ada);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623ADF
-// GHIDRA_NAME InitializeRuntimeClassVtablePointer_0066FEC4_VariantC
-// GHIDRA_PROTO undefined InitializeRuntimeClassVtablePointer_0066FEC4_VariantC()
-
-void InitializeRuntimeClassVtablePointer_0066FEC4_VariantC(void)
-
-{
-  InitializeRuntimeClassVtablePointer_0066FEC4_VariantC();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623AEA
-// GHIDRA_NAME WrapperFor_E355_At00623aea
-// GHIDRA_PROTO undefined WrapperFor_E355_At00623aea()
-
-void WrapperFor_E355_At00623aea(void)
-
-{
-  FUN_00623af4();
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623AEF
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06(void)
-
-{
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623B06
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06(void)
-
-{
-  AppendPointerToGlobalVectorAsStatus(&LAB_00623b12);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623B17
-// GHIDRA_NAME InitializeRuntimeClassVtablePointer_0066FEC4_VariantD
-// GHIDRA_PROTO undefined InitializeRuntimeClassVtablePointer_0066FEC4_VariantD()
-
-void InitializeRuntimeClassVtablePointer_0066FEC4_VariantD(void)
-
-{
-  InitializeRuntimeClassVtablePointer_0066FEC4_VariantD();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623B40
-// GHIDRA_NAME GetCFileExceptionRuntimeClass
-// GHIDRA_PROTO undefined GetCFileExceptionRuntimeClass()
-
-CRuntimeClass * GetCFileExceptionRuntimeClass(void)
-
-{
-  return &CFileException::classRuntimeClass;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623B5F
-// GHIDRA_NAME RemoveNodeFromOffsetLinkedList
-// GHIDRA_PROTO undefined RemoveNodeFromOffsetLinkedList()
-
-undefined4 __thiscall RemoveNodeFromOffsetLinkedList(int *param_1,int param_2)
-
-{
-  int iVar1;
-  int iVar2;
-  
-  iVar2 = *param_1;
-  if (iVar2 == 0) {
-    return 0;
-  }
-  if (iVar2 == param_2) {
-    *param_1 = *(int *)(param_1[1] + param_2);
-  }
-  else {
-    if (iVar2 == 0) {
-      return 0;
-    }
-    do {
-      iVar1 = *(int *)(iVar2 + param_1[1]);
-      if (iVar1 == param_2) break;
-      iVar2 = iVar1;
-    } while (iVar1 != 0);
-    if (iVar2 == 0) {
-      return 0;
-    }
-    *(undefined4 *)(iVar2 + param_1[1]) = *(undefined4 *)(param_2 + param_1[1]);
-  }
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623BAA
-// GHIDRA_NAME WrapperFor_ThrowMfcResourceException_At00623baa
-// GHIDRA_PROTO undefined WrapperFor_ThrowMfcResourceException_At00623baa()
-
-HLOCAL WrapperFor_ThrowMfcResourceException_At00623baa(SIZE_T param_1)
-
-{
-  HLOCAL pvVar1;
-  
-  pvVar1 = LocalAlloc(0x40,param_1);
-  if (pvVar1 == (HLOCAL)0x0) {
-    AfxThrowMemoryException();
-  }
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623BC8
-// GHIDRA_NAME FreeLocalAllocHandleIfNotNull
-// GHIDRA_PROTO undefined FreeLocalAllocHandleIfNotNull()
-
-void FreeLocalAllocHandleIfNotNull(HLOCAL param_1)
-
-{
-  if (param_1 != (HLOCAL)0x0) {
-    LocalFree(param_1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623BDC
-// GHIDRA_NAME CThreadSlotData
-// GHIDRA_PROTO undefined CThreadSlotData()
-
-DWORD * __fastcall CThreadSlotData(DWORD *param_1)
-
-{
-  DWORD DVar1;
-  
-  param_1[5] = 0;
-  param_1[6] = 0;
-  param_1[6] = 4;
-  param_1[1] = 0;
-  param_1[2] = 1;
-  param_1[3] = 0;
-  param_1[4] = 0;
-  DVar1 = TlsAlloc();
-  *param_1 = DVar1;
-  if (DVar1 == 0xffffffff) {
-    AfxThrowMemoryException();
-  }
-  InitializeCriticalSection((LPCRITICAL_SECTION)(param_1 + 7));
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623C75
-// GHIDRA_NAME AllocSlot
-// GHIDRA_PROTO undefined AllocSlot()
-
-int __fastcall AllocSlot(int param_1)
-
-{
-  LPCRITICAL_SECTION lpCriticalSection;
-  uint *puVar1;
-  byte *pbVar2;
-  HGLOBAL pvVar3;
-  HGLOBAL hMem;
-  LPVOID pvVar4;
-  int iVar5;
-  int iVar6;
-  
-  lpCriticalSection = (LPCRITICAL_SECTION)(param_1 + 0x1c);
-  EnterCriticalSection(lpCriticalSection);
-  iVar5 = *(int *)(param_1 + 4);
-  iVar6 = *(int *)(param_1 + 8);
-  if ((iVar5 <= iVar6) || ((*(byte *)(*(int *)(param_1 + 0x10) + iVar6 * 8) & 1) != 0)) {
-    iVar6 = 1;
-    if (1 < iVar5) {
-      pbVar2 = *(byte **)(param_1 + 0x10);
-      do {
-        pbVar2 = pbVar2 + 8;
-        if ((*pbVar2 & 1) == 0) break;
-        iVar6 = iVar6 + 1;
-      } while (iVar6 < iVar5);
-      if (iVar6 < iVar5) goto LAB_00623d59;
-    }
-    iVar5 = iVar5 + 0x20;
-    if (*(LPCVOID *)(param_1 + 0x10) == (LPCVOID)0x0) {
-      pvVar3 = GlobalAlloc(0x2002,iVar5 * 8);
-    }
-    else {
-      pvVar3 = GlobalHandle(*(LPCVOID *)(param_1 + 0x10));
-      GlobalUnlock(pvVar3);
-      pvVar3 = GlobalReAlloc(pvVar3,iVar5 * 8,0x2002);
-    }
-    if (pvVar3 == (HGLOBAL)0x0) {
-      hMem = GlobalHandle(*(LPCVOID *)(param_1 + 0x10));
-      GlobalLock(hMem);
-      LeaveCriticalSection(lpCriticalSection);
-      AfxThrowMemoryException();
-    }
-    pvVar4 = GlobalLock(pvVar3);
-    CDocTemplate::memset
-              ((void *)((int)pvVar4 + *(int *)(param_1 + 4) * 8),0,
-               (*(int *)(param_1 + 4) * 0x1fffffff + iVar5) * 8);
-    *(int *)(param_1 + 4) = iVar5;
-    *(LPVOID *)(param_1 + 0x10) = pvVar4;
-  }
-LAB_00623d59:
-  if (*(int *)(param_1 + 0xc) <= iVar6) {
-    *(int *)(param_1 + 0xc) = iVar6 + 1;
-  }
-  puVar1 = (uint *)(*(int *)(param_1 + 0x10) + iVar6 * 8);
-  *puVar1 = *puVar1 | 1;
-  *(int *)(param_1 + 8) = iVar6 + 1;
-  LeaveCriticalSection(lpCriticalSection);
-  return iVar6;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623DE4
-// GHIDRA_NAME SetValue
-// GHIDRA_PROTO undefined SetValue()
-
-void __thiscall SetValue(DWORD *param_1,int param_2,int param_3)
-
-{
-  TMacViewMgrVtbl *lpTlsValue;
-  _vslot_fn *p_Var1;
-  
-  lpTlsValue = TlsGetValue(*param_1);
-  if (lpTlsValue == (TMacViewMgrVtbl *)0x0) {
-LAB_00623e14:
-    lpTlsValue = (TMacViewMgrVtbl *)WrapperFor_ThrowMfcResourceException_At00623baa(0x10);
-    if (lpTlsValue == (TMacViewMgrVtbl *)0x0) {
-      lpTlsValue = (TMacViewMgrVtbl *)0x0;
-    }
-    else {
-      lpTlsValue->GetRuntimeClass =
-           (TMacViewMgr_GetTMacViewMgrClassNamePointer_0x00 *)
-           &PTR_WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623eb2_0067303c;
-    }
-    lpTlsValue->Serialize = (_vslot_fn *)0x0;
-    lpTlsValue->AssertValid = (_vslot_fn *)0x0;
-    TMacViewMgr::AddHead_623b4c((TMacViewMgr *)(param_1 + 5),lpTlsValue);
-  }
-  else {
-    if ((param_2 < (int)lpTlsValue->Serialize) || (param_3 == 0)) goto LAB_00623e9e;
-    if (lpTlsValue == (TMacViewMgrVtbl *)0x0) goto LAB_00623e14;
-  }
-  if (lpTlsValue->AssertValid == (_vslot_fn *)0x0) {
-    p_Var1 = LocalAlloc(0,param_1[3] << 2);
-  }
-  else {
-    p_Var1 = LocalReAlloc(lpTlsValue->AssertValid,param_1[3] << 2,2);
-  }
-  lpTlsValue->AssertValid = p_Var1;
-  if (p_Var1 == (_vslot_fn *)0x0) {
-    AfxThrowMemoryException();
-  }
-  CDocTemplate::memset
-            (lpTlsValue->AssertValid + (int)lpTlsValue->Serialize * 4,0,
-             ((int)lpTlsValue->Serialize * 0x3fffffff + param_1[3]) * 4);
-  lpTlsValue->Serialize = (_vslot_fn *)param_1[3];
-  TlsSetValue(*param_1,lpTlsValue);
-LAB_00623e9e:
-  *(int *)(lpTlsValue->AssertValid + param_2 * 4) = param_3;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623EB2
-// GHIDRA_NAME WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623eb2
-// GHIDRA_PROTO undefined WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623eb2()
-
-undefined4 __thiscall
-WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623eb2(undefined4 param_1,byte param_2)
-
-{
-  InitializeThreadObjectPrimaryVtable();
-  if ((param_2 & 1) != 0) {
-    FreeLocalAllocHandleIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623ECD
-// GHIDRA_NAME InitializeThreadObjectPrimaryVtable
-// GHIDRA_PROTO undefined InitializeThreadObjectPrimaryVtable()
-
-void __fastcall InitializeThreadObjectPrimaryVtable(undefined4 *param_1)
-
-{
-  *param_1 = &PTR_WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc_0066fdf4;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00623F9D
-// GHIDRA_NAME DeleteValues_623f9d
-// GHIDRA_PROTO undefined DeleteValues_623f9d()
-
-void __thiscall DeleteValues_623f9d(DWORD *param_1,undefined4 param_2,int param_3)
-
-{
-  DWORD DVar1;
-  DWORD DVar2;
-  LPVOID pvVar3;
-  
-  EnterCriticalSection((LPCRITICAL_SECTION)(param_1 + 7));
-  if (param_3 == 0) {
-    pvVar3 = TlsGetValue(*param_1);
-    if (pvVar3 != (LPVOID)0x0) {
-      FUN_00623f15(pvVar3,param_2);
-    }
-  }
-  else {
-    DVar2 = param_1[5];
-    while (DVar2 != 0) {
-      DVar1 = *(DWORD *)(DVar2 + 4);
-      FUN_00623f15(DVar2,param_2);
-      DVar2 = DVar1;
-    }
-  }
-  LeaveCriticalSection((LPCRITICAL_SECTION)(param_1 + 7));
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006240B8
-// GHIDRA_NAME GetData_6240b8
-// GHIDRA_PROTO undefined GetData_6240b8()
-
-int GetData_6240b8(void)
-
-{
-  int iVar1;
-  int *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe8;
-  *(int **)(unaff_EBP + -0x14) = extraout_ECX;
-  if (*extraout_ECX == 0) {
-    AfxLockGlobals(0x10);
-    *(undefined4 *)(unaff_EBP + -4) = 0;
-    if (*extraout_ECX == 0) {
-      iVar1 = (**(code **)(unaff_EBP + 8))();
-      *extraout_ECX = iVar1;
-    }
-    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    AfxUnlockGlobals(0x10);
-  }
-  iVar1 = *extraout_ECX;
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006241A7
-// GHIDRA_NAME WrapperFor_InitializeGlobalMfcVersionAndCursorState_At006241a7
-// GHIDRA_PROTO undefined WrapperFor_InitializeGlobalMfcVersionAndCursorState_At006241a7()
-
-void WrapperFor_InitializeGlobalMfcVersionAndCursorState_At006241a7(void)
-
-{
-  InitializeGlobalMfcVersionAndCursorState();
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006241AC
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb(void)
-
-{
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006241B1
-// GHIDRA_NAME InitializeGlobalMfcVersionAndCursorState
-// GHIDRA_PROTO undefined InitializeGlobalMfcVersionAndCursorState()
-
-void InitializeGlobalMfcVersionAndCursorState(void)
-
-{
-  AUX_DATA();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006241BB
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb(void)
-
-{
-  AppendPointerToGlobalVectorAsStatus(&LAB_006241c7);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006241CC
-// GHIDRA_NAME WrapperFor_AfxDeleteObject_At00626c02
-// GHIDRA_PROTO undefined WrapperFor_AfxDeleteObject_At00626c02()
-
-void __fastcall WrapperFor_AfxDeleteObject_At00626c02(int param_1)
-
-{
-  AfxDeleteObject(param_1 + 0x50);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006241D1
-// GHIDRA_NAME AfxEnableWin40Compatibility
-// GHIDRA_PROTO undefined AfxEnableWin40Compatibility()
-
-void AfxEnableWin40Compatibility(void)
-
-{
-  int iVar1;
-  
-  if (DAT_006a7d5c != 0) {
-    iVar1 = GetSystemMetrics(2);
-    DAT_006a7d00 = iVar1 + 1;
-    iVar1 = GetSystemMetrics(3);
-    DAT_006a7d04 = iVar1 + 1;
-    DAT_006a7d68 = 1;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624201
-// GHIDRA_NAME AfxEnableWin31Compatibility
-// GHIDRA_PROTO undefined AfxEnableWin31Compatibility()
-
-void AfxEnableWin31Compatibility(void)
-
-{
-  DAT_006a7d00 = GetSystemMetrics(2);
-  DAT_006a7d04 = GetSystemMetrics(3);
-  DAT_006a7d68 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624223
-// GHIDRA_NAME AUX_DATA
-// GHIDRA_PROTO undefined AUX_DATA()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes MFC/global UI version flags and default cursors.
-// GHIDRA_COMMENT Loads IDC_SIZENWSE/IDC_ARROW equivalents (0x7F02/0x7F00) and stores them in state object fields +0x3C/+0x40.
-// GHIDRA_COMMENT_END
-
-/* Initializes MFC/global UI version flags and default cursors.
-   Loads IDC_SIZENWSE/IDC_ARROW equivalents (0x7F02/0x7F00) and stores them in state object fields
-   +0x3C/+0x40. */
-
-int __fastcall AUX_DATA(int param_1)
-
-{
-  uint uVar1;
-  DWORD DVar2;
-  HCURSOR pHVar3;
-  int iVar4;
-  
-  DVar2 = GetVersion();
-  *(DWORD *)(param_1 + 0x54) = (DVar2 & 0xff) * 0x100 + (DVar2 >> 8 & 0xff);
-  *(DWORD *)(param_1 + 0x58) = DVar2 >> 0x1f;
-  uVar1 = (uint)(3 < (byte)DVar2);
-  *(uint *)(param_1 + 0x5c) = uVar1;
-  *(uint *)(param_1 + 0x60) = 1 - uVar1;
-  *(uint *)(param_1 + 100) = uVar1;
-  *(undefined4 *)(param_1 + 0x68) = 0;
-  if (uVar1 != 0) {
-    DVar2 = GetProcessVersion(0);
-    *(uint *)(param_1 + 0x68) = (uint)(0x3ffff < DVar2);
-  }
-  FUN_0060cfec();
-  *(undefined4 *)(param_1 + 0x24) = 0;
-  FUN_0060cfa8();
-  pHVar3 = LoadCursorA((HINSTANCE)0x0,(LPCSTR)0x7f02);
-  *(HCURSOR *)(param_1 + 0x3c) = pHVar3;
-  pHVar3 = LoadCursorA((HINSTANCE)0x0,&DAT_00007f00);
-  *(HCURSOR *)(param_1 + 0x40) = pHVar3;
-  *(undefined4 *)(param_1 + 0x50) = 0;
-  *(undefined4 *)(param_1 + 0x44) = 0;
-  iVar4 = (*(int *)(param_1 + 0x5c) != 0) + 1;
-  *(int *)(param_1 + 0x10) = iVar4;
-  *(int *)(param_1 + 0x14) = iVar4;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006242DE
-// GHIDRA_NAME FinalizeTurnStateObjectModuleHandleResources
-// GHIDRA_PROTO undefined FinalizeTurnStateObjectModuleHandleResources()
-
-void FinalizeTurnStateObjectModuleHandleResources(void)
-
-{
-  code *pcVar1;
-  undefined4 uVar2;
-  undefined4 *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &PTR_DestroyTurnStateObjectWithModuleHandleFinalizer_00670554;
-  pcVar1 = (code *)extraout_ECX[4];
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  if (pcVar1 != (code *)0x0) {
-    (*pcVar1)(0);
-  }
-  if ((HMODULE)extraout_ECX[2] != (HMODULE)0x0) {
-    FreeLibrary((HMODULE)extraout_ECX[2]);
-  }
-  uVar2 = *(undefined4 *)(unaff_EBP + -0xc);
-  *extraout_ECX = &PTR_WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc_0066fdf4;
-  *unaff_FS_OFFSET = uVar2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624325
-// GHIDRA_NAME WrapperFor_EstablishSehFrameProlog_At00624325
-// GHIDRA_PROTO undefined WrapperFor_EstablishSehFrameProlog_At00624325()
-
-void WrapperFor_EstablishSehFrameProlog_At00624325(void)
-
-{
-  code *pcVar1;
-  undefined4 uVar2;
-  int iVar3;
-  undefined4 *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &PTR_WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485_0067055c;
-  iVar3 = DAT_006a7d6c;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  if ((iVar3 != 0) && (pcVar1 = *(code **)(iVar3 + 0x18), pcVar1 != (code *)0x0)) {
-    (*pcVar1)();
-  }
-  uVar2 = *(undefined4 *)(unaff_EBP + -0xc);
-  *extraout_ECX = &PTR_WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc_0066fdf4;
-  *unaff_FS_OFFSET = uVar2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624487
-// GHIDRA_NAME WrapperFor_NoOpPaddingStub_00624491_At00624487
-// GHIDRA_PROTO undefined WrapperFor_NoOpPaddingStub_00624491_At00624487()
-
-void WrapperFor_NoOpPaddingStub_00624491_At00624487(void)
-
-{
-  NoOpPaddingStub_00624491();
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0062448C
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492(void)
-
-{
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624491
-// GHIDRA_NAME NoOpPaddingStub_00624491
-// GHIDRA_PROTO undefined NoOpPaddingStub_00624491()
-
-void NoOpPaddingStub_00624491(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624492
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492(void)
-
-{
-  AppendPointerToGlobalVectorAsStatus(Dtor_CThreadLocalObject_Global_006A7D70);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0062449E
-// GHIDRA_NAME Dtor_CThreadLocalObject_Global_006A7D70
-// GHIDRA_PROTO undefined Dtor_CThreadLocalObject_Global_006A7D70()
-
-void Dtor_CThreadLocalObject_Global_006A7D70(void)
-
-{
-  FUN_0062409a();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006244A3
-// GHIDRA_NAME CThreadLocalObject
-// GHIDRA_PROTO undefined FUN_0062409a()
-
-void FUN_0062409a(void)
-
-{
-  FUN_0062409a();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006244B2
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8(void)
-
-{
-  WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006244B7
-// GHIDRA_NAME NoOpPaddingStub_006244b7
-// GHIDRA_PROTO undefined NoOpPaddingStub_006244b7()
-
-void NoOpPaddingStub_006244b7(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006244B8
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8(void)
-
-{
-  AppendPointerToGlobalVectorAsStatus(thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006244C4
-// GHIDRA_NAME thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4
-// GHIDRA_PROTO undefined thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4()
-
-void thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4(void)
-
-{
-  CProcessLocalObject::~CProcessLocalObject((CProcessLocalObject *)&DAT_006a7d6c);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006244D3
-// GHIDRA_NAME AfxCriticalInit
-// GHIDRA_PROTO undefined AfxCriticalInit()
-
-int AfxCriticalInit(void)
-
-{
-  DWORD DVar1;
-  
-  if (DAT_006a7d78 == 0) {
-    DAT_006a7d78 = 1;
-    DVar1 = GetVersion();
-    if (((byte)DVar1 < 4) && ((DVar1 & 0x80000000) != 0)) {
-      DAT_006a7f18 = 1;
-    }
-    else {
-      DAT_006a7f18 = 0;
-    }
-    if (DAT_006a7f18 == 0) {
-      InitializeCriticalSection((LPCRITICAL_SECTION)&DAT_006a7f20);
-    }
-  }
-  return DAT_006a7d78;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0062456F
-// GHIDRA_NAME AfxLockGlobals
-// GHIDRA_PROTO undefined AfxLockGlobals()
-
-void AfxLockGlobals(int param_1)
-
-{
-  int *piVar1;
-  
-  if (DAT_006a7d78 == 0) {
-    AfxCriticalInit();
-  }
-  if (DAT_006a7f18 == 0) {
-    piVar1 = (int *)(&DAT_006a7f38 + param_1 * 4);
-    if (*(int *)(&DAT_006a7f38 + param_1 * 4) == 0) {
-      EnterCriticalSection((LPCRITICAL_SECTION)&DAT_006a7f20);
-      if (*piVar1 == 0) {
-        InitializeCriticalSection((LPCRITICAL_SECTION)(&DAT_006a7d80 + param_1 * 0x18));
-        *piVar1 = *piVar1 + 1;
-      }
-      LeaveCriticalSection((LPCRITICAL_SECTION)&DAT_006a7f20);
-    }
-    EnterCriticalSection((LPCRITICAL_SECTION)(&DAT_006a7d80 + param_1 * 0x18));
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006245DF
-// GHIDRA_NAME AfxUnlockGlobals
-// GHIDRA_PROTO undefined AfxUnlockGlobals()
-
-void AfxUnlockGlobals(int param_1)
-
-{
-  if (DAT_006a7f18 == 0) {
-    LeaveCriticalSection((LPCRITICAL_SECTION)(&DAT_006a7d80 + param_1 * 0x18));
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624606
-// GHIDRA_NAME AfxDeleteRegKey
-// GHIDRA_PROTO undefined AfxDeleteRegKey()
-
-undefined4 AfxDeleteRegKey(HKEY param_1)
-
-{
-  LPCSTR lpString;
-  int iVar1;
-  LPCSTR pCVar2;
-  LSTATUS LVar3;
-  CHAR local_10c [264];
-  
-  lpString = (LPCSTR)AllocateAnsiStringCopyWithGlobalNewMode(param_1);
-  iVar1 = lstrlenA(lpString);
-  pCVar2 = lpString + iVar1;
-  while (pCVar2 != (LPCSTR)0x0) {
-    *pCVar2 = '\0';
-    LVar3 = RegOpenKeyA((HKEY)0x80000000,lpString,&param_1);
-    if (LVar3 != 0) break;
-    LVar3 = RegEnumKeyA(param_1,0,local_10c,0x105);
-    RegCloseKey(param_1);
-    if (LVar3 == 0) break;
-    RegDeleteKeyA((HKEY)0x80000000,lpString);
-    pCVar2 = (LPCSTR)FindLastCharWithMbcsLeadByteSupport(lpString,0x5c);
-  }
-  FreeHeapBlockWithAllocatorTracking(lpString);
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624693
-// GHIDRA_NAME CDocManager
-// GHIDRA_PROTO undefined CDocManager()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructor for doc-template manager list object used by app->0x80 and pending global handoff (DAT_006a6120).
-// GHIDRA_COMMENT_END
-
-/* Constructor for doc-template manager list object used by app->0x80 and pending global handoff
-   (DAT_006a6120). */
-
-undefined4 * CDocManager(void)
-
-{
-  undefined4 uVar1;
-  undefined4 *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  TGreatPower::CPtrList((TGreatPower *)(extraout_ECX + 1),10);
-  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
-  *extraout_ECX = &PTR_LAB_0067326c;
-  *unaff_FS_OFFSET = uVar1;
-  return extraout_ECX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006246CD
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At006246cd
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At006246cd()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At006246cd(undefined4 param_1,byte param_2)
-
-{
-  FUN_00626c0c();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006246E9
-// GHIDRA_NAME UnregisterShellFileTypes
-// GHIDRA_PROTO undefined UnregisterShellFileTypes()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Cleans stale shell file-association registry command entries.
-// GHIDRA_COMMENT Enumerates file-type handlers from module thread state and removes obsolete DefaultIcon/shell command/DDE branches under HKEY_CLASSES_ROOT when command targets mismatch current registrations.
-// GHIDRA_COMMENT_END
-
-/* Cleans stale shell file-association registry command entries.
-   Enumerates file-type handlers from module thread state and removes obsolete DefaultIcon/shell
-   command/DDE branches under HKEY_CLASSES_ROOT when command targets mismatch current registrations.
-    */
-
-void UnregisterShellFileTypes(void)
-
-{
-  undefined4 *puVar1;
-  int *piVar2;
-  code *pcVar3;
-  LPCSTR lpSubKey;
-  undefined4 *puVar4;
-  int iVar5;
-  LPSTR lpData;
-  LSTATUS LVar6;
-  int extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  PLONG lpcbData;
-  
-  EstablishSehFrameProlog();
-  CString::CString((CString *)(unaff_EBP + -0x24));
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::CString((CString *)(unaff_EBP + -0x10));
-  *(undefined1 *)(unaff_EBP + -4) = 1;
-  iVar5 = AfxGetModuleState();
-  AfxGetModuleShortFileName(*(undefined4 *)(iVar5 + 8),unaff_EBP + -0x24);
-  puVar4 = *(undefined4 **)(extraout_ECX + 8);
-  while (puVar4 != (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)*puVar4;
-    piVar2 = (int *)puVar4[2];
-    CString::CString((CString *)(unaff_EBP + -0x18));
-    *(undefined1 *)(unaff_EBP + -4) = 2;
-    CString::CString((CString *)(unaff_EBP + -0x14));
-    *(undefined1 *)(unaff_EBP + -4) = 3;
-    CString::CString((CString *)(unaff_EBP + -0x20));
-    pcVar3 = *(code **)(*piVar2 + 0x6c);
-    *(undefined1 *)(unaff_EBP + -4) = 4;
-    *(code **)(unaff_EBP + -0x1c) = pcVar3;
-    iVar5 = (*pcVar3)(unaff_EBP + -0x14,5);
-    if ((iVar5 != 0) && (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) != 0)) {
-      iVar5 = (**(code **)(unaff_EBP + -0x1c))(unaff_EBP + -0x20,6);
-      if (iVar5 == 0) {
-        CString::AssignFromPtr((CString *)(unaff_EBP + -0x20),(CString *)(unaff_EBP + -0x14));
-      }
-      FormatStringWithVarArgsToSharedRef
-                (unaff_EBP + -0x10,"%s\\DefaultIcon",*(undefined4 *)(unaff_EBP + -0x14));
-      AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-      iVar5 = (**(code **)(unaff_EBP + -0x1c))(unaff_EBP + -0x10,0);
-      if ((iVar5 == 0) || (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0)) {
-        FormatStringWithVarArgsToSharedRef
-                  (unaff_EBP + -0x10,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                   "ddeexec");
-        AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-        FormatStringWithVarArgsToSharedRef
-                  (unaff_EBP + -0x10,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                   "ddeexec");
-        AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-        FormatStringWithVarArgsToSharedRef
-                  (unaff_EBP + -0x10,"%s\\shell\\printto\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                   "ddeexec");
-        AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-      }
-      FormatStringWithVarArgsToSharedRef
-                (unaff_EBP + -0x10,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                 "command");
-      AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-      FormatStringWithVarArgsToSharedRef
-                (unaff_EBP + -0x10,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                 "command");
-      AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-      FormatStringWithVarArgsToSharedRef
-                (unaff_EBP + -0x10,"%s\\shell\\printto\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                 "command");
-      AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-      (**(code **)(unaff_EBP + -0x1c))(unaff_EBP + -0x18,4);
-      lpSubKey = *(LPCSTR *)(unaff_EBP + -0x18);
-      if (*(int *)(lpSubKey + -8) != 0) {
-        lpcbData = (PLONG)(unaff_EBP + -0x28);
-        *(undefined4 *)(unaff_EBP + -0x28) = 0x208;
-        lpData = (LPSTR)CString::EnsureCapacityPreserveLength((CString *)(unaff_EBP + -0x10),0x208);
-        LVar6 = RegQueryValueA((HKEY)0x80000000,lpSubKey,lpData,lpcbData);
-        CString::SetLengthAndTerminator((CString *)(unaff_EBP + -0x10),-1);
-        if (((LVar6 != 0) || (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0)) ||
-           (iVar5 = CompareAnsiStringsWithMbcsAwareness
-                              (*(int *)(unaff_EBP + -0x10),*(undefined4 *)(unaff_EBP + -0x14)),
-           iVar5 == 0)) {
-          FormatStringWithVarArgsToSharedRef
-                    (unaff_EBP + -0x10,"%s\\ShellNew",*(undefined4 *)(unaff_EBP + -0x18));
-          AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-          AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x18));
-        }
-      }
-    }
-    *(undefined1 *)(unaff_EBP + -4) = 3;
-    CString::~CString((CString *)(unaff_EBP + -0x20));
-    *(undefined1 *)(unaff_EBP + -4) = 2;
-    CString::~CString((CString *)(unaff_EBP + -0x14));
-    *(undefined1 *)(unaff_EBP + -4) = 1;
-    CString::~CString((CString *)(unaff_EBP + -0x18));
-    puVar4 = puVar1;
-  }
-  *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + -0x10));
-  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(unaff_EBP + -0x24));
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624E73
-// GHIDRA_NAME AfxWinInit
-// GHIDRA_PROTO undefined AfxWinInit()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes MFC app/module state from entry arguments (hInstance, hPrevInstance, cmdLine, nCmdShow).
-// GHIDRA_COMMENT Also sets process error mode, updates app object fields, and runs follow-up framework init hooks.
-// GHIDRA_COMMENT_END
-
-/* Initializes MFC app/module state from entry arguments (hInstance, hPrevInstance, cmdLine,
-   nCmdShow).
-   Also sets process error mode, updates app object fields, and runs follow-up framework init hooks.
-    */
-
-undefined4 AfxWinInit(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
-{
-  UINT UVar1;
-  int iVar2;
-  
-  UVar1 = SetErrorMode(0);
-  SetErrorMode(UVar1 | 0x8001);
-  iVar2 = AfxGetModuleState();
-  *(undefined4 *)(iVar2 + 8) = param_1;
-  *(undefined4 *)(iVar2 + 0xc) = param_1;
-  iVar2 = AfxGetModuleState();
-  iVar2 = *(int *)(iVar2 + 4);
-  if (iVar2 != 0) {
-    *(undefined4 *)(iVar2 + 0x68) = param_1;
-    *(undefined4 *)(iVar2 + 0x6c) = param_2;
-    *(undefined4 *)(iVar2 + 0x70) = param_3;
-    *(undefined4 *)(iVar2 + 0x74) = param_4;
-    SetCurrentHandles();
-  }
-  iVar2 = AfxGetModuleState();
-  if (*(char *)(iVar2 + 0x14) == '\0') {
-    AfxInitThread();
-  }
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624ED6
-// GHIDRA_NAME SetCurrentHandles
-// GHIDRA_PROTO undefined SetCurrentHandles()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes MFC application path/resource strings from module file path.
-// GHIDRA_COMMENT Seeds app/module handles in thread state and fills app name/help path/.INI defaults when unset.
-// GHIDRA_COMMENT_END
-
-/* Initializes MFC application path/resource strings from module file path.
-   Seeds app/module handles in thread state and fills app name/help path/.INI defaults when unset.
-    */
-
-void __fastcall SetCurrentHandles(int param_1)
-
-{
-  LPSTR pCVar1;
-  int iVar2;
-  undefined4 uVar3;
-  int iVar4;
-  undefined1 *puVar5;
-  undefined1 local_310 [256];
-  CHAR local_210 [260];
-  CHAR local_10c [260];
-  LPSTR local_8;
-  
-  iVar2 = AfxGetModuleState();
-  *(undefined4 *)(iVar2 + 8) = *(undefined4 *)(param_1 + 0x68);
-  *(undefined4 *)(iVar2 + 0xc) = *(undefined4 *)(param_1 + 0x68);
-  GetModuleFileNameA(*(HMODULE *)(param_1 + 0x68),local_210,0x104);
-  local_8 = (LPSTR)FindLastCharWithMbcsLeadByteSupport(local_210,0x2e);
-  *local_8 = '\0';
-  AfxGetFileName(local_210,local_10c,0x104);
-  if (*(int *)(param_1 + 0x88) == 0) {
-    uVar3 = AllocateAnsiStringCopyWithGlobalNewMode(local_10c);
-    *(undefined4 *)(param_1 + 0x88) = uVar3;
-  }
-  if (*(int *)(param_1 + 0x78) == 0) {
-    iVar4 = AfxLoadString(0xe000,local_310,0x100);
-    if (iVar4 == 0) {
-      puVar5 = *(undefined1 **)(param_1 + 0x88);
-    }
-    else {
-      puVar5 = local_310;
-    }
-    uVar3 = AllocateAnsiStringCopyWithGlobalNewMode(puVar5);
-    *(undefined4 *)(param_1 + 0x78) = uVar3;
-  }
-  pCVar1 = local_8;
-  *(undefined4 *)(iVar2 + 0x10) = *(undefined4 *)(param_1 + 0x78);
-  if (*(int *)(param_1 + 0x8c) == 0) {
-    lstrcpyA(local_8,".HLP");
-    uVar3 = AllocateAnsiStringCopyWithGlobalNewMode(local_210);
-    *(undefined4 *)(param_1 + 0x8c) = uVar3;
-    *pCVar1 = '\0';
-  }
-  if (*(int *)(param_1 + 0x90) == 0) {
-    lstrcatA(local_10c,".INI");
-    uVar3 = AllocateAnsiStringCopyWithGlobalNewMode(local_10c);
-    *(undefined4 *)(param_1 + 0x90) = uVar3;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00624FF3
-// GHIDRA_NAME AfxGetFileName
-// GHIDRA_PROTO undefined AfxGetFileName()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Extracts/copies the tail component of a path (after last \\/:).
-// GHIDRA_COMMENT If destination is NULL, returns required length including terminator.
-// GHIDRA_COMMENT_END
-
-/* Extracts/copies the tail component of a path (after last \\/:).
-   If destination is NULL, returns required length including terminator. */
-
-int AfxGetFileName(char *param_1,LPSTR param_2,int param_3)
-
-{
-  char cVar1;
-  char *lpString2;
-  int iVar2;
-  
-  lpString2 = param_1;
-  for (; *param_1 != '\0'; param_1 = (char *)AdvanceMbcsCharPointerByOneCharacter(param_1)) {
-    cVar1 = *param_1;
-    if (((cVar1 == '\\') || (cVar1 == '/')) || (cVar1 == ':')) {
-      lpString2 = (char *)AdvanceMbcsCharPointerByOneCharacter(param_1);
-    }
-  }
-  if (param_2 == (LPSTR)0x0) {
-    iVar2 = lstrlenA(lpString2);
-    iVar2 = iVar2 + 1;
-  }
-  else {
-    lstrcpynA(param_2,lpString2,param_3);
-    iVar2 = 0;
-  }
-  return iVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00626B59
-// GHIDRA_NAME FinalizeTurnStateObjectMfcDeleteResources
-// GHIDRA_PROTO undefined FinalizeTurnStateObjectMfcDeleteResources()
-
-void FinalizeTurnStateObjectMfcDeleteResources(void)
-
-{
-  undefined4 uVar1;
-  undefined4 *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &PTR_DestroyTurnStateObjectWithMfcDeleteFinalizer_0066fdec;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  AfxDeleteObject(extraout_ECX + 1);
-  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
-  *extraout_ECX = &PTR_WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc_0066fdf4;
-  *unaff_FS_OFFSET = uVar1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00626C02
-// GHIDRA_NAME WrapperFor_AfxDeleteObject_At00626c02
-// GHIDRA_PROTO undefined WrapperFor_AfxDeleteObject_At00626c02()
-
-void __fastcall WrapperFor_AfxDeleteObject_At00626c02(int param_1)
-
-{
-  AfxDeleteObject(param_1 + 0x50);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00626C7D
-// GHIDRA_NAME AfxWinTerm
-// GHIDRA_PROTO undefined AfxWinTerm()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Performs MFC shutdown cleanup for app lifecycle dispatcher.
-// GHIDRA_COMMENT Unregisters stored window classes, runs app callback hooks, and removes global hooks when not in DLL context.
-// GHIDRA_COMMENT_END
-
-/* Performs MFC shutdown cleanup for app lifecycle dispatcher.
-   Unregisters stored window classes, runs app callback hooks, and removes global hooks when not in
-   DLL context. */
-
-void AfxWinTerm(void)
-
-{
-  code *pcVar1;
-  int iVar2;
-  undefined1 *puVar3;
-  int iVar4;
-  LPCSTR lpClassName;
-  
-  iVar2 = AfxGetModuleState();
-  AfxLockGlobals(1);
-  lpClassName = (LPCSTR)(iVar2 + 0x34);
-  while (*lpClassName != '\0') {
-    puVar3 = (undefined1 *)FindCharWithMbcsLeadByteSupport(lpClassName,10);
-    *puVar3 = 0;
-    iVar4 = AfxGetModuleState();
-    UnregisterClassA(lpClassName,*(HINSTANCE *)(iVar4 + 8));
-    lpClassName = puVar3 + 1;
-  }
-  *(LPCSTR)(iVar2 + 0x34) = '\0';
-  AfxUnlockGlobals(1);
-  iVar2 = AfxGetModuleState();
-  if ((*(int *)(iVar2 + 4) != 0) &&
-     (pcVar1 = *(code **)(*(int *)(iVar2 + 4) + 0x54), pcVar1 != (code *)0x0)) {
-    (*pcVar1)(1,0);
-  }
-  iVar2 = AfxGetThreadState();
-  if (*(int *)(iVar2 + 0xcc) != 0) {
-    iVar4 = FUN_005fa92c();
-    if (iVar4 != 0) {
-      *(undefined4 *)(iVar2 + 0xcc) = 0;
-    }
-  }
-  iVar4 = AfxGetModuleState();
-  if (*(char *)(iVar4 + 0x14) == '\0') {
-    if (*(HHOOK *)(iVar2 + 0x30) != (HHOOK)0x0) {
-      UnhookWindowsHookEx(*(HHOOK *)(iVar2 + 0x30));
-      *(undefined4 *)(iVar2 + 0x30) = 0;
-    }
-    if (*(HHOOK *)(iVar2 + 0x2c) != (HHOOK)0x0) {
-      UnhookWindowsHookEx(*(HHOOK *)(iVar2 + 0x2c));
-      *(undefined4 *)(iVar2 + 0x2c) = 0;
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00627DD4
-// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
-// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
-
-void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
-
-{
-  ForwardStructuredExceptionDispatchThroughFrameInfo();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00627E51
-// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
-// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
-
-void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
-
-{
-  ForwardStructuredExceptionDispatchThroughFrameInfo();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00627ED1
-// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
-// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
-
-void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
-
-{
-  ForwardStructuredExceptionDispatchThroughFrameInfo();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00627F86
-// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
-// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
-
-void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
-
-{
-  ForwardStructuredExceptionDispatchThroughFrameInfo();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00627FCD
-// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
-// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
-
-void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
-
-{
-  ForwardStructuredExceptionDispatchThroughFrameInfo();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00627FED
-// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
-// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
-
-void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
-
-{
-  ForwardStructuredExceptionDispatchThroughFrameInfo();
   return;
 }
 

@@ -4,10 +4,10 @@
 // Bucket: NodeScanner.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061249E
-// GHIDRA_NAME NodeScanner::ReadClass
-// GHIDRA_PROTO undefined ReadClass()
+// GHIDRA_NAME NodeScanner::?ReadClass@CArchive@@QAEPAUCRuntimeClass@@PBU2@PAIPAK@Z
+// GHIDRA_PROTO undefined ?ReadClass@CArchive@@QAEPAUCRuntimeClass@@PBU2@PAIPAK@Z()
 
-CRuntimeClass * NodeScanner::ReadClass(void)
+CRuntimeClass * NodeScanner::_ReadClass_CArchive__QAEPAUCRuntimeClass__PBU2_PAIPAK_Z(void)
 
 {
   undefined4 uVar1;
@@ -21,15 +21,15 @@ CRuntimeClass * NodeScanner::ReadClass(void)
   int unaff_EBP;
   uint uVar6;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   if ((*(int *)(unaff_EBP + 8) != 0) && (*(int *)(*(int *)(unaff_EBP + 8) + 8) == 0xffff)) {
-    AfxThrowNotSupportedException();
+    _AfxThrowNotSupportedException__YGXXZ();
   }
-  TNetMgr::MapObject(0);
-  CArchive::ReadWordFromSerializedBuffer(this_01,(undefined2 *)(unaff_EBP + -0xe));
+  TNetMgr::_MapObject_CArchive__QAEXPBVCObject___Z(0);
+  CArchive::__5CArchive__QAEAAV0_AAG_Z(this_01,(undefined2 *)(unaff_EBP + -0xe));
   if (*(short *)(unaff_EBP + -0xe) == 0x7fff) {
-    CArchive::ReadDwordFromSerializedBuffer(this_01,(undefined4 *)(unaff_EBP + -0x18));
+    CArchive::__5CArchive__QAEAAV0_AAK_Z(this_01,(undefined4 *)(unaff_EBP + -0x18));
   }
   else {
     *(uint *)(unaff_EBP + -0x18) =
@@ -38,64 +38,67 @@ CRuntimeClass * NodeScanner::ReadClass(void)
   if ((*(uint *)(unaff_EBP + -0x18) & 0x80000000) == 0) {
     puVar3 = *(undefined4 **)(unaff_EBP + 0x10);
     if (puVar3 == (undefined4 *)0x0) {
-      AfxThrowArchiveException(5,(this_01->m_strFileName).m_pchData);
+      _AfxThrowArchiveException__YGXHPBD_Z(5,(this_01->m_strFileName).m_pchData);
     }
     *puVar3 = *(undefined4 *)(unaff_EBP + -0x18);
     this = (CRuntimeClass *)0x0;
   }
   else {
     if (*(short *)(unaff_EBP + -0xe) == -1) {
-      this = (CRuntimeClass *)FindThreadHandleMapEntryBySerializedName(this_01,unaff_EBP + -0x14);
+      this = (CRuntimeClass *)
+             _Load_CRuntimeClass__SGPAU1_AAVCArchive__PAI_Z(this_01,unaff_EBP + -0x14);
       if (this == (CRuntimeClass *)0x0) {
-        AfxThrowArchiveException(6,(this_01->m_strFileName).m_pchData);
+        _AfxThrowArchiveException__YGXHPBD_Z(6,(this_01->m_strFileName).m_pchData);
       }
       if ((this->m_wSchema & 0x7fffffffU) != *(uint *)(unaff_EBP + -0x14)) {
         if ((this->m_wSchema & 0x80000000U) == 0) {
-          AfxThrowArchiveException(7,(this_01->m_strFileName).m_pchData);
+          _AfxThrowArchiveException__YGXHPBD_Z(7,(this_01->m_strFileName).m_pchData);
         }
         else {
           if (this_01->m_pSchemaMap == (void *)0x0) {
-            this_00 = (TNetMgr *)AllocateWithFallbackHandler(0x1c);
+            this_00 = (TNetMgr *)__2_YAPAXI_Z(0x1c);
             *(TNetMgr **)(unaff_EBP + -0x1c) = this_00;
             *(undefined4 *)(unaff_EBP + -4) = 0;
             if (this_00 == (TNetMgr *)0x0) {
               pvVar2 = (void *)0x0;
             }
             else {
-              pvVar2 = (void *)TNetMgr::CMapPtrToPtr_ctor(this_00,(TNetMgrVtbl *)0xa);
+              pvVar2 = (void *)TNetMgr::__0CMapPtrToPtr__QAE_H_Z(this_00,(TNetMgrVtbl *)0xa);
             }
             *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
             this_01->m_pSchemaMap = pvVar2;
           }
           uVar1 = *(undefined4 *)(unaff_EBP + -0x14);
           puVar3 = (undefined4 *)
-                   TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_01->m_pSchemaMap,(int)this);
+                   TNetMgr::__ACMapPtrToPtr__QAEAAPAXPAX_Z(this_01->m_pSchemaMap,(int)this);
           *puVar3 = uVar1;
         }
       }
-      CheckCount();
+      _CheckCount_CArchive__QAEXXZ();
       iVar5 = this_01->m_nMapCount;
       this_01->m_nMapCount = iVar5 + 1;
-      InsertAt(iVar5,this,1);
+      _InsertAt_CPtrArray__QAEXHPAXH_Z(iVar5,this,1);
       uVar4 = *(uint *)(unaff_EBP + -0x14);
     }
     else {
       uVar4 = *(uint *)(unaff_EBP + -0x18);
       uVar6 = uVar4 & 0x7fffffff;
       if ((uVar6 == 0) || (*(int *)((int)this_01->m_pLoadArrayOrStoreMap + 8) - 1U < uVar6)) {
-        AfxThrowArchiveException(5,(this_01->m_strFileName).m_pchData);
+        _AfxThrowArchiveException__YGXHPBD_Z(5,(this_01->m_strFileName).m_pchData);
       }
       this = *(CRuntimeClass **)(*(int *)((int)this_01->m_pLoadArrayOrStoreMap + 4) + uVar4 * 4);
       if ((this_01->m_pSchemaMap == (CWnd *)0x0) ||
-         (uVar4 = CWnd::GetValueAt(this_01->m_pSchemaMap,(uint)this), uVar4 == 0)) {
+         (uVar4 = CWnd::_GetValueAt_CMapPtrToPtr__QBEPAXPAX_Z(this_01->m_pSchemaMap,(uint)this),
+         uVar4 == 0)) {
         uVar4 = this->m_wSchema & 0x7fffffff;
       }
       *(uint *)(unaff_EBP + -0x14) = uVar4;
     }
     if (*(int *)(unaff_EBP + 8) != 0) {
-      iVar5 = CRuntimeClass::IsDerivedFrom(this,*(CRuntimeClass **)(unaff_EBP + 8));
+      iVar5 = CRuntimeClass::_IsDerivedFrom_CRuntimeClass__QBEHPBU1__Z
+                        (this,*(CRuntimeClass **)(unaff_EBP + 8));
       if (iVar5 == 0) {
-        AfxThrowArchiveException(6,(this_01->m_strFileName).m_pchData);
+        _AfxThrowArchiveException__YGXHPBD_Z(6,(this_01->m_strFileName).m_pchData);
       }
       uVar4 = *(uint *)(unaff_EBP + -0x14);
     }

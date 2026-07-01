@@ -15,12 +15,12 @@ TControl * TGameWindow::CreateTGameWindowInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063331a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0xb0);
+  this = (TControl *)__2_YAPAXI_Z(0xb0);
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::ConstructUiWindowResourceEntryBase(this);
@@ -61,7 +61,7 @@ TGameWindow * TGameWindow::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -75,7 +75,7 @@ void TGameWindow::OrphanCallChain_C11_I88_004874b0()
 {
   TGameWindowVtbl *pTVar1;
   char cVar2;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_3b)();
   if (cVar2 == '\0') {
@@ -134,7 +134,7 @@ void TGameWindow::OrphanTiny_ReturnZero_0048a730()
   undefined4 uVar5;
   int unaff_retaddr;
   int *piVar3;
-  
+
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920)(0x6d61696e);
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
@@ -258,7 +258,7 @@ void TGameWindow::UpdateTurnOrderNavigationWindowLayout()
   LONG LStack_1c;
   LONG LStack_18;
   tagRECT tStack_14;
-  
+
   if (*(short *)(DAT_006a2158 + 0xe) == 0x7d1) {
     pTVar1 = this->vftable;
     (*pTVar1->OrphanRetStub_0059add0_4b)(&local_20);

@@ -12,7 +12,7 @@ TRelationshipDialog * TRelationshipDialog::_scalar_deleting_destructor_(byte par
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -43,7 +43,7 @@ void TRelationshipDialog::GetTEventHandlerClassNamePointer()
   short sVar5;
   int iVar6;
   TDiplomacyMgrVtbl *local_c;
-  
+
   sVar5 = 0;
   local_c = (TDiplomacyMgrVtbl *)0x0;
   do {
@@ -118,13 +118,13 @@ void TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638c28;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_30 = this;
-  CString::CString(&local_44);
+  CString::__0CString__QAE_XZ(&local_44);
   local_28 = 0x6e616d30;
   local_4 = 0;
   local_24 = 0x6e616d31;
@@ -219,7 +219,7 @@ void TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree()
     local_38 = (int *)((int)local_38 + -1);
   } while (local_38 != (int *)0x0);
   uStack_c = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffffb4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb4);
   *unaff_FS_OFFSET = local_14;
   return;
 }

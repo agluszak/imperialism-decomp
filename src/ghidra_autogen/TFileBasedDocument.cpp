@@ -38,12 +38,12 @@ TEventHandler * TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ea7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TEventHandler *)AllocateWithFallbackHandler(0x20);
+  this = (TEventHandler *)__2_YAPAXI_Z(0x20);
   local_4 = 0;
   pTVar1 = (TEventHandler *)0x0;
   if (this != (TEventHandler *)0x0) {
@@ -64,7 +64,7 @@ TFileBasedDocument * TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree(
 {
   TCommandHandler::CreateTCommandHandlerInstance((TCommandHandler *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

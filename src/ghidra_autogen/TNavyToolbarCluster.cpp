@@ -16,12 +16,12 @@ TUberCluster * TNavyToolbarCluster::CreateTNavyToolbarClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635b9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
@@ -64,7 +64,7 @@ TNavyToolbarCluster * TNavyToolbarCluster::_scalar_deleting_destructor_(byte par
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -86,7 +86,7 @@ TNavyToolbarCluster::OrphanRetStub_0059add0
   void *pvVar4;
   TCivToolbar *this_01;
   uint uVar5;
-  
+
   if (param_1 == 0xc) {
     uVar5 = *(int *)((int)param_2 + 0x1c) + 0x9e988dd0;
     if (uVar5 < 3) {
@@ -159,7 +159,7 @@ void TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790(int param_1)
   int iVar3;
   undefined3 extraout_var;
   int *piVar4;
-  
+
   InitializeSelectableTextOptionEntryIteratorContext(this);
   piVar4 = (int *)0x0;
   piVar2 = (int *)BeginSelectableTextOptionEntryIterator();

@@ -16,12 +16,12 @@ TNoHilitePicture * TGameSetupPicture::CreateTGameSetupPictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006367ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
@@ -64,7 +64,7 @@ TGameSetupPicture * TGameSetupPicture::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -105,7 +105,7 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   TMapMgr *pTStack_8;
   undefined4 uStack_4;
   uint dwCommandTag;
-  
+
   iVar1 = nDialogEventCode;
   uStack_4 = 0xffffffff;
   pTStack_8 = (TMapMgr *)&LAB_00636802;
@@ -129,14 +129,14 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
         fModalAccepted = ReturnTrueStub();
         while (fModalAccepted == '\0') {
-          CString::CString((CString *)&nDialogEventCode);
+          CString::__0CString__QAE_XZ((CString *)&nDialogEventCode);
           uStack_4 = 2;
           LoadUiStringResourceByGroupAndIndex();
           AssignStringSharedRefAndReturnThis(&nDialogEventCode);
           fModalAccepted = DispatchLocalizedUiMessageWithTemplateA13A0();
           uStack_4 = 0xffffffff;
           if (fModalAccepted == '\0') goto LAB_00575d64;
-          CString::~CString((CString *)&nDialogEventCode);
+          CString::__1CString__QAE_XZ((CString *)&nDialogEventCode);
           fModalAccepted = ReturnTrueStub();
         }
         DAT_00695278 = 0xfffffffe;
@@ -156,14 +156,14 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
           fModalAccepted = ReturnTrueStub();
           while (fModalAccepted == '\0') {
-            CString::CString((CString *)&nDialogEventCode);
+            CString::__0CString__QAE_XZ((CString *)&nDialogEventCode);
             uStack_4 = 1;
             LoadUiStringResourceByGroupAndIndex();
             AssignStringSharedRefAndReturnThis(&nDialogEventCode);
             fModalAccepted = DispatchLocalizedUiMessageWithTemplateA13A0();
             uStack_4 = 0xffffffff;
             if (fModalAccepted == '\0') goto LAB_00575d64;
-            CString::~CString((CString *)&nDialogEventCode);
+            CString::__1CString__QAE_XZ((CString *)&nDialogEventCode);
             fModalAccepted = ReturnTrueStub();
           }
           SetSelectedIndex6AAndTriggerRefresh();
@@ -177,7 +177,7 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
               (*g_pActiveMapOrderContext->vftable[1].GetRuntimeClass)();
               g_pActiveMapOrderContext = (TOcean *)0x0;
             }
-            g_pActiveMapOrderContext = (TOcean *)AllocateWithFallbackHandler();
+            g_pActiveMapOrderContext = (TOcean *)__2_YAPAXI_Z();
             if (g_pActiveMapOrderContext == (TOcean *)0x0) {
               g_pActiveMapOrderContext = (TOcean *)0x0;
             }
@@ -194,7 +194,7 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
               (*g_pGlobalMapState->vftable->Free)();
               g_pGlobalMapState = (TMapMgr *)0x0;
             }
-            pTStack_8 = (TMapMgr *)AllocateWithFallbackHandler();
+            pTStack_8 = (TMapMgr *)__2_YAPAXI_Z();
             if (pTStack_8 == (TMapMgr *)0x0) {
               g_pGlobalMapState = (TMapMgr *)0x0;
             }
@@ -219,14 +219,14 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
         fModalAccepted = ReturnTrueStub();
         while (fModalAccepted == '\0') {
-          CString::CString((CString *)&nDialogEventCode);
+          CString::__0CString__QAE_XZ((CString *)&nDialogEventCode);
           uStack_4 = 3;
           LoadUiStringResourceByGroupAndIndex();
           AssignStringSharedRefAndReturnThis(&nDialogEventCode);
           fModalAccepted = DispatchLocalizedUiMessageWithTemplateA13A0();
           uStack_4 = 0xffffffff;
           if (fModalAccepted == '\0') goto LAB_00575d64;
-          CString::~CString((CString *)&nDialogEventCode);
+          CString::__1CString__QAE_XZ((CString *)&nDialogEventCode);
           fModalAccepted = ReturnTrueStub();
         }
       }
@@ -241,7 +241,7 @@ LAB_00575d4f:
   return;
 LAB_00575d64:
   uStack_4 = 0xffffffff;
-  CString::~CString((CString *)&nDialogEventCode);
+  CString::__1CString__QAE_XZ((CString *)&nDialogEventCode);
   goto LAB_00575d4f;
 }
 

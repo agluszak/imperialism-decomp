@@ -37,7 +37,7 @@ TCivAnimation2::ConstructTCivAnimation2BaseState
   undefined2 uVar1;
   undefined4 uVar2;
   undefined4 local_48 [18];
-  
+
   local_48[0xb] = 10;
   local_48[0x10] = 10;
   local_48[0x11] = 10;
@@ -83,7 +83,7 @@ uint TCivAnimation2::DestructTCivAnimation2AndMaybeFree()
   ushort uVar1;
   int iVar2;
   uint uVar3;
-  
+
   uVar3 = *(int *)&this->field_0x10 + 1;
   *(uint *)&this->field_0x10 = uVar3;
   if (uVar3 != *(uint *)&this->field_0x14) {
@@ -132,7 +132,7 @@ uint TCivAnimation2::DestructTCivAnimation2AndMaybeFree()
       if (uVar1 != 1) {
         return uVar3;
       }
-      iVar2 = GenerateThreadLocalRandom15();
+      iVar2 = _rand();
       if (0x31 < iVar2 % 100) {
         return iVar2 / 100;
       }
@@ -160,7 +160,7 @@ void TCivAnimation2::RenderBattleReportInsetWithPaletteShift(int *param_1)
   short sVar1;
   undefined2 auStackY_d00d8 [425978];
   undefined2 local_d8 [108];
-  
+
   local_d8[0] = 0;
   local_d8[1] = 1;
   local_d8[2] = 2;
@@ -296,7 +296,7 @@ int TCivAnimation2::FindLinkedListNodeByIdFieldAt18(int param_1)
 {
   int iVar1;
   int iVar2;
-  
+
   if (this != (TCivAnimation2 *)0x0) {
     iVar1 = InitializeLinkedListCursorFromOwnerHead();
     iVar2 = LinkedListCursorHasCurrent();

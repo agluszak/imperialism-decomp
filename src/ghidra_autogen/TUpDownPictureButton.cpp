@@ -35,7 +35,7 @@ TUpDownPictureButton * TUpDownPictureButton::_scalar_deleting_destructor_(byte p
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -53,7 +53,7 @@ TUpDownPictureButton::SetPressedStateAdjustPictureBitmapByOne
   undefined4 in_EAX;
   undefined4 uVar2;
   char unaff_retaddr;
-  
+
   if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
     this->field_0x64 = param_1;
@@ -80,7 +80,7 @@ void TUpDownPictureButton::OrphanCallChain_C1_I05_00571690()
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
                     /* WARNING: Could not recover jumptable at 0x00571699. Too many branches */
                     /* WARNING: Treating indirect jump as call */

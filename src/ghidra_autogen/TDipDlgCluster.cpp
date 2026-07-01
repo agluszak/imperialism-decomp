@@ -16,12 +16,12 @@ TUberCluster * TDipDlgCluster::CreateTDipDlgClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006375aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
@@ -64,7 +64,7 @@ TDipDlgCluster * TDipDlgCluster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -81,7 +81,7 @@ bool TDipDlgCluster::OrphanVtableAssignStub_005714e0()
   char cVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  
+
   uVar1 = (*this->ownerContext->vftable->ResolveControlByTag)(0x73756273);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

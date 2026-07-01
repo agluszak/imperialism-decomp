@@ -16,12 +16,12 @@ undefined4 __fastcall TLanguageMgr::CreateTLanguageMgrInstance(undefined4 param_
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063384a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLanguageMgr *)AllocateWithFallbackHandler(0x34,param_1);
+  this = (TLanguageMgr *)__2_YAPAXI_Z(0x34,param_1);
   local_4 = 0;
   if (this != (TLanguageMgr *)0x0) {
     uVar1 = TLanguageMgr::ConstructTLanguageMgrBaseState(this);
@@ -55,16 +55,16 @@ TLanguageMgr * TLanguageMgr::ConstructTLanguageMgrBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0063388e;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TLanguageMgrVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
   local_10 = this;
-  CString::CString((CString *)&this->field_0x28);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x28);
   local_4._0_1_ = 1;
-  CString::CString((CString *)&this->field_0x2c);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x2c);
   local_4._0_1_ = 2;
   this->vftable = &TLanguageMgrVtbl_006585a8;
   *(undefined4 *)&this->field_0x10 = 0;
@@ -72,16 +72,16 @@ TLanguageMgr * TLanguageMgr::ConstructTLanguageMgrBaseState()
   *(undefined4 *)&this->field_0x1c = 0;
   *(undefined4 *)&this->field_0x20 = 0;
   this->field_0x24 = 0;
-  CString::CString(&local_14,s_news_tab_00696d04);
+  CString::__0CString__QAE_PBD_Z(&local_14,s_news_tab_00696d04);
   local_4._0_1_ = 3;
-  CString::AssignFromPtr((CString *)&this->field_0x2c,&local_14);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x2c,&local_14);
   local_4._0_1_ = 2;
-  CString::~CString(&local_14);
-  CString::CString(&local_14,s_news_tex_00696cf8);
+  CString::__1CString__QAE_XZ(&local_14);
+  CString::__0CString__QAE_PBD_Z(&local_14,s_news_tex_00696cf8);
   local_4._0_1_ = 4;
-  CString::AssignFromPtr((CString *)&this->field_0x28,&local_14);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x28,&local_14);
   local_4 = CONCAT31(local_4._1_3_,2);
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   this->field_0x25 = 0x20;
   *(undefined4 *)&this->field_0x30 = 6;
   *unaff_FS_OFFSET = local_c;
@@ -97,7 +97,7 @@ TLanguageMgr * TLanguageMgr::DestructTLanguageMgrAndMaybeFree(byte param_1)
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

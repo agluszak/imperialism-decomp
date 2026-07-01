@@ -16,7 +16,7 @@ TMilitaryUnitOrderState * TMilitaryUnitOrderState::TMilitaryUnitOrderState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0063991b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -27,7 +27,7 @@ TMilitaryUnitOrderState * TMilitaryUnitOrderState::TMilitaryUnitOrderState()
   this[0x1c] = (TMilitaryUnitOrderState)0x0;
   local_4 = 0;
   local_10 = this;
-  CString::CString((CString *)(this + 0x24));
+  CString::__0CString__QAE_XZ((CString *)(this + 0x24));
   local_4._0_1_ = 1;
   *(undefined2 *)(this + 0x38) = 0;
   *(undefined2 *)(this + 0x3a) = 0;
@@ -37,11 +37,11 @@ TMilitaryUnitOrderState * TMilitaryUnitOrderState::TMilitaryUnitOrderState()
   this[0x1c] = (TMilitaryUnitOrderState)0x1;
   *(undefined2 *)(this + 0x34) = 500;
   *(undefined2 *)(this + 0x36) = 0;
-  CString::CString(&local_14,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&local_14,(char *)&g_szEmptyString);
   local_4._0_1_ = 2;
-  CString::AssignFromPtr((CString *)(this + 0x24),&local_14);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)(this + 0x24),&local_14);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -61,12 +61,12 @@ TMilitaryUnitOrderState * TMilitaryUnitOrderState::TMilitaryUnitOrderState()
 // GHIDRA_COMMENT_END
 
 /* Initializes military recruit order object state after allocation.
-   
+
    Behavior:
    - Calls base registration/owner insertion path.
    - Sets group/index-derived fields (+0x36) and initialization defaults.
    - Triggers object vfunc +0x38 post-init hook.
-   
+
    Used by recruitment commit path for non-civilian branch. */
 
 void __thiscall
@@ -95,7 +95,7 @@ void TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets()
 {
   TMilitaryUnitOrderState *pTVar1;
   int iVar2;
-  
+
   pTVar1 = this + 0x2e;
   iVar2 = 3;
   do {

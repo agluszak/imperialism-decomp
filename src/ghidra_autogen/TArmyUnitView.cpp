@@ -16,12 +16,12 @@ TView * TArmyUnitView::CreateTArmyUnitViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063040a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -64,7 +64,7 @@ TArmyUnitView * TArmyUnitView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -86,19 +86,20 @@ void TArmyUnitView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630430;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString((CString *)&local_38.right);
+  CString::__0CString__QAE_XZ((CString *)&local_38.right);
   local_4 = 0;
-  CString::CString((CString *)&local_38.top);
+  CString::__0CString__QAE_XZ((CString *)&local_38.top);
   local_4 = CONCAT31(local_4._1_3_,1);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   local_38.left = 0x1c474b;
   SetQuickDrawColorAndSyncGlobals();
-  CString::AssignFromPtr((CString *)&local_38.right,(CString *)(*(int *)&this->field_0x60 + 0x24));
+  CString::__4CString__QAEABV0_ABV0__Z
+            ((CString *)&local_38.right,(CString *)(*(int *)&this->field_0x60 + 0x24));
   SetQuickDrawTextOriginWithContextOffset();
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
@@ -158,9 +159,9 @@ void TArmyUnitView::OrphanTiny_ReturnZero_0048a730()
     SetQuickDrawStrokeColor();
   }
   uStack_10 = uStack_10 & 0xffffff00;
-  CString::~CString((CString *)&stack0xffffffc0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffc0);
   uStack_10 = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffffc4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffc4);
   *unaff_FS_OFFSET = uStack_18;
   return;
 }
@@ -184,7 +185,7 @@ void TArmyUnitView::OrphanTiny_ReturnZero_0048a730()
    - Handles 'upgr' via upgrade flow or fallback UI refresh path.
    - Handles 'name' by delegating to HandleCrossUArmyViewsNameCommand.
    - Forwards unhandled/cleanup path through base view dispatcher thunk_FUN_0048a280.
-   
+
    Note: this function updates turn-flow state via +0x48; it is not a direct +0x4C event-code
    dispatch producer. */
 
@@ -205,7 +206,7 @@ TArmyUnitView::OrphanRetStub_0059add0
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   CVar2.m_pchData = param_2.m_pchData;
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
@@ -238,13 +239,13 @@ TArmyUnitView::OrphanRetStub_0059add0
   else if (iVar1 == 0x75706772) {
     cVar3 = ApplyEraCapabilityCostAndSetSelection();
     if (cVar3 == '\0') {
-      CString::CString(&param_2);
+      CString::__0CString__QAE_XZ(&param_2);
       local_4 = 0;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       AssignStringSharedRefAndReturnThis(&param_2);
       DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = 0xffffffff;
-      CString::~CString(&param_2);
+      CString::__1CString__QAE_XZ(&param_2);
     }
     else {
       (**(code **)(*(int *)CVar2.m_pchData + 0xa4))();

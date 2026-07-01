@@ -22,7 +22,7 @@ TNominationView * TNominationView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -78,7 +78,7 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633018;
   uStack_c = *unaff_FS_OFFSET;
@@ -88,7 +88,7 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   local_10 = 0;
   local_f = 0;
   uStack_30 = 0x4fb7bb;
-  CString::CString(local_1c);
+  CString::__0CString__QAE_XZ(local_1c);
   uStack_30 = 0x636f756e;
   local_4 = 0;
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
@@ -158,7 +158,7 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   (**(code **)(iVar2 + 0x1c8))(&puStack_64,1);
   (**(code **)(iVar2 + 0x1b4))(&puStack_68,1);
   puStack_5c = (undefined4 *)0xffffffff;
-  CString::~CString(&CStack_74);
+  CString::__1CString__QAE_XZ(&CStack_74);
   *unaff_FS_OFFSET = puStack_64;
   return;
 }

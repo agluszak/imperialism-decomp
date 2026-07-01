@@ -52,7 +52,7 @@ TNapoleonMinister * TNapoleonMinister::DeletingDestructTMinister(byte param_1)
 {
   DestructTNapoleonMinisterAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

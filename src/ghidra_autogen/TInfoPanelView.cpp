@@ -25,7 +25,7 @@ TInfoPanelView * TInfoPanelView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -42,12 +42,12 @@ TView * TInfoPanelView::CreateTInfoPanelViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632f2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x70);
+  this = (TView *)__2_YAPAXI_Z(0x70);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -90,12 +90,12 @@ void TInfoPanelView::OrphanCallChain_C6_I49_004875d0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632f50;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   iVar1 = 0;
   local_4 = 0;
   local_14 = 0;
@@ -117,17 +117,17 @@ void TInfoPanelView::OrphanCallChain_C6_I49_004875d0()
     iVar1 = iVar1 + 1;
   } while (iVar1 < 4);
   puStack_34 = (undefined1 *)0x4fa0d9;
-  CString::CString(&stack0x00000004,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&stack0x00000004,(char *)&g_szEmptyString);
   local_4._0_1_ = 1;
   puStack_34 = (undefined1 *)0x4fa0ec;
-  CString::AssignFromPtr(&local_1c,&stack0x00000004);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_1c,&stack0x00000004);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&stack0x00000004);
+  CString::__1CString__QAE_XZ(&stack0x00000004);
   puStack_18 = (undefined1 *)&puStack_34;
   AssignStringSharedRefAndReturnThis(&local_1c);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_4 = 0xffffffff;
-  CString::~CString(&local_1c);
+  CString::__1CString__QAE_XZ(&local_1c);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -174,23 +174,23 @@ void TInfoPanelView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632f80;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pCStack_4c = (CString *)0x4fa1bb;
   local_1c = this;
-  CString::CString(&local_38);
+  CString::__0CString__QAE_XZ(&local_38);
   local_4 = 0;
   pCStack_4c = (CString *)0x4fa1cc;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4._0_1_ = 1;
   pCStack_4c = (CString *)0x4fa1da;
-  CString::CString(&local_28);
+  CString::__0CString__QAE_XZ(&local_28);
   local_4._0_1_ = 2;
   pCStack_4c = (CString *)0x4fa1e8;
-  CString::CString(&local_2c);
+  CString::__0CString__QAE_XZ(&local_2c);
   sVar11 = (short)this->ownerOffsetY;
   iVar10 = CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar11);
   sVar2 = (short)this->ownerOffsetX;
@@ -337,7 +337,7 @@ void TInfoPanelView::OrphanTiny_ReturnZero_0048a730()
   }
   uVar5 = (*g_apTerrainTypeDescriptorTable[iVar8]->ownedRegionList->vftable[5].
             GetTEventHandlerClassNamePointer)();
-  FormatStringWithVarArgsToSharedRef(&CStack_50,&g_szDecimalFormat,uVar5);
+  _Format_CString__QAAXPBDZZ(&CStack_50,&g_szDecimalFormat,uVar5);
   SetQuickDrawColorAndSyncGlobals(pCStack_4c);
   SetQuickDrawTextOriginWithContextOffset(iVar7 + 0xa8,-iVar10 + 0x199);
   THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_50);
@@ -393,13 +393,13 @@ void TInfoPanelView::OrphanTiny_ReturnZero_0048a730()
   }
 LAB_004faa26:
   local_1c._0_1_ = 2;
-  CString::~CString((CString *)&stack0xffffffbc);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffbc);
   local_1c._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffffc0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffc0);
   local_1c = (TInfoPanelView *)((uint)local_1c._1_3_ << 8);
-  CString::~CString(&local_28);
+  CString::__1CString__QAE_XZ(&local_28);
   local_1c = (TInfoPanelView *)0xffffffff;
-  CString::~CString(&CStack_50);
+  CString::__1CString__QAE_XZ(&CStack_50);
   *unaff_FS_OFFSET = local_24;
   return;
 }
@@ -419,7 +419,7 @@ void TInfoPanelView::OrphanRetStub_00430550()
   TToolBarClusterVtbl *pTStack_20;
   int *piStack_1c;
   undefined4 uStack_18;
-  
+
   uStack_18 = 0x636c7573;
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   piStack_1c = (int *)0x4facd6;
@@ -457,7 +457,7 @@ TInfoPanelView::OrphanRetStub_0059add0
   undefined uVar2;
   undefined3 extraout_var;
   short sVar3;
-  
+
   if (param_1 == 0xc) {
     iVar1 = *(int *)&this->field_0x60;
     sVar3 = *(short *)(param_2 + 0x1c) + -0x7230;
@@ -495,7 +495,7 @@ void TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(short param_1)
   short local_20 [6];
   undefined2 local_14;
   short asStack_10 [8];
-  
+
   puVar6 = (undefined2 *)&this->field_0x64;
   *(undefined4 *)puVar6 = 0xffffffff;
   sVar8 = 0;

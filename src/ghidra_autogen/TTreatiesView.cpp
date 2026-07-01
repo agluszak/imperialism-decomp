@@ -25,7 +25,7 @@ TTreatiesView * TTreatiesView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -42,12 +42,12 @@ TView * TTreatiesView::CreateTTreatiesViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632d3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -86,12 +86,12 @@ void TTreatiesView::OrphanCallChain_C6_I49_004875d0(CString param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632d60;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   iVar2 = 0;
   local_4 = 0;
   puStack_2c = (undefined1 *)0x4f7af9;
@@ -109,17 +109,17 @@ void TTreatiesView::OrphanCallChain_C6_I49_004875d0(CString param_1)
     iVar2 = iVar2 + 1;
   } while (iVar2 < 7);
   puStack_2c = (undefined1 *)0x4f7b5f;
-  CString::CString(&param_1,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&param_1,(char *)&g_szEmptyString);
   local_4._0_1_ = 1;
   puStack_2c = (undefined1 *)0x4f7b72;
-  CString::AssignFromPtr(&local_14,&param_1);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_14,&param_1);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   puStack_10 = (undefined1 *)&puStack_2c;
   AssignStringSharedRefAndReturnThis(&local_14);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_4 = 0xffffffff;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -158,17 +158,17 @@ void TTreatiesView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632d80;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pCStack_54 = (CString *)0x4f7c27;
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   iVar2 = 0;
   local_4 = 0;
   pCStack_54 = (CString *)0x4f7c36;
-  CString::CString(local_34);
+  CString::__0CString__QAE_XZ(local_34);
   pCStack_54 = (CString *)0x1;
   local_28[6] = 0x83;
   local_28[7] = 0x83;
@@ -249,10 +249,10 @@ void TTreatiesView::OrphanTiny_ReturnZero_0048a730()
   SetQuickDrawFillColor();
   local_10 = local_10 & 0xffffff00;
   puStack_60 = (undefined1 *)0x4f7e43;
-  CString::~CString(&local_40);
+  CString::__1CString__QAE_XZ(&local_40);
   local_10 = 0xffffffff;
   puStack_60 = (undefined1 *)0x4f7e54;
-  CString::~CString((CString *)&stack0xffffffb4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb4);
   *unaff_FS_OFFSET = local_18;
   return;
 }
@@ -269,7 +269,7 @@ void TTreatiesView::OrphanRetStub_00430550()
   TToolBarClusterVtbl *pTStack_18;
   int *piStack_14;
   undefined4 uStack_10;
-  
+
   uStack_10 = 0x7363726f;
   piStack_14 = (int *)0x4f7f22;
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
@@ -295,7 +295,7 @@ TTreatiesView::OrphanRetStub_0059add0
 {
   uint uVar1;
   int iVar2;
-  
+
   if (param_1 == 0xc) {
     uVar1 = *(uint *)(param_2 + 0x1c);
     if (uVar1 < 0x73637235) {

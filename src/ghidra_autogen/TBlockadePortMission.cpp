@@ -15,12 +15,12 @@ TMission * TBlockadePortMission::CreateTBlockadePortMission(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006343aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x40);
+  this = (TMission *)__2_YAPAXI_Z(0x40);
   local_4 = 0;
   if (this != (TMission *)0x0) {
     TMission::ConstructTMission(this);
@@ -51,7 +51,7 @@ TBlockadePortMission * TBlockadePortMission::DestroyTBlockadePortMission(byte pa
 {
   ResetTBlockadePortMissionToSentinelVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -75,7 +75,7 @@ void TBlockadePortMission::SerializeTBlockadePortMission(int *param_1)
 {
   int iVar1;
   undefined4 uVar2;
-  
+
   SerializeTNavyMissionCommon(param_1);
   iVar1 = *param_1;
   uVar2 = GetShortAtOffset14OrInvalid();
@@ -91,7 +91,7 @@ void TBlockadePortMission::DeserializeTBlockadePortMission(int *param_1)
 
 {
   undefined4 uVar1;
-  
+
   DeserializeTNavyMissionCommon(param_1);
   uVar1 = (**(code **)(*param_1 + 0x4c))();
   uVar1 = FindMapActionContextByNodeId(uVar1);
@@ -118,16 +118,16 @@ TBlockadePortMission::RecomputeAndClearMissionScoreUsingPortZoneContextAverageVa
   undefined4 uVar4;
   void *unaff_EBX;
   float fStack_4;
-  
+
   this_00 = *(TGreatPower **)(this + 0x14);
   iVar3 = TGreatPower::ComputeMapActionContextNodeValueAverage(this_00);
   fStack_4 = (float)iVar3;
   for (this_01 = GetFirstPortZone(); this_01 != (TZone *)0x0;
       this_01 = TZone::GetNextPortZone(this_01,unaff_EBX)) {
     if (*(int *)&this_01->field_0x2c == 0) {
-      iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this_01->field_0x28,8);
+      iVar3 = _realloc(*(undefined4 *)&this_01->field_0x28,8);
       if (iVar3 == 0) {
-        uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this_01->field_0x28,4);
+        uVar4 = _realloc(*(undefined4 *)&this_01->field_0x28,4);
         *(undefined4 *)&this_01->field_0x28 = uVar4;
         *(undefined4 *)&this_01->field_0x2c = 1;
       }
@@ -166,7 +166,7 @@ uint TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild()
   short sVar3;
   undefined2 extraout_var;
   undefined4 uVar4;
-  
+
   pTVar1 = g_apNationStates[*(short *)(this + 4)];
   (*pTVar1->vftable->ConstructTTaskBaseState)();
   sVar3 = GetPortZoneOwnerNationCodeFromMissionField48();
@@ -232,7 +232,7 @@ TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
   float10 fVar16;
   float fStack_30;
   float local_20 [8];
-  
+
   local_20[0] = 0.0;
   local_20[1] = 0.0;
   local_20[2] = 0.0;
@@ -379,7 +379,7 @@ TBlockadePortMission::HandleBlockadePortMissionActionType4ForTargetPort
 
 {
   int in_stack_0000000c;
-  
+
   if ((param_1 == 4) && (in_stack_0000000c == *(int *)(this + 0x14))) {
     return 1;
   }

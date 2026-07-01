@@ -12,7 +12,7 @@ TJoinSelectorDialog * TJoinSelectorDialog::_scalar_deleting_destructor_(byte par
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -49,7 +49,7 @@ void TJoinSelectorDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_4;
   int *piVar5;
   int *piVar6;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634f48;
   CStack_c.m_pchData = (char *)*unaff_FS_OFFSET;
@@ -78,7 +78,7 @@ void TJoinSelectorDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   }
   *(undefined2 *)(piVar6 + 0x24) = 0x2b6b;
   *(undefined2 *)((int)piVar6 + 0x92) = 2;
-  CString::~CString(&CStack_c);
+  CString::__1CString__QAE_XZ(&CStack_c);
   *unaff_FS_OFFSET = (int *)CONCAT31(extraout_var_01,uVar3);
   return;
 }
@@ -95,7 +95,7 @@ TJoinSelectorDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
   int iVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  
+
   if (((((param_1 == 0x14) || (param_1 == 10)) || (param_1 == 0x22)) || (param_1 == 0xd)) &&
      (((iVar1 = *(int *)(param_2 + 0x1c), iVar1 == 0x63616e63 || (iVar1 == 0x636e636c)) ||
       (iVar1 == 0x6f6b6179)))) {

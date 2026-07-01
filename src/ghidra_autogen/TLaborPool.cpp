@@ -19,13 +19,13 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(int *param_1,CString param_
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630e08;
   *unaff_FS_OFFSET = &uStack_c;
   pTVar1 = g_apNationStates[(int)param_2.m_pchData];
-  CString::CString(&param_2);
+  CString::__0CString__QAE_XZ(&param_2);
   local_4 = 0;
   pcVar2 = *(code **)(*param_1 + 0x94);
   piVar4 = (int *)(*pcVar2)();
@@ -75,7 +75,7 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(int *param_1,CString param_
     ;
   }
   (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)&pTVar1->field_0x844,1);
-  CString::~CString((CString *)&stack0xffffffbc);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffbc);
   *unaff_FS_OFFSET = uVar5;
   return;
 }
@@ -99,7 +99,7 @@ TLaborPool * TLaborPool::ConstructTLaborPoolBaseState(byte param_1)
 {
   TLaborPool::DestructTLaborPoolAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -123,7 +123,7 @@ void TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(int *param_1)
 
 {
   code *pcVar1;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x4,2);
@@ -140,7 +140,7 @@ void TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(int *param_1)
 
 {
   code *pcVar1;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
@@ -158,7 +158,7 @@ undefined2 TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param
 {
   short sVar1;
   short sVar2;
-  
+
   sVar1 = *(short *)&this->field_0x4;
   if (param_2 <= sVar1) {
     *(short *)&this->field_0x4 = sVar1 - param_2;
@@ -198,9 +198,9 @@ void TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(undefined4 pa
   undefined4 *puVar1;
   TLaborPoolVtbl *pTVar2;
   int iVar3;
-  
+
   *(undefined4 *)&this->field_0x4 = param_1;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xc);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0xc);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
@@ -214,7 +214,7 @@ void TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(undefined4 pa
   *(undefined2 *)(puVar1 + 1) = 0;
   *(undefined2 *)(puVar1 + 2) = 0;
   *(undefined4 **)&this[1].field_0x4 = puVar1;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xc);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0xc);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
@@ -228,7 +228,7 @@ void TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(undefined4 pa
   *(undefined2 *)(puVar1 + 1) = 0;
   *(undefined2 *)(puVar1 + 2) = 0;
   *(undefined4 **)&this[1].field_0x8 = puVar1;
-  pTVar2 = (TLaborPoolVtbl *)AllocateWithFallbackHandler(0xc);
+  pTVar2 = (TLaborPoolVtbl *)__2_YAPAXI_Z(0xc);
   if (pTVar2 == (TLaborPoolVtbl *)0x0) {
     pTVar2 = (TLaborPoolVtbl *)0x0;
   }

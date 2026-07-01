@@ -24,7 +24,7 @@ TShip * TShip::ConstructAndLinkNavyPrimaryOrderNode()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00635028;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -35,7 +35,7 @@ TShip * TShip::ConstructAndLinkNavyPrimaryOrderNode()
   *(undefined4 *)&this->field_0xc = 0;
   *(undefined4 *)&this->field_0x10 = 1;
   *(undefined2 *)&this->field_0x14 = 0xffff;
-  CString::CString((CString *)&this->field_0x18);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x18);
   *(undefined2 *)&this->field_0x1c = 0;
   *(undefined4 *)&this->field_0x20 = 0;
   *(undefined4 *)&this->field_0x28 = 0;
@@ -61,7 +61,7 @@ TShip * TShip::DestructTShipAndFreeIfOwned(byte param_1)
 {
   TShip::DestructTShip(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -77,12 +77,12 @@ void TShip::DestructTShip()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00635048;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::~CString((CString *)&this->field_0x18);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x18);
   this->vftable = (TShipVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -102,7 +102,7 @@ void TShip::DestroyAndUnlinkNavyPrimaryOrderNode()
   TShip *this_00;
   undefined4 uVar5;
   int *unaff_EDI;
-  
+
   if (g_pNavyPrimaryOrderListHead == this) {
     g_pNavyPrimaryOrderListHead = *(TShip **)&this->field_0x24;
   }
@@ -173,7 +173,7 @@ void TShip::SerializeNavyPrimaryOrderNodeToStream(int *param_1)
   undefined1 *puStack_20;
   undefined4 uStack_1c;
   undefined1 *puStack_18;
-  
+
   puStack_18 = (undefined1 *)0x54fac0;
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
@@ -219,7 +219,7 @@ void TShip::DeserializeNavyPrimaryOrderNodeFromStream(int *param_1)
   undefined1 *puStack_20;
   undefined4 uStack_1c;
   undefined1 *puStack_18;
-  
+
   puStack_18 = (undefined1 *)0x54fb60;
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
@@ -263,7 +263,7 @@ int * TShip::DeleteMapOrderChildLinkAndReturnNext(int *pChildLinkNode)
 
 {
   int *piVar1;
-  
+
   piVar1 = *(int **)&this->field_0x4;
   if (piVar1 != (int *)0x0) {
     piVar1[2] = *(int *)&this->field_0x8;
@@ -271,7 +271,7 @@ int * TShip::DeleteMapOrderChildLinkAndReturnNext(int *pChildLinkNode)
   if (*(int *)&this->field_0x8 != 0) {
     *(undefined4 *)(*(int *)&this->field_0x8 + 4) = *(undefined4 *)&this->field_0x4;
   }
-  FreeHeapBufferIfNotNull(this);
+  __3_YAXPAX_Z(this);
   return piVar1;
 }
 
@@ -299,7 +299,7 @@ void TShip::SerializeTaskForceToBinaryStream(int *param_1)
   undefined1 *puStack_24;
   undefined4 uStack_20;
   undefined1 *puStack_1c;
-  
+
   puStack_1c = (undefined1 *)0x552ba1;
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   puStack_1c = &this->field_0x4;
@@ -388,7 +388,7 @@ void TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(int *param_1)
   undefined1 *puStack_34;
   undefined4 uStack_30;
   undefined1 *puStack_2c;
-  
+
   puStack_2c = (undefined1 *)0x552d27;
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   puStack_2c = &this->field_0x4;

@@ -16,12 +16,12 @@ TUberCluster * TCityBarCluster::CreateTCityBarClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063785a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
@@ -64,7 +64,7 @@ TCityBarCluster * TCityBarCluster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -86,7 +86,7 @@ void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int param_1)
   int unaff_EBX;
   int unaff_ESI;
   int iVar4;
-  
+
   iVar1 = *(int *)(param_1 + 0xac);
   p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar3 = (*p_Var2)(0x74726561);

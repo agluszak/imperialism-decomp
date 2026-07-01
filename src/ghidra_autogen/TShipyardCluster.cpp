@@ -15,12 +15,12 @@ TUberCluster * TShipyardCluster::CreateTradeMoveArrowControlPanel(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637a3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x90);
+  this = (TUberCluster *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   if (this != (TUberCluster *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState(this);
@@ -65,7 +65,7 @@ TShipyardCluster * TShipyardCluster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -79,7 +79,7 @@ void TShipyardCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 {
   short sVar1;
   TCity *pTVar2;
-  
+
   sVar1 = UiRuntimeContext::GetActiveNationId();
   if (g_apNationStates[sVar1] == (TGreatPower *)0x0) {
     pTVar2 = (TCity *)0x0;
@@ -113,7 +113,7 @@ void TShipyardCluster::OrphanRetStub_00586ff0()
   RECT RStack_30;
   tagRECT atStack_20 [2];
   undefined3 extraout_var_00;
-  
+
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar3 = (*p_Var1)();
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
@@ -174,7 +174,7 @@ TShipyardCluster::OrphanRetStub_0059add0
   undefined3 extraout_var;
   int iVar3;
   undefined3 extraout_var_00;
-  
+
   if (param_1 == 10) {
     if (*(int *)((int)param_2 + 0x1c) == 0x72676874) {
       pTVar1 = this->vftable;

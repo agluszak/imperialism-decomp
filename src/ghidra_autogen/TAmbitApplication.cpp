@@ -19,24 +19,23 @@ TAmbitApplication::ParseDirectionTokenAndSetMovementFlags
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   CVar1.m_pchData = param_1.m_pchData;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00627fc8;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&param_1,param_1.m_pchData);
+  CString::__0CString__QAE_PBD_Z(&param_1,param_1.m_pchData);
   local_4 = 0;
-  WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52();
+  _MakeReverse_CString__QAEXXZ();
   if (param_2 != 0) {
-    iVar2 = CompareAnsiStringsWithMbcsAwareness(param_1.m_pchData,&DAT_00694254);
+    iVar2 = __mbscmp(param_1.m_pchData,&DAT_00694254);
     if (iVar2 == 0) {
       *(undefined4 *)&this->field_0x2c = 1;
       *(undefined4 *)&this->field_0x30 = 1;
       goto LAB_004134c8;
     }
-    if ((param_2 != 0) &&
-       (iVar2 = CompareAnsiStringsWithMbcsAwareness(param_1.m_pchData,&DAT_00694250), iVar2 == 0)) {
+    if ((param_2 != 0) && (iVar2 = __mbscmp(param_1.m_pchData,&DAT_00694250), iVar2 == 0)) {
       *(undefined4 *)&this->field_0x30 = 1;
       goto LAB_004134c8;
     }
@@ -52,7 +51,7 @@ TAmbitApplication::ParseDirectionTokenAndSetMovementFlags
         }
         else if (param_2 != 0) {
           if (*param_1.m_pchData == 'T') {
-            CString::CopyFromCStr((CString *)&this->field_0x38,param_1.m_pchData + 1);
+            CString::__4CString__QAEABV0_PBD_Z((CString *)&this->field_0x38,param_1.m_pchData + 1);
           }
           else if ((param_2 != 0) && (*param_1.m_pchData == 'C')) {
             *(undefined4 *)&this->field_0x34 = 1;
@@ -62,12 +61,13 @@ TAmbitApplication::ParseDirectionTokenAndSetMovementFlags
     }
   }
   else {
-    CString::CopyFromCStr(*(CString **)&this->field_0x24,CVar1.m_pchData + 1);
+    CString::__4CString__QAEABV0_PBD_Z(*(CString **)&this->field_0x24,CVar1.m_pchData + 1);
   }
 LAB_004134c8:
-  CObject::ParseParam((CObject *)this,CVar1.m_pchData,param_2,in_stack_0000000c);
+  CObject::_ParseParam_CCommandLineInfo__UAEXPBDHH_Z
+            ((CObject *)this,CVar1.m_pchData,param_2,in_stack_0000000c);
   local_4 = 0xffffffff;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -83,7 +83,7 @@ TAmbitApplication::WrapperFor_FreeHeapBufferIfNotNull_At00413550
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

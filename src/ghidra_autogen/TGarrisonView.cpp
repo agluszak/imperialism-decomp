@@ -16,12 +16,12 @@ TMilitaryPageView * TGarrisonView::CreateTGarrisonViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006302ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMilitaryPageView *)AllocateWithFallbackHandler(0x90);
+  this = (TMilitaryPageView *)__2_YAPAXI_Z(0x90);
   local_4 = 0;
   pTVar1 = (TMilitaryPageView *)0x0;
   if (this != (TMilitaryPageView *)0x0) {
@@ -66,7 +66,7 @@ TGarrisonView * TGarrisonView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -93,7 +93,7 @@ void TGarrisonView::InvalidateWindowRectFromHandleField1C()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630340;
   uStack_c = *unaff_FS_OFFSET;
@@ -130,17 +130,17 @@ LAB_004a8aa3:
         while (piVar2 != (int *)0x0) {
           if (piVar2[2] == 0xe) {
             piVar1 = (int *)piVar2[5];
-            CString::CString(&local_14);
+            CString::__0CString__QAE_XZ(&local_14);
             local_4 = 0;
-            CString::AssignFromPtr(&local_14,(CString *)(piVar2 + 9));
-            iVar6 = CompareAnsiStringsWithMbcsAwareness(local_14.m_pchData,s_Snidely_0069584c);
+            CString::__4CString__QAEABV0_ABV0__Z(&local_14,(CString *)(piVar2 + 9));
+            iVar6 = __mbscmp(local_14.m_pchData,s_Snidely_0069584c);
             if (iVar6 == 0) {
-              CString::CString(&local_18);
+              CString::__0CString__QAE_XZ(&local_18);
               pCVar7 = &local_18;
               local_4 = CONCAT31(local_4._1_3_,1);
               UiRuntimeContext::GetActiveNationId(pCVar7);
               FormatOverlayTerrainLabelText(pCVar7);
-              iVar6 = CompareAnsiStringsWithMbcsAwareness(local_18.m_pchData,&DAT_00695844);
+              iVar6 = __mbscmp(local_18.m_pchData,&DAT_00695844);
               if (iVar6 == 0) {
                 sVar5 = UiRuntimeContext::GetActiveNationId();
                 uVar4 = (*g_apTerrainTypeDescriptorTable[sVar5]->vftable->
@@ -150,13 +150,13 @@ LAB_004a8aa3:
                 }
               }
               local_4 = local_4 & 0xffffff00;
-              CString::~CString(&local_18);
+              CString::__1CString__QAE_XZ(&local_18);
             }
             iVar6 = *piVar2;
             (**(code **)(iVar6 + 0x30))();
             (**(code **)(iVar6 + 0x1c))();
             local_4 = 0xffffffff;
-            CString::~CString(&local_14);
+            CString::__1CString__QAE_XZ(&local_14);
             this = local_10;
             piVar2 = piVar1;
           }

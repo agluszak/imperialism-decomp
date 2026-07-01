@@ -12,7 +12,7 @@ undefined2 TCity::CreateTCityInstance(int param_1, short param_2)
 {
   short sVar1;
   short sVar2;
-  
+
   sVar1 = *(short *)&this->field_0x8;
   if (param_2 <= sVar1) {
     *(short *)&this->field_0x8 = sVar1 - param_2;
@@ -61,7 +61,7 @@ void TCity::TCity()
 {
   int iVar1;
   undefined2 *puVar2;
-  
+
   iVar1 = 0;
   this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0xb0 = 0;
@@ -90,7 +90,7 @@ TCity * TCity::_scalar_deleting_destructor_(byte param_1)
 {
   TCity::~TCity(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -173,7 +173,7 @@ void TCity::DeserializeCityProductionState(int *param_1)
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00630ee4;
   iStack_c = *unaff_FS_OFFSET;
@@ -397,7 +397,7 @@ void TCity::DeserializeCityProductionState(int *param_1)
   do {
     (*pcVar2)(&uStack_ac,1);
     if ((char)puStack_b4 == '\x01') {
-      this_00 = (TShipBuildingTask *)AllocateWithFallbackHandler(0x14);
+      this_00 = (TShipBuildingTask *)__2_YAPAXI_Z(0x14);
       piVar5 = (int *)0x0;
       iStack_bc = 0;
       if (this_00 != (TShipBuildingTask *)0x0) {
@@ -408,7 +408,7 @@ void TCity::DeserializeCityProductionState(int *param_1)
       (**(code **)(*piVar5 + 0x18))(param_1);
     }
     else {
-      this_00 = (TShipBuildingTask *)AllocateWithFallbackHandler(0x18);
+      this_00 = (TShipBuildingTask *)__2_YAPAXI_Z(0x18);
       iStack_bc = 1;
       if (this_00 == (TShipBuildingTask *)0x0) {
         piVar5 = (int *)0x0;
@@ -480,7 +480,7 @@ void TCity::SerializeCityProductionState(int *param_1)
   undefined1 *puStack_28;
   undefined4 uStack_24;
   undefined1 *puStack_20;
-  
+
   puStack_20 = (undefined1 *)0x4b35e3;
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   puStack_20 = &this->field_0x4;
@@ -672,7 +672,7 @@ void TCity::Call1C()
 {
   void **ppvVar1;
   int iVar2;
-  
+
   if (*(int **)&this->field_0x1d8 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x1d8 + 0x1c))();
   }
@@ -726,7 +726,7 @@ void TCity::OrphanCallChain_C13_I161_004b3b40()
   int iVar5;
   int iVar6;
   void **ppvVar7;
-  
+
   *(short *)&this->field_0xc = *(short *)&this->field_0xc + 1;
   p_Var1 = this->vftable->Refresh80;
   (*p_Var1)();
@@ -836,7 +836,7 @@ void TCity::Call2C()
 
 {
   short sVar1;
-  
+
   if (*(short *)(*(int *)&this->field_0x1d8 + 0x1c) < 2) {
     this->field_0x7d = 0;
   }
@@ -882,7 +882,7 @@ void TCity::RefreshOrderStateSlot0C()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630f08;
   uStack_c = *unaff_FS_OFFSET;
@@ -892,7 +892,7 @@ void TCity::RefreshOrderStateSlot0C()
   local_10 = ppvVar4;
   do {
     if (*ppvVar4 != (void *)0x0) {
-      CString::CString(&local_14);
+      CString::__0CString__QAE_XZ(&local_14);
       local_4 = 0;
       sVar1 = *(short *)((int)*ppvVar4 + 4);
       uVar2 = *(undefined2 *)((int)*ppvVar4 + 0x48);
@@ -906,7 +906,7 @@ void TCity::RefreshOrderStateSlot0C()
         }
       }
       local_4 = 0xffffffff;
-      CString::~CString(&local_14);
+      CString::__1CString__QAE_XZ(&local_14);
     }
     ppvVar4 = ppvVar4 + 1;
     local_18 = local_18 + -1;
@@ -944,7 +944,7 @@ void TCity::AddNeedVectorSplitSlot34(short *param_1)
   word *pwVar2;
   short *psVar3;
   int iVar4;
-  
+
   pwVar2 = this->fieldB6;
   iVar4 = 7;
   psVar3 = param_1;
@@ -988,7 +988,7 @@ void TCity::AddNeedVectorSlot3C(short *param_1)
   short sVar1;
   word *pwVar2;
   int iVar3;
-  
+
   pwVar2 = this->fieldB6;
   iVar3 = 0x17;
   do {
@@ -1012,7 +1012,7 @@ void TCity::AddOwnerNeedTargetsSlot38()
 {
   word *pwVar1;
   int iVar2;
-  
+
   iVar2 = 0x17;
   pwVar1 = this->fieldB6;
   do {
@@ -1038,7 +1038,7 @@ short TCity::AllocateNeedFromOwnerSlot4C(short param_1, short param_2)
   short sVar3;
   int iVar4;
   undefined2 in_stack_00000006;
-  
+
   iVar4 = (int)param_1;
   iVar2 = *(int *)&this->field_0xac;
   iVar1 = iVar4 * 2 + 0x13c;
@@ -1067,7 +1067,7 @@ void TCity::Refresh80()
   char cVar1;
   int iVar2;
   word *pwVar3;
-  
+
   iVar2 = 0x17;
   pwVar3 = this->fieldB6;
   do {
@@ -1131,7 +1131,7 @@ void TCity::GetCitySummaryRecordSlot74()
   short sVar2;
   int iVar3;
   short sVar4;
-  
+
   iVar1 = (**(code **)(**(int **)&this->field_0x1d8 + 0x50))();
   sVar4 = 0;
   do {
@@ -1180,7 +1180,7 @@ void TCity::CreateAltownCityObject()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630f2a;
   uStack_c = *unaff_FS_OFFSET;
@@ -1189,7 +1189,7 @@ void TCity::CreateAltownCityObject()
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCity_cpp_00695f18,0x53a);
   }
-  this_00 = (TTown *)AllocateWithFallbackHandler(0x50);
+  this_00 = (TTown *)__2_YAPAXI_Z(0x50);
   local_4 = 0;
   if (this_00 == (TTown *)0x0) {
     piVar1 = (int *)0x0;
@@ -1238,7 +1238,7 @@ int TCity::GetCityBuildingDisplayCapacityBySlot(short param_1)
 {
   short sVar1;
   int iVar2;
-  
+
   if (param_1 == 0xf) {
     iVar2 = *(int *)&this->field_0xac;
     if (*(char *)(iVar2 + 0x8d1) < '3') {
@@ -1309,7 +1309,7 @@ char TCity::GetBuildingCapacityTierSlot58(short param_1)
   short sVar2;
   undefined3 extraout_var;
   undefined2 in_stack_00000006;
-  
+
   uVar1 = (*this->vftable->GetCityBuildingDisplayCapacityBySlot)(_param_1);
   sVar2 = (short)CONCAT31(extraout_var,uVar1);
   if (((param_1 == 1) || (param_1 == 3)) || (param_1 == 5)) {
@@ -1341,7 +1341,7 @@ int TCity::WrapperFor_GetActiveNationId_At004b4940(short param_1)
   short sVar2;
   int iVar3;
   ushort uVar4;
-  
+
   if (param_1 == 0xf) {
     iVar3 = **(int **)(*(int *)&this->field_0xac + 0x90);
     if (*(char *)(*(int *)&this->field_0xac + 0x8d1) < '3') {
@@ -1430,7 +1430,7 @@ TCity::OrphanLeaf_NoCall_Ins08_004b4c80
 
 {
   int iVar1;
-  
+
   iVar1 = (int)param_1;
   *(undefined1 *)((int)this->orderSlotsE4 + iVar1 + 0x138) = param_2;
   *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x148) = param_3;
@@ -1448,7 +1448,7 @@ TCity::OrphanLeaf_NoCall_Ins11_004b4cc0
 
 {
   int iVar1;
-  
+
   iVar1 = (int)param_1;
   *param_2 = *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x148);
   *param_3 = *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x168);
@@ -1544,7 +1544,7 @@ int TCity::GetCityBuildingProductionValueBySlot(short nBuildingSlotId)
 
 {
   int iVar1;
-  
+
   if (nBuildingSlotId != 0xf) {
     return CONCAT22(nBuildingSlotId >> 0xf,
                     *(undefined2 *)((int)this->orderSlotsE4 + nBuildingSlotId * 2 + 0xf8));

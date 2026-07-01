@@ -21,7 +21,7 @@ void TDialogView::OrphanTiny_ReturnZero_0048a730()
 
 {
   undefined4 uVar1;
-  
+
   uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
@@ -36,7 +36,7 @@ TDialogView * TDialogView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

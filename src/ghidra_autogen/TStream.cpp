@@ -14,12 +14,12 @@ void TStream::CreateTStreamInstance()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_0062ebb8;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  DestructCPtrListBaseState();
+  __1CPtrList__UAE_XZ();
   this->vftable = (TStreamVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -44,7 +44,7 @@ TStream * TStream::ConstructTStreamBaseState(byte param_1)
 {
   TStream::DestructTStreamAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -72,7 +72,7 @@ undefined4 TStream::OrphanCallChain_C2_I15_00488a80()
   undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  
+
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1[5].GetTStreamClassNamePointer)();
   uVar3 = (*pTVar1[6].GetTStreamClassNamePointer)();
@@ -144,7 +144,7 @@ undefined4 TStream::OrphanCallChain_C1_I09_00488b60()
 {
   undefined3 extraout_var;
   undefined1 *puVar1;
-  
+
   puVar1 = &stack0xffffffff;
   (*this->vftable[7].ConstructTStreamBaseState)(puVar1,1,this);
   return CONCAT31(extraout_var,(char)((uint)puVar1 >> 0x18));
@@ -159,7 +159,7 @@ undefined4 TStream::OrphanCallChain_C1_I09_00488b90()
 {
   undefined3 extraout_var;
   undefined1 *puVar1;
-  
+
   puVar1 = &stack0xffffffff;
   (*this->vftable[7].ConstructTStreamBaseState)(puVar1,1,this);
   return CONCAT31(extraout_var,(char)((uint)puVar1 >> 0x18));
@@ -173,7 +173,7 @@ void TStream::OrphanCallChain_C1_I08_00488bc0(undefined2 *param_1)
 
 {
   TStreamVtbl *pTVar1;
-  
+
   pTVar1 = this->vftable;
   *param_1 = 0;
   (*pTVar1[7].ConstructTStreamBaseState)((int)param_1 + 1,1);
@@ -188,7 +188,7 @@ undefined2 TStream::OrphanCallChain_C1_I09_00488bf0()
 
 {
   undefined1 *puVar1;
-  
+
   puVar1 = &stack0xfffffffe;
   (*this->vftable[7].ConstructTStreamBaseState)(puVar1,2,this);
   return (short)((uint)puVar1 >> 0x10);
@@ -203,7 +203,7 @@ undefined1 * TStream::ReadDwordFromStreamViaVtableSlot3C()
 {
   TStream **ppTVar1;
   TStream *local_4;
-  
+
   ppTVar1 = &local_4;
   local_4 = this;
   (*this->vftable[7].ConstructTStreamBaseState)(&local_4,4);
@@ -225,14 +225,14 @@ TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50
   int iVar3;
   CString *unaff_EBX;
   int iVar4;
-  
+
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1[9].ConstructTStreamBaseState)();
   iVar4 = (int)(short)CONCAT31(extraout_var,uVar2);
-  iVar3 = CString::EnsureCapacityPreserveLength(param_1,iVar4 + 1);
+  iVar3 = CString::_GetBuffer_CString__QAEPADH_Z(param_1,iVar4 + 1);
   (*pTVar1[7].ConstructTStreamBaseState)(iVar3,iVar4);
   *(undefined1 *)(iVar3 + iVar4) = 0;
-  CString::SetLengthAndTerminator(unaff_EBX,-1);
+  CString::_ReleaseBuffer_CString__QAEXH_Z(unaff_EBX,-1);
   return;
 }
 
@@ -246,7 +246,7 @@ void TStream::OrphanCallChain_C2_I19_00488ca0(int param_1)
   TStreamVtbl *pTVar1;
   undefined uVar2;
   undefined1 extraout_AH;
-  
+
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1[9].ConstructTStreamBaseState)();
   (*pTVar1[7].ConstructTStreamBaseState)(param_1,(int)CONCAT11(extraout_AH,uVar2));
@@ -263,7 +263,7 @@ void TStream::OrphanCallChain_C1_I13_00488ce0()
 {
   undefined1 local_8 [4];
   int iStack_4;
-  
+
   (*this->vftable[7].ConstructTStreamBaseState)();
   *(undefined1 **)iStack_4 = local_8;
   *(undefined4 *)(iStack_4 + 4) = 8;
@@ -323,7 +323,7 @@ undefined1 * TStream::OrphanCallChain_C1_I09_00488da0()
 {
   TStream **ppTVar1;
   TStream *local_4;
-  
+
   ppTVar1 = &local_4;
   local_4 = this;
   (*this->vftable[7].ConstructTStreamBaseState)(&local_4,4);
@@ -340,7 +340,7 @@ void TStream::OrphanCallChain_C2_I17_00488dd0()
   TStreamVtbl *pTVar1;
   byte bVar2;
   undefined4 uStack_4;
-  
+
   pTVar1 = this->vftable;
   uStack_4 = this;
   bVar2 = (*pTVar1[5].GetTStreamClassNamePointer)();
@@ -524,7 +524,7 @@ void TStream::OrphanCallChain_C2_I18_00488ff0()
   TStreamVtbl *pTVar1;
   byte bVar2;
   undefined4 uStack_4;
-  
+
   pTVar1 = this->vftable;
   uStack_4 = this;
   bVar2 = (*pTVar1[5].GetTStreamClassNamePointer)();
@@ -544,7 +544,7 @@ void TStream::OrphanCallChain_C2_I21_00489030(int *param_1)
 {
   TStreamVtbl *pTVar1;
   undefined4 uVar2;
-  
+
   pTVar1 = this->vftable;
   uVar2 = *(undefined4 *)(*param_1 + -8);
   (*pTVar1[0x11].GetTStreamClassNamePointer)(uVar2);

@@ -52,7 +52,7 @@ TPirateMinister * TPirateMinister::DeletingDestructTMinister(byte param_1)
 {
   DestructTPirateMinisterAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -71,7 +71,7 @@ void TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(int param_1)
   undefined4 uStack_c;
   int *piStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   piStack_8 = (int *)&LAB_0063283a;
   uStack_c = *unaff_FS_OFFSET;
@@ -80,7 +80,7 @@ void TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(int param_1)
   *(undefined2 *)(param_1 + 0x62) = 2;
   iVar2 = 3;
   do {
-    pTVar1 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
+    pTVar1 = (TMilitaryUnitOrderState *)__2_YAPAXI_Z(0x44);
     if (pTVar1 == (TMilitaryUnitOrderState *)0x0) {
       pTVar1 = (TMilitaryUnitOrderState *)0x0;
     }

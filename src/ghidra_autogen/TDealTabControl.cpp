@@ -12,7 +12,7 @@ TDealTabControl * TDealTabControl::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,12 +29,12 @@ TControl * TDealTabControl::CreateTDealTabControlInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006392ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x94);
+  this = (TControl *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::TControl(this);
@@ -69,7 +69,7 @@ void TDealTabControl::ConstructTDealTabControlBaseState(int param_1, char param_
 
 {
   undefined4 uVar1;
-  
+
   if (param_2 == '\0') {
     *(undefined2 *)&this->field_0x88 = 0xf;
   }
@@ -94,7 +94,7 @@ void TDealTabControl::OrphanCallChain_C11_I88_004874b0()
   short sVar1;
   int iVar2;
   RECT local_10;
-  
+
   if (*(int *)&this->field_0x8c != 0) {
     ResetQuickDrawStrokeState();
     SetQuickDrawStrokeColor(0xffffff);
@@ -160,7 +160,7 @@ void TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
   int unaff_retaddr;
   int in_stack_0000000c;
   short sStack_10;
-  
+
   pTVar1 = this->vftable;
   sVar4 = -1;
   p_Var2 = pTVar1->VTableSlot5B;

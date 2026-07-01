@@ -15,12 +15,12 @@ thunk_TPictureButton * TPlacard::CreateTPlacardInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -65,7 +65,7 @@ TPlacard * TPlacard::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -97,7 +97,7 @@ TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
 {
   RECT local_20;
   tagRECT tStack_10;
-  
+
   if (param_1 != *(short *)&this->field_0x90) {
     if (param_1 == 0) {
       (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(0,(int)param_2);
@@ -131,16 +131,16 @@ void TPlacard::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637b58;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
-  FormatStringWithVarArgsToSharedRef(&local_10,&g_szDecimalFormat);
+  _Format_CString__QAAXPBDZZ(&local_10,&g_szDecimalFormat);
   if (*(short *)&this->field_0x90 < 10) {
     iVar1 = this->field34 / 2 + -2;
   }
@@ -160,7 +160,7 @@ void TPlacard::OrphanTiny_ReturnZero_0048a730()
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawFillColor();
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }

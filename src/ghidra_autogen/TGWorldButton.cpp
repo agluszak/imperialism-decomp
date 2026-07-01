@@ -15,12 +15,12 @@ TControl * TGWorldButton::CreateTGWorldButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006364aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x8c);
+  this = (TControl *)__2_YAPAXI_Z(0x8c);
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::TControl(this);
@@ -65,7 +65,7 @@ TGWorldButton * TGWorldButton::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -78,7 +78,7 @@ void TGWorldButton::OrphanCallChain_C2_I25_00572200(char param_1, char param_2)
 
 {
   TGWorldButtonVtbl *pTVar1;
-  
+
   if (param_1 != this->field_0x64) {
     this->field_0x64 = param_1;
     if (param_1 == '\0') {
@@ -109,7 +109,7 @@ void TGWorldButton::OrphanTiny_ReturnZero_0048a730()
   RECT RStack_24;
   RECT RStack_14;
   int local_4;
-  
+
   if (*(int *)&this->field_0x88 != 0) {
     RStack_14.top = (LONG)*(short *)&this->field_0x84;
     local_4 = this->field38;

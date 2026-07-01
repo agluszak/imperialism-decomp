@@ -11,10 +11,10 @@ void TTown::CreateTTownInstance(CString param_1,undefined4 *param_2)
 
 {
   undefined4 uVar1;
-  
-  uVar1 = ParseSignedIntAndDiscardResult(param_1.m_pchData);
+
+  uVar1 = _atoi(param_1.m_pchData);
   *param_2 = uVar1;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   return;
 }
 
@@ -37,7 +37,7 @@ TTown * TTown::DestructTTownAndMaybeFree(byte param_1)
 {
   DestructTTownAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -53,7 +53,7 @@ void TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int *param_1)
   undefined1 uVar2;
   undefined1 *puVar3;
   int iVar4;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,0x10);
@@ -99,7 +99,7 @@ void TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(int *param_1)
   undefined1 *puStack_28;
   undefined4 uStack_24;
   undefined1 *puStack_20;
-  
+
   puStack_20 = (undefined1 *)0x5b6e73;
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
@@ -156,7 +156,7 @@ void TTown::RecomputeTownAdjacentResourceSupplyTotals()
   undefined4 *puVar11;
   int local_10;
   int local_c;
-  
+
   cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 5 + *(short *)&this->field_0x14 * 0x24);
   this->field_0x4e = 0;
   puVar11 = (undefined4 *)&this->field_0x1e;
@@ -255,7 +255,7 @@ void TTown::RecomputeTownAdjacentUniversityWeightedTotals()
   short *psVar9;
   undefined4 local_c;
   int local_8;
-  
+
   puVar8 = (undefined4 *)&this->field_0x1e;
   for (iVar4 = 0xb; iVar4 != 0; iVar4 = iVar4 + -1) {
     *puVar8 = 0;
@@ -324,7 +324,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
   ushort uVar4;
   TCity *this_00;
   short sVar5;
-  
+
   if (g_apNationStates[*(short *)&this->field_0x1c] == (TGreatPower *)0x0) {
     this_00 = (TCity *)0x0;
   }
@@ -403,7 +403,7 @@ void TTown::OrphanLeaf_NoCall_Ins29_005b77e0(char *param_1)
   uint uVar5;
   char *pcVar6;
   char *pcVar7;
-  
+
   uVar4 = 0xffffffff;
   pcVar6 = param_1;
   do {

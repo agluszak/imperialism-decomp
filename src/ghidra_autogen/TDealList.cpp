@@ -22,7 +22,7 @@ void __fastcall TDealList::InitializeNationInteractionStateManagerDefaults(int p
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0063907a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -41,13 +41,13 @@ void __fastcall TDealList::InitializeNationInteractionStateManagerDefaults(int p
     puVar5[-3] = uVar1;
     puVar5[-2] = uVar1;
     puVar5[6] = puVar5[-3];
-    this = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+    this = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
     local_4 = 0;
     if (this == (TIndexAndRankList *)0x0) {
       this = (TIndexAndRankList *)0x0;
     }
     else {
-      TIndexAndRankList::CPtrArray(this);
+      TIndexAndRankList::__0CPtrArray__QAE_XZ(this);
       this->vftable = (TIndexAndRankListVtbl *)&TDealListVtbl_0066da38;
     }
     *(undefined2 *)&this->field_0x14 = 0x10;
@@ -83,16 +83,16 @@ TIndexAndRankList * TDealList::CreateTDealListInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063909a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  this = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   pTVar1 = (TIndexAndRankList *)0x0;
   if (this != (TIndexAndRankList *)0x0) {
-    TIndexAndRankList::CPtrArray(this);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(this);
     this->vftable = (TIndexAndRankListVtbl *)&TDealListVtbl_0066da38;
     pTVar1 = this;
   }
@@ -117,7 +117,7 @@ CRuntimeClass * TDealList::GetTEventHandlerClassNamePointer()
 TDealList * TDealList::ConstructTDealListBaseState()
 
 {
-  TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
+  TIndexAndRankList::__0CPtrArray__QAE_XZ((TIndexAndRankList *)this);
   this->vftable = &TDealListVtbl_0066da38;
   return this;
 }
@@ -129,9 +129,9 @@ TDealList * TDealList::ConstructTDealListBaseState()
 TDealList * TDealList::_scalar_deleting_destructor_(byte param_1)
 
 {
-  CObArray::DestructCObArray();
+  CObArray::??1CUIntArray@@UAE@XZ();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -149,7 +149,7 @@ int TDealList::OrphanRetStub_0059add0(short *param_1, short *param_2)
   int iVar4;
   int iVar5;
   int iVar6;
-  
+
   sVar1 = param_1[6];
   if ((sVar1 < 0xd) || (0x10 < sVar1)) {
     bVar3 = false;

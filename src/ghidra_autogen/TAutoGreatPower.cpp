@@ -45,7 +45,7 @@ TAutoGreatPower * TAutoGreatPower::_scalar_deleting_destructor_(byte param_1)
 {
   TAutoGreatPower::~TAutoGreatPower(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -61,14 +61,14 @@ void TAutoGreatPower::~TAutoGreatPower()
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_006325b3;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  CString::~CString((CString *)&this->field_0x8);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x8);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString((CString *)&this->field_0x4);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x4);
   this->vftable = (TAutoGreatPowerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
   ;
   *unaff_FS_OFFSET = local_c;
@@ -85,7 +85,7 @@ void TAutoGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf()
   int iVar1;
   int iVar2;
   int *piVar3;
-  
+
   if (*(int **)&this->field_0xb60 != (int *)0x0) {
     for (iVar2 = (**(code **)(**(int **)&this->field_0xb60 + 0x48))(); 0 < iVar2; iVar2 = iVar2 + -1
         ) {
@@ -125,7 +125,7 @@ void TAutoGreatPower::VTableIndex54_Provisional()
 
 {
   TAutoGreatPowerVtbl *pTVar1;
-  
+
   if (this->city != (TCity *)0x0) {
     pTVar1 = this->vftable;
     (*pTVar1->RebuildNationResourceYieldsAndRollField134Into136)();
@@ -155,7 +155,7 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(int *param_1, short param_
   undefined2 extraout_var_05;
   undefined4 uVar7;
   undefined3 extraout_var;
-  
+
   if (g_apNationStates[param_2]->field_0xa0 == '\0') {
     if ((short)param_1 != 5) {
       p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins02_004d7f20;
@@ -183,7 +183,7 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(int *param_1, short param_
     dVar3 = (double)(int)*(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
                                    (*(short *)&this->field_0xc * 0x17 + (int)param_2) * 2) *
             g_DAT_00653fc0_Value_00653FC0;
-    iVar5 = GenerateThreadLocalRandom15();
+    iVar5 = _rand();
     if ((double)iVar5 <= dVar3 * g_DAT_00653fc8_Value_00653FC8) {
       return;
     }
@@ -220,7 +220,7 @@ void TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix()
   short sVar5;
   int iVar6;
   undefined2 *puVar7;
-  
+
   sVar5 = 0;
   iVar6 = 0;
   iVar4 = 0x5c;
@@ -307,7 +307,7 @@ void TAutoGreatPower::ClearDiplomacyState1c6Block()
   int iVar5;
   int unaff_EBP;
   int iVar6;
-  
+
   if (this->city != (TCity *)0x0) {
     (**(code **)(**(int **)&this->field_0x94 + 0x9c))();
     psVar4 = (short *)&this->field_0x964;
@@ -343,7 +343,7 @@ void TAutoGreatPower::ReplayQueuedDiplomacyProposalRowsAndProcessQueue()
 
 {
   int iVar1;
-  
+
   if (this->city != (TCity *)0x0) {
     iVar1 = 1;
     if (0 < *(int *)(*(int *)&this->field_0x84c + 8)) {
@@ -380,7 +380,7 @@ undefined4 TAutoGreatPower::CheckTransitionSlot27C(float param_1, undefined4 par
   undefined4 uStack_c;
   char local_8 [4];
   float local_4;
-  
+
   uStack_c = (float)CONCAT13(1,(undefined3)uStack_c);
   local_8[0] = '\0';
   local_8[1] = 0;
@@ -475,7 +475,7 @@ TAutoGreatPower::PropagateWarTransitionSlot280
   float10 extraout_ST0_00;
   float10 fVar6;
   float10 extraout_ST0_01;
-  
+
   cVar4 = (char)((uint)unaff_EBP >> 0x18);
   uVar5 = (undefined2)((uint)in_EDX >> 0x10);
   if (param_3 == '\0') {
@@ -553,7 +553,7 @@ uint TAutoGreatPower::ReturnZeroSlot9D()
   float fVar14;
   short sStack_8;
   uint uVar9;
-  
+
   cVar7 = (*g_pDiplomacyTurnStateManager->vftable[0xc].GetTDiplomacyMgrClassNamePointer)();
   uVar9 = CONCAT31(extraout_var,cVar7);
   if (cVar7 == '\0') {
@@ -642,7 +642,7 @@ TAutoGreatPower::DispatchToFirstMatchingListNodeAndRemove
   int *piVar2;
   int iVar3;
   int *piVar4;
-  
+
   piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
   if (iVar3 != 0) {
@@ -654,9 +654,10 @@ TAutoGreatPower::DispatchToFirstMatchingListNodeAndRemove
       }
     }
     this_00 = (TAutoGreatPower *)(*(int *)&this->field_0xb60 + 4);
-    piVar4 = (int *)Find(this_00,(int)piVar2,(undefined4 *)0x0);
+    piVar4 = (int *)_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                              (this_00,(int)piVar2,(undefined4 *)0x0);
     if (piVar4 != (int *)0x0) {
-      RemoveAt_60217d(this_00,piVar4);
+      _RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar4);
     }
     (**(code **)(*piVar2 + 0x1c))();
   }
@@ -677,7 +678,7 @@ undefined1 TAutoGreatPower::VTableSlot20C_Provisional()
   undefined2 extraout_var;
   TGreatPower **ppTVar5;
   TMinor **ppTVar6;
-  
+
   uVar1 = 0;
   iVar3 = 0;
   ppTVar5 = g_apNationStates;
@@ -733,7 +734,7 @@ void TAutoGreatPower::VTableSlot84_Provisional(int param_1)
   int iVar6;
   TCountry **ppTVar7;
   int iVar5;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->VTableSlot20C_Provisional)();
   iVar5 = CONCAT31(extraout_var,cVar2);
@@ -781,7 +782,7 @@ void TAutoGreatPower::NotifyAllianceSlot214(int param_1)
   undefined uVar1;
   short sVar2;
   int3 extraout_var;
-  
+
   (&this->field_0x8a0)[param_1] = 0;
   if (g_apTerrainTypeDescriptorTable[param_1] != (TCountry *)0x0) {
     uVar1 = (*g_apTerrainTypeDescriptorTable[param_1]->ownedRegionList->vftable[5].
@@ -807,7 +808,7 @@ void TAutoGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup(int param_1)
   int iVar3;
   int *piVar4;
   TAutoGreatPower *this_00;
-  
+
   piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
   do {
@@ -820,9 +821,10 @@ LAB_004ea23f:
     cVar1 = (**(code **)(*piVar2 + 0x4c))(3,param_1,0);
     if (cVar1 != '\0') {
       this_00 = (TAutoGreatPower *)(*(int *)&this->field_0xb60 + 4);
-      piVar4 = (int *)Find(this_00,(int)piVar2,(undefined4 *)0x0);
+      piVar4 = (int *)_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                                (this_00,(int)piVar2,(undefined4 *)0x0);
       if (piVar4 != (int *)0x0) {
-        RemoveAt_60217d(this_00,piVar4);
+        _RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar4);
       }
       (**(code **)(*piVar2 + 0x1c))();
       goto LAB_004ea23f;
@@ -850,7 +852,7 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int param_1
   int iVar6;
   undefined4 uVar7;
   int iVar8;
-  
+
   TGreatPower::SelectCandidateTilesWithLowGroundUnitCount((TGreatPower *)this);
   iVar8 = 1;
   pTVar1 = g_apTerrainTypeDescriptorTable[param_1]->ownedRegionList;
@@ -869,9 +871,9 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int param_1
   }
   iVar8 = FindFirstPortZoneContextByNation(param_1);
   if (*(int *)(iVar8 + 0x2c) == 0) {
-    iVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar8 + 0x28),8);
+    iVar6 = _realloc(*(undefined4 *)(iVar8 + 0x28),8);
     if (iVar6 == 0) {
-      uVar7 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar8 + 0x28),4);
+      uVar7 = _realloc(*(undefined4 *)(iVar8 + 0x28),4);
       *(undefined4 *)(iVar8 + 0x28) = uVar7;
       *(undefined4 *)(iVar8 + 0x2c) = 1;
     }
@@ -943,7 +945,7 @@ void TAutoGreatPower::RecomputeNationTerrainCompatibilityAndDiplomacyMetrics()
   float local_1c;
   float fStack_18;
   float fStack_14;
-  
+
   iVar9 = 0;
   iVar13 = 0;
   local_2c = 0;
@@ -1085,7 +1087,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment()
   int iVar3;
   int *piVar4;
   undefined2 extraout_var;
-  
+
   if (this->city != (TCity *)0x0) {
     iVar2 = InitializeLinkedListCursorFromOwnerHead();
     iVar3 = LinkedListCursorHasCurrent();
@@ -1126,7 +1128,7 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner()
   int iVar2;
   int *piVar3;
   int *piVar4;
-  
+
   do {
     piVar1 = (int *)InitializeLinkedListCursorFromOwnerHead();
     while( true ) {
@@ -1139,9 +1141,10 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner()
       piVar1 = (int *)AdvanceLinkedListCursor();
     }
     this_00 = (TAutoGreatPower *)(*(int *)&this->field_0xb60 + 4);
-    piVar4 = (int *)Find(this_00,(int)piVar1,(undefined4 *)0x0);
+    piVar4 = (int *)_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                              (this_00,(int)piVar1,(undefined4 *)0x0);
     if (piVar4 != (int *)0x0) {
-      RemoveAt_60217d(this_00,piVar4);
+      _RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar4);
     }
     (**(code **)(*piVar1 + 0x1c))();
     if (piVar3 != (int *)0x0) {
@@ -1169,7 +1172,7 @@ TAutoGreatPower * TAutoGreatPower::DeserializeRecruitScenarioAndInstantiateOrder
 {
   TAdmiral::DestructTAdmiral((TAdmiral *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -1209,7 +1212,7 @@ void TAutoGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0(int *param_1)
   int iVar1;
   code *pcVar2;
   TShip *pTVar3;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
   pcVar2 = *(code **)(iVar1 + 0x78);
@@ -1240,7 +1243,7 @@ void TAutoGreatPower::SelectCandidateTilesWithLowGroundUnitCount(int *param_1)
   int iVar4;
   short sVar5;
   undefined4 uVar6;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
   pcVar2 = *(code **)(iVar1 + 0x3c);
@@ -1297,7 +1300,7 @@ void TAutoGreatPower::GetTCountryClassNamePointer(int *pMapOrderEntry)
   int iVar1;
   int iVar2;
   int *piVar3;
-  
+
   iVar2 = *(int *)&this->field_0x10;
   while (iVar2 != 0) {
     *(undefined4 *)(**(int **)&this->field_0x10 + 0xc) = 0;
@@ -1309,7 +1312,7 @@ void TAutoGreatPower::GetTCountryClassNamePointer(int *pMapOrderEntry)
     if (*(int *)(iVar1 + 8) != 0) {
       *(undefined4 *)(*(int *)(iVar1 + 8) + 4) = *(undefined4 *)(iVar1 + 4);
     }
-    FreeHeapBufferIfNotNull(iVar1);
+    __3_YAXPAX_Z(iVar1);
     *(int *)&this->field_0x10 = iVar2;
   }
   if ((g_pNavyOrderManager != (TNavyMgr *)0x0) &&
@@ -1328,8 +1331,8 @@ void TAutoGreatPower::GetTCountryClassNamePointer(int *pMapOrderEntry)
                        queued entry. */
   HandleNavyOrderNodeRemovalAndSelectionRefresh(this);
   if ((g_apNationStates[*(short *)&this->field_0x1c] != (TGreatPower *)0x0) &&
-     (iVar2 = CObject::IsKindOf((CObject *)g_apNationStates[*(short *)&this->field_0x1c]),
-     iVar2 != 0)) {
+     (iVar2 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z
+                        ((CObject *)g_apNationStates[*(short *)&this->field_0x1c]), iVar2 != 0)) {
     piVar3 = (int *)InitializeLinkedListCursorFromOwnerHead();
     iVar2 = LinkedListCursorHasCurrent();
     while (iVar2 != 0) {
@@ -1363,7 +1366,7 @@ TAutoGreatPower * TAutoGreatPower::OrphanLeaf_NoCall_Ins07_004d8920(byte param_1
 {
   ResetNavyManagerVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -1376,7 +1379,7 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList()
 
 {
   int *piVar1;
-  
+
   while (g_pNavyPrimaryOrderListHead != (TShip *)0x0) {
     (*g_pNavyPrimaryOrderListHead->vftable[3].DestructTShipAndFreeIfOwned)();
   }
@@ -1428,7 +1431,7 @@ TAutoGreatPower * TAutoGreatPower::OrphanLeaf_NoCall_Ins07_004d8920(byte param_1
 {
   ResetTNewsMgrToSentinelVtable();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -1452,7 +1455,7 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList()
 {
   int *piVar1;
   int iVar2;
-  
+
   piVar1 = (int *)&this[1].field_0x364;
   iVar2 = 7;
   do {
@@ -1460,7 +1463,7 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList()
       (**(code **)(*(int *)*piVar1 + 0x24))();
     }
     if (piVar1[8] != 0) {
-      FreeHeapBufferIfNotNull(piVar1[8]);
+      __3_YAXPAX_Z(piVar1[8]);
     }
     piVar1 = piVar1 + 1;
     iVar2 = iVar2 + -1;
@@ -1482,7 +1485,7 @@ void TAutoGreatPower::IsDiplomacyTargetClassCode200Match()
 
 {
   TStream *in_stack_00000004;
-  
+
   TObject::ReadFrom((TObject *)this,in_stack_00000004);
   return;
 }
@@ -1495,7 +1498,7 @@ void TAutoGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState()
 
 {
   TStream *in_stack_00000004;
-  
+
   TObject::WriteTo((TObject *)this,in_stack_00000004);
   return;
 }
@@ -1583,7 +1586,7 @@ int * TAutoGreatPower::ApplyJoinEmpireMode1TargetTransition(int param_1)
   int *piVar4;
   int iVar5;
   undefined4 uVar6;
-  
+
   uVar3 = 0;
   uVar2 = *(uint *)&this->field_0xc;
   if (uVar2 != 0) {
@@ -1606,9 +1609,9 @@ LAB_0055e9ec:
       if (0x7fffffff < uVar3) {
         uVar3 = 0x7fffffff;
       }
-      iVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 8);
+      iVar5 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 8);
       if (iVar5 == 0) {
-        uVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 4);
+        uVar6 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 4);
         *(undefined4 *)&this->field_0x4 = uVar6;
         *(int *)&this->field_0x8 = iVar1;
       }
@@ -1673,7 +1676,7 @@ void TAutoGreatPower::HasQueuedCivWorkOrderType7(int *param_1)
   undefined1 *puStack_34;
   undefined4 uStack_30;
   undefined1 *puStack_2c;
-  
+
   puStack_2c = (undefined1 *)0x55ed33;
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   iVar8 = *param_1;
@@ -1708,14 +1711,14 @@ void TAutoGreatPower::HasQueuedCivWorkOrderType7(int *param_1)
     *(undefined4 *)&this->field_0x28 = 0;
     *(undefined4 *)&this->field_0x2c = 0;
     *(undefined4 *)&this->field_0x30 = 0;
-    FreeHeapBlockWithAllocatorTracking(iVar8);
+    _free(iVar8);
   }
   iVar8 = *(int *)&this->field_0x38;
   if (iVar8 != 0) {
     *(undefined4 *)&this->field_0x38 = 0;
     *(undefined4 *)&this->field_0x3c = 0;
     *(undefined4 *)&this->field_0x40 = 0;
-    FreeHeapBlockWithAllocatorTracking(iVar8);
+    _free(iVar8);
   }
   if (DAT_00695278 < 0xd) {
     (*pcVar6)((int)&uStack_3c + 2,2);
@@ -1731,11 +1734,9 @@ void TAutoGreatPower::HasQueuedCivWorkOrderType7(int *param_1)
           if (0x7fffffff < uStack_38) {
             uStack_38 = 0x7fffffff;
           }
-          iVar1 = ReallocateHeapBlockWithAllocatorTracking
-                            (*(undefined4 *)&this->field_0x28,iVar8 * 8);
+          iVar1 = _realloc(*(undefined4 *)&this->field_0x28,iVar8 * 8);
           if (iVar1 == 0) {
-            uVar2 = ReallocateHeapBlockWithAllocatorTracking
-                              (*(undefined4 *)&this->field_0x28,iVar8 * 4);
+            uVar2 = _realloc(*(undefined4 *)&this->field_0x28,iVar8 * 4);
             *(undefined4 *)&this->field_0x28 = uVar2;
             *(int *)&this->field_0x2c = iVar8;
           }
@@ -1765,11 +1766,9 @@ void TAutoGreatPower::HasQueuedCivWorkOrderType7(int *param_1)
           if (0x7fffffff < uVar4) {
             uVar4 = 0x7fffffff;
           }
-          iVar3 = ReallocateHeapBlockWithAllocatorTracking
-                            (*(undefined4 *)&this->field_0x38,iVar8 * 8);
+          iVar3 = _realloc(*(undefined4 *)&this->field_0x38,iVar8 * 8);
           if (iVar3 == 0) {
-            uVar2 = ReallocateHeapBlockWithAllocatorTracking
-                              (*(undefined4 *)&this->field_0x38,iVar8 * 4);
+            uVar2 = _realloc(*(undefined4 *)&this->field_0x38,iVar8 * 4);
             *(undefined4 *)&this->field_0x38 = uVar2;
             *(int *)&this->field_0x3c = iVar8;
           }
@@ -1799,7 +1798,7 @@ void TAutoGreatPower::ExecuteNationPendingActionStateMachine(int *param_1)
 {
   int iVar1;
   code *pcVar2;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0xac))(&this->field_0x8);
@@ -1819,7 +1818,7 @@ void TAutoGreatPower::ExecuteNationPendingActionStateMachine(int *param_1)
 void TAutoGreatPower::GetTEventHandlerClassNamePointer(CString *param_1)
 
 {
-  CString::AssignFromPtr(param_1,(CString *)&this->field_0x8);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,(CString *)&this->field_0x8);
   return;
 }
 
@@ -1830,7 +1829,7 @@ void TAutoGreatPower::GetTEventHandlerClassNamePointer(CString *param_1)
 void TAutoGreatPower::HandleCityDialogHintClusterUpdate(CString *param_1)
 
 {
-  CString::AssignFromPtr(param_1,(CString *)&this->field_0x8);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,(CString *)&this->field_0x8);
   return;
 }
 
@@ -1851,7 +1850,7 @@ void TAutoGreatPower::OrphanRetStub_0059add0(int param_1, CString param_2)
   undefined4 uStack_c;
   CString CStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   CStack_8.m_pchData = &LAB_00635740;
   uStack_c = *unaff_FS_OFFSET;
@@ -1892,18 +1891,18 @@ void TAutoGreatPower::OrphanRetStub_0059add0(int param_1, CString param_2)
           uStack_10 = 0x17;
           DAT_006984bc = aiStack_1c[DAT_006a5aec >> 0xc & 3];
         }
-        CString::CString(&param_2);
+        CString::__0CString__QAE_XZ(&param_2);
         uStack_4 = 1;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)
                   (0x275b,CONCAT22((short)((uint)&param_2 >> 0x10),(undefined2)DAT_006984b8),
                    &param_2);
-        CString::AssignFromPtr((CString *)&this->field_0x8,&param_2);
+        CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x8,&param_2);
         DAT_006984b8 = DAT_006984b8 + DAT_006984bc;
         if (0x24 < (int)DAT_006984b8) {
           DAT_006984b8 = DAT_006984b8 - 0x25;
         }
         uStack_4 = 0xffffffff;
-        CString::~CString(&param_2);
+        CString::__1CString__QAE_XZ(&param_2);
       }
     }
     else {
@@ -1911,25 +1910,25 @@ void TAutoGreatPower::OrphanRetStub_0059add0(int param_1, CString param_2)
     }
   }
   else {
-    CString::CString(&param_2,param_2.m_pchData);
+    CString::__0CString__QAE_PBD_Z(&param_2,param_2.m_pchData);
     uStack_4 = 0;
-    CString::AssignFromPtr((CString *)&this->field_0x8,&param_2);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x8,&param_2);
     uStack_4 = 0xffffffff;
-    CString::~CString(&param_2);
+    CString::__1CString__QAE_XZ(&param_2);
   }
-  CString::CString(&CStack_20);
+  CString::__0CString__QAE_XZ(&CStack_20);
   uStack_4 = 2;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)
             (0x275a,CONCAT22((short)((uint)&CStack_20 >> 0x10),*(undefined2 *)&this->field_0x4),
              &CStack_20);
-  CString::CString(&CStack_8);
+  CString::__0CString__QAE_XZ(&CStack_8);
   uStack_10._0_1_ = 3;
   scanBracketExpressions(g_pLocalizationTable,&CStack_8,unaff_ESI);
-  CString::AssignFromPtr((CString *)&this->field_0x8,&CStack_8);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x8,&CStack_8);
   uStack_10 = CONCAT31(uStack_10._1_3_,2);
-  CString::~CString(&CStack_8);
+  CString::__1CString__QAE_XZ(&CStack_8);
   uStack_10 = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffffd4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
   *unaff_FS_OFFSET = aiStack_1c[1];
   return;
 }
@@ -1947,7 +1946,7 @@ void TAutoGreatPower::OrphanLeaf_NoCall_Ins07_004d8920()
   dword *pdVar4;
   short sVar5;
   short sVar6;
-  
+
   sVar5 = 1;
   sVar2 = *(short *)&this->field_0xc + 0xd8;
   sVar6 = 1;
@@ -1984,7 +1983,7 @@ void TAutoGreatPower::ApplyJoinEmpireModeForTargetNation()
   dword *pdVar4;
   short sVar5;
   short sVar6;
-  
+
   sVar2 = *(short *)&this->field_0xc;
   sVar5 = 1;
   sVar6 = 1;
@@ -2030,7 +2029,7 @@ TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers
   int local_c;
   int local_8;
   int local_4;
-  
+
   uVar7 = 0;
   pTVar6 = g_pGlobalMapState;
   do {
@@ -2150,7 +2149,7 @@ void TAutoGreatPower::ApplyJoinEmpireMode1TargetTransition(char param_1)
   undefined2 extraout_var_04;
   undefined4 unaff_EDI;
   int iVar6;
-  
+
   piVar1 = *(int **)&g_pUiRuntimeContext->field_0xf0;
   if (((bool)param_1 !=
        -1 < *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 +
@@ -2189,43 +2188,43 @@ TAutoGreatPower * TAutoGreatPower::SetNationPendingActionStateAndPayload(byte pa
 
 {
   if ((param_1 & 2) != 0) {
-    TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
+    TDiplomacyMapView::___M_YGXPAXIHP6EX0_Z_Z
               (this,0x48,*(undefined4 *)&this[-1].field_0xb6c,
                TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList);
-    FreeHeapBufferIfNotNull(&this[-1].field_0xb6c);
+    __3_YAXPAX_Z(&this[-1].field_0xb6c);
     return this;
   }
   TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList((TZone *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00602004
-// GHIDRA_NAME TAutoGreatPower::FreeNode
-// GHIDRA_PROTO undefined __thiscall FreeNode(undefined4 * param_1)
+// GHIDRA_NAME TAutoGreatPower::?FreeNode@CPtrList@@IAEXPAUCNode@1@@Z
+// GHIDRA_PROTO undefined __thiscall ?FreeNode@CPtrList@@IAEXPAUCNode@1@@Z(undefined4 * param_1)
 
-void TAutoGreatPower::FreeNode(undefined4 *param_1)
+void TAutoGreatPower::_FreeNode_CPtrList__IAEXPAUCNode_1__Z(undefined4 *param_1)
 
 {
   undefined1 *puVar1;
-  
+
   *param_1 = *(undefined4 *)&this->field_0x10;
   puVar1 = &this->field_0xc;
   *(int *)puVar1 = *(int *)puVar1 + -1;
   *(undefined4 **)&this->field_0x10 = param_1;
   if (*(int *)puVar1 == 0) {
-    CPtrList::RemoveAll((CPtrList *)this);
+    CPtrList::_RemoveAll_CPtrList__QAEXXZ((CPtrList *)this);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060217D
-// GHIDRA_NAME TAutoGreatPower::RemoveAt_60217d
-// GHIDRA_PROTO undefined __thiscall RemoveAt_60217d(int * param_1)
+// GHIDRA_NAME TAutoGreatPower::?RemoveAt@CPtrList@@QAEXPAU__POSITION@@@Z
+// GHIDRA_PROTO undefined __thiscall ?RemoveAt@CPtrList@@QAEXPAU__POSITION@@@Z(int * param_1)
 
-void TAutoGreatPower::RemoveAt_60217d(int *param_1)
+void TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(int *param_1)
 
 {
   if (param_1 == *(int **)&this->field_0x4) {
@@ -2240,15 +2239,17 @@ void TAutoGreatPower::RemoveAt_60217d(int *param_1)
   else {
     *(int *)(*param_1 + 4) = param_1[1];
   }
-  FreeNode(this,param_1);
+  _FreeNode_CPtrList__IAEXPAUCNode_1__Z(this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006021D6
-// GHIDRA_NAME TAutoGreatPower::Find
-// GHIDRA_PROTO undefined __thiscall Find(int param_1, undefined4 * param_2)
+// GHIDRA_NAME TAutoGreatPower::?Find@CPtrList@@QBEPAU__POSITION@@PAXPAU2@@Z
+// GHIDRA_PROTO undefined __thiscall ?Find@CPtrList@@QBEPAU__POSITION@@PAXPAU2@@Z(int param_1, undefined4 * param_2)
 
-undefined4 * TAutoGreatPower::Find(int param_1, undefined4 *param_2)
+undefined4 * __thiscall
+TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+          (TAutoGreatPower *this,int param_1,undefined4 *param_2)
 
 {
   if (param_2 != (undefined4 *)0x0) goto LAB_006021e3;

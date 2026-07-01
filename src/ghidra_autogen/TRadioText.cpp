@@ -16,7 +16,7 @@
 
 /* Derived constructor for selectable text option entries used in turn-event and dialog option
    lists.
-   
+
    Algorithm:
    1. Calls ConstructSelectableTextOptionEntryBase.
    2. Installs derived option-entry vtable PTR_LAB_00642b18. */
@@ -38,7 +38,7 @@ TRadioText * TRadioText::_scalar_deleting_destructor_(byte param_1)
 {
   TStaticText::~TStaticText((TStaticText *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -80,7 +80,7 @@ void TRadioText::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   int iStack_8;
   int iStack_4;
-  
+
   if ((this->field_0x98 != '\0') || (this->field_0x64 != '\0')) {
     pTVar1 = this->ownerContext;
     (**(code **)&pTVar1->vftable->field_0xc)();
@@ -113,7 +113,7 @@ void TRadioText::OrphanCallChain_C3_I13_00579580()
   TRadioTextVtbl *pTVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1->VTableSlot39)();
   uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();

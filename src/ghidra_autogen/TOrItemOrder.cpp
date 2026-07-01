@@ -22,7 +22,7 @@ TOrItemOrder * TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
 {
   TOrItemOrder::DestructTOrItemOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -50,7 +50,7 @@ TOrItemOrder::InitializeCityProductionState_Impl_At004b5870
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = param_2;
@@ -90,13 +90,13 @@ TOrItemOrder::InitializeCityProductionState_Impl_At004b5870
 // GHIDRA_COMMENT_END
 
 /* Computes current recruitment cap from staged pools for a single order entry.
-   
+
    Inputs:
    - this+0x04 pending amount
    - this+0x10 staged resource deltas
    - city+0xB6 resource stocks
    - city+0x1FC unit-cap counters
-   
+
    Behavior:
    - Computes three cap candidates (workforce, staged+stock resources, unit counter).
    - Stores limiting factor code in this+0x40 (0=resource,1=workforce,2=unit counter).
@@ -112,7 +112,7 @@ int TOrItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   int nCapByStagedAndStock;
   uint dwScratchHigh;
   int nCapByWorkforce;
-  
+
   iVar2 = *(int *)&this->field_0x8;
   nCapByWorkforce =
        (int)*(short *)(*(int *)&this->field_0xc + 0x1c) / 2 +
@@ -154,7 +154,7 @@ int TOrItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 // GHIDRA_COMMENT_END
 
 /* Applies a university/city recruitment slider change to temporary staging pools.
-   
+
    Algorithm:
    1. Validate requested value against entry cap (vfunc +0x30).
    2. Compute delta from current pending amount (+0x04).
@@ -163,7 +163,7 @@ int TOrItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
    4. Update workforce-derived counters (+0x1C and +0x3E) and slot availability (+0x1FC indexed by
    +0x52).
    5. Invalidate UI via g_pUiRuntimeContext callback.
-   
+
    Returns: true if delta applied, false if rejected. */
 
 bool TOrItemOrder::OrphanCallChain_C1_I16_004b5100(short nNewOrderAmount)
@@ -181,7 +181,7 @@ bool TOrItemOrder::OrphanCallChain_C1_I16_004b5100(short nNewOrderAmount)
   short sVar9;
   short sVar10;
   short sVar11;
-  
+
   sVar10 = nNewOrderAmount - *(short *)&this->field_0x4;
   uVar8 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar8) < nNewOrderAmount) || (nNewOrderAmount < 0)) {

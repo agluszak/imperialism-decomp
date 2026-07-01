@@ -22,7 +22,7 @@ THostGreatPower * THostGreatPower::_scalar_deleting_destructor_(byte param_1)
 {
   THostGreatPower::DestructTHostGreatPower(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -38,14 +38,14 @@ void THostGreatPower::DestructTHostGreatPower()
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   puStack_8 = &LAB_00634593;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  CString::~CString((CString *)&this->field_0x8);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x8);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString((CString *)&this->field_0x4);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x4);
   this->vftable = (THostGreatPowerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
   ;
   *unaff_FS_OFFSET = local_c;
@@ -101,7 +101,7 @@ THostGreatPower::ReturnFalseNationStateActionStub
 {
   char cVar1;
   undefined2 extraout_var;
-  
+
   cVar1 = TGreatPower::ReturnFalseNationStateActionStub((TGreatPower *)this,param_1,param_2);
   if (cVar1 != '\0') {
     DispatchTurnEvent1AWithNationActionPayload
@@ -122,7 +122,7 @@ void THostGreatPower::AddRegionIdToNationOwnedRegionList()
   char cVar1;
   TGreatPower **ppTVar2;
   int iVar3;
-  
+
   TGreatPower::AddRegionIdToNationOwnedRegionList((TGreatPower *)this);
   iVar3 = 0;
   ppTVar2 = g_apNationStates;
@@ -152,7 +152,7 @@ void THostGreatPower::ApplyJoinEmpireMode1TargetTransition()
   short sVar2;
   TGreatPower **ppTVar3;
   int iVar4;
-  
+
   if (this->field_0x964 == '\0') {
     DispatchTaggedGameStateEvent1F20
               (0x6c6f7374,

@@ -12,7 +12,7 @@ TNavyPlayer * TNavyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(byte pa
 {
   TNavyPlayer::CreateTNavyPlayerInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -57,7 +57,7 @@ TNavyPlayer * TNavyPlayer::DestructTNavyPlayerAndMaybeFree(byte param_1)
 {
   DestructTNavyPlayerAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -71,7 +71,7 @@ void TNavyPlayer::OrphanRetStub_0059add0()
 {
   int *piVar1;
   int iVar2;
-  
+
   piVar1 = (int *)InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
   while (iVar2 != 0) {
@@ -95,11 +95,12 @@ void TNavyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60()
   TAutoGreatPower *this_00;
   int *piVar1;
   int in_stack_00000004;
-  
+
   this_00 = (TAutoGreatPower *)(*(int *)&this->field_0x4 + 4);
-  piVar1 = (int *)TAutoGreatPower::Find(this_00,in_stack_00000004,(undefined4 *)0x0);
+  piVar1 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
+                            (this_00,in_stack_00000004,(undefined4 *)0x0);
   if (piVar1 != (int *)0x0) {
-    TAutoGreatPower::RemoveAt_60217d(this_00,piVar1);
+    TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z(this_00,piVar1);
   }
   return;
 }
@@ -113,8 +114,9 @@ void TNavyPlayer::AddOrderNodeToHeadAndReassignNationCounters(int *param_1)
 {
   int iVar1;
   undefined2 extraout_var;
-  
-  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
+
+  CPtrList::_AddHead_CPtrList__QAEPAU__POSITION__PAX_Z
+            ((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0x3c))();
   (**(code **)(iVar1 + 0x40))();

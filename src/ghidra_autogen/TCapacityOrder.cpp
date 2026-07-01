@@ -22,7 +22,7 @@ TCapacityOrder * TCapacityOrder::ConstructTItemOrderBaseState(byte param_1)
 {
   TCapacityOrder::DestructTCapacityOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -50,7 +50,7 @@ TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = param_2;
@@ -95,7 +95,7 @@ void TCapacityOrder::OrphanRetStub_004b5160()
   short sVar2;
   int iVar3;
   int iVar4;
-  
+
   if (*(short *)&this->field_0x4 == 0) {
     return;
   }

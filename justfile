@@ -54,7 +54,7 @@ push-names *args: _require-ghidra-install
   uv run python -m tools.ghidra.push_names_to_ghidra {{args}}
 
 sync-ghidra: _require-ghidra-install
-  just push-names --apply
+  just push-names --apply --include-library-symbols --library-start 0x005e539c --library-end 0x00626c7d
   uv run python -m tools.ghidra.sync_exports \
     --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
     --ghidra-project-dir "{{GHIDRA_PROJECT_DIR}}" \
@@ -184,6 +184,12 @@ apply-mfc-datatypes *args: _require-ghidra-install
 
 apply-mfc-rtti *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_mfc_rtti {{args}}
+
+apply-fidb *args: _require-ghidra-install
+  uv run python -m tools.ghidra.apply_fidb {{args}}
+
+apply-msvc500-library-region *args:
+  uv run python -m tools.mfc.apply_msvc500_library_region {{args}}
 
 ghidra-datatype-audit *args: _require-ghidra-install
   uv run python -m tools.ghidra.datatype_audit {{args}}

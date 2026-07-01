@@ -60,7 +60,7 @@ TDisplayMgr * TDisplayMgr::DestructTDisplayMgrAndMaybeFree(byte param_1)
 {
   DestructTDisplayMgrAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -89,7 +89,7 @@ void TDisplayMgr::Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0()
 
 {
   short sVar1;
-  
+
   sVar1 = InitializeBitmapDescriptorRecordAndLoadSurfaceNode();
   if (sVar1 != 0) {
     InitializeBitmapDescriptorRecordAndLoadSurfaceNode();
@@ -109,7 +109,7 @@ void TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated()
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   if (g_pPrimaryRenderSurfaceContext == 0) {
     local_10 = 0xffffffc0;
     local_c = 0xffffffc0;
@@ -176,7 +176,7 @@ void TDisplayMgr::DispatchDisplayManagerControlStringMessage()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00633288;
   *unaff_FS_OFFSET = &local_c;
@@ -186,7 +186,7 @@ void TDisplayMgr::DispatchDisplayManagerControlStringMessage()
   TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
             ((TViewMgr *)g_pUiRuntimeContext,&this->vftable);
   local_4 = 0xffffffff;
-  CString::~CString((CString *)&stack0x00000004);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000004);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -259,7 +259,7 @@ void TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   iVar1 = g_pPrimaryRenderSurfaceContext;
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
@@ -334,10 +334,10 @@ void TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows()
   char cVar1;
   int *piVar2;
   int iVar3;
-  
-  InitializeUiWindowTraversalState(1);
-  piVar2 = (int *)LoadFirstUiWindowTraversalEntry();
-  iVar3 = IsUiWindowTraversalEntryValid();
+
+  CWMgrIterator::Reset(1);
+  piVar2 = (int *)CWMgrIterator::FirstWindow();
+  iVar3 = CWMgrIterator::More();
   while (iVar3 != 0) {
     if (piVar2 != (int *)0x0) {
       iVar3 = *piVar2;
@@ -352,8 +352,8 @@ void TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows()
         }
       }
     }
-    piVar2 = (int *)LoadNextUiWindowTraversalEntry();
-    iVar3 = IsUiWindowTraversalEntryValid();
+    piVar2 = (int *)CWMgrIterator::NextWindow();
+    iVar3 = CWMgrIterator::More();
   }
   return;
 }

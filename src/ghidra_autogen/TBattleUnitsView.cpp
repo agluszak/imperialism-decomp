@@ -25,7 +25,7 @@ TBattleUnitsView * TBattleUnitsView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -42,12 +42,12 @@ TMilitaryPageView * TBattleUnitsView::CreateTBattleUnitsViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630bca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMilitaryPageView *)AllocateWithFallbackHandler(0x8c);
+  this = (TMilitaryPageView *)__2_YAPAXI_Z(0x8c);
   local_4 = 0;
   if (this != (TMilitaryPageView *)0x0) {
     TMilitaryPageView::ConstructTMilitaryPageViewBaseState(this);
@@ -93,7 +93,7 @@ TBattleUnitsView::ConstructTBattleUnitsViewBaseState
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630bfa;
   uStack_c = *unaff_FS_OFFSET;
@@ -119,16 +119,16 @@ TBattleUnitsView::ConstructTBattleUnitsViewBaseState
   iVar3 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
   param_1[0x22] = iVar3;
 switchD_004b071e_default:
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   iVar4 = 0;
   local_4 = 0;
-  CString::CString(&local_20);
+  CString::__0CString__QAE_XZ(&local_20);
   iVar3 = 0;
   local_4._0_1_ = 1;
   if (0 < *(short *)((int)&param_2[0xc].Serialize + param_3 * 2 + 2)) {
     pcVar1 = *(code **)(*param_1 + 0x1a0);
     do {
-      pTVar2 = (TLineData *)AllocateWithFallbackHandler(0x18);
+      pTVar2 = (TLineData *)__2_YAPAXI_Z(0x18);
       local_4._0_1_ = 2;
       local_18 = pTVar2;
       if (pTVar2 == (TLineData *)0x0) {
@@ -150,9 +150,9 @@ switchD_004b071e_default:
     } while (iVar3 < *(short *)((int)&param_2[0xc].Serialize + param_3 * 2 + 2));
   }
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_20);
+  CString::__1CString__QAE_XZ(&local_20);
   local_4 = 0xffffffff;
-  CString::~CString(&local_1c);
+  CString::__1CString__QAE_XZ(&local_1c);
   iVar3 = *param_1;
   *(undefined2 *)(param_1 + 0x19) = 1;
   (**(code **)(iVar3 + 0x1ac))();

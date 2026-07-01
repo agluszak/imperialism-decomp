@@ -31,7 +31,7 @@ TStatusPicture * TStatusPicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -74,7 +74,7 @@ void TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006381aa;
   uStack_c = *unaff_FS_OFFSET;
@@ -86,7 +86,7 @@ void TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   do {
     cVar3 = IsNationSlotEligibleForEventProcessing(iVar7);
     if (cVar3 != '\0') {
-      this_00 = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+      this_00 = (thunk_TPictureButton *)__2_YAPAXI_Z(0x90);
       iVar8 = 0;
       local_4 = 0;
       if (this_00 != (thunk_TPictureButton *)0x0) {
@@ -177,7 +177,7 @@ TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   int iVar11;
   int *piVar12;
   undefined4 uVar13;
-  
+
   if (((param_1 == 10) && (0x7461622f < *(uint *)(param_2 + 0x1c))) &&
      (*(uint *)(param_2 + 0x1c) < 0x7461623a)) {
     iVar11 = (int)(short)(*(short *)(param_2 + 0x1c) + -0x6230);
@@ -264,13 +264,13 @@ void TStatusPicture::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   CString CStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   CStack_8.m_pchData = &LAB_006381d0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
-  CString::CString((CString *)&stack0x00000004);
+  CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
   local_4 = 0;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)
             (0x2757,CONCAT22((short)((uint)&stack0x00000004 >> 0x10),*(short *)&this->field_0x90 + 8
@@ -284,7 +284,7 @@ void TStatusPicture::OrphanTiny_ReturnZero_0048a730()
   iVar4 = 7;
   do {
     if (*psVar3 != -1) {
-      CString::CString((CString *)&stack0xffffffd0);
+      CString::__0CString__QAE_XZ((CString *)&stack0xffffffd0);
       ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc,0x2b6a);
       FormatOverlayTerrainLabelText(&stack0xffffffd0);
       SetQuickDrawTextOriginWithContextOffset(0x9a,iVar2 + -8);
@@ -296,12 +296,12 @@ void TStatusPicture::OrphanTiny_ReturnZero_0048a730()
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(sVar1);
       FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffd8);
       iVar2 = iVar2 + 0x37;
-      CString::~CString((CString *)&stack0xffffffd0);
+      CString::__1CString__QAE_XZ((CString *)&stack0xffffffd0);
     }
     psVar3 = psVar3 + 1;
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
-  CString::~CString(&CStack_8);
+  CString::__1CString__QAE_XZ(&CStack_8);
   *unaff_FS_OFFSET = uStack_18;
   return;
 }
@@ -325,7 +325,7 @@ void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets()
   short *psVar9;
   int local_c;
   int local_8;
-  
+
   local_8 = 1;
   piVar6 = (int *)&this->field_0x94;
   psVar9 = (short *)&this->field_0xb0;

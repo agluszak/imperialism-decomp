@@ -32,7 +32,7 @@ TTacticalBattleView * TTacticalBattleView::_scalar_deleting_destructor_(byte par
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -67,7 +67,7 @@ void TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  
+
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable;
   p_Var2 = pTVar1->SetForeignMinisterReadyFlag14;
@@ -122,7 +122,7 @@ TTacticalBattleView::ReleaseRuntimeSelectionOwnerAndDestroyObject
 
 {
   TTacticalBattleView *local_4;
-  
+
   if (this->field_0x98 != '\0') {
     local_4 = this;
     ConvertScreenPointToHexGridCoordClamped(param_1,&param_1,&local_4);
@@ -144,7 +144,7 @@ TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a89a0
 {
   undefined1 *puStack_18;
   undefined1 local_10 [16];
-  
+
   puStack_18 = local_10;
   if (*(int *)(param_1 + 8) != -1) {
     (*this->vftable->OrphanLeaf_NoCall_Ins59_005a89f0)(param_1);
@@ -165,7 +165,7 @@ TTacticalBattleView::OrphanLeaf_NoCall_Ins59_005a89f0
   uint uVar1;
   int iVar2;
   int iVar3;
-  
+
   iVar3 = *(int *)(param_1 + 8);
   if (iVar3 != -1) {
     uVar1 = iVar3 / *(int *)&this->field_0x80;
@@ -213,7 +213,7 @@ TTacticalBattleView::OrphanCallChain_C11_I88_004874b0
   HCURSOR hCursor;
   short sVar4;
   undefined1 auStack_8 [8];
-  
+
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1->OrphanRetStub_0059add0_2b)();
   sVar4 = (short)CONCAT31(extraout_var,uVar2);
@@ -253,7 +253,7 @@ void TTacticalBattleView::SetForeignMinisterReadyFlag14(undefined4 param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638780;
   local_c = *unaff_FS_OFFSET;
@@ -355,7 +355,7 @@ TTacticalBattleView::OrphanCallChain_C2_I66_005a9090
   int local_c;
   int local_8;
   int local_4;
-  
+
   iVar1 = *(int *)(*(int *)(*(int *)&this->field_0x60 + 4) + 4 + param_1 * 0x14);
   if (iVar1 == 0) {
     uVar2 = param_1 / *(int *)&this->field_0x80;
@@ -399,7 +399,7 @@ void TTacticalBattleView::DrawUiTilesAndOverlay(astruct_13 *ui_ctx)
   int text_src_rect_bottom;
   tagRECT src_clip_rect;
   tagRECT dst_clip_rect;
-  
+
   if (*(int *)&this->field_0xa4 != -1) {
     SetQuickDrawFillColor(0);
     slot_index = 0;

@@ -15,7 +15,7 @@ void TBehavior::CreateTBehaviorInstance()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062ead8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -28,7 +28,7 @@ void TBehavior::CreateTBehaviorInstance()
   this[1].vftable = (TBehaviorVtbl *)0x0;
   *(undefined4 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0x4 = 0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   *(undefined4 *)&this[1].field_0x4 = 0;
   this->vftable = (TBehaviorVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
@@ -68,7 +68,7 @@ TBehavior * TBehavior::DestructTBehaviorAndMaybeFree(byte param_1)
 {
   DestructTBehaviorAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

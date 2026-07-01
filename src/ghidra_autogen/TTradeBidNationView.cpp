@@ -12,7 +12,7 @@ TTradeBidNationView * TTradeBidNationView::_scalar_deleting_destructor_(byte par
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TView * TTradeBidNationView::CreateTTradeBidNationViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063946a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -75,7 +75,7 @@ void TTradeBidNationView::OrphanCallChain_C11_I88_004874b0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639490;
   uStack_c = *unaff_FS_OFFSET;
@@ -95,26 +95,26 @@ void TTradeBidNationView::OrphanCallChain_C11_I88_004874b0()
              (astruct_19 *)0x0);
   local_30.m_pchData = &stack0xffffffc0;
   SetQuickDrawStrokeColor();
-  CString::CString(&local_34);
+  CString::__0CString__QAE_XZ(&local_34);
   local_4 = 0;
   src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot(&local_30);
   local_4._0_1_ = 1;
-  CString::AssignFromPtr(&local_34,src_ref);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_34,src_ref);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_30);
+  CString::__1CString__QAE_XZ(&local_30);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
   SetQuickDrawTextOriginWithContextOffset(0x28);
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   if ((*(short *)&this->field_0x62 < 7) && (*(int *)&g_pLocalizationTable->field_0x8 == 7)) {
     (*g_apNationStates[*(short *)&this->field_0x62]->vftable->OrphanLeaf_NoCall_Ins02_004d7f00)();
-    FormatStringWithVarArgsToSharedRef(&local_34,&g_szDecimalFormat);
+    _Format_CString__QAAXPBDZZ(&local_34,&g_szDecimalFormat);
     sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_34);
     SetQuickDrawTextOriginWithContextOffset
               (CONCAT22(extraout_var,(short)this->field34 - sVar1) + -4);
     THQButton::DrawTextWithCachedQuickDrawStyleState();
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_34);
+  CString::__1CString__QAE_XZ(&local_34);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

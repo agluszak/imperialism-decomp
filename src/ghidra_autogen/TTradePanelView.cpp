@@ -25,7 +25,7 @@ TTradePanelView * TTradePanelView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -42,12 +42,12 @@ TView * TTradePanelView::CreateTTradePanelViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632e0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -94,13 +94,13 @@ void TTradePanelView::OrphanCallChain_C6_I49_004875d0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632e30;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_2c.m_pchData = (char *)0x4f87a7;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   iVar4 = 0;
   local_4 = 0;
   iStack_30 = 0x4f87b9;
@@ -135,19 +135,19 @@ void TTradePanelView::OrphanCallChain_C6_I49_004875d0()
   acStack_44[1] = -0x78;
   acStack_44[2] = 'O';
   acStack_44[3] = '\0';
-  CString::CString(&CStack_10,(char *)g_Build_Map_Order_LookupTable_00695794);
+  CString::__0CString__QAE_PBD_Z(&CStack_10,(char *)g_Build_Map_Order_LookupTable_00695794);
   local_18.m_pchData._0_1_ = 1;
   acStack_44[0] = -0x70;
   acStack_44[1] = -0x78;
   acStack_44[2] = 'O';
   acStack_44[3] = '\0';
-  CString::AssignFromPtr(&CStack_2c,&CStack_10);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_2c,&CStack_10);
   local_18.m_pchData = (char *)((uint)local_18.m_pchData._1_3_ << 8);
-  CString::~CString(&CStack_10);
+  CString::__1CString__QAE_XZ(&CStack_10);
   AssignStringSharedRefAndReturnThis(&CStack_2c);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_18.m_pchData = (char *)0xffffffff;
-  CString::~CString(&CStack_2c);
+  CString::__1CString__QAE_XZ(&CStack_2c);
   *unaff_FS_OFFSET = unaff_EBP;
   return;
 }
@@ -187,16 +187,16 @@ void TTradePanelView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632e50;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pCStack_60 = (CString *)0x4f8967;
-  CString::CString(&local_4c);
+  CString::__0CString__QAE_XZ(&local_4c);
   local_4 = 0;
   pCStack_60 = (CString *)0x4f8978;
-  CString::CString(&local_38);
+  CString::__0CString__QAE_XZ(&local_38);
   puVar5 = (undefined1 *)CONCAT22((short)((uint)unaff_EDI >> 0x10),(short)this->ownerOffsetY);
   sVar1 = (short)this->ownerOffsetX;
   iVar2 = CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1);
@@ -307,10 +307,10 @@ void TTradePanelView::OrphanTiny_ReturnZero_0048a730()
   SetQuickDrawFillColor();
   local_10 = local_10 & 0xffffff00;
   puStack_6c = (undefined1 *)0x4f8c4d;
-  CString::~CString(&local_44);
+  CString::__1CString__QAE_XZ(&local_44);
   local_10 = 0xffffffff;
   puStack_6c = (undefined1 *)0x4f8c5e;
-  CString::~CString((CString *)&stack0xffffffa8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa8);
   *unaff_FS_OFFSET = local_18;
   return;
 }
@@ -327,7 +327,7 @@ void TTradePanelView::OrphanRetStub_00430550()
   TToolBarClusterVtbl *pTStack_18;
   int *piStack_14;
   undefined4 uStack_10;
-  
+
   uStack_10 = 0x636c7573;
   piStack_14 = (int *)0x4f8d62;
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
@@ -353,7 +353,7 @@ TTradePanelView::OrphanRetStub_0059add0
 
 {
   int iVar1;
-  
+
   if (param_1 == 0xc) {
     if (*(int *)(param_2 + 0x1c) != 0x6c696e6b) {
       iVar1 = *(int *)(param_2 + 0x1c) + -0x74726161;

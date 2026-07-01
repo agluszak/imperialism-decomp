@@ -33,7 +33,7 @@ TTradeMgr * TTradeMgr::DestructTTradeMgrAndMaybeFree(byte param_1)
 {
   TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -58,7 +58,7 @@ void TTradeMgr::OrphanCallChain_C2_I25_005b7bc0()
 {
   int *piVar1;
   int iVar2;
-  
+
   piVar1 = (int *)&this->field_0xaa8;
   iVar2 = 0x11;
   do {
@@ -89,7 +89,7 @@ void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(int *param_1)
   int iVar5;
   undefined1 *puVar6;
   undefined4 *puVar7;
-  
+
   piVar3 = param_1;
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   if (DAT_00695278 < 0x27) {
@@ -174,7 +174,7 @@ void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90()
   undefined1 uStack00000005;
   int iStack_c;
   int local_8;
-  
+
   pTVar2 = _uStack00000004;
   TObject::WriteTo((TObject *)this,_uStack00000004);
   puVar4 = &this->field_0xa;
@@ -253,7 +253,7 @@ void TTradeMgr::OrphanCallChain_C3_I50_005b7fc0()
   int iVar3;
   undefined4 *puVar4;
   int iVar5;
-  
+
   puVar1 = (undefined2 *)&this->field_0xe;
   iVar5 = 0x11;
   do {
@@ -342,7 +342,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents()
   undefined2 uStack_e;
   short sStack_c;
   undefined2 uStack_a;
-  
+
   sVar4 = 0;
   local_30 = 0;
   psVar6 = (short *)&this->field_0x1a;
@@ -627,7 +627,7 @@ void TTradeMgr::DispatchNationMetricUpdatePassForAllSlots()
 {
   TTradeMgr_slot_0x04_0x04 *pTVar1;
   int iVar2;
-  
+
   iVar2 = 0;
   pTVar1 = this->vftable[6].slot_0x04;
   do {
@@ -650,7 +650,7 @@ void TTradeMgr::ComputeNationMetricBaselineValueForSlot(short param_1)
   int iVar2;
   int iVar3;
   int iVar4;
-  
+
   iVar4 = param_1 * 0xa0;
   *(undefined2 *)(&this->field_0x8 + iVar4) = *(undefined2 *)(&this->field_0xa + iVar4);
   switch((int)param_1) {
@@ -740,7 +740,7 @@ TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale
   short unaff_retaddr;
   undefined2 in_stack_00000006;
   undefined2 in_stack_0000000a;
-  
+
   cVar1 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(_param_1,_param_2);
   if (cVar1 != '\0') {
     return -1;
@@ -877,7 +877,7 @@ void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short para
   undefined2 extraout_var_03;
   undefined2 in_stack_00000006;
   undefined4 uVar8;
-  
+
   piVar1 = *(int **)(&this->field_0xaa8 + param_1 * 4);
   iVar6 = 1;
   sVar5 = 1;
@@ -920,7 +920,7 @@ void TTradeMgr::WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At
 
 {
   short sVar1;
-  
+
   *(undefined2 *)&this->field_0x6 = 1;
   *(undefined2 *)&this->field_0x4 = 0;
   do {
@@ -946,7 +946,7 @@ void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline()
   int iVar4;
   TGreatPower **ppTVar5;
   short *psVar6;
-  
+
   iVar4 = 0xd;
   pTVar1 = this->vftable[10].slot_0x04;
   do {
@@ -1011,7 +1011,7 @@ TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C
   undefined2 uVar6;
   undefined4 uVar7;
   undefined4 uVar8;
-  
+
   if ((param_7 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 == 2)) {
     CreateAndSendTurnEvent1C_BoolAndSixShorts
               (1,param_1,param_2,param_3,param_4,param_5,(short)param_6);
@@ -1100,7 +1100,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags()
   int iVar2;
   TMinor **ppTVar3;
   TGreatPower **ppTVar4;
-  
+
   iVar2 = 0;
   ppTVar4 = g_apNationStates;
   do {
@@ -1144,7 +1144,7 @@ void TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations()
 {
   TMinor **ppTVar1;
   int iVar2;
-  
+
   ppTVar1 = g_apSecondaryNationStateSlots + 7;
   iVar2 = 0x10;
   do {
@@ -1182,7 +1182,7 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores()
   int local_14;
   undefined4 local_10;
   undefined4 local_c;
-  
+
   sVar3 = (short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
                        ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2);
   if (sVar3 < 0xb) {
@@ -1305,7 +1305,7 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores()
   int local_14;
   undefined4 local_10;
   undefined4 local_c;
-  
+
   sVar3 = (short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
                        ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2);
   if (sVar3 < 0xb) {
@@ -1461,7 +1461,7 @@ float10 TTradeMgr::ComputeNationMetricPowerScale(double param_1, short param_2)
 {
   int iVar1;
   float10 fVar2;
-  
+
   fVar2 = (float10)_DAT_0066d8e0;
   if (0 < param_2) {
     iVar1 = (int)param_2;
@@ -1481,7 +1481,7 @@ undefined4 TTradeMgr::IsNationMetricCellNegative(int param_1, int param_2)
 
 {
   int iVar1;
-  
+
   iVar1 = param_1 * 0x50 + param_2;
   return CONCAT31((int3)((uint)iVar1 >> 8),*(short *)(&this->field_0x1c + iVar1 * 2) < 0);
 }
@@ -1494,7 +1494,7 @@ undefined4 TTradeMgr::IsNationMetricCellPositive(int param_1, int param_2)
 
 {
   int iVar1;
-  
+
   iVar1 = param_1 * 0x50 + param_2;
   return CONCAT31((int3)((uint)iVar1 >> 8),0 < *(short *)(&this->field_0x1c + iVar1 * 2));
 }
@@ -1514,8 +1514,8 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter
   short *psVar4;
   short sVar5;
   int *piStack_4;
-  
-  piStack_4 = (int *)AllocateWithFallbackHandler(0x1c);
+
+  piStack_4 = (int *)__2_YAPAXI_Z(0x1c);
   if (piStack_4 == (int *)0x0) {
     piStack_4 = (int *)0x0;
   }
@@ -1554,7 +1554,7 @@ short TTradeMgr::SelectPreferredNationMetricCodeFromLookup(short param_1, short 
 {
   short sVar1;
   short *psVar2;
-  
+
   psVar2 = &DAT_0066d810;
   while ((sVar1 = param_1, *psVar2 != param_1 && (sVar1 = param_2, *psVar2 != param_2))) {
     psVar2 = psVar2 + 1;

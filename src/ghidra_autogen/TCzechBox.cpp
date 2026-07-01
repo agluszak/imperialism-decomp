@@ -28,12 +28,12 @@ thunk_TPictureButton * TCzechBox::CreateTCzechBoxInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063646a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -80,7 +80,7 @@ TCzechBox * TCzechBox::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -136,7 +136,7 @@ void TCzechBox::OrphanCallChain_C4_I45_00571d40(char param_1)
   undefined4 in_EAX;
   undefined2 uVar3;
   undefined3 in_stack_00000005;
-  
+
   uVar3 = (undefined2)((uint)in_EAX >> 0x10);
   if ((this->field_0x94 == '\0') && (this->field_0x64 == '\0')) {
     uVar1 = *(ushort *)&this->field_0x84;
@@ -197,7 +197,7 @@ void TCzechBox::OrphanCallChain_C2_I16_00571e40()
 {
   TCzechBoxVtbl *pTVar1;
   char cVar2;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins02_00571de0)();
   (*pTVar1->OrphanCallChain_C1_I10_00571e00)((uint)(cVar2 == '\0'));
@@ -214,7 +214,7 @@ void TCzechBox::OrphanCallChain_C3_I23_00571e80(char param_1, undefined4 param_2
   TCzechBoxVtbl *pTVar1;
   _vslot_fn *p_Var2;
   char cVar3;
-  
+
   pTVar1 = this->vftable;
   p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins02_00571de0;
   cVar3 = (*p_Var2)();

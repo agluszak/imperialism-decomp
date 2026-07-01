@@ -31,7 +31,7 @@ TMapPreviewView * TMapPreviewView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -72,7 +72,7 @@ void TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636aa8;
   uStack_c = *unaff_FS_OFFSET;
@@ -134,7 +134,7 @@ void TMapPreviewView::_scalar_deleting_destructor_(int *param_1)
   int iVar5;
   int *piVar6;
   int iVar7;
-  
+
   uVar4 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   iVar5 = GetSurfaceHeaderFromSurfaceObject(uVar4);
   piVar6 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
@@ -165,7 +165,7 @@ void TMapPreviewView::OrphanTiny_ReturnZero_0048a730()
   RECT local_30;
   RECT local_20;
   RECT local_10;
-  
+
   local_30.left = 0;
   local_30.right = this->field34;
   local_30.bottom = this->field38;

@@ -15,12 +15,12 @@ TPageView * TMilitaryPageView::CreateTMilitaryPageViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006358da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPageView *)AllocateWithFallbackHandler(0x88);
+  this = (TPageView *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   if (this != (TPageView *)0x0) {
     TPageView::ConstructTPageViewBaseState(this);
@@ -65,7 +65,7 @@ TMilitaryPageView * TMilitaryPageView::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -82,7 +82,7 @@ void TMilitaryPageView::OrphanLeaf_NoCall_Ins07_004d8920()
   TToolBarClusterVtbl *pTStack_10;
   TMilitaryPageView *pTStack_c;
   undefined4 uStack_8;
-  
+
   pTStack_c = (TMilitaryPageView *)0x5649ad;
   TPageView::OrphanLeaf_NoCall_Ins07_004d8920((TPageView *)this);
   uStack_8 = 0x6f6b6179;
@@ -106,7 +106,7 @@ void TMilitaryPageView::GetTEventHandlerClassNamePointer()
 
 {
   int *piVar1;
-  
+
   TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
   piVar1 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   *(undefined1 *)(piVar1 + 0xd3) = 0;

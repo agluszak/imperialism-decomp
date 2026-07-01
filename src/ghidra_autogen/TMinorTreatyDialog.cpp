@@ -12,7 +12,7 @@ TMinorTreatyDialog * TMinorTreatyDialog::_scalar_deleting_destructor_(byte param
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -66,13 +66,13 @@ void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638d18;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_38 = this;
-  CString::CString(&local_44);
+  CString::__0CString__QAE_XZ(&local_44);
   local_4 = 0;
   local_2c = 0x6e616d30;
   local_28 = 0x6e616d31;
@@ -198,7 +198,7 @@ void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
     iVar8 = iVar8 + -1;
   } while (iVar8 != 0);
   local_14 = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffffac);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffac);
   *unaff_FS_OFFSET = local_1c;
   return;
 }
@@ -216,12 +216,12 @@ TView * TMinorTreatyDialog::DestructTMinorTreatyDialogAndMaybeFree(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638d42;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)__2_YAPAXI_Z(0x60);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {

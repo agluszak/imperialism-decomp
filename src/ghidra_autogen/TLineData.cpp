@@ -22,15 +22,15 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063031a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   TLineData::RenderUiBitmapOnRuntimeSurfaceContext(param_1,0xdb8);
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_4 = 0;
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   local_4._0_1_ = 1;
   *(short *)&param_1[8].field_0xc = param_2;
   if ((param_2 < 0) || (0x17f < param_2)) {
@@ -41,7 +41,7 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param
   }
   for (; pTVar2 != (TLineDataVtbl *)0x0; pTVar2 = (TLineDataVtbl *)pTVar2->WriteTo) {
     if (*(short *)&pTVar2->Serialize != 1) {
-      this = (TLineData *)AllocateWithFallbackHandler(0x14);
+      this = (TLineData *)__2_YAPAXI_Z(0x14);
       local_4._0_1_ = 2;
       if (this == (TLineData *)0x0) {
         this = (TLineData *)0x0;
@@ -61,9 +61,9 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param
   }
   WrapperFor_thunk_UpdatePagedListNavigationButtonState_At00564a10();
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_1c);
+  CString::__1CString__QAE_XZ(&local_1c);
   local_4 = 0xffffffff;
-  CString::~CString(&local_18);
+  CString::__1CString__QAE_XZ(&local_18);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -81,7 +81,7 @@ TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
   TLineDataVtbl *pTVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  
+
   pTVar1 = this->vftable;
   *(undefined4 *)&this[9].field_0x4 = param_1;
   this[9].field_0xc = param_2;
@@ -113,7 +113,7 @@ void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
   undefined4 uStack_14;
   undefined4 uStack_10;
   undefined4 uStack_c;
-  
+
   piVar6 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   iVar2 = *piVar6;
   *(int *)&this[8].field_0x4 = piVar6[0xd4];
@@ -145,9 +145,9 @@ void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
     this_00->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
               (this_00);
-    FreeHeapBufferIfNotNull(this_00);
+    __3_YAXPAX_Z(this_00);
   }
-  FreeHeapBufferIfNotNull(piVar6);
+  __3_YAXPAX_Z(piVar6);
   SetActiveQuickDrawSurfaceContext(uStack_14,uStack_18);
   return;
 }
@@ -171,7 +171,7 @@ void TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 pa
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063591a;
   uStack_c = *unaff_FS_OFFSET;
@@ -197,7 +197,7 @@ void TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 pa
   if (puVar5 != (undefined4 *)0x0) {
     p_Var1 = this->vftable[8].ShallowClone;
     do {
-      pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x1c);
+      pTVar3 = (TLineData *)__2_YAPAXI_Z(0x1c);
       uStack_4 = 0;
       if (pTVar3 == (TLineData *)0x0) {
         pTVar3 = (TLineData *)0x0;
@@ -258,7 +258,7 @@ TLineData * TLineData::DestructTLineDataAndMaybeFree(byte param_1)
 {
   DestructTLineDataAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -310,7 +310,7 @@ TLineData * TLineData::ConstructPictureScreenVariantEntry()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636518;
   local_c = *unaff_FS_OFFSET;
@@ -319,7 +319,7 @@ TLineData * TLineData::ConstructPictureScreenVariantEntry()
   this->vftable = (TLineDataVtbl *)&TUpDownPictureButtonVtbl_0065f440;
   *(undefined2 *)((int)&this[9].vftable + 2) = 7000;
   local_4 = 0;
-  CString::CString((CString *)&this[9].field_0x4);
+  CString::__0CString__QAE_XZ((CString *)&this[9].field_0x4);
   *(undefined2 *)&this[9].field_0x8 = 0;
   *(undefined2 *)&this[9].field_0xa = 0;
   *(undefined2 *)&this[9].field_0xc = 0;
@@ -406,7 +406,7 @@ void TLineData::BuildSelectedNationOrderCapabilityRows()
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006391d8;
   iStack_c = *unaff_FS_OFFSET;
@@ -438,7 +438,7 @@ LAB_005bb355:
       uVar8 = (undefined2)iVar9;
       if ((short)((uint)puVar12 >> 0x10) == 1) {
         *(undefined1 *)&this[0xb].vftable = 0;
-        pTVar4 = (TLineData *)AllocateWithFallbackHandler(0x14);
+        pTVar4 = (TLineData *)__2_YAPAXI_Z(0x14);
         iStack_1c = 0;
         pTStack_50 = pTVar4;
         if (pTVar4 == (TLineData *)0x0) {
@@ -457,7 +457,7 @@ LAB_005bb355:
         CStack_48.m_pchData = (char *)(int)sVar11;
         sVar11 = 1;
         do {
-          pTVar5 = (TTextLine *)AllocateWithFallbackHandler(0x18);
+          pTVar5 = (TTextLine *)__2_YAPAXI_Z(0x18);
           uStack_4 = 1;
           pTStack_38 = pTVar5;
           if (pTVar5 == (TTextLine *)0x0) {
@@ -483,7 +483,7 @@ LAB_005bb355:
       }
       else {
         *(undefined1 *)&this[0xb].vftable = 0;
-        pTVar4 = (TLineData *)AllocateWithFallbackHandler(0x14);
+        pTVar4 = (TLineData *)__2_YAPAXI_Z(0x14);
         iStack_1c = 2;
         pTStack_50 = pTVar4;
         if (pTVar4 == (TLineData *)0x0) {
@@ -502,7 +502,7 @@ LAB_005bb355:
         CStack_48.m_pchData = (char *)(int)sVar11;
         sVar11 = 1;
         do {
-          pTVar5 = (TTextLine *)AllocateWithFallbackHandler(0x18);
+          pTVar5 = (TTextLine *)__2_YAPAXI_Z(0x18);
           uStack_4 = 3;
           pTStack_38 = pTVar5;
           if (pTVar5 == (TTextLine *)0x0) {
@@ -531,10 +531,10 @@ LAB_005bb355:
   uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable->
             PromoteNationPendingActionSlot5IfCapabilityActive_5f)();
   if (CONCAT31(extraout_var_01,uVar3) != 0) {
-    CString::CString(&CStack_48);
+    CString::__0CString__QAE_XZ(&CStack_48);
     uStack_4 = 4;
     *(undefined1 *)&this[0xb].vftable = 0;
-    pTStack_38 = (TTextLine *)AllocateWithFallbackHandler(0x20);
+    pTStack_38 = (TTextLine *)__2_YAPAXI_Z(0x20);
     uStack_4._0_1_ = 5;
     if (pTStack_38 == (TTextLine *)0x0) {
       uVar6 = 0;
@@ -561,7 +561,7 @@ LAB_005bb355:
       if (CONCAT31(extraout_var_02,uVar3) != 0) {
         local_68 = local_68 + 1;
         *(undefined1 *)&this[0xb].vftable = 0;
-        pTVar4 = (TLineData *)AllocateWithFallbackHandler(0x14);
+        pTVar4 = (TLineData *)__2_YAPAXI_Z(0x14);
         uStack_4._0_1_ = 6;
         if (pTVar4 == (TLineData *)0x0) {
           this_00 = (TLineData *)0x0;
@@ -587,11 +587,11 @@ LAB_005bb355:
              (iVar2 = *(int *)((int)g_apNationStates[*(short *)&this[9].vftable] +
                               ((int)&pTStack_50->vftable + (int)pTStack_58) * 4 + -4), iVar2 != 0))
           {
-            CString::CString(&local_64);
+            CString::__0CString__QAE_XZ(&local_64);
             uStack_4._0_1_ = 7;
-            CString::CString(&CStack_60);
+            CString::__0CString__QAE_XZ(&CStack_60);
             uStack_4._0_1_ = 8;
-            pTStack_30 = (TTextLine *)AllocateWithFallbackHandler(0x20);
+            pTStack_30 = (TTextLine *)__2_YAPAXI_Z(0x20);
             uStack_4._0_1_ = 9;
             if (pTStack_30 == (TTextLine *)0x0) {
               uVar6 = 0;
@@ -606,21 +606,21 @@ LAB_005bb355:
                       (local_68,0,&uStack_20,0xffffffff,0);
             src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot(&CStack_40,iVar10);
             uStack_4._0_1_ = 10;
-            CString::AssignFromPtr(&local_64,src_ref);
+            CString::__4CString__QAEABV0_ABV0__Z(&local_64,src_ref);
             uStack_4._0_1_ = 8;
-            CString::~CString(&CStack_40);
+            CString::__1CString__QAE_XZ(&CStack_40);
             (*g_pLocalizationTable->vftable[0xe].slot_0x04)(iVar2,&CStack_60);
-            uVar7 = AssignSharedStringConcatCStrAndRef(&CStack_40,&DAT_00699320,&local_68);
+            uVar7 = __H_YG_AVCString__PBDABV0__Z(&CStack_40,&DAT_00699320,&local_68);
             iStack_c._0_1_ = 0xb;
-            AssignStringSharedFromRef(uVar7);
+            __YCString__QAEABV0_ABV0__Z(uVar7);
             iStack_c = CONCAT31(iStack_c._1_3_,8);
-            CString::~CString(&CStack_40);
+            CString::__1CString__QAE_XZ(&CStack_40);
             WrapperFor_StringShared_AssignFromPtr_At00570420(auStack_6c);
             (**(code **)(**(int **)&this[9].field_0xc + 0x1a0))(uVar6);
             uStack_4._0_1_ = 7;
-            CString::~CString(&CStack_60);
+            CString::__1CString__QAE_XZ(&CStack_60);
             uStack_4 = CONCAT31(uStack_4._1_3_,4);
-            CString::~CString(&local_64);
+            CString::__1CString__QAE_XZ(&local_64);
             iVar9 = iStack_44;
           }
           iVar10 = iVar10 + 1;
@@ -632,9 +632,9 @@ LAB_005bb355:
       pTStack_50 = (TLineData *)((int)&pTStack_50->vftable + 1);
     } while ((short)iStack_44 < 0x17);
     uStack_4 = 0xffffffff;
-    CString::~CString(&CStack_48);
+    CString::__1CString__QAE_XZ(&CStack_48);
   }
-  pTVar5 = (TTextLine *)AllocateWithFallbackHandler(0x14);
+  pTVar5 = (TTextLine *)__2_YAPAXI_Z(0x14);
   uStack_4 = 0xe;
   pTStack_30 = pTVar5;
   if (pTVar5 == (TTextLine *)0x0) {

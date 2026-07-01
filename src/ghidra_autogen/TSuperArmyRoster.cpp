@@ -12,7 +12,7 @@ TSuperArmyRoster * TSuperArmyRoster::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -53,7 +53,7 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006304e4;
   uStack_c = *unaff_FS_OFFSET;
@@ -75,11 +75,11 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
         iVar5 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar4 * 0xa8);
       }
       if (iVar5 != 0) {
-        CString::CString(&param_2);
+        CString::__0CString__QAE_XZ(&param_2);
         local_4 = 0;
-        CString::CString(&param_3);
+        CString::__0CString__QAE_XZ(&param_3);
         local_4._0_1_ = 1;
-        this_00 = (TTextLine *)AllocateWithFallbackHandler(0x20);
+        this_00 = (TTextLine *)__2_YAPAXI_Z(0x20);
         local_4._0_1_ = 2;
         if (this_00 == (TTextLine *)0x0) {
           uVar6 = 0;
@@ -92,7 +92,7 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
         local_18 = 0x12;
         WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0,&local_1c,0xffffffff,0);
         AssignSharedStringFromIndexedA8EntryNameField(param_1,&param_3);
-        CString::AssignFromPtr(&param_2,&param_3);
+        CString::__4CString__QAEABV0_ABV0__Z(&param_2,&param_3);
         WrapperFor_StringShared_AssignFromPtr_At00570420(&param_2);
         p_Var1 = this->vftable->OrphanCallChain_C1_I06_0056fbb0;
         (*p_Var1)(uVar6);
@@ -104,7 +104,7 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
           ;
         }
         for (; pTVar7 != (TLineDataVtbl *)0x0; pTVar7 = (TLineDataVtbl *)pTVar7->WriteTo) {
-          this_01 = (TLineData *)AllocateWithFallbackHandler(0x14);
+          this_01 = (TLineData *)__2_YAPAXI_Z(0x14);
           local_4._0_1_ = 3;
           if (this_01 == (TLineData *)0x0) {
             this_01 = (TLineData *)0x0;
@@ -121,9 +121,9 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
           (*p_Var1)(this_01);
         }
         local_4 = local_4 & 0xffffff00;
-        CString::~CString(&param_3);
+        CString::__1CString__QAE_XZ(&param_3);
         local_4 = 0xffffffff;
-        CString::~CString(&param_2);
+        CString::__1CString__QAE_XZ(&param_2);
       }
     }
     param_1 = param_1 + 1;
@@ -147,7 +147,7 @@ TSuperArmyRoster * TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree(byte p
 {
   ResetObjectToCObjectSentinelVtable_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -180,7 +180,7 @@ void TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection()
   undefined1 *puStack_8;
   undefined4 uStack_4;
   int *piVar5;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063a4a4;
   uStack_c = *unaff_FS_OFFSET;
@@ -203,7 +203,7 @@ void TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection()
   }
   iVar3 = piVar6[8];
   (**(code **)(*piVar6 + 0x1c))();
-  this_00 = (TPageView *)AllocateWithFallbackHandler(0x88);
+  this_00 = (TPageView *)__2_YAPAXI_Z(0x88);
   uStack_c = 0;
   if (this_00 == (TPageView *)0x0) {
     this_00 = (TPageView *)0x0;
@@ -221,7 +221,7 @@ void TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection()
   uStack_20 = 0x2e;
   (*this_00->vftable[1].GetTEventHandlerClassNamePointer)(iVar3,&uStack_24,&pTStack_2c);
   this_00->controlTag = 0x70616765;
-  this_01 = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  this_01 = (TStaticText *)__2_YAPAXI_Z(0x94);
   uStack_18 = 1;
   if (this_01 == (TStaticText *)0x0) {
     uVar7 = 0;

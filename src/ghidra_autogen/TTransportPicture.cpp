@@ -18,12 +18,12 @@ _CreateTTransportPictureInstance__YAPAUTransportPictureState___Z_imperialismsrcg
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063807a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x9c);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x9c);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -77,7 +77,7 @@ TTransportPicture * TTransportPicture::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -107,7 +107,7 @@ void TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1
   undefined2 extraout_var_03;
   undefined2 extraout_var_04;
   undefined4 unaff_EBX;
-  
+
   uVar4 = (undefined2)((uint)unaff_EBX >> 0x10);
   bVar3 = false;
   if ((param_1 < 100) || (0x65 < param_1)) goto LAB_00592108;
@@ -236,7 +236,7 @@ void TTransportPicture::RenderTransportPictureGaugeAndLabels()
   undefined1 *puStack_8;
   undefined4 local_4;
   undefined3 extraout_var_00;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006380c8;
   uStack_c = *unaff_FS_OFFSET;
@@ -245,13 +245,13 @@ void TTransportPicture::RenderTransportPictureGaugeAndLabels()
   AcquireReusableQuickDrawSurface();
   local_4 = 0;
   pcStack_5c = (char *)0x5921f7;
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   local_4._0_1_ = 1;
   pcStack_5c = (char *)0x592205;
-  CString::CString(&local_44);
+  CString::__0CString__QAE_XZ(&local_44);
   local_4._0_1_ = 2;
   pcStack_5c = (char *)0x592213;
-  CString::CString(&local_4c);
+  CString::__0CString__QAE_XZ(&local_4c);
   local_4 = CONCAT31(local_4._1_3_,3);
   sVar7 = 0x61;
   if (200 < this->ownerOffsetX) {
@@ -349,21 +349,21 @@ LAB_00592373:
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  FormatStringWithVarArgsToSharedRef(&local_4c);
-  FormatStringWithVarArgsToSharedRef(&stack0xffffffb0);
-  AssignSharedStringConcatRefAndCStr(&local_40);
+  _Format_CString__QAAXPBDZZ(&local_4c);
+  _Format_CString__QAAXPBDZZ(&stack0xffffffb0);
+  __H_YG_AVCString__ABV0_PBD_Z(&local_40);
   local_10._0_1_ = 4;
-  src_ref = (CString *)AssignSharedStringConcatRefAndRef(&local_48);
+  src_ref = (CString *)__H_YG_AVCString__ABV0_0_Z(&local_48);
   local_10._0_1_ = 5;
-  CString::StringSharedRef_AssignFromPtr(&local_44,src_ref);
+  CString::__0CString__QAE_ABV0__Z(&local_44,src_ref);
   local_10._0_1_ = 6;
-  CString::AssignFromPtr((CString *)&stack0xffffffa8,&local_44);
+  CString::__4CString__QAEABV0_ABV0__Z((CString *)&stack0xffffffa8,&local_44);
   local_10._0_1_ = 5;
-  CString::~CString(&local_44);
+  CString::__1CString__QAE_XZ(&local_44);
   local_10._0_1_ = 4;
-  CString::~CString(&local_48);
+  CString::__1CString__QAE_XZ(&local_48);
   local_10 = CONCAT31(local_10._1_3_,3);
-  CString::~CString(&local_40);
+  CString::__1CString__QAE_XZ(&local_40);
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar6) + 0x1c8))();
   if (*(short *)&this->field_0x92 == 0x16) {
     uVar6 = (*p_Var1)(0x76616c75);
@@ -412,11 +412,11 @@ LAB_005925fa:
     (**(code **)(local_48.m_pchData + 0xf8))();
   }
   local_18._0_1_ = 2;
-  CString::~CString(&CStack_60);
+  CString::__1CString__QAE_XZ(&CStack_60);
   local_18._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffffa8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa8);
   local_18 = (uint)local_18._1_3_ << 8;
-  CString::~CString((CString *)&stack0xffffffac);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffac);
   local_18 = 0xffffffff;
   ReleaseOrCacheQuickDrawSurface();
   *unaff_FS_OFFSET = uStack_20;

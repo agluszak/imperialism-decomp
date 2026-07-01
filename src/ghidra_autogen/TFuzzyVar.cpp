@@ -22,7 +22,7 @@ TFuzzyVar * TFuzzyVar::ConstructTFuzzyVarBaseState(byte param_1)
 {
   TFuzzySet::CreateTFuzzySetInstance((TFuzzySet *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -38,8 +38,8 @@ TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
 
 {
   undefined4 *puVar1;
-  
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x14);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }

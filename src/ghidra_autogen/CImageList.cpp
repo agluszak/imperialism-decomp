@@ -3,20 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: CImageList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005E6AA4
-// GHIDRA_NAME CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4
-// GHIDRA_PROTO undefined __thiscall WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(int param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x005E69E7
+// GHIDRA_NAME CImageList::?Create@CImageList@@QAEHHHIHH@Z
+// GHIDRA_PROTO int __thiscall ?Create@CImageList@@QAEHHHIHH@Z(int param_1, int param_2, uint param_3, int param_4, int param_5)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CImageList::Create(int,int,unsigned int,int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
 
-bool CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(int param_1)
+/* Library Function - Single Match
+    public: int __thiscall CImageList::Create(int,int,unsigned int,int,int)
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall
+CImageList::_Create_CImageList__QAEHHHIHH_Z
+          (CImageList *this,int param_1,int param_2,uint param_3,int param_4,int param_5)
+
+{
+  HIMAGELIST p_Var1;
+  int iVar2;
+
+  p_Var1 = ImageList_Create(param_1,param_2,param_3,param_4,param_5);
+  iVar2 = _Attach_CImageList__QAEHPAU_IMAGELIST___Z(this,(int)p_Var1);
+  return iVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6AA4
+// GHIDRA_NAME CImageList::?Attach@CImageList@@QAEHPAU_IMAGELIST@@@Z
+// GHIDRA_PROTO undefined __thiscall ?Attach@CImageList@@QAEHPAU_IMAGELIST@@@Z(int param_1)
+
+bool CImageList::_Attach_CImageList__QAEHPAU_IMAGELIST___Z(int param_1)
 
 {
   TNetMgr *this_00;
   undefined4 *puVar1;
-  
+
   if (param_1 != 0) {
-    this_00 = (TNetMgr *)afxMapHIMAGELIST(1);
+    this_00 = (TNetMgr *)_afxMapHMENU__YAPAVCHandleMap__H_Z(1);
     *(int *)(this + 4) = param_1;
-    puVar1 = (undefined4 *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_00,param_1);
+    puVar1 = (undefined4 *)TNetMgr::__ACMapPtrToPtr__QAEAAPAXPAX_Z(this_00,param_1);
     *puVar1 = this;
   }
   return param_1 != 0;

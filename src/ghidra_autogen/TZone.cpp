@@ -16,12 +16,12 @@ undefined4 __fastcall TZone::CreateTZone(undefined4 param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006356ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TZone *)AllocateWithFallbackHandler(0x48,param_1);
+  this = (TZone *)__2_YAPAXI_Z(0x48,param_1);
   local_4 = 0;
   if (this != (TZone *)0x0) {
     uVar1 = TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(this);
@@ -43,13 +43,13 @@ TZone * TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00635709;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TZoneVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  CString::CString((CString *)&this->field_0x8);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x8);
   *(undefined4 *)&this->field_0x28 = 0;
   *(undefined4 *)&this->field_0x2c = 0;
   *(undefined4 *)&this->field_0x30 = 0;
@@ -75,7 +75,7 @@ TZone * TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList()
     *(TZone **)(*(int *)&this->field_0x18 + 0x1c) = this;
   }
   if (g_pMapActionContextDistanceCache != (void *)0x0) {
-    FreeHeapBufferIfNotNull(g_pMapActionContextDistanceCache);
+    __3_YAXPAX_Z(g_pMapActionContextDistanceCache);
     g_pMapActionContextDistanceCache = (void *)0x0;
   }
   *unaff_FS_OFFSET = local_c;
@@ -95,7 +95,7 @@ int * TZone::GetOrAppendUniqueZonePointerInPrimaryArray(int param_1)
   int *piVar4;
   int iVar5;
   undefined4 uVar6;
-  
+
   uVar3 = 0;
   uVar2 = *(uint *)&this->field_0xc;
   if (uVar2 != 0) {
@@ -118,9 +118,9 @@ LAB_0055e90c:
       if (0x7fffffff < uVar3) {
         uVar3 = 0x7fffffff;
       }
-      iVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 8);
+      iVar5 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 8);
       if (iVar5 == 0) {
-        uVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 4);
+        uVar6 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 4);
         *(undefined4 *)&this->field_0x4 = uVar6;
         *(int *)&this->field_0x8 = iVar1;
       }
@@ -151,7 +151,7 @@ void TZone::AppendZonePointerToPrimaryArray(undefined4 param_1)
   int iVar3;
   undefined4 uVar4;
   uint uVar5;
-  
+
   uVar2 = *(uint *)&this->field_0xc;
   if (*(uint *)&this->field_0x8 <= uVar2) {
     iVar1 = uVar2 + 1;
@@ -159,9 +159,9 @@ void TZone::AppendZonePointerToPrimaryArray(undefined4 param_1)
     if (0x7fffffff < uVar5) {
       uVar5 = 0x7fffffff;
     }
-    iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 8);
+    iVar3 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 8);
     if (iVar3 == 0) {
-      uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 4);
+      uVar4 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 4);
       *(undefined4 *)&this->field_0x4 = uVar4;
       *(int *)&this->field_0x8 = iVar1;
     }
@@ -189,7 +189,7 @@ void TZone::AppendZonePointerToSecondaryArray(undefined4 param_1)
   int iVar3;
   undefined4 uVar4;
   uint uVar5;
-  
+
   uVar2 = *(uint *)&this->field_0xc;
   if (*(uint *)&this->field_0x8 <= uVar2) {
     iVar1 = uVar2 + 1;
@@ -197,9 +197,9 @@ void TZone::AppendZonePointerToSecondaryArray(undefined4 param_1)
     if (0x7fffffff < uVar5) {
       uVar5 = 0x7fffffff;
     }
-    iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 8);
+    iVar3 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 8);
     if (iVar3 == 0) {
-      uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 4);
+      uVar4 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 4);
       *(undefined4 *)&this->field_0x4 = uVar4;
       *(int *)&this->field_0x8 = iVar1;
     }
@@ -228,7 +228,7 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(undefined4 param_1, s
   undefined2 extraout_var_00;
   undefined2 extraout_var_01;
   undefined2 extraout_var_02;
-  
+
   *(short *)&this->field_0x12 = (short)param_1;
   if (param_2 == -1) {
     param_2 = ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(param_1,0);
@@ -267,7 +267,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity
   int iVar5;
   int iVar6;
   void *unaff_EDI;
-  
+
   iVar5 = *(int *)&g_pGlobalMapState->field_0xc + (short)param_1 * 0x24;
   if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + (short)param_1 * 0x24) != '\x05') {
     return 0;
@@ -295,7 +295,8 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity
         pTVar4 = g_pMapActionContextListHead;
         if ((pcVar1[0x16] == '\x03') || (pcVar1[0x16] == '\x0e')) {
           while ((pTVar4 != (TZone *)0x0 &&
-                 (iVar3 = CObject::IsKindOf((CObject *)pTVar4), iVar3 == 0))) {
+                 (iVar3 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)pTVar4),
+                 iVar3 == 0))) {
             pTVar4 = *(TZone **)&pTVar4->field_0x18;
           }
           for (; pTVar4 != (TZone *)0x0; pTVar4 = TZone::GetNextPortZone(pTVar4,unaff_EDI)) {
@@ -348,7 +349,7 @@ void TZone::ResetTPortZoneToSentinelVtableAndReleaseResources()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00635808;
   *unaff_FS_OFFSET = &local_c;
@@ -367,13 +368,13 @@ void TZone::ResetTPortZoneToSentinelVtableAndReleaseResources()
   *(undefined4 *)&this->field_0x18 = 0;
   *(undefined4 *)&this->field_0x34 = 0x65c754;
   if (*(int *)&this->field_0x38 != 0) {
-    FreeHeapBlockWithAllocatorTracking(*(int *)&this->field_0x38);
+    _free(*(int *)&this->field_0x38);
   }
   *(undefined4 *)&this->field_0x24 = 0x65c750;
   if (*(int *)&this->field_0x28 != 0) {
-    FreeHeapBlockWithAllocatorTracking(*(int *)&this->field_0x28);
+    _free(*(int *)&this->field_0x28);
   }
-  CString::~CString((CString *)&this->field_0x8);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x8);
   this->vftable = (TZoneVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -400,7 +401,7 @@ void TZone::SerializeTPortZoneToBinaryStream(int *param_1)
 {
   int iVar1;
   code *pcVar2;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0xac))(&this->field_0x8);
@@ -422,7 +423,7 @@ undefined4 TZone::IsPortZoneOwnerNationEqual(short param_1)
 
 {
   short sVar1;
-  
+
   sVar1 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
                           *(short *)&this[1].vftable * 0x24);
   return CONCAT31((int3)(CONCAT22((short)((uint)(*(short *)&this[1].vftable * 9) >> 0x10),sVar1) >>
@@ -443,10 +444,11 @@ void * TZone::GetNextPortZone(void *pCurrentPortZone)
 {
   CObjectVtbl *this_00;
   int iVar1;
-  
+
   this_00 = *(CObjectVtbl **)&this->field_0x18;
   while ((this_00 != (CObjectVtbl *)0x0 &&
-         (iVar1 = CObject::IsKindOf((CObject *)this_00), iVar1 == 0))) {
+         (iVar1 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z((CObject *)this_00),
+         iVar1 == 0))) {
     this_00 = ((CObject *)(this_00 + 3))->vftable;
   }
   return (CObject *)this_00;
@@ -461,7 +463,7 @@ undefined4 TZone::CanPortZoneInteractWithNationUnderDiplomacyRules(int param_1)
 {
   char cVar1;
   short sVar2;
-  
+
   if ((*(short *)&this->field_0x44 < 1) || (*(TZone **)(param_1 + 0x18) == this)) {
     return 0;
   }
@@ -489,7 +491,7 @@ void TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00635878;
   *unaff_FS_OFFSET = &local_c;
@@ -508,13 +510,13 @@ void TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList()
   *(undefined4 *)&this->field_0x18 = 0;
   *(undefined4 *)&this->field_0x34 = 0x65c754;
   if (*(int *)&this->field_0x38 != 0) {
-    FreeHeapBlockWithAllocatorTracking(*(int *)&this->field_0x38);
+    _free(*(int *)&this->field_0x38);
   }
   *(undefined4 *)&this->field_0x24 = 0x65c750;
   if (*(int *)&this->field_0x28 != 0) {
-    FreeHeapBlockWithAllocatorTracking(*(int *)&this->field_0x28);
+    _free(*(int *)&this->field_0x28);
   }
-  CString::~CString((CString *)&this->field_0x8);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x8);
   this->vftable = (TZoneVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;

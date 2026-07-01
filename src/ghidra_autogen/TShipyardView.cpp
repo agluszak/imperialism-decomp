@@ -43,12 +43,12 @@ TNoHilitePicture * TShipyardView::CreateTShipyardViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063166a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xcc);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0xcc);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
@@ -95,7 +95,7 @@ TShipyardView * TShipyardView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -171,7 +171,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
   undefined1 local_5;
   undefined1 local_4;
   undefined1 local_3;
-  
+
   local_6 = 0;
   local_5 = 0;
   local_4 = 0;
@@ -327,7 +327,7 @@ void TShipyardView::OrphanRetStub_004c6fb0()
   undefined4 uStack_c;
   undefined4 uStack_8;
   undefined4 uStack_4;
-  
+
   (**(code **)(**(int **)&this->field_0x98 + 0x1dc))();
   uStack_10 = 0x16;
   uStack_c = 0xb4;
@@ -360,7 +360,7 @@ void TShipyardView::OrphanRetStub_0059add0(int param_1, int param_2)
   code *apcStack_20 [3];
   _vslot_fn *p_Stack_14;
   int iStack_4;
-  
+
   uVar10 = (undefined2)((uint)this >> 0x10);
   if (param_1 == 0xc) {
     sVar6 = *(short *)(param_2 + 0x1c) + -0x7430;
@@ -461,12 +461,12 @@ TShipyardView::OrphanTiny_ReturnZero_0048a730
   undefined1 *puStack_8;
   undefined4 local_4;
   short nCommoditySpriteId;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006316bb;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_84);
+  CString::__0CString__QAE_XZ(&local_84);
   local_28[1] = 0x19;
   local_28[6] = 0x19;
   local_48 = *(undefined4 *)pDialogState;
@@ -532,10 +532,9 @@ TShipyardView::OrphanTiny_ReturnZero_0048a730
                    (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_58,&local_68,
                    0x24,(astruct_19 *)0x0);
         SetQuickDrawTextOriginWithContextOffset(local_68.right,0xb2);
-        FormatStringWithVarArgsToSharedRef(&local_84,&g_szDecimalFormat,(int)pnCommoditySlotInfo[4])
-        ;
+        _Format_CString__QAAXPBDZZ(&local_84,&g_szDecimalFormat,(int)pnCommoditySlotInfo[4]);
         THQButton::DrawTextWithCachedQuickDrawStyleState(&local_84);
-        FormatStringWithVarArgsToSharedRef
+        _Format_CString__QAAXPBDZZ
                   (&local_84,&g_szDecimalFormat,
                    (int)*(short *)(*(int *)&this->field_0x94 + 0xb6 + *pnCommoditySlotInfo * 2));
         if (*(short *)(*(int *)&this->field_0x94 + 0xb6 + *pnCommoditySlotInfo * 2) <
@@ -597,7 +596,7 @@ TShipyardView::OrphanTiny_ReturnZero_0048a730
       default:
         goto switchD_004c9540_default;
       }
-      FormatStringWithVarArgsToSharedRef(&local_84,&g_szDecimalFormat,nMetricValue);
+      _Format_CString__QAAXPBDZZ(&local_84,&g_szDecimalFormat,nMetricValue);
 switchD_004c9540_default:
       unaff_EBP = nValueTextY + 0x3c;
       SetQuickDrawTextOriginWithContextOffset(unaff_EBP,uVar1);
@@ -607,7 +606,7 @@ switchD_004c9540_default:
   }
   UpdatePaletteIndexWithDefaultFallback(0x13);
   local_4 = 0xffffffff;
-  CString::~CString(&local_84);
+  CString::__1CString__QAE_XZ(&local_84);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -630,25 +629,25 @@ TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006316f0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   local_4 = 0;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_4._0_1_ = 1;
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   local_4._0_1_ = 2;
-  CString::CString(&local_10,PTR_g_szEmptyString_00651028);
+  CString::__0CString__QAE_PBD_Z(&local_10,PTR_g_szEmptyString_00651028);
   local_4._0_1_ = 3;
-  CString::AssignFromPtr(param_1,&local_10);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,&local_10);
   local_4 = CONCAT31(local_4._1_3_,2);
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   iVar1 = param_2 * 2;
   if (*(short *)(&g_industryActionCostWeightResCode09 + iVar1) != 0) {
-    FormatStringWithVarArgsToSharedRef
+    _Format_CString__QAAXPBDZZ
               (&local_14,&g_szDecimalFormat,
                (int)*(short *)(&g_industryActionCostWeightResCode09 + iVar1));
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)(9,&local_18);
@@ -656,7 +655,7 @@ TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
     scanBracketExpressions(g_pLocalizationTable,param_1,local_1c.m_pchData);
   }
   if (*(short *)(&g_industryActionCostWeightResCode08 + iVar1) != 0) {
-    FormatStringWithVarArgsToSharedRef
+    _Format_CString__QAAXPBDZZ
               (&local_14,&g_szDecimalFormat,
                (int)*(short *)(&g_industryActionCostWeightResCode08 + iVar1));
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)(8,&local_18);
@@ -664,7 +663,7 @@ TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
     scanBracketExpressions(g_pLocalizationTable,param_1,local_1c.m_pchData);
   }
   if (*(short *)(&g_industryActionCostWeightResCode10 + iVar1) != 0) {
-    FormatStringWithVarArgsToSharedRef
+    _Format_CString__QAAXPBDZZ
               (&local_14,&g_szDecimalFormat,
                (int)*(short *)(&g_industryActionCostWeightResCode10 + iVar1));
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)(0x10,&local_18);
@@ -672,11 +671,11 @@ TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
     scanBracketExpressions(g_pLocalizationTable,param_1,local_1c.m_pchData);
   }
   local_4._0_1_ = 1;
-  CString::~CString(&local_1c);
+  CString::__1CString__QAE_XZ(&local_1c);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_18);
+  CString::__1CString__QAE_XZ(&local_18);
   local_4 = 0xffffffff;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -732,12 +731,12 @@ void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631718;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_34);
+  CString::__0CString__QAE_XZ(&local_34);
   local_4 = 0;
   p_Var5 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
   local_30 = p_Var5;
@@ -788,7 +787,7 @@ void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
     p_Var6 = p_Var5;
   } while ((short)iVar4 < 6);
   uStack_2c = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffffa4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffa4);
   *unaff_FS_OFFSET = local_34.m_pchData;
   return;
 }
@@ -801,7 +800,7 @@ void TShipyardView::OrphanCallChain_C1_I15_004c9d20(int param_1)
 
 {
   ushort uVar1;
-  
+
   uVar1 = *(byte *)(param_1 + 0x1c) & 0xf;
   if ((uVar1 != *(ushort *)&this->field_0xa2) &&
      (*(short *)(&this->field_0xa4 + (short)uVar1 * 2) != 0)) {

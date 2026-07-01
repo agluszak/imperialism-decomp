@@ -15,12 +15,12 @@ TUpDownPictureButton * TSidewaysArrow::CreateTSidewaysArrowInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063754a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x98);
+  this = (TUpDownPictureButton *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (TUpDownPictureButton *)0x0) {
     TUpDownPictureButton::ConstructPictureScreenResourceEntry(this);
@@ -65,7 +65,7 @@ TSidewaysArrow * TSidewaysArrow::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -83,7 +83,7 @@ TSidewaysArrow::QueueCityRecruitmentSupportCommandsIfDeficit
   char cVar2;
   uint uVar3;
   int iVar4;
-  
+
   TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit((TControl *)this,param_1,param_2,param_3,param_4);
   if (param_1 != 2) {
     uVar3 = GetTickCountDiv16();

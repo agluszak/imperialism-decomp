@@ -15,12 +15,12 @@ TEditText * TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638eba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TEditText *)AllocateWithFallbackHandler(0xb0);
+  this = (TEditText *)__2_YAPAXI_Z(0xb0);
   local_4 = 0;
   if (this != (TEditText *)0x0) {
     TEditText::ConstructUiNumericTextEntryBase(this);
@@ -75,7 +75,7 @@ TDropShadowNumberText * TDropShadowNumberText::_scalar_deleting_destructor_(byte
 {
   TView::DestructTEditTextAndMaybeFree((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -94,14 +94,14 @@ void TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730()
   int iStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638ed8;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   TEditText::OrphanTiny_ReturnZero_0048a730((TEditText *)this);
   SetQuickDrawColorAndPropagateIfChanged(*(undefined4 *)&this->field_0xac);
-  CString::CString((CString *)&stack0x00000004);
+  CString::__0CString__QAE_XZ((CString *)&stack0x00000004);
   pTVar1 = this->vftable;
   local_4 = 0;
   (*pTVar1[0x3b].slot_0x04)(&stack0x00000004);
@@ -109,7 +109,7 @@ void TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730()
   (*pTVar1[0x3a].slot_0x04)
             (local_4,*(undefined4 *)(local_4 + -8),&stack0xffffffdc,
              CONCAT22((short)((uint)(unaff_EDI + -1) >> 0x10),*(undefined2 *)&this->field_0x90));
-  CString::~CString(aCStack_14);
+  CString::__1CString__QAE_XZ(aCStack_14);
   *unaff_FS_OFFSET = unaff_EDI + -1;
   return;
 }

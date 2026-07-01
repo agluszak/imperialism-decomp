@@ -15,12 +15,12 @@ TView * TForeignMinisterView::CreateTForeignMinisterViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632a2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)__2_YAPAXI_Z(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -65,7 +65,7 @@ TForeignMinisterView * TForeignMinisterView::_scalar_deleting_destructor_(byte p
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -82,7 +82,7 @@ TForeignMinisterView::OrphanRetStub_0059add0
   uint uVar1;
   TForeignMinisterViewVtbl *pTVar2;
   undefined uVar3;
-  
+
   uVar1 = *(uint *)(param_2 + 0x1c);
   if (param_1 == 0x14) {
     if (uVar1 < 0x65787070) {
@@ -142,7 +142,7 @@ void TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0()
 {
   TForeignMinisterViewVtbl *pTVar1;
   undefined uVar2;
-  
+
   if (g_pLocalizationTable->field_0x14 == '\0') {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();

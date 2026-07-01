@@ -16,12 +16,12 @@ TView * TTradeTotalsView::CreateTTradeTotalsViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063987a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -64,7 +64,7 @@ TTradeTotalsView * TTradeTotalsView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -125,13 +125,13 @@ void TTradeTotalsView::OrphanCallChain_C11_I88_004874b0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006398a8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pCStack_34 = (CString *)0x5c1bf7;
-  CString::CString(&local_20);
+  CString::__0CString__QAE_XZ(&local_20);
   local_4 = 0;
   local_18 = 0;
   local_17 = 0;
@@ -142,10 +142,10 @@ void TTradeTotalsView::OrphanCallChain_C11_I88_004874b0()
   local_1a = 0;
   local_19 = 0;
   pCStack_34 = (CString *)0x5c1c26;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4._0_1_ = 1;
   pCStack_34 = (CString *)0x5c1c34;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   pCStack_34 = &local_20;
   uStack_38 = 0x17;
   uStack_3c = 0x2740;
@@ -300,7 +300,7 @@ void TTradeTotalsView::OrphanCallChain_C11_I88_004874b0()
     uStack_94 = 0x1c;
     CStack_98.m_pchData = (char *)0x2740;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    FormatStringWithVarArgsToSharedRef
+    _Format_CString__QAAXPBDZZ
               (&ppppuStack_7c,&g_szDecimalFormat,
                (int)(char)g_apNationStates[*(short *)&this->field_0x60]->field_0x8f4);
     scanBracketExpressions(g_pLocalizationTable,&CStack_88,pcStack_78);
@@ -366,11 +366,11 @@ void TTradeTotalsView::OrphanCallChain_C11_I88_004874b0()
   THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_8c);
   SetQuickDrawFillColorFromPaletteIndex(0);
   ppppuStack_7c._0_1_ = 1;
-  CString::~CString(&CStack_8c);
+  CString::__1CString__QAE_XZ(&CStack_8c);
   ppppuStack_7c = (undefined1 ****)((uint)ppppuStack_7c._1_3_ << 8);
-  CString::~CString(&CStack_88);
+  CString::__1CString__QAE_XZ(&CStack_88);
   ppppuStack_7c = (undefined1 ****)0xffffffff;
-  CString::~CString(&CStack_98);
+  CString::__1CString__QAE_XZ(&CStack_98);
   *unaff_FS_OFFSET = uStack_84;
   return;
 }

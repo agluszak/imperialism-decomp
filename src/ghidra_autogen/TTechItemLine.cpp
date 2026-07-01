@@ -16,12 +16,12 @@ TLineData * TTechItemLine::CreateTTechItemLineInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006389ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)AllocateWithFallbackHandler(0x18);
+  this = (TLineData *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (this != (TLineData *)0x0) {
@@ -58,12 +58,12 @@ void TTechItemLine::OrphanRetStub_0056f460()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006389da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (TTechItemView *)AllocateWithFallbackHandler(0x68);
+  this_00 = (TTechItemView *)__2_YAPAXI_Z(0x68);
   local_4 = 0;
   this_01 = (TTechItemView *)0x0;
   if (this_00 != (TTechItemView *)0x0) {

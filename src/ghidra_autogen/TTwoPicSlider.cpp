@@ -12,7 +12,7 @@ TTwoPicSlider * TTwoPicSlider::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -50,12 +50,12 @@ TControl * TTwoPicSlider::CreateTTwoPicSliderInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063611a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x98);
+  this = (TControl *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::TControl(this);
@@ -97,7 +97,7 @@ void TTwoPicSlider::ConstructTTwoPicSliderBaseState(int param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00636138;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -155,7 +155,7 @@ void TTwoPicSlider::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636158;
@@ -190,7 +190,7 @@ void TTwoPicSlider::OrphanTiny_ReturnZero_0048a730()
                (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_1c,0,
                (astruct_19 *)0x0);
     if (*(short *)&this->field_0x90 < 0xc) {
-      CString::CString(&local_20);
+      CString::__0CString__QAE_XZ(&local_20);
       local_4 = 0;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2743,0x3b,&local_20);
       ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b6c);
@@ -208,7 +208,7 @@ void TTwoPicSlider::OrphanTiny_ReturnZero_0048a730()
       SetQuickDrawTextOriginWithContextOffset(iVar2,iVar3 + 4);
       THQButton::DrawTextWithCachedQuickDrawStyleState(&local_20);
       local_4 = 0xffffffff;
-      CString::~CString(&local_20);
+      CString::__1CString__QAE_XZ(&local_20);
     }
   }
   *unaff_FS_OFFSET = local_c;
@@ -236,7 +236,7 @@ TTwoPicSlider::QueueCityRecruitmentSupportCommandsIfDeficit
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636178;

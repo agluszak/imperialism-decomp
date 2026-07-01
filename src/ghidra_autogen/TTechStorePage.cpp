@@ -12,7 +12,7 @@ TTechStorePage * TTechStorePage::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -46,7 +46,7 @@ TTechStorePage * TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0(b
 {
   DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -66,15 +66,15 @@ TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062dfc8;
   *unaff_FS_OFFSET = &uStack_c;
-  AfxGetModuleState();
-  BeginWaitCursor();
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  _BeginWaitCursor_CCmdTarget__QAEXXZ();
   uStack_4 = 0;
-  piVar1 = (int *)AllocateWithFallbackHandler(8);
+  piVar1 = (int *)__2_YAPAXI_Z(8);
   if (piVar1 == (int *)0x0) {
     piVar1 = (int *)0x0;
   }
@@ -92,8 +92,8 @@ TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
   }
   (**(code **)(*piVar1 + 0x1c))();
   (*this->vftable->VTableSlot19)(1);
-  AfxGetModuleState();
-  EndWaitCursor();
+  _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+  _EndWaitCursor_CCmdTarget__QAEXXZ();
   *unaff_FS_OFFSET = uVar2;
   return;
 }
@@ -111,12 +111,12 @@ TPageView * TTechStorePage::CreateTTechStorePageInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063897a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPageView *)AllocateWithFallbackHandler(0x84);
+  this = (TPageView *)__2_YAPAXI_Z(0x84);
   local_4 = 0;
   pTVar1 = (TPageView *)0x0;
   if (this != (TPageView *)0x0) {
@@ -155,7 +155,7 @@ TTechStorePage::ConstructTTechStorePageBaseState(int *param_1,TLineDataVtbl *par
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063899a;
@@ -163,7 +163,7 @@ TTechStorePage::ConstructTTechStorePageBaseState(int *param_1,TLineDataVtbl *par
   iVar2 = 0x1c;
   do {
     if ((&g_pCityOrderCapabilityState->field_0x180)[(short)iVar2] != '\0') {
-      this = (TLineData *)AllocateWithFallbackHandler(0x18);
+      this = (TLineData *)__2_YAPAXI_Z(0x18);
       local_4 = 0;
       if (this == (TLineData *)0x0) {
         this = (TLineData *)0x0;
@@ -201,7 +201,7 @@ TTechStorePage * TTechStorePage::DestructTTechStorePageAndMaybeFree(byte param_1
 {
   DestructTTechStorePageAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

@@ -22,7 +22,7 @@ TTedForeignMinister * TTedForeignMinister::ConstructTTedForeignMinister()
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(undefined4 *)&this->field_0x49 = 0x1010101;
   *(undefined2 *)&this->field_0x4d = 0x101;
   this->field_0x4f = 1;
@@ -50,7 +50,7 @@ TTedForeignMinister * TTedForeignMinister::DeletingDestructTMinister(byte param_
 {
   TTedForeignMinister::DestructTTedForeignMinister(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -85,7 +85,7 @@ void TTedForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uVar7;
   undefined4 uVar8;
   int *piVar9;
-  
+
   piVar1 = *(int **)&this->field_0x4;
   if ((&g_pCityOrderCapabilityState->field_0x27b)[*(short *)(*(int *)&this->field_0x4 + 0xc) * 0x1d]
       != '\x02') {
@@ -100,7 +100,7 @@ void TTedForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
       *(undefined2 *)&this->field_0x44 = 4;
     }
     *(undefined2 *)&this->field_0x42 = 2;
-    iVar4 = GenerateThreadLocalRandom15();
+    iVar4 = _rand();
     if (iVar4 < 0x3ffe) {
       *(undefined2 *)&this->field_0x46 = 0;
       TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920((TForeignMinister *)this);
@@ -174,7 +174,7 @@ LAB_0053144b:
       *(undefined2 *)&this->field_0x44 = 2;
     }
   }
-  iVar4 = GenerateThreadLocalRandom15(uVar7,uVar8,piVar9);
+  iVar4 = _rand(uVar7,uVar8,piVar9);
   if (iVar4 < 0x3ffe) {
     *(undefined2 *)&this->field_0x46 = 0;
     TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920((TForeignMinister *)this);
@@ -206,7 +206,7 @@ void TTedForeignMinister::SetForeignMinisterReadyFlag14()
   int *piVar7;
   int iVar8;
   undefined2 *puVar9;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1[9].GetTMinisterClassNamePointer)();
   uVar6 = extraout_var_00;
@@ -304,7 +304,7 @@ TTedForeignMinister::UpdateControlCachedIntFromWindowText
   undefined2 uVar5;
   undefined4 unaff_retaddr;
   short sVar6;
-  
+
   sVar2 = (short)param_4;
   sVar6 = (short)param_2;
   if (*(short *)(&this->field_0x1e + sVar2 * 2) != 0) {
@@ -394,7 +394,7 @@ void TTedForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
   int iVar6;
   short sVar7;
   short local_8 [4];
-  
+
   sVar7 = 0;
   sVar4 = 0;
   local_8[0] = 0;
@@ -406,7 +406,7 @@ void TTedForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
       return;
     }
     sVar4 = sVar4 + 1;
-    uVar2 = GenerateThreadLocalRandom15();
+    uVar2 = _rand();
     uVar3 = (int)uVar2 >> 0x1f;
     iVar6 = (((uVar2 ^ uVar3) - uVar3 & 0xf ^ uVar3) - uVar3) + 7;
     sVar5 = (short)iVar6;

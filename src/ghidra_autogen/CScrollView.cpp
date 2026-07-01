@@ -4,10 +4,10 @@
 // Bucket: CScrollView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615A34
-// GHIDRA_NAME CScrollView::DoMouseWheel
-// GHIDRA_PROTO undefined __thiscall DoMouseWheel(short param_1)
+// GHIDRA_NAME CScrollView::?DoMouseWheel@CScrollView@@QAEHIFVCPoint@@@Z
+// GHIDRA_PROTO undefined __thiscall ?DoMouseWheel@CScrollView@@QAEHIFVCPoint@@@Z(short param_1)
 
-int CScrollView::DoMouseWheel(short param_1)
+int CScrollView::_DoMouseWheel_CScrollView__QAEHIFVCPoint___Z(short param_1)
 
 {
   int iVar1;
@@ -19,12 +19,13 @@ int CScrollView::DoMouseWheel(short param_1)
   int iVar7;
   int iVar8;
   short in_stack_00000008;
-  
-  uVar5 = GetStyle();
+
+  uVar5 = _GetStyle_CWnd__QBEKXZ();
   iVar1 = *(int *)this;
   pcVar2 = *(code **)(iVar1 + 0x70);
   iVar6 = (*pcVar2)(1);
-  if (((iVar6 == 0) || (iVar6 = IsWindowEnabled(), iVar6 == 0)) && ((uVar5 & 0x200000) == 0)) {
+  if (((iVar6 == 0) || (iVar6 = _IsWindowEnabled_CWnd__QBEHXZ(), iVar6 == 0)) &&
+     ((uVar5 & 0x200000) == 0)) {
     bVar3 = false;
   }
   else {
@@ -32,14 +33,14 @@ int CScrollView::DoMouseWheel(short param_1)
   }
   iVar6 = (*pcVar2)(0);
   iVar8 = 0;
-  if (((iVar6 != 0) && (iVar6 = IsWindowEnabled(), iVar6 != 0)) ||
+  if (((iVar6 != 0) && (iVar6 = _IsWindowEnabled_CWnd__QBEHXZ(), iVar6 != 0)) ||
      (bVar4 = false, (uVar5 & 0x100000) != 0)) {
     bVar4 = true;
   }
   if ((!bVar3) && (!bVar4)) {
     return 0;
   }
-  iVar6 = AfxGetMouseScrollLines(0);
+  iVar6 = __AfxGetMouseScrollLines__YAIH_Z(0);
   if (bVar3) {
     iVar7 = MulDiv(-(int)in_stack_00000008,iVar6,0x78);
     if ((iVar7 == -1) || (iVar6 == -1)) {

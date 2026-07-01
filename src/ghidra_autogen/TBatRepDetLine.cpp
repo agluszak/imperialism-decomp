@@ -12,7 +12,7 @@ TBatRepDetLine * TBatRepDetLine::WrapperFor_FreeHeapBufferIfNotNull_At004affd0(b
 {
   TBatRepDetLine::CreateTBatRepDetLineInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -80,7 +80,7 @@ void TBatRepDetLine::OrphanRetStub_0056f460(int *param_1, undefined4 param_2)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00630ba0;
@@ -89,7 +89,7 @@ void TBatRepDetLine::OrphanRetStub_0056f460(int *param_1, undefined4 param_2)
   uVar1 = *(uint *)(*(int *)&this->field_0x14 + 0x28);
   if (uVar1 < 0x6974656e) {
     if (uVar1 == 0x6974656d) {
-      pTVar2 = (TView *)AllocateWithFallbackHandler(100);
+      pTVar2 = (TView *)__2_YAPAXI_Z(100);
       uStack_4 = 6;
       if (pTVar2 == (TView *)0x0) {
 LAB_004b0206:
@@ -106,7 +106,7 @@ LAB_004b0208:
       goto LAB_004b04e9;
     }
     if (uVar1 != 0x61726d79) goto LAB_004b04e9;
-    pTVar2 = (TView *)AllocateWithFallbackHandler(100);
+    pTVar2 = (TView *)__2_YAPAXI_Z(100);
     uStack_4 = 0;
     if (pTVar2 == (TView *)0x0) {
       pTVar2 = (TView *)0x0;
@@ -118,7 +118,7 @@ LAB_004b0208:
     uStack_4 = 0xffffffff;
     InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
     pTVar2[1].vftable = *(TViewVtbl **)&this->field_0x14;
-    pTVar3 = (TArmyCheckBox *)AllocateWithFallbackHandler(0x94);
+    pTVar3 = (TArmyCheckBox *)__2_YAPAXI_Z(0x94);
     uStack_4 = 1;
     if (pTVar3 == (TArmyCheckBox *)0x0) {
       pTVar3 = (TArmyCheckBox *)0x0;
@@ -142,7 +142,7 @@ LAB_004b0208:
     uVar5 = 1;
   }
   else if (uVar1 == 0x6d657263) {
-    pTVar2 = (TView *)AllocateWithFallbackHandler(100);
+    pTVar2 = (TView *)__2_YAPAXI_Z(100);
     uStack_4 = 4;
     if (pTVar2 == (TView *)0x0) {
       pTVar2 = (TView *)0x0;
@@ -168,7 +168,7 @@ LAB_004b0208:
     uStack_12 = 0;
     uStack_10 = 0;
     uStack_e = 0;
-    pTVar3 = (TArmyCheckBox *)AllocateWithFallbackHandler(0x94);
+    pTVar3 = (TArmyCheckBox *)__2_YAPAXI_Z(0x94);
     uStack_4 = 5;
     if (pTVar3 == (TArmyCheckBox *)0x0) {
       pTVar3 = (TArmyCheckBox *)0x0;
@@ -194,14 +194,14 @@ LAB_004b0208:
   else {
     if (uVar1 != 0x6e617679) {
       if (uVar1 != 0x72757074) goto LAB_004b04e9;
-      pTVar2 = (TView *)AllocateWithFallbackHandler(100);
+      pTVar2 = (TView *)__2_YAPAXI_Z(100);
       uStack_4 = 7;
       if (pTVar2 == (TView *)0x0) goto LAB_004b0206;
       TView::ConstructTViewBaseState(pTVar2);
       pTVar2->vftable = (TViewVtbl *)&TInterruptusViewVtbl_0064e7d8;
       goto LAB_004b0208;
     }
-    pTVar2 = (TView *)AllocateWithFallbackHandler(100);
+    pTVar2 = (TView *)__2_YAPAXI_Z(100);
     uStack_4 = 2;
     if (pTVar2 == (TView *)0x0) {
       pTVar2 = (TView *)0x0;
@@ -227,7 +227,7 @@ LAB_004b0208:
     uStack_12 = 800;
     uStack_10 = 0x3c0;
     uStack_e = 0x460;
-    pTVar3 = (TArmyCheckBox *)AllocateWithFallbackHandler(0x94);
+    pTVar3 = (TArmyCheckBox *)__2_YAPAXI_Z(0x94);
     uStack_4 = 3;
     if (pTVar3 == (TArmyCheckBox *)0x0) {
       pTVar3 = (TArmyCheckBox *)0x0;

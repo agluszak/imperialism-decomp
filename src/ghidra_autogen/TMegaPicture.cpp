@@ -15,12 +15,12 @@ thunk_TPictureButton * TMegaPicture::CreateTMegaPictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006365da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0xac);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0xac);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -69,7 +69,7 @@ TMegaPicture * TMegaPicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -90,7 +90,7 @@ void TMegaPicture::OrphanTiny_ReturnZero_0048a730(LONG *param_1)
   LONG local_2c;
   RECT local_28;
   RECT RStack_18;
-  
+
   local_30 = *param_1;
   local_2c = param_1[1];
   local_28.left = param_1[2];
@@ -162,7 +162,7 @@ void TMegaPicture::SetPictureResourceIdAndRefresh(undefined4 param_1)
   LONG LStack_14;
   undefined1 auStack_10 [12];
   LONG LStack_4;
-  
+
   puVar1 = &this->field_0x94;
   if (*(int *)&this->field_0x94 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(puVar1);
@@ -206,9 +206,9 @@ void TMegaPicture::SetPictureResourceIdAndRefresh(undefined4 param_1)
         this_00->vftable = (TAnimationVtbl *)0x64c340;
         TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
                   (this_00);
-        FreeHeapBufferIfNotNull(this_00);
+        __3_YAXPAX_Z(this_00);
       }
-      FreeHeapBufferIfNotNull(piVar3);
+      __3_YAXPAX_Z(piVar3);
       uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
       NoOpQuickDrawLifecycleHookB(uVar5);
       SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);

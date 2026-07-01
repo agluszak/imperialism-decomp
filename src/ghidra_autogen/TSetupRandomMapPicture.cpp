@@ -24,14 +24,14 @@ TSetupRandomMapPicture * TSetupRandomMapPicture::ConstructTSetupRandomMapPicture
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636918;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   local_4 = 0;
-  CString::CString((CString *)&this->field_0x94);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x94);
   this->field_0x98 = 0;
   this->field_0xa4 = 0;
   this->vftable = &TSetupRandomMapPictureVtbl_006621e0;
@@ -48,7 +48,7 @@ TSetupRandomMapPicture * TSetupRandomMapPicture::_scalar_deleting_destructor_(by
 {
   TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -64,12 +64,12 @@ void TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00636938;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  CString::~CString((CString *)&this->field_0x94);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x94);
   local_4 = 0xffffffff;
   TView::DestructCityDialogSharedBaseState((TView *)this);
   *unaff_FS_OFFSET = local_c;
@@ -133,7 +133,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063697a;
@@ -144,7 +144,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   EnsurePictWvDataGobLoadedBySlot();
   *(undefined2 *)&g_pLocalizationTable->field_0x114 = 0;
   if (g_pGlobalMapState == (TMapMgr *)0x0) {
-    iVar4 = GenerateThreadLocalRandom15();
+    iVar4 = _rand();
     *(short *)&this->field_0x9a = (short)(iVar4 % 7);
     uStack_34 = 0x57709d;
     GenerateMappedFlavorTextByCurrentContextNation();
@@ -152,12 +152,13 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   }
   else {
     uStack_34 = 0x5770b8;
-    CString::AssignFromPtr((CString *)&this->field_0x94,(CString *)&g_pGlobalMapState->field_0x1c);
+    CString::__4CString__QAEABV0_ABV0__Z
+              ((CString *)&this->field_0x94,(CString *)&g_pGlobalMapState->field_0x1c);
     this->field_0x98 = g_pGlobalMapState->field_0x20;
     bVar10 = DAT_00698ab0 == -1;
     *(short *)&this->field_0x9a = DAT_00698ab0;
     if (bVar10) {
-      iVar4 = GenerateThreadLocalRandom15();
+      iVar4 = _rand();
       *(short *)&this->field_0x9a = (short)(iVar4 % 7);
     }
     uStack_34 = 0x5770fd;
@@ -299,7 +300,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   pTStack_68 = (TCommand *)0x20;
   ((int *)CONCAT31(extraout_var_03,uVar3))[0x1a] = (int)*(short *)&this->field_0x9a;
   aiStack_70[1] = 0x577345;
-  pTVar5 = (TCommand *)AllocateWithFallbackHandler();
+  pTVar5 = (TCommand *)__2_YAPAXI_Z();
   uStack_3c = 0;
   CStack_4c.m_pchData = (char *)pTVar5;
   if (pTVar5 == (TCommand *)0x0) {
@@ -335,7 +336,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   piVar8[0x1c] = piVar8[0xe];
   if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
     g_pLocalizationTable->field_0x68 = (char)*(undefined2 *)&g_pLocalizationTable->field_0x62;
-    CString::CString(&CStack_64);
+    CString::__0CString__QAE_XZ(&CStack_64);
     CStack_4c.m_pchData = (char *)0x2;
     pCStack_7c = (CString *)0x57746e;
     GenerateMappedFlavorTextByCurrentContextNation();
@@ -348,9 +349,9 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
     pCVar6 = (CString *)NormalizeRuntimeCredentialNameToken();
     CStack_4c.m_pchData._0_1_ = 3;
     pCStack_7c = (CString *)0x5774b2;
-    CString::AssignFromPtr((CString *)&DAT_006a4220,pCVar6);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&DAT_006a4220,pCVar6);
     CStack_4c.m_pchData._0_1_ = 2;
-    CString::~CString(&CStack_60);
+    CString::__1CString__QAE_XZ(&CStack_60);
   }
   else {
     pCStack_7c = &CStack_64;
@@ -358,10 +359,10 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
     pCVar6 = (CString *)NormalizeRuntimeCredentialNameToken();
     CStack_4c.m_pchData = (char *)0x1;
     pCStack_7c = (CString *)0x57743b;
-    CString::AssignFromPtr((CString *)&DAT_006a4220,pCVar6);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&DAT_006a4220,pCVar6);
   }
   CStack_4c.m_pchData = (char *)0xffffffff;
-  CString::~CString(&CStack_64);
+  CString::__1CString__QAE_XZ(&CStack_64);
   pCStack_7c = (CString *)0x1;
   pCStack_80 = (CString *)0x2b6b;
   pCStack_84 = (CString *)0xc;
@@ -393,7 +394,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   ppuStack_90 = (undefined4 **)CONCAT31(extraout_var_06,uVar3);
   ApplyUiTextStyleAndThemeFlags();
   pCStack_80 = (CString *)0x57755b;
-  CString::CString(&CStack_4c);
+  CString::__0CString__QAE_XZ(&CStack_4c);
   pCStack_80 = (CString *)0x2;
   pCStack_88 = &CStack_4c;
   pCStack_84 = (CString *)0x2758;
@@ -471,7 +472,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
     (**(code **)(*piVar8 + 0xc))();
   }
   ppuStack_94 = (undefined4 **)0xffffffff;
-  CString::~CString(&CStack_8c);
+  CString::__1CString__QAE_XZ(&CStack_8c);
   *unaff_FS_OFFSET = uVar13;
   return;
 }
@@ -502,7 +503,7 @@ TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   CVar2.m_pchData = param_2.m_pchData;
   iStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
@@ -565,38 +566,38 @@ TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     }
     if (uVar7 != 0x706c616e) goto LAB_00577ce4;
   }
-  CString::StringSharedRef_AssignFromPtr(&param_2,(CString *)&this->field_0x94);
+  CString::__0CString__QAE_ABV0__Z(&param_2,(CString *)&this->field_0x94);
   uStack_4 = 1;
-  CString::CString(&CStack_40);
+  CString::__0CString__QAE_XZ(&CStack_40);
   uStack_4._0_1_ = 2;
-  CString::CString(aCStack_38);
+  CString::__0CString__QAE_XZ(aCStack_38);
   uStack_4._0_1_ = 3;
-  CString::CString(&CStack_3c);
+  CString::__0CString__QAE_XZ(&CStack_3c);
   uStack_4 = CONCAT31(uStack_4._1_3_,4);
   LoadUiStringResourceByGroupAndIndex(&CStack_40,0x2758);
   LoadUiStringResourceByGroupAndIndex(aCStack_38,0x2758);
   LoadUiStringResourceByGroupAndIndex(&CStack_3c,0x2758);
   iVar6 = RunTaggedOptionDialogAndReturnSelectionTag(CStack_40.m_pchData,&param_2,0,0,0);
   this->field_0x98 = iVar6 == 0x6f6e6531;
-  iVar6 = CompareAnsiStringsWithMbcsAwareness(param_2.m_pchData);
+  iVar6 = __mbscmp(param_2.m_pchData);
   if (iVar6 == 0) {
 LAB_00577c8c:
     g_pGlobalMapState->field_0x20 = this->field_0x98;
   }
   else {
-    iVar6 = CompareAnsiStringsWithMbcsAwareness(param_2.m_pchData);
+    iVar6 = __mbscmp(param_2.m_pchData);
     if (iVar6 == 0) goto LAB_00577c8c;
-    CString::AssignFromPtr((CString *)&this->field_0x94,&param_2);
+    CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x94,&param_2);
     TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview((TSpaceCommand *)this);
   }
   uStack_4._0_1_ = 3;
-  CString::~CString(&CStack_3c);
+  CString::__1CString__QAE_XZ(&CStack_3c);
   uStack_4._0_1_ = 2;
-  CString::~CString(aCStack_38);
+  CString::__1CString__QAE_XZ(aCStack_38);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  CString::~CString(&CStack_40);
+  CString::__1CString__QAE_XZ(&CStack_40);
   uStack_4 = 0xffffffff;
-  CString::~CString(&param_2);
+  CString::__1CString__QAE_XZ(&param_2);
 LAB_00577ce4:
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   *unaff_FS_OFFSET = iStack_c;
@@ -632,7 +633,7 @@ void TSetupRandomMapPicture::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   short sVar1;
-  
+
   sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
     (*this->vftable->ApplyNationSelectionAndMaybePostTurnEvent5E4)();

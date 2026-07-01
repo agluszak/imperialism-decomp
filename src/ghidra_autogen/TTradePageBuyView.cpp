@@ -12,7 +12,7 @@ TTradePageBuyView * TTradePageBuyView::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TPageView * TTradePageBuyView::CreateTTradePageBuyViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006393da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPageView *)AllocateWithFallbackHandler(0x88);
+  this = (TPageView *)__2_YAPAXI_Z(0x88);
   local_4 = 0;
   pTVar1 = (TPageView *)0x0;
   if (this != (TPageView *)0x0) {
@@ -82,7 +82,7 @@ void TTradePageBuyView::ConstructTTradePageBuyViewBaseState(short param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   TTextLine *pTStack_4;
-  
+
   pTStack_4 = (TTextLine *)0xffffffff;
   puStack_8 = &LAB_00639404;
   local_c = *unaff_FS_OFFSET;
@@ -105,7 +105,7 @@ void TTradePageBuyView::ConstructTTradePageBuyViewBaseState(short param_1)
     }
     else {
 LAB_005bd73a:
-      pTStack_4 = (TTextLine *)AllocateWithFallbackHandler(0x20);
+      pTStack_4 = (TTextLine *)__2_YAPAXI_Z(0x20);
       iVar8 = 0;
       local_c = 0;
       if (pTStack_4 == (TTextLine *)0x0) {
@@ -128,7 +128,7 @@ LAB_005bd73a:
         cVar3 = (*g_pNationInteractionStateManager->vftable[0xf].GetTTradeMgrClassNamePointer)
                           ((int)param_1,iVar8);
         if (cVar3 != '\0') {
-          pTVar6 = (TTextLine *)AllocateWithFallbackHandler(0x14);
+          pTVar6 = (TTextLine *)__2_YAPAXI_Z(0x14);
           local_c = 1;
           pTStack_4 = pTVar6;
           if (pTVar6 == (TTextLine *)0x0) {
@@ -166,7 +166,7 @@ TTradePageBuyView * TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(byt
 {
   TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

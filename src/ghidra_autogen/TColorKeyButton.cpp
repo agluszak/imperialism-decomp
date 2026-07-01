@@ -16,12 +16,12 @@ TColorKeyPicture * TColorKeyButton::CreateTColorKeyButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063648a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TColorKeyPicture *)AllocateWithFallbackHandler(0x9c);
+  this = (TColorKeyPicture *)__2_YAPAXI_Z(0x9c);
   local_4 = 0;
   pTVar1 = (TColorKeyPicture *)0x0;
   if (this != (TColorKeyPicture *)0x0) {
@@ -64,7 +64,7 @@ TColorKeyButton * TColorKeyButton::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -80,7 +80,7 @@ void TColorKeyButton::OrphanCallChain_C2_I28_00571ff0(char param_1)
   undefined4 in_EAX;
   undefined4 uVar2;
   char unaff_retaddr;
-  
+
   if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
     this->field_0x64 = param_1;
@@ -107,7 +107,7 @@ void TColorKeyButton::OrphanCallChain_C1_I05_00572060()
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
                     /* WARNING: Could not recover jumptable at 0x00572069. Too many branches */
                     /* WARNING: Treating indirect jump as call */

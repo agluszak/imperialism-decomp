@@ -22,7 +22,7 @@ TTraderForeignMinister * TTraderForeignMinister::ConstructTTraderForeignMinister
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(undefined4 *)&this->field_0x49 = 0x1010101;
   *(undefined2 *)&this->field_0x4d = 0x101;
   this->field_0x4f = 1;
@@ -50,7 +50,7 @@ TTraderForeignMinister * TTraderForeignMinister::DeletingDestructTMinister(byte 
 {
   TTraderForeignMinister::DestructTTraderForeignMinister(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -87,19 +87,19 @@ void TTraderForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006341ea;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  this_00 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   iVar5 = 0;
   local_4 = 0;
   if (this_00 == (TIndexAndRankList *)0x0) {
     this_00 = (TIndexAndRankList *)0x0;
   }
   else {
-    TIndexAndRankList::CPtrArray(this_00);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(this_00);
     this_00->vftable = (TIndexAndRankListVtbl *)&TSortByPriceList::_vftable_;
   }
   pTVar1 = this_00->vftable;
@@ -173,7 +173,7 @@ void TTraderForeignMinister::SetForeignMinisterReadyFlag14()
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   iStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063420a;
@@ -202,14 +202,14 @@ void TTraderForeignMinister::SetForeignMinisterReadyFlag14()
     puVar11 = puVar11 + 1;
     iVar9 = iVar9 + -1;
   } while (iVar9 != 0);
-  uStack_20 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  uStack_20 = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   uStack_4 = 0;
   pTStack_10 = uStack_20;
   if (uStack_20 == (TIndexAndRankList *)0x0) {
     uStack_20 = (TIndexAndRankList *)0x0;
   }
   else {
-    TIndexAndRankList::CPtrArray(uStack_20);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(uStack_20);
     uStack_20->vftable = (TIndexAndRankListVtbl *)&TSortByPriceList::_vftable_;
   }
   pTVar10 = uStack_20;
@@ -277,7 +277,7 @@ TTraderForeignMinister::UpdateControlCachedIntFromWindowText
   undefined4 unaff_EBX;
   undefined4 unaff_retaddr;
   short in_stack_00000010;
-  
+
   if (*(short *)(&this->field_0x1e + in_stack_00000010 * 2) != 0) {
     TForeignMinister::UpdateControlCachedIntFromWindowText
               ((TForeignMinister *)this,param_1,(short)param_2);
@@ -316,7 +316,7 @@ TTraderForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
   short sVar6;
   short sVar7;
   short local_8 [4];
-  
+
   sVar7 = 0;
   sVar6 = 0;
   local_8[0] = 0;
@@ -328,7 +328,7 @@ TTraderForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
       return;
     }
     sVar6 = sVar6 + 1;
-    uVar3 = GenerateThreadLocalRandom15();
+    uVar3 = _rand();
     uVar5 = (int)uVar3 >> 0x1f;
     iVar4 = (((uVar3 ^ uVar5) - uVar5 & 0xf ^ uVar5) - uVar5) + 7;
     sVar2 = (short)iVar4;

@@ -12,7 +12,7 @@ TNavyHumanPlayer * TNavyHumanPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ef
 {
   TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -49,7 +49,7 @@ void TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(undefined4 param_1)
   int iVar1;
   int iVar2;
   int iVar3;
-  
+
   iVar3 = 1;
   do {
     iVar1 = (**(code **)(**(int **)&this->field_0x4 + 0x4c))(iVar3);
@@ -75,7 +75,7 @@ TNavyHumanPlayer * TNavyHumanPlayer::DestructTNavyHumanPlayerAndMaybeFree(byte p
 {
   TNavyAutoPlayer::CreateTNavyAutoPlayerInstance((TNavyAutoPlayer *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

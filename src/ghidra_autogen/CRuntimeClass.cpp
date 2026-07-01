@@ -4,10 +4,10 @@
 // Bucket: CRuntimeClass.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607077
-// GHIDRA_NAME CRuntimeClass::IsDerivedFrom
-// GHIDRA_PROTO undefined __thiscall IsDerivedFrom(CRuntimeClass * param_1)
+// GHIDRA_NAME CRuntimeClass::?IsDerivedFrom@CRuntimeClass@@QBEHPBU1@@Z
+// GHIDRA_PROTO undefined __thiscall ?IsDerivedFrom@CRuntimeClass@@QBEHPBU1@@Z(CRuntimeClass * param_1)
 
-undefined4 CRuntimeClass::IsDerivedFrom(CRuntimeClass *param_1)
+undefined4 CRuntimeClass::_IsDerivedFrom_CRuntimeClass__QBEHPBU1__Z(CRuntimeClass *param_1)
 
 {
   while( true ) {

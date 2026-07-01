@@ -31,12 +31,12 @@ TCivilianButton * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637afa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCivilianButton *)AllocateWithFallbackHandler(0xa0);
+  this = (TCivilianButton *)__2_YAPAXI_Z(0xa0);
   local_4 = 0;
   pTVar1 = (TCivilianButton *)0x0;
   if (this != (TCivilianButton *)0x0) {
@@ -81,7 +81,7 @@ TCivilianButton * TCivilianButton::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -96,7 +96,7 @@ void TCivilianButton::SetSelectionAndEnableByMappedValue(int param_1)
   TCivilianButtonVtbl *pTVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  
+
   *(undefined4 *)&this->field_0x60 = 0xc;
   *(int *)&this->field_0x9c = param_1;
   if (param_1 != 0) {
@@ -120,7 +120,7 @@ void TCivilianButton::OrphanTiny_ReturnZero_0048a730()
 {
   RECT local_20;
   RECT local_10;
-  
+
   if (this->field04 != 0) {
     TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   }

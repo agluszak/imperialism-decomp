@@ -12,7 +12,7 @@ TFrameRadioView * TFrameRadioView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -35,7 +35,7 @@ void TFrameRadioView::OrphanTiny_ReturnZero_0048a730()
 
 {
   tagRECT tStack_10;
-  
+
   if (this->field_0x64 != '\0') {
     tStack_10.right = this->field34;
     tStack_10.bottom = this->field38;
@@ -59,7 +59,7 @@ void TFrameRadioView::OrphanRetStub_0059add0(int param_1)
 {
   TFrameRadioViewVtbl *pTVar1;
   char cVar2;
-  
+
   switch(param_1) {
   case 10:
     (*this->vftable->OrphanTiny_ReturnZero_0048a730)(0x1f,this,0);
@@ -104,7 +104,7 @@ void TFrameRadioView::OrphanCallChain_C2_I18_004fe190(char param_1, char param_2
 
 {
   TFrameRadioViewVtbl *pTVar1;
-  
+
   if ((param_1 != this->field_0x64) && (this->field_0x64 = param_1, param_2 != '\0')) {
     pTVar1 = this->vftable;
     (*pTVar1->VTableSlot39)();

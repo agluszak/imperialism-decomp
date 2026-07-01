@@ -11,7 +11,7 @@ void TTrainingOrder::CreateTTrainingOrderInstance(short param_1)
 
 {
   short *psVar1;
-  
+
   psVar1 = (short *)(*(int *)&this->field_0x10 + 8);
   *psVar1 = *psVar1 + param_1;
   psVar1 = (short *)(*(int *)&this->field_0x14 + 8);
@@ -40,7 +40,7 @@ TTrainingOrder * TTrainingOrder::ConstructTTrainingOrderBaseState(byte param_1)
 {
   TTrainingOrder::DestructTTrainingOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -67,7 +67,7 @@ TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = param_2;
@@ -100,7 +100,7 @@ int TTrainingOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   int iVar6;
   undefined4 unaff_EDI;
   short local_4;
-  
+
   if (*(short *)&this->field_0x48 == 1) {
     local_4 = 1;
     iVar6 = 100;
@@ -162,7 +162,7 @@ undefined4 TTrainingOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   undefined3 extraout_var;
   int iVar5;
   short sVar6;
-  
+
   sVar6 = param_1 - *(short *)&this->field_0x4;
   uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar3) < param_1) || (param_1 < 0)) {
@@ -203,7 +203,7 @@ void TTrainingOrder::CreateTItemOrderInstance()
 
 {
   short sStack00000004;
-  
+
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   if (*(short *)&this->field_0x48 == 1) {
     *(short *)(_sStack00000004 + 0x14) = sStack00000004;
@@ -225,7 +225,7 @@ void TTrainingOrder::OrphanRetStub_004b5160()
   int iVar2;
   int *piVar3;
   int iVar4;
-  
+
   sVar1 = *(short *)&this->field_0x4;
   if (sVar1 != 0) {
     iVar2 = *(int *)(*(int *)&this->field_0xc + 0x10);

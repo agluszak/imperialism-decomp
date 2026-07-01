@@ -15,12 +15,12 @@ thunk_TPictureButton * TOnOffRadioButton::CreateTOnOffRadioButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063644a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -69,7 +69,7 @@ TOnOffRadioButton * TOnOffRadioButton::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -111,7 +111,7 @@ TOnOffRadioButton::OrphanCallChain_C2_I16_00571b20
 {
   TOnOffRadioButtonVtbl *pTVar1;
   char cVar2;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {

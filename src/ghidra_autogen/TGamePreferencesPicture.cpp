@@ -32,7 +32,7 @@ TGamePreferencesPicture * TGamePreferencesPicture::_scalar_deleting_destructor_(
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -50,12 +50,12 @@ thunk_TPictureButton * TGamePreferencesPicture::CreateTGamePreferencesPictureIns
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635c9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -149,14 +149,14 @@ void TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635cda;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   piVar9 = (int *)DAT_006a2158[1];
   uStack_54 = 0x56a5df;
-  CString::CString(&local_38);
+  CString::__0CString__QAE_XZ(&local_38);
   local_4 = 0;
   uStack_58 = 0x56a5f3;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
@@ -397,7 +397,7 @@ LAB_0056a843:
       if (DAT_006a21b8 == (int *)0x0) {
         piStack_88 = (int *)0x30;
         uStack_8c = 0x56aa66;
-        pTStack_30 = (THelpMgr *)AllocateWithFallbackHandler();
+        pTStack_30 = (THelpMgr *)__2_YAPAXI_Z();
         local_38.m_pchData._0_1_ = 3;
         if (pTStack_30 == (THelpMgr *)0x0) {
           DAT_006a21b8 = (int *)0x0;
@@ -427,7 +427,7 @@ LAB_0056a843:
       ppiStack_98 = (int **)0x56aac3;
       (**(code **)(iVar5 + 0xa4))();
       ppiStack_98 = (int **)0x56aacc;
-      CString::CString(&CStack_84);
+      CString::__0CString__QAE_XZ(&CStack_84);
       ppiStack_98 = (int **)0x18;
       pCStack_a0 = &CStack_84;
       uStack_9c = 0x2763;
@@ -508,9 +508,9 @@ LAB_0056a843:
       SetSelectedTextOptionByTag
                 ((-(uint)(pcStack_ac != (code *)0x0) & 0xaf60404) + 0x6e6f6f6f,0);
       uStack_90 = uStack_90 & 0xffffff00;
-      CString::~CString(&CStack_cc);
+      CString::__1CString__QAE_XZ(&CStack_cc);
       uStack_90 = 0xffffffff;
-      CString::~CString(&CStack_c4);
+      CString::__1CString__QAE_XZ(&CStack_c4);
       *unaff_FS_OFFSET = ppiStack_98;
       return;
     }
@@ -546,7 +546,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined1 *puStack_8;
   undefined4 uStack_4;
   undefined3 extraout_var_01;
-  
+
   CVar9.m_pchData = param_2.m_pchData;
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
@@ -635,7 +635,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   }
   if (((param_1 == 4) && (0x6f707460 < *(uint *)((int)CVar9.m_pchData + 0x1c))) &&
      (*(uint *)((int)CVar9.m_pchData + 0x1c) < 0x6f70747b)) {
-    CString::CString(&param_2);
+    CString::__0CString__QAE_XZ(&param_2);
     iVar8 = *(int *)((int)CVar9.m_pchData + 0x1c);
     iVar3 = *(int *)CVar9.m_pchData;
     uStack_4 = 0;
@@ -649,7 +649,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     (**(code **)(iVar8 + 0x1ec))(&puStack_8,1);
     (**(code **)(iVar8 + 0x1f8))(1);
     uStack_4 = 0xffffffff;
-    CString::~CString(&param_2);
+    CString::__1CString__QAE_XZ(&param_2);
   }
   *unaff_FS_OFFSET = uStack_c;
   return;

@@ -37,7 +37,7 @@ TOffersPanelView * TOffersPanelView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -85,13 +85,13 @@ void TOffersPanelView::OrphanCallChain_C6_I49_004875d0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632e90;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   puStack_38 = (undefined1 *)0x4f9017;
-  CString::CString(&local_24);
+  CString::__0CString__QAE_XZ(&local_24);
   puStack_38 = &local_20;
   local_4 = 0;
   local_12 = 0;
@@ -167,14 +167,14 @@ void TOffersPanelView::OrphanCallChain_C6_I49_004875d0()
   AssignStringSharedRefAndReturnThis(&CStack_6c);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   uStack_84 = 0x4f91f9;
-  CString::CString((CString *)&stack0xffffffbc,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z((CString *)&stack0xffffffbc,(char *)&g_szEmptyString);
   uStack_84 = 0x4f920c;
-  CString::AssignFromPtr(&CStack_6c,(CString *)&stack0xffffffbc);
-  CString::~CString((CString *)&stack0xffffffbc);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_6c,(CString *)&stack0xffffffbc);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffbc);
   puStack_64 = (undefined1 *)&uStack_84;
   AssignStringSharedRefAndReturnThis(&CStack_6c);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  CString::~CString(&CStack_6c);
+  CString::__1CString__QAE_XZ(&CStack_6c);
   *unaff_FS_OFFSET = uStack_54;
   return;
 }
@@ -189,7 +189,7 @@ TOffersPanelView::OrphanRetStub_0059add0
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)(param_2 + 0x1c);
   if (((param_1 != 5) && (param_1 == 10)) && ((iVar1 == 0x61636365 || (iVar1 == 0x72656a65)))) {
     *(int *)&this->field_0x64 = iVar1;
@@ -211,7 +211,7 @@ void TOffersPanelView::OrphanTiny_ReturnZero_0048a730(int param_1)
   undefined3 extraout_var_00;
   undefined2 extraout_var_01;
   int iVar3;
-  
+
   sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
     uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x61636365);
@@ -285,7 +285,7 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00632ec0;
   uStack_c = *unaff_FS_OFFSET;
@@ -296,13 +296,13 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
   local_1c[0].m_pchData = (char *)p_Var9;
   local_14 = this;
   (*p_Var9)();
-  CString::CString((CString *)&stack0xffffffd4);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffd4);
   puStack_8 = (undefined1 *)0x0;
-  CString::CString(&CStack_28);
+  CString::__0CString__QAE_XZ(&CStack_28);
   puStack_8._0_1_ = 1;
-  CString::CString(&CStack_24);
+  CString::__0CString__QAE_XZ(&CStack_24);
   puStack_8._0_1_ = 2;
-  CString::CString(local_1c);
+  CString::__0CString__QAE_XZ(local_1c);
   puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
   FormatOverlayTerrainLabelText();
   FormatOverlayTerrainLabelText();
@@ -404,18 +404,18 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
       PumpUiMessagesAndBackgroundTasks(1);
     } while (iRam736865c9 == 0);
     if (iRam736865c9 == 0x61636365) {
-      CString::~CString((CString *)&stack0xffffffbc);
-      CString::~CString((CString *)&stack0xffffffb4);
-      CString::~CString((CString *)&stack0xffffffb0);
-      CString::~CString(&CStack_54);
+      CString::__1CString__QAE_XZ((CString *)&stack0xffffffbc);
+      CString::__1CString__QAE_XZ((CString *)&stack0xffffffb4);
+      CString::__1CString__QAE_XZ((CString *)&stack0xffffffb0);
+      CString::__1CString__QAE_XZ(&CStack_54);
       uVar8 = 1;
       goto LAB_004f98e5;
     }
   }
-  CString::~CString((CString *)&stack0xffffffbc);
-  CString::~CString((CString *)&stack0xffffffb4);
-  CString::~CString((CString *)&stack0xffffffb0);
-  CString::~CString(&CStack_54);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffbc);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb0);
+  CString::__1CString__QAE_XZ(&CStack_54);
   uVar8 = 0;
 LAB_004f98e5:
   *unaff_FS_OFFSET = unaff_EDI;

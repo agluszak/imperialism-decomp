@@ -10,15 +10,15 @@
 void CWinApp::WrapperFor_WriteProfileInt_At00415510(undefined4 param_1,undefined4 param_2)
 
 {
-  FUN_0061880f(PTR_s_Settings_0063e044,param_1,param_2);
+  _WriteProfileInt_CWinApp__QAEHPBD0H_Z(PTR_s_Settings_0063e044,param_1,param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618704
-// GHIDRA_NAME CWinApp::CloseAllDocuments_618704
-// GHIDRA_PROTO undefined __thiscall CloseAllDocuments_618704(void)
+// GHIDRA_NAME CWinApp::?CloseAllDocuments@CWinApp@@QAEXH@Z
+// GHIDRA_PROTO undefined __thiscall ?CloseAllDocuments@CWinApp@@QAEXH@Z(void)
 
-void CWinApp::CloseAllDocuments_618704()
+void CWinApp::_CloseAllDocuments_CWinApp__QAEXH_Z()
 
 {
   if (*(int **)(this + 0x80) != (int *)0x0) {

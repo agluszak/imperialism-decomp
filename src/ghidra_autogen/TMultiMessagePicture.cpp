@@ -26,7 +26,7 @@ TMultiMessagePicture * TMultiMessagePicture::_scalar_deleting_destructor_(byte p
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -64,7 +64,7 @@ TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   local_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634fc8;
@@ -82,7 +82,7 @@ TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       uVar4 = (*p_Var1)(0x6d657367);
       iVar7 = *(int *)CONCAT31(extraout_var,uVar4);
       (**(code **)(iVar7 + 0xc))();
-      CString::CString(&param_1);
+      CString::__0CString__QAE_XZ(&param_1);
       puStack_8 = (undefined1 *)0x0;
       (**(code **)(iVar7 + 0x1dc))(&param_1);
       iVar7 = 0;
@@ -100,7 +100,7 @@ TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       uVar6 = FindActiveNationSlotIndexInGameFlowList();
       CreateAndSendTurnEvent0C_Text256AndTwoFlags(&param_2,param_1.m_pchData,uVar6);
       uStack_4 = 0xffffffff;
-      CString::~CString(&param_2);
+      CString::__1CString__QAE_XZ(&param_2);
     }
     pTVar3 = g_pGlobalUiRootController->vftable;
     uVar4 = (*this->vftable->SetForeignMinisterReadyFlag14)();

@@ -12,7 +12,7 @@ TArmyBoyView * TArmyBoyView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -46,24 +46,24 @@ void TArmyBoyView::OrphanTiny_ReturnZero_0048a730()
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630970;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_30);
+  CString::__0CString__QAE_XZ(&local_30);
   local_4 = 0;
-  CString::CString(&local_34);
+  CString::__0CString__QAE_XZ(&local_34);
   local_4._0_1_ = 1;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
   local_38.m_pchData = (char *)0x1c474b;
   SetQuickDrawColorAndSyncGlobals();
   SetQuickDrawTextOriginWithContextOffset(0x40);
-  CString::CString(&local_38,(char *)(*(int *)&this->field_0x60 + 4));
+  CString::__0CString__QAE_PBD_Z(&local_38,(char *)(*(int *)&this->field_0x60 + 4));
   local_4._0_1_ = 2;
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   local_4._0_1_ = 1;
-  CString::~CString(&local_38);
+  CString::__1CString__QAE_XZ(&local_38);
   local_38.m_pchData = &stack0xffffffb8;
   SetQuickDrawFillColor();
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 2) / 0x19 + 1;
@@ -86,7 +86,7 @@ void TArmyBoyView::OrphanTiny_ReturnZero_0048a730()
   local_2c.bottom = 0x26;
   if (*(short *)(*(int *)&this->field_0x60 + 2) < 1) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1,0xc);
-    CString::CString(&local_38);
+    CString::__0CString__QAE_XZ(&local_38);
     local_4._0_1_ = 3;
     if (*(short *)(*(int *)&this->field_0x60 + 2) == -0x56) {
       uVar3 = 0x20;
@@ -99,7 +99,7 @@ void TArmyBoyView::OrphanTiny_ReturnZero_0048a730()
     SetQuickDrawTextOriginWithContextOffset(0x6a - (int)sVar1 / 2);
     THQButton::DrawTextWithCachedQuickDrawStyleState();
     local_4._0_1_ = 1;
-    CString::~CString(&local_38);
+    CString::__1CString__QAE_XZ(&local_38);
   }
   else {
     UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -139,9 +139,9 @@ void TArmyBoyView::OrphanTiny_ReturnZero_0048a730()
     SetQuickDrawStrokeColor();
   }
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_34);
+  CString::__1CString__QAE_XZ(&local_34);
   local_4 = 0xffffffff;
-  CString::~CString(&local_30);
+  CString::__1CString__QAE_XZ(&local_30);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -159,12 +159,12 @@ TView * TArmyBoyView::DestructTArmyBoyViewAndMaybeFree(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063099a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {

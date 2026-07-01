@@ -12,9 +12,9 @@ CBrush * CBrush::InitializeGlobalClipRegionHandleState()
 {
   CBrush *this_00;
   HRGN pHVar1;
-  
+
   *(undefined **)(this + 8) = &DAT_006a1ca0;
-  this_00 = (CBrush *)AllocateWithFallbackHandler(8);
+  this_00 = (CBrush *)__2_YAPAXI_Z(8);
   if (this_00 == (CBrush *)0x0) {
     this_00 = (CBrush *)0x0;
   }
@@ -24,7 +24,7 @@ CBrush * CBrush::InitializeGlobalClipRegionHandleState()
   }
   g_pGlobalClipRegionHandleObject = (int)this_00;
   pHVar1 = CreateRectRgn(0,0,0,0);
-  AttachRegionHandleToClipStateAndRegister(this_00,(int)pHVar1);
+  _Attach_CGdiObject__QAEHPAX_Z(this_00,(int)pHVar1);
   return this;
 }
 
@@ -37,12 +37,12 @@ void CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(REC
 {
   HRGN pHVar1;
   undefined4 uVar2;
-  
+
   if (*(int *)(this + 0x10) != 0) {
-    DeleteObject();
+    _DeleteObject_CGdiObject__QAEHXZ();
   }
   pHVar1 = CreateRectRgnIndirect(param_1);
-  uVar2 = AttachRegionHandleToClipStateAndRegister(this + 0x14,(int)pHVar1);
+  uVar2 = _Attach_CGdiObject__QAEHPAX_Z(this + 0x14,(int)pHVar1);
   *(undefined4 *)(this + 0x10) = uVar2;
   return;
 }
@@ -56,27 +56,56 @@ CBrush * CBrush::_scalar_deleting_destructor_(byte param_1)
 {
   CGdiObject::~CGdiObject((CGdiObject *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613A4C
-// GHIDRA_NAME CBrush::AttachRegionHandleToClipStateAndRegister
-// GHIDRA_PROTO undefined __thiscall AttachRegionHandleToClipStateAndRegister(int param_1)
+// GHIDRA_NAME CBrush::?Attach@CGdiObject@@QAEHPAX@Z
+// GHIDRA_PROTO undefined __thiscall ?Attach@CGdiObject@@QAEHPAX@Z(int param_1)
 
-bool CBrush::AttachRegionHandleToClipStateAndRegister(int param_1)
+bool CBrush::_Attach_CGdiObject__QAEHPAX_Z(int param_1)
 
 {
   TNetMgr *this_00;
   undefined4 *puVar1;
-  
+
   if (param_1 != 0) {
-    this_00 = (TNetMgr *)afxMapHIMAGELIST_6139c6(1);
+    this_00 = (TNetMgr *)_afxMapHMENU__YAPAVCHandleMap__H_Z(1);
     *(int *)(this + 4) = param_1;
-    puVar1 = (undefined4 *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_00,param_1);
+    puVar1 = (undefined4 *)TNetMgr::__ACMapPtrToPtr__QAEAAPAXPAX_Z(this_00,param_1);
     *puVar1 = this;
   }
   return param_1 != 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613C43
+// GHIDRA_NAME CBrush::?CreateDIBPatternBrush@CBrush@@QAEHPAXI@Z
+// GHIDRA_PROTO int __thiscall ?CreateDIBPatternBrush@CBrush@@QAEHPAXI@Z(void * param_1, uint param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CBrush::CreateDIBPatternBrush(void *,unsigned int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CBrush::CreateDIBPatternBrush(void *,unsigned int)
+
+   Library: nafxcw retail msvc500:static */
+
+int CBrush::_CreateDIBPatternBrush_CBrush__QAEHPAXI_Z(void *param_1, uint param_2)
+
+{
+  LPVOID lpPackedDIB;
+  HBRUSH pHVar1;
+  int iVar2;
+
+  lpPackedDIB = GlobalLock(param_1);
+  pHVar1 = CreateDIBPatternBrushPt(lpPackedDIB,param_2);
+  iVar2 = _Attach_CGdiObject__QAEHPAX_Z(this,(int)pHVar1);
+  GlobalUnlock(param_1);
+  return iVar2;
 }
 

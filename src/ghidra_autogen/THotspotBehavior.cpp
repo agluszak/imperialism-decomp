@@ -16,12 +16,12 @@ TBehavior * THotspotBehavior::CreateTHotspotBehaviorInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630c1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TBehavior *)AllocateWithFallbackHandler(0x10);
+  this = (TBehavior *)__2_YAPAXI_Z(0x10);
   local_4 = 0;
   pTVar1 = (TBehavior *)0x0;
   if (this != (TBehavior *)0x0) {
@@ -64,7 +64,7 @@ THotspotBehavior * THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree(byte p
 {
   DestructTHotspotBehaviorAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -81,12 +81,12 @@ uint THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00()
   undefined4 *puVar3;
   uint uVar4;
   int *piVar5;
-  
+
   piVar5 = *(int **)&this->field_0x8;
   if ((piVar5[7] != 0x444c4f47) && (piVar5[7] != 0x6d61696e)) {
     piVar5 = (int *)piVar5[8];
   }
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+  puVar3 = (undefined4 *)__2_YAPAXI_Z(0x14);
   if (puVar3 == (undefined4 *)0x0) {
     puVar3 = (undefined4 *)0x0;
   }

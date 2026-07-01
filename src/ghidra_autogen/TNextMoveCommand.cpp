@@ -16,13 +16,13 @@ void TNextMoveCommand::QueueTacticalEventPacket232A()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006385ea;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   this[2].field_0x10 = 0;
-  this_00 = (TCommand *)AllocateWithFallbackHandler(0x1c);
+  this_00 = (TCommand *)__2_YAPAXI_Z(0x1c);
   local_4 = 0;
   if (this_00 == (TCommand *)0x0) {
     pTVar1 = (TCommand *)0x0;
@@ -53,12 +53,12 @@ TCommand * TNextMoveCommand::CreateTNextMoveCommandInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063873a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCommand *)AllocateWithFallbackHandler(0x1c);
+  this = (TCommand *)__2_YAPAXI_Z(0x1c);
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
@@ -101,7 +101,7 @@ TNextMoveCommand * TNextMoveCommand::OrphanCallChain_C1_I17_00487470(byte param_
 {
   DestructTNextMoveCommandAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -115,7 +115,7 @@ void TNextMoveCommand::OrphanRetStub_00487a00()
 {
   int *piVar1;
   bool bVar2;
-  
+
   piVar1 = *(int **)&this->field_0x18;
   if (piVar1 == *(int **)&g_pMapContextActionManager->field_0x3a4) {
     if (piVar1[0x11] != 0) {

@@ -15,16 +15,16 @@ undefined4 * TTextLine::CreateTTextLineInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006362c2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = (undefined4 *)__2_YAPAXI_Z(0x20);
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &TLineDataVtbl_0065e230;
     local_4 = 1;
-    CString::CString((CString *)(puVar1 + 4));
+    CString::__0CString__QAE_XZ((CString *)(puVar1 + 4));
     *(undefined1 *)((int)puVar1 + 0x1a) = 0;
     *(undefined1 *)((int)puVar1 + 0x1b) = 0;
     *(undefined1 *)(puVar1 + 7) = 0;
@@ -58,13 +58,13 @@ TTextLine * TTextLine::ConstructTTextLineBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_006362e8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TTextLineVtbl *)&TLineDataVtbl_0065e230;
   local_4 = 0;
-  CString::CString((CString *)&this->field_0x10);
+  CString::__0CString__QAE_XZ((CString *)&this->field_0x10);
   this->field_0x1a = 0;
   this->field_0x1b = 0;
   this->field_0x1c = 0;
@@ -83,7 +83,7 @@ TTextLine * TTextLine::DestructTTextLineAndMaybeFree(byte param_1)
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00570340();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -104,12 +104,12 @@ void TTextLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063632a;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  this_00 = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  this_00 = (TStaticText *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this_00 == (TStaticText *)0x0) {
     piVar2 = (int *)0x0;

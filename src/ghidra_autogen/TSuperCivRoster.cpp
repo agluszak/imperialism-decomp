@@ -17,10 +17,10 @@
 // GHIDRA_COMMENT_END
 
 /* Cleans up a civilian-ledger dialog instance; optionally releases heap memory.
-   
+
    Parameters:
    - bFreeMemory: If low bit is set, frees the dialog object after destructor logic.
-   
+
    Returns:
    - this pointer. */
 
@@ -29,7 +29,7 @@ void * TSuperCivRoster::_scalar_deleting_destructor_(byte bFreeMemory)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((bFreeMemory & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -67,7 +67,7 @@ TSuperCivRoster::ConstructTSuperCivRosterBaseState
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063063a;
   uStack_c = *unaff_FS_OFFSET;
@@ -82,7 +82,7 @@ TSuperCivRoster::ConstructTSuperCivRosterBaseState
   if (iVar5 != 0) {
     p_Var1 = this->vftable->OrphanCallChain_C1_I06_0056fbb0;
     do {
-      this_00 = (TLineData *)AllocateWithFallbackHandler(0x14);
+      this_00 = (TLineData *)__2_YAPAXI_Z(0x14);
       local_4 = 0;
       if (this_00 == (TLineData *)0x0) {
         this_00 = (TLineData *)0x0;
@@ -120,7 +120,7 @@ TSuperCivRoster * TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree(byte para
 {
   DestructTSuperCivRosterAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -151,20 +151,20 @@ TSuperCivRoster * TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree(byte para
 
 /* Shows the civilian ledger/list dialog (also reachable via CTRL+Disband and hotkey 't') and
    applies the selected civilian as active map selection.
-   
+
    Algorithm:
    1. Acquire the map UI page manager and page container for the ledger context.
    2. Build and initialize the civilian-ledger dialog instance with page index 10.
    3. Enter modal dialog processing until the list selection is confirmed/cancelled.
    4. If a civilian index is selected, focus that entry in the map UI context.
    5. For active civilian task states (0/2/3), dispatch map selection update callback.
-   
+
    Parameters:
    - None.
-   
+
    Returns:
    - void.
-   
+
    Special Cases:
    - If no list item is selected (index -1), no selection update is applied.
    - Internal allocation/assertion failures follow engine nil-pointer/failure paths. */
@@ -191,7 +191,7 @@ void TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit()
   undefined1 *puStack_8;
   undefined4 uStack_4;
   int dwViewTypeId;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063a4d4;
   uStack_c = *unaff_FS_OFFSET;
@@ -215,7 +215,7 @@ void TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit()
   }
   iVar3 = pCivilianLedgerDialog[8];
   (**(code **)(*pCivilianLedgerDialog + 0x1c))();
-  this_00 = (TPageView *)AllocateWithFallbackHandler(0x88);
+  this_00 = (TPageView *)__2_YAPAXI_Z(0x88);
   uStack_c = 0;
   if (this_00 == (TPageView *)0x0) {
     this_00 = (TPageView *)0x0;
@@ -233,7 +233,7 @@ void TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit()
   uStack_20 = 0x2e;
   (*this_00->vftable[1].GetTEventHandlerClassNamePointer)(iVar3,&uStack_24,&pTStack_2c);
   this_00->controlTag = 0x70616765;
-  nLedgerPageHandle = AllocateWithFallbackHandler(0x94);
+  nLedgerPageHandle = __2_YAPAXI_Z(0x94);
   uStack_18 = 1;
   if (nLedgerPageHandle == 0) {
     uVar4 = 0;

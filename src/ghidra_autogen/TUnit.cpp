@@ -32,7 +32,7 @@ TUnit * TUnit::ConstructTUnitBaseState(byte param_1)
 {
   TUnit::DestructTUnitAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -92,7 +92,7 @@ void TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy()
 {
   int iVar1;
   int *piVar2;
-  
+
   if (this->field_0x1c == '\0') {
     iVar1 = *(int *)&g_apNationStates[*(short *)&this->field_0x18]->field_0x89c;
   }
@@ -100,10 +100,11 @@ void TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy()
     iVar1 = *(int *)&g_apTerrainTypeDescriptorTable[*(short *)&this->field_0x18]->field_0x44;
   }
   if (iVar1 != 0) {
-    piVar2 = (int *)TAutoGreatPower::Find
+    piVar2 = (int *)TAutoGreatPower::_Find_CPtrList__QBEPAU__POSITION__PAXPAU2__Z
                               ((TAutoGreatPower *)(iVar1 + 4),(int)this,(undefined4 *)0x0);
     if (piVar2 != (int *)0x0) {
-      TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)(iVar1 + 4),piVar2);
+      TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z
+                ((TAutoGreatPower *)(iVar1 + 4),piVar2);
     }
   }
   if (this != (TUnit *)0x0) {
@@ -136,21 +137,21 @@ void TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy()
 // GHIDRA_COMMENT_END
 
 /* Deserialize common unit-order core fields from archive stream and restore runtime links.
-   
+
    Algorithm:
    1. Enter archive read context for the order object.
    2. Read core fields in the same order used by SerializeUnitOrderCoreState.
    3. If loaded source tile index (+0x06) is valid, temporarily clear it and call order vfunc +0x28
    to relink runtime tile ownership/state, then restore owner index field.
    4. For save versions > 0x2D, read trailing 4-byte field at +0x20.
-   
+
    Parameters:
    - this (IMPLICIT): Unit-order state object.
    - pArchiveStream: Load/archive stream interface.
-   
+
    Returns:
    - void.
-   
+
    Versioning:
    - DAT_00695278 gates legacy-vs-newer layout for the +0x20 field. */
 
@@ -162,7 +163,7 @@ void TUnit::DeserializeUnitOrderCoreState(int *pArchiveStream)
   code *pReadBytesFn;
   undefined1 *pnSourceTileIndex;
   undefined2 wSavedOrderOwnerIndex;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)pArchiveStream);
   pReadBytesFn = *(code **)(*pArchiveStream + 0x3c);
   (*pReadBytesFn)(&this->field_0x4,2);
@@ -211,21 +212,21 @@ void TUnit::DeserializeUnitOrderCoreState(int *pArchiveStream)
 // GHIDRA_COMMENT_END
 
 /* Serialize common unit-order core fields to archive stream.
-   
+
    Algorithm:
    1. Enter archive write context for the order object.
    2. Write fixed-size core fields from this object in save order.
    3. Persist 2-byte fields at offsets +0x04, +0x06, +0x0C, +0x18, +0x1A.
    4. Persist 1-byte field at offset +0x1C.
    5. Persist 4-byte fields at offsets +0x08 and +0x20.
-   
+
    Parameters:
    - this (IMPLICIT): Unit-order state object.
    - pArchiveStream: Save/archive stream interface.
-   
+
    Returns:
    - void.
-   
+
    Notes:
    - Civ/Military serializers wrap this routine and append class-specific fields. */
 
@@ -233,7 +234,7 @@ void TUnit::SerializeUnitOrderCoreState(int *pArchiveStream)
 
 {
   code *pWriteBytesFn;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)pArchiveStream);
   pWriteBytesFn = *(code **)(*pArchiveStream + 0x78);
   (*pWriteBytesFn)(&this->field_0x4,2);

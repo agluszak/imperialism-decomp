@@ -25,7 +25,7 @@ TTacMapUberPicture * TTacMapUberPicture::_scalar_deleting_destructor_(byte param
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -42,12 +42,12 @@ TOffLimitsPicture * TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063883a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TOffLimitsPicture *)AllocateWithFallbackHandler(0x98);
+  this = (TOffLimitsPicture *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (TOffLimitsPicture *)0x0) {
     TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
@@ -79,7 +79,7 @@ void TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920((TMapUberUberPicture *)this);
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x444c4f47);
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0xc))();
@@ -98,7 +98,7 @@ void TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730()
   undefined uVar2;
   undefined3 extraout_var;
   undefined4 unaff_retaddr;
-  
+
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x444c4f47);
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(iVar1 + 0xc))();

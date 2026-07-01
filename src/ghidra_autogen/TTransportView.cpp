@@ -12,7 +12,7 @@ TTransportView * TTransportView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -47,12 +47,12 @@ void TTransportView::ApplyCityDialogMinisterValues(undefined4 param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631118;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   *(undefined4 *)&this->field_0x60 = param_1;
   sVar5 = 0;
   local_4 = 0;
@@ -108,7 +108,7 @@ void TTransportView::ApplyCityDialogMinisterValues(undefined4 param_1)
     sVar5 = *(short *)(puStack_8 + 0xa6);
   }
   (**(code **)(*piVar4 + 0x1e4))((int)sVar5,1);
-  CString::~CString((CString *)&stack0xffffffdc);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffdc);
   *unaff_FS_OFFSET = pcVar1;
   return;
 }
@@ -127,7 +127,7 @@ void TTransportView::GetTEventHandlerClassNamePointer()
   int iVar4;
   dword *pdVar5;
   code *pcStack_c;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7472616e);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

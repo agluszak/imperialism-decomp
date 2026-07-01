@@ -10,7 +10,7 @@
 void TStaticText::AssignSharedStringFromField84(CString *param_1)
 
 {
-  CString::AssignFromPtr(param_1,*(CString **)&this->field_0x84);
+  CString::__4CString__QAEABV0_ABV0__Z(param_1,*(CString **)&this->field_0x84);
   return;
 }
 
@@ -28,12 +28,12 @@ TView * TStaticText::CreateTStaticTextInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062effd;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x94);
+  this = (TView *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this == (TView *)0x0) {
     *unaff_FS_OFFSET = local_c;
@@ -56,10 +56,10 @@ TView * TStaticText::CreateTStaticTextInstance(void)
   *(undefined2 *)&this[1].field30 = 0;
   this->vftable = (TViewVtbl *)&_vftable_;
   this[1].vftable = (TViewVtbl *)0xd;
-  this_00 = (CString *)AllocateWithFallbackHandler(4);
+  this_00 = (CString *)__2_YAPAXI_Z(4);
   local_4 = CONCAT31(local_4._1_3_,2);
   if (this_00 != (CString *)0x0) {
-    CString::CString(this_00);
+    CString::__0CString__QAE_XZ(this_00);
     this[1].ownerOffsetX = extraout_EAX;
     *unaff_FS_OFFSET = local_c;
     return this;
@@ -96,13 +96,13 @@ CRuntimeClass * TStaticText::GetTEventHandlerClassNamePointer()
 // GHIDRA_COMMENT_END
 
 /* Base constructor for styled text UI resource entries.
-   
+
    Algorithm:
    1. Calls ConstructUiResourceEntryBase.
    2. Initializes text-style and bounds defaults.
    3. Allocates auxiliary style/state storage.
    4. Installs text-entry base vtable.
-   
+
    Returns:
    - this pointer. */
 
@@ -116,7 +116,7 @@ TStaticText * TStaticText::TStaticText()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f023;
   local_c = *unaff_FS_OFFSET;
@@ -138,13 +138,13 @@ TStaticText * TStaticText::TStaticText()
   *(undefined2 *)&this->field_0x90 = 0;
   this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x60 = 0xd;
-  this_00 = (CString *)AllocateWithFallbackHandler(4);
+  this_00 = (CString *)__2_YAPAXI_Z(4);
   local_4 = CONCAT31(local_4._1_3_,1);
   if (this_00 == (CString *)0x0) {
     uVar1 = 0;
   }
   else {
-    CString::CString(this_00);
+    CString::__0CString__QAE_XZ(this_00);
     uVar1 = extraout_EAX;
   }
   *(undefined4 *)&this->field_0x84 = uVar1;
@@ -161,7 +161,7 @@ TStaticText * TStaticText::_scalar_deleting_destructor_(byte param_1)
 {
   TStaticText::~TStaticText(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -174,7 +174,7 @@ undefined1 TStaticText::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined uVar1;
-  
+
   uVar1 = (*this->vftable->OrphanRetStub_0059add0)();
   CopyExtendedCityDialogControllerState(this);
   return uVar1;
@@ -192,7 +192,7 @@ void TStaticText::~TStaticText()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_0062f0ab;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -200,17 +200,17 @@ void TStaticText::~TStaticText()
   this_00 = *(CString **)&this->field_0x84;
   local_4 = 0;
   if (this_00 != (CString *)0x0) {
-    CString::~CString(this_00);
-    FreeHeapBufferIfNotNull(this_00);
+    CString::__1CString__QAE_XZ(this_00);
+    __3_YAXPAX_Z(this_00);
   }
   this->vftable = (TStaticTextVtbl *)&TView::_vftable_;
   local_4 = 2;
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable = (TStaticTextVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -226,11 +226,10 @@ TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate
 
 {
   int iVar1;
-  
-  iVar1 = CompareAnsiStringsWithMbcsAwareness(param_1->m_pchData,**(undefined4 **)&this->field_0x84)
-  ;
+
+  iVar1 = __mbscmp(param_1->m_pchData,**(undefined4 **)&this->field_0x84);
   if (iVar1 != 0) {
-    CString::AssignFromPtr(*(CString **)&this->field_0x84,param_1);
+    CString::__4CString__QAEABV0_ABV0__Z(*(CString **)&this->field_0x84,param_1);
     if (param_2 != '\0') {
       (*this->vftable->VTableSlot39)();
     }
@@ -252,20 +251,20 @@ void TStaticText::LoadUiStringAndDispatchViaVslot1C8(short param_1, short param_
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f0e8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_18.m_pchData = (char *)0x48fef2;
   local_10.m_pchData = (char *)this;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   CStack_18.m_pchData = (char *)(int)param_2;
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex(&local_10,(int)param_1);
   (**(code **)&this->vftable->field_0x1c8)(&local_10);
   uStack_c = 0xffffffff;
-  CString::~CString(&CStack_18);
+  CString::__1CString__QAE_XZ(&CStack_18);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }
@@ -299,11 +298,12 @@ void TStaticText::OrphanTiny_ReturnZero_0048a730()
   undefined4 *puVar6;
   undefined4 uVar7;
   undefined1 local_10 [16];
-  
+
   piVar4 = (int *)NoOpQuickDrawContextSelectionHook();
-  SetBkModeOnPrimaryAndSecondaryDc(1);
+  _SetMapperFlags_CDC__QAEKK_Z(1);
   (*this->vftable->GetTEventHandlerClassNamePointer_58)(local_10);
-  TTEView::DeflateRect((TTEView *)&stack0xffffffec,(int *)&this->field_0x68);
+  TTEView::_DeflateRect_CRect__QAEXPBUtagRECT___Z
+            ((TTEView *)&stack0xffffffec,(int *)&this->field_0x68);
   uVar5 = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&this->field_0x78);
   iVar2 = *piVar4;
   pcVar3 = *(code **)(iVar2 + 0x30);

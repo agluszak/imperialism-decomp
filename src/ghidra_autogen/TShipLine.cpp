@@ -26,7 +26,7 @@ TShipLine * TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90(byte param_
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00564f90_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -44,12 +44,12 @@ TLineData * TShipLine::CreateTShipLineInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063593a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TLineData *)AllocateWithFallbackHandler(0x1c);
+  this = (TLineData *)__2_YAPAXI_Z(0x1c);
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (this != (TLineData *)0x0) {
@@ -93,14 +93,14 @@ void TShipLine::OrphanRetStub_0056f460(int param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   TClickZone *local_4;
-  
+
   local_4 = (TClickZone *)0xffffffff;
   puStack_8 = &LAB_00635976;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_1c = *(undefined4 *)(param_1 + 0x84);
   CStack_3c.m_pchData = (char *)0x68;
-  this_00 = (TViewVtbl *)AllocateWithFallbackHandler();
+  this_00 = (TViewVtbl *)__2_YAPAXI_Z();
   local_4 = (TClickZone *)0x0;
   if (this_00 == (TViewVtbl *)0x0) {
     this_00 = (TViewVtbl *)0x0;
@@ -120,7 +120,7 @@ void TShipLine::OrphanRetStub_0056f460(int param_1)
   CStack_3c.m_pchData = (char *)0x94;
   this_00->vmethod_0024 = (_vslot_fn *)local_24;
   this_00->vmethod_0025 = p_Var1;
-  this_01 = (TArmyCheckBox *)AllocateWithFallbackHandler();
+  this_01 = (TArmyCheckBox *)__2_YAPAXI_Z();
   local_4 = (TClickZone *)0x1;
   if (this_01 == (TArmyCheckBox *)0x0) {
     this_01 = (TArmyCheckBox *)0x0;
@@ -146,9 +146,9 @@ void TShipLine::OrphanRetStub_0056f460(int param_1)
   *(undefined4 *)&this_01->field_0x60 = 4;
   CStack_3c.m_pchData = (char *)0x0;
   (*this_01->vftable->SetArmyUnitLineActiveFlagAndNotify)();
-  CString::CString((CString *)&stack0xffffffd0);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffd0);
   uStack_c = 2;
-  local_4 = (TClickZone *)AllocateWithFallbackHandler();
+  local_4 = (TClickZone *)__2_YAPAXI_Z();
   uStack_c._0_1_ = 3;
   if (local_4 == (TClickZone *)0x0) {
     iVar2 = 0;
@@ -168,7 +168,7 @@ void TShipLine::OrphanRetStub_0056f460(int param_1)
   AssignStringSharedRefAndReturnThis(&CStack_3c);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_18 = 0xffffffff;
-  CString::~CString(&CStack_3c);
+  CString::__1CString__QAE_XZ(&CStack_3c);
   *unaff_FS_OFFSET = local_20;
   return;
 }

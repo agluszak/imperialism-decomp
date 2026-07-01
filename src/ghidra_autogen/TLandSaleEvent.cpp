@@ -12,7 +12,7 @@ TLandSaleEvent * TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(byte param_1
 {
   DestructLandSaleEventToBase();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -46,24 +46,24 @@ void TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632560;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_20);
+  CString::__0CString__QAE_XZ(&local_20);
   local_4 = 0;
-  CString::CString(&local_24);
+  CString::__0CString__QAE_XZ(&local_24);
   local_4._0_1_ = 1;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   local_4._0_1_ = 2;
-  CString::CString(&local_1c);
+  CString::__0CString__QAE_XZ(&local_1c);
   local_4._0_1_ = 3;
   uVar2 = (undefined1)local_4;
   local_4._0_1_ = 3;
   cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + *(short *)&this->field_0x8 * 0x24);
   if (g_apTerrainTypeDescriptorTable[*(short *)&this->field_0xa] == (TCountry *)0x0) {
-    CString::CString(&local_14,PTR_g_szEmptyString_00653300);
+    CString::__0CString__QAE_PBD_Z(&local_14,PTR_g_szEmptyString_00653300);
     local_4._0_1_ = 4;
     AssignStringSharedRefFromPointer();
   }
@@ -74,9 +74,9 @@ void TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState()
     AssignStringSharedRefFromPointer();
   }
   local_4._0_1_ = 3;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   if (g_apTerrainTypeDescriptorTable[(short)cVar1] == (TCountry *)0x0) {
-    CString::CString(&local_14,PTR_g_szEmptyString_00653300);
+    CString::__0CString__QAE_PBD_Z(&local_14,PTR_g_szEmptyString_00653300);
     local_4._0_1_ = 6;
     AssignStringSharedRefFromPointer();
   }
@@ -86,7 +86,7 @@ void TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState()
     AssignStringSharedRefFromPointer();
   }
   local_4 = CONCAT31(local_4._1_3_,3);
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   if (g_pGlobalUiRootController[1].vftable != (TApplicationVtbl *)0x0) {
     (**(code **)((g_pGlobalUiRootController[1].vftable)->GetTEventHandlerClassNamePointer + 0x1e0))
               ();
@@ -97,13 +97,13 @@ void TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState()
   AssignStringSharedRefAndReturnThis(&stack0xffffffd8);
   DispatchLocalizedUiMessageWithTemplateA13A0();
   iStack_10._0_1_ = 2;
-  CString::~CString((CString *)&stack0xffffffd8);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd8);
   iStack_10._0_1_ = 1;
-  CString::~CString(&local_24);
+  CString::__1CString__QAE_XZ(&local_24);
   iStack_10 = (uint)iStack_10._1_3_ << 8;
-  CString::~CString((CString *)&stack0xffffffd0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd0);
   iStack_10 = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffffd4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
   *unaff_FS_OFFSET = local_18.m_pchData;
   return;
 }
@@ -138,7 +138,7 @@ void TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   TTacticalBattle *pTStack_4;
-  
+
   pTStack_4 = (TTacticalBattle *)0xffffffff;
   puStack_8 = &LAB_00634c94;
   uStack_c = *unaff_FS_OFFSET;
@@ -157,7 +157,7 @@ void TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int *param_1)
   iVar6 = (int)sVar5;
   switch(unaff_EBP) {
   case 0x28:
-    pTVar11 = (TTacticalBattle *)AllocateWithFallbackHandler(0x78);
+    pTVar11 = (TTacticalBattle *)__2_YAPAXI_Z(0x78);
     uStack_c = 1;
     pTStack_4 = pTVar11;
     if (pTVar11 == (TTacticalBattle *)0x0) {
@@ -193,7 +193,7 @@ void TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int *param_1)
         pcVar2 = *(code **)(iVar1 + 0x4c);
         uVar8 = (*pcVar2)();
         uVar9 = (*pcVar2)();
-        puVar10 = (undefined4 *)AllocateWithFallbackHandler(0xc);
+        puVar10 = (undefined4 *)__2_YAPAXI_Z(0xc);
         if (puVar10 == (undefined4 *)0x0) {
           puVar10 = (undefined4 *)0x0;
         }
@@ -207,7 +207,7 @@ void TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int *param_1)
       }
     }
     else if (iVar6 == 0x746f776e) {
-      pTStack_4 = (TTacticalBattle *)AllocateWithFallbackHandler(0x50);
+      pTStack_4 = (TTacticalBattle *)__2_YAPAXI_Z(0x50);
       uStack_c = 0;
       if (pTStack_4 == (TTacticalBattle *)0x0) {
         piVar7 = (int *)0x0;

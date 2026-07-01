@@ -33,7 +33,7 @@ TTechMgr * TTechMgr::DestructTTechMgrAndMaybeFree(byte param_1)
 {
   DestructTTechMgrAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -58,7 +58,7 @@ TTechMgr * TTechMgr::DestructTTechMgrAndMaybeFree(byte param_1)
 // GHIDRA_COMMENT_END
 
 /* Deserializes CityOrderCapabilityState from persistence/archive stream with version handling.
-   
+
    Algorithm:
    1. Read base capability blocks into this+0x004 and this+0x03E.
    2. Read scalar capability metadata blocks (+0x1D2, +0x1D4, +0x180, +0x19D, +0x1AB, +0x1C9).
@@ -68,7 +68,7 @@ TTechMgr * TTechMgr::DestructTTechMgrAndMaybeFree(byte param_1)
       - +0x467 (recruitment/city-order availability table)
    4. Apply byte-swap compatibility paths for older build versions.
    5. Recompute derived averages via RecomputeGlobalCapabilityAverages().
-   
+
    This function is a key source for persisted city/university capability state. */
 
 void TTechMgr::DeserializeCityOrderCapabilityState(int *param_1)
@@ -79,7 +79,7 @@ void TTechMgr::DeserializeCityOrderCapabilityState(int *param_1)
   int iVar3;
   code *pcVar4;
   undefined4 uVar5;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   if (DAT_00695278 < 0x27) {
     pcVar4 = *(code **)(*param_1 + 0x3c);
@@ -193,7 +193,7 @@ LAB_005af590:
 // GHIDRA_COMMENT_END
 
 /* Serializes CityOrderCapabilityState to persistence/archive stream.
-   
+
    Algorithm:
    1. Write core capability blocks (+0x004, +0x03E).
    2. Write scalar and small metadata blocks (+0x1D2, +0x1D4, +0x180, +0x19D, +0x1AB, +0x1C9,
@@ -203,7 +203,7 @@ LAB_005af590:
       - +0x395 (era capability availability)
       - +0x467 (recruitment/city-order availability)
    4. Write remaining extended arrays (+0x4A6 etc.) and terminal fields.
-   
+
    This function is the persistence writeback counterpart of DeserializeCityOrderCapabilityState. */
 
 void TTechMgr::SerializeCityOrderCapabilityState()
@@ -239,7 +239,7 @@ void TTechMgr::SerializeCityOrderCapabilityState()
   undefined4 uStack_20;
   undefined4 *puStack_1c;
   int local_4;
-  
+
   puStack_1c = (undefined4 *)0x5af721;
   TObject::WriteTo((TObject *)this,_uStack00000004);
   puVar3 = (undefined2 *)&this->field_0x4;

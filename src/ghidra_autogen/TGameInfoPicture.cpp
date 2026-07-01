@@ -12,7 +12,7 @@ TGameInfoPicture * TGameInfoPicture::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -42,13 +42,13 @@ void TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00635da8;
   *unaff_FS_OFFSET = &uStack_c;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  CString::CString(&param_1);
+  CString::__0CString__QAE_XZ(&param_1);
   uStack_4 = 0;
   iVar3 = 0;
   do {
@@ -68,7 +68,7 @@ void TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
     iVar3 = iVar3 + 1;
   } while (iVar3 < 0xe);
   uStack_4 = 0xffffffff;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -91,13 +91,13 @@ TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635dc8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_10.m_pchData = (char *)this;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   if (param_1 == 10) {
     uVar1 = *(uint *)(param_2 + 0x1c);
@@ -145,7 +145,7 @@ LAB_0056bb1b:
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
 LAB_0056bb37:
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

@@ -12,7 +12,7 @@ TTechItemView * TTechItemView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TView * TTechItemView::CreateTTechItemViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006389fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)__2_YAPAXI_Z(0x68);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -102,25 +102,25 @@ TTechItemView::ConstructTTechItemViewBaseState
   CString CStack_c;
   CString CStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   CStack_8.m_pchData = &LAB_00638aac;
   CStack_c.m_pchData = (char *)*unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &CStack_c;
   CStack_68.m_pchData = (char *)0x5b1307;
-  CString::CString(&local_3c);
+  CString::__0CString__QAE_XZ(&local_3c);
   local_4 = 0;
   CStack_68.m_pchData = (char *)0x5b1316;
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   local_4._0_1_ = 1;
   CStack_68.m_pchData = (char *)0x5b1324;
-  CString::CString(&local_54);
+  CString::__0CString__QAE_XZ(&local_54);
   local_4._0_1_ = 2;
   CStack_68.m_pchData = (char *)0x5b1332;
-  CString::CString(&local_44);
+  CString::__0CString__QAE_XZ(&local_44);
   local_4._0_1_ = 3;
   CStack_68.m_pchData = (char *)0x5b1340;
-  CString::CString(&local_48);
+  CString::__0CString__QAE_XZ(&local_48);
   CStack_68.m_pchData = (char *)0x0;
   uStack_6c = 5;
   local_4._0_1_ = 4;
@@ -129,7 +129,7 @@ TTechItemView::ConstructTTechItemViewBaseState
   *(undefined4 *)&this->field_0x60 = in_stack_00000010;
   *(int *)&this->field_0x64 = in_stack_00000014;
   uStack_6c = 0x5b137c;
-  this_00 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
+  this_00 = (TUpDownPictureButton *)__2_YAPAXI_Z();
   local_4._0_1_ = 5;
   if (this_00 == (TUpDownPictureButton *)0x0) {
     piVar3 = (int *)0x0;
@@ -158,7 +158,7 @@ TTechItemView::ConstructTTechItemViewBaseState
   MapUiThemeCodeToStyleFlags();
   MapUiThemeCodeToStyleFlags();
   BuildUiTextStyleDescriptor();
-  pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar4 = (TDeluxeText *)__2_YAPAXI_Z();
   CStack_c.m_pchData._0_1_ = 6;
   if (pTVar4 == (TDeluxeText *)0x0) {
     pTVar4 = (TDeluxeText *)0x0;
@@ -187,27 +187,27 @@ TTechItemView::ConstructTTechItemViewBaseState
   *(char **)&pTVar4->field_0x9c = local_54.m_pchData;
   pTVar4->field_0xa0 = 1;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  FormatStringWithVarArgsToSharedRef();
-  AssignSharedStringConcatRefAndCStr();
+  _Format_CString__QAAXPBDZZ();
+  __H_YG_AVCString__ABV0_PBD_Z();
   uStack_18 = 8;
-  pCVar6 = (CString *)AssignSharedStringConcatRefAndRef();
+  pCVar6 = (CString *)__H_YG_AVCString__ABV0_0_Z();
   uStack_18 = 9;
-  CString::StringSharedRef_AssignFromPtr(&CStack_8,pCVar6);
+  CString::__0CString__QAE_ABV0__Z(&CStack_8,pCVar6);
   uStack_18 = 10;
-  CString::AssignFromPtr(&CStack_68,&CStack_8);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_68,&CStack_8);
   uStack_18 = 9;
-  CString::~CString(&CStack_8);
+  CString::__1CString__QAE_XZ(&CStack_8);
   uStack_18 = 8;
-  CString::~CString(&CStack_c);
+  CString::__1CString__QAE_XZ(&CStack_c);
   uStack_18 = 4;
-  CString::~CString(&CStack_10);
+  CString::__1CString__QAE_XZ(&CStack_10);
   CStack_8.m_pchData = (char *)pTVar4->vftable;
   pCVar6 = &CStack_68;
   (*((TDeluxeTextVtbl *)CStack_8.m_pchData)->
     WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)();
   CVar9.m_pchData = (char *)0x0;
   (**(code **)(CStack_c.m_pchData + 0x1f8))();
-  pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
+  pTVar4 = (TDeluxeText *)__2_YAPAXI_Z();
   pTStack_20._0_1_ = 0xb;
   CStack_10.m_pchData = (char *)pTVar4;
   if (pTVar4 == (TDeluxeText *)0x0) {
@@ -248,7 +248,7 @@ TTechItemView::ConstructTTechItemViewBaseState
   iStack_24 = (int)pTStack_20 * 0x1d;
   pTStack_20 = (TDeluxeText *)(iStack_24 + (short)in_stack_00000014);
   if ((&g_pCityOrderCapabilityState->field_0x268)[(int)pTStack_20] == '\x02') {
-    pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
+    pTVar4 = (TDeluxeText *)__2_YAPAXI_Z();
     local_34._0_1_ = 0x10;
     pTStack_20 = pTVar4;
     if (pTVar4 == (TDeluxeText *)0x0) {
@@ -281,7 +281,7 @@ TTechItemView::ConstructTTechItemViewBaseState
     *(CString **)&pTVar4->field_0x9c = pCVar6;
     pTVar4->field_0xa0 = 1;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x274f,0);
-    FormatStringWithVarArgsToSharedRef
+    _Format_CString__QAAXPBDZZ
               (&stack0xffffff78,&g_szDecimalFormat,
                *(short *)(&g_pCityOrderCapabilityState->field_0x4a6 +
                          (int)(local_3c.m_pchData + in_stack_00000014) * 2) + 0x717);
@@ -300,7 +300,7 @@ TTechItemView::ConstructTTechItemViewBaseState
                   (*(undefined4 *)(&DAT_0066ad58 + in_stack_00000014 * 4));
         uVar7 = 9;
       }
-      local_2c = (TLineData *)AllocateWithFallbackHandler(0xa0);
+      local_2c = (TLineData *)__2_YAPAXI_Z(0xa0);
       local_40.m_pchData._0_1_ = 0xf;
       if (local_2c == (TLineData *)0x0) {
         piVar3 = (int *)0x0;
@@ -319,7 +319,7 @@ TTechItemView::ConstructTTechItemViewBaseState
       goto LAB_005b1b70;
     }
     SelectMissingTechItemPrerequisitesFromPair(in_stack_00000014,pTVar4,&pTStack_20);
-    pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
+    pTVar4 = (TDeluxeText *)__2_YAPAXI_Z();
     local_34._0_1_ = 0xd;
     uStack_28 = pTVar4;
     if (pTVar4 == (TDeluxeText *)0x0) {
@@ -367,15 +367,15 @@ TTechItemView::ConstructTTechItemViewBaseState
 LAB_005b1b70:
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_0066ae08,this->controlTag);
   local_48.m_pchData._0_1_ = 3;
-  CString::~CString((CString *)&stack0xffffff74);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff74);
   local_48.m_pchData._0_1_ = 2;
-  CString::~CString((CString *)&stack0xffffff78);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff78);
   local_48.m_pchData._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffff68);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff68);
   local_48.m_pchData = (char *)((uint)local_48.m_pchData._1_3_ << 8);
-  CString::~CString((CString *)&stack0xffffff7c);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff7c);
   local_48.m_pchData = (char *)0xffffffff;
-  CString::~CString((CString *)&stack0xffffff80);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffff80);
   *unaff_FS_OFFSET = uStack_50;
   return;
 }
@@ -405,7 +405,7 @@ TTechItemView::OrphanRetStub_0059add0
   undefined4 uStack_c;
   CString CStack_8;
   CString CStack_4;
-  
+
   CVar2.m_pchData = param_2.m_pchData;
   uStack_c = *unaff_FS_OFFSET;
   CStack_4.m_pchData = (char *)0xffffffff;
@@ -436,7 +436,7 @@ TTechItemView::OrphanRetStub_0059add0
     }
     goto LAB_005b2141;
   }
-  CString::CString(&param_2);
+  CString::__0CString__QAE_XZ(&param_2);
   CStack_4.m_pchData = (char *)0x0;
   if ((&g_pCityOrderCapabilityState->field_0x268)
       [(int)*(short *)&this->field_0x64 + *(int *)&this->field_0x60 * 0x1d] == '\0') {
@@ -447,15 +447,15 @@ TTechItemView::OrphanRetStub_0059add0
         (int)(((int)uVar7 < 1) - 1 & uVar7)) {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       ApplyTechItemPurchaseCostAndState();
-      CString::AssignFromPtr((CString *)(CVar2.m_pchData + 0x94),&CStack_4);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)(CVar2.m_pchData + 0x94),&CStack_4);
       (**(code **)(*(int *)CVar2.m_pchData + 0xe4))();
       goto LAB_005b2043;
     }
-    CString::CString(aCStack_18);
+    CString::__0CString__QAE_XZ(aCStack_18);
     CStack_4.m_pchData._0_1_ = 1;
-    CString::CString(&param_3);
+    CString::__0CString__QAE_XZ(&param_3);
     CStack_4.m_pchData._0_1_ = 2;
-    CString::CString(&param_1);
+    CString::__0CString__QAE_XZ(&param_1);
     CStack_4.m_pchData._0_1_ = 3;
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -463,16 +463,17 @@ TTechItemView::OrphanRetStub_0059add0
     AssignStringSharedRefAndReturnThis(&CStack_10);
     DispatchLocalizedUiMessageWithTemplateA13A0();
     aCStack_18[0].m_pchData._0_1_ = 2;
-    CString::~CString(&CStack_10);
+    CString::__1CString__QAE_XZ(&CStack_10);
     aCStack_18[0].m_pchData._0_1_ = 1;
-    CString::~CString(&CStack_8);
+    CString::__1CString__QAE_XZ(&CStack_8);
     aCStack_18[0].m_pchData._0_1_ = 0;
-    CString::~CString((CString *)&stack0xffffffd4);
+    CString::__1CString__QAE_XZ((CString *)&stack0xffffffd4);
   }
   else {
     RefundTechItemPurchaseCostAndClearState();
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
-    CString::AssignFromPtr((CString *)(CVar2.m_pchData + 0x94),(CString *)&stack0x00000000);
+    CString::__4CString__QAEABV0_ABV0__Z
+              ((CString *)(CVar2.m_pchData + 0x94),(CString *)&stack0x00000000);
     (**(code **)(*(int *)CVar2.m_pchData + 0xe4))();
 LAB_005b2043:
     LoadUiStringAndDispatchSharedMessageCommand();
@@ -484,7 +485,7 @@ LAB_005b2043:
   UiRuntimeContext::GetActiveNationId();
   (**(code **)(iVar1 + 0x1d0))();
   CStack_4.m_pchData = (char *)0xffffffff;
-  CString::~CString(&param_2);
+  CString::__1CString__QAE_XZ(&param_2);
 LAB_005b2141:
   *unaff_FS_OFFSET = uStack_c;
   return;

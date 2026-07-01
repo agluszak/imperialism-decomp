@@ -16,7 +16,7 @@ ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(int param_1,int param_2,
   bool bVar3;
   short sVar4;
   short sVar5;
-  
+
   if (param_3 != '\0') {
     if (*(int *)(param_1 + 0x20) != 0) {
       return param_2;
@@ -91,7 +91,7 @@ void ObjectPool::RemoveNode(int self)
   int new_head;
   astruct_8 *owner_ctx;
   int *next_node;
-  
+
   owner_ctx = *(astruct_8 **)(this + 0xc);
   if (owner_ctx != (astruct_8 *)0x0) {
     list_head = owner_ctx->field16_0x10;
@@ -109,7 +109,7 @@ void ObjectPool::RemoveNode(int self)
           if (list_head[2] != 0) {
             *(int *)(list_head[2] + 4) = list_head[1];
           }
-          FreeHeapBufferIfNotNull(list_head);
+          __3_YAXPAX_Z(list_head);
           list_head = next_node;
         }
         else {
@@ -157,7 +157,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
   int iVar5;
   int unaff_EBP;
   int in_stack_00000010;
-  
+
   *(int *)(in_ECX + 0x768b1447) = *(int *)(in_ECX + 0x768b1447) + -1;
   *(undefined4 *)(unaff_EBP + 8) = 0;
   iVar5 = 0;
@@ -231,7 +231,7 @@ int __thiscall ObjectPool::RemoveTaskForceOrderNodeById(int param_1,int param_2)
   int iVar4;
   int *piVar5;
   int iVar6;
-  
+
   piVar5 = *(int **)(param_1 + 0x10);
   if (piVar5 == (int *)0x0) {
     piVar5 = (int *)0x0;
@@ -251,7 +251,7 @@ int __thiscall ObjectPool::RemoveTaskForceOrderNodeById(int param_1,int param_2)
         if (piVar5[2] != 0) {
           *(int *)(piVar5[2] + 4) = piVar5[1];
         }
-        FreeHeapBufferIfNotNull(piVar5);
+        __3_YAXPAX_Z(piVar5);
         piVar5 = piVar3;
       }
       else {

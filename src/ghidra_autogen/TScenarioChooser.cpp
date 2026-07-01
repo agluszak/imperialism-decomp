@@ -12,7 +12,7 @@ TScenarioChooser * TScenarioChooser::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TNoHilitePicture * TScenarioChooser::CreateTScenarioChooserInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x160);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x160);
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
@@ -111,7 +111,7 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636b68;
   uStack_c = *unaff_FS_OFFSET;
@@ -128,9 +128,9 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
   local_6c = (_vslot_fn *)0x0;
   do {
     p_Var9 = local_6c;
-    CString::CString(&CStack_64);
+    CString::__0CString__QAE_XZ(&CStack_64);
     puStack_8 = (undefined1 *)0x0;
-    CString::CString((CString *)&stack0x00000000);
+    CString::__0CString__QAE_XZ((CString *)&stack0x00000000);
     puStack_8._0_1_ = 1;
     if ((((int)p_Var9 < 9) || (0xf < (int)p_Var9)) ||
        (*(int *)&g_pLocalizationTable->field_0x44 == 0)) {
@@ -142,13 +142,13 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
       cVar3 = TryGetFileMetadataForPath();
       if (cVar3 != '\0') {
         p_Stack_90 = (_vslot_fn *)0x579c5c;
-        OpenBufferedStreamWithMode40();
+        __wfopen();
         p_Stack_90 = (_vslot_fn *)&uStack_50;
         pp_Stack_8c = (_vslot_fn **)0x40;
         puStack_94 = (undefined1 *)0x579c6e;
         ReadLineFromBufferedStreamUntilTerminator();
         pp_Stack_8c = (_vslot_fn **)0x579c77;
-        CloseBufferedStreamAndReleaseResources();
+        _fclose();
         if (piVar5[0x418] < 0x40) {
           piVar7 = piVar5 + piVar5[0x418] * 0x10 + 0x18;
           cVar3 = uStack_50;
@@ -168,9 +168,9 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
       }
     }
     puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-    CString::~CString((CString *)&stack0x00000000);
+    CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
     puStack_8 = (undefined1 *)0xffffffff;
-    CString::~CString(&CStack_64);
+    CString::__1CString__QAE_XZ(&CStack_64);
     local_6c = p_Var9 + 1;
   } while ((int)local_6c < 0x40);
   (**(code **)(iStack_60 + 0xe4))();
@@ -183,7 +183,7 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
   uStack_53 = 0;
   pcStack_98 = (code *)0x579d42;
   BuildUiTextStyleDescriptor();
-  CString::CString(&CStack_68);
+  CString::__0CString__QAE_XZ(&CStack_68);
   puStack_8 = (undefined1 *)0x2;
   pp_Stack_8c = (_vslot_fn **)0x2b6c;
   p_Stack_90 = (_vslot_fn *)0x579d75;
@@ -242,7 +242,7 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
   do {
     uStack_c8 = 0x400;
     uStack_cc = 0x579e46;
-    uVar6 = AllocateWithFallbackHandler();
+    uVar6 = __2_YAPAXI_Z();
     pcVar1 = pcStack_b0;
     *puVar10 = uVar6;
     puVar10 = puVar10 + 1;
@@ -269,7 +269,7 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
   LoadUiStringByGroupAndIndexToControlObject(0x2758,0x1a,uVar6);
   uVar6 = (*pcVar1)(0x6d6f7265);
   LoadUiStringByGroupAndIndexToControlObject(0x2758,0x1c,uVar6);
-  CString::~CString(&CStack_d0);
+  CString::__1CString__QAE_XZ(&CStack_d0);
   *unaff_FS_OFFSET = unaff_EBP;
   return;
 }
@@ -294,7 +294,7 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined2 extraout_var_02;
   int *unaff_EBX;
   int *piVar4;
-  
+
   if (param_1 == 4) {
     (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
     SetCursor(*(HCURSOR *)&g_pUiRuntimeContext->field_0x7c);
@@ -385,7 +385,7 @@ void TScenarioChooser::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   short sVar1;
-  
+
   sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
     (*this->vftable->ApplyScenarioSelectionAndPostTurnEvent5E4)();
@@ -430,7 +430,7 @@ void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
   undefined4 local_4c [17];
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636b98;
   local_4c[0x10] = *unaff_FS_OFFSET;
@@ -470,30 +470,32 @@ void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
         src_ref = (CString *)
                   NormalizeRuntimeCredentialNameToken(aCStack_54,&g_pGameFlowState->field_0xb0);
         puStack_8 = (undefined1 *)0x0;
-        CString::AssignFromPtr((CString *)&DAT_006a4220,src_ref);
+        CString::__4CString__QAEABV0_ABV0__Z((CString *)&DAT_006a4220,src_ref);
         puStack_8 = (undefined1 *)0xffffffff;
-        CString::~CString(aCStack_54);
-        CString::CString(&CStack_5c);
+        CString::__1CString__QAE_XZ(aCStack_54);
+        CString::__0CString__QAE_XZ(&CStack_5c);
         puStack_8 = (undefined1 *)0x1;
         LoadUiStringResourceByGroupAndIndex(&CStack_5c,0x2742,3);
         RunTaggedOptionDialogAndReturnSelectionTag(CStack_5c.m_pchData,&DAT_006a4220,0,0,0,0);
         puStack_8 = (undefined1 *)0xffffffff;
-        CString::~CString(&CStack_5c);
-        iVar4 = CompareAnsiStringsWithMbcsAwareness(DAT_006a4220,&g_szEmptyString);
+        CString::__1CString__QAE_XZ(&CStack_5c);
+        iVar4 = __mbscmp(DAT_006a4220,&g_szEmptyString);
       } while (iVar4 == 0);
-      CString::CString((CString *)&stack0xffffffa0);
+      CString::__0CString__QAE_XZ((CString *)&stack0xffffffa0);
       puStack_8 = (undefined1 *)0x2;
       uVar5 = ShowCountrySelectionPromptAndReturnNationId(DAT_006a4220);
-      AppendSingleByteToSharedStringFromArg(uVar5);
-      AssignStringSharedFromRef(&DAT_006a4220);
-      CString::AssignFromPtr((CString *)&DAT_006a4220,(CString *)&stack0xffffffa0);
-      CString::AssignFromPtr((CString *)&g_pGameFlowState->field_0xb4,(CString *)&DAT_006a4220);
-      CString::AssignFromPtr((CString *)&g_pGameFlowState->field_0xb0,(CString *)&DAT_006a4220);
+      __YCString__QAEABV0_D_Z(uVar5);
+      __YCString__QAEABV0_ABV0__Z(&DAT_006a4220);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)&DAT_006a4220,(CString *)&stack0xffffffa0);
+      CString::__4CString__QAEABV0_ABV0__Z
+                ((CString *)&g_pGameFlowState->field_0xb4,(CString *)&DAT_006a4220);
+      CString::__4CString__QAEABV0_ABV0__Z
+                ((CString *)&g_pGameFlowState->field_0xb0,(CString *)&DAT_006a4220);
       g_pGameFlowState->field_0xdc = (char)piStack_58[0x1a];
       *(int *)&g_pGameFlowState->field_0xe0 = *(short *)&this->field_0x142 + 0x73636e30;
       PostTurnEventCodeMessage2420(0x5e4);
       puStack_8 = (undefined1 *)0xffffffff;
-      CString::~CString((CString *)&stack0xffffffa0);
+      CString::__1CString__QAE_XZ((CString *)&stack0xffffffa0);
       *unaff_FS_OFFSET = local_4c[0xf];
       return;
     }
@@ -521,12 +523,12 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
 {
   int *piVar1;
   int iVar2;
-  
+
   piVar1 = (int *)&this->field_0x118;
   iVar2 = 7;
   do {
     if (*piVar1 != 0) {
-      FreeHeapBufferIfNotNull(*piVar1);
+      __3_YAXPAX_Z(*piVar1);
     }
     piVar1 = piVar1 + 1;
     iVar2 = iVar2 + -1;

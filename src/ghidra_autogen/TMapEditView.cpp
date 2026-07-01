@@ -18,12 +18,12 @@ TWorldView * TMapEditView::CreateTMapEditViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633fc2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TWorldView *)AllocateWithFallbackHandler(0x370);
+  this = (TWorldView *)__2_YAPAXI_Z(0x370);
   local_4 = 0;
   if (this != (TWorldView *)0x0) {
     local_10 = this;
@@ -64,7 +64,7 @@ TMapEditView * TMapEditView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -124,7 +124,7 @@ void TMapEditView::OrphanLeaf_NoCall_Ins07_004d8920(void *pMapView, int nInitTok
   undefined4 local_18;
   undefined4 local_14;
   undefined2 uStack_10;
-  
+
   TWorldView::OrphanLeaf_NoCall_Ins07_004d8920((TWorldView *)this);
   *(undefined2 *)&this->field_0x78 = 0x40;
   local_14 = 0x40;
@@ -201,7 +201,7 @@ TMapEditView::HandleMapClickByInteractionMode
   int iVar3;
   void *unaff_retaddr;
   short nTileIndex_00;
-  
+
   nTileIndex_00 = 0x6f6e;
   uVar2 = (*this->ownerContext->vftable->ResolveControlByTag)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
@@ -245,7 +245,7 @@ void TMapEditView::InvokeDialogHooks1D8ThenE4(short param_1)
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
-  
+
   if (*(int *)&this->field_0x368 == 1) {
     sVar1 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + param_1 * 0x24);
     if (sVar1 != -1) {
@@ -310,7 +310,7 @@ void TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(short param_1)
   TMapEditView *pTVar8;
   TMapEditView *pTVar9;
   int iVar10;
-  
+
   uVar1 = *(ushort *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + param_1 * 0x24);
   pTVar8 = (TMapEditView *)(uint)uVar1;
   uVar3 = (*this->ownerContext->vftable->ResolveControlByTag)(0x70726e75);
@@ -395,7 +395,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79()
   TMapMgr *pTVar7;
   int iVar8;
   short local_c [6];
-  
+
   iVar2 = 0;
   iVar8 = 0;
   do {
@@ -478,7 +478,7 @@ TMapEditView::ApplyTileIconProfileFromEditorSelection
   undefined4 uVar2;
   int iVar3;
   int iVar4;
-  
+
   if (*(int *)&this->field_0x36c != 0) {
     iVar4 = (short)pMapTileEditState * 0x24;
     if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar4) != '\0') {
@@ -542,7 +542,7 @@ TMapEditView::ApplyTileIconOverlayFromEditorSelection
 {
   int iVar1;
   int iVar2;
-  
+
   iVar2 = (short)pMapTileEditState * 0x24;
   iVar1 = 0;
   if ((*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x11 + iVar2) != -1) &&
@@ -569,7 +569,7 @@ void TMapEditView::OrphanTiny_ReturnZero_0048a730(int param_1)
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   int iVar3;
-  
+
   switch(*(undefined2 *)(param_1 + 0x1c)) {
   case 0x2c:
   case 0x3c:

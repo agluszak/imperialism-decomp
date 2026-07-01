@@ -25,7 +25,7 @@ TGrantsView * TGrantsView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -42,12 +42,12 @@ TView * TGrantsView::CreateTGrantsViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632d9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = (TView *)__2_YAPAXI_Z(100);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -86,12 +86,12 @@ void TGrantsView::OrphanCallChain_C6_I49_004875d0(CString param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632dc0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   iVar2 = 0;
   local_4 = 0;
   puStack_2c = (undefined1 *)0x4f80b9;
@@ -109,17 +109,17 @@ void TGrantsView::OrphanCallChain_C6_I49_004875d0(CString param_1)
     iVar2 = iVar2 + 1;
   } while (iVar2 < 8);
   puStack_2c = (undefined1 *)0x4f811f;
-  CString::CString(&param_1,(char *)&g_szEmptyString);
+  CString::__0CString__QAE_PBD_Z(&param_1,(char *)&g_szEmptyString);
   local_4._0_1_ = 1;
   puStack_2c = (undefined1 *)0x4f8132;
-  CString::AssignFromPtr(&local_14,&param_1);
+  CString::__4CString__QAEABV0_ABV0__Z(&local_14,&param_1);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&param_1);
+  CString::__1CString__QAE_XZ(&param_1);
   puStack_10 = (undefined1 *)&puStack_2c;
   AssignStringSharedRefAndReturnThis(&local_14);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_4 = 0xffffffff;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -165,16 +165,16 @@ void TGrantsView::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632de8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CStack_58.m_pchData = (char *)0x4f81e7;
-  CString::CString(&local_44);
+  CString::__0CString__QAE_XZ(&local_44);
   local_4 = 0;
   CStack_58.m_pchData = (char *)0x4f81f8;
-  CString::CString(&local_38);
+  CString::__0CString__QAE_XZ(&local_38);
   iVar5 = CONCAT22((short)((uint)unaff_EBP >> 0x10),(short)this->ownerOffsetX);
   sVar1 = (short)this->ownerOffsetY;
   CStack_58.m_pchData = (char *)0x2b68;
@@ -259,11 +259,11 @@ void TGrantsView::OrphanTiny_ReturnZero_0048a730()
   UiRuntimeContext::GetActiveNationId();
   SumDiplomacyGrantEntriesMaskedToValueBits();
   (*pTVar2[0xe].slot_0x04)();
-  AssignSharedStringConcatCStrAndRef(&stack0xffffffb0,g_Build_Map_Order_LookupTable_00695794);
+  __H_YG_AVCString__PBDABV0__Z(&stack0xffffffb0,g_Build_Map_Order_LookupTable_00695794);
   local_24._0_1_ = 2;
-  AssignStringSharedFromRef();
+  __YCString__QAEABV0_ABV0__Z();
   local_24._0_1_ = 1;
-  CString::~CString((CString *)&stack0xffffffb0);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffb0);
   SetQuickDrawColorAndSyncGlobals();
   SetQuickDrawTextOriginWithContextOffset(iVar5 + 1);
   THQButton::DrawTextWithCachedQuickDrawStyleState();
@@ -272,9 +272,9 @@ void TGrantsView::OrphanTiny_ReturnZero_0048a730()
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawFillColor();
   local_24 = (uint)local_24._1_3_ << 8;
-  CString::~CString(&CStack_58);
+  CString::__1CString__QAE_XZ(&CStack_58);
   local_24 = 0xffffffff;
-  CString::~CString(&CStack_64);
+  CString::__1CString__QAE_XZ(&CStack_64);
   *unaff_FS_OFFSET = local_2c;
   return;
 }
@@ -291,7 +291,7 @@ void TGrantsView::OrphanRetStub_00430550()
   TToolBarClusterVtbl *pTStack_18;
   int *piStack_14;
   undefined4 uStack_10;
-  
+
   uStack_10 = 0x646f6373;
   piStack_14 = (int *)0x4f85e2;
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
@@ -315,7 +315,7 @@ void TGrantsView::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 pa
 
 {
   ushort uVar1;
-  
+
   if (param_1 == 0xc) {
     uVar1 = *(short *)(param_2 + 0x1c) + 0x9cd0;
     if ((uVar1 & 1) == 0) {

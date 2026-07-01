@@ -25,7 +25,7 @@ TMapKey * TMapKey::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -54,12 +54,12 @@ thunk_TPictureButton * TMapKey::CreateTMapKeyInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006330ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -122,7 +122,7 @@ void TMapKey::OrphanCallChain_C6_I49_004875d0()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063311d;
   uStack_c = *unaff_FS_OFFSET;
@@ -151,7 +151,7 @@ void TMapKey::OrphanCallChain_C6_I49_004875d0()
   local_4c[0xd] = 0x1a0;
   local_68 = 0x46;
   local_64 = 0x19;
-  CString::CString(&local_84);
+  CString::__0CString__QAE_XZ(&local_84);
   local_4 = 0;
   local_52 = 0;
   local_51 = 0;
@@ -174,7 +174,7 @@ void TMapKey::OrphanCallChain_C6_I49_004875d0()
     else {
       FormatOverlayTerrainLabelText(&local_84);
     }
-    pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler(0xa4);
+    pTVar3 = (TDeluxeText *)__2_YAPAXI_Z(0xa4);
     local_4._0_1_ = 1;
     pTStack_70 = pTVar3;
     if (pTVar3 == (TDeluxeText *)0x0) {
@@ -219,7 +219,7 @@ void TMapKey::OrphanCallChain_C6_I49_004875d0()
     this = local_7c;
   } while ((int)local_80 < 0x6a432c);
   local_4 = 0xffffffff;
-  CString::~CString(&local_84);
+  CString::__1CString__QAE_XZ(&local_84);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

@@ -12,7 +12,7 @@ TTEView * TTEView::_scalar_deleting_destructor_(byte param_1)
 {
   TStaticText::~TStaticText((TStaticText *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TStaticText * TTEView::CreateTTEViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ea1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0x98);
+  this = (TStaticText *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   pTVar1 = (TStaticText *)0x0;
   if (this != (TStaticText *)0x0) {
@@ -70,7 +70,7 @@ TTEView::ConstructTTEViewBaseState
   undefined2 uVar1;
   undefined2 in_stack_00000022;
   undefined2 in_stack_00000024;
-  
+
   InitializeTextEntryBaseAndOptionalStringResource
             (param_2,param_3,param_4,param_5,param_6,0xffffffff,0);
   *(undefined4 *)&this->field_0x68 = *param_7;
@@ -102,26 +102,26 @@ int TTEView::DestructTTEViewAndMaybeFree()
   TView *pTStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = -1;
   puStack_8 = &LAB_0062ea38;
   pTStack_c = (TView *)*unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&pTStack_c;
-  CDC::CDC(&local_2c);
+  CDC::__0CDC__QAE_XZ(&local_2c);
   local_4 = 0;
   pHVar1 = CreateCompatibleDC((HDC)0x0);
-  TCivDescription::AttachHdcToDcWrapper((TCivDescription *)&local_2c,(int)pHVar1);
+  TCivDescription::_Attach_CDC__QAEHPAUHDC_____Z((TCivDescription *)&local_2c,(int)pHVar1);
   pvVar2 = (HGDIOBJ)UpdateGlobalFontPresetAndRebuildCachedFontIfDirty();
-  pvVar2 = (HGDIOBJ)SelectObject_6129d7((TTEView *)&local_2c,pvVar2);
+  pvVar2 = (HGDIOBJ)_SelectObject_CDC__QAEPAVCBrush__PAV2__Z((TTEView *)&local_2c,pvVar2);
   (*this->vftable->GetTEventHandlerClassNamePointer_58)();
   pTStack_40 = (TTEViewVtbl *)0x486153;
-  DeflateRect((TTEView *)&local_2c.m_bPrinting,(int *)&this->field_0x68);
+  _DeflateRect_CRect__QAEXPBUtagRECT___Z((TTEView *)&local_2c.m_bPrinting,(int *)&this->field_0x68);
   pTStack_40 = (TTEViewVtbl *)&local_2c.m_bPrinting;
   (**(code **)(unaff_ESI + 0x70))
             (**(int **)&this->field_0x84,*(undefined4 *)(**(int **)&this->field_0x84 + -8));
-  SelectObject_6129d7((TTEView *)&pTStack_40,pvVar2);
+  _SelectObject_CDC__QAEPAVCBrush__PAV2__Z((TTEView *)&pTStack_40,pvVar2);
   iStack_18 = -1;
-  DestroyCDCAndDeleteOwnedHdc();
+  __1CDC__UAE_XZ();
   *unaff_FS_OFFSET = local_2c.m_bPrinting;
   return (int)local_2c.m_hAttribDC - (int)local_2c.cobject.vftable;
 }
@@ -224,7 +224,7 @@ void TTEView::BuildHelpSubjectListControlsWithPrevNext()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633628;
   uStack_c = *unaff_FS_OFFSET;
@@ -243,7 +243,7 @@ void TTEView::BuildHelpSubjectListControlsWithPrevNext()
   local_3c = 0;
   local_3b = 0;
   uStack_74 = 0x50428f;
-  CString::CString(local_60);
+  CString::__0CString__QAE_XZ(local_60);
   uStack_74 = 3;
   uStack_78 = 0x2b6d;
   iStack_7c = 0xc;
@@ -429,7 +429,7 @@ void TTEView::BuildHelpSubjectListControlsWithPrevNext()
   (**(code **)(iStack_14c + 0xe4))();
   (**(code **)(*piStack_148 + 0x13c))();
   uStack_f8 = 0xffffffff;
-  CString::~CString(&CStack_154);
+  CString::__1CString__QAE_XZ(&CStack_154);
   *unaff_FS_OFFSET = uStack_100;
   return;
 }
@@ -464,7 +464,7 @@ int TTEView::AppendInterNationEventSummaryTextEntry(int param_1, undefined4 *par
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006356aa;
   local_c = *unaff_FS_OFFSET;
@@ -472,7 +472,7 @@ int TTEView::AppendInterNationEventSummaryTextEntry(int param_1, undefined4 *par
   local_38[0] = (undefined4 *)0x18;
   local_38[1] = (undefined4 *)0xe2;
   local_38[2] = (undefined4 *)0x1ac;
-  this_00 = (TDeluxeText *)AllocateWithFallbackHandler();
+  this_00 = (TDeluxeText *)__2_YAPAXI_Z();
   local_4 = 0;
   if (this_00 == (TDeluxeText *)0x0) {
     this_00 = (TDeluxeText *)0x0;
@@ -501,14 +501,14 @@ int TTEView::AppendInterNationEventSummaryTextEntry(int param_1, undefined4 *par
   local_3c = 0x18c;
   TDeluxeText::ConstructTDeluxeTextBaseState
             (this_00,this,local_38,&local_40,local_38 + 3,in_stack_00000014);
-  uVar5 = AllocateWithFallbackHandler();
+  uVar5 = __2_YAPAXI_Z();
   InvokeVtableSlot30OnTargetObject(*(undefined4 *)&this->field_0x94);
   ReadResourceStreamIntoBufferAndAdvance(*(undefined4 *)&this->field_0x94,uVar5);
   text_or_resource_id =
        (char *)AppendInterNationEventSummaryTextEntry_Impl
                          (g_pLocalizationTable,uVar5,*in_stack_0000001c,in_stack_0000001c[1],
                           in_stack_0000001c[2]);
-  FreeHeapBufferIfNotNull();
+  __3_YAXPAX_Z();
   cVar2 = *text_or_resource_id;
   pcStack00000010 = text_or_resource_id;
   while (cVar2 != '\0') {
@@ -517,31 +517,31 @@ int TTEView::AppendInterNationEventSummaryTextEntry(int param_1, undefined4 *par
     cVar2 = *pcVar1;
   }
   pcStack00000010 = pcStack00000010 + (1 - (int)text_or_resource_id);
-  CString::CString(&local_44,text_or_resource_id);
+  CString::__0CString__QAE_PBD_Z(&local_44,text_or_resource_id);
   pTVar3 = this_00->vftable;
   local_4 = 2;
   (*pTVar3->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)();
-  FreeHeapBlockWithAllocatorTracking(text_or_resource_id);
+  _free(text_or_resource_id);
   iVar6 = TTEView::DestructTTEViewAndMaybeFree((TTEView *)this_00);
   (*pTVar3->OrphanRetStub_0059add0_4b)(&local_20);
   local_18 = iVar6 + 8 + local_20;
   (*pTVar3->GetTEventHandlerClassNamePointer_5a)(local_38 + 5,0);
   uStack_14 = 0xffffffff;
-  CString::~CString((CString *)&stack0xffffffac);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffac);
   *unaff_FS_OFFSET = local_1c;
   return iVar6 + 8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006129D7
-// GHIDRA_NAME TTEView::SelectObject_6129d7
-// GHIDRA_PROTO undefined __thiscall SelectObject_6129d7(HGDIOBJ param_1)
+// GHIDRA_NAME TTEView::?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z
+// GHIDRA_PROTO undefined __thiscall ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z(HGDIOBJ param_1)
 
-void TTEView::SelectObject_6129d7(HGDIOBJ param_1)
+void TTEView::_SelectObject_CDC__QAEPAVCBrush__PAV2__Z(HGDIOBJ param_1)
 
 {
   HGDIOBJ pvVar1;
   HGDIOBJ h;
-  
+
   pvVar1 = param_1;
   if ((HDC)this->field04 != (HDC)this->padding_08_to_0b) {
     if (param_1 == (HGDIOBJ)0x0) {
@@ -561,15 +561,15 @@ void TTEView::SelectObject_6129d7(HGDIOBJ param_1)
     }
     param_1 = SelectObject((HDC)this->padding_08_to_0b,pvVar1);
   }
-  FromHandle_613a36(param_1);
+  _FromHandle_CGdiObject__SGPAV1_PAX_Z(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061F342
-// GHIDRA_NAME TTEView::DeflateRect
-// GHIDRA_PROTO undefined __thiscall DeflateRect(int * param_1)
+// GHIDRA_NAME TTEView::?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z
+// GHIDRA_PROTO undefined __thiscall ?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z(int * param_1)
 
-void TTEView::DeflateRect(int *param_1)
+void TTEView::_DeflateRect_CRect__QAEXPBUtagRECT___Z(int *param_1)
 
 {
   this->vftable = (TTEViewVtbl *)((int)&this->vftable->GetTEventHandlerClassNamePointer + *param_1);

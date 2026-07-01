@@ -16,12 +16,12 @@ TCommand * TNextTradeCommand::CreateTNextTradeCommandInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006390ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCommand *)AllocateWithFallbackHandler(0x18);
+  this = (TCommand *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
@@ -64,7 +64,7 @@ TNextTradeCommand * TNextTradeCommand::OrphanCallChain_C1_I17_00487470(byte para
 {
   TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -124,7 +124,7 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
   int iStack_c;
   CString CStack_8;
   undefined4 uStack_4;
-  
+
   iStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   CStack_8.m_pchData = &LAB_006396f2;
@@ -160,15 +160,15 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
   else {
     iVar8 = (int)sVar5;
     if ((piVar6[0x2a] < iVar8) || (sVar5 < 0)) {
-      CString::CString(&CStack_8);
-      CString::CString((CString *)&stack0xffffffdc);
+      CString::__0CString__QAE_XZ(&CStack_8);
+      CString::__0CString__QAE_XZ((CString *)&stack0xffffffdc);
       if (this[6].field_0xd == '\0') {
-        CString::CString((CString *)&stack0xffffffe0);
-        FormatStringWithVarArgsToSharedRef();
+        CString::__0CString__QAE_XZ((CString *)&stack0xffffffe0);
+        _Format_CString__QAAXPBDZZ();
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
         uStack_54 = 0x5c07bd;
         scanBracketExpressions(g_pLocalizationTable,&stack0xffffffd0,CStack_2c.m_pchData);
-        CString::~CString(&CStack_2c);
+        CString::__1CString__QAE_XZ(&CStack_2c);
       }
       else {
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -180,8 +180,8 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
       uStack_54 = *(undefined4 *)(unaff_EBP + -8);
       CStack_58.m_pchData = (char *)0x0;
       (**(code **)(iVar2 + 0x1d8))();
-      CString::~CString(&CStack_58);
-      CString::~CString((CString *)&stack0xffffffc4);
+      CString::__1CString__QAE_XZ(&CStack_58);
+      CString::__1CString__QAE_XZ((CString *)&stack0xffffffc4);
       goto LAB_005c082f;
     }
   }
@@ -208,7 +208,7 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
     }
   }
   if (*(int *)&g_pLocalizationTable->field_0x44 != 2) {
-    this_00 = (TNextTradeCommand *)AllocateWithFallbackHandler(0x18);
+    this_00 = (TNextTradeCommand *)__2_YAPAXI_Z(0x18);
     if (this_00 == (TNextTradeCommand *)0x0) {
       uVar7 = 0;
     }

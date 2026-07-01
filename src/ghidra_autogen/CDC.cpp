@@ -4,10 +4,10 @@
 // Bucket: CDC.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00612682
-// GHIDRA_NAME CDC::CDC
-// GHIDRA_PROTO undefined __thiscall CDC(void)
+// GHIDRA_NAME CDC::??0CDC@@QAE@XZ
+// GHIDRA_PROTO undefined __thiscall ??0CDC@@QAE@XZ(void)
 
-void CDC::CDC()
+void CDC::__0CDC__QAE_XZ()
 
 {
   (this->cobject).vftable = (CObjectVtbl *)&_vftable_;
@@ -15,5 +15,70 @@ void CDC::CDC()
   this->m_hAttribDC = (void *)0x0;
   this->m_bPrinting = 0;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613203
+// GHIDRA_NAME CDC::?ArcTo@CDC@@QAEHHHHHHHHH@Z
+// GHIDRA_PROTO int __thiscall ?ArcTo@CDC@@QAEHHHHHHHHH@Z(int param_1, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7, int param_8)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CDC::ArcTo(int,int,int,int,int,int,int,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CDC::ArcTo(int,int,int,int,int,int,int,int)
+
+   Library: nafxcw retail msvc500:static */
+
+int __thiscall
+CDC::_ArcTo_CDC__QAEHHHHHHHHH_Z
+          (CDC *this,int param_1,int param_2,int param_3,int param_4,int param_5,int param_6,
+          int param_7,int param_8)
+
+{
+  BOOL BVar1;
+  tagPOINT local_c;
+
+  local_c.x = (LONG)this;
+  local_c.y = (LONG)this;
+  BVar1 = ArcTo(this->m_hDC,param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8);
+  if (this->m_hDC != this->m_hAttribDC) {
+    GetCurrentPositionEx(this->m_hDC,&local_c);
+    MoveToEx(this->m_hAttribDC,local_c.x,local_c.y,(LPPOINT)0x0);
+  }
+  return BVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613293
+// GHIDRA_NAME CDC::?PolyDraw@CDC@@QAEHPBUtagPOINT@@PBEH@Z
+// GHIDRA_PROTO int __thiscall ?PolyDraw@CDC@@QAEHPBUtagPOINT@@PBEH@Z(tagPOINT * param_1, uchar * param_2, int param_3)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: int __thiscall CDC::PolyDraw(struct tagPOINT const *,unsigned char const *,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: int __thiscall CDC::PolyDraw(struct tagPOINT const *,unsigned char const *,int)
+
+   Library: nafxcw retail msvc500:static */
+
+int CDC::_PolyDraw_CDC__QAEHPBUtagPOINT__PBEH_Z(tagPOINT *param_1, uchar *param_2, int param_3)
+
+{
+  BOOL BVar1;
+  tagPOINT local_c;
+
+  local_c.x = (LONG)this;
+  local_c.y = (LONG)this;
+  BVar1 = PolyDraw(this->m_hDC,param_1,param_2,param_3);
+  if (this->m_hDC != this->m_hAttribDC) {
+    GetCurrentPositionEx(this->m_hDC,&local_c);
+    MoveToEx(this->m_hAttribDC,local_c.x,local_c.y,(LPPOINT)0x0);
+  }
+  return BVar1;
 }
 

@@ -12,7 +12,7 @@ TTacArmyView * TTacArmyView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -57,7 +57,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
   int iStack_8;
   int iStack_4;
   TTacArmyView *this_01;
-  
+
   local_38 = 0;
   *(undefined4 *)&this->field_0x88 = DAT_006a5430;
   *(undefined4 *)&this->field_0x8c = DAT_006a5434;
@@ -108,9 +108,9 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
       this_00->vftable = (TAnimationVtbl *)0x64c340;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
                 (this_00);
-      FreeHeapBufferIfNotNull(this_00);
+      __3_YAXPAX_Z(this_00);
     }
-    FreeHeapBufferIfNotNull(piVar7);
+    __3_YAXPAX_Z(piVar7);
     uVar8 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
     NoOpQuickDrawLifecycleHookB(uVar8);
     SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
@@ -207,7 +207,7 @@ void TTacArmyView::OrphanCallChain_C11_I88_004874b0(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006387b8;
   uStack_c = *unaff_FS_OFFSET;
@@ -349,7 +349,7 @@ void TTacArmyView::OrphanRetStub_005a83c0(int param_1)
   int iStack_a8;
   int iStack_a4;
   short local_a0 [80];
-  
+
   local_e8 = 0;
   local_109 = '\0';
   bVar2 = false;
@@ -1199,7 +1199,7 @@ void TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
   undefined3 extraout_var_04;
   undefined3 extraout_var_05;
   undefined3 extraout_var_06;
-  
+
   if (param_1 == 0) {
     p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
     uVar3 = (*p_Var1)(0x74617267);

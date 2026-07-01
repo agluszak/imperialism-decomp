@@ -15,12 +15,12 @@ TView * TIndustryAmtBar::CreateTIndustryAmtBarInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063795a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x6c);
+  this = (TView *)__2_YAPAXI_Z(0x6c);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -71,7 +71,7 @@ TIndustryAmtBar * TIndustryAmtBar::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -90,7 +90,7 @@ void TIndustryAmtBar::OrphanLeaf_NoCall_Ins07_004d8920()
   int iVar5;
   TCity *this_00;
   short sVar6;
-  
+
   sVar4 = UiRuntimeContext::GetActiveNationId();
   if (g_apNationStates[sVar4] == (TGreatPower *)0x0) {
     this_00 = (TCity *)0x0;
@@ -138,7 +138,7 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637978;
   uStack_c = *unaff_FS_OFFSET;
@@ -203,7 +203,7 @@ TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegionVariantA
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637998;
   uStack_c = *unaff_FS_OFFSET;
@@ -261,7 +261,7 @@ TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
   float fStack_c;
   int *piVar7;
   undefined3 extraout_var_00;
-  
+
   sVar6 = *(short *)((int)&this[1].ownerContext + 2);
   LStack_58 = (((int)sVar6 / 2 + (int)param_1) / (int)sVar6) *
               CONCAT22((short)((uint)this >> 0x10),sVar6);
@@ -343,7 +343,7 @@ void TIndustryAmtBar::UpdateTradeBarFromSelectedMetricRatio_A()
   short sVar3;
   undefined3 extraout_var;
   int *piVar4;
-  
+
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x62617220);
   piVar4 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar4 == (int *)0x0) {

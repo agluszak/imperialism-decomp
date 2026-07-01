@@ -12,7 +12,7 @@ TTechHistoryView * TTechHistoryView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -30,12 +30,12 @@ TView * TTechHistoryView::CreateTTechHistoryViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638b2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)__2_YAPAXI_Z(0x60);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
@@ -107,7 +107,7 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState()
   undefined1 *puStack_8;
   undefined4 uStack_4;
   undefined3 extraout_var_00;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00638b52;
   uStack_c = *unaff_FS_OFFSET;
@@ -159,7 +159,7 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState()
   uVar6 = (*p_Var2)(0x73637677);
   piVar8 = (int *)CONCAT31(extraout_var_02,uVar6);
   (**(code **)(*piVar8 + 0xc))();
-  this_00 = (TDeluxeText *)AllocateWithFallbackHandler(0xa4);
+  this_00 = (TDeluxeText *)__2_YAPAXI_Z(0xa4);
   uStack_24 = 0;
   if (this_00 == (TDeluxeText *)0x0) {
     this_00 = (TDeluxeText *)0x0;
@@ -218,12 +218,12 @@ TView * TTechHistoryView::DestructTTechHistoryViewAndMaybeFree(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638b82;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)__2_YAPAXI_Z(0x60);
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {

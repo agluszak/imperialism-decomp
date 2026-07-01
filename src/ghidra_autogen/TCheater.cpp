@@ -22,7 +22,7 @@ TCheater * TCheater::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -56,7 +56,7 @@ void __thiscall TCheater::ConstructTCheaterBaseState(int param_1,CString param_2
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630d54;
   local_c = *unaff_FS_OFFSET;
@@ -68,7 +68,7 @@ void __thiscall TCheater::ConstructTCheaterBaseState(int param_1,CString param_2
   local_14 = 0x80;
   local_10 = 0x20;
   InitializeUiResourceEntryFrameAndParent(0,param_2.m_pchData,&local_24,&local_1c,5,5,0);
-  param_2.m_pchData = (char *)AllocateWithFallbackHandler(0x94);
+  param_2.m_pchData = (char *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if ((TStaticText *)param_2.m_pchData != (TStaticText *)0x0) {
     TStaticText::TStaticText((TStaticText *)param_2.m_pchData);
@@ -76,7 +76,7 @@ void __thiscall TCheater::ConstructTCheaterBaseState(int param_1,CString param_2
   uVar1 = param_3;
   local_4 = 0xffffffff;
   InitializeTextEntryBaseAndOptionalStringResource(param_1,&local_24,&local_14,5,5,param_3,1);
-  pTVar2 = (TControl *)AllocateWithFallbackHandler(0x84);
+  pTVar2 = (TControl *)__2_YAPAXI_Z(0x84);
   local_4 = 1;
   param_2.m_pchData = (char *)pTVar2;
   if (pTVar2 == (TControl *)0x0) {
@@ -90,13 +90,13 @@ void __thiscall TCheater::ConstructTCheaterBaseState(int param_1,CString param_2
     pTVar2->vftable = (TControlVtbl *)&TButtonVtbl_0064a4e0;
   }
   local_4 = 0xffffffff;
-  CString::CString(&param_2,&DAT_00695a18);
+  CString::__0CString__QAE_PBD_Z(&param_2,&DAT_00695a18);
   local_4 = 3;
   if (DAT_006a2480 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5b7);
   }
   local_4 = 0xffffffff;
-  CString::~CString(&param_2);
+  CString::__1CString__QAE_XZ(&param_2);
   pTVar2->hasCommandTagResource = 0x22;
   *(short *)(param_1 + 0x60) = (short)uVar1;
   *unaff_FS_OFFSET = local_c;
@@ -117,7 +117,7 @@ void TCheater::DestructTCheaterAndMaybeFree()
   int iStack_10;
   int iStack_c;
   int iStack_8;
-  
+
   uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(iVar1 + 300))(&iStack_10);

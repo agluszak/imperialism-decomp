@@ -15,12 +15,12 @@ thunk_TPictureButton * TBuildingConstructionView::CreateTBuildingConstructionVie
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063173a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x9c);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x9c);
   local_4 = 0;
   if (this != (thunk_TPictureButton *)0x0) {
     thunk_TPictureButton::TPictureButton(this);
@@ -71,7 +71,7 @@ TBuildingConstructionView::_scalar_deleting_destructor_
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -193,7 +193,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631778;
   uStack_c = *unaff_FS_OFFSET;
@@ -201,13 +201,13 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   local_22 = 0;
   local_21 = 0;
   local_20 = local_20 & 0xffff0000;
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   local_4 = 0;
-  CString::CString(&local_3c);
+  CString::__0CString__QAE_XZ(&local_3c);
   local_4._0_1_ = 1;
-  CString::CString(local_34);
+  CString::__0CString__QAE_XZ(local_34);
   local_4._0_1_ = 2;
-  CString::CString(local_2c);
+  CString::__0CString__QAE_XZ(local_2c);
                     /* Persist dialog context (city ptr, slot id, caller flags) into object fields.
                         */
   iVar6 = *pCityState;
@@ -335,7 +335,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     }
     CStack_f8.m_pchData = (char *)0x1;
   }
-  FormatStringWithVarArgsToSharedRef();
+  _Format_CString__QAAXPBDZZ();
 LAB_004ca263:
   CStack_f8.m_pchData = &stack0xffffff28;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -400,7 +400,7 @@ LAB_004ca263:
   }
                     /* Compute OK-button availability for University slot 11. */
   if ((short)ppuVar12 == 0xb) {
-    CString::CString(&CStack_cc);
+    CString::__0CString__QAE_XZ(&CStack_cc);
     uVar1 = *(int *)(*(int *)(iVar13 + 0xac) + 0x10) +
             *(int *)(*(int *)(iVar13 + 0xac) + 0x8f0) / 100;
     cVar4 = 4999 < (int)(uVar1 & ((int)uVar1 < 1) - 1);
@@ -427,7 +427,7 @@ LAB_004ca263:
     uStack_158 = 0x4ca4f7;
     (**(code **)(iVar6 + 0x1c8))();
     uStack_158 = 0x4ca505;
-    CString::~CString(&CStack_f8);
+    CString::__1CString__QAE_XZ(&CStack_f8);
   }
   else {
     piVar7 = this->pCity->orderSlotsE4[(short)(*(short *)&this->field_0x94 + 0x35)];
@@ -491,13 +491,13 @@ LAB_004ca263:
     *(undefined2 *)((int)piVar7 + 0x92) = 0xbc7;
   }
   puStack_148._0_1_ = 2;
-  CString::~CString(&CStack_170);
+  CString::__1CString__QAE_XZ(&CStack_170);
   puStack_148._0_1_ = 1;
-  CString::~CString(&CStack_178);
+  CString::__1CString__QAE_XZ(&CStack_178);
   puStack_148 = (undefined4 *)((uint)puStack_148._1_3_ << 8);
-  CString::~CString(&CStack_180);
+  CString::__1CString__QAE_XZ(&CStack_180);
   puStack_148 = (undefined4 *)0xffffffff;
-  CString::~CString(&CStack_184);
+  CString::__1CString__QAE_XZ(&CStack_184);
   *unaff_FS_OFFSET = uStack_150;
   return;
 }
@@ -549,7 +549,7 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
   int iVar4;
   undefined2 extraout_var_00;
   int unaff_retaddr;
-  
+
                     /* Slot 11 uses the Power Plant special upgrade toggle path (city-model vfunc
                        +0x60). */
   if (*(short *)&this->field_0x94 == 0xb) {
@@ -634,7 +634,7 @@ TBuildingConstructionView::SelectNextValidMapOrderEntryFromCursor
   char cVar1;
   void *pMapOrderEntry;
   TCivToolbar *this_00;
-  
+
   if (*(short *)&this->field_0x96 == 2) {
     this_00 = *(TCivToolbar **)&this->field_0x98;
     EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);

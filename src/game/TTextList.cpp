@@ -9,10 +9,6 @@
 #include "game/mfc.h"
 #include "game/mfc.h"
 
-extern "C" {
-char g_vtblTTextList = 0;
-}
-
 undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
 undefined4 thunk_FillRectWithQuickDrawBrushAndContextOffset(void);
 undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);

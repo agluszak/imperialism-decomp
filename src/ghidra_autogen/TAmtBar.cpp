@@ -25,12 +25,12 @@ TView * TAmtBar::CreateTAmtBarInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006378fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)__2_YAPAXI_Z(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -81,7 +81,7 @@ TAmtBar * TAmtBar::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -105,7 +105,7 @@ void TAmtBar::UpdateBarValuesAndRefresh(short param_1, short param_2)
 
 {
   TAmtBarVtbl *pTVar1;
-  
+
   pTVar1 = this->vftable;
   this->stepOrCurrentValue = param_2;
   this->rangeOrMaxValue = param_1;
@@ -156,7 +156,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637918;
   uStack_c = *unaff_FS_OFFSET;
@@ -245,7 +245,7 @@ void TAmtBar::_scalar_deleting_destructor_(int *param_1)
   int *piVar4;
   undefined2 uVar5;
   undefined2 extraout_var_00;
-  
+
   uVar5 = (undefined2)((uint)this >> 0x10);
   if ((this->auxValueA < 1) || (*(int *)&this->field_0x34 / ((int)this->auxValueA << 1) <= *param_1)
      ) {
@@ -301,7 +301,7 @@ void TAmtBar::UpdateTradeMoveControlsFromDrag(char param_1)
   float fStack_c;
   int *piVar7;
   undefined3 extraout_var_00;
-  
+
   piVar7 = *(int **)&this[1].field_0x20;
   iVar4 = piVar7[1];
   if (piVar7 != (int *)0x0) {
@@ -382,7 +382,7 @@ void TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B()
   short sVar3;
   undefined3 extraout_var;
   int *piVar4;
-  
+
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x62617220);
   piVar4 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar4 == (int *)0x0) {

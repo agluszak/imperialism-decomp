@@ -12,7 +12,7 @@ TTacticalToolbar * TTacticalToolbar::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,12 +29,12 @@ TCluster * TTacticalToolbar::CreateTTacticalToolbarInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006387da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x98);
+  this = (TCluster *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
     TCluster::ConstructUiResourceEntryType4B0C0(this);
@@ -81,7 +81,7 @@ void TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920()
   int iStack_14;
   undefined1 *puStack_10;
   int iStack_c;
-  
+
   puStack_10 = (undefined1 *)0x5ac84e;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   iStack_c = 0x68656c70;
@@ -148,7 +148,7 @@ int TTacticalToolbar::OrphanCallChain_C11_I88_004874b0()
   short sVar4;
   RECT local_20;
   RECT local_10;
-  
+
   iVar3 = *(int *)&this->field_0x8c;
   iVar2 = 0;
   if (iVar3 != 0) {
@@ -221,7 +221,7 @@ TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
   undefined4 uStack_c;
   CString CStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   CStack_8.m_pchData = &LAB_006387f8;
@@ -237,13 +237,13 @@ TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
   }
   (**(code **)(iVar2 + 0xa4))(param_1 != (int *)0x0,1);
   InvalidateCityDialogRectRegion(&stack0xffffffd8,1);
-  CString::CString(&CStack_8);
+  CString::__0CString__QAE_XZ(&CStack_8);
   if (param_1 != (int *)0x0) {
     (**(code **)(*param_1 + 0xc))();
-    CString::AssignFromPtr(&CStack_8,(CString *)(param_1[0xe] + 0x24));
+    CString::__4CString__QAEABV0_ABV0__Z(&CStack_8,(CString *)(param_1[0xe] + 0x24));
   }
   AssignSharedStringToTaggedControlAndProcessState(CStack_8.m_pchData,0x444c4f47);
-  CString::~CString(&CStack_8);
+  CString::__1CString__QAE_XZ(&CStack_8);
   *unaff_FS_OFFSET = uStack_18;
   return;
 }
@@ -261,7 +261,7 @@ TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
-  
+
   *(int *)&this->field_0x90 = param_1;
   uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x74706963);
   iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
@@ -286,7 +286,7 @@ TTacticalToolbar::OrphanRetStub_0059add0
 
 {
   uint commandTag;
-  
+
   if (param_1 != 10) goto LAB_005acfe5;
   commandTag = *(uint *)((int)param_2 + 0x1c);
   if (commandTag < 0x646f6e66) {

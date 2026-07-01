@@ -15,12 +15,12 @@ TStaticText * TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638efa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0xb4);
+  this = (TStaticText *)__2_YAPAXI_Z(0xb4);
   local_4 = 0;
   if (this != (TStaticText *)0x0) {
     TStaticText::TStaticText(this);
@@ -61,7 +61,7 @@ TInfoBarPictureText * TInfoBarPictureText::_scalar_deleting_destructor_(byte par
 {
   TStaticText::~TStaticText(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -78,7 +78,7 @@ void TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   puStack_8 = &LAB_0062f0ab;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -86,17 +86,17 @@ void TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree()
   this_00 = *(CString **)&this->field_0x84;
   uStack_4 = 0;
   if (this_00 != (CString *)0x0) {
-    CString::~CString(this_00);
-    FreeHeapBufferIfNotNull(this_00);
+    CString::__1CString__QAE_XZ(this_00);
+    __3_YAXPAX_Z(this_00);
   }
   this->vftable = (TInfoBarPictureTextVtbl *)&TView::_vftable_;
   uStack_4 = 2;
   if ((int *)this->field44 != (int *)0x0) {
     (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->field48);
+  __3_YAXPAX_Z(this->field48);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  CString::~CString(&this->sharedStringRef);
+  CString::__1CString__QAE_XZ(&this->sharedStringRef);
   this->vftable =
        (TInfoBarPictureTextVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
@@ -122,7 +122,7 @@ void TInfoBarPictureText::ConstructTInfoBarTextBaseState(RECT *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00638f18;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -144,7 +144,7 @@ void TInfoBarPictureText::ConstructTInfoBarTextBaseState(RECT *param_1)
     (*pTVar1->VTableSlot39)();
   }
   local_4 = 0xffffffff;
-  CString::~CString((CString *)&param_1);
+  CString::__1CString__QAE_XZ((CString *)&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -169,7 +169,7 @@ TInfoBarPictureText::Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00638f38;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
@@ -188,7 +188,7 @@ TInfoBarPictureText::Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0
   UpdateTextEntrySharedStringIfChanged(&stack0x00000000);
   (*pTVar1->VTableSlot39)();
   puStack_8 = (undefined1 *)0xffffffff;
-  CString::~CString((CString *)&stack0x00000000);
+  CString::__1CString__QAE_XZ((CString *)&stack0x00000000);
   *unaff_FS_OFFSET = uStack_10;
   return;
 }

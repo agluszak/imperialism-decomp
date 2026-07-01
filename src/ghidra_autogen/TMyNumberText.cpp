@@ -17,7 +17,7 @@ TMyNumberText * TMyNumberText::CloneCityDialogStateWithSharedStringInit(int para
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f053;
   local_c = *unaff_FS_OFFSET;
@@ -40,18 +40,18 @@ TMyNumberText * TMyNumberText::CloneCityDialogStateWithSharedStringInit(int para
   local_4 = 0;
   *(undefined2 *)&this->field_0x90 = *(undefined2 *)(param_1 + 0x90);
   this->vftable = (TMyNumberTextVtbl *)&TStaticText::_vftable_;
-  pCVar2 = (CString *)AllocateWithFallbackHandler(4);
+  pCVar2 = (CString *)__2_YAPAXI_Z(4);
   local_4._0_1_ = 1;
   if (pCVar2 == (CString *)0x0) {
     pCVar2 = (CString *)0x0;
   }
   else {
-    CString::CString(pCVar2);
+    CString::__0CString__QAE_XZ(pCVar2);
     pCVar2 = extraout_EAX;
   }
   *(CString **)&this->field_0x84 = pCVar2;
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::AssignFromPtr(pCVar2,*(CString **)(param_1 + 0x84));
+  CString::__4CString__QAEABV0_ABV0__Z(pCVar2,*(CString **)(param_1 + 0x84));
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -68,12 +68,12 @@ TEditText * TMyNumberText::CreateTMyNumberTextInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638dca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TEditText *)AllocateWithFallbackHandler(0xac);
+  this = (TEditText *)__2_YAPAXI_Z(0xac);
   local_4 = 0;
   if (this != (TEditText *)0x0) {
     TEditText::ConstructUiNumericTextEntryBase(this);
@@ -118,7 +118,7 @@ TMyNumberText * TMyNumberText::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTEditTextAndMaybeFree((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -141,14 +141,14 @@ char * TMyNumberText::UpdateControlCachedIntFromWindowText()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638de8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_14 = (undefined1 *)0x0;
   pCStack_20 = (CString *)0x5b507c;
-  CString::CString(&local_18);
+  CString::__0CString__QAE_XZ(&local_18);
   pCStack_20 = &local_18;
   local_4 = 0;
   pCStack_24 = (CString *)0x5b5093;
@@ -161,7 +161,7 @@ char * TMyNumberText::UpdateControlCachedIntFromWindowText()
   }
   puStack_8 = (undefined1 *)0xffffffff;
   pCStack_24 = (CString *)0x5b50d1;
-  CString::~CString((CString *)&stack0xffffffe4);
+  CString::__1CString__QAE_XZ((CString *)&stack0xffffffe4);
   *unaff_FS_OFFSET = uStack_10;
   return local_18.m_pchData;
 }

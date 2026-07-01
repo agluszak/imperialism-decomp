@@ -16,12 +16,12 @@ TNoHilitePicture * TTownNameDialog::CreateTTownNameDialogInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633eea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
@@ -64,7 +64,7 @@ TTownNameDialog * TTownNameDialog::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -89,13 +89,13 @@ void TTownNameDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633f08;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   local_10.m_pchData = (char *)this;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
@@ -105,7 +105,7 @@ void TTownNameDialog::OrphanLeaf_NoCall_Ins07_004d8920()
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
-  uVar3 = GenerateThreadLocalRandom15();
+  uVar3 = _rand();
   uVar5 = (int)uVar3 >> 0x1f;
   iVar4 = (((uVar3 ^ uVar5) - uVar5 & 7 ^ uVar5) - uVar5) + 1;
   (**(code **)(iVar1 + 0x1cc))();
@@ -117,7 +117,7 @@ void TTownNameDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(iVar1 + 0x1dc))();
   CStack_30.m_pchData = (char *)0x1;
   (**(code **)(iVar1 + 0x1d8))(0,*(undefined4 *)(iVar4 + -8));
-  CString::~CString(&CStack_30);
+  CString::__1CString__QAE_XZ(&CStack_30);
   *unaff_FS_OFFSET = (int)puVar6;
   return;
 }
@@ -132,7 +132,7 @@ void TTownNameDialog::OrphanTiny_ReturnZero_0048a730()
   undefined uVar1;
   undefined3 extraout_var;
   undefined1 auStack_14 [20];
-  
+
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6e616d65);
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {

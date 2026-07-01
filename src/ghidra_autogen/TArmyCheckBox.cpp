@@ -12,7 +12,7 @@ TArmyCheckBox * TArmyCheckBox::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -29,12 +29,12 @@ TControl * TArmyCheckBox::CreateTArmyCheckBoxInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063048a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x94);
+  this = (TControl *)__2_YAPAXI_Z(0x94);
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::TControl(this);
@@ -72,7 +72,7 @@ TArmyCheckBox::ConstructTArmyCheckBoxBaseState
 {
   undefined4 in_stack_00000018;
   undefined4 in_stack_0000001c;
-  
+
   InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,4,4,0);
   *(undefined4 *)&this->field_0x90 = in_stack_00000018;
   *(undefined4 *)&this->field_0x88 = in_stack_0000001c;
@@ -87,7 +87,7 @@ void TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(char param_1)
 
 {
   TArmyCheckBoxVtbl *pTVar1;
-  
+
   if ((this->field_0x84 == '\0') && (this->field_0x64 == '\0')) {
     if (*(int *)&this->field_0x8c != 0) {
       pTVar1 = this->vftable;
@@ -125,7 +125,7 @@ void TArmyCheckBox::OrphanTiny_ReturnZero_0048a730(int *param_1)
   tagRECT local_30;
   tagRECT local_20;
   int local_4;
-  
+
   iVar3 = *param_1;
   iVar1 = param_1[1];
   iVar2 = param_1[2];
@@ -174,7 +174,7 @@ void TArmyCheckBox::OrphanRetStub_0059add0(int param_1)
 
 {
   ushort uVar1;
-  
+
   if (param_1 == 0x21) {
     uVar1 = GetAsyncKeyState(0x11);
     if (((uVar1 & 0x8000) == 0) || (this->field_0x84 != '\0')) {
@@ -229,7 +229,7 @@ void TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0()
 {
   TArmyCheckBoxVtbl *pTVar1;
   char cVar2;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins02_004aa340)();
   (*pTVar1->SetArmyUnitLineActiveFlagAndNotify)((uint)(cVar2 == '\0'));
@@ -246,7 +246,7 @@ void TArmyCheckBox::OrphanCallChain_C3_I23_004aa3e0(char param_1, undefined4 par
   TArmyCheckBoxVtbl *pTVar1;
   _vslot_fn *p_Var2;
   char cVar3;
-  
+
   pTVar1 = this->vftable;
   p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins02_004aa340;
   cVar3 = (*p_Var2)();
@@ -266,7 +266,7 @@ void TArmyCheckBox::OrphanCallChain_C1_I05_004aa430()
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
                     /* WARNING: Could not recover jumptable at 0x004aa439. Too many branches */
                     /* WARNING: Treating indirect jump as call */

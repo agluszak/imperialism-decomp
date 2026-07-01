@@ -15,12 +15,12 @@ TNoHilitePicture * TUniversityView::CreateTUniversityViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006317ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xac);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0xac);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
@@ -67,7 +67,7 @@ TUniversityView * TUniversityView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -140,7 +140,7 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   int pControlResource;
   code *pGetControlByTag;
   int pRecruitOrderEntry;
-  
+
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
   BuildUiTextStyleDescriptor();
   nRecruitRowIndex = 0;
@@ -335,7 +335,7 @@ void TUniversityView::OrphanRetStub_0059add0(int param_1, int param_2)
   RECT RStack_34;
   tagRECT atStack_24 [2];
   int iStack_4;
-  
+
   if (param_1 == 0xc) {
     sVar7 = *(short *)(param_2 + 0x1c) + -0x7630;
     if ((-1 < sVar7) && (sVar7 < 9)) {
@@ -449,14 +449,14 @@ void TUniversityView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631800;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString((CString *)(local_4c + 8));
+  CString::__0CString__QAE_XZ((CString *)(local_4c + 8));
   local_4 = 0;
-  CString::CString(&local_40);
+  CString::__0CString__QAE_XZ(&local_40);
   local_4 = CONCAT31(local_4._1_3_,1);
   local_4c._4_4_ = 0;
   local_4c._0_4_ = 0;
@@ -552,9 +552,9 @@ void TUniversityView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
     (**(code **)(**(int **)&this->field_0x98 + 0x1dc))();
   }
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_40);
+  CString::__1CString__QAE_XZ(&local_40);
   local_4 = 0xffffffff;
-  CString::~CString((CString *)(local_4c + 8));
+  CString::__1CString__QAE_XZ((CString *)(local_4c + 8));
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -608,7 +608,7 @@ void TUniversityView::OrphanTiny_ReturnZero_0048a730(RECT *pClipRect)
   undefined1 *puStack_8;
   undefined4 uStack_4;
   int nRequirementLevelColumn;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00631818;
   uStack_c = *unaff_FS_OFFSET;
@@ -649,7 +649,7 @@ void TUniversityView::OrphanTiny_ReturnZero_0048a730(RECT *pClipRect)
     puStack_8 = (undefined1 *)0x0;
     nRequirementRowBottomY = 0x12e;
     do {
-      CString::CString((CString *)&stack0xffffff9c);
+      CString::__0CString__QAE_XZ((CString *)&stack0xffffff9c);
       uStack_10 = 0;
       if (*(short *)(&g_anUniversityRequirementIdByRecruitRow +
                     (int)(puStack_8 + *(short *)&this->field_0xa4 * 4) * 4) != -1) {
@@ -681,7 +681,7 @@ void TUniversityView::OrphanTiny_ReturnZero_0048a730(RECT *pClipRect)
         if (0 < nHighestRequirementLevel) {
           nRequirementLevelColumn = (int)puStack_8 * 0x19;
           do {
-            FormatStringWithVarArgsToSharedRef
+            _Format_CString__QAAXPBDZZ
                       (&stack0xffffff9c,&g_szDecimalFormat,
                        (int)(char)(&g_abUniversityRequirementLevelById)[iVar3 + nRequirementId * 4])
             ;
@@ -693,7 +693,7 @@ void TUniversityView::OrphanTiny_ReturnZero_0048a730(RECT *pClipRect)
         }
       }
       uStack_10 = 0xffffffff;
-      CString::~CString((CString *)&stack0xffffff9c);
+      CString::__1CString__QAE_XZ((CString *)&stack0xffffff9c);
       nRequirementRowBottomY = nRequirementRowBottomY + 0x19;
       puStack_8 = puStack_8 + 1;
     } while (nRequirementRowBottomY < 0x192);

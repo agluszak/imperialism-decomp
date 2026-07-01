@@ -32,7 +32,7 @@ TCityTask::ApplyProductionDistributionToCitySlots
   int unaff_EBX;
   undefined4 unaff_EBP;
   undefined4 uVar4;
-  
+
   if (param_1 < param_2) {
     pTVar1 = this->vftable;
     uVar4 = param_3;
@@ -62,7 +62,7 @@ TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
   undefined *puStack_20;
   code *pcStack_1c;
   undefined4 uStack_4;
-  
+
   if (param_2 <= (int)param_1) {
     return param_2;
   }
@@ -113,10 +113,10 @@ void TCityTask::GetTTaskClassNamePointer(int param_1, int param_2)
   undefined4 unaff_EBX;
   undefined4 unaff_retaddr;
   int iStack_4;
-  
+
   iVar3 = param_1;
   if (param_1 != param_2) {
-    iVar5 = GenerateThreadLocalRandom15();
+    iVar5 = _rand();
     uVar6 = param_2 - param_1 >> 0x1f;
     param_1 = iVar5 % (int)((param_2 - param_1 ^ uVar6) - uVar6) + param_1;
   }
@@ -124,9 +124,11 @@ void TCityTask::GetTTaskClassNamePointer(int param_1, int param_2)
   p_Var2 = pTVar1[1].AssertValid;
   (*p_Var2)(iVar3);
   uVar4 = (*p_Var2)(unaff_retaddr);
-  iVar5 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4,iVar3 + -1);
+  iVar5 = CPtrList::_FindIndex_CStringList__QBEPAU__POSITION__H_Z
+                    ((CPtrList *)&this->field_0x4,iVar3 + -1);
   *(uint *)(iVar5 + 8) = CONCAT31(extraout_var,uVar4);
-  iVar5 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4,iStack_4 + -1);
+  iVar5 = CPtrList::_FindIndex_CStringList__QBEPAU__POSITION__H_Z
+                    ((CPtrList *)&this->field_0x4,iStack_4 + -1);
   *(undefined4 *)(iVar5 + 8) = unaff_EBX;
   (*pTVar1[1].QueueCityRecruitmentSupportCommandsIfDeficit)(iVar3,unaff_retaddr,param_1,param_2);
   return;
@@ -144,7 +146,7 @@ void TCityTask::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined uVar3;
   int3 extraout_var;
   undefined3 extraout_var_00;
-  
+
   pTVar1 = this->vftable;
   p_Var2 = pTVar1[1].Serialize;
   uVar3 = (*p_Var2)();
@@ -167,7 +169,7 @@ void TCityTask::OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 
   undefined uVar3;
   int3 extraout_var;
   undefined3 extraout_var_00;
-  
+
   pTVar1 = this->vftable;
   p_Var2 = pTVar1[1].Serialize;
   uVar3 = (*p_Var2)();
@@ -186,8 +188,9 @@ void TCityTask::ApplyProductionDistributionToCitySlots()
 
 {
   undefined4 in_stack_00000004;
-  
-  CPtrList::AddTail((CPtrList *)&this->field_0x4,in_stack_00000004);
+
+  CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z
+            ((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -198,7 +201,7 @@ void TCityTask::ApplyProductionDistributionToCitySlots()
 void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit()
 
 {
-  RemoveTailNodeAndReturnPayload();
+  _RemoveTail_CPtrList__QAEPAXXZ();
   return;
 }
 
@@ -210,8 +213,9 @@ void TCityTask::GetTTaskClassNamePointer()
 
 {
   undefined4 in_stack_00000004;
-  
-  CPtrList::AddTail((CPtrList *)&this->field_0x4,in_stack_00000004);
+
+  CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z
+            ((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -222,7 +226,7 @@ void TCityTask::GetTTaskClassNamePointer()
 void TCityTask::ConstructTTaskBaseState()
 
 {
-  RemoveHead();
+  _RemoveHead_CPtrList__QAEPAXXZ();
   return;
 }
 
@@ -245,8 +249,9 @@ undefined4 TCityTask::QueueCityOrderType10CommandIfReady()
 {
   int iVar1;
   int in_stack_00000004;
-  
-  iVar1 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4,in_stack_00000004 + -1);
+
+  iVar1 = CPtrList::_FindIndex_CStringList__QBEPAU__POSITION__H_Z
+                    ((CPtrList *)&this->field_0x4,in_stack_00000004 + -1);
   return *(undefined4 *)(iVar1 + 8);
 }
 
@@ -259,10 +264,11 @@ void TCityTask::ApplyProductionDistributionToCitySlots()
 {
   int *piVar1;
   int in_stack_00000004;
-  
-  piVar1 = (int *)CPtrList::GetNodeAtZeroBasedIndex
+
+  piVar1 = (int *)CPtrList::_FindIndex_CStringList__QBEPAU__POSITION__H_Z
                             ((CPtrList *)&this->field_0x4,in_stack_00000004 + -1);
-  TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)&this->field_0x4,piVar1);
+  TAutoGreatPower::_RemoveAt_CPtrList__QAEXPAU__POSITION___Z
+            ((TAutoGreatPower *)&this->field_0x4,piVar1);
   return;
 }
 
@@ -275,10 +281,10 @@ void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit()
 {
   int iVar1;
   int *piVar2;
-  
+
   iVar1 = *(int *)&this->field_0x10;
   while (iVar1 != 0) {
-    piVar2 = (int *)RemoveHead();
+    piVar2 = (int *)_RemoveHead_CPtrList__QAEPAXXZ();
     (**(code **)(*piVar2 + 0x1c))();
     iVar1 = *(int *)&this->field_0x10;
   }
@@ -306,7 +312,7 @@ void TCityTask::DeserializeCityProductionQueueCommand()
 
 {
   TCityTaskVtbl *pTVar1;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1[1].SerializeCityProductionQueueCommand)();
   (*pTVar1->Free)();
@@ -320,7 +326,7 @@ void TCityTask::DeserializeCityProductionQueueCommand()
 void TCityTask::OrphanRetStub_0059add0()
 
 {
-  CPtrList::RemoveAll((CPtrList *)&this->field_0x4);
+  CPtrList::_RemoveAll_CPtrList__QAEXXZ((CPtrList *)&this->field_0x4);
   return;
 }
 
@@ -353,8 +359,9 @@ void TCityTask::InvalidateWindowRectFromHandleField1C(undefined4 *param_1)
 {
   int iVar1;
   undefined4 *in_stack_00000008;
-  
-  iVar1 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4,(int)param_1 + -1);
+
+  iVar1 = CPtrList::_FindIndex_CStringList__QBEPAU__POSITION__H_Z
+                    ((CPtrList *)&this->field_0x4,(int)param_1 + -1);
   *(undefined4 *)(iVar1 + 8) = *in_stack_00000008;
   return;
 }
@@ -389,7 +396,7 @@ TCityTask * TCityTask::ConstructTTaskBaseState(byte param_1)
 {
   DestroyTCityTask_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -458,7 +465,7 @@ bool TCityTask::OrphanLeaf_NoCall_Ins04_005adc30()
   int local_88;
   code *local_84;
   undefined1 auStack_80 [128];
-  
+
   bVar3 = true;
   sVar4 = *(short *)&this->field_0x4;
   if ((-1 < sVar4) && (sVar4 < 7)) {
@@ -553,7 +560,7 @@ void TCityTask::QueueCityOrderType10CommandIfReady(int *param_1)
   int iVar4;
   undefined4 *puVar5;
   short sVar6;
-  
+
   piVar2 = *(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4);
   (**(code **)(*piVar2 + 0x30))();
   sVar1 = (short)piVar2[0x10];
@@ -562,7 +569,7 @@ void TCityTask::QueueCityOrderType10CommandIfReady(int *param_1)
     if (*(short *)&this->field_0x4 != 0x17) {
       sVar6 = sVar6 << 1;
     }
-    puVar5 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+    puVar5 = (undefined4 *)__2_YAPAXI_Z(0x14);
     if (puVar5 == (undefined4 *)0x0) {
       puVar5 = (undefined4 *)0x0;
     }
@@ -600,7 +607,7 @@ void TCityTask::QueueCityOrderType10CommandIfReady(int *param_1)
 // GHIDRA_COMMENT_END
 
 /* Queues support resource commands for recruitment deficits.
-   
+
    Behavior:
    - For active entry, compares requested recruitment amount (+0x0C) against two city pools
    (city+0xC8 and city+0xCC).
@@ -617,7 +624,7 @@ void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void *pCommandQueue
   undefined4 *puVar4;
   short sVar5;
   short sVar6;
-  
+
   piVar1 = *(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4);
   (**(code **)(*piVar1 + 0x30))();
   bVar3 = false;
@@ -625,7 +632,7 @@ void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void *pCommandQueue
     sVar6 = *(short *)(*(int *)&this->field_0x8 + 200) - *(short *)&this->field_0xc;
     sVar5 = *(short *)(*(int *)&this->field_0x8 + 0xcc) - *(short *)&this->field_0xc;
     if (sVar6 < 0) {
-      puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+      puVar4 = (undefined4 *)__2_YAPAXI_Z(0x14);
       if (puVar4 == (undefined4 *)0x0) {
         puVar4 = (undefined4 *)0x0;
       }
@@ -643,7 +650,7 @@ void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void *pCommandQueue
       bVar3 = true;
     }
     if ((sVar5 < 0) && (*(short *)&this->field_0xe == 0)) {
-      puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+      puVar4 = (undefined4 *)__2_YAPAXI_Z(0x14);
       if (puVar4 == (undefined4 *)0x0) {
         puVar4 = (undefined4 *)0x0;
       }
@@ -720,7 +727,7 @@ void TCityTask::DeserializeCityProductionQueueCommand(void *pCommandQueue)
   short sVar9;
   short sVar10;
   short sVar11;
-  
+
   piVar4 = *(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4);
   (**(code **)(*piVar4 + 0x30))();
   sVar1 = (short)piVar4[0x13];
@@ -740,7 +747,7 @@ void TCityTask::DeserializeCityProductionQueueCommand(void *pCommandQueue)
       sVar10 = sVar9 * *(short *)&this->field_0xc - sVar3;
     }
     if (0 < sVar11) {
-      puVar8 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+      puVar8 = (undefined4 *)__2_YAPAXI_Z(0x14);
       if (puVar8 == (undefined4 *)0x0) {
         puVar8 = (undefined4 *)0x0;
       }
@@ -761,7 +768,7 @@ void TCityTask::DeserializeCityProductionQueueCommand(void *pCommandQueue)
       bVar7 = true;
     }
     if ((0 < sVar10) && (*(short *)&this->field_0xe == 0)) {
-      puVar8 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+      puVar8 = (undefined4 *)__2_YAPAXI_Z(0x14);
       if (puVar8 == (undefined4 *)0x0) {
         puVar8 = (undefined4 *)0x0;
       }
@@ -832,7 +839,7 @@ void TCityTask::ApplyProductionDistributionToCitySlots()
   int iVar2;
   short *psVar3;
   undefined1 local_80 [128];
-  
+
   iVar2 = *(int *)(*(int *)&this->field_0x8 + 0xac);
   piVar1 = *(int **)(iVar2 + 0x94);
   (**(code **)(**(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4) + 0x40))
@@ -868,14 +875,14 @@ void TCityTask::ApplyProductionDistributionToCitySlots()
 // GHIDRA_COMMENT_END
 
 /* Queues a city production/recruitment command object for later execution.
-   
+
    Algorithm:
    1. Resolve selected city entry by slot index.
    2. Refresh entry state and ensure not blocked/already queued.
    3. Allocate 0x14-byte command object and assign command vtable.
    4. Store slot id, quantity delta, city pointer, and mode selector.
    5. Enqueue command to command queue (+0x30) and mark this UI/order context as queued.
-   
+
    Rollover behavior:
    - Actual city state mutation is deferred to command execution, which calls
    ApplyProductionDistributionToCitySlots. */
@@ -888,11 +895,11 @@ void TCityTask::OrphanRetStub_0059add0(void *pCommandQueue)
   int *piVar3;
   undefined4 uVar4;
   undefined4 *puVar5;
-  
+
   piVar3 = *(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4);
   (**(code **)(*piVar3 + 0x30))();
   if (((short)piVar3[0x10] == 0) && (*(short *)&this->field_0xe == 0)) {
-    puVar5 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+    puVar5 = (undefined4 *)__2_YAPAXI_Z(0x14);
     if (puVar5 == (undefined4 *)0x0) {
       puVar5 = (undefined4 *)0x0;
     }
@@ -930,7 +937,7 @@ void TCityTask::SerializeCityProductionQueueCommand(void *pArchive)
 
 {
   code *pcVar1;
-  
+
   pcVar1 = *(code **)(*(int *)pArchive + 0x78);
   (*pcVar1)(&this->field_0x10,1);
   TObject::WriteTo((TObject *)this,pArchive);
@@ -954,7 +961,7 @@ void TCityTask::DeserializeCityProductionQueueCommand(void *pArchive)
 
 {
   code *pcVar1;
-  
+
   TObject::ReadFrom((TObject *)this,pArchive);
   pcVar1 = *(code **)(*(int *)pArchive + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
@@ -981,7 +988,7 @@ undefined4 TCityTask::ConstructTTaskBaseState()
   code *unaff_EBX;
   int iVar6;
   short unaff_retaddr;
-  
+
   sVar5 = 1;
   pTVar1 = this->vftable;
   uVar3 = (*pTVar1[1].Serialize)();

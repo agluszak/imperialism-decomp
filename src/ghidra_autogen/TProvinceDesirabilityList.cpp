@@ -16,16 +16,16 @@ TIndexAndRankList * TProvinceDesirabilityList::CreateTProvinceDesirabilityListIn
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631d2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  this = (TIndexAndRankList *)__2_YAPAXI_Z(0x18);
   local_4 = 0;
   pTVar1 = (TIndexAndRankList *)0x0;
   if (this != (TIndexAndRankList *)0x0) {
-    TIndexAndRankList::CPtrArray(this);
+    TIndexAndRankList::__0CPtrArray__QAE_XZ(this);
     this->vftable = (TIndexAndRankListVtbl *)&_vftable_;
     pTVar1 = this;
   }
@@ -50,7 +50,7 @@ CRuntimeClass * TProvinceDesirabilityList::GetTEventHandlerClassNamePointer()
 TProvinceDesirabilityList * TProvinceDesirabilityList::ConstructObArrayWithVtable653810()
 
 {
-  TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
+  TIndexAndRankList::__0CPtrArray__QAE_XZ((TIndexAndRankList *)this);
   this->vftable = &_vftable_;
   return this;
 }
@@ -64,9 +64,9 @@ TProvinceDesirabilityList::_scalar_deleting_destructor_
           (TProvinceDesirabilityList *this,byte param_1)
 
 {
-  CObArray::DestructCObArray();
+  CObArray::??1CUIntArray@@UAE@XZ();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -82,14 +82,14 @@ TProvinceDesirabilityList::OrphanRetStub_0059add0
 {
   uint uVar1;
   uint uVar2;
-  
+
   if (*(short *)(param_2 + 2) < *(short *)(param_1 + 2)) {
     return 1;
   }
   if (*(short *)(param_1 + 2) < *(short *)(param_2 + 2)) {
     return 0xffff;
   }
-  uVar1 = GenerateThreadLocalRandom15();
+  uVar1 = _rand();
   uVar2 = (int)uVar1 >> 0x1f;
   return (-(uint)(((uVar1 ^ uVar2) - uVar2 & 1 ^ uVar2) != uVar2) & 2) - 1;
 }

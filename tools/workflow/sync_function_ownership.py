@@ -10,10 +10,15 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.workflow.function_ownership import (
     DEFAULT_FUNCTION_OWNERSHIP_CSV,
     FunctionOwnership,
-    function_marker_regex,
     load_function_ownership,
     normalize_repo_relative_path,
     write_function_ownership,
+)
+
+
+MARKER_RE_TEMPLATE = (
+    r"//\s*(?P<kind>FUNCTION|STUB|TEMPLATE|SYNTHETIC|LIBRARY)\s*:\s*{target}\s+"
+    r"(?:0x)?(?P<address>[0-9a-fA-F]+)"
 )
 
 
@@ -45,7 +50,9 @@ def iter_source_files(source_dir: Path) -> list[Path]:
 def collect_marker_ownership(
     source_dir: Path, repo_root: Path, target: str
 ) -> tuple[dict[int, FunctionOwnership], list[tuple[int, str, str]]]:
-    marker_re = function_marker_regex(target)
+    import re
+
+    marker_re = re.compile(MARKER_RE_TEMPLATE.format(target=re.escape(target)), re.IGNORECASE)
     found: dict[int, FunctionOwnership] = {}
     conflicts: list[tuple[int, str, str]] = []
 
@@ -59,11 +66,12 @@ def collect_marker_ownership(
 
         target_cpp = normalize_repo_relative_path(path, repo_root)
         for match in marker_re.finditer(text):
-            address = int(match.group(1), 16)
+            address = int(match.group("address"), 16)
+            marker_kind = match.group("kind").upper()
             entry = FunctionOwnership(
                 address=address,
                 target_cpp=target_cpp,
-                ownership="manual",
+                ownership="library" if marker_kind == "LIBRARY" else "manual",
                 note="marker_sync",
             )
             existing = found.get(address)

@@ -22,7 +22,7 @@ TPowerPlantOrder * TPowerPlantOrder::ConstructTPowerPlantOrderBaseState(byte par
 {
   TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -48,7 +48,7 @@ void TPowerPlantOrder::InitializeCityProductionState_Impl(int param_1)
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = 0;
@@ -74,7 +74,7 @@ int TPowerPlantOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   undefined2 uVar1;
-  
+
   uVar1 = (undefined2)((uint)*(int *)&this->field_0x8 >> 0x10);
   return CONCAT22(uVar1,*(undefined2 *)&this->field_0x4) +
          CONCAT22(uVar1,*(undefined2 *)(*(int *)&this->field_0x8 + 0xce)) * 6;
@@ -95,7 +95,7 @@ undefined4 TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   char cVar6;
   undefined3 extraout_var;
   short sVar7;
-  
+
   sVar7 = param_1 - *(short *)&this->field_0x4;
   uVar5 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar5) < param_1) || (param_1 < 0)) {
@@ -151,7 +151,7 @@ void TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop()
   undefined uVar3;
   undefined3 extraout_var;
   undefined4 unaff_EBX;
-  
+
   pTVar2 = this->vftable;
   uVar3 = (*pTVar2->OrphanLeaf_NoCall_Ins02_004b50e0)();
   sVar1 = *(short *)&this->field_0x4c;
@@ -187,7 +187,7 @@ TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
 
 {
   code *pcVar1;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
@@ -210,7 +210,7 @@ TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
 
 {
   code *pcVar1;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x48,2);

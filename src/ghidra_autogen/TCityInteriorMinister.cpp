@@ -45,7 +45,7 @@ undefined4 TCityInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   int iVar1;
-  
+
   if (*(int *)&this->field_0x4 == 0) {
     iVar1 = 0;
   }
@@ -97,7 +97,7 @@ void TCityInteriorMinister::SetForeignMinisterReadyFlag14()
   short sVar3;
   short sVar4;
   short sVar5;
-  
+
   sVar4 = 0;
   do {
     piVar2 = *(int **)&this->field_0x4;
@@ -125,7 +125,7 @@ undefined1 TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
 {
   undefined1 uVar1;
   short sVar2;
-  
+
   uVar1 = 0;
   sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x74))();
   if (sVar2 == 0) {
@@ -199,7 +199,7 @@ TCityInteriorMinister * TCityInteriorMinister::DeletingDestructTMinister(byte pa
 {
   DestroyTCityInteriorMinister_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -213,7 +213,7 @@ TCityInteriorMinister * TCityInteriorMinister::_scalar_deleting_destructor_(byte
 {
   TCityInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004bec40(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -232,7 +232,7 @@ TCityInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   puStack_8 = &LAB_00631218;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
@@ -245,7 +245,7 @@ TCityInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004
   *(undefined4 *)&this->field_0x10 = 0;
   *(undefined4 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0x4 = 0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   *(undefined4 *)&this->field_0x14 = 0;
   this->vftable =
        (TCityInteriorMinisterVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -295,7 +295,7 @@ undefined4 TCityInteriorMinister::GetTEventHandlerClassNamePointer(short param_1
   short sVar4;
   TCity *this_00;
   int iVar5;
-  
+
   iVar5 = 0;
   sVar4 = 0;
   pTVar3 = g_apNationStates[param_1];
@@ -423,7 +423,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
   undefined4 uStack_28;
   int iStack_24;
   undefined1 *puStack_20;
-  
+
   puStack_20 = (undefined1 *)0x4bef73;
   TMinister::SerializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
   puStack_20 = &this->field_0x10;
@@ -698,7 +698,7 @@ void TCityInteriorMinister::SetForeignMinisterReadyFlag14(int *param_1)
   undefined1 *puStack_2c;
   undefined4 uStack_28;
   undefined1 *puStack_24;
-  
+
   puStack_24 = (undefined1 *)0x4bf3cf;
   TMinister::DeserializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
   puStack_24 = &this->field_0x10;
@@ -923,7 +923,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
   int *piVar3;
   int iVar4;
   undefined4 *puVar5;
-  
+
   if (*(int *)&this->field_0x4 == 0) {
     piVar3 = (int *)0x0;
   }
@@ -992,10 +992,10 @@ void TCityInteriorMinister::_scalar_deleting_destructor_(int param_1)
   short *psVar3;
   undefined1 auStack_8 [4];
   undefined1 auStack_4 [4];
-  
+
   if ((*(short *)&this->field_0x40 != 0) || (*(short *)&this->field_0x42 != 0)) {
     iVar2 = **(int **)(*(int *)&this->field_0x4 + 0x94);
-    iVar1 = GenerateThreadLocalRandom15(*(short *)&this->field_0x40);
+    iVar1 = _rand(*(short *)&this->field_0x40);
     (**(code **)(iVar2 + 0x4c))(0x4a < iVar1 % 100);
   }
   iVar2 = 2;
@@ -1063,7 +1063,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063126c;
   uStack_c = *unaff_FS_OFFSET;
@@ -1074,7 +1074,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_
     iVar3 = TCity::GetCityBuildingProductionValueBySlot(param_1,0);
     sVar7 = (short)(sVar7 + sVar1) / 2 - (short)iVar3;
     if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x35), cVar2 == '\0')) {
-      pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+      pTVar4 = (TCityTask *)__2_YAPAXI_Z(0x14);
       pvVar6 = (void *)0x0;
       uStack_4 = 0;
       if (pTVar4 != (TCityTask *)0x0) {
@@ -1090,7 +1090,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_
     iVar3 = TCity::GetCityBuildingProductionValueBySlot(param_1,2);
     sVar7 = sVar7 - (short)iVar3;
     if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x37), cVar2 == '\0')) {
-      pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+      pTVar4 = (TCityTask *)__2_YAPAXI_Z(0x14);
       uStack_4 = 1;
       if (pTVar4 == (TCityTask *)0x0) {
         pvVar6 = (void *)0x0;
@@ -1108,7 +1108,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_
     iVar3 = TCity::GetCityBuildingProductionValueBySlot(param_1,4);
     sVar7 = sVar7 / 2 - (short)iVar3;
     if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x39), cVar2 == '\0')) {
-      pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+      pTVar4 = (TCityTask *)__2_YAPAXI_Z(0x14);
       uStack_4 = 2;
       if (pTVar4 == (TCityTask *)0x0) {
         pvVar6 = (void *)0x0;
@@ -1126,7 +1126,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_
     iVar5 = TCity::GetCityBuildingProductionValueBySlot(param_1,1);
     sVar7 = (short)iVar3 / 2 - (short)iVar5;
     if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x36), cVar2 == '\0')) {
-      pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+      pTVar4 = (TCityTask *)__2_YAPAXI_Z(0x14);
       uStack_4 = 3;
       if (pTVar4 == (TCityTask *)0x0) {
         pvVar6 = (void *)0x0;
@@ -1144,7 +1144,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_
     iVar5 = TCity::GetCityBuildingProductionValueBySlot(param_1,3);
     sVar7 = (short)iVar3 / 2 - (short)iVar5;
     if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x38), cVar2 == '\0')) {
-      pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+      pTVar4 = (TCityTask *)__2_YAPAXI_Z(0x14);
       uStack_4 = 4;
       if (pTVar4 == (TCityTask *)0x0) {
         pvVar6 = (void *)0x0;
@@ -1162,7 +1162,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_
     iVar5 = TCity::GetCityBuildingProductionValueBySlot(param_1,5);
     sVar7 = (short)iVar3 / 2 - (short)iVar5;
     if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x3a), cVar2 == '\0')) {
-      pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+      pTVar4 = (TCityTask *)__2_YAPAXI_Z(0x14);
       uStack_4 = 5;
       if (pTVar4 == (TCityTask *)0x0) {
         pvVar6 = (void *)0x0;
@@ -1210,7 +1210,7 @@ void TCityInteriorMinister::OrphanRetStub_0059add0(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063129a;
@@ -1235,7 +1235,7 @@ void TCityInteriorMinister::OrphanRetStub_0059add0(int *param_1)
     }
     this_01 = (void *)0x0;
     if (0 < nRequestedAmount) {
-      this_00 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+      this_00 = (TCityTask *)__2_YAPAXI_Z(0x14);
       puStack_8 = (undefined1 *)0x0;
       if (this_00 != (TCityTask *)0x0) {
         this_01 = (void *)TCityTask::InitializeCityOrderCommandVtable(this_00);
@@ -1277,7 +1277,7 @@ TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006312ba;
   uStack_c = *unaff_FS_OFFSET;
@@ -1309,7 +1309,7 @@ TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
         sVar6 = *psVar5;
         this_01 = (void *)0x0;
         if (sVar6 != 0) {
-          this_00 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+          this_00 = (TCityTask *)__2_YAPAXI_Z(0x14);
           uStack_4 = 0;
           if (this_00 != (TCityTask *)0x0) {
             this_01 = (void *)TCityTask::InitializeCityOrderCommandVtable(this_00);
@@ -1371,14 +1371,14 @@ TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063130a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  uVar2 = GenerateThreadLocalRandom15();
+  uVar2 = _rand();
   uVar1 = (ushort)((int)uVar2 >> 0x1f);
-  this_00 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+  this_00 = (TCityTask *)__2_YAPAXI_Z(0x14);
   this_01 = (void *)0x0;
   local_4 = 0;
   if (this_00 != (TCityTask *)0x0) {
@@ -1412,7 +1412,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063132a;
   uStack_c = *unaff_FS_OFFSET;
@@ -1432,7 +1432,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
       iVar3 = (*pcVar1)();
     } while (iVar5 <= iVar3);
   }
-  this_00 = (TShipBuildingTask *)AllocateWithFallbackHandler(0x18);
+  this_00 = (TShipBuildingTask *)__2_YAPAXI_Z(0x18);
   uStack_4 = 0;
   if (this_00 == (TShipBuildingTask *)0x0) {
     pCommandQueue = (void *)0x0;
@@ -1465,13 +1465,13 @@ TCityInteriorMinister::_scalar_deleting_destructor_
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063134a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   sVar1 = *(short *)&this->field_0x36;
-  this_00 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+  this_00 = (TCityTask *)__2_YAPAXI_Z(0x14);
   this_01 = (void *)0x0;
   local_4 = 0;
   if (this_00 != (TCityTask *)0x0) {
@@ -1501,13 +1501,13 @@ TCityInteriorMinister::DispatchNationStateEventCode10
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063136a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   sVar1 = *(short *)&this->field_0x38;
-  this_00 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+  this_00 = (TCityTask *)__2_YAPAXI_Z(0x14);
   this_01 = (void *)0x0;
   local_4 = 0;
   if (this_00 != (TCityTask *)0x0) {
@@ -1562,7 +1562,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCity *param_1)
   code *pcStack_8c;
   int local_88;
   undefined1 auStack_84 [132];
-  
+
   *(undefined2 *)&this->field_0x3e = 0;
   local_90 = 1;
   sVar4 = *(short *)(*(int *)&param_1->field_0x1d8 + 0x1c);
@@ -1591,7 +1591,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCity *param_1)
                         ((int)param_1->orderSlotsE4 + *(short *)((int)piVar17 + 0x52) * 2 + 0x118));
       if ((short)piVar17[0x12] == 8) {
         unaff_ESI = (code *)((iVar7 - iVar6) * 2);
-        iVar6 = GenerateThreadLocalRandom15();
+        iVar6 = _rand();
         bVar2 = 0x31 < iVar6 % 100;
         uVar13 = (uint)bVar2;
         iVar6 = (*unaff_EBX)(uVar13,unaff_ESI);
@@ -1788,7 +1788,7 @@ TCityInteriorMinister::SetForeignMinisterReadyFlag14
   undefined2 in_stack_00000006;
   undefined2 in_stack_0000000a;
   undefined2 in_stack_0000000e;
-  
+
   piVar2 = *(int **)&this->field_0x4;
   sVar1 = *(short *)((int)piVar2 + param_1 * 2 + 0x13c);
   sVar3 = *(short *)((int)piVar2 + param_1 * 2 + 0x10e) - sVar1;
@@ -1842,7 +1842,7 @@ short TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063138a;
   uStack_c = *unaff_FS_OFFSET;
@@ -1901,7 +1901,7 @@ short TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
     sVar2 = (short)*piVar11;
     sVar8 = *psVar5;
     if (sVar2 < sVar8) {
-      this_01 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+      this_01 = (TCityTask *)__2_YAPAXI_Z(0x14);
       this_02 = (void *)0x0;
       this = pTVar15;
       if (this_01 != (TCityTask *)0x0) {
@@ -1993,14 +1993,14 @@ undefined4 TCityInteriorMinister::GetTEventHandlerClassNamePointer()
   undefined4 local_10;
   undefined1 *puStack_c;
   undefined4 local_8;
-  
+
   local_8 = 0xffffffff;
   puStack_c = &LAB_006313b2;
   local_10 = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_10;
   local_14 = &stack0xffffffcc;
   sVar1 = *(short *)(*(int *)&this->field_0x4 + 0xc);
-  this_00 = (TTown *)AllocateWithFallbackHandler();
+  this_00 = (TTown *)__2_YAPAXI_Z();
   piVar14 = (int *)0x0;
   local_8 = 0;
   if (this_00 != (TTown *)0x0) {
@@ -2103,13 +2103,13 @@ undefined4 TCityInteriorMinister::GetTEventHandlerClassNamePointer()
   }
   local_8 = 1;
   if ((short)local_20 == -1) {
-    CString::CString(&local_1c);
+    CString::__0CString__QAE_XZ(&local_1c);
     local_8._0_1_ = 2;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     AssignStringSharedRefAndReturnThis(&local_1c);
     DispatchLocalizedUiMessageWithTemplateA13A0();
     local_8 = CONCAT31(local_8._1_3_,1);
-    CString::~CString(&local_1c);
+    CString::__1CString__QAE_XZ(&local_1c);
     uVar10 = extraout_var_00;
   }
   *unaff_FS_OFFSET = local_10;
@@ -2150,7 +2150,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006313d8;
   uStack_c = *unaff_FS_OFFSET;
@@ -2171,7 +2171,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
   iStack_14 = 0;
   uStack_10 = 0;
   uStack_4 = 0;
-  uStack_18 = ReallocateHeapBlockWithAllocatorTracking(0,iVar11 * 2);
+  uStack_18 = _realloc(0,iVar11 * 2);
   iVar7 = 0;
   iStack_14 = iVar11;
   do {
@@ -2252,11 +2252,11 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
   pTVar1 = this->vftable;
   (*pTVar1->VTableSlot31)();
   (*pTVar1->VTableSlot33)();
-  FreeHeapBufferIfNotNull(unaff_ESI);
-  FreeHeapBufferIfNotNull(iVar7);
+  __3_YAXPAX_Z(unaff_ESI);
+  __3_YAXPAX_Z(iVar7);
   puStack_2c = &DAT_00650a68;
   if (iStack_28 != 0) {
-    FreeHeapBlockWithAllocatorTracking(iStack_28);
+    _free(iStack_28);
   }
   *unaff_FS_OFFSET = puStack_1c;
   return;
@@ -2299,7 +2299,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006313f8;
   uStack_c = *unaff_FS_OFFSET;
@@ -2431,7 +2431,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
     } while (iStack_44 <= iVar5);
   }
   if (iStack_18 != 0) {
-    FreeHeapBlockWithAllocatorTracking(iStack_18);
+    _free(iStack_18);
   }
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -2454,7 +2454,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
   int iVar8;
   TCityInteriorMinister *local_10;
   char local_c [12];
-  
+
   piVar1 = *(int **)(*(int *)&this->field_0x4 + 0x89c);
   local_c[0] = '\0';
   local_c[1] = '\0';
@@ -2559,7 +2559,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
   int iStack_60;
   float afStack_5c [7];
   float afStack_40 [16];
-  
+
   uVar5 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
   if ((short)CONCAT31(extraout_var,uVar5) < 4) {
     return;
@@ -2619,13 +2619,13 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
   puStack_cc = (undefined4 *)0x0;
   pcStack_d0 = (code *)0x0;
   if (pfStack_ec != (float *)0x0) {
-    puStack_d4 = (undefined2 *)AllocateWithFallbackHandler((int)pfStack_ec * 2);
+    puStack_d4 = (undefined2 *)__2_YAPAXI_Z((int)pfStack_ec * 2);
     if (puStack_d4 == (undefined2 *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityMinister_cpp_006964b0,0x970);
     }
-    puStack_cc = (undefined4 *)AllocateWithFallbackHandler((int)pfStack_ec * 4);
+    puStack_cc = (undefined4 *)__2_YAPAXI_Z((int)pfStack_ec * 4);
     if (puStack_cc == (undefined4 *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
@@ -2654,13 +2654,13 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
   iStack_f0 = iVar9;
 LAB_004c237a:
   if (iStack_f0 != 0) {
-    psStack_d8 = (short *)AllocateWithFallbackHandler(iStack_f0 * 2);
+    psStack_d8 = (short *)__2_YAPAXI_Z(iStack_f0 * 2);
     if (psStack_d8 == (short *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityMinister_cpp_006964b0,0x985);
     }
-    pcStack_d0 = (code *)AllocateWithFallbackHandler(iStack_f0 * 4);
+    pcStack_d0 = (code *)__2_YAPAXI_Z(iStack_f0 * 4);
     if (pcStack_d0 == (code *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
@@ -2818,16 +2818,16 @@ LAB_004c237a:
     } while ((int)uVar17 <= iVar13);
   }
   if (psStack_d8 != (short *)0x0) {
-    FreeHeapBufferIfNotNull(psStack_d8);
+    __3_YAXPAX_Z(psStack_d8);
   }
   if (pcStack_d0 != (code *)0x0) {
-    FreeHeapBufferIfNotNull(pcStack_d0);
+    __3_YAXPAX_Z(pcStack_d0);
   }
   if (puStack_d4 != (undefined2 *)0x0) {
-    FreeHeapBufferIfNotNull(puStack_d4);
+    __3_YAXPAX_Z(puStack_d4);
   }
   if (puStack_cc != (undefined4 *)0x0) {
-    FreeHeapBufferIfNotNull(puStack_cc);
+    __3_YAXPAX_Z(puStack_cc);
   }
   return;
 }
@@ -2867,7 +2867,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
   short sStack_10;
   code *local_c;
   TCityInteriorMinister *pTVar9;
-  
+
   iVar11 = 1;
   pcVar3 = *(code **)(*(int *)&this->field_0x4 + 0x898);
   local_c = (code *)((uint)local_c & 0xffff0000);
@@ -2985,7 +2985,7 @@ TCityInteriorMinister::SetForeignMinisterReadyFlag14
   char cVar1;
   int iVar2;
   int iVar3;
-  
+
   iVar2 = InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
   if (iVar3 != 0) {
@@ -3039,7 +3039,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_
   TTown *pTStack_8;
   undefined4 uStack_4;
   int nTileIndex;
-  
+
   iVar3 = param_2;
   uVar11 = (undefined2)((uint)in_EDX >> 0x10);
   uStack_c = *unaff_FS_OFFSET;
@@ -3104,7 +3104,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_
     uVar12 = 7;
   }
   (**(code **)(iVar3 + 0x34))(uVar12,uVar6);
-  pTStack_8 = (TTown *)AllocateWithFallbackHandler(0x50);
+  pTStack_8 = (TTown *)__2_YAPAXI_Z(0x50);
   piVar7 = (int *)0x0;
   uVar11 = extraout_var_03;
   if (pTStack_8 != (TTown *)0x0) {
@@ -3171,13 +3171,13 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063143a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   iVar1 = *(int *)(param_2 + 0xc);
-  this_00 = (TTown *)AllocateWithFallbackHandler(0x50);
+  this_00 = (TTown *)__2_YAPAXI_Z(0x50);
   uVar9 = 0;
   local_4 = 0;
   if (this_00 == (TTown *)0x0) {
@@ -3190,7 +3190,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
   local_4 = 0xffffffff;
   InitializeFrogCityMarkerFields
             (s_Bleah_006964d8,0,1,CONCAT22(uVar9,*(undefined2 *)(*(int *)&this->field_0x4 + 0xc)));
-  local_34 = (int *)AllocateWithFallbackHandler(0x1c);
+  local_34 = (int *)__2_YAPAXI_Z(0x1c);
   if (local_34 == (int *)0x0) {
     local_34 = (int *)0x0;
   }
@@ -3305,7 +3305,7 @@ short TCityInteriorMinister::_scalar_deleting_destructor_(undefined4 param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063145a;
   uStack_c = *unaff_FS_OFFSET;
@@ -3318,7 +3318,7 @@ short TCityInteriorMinister::_scalar_deleting_destructor_(undefined4 param_1)
   else {
     piVar8 = *(int **)(*(int *)&this->field_0x4 + 0x894);
   }
-  this_00 = (TTown *)AllocateWithFallbackHandler(0x50);
+  this_00 = (TTown *)__2_YAPAXI_Z(0x50);
   local_4 = 0;
   uVar7 = extraout_var;
   if (this_00 != (TTown *)0x0) {
@@ -3370,7 +3370,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
 
 {
   int in_stack_0000000c;
-  
+
   return in_stack_0000000c * param_1;
 }
 
@@ -3403,7 +3403,7 @@ undefined4 * TCityInteriorMinister::_scalar_deleting_destructor_(int param_1)
   undefined2 local_10;
   undefined1 local_e;
   undefined1 local_d;
-  
+
   iVar9 = *(int *)(param_1 + 0xc);
   sVar1 = *(short *)(*(int *)&this->field_0x4 + 0xc);
   local_14 = 1;
@@ -3414,7 +3414,7 @@ undefined4 * TCityInteriorMinister::_scalar_deleting_destructor_(int param_1)
   local_12 = (&g_pCityOrderCapabilityState->field_0x274)[sVar1 * 0x1d] == '\x02';
   local_11 = (&g_pCityOrderCapabilityState->field_0x27f)[sVar1 * 0x1d] == '\x02';
   local_10._0_1_ = (&g_pCityOrderCapabilityState->field_0x26e)[sVar1 * 0x1d] == '\x02';
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x1950);
+  puVar3 = (undefined4 *)__2_YAPAXI_Z(0x1950);
   if (puVar3 == (undefined4 *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -3444,7 +3444,7 @@ undefined4 * TCityInteriorMinister::_scalar_deleting_destructor_(int param_1)
       iVar7 = iVar7 + 2;
     } while (iVar5 <= iStack_24);
   }
-  FreeHeapBufferIfNotNull(iVar9);
+  __3_YAXPAX_Z(iVar9);
   while (unaff_EBX != 0) {
     iVar9 = 1;
     local_1c = unaff_EBX;
@@ -3521,7 +3521,7 @@ undefined4 * TCityInteriorMinister::GetTEventHandlerClassNamePointer(int param_1
   undefined1 local_e;
   undefined1 local_d;
   short local_c [6];
-  
+
   sVar2 = *(short *)(*(int *)&this->field_0x4 + 0xc);
   iVar3 = *(int *)(param_1 + 0xc);
   local_14[2] = (&g_pCityOrderCapabilityState->field_0x273)[sVar2 * 0x1d] == '\x02';
@@ -3532,7 +3532,7 @@ undefined4 * TCityInteriorMinister::GetTEventHandlerClassNamePointer(int param_1
   local_f = 0;
   local_e = 1;
   local_d = 1;
-  puVar6 = (undefined4 *)AllocateWithFallbackHandler(0x1950);
+  puVar6 = (undefined4 *)__2_YAPAXI_Z(0x1950);
   if (puVar6 == (undefined4 *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -3648,7 +3648,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
   int iVar6;
   int iVar7;
   int iVar8;
-  
+
   iVar6 = 0;
   iVar3 = (**(code **)(*param_1 + 0x74))();
   p_Var1 = this->vftable[1].ConstructTTaskBaseState;
@@ -3731,7 +3731,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
   short *psVar11;
   undefined4 uStack_1c;
   int local_14 [5];
-  
+
   iVar5 = *(int *)&this->field_0x4;
   if (iVar5 == 0) {
     piVar9 = (int *)0x0;
@@ -3886,7 +3886,7 @@ void TCityInteriorMinister::OrphanRetStub_004be6d0()
   int *piVar11;
   short sVar12;
   int local_c;
-  
+
   iVar8 = 0x10;
   sVar5 = 0;
   psVar6 = (short *)&this->field_0xba;
@@ -4025,7 +4025,7 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
   TCity *local_20;
   int iStack_1c;
   uint auStack_10 [4];
-  
+
   iVar4 = *(int *)&this->field_0x4;
   if (iVar4 == 0) {
     local_20 = (TCity *)0x0;
@@ -4064,8 +4064,8 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
         if ((*(short *)(&this->field_0xdc + (short)uVar6 * 2) <
              *(short *)(&this->field_0xdc + sVar1 * 2)) ||
            ((*(short *)(&this->field_0xdc + sVar1 * 2) ==
-             *(short *)(&this->field_0xdc + (short)uVar6 * 2) &&
-            (uVar5 = GenerateThreadLocalRandom15(), (uVar5 & 1) != 0)))) {
+             *(short *)(&this->field_0xdc + (short)uVar6 * 2) && (uVar5 = _rand(), (uVar5 & 1) != 0)
+            ))) {
           *(short *)puVar9 = sVar1;
           *psVar10 = (short)uVar6;
         }
@@ -4080,12 +4080,12 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
   if ((*(short *)(&this->field_0xdc + (short)auStack_10[0] * 2) == 0) &&
      (bVar3 = (*g_pLocalizationTable->vftable[7].slot_0x04)(), (bVar3 & 1) != 0)) {
     if (bVar12) {
-      uVar6 = GenerateThreadLocalRandom15();
+      uVar6 = _rand();
       uVar5 = (int)uVar6 >> 0x1f;
       iVar4 = ((uVar6 ^ uVar5) - uVar5 & 3 ^ uVar5) - uVar5;
     }
     else {
-      iVar4 = GenerateThreadLocalRandom15();
+      iVar4 = _rand();
       iVar4 = iVar4 % 3;
     }
     if (iVar4 == 3) {
@@ -4150,7 +4150,7 @@ void TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920()
   short sVar6;
   short sVar7;
   TCity *this_00;
-  
+
   if (*(int *)&this->field_0x4 == 0) {
     this_00 = (TCity *)0x0;
   }
@@ -4227,7 +4227,7 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
   int *piVar4;
   TCityInteriorMinister_GetTMinisterClassNamePointer_0x00 *pTVar5;
   undefined4 uVar6;
-  
+
   if (*(int *)&this->field_0x4 == 0) {
     piVar4 = (int *)0x0;
   }
@@ -4308,7 +4308,7 @@ short __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(int param_
   int iVar5;
   int iVar6;
   short unaff_retaddr;
-  
+
   iVar3 = *(int *)(param_1 + 4);
   if (iVar3 == 0) {
     iVar4 = 0;
@@ -4356,7 +4356,7 @@ void __fastcall TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1
   undefined2 uVar5;
   int iVar6;
   int local_8;
-  
+
   if (param_1[1] == 0) {
     local_8 = 0;
   }
@@ -4417,7 +4417,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
   int unaff_retaddr;
   int local_8;
   uint uVar11;
-  
+
   piVar3 = *(int **)(param_1 + 4);
   if (piVar3 == (int *)0x0) {
     local_8 = 0;
@@ -4535,20 +4535,20 @@ TCityInteriorMinister::_scalar_deleting_destructor_(int param_1,int param_2,int 
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631488;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   uVar3 = *(undefined4 *)(param_2 + 0xc);
-  CString::CString(&local_78);
+  CString::__0CString__QAE_XZ(&local_78);
   local_4 = 0;
-  CString::CString(&local_7c);
+  CString::__0CString__QAE_XZ(&local_7c);
   local_4._0_1_ = 1;
-  CString::CString(&local_70);
+  CString::__0CString__QAE_XZ(&local_70);
   local_4 = CONCAT31(local_4._1_3_,2);
   FormatOverlayTerrainLabelText(&local_78);
-  FormatStringWithVarArgsToSharedRef
+  _Format_CString__QAAXPBDZZ
             (&local_7c,&g_szDecimalFormat,
              (int)(short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
                                ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2
@@ -4688,11 +4688,11 @@ LAB_004c54ab:
   } while (sVar8 < 0x17);
   local_4._0_1_ = 1;
   *(undefined2 *)(param_1 + 0x128) = 2;
-  CString::~CString(&local_70);
+  CString::__1CString__QAE_XZ(&local_70);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&local_7c);
+  CString::__1CString__QAE_XZ(&local_7c);
   local_4 = 0xffffffff;
-  CString::~CString(&local_78);
+  CString::__1CString__QAE_XZ(&local_78);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -4714,20 +4714,21 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
   undefined4 *puVar5;
   int iVar6;
   int *piVar7;
-  
+
   this_00 = param_1;
   if ((~param_1->m_nMode & 1U) == 0) {
-    for (iVar3 = FUN_0061202e(); iVar3 != 0; iVar3 = iVar3 + -1) {
+    for (iVar3 = _ReadCount_CArchive__QAEKXZ(); iVar3 != 0; iVar3 = iVar3 + -1) {
       if ((~this_00->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(this_00,(int)&param_1,4);
+        CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)&param_1,4);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)&param_1,4);
+        TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)&param_1,4);
       }
       pCVar2 = param_1;
       uVar1 = *(undefined4 *)&this->field_0x8;
       if (*(int *)&this->field_0x10 == 0) {
-        iVar4 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
+        iVar4 = _Create_CPlex__SGPAU1_AAPAU1_II_Z
+                          (&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
         iVar6 = *(int *)&this->field_0x18;
         puVar5 = (undefined4 *)(iVar4 + -8 + iVar6 * 0xc);
         if (-1 < iVar6 + -1) {
@@ -4756,16 +4757,16 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)param_1,
-                        *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)&this->field_0xc);
+    TNetMgr::_WriteCount_CArchive__QAEXK_Z
+              ((TNetMgr *)param_1,*(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)&this->field_0xc);
     piVar7 = *(int **)&this->field_0x4;
     if (piVar7 != (int *)0x0) {
       do {
         if ((~this_00->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)(piVar7 + 2),4);
+          CArchive::_Read_CArchive__QAEIPAXI_Z(this_00,(int)(piVar7 + 2),4);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)(piVar7 + 2),4);
+          TNetMgr::_Write_CArchive__QAEXPBXI_Z((TNetMgr *)this_00,(int)(piVar7 + 2),4);
         }
         piVar7 = (int *)*piVar7;
       } while (piVar7 != (int *)0x0);
@@ -4786,10 +4787,11 @@ void TCityInteriorMinister::_scalar_deleting_destructor_(undefined4 param_1)
   int iVar2;
   undefined4 *puVar3;
   int iVar4;
-  
+
   uVar1 = *(undefined4 *)&this->field_0x8;
   if (*(int *)&this->field_0x10 == 0) {
-    iVar2 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
+    iVar2 = _Create_CPlex__SGPAU1_AAPAU1_II_Z
+                      (&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
     iVar4 = *(int *)&this->field_0x18;
     puVar3 = (undefined4 *)(iVar2 + -8 + iVar4 * 0xc);
     if (-1 < iVar4 + -1) {
@@ -4831,10 +4833,11 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
   int iVar2;
   undefined4 *puVar3;
   int iVar4;
-  
+
   uVar1 = *(undefined4 *)&this->field_0x8;
   if (*(int *)&this->field_0x10 == 0) {
-    iVar2 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
+    iVar2 = _Create_CPlex__SGPAU1_AAPAU1_II_Z
+                      (&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
     iVar4 = *(int *)&this->field_0x18;
     puVar3 = (undefined4 *)(iVar2 + -8 + iVar4 * 0xc);
     if (-1 < iVar4 + -1) {
@@ -4874,7 +4877,7 @@ undefined4 TCityInteriorMinister::OrphanRetStub_004be6d0(int param_1)
 {
   undefined4 *puVar1;
   int iVar2;
-  
+
   iVar2 = param_1 + -1;
   if (*(int *)&this->field_0xc <= iVar2) {
     return _DAT_00000008;
@@ -4906,7 +4909,7 @@ void TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
   undefined4 *puVar1;
   int *piVar2;
   int iVar3;
-  
+
   iVar3 = param_1 + -1;
   if (iVar3 < *(int *)&this->field_0xc) {
     piVar2 = *(int **)&this->field_0x4;
@@ -4941,7 +4944,7 @@ void TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
     *(undefined4 *)&this->field_0x10 = 0;
     *(undefined4 *)&this->field_0x8 = 0;
     *(undefined4 *)&this->field_0x4 = 0;
-    FreeDataChain();
+    _FreeDataChain_CPlex__QAEXXZ();
     *(undefined4 *)&this->field_0x14 = 0;
   }
   return;
@@ -4955,7 +4958,7 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined4 *puVar1;
-  
+
   for (puVar1 = *(undefined4 **)&this->field_0x4; puVar1 != (undefined4 *)0x0;
       puVar1 = (undefined4 *)*puVar1) {
   }
@@ -4963,7 +4966,7 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
   *(undefined4 *)&this->field_0x10 = 0;
   *(undefined4 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0x4 = 0;
-  FreeDataChain();
+  _FreeDataChain_CPlex__QAEXXZ();
   *(undefined4 *)&this->field_0x14 = 0;
   return;
 }
@@ -4978,7 +4981,7 @@ void TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(int param_1)
   undefined4 *puVar1;
   int *piVar2;
   int iVar3;
-  
+
   for (piVar2 = *(int **)&this->field_0x4; piVar2 != (int *)0x0; piVar2 = (int *)*piVar2) {
     if (piVar2[2] == param_1) goto LAB_004c6a00;
   }
@@ -5009,7 +5012,7 @@ LAB_004c6a00:
       *(undefined4 *)&this->field_0x10 = 0;
       *(undefined4 *)&this->field_0x8 = 0;
       *(undefined4 *)&this->field_0x4 = 0;
-      FreeDataChain();
+      _FreeDataChain_CPlex__QAEXXZ();
       *(undefined4 *)&this->field_0x14 = 0;
     }
   }
@@ -5029,8 +5032,8 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
   code *pcVar5;
   undefined *puVar6;
   uint uVar3;
-  
-  FUN_00621089(&DAT_00695880);
+
+  __6CDumpContext__QAEAAV0_PBD_Z(&DAT_00695880);
   iVar4 = 1;
   if (0 < *(int *)&this->field_0xc) {
     p_Var1 = this->vftable->OrphanRetStub_0059add0;
@@ -5039,10 +5042,10 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
       bVar2 = (*p_Var1)(iVar4,&DAT_00695880);
       uVar3 = (uint)bVar2;
       pcVar5 = g_Build_Map_Order_LookupTable_00695794;
-      FUN_00621206(iVar4);
-      FUN_00621089(pcVar5);
-      FUN_006211a6(uVar3);
-      FUN_00621089(puVar6);
+      __6CDumpContext__QAEAAV0_H_Z(iVar4);
+      __6CDumpContext__QAEAAV0_PBD_Z(pcVar5);
+      __6CDumpContext__QAEAAV0_H_Z(uVar3);
+      __6CDumpContext__QAEAAV0_PBD_Z(puVar6);
       iVar4 = iVar4 + 1;
     } while (iVar4 <= *(int *)&this->field_0xc);
   }
@@ -5057,7 +5060,7 @@ void TCityInteriorMinister::SetForeignMinisterReadyFlag14()
 
 {
   TCityInteriorMinisterVtbl *pTVar1;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1->GetTEventHandlerClassNamePointer_0c)();
   if (this != (TCityInteriorMinister *)0x0) {

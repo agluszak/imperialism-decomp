@@ -12,7 +12,7 @@ TCivAnimation * TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480(byt
 {
   TCivAnimation::CreateTCivAnimationInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -47,7 +47,7 @@ void TCivAnimation::ConstructTCivAnimationBaseState()
 {
   ushort uVar1;
   int iVar2;
-  
+
   iVar2 = *(int *)&this->field_0x10 + 1;
   *(int *)&this->field_0x10 = iVar2;
   if (iVar2 != *(int *)&this->field_0x14) {
@@ -60,7 +60,7 @@ void TCivAnimation::ConstructTCivAnimationBaseState()
     if (*(short *)&this->field_0x8 != *(short *)&this->field_0x2c) {
       return;
     }
-    uVar1 = GenerateThreadLocalRandom15();
+    uVar1 = _rand();
     if (*(short *)&this->field_0x2e <= (short)(uVar1 & 0xf)) {
       return;
     }
@@ -78,7 +78,7 @@ TCivAnimation * TCivAnimation::DestructTCivAnimationAndMaybeFree(byte param_1)
 {
   TCivAnimation2::CreateTCivAnimation2Instance((TCivAnimation2 *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

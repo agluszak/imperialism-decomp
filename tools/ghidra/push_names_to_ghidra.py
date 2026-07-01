@@ -42,6 +42,9 @@ from tools.common.repo import repo_root_from_file
 REPO_ROOT = repo_root_from_file(__file__)
 OWNERSHIP_PATH = REPO_ROOT / "config" / "function_ownership.csv"
 NAME_OVERRIDES_PATH = REPO_ROOT / "config" / "function_name_overrides.csv"
+SYMBOLS_PATH = REPO_ROOT / "config" / "symbols.csv"
+DEFAULT_LIBRARY_START = 0x005E539C
+DEFAULT_LIBRARY_END = 0x00626C7D
 
 IDENT_RE = re.compile(r"^[A-Za-z_~][A-Za-z0-9_]*$")
 
@@ -51,13 +54,35 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--apply", action="store_true", help="Write changes (default: dry-run).")
     p.add_argument("--limit", type=int, default=0, help="Process at most N renames (0 = all).")
     p.add_argument("--verbose", action="store_true", help="Print every planned rename.")
+    p.add_argument(
+        "--include-library-symbols",
+        action="store_true",
+        help="Also push symbols.csv names for ownership=library rows in the library range.",
+    )
+    p.add_argument(
+        "--library-start",
+        default=f"0x{DEFAULT_LIBRARY_START:08x}",
+        help="Inclusive start for --include-library-symbols.",
+    )
+    p.add_argument(
+        "--library-end",
+        default=f"0x{DEFAULT_LIBRARY_END:08x}",
+        help="Inclusive end for --include-library-symbols.",
+    )
     return p.parse_args()
 
 
-def owned_addresses() -> set[int]:
+def parse_address(value: str) -> int:
+    text = value.strip().lower()
+    if text.startswith("0x"):
+        text = text[2:]
+    return int(text, 16)
+
+
+def owned_addresses(kind: str = "manual") -> set[int]:
     out: set[int] = set()
     for row in read_pipe_rows(OWNERSHIP_PATH):
-        if (row.get("ownership") or "").strip() != "manual":
+        if (row.get("ownership") or "").strip() != kind:
             continue
         addr = normalize_hex((row.get("address") or "").strip())
         if addr:
@@ -96,13 +121,31 @@ def canonical_names(owned: set[int]) -> dict[int, str]:
     return names
 
 
+def library_symbol_names(owned: set[int], *, start: int, end: int) -> dict[int, str]:
+    names: dict[int, str] = {}
+    if not owned:
+        return names
+    for row in read_pipe_rows(SYMBOLS_PATH):
+        if (row.get("type") or "").strip().lower() != "function":
+            continue
+        addr_text = normalize_hex((row.get("address") or "").strip())
+        name = (row.get("name") or "").strip()
+        if not addr_text or not name:
+            continue
+        addr = int(addr_text, 16)
+        if addr in owned and start <= addr <= end:
+            names[addr] = name
+    return names
+
+
 def split_qualified(qualified: str) -> tuple[list[str], str]:
     parts = qualified.split("::")
     return parts[:-1], parts[-1]
 
 
 def run(program, args) -> dict:
-    from ghidra.program.model.symbol import SourceType
+    from ghidra.program.model.symbol import SourceType, SymbolUtilities
+    from ghidra.util.exception import DuplicateNameException, InvalidInputException
 
     af = program.getAddressFactory().getDefaultAddressSpace()
     fm = program.getFunctionManager()
@@ -118,16 +161,28 @@ def run(program, args) -> dict:
             parent = existing if existing is not None else st.createClass(parent, part, SourceType.USER_DEFINED)
         return parent
 
-    owned = owned_addresses()
-    wanted = canonical_names(owned)
+    manual_owned = owned_addresses("manual")
+    wanted: dict[int, tuple[str, str]] = {
+        addr: (name, "manual") for addr, name in canonical_names(manual_owned).items()
+    }
+    library_owned_count = 0
+    if args.include_library_symbols:
+        start = parse_address(args.library_start)
+        end = parse_address(args.library_end)
+        if start > end:
+            raise ValueError("--library-start must be <= --library-end")
+        library_owned = owned_addresses("library")
+        library_owned_count = len(library_owned)
+        for addr, name in library_symbol_names(library_owned, start=start, end=end).items():
+            wanted[addr] = (name, "library")
 
     stats = {"planned": 0, "applied": 0, "already": 0, "no_function": 0, "skipped_name": 0}
     changes: list[str] = []
 
     for addr in sorted(wanted):
-        desired_qualified = wanted[addr]
+        desired_qualified, name_source = wanted[addr]
         ns_path, simple = split_qualified(desired_qualified)
-        if not IDENT_RE.match(simple):
+        if name_source != "library" and not IDENT_RE.match(simple):
             stats["skipped_name"] += 1
             continue
         fn = fm.getFunctionAt(A(addr))
@@ -146,15 +201,35 @@ def run(program, args) -> dict:
             changes.append(f"  0x{addr:08x}: {current} -> {desired_qualified}")
         if args.apply:
             try:
-                ns = get_namespace(ns_path) if ns_path else None
-                if ns is not None:
-                    fn.setParentNamespace(ns)
-                fn.setName(simple, SourceType.USER_DEFINED)
+                if name_source == "library":
+                    fn.setName(desired_qualified, SourceType.USER_DEFINED)
+                else:
+                    ns = get_namespace(ns_path) if ns_path else None
+                    if ns is not None:
+                        fn.setParentNamespace(ns)
+                    fn.setName(simple, SourceType.USER_DEFINED)
                 stats["applied"] += 1
+            except DuplicateNameException:
+                if name_source != "library":
+                    changes.append(f"  !! 0x{addr:08x} -> {desired_qualified} failed: duplicate")
+                    continue
+                try:
+                    fallback = str(SymbolUtilities.getAddressAppendedName(desired_qualified, fn.getEntryPoint()))
+                    fn.setName(fallback, SourceType.USER_DEFINED)
+                    stats["applied"] += 1
+                    changes.append(f"  !! 0x{addr:08x}: duplicate, used {fallback}")
+                except (DuplicateNameException, InvalidInputException) as exc:
+                    changes.append(f"  !! 0x{addr:08x} -> {desired_qualified} failed: {exc}")
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! 0x{addr:08x} -> {desired_qualified} failed: {exc}")
 
-    return {"stats": stats, "changes": changes, "owned": len(owned), "wanted": len(wanted)}
+    return {
+        "stats": stats,
+        "changes": changes,
+        "manual_owned": len(manual_owned),
+        "library_owned": library_owned_count,
+        "wanted": len(wanted),
+    }
 
 
 def main() -> int:
@@ -178,7 +253,8 @@ def main() -> int:
         for line in result["changes"][:4000]:
             print(line)
         print(
-            f"\n[{mode}] owned={result['owned']} with_source_name={result['wanted']} "
+            f"\n[{mode}] manual_owned={result['manual_owned']} "
+            f"library_owned={result['library_owned']} with_name={result['wanted']} "
             f"planned={s['planned']} applied={s['applied']} already_matching={s['already']} "
             f"no_function={s['no_function']} skipped_name={s['skipped_name']}"
         )

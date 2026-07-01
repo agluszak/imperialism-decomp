@@ -25,12 +25,12 @@ TView * TWorldView::CreateTWorldViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006381ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x7c);
+  this = (TView *)__2_YAPAXI_Z(0x7c);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -93,7 +93,7 @@ TWorldView * TWorldView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -121,7 +121,7 @@ TWorldView::OrphanRetStub_0059add0
   undefined *puVar1;
   undefined4 uVar2;
   undefined2 extraout_var;
-  
+
   if ((param_1 == 0x78) && (*(short *)&this->field_0x7a != -1)) {
     puVar1 = g_pUiRuntimeContext->vftable;
     uVar2 = UiRuntimeContext::GetActiveNationId();
@@ -145,11 +145,11 @@ TWorldView::OrphanRetStub_0059add0
 // GHIDRA_COMMENT_END
 
 /* Dispatches map-screen hotkeys.
-   
+
    Relevant civilian-order behavior:
    - Key 't' opens civilian ledger/list dialog (same destination as CTRL+Disband path).
    - Other map/UI hotkeys are routed to specialized handlers.
-   
+
    This function is the keyboard entry point complementing HandleMapCommandPanelAction mouse paths.
     */
 
@@ -172,12 +172,12 @@ void TWorldView::OrphanTiny_ReturnZero_0048a730(int *pKeyEvent)
   undefined1 *puStack_8;
   int local_4;
   char cHotkey;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638258;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CString::CString(&local_20);
+  CString::__0CString__QAE_XZ(&local_20);
   local_4 = 0;
   switch((short)pKeyEvent[7]) {
   case 0x1b:
@@ -215,32 +215,32 @@ void TWorldView::OrphanTiny_ReturnZero_0048a730(int *pKeyEvent)
     break;
   case 0x4f:
   case 0x6f:
-    CString::CString((CString *)&pKeyEvent,(char *)&g_szEmptyString);
+    CString::__0CString__QAE_PBD_Z((CString *)&pKeyEvent,(char *)&g_szEmptyString);
     local_4._0_1_ = 6;
-    CString::CString(&local_10);
+    CString::__0CString__QAE_XZ(&local_10);
     local_4._0_1_ = 7;
-    CString::CString(&local_1c);
+    CString::__0CString__QAE_XZ(&local_1c);
     local_4 = CONCAT31(local_4._1_3_,8);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     RunTaggedOptionDialogAndReturnSelectionTag(local_1c.m_pchData,&pKeyEvent);
-    CString::AssignFromPtr(&local_10,(CString *)&pKeyEvent);
+    CString::__4CString__QAEABV0_ABV0__Z(&local_10,(CString *)&pKeyEvent);
     for (pTVar1 = g_pMapActionContextListHead; pTVar1 != (TZone *)0x0;
         pTVar1 = *(TZone **)&pTVar1->field_0x18) {
-      CString::CString(&local_18);
+      CString::__0CString__QAE_XZ(&local_18);
       local_4._0_1_ = 9;
       (*pTVar1->vftable->GetTEventHandlerClassNamePointer_0b)();
-      nDialogResult = CompareAnsiStringsWithMbcsAwareness();
+      nDialogResult = __mbscmp();
       if (nDialogResult == 0) {
         (*this->vftable[1].vmethod_0025)();
         this_00 = &local_18;
         goto LAB_00595484;
       }
       local_4 = CONCAT31(local_4._1_3_,8);
-      CString::~CString(&local_18);
+      CString::__1CString__QAE_XZ(&local_18);
     }
-    nDialogResult = CompareAnsiStringsWithMbcsAwareness();
+    nDialogResult = __mbscmp();
     if (nDialogResult != 0) {
-      CString::CString(&local_14);
+      CString::__0CString__QAE_XZ(&local_14);
       local_4._0_1_ = 10;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       scanBracketExpressions(g_pLocalizationTable,&local_14,local_20.m_pchData);
@@ -250,43 +250,43 @@ void TWorldView::OrphanTiny_ReturnZero_0048a730(int *pKeyEvent)
       this_00 = &local_14;
 LAB_00595484:
       local_4 = CONCAT31(local_4._1_3_,8);
-      CString::~CString(this_00);
+      CString::__1CString__QAE_XZ(this_00);
     }
     local_4._0_1_ = 7;
-    CString::~CString(&local_1c);
+    CString::__1CString__QAE_XZ(&local_1c);
     local_4._0_1_ = 6;
-    CString::~CString(&local_10);
+    CString::__1CString__QAE_XZ(&local_10);
     local_4 = (uint)local_4._1_3_ << 8;
-    CString::~CString((CString *)&pKeyEvent);
+    CString::__1CString__QAE_XZ((CString *)&pKeyEvent);
     break;
   case 0x50:
   case 0x70:
-    CString::CString((CString *)&pKeyEvent,(char *)&g_szEmptyString);
+    CString::__0CString__QAE_PBD_Z((CString *)&pKeyEvent,(char *)&g_szEmptyString);
     local_4._0_1_ = 1;
-    CString::CString(&local_14);
+    CString::__0CString__QAE_XZ(&local_14);
     local_4._0_1_ = 2;
-    CString::CString(&local_18);
+    CString::__0CString__QAE_XZ(&local_18);
     local_4._0_1_ = 3;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     RunTaggedOptionDialogAndReturnSelectionTag(local_18.m_pchData,&pKeyEvent);
-    CString::AssignFromPtr(&local_14,(CString *)&pKeyEvent);
+    CString::__4CString__QAEABV0_ABV0__Z(&local_14,(CString *)&pKeyEvent);
     nDialogResult = 0;
     do {
-      CString::CString(&local_1c);
+      CString::__0CString__QAE_XZ(&local_1c);
       local_4._0_1_ = 4;
       AssignSharedStringFromIndexedA8EntryNameField();
-      nLoopResult = CompareAnsiStringsWithMbcsAwareness();
+      nLoopResult = __mbscmp();
       if (nLoopResult == 0) {
         (*this->vftable[1].vmethod_0025)();
         goto LAB_005952db;
       }
       local_4._0_1_ = 3;
-      CString::~CString(&local_1c);
+      CString::__1CString__QAE_XZ(&local_1c);
       nDialogResult = nDialogResult + 1;
     } while (nDialogResult < 0x180);
-    nDialogResult = CompareAnsiStringsWithMbcsAwareness();
+    nDialogResult = __mbscmp();
     if (nDialogResult != 0) {
-      CString::CString(&local_1c);
+      CString::__0CString__QAE_XZ(&local_1c);
       local_4._0_1_ = 5;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       scanBracketExpressions(g_pLocalizationTable,&local_1c,local_20.m_pchData);
@@ -295,14 +295,14 @@ LAB_00595484:
       DispatchLocalizedUiMessageWithTemplateA13A0();
 LAB_005952db:
       local_4._0_1_ = 3;
-      CString::~CString(&local_1c);
+      CString::__1CString__QAE_XZ(&local_1c);
     }
     local_4._0_1_ = 2;
-    CString::~CString(&local_18);
+    CString::__1CString__QAE_XZ(&local_18);
     local_4._0_1_ = 1;
-    CString::~CString(&local_14);
+    CString::__1CString__QAE_XZ(&local_14);
     local_4 = (uint)local_4._1_3_ << 8;
-    CString::~CString((CString *)&pKeyEvent);
+    CString::__1CString__QAE_XZ((CString *)&pKeyEvent);
     break;
   case 0x57:
   case 0x77:
@@ -328,7 +328,7 @@ LAB_005952db:
     }
   }
   local_4 = 0xffffffff;
-  CString::~CString(&local_20);
+  CString::__1CString__QAE_XZ(&local_20);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -353,7 +353,7 @@ void TWorldView::OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4
   HCURSOR hCursor;
   short sVar4;
   undefined1 auStack_8 [8];
-  
+
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1->GetField4E)();
   sVar4 = (short)CONCAT31(extraout_var,uVar2);
@@ -399,7 +399,7 @@ void TWorldView::SetForeignMinisterReadyFlag14()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00638288;
@@ -561,7 +561,7 @@ undefined4 TWorldView::SetForeignMinisterReadyFlag14(undefined4 param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006382d8;
   uStack_c = *unaff_FS_OFFSET;
@@ -609,7 +609,7 @@ void TWorldView::InvokeDialogHooks1D8ThenE4()
 
 {
   TWorldViewVtbl *pTVar1;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1[1].vmethod_0025)();
   (*pTVar1->RefreshControl)();
@@ -630,8 +630,8 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(short param
   undefined4 *puVar2;
   void *pvVar3;
   undefined4 *puVar4;
-  
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+
+  puVar2 = (undefined4 *)__2_YAPAXI_Z(0x14);
   puVar4 = (undefined4 *)0x0;
   if (puVar2 != (undefined4 *)0x0) {
     puVar2[1] = 0;
@@ -679,8 +679,8 @@ void TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(undefined2 pa
 {
   TWorldViewVtbl *pTVar1;
   undefined4 *puVar2;
-  
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+
+  puVar2 = (undefined4 *)__2_YAPAXI_Z(0x14);
   if (puVar2 == (undefined4 *)0x0) {
     puVar2 = (undefined4 *)0x0;
   }
@@ -710,8 +710,8 @@ void TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(undefined2 pa
 {
   TWorldViewVtbl *pTVar1;
   undefined4 *puVar2;
-  
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+
+  puVar2 = (undefined4 *)__2_YAPAXI_Z(0x14);
   if (puVar2 == (undefined4 *)0x0) {
     puVar2 = (undefined4 *)0x0;
   }
@@ -783,7 +783,7 @@ void TWorldView::OrphanCallChain_C6_I29_00596700()
   char cVar2;
   undefined uVar3;
   undefined3 extraout_var;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1[1].DispatchCityProductionAction1B)();
   if (cVar2 == '\0') {

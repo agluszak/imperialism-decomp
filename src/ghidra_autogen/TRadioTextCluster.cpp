@@ -15,12 +15,12 @@ TCluster * TRadioTextCluster::CreateTRadioTextClusterInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636aea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x98);
+  this = (TCluster *)__2_YAPAXI_Z(0x98);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
     TCluster::ConstructUiResourceEntryType4B0C0(this);
@@ -56,7 +56,7 @@ TRadioTextCluster * TRadioTextCluster::_scalar_deleting_destructor_(byte param_1
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -83,7 +83,7 @@ void TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 // GHIDRA_COMMENT_END
 
 /* Event-dispatch helper for selectable option controls.
-   
+
    On event code 0x0D, synchronizes selected tag via SetSelectedTextOptionByTag, then forwards to
    shared panel control dispatcher. */
 
@@ -112,7 +112,7 @@ void TRadioTextCluster::OrphanTiny_ReturnZero_0048a730()
   undefined4 uStack_c;
   int iStack_8;
   int iStack_4;
-  
+
   uStack_14 = CONCAT22((short)((uint)in_EDX >> 0x10),*(short *)&this->field_0x90);
   if (-1 < *(short *)&this->field_0x90) {
     iStack_8 = this->field34;

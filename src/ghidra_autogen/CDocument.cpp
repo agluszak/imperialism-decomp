@@ -155,26 +155,26 @@ undefined ** CDocument::OrphanCallChain_C11_I88_004874b0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061096B
-// GHIDRA_NAME CDocument::CDocument
-// GHIDRA_PROTO undefined CDocument()
+// GHIDRA_NAME CDocument::??0CDocument@@QAE@XZ
+// GHIDRA_PROTO undefined ??0CDocument@@QAE@XZ()
 
-undefined4 * CDocument::CDocument(void)
+undefined4 * CDocument::__0CDocument__QAE_XZ(void)
 
 {
   undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  CCmdTarget();
+  __0CCmdTarget__QAE_XZ();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::CString((CString *)(extraout_ECX + 7));
+  CString::__0CString__QAE_XZ((CString *)(extraout_ECX + 7));
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  CString::CString((CString *)(extraout_ECX + 8));
+  CString::__0CString__QAE_XZ((CString *)(extraout_ECX + 8));
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  TGreatPower::CPtrList((TGreatPower *)(extraout_ECX + 10),10);
+  TGreatPower::__0CPtrList__QAE_H_Z((TGreatPower *)(extraout_ECX + 10),10);
   extraout_ECX[9] = 0;
   extraout_ECX[0x11] = 0;
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
@@ -186,46 +186,46 @@ undefined4 * CDocument::CDocument(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006109CF
-// GHIDRA_NAME CDocument::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// GHIDRA_NAME CDocument::??_GCDocument@@UAEPAXI@Z
+// GHIDRA_PROTO undefined __thiscall ??_GCDocument@@UAEPAXI@Z(byte param_1)
 
-CDocument * CDocument::_scalar_deleting_destructor_(byte param_1)
+CDocument * CDocument::___GCDocument__UAEPAXI_Z(byte param_1)
 
 {
-  DestructCDocumentBaseState();
+  __1CDocument__UAE_XZ();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006109EB
-// GHIDRA_NAME CDocument::DestructCDocumentBaseState
-// GHIDRA_PROTO undefined DestructCDocumentBaseState()
+// GHIDRA_NAME CDocument::??1CDocument@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CDocument@@UAE@XZ()
 
-void CDocument::DestructCDocumentBaseState(void)
+void CDocument::__1CDocument__UAE_XZ(void)
 
 {
   CDocument *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(CDocument **)(unaff_EBP + -0x10) = this;
   this->vftable = &CDocumentVtbl_0067210c;
   *(undefined4 *)(unaff_EBP + -4) = 3;
-  DisconnectViews(this);
+  _DisconnectViews_CDocument__QAEXXZ(this);
   if (*(int **)&this->field_0x24 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x24 + 0x68))(this);
   }
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  DestructCPtrListBaseState();
+  __1CPtrList__UAE_XZ();
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  CString::~CString((CString *)&this->field_0x20);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x20);
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)&this->field_0x1c);
+  CString::__1CString__QAE_XZ((CString *)&this->field_0x1c);
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  WrapperFor_EstablishSehFrameProlog_At006069cb();
+  __1CCmdTarget__UAE_XZ();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -244,17 +244,17 @@ void CDocument::GetTEventHandlerClassNamePointer()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610A5F
-// GHIDRA_NAME CDocument::DisconnectViews
-// GHIDRA_PROTO undefined __thiscall DisconnectViews(void)
+// GHIDRA_NAME CDocument::?DisconnectViews@CDocument@@QAEXXZ
+// GHIDRA_PROTO undefined __thiscall ?DisconnectViews@CDocument@@QAEXXZ(void)
 
-void CDocument::DisconnectViews()
+void CDocument::_DisconnectViews_CDocument__QAEXXZ()
 
 {
   int iVar1;
-  
+
   iVar1 = *(int *)&this->field_0x34;
   while (iVar1 != 0) {
-    iVar1 = RemoveHead();
+    iVar1 = _RemoveHead_CPtrList__QAEPAXXZ();
     *(undefined4 *)(iVar1 + 0x3c) = 0;
     iVar1 = *(int *)&this->field_0x34;
   }
@@ -262,13 +262,13 @@ void CDocument::DisconnectViews()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610A80
-// GHIDRA_NAME CDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(char * param_1)
+// GHIDRA_NAME CDocument::?SetTitle@CDocument@@UAEXPBD@Z
+// GHIDRA_PROTO undefined __thiscall ?SetTitle@CDocument@@UAEXPBD@Z(char * param_1)
 
-void CDocument::OrphanLeaf_NoCall_Ins04_005adc30(char *param_1)
+void CDocument::_SetTitle_CDocument__UAEXPBD_Z(char *param_1)
 
 {
-  CString::CopyFromCStr((CString *)&this->field_0x1c,param_1);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)&this->field_0x1c,param_1);
   (*this->vftable[0x15].SetForeignMinisterReadyFlag14)();
   return;
 }
@@ -293,10 +293,10 @@ void CDocument::GetTTaskClassNamePointer()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610ABA
-// GHIDRA_NAME CDocument::RenumberAndActivateVisibleDocumentFrames
-// GHIDRA_PROTO undefined __thiscall RenumberAndActivateVisibleDocumentFrames(void)
+// GHIDRA_NAME CDocument::?UpdateFrameCounts@CDocument@@UAEXXZ
+// GHIDRA_PROTO undefined __thiscall ?UpdateFrameCounts@CDocument@@UAEXXZ(void)
 
-void CDocument::RenumberAndActivateVisibleDocumentFrames()
+void CDocument::_UpdateFrameCounts_CDocument__UAEXXZ()
 
 {
   CDocumentVtbl *pCVar1;
@@ -315,7 +315,7 @@ void CDocument::RenumberAndActivateVisibleDocumentFrames()
   int iStack_14;
   int iStack_10;
   int iStack_8;
-  
+
   pCVar1 = this->vftable;
   pCVar2 = pCVar1[0xd].SetForeignMinisterReadyFlag14;
   uVar4 = (*pCVar2)();
@@ -326,7 +326,7 @@ void CDocument::RenumberAndActivateVisibleDocumentFrames()
       uVar4 = (*pCVar3)(&iStack_8);
       BVar5 = IsWindowVisible(*(HWND *)(CONCAT31(extraout_var_00,uVar4) + 0x1c));
       if (BVar5 != 0) {
-        iVar6 = GetParentFrame();
+        iVar6 = _GetParentFrame_CWnd__QBEPAVCFrameWnd__XZ();
         if (iVar6 != 0) {
           *(undefined4 *)(iVar6 + 0x40) = 0xffffffff;
         }
@@ -342,7 +342,7 @@ void CDocument::RenumberAndActivateVisibleDocumentFrames()
       uVar4 = (*pCVar3)(&iStack_8);
       BVar5 = IsWindowVisible(*(HWND *)(CONCAT31(extraout_var_02,uVar4) + 0x1c));
       if (BVar5 != 0) {
-        iVar6 = GetParentFrame();
+        iVar6 = _GetParentFrame_CWnd__QBEPAVCFrameWnd__XZ();
         if ((iVar6 != 0) && (*(int *)(iVar6 + 0x40) == -1)) {
           iStack_10 = iStack_10 + 1;
           *(int *)(iVar6 + 0x40) = iStack_10;
@@ -359,7 +359,7 @@ void CDocument::RenumberAndActivateVisibleDocumentFrames()
       uVar4 = (*pCVar3)(&iStack_8);
       BVar5 = IsWindowVisible(*(HWND *)(CONCAT31(extraout_var_04,uVar4) + 0x1c));
       if (BVar5 != 0) {
-        piVar7 = (int *)GetParentFrame();
+        piVar7 = (int *)_GetParentFrame_CWnd__QBEPAVCFrameWnd__XZ();
         if ((piVar7 != (int *)0x0) && (piVar7[0x10] == iStack_14)) {
           if (iStack_10 == 1) {
             piVar7[0x10] = 0;
@@ -384,37 +384,37 @@ void CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610C0B
-// GHIDRA_NAME CDocument::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1, int param_2)
+// GHIDRA_NAME CDocument::?SetPathName@CDocument@@UAEXPBDH@Z
+// GHIDRA_PROTO undefined __thiscall ?SetPathName@CDocument@@UAEXPBDH@Z(undefined4 param_1, int param_2)
 
-void CDocument::_scalar_deleting_destructor_(undefined4 param_1, int param_2)
+void CDocument::_SetPathName_CDocument__UAEXPBDH_Z(undefined4 param_1, int param_2)
 
 {
   undefined4 uVar1;
   int iVar2;
   undefined1 local_208 [256];
   char local_108 [260];
-  
-  AfxFullPath(local_108,param_1);
-  CString::CopyFromCStr((CString *)&this->field_0x20,local_108);
+
+  _AfxFullPath__YGHPADPBD_Z(local_108,param_1);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)&this->field_0x20,local_108);
   *(undefined4 *)&this->field_0x4c = 0;
-  iVar2 = AfxGetFileTitle(local_108,local_208,0x100);
+  iVar2 = _AfxGetFileTitle__YGIPBDPADI_Z(local_108,local_208,0x100);
   if (iVar2 == 0) {
     (*this->vftable[0xb].SetForeignMinisterReadyFlag14)(local_208);
   }
   if (param_2 != 0) {
     uVar1 = *(undefined4 *)&this->field_0x20;
-    iVar2 = AfxGetModuleState();
+    iVar2 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
     (**(code **)(**(int **)(iVar2 + 4) + 0x88))(uVar1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610CE5
-// GHIDRA_NAME CDocument::DoSaveDocumentWithPromptAndReplace
-// GHIDRA_PROTO undefined __thiscall DoSaveDocumentWithPromptAndReplace(void)
+// GHIDRA_NAME CDocument::?DoSave@CDocument@@UAEHPBDH@Z
+// GHIDRA_PROTO undefined __thiscall ?DoSave@CDocument@@UAEHPBDH@Z(void)
 
-undefined4 CDocument::DoSaveDocumentWithPromptAndReplace()
+undefined4 CDocument::_DoSave_CDocument__UAEHPBDH_Z()
 
 {
   int *piVar1;
@@ -424,40 +424,43 @@ undefined4 CDocument::DoSaveDocumentWithPromptAndReplace()
   int *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe8;
-  CString::CString((CString *)(unaff_EBP + -0x14),*(char **)(unaff_EBP + 8));
+  CString::__0CString__QAE_PBD_Z((CString *)(unaff_EBP + -0x14),*(char **)(unaff_EBP + 8));
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) == 0) {
     piVar1 = (int *)extraout_ECX[9];
-    CString::AssignFromPtr((CString *)(unaff_EBP + -0x14),(CString *)(extraout_ECX + 8));
+    CString::__4CString__QAEABV0_ABV0__Z
+              ((CString *)(unaff_EBP + -0x14),(CString *)(extraout_ECX + 8));
     if ((*(int *)(unaff_EBP + 0xc) != 0) && (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) == 0)) {
-      CString::AssignFromPtr((CString *)(unaff_EBP + -0x14),(CString *)(extraout_ECX + 7));
-      iVar2 = FUN_00605e33(" #%;/\\");
+      CString::__4CString__QAEABV0_ABV0__Z
+                ((CString *)(unaff_EBP + -0x14),(CString *)(extraout_ECX + 7));
+      iVar2 = _FindOneOf_CString__QBEHPBD_Z(" #%;/\\");
       if (iVar2 != -1) {
-        CString::SetLengthAndTerminator((CString *)(unaff_EBP + -0x14),iVar2);
+        CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(unaff_EBP + -0x14),iVar2);
       }
-      CString::CString((CString *)(unaff_EBP + -0x18));
+      CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
       iVar2 = *piVar1;
       *(undefined1 *)(unaff_EBP + -4) = 1;
       iVar2 = (**(code **)(iVar2 + 0x6c))(unaff_EBP + -0x18,4);
       if ((iVar2 != 0) && (*(int *)(*(int *)(unaff_EBP + -0x18) + -8) != 0)) {
-        AssignStringSharedFromRef(unaff_EBP + -0x18);
+        __YCString__QAEABV0_ABV0__Z(unaff_EBP + -0x18);
       }
       *(undefined1 *)(unaff_EBP + -4) = 0;
-      CString::~CString((CString *)(unaff_EBP + -0x18));
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x18));
     }
-    AfxGetModuleState();
-    iVar2 = FUN_0061844a(unaff_EBP + -0x14,
-                         (-(uint)(*(int *)(unaff_EBP + 0xc) != 0) & 0xfffffffd) + 0xf004,0x804,0,
-                         piVar1);
+    _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    iVar2 = _DoPromptFileName_CWinApp__QAEHAAVCString__IKHPAVCDocTemplate___Z
+                      (unaff_EBP + -0x14,
+                       (-(uint)(*(int *)(unaff_EBP + 0xc) != 0) & 0xfffffffd) + 0xf004,0x804,0,
+                       piVar1);
     if (iVar2 != 0) goto LAB_00610dc4;
   }
   else {
 LAB_00610dc4:
-    AfxGetModuleState();
-    BeginWaitCursor();
+    _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    _BeginWaitCursor_CCmdTarget__QAEXXZ();
     iVar2 = *extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 2;
     iVar3 = (**(code **)(iVar2 + 0x80))(*(undefined4 *)(unaff_EBP + -0x14));
@@ -466,24 +469,24 @@ LAB_00610dc4:
         (**(code **)(iVar2 + 0x5c))(*(undefined4 *)(unaff_EBP + -0x14),1);
       }
       *(undefined1 *)(unaff_EBP + -4) = 0;
-      AfxGetModuleState();
-      EndWaitCursor();
+      _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+      _EndWaitCursor_CCmdTarget__QAEXXZ();
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      CString::~CString((CString *)(unaff_EBP + -0x14));
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
       uVar4 = 1;
       goto LAB_00610e5e;
     }
     if (*(int *)(unaff_EBP + 8) == 0) {
       *(undefined1 *)(unaff_EBP + -4) = 3;
-      DeleteFileOrReportLastError(*(undefined4 *)(unaff_EBP + -0x14));
+      _Remove_CFile__SGXPBD_Z(*(undefined4 *)(unaff_EBP + -0x14));
       *(undefined4 *)(unaff_EBP + -4) = 2;
     }
     *(undefined1 *)(unaff_EBP + -4) = 0;
-    AfxGetModuleState();
-    EndWaitCursor();
+    _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    _EndWaitCursor_CCmdTarget__QAEXXZ();
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(unaff_EBP + -0x14));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
   uVar4 = 0;
 LAB_00610e5e:
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -491,10 +494,10 @@ LAB_00610e5e:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610E6F
-// GHIDRA_NAME CDocument::SaveModified
-// GHIDRA_PROTO undefined __thiscall SaveModified(void)
+// GHIDRA_NAME CDocument::?SaveModified@CDocument@@UAEHXZ
+// GHIDRA_PROTO undefined __thiscall ?SaveModified@CDocument@@UAEHXZ(void)
 
-undefined4 CDocument::SaveModified()
+undefined4 CDocument::_SaveModified_CDocument__UAEHXZ()
 
 {
   char *pcVar1;
@@ -503,42 +506,44 @@ undefined4 CDocument::SaveModified()
   int *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   iVar2 = *extraout_ECX;
   *(int *)(unaff_EBP + -0x18) = iVar2;
   iVar2 = (**(code **)(iVar2 + 0x60))();
   if (iVar2 != 0) {
-    CString::CString((CString *)(unaff_EBP + -0x10));
+    CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
     iVar2 = *(int *)(extraout_ECX[8] + -8);
     *(undefined4 *)(unaff_EBP + -4) = 0;
     if (iVar2 == 0) {
-      CString::AssignFromPtr((CString *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 7));
+      CString::__4CString__QAEABV0_ABV0__Z
+                ((CString *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 7));
       if (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0) {
-        LoadStringA(0xf003);
+        _LoadStringA_CString__QAEHI_Z(0xf003);
       }
     }
     else {
-      CString::AssignFromPtr((CString *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 8));
+      CString::__4CString__QAEABV0_ABV0__Z
+                ((CString *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 8));
       if (DAT_006a7d68 != 0) {
         pcVar1 = ((CString *)(extraout_ECX + 8))->m_pchData;
         uVar3 = 0x104;
-        iVar2 = CString::EnsureCapacityPreserveLength((CString *)(unaff_EBP + -0x10),0x104);
-        AfxGetFileTitle(pcVar1,iVar2,uVar3);
-        CString::SetLengthAndTerminator((CString *)(unaff_EBP + -0x10),-1);
+        iVar2 = CString::_GetBuffer_CString__QAEPADH_Z((CString *)(unaff_EBP + -0x10),0x104);
+        _AfxGetFileTitle__YGIPBDPADI_Z(pcVar1,iVar2,uVar3);
+        CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(unaff_EBP + -0x10),-1);
       }
     }
-    CString::CString((CString *)(unaff_EBP + -0x14));
+    CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
     *(undefined1 *)(unaff_EBP + -4) = 1;
-    AfxFormatString1(unaff_EBP + -0x14,0xf103,*(undefined4 *)(unaff_EBP + -0x10));
-    iVar2 = WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-                      (*(undefined4 *)(unaff_EBP + -0x14),3,0xf103);
+    _AfxFormatString1__YGXAAVCString__IPBD_Z
+              (unaff_EBP + -0x14,0xf103,*(undefined4 *)(unaff_EBP + -0x10));
+    iVar2 = _AfxMessageBox__YGHPBDII_Z(*(undefined4 *)(unaff_EBP + -0x14),3,0xf103);
     if (iVar2 == 2) {
 LAB_00610f5c:
       *(undefined1 *)(unaff_EBP + -4) = 0;
-      CString::~CString((CString *)(unaff_EBP + -0x14));
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      CString::~CString((CString *)(unaff_EBP + -0x10));
+      CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
       uVar3 = 0;
       goto LAB_00610f75;
     }
@@ -547,9 +552,9 @@ LAB_00610f5c:
       if (iVar2 == 0) goto LAB_00610f5c;
     }
     *(undefined1 *)(unaff_EBP + -4) = 0;
-    CString::~CString((CString *)(unaff_EBP + -0x14));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x14));
     *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    CString::~CString((CString *)(unaff_EBP + -0x10));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x10));
   }
   uVar3 = 1;
 LAB_00610f75:
@@ -558,10 +563,10 @@ LAB_00610f75:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610F8A
-// GHIDRA_NAME CDocument::ReportSaveLoadException
-// GHIDRA_PROTO undefined __thiscall ReportSaveLoadException(void)
+// GHIDRA_NAME CDocument::?ReportSaveLoadException@CDocument@@UAEXPBDPAVCException@@HI@Z
+// GHIDRA_PROTO undefined __thiscall ?ReportSaveLoadException@CDocument@@UAEXPBDPAVCException@@HI@Z(void)
 
-void CDocument::ReportSaveLoadException()
+void CDocument::_ReportSaveLoadException_CDocument__UAEXPBDPAVCException__HI_Z()
 
 {
   CObject *this_00;
@@ -572,25 +577,25 @@ void CDocument::ReportSaveLoadException()
   int iVar4;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   iVar4 = *(int *)(unaff_EBP + 0x14);
   *(int *)(unaff_EBP + -0x10) = iVar4;
-  CString::CString((CString *)(unaff_EBP + 0x14));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + 0x14));
   this_00 = *(CObject **)(unaff_EBP + 0xc);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (this_00 != (CObject *)0x0) {
-    iVar3 = CObject::IsKindOf(this_00);
+    iVar3 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(this_00);
     if (iVar3 != 0) goto LAB_006110dd;
-    iVar3 = CObject::IsKindOf(this_00);
+    iVar3 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(this_00);
     if (iVar3 == 0) {
-      iVar3 = CObject::IsKindOf(this_00);
+      iVar3 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(this_00);
       if (iVar3 != 0) {
         if (this_00[4].vftable[-1].SetForeignMinisterReadyFlag14 ==
             (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0) {
-          CString::CopyFromCStr((CString *)(this_00 + 4),*(char **)(unaff_EBP + 8));
+          CString::__4CString__QAEABV0_PBD_Z((CString *)(this_00 + 4),*(char **)(unaff_EBP + 8));
         }
-        iVar3 = CString::EnsureCapacityPreserveLength((CString *)(unaff_EBP + 0x14),0xff);
+        iVar3 = CString::_GetBuffer_CString__QAEPADH_Z((CString *)(unaff_EBP + 0x14),0xff);
         uVar2 = (*this_00->vftable[2].slot_0x04)(iVar3,0x100,unaff_EBP + -0x10);
         if (((CONCAT31(extraout_var,uVar2) == 0) &&
             (pCVar1 = this_00[2].vftable, pCVar1 != (CObjectVtbl *)0x1)) && (1 < (int)pCVar1)) {
@@ -604,7 +609,7 @@ void CDocument::ReportSaveLoadException()
             iVar4 = 0xf122;
           }
         }
-        CString::SetLengthAndTerminator((CString *)(unaff_EBP + 0x14),-1);
+        CString::_ReleaseBuffer_CString__QAEXH_Z((CString *)(unaff_EBP + 0x14),-1);
       }
     }
     else {
@@ -619,24 +624,24 @@ void CDocument::ReportSaveLoadException()
       lstrcpynA((LPSTR)(unaff_EBP + -0x114),*(LPCSTR *)(unaff_EBP + 8),0x104);
     }
     else {
-      AfxGetFileTitle(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x114,0x104);
+      _AfxGetFileTitle__YGIPBDPADI_Z(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x114,0x104);
     }
-    AfxFormatString1(unaff_EBP + 0x14,iVar4,unaff_EBP + -0x114);
+    _AfxFormatString1__YGXAAVCString__IPBD_Z(unaff_EBP + 0x14,iVar4,unaff_EBP + -0x114);
   }
-  WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
+  _AfxMessageBox__YGHPBDII_Z
             (*(undefined4 *)(unaff_EBP + 0x14),0x30,*(undefined4 *)(unaff_EBP + -0x10));
 LAB_006110dd:
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(unaff_EBP + 0x14));
+  CString::__1CString__QAE_XZ((CString *)(unaff_EBP + 0x14));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611334
-// GHIDRA_NAME CDocument::GetFile
-// GHIDRA_PROTO undefined __thiscall GetFile(void)
+// GHIDRA_NAME CDocument::?GetFile@CDocument@@UAEPAVCFile@@PBDIPAVCFileException@@@Z
+// GHIDRA_PROTO undefined __thiscall ?GetFile@CDocument@@UAEPAVCFile@@PBDIPAVCFileException@@@Z(void)
 
-int * CDocument::GetFile()
+int * CDocument::_GetFile_CDocument__UAEPAVCFile__PBDIPAVCFileException___Z()
 
 {
   int iVar1;
@@ -644,18 +649,18 @@ int * CDocument::GetFile()
   int iVar3;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
-  piVar2 = (int *)AllocateWithFallbackHandler(0x14);
+  piVar2 = (int *)__2_YAPAXI_Z(0x14);
   *(int **)(unaff_EBP + -0x10) = piVar2;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (piVar2 == (int *)0x0) {
     piVar2 = (int *)0x0;
   }
   else {
-    CFileException::ConstructCFileException();
+    CFileException::__0CFile__QAE_XZ();
     *(undefined1 *)(unaff_EBP + -4) = 1;
-    CString::CString((CString *)(piVar2 + 4));
+    CString::__0CString__QAE_XZ((CString *)(piVar2 + 4));
     *piVar2 = (int)&PTR_LAB_006721d4;
   }
   iVar1 = *piVar2;
@@ -674,14 +679,14 @@ int * CDocument::GetFile()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006113F7
-// GHIDRA_NAME CDocument::ReleaseFileObjectCloseOrAbort
-// GHIDRA_PROTO undefined __thiscall ReleaseFileObjectCloseOrAbort(int * param_1, int param_2)
+// GHIDRA_NAME CDocument::?ReleaseFile@CDocument@@UAEXPAVCFile@@H@Z
+// GHIDRA_PROTO undefined __thiscall ?ReleaseFile@CDocument@@UAEXPAVCFile@@H@Z(int * param_1, int param_2)
 
-void CDocument::ReleaseFileObjectCloseOrAbort(int *param_1, int param_2)
+void CDocument::_ReleaseFile_CDocument__UAEXPAVCFile__H_Z(int *param_1, int param_2)
 
 {
   int iVar1;
-  
+
   iVar1 = *param_1;
   if (param_2 == 0) {
     (**(code **)(iVar1 + 0x54))();
@@ -696,27 +701,27 @@ void CDocument::ReleaseFileObjectCloseOrAbort(int *param_1, int param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611420
-// GHIDRA_NAME CDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_NAME CDocument::?OnNewDocument@CDocument@@UAEHXZ
+// GHIDRA_PROTO undefined __thiscall ?OnNewDocument@CDocument@@UAEHXZ(void)
 
-undefined4 CDocument::OrphanLeaf_NoCall_Ins04_005adc30()
+undefined4 CDocument::_OnNewDocument_CDocument__UAEHXZ()
 
 {
   CDocumentVtbl *pCVar1;
-  
+
   pCVar1 = this->vftable;
   (*pCVar1[0xc].SetForeignMinisterReadyFlag14)();
   (*pCVar1[0xe].slot_0x04)();
-  Empty();
+  _Empty_CString__QAEXXZ();
   (*pCVar1[0xc].slot_0x04)(0);
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611443
-// GHIDRA_NAME CDocument::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_NAME CDocument::?OnOpenDocument@CDocument@@UAEHPBD@Z
+// GHIDRA_PROTO undefined ?OnOpenDocument@CDocument@@UAEHPBD@Z()
 
-undefined4 CDocument::_scalar_deleting_destructor_(void)
+undefined4 CDocument::_OnOpenDocument_CDocument__UAEHPBD_Z(void)
 
 {
   int iVar1;
@@ -726,20 +731,20 @@ undefined4 CDocument::_scalar_deleting_destructor_(void)
   int *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffff88;
   *(int **)(unaff_EBP + -0x1c) = extraout_ECX;
   iVar1 = *extraout_ECX;
   (**(code **)(iVar1 + 0x60))();
-  ConstructSerializedDataExceptionBase();
+  __0CException__QAE_XZ();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::CString((CString *)(unaff_EBP + -0x24));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x24));
   *(undefined4 *)(unaff_EBP + -0x2c) = 0;
   *(undefined4 *)(unaff_EBP + -0x28) = 0xffffffff;
   *(undefined1 *)(unaff_EBP + -4) = 1;
   *(undefined ***)(unaff_EBP + -0x34) = &PTR_GetCFileExceptionRuntimeClass_00672234;
-  CString::CopyFromCStr((CString *)(unaff_EBP + -0x24),(char *)0x0);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)(unaff_EBP + -0x24),(char *)0x0);
   *(undefined4 *)(unaff_EBP + -4) = 2;
   iVar3 = (**(code **)(iVar1 + 0x8c))(*(undefined4 *)(unaff_EBP + 8),0x20,unaff_EBP + -0x34);
   *(int *)(unaff_EBP + -0x14) = iVar3;
@@ -747,7 +752,7 @@ undefined4 CDocument::_scalar_deleting_destructor_(void)
     (**(code **)(iVar1 + 0x88))(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x34,0,0xf101);
     *(undefined ***)(unaff_EBP + -0x34) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 3;
-    CString::~CString((CString *)(unaff_EBP + -0x24));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x24));
     uVar4 = 0;
   }
   else {
@@ -755,29 +760,29 @@ undefined4 CDocument::_scalar_deleting_destructor_(void)
     pcVar2 = *(code **)(iVar1 + 100);
     *(code **)(unaff_EBP + -0x18) = pcVar2;
     (*pcVar2)(1);
-    CArchive(*(undefined4 *)(unaff_EBP + -0x14),3,0x1000,0);
+    __0CArchive__QAE_PAVCFile__IHPAX_Z(*(undefined4 *)(unaff_EBP + -0x14),3,0x1000,0);
     *(undefined4 *)(unaff_EBP + -0x74) = 0;
     *(int **)(unaff_EBP + -0x78) = extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 5;
-    AfxGetModuleState();
-    BeginWaitCursor();
+    _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    _BeginWaitCursor_CCmdTarget__QAEXXZ();
     *(undefined1 *)(unaff_EBP + -4) = 6;
     iVar3 = (**(code **)(**(int **)(unaff_EBP + -0x14) + 0x38))();
     if (iVar3 != 0) {
       (**(code **)(iVar1 + 8))(unaff_EBP + -0x78);
     }
-    TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount((TNetMgr *)(unaff_EBP + -0x78));
+    TNetMgr::_Close_CArchive__QAEXXZ((TNetMgr *)(unaff_EBP + -0x78));
     (**(code **)(iVar1 + 0x90))(*(undefined4 *)(unaff_EBP + -0x14),0);
     *(undefined1 *)(unaff_EBP + -4) = 5;
-    AfxGetModuleState();
-    EndWaitCursor();
+    _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    _EndWaitCursor_CCmdTarget__QAEXXZ();
     *(undefined4 *)(unaff_EBP + -4) = 4;
     (**(code **)(unaff_EBP + -0x18))(0);
     *(undefined1 *)(unaff_EBP + -4) = 2;
-    ReleaseSerializedArchiveBufferState();
+    __1CArchive__QAE_XZ();
     *(undefined ***)(unaff_EBP + -0x34) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 0xb;
-    CString::~CString((CString *)(unaff_EBP + -0x24));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x24));
     uVar4 = 1;
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -785,10 +790,10 @@ undefined4 CDocument::_scalar_deleting_destructor_(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061160E
-// GHIDRA_NAME CDocument::OnSaveDocument
-// GHIDRA_PROTO undefined OnSaveDocument()
+// GHIDRA_NAME CDocument::?OnSaveDocument@CDocument@@UAEHPBD@Z
+// GHIDRA_PROTO undefined ?OnSaveDocument@CDocument@@UAEHPBD@Z()
 
-bool CDocument::OnSaveDocument(void)
+bool CDocument::_OnSaveDocument_CDocument__UAEHPBD_Z(void)
 
 {
   int iVar1;
@@ -796,49 +801,49 @@ bool CDocument::OnSaveDocument(void)
   int *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffff8c;
   *(int **)(unaff_EBP + -0x18) = extraout_ECX;
-  ConstructSerializedDataExceptionBase();
+  __0CException__QAE_XZ();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::CString((CString *)(unaff_EBP + -0x20));
+  CString::__0CString__QAE_XZ((CString *)(unaff_EBP + -0x20));
   *(undefined4 *)(unaff_EBP + -0x24) = 0xffffffff;
   *(undefined1 *)(unaff_EBP + -4) = 1;
   *(undefined ***)(unaff_EBP + -0x30) = &PTR_GetCFileExceptionRuntimeClass_00672234;
   *(undefined4 *)(unaff_EBP + -0x28) = 0;
-  CString::CopyFromCStr((CString *)(unaff_EBP + -0x20),(char *)0x0);
+  CString::__4CString__QAEABV0_PBD_Z((CString *)(unaff_EBP + -0x20),(char *)0x0);
   iVar1 = *extraout_ECX;
   *(undefined4 *)(unaff_EBP + -4) = 2;
   iVar2 = (**(code **)(iVar1 + 0x8c))(*(undefined4 *)(unaff_EBP + 8),0x1012,unaff_EBP + -0x30);
   *(int *)(unaff_EBP + -0x14) = iVar2;
   if (iVar2 != 0) {
-    CArchive(iVar2,2,0x1000,0);
+    __0CArchive__QAE_PAVCFile__IHPAX_Z(iVar2,2,0x1000,0);
     *(undefined4 *)(unaff_EBP + -0x70) = 0;
     *(int **)(unaff_EBP + -0x74) = extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 5;
-    AfxGetModuleState();
-    BeginWaitCursor();
+    _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    _BeginWaitCursor_CCmdTarget__QAEXXZ();
     *(undefined1 *)(unaff_EBP + -4) = 6;
     (**(code **)(iVar1 + 8))(unaff_EBP + -0x74);
-    TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount((TNetMgr *)(unaff_EBP + -0x74));
+    TNetMgr::_Close_CArchive__QAEXXZ((TNetMgr *)(unaff_EBP + -0x74));
     (**(code **)(iVar1 + 0x90))(*(undefined4 *)(unaff_EBP + -0x14),0);
     *(undefined1 *)(unaff_EBP + -4) = 5;
-    AfxGetModuleState();
-    EndWaitCursor();
+    _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
+    _EndWaitCursor_CCmdTarget__QAEXXZ();
     *(undefined4 *)(unaff_EBP + -4) = 4;
     (**(code **)(iVar1 + 100))(0);
     *(undefined1 *)(unaff_EBP + -4) = 2;
-    ReleaseSerializedArchiveBufferState();
+    __1CArchive__QAE_XZ();
     *(undefined ***)(unaff_EBP + -0x30) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 0xb;
-    CString::~CString((CString *)(unaff_EBP + -0x20));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x20));
   }
   else {
     (**(code **)(iVar1 + 0x88))(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x30,1,0xf100);
     *(undefined ***)(unaff_EBP + -0x30) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 3;
-    CString::~CString((CString *)(unaff_EBP + -0x20));
+    CString::__1CString__QAE_XZ((CString *)(unaff_EBP + -0x20));
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return iVar2 != 0;
@@ -855,15 +860,15 @@ void CDocument::CreateChildWindowFromRect()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611810
-// GHIDRA_NAME CDocument::AddView
-// GHIDRA_PROTO undefined __thiscall AddView(int param_1)
+// GHIDRA_NAME CDocument::?AddView@CDocument@@QAEXPAVCView@@@Z
+// GHIDRA_PROTO undefined __thiscall ?AddView@CDocument@@QAEXPAVCView@@@Z(int param_1)
 
-void CDocument::AddView(int param_1)
+void CDocument::_AddView_CDocument__QAEXPAVCView___Z(int param_1)
 
 {
   CDocumentVtbl *pCVar1;
-  
-  CPtrList::AddTail((CPtrList *)&this->field_0x28,param_1);
+
+  CPtrList::_AddTail_CPtrList__QAEPAU__POSITION__PAX_Z((CPtrList *)&this->field_0x28,param_1);
   pCVar1 = this->vftable;
   *(CDocument **)(param_1 + 0x3c) = this;
   (*pCVar1[0xe].SetForeignMinisterReadyFlag14)();
@@ -871,18 +876,18 @@ void CDocument::AddView(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006118ED
-// GHIDRA_NAME CDocument::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(uint param_1, uint param_2, int param_3, undefined4 param_4)
+// GHIDRA_NAME CDocument::?OnCmdMsg@CDocument@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
+// GHIDRA_PROTO undefined __thiscall ?OnCmdMsg@CDocument@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
 undefined4 __thiscall
-CDocument::_scalar_deleting_destructor_
+CDocument::_OnCmdMsg_CDocument__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
           (CDocument *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
 
 {
   int iVar1;
   undefined4 uVar2;
-  
-  iVar1 = TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
+
+  iVar1 = TTooltipRelayWindowState::_OnCmdMsg_CCmdTarget__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
                     ((TTooltipRelayWindowState *)this,param_1,param_2,param_3,param_4);
   if (iVar1 == 0) {
     if (*(int **)&this->field_0x24 != (int *)0x0) {
@@ -899,10 +904,10 @@ LAB_00611924:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611BB4
-// GHIDRA_NAME CDocument::CArchive
-// GHIDRA_PROTO undefined CArchive()
+// GHIDRA_NAME CDocument::??0CArchive@@QAE@PAVCFile@@IHPAX@Z
+// GHIDRA_PROTO undefined ??0CArchive@@QAE@PAVCFile@@IHPAX@Z()
 
-undefined4 * CDocument::CArchive(void)
+undefined4 * CDocument::__0CArchive__QAE_PAVCFile__IHPAX_Z(void)
 
 {
   undefined4 uVar1;
@@ -912,7 +917,7 @@ undefined4 * CDocument::CArchive(void)
   int iVar4;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   iVar2 = **(int **)(unaff_EBP + 8);
@@ -952,7 +957,7 @@ undefined4 * CDocument::CArchive(void)
     iVar2 = (**(code **)(iVar2 + 0x58))(3,0,0,0);
     extraout_ECX[2] = iVar2;
     if (iVar2 == 0) {
-      uVar3 = AllocateWithFallbackHandler(extraout_ECX[7]);
+      uVar3 = __2_YAPAXI_Z(extraout_ECX[7]);
       extraout_ECX[0xb] = uVar3;
       extraout_ECX[6] = 0;
     }
@@ -973,25 +978,25 @@ undefined4 * CDocument::CArchive(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611C90
-// GHIDRA_NAME CDocument::ReleaseSerializedArchiveBufferState
-// GHIDRA_PROTO undefined ReleaseSerializedArchiveBufferState()
+// GHIDRA_NAME CDocument::??1CArchive@@QAE@XZ
+// GHIDRA_PROTO undefined ??1CArchive@@QAE@XZ()
 
-void CDocument::ReleaseSerializedArchiveBufferState(void)
+void CDocument::__1CArchive__QAE_XZ(void)
 
 {
   TNetMgr *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(TNetMgr **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if ((this[8].vftable != (TNetMgrVtbl *)0x0) && (((uint)this[5].vftable & 2) == 0)) {
-    TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount(this);
+    TNetMgr::_Close_CArchive__QAEXXZ(this);
   }
-  Abort_611cd6();
+  _Abort_CArchive__QAEXXZ();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  CString::~CString((CString *)(this + 4));
+  CString::__1CString__QAE_XZ((CString *)(this + 4));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }

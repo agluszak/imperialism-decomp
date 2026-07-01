@@ -33,7 +33,7 @@ TItemOrder * TItemOrder::ConstructTItemOrderBaseState(byte param_1)
 {
   TItemOrder::DestructTItemOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -61,7 +61,7 @@ TItemOrder::InitializeCityProductionState_Impl_At004b5290
 {
   int iVar1;
   undefined4 *puVar2;
-  
+
   *(int *)&this->field_0x8 = param_1;
   *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = param_2;
@@ -97,7 +97,7 @@ uint TItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
   ushort uVar6;
   uint uVar7;
   ushort uVar8;
-  
+
   iVar2 = *(int *)&this->field_0x8;
   uVar7 = (int)*(short *)(*(int *)&this->field_0xc + 0x1c) / 2 + (uint)*(ushort *)&this->field_0x4;
   uVar8 = *(short *)(iVar2 + 0x1fc + *(short *)&this->field_0x52 * 2) + *(ushort *)&this->field_0x4;
@@ -141,7 +141,7 @@ undefined4 TItemOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   char cVar5;
   undefined3 extraout_var;
   short sVar6;
-  
+
   sVar6 = param_1 - *(short *)&this->field_0x4;
   uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar4) < param_1) || (param_1 < 0)) {
@@ -193,7 +193,7 @@ void TItemOrder::CreateTItemOrderInstance(int param_1)
 
 {
   short sVar1;
-  
+
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)(param_1);
   sVar1 = (short)param_1;
   if (-1 < *(short *)&this->field_0x50) {
@@ -216,7 +216,7 @@ void TItemOrder::OrphanRetStub_004b5160()
 {
   short *psVar1;
   int *piVar2;
-  
+
   psVar1 = (short *)(*(int *)&this->field_0x8 + 0x1fc + *(short *)&this->field_0x52 * 2);
   *psVar1 = *psVar1 + *(short *)&this->field_0x4;
   piVar2 = *(int **)&this->field_0x8;
@@ -246,7 +246,7 @@ void TItemOrder::ResetCityOrderItemDerivedStateNoop()
   undefined uVar3;
   undefined3 extraout_var;
   undefined4 unaff_EBX;
-  
+
   pTVar2 = this->vftable;
   uVar3 = (*pTVar2->OrphanLeaf_NoCall_Ins02_004b50e0)();
   sVar1 = *(short *)&this->field_0x4c;
@@ -268,7 +268,7 @@ void TItemOrder::SerializeCityOrderItemContextCore(int *param_1)
 
 {
   code *pcVar1;
-  
+
   TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
@@ -292,7 +292,7 @@ void TItemOrder::DeserializeCityOrderItemContextCore(int *param_1)
 
 {
   code *pcVar1;
-  
+
   TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x48,2);

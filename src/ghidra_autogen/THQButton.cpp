@@ -13,7 +13,7 @@ void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
   undefined4 uVar1;
   int *piVar2;
   int iVar3;
-  
+
   if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
     if (DAT_006a1d48 != (int *)0x0) {
       (**(code **)(*DAT_006a1d48 + 4))(1);
@@ -32,14 +32,14 @@ void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
   }
   iVar3 = g_uQuickDrawCurrentColor;
   (**(code **)(*piVar2 + 0x38))(g_uQuickDrawCurrentColor);
-  SetBkModeOnPrimaryAndSecondaryDc(1);
-  uVar1 = FUN_00613121(0x18);
+  _SetMapperFlags_CDC__QAEKK_Z(1);
+  uVar1 = _SetTextAlign_CDC__QAEII_Z(0x18);
   piVar2 = DAT_006a1da0;
   if (DAT_006a1da0 == (int *)0x0) {
     piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
   (**(code **)(*piVar2 + 100))(DAT_006a1d00,DAT_006a1d04,*param_1,*(undefined4 *)(*param_1 + -8));
-  FUN_00613121(uVar1);
+  _SetTextAlign_CDC__QAEII_Z(uVar1);
   piVar2 = DAT_006a1da0;
   if (DAT_006a1da0 == (int *)0x0) {
     piVar2 = g_pScopedMapQuickDrawDcHandleObject;
@@ -75,7 +75,7 @@ void TPicture::OrphanTiny_ReturnZero_0048a730()
   int iStack_10;
   int iStack_c;
   int iStack_8;
-  
+
   uVar3 = GetAsyncKeyState(0x11);
   if ((uVar3 & 0x8000) != 0) {
     (*this->vftable->GetTEventHandlerClassNamePointer_58)(&iStack_10);
@@ -127,7 +127,7 @@ void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
   undefined4 uVar1;
   int *piVar2;
   int iVar3;
-  
+
   if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
     if (DAT_006a1d48 != (int *)0x0) {
       (**(code **)(*DAT_006a1d48 + 4))(1);
@@ -146,14 +146,14 @@ void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
   }
   iVar3 = g_uQuickDrawCurrentColor;
   (**(code **)(*piVar2 + 0x38))(g_uQuickDrawCurrentColor);
-  SetBkModeOnPrimaryAndSecondaryDc(1);
-  uVar1 = FUN_00613121(0x18);
+  _SetMapperFlags_CDC__QAEKK_Z(1);
+  uVar1 = _SetTextAlign_CDC__QAEII_Z(0x18);
   piVar2 = DAT_006a1da0;
   if (DAT_006a1da0 == (int *)0x0) {
     piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
   (**(code **)(*piVar2 + 100))(DAT_006a1d00,DAT_006a1d04,*param_1,*(undefined4 *)(*param_1 + -8));
-  FUN_00613121(uVar1);
+  _SetTextAlign_CDC__QAEII_Z(uVar1);
   piVar2 = DAT_006a1da0;
   if (DAT_006a1da0 == (int *)0x0) {
     piVar2 = g_pScopedMapQuickDrawDcHandleObject;
@@ -175,12 +175,12 @@ thunk_TPictureButton * THQButton::CreateTHQButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637b1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x9c);
+  this = (thunk_TPictureButton *)__2_YAPAXI_Z(0x9c);
   local_4 = 0;
   ptVar1 = (thunk_TPictureButton *)0x0;
   if (this != (thunk_TPictureButton *)0x0) {
@@ -223,7 +223,7 @@ THQButton * THQButton::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -236,7 +236,7 @@ void THQButton::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   short sVar1;
-  
+
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   sVar1 = *(short *)&this->field_0x84;
   *(undefined2 *)&this->field_0x98 = 0;
@@ -263,7 +263,7 @@ void THQButton::SetModeAndBitmapBySelectionState(char param_1)
   undefined4 in_EDX;
   THQButtonVtbl *pTVar4;
   char unaff_retaddr;
-  
+
   if (param_1 == this->field_0x64) {
     return;
   }
@@ -331,7 +331,7 @@ void THQButton::InvokeSlot1CCIfSlot28Enabled(undefined4 param_1, undefined4 para
 {
   THQButtonVtbl *pTVar1;
   char cVar2;
-  
+
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {
@@ -351,7 +351,7 @@ void THQButton::SetSelectionStateAndRefreshBitmap(short param_1)
   undefined4 uVar1;
   undefined4 in_EDX;
   THQButtonVtbl *pTVar2;
-  
+
   *(short *)&this->field_0x98 = param_1;
   this->field_0x64 = 0;
   if (param_1 == 0) {

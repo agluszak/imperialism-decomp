@@ -16,12 +16,12 @@ TControl * TStatusButton::CreateTStatusButtonInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006377f2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x84);
+  this = (TControl *)__2_YAPAXI_Z(0x84);
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
@@ -57,7 +57,7 @@ TStatusButton * TStatusButton::ConstructTStatusButtonBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637818;
   local_c = *unaff_FS_OFFSET;
@@ -80,7 +80,7 @@ TStatusButton * TStatusButton::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -106,14 +106,14 @@ void TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637840;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&local_10);
+  CString::__0CString__QAE_XZ(&local_10);
   local_4 = 0;
-  CString::CString(&local_14);
+  CString::__0CString__QAE_XZ(&local_14);
   pTVar1 = this->vftable;
   local_4 = CONCAT31(local_4._1_3_,1);
   uVar2 = (*pTVar1->VTableSlot2F)();
@@ -144,9 +144,9 @@ void TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
 LAB_0058650a:
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_14);
+  CString::__1CString__QAE_XZ(&local_14);
   local_4 = 0xffffffff;
-  CString::~CString(&local_10);
+  CString::__1CString__QAE_XZ(&local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

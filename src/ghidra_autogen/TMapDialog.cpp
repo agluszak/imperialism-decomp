@@ -13,7 +13,7 @@ void TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
 {
   uint uVar1;
   short sVar2;
-  
+
   uVar1 = (int)param_1 / 0x6c;
   *param_3 = (short)uVar1 * 0x40 - param_2[2];
   sVar2 = (short)((int)param_1 % 0x6c << 6) - *param_2;
@@ -148,7 +148,7 @@ void TMapDialog::_scalar_deleting_destructor_(undefined4 param_1)
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->QueryStepValue)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x44))(param_1);
@@ -165,7 +165,7 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->QueryStepValue)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x48))(param_1);
@@ -273,7 +273,7 @@ void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   TMapDialog *pTVar3;
   undefined3 extraout_var;
   ApplicationUiRootController *pAVar4;
-  
+
   iVar1 = this->field44;
   while (iVar1 != 0) {
     (**(code **)(**(int **)(*(int *)(iVar1 + 4) + 8) + 0x1c))();
@@ -313,7 +313,7 @@ undefined1 TMapDialog::SetForeignMinisterReadyFlag14()
 
 {
   undefined uVar1;
-  
+
   if (this->ownerContext != (TView *)0x0) {
                     /* WARNING: Could not recover jumptable at 0x0048b189. Too many branches */
                     /* WARNING: Treating indirect jump as call */
@@ -338,7 +338,7 @@ void TMapDialog::SetForeignMinisterReadyFlag14(undefined4 *param_1, undefined4 p
   TMapDialog *local_c;
   undefined4 uStack_8;
   undefined4 uStack_4;
-  
+
   pTVar1 = this->vftable;
   local_c = this;
   cVar3 = (*pTVar1->HasRenderableParentAndContent)();
@@ -399,7 +399,7 @@ void TMapDialog::OrphanCallChain_C11_I88_004874b0()
   HCURSOR hCursor;
   RECT RStack_30;
   tagRECT atStack_20 [2];
-  
+
   if (this->field5c != 0) {
     puVar3 = (undefined4 *)(**(code **)&this->vftable->field_0x160)();
     RStack_30.left = *puVar3;
@@ -440,7 +440,7 @@ void TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
   undefined3 extraout_var;
   undefined4 in_stack_00000008;
   undefined4 in_stack_0000000c;
-  
+
   if (param_1 == 0x1f) {
     (*this->vftable[1].CanHandleCityDialogActionFalse)(1,1);
   }
@@ -479,7 +479,7 @@ CityDialogController * TMapDialog::GetTBehaviorClassNamePointer(CityDialogContro
   short sVar1;
   int iVar2;
   CityDialogController *this_00;
-  
+
   this_00 = (CityDialogController *)(**(code **)&this->vftable->field_0x24)();
   TView::CopyCityDialogStateFromSource((TView *)this_00,(TView *)this);
   this_00->extendedField60 = *(int *)&this->field_0x60;
@@ -513,7 +513,7 @@ void TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
 {
   uint uVar1;
   short sVar2;
-  
+
   uVar1 = (int)param_1 / 0x6c;
   *param_3 = (short)uVar1 * 0x40 - param_2[2];
   sVar2 = (short)((int)param_1 % 0x6c << 6) - *param_2;
@@ -559,12 +559,12 @@ TWorldView * TMapDialog::CreateTMapDialogInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633d92;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TWorldView *)AllocateWithFallbackHandler(0x364);
+  this = (TWorldView *)__2_YAPAXI_Z(0x364);
   local_4 = 0;
   if (this != (TWorldView *)0x0) {
     local_10 = this;
@@ -616,7 +616,7 @@ TMapDialog * TMapDialog::ConstructTMapDialogBaseState()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633db8;
   local_c = *unaff_FS_OFFSET;
@@ -652,7 +652,7 @@ TMapDialog * TMapDialog::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -692,7 +692,7 @@ void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   TWorldView::OrphanLeaf_NoCall_Ins07_004d8920((TWorldView *)this);
   local_10 = 0;
   local_c = 0;
@@ -759,7 +759,7 @@ void TMapDialog::OrphanRetStub_00596080()
   undefined4 local_24;
   RECT local_20;
   RECT local_10;
-  
+
   bVar2 = false;
   bVar3 = false;
   sVar4 = this->field4e;
@@ -904,7 +904,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
   int unaff_EBX;
   short *unaff_retaddr;
   int aiStack_8 [2];
-  
+
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x3f);
   if (*unaff_retaddr != -1) {
     TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
@@ -1018,7 +1018,7 @@ void TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(short param_1)
   int local_c;
   int local_8;
   int local_4;
-  
+
   uVar1 = _param_1;
   TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
             (_param_1,&this->field_0x60,&local_12,&param_1,1);
@@ -1044,7 +1044,7 @@ TMapDialog::OrphanRetStub_005960c0
   short sVar2;
   short sVar3;
   int iVar4;
-  
+
   uVar1 = ftol();
   *param_3 = uVar1;
   if ((uVar1 & 1) == 0) {
@@ -1088,7 +1088,7 @@ void TMapDialog::OrphanRetStub_005966c0(undefined4 param_1)
   undefined4 unaff_EBX;
   short sVar2;
   short sVar3;
-  
+
   pTVar1 = this->vftable;
   (*pTVar1->Refresh)();
   (*pTVar1[1].vmethod_0032)(param_1);
@@ -1119,7 +1119,7 @@ bool TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0()
   undefined1 local_20 [4];
   undefined1 auStack_1c [8];
   undefined1 auStack_14 [20];
-  
+
   TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale();
   SetGlobalQuickDrawOrigin
             (CONCAT22(extraout_var_00,(short)this->field2c),
@@ -1141,7 +1141,7 @@ void TMapDialog::OrphanRetStub_00594fc0(int param_1)
 
 {
   int local_14 [5];
-  
+
   TMapDialog::SplitTileIndexToRowAndColumn(param_1,&param_1,local_14);
   (*this->vftable[1].DispatchUiCommand19ToParent)
             (local_14[0] - (int)(short)DAT_006a33b0 / 2,param_1 + -3);
@@ -1161,7 +1161,7 @@ int TMapDialog::HasRenderableParentAndContent()
 {
   int local_8;
   int local_4;
-  
+
   local_4 = ((int)(*(int *)&this->field_0x60 + (*(int *)&this->field_0x60 >> 0x1f & 0x3fU)) >> 6) +
             (int)(short)DAT_006a33b0 / 2;
   local_8 = ((int)(*(int *)&this->field_0x64 + (*(int *)&this->field_0x64 >> 0x1f & 0x3fU)) >> 6) +
@@ -1178,7 +1178,7 @@ void TMapDialog::OrphanRetStub_005966a0(undefined4 param_1)
 
 {
   TMapDialog *local_4;
-  
+
   local_4 = this;
   TMapDialog::SplitTileIndexToRowAndColumn(param_1,&param_1,&local_4);
   (*this->vftable[1].DispatchUiCommand19ToParent)(local_4,param_1);
@@ -1212,7 +1212,7 @@ TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
-  
+
   if (g_pGlobalMapState->field_0x20 != '\0') {
     if (0x6e - (short)DAT_006a33b0 < (int)(short)param_1) {
       param_1 = 0x6e - DAT_006a33b0;
@@ -1270,7 +1270,7 @@ void TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()
   undefined1 local_a [2];
   undefined1 local_8 [4];
   undefined1 local_4 [4];
-  
+
   pTVar1 = this->vftable;
   (*pTVar1[1].CanHandleCityDialogActionFalse)(&DAT_006a3370,local_8,local_4,local_a);
   if ((unaff_SI & 1) != 0) {
@@ -1333,7 +1333,7 @@ TMapDialog * TMapDialog::InitializeCitySiteView()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633f58;
   local_c = *unaff_FS_OFFSET;
@@ -1370,7 +1370,7 @@ void TMapDialog::OrphanCallChain_C1_I20_0051e1a0()
 {
   undefined2 *puVar1;
   int iVar2;
-  
+
   (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins08_005178c0)();
   puVar1 = (undefined2 *)&this->field_0x7e;
   iVar2 = 0x5a;
@@ -1394,7 +1394,7 @@ void TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0(short param_1)
 {
   int iVar1;
   short sVar2;
-  
+
   sVar2 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + param_1 * 0x24);
   if (sVar2 != -1) {
     *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + param_1 * 0x24) = 0xff;
@@ -1459,7 +1459,7 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   pTVar2 = g_pGlobalMapState;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
@@ -1477,7 +1477,7 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
       DAT_006a344c = DAT_006a344c | 1;
       DAT_006a3418 = 0x40;
       DAT_006a341c = 0x40;
-      AppendPointerToGlobalVectorAsStatus(&DAT_0051eb20);
+      _atexit(&DAT_0051eb20);
     }
     local_78.left = local_64.left;
     local_78.top = local_64.top;
@@ -1591,7 +1591,7 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
                     TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
                               (uVar5,&this->field_0x60,&local_82,&local_80,1);
                     local_50 = (short)piVar8[1];
-                    this_00 = (TCivAnimation2 *)AllocateWithFallbackHandler(0x30);
+                    this_00 = (TCivAnimation2 *)__2_YAPAXI_Z(0x30);
                     if (this_00 == (TCivAnimation2 *)0x0) {
                       this_00 = (TCivAnimation2 *)0x0;
                     }
@@ -1680,7 +1680,7 @@ TMapDialog::RenderMapDialogBilateralRelationMarkers
   undefined2 unaff_SI;
   undefined4 unaff_retaddr;
   undefined4 in_stack_0000000c;
-  
+
   cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)();
   if (cVar1 == '\0') {
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x35);
@@ -1772,7 +1772,7 @@ TMapDialog::DrawMapDialogGuidePatternSetA_00520970
 {
   int iVar1;
   int iVar2;
-  
+
   if (param_3 == 0) {
     SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2);
     DrawCenteredGuideLineOnMapDc(param_1 + 0x20,param_2 + 9);
@@ -1847,7 +1847,7 @@ TMapDialog::DrawMapDialogGuidePatternSetC_00520c10
   int iVar1;
   int iVar2;
   int iVar3;
-  
+
   if (param_3 == 1) {
     iVar1 = param_1 + 0x36;
     SetQuickDrawTextOriginWithContextOffset(iVar1,param_2);
@@ -1975,7 +1975,7 @@ TMapDialog::DrawMapDialogGuidePatternSetF_00521090
 {
   int iVar1;
   int iVar2;
-  
+
   if (param_3 == 1) {
     iVar1 = param_1 + 0x36;
     SetQuickDrawTextOriginWithContextOffset(iVar1,param_2 + 0x20);
@@ -2088,7 +2088,7 @@ TMapDialog::DrawMapDialogGuidePatternSetI_00521540
 
 {
   int iVar1;
-  
+
   if (param_3 == 0) {
     SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2 + 0x40);
     DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,param_2 + 0x3b);
@@ -2154,7 +2154,7 @@ void TMapDialog::DrawHexEdgeConnectionGlyphsByMask(byte param_1, undefined4 para
   TMapDialogVtbl *pTVar3;
   undefined4 in_stack_00000010;
   byte bStack_8;
-  
+
   bVar1 = param_1 & 2;
   if (bVar1 != 0) {
     if ((param_1 & 1) == 0) {
@@ -2254,7 +2254,7 @@ void TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask(byte param_1, short p
   short in_stack_00000010;
   undefined4 uVar3;
   undefined4 uStack_4;
-  
+
   sVar2 = in_stack_00000010;
   uStack_4._0_3_ = SUB43(this,0);
   uStack_4 = (code *)(CONCAT13(param_1,(undefined3)uStack_4) & 0x2ffffff);
@@ -2345,7 +2345,7 @@ TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000
 {
   byte unaff_retaddr;
   short in_stack_00000010;
-  
+
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
             (CONCAT22((short)((uint)(in_stack_00000010 * 9) >> 0x10),
                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2397,7 +2397,7 @@ TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints
   short local_6;
   short local_4;
   short sStack_2;
-  
+
   ComputeHexNeighborTileIndices(param_3,&local_c,g_pGlobalMapState->field_0x20);
   uVar8 = CONCAT22(extraout_var_02,local_8);
   if (local_6 == -1) {
@@ -2704,7 +2704,7 @@ TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10
 
 {
   uint uVar1;
-  
+
   uVar1 = (int)param_1 - (int)param_3 >> 0x1f;
   if (0x6c < (int)(((int)param_1 - (int)param_3 ^ uVar1) - uVar1)) {
     if (param_1 < 0x6d) {
@@ -2750,7 +2750,7 @@ void TMapDialog::DrawHexNeighborConnectionMask(byte param_1, int param_2, int pa
   short local_c;
   short local_a;
   short local_8;
-  
+
   ComputeHexNeighborTileIndices(_bStack00000010,&local_c,g_pGlobalMapState->field_0x20);
   bStack00000010 = param_1 & 2;
   if (((param_1 & 2) == 0) ||
@@ -2840,7 +2840,7 @@ void TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060()
   short sVar7;
   int iVar8;
   int iVar9;
-  
+
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x3c);
   iVar1 = *(int *)&this->field_0x64;
   iVar9 = 0;
@@ -2924,7 +2924,7 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot
   int local_30;
   RECT local_2c [2];
   short sStack_4;
-  
+
   local_30 = (int)param_3;
   local_2c[0].left = (LONG)param_2;
   local_2c[0].top = local_30 + 0x40;
@@ -3008,7 +3008,7 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot
     DAT_006a33f8 = DAT_006a33f8 | 1;
     DAT_006a3440 = 0x40;
     DAT_006a3444 = 0x40;
-    AppendPointerToGlobalVectorAsStatus(&DAT_00523620);
+    _atexit(&DAT_00523620);
   }
   LVar3 = local_4c.left;
   local_5c = local_4c.top;
@@ -3065,7 +3065,7 @@ TMapDialog::OrphanTiny_ReturnZero_0048a730
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063409a;
   local_c = *unaff_FS_OFFSET;
@@ -3180,7 +3180,7 @@ TMapDialog::OrphanTiny_ReturnZero_0048a730
       TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
                 (in_stack_00000014,&this->field_0x60,&param_3,&param_4,1);
       sVar6 = *(short *)(param_1 + 4);
-      this_00 = (TCivAnimation2 *)AllocateWithFallbackHandler(0x30);
+      this_00 = (TCivAnimation2 *)__2_YAPAXI_Z(0x30);
       local_4 = 0;
       if (this_00 == (TCivAnimation2 *)0x0) {
         this_00 = (TCivAnimation2 *)0x0;
@@ -3227,7 +3227,7 @@ void TMapDialog::DispatchReflectedControlMessageOrFallback(RECT *param_1, char p
   char in_stack_0000000c;
   undefined1 auStack_18 [8];
   RECT local_10;
-  
+
   pTVar2 = g_pActiveQuickDrawSurfaceContext;
   iVar6 = (short)param_1 * 0x24;
   sVar7 = 0;
@@ -3355,7 +3355,7 @@ void TMapDialog::OrphanRetStub_00596060(short param_1, RECT *param_2, char param
   TQuickDrawSurfaceContext *pTVar3;
   short sVar4;
   RECT RStack_10;
-  
+
   pTVar3 = g_pActiveQuickDrawSurfaceContext;
   iVar1 = *(int *)&g_pGlobalMapState->field_0xc + param_1 * 0x24;
   cVar2 = *(char *)(iVar1 + 0x16);
@@ -3418,7 +3418,7 @@ TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0
   undefined4 *puVar6;
   undefined4 *puVar7;
   int iVar8;
-  
+
   puVar6 = (undefined4 *)(param_1 + 0x20);
   puVar3 = (undefined4 *)(param_2 + 0x20);
   param_1 = 8;
@@ -3506,7 +3506,7 @@ TMapDialog::GetTEventHandlerClassNamePointer
   int iVar9;
   int iVar10;
   short sVar11;
-  
+
   puVar4 = (undefined4 *)(param_2 + 0x40);
   puVar7 = (undefined4 *)(param_1 + 0x40);
   iVar2 = 0;
@@ -3656,7 +3656,7 @@ TMapDialog::_scalar_deleting_destructor_
   int iVar6;
   int iVar7;
   int iVar8;
-  
+
   iVar5 = (int)(short)((int)((int)param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2);
   iVar7 = iVar5 * 4;
   iVar8 = (int)(short)((int)((int)param_4 + ((int)param_4 >> 0x1f & 3U)) >> 2);
@@ -3745,7 +3745,7 @@ TMapDialog::InitializeForeignMinisterStateFlags
   int iVar7;
   int iVar8;
   int iVar9;
-  
+
   iVar6 = (int)(short)((int)((int)param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2);
   iVar8 = iVar6 * 4;
   iVar9 = (int)(short)((int)((int)param_4 + ((int)param_4 >> 0x1f & 3U)) >> 2);
@@ -3834,7 +3834,7 @@ TMapDialog::AddToForeignMinisterCounterAtIndex
   undefined4 *puVar8;
   short sVar9;
   undefined4 *puVar10;
-  
+
   puVar2 = (undefined4 *)0x0;
   do {
     puVar8 = puVar2;
@@ -3984,7 +3984,7 @@ TMapDialog::SetForeignMinisterReadyFlag14
   int iVar8;
   int iVar9;
   int iVar10;
-  
+
   puVar6 = param_1;
   iVar7 = 7;
   param_1 = (undefined4 *)&DAT_00000008;
@@ -4068,7 +4068,7 @@ TMapDialog::SelectCandidateTilesWithLowGroundUnitCount
   undefined4 *puVar6;
   undefined4 *puVar7;
   int iVar8;
-  
+
   puVar7 = (undefined4 *)(param_1 + 0x30);
   puVar3 = (undefined4 *)(param_2 + 0x30);
   iVar5 = 4;
@@ -4153,7 +4153,7 @@ TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
   int iVar6;
   int iVar7;
   int iVar8;
-  
+
   iVar5 = (int)(short)((int)((int)param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2);
   iVar7 = iVar5 * 4 + -0x1c;
   iVar8 = (int)(short)((int)((int)param_4 + ((int)param_4 >> 0x1f & 3U)) >> 2);
@@ -4298,7 +4298,7 @@ TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
   int iVar8;
   int iVar9;
   int iVar10;
-  
+
   iVar2 = (int)param_4;
   puVar5 = (undefined4 *)(param_1 + 0x10);
   puVar4 = (undefined4 *)(param_2 + 0x10);
@@ -4452,7 +4452,7 @@ TMapDialog::OrphanCallChain_C11_I88_004874b0
   int iVar7;
   int iVar8;
   int iVar9;
-  
+
   iVar6 = (int)(short)((int)((int)param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2);
   iVar8 = iVar6 * 4;
   iVar9 = (int)(short)((int)((int)param_4 + ((int)param_4 >> 0x1f & 3U)) >> 2);
@@ -4607,7 +4607,7 @@ TMapDialog::OrphanRetStub_0059add0
   int iVar6;
   int iVar7;
   int iVar8;
-  
+
   iVar5 = (int)(short)((int)((int)param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2);
   iVar7 = (int)(short)((int)((int)param_4 + ((int)param_4 >> 0x1f & 3U)) >> 2);
   iVar8 = iVar7 * 4 + -0x20;
@@ -4750,7 +4750,7 @@ TMapDialog::GetTBehaviorClassNamePointer
   int iVar6;
   int iVar7;
   int iVar8;
-  
+
   puVar5 = param_1;
   iVar7 = 4;
   param_1 = (undefined4 *)0x4;
@@ -4884,7 +4884,7 @@ TMapDialog::EvaluateControlInputGate
   int iVar2;
   int iVar3;
   undefined4 *puVar4;
-  
+
   iVar3 = 0x40;
   do {
     iVar2 = 2;

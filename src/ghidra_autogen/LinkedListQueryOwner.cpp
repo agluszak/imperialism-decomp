@@ -4,11 +4,11 @@
 // Bucket: LinkedListQueryOwner.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FFEB1
-// GHIDRA_NAME LinkedListQueryOwner::AfxCommDlgProc
-// GHIDRA_PROTO undefined AfxCommDlgProc()
+// GHIDRA_NAME LinkedListQueryOwner::?_AfxCommDlgProc@@YGIPAUHWND__@@IIJ@Z
+// GHIDRA_PROTO undefined ?_AfxCommDlgProc@@YGIPAUHWND__@@IIJ@Z()
 
 undefined1
-LinkedListQueryOwner::AfxCommDlgProc
+LinkedListQueryOwner::__AfxCommDlgProc__YGIPAUHWND____IIJ_Z
           (HWND param_1,uint param_2,undefined4 param_3,CObjectVtbl *param_4)
 
 {
@@ -16,15 +16,17 @@ LinkedListQueryOwner::AfxCommDlgProc
   undefined uVar2;
   int iVar3;
   CObject *this;
-  
+
   if (param_1 != (HWND)0x0) {
-    iVar3 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
+    iVar3 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
+                      ((TMacViewMgr *)&DAT_006a7a50,
+                       _CreateObject___CThreadLocal_V_AFX_THREAD_STATE____SGPAVCNoTrackObject__XZ);
     if (*(int *)(iVar3 + 0x18) != 0) {
-      SubclassWindow(param_1);
+      _SubclassWindow_CWnd__QAEHPAUHWND_____Z(param_1);
       *(undefined4 *)(iVar3 + 0x18) = 0;
     }
     if (param_2 == 0x110) {
-      uVar1 = AfxDlgProc(param_1,0x110,param_3,param_4);
+      uVar1 = _AfxDlgProc__YGHPAUHWND____IIJ_Z(param_1,0x110,param_3,param_4);
       return uVar1;
     }
     if ((param_2 == DAT_006a7f9c) || ((param_2 == 0x111 && ((short)param_3 == 0x40e)))) {
@@ -32,8 +34,8 @@ LinkedListQueryOwner::AfxCommDlgProc
       return 1;
     }
     if (0xbfff < param_2) {
-      this = (CObject *)FromHandlePermanent_607b57(param_1);
-      iVar3 = CObject::IsKindOf(this);
+      this = (CObject *)_FromHandlePermanent_CWnd__SGPAV1_PAUHWND_____Z(param_1);
+      iVar3 = CObject::_IsKindOf_CObject__QBEHPBUCRuntimeClass___Z(this);
       if ((iVar3 == 0) || (((uint)this[0x24].vftable & 0x80000) == 0)) {
         if (param_2 == DAT_006a7f8c) {
           uVar2 = (*this->vftable[0x1b].SetForeignMinisterReadyFlag14)(param_4);

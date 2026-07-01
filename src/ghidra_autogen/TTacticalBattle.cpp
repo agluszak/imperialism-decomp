@@ -61,7 +61,7 @@ TTacticalBattle * TTacticalBattle::DestructTTacticalBattleAndMaybeFree(byte para
 {
   DestructTTacticalBattleAndMaybeFree_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -74,7 +74,7 @@ void TTacticalBattle::WrapperFor_FreeHeapBufferIfNotNull_At0059fb50()
 
 {
   if (*(int *)&this->field_0x24 != 0) {
-    FreeHeapBufferIfNotNull(*(int *)&this->field_0x24);
+    __3_YAXPAX_Z(*(int *)&this->field_0x24);
   }
   (**(code **)(**(int **)&this->field_0x20 + 0x5c))();
   if (*(int **)&this->field_0x20 != (int *)0x0) {
@@ -87,16 +87,16 @@ void TTacticalBattle::WrapperFor_FreeHeapBufferIfNotNull_At0059fb50()
     (**(code **)(**(int **)&this->field_0x18 + 0x1c))();
   }
   if (*(int *)&this->field_0x4 != 0) {
-    FreeHeapBufferIfNotNull(*(int *)&this->field_0x4);
+    __3_YAXPAX_Z(*(int *)&this->field_0x4);
   }
   if (*(int *)&this->field_0x28 != 0) {
-    FreeHeapBufferIfNotNull(*(int *)&this->field_0x28);
+    __3_YAXPAX_Z(*(int *)&this->field_0x28);
   }
   if (*(int *)&this->field_0x2c != 0) {
-    FreeHeapBufferIfNotNull(*(int *)&this->field_0x2c);
+    __3_YAXPAX_Z(*(int *)&this->field_0x2c);
   }
   if (*(int *)&this->field_0x30 != 0) {
-    FreeHeapBufferIfNotNull(*(int *)&this->field_0x30);
+    __3_YAXPAX_Z(*(int *)&this->field_0x30);
   }
   DAT_006a475c = 0;
   if (this != (TTacticalBattle *)0x0) {
@@ -118,7 +118,7 @@ TTacticalBattle::WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400
   int iVar2;
   char cVar3;
   int local_18 [6];
-  
+
   cVar3 = '\0';
   ComputeHexNeighborTileIndices_005A0420(param_1,local_18);
   if (param_2 == 5) {
@@ -158,7 +158,7 @@ TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
   int *piVar3;
   int iVar4;
   int aiStack_18 [6];
-  
+
   MoveTacticalUnitTowardTile(param_1,param_2);
   if (*(short *)(&DAT_00695528 + *(int *)(param_1 + 0xc) * 2) == 7) {
     *(undefined1 *)(param_1 + 0x18) = 0;
@@ -197,7 +197,7 @@ TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
   short sVar1;
   int *piVar2;
   int iVar3;
-  
+
   (*this->vftable->EvaluateAndResolveTacticalActionAgainstTileOccupant)(param_1);
   if ((*(short *)(&DAT_00695528 + *(int *)(param_1 + 0xc) * 2) == 4) ||
      (*(short *)(&DAT_00695528 + *(int *)(param_1 + 0xc) * 2) == 5)) {
@@ -254,7 +254,7 @@ TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
   int iStack_20;
   int iStack_1c;
   int aiStack_18 [6];
-  
+
   piVar6 = param_1;
   iVar13 = param_2 * 0x14;
   piVar1 = *(int **)(*(int *)&this->field_0x4 + 4 + iVar13);
@@ -387,7 +387,7 @@ void TTacticalBattle::OrphanCallChain_C4_I30_005a2700(int param_1)
 
 {
   int *piVar1;
-  
+
   if (*(int *)(param_1 + 0x20) == 0) {
     piVar1 = *(int **)&this->field_0x18;
     (**(code **)(**(int **)&this->field_0x14 + 0x38))(param_1);
@@ -411,7 +411,7 @@ TTacticalBattle::MarkTacticalTileStateQueuedAndMaybeDispatchPacket
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = param_1[2];
   iVar2 = *param_1;
   *(undefined4 *)(*(int *)&this->field_0x4 + 0xc + iVar1 * 0x14) = 2;
@@ -440,7 +440,7 @@ TTacticalBattle::AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket
   int iVar1;
   int iVar2;
   int iVar3;
-  
+
   iVar1 = *(int *)(param_1 + 0x40);
   iVar2 = *(int *)&this->field_0x4;
   if (*(int *)(iVar2 + 8 + iVar1 * 0x14) < 2) {
@@ -488,7 +488,7 @@ void TTacticalBattle::ClearTacticalTileStateRunByStride(int param_1)
 
 {
   int *piVar1;
-  
+
   for (; (-1 < param_1 &&
          (piVar1 = (int *)(*(int *)&this->field_0x4 + 0xc + param_1 * 0x14), *piVar1 != -1));
       param_1 = param_1 - *(int *)&this->field_0x40) {
@@ -511,9 +511,9 @@ TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = *(int *)(param_1 + 0xc);
-  iVar2 = GenerateThreadLocalRandom15();
+  iVar2 = _rand();
   iVar1 = iVar2 % 400 + -0x15e0 + iVar1 * 0xfa;
   if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
     NoOpCallbackRet10(0x6d696e65,0,param_2,iVar1);
@@ -538,7 +538,7 @@ TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints
 {
   TTacticalBattleVtbl *pTVar1;
   int iVar2;
-  
+
   (**(code **)(*param_1 + 0xc))();
   iVar2 = param_1[10];
   HandleTacticalCommandTag_digg(param_1,param_2,0);
@@ -570,7 +570,7 @@ TTacticalBattle::ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty
   int iVar1;
   int sideBandIndex;
   int remainingPool;
-  
+
   sideBandIndex = tileIndex / 0x3a;
   remainingPool = *(int *)(&this->field_0x54 + sideBandIndex * 4) - consumeAmount;
   *(int *)(&this->field_0x54 + sideBandIndex * 4) = remainingPool;

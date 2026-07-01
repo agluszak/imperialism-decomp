@@ -30,7 +30,7 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00633c92;
@@ -44,7 +44,7 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
-  this_00 = (TMapMaker *)AllocateWithFallbackHandler(0x2a8);
+  this_00 = (TMapMaker *)__2_YAPAXI_Z(0x2a8);
   uStack_4 = 0;
   if (this_00 == (TMapMaker *)0x0) {
     pTStack_14 = (TSpaceCommand *)0x0;
@@ -91,11 +91,11 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
       GenerateMappedFlavorTextByCurrentContextNation(&this->field_0x1c);
     }
     else {
-      CString::CString(&param_1,param_2);
+      CString::__0CString__QAE_PBD_Z(&param_1,param_2);
       uStack_4 = 1;
-      CString::AssignFromPtr((CString *)&this->field_0x1c,&param_1);
+      CString::__4CString__QAEABV0_ABV0__Z((CString *)&this->field_0x1c,&param_1);
       uStack_4 = 0xffffffff;
-      CString::~CString(&param_1);
+      CString::__1CString__QAE_XZ(&param_1);
     }
     TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
               (pTStack_14,*(undefined4 *)&this->field_0xc,*(undefined4 **)&this->field_0x10,
@@ -158,7 +158,7 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
   RebuildUMapperRouteRecordsAndActiveMapRects();
   (*g_pLocalizationTable->vftable[0x10].GetTSimMgrClassNamePointer)();
   DAT_006a5aec = 0;
-  DAT_006a5aec = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
+  DAT_006a5aec = _time(0);
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
@@ -199,7 +199,7 @@ void TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(int param_1, int pa
   int iVar2;
   int iVar3;
   int iVar4;
-  
+
   iVar3 = param_1 * 0xa8;
   if (*(char *)(*(int *)&this->field_0x10 + 0xa3 + iVar3) != param_2) {
     *(char *)(*(int *)&this->field_0x10 + 0xa3 + iVar3) = (char)param_2;
@@ -238,7 +238,7 @@ TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
   uint uVar9;
   int iVar10;
   bool bVar11;
-  
+
   *(undefined4 *)&this->field_0x8 = param_1;
   iVar10 = 0x96;
   iVar8 = 0xfa;
@@ -348,12 +348,12 @@ LAB_00525acd:
     cVar2 = *pcVar4;
   }
   if (DAT_006a38e8 == 0) {
-    DAT_006a38e8 = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
+    DAT_006a38e8 = _time(0);
   }
   DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
   DAT_006a5aec = DAT_006a38e8 >> 0xc & 0x7fff;
   if (DAT_006a5aec == 0) {
-    DAT_006a5aec = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
+    DAT_006a5aec = _time(0);
   }
   pTVar1 = this->vftable;
   do {
@@ -750,7 +750,7 @@ TSpaceCommand * TSpaceCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
 {
   TSpaceCommand::CreateTSpaceCommandInstance(this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -789,12 +789,12 @@ TNoHilitePicture * TSpaceCommand::ConstructTSpaceCommandBaseState(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063675a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x1fc);
+  this = (TNoHilitePicture *)__2_YAPAXI_Z(0x1fc);
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
@@ -821,12 +821,12 @@ TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636a2a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this_00 = (TCommand *)AllocateWithFallbackHandler(0x20);
+  this_00 = (TCommand *)__2_YAPAXI_Z(0x20);
   local_4 = 0;
   if (this_00 == (TCommand *)0x0) {
     pTVar1 = (TCommand *)0x0;
@@ -881,7 +881,7 @@ void TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636a50;
   uStack_c = *unaff_FS_OFFSET;
@@ -894,7 +894,7 @@ void TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview()
   iStack_54 = 0x578367;
   (**(code **)(iVar2 + 0xc))();
   iStack_54 = 0x578370;
-  CString::CString((CString *)&stack0xffffffc0);
+  CString::__0CString__QAE_XZ((CString *)&stack0xffffffc0);
   iStack_54 = 7;
   CStack_5c.m_pchData = &stack0xffffffc0;
   piStack_58 = (int *)0x2758;
@@ -955,15 +955,15 @@ void TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview()
   CStack_a4.m_pchData = (char *)0x11bc;
   (*(code *)&pTStack_3c)();
   (*(code *)0x11cd)(*(short *)&this[4].field_0x1a + 0x11c6,1);
-  CString::CString(&CStack_5c,(char *)&g_szEmptyString);
-  CString::AssignFromPtr(&CStack_9c,&CStack_5c);
-  CString::~CString(&CStack_5c);
+  CString::__0CString__QAE_PBD_Z(&CStack_5c,(char *)&g_szEmptyString);
+  CString::__4CString__QAEABV0_ABV0__Z(&CStack_9c,&CStack_5c);
+  CString::__1CString__QAE_XZ(&CStack_5c);
   (*(code *)0x636f6174)(&CStack_9c,1);
   if ((this[5].field_0x4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 == 0)) {
     uVar3 = (*pTVar1)(0x636f756e);
     (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar3) + 0xc))();
   }
-  CString::~CString(&CStack_a4);
+  CString::__1CString__QAE_XZ(&CStack_a4);
   *unaff_FS_OFFSET = &pTStack_3c;
   return;
 }
@@ -987,7 +987,7 @@ void TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame()
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636a68;

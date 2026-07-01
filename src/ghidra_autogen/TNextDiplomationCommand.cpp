@@ -32,7 +32,7 @@ void TNextDiplomationCommand::ProcessQueuedWarTransitions()
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
-  
+
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063298a;
   local_c = *unaff_FS_OFFSET;
@@ -107,7 +107,7 @@ void TNextDiplomationCommand::ProcessQueuedWarTransitions()
       } while ((int)ppTVar5 < 0x6a438c);
     }
     if (!bVar9) {
-      this_00 = (TCommand *)AllocateWithFallbackHandler(0x18);
+      this_00 = (TCommand *)__2_YAPAXI_Z(0x18);
       if (this_00 == (TCommand *)0x0) {
         pTVar7 = (TCommand *)0x0;
       }
@@ -146,7 +146,7 @@ TNextDiplomationCommand * TNextDiplomationCommand::OrphanCallChain_C1_I17_004874
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0_Impl();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -169,7 +169,7 @@ void TNextDiplomationCommand::DestructTNextDiplomationCommandAndMaybeFree(undefi
 
 {
   undefined1 uVar1;
-  
+
   uVar1 = *param_1;
   *param_1 = param_1[1];
   param_1[1] = uVar1;
@@ -242,7 +242,7 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063491e;
   local_c = *unaff_FS_OFFSET;
@@ -254,7 +254,7 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
     iVar8 = 0;
     *(undefined4 *)(iVar11 + 8) = 0;
     EnqueueOrSendTurnEventPacketToNation(iVar11,0);
-    FreeHeapBufferIfNotNull(iVar11);
+    __3_YAXPAX_Z(iVar11);
     TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll(0xffffffff);
     local_664 = 0x74696d65;
     local_660 = UiRuntimeContext::GetActiveNationId();
@@ -271,21 +271,21 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
       puVar9[-0x30e] = (short)(*ppTVar15)->ownerNationSlot;
       uVar3 = (*pTVar1->OrphanLeaf_NoCall_Ins06_004d87b0_10)();
       uStack_740 = CONCAT31(extraout_var,uVar3);
-      CString::CString(&CStack_79c);
+      CString::__0CString__QAE_XZ(&CStack_79c);
       local_4 = 0;
       AssignSharedStringFromIndexedA8EntryNameField(uStack_740,&CStack_79c);
-      strncpy(_Dest + -0x2f7,CStack_79c.m_pchData,0x21);
-      CString::CString(&CStack_798);
+      _strncpy(_Dest + -0x2f7,CStack_79c.m_pchData,0x21);
+      CString::__0CString__QAE_XZ(&CStack_798);
       local_4._0_1_ = 1;
       AssignSharedStringFromDescriptorNameOrDefault(&CStack_798);
-      strncpy(_Dest,CStack_798.m_pchData,0x21);
+      _strncpy(_Dest,CStack_798.m_pchData,0x21);
       FindFirstPortZoneContextByNation(iVar8);
       uVar5 = GetShortAtOffset14OrInvalid();
       *puVar9 = uVar5;
       local_4 = (uint)local_4._1_3_ << 8;
-      CString::~CString(&CStack_798);
+      CString::__1CString__QAE_XZ(&CStack_798);
       local_4 = 0xffffffff;
-      CString::~CString(&CStack_79c);
+      CString::__1CString__QAE_XZ(&CStack_79c);
       ppTVar15 = ppTVar15 + 1;
       iVar8 = iVar8 + 1;
       _Dest = _Dest + 0x17;
@@ -335,7 +335,7 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
       CopyA8RecordWithSharedStringAtA4(*(int *)&g_pGlobalMapState->field_0x10 + sStack_720 * 0xa8);
       EnqueueOrSendTurnEventPacketToNation(&uStack_73c,0);
       local_4 = 0xffffffff;
-      CString::~CString(&CStack_678);
+      CString::__1CString__QAE_XZ(&CStack_678);
       ppTVar15 = ppTVar15 + 1;
     } while ((int)ppTVar15 < 0x6a432c);
     DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x2e,0xfffffffe,0xffffffff);
@@ -431,7 +431,7 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
     local_7a0 = UiRuntimeContext::GetActiveNationId();
     break;
   case (TNextDiplomationCommandVtbl *)0x6:
-    this_00 = (TCommand *)AllocateWithFallbackHandler(0x18);
+    this_00 = (TCommand *)__2_YAPAXI_Z(0x18);
     local_4 = 4;
     local_794 = this_00;
     if (this_00 == (TCommand *)0x0) {
@@ -504,7 +504,7 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
     iVar11 = BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
     *(undefined4 *)(iVar11 + 8) = 0;
     EnqueueOrSendTurnEventPacketToNation(iVar11,0);
-    FreeHeapBufferIfNotNull(iVar11);
+    __3_YAXPAX_Z(iVar11);
     local_794 = (TCommand *)0x61726d79;
     local_790 = g_pMapContextActionManager;
     DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x31,0xfffffffe,&local_794);

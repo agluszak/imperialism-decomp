@@ -4,119 +4,117 @@
 // Bucket: TTooltipRelayWindowState.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5BD7
-// GHIDRA_NAME TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7
-// GHIDRA_PROTO undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7()
+// GHIDRA_NAME TTooltipRelayWindowState::?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
+// GHIDRA_PROTO undefined ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z()
 
 undefined4 __thiscall
-TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7
+TTooltipRelayWindowState::_OnChildNotify_CListCtrl__MAEHIIJPAJ_Z
           (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
 
 {
   undefined4 uVar1;
-  
+
   if (param_2 == 0x2b) {
     (**(code **)(*param_1 + 0xc0))(param_4);
     uVar1 = 1;
   }
   else {
-    uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+    uVar1 = _OnChildNotify_CWnd__MAEHIIJPAJ_Z(param_2,param_3,param_4,param_5);
   }
   return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5EEE
-// GHIDRA_NAME TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee
-// GHIDRA_PROTO undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee()
+// GHIDRA_NAME TTooltipRelayWindowState::?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
+// GHIDRA_PROTO undefined ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z()
 
 undefined4 __thiscall
-TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee
+TTooltipRelayWindowState::_OnChildNotify_CListCtrl__MAEHIIJPAJ_Z
           (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
 
 {
   undefined4 uVar1;
-  
+
   if (param_2 == 0x2b) {
     (**(code **)(*param_1 + 0xc0))(param_4);
     uVar1 = 1;
   }
   else {
-    uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+    uVar1 = _OnChildNotify_CWnd__MAEHIIJPAJ_Z(param_2,param_3,param_4,param_5);
   }
   return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E663C
-// GHIDRA_NAME TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c
-// GHIDRA_PROTO undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c()
+// GHIDRA_NAME TTooltipRelayWindowState::?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
+// GHIDRA_PROTO undefined ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z()
 
 undefined4 __thiscall
-TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c
+TTooltipRelayWindowState::_OnChildNotify_CListCtrl__MAEHIIJPAJ_Z
           (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
 
 {
   undefined4 uVar1;
-  
+
   if (param_2 == 0x2b) {
     (**(code **)(*param_1 + 0xc0))(param_4);
     uVar1 = 1;
   }
   else {
-    uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+    uVar1 = _OnChildNotify_CWnd__MAEHIIJPAJ_Z(param_2,param_3,param_4,param_5);
   }
   return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6784
-// GHIDRA_NAME TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784
-// GHIDRA_PROTO undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784()
+// GHIDRA_NAME TTooltipRelayWindowState::?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
+// GHIDRA_PROTO undefined ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z()
 
 undefined4 __thiscall
-TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784
+TTooltipRelayWindowState::_OnChildNotify_CListCtrl__MAEHIIJPAJ_Z
           (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
 
 {
   undefined4 uVar1;
-  
+
   if (param_2 == 0x2b) {
     (**(code **)(*param_1 + 0xc0))(param_4);
     uVar1 = 1;
   }
   else {
-    uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+    uVar1 = _OnChildNotify_CWnd__MAEHIIJPAJ_Z(param_2,param_3,param_4,param_5);
   }
   return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FA87E
-// GHIDRA_NAME TTooltipRelayWindowState::ScalarDeletingDestructorTooltipRelayWindowState
-// GHIDRA_PROTO undefined __thiscall ScalarDeletingDestructorTooltipRelayWindowState(byte param_1)
+// GHIDRA_NAME TTooltipRelayWindowState::??_GCMonikerFile@@UAEPAXI@Z
+// GHIDRA_PROTO undefined __thiscall ??_GCMonikerFile@@UAEPAXI@Z(byte param_1)
 
-TTooltipRelayWindowState * __thiscall
-TTooltipRelayWindowState::ScalarDeletingDestructorTooltipRelayWindowState
-          (TTooltipRelayWindowState *this,byte param_1)
+TTooltipRelayWindowState * TTooltipRelayWindowState::___GCMonikerFile__UAEPAXI_Z(byte param_1)
 
 {
-  DestructTooltipRelayWindowStateAndBaseCWnd();
+  __1CToolTipCtrl__UAE_XZ();
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FFD49
-// GHIDRA_NAME TTooltipRelayWindowState::DispatchNegativeCommandRangeToFrameHandlers
-// GHIDRA_PROTO undefined __thiscall DispatchNegativeCommandRangeToFrameHandlers(undefined4 param_1, int param_2, undefined4 * param_3)
+// GHIDRA_NAME TTooltipRelayWindowState::?OnNotify@CFileDialog@@MAEHIJPAJ@Z
+// GHIDRA_PROTO undefined __thiscall ?OnNotify@CFileDialog@@MAEHIJPAJ@Z(undefined4 param_1, int param_2, undefined4 * param_3)
 
 undefined4 __thiscall
-TTooltipRelayWindowState::DispatchNegativeCommandRangeToFrameHandlers
+TTooltipRelayWindowState::_OnNotify_CFileDialog__MAEHIJPAJ_Z
           (TTooltipRelayWindowState *this,undefined4 param_1,int param_2,undefined4 *param_3)
 
 {
   int iVar1;
   undefined4 uVar2;
   LRESULT LVar3;
-  
-  iVar1 = CCmdTarget::UpdateControlCachedIntFromWindowText(param_1,param_2,param_3);
+
+  iVar1 = CCmdTarget::_OnNotify_CWnd__MAEHIJPAJ_Z(param_1,param_2,param_3);
   if (iVar1 == 0) {
     iVar1 = *(int *)(param_2 + 8);
     if (iVar1 == -0x25f) {
@@ -159,10 +157,12 @@ TTooltipRelayWindowState::DispatchNegativeCommandRangeToFrameHandlers
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006035BB
-// GHIDRA_NAME TTooltipRelayWindowState::RemoveKey
-// GHIDRA_PROTO undefined __thiscall RemoveKey(uint param_1)
+// GHIDRA_NAME TTooltipRelayWindowState::?RemoveKey@CMapPtrToPtr@@QAEHPAX@Z
+// GHIDRA_PROTO undefined __thiscall ?RemoveKey@CMapPtrToPtr@@QAEHPAX@Z(uint param_1)
 
-undefined4 TTooltipRelayWindowState::RemoveKey(uint param_1)
+undefined4 __thiscall
+TTooltipRelayWindowState::_RemoveKey_CMapPtrToPtr__QAEHPAX_Z
+          (TTooltipRelayWindowState *this,uint param_1)
 
 {
   int iVar1;
@@ -170,7 +170,7 @@ undefined4 TTooltipRelayWindowState::RemoveKey(uint param_1)
   undefined4 *puVar3;
   uint uVar4;
   undefined4 *puVar5;
-  
+
   iVar1 = *(int *)(this + 4);
   if (iVar1 != 0) {
     uVar4 = (param_1 >> 4) % *(uint *)(this + 8);
@@ -179,7 +179,7 @@ undefined4 TTooltipRelayWindowState::RemoveKey(uint param_1)
     while (puVar3 = puVar2, puVar3 != (undefined4 *)0x0) {
       if (puVar3[1] == param_1) {
         *puVar5 = *puVar3;
-        FreeAssoc(puVar3);
+        _FreeAssoc_CMapPtrToWord__IAEXPAUCAssoc_1__Z(puVar3);
         return 1;
       }
       puVar5 = puVar3;
@@ -203,20 +203,20 @@ TTooltipRelayWindowState::PreTranslateMessageForDialogAndDispatchHotkey
   HWND hWnd;
   BOOL BVar3;
   undefined4 uVar4;
-  
-  iVar1 = PreTranslateMessage_6084b2(this,param_1);
+
+  iVar1 = _PreTranslateMessage_CWnd__UAEHPAUtagMSG___Z(this,param_1);
   if (iVar1 == 0) {
-    iVar1 = GetTopLevelFrame();
+    iVar1 = _GetTopLevelFrame_CWnd__QBEPAVCFrameWnd__XZ();
     if ((iVar1 != 0) && (*(int *)(iVar1 + 0x50) != 0)) {
       return 0;
     }
     if ((((param_1[1] != 0x100) ||
          (((param_1[2] != 0x1b && (param_1[2] != 3)) ||
           (uVar2 = GetWindowLongA((HWND)*param_1,-0x10), (uVar2 & 4) == 0)))) ||
-        (iVar1 = AfxCompareClassName(*param_1,&DAT_0066fc20), iVar1 == 0)) ||
+        (iVar1 = __AfxCompareClassName__YGHPAUHWND____PBD_Z(*param_1,&DAT_0066fc20), iVar1 == 0)) ||
        ((hWnd = GetDlgItem(*(HWND *)(this + 0x1c),2), hWnd != (HWND)0x0 &&
         (BVar3 = IsWindowEnabled(hWnd), BVar3 == 0)))) {
-      uVar4 = PreTranslateInput(param_1);
+      uVar4 = _PreTranslateInput_CWnd__QAEHPAUtagMSG___Z(param_1);
       return uVar4;
     }
     SendMessageA(*(HWND *)(this + 0x1c),0x111,2,0);
@@ -225,11 +225,11 @@ TTooltipRelayWindowState::PreTranslateMessageForDialogAndDispatchHotkey
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606A07
-// GHIDRA_NAME TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
-// GHIDRA_PROTO undefined __thiscall DispatchCommandToAfxMessageMapChain(uint param_1, uint param_2, int param_3, undefined4 param_4)
+// GHIDRA_NAME TTooltipRelayWindowState::?OnCmdMsg@CCmdTarget@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
+// GHIDRA_PROTO undefined __thiscall ?OnCmdMsg@CCmdTarget@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
 uint __thiscall
-TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
+TTooltipRelayWindowState::_OnCmdMsg_CCmdTarget__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
           (TTooltipRelayWindowState *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
 
 {
@@ -239,9 +239,9 @@ TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
   AFX_MSGMAP_ENTRY *pAVar3;
   uint uVar4;
   int *piVar5;
-  
+
   if (param_2 == 0xfffffffe) {
-    iVar1 = AfxGetModuleState();
+    iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
     param_2 = (**(code **)(**(int **)(iVar1 + 0x1038) + 4))(this,param_1,param_3,param_4);
   }
   else {
@@ -259,7 +259,7 @@ TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
             }
             else {
               if ((void *)*piVar5 == (void *)0x0) goto LAB_00606aac;
-              iVar1 = memcmp(_Buf1,(void *)*piVar5,0x10);
+              iVar1 = _memcmp(_Buf1,(void *)*piVar5,0x10);
             }
             if (iVar1 == 0) {
               param_2 = 1;
@@ -282,10 +282,12 @@ LAB_00606aac:
       }
       for (puVar2 = (undefined4 *)(**(code **)(*(int *)this + 0x30))(); puVar2 != (undefined4 *)0x0;
           puVar2 = (undefined4 *)*puVar2) {
-        pAVar3 = AfxFindMessageEntry((AFX_MSGMAP_ENTRY *)puVar2[1],uVar4,param_2,param_1);
+        pAVar3 = _AfxFindMessageEntry__YGPBUAFX_MSGMAP_ENTRY__PBU1_III_Z_00608b11
+                           ((AFX_MSGMAP_ENTRY *)puVar2[1],uVar4,param_2,param_1);
         if (pAVar3 != (AFX_MSGMAP_ENTRY *)0x0) {
-          uVar4 = DispatchCmdMsg(this,param_1,param_2,*(undefined4 *)(pAVar3 + 0x14),param_3,
-                                 *(undefined4 *)(pAVar3 + 0x10),param_4);
+          uVar4 = _DispatchCmdMsg__YAHPAVCCmdTarget__IHP81_AEXXZPAXIPAUAFX_CMDHANDLERINFO___Z
+                            (this,param_1,param_2,*(undefined4 *)(pAVar3 + 0x14),param_3,
+                             *(undefined4 *)(pAVar3 + 0x10),param_4);
           return uVar4;
         }
       }
@@ -296,18 +298,18 @@ LAB_00606aac:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006081D9
-// GHIDRA_NAME TTooltipRelayWindowState::PreCreateWindow
-// GHIDRA_PROTO undefined PreCreateWindow()
+// GHIDRA_NAME TTooltipRelayWindowState::?PreCreateWindow@CWnd@@UAEHAAUtagCREATESTRUCTA@@@Z
+// GHIDRA_PROTO undefined ?PreCreateWindow@CWnd@@UAEHAAUtagCREATESTRUCTA@@@Z()
 
-undefined4 TTooltipRelayWindowState::PreCreateWindow(int param_1)
+undefined4 TTooltipRelayWindowState::_PreCreateWindow_CWnd__UAEHAAUtagCREATESTRUCTA___Z(int param_1)
 
 {
   int iVar1;
-  
+
   if (*(int *)(param_1 + 0x28) == 0) {
-    iVar1 = AfxGetModuleState();
+    iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
     if ((*(byte *)(iVar1 + 0x18) & 1) == 0) {
-      iVar1 = AfxEndDeferRegisterClass(1);
+      iVar1 = _AfxEndDeferRegisterClass__YGHF_Z(1);
     }
     else {
       iVar1 = 1;
@@ -321,17 +323,17 @@ undefined4 TTooltipRelayWindowState::PreCreateWindow(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006084B2
-// GHIDRA_NAME TTooltipRelayWindowState::PreTranslateMessage_6084b2
-// GHIDRA_PROTO undefined __thiscall PreTranslateMessage_6084b2(undefined4 param_1)
+// GHIDRA_NAME TTooltipRelayWindowState::?PreTranslateMessage@CWnd@@UAEHPAUtagMSG@@@Z
+// GHIDRA_PROTO undefined __thiscall ?PreTranslateMessage@CWnd@@UAEHPAUtagMSG@@@Z(undefined4 param_1)
 
 undefined4 __thiscall
-TTooltipRelayWindowState::PreTranslateMessage_6084b2
+TTooltipRelayWindowState::_PreTranslateMessage_CWnd__UAEHPAUtagMSG___Z
           (TTooltipRelayWindowState *this,undefined4 param_1)
 
 {
   int iVar1;
-  
-  iVar1 = AfxGetModuleState();
+
+  iVar1 = _AfxGetModuleState__YGPAVAFX_MODULE_STATE__XZ();
   if (*(code **)(iVar1 + 0x1034) != (code *)0x0) {
     (**(code **)(iVar1 + 0x1034))(param_1,this);
   }
@@ -339,10 +341,12 @@ TTooltipRelayWindowState::PreTranslateMessage_6084b2
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060914D
-// GHIDRA_NAME TTooltipRelayWindowState::OnCommand
-// GHIDRA_PROTO undefined __thiscall OnCommand(uint param_1, int param_2)
+// GHIDRA_NAME TTooltipRelayWindowState::?OnCommand@CWnd@@MAEHIJ@Z
+// GHIDRA_PROTO undefined __thiscall ?OnCommand@CWnd@@MAEHIJ@Z(uint param_1, int param_2)
 
-undefined4 TTooltipRelayWindowState::OnCommand(uint param_1, int param_2)
+undefined4 __thiscall
+TTooltipRelayWindowState::_OnCommand_CWnd__MAEHIJ_Z
+          (TTooltipRelayWindowState *this,uint param_1,int param_2)
 
 {
   undefined4 uVar1;
@@ -351,14 +355,14 @@ undefined4 TTooltipRelayWindowState::OnCommand(uint param_1, int param_2)
   undefined1 local_30 [4];
   uint local_2c;
   int local_8;
-  
+
   uVar3 = param_1 & 0xffff;
   param_1 = param_1 >> 0x10;
   if (param_2 == 0) {
     if (uVar3 == 0) {
       return 0;
     }
-    CTestCmdUI();
+    __0CTestCmdUI__QAE_XZ();
     local_2c = uVar3;
     (**(code **)(*(int *)this + 0x14))(uVar3,0xffffffff,local_30,0);
     if (local_8 != 0) {
@@ -369,9 +373,11 @@ LAB_00609191:
     }
   }
   else {
-    iVar2 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
+    iVar2 = TMacViewMgr::_GetData_CThreadLocalObject__QAEPAVCNoTrackObject__P6GPAV2_XZ_Z
+                      ((TMacViewMgr *)&DAT_006a7a50,
+                       _CreateObject___CThreadLocal_V_AFX_THREAD_STATE____SGPAVCNoTrackObject__XZ);
     if ((*(int *)(iVar2 + 0xb8) != *(int *)(this + 0x1c)) &&
-       (iVar2 = ReflectLastMsg(param_2,0), iVar2 == 0)) {
+       (iVar2 = _ReflectLastMsg_CWnd__KGHPAUHWND____PAJ_Z(param_2,0), iVar2 == 0)) {
       if (uVar3 == 0) {
         return 0;
       }
@@ -382,11 +388,11 @@ LAB_00609191:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00609C92
-// GHIDRA_NAME TTooltipRelayWindowState::ReflectChildNotify
-// GHIDRA_PROTO undefined ReflectChildNotify()
+// GHIDRA_NAME TTooltipRelayWindowState::?ReflectChildNotify@CWnd@@IAEHIIJPAJ@Z
+// GHIDRA_PROTO undefined ?ReflectChildNotify@CWnd@@IAEHIIJPAJ@Z()
 
 undefined4 __thiscall
-TTooltipRelayWindowState::ReflectChildNotify
+TTooltipRelayWindowState::_ReflectChildNotify_CWnd__IAEHIIJPAJ_Z
           (TTooltipRelayWindowState *param_1,uint param_2,int *param_3,int param_4,int *param_5)
 
 {
@@ -395,11 +401,11 @@ TTooltipRelayWindowState::ReflectChildNotify
   undefined1 local_10 [4];
   int *local_c;
   int local_8;
-  
+
   if (param_2 < 0x3a) {
     if ((param_2 == 0x39) || ((0x2a < param_2 && (param_2 < 0x30)))) {
 LAB_00609d72:
-      uVar1 = OnWndMsg(param_2 + 0xbc00,param_3,param_4,param_5);
+      uVar1 = _OnWndMsg_CWnd__MAEHIIJPAJ_Z(param_2 + 0xbc00,param_3,param_4,param_5);
       return uVar1;
     }
   }
@@ -407,12 +413,13 @@ LAB_00609d72:
     if (param_2 == 0x4e) {
       local_c = param_5;
       local_8 = param_4;
-      uVar1 = DispatchCommandToAfxMessageMapChain
+      uVar1 = _OnCmdMsg_CCmdTarget__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
                         (param_1,0,*(uint *)(param_4 + 8) & 0xffff | 0xbc4e0000,(int)&local_c,0);
       return uVar1;
     }
     if (param_2 == 0x111) {
-      iVar2 = DispatchCommandToAfxMessageMapChain(param_1,0,(uint)param_3 >> 0x10 | 0xbd110000,0,0);
+      iVar2 = _OnCmdMsg_CCmdTarget__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
+                        (param_1,0,(uint)param_3 >> 0x10 | 0xbd110000,0,0);
       if (iVar2 == 0) {
         return 0;
       }
@@ -427,7 +434,7 @@ LAB_00609d72:
   if ((0x131 < param_2) && (param_2 < 0x139)) {
     local_8 = param_2 - 0x132;
     local_c = param_3;
-    uVar1 = OnWndMsg(0xbc19,0,local_10,param_5);
+    uVar1 = _OnWndMsg_CWnd__MAEHIIJPAJ_Z(0xbc19,0,local_10,param_5);
     if (*param_5 != 0) {
       return uVar1;
     }
@@ -436,10 +443,10 @@ LAB_00609d72:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060A4D5
-// GHIDRA_NAME TTooltipRelayWindowState::UpdateDialogControls
-// GHIDRA_PROTO undefined UpdateDialogControls()
+// GHIDRA_NAME TTooltipRelayWindowState::?UpdateDialogControls@CWnd@@QAEXPAVCCmdTarget@@H@Z
+// GHIDRA_PROTO undefined ?UpdateDialogControls@CWnd@@QAEXPAVCCmdTarget@@H@Z()
 
-void TTooltipRelayWindowState::UpdateDialogControls(void)
+void TTooltipRelayWindowState::_UpdateDialogControls_CWnd__QAEXPAVCCmdTarget__H_Z(void)
 
 {
   HWND pHVar1;
@@ -449,11 +456,11 @@ void TTooltipRelayWindowState::UpdateDialogControls(void)
   int extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(int *)(unaff_EBP + -0x10) = extraout_ECX;
-  CCmdUI::CCmdUI((CCmdUI *)(unaff_EBP + -0x38));
-  ConstructObjectVtable00670b4cBase();
+  CCmdUI::__0CCmdUI__QAE_XZ((CCmdUI *)(unaff_EBP + -0x38));
+  __0CWnd__QAE_XZ();
   pHVar1 = *(HWND *)(extraout_ECX + 0x1c);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   pHVar1 = GetTopWindow(pHVar1);
@@ -461,7 +468,7 @@ void TTooltipRelayWindowState::UpdateDialogControls(void)
     if (pHVar1 == (HWND)0x0) {
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
       *(undefined4 *)(unaff_EBP + -0x58) = 0;
-      CWnd::~CWnd((CWnd *)(unaff_EBP + -0x74));
+      CWnd::__1CWnd__UAE_XZ((CWnd *)(unaff_EBP + -0x74));
       *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
       return;
     }
@@ -469,11 +476,11 @@ void TTooltipRelayWindowState::UpdateDialogControls(void)
     uVar2 = GetDlgCtrlID(pHVar1);
     *(uint *)(unaff_EBP + -0x34) = uVar2 & 0xffff;
     *(int *)(unaff_EBP + -0x24) = unaff_EBP + -0x74;
-    this = (TTooltipRelayWindowState *)FromHandlePermanent_607b57(pHVar1);
+    this = (TTooltipRelayWindowState *)_FromHandlePermanent_CWnd__SGPAV1_PAUHWND_____Z(pHVar1);
     if (((this == (TTooltipRelayWindowState *)0x0) ||
-        (iVar3 = DispatchCommandToAfxMessageMapChain(this,0,0xbd11ffff,unaff_EBP + -0x38,0),
-        iVar3 == 0)) &&
-       (iVar3 = DispatchCommandToAfxMessageMapChain
+        (iVar3 = _OnCmdMsg_CCmdTarget__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
+                           (this,0,0xbd11ffff,unaff_EBP + -0x38,0), iVar3 == 0)) &&
+       (iVar3 = _OnCmdMsg_CCmdTarget__UAEHIHPAXPAUAFX_CMDHANDLERINFO___Z
                           (*(TTooltipRelayWindowState **)(unaff_EBP + -0x10),
                            *(uint *)(unaff_EBP + -0x34),0xffffffff,unaff_EBP + -0x38,0), iVar3 == 0)
        ) {
@@ -481,51 +488,51 @@ void TTooltipRelayWindowState::UpdateDialogControls(void)
       if (iVar3 != 0) {
         uVar2 = SendMessageA(*(HWND *)(unaff_EBP + -0x58),0x87,0,0);
         if ((uVar2 & 0x2000) != 0) {
-          uVar2 = GetStyle();
+          uVar2 = _GetStyle_CWnd__QBEKXZ();
           uVar2 = uVar2 & 0xf;
           if (((uVar2 != 3) && (uVar2 != 6)) && ((uVar2 != 7 && (uVar2 != 9)))) goto LAB_0060a59b;
         }
         iVar3 = 0;
       }
 LAB_0060a59b:
-      FUN_00606ee7(*(undefined4 *)(unaff_EBP + 8),iVar3);
+      _DoUpdate_CCmdUI__QAEHPAVCCmdTarget__H_Z(*(undefined4 *)(unaff_EBP + 8),iVar3);
     }
     pHVar1 = GetWindow(pHVar1,2);
   } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E87C
-// GHIDRA_NAME TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c
-// GHIDRA_PROTO undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c()
+// GHIDRA_NAME TTooltipRelayWindowState::?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
+// GHIDRA_PROTO undefined ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z()
 
 undefined4 __thiscall
-TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c
+TTooltipRelayWindowState::_OnChildNotify_CListCtrl__MAEHIIJPAJ_Z
           (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
 
 {
   undefined4 uVar1;
-  
+
   if (param_2 == 0x2b) {
     (**(code **)(*param_1 + 0xc0))(param_4);
     uVar1 = 1;
   }
   else {
-    uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+    uVar1 = _OnChildNotify_CWnd__MAEHIIJPAJ_Z(param_2,param_3,param_4,param_5);
   }
   return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E921
-// GHIDRA_NAME TTooltipRelayWindowState::OnChildNotify_61e921
-// GHIDRA_PROTO undefined OnChildNotify_61e921()
+// GHIDRA_NAME TTooltipRelayWindowState::?OnChildNotify@CListBox@@MAEHIIJPAJ@Z
+// GHIDRA_PROTO undefined ?OnChildNotify@CListBox@@MAEHIIJPAJ@Z()
 
 undefined4 __thiscall
-TTooltipRelayWindowState::OnChildNotify_61e921
+TTooltipRelayWindowState::_OnChildNotify_CListBox__MAEHIIJPAJ_Z
           (int *param_1,int param_2,uint param_3,undefined4 param_4,undefined4 *param_5)
 
 {
   undefined4 uVar1;
-  
+
   if (param_2 == 0x2b) {
     (**(code **)(*param_1 + 0xc0))(param_4);
   }
@@ -544,7 +551,7 @@ TTooltipRelayWindowState::OnChildNotify_61e921
     }
     else {
       if (param_2 != 0x39) {
-        uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+        uVar1 = _OnChildNotify_CWnd__MAEHIIJPAJ_Z(param_2,param_3,param_4,param_5);
         return uVar1;
       }
       uVar1 = (**(code **)(*param_1 + 200))(param_4);
@@ -555,16 +562,16 @@ TTooltipRelayWindowState::OnChildNotify_61e921
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061EA9C
-// GHIDRA_NAME TTooltipRelayWindowState::OnChildNotify_61ea9c
-// GHIDRA_PROTO undefined OnChildNotify_61ea9c()
+// GHIDRA_NAME TTooltipRelayWindowState::?OnChildNotify@CComboBox@@MAEHIIJPAJ@Z
+// GHIDRA_PROTO undefined ?OnChildNotify@CComboBox@@MAEHIIJPAJ@Z()
 
 undefined4 __thiscall
-TTooltipRelayWindowState::OnChildNotify_61ea9c
+TTooltipRelayWindowState::_OnChildNotify_CComboBox__MAEHIIJPAJ_Z
           (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 *param_5)
 
 {
   undefined4 uVar1;
-  
+
   if (param_2 == 0x2b) {
     (**(code **)(*param_1 + 0xc0))(param_4);
   }
@@ -576,7 +583,7 @@ TTooltipRelayWindowState::OnChildNotify_61ea9c
   }
   else {
     if (param_2 != 0x39) {
-      uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+      uVar1 = _OnChildNotify_CWnd__MAEHIIJPAJ_Z(param_2,param_3,param_4,param_5);
       return uVar1;
     }
     uVar1 = (**(code **)(*param_1 + 200))(param_4);

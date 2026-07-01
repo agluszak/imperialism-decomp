@@ -22,7 +22,7 @@ TTaskList * TTaskList::_scalar_deleting_destructor_(byte param_1)
 {
   TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30((TaskList *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }

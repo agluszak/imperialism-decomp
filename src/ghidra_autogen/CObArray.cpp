@@ -4,31 +4,31 @@
 // Bucket: CObArray.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004883C0
-// GHIDRA_NAME CObArray::DestructCObArray
-// GHIDRA_PROTO undefined CObArray::DestructCObArray()
+// GHIDRA_NAME CObArray::??1CUIntArray@@UAE@XZ
+// GHIDRA_PROTO undefined CObArray::??1CUIntArray@@UAE@XZ()
 
-void CObArray::DestructCObArray(void)
+void CObArray::??1CUIntArray@@UAE@XZ(void)
 
 {
   undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &TIndexAndRankList::_vftable_;
   uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull(uVar1);
+  __3_YAXPAX_Z(uVar1);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601BDD
-// GHIDRA_NAME CObArray::DestructCObArray
-// GHIDRA_PROTO undefined DestructCObArray()
+// GHIDRA_NAME CObArray::??1CUIntArray@@UAE@XZ
+// GHIDRA_PROTO undefined ??1CUIntArray@@UAE@XZ()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT CObArray base destructor logic.
 // GHIDRA_COMMENT - resets vtable to CObArray,
@@ -43,20 +43,20 @@ void CObArray::DestructCObArray(void)
    - restores base vtable pointer.
    Used by multiple deleting-destructor thunks across UI/game object classes. */
 
-void CObArray::DestructCObArray(void)
+void CObArray::__1CUIntArray__UAE_XZ(void)
 
 {
   undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  
+
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &TIndexAndRankList::_vftable_;
   uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull(uVar1);
+  __3_YAXPAX_Z(uVar1);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;

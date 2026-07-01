@@ -15,12 +15,12 @@ TView * TMinisterView::CreateTMinisterViewInstance(void)
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
-  
+
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632a0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)__2_YAPAXI_Z(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::ConstructTViewBaseState(this);
@@ -65,7 +65,7 @@ TMinisterView * TMinisterView::_scalar_deleting_destructor_(byte param_1)
 {
   TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    __3_YAXPAX_Z(this);
   }
   return this;
 }
@@ -97,7 +97,7 @@ TMinisterView::InvalidateWindowRectFromHandleField1C
   int *piVar4;
   undefined4 *unaff_EBX;
   undefined4 unaff_retaddr;
-  
+
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6261636b);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -131,7 +131,7 @@ TMinisterView::OrphanRetStub_0059add0
 {
   TMinisterViewVtbl *pTVar1;
   undefined uVar2;
-  
+
   if (param_1 != 10) {
     TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
     return;
@@ -185,7 +185,7 @@ void TMinisterView::OrphanCallChain_C1_I09_004f2ef0()
 {
   undefined uVar1;
   undefined3 extraout_var;
-  
+
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x64697370);
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
                     /* WARNING: Could not recover jumptable at 0x004f2f05. Too many branches */
