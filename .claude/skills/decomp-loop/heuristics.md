@@ -504,3 +504,8 @@ plain free functions in another `.cpp`, the recompiled body becomes a thin seque
 - Remaining gap on such a function is then ordinary matching work (e.g. the original hoists a
   single function-scope `CString` at entry, pinning `this` in `ebx`; a per-case local `CString`
   shifts register allocation across the whole body).
+
+- **Batch compare exists — never loop single `just compare` calls.** `just compare
+  0xA 0xB 0xC`, `just compare --file src/game/X.cpp`, and `just compare-class X`
+  all run reccmp once with `--json` (one PDB parse for any number of functions).
+  A per-address loop pays ~10s of PDB parsing per call for nothing.
