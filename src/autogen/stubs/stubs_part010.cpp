@@ -1939,14 +1939,6 @@ undefined4 WrapperFor_ftol_At00489a20(void)
   return 0;
 }
 
-// ghidra_name NoOpRuntimeCallback_00489a70
-// ghidra_proto undefined NoOpRuntimeCallback_00489a70()
-// FUNCTION: IMPERIALISM 0x00489a70
-undefined4 NoOpRuntimeCallback_00489a70(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearQuickDrawModeFlag950AC
 // ghidra_proto undefined ClearQuickDrawModeFlag950AC()
 // FUNCTION: IMPERIALISM 0x00489a90

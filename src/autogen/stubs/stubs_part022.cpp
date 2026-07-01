@@ -587,18 +587,16 @@ undefined4 SelectPaletteThenLookupHandleMapEntryWithCreate(void)
   return 0;
 }
 
-// ghidra_name GetClipBoxFromThisHdcField
-// ghidra_proto undefined GetClipBoxFromThisHdcField()
+// ghidra_name CDC::GetClipBox
 // FUNCTION: IMPERIALISM 0x00612e9a
-undefined4 GetClipBoxFromThisHdcField(void)
+undefined4 CDC_GetClipBox(void)
 {
   return 0;
 }
 
-// ghidra_name CPaintDC
-// ghidra_proto undefined CPaintDC()
+// ghidra_name CPaintDC::CPaintDC
 // FUNCTION: IMPERIALISM 0x006138f9
-undefined4 CPaintDC(void)
+undefined4 CPaintDC_CPaintDC(void)
 {
   return 0;
 }

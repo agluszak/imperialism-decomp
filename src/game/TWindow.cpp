@@ -83,11 +83,8 @@ undefined TWindow::OrphanCallChain_C2_I39_0048d900(char param_1, char param_2) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048d980
-int TWindow::IsActionable() {
-  if (field98 != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0) {
-    return 1;
-  }
-  return 0;
+char TWindow::IsActionable() {
+  return field98 != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9c0

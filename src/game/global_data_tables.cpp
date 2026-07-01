@@ -307,6 +307,11 @@ undefined4 SetGlobalUiInvalidationFlagAndReturnPrevious(undefined4 newValue) {
   return previous;
 }
 
+// FUNCTION: IMPERIALISM 0x00489a70
+int GetMcAppUiActiveFlag() {
+  return g_McAppUiActiveFlag_006950AC;
+}
+
 extern "C" {
 // MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
 // symbol name, so the zero-initialized contents are irrelevant to matching.

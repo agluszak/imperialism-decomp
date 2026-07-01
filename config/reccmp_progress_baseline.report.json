@@ -3970,8 +3970,8 @@
     },
     {
       "address": "0x489a70",
-      "matching": 0.5,
-      "name": "NoOpRuntimeCallback_00489a70",
+      "matching": 1.0,
+      "name": "GetMcAppUiActiveFlag",
       "type": 1
     },
     {
@@ -4330,13 +4330,13 @@
     },
     {
       "address": "0x48b200",
-      "matching": 0.95,
+      "matching": 1.0,
       "name": "TView::CanProcessMapViewSlotECUnderWindowState_bf",
       "type": 1
     },
     {
       "address": "0x48b250",
-      "matching": 0.8648648648648649,
+      "matching": 0.918918918918919,
       "name": "TView::GetTEventHandlerClassNamePointer_c0",
       "type": 1
     },
@@ -4414,7 +4414,7 @@
     },
     {
       "address": "0x48b8d0",
-      "matching": 0.9897959183673469,
+      "matching": 1.0,
       "name": "TView::PaintVisibleChildrenIntersectingClipRect_c7",
       "type": 1
     },
@@ -4540,7 +4540,7 @@
     },
     {
       "address": "0x48c380",
-      "matching": 0.6260869565217392,
+      "matching": 0.6608695652173913,
       "name": "TView::UpdateRectCacheIfChangedAndInvalidateCityDialog_de",
       "type": 1
     },
@@ -4558,7 +4558,7 @@
     },
     {
       "address": "0x48c6d0",
-      "matching": 0.84375,
+      "matching": 0.875,
       "name": "TView::VTableSlotDF",
       "type": 1
     },
@@ -4858,7 +4858,7 @@
     },
     {
       "address": "0x48de00",
-      "matching": 0.2033898305084746,
+      "matching": 0.19491525423728814,
       "name": "TWindow::DispatchSlot9CToLinkedChildren",
       "type": 1
     },
@@ -12458,7 +12458,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -14936,7 +14936,7 @@
     },
     {
       "address": "0x4ff000",
-      "matching": 0.8842105263157894,
+      "matching": 0.9052631578947369,
       "name": "TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows",
       "type": 1
     },
@@ -15068,7 +15068,7 @@
     },
     {
       "address": "0x4ffcb0",
-      "matching": 0.9285714285714286,
+      "matching": 1.0,
       "name": "TGameWindow::DispatchSlot9CToLinkedChildren",
       "type": 1
     },
@@ -15890,7 +15890,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20454545454545456,
+      "matching": 0.20636363636363636,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -24698,7 +24698,7 @@
     },
     {
       "address": "0x5742b0",
-      "matching": 0.03125,
+      "matching": 0.6129032258064516,
       "name": "TScrollView::PaintVisibleChildrenIntersectingClipRect",
       "type": 1
     },
@@ -26704,7 +26704,7 @@
     },
     {
       "address": "0x588690",
-      "matching": 0.4492307692307692,
+      "matching": 0.4553846153846154,
       "name": "TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -26812,13 +26812,13 @@
     },
     {
       "address": "0x589340",
-      "matching": 0.4292237442922374,
+      "matching": 0.4474885844748858,
       "name": "TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
     {
       "address": "0x589540",
-      "matching": 0.3492063492063492,
+      "matching": 0.38095238095238093,
       "name": "TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegionVariantA",
       "type": 1
     },
@@ -26920,13 +26920,13 @@
     },
     {
       "address": "0x58a1b0",
-      "matching": 0.4292237442922374,
+      "matching": 0.4474885844748858,
       "name": "TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
     {
       "address": "0x58a3b0",
-      "matching": 0.3484848484848485,
+      "matching": 0.3787878787878788,
       "name": "TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB",
       "type": 1
     },
@@ -27016,7 +27016,7 @@
     },
     {
       "address": "0x58ac80",
-      "matching": 0.45544554455445546,
+      "matching": 0.4752475247524752,
       "name": "TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -27070,7 +27070,7 @@
     },
     {
       "address": "0x58b0f0",
-      "matching": 0.42152466367713004,
+      "matching": 0.43946188340807174,
       "name": "TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -27298,7 +27298,8 @@
     },
     {
       "address": "0x58c7c0",
-      "matching": 0.9,
+      "effective": true,
+      "matching": 0.9333333333333333,
       "name": "TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback",
       "type": 1
     },

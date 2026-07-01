@@ -86,7 +86,7 @@ public:
   virtual void NoOpUiCallback();                                                // 0x38 0x48abc0
   virtual void RefreshControl();                                                // 0x39 0x48b6d0
   virtual class TView* QueryOwnerContextPanel();                                // 0x3a 0x48b1a0
-  virtual int IsActionable();                                                   // 0x3b 0x48b200
+  virtual char IsActionable();                                                  // 0x3b 0x48b200
   virtual void CaptureLayoutF0(int* buffer, int modeFlag);                      // 0x3c 0x48b250
   virtual void CaptureLayout(int* buffer, int modeFlag);                        // 0x3d 0x48b3f0
   virtual char Refresh();                                                       // 0x3e 0x48b770

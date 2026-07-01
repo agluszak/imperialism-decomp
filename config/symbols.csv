@@ -852,7 +852,7 @@ address|name|symbol|size|type|prototype
 4899a0|TStream::OrphanRetStub_004899a0||3|function|undefined OrphanRetStub_004899a0(void)
 489a20|WrapperFor_ftol_At00489a20||30|function|undefined WrapperFor_ftol_At00489a20()
 489a50|SetGlobalUiInvalidationFlagAndReturnPrevious||16|function|undefined SetGlobalUiInvalidationFlagAndReturnPrevious()
-489a70|NoOpRuntimeCallback_00489a70||6|function|undefined NoOpRuntimeCallback_00489a70()
+489a70|GetMcAppUiActiveFlag||6|function|int GetMcAppUiActiveFlag()
 489a90|ClearQuickDrawModeFlag950AC||16|function|undefined ClearQuickDrawModeFlag950AC()
 489ab0|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0||24|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0()
 489b60|NotifyGlobalCaptureOwnerState1WithCachedCoords||99|function|undefined NotifyGlobalCaptureOwnerState1WithCachedCoords()

@@ -74,7 +74,7 @@ public:
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   virtual class TView* QueryOwnerContextPanel() override; // slot 0x3a 0x492ce0
-  virtual int IsActionable() override;                    // slot 0x3b 0x48d980
+  virtual char IsActionable() override;                   // slot 0x3b 0x48d980
   // slot 0x3c CaptureLayoutF0 inherited unchanged (0x48b250)
   // slot 0x3d CaptureLayout inherited unchanged (0x48b3f0)
   // slot 0x3e Refresh inherited unchanged (0x48b770)

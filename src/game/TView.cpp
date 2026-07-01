@@ -394,14 +394,9 @@ void TView::SetEnabled(int enabledState, int refreshFlag) {
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b200
-int TView::IsActionable() {
-  if (g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0 &&
-      ownerContext != 0) {
-    if (ownerContext->IsActionable() != 0) {
-      return 1;
-    }
-  }
-  return 0;
+char TView::IsActionable() {
+  return g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0 &&
+         ownerContext != 0 && ownerContext->IsActionable() != 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b250
 void TView::CaptureLayoutF0(int* buffer, int modeFlag) {
