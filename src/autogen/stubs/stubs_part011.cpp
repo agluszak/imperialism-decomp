@@ -11,10 +11,9 @@ undefined4 CopyCityDialogStateFromSourceAndCloneChildLinks(void)
   return 0;
 }
 
-// ghidra_name Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60
-// ghidra_proto undefined Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60()
+// ghidra_name TScroller::CreateObject
 // FUNCTION: IMPERIALISM 0x0048ca60
-undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60(void)
+undefined4 TScroller_CreateObject(void)
 {
   return 0;
 }
@@ -107,14 +106,6 @@ undefined4 thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass_
   return 0;
 }
 
-// ghidra_name TCtlMgr::ConstructTCtlMgrBaseState
-// ghidra_proto undefined ConstructTCtlMgrBaseState()
-// FUNCTION: IMPERIALISM 0x0048eb10
-undefined4 ConstructTCtlMgrBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TView::~TView
 // ghidra_proto undefined CreateTButtonInstance()
 // FUNCTION: IMPERIALISM 0x0048ec30
@@ -143,14 +134,6 @@ undefined4 CreateTRadioInstance(void)
 // ghidra_proto undefined GetTRadioClassNamePointer()
 // FUNCTION: IMPERIALISM 0x0048ee90
 undefined4 GetTRadioClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TRadio::ConstructTRadioBaseState
-// ghidra_proto undefined ConstructTRadioBaseState()
-// FUNCTION: IMPERIALISM 0x0048eeb0
-undefined4 ConstructTRadioBaseState(void)
 {
   return 0;
 }
@@ -195,34 +178,10 @@ undefined4 TStaticText(void)
   return 0;
 }
 
-// ghidra_name TEditText::CreateTEditTextInstance
-// ghidra_proto undefined CreateTEditTextInstance()
-// FUNCTION: IMPERIALISM 0x00490210
-undefined4 CreateTEditTextInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
 // ghidra_proto undefined WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0()
 // FUNCTION: IMPERIALISM 0x004905e0
 undefined4 WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberText::CreateTNumberTextInstance
-// ghidra_proto undefined CreateTNumberTextInstance()
-// FUNCTION: IMPERIALISM 0x00490ed0
-undefined4 CreateTNumberTextInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TCluster::CreateTClusterInstance
-// ghidra_proto undefined CreateTClusterInstance()
-// FUNCTION: IMPERIALISM 0x00491300
-undefined4 CreateTClusterInstance(void)
 {
   return 0;
 }
@@ -479,14 +438,6 @@ undefined4 GetTickCountDiv16(void)
 // ghidra_proto undefined WrapperFor_ftol_At004933a0()
 // FUNCTION: IMPERIALISM 0x004933a0
 undefined4 WrapperFor_ftol_At004933a0(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_thunk_CreateMcWindowFromDescriptorAndShow_At004933d0
-// ghidra_proto undefined Helper_Uses_thunk_CreateMcWindowFromDescriptorAndShow_At004933d0()
-// FUNCTION: IMPERIALISM 0x004933d0
-undefined4 Helper_Uses_thunk_CreateMcWindowFromDescriptorAndShow_At004933d0(void)
 {
   return 0;
 }
@@ -1691,22 +1642,6 @@ undefined4 ResetGlobalPair6A2020And6A2024(void)
   return 0;
 }
 
-// ghidra_name TAdorner::CreateTAdornerInstance
-// ghidra_proto undefined CreateTAdornerInstance()
-// FUNCTION: IMPERIALISM 0x0049d650
-undefined4 CreateTAdornerInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TAdorner::ConstructTAdornerBaseState
-// ghidra_proto undefined ConstructTAdornerBaseState()
-// FUNCTION: IMPERIALISM 0x0049d6f0
-undefined4 ConstructTAdornerBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl()
 // FUNCTION: IMPERIALISM 0x0049dae0
@@ -1723,26 +1658,10 @@ undefined4 WrapperFor_ftol_At0049db60(void)
   return 0;
 }
 
-// ghidra_name CreateTurnEventPacket_Vtbl0064c130
-// ghidra_proto undefined CreateTurnEventPacket_Vtbl0064c130()
-// FUNCTION: IMPERIALISM 0x0049dd40
-undefined4 CreateTurnEventPacket_Vtbl0064c130(void)
-{
-  return 0;
-}
-
 // ghidra_name TNewGameCommand::CreateTNewGameCommandInstance
 // ghidra_proto undefined CreateTNewGameCommandInstance()
 // FUNCTION: IMPERIALISM 0x0049de00
 undefined4 CreateTNewGameCommandInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TNewGameCommand::ConstructTNewGameCommandBaseState
-// ghidra_proto undefined ConstructTNewGameCommandBaseState()
-// FUNCTION: IMPERIALISM 0x0049de40
-undefined4 ConstructTNewGameCommandBaseState(void)
 {
   return 0;
 }

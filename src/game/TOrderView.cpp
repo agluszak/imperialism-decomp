@@ -1,4 +1,7 @@
 #include "game/TOrderView.h"
+// SYNTHETIC: IMPERIALISM 0x005069d0
+// TOrderView::CreateObject
+
 IMPLEMENT_DYNCREATE(TOrderView, TView)
 
 TOrderView::TOrderView() {}

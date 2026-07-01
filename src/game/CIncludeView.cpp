@@ -2,6 +2,9 @@
 
 #include "game/TView.h"
 
+// SYNTHETIC: IMPERIALISM 0x00482850
+// CIncludeView::CreateObject
+
 IMPLEMENT_DYNCREATE(CIncludeView, CView)
 
 CIncludeView::CIncludeView() : CView() {}

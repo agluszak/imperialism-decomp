@@ -39,6 +39,9 @@ void __fastcall thunk_RegisterUnitOrderWithOwnerManager(TUnit* order, int unused
 
 // FUNCTION: IMPERIALISM 0x005c2470
 void TUnit::DetachUnitOrderFromOwnerAndReset() {}
+// SYNTHETIC: IMPERIALISM 0x005c2430
+// TUnit::CreateObject
+
 IMPLEMENT_DYNCREATE(TUnit, TObject)
 
 TUnit::TUnit() {

@@ -1,4 +1,7 @@
 #include "game/TShipPlacard.h"
+// SYNTHETIC: IMPERIALISM 0x005691d0
+// TShipPlacard::CreateObject
+
 IMPLEMENT_DYNCREATE(TShipPlacard, TNoHilitePicture)
 
 TShipPlacard::TShipPlacard() {}

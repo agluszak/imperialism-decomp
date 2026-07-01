@@ -1,4 +1,7 @@
 #include "game/TLaborPool.h"
+// SYNTHETIC: IMPERIALISM 0x004b20d0
+// TLaborPool::CreateObject
+
 IMPLEMENT_DYNCREATE(TLaborPool, TObject)
 
 TLaborPool::TLaborPool() {}

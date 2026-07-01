@@ -1,4 +1,7 @@
 #include "game/TTextPictureButton.h"
+// SYNTHETIC: IMPERIALISM 0x005724e0
+// TTextPictureButton::CreateObject
+
 IMPLEMENT_DYNCREATE(TTextPictureButton, TUpDownPictureButton)
 
 TTextPictureButton::TTextPictureButton() {}

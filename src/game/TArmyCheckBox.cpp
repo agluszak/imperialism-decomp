@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004a9400
 // TArmyCheckBox::`scalar deleting destructor'
 TArmyCheckBox::~TArmyCheckBox() {}
+// SYNTHETIC: IMPERIALISM 0x004a9f20
+// TArmyCheckBox::CreateObject
+
 IMPLEMENT_DYNCREATE(TArmyCheckBox, TControl)
 
 TArmyCheckBox::TArmyCheckBox() {}

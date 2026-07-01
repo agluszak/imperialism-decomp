@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004affd0
 // TBatRepDetLine::`scalar deleting destructor'
 TBatRepDetLine::~TBatRepDetLine() {}
+// SYNTHETIC: IMPERIALISM 0x004aff60
+// TBatRepDetLine::CreateObject
+
 IMPLEMENT_DYNCREATE(TBatRepDetLine, TLineData)
 
 TBatRepDetLine::TBatRepDetLine() {}

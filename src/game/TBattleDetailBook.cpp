@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00430b00
 // TBattleDetailBook::`scalar deleting destructor'
 TBattleDetailBook::~TBattleDetailBook() {}
+// SYNTHETIC: IMPERIALISM 0x004ae9d0
+// TBattleDetailBook::CreateObject
+
 IMPLEMENT_DYNCREATE(TBattleDetailBook, TBook)
 
 TBattleDetailBook::TBattleDetailBook() {}

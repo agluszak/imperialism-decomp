@@ -1,4 +1,7 @@
 #include "game/TNextMoveCommand.h"
+// SYNTHETIC: IMPERIALISM 0x005a64d0
+// TNextMoveCommand::CreateObject
+
 IMPLEMENT_DYNCREATE(TNextMoveCommand, TCommand)
 
 TNextMoveCommand::TNextMoveCommand() {}

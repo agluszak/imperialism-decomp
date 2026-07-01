@@ -1,4 +1,7 @@
 #include "game/TUpDownView.h"
+// SYNTHETIC: IMPERIALISM 0x00583c90
+// TUpDownView::CreateObject
+
 IMPLEMENT_DYNCREATE(TUpDownView, TControl)
 
 TUpDownView::TUpDownView() {}

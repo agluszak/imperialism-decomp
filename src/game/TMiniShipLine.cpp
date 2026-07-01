@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00569b60
 // TMiniShipLine::`scalar deleting destructor'
 TMiniShipLine::~TMiniShipLine() {}
+// SYNTHETIC: IMPERIALISM 0x00569bb0
+// TMiniShipLine::CreateObject
+
 IMPLEMENT_DYNCREATE(TMiniShipLine, TLineData)
 
 TMiniShipLine::TMiniShipLine() {}

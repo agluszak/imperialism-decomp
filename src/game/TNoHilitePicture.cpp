@@ -1,4 +1,7 @@
 #include "game/TNoHilitePicture.h"
+// SYNTHETIC: IMPERIALISM 0x00572a80
+// TNoHilitePicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TNoHilitePicture, TPicture)
 
 TNoHilitePicture::TNoHilitePicture() {}

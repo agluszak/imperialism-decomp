@@ -6,6 +6,9 @@ void TCancelGameOptionsCommand::OrphanRetStub_00487a00() {}
 // SYNTHETIC: IMPERIALISM 0x00542560
 // TCancelGameOptionsCommand::`scalar deleting destructor'
 TCancelGameOptionsCommand::~TCancelGameOptionsCommand() {}
+// SYNTHETIC: IMPERIALISM 0x005424b0
+// TCancelGameOptionsCommand::CreateObject
+
 IMPLEMENT_DYNCREATE(TCancelGameOptionsCommand, TCommand)
 
 TCancelGameOptionsCommand::TCancelGameOptionsCommand() {}

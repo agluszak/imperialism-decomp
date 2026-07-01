@@ -1,6 +1,9 @@
 #include "game/TItemOrder.h"
 
 TItemOrder::TItemOrder() {}
+// SYNTHETIC: IMPERIALISM 0x004b51d0
+// TItemOrder::CreateObject
+
 IMPLEMENT_DYNCREATE(TItemOrder, TProductionOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b5240

@@ -1,4 +1,7 @@
 #include "game/TMegaPicture.h"
+// SYNTHETIC: IMPERIALISM 0x005730d0
+// TMegaPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TMegaPicture, TNoHilitePicture)
 
 TMegaPicture::TMegaPicture() {}

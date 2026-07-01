@@ -1,4 +1,7 @@
 #include "game/TGWorldButton.h"
+// SYNTHETIC: IMPERIALISM 0x00572080
+// TGWorldButton::CreateObject
+
 IMPLEMENT_DYNCREATE(TGWorldButton, TControl)
 
 TGWorldButton::TGWorldButton() {}

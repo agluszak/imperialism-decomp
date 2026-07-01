@@ -1187,14 +1187,6 @@ undefined4 InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820(void)
   return 0;
 }
 
-// ghidra_name TCViewOwnedBufferRegistryState_00648560::CreateCViewOwnedBufferRegistryState
-// ghidra_proto undefined CreateCViewOwnedBufferRegistryState()
-// FUNCTION: IMPERIALISM 0x00482850
-undefined4 CreateCViewOwnedBufferRegistryState(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanVtableAssignStub_00482930
 // ghidra_proto undefined OrphanVtableAssignStub_00482930()
 // FUNCTION: IMPERIALISM 0x00482930
@@ -1643,14 +1635,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At00485e40(void)
   return 0;
 }
 
-// ghidra_name TTEView::CreateTTEViewInstance
-// ghidra_proto undefined CreateTTEViewInstance()
-// FUNCTION: IMPERIALISM 0x00485fb0
-undefined4 CreateTTEViewInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TTEView::ConstructTTEViewBaseState
 // ghidra_proto undefined ConstructTTEViewBaseState()
 // FUNCTION: IMPERIALISM 0x00486050
@@ -1707,14 +1691,6 @@ undefined4 NoOpTextPostLayoutHook(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_AllocateWithFallbackHandler_At00486320
-// ghidra_proto undefined WrapperFor_AllocateWithFallbackHandler_At00486320()
-// FUNCTION: IMPERIALISM 0x00486320
-undefined4 WrapperFor_AllocateWithFallbackHandler_At00486320(void)
-{
-  return 0;
-}
-
 // ghidra_name TDocument::CreateTDocumentInstance
 // ghidra_proto undefined CreateTDocumentInstance()
 // FUNCTION: IMPERIALISM 0x00486380
@@ -1727,14 +1703,6 @@ undefined4 CreateTDocumentInstance(void)
 // ghidra_proto undefined CreateTFileBasedDocumentInstance()
 // FUNCTION: IMPERIALISM 0x00486420
 undefined4 CreateTFileBasedDocumentInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TFileBasedDocument::ConstructTFileBasedDocumentBaseState
-// ghidra_proto undefined ConstructTFileBasedDocumentBaseState()
-// FUNCTION: IMPERIALISM 0x00486570
-undefined4 ConstructTFileBasedDocumentBaseState(void)
 {
   return 0;
 }
@@ -1827,14 +1795,6 @@ undefined4 ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl(void)
   return 0;
 }
 
-// ghidra_name Helper_Uses_CPtrArray_ctor_At00488030
-// ghidra_proto undefined Helper_Uses_CPtrArray_ctor_At00488030()
-// FUNCTION: IMPERIALISM 0x00488030
-undefined4 Helper_Uses_CPtrArray_ctor_At00488030(void)
-{
-  return 0;
-}
-
 // ghidra_name CObArray::thunk_DestructCObArray
 // ghidra_proto undefined thunk_DestructCObArray()
 // FUNCTION: IMPERIALISM 0x004883c0
@@ -1875,14 +1835,6 @@ undefined4 CreateTStreamInstance(void)
   return 0;
 }
 
-// ghidra_name CreateTStreamWithAllocFallback
-// ghidra_proto undefined CreateTStreamWithAllocFallback()
-// FUNCTION: IMPERIALISM 0x004889a0
-undefined4 CreateTStreamWithAllocFallback(void)
-{
-  return 0;
-}
-
 // ghidra_name TStream::DestructTStreamAndMaybeFree
 // ghidra_proto undefined DestructTStreamAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x00488a40
@@ -1891,34 +1843,10 @@ undefined4 DestructTStreamAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name CreateTFileStreamWithAllocFallback
-// ghidra_proto undefined CreateTFileStreamWithAllocFallback()
-// FUNCTION: IMPERIALISM 0x004890c0
-undefined4 CreateTFileStreamWithAllocFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateTCountingStreamWithAllocFallback
-// ghidra_proto undefined CreateTCountingStreamWithAllocFallback()
-// FUNCTION: IMPERIALISM 0x004893c0
-undefined4 CreateTCountingStreamWithAllocFallback(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl
 // ghidra_proto undefined DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl()
 // FUNCTION: IMPERIALISM 0x00489490
 undefined4 DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateTHandleStreamWithAllocFallback
-// ghidra_proto undefined CreateTHandleStreamWithAllocFallback()
-// FUNCTION: IMPERIALISM 0x00489580
-undefined4 CreateTHandleStreamWithAllocFallback(void)
 {
   return 0;
 }

@@ -1211,10 +1211,9 @@ undefined4 RegisterUiResourceEntry_Impl(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_AllocateWithFallbackHandler_At00479e40
-// ghidra_proto undefined WrapperFor_AllocateWithFallbackHandler_At00479e40()
+// ghidra_name CDib::CreateObject
 // FUNCTION: IMPERIALISM 0x00479e40
-undefined4 WrapperFor_AllocateWithFallbackHandler_At00479e40(void)
+undefined4 CDib_CreateObject(void)
 {
   return 0;
 }

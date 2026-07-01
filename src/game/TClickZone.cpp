@@ -4,6 +4,9 @@
 undefined TClickZone::OrphanRetStub_005723d0() {
   return 0;
 }
+// SYNTHETIC: IMPERIALISM 0x00572350
+// TClickZone::CreateObject
+
 IMPLEMENT_DYNCREATE(TClickZone, TControl)
 
 TClickZone::TClickZone() {}

@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043da70
 // TGamePreferencesPicture::`scalar deleting destructor'
 TGamePreferencesPicture::~TGamePreferencesPicture() {}
+// SYNTHETIC: IMPERIALISM 0x0056a510
+// TGamePreferencesPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TGamePreferencesPicture, TPicture)
 
 TGamePreferencesPicture::TGamePreferencesPicture() {}

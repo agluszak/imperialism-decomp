@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045ad70
 // TTEView::`scalar deleting destructor'
 TTEView::~TTEView() {}
+// SYNTHETIC: IMPERIALISM 0x00485fb0
+// TTEView::CreateObject
+
 IMPLEMENT_DYNCREATE(TTEView, TStaticText)
 
 TTEView::TTEView() {}

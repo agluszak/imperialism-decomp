@@ -15,6 +15,9 @@ undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void);
 undefined4 thunk_SplitTileIndexToRowAndColumn(void);
 
 #define g_wMapDialogTileRowMarker (*reinterpret_cast<short*>(0x006a33b0))
+// SYNTHETIC: IMPERIALISM 0x005199c0
+// TMapDialog::CreateObject
+
 IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
 TMapDialog::TMapDialog() {}

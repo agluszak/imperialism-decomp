@@ -22,6 +22,9 @@ static void SwapAdjacentBytePairs(unsigned char* bytes, int pairCount) {
 
 // MFC-style GetRuntimeClass (slot 0): returns the class descriptor that precedes
 // the vtable at 0x0066d7c8.
+// SYNTHETIC: IMPERIALISM 0x005b6c10
+// TTown::CreateObject
+
 IMPLEMENT_DYNCREATE(TTown, TObject)
 
 // Bare vptr-write constructor; all field state comes from InitializeTownMarker.

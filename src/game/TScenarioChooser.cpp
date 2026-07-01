@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045ae90
 // TScenarioChooser::`scalar deleting destructor'
 TScenarioChooser::~TScenarioChooser() {}
+// SYNTHETIC: IMPERIALISM 0x00579ae0
+// TScenarioChooser::CreateObject
+
 IMPLEMENT_DYNCREATE(TScenarioChooser, TNoHilitePicture)
 
 TScenarioChooser::TScenarioChooser() {}

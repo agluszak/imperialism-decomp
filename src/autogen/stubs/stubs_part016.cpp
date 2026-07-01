@@ -139,10 +139,9 @@ undefined4 ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(void)
   return 0;
 }
 
-// ghidra_name TNavyMission::CreateTNavyMission
-// ghidra_proto undefined CreateTNavyMission()
+// ghidra_name TNavyMission::CreateObject
 // FUNCTION: IMPERIALISM 0x00536390
-undefined4 CreateTNavyMission(void)
+undefined4 TNavyMission_CreateObject(void)
 {
   return 0;
 }
@@ -395,10 +394,9 @@ undefined4 ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(void)
   return 0;
 }
 
-// ghidra_name TControlSeaZoneMission::CreateTControlSeaZoneMission
-// ghidra_proto undefined CreateTControlSeaZoneMission()
+// ghidra_name TControlSeaZoneMission::CreateObject
 // FUNCTION: IMPERIALISM 0x005386c0
-undefined4 CreateTControlSeaZoneMission(void)
+undefined4 TControlSeaZoneMission_CreateObject(void)
 {
   return 0;
 }
@@ -491,10 +489,9 @@ undefined4 ResolveAndCacheMissionPortZoneContextForNationTarget(void)
   return 0;
 }
 
-// ghidra_name TEscortMission::CreateTEscortMission
-// ghidra_proto undefined CreateTEscortMission()
+// ghidra_name TEscortMission::CreateObject
 // FUNCTION: IMPERIALISM 0x00539840
-undefined4 CreateTEscortMission(void)
+undefined4 TEscortMission_CreateObject(void)
 {
   return 0;
 }
@@ -611,10 +608,9 @@ undefined4 ResetBeachheadMissionChildFlagsAndDispatchField5Context(void)
   return 0;
 }
 
-// ghidra_name TBeachheadMission::CreateTBeachheadMission
-// ghidra_proto undefined CreateTBeachheadMission()
+// ghidra_name TBeachheadMission::CreateObject
 // FUNCTION: IMPERIALISM 0x0053a2d0
-undefined4 CreateTBeachheadMission(void)
+undefined4 TBeachheadMission_CreateObject(void)
 {
   return 0;
 }
@@ -715,10 +711,9 @@ undefined4 ClearBlockadePortMissionChildOrderLinksIfReady(void)
   return 0;
 }
 
-// ghidra_name TBlockadePortMission::CreateTBlockadePortMission
-// ghidra_proto undefined CreateTBlockadePortMission()
+// ghidra_name TBlockadePortMission::CreateObject
 // FUNCTION: IMPERIALISM 0x0053a990
-undefined4 CreateTBlockadePortMission(void)
+undefined4 TBlockadePortMission_CreateObject(void)
 {
   return 0;
 }
@@ -859,10 +854,9 @@ undefined4 QueueMapOrderType6FromContextPointer(void)
   return 0;
 }
 
-// ghidra_name TScatteredShipsMission::CreateTScatteredShipsMission
-// ghidra_proto undefined CreateTScatteredShipsMission()
+// ghidra_name TScatteredShipsMission::CreateObject
 // FUNCTION: IMPERIALISM 0x0053ba60
-undefined4 CreateTScatteredShipsMission(void)
+undefined4 TScatteredShipsMission_CreateObject(void)
 {
   return 0;
 }
@@ -955,10 +949,9 @@ undefined4 ReturnFalseForScatteredShipsMissionCapabilityFlag(void)
   return 0;
 }
 
-// ghidra_name AllocateAndConstructTArmyMissionWithNodeKey
-// ghidra_proto undefined AllocateAndConstructTArmyMissionWithNodeKey()
+// ghidra_name TArmyMission::CreateObject
 // FUNCTION: IMPERIALISM 0x0053bfb0
-undefined4 AllocateAndConstructTArmyMissionWithNodeKey(void)
+undefined4 TArmyMission_CreateObject(void)
 {
   return 0;
 }
@@ -1171,10 +1164,9 @@ undefined4 ReturnMissionIfMovementClassMatchesTargetTile(void)
   return 0;
 }
 
-// ghidra_name TAttackProvinceMission::CreateTAttackProvinceMission
-// ghidra_proto undefined CreateTAttackProvinceMission()
+// ghidra_name TAttackProvinceMission::CreateObject
 // FUNCTION: IMPERIALISM 0x0053d670
-undefined4 CreateTAttackProvinceMission(void)
+undefined4 TAttackProvinceMission_CreateObject(void)
 {
   return 0;
 }
@@ -1331,10 +1323,9 @@ undefined4 HandleDefendProvinceMissionActionType01ForTargetTile(void)
   return 0;
 }
 
-// ghidra_name TDefendProvinceMission::CreateTDefendProvinceMission
-// ghidra_proto undefined CreateTDefendProvinceMission()
+// ghidra_name TDefendProvinceMission::CreateObject
 // FUNCTION: IMPERIALISM 0x0053e5f0
-undefined4 CreateTDefendProvinceMission(void)
+undefined4 TDefendProvinceMission_CreateObject(void)
 {
   return 0;
 }
@@ -1411,10 +1402,9 @@ undefined4 ReturnInvadeMissionIfMovementClassMatchesTargetTile(void)
   return 0;
 }
 
-// ghidra_name TInvadeMission::CreateTInvadeMission
-// ghidra_proto undefined CreateTInvadeMission()
+// ghidra_name TInvadeMission::CreateObject
 // FUNCTION: IMPERIALISM 0x0053f080
-undefined4 CreateTInvadeMission(void)
+undefined4 TInvadeMission_CreateObject(void)
 {
   return 0;
 }
@@ -1683,26 +1673,10 @@ undefined4 WrapperFor_ftol_At00540810(void)
   return 0;
 }
 
-// ghidra_name CreateNationStateVariantVtable65B078
-// ghidra_proto undefined CreateNationStateVariantVtable65B078()
-// FUNCTION: IMPERIALISM 0x00540840
-undefined4 CreateNationStateVariantVtable65B078(void)
-{
-  return 0;
-}
-
 // ghidra_name TProxyGreatPower::DestructTProxyGreatPower
 // ghidra_proto undefined DestructTProxyGreatPower()
 // FUNCTION: IMPERIALISM 0x00540970
 undefined4 DestructTProxyGreatPower(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateNationStateVariantVtable65B3D0
-// ghidra_proto undefined CreateNationStateVariantVtable65B3D0()
-// FUNCTION: IMPERIALISM 0x00540e90
-undefined4 CreateNationStateVariantVtable65B3D0(void)
 {
   return 0;
 }
@@ -1715,26 +1689,10 @@ undefined4 DestructTHostGreatPower(void)
   return 0;
 }
 
-// ghidra_name CreateNationStateVariantVtable65B728
-// ghidra_proto undefined CreateNationStateVariantVtable65B728()
-// FUNCTION: IMPERIALISM 0x00541230
-undefined4 CreateNationStateVariantVtable65B728(void)
-{
-  return 0;
-}
-
 // ghidra_name TClientGreatPower::DestructTClientGreatPower
 // ghidra_proto undefined DestructTClientGreatPower()
 // FUNCTION: IMPERIALISM 0x00541320
 undefined4 DestructTClientGreatPower(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateNationStateVariantVtable65BA80
-// ghidra_proto undefined CreateNationStateVariantVtable65BA80()
-// FUNCTION: IMPERIALISM 0x005417c0
-undefined4 CreateNationStateVariantVtable65BA80(void)
 {
   return 0;
 }
@@ -1771,14 +1729,6 @@ undefined4 FindActiveNationSlotIndexInGameFlowList(void)
   return 0;
 }
 
-// ghidra_name AllocateAndConstructTurnEventPacket_Vtbl0065bff0
-// ghidra_proto undefined AllocateAndConstructTurnEventPacket_Vtbl0065bff0()
-// FUNCTION: IMPERIALISM 0x005424b0
-undefined4 AllocateAndConstructTurnEventPacket_Vtbl0065bff0(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructCancelGameOptionsCommand
 // ghidra_proto undefined DestructCancelGameOptionsCommand()
 // FUNCTION: IMPERIALISM 0x00542590
@@ -1787,10 +1737,9 @@ undefined4 DestructCancelGameOptionsCommand(void)
   return 0;
 }
 
-// ghidra_name AllocateAndInitConfigDefaultsObjectF8
-// ghidra_proto undefined AllocateAndInitConfigDefaultsObjectF8()
+// ghidra_name TMultiplayerMgr::CreateObject
 // FUNCTION: IMPERIALISM 0x005425d0
-undefined4 AllocateAndInitConfigDefaultsObjectF8(void)
+undefined4 TMultiplayerMgr_CreateObject(void)
 {
   return 0;
 }
@@ -2187,14 +2136,6 @@ undefined4 DestructPoseMessageDialogTurnEventPacket(void)
   return 0;
 }
 
-// ghidra_name AllocateAndConstructPoseMessageDialogTurnEventPacket
-// ghidra_proto undefined AllocateAndConstructPoseMessageDialogTurnEventPacket()
-// FUNCTION: IMPERIALISM 0x0054b060
-undefined4 AllocateAndConstructPoseMessageDialogTurnEventPacket(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchSimpleTurnEventEsopWithParam
 // ghidra_proto undefined DispatchSimpleTurnEventEsopWithParam()
 // FUNCTION: IMPERIALISM 0x0054b0f0
@@ -2395,14 +2336,6 @@ undefined4 WrapperFor_ftol_At0054d620(void)
   return 0;
 }
 
-// ghidra_name AllocateAndConstructTLoungeDialog
-// ghidra_proto undefined AllocateAndConstructTLoungeDialog()
-// FUNCTION: IMPERIALISM 0x0054d650
-undefined4 AllocateAndConstructTLoungeDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name TryInvokeNationStateReplacementForSlot
 // ghidra_proto undefined TryInvokeNationStateReplacementForSlot()
 // FUNCTION: IMPERIALISM 0x0054dfc0
@@ -2419,14 +2352,6 @@ undefined4 RefreshMapAndMessageControlsForCurrentContext(void)
   return 0;
 }
 
-// ghidra_name AllocateAndConstructTJoinSelectorDialog
-// ghidra_proto undefined AllocateAndConstructTJoinSelectorDialog()
-// FUNCTION: IMPERIALISM 0x0054e690
-undefined4 AllocateAndConstructTJoinSelectorDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name AddJoinableGameOptionEntry
 // ghidra_proto undefined AddJoinableGameOptionEntry()
 // FUNCTION: IMPERIALISM 0x0054e8e0
@@ -2439,22 +2364,6 @@ undefined4 AddJoinableGameOptionEntry(void)
 // ghidra_proto undefined GetSelectedJoinableGameTag()
 // FUNCTION: IMPERIALISM 0x0054e970
 undefined4 GetSelectedJoinableGameTag(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateAndConstructTMadnessButton
-// ghidra_proto undefined AllocateAndConstructTMadnessButton()
-// FUNCTION: IMPERIALISM 0x0054ea30
-undefined4 AllocateAndConstructTMadnessButton(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateAndConstructTMultiMessagePicture
-// ghidra_proto undefined AllocateAndConstructTMultiMessagePicture()
-// FUNCTION: IMPERIALISM 0x0054ec20
-undefined4 AllocateAndConstructTMultiMessagePicture(void)
 {
   return 0;
 }
@@ -2479,14 +2388,6 @@ undefined4 BuildMapOrderBattleSideSnapshot(void)
 // ghidra_proto void __cdecl RefreshMapOrderBattleSideSnapshot(int pBattleSnapshotState, int nSideIndex, int pOrderEntry)
 // FUNCTION: IMPERIALISM 0x0054f340
 undefined4 RefreshMapOrderBattleSideSnapshot(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateNavyPrimaryOrderNode
-// ghidra_proto undefined CreateNavyPrimaryOrderNode()
-// FUNCTION: IMPERIALISM 0x0054f460
-undefined4 CreateNavyPrimaryOrderNode(void)
 {
   return 0;
 }
@@ -2719,14 +2620,6 @@ undefined4 ReassignOrderNodeNationAndRebindParentCounters(void)
 // ghidra_proto void __thiscall SetMapOrderActiveChildEntry(int * pActiveChildEntry)
 // FUNCTION: IMPERIALISM 0x00551220
 undefined4 SetMapOrderActiveChildEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateNavySecondaryOrderNodeWithSentinelNation
-// ghidra_proto undefined CreateNavySecondaryOrderNodeWithSentinelNation()
-// FUNCTION: IMPERIALISM 0x005512d0
-undefined4 CreateNavySecondaryOrderNodeWithSentinelNation(void)
 {
   return 0;
 }

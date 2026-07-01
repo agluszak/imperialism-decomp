@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045b030
 // TGWorldPartView::`scalar deleting destructor'
 TGWorldPartView::~TGWorldPartView() {}
+// SYNTHETIC: IMPERIALISM 0x004ac7d0
+// TGWorldPartView::CreateObject
+
 IMPLEMENT_DYNCREATE(TGWorldPartView, TView)
 
 TGWorldPartView::TGWorldPartView() {}

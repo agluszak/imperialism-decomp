@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043d5c0
 // TMapPreviewView::`scalar deleting destructor'
 TMapPreviewView::~TMapPreviewView() {}
+// SYNTHETIC: IMPERIALISM 0x005787b0
+// TMapPreviewView::CreateObject
+
 IMPLEMENT_DYNCREATE(TMapPreviewView, TView)
 
 TMapPreviewView::TMapPreviewView() {}

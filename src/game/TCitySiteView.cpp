@@ -1,4 +1,7 @@
 #include "game/TCitySiteView.h"
+// SYNTHETIC: IMPERIALISM 0x0051bd60
+// TCitySiteView::CreateObject
+
 IMPLEMENT_DYNCREATE(TCitySiteView, TMapDialog)
 
 TCitySiteView::TCitySiteView() {}

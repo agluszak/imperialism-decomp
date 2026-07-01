@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004d49a0
 // TLandSaleEvent::`scalar deleting destructor'
 TLandSaleEvent::~TLandSaleEvent() {}
+// SYNTHETIC: IMPERIALISM 0x004e66c0
+// TLandSaleEvent::CreateObject
+
 IMPLEMENT_DYNCREATE(TLandSaleEvent, TTurnStartEvent)
 
 TLandSaleEvent::TLandSaleEvent() {}

@@ -1,4 +1,7 @@
 #include "game/TMiniMapView.h"
+// SYNTHETIC: IMPERIALISM 0x0059a290
+// TMiniMapView::CreateObject
+
 IMPLEMENT_DYNCREATE(TMiniMapView, TControl)
 
 TMiniMapView::TMiniMapView() {}

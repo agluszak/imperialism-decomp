@@ -1,4 +1,7 @@
 #include "game/TAdorner.h"
+// SYNTHETIC: IMPERIALISM 0x0049d650
+// TAdorner::CreateObject
+
 IMPLEMENT_DYNCREATE(TAdorner, TObject)
 
 TAdorner::TAdorner() {}

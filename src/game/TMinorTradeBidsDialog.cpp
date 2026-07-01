@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x005b2a30
 // TMinorTradeBidsDialog::`scalar deleting destructor'
 TMinorTradeBidsDialog::~TMinorTradeBidsDialog() {}
+// SYNTHETIC: IMPERIALISM 0x005b29a0
+// TMinorTradeBidsDialog::CreateObject
+
 IMPLEMENT_DYNCREATE(TMinorTradeBidsDialog, TDialogView)
 
 TMinorTradeBidsDialog::TMinorTradeBidsDialog() {}

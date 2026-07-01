@@ -1,4 +1,7 @@
 #include "game/TCommodityLine.h"
+// SYNTHETIC: IMPERIALISM 0x005c1430
+// TCommodityLine::CreateObject
+
 IMPLEMENT_DYNCREATE(TCommodityLine, TLineData)
 
 TCommodityLine::TCommodityLine() {}

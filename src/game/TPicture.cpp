@@ -6,6 +6,9 @@
 
 undefined4 IncrementDialogResourceRefCountByShortIdInRegistry(void);
 undefined4 SetPictureResourceIdAndRefresh_Impl(void);
+// SYNTHETIC: IMPERIALISM 0x0048eeb0
+// TPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TPicture, TControl)
 
 // FUNCTION: IMPERIALISM 0x0048efc0

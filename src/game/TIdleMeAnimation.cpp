@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004ac950
 // TIdleMeAnimation::`scalar deleting destructor'
 TIdleMeAnimation::~TIdleMeAnimation() {}
+// SYNTHETIC: IMPERIALISM 0x004ac920
+// TIdleMeAnimation::CreateObject
+
 IMPLEMENT_DYNCREATE(TIdleMeAnimation, TAnimation)
 
 TIdleMeAnimation::TIdleMeAnimation() {}

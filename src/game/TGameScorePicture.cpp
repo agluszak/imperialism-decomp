@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045afb0
 // TGameScorePicture::`scalar deleting destructor'
 TGameScorePicture::~TGameScorePicture() {}
+// SYNTHETIC: IMPERIALISM 0x0057b000
+// TGameScorePicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TGameScorePicture, TNoHilitePicture)
 
 TGameScorePicture::TGameScorePicture() {}

@@ -24,6 +24,9 @@ void TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
 // TProxyGreatPower::`scalar deleting destructor'
 TProxyGreatPower::~TProxyGreatPower() {}
 
+// SYNTHETIC: IMPERIALISM 0x00540840
+// TProxyGreatPower::CreateObject
+
 IMPLEMENT_DYNCREATE(TProxyGreatPower, TGreatPower)
 
 TProxyGreatPower::TProxyGreatPower() {}

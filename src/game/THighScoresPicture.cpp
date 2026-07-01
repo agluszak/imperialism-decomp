@@ -8,6 +8,9 @@ undefined THighScoresPicture::UniversityDialogMethod_00405623() {
 // SYNTHETIC: IMPERIALISM 0x0045adc0
 // THighScoresPicture::`scalar deleting destructor'
 THighScoresPicture::~THighScoresPicture() {}
+// SYNTHETIC: IMPERIALISM 0x00575280
+// THighScoresPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(THighScoresPicture, TNoHilitePicture)
 
 THighScoresPicture::THighScoresPicture() {}

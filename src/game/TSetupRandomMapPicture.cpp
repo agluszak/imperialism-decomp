@@ -1,4 +1,7 @@
 #include "game/TSetupRandomMapPicture.h"
+// SYNTHETIC: IMPERIALISM 0x00576ca0
+// TSetupRandomMapPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TSetupRandomMapPicture, TNoHilitePicture)
 
 TSetupRandomMapPicture::TSetupRandomMapPicture() {}

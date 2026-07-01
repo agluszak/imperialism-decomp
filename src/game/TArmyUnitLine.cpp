@@ -1,4 +1,7 @@
 #include "game/TArmyUnitLine.h"
+// SYNTHETIC: IMPERIALISM 0x004a8ca0
+// TArmyUnitLine::CreateObject
+
 IMPLEMENT_DYNCREATE(TArmyUnitLine, TLineData)
 
 TArmyUnitLine::TArmyUnitLine() {}

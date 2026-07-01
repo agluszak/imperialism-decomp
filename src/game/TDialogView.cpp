@@ -2,6 +2,9 @@
 #include "game/global_data_tables.h"
 
 extern "C" char g_pClassDescTDialogView;
+// SYNTHETIC: IMPERIALISM 0x0049d6f0
+// TDialogView::CreateObject
+
 IMPLEMENT_DYNCREATE(TDialogView, TView)
 
 TDialogView::TDialogView() {}

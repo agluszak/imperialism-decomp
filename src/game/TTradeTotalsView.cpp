@@ -1,4 +1,7 @@
 #include "game/TTradeTotalsView.h"
+// SYNTHETIC: IMPERIALISM 0x005c1a80
+// TTradeTotalsView::CreateObject
+
 IMPLEMENT_DYNCREATE(TTradeTotalsView, TView)
 
 TTradeTotalsView::TTradeTotalsView() {}

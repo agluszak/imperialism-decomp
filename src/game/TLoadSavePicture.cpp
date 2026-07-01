@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043da40
 // TLoadSavePicture::`scalar deleting destructor'
 TLoadSavePicture::~TLoadSavePicture() {}
+// SYNTHETIC: IMPERIALISM 0x0056bbd0
+// TLoadSavePicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TLoadSavePicture, TPicture)
 
 TLoadSavePicture::TLoadSavePicture() {}

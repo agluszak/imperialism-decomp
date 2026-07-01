@@ -14,6 +14,9 @@ TNumberText::TNumberText() : TEditText() {
 // SYNTHETIC: IMPERIALISM 0x00429530
 // TNumberText::`scalar deleting destructor'
 TNumberText::~TNumberText() {}
+// SYNTHETIC: IMPERIALISM 0x00490ed0
+// TNumberText::CreateObject
+
 IMPLEMENT_DYNCREATE(TNumberText, TEditText)
 
 // FUNCTION: IMPERIALISM 0x00491060

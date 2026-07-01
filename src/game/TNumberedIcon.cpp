@@ -1,4 +1,7 @@
 #include "game/TNumberedIcon.h"
+// SYNTHETIC: IMPERIALISM 0x005072e0
+// TNumberedIcon::CreateObject
+
 IMPLEMENT_DYNCREATE(TNumberedIcon, TMegaPicture)
 
 TNumberedIcon::TNumberedIcon() {}

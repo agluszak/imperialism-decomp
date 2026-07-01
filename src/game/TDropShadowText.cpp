@@ -1,4 +1,7 @@
 #include "game/TDropShadowText.h"
+// SYNTHETIC: IMPERIALISM 0x005b54a0
+// TDropShadowText::CreateObject
+
 IMPLEMENT_DYNCREATE(TDropShadowText, TPictureText)
 
 TDropShadowText::TDropShadowText() {}

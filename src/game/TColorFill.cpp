@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004ff150
 // TColorFill::`scalar deleting destructor'
 TColorFill::~TColorFill() {}
+// SYNTHETIC: IMPERIALISM 0x004ff0c0
+// TColorFill::CreateObject
+
 IMPLEMENT_DYNCREATE(TColorFill, TAdorner)
 
 TColorFill::TColorFill() {}

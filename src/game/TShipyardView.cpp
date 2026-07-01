@@ -1,4 +1,7 @@
 #include "game/TShipyardView.h"
+// SYNTHETIC: IMPERIALISM 0x004c8200
+// TShipyardView::CreateObject
+
 IMPLEMENT_DYNCREATE(TShipyardView, TBuildingView)
 
 TShipyardView::TShipyardView() {}

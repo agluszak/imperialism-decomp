@@ -1,4 +1,7 @@
 #include "game/TCloseButton.h"
+// SYNTHETIC: IMPERIALISM 0x00584a50
+// TCloseButton::CreateObject
+
 IMPLEMENT_DYNCREATE(TCloseButton, TPictureButton)
 
 TCloseButton::TCloseButton() {}

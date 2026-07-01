@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00430b80
 // TBattleUnitsView::`scalar deleting destructor'
 TBattleUnitsView::~TBattleUnitsView() {}
+// SYNTHETIC: IMPERIALISM 0x004b0630
+// TBattleUnitsView::CreateObject
+
 IMPLEMENT_DYNCREATE(TBattleUnitsView, TMilitaryPageView)
 
 TBattleUnitsView::TBattleUnitsView() {}

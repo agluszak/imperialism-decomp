@@ -1,4 +1,7 @@
 #include "game/TTradeTotalsLine.h"
+// SYNTHETIC: IMPERIALISM 0x005c1870
+// TTradeTotalsLine::CreateObject
+
 IMPLEMENT_DYNCREATE(TTradeTotalsLine, TLineData)
 
 TTradeTotalsLine::TTradeTotalsLine() {}

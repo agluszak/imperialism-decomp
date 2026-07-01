@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0051cbf0
 // TMapEditView::`scalar deleting destructor'
 TMapEditView::~TMapEditView() {}
+// SYNTHETIC: IMPERIALISM 0x0051cab0
+// TMapEditView::CreateObject
+
 IMPLEMENT_DYNCREATE(TMapEditView, TMapDialog)
 
 TMapEditView::TMapEditView() {}

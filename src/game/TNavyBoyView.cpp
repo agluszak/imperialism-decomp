@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004af040
 // TNavyBoyView::`scalar deleting destructor'
 TNavyBoyView::~TNavyBoyView() {}
+// SYNTHETIC: IMPERIALISM 0x004aefd0
+// TNavyBoyView::CreateObject
+
 IMPLEMENT_DYNCREATE(TNavyBoyView, TView)
 
 TNavyBoyView::TNavyBoyView() {}

@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0059b140
 // TArmyPlayer::`scalar deleting destructor'
 TArmyPlayer::~TArmyPlayer() {}
+// SYNTHETIC: IMPERIALISM 0x0059b110
+// TArmyPlayer::CreateObject
+
 IMPLEMENT_DYNCREATE(TArmyPlayer, TTacticalPlayer)
 
 TArmyPlayer::TArmyPlayer() {}

@@ -1,4 +1,7 @@
 #include "game/TShipBuildingTask.h"
+// SYNTHETIC: IMPERIALISM 0x005ae650
+// TShipBuildingTask::CreateObject
+
 IMPLEMENT_DYNCREATE(TShipBuildingTask, TCityTask)
 
 TShipBuildingTask::TShipBuildingTask() {}

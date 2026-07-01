@@ -18,6 +18,9 @@ static __inline unsigned int GenerateThreadLocalRandom15Value(void) {
 }
 
 static const short kPrimaryNationUnset = static_cast<short>(0xfff6);
+// SYNTHETIC: IMPERIALISM 0x0052efd0
+// TForeignMinister::CreateObject
+
 IMPLEMENT_DYNCREATE(TForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x0052f070

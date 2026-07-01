@@ -8,6 +8,9 @@ undefined TCheater::OrphanRetStub_004b1410() {
 // SYNTHETIC: IMPERIALISM 0x004b1430
 // TCheater::`scalar deleting destructor'
 TCheater::~TCheater() {}
+// SYNTHETIC: IMPERIALISM 0x004b13a0
+// TCheater::CreateObject
+
 IMPLEMENT_DYNCREATE(TCheater, TView)
 
 TCheater::TCheater() {}

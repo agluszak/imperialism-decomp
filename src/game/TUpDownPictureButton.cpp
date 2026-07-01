@@ -3,6 +3,9 @@
 #include "game/TView.h"
 
 const unsigned int kAddrSfxPlaybackSystem = 0x006a4510;
+// SYNTHETIC: IMPERIALISM 0x00571500
+// TUpDownPictureButton::CreateObject
+
 IMPLEMENT_DYNCREATE(TUpDownPictureButton, TPicture)
 
 // SYNTHETIC: IMPERIALISM 0x005715d0

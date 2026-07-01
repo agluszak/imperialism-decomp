@@ -1,4 +1,7 @@
 #include "game/TMinisterView.h"
+// SYNTHETIC: IMPERIALISM 0x004f2bb0
+// TMinisterView::CreateObject
+
 IMPLEMENT_DYNCREATE(TMinisterView, TView)
 
 TMinisterView::TMinisterView() {}

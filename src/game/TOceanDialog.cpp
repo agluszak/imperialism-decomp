@@ -1,4 +1,7 @@
 #include "game/TOceanDialog.h"
+// SYNTHETIC: IMPERIALISM 0x00565db0
+// TOceanDialog::CreateObject
+
 IMPLEMENT_DYNCREATE(TOceanDialog, TWorldView)
 
 TOceanDialog::TOceanDialog() {}

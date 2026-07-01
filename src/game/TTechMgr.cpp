@@ -9,6 +9,9 @@ extern int DAT_006a601c;
 undefined4 RecomputeGlobalCapabilityAverages(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
+// SYNTHETIC: IMPERIALISM 0x005aef30
+// TTechMgr::CreateObject
+
 IMPLEMENT_DYNCREATE(TTechMgr, TObject)
 
 TTechMgr::TTechMgr() {}

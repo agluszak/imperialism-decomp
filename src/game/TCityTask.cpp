@@ -1,4 +1,7 @@
 #include "game/TCityTask.h"
+// SYNTHETIC: IMPERIALISM 0x005adcd0
+// TCityTask::CreateObject
+
 IMPLEMENT_DYNCREATE(TCityTask, TTask)
 
 TCityTask::TCityTask() {}

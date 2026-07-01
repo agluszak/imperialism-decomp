@@ -6,6 +6,9 @@
 #include "game/quickdraw_rendering.h"
 #include "game/ui_widget_thunks.h"
 
+// SYNTHETIC: IMPERIALISM 0x00583a90
+// TSidewaysArrow::CreateObject
+
 IMPLEMENT_DYNCREATE(TSidewaysArrow, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00583b50

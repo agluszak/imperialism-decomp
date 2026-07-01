@@ -11,6 +11,9 @@ void TInteriorMinister::InteriorSlot1E() {}
 
 // FUNCTION: IMPERIALISM 0x004be190
 void TInteriorMinister::InteriorSlot1F() {}
+// SYNTHETIC: IMPERIALISM 0x004be0d0
+// TInteriorMinister::CreateObject
+
 IMPLEMENT_DYNCREATE(TInteriorMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x004be1d0

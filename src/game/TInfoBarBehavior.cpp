@@ -1,4 +1,7 @@
 #include "game/TInfoBarBehavior.h"
+// SYNTHETIC: IMPERIALISM 0x004b0c90
+// TInfoBarBehavior::CreateObject
+
 IMPLEMENT_DYNCREATE(TInfoBarBehavior, TBehavior)
 
 TInfoBarBehavior::TInfoBarBehavior() {}

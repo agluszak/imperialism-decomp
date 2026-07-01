@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x005bd900
 // TTradeBidNationLine::`scalar deleting destructor'
 TTradeBidNationLine::~TTradeBidNationLine() {}
+// SYNTHETIC: IMPERIALISM 0x005bd950
+// TTradeBidNationLine::CreateObject
+
 IMPLEMENT_DYNCREATE(TTradeBidNationLine, TLineData)
 
 TTradeBidNationLine::TTradeBidNationLine() {}

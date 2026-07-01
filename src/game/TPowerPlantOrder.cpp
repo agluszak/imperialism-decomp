@@ -1,4 +1,7 @@
 #include "game/TPowerPlantOrder.h"
+// SYNTHETIC: IMPERIALISM 0x004b79f0
+// TPowerPlantOrder::CreateObject
+
 IMPLEMENT_DYNCREATE(TPowerPlantOrder, TProductionOrder)
 
 TPowerPlantOrder::TPowerPlantOrder() {}

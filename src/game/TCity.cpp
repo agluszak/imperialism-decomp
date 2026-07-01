@@ -10,6 +10,9 @@
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;
+// SYNTHETIC: IMPERIALISM 0x004b2410
+// TCity::CreateObject
+
 IMPLEMENT_DYNCREATE(TCity, TObject)
 
 // FUNCTION: IMPERIALISM 0x004b24b0

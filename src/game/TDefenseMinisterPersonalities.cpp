@@ -10,6 +10,9 @@
 // Slot 24 (0x60) override — factory hook on this minister variant.
 // FUNCTION: IMPERIALISM 0x004ed490
 undefined TNapoleonMinister::CreateTDefenseMinisterInstance() { return 0; }
+// SYNTHETIC: IMPERIALISM 0x004ed400
+// TNapoleonMinister::CreateObject
+
 IMPLEMENT_DYNCREATE(TNapoleonMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ed4e0
@@ -28,6 +31,9 @@ undefined TBismarckMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
+// SYNTHETIC: IMPERIALISM 0x004ed740
+// TBismarckMinister::CreateObject
+
 IMPLEMENT_DYNCREATE(TBismarckMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ed810
@@ -46,6 +52,9 @@ undefined TPirateMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
+// SYNTHETIC: IMPERIALISM 0x004eda30
+// TPirateMinister::CreateObject
+
 IMPLEMENT_DYNCREATE(TPirateMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004edb00
@@ -64,6 +73,9 @@ undefined TDefenderMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
+// SYNTHETIC: IMPERIALISM 0x004edd20
+// TDefenderMinister::CreateObject
+
 IMPLEMENT_DYNCREATE(TDefenderMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004edde0
@@ -82,6 +94,9 @@ undefined TBullyMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
+// SYNTHETIC: IMPERIALISM 0x004ee000
+// TBullyMinister::CreateObject
+
 IMPLEMENT_DYNCREATE(TBullyMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ee0d0

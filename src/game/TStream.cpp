@@ -6,6 +6,9 @@ extern "C" unsigned int __cdecl strlen(const char* s);
 #pragma intrinsic(strlen)
 #endif
 
+// SYNTHETIC: IMPERIALISM 0x004889a0
+// TStream::CreateObject
+
 IMPLEMENT_DYNCREATE(TStream, TObject)
 
 // MFC-style serialization foundation: compiled favor-size in the original.

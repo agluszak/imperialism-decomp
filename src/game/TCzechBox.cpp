@@ -1,4 +1,7 @@
 #include "game/TCzechBox.h"
+// SYNTHETIC: IMPERIALISM 0x00571b60
+// TCzechBox::CreateObject
+
 IMPLEMENT_DYNCREATE(TCzechBox, TUpDownPictureButton)
 
 TCzechBox::TCzechBox() {}

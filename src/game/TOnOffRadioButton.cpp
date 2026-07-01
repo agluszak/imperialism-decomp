@@ -1,4 +1,7 @@
 #include "game/TOnOffRadioButton.h"
+// SYNTHETIC: IMPERIALISM 0x00571930
+// TOnOffRadioButton::CreateObject
+
 IMPLEMENT_DYNCREATE(TOnOffRadioButton, TPictureButton)
 
 TOnOffRadioButton::TOnOffRadioButton() {}

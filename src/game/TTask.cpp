@@ -1,4 +1,7 @@
 #include "game/TTask.h"
+// SYNTHETIC: IMPERIALISM 0x005adb40
+// TTask::CreateObject
+
 IMPLEMENT_DYNCREATE(TTask, TObject)
 
 TTask::TTask() {}

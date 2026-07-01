@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00569870
 // TSuperNavyRoster::`scalar deleting destructor'
 TSuperNavyRoster::~TSuperNavyRoster() {}
+// SYNTHETIC: IMPERIALISM 0x005697d0
+// TSuperNavyRoster::CreateObject
+
 IMPLEMENT_DYNCREATE(TSuperNavyRoster, TPageView)
 
 TSuperNavyRoster::TSuperNavyRoster() {}

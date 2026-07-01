@@ -4,6 +4,9 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
+// SYNTHETIC: IMPERIALISM 0x004933d0
+// CMcWindow::CreateObject
+
 IMPLEMENT_DYNCREATE(CMcWindow, CWnd)
 
 // Original AFX_MSGMAP_ENTRY order (0x0064b5f0). WM_LBUTTONUP, WM_MOUSEMOVE,

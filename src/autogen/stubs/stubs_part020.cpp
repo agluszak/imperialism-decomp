@@ -11,14 +11,6 @@ undefined4 DestructTTradeTotalsLineAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TTradeTotalsView::CreateTTradeTotalsViewInstance
-// ghidra_proto undefined CreateTTradeTotalsViewInstance()
-// FUNCTION: IMPERIALISM 0x005c1a80
-undefined4 CreateTTradeTotalsViewInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeTotalsView::ConstructTTradeTotalsViewBaseState
 // ghidra_proto undefined ConstructTTradeTotalsViewBaseState()
 // FUNCTION: IMPERIALISM 0x005c1b10
@@ -43,10 +35,9 @@ undefined4 TickCivWorkOrderCountdownAndComplete(void)
   return 0;
 }
 
-// ghidra_name TMilitaryUnit::CreateTMilitaryUnitInstance
-// ghidra_proto undefined CreateTMilitaryUnitInstance()
+// ghidra_name TMilitaryUnit::CreateObject
 // FUNCTION: IMPERIALISM 0x005c2cb0
-undefined4 CreateTMilitaryUnitInstance(void)
+undefined4 TMilitaryUnit_CreateObject(void)
 {
   return 0;
 }

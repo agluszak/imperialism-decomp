@@ -1,4 +1,7 @@
 #include "game/THelpPicture.h"
+// SYNTHETIC: IMPERIALISM 0x00503bd0
+// THelpPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(THelpPicture, TPicture)
 
 THelpPicture::THelpPicture() {}

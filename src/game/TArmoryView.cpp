@@ -1,4 +1,7 @@
 #include "game/TArmoryView.h"
+// SYNTHETIC: IMPERIALISM 0x004cece0
+// TArmoryView::CreateObject
+
 IMPLEMENT_DYNCREATE(TArmoryView, TBuildingView)
 
 TArmoryView::TArmoryView() {}

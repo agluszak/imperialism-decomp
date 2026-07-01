@@ -1,4 +1,7 @@
 #include "game/TSliderPicture.h"
+// SYNTHETIC: IMPERIALISM 0x00573970
+// TSliderPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TSliderPicture, TNoHilitePicture)
 
 TSliderPicture::TSliderPicture() {}

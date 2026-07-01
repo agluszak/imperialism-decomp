@@ -24,6 +24,9 @@ void* GetValueAtOffset98(CWnd* wnd) {
 
 CMainFrameRefTarget::~CMainFrameRefTarget() {}
 
+// SYNTHETIC: IMPERIALISM 0x00484af0
+// CMainFrame::CreateObject
+
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)

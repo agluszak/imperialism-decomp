@@ -1,4 +1,7 @@
 #include "game/TTaskForce.h"
+// SYNTHETIC: IMPERIALISM 0x00552770
+// TTaskForce::CreateObject
+
 IMPLEMENT_DYNCREATE(TTaskForce, TObject)
 
 TTaskForce::TTaskForce() {}

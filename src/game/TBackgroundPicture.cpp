@@ -1,4 +1,7 @@
 #include "game/TBackgroundPicture.h"
+// SYNTHETIC: IMPERIALISM 0x00572bd0
+// TBackgroundPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TBackgroundPicture, TNoHilitePicture)
 
 TBackgroundPicture::TBackgroundPicture() {}

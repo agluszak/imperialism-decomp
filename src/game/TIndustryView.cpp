@@ -1,4 +1,7 @@
 #include "game/TIndustryView.h"
+// SYNTHETIC: IMPERIALISM 0x004cc6b0
+// TIndustryView::CreateObject
+
 IMPLEMENT_DYNCREATE(TIndustryView, TBuildingView)
 
 TIndustryView::TIndustryView() {}

@@ -1,4 +1,7 @@
 #include "game/TFoodProcessingOrder.h"
+// SYNTHETIC: IMPERIALISM 0x004b7dc0
+// TFoodProcessingOrder::CreateObject
+
 IMPLEMENT_DYNCREATE(TFoodProcessingOrder, TProductionOrder)
 
 TFoodProcessingOrder::TFoodProcessingOrder() {}

@@ -28,6 +28,9 @@ void WriteSettingsPrefIntByIndex(int index, int value) {
   key.Format("Pref%d", index);
   DAT_006a1348->WriteProfileInt("Settings", key, value);
 }
+// SYNTHETIC: IMPERIALISM 0x0057b940
+// TSimMgr::CreateObject
+
 IMPLEMENT_DYNCREATE(TSimMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0057b9e0

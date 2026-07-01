@@ -11,6 +11,9 @@
 // TTechStorePage::`scalar deleting destructor'
 TTechStorePage::~TTechStorePage() {}
 
+// SYNTHETIC: IMPERIALISM 0x005b0e70
+// TTechStorePage::CreateObject
+
 IMPLEMENT_DYNCREATE(TTechStorePage, TPageView)
 
 TTechStorePage::TTechStorePage() {}

@@ -1,4 +1,7 @@
 #include "game/TPurchaseCluster.h"
+// SYNTHETIC: IMPERIALISM 0x004cc300
+// TPurchaseCluster::CreateObject
+
 IMPLEMENT_DYNCREATE(TPurchaseCluster, TCluster)
 
 TPurchaseCluster::TPurchaseCluster() {}

@@ -1,4 +1,7 @@
 #include "game/TMapUberPicture.h"
+// SYNTHETIC: IMPERIALISM 0x00596900
+// TMapUberPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
 
 TMapUberPicture::TMapUberPicture() {}

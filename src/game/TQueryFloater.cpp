@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043d6a0
 // TQueryFloater::`scalar deleting destructor'
 TQueryFloater::~TQueryFloater() {}
+// SYNTHETIC: IMPERIALISM 0x0056e840
+// TQueryFloater::CreateObject
+
 IMPLEMENT_DYNCREATE(TQueryFloater, TPicture)
 
 TQueryFloater::TQueryFloater() {}

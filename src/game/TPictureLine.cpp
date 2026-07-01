@@ -1,4 +1,7 @@
 #include "game/TPictureLine.h"
+// SYNTHETIC: IMPERIALISM 0x00570030
+// TPictureLine::CreateObject
+
 IMPLEMENT_DYNCREATE(TPictureLine, TLineData)
 
 TPictureLine::TPictureLine() {}

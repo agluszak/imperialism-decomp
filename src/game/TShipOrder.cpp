@@ -38,6 +38,9 @@ TShipOrder::TShipOrder()
       resourceTypeIndex48(0), field4a(0) {
   ZeroShipOrderTrackingSlots(this);
 }
+// SYNTHETIC: IMPERIALISM 0x004b8470
+// TShipOrder::CreateObject
+
 IMPLEMENT_DYNCREATE(TShipOrder, TProductionOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b84e0

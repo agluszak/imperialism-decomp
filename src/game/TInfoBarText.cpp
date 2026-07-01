@@ -8,6 +8,9 @@ undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
 // SYNTHETIC: IMPERIALISM 0x004293c0
 // TInfoBarText::`scalar deleting destructor'
 TInfoBarText::~TInfoBarText() {}
+// SYNTHETIC: IMPERIALISM 0x005b65a0
+// TInfoBarText::CreateObject
+
 IMPLEMENT_DYNCREATE(TInfoBarText, TDeluxeText)
 
 TInfoBarText::TInfoBarText() {}

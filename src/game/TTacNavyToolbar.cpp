@@ -13,6 +13,9 @@ undefined TTacNavyToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90(
 // SYNTHETIC: IMPERIALISM 0x005ad110
 // TTacNavyToolbar::`scalar deleting destructor'
 TTacNavyToolbar::~TTacNavyToolbar() {}
+// SYNTHETIC: IMPERIALISM 0x005ad030
+// TTacNavyToolbar::CreateObject
+
 IMPLEMENT_DYNCREATE(TTacNavyToolbar, TTacticalToolbar)
 
 TTacNavyToolbar::TTacNavyToolbar() {}

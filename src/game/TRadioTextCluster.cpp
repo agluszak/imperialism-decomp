@@ -1,4 +1,7 @@
 #include "game/TRadioTextCluster.h"
+// SYNTHETIC: IMPERIALISM 0x005795b0
+// TRadioTextCluster::CreateObject
+
 IMPLEMENT_DYNCREATE(TRadioTextCluster, TCluster)
 
 TRadioTextCluster::TRadioTextCluster() {}

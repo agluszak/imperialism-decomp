@@ -18,6 +18,9 @@
 #include "decomp_types.h"
 
 extern "C" CRuntimeClass PTR_s_TCluster_006496c0;
+// SYNTHETIC: IMPERIALISM 0x00491300
+// TCluster::CreateObject
+
 IMPLEMENT_DYNCREATE(TCluster, TControl)
 
 // FUNCTION: IMPERIALISM 0x00491400

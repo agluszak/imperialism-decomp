@@ -147,6 +147,9 @@ void TZone::HandleKeyDown(int key_id) {
 // TOcean::`scalar deleting destructor'
 
 TOcean::~TOcean() {}
+// SYNTHETIC: IMPERIALISM 0x00562100
+// TOcean::CreateObject
+
 IMPLEMENT_DYNCREATE(TOcean, TObject)
 
 TOcean::TOcean() {}

@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x005bd1a0
 // TTradeOfferNationView::`scalar deleting destructor'
 TTradeOfferNationView::~TTradeOfferNationView() {}
+// SYNTHETIC: IMPERIALISM 0x005bd1f0
+// TTradeOfferNationView::CreateObject
+
 IMPLEMENT_DYNCREATE(TTradeOfferNationView, TView)
 
 TTradeOfferNationView::TTradeOfferNationView() {}

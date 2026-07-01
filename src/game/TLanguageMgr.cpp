@@ -27,6 +27,9 @@ TLanguageMgr::TLanguageMgr() : TObject() {
   delimiter = 0x20;
   field30 = 6;
 }
+// SYNTHETIC: IMPERIALISM 0x00507bc0
+// TLanguageMgr::CreateObject
+
 IMPLEMENT_DYNCREATE(TLanguageMgr, TObject)
 
 TLanguageMgr::~TLanguageMgr() {}

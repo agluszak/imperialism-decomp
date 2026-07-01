@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00430350
 // TTreatiesView::`scalar deleting destructor'
 TTreatiesView::~TTreatiesView() {}
+// SYNTHETIC: IMPERIALISM 0x004f7a10
+// TTreatiesView::CreateObject
+
 IMPLEMENT_DYNCREATE(TTreatiesView, TPanelView)
 
 TTreatiesView::TTreatiesView() {}

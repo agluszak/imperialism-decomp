@@ -1,4 +1,7 @@
 #include "game/TAnimator.h"
+// SYNTHETIC: IMPERIALISM 0x004a09f0
+// TAnimator::CreateObject
+
 IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 
 TAnimator::TAnimator() {}

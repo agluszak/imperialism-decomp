@@ -1,4 +1,7 @@
 #include "game/TLineData.h"
+// SYNTHETIC: IMPERIALISM 0x0056f360
+// TLineData::CreateObject
+
 IMPLEMENT_DYNCREATE(TLineData, TObject)
 
 TLineData::TLineData() {}

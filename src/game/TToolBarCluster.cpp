@@ -1,4 +1,7 @@
 #include "game/TToolBarCluster.h"
+// SYNTHETIC: IMPERIALISM 0x00584d80
+// TToolBarCluster::CreateObject
+
 IMPLEMENT_DYNCREATE(TToolBarCluster, TCluster)
 
 TToolBarCluster::TToolBarCluster() {}

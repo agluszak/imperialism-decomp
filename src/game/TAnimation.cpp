@@ -32,6 +32,9 @@ void TBitmapResourceLoader::ReleaseBitmapResource() {
 // SYNTHETIC: IMPERIALISM 0x0049f050
 // TAnimation::`scalar deleting destructor'
 TAnimation::~TAnimation() {}
+// SYNTHETIC: IMPERIALISM 0x0049f020
+// TAnimation::CreateObject
+
 IMPLEMENT_DYNCREATE(TAnimation, TObject)
 
 TAnimation::TAnimation() {}

@@ -266,6 +266,9 @@ void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
   }
 }
 
+// SYNTHETIC: IMPERIALISM 0x00509c00
+// TMacViewMgr::CreateObject
+
 IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00509ca0

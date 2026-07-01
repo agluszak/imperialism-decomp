@@ -1,6 +1,9 @@
 #include "game/TSortedPtrList.h"
 #include "game/mfc.h"
 
+// SYNTHETIC: IMPERIALISM 0x00488030
+// TSortedPtrList::CreateObject
+
 IMPLEMENT_DYNCREATE(TSortedPtrList, CPtrArray)
 
 // FUNCTION: IMPERIALISM 0x004880a0

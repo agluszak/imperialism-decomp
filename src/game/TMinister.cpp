@@ -18,6 +18,9 @@ struct MinisterTerrainPreferenceEntry {
 };
 
 } // namespace
+// SYNTHETIC: IMPERIALISM 0x0052eb30
+// TMinister::CreateObject
+
 IMPLEMENT_DYNCREATE(TMinister, TObject)
 
 // FUNCTION: IMPERIALISM 0x0052eb80

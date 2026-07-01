@@ -1,4 +1,7 @@
 #include "game/TOrItemOrder.h"
+// SYNTHETIC: IMPERIALISM 0x004b57b0
+// TOrItemOrder::CreateObject
+
 IMPLEMENT_DYNCREATE(TOrItemOrder, TItemOrder)
 
 TOrItemOrder::TOrItemOrder() {}

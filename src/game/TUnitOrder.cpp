@@ -5,6 +5,9 @@
 #include "game/TSimMgr.h"
 
 extern "C" TSimMgr* g_pLocalizationTable;
+// SYNTHETIC: IMPERIALISM 0x004b6f20
+// TUnitOrder::CreateObject
+
 IMPLEMENT_DYNCREATE(TUnitOrder, TProductionOrder)
 
 TUnitOrder::TUnitOrder() {}

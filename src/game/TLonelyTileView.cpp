@@ -1,4 +1,7 @@
 #include "game/TLonelyTileView.h"
+// SYNTHETIC: IMPERIALISM 0x00505a50
+// TLonelyTileView::CreateObject
+
 IMPLEMENT_DYNCREATE(TLonelyTileView, TView)
 
 TLonelyTileView::TLonelyTileView() {}

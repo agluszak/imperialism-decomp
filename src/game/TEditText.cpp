@@ -1,6 +1,9 @@
 #include "game/TEditText.h"
 #include "game/CMcWindow.h"
 #include "game/TObject.h"
+// SYNTHETIC: IMPERIALISM 0x00490210
+// TEditText::CreateObject
+
 IMPLEMENT_DYNCREATE(TEditText, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x004903a0

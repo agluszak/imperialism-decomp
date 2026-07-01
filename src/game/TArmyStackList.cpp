@@ -1,4 +1,7 @@
 #include "game/TArmyStackList.h"
+// SYNTHETIC: IMPERIALISM 0x004a83b0
+// TArmyStackList::CreateObject
+
 IMPLEMENT_DYNCREATE(TArmyStackList, TSortedList)
 
 TArmyStackList::TArmyStackList() {}

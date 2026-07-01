@@ -6,6 +6,9 @@
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
+// SYNTHETIC: IMPERIALISM 0x00556530
+// TNavyMgr::CreateObject
+
 IMPLEMENT_DYNCREATE(TNavyMgr, TObject)
 
 TNavyMgr::TNavyMgr() : orderListHead04(0) {}

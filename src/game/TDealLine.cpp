@@ -1,4 +1,7 @@
 #include "game/TDealLine.h"
+// SYNTHETIC: IMPERIALISM 0x005c0cf0
+// TDealLine::CreateObject
+
 IMPLEMENT_DYNCREATE(TDealLine, TLineData)
 
 TDealLine::TDealLine() {}

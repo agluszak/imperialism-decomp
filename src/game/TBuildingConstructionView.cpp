@@ -1,4 +1,7 @@
 #include "game/TBuildingConstructionView.h"
+// SYNTHETIC: IMPERIALISM 0x004c9d70
+// TBuildingConstructionView::CreateObject
+
 IMPLEMENT_DYNCREATE(TBuildingConstructionView, TPicture)
 
 TBuildingConstructionView::TBuildingConstructionView() {}

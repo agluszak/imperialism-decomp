@@ -3,6 +3,9 @@
 undefined TTacticalBattle::OrphanRetStub_0059f710() { return 0; }
 
 undefined TTacticalBattle::CreateTTacticalBattleInstance() { return 0; }
+// SYNTHETIC: IMPERIALISM 0x0059f6d0
+// TTacticalBattle::CreateObject
+
 IMPLEMENT_DYNCREATE(TTacticalBattle, TObject)
 
 TTacticalBattle::TTacticalBattle() {}

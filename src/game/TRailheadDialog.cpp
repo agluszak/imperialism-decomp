@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004bcfd0
 // TRailheadDialog::`scalar deleting destructor'
 TRailheadDialog::~TRailheadDialog() {}
+// SYNTHETIC: IMPERIALISM 0x004bcf40
+// TRailheadDialog::CreateObject
+
 IMPLEMENT_DYNCREATE(TRailheadDialog, TDialogView)
 
 TRailheadDialog::TRailheadDialog() {}

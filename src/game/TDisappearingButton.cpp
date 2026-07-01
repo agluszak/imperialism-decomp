@@ -1,4 +1,7 @@
 #include "game/TDisappearingButton.h"
+// SYNTHETIC: IMPERIALISM 0x00568b20
+// TDisappearingButton::CreateObject
+
 IMPLEMENT_DYNCREATE(TDisappearingButton, TPicture)
 
 TDisappearingButton::TDisappearingButton() {}

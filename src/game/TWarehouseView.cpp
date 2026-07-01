@@ -1,4 +1,7 @@
 #include "game/TWarehouseView.h"
+// SYNTHETIC: IMPERIALISM 0x004c71f0
+// TWarehouseView::CreateObject
+
 IMPLEMENT_DYNCREATE(TWarehouseView, TBuildingView)
 
 TWarehouseView::TWarehouseView() {}

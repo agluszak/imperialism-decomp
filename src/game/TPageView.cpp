@@ -1,4 +1,7 @@
 #include "game/TPageView.h"
+// SYNTHETIC: IMPERIALISM 0x0056f8e0
+// TPageView::CreateObject
+
 IMPLEMENT_DYNCREATE(TPageView, TView)
 
 TPageView::TPageView() {}

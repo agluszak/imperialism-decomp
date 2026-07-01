@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0044fae0
 // TLoungeDialog::`scalar deleting destructor'
 TLoungeDialog::~TLoungeDialog() {}
+// SYNTHETIC: IMPERIALISM 0x0054d650
+// TLoungeDialog::CreateObject
+
 IMPLEMENT_DYNCREATE(TLoungeDialog, TNoHilitePicture)
 
 TLoungeDialog::TLoungeDialog() {}

@@ -1,4 +1,7 @@
 #include "game/TUnitsView.h"
+// SYNTHETIC: IMPERIALISM 0x004c7f10
+// TUnitsView::CreateObject
+
 IMPLEMENT_DYNCREATE(TUnitsView, TBuildingView)
 
 TUnitsView::TUnitsView() {}

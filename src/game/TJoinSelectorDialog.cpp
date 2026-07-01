@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0044fab0
 // TJoinSelectorDialog::`scalar deleting destructor'
 TJoinSelectorDialog::~TJoinSelectorDialog() {}
+// SYNTHETIC: IMPERIALISM 0x0054e690
+// TJoinSelectorDialog::CreateObject
+
 IMPLEMENT_DYNCREATE(TJoinSelectorDialog, TNoHilitePicture)
 
 TJoinSelectorDialog::TJoinSelectorDialog() {}

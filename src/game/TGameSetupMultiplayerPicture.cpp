@@ -1,4 +1,7 @@
 #include "game/TGameSetupMultiplayerPicture.h"
+// SYNTHETIC: IMPERIALISM 0x00575e90
+// TGameSetupMultiplayerPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TGameSetupMultiplayerPicture, TNoHilitePicture)
 
 TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture() {}

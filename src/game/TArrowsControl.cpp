@@ -1,4 +1,7 @@
 #include "game/TArrowsControl.h"
+// SYNTHETIC: IMPERIALISM 0x005838b0
+// TArrowsControl::CreateObject
+
 IMPLEMENT_DYNCREATE(TArrowsControl, TPicture)
 
 TArrowsControl::TArrowsControl() {}

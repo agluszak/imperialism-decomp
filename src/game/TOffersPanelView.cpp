@@ -1,4 +1,7 @@
 #include "game/TOffersPanelView.h"
+// SYNTHETIC: IMPERIALISM 0x004f8ec0
+// TOffersPanelView::CreateObject
+
 IMPLEMENT_DYNCREATE(TOffersPanelView, TPanelView)
 
 TOffersPanelView::TOffersPanelView() {}

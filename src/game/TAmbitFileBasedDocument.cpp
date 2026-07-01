@@ -1,4 +1,7 @@
 #include "game/TAmbitFileBasedDocument.h"
+// SYNTHETIC: IMPERIALISM 0x0049e5a0
+// TAmbitFileBasedDocument::CreateObject
+
 IMPLEMENT_DYNCREATE(TAmbitFileBasedDocument, TFileBasedDocument)
 
 TAmbitFileBasedDocument::TAmbitFileBasedDocument() {}

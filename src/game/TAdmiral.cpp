@@ -8,6 +8,9 @@ extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
 
 #include "game/CString.h"
 
+// SYNTHETIC: IMPERIALISM 0x005512d0
+// TAdmiral::CreateObject
+
 IMPLEMENT_DYNCREATE(TAdmiral, TObject)
 
 // FUNCTION: IMPERIALISM 0x004d7eb0

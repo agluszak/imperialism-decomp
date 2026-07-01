@@ -90,6 +90,9 @@ static void PlayClickSfx7000() {
 }
 
 } // namespace GameWindowInvoke
+// SYNTHETIC: IMPERIALISM 0x004ffb30
+// TGameWindow::CreateObject
+
 IMPLEMENT_DYNCREATE(TGameWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x004ffc10

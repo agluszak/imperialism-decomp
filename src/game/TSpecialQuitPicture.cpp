@@ -8,6 +8,9 @@ undefined TSpecialQuitPicture::OrphanRetStub_0045acb0() {
 // SYNTHETIC: IMPERIALISM 0x0045acd0
 // TSpecialQuitPicture::`scalar deleting destructor'
 TSpecialQuitPicture::~TSpecialQuitPicture() {}
+// SYNTHETIC: IMPERIALISM 0x005b4760
+// TSpecialQuitPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TSpecialQuitPicture, TPicture)
 
 TSpecialQuitPicture::TSpecialQuitPicture() {}

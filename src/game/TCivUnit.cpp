@@ -3,6 +3,9 @@
 #include "game/TStream.h"
 
 extern "C" char g_pClassDescTCivUnit = 0;
+// SYNTHETIC: IMPERIALISM 0x005c2860
+// TCivUnit::CreateObject
+
 IMPLEMENT_DYNCREATE(TCivUnit, TUnit)
 
 // FUNCTION: IMPERIALISM 0x005c28c0

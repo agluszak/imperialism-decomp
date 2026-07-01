@@ -8,6 +8,9 @@ undefined TMiniShipView::OrphanRetStub_00569d50() {
 // SYNTHETIC: IMPERIALISM 0x00569d70
 // TMiniShipView::`scalar deleting destructor'
 TMiniShipView::~TMiniShipView() {}
+// SYNTHETIC: IMPERIALISM 0x00569dc0
+// TMiniShipView::CreateObject
+
 IMPLEMENT_DYNCREATE(TMiniShipView, TControl)
 
 TMiniShipView::TMiniShipView() {}

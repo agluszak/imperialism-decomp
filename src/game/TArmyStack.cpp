@@ -1,4 +1,7 @@
 #include "game/TArmyStack.h"
+// SYNTHETIC: IMPERIALISM 0x004a76a0
+// TArmyStack::CreateObject
+
 IMPLEMENT_DYNCREATE(TArmyStack, TObject)
 
 TArmyStack::TArmyStack() {}

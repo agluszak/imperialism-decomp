@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043daa0
 // TRadioText::`scalar deleting destructor'
 TRadioText::~TRadioText() {}
+// SYNTHETIC: IMPERIALISM 0x005793f0
+// TRadioText::CreateObject
+
 IMPLEMENT_DYNCREATE(TRadioText, TDropShadowText)
 
 TRadioText::TRadioText() {}

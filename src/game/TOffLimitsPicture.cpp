@@ -1,4 +1,7 @@
 #include "game/TOffLimitsPicture.h"
+// SYNTHETIC: IMPERIALISM 0x00573710
+// TOffLimitsPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TOffLimitsPicture, TPicture)
 
 TOffLimitsPicture::TOffLimitsPicture() {}

@@ -68,6 +68,9 @@ THelpMgr::THelpMgr() : TObject() {
   field18 = 0;
   indexList = nullptr;
 }
+// SYNTHETIC: IMPERIALISM 0x00500550
+// THelpMgr::CreateObject
+
 IMPLEMENT_DYNCREATE(THelpMgr, TObject)
 
 THelpMgr::~THelpMgr() {}

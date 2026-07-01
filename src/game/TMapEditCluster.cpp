@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x005b2900
 // TMapEditCluster::`scalar deleting destructor'
 TMapEditCluster::~TMapEditCluster() {}
+// SYNTHETIC: IMPERIALISM 0x005b2880
+// TMapEditCluster::CreateObject
+
 IMPLEMENT_DYNCREATE(TMapEditCluster, TCluster)
 
 TMapEditCluster::TMapEditCluster() {}

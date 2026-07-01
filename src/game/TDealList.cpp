@@ -175,6 +175,9 @@ short TDealList::ResolveProposalCodeForCategorySlot84(int proposalCode, int cate
   }
   return resolvedCode;
 }
+// SYNTHETIC: IMPERIALISM 0x005ba130
+// TDealList::CreateObject
+
 IMPLEMENT_DYNCREATE(TDealList, TSortedPtrList)
 
 // SYNTHETIC: IMPERIALISM 0x005ba1f0

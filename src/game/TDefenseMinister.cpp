@@ -10,6 +10,9 @@
 
 // FUNCTION: IMPERIALISM 0x004ec0a0
 undefined TDefenseMinister::CreateTDefenseMinisterInstance() { return 0; }
+// SYNTHETIC: IMPERIALISM 0x004ec020
+// TDefenseMinister::CreateObject
+
 IMPLEMENT_DYNCREATE(TDefenseMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x004ec0e0

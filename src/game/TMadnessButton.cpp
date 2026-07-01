@@ -3,6 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043d720
 // TMadnessButton::`scalar deleting destructor'
 TMadnessButton::~TMadnessButton() {}
+// SYNTHETIC: IMPERIALISM 0x0054ea30
+// TMadnessButton::CreateObject
+
 IMPLEMENT_DYNCREATE(TMadnessButton, TCzechBox)
 
 TMadnessButton::TMadnessButton() {}

@@ -8,6 +8,9 @@ undefined TMapUberUberPicture::OrphanRetStub_0045d2a0() {
 // SYNTHETIC: IMPERIALISM 0x0045d2c0
 // TMapUberUberPicture::`scalar deleting destructor'
 TMapUberUberPicture::~TMapUberUberPicture() {}
+// SYNTHETIC: IMPERIALISM 0x00596770
+// TMapUberUberPicture::CreateObject
+
 IMPLEMENT_DYNCREATE(TMapUberUberPicture, TOffLimitsPicture)
 
 TMapUberUberPicture::TMapUberUberPicture() {}

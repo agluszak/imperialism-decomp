@@ -1,6 +1,9 @@
 #include "game/TProductionOrder.h"
 
 TProductionOrder::TProductionOrder() {}
+// SYNTHETIC: IMPERIALISM 0x004b4eb0
+// TProductionOrder::CreateObject
+
 IMPLEMENT_DYNCREATE(TProductionOrder, TObject)
 
 TProductionOrder::~TProductionOrder() {}
