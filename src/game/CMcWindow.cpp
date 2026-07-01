@@ -4,6 +4,10 @@
 
 IMPLEMENT_DYNCREATE(CMcWindow, CWnd)
 
+BEGIN_MESSAGE_MAP(CMcWindow, CWnd)
+ON_WM_PAINT()
+END_MESSAGE_MAP()
+
 // Build the host window for a TWindow descriptor: construct the CWnd base, record the
 // owner backref, derive the CreateEx window style from the descriptor's type code, then
 // create and bring up the window via the real MFC CWnd surface. (The original also fires
@@ -67,4 +71,20 @@ CMcWindow::CMcWindow(TWindow* descriptor) : CWnd() {
            NULL, NULL);
   SetWindowPos(&CWnd::wndTop, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
   BringWindowToTop();
+}
+
+// Paint dispatch for the hosted TView tree: everything a TWindow-rooted control tree
+// ever draws on screen flows through here. Clip-box → owner TWindow's
+// PaintVisibleChildrenIntersectingClipRect (TView slot 0x43) with the CPaintDC, which
+// BindScopedMapQuickDrawDcHandle then binds as the active QuickDraw DC.
+// FUNCTION: IMPERIALISM 0x004938c0
+void CMcWindow::OnPaint() {
+  CPaintDC dc(this);
+  RECT clipBox;
+  dc.GetClipBox(&clipBox);
+  if (m_pOwnerWindow != NULL) {
+    RECT paintRect;
+    CopyRect(&paintRect, &clipBox);
+    m_pOwnerWindow->PaintVisibleChildrenIntersectingClipRect(&paintRect, &dc);
+  }
 }

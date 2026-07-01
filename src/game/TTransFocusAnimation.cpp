@@ -71,7 +71,7 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
 // FUNCTION: IMPERIALISM 0x004a0770
 void TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw() {
   ScopedMapQuickDrawContextGuard quickDrawContext(scopedRenderTarget);
-  reinterpret_cast<TView*>(scopedRenderTarget)->Refresh();
+  scopedRenderTarget->Refresh();
 
   int completionRecord[2];
   completionRecord[0] = 0;

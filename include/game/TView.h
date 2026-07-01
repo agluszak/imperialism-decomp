@@ -91,13 +91,16 @@ public:
   virtual void CaptureLayout(int* buffer, int modeFlag);                        // 0x3d 0x48b3f0
   virtual char Refresh();                                                       // 0x3e 0x48b770
   virtual void PostRenderSlotFC();                                              // 0x3f
-  virtual int BindMapQuickDrawDc(int arg);                                      // 0x40 0x48b7b0
-  virtual void ReleaseMapQuickDrawDc(int arg);                                  // 0x41 0x48b7e0
+  // The "DC handle" flowing through slots 0x40/0x41/0x43/0x45 is a caller-supplied MFC
+  // CDC* (or null = bind a fresh window DC): CMcWindow::OnPaint (0x4938c0) passes its
+  // CPaintDC here, and BindScopedMapQuickDrawDcHandle stores it as the active DC object.
+  virtual int BindMapQuickDrawDc(CDC* paintDc);                                 // 0x40 0x48b7b0
+  virtual void ReleaseMapQuickDrawDc(CDC* paintDc);                             // 0x41 0x48b7e0
   virtual void EnsureField48Buffer();                                           // 0x42 0x48b810
   virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect,
-                                                        int bindArg); // 0x43 0x48b8d0
-  virtual void ApplyRectSlot110(RECT* rectBuffer);                    // 0x44
-  virtual void PaintOrInvalidateControl(int arg = 0);                 // 0x45
+                                                        CDC* paintDc); // 0x43 0x48b8d0
+  virtual void ApplyRectSlot110(RECT* rectBuffer);                     // 0x44
+  virtual void PaintOrInvalidateControl(CDC* paintDc = 0);             // 0x45
   virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
                                              int arg4); // 0x46 0x48c450
   virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,

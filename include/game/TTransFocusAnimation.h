@@ -2,6 +2,8 @@
 
 #include "game/mfc.h"
 
+class TView;
+
 // Transitional focus-animation helper (factory 0x004a0460). Shares the completion callback
 // slot layout with TFocusAnimation (vtable index 5 / byte offset 0x14).
 // VTABLE: IMPERIALISM 0x0064c498
@@ -17,7 +19,7 @@ public:
 
   virtual void DispatchCompletionRecordSlot14(int* completionRecord); // 0x14
 
-  void* scopedRenderTarget; // 0x04
+  TView* scopedRenderTarget; // 0x04 — render-target view for the scoped QuickDraw context
   short field08;            // 0x08
   short field0a;            // 0x0a
   short field0c;            // 0x0c

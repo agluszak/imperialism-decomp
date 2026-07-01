@@ -571,14 +571,6 @@ undefined4 DestructObjectAndReleaseWithFlag_Field0F(void)
   return 0;
 }
 
-// ghidra_name QueryClipBoxFromPaintDcHandle
-// ghidra_proto undefined QueryClipBoxFromPaintDcHandle()
-// FUNCTION: IMPERIALISM 0x004938c0
-undefined4 QueryClipBoxFromPaintDcHandle(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_InvokeCurrentMessageFallbackHandler_At00493990
 // ghidra_proto undefined WrapperFor_InvokeCurrentMessageFallbackHandler_At00493990()
 // FUNCTION: IMPERIALISM 0x00493990

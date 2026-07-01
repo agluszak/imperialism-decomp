@@ -554,13 +554,13 @@ char TView::Refresh() {
   return 1;
 }
 // FUNCTION: IMPERIALISM 0x0048b7b0
-int TView::BindMapQuickDrawDc(int arg) {
-  return BindScopedMapQuickDrawDcHandle(this, arg);
+int TView::BindMapQuickDrawDc(CDC* paintDc) {
+  return BindScopedMapQuickDrawDcHandle(this, paintDc);
 }
 
 // FUNCTION: IMPERIALISM 0x0048b7e0
-void TView::ReleaseMapQuickDrawDc(int arg) {
-  ReleaseScopedMapQuickDrawDcHandle(this, arg);
+void TView::ReleaseMapQuickDrawDc(CDC* paintDc) {
+  ReleaseScopedMapQuickDrawDcHandle(this, paintDc);
 }
 // Lazily allocate the 8-byte auxiliary buffer stored at field48 (freed in the dtor).
 // FUNCTION: IMPERIALISM 0x0048b810
@@ -576,18 +576,18 @@ void TView::EnsureField48Buffer() {
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b860
-void TView::PaintOrInvalidateControl(int arg) {
-  if (arg != 0) {
+void TView::PaintOrInvalidateControl(CDC* paintDc) {
+  if (paintDc != 0) {
     RECT rect;
     QueryContentBounds(&rect);
-    PaintVisibleChildrenIntersectingClipRect(&rect, arg);
+    PaintVisibleChildrenIntersectingClipRect(&rect, paintDc);
     return;
   }
   InvalidateCityDialogRectRegion(0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0048b8d0
-void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg) {
+void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
   if (g_McAppUiActiveFlag_006950AC == 0 || IsActionable() == 0 || Refresh() == 0) {
     return;
   }
@@ -598,12 +598,12 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg
     return;
   }
 
-  if (BindMapQuickDrawDc(bindArg) != 0) {
+  if (BindMapQuickDrawDc(paintDc) != 0) {
     ApplyRectSlot110(&clippedRect);
     if (linkedResourceOwner != 0) {
       linkedResourceOwner->DispatchQueuedUiCommandAndRelease(&clippedRect);
     }
-    ReleaseMapQuickDrawDc(bindArg);
+    ReleaseMapQuickDrawDc(paintDc);
   }
 
   CPtrList* list = childList44;
@@ -615,7 +615,7 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg
       OffsetRect(&childClip, -child->ownerOffsetX, -child->ownerOffsetY);
       RECT childPaintRect;
       CopyRect(&childPaintRect, &childClip);
-      child->PaintVisibleChildrenIntersectingClipRect(&childPaintRect, bindArg);
+      child->PaintVisibleChildrenIntersectingClipRect(&childPaintRect, paintDc);
     }
   }
 }

@@ -7416,7 +7416,7 @@ address|name|symbol|size|type|prototype
 612daa|CDC::OffsetWindowOrg|?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z|76|function|undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612daa()
 612df6|CDC::OffsetWindowOrg|?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z|76|function|undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612df6()
 612e42|CDC::ScaleWindowExt|?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z|88|function|undefined ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z@00612e42()
-612e9a|GetClipBoxFromThisHdcField||16|function|undefined GetClipBoxFromThisHdcField()
+612e9a|CDC::GetClipBox|?GetClipBox@CDC@@UBEHPAUtagRECT@@@Z|16|function|
 612eaa|CDC::SelectClipRgn|?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z|78|function|undefined SelectClipRegionOnPrimaryAndSecondaryDc()
 612ef8|CDC::IntersectClipRect||74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612ef8()
 612f42|CDC::ExcludeClipRect||76|function|undefined ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612f42()
@@ -7448,7 +7448,7 @@ address|name|symbol|size|type|prototype
 613845|CWindowDC::CWindowDC|??0CWindowDC@@QAE@PAVCWnd@@@Z|86|function|undefined CWindowDC()
 61389b|CClientDC::`scalar deleting dtor'|??_GCClientDC@@UAEPAXI@Z|28|function|undefined DestroyWindowDcAndMaybeFree()
 6138b7|CWindowDC::~CWindowDC|??1CWindowDC@@UAE@XZ|66|function|undefined DestroyCWindowDCAndReleaseHandle()
-6138f9|CPaintDC||86|function|undefined CPaintDC()
+6138f9|CPaintDC::CPaintDC|??0CPaintDC@@QAE@PAVCWnd@@@Z|86|function|
 61394f|CPaintDC::`scalar deleting dtor'|??_GCPaintDC@@UAEPAXI@Z|28|function|void * __thiscall ??_GCPaintDC@@UAEPAXI@Z(uint param_1)
 61396b|CPaintDC::~CPaintDC|??1CPaintDC@@UAE@XZ|71|function|void __thiscall ??1CPaintDC@@UAE@XZ(void)
 6139b2|CMenu::DeleteTempMap|?DeleteTempMap@CMenu@@SGXXZ|20|function|undefined DeleteTempMap_6139b2()

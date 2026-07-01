@@ -167,6 +167,39 @@ caller is the real trigger this whole investigation has been hunting) and whethe
 reachable for our `BuildStartupIntroBackground` tree at all given it's plain
 `TView`/`TPicture`, not `TWindow`-hosted.
 
+**UPDATE 2026-07-01-F — both questions above are RESOLVED; the real paint trigger is
+found and ported.**
+
+- `0x5742b0` is **`TScrollView::PaintVisibleChildrenIntersectingClipRect`** — slot 0x43
+  of `TScrollView::vftable` at `0x6417e0` (`0x6417e0 + 4*0x43 = 0x6418ec` holds ILT
+  thunk `0x407572` → `0x5742b0`). It was already declared at the right slot in
+  `TScrollView.h`; the body is still an empty stub in `TScrollView.cpp` (next port).
+- **The real trigger for all TView-tree painting is `CMcWindow::OnPaint`
+  (`0x4938c0`)** — CMcWindow's own MFC message map (AFX_MSGMAP at `0x64b5e8`, 14
+  `AFX_MSGMAP_ENTRY` rows at `0x64b5f0`, chained to CWnd's at `0x670868`) has a
+  `WM_PAINT` entry → thunk `0x406cf8` → `0x4938c0`. The body: `CPaintDC dc(this)`,
+  `dc.GetClipBox(&clipBox)`, `CopyRect`, then
+  `m_pOwnerWindow->PaintVisibleChildrenIntersectingClipRect(&paintRect, &dc)` (slot
+  0x43 on the owning TWindow). **Ported at 100% match** with a real
+  `BEGIN_MESSAGE_MAP(CMcWindow, CWnd) + ON_WM_PAINT()`; the other 13 handlers
+  (`WM_LBUTTONDOWN/UP`, `WM_MOUSEMOVE`, `WM_CLOSE`, `WM_KEYDOWN/UP`, `0x19`,
+  `WM_QUERYNEWPALETTE`(0x30f), `WM_PALETTECHANGED`(0x311), `WM_CHAR`, custom `0x468`
+  and `0x36a`) are still unported — thunk pfns in the original table:
+  0x408530/0x404a16/0x408a4e/0x402da1/0x40927d/0x4010fa/0x406a82/0x402987/0x408265/
+  0x40894a/0x4024ff/0x4020c7.
+- The `bindArg` of slots 0x40/0x41/0x43/0x45 is confirmed to be a **caller-supplied
+  `CDC*`** (CMcWindow::OnPaint passes its CPaintDC; BindScopedMapQuickDrawDcHandle
+  binds it as the active QuickDraw DC object, or wraps a fresh window DC when null).
+  The whole chain is now typed `CDC*` in source.
+- **Consequence for the blank main frame:** painting only ever reaches a TView tree
+  whose ancestry passes through a realized `TWindow` (its `DispatchSlot9CToLinkedChildren`
+  creates the `CMcWindow` host, whose `OnPaint` starts the slot-0x43 recursion).
+  `CIncludeView` never paints TView content (no WM_PAINT map entry, no-op OnDraw), so
+  parking the intro tree on the frame's `CIncludeView` `nativeWindow50` can never
+  render. The open init-chain question is **where the original builds/realizes the
+  main-screen TWindow** (window registry / TViewMgr / CreateTWindowInstance chain) —
+  that realize step is what makes WM_PAINT reach the tree.
+
 (Superseded by the above, kept for history) `TIncludeView::NoOpUiLifecycleHook`
 (already ported, `src/game/TIncludeView.cpp`) ends with
 `SendMessageA(nativeWindow50->m_hWnd, 0x4ef, 1, 0)` — originally guessed to be the real

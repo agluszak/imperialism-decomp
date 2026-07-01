@@ -2,6 +2,8 @@
 
 #include "game/mfc.h"
 
+class TView;
+
 // Focus-animation helper object
 // completion callback at slot 0x14 (index 5).
 // VTABLE: IMPERIALISM (provisional)
@@ -17,7 +19,7 @@ public:
 
   virtual void DispatchCompletionRecordSlot14(int* completionRecord); // 0x14
 
-  void* scopedRenderTarget; // 0x04
+  TView* scopedRenderTarget; // 0x04 — render-target view for the scoped QuickDraw context
   short currentFrame;         // 0x08
   short frameCount;           // 0x0a
   short field0c;              // 0x0c

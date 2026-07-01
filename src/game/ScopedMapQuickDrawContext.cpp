@@ -10,11 +10,10 @@ undefined4 FromHandle_612736(void);
 // Bind the scoped map QuickDraw DC: record the active view, and select the DC-handle
 // object (either the caller-supplied one, or a fresh CDC wrapping the view window's DC).
 // FUNCTION: IMPERIALISM 0x004945f0
-int BindScopedMapQuickDrawDcHandle(void* viewArg, int existingHandle) {
-  TView* view = reinterpret_cast<TView*>(viewArg);
+int BindScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
   g_pScopedMapQuickDrawViewContext = view;
-  void* dcHandleObject = reinterpret_cast<void*>(existingHandle);
-  if (existingHandle == 0) {
+  void* dcHandleObject = existingDc;
+  if (existingDc == 0) {
     if (view->nativeWindow50 != 0) {
       HDC hdc = GetDC(reinterpret_cast<HWND>(view->nativeWindow50->m_hWnd));
       void* cdc = reinterpret_cast<void*(__stdcall*)(HDC)>(FromHandle_612736)(hdc);
@@ -30,9 +29,8 @@ int BindScopedMapQuickDrawDcHandle(void* viewArg, int existingHandle) {
 // Release the scoped map QuickDraw DC: when no caller-supplied handle was bound, return
 // the borrowed window DC, then clear the active handle/view globals.
 // FUNCTION: IMPERIALISM 0x004946b0
-void ReleaseScopedMapQuickDrawDcHandle(void* viewArg, int existingHandle) {
-  TView* view = reinterpret_cast<TView*>(viewArg);
-  if (existingHandle == 0) {
+void ReleaseScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
+  if (existingDc == 0) {
     HDC boundDc =
         *reinterpret_cast<HDC*>(reinterpret_cast<char*>(g_pScopedMapQuickDrawDcHandleObject) + 4);
     ReleaseDC(reinterpret_cast<HWND>(view->nativeWindow50->m_hWnd), boundDc);
@@ -42,11 +40,9 @@ void ReleaseScopedMapQuickDrawDcHandle(void* viewArg, int existingHandle) {
 }
 
 // FUNCTION: IMPERIALISM 0x00494700
-ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(void* renderTargetArg)
-    : clientDc(renderTargetArg != 0 ? reinterpret_cast<CWnd*>(
-                                          reinterpret_cast<TView*>(renderTargetArg)->nativeWindow50)
-                                    : 0),
-      renderTarget(reinterpret_cast<TView*>(renderTargetArg)) {
+ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
+    : clientDc(renderTargetArg != 0 ? renderTargetArg->nativeWindow50 : 0),
+      renderTarget(renderTargetArg) {
   if (renderTarget != 0) {
     renderTarget->Refresh();
     RECT clipRect;

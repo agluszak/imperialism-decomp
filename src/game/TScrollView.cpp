@@ -12,5 +12,5 @@ void TScrollView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005742b0
-void TScrollView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg) {
+void TScrollView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
 }

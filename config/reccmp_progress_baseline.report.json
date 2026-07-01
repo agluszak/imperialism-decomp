@@ -5711,7 +5711,7 @@
     },
     {
       "address": "0x4938c0",
-      "matching": 0.04878048780487805,
+      "matching": 1.0,
       "name": "QueryClipBoxFromPaintDcHandle",
       "type": 1
     },
@@ -6709,7 +6709,7 @@
     },
     {
       "address": "0x49d180",
-      "matching": 0.7804878048780488,
+      "matching": 0.8048780487804879,
       "name": "PaintStoredBitmapToWindowClientDc",
       "type": 1
     },
@@ -38399,7 +38399,7 @@
     {
       "address": "0x612e9a",
       "matching": 0.0,
-      "name": "GetClipBoxFromThisHdcField",
+      "name": "CDC::GetClipBox(struct tagRECT *)",
       "type": 1
     },
     {
@@ -38519,7 +38519,7 @@
     {
       "address": "0x6138f9",
       "matching": 0.0,
-      "name": "CPaintDC",
+      "name": "CPaintDC::CPaintDC(class CWnd *)",
       "type": 1
     },
     {
@@ -38632,7 +38632,7 @@
     },
     {
       "address": "0x613eb0",
-      "matching": 0.9310344827586207,
+      "matching": 0.9655172413793104,
       "name": "CView::OnPaint",
       "type": 1
     },

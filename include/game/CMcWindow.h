@@ -27,4 +27,13 @@ public:
   // CreateMcWindowFromDescriptorAndShow and cleared during TWindow::Free. Sits
   // immediately after the CWnd subobject (CWnd ends at +0x3c in this build).
   TWindow* m_pOwnerWindow;
+
+  // WM_PAINT — the real trigger for all TView-tree painting: builds a CPaintDC and
+  // dispatches m_pOwnerWindow->PaintVisibleChildrenIntersectingClipRect (TView slot
+  // 0x43) with the paint DC. Original message map (14 entries, AFX_MSGMAP_ENTRY table
+  // at 0x0064b5f0, AFX_MSGMAP at 0x0064b5e8 chaining to CWnd's); the remaining 13
+  // handlers (mouse/key/palette/0x468/0x36a) are not yet ported.
+  afx_msg void OnPaint();
+
+  DECLARE_MESSAGE_MAP()
 };
