@@ -5704,6 +5704,12 @@
       "type": 1
     },
     {
+      "address": "0x493800",
+      "matching": 0.26229508196721313,
+      "name": "CMcWindow::OnWindowStateMsg468",
+      "type": 1
+    },
+    {
       "address": "0x493839",
       "matching": 0.11764705882352941,
       "name": "DestructObjectAndReleaseWithFlag_Field0F",
@@ -5712,13 +5718,49 @@
     {
       "address": "0x4938c0",
       "matching": 1.0,
-      "name": "QueryClipBoxFromPaintDcHandle",
+      "name": "CMcWindow::OnPaint",
+      "type": 1
+    },
+    {
+      "address": "0x493990",
+      "matching": 0.6086956521739131,
+      "name": "CMcWindow::OnLButtonDown",
       "type": 1
     },
     {
       "address": "0x493a70",
       "matching": 0.0,
       "name": "DispatchMessageFallbackAndUpdateCaptureState",
+      "type": 1
+    },
+    {
+      "address": "0x493b00",
+      "matching": 1.0,
+      "name": "CMcWindow::OnClose",
+      "type": 1
+    },
+    {
+      "address": "0x493b30",
+      "matching": 1.0,
+      "name": "CMcWindow::OnKeyDown",
+      "type": 1
+    },
+    {
+      "address": "0x493b50",
+      "matching": 1.0,
+      "name": "CMcWindow::OnKeyUp",
+      "type": 1
+    },
+    {
+      "address": "0x493ca0",
+      "matching": 1.0,
+      "name": "CMcWindow::OnQueryNewPalette",
+      "type": 1
+    },
+    {
+      "address": "0x493cc0",
+      "matching": 1.0,
+      "name": "CMcWindow::OnPaletteChanged",
       "type": 1
     },
     {
@@ -12008,7 +12050,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12470,7 +12512,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -15890,7 +15932,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20636363636363636,
+      "matching": 0.19818181818181818,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16718,7 +16760,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32038834951456313,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },

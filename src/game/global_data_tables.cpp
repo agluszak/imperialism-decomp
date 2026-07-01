@@ -312,6 +312,15 @@ int GetMcAppUiActiveFlag() {
   return g_McAppUiActiveFlag_006950AC;
 }
 
+// Source-path string for CMcWindow's McWindow.cpp one-shot debug asserts.
+// GLOBAL: IMPERIALISM 0x006950d8
+char g_szMcWindowSourcePath_006950D8[] = "D:\\Ambit\\McWindow.cpp";
+
+// Gate read by CMcWindow::OnWindowStateMsg468 before firing the unknown-wParam
+// one-shot assert (writer not yet identified).
+// GLOBAL: IMPERIALISM 0x006a1c74
+int g_nMcWindowStateMsgAssertGate_006A1C74 = 0;
+
 extern "C" {
 // MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
 // symbol name, so the zero-initialized contents are irrelevant to matching.

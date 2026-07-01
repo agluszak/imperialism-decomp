@@ -571,14 +571,6 @@ undefined4 DestructObjectAndReleaseWithFlag_Field0F(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_InvokeCurrentMessageFallbackHandler_At00493990
-// ghidra_proto undefined WrapperFor_InvokeCurrentMessageFallbackHandler_At00493990()
-// FUNCTION: IMPERIALISM 0x00493990
-undefined4 WrapperFor_InvokeCurrentMessageFallbackHandler_At00493990(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00
 // ghidra_proto undefined WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00()
 // FUNCTION: IMPERIALISM 0x00493a00
@@ -591,14 +583,6 @@ undefined4 WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00(void)
 // ghidra_proto undefined DispatchMessageFallbackAndUpdateCaptureState()
 // FUNCTION: IMPERIALISM 0x00493a70
 undefined4 DispatchMessageFallbackAndUpdateCaptureState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_InvokeCurrentMessageFallbackHandler_At00493b00
-// ghidra_proto undefined WrapperFor_InvokeCurrentMessageFallbackHandler_At00493b00()
-// FUNCTION: IMPERIALISM 0x00493b00
-undefined4 WrapperFor_InvokeCurrentMessageFallbackHandler_At00493b00(void)
 {
   return 0;
 }

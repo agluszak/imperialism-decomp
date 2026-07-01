@@ -209,6 +209,11 @@ extern unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC;
 // UI invalidation-flag assert/log helper.
 extern char g_szMcAppUiSourcePath_006950B0[];
 
+// Source-file path string ("D:\\Ambit\\McWindow.cpp") for CMcWindow's one-shot asserts,
+// and the gate read before the unknown-wParam 0x468 assert fires.
+extern char g_szMcWindowSourcePath_006950D8[];
+extern int g_nMcWindowStateMsgAssertGate_006A1C74;
+
 // Header path string ("D:\\Ambit\\McAppUI.h") passed with a line number to city-production
 // dialog assert/log helpers on the TControl branch.
 extern char g_szMcAppUiHeaderPath_006943CC[];
