@@ -269,14 +269,10 @@ void* g_pReusableQuickDrawSurfaceListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a7fac
 void* g_pGlobalCallback_006a7fac = nullptr;
 // GLOBAL: IMPERIALISM 0x006a2018
-// Cached copy of CCommandLineInfo::m_nShellCommand (cmdInfo+0x04, UINT enum).
-// NOT m_strFileName.m_pchData (CString at cmdInfo+0x08).
-// Writer: SetCachedAppShellCommand @ 0x0049cc40 from InitInstance @ 0x00412f81
-//   (MOV EDX,[ESP+0x20] with cmdInfo at [ESP+0x1c]).
-// Reader: WrapperFor_AllocateWithFallbackHandler_At0049cc60 @ 0x0049cc60 when != 0.
-// Enum: FileNew=0, FileOpen=1, FilePrint=2, FilePrintPreview=3, FilePageSetup=4,
-//       FileDDE=5, FileNothing=6.
-UINT g_cachedAppShellCommand = 0;
+// Cached CCommandLineInfo::m_bShowSplash flag (cmdInfo+0x04 after the CObject vptr).
+// Writer: SetCachedShowSplashFlag @ 0x0049cc40 from InitInstance @ 0x00412f81.
+// Reader: WrapperFor_AllocateWithFallbackHandler_At0049cc60 @ 0x0049cc60 when nonzero.
+BOOL g_cachedShowSplashFlag = FALSE;
 CRuntimeClass g_pClassDescTScopedMapQuickDrawContext2 = {nullptr, 0, 0, nullptr, nullptr};
 
 } // extern "C"

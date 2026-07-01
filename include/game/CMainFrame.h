@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/CDibPal.h"
 #include "game/mfc.h"
 
 // SDI main frame for ProcessShellCommand (CRuntimeClass @ 0x00648628, m_lpszClassName
@@ -33,9 +34,9 @@ public:
   void ConfigureTopLevelWindowStyleAndPlacement(int width, int height);
   int TryRealizeViewPaletteAndInvalidateWindow();
 
-  CMainFrameRefTarget* field_BC;
+  CDibPal* field_BC;
   int field_C0;
-  CMainFrameRefTarget* field_C4;
+  CObject* field_C4;
   int field_CC;
 };
 

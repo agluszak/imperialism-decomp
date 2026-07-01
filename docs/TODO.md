@@ -16,7 +16,7 @@ Current recovered surface:
 - Object size: `0x40`; important fields: `CWnd::m_hWnd` at `+0x1c`, backdrop BMP
   handle at `+0x3c`.
 - Guarded creator: `WrapperFor_AllocateWithFallbackHandler_At0049cc60` @ `0x49cc60`
-  (reads `g_cachedAppShellCommand`; see `docs/reference/initinstance-port-plan.md`).
+  (reads `g_cachedShowSplashFlag`; see `docs/reference/initinstance-port-plan.md`).
 - Inner init: `CreateGlobalBackdropWindowWithDefaultBmp3B6` @ `0x49cca0`.
 - Input refresh/destroy path: `RefreshBackdropOnInputMessages` @ `0x49cdf0`
   (slot `0x18` / `CWnd::DestroyWindow` in the observed window flow).
@@ -25,12 +25,12 @@ Current recovered surface:
 - Teardown/reveal path: `TBackdropWindow::PostNcDestroy` @ `0x49cfa0` (retail vtable
   slot `0x2b` ILT → this body).
 - Globals: `DAT_006a2050` (backdrop `TBackdropWindow*`), temp map/wait-cursor buffer
-  `DAT_006a2054`, cached shell command `g_cachedAppShellCommand` @ `0x006a2018`
-  (`CCommandLineInfo::m_nShellCommand` as `UINT` enum — **not** a filename pointer).
+  `DAT_006a2054`, cached splash flag `g_cachedShowSplashFlag` @ `0x006a2018`
+  (`CCommandLineInfo::m_bShowSplash` as `BOOL` — **not** a filename pointer or shell command).
 
 Completed (2026-06-30):
-- ~~Model `DAT_006a2018`~~ — **done:** `g_cachedAppShellCommand` +
-   `SetCachedAppShellCommand` @ `0x49cc40`; guarded creator @ `0x49cc60`. Semantics
+- ~~Model `DAT_006a2018`~~ — **done:** `g_cachedShowSplashFlag` +
+   `SetCachedShowSplashFlag` @ `0x49cc40`; guarded creator @ `0x49cc60`. Semantics
    documented in source (`global_data_tables.cpp`, `ImperialismApp.cpp`).
 - ~~Confirm the visible-window path in `just debug`~~ — **done** (backdrop window exists).
 - Wired teardown trigger in source: `PostNcDestroy` @ `0x49cfa0` (59.77%), `OnCreate` @ `0x49d090` (50%),

@@ -1227,14 +1227,6 @@ undefined4 WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0(vo
   return 0;
 }
 
-// ghidra_name TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6
-// ghidra_proto undefined ResolveBmpResourceHandleWithDefault3B6()
-// FUNCTION: IMPERIALISM 0x004995c0
-undefined4 ResolveBmpResourceHandleWithDefault3B6(void)
-{
-  return 0;
-}
-
 // ghidra_name AllocateAndLinkBlockHeadPair_00499e80
 // ghidra_proto undefined AllocateAndLinkBlockHeadPair_00499e80()
 // FUNCTION: IMPERIALISM 0x00499e80

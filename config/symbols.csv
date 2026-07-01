@@ -1373,7 +1373,7 @@ address|name|symbol|size|type|prototype
 49cbc0|TBackdropWindow::`scalar deleting destructor'||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0()
 49cbf0|TBackdropWindow::~TBackdropWindow||21|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl()
 49cc20|OrphanVtableAssignStub_0049cc20||6|function|undefined OrphanVtableAssignStub_0049cc20()
-49cc40|SetCachedAppShellCommand||10|function|undefined SetCachedAppShellCommand()
+49cc40|SetCachedShowSplashFlag||10|function|void SetCachedShowSplashFlag(BOOL showSplash)
 49cc60|WrapperFor_AllocateWithFallbackHandler_At0049cc60||1|function|undefined WrapperFor_AllocateWithFallbackHandler_At0049cc60()
 49cca0|CreateGlobalBackdropWindowWithDefaultBmp3B6||243|function|undefined InitializeGlobalBackdropWindowWithDefaultBmp3B6()
 49cdf0|RefreshBackdropOnInputMessages||123|function|undefined RefreshBackdropOnInputMessages()
@@ -9900,7 +9900,7 @@ address|name|symbol|size|type|prototype
 6a1da8|g_pGlobalClipRegionHandleObject|||global|
 6a1dac|g_pScopedMapQuickDrawViewContext|||global|
 6a1db4|g_bQuickDrawStrokePairDirty|||global|
-6a2018|g_cachedAppShellCommand|||global|
+6a2018|g_cachedShowSplashFlag|||global|
 6a20f8|g_pLocalizationTable|||global|
 6a2148|g_pUiViewManager|||global|
 6a2158|g_pDisplayMgr|||global|

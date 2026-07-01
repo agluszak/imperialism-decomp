@@ -109,9 +109,7 @@ BOOL ImperialismApp::InitInstance() {
     }
     PostMessageA(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
 
-    // cmdInfo.m_nShellCommand is CCommandLineInfo+0x04 (UINT enum, not m_strFileName).
-    // Cached for backdrop guard @ 0x0049cc60 — see g_cachedAppShellCommand in global_data_tables.h.
-    SetCachedAppShellCommand(cmdInfo.m_nShellCommand);
+    SetCachedShowSplashFlag(cmdInfo.m_bShowSplash);
 
     CSingleDocTemplate* pDocTemplate =
         new CSingleDocTemplate(0x80, RUNTIME_CLASS(CAmbitDocument), RUNTIME_CLASS(CMainFrame),

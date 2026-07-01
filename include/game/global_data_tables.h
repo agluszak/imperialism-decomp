@@ -126,8 +126,8 @@ extern double DAT_0066fad0;
 extern char g_pClassDescTStratReportView;
 extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
 extern void* g_pGlobalCallback_006a7fac;
-// Cached CCommandLineInfo::m_nShellCommand (cmdInfo+0x04, UINT enum — not m_strFileName).
-extern UINT g_cachedAppShellCommand;
+// Cached CCommandLineInfo::m_bShowSplash (cmdInfo+0x04), not m_nShellCommand.
+extern BOOL g_cachedShowSplashFlag;
 extern TBackdropWindow* DAT_006a2050;
 extern void* DAT_006a2054;
 extern LPCSTR g_apFontFiles[];

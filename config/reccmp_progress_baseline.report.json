@@ -2686,13 +2686,13 @@
     },
     {
       "address": "0x484ff0",
-      "matching": 0.6938775510204082,
+      "matching": 0.7074829931972789,
       "name": "TryRealizeViewPaletteAndInvalidateWindow",
       "type": 1
     },
     {
       "address": "0x485180",
-      "matching": 0.7,
+      "matching": 1.0,
       "name": "TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl",
       "type": 1
     },
@@ -6325,7 +6325,7 @@
     },
     {
       "address": "0x4995c0",
-      "matching": 0.024096385542168676,
+      "matching": 0.23076923076923078,
       "name": "TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6",
       "type": 1
     },
@@ -6674,7 +6674,7 @@
     {
       "address": "0x49cc40",
       "matching": 1.0,
-      "name": "SetCachedAppShellCommand",
+      "name": "SetCachedShowSplashFlag",
       "type": 1
     },
     {
@@ -15890,7 +15890,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20636363636363636,
+      "matching": 0.2081818181818182,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },

@@ -159,9 +159,8 @@ GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized()
 }
 
 // FUNCTION: IMPERIALISM 0x0049cc40
-void SetCachedAppShellCommand(UINT shellCommand) {
-  // Stores cmdInfo.m_nShellCommand — see g_cachedAppShellCommand @ 0x006a2018.
-  g_cachedAppShellCommand = shellCommand;
+void SetCachedShowSplashFlag(BOOL showSplash) {
+  g_cachedShowSplashFlag = showSplash;
 }
 
 // FUNCTION: IMPERIALISM 0x0049ded0

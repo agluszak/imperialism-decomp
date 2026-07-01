@@ -50,6 +50,9 @@ public:
   // Cached bitmap-surface lookup/load by resource id (primary + slot modules). 0x004997e0
   CDib* LoadBmpResourceByIdCached(unsigned short bmpId);
 
+  // Lazily build and return the shared palette from backdrop bitmap 0x3b6. 0x004995c0
+  CDibPal* EnsureDefaultDibPalette();
+
   // Build an indexed 8-bit CDib fallback and cache it by resource id. 0x00499b40
   CDib* BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode);
 

@@ -89,6 +89,20 @@ void TModuleLibraryCacheTableStateB::LoadUiStringResourceByGroupAndIndex(CString
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004995c0
+CDibPal* TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette() {
+  if (m_dibPalette == NULL) {
+    CDib* paletteDib = LoadBmpResourceByIdCached(0x3b6);
+    m_dibPalette = new CDibPal();
+    if (m_dibPalette != NULL && paletteDib != NULL) {
+      m_dibPalette->BuildPaletteFromBitmapColorTable(paletteDib);
+    }
+    ReleaseRecordById(0x3b6);
+  }
+
+  return m_dibPalette;
+}
+
 // FUNCTION: IMPERIALISM 0x004997e0
 CDib* TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached(unsigned short bmpId) {
   CacheRecord* record = NULL;
