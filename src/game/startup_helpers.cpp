@@ -2,6 +2,7 @@
 
 #include "game/app_init_globals.h"
 
+#include "game/CIncludeView.h"
 #include "game/ImperialismApp.h"
 #include "game/TAmbitApplication.h"
 #include "game/TAssetMgr.h"
@@ -24,21 +25,14 @@ namespace {
 
 const unsigned int kAddrDecimalFormat = 0x0069430c;
 
-void* GetObjectValueAtOffset98(void* object) {
-  if (object == nullptr) {
-    return nullptr;
-  }
-  return *reinterpret_cast<void**>(reinterpret_cast<char*>(object) + 0x98);
-}
-
-void* GetMainContextFromActiveThread() {
+CFrameWnd* GetMainFrameFromActiveThread() {
   CWinThread* thread = AfxGetThread();
   if (thread == nullptr) {
     return nullptr;
   }
   // Original calls CWinThread vtable slot +0x7c; m_pMainWnd is the recovered host until that
-  // virtual is promoted onto CWinThread.
-  return thread->m_pMainWnd;
+  // virtual is promoted onto CWinThread. The SDI main frame is always a CFrameWnd here.
+  return static_cast<CFrameWnd*>(thread->m_pMainWnd);
 }
 
 void InvokeLoadUiStringResourceByGroupAndIndex(CString* dest, int group, int index) {
@@ -92,8 +86,12 @@ int QueryFreeDiskMegabytesOnWindowsVolume(LPCSTR windowsDirectory) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00412a70
-void* GetMainViewHostFromActiveThread() {
-  return GetObjectValueAtOffset98(GetMainContextFromActiveThread());
+CIncludeView* GetMainViewHostFromActiveThread() {
+  CFrameWnd* mainFrame = GetMainFrameFromActiveThread();
+  if (mainFrame == nullptr) {
+    return nullptr;
+  }
+  return static_cast<CIncludeView*>(mainFrame->GetActiveView());
 }
 
 // FUNCTION: IMPERIALISM 0x00415760
@@ -131,18 +129,6 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
   }
   dialog.UpdateData(FALSE);
   return dialog.FinalizeModalDialogAndRestoreOwnerFocus() == 1 ? TRUE : FALSE;
-}
-
-// FUNCTION: IMPERIALISM 0x00483340
-void SetUiRuntimeContextAndActivateMain(TView* mainViewHost, TView* activeDialog) {
-  if (mainViewHost == nullptr) {
-    return;
-  }
-  mainViewHost->uiResourceContext40 = activeDialog;
-  mainViewHost->PropagateUiResourceContextRecursive(reinterpret_cast<CWnd*>(mainViewHost));
-  if (activeDialog != nullptr) {
-    activeDialog->ResolveControlByTag(0x6d61696e);
-  }
 }
 
 // FUNCTION: IMPERIALISM 0x00497230

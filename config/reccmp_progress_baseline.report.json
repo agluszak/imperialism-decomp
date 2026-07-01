@@ -284,7 +284,7 @@
     },
     {
       "address": "0x412a70",
-      "matching": 0.0,
+      "matching": 0.23529411764705882,
       "name": "GetMainViewHostFromActiveThread",
       "type": 1
     },
@@ -350,7 +350,7 @@
     },
     {
       "address": "0x412dc0",
-      "matching": 0.46808510638297873,
+      "matching": 0.46885245901639344,
       "name": "InitializeImperialismApplicationInstance",
       "type": 1
     },
@@ -2542,7 +2542,7 @@
     },
     {
       "address": "0x483340",
-      "matching": 0.35714285714285715,
+      "matching": 0.5,
       "name": "SetUiRuntimeContextAndActivateMain",
       "type": 1
     },
@@ -4756,7 +4756,7 @@
     },
     {
       "address": "0x48d670",
-      "matching": 0.2085889570552147,
+      "matching": 0.19631901840490798,
       "name": "DestructTWindowViewAndUnlinkGlobalLists",
       "type": 1
     },
@@ -4786,13 +4786,13 @@
     },
     {
       "address": "0x48d9c0",
-      "matching": 0.9230769230769231,
+      "matching": 0.7692307692307693,
       "name": "TWindow::SetWindowText",
       "type": 1
     },
     {
       "address": "0x48d9f0",
-      "matching": 0.9090909090909091,
+      "matching": 0.7272727272727273,
       "name": "TWindow::GetWindowText",
       "type": 1
     },
@@ -4810,7 +4810,7 @@
     },
     {
       "address": "0x48da60",
-      "matching": 0.37073170731707317,
+      "matching": 0.35121951219512193,
       "name": "TWindow::ExecuteViewModalStateWithPushPopChain",
       "type": 1
     },
@@ -5345,7 +5345,7 @@
     },
     {
       "address": "0x4911c0",
-      "matching": 1.0,
+      "matching": 0.96875,
       "name": "TNumberText::UpdateControlCachedIntFromWindowText",
       "type": 1
     },
@@ -12008,7 +12008,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12452,13 +12452,13 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -15890,7 +15890,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20636363636363636,
+      "matching": 0.20454545454545456,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16718,7 +16718,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.34382566585956414,
+      "matching": 0.32038834951456313,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -36801,12 +36801,6 @@
       "type": 1
     },
     {
-      "address": "0x6073b4",
-      "matching": 0.32,
-      "name": "CMcWindow::SetWindowTextOrDelegateToOwner",
-      "type": 1
-    },
-    {
       "address": "0x607469",
       "matching": 1.0,
       "name": "CWnd::MoveWindow",
@@ -36828,12 +36822,6 @@
       "address": "0x607520",
       "matching": 0.18181818181818182,
       "name": "IsWindowEnabled",
-      "type": 1
-    },
-    {
-      "address": "0x60753b",
-      "matching": 0.32,
-      "name": "CMcWindow::EnableWindowOrDelegateToOwner",
       "type": 1
     },
     {
@@ -37068,12 +37056,6 @@
       "address": "0x60852e",
       "matching": 0.0,
       "name": "AssignSharedStringFromField84",
-      "type": 1
-    },
-    {
-      "address": "0x60859f",
-      "matching": 0.14285714285714285,
-      "name": "CMcWindow::GetWindowTextOrDelegateToOwner",
       "type": 1
     },
     {

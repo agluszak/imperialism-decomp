@@ -179,7 +179,7 @@ address|target_cpp|ownership|note
 47e3c0|src/game/CDibPal.cpp|manual|marker_sync
 47e440|src/game/CDibPal.cpp|manual|marker_sync
 480850|src/game/TWNetSessionManager.cpp|manual|marker_sync
-483340|src/game/startup_helpers.cpp|manual|marker_sync
+483340|src/game/CIncludeView.cpp|manual|marker_sync
 484990|src/game/TObject.cpp|manual|marker_sync
 484af0|src/game/CMainFrame.cpp|manual|marker_sync
 484bf0|src/game/CMainFrame.cpp|manual|marker_sync
@@ -4120,10 +4120,10 @@ address|target_cpp|ownership|note
 607296|src/game/library_msvc500_fid.cpp|library|marker_sync
 6072e5|src/game/library_msvc500_fid.cpp|library|marker_sync
 607332|src/game/library_msvc500_fid.cpp|library|marker_sync
-6073b4|src/game/CMcWindow.cpp|manual|marker_sync
+6073b4|src/game/MfcRuntime.cpp|library|marker_sync
 607469|src/game/library_msvc500_fid.cpp|library|marker_sync
 6074f9|src/game/library_msvc500_fid.cpp|library|marker_sync
-60753b|src/game/CMcWindow.cpp|manual|marker_sync
+60753b|src/game/MfcRuntime.cpp|library|marker_sync
 607562|src/game/library_msvc500_fid.cpp|library|marker_sync
 6075ea|src/game/library_msvc500_fid.cpp|library|marker_sync
 607643|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -4167,7 +4167,7 @@ address|target_cpp|ownership|note
 608467|src/game/library_msvc500_fid.cpp|library|marker_sync
 6084b2|src/game/library_msvc500_fid.cpp|library|marker_sync
 6084d1|src/game/library_msvc500_fid.cpp|library|marker_sync
-60859f|src/game/CMcWindow.cpp|manual|marker_sync
+60859f|src/game/MfcRuntime.cpp|library|marker_sync
 6086c2|src/game/library_msvc500_fid.cpp|library|marker_sync
 60870c|src/game/library_msvc500_fid.cpp|library|marker_sync
 608737|src/game/library_msvc500_fid.cpp|library|marker_sync

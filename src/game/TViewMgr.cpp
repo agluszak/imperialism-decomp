@@ -47,6 +47,7 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 // holds the active main TView used as the dispatch root for turn-event UI refreshes.
 
 #include "game/startup_helpers.h"
+#include "game/CIncludeView.h"
 
 // Free-function thunks reached through the ILT jump table; declared in the generic
 // repo form and invoked through typed __cdecl casts at the callsites.
@@ -547,9 +548,9 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* o
   g_pDisplayMgr->activeDialog->QueryBounds(&mainBounds);
   (void)mainBounds; // original makes the call but discards the result
 
-  char* afxWindow = reinterpret_cast<char*>(GetMainViewHostFromActiveThread());
+  CIncludeView* mainView = GetMainViewHostFromActiveThread();
   RECT clientRect;
-  GetClientRect(*reinterpret_cast<HWND*>(afxWindow + 0x1c), &clientRect);
+  GetClientRect(mainView->m_hWnd, &clientRect);
 
   RECT dialogBounds;
   dialogView->QueryBounds(&dialogBounds);

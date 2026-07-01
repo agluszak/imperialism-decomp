@@ -9,11 +9,12 @@ class TWindow;
 // the inherited CWnd::m_hWnd (+0x1c), and CreateMcWindowFromDescriptorAndShow installs
 // the CMcWindow vtable (0x0064b7c8) and backrefs the owning TWindow at +0x3c.
 //
-// The three text/enable helpers below reimplement the corresponding CWnd operations:
-// when the inherited control-site pointer (CWnd::m_pCtrlSite, +0x38) is null they drive
-// the HWND through the Win32 API, otherwise they let the active control site handle it.
-// They are ordinary (non-virtual) thiscall methods invoked directly by address, so this
-// class deliberately models no new vtable yet (vtable recovery is separate work).
+// The "text/enable OrDelegateToOwner" helpers that used to live here (0x006073b4,
+// 0x0060753b, 0x0060859f) are the real MFC library CWnd::SetWindowText/EnableWindow/
+// GetWindowText(CString&) (nafxcw.lib, OCC-support build) — verified against MFC source
+// (winocc.cpp): they read the inherited CWnd::m_pCtrlSite directly and are called on
+// CIncludeView receivers too, not just CMcWindow. See MfcRuntime.cpp for the
+// `// LIBRARY:` markers; callers now use the real inherited CWnd methods directly.
 class CMcWindow : public CWnd {
 public:
   DECLARE_DYNCREATE(CMcWindow) // GetRuntimeClass slot 0x00; classCMcWindow @ 0x0064b5d0
@@ -21,10 +22,6 @@ public:
   // derives the CreateEx window style from the descriptor's type code, then drives the
   // MFC CreateEx/SetWindowPos/BringWindowToTop window-creation surface.
   explicit CMcWindow(TWindow* descriptor = NULL);
-
-  void SetWindowTextOrDelegateToOwner(const char* text); // 0x006073b4
-  void GetWindowTextOrDelegateToOwner(CString* out);     // 0x0060859f
-  void EnableWindowOrDelegateToOwner(int enable);        // 0x0060753b
 
   // +0x3c — backref to the owning TWindow, installed by
   // CreateMcWindowFromDescriptorAndShow and cleared during TWindow::Free. Sits

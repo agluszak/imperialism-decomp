@@ -40,7 +40,7 @@ void TNumberText::SetControlValue(int val, int refresh) {
 int TNumberText::UpdateControlCachedIntFromWindowText() {
   if (this->field_94 != nullptr) {
     CString textVal;
-    this->field_94->GetWindowTextOrDelegateToOwner(&textVal);
+    this->field_94->GetWindowText(textVal);
     this->value = atoi(textVal);
   }
   return this->value;
