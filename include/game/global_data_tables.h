@@ -247,6 +247,7 @@ extern TSelectedCivilianOrderState* g_pSelectedCivilianOrderState;
 extern TSoundPlayer* g_pSfxPlaybackSystem;
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 extern TApplication* g_pApplicationUiRootController;
+extern int g_turnEventDialogAnchorPoint[2];
 extern CPtrList g_LiveViewRegistry;
 extern CPtrList g_ModalViewStack;
 

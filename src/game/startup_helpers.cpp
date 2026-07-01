@@ -138,7 +138,7 @@ void SetUiRuntimeContextAndActivateMain(TView* mainViewHost, TView* activeDialog
   if (mainViewHost == nullptr) {
     return;
   }
-  *reinterpret_cast<TView**>(reinterpret_cast<char*>(mainViewHost) + 0x40) = activeDialog;
+  mainViewHost->uiResourceContext40 = activeDialog;
   mainViewHost->PropagateUiResourceContextRecursive(reinterpret_cast<CWnd*>(mainViewHost));
   if (activeDialog != nullptr) {
     activeDialog->ResolveControlByTag(0x6d61696e);

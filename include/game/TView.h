@@ -23,7 +23,15 @@ public:
   int field34;
   int field38;
   int field3c;
-  unsigned char padding_40_to_43[0x04];
+  // TODO(class-recovery): offset +0x40 has at least two observed meanings. Startup and
+  // TIncludeView treat it as a TView* UI-resource context, while TModalTemplateDialogBase
+  // uses the same inherited slot as a dialog resource-template id. Verify whether one
+  // path is misclassified, or whether the common base should stop owning this slot once
+  // the affected subclasses are split more precisely.
+  union {
+    TView* uiResourceContext40;
+    int resourceTemplateId40;
+  };
   CPtrList* childList44; // 0x44 — child-control list (CObList/CPtrList)
   int* field48;
   unsigned char flag4c;
@@ -36,9 +44,9 @@ public:
   int field5c;
 
   TView();
-  void InitializeUiResourceEntryFrameAndParent(int ownerContext, TControl* panel, int* offsetLayout,
-                                               int* sizeLayout, int layoutParam6, int layoutParam7,
-                                               int attachFlag);
+  void InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TControl* panel,
+                                               int* offsetLayout, int* sizeLayout, int layoutParam6,
+                                               int layoutParam7, int attachFlag);
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
   void CopyCityDialogStateFromSource(TView* source);
   void EnableAndProcessFlag(CString sharedString);

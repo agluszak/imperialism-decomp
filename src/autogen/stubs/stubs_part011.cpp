@@ -59,14 +59,6 @@ undefined4 DestructTScrollerAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name TControl::ConstructTurnEventUiEntryBase
-// ghidra_proto undefined ConstructTurnEventUiEntryBase()
-// FUNCTION: IMPERIALISM 0x0048cd70
-undefined4 ConstructTurnEventUiEntryBase(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTIncludeViewAndMaybeFree_Impl
 // ghidra_proto undefined DestructTIncludeViewAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0048ce70

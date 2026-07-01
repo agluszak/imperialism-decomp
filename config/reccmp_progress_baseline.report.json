@@ -4342,7 +4342,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -4672,8 +4672,8 @@
     },
     {
       "address": "0x48cd70",
-      "matching": 0.09090909090909091,
-      "name": "TControl::ConstructTurnEventUiEntryBase",
+      "matching": 0.5747126436781609,
+      "name": "TIncludeView::TIncludeView",
       "type": 1
     },
     {
@@ -4684,13 +4684,13 @@
     },
     {
       "address": "0x48cf10",
-      "matching": 0.045454545454545456,
-      "name": "TCViewOwnedBufferRegistryState_00648560::BuildTurnEventFactoryPacket",
+      "matching": 1.0,
+      "name": "TIncludeView::BuildTurnEventFactoryPacket",
       "type": 1
     },
     {
       "address": "0x48cfd0",
-      "matching": 0.041666666666666664,
+      "matching": 0.7047619047619048,
       "name": "TIncludeView::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -12470,7 +12470,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -15890,7 +15890,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2081818181818182,
+      "matching": 0.20636363636363636,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16718,7 +16718,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32038834951456313,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -32392,7 +32392,7 @@
     },
     {
       "address": "0x5d7240",
-      "matching": 0.20497512437810944,
+      "matching": 0.15904572564612326,
       "name": "LinkedListQueryOwner::DispatchGlobalTurnEventCode",
       "type": 1
     },

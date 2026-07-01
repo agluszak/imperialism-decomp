@@ -181,7 +181,7 @@ TView::~TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048aa60
-void TView::InitializeUiResourceEntryFrameAndParent(int ownerContext, TControl* panel,
+void TView::InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TControl* panel,
                                                     int* offsetLayout, int* sizeLayout,
                                                     int layoutParam6, int layoutParam7,
                                                     int attachFlag) {
@@ -201,7 +201,7 @@ void TView::InitializeUiResourceEntryFrameAndParent(int ownerContext, TControl* 
   if (panel != 0) {
     panel->AttachChildControl(this, attachFlag);
   }
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x40) = ownerContext;
+  uiResourceContext40 = ownerContext;
 }
 // Recursively dispatch a control event: walk the field44 child list, forward to each
 // child's slot-0x36, then invoke this view's own slot-0x37 handler.

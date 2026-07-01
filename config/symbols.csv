@@ -976,10 +976,10 @@ address|name|symbol|size|type|prototype
 48cbb0|TScroller::ConstructTScrollerBaseState||101|function|undefined ConstructTScrollerBaseState()
 48cc40|TScroller::DestructTScrollerAndMaybeFree||198|function|undefined DestructTScrollerAndMaybeFree()
 48cd50|TIncludeView::GetRuntimeClass||6|function|undefined GetTIncludeViewClassNamePointer()
-48cd70|TControl::ConstructTurnEventUiEntryBase||159|function|undefined ConstructTurnEventUiEntryBase()
+48cd70|TIncludeView::TIncludeView||159|function|undefined ConstructTurnEventUiEntryBase()
 48ce40|TIncludeView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()
 48ce70|DestructTIncludeViewAndMaybeFree_Impl||120|function|undefined DestructTIncludeViewAndMaybeFree_Impl()
-48cf10|TCViewOwnedBufferRegistryState_00648560::BuildTurnEventFactoryPacket||139|function|undefined BuildTurnEventFactoryPacket()
+48cf10|TIncludeView::BuildTurnEventFactoryPacket||139|function|undefined BuildTurnEventFactoryPacket()
 48cfd0|TIncludeView::NoOpUiLifecycleHook||142|function|void OrphanCallChain_C6_I49_004875d0(int * pEventPacket)
 48d090|TWindow::CreateTWindowInstance||310|function|undefined CreateTWindowInstance()
 48d220|TWindow::GetRuntimeClass||6|function|undefined GetTWindowClassNamePointer()
@@ -9872,6 +9872,7 @@ address|name|symbol|size|type|prototype
 6a1a70|g_McAppUiMouseCaptureLastPoint_006A1A70|||global|
 6a1a78|g_McAppUiMouseCaptureCurrentPoint_006A1A78|||global|
 6a1a80|g_McAppUiMouseCaptureControl_006A1A80|||global|
+6a1ab0|g_turnEventDialogAnchorPoint|||global|
 6a1adc|g_McAppUiMouseCaptureTimerId_006A1ADC|||global|
 6a1ae0|g_McAppUiFlag_006A1AE0|||global|
 6a1ae4|g_McAppUiFlag_006A1AE4|||global|

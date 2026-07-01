@@ -887,8 +887,8 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
 
   TIncludeView* packet = new TIncludeView();
   CString emptyText(g_szEmptyString);
-  void* factoryOut = nullptr;
-  packet->BuildTurnEventFactoryPacket(0, mainView, newCode, &factoryOut, &emptyText, 1);
+  int anchorPoint[2] = {0, 0};
+  packet->BuildTurnEventFactoryPacket(nullptr, mainView, newCode, anchorPoint, &emptyText, 1);
   packet->NoOpUiLifecycleHook(0);
   packet->controlTag = 0x496e636c; // 'Incl'
   packet->RefreshControl();

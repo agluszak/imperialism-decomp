@@ -478,6 +478,7 @@ address|target_cpp|ownership|note
 48ca20|src/game/TView.cpp|manual|marker_sync
 48ca40|src/game/TView.cpp|manual|marker_sync
 48cd50|src/game/TIncludeView.cpp|manual|mfc_runtime_macro
+48cd70|src/game/TIncludeView.cpp|manual|marker_sync
 48ce40|src/game/TIncludeView.cpp|manual|marker_sync
 48cf10|src/game/TIncludeView.cpp|manual|marker_sync
 48cfd0|src/game/TIncludeView.cpp|manual|marker_sync
