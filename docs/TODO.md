@@ -66,6 +66,54 @@ Current compare snapshot (2026-06-30): `0x49ce90`/`0x49cdf0`/`0x49d180` ~75%,
 Updated 2026-06-30: Wired teardown trigger in source; shape passes completed for all functions.
 All gates passing (vtable 100%, datacmp OK).
 
+### 2026-07-01 continuation: backdrop closes, main frame reveals, but stays blank
+
+The backdrop teardown documented above works and the main frame does reveal (maximized,
+2560x1440, confirmed via live X11 screenshot). The remaining gap is downstream of this
+section entirely: **nothing ever paints into the revealed main frame's client area.**
+Traced the full path this session; summary (see git log on branch
+`debug-window-asset-loading` for the fixes, and
+`src/game/turn_event_dialog_factory.cpp`'s `BuildStartupIntroBackground` for the
+in-progress port and its shortcut TODOs):
+
+1. **Fixed**: `TSimMgr::AdvanceGlobalTurnStateMachine`'s `turnStateCode==1` case
+   dispatched fabricated event codes (`0`/`0x5e4`) instead of the real ones
+   (`0x11f8`/`0x5dc`, verified against `0x0057da70`'s disassembly). Now dispatches the
+   correct `0x11f8` for a fresh single-player start.
+2. **Fixed**: `TSimMgr_AdvanceGlobalTurnStateMachine.cpp`, `TPicture.cpp` ctor,
+   `ClipStateRegion.cpp`'s `afxMapHIMAGELIST_6139c6`, and `quickdraw_rendering.cpp`'s
+   `g_pGlobalClipRegionHandleObject` init — three real crash bugs, all previously
+   unreachable because nothing had ever painted a real picture before. Real title bitmap
+   (0x11f7) now genuinely renders — confirmed via screenshot — but only into a separate
+   transient popup window, not the main frame.
+3. **Partially fixed**: forcing `nativeWindow50` onto the built tree via
+   `PropagateUiResourceContextRecursive(mainNativeWindow)` (a deviation from the
+   original's own `PropagateUiResourceContextRecursive(0)` call — see the TODO comment
+   in `BuildStartupIntroBackground`) makes the stray popup window disappear. **But the
+   main frame's client area still doesn't paint anything** — process is stable
+   (no crash), just blank.
+
+**Next concrete step — find the real repaint trigger.** `TIncludeView::NoOpUiLifecycleHook`
+(already ported, `src/game/TIncludeView.cpp`) ends with
+`SendMessageA(nativeWindow50->m_hWnd, 0x4ef, 1, 0)` after a dialog is built. This custom
+message (`0x4ef`) is presumed to be the real trigger that repaints newly-attached
+content, but **its handler has not been located** — grep the message maps
+(`ON_MESSAGE(0x4ef, ...)`) across `CMainFrame`/`CIncludeView`/`CMcWindow`, or trace it
+live with `winedbg` (`break SendMessageA`, filter for `wParam==0x4ef`, or set a
+conditional breakpoint on the target HWND's WindowProc). Confirmed **not** it:
+`TView::RefreshControl()` — it's gated by `g_McAppUiActiveFlag_006950AC`, which is
+deliberately `0` for the entire duration of
+`TTurnEventDialogFactoryRegistry::InvokeDialogFactoryFromPacket` (the caller of every
+dialog factory, including `BuildStartupIntroBackground`), so any refresh call made
+*from inside* a factory body is a guaranteed no-op by design — the real refresh must
+happen strictly after that flag is restored, i.e. from the caller's caller onward.
+
+Also still open: `BuildStartupIntroBackground` only ports 2 of (at least) 3 widgets
+the real `0x0043b1cb` case builds — a `TMovieView` (0x94 bytes, ctor `0x5e2230`) follows
+the background picture and was not traced. `TMovieView` itself
+(`src/game/TMovieView.cpp`) is still all-stub method bodies. Unknown whether it's
+load-bearing for this screen to display, or a secondary/overlay element.
+
 ## Game init & asset loading
 
 Goal: port the asset-loader functions that sit on top of the (already real)

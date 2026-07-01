@@ -38,12 +38,15 @@ void ResetQuickDrawStrokeState() {
   g_bQuickDrawStrokePairDirty = 1;
 }
 
-// The real owner (InitializeGlobalClipRegionHandleState, 0x494040) constructs a small
-// object (vtable @ 0x67106c + an HRGN member at +4) the first time the app needs a
-// cached hit-region handle, registers it via RegisterClipRegionHandle, and stores it
-// here. That owning class isn't modeled yet; lazily create just the HRGN this reader
-// actually needs so the (previously always-null, crash-on-first-paint) global gets a
-// real region instead of dereferencing offset+4 of a null pointer.
+// TODO(shortcut): the real owner (InitializeGlobalClipRegionHandleState, 0x494040)
+// constructs a small object (vtable @ 0x67106c + an HRGN member at +4) the first time
+// the app needs a cached hit-region handle, registers it via RegisterClipRegionHandle,
+// and stores it here. That owning class isn't modeled yet, so this lazily creates just
+// the HRGN this one reader needs instead of the real object — g_pGlobalClipRegionHandleObject
+// stays typed as a raw `int` (pre-existing, not introduced here) rather than a real
+// pointer, and nothing calls RegisterClipRegionHandle for it the way the real ctor
+// does. Fixes the crash (previously always-null, dereferenced offset+4 of a null
+// pointer on first paint) but is not a full port of InitializeGlobalClipRegionHandleState.
 static int* EnsureGlobalClipRegionHandleObject() {
   if (g_pGlobalClipRegionHandleObject == 0) {
     static int s_clipRegionHandleObject[2] = {0, 0};

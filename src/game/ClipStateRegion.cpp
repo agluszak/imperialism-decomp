@@ -142,12 +142,14 @@ int IntersectRectWrapper(RECT* src1, RECT* src2, RECT* dst) {
   return IntersectRect(dst, src1, src2);
 }
 
-// Real behavior is a lazily-constructed CMapPtrToPtr cached on the current thread's
-// AFX module-thread-state (AfxGetModuleThreadState()+0x20 in the original). That state
-// struct's layout isn't modeled here, and this map is only ever touched from the UI
-// thread, so a single process-wide lazy singleton is behaviorally equivalent for this
-// single-threaded game. Was an unported stub (returned null unconditionally), which
-// crashed the first time a real clip region was registered.
+// TODO(shortcut): real behavior is a lazily-constructed CMapPtrToPtr cached on the
+// current thread's AFX module-thread-state (AfxGetModuleThreadState()+0x20 in the
+// original). That state struct's layout isn't modeled here, so this is a process-wide
+// lazy singleton instead of a proper per-thread-state one — behaviorally equivalent
+// only as long as this map is never touched from more than one thread (true today: the
+// game is single-threaded UI-wise). Revisit if a second thread ever needs a clip
+// region. Was an unported stub (returned null unconditionally), which crashed the
+// first time a real clip region was registered.
 // FUNCTION: IMPERIALISM 0x006139c6
 static CMapPtrToPtr* afxMapHIMAGELIST_6139c6() {
   static CMapPtrToPtr* s_map = nullptr;

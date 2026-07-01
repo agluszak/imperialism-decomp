@@ -196,6 +196,15 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
+  // TODO(shortcut): this case has an *unverified, likely* bug, spotted but not fixed
+  // (ran out of session time to re-verify field offsets before touching it). The real
+  // disassembly around 0x0057db61-0x57db8b looked like it has the condition inverted
+  // (dispatch only when field34>=2 && stateFlag114==0, i.e. opposite of what's modeled
+  // below) and dispatches a different event code (0x3b8, not 0x5e4) with the arguments
+  // in (code, activeNationSlot) order rather than (activeNationSlot, code) — the same
+  // swap pattern that was confirmed and fixed in case 1 above. Re-verify against
+  // `just ghidra-listing 0x0057da70` before changing; do not just swap the args again
+  // without re-checking the condition too, this one wasn't fully traced through.
   case 3:
     turnStateCode = 2;
     if (field112 != 0) {
