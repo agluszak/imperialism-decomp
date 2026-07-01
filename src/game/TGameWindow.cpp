@@ -238,34 +238,29 @@ void TGameWindow::ForwardParam(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x00500160
-undefined TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
-  if (g_pDisplayMgr != 0 &&
-      *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pDisplayMgr) + 0xe) == 0x7d1) {
+void TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
+  if (g_pDisplayMgr->eventCode0e == 0x7d1) {
     RECT boundsRect;
-    CaptureLayoutF0(reinterpret_cast<int*>(&boundsRect), 0);
+    QueryBounds(&boundsRect);
     GlobalViewportRectDefaultsRecord** rectDefaultsHandle =
         InitializeGlobalRectDefaultsIfUninitialized();
     GlobalViewportRectDefaultsRecord* rectRecord = *rectDefaultsHandle;
     RECT globalRect;
     CopyRect(&globalRect, reinterpret_cast<RECT*>(&rectRecord->left));
+    boundsRect.left = globalRect.left;
     boundsRect.top = globalRect.top;
-    boundsRect.bottom = globalRect.bottom;
     boundsRect.right = globalRect.right;
+    boundsRect.bottom = globalRect.bottom;
     ApplyBounds(&boundsRect, 1);
   }
   NoOpTurnOrderNavigationVtableSlotA();
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00500200
-undefined TGameWindow::NoOpTurnOrderNavigationVtableSlotA() {
-  return 0;
-}
+void TGameWindow::NoOpTurnOrderNavigationVtableSlotA() {}
 
 // FUNCTION: IMPERIALISM 0x00500220
-undefined TGameWindow::NoOpTurnOrderNavigationVtableSlotB() {
-  return 0;
-}
+void TGameWindow::NoOpTurnOrderNavigationVtableSlotB() {}
 
 // FUNCTION: IMPERIALISM 0x00500240
 void TGameWindow::Free() {

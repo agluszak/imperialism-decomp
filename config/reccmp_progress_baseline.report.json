@@ -15092,19 +15092,19 @@
     },
     {
       "address": "0x500160",
-      "matching": 0.4810126582278481,
+      "matching": 1.0,
       "name": "TGameWindow::UpdateTurnOrderNavigationWindowLayout",
       "type": 1
     },
     {
       "address": "0x500200",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TGameWindow::NoOpTurnOrderNavigationVtableSlotA",
       "type": 1
     },
     {
       "address": "0x500220",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TGameWindow::NoOpTurnOrderNavigationVtableSlotB",
       "type": 1
     },

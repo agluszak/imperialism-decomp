@@ -13,20 +13,20 @@ public:
   virtual void Free() override;
   virtual void ForwardParam(int param) override;
   virtual void DispatchSlot9CToLinkedChildren() override;
-  virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
-                                             int arg4) override;
+  virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
                                                          int arg4) override;
-  virtual undefined UpdateTurnOrderNavigationWindowLayout();
-  virtual undefined NoOpTurnOrderNavigationVtableSlotA();
-  virtual undefined NoOpTurnOrderNavigationVtableSlotB();
+  virtual void UpdateTurnOrderNavigationWindowLayout();
+  virtual void NoOpTurnOrderNavigationVtableSlotA();
+  virtual void NoOpTurnOrderNavigationVtableSlotB();
 
   unsigned char turnNavTail[0x1e4 - 0xa0];
 
   TGameWindow();
 };
 
-// === BEGIN GENERATED (TGameWindow) — refreshed by `just gen-class TGameWindow`; do not hand-edit ===
+// === BEGIN GENERATED (TGameWindow) — refreshed by `just gen-class TGameWindow`; do not hand-edit
+// ===
 // clang-format off
 // vtable @ 0x00656a98 (122 slots), object size 0x1e4, base TWindow
 //   slot 0x00  byte 0x00  0x004ffbf0  override  GetTEventHandlerClassNamePointer
