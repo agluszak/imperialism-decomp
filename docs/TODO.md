@@ -423,3 +423,11 @@ calls slot 0x1cc with no argument pushes; `TCivReport` and
 `TCombatReportView` both return with `RET 0x4`. `just build` passed, and
 filtered `just vtable` checks for `TPictureButton`, `TUpDownPictureButton`,
 `TCivReport`, and `TCombatReportView` were 100%.
+
+## Class-size mismatches found by `just class-size-check` (2026-07-02)
+
+The RTTI oracle contradicts two modeled layouts (both missing 0x10 bytes):
+- `TArmyMission`: ASSERT_SIZE 0x20 vs RTTI 0x30 (include/game/TArmyMission.h)
+- `TMinor`: ASSERT_SIZE 0x2cc vs RTTI 0x2dc (include/game/TMinor.h)
+Fix via class recovery (fields exist in the binary that the model lacks), then
+promote `class-size-check --strict` into `just gates`.

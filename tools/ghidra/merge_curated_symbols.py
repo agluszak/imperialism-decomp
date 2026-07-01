@@ -111,6 +111,11 @@ def merge_curated_symbols_csv(
             out_rows.append(row)
             continue
         addr = int(addr_text, 16)
+        if addr in merged_addrs:
+            # The Ghidra export can carry two symbols at one address (e.g. a label
+            # and a data symbol); every downstream consumer keys rows by address,
+            # so keep only the first.
+            continue
         merged_addrs.add(addr)
         merged = dict(row)
         curated = curated_by_addr.get(addr)

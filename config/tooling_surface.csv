@@ -73,3 +73,5 @@ module|tools.ghidra.rtti_class_oracle|just:rtti-oracle|Walk MFC CRuntimeClass de
 module|tools.ghidra.search_whole_binary|just:ghidra-search|Whole-binary text/dword search for handler hunting
 module|tools.workflow.check_symbols_integrity|just:symbols-integrity-gate|Structural integrity of config/symbols.csv
 module|tools.ghidra.linear_disasm|just:ghidra-linear-disasm|Linear disassembly by address ignoring Ghidra function boundaries
+module|tools.workflow.check_class_sizes|just:class-size-check|Modeled class sizes vs RTTI oracle object_size
+module|tools.ghidra.repair_code_gaps|just:repair-code-gaps|Create missing Ghidra functions at vtable/ILT/symbols targets

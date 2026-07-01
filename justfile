@@ -145,6 +145,19 @@ ghidra-raw-disasm *args: _require-ghidra-install
 rtti-oracle *args: _require-ghidra-install
   uv run python -m tools.ghidra.rtti_class_oracle {{args}}
 
+# Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
+# m_nObjectSize. Report-only; pass --strict to fail on mismatches, or
+# --show-unasserted to list oracle classes with no size assert yet.
+class-size-check *args:
+  uv run python -m tools.workflow.check_class_sizes {{args}}
+
+# Define real functions Ghidra never created (vtable slot targets, ILT jmp
+# targets, symbols.csv rows). Dry-run by default; --apply writes + saves the DB.
+# See docs/ghidra-db-mutations.md before applying: the post-apply sync-ghidra
+# needs the ILT thunk-range handled or vtable resolution collapses.
+repair-code-gaps *args: _require-ghidra-install
+  uv run python -m tools.ghidra.repair_code_gaps {{args}}
+
 # Decompile benchmark gate: must-keep patterns for curated Ghidra typing work.
 # Pass --strict to also fail on missing should-improve patterns.
 ghidra-decomp-check *args: _require-ghidra-install

@@ -29,7 +29,7 @@ import sys
 from tools.common import ghidra_env
 
 IMAGE_BASE = 0x400000
-CODE_LO, CODE_HI = 0x401000, 0x640000
+CODE_LO, CODE_HI = 0x401000, 0x640000  # also bounds the GetRuntimeClass byte scan
 DATA_LO, DATA_HI = 0x630000, 0x6b0000
 
 
@@ -152,21 +152,49 @@ def main() -> int:
                 pass
             return addr
 
+        # GetRuntimeClass bodies are `MOV EAX, <descriptor>; RET` (B8 xx xx xx xx C3):
+        # find each descriptor's unique hit in the code range (0 = none, -1 = ambiguous).
+        import jpype
+
+        monitor = jpype.JClass("ghidra.util.task.TaskMonitor").DUMMY
+        JByte = jpype.JArray(jpype.JByte)
+
+        def find_getruntimeclass(descriptor: int) -> int:
+            patt = bytes([0xB8]) + descriptor.to_bytes(4, "little") + bytes([0xC3])
+            pattern = JByte(6)
+            for i, b in enumerate(patt):
+                pattern[i] = jpype.JByte(b if b < 128 else b - 256)
+            hits = []
+            addr = af.getAddress(CODE_LO)
+            end = af.getAddress(CODE_HI)
+            while True:
+                found = mem.findBytes(addr, end, pattern, None, True, monitor)
+                if found is None:
+                    break
+                hits.append(found.getOffset())
+                if len(hits) > 1:
+                    return -1
+                addr = found.add(1)
+            return hits[0] if hits else 0
+
         rows = []
         for addr in sorted(keep):
             d = keep[addr]
             base_name = keep.get(d["base"], {}).get("name", "") if d["base"] else ""
             rows.append((addr, d["name"], d["size"], d["schema"],
-                         d["pfn"], resolve_thunk(d["pfn"]), d["base"], base_name))
+                         d["pfn"], resolve_thunk(d["pfn"]), d["base"], base_name,
+                         find_getruntimeclass(addr)))
 
         if as_csv:
-            print("descriptor,name,object_size,schema,createobject_thunk,createobject,base_descriptor,base_name")
+            print("descriptor,name,object_size,schema,createobject_thunk,createobject,base_descriptor,base_name,getruntimeclass")
             for r in rows:
-                print(f"{r[0]:#x},{r[1]},{r[2]:#x},{r[3]:#x},{r[4]:#x},{r[5]:#x},{r[6]:#x},{r[7]}")
+                print(f"{r[0]:#x},{r[1]},{r[2]:#x},{r[3]:#x},{r[4]:#x},{r[5]:#x},{r[6]:#x},{r[7]},{r[8]:#x}")
         else:
             for r in rows:
                 pfn = f"{r[4]:#x}->{r[5]:#x}" if r[4] else "-"
-                print(f"{r[0]:#010x}  {r[1]:<36} size={r[2]:<#8x} create={pfn:<22} base={r[7] or '-'}")
+                grc = f"{r[8]:#x}" if r[8] > 0 else ("multi" if r[8] < 0 else "-")
+                print(f"{r[0]:#010x}  {r[1]:<36} size={r[2]:<#8x} create={pfn:<22} "
+                      f"getrtc={grc:<12} base={r[7] or '-'}")
             print(f"total descriptors: {len(rows)}")
         return 0
     finally:
