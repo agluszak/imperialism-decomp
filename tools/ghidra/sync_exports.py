@@ -320,6 +320,7 @@ def main() -> int:
             print(
                 "Preserved curated symbols.csv rows: "
                 f"names {merge_stats.preserved_names}, "
+                f"symbols {merge_stats.preserved_symbols}, "
                 f"prototypes {merge_stats.preserved_prototypes}, "
                 f"new {merge_stats.new_from_export}, "
                 f"retained orphans {merge_stats.retained_orphans}, "

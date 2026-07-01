@@ -9,6 +9,8 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from reccmp.cvdump.demangler import msvc_demangle
+
 from tools.common.hexutil import parse_hex_address
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
@@ -29,6 +31,7 @@ DEFAULT_OWNERSHIP = "config/function_ownership.csv"
 DEFAULT_MARKERS = "src/game/library_msvc500_fid.cpp"
 DEFAULT_FAMILIES = "nafxcw,libcmt"
 DEFAULT_RANGE_AUDIT = "tmp_decomp/msvc500_library_range_audit.csv"
+DEFAULT_LIBRARY_FUNCTIONS = "vendor/msvc500/fid-generation/fidb/functions.txt"
 
 MARKER_RE = re.compile(
     r"//\s*(?P<kind>FUNCTION|STUB|TEMPLATE|SYNTHETIC|LIBRARY)\s*:\s*"
@@ -36,12 +39,14 @@ MARKER_RE = re.compile(
     re.IGNORECASE,
 )
 IDENT_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+SymbolTarget = tuple[str, str | None, bool]
 
 
 @dataclass(frozen=True)
 class SourceMarker:
     kind: str
     path: str
+    name: str = ""
 
 
 @dataclass
@@ -49,7 +54,9 @@ class Candidate:
     address: int
     current_name: str
     fid_name: str
+    display_name: str
     symbol_name: str
+    fid_name_has_address_suffix: bool
     domain_path: str
     library_family: str
     library_version: str
@@ -70,6 +77,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--fid-matches", default=DEFAULT_FID_MATCHES)
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
     parser.add_argument("--range-audit", default=DEFAULT_RANGE_AUDIT)
+    parser.add_argument("--library-functions", default=DEFAULT_LIBRARY_FUNCTIONS)
     parser.add_argument("--ownership-csv", default=DEFAULT_OWNERSHIP)
     parser.add_argument("--library-markers", default=DEFAULT_MARKERS)
     parser.add_argument("--out-map", default=DEFAULT_REVIEW_MAP)
@@ -111,16 +119,120 @@ def collect_source_markers(repo_root: Path, target: str) -> dict[int, SourceMark
         except OSError:
             continue
         rel = normalize_repo_relative_path(path, repo_root)
-        for match in MARKER_RE.finditer(text):
+        lines = text.splitlines()
+        for idx, line in enumerate(lines):
+            match = MARKER_RE.search(line)
+            if match is None:
+                continue
             if match.group("target").upper() != target.upper():
                 continue
             address = int(match.group("address"), 16)
             kind = match.group("kind").upper()
+            name = ""
+            if idx + 1 < len(lines):
+                next_line = lines[idx + 1].strip()
+                if next_line.startswith("//"):
+                    next_match = MARKER_RE.search(next_line)
+                    if next_match is None:
+                        name = next_line[2:].strip()
             existing = markers.get(address)
             if existing is not None and existing.kind == "LIBRARY":
                 continue
-            markers[address] = SourceMarker(kind=kind, path=rel)
+            markers[address] = SourceMarker(kind=kind, path=rel, name=name)
     return markers
+
+
+def strip_address_suffix(symbol: str) -> str:
+    return re.sub(r"@[0-9a-fA-F]{8}$", "", symbol.strip())
+
+
+def has_address_suffix(symbol: str) -> bool:
+    return strip_address_suffix(symbol) != symbol.strip()
+
+
+def is_decorated_symbol(name: str) -> bool:
+    return name.startswith("?")
+
+
+def demangled_base_name(symbol: str) -> str:
+    if not symbol:
+        return ""
+    demangled = msvc_demangle(symbol)
+    if not demangled:
+        return ""
+    head, sep, _tail = demangled.partition("(")
+    if not sep:
+        return ""
+    if "`" in head:
+        tick = head.rfind("`")
+        prefix_end = head.rfind(" ", 0, tick)
+        return head[prefix_end + 1 :].strip() if prefix_end >= 0 else head.strip()
+    return head.rsplit(None, 1)[-1].strip()
+
+
+def qualified_conflict_name(cand: Candidate, fallback_symbol: str) -> str:
+    prefix = "FID_conflict:"
+    if not cand.current_name.startswith(prefix):
+        return ""
+    method = cand.current_name[len(prefix) :].strip()
+    if not method:
+        return ""
+    demangled = demangled_base_name(fallback_symbol)
+    if "::" not in demangled:
+        return method
+    class_name = demangled.rsplit("::", 1)[0]
+    if method.startswith("~"):
+        return f"{class_name}::{method}"
+    if method.startswith("`"):
+        return f"{class_name}::{method}"
+    return f"{class_name}::{method}"
+
+
+def choose_display_name(cand: Candidate, marker: SourceMarker | None) -> str:
+    if marker is not None and marker.name and not is_decorated_symbol(marker.name):
+        return marker.name
+    demangled = demangled_base_name(cand.symbol_name)
+    if demangled:
+        return demangled
+    conflict = qualified_conflict_name(cand, strip_address_suffix(cand.fid_name))
+    if conflict:
+        return conflict
+    if cand.current_name and not is_decorated_symbol(cand.current_name):
+        return cand.current_name
+    return cand.symbol_name
+
+
+def load_library_symbol_index(path: Path) -> dict[tuple[str, str], set[str]]:
+    """Map (domain_path, demangled base name) to decorated symbols."""
+    index: dict[tuple[str, str], set[str]] = {}
+    if not path.is_file():
+        return index
+    with path.open(encoding="utf-8", errors="ignore") as fd:
+        for line in fd:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            try:
+                domain_path, symbol = line.rsplit(" ", 1)
+            except ValueError:
+                continue
+            base_name = demangled_base_name(symbol)
+            if not base_name:
+                continue
+            index.setdefault((domain_path, base_name), set()).add(symbol)
+    return index
+
+
+def resolve_conflict_symbol(
+    cand: Candidate, library_symbols: dict[tuple[str, str], set[str]]
+) -> str:
+    conflict_name = qualified_conflict_name(cand, strip_address_suffix(cand.fid_name))
+    if not conflict_name:
+        return ""
+    symbols = library_symbols.get((cand.domain_path, conflict_name), set())
+    if len(symbols) != 1:
+        return ""
+    return next(iter(symbols))
 
 
 def collect_manual_source_references(
@@ -154,6 +266,7 @@ def load_candidates(
     start: int,
     end: int,
     families: set[str],
+    library_symbols: dict[tuple[str, str], set[str]],
 ) -> list[Candidate]:
     rows: list[Candidate] = []
     with path.open(newline="", encoding="utf-8") as fd:
@@ -169,12 +282,35 @@ def load_candidates(
             fid_name = (row.get("matched_name") or "").strip()
             if not fid_name:
                 continue
+            fid_name_has_address_suffix = has_address_suffix(fid_name)
+            symbol_name = (
+                resolve_conflict_symbol(
+                    Candidate(
+                        address=address,
+                        current_name=(row.get("current_name") or "").strip(),
+                        fid_name=fid_name,
+                        display_name="",
+                        symbol_name="",
+                        fid_name_has_address_suffix=fid_name_has_address_suffix,
+                        domain_path=(row.get("domain_path") or "").strip(),
+                        library_family=family,
+                        library_version=(row.get("library_version") or "").strip(),
+                        library_variant=(row.get("library_variant") or "").strip(),
+                        overall_score=(row.get("overall_score") or "").strip(),
+                    ),
+                    library_symbols,
+                )
+                if fid_name_has_address_suffix
+                else strip_address_suffix(fid_name)
+            )
             rows.append(
                 Candidate(
                     address=address,
                     current_name=(row.get("current_name") or "").strip(),
                     fid_name=fid_name,
-                    symbol_name=fid_name,
+                    display_name="",
+                    symbol_name=symbol_name,
+                    fid_name_has_address_suffix=fid_name_has_address_suffix,
                     domain_path=(row.get("domain_path") or "").strip(),
                     library_family=family,
                     library_version=(row.get("library_version") or "").strip(),
@@ -220,6 +356,18 @@ def classify_candidates(
         if marker is not None:
             cand.existing_marker_kind = marker.kind
             cand.existing_marker_path = marker.path
+        cand.display_name = choose_display_name(cand, marker)
+        if (
+            marker is not None
+            and marker.kind == "LIBRARY"
+            and marker.path != marker_rel
+            and marker.name
+            and not is_decorated_symbol(marker.name)
+            and cand.symbol_name
+            and is_decorated_symbol(cand.symbol_name)
+            and demangled_base_name(cand.symbol_name) != marker.name
+        ):
+            cand.symbol_name = ""
         if owner is not None:
             cand.existing_ownership = owner.ownership
             cand.existing_target_cpp = owner.target_cpp
@@ -290,17 +438,17 @@ def generated_marker_candidates(candidates: list[Candidate]) -> list[Candidate]:
     ]
 
 
-def symbol_targets(candidates: list[Candidate]) -> dict[int, tuple[str, bool]]:
-    targets: dict[int, tuple[str, bool]] = {}
+def symbol_targets(candidates: list[Candidate]) -> dict[int, SymbolTarget]:
+    targets: dict[int, SymbolTarget] = {}
     for cand in candidates:
         if cand.action in {
             "generate_library_marker",
             "keep_generated_library_marker",
             "symbols_only_existing_library_marker",
         }:
-            targets[cand.address] = (cand.symbol_name, True)
+            targets[cand.address] = (cand.display_name, cand.symbol_name, True)
         elif cand.action == "skip_referenced_project_alias":
-            targets[cand.address] = (cand.current_name, False)
+            targets[cand.address] = (cand.current_name, None, False)
     return targets
 
 
@@ -310,6 +458,7 @@ def write_review_map(path: Path, candidates: list[Candidate]) -> None:
         "address",
         "current_name",
         "fid_name",
+        "display_name",
         "symbol_name",
         "library_family",
         "library_version",
@@ -332,6 +481,7 @@ def write_review_map(path: Path, candidates: list[Candidate]) -> None:
                     "address": f"0x{c.address:08x}",
                     "current_name": c.current_name,
                     "fid_name": c.fid_name,
+                    "display_name": c.display_name,
                     "symbol_name": c.symbol_name,
                     "library_family": c.library_family,
                     "library_version": c.library_version,
@@ -349,9 +499,12 @@ def write_review_map(path: Path, candidates: list[Candidate]) -> None:
 
 
 def apply_symbols(
-    symbols_path: Path, targets: dict[int, tuple[str, bool]], sizes: dict[int, str]
+    symbols_path: Path, targets: dict[int, SymbolTarget], sizes: dict[int, str]
 ) -> tuple[int, int]:
     fieldnames, rows = read_pipe_table(symbols_path)
+    if "symbol" not in fieldnames:
+        insert_at = fieldnames.index("size") if "size" in fieldnames else len(fieldnames)
+        fieldnames.insert(insert_at, "symbol")
     updated = 0
     seen: set[int] = set()
     for row in rows:
@@ -368,17 +521,21 @@ def apply_symbols(
         if target is None:
             continue
         seen.add(address)
-        target_name, _add_if_missing = target
-        if row.get("name", "") != target_name:
+        target_name, target_symbol, _add_if_missing = target
+        if target_name and row.get("name", "") != target_name:
             row["name"] = target_name
             updated += 1
-    missing = sorted(address for address, target in targets.items() if target[1] and address not in seen)
+        if target_symbol is not None and row.get("symbol", "") != target_symbol:
+            row["symbol"] = target_symbol
+            updated += 1
+    missing = sorted(address for address, target in targets.items() if target[2] and address not in seen)
     for address in missing:
-        target_name, _add_if_missing = targets[address]
+        target_name, target_symbol, _add_if_missing = targets[address]
         rows.append(
             {
                 "address": format(address, "x"),
                 "name": target_name,
+                "symbol": target_symbol or "",
                 "size": sizes.get(address, ""),
                 "type": "function",
                 "prototype": "",
@@ -399,7 +556,7 @@ def render_marker_file(candidates: list[Candidate], *, target: str) -> str:
     ]
     for cand in sorted(candidates, key=lambda c: c.address):
         lines.append(f"// LIBRARY: {target} 0x{cand.address:08x}")
-        lines.append(f"// {cand.symbol_name}")
+        lines.append(f"// {cand.symbol_name or cand.display_name or cand.fid_name}")
         lines.append("")
     lines.append("#endif")
     return "\n".join(lines) + "\n"
@@ -452,6 +609,7 @@ def main() -> int:
     fid_matches = resolve_repo_path(repo_root, args.fid_matches)
     symbols_path = resolve_repo_path(repo_root, args.symbols)
     range_audit_path = resolve_repo_path(repo_root, args.range_audit)
+    library_functions_path = resolve_repo_path(repo_root, args.library_functions)
     ownership_path = resolve_repo_path(repo_root, args.ownership_csv)
     marker_path = resolve_repo_path(repo_root, args.library_markers)
     marker_rel = normalize_repo_relative_path(marker_path, repo_root)
@@ -462,7 +620,14 @@ def main() -> int:
     if not symbols_path.is_file():
         raise FileNotFoundError(symbols_path)
 
-    candidates = load_candidates(fid_matches, start=start, end=end, families=families)
+    library_symbols = load_library_symbol_index(library_functions_path)
+    candidates = load_candidates(
+        fid_matches,
+        start=start,
+        end=end,
+        families=families,
+        library_symbols=library_symbols,
+    )
     sizes = load_function_sizes(range_audit_path)
     markers = collect_source_markers(repo_root, args.target)
     ownership = load_function_ownership(ownership_path)

@@ -31,7 +31,7 @@
 // ??1CHandleMap@@QAE@XZ
 
 // LIBRARY: IMPERIALISM 0x005e5529
-// ??1CDragListBox@@UAE@XZ@005e5529
+// ??1CDragListBox@@UAE@XZ
 
 // LIBRARY: IMPERIALISM 0x005e556b
 // ?BeginDrag@CDragListBox@@UAEHVCPoint@@@Z
@@ -52,16 +52,16 @@
 // ??1CProgressCtrl@@UAE@XZ
 
 // LIBRARY: IMPERIALISM 0x005e591c
-// ?AddBitmap@CToolBarCtrl@@QAEHHPAVCBitmap@@@Z@005e591c
+// AddBitmap
 
 // LIBRARY: IMPERIALISM 0x005e5950
 // ?AddBitmap@CToolBarCtrl@@QAEHHI@Z
 
 // LIBRARY: IMPERIALISM 0x005e5987
-// ?SaveState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e5987
+// SaveState
 
 // LIBRARY: IMPERIALISM 0x005e59b7
-// ?RestoreState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e59b7
+// RestoreState
 
 // LIBRARY: IMPERIALISM 0x005e59e7
 // ?AddString@CToolBarCtrl@@QAEHI@Z
@@ -73,7 +73,7 @@
 // ?GetText@CStatusBarCtrl@@QBE?AVCString@@HPAH@Z
 
 // LIBRARY: IMPERIALISM 0x005e5b9a
-// ?GetBorders@CStatusBarCtrl@@QBEHAAH00@Z@005e5b9a
+// GetBorders
 
 // LIBRARY: IMPERIALISM 0x005e5bd7
 // ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
@@ -88,10 +88,10 @@
 // ?InsertItem@CListCtrl@@QAEHIHPBDIIHJ@Z
 
 // LIBRARY: IMPERIALISM 0x005e5d3b
-// ?HitTest@CListCtrl@@QBEHVCPoint@@PAI@Z@005e5d3b
+// HitTest
 
 // LIBRARY: IMPERIALISM 0x005e5d71
-// ?SetItem@CListCtrl@@QAEHHHIPBDHIIJ@Z@005e5d71
+// SetItem
 
 // LIBRARY: IMPERIALISM 0x005e5dbf
 // ?GetItemText@CListCtrl@@QBE?AVCString@@HH@Z
@@ -136,7 +136,7 @@
 // ?InsertItem@CTreeCtrl@@QAEPAU_TREEITEM@@IPBDHHIIJPAU2@1@Z
 
 // LIBRARY: IMPERIALISM 0x005e628b
-// ?HitTest@CTreeCtrl@@QBEPAU_TREEITEM@@VCPoint@@PAI@Z@005e628b
+// HitTest_005E628B
 
 // LIBRARY: IMPERIALISM 0x005e62c1
 // ?RemoveImageList@CTreeCtrl@@IAEXH@Z
@@ -148,7 +148,7 @@
 // ??1CProgressCtrl@@UAE@XZ
 
 // LIBRARY: IMPERIALISM 0x005e644f
-// ??1CProgressCtrl@@UAE@XZ@005e644f
+// CProgressCtrl::~CHotKeyCtrl
 
 // LIBRARY: IMPERIALISM 0x005e64be
 // ?SetRange@CSliderCtrl@@QAEXHHH@Z
@@ -286,10 +286,10 @@
 // ??0CMemoryException@@QAE@HI@Z
 
 // LIBRARY: IMPERIALISM 0x005e7079
-// ??_GCSharedFile@@UAEPAXI@Z@005e7079
+// CSharedFile::`scalar_deleting_destructor'
 
 // LIBRARY: IMPERIALISM 0x005e709d
-// ??1CCtrlView@@UAE@XZ@005e709d
+// CCtrlView::~CListView
 
 // LIBRARY: IMPERIALISM 0x005e70ce
 // ??_GCGdiObject@@UAEPAXI@Z
@@ -313,7 +313,7 @@
 // ??_GCFileException@@UAEPAXI@Z
 
 // LIBRARY: IMPERIALISM 0x005e730d
-// ??1CFileException@@UAE@XZ@005e730d
+// CFileException::~CArchiveException
 
 // LIBRARY: IMPERIALISM 0x005e7400
 // ?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z
@@ -409,7 +409,7 @@
 // _vsprintf
 
 // LIBRARY: IMPERIALISM 0x005e9120
-// _fprintf@005e9120
+// _fprintf
 
 // LIBRARY: IMPERIALISM 0x005e9170
 // _fwrite
@@ -1045,7 +1045,7 @@
 // ?UpdateTipText@CToolTipCtrl@@QAEXIPAVCWnd@@I@Z
 
 // LIBRARY: IMPERIALISM 0x005facd6
-// ?FillInToolInfo@CToolTipCtrl@@QBEXAAUtagTOOLINFOA@@PAVCWnd@@I@Z@005facd6
+// FillInToolInfo
 
 // LIBRARY: IMPERIALISM 0x005fad29
 // ?EnableToolTips@CWnd@@QAEHH@Z
@@ -1090,10 +1090,10 @@
 // ?Left@CString@@QBE?AV1@H@Z
 
 // LIBRARY: IMPERIALISM 0x005fee24
-// ?SpanExcluding@CString@@QBE?AV1@PBD@Z@005fee24
+// ?SpanExcluding@CString@@QBE?AV1@PBD@Z
 
 // LIBRARY: IMPERIALISM 0x005fee4e
-// ?SpanExcluding@CString@@QBE?AV1@PBD@Z@005fee4e
+// ?SpanExcluding@CString@@QBE?AV1@PBD@Z
 
 // LIBRARY: IMPERIALISM 0x005fee78
 // ?ReverseFind@CString@@QBEHD@Z
@@ -1264,7 +1264,7 @@
 // ??0CDialog@@QAE@XZ
 
 // LIBRARY: IMPERIALISM 0x00604ce8
-// ??_GCSharedFile@@UAEPAXI@Z@00604ce8
+// CSharedFile::`scalar_deleting_destructor'
 
 // LIBRARY: IMPERIALISM 0x00604d04
 // ??1CDialog@@UAE@XZ
@@ -1396,7 +1396,7 @@
 // ?PreTranslateMessage@CWinThread@@UAEHPAUtagMSG@@@Z
 
 // LIBRARY: IMPERIALISM 0x00606725
-// ?ProcessWndProcException@CWinThread@@UAEJPAVCException@@PBUtagMSG@@@Z@00606725
+// AfxInternalProcessWndProcException
 
 // LIBRARY: IMPERIALISM 0x0060674a
 // ?_AfxMsgFilterHook@@YGJHIJ@Z
@@ -1606,7 +1606,7 @@
 // ?AfxRegisterClass@@YGHPAUtagWNDCLASSA@@@Z
 
 // LIBRARY: IMPERIALISM 0x00608b11
-// ?AfxFindMessageEntry@@YGPBUAFX_MSGMAP_ENTRY@@PBU1@III@Z@00608b11
+// AfxFindMessageEntry
 
 // LIBRARY: IMPERIALISM 0x00608b66
 // ?WindowProc@CWnd@@MAEJIIJ@Z
@@ -1624,7 +1624,7 @@
 // ?GetParentFrame@CWnd@@QBEPAVCFrameWnd@@XZ
 
 // LIBRARY: IMPERIALISM 0x00609297
-// ?AfxGetParentOwner@@YGPAUHWND__@@PAU1@@Z@00609297
+// AfxGetParentOwner
 
 // LIBRARY: IMPERIALISM 0x006092dc
 // ?GetTopLevelParent@CWnd@@QBEPAV1@XZ
@@ -1759,7 +1759,7 @@
 // ?AfxEndDeferRegisterClass@@YGHF@Z
 
 // LIBRARY: IMPERIALISM 0x0060a8ce
-// ?RegisterWithIcon@@YGHPAUtagWNDCLASSA@@PBDI@Z@0060a8ce
+// AfxRegisterWithIcon
 
 // LIBRARY: IMPERIALISM 0x0060a916
 // ?IsTracking@CFrameWnd@@QBEHXZ
@@ -2020,7 +2020,7 @@
 // ?FromHandlePermanent@CMenu@@SGPAV1@PAUHMENU__@@@Z
 
 // LIBRARY: IMPERIALISM 0x0060d151
-// ?DestroyMenu@CMenu@@QAEHXZ@0060d151
+// CMenu::DeleteObject
 
 // LIBRARY: IMPERIALISM 0x0060d176
 // ?AfxUnlockTempMaps@@YGHH@Z
@@ -2155,85 +2155,85 @@
 // ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z
 
 // LIBRARY: IMPERIALISM 0x00612a2a
-// ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z@00612a2a
+// CDC::SelectClipRgn
 
 // LIBRARY: IMPERIALISM 0x00612a9a
-// ?SetMapperFlags@CDC@@QAEKK@Z@00612a9a
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
 // LIBRARY: IMPERIALISM 0x00612ad2
 // ?SetMapperFlags@CDC@@QAEKK@Z
 
 // LIBRARY: IMPERIALISM 0x00612b0a
-// ?SetMapperFlags@CDC@@QAEKK@Z@00612b0a
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
 // LIBRARY: IMPERIALISM 0x00612b42
-// ?SetMapperFlags@CDC@@QAEKK@Z@00612b42
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
 // LIBRARY: IMPERIALISM 0x00612b7a
-// ?SetMapperFlags@CDC@@QAEKK@Z@00612b7a
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
 // LIBRARY: IMPERIALISM 0x00612bb2
-// ?SetMapperFlags@CDC@@QAEKK@Z@00612bb2
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
 // LIBRARY: IMPERIALISM 0x00612bea
 // ?SetMapMode@CDC@@UAEHH@Z
 
 // LIBRARY: IMPERIALISM 0x00612c22
-// ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612c22
+// ?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z
 
 // LIBRARY: IMPERIALISM 0x00612c6e
-// ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612c6e
+// ?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z
 
 // LIBRARY: IMPERIALISM 0x00612cba
-// ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612cba
+// ?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z
 
 // LIBRARY: IMPERIALISM 0x00612d06
-// ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z@00612d06
+// ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z
 
 // LIBRARY: IMPERIALISM 0x00612d5e
 // ?SetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z
 
 // LIBRARY: IMPERIALISM 0x00612daa
-// ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612daa
+// ?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z
 
 // LIBRARY: IMPERIALISM 0x00612df6
-// ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@00612df6
+// ?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z
 
 // LIBRARY: IMPERIALISM 0x00612e42
-// ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z@00612e42
+// ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z
 
 // LIBRARY: IMPERIALISM 0x00612eaa
 // ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z
 
 // LIBRARY: IMPERIALISM 0x00612ef8
-// ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612ef8
+// CDC::IntersectClipRect
 
 // LIBRARY: IMPERIALISM 0x00612f42
-// ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612f42
+// CDC::ExcludeClipRect
 
 // LIBRARY: IMPERIALISM 0x00612f8e
-// ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612f8e
+// CDC::IntersectClipRect
 
 // LIBRARY: IMPERIALISM 0x00613024
-// ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613024
+// CDC::OffsetClipRgn
 
 // LIBRARY: IMPERIALISM 0x00613062
-// ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613062
+// CDC::OffsetClipRgn
 
 // LIBRARY: IMPERIALISM 0x006130a0
-// ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@006130a0
+// ?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z
 
 // LIBRARY: IMPERIALISM 0x006130ec
-// ?LineTo@CDC@@QAEHHH@Z@006130ec
+// LineTo
 
 // LIBRARY: IMPERIALISM 0x00613121
 // ?SetTextAlign@CDC@@QAEII@Z
 
 // LIBRARY: IMPERIALISM 0x00613155
-// ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613155
+// CDC::OffsetClipRgn
 
 // LIBRARY: IMPERIALISM 0x00613193
-// ?SetMapperFlags@CDC@@QAEKK@Z@00613193
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
 // LIBRARY: IMPERIALISM 0x006131cb
 // ?SetMapperFlags@CDC@@QAEKK@Z
@@ -2242,19 +2242,19 @@
 // ?ArcTo@CDC@@QAEHHHHHHHHH@Z
 
 // LIBRARY: IMPERIALISM 0x0061325b
-// ?SetMapperFlags@CDC@@QAEKK@Z@0061325b
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
 // LIBRARY: IMPERIALISM 0x00613293
 // ?PolyDraw@CDC@@QAEHPBUtagPOINT@@PBEH@Z
 
 // LIBRARY: IMPERIALISM 0x006132dc
-// ?PolylineTo@CDC@@QAEHPBUtagPOINT@@H@Z@006132dc
+// ?PolyBezierTo@CDC@@QAEHPBUtagPOINT@@H@Z
 
 // LIBRARY: IMPERIALISM 0x00613322
-// ?SetMapperFlags@CDC@@QAEKK@Z@00613322
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
 // LIBRARY: IMPERIALISM 0x0061335a
-// ?PolylineTo@CDC@@QAEHPBUtagPOINT@@H@Z@0061335a
+// ?PolyBezierTo@CDC@@QAEHPBUtagPOINT@@H@Z
 
 // LIBRARY: IMPERIALISM 0x006133a0
 // ?SelectClipPath@CDC@@QAEHH@Z
@@ -2266,7 +2266,7 @@
 // ?AfxEnumMetaFileProc@@YGHPAUHDC__@@PAUtagHANDLETABLE@@PAUtagMETARECORD@@HJ@Z
 
 // LIBRARY: IMPERIALISM 0x00613686
-// ?PlayMetaFile@CDC@@QAEHPAUHMETAFILE__@@@Z@00613686
+// PlayMetaFile
 
 // LIBRARY: IMPERIALISM 0x006136bf
 // ?LPtoDP@CDC@@QBEXPAUtagSIZE@@@Z
@@ -2275,7 +2275,7 @@
 // ?DPtoLP@CDC@@QBEXPAUtagSIZE@@@Z
 
 // LIBRARY: IMPERIALISM 0x006137e7
-// ??_GCClientDC@@UAEPAXI@Z@006137e7
+// CClientDC::`scalar_deleting_destructor'
 
 // LIBRARY: IMPERIALISM 0x00613845
 // ??0CWindowDC@@QAE@PAVCWnd@@@Z
@@ -2749,7 +2749,7 @@
 // ?OnCreateHelper@CFrameWnd@@IAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z
 
 // LIBRARY: IMPERIALISM 0x0061cf9b
-// ?GetIconWndClass@CFrameWnd@@IAEPBDKI@Z@0061cf9b
+// GetIconWndClass
 
 // LIBRARY: IMPERIALISM 0x0061d01e
 // ?LoadFrame@CFrameWnd@@UAEHIKPAVCWnd@@PAUCCreateContext@@@Z
@@ -2872,7 +2872,7 @@
 // ?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z
 
 // LIBRARY: IMPERIALISM 0x0061e819
-// ??1CProgressCtrl@@UAE@XZ@0061e819
+// CProgressCtrl::~CHotKeyCtrl
 
 // LIBRARY: IMPERIALISM 0x0061e851
 // ?GetCheckedRadioButton@CWnd@@QAEHHH@Z
@@ -2881,7 +2881,7 @@
 // ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
 
 // LIBRARY: IMPERIALISM 0x0061e8cb
-// ??1CListBox@@UAE@XZ@0061e8cb
+// Dtor_CListBox_FID_61e8cb
 
 // LIBRARY: IMPERIALISM 0x0061e921
 // ?OnChildNotify@CListBox@@MAEHIIJPAJ@Z
@@ -2920,7 +2920,7 @@
 // ?DrawDragRect@CDC@@QAEXPBUtagRECT@@UtagSIZE@@01PAVCBrush@@2@Z
 
 // LIBRARY: IMPERIALISM 0x0061f0fa
-// ?FillSolidRect@CDC@@QAEXPBUtagRECT@@K@Z@0061f0fa
+// FillSolidRect
 
 // LIBRARY: IMPERIALISM 0x0061f124
 // ?FillSolidRect@CDC@@QAEXHHHHK@Z
@@ -3034,7 +3034,7 @@
 // ?GetAppRegistryKey@CWinApp@@QAEPAUHKEY__@@XZ
 
 // LIBRARY: IMPERIALISM 0x00623160
-// ?GetSectionKey@CWinApp@@QAEPAUHKEY__@@PBD@Z@00623160
+// GetSectionKey
 
 // LIBRARY: IMPERIALISM 0x006231a6
 // ?GetProfileIntA@CWinApp@@QAEIPBD0H@Z
@@ -3082,7 +3082,7 @@
 // ??_G_AFX_BASE_MODULE_STATE@@UAEPAXI@Z
 
 // LIBRARY: IMPERIALISM 0x006238ac
-// ?AfxGetModuleThreadState@@YGPAVAFX_MODULE_THREAD_STATE@@XZ@006238ac
+// AfxGetModuleThreadState
 
 // LIBRARY: IMPERIALISM 0x006238c3
 // ?Unlock@CTypeLibCache@@QAEXXZ
@@ -3205,7 +3205,7 @@
 // ??1_AFX_WIN_STATE@@UAE@XZ
 
 // LIBRARY: IMPERIALISM 0x00626b90
-// ?AfxPostQuitMessage@@YGXH@Z@00626b90
+// AfxPostQuitMessage
 
 // LIBRARY: IMPERIALISM 0x00626bb3
 // ??1CWinThread@@UAE@XZ

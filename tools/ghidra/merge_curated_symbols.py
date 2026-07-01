@@ -31,6 +31,7 @@ NON_VTABLE_TYPES = {
 @dataclass(frozen=True)
 class MergeStats:
     preserved_names: int = 0
+    preserved_symbols: int = 0
     preserved_prototypes: int = 0
     new_from_export: int = 0
     retained_orphans: int = 0
@@ -99,6 +100,7 @@ def merge_curated_symbols_csv(
     merged_addrs: set[int] = set()
     out_rows: list[dict[str, str]] = []
     preserved_names = 0
+    preserved_symbols = 0
     preserved_prototypes = 0
     new_from_export = 0
     coerced_vtables = 0
@@ -119,6 +121,10 @@ def merge_curated_symbols_csv(
             if curated_name and merged.get("name", "") != curated_name:
                 merged["name"] = curated_name
                 preserved_names += 1
+            curated_symbol = (curated.get("symbol") or "").strip()
+            if curated_symbol and merged.get("symbol", "") != curated_symbol:
+                merged["symbol"] = curated_symbol
+                preserved_symbols += 1
             curated_proto = (curated.get("prototype") or "").strip()
             if curated_proto and merged.get("prototype", "") != curated_proto:
                 merged["prototype"] = curated_proto
@@ -139,6 +145,7 @@ def merge_curated_symbols_csv(
 
     return out_rows, MergeStats(
         preserved_names=preserved_names,
+        preserved_symbols=preserved_symbols,
         preserved_prototypes=preserved_prototypes,
         new_from_export=new_from_export,
         retained_orphans=retained_orphans,
@@ -148,6 +155,17 @@ def merge_curated_symbols_csv(
 
 def write_symbols_csv(path: Path, fieldnames: list[str], rows: list[dict[str, str]]) -> None:
     import csv
+
+    fieldnames = list(fieldnames)
+    for required in ("address", "name", "size", "type", "prototype"):
+        if required not in fieldnames:
+            fieldnames.append(required)
+    if "symbol" not in fieldnames:
+        insert_at = fieldnames.index("size") if "size" in fieldnames else len(fieldnames)
+        fieldnames.insert(insert_at, "symbol")
+    for row in rows:
+        for field in fieldnames:
+            row.setdefault(field, "")
 
     with path.open("w", encoding="utf-8", newline="") as fd:
         writer = csv.DictWriter(fd, fieldnames=fieldnames, delimiter="|", lineterminator="\n")
