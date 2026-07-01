@@ -1171,66 +1171,10 @@ undefined4 ResetTNavyMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueForControlSeaZoneMissionCapabilityFlagA
-// ghidra_proto undefined ReturnTrueForControlSeaZoneMissionCapabilityFlagA()
-// FUNCTION: IMPERIALISM 0x005355b0
-undefined4 ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForControlSeaZoneMissionCapabilityFlagB
-// ghidra_proto undefined ReturnFalseForControlSeaZoneMissionCapabilityFlagB()
-// FUNCTION: IMPERIALISM 0x005355d0
-undefined4 ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name TControlSeaZoneMission::DestroyTControlSeaZoneMission
-// ghidra_proto undefined DestroyTControlSeaZoneMission()
-// FUNCTION: IMPERIALISM 0x005355f0
-undefined4 DestroyTControlSeaZoneMission(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTControlSeaZoneMissionToSentinelVtable
 // ghidra_proto undefined ResetTControlSeaZoneMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x00535620
 undefined4 ResetTControlSeaZoneMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagA
-// ghidra_proto undefined ReturnTrueForScatteredShipsMissionCapabilityFlagA()
-// FUNCTION: IMPERIALISM 0x00535640
-undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagB
-// ghidra_proto undefined ReturnTrueForScatteredShipsMissionCapabilityFlagB()
-// FUNCTION: IMPERIALISM 0x00535660
-undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionSlot20
-// ghidra_proto undefined ReturnTrueForScatteredShipsMissionSlot20()
-// FUNCTION: IMPERIALISM 0x00535680
-undefined4 ReturnTrueForScatteredShipsMissionSlot20(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::DestroyTScatteredShipsMission
-// ghidra_proto undefined DestroyTScatteredShipsMission()
-// FUNCTION: IMPERIALISM 0x005356a0
-undefined4 DestroyTScatteredShipsMission(void)
 {
   return 0;
 }

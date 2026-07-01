@@ -91,14 +91,6 @@ undefined4 RebuildMapOrderEntryChildrenForContext(void)
   return 0;
 }
 
-// ghidra_name TScatteredShipsMission::SetMapOrderEntryChildFlags
-// ghidra_proto undefined SetMapOrderEntryChildFlags()
-// FUNCTION: IMPERIALISM 0x00536f70
-undefined4 SetMapOrderEntryChildFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name QueueMissionOrderEntriesAcrossSelectionRange
 // ghidra_proto undefined QueueMissionOrderEntriesAcrossSelectionRange()
 // FUNCTION: IMPERIALISM 0x005370f0
@@ -171,34 +163,10 @@ undefined4 CreateTControlSeaZoneMission(void)
   return 0;
 }
 
-// ghidra_name TControlSeaZoneMission::GetTControlSeaZoneMissionClassNamePointer
-// ghidra_proto undefined GetTControlSeaZoneMissionClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00538780
-undefined4 GetTControlSeaZoneMissionClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At005387a0
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At005387a0()
 // FUNCTION: IMPERIALISM 0x005387a0
 undefined4 WrapperFor_AFX_CLASSINIT_At005387a0(void)
-{
-  return 0;
-}
-
-// ghidra_name RecomputeAndClearMissionScoreUsingPortZoneContextAverage
-// ghidra_proto undefined RecomputeAndClearMissionScoreUsingPortZoneContextAverage()
-// FUNCTION: IMPERIALISM 0x005387f0
-undefined4 RecomputeAndClearMissionScoreUsingPortZoneContextAverage(void)
-{
-  return 0;
-}
-
-// ghidra_name ValidateMissionTerrainCoverageAndRefreshTargetContext
-// ghidra_proto undefined ValidateMissionTerrainCoverageAndRefreshTargetContext()
-// FUNCTION: IMPERIALISM 0x00538900
-undefined4 ValidateMissionTerrainCoverageAndRefreshTargetContext(void)
 {
   return 0;
 }
@@ -211,54 +179,6 @@ undefined4 ComputeNavyOrderDistributionSimilarityScoreForMissionNation(void)
   return 0;
 }
 
-// ghidra_name UpdateControlSeaZoneMissionStateFromTargetNavySimilarity
-// ghidra_proto undefined UpdateControlSeaZoneMissionStateFromTargetNavySimilarity()
-// FUNCTION: IMPERIALISM 0x00538fe0
-undefined4 UpdateControlSeaZoneMissionStateFromTargetNavySimilarity(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeMissionScoreUsingPortZoneContextAverage
-// ghidra_proto undefined ComputeMissionScoreUsingPortZoneContextAverage()
-// FUNCTION: IMPERIALISM 0x00539290
-undefined4 ComputeMissionScoreUsingPortZoneContextAverage(void)
-{
-  return 0;
-}
-
-// ghidra_name TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
-// ghidra_proto undefined PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure()
-// FUNCTION: IMPERIALISM 0x005393a0
-undefined4 PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure(void)
-{
-  return 0;
-}
-
-// ghidra_name TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort
-// ghidra_proto undefined HandleControlSeaZoneMissionActionType0Or3ForTargetPort()
-// FUNCTION: IMPERIALISM 0x00539600
-undefined4 HandleControlSeaZoneMissionActionType0Or3ForTargetPort(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveAndQueuePortZoneMapOrder
-// ghidra_proto undefined ResolveAndQueuePortZoneMapOrder()
-// FUNCTION: IMPERIALISM 0x00539640
-undefined4 ResolveAndQueuePortZoneMapOrder(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveAndCacheMissionPortZoneContextForNationTarget
-// ghidra_proto undefined ResolveAndCacheMissionPortZoneContextForNationTarget()
-// FUNCTION: IMPERIALISM 0x00539780
-undefined4 ResolveAndCacheMissionPortZoneContextForNationTarget(void)
-{
-  return 0;
-}
-
 // ghidra_name TEscortMission::CreateTEscortMission
 // ghidra_proto undefined CreateTEscortMission()
 // FUNCTION: IMPERIALISM 0x00539840
@@ -267,50 +187,10 @@ undefined4 CreateTEscortMission(void)
   return 0;
 }
 
-// ghidra_name ReturnEscortMissionArgPassthrough
-// ghidra_proto undefined ReturnEscortMissionArgPassthrough()
-// FUNCTION: IMPERIALISM 0x00539900
-undefined4 ReturnEscortMissionArgPassthrough(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForEscortMissionCapabilityFlagA
-// ghidra_proto undefined ReturnTrueForEscortMissionCapabilityFlagA()
-// FUNCTION: IMPERIALISM 0x00539920
-undefined4 ReturnTrueForEscortMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForEscortMissionCapabilityFlagB
-// ghidra_proto undefined ReturnFalseForEscortMissionCapabilityFlagB()
-// FUNCTION: IMPERIALISM 0x00539940
-undefined4 ReturnFalseForEscortMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name TEscortMission::DestroyTEscortMission
-// ghidra_proto undefined DestroyTEscortMission()
-// FUNCTION: IMPERIALISM 0x00539960
-undefined4 DestroyTEscortMission(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTEscortMissionToSentinelVtable
 // ghidra_proto undefined ResetTEscortMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x00539990
 undefined4 ResetTEscortMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name TEscortMission::GetTEscortMissionClassNamePointer
-// ghidra_proto undefined GetTEscortMissionClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005399b0
-undefined4 GetTEscortMissionClassNamePointer(void)
 {
   return 0;
 }
@@ -331,50 +211,10 @@ undefined4 ConstructTEscortMissionForPortContext(void)
   return 0;
 }
 
-// ghidra_name TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId
-// ghidra_proto undefined ResetEscortMissionDispatchFlagAndCopyTargetContextId()
-// FUNCTION: IMPERIALISM 0x00539a70
-undefined4 ResetEscortMissionDispatchFlagAndCopyTargetContextId(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeNavyOrderDistributionSimilarityScoreForNation
 // ghidra_proto undefined ComputeNavyOrderDistributionSimilarityScoreForNation()
 // FUNCTION: IMPERIALISM 0x00539a90
 undefined4 ComputeNavyOrderDistributionSimilarityScoreForNation(void)
-{
-  return 0;
-}
-
-// ghidra_name TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAverage
-// ghidra_proto undefined ComputeNationScaledMissionScoreUsingPrimaryPortContextAverage()
-// FUNCTION: IMPERIALISM 0x00539ca0
-undefined4 ComputeNationScaledMissionScoreUsingPrimaryPortContextAverage(void)
-{
-  return 0;
-}
-
-// ghidra_name TEscortMission::PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressure
-// ghidra_proto undefined PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressure()
-// FUNCTION: IMPERIALISM 0x00539e70
-undefined4 PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressure(void)
-{
-  return 0;
-}
-
-// ghidra_name TEscortMission::HandleBeachheadMissionActionType0Or3ForTargetPort
-// ghidra_proto undefined HandleBeachheadMissionActionType0Or3ForTargetPort()
-// FUNCTION: IMPERIALISM 0x0053a250
-undefined4 HandleBeachheadMissionActionType0Or3ForTargetPort(void)
-{
-  return 0;
-}
-
-// ghidra_name TEscortMission::ResetBeachheadMissionChildFlagsAndDispatchField5Context
-// ghidra_proto undefined ResetBeachheadMissionChildFlagsAndDispatchField5Context()
-// FUNCTION: IMPERIALISM 0x0053a290
-undefined4 ResetBeachheadMissionChildFlagsAndDispatchField5Context(void)
 {
   return 0;
 }
@@ -387,42 +227,10 @@ undefined4 CreateTBeachheadMission(void)
   return 0;
 }
 
-// ghidra_name ReturnFalseForBeachheadMissionCapabilityFlagA
-// ghidra_proto undefined ReturnFalseForBeachheadMissionCapabilityFlagA()
-// FUNCTION: IMPERIALISM 0x0053a390
-undefined4 ReturnFalseForBeachheadMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForBeachheadMissionCapabilityFlagB
-// ghidra_proto undefined ReturnFalseForBeachheadMissionCapabilityFlagB()
-// FUNCTION: IMPERIALISM 0x0053a3b0
-undefined4 ReturnFalseForBeachheadMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyTBeachheadMission
-// ghidra_proto undefined DestroyTBeachheadMission()
-// FUNCTION: IMPERIALISM 0x0053a3d0
-undefined4 DestroyTBeachheadMission(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTBeachheadMissionToSentinelVtable
 // ghidra_proto undefined ResetTBeachheadMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x0053a400
 undefined4 ResetTBeachheadMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name TBeachheadMission::GetTBeachheadMissionClassNamePointer
-// ghidra_proto undefined GetTBeachheadMissionClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0053a420
-undefined4 GetTBeachheadMissionClassNamePointer(void)
 {
   return 0;
 }
@@ -443,46 +251,6 @@ undefined4 ConstructTBeachheadMissionWithNodeAndParent(void)
   return 0;
 }
 
-// ghidra_name TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext
-// ghidra_proto undefined PopulateBeachheadMissionResourceWeightsFromNavyContext()
-// FUNCTION: IMPERIALISM 0x0053a500
-undefined4 PopulateBeachheadMissionResourceWeightsFromNavyContext(void)
-{
-  return 0;
-}
-
-// ghidra_name TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget
-// ghidra_proto undefined HandleBlockadePortMissionActionType2ForBeachheadTarget()
-// FUNCTION: IMPERIALISM 0x0053a7b0
-undefined4 HandleBlockadePortMissionActionType2ForBeachheadTarget(void)
-{
-  return 0;
-}
-
-// ghidra_name TryQueueProvinceOrderFromContextMessage
-// ghidra_proto void __fastcall TryQueueProvinceOrderFromContextMessage(int msg_ctx)
-// FUNCTION: IMPERIALISM 0x0053a800
-undefined4 TryQueueProvinceOrderFromContextMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name GetBlockadePortMissionBeachheadChild
-// ghidra_proto undefined GetBlockadePortMissionBeachheadChild()
-// FUNCTION: IMPERIALISM 0x0053a920
-undefined4 GetBlockadePortMissionBeachheadChild(void)
-{
-  return 0;
-}
-
-// ghidra_name TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady
-// ghidra_proto undefined ClearBlockadePortMissionChildOrderLinksIfReady()
-// FUNCTION: IMPERIALISM 0x0053a940
-undefined4 ClearBlockadePortMissionChildOrderLinksIfReady(void)
-{
-  return 0;
-}
-
 // ghidra_name TBlockadePortMission::CreateTBlockadePortMission
 // ghidra_proto undefined CreateTBlockadePortMission()
 // FUNCTION: IMPERIALISM 0x0053a990
@@ -491,42 +259,10 @@ undefined4 CreateTBlockadePortMission(void)
   return 0;
 }
 
-// ghidra_name ReturnFalseForBlockadePortMissionCapabilityFlagA
-// ghidra_proto undefined ReturnFalseForBlockadePortMissionCapabilityFlagA()
-// FUNCTION: IMPERIALISM 0x0053aa50
-undefined4 ReturnFalseForBlockadePortMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForBlockadePortMissionCapabilityFlagB
-// ghidra_proto undefined ReturnFalseForBlockadePortMissionCapabilityFlagB()
-// FUNCTION: IMPERIALISM 0x0053aa70
-undefined4 ReturnFalseForBlockadePortMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name TBlockadePortMission::DestroyTBlockadePortMission
-// ghidra_proto undefined DestroyTBlockadePortMission()
-// FUNCTION: IMPERIALISM 0x0053aa90
-undefined4 DestroyTBlockadePortMission(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTBlockadePortMissionToSentinelVtable
 // ghidra_proto undefined ResetTBlockadePortMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x0053aac0
 undefined4 ResetTBlockadePortMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name TBlockadePortMission::GetTBlockadePortMissionClassNamePointer
-// ghidra_proto undefined GetTBlockadePortMissionClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0053aae0
-undefined4 GetTBlockadePortMissionClassNamePointer(void)
 {
   return 0;
 }
@@ -547,54 +283,6 @@ undefined4 ConstructBlockadePortMissionForContext(void)
   return 0;
 }
 
-// ghidra_name TBlockadePortMission::SerializeTBlockadePortMission
-// ghidra_proto undefined SerializeTBlockadePortMission()
-// FUNCTION: IMPERIALISM 0x0053ac60
-undefined4 SerializeTBlockadePortMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TBlockadePortMission::DeserializeTBlockadePortMission
-// ghidra_proto undefined DeserializeTBlockadePortMission()
-// FUNCTION: IMPERIALISM 0x0053aca0
-undefined4 DeserializeTBlockadePortMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TBlockadePortMission::RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB
-// ghidra_proto undefined RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB()
-// FUNCTION: IMPERIALISM 0x0053ace0
-undefined4 RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB(void)
-{
-  return 0;
-}
-
-// ghidra_name TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild
-// ghidra_proto undefined ValidateBlockadePortMissionContextAndRefreshChild()
-// FUNCTION: IMPERIALISM 0x0053adf0
-undefined4 ValidateBlockadePortMissionContextAndRefreshChild(void)
-{
-  return 0;
-}
-
-// ghidra_name TBlockadePortMission::SetBlockadePortMissionStateByte8To3
-// ghidra_proto undefined SetBlockadePortMissionStateByte8To3()
-// FUNCTION: IMPERIALISM 0x0053ae90
-undefined4 SetBlockadePortMissionStateByte8To3(void)
-{
-  return 0;
-}
-
-// ghidra_name TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
-// ghidra_proto undefined PopulateBlockadePortMissionResourceWeightsFromNavyContext()
-// FUNCTION: IMPERIALISM 0x0053aeb0
-undefined4 PopulateBlockadePortMissionResourceWeightsFromNavyContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
 // ghidra_proto undefined ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies()
 // FUNCTION: IMPERIALISM 0x0053b350
@@ -611,22 +299,6 @@ undefined4 ComputeNavyOrderDistributionScoreForNation(void)
   return 0;
 }
 
-// ghidra_name TBlockadePortMission::HandleBlockadePortMissionActionType4ForTargetPort
-// ghidra_proto undefined HandleBlockadePortMissionActionType4ForTargetPort()
-// FUNCTION: IMPERIALISM 0x0053ba10
-undefined4 HandleBlockadePortMissionActionType4ForTargetPort(void)
-{
-  return 0;
-}
-
-// ghidra_name QueueMapOrderType6FromContextPointer
-// ghidra_proto undefined QueueMapOrderType6FromContextPointer()
-// FUNCTION: IMPERIALISM 0x0053ba40
-undefined4 QueueMapOrderType6FromContextPointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TScatteredShipsMission::CreateTScatteredShipsMission
 // ghidra_proto undefined CreateTScatteredShipsMission()
 // FUNCTION: IMPERIALISM 0x0053ba60
@@ -635,90 +307,10 @@ undefined4 CreateTScatteredShipsMission(void)
   return 0;
 }
 
-// ghidra_name TScatteredShipsMission::GetTScatteredShipsMissionClassNamePointer
-// ghidra_proto undefined GetTScatteredShipsMissionClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0053bb20
-undefined4 GetTScatteredShipsMissionClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At0053bb40
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053bb40()
 // FUNCTION: IMPERIALISM 0x0053bb40
 undefined4 WrapperFor_AFX_CLASSINIT_At0053bb40(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetScatteredShipsMissionStateAndScoreDefault
-// ghidra_proto undefined ResetScatteredShipsMissionStateAndScoreDefault()
-// FUNCTION: IMPERIALISM 0x0053bb90
-undefined4 ResetScatteredShipsMissionStateAndScoreDefault(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline
-// ghidra_proto undefined RunScatteredShipsMissionStateUpdatePipeline()
-// FUNCTION: IMPERIALISM 0x0053bbb0
-undefined4 RunScatteredShipsMissionStateUpdatePipeline(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnMissionArgPassthrough
-// ghidra_proto undefined ReturnMissionArgPassthrough()
-// FUNCTION: IMPERIALISM 0x0053bbe0
-undefined4 ReturnMissionArgPassthrough(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3
-// ghidra_proto undefined SetScatteredShipsMissionStateByte8To3()
-// FUNCTION: IMPERIALISM 0x0053bc00
-undefined4 SetScatteredShipsMissionStateByte8To3(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C
-// ghidra_proto undefined ResetScatteredShipsMissionScoreField0C()
-// FUNCTION: IMPERIALISM 0x0053bc20
-undefined4 ResetScatteredShipsMissionScoreField0C(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::PopulateScatteredShipsMissionResourceWeightsFromNationNavyPressure
-// ghidra_proto undefined PopulateScatteredShipsMissionResourceWeightsFromNationNavyPressure()
-// FUNCTION: IMPERIALISM 0x0053bc40
-undefined4 PopulateScatteredShipsMissionResourceWeightsFromNationNavyPressure(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleScatteredShipsMissionActionType5WithNoTarget
-// ghidra_proto undefined HandleScatteredShipsMissionActionType5WithNoTarget()
-// FUNCTION: IMPERIALISM 0x0053bcc0
-undefined4 HandleScatteredShipsMissionActionType5WithNoTarget(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain
-// ghidra_proto undefined SelectMapActionContextAndPromoteMissionOrderChain()
-// FUNCTION: IMPERIALISM 0x0053bdd0
-undefined4 SelectMapActionContextAndPromoteMissionOrderChain(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForScatteredShipsMissionCapabilityFlag
-// ghidra_proto undefined ReturnFalseForScatteredShipsMissionCapabilityFlag()
-// FUNCTION: IMPERIALISM 0x0053bf90
-undefined4 ReturnFalseForScatteredShipsMissionCapabilityFlag(void)
 {
   return 0;
 }
@@ -819,22 +411,6 @@ undefined4 CreateTAttackProvinceMission(void)
   return 0;
 }
 
-// ghidra_name ReturnFalseForAttackProvinceMissionCapabilityFlag
-// ghidra_proto undefined ReturnFalseForAttackProvinceMissionCapabilityFlag()
-// FUNCTION: IMPERIALISM 0x0053d6f0
-undefined4 ReturnFalseForAttackProvinceMissionCapabilityFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer
-// ghidra_proto undefined GetTAttackProvinceMissionClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0053d710
-undefined4 GetTAttackProvinceMissionClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At0053d730
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053d730()
 // FUNCTION: IMPERIALISM 0x0053d730
@@ -843,130 +419,10 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053d730(void)
   return 0;
 }
 
-// ghidra_name TAttackProvinceMission::ConstructTAttackProvinceMission
-// ghidra_proto undefined ConstructTAttackProvinceMission()
-// FUNCTION: IMPERIALISM 0x0053d780
-undefined4 ConstructTAttackProvinceMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::DestroyTAttackProvinceMission
-// ghidra_proto undefined DestroyTAttackProvinceMission()
-// FUNCTION: IMPERIALISM 0x0053d7c0
-undefined4 DestroyTAttackProvinceMission(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTAttackProvinceMissionToSentinelVtable
 // ghidra_proto undefined ResetTAttackProvinceMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x0053d7f0
 undefined4 ResetTAttackProvinceMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::SerializeTAttackProvinceMission
-// ghidra_proto undefined SerializeTAttackProvinceMission()
-// FUNCTION: IMPERIALISM 0x0053d810
-undefined4 SerializeTAttackProvinceMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::DeserializeTAttackProvinceMission
-// ghidra_proto undefined DeserializeTAttackProvinceMission()
-// FUNCTION: IMPERIALISM 0x0053d850
-undefined4 DeserializeTAttackProvinceMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext
-// ghidra_proto undefined CleanupTAttackProvinceMissionAndReleaseChildContext()
-// FUNCTION: IMPERIALISM 0x0053d890
-undefined4 CleanupTAttackProvinceMissionAndReleaseChildContext(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
-// ghidra_proto undefined EvaluateAttackProvinceMissionAndQueueEligibleUnits()
-// FUNCTION: IMPERIALISM 0x0053d950
-undefined4 EvaluateAttackProvinceMissionAndQueueEligibleUnits(void)
-{
-  return 0;
-}
-
-// ghidra_name TryResolveAttackProvinceMissionTargetTerrainClass
-// ghidra_proto undefined TryResolveAttackProvinceMissionTargetTerrainClass()
-// FUNCTION: IMPERIALISM 0x0053db60
-undefined4 TryResolveAttackProvinceMissionTargetTerrainClass(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshAttackProvinceMissionTargetAndMaybeQueueUnits
-// ghidra_proto undefined RefreshAttackProvinceMissionTargetAndMaybeQueueUnits()
-// FUNCTION: IMPERIALISM 0x0053de00
-undefined4 RefreshAttackProvinceMissionTargetAndMaybeQueueUnits(void)
-{
-  return 0;
-}
-
-// ghidra_name TryValidateOrRetargetDefendProvinceMissionTarget
-// ghidra_proto undefined TryValidateOrRetargetDefendProvinceMissionTarget()
-// FUNCTION: IMPERIALISM 0x0053e050
-undefined4 TryValidateOrRetargetDefendProvinceMissionTarget(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending
-// ghidra_proto undefined SetDefendProvinceMissionStateFlag8ToPending()
-// FUNCTION: IMPERIALISM 0x0053e180
-undefined4 SetDefendProvinceMissionStateFlag8ToPending(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile30
-// ghidra_proto undefined ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile30()
-// FUNCTION: IMPERIALISM 0x0053e1a0
-undefined4 ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile30(void)
-{
-  return 0;
-}
-
-// ghidra_name PopulateDefendProvinceMissionResourceWeightsFromTargetProvince
-// ghidra_proto undefined PopulateDefendProvinceMissionResourceWeightsFromTargetProvince()
-// FUNCTION: IMPERIALISM 0x0053e290
-undefined4 PopulateDefendProvinceMissionResourceWeightsFromTargetProvince(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeDefendProvinceMissionScoreWithEarlyThreatGate
-// ghidra_proto undefined ComputeDefendProvinceMissionScoreWithEarlyThreatGate()
-// FUNCTION: IMPERIALISM 0x0053e500
-undefined4 ComputeDefendProvinceMissionScoreWithEarlyThreatGate(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetProvince
-// ghidra_proto undefined InitializeDefendProvinceMissionMovementClassFromTargetProvince()
-// FUNCTION: IMPERIALISM 0x0053e570
-undefined4 InitializeDefendProvinceMissionMovementClassFromTargetProvince(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile
-// ghidra_proto undefined HandleDefendProvinceMissionActionType01ForTargetTile()
-// FUNCTION: IMPERIALISM 0x0053e5b0
-undefined4 HandleDefendProvinceMissionActionType01ForTargetTile(void)
 {
   return 0;
 }
@@ -987,70 +443,6 @@ undefined4 CreateTInvadeMission(void)
   return 0;
 }
 
-// ghidra_name GetInvadeMissionBeachheadChild
-// ghidra_proto undefined GetInvadeMissionBeachheadChild()
-// FUNCTION: IMPERIALISM 0x0053f120
-undefined4 GetInvadeMissionBeachheadChild(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForInvadeMissionCapabilityFlagAlt
-// ghidra_proto undefined ReturnTrueForInvadeMissionCapabilityFlagAlt()
-// FUNCTION: IMPERIALISM 0x0053f140
-undefined4 ReturnTrueForInvadeMissionCapabilityFlagAlt(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90
-// ghidra_proto undefined ForwardInvadeMissionArgToBeachheadSlot90()
-// FUNCTION: IMPERIALISM 0x0053f160
-undefined4 ForwardInvadeMissionArgToBeachheadSlot90(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot84
-// ghidra_proto undefined ForwardInvadeMissionArgsToBeachheadSlot84()
-// FUNCTION: IMPERIALISM 0x0053f190
-undefined4 ForwardInvadeMissionArgsToBeachheadSlot84(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C
-// ghidra_proto undefined ForwardInvadeMissionArgsToBeachheadSlot8C()
-// FUNCTION: IMPERIALISM 0x0053f1c0
-undefined4 ForwardInvadeMissionArgsToBeachheadSlot8C(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead
-// ghidra_proto undefined ComputeInvadeMissionCompositeScoreWithBeachhead()
-// FUNCTION: IMPERIALISM 0x0053f1f0
-undefined4 ComputeInvadeMissionCompositeScoreWithBeachhead(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForInvadeMissionCapabilityFlag
-// ghidra_proto undefined ReturnFalseForInvadeMissionCapabilityFlag()
-// FUNCTION: IMPERIALISM 0x0053f240
-undefined4 ReturnFalseForInvadeMissionCapabilityFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::GetTInvadeMissionClassNamePointer
-// ghidra_proto undefined GetTInvadeMissionClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0053f260
-undefined4 GetTInvadeMissionClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At0053f280
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053f280()
 // FUNCTION: IMPERIALISM 0x0053f280
@@ -1067,14 +459,6 @@ undefined4 ConstructTInvadeMissionWithOptionalBeachhead(void)
   return 0;
 }
 
-// ghidra_name TInvadeMission::DestroyTInvadeMission
-// ghidra_proto undefined DestroyTInvadeMission()
-// FUNCTION: IMPERIALISM 0x0053f3c0
-undefined4 DestroyTInvadeMission(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTInvadeMissionToSentinelVtable
 // ghidra_proto undefined ResetTInvadeMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x0053f3f0
@@ -1083,146 +467,10 @@ undefined4 ResetTInvadeMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders
-// ghidra_proto undefined CleanupTInvadeMissionAndReleaseOwnedOrders()
-// FUNCTION: IMPERIALISM 0x0053f410
-undefined4 CleanupTInvadeMissionAndReleaseOwnedOrders(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits
-// ghidra_proto undefined EvaluateInvadeMissionBeachheadAndQueueEligibleUnits()
-// FUNCTION: IMPERIALISM 0x0053f4e0
-undefined4 EvaluateInvadeMissionBeachheadAndQueueEligibleUnits(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::InitializeInvadeMissionFromNationAndTargetTile
-// ghidra_proto undefined InitializeInvadeMissionFromNationAndTargetTile()
-// FUNCTION: IMPERIALISM 0x0053f580
-undefined4 InitializeInvadeMissionFromNationAndTargetTile(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::SetInvadeMissionKindTag2
-// ghidra_proto undefined SetInvadeMissionKindTag2()
-// FUNCTION: IMPERIALISM 0x0053f5f0
-undefined4 SetInvadeMissionKindTag2(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState
-// ghidra_proto undefined UpdateInvadeMissionAndBeachheadChildState()
-// FUNCTION: IMPERIALISM 0x0053f610
-undefined4 UpdateInvadeMissionAndBeachheadChildState(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::SerializeTInvadeMission
-// ghidra_proto undefined SerializeTInvadeMission()
-// FUNCTION: IMPERIALISM 0x0053f640
-undefined4 SerializeTInvadeMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TMission::DeserializeTInvadeMission
-// ghidra_proto undefined DeserializeTInvadeMission()
-// FUNCTION: IMPERIALISM 0x0053f690
-undefined4 DeserializeTInvadeMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath
-// ghidra_proto undefined RefreshInvadeMissionBeachheadNodeAndMaybeRepath()
-// FUNCTION: IMPERIALISM 0x0053f780
-undefined4 RefreshInvadeMissionBeachheadNodeAndMaybeRepath(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::AdvanceInvadeMissionCompositeHandlers
-// ghidra_proto undefined AdvanceInvadeMissionCompositeHandlers()
-// FUNCTION: IMPERIALISM 0x0053f7d0
-undefined4 AdvanceInvadeMissionCompositeHandlers(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeInvadeMissionPriorityScore
 // ghidra_proto undefined ComputeInvadeMissionPriorityScore()
 // FUNCTION: IMPERIALISM 0x0053f800
 undefined4 ComputeInvadeMissionPriorityScore(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForInvadeMissionCapabilityFlag
-// ghidra_proto undefined ReturnTrueForInvadeMissionCapabilityFlag()
-// FUNCTION: IMPERIALISM 0x0053faa0
-undefined4 ReturnTrueForInvadeMissionCapabilityFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::ComputeInvadeMissionWeightedScoreDelta
-// ghidra_proto undefined ComputeInvadeMissionWeightedScoreDelta()
-// FUNCTION: IMPERIALISM 0x0053fac0
-undefined4 ComputeInvadeMissionWeightedScoreDelta(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled
-// ghidra_proto undefined ComputeInvadeMissionBeachheadScoreIfEnabled()
-// FUNCTION: IMPERIALISM 0x0053fb60
-undefined4 ComputeInvadeMissionBeachheadScoreIfEnabled(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::SetInvadeMissionBeachheadDisabledFlag
-// ghidra_proto undefined SetInvadeMissionBeachheadDisabledFlag()
-// FUNCTION: IMPERIALISM 0x0053fb90
-undefined4 SetInvadeMissionBeachheadDisabledFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::HandleInvadeMissionActionOnTargetViaBeachhead
-// ghidra_proto undefined HandleInvadeMissionActionOnTargetViaBeachhead()
-// FUNCTION: IMPERIALISM 0x0053fbc0
-undefined4 HandleInvadeMissionActionOnTargetViaBeachhead(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore
-// ghidra_proto undefined BuildInvadeMissionUnitPriorityVectorAndScore()
-// FUNCTION: IMPERIALISM 0x0053fc10
-undefined4 BuildInvadeMissionUnitPriorityVectorAndScore(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass
-// ghidra_proto undefined TryResolveInvadeMissionTargetTerrainClass()
-// FUNCTION: IMPERIALISM 0x0053fdc0
-undefined4 TryResolveInvadeMissionTargetTerrainClass(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh
-// ghidra_proto undefined ResetInvadeMissionTargetTerrainClassAndRefresh()
-// FUNCTION: IMPERIALISM 0x0053fe10
-undefined4 ResetInvadeMissionTargetTerrainClassAndRefresh(void)
 {
   return 0;
 }
