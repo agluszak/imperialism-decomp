@@ -144,14 +144,15 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 1:
     turnStateCode = 3;
     if (DAT_006a43c0 == 0) {
-      if (g_pUiRuntimeContext != nullptr) {
-        g_pUiRuntimeContext->DispatchTurnEventSlot4C(0, 0);
-      }
+      // Verified against 0x0057daf5: real event code is 0x11f8, payload 0, no null
+      // guard on g_pUiRuntimeContext (matches the original — see heuristics for the
+      // full re-verification note on this switch).
+      g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x11f8, 0);
       break;
     }
-    if (g_pUiRuntimeContext != nullptr) {
-      g_pUiRuntimeContext->DispatchTurnEventSlot4C(activeNationSlot, 0x5e4);
-    }
+    // Verified against 0x0057db06: real event code is 0x5dc, payload 0 (not
+    // activeNationSlot/0x5e4 — that call was misattributed to this branch).
+    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x5dc, 0);
     break;
 
   case 2: {
