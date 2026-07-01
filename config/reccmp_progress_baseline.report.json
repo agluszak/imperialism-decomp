@@ -12206,7 +12206,7 @@
     },
     {
       "address": "0x4ddc30",
-      "matching": 0.9894736842105263,
+      "matching": 0.6526315789473685,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_20",
       "type": 1
     },
@@ -12518,7 +12518,7 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12554,7 +12554,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -19022,7 +19022,7 @@
     },
     {
       "address": "0x536530",
-      "matching": 0.2981366459627329,
+      "matching": 0.2893081761006289,
       "name": "SerializeTNavyMissionCommon",
       "type": 1
     },
@@ -21405,7 +21405,7 @@
     },
     {
       "address": "0x550610",
-      "matching": 0.3076923076923077,
+      "matching": 1.0,
       "name": "GetNavyPrimaryOrderListIndexOfNode",
       "type": 1
     },

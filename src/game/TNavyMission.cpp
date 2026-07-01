@@ -28,7 +28,6 @@ extern const float g_ArmyMissionCandidateScoreTable_006978f8[];
 // Not-yet-recovered free functions this file calls into (generic stub
 // signature per the autogen stub definition; real signature applied via a
 // typed cast at each call site so the linker resolves the correct symbol).
-extern undefined4 GetNavyPrimaryOrderListIndexOfNode(void);
 extern undefined4 FindMapActionContextByNodeId(void);
 extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
 extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
@@ -179,13 +178,11 @@ void TNavyMission::WriteTo(TStream* stream) {
     stream->WriteBytesSlot78(&swapped, 4);
   }
 
-  typedef int(__cdecl * GetNavyPrimaryOrderListIndexOfNode_t)(void* node);
-  GetNavyPrimaryOrderListIndexOfNode_t GetNavyPrimaryOrderListIndexOfNode_fn =
-      reinterpret_cast<GetNavyPrimaryOrderListIndexOfNode_t>(
-          (void*)&GetNavyPrimaryOrderListIndexOfNode); // at 0x550610
-
+  // orderList24 payloads are TShip nodes in this class (see TShip class recovery);
+  // TMapOrderChildLinkNode::object_ptr is typed TMapOrderEntry* for the (more common)
+  // army-mission usage of this shared node type.
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    int idx = GetNavyPrimaryOrderListIndexOfNode_fn(node->object_ptr);
+    int idx = reinterpret_cast<TShip*>(node->object_ptr)->GetIndexInPrimaryOrderList();
     stream->WriteCountSlot88(idx);
   }
   stream->WriteCountSlot88(-1);

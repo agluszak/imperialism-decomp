@@ -189,6 +189,16 @@ TShip* GetNavyPrimaryOrderListHead(void) {
   return g_pNavyPrimaryOrderListHead;
 }
 
+// FUNCTION: IMPERIALISM 0x00550610
+int TShip::GetIndexInPrimaryOrderList() {
+  int index = 0;
+  for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0 && node != this;
+       node = node->nextOlder24) {
+    ++index;
+  }
+  return index;
+}
+
 // FUNCTION: IMPERIALISM 0x00550970
 short GetIndustryActionCostWeightByResourceType(short resourceType) {
   return g_industryActionCostWeightResCode10[resourceType];

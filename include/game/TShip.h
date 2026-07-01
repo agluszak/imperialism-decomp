@@ -51,6 +51,9 @@ public:
   // shared per-resource-type descriptor table, TNavyOrderResourceDescriptor).
   // Thin wrapper, same receiver-agnostic reasoning as above.
   short GetNavyOrderNormalizationBaseByNationType();
+  // Position of `this` in the primary navy order list, counted from
+  // g_pNavyPrimaryOrderListHead (used when serializing orderList24 nodes by index).
+  int GetIndexInPrimaryOrderList();
 };
 
 ASSERT_SIZE(TShip, 0x38);
