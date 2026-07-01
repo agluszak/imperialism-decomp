@@ -272,3 +272,64 @@ calls slot 0x1cc with no argument pushes; `TCivReport` and
 `TCombatReportView` both return with `RET 0x4`. `just build` passed, and
 filtered `just vtable` checks for `TPictureButton`, `TUpDownPictureButton`,
 `TCivReport`, and `TCombatReportView` were 100%.
+
+## `TNavyMission.cpp` antipattern audit (2026-07-02) — callconv-cast bridges needing class recovery
+
+Ran `just scan-cdecl-thiscall` + disassembly over every `typedef ... __fastcall/__cdecl`
++ `reinterpret_cast` bridge in `TNavyMission.cpp` (the fake-calling-convention pattern the
+MSVC500 guardrail flags). One was cleanly promotable and is **done**:
+`GetNavyPrimaryOrderListIndexOfNode` (0x550610) → real `TShip::GetIndexInPrimaryOrderList()`,
+100% match (commit `39e7e405`).
+
+The rest are all **confirmed genuine `__thiscall`** (not cdecl/fastcall mislabels), but
+each needs a real class/manager recovered before the callsite can become `obj->Method()` —
+promoting the call type without the receiver would just move the fake-convention problem,
+not fix it. Recorded here so a future session can pick one up as its own decomp-loop pass:
+
+- **`SetMapOrderType9AndQueue`** (0x552f80, 282 bytes) and **`PromoteMapOrderChainAndQueue`**
+  (0x5533f0, 566 bytes) — both `__thiscall` on what looks like a `TMapOrderEntry`-shaped
+  receiver (offsets +8 type/attachment, +0x10 child-list head, +0x14 active node, +0x28/+0x2c
+  queue links match `TMapOrderEntry`/`TMapOrderEntryOwnerContext` fields), but the bodies are
+  large and cross-call into:
+  - `g_pNavyOrderManager` (a global of unrecovered type `TNavyMgr*` — only a forward
+    declaration exists today; needs its own class recovery, at least the fields read here:
+    `field_0x4` is a head-of-list pointer walked via `+0x2c` links).
+  - `TShip::DeleteMapOrderChildLinkAndReturnNext`, `TScatteredShipsMission::SetMapOrderActiveChildEntry`,
+    `TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive` — cross-class
+    calls into already-partially-recovered classes, but the exact call graph needs mapping.
+  - Realloc-based dynamic `int[]` growth logic (candidate for modeling as a real
+    dynamic-array member once the owning struct is understood) at offsets +0x28/+0x2c/+0x30
+    of some other still-unnamed context object (looks like a per-zone bucket table, possibly
+    related to the `TNavyOrderResourceDescriptor` work from the previous session —
+    `DAT_00698120`/`DAT_00698124` byte constants appear in both).
+  - `FinalizeQueuedMapOrderEntry`, `MoveMapOrderEntryToQueueHeadIfValid`,
+    `RecomputeMapOrderChildAggregateMetric` — more unrecovered free functions in the same
+    cluster, likely also real methods on the same receiver class.
+  - Verdict: this whole cluster is really "recover the map-order queue manager class"
+    (probably `TNavyMgr` plus its owned queue/bucket structures), not a small promotion.
+
+- **`SelectBestMapActionContextForNationDiplomacyMask`** (0x560e70, 197 bytes) — `__thiscall`
+  on a receiver with fields at +0x28 (array base), +0x30 (count), and calls two vtable slots
+  (`+0x38`, `+0x40`) on elements of that array against `g_apTerrainTypeDescriptorTable`. Smells
+  like a per-nation "candidate context list" manager, not yet identified. Needs the array
+  element's class recovered first (its vtable slots 0x38/0x40 are the actual unknowns).
+
+- **`IsZoneMaskOrArrayEntryPresentForKey`** (0x55f540, 84 bytes) — `__thiscall`, reads a
+  bitmask at `this+0x10` and a growable array (`count@+0x40`, `data@+0x38`) of pointers whose
+  first byte is compared against the key. Same "unrecovered per-zone/context manager" shape
+  as the previous two; likely all three share one receiver class.
+
+- **`ComputeOrderNodeDistanceQuotientByDescriptorWord24`** (0x550550, 51 bytes) — confirmed
+  **receiver-agnostic** like heuristics.md #23: called with both a `TZone*`
+  (`QueueMissionOrdersByPriorityForContext`'s `targetZone14`) and a `TMapOrderEntry*`
+  (`topOrder`) at different callsites, reading the same `+4`/`+8` offsets from both. The `+8`
+  field is dereferenced as a `TScatteredShipsMission*` and calls
+  `TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute` on it — so `TZone`
+  apparently has an (unnamed today) field at `+8` pointing at a `TScatteredShipsMission`,
+  which needs verifying/naming on `TZone` before this can become a real receiver-agnostic
+  free function (same pattern as `ComputeNavyOrderPriorityContributionPercentByCategory`).
+
+Recommended order if picked up: (1) `TZone`'s `+8` field first (small, unblocks #4 above and
+is probably reusable elsewhere), (2) the `IsZoneMaskOrArrayEntryPresentForKey`/
+`SelectBestMapActionContextForNationDiplomacyMask` manager class (smaller, self-contained),
+(3) the `TNavyMgr`/map-order-queue cluster last (largest, most cross-class).
