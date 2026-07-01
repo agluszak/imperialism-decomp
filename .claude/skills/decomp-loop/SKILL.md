@@ -39,9 +39,6 @@ squeezing any single function to 100%.
    - `just promote src/game/<Class>.cpp --address 0x005d6b70` — raw autogen copy of one
      function. The address is the original-binary offset (the autogen marker). It appends
      the block (marker + raw `__thiscall` body) to `<Class>.cpp`; you then shape it.
-   - `just promote-shaped src/game/<Class>.cpp --address 0x...` — preferred when
-     `config/classes/<Class>.yml` exists: it also reshapes the `__thiscall Cls::M(Cls*
-     this, …)` head into a real member signature for you.
    - `just promote-range src/game/<Class>.cpp 0xLOW 0xHIGH` — bulk-promote every owned
      function in an address range (a whole class slice) in one pass.
    - Targeting: the file should be the owning class's `src/game/<Class>.cpp` (Hard Rule 7).

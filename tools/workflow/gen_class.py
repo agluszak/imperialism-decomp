@@ -30,6 +30,12 @@ object size by default — an active assert is emitted only when the manifest's
 the block and fails on any drift, so the header and manifest cannot diverge.
 """
 
+# DORMANT MANIFEST SYSTEM: config/classes/ has no manifests and the dump-manifests
+# producer no longer exists; the class-recovery workflow is source-only. This module
+# is retained ONLY because vtable_autofix/slice_discovery import its helpers. Do not
+# build new workflows on manifests. Entry points (gen-classes-batch, promote-shaped,
+# just gen-class) were deleted 2026-07-02.
+
 from __future__ import annotations
 
 import argparse

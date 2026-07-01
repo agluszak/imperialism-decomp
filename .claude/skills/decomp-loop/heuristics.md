@@ -361,7 +361,7 @@ explanatory comment must go **above** the `// FUNCTION:` marker, never between i
 decl — a comment there silently unpairs the address (shows as `no recomp` / oversize vtable),
 not just a marker-gate fail.
 
-- **Shape-only class batch (`just gen-classes`)**: porting all remaining classes at once
+- **Shape-only class batch** *(historical — the gen-class/manifest tooling was retired 2026-07-02; config/classes/ manifests no longer exist)*: porting all remaining classes at once
   works only if you *defer bodies*. `gen-class --no-bodies` emits header + GENERATED
   DECLS + compilable **unmarked** cpp stubs (no `// FUNCTION:`/ownership/symbols), so
   the vtable still emits/pairs but nothing claims the heavily-shared slot addresses

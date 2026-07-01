@@ -187,8 +187,8 @@ fix-in-stack-params *args: _require-ghidra-install
   uv run python -m tools.ghidra.fix_in_stack_params {{args}}
 
 # Dump the Ghidra thunk-name -> real-name map to config/thunk_map.csv so offline
-# body promotion (gen-class) can resolve jmp-thunk/alias call names without
-# a live Ghidra connection. Read-only and idempotent.
+# body promotion (promote/promote-range, resolve-autogen-thunks) can resolve
+# jmp-thunk/alias call names without a live Ghidra connection. Read-only, idempotent.
 dump-thunk-map *args: _require-ghidra-install
   uv run python -m tools.ghidra.dump_thunk_map {{args}}
 
@@ -535,17 +535,6 @@ promote-range target_cpp start end:
     --target-cpp "{{target_cpp}}" \
     --ownership-csv "{{function_ownership}}" \
     --range "{{start}}:{{end}}"
-
-# Promote autogen blocks with shape_body when config/classes/<Class>.yml exists.
-promote-shaped target_cpp *args:
-  uv run python -m tools.workflow.promote_shaped \
-    --target-cpp "{{target_cpp}}" \
-    --ownership-csv "{{function_ownership}}" \
-    {{args}}
-
-# Manifest-driven class generator (header block + shaped slot bodies). Dry-run by default.
-gen-class cls *args:
-  uv run python -m tools.workflow.gen_class "{{cls}}" {{args}}
 
 # Score every // FUNCTION marker in src/game/<Class>.cpp (single PDB parse).
 compare-class cls:
