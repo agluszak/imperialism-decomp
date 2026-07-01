@@ -4430,6 +4430,7 @@ address|target_cpp|ownership|note
 61394f|src/game/library_msvc500_fid.cpp|library|marker_sync
 61396b|src/game/library_msvc500_fid.cpp|library|marker_sync
 6139b2|src/game/library_msvc500_fid.cpp|library|marker_sync
+6139c6|src/game/ClipStateRegion.cpp|manual|marker_sync
 613a36|src/game/library_msvc500_fid.cpp|library|marker_sync
 613a4c|src/game/ClipStateRegion.cpp|manual|marker_sync
 613a79|src/game/library_msvc500_fid.cpp|library|marker_sync

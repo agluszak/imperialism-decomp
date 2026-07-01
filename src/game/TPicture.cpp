@@ -9,7 +9,8 @@ undefined4 SetPictureResourceIdAndRefresh_Impl(void);
 IMPLEMENT_DYNCREATE(TPicture, TControl)
 
 // FUNCTION: IMPERIALISM 0x0048efc0
-TPicture::TPicture() : TControl() {}
+TPicture::TPicture()
+    : TControl(), glyphBase84(-1), field86(0), bitmapId(0), field8A(0), field8C(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0048f050
 // TPicture::`scalar deleting destructor'

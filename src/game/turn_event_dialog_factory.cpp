@@ -1,6 +1,7 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 
 #include "game/TGameWindow.h"
+#include "game/TPicture.h"
 #include "game/TView.h"
 #include "game/global_data_tables.h"
 
@@ -65,6 +66,65 @@ TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int h
   return g_pUiResourceHead;
 }
 
+// Startup intro screen (event code 0x11f8): a root TView container ('base' tag, a
+// large logical 2000x2000 layout area) holding a full-screen 640x480 TPicture ('main'
+// tag) that loads bitmap resource 0x11f7. Verified against the retail disassembly at
+// 0x0043b1cb (inside BuildTurnEventDialogUiByCode's body — Ghidra reports that whole
+// function as 25768 bytes; this is one of its many event-code cases, not a separate
+// function). The picture's border/bevel style fields (TControl protected members) are
+// left at their constructed defaults; they affect frame decoration, not the bitmap paint.
+TView* BuildStartupIntroBackground() {
+  TView* container = new TView();
+  if (container == 0) {
+    return 0;
+  }
+
+  if (g_pUiResourceHead == 0) {
+    g_pUiResourceHead = container;
+  }
+  g_pUiResourceContext = container;
+
+  PushUiResourcePoolNode();
+
+  int containerOffset[2] = {0, 0};
+  int containerSize[2] = {0x7d0, 0x7d0};
+  container->InitializeUiResourceEntryFrameAndParent(0, 0, containerOffset, containerSize, 0, 0, 1);
+  container->controlTag = static_cast<int>(kControlTagBase);
+  container->field3c = 0;
+  container->SetEnabled(1, 0);
+  container->SetState(containerSize[0], 0);
+
+  TPicture* background = new TPicture();
+  if (background != 0) {
+    g_pUiResourceContext = background;
+
+    int pictureOffset[2] = {0, 0};
+    int pictureSize[2] = {0x280, 0x1e0};
+    background->InitializeUiResourceEntryFrameAndParent(0, 0, pictureOffset, pictureSize, 0, 0, 1);
+    background->controlTag = static_cast<int>(kControlTagMain);
+    background->field3c = 0;
+    background->SetEnabled(1, 0);
+    background->SetState(pictureSize[0], 0);
+    container->AttachChildControl(background, 0);
+
+    background->EnsureField48Buffer();
+    if (background->field48 != 0) {
+      background->field48[1] = 0;
+      background->field48[0] = 0xffffff;
+    }
+
+    background->SetPictureResourceIdAndRefresh(0x11f7, 0);
+  }
+
+  g_pUiResourceContext = 0;
+  PopUiResourcePoolNode_00479A80();
+
+  if (g_pUiResourceHead != 0) {
+    g_pUiResourceHead->PropagateUiResourceContextRecursive(0);
+  }
+  return g_pUiResourceHead;
+}
+
 } // namespace
 
 // Turn-event dialog factory callbacks registered by InitializeTurnEventDialogFactoryRegistry.
@@ -87,7 +147,7 @@ TView* __cdecl InitializeIndustryViewTradeMoveControlsAndCommodityRows(int nCont
 
 // FUNCTION: IMPERIALISM 0x00427360
 TView* __cdecl InitializeIndustryOverviewPlacardsAndTradeStatusTags(int nContextSlot,
-                                                                     int nEventCode) {
+                                                                    int nEventCode) {
   (void)nContextSlot;
   (void)nEventCode;
   return nullptr;
@@ -117,6 +177,8 @@ TView* __cdecl BuildTurnEventDialogUiByCode(int nContextSlot, int nEventCode) {
     return BuildTurnOrderNavigationWindow(5, 0x32, 0x258, 400, 2);
   case 0x7d2:
     return BuildTurnOrderNavigationWindow(0, 0x28, 0x280, 0x1e0, 4);
+  case 0x11f8:
+    return BuildStartupIntroBackground();
   default:
     return nullptr;
   }
@@ -137,7 +199,8 @@ TView* __cdecl BuildTurnEventDialogResources_2508(int nContextSlot, int nEventCo
 }
 
 // FUNCTION: IMPERIALISM 0x0044af90
-TView* __cdecl InitializeJoinSelectorDialogControlsAndNationSlots(int nContextSlot, int nEventCode) {
+TView* __cdecl InitializeJoinSelectorDialogControlsAndNationSlots(int nContextSlot,
+                                                                  int nEventCode) {
   (void)nContextSlot;
   (void)nEventCode;
   return nullptr;

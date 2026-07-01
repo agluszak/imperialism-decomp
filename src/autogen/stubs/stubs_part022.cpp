@@ -603,14 +603,6 @@ undefined4 CPaintDC(void)
   return 0;
 }
 
-// ghidra_name afxMapHIMAGELIST_6139c6
-// ghidra_proto undefined afxMapHIMAGELIST_6139c6()
-// FUNCTION: IMPERIALISM 0x006139c6
-undefined4 afxMapHIMAGELIST_6139c6(void)
-{
-  return 0;
-}
-
 // ghidra_name DeleteObject
 // ghidra_proto undefined DeleteObject()
 // FUNCTION: IMPERIALISM 0x00613aa3
