@@ -393,14 +393,6 @@ undefined4 UpdateUniversitySpecialistCountControlAndRefreshViewAlt(void)
   return 0;
 }
 
-// ghidra_name TEngineerDialog::BuildCityViewProductionControls
-// ghidra_proto void __thiscall BuildCityViewProductionControls(short nBuildingSlotId)
-// FUNCTION: IMPERIALISM 0x004d0810
-undefined4 BuildCityViewProductionControls(void)
-{
-  return 0;
-}
-
 // ghidra_name TPlaceCityDialog::ConstructTPlaceCityDialogBaseState
 // ghidra_proto undefined ConstructTPlaceCityDialogBaseState()
 // FUNCTION: IMPERIALISM 0x004d1800
@@ -677,14 +669,6 @@ undefined4 thunk_DestructCObArray_004D65F0(void)
 // ghidra_proto undefined InitializeObArrayVtable653810ModeField()
 // FUNCTION: IMPERIALISM 0x004d6610
 undefined4 InitializeObArrayVtable653810ModeField(void)
-{
-  return 0;
-}
-
-// ghidra_name TProvinceDesirabilityList::CompareUnsignedIntsAscending
-// ghidra_proto undefined OrphanRetStub_0059add0(void)
-// FUNCTION: IMPERIALISM 0x004d6630
-undefined4 OrphanRetStub_0059add0(void)
 {
   return 0;
 }

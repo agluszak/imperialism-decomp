@@ -144,14 +144,6 @@ undefined4 Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0
   return 0;
 }
 
-// ghidra_name DestructCityDialogSharedBaseState
-// ghidra_proto undefined DestructCityDialogSharedBaseState()
-// FUNCTION: IMPERIALISM 0x0048f250
-undefined4 DestructCityDialogSharedBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializePictureEntryBaseAndRefresh
 // ghidra_proto undefined InitializePictureEntryBaseAndRefresh()
 // FUNCTION: IMPERIALISM 0x0048f330
@@ -468,6 +460,30 @@ undefined4 WrapperFor_CWnd_At00493760(void)
 // ghidra_proto undefined OrphanVtableAssignStub_004937e0()
 // FUNCTION: IMPERIALISM 0x004937e0
 undefined4 OrphanVtableAssignStub_004937e0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ShowWindowOrForwardToSite_At00493819
+// ghidra_proto undefined WrapperFor_ShowWindowOrForwardToSite_At00493819()
+// FUNCTION: IMPERIALISM 0x00493819
+undefined4 WrapperFor_ShowWindowOrForwardToSite_At00493819(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ShowWindowOrForwardToSite_At00493829
+// ghidra_proto undefined WrapperFor_ShowWindowOrForwardToSite_At00493829()
+// FUNCTION: IMPERIALISM 0x00493829
+undefined4 WrapperFor_ShowWindowOrForwardToSite_At00493829(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructObjectAndReleaseWithFlag_Field0F
+// ghidra_proto undefined DestructObjectAndReleaseWithFlag_Field0F()
+// FUNCTION: IMPERIALISM 0x00493839
+undefined4 DestructObjectAndReleaseWithFlag_Field0F(void)
 {
   return 0;
 }

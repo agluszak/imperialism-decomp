@@ -1082,14 +1082,6 @@ undefined4 DestructTIndexAndRankList(void)
   return 0;
 }
 
-// ghidra_name TIndexAndRankList::CompareUnsignedIntsAscending
-// ghidra_proto undefined CompareIndexAndRankEntriesByField2Descending()
-// FUNCTION: IMPERIALISM 0x00534910
-undefined4 CompareIndexAndRankEntriesByField2Descending(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00534a80
 // ghidra_proto undefined WrapperFor_ftol_At00534a80()
 // FUNCTION: IMPERIALISM 0x00534a80

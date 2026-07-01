@@ -10,7 +10,7 @@ class TTransFocusAnimation : public TFocusAnimation {
 
 public:
   TTransFocusAnimation();
-  TTransFocusAnimation(void* target, RECT* bounds, short f0a, short f0c, int tickLimit, int f18);
+  TTransFocusAnimation(TView* target, RECT* bounds, short f0a, short f0c, int tickLimit, int f18);
   virtual ~TTransFocusAnimation() override;
 
   virtual void Free() override; // slot 7 / 0x1c

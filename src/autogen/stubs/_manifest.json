@@ -1,8 +1,6 @@
 {
-  "chunk_count": 19,
+  "chunk_count": 17,
   "generated_cpp_files": [
-    "stubs_part001.cpp",
-    "stubs_part006.cpp",
     "stubs_part009.cpp",
     "stubs_part010.cpp",
     "stubs_part011.cpp",
@@ -22,6 +20,6 @@
     "stubs_part025.cpp"
   ],
   "max_functions_per_file": 500,
-  "stub_count": 4252,
+  "stub_count": 3998,
   "target": "IMPERIALISM"
 }

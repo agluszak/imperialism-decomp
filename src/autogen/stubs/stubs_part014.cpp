@@ -283,14 +283,6 @@ undefined4 InitializeObArrayVtable654D38ModeField(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::CompareUnsignedIntsAscending
-// ghidra_proto undefined CreateTDiplomacyMgrInstance()
-// FUNCTION: IMPERIALISM 0x004ee5e0
-undefined4 CreateTDiplomacyMgrInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004ee730
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004ee730()
 // FUNCTION: IMPERIALISM 0x004ee730

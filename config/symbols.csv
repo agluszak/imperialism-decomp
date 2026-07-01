@@ -9392,7 +9392,6 @@ address|name|symbol|size|type|prototype|provenance
 64c268|TFocusAnimation::classRuntimeClass|||global||
 64c280|TTransFocusAnimation::classRuntimeClass|||global||
 64c298|TAnimator::classTAnimator|||global||
-64c450|TFocusAnimation::vftable|||global||
 64c828|TArmyMgr::classTArmyMgr|||global||
 64c840|TArmyStack::classTArmyStack|||global||
 64c858|TArmyStackList::classTArmyStackList|||global||
@@ -9588,9 +9587,7 @@ address|name|symbol|size|type|prototype|provenance
 65aa00|g_Recompute_Nation_Order_LookupTable_0065AA00|||global||
 65aa08|g_Recompute_Nation_Order_LookupTable_0065AA08|||global||
 65ab58|g_vtblMissionOrderPrioritizerBeachhead|||global||
-65ab88|g_vtblTBeachheadMission|||global||
 65ac30|g_vtblMissionOrderPrioritizerBlockadePort|||global||
-65ac60|g_vtblTBlockadePortMission|||global||
 65ad08|g_vtblMissionOrderPrioritizerArmy|||global||
 65afc0|TProxyGreatPower::classTProxyGreatPower|||global||
 65afd8|THostGreatPower::classTHostGreatPower|||global||

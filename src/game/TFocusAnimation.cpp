@@ -33,10 +33,10 @@ undefined TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140(
 // FUNCTION: IMPERIALISM 0x004a0190
 void TFocusAnimation::VTableSlot0D() {
   if (enabledFlag != 0) {
-    ScopedMapQuickDrawContextGuard quickDrawContext(reinterpret_cast<void*>(field04));
-    reinterpret_cast<TView*>(reinterpret_cast<void*>(field04))->Refresh();
+    ScopedMapQuickDrawContextGuard quickDrawContext(ScopedRenderTarget());
+    ScopedRenderTarget()->Refresh();
     RenderBattleReportInsetWithPaletteShift();
-    reinterpret_cast<TView*>(reinterpret_cast<void*>(field04))->PostRenderSlotFC();
+    ScopedRenderTarget()->PostRenderSlotFC();
   }
 }
 
@@ -52,7 +52,7 @@ void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280() 
   TQuickDrawSurfaceContext* srcContext = *reinterpret_cast<TQuickDrawSurfaceContext**>(g_pUiAnimator + 0x20);
 
   CPoint pt(SourceLeft(), SourceTop());
-  CPoint transformedPt = reinterpret_cast<TView*>(ScopedRenderTarget())->TransformPointViaSlot138(&pt);
+  CPoint transformedPt = ScopedRenderTarget()->TransformPointViaSlot138(&pt);
 
   int width = SourceRight() - SourceLeft();
   int height = SourceBottom() - SourceTop();

@@ -38,7 +38,7 @@ TTransFocusAnimation::TTransFocusAnimation()
 }
 
 // FUNCTION: IMPERIALISM 0x004a04a0
-TTransFocusAnimation::TTransFocusAnimation(void* target, RECT* bounds, short f0a, short f0c, int tickLimit, int f18)
+TTransFocusAnimation::TTransFocusAnimation(TView* target, RECT* bounds, short f0a, short f0c, int tickLimit, int f18)
     : TFocusAnimation() {
   ScopedRenderTarget() = target;
   Field08() = 0;

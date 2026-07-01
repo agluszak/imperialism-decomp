@@ -2,6 +2,8 @@
 
 #include "game/TAnimation.h"
 
+class TView;
+
 // Focus-animation helper object
 // completion callback at slot 0x14 (index 5 of subclass, slot 13 in vtable).
 // VTABLE: IMPERIALISM 0x0064c450
@@ -15,7 +17,7 @@ public:
   virtual void Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(); // slot 14 / 0x38
 
 
-  void*& ScopedRenderTarget() { return *reinterpret_cast<void**>(&field04); }
+  TView*& ScopedRenderTarget() { return *reinterpret_cast<TView**>(&field04); }
   short& Field08() { return *reinterpret_cast<short*>(&bitmapRect.left); }
   short& Field0a() { return *(reinterpret_cast<short*>(&bitmapRect.left) + 1); }
   short& Field0c() { return *reinterpret_cast<short*>(&bitmapRect.top); }
