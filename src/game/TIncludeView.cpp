@@ -7,6 +7,12 @@
 
 extern "C" char g_szEmptyString[];
 
+// IMPLEMENT_DYNCREATE also emits `TIncludeView::CreateObject`; the original copy at
+// 0x48cc40 has the TIncludeView ctor fully inlined into it (same TU, inline-eligible),
+// so the pairing is structural, not byte-exact.
+// SYNTHETIC: IMPERIALISM 0x0048cc40
+// TIncludeView::CreateObject
+
 IMPLEMENT_DYNCREATE(TIncludeView, TView)
 
 // FUNCTION: IMPERIALISM 0x0048cd70

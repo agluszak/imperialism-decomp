@@ -50,6 +50,11 @@ TObject* TControl::ShallowClone() {
   TemporarilyClearAndRestoreUiInvalidationFlag();
   return 0;
 }
+// IMPLEMENT_DYNCREATE also emits `TControl::CreateObject`; the original copy at
+// 0x48e430 has the TControl ctor inlined into it.
+// SYNTHETIC: IMPERIALISM 0x0048e430
+// TControl::CreateObject
+
 IMPLEMENT_DYNCREATE(TControl, TView)
 
 TModalTemplateDialogBase::TModalTemplateDialogBase()

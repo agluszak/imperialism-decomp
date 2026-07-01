@@ -2027,14 +2027,6 @@ undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void)
   return 0;
 }
 
-// ghidra_name TView::CreateTViewInstance
-// ghidra_proto undefined CreateTViewInstance()
-// FUNCTION: IMPERIALISM 0x0048a840
-undefined4 CreateTViewInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0
 // ghidra_proto undefined DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0()
 // FUNCTION: IMPERIALISM 0x0048add0

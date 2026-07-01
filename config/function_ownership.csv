@@ -409,6 +409,7 @@ address|target_cpp|ownership|note
 48a710|src/game/TEventHandler.cpp|manual|marker_sync
 48a730|src/game/TEventHandler.cpp|manual|marker_sync
 48a7c0|src/game/TEventHandler.cpp|manual|marker_sync
+48a840|src/game/TView.cpp|manual|marker_sync
 48a8c0|src/game/TView.cpp|manual|mfc_runtime_macro
 48a8e0|src/game/TView.cpp|manual|marker_sync
 48a9a0|src/game/TView.cpp|manual|marker_sync
@@ -478,11 +479,13 @@ address|target_cpp|ownership|note
 48ca00|src/game/TView.cpp|manual|marker_sync
 48ca20|src/game/TView.cpp|manual|marker_sync
 48ca40|src/game/TView.cpp|manual|marker_sync
+48cc40|src/game/TIncludeView.cpp|manual|marker_sync
 48cd50|src/game/TIncludeView.cpp|manual|mfc_runtime_macro
 48cd70|src/game/TIncludeView.cpp|manual|marker_sync
 48ce40|src/game/TIncludeView.cpp|manual|marker_sync
 48cf10|src/game/TIncludeView.cpp|manual|marker_sync
 48cfd0|src/game/TIncludeView.cpp|manual|marker_sync
+48d090|src/game/TWindow.cpp|manual|marker_sync
 48d220|src/game/TWindow.cpp|manual|mfc_runtime_macro
 48d500|src/game/TWindow.cpp|manual|marker_sync
 48d640|src/game/TWindow.cpp|manual|marker_sync
@@ -513,6 +516,7 @@ address|target_cpp|ownership|note
 48e240|src/game/TWindow.cpp|manual|marker_sync
 48e270|src/game/TWindow.cpp|manual|marker_sync
 48e2a0|src/game/TWindow.cpp|manual|marker_sync
+48e430|src/game/TControl.cpp|manual|marker_sync
 48e500|src/game/TControl.cpp|manual|mfc_runtime_macro
 48e520|src/game/TControl.cpp|manual|marker_sync
 48e590|src/game/TControl.cpp|manual|marker_sync

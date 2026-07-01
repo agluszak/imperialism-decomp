@@ -156,6 +156,10 @@ void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
   }
 }
 
+// IMPLEMENT_DYNCREATE also emits `TView::CreateObject` (`return new TView;`).
+// SYNTHETIC: IMPERIALISM 0x0048a840
+// TView::CreateObject
+
 // TView slot 0x00 override: return this class's MFC CRuntimeClass descriptor.
 IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
@@ -1026,3 +1030,9 @@ void TView::ReturnFromUiSlot63(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
+
+// MSVC500 emitted a fresh out-of-line copy of the (header-inline) `TView::~TView` in
+// every TU that needed it non-inline: 0x0048cb00, 0x0048ec30, 0x0048ee00 are
+// byte-identical twins of 0x0048a9d0 (verified instruction-for-instruction). reccmp
+// cannot bind two original addresses to one recomp symbol, so the twins stay
+// stub-owned; their symbols.csv rows carry the truthful `TView::~TView` label.

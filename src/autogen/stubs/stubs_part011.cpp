@@ -27,7 +27,7 @@ undefined4 TView_VTableSlot85(void)
   return 0;
 }
 
-// ghidra_name TScroller::CreateTScrollerInstance
+// ghidra_name TView::~TView
 // ghidra_proto undefined CreateTScrollerInstance()
 // FUNCTION: IMPERIALISM 0x0048cb00
 undefined4 CreateTScrollerInstance(void)
@@ -51,26 +51,10 @@ undefined4 ConstructTScrollerBaseState(void)
   return 0;
 }
 
-// ghidra_name TScroller::DestructTScrollerAndMaybeFree
-// ghidra_proto undefined DestructTScrollerAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x0048cc40
-undefined4 DestructTScrollerAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTIncludeViewAndMaybeFree_Impl
 // ghidra_proto undefined DestructTIncludeViewAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0048ce70
 undefined4 DestructTIncludeViewAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TWindow::CreateTWindowInstance
-// ghidra_proto undefined CreateTWindowInstance()
-// FUNCTION: IMPERIALISM 0x0048d090
-undefined4 CreateTWindowInstance(void)
 {
   return 0;
 }
@@ -123,14 +107,6 @@ undefined4 thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass_
   return 0;
 }
 
-// ghidra_name TControl::CreateTControlInstance
-// ghidra_proto undefined CreateTControlInstance()
-// FUNCTION: IMPERIALISM 0x0048e430
-undefined4 CreateTControlInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TCtlMgr::ConstructTCtlMgrBaseState
 // ghidra_proto undefined ConstructTCtlMgrBaseState()
 // FUNCTION: IMPERIALISM 0x0048eb10
@@ -139,7 +115,7 @@ undefined4 ConstructTCtlMgrBaseState(void)
   return 0;
 }
 
-// ghidra_name TButton::CreateTButtonInstance
+// ghidra_name TView::~TView
 // ghidra_proto undefined CreateTButtonInstance()
 // FUNCTION: IMPERIALISM 0x0048ec30
 undefined4 CreateTButtonInstance(void)
@@ -155,7 +131,7 @@ undefined4 DestructTButtonAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name TRadio::CreateTRadioInstance
+// ghidra_name TView::~TView
 // ghidra_proto undefined CreateTRadioInstance()
 // FUNCTION: IMPERIALISM 0x0048ee00
 undefined4 CreateTRadioInstance(void)
