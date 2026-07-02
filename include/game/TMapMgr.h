@@ -206,14 +206,35 @@ public:
 
   // Global map session state (g_pGlobalMapState @ 0x006A43D4). RTTI object size 0x28
   // covers the TObject head; tile/city tables are heap-backed pointers below.
-  TTerrainStateRecordView* terrainStateTable; // +0x08
-  TGlobalMapCityScoreRecord* cityScoreTable;  // +0x0c
+  //
+  // terrainStateTable/cityScoreTable/tileOwnershipTable/cityScoreTotal previously sat 4
+  // bytes too early (declared starting at +0x08). Ground truth from TMapMgr::ReadFrom's
+  // decompile (0x50e620, whose own field_0xNN offsets are Ghidra-authoritative -- they
+  // are not subject to the header's prior offset comments): field_0xc is dereferenced as
+  // a pointer and filled with a 0x38f40-byte buffer (0x1950 tiles * 0x24-byte records,
+  // matching TTerrainStateRecordView exactly), field_0x10 is a pointer walked in 0x180
+  // steps of 0xa8 bytes (matching TGlobalMapCityScoreRecord exactly), and the following
+  // divisor field lands at field_0x18 -- confirmed independently by 3 call sites reading
+  // [g_pGlobalMapState+0x10] with the cityScoreTable stride/sub-offsets directly (bd
+  // 1uj.8, bd 1uj.23: TDefendProvinceMission::ResetValue0CToZero 0x53ed00 and
+  // TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric 0x4e8750, both FILD
+  // dword ptr [.. + 0x9c] -- an int-to-float CONVERSION of cityScoreValue, not a raw
+  // bit-reinterpret). field_0x1c (scenarioTagText1c) and field_0x20
+  // (hexNeighborWrapHorizontally20) already matched their declared offsets, so the gap
+  // is confined to +0x04..+0x0c: 4 stream-read scalars whose semantics aren't identified
+  // yet (kept generic below), aligning the first pointer to +0x0c.
+  short field4;           // +0x04 -- zeroed unconditionally near the end of ReadFrom
+  short field6;           // +0x06 -- 2-byte stream read
+  unsigned char field8;   // +0x08 -- 1-byte stream read
+  unsigned char field9;   // +0x09 -- 1-byte stream read
+  unsigned char pad0a[2]; // +0x0a -- alignment gap before the +0x0c pointer
+  TTerrainStateRecordView* terrainStateTable; // +0x0c
+  TGlobalMapCityScoreRecord* cityScoreTable;  // +0x10
   // Per-tile ownership/region table (0x24-byte records, one per map tile: terrain/region
-  // tag at +0x04 valid in [7,22], owner-nation byte at +0x18). Compiled at struct offset
-  // +0x0c (cityScoreTable lands at +0x08); previously an unnamed pad. Full record layout
-  // is unknown, so accessed via byte offsets.
-  signed char* tileOwnershipTable;
-  int cityScoreTotal;                 // +0x14
+  // tag at +0x04 valid in [7,22], owner-nation byte at +0x18). Full record layout is
+  // unknown, so accessed via byte offsets.
+  signed char* tileOwnershipTable;    // +0x14
+  int cityScoreTotal;                 // +0x18
   char* scenarioTagText1c;            // +0x1c
   char hexNeighborWrapHorizontally20; // +0x20
 

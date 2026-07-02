@@ -7543,7 +7543,7 @@
     },
     {
       "address": "0x4a5aa0",
-      "matching": 0.5833333333333334,
+      "matching": 0.625,
       "name": "ComputeWeightedNeighborLinkScoreForNodeIndex",
       "type": 1
     },
@@ -11341,7 +11341,7 @@
     },
     {
       "address": "0x4d3a60",
-      "matching": 0.24093816631130063,
+      "matching": 0.24946695095948826,
       "name": "TCivMgr::HandleEngineerConstructionAction",
       "type": 1
     },
@@ -11527,7 +11527,7 @@
     },
     {
       "address": "0x4d68f0",
-      "matching": 0.4108527131782946,
+      "matching": 0.4186046511627907,
       "name": "InitializeNationStateIdentityAndOwnedRegionList",
       "type": 1
     },
@@ -11581,7 +11581,7 @@
     },
     {
       "address": "0x4d71b0",
-      "matching": 0.5566433566433566,
+      "matching": 0.5650349650349651,
       "name": "TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities",
       "type": 1
     },
@@ -11773,7 +11773,7 @@
     },
     {
       "address": "0x4d87b0",
-      "matching": 0.8333333333333334,
+      "matching": 1.0,
       "name": "TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_10",
       "type": 1
     },
@@ -11959,7 +11959,8 @@
     },
     {
       "address": "0x4dbac0",
-      "matching": 0.9545454545454546,
+      "effective": true,
+      "matching": 0.9848484848484849,
       "name": "TGreatPower::MarkConnectedOwnedRegionsInMaskRecursive",
       "type": 1
     },
@@ -12013,7 +12014,7 @@
     },
     {
       "address": "0x4dc840",
-      "matching": 0.3669724770642202,
+      "matching": 0.3761467889908257,
       "name": "TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList",
       "type": 1
     },
@@ -13052,7 +13053,7 @@
     },
     {
       "address": "0x4e5d90",
-      "matching": 0.21122112211221122,
+      "matching": 0.21782178217821782,
       "name": "TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects",
       "type": 1
     },
@@ -13064,7 +13065,7 @@
     },
     {
       "address": "0x4e6150",
-      "matching": 0.1671309192200557,
+      "matching": 0.20612813370473537,
       "name": "TRemoteMinor::ReassignUnitOrdersForCountryTargetChange",
       "type": 1
     },
@@ -16593,7 +16594,7 @@
     },
     {
       "address": "0x513ff0",
-      "matching": 0.5915492957746479,
+      "matching": 0.6197183098591549,
       "name": "ApplyRailSectionEndpointDirectionFlags",
       "type": 1
     },
@@ -16665,7 +16666,7 @@
     },
     {
       "address": "0x514c80",
-      "matching": 0.7058823529411765,
+      "matching": 0.7450980392156863,
       "name": "FindReachableRecruitSpawnTileWithVisitedReset",
       "type": 1
     },
@@ -16785,7 +16786,7 @@
     },
     {
       "address": "0x515ec0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "AssignSharedStringFromIndexedA8EntryNameField",
       "type": 1
     },
@@ -16965,7 +16966,7 @@
     },
     {
       "address": "0x518470",
-      "matching": 0.9285714285714286,
+      "matching": 0.8928571428571429,
       "name": "ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl",
       "type": 1
     },
@@ -16995,7 +16996,7 @@
     },
     {
       "address": "0x518960",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TGlobalMapState::SetRegionDevelopmentStageByte",
       "type": 1
     },
@@ -17559,7 +17560,7 @@
     },
     {
       "address": "0x523ff0",
-      "matching": 0.3106796116504854,
+      "matching": 0.32038834951456313,
       "name": "TMapDialog::OrphanRetStub_00596060",
       "type": 1
     },
@@ -20008,7 +20009,7 @@
     },
     {
       "address": "0x53db60",
-      "matching": 0.41295546558704455,
+      "matching": 0.4291497975708502,
       "name": "TryResolveAttackProvinceMissionTargetTerrainClass",
       "type": 1
     },
@@ -20050,7 +20051,7 @@
     },
     {
       "address": "0x53e570",
-      "matching": 0.8571428571428571,
+      "matching": 0.9285714285714286,
       "name": "TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetProvince",
       "type": 1
     },
@@ -20098,7 +20099,7 @@
     },
     {
       "address": "0x53ed00",
-      "matching": 0.3185840707964602,
+      "matching": 0.3008849557522124,
       "name": "TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14",
       "type": 1
     },
@@ -20242,7 +20243,7 @@
     },
     {
       "address": "0x53f780",
-      "matching": 0.7755102040816326,
+      "matching": 0.8163265306122449,
       "name": "TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath",
       "type": 1
     },
@@ -22582,7 +22583,7 @@
     },
     {
       "address": "0x55e360",
-      "matching": 0.7080745341614907,
+      "matching": 0.7329192546583851,
       "name": "StepHexTileIndexByDirectionWithWrapRules",
       "type": 1
     },
@@ -22792,7 +22793,7 @@
     },
     {
       "address": "0x560150",
-      "matching": 0.5112781954887218,
+      "matching": 0.5263157894736842,
       "name": "TZone::FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_35_35",
       "type": 1
     },
@@ -27673,7 +27674,7 @@
     },
     {
       "address": "0x58f3c0",
-      "matching": 0.6294416243654822,
+      "matching": 0.6598984771573604,
       "name": "TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation",
       "type": 1
     },

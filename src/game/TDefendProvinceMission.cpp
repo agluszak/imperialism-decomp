@@ -272,15 +272,16 @@ void TDefendProvinceMission::SetStateByte8To2() {
 // FUNCTION: IMPERIALISM 0x0053ed00
 void TDefendProvinceMission::ResetValue0CToZero() {
   int tileIndex = field_14;
-  char* cityScoreTable = reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable);
+  const TGlobalMapCityScoreRecord& cityRecord = g_pGlobalMapState->cityScoreTable[tileIndex];
 
-  float local_8 = *reinterpret_cast<float*>(cityScoreTable + 0x9c + tileIndex * 0xa8);
-  int adjacentCount =
-      static_cast<int>(g_pGlobalMapState->cityScoreTable[tileIndex].adjacentRegionCount08);
+  // Ground truth: 0x53ed00 uses FILD (int-to-float conversion), not a raw float
+  // bit-reinterpret -- cityScoreValue is a genuine int (see TMapMgr.h).
+  float local_8 = static_cast<float>(cityRecord.cityScoreValue);
+  int adjacentCount = static_cast<int>(cityRecord.adjacentRegionCount08);
   int local_c = 0;
 
   if (adjacentCount > 0) {
-    const short* adjArray = g_pGlobalMapState->cityScoreTable[tileIndex].adjacentRegionIds0A;
+    const short* adjArray = cityRecord.adjacentRegionIds0A;
     // GetTileNormalizedMovementClassId is at 0x514290
     typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
     GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
