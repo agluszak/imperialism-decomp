@@ -21,6 +21,16 @@
 // distinct vtables (0x0064ba80 / 0x0064ba68), i.e. two distinct instantiations; the exact
 // scalar key/value types (which fix the per-instantiation vtable but not the layout) are
 // still provisional pending the resource lookup/insert sites.
+//
+// bd 1uj.44: these two CMap<> destructors are compiler-emitted (no hand-written body is
+// correct per the mfc-collections skill) at 0x0049ae30 (CMap<WORD,WORD,CacheRecord*,
+// CacheRecord*>::~CMap, vtable 0x0064ba80) and 0x0049b270 (CMap<void*,void*,CacheRecord*,
+// CacheRecord*>::~CMap, vtable 0x0064ba68) — claimed via `// TEMPLATE:` markers in
+// TModuleLibraryCacheTableStateB.cpp (see the ISLE-style decorated-name-comment
+// convention). They previously carried invented vtable-address-suffixed placeholder
+// class names (TModuleLibraryCacheTableStateA_0064BA68 / TModuleLibraryCacheTableStateB_
+// 0064BA80) with hand-written stub bodies; both are retired in favor of letting the real
+// `CMap<K,ARG_K,V,ARG_V>` members below emit their own destructors.
 struct CacheRecord {
   short id;
   CObject* pObject;
