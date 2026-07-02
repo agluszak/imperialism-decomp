@@ -347,14 +347,6 @@ undefined4 ClearPerTileByte0FForAllMapTiles(void)
   return 0;
 }
 
-// ghidra_name TileHasMovementClassId
-// ghidra_proto undefined TileHasMovementClassId()
-// FUNCTION: IMPERIALISM 0x00515e50
-undefined4 TileHasMovementClassId(void)
-{
-  return 0;
-}
-
 // ghidra_name SetGlobalMapCellSharedLabel
 // ghidra_proto undefined SetGlobalMapCellSharedLabel()
 // FUNCTION: IMPERIALISM 0x00515f40
@@ -431,14 +423,6 @@ undefined4 LoadScenarioMapStateFromTableResource_Impl(void)
 // ghidra_proto undefined ResetTileToBaseTransportFlag()
 // FUNCTION: IMPERIALISM 0x00518990
 undefined4 ResetTileToBaseTransportFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name AreAllLinkedEntriesTerrainFlagBit2Clear
-// ghidra_proto undefined AreAllLinkedEntriesTerrainFlagBit2Clear()
-// FUNCTION: IMPERIALISM 0x00518a20
-undefined4 AreAllLinkedEntriesTerrainFlagBit2Clear(void)
 {
   return 0;
 }

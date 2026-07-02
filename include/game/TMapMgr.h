@@ -249,6 +249,13 @@ public:
   short ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short terrainType, char wrapBias);
 
   char AreNationsBorderLinked(int nationA, int nationB);
+  // 0x515e50. Despite the name, checks whether regionIndex is in nodeContext's
+  // adjacent-region list -- see the .cpp body comment.
+  char TileHasMovementClassId(int nodeContext, int regionIndex);
+  // 0x518a20. Returns true on the first linked region with terrainStateTable
+  // activeFlags1c bit 2 SET (not "all clear" as the name implies) -- see the .cpp
+  // body comment.
+  char AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex);
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
   int SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags);
   void ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation);

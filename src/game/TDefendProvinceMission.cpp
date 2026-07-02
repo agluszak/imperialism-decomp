@@ -5,6 +5,7 @@
 #include "game/TGlobalMapState.h"
 #include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
+#include "game/TNavyMgr.h"
 #include "game/TList.h"
 #include "game/TGreatPower.h"
 #include "game/global_data_tables.h"
@@ -22,9 +23,6 @@ IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 // Not-yet-recovered free functions this file calls into (generic stub
 // signature per the autogen stub definition; real signature applied via a
 // typed cast at each call site so the linker resolves the correct symbol).
-extern undefined4 ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(void);
-extern undefined4 TileHasMovementClassId(void);
-extern undefined4 AreAllLinkedEntriesTerrainFlagBit2Clear(void);
 extern undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(void);
 extern undefined4 GetNormalizedCityActionResourceCostPercent(void);
 extern undefined4 GetTileNormalizedMovementClassId(void);
@@ -103,15 +101,11 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
   int sourceNation =
       static_cast<int>(static_cast<signed char>(nationContextTable[nodeContext * 0xa8]));
 
-  // ComputeAggregateWeightedChildCostForMatchingType5NavyOrders is at 0x557170
-  typedef short(__cdecl * ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_t)(void);
-  ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_t
-      ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_fn =
-          reinterpret_cast<ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_t>(
-              (void*)&ComputeAggregateWeightedChildCostForMatchingType5NavyOrders);
-
+  void* nodeCityRecord = nationContextTable + nodeContext * 0xa8;
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
-    short navyBudget = ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_fn();
+    short navyBudget =
+        g_pNavyOrderManager->ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
+            static_cast<short>(nationIndex), nodeCityRecord, 0);
     remainingBudgetByNation[nationIndex] = static_cast<int>(navyBudget);
   }
 
@@ -126,18 +120,14 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
           g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(candidateNation, sourceNation) !=
               0) {
 
-        // TileHasMovementClassId is at 0x515e50
-        typedef char(__cdecl * TileHasMovementClassId_t)(void);
         char tileHasMovementClass =
-            reinterpret_cast<TileHasMovementClassId_t>((void*)&TileHasMovementClassId)();
+            g_pGlobalMapState->TileHasMovementClassId(nodeContext, regionIndex);
 
         if (tileHasMovementClass == 0) {
           if (remainingBudgetByNation[candidateNationIndex] > 0) {
 
-            // AreAllLinkedEntriesTerrainFlagBit2Clear is at 0x518a20
-            typedef char(__cdecl * AreAllLinkedEntriesTerrainFlagBit2Clear_t)(void);
-            char linkedTerrainClear = reinterpret_cast<AreAllLinkedEntriesTerrainFlagBit2Clear_t>(
-                (void*)&AreAllLinkedEntriesTerrainFlagBit2Clear)();
+            char linkedTerrainClear =
+                g_pGlobalMapState->AreAllLinkedEntriesTerrainFlagBit2Clear(regionIndex);
 
             if (linkedTerrainClear != 0) {
               for (TMilitaryUnit* unit = StationedUnitChainAt(regionIndex); unit != 0;

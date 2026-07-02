@@ -20,9 +20,13 @@ TNavyMgr::~TNavyMgr() {}
 
 void TNavyMgr::Free() {}
 
-void TNavyMgr::WriteTo(TStream* stream) { (void)stream; }
+void TNavyMgr::WriteTo(TStream* stream) {
+  (void)stream;
+}
 
-void TNavyMgr::ReadFrom(TStream* stream) { (void)stream; }
+void TNavyMgr::ReadFrom(TStream* stream) {
+  (void)stream;
+}
 
 static void RemoveMatchingSecondaryOrders(short nationSlot) {
   int* node = reinterpret_cast<int*>(g_pNavySecondaryOrderListHead);
@@ -44,6 +48,34 @@ static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlo
     }
     node = nextNode;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00557170
+short TNavyMgr::ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(short nationSlot,
+                                                                            void* cityRecordPtr,
+                                                                            int filterValue) {
+  int total = 0;
+  int* node = reinterpret_cast<int*>(orderListHead04);
+  while (node != 0) {
+    if (static_cast<short>(node[7]) == nationSlot && node[2] == 5 &&
+        node[3] == reinterpret_cast<int>(cityRecordPtr) &&
+        (filterValue == 0 || node[6] == filterValue)) {
+      int sum = 0;
+      int* item = reinterpret_cast<int*>(node[4]);
+      while (item != 0) {
+        TShip* ship = reinterpret_cast<TShip*>(item[0]);
+        short contribution = 0;
+        if (ship->stockLevel1c > 0) {
+          contribution = g_industryActionCostWeightResCode10[ship->resourceType04];
+        }
+        sum += contribution;
+        item = reinterpret_cast<int*>(item[1]);
+      }
+      total += sum;
+    }
+    node = reinterpret_cast<int*>(node[0xb]);
+  }
+  return static_cast<short>(total);
 }
 
 // FUNCTION: IMPERIALISM 0x00557210

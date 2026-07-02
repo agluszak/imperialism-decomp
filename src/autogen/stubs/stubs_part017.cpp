@@ -283,14 +283,6 @@ undefined4 MoveMapOrderEntryToQueueHeadIfValid(void)
   return 0;
 }
 
-// ghidra_name ComputeAggregateWeightedChildCostForMatchingType5NavyOrders
-// ghidra_proto undefined ComputeAggregateWeightedChildCostForMatchingType5NavyOrders()
-// FUNCTION: IMPERIALISM 0x00557170
-undefined4 ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(void)
-{
-  return 0;
-}
-
 // ghidra_name GetEnabledIndustryCapabilitySlotByClass
 // ghidra_proto undefined GetEnabledIndustryCapabilitySlotByClass()
 // FUNCTION: IMPERIALISM 0x005572d0

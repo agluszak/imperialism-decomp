@@ -8,21 +8,31 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0065c4c8
 class TNavyMgr : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TNavyMgr) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TNavyMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNavyMgr)
   virtual ~TNavyMgr(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x5568c0
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5568c0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x556aa0
-  virtual void Free() override; // slot 0x07 0x5567a0
+  virtual void Free() override;                    // slot 0x07 0x5567a0
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-// === END GENERATED DECLS (TNavyMgr) ===
+  // === END GENERATED DECLS (TNavyMgr) ===
   void* orderListHead04;
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
+  // 0x557170. Walks orderListHead04 (the same raw task-force-order node list
+  // RemoveMatchingTaskForceOrders in the .cpp already indexes via node[7]=
+  // nationSlot@+0x1c, node[0xb]=next@+0x2c); matches nodes with orderType@+0x8==5,
+  // targetRecord@+0xc==cityRecordPtr, and (filterValue==0 || filterTag@+0x18==
+  // filterValue), then sums a per-TShip weighted cost from the sub-list at +0x10
+  // (each entry is {TShip*, next}; TShip::resourceType04/stockLevel1c line up with
+  // the entry's ship's own fields).
+  short ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(short nationSlot,
+                                                                    void* cityRecordPtr,
+                                                                    int filterValue);
 
   TNavyMgr();
 };

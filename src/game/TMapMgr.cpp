@@ -508,6 +508,22 @@ short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileInde
                                                     allowActiveFlag2);
 }
 
+// Verified against 0x0053e7bf's callsite (TDefendProvinceMission::
+// ComputeCrossNationSupportVectorScore): despite the Ghidra-provisional name, this
+// checks whether regionIndex appears in nodeContext's adjacent-region list, not
+// anything about movement classes -- kept the name per Hard Rule 6 (no clean
+// replacement name yet), documented here instead.
+// FUNCTION: IMPERIALISM 0x00515e50
+char TMapMgr::TileHasMovementClassId(int nodeContext, int regionIndex) {
+  const TGlobalMapCityScoreRecord& record = cityScoreTable[nodeContext];
+  for (int i = 0; i < record.adjacentRegionCount08; ++i) {
+    if (record.adjacentRegionIds0A[i] == regionIndex) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00515ec0
 void TMapMgr::AssignSharedStringFromIndexedA8EntryNameField(int cityRecordIndex, CString* dest) {
   *dest = *reinterpret_cast<CString*>(reinterpret_cast<char*>(cityScoreTable) +
@@ -726,6 +742,24 @@ short __stdcall GetProvinceUnitOrderWeight(short provinceId) {
 // FUNCTION: IMPERIALISM 0x00518960
 void TMapMgr::SetRegionDevelopmentStageByte(short regionId, unsigned char stage) {
   cityScoreTable[regionId].developmentStage = stage;
+}
+
+// Verified against the disassembly: returns TRUE as soon as it finds a linked
+// region whose terrainStateTable activeFlags1c bit 2 is SET, and FALSE if
+// linkedRegionCount<=0 -- the OPPOSITE of what the Ghidra-provisional name
+// implies ("all clear" would return true only when none are set). Kept the name
+// per Hard Rule 6 pending a confident replacement; documented the real behavior
+// here instead of renaming on a single read.
+// FUNCTION: IMPERIALISM 0x00518a20
+char TMapMgr::AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex) {
+  const TGlobalMapCityScoreRecord& record = cityScoreTable[regionIndex];
+  for (int i = 0; i < record.linkedRegionCount; ++i) {
+    unsigned char flags = terrainStateTable[record.linkedRegionIds[i]].activeFlags1c;
+    if ((flags >> 2) & 1) {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e360

@@ -12595,7 +12595,7 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12613,19 +12613,19 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -16094,7 +16094,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20545454545454545,
+      "matching": 0.20727272727272728,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16172,7 +16172,7 @@
     },
     {
       "address": "0x50da80",
-      "matching": 0.2857142857142857,
+      "matching": 0.28507795100222716,
       "name": "TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10",
       "type": 1
     },
@@ -16778,7 +16778,7 @@
     },
     {
       "address": "0x515e50",
-      "matching": 0.05555555555555555,
+      "matching": 1.0,
       "name": "TileHasMovementClassId",
       "type": 1
     },
@@ -16922,7 +16922,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.2987951807228916,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -17006,7 +17006,7 @@
     },
     {
       "address": "0x518a20",
-      "matching": 0.0,
+      "matching": 0.5974025974025974,
       "name": "AreAllLinkedEntriesTerrainFlagBit2Clear",
       "type": 1
     },
@@ -19905,7 +19905,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -19917,7 +19917,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -20073,7 +20073,7 @@
     },
     {
       "address": "0x53e6e0",
-      "matching": 0.2222222222222222,
+      "matching": 0.23267326732673269,
       "name": "ComputeDefendProvinceMissionCrossNationSupportVectorScore",
       "type": 1
     },
@@ -22317,7 +22317,7 @@
     },
     {
       "address": "0x557170",
-      "matching": 0.0392156862745098,
+      "matching": 0.35789473684210527,
       "name": "ComputeAggregateWeightedChildCostForMatchingType5NavyOrders",
       "type": 1
     },
