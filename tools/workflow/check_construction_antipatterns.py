@@ -20,7 +20,7 @@ import csv
 import re
 from pathlib import Path
 
-from tools.common.file_scan import strip_generated_blocks
+from tools.common.file_scan import is_excluded_scan_path, strip_generated_blocks
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
 
 PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -79,6 +79,8 @@ def collect_files(repo_root: Path, roots: list[str]) -> list[Path]:
                 files.append(root)
             continue
         for path in root.rglob("*"):
+            if is_excluded_scan_path(path):
+                continue
             if path.is_file() and path.suffix.lower() in DEFAULT_EXTENSIONS:
                 files.append(path)
     return sorted(set(files))
