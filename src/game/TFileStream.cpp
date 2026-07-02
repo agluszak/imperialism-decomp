@@ -93,8 +93,13 @@ void TFileStream::WriteObjectSlotB4(void* objectRef, int flag) {
   BackingArchive(this->backingArchiveOrStream)->WriteObject(static_cast<const CObject*>(objectRef));
 }
 
+// Delegate the shared-string read straight to the backing CArchive via the MFC
+// operator>>(CArchive&, CString&). maxLen is unused (see TStream base override).
 // FUNCTION: IMPERIALISM 0x00489360
-void TFileStream::streamSlot70() {}
+void TFileStream::streamSlot70(CString* dest, int maxLen) {
+  (void)maxLen;
+  *BackingArchive(this->backingArchiveOrStream) >> *dest;
+}
 
 // FUNCTION: IMPERIALISM 0x00489390
 void TFileStream::streamSlotAc(CString* sharedString) {

@@ -74,8 +74,18 @@ int TStream::streamSlot50() {
   return value;
 }
 
+// Read a length-prefixed shared string into dest: pull the length via ReadShort
+// (slot 0x4c), size dest's buffer, read that many raw bytes, null-terminate, and
+// release. maxLen is a caller-supplied capacity hint the base impl does not use.
 // FUNCTION: IMPERIALISM 0x00488c50
-void TStream::streamSlot70() {} // TODO: 0x00488c50
+void TStream::streamSlot70(CString* dest, int maxLen) {
+  (void)maxLen;
+  int length = this->ReadShort();
+  char* buffer = dest->GetBuffer(length + 1);
+  this->ReadBytes(buffer, length);
+  buffer[length] = 0;
+  dest->ReleaseBuffer(-1);
+}
 
 // FUNCTION: IMPERIALISM 0x00488ca0
 void TStream::streamSlot6c() {} // TODO: 0x00488ca0
@@ -217,4 +227,3 @@ void TStream::WriteObjectSlotB4(void*, int) {}
 
 // SYNTHETIC: IMPERIALISM 0x00488a10
 // TStream::`scalar deleting destructor'
-

@@ -163,8 +163,8 @@ void TCountry::Free(void) {
 // FUNCTION: IMPERIALISM 0x004d6bf0
 void TCountry::ReadFrom(TStream* stream) {
   int streamState = reinterpret_cast<int>(stream);
-  stream->streamSlot70();
-  stream->streamSlot70();
+  stream->streamSlot70(&this->identitySharedString0, 0xff);
+  stream->streamSlot70(&this->identitySharedString1, 0xff);
 
   this->identitySharedString1 = g_pLocalizationTable->sharedTextSlots[this->nationSlot];
   stream->ReadBytes(&this->identitySharedString0, 4);

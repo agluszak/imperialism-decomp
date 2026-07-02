@@ -75,7 +75,7 @@ public:
   int streamSlot30() override;
   void streamSlot34() override;
   void ReadBytes(void* buffer, int sizeBytes) override;
-  void streamSlot70() override;
+  void streamSlot70(CString* dest, int maxLen) override;
   void WriteBytesSlot78(void* data, int length) override;
 
   // 0x00489220 / 0x00489290: forward raw byte read/write to the backing

@@ -57,13 +57,9 @@ static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
 void TMilitaryUnit::ReadFrom(TStream* stream) {
   TUnit::ReadFrom(stream);
   // name24 (CString) is read here in the original via TStream slot 0x70
-  // (streamSlot70, confirmed 2-arg "read shared string with capacity" --
-  // args &name24, 0x20 -- same slot TCountry::ReadFrom 0x4d6bf0 calls with
-  // &identitySharedString0/1, 0xff). Left as the 0-arg placeholder: widening
-  // the shared TStream vtable slot's signature touches TStream::streamSlot70
-  // (0x488c50), TFileStream::streamSlot70 (0x489360), and TCountry's two call
-  // sites, which is out of this class's scope -- see bd 1uj.6.
-  stream->streamSlot70();
+  // (streamSlot70, "read shared string with capacity"): args (&name24, 0x20)
+  // verified against 0x5c2fd0.
+  stream->streamSlot70(&name24, 0x20);
   stream->ReadBytes(orderTargetTiles28, 6);
   SwapAdjacentBytesInShortArray(orderTargetTiles28, 3);
   stream->ReadBytes(orderTargetTilesMirror2E, 6);
