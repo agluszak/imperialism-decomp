@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00664b00
 class TToolBarCluster : public TCluster {
 public:
-// === BEGIN GENERATED DECLS (TToolBarCluster) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TToolBarCluster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TToolBarCluster)
   virtual ~TToolBarCluster(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +23,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x00584ea0
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x00584ea0
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -61,8 +62,9 @@ public:
   // slot 0x32 ValidateControlRectIfWindowActive inherited unchanged (0x48b690)
   // slot 0x33 EvaluateControlInputGate inherited unchanged (0x48c000)
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
-  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                   int hitArg) override; // slot 0x35 0x5851c0
+  virtual void
+  HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
+                                                      int hitArg) override; // slot 0x35 0x5851c0
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
   // slot 0x37 NoOpUiLifecycleHook inherited unchanged (0x48ab70)
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
@@ -124,11 +126,36 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
-  virtual undefined RefreshTurnOrderStatusPanelTextsAndControls(); // slot 0x73 0x5853f0
+  virtual undefined RefreshTurnOrderStatusPanelTextsAndControls();            // slot 0x73 0x5853f0
   virtual void UpdateControlTagTreaTextFromNationAndMapContext(int nationId); // slot 0x74 0x585ba0
-  virtual undefined SehCleanup_ReleaseTwoTempSharedStringRefs(); // slot 0x75 0x585ee0
-// === END GENERATED DECLS (TToolBarCluster) ===
+  virtual undefined SehCleanup_ReleaseTwoTempSharedStringRefs();              // slot 0x75 0x585ee0
+  // === END GENERATED DECLS (TToolBarCluster) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TToolBarCluster 0xCTOR`).
+  //
+  // Do NOT add data members here for the this+0x94/this+0x96/this+0xb0.. fields touched
+  // by SetMapInteractionMode/RefreshMapOrderEntryPanel/SetActiveMapOrderEntry below:
+  // measured (bd 1uj.50), adding them widens sizeof(TToolBarCluster) past the verified
+  // real 0x88 bytes (CreateObject @ 0x584d80 allocates exactly size 0x88; RTTI agrees)
+  // and regresses TToolBarCluster::CreateObject's match (`push 0x88` -> `push 0x9c`).
+  // That's hard evidence these fields belong to a further-derived, RTTI-invisible
+  // subclass (no DECLARE_DYNCREATE sibling of TToolBarCluster exists), not to this
+  // class. Until that subclass is recovered, access them via a scoped typed-view struct
+  // at the callsite (see TWorldView.cpp) per Hard Rule 8's "typed view struct" option,
+  // not as members here and not as raw ad-hoc reinterpret_cast arithmetic.
+
+  // Non-virtual own methods (map-interaction/order-entry cluster; bd 1uj.50).
+  // CAUTION: the disassembly of SetMapInteractionMode/RefreshMapOrderEntryPanel/
+  // SetActiveMapOrderEntry reads/writes `this+0x96` (short) and a 3-element pointer
+  // array at `this+0xb0..0xbc`, which exceed TToolBarCluster's verified object size
+  // (0x88, confirmed via CreateObject's allocator call (size 0x88) at 0x584d80 and RTTI).
+  // The real receiver is very likely a further-derived, RTTI-invisible class (no
+  // DECLARE_DYNCREATE sibling found for TToolBarCluster), not modeled here yet. These
+  // three methods keep the curated symbols.csv class attribution and a real thiscall
+  // signature/callsite, but their bodies are intentionally left as TODO stubs rather
+  // than guessing fields on the wrong-sized class. See bd notes for follow-up.
+  void SetMapInteractionMode(short nMode);
+  void RefreshMapOrderEntryPanel(void* pMapOrderEntry);
+  void SetActiveMapOrderEntry(void* pMapOrderEntry);
 
   TToolBarCluster();
 };

@@ -883,14 +883,6 @@ undefined4 ConstructTMapUberPictureBaseState(void)
   return 0;
 }
 
-// ghidra_name TToolBarCluster::SetMapInteractionMode
-// ghidra_proto void __thiscall SetMapInteractionMode(short nMode)
-// FUNCTION: IMPERIALISM 0x00596cb0
-undefined4 SetMapInteractionMode(void)
-{
-  return 0;
-}
-
 // ghidra_name ComposeAndDispatchTurnSummaryLocalizedMessage
 // ghidra_proto undefined ComposeAndDispatchTurnSummaryLocalizedMessage()
 // FUNCTION: IMPERIALISM 0x00597020
@@ -911,22 +903,6 @@ undefined4 Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4(void)
 // ghidra_proto undefined ReinitializeGameFlowAndPostTurnEvent5DD()
 // FUNCTION: IMPERIALISM 0x005974eb
 undefined4 ReinitializeGameFlowAndPostTurnEvent5DD(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::RefreshMapOrderEntryPanel
-// ghidra_proto void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00597810
-undefined4 RefreshMapOrderEntryPanel(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::SetActiveMapOrderEntry
-// ghidra_proto void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00597950
-undefined4 SetActiveMapOrderEntry(void)
 {
   return 0;
 }

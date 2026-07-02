@@ -3536,10 +3536,13 @@ address|target_cpp|ownership|note
 596a30|src/game/TMapUberPicture.cpp|manual|marker_sync
 596a80|src/game/TMapUberPicture.cpp|manual|marker_sync
 596c60|src/game/TMapUberPicture.cpp|manual|marker_sync
+596cb0|src/game/TToolBarCluster.cpp|manual|marker_sync
 597340|src/game/TMapUberPicture.cpp|manual|marker_sync
 597600|src/game/TMapUberPicture.cpp|manual|marker_sync
 597770|src/game/TMapUberPicture.cpp|manual|marker_sync
 5977a0|src/game/TMapUberPicture.cpp|manual|marker_sync
+597810|src/game/TToolBarCluster.cpp|manual|marker_sync
+597950|src/game/TToolBarCluster.cpp|manual|marker_sync
 597a10|src/game/TMapUberPicture.cpp|manual|marker_sync
 598870|src/game/TMapUberPicture.cpp|manual|marker_sync
 5988c0|src/game/TMapUberPicture.cpp|manual|marker_sync
