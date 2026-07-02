@@ -711,3 +711,42 @@ Round 1 (min 2 votes, no conflicts) moved 31 functions to 100% with zero regress
 The tool's conflict column doubles as an annotation-audit: consistent votes AGAINST an
 existing row mean the row (not the oracle) is probably wrong.
 
+## 33. A local object with a non-trivial dtor forces MSVC's single-epilogue shape
+
+A function-scope local with a destructor (e.g. `CString`) that the original constructs
+*unconditionally right after the prologue* — not lazily where first used — is a strong
+tell that every exit path (every `break`/`return`) must funnel through **one shared
+epilogue block** that runs the destructor once, and every early exit becomes a `jmp` to
+it instead of its own inlined pop/ret sequence. If you instead scope that local inside
+one branch/loop (matching naive "where is it used" reading), the compiler has no reason
+to build a shared funnel — each exit gets its own duplicated epilogue, inflating code
+size and decorrelating nearly every jump-target offset in the function. Diagnostic:
+compare the recomp's `push`/`call CString::CString` position against 0x<funcstart>+few
+bytes in the original (before the first real branch) — if it's there, hoist the local to
+the top of the function, unconditionally constructed, even if only one switch-case reads
+it (pass it by value/const-ref into that case; it'll compile to a copy-ctor call per use,
+matching original). Caught in `TSimMgr::AdvanceGlobalTurnStateMachine` (0x57da70):
+moving `CString emptyString` from inside a case's loop to function-scope shrank the
+byte-size gap vs the original from +62 bytes to +1 byte (1277→1116, target 1215) even
+before any other fix landed.
+
+## 34. `extern undefined4 Foo(void)` stubs beside a switch/state-machine may be real
+    methods on a *different* receiver — check ecx, not just the name
+
+A free-function stub called with no visible receiver can still be a real `__thiscall`
+hiding behind an ILT jmp thunk (`0x40xxxx` range — resolve with
+`just ghidra-listing 0xTHUNK`, never trust the un-followed `CALL 0x40xxxx` operand).
+Two traps found together in one switch case: (1) the receiver is not always `this` —
+`TSimMgr::AdvanceGlobalTurnStateMachine`'s case 3 called two methods with
+`ecx = g_pLocalizationTable` (a *different* TSimMgr instance/alias) while a third call a
+few lines later used `ecx = this`, in the same case body; (2) a condition guarding a
+call can reference a field on that *other* receiver (`g_pLocalizationTable->redrawEnabled`
+at +0x40) while the existing port had guessed a same-named-feeling field on `this`
+(`this->field34`) — same bug shape as note 17's cross-class-cast trap, just via a global
+alias instead of an inheritance cast. Always re-derive the field offset and receiver from
+the raw `MOV ECX, [global]` right before the `CALL`, never assume `this`. Also watch
+`RET 0xN` on the callee for the real stack-arg count/types (a `PUSH <addr>` operand that
+reccmp later renders as `push "Literal" (STRING)` is a string-literal pointer, not a raw
+int — model it as a named `s_*_00ADDR[]` `GLOBAL:` global per note 9/existing convention,
+not `reinterpret_cast<void*>(0xADDR)`).
+

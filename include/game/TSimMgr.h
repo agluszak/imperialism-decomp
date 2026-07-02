@@ -81,6 +81,17 @@ public:
   void DecrementField30Value();
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
+  // 0x57c3b0. Verified against AdvanceGlobalTurnStateMachine's case-3 callsite
+  // (0x0057db25): a real __thiscall on TSimMgr (receiver g_pLocalizationTable), not a
+  // free function -- writes into the scenarioSetupRows regions at +0xe8 on `this`.
+  void RebuildGlobalOrderManagersAndCapabilityState(char flag);
+  // 0x57c7c0. Same callsite family (0x0057db32); real __thiscall, 3 stack args
+  // (`RET 0xc` confirms the count); param2 is the string literal "Chunk", not a
+  // raw address.
+  void RebuildMapContextAndGlobalMapState(int param1, const char* param2, int param3);
+  // 0x57cad0. Verified against 0x0057db53: real __thiscall on `this` (not
+  // g_pLocalizationTable this time), 1 stack arg (`RET 0x4`).
+  void RebuildNationStateSlotsAndAvailability(int flag);
 
   // --- fields (offsets are load-bearing: referenced from many other classes via
   //     g_pLocalizationTable; do not rename or move) ---

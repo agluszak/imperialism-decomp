@@ -26,9 +26,6 @@
 extern "C" char DAT_006a43f0;
 extern "C" char DAT_006a43c0;
 
-extern undefined4 RebuildGlobalOrderManagersAndCapabilityState(void);
-extern undefined4 RebuildMapContextAndGlobalMapState(void);
-extern undefined4 RebuildNationStateSlotsAndAvailability(void);
 extern undefined4 ConfigureTurnResumeStateAndNationMask(void);
 extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
@@ -133,6 +130,14 @@ static inline void HandleTurnEndSavePaths(TSimMgr* simMgr) {
 
 // FUNCTION: IMPERIALISM 0x0057da70
 void TSimMgr::AdvanceGlobalTurnStateMachine() {
+  // Verified against 0x0057da8e: the original constructs this CString unconditionally
+  // right after the prologue, before even the deferCounter check below -- it is a
+  // function-scope local (only case 2's loop reads it, passed by value per iteration),
+  // not a temporary re-created each loop iteration. Its non-trivial dtor is what forces
+  // MSVC to route every case's `break` through one shared epilogue/cleanup block instead
+  // of inlining a separate epilogue per case (see 0x57db01's `jmp` to the common tail).
+  CString emptyString;
+
   if (turnStateCode == 0x10 && g_nTurnCooldownDeferCounter006A43C4 > 0) {
     --g_nTurnCooldownDeferCounter006A43C4;
   }
@@ -161,7 +166,6 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         continue;
       }
       if (nation->ShouldDispatchImmediatelySlot28() == 0 && DAT_006a43f0 == 0) {
-        CString emptyString;
         nation->RefreshNationCivilianWorkOrdersForTurn(emptyString, reinterpret_cast<char*>(-1));
       }
     }
@@ -194,29 +198,26 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  // TODO(shortcut): this case has an *unverified, likely* bug, spotted but not fixed
-  // (ran out of session time to re-verify field offsets before touching it). The real
-  // disassembly around 0x0057db61-0x57db8b looked like it has the condition inverted
-  // (dispatch only when field34>=2 && stateFlag114==0, i.e. opposite of what's modeled
-  // below) and dispatches a different event code (0x3b8, not 0x5e4) with the arguments
-  // in (code, activeNationSlot) order rather than (activeNationSlot, code) — the same
-  // swap pattern that was confirmed and fixed in case 1 above. Re-verify against
-  // `just ghidra-listing 0x0057da70` before changing; do not just swap the args again
-  // without re-checking the condition too, this one wasn't fully traced through.
   case 3:
     turnStateCode = 2;
     if (field112 != 0) {
-      RebuildGlobalOrderManagersAndCapabilityState();
-      RebuildMapContextAndGlobalMapState();
+      // Verified against 0x0057db25/0x0057db32: both are real TSimMgr thiscall
+      // methods on g_pLocalizationTable (not `this`, and not free functions).
+      g_pLocalizationTable->RebuildGlobalOrderManagersAndCapabilityState(1);
+      g_pLocalizationTable->RebuildMapContextAndGlobalMapState(1, s_Chunk_00698C0C, 1);
     }
     if (DAT_006a43f0 != 0) {
       break;
     }
-    RebuildNationStateSlotsAndAvailability();
-    if (field34 < 2 && stateFlag114 == 0) {
-      if (g_pUiRuntimeContext != nullptr) {
-        g_pUiRuntimeContext->DispatchTurnEventSlot4C(activeNationSlot, 0x5e4);
-      }
+    // Verified against 0x0057db53: real TSimMgr thiscall on `this` this time.
+    RebuildNationStateSlotsAndAvailability(1);
+    // Verified against 0x0057db5c-0x57db89: the condition reads g_pLocalizationTable's
+    // redrawEnabled (this+0x40 on that object, NOT this->field34), the dispatch uses
+    // event code 0x3b8 (not 0x5e4) with (code, activeNationSlot) argument order, and
+    // there is no null guard on g_pUiRuntimeContext -- same missing-guard pattern as
+    // case 1 above. field34/0x5e4/guarded call was an unverified placeholder shape.
+    if (g_pLocalizationTable->redrawEnabled > 1 && stateFlag114 == 0) {
+      g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x3b8, activeNationSlot);
     } else {
       PostMainWindowCommand100ForTurnFlow();
     }

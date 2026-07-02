@@ -3173,6 +3173,9 @@ address|target_cpp|ownership|note
 57bea0|src/game/TSimMgr.cpp|manual|marker_sync
 57c230|src/game/TSimMgr.cpp|manual|marker_sync
 57c390|src/game/TSimMgr.cpp|manual|marker_sync
+57c3b0|src/game/TSimMgr.cpp|manual|marker_sync
+57c7c0|src/game/TSimMgr.cpp|manual|marker_sync
+57cad0|src/game/TSimMgr.cpp|manual|marker_sync
 57cda0|src/game/TSimMgr.cpp|manual|marker_sync
 57d520|src/game/TSimMgr.cpp|manual|marker_sync
 57d830|src/game/TSimMgr.cpp|manual|marker_sync

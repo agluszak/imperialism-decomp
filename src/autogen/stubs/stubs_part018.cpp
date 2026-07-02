@@ -291,34 +291,10 @@ undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At0057bb80(void)
   return 0;
 }
 
-// ghidra_name RebuildGlobalOrderManagersAndCapabilityState
-// ghidra_proto undefined RebuildGlobalOrderManagersAndCapabilityState()
-// FUNCTION: IMPERIALISM 0x0057c3b0
-undefined4 RebuildGlobalOrderManagersAndCapabilityState(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildMapContextAndGlobalMapState
-// ghidra_proto undefined RebuildMapContextAndGlobalMapState()
-// FUNCTION: IMPERIALISM 0x0057c7c0
-undefined4 RebuildMapContextAndGlobalMapState(void)
-{
-  return 0;
-}
-
 // ghidra_name RecreateActiveMapContextAndInitializeGlobalMapState
 // ghidra_proto undefined RecreateActiveMapContextAndInitializeGlobalMapState()
 // FUNCTION: IMPERIALISM 0x0057c9a0
 undefined4 RecreateActiveMapContextAndInitializeGlobalMapState(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildNationStateSlotsAndAvailability
-// ghidra_proto undefined RebuildNationStateSlotsAndAvailability()
-// FUNCTION: IMPERIALISM 0x0057cad0
-undefined4 RebuildNationStateSlotsAndAvailability(void)
 {
   return 0;
 }

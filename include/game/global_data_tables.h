@@ -454,6 +454,10 @@ extern const float g_MissionDefaultScore_0065a468;
 // TSimMgr.cpp — per-nation scenario setup source table.
 extern short g_anScenarioNationSetupTable_00698B1A[27];
 
+// TSimMgr_AdvanceGlobalTurnStateMachine.cpp — debug tag literal passed to
+// TSimMgr::RebuildMapContextAndGlobalMapState.
+extern const char s_Chunk_00698C0C[];
+
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp / turn_flow_cooldown.cpp — turn-cooldown state.
 extern short g_nTurnCooldownDeferCounter006A43C4;
 extern short g_nTurnCooldownSideFlag00698B10;

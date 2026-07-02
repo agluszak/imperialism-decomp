@@ -118,6 +118,22 @@ void TSimMgr::WriteTo(TStream*) {}
 // FUNCTION: IMPERIALISM 0x0057c390
 void TSimMgr::RebuildNationStateSlotsNoOp() {}
 
+// TODO: port the order-manager/capability-state rebuild (writes scenarioSetupRows
+// regions at +0xe8, gated on flag and DAT_006a43f0).
+
+// FUNCTION: IMPERIALISM 0x0057c3b0
+void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char) {}
+
+// TODO: port the map-context/global-map-state rebuild.
+
+// FUNCTION: IMPERIALISM 0x0057c7c0
+void TSimMgr::RebuildMapContextAndGlobalMapState(int, const char*, int) {}
+
+// TODO: port the nation-state slot table rebuild.
+
+// FUNCTION: IMPERIALISM 0x0057cad0
+void TSimMgr::RebuildNationStateSlotsAndAvailability(int) {}
+
 // TODO: port primary nation-state slot rebuild (allocates TGreatPower / proxy / remote
 // variants and rebinds the display/name tables).
 

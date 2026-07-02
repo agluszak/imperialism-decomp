@@ -8541,6 +8541,7 @@ address|name|symbol|size|type|prototype|provenance
 698b10|g_nTurnCooldownSideFlag00698B10|||global||
 698b1a|g_anScenarioNationSetupTable_00698B1A|||global||
 698bf4|s_PictWvGobPathFormat_00698BF4|||global||
+698c0c|s_Chunk_00698C0C|||global||
 698f58|g_anTargetTileProfileByCivilianClassAndSlot|||global||
 69b6b4|s_TurnEventCursorNameFormat_0069B6B4|||global||
 69b810|s_MissingFileSuffix_0069B810|||global||

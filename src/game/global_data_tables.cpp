@@ -588,6 +588,11 @@ extern "C" short g_anScenarioNationSetupTable_00698B1A[27] = {
     0x40f,  0x0,  0x41fc, 0x67, 0x410,  0x0,  0x41f4, 0x67, 0x410,  0x0,  0x41e4, 0x67, 0x810, 0x0,
     0x41e0, 0x67, 0x810,  0x0,  0x41d4, 0x67, 0x411,  0x0,  0x41d0, 0x67, 0x411,  0x0,  0x41cc};
 
+// Debug/trace tag literal passed to TSimMgr::RebuildMapContextAndGlobalMapState
+// (0x0057c7c0) from case 3 of AdvanceGlobalTurnStateMachine.
+// GLOBAL: IMPERIALISM 0x00698c0c
+extern "C" const char s_Chunk_00698C0C[] = "Chunk";
+
 // UI command-tag default params copied into every TControl (offsets 0x78/0x7c/0x80).
 // Named so reccmp pairs the direct absolute loads in the TControl ctor.
 int g_nUiResourceEntryDefaultParam0 = 0;

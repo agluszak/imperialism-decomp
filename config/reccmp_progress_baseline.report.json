@@ -12603,7 +12603,7 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12633,7 +12633,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12663,7 +12663,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16102,7 +16102,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.1990909090909091,
+      "matching": 0.20454545454545456,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16180,7 +16180,7 @@
     },
     {
       "address": "0x50da80",
-      "matching": 0.28507795100222716,
+      "matching": 0.30666666666666664,
       "name": "TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10",
       "type": 1
     },
@@ -19913,13 +19913,13 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.441025641025641,
+      "matching": 0.44329896907216493,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -25727,13 +25727,13 @@
     },
     {
       "address": "0x57c3b0",
-      "matching": 0.008333333333333333,
+      "matching": 0.008368200836820083,
       "name": "RebuildGlobalOrderManagersAndCapabilityState",
       "type": 1
     },
     {
       "address": "0x57c7c0",
-      "matching": 0.01694915254237288,
+      "matching": 0.017094017094017096,
       "name": "RebuildMapContextAndGlobalMapState",
       "type": 1
     },
@@ -25745,7 +25745,7 @@
     },
     {
       "address": "0x57cad0",
-      "matching": 0.012121212121212121,
+      "matching": 0.012195121951219513,
       "name": "RebuildNationStateSlotsAndAvailability",
       "type": 1
     },
@@ -25805,7 +25805,7 @@
     },
     {
       "address": "0x57da70",
-      "matching": 0.10112359550561797,
+      "matching": 0.10467610467610468,
       "name": "TSimMgr::AdvanceGlobalTurnStateMachine",
       "type": 1
     },
