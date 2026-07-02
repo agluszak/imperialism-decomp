@@ -86,7 +86,8 @@ void* TSortedList::RemoveHeadSlot44() {
   return this->listState.RemoveHead();
 }
 
-// FUNCTION: IMPERIALISM TODO
+// Repo convenience only (no address claim): callers store ordinals/ints in the
+// payload slots, so this narrows GetEntryByOrdinalSlot4C's pointer to int.
 int TSortedList::GetIntByOrdinalSlot24(int ordinal) {
   void* entry = GetEntryByOrdinalSlot4C(ordinal);
   return reinterpret_cast<int>(entry);
