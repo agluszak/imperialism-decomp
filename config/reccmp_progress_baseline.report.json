@@ -11983,7 +11983,7 @@
     },
     {
       "address": "0x4d92e0",
-      "matching": 0.4174980813507291,
+      "matching": 0.42363775901765155,
       "name": "TGreatPower::ReadFrom",
       "type": 1
     },
@@ -12031,7 +12031,7 @@
     },
     {
       "address": "0x4daa10",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TGreatPower::SetNationPendingActionStateAndPayload",
       "type": 1
     },
@@ -12079,7 +12079,7 @@
     },
     {
       "address": "0x4db380",
-      "matching": 0.34592445328031807,
+      "matching": 0.36105476673427994,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -12746,7 +12746,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12764,7 +12764,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13323,7 +13323,7 @@
     },
     {
       "address": "0x4e72c0",
-      "matching": 0.4161849710982659,
+      "matching": 0.4277456647398844,
       "name": "TGreatPower::InitializeMapActionCandidateStateAndQueueMission",
       "type": 1
     },
@@ -16233,7 +16233,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20636363636363636,
+      "matching": 0.20454545454545456,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17061,7 +17061,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32038834951456313,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -17247,7 +17247,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.24,
+      "matching": 0.2413793103448276,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -19311,7 +19311,7 @@
     },
     {
       "address": "0x5358a0",
-      "matching": 0.9464285714285714,
+      "matching": 0.9821428571428571,
       "name": "TMission::DeserializeMissionState",
       "type": 1
     },
@@ -20044,7 +20044,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.2,
+      "matching": 0.2014388489208633,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -27366,7 +27366,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.47715736040609136,
+      "matching": 0.45685279187817257,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },

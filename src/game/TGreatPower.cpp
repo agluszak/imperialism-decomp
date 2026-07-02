@@ -167,18 +167,8 @@ static const unsigned int kAddrSecondaryNationStateSlots = 0x006A4280;
 static const unsigned int kAddrInterNationEventQueueManagerPtr = 0x006A43E8;
 static const unsigned int kAddrGameFlowStatePtr = 0x006A43C8;
 static const unsigned int kAddrLocalizationTablePtr = 0x006A20F8;
-static const unsigned int kAddrShGreatPowerPressureMessageRef = 0x006A2DF0;
 static const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 static const unsigned int kAddrNationStates = 0x006A4370;
-static const unsigned int kAddrCompileGreatPowerValue = 0x00653528;
-static const unsigned int kAddrNationBasePressureByLocale = 0x00653498;
-static const unsigned int kAddrGreatPowerPressureMinFloor = 0x006534B0;
-static const unsigned int kAddrGreatPowerPressureRiseCap = 0x006534E0;
-static const unsigned int kAddrGreatPowerPressureDecayStep = 0x006534F8;
-static const unsigned int kAddrGreatPowerPressureRiseStep = 0x00653510;
-static const unsigned int kAddrGreatPowerPressureHardAlertThreshold = 0x00653540;
-static const unsigned int kAddrNationRuntimeSubsystemCache = 0x00653558;
-static const unsigned int kAddrAdvanceTurnMachineState = 0x00695278;
 static const unsigned int kAddrNationStatesMajorEnd = 0x006A438C;
 static const unsigned int kAddrClassDescTGreatPower = 0x00653688;
 static const unsigned int kAddrCPtrListRuntimeClassVtable = 0x00672EEC;
@@ -231,14 +221,6 @@ static __inline short
 CityRecord_ReadDevelopmentAccumulatorAt82(const TGlobalMapCityScoreRecord* cityRecord,
                                           int accumulatorIndex) {
   return cityRecord->linkedRegionIds[0x20 + accumulatorIndex];
-}
-
-static __inline signed char ReadLocaleByteStep(unsigned int baseAddress, int localeIndex) {
-  return *reinterpret_cast<signed char*>(baseAddress + localeIndex * 4);
-}
-
-static __inline int ReadGlobalIntStep(unsigned int baseAddress, int index) {
-  return *reinterpret_cast<int*>(baseAddress + index * 4);
 }
 
 static __inline void SwapShortArrayBytes(void* base, int count) {
@@ -380,9 +362,7 @@ static __inline bool IsQuarterlyLocalizationGateOpen(void) {
 }
 
 static __inline void DispatchQuarterlyGreatPowerPressureMessage(int statusLevel) {
-  CString& sharedRef = *reinterpret_cast<CString*>(kAddrShGreatPowerPressureMessageRef);
-  CString dispatchMessage;
-  ::new ((void*)&dispatchMessage) CString(sharedRef);
+  CString dispatchMessage(g_cstrGreatPowerPressureMessage);
   reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
       ->DispatchLocalizedUiMessageWithTemplateA13A0(statusLevel, &dispatchMessage);
 }
@@ -534,10 +514,9 @@ TGreatPower::TGreatPower()
   if (g_pLocalizationTable != 0) {
     localeIndex = g_pLocalizationTable->runtimeSubsystemIndex;
   }
-  this->diplomacyBudgetBase =
-      *reinterpret_cast<int*>(kAddrNationBasePressureByLocale + localeIndex * 4) * 100;
+  this->diplomacyBudgetBase = g_anNationBasePressureByLocale[localeIndex] * 100;
   this->escalationCounter =
-      *reinterpret_cast<unsigned char*>(0x006534C8 + static_cast<unsigned int>(localeIndex) * 4);
+      static_cast<unsigned char>(g_anGreatPowerEscalationSeedByLocale[localeIndex]);
 
   int nationIndex = 0;
   do {
@@ -600,7 +579,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   TSimMgr* localizationRuntime = g_pLocalizationTable;
   if (localizationRuntime != 0) {
     int runtimeIndex = localizationRuntime->runtimeSubsystemIndex;
-    this->treasuryValue10 = ReadGlobalIntStep(kAddrNationRuntimeSubsystemCache, runtimeIndex);
+    this->treasuryValue10 = g_anNationStartingTreasuryByLocale[runtimeIndex];
   } else {
     this->treasuryValue10 = 0;
   }
@@ -748,7 +727,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->tradeCapacity, 2);
   stream->ReadBytes(&this->needCapA6, 2);
   stream->ReadBytes(&this->needsOverCapFlag, 2);
-  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) < 0x3E) {
+  if (g_nSaveFormatVersion < 0x3E) {
     stream->ReadBytes(&this->grantTotalCost, 2);
   } else {
     stream->ReadBytes(&this->grantTotalCost, 4);
@@ -769,7 +748,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->diplomacyState1c6, 0x2E);
   SwapShortArrayBytes(this->diplomacyState1c6, kNationSlotCount);
 
-  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x16) {
+  if (g_nSaveFormatVersion > 0x16) {
     stream->ReadBytes(this->diplomacyState1f4, 0x2E);
     SwapShortArrayBytes(this->diplomacyState1f4, kNationSlotCount);
   }
@@ -796,7 +775,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
     ++listIndex;
   }
 
-  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) < 0x1D) {
+  if (g_nSaveFormatVersion < 0x1D) {
     if (this->encodedNationSlot == -1) {
       char gate = this->ShouldDispatchImmediatelySlot28();
       if (gate == 0) {
@@ -923,7 +902,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   static_cast<TStream*>(stream)->ReadBytes(&this->field900, 4);
   static_cast<TStream*>(stream)->ReadBytes(&this->field904, 1);
 
-  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x0E) {
+  if (g_nSaveFormatVersion > 0x0E) {
     void* missionNodeQueue = this->missionNodeQueue;
     static_cast<TSortedList*>(missionNodeQueue)->ReadFrom(stream);
 
@@ -942,14 +921,14 @@ void TGreatPower::ReadFrom(TStream* stream) {
     }
   }
 
-  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x25) {
+  if (g_nSaveFormatVersion > 0x25) {
     static_cast<TStream*>(stream)->ReadBytes(&this->field910, 4);
     static_cast<TStream*>(stream)->ReadBytes(&this->aidAllocationTotal, 4);
   }
-  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x2F) {
+  if (g_nSaveFormatVersion > 0x2F) {
     static_cast<TStream*>(stream)->ReadBytes(this->colonyBoycottFlags, kNationSlotCount);
   }
-  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x34) {
+  if (g_nSaveFormatVersion > 0x34) {
     static_cast<TStream*>(stream)->ReadBytes(&this->pendingAidTotal, 4);
   }
 }
@@ -1198,7 +1177,7 @@ void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
 
 // FUNCTION: IMPERIALISM 0x004daa10
 void TGreatPower::SetNationPendingActionStateAndPayload(int index, short payload) {
-  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) != -3) {
+  if (g_nSaveFormatVersion != -3) {
     this->serializedStatusFlags[index] = 0x32;
     this->field8d6[index] = payload;
   }
@@ -1258,7 +1237,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
   if (localizationRuntime != 0) {
     localeIndex = localizationRuntime->runtimeSubsystemIndex;
   }
-  int compileThreshold = ReadGlobalIntStep(kAddrCompileGreatPowerValue, localeIndex);
+  int compileThreshold = g_anGreatPowerCompileThresholdByLocale[localeIndex];
   if (compileThreshold > static_cast<int>(this->pressureCounter)) {
     return;
   }
@@ -1331,7 +1310,7 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
   basePressure += static_cast<int>(this->needTargetByType[0x16]) * 200;
   basePressure += static_cast<int>(this->needTargetByType[0x15]) * 500;
   basePressure += this->budgetPoolBase;
-  int pressureFloor = ReadGlobalIntStep(kAddrNationBasePressureByLocale, localeIndex);
+  int pressureFloor = g_anNationBasePressureByLocale[localeIndex];
   if (basePressure < pressureFloor) {
     basePressure = pressureFloor;
   }
@@ -1346,10 +1325,10 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       this->pressureCounter = 1;
     } else if ((-pressureBand == treasuryValue10) || (-treasuryValue10 < pressureBand)) {
       if (this->pressureCounter > 1) {
-        int nextPressureValue =
-            static_cast<int>(this->escalationCounter) +
-            static_cast<int>(ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex));
-        int pressureRiseCap = ReadGlobalIntStep(kAddrGreatPowerPressureRiseCap, localeIndex);
+        int nextPressureValue = static_cast<int>(this->escalationCounter) +
+                                static_cast<int>(static_cast<signed char>(
+                                    g_anGreatPowerPressureRiseStepByLocale[localeIndex]));
+        int pressureRiseCap = g_anGreatPowerPressureRiseCapByLocale[localeIndex];
         if (nextPressureValue > pressureRiseCap) {
           nextPressureValue = pressureRiseCap;
         }
@@ -1358,10 +1337,10 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       this->pressureCounter = 2;
     } else {
       CString sharedMessageRef;
-      int nextPressureValue =
-          static_cast<int>(this->escalationCounter) +
-          static_cast<int>(ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex));
-      int pressureRiseCap = ReadGlobalIntStep(kAddrGreatPowerPressureRiseCap, localeIndex);
+      int nextPressureValue = static_cast<int>(this->escalationCounter) +
+                              static_cast<int>(static_cast<signed char>(
+                                  g_anGreatPowerPressureRiseStepByLocale[localeIndex]));
+      int pressureRiseCap = g_anGreatPowerPressureRiseCapByLocale[localeIndex];
       if (nextPressureValue > pressureRiseCap) {
         nextPressureValue = pressureRiseCap;
       }
@@ -1374,8 +1353,8 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       }
 
       int pressureTier = static_cast<int>(this->pressureCounter);
-      int hardThreshold = ReadGlobalIntStep(kAddrGreatPowerPressureHardAlertThreshold, localeIndex);
-      int compileThreshold = ReadGlobalIntStep(kAddrCompileGreatPowerValue, localeIndex);
+      int hardThreshold = g_anGreatPowerPressureHardAlertThresholdByLocale[localeIndex];
+      int compileThreshold = g_anGreatPowerCompileThresholdByLocale[localeIndex];
 
       if (hardThreshold <= pressureTier) {
         if (localizationRuntime != 0) {
@@ -1391,25 +1370,23 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       if (pressureTier < compileThreshold) {
         if (localizationRuntime != 0) {
           int statusId = (pressureTier == (compileThreshold - 1)) ? 3 : 2;
-          localizationRuntime->GetString(
-              0x274b, static_cast<short>(statusId),
-              reinterpret_cast<CString*>(kAddrShGreatPowerPressureMessageRef));
+          localizationRuntime->GetString(0x274b, static_cast<short>(statusId),
+                                         &g_cstrGreatPowerPressureMessage);
         }
         DispatchQuarterlyGreatPowerPressureMessage(1);
       } else {
         if (localizationRuntime != 0) {
-          localizationRuntime->GetString(
-              0x274b, 1, reinterpret_cast<CString*>(kAddrShGreatPowerPressureMessageRef));
+          localizationRuntime->GetString(0x274b, 1, &g_cstrGreatPowerPressureMessage);
         }
         DispatchQuarterlyGreatPowerPressureMessage(2);
       }
     }
   } else {
     if (this->pressureCounter != 0) {
-      int nextPressureValue =
-          static_cast<int>(this->escalationCounter) -
-          static_cast<int>(ReadLocaleByteStep(kAddrGreatPowerPressureDecayStep, localeIndex));
-      int pressureMinFloor = ReadGlobalIntStep(kAddrGreatPowerPressureMinFloor, localeIndex);
+      int nextPressureValue = static_cast<int>(this->escalationCounter) -
+                              static_cast<int>(static_cast<signed char>(
+                                  g_anGreatPowerPressureDecayStepByLocale[localeIndex]));
+      int pressureMinFloor = g_anGreatPowerPressureMinFloorByLocale[localeIndex];
       if (nextPressureValue < pressureMinFloor) {
         nextPressureValue = pressureMinFloor;
       }

@@ -53,7 +53,10 @@ TMission*& OwnerOf(TMission* item) {
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
-  union { float f; unsigned char b[4]; } src, dst;
+  union {
+    float f;
+    unsigned char b[4];
+  } src, dst;
   src.f = val;
   dst.b[0] = src.b[3];
   dst.b[1] = src.b[2];
@@ -65,7 +68,8 @@ static inline float SwapFloat(float val) {
 // Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 both repeat
 // this exact per-unit vector-contribution pattern).
 void TArmyMission::AccumulateOrderPriorityVector(float* vector) {
-  typedef void (__cdecl *AccumulateUnitOrderPriorityVectorContribution_t)(int, float*, float, float);
+  typedef void(__cdecl * AccumulateUnitOrderPriorityVectorContribution_t)(int, float*, float,
+                                                                          float);
   AccumulateUnitOrderPriorityVectorContribution_t AccumulateUnitOrderPriorityVectorContribution_fn =
       reinterpret_cast<AccumulateUnitOrderPriorityVectorContribution_t>(
           (void*)&AccumulateUnitOrderPriorityVectorContribution);
@@ -128,8 +132,7 @@ TArmyMission::TArmyMission(int nodeKey) : TMission() {
   orderListAt18 = list;
   if (list == nullptr) {
     MessageBoxA(nullptr, "Nil Pointer", "Failure", 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(
-        "D:\\Ambit\\Cross\\UMissionSubs.cpp", 0x842);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMissionSubs.cpp", 0x842);
   }
 
   for (int i = 0; i < 5; ++i) {
@@ -197,8 +200,7 @@ void TArmyMission::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053c3d0
 void TArmyMission::ReadFrom(TStream* stream) {
-  static const unsigned int kSaveFormatVersionAddr = 0x00695278;
-  int saveFormatVersion = *reinterpret_cast<int*>(kSaveFormatVersionAddr);
+  int saveFormatVersion = g_nSaveFormatVersion;
 
   TMission::ReadFrom(stream);
   stream->ReadBytes(&field_14, 2);
@@ -317,18 +319,19 @@ float TArmyMission::ReturnZeroFloatSlot70(TMission* candidate) {
     return 0.0f;
   }
 
-  typedef float (__cdecl *ComputeArmyMissionScoreDeltaWithCandidateUnit_t)(TMission*);
+  typedef float(__cdecl * ComputeArmyMissionScoreDeltaWithCandidateUnit_t)(TMission*);
   ComputeArmyMissionScoreDeltaWithCandidateUnit_t ComputeArmyMissionScoreDeltaWithCandidateUnit_fn =
       reinterpret_cast<ComputeArmyMissionScoreDeltaWithCandidateUnit_t>(
           (void*)&ComputeArmyMissionScoreDeltaWithCandidateUnit);
-  typedef float (__cdecl *ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_t)(TMission*);
+  typedef float(__cdecl * ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_t)(TMission*);
   ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_t
       ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_fn =
           reinterpret_cast<ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_t>(
               (void*)&ComputeArmyMissionScoreDeltaWithScaledCandidateUnit);
 
   if (OwnerOf(candidate) == this) {
-    return ReturnZeroFloatSlot68() - ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_fn(candidate);
+    return ReturnZeroFloatSlot68() -
+           ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_fn(candidate);
   }
   return ComputeArmyMissionScoreDeltaWithCandidateUnit_fn(candidate) - ReturnZeroFloatSlot68();
 }
@@ -350,7 +353,8 @@ float TArmyMission::ReturnZeroFloatSlot78(TMission* candidate, float* referenceV
   float baseline = g_ArmyMissionCandidateScoreTable_006978f8[weightIndex + state08 * 6];
 
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  typedef void (__cdecl *AccumulateUnitOrderPriorityVectorContribution_t)(TMission*, float*, float, float);
+  typedef void(__cdecl * AccumulateUnitOrderPriorityVectorContribution_t)(TMission*, float*, float,
+                                                                          float);
   AccumulateUnitOrderPriorityVectorContribution_t AccumulateUnitOrderPriorityVectorContribution_fn =
       reinterpret_cast<AccumulateUnitOrderPriorityVectorContribution_t>(
           (void*)&AccumulateUnitOrderPriorityVectorContribution);
@@ -374,9 +378,10 @@ float TArmyMission::ReturnZeroFloatSlot78(TMission* candidate, float* referenceV
 
 // FUNCTION: IMPERIALISM 0x0053d630
 TMission* TArmyMission::GetReplacementSlot48() {
-  typedef short (__cdecl *GetTileNormalizedMovementClassId_t)(int);
+  typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
   GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-      reinterpret_cast<GetTileNormalizedMovementClassId_t>((void*)&GetTileNormalizedMovementClassId);
+      reinterpret_cast<GetTileNormalizedMovementClassId_t>(
+          (void*)&GetTileNormalizedMovementClassId);
   short movementClass = GetTileNormalizedMovementClassId_fn(field_14);
   return (movementClass == nationId04) ? this : nullptr;
 }

@@ -20,7 +20,6 @@
 #include <new>
 
 static const unsigned int kAddrClassDescTMinor = 0x006536a0;
-static const unsigned int kAddrSaveFormatVersion = 0x00695278;
 
 namespace {
 
@@ -97,9 +96,8 @@ void TMinor::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->diplomacyPolicyGate130, 2);
   stream->ReadBytes(&this->diplomacyPolicyGate132, 2);
   stream->ReadBytes(reinterpret_cast<char*>(this) + 0x134, 8);
-  SwapAdjacentBytesInShortArray(reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x134),
-                                4);
-  if (*reinterpret_cast<int*>(kAddrSaveFormatVersion) > 0x39) {
+  SwapAdjacentBytesInShortArray(reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x134), 4);
+  if (g_nSaveFormatVersion > 0x39) {
     stream->ReadBytes(reinterpret_cast<char*>(this) + 0x13c, 0x2e);
     SwapAdjacentBytesInShortArray(reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x13c),
                                   0x17);
@@ -224,9 +222,9 @@ void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, i
       continue;
     }
 
-    short standing = g_pDiplomacyTurnStateManager
-                         ->relationStandingScoreMatrix79c[this->nationSlot * kNationSlotCount +
-                                                         majorNationSlot];
+    short standing =
+        g_pDiplomacyTurnStateManager
+            ->relationStandingScoreMatrix79c[this->nationSlot * kNationSlotCount + majorNationSlot];
     int negDelta = -static_cast<int>(deltaShort);
     int intFactor = negDelta;
     if (negDelta < linkValue) {
@@ -323,8 +321,7 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
         rolledPredicate = static_cast<short>((0x59 < roll) + 0xf);
       }
     } while (rolledPredicate == this->diplomacyPolicyPredicateCode12c);
-    proposalWeight =
-        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(rolledPredicate);
+    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(rolledPredicate);
     if (this->diplomacyRandomThreshold11e < proposalWeight) {
       this->diplomacyPolicyPredicateCode12c = -10;
     } else {
@@ -368,14 +365,13 @@ bool TMinor::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short policyCod
 }
 
 // FUNCTION: IMPERIALISM 0x004e4f50
-char TMinor::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                           int arg4) {
+char TMinor::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3, int arg4) {
   if (this->ReturnFalseNationStateCapabilityFlag90(arg4) == 0) {
     return 0;
   }
 
-  g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
-      this->nationSlot, arg1, arg2, arg3, arg4, 1, 0);
+  g_pNationInteractionStateManager->DispatchProposalAmountSlot60(this->nationSlot, arg1, arg2, arg3,
+                                                                 arg4, 1, 0);
   return 0;
 }
 
@@ -402,8 +398,8 @@ char TMinor::HasMinorStandingLinkSlot5C(int sourceNation) {
 }
 
 void TMinor::ApplyTerrainDiplomacyRelationFlagSlot8c(int sourceNation, int packedRelationCode) {
-  g_pDiplomacyTurnStateManager->SetRelationCodeSlot74WithMode(
-      sourceNation, this->nationSlot, packedRelationCode, 0);
+  g_pDiplomacyTurnStateManager->SetRelationCodeSlot74WithMode(sourceNation, this->nationSlot,
+                                                              packedRelationCode, 0);
 }
 
 char TMinor::HasStandingPropagationBridgeSlot90(int targetNation) {
@@ -488,15 +484,16 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short
         return;
       }
       if (g_apNationStates[targetNation] != 0) {
-        g_apNationStates[targetNation]->QueueDiplomacyProposalCodeForTargetNation(
-            0x132, this->nationSlot);
+        g_apNationStates[targetNation]->QueueDiplomacyProposalCodeForTargetNation(0x132,
+                                                                                  this->nationSlot);
       }
       g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(3, this->nationSlot,
                                                                           targetNation, 0);
       return;
     }
     if (g_apNationStates[targetNation] != 0) {
-      g_apNationStates[targetNation]->NotifyActionSlot94(this->nationSlot, -static_cast<int>(proposalCode));
+      g_apNationStates[targetNation]->NotifyActionSlot94(this->nationSlot,
+                                                         -static_cast<int>(proposalCode));
     }
     g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(9, targetNation,
                                                                         this->nationSlot, 0);
@@ -558,9 +555,10 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
         if (majorNation != 0 && majorNation->diplomacyEligibilityA0 == 0) {
           majorNation->NotifyActionSlot94(this->nationSlot, 0x131);
         }
-        g_pDiplomacyTurnStateManager->SetRelationCodeSlot74WithMode(this->nationSlot, majorNationSlot,
-                                                                    6, 0);
-        g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, majorNationSlot, 0x31);
+        g_pDiplomacyTurnStateManager->SetRelationCodeSlot74WithMode(this->nationSlot,
+                                                                    majorNationSlot, 6, 0);
+        g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, majorNationSlot,
+                                                             0x31);
       }
     }
 
@@ -582,7 +580,8 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
 
   for (int resetNationSlot = 0; resetNationSlot < kNationSlotCount; ++resetNationSlot) {
     if (IsNationSlotEligibleForEventProcessing(static_cast<short>(resetNationSlot)) != 0) {
-      g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, resetNationSlot, 4);
+      g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, resetNationSlot,
+                                                               4);
       g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, resetNationSlot, 0x5a);
     }
   }
@@ -595,9 +594,9 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
   if (this->ownedRegionList != 0) {
     int ownedCount = this->ownedRegionList->GetCountSlot48();
     int oneBasedIndex = 1;
-  while (oneBasedIndex <= ownedCount) {
-      short regionId = static_cast<short>(
-          this->ownedRegionList->GetIntByOrdinalSlot24(oneBasedIndex));
+    while (oneBasedIndex <= ownedCount) {
+      short regionId =
+          static_cast<short>(this->ownedRegionList->GetIntByOrdinalSlot24(oneBasedIndex));
       if (oneBasedIndex - 1 < 10) {
         ownedRegionIds[oneBasedIndex - 1] = regionId;
       }
@@ -612,9 +611,8 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
       if (regionId == -1) {
         continue;
       }
-      short regionOwner =
-          *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(g_pMapContextActionManager) +
-                                    0x1c + regionId * 2);
+      short regionOwner = *reinterpret_cast<short*>(
+          reinterpret_cast<unsigned char*>(g_pMapContextActionManager) + 0x1c + regionId * 2);
       if (regionOwner == this->nationSlot || regionOwner == decodedNationSlot) {
         g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
             static_cast<short>(regionId), decodedNationSlot);
@@ -640,7 +638,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
         this->SetDiplomacyStandingSlot48(standingNationSlot, 100);
         if (g_apNationStates[standingNationSlot] != 0) {
           g_apNationStates[standingNationSlot]->ResetDiplomacyLevelForNationSlot12(this->nationSlot,
-                                                                                 100);
+                                                                                   100);
           g_apNationStates[standingNationSlot]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
               this->nationSlot, static_cast<unsigned short>(-1));
         }
@@ -648,7 +646,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
         this->SetDiplomacyStandingSlot48(standingNationSlot, 300);
         if (g_apNationStates[standingNationSlot] != 0) {
           g_apNationStates[standingNationSlot]->ResetDiplomacyLevelForNationSlot12(this->nationSlot,
-                                                                                300);
+                                                                                   300);
         }
       }
     }
@@ -685,13 +683,12 @@ void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
 void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
   TCountry::ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
   g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1b, this->nationSlot,
-                                                                    targetNationSlot, 0);
+                                                                      targetNationSlot, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004e59d0
 void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
-  short decodedSlot =
-      DecodeTerrainNationSlotFromEncoded(this->encodedNationSlot, this->nationSlot);
+  short decodedSlot = DecodeTerrainNationSlotFromEncoded(this->encodedNationSlot, this->nationSlot);
   this->encodedNationSlot = -1;
   this->SetNationRowDisplayValueByDiplomacyPredicate(decodedSlot, 0);
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
@@ -701,15 +698,15 @@ void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
 
 // FUNCTION: IMPERIALISM 0x004e5a40
 void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot,
-                                                            short predicateCode) {
+                                                          short predicateCode) {
   (void)predicateCode;
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(targetNationSlot, nationSlot) ==
             0 &&
         (nationSlot == this->nationSlot ||
          (g_apNationStates[targetNationSlot] != 0 &&
-          reinterpret_cast<unsigned char*>(g_apNationStates[targetNationSlot])[0x918 + nationSlot] ==
-              0))) {
+          reinterpret_cast<unsigned char*>(
+              g_apNationStates[targetNationSlot])[0x918 + nationSlot] == 0))) {
       this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(nationSlot), 100);
     } else {
       this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(nationSlot), 300);
@@ -723,8 +720,8 @@ void DispatchCivilianOrderRelationMaskSlots(TUnit* orderNode) {
   if (orderNode->orderType == 7) {
     TGreatPower* ownerNation = g_apNationStates[orderNode->field_18];
     if (ownerNation != 0) {
-      short payload = *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerNation) +
-                                                  0x88);
+      short payload =
+          *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerNation) + 0x88);
       orderNode->VTableSlot10(static_cast<int>(payload));
     }
     return;
@@ -734,7 +731,7 @@ void DispatchCivilianOrderRelationMaskSlots(TUnit* orderNode) {
 }
 
 void WalkTileCivilianOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, short tileId,
-                                         const char* relationMaskByNation) {
+                                           const char* relationMaskByNation) {
   TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
   while (orderNode != 0) {
     TUnit* nextNode = orderNode->nextOnTile;
@@ -796,8 +793,7 @@ void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
   int majorSlot;
   char needLevel300ByMajorSlot[7];
   for (majorSlot = 0; majorSlot < 7; ++majorSlot) {
-    needLevel300ByMajorSlot[majorSlot] =
-        (this->needLevelByNation[majorSlot + 1] == 300) ? 1 : 0;
+    needLevel300ByMajorSlot[majorSlot] = (this->needLevelByNation[majorSlot + 1] == 300) ? 1 : 0;
   }
 
   char notifyMajorSlots[7] = {0};
@@ -831,7 +827,7 @@ void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
     if (g_apNationStates[majorSlot] != 0 && notifyMajorSlots[majorSlot] != 0) {
       g_apNationStates[majorSlot]->NotifyActionSlot94(this->nationSlot, 0x137);
       g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x17, majorSlot,
-                                                                        this->nationSlot, 0);
+                                                                          this->nationSlot, 0);
     }
   }
 }
@@ -844,8 +840,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
   for (int nationSlot = 0; nationSlot < kTerrainTypeDescriptorTableCount; ++nationSlot) {
     relationMaskByNation[nationSlot] = 0;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
-        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(ownerNationSlot, nationSlot) !=
-            0) {
+        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(ownerNationSlot, nationSlot) != 0) {
       relationMaskByNation[nationSlot] = 1;
     }
   }
@@ -863,8 +858,8 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
-          WalkTileCivilianOrdersForRelationMask(terrainTiles, regionRecord->linkedRegionIds[linkedIndex],
-                                                relationMaskByNation);
+          WalkTileCivilianOrdersForRelationMask(
+              terrainTiles, regionRecord->linkedRegionIds[linkedIndex], relationMaskByNation);
           linkedIndex++;
         }
       }
@@ -878,8 +873,8 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
   if (regionRecord->linkedRegionCount > 0) {
     int linkedIndex = 0;
     while (linkedIndex < regionRecord->linkedRegionCount) {
-      WalkTileCivilianOrdersForRelationMask(terrainTiles, regionRecord->linkedRegionIds[linkedIndex],
-                                            relationMaskByNation);
+      WalkTileCivilianOrdersForRelationMask(
+          terrainTiles, regionRecord->linkedRegionIds[linkedIndex], relationMaskByNation);
       linkedIndex++;
     }
   }
@@ -902,8 +897,7 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNati
       oneBasedIndex++;
       continue;
     }
-    TStationedUnitNode* unitNode =
-        g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
+    TStationedUnitNode* unitNode = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
     while (unitNode != 0) {
       TUnit* unit = reinterpret_cast<TUnit*>(unitNode);
       TStationedUnitNode* nextNode = unitNode->next14;
@@ -998,9 +992,8 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
   for (int nationSlot = 0; nationSlot < kTerrainTypeDescriptorTableCount; ++nationSlot) {
     relationMaskByNation[nationSlot] = 0;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
-        (includeAllPolicyTargets != 0 ||
-         g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, nationSlot) !=
-             0)) {
+        (includeAllPolicyTargets != 0 || g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+                                             this->nationSlot, nationSlot) != 0)) {
       relationMaskByNation[nationSlot] = 1;
     }
   }
@@ -1018,8 +1011,8 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
-          WalkTileUnitOrdersForRelationMask(terrainTiles, regionRecord->linkedRegionIds[linkedIndex],
-                                            relationMaskByNation, 0);
+          WalkTileUnitOrdersForRelationMask(
+              terrainTiles, regionRecord->linkedRegionIds[linkedIndex], relationMaskByNation, 0);
           linkedIndex++;
         }
       }

@@ -19,8 +19,7 @@ void TAmbitApplication::ParseDirectionTokenAndSetMovementFlags(CString token, in
   CString localToken(token);
 
   int& movementParseFlag2c = *reinterpret_cast<int*>(&trackedEntries);
-  int& movementParseFlag30 =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 4);
+  int& movementParseFlag30 = *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 4);
   int& movementParseCenterFlag =
       *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 8);
   CString& movementParseTypeTail =
@@ -30,19 +29,17 @@ void TAmbitApplication::ParseDirectionTokenAndSetMovementFlags(CString token, in
   int& movementParseStopFlag =
       *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 20);
 
-  unsigned char* tokenText = const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
-      static_cast<LPCSTR>(localToken)));
+  unsigned char* tokenText = const_cast<unsigned char*>(
+      reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(localToken)));
   if (parseMode != 0) {
     if (CompareAnsiStringsWithMbcsAwareness(
-            tokenText,
-            reinterpret_cast<unsigned char*>(g_szMovementParseCompareB_00694254)) == 0) {
+            tokenText, reinterpret_cast<unsigned char*>(g_szMovementParseCompareB_00694254)) == 0) {
       movementParseFlag2c = 1;
       movementParseFlag30 = 1;
       goto finish_parse_direction_token;
     }
     if (CompareAnsiStringsWithMbcsAwareness(
-            tokenText,
-            reinterpret_cast<unsigned char*>(g_szMovementParseCompareA_00694250)) == 0) {
+            tokenText, reinterpret_cast<unsigned char*>(g_szMovementParseCompareA_00694250)) == 0) {
       movementParseFlag30 = 1;
       goto finish_parse_direction_token;
     }
@@ -133,8 +130,7 @@ extern "C" int DAT_006a21c0;
 // FUNCTION: IMPERIALISM 0x0049e280
 void TAmbitApplication::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  static const unsigned int kAddrSaveFormatVersion = 0x00695278;
-  if (*reinterpret_cast<const int*>(kAddrSaveFormatVersion) < 0x2a) {
+  if (g_nSaveFormatVersion < 0x2a) {
     stream->ReadBytes(&field_50, 2);
     field_50 = 0x00657573;
   } else {

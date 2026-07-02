@@ -9,8 +9,6 @@
 
 extern "C" char g_pClassDescTUnit = 0;
 
-static const unsigned int kAddrSaveFormatVersion = 0x00695278;
-
 struct TUnitOrderOwnerManagerView {
   virtual void s00() = 0;
   virtual void s01() = 0;
@@ -63,7 +61,7 @@ TUnit::~TUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005c2530
 void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
-                                                        short nOrderOwnerNationId, short arg3) {
+                                              short nOrderOwnerNationId, short arg3) {
   this->orderType = nOrderType;
   this->field_8 = 0;
   this->VTableSlot10(pOwnerContext);
@@ -151,7 +149,7 @@ void TUnit::ReadFrom(TStream* stream) {
     this->VTableSlot10(savedField_6);
     field_C = savedField_C;
   }
-  if (*reinterpret_cast<int*>(kAddrSaveFormatVersion) > 0x2d) {
+  if (g_nSaveFormatVersion > 0x2d) {
     stream->ReadBytes(&field_20, 4);
   }
 }

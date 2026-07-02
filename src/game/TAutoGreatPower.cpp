@@ -37,7 +37,6 @@ static const unsigned int kAddrClassDescTAutoGreatPower = 0x00653F90;
 // kNationSlotCount (0x17) comes from TDiplomacyMgr.h.
 static const int kAidAllocationRowCount = 0x10;
 static const int kAidAllocationColumnCount = 0x17;
-static const unsigned int kAddrAdvanceTurnMachineState = 0x00695278;
 static const int kMapNodeCount = 0x180;
 static const int kPortZoneCount = 0x70;
 
@@ -133,7 +132,7 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
     }
   }
 
-  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) < 0x39) {
+  if (g_nSaveFormatVersion < 0x39) {
     this->QueueMapActionMissionFromCandidateAndMarkState(5, -1, 0, -1);
   }
 }
@@ -241,8 +240,7 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sour
     this->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(needSlot), metricCap);
     return;
   }
-  if (this->GetDiplomacyExternalStateByTarget(5) != 0 &&
-      this->QueryNationMetricBySlot7C(5) != -1) {
+  if (this->GetDiplomacyExternalStateByTarget(5) != 0 && this->QueryNationMetricBySlot7C(5) != -1) {
     short metric = this->GetDiplomacyExternalStateByTarget(5);
     int assignAmount = (metric != 1) + 1;
     if (this->tradeCapacity < static_cast<short>(assignAmount)) {
@@ -287,16 +285,13 @@ void TAutoGreatPower::ResetField900FromNeedCapA6(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7910
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2() {
-}
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2() {}
 
 // FUNCTION: IMPERIALISM 0x004e7930
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1() {
-}
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1() {}
 
 // FUNCTION: IMPERIALISM 0x004e7950
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0() {
-}
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0() {}
 
 // FUNCTION: IMPERIALISM 0x004e7970
 void TAutoGreatPower::SnapshotDiplomacyState1c6Into250(void) {}
@@ -365,8 +360,8 @@ void TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCo
   case 0x12E:
   case 0x132: {
     if (g_pDiplomacyTurnStateManager != 0) {
-      char hasAllianceGuard = g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(
-          targetNationId, this->nationSlot);
+      char hasAllianceGuard =
+          g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNationId, this->nationSlot);
       if (hasAllianceGuard == 0) {
         TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationId);
       }
@@ -405,8 +400,7 @@ void TAutoGreatPower::NotifyActionSlot94(int sourceNation, int actionCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7ca0
-void TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord() {
-}
+void TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 
 // FUNCTION: IMPERIALISM 0x004e7cc0
 int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {
@@ -636,8 +630,8 @@ void TAutoGreatPower::NoOpSlotA2(void) {
 
 // FUNCTION: IMPERIALISM 0x004e9ed0
 void TAutoGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot,
-                                                                            int policyCode,
-                                                                            int sourceNationSlot) {
+                                                                           int policyCode,
+                                                                           int sourceNationSlot) {
   this->SetCandidateNationFlagAndPortZoneState(targetNationSlot);
   TGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNationSlot, policyCode,
                                                                     sourceNationSlot);
@@ -695,8 +689,7 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
   }
   this->candidateNationFlags[targetNation] = 1;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
-    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountSlot48() >
-        0) {
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountSlot48() > 0) {
       short ownerTag;
       if (g_apTerrainTypeDescriptorTable[targetNation] == 0 ||
           (ownerTag = g_apTerrainTypeDescriptorTable[targetNation]->encodedNationSlot,
@@ -714,8 +707,7 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
 void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
   this->candidateNationFlags[targetNation] = 0;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
-    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountSlot48() >
-        0) {
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountSlot48() > 0) {
       TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
       short portZoneId = GetShortAtOffset14OrInvalidValue();
       this->portZoneStateFlags[portZoneId] = 0;
@@ -787,8 +779,9 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
     void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
         ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
     if (grownArray == 0) {
-      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 4));
+      portZone->PrimaryZoneHeapData() =
+          static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+              ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 4));
       portZone->PrimaryZoneHeapCapacity() = 1;
     } else {
       portZone->PrimaryZoneHeapData() = static_cast<TZone**>(grownArray);

@@ -1,4 +1,5 @@
 #include "game/TMission.h"
+#include "game/global_data_tables.h"
 
 #include "decomp_types.h"
 #include "game/mfc.h"
@@ -188,18 +189,17 @@ void TMission::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005358a0
 void TMission::ReadFrom(TStream* stream) {
-  static const unsigned int kSaveFormatVersionAddr = 0x00695278;
   TObject::ReadFrom(stream);
   stream->ReadBytes(&nationId04, 2);
   stream->ReadBytes(&state08, 1);
   stream->ReadBytes(&value0c, 4);
   stream->ReadBytes(&flag10, 1);
-  if (*reinterpret_cast<int*>(kSaveFormatVersionAddr) < 0x10) {
+  if (g_nSaveFormatVersion < 0x10) {
     pathMarker06 = static_cast<short>(0xffff);
   } else {
     stream->ReadBytes(&pathMarker06, 2);
   }
-  if (*reinterpret_cast<int*>(kSaveFormatVersionAddr) < 9) {
+  if (g_nSaveFormatVersion < 9) {
     RefreshSlot40();
     return;
   }

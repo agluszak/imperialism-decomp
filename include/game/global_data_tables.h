@@ -269,6 +269,18 @@ extern "C" const char g_szUiFontLiteralPalatino[];
 extern "C" const char g_szUiFontLiteralBelweLight[];
 extern "C" const char g_szUiNilPointerMessage[];
 extern "C" const char g_szDecimalFormat[]; // "%d" @ 0x69430c
+
+// Great-power pressure tuning tables (see global_data_tables.cpp for values).
+extern "C" const int g_anNationBasePressureByLocale[6];
+extern "C" const int g_anGreatPowerPressureMinFloorByLocale[6];
+extern "C" const int g_anGreatPowerEscalationSeedByLocale[6];
+extern "C" const int g_anGreatPowerPressureRiseCapByLocale[6];
+extern "C" const int g_anGreatPowerPressureDecayStepByLocale[6];
+extern "C" const int g_anGreatPowerPressureRiseStepByLocale[6];
+extern "C" const int g_anGreatPowerCompileThresholdByLocale[6];
+extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6];
+extern "C" const int g_anNationStartingTreasuryByLocale[6];
+extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
 extern "C" const char g_szUiFailureMessage[];
 extern CString g_cstrUiFontBelweLight;
 extern CString g_cstrUiFontPalatino;
