@@ -3,151 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part011.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005ED870
-// GHIDRA_NAME __freeptd
-// GHIDRA_PROTO undefined __freeptd()
-
-void __freeptd(LPVOID param_1)
-
-{
-  if (DAT_0069caa0 != 0xffffffff) {
-    if ((param_1 != (LPVOID)0x0) || (param_1 = TlsGetValue(DAT_0069caa0), param_1 != (LPVOID)0x0)) {
-      if (*(int *)((int)param_1 + 0x24) != 0) {
-        FreeHeapBlockWithAllocatorTracking(*(int *)((int)param_1 + 0x24));
-      }
-      if (*(int *)((int)param_1 + 0x28) != 0) {
-        FreeHeapBlockWithAllocatorTracking(*(int *)((int)param_1 + 0x28));
-      }
-      if (*(int *)((int)param_1 + 0x30) != 0) {
-        FreeHeapBlockWithAllocatorTracking(*(int *)((int)param_1 + 0x30));
-      }
-      if (*(int *)((int)param_1 + 0x38) != 0) {
-        FreeHeapBlockWithAllocatorTracking(*(int *)((int)param_1 + 0x38));
-      }
-      if (*(int *)((int)param_1 + 0x40) != 0) {
-        FreeHeapBlockWithAllocatorTracking(*(int *)((int)param_1 + 0x40));
-      }
-      if (*(int *)((int)param_1 + 0x44) != 0) {
-        FreeHeapBlockWithAllocatorTracking(*(int *)((int)param_1 + 0x44));
-      }
-      FreeHeapBlockWithAllocatorTracking(param_1);
-    }
-    TlsSetValue(DAT_0069caa0,(LPVOID)0x0);
-    return;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005ED930
-// GHIDRA_NAME AbortWithThreadAbortHookIfPresent
-// GHIDRA_PROTO undefined AbortWithThreadAbortHookIfPresent()
-
-void AbortWithThreadAbortHookIfPresent(void)
-
-{
-  int iVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_14;
-  undefined1 *puStack_10;
-  undefined *puStack_c;
-  undefined4 local_8;
-  
-  puStack_c = &DAT_00673a50;
-  puStack_10 = &LAB_005eddb8;
-  uStack_14 = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_14;
-  local_8 = 0;
-  iVar1 = __getptd();
-  if (*(int *)(iVar1 + 0x60) != 0) {
-    local_8 = 1;
-    iVar1 = __getptd();
-    (**(code **)(iVar1 + 0x60))();
-  }
-  local_8 = 0xffffffff;
-                    /* WARNING: Subroutine does not return */
-  abort();
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005ED9E0
-// GHIDRA_NAME _inconsistency
-// GHIDRA_PROTO undefined _inconsistency()
-
-void _inconsistency(void)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_14;
-  undefined1 *puStack_10;
-  undefined *puStack_c;
-  undefined4 local_8;
-  
-  puStack_c = &DAT_00673a68;
-  puStack_10 = &LAB_005eddb8;
-  local_14 = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_14;
-  if (PTR_AbortWithThreadAbortHookIfPresent_0069caa4 != (undefined *)0x0) {
-    local_8 = 1;
-    (*(code *)PTR_AbortWithThreadAbortHookIfPresent_0069caa4)();
-  }
-  local_8 = 0xffffffff;
-  WrapperFor_AbortWithThreadAbortHookIfPresent_At005eda4e();
-  *unaff_FS_OFFSET = local_14;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005EDA4E
-// GHIDRA_NAME WrapperFor_AbortWithThreadAbortHookIfPresent_At005eda4e
-// GHIDRA_PROTO undefined WrapperFor_AbortWithThreadAbortHookIfPresent_At005eda4e()
-
-void WrapperFor_AbortWithThreadAbortHookIfPresent_At005eda4e(void)
-
-{
-  AbortWithThreadAbortHookIfPresent();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005EDA70
-// GHIDRA_NAME __mtinitlocks
-// GHIDRA_PROTO undefined __mtinitlocks()
-
-void __mtinitlocks(void)
-
-{
-  InitializeCriticalSection((LPCRITICAL_SECTION)PTR_DAT_0069caec);
-  InitializeCriticalSection((LPCRITICAL_SECTION)PTR_DAT_0069cadc);
-  InitializeCriticalSection((LPCRITICAL_SECTION)PTR_DAT_0069cacc);
-  InitializeCriticalSection((LPCRITICAL_SECTION)PTR_DAT_0069caac);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005EDB20
-// GHIDRA_NAME EnterIndexedCriticalSectionWithLazyInit
-// GHIDRA_PROTO undefined EnterIndexedCriticalSectionWithLazyInit()
-
-void EnterIndexedCriticalSectionWithLazyInit(int param_1)
-
-{
-  LPCRITICAL_SECTION lpCriticalSection;
-  
-  if (*(int *)(&DAT_0069caa8 + param_1 * 4) == 0) {
-    lpCriticalSection = (LPCRITICAL_SECTION)AllocateWithGlobalNewMode(0x18);
-    if (lpCriticalSection == (LPCRITICAL_SECTION)0x0) {
-      amsg_exit(0x11);
-    }
-    EnterIndexedCriticalSectionWithLazyInit(0x11);
-    if (*(int *)(&DAT_0069caa8 + param_1 * 4) == 0) {
-      InitializeCriticalSection(lpCriticalSection);
-      *(LPCRITICAL_SECTION *)(&DAT_0069caa8 + param_1 * 4) = lpCriticalSection;
-    }
-    else {
-      FreeHeapBlockWithAllocatorTracking();
-    }
-    LeaveIndexedCriticalSection(0x11);
-  }
-  EnterCriticalSection(*(LPCRITICAL_SECTION *)(&DAT_0069caa8 + param_1 * 4));
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005EDBA0
 // GHIDRA_NAME LeaveIndexedCriticalSection
 // GHIDRA_PROTO undefined LeaveIndexedCriticalSection()
@@ -11567,5 +11422,124 @@ long HandleWndProcExceptionWithNodeTypeDispatch_00605613(CException *param_1)
     (**(code **)(iVar1 + 0x18))(uVar4,uVar3);
   }
   return lVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060564E
+// GHIDRA_NAME DispatchVirtualSlot18OnImplicitObject
+// GHIDRA_PROTO undefined DispatchVirtualSlot18OnImplicitObject()
+
+void DispatchVirtualSlot18OnImplicitObject(void)
+
+{
+  int in_EAX;
+  
+  (**(code **)(in_EAX + 0x18))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00605665
+// GHIDRA_NAME DispatchVirtualSlot18OnImplicitObject
+// GHIDRA_PROTO undefined DispatchVirtualSlot18OnImplicitObject()
+
+void DispatchVirtualSlot18OnImplicitObject(void)
+
+{
+  int in_EAX;
+  
+  (**(code **)(in_EAX + 0x18))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00605791
+// GHIDRA_NAME GetSharedEmptyStringRef
+// GHIDRA_PROTO undefined GetSharedEmptyStringRef()
+
+undefined ** GetSharedEmptyStringRef(void)
+
+{
+  return &PTR_DAT_0069be0c;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060584A
+// GHIDRA_NAME DecrementSharedStringRefCountAndFree
+// GHIDRA_PROTO undefined DecrementSharedStringRefCountAndFree()
+
+void DecrementSharedStringRefCountAndFree(LONG *param_1)
+
+{
+  LONG LVar1;
+  
+  if (param_1 != (LONG *)PTR_DAT_0069be08) {
+    LVar1 = InterlockedDecrement(param_1);
+    if (LVar1 < 1) {
+      operator_delete(param_1);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00605B21
+// GHIDRA_NAME AssignSharedStringConcatRefAndRef
+// GHIDRA_PROTO undefined AssignSharedStringConcatRefAndRef()
+
+undefined4 AssignSharedStringConcatRefAndRef(void)
+
+{
+  char *rhs_text;
+  char *lhs_text;
+  undefined4 uVar1;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 *)(unaff_EBP + -0x14) = 0;
+  CString::CString((CString *)(unaff_EBP + -0x10));
+  rhs_text = (char *)**(undefined4 **)(unaff_EBP + 0x10);
+  lhs_text = (char *)**(undefined4 **)(unaff_EBP + 0xc);
+  *(undefined4 *)(unaff_EBP + -4) = 1;
+  CString::ConcatCopy((CString *)(unaff_EBP + -0x10),*(int *)(lhs_text + -8),lhs_text,
+                      *(int *)(rhs_text + -8),rhs_text);
+  CString::CString(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + -0x10));
+  *(undefined4 *)(unaff_EBP + -0x14) = 1;
+  *(undefined1 *)(unaff_EBP + -4) = 0;
+  CString::~CString((CString *)(unaff_EBP + -0x10));
+  uVar1 = *(undefined4 *)(unaff_EBP + 8);
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return uVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00605B87
+// GHIDRA_NAME AssignSharedStringConcatRefAndCStr
+// GHIDRA_PROTO undefined AssignSharedStringConcatRefAndCStr()
+
+undefined4 AssignSharedStringConcatRefAndCStr(void)
+
+{
+  undefined4 uVar1;
+  int rhs_len;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 *)(unaff_EBP + -0x14) = 0;
+  CString::CString((CString *)(unaff_EBP + -0x10));
+  *(undefined4 *)(unaff_EBP + -4) = 1;
+  if (*(int *)(unaff_EBP + 0x10) == 0) {
+    rhs_len = 0;
+  }
+  else {
+    rhs_len = lstrlenA(*(LPCSTR *)(unaff_EBP + 0x10));
+  }
+  CString::ConcatCopy((CString *)(unaff_EBP + -0x10),
+                      *(int *)((char *)**(undefined4 **)(unaff_EBP + 0xc) + -8),
+                      (char *)**(undefined4 **)(unaff_EBP + 0xc),rhs_len,
+                      *(char **)(unaff_EBP + 0x10));
+  CString::CString(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + -0x10));
+  *(undefined4 *)(unaff_EBP + -0x14) = 1;
+  *(undefined1 *)(unaff_EBP + -4) = 0;
+  CString::~CString((CString *)(unaff_EBP + -0x10));
+  uVar1 = *(undefined4 *)(unaff_EBP + 8);
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return uVar1;
 }
 

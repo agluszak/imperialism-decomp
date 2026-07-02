@@ -247,7 +247,7 @@ void TNavyRoster::CallVoidSlotA0()
 {
   int *piVar1;
   
-  TView::CallVoidSlotA0((TView *)this);
+  func_0x00409a8e();
   piVar1 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   *(undefined1 *)(piVar1 + 0xd3) = 0;
   (**(code **)(*piVar1 + 0x1f8))();

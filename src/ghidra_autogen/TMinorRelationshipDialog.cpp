@@ -108,7 +108,7 @@ void TMinorRelationshipDialog::CallVoidSlotA0()
     local_c = (TDiplomacyMgrVtbl *)&local_c->slot_0x04;
     sVar4 = sVar4 + 1;
   } while (sVar4 < 0x17);
-  TView::CallVoidSlotA0((TView *)this);
+  func_0x00409a8e();
   return;
 }
 

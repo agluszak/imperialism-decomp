@@ -166,7 +166,7 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(undefined4 pa
   undefined4 unaff_retaddr;
   
   func_0x0040174e(0);
-  cVar1 = InitializeDirectSoundDeviceAndChannels();
+  cVar1 = func_0x004061d1();
   this->field_0x20 = cVar1;
   if (cVar1 == '\0') {
     (*this->vftable->ClearDirectSoundInitPendingAndResetState)();

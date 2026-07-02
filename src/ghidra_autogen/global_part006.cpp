@@ -3,62 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part006.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00534E70
-// GHIDRA_NAME ReturnMissionConstantFloatSlot70
-// GHIDRA_PROTO undefined ReturnMissionConstantFloatSlot70()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-float10 ReturnMissionConstantFloatSlot70(void)
-
-{
-  return (float10)_g_MissionDefaultScore_0065a468;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00534E90
-// GHIDRA_NAME ReturnMissionConstantFloatSlot7C
-// GHIDRA_PROTO undefined ReturnMissionConstantFloatSlot7C()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-float10 ReturnMissionConstantFloatSlot7C(void)
-
-{
-  return (float10)_g_MissionDefaultScore_0065a468;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00534EB0
-// GHIDRA_NAME ReturnMissionConstantFloatSlot78
-// GHIDRA_PROTO undefined ReturnMissionConstantFloatSlot78()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-float10 ReturnMissionConstantFloatSlot78(void)
-
-{
-  return (float10)_g_MissionDefaultScore_0065a468;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00534ED0
-// GHIDRA_NAME NoOpMissionVtableSlot84
-// GHIDRA_PROTO undefined NoOpMissionVtableSlot84()
-
-void NoOpMissionVtableSlot84(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00534EF0
-// GHIDRA_NAME NoOpMissionVtableSlot80Ret8
-// GHIDRA_PROTO undefined NoOpMissionVtableSlot80Ret8()
-
-void NoOpMissionVtableSlot80Ret8(void)
-
-{
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00534F10
 // GHIDRA_NAME NoOpMissionVtableSlot8CRet8
 // GHIDRA_PROTO undefined NoOpMissionVtableSlot8CRet8()
@@ -10218,5 +10162,108 @@ int __fastcall GetNavyPrimaryOrderListIndexOfNode(TShip *param_1)
     iVar2 = iVar2 + 1;
   }
   return iVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550640
+// GHIDRA_NAME GetNavyPrimaryOrderNodeByIndex
+// GHIDRA_PROTO undefined GetNavyPrimaryOrderNodeByIndex()
+
+void GetNavyPrimaryOrderNodeByIndex(short param_1)
+
+{
+  TShip *pTVar1;
+  
+  pTVar1 = g_pNavyPrimaryOrderListHead;
+  for (; (pTVar1 != (TShip *)0x0 && (param_1 != 0)); param_1 = param_1 + -1) {
+    pTVar1 = *(TShip **)&pTVar1->field_0x24;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550820
+// GHIDRA_NAME GetOrderNodeDescriptorWord0CByResourceType
+// GHIDRA_PROTO undefined GetOrderNodeDescriptorWord0CByResourceType()
+
+undefined4 __fastcall GetOrderNodeDescriptorWord0CByResourceType(int param_1)
+
+{
+  return CONCAT22((short)((uint)(*(short *)(param_1 + 4) * 9) >> 0x10),
+                  *(undefined2 *)
+                   (&g_Calculate_Mission_Order_LookupTable_0069810C + *(short *)(param_1 + 4) * 9));
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550840
+// GHIDRA_NAME ComputeOrderNodeDerivedScoreFromQuantityAndWord18
+// GHIDRA_PROTO undefined ComputeOrderNodeDerivedScoreFromQuantityAndWord18()
+
+int __fastcall ComputeOrderNodeDerivedScoreFromQuantityAndWord18(int param_1)
+
+{
+  short sVar1;
+  
+  sVar1 = *(short *)(param_1 + 0x30);
+  return ((short)((sVar1 / 100 + (sVar1 >> 0xf)) -
+                 (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) + 5 +
+         (&g_Navy_Order_Priority_LookupTable_00698118)[*(short *)(param_1 + 4) * 9] * 10) / 10;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550970
+// GHIDRA_NAME GetIndustryActionCostWeightByResourceType
+// GHIDRA_PROTO undefined GetIndustryActionCostWeightByResourceType()
+
+undefined4 GetIndustryActionCostWeightByResourceType(short param_1)
+
+{
+  return CONCAT22(param_1 >> 0xf,*(undefined2 *)(&g_industryActionCostWeightResCode10 + param_1 * 2)
+                 );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005509C0
+// GHIDRA_NAME PruneOrPromoteOrderNodeWhenChildCostDepleted
+// GHIDRA_PROTO undefined PruneOrPromoteOrderNodeWhenChildCostDepleted()
+
+void __fastcall PruneOrPromoteOrderNodeWhenChildCostDepleted(int *param_1)
+
+{
+  int iVar1;
+  int *piVar2;
+  undefined4 uVar3;
+  
+  iVar1 = param_1[3];
+  *(undefined2 *)(param_1 + 7) = 0xfd66;
+  if (iVar1 == 0) {
+    (**(code **)(*param_1 + 0x1c))();
+  }
+  else {
+    piVar2 = *(int **)(iVar1 + 0x10);
+    if (piVar2 != (int *)0x0) {
+      if (*(short *)(*piVar2 + 0x1c) < 1) {
+        *(undefined4 *)(*piVar2 + 0xc) = 0;
+        (**(code **)(*(int *)*piVar2 + 0x1c))();
+        if (piVar2[1] != 0) {
+          *(int *)(piVar2[1] + 8) = piVar2[2];
+        }
+        if (piVar2[2] != 0) {
+          *(int *)(piVar2[2] + 4) = piVar2[1];
+        }
+        operator_delete(piVar2);
+        piVar2 = (int *)func_0x00404692();
+      }
+      else {
+        func_0x00404692();
+      }
+    }
+    *(int **)(iVar1 + 0x10) = piVar2;
+    *(undefined4 *)(iVar1 + 0x14) = 0;
+    for (; piVar2 != (int *)0x0; piVar2 = (int *)piVar2[1]) {
+      uVar3 = func_0x004076fd(*(undefined4 *)(iVar1 + 0x14),0);
+      *(undefined4 *)(iVar1 + 0x14) = uVar3;
+    }
+    if (*(int *)(iVar1 + 0x10) == 0) {
+      *(undefined1 *)(iVar1 + 0x26) = 1;
+      return;
+    }
+  }
+  return;
 }
 

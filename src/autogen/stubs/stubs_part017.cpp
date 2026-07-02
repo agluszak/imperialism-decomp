@@ -1148,8 +1148,9 @@ undefined4 BuildSaveSlotPathAndProbeMetadata(void)
 }
 
 // ghidra_name TTwoPicSlider::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0056e120
-undefined4 TTwoPicSlider_CreateObject(void)
+undefined4 CreateObject_0056E120(void)
 {
   return 0;
 }

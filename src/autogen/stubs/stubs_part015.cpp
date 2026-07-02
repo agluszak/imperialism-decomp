@@ -660,8 +660,9 @@ undefined4 WrapperFor_ftol_At005258c0(void)
 }
 
 // ghidra_name TMapMaker::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x00525910
-undefined4 TMapMaker_CreateObject(void)
+undefined4 CreateObject_00525910(void)
 {
   return 0;
 }

@@ -355,7 +355,7 @@ void TDiplomacyMapView::ResetDiplomacyOverlayFlagAndDispatchChildUpdate()
 
 {
   *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 0;
-  TView::CallVoidSlotA0((TView *)this);
+  func_0x00409a8e();
   return;
 }
 

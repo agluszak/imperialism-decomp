@@ -12,8 +12,9 @@ undefined4 CopyCityDialogStateFromSourceAndCloneChildLinks(void)
 }
 
 // ghidra_name TScroller::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0048ca60
-undefined4 TScroller_CreateObject(void)
+undefined4 CreateObject_0048CA60(void)
 {
   return 0;
 }
@@ -35,8 +36,9 @@ undefined4 CreateTScrollerInstance(void)
 }
 
 // ghidra_name TScroller::GetRuntimeClass
+// ghidra_proto undefined __thiscall GetRuntimeClass(void)
 // FUNCTION: IMPERIALISM 0x0048cb90
-undefined4 TScroller_GetRuntimeClass(void)
+undefined4 GetRuntimeClass(void)
 {
   return 0;
 }
@@ -130,8 +132,9 @@ undefined4 CreateTRadioInstance(void)
 }
 
 // ghidra_name TRadio::GetRuntimeClass
+// ghidra_proto undefined __thiscall GetRuntimeClass(void)
 // FUNCTION: IMPERIALISM 0x0048ee90
-undefined4 TRadio_GetRuntimeClass(void)
+undefined4 GetRuntimeClass_0048EE90(void)
 {
   return 0;
 }

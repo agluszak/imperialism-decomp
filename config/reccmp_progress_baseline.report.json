@@ -2710,7 +2710,7 @@
     },
     {
       "address": "0x485df0",
-      "matching": 0.34146341463414637,
+      "matching": 0.42424242424242425,
       "name": "TObject::CreateObject",
       "type": 1
     },
@@ -2818,7 +2818,7 @@
     },
     {
       "address": "0x4863c0",
-      "matching": 0.34146341463414637,
+      "matching": 0.42424242424242425,
       "name": "TFileBasedDocument::CreateObject",
       "type": 1
     },
@@ -2962,7 +2962,7 @@
     },
     {
       "address": "0x487180",
-      "matching": 0.3333333333333333,
+      "matching": 0.3888888888888889,
       "name": "TBehavior::CreateObject",
       "type": 1
     },
@@ -3010,7 +3010,7 @@
     },
     {
       "address": "0x487300",
-      "matching": 0.2978723404255319,
+      "matching": 0.32558139534883723,
       "name": "TDialogBehavior::CreateObject",
       "type": 1
     },
@@ -3070,7 +3070,7 @@
     },
     {
       "address": "0x4877c0",
-      "matching": 0.30434782608695654,
+      "matching": 0.358974358974359,
       "name": "TCommand::CreateObject",
       "type": 1
     },
@@ -4000,7 +4000,7 @@
     },
     {
       "address": "0x489f00",
-      "matching": 0.25,
+      "matching": 0.3157894736842105,
       "name": "TEvent::CreateObject",
       "type": 1
     },
@@ -4024,7 +4024,7 @@
     },
     {
       "address": "0x48a0a0",
-      "matching": 0.2727272727272727,
+      "matching": 0.3157894736842105,
       "name": "TEventHandler::CreateObject",
       "type": 1
     },
@@ -5711,7 +5711,7 @@
     },
     {
       "address": "0x493800",
-      "matching": 0.26229508196721313,
+      "matching": 0.5277777777777778,
       "name": "CMcWindow::OnWindowStateMsg468",
       "type": 1
     },
@@ -6949,7 +6949,7 @@
     },
     {
       "address": "0x49e5a0",
-      "matching": 0.34146341463414637,
+      "matching": 0.42424242424242425,
       "name": "TAmbitFileBasedDocument::CreateObject",
       "type": 1
     },
@@ -7009,7 +7009,7 @@
     },
     {
       "address": "0x49f020",
-      "matching": 0.34146341463414637,
+      "matching": 0.42424242424242425,
       "name": "TAnimation::CreateObject",
       "type": 1
     },
@@ -7057,7 +7057,7 @@
     },
     {
       "address": "0x49f450",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TCivAnimation::CreateObject",
       "type": 1
     },
@@ -7087,7 +7087,7 @@
     },
     {
       "address": "0x49f600",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TCivAnimation2::CreateObject",
       "type": 1
     },
@@ -7129,7 +7129,7 @@
     },
     {
       "address": "0x49fcc0",
-      "matching": 0.0,
+      "matching": 0.36363636363636365,
       "name": "TOneTimeAnimation::CreateObject",
       "type": 1
     },
@@ -7153,7 +7153,7 @@
     },
     {
       "address": "0x49fef0",
-      "matching": 0.34146341463414637,
+      "matching": 0.42424242424242425,
       "name": "TCouncilTickerAnimation::CreateObject",
       "type": 1
     },
@@ -7189,7 +7189,7 @@
     },
     {
       "address": "0x4a0020",
-      "matching": 0.0,
+      "matching": 0.3333333333333333,
       "name": "TFocusAnimation::CreateObject(void)",
       "type": 1
     },
@@ -7399,7 +7399,7 @@
     },
     {
       "address": "0x4a1810",
-      "matching": 0.3,
+      "matching": 0.34285714285714286,
       "name": "TArmyMgr::CreateObject",
       "type": 1
     },
@@ -8731,7 +8731,7 @@
     },
     {
       "address": "0x4b20d0",
-      "matching": 0.2127659574468085,
+      "matching": 0.2702702702702703,
       "name": "TLaborPool::CreateObject",
       "type": 1
     },
@@ -8773,7 +8773,7 @@
     },
     {
       "address": "0x4b2410",
-      "matching": 0.1276595744680851,
+      "matching": 0.23076923076923078,
       "name": "TCity::CreateObject",
       "type": 1
     },
@@ -8995,7 +8995,7 @@
     },
     {
       "address": "0x4b4eb0",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TProductionOrder::CreateObject",
       "type": 1
     },
@@ -9073,7 +9073,7 @@
     },
     {
       "address": "0x4b51d0",
-      "matching": 0.3333333333333333,
+      "matching": 0.35294117647058826,
       "name": "TItemOrder::CreateObject",
       "type": 1
     },
@@ -9139,7 +9139,7 @@
     },
     {
       "address": "0x4b57b0",
-      "matching": 0.3333333333333333,
+      "matching": 0.35294117647058826,
       "name": "TOrItemOrder::CreateObject",
       "type": 1
     },
@@ -9175,7 +9175,7 @@
     },
     {
       "address": "0x4b5b40",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TPopulationMgr::CreateObject",
       "type": 1
     },
@@ -9283,7 +9283,7 @@
     },
     {
       "address": "0x4b6a60",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TTrainingOrder::CreateObject",
       "type": 1
     },
@@ -9337,7 +9337,7 @@
     },
     {
       "address": "0x4b6f20",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TUnitOrder::CreateObject",
       "type": 1
     },
@@ -9403,7 +9403,7 @@
     },
     {
       "address": "0x4b79f0",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TPowerPlantOrder::CreateObject",
       "type": 1
     },
@@ -9469,7 +9469,7 @@
     },
     {
       "address": "0x4b7dc0",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TFoodProcessingOrder::CreateObject",
       "type": 1
     },
@@ -9523,7 +9523,7 @@
     },
     {
       "address": "0x4b8110",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TPopGrowthOrder::CreateObject",
       "type": 1
     },
@@ -9571,7 +9571,7 @@
     },
     {
       "address": "0x4b8470",
-      "matching": 0.34146341463414637,
+      "matching": 0.42424242424242425,
       "name": "TShipOrder::CreateObject",
       "type": 1
     },
@@ -9631,7 +9631,7 @@
     },
     {
       "address": "0x4b8c90",
-      "matching": 0.0,
+      "matching": 0.3333333333333333,
       "name": "TCapacityOrder::CreateObject",
       "type": 1
     },
@@ -9667,7 +9667,7 @@
     },
     {
       "address": "0x4b8f50",
-      "matching": 0.3333333333333333,
+      "matching": 0.35294117647058826,
       "name": "TExpansionOrder::CreateObject",
       "type": 1
     },
@@ -11341,7 +11341,7 @@
     },
     {
       "address": "0x4d2000",
-      "matching": 0.34146341463414637,
+      "matching": 0.42424242424242425,
       "name": "TCivMgr::CreateObject",
       "type": 1
     },
@@ -13220,7 +13220,7 @@
     },
     {
       "address": "0x4e65e0",
-      "matching": 0.34285714285714286,
+      "matching": 0.35294117647058826,
       "name": "TTurnStartEvent::CreateObject",
       "type": 1
     },
@@ -13250,7 +13250,7 @@
     },
     {
       "address": "0x4e66c0",
-      "matching": 0.34285714285714286,
+      "matching": 0.35294117647058826,
       "name": "TLandSaleEvent::CreateObject",
       "type": 1
     },
@@ -14024,7 +14024,7 @@
     },
     {
       "address": "0x4ee650",
-      "matching": 0.26666666666666666,
+      "matching": 0.3157894736842105,
       "name": "TDiplomacyMgr::CreateObject",
       "type": 1
     },
@@ -15152,7 +15152,7 @@
     },
     {
       "address": "0x4fe710",
-      "matching": 0.21428571428571427,
+      "matching": 0.25,
       "name": "TDisplayMgr::CreateObject",
       "type": 1
     },
@@ -15314,7 +15314,7 @@
     },
     {
       "address": "0x4ff460",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TFuzzyVar::CreateObject",
       "type": 1
     },
@@ -15338,7 +15338,7 @@
     },
     {
       "address": "0x4ff690",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TFuzzySet::CreateObject",
       "type": 1
     },
@@ -15482,7 +15482,7 @@
     },
     {
       "address": "0x500550",
-      "matching": 0.1724137931034483,
+      "matching": 0.20833333333333334,
       "name": "THelpMgr::CreateObject",
       "type": 1
     },
@@ -17786,7 +17786,7 @@
     },
     {
       "address": "0x525910",
-      "matching": 0.0,
+      "matching": 0.3333333333333333,
       "name": "TMapMaker::CreateObject",
       "type": 1
     },
@@ -18200,7 +18200,7 @@
     },
     {
       "address": "0x52eb30",
-      "matching": 0.3333333333333333,
+      "matching": 0.35294117647058826,
       "name": "TMinister::CreateObject",
       "type": 1
     },
@@ -18302,7 +18302,7 @@
     },
     {
       "address": "0x52efd0",
-      "matching": 0.16326530612244897,
+      "matching": 0.1568627450980392,
       "name": "TForeignMinister::CreateObject",
       "type": 1
     },
@@ -18488,7 +18488,7 @@
     },
     {
       "address": "0x531130",
-      "matching": 0.16326530612244897,
+      "matching": 0.1568627450980392,
       "name": "TTedForeignMinister::CreateObject",
       "type": 1
     },
@@ -18554,7 +18554,7 @@
     },
     {
       "address": "0x531b30",
-      "matching": 0.125,
+      "matching": 0.14814814814814814,
       "name": "TBillForeignMinister::CreateObject",
       "type": 1
     },
@@ -18632,7 +18632,7 @@
     },
     {
       "address": "0x5326e0",
-      "matching": 0.16326530612244897,
+      "matching": 0.1568627450980392,
       "name": "TDiplomatForeignMinister::CreateObject",
       "type": 1
     },
@@ -18698,7 +18698,7 @@
     },
     {
       "address": "0x533070",
-      "matching": 0.12244897959183673,
+      "matching": 0.15384615384615385,
       "name": "TTextileForeignMinister::CreateObject",
       "type": 1
     },
@@ -18752,7 +18752,7 @@
     },
     {
       "address": "0x533800",
-      "matching": 0.16326530612244897,
+      "matching": 0.1568627450980392,
       "name": "TTraderForeignMinister::CreateObject",
       "type": 1
     },
@@ -18812,7 +18812,7 @@
     },
     {
       "address": "0x533f70",
-      "matching": 0.125,
+      "matching": 0.15384615384615385,
       "name": "TArmsForeignMinister::CreateObject",
       "type": 1
     },
@@ -18932,7 +18932,7 @@
     },
     {
       "address": "0x534bc0",
-      "matching": 0.35555555555555557,
+      "matching": 0.4444444444444444,
       "name": "TMission::CreateObject",
       "type": 1
     },
@@ -22023,7 +22023,7 @@
     },
     {
       "address": "0x552770",
-      "matching": 0.18181818181818182,
+      "matching": 0.20833333333333334,
       "name": "TTaskForce::CreateObject",
       "type": 1
     },
@@ -22353,7 +22353,7 @@
     },
     {
       "address": "0x556530",
-      "matching": 0.2127659574468085,
+      "matching": 0.2702702702702703,
       "name": "TNavyMgr::CreateObject",
       "type": 1
     },
@@ -22569,7 +22569,7 @@
     },
     {
       "address": "0x55b670",
-      "matching": 0.3157894736842105,
+      "matching": 0.36363636363636365,
       "name": "TNewsMgr::CreateObject",
       "type": 1
     },
@@ -23151,7 +23151,7 @@
     },
     {
       "address": "0x562100",
-      "matching": 0.22727272727272727,
+      "matching": 0.2564102564102564,
       "name": "TOcean::CreateObject",
       "type": 1
     },
@@ -24093,7 +24093,7 @@
     },
     {
       "address": "0x56f360",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TLineData::CreateObject",
       "type": 1
     },
@@ -24255,7 +24255,7 @@
     },
     {
       "address": "0x570030",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TPictureLine::CreateObject",
       "type": 1
     },
@@ -28722,7 +28722,7 @@
     },
     {
       "address": "0x59ad40",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TTacticalPlayer::CreateObject",
       "type": 1
     },
@@ -28824,7 +28824,7 @@
     },
     {
       "address": "0x59b110",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TArmyPlayer::CreateObject",
       "type": 1
     },
@@ -29160,7 +29160,7 @@
     },
     {
       "address": "0x59eb80",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TNavyPlayer::CreateObject",
       "type": 1
     },
@@ -29214,7 +29214,7 @@
     },
     {
       "address": "0x59eef0",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TNavyHumanPlayer::CreateObject",
       "type": 1
     },
@@ -29244,7 +29244,7 @@
     },
     {
       "address": "0x59f040",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TNavyAutoPlayer::CreateObject",
       "type": 1
     },
@@ -29286,7 +29286,7 @@
     },
     {
       "address": "0x59f6d0",
-      "matching": 0.23809523809523808,
+      "matching": 0.24390243902439024,
       "name": "TTacticalBattle::CreateObject",
       "type": 1
     },
@@ -29652,7 +29652,7 @@
     },
     {
       "address": "0x5a4710",
-      "matching": 0.23809523809523808,
+      "matching": 0.24390243902439024,
       "name": "TArmyBattle::CreateObject",
       "type": 1
     },
@@ -29712,7 +29712,7 @@
     },
     {
       "address": "0x5a5480",
-      "matching": 0.18181818181818182,
+      "matching": 0.24390243902439024,
       "name": "TNavyBattle::CreateObject",
       "type": 1
     },
@@ -29784,7 +29784,7 @@
     },
     {
       "address": "0x5a5d10",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TTacticalUnit::CreateObject",
       "type": 1
     },
@@ -29850,7 +29850,7 @@
     },
     {
       "address": "0x5a5ed0",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TArmyTacUnit::CreateObject",
       "type": 1
     },
@@ -29898,7 +29898,7 @@
     },
     {
       "address": "0x5a6240",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TNavyTacUnit::CreateObject",
       "type": 1
     },
@@ -30348,7 +30348,7 @@
     },
     {
       "address": "0x5adb40",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TTask::CreateObject",
       "type": 1
     },
@@ -30384,7 +30384,7 @@
     },
     {
       "address": "0x5adcd0",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TCityTask::CreateObject",
       "type": 1
     },
@@ -30468,7 +30468,7 @@
     },
     {
       "address": "0x5ae650",
-      "matching": 0.2926829268292683,
+      "matching": 0.36363636363636365,
       "name": "TShipBuildingTask::CreateObject",
       "type": 1
     },
@@ -30570,7 +30570,7 @@
     },
     {
       "address": "0x5aef30",
-      "matching": 0.3157894736842105,
+      "matching": 0.36363636363636365,
       "name": "TTechMgr::CreateObject",
       "type": 1
     },
@@ -31350,7 +31350,7 @@
     },
     {
       "address": "0x5b6c10",
-      "matching": 0.34146341463414637,
+      "matching": 0.42424242424242425,
       "name": "TTown::CreateObject",
       "type": 1
     },
@@ -31362,7 +31362,7 @@
     },
     {
       "address": "0x5b6c60",
-      "matching": 0.11764705882352941,
+      "matching": 0.2,
       "name": "TTown::TTown",
       "type": 1
     },
@@ -31398,7 +31398,7 @@
     },
     {
       "address": "0x5b79d0",
-      "matching": 0.0,
+      "matching": 0.36363636363636365,
       "name": "TTradeMgr::CreateObject",
       "type": 1
     },
@@ -32148,7 +32148,7 @@
     },
     {
       "address": "0x5c2430",
-      "matching": 0.3111111111111111,
+      "matching": 0.3684210526315789,
       "name": "TUnit::CreateObject",
       "type": 1
     },
@@ -32220,7 +32220,7 @@
     },
     {
       "address": "0x5c2860",
-      "matching": 0.27906976744186046,
+      "matching": 0.3076923076923077,
       "name": "TCivUnit::CreateObject",
       "type": 1
     },

@@ -588,15 +588,17 @@ undefined4 SelectPaletteThenLookupHandleMapEntryWithCreate(void)
 }
 
 // ghidra_name CDC::GetClipBox
+// ghidra_proto undefined GetClipBox()
 // FUNCTION: IMPERIALISM 0x00612e9a
-undefined4 CDC_GetClipBox(void)
+undefined4 GetClipBox(void)
 {
   return 0;
 }
 
 // ghidra_name CPaintDC::CPaintDC
+// ghidra_proto undefined CPaintDC()
 // FUNCTION: IMPERIALISM 0x006138f9
-undefined4 CPaintDC_CPaintDC(void)
+undefined4 CPaintDC(void)
 {
   return 0;
 }

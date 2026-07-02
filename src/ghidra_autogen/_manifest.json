@@ -1,6 +1,6 @@
 {
   "failed_count": 1,
-  "function_count": 9217,
+  "function_count": 9206,
   "generated_cpp_files": [
     "AFX_BASE_MODULE_STATE.cpp",
     "AFX_CLASSINIT.cpp",

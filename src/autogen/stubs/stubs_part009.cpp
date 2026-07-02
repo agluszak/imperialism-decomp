@@ -1540,8 +1540,9 @@ undefined4 RegisterUiResourceEntry_Impl(void)
 }
 
 // ghidra_name CDib::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x00479e40
-undefined4 CDib_CreateObject(void)
+undefined4 CreateObject(void)
 {
   return 0;
 }

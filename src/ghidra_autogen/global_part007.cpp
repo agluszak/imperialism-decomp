@@ -3,109 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part007.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00550640
-// GHIDRA_NAME GetNavyPrimaryOrderNodeByIndex
-// GHIDRA_PROTO undefined GetNavyPrimaryOrderNodeByIndex()
-
-void GetNavyPrimaryOrderNodeByIndex(short param_1)
-
-{
-  TShip *pTVar1;
-  
-  pTVar1 = g_pNavyPrimaryOrderListHead;
-  for (; (pTVar1 != (TShip *)0x0 && (param_1 != 0)); param_1 = param_1 + -1) {
-    pTVar1 = *(TShip **)&pTVar1->field_0x24;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00550820
-// GHIDRA_NAME GetOrderNodeDescriptorWord0CByResourceType
-// GHIDRA_PROTO undefined GetOrderNodeDescriptorWord0CByResourceType()
-
-undefined4 __fastcall GetOrderNodeDescriptorWord0CByResourceType(int param_1)
-
-{
-  return CONCAT22((short)((uint)(*(short *)(param_1 + 4) * 9) >> 0x10),
-                  *(undefined2 *)
-                   (&g_Calculate_Mission_Order_LookupTable_0069810C + *(short *)(param_1 + 4) * 9));
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00550840
-// GHIDRA_NAME ComputeOrderNodeDerivedScoreFromQuantityAndWord18
-// GHIDRA_PROTO undefined ComputeOrderNodeDerivedScoreFromQuantityAndWord18()
-
-int __fastcall ComputeOrderNodeDerivedScoreFromQuantityAndWord18(int param_1)
-
-{
-  short sVar1;
-  
-  sVar1 = *(short *)(param_1 + 0x30);
-  return ((short)((sVar1 / 100 + (sVar1 >> 0xf)) -
-                 (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) + 5 +
-         (&g_Navy_Order_Priority_LookupTable_00698118)[*(short *)(param_1 + 4) * 9] * 10) / 10;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00550970
-// GHIDRA_NAME GetIndustryActionCostWeightByResourceType
-// GHIDRA_PROTO undefined GetIndustryActionCostWeightByResourceType()
-
-undefined4 GetIndustryActionCostWeightByResourceType(short param_1)
-
-{
-  return CONCAT22(param_1 >> 0xf,*(undefined2 *)(&g_industryActionCostWeightResCode10 + param_1 * 2)
-                 );
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005509C0
-// GHIDRA_NAME PruneOrPromoteOrderNodeWhenChildCostDepleted
-// GHIDRA_PROTO undefined PruneOrPromoteOrderNodeWhenChildCostDepleted()
-
-void __fastcall PruneOrPromoteOrderNodeWhenChildCostDepleted(int *param_1)
-
-{
-  int iVar1;
-  int *piVar2;
-  undefined4 uVar3;
-  
-  iVar1 = param_1[3];
-  *(undefined2 *)(param_1 + 7) = 0xfd66;
-  if (iVar1 == 0) {
-    (**(code **)(*param_1 + 0x1c))();
-  }
-  else {
-    piVar2 = *(int **)(iVar1 + 0x10);
-    if (piVar2 != (int *)0x0) {
-      if (*(short *)(*piVar2 + 0x1c) < 1) {
-        *(undefined4 *)(*piVar2 + 0xc) = 0;
-        (**(code **)(*(int *)*piVar2 + 0x1c))();
-        if (piVar2[1] != 0) {
-          *(int *)(piVar2[1] + 8) = piVar2[2];
-        }
-        if (piVar2[2] != 0) {
-          *(int *)(piVar2[2] + 4) = piVar2[1];
-        }
-        operator_delete(piVar2);
-        piVar2 = (int *)func_0x00404692();
-      }
-      else {
-        func_0x00404692();
-      }
-    }
-    *(int **)(iVar1 + 0x10) = piVar2;
-    *(undefined4 *)(iVar1 + 0x14) = 0;
-    for (; piVar2 != (int *)0x0; piVar2 = (int *)piVar2[1]) {
-      uVar3 = func_0x004076fd(*(undefined4 *)(iVar1 + 0x14),0);
-      *(undefined4 *)(iVar1 + 0x14) = uVar3;
-    }
-    if (*(int *)(iVar1 + 0x10) == 0) {
-      *(undefined1 *)(iVar1 + 0x26) = 1;
-      return;
-    }
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00550AA0
 // GHIDRA_NAME ComputeMapOrderEntryHeuristicScore
 // GHIDRA_PROTO undefined ComputeMapOrderEntryHeuristicScore()
@@ -13394,5 +13291,417 @@ void scanBracketExpressions(void *ctx,void *out_or_state,char *input_str)
     ch = p[idx + 1];
     idx = idx + 1;
   } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00580060
+// GHIDRA_NAME BuildUiMessageTextFromBracketTemplate
+// GHIDRA_PROTO undefined BuildUiMessageTextFromBracketTemplate()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Expands a bracket-token template into a final UI message string by substituting token values via localization/theme callbacks and appending text chunks.
+// GHIDRA_COMMENT_END
+
+/* Expands a bracket-token template into a final UI message string by substituting token values via
+   localization/theme callbacks and appending text chunks. */
+
+void BuildUiMessageTextFromBracketTemplate
+               (int *param_1,CString *param_2,undefined4 param_3,undefined4 param_4)
+
+{
+  char *pcVar1;
+  byte bVar2;
+  char cVar3;
+  code *pcVar4;
+  int iVar5;
+  undefined2 extraout_var;
+  undefined4 unaff_EBX;
+  int unaff_ESI;
+  int iVar6;
+  undefined4 *unaff_FS_OFFSET;
+  undefined2 auStackY_180 [160];
+  undefined4 uStackY_40;
+  CString *pCStackY_3c;
+  char *pcStackY_38;
+  CString *pCStackY_34;
+  undefined4 uStackY_30;
+  undefined4 uStackY_2c;
+  CString local_14;
+  CString local_10;
+  undefined4 uStack_c;
+  CString CStack_8;
+  CString local_4;
+  
+  local_4.m_pchData = (char *)0xffffffff;
+  CStack_8.m_pchData = &LAB_006370f0;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  uStackY_2c = 0x58008a;
+  CString::CString(&local_10,(char *)&g_szEmptyString);
+  iVar6 = 0;
+  local_4.m_pchData = (char *)0x0;
+  uStackY_2c = 0x5800a0;
+  CString::operator=(param_2,&local_10);
+  local_4.m_pchData = (char *)0xffffffff;
+  CString::~CString(&local_10);
+  CString::CString(&local_14);
+  local_4.m_pchData = (char *)0x1;
+  uStackY_2c = param_4;
+  pcVar4 = *(code **)(*param_1 + 0x84);
+  uStackY_30 = param_3;
+  pCStackY_34 = (CString *)0x5800e2;
+  (*pcVar4)();
+  iVar5 = *(int *)(unaff_ESI + -8);
+  if (0 < iVar5) {
+    do {
+      pCStackY_34 = (CString *)CONCAT31((int3)((uint)iVar5 >> 8),*(char *)(unaff_ESI + iVar6));
+      if (*(char *)(unaff_ESI + iVar6) == '[') {
+        do {
+          if ((char)pCStackY_34 == '\0') break;
+          bVar2 = *(byte *)(unaff_ESI + 1 + iVar6);
+          pCStackY_34 = (CString *)(uint)bVar2;
+          iVar6 = iVar6 + 1;
+          if (('/' < (char)bVar2) && ((char)bVar2 < ':')) {
+            pCStackY_34 = (CString *)0x580123;
+            CString::CString(&local_4);
+            pCStackY_34 = &local_4;
+            local_10.m_pchData._0_1_ = 2;
+            pcStackY_38 = (char *)CONCAT22((short)((uint)&local_4 >> 0x10),
+                                           auStackY_180[*(char *)(unaff_ESI + iVar6) * 4 + 2]);
+            pCStackY_3c = (CString *)
+                          CONCAT22(extraout_var,auStackY_180[*(char *)(unaff_ESI + iVar6) * 4]);
+            uStackY_40 = 0x580150;
+            (*pcVar4)();
+            cVar3 = *(char *)(unaff_ESI + 1 + iVar6);
+            if ((cVar3 < 'a') || ('z' < cVar3)) {
+              pCStackY_34 = &local_4;
+              pcStackY_38 = (char *)0x5801a1;
+              CString::operator+=();
+            }
+            else {
+              pCStackY_34 = (CString *)CONCAT31((int3)((uint)unaff_ESI >> 8),cVar3);
+              pCStackY_3c = &CStack_8;
+              pcStackY_38 = local_4.m_pchData;
+              uStackY_40 = 0x580178;
+              pCStackY_34 = (CString *)func_0x004013f2();
+              local_10.m_pchData._0_1_ = 3;
+              pcStackY_38 = (char *)0x580185;
+              CString::operator+=();
+              local_10.m_pchData._0_1_ = 2;
+              pCStackY_34 = (CString *)0x580193;
+              CString::~CString(&CStack_8);
+            }
+            local_10.m_pchData._0_1_ = 1;
+            pCStackY_34 = (CString *)0x5801af;
+            CString::~CString(&local_4);
+            break;
+          }
+        } while (bVar2 != 0x5d);
+        if (*(char *)(unaff_ESI + iVar6) != ']') {
+          do {
+            if (*(int *)(unaff_ESI + -8) <= iVar6) break;
+            pcVar1 = (char *)(unaff_ESI + 1 + iVar6);
+            iVar6 = iVar6 + 1;
+          } while (*pcVar1 != ']');
+        }
+      }
+      else {
+        pcStackY_38 = (char *)0x5801d4;
+        CString::operator+=();
+      }
+      iVar5 = *(int *)(unaff_ESI + -8);
+      iVar6 = iVar6 + 1;
+    } while (iVar6 < iVar5);
+  }
+  local_10.m_pchData = (char *)0xffffffff;
+  pCStackY_34 = (CString *)0x5801f5;
+  CString::~CString((CString *)&stack0xffffffe0);
+  *unaff_FS_OFFSET = unaff_EBX;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00580280
+// GHIDRA_NAME AppendInterNationEventSummaryTextEntry_Impl
+// GHIDRA_PROTO undefined AppendInterNationEventSummaryTextEntry_Impl()
+
+undefined4 * AppendInterNationEventSummaryTextEntry_Impl(undefined4 param_1,char *param_2)
+
+{
+  uint uVar1;
+  char cVar2;
+  int3 iVar4;
+  int3 extraout_var;
+  undefined4 uVar3;
+  int3 extraout_var_00;
+  CString CVar5;
+  char *pcVar6;
+  int iVar7;
+  int iVar8;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 auStack_b8 [27];
+  undefined4 uStack_4c;
+  CString *pCStack_48;
+  undefined4 uStack_44;
+  undefined4 uStack_40;
+  CString local_2c;
+  undefined4 local_28;
+  undefined4 local_24;
+  undefined4 local_20;
+  undefined4 *local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  puStack_8 = &LAB_00637120;
+  uVar3 = *unaff_FS_OFFSET;
+  local_c = uVar3;
+  *unaff_FS_OFFSET = &local_c;
+  local_18 = 0;
+  local_14 = 0;
+  local_10 = 0;
+  local_1c = (undefined4 *)&DAT_00662b00;
+  iVar7 = 0;
+  local_4 = 0;
+  cVar2 = *param_2;
+joined_r0x005802bd:
+  if (cVar2 == '\0') {
+    uStack_40 = 0x5803b9;
+    (*(code *)*local_1c)();
+    *unaff_FS_OFFSET = local_10;
+    return local_1c;
+  }
+  cVar2 = param_2[iVar7];
+  iVar4 = (int3)((uint)uVar3 >> 8);
+  iVar8 = iVar7;
+  if (cVar2 == '[') {
+LAB_005802cf:
+    iVar7 = iVar8;
+    if (cVar2 != '\0') {
+      cVar2 = param_2[iVar8 + 1];
+      iVar7 = iVar8 + 1;
+      if ((cVar2 < '0') || ('9' < cVar2)) goto LAB_005802e4;
+      cVar2 = param_2[iVar8 + 2];
+      if ((cVar2 < 'a') || ('z' < cVar2)) {
+        pcVar6 = (char *)auStack_b8[param_2[iVar7]];
+        iVar4 = (int3)(param_2[iVar7] >> 7);
+        cVar2 = *pcVar6;
+        while (cVar2 != '\0') {
+          uVar1 = (uint)local_24 >> 8;
+          local_24 = CONCAT31((int3)uVar1,cVar2);
+          pcVar6 = pcVar6 + 1;
+          uStack_40 = local_24;
+          uStack_44 = 0x580370;
+          uVar3 = (*(code *)*local_1c)();
+          iVar4 = (int3)((uint)uVar3 >> 8);
+          cVar2 = *pcVar6;
+        }
+      }
+      else {
+        uStack_40 = CONCAT31(iVar4,cVar2);
+        pCStack_48 = &local_2c;
+        uStack_44 = auStack_b8[param_2[iVar7]];
+        uStack_4c = 0x580313;
+        func_0x004013f2();
+        local_4._0_1_ = 1;
+        cVar2 = *local_2c.m_pchData;
+        CVar5.m_pchData = local_2c.m_pchData;
+        while (cVar2 != '\0') {
+          uVar1 = (uint)local_28 >> 8;
+          local_28 = CONCAT31((int3)uVar1,cVar2);
+          CVar5.m_pchData = CVar5.m_pchData + 1;
+          uStack_40 = local_28;
+          uStack_44 = 0x580337;
+          (*(code *)*local_1c)();
+          cVar2 = *CVar5.m_pchData;
+        }
+        local_4 = (uint)local_4._1_3_ << 8;
+        uStack_40 = 0x58034b;
+        CString::~CString(&local_2c);
+        iVar4 = extraout_var;
+      }
+    }
+    goto LAB_00580377;
+  }
+  uVar1 = (uint)local_20 >> 8;
+  local_20 = CONCAT31((int3)uVar1,cVar2);
+  uStack_40 = local_20;
+  uStack_44 = 0x5803a0;
+  (*(code *)*local_1c)();
+  iVar4 = extraout_var_00;
+  goto LAB_005803a0;
+LAB_005802e4:
+  iVar8 = iVar7;
+  if (cVar2 == ']') goto LAB_00580377;
+  goto LAB_005802cf;
+LAB_00580377:
+  cVar2 = param_2[iVar7];
+  if (cVar2 != ']') {
+    while (cVar2 != '\0') {
+      cVar2 = param_2[iVar7 + 1];
+      iVar7 = iVar7 + 1;
+      if (cVar2 == ']') break;
+    }
+  }
+LAB_005803a0:
+  cVar2 = param_2[iVar7 + 1];
+  uVar3 = CONCAT31(iVar4,cVar2);
+  iVar7 = iVar7 + 1;
+  goto joined_r0x005802bd;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005804F0
+// GHIDRA_NAME ExpandBracketMappedStringToSinkCallback
+// GHIDRA_PROTO undefined ExpandBracketMappedStringToSinkCallback()
+
+code * ExpandBracketMappedStringToSinkCallback(int *param_1)
+
+{
+  code *pcVar1;
+  uint uVar2;
+  char cVar3;
+  CString *src_ref;
+  char *unaff_ESI;
+  int iVar4;
+  int iVar5;
+  CString CVar6;
+  code *pcVar7;
+  undefined4 *unaff_FS_OFFSET;
+  undefined2 auStackY_184 [146];
+  undefined4 uStackY_60;
+  undefined1 *puStackY_5c;
+  char *pcStackY_58;
+  CString local_34;
+  code *pcStack_30;
+  undefined4 uStack_2c;
+  undefined4 *puStack_28;
+  code *local_24;
+  undefined4 uStack_20;
+  undefined *local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  uint local_10;
+  undefined4 uStack_c;
+  CString CStack_8;
+  undefined4 local_4;
+  
+  CStack_8.m_pchData = &LAB_00637150;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_18 = 0;
+  local_14 = 0;
+  local_10 = 0;
+  local_1c = &DAT_00662b00;
+  local_4 = 0;
+  CString::CString(&local_34);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  pcVar7 = *(code **)(*param_1 + 0x84);
+  local_24 = pcVar7;
+  (*pcVar7)();
+  iVar4 = 0;
+  cVar3 = *unaff_ESI;
+  pcVar1 = local_24;
+joined_r0x00580560:
+  if (cVar3 == '\0') {
+    local_24 = (code *)0x0;
+    uStack_20 = 0;
+    local_1c = (undefined *)0x0;
+    local_10 = local_10 & 0xffffff00;
+    CString::~CString((CString *)&stack0xffffffc0);
+    puStack_28 = (undefined4 *)&DAT_00662b00;
+    if (local_24 != (code *)0x0) {
+      pcStackY_58 = (char *)0x5806c1;
+      FreeHeapBlockWithAllocatorTracking();
+    }
+    *unaff_FS_OFFSET = local_18;
+    return pcVar1;
+  }
+  local_24 = pcVar1;
+  if (unaff_ESI[iVar4] == '[') {
+    cVar3 = '[';
+    iVar5 = iVar4;
+LAB_00580579:
+    iVar4 = iVar5;
+    if (cVar3 != '\0') {
+      cVar3 = unaff_ESI[iVar5 + 1];
+      iVar4 = iVar5 + 1;
+      if ((cVar3 < '0') || ('9' < cVar3)) goto LAB_0058058e;
+      CString::CString(&CStack_8);
+      local_10._0_1_ = 2;
+      cVar3 = unaff_ESI[iVar4];
+      pcStackY_58 = (char *)CONCAT22((short)((uint)&CStack_8 >> 0x10),auStackY_184[cVar3 * 4 + 2]);
+      puStackY_5c = (undefined1 *)CONCAT22(cVar3 >> 7,auStackY_184[cVar3 * 4]);
+      uStackY_60 = 0x5805cd;
+      (*pcVar7)();
+      if (('`' < unaff_ESI[iVar5 + 2]) && (unaff_ESI[iVar5 + 2] < '{')) {
+        puStackY_5c = &stack0xffffffc8;
+        pcStackY_58 = CStack_8.m_pchData;
+        uStackY_60 = 0x5805fd;
+        src_ref = (CString *)func_0x004013f2();
+        local_10._0_1_ = 3;
+        pcStackY_58 = (char *)0x58060c;
+        CString::operator=(&CStack_8,src_ref);
+        local_10._0_1_ = 2;
+        CString::~CString((CString *)&stack0xffffffc8);
+      }
+      cVar3 = *CStack_8.m_pchData;
+      CVar6.m_pchData = CStack_8.m_pchData;
+      while (cVar3 != '\0') {
+        local_34.m_pchData._1_3_ = (undefined3)((uint)local_34.m_pchData >> 8);
+        local_34.m_pchData._0_1_ = cVar3;
+        CVar6.m_pchData = CVar6.m_pchData + 1;
+        pcStackY_58 = (char *)0x580638;
+        (*(code *)*puStack_28)();
+        cVar3 = *CVar6.m_pchData;
+      }
+      local_10 = CONCAT31(local_10._1_3_,1);
+      CString::~CString(&CStack_8);
+      pcVar7 = pcStack_30;
+    }
+    goto LAB_00580654;
+  }
+  uVar2 = (uint)uStack_2c >> 8;
+  uStack_2c = CONCAT31((int3)uVar2,unaff_ESI[iVar4]);
+  pcStackY_58 = (char *)0x58067d;
+  (*(code *)*puStack_28)();
+  goto LAB_00580681;
+LAB_0058058e:
+  iVar5 = iVar4;
+  if (cVar3 == ']') goto LAB_00580654;
+  goto LAB_00580579;
+LAB_00580654:
+  cVar3 = unaff_ESI[iVar4];
+  if (cVar3 == ']') goto LAB_00580681;
+  do {
+    if (cVar3 == '\0') break;
+    cVar3 = unaff_ESI[iVar4 + 1];
+    iVar4 = iVar4 + 1;
+  } while (cVar3 != ']');
+LAB_00580681:
+  cVar3 = unaff_ESI[iVar4 + 1];
+  iVar4 = iVar4 + 1;
+  pcVar1 = local_24;
+  goto joined_r0x00580560;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005811E0
+// GHIDRA_NAME GetInt32Field30
+// GHIDRA_PROTO undefined GetInt32Field30()
+
+undefined4 __fastcall GetInt32Field30(int param_1)
+
+{
+  return *(undefined4 *)(param_1 + 0x30);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00581200
+// GHIDRA_NAME DecrementField30Value
+// GHIDRA_PROTO undefined DecrementField30Value()
+
+void __fastcall DecrementField30Value(int param_1)
+
+{
+  *(int *)(param_1 + 0x30) = *(int *)(param_1 + 0x30) + -1;
+  return;
 }
 

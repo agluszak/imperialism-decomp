@@ -314,7 +314,7 @@ void TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(CArchive *param_1)
 TFloatWindow * TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950(byte param_1)
 
 {
-  DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
+  func_0x004069e7();
   if ((param_1 & 1) != 0) {
     operator_delete(this);
   }

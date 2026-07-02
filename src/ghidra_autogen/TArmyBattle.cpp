@@ -19,7 +19,7 @@ TArmyBattle * TArmyBattle::_scalar_deleting_destructor_(byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F7F0
 // GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseStateImpl
-// GHIDRA_PROTO undefined __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTArmyBattleBaseStateImpl(void)
 
 void TArmyBattle::ConstructTArmyBattleBaseStateImpl()
 
@@ -100,38 +100,6 @@ CRuntimeClass * TArmyBattle::GetRuntimeClass()
 
 {
   return &classTArmyBattle;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A4770
-// GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseState
-// GHIDRA_PROTO undefined __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(void)
-
-void TArmyBattle::ConstructTArmyBattleBaseState()
-
-{
-  undefined4 *puVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_006385c2;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = (undefined4 *)operator_new(0x20);
-  if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &TObject::_vftable_;
-    uStack_4 = 1;
-    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
-    *puVar1 = &TList::_vftable_;
-    *(undefined4 **)&this->field_0x20 = puVar1;
-    *unaff_FS_OFFSET = uStack_c;
-    return;
-  }
-  *(undefined4 *)&this->field_0x20 = 0;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4990

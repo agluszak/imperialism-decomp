@@ -36,8 +36,9 @@ undefined4 TickCivWorkOrderCountdownAndComplete(void)
 }
 
 // ghidra_name TMilitaryUnit::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x005c2cb0
-undefined4 TMilitaryUnit_CreateObject(void)
+undefined4 CreateObject_005C2CB0(void)
 {
   return 0;
 }
@@ -1981,7 +1982,7 @@ undefined4 AfxGetMainWnd(void)
 // ghidra_name CreateObject
 // ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x005e53d8
-undefined4 CreateObject(void)
+undefined4 CreateObject_005E53D8(void)
 {
   return 0;
 }

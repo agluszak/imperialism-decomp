@@ -3,125 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part012.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0060564E
-// GHIDRA_NAME DispatchVirtualSlot18OnImplicitObject
-// GHIDRA_PROTO undefined DispatchVirtualSlot18OnImplicitObject()
-
-void DispatchVirtualSlot18OnImplicitObject(void)
-
-{
-  int in_EAX;
-  
-  (**(code **)(in_EAX + 0x18))();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00605665
-// GHIDRA_NAME DispatchVirtualSlot18OnImplicitObject
-// GHIDRA_PROTO undefined DispatchVirtualSlot18OnImplicitObject()
-
-void DispatchVirtualSlot18OnImplicitObject(void)
-
-{
-  int in_EAX;
-  
-  (**(code **)(in_EAX + 0x18))();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00605791
-// GHIDRA_NAME GetSharedEmptyStringRef
-// GHIDRA_PROTO undefined GetSharedEmptyStringRef()
-
-undefined ** GetSharedEmptyStringRef(void)
-
-{
-  return &PTR_DAT_0069be0c;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060584A
-// GHIDRA_NAME DecrementSharedStringRefCountAndFree
-// GHIDRA_PROTO undefined DecrementSharedStringRefCountAndFree()
-
-void DecrementSharedStringRefCountAndFree(LONG *param_1)
-
-{
-  LONG LVar1;
-  
-  if (param_1 != (LONG *)PTR_DAT_0069be08) {
-    LVar1 = InterlockedDecrement(param_1);
-    if (LVar1 < 1) {
-      operator_delete(param_1);
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00605B21
-// GHIDRA_NAME AssignSharedStringConcatRefAndRef
-// GHIDRA_PROTO undefined AssignSharedStringConcatRefAndRef()
-
-undefined4 AssignSharedStringConcatRefAndRef(void)
-
-{
-  char *rhs_text;
-  char *lhs_text;
-  undefined4 uVar1;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined4 *)(unaff_EBP + -0x14) = 0;
-  CString::CString((CString *)(unaff_EBP + -0x10));
-  rhs_text = (char *)**(undefined4 **)(unaff_EBP + 0x10);
-  lhs_text = (char *)**(undefined4 **)(unaff_EBP + 0xc);
-  *(undefined4 *)(unaff_EBP + -4) = 1;
-  CString::ConcatCopy((CString *)(unaff_EBP + -0x10),*(int *)(lhs_text + -8),lhs_text,
-                      *(int *)(rhs_text + -8),rhs_text);
-  CString::CString(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + -0x10));
-  *(undefined4 *)(unaff_EBP + -0x14) = 1;
-  *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + -0x10));
-  uVar1 = *(undefined4 *)(unaff_EBP + 8);
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return uVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00605B87
-// GHIDRA_NAME AssignSharedStringConcatRefAndCStr
-// GHIDRA_PROTO undefined AssignSharedStringConcatRefAndCStr()
-
-undefined4 AssignSharedStringConcatRefAndCStr(void)
-
-{
-  undefined4 uVar1;
-  int rhs_len;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined4 *)(unaff_EBP + -0x14) = 0;
-  CString::CString((CString *)(unaff_EBP + -0x10));
-  *(undefined4 *)(unaff_EBP + -4) = 1;
-  if (*(int *)(unaff_EBP + 0x10) == 0) {
-    rhs_len = 0;
-  }
-  else {
-    rhs_len = lstrlenA(*(LPCSTR *)(unaff_EBP + 0x10));
-  }
-  CString::ConcatCopy((CString *)(unaff_EBP + -0x10),
-                      *(int *)((char *)**(undefined4 **)(unaff_EBP + 0xc) + -8),
-                      (char *)**(undefined4 **)(unaff_EBP + 0xc),rhs_len,
-                      *(char **)(unaff_EBP + 0x10));
-  CString::CString(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + -0x10));
-  *(undefined4 *)(unaff_EBP + -0x14) = 1;
-  *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + -0x10));
-  uVar1 = *(undefined4 *)(unaff_EBP + 8);
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return uVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00605BFB
 // GHIDRA_NAME AssignSharedStringConcatCStrAndRef
 // GHIDRA_PROTO undefined AssignSharedStringConcatCStrAndRef()
@@ -6598,5 +6479,177 @@ void __thiscall DispatchNestedVirtualSlot24_FromField80(int param_1,undefined4 p
 {
   (**(code **)(**(int **)(param_1 + 0x80) + 0x24))(param_2);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061874F
+// GHIDRA_NAME NoOpVirtualStub_00618753
+// GHIDRA_PROTO undefined NoOpVirtualStub_00618753()
+
+void NoOpVirtualStub_00618753(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00618753
+// GHIDRA_NAME NoOpVirtualStub_00618753
+// GHIDRA_PROTO undefined NoOpVirtualStub_00618753()
+
+void NoOpVirtualStub_00618753(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061878F
+// GHIDRA_NAME AddDocTemplate
+// GHIDRA_PROTO undefined AddDocTemplate()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT App helper that ensures app->documentTemplateList exists (this+0x80) and appends provided doc-template object. Called in startup after ConstructImperialismSingleDocTemplate.
+// GHIDRA_COMMENT_END
+
+/* App helper that ensures app->documentTemplateList exists (this+0x80) and appends provided
+   doc-template object. Called in startup after ConstructImperialismSingleDocTemplate. */
+
+void AddDocTemplate(void)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  int extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  if (*(int *)(extraout_ECX + 0x80) == 0) {
+    iVar1 = operator_new(0x20);
+    *(int *)(unaff_EBP + -0x10) = iVar1;
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    if (iVar1 == 0) {
+      uVar2 = 0;
+    }
+    else {
+      uVar2 = CDocManager::CDocManager();
+    }
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    *(undefined4 *)(extraout_ECX + 0x80) = uVar2;
+  }
+  (**(code **)(**(int **)(extraout_ECX + 0x80) + 0x14))(*(undefined4 *)(unaff_EBP + 8));
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00618A40
+// GHIDRA_NAME DDX_Text
+// GHIDRA_PROTO undefined DDX_Text()
+
+void DDX_Text(int *param_1,undefined4 param_2,byte *param_3)
+
+{
+  byte *pbVar1;
+  
+  pbVar1 = param_3;
+  param_3 = (byte *)(uint)*param_3;
+  if (*param_1 == 0) {
+    DDX_TextWithFormat(param_1,param_2,&DAT_00672768,0xf116,param_3);
+  }
+  else {
+    DDX_TextWithFormat(param_1,param_2,&DAT_00672768,0xf116,&param_3);
+    if (0xff < (int)param_3) {
+      AfxMessageBox(0xf116,0,0xffffffff);
+      CDataExchange::Fail();
+    }
+    *pbVar1 = (byte)param_3;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00618AB1
+// GHIDRA_NAME DDX_TextWithFormat
+// GHIDRA_PROTO undefined DDX_TextWithFormat()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  void __cdecl DDX_TextWithFormat(class CDataExchange *,int,char const *,unsigned int,...)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    void __cdecl DDX_TextWithFormat(class CDataExchange *,int,char const *,unsigned int,...)
+   
+   Library: nafxcw retail msvc500:static */
+
+void DDX_TextWithFormat(int *param_1,undefined4 param_2,LPCSTR param_3,undefined4 param_4)
+
+{
+  HWND hWnd;
+  int iVar1;
+  CHAR local_24 [32];
+  
+  hWnd = (HWND)CDataExchange::PrepareEditCtrl(param_2);
+  if (*param_1 == 0) {
+    wvsprintfA(local_24,param_3,&stack0x00000014);
+    AfxSetWindowText(hWnd,local_24);
+  }
+  else {
+    GetWindowTextA(hWnd,local_24,0x20);
+    iVar1 = AfxSimpleScanf(local_24,param_3,&stack0x00000014);
+    if (iVar1 == 0) {
+      AfxMessageBox(param_4,0,0xffffffff);
+      CDataExchange::Fail();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00618B21
+// GHIDRA_NAME AfxSimpleScanf
+// GHIDRA_PROTO undefined AfxSimpleScanf()
+
+undefined4 AfxSimpleScanf(char *param_1,int param_2,undefined4 *param_3)
+
+{
+  char cVar1;
+  bool bVar2;
+  char *pcVar3;
+  int iVar4;
+  
+  pcVar3 = (char *)(param_2 + 1);
+  bVar2 = false;
+  if (*pcVar3 != 'l') {
+    if (*pcVar3 != 's') goto LAB_00618b3f;
+    bVar2 = true;
+  }
+  pcVar3 = (char *)(param_2 + 2);
+LAB_00618b3f:
+  for (; (*param_1 == ' ' || (*param_1 == '\t')); param_1 = param_1 + 1) {
+  }
+  cVar1 = *param_1;
+  if (*pcVar3 == 'd') {
+    iVar4 = _strtol(param_1,&param_1,10);
+  }
+  else {
+    if (cVar1 == '-') {
+      return 0;
+    }
+    iVar4 = _strtoul(param_1,&param_1,10);
+  }
+  if ((iVar4 != 0) || (cVar1 == '0')) {
+    for (; (*param_1 == ' ' || (*param_1 == '\t')); param_1 = param_1 + 1) {
+    }
+    if (*param_1 == '\0') {
+      if (bVar2) {
+        if ((short)iVar4 != iVar4) {
+          return 0;
+        }
+        *(short *)*param_3 = (short)iVar4;
+      }
+      else {
+        *(int *)*param_3 = iVar4;
+      }
+      return 1;
+    }
+  }
+  return 0;
 }
 

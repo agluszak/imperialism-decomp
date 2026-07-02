@@ -152,7 +152,7 @@ switchD_004b071e_default:
 void TBattleUnitsView::CallVoidSlotA0()
 
 {
-  TView::CallVoidSlotA0((TView *)this);
+  func_0x00409a8e();
   if (*(int *)&this->field_0x84 != 0) {
     func_0x004010e6(&this->field_0x84);
     *(undefined4 *)&this->field_0x84 = 0;

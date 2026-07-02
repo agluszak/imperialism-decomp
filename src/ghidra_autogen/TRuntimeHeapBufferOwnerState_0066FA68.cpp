@@ -3,31 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TRuntimeHeapBufferOwnerState_0066FA68.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005E2755
-// GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// GHIDRA_PROTO undefined __thiscall TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
-
-void __thiscall
-TRuntimeHeapBufferOwnerState_0066FA68::
-TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-          (TRuntimeHeapBufferOwnerState_0066FA68 *this)
-
-{
-  TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005E27A5
 // GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
 // GHIDRA_PROTO undefined TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
 
-void __fastcall
-TRuntimeHeapBufferOwnerState_0066FA68::
-TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-          (TRuntimeHeapBufferOwnerState_0066FA68 *param_1)
+void TRuntimeHeapBufferOwnerState_0066FA68::
+     TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
 {
-  TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(param_1);
+  func_0x00407ed2();
   return;
 }
 
@@ -50,11 +34,11 @@ TRuntimeHeapBufferOwnerState_0066FA68::InitializeRuntimeClassVtablePointer_0066F
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E47B0
 // GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// GHIDRA_PROTO undefined __thiscall TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
+// GHIDRA_PROTO undefined __thiscall DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
 void __thiscall
 TRuntimeHeapBufferOwnerState_0066FA68::
-TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
+DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
           (TRuntimeHeapBufferOwnerState_0066FA68 *this)
 
 {

@@ -85,24 +85,48 @@ annotations, same pattern as the merge step; deleted by address), then
 both mechanically and by hand: `CMcWindow::OnKeyDown` and
 `TFileBasedDocument::CreateObject` back to their correct pre-mutation scores).
 
+## 2026-07-02 (second): pipeline-automation resync
+
+Validation run of the automated pipeline (`just db-resync`). DB deltas: 29
+`push-names` renames; 9 stray ILT-range Function entities removed by the new
+`prune-ilt-db-functions` step (34 claimed/referenced ones kept).
+
+Finding from this run: the previously committed `symbols.ghidra.txt` showed 627
+ILT-range `f` symbols while the committed `.gzf` actually contained only 43 ILT
+Function entities — the gap-repair session exported symbols *before* its manual
+ILT surgery, so the txt (and ~20 `symbols.csv` `function` rows over label-only
+addresses) were stale against the DB. The honest re-export therefore demoted
+those rows to `global`, which silently dropped the autogen stubs manual
+extern-thunk callsites link against (7 unresolved externals). Two fixes landed:
+the curated merge now preserves a curated `function` row over a bare-label
+export row, and `ilt_keep_reason` also matches Ghidra's `_00ADDR`-suffixed
+names. The raw-vtable gate no longer scans regenerated `src/ghidra_autogen/`
+reference files (their pattern counts change with every resync and are not a
+source-policy signal).
+
 ## Procedure for a future re-run (this DB or a newer one)
+
+The manual repair steps from the attempts above are now **automated inside the
+pipeline** (2026-07-02 tooling overhaul):
+
+- `just sync-ghidra` runs `prune-ilt-db-functions --apply` before the export, so
+  stray ILT-range Function entities can no longer survive a resync (old step 3).
+- The curated-symbols merge (`merge_curated_symbols.py`) **drops** any
+  symbols.csv row at a source `// VTABLE:` address instead of re-introducing it
+  for manual deletion (old step 5), and `sync-ghidra` ends with
+  `symbols-integrity-gate` + `vtable-collision-gate` to prove it.
+- `just db-resync` chains the whole thing: `tooling-check` → `sync-ghidra` →
+  `regen-stubs` → `build` → `detect` → `gates` → `stats` → `export-project`.
+
+So the procedure is:
 
 1. Restore/open the DB; run the standard reproduction pipeline first
    (`push-names --apply`, datatype appliers, `import-ghidra`).
-2. Run `just repair-code-gaps` (dry-run), review, then `--apply`. The tool now
-   disassembles gaps before creating functions and self-reports any residual
-   degenerate (1-byte) result — treat a nonzero `degenerate` count as worth a
-   look, not silently ignorable.
-3. **Before `just sync-ghidra`:** delete any stray Function entities in the
-   ILT range (0x401000–0x409ab5) directly in the live DB
-   (`FunctionManager.removeFunction`) — `just prune-ilt-thunks` only handles
-   the `config/symbols.csv` side and won't fix DB-side ILT function entities.
-4. Gate every step: `just symbols-integrity-gate` (dupes), `just vtable`
-   (393/393 must stay 100%), `just stats` (no mass regressions) — all three
-   caught real problems across these attempts.
-5. After `just sync-ghidra`, check for stale `'vftable'`-typed
-   `config/symbols.csv` rows colliding with real `// VTABLE:` header
-   annotations (`just vtable-collision-gate` reports them by address) — delete
-   them; this happens on every full resync so far.
-6. `just export-project` LAST (after push-names), so the committed `.gzf`
-   carries everything.
+2. For gap repair: `just repair-code-gaps` (dry-run), review, then `--apply`.
+   The tool disassembles gaps before creating functions and self-reports any
+   residual degenerate (1-byte) result — treat a nonzero `degenerate` count as
+   worth a look, not silently ignorable.
+3. `just db-resync`. If `just vtable` (393/393 must stay 100%) or `just stats`
+   (no mass regressions) fails partway, fix forward and re-run; the pipeline
+   ends with `export-project`, so a completed run leaves the committed `.gzf`
+   carrying everything.

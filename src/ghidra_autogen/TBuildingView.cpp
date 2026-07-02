@@ -177,11 +177,11 @@ void TBuildingView::CallVoidSlotA0()
 {
   if (this->field_0x9c != '\0') {
     *(undefined4 *)(*(int *)&this->field_0x98 + 0xac + *(short *)&this->field_0x9e * 4) = 0;
-    TView::CallVoidSlotA0((TView *)this);
+    func_0x00409a8e();
     return;
   }
   (**(code **)(g_pUiRuntimeContext->vftable + 0xb0))(*(undefined2 *)&this->field_0x9e);
-  TView::CallVoidSlotA0((TView *)this);
+  func_0x00409a8e();
   return;
 }
 

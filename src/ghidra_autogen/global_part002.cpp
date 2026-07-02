@@ -3,49 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part002.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D0C0
-// GHIDRA_NAME DestroyDialogWithListBoxAndHotKeyControl_Alias
-// GHIDRA_PROTO undefined DestroyDialogWithListBoxAndHotKeyControl_Alias()
-
-void __fastcall DestroyDialogWithListBoxAndHotKeyControl_Alias(CDialog *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  uint local_4;
-  
-  puStack_8 = &LAB_0062e19b;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_4 = 1;
-  Dtor_CListBox_FID_61e8cb();
-  local_4 = local_4 & 0xffffff00;
-  CProgressCtrl___CHotKeyCtrl();
-  *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
-  local_4 = 2;
-  if (*(int *)(param_1 + 100) != 0) {
-    func_0x00402ca7();
-  }
-  local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D160
-// GHIDRA_NAME WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160
-// GHIDRA_PROTO undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160()
-
-void __thiscall
-WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160(int param_1,undefined4 param_2)
-
-{
-  DDX_Control(param_2,0x3fc,param_1 + 0x74);
-  DDX_Control(param_2,0x40a,param_1 + 0xb0);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0047D1A0
 // GHIDRA_NAME OrphanVtableAssignStub_0047d1a0
 // GHIDRA_PROTO undefined OrphanVtableAssignStub_0047d1a0()
@@ -1427,18 +1384,7 @@ void InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit(void)
 void DestroyRuntimeSelectionRecordArrayStateAtExit(void)
 
 {
-  DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047F745
-// GHIDRA_NAME DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass
-// GHIDRA_PROTO undefined DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass()
-
-void DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass(void)
-
-{
-  DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass();
+  func_0x004032e2();
   return;
 }
 
@@ -2529,7 +2475,7 @@ void __thiscall SerializeDwordArrayWithAutoReallocFromArchive(void *this,CArchiv
 void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(void *this,byte param_1)
 
 {
-  DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass();
+  func_0x004032e2();
   if ((param_1 & 1) != 0) {
     operator_delete(this);
   }
@@ -5730,6 +5676,46 @@ void __thiscall RemoveUiListEntryByOwnerIdAndRecycleStorage(int param_1,int para
   *(undefined4 *)(param_1 + 4) = 0;
   CPlex::FreeDataChain();
   *(undefined4 *)(param_1 + 0x14) = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A100
+// GHIDRA_NAME InitializeUiResourceEntryBaseHeaderDefaults
+// GHIDRA_PROTO undefined __thiscall InitializeUiResourceEntryBaseHeaderDefaults(void)
+
+void __thiscall InitializeUiResourceEntryBaseHeaderDefaults(void *this)
+
+{
+  *(undefined4 *)((int)this + 0xc) = 0;
+  *(undefined4 *)((int)this + 0x10) = 0x7fffffff;
+  *(undefined4 *)((int)this + 0x14) = 0;
+  *(undefined4 *)((int)this + 0x18) = 0;
+  *(TEventHandlerVtbl **)this = &TEventHandler::_vftable_;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A160
+// GHIDRA_NAME DestructTEventHandlerAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTEventHandlerAndMaybeFree_Impl()
+
+void __fastcall DestructTEventHandlerAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A180
+// GHIDRA_NAME InitializePacketHeaderFields_Tag20202020
+// GHIDRA_PROTO undefined InitializePacketHeaderFields_Tag20202020()
+
+void __thiscall InitializePacketHeaderFields_Tag20202020(int param_1,undefined4 param_2)
+
+{
+  *(undefined4 *)(param_1 + 0x1c) = 0x20202020;
+  *(undefined4 *)(param_1 + 4) = 1;
+  *(undefined4 *)(param_1 + 8) = 1;
+  *(undefined4 *)(param_1 + 0xc) = param_2;
   return;
 }
 

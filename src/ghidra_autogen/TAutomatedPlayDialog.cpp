@@ -81,7 +81,7 @@ void TAutomatedPlayDialog::CallVoidSlotA0()
   if (0 < g_nTurnCooldownDeferCounter006A43C4) {
     (*g_pLocalizationTable->vftable[8].slot_0x04)();
   }
-  TView::CallVoidSlotA0((TView *)this);
+  func_0x00409a8e();
   return;
 }
 

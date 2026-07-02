@@ -3,46 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part003.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A100
-// GHIDRA_NAME InitializeUiResourceEntryBaseHeaderDefaults
-// GHIDRA_PROTO undefined __thiscall InitializeUiResourceEntryBaseHeaderDefaults(void)
-
-void __thiscall InitializeUiResourceEntryBaseHeaderDefaults(void *this)
-
-{
-  *(undefined4 *)((int)this + 0xc) = 0;
-  *(undefined4 *)((int)this + 0x10) = 0x7fffffff;
-  *(undefined4 *)((int)this + 0x14) = 0;
-  *(undefined4 *)((int)this + 0x18) = 0;
-  *(TEventHandlerVtbl **)this = &TEventHandler::_vftable_;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A160
-// GHIDRA_NAME DestructTEventHandlerAndMaybeFree_Impl
-// GHIDRA_PROTO undefined DestructTEventHandlerAndMaybeFree_Impl()
-
-void __fastcall DestructTEventHandlerAndMaybeFree_Impl(undefined4 *param_1)
-
-{
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A180
-// GHIDRA_NAME InitializePacketHeaderFields_Tag20202020
-// GHIDRA_PROTO undefined InitializePacketHeaderFields_Tag20202020()
-
-void __thiscall InitializePacketHeaderFields_Tag20202020(int param_1,undefined4 param_2)
-
-{
-  *(undefined4 *)(param_1 + 0x1c) = 0x20202020;
-  *(undefined4 *)(param_1 + 4) = 1;
-  *(undefined4 *)(param_1 + 8) = 1;
-  *(undefined4 *)(param_1 + 0xc) = param_2;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A410
 // GHIDRA_NAME WrapperFor_thunk_GetTickCountDiv16_At0048a410
 // GHIDRA_PROTO undefined WrapperFor_thunk_GetTickCountDiv16_At0048a410()
@@ -234,18 +194,7 @@ void InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit(void)
 void DestroyViewModalStateNodeBlockChainAtExit(void)
 
 {
-  DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048D275
-// GHIDRA_NAME DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
-// GHIDRA_PROTO undefined DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
-
-void DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(void)
-
-{
-  DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
+  func_0x004069e7();
   return;
 }
 
@@ -270,7 +219,7 @@ void DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce(void)
 {
   if ((DAT_006a1a28 & 1) == 0) {
     DAT_006a1a28 = DAT_006a1a28 | 1;
-    DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
+    func_0x004069e7();
     return;
   }
   return;
@@ -283,7 +232,7 @@ void DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce(void)
 void DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(void)
 
 {
-  DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
+  func_0x004069e7();
   return;
 }
 
@@ -5889,17 +5838,6 @@ void __fastcall ClearDirectSoundInitPendingAndResetState_Impl(int *param_1)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049C950
-// GHIDRA_NAME InitializeDirectSoundDeviceAndChannels
-// GHIDRA_PROTO undefined InitializeDirectSoundDeviceAndChannels()
-
-void InitializeDirectSoundDeviceAndChannels(void)
-
-{
-  InitializeDirectSoundDeviceAndChannels();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0049C970
 // GHIDRA_NAME InitializeDirectSoundDeviceAndChannels
 // GHIDRA_PROTO undefined InitializeDirectSoundDeviceAndChannels()
@@ -6877,6 +6815,183 @@ void __fastcall CallObjectOffset24Vslot54IfPresent(int param_1)
     (**(code **)(**(int **)(param_1 + 0x24) + 0x54))();
     return;
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A1130
+// GHIDRA_NAME CreateBitmapResourceLoaderHandle
+// GHIDRA_PROTO undefined CreateBitmapResourceLoaderHandle()
+
+undefined4 * CreateBitmapResourceLoaderHandle(undefined2 param_1)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ff0b;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(4);
+  puVar2 = (undefined4 *)operator_new(0x20);
+  local_4 = 0;
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    *(undefined1 *)(puVar2 + 1) = 0;
+    puVar2[6] = 0;
+    *(undefined2 *)(puVar2 + 7) = param_1;
+    *puVar2 = 0x64c340;
+    func_0x00408d37();
+  }
+  *puVar1 = puVar2;
+  *unaff_FS_OFFSET = local_c;
+  return puVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A1260
+// GHIDRA_NAME WrapperFor_ftol_At004a1260
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004a1260()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004a1260(void)
+
+{
+  _DAT_006a22d8 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A13C0
+// GHIDRA_NAME ResetMapActionSelectionAndLoadContextByNodeId
+// GHIDRA_PROTO undefined ResetMapActionSelectionAndLoadContextByNodeId()
+
+void __thiscall ResetMapActionSelectionAndLoadContextByNodeId(int param_1,int *param_2)
+
+{
+  int *piVar1;
+  code *pcVar2;
+  code *pcVar3;
+  undefined4 uVar4;
+  int iVar5;
+  undefined1 *puVar6;
+  int unaff_EBP;
+  short *psVar7;
+  int iVar8;
+  int iVar9;
+  undefined4 unaff_EDI;
+  undefined4 uVar10;
+  int *piVar11;
+  int iVar12;
+  short *psVar13;
+  int *piStack_1c;
+  
+  pcVar2 = *(code **)(*param_2 + 0x3c);
+  (*pcVar2)(param_1 + 2,1);
+  (*pcVar2)(param_1 + 3,1);
+  piVar1 = (int *)(param_1 + 4);
+  piVar11 = piVar1;
+  (*pcVar2)(piVar1,4);
+  uVar10 = 2;
+  (*pcVar2)(&stack0xffffffdc,2);
+  iVar12 = *piVar1;
+  if (((iVar12 == 0) || (iVar12 == 3)) || (iVar12 == 4)) {
+    *(int *)(param_1 + 8) = (int)(short)unaff_EDI;
+  }
+  else {
+    uVar4 = func_0x004024c3(unaff_EDI);
+    *(undefined4 *)(param_1 + 8) = uVar4;
+  }
+  psVar7 = (short *)(param_1 + 0x24a);
+  piStack_1c = (int *)(param_1 + 0x250);
+  iVar12 = 0;
+  do {
+    psVar13 = psVar7;
+    (*pcVar2)(iVar12 + param_1,1);
+    if (g_nSaveFormatVersion < 0x2c) {
+      pcVar3 = *(code **)(*param_2 + 0x6c);
+      (*pcVar3)(piVar11,0x20);
+      (*pcVar3)(uVar10,0xff);
+    }
+    else {
+      (*pcVar2)(piVar11,0x20);
+      (*pcVar2)(uVar10,0xff);
+    }
+    (*pcVar2)(psVar7,2);
+    operator_delete(*piStack_1c);
+    iVar8 = (int)*psVar7;
+    iVar5 = operator_new(iVar8 * 0x2c);
+    if (iVar5 == 0) {
+      iVar5 = 0;
+    }
+    else if (-1 < iVar8 + -1) {
+      puVar6 = (undefined1 *)(iVar5 + 4);
+      do {
+        *puVar6 = 0;
+        puVar6 = puVar6 + 0x2c;
+        iVar8 = iVar8 + -1;
+      } while (iVar8 != 0);
+    }
+    iVar8 = 0;
+    *piStack_1c = iVar5;
+    if (0 < *psVar7) {
+      iVar5 = 0;
+      psVar7 = psVar13;
+      do {
+        iVar9 = iVar5 + *piStack_1c;
+        (*pcVar2)(iVar9,2);
+        (*pcVar2)(iVar9 + 2,2);
+        if (g_nSaveFormatVersion < 0x2c) {
+          (**(code **)(*param_2 + 0x6c))(iVar9 + 4);
+        }
+        else {
+          (*pcVar2)(iVar9 + 4,0x20);
+        }
+        (*pcVar2)(iVar9 + 0x24,2);
+        (*pcVar2)(iVar9 + 0x28,4);
+        iVar8 = iVar8 + 1;
+        iVar5 = iVar5 + 0x2c;
+      } while (iVar8 < *psVar7);
+    }
+    piStack_1c = piStack_1c + 1;
+    iVar12 = iVar12 + 1;
+    psVar7 = psVar7 + 1;
+    param_1 = unaff_EBP;
+  } while (iVar12 < 2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A1870
+// GHIDRA_NAME ConstructMapContextActionManager
+// GHIDRA_PROTO void __thiscall ConstructMapContextActionManager(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void ConstructMapContextActionManager(void)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void ConstructMapContextActionManager(void) */
+
+void __thiscall ConstructMapContextActionManager(void *this)
+
+{
+  *(TArmyMgrVtbl **)this = &TArmyMgr::_vftable_;
+  *(undefined2 *)((int)this + 0x31c) = 0xffff;
+  *(undefined4 *)((int)this + 4) = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A18D0
+// GHIDRA_NAME DestructTArmyMgrAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTArmyMgrAndMaybeFree_Impl()
+
+void __fastcall DestructTArmyMgrAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 

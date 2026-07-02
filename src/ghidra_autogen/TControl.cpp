@@ -774,17 +774,6 @@ undefined4 TControl::FinalizeModalDialogAndRestoreOwnerFocus()
   return uVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004D1E60
-// GHIDRA_NAME TView::CallVoidSlotA0
-// GHIDRA_PROTO undefined __thiscall TView::CallVoidSlotA0(void)
-
-void TView::CallVoidSlotA0()
-
-{
-  TView::CallVoidSlotA0((TView *)this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004F1F20
 // GHIDRA_NAME TControl::LookupOrderCompatibilityMatrixValue
 // GHIDRA_PROTO short __thiscall LookupOrderCompatibilityMatrixValue(short nSourceClass, short nTargetClass, undefined2 param_3, undefined2 param_4)

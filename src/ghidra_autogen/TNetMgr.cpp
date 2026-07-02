@@ -499,9 +499,7 @@ void TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive *param_1)
 TNetMgr * TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)
 
 {
-  TRuntimeLinkedBlockChainState_0066FA50::
-  TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-            ((TRuntimeLinkedBlockChainState_0066FA50 *)this);
+  func_0x00401348();
   if ((param_1 & 1) != 0) {
     operator_delete(this);
   }
@@ -515,9 +513,7 @@ TNetMgr * TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)
 TNetMgr * TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)
 
 {
-  TRuntimeHeapBufferOwnerState_0066FA68::
-  TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-            ((TRuntimeHeapBufferOwnerState_0066FA68 *)this);
+  func_0x00407ed2();
   if ((param_1 & 1) != 0) {
     operator_delete(this);
   }

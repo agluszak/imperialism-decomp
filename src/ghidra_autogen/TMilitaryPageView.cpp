@@ -94,7 +94,7 @@ void TMilitaryPageView::CallVoidSlotA0()
 {
   int *piVar1;
   
-  TView::CallVoidSlotA0((TView *)this);
+  func_0x00409a8e();
   piVar1 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   *(undefined1 *)(piVar1 + 0xd3) = 0;
                     /* WARNING: Could not recover jumptable at 0x00564c0f. Too many branches */

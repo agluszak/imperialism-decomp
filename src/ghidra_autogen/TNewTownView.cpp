@@ -212,7 +212,7 @@ void TNewTownView::CallVoidSlotA0()
   }
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1dc))(&stack0xffffffec);
   (**(code **)(**(int **)&this->field_0x60 + 0x38))(unaff_EDI);
-  TView::CallVoidSlotA0((TView *)this);
+  func_0x00409a8e();
   local_10.m_pchData = (char *)0xffffffff;
   CString::~CString(&CStack_1c);
   *unaff_FS_OFFSET = unaff_EDI;

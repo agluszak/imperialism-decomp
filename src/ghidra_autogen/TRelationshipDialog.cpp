@@ -109,7 +109,7 @@ void TRelationshipDialog::CallVoidSlotA0()
     sVar5 = sVar5 + 1;
     local_c = (TDiplomacyMgrVtbl *)&local_c->slot_0x04;
   } while (sVar5 < 7);
-  TView::CallVoidSlotA0((TView *)this);
+  func_0x00409a8e();
   return;
 }
 

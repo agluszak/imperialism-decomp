@@ -3,20 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TRuntimeLinkedBlockChainState_0066FA50.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005E2705
-// GHIDRA_NAME TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-// GHIDRA_PROTO undefined __thiscall TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
-
-void __thiscall
-TRuntimeLinkedBlockChainState_0066FA50::
-TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-          (TRuntimeLinkedBlockChainState_0066FA50 *this)
-
-{
-  TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4540
 // GHIDRA_NAME TRuntimeLinkedBlockChainState_0066FA50::InitializeRuntimeClassVtablePointer_0066FA50_State
 // GHIDRA_PROTO undefined __thiscall InitializeRuntimeClassVtablePointer_0066FA50_State(undefined4 param_1)
@@ -38,11 +24,11 @@ TRuntimeLinkedBlockChainState_0066FA50::InitializeRuntimeClassVtablePointer_0066
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4580
 // GHIDRA_NAME TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-// GHIDRA_PROTO undefined __thiscall TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
+// GHIDRA_PROTO undefined __thiscall DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
 
 void __thiscall
 TRuntimeLinkedBlockChainState_0066FA50::
-TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
+DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
           (TRuntimeLinkedBlockChainState_0066FA50 *this)
 
 {

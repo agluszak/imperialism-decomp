@@ -766,56 +766,6 @@ LAB_004f4d17:
   } while( true );
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004061D1
-// GHIDRA_NAME InitializeDirectSoundDeviceAndChannels
-// GHIDRA_PROTO undefined InitializeDirectSoundDeviceAndChannels()
-
-undefined4 __fastcall InitializeDirectSoundDeviceAndChannels(int *param_1)
-
-{
-  HMODULE pHVar1;
-  int iVar2;
-  CWinThread *pCVar3;
-  undefined4 uVar4;
-  
-  if (*param_1 != 0) {
-    return 1;
-  }
-  if (param_1[0xc] == 0) {
-    pHVar1 = LoadLibraryExA(*(LPCSTR *)(DAT_006a1348 + 0xdc),(HANDLE)0x0,2);
-    param_1[0xc] = (int)pHVar1;
-  }
-  iVar2 = DSOUND.DLL::DirectSoundCreate(0,param_1,0);
-  param_1[0xd] = iVar2;
-  if (iVar2 == 0) {
-    pCVar3 = AfxGetThread();
-    if (pCVar3 == (CWinThread *)0x0) {
-      iVar2 = 0;
-    }
-    else {
-      pCVar3 = AfxGetThread();
-      iVar2 = (**(code **)(*(int *)pCVar3 + 0x7c))();
-    }
-    if (iVar2 == 0) {
-      uVar4 = 0;
-    }
-    else {
-      uVar4 = *(undefined4 *)(iVar2 + 0x1c);
-    }
-    iVar2 = (**(code **)(*(int *)*param_1 + 0x18))((int *)*param_1,uVar4,1);
-    param_1[0xd] = iVar2;
-    iVar2 = 6;
-    do {
-      param_1 = param_1 + 1;
-      func_0x0040439f(param_1);
-      iVar2 = iVar2 + -1;
-    } while (iVar2 != 0);
-    return 1;
-  }
-  *param_1 = 0;
-  return 0;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00406546
 // GHIDRA_NAME FillRectWithQuickDrawBrushAndContextOffset
 // GHIDRA_PROTO undefined FillRectWithQuickDrawBrushAndContextOffset()
@@ -1573,44 +1523,6 @@ DispatchLocalizedUiMessageWithTemplateA13A0
   CString::~CString(&CStack_1c);
   *unaff_FS_OFFSET = uStack_2c;
   return uVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409A8E
-// GHIDRA_NAME TView::CallVoidSlotA0
-// GHIDRA_PROTO undefined __thiscall TView::CallVoidSlotA0(void)
-
-void TView::CallVoidSlotA0()
-
-{
-  int *piVar1;
-  undefined4 *puVar2;
-  
-  if (this->field44 == 0) {
-    puVar2 = (undefined4 *)0x0;
-  }
-  else {
-    puVar2 = *(undefined4 **)(this->field44 + 4);
-  }
-  if (puVar2 == (undefined4 *)0x0) {
-    piVar1 = (int *)0x0;
-    puVar2 = (undefined4 *)0x0;
-  }
-  else {
-    piVar1 = (int *)puVar2[2];
-    puVar2 = (undefined4 *)*puVar2;
-  }
-  while (piVar1 != (int *)0x0) {
-    (**(code **)(*piVar1 + 0xa0))();
-    if (puVar2 == (undefined4 *)0x0) {
-      piVar1 = (int *)0x0;
-      puVar2 = (undefined4 *)0x0;
-    }
-    else {
-      piVar1 = (int *)puVar2[2];
-      puVar2 = (undefined4 *)*puVar2;
-    }
-  }
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004125D0
@@ -3880,9 +3792,7 @@ void InitializeUiResourcePoolStateAndRegisterAtExit(void)
 void DestroyUiResourcePoolStateAtExit(void)
 
 {
-  TRuntimeLinkedBlockChainState_0063E880::
-  TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70
-            ((TRuntimeLinkedBlockChainState_0063E880 *)&DAT_006a13e0);
+  func_0x00403f6c();
   return;
 }
 
@@ -3910,8 +3820,7 @@ void __fastcall InitializeUiResourcePoolRuntimeClassFields(undefined4 *param_1)
 void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00415f90(void *this,byte param_1)
 
 {
-  TRuntimeLinkedBlockChainState_0063E880::
-  TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(this);
+  func_0x00403f6c();
   if ((param_1 & 1) != 0) {
     operator_delete(this);
   }
@@ -95973,5 +95882,48 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047d090(undefined4 p
     operator_delete(param_1);
   }
   return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0047D0C0
+// GHIDRA_NAME DestroyDialogWithListBoxAndHotKeyControl_Alias
+// GHIDRA_PROTO undefined DestroyDialogWithListBoxAndHotKeyControl_Alias()
+
+void __fastcall DestroyDialogWithListBoxAndHotKeyControl_Alias(CDialog *param_1)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  puStack_8 = &LAB_0062e19b;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 1;
+  Dtor_CListBox_FID_61e8cb();
+  local_4 = local_4 & 0xffffff00;
+  CProgressCtrl___CHotKeyCtrl();
+  *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
+  local_4 = 2;
+  if (*(int *)(param_1 + 100) != 0) {
+    func_0x00402ca7();
+  }
+  local_4 = 0xffffffff;
+  CDialog::~CDialog(param_1);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0047D160
+// GHIDRA_NAME WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160
+// GHIDRA_PROTO undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160()
+
+void __thiscall
+WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160(int param_1,undefined4 param_2)
+
+{
+  DDX_Control(param_2,0x3fc,param_1 + 0x74);
+  DDX_Control(param_2,0x40a,param_1 + 0xb0);
+  return;
 }
 

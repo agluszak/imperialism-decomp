@@ -156,8 +156,9 @@ undefined4 ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(void)
 }
 
 // ghidra_name TControlSeaZoneMission::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x005386c0
-undefined4 TControlSeaZoneMission_CreateObject(void)
+undefined4 CreateObject_005386C0(void)
 {
   return 0;
 }
@@ -179,8 +180,9 @@ undefined4 ComputeNavyOrderDistributionSimilarityScoreForMissionNation(void)
 }
 
 // ghidra_name TEscortMission::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x00539840
-undefined4 TEscortMission_CreateObject(void)
+undefined4 CreateObject_00539840(void)
 {
   return 0;
 }
@@ -218,8 +220,9 @@ undefined4 ComputeNavyOrderDistributionSimilarityScoreForNation(void)
 }
 
 // ghidra_name TBeachheadMission::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0053a2d0
-undefined4 TBeachheadMission_CreateObject(void)
+undefined4 CreateObject_0053A2D0(void)
 {
   return 0;
 }
@@ -249,8 +252,9 @@ undefined4 ConstructTBeachheadMissionWithNodeAndParent(void)
 }
 
 // ghidra_name TBlockadePortMission::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0053a990
-undefined4 TBlockadePortMission_CreateObject(void)
+undefined4 CreateObject_0053A990(void)
 {
   return 0;
 }
@@ -296,8 +300,9 @@ undefined4 ComputeNavyOrderDistributionScoreForNation(void)
 }
 
 // ghidra_name TScatteredShipsMission::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0053ba60
-undefined4 TScatteredShipsMission_CreateObject(void)
+undefined4 CreateObject_0053BA60(void)
 {
   return 0;
 }
@@ -311,8 +316,9 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053bb40(void)
 }
 
 // ghidra_name TArmyMission::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0053bfb0
-undefined4 TArmyMission_CreateObject(void)
+undefined4 CreateObject_0053BFB0(void)
 {
   return 0;
 }
@@ -398,8 +404,9 @@ undefined4 ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(void)
 }
 
 // ghidra_name TAttackProvinceMission::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0053d670
-undefined4 TAttackProvinceMission_CreateObject(void)
+undefined4 CreateObject_0053D670(void)
 {
   return 0;
 }
@@ -429,8 +436,9 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053e690(void)
 }
 
 // ghidra_name TInvadeMission::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0053f080
-undefined4 TInvadeMission_CreateObject(void)
+undefined4 CreateObject_0053F080(void)
 {
   return 0;
 }
@@ -556,8 +564,9 @@ undefined4 DestructCancelGameOptionsCommand(void)
 }
 
 // ghidra_name TMultiplayerMgr::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x005425d0
-undefined4 TMultiplayerMgr_CreateObject(void)
+undefined4 CreateObject_005425D0(void)
 {
   return 0;
 }

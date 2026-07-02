@@ -956,15 +956,17 @@ undefined4 WrapperFor_ftol_At005b4ee0(void)
 }
 
 // ghidra_name TMyNumberText::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x005b4f10
-undefined4 TMyNumberText_CreateObject(void)
+undefined4 CreateObject_005B4F10(void)
 {
   return 0;
 }
 
 // ghidra_name TMyNumberText::GetRuntimeClass
+// ghidra_proto undefined __thiscall GetRuntimeClass(void)
 // FUNCTION: IMPERIALISM 0x005b4fb0
-undefined4 TMyNumberText_GetRuntimeClass(void)
+undefined4 GetRuntimeClass_005B4FB0(void)
 {
   return 0;
 }
@@ -1010,15 +1012,17 @@ undefined4 ConstructSelectableTextOptionEntryBase(void)
 }
 
 // ghidra_name TDropShadowNumberText::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x005b5820
-undefined4 TDropShadowNumberText_CreateObject(void)
+undefined4 CreateObject_005B5820(void)
 {
   return 0;
 }
 
 // ghidra_name TDropShadowNumberText::GetRuntimeClass
+// ghidra_proto undefined __thiscall GetRuntimeClass(void)
 // FUNCTION: IMPERIALISM 0x005b58f0
-undefined4 TDropShadowNumberText_GetRuntimeClass(void)
+undefined4 GetRuntimeClass_005B58F0(void)
 {
   return 0;
 }
@@ -1104,15 +1108,17 @@ undefined4 WrapperFor_ftol_At005b79a0(void)
 }
 
 // ghidra_name TTradeMgr::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x005b79d0
-undefined4 TTradeMgr_CreateObject(void)
+undefined4 CreateObject_005B79D0(void)
 {
   return 0;
 }
 
 // ghidra_name TTradeMgr::GetRuntimeClass
+// ghidra_proto undefined __thiscall GetRuntimeClass(void)
 // FUNCTION: IMPERIALISM 0x005b7a00
-undefined4 TTradeMgr_GetRuntimeClass(void)
+undefined4 GetRuntimeClass_005B7A00(void)
 {
   return 0;
 }

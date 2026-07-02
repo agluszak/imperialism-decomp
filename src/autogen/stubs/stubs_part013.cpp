@@ -236,15 +236,17 @@ undefined4 ConstructTBuildingConstructionViewBaseState(void)
 }
 
 // ghidra_name TOverlayRadioButton::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x004caa50
-undefined4 TOverlayRadioButton_CreateObject(void)
+undefined4 CreateObject_004CAA50(void)
 {
   return 0;
 }
 
 // ghidra_name TOverlayRadioButton::GetRuntimeClass
+// ghidra_proto undefined __thiscall GetRuntimeClass(void)
 // FUNCTION: IMPERIALISM 0x004caaf0
-undefined4 TOverlayRadioButton_GetRuntimeClass(void)
+undefined4 GetRuntimeClass_004CAAF0(void)
 {
   return 0;
 }

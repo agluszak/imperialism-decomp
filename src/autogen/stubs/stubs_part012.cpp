@@ -28,8 +28,9 @@ undefined4 ConstructTCivAnimation2BaseState(void)
 }
 
 // ghidra_name TOneTimeAnimation::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0049fcc0
-undefined4 TOneTimeAnimation_CreateObject(void)
+undefined4 CreateObject_0049FCC0(void)
 {
   return 0;
 }
@@ -51,8 +52,9 @@ undefined4 CreateTOneTimeAnimationInstance(void)
 }
 
 // ghidra_name TOneTimeAnimation::GetRuntimeClass
+// ghidra_proto undefined __thiscall GetRuntimeClass(void)
 // FUNCTION: IMPERIALISM 0x0049fd40
-undefined4 TOneTimeAnimation_GetRuntimeClass(void)
+undefined4 GetRuntimeClass_0049FD40(void)
 {
   return 0;
 }
@@ -74,8 +76,9 @@ undefined4 CreateTCouncilTickerAnimationInstance(void)
 }
 
 // ghidra_name TFocusAnimation::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x004a0020
-undefined4 TFocusAnimation_CreateObject(void)
+undefined4 CreateObject_004A0020(void)
 {
   return 0;
 }
@@ -89,8 +92,9 @@ undefined4 CreateTFocusAnimationInstance(void)
 }
 
 // ghidra_name TTransFocusAnimation::CreateObject
+// ghidra_proto TTransFocusAnimation * __cdecl CreateObject(void)
 // FUNCTION: IMPERIALISM 0x004a03f0
-undefined4 TTransFocusAnimation_CreateObject(void)
+undefined4 CreateObject_004A03F0(void)
 {
   return 0;
 }
@@ -1048,8 +1052,9 @@ undefined4 DestructTShipOrderAndMaybeFree(void)
 }
 
 // ghidra_name TCapacityOrder::CreateObject
+// ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x004b8c90
-undefined4 TCapacityOrder_CreateObject(void)
+undefined4 CreateObject_004B8C90(void)
 {
   return 0;
 }
