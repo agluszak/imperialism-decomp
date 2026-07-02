@@ -395,14 +395,6 @@ undefined4 GetSumField34PlusField30(void)
   return 0;
 }
 
-// ghidra_name GetActiveNationId
-// ghidra_proto undefined GetActiveNationId()
-// FUNCTION: IMPERIALISM 0x00581260
-undefined4 GetActiveNationId_00581260(void)
-{
-  return 0;
-}
-
 // ghidra_name RemoveNationSlotAndNotifyPeers
 // ghidra_proto undefined RemoveNationSlotAndNotifyPeers()
 // FUNCTION: IMPERIALISM 0x00581300

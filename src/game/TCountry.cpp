@@ -19,7 +19,7 @@
 #include "game/TZone.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/nation_stream_serialization.h"
-#include "game/turn_event_packets.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/mapped_flavor_text.h"
 
 #include "game/TDiplomacyMgr.h"
@@ -383,7 +383,8 @@ char TCountry::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2,
 // FUNCTION: IMPERIALISM 0x004d7b20
 void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
   if (g_pLocalizationTable != 0 && g_pLocalizationTable->redrawEnabled == 1) {
-    DispatchJoinEmpireModeEventPacket24_27(this->nationSlot, targetNationSlot, mode);
+    g_pGameFlowState->DispatchJoinEmpireModeEventPacket24_27(this->nationSlot, targetNationSlot,
+                                                             mode);
   }
 
   if (mode == 1) {

@@ -651,14 +651,6 @@ undefined4 ReportDirectPlayAssertionStub(void)
   return 0;
 }
 
-// ghidra_name TryReceiveNetworkPacketIntoResizableBuffer
-// ghidra_proto undefined TryReceiveNetworkPacketIntoResizableBuffer()
-// FUNCTION: IMPERIALISM 0x004808a0
-undefined4 TryReceiveNetworkPacketIntoResizableBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name CacheObjectVslot74ResultToField0C
 // ghidra_proto undefined CacheObjectVslot74ResultToField0C()
 // FUNCTION: IMPERIALISM 0x00480990

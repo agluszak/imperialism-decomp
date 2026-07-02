@@ -60,7 +60,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
     int choice = g_pUiRuntimeContext->ShowConstructionOptionsDialog();
     if (choice == 0x666f7274) { // 'fort'
       short cityIndex = g_pGlobalMapState->terrainStateTable[nTileIndex].cityRecordIndex;
-      int fortLevel = g_pGlobalMapState->cityScoreTable[cityIndex].pad03;
+      int fortLevel = g_pGlobalMapState->cityScoreTable[cityIndex].fortLevel03;
       short cost = g_awEngineerFortBuildCostByLevel[fortLevel];
 
       short nationId = g_pUiRuntimeContext->GetActiveNationId();

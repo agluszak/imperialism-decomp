@@ -3,6 +3,8 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
+struct NetMessage;
+
 // Global turn-event queue manager handle (ConstructGlobalTurnEventQueueManager @ 0x005e33e0
 // only stores vptr 0x0066fa20 on a 4-byte heap block). Plain TObject derivative — no extra
 // bases. recover-class merged the adjacent 0x0066fa50 vtable blob into this class; ignore
@@ -11,7 +13,7 @@
 class TNetMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TNetMgr)
-  virtual ~TNetMgr();                                    // slot 0x01 (scalar deleting destructor)
+  virtual ~TNetMgr(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -25,7 +27,18 @@ public:
 
   TNetMgr();
 
-  // Placement ctor on a 4-byte heap block (Ghidra: ConstructGlobalTurnEventQueueManager @ 0x005e33e0).
+  // Queue the message for the local player and/or send it over DirectPlay
+  // (message->toNetworkId == -1 broadcasts). `this` carries no state — the queue and
+  // session-manager state are file-scope globals of the original WNetMgr.cpp TU.
+  // Mac oracle: TNetMgr::Send(NSpMessageHeader*, unsigned char).
+  unsigned char Send(NetMessage* message, unsigned char queueOnly);
+
+  // Map a DirectPlay error HRESULT to detail text and pose the localized error dialog.
+  // Mac oracle: TNetMgr::HandleError(int). Asserts with D:\Ambit\WNetMgr.cpp line 451.
+  void HandleError(int errorCode);
+
+  // Placement ctor on a 4-byte heap block (Ghidra: ConstructGlobalTurnEventQueueManager @
+  // 0x005e33e0).
   static TNetMgr* ConstructGlobalTurnEventQueueManager(TNetMgr* storage);
 
   // Owned at 0x005e4a30 / 0x005e4610 / 0x005e4830 / 0x005e4a60 — live on the adjacent

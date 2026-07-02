@@ -19,7 +19,7 @@
 #include "game/TZone.h"
 #include <new>
 
-#include "game/turn_event_packets.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TShip.h"
 
 undefined4 GenerateThreadLocalRandom15(void);
@@ -177,7 +177,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
   if (g_pLocalizationTable->redrawEnabled != 0) {
-    DispatchTaggedGameStateEvent1F20(0x6c6f7374, this->nationSlot, -3);
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, this->nationSlot, -3);
   }
 }
 

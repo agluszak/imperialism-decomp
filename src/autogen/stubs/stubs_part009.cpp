@@ -147,6 +147,14 @@ undefined4 thunk_GetSurfaceObjectAtContextOffset24(void)
   return 0;
 }
 
+// ghidra_name Config::InitDefaults
+// ghidra_proto undefined4 * __fastcall InitDefaults(astruct_11 * this_obj)
+// ILT thunk 0x00405529 - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 InitDefaults(void)
+{
+  return 0;
+}
+
 // ghidra_name TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale
 // ghidra_proto undefined thunk_ProjectTileIndexToWrappedScreenOffsetByScale()
 // ILT thunk 0x004056a5 - unannotated on purpose (see ILT_THUNK_RANGE)

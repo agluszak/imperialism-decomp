@@ -44,6 +44,8 @@ class TSoundPlayer;
 class TCursorControlPanel;
 class TTechMgr;
 class TWNetSessionManager;
+class TMultiplayerMgr;
+class TNetMgr;
 class TDealList;
 class TSoundResourceManager;
 class TModuleLibraryCacheTableStateB;
@@ -132,7 +134,21 @@ extern TSimMgr* g_pLocalizationTable;
 extern THelpMgr* g_pHelpMgr;
 extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
 extern TApplication* g_pGlobalUiRootController;
-extern void* g_pGameFlowState;
+// The multiplayer/game-flow singleton (0x6a43c8); every turn-event emitter is a
+// __thiscall method on it (original callsites load ECX from here).
+extern TMultiplayerMgr* g_pGameFlowState;
+// WNetMgr.cpp TU globals (0x6a5fxx band): local-player pending-packet queue + DirectPlay
+// session error state, consumed by TNetMgr::Send / TWNetSessionManager.
+extern int g_NetworkDefaultNationId006a5fc0;
+extern int g_NetworkBroadcastNationId006a5fc4;
+extern void* g_pNetworkPacketQueueHead006a5f50;
+extern void* g_pNetworkPacketQueueTail006a5f48;
+extern void* g_pNetworkPacketQueueRoot006a5f44;
+extern int g_NetworkPacketQueueCount006a5f4c;
+extern int g_NetworkPacketBlockCount006a5f58;
+extern void* g_pNetworkPacketBlockChain006a5f54;
+extern int g_NetworkManagerLastError006a5f6c;
+extern int DAT_006a601c;
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;
 extern int* g_pMapContextActionManager;
@@ -175,6 +191,8 @@ extern TDealList* g_pNationInteractionStateManager;
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
+// Global TNetMgr (0x6a6014), created by TMultiplayerMgr session init.
+extern TNetMgr* g_pNetMgr006a6014;
 extern TTechMgr* g_pCityOrderCapabilityState;
 extern TSoundResourceManager g_soundResourceManager;
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];

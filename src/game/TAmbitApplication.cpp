@@ -10,6 +10,7 @@
 #include "game/TStream.h"
 #include "game/TLanguageMgr.h"
 #include "game/TMacViewMgr.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/THelpMgr.h"
 #include "game/ui_invalidation_guard.h"
 
@@ -117,7 +118,7 @@ void TAmbitApplication::Free() {
     g_pDisplayMgr = nullptr;
   }
   if (g_pGameFlowState != nullptr) {
-    reinterpret_cast<TObject*>(g_pGameFlowState)->Free();
+    g_pGameFlowState->Free();
     g_pGameFlowState = nullptr;
   }
   TApplication::Free();

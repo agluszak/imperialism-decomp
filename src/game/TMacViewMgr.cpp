@@ -25,7 +25,7 @@
 #include "game/localization_text_helpers.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/turn_event_packets.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/mfc.h"
 #include "game/turn_flow_cooldown.h"
 #include "decomp_types.h"
@@ -928,7 +928,7 @@ undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
 // FUNCTION: IMPERIALISM 0x0050bad0
 undefined TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
   if (g_pLocalizationTable->field30 == 1) {
-    DispatchTaggedGameStateEvent1F20(0x72656765, 0, 0xfffffffd);
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x72656765, 0, 0xfffffffd);
   }
   if (tileStateSlots[0] != 0) {
     ClipStateRegionWrapper* regionWrapper = CreateClipStateRegionWrapperObject();

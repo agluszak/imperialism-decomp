@@ -507,14 +507,6 @@ undefined4 QueueInterNationEventType11(void)
   return 0;
 }
 
-// ghidra_name AddOrUpdateBilateralActionRelationEntry
-// ghidra_proto undefined AddOrUpdateBilateralActionRelationEntry()
-// FUNCTION: IMPERIALISM 0x0055cda0
-undefined4 AddOrUpdateBilateralActionRelationEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildInterNationEventSummaryRowsForAdvisorDialog
 // ghidra_proto undefined BuildInterNationEventSummaryRowsForAdvisorDialog()
 // FUNCTION: IMPERIALISM 0x0055d200

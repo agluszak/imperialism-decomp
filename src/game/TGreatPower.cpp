@@ -24,9 +24,8 @@
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/TNavyMgr.h"
-#include "game/turn_event_packets.h"
 #include "game/diplomacy_policy_hooks.h"
-#include "game/TTurnEventPacket.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/turn_flow_cooldown.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TTurnInstructionCiviCursor.h"
@@ -394,7 +393,7 @@ struct SharedRefTripleScope {
 };
 
 static __inline void DispatchCityRedrawInvalidateEventForRegion(short regionId) {
-  ::DispatchCityRedrawInvalidateEvent(regionId);
+  g_pGameFlowState->DispatchCityRedrawInvalidateEvent(regionId);
 }
 
 // TEMP: preamble bridge cluster — map-action score wrappers (retire to TGlobalMapState/TZone).
@@ -3063,7 +3062,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
 
   TSimMgr* localizationTable = g_pLocalizationTable;
   if (localizationTable != 0 && localizationTable->redrawEnabled != 0) {
-    DispatchTaggedGameStateEvent1F20(0x6e616d65, this->nationSlot, 0xfffffffd);
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6e616d65, this->nationSlot, 0xfffffffd);
   }
 }
 
@@ -3120,8 +3119,8 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
             static_cast<int>(this->nationSlot), reinterpret_cast<int>(&payload), '\0');
       }
     } else {
-      CreateAndSendTurnEvent13_NationAndNineDwords(static_cast<int>(this->nationSlot),
-                                                   reinterpret_cast<int*>(&payload));
+      g_pGameFlowState->CreateAndSendTurnEvent13_NationAndNineDwords(
+          static_cast<int>(this->nationSlot), reinterpret_cast<int*>(&payload));
     }
   }
 

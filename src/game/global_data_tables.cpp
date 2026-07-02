@@ -84,7 +84,7 @@ TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
 // GLOBAL: IMPERIALISM 0x006a1344
 TApplication* g_pGlobalUiRootController = 0;
 // GLOBAL: IMPERIALISM 0x006a43c8
-void* g_pGameFlowState = 0;
+TMultiplayerMgr* g_pGameFlowState = 0;
 // GLOBAL: IMPERIALISM 0x006a43d0
 TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
 // GLOBAL: IMPERIALISM 0x006a43e4
@@ -482,16 +482,26 @@ int g_nMapActionContextCount = 0;
 void* g_pMapActionContextDistanceCache = 0;
 // g_pNationInteractionStateManager is defined in TDealList.cpp (0x6a43cc).
 
+// GLOBAL: IMPERIALISM 0x006a5fc0
 int g_NetworkDefaultNationId006a5fc0 = 0;
+// GLOBAL: IMPERIALISM 0x006a5fc4
 int g_NetworkBroadcastNationId006a5fc4 = 0;
+// GLOBAL: IMPERIALISM 0x006a5f50
 void* g_pNetworkPacketQueueHead006a5f50 = 0;
+// GLOBAL: IMPERIALISM 0x006a5f48
 void* g_pNetworkPacketQueueTail006a5f48 = 0;
+// GLOBAL: IMPERIALISM 0x006a5f44
 void* g_pNetworkPacketQueueRoot006a5f44 = 0;
+// GLOBAL: IMPERIALISM 0x006a5f4c
 int g_NetworkPacketQueueCount006a5f4c = 0;
+// GLOBAL: IMPERIALISM 0x006a5f58
 int g_NetworkPacketBlockCount006a5f58 = 0;
+// GLOBAL: IMPERIALISM 0x006a5f54
 void* g_pNetworkPacketBlockChain006a5f54 = 0;
+// GLOBAL: IMPERIALISM 0x006a5f6c
 int g_NetworkManagerLastError006a5f6c = 0;
 undefined4 DAT_0066ac88 = 0;
+// GLOBAL: IMPERIALISM 0x006a601c
 int DAT_006a601c = 0;
 
 // InitInstance asset-path literals (LoadLanguageResourcesFromIrgFiles,
@@ -594,10 +604,16 @@ unsigned short g_wUiResourceEntryDefaultParam2 = 0;
 
 } // extern "C"
 
-// 0x006a6014 — global turn-event-queue manager pointer (built by
-// ConstructGlobalTurnEventQueueManager during multiplayer init, stored here and read by the
-// turn-event dispatch path). GLOBAL: IMPERIALISM 0x006a6014
-TNetMgr* DAT_006a6014 = 0;
+#include "game/TWNetSessionManager.h"
+
+// DirectPlay session manager object embedded at a fixed address (not a pointer).
+// GLOBAL: IMPERIALISM 0x006a5f60
+TWNetSessionManager g_NetworkSessionManager006a5f60;
+
+// 0x006a6014 — global TNetMgr (built by ConstructGlobalTurnEventQueueManager during
+// multiplayer init, stored here; every turn-event emitter dispatches TNetMgr::Send
+// through it). GLOBAL: IMPERIALISM 0x006a6014
+TNetMgr* g_pNetMgr006a6014 = 0;
 
 #include "game/TApplication.h"
 

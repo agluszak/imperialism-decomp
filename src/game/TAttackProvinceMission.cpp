@@ -311,7 +311,7 @@ void TAttackProvinceMission::NoOpSlot3C() {
 
   // NOTE: the original also re-weights this vector against a per-resource-type
   // lookup table selected by the target province's development-stage byte
-  // (pad03 in TGlobalMapCityScoreRecord) before storing it; that lookup table
+  // (fortLevel03 in TGlobalMapCityScoreRecord) before storing it; that lookup table
   // is not yet catalogued in global_data_tables, so the accumulated priority
   // vector is stored directly pending further recovery.
   for (int i = 0; i < 5; ++i) {

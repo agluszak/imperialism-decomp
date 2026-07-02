@@ -1,6 +1,9 @@
 #include "game/TProxyGreatPower.h"
 #include "game/global_data_tables.h"
-#include "game/TTurnEventPacket.h"
+#include "game/NetMessage.h"
+#include "game/TNetMgr.h"
+#include "game/TSimMgr.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TUiRuntimeContext.h"
 #include "game/UiRuntimeContext.h"
 
@@ -43,8 +46,7 @@ void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 // FUNCTION: IMPERIALISM 0x00540ac0
 void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
                                                                  short targetNationId) {
-  struct TurnEvent16PacketPayload {
-    TTurnEventPacketRoutingPrefix routing;
+  struct TurnEvent16PacketPayload : NetMessage {
     int packetTag;
     unsigned char activeNationId;
     unsigned char padAfterActiveNation;
@@ -58,15 +60,15 @@ void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalC
   TurnEvent16PacketPayload packetPayload;
   packetPayload.packetTag = 0x74696D65;
   packetPayload.activeNationId =
-      static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
+      static_cast<unsigned char>(g_pLocalizationTable->GetActiveNationId());
   packetPayload.sourceNation = this->nationSlot;
-  packetPayload.routing.eventCode = 0x16;
-  packetPayload.routing.payloadSize = 0x20;
+  packetPayload.eventCode = 0x16;
+  packetPayload.messageLength = 0x20;
   packetPayload.proposalCode = proposalCode;
   packetPayload.targetNationId = targetNationId;
 
-  packetPayload.routing.SetPayloadNationIdFromSlotIndex(static_cast<int>(this->nationSlot));
-  packetPayload.routing.EnqueueOrSendTurnEventPacketToNation(0);
+  packetPayload.DestinateToGP(static_cast<int>(this->nationSlot));
+  g_pNetMgr006a6014->Send(&packetPayload, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00540b80

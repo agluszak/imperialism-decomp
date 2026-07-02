@@ -25,8 +25,8 @@ public:
 
   // --- TObject overrides (occupy the inherited base slots) ---
   DECLARE_DYNCREATE(TSimMgr)
-  ~TSimMgr();                                      // slot 0x04  scalar deleting dtor 0x0057bb50
-  void WriteTo(TStream* stream) override;          // slot 0x14  0x0057c230
+  ~TSimMgr();                              // slot 0x04  scalar deleting dtor 0x0057bb50
+  void WriteTo(TStream* stream) override;  // slot 0x14  0x0057c230
   void ReadFrom(TStream* stream) override; // slot 0x18  0x0057bea0  (scenario setup / rebuild)
   void Free() override;                    // slot 0x1c  0x0057bd20  (manager teardown)
 
@@ -70,6 +70,11 @@ public:
 
   // --- non-virtual helpers ---
   int GetField30();
+
+  // Active great-power slot (this+0x2e). Every original callsite loads ECX from
+  // g_pLocalizationTable (0x6a20f8) — this getter belongs to TSimMgr, not the view
+  // managers that many older ports called it on.
+  short GetActiveNationId(); // 0x581260
   void DecrementField30Value();
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);

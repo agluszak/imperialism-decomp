@@ -2170,13 +2170,13 @@
     },
     {
       "address": "0x480850",
-      "matching": 0.5283018867924528,
+      "matching": 0.8679245283018868,
       "name": "TrySendNetworkPacketViaManagerContext",
       "type": 1
     },
     {
       "address": "0x4808a0",
-      "matching": 0.02531645569620253,
+      "matching": 0.7189542483660131,
       "name": "TryReceiveNetworkPacketIntoResizableBuffer",
       "type": 1
     },
@@ -4342,7 +4342,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -6919,7 +6919,7 @@
     },
     {
       "address": "0x49ded0",
-      "matching": 0.712166172106825,
+      "matching": 0.6994219653179191,
       "name": "InitializeGlobalRuntimeSystemsFromConfig",
       "type": 1
     },
@@ -11761,7 +11761,7 @@
     },
     {
       "address": "0x4d7b20",
-      "matching": 0.6201550387596899,
+      "matching": 0.6356589147286822,
       "name": "TCountry::ApplyJoinEmpireModeForTargetNation",
       "type": 1
     },
@@ -12079,7 +12079,7 @@
     },
     {
       "address": "0x4db380",
-      "matching": 0.36105476673427994,
+      "matching": 0.35699797160243407,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -12109,7 +12109,7 @@
     },
     {
       "address": "0x4dbf00",
-      "matching": 0.23307086614173228,
+      "matching": 0.23622047244094488,
       "name": "TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents",
       "type": 1
     },
@@ -12560,7 +12560,7 @@
     },
     {
       "address": "0x4de860",
-      "matching": 0.6641221374045801,
+      "matching": 0.6717557251908397,
       "name": "TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers",
       "type": 1
     },
@@ -12572,7 +12572,7 @@
     },
     {
       "address": "0x4dedf0",
-      "matching": 0.3471698113207547,
+      "matching": 0.35471698113207545,
       "name": "TGreatPower::OrphanRetStub_004d7f80",
       "type": 1
     },
@@ -12740,13 +12740,13 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12764,7 +12764,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13070,7 +13070,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.6666666666666666,
+      "matching": 0.9333333333333333,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -13335,7 +13335,7 @@
     },
     {
       "address": "0x4e7510",
-      "matching": 0.2962962962962963,
+      "matching": 0.37037037037037035,
       "name": "TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC",
       "type": 1
     },
@@ -13587,7 +13587,7 @@
     },
     {
       "address": "0x4ea300",
-      "matching": 0.782608695652174,
+      "matching": 0.7701863354037267,
       "name": "TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations",
       "type": 1
     },
@@ -14187,7 +14187,7 @@
     },
     {
       "address": "0x4f0a10",
-      "matching": 0.8521739130434782,
+      "matching": 0.8590021691973969,
       "name": "ProcessQueuedWarTransitions",
       "type": 1
     },
@@ -16209,7 +16209,7 @@
     },
     {
       "address": "0x50bad0",
-      "matching": 0.6466165413533834,
+      "matching": 0.6616541353383458,
       "name": "TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent",
       "type": 1
     },
@@ -16233,7 +16233,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20454545454545456,
+      "matching": 0.20636363636363636,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -20044,7 +20044,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.2014388489208633,
+      "matching": 0.2,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -20518,7 +20518,7 @@
     },
     {
       "address": "0x540ac0",
-      "matching": 0.5352112676056338,
+      "matching": 0.4657534246575342,
       "name": "TGreatPower::QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16",
       "type": 1
     },
@@ -20686,7 +20686,7 @@
     },
     {
       "address": "0x5416b0",
-      "matching": 0.3855421686746988,
+      "matching": 0.6265060240963856,
       "name": "TClientGreatPower::CheckTransitionSlot27C",
       "type": 1
     },
@@ -20896,7 +20896,7 @@
     },
     {
       "address": "0x542120",
-      "matching": 0.4444444444444444,
+      "matching": 1.0,
       "name": "SetTimeEmitPacketGameFlowTurnId",
       "type": 1
     },
@@ -21046,7 +21046,7 @@
     },
     {
       "address": "0x5446a0",
-      "matching": 0.3,
+      "matching": 0.5945945945945946,
       "name": "EmitTurnEvent3Mode18WithActiveNation",
       "type": 1
     },
@@ -21178,19 +21178,19 @@
     },
     {
       "address": "0x549540",
-      "matching": 0.27586206896551724,
+      "matching": 0.36666666666666664,
       "name": "CreateAndSendTurnEvent13_NationAndNineDwords",
       "type": 1
     },
     {
       "address": "0x5495e0",
-      "matching": 0.07142857142857142,
+      "matching": 0.32653061224489793,
       "name": "CreateAndSendTurnEvent20_ShortAndTwoBytes",
       "type": 1
     },
     {
       "address": "0x549680",
-      "matching": 0.2127659574468085,
+      "matching": 0.32653061224489793,
       "name": "CreateAndSendTurnEvent21_ThreeBytes",
       "type": 1
     },
@@ -21202,7 +21202,7 @@
     },
     {
       "address": "0x5497b0",
-      "matching": 0.33663366336633666,
+      "matching": 0.4077669902912621,
       "name": "DispatchTurnEvent1AWithNationActionPayload",
       "type": 1
     },
@@ -21244,7 +21244,7 @@
     },
     {
       "address": "0x54a340",
-      "matching": 0.3466666666666667,
+      "matching": 0.38961038961038963,
       "name": "DispatchTaggedGameStateEvent1F20",
       "type": 1
     },
@@ -21298,7 +21298,7 @@
     },
     {
       "address": "0x54abf0",
-      "matching": 0.23333333333333334,
+      "matching": 0.19123505976095617,
       "name": "DispatchCityRedrawInvalidateEvent",
       "type": 1
     },
@@ -21406,7 +21406,7 @@
     },
     {
       "address": "0x54c5a0",
-      "matching": 0.3181818181818182,
+      "matching": 0.34782608695652173,
       "name": "DispatchJoinEmpireModeEventPacket24_27",
       "type": 1
     },
@@ -22642,19 +22642,19 @@
     },
     {
       "address": "0x55c970",
-      "matching": 0.3793103448275862,
+      "matching": 0.41379310344827586,
       "name": "TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket",
       "type": 1
     },
     {
       "address": "0x55c9f0",
-      "matching": 0.3851851851851852,
+      "matching": 0.38661710037174724,
       "name": "TInterNationEventQueueManager::QueueInterNationEventRecordDeduped",
       "type": 1
     },
     {
       "address": "0x55cbd0",
-      "matching": 0.3468208092485549,
+      "matching": 0.3699421965317919,
       "name": "TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge",
       "type": 1
     },
@@ -22666,7 +22666,7 @@
     },
     {
       "address": "0x55cda0",
-      "matching": 0.0,
+      "matching": 0.5865384615384616,
       "name": "AddOrUpdateBilateralActionRelationEntry",
       "type": 1
     },
@@ -26086,7 +26086,7 @@
     },
     {
       "address": "0x581260",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "GetActiveNationId(void)",
       "type": 1
     },
@@ -27366,7 +27366,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -33865,7 +33865,7 @@
     },
     {
       "address": "0x5e34f0",
-      "matching": 0.14022140221402213,
+      "matching": 0.15498154981549817,
       "name": "ReportWNetManagerErrorCodeAndNotifyUi",
       "type": 1
     },
@@ -33901,7 +33901,7 @@
     },
     {
       "address": "0x5e3d40",
-      "matching": 0.19742489270386265,
+      "matching": 0.34977578475336324,
       "name": "EnqueueOrSendTurnEventPacketToNation",
       "type": 1
     },

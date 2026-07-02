@@ -12,7 +12,7 @@
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TApplication.h"
 #include "game/TStream.h"
-#include "game/turn_event_packets.h"
+#include "game/TMultiplayerMgr.h"
 #include <new>
 
 extern "C" CRuntimeClass TDiplomacyMgr_classRuntimeClass_00654cd0;
@@ -780,7 +780,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
   } else {
     bool isLocalizationOne = (g_pLocalizationTable->redrawEnabled == 1);
     if (isLocalizationOne) {
-      EmitTurnEvent3Mode18WithActiveNation();
+      g_pGameFlowState->EmitTurnEvent3Mode18WithActiveNation();
     } else {
       g_pLocalizationTable->PostMainWindowCommand100ForTurnFlow();
     }

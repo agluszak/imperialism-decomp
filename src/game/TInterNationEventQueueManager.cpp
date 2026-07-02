@@ -1,10 +1,9 @@
 #include "game/TInterNationEventQueueManager.h"
 
 #include "game/global_data_tables.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TQueueObject.h"
-#include "game/turn_event_packets.h"
-
 
 struct TInterNationEventDedupPacket {
   short eventCode0;
@@ -44,7 +43,8 @@ void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int ev
     return;
   }
 
-  CreateAndSendTurnEvent13_NationAndNineDwords(eventCode, reinterpret_cast<int*>(payloadOrNation));
+  g_pGameFlowState->CreateAndSendTurnEvent13_NationAndNineDwords(
+      eventCode, reinterpret_cast<int*>(payloadOrNation));
 }
 
 struct TInterNationEventType0FMergePayload {
@@ -67,16 +67,16 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
 
   if (isReplayBypass == 0 && g_pLocalizationTable->redrawEnabled != 0) {
     if (g_pLocalizationTable->redrawEnabled == 1) {
-      reinterpret_cast<void(__fastcall*)(void*, int, int, int)>(0x00405bd7)(
-          g_pGameFlowState, eventCode, nationA, nationB);
+      g_pGameFlowState->CreateAndSendTurnEvent20_ShortAndTwoBytes(
+          static_cast<short>(eventCode), static_cast<unsigned char>(nationA),
+          static_cast<unsigned char>(nationB));
       return;
     }
     return;
   }
 
   if (eventCode >= 5 && eventCode <= 0x15) {
-    reinterpret_cast<void(__fastcall*)(void*, int, int, int)>(0x00406bf9)(this, eventCode, nationA,
-                                                                          nationB);
+    AddOrUpdateBilateralActionRelationEntry(eventCode, nationA, nationB);
     return;
   }
 
@@ -171,8 +171,58 @@ void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
     return;
   }
 
-  CreateAndSendTurnEvent21_ThreeBytes(static_cast<unsigned char>(eventCode),
-                                        static_cast<unsigned char>(nationA),
-                                        static_cast<unsigned char>(nationB));
+  g_pGameFlowState->CreateAndSendTurnEvent21_ThreeBytes(static_cast<unsigned char>(eventCode),
+                                                        static_cast<unsigned char>(nationA),
+                                                        static_cast<unsigned char>(nationB));
 }
 
+// Per-nation-pair relation record kept in sharedEventRecordQueue by
+// AddOrUpdateBilateralActionRelationEntry (12-byte {eventCode, nationSlot, nationMask}
+// rows — a different record shape than TInterNationEventDedupPacket).
+struct TBilateralActionRelationEntry {
+  int eventCode0;
+  int nationSlot4;
+  int nationMask8;
+};
+
+// FUNCTION: IMPERIALISM 0x0055cda0
+void TInterNationEventQueueManager::AddOrUpdateBilateralActionRelationEntry(int eventCode,
+                                                                            int nationA,
+                                                                            int nationB) {
+  bool nationAHandled = 6 < nationA;
+  bool nationBHandled = 6 < nationB;
+  if (((6 < eventCode && eventCode < 0xe)) || eventCode == 0x12 || eventCode == 0x14) {
+    nationBHandled = true;
+  }
+  int entryIndex = 1;
+  while (!(nationAHandled && nationBHandled) &&
+         entryIndex <= sharedEventRecordQueue->GetEntryCount()) {
+    TBilateralActionRelationEntry* entry = static_cast<TBilateralActionRelationEntry*>(
+        sharedEventRecordQueue->GetEntryAt1BasedSlot2C(entryIndex));
+    if (entry->eventCode0 == eventCode) {
+      if (!nationAHandled && entry->nationSlot4 == nationA) {
+        nationAHandled = true;
+        entry->nationMask8 = entry->nationMask8 | (1 << (nationB & 0x1f));
+      }
+      if (!nationBHandled && entry->nationSlot4 == nationB) {
+        nationBHandled = true;
+        entry->nationMask8 = entry->nationMask8 | (1 << (nationA & 0x1f));
+      }
+    }
+    entryIndex = entryIndex + 1;
+  }
+  if (!nationAHandled) {
+    TBilateralActionRelationEntry newEntryA;
+    newEntryA.eventCode0 = eventCode;
+    newEntryA.nationSlot4 = nationA;
+    newEntryA.nationMask8 = 1 << (nationB & 0x1f);
+    sharedEventRecordQueue->AddEntrySlot38(&newEntryA.eventCode0);
+  }
+  if (!nationBHandled) {
+    TBilateralActionRelationEntry newEntryB;
+    newEntryB.eventCode0 = eventCode;
+    newEntryB.nationSlot4 = nationB;
+    newEntryB.nationMask8 = 1 << (nationA & 0x1f);
+    sharedEventRecordQueue->AddEntrySlot38(&newEntryB.eventCode0);
+  }
+}

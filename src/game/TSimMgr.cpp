@@ -14,7 +14,6 @@
 extern "C" char g_szEmptyString[];
 extern "C" short g_anScenarioNationSetupTable_00698B1A[27];
 
-
 // FUNCTION: IMPERIALISM 0x004153a0
 int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
   CString key;
@@ -60,7 +59,8 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   // Copy the per-nation scenario setup table (DAT_00698b1a) into the +0xe8 short arrays. The
   // original reads 4 shorts per iteration at table[-1..2] with stride 4, scattering them to
   // +0xda/-0xe, +0xe8/0, +0xf6/+0xe, +0x104/+0x1c (then cursor += 2). The writes straddle the
-  // scenarioSetupRows0..3 fields, so the cursor is the raw +0xe8 short pointer (matches ECX=ESI+0xe8).
+  // scenarioSetupRows0..3 fields, so the cursor is the raw +0xe8 short pointer (matches
+  // ECX=ESI+0xe8).
   short* destCursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xe8);
   const short* tableCursor = g_anScenarioNationSetupTable_00698B1A;
   for (int row = 0; row < 7; ++row) {
@@ -299,6 +299,11 @@ void TSimMgr::DecrementField30Value() {
   --field30;
 }
 
+// FUNCTION: IMPERIALISM 0x00581260
+short TSimMgr::GetActiveNationId() {
+  return activeNationSlot;
+}
+
 // FUNCTION: IMPERIALISM 0x00581400
 void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
   if (writeBack) {
@@ -339,4 +344,3 @@ void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
   preferenceValues[12] = 0;
   preferenceValues[1] = 0;
 }
-

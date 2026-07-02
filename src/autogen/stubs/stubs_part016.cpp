@@ -819,14 +819,6 @@ undefined4 CreateAndSendTurnEvent12_TwoShorts(void)
   return 0;
 }
 
-// ghidra_name CreateAndSendTurnEvent20_ShortAndTwoBytes
-// ghidra_proto undefined CreateAndSendTurnEvent20_ShortAndTwoBytes()
-// FUNCTION: IMPERIALISM 0x005495e0
-undefined4 CreateAndSendTurnEvent20_ShortAndTwoBytes(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAndSendTurnEvent22_ByteAndShort
 // ghidra_proto undefined CreateAndSendTurnEvent22_ByteAndShort()
 // FUNCTION: IMPERIALISM 0x00549720

@@ -19,6 +19,7 @@ public:
                                              char isReplayBypass);
   void QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int nationA, int nationB,
                                                    char isReplayBypass);
+  void AddOrUpdateBilateralActionRelationEntry(int eventCode, int nationA, int nationB);
 
 private:
   TQueueObject* GetInterNationQueueByEventCode(int eventCode);

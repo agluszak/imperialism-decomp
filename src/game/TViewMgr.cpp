@@ -23,7 +23,7 @@
 #include "game/TPicture.h"
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
 #include "game/ui_invalidation_guard.h"
-#include "game/turn_event_packets.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TMilitaryUnitOrderState.h" // g_szEmptyString
 #include "game/localization_text_helpers.h"
 #include "game/TCluster.h"
@@ -369,14 +369,14 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   bool localizationActive =
       *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x44) != 0;
   if (localizationActive) {
-    savedFlag = *(reinterpret_cast<unsigned char*>(g_pGameFlowState) + 0x68);
-    *(reinterpret_cast<unsigned char*>(g_pGameFlowState) + 0x68) = 0;
+    savedFlag = g_pGameFlowState->processPrimaryEventQueue;
+    g_pGameFlowState->processPrimaryEventQueue = 0;
   }
   node->RefreshTurnEventDialog();
   node->CallVoidSlotA0();
   node->Free();
   if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x44) != 0) {
-    *(reinterpret_cast<unsigned char*>(g_pGameFlowState) + 0x68) = savedFlag;
+    g_pGameFlowState->processPrimaryEventQueue = savedFlag;
   }
 }
 

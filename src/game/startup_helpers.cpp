@@ -13,7 +13,6 @@
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
-#include "game/config.h"
 #include "game/THelpMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TModalTemplateDialog.h"
@@ -198,15 +197,13 @@ void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app) {
   }
 
   if (g_pGameFlowState != nullptr) {
-    reinterpret_cast<TObject*>(g_pGameFlowState)->Free();
+    g_pGameFlowState->Free();
     g_pGameFlowState = nullptr;
   }
 
-  Config configScratch;
-  g_pGameFlowState = configScratch.InitDefaults();
+  g_pGameFlowState = new TMultiplayerMgr();
   if (g_pGameFlowState != nullptr) {
-    reinterpret_cast<TMultiplayerMgr*>(g_pGameFlowState)
-        ->InitializeMultiplayerManagerForSessionContext(CString());
+    g_pGameFlowState->InitializeMultiplayerManagerForSessionContext(CString());
   }
 }
 

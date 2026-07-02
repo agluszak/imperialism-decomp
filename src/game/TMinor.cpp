@@ -15,7 +15,6 @@
 #include "game/TTown.h"
 #include "game/TUnit.h"
 #include "game/nation_stream_serialization.h"
-#include "game/turn_event_packets.h"
 
 #include <new>
 
