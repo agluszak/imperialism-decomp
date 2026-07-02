@@ -1051,14 +1051,6 @@ undefined4 WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00(vo
   return 0;
 }
 
-// ghidra_name InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440
-// ghidra_proto undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440()
-// FUNCTION: IMPERIALISM 0x00499440
-undefined4 InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0
 // ghidra_proto undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0()
 // FUNCTION: IMPERIALISM 0x004995a0

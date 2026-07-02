@@ -54,12 +54,14 @@ public:
   virtual void UiRuntimeSlot6C();                        // 0x6c
   virtual void UiRuntimeSlot70();                        // 0x70
   virtual void UiRuntimeSlot74();                        // 0x74
-  virtual void UiRuntimeSlot78();                        // 0x78
-  virtual void UiRuntimeSlot7C();                        // 0x7c
-  virtual void UiRuntimeSlot80();                        // 0x80
-  virtual void UiRuntimeSlot84();                        // 0x84
-  virtual void UiRuntimeSlot88();                        // 0x88
-  virtual void UiRuntimeSlot8C(int arg);                 // 0x8c
+  // Resolves the factory dialog for eventCode, commits its 'GOLD' child, then
+  // shows/refreshes/frees the dialog node (0x5d6e50).
+  virtual void HandleTurnEventDialogFactorySlot78(int eventCode); // 0x78
+  virtual void UiRuntimeSlot7C();                                 // 0x7c
+  virtual void UiRuntimeSlot80();                                 // 0x80
+  virtual void UiRuntimeSlot84();                                 // 0x84
+  virtual void UiRuntimeSlot88();                                 // 0x88
+  virtual void UiRuntimeSlot8C(int arg);                          // 0x8c
   virtual char RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
                                               int proposalCode); // 0x90
   virtual char RequestDecisionSlot94(int sourceNation, int arg1, int arg2,
@@ -84,18 +86,22 @@ public:
   virtual void UiRuntimeSlotD8();                                       // 0xd8
   virtual int ShowConstructionOptionsDialog();                          // 0xdc
   virtual void UiRuntimeSlotE0();                                       // 0xe0
-  virtual void UiRuntimeSlotE4();                                       // 0xe4
-  virtual void UiRuntimeSlotE8();                                       // 0xe8
-  virtual void UiRuntimeSlotEC();                                       // 0xec
-  virtual void UiRuntimeSlotF0();                                       // 0xf0
-  virtual void UiRuntimeSlotF4();                                       // 0xf4
-  virtual void UiRuntimeSlotF8();                                       // 0xf8
-  virtual void UiRuntimeSlotFC();                                       // 0xfc
-  virtual void UiRuntimeSlot100();                                      // 0x100
-  virtual void UiRuntimeSlot104();                                      // 0x104
-  virtual void UiRuntimeSlot108();                                      // 0x108
-  virtual void UiRuntimeSlot10C();                                      // 0x10c
-  virtual void UiRuntimeSlot110();                                      // 0x110
+  // Opens factory dialog 0x1c52, places it, and sets the 'GOLD'->'name' text from a
+  // localized string code (0x5dd220).
+  virtual void HandleTurnEventDialogFactorySlotE4(int stringCode); // 0xe4
+  virtual void UiRuntimeSlotE8();                                  // 0xe8
+  virtual void UiRuntimeSlotEC();                                  // 0xec
+  virtual void UiRuntimeSlotF0();                                  // 0xf0
+  virtual void UiRuntimeSlotF4();                                  // 0xf4
+  virtual void UiRuntimeSlotF8();                                  // 0xf8
+  virtual void UiRuntimeSlotFC();                                  // 0xfc
+  virtual void UiRuntimeSlot100();                                 // 0x100
+  // Turn-event 0x5DF path (see DispatchTurnEventSlot4C): re-asserts and refreshes
+  // the main view's 'main' panel (0x5dbdd0).
+  virtual void HandleTurnEvent5DF_RefreshMainView(); // 0x104
+  virtual void UiRuntimeSlot108();                   // 0x108
+  virtual void UiRuntimeSlot10C();                   // 0x10c
+  virtual void UiRuntimeSlot110();                   // 0x110
 
   void ApplyLegendSplitSlot34(int split) {
     ApplyTurnEventPaletteColorByEventCode(split);
@@ -108,6 +114,16 @@ public:
   }
 
   int MapTurnEventCodeToPaletteIndex(int eventCode);
+
+  // 0x5ddd20 — opens the civilian ledger (TSuperCivRoster) inside factory dialog
+  // 0xdac, runs it modally via the show/refresh chain, then applies the selected
+  // civilian as the active map selection.
+  void ShowCivilianLedgerDialogAndSelectUnit();
+
+  // 0x5dea60 — allocates a TModalMessageCommand carrying `message`/`payload`, seeds
+  // it with dispatch code 'Hey!' targeting the global UI root controller, and posts
+  // it there. `this` is unused by the original body.
+  void CreateModalMessageCommandAndQueue(CString* message, int payload);
   undefined4 RunControlStringProviderAndDispatchLocalizedMessage(CString* messageString);
   undefined1 DispatchLocalizedUiMessageWithTemplateA13A0(int overlayMode, CString* messageCString);
   undefined1 DispatchLocalizedUiMessageWithTemplate(int templateKind);

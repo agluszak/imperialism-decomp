@@ -73,7 +73,10 @@ undefined TMapUberPicture::OrphanCallChain_C2_I16_005989d0() {
 }
 
 // FUNCTION: IMPERIALISM 0x00598a20
-undefined TMapUberPicture::OrphanCallChain_C1_I06_00598a20() {
+undefined TMapUberPicture::OrphanCallChain_C1_I06_00598a20(short entryIndex) {
+  // TODO(port): forwards entryIndex to the +0xac subview's byte-0x1f0 virtual; needs
+  // the +0xac member recovered first.
+  (void)entryIndex;
   return 0;
 }
 

@@ -10,7 +10,7 @@ class astruct_20;
 // VTABLE: IMPERIALISM 0x00668f08
 class TMapUberPicture : public TMapUberUberPicture {
 public:
-// === BEGIN GENERATED DECLS (TMapUberPicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TMapUberPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMapUberPicture)
   virtual ~TMapUberPicture(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -26,7 +26,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x00597340
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x00597340
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   virtual void vmethod_0017(int param) override; // slot 0x11 0x597600
   virtual void ForwardParam(int param) override; // slot 0x12 0x597770
@@ -127,19 +128,21 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
-  virtual undefined OrphanRetStub_0045d2a0() override; // slot 0x74 0x5977a0
-  virtual undefined OrphanLeaf_NoCall_Ins09_00598950(); // slot 0x75 0x598950
+  virtual undefined OrphanRetStub_0045d2a0() override;     // slot 0x74 0x5977a0
+  virtual undefined OrphanLeaf_NoCall_Ins09_00598950();    // slot 0x75 0x598950
   virtual void InvalidateTileMarkerChain(short tileIndex); // slot 0x76 0x598870
-  virtual undefined OrphanCallChain_C2_I18_005988c0(); // slot 0x77 0x5988c0
-  virtual undefined OrphanCallChain_C2_I14_00598990(); // slot 0x78 0x598990
-  virtual undefined OrphanCallChain_C2_I16_005989d0(); // slot 0x79 0x5989d0
-  virtual undefined OrphanCallChain_C1_I06_00598a20(); // slot 0x7a 0x598a20
-  virtual undefined OrphanLeaf_NoCall_Ins23_00597a10(); // slot 0x7b 0x597a10
-  virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1); // slot 0x7c 0x598910
-  virtual void __fastcall CreateToolWindow_00599CF0(astruct_20 * this_obj); // slot 0x7d 0x599cf0
-  virtual undefined SwapToolInfoSubviewAndRefreshClipRegion(); // slot 0x7e 0x599fd0
-  virtual undefined SetTradeToolSubcontrolEnabledStateByFlag(); // slot 0x7f 0x59a180
-// === END GENERATED DECLS (TMapUberPicture) ===
+  virtual undefined OrphanCallChain_C2_I18_005988c0();     // slot 0x77 0x5988c0
+  virtual undefined OrphanCallChain_C2_I14_00598990();     // slot 0x78 0x598990
+  virtual undefined OrphanCallChain_C2_I16_005989d0();     // slot 0x79 0x5989d0
+  // Forwards entryIndex to the +0xac subview's byte-0x1f0 virtual (verified 1-arg
+  // thiscall, RET 4; the previous declaration had dropped the argument).
+  virtual undefined OrphanCallChain_C1_I06_00598a20(short entryIndex);     // slot 0x7a 0x598a20
+  virtual undefined OrphanLeaf_NoCall_Ins23_00597a10();                    // slot 0x7b 0x597a10
+  virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1);   // slot 0x7c 0x598910
+  virtual void __fastcall CreateToolWindow_00599CF0(astruct_20* this_obj); // slot 0x7d 0x599cf0
+  virtual undefined SwapToolInfoSubviewAndRefreshClipRegion();             // slot 0x7e 0x599fd0
+  virtual undefined SetTradeToolSubcontrolEnabledStateByFlag();            // slot 0x7f 0x59a180
+  // === END GENERATED DECLS (TMapUberPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberPicture 0xCTOR`).
 
   TMapUberPicture();

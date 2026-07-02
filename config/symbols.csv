@@ -1275,7 +1275,7 @@ address|name|symbol|size|type|prototype|provenance
 498fe0|TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB||527|function|undefined ~TModuleLibraryCacheTableStateB()|
 4992a0|TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog||174|function|undefined LoadModuleLibrarySlotWithErrorDialog()|
 499380|TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog||143|function|undefined LoadPrimaryDataLibraryWithErrorDialog()|
-499440|InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440||91|function|undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440()|
+499440|TModuleLibraryCacheTableStateB::LoadUiStringResourceById||91|function|undefined4 LoadUiStringResourceById(class CString * out, unsigned int stringId)|
 4994c0|LoadUiStringResourceByGroupAndIndex||170|function|undefined LoadUiStringResourceByGroupAndIndex()|
 4995a0|TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0||9|function|undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0()|
 4995c0|TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6||429|function|undefined ResolveBmpResourceHandleWithDefault3B6()|
@@ -1618,7 +1618,7 @@ address|name|symbol|size|type|prototype|provenance
 4ab380|TSuperCivRoster::CreateObject|?CreateObject@TSuperCivRoster@@SGPAVCObject@@XZ|92|function|void * CreateObject(void)|rtti
 4ab400|TSuperCivRoster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ab450|TSuperCivRoster::GetRuntimeClass||6|function|undefined GetTSuperCivRosterClassNamePointer()|rtti
-4ab470|TSuperCivRoster::ConstructTSuperCivRosterBaseState||325|function|undefined ConstructTSuperCivRosterBaseState()|
+4ab470|TSuperCivRoster::InitializeLedgerRosterPages||325|function|undefined InitializeLedgerRosterPages(class TView * pOwnerContext, int * pBoundsRect, class TView * * pOutDialogView)|
 4ab620|TMiniCivLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ab650|DestructTSuperCivRosterAndMaybeFree_Impl||7|function|undefined DestructTSuperCivRosterAndMaybeFree_Impl()|
 4ab670|TMiniCivLine::CreateObject|?CreateObject@TMiniCivLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
@@ -2254,9 +2254,9 @@ address|name|symbol|size|type|prototype|provenance
 4d26d0|TCivMgr::HandleCivilianTileOrderAction||439|function|bool __thiscall HandleCivilianTileOrderAction(short nTileIndex, short nInputHint)|
 4d2930|TCivToolbar::LookupCivilianTileOrderCursorTokenByActionIndex||26|function|undefined LookupCivilianTileOrderCursorTokenByActionIndex()|
 4d2960|TCivToolbar::ResolveCivilianTileOrderActionCode||602|function|int __thiscall ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)|
-4d2c60|TSelectedCivilianOrderState::SetActiveCivilianSelection||106|function|void __thiscall SetActiveCivilianSelection(class TCivUnit * entryContext, int refreshCommandPanel)|
-4d2cf0|TSelectedCivilianOrderState::QueueImmediateCivilianCommandAndCycleSelection||42|function|void __thiscall QueueImmediateCivilianCommandAndCycleSelection(int commandType)|
-4d2d30|TSelectedCivilianOrderState::ShowDisbandCivilianConfirmationDialog||350|function|void __thiscall ShowDisbandCivilianConfirmationDialog(void)|
+4d2c60|TCivMgr::SetActiveCivilianSelection||106|function|void __thiscall SetActiveCivilianSelection(class TCivUnit * entryContext, char refreshCommandPanel)|
+4d2cf0|TCivMgr::QueueImmediateCivilianCommandAndCycleSelection||42|function|void __thiscall QueueImmediateCivilianCommandAndCycleSelection(int commandType)|
+4d2d30|TCivMgr::ShowDisbandCivilianConfirmationDialog||350|function|void __thiscall ShowDisbandCivilianConfirmationDialog(void)|
 4d2ef0|TCivToolbar::TryQueueCivilianMoveOrderToTile||79|function|bool __thiscall TryQueueCivilianMoveOrderToTile(int nTileIndex)|
 4d2f60|TCivToolbar::CanAssignCivilianOrderToTile||193|function|undefined1 __thiscall CanAssignCivilianOrderToTile(short nTileIndex)|
 4d3070|TCivToolbar::HandleCivilianReportDecision||478|function|void __thiscall HandleCivilianReportDecision(int * pCivilianOrderEntry)|
@@ -5282,7 +5282,7 @@ address|name|symbol|size|type|prototype|provenance
 598950|TMapUberPicture::OrphanLeaf_NoCall_Ins09_00598950||38|function|undefined OrphanLeaf_NoCall_Ins09_00598950(void)|
 598990|TMapUberPicture::OrphanCallChain_C2_I14_00598990||44|function|undefined OrphanCallChain_C2_I14_00598990(void)|
 5989d0|TMapUberPicture::OrphanCallChain_C2_I16_005989d0||49|function|undefined OrphanCallChain_C2_I16_005989d0(void)|
-598a20|TMapUberPicture::OrphanCallChain_C1_I06_00598a20||22|function|undefined OrphanCallChain_C1_I06_00598a20(void)|
+598a20|TMapUberPicture::OrphanCallChain_C1_I06_00598a20||22|function|undefined OrphanCallChain_C1_I06_00598a20(short entryIndex)|
 598a50|PromptAndQueueMilitaryProvincePurgeOrders||625|function|undefined PromptAndQueueMilitaryProvincePurgeOrders()|
 598d70|CreateCivilianWorkOrderAndRegisterSelection||117|function|undefined CreateCivilianWorkOrderAndRegisterSelection()|
 598e10|RunNavyPrimaryOrderCreationDialogAndApplyResults||509|function|undefined RunNavyPrimaryOrderCreationDialogAndApplyResults()|
@@ -5753,7 +5753,7 @@ address|name|symbol|size|type|prototype|provenance
 5b5ff0|TDeluxeText::ConstructTDeluxeTextBaseState||77|function|undefined ConstructTDeluxeTextBaseState()|
 5b6060|TDeluxeText::NoOpUiLifecycleHook||36|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5b60a0|TDeluxeText::OrphanCallChain_C1_I08_005b60a0||27|function|undefined OrphanCallChain_C1_I08_005b60a0(char param_1)|
-5b60d0|TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl||116|function|undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl()|
+5b60d0|TDeluxeText::SetTextFromUiStringResourceId||116|function|undefined SetTextFromUiStringResourceId(short stringId)|
 5b6170|TDeluxeText::ApplyRectSlot110||237|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
 5b62a0|TDeluxeText::ConstructTMapKeyBaseState_Impl||45|function|undefined ConstructTMapKeyBaseState_Impl()|
 5b62e0|TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0||96|function|undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(void)|
@@ -5985,7 +5985,7 @@ address|name|symbol|size|type|prototype|provenance
 5c3d20|MapUiThemeCodeToStyleFlags||201|function|undefined MapUiThemeCodeToStyleFlags()|
 5c3e80|BuildUiTextStyleDescriptor||151|function|void __cdecl BuildUiTextStyleDescriptor(void * styleDescriptor, int unused, int arg2, int arg3)|
 5c3f50|InitializeUiTextStyleDescriptor||146|function|undefined InitializeUiTextStyleDescriptor()|
-5c4020|ApplyControlThemeStyleAndOptionalCaption||268|function|undefined ApplyControlThemeStyleAndOptionalCaption()|
+5c4020|ApplyControlThemeStyleAndOptionalCaption||268|function|class TStaticText * __cdecl ApplyControlThemeStyleAndOptionalCaption(class TStaticText * control, int unused2, int pointSize, int themeCode, int themeCode2, char * caption)|
 5c4180|ConfigureUiControlStyleValueAndCaptionFromStringResource||316|function|undefined ConfigureUiControlStyleValueAndCaptionFromStringResource()|
 5c4310|RefreshActiveControlThenApplyThemeStyleAndCaption||67|function|undefined RefreshActiveControlThenApplyThemeStyleAndCaption()|
 5c43b0|DispatchToSelectableTextOptionEntries||129|function|undefined DispatchToSelectableTextOptionEntries()|
@@ -6044,7 +6044,7 @@ address|name|symbol|size|type|prototype|provenance
 5d5040|TViewMgr::GetRuntimeClass||6|function|undefined GetTViewMgrClassNamePointer()|
 5d5060|TViewMgr::ConstructGlobalTurnEventState||62|function|undefined ConstructGlobalTurnEventState()|
 5d50b0|TViewMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5d50e0|SetTurnEventStateBaseVtable||7|function|undefined SetTurnEventStateBaseVtable()|
+5d50e0|TViewMgr::~TViewMgr||7|function|undefined ~TViewMgr()|
 5d5100|TViewMgr::LoadTurnEventCursorTable||36|function|undefined LoadTurnEventCursorTable()|
 5d5140|LoadTurnEventCursorByResourceIdOffset1000||126|function|undefined LoadTurnEventCursorByResourceIdOffset1000()|
 5d51e0|TViewMgr::Free||12|function|undefined ReleaseTurnEventDialogIfPresent()|
@@ -6070,7 +6070,7 @@ address|name|symbol|size|type|prototype|provenance
 5d6cd0|HandleTurnEventDialogFactorySlot70||116|function|undefined HandleTurnEventDialogFactorySlot70()|
 5d6d70|HandleTurnEventDialogFactorySlot74||139|function|undefined HandleTurnEventDialogFactorySlot74()|
 5d6e30|NoOpTurnEventStateVtableSlot8C||3|function|undefined NoOpTurnEventStateVtableSlot8C()|
-5d6e50|HandleTurnEventDialogFactorySlot78||139|function|undefined HandleTurnEventDialogFactorySlot78()|
+5d6e50|TViewMgr::HandleTurnEventDialogFactorySlot78||139|function|undefined HandleTurnEventDialogFactorySlot78(int eventCode)|
 5d6f10|HandleTurnEventDialogFactorySlot7C||139|function|undefined HandleTurnEventDialogFactorySlot7C()|
 5d6fd0|HandleTurnEventDialogFactorySlot80||139|function|undefined HandleTurnEventDialogFactorySlot80()|
 5d7090|TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection||75|function|undefined DispatchTurnEvent7D8AndUpdateMainViewSelection()|
@@ -6080,7 +6080,7 @@ address|name|symbol|size|type|prototype|provenance
 5d7240|LinkedListQueryOwner::DispatchGlobalTurnEventCode||1933|function|undefined DispatchGlobalTurnEventCode()|
 5d7c40|DispatchTurnEvent3B8AndWaitForCompletion||72|function|undefined DispatchTurnEvent3B8AndWaitForCompletion()|
 5d7cb0|HandleTurnEvent7DB_SelectCityAndRefreshView||547|function|undefined HandleTurnEvent7DB_SelectCityAndRefreshView()|
-5d7f70|InvokeStrategicMapViewMethod5C||11|function|undefined InvokeStrategicMapViewMethod5C()|
+5d7f70|TViewMgr::RefreshCityProductionUiSlotAc||11|function|undefined RefreshCityProductionUiSlotAc()|
 5d7f90|InvokeStrategicMapViewMethod60||19|function|undefined InvokeStrategicMapViewMethod60()|
 5d7fc0|SetCursorRangeAndRefreshMainPanel||93|function|undefined SetCursorRangeAndRefreshMainPanel()|
 5d8040|HandleTurnEvent7D8_ActivateDiplomacyMapView||561|function|undefined HandleTurnEvent7D8_ActivateDiplomacyMapView()|
@@ -6099,13 +6099,13 @@ address|name|symbol|size|type|prototype|provenance
 5db780|HandleTurnEventDialogFactorySlotF8||1130|function|undefined HandleTurnEventDialogFactorySlotF8()|
 5dbd10|NoOpTurnEventStateVtableSlotFC||1|function|undefined NoOpTurnEventStateVtableSlotFC()|
 5dbd30|TViewMgr::HandleTurnEvent5DE_RefreshMainView||115|function|undefined HandleTurnEvent5DE_RefreshMainView()|
-5dbdd0|HandleTurnEventTable66F220_Slot04_InvokeMainViewSlots0C_E4||43|function|undefined HandleTurnEventTable66F220_Slot04_InvokeMainViewSlots0C_E4()|
+5dbdd0|TViewMgr::HandleTurnEvent5DF_RefreshMainView||43|function|undefined HandleTurnEvent5DF_RefreshMainView()|
 5dbe10|HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4||43|function|undefined HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4()|
 5dbe50|BuildTurnStateStyledTextAndDispatchMainRoutine||618|function|undefined BuildTurnStateStyledTextAndDispatchMainRoutine()|
 5dc160|InvokeStrategicMapViewMethod6C||11|function|undefined InvokeStrategicMapViewMethod6C()|
 5dc180|InvokeStrategicMapViewMethod68||11|function|undefined InvokeStrategicMapViewMethod68()|
 5dc1a0|InvokeStrategicMapViewMethod74||11|function|undefined InvokeStrategicMapViewMethod74()|
-5dc1c0|InvokeStrategicMapViewMethod70||11|function|undefined InvokeStrategicMapViewMethod70()|
+5dc1c0|TViewMgr::UiRuntimeSlotC4||11|function|undefined UiRuntimeSlotC4()|
 5dc1e0|TViewMgr::HandleTurnEventDialogFactorySlotD0||407|function|undefined HandleTurnEventDialogFactorySlotD0()|
 5dc3f0|HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14||47|function|undefined HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14()|
 5dc430|HandleTurnEventDialogFactorySlotB8||238|function|undefined HandleTurnEventDialogFactorySlotB8()|
@@ -6113,28 +6113,28 @@ address|name|symbol|size|type|prototype|provenance
 5dc690|HandleTurnEventF3D_PopulateRecentTurnMessages||751|function|undefined HandleTurnEventF3D_PopulateRecentTurnMessages()|
 5dcaa0|TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog||260|function|undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog()|
 5dcc60|WrapperFor_ftol_At005dcc60||30|function|undefined WrapperFor_ftol_At005dcc60()|
-5dcc90|Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90||93|function|undefined Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90()|
+5dcc90|TModalMessageCommand::CreateObject|?CreateObject@TModalMessageCommand@@SGPAVCObject@@XZ|93|function|void * CreateObject(void)|rtti
 5dcd10|TModalMessageCommand::OrphanRetStub_00487a00||42|function|void DispatchTurnStateLocalizedMessageForControlId()|
 5dcd50|TModalMessageCommand::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5dcd80|TModalMessageCommand::CreateTModalMessageCommandInstance||62|function|undefined CreateTModalMessageCommandInstance()|
+5dcd80|TModalMessageCommand::~TModalMessageCommand||62|function|undefined ~TModalMessageCommand()|
 5dcdd0|TModalMessageCommand::GetRuntimeClass||6|function|undefined GetTModalMessageCommandClassNamePointer()|
 5dcdf0|TViewMgr::HandleTurnEventDialogFactorySlotB4||236|function|undefined HandleTurnEventDialogFactorySlotB4()|
 5dcf20|TViewMgr::HandleTurnEventDialogFactorySlotD8||292|function|undefined HandleTurnEventDialogFactorySlotD8()|
 5dd0a0|TViewMgr::ExecuteUiFactoryModalDialogAndReturnResultTag||169|function|undefined ExecuteUiFactoryModalDialogAndReturnResultTag()|
 5dd180|TViewMgr::HandleGlobalMapNationContextSelection||120|function|undefined HandleGlobalMapNationContextSelection()|
-5dd220|TViewMgr::HandleTurnEventDialogFactorySlotE4||218|function|undefined HandleTurnEventDialogFactorySlotE4()|
+5dd220|TViewMgr::HandleTurnEventDialogFactorySlotE4||218|function|undefined HandleTurnEventDialogFactorySlotE4(int stringCode)|
 5dd340|TViewMgr::HandleTurnEventDialogFactorySlotF0||203|function|undefined HandleTurnEventDialogFactorySlotF0()|
 5dd450|RunMapOrderPageSelectionDialogAndApplyResult||635|function|undefined RunMapOrderPageSelectionDialogAndApplyResult()|
 5dd770|TViewMgr::HandleTurnEventDialogFactorySlotE8||315|function|undefined HandleTurnEventDialogFactorySlotE8()|
 5dd900|TLineData::HandleTurnEventDialogFactorySlotEC||239|function|undefined HandleTurnEventDialogFactorySlotEC()|
 5dda30|OpenSuperArmyRosterPageAndActivateProvinceSelection||587|function|undefined OpenSuperArmyRosterPageAndActivateProvinceSelection()|
-5ddd20|ShowCivilianLedgerDialogAndSelectUnit||585|function|void ShowCivilianLedgerDialogAndSelectUnit(void)|
+5ddd20|TViewMgr::ShowCivilianLedgerDialogAndSelectUnit||585|function|void __thiscall ShowCivilianLedgerDialogAndSelectUnit(void)|
 5de010|RunTaggedOptionDialogAndReturnSelectionTag||992|function|undefined RunTaggedOptionDialogAndReturnSelectionTag()|
 5de4f0|ShowCivilianReportDialogAndReturnConfirm||176|function|bool __fastcall ShowCivilianReportDialogAndReturnConfirm(int * pCivilianOrderEntry)|
 5de5d0|RefreshCurrentUiViewAndActivePanelState||181|function|undefined RefreshCurrentUiViewAndActivePanelState()|
 5de8f0|DispatchUiRuntimeMessage101AAndRefreshActiveView||123|function|undefined DispatchUiRuntimeMessage101AAndRefreshActiveView()|
 5de990|ShowLocalizedUiPromptByGroupAndIndex||148|function|char __stdcall ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int uiStringGroup, int promptFlagA, int promptFlagB)|
-5dea60|CreateModalMessageCommandAndQueue||164|function|undefined CreateModalMessageCommandAndQueue()|
+5dea60|TViewMgr::CreateModalMessageCommandAndQueue||164|function|void __thiscall CreateModalMessageCommandAndQueue(class CString * message, int payload)|
 5deb40|DispatchGameStateEventIfLocalizedPromptAccepted||323|function|undefined DispatchGameStateEventIfLocalizedPromptAccepted()|
 5dee20|WrapperFor_ftol_At005dee20||30|function|undefined WrapperFor_ftol_At005dee20()|
 5dee50|InitializeDialogTemplateE0||30|function|undefined InitializeDialogTemplateE0()|
@@ -8385,7 +8385,7 @@ address|name|symbol|size|type|prototype|provenance
 66fad0|DAT_0066fad0|||global|double DAT_0066fad0|
 66fc00|CDialog::classRuntimeClass|||global||
 66fdc8|CWinApp::classRuntimeClass|||global||
-66fec4|CObject::vftable|||global||
+66fec4|CObject::`vftable'|??_7CObject@@6B@||global||
 670320|CFrameWnd::classRuntimeClass|||global||
 670338|CView::classRuntimeClass|||global||
 670350|CControlBar::CControlBar_classDesc|||global||

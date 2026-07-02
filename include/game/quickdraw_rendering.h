@@ -27,6 +27,15 @@ void DrawCenteredGuideLineOnMapDc(short x, short y);
 // function. unused is always passed 0 by every known caller.
 void BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int themeCode);
 
+// 0x5c4020 -- asserts the text control, applies a theme style descriptor built from
+// themeCode (BuildUiTextStyleDescriptor inline-expanded in the original), sets the
+// text theme code, and optionally assigns a caption string. Returns the control.
+// unused2 is always 0 at every known call site.
+class TStaticText;
+TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int unused2,
+                                                      int pointSize, int themeCode, int themeCode2,
+                                                      const char* caption);
+
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 

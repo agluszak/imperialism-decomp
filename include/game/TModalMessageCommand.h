@@ -23,11 +23,19 @@ public:
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
   virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x5dcd10
   // === END GENERATED DECLS (TModalMessageCommand) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery
-  // TModalMessageCommand 0xCTOR`).
 
-  TModalMessageCommand();
+  // Object slice from the inline-expanded ctor at 0x5dea93 (inside
+  // TViewMgr::CreateModalMessageCommandAndQueue 0x5dea60): TCommand base is 0x18
+  // bytes, then the message text and one scalar payload.
+  CString message; // +0x18
+  int payload;     // +0x1c
+
+  // Defined inline: the original constructor exists only inline-expanded at the
+  // 0x5dea60 call site (TCommand ctor call + CString member ctor + vptr store).
+  TModalMessageCommand() : TCommand() {}
 };
+
+ASSERT_SIZE(TModalMessageCommand, 0x20);
 
 // === BEGIN GENERATED (TModalMessageCommand) — refreshed by `just gen-class TModalMessageCommand`;
 // do not hand-edit ===

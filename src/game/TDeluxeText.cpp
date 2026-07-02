@@ -1,5 +1,8 @@
 #include "game/TDeluxeText.h"
 
+#include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/global_data_tables.h"
+
 // SYNTHETIC: IMPERIALISM 0x004309e0
 // TDeluxeText::`scalar deleting destructor'
 TDeluxeText::~TDeluxeText() {}
@@ -22,8 +25,10 @@ undefined TDeluxeText::OrphanCallChain_C1_I08_005b60a0(char param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b60d0
-undefined TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl() {
-  return 0;
+void TDeluxeText::SetTextFromUiStringResourceId(short stringId) {
+  CString text;
+  g_pModuleLibraryCacheState->LoadUiStringResourceById(&text, stringId);
+  this->UpdateTextEntrySharedStringAndMaybeNotify(&text, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6170
