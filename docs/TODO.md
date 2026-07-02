@@ -566,3 +566,57 @@ The RTTI oracle contradicts two modeled layouts (both missing 0x10 bytes):
 - `TMinor`: ASSERT_SIZE 0x2cc vs RTTI 0x2dc (include/game/TMinor.h)
 Fix via class recovery (fields exist in the binary that the model lacks), then
 promote `class-size-check --strict` into `just gates`.
+
+## Networking/orphan-file pass follow-ups (2026-07-02)
+
+Context: NetMessage/TNetMgr::Send/TMultiplayerMgr-emitter remodel, CAmbitDocument
+recovery, CList/CArray template-static modeling (commits d959348..this session).
+
+- **Wrong-receiver audit — `GetActiveNationId`.** The real method is
+  `TSimMgr::GetActiveNationId` @ `0x581260` (all original callers load
+  `g_pLocalizationTable` 0x6a20f8). The networking cluster is fixed, but the rest of
+  the repo still calls a fake unmarked `TViewMgr::GetActiveNationId`
+  (TViewMgr.cpp:~157, reads this+0x2e via cast) through `g_pUiRuntimeContext` —
+  audit every `g_pUiRuntimeContext->GetActiveNationId()` callsite against the
+  original ECX load and retarget; then delete the fake TViewMgr helper.
+- **Unported TMultiplayerMgr-TU emitters/handlers** (0x540xxx–0x54c band, ~30
+  callers of `TNetMgr::Send` not yet in repo): CreateAndSendTurnEvent11/12/1B/1C
+  (0x5493c0/0x5494b0/0x5498d0/0x5499b0), DispatchTurnEventPacketWithCodeAndPayloadBuffer
+  0x549ad0, DispatchTileRedrawInvalidateEvent 0x54ab20, HandleDiplomacyTurnEventPacketByCode
+  0x543910, EnsureGameFlowStateAndPostTurnEvent5E5 0x544540, EmitTurnEvent10ForFlaggedNationSlots
+  0x544720, SetNationStatusAwolByNationIdAndDispatchNotices 0x54b930, etc. All are
+  `__thiscall` on g_pGameFlowState — check each with the ECX-load test before porting.
+  Also `TNetMgr` method @ 0x407f77-ILT target (called right after Send in 0x5456a0),
+  and `TProxyGreatPower::AddToNationMetricAtField10` 0x540a00 has an empty repo body
+  but the original calls Send at +0x72 (dropped body).
+- **DataHunkMessage / PhaseDataMessage (Mac oracle) still unlocated on Windows.**
+  Mac signatures: DataHunkMessage::{Create16, ReadData(void*) const, Release};
+  PhaseDataMessage::{CheckSync, SetSync}; used by TMultiplayerMgr::DoGameDataHunk /
+  ReceiveStreamMessage. They will surface when the receive path
+  (TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer callers, WNetMgr
+  GetMessage/HandleMessage analogues in the 0x5e3xxx band) is ported. Candidates
+  ruled out: 0x487820 is the TCommand base ctor (symbols.csv name
+  "ConstructTurnEventPacketBase" is misleading), 0x49e500 news a TNewGameCommand.
+  Mac `TEventList` also unlocated (0x66fa50 turned out to be a CList twin copy).
+- **TInterNationEventQueueManager playback iterator**: QueueInterNationEventRecordDeduped
+  still calls raw-address `__fastcall` casts 0x407919/0x409679/0x4097dc on a
+  TPlaybackWalkState — recover the iterator class; also the `thunk_` marker at ILT
+  0x406758 (known thunk_ cluster).
+- **TGameWindow raw byte offsets** 0x60/0x6d–0x71/0x9c in
+  turn_event_dialog_factory.cpp's BuildTurnOrderNavigationWindow — promote to named
+  TWindow/TGameWindow fields once the TWindow layout blockers (docs/TODO + memory)
+  are resolved.
+- **Flavor-text variant generators (18 fns, one original TU)** behind Hard-Rule-9
+  externs in mapped_flavor_text.cpp: AppendRandomMapContextStatusSuffixWithProbability,
+  GenerateMappedFlavorTextVariantA–E (0x5d13d0/0x5cfc40/0x5cf1b0/0x5d33a0/0x5ccce0),
+  BuildMapContextStatusStringVariantA–L, ShouldRetryMappedFlavorTextGeneration —
+  port as a dedicated pass (large string builders).
+- **TDefendProvinceMission raw cityScoreTable access** (lines ~73/129/306/390):
+  byte-offset casts into TGlobalMapCityScoreRecord, including a float read at +0x9c
+  where the record declares `int cityScoreValue` — reconcile the dual int/float use
+  and use typed fields.
+- **Template twin-copy reccmp gap** (systemic): per-TU original copies of
+  CList/CArray member functions (e.g. 0x5e4540..0x5e4a60 WNetMgr copies,
+  0x479a80/0x479b00 IncludeView copies) cannot pair against the single recomp
+  COMDAT — needs reccmp-side support or per-address SYNTHETIC aliasing.
+

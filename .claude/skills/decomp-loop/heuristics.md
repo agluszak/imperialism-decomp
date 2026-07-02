@@ -629,3 +629,49 @@ near the top if something later in the file (now possibly reordered before its o
 depends on them being textually visible first. Verify with `just decomplint` (or grep the
 `function_out_of_order` count) before/after — the reorder should be a pure score no-op in
 `just stats`.
+
+## 26. Free-vs-method is decided at the CALLSITE: the ECX-load + `ret n` test
+
+`scan-cdecl-thiscall` on the callee alone under-detects methods whose bodies never touch
+`this` (empty hooks, emitters whose state is all globals). The decisive evidence is the
+caller: `MOV ECX, <global or object>` immediately before the `CALL`, plus callee-cleanup
+`RET n` matching the stack-arg count, proves `__thiscall` — and the ECX source names the
+owning class. Worked examples (2026-07-02): every turn-event emitter (0x5446a0..0x54c5a0)
+loads ECX from `g_pGameFlowState` → TMultiplayerMgr methods; `GetActiveNationId` 0x581260
+loads from `g_pLocalizationTable` → TSimMgr, exposing a repo-wide wrong-receiver bug;
+`NoOpDiplomacyPolicyStateChangedHook` 0x5033e0 (`ret 0xc`, body empty) loads from
+`g_pHelpMgr` → THelpMgr method whose three args old ports had dropped. Corollary: old
+no-arg `extern void F(void)` stubs at such addresses are the dropped-args audit pattern.
+
+## 27. CList/CArray twin copies masquerade as class methods and vtables
+
+A cluster of {ctor writing head/tail/count/free/blocks(+blockSize), dtor doing
+walk+FreeDataChain, Serialize doing ReadCount+per-element Read/AddTail} adjacent to a real
+class's vtable is a **per-TU template instantiation** (afxtempl CList/CArray compiled into
+that TU), not class methods — the original was built without ICF so every TU has its own
+copy of the template vtable + bodies. Model the underlying object (often a file-scope
+static reachable via an `InitStub`/atexit pair: `MOV ECX,<addr>` in the static-init gives
+the object address, the ctor arg gives blockSize) as a real `CList<...>`/`CArray<...>`
+global and call the public API; MSVC500 /Ob1 re-inlines AddTail identically
+(TNetMgr::Send 35%→65%). The twin-copy addresses themselves can't pair against the single
+recomp COMDAT (known gap) — leave them to autogen stubs. Bonus: "mystery globals" inside
+the object footprint are member aliases (0x6a13e8 = the 0x6a13e0 list's m_pNodeTail, i.e.
+GetTail(); 0x6a5f6c = the session manager's lastErrorCode field, not a separate global).
+
+## 28. Field-by-field snapshot copies are a struct-recovery oracle
+
+When a function copies a record wholesale but element-wise (byte/word/dword slices, loops
+per array), the bytes it SKIPS are exactly the struct's padding, and every separately-copied
+slice is a real field boundary. Worked example: DispatchCityRedrawInvalidateEvent 0x54abf0
+snapshots the whole 0xa8 TGlobalMapCityScoreRecord and skips exactly 0x09/0x3d/0x96-97,
+proving shorts at 0x3e/0x40/0x94 and the CString city name at 0xa4 that were folded into
+pads. Use the copy to refine the record, then rewrite the copy through typed fields.
+
+## 29. clang-format eats `// VTABLE:` markers — keep them on their own line
+
+Reflowing a comment block can merge a `// VTABLE: IMPERIALISM 0x...` (or split its address
+onto the next line), which silently unpairs the vtable (it shows up as "unpaired now" in
+stats, or as a long-missing vtable). After formatting headers, grep
+`'\. VTABLE: IMPERIALISM'` and `'VTABLE: IMPERIALISM$'`; splitting the marker back onto its
+own line re-pairs immediately (6 vtables recovered 2026-07-02).
+
