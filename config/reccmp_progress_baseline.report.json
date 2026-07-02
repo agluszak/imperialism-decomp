@@ -3406,7 +3406,7 @@
     },
     {
       "address": "0x488b90",
-      "matching": 0.2,
+      "matching": 1.0,
       "name": "TStream::streamSlot44",
       "type": 1
     },
@@ -3418,7 +3418,7 @@
     },
     {
       "address": "0x488bf0",
-      "matching": 0.18181818181818182,
+      "matching": 1.0,
       "name": "TStream::ReadShort",
       "type": 1
     },
@@ -3436,7 +3436,7 @@
     },
     {
       "address": "0x488ca0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TStream::streamSlot6c",
       "type": 1
     },
@@ -3478,7 +3478,7 @@
     },
     {
       "address": "0x488dd0",
-      "matching": 0.1111111111111111,
+      "matching": 1.0,
       "name": "TStream::streamSlot74",
       "type": 1
     },
@@ -3490,13 +3490,13 @@
     },
     {
       "address": "0x488e30",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TStream::OrphanRetStub_00488e30",
       "type": 1
     },
     {
       "address": "0x488e50",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TStream::OrphanRetStub_00488e50",
       "type": 1
     },
@@ -3634,13 +3634,13 @@
     },
     {
       "address": "0x4891c0",
-      "matching": 0.0,
+      "matching": 0.2,
       "name": "TFileStream::OrphanRetStub_00488e30",
       "type": 1
     },
     {
       "address": "0x4891f0",
-      "matching": 0.0,
+      "matching": 0.2222222222222222,
       "name": "TFileStream::OrphanRetStub_00488e50",
       "type": 1
     },
@@ -3724,7 +3724,7 @@
     },
     {
       "address": "0x4894d0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TCountingStream::OrphanRetStub_00488e30",
       "type": 1
     },
@@ -3736,7 +3736,7 @@
     },
     {
       "address": "0x489520",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TCountingStream::OrphanRetStub_00488e50",
       "type": 1
     },
@@ -3808,13 +3808,13 @@
     },
     {
       "address": "0x489740",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "THandleStream::OrphanRetStub_00488e30",
       "type": 1
     },
     {
       "address": "0x489760",
-      "matching": 0.0,
+      "matching": 0.11764705882352941,
       "name": "THandleStream::OrphanRetStub_00488e50",
       "type": 1
     },
@@ -12187,7 +12187,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12643,13 +12643,13 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12679,7 +12679,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -19935,7 +19935,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
