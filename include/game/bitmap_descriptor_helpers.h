@@ -9,8 +9,8 @@ struct TQuickDrawSurfaceContext;
 
 void GetActiveQuickDrawSurfaceContextAndFlags(TQuickDrawSurfaceContext** outContext, int* outFlags);
 void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext* context, int flags);
-void* GetSurfaceObjectAtContextOffset24(TQuickDrawSurfaceContext* context);
-void* GetSurfaceHeaderFromSurfaceObject(void* surfaceObject);
+void* GetSurfaceNodeSlot(TQuickDrawSurfaceContext* context);
+void* GetSurfaceNodePixelBits(void* surfaceObject);
 short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(TQuickDrawSurfaceContext** outContext,
                                                          short bitDepth, RECT* bounds,
                                                          int hintField18, int arg4, int arg5);

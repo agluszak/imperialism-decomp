@@ -399,10 +399,10 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas674, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas674, savedFlags);
-  atlasSurface = static_cast<TBitmapSurfaceNode**>(GetSurfaceObjectAtContextOffset24(atlas674));
+  atlasSurface = static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(atlas674));
   ReturnConstantTrueQuickDrawFlag(atlasSurface);
   ResetQuickDrawStrokeState();
-  pixelBuffer = reinterpret_cast<int*>(GetSurfaceHeaderFromSurfaceObject(atlasSurface));
+  pixelBuffer = reinterpret_cast<int*>(GetSurfaceNodePixelBits(atlasSurface));
   clearWords = (atlasBounds.right - atlasBounds.left) * (atlasBounds.bottom - atlasBounds.top);
   clearCursor = reinterpret_cast<undefined4*>(pixelBuffer);
   while (clearWords >= 4) {
@@ -428,7 +428,7 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
     ReleaseBitmapLoaderHandle(loaderHandle);
     commodityIndex = commodityIndex + 1;
   }
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas674));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(atlas674));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
   return 0;
 }
@@ -469,11 +469,11 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas688, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas688, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas688));
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas688));
   ResetQuickDrawStrokeState();
   ResolveAndBlitBitmapResourceToActiveAtlas(0x58e, &atlasBounds);
   ResolveAndBlitBitmapResourceToActiveAtlas(0x58f, &atlasBounds);
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas688));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(atlas688));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
 }
 
@@ -528,7 +528,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
     g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas694[stripIndex], 8,
                                                            &resourceBounds);
     SetActiveQuickDrawSurfaceContext(atlas694[stripIndex], savedFlags);
-    ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas694[stripIndex]));
+    ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas694[stripIndex]));
     NoOpRuntimeCallback_00497c00(loaderHandle);
     if (*loaderHandle != 0) {
       loader = *loaderHandle;
@@ -545,7 +545,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
       delete loader;
       ::operator delete(loaderHandle);
     }
-    NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas694[stripIndex]));
+    NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(atlas694[stripIndex]));
     stripIndex = stripIndex + 1;
   }
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
@@ -567,7 +567,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas668, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas668, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas668));
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas668));
   ResetQuickDrawStrokeState();
   dstX = 0;
   dstY = 0;
@@ -620,14 +620,14 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(0x277e, &blitRect);
   }
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas668));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(atlas668));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
 
   atlasBounds.right = 0xa80;
   g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas66c, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas66c, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas66c));
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas66c));
   ResetQuickDrawStrokeState();
   dstX = 0x40;
   resourceId = 0x190;
@@ -687,7 +687,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
     dstX = dstX + 0x40;
     index = index + 1;
   }
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas66c));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(atlas66c));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
 
   atlasBounds.right = 0xd7;
@@ -698,7 +698,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas6b4, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas6b4, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas6b4));
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas6b4));
   ResetQuickDrawStrokeState();
   dstX = 0;
   resourceId = 0x23a;
@@ -712,7 +712,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
     dstX = dstX + 2;
     resourceId = resourceId + 1;
   }
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas6b4));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(atlas6b4));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
 
   if (atlas6b8 != 0) {
@@ -725,10 +725,10 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas6b8, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas6b8, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas6b8));
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas6b8));
   ResetQuickDrawStrokeState();
   ResolveAndBlitBitmapResourceToActiveAtlas(0x244, &atlasBounds);
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas6b8));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(atlas6b8));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
 
   index = 0;
@@ -786,10 +786,10 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   fillRect.bottom = 0x78;
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas670, savedFlags);
-  surfaceObject = static_cast<TBitmapSurfaceNode**>(GetSurfaceObjectAtContextOffset24(atlas670));
+  surfaceObject = static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(atlas670));
   ReturnConstantTrueQuickDrawFlag(surfaceObject);
   ResetQuickDrawStrokeState();
-  pixelBase = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(surfaceObject));
+  pixelBase = reinterpret_cast<int>(GetSurfaceNodePixelBits(surfaceObject));
   strideBytes = static_cast<ushort>((*surfaceObject)->stride) & 0x3fff;
   SetQuickDrawStrokeColor(0xffffff);
   g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x32);
@@ -816,7 +816,7 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     }
     tileIndex = tileIndex + 1;
   }
-  pixelBase = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(surfaceObject));
+  pixelBase = reinterpret_cast<int>(GetSurfaceNodePixelBits(surfaceObject));
   pixelBase = pixelBase + strideBytes * 2;
   scratchBuffer = new unsigned char[0x6540];
   if (scratchBuffer == 0) {
@@ -883,7 +883,7 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   }
   delete[] scratchBuffer;
   SetQuickDrawFillColor(0);
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas670));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(atlas670));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
   RebuildSurfaceRowsWithTemporaryRowBuffer();
   reinterpret_cast<unsigned char*>(g_pGlobalMapState)[4] = 1;
@@ -1495,7 +1495,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
   CopyRect(&resourceBounds, &(*loaderHandle)->bitmapRect);
   g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&tileSurface, 1, &resourceBounds);
   SetActiveQuickDrawSurfaceContext(tileSurface, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(tileSurface));
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(tileSurface));
   NoOpRuntimeCallback_00497c00(loaderHandle);
   TBitmapResourceLoader* loader = *loaderHandle;
   if (loader != 0) {
@@ -1506,7 +1506,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
   }
   ReleaseBitmapLoaderHandle(loaderHandle);
   TBitmapSurfaceNode** surfaceHandle =
-      static_cast<TBitmapSurfaceNode**>(GetSurfaceObjectAtContextOffset24(tileSurface));
+      static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(tileSurface));
   // The region rebuild consumes the node itself (it reads node->dib at +0x1c).
   if (RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], *surfaceHandle) != 0) {
     RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], *surfaceHandle);
@@ -1515,7 +1515,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
   FreeQuickDrawSurfaceContextSlot(&tileSurface);
   // Faithful to the original: the slot is already zeroed here, so this reads
   // *(0 + 0x24) — benign on the Win9x null page the game shipped against.
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(tileSurface));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(tileSurface));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
   return 0;
 }
@@ -1601,17 +1601,17 @@ undefined TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(TBitmapSurfaceNod
   TBitmapSurfaceNode** atlasSurface;
   short srcRowOffset;
   if (param_2 < 100) {
-    atlasSurface = static_cast<TBitmapSurfaceNode**>(GetSurfaceObjectAtContextOffset24(atlas674));
+    atlasSurface = static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(atlas674));
     srcRowOffset = static_cast<short>(param_2 << 5);
   } else {
-    atlasSurface = static_cast<TBitmapSurfaceNode**>(GetSurfaceObjectAtContextOffset24(atlas680));
+    atlasSurface = static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(atlas680));
     srcRowOffset = static_cast<short>((param_2 - 100) * 0x20);
   }
   ushort dstStrideRaw = static_cast<ushort>((*dstSurface)->stride);
   ReturnConstantTrueQuickDrawFlag(atlasSurface);
-  int srcPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(atlasSurface));
+  int srcPixels = reinterpret_cast<int>(GetSurfaceNodePixelBits(atlasSurface));
   ushort srcStrideRaw = static_cast<ushort>((*atlasSurface)->stride);
-  int dstPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(dstSurface));
+  int dstPixels = reinterpret_cast<int>(GetSurfaceNodePixelBits(dstSurface));
   int dstStrideBytes = static_cast<int>(static_cast<short>(dstStrideRaw & 0x3fff));
   char* srcRow = reinterpret_cast<char*>(srcPixels + srcRowOffset);
   char* dstRow = reinterpret_cast<char*>(dstPixels + param_4 * dstStrideBytes + param_3);
@@ -1693,11 +1693,11 @@ undefined TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(TBitmapSurfaceNod
 void TMacViewMgr::DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, short nIconVariant,
                                            short nDstX, short nYShift) {
   TBitmapSurfaceNode** atlasSurface =
-      static_cast<TBitmapSurfaceNode**>(GetSurfaceObjectAtContextOffset24(unitIconAtlas));
+      static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(unitIconAtlas));
   ReturnConstantTrueQuickDrawFlag(atlasSurface);
-  int srcPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(atlasSurface));
+  int srcPixels = reinterpret_cast<int>(GetSurfaceNodePixelBits(atlasSurface));
   ushort srcStrideRaw = static_cast<ushort>((*atlasSurface)->stride);
-  int dstPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(pDstSurface));
+  int dstPixels = reinterpret_cast<int>(GetSurfaceNodePixelBits(pDstSurface));
   int dstStrideBytes =
       static_cast<int>(static_cast<short>(static_cast<ushort>((*pDstSurface)->stride) & 0x3fff));
   char* srcRow = reinterpret_cast<char*>(srcPixels + static_cast<short>(nIconVariant * 0x14));
@@ -1763,11 +1763,11 @@ void TMacViewMgr::DrawStrategicMapUnitIconOverlay(TBitmapSurfaceNode** pDstSurfa
     return;
   }
   TBitmapSurfaceNode** atlasSurface =
-      static_cast<TBitmapSurfaceNode**>(GetSurfaceObjectAtContextOffset24(unitOverlayAtlas));
+      static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(unitOverlayAtlas));
   ReturnConstantTrueQuickDrawFlag(atlasSurface);
-  int srcPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(atlasSurface));
+  int srcPixels = reinterpret_cast<int>(GetSurfaceNodePixelBits(atlasSurface));
   ushort srcStrideRaw = static_cast<ushort>((*atlasSurface)->stride);
-  int dstPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(pDstSurface));
+  int dstPixels = reinterpret_cast<int>(GetSurfaceNodePixelBits(pDstSurface));
   int dstStrideBytes =
       static_cast<int>(static_cast<short>(static_cast<ushort>((*pDstSurface)->stride) & 0x3fff));
   char* srcRow = reinterpret_cast<char*>(srcPixels + overlaySourceRow * (srcStrideRaw & 0x3fff));

@@ -843,10 +843,10 @@ undefined4 HandleBlinkStateAndScheduleTimerTick(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0
-// ghidra_proto undefined WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0()
+// ghidra_name ScaleAndApplyAuxOutputVolume
+// ghidra_proto undefined __cdecl ScaleAndApplyAuxOutputVolume(int volumeScalar)
 // FUNCTION: IMPERIALISM 0x00593cb0
-undefined4 WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0(void)
+undefined4 ScaleAndApplyAuxOutputVolume(void)
 {
   return 0;
 }

@@ -218,8 +218,7 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   ApplyHitRegionToClip(surfaceGuard.surfaceWrapper);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(
-      GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
 
   TControl* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
@@ -243,7 +242,7 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   ApplyRectClipRegionToClip(&clipRect);
   mainView->ApplyRectSlot110(&queryBounds);
 
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
   SnapshotHitRegionToClipCache(reinterpret_cast<int*>(surfaceGuard.surfaceWrapper));
   clipSnapshotEvent = static_cast<short>(param_1);

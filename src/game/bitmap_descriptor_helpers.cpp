@@ -230,7 +230,7 @@ void GetActiveQuickDrawSurfaceContextAndFlags(TQuickDrawSurfaceContext** outCont
 }
 
 // FUNCTION: IMPERIALISM 0x004962a0
-void* GetSurfaceObjectAtContextOffset24(TQuickDrawSurfaceContext* context) {
+void* GetSurfaceNodeSlot(TQuickDrawSurfaceContext* context) {
   return context->surfaceObject;
 }
 
@@ -266,7 +266,7 @@ void NoOpQuickDrawLifecycleHookB(void* surfaceObject) {
 }
 
 // FUNCTION: IMPERIALISM 0x00497300
-void* GetSurfaceHeaderFromSurfaceObject(void* surfaceObject) {
+void* GetSurfaceNodePixelBits(void* surfaceObject) {
   return **reinterpret_cast<void***>(surfaceObject);
 }
 
@@ -295,7 +295,7 @@ LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
   }
 
   SetActiveQuickDrawSurfaceContext(outContext, savedFlags);
-  void* surfaceObject = GetSurfaceObjectAtContextOffset24(outContext);
+  void* surfaceObject = GetSurfaceNodeSlot(outContext);
   ReturnConstantTrueQuickDrawFlag(surfaceObject);
 
   loader->EnsureBitmapResourceLoadedAndCopyRectSize();

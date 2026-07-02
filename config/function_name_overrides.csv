@@ -40,3 +40,4 @@ address|name|prototype
 0x0048dcc0|TWindow::GetEmbeddedDialogBehavior|unsigned char* __thiscall GetEmbeddedDialogBehavior(void)
 0x0048da10|TWindow::GetDialogBehaviorByte10|undefined __thiscall GetDialogBehaviorByte10(void)
 0x0048dc60|TWindow::GetDialogBehaviorByte20|undefined __thiscall GetDialogBehaviorByte20(void)
+0x00593cb0|ScaleAndApplyAuxOutputVolume|undefined __cdecl ScaleAndApplyAuxOutputVolume(int volumeScalar)

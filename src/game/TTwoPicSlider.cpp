@@ -16,7 +16,7 @@
 #include <new>
 #include "game/CString.h"
 
-undefined4 WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0(void);
+undefined4 ScaleAndApplyAuxOutputVolume(void);
 
 // SYNTHETIC: IMPERIALISM 0x0056e1e0
 // TTwoPicSlider::GetRuntimeClass
@@ -171,8 +171,12 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventS
 
       if (slider->mode == 1) {
         int volumeScalar = SliderScaledValue(slider, 0xff);
-        reinterpret_cast<void(__cdecl*)(int)>(
-            WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0)(volumeScalar);
+        // 0x593cb0: real cdecl(int) free function, not a class thunk (no ECX use
+        // by its own callee chain 0x47cdd0 -> SetAuxOutputVolumeFromScalar
+        // 0x5e1500). Scales volumeScalar (0-255) by 256 before forwarding --
+        // retirement (inlining the *256 + calling SetAuxOutputVolumeFromScalar
+        // directly) is a follow-up, not done here.
+        reinterpret_cast<void(__cdecl*)(int)>(ScaleAndApplyAuxOutputVolume)(volumeScalar);
         // Original: mov eax,[0x6a20f8]; mov [eax+0x4e],di — the master-volume
         // preference slot on the TSimMgr singleton (not a raw global).
         g_pLocalizationTable->preferenceValues[5] = static_cast<short>(volumeScalar);

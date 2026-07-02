@@ -260,8 +260,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
     SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
 
     if (previousSurface != g_pPrimaryRenderSurfaceContext) {
-      ReturnConstantTrueQuickDrawFlag(
-          GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
+      ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
     }
 
     // Original passes the present rect here (mov ecx,[esp+0x58]; thiscall 0x48f3c0),
@@ -300,8 +299,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
                                                                                              0);
 
     if (previousSurface != g_pPrimaryRenderSurfaceContext) {
-      NoOpQuickDrawLifecycleHookB(
-          GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
+      NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
     }
 
     SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
@@ -362,8 +360,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
   if (legendSurfaceModeAt524 != 4) {
     GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
     SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
-    ReturnConstantTrueQuickDrawFlag(
-        GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
+    ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
 
     short nationIndex = 0;
     do {
@@ -400,7 +397,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
     reinterpret_cast<void(__fastcall*)(void*, int)>(RenderTerrainAndMinorNationLegendLabels)(this,
                                                                                              0);
     legendSurfaceModeAt524 = 4;
-    NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
+    NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
     SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
   }
 
@@ -502,8 +499,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
   if (legendSurfaceModeAt524 != 1) {
     GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
     SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
-    ReturnConstantTrueQuickDrawFlag(
-        GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
+    ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
 
     int terrainIndex = 0;
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
@@ -532,7 +528,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
     reinterpret_cast<void(__fastcall*)(void*, int)>(RenderTerrainAndMinorNationLegendLabels)(this,
                                                                                              0);
     legendSurfaceModeAt524 = 1;
-    NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
+    NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
     SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
   }
 
