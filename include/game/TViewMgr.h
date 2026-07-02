@@ -70,15 +70,20 @@ public:
   virtual void UiRuntimeSlotA0();                                       // 0xa0
   virtual void UiRuntimeSlotA4(int payload, TEventHandler* waitTarget); // 0xa4
   virtual void UiRuntimeSlotA8();                                       // 0xa8
-  virtual void RefreshCityProductionUiSlotAc();                         // 0xac
-  virtual void UiRuntimeSlotB0();                                       // 0xb0
+  // Forwards to g_pStrategicMapViewSystem's own vtable slot 0x5c/0x60/0x68/0x6c/
+  // 0x70/0x74 (TMacViewMgr) -- verified via disassembly (0057db14-style pattern:
+  // `mov ecx,[g_pStrategicMapViewSystem]; mov eax,[ecx]; jmp [eax+0xNN]`, no
+  // wrapping logic). Real orig names embed the target slot's byte offset. bd
+  // imperialism-decomp-kdm.
+  virtual void InvokeStrategicMapViewMethod5C(); // 0xac 0x5d7f70
+  virtual void InvokeStrategicMapViewMethod60(short param1); // 0xb0 0x5d7f90
   virtual void UiRuntimeSlotB4();                                       // 0xb4
   virtual void UiRuntimeSlotB8();                                       // 0xb8
   virtual void UiRuntimeSlotBC();                                       // 0xbc
-  virtual void UiRuntimeSlotC0();                                       // 0xc0
-  virtual void UiRuntimeSlotC4();                                       // 0xc4
-  virtual void UiRuntimeSlotC8();                                       // 0xc8
-  virtual void UiRuntimeSlotCC();                                       // 0xcc
+  virtual undefined InvokeStrategicMapViewMethod68(); // 0xc0 0x5dc180
+  virtual undefined InvokeStrategicMapViewMethod70(); // 0xc4 0x5dc1c0
+  virtual undefined InvokeStrategicMapViewMethod74(); // 0xc8 0x5dc1a0
+  virtual void InvokeStrategicMapViewMethod6C(); // 0xcc 0x5dc160
   virtual void UiRuntimeSlotD0();                                       // 0xd0
   virtual void UiRuntimeSlotD4(int arg);                                // 0xd4
   virtual void UiRuntimeSlotD8();                                       // 0xd8
@@ -90,7 +95,7 @@ public:
   virtual void UiRuntimeSlotF0();                                       // 0xf0
   virtual void UiRuntimeSlotF4();                                       // 0xf4
   virtual void UiRuntimeSlotF8();                                       // 0xf8
-  virtual void UiRuntimeSlotFC();                                       // 0xfc
+  virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   virtual void UiRuntimeSlot100();                                      // 0x100
   virtual void UiRuntimeSlot104();                                      // 0x104
   virtual void UiRuntimeSlot108();                                      // 0x108

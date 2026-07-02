@@ -913,7 +913,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
     } else if (newCode < 0x7d9) {
       switch (newCode) {
       case 0x5dd:
-        this->UiRuntimeSlotFC();
+        this->NoOpTurnEventStateVtableSlotFC();
         break;
       case 0x5de:
         this->UiRuntimeSlot100();
@@ -1012,9 +1012,15 @@ void TViewMgr::UiRuntimeSlotA8() {
   }
 }
 
-void TViewMgr::RefreshCityProductionUiSlotAc() {}
+// FUNCTION: IMPERIALISM 0x005d7f70
+void TViewMgr::InvokeStrategicMapViewMethod5C() {
+  g_pStrategicMapViewSystem->OrphanLeaf_NoCall_Ins06_0050d8d0();
+}
 
-void TViewMgr::UiRuntimeSlotB0() {}
+// FUNCTION: IMPERIALISM 0x005d7f90
+void TViewMgr::InvokeStrategicMapViewMethod60(short param1) {
+  g_pStrategicMapViewSystem->OrphanLeaf_NoCall_Ins06_0050d8f0(param1);
+}
 
 void TViewMgr::UiRuntimeSlotB4() {}
 
@@ -1232,13 +1238,34 @@ void TViewMgr::UiRuntimeSlotBC() {
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagCity, 0x2731, 0);
 }
 
-void TViewMgr::UiRuntimeSlotC0() {}
+// FUNCTION: IMPERIALISM 0x005dbd10
+void TViewMgr::NoOpTurnEventStateVtableSlotFC() {}
 
-void TViewMgr::UiRuntimeSlotC4() {}
+void TViewMgr::UiRuntimeSlot100() {}
+void TViewMgr::UiRuntimeSlot104() {}
+void TViewMgr::UiRuntimeSlot108() {}
+void TViewMgr::UiRuntimeSlot10C() {}
+void TViewMgr::UiRuntimeSlot110() {}
 
-void TViewMgr::UiRuntimeSlotC8() {}
+// FUNCTION: IMPERIALISM 0x005dc160
+void TViewMgr::InvokeStrategicMapViewMethod6C() {
+  g_pStrategicMapViewSystem->WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950();
+}
 
-void TViewMgr::UiRuntimeSlotCC() {}
+// FUNCTION: IMPERIALISM 0x005dc180
+undefined TViewMgr::InvokeStrategicMapViewMethod68() {
+  return g_pStrategicMapViewSystem->RenderOffscreenBitmapGridStripAndRestoreContext();
+}
+
+// FUNCTION: IMPERIALISM 0x005dc1a0
+undefined TViewMgr::InvokeStrategicMapViewMethod74() {
+  return g_pStrategicMapViewSystem->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
+}
+
+// FUNCTION: IMPERIALISM 0x005dc1c0
+undefined TViewMgr::InvokeStrategicMapViewMethod70() {
+  return g_pStrategicMapViewSystem->RenderTurnEventPalettePreviewSurfaceAndProgress();
+}
 
 // FUNCTION: IMPERIALISM 0x005dc1e0
 void TViewMgr::UiRuntimeSlotD0() {
@@ -1266,12 +1293,6 @@ void TViewMgr::UiRuntimeSlotEC() {}
 void TViewMgr::UiRuntimeSlotF0() {}
 void TViewMgr::UiRuntimeSlotF4() {}
 void TViewMgr::UiRuntimeSlotF8() {}
-void TViewMgr::UiRuntimeSlotFC() {}
-void TViewMgr::UiRuntimeSlot100() {}
-void TViewMgr::UiRuntimeSlot104() {}
-void TViewMgr::UiRuntimeSlot108() {}
-void TViewMgr::UiRuntimeSlot10C() {}
-void TViewMgr::UiRuntimeSlot110() {}
 
 // FUNCTION: IMPERIALISM 0x005dcaa0
 void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {

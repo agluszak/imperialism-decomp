@@ -197,7 +197,7 @@ bool TCapacityOrder::SetCapacityOrderQuantity(short quantity) {
                          ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
   city->Refresh80();
   if (g_pUiRuntimeContext != 0) {
-    g_pUiRuntimeContext->RefreshCityProductionUiSlotAc();
+    g_pUiRuntimeContext->InvokeStrategicMapViewMethod5C();
   }
   return true;
 }

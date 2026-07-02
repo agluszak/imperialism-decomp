@@ -651,22 +651,6 @@ undefined4 InvokeMainWidgetMethod1CCWithArgs(void)
   return 0;
 }
 
-// ghidra_name InvokeStrategicMapViewMethod5C
-// ghidra_proto undefined InvokeStrategicMapViewMethod5C()
-// FUNCTION: IMPERIALISM 0x005d7f70
-undefined4 InvokeStrategicMapViewMethod5C(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeStrategicMapViewMethod60
-// ghidra_proto undefined InvokeStrategicMapViewMethod60()
-// FUNCTION: IMPERIALISM 0x005d7f90
-undefined4 InvokeStrategicMapViewMethod60(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEvent8FC_RebuildPageTabsAndTitles
 // ghidra_proto undefined HandleTurnEvent8FC_RebuildPageTabsAndTitles()
 // FUNCTION: IMPERIALISM 0x005d8750
@@ -731,14 +715,6 @@ undefined4 HandleTurnEventDialogFactorySlotF8(void)
   return 0;
 }
 
-// ghidra_name NoOpTurnEventStateVtableSlotFC
-// ghidra_proto undefined NoOpTurnEventStateVtableSlotFC()
-// FUNCTION: IMPERIALISM 0x005dbd10
-undefined4 NoOpTurnEventStateVtableSlotFC(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::HandleTurnEvent5DE_RefreshMainView
 // ghidra_proto undefined HandleTurnEvent5DE_RefreshMainView()
 // FUNCTION: IMPERIALISM 0x005dbd30
@@ -767,38 +743,6 @@ undefined4 HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4(void)
 // ghidra_proto undefined BuildTurnStateStyledTextAndDispatchMainRoutine()
 // FUNCTION: IMPERIALISM 0x005dbe50
 undefined4 BuildTurnStateStyledTextAndDispatchMainRoutine(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeStrategicMapViewMethod6C
-// ghidra_proto undefined InvokeStrategicMapViewMethod6C()
-// FUNCTION: IMPERIALISM 0x005dc160
-undefined4 InvokeStrategicMapViewMethod6C(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeStrategicMapViewMethod68
-// ghidra_proto undefined InvokeStrategicMapViewMethod68()
-// FUNCTION: IMPERIALISM 0x005dc180
-undefined4 InvokeStrategicMapViewMethod68(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeStrategicMapViewMethod74
-// ghidra_proto undefined InvokeStrategicMapViewMethod74()
-// FUNCTION: IMPERIALISM 0x005dc1a0
-undefined4 InvokeStrategicMapViewMethod74(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeStrategicMapViewMethod70
-// ghidra_proto undefined InvokeStrategicMapViewMethod70()
-// FUNCTION: IMPERIALISM 0x005dc1c0
-undefined4 InvokeStrategicMapViewMethod70(void)
 {
   return 0;
 }

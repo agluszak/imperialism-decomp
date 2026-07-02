@@ -3430,7 +3430,7 @@
     },
     {
       "address": "0x488c50",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50",
       "type": 1
     },
@@ -3670,7 +3670,7 @@
     },
     {
       "address": "0x489360",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TFileStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50",
       "type": 1
     },
@@ -11561,7 +11561,7 @@
     },
     {
       "address": "0x4d6bf0",
-      "matching": 0.20728291316526612,
+      "matching": 0.48066298342541436,
       "name": "TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders",
       "type": 1
     },
@@ -12619,7 +12619,7 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12631,13 +12631,13 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12679,7 +12679,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -19935,7 +19935,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -32106,7 +32106,7 @@
     },
     {
       "address": "0x5c2fd0",
-      "matching": 0.4715447154471545,
+      "matching": 0.6666666666666666,
       "name": "TMilitaryUnit::ReadFrom",
       "type": 1
     },
@@ -32778,13 +32778,13 @@
     },
     {
       "address": "0x5d7f70",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "InvokeStrategicMapViewMethod5C",
       "type": 1
     },
     {
       "address": "0x5d7f90",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "InvokeStrategicMapViewMethod60",
       "type": 1
     },
@@ -32880,7 +32880,7 @@
     },
     {
       "address": "0x5dbd10",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "NoOpTurnEventStateVtableSlotFC",
       "type": 1
     },
@@ -32910,25 +32910,25 @@
     },
     {
       "address": "0x5dc160",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "InvokeStrategicMapViewMethod6C",
       "type": 1
     },
     {
       "address": "0x5dc180",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "InvokeStrategicMapViewMethod68",
       "type": 1
     },
     {
       "address": "0x5dc1a0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "InvokeStrategicMapViewMethod74",
       "type": 1
     },
     {
       "address": "0x5dc1c0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "InvokeStrategicMapViewMethod70",
       "type": 1
     },
