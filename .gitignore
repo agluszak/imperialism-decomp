@@ -53,6 +53,11 @@ vendor/ghidra/imperialism-decomp.rep/
 # Populate with `just vendor-msvc500-headers`.
 vendor/msvc500/headers/
 
+# Local DirectX 5 SDK mirror for agent/reference use.
+# Populate with `just vendor-directx-headers`.
+vendor/directx/include/
+vendor/directx/lib/
+
 scratch
 
 # reccmp detect output at repo root (build artifact)

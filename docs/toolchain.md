@@ -27,6 +27,24 @@ reccmp matching and must not influence the MSVC500 build.
   language linkage, `CString::Header` missing `()`, two `TCivDescription`
   layout assertions).
 
+## DirectX 5 SDK headers (dplay.h shadowing)
+
+- The portable `archaic-msvc/msvc500` toolchain ships a **DirectX 1** `<dplay.h>` whose
+  `IDirectPlay` puts Receive/Send at vtable +0x54/+0x5c. The binary dispatches Receive
+  at +0x64 and Send at +0x68 — the **IDirectPlay2** slot order (3 IUnknown + 22 methods
+  before Receive), so the game was built against a DirectX 3+ SDK.
+- The Docker image therefore bakes the **DirectX 5 SDK** (August 1997, period-correct;
+  `idx5sdk.exe` from archive.org, a WEXTRACT SFX wrapping an MSZip cab) into
+  `C:\dxsdk\{include,lib}`. `C:\dxsdk\include` is placed **before** `C:\msvc\include`
+  on `INCLUDE` (docker/msvc500/entrypoint.py) so its `dplay.h` shadows the DX1 copy;
+  the clang-cl lint toolchain (cmake/clang-cl-i686.cmake) mirrors the same order.
+- All `DPERR_*` codes hard-coded in the original error tree
+  (`TNetMgr.cpp::LookupDirectPlayErrorDetailText`) were verified to match the DX5
+  header values (`MAKE_DPHRESULT` = `0x88770000 + code`, plus the `E_*` aliases).
+- Nothing links `dplayx.lib` yet; the lib dir is on `LIB` for future session/lobby
+  ports. A gitignored local reference mirror lives at `vendor/directx/` via
+  `just vendor-directx-headers`.
+
 ## Current Hypothesis
 
 - Architecture: 32-bit x86 PE

@@ -14,8 +14,10 @@ set(CMAKE_CXX_COMPILER clang-cl)
 set(CMAKE_C_COMPILER_TARGET ${_target})
 set(CMAKE_CXX_COMPILER_TARGET ${_target})
 
-# Tell clang-cl where the real MSVC/MFC headers are.
+# Tell clang-cl where the real MSVC/MFC headers are. The DirectX 5 SDK dir comes
+# first so its IDirectPlay2-era <dplay.h> shadows the DirectX 1 copy in msvc/include.
 set(MSVC_INCLUDE_DIRS
+    "/root/.wine/drive_c/dxsdk/include"
     "/root/.wine/drive_c/msvc/include"
     "/root/.wine/drive_c/msvc/mfc/include"
     "/root/.wine/drive_c/msvc/atl/include"

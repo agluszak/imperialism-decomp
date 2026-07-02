@@ -21,12 +21,14 @@ def configure_wine_env() -> None:
             r"C:\msvc\bin;C:\msvc\redist;C:\cmake\bin;C:\windows\system32",
         ),
         (
+            # C:\dxsdk\include (DirectX 5 SDK) must precede C:\msvc\include so its
+            # IDirectPlay2-era <dplay.h> shadows the DirectX 1 copy in the toolchain.
             "INCLUDE",
-            r"C:\msvc\include;C:\msvc\mfc\include;C:\msvc\atl\include",
+            r"C:\dxsdk\include;C:\msvc\include;C:\msvc\mfc\include;C:\msvc\atl\include",
         ),
         (
             "LIB",
-            r"C:\msvc\lib;C:\msvc\mfc\lib",
+            r"C:\msvc\lib;C:\msvc\mfc\lib;C:\dxsdk\lib",
         ),
         ("TMP", r"Z:\build"),
         ("TEMP", r"Z:\build"),

@@ -819,6 +819,11 @@ bootstrap-reccmp:
 vendor-msvc500-headers *args:
   uv run python -m tools.workflow.vendor_msvc500_headers {{args}}
 
+# Mirror the DirectX 5 SDK inc/lib (reference copy of C:\dxsdk in the build image).
+[group('setup')]
+vendor-directx-headers *args:
+  uv run python -m tools.workflow.vendor_directx_headers {{args}}
+
 # MUTATES: vendor/macos_codewarrior/ghidra (imports the Mac PEF into its own project).
 [group('setup')]
 import-macos-pef: _require-ghidra-install
