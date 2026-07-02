@@ -2770,8 +2770,8 @@
     },
     {
       "address": "0x486290",
-      "matching": 0.0,
-      "name": "UpdateTextEntrySharedStringIfChanged",
+      "matching": 1.0,
+      "name": "TStaticText::UpdateTextEntrySharedStringIfChanged",
       "type": 1
     },
     {
@@ -4373,7 +4373,7 @@
     {
       "address": "0x48b6d0",
       "matching": 1.0,
-      "name": "TView::VTableSlotBD",
+      "name": "TView::RefreshControl",
       "type": 1
     },
     {
@@ -16233,7 +16233,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20545454545454545,
+      "matching": 0.20636363636363636,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -31189,8 +31189,8 @@
     },
     {
       "address": "0x5b5cb0",
-      "matching": 0.43478260869565216,
-      "name": "TInfoBarPictureText::SerializeRecordList_0x0C_WithBlockPool_A",
+      "matching": 0.4778761061946903,
+      "name": "TInfoBarPictureText::SetTextAndLayoutRect",
       "type": 1
     },
     {
@@ -31267,14 +31267,14 @@
     },
     {
       "address": "0x5b6480",
-      "matching": 0.3333333333333333,
-      "name": "TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480",
+      "matching": 0.8888888888888888,
+      "name": "TDeluxeText::UpdateTextEntrySharedString",
       "type": 1
     },
     {
       "address": "0x5b64a0",
-      "matching": 0.13333333333333333,
-      "name": "TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0",
+      "matching": 0.9629629629629629,
+      "name": "TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify",
       "type": 1
     },
     {
@@ -31297,8 +31297,8 @@
     },
     {
       "address": "0x5b66b0",
-      "matching": 0.5238095238095238,
-      "name": "TInfoBarText::SerializeRecordList_0x0C_WithBlockPool_A",
+      "matching": 0.6896551724137931,
+      "name": "TInfoBarText::SetTextAndLayoutRect",
       "type": 1
     },
     {
@@ -31310,7 +31310,7 @@
     {
       "address": "0x5b6840",
       "matching": 0.45,
-      "name": "TInfoBarText::AssertValid",
+      "name": "TInfoBarText::InitializeMapHintTextStyleAndThemeFlags",
       "type": 1
     },
     {
@@ -41058,12 +41058,6 @@
       "type": 5
     },
     {
-      "address": "0x63eb00",
-      "matching": 1.0,
-      "name": "TInfoBarText::`vftable'",
-      "type": 5
-    },
-    {
       "address": "0x63ed78",
       "matching": 1.0,
       "name": "TNominationView::`vftable'",
@@ -41127,12 +41121,6 @@
       "address": "0x6404b0",
       "matching": 1.0,
       "name": "TMapKey::`vftable'",
-      "type": 5
-    },
-    {
-      "address": "0x6406d8",
-      "matching": 1.0,
-      "name": "TDeluxeText::`vftable'",
       "type": 5
     },
     {
@@ -43257,12 +43245,6 @@
       "address": "0x66ce00",
       "matching": 1.0,
       "name": "TDropShadowText::`vftable'",
-      "type": 5
-    },
-    {
-      "address": "0x66d288",
-      "matching": 1.0,
-      "name": "TInfoBarPictureText::`vftable'",
       "type": 5
     },
     {

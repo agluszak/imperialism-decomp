@@ -27,6 +27,10 @@ public:
   TObject* ShallowClone() override;                 // 0x20 0x48fc00
   void ApplyRectSlot110(RECT* rectBuffer) override; // 0x110 0x48ffb0
 
+  // 0x486290 — non-virtual convenience: qualified forward to
+  // AssignTextSharedRefIfChangedAndMaybeInvalidate(text, 0).
+  void UpdateTextEntrySharedStringIfChanged(CString* text);
+
   // TStaticText's five new virtuals beyond TControl (which ends at byte 0x1c0).
   virtual undefined SetTextThemeCodeAndMaybeRefresh(short themeCode,
                                                     char refreshFlag); // 0x1c4 0x48ff70

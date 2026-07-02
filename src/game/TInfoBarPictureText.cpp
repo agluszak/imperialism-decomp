@@ -14,16 +14,14 @@ TInfoBarPictureText::TInfoBarPictureText() {}
 TInfoBarPictureText::~TInfoBarPictureText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5cb0
-undefined TInfoBarPictureText::ConstructTInfoBarTextBaseState(RECT* layoutRect) {
+undefined TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
   RECT* cachedLayout = reinterpret_cast<RECT*>(reinterpret_cast<char*>(this) + 0xa4);
   if (EqualRect(layoutRect, cachedLayout) == 0) {
     CopyRect(cachedLayout, layoutRect);
     RECT clipRect;
     CopyRectFromBuildRectFromSlot158(&clipRect);
     InvalidateCityDialogRectRegion(&clipRect, 1);
-    CString textArg;
-    WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(
-        reinterpret_cast<undefined4>(&textArg));
+    UpdateTextEntrySharedString(&text);
     RefreshControl();
   }
   return 0;

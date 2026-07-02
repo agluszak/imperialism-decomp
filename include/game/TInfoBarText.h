@@ -3,11 +3,12 @@
 #include "game/TDeluxeText.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TInfoBarText and its role. Base edge (TDeluxeText) recovered from RTTI CRuntimeClass chain: TInfoBarText -> TDeluxeText -> TTEView -> TStaticText -> TControl -> TView -> TEventHandler -> TObject -> CObject.
-// VTABLE: IMPERIALISM 0x0063eb00
+// TODO(manifest): describe TInfoBarText and its role. Base edge (TDeluxeText) recovered from RTTI
+// CRuntimeClass chain: TInfoBarText -> TDeluxeText -> TTEView -> TStaticText -> TControl -> TView
+// -> TEventHandler -> TObject -> CObject. VTABLE: IMPERIALISM 0x0063eb00
 class TInfoBarText : public TDeluxeText {
 public:
-// === BEGIN GENERATED DECLS (TInfoBarText) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TInfoBarText) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TInfoBarText)
   virtual ~TInfoBarText(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -131,16 +132,17 @@ public:
   // slot 0x78 WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0 inherited unchanged (0x5b62e0)
   // slot 0x79 ConstructTMapKeyBaseState_Impl inherited unchanged (0x5b62a0)
   // slot 0x7a BuildCityViewProductionControls_Impl inherited unchanged (0x5b64e0)
-  // slot 0x7b WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0 inherited unchanged (0x5b64a0)
-  // slot 0x7c WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480 inherited unchanged (0x5b6480)
-  // slot 0x7d Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360 inherited unchanged (0x5b6360)
-  // slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
-  virtual undefined DestructTInfoBarTextAndMaybeFree(); // slot 0x7f 0x5b6770
-  virtual undefined ConstructTInfoBarTextBaseState(RECT* param_1); // slot 0x80 0x5b66b0
-  virtual undefined InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
-                                                            int styleSecondary); // slot 0x81 0x5b6840
-  virtual undefined OrphanCallChain_C1_I05_005b6810(); // slot 0x82 0x5b6810
-// === END GENERATED DECLS (TInfoBarText) ===
+  // slot 0x7b UpdateTextEntrySharedStringAndMaybeNotify inherited unchanged (0x5b64a0)
+  // slot 0x7c UpdateTextEntrySharedString inherited unchanged (0x5b6480)
+  // slot 0x7d Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360 inherited unchanged
+  // (0x5b6360) slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
+  virtual undefined DestructTInfoBarTextAndMaybeFree();                   // slot 0x7f 0x5b6770
+  virtual undefined SetTextAndLayoutRect(CString text, RECT* layoutRect); // slot 0x80 0x5b66b0
+  virtual undefined
+  InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
+                                          int styleSecondary); // slot 0x81 0x5b6840
+  virtual undefined OrphanCallChain_C1_I05_005b6810();         // slot 0x82 0x5b6810
+  // === END GENERATED DECLS (TInfoBarText) ===
 
   int cursorThemeCode98;      // +0x98
   int cursorThemeCode9c;      // +0x9c
@@ -151,7 +153,8 @@ public:
   TInfoBarText();
 };
 
-// === BEGIN GENERATED (TInfoBarText) — refreshed by `just gen-class TInfoBarText`; do not hand-edit ===
+// === BEGIN GENERATED (TInfoBarText) — refreshed by `just gen-class TInfoBarText`; do not hand-edit
+// ===
 // clang-format off
 // vtable @ 0x0063eb00 (131 slots), object size 0xb4, base TDeluxeText
 //   slot 0x00  byte 0x00  0x005b6690  override  GetTEventHandlerClassNamePointer
@@ -277,12 +280,12 @@ public:
 //   slot 0x78  byte 0x1e0  0x005b62e0  inherited WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0
 //   slot 0x79  byte 0x1e4  0x005b62a0  inherited ConstructTMapKeyBaseState_Impl
 //   slot 0x7a  byte 0x1e8  0x005b64e0  inherited BuildCityViewProductionControls_Impl
-//   slot 0x7b  byte 0x1ec  0x005b64a0  inherited WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
-//   slot 0x7c  byte 0x1f0  0x005b6480  inherited WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
+//   slot 0x7b  byte 0x1ec  0x005b64a0  inherited UpdateTextEntrySharedStringAndMaybeNotify
+//   slot 0x7c  byte 0x1f0  0x005b6480  inherited UpdateTextEntrySharedString
 //   slot 0x7d  byte 0x1f4  0x005b6360  inherited Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360
 //   slot 0x7e  byte 0x1f8  0x005b63e0  inherited RecenterTextFromMeasuredWidthAndMaybeInvalidate
 //   slot 0x7f  byte 0x1fc  0x005b6770  override  VTableSlot7F
-//   slot 0x80  byte 0x200  0x005b66b0  override  ConstructTInfoBarTextBaseState
+//   slot 0x80  byte 0x200  0x005b66b0  override  SetTextAndLayoutRect
 //   slot 0x81  byte 0x204  0x005b6840  override  InitializeMapHintTextStyleAndThemeFlags
 //   slot 0x82  byte 0x208  0x005b6810  override  OrphanCallChain_C1_I05_005b6810
 // object size 0xb4 (RTTI) unverified against the header layout;

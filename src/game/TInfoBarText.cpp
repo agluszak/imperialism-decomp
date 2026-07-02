@@ -20,13 +20,15 @@ IMPLEMENT_DYNCREATE(TInfoBarText, TDeluxeText)
 TInfoBarText::TInfoBarText() {}
 
 // FUNCTION: IMPERIALISM 0x005b66b0
-undefined TInfoBarText::ConstructTInfoBarTextBaseState(RECT* layoutRect) {
-  RECT* cachedLayout = reinterpret_cast<RECT*>(reinterpret_cast<char*>(this) + 0xa4);
-  if (EqualRect(layoutRect, cachedLayout) == 0) {
-    CopyRect(cachedLayout, layoutRect);
-    CString textArg;
-    WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(
-        reinterpret_cast<undefined4>(&textArg));
+undefined TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
+  // Original signature carries the text by value (the previous port dropped it and
+  // pushed a fresh empty CString instead).
+  if (EqualRect(layoutRect, &layoutRectA4) == 0) {
+    layoutRectA4.left = layoutRect->left;
+    layoutRectA4.top = layoutRect->top;
+    layoutRectA4.right = layoutRect->right;
+    layoutRectA4.bottom = layoutRect->bottom;
+    UpdateTextEntrySharedString(&text);
     RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
   }
   return 0;

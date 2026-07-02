@@ -29,6 +29,11 @@ undefined TStaticText::AssignSharedStringFromField84() {
 
 IMPLEMENT_DYNCREATE(TStaticText, TControl)
 
+// FUNCTION: IMPERIALISM 0x00486290
+void TStaticText::UpdateTextEntrySharedStringIfChanged(CString* text) {
+  TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(text, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x0048F890
 TStaticText::TStaticText()
     : TControl(), text(), field88((void*)0xffffffff), field8C(0), field90(0) {

@@ -640,7 +640,7 @@ address|name|symbol|size|type|prototype|provenance
 486050|TTEView::ConstructTTEViewBaseState||109|function|undefined ConstructTTEViewBaseState()|
 4860e0|TTEView::DestructTTEViewAndMaybeFree||205|function|undefined DestructTTEViewAndMaybeFree()|
 4861f0|AssignTextFromResourceIdAndMaybeInvalidate||127|function|undefined AssignTextFromResourceIdAndMaybeInvalidate()|
-486290|UpdateTextEntrySharedStringIfChanged||15|function|undefined UpdateTextEntrySharedStringIfChanged()|
+486290|TStaticText::UpdateTextEntrySharedStringIfChanged||15|function|void __thiscall UpdateTextEntrySharedStringIfChanged(CString* text)|
 4862b0|NoOpUiStyleBridge_004862b0||5|function|undefined NoOpUiStyleBridge_004862b0()|
 4862d0|CallThisVslot1B4NoArgs||21|function|undefined CallThisVslot1B4NoArgs()|
 486300|NoOpTextPostLayoutHook||3|function|undefined NoOpTextPostLayoutHook()|
@@ -929,7 +929,7 @@ address|name|symbol|size|type|prototype|provenance
 48b4b0|TView::InvalidateOffsetRegionUsingChildClipRect_b4||248|function|undefined InvalidateOffsetRegionUsingChildClipRect()|
 48b5f0|InvalidateCityDialogRectRegion||114|function|undefined InvalidateCityDialogRectRegion()|
 48b690|TView::ValidateControlRectIfWindowActive_b6||35|function|undefined ValidateControlRectIfWindowActive()|
-48b6d0|TView::VTableSlotBD||26|function|undefined 'scalar_deleting_destructor'(void)|
+48b6d0|TView::RefreshControl||26|function|void __thiscall RefreshControl(void)|
 48b700|TView::ResetUiInputCaptureState_d3||75|function|undefined ResetUiInputCaptureState()|
 48b770|TView::SetGlobalUiSelectionIfChangedAndNotify_c2||40|function|undefined SetGlobalUiSelectionIfChangedAndNotify()|
 48b7b0|TView::GetTEventHandlerClassNamePointer_c4||17|function|undefined GetTEventHandlerClassNamePointer(void)|
@@ -5795,7 +5795,7 @@ address|name|symbol|size|type|prototype|provenance
 5b5bb0|TInfoBarPictureText::GetRuntimeClass||6|function|undefined GetTInfoBarPictureTextClassNamePointer()|rtti
 5b5c60|TInfoBarPictureText::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b5c90|TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree||5|function|undefined DestructTInfoBarPictureTextAndMaybeFree()|
-5b5cb0|TInfoBarPictureText::SerializeRecordList_0x0C_WithBlockPool_A||216|function|undefined ConstructTInfoBarTextBaseState(RECT * param_1)|
+5b5cb0|TInfoBarPictureText::SetTextAndLayoutRect||216|function|undefined __thiscall SetTextAndLayoutRect(CString text, RECT* layoutRect)|
 5b5dd0|TInfoBarPictureText::DestructTInfoBarTextAndMaybeFree||193|function|undefined DestructTInfoBarTextAndMaybeFree(void)|
 5b5ee0|TDeluxeText::CreateObject|?CreateObject@TDeluxeText@@SGPAVCObject@@XZ|184|function||rtti
 5b5fd0|TDeluxeText::GetRuntimeClass||6|function|undefined GetTDeluxeTextClassNamePointer()|rtti
@@ -5808,15 +5808,15 @@ address|name|symbol|size|type|prototype|provenance
 5b62e0|TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0||96|function|undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(void)|
 5b6360|TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360||96|function|undefined Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(CString param_1)|
 5b63e0|TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate||123|function|undefined RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)|
-5b6480|TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480||13|function|undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1)|
-5b64a0|TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0||35|function|undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2)|
+5b6480|TDeluxeText::UpdateTextEntrySharedString||13|function|void __thiscall UpdateTextEntrySharedString(CString* text)|
+5b64a0|TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify||35|function|void __thiscall UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char notifyFlag)|
 5b64e0|TDeluxeText::BuildCityViewProductionControls_Impl||129|function|undefined BuildCityViewProductionControls_Impl()|
 5b65a0|TInfoBarText::CreateObject|?CreateObject@TInfoBarText@@SGPAVCObject@@XZ|184|function||rtti
 5b6690|TInfoBarText::GetRuntimeClass||6|function|undefined GetTInfoBarTextClassNamePointer()|rtti
-5b66b0|TInfoBarText::SerializeRecordList_0x0C_WithBlockPool_A||140|function|undefined ConstructTInfoBarTextBaseState()|
+5b66b0|TInfoBarText::SetTextAndLayoutRect||140|function|undefined __thiscall SetTextAndLayoutRect(CString text, RECT* layoutRect)|
 5b6770|TInfoBarText::DestructTInfoBarTextAndMaybeFree||117|function|undefined DestructTInfoBarTextAndMaybeFree(void)|
 5b6810|TInfoBarText::Dump||19|function|undefined OrphanCallChain_C1_I05_005b6810(void)|
-5b6840|TInfoBarText::AssertValid||183|function|undefined InitializeMapHintTextStyleAndThemeFlags()|
+5b6840|TInfoBarText::InitializeMapHintTextStyleAndThemeFlags||183|function|undefined __thiscall InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary)|
 5b6930|TInfoBarText::Free||23|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5b6960|TNoHiliteText::CreateObject|?CreateObject@TNoHiliteText@@SGPAVCObject@@XZ|83|function||rtti
 5b69e0|TNoHiliteText::GetRuntimeClass||6|function|undefined GetTNoHiliteTextClassNamePointer()|rtti
