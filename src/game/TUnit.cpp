@@ -89,8 +89,8 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContex
   this->field_C = static_cast<short>(-1);
 
   TSimMgr* locTable = g_pLocalizationTable;
-  int uniqueId = locTable->field_64 + 1;
-  locTable->field_64 = uniqueId;
+  int uniqueId = locTable->field60 + 1;
+  locTable->field60 = uniqueId;
   this->field_20 = uniqueId;
 }
 

@@ -269,7 +269,7 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004d71b0
 void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   TSimMgr* localization = g_pLocalizationTable;
-  if (localization->stateFlag114 > 0) {
+  if (localization->stateFlag116 > 0) {
     g_pGlobalMapState->NotifyCityRecordSlot12C(
         g_pGlobalMapState->terrainStateTable[this->ownerNationSlot].cityRecordIndex);
     return;

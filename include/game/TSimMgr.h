@@ -95,35 +95,39 @@ public:
   int runtimeSubsystemIndex;
   int redrawEnabled;
   short preferenceValues[14];
-  int field_64;
-  // +0x68 — nonzero: city/nation names come from the localized string table
+  // Field names below carry each field's real byte offset from `this`
+  // (verified against ctor/field-access evidence, see bd 1uj.4); the
+  // previous names drifted +4 relative to their true offsets from field60
+  // through pad115, self-correcting again at scenarioSetupRows1.
+  int field60;
+  // +0x64 — nonzero: city/nation names come from the localized string table
   // (GetString group 0x2715) instead of the generated flavor-text variants
   // (SetSharedStringFromMappedFlavorTextWithLengthClamp @ 0x5d4410).
-  char useLocalizedNameTables68;
-  unsigned char pad69;
-  short field6a;
-  short field6c;
-  unsigned char field6e;
+  char useLocalizedNameTables64;
+  unsigned char pad65;
+  short field66;
+  short field68;
+  unsigned char field6a;
   unsigned char phaseFlags[9];
-  unsigned char field78;
-  unsigned char field79;
-  unsigned char gateFlag7a;
-  unsigned char pad7b;
+  unsigned char field74;
+  unsigned char field75;
+  unsigned char gateFlag76;
+  unsigned char pad77;
   CString sharedTextSlots[0x17];
-  unsigned char fieldd8;
-  unsigned char padD9;
+  unsigned char fieldd4;
+  unsigned char padD5;
   short scenarioSetupRows0[7];
-  short padE6;
+  short padE4;
   short scenarioSetupRows1[7];
   short padF4;
   short scenarioSetupRows2[7];
-  short pad102;
+  short pad104;
   short scenarioSetupRows3[7];
-  unsigned char field112;
-  unsigned char pad113;
-  // 0x114 — nonzero switches TGreatPower seeding/home-region resolution to the
+  unsigned char field114;
+  unsigned char pad115;
+  // 0x116 — nonzero switches TGreatPower seeding/home-region resolution to the
   // direct-map path (0x004d71b0 / 0x004dfae0 / 0x004df810).
-  short stateFlag114;
+  short stateFlag116;
 };
 
 ASSERT_SIZE(TSimMgr, 0x118);

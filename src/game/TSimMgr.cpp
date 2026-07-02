@@ -72,9 +72,9 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
     tableCursor += 4;
   }
 
-  fieldd8 = 0;
-  field112 = 0;
-  stateFlag114 = 0;
+  fieldd4 = 0;
+  field114 = 0;
+  stateFlag116 = 0;
   preferenceValues[0] = 0;
   preferenceValues[1] = 0;
 }
@@ -94,18 +94,18 @@ void TSimMgr::InitializeTurnFlowStateDefaults() {
   field14 = 0;
   mode = 1;
   turnFlowStatusFlags = 0;
-  field_64 = 0;
-  field6e = 0;
+  field60 = 0;
+  field6a = 0;
   memset(phaseFlags, 0x01, sizeof(phaseFlags));
-  gateFlag7a = 0;
-  field78 = 2;
-  field79 = 1;
+  gateFlag76 = 0;
+  field74 = 2;
+  field75 = 1;
   g_apSecondaryNationStateSlots[0x17] = nullptr;
   PostMainWindowCommand100ForTurnFlow();
   runtimeSubsystemIndex = 0;
   InitializeOrLoadEntryArray14AndClampLimits(false);
-  field6a = 0;
-  field6c = 0x77a;
+  field66 = 0;
+  field68 = 0x77a;
 }
 
 // FUNCTION: IMPERIALISM 0x0057bd20
