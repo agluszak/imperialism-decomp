@@ -29,6 +29,11 @@ undefined TStaticText::AssignSharedStringFromField84() {
 
 IMPLEMENT_DYNCREATE(TStaticText, TControl)
 
+// FUNCTION: IMPERIALISM 0x00486290
+void TStaticText::UpdateTextEntrySharedStringIfChanged(CString* text) {
+  TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(text, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x0048F890
 TStaticText::TStaticText()
     : TControl(), text(), field88((void*)0xffffffff), field8C(0), field90(0) {
@@ -114,7 +119,7 @@ undefined TStaticText::LoadUiStringAndDispatchViaVslot1C8() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048ff70
-undefined TStaticText::OrphanCallChain_C1_I09_0048ff70(short themeCode, char refreshFlag) {
+undefined TStaticText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag) {
   field90 = themeCode;
   if (refreshFlag != 0) {
     RefreshControl();

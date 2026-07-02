@@ -6,7 +6,6 @@
 #include "game/TStream.h"
 #include "game/GameAssert.h"
 #include "game/global_data_tables.h"
-#include "game/map_action_context_helpers.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/CString.h"
 
@@ -97,7 +96,7 @@ void TShip::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&stockLevel1c, 2);
   stream->WriteBytesSlot78(&field34, 4);
   stream->WriteBytesSlot78(&field30, 2);
-  short zoneIndex = GetShortAtOffset14OrInvalid(field08);
+  short zoneIndex = field08->GetContextOrdinalOrInvalid();
   stream->WriteBytesSlot78(&zoneIndex, 2);
 }
 

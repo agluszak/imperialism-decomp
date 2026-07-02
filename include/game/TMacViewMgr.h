@@ -8,6 +8,8 @@
 class TStream;
 class TBitmapResourceLoader;
 class TView;
+struct TQuickDrawSurfaceContext;
+struct TBitmapSurfaceNode;
 
 // Strategic map view / render system (singleton g_pStrategicMapViewSystem @ 0x006a21a8).
 // VTABLE: IMPERIALISM 0x00658660
@@ -34,29 +36,31 @@ public:
   virtual undefined SyncSellTaggedChildControlWithNationState(int* param_1,
                                                               short param_2); // slot 0x10 0x50bc50
   virtual undefined
-  RefreshCityProductionDetailPanelAndArrowWidgets(word param_1);    // slot 0x11 0x50bea0
-  virtual undefined ResolveTurnEventDialogOrFailAndInvokeSlot9C();  // slot 0x12 0x50be30
-  virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag();      // slot 0x13 0x50d310
+  RefreshCityProductionDetailPanelAndArrowWidgets(word param_1);   // slot 0x11 0x50bea0
+  virtual undefined ResolveTurnEventDialogOrFailAndInvokeSlot9C(); // slot 0x12 0x50be30
+  virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag();     // slot 0x13 0x50d310
   virtual undefined OrphanCallChain_C10_I80_0050d470(undefined4 param_1,
                                                      undefined4 param_2); // slot 0x14 0x50d470
   virtual undefined CreateCityBuildingDialogBySlot(int param_1, undefined4 param_2,
-                                                   undefined4 param_3);  // slot 0x15 0x50d360
-  virtual undefined OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1); // slot 0x16 0x50d5b0
-  virtual void OrphanLeaf_NoCall_Ins06_0050d8d0();                       // slot 0x17 0x50d8d0
-  virtual void OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1);          // slot 0x18 0x50d8f0
-  virtual void OrphanCallChain_C1_I10_0050d920();                        // slot 0x19 0x50d920
-  virtual undefined RenderOffscreenBitmapGridStripAndRestoreContext();   // slot 0x1a 0x50a9f0
+                                                   undefined4 param_3);    // slot 0x15 0x50d360
+  virtual undefined OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1);   // slot 0x16 0x50d5b0
+  virtual void OrphanLeaf_NoCall_Ins06_0050d8d0();                         // slot 0x17 0x50d8d0
+  virtual void OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1);            // slot 0x18 0x50d8f0
+  virtual void OrphanCallChain_C1_I10_0050d920();                          // slot 0x19 0x50d920
+  virtual undefined RenderOffscreenBitmapGridStripAndRestoreContext();     // slot 0x1a 0x50a9f0
   virtual void WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(); // slot 0x1b 0x50d950
-  virtual undefined RenderTurnEventPalettePreviewSurfaceAndProgress();    // slot 0x1c 0x50b640
-  virtual undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles(); // slot 0x1d 0x50b9e0
-  virtual undefined RebuildNationClipRegionsAndDispatchMapEvent();        // slot 0x1e 0x50bad0
-  virtual undefined BlitMapOverlayGlyphStrip32x24SkipMask10(int* param_1, short param_2,
-                                                            short param_3,
+  virtual undefined RenderTurnEventPalettePreviewSurfaceAndProgress();     // slot 0x1c 0x50b640
+  virtual undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles();  // slot 0x1d 0x50b9e0
+  virtual undefined RebuildNationClipRegionsAndDispatchMapEvent();         // slot 0x1e 0x50bad0
+  virtual undefined BlitMapOverlayGlyphStrip32x24SkipMask10(TBitmapSurfaceNode** dstSurface,
+                                                            short param_2, short param_3,
                                                             short param_4); // slot 0x1f 0x50da80
-  virtual void DrawStrategicMapUnitIcon(int* pDstSurface, short nIconVariant, short nDstX,
+  virtual void DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, short nIconVariant,
+                                        short nDstX,
                                         short nYShift); // slot 0x20 0x50dd40
-  virtual void DrawStrategicMapUnitIconOverlay(int* pDstSurface, ushort wOverlayIconId,
-                                               short nVariantRow, short nDstX,
+  virtual void DrawStrategicMapUnitIconOverlay(TBitmapSurfaceNode** pDstSurface,
+                                               ushort wOverlayIconId, short nVariantRow,
+                                               short nDstX,
                                                short nYShift); // slot 0x21 0x50df40
   virtual undefined CopySpriteSurfaceToStrideBuffer(TBitmapResourceLoader** loaderHandle,
                                                     undefined4* param_2,
@@ -75,20 +79,20 @@ public:
   ClipStateRegionWrapper* regionSlots[0x17];
   ClipStateRegionWrapper* tileStateSlots[0x180];
   int padding664;
-  int atlas668;
-  int atlas66c;
-  int atlas670;
-  int atlas674;
-  int unitIconAtlas;
-  int unitOverlayAtlas;
-  int atlas680;
-  int atlas684;
-  int atlas688;
-  int atlas68c;
-  int atlas690;
-  int atlas694[8];
-  int atlas6b4;
-  int atlas6b8;
+  TQuickDrawSurfaceContext* atlas668;
+  TQuickDrawSurfaceContext* atlas66c;
+  TQuickDrawSurfaceContext* atlas670;
+  TQuickDrawSurfaceContext* atlas674;
+  TQuickDrawSurfaceContext* unitIconAtlas;
+  TQuickDrawSurfaceContext* unitOverlayAtlas;
+  TQuickDrawSurfaceContext* atlas680;
+  TQuickDrawSurfaceContext* atlas684;
+  TQuickDrawSurfaceContext* atlas688;
+  TQuickDrawSurfaceContext* atlas68c;
+  TQuickDrawSurfaceContext* atlas690;
+  TQuickDrawSurfaceContext* atlas694[8];
+  TQuickDrawSurfaceContext* atlas6b4;
+  TQuickDrawSurfaceContext* atlas6b8;
   StrategicMapCallbackRecord callback6bc[0x18];
   StrategicMapCallbackRecord callbackB3c[6];
   StrategicMapCallbackRecord callbackC5c[6];

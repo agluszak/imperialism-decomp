@@ -662,7 +662,32 @@ extern "C" short g_nTurnFlowNationComparisonAdvisoryTick = 0;
 extern "C" const char g_szUiNilPointerMessage[] = "Nil Pointer";
 // GLOBAL: IMPERIALISM 0x00694fd8
 extern "C" const char g_szUiFailureMessage[] = "Failure";
+// GLOBAL: IMPERIALISM 0x0069430c
+extern "C" const char g_szDecimalFormat[] = "%d";
 
+// Great-power pressure tuning tables (.rdata, indexed by the 6-level difficulty/
+// locale index; last entry is a 0 sentinel). Values dumped from the original.
+// GLOBAL: IMPERIALISM 0x00653498
+extern "C" const int g_anNationBasePressureByLocale[6] = {1000, 500, 200, 100, 10, 0};
+// GLOBAL: IMPERIALISM 0x006534b0
+extern "C" const int g_anGreatPowerPressureMinFloorByLocale[6] = {2, 3, 4, 6, 10, 0};
+// GLOBAL: IMPERIALISM 0x006534c8
+extern "C" const int g_anGreatPowerEscalationSeedByLocale[6] = {8, 10, 12, 15, 19, 0};
+// GLOBAL: IMPERIALISM 0x006534e0
+extern "C" const int g_anGreatPowerPressureRiseCapByLocale[6] = {20, 35, 50, 75, 100, 0};
+// GLOBAL: IMPERIALISM 0x006534f8
+extern "C" const int g_anGreatPowerPressureDecayStepByLocale[6] = {2, 2, 1, 1, 1, 0};
+// GLOBAL: IMPERIALISM 0x00653510
+extern "C" const int g_anGreatPowerPressureRiseStepByLocale[6] = {1, 1, 1, 2, 3, 0};
+// GLOBAL: IMPERIALISM 0x00653528
+extern "C" const int g_anGreatPowerCompileThresholdByLocale[6] = {5, 5, 5, 5, 5, 0};
+// GLOBAL: IMPERIALISM 0x00653540
+extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6] = {6, 6, 6, 6, 6, 0};
+// GLOBAL: IMPERIALISM 0x00653558
+extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 10000, 5000, 5000, 0};
+
+// GLOBAL: IMPERIALISM 0x006a2df0
+CString g_cstrGreatPowerPressureMessage;
 // GLOBAL: IMPERIALISM 0x006a3060
 CString g_cstrUiFontBelweLight;
 // GLOBAL: IMPERIALISM 0x006a3080

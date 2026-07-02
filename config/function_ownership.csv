@@ -203,6 +203,7 @@ address|target_cpp|ownership|note
 485f90|src/game/TObject.cpp|manual|marker_sync
 485fb0|src/game/TTEView.cpp|manual|marker_sync
 486030|src/game/TTEView.cpp|manual|marker_sync
+486290|src/game/TStaticText.cpp|manual|marker_sync
 486320|src/game/TDocument.cpp|manual|marker_sync
 486350|src/game/TDocument.cpp|manual|marker_sync
 4863a0|src/game/TDocument.cpp|manual|marker_sync
@@ -655,6 +656,8 @@ address|target_cpp|ownership|note
 4948b0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 495000|src/game/quickdraw_rendering.cpp|manual|marker_sync
 495070|src/game/quickdraw_rendering.cpp|manual|marker_sync
+4950a0|src/game/quickdraw_rendering.cpp|manual|marker_sync
+4950d0|src/game/quickdraw_rendering.cpp|manual|marker_sync
 495310|src/game/quickdraw_rendering.cpp|manual|marker_sync
 4953a0|src/game/quickdraw_rendering.cpp|manual|marker_sync
 495610|src/game/ClipStateRegion.cpp|manual|marker_sync
@@ -1622,7 +1625,7 @@ address|target_cpp|ownership|note
 4e66c0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4e66f0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4e6740|src/game/TLandSaleEvent.cpp|manual|marker_sync
-4e6a70|src/game/tauto_great_power_factory.cpp|manual|marker_sync
+4e6a70|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6b10|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6b30|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6b50|src/game/TAutoGreatPower.cpp|manual|marker_sync
@@ -2753,7 +2756,7 @@ address|target_cpp|ownership|note
 55eff0|src/game/TZone.cpp|manual|marker_sync
 55f070|src/game/TZone.cpp|manual|marker_sync
 55f090|src/game/TZone.cpp|manual|marker_sync
-55f0b0|src/game/map_action_context_helpers.cpp|manual|marker_sync
+55f0b0|src/game/TZone.cpp|manual|marker_sync
 55f140|src/game/TGreatPower.cpp|manual|marker_sync
 55f4d0|src/game/TGreatPower.cpp|manual|marker_sync
 55f5c0|src/game/TZone.cpp|manual|marker_sync
@@ -3925,6 +3928,7 @@ address|target_cpp|ownership|note
 5c3200|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5c3490|src/game/TStationedUnitNode.cpp|manual|marker_sync
 5c3b70|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+5c3d20|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5d4410|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d46b0|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d4720|src/game/mapped_flavor_text.cpp|manual|marker_sync

@@ -3,11 +3,12 @@
 #include "game/TTEView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDeluxeText and its role. Base edge (TTEView) recovered from RTTI CRuntimeClass chain: TDeluxeText -> TTEView -> TStaticText -> TControl -> TView -> TEventHandler -> TObject -> CObject.
-// VTABLE: IMPERIALISM 0x006406d8
+// TODO(manifest): describe TDeluxeText and its role. Base edge (TTEView) recovered from RTTI
+// CRuntimeClass chain: TDeluxeText -> TTEView -> TStaticText -> TControl -> TView -> TEventHandler
+// -> TObject -> CObject. VTABLE: IMPERIALISM 0x006406d8
 class TDeluxeText : public TTEView {
 public:
-// === BEGIN GENERATED DECLS (TDeluxeText) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TDeluxeText) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDeluxeText)
   virtual ~TDeluxeText(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -121,28 +122,33 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  // slot 0x71 OrphanCallChain_C1_I09_0048ff70 inherited unchanged (0x48ff70)
+  // slot 0x71 SetTextThemeCodeAndMaybeRefresh inherited unchanged (0x48ff70)
   // slot 0x72 AssignTextSharedRefIfChangedAndMaybeInvalidate inherited unchanged (0x48fe60)
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
-  virtual undefined OrphanCallChain_C1_I08_005b60a0(char param_1); // slot 0x76 0x5b60a0
-  virtual undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl(); // slot 0x77 0x5b60d0
+  virtual undefined OrphanCallChain_C1_I08_005b60a0(char param_1);            // slot 0x76 0x5b60a0
+  virtual undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl();   // slot 0x77 0x5b60d0
   virtual undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(); // slot 0x78 0x5b62e0
   virtual undefined ConstructTMapKeyBaseState_Impl(void* styleDescriptor,
                                                    int unusedFlag); // slot 0x79 0x5b62a0
-  virtual undefined BuildCityViewProductionControls_Impl(); // slot 0x7a 0x5b64e0
-  virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2); // slot 0x7b 0x5b64a0
-  virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1); // slot 0x7c 0x5b6480
-  virtual undefined Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(CString param_1); // slot 0x7d 0x5b6360
-  virtual undefined RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1); // slot 0x7e 0x5b63e0
-// === END GENERATED DECLS (TDeluxeText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDeluxeText 0xCTOR`).
+  virtual undefined BuildCityViewProductionControls_Impl();         // slot 0x7a 0x5b64e0
+  virtual undefined
+  UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char notifyFlag); // slot 0x7b 0x5b64a0
+  virtual undefined UpdateTextEntrySharedString(CString* text);              // slot 0x7c 0x5b6480
+  virtual undefined Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(
+      CString param_1); // slot 0x7d 0x5b6360
+  virtual undefined
+  RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1); // slot 0x7e 0x5b63e0
+  // === END GENERATED DECLS (TDeluxeText) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TDeluxeText
+  // 0xCTOR`).
 
   TDeluxeText();
 };
 
-// === BEGIN GENERATED (TDeluxeText) — refreshed by `just gen-class TDeluxeText`; do not hand-edit ===
+// === BEGIN GENERATED (TDeluxeText) — refreshed by `just gen-class TDeluxeText`; do not hand-edit
+// ===
 // clang-format off
 // vtable @ 0x006406d8 (127 slots), object size 0xa4, base TTEView
 //   slot 0x00  byte 0x00  0x005b5fd0  override  GetTEventHandlerClassNamePointer
@@ -258,7 +264,7 @@ public:
 //   slot 0x6e  byte 0x1b8  0x0048e7a0  inherited SetControlPictureEntryAndMaybeRefresh
 //   slot 0x6f  byte 0x1bc  0x004294a0  inherited LogUnhandledDialogMethodAndReturnFalse
 //   slot 0x70  byte 0x1c0  0x0048e810  inherited SetControlStateFlagAndMaybeRefresh
-//   slot 0x71  byte 0x1c4  0x0048ff70  inherited OrphanCallChain_C1_I09_0048ff70
+//   slot 0x71  byte 0x1c4  0x0048ff70  inherited SetTextThemeCodeAndMaybeRefresh
 //   slot 0x72  byte 0x1c8  0x0048fe60  inherited AssignTextSharedRefIfChangedAndMaybeInvalidate
 //   slot 0x73  byte 0x1cc  0x0048fed0  inherited LoadUiStringAndDispatchViaVslot1C8
 //   slot 0x74  byte 0x1d0  0x004294d0  inherited AssignSharedStringFromField84
@@ -268,8 +274,8 @@ public:
 //   slot 0x78  byte 0x1e0  0x005b62e0  override  WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0
 //   slot 0x79  byte 0x1e4  0x005b62a0  override  ConstructTMapKeyBaseState_Impl
 //   slot 0x7a  byte 0x1e8  0x005b64e0  override  BuildCityViewProductionControls_Impl
-//   slot 0x7b  byte 0x1ec  0x005b64a0  override  WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
-//   slot 0x7c  byte 0x1f0  0x005b6480  override  WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
+//   slot 0x7b  byte 0x1ec  0x005b64a0  override  UpdateTextEntrySharedStringAndMaybeNotify
+//   slot 0x7c  byte 0x1f0  0x005b6480  override  UpdateTextEntrySharedString
 //   slot 0x7d  byte 0x1f4  0x005b6360  override  Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360
 //   slot 0x7e  byte 0x1f8  0x005b63e0  override  RecenterTextFromMeasuredWidthAndMaybeInvalidate
 // object size 0xa4 (RTTI) unverified against the header layout;

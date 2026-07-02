@@ -30,8 +30,7 @@ void* ReallocateStretchEntries(TZone** entries, int sizeBytes) {
       entries, sizeBytes);
 }
 
-template <typename TStretch>
-void AppendZonePointerToStretch(TStretch* list, TZone* entry) {
+template <typename TStretch> void AppendZonePointerToStretch(TStretch* list, TZone* entry) {
   int slotIndex = list->Count();
   if (list->Capacity() <= slotIndex) {
     int nextCapacity = slotIndex + 1;
@@ -196,12 +195,10 @@ void TZone::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055ed20
-void TZone::ReadFrom(TStream* stream) {
-}
+void TZone::ReadFrom(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x0055eff0
-void TZone::WriteTo(TStream* stream) {
-}
+void TZone::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x0055f070
 void TZone::AssignZoneDisplayNameToOutputRef(void* outputRef) {
@@ -211,6 +208,14 @@ void TZone::AssignZoneDisplayNameToOutputRef(void* outputRef) {
 // FUNCTION: IMPERIALISM 0x0055f090
 void TZone::AssignZoneDisplayNameAliasToOutputRef(void* outputRef) {
   (void)outputRef;
+}
+
+// FUNCTION: IMPERIALISM 0x0055f0b0
+short TZone::GetContextOrdinalOrInvalid() {
+  if (this == 0) {
+    return -1;
+  }
+  return field14;
 }
 
 // FUNCTION: IMPERIALISM 0x0055f5c0
@@ -451,8 +456,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
 
 // FUNCTION: IMPERIALISM 0x00560580
 void TZone::SetMapOrderUiFlag(int flag) {
-  unsigned char tileStateByte =
-      g_pGlobalMapState->terrainStateTable[field20].pad16;
+  unsigned char tileStateByte = g_pGlobalMapState->terrainStateTable[field20].pad16;
   if (((static_cast<unsigned char>(flag != 0) !=
         static_cast<unsigned char>(static_cast<signed char>(tileStateByte) < 0 ? 1 : 0)) &&
        (g_pUiRuntimeContext != 0)) &&

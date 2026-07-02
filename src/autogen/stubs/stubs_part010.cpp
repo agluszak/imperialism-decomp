@@ -1643,14 +1643,6 @@ undefined4 AssignTextFromResourceIdAndMaybeInvalidate(void)
   return 0;
 }
 
-// ghidra_name UpdateTextEntrySharedStringIfChanged
-// ghidra_proto undefined UpdateTextEntrySharedStringIfChanged()
-// FUNCTION: IMPERIALISM 0x00486290
-undefined4 UpdateTextEntrySharedStringIfChanged(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpUiStyleBridge_004862b0
 // ghidra_proto undefined NoOpUiStyleBridge_004862b0()
 // FUNCTION: IMPERIALISM 0x004862b0

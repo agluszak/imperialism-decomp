@@ -30,7 +30,7 @@ public:
   void ApplyRectSlot110(RECT* rectBuffer) override;
   char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
   void RecomputeAbsolutePositionRecursive() override;
-  undefined OrphanCallChain_C1_I09_0048ff70(short themeCode, char refreshFlag) override;
+  undefined SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag) override;
   virtual undefined SetEditSelectionAndScrollCaret();
   virtual undefined WrapperFor_StringShared_AssignFromPtr_At00490c70(CString* param_1);
   virtual void InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag);
@@ -55,7 +55,7 @@ public:
 //   slot 0x44  byte 0x110  0x004906a0  override  OrphanTiny_ReturnZero_0048a730
 //   slot 0x46  byte 0x118  0x00490bc0  override  SetForeignMinisterReadyFlag14
 //   slot 0x59  byte 0x164  0x00490e50  override  VTableSlot59
-//   slot 0x71  byte 0x1c4  0x00490cb0  override  OrphanCallChain_C1_I09_0048ff70
+//   slot 0x71  byte 0x1c4  0x00490cb0  override  SetTextThemeCodeAndMaybeRefresh
 //   slot 0x76  byte 0x1d8  0x00490a50  override  SetEditSelectionAndScrollCaret
 //   slot 0x77  byte 0x1dc  0x00490c70  override  WrapperFor_StringShared_AssignFromPtr_At00490c70
 //   slot 0x78  byte 0x1e0  0x00490cf0  override  InitDialogWindowAndSyncTitleIfChanged

@@ -112,8 +112,9 @@ void TDisplayMgr::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004feab0
-undefined TDisplayMgr::InitializeBitmapSurfaceContextWithRetry(int* outContext, short bitDepth,
-                                                               RECT* bounds) {
+undefined
+TDisplayMgr::InitializeBitmapSurfaceContextWithRetry(TQuickDrawSurfaceContext** outContext,
+                                                     short bitDepth, RECT* bounds) {
   short result = InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, bitDepth, bounds,
                                                                     field18, 0, 0);
   if (result != 0) {
@@ -123,18 +124,19 @@ undefined TDisplayMgr::InitializeBitmapSurfaceContextWithRetry(int* outContext, 
   return 0;
 }
 
+// Frees the TQuickDrawSurfaceContext record held in `slot` and clears the slot.
+// The original is callee-clean (`ret 4`) with no `this`, i.e. __stdcall.
 // FUNCTION: IMPERIALISM 0x004feb50
-void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(int* field) {
-  delete reinterpret_cast<void*>(*field);
-  *field = 0;
+void __stdcall FreeQuickDrawSurfaceContextSlot(TQuickDrawSurfaceContext** slot) {
+  delete *slot;
+  *slot = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004feb80
 undefined TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated() {
   if (g_pPrimaryRenderSurfaceContext == 0) {
     RECT bounds = {-64, -64, 0x280, 0x220};
-    InitializeBitmapSurfaceContextWithRetry(reinterpret_cast<int*>(&g_pPrimaryRenderSurfaceContext),
-                                            8, &bounds);
+    InitializeBitmapSurfaceContextWithRetry(&g_pPrimaryRenderSurfaceContext, 8, &bounds);
   }
   return 0;
 }
@@ -211,15 +213,13 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   }
 
   int savedFlags = 0;
-  undefined4 savedContext = 0;
+  TQuickDrawSurfaceContext* savedContext = 0;
   QuickDrawSurfaceGuard surfaceGuard;
-  int clipDescriptor = reinterpret_cast<int>(surfaceGuard.surfaceWrapper);
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(&clipDescriptor);
+  ApplyHitRegionToClip(surfaceGuard.surfaceWrapper);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext),
-                                   savedFlags);
+  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, savedFlags);
   ReturnConstantTrueQuickDrawFlag(
-      GetSurfaceObjectAtContextOffset24(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext)));
+      GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
 
   TControl* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
@@ -240,13 +240,12 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
 
   SetGlobalQuickDrawOrigin(static_cast<short>(mainView->ownerOffsetX),
                            static_cast<short>(mainView->ownerOffsetY));
-  reinterpret_cast<void(__cdecl*)(RECT*)>(ApplyRectClipRegionToGlobalClipState)(&clipRect);
+  ApplyRectClipRegionToClip(&clipRect);
   mainView->ApplyRectSlot110(&queryBounds);
 
-  NoOpQuickDrawLifecycleHookB(
-      GetSurfaceObjectAtContextOffset24(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext)));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
-  SnapshotHitRegionToClipCache(&clipDescriptor);
+  SnapshotHitRegionToClipCache(reinterpret_cast<int*>(surfaceGuard.surfaceWrapper));
   clipSnapshotEvent = static_cast<short>(param_1);
   return 0;
 }

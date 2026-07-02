@@ -38,12 +38,10 @@ TEditText::~TEditText() {
 }
 
 // FUNCTION: IMPERIALISM 0x00490650
-void TEditText::CallVoidSlotA0() {
-}
+void TEditText::CallVoidSlotA0() {}
 
 // FUNCTION: IMPERIALISM 0x004906a0
-void TEditText::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TEditText::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x004906d0
 char TEditText::GetBoolSlot28() {
@@ -51,16 +49,13 @@ char TEditText::GetBoolSlot28() {
 }
 
 // FUNCTION: IMPERIALISM 0x004906f0
-void TEditText::SetControlValue(int value) {
-}
+void TEditText::SetControlValue(int value) {}
 
 // FUNCTION: IMPERIALISM 0x00490730
-void TEditText::SetEnabled(int enabledState, int refreshFlag) {
-}
+void TEditText::SetEnabled(int enabledState, int refreshFlag) {}
 
 // FUNCTION: IMPERIALISM 0x004907a0
-void TEditText::DispatchSlot9CToLinkedChildren() {
-}
+void TEditText::DispatchSlot9CToLinkedChildren() {}
 
 // FUNCTION: IMPERIALISM 0x00490a50
 undefined TEditText::SetEditSelectionAndScrollCaret() {
@@ -73,8 +68,7 @@ char TEditText::ActivateCityProductionViewIfAllowed() {
 }
 
 // FUNCTION: IMPERIALISM 0x00490ad0
-void TEditText::Free() {
-}
+void TEditText::Free() {}
 
 // FUNCTION: IMPERIALISM 0x00490bc0
 char TEditText::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
@@ -86,20 +80,18 @@ char TEditText::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
 }
 
 // FUNCTION: IMPERIALISM 0x00490c10
-void TEditText::HandleCityProductionNoOp() {
-}
+void TEditText::HandleCityProductionNoOp() {}
 
 // FUNCTION: IMPERIALISM 0x00490c30
-void TEditText::vmethod_0081(int) {
-}
+void TEditText::vmethod_0081(int) {}
 
 // FUNCTION: IMPERIALISM 0x00490c70
-undefined TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString * param_1) {
+undefined TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString* param_1) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00490cb0
-undefined TEditText::OrphanCallChain_C1_I09_0048ff70(short themeCode, char refreshFlag) {
+undefined TEditText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag) {
   (void)themeCode;
   (void)refreshFlag;
   return 0;
@@ -112,9 +104,7 @@ void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refr
 }
 
 // FUNCTION: IMPERIALISM 0x00490e50
-void TEditText::RecomputeAbsolutePositionRecursive() {
-}
+void TEditText::RecomputeAbsolutePositionRecursive() {}
 
 // SYNTHETIC: IMPERIALISM 0x00492f30
 // TEditText::`scalar deleting destructor'
-

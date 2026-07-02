@@ -3,11 +3,14 @@
 #include "game/TInfoBarText.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TInfoBarPictureText and its role. Base edge (TInfoBarText) recovered from RTTI CRuntimeClass chain: TInfoBarPictureText -> TInfoBarText -> TDeluxeText -> TTEView -> TStaticText -> TControl -> TView -> TEventHandler -> TObject -> CObject.
-// VTABLE: IMPERIALISM 0x0066d288
+// TODO(manifest): describe TInfoBarPictureText and its role. Base edge (TInfoBarText) recovered
+// from RTTI CRuntimeClass chain: TInfoBarPictureText -> TInfoBarText -> TDeluxeText -> TTEView ->
+// TStaticText -> TControl -> TView -> TEventHandler -> TObject -> CObject. VTABLE: IMPERIALISM
+// 0x0066d288
 class TInfoBarPictureText : public TInfoBarText {
 public:
-// === BEGIN GENERATED DECLS (TInfoBarPictureText) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TInfoBarPictureText) — refreshed by recover-class; do not hand-edit
+  // ===
   DECLARE_DYNCREATE(TInfoBarPictureText)
   virtual ~TInfoBarPictureText(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -121,7 +124,7 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  // slot 0x71 OrphanCallChain_C1_I09_0048ff70 inherited unchanged (0x48ff70)
+  // slot 0x71 SetTextThemeCodeAndMaybeRefresh inherited unchanged (0x48ff70)
   // slot 0x72 AssignTextSharedRefIfChangedAndMaybeInvalidate inherited unchanged (0x48fe60)
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
@@ -131,21 +134,24 @@ public:
   // slot 0x78 WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0 inherited unchanged (0x5b62e0)
   // slot 0x79 ConstructTMapKeyBaseState_Impl inherited unchanged (0x5b62a0)
   // slot 0x7a BuildCityViewProductionControls_Impl inherited unchanged (0x5b64e0)
-  // slot 0x7b WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0 inherited unchanged (0x5b64a0)
-  // slot 0x7c WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480 inherited unchanged (0x5b6480)
-  // slot 0x7d Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360 inherited unchanged (0x5b6360)
-  // slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
+  // slot 0x7b UpdateTextEntrySharedStringAndMaybeNotify inherited unchanged (0x5b64a0)
+  // slot 0x7c UpdateTextEntrySharedString inherited unchanged (0x5b6480)
+  // slot 0x7d Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360 inherited unchanged
+  // (0x5b6360) slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
   virtual undefined DestructTInfoBarTextAndMaybeFree() override; // slot 0x7f 0x5b5dd0
-  virtual undefined ConstructTInfoBarTextBaseState(RECT* param_1) override; // slot 0x80 0x5b5cb0
+  virtual undefined SetTextAndLayoutRect(CString text,
+                                         RECT* layoutRect) override; // slot 0x80 0x5b5cb0
   // slot 0x81 InitializeMapHintTextStyleAndThemeFlags inherited unchanged (0x5b6840)
   // slot 0x82 OrphanCallChain_C1_I05_005b6810 inherited unchanged (0x5b6810)
-// === END GENERATED DECLS (TInfoBarPictureText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TInfoBarPictureText 0xCTOR`).
+  // === END GENERATED DECLS (TInfoBarPictureText) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery
+  // TInfoBarPictureText 0xCTOR`).
 
   TInfoBarPictureText();
 };
 
-// === BEGIN GENERATED (TInfoBarPictureText) — refreshed by `just gen-class TInfoBarPictureText`; do not hand-edit ===
+// === BEGIN GENERATED (TInfoBarPictureText) — refreshed by `just gen-class TInfoBarPictureText`; do
+// not hand-edit ===
 // clang-format off
 // vtable @ 0x0066d288 (131 slots), object size 0xb4, base TInfoBarText
 //   slot 0x00  byte 0x00  0x005b5bb0  override  GetTEventHandlerClassNamePointer
@@ -261,7 +267,7 @@ public:
 //   slot 0x6e  byte 0x1b8  0x0048e7a0  inherited SetControlPictureEntryAndMaybeRefresh
 //   slot 0x6f  byte 0x1bc  0x004294a0  inherited LogUnhandledDialogMethodAndReturnFalse
 //   slot 0x70  byte 0x1c0  0x0048e810  inherited SetControlStateFlagAndMaybeRefresh
-//   slot 0x71  byte 0x1c4  0x0048ff70  inherited OrphanCallChain_C1_I09_0048ff70
+//   slot 0x71  byte 0x1c4  0x0048ff70  inherited SetTextThemeCodeAndMaybeRefresh
 //   slot 0x72  byte 0x1c8  0x0048fe60  inherited AssignTextSharedRefIfChangedAndMaybeInvalidate
 //   slot 0x73  byte 0x1cc  0x0048fed0  inherited LoadUiStringAndDispatchViaVslot1C8
 //   slot 0x74  byte 0x1d0  0x004294d0  inherited AssignSharedStringFromField84
@@ -271,12 +277,12 @@ public:
 //   slot 0x78  byte 0x1e0  0x005b62e0  inherited WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0
 //   slot 0x79  byte 0x1e4  0x005b62a0  inherited ConstructTMapKeyBaseState_Impl
 //   slot 0x7a  byte 0x1e8  0x005b64e0  inherited BuildCityViewProductionControls_Impl
-//   slot 0x7b  byte 0x1ec  0x005b64a0  inherited WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
-//   slot 0x7c  byte 0x1f0  0x005b6480  inherited WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
+//   slot 0x7b  byte 0x1ec  0x005b64a0  inherited UpdateTextEntrySharedStringAndMaybeNotify
+//   slot 0x7c  byte 0x1f0  0x005b6480  inherited UpdateTextEntrySharedString
 //   slot 0x7d  byte 0x1f4  0x005b6360  inherited Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360
 //   slot 0x7e  byte 0x1f8  0x005b63e0  inherited RecenterTextFromMeasuredWidthAndMaybeInvalidate
 //   slot 0x7f  byte 0x1fc  0x005b5dd0  override  Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0
-//   slot 0x80  byte 0x200  0x005b5cb0  override  ConstructTInfoBarTextBaseState
+//   slot 0x80  byte 0x200  0x005b5cb0  override  SetTextAndLayoutRect
 //   slot 0x81  byte 0x204  0x005b6840  inherited InitializeMapHintTextStyleAndThemeFlags
 //   slot 0x82  byte 0x208  0x005b6810  inherited OrphanCallChain_C1_I05_005b6810
 // object size 0xb4 (RTTI) unverified against the header layout;

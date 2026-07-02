@@ -12,23 +12,15 @@
 #include "game/TView.h"
 #include "game/CString.h"
 
-
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
 #include "game/CString.h"
 #include "game/mfc.h"
-
-undefined4 thunk_RefreshCivilianTargetLegendBySelectedClass(void);
-undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
+#include "game/TSimMgr.h"
+#include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
 
 extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
 extern "C" void* g_pActiveCityDialogLegendSelectionOwner;
-
-undefined4 InitializeUiTextStyleDescriptorAndApplyQuickDraw(void);
-undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
-undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
-undefined4 SetQuickDrawColorAndSyncGlobals(void);
-undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
-undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 
 namespace {
 const unsigned int kAddrTargetTileProfileByCivilianClassAndSlot = 0x00698F58;
@@ -92,8 +84,7 @@ IMPLEMENT_DYNCREATE(TCivDescription, TView)
 /* Caches civilian class changes and refreshes target tile counts for supported civilian classes. */
 
 // FUNCTION: IMPERIALISM 0x0058f110
-void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(
-    TCivUnit* orderState) {
+void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
   short civilianClassId;
@@ -220,8 +211,7 @@ void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int ar
 }
 
 // FUNCTION: IMPERIALISM 0x0058f3c0
-void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
-    TCivUnit* orderState) {
+void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
   short ownerNationId;
@@ -237,7 +227,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
   short tileProfileId;
   TSortedList* ownerNationProvinceCollection;
   int provinceCount;
- 
+
   provinceOrdinal = 1;
   ownerNationId = (short)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
                                   4 + orderState->field_6 * 0x24);
@@ -297,7 +287,6 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
   int stylePrimary;
   int styleSecondary;
   CString localizedTextRef;
-  void** localizationTable;
   short selectedClass;
   short textWidth;
   short textOriginX;
@@ -330,30 +319,23 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
     stylePrimary = 0;
     styleSecondary = 0;
 
-    reinterpret_cast<void(__cdecl*)(int, int, int)>(
-        InitializeUiTextStyleDescriptorAndApplyQuickDraw)(0, 0xc, 0x2b68);
-    reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
-        0x2b6c, reinterpret_cast<int>(&stylePrimary));
-    reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
-        0x2b67, reinterpret_cast<int>(&styleSecondary));
-    localizationTable = *reinterpret_cast<void***>(kAddrLocalizationTable);
-    reinterpret_cast<LocalizationFormatFn>(localizationTable[0x21])(
-        0x2718, selectedClass, reinterpret_cast<int*>(&localizedTextRef));
+    // Original calls 0x5c4470 (three-arg apply), then reads the class name via the
+    // TSimMgr GetString virtual, and passes each mapped color to 0x4950a0 — the
+    // previous port dropped both color arguments.
+    ApplyUiTextStyleAndSyncColor(0, 0xc, 0x2b68);
+    MapUiThemeCodeToStyleFlags(0x2b6c, &stylePrimary);
+    MapUiThemeCodeToStyleFlags(0x2b67, &styleSecondary);
+    g_pLocalizationTable->GetString(0x2718, selectedClass, &localizedTextRef);
 
-    textWidth = static_cast<short>(
-        reinterpret_cast<int(__cdecl*)(void)>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());
+    textWidth = MeasureTextExtentWithCachedStyle(&localizedTextRef);
     textOriginX = static_cast<short>((this->field34 / 2) - (textWidth / 2));
 
-    SetQuickDrawColorAndSyncGlobals();
-    reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
-        static_cast<short>(textOriginX + 1), 0x47);
-    reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-        reinterpret_cast<int*>(&localizedTextRef), 0);
-    SetQuickDrawColorAndSyncGlobals();
-    reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
-        textOriginX, 0x46);
-    reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-        reinterpret_cast<int*>(&localizedTextRef), 0);
+    SetQuickDrawColorAndSyncGlobals(styleSecondary);
+    SetQuickDrawTextOrigin(static_cast<short>(textOriginX + 1), 0x47);
+    DrawTextWithCachedStyle(&localizedTextRef);
+    SetQuickDrawColorAndSyncGlobals(stylePrimary);
+    SetQuickDrawTextOrigin(textOriginX, 0x46);
+    DrawTextWithCachedStyle(&localizedTextRef);
   }
 }
 

@@ -616,7 +616,7 @@ address|name|symbol|size|type|prototype|provenance
 486050|TTEView::ConstructTTEViewBaseState||109|function|undefined ConstructTTEViewBaseState()|
 4860e0|TTEView::DestructTTEViewAndMaybeFree||205|function|undefined DestructTTEViewAndMaybeFree()|
 4861f0|AssignTextFromResourceIdAndMaybeInvalidate||127|function|undefined AssignTextFromResourceIdAndMaybeInvalidate()|
-486290|UpdateTextEntrySharedStringIfChanged||15|function|undefined UpdateTextEntrySharedStringIfChanged()|
+486290|TStaticText::UpdateTextEntrySharedStringIfChanged||15|function|void __thiscall UpdateTextEntrySharedStringIfChanged(CString* text)|
 4862b0|NoOpUiStyleBridge_004862b0||5|function|undefined NoOpUiStyleBridge_004862b0()|
 4862d0|CallThisVslot1B4NoArgs||21|function|undefined CallThisVslot1B4NoArgs()|
 486300|NoOpTextPostLayoutHook||3|function|undefined NoOpTextPostLayoutHook()|
@@ -905,7 +905,7 @@ address|name|symbol|size|type|prototype|provenance
 48b4b0|TView::InvalidateOffsetRegionUsingChildClipRect_b4||248|function|undefined InvalidateOffsetRegionUsingChildClipRect()|
 48b5f0|InvalidateCityDialogRectRegion||114|function|undefined InvalidateCityDialogRectRegion()|
 48b690|TView::ValidateControlRectIfWindowActive_b6||35|function|undefined ValidateControlRectIfWindowActive()|
-48b6d0|TView::VTableSlotBD||26|function|undefined 'scalar_deleting_destructor'(void)|
+48b6d0|TView::RefreshControl||26|function|void __thiscall RefreshControl(void)|
 48b700|TView::ResetUiInputCaptureState_d3||75|function|undefined ResetUiInputCaptureState()|
 48b770|TView::SetGlobalUiSelectionIfChangedAndNotify_c2||40|function|undefined SetGlobalUiSelectionIfChangedAndNotify()|
 48b7b0|TView::GetTEventHandlerClassNamePointer_c4||17|function|undefined GetTEventHandlerClassNamePointer(void)|
@@ -1044,7 +1044,7 @@ address|name|symbol|size|type|prototype|provenance
 48fd00|InitializeTextEntryBaseAndOptionalStringResource||261|function|undefined InitializeTextEntryBaseAndOptionalStringResource()|
 48fe60|TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate||73|function|undefined AssignTextSharedRefIfChangedAndMaybeInvalidate()|
 48fed0|TStaticText::LoadUiStringAndDispatchViaVslot1C8||125|function|undefined LoadUiStringAndDispatchViaVslot1C8()|
-48ff70|TStaticText::OrphanCallChain_C1_I09_0048ff70||33|function|undefined OrphanCallChain_C1_I09_0048ff70(void)|
+48ff70|TStaticText::SetTextThemeCodeAndMaybeRefresh||33|function|void __thiscall SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag)|
 48ffb0|TStaticText::ApplyRectSlot110||184|function|undefined ApplyRectSlot110()|
 4900a0|TStaticText::RenderControlStateTextBySelectionCode||273|function|undefined RenderControlStateTextBySelectionCode()|
 490210|TEditText::CreateObject|?CreateObject@TEditText@@SGPAVCObject@@XZ|282|function|undefined CreateObject()|rtti
@@ -1065,7 +1065,7 @@ address|name|symbol|size|type|prototype|provenance
 490c10|TEditText::HandleCityProductionNoOp||16|function|undefined OrphanRetStub_0059add0(void)|
 490c30|TEditText::vmethod_0081||44|function|undefined ApplyControlFocusIfEnabledAndNotifySelectionRange()|
 490c70|TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70||44|function|undefined WrapperFor_StringShared_AssignFromPtr_At00490c70(CString * param_1)|
-490cb0|TEditText::OrphanCallChain_C1_I09_0048ff70||33|function|undefined OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)|
+490cb0|TEditText::SetTextThemeCodeAndMaybeRefresh||33|function|void __thiscall SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag)|
 490cf0|TEditText::InitDialogWindowAndSyncTitleIfChanged||272|function|undefined InitDialogWindowAndSyncTitleIfChanged()|
 490e50|TEditText::VTableSlot59||91|function|undefined 'scalar_deleting_destructor'(void)|
 490ed0|TNumberText::CreateObject|?CreateObject@TNumberText@@SGPAVCObject@@XZ|288|function|undefined CreateObject()|rtti
@@ -2545,7 +2545,7 @@ address|name|symbol|size|type|prototype|provenance
 4e6a70|TAutoGreatPower::CreateObject|?CreateObject@TAutoGreatPower@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 4e6b10|TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||3|function|undefined CreateTAutoGreatPowerInstance()|
 4e6b30|TAutoGreatPower::GetRuntimeClass||6|function|CRuntimeClass * __thiscall GetRuntimeClass()|rtti
-4e6b50|TAutoGreatPower::ConstructTAutoGreatPowerBaseState||28|function|undefined ConstructTAutoGreatPowerBaseState()|
+4e6b50|TAutoGreatPower::TAutoGreatPower||28|function|void __thiscall TAutoGreatPower(void)|
 4e6b80|TAutoGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4e6bb0|TAutoGreatPower::~TAutoGreatPower||80|function|undefined ~TAutoGreatPower()|
 4e6c20|InitializeNationMinisterSubsystemsByPolicyIds||1160|function|undefined InitializeNationMinisterSubsystemsByPolicyIds()|
@@ -4222,7 +4222,7 @@ address|name|symbol|size|type|prototype|provenance
 55eff0|TZone::WriteTo||88|function|undefined SerializeZoneToBinaryStream()|
 55f070|TZone::AssignZoneDisplayNameToOutputRef_2b_2b_2b_2b_2b||16|function|undefined AssignZoneDisplayNameToOutputRef()|
 55f090|TZone::AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_2c_2c||16|function|undefined AssignZoneDisplayNameAliasToOutputRef()|
-55f0b0|GetShortAtOffset14OrInvalid||14|function|undefined GetShortAtOffset14OrInvalid()|
+55f0b0|TZone::GetContextOrdinalOrInvalid||14|function|short __thiscall GetContextOrdinalOrInvalid(void)|
 55f100|FindMapActionContextByNodeId||47|function|undefined FindMapActionContextByNodeId()|
 55f140|TGreatPower::ComputeMapActionContextNodeValueAverage||337|function|undefined ComputeMapActionContextNodeValueAverage()|
 55f300|DispatchMapActionContextCallbackViaField24||16|function|undefined DispatchMapActionContextCallbackViaField24()|
@@ -5688,7 +5688,7 @@ address|name|symbol|size|type|prototype|provenance
 5b5bb0|TInfoBarPictureText::GetRuntimeClass||6|function|undefined GetTInfoBarPictureTextClassNamePointer()|rtti
 5b5c60|TInfoBarPictureText::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b5c90|TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree||5|function|undefined DestructTInfoBarPictureTextAndMaybeFree()|
-5b5cb0|TInfoBarPictureText::SerializeRecordList_0x0C_WithBlockPool_A||216|function|undefined ConstructTInfoBarTextBaseState(RECT * param_1)|
+5b5cb0|TInfoBarPictureText::SetTextAndLayoutRect||216|function|undefined __thiscall SetTextAndLayoutRect(CString text, RECT* layoutRect)|
 5b5dd0|TInfoBarPictureText::DestructTInfoBarTextAndMaybeFree||193|function|undefined DestructTInfoBarTextAndMaybeFree(void)|
 5b5ee0|TDeluxeText::CreateObject|?CreateObject@TDeluxeText@@SGPAVCObject@@XZ|184|function|undefined CreateObject()|rtti
 5b5fd0|TDeluxeText::GetRuntimeClass||6|function|undefined GetTDeluxeTextClassNamePointer()|rtti
@@ -5701,15 +5701,15 @@ address|name|symbol|size|type|prototype|provenance
 5b62e0|TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0||96|function|undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(void)|
 5b6360|TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360||96|function|undefined Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(CString param_1)|
 5b63e0|TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate||123|function|undefined RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)|
-5b6480|TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480||13|function|undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1)|
-5b64a0|TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0||35|function|undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2)|
+5b6480|TDeluxeText::UpdateTextEntrySharedString||13|function|void __thiscall UpdateTextEntrySharedString(CString* text)|
+5b64a0|TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify||35|function|void __thiscall UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char notifyFlag)|
 5b64e0|TDeluxeText::BuildCityViewProductionControls_Impl||129|function|undefined BuildCityViewProductionControls_Impl()|
 5b65a0|TInfoBarText::CreateObject|?CreateObject@TInfoBarText@@SGPAVCObject@@XZ|184|function|undefined CreateObject()|rtti
 5b6690|TInfoBarText::GetRuntimeClass||6|function|undefined GetTInfoBarTextClassNamePointer()|rtti
-5b66b0|TInfoBarText::SerializeRecordList_0x0C_WithBlockPool_A||140|function|undefined ConstructTInfoBarTextBaseState()|
+5b66b0|TInfoBarText::SetTextAndLayoutRect||140|function|undefined __thiscall SetTextAndLayoutRect(CString text, RECT* layoutRect)|
 5b6770|TInfoBarText::DestructTInfoBarTextAndMaybeFree||117|function|undefined DestructTInfoBarTextAndMaybeFree(void)|
 5b6810|TInfoBarText::Dump||19|function|undefined OrphanCallChain_C1_I05_005b6810(void)|
-5b6840|TInfoBarText::AssertValid||183|function|undefined InitializeMapHintTextStyleAndThemeFlags()|
+5b6840|TInfoBarText::InitializeMapHintTextStyleAndThemeFlags||183|function|undefined __thiscall InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary)|
 5b6930|TInfoBarText::Free||23|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5b6960|TNoHiliteText::CreateObject|?CreateObject@TNoHiliteText@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 5b69e0|TNoHiliteText::GetRuntimeClass||6|function|undefined GetTNoHiliteTextClassNamePointer()|rtti
@@ -6225,7 +6225,7 @@ address|name|symbol|size|type|prototype|provenance
 5e4fb0|TSoundPlayer::ReturnConstantFalse_SoundPredicate||5|function|undefined ReturnConstantFalse_SoundPredicate()|
 5e4fd0|TSoundPlayer::ClearDirectSoundInitPendingAndResetState||14|function|undefined ClearDirectSoundInitPendingAndResetState()|
 5e4ff0|TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48||28|function|undefined NotifyGlobalAudioObjectsViaVslot48()|
-5e5020|TSoundPlayer::WrapperFor_ftol_At005e5020||94|function|undefined WrapperFor_ftol_At005e5020(void)|
+5e5020|TSoundPlayer::SetMasterVolumeFromPercent||94|function|void __thiscall SetMasterVolumeFromPercent(short percent)|
 5e50a0|TSoundPlayer::NoOpAudioTickCallback_005e50a0||3|function|undefined NoOpAudioTickCallback_005e50a0(void)|
 5e50c0|TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState||89|function|undefined UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState()|
 5e5140|TSoundPlayer::ForwardActionToVslotB4WithFlag1||30|function|undefined ForwardActionToVslotB4WithFlag1()|

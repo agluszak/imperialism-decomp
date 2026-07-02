@@ -45,50 +45,59 @@ public:
   // vtable 0x0065c6d8 — slots 0x00..0x16. Slots 0x02..0x04 (Serialize/AssertValid/
   // Dump) and 0x08..0x09 (ShallowClone/ShallowFree) come from TObject/CObject.
   DECLARE_DYNCREATE(TZone)
-  ~TZone() override;                                               // slot 0x01 vector dtor 0x562880
-  void WriteTo(TStream* stream) override;                          // slot 0x05 0x55eff0
-  void ReadFrom(TStream* stream) override;                         // slot 0x06 0x55ed20
-  void Free() override;                                            // slot 0x07 0x55ec60
-  virtual void GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2); // slot 0x0a 0x55f780
-  virtual void AssignZoneDisplayNameToOutputRef(void* outputRef);  // slot 0x0b 0x55f070
-  virtual void AssignZoneDisplayNameAliasToOutputRef(void* outputRef); // slot 0x0c 0x55f090
-  virtual bool QueryZoneCapabilityFlagA();                         // slot 0x0d 0x55e820
-  virtual bool QueryPortZoneCapability();                          // slot 0x0e 0x55e840
-  virtual bool QueryZoneCapabilityFlagC();                         // slot 0x0f 0x55e860
-  virtual bool QueryZoneCapabilityFlagD(int unused);               // slot 0x10 0x55e880
-  virtual bool QueryZoneCapabilityFlagE(int unused);               // slot 0x11 0x55e8a0
-  virtual bool HasZoneActiveChildCount(int unused);                // slot 0x12 0x55e8c0
-  virtual short FindNearestActiveSeaContextTileFromOffset216();    // slot 0x13 0x55fe60
-  virtual short GetActiveNationSlotTile();                         // slot 0x14 0x55fef0
-  virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState); // slot 0x15 0x560150
-  virtual void SetMapOrderUiFlag(int flag);                        // slot 0x16 0x560580
+  ~TZone() override;                       // slot 0x01 vector dtor 0x562880
+  void WriteTo(TStream* stream) override;  // slot 0x05 0x55eff0
+  void ReadFrom(TStream* stream) override; // slot 0x06 0x55ed20
+  void Free() override;                    // slot 0x07 0x55ec60
+  virtual void GenerateMapActionContextDisplayNameAndHeadline(int arg1,
+                                                              void* arg2); // slot 0x0a 0x55f780
+  virtual void AssignZoneDisplayNameToOutputRef(void* outputRef);          // slot 0x0b 0x55f070
+  virtual void AssignZoneDisplayNameAliasToOutputRef(void* outputRef);     // slot 0x0c 0x55f090
+  virtual bool QueryZoneCapabilityFlagA();                                 // slot 0x0d 0x55e820
+  virtual bool QueryPortZoneCapability();                                  // slot 0x0e 0x55e840
+  virtual bool QueryZoneCapabilityFlagC();                                 // slot 0x0f 0x55e860
+  virtual bool QueryZoneCapabilityFlagD(int unused);                       // slot 0x10 0x55e880
+  virtual bool QueryZoneCapabilityFlagE(int unused);                       // slot 0x11 0x55e8a0
+  virtual bool HasZoneActiveChildCount(int unused);                        // slot 0x12 0x55e8c0
+  virtual short FindNearestActiveSeaContextTileFromOffset216();            // slot 0x13 0x55fe60
+  virtual short GetActiveNationSlotTile();                                 // slot 0x14 0x55fef0
+  virtual short
+  FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState); // slot 0x15 0x560150
+  virtual void SetMapOrderUiFlag(int flag);                                   // slot 0x16 0x560580
   // --- vtable ends at slot 0x16 (orig 0x17..0x1b are NULL; see note above) ---
 
   // The original table group continues with two embedded stretch<TZone*> member vtables
   // at +0x24/+0x34, then TPortZone. Those stretch bodies are implemented in TZone.cpp.
-  void AppendZonePointerToPrimaryArray(TZone* zone) { primaryNeighbors.Add(zone); }
-  void AppendZonePointerToSecondaryArray(TZone* zone) { secondaryNeighbors.Add(zone); }
+  void AppendZonePointerToPrimaryArray(TZone* zone) {
+    primaryNeighbors.Add(zone);
+  }
+  void AppendZonePointerToSecondaryArray(TZone* zone) {
+    secondaryNeighbors.Add(zone);
+  }
 
   // Non-virtual helpers (real bodies in TZone.cpp; not TZone vtable slots).
-  void GenerateZoneStatusCodeIfUnset();                            // 0x55f5c0
+  // 0x55f0b0 — null-tolerant: the original calls this on possibly-null TZone*
+  // (mov ecx, zone; test ecx,ecx inside), so keep the `this == 0` guard.
+  short GetContextOrdinalOrInvalid();
+  void GenerateZoneStatusCodeIfUnset(); // 0x55f5c0
   void InvokeObjectVtableMethod24();
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
 
-  short field04;                  // +0x04
-  char pad06[2];                  // +0x06
-  CString displayName;            // +0x08
-  int field0c;                    // +0x0c tile / terrain id storage
-  unsigned short field10;         // +0x10 (key mask in nation context slices)
-  short field12;                  // +0x12 seed nation id arg
-  short field14;                  // +0x14 context ordinal
-  char pad16[2];                  // +0x16
-  TZone* prev18;                  // +0x18 older in g_pMapActionContextListHead chain
-  TZone* next1c;                  // +0x1c newer link
-  short field20;                  // +0x20 active tile index
-  char pad22[2];                  // +0x22
-  TZonePrimaryNeighborStretch primaryNeighbors;     // +0x24
+  short field04;                                // +0x04
+  char pad06[2];                                // +0x06
+  CString displayName;                          // +0x08
+  int field0c;                                  // +0x0c tile / terrain id storage
+  unsigned short field10;                       // +0x10 (key mask in nation context slices)
+  short field12;                                // +0x12 seed nation id arg
+  short field14;                                // +0x14 context ordinal
+  char pad16[2];                                // +0x16
+  TZone* prev18;                                // +0x18 older in g_pMapActionContextListHead chain
+  TZone* next1c;                                // +0x1c newer link
+  short field20;                                // +0x20 active tile index
+  char pad22[2];                                // +0x22
+  TZonePrimaryNeighborStretch primaryNeighbors; // +0x24
   TZoneSecondaryNeighborStretch secondaryNeighbors; // +0x34
-  short field44;                  // +0x44
+  short field44;                                    // +0x44
 
   TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);

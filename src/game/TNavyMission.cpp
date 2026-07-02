@@ -9,7 +9,6 @@
 #include "game/TShip.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TMapOrderEntry.h"
-#include "game/map_action_context_helpers.h"
 #include "game/global_data_tables.h"
 
 IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
@@ -163,13 +162,13 @@ void TNavyMission::WriteTo(TStream* stream) {
 
   int nodeIdx1 = -1;
   if (targetZone14 != nullptr) {
-    nodeIdx1 = GetShortAtOffset14OrInvalid(targetZone14);
+    nodeIdx1 = targetZone14->GetContextOrdinalOrInvalid();
   }
   stream->WriteCountSlot88(nodeIdx1);
 
   int nodeIdx2 = -1;
   if (targetZone18 != nullptr) {
-    nodeIdx2 = GetShortAtOffset14OrInvalid(targetZone18);
+    nodeIdx2 = targetZone18->GetContextOrdinalOrInvalid();
   }
   stream->WriteCountSlot88(nodeIdx2);
 

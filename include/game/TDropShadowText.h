@@ -3,11 +3,13 @@
 #include "game/TPictureText.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDropShadowText and its role. Base edge (TPictureText) recovered from RTTI CRuntimeClass chain: TDropShadowText -> TPictureText -> TStaticText -> TControl -> TView -> TEventHandler -> TObject -> CObject.
+// TODO(manifest): describe TDropShadowText and its role. Base edge (TPictureText) recovered from
+// RTTI CRuntimeClass chain: TDropShadowText -> TPictureText -> TStaticText -> TControl -> TView ->
+// TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066ce00
 class TDropShadowText : public TPictureText {
 public:
-// === BEGIN GENERATED DECLS (TDropShadowText) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TDropShadowText) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDropShadowText)
   virtual ~TDropShadowText(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -121,18 +123,20 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  // slot 0x71 OrphanCallChain_C1_I09_0048ff70 inherited unchanged (0x48ff70)
+  // slot 0x71 SetTextThemeCodeAndMaybeRefresh inherited unchanged (0x48ff70)
   // slot 0x72 AssignTextSharedRefIfChangedAndMaybeInvalidate inherited unchanged (0x48fe60)
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
-// === END GENERATED DECLS (TDropShadowText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDropShadowText 0xCTOR`).
+  // === END GENERATED DECLS (TDropShadowText) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TDropShadowText
+  // 0xCTOR`).
 
   TDropShadowText();
 };
 
-// === BEGIN GENERATED (TDropShadowText) — refreshed by `just gen-class TDropShadowText`; do not hand-edit ===
+// === BEGIN GENERATED (TDropShadowText) — refreshed by `just gen-class TDropShadowText`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x0066ce00 (118 slots), object size 0x98, base TPictureText
 //   slot 0x00  byte 0x00  0x005b5570  override  GetTEventHandlerClassNamePointer
@@ -248,7 +252,7 @@ public:
 //   slot 0x6e  byte 0x1b8  0x0048e7a0  inherited SetControlPictureEntryAndMaybeRefresh
 //   slot 0x6f  byte 0x1bc  0x004294a0  inherited LogUnhandledDialogMethodAndReturnFalse
 //   slot 0x70  byte 0x1c0  0x0048e810  inherited SetControlStateFlagAndMaybeRefresh
-//   slot 0x71  byte 0x1c4  0x0048ff70  inherited OrphanCallChain_C1_I09_0048ff70
+//   slot 0x71  byte 0x1c4  0x0048ff70  inherited SetTextThemeCodeAndMaybeRefresh
 //   slot 0x72  byte 0x1c8  0x0048fe60  inherited AssignTextSharedRefIfChangedAndMaybeInvalidate
 //   slot 0x73  byte 0x1cc  0x0048fed0  inherited LoadUiStringAndDispatchViaVslot1C8
 //   slot 0x74  byte 0x1d0  0x004294d0  inherited AssignSharedStringFromField84

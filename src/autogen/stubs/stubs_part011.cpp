@@ -715,22 +715,6 @@ undefined4 SetQuickDrawColorAndPropagateIfChanged(void)
   return 0;
 }
 
-// ghidra_name SetQuickDrawColorAndSyncGlobals
-// ghidra_proto undefined SetQuickDrawColorAndSyncGlobals()
-// FUNCTION: IMPERIALISM 0x004950a0
-undefined4 SetQuickDrawColorAndSyncGlobals(void)
-{
-  return 0;
-}
-
-// ghidra_name SetGlobalBlitTransparentColorRaw
-// ghidra_proto undefined SetGlobalBlitTransparentColorRaw()
-// FUNCTION: IMPERIALISM 0x004950d0
-undefined4 SetGlobalBlitTransparentColorRaw(void)
-{
-  return 0;
-}
-
 // ghidra_name SetQuickDrawFillColorFromPaletteIndex
 // ghidra_proto undefined SetQuickDrawFillColorFromPaletteIndex()
 // FUNCTION: IMPERIALISM 0x004950f0

@@ -7,6 +7,7 @@
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/bitmap_descriptor_helpers.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
@@ -24,14 +25,7 @@
 #include "game/TSimMgr.h"
 #include "game/TCursorControlPanel.h"
 
-undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
-undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);
-undefined4 thunk_GetSurfaceObjectAtContextOffset24(void);
-undefined4 thunk_ReturnConstantTrueQuickDrawFlag(void);
-undefined4 thunk_NoOpQuickDrawLifecycleHookB(void);
-undefined4 thunk_RenderTerrainAndMinorNationLegendLabels(void);
-undefined4 SetQuickDrawColorAndSyncGlobals(void);
-undefined4 thunk_SetGlobalBlitTransparentColorRaw(void);
+undefined4 RenderTerrainAndMinorNationLegendLabels(void);
 undefined4 BlitRectWithOptionalTransparency(void);
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 MapTurnEventCodeToPaletteIndex(void);
@@ -255,26 +249,25 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
 // FUNCTION: IMPERIALISM 0x004f6170
 void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect) {
   QuickDrawSurfaceGuard surface;
-  reinterpret_cast<TView*>(this)->QueryBounds(const_cast<RECT*>(presentRect));
+  QueryBounds(const_cast<RECT*>(presentRect));
 
   if (legendSurfaceModeAt524 != 0) {
     int savedTransparentColor = g_pActiveQuickDrawSurfaceContext->transparentBlitColor;
     int savedQuickDrawColor = g_pActiveQuickDrawSurfaceContext->quickDrawColor;
 
-    int* previousSurface = 0;
+    TQuickDrawSurfaceContext* previousSurface = 0;
     int contextFlags = 0;
-    reinterpret_cast<void(__cdecl*)(int**, int*)>(thunk_GetActiveQuickDrawSurfaceContextAndFlags)(
-        &previousSurface, &contextFlags);
-    reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
-        reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext), contextFlags);
+    GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
+    SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
 
-    if (previousSurface != reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext)) {
-      reinterpret_cast<void(__cdecl*)(int*)>(thunk_GetSurfaceObjectAtContextOffset24)(
-          reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext));
-      reinterpret_cast<void(__cdecl*)()>(thunk_ReturnConstantTrueQuickDrawFlag)();
+    if (previousSurface != g_pPrimaryRenderSurfaceContext) {
+      ReturnConstantTrueQuickDrawFlag(
+          GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
     }
 
-    reinterpret_cast<TView*>(this)->ApplyRectSlot110(nullptr);
+    // Original passes the present rect here (mov ecx,[esp+0x58]; thiscall 0x48f3c0),
+    // not a null rect.
+    ApplyRectSlot110(const_cast<RECT*>(presentRect));
 
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
     short terrainIndex = 0;
@@ -299,20 +292,21 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
     } while (terrainIndex < 0x17);
 
     SetQuickDrawFillColor(0);
-    reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_RenderTerrainAndMinorNationLegendLabels)(
-        this, 0);
+    // 0x4f4a30 is really `__thiscall TDiplomacyMapView::RenderTerrainAndMinorNation-
+    // LegendLabels(RECT* presentRect)` (ecx=this, one stack arg). Porting the 920-byte
+    // body is tracked in docs/TODO.md; until then the target is a no-arg stub, so the
+    // bridge stays zero-stack-arg to keep the rebuilt stack balanced.
+    reinterpret_cast<void(__fastcall*)(void*, int)>(RenderTerrainAndMinorNationLegendLabels)(this,
+                                                                                             0);
 
-    if (previousSurface != reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext)) {
-      reinterpret_cast<void(__cdecl*)(int*)>(thunk_GetSurfaceObjectAtContextOffset24)(
-          reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext));
-      reinterpret_cast<void(__cdecl*)()>(thunk_NoOpQuickDrawLifecycleHookB)();
+    if (previousSurface != g_pPrimaryRenderSurfaceContext) {
+      NoOpQuickDrawLifecycleHookB(
+          GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
     }
 
-    reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
-        previousSurface, contextFlags);
-    reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(savedQuickDrawColor);
-    reinterpret_cast<void(__cdecl*)(int)>(thunk_SetGlobalBlitTransparentColorRaw)(
-        savedTransparentColor);
+    SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
+    SetQuickDrawColorAndSyncGlobals(savedQuickDrawColor);
+    SetGlobalBlitTransparentColorRaw(savedTransparentColor);
     legendSurfaceModeAt524 = 0;
   }
 
@@ -356,7 +350,7 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
 // FUNCTION: IMPERIALISM 0x004f64c0
 void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNationSlot,
                                                                   const RECT* presentRect) {
-  int* previousSurface = 0;
+  TQuickDrawSurfaceContext* previousSurface = 0;
   int maskState[2] = {0, 0};
   int contextFlags = 0;
   RECT blitRect;
@@ -366,13 +360,10 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
   blitRect.bottom = presentRect->bottom;
 
   if (legendSurfaceModeAt524 != 4) {
-    reinterpret_cast<void(__cdecl*)(int**, int*)>(thunk_GetActiveQuickDrawSurfaceContextAndFlags)(
-        &previousSurface, &contextFlags);
-    reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
-        reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext), contextFlags);
-    reinterpret_cast<void(__cdecl*)(int)>(thunk_ReturnConstantTrueQuickDrawFlag)(
-        reinterpret_cast<int(__cdecl*)(int*)>(thunk_GetSurfaceObjectAtContextOffset24)(
-            reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext)));
+    GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
+    SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
+    ReturnConstantTrueQuickDrawFlag(
+        GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
 
     short nationIndex = 0;
     do {
@@ -402,14 +393,12 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
       nationIndex = static_cast<short>(nationIndex + 1);
     } while (nationIndex < 0x17);
 
-    reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_RenderTerrainAndMinorNationLegendLabels)(
-        this, 0);
+    // See the note at 0x4f6170: 0x4f4a30 is a __thiscall member pending a real port.
+    reinterpret_cast<void(__fastcall*)(void*, int)>(RenderTerrainAndMinorNationLegendLabels)(this,
+                                                                                             0);
     legendSurfaceModeAt524 = 4;
-    reinterpret_cast<void(__cdecl*)(int*)>(thunk_GetSurfaceObjectAtContextOffset24)(
-        reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext));
-    reinterpret_cast<void(__cdecl*)()>(thunk_NoOpQuickDrawLifecycleHookB)();
-    reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
-        previousSurface, contextFlags);
+    NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
+    SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
   }
 
   BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -498,7 +487,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
   QuickDrawSurfaceGuard surface;
   frameRegionSelectorAt98 = (short)activeNationSlot;
 
-  int* previousSurface = 0;
+  TQuickDrawSurfaceContext* previousSurface = 0;
   int maskState[2];
   int contextFlags = 0;
   RECT blitRect;
@@ -508,13 +497,10 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
   blitRect.bottom = presentRect->bottom;
 
   if (legendSurfaceModeAt524 != 1) {
-    reinterpret_cast<void(__cdecl*)(int**, int*)>(thunk_GetActiveQuickDrawSurfaceContextAndFlags)(
-        &previousSurface, &contextFlags);
-    reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
-        reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext), contextFlags);
-    reinterpret_cast<void(__cdecl*)(int)>(thunk_ReturnConstantTrueQuickDrawFlag)(
-        reinterpret_cast<int(__cdecl*)(int*)>(thunk_GetSurfaceObjectAtContextOffset24)(
-            reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext)));
+    GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
+    SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
+    ReturnConstantTrueQuickDrawFlag(
+        GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
 
     int terrainIndex = 0;
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
@@ -540,14 +526,12 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
       terrainDescriptors++;
     } while (terrainIndex < 0x17);
 
-    reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_RenderTerrainAndMinorNationLegendLabels)(
-        this, 0);
+    // See the note at 0x4f6170: 0x4f4a30 is a __thiscall member pending a real port.
+    reinterpret_cast<void(__fastcall*)(void*, int)>(RenderTerrainAndMinorNationLegendLabels)(this,
+                                                                                             0);
     legendSurfaceModeAt524 = 1;
-    reinterpret_cast<void(__cdecl*)(int*)>(thunk_GetSurfaceObjectAtContextOffset24)(
-        reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext));
-    reinterpret_cast<void(__cdecl*)()>(thunk_NoOpQuickDrawLifecycleHookB)();
-    reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
-        previousSurface, contextFlags);
+    NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext));
+    SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
   }
 
   BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -576,7 +560,7 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int e
 
 // FUNCTION: IMPERIALISM 0x004f6bd0
 void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex, int bmpId) {
-  TQuickDrawBlitSurface* surfaceCtx = g_pActiveQuickDrawSurfaceContext->GetBlitSurface();
+  TQuickDrawSurfaceContext* surface = g_pActiveQuickDrawSurfaceContext;
   DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
   CDib* bmpHandle =
       g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(static_cast<unsigned short>(bmpId));
@@ -585,17 +569,14 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   if (maskCursor != 0) {
     int srcRowWidth = bmpHandle->m_pInfoHeader->bmiHeader.biWidth;
     int srcRowAdvance = (((srcRowWidth + 3) & 0xfffffffc) - maskRun->rightAt0c) + maskRun->leftAt04;
-    int surfaceHeight = *reinterpret_cast<int*>(
-        *reinterpret_cast<int*>(
-            *reinterpret_cast<int*>(reinterpret_cast<char*>(surfaceCtx) + 0x1c) + 0x10) +
-        8);
+    int surfaceHeight = surface->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (surfaceHeight < 1) {
       surfaceHeight = -surfaceHeight;
     }
     int row = maskRun->topAt08;
-    int rowStride = *reinterpret_cast<short*>(&surfaceCtx->hdcOrBitmapHandle);
-    unsigned char* destCursor = reinterpret_cast<unsigned char*>(
-        ((surfaceHeight - row) - 1) * rowStride + surfaceCtx->field00 + maskRun->leftAt04);
+    int rowStride = surface->blitSurface.stride;
+    unsigned char* destCursor = static_cast<unsigned char*>(surface->blitSurface.pixelBits) +
+                                ((surfaceHeight - row) - 1) * rowStride + maskRun->leftAt04;
     int destRowAdvance = (maskRun->leftAt04 - maskRun->rightAt0c) - rowStride;
     unsigned char* srcCursor = static_cast<unsigned char*>(bmpHandle->m_dibBits);
 
@@ -642,7 +623,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   g_pModuleLibraryCacheState->ReleaseRecordByHandle(bmpHandle);
   int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
   StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
-  packedRun->AppendPackedColorDword(reinterpret_cast<int>(surfaceCtx), packedColor);
+  packedRun->AppendPackedColorDword(reinterpret_cast<int>(surface->GetBlitSurface()), packedColor);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7040
@@ -727,10 +708,9 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
       destRect.right = iconRect->right;
       destRect.bottom = iconRect->bottom;
 
-      int surfaceObject = g_pActiveQuickDrawSurfaceContext->flipDescriptor;
-      if (surfaceObject != 0) {
-        int surfaceHeight =
-            *reinterpret_cast<int*>(*reinterpret_cast<int*>(surfaceObject + 0x10) + 8);
+      CDib* activeDib = g_pActiveQuickDrawSurfaceContext->surfaceDib;
+      if (activeDib != 0) {
+        int surfaceHeight = activeDib->m_pInfoHeader->bmiHeader.biHeight;
         if (surfaceHeight < 1) {
           surfaceHeight = -surfaceHeight;
         }
@@ -770,7 +750,8 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
 // FUNCTION: IMPERIALISM 0x005DA040
 void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount() {
   TView* mainView = g_pDisplayMgr->activeDialog;
-  TCursorControlPanel* cursor = static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCrus));
+  TCursorControlPanel* cursor =
+      static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCrus));
   g_pCursorControlPanel = cursor;
   if (cursor != nullptr) {
     cursor->AssertValid();
@@ -785,7 +766,8 @@ void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount() {
 // FUNCTION: IMPERIALISM 0x005DA180
 void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920() {
   TView* mainView = g_pDisplayMgr->activeDialog;
-  TCursorControlPanel* cursor = static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCrus));
+  TCursorControlPanel* cursor =
+      static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCrus));
   g_pCursorControlPanel = cursor;
   if (cursor != nullptr) {
     cursor->AssertValid();
@@ -808,7 +790,8 @@ void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920() {
   if (titleControl != nullptr) {
     titleControl->AssertValid();
     titleControl->RefreshControl();
-    static_cast<TInfoBarText*>(titleControl)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
+    static_cast<TInfoBarText*>(titleControl)
+        ->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
     CString titleString;
     g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(&titleString);
     titleControl->EnableAndProcessFlag(titleString);

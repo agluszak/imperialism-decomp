@@ -28,8 +28,7 @@ public:
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
   // slot 0x23 — 0x004e7b50: proposal queue with alliance guards.
-  void QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
-                                                  short targetNationId) override;
+  void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) override;
   // slot 0x25 — 0x004e7c50: policy side effects before slot 0x94 dispatch.
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
   // slot 0x4d — 0x004ea470: rebuild yields and roll field 0x134 into 0x136.
@@ -108,13 +107,10 @@ public:
   virtual undefined OrphanCallChain_C4_I28_004e75c0(int needSlot);
   // slot 0xb3 — 0x004ea990.
   virtual undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990();
-
-  void* ConstructTAutoGreatPowerBaseState(void);
 };
 
-TGreatPower* CreateAutoGreatPowerNationState(void);
-
-// === BEGIN GENERATED (TAutoGreatPower) — refreshed by `just gen-class TAutoGreatPower`; do not hand-edit ===
+// === BEGIN GENERATED (TAutoGreatPower) — refreshed by `just gen-class TAutoGreatPower`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x00654088 (180 slots), object size 0xb70, base TGreatPower
 //   slot 0x00  byte 0x00  0x004e6b30  override  GetTAutoGreatPowerClassNamePointer

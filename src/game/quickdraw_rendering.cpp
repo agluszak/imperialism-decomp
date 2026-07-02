@@ -23,6 +23,18 @@ void SetQuickDrawStrokeColor(int strokeColor) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004950a0
+void SetQuickDrawColorAndSyncGlobals(int color) {
+  g_Quick_Draw_Color_State_006950FC = color;
+  g_pActiveQuickDrawSurfaceContext->quickDrawColor = color;
+  g_uQuickDrawCurrentColor = color;
+}
+
+// FUNCTION: IMPERIALISM 0x004950d0
+void SetGlobalBlitTransparentColorRaw(int transparentColor) {
+  g_uQuickDrawStrokeColor = transparentColor;
+}
+
 // FUNCTION: IMPERIALISM 0x00495310
 void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB) {
   g_nQuickDrawStrokeStylePrimary = (int)styleParamA;
@@ -102,5 +114,56 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   }
   if (dc != nullptr) {
     FillRect(dc->GetSafeHdc(), &fillRect, static_cast<HBRUSH>(brush.GetSafeHandle()));
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005c3d20
+void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags) {
+  switch (themeCode) {
+  case 0x2b67:
+    *outStyleFlags = 0x1000000;
+    return;
+  case 0x2b68:
+    *outStyleFlags = 0x1000013;
+    return;
+  case 0x2b6a:
+    *outStyleFlags = 0x100005c;
+    return;
+  case 0x2b6b:
+    *outStyleFlags = 0x10000d2;
+    return;
+  case 0x2b69:
+    *outStyleFlags = 0x10000cb;
+    return;
+  case 0x2b6c:
+    *outStyleFlags = 0x1000028;
+    return;
+  case 0x2b6d:
+    *outStyleFlags = 0x1000001;
+    return;
+  case 0x2b6e:
+    *outStyleFlags = 0x1000001;
+    return;
+  case 0x2b6f:
+    *outStyleFlags = 0x100002a;
+    return;
+  case 0x2b70:
+    *outStyleFlags = 0x10000c9;
+    return;
+  case 0x2b71:
+    *outStyleFlags = 0x100001b;
+    return;
+  case 0x2b72:
+    *outStyleFlags = 0x1000030;
+    return;
+  case 0x2b73:
+    *outStyleFlags = 0x10000c8;
+    return;
+  case 0x2b74:
+    *outStyleFlags = 0x10000e3;
+    return;
+  default:
+    *outStyleFlags = (themeCode & 0xffff) | 0x1000000;
+    return;
   }
 }
