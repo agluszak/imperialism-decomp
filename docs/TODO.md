@@ -45,6 +45,24 @@ retyping. Same family: `thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d
 `+0x44..+0x5f`, so `field_64` sits at `+0x60`, `pad68` at `+0x64`, ...). Verify against
 the ctor listing and fix the comment names.
 
+## Remaining thunk_ clusters (post 2026-07 QuickDraw retirement; 136 refs left)
+
+- `thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9xx` (7 leaves,
+  0x49d900..0x49da80, 35 refs): vtable-slot bodies on the TAdorner family whose
+  release body is the assert-macro flag pulse
+  (`prev = SetFlag(0); SetFlag(prev); ret 4`, one ignored arg). Port as real slot
+  bodies using the TemporarilyClearAndRestore helper shape and rename per slot role.
+- `thunk_ComputeHexNeighborTileIndices_At005a1400` (7 refs) and
+  `thunk_NormalizeWrappedMapCoord108x60` (4 refs): map-geometry leaves, likely
+  cleanly portable free functions.
+- `thunk_BuildUiTextStyleDescriptor_At005b62e0` (7 refs): TDeluxeText slot 0x78
+  body — part of the text-engine recovery above.
+- `thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0`,
+  `thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0`,
+  `thunk_InvalidateMapRegionForOrderEntry`,
+  `thunk_InitializeDirectSoundDeviceAndChannels`, NoOpCallback pairs — small
+  per-callsite jobs; verify receiver/convention before retargeting.
+
 ## Misleading-name backlog (spotted 2026-07, not yet renamed)
 
 - `GetSurfaceObjectAtContextOffset24` returns `context->surfaceObject`
