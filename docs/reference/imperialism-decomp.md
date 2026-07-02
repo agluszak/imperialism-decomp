@@ -122,7 +122,7 @@ Native Windows smoke remains the acceptance check.
 
 | Type | Id | Hex | Size |
 |------|-----|-----|------|
-| DIALOG | 152 | 0x98 | 0xba | Low-disk prompt (`initinstance-port-plan.md`) |
+| DIALOG | 152 | 0x98 | 0xba | Low-disk prompt (init-chain backlog: Beads `imperialism-decomp-1uj.14`) |
 | DIALOG | 251 | 0xfb | 0xf0 | Auto-resolution prompt |
 
 Recomp build links `resources/imperialism_game.rc` (minimal MENU+ACCEL id 128) via

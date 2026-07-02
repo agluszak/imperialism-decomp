@@ -14,8 +14,9 @@ IMPORTANT: reads bytes one at a time via Memory.getByte(Address) — do NOT swit
 to Memory.getBytes(Address, byte[]) with a Python bytearray/bytes buffer. That silently
 returns success with the buffer left all-zero in this environment (reproduced under
 `python -m` invocation; jpype does not marshal the Java out-param into a Python
-buffer). Bit us once already — see docs/TODO.md's "Backdrop window bring-up" section
-and search_whole_binary.py's search_dword for the same caveat.
+buffer). Bit us once already during backdrop-window recovery; the pre-migration
+note is preserved in Beads issue imperialism-decomp-1uj.35. See also
+search_whole_binary.py's search_dword for the same caveat.
 
 usage: raw_disasm 0xADDR [byte_count]
 """

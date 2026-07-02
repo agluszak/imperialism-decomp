@@ -96,7 +96,8 @@
 - **Timestamp:** 2026-06-16 — TGreatPower vtable skeleton + stub-to-virtual sweep
 - **Command:** `just sync-ownership` → `just regen-stubs` → `just build` → `just detect` →
   `just vtable TGreatPower` → `just vtable TAutoGreatPower` → `just compare` canaries →
-  `just stackcmp 0x4d89f0` → `just gates`. Blockers in `docs/blockers/tgreatpower.md`.
+  `just stackcmp 0x4d89f0` → `just gates`. Blockers later migrated to Beads issue
+  `imperialism-decomp-1uj.28`.
 - **Score Delta:** `just vtable TGreatPower` — recomp vtable **size warning gone** (was
   larger than orig); slot 0 `GetRuntimeClass`, slot 0x14 `HandleCityDialogHintClusterUpdate`,
   slots 0x19–0x1b region/diplomacy trio, aid-matrix block, tail `0x2b4`/`0x2b8`/`0x2c4`
@@ -125,8 +126,8 @@
 - **Timestamp:** 2026-06-16 — CObject LIBRARY markers + migration-plan update
 - **Command:** Replaced deleted `CObject`/`CRuntimeClass` bodies with in-source
   `// LIBRARY:` comment-only ownership (`CObject.cpp`, `CRuntimeClass.cpp`). Renamed
-  `symbols.csv` `606fba` row to `CObject::GetRuntimeClass`. Updated
-  `docs/reference/mfc-migration-plan.md` with progress table and LIBRARY-marker recipe.
+  `symbols.csv` `606fba` row to `CObject::GetRuntimeClass`. The old MFC migration
+  plan was later migrated to Beads issue `imperialism-decomp-1uj.41`.
   `just sync-ownership` → `just regen-stubs` → `just build` → `just gates` →
   `just compare` on the seven reclaimed addresses.
 - **Score Delta:** `0x00412bd0`/`0x00412bf0`/`0x00412c10`/`0x00606fc0`/`0x00606fd2`/

@@ -294,8 +294,9 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
     SetQuickDrawFillColor(0);
     // 0x4f4a30 is really `__thiscall TDiplomacyMapView::RenderTerrainAndMinorNation-
     // LegendLabels(RECT* presentRect)` (ecx=this, one stack arg). Porting the 920-byte
-    // body is tracked in docs/TODO.md; until then the target is a no-arg stub, so the
-    // bridge stays zero-stack-arg to keep the rebuilt stack balanced.
+    // body is tracked in Beads issue imperialism-decomp-1uj.2; until then the target
+    // is a no-arg stub, so the bridge stays zero-stack-arg to keep the rebuilt stack
+    // balanced.
     reinterpret_cast<void(__fastcall*)(void*, int)>(RenderTerrainAndMinorNationLegendLabels)(this,
                                                                                              0);
 
