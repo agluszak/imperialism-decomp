@@ -3,6 +3,62 @@
 Living backlog. Keep entries actionable with addresses; move durable design notes to
 `docs/reference/`. See also `docs/reference/initinstance-port-plan.md`.
 
+## QuickDraw text-engine recovery (follow-up to the 2026-07 thunk retirement)
+
+The cached text-style engine behind the remaining `quickdraw_rendering.h` typed
+wrappers is unrecovered. Recovering it retires four Hard-Rule-9 casts and ports the
+whole text-draw path:
+- Singletons: `0x6a1da0` / `0x6a1d9c` (cached text-style context objects; vtable
+  dispatch at `+0x04`, `+0x30`), lazy font handle `0x6a1d48`, dirty flag `0x6a1d56`.
+- Bodies to port once the class exists: `DrawTextWithCachedQuickDrawStyleState`
+  @ `0x494a90` (262b), `MeasureTextExtentWithCachedQuickDrawStyle` @ `0x494e00`
+  (393b), `SetQuickDrawTextOriginWithContextOffset` @ `0x497c80` (102b, needs the
+  `0x489a70` DC getter), `DrawCenteredGuideLineOnMapDc` @ `0x497d10` (376b).
+- Style-descriptor family in the same TU: `BuildUiTextStyleDescriptor` @ `0x5c3e80`,
+  `ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor` @ `0x5c4470` (3 args),
+  `InitializeUiTextStyleDescriptorAndApplyQuickDraw` @ `0x5c4500` (4 args),
+  `InitializeUiTextStyleDescriptor`.
+
+## RenderTerrainAndMinorNationLegendLabels @ 0x4f4a30 (920b)
+
+Really `__thiscall TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(RECT*)`
+(ecx=this, one stack arg = present rect; callee-clean). Two callsites in
+`TDiplomacyMapView.cpp` still bridge it via a zero-arg `__fastcall` cast so the
+rebuilt stack stays balanced against the no-arg stub. Porting needs:
+- label-rect arrays at `this+0x234` (terrain) / `this+0x2a4` (minor nations),
+  16-byte records, probed by `ProbeRectEmptyAfterCopyToLocal` @ `0x498b10`;
+- `FormatOverlayTerrainLabelText` @ `0x4d7860`,
+  `LoadNationDisplayNameSharedRefFromField8` @ `0x4d7a40` (already owned by
+  TGreatPower.cpp), and the text-engine ports above.
+
+## SetUiResourceContextTagWord @ 0x4270e0 is __thiscall with unknown receiver
+
+Body is `*(dword*)this = param`. Callsites (TDiplomacyMapView 3x, TMapDialog, ...)
+still call the old no-arg thunk shape and drop the palette-index argument; the
+receiver object (ecx at the callsites) must be identified from the listing before
+retyping. Same family: `thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90`
+(real body `0x4f6d90`, 513b, a `TDiplomacyMapView` cursor-mode method worth porting).
+
+## TSimMgr field-offset comment drift
+
+`TSimMgr.h` field comments drift by 4 from `field_64` onward (`preferenceValues` is
+`+0x44..+0x5f`, so `field_64` sits at `+0x60`, `pad68` at `+0x64`, ...). Verify against
+the ctor listing and fix the comment names.
+
+## Misleading-name backlog (spotted 2026-07, not yet renamed)
+
+- `GetSurfaceObjectAtContextOffset24` returns `context->surfaceObject`
+  (a `TBitmapSurfaceNode**` handle) — "AtContextOffset24" is stale now that the
+  field is typed.
+- `GetSurfaceHeaderFromSurfaceObject` @ `0x497300` actually returns
+  `(*handle)->pixelBits` (the pixel buffer), not a header.
+- `WrapperFor_FreeHeapBufferIfNotNull_At00413550` family — several are
+  surface/record slot releasers like the renamed
+  `FreeQuickDrawSurfaceContextSlot` @ `0x4feb50`; audit per address.
+- `ApplyAuxOutputVolumeFromScalar` @ `0x593cb0` (22b) scales 0-255 to 0-65280 and
+  calls `0x47cdd0` (likely waveOut/aux volume) — port both, then retire
+  `WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0` in TTwoPicSlider.
+
 ## Backdrop window bring-up under `just debug`
 
 Goal: get the first visible window on screen by recovering the loading/backdrop

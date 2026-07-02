@@ -1,0 +1,16 @@
+
+# Editor/LSP navigation aid only — the real build is MSVC500 in Docker (see justfile).
+CompileFlags:
+  Add:
+    - -Iinclude
+    - -Isrc
+    - -xc++
+    - -std=c++98
+    - -fms-extensions
+    - -Wno-inconsistent-missing-override
+    - -Wno-writable-strings
+    - -Wno-dynamic-class-memaccess
+  Compiler: clang++
+Diagnostics:
+  Suppress:
+    - pp_file_not_found

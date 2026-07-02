@@ -10,7 +10,6 @@
 #include <new>
 #include <math.h>
 
-
 extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 // Random-cue rotation counter at 0x006a4520 (raw audio-state global, not yet in
 // symbols.csv). Provisional definition until the owning data block is recovered.
@@ -185,9 +184,9 @@ void TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e5020
-void TSoundPlayer::WrapperFor_ftol_At005e5020(short param_1) {
+void TSoundPlayer::SetMasterVolumeFromPercent(short percent) {
   if (this->directSoundInitPendingAt21 != 0) {
-    double val = -pow(2.0, (100 - param_1) * DAT_0066fad0);
+    double val = -pow(2.0, (100 - percent) * DAT_0066fad0);
     int volume = static_cast<int>(val);
     if (volume > 0) {
       volume = 0;

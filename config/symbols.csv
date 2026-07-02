@@ -1069,7 +1069,7 @@ address|name|symbol|size|type|prototype|provenance
 48fd00|InitializeTextEntryBaseAndOptionalStringResource||261|function|undefined InitializeTextEntryBaseAndOptionalStringResource()|
 48fe60|TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate||73|function|undefined AssignTextSharedRefIfChangedAndMaybeInvalidate()|
 48fed0|TStaticText::LoadUiStringAndDispatchViaVslot1C8||125|function|undefined LoadUiStringAndDispatchViaVslot1C8()|
-48ff70|TStaticText::OrphanCallChain_C1_I09_0048ff70||33|function|undefined OrphanCallChain_C1_I09_0048ff70(void)|
+48ff70|TStaticText::SetTextThemeCodeAndMaybeRefresh||33|function|void __thiscall SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag)|
 48ffb0|TStaticText::ApplyRectSlot110||184|function|undefined ApplyRectSlot110()|
 4900a0|TStaticText::RenderControlStateTextBySelectionCode||273|function|undefined RenderControlStateTextBySelectionCode()|
 490210|TEditText::CreateObject|?CreateObject@TEditText@@SGPAVCObject@@XZ|282|function||rtti
@@ -1090,7 +1090,7 @@ address|name|symbol|size|type|prototype|provenance
 490c10|TEditText::HandleCityProductionNoOp||16|function|undefined OrphanRetStub_0059add0(void)|
 490c30|TEditText::vmethod_0081||44|function|undefined ApplyControlFocusIfEnabledAndNotifySelectionRange()|
 490c70|TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70||44|function|undefined WrapperFor_StringShared_AssignFromPtr_At00490c70(CString * param_1)|
-490cb0|TEditText::OrphanCallChain_C1_I09_0048ff70||33|function|undefined OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)|
+490cb0|TEditText::SetTextThemeCodeAndMaybeRefresh||33|function|void __thiscall SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag)|
 490cf0|TEditText::InitDialogWindowAndSyncTitleIfChanged||272|function|undefined InitDialogWindowAndSyncTitleIfChanged()|
 490e50|TEditText::VTableSlot59||91|function|undefined 'scalar_deleting_destructor'(void)|
 490ed0|TNumberText::CreateObject|?CreateObject@TNumberText@@SGPAVCObject@@XZ|288|function||rtti
@@ -6334,7 +6334,7 @@ address|name|symbol|size|type|prototype|provenance
 5e4fb0|TSoundPlayer::ReturnConstantFalse_SoundPredicate||5|function|undefined ReturnConstantFalse_SoundPredicate()|
 5e4fd0|TSoundPlayer::ClearDirectSoundInitPendingAndResetState||14|function|undefined ClearDirectSoundInitPendingAndResetState()|
 5e4ff0|TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48||28|function|undefined NotifyGlobalAudioObjectsViaVslot48()|
-5e5020|TSoundPlayer::WrapperFor_ftol_At005e5020||94|function|undefined WrapperFor_ftol_At005e5020(void)|
+5e5020|TSoundPlayer::SetMasterVolumeFromPercent||94|function|void __thiscall SetMasterVolumeFromPercent(short percent)|
 5e50a0|TSoundPlayer::NoOpAudioTickCallback_005e50a0||3|function|undefined NoOpAudioTickCallback_005e50a0(void)|
 5e50c0|TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState||89|function|undefined UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState()|
 5e5140|TSoundPlayer::ForwardActionToVslotB4WithFlag1||30|function|undefined ForwardActionToVslotB4WithFlag1()|

@@ -268,6 +268,7 @@ extern "C" const char g_szUiFontLiteralBelweBdBt[];
 extern "C" const char g_szUiFontLiteralPalatino[];
 extern "C" const char g_szUiFontLiteralBelweLight[];
 extern "C" const char g_szUiNilPointerMessage[];
+extern "C" const char g_szDecimalFormat[]; // "%d" @ 0x69430c
 extern "C" const char g_szUiFailureMessage[];
 extern CString g_cstrUiFontBelweLight;
 extern CString g_cstrUiFontPalatino;

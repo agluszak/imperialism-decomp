@@ -7,10 +7,12 @@
 class CDib;
 
 // Nested blit target at parent+0x4 (astruct_18 / Ghidra). Passed as the first two
-// operands to BlitRectWithOptionalTransparency.
+// operands to BlitRectWithOptionalTransparency. Original init (0x495eb0) stores the
+// DIB-section bits pointer and the dword-aligned 8bpp row stride ((biWidth + 3) & ~3).
 struct TQuickDrawBlitSurface {
-  int field00;
-  int hdcOrBitmapHandle; // +0x4
+  void* pixelBits; // +0x0
+  short stride;    // +0x4
+  short pad06;
 };
 ASSERT_SIZE(TQuickDrawBlitSurface, 0x8);
 
@@ -22,7 +24,7 @@ struct TQuickDrawSurfaceContext {
   RECT clipRect;                     // +0x0c
   short field1c;                     // +0x1c
   short pad1e;
-  int flipDescriptor;       // +0x20
+  CDib* surfaceDib;         // +0x20 — backing CDib (0x495eb0 stores node->dib here)
   void* surfaceObject;      // +0x24
   int quickDrawColor;       // +0x28
   int transparentBlitColor; // +0x2c

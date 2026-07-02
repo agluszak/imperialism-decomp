@@ -121,7 +121,7 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  // slot 0x71 OrphanCallChain_C1_I09_0048ff70 inherited unchanged (0x48ff70)
+  // slot 0x71 SetTextThemeCodeAndMaybeRefresh inherited unchanged (0x48ff70)
   // slot 0x72 AssignTextSharedRefIfChangedAndMaybeInvalidate inherited unchanged (0x48fe60)
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
@@ -248,7 +248,7 @@ public:
 //   slot 0x6e  byte 0x1b8  0x0048e7a0  inherited SetControlPictureEntryAndMaybeRefresh
 //   slot 0x6f  byte 0x1bc  0x004294a0  inherited LogUnhandledDialogMethodAndReturnFalse
 //   slot 0x70  byte 0x1c0  0x0048e810  inherited SetControlStateFlagAndMaybeRefresh
-//   slot 0x71  byte 0x1c4  0x0048ff70  inherited OrphanCallChain_C1_I09_0048ff70
+//   slot 0x71  byte 0x1c4  0x0048ff70  inherited SetTextThemeCodeAndMaybeRefresh
 //   slot 0x72  byte 0x1c8  0x0048fe60  inherited AssignTextSharedRefIfChangedAndMaybeInvalidate
 //   slot 0x73  byte 0x1cc  0x0048fed0  inherited LoadUiStringAndDispatchViaVslot1C8
 //   slot 0x74  byte 0x1d0  0x004294d0  inherited AssignSharedStringFromField84

@@ -5,6 +5,8 @@
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/TDisplayMgr.h"
+#include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
@@ -14,15 +16,7 @@
 #include <new>
 #include "game/CString.h"
 
-undefined4 BlitRectWithOptionalTransparency(void);
-undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
-undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
-undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
-undefined4 SetQuickDrawColorAndSyncGlobals(void);
-undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
-undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 undefined4 WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0(void);
-void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(int* field);
 
 // SYNTHETIC: IMPERIALISM 0x0056e1e0
 // TTwoPicSlider::GetRuntimeClass
@@ -33,8 +27,8 @@ IMPLEMENT_DYNCREATE(TTwoPicSlider, TControl)
 // (0x0056e120): allocate, run the base TControl ctor, patch the vtable, zero the
 // slider-specific fields.
 TTwoPicSlider::TTwoPicSlider()
-    : TControl(), lowerSurface(0), upperSurface(0), compositeSurface(0), splitPosition(0),
-      mode(0) {}
+    : TControl(), lowerSurface(0), upperSurface(0), compositeSurface(0), splitPosition(0), mode(0) {
+}
 
 // SYNTHETIC: IMPERIALISM 0x0043d650
 // TTwoPicSlider::`scalar deleting destructor'
@@ -51,20 +45,18 @@ void TTwoPicSlider::InitializePictureSurfaces(int baseBitmapId) {
 // FUNCTION: IMPERIALISM 0x0056e2f0
 void TTwoPicSlider::Free() {
   if (lowerSurface != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&lowerSurface);
+    FreeQuickDrawSurfaceContextSlot(&lowerSurface);
   }
   if (upperSurface != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&upperSurface);
+    FreeQuickDrawSurfaceContextSlot(&upperSurface);
   }
   if (compositeSurface != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&compositeSurface);
+    FreeQuickDrawSurfaceContextSlot(&compositeSurface);
   }
   TView::Free();
 }
 
 namespace {
-const unsigned int kAddrLocalizationTable = 0x006A20F8;
-const unsigned int kAddrSfxPlaybackSystem = 0x006A43EC;
 
 static __inline short ClampSliderSplitForFill(short splitPosition) {
   if (splitPosition < 0x0c) {
@@ -109,58 +101,43 @@ void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
     blitRect.right = slider->field34;
 
     ResetQuickDrawStrokeState();
-    reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->lowerSurface + 4),
-                                          reinterpret_cast<void*>(slider->compositeSurface + 4),
-                                          &blitRect, &blitRect, 0, 0);
+    BlitQuickDrawSurfaces(slider->lowerSurface->GetBlitSurface(),
+                          slider->compositeSurface->GetBlitSurface(), &blitRect, &blitRect, 0);
 
     blitRect.bottom = blitRect.top;
     blitRect.top = 0;
-    reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->upperSurface + 4),
-                                          reinterpret_cast<void*>(slider->compositeSurface + 4),
-                                          &blitRect, &blitRect, 0, 0);
+    BlitQuickDrawSurfaces(slider->upperSurface->GetBlitSurface(),
+                          slider->compositeSurface->GetBlitSurface(), &blitRect, &blitRect, 0);
 
     blitRect.right = slider->field34;
     blitRect.bottom = slider->field38;
     blitRect.left = 0;
     blitRect.top = 0;
-    reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->compositeSurface + 4),
-                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
-                                          &blitRect, &blitRect, 0, 0);
+    BlitQuickDrawSurfaces(slider->compositeSurface->GetBlitSurface(),
+                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect, &blitRect,
+                          0);
 
     if (slider->splitPosition < 0x0c) {
       CString statusText;
-      int* statusTextRef = reinterpret_cast<int*>(&statusText);
       int textShadowColor = 0;
       int textMainColor = 0;
 
-      void** localizationTable = *reinterpret_cast<void***>(kAddrLocalizationTable);
-      reinterpret_cast<void(__cdecl*)(int, int, int*)>(localizationTable[0x21])(0x2743, 0x3b,
-                                                                                statusTextRef);
-      reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
-      reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
-          0x2b6c, reinterpret_cast<int>(&textShadowColor));
-      reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
-          0x2b67, reinterpret_cast<int>(&textMainColor));
+      g_pLocalizationTable->GetString(0x2743, 0x3b, &statusText);
+      ApplyUiTextStyleAndSyncColor(0, 0xe, 0x2b6c);
+      MapUiThemeCodeToStyleFlags(0x2b6c, &textShadowColor);
+      MapUiThemeCodeToStyleFlags(0x2b67, &textMainColor);
 
       short textCenterY = static_cast<short>(slider->field38 / 2);
-      short textWidth = static_cast<short>(
-          reinterpret_cast<int(__cdecl*)()>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());
+      short textWidth = MeasureTextExtentWithCachedStyle(&statusText);
       short textLeft = static_cast<short>((slider->field34 / 2) - (textWidth / 2));
 
-      reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(textMainColor);
-      reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
-          static_cast<short>(textLeft + 1), static_cast<short>(textCenterY + 5));
-      reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-          statusTextRef);
+      SetQuickDrawColorAndSyncGlobals(textMainColor);
+      SetQuickDrawTextOrigin(static_cast<short>(textLeft + 1), static_cast<short>(textCenterY + 5));
+      DrawTextWithCachedStyle(&statusText);
 
-      reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(textShadowColor);
-      reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
-          textLeft, static_cast<short>(textCenterY + 4));
-      reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-          statusTextRef);
+      SetQuickDrawColorAndSyncGlobals(textShadowColor);
+      SetQuickDrawTextOrigin(textLeft, static_cast<short>(textCenterY + 4));
+      DrawTextWithCachedStyle(&statusText);
     }
   }
 }
@@ -196,15 +173,16 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventS
         int volumeScalar = SliderScaledValue(slider, 0xff);
         reinterpret_cast<void(__cdecl*)(int)>(
             WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0)(volumeScalar);
-        *reinterpret_cast<short*>(kAddrLocalizationTable + 0x4e) = static_cast<short>(volumeScalar);
+        // Original: mov eax,[0x6a20f8]; mov [eax+0x4e],di — the master-volume
+        // preference slot on the TSimMgr singleton (not a raw global).
+        g_pLocalizationTable->preferenceValues[5] = static_cast<short>(volumeScalar);
       }
     }
   }
 
   if ((nEventType == 2) && (slider->mode == 2)) {
     int percent = SliderScaledValue(slider, 100);
-    void** sfxPlaybackSystem = *reinterpret_cast<void***>(kAddrSfxPlaybackSystem);
-    reinterpret_cast<void(__cdecl*)(int)>(sfxPlaybackSystem[0x2b])(percent);
-    reinterpret_cast<void(__cdecl*)(int, int, int)>(sfxPlaybackSystem[0x2e])(7000, 0, 1);
+    g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(static_cast<short>(percent));
+    g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
   }
 }

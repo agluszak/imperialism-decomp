@@ -8,6 +8,7 @@
 #include "game/quickdraw_guards.h"
 #include "game/ui_widget_thunks.h"
 #include "game/global_data_tables.h"
+#include "game/CDib.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TAnimator.h"
@@ -49,7 +50,8 @@ undefined TFocusAnimation::RenderBattleReportInsetWithPaletteShift() {
 
 // FUNCTION: IMPERIALISM 0x004a0280
 void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280() {
-  TQuickDrawSurfaceContext* srcContext = *reinterpret_cast<TQuickDrawSurfaceContext**>(g_pUiAnimator + 0x20);
+  TQuickDrawSurfaceContext* srcContext =
+      *reinterpret_cast<TQuickDrawSurfaceContext**>(g_pUiAnimator + 0x20);
 
   CPoint pt(SourceLeft(), SourceTop());
   CPoint transformedPt = ScopedRenderTarget()->TransformPointViaSlot138(&pt);
@@ -71,23 +73,23 @@ void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280() 
 
   SetQuickDrawStrokeColor(0xffffff);
 
-  if (g_pActiveQuickDrawSurfaceContext->flipDescriptor != 0) {
-    if (srcContext != nullptr && srcContext->flipDescriptor != 0) {
-      int heightAnim = *reinterpret_cast<int*>(*reinterpret_cast<int*>(srcContext->flipDescriptor + 0x10) + 8);
-      if (heightAnim < 1) heightAnim = -heightAnim;
+  if (g_pActiveQuickDrawSurfaceContext->surfaceDib != 0) {
+    if (srcContext != nullptr && srcContext->surfaceDib != 0) {
+      int heightAnim = srcContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+      if (heightAnim < 1)
+        heightAnim = -heightAnim;
       OffsetRect(&tStack_14, 0, (heightAnim - tStack_14.top) - tStack_14.bottom);
     }
 
-    int activeContext = g_pActiveQuickDrawSurfaceContext->flipDescriptor;
-    if (activeContext != 0) {
-      int heightActive = *reinterpret_cast<int*>(*reinterpret_cast<int*>(activeContext + 0x10) + 8);
-      if (heightActive < 1) heightActive = -heightActive;
+    CDib* activeDib = g_pActiveQuickDrawSurfaceContext->surfaceDib;
+    if (activeDib != 0) {
+      int heightActive = activeDib->m_pInfoHeader->bmiHeader.biHeight;
+      if (heightActive < 1)
+        heightActive = -heightActive;
       OffsetRect(&local_24, 0, (heightActive - local_24.top) - local_24.bottom);
     }
   }
 
-  BlitQuickDrawSurfaces(
-      &srcContext->blitSurface,
-      &g_pActiveQuickDrawSurfaceContext->blitSurface,
-      &tStack_14, &local_24, 0);
+  BlitQuickDrawSurfaces(&srcContext->blitSurface, &g_pActiveQuickDrawSurfaceContext->blitSurface,
+                        &tStack_14, &local_24, 0);
 }

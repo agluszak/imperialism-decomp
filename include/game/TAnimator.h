@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+struct TQuickDrawSurfaceContext;
 
 // TODO(manifest): describe TAnimator and its role. Base edge (TEventHandler) recovered from RTTI
 // CRuntimeClass chain: TAnimator -> TEventHandler -> TObject -> CObject.
@@ -13,7 +14,7 @@ class TAnimator : public TEventHandler {
 public:
   // === BEGIN GENERATED DECLS (TAnimator) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TAnimator)
-  virtual ~TAnimator();                                    // slot 0x01 (scalar deleting destructor)
+  virtual ~TAnimator(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -52,8 +53,14 @@ public:
   virtual undefined OrphanCallChain_C2_I13_004a0c00(); // slot 0x25 0x4a0c00
                                                        // === END GENERATED DECLS (TAnimator) ===
   void RemoveUiTransientRegistryObjectByTag(int tag);
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TAnimator
-  // 0xCTOR`).
+
+  // Object size 0x30 (base TEventHandler ends at 0x20). +0x20 is the offscreen
+  // surface the focus animations blit into (read as `*(g_pUiAnimator) + 0x20` at
+  // 0x4a0810 and 0x4a05c0); the remaining three dwords are not yet recovered.
+  TQuickDrawSurfaceContext* renderSurfaceContext; // +0x20
+  int field24;                                    // +0x24
+  int field28;                                    // +0x28
+  int field2c;                                    // +0x2c
 
   TAnimator();
 };

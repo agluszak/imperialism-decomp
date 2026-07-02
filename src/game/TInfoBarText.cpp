@@ -2,8 +2,9 @@
 
 #include <cstring>
 
-void __cdecl BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int stylePrimary);
-undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
+#include "game/quickdraw_rendering.h"
+
+void __cdecl BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int themeCode);
 
 // SYNTHETIC: IMPERIALISM 0x004293c0
 // TInfoBarText::`scalar deleting destructor'
@@ -45,23 +46,32 @@ undefined TInfoBarText::OrphanCallChain_C1_I05_005b6810() {
 // FUNCTION: IMPERIALISM 0x005b6840
 undefined TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
                                                                 int styleSecondary) {
-  unsigned char styleDescriptor[16];
-  memset(&styleDescriptor, 0, sizeof(styleDescriptor));
-  BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, stylePrimary);
+  // Original (0x5b6840): builds the descriptor from styleSecondary (stylePrimary is
+  // genuinely unused), forwards it to slot 0x79, clears the theme code via slot 0x71
+  // with (-1, no-refresh), then maps the descriptor's stored theme word and
+  // styleSecondary through MapUiThemeCodeToStyleFlags out-params (the previous port
+  // consumed nonexistent return values with swapped arguments).
+  (void)stylePrimary;
+  int styleDescriptor[4];
+  styleDescriptor[0] = 0;
+  styleDescriptor[1] = 0;
+  styleDescriptor[2] = 0;
+  styleDescriptor[3] = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
   ConstructTMapKeyBaseState_Impl(&styleDescriptor, 0);
-  OrphanCallChain_C1_I09_0048ff70(0, static_cast<char>(-1));
+  SetTextThemeCodeAndMaybeRefresh(static_cast<short>(-1), 0);
   layoutRectA4.left = 0;
   layoutRectA4.top = 0;
   layoutRectA4.right = 0;
   layoutRectA4.bottom = 0;
-  cursorThemeCode98 = reinterpret_cast<int(__cdecl*)(int, void*)>(thunk_MapUiThemeCodeToStyleFlags)(
-      styleSecondary, &styleDescriptor);
-  cursorThemeCode9c = reinterpret_cast<int(__cdecl*)(int, void*)>(thunk_MapUiThemeCodeToStyleFlags)(
-      stylePrimary, &styleDescriptor);
+  int mappedFlags = 0;
+  MapUiThemeCodeToStyleFlags(static_cast<short>(styleDescriptor[0]), &mappedFlags);
+  cursorThemeCode98 = mappedFlags;
+  MapUiThemeCodeToStyleFlags(static_cast<short>(styleSecondary), &mappedFlags);
+  cursorThemeCode9c = mappedFlags;
   fieldA0 = 1;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6930
-void TInfoBarText::Free() {
-}
+void TInfoBarText::Free() {}

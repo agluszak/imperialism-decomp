@@ -662,6 +662,8 @@ extern "C" short g_nTurnFlowNationComparisonAdvisoryTick = 0;
 extern "C" const char g_szUiNilPointerMessage[] = "Nil Pointer";
 // GLOBAL: IMPERIALISM 0x00694fd8
 extern "C" const char g_szUiFailureMessage[] = "Failure";
+// GLOBAL: IMPERIALISM 0x0069430c
+extern "C" const char g_szDecimalFormat[] = "%d";
 
 // GLOBAL: IMPERIALISM 0x006a3060
 CString g_cstrUiFontBelweLight;

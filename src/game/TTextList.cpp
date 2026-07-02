@@ -9,12 +9,6 @@
 #include "game/mfc.h"
 #include "game/mfc.h"
 
-undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
-undefined4 thunk_FillRectWithQuickDrawBrushAndContextOffset(void);
-undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
-undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
-undefined4 SetQuickDrawColorAndSyncGlobals(void);
-
 // SYNTHETIC: IMPERIALISM 0x0045af30
 // TTextList::`scalar deleting destructor'
 
@@ -40,12 +34,10 @@ void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
 
   int styleFlags1 = 0;
   int styleFlags2 = 0;
-  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
-      0x2B6C, reinterpret_cast<int>(&styleFlags1));
-  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
-      0x2B6A, reinterpret_cast<int>(&styleFlags2));
+  MapUiThemeCodeToStyleFlags(0x2b6c, &styleFlags1);
+  MapUiThemeCodeToStyleFlags(0x2b6a, &styleFlags2);
 
-  reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
+  ApplyUiTextStyleAndSyncColor(0, 0xe, 0x2b6c);
 
   short currentY = 0;
   if (itemHeight + currentY < field38) {
@@ -65,24 +57,19 @@ void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
         rect.right = field34;
         rect.bottom = currentY + itemHeight;
 
-        reinterpret_cast<void(__cdecl*)(RECT*)>(thunk_FillRectWithQuickDrawBrushAndContextOffset)(
-            &rect);
+        FillRectWithQuickDrawBrushAndContextOffset(&rect);
       }
 
-      short textWidth = static_cast<short>(
-          reinterpret_cast<int(__cdecl*)()>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());
+      short textWidth = MeasureTextExtentWithCachedStyle(&tempString);
       short textX = static_cast<short>(field34 / 2) - static_cast<short>(textWidth / 2);
-      int* tempStringRef = reinterpret_cast<int*>(&tempString);
 
-      reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(styleFlags2);
-      reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(static_cast<short>(textX + 1), static_cast<short>(currentY + 12));
-      reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-          tempStringRef);
+      SetQuickDrawColorAndSyncGlobals(styleFlags2);
+      SetQuickDrawTextOrigin(static_cast<short>(textX + 1), static_cast<short>(currentY + 12));
+      DrawTextWithCachedStyle(&tempString);
 
-      reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(styleFlags1);
-      reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(textX, static_cast<short>(currentY + 11));
-      reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-          tempStringRef);
+      SetQuickDrawColorAndSyncGlobals(styleFlags1);
+      SetQuickDrawTextOrigin(textX, static_cast<short>(currentY + 11));
+      DrawTextWithCachedStyle(&tempString);
 
       currentY += itemHeight;
       idx++;

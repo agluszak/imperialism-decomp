@@ -2,6 +2,8 @@
 
 #include "game/TFocusAnimation.h"
 
+struct TQuickDrawSurfaceContext;
+
 // Transitional focus-animation helper (factory 0x004a0460). Shares the completion callback
 // slot layout with TFocusAnimation (vtable index 5 / byte offset 0x14).
 // VTABLE: IMPERIALISM 0x0064c498
@@ -13,13 +15,13 @@ public:
   TTransFocusAnimation(TView* target, RECT* bounds, short f0a, short f0c, int tickLimit, int f18);
   virtual ~TTransFocusAnimation() override;
 
-  virtual void Free() override; // slot 7 / 0x1c
+  virtual void Free() override;                                         // slot 7 / 0x1c
   virtual undefined RenderBattleReportInsetWithPaletteShift() override; // slot 11 / 0x2c
-  virtual void VTableSlot0D() override; // slot 13 / 0x34
+  virtual void VTableSlot0D() override;                                 // slot 13 / 0x34
 
   // TTransFocusAnimation-introduced virtual (past TFocusAnimation's own slots).
   virtual void BlitTransientSurfaceToPrimaryRenderContextWithClip(); // slot 0x3c 0x4a05c0
 
-  int transientSurfaceContext; // 0x30
-  int field34;                 // 0x34
+  TQuickDrawSurfaceContext* transientSurfaceContext; // 0x30 — offscreen scratch surface
+  TQuickDrawSurfaceContext* insetBitmapSurface;      // 0x34 — bitmap resource f0c's surface
 };

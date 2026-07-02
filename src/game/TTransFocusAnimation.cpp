@@ -3,6 +3,7 @@
 #include "game/TTransFocusAnimation.h"
 
 #include "game/global_data_tables.h"
+#include "game/CDib.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TView.h"
 #include "game/TAnimator.h"
@@ -15,12 +16,10 @@
 
 IMPLEMENT_DYNCREATE(TTransFocusAnimation, TFocusAnimation)
 
-void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(int* field);
 undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
 
 // Default constructor for MFC dynamic creation
-TTransFocusAnimation::TTransFocusAnimation()
-    : TFocusAnimation() {
+TTransFocusAnimation::TTransFocusAnimation() : TFocusAnimation() {
   ScopedRenderTarget() = nullptr;
   Field08() = 0;
   Field0a() = 0;
@@ -34,11 +33,12 @@ TTransFocusAnimation::TTransFocusAnimation()
   SourceBottom() = 0;
   enabledFlag = 1;
   transientSurfaceContext = 0;
-  field34 = 0;
+  insetBitmapSurface = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a04a0
-TTransFocusAnimation::TTransFocusAnimation(TView* target, RECT* bounds, short f0a, short f0c, int tickLimit, int f18)
+TTransFocusAnimation::TTransFocusAnimation(TView* target, RECT* bounds, short f0a, short f0c,
+                                           int tickLimit, int f18)
     : TFocusAnimation() {
   ScopedRenderTarget() = target;
   Field08() = 0;
@@ -53,11 +53,12 @@ TTransFocusAnimation::TTransFocusAnimation(TView* target, RECT* bounds, short f0
   SourceBottom() = bounds->bottom;
   enabledFlag = 1;
   transientSurfaceContext = 0;
-  field34 = 0;
+  insetBitmapSurface = 0;
 
   RECT local_bounds = {0, 0, bounds->right - bounds->left, bounds->bottom - bounds->top};
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&transientSurfaceContext, 8, &local_bounds);
-  field34 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(f0c);
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&transientSurfaceContext, 8,
+                                                         &local_bounds);
+  insetBitmapSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(f0c);
 }
 
 // SYNTHETIC: IMPERIALISM 0x004a0430
@@ -67,10 +68,10 @@ TTransFocusAnimation::~TTransFocusAnimation() {}
 // FUNCTION: IMPERIALISM 0x004a0570
 void TTransFocusAnimation::Free() {
   if (transientSurfaceContext != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&transientSurfaceContext);
+    FreeQuickDrawSurfaceContextSlot(&transientSurfaceContext);
   }
-  if (field34 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&field34);
+  if (insetBitmapSurface != 0) {
+    FreeQuickDrawSurfaceContextSlot(&insetBitmapSurface);
   }
   if (this != nullptr) {
     delete this;
@@ -95,35 +96,31 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
 
   ApplyRectClipRegionToGlobalClipState();
   ResetQuickDrawStrokeState();
-  UpdatePaletteIndexWithDefaultFallback();
+  UpdatePaletteIndexWithFallback(0x13);
   reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(0);
 
-  int primaryFlipDescriptor = g_pPrimaryRenderSurfaceContext->flipDescriptor;
-  if (primaryFlipDescriptor != 0) {
-    int primaryFlipHeight =
-        *reinterpret_cast<int*>(*reinterpret_cast<int*>(primaryFlipDescriptor + 0x10) + 8);
-    if (primaryFlipHeight < 1) {
-      primaryFlipHeight = -primaryFlipHeight;
+  CDib* primaryDib = g_pPrimaryRenderSurfaceContext->surfaceDib;
+  if (primaryDib != 0) {
+    int primaryHeight = primaryDib->m_pInfoHeader->bmiHeader.biHeight;
+    if (primaryHeight < 1) {
+      primaryHeight = -primaryHeight;
     }
-    OffsetRect(&sourceRect, 0, (primaryFlipHeight - sourceRect.top) - sourceRect.bottom);
+    OffsetRect(&sourceRect, 0, (primaryHeight - sourceRect.top) - sourceRect.bottom);
   }
 
-  int transientContext = transientSurfaceContext;
-  int transientFlipDescriptor = *reinterpret_cast<int*>(transientContext + 0x20);
-  if (transientFlipDescriptor != 0) {
-    int transientFlipHeight =
-        *reinterpret_cast<int*>(*reinterpret_cast<int*>(transientFlipDescriptor + 0x10) + 8);
-    if (transientFlipHeight < 1) {
-      transientFlipHeight = -transientFlipHeight;
+  CDib* transientDib = transientSurfaceContext->surfaceDib;
+  if (transientDib != 0) {
+    int transientHeight = transientDib->m_pInfoHeader->bmiHeader.biHeight;
+    if (transientHeight < 1) {
+      transientHeight = -transientHeight;
     }
     OffsetRect(&destinationRect, 0,
-               (transientFlipHeight - destinationRect.top) - destinationRect.bottom);
+               (transientHeight - destinationRect.top) - destinationRect.bottom);
   }
 
-  BlitQuickDrawSurfaces(
-      g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-      reinterpret_cast<TQuickDrawSurfaceContext*>(transientContext)->GetBlitSurface(), &sourceRect,
-      &destinationRect, 0);
+  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                        transientSurfaceContext->GetBlitSurface(), &sourceRect, &destinationRect,
+                        0);
   SnapshotHitRegionToClipCache(reinterpret_cast<int*>(surface.surfaceWrapper));
 }
 
@@ -145,22 +142,22 @@ undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift() {
   SetQuickDrawStrokeColor(0xffffff);
   SetQuickDrawFillColor(0);
 
+  // Original (0x4a0810): the blit target is the surface context held at
+  // g_pUiAnimator+0x20; the height check reads that context's backing dib. The
+  // previous port collapsed both dereferences into one and applied pointer
+  // arithmetic to the TAnimator*, reading a garbage "context".
   RECT clipRect = destinationRect;
-  int uiAnimatorFlipDescriptor = *reinterpret_cast<int*>(g_pUiAnimator + 0x20);
-  if (uiAnimatorFlipDescriptor != 0) {
-    int uiAnimatorFlipHeight =
-        *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiAnimatorFlipDescriptor + 0x10) + 8);
-    if (uiAnimatorFlipHeight < 1) {
-      uiAnimatorFlipHeight = -uiAnimatorFlipHeight;
+  TQuickDrawSurfaceContext* animatorTarget = g_pUiAnimator->renderSurfaceContext;
+  if (animatorTarget->surfaceDib != 0) {
+    int animatorTargetHeight = animatorTarget->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+    if (animatorTargetHeight < 1) {
+      animatorTargetHeight = -animatorTargetHeight;
     }
-    OffsetRect(&clipRect, 0, (uiAnimatorFlipHeight - destinationRect.top) - destinationRect.bottom);
+    OffsetRect(&clipRect, 0, (animatorTargetHeight - destinationRect.top) - destinationRect.bottom);
   }
 
-  int uiAnimatorBlitSurface = uiAnimatorFlipDescriptor + 4;
-  BlitQuickDrawSurfaces(
-      reinterpret_cast<TQuickDrawBlitSurface*>(transientSurfaceContext + 4),
-      reinterpret_cast<TQuickDrawBlitSurface*>(uiAnimatorBlitSurface),
-      &destinationRect, &clipRect, 0);
+  BlitQuickDrawSurfaces(transientSurfaceContext->GetBlitSurface(), animatorTarget->GetBlitSurface(),
+                        &destinationRect, &clipRect, 0);
 
   if (enabledFlag != 0) {
     RECT overlayRect;
@@ -168,19 +165,17 @@ undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift() {
     overlayRect.right = overlayRect.left + width;
     overlayRect.top = 0;
     overlayRect.bottom = height;
-    UpdatePaletteIndexWithDefaultFallback();
-    BlitQuickDrawSurfaces(
-        reinterpret_cast<TQuickDrawBlitSurface*>(field34 + 4),
-        reinterpret_cast<TQuickDrawBlitSurface*>(uiAnimatorBlitSurface),
-        &overlayRect, &clipRect, 0x24);
+    UpdatePaletteIndexWithFallback(0x10);
+    BlitQuickDrawSurfaces(insetBitmapSurface->GetBlitSurface(), animatorTarget->GetBlitSurface(),
+                          &overlayRect, &clipRect, 0x24);
   }
 
   Helper_Uses_BlitRectWithOptionalTransparency_At004a0280();
 
-  undefined4 activeContext;
+  TQuickDrawSurfaceContext* activeContext;
   int activeFlags;
   GetActiveQuickDrawSurfaceContextAndFlags(&activeContext, &activeFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<int>(g_pPrimaryRenderSurfaceContext), activeFlags);
+  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, activeFlags);
   Helper_Uses_BlitRectWithOptionalTransparency_At004a0280();
   SetActiveQuickDrawSurfaceContext(activeContext, activeFlags);
 

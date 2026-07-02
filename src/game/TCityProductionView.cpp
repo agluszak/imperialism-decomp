@@ -8,22 +8,16 @@
 #include "game/TMinor.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/bitmap_descriptor_helpers.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 
-undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
-undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
-undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);
-
 extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_00696210[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_00696228[12] = {0};
-
-undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
-undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
 
 struct RuntimeLocalTime {
   int tm_sec;
@@ -112,22 +106,20 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
 
   ResetQuickDrawStrokeState();
   g_pUiRuntimeContext->ApplyLegendSplitSlot34(1);
-  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
-      originX, sVar2);
+  SetQuickDrawTextOrigin(originX, sVar2);
 
   short offset_x1 = g_Render_Nation_Header_Value_006961E0[currentMonthAtA8];
   short offset_y1 = g_Render_Nation_Header_Value_006961F8[currentMonthAtA8];
-  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_DrawCenteredGuideLineOnMapDc)(
-      static_cast<short>(offset_x1 + originX), static_cast<short>(offset_y1 + sVar2));
+  DrawCenteredGuideLine(static_cast<short>(offset_x1 + originX),
+                        static_cast<short>(offset_y1 + sVar2));
 
-  reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColor)(0);
-  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
-      originX, sVar2);
+  SetQuickDrawFillColor(0);
+  SetQuickDrawTextOrigin(originX, sVar2);
 
   short offset_x2 = g_Render_Nation_Header_Value_00696210[currentWeekAtAa];
   short offset_y2 = g_Render_Nation_Header_Value_00696228[currentWeekAtAa];
-  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_DrawCenteredGuideLineOnMapDc)(
-      static_cast<short>(offset_x2 + originX), static_cast<short>(offset_y2 + sVar2));
+  DrawCenteredGuideLine(static_cast<short>(offset_x2 + originX),
+                        static_cast<short>(offset_y2 + sVar2));
 }
 
 // FUNCTION: IMPERIALISM 0x004bafa0
@@ -187,24 +179,22 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip() 
   clipRect.right = boundsRecord.right;
   clipRect.bottom = boundsRecord.bottom;
 
-  int nullClipDescriptor = 0;
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(&nullClipDescriptor);
+  // Original pushes the guard's wrapper here and again into the snapshot below,
+  // and hands ApplyRectSlot110 the same rect QueryBounds filled in.
+  ApplyHitRegionToClip(surface.surfaceWrapper);
 
-  int* previousSurface = 0;
+  TQuickDrawSurfaceContext* previousSurface = 0;
   int contextFlags = 0;
-  reinterpret_cast<void(__cdecl*)(int**, int*)>(thunk_GetActiveQuickDrawSurfaceContextAndFlags)(
-      &previousSurface, &contextFlags);
+  GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
 
-  reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
-      reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext), contextFlags);
-  reinterpret_cast<void(__cdecl*)(RECT*)>(thunk_ApplyRectClipRegionToGlobalClipState)(&clipRect);
+  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
+  ApplyRectClipRegionToClip(&clipRect);
 
   needsRefreshAtA6 = 1;
-  this->ApplyRectSlot110(reinterpret_cast<RECT*>(&boundsRecord.top));
+  this->ApplyRectSlot110(&boundsRecord);
 
-  reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
-      previousSurface, contextFlags);
-  SnapshotHitRegionToClipCache(0);
+  SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
+  SnapshotHitRegionToClipCache(reinterpret_cast<int*>(surface.surfaceWrapper));
 }
 
 // FUNCTION: IMPERIALISM 0x004bcaf0

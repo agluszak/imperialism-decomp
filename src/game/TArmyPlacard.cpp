@@ -45,42 +45,29 @@ bool TArmyPlacard::IsSelected(short value, bool refreshNow) {
   return true;
 }
 
-undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
-undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
-
-const unsigned int kAddrDecimalFormat = 0x0069430C;
-
 // FUNCTION: IMPERIALISM 0x0058bfe0
 void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer;
-  CString sharedStringRef;
-  int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
+  CString countText;
 
-  TPicture::ApplyRectSlot110(nullptr);
+  TPicture::ApplyRectSlot110(rectBuffer);
 
   if (this->glyph90 != 0) {
-    reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
-    sharedStringRef.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
-                           static_cast<int>(this->glyph90));
+    // Original (0x58bfe0): style (0, 10, 0x2b67) for the main pass and
+    // (0, 10, 0x2b6c) for the offset shadow pass.
+    ApplyUiTextStyleAndSyncColor(0, 10, 0x2b67);
+    countText.Format(g_szDecimalFormat, static_cast<int>(this->glyph90));
 
-    short textWidth = static_cast<short>(
-        reinterpret_cast<int(__cdecl*)()>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());
-    short textX = static_cast<short>(
-        *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x34) - textWidth);
-    short textY =
-        static_cast<short>(*reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x38) - 2);
+    short textWidth = MeasureTextExtentWithCachedStyle(&countText);
+    short textX = static_cast<short>(field34 - textWidth);
+    short textY = static_cast<short>(field38 - 2);
 
-    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(textX, textY);
-    reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-        sharedStringRefPtr);
+    SetQuickDrawTextOrigin(textX, textY);
+    DrawTextWithCachedStyle(&countText);
 
-    reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
-    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(static_cast<short>(textX - 1), static_cast<short>(textY - 1));
-    reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-        sharedStringRefPtr);
+    ApplyUiTextStyleAndSyncColor(0, 10, 0x2b6c);
+    SetQuickDrawTextOrigin(static_cast<short>(textX - 1), static_cast<short>(textY - 1));
+    DrawTextWithCachedStyle(&countText);
   }
-
-  sharedStringRef.~CString();
 }
 
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
