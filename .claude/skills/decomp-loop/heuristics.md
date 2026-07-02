@@ -654,3 +654,14 @@ ignore — 7 vtables and 1 global had been lost this way with all gates green.
 (plus `grep -rn "IMPERIALISM$"` for annotations split across two lines). Repair = put the
 annotation back on its own line immediately above the declaration; the restored vtables
 paired at 100% for free (390→397).
+
+## 28. Mine reccmp diffs for global identities (`just global-xref-oracle`)
+
+reccmp renders an unresolved original operand as `<OFFSETn>` while the recomp side
+shows the real PDB symbol (`[g_Foo (DATA)]`). Each such positionally-paired mismatch
+line is a vote that the original address (re-disassembled with capstone) belongs to
+that symbol; symbols.csv is a reccmp `data_sources` entry, so applying a voted pair is
+just adding an `addr|name|||global||xref_oracle` row — no marker or rebuild needed.
+Round 1 (min 2 votes, no conflicts) moved 31 functions to 100% with zero regressions.
+The tool's conflict column doubles as an annotation-audit: consistent votes AGAINST an
+existing row mean the row (not the oracle) is probably wrong.

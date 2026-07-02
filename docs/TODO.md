@@ -109,6 +109,30 @@ range 0x5e539c..0x626c7d. Findings from the extension attempt:
   pairs + fidb/functions.txt obj paths. The tool now refuses to shrink the marker set
   without --allow-marker-removals.
 
+## Global-data xref oracle: apply loop + disputed annotations
+
+`just global-xref-oracle` (tools/reccmp/global_xref_oracle.py) mines reccmp asm
+diffs for (original address <-> recomp symbol) global pairs; round 1 applied 32
+rows (`provenance=xref_oracle` in symbols.csv) and moved 31 functions to 100%
+with zero regressions. The loop is at fixpoint for auto-application; what
+remains is its *dispute list* — places where existing annotations disagree with
+observed instruction alignment (verify in Ghidra before touching):
+
+- `g_pDisplayMgr`: annotated at 0x6a2158, oracle votes 6x for 0x6a436c.
+- The nation-state pointer block 0x6a4310..0x6a43d8: cross-votes between
+  g_apNationStates / g_apTerrainTypeDescriptorTable / g_pLocalizationTable /
+  g_pUiRuntimeContext suggest one or more rows in that run are off by a slot
+  (0x6a438c currently rowed as g_apNationStates_End but votes as
+  g_pLocalizationTable; 0x6a20f8 rowed g_pLocalizationTable, votes
+  g_pUiRuntimeContext).
+- 0x63e044 rowed g_pRegistrySettingsSectionAlt_0063E044 but recomp aligns it
+  with DAT_006a1348 usage.
+
+Extensions worth building: the same mining for (STRING) refs (1,162 orig-only
+strings) and (FLOAT) refs (275 original float-pool constants, 0 paired — the
+recomp side reports no FLO entities at all, so check whether the reccmp fork
+detects MSVC500 constant pools before blaming annotations).
+
 ## Misleading-name backlog (spotted 2026-07, not yet renamed)
 
 - `GetSurfaceObjectAtContextOffset24` returns `context->surfaceObject`
