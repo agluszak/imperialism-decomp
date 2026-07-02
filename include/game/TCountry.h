@@ -83,7 +83,7 @@ public:
   short needLevelByNation[0x17];
   short field42;
   // 0x44 — military unit list; entries carry a unit-type short at +4 indexing
-  // g_Classify_Nation_Military_LookupTable_00695CD4 power weights.
+  // g_UnitTypeMilitaryStatTable_00695CD2 power weights (column 1).
   TSortedList* militaryUnitList44;
   // 0x48 — per-unit-type counter of names already issued (slot 0x0f increments the
   // type's entry after assigning "<ordinal> <type name>").

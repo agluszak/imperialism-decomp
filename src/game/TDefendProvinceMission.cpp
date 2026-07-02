@@ -3,7 +3,8 @@
 #include "game/TDefendProvinceMission.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
-#include "game/TStationedUnitNode.h"
+#include "game/TMapMgr.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TList.h"
 #include "game/TGreatPower.h"
 #include "game/global_data_tables.h"
@@ -30,12 +31,9 @@ extern unsigned short g_Recompute_Nation_Order_LookupTable_00697870[];
 // Not-yet-recovered free functions this file calls into (generic stub
 // signature per the autogen stub definition; real signature applied via a
 // typed cast at each call site so the linker resolves the correct symbol).
-extern undefined4 NoOpRuntimeCallback_005184e0(void);
 extern undefined4 ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(void);
 extern undefined4 TileHasMovementClassId(void);
 extern undefined4 AreAllLinkedEntriesTerrainFlagBit2Clear(void);
-extern undefined4 GetCityActionGateValueFromOrderTemplate(void);
-extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
 extern undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(void);
 extern undefined4 GetNormalizedCityActionResourceCostPercent(void);
 extern undefined4 GetTileNormalizedMovementClassId(void);
@@ -44,7 +42,7 @@ extern undefined4 PropagateTargetTileToLinkedUnitsIfDifferent(void);
 
 // FUNCTION: IMPERIALISM 0x00535770
 void TDefendProvinceMission::MissionSlot44() {
-  typedef void (__fastcall *PropagateTargetTileToLinkedUnitsIfDifferent_t)(short);
+  typedef void(__fastcall * PropagateTargetTileToLinkedUnitsIfDifferent_t)(short);
   PropagateTargetTileToLinkedUnitsIfDifferent_t PropagateTargetTileToLinkedUnitsIfDifferent_fn =
       reinterpret_cast<PropagateTargetTileToLinkedUnitsIfDifferent_t>(
           (void*)&PropagateTargetTileToLinkedUnitsIfDifferent);
@@ -73,11 +71,11 @@ char* NationContextRecordBytes(int regionIndex) {
   return reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + regionIndex * 0xa8;
 }
 
-TStationedUnitNode* StationedUnitChainAt(int regionIndex) {
+TMilitaryUnit* StationedUnitChainAt(int regionIndex) {
   if (regionIndex < 0 || regionIndex > 0x17f) {
     return 0;
   }
-  return *reinterpret_cast<TStationedUnitNode**>(NationContextRecordBytes(regionIndex) + 0x98);
+  return *reinterpret_cast<TMilitaryUnit**>(NationContextRecordBytes(regionIndex) + 0x98);
 }
 
 float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
@@ -101,40 +99,25 @@ float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
                 accum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
 }
 
-void AccumulatePriorityVectorFromStationedUnit(TStationedUnitNode* unitNode, float* vector) {
-  short movementClassId = unitNode->GetUnitMovementClassId();
-  if (movementClassId <= 0) {
-    return;
-  }
-  // AccumulateUnitOrderPriorityVectorContribution is at 0x53cc10
-  typedef void (__cdecl *AccumulateUnitOrderPriorityVectorContribution_t)(void*, float*, int, int);
-  AccumulateUnitOrderPriorityVectorContribution_t AccumulateUnitOrderPriorityVectorContribution_fn =
-      reinterpret_cast<AccumulateUnitOrderPriorityVectorContribution_t>(
-          (void*)&AccumulateUnitOrderPriorityVectorContribution);
-  AccumulateUnitOrderPriorityVectorContribution_fn(unitNode, vector, 0x3f800000,
-                                                   static_cast<int>(movementClassId));
-}
-
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0053e6e0
 float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeContext) {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   int remainingBudgetByNation[7] = {0, 0, 0, 0, 0, 0, 0};
-  
-  // NoOpRuntimeCallback_005184e0 is at 0x5184e0
-  typedef void (__cdecl *NoOpRuntimeCallback_005184e0_t)(void);
-  reinterpret_cast<NoOpRuntimeCallback_005184e0_t>((void*)&NoOpRuntimeCallback_005184e0)();
+
+  short unitOrderWeight = GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
 
   char* nationContextTable = reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable);
   int sourceNation =
       static_cast<int>(static_cast<signed char>(nationContextTable[nodeContext * 0xa8]));
 
   // ComputeAggregateWeightedChildCostForMatchingType5NavyOrders is at 0x557170
-  typedef short (__cdecl *ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_t)(void);
-  ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_t ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_fn =
-      reinterpret_cast<ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_t>(
-          (void*)&ComputeAggregateWeightedChildCostForMatchingType5NavyOrders);
+  typedef short(__cdecl * ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_t)(void);
+  ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_t
+      ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_fn =
+          reinterpret_cast<ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_t>(
+              (void*)&ComputeAggregateWeightedChildCostForMatchingType5NavyOrders);
 
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     short navyBudget = ComputeAggregateWeightedChildCostForMatchingType5NavyOrders_fn();
@@ -151,9 +134,9 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
       if (candidateNationIndex != sourceNation &&
           g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(candidateNation, sourceNation) !=
               0) {
-        
+
         // TileHasMovementClassId is at 0x515e50
-        typedef char (__cdecl *TileHasMovementClassId_t)(void);
+        typedef char(__cdecl * TileHasMovementClassId_t)(void);
         char tileHasMovementClass =
             reinterpret_cast<TileHasMovementClassId_t>((void*)&TileHasMovementClassId)();
 
@@ -161,47 +144,33 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
           if (remainingBudgetByNation[candidateNationIndex] > 0) {
 
             // AreAllLinkedEntriesTerrainFlagBit2Clear is at 0x518a20
-            typedef char (__cdecl *AreAllLinkedEntriesTerrainFlagBit2Clear_t)(void);
+            typedef char(__cdecl * AreAllLinkedEntriesTerrainFlagBit2Clear_t)(void);
             char linkedTerrainClear = reinterpret_cast<AreAllLinkedEntriesTerrainFlagBit2Clear_t>(
                 (void*)&AreAllLinkedEntriesTerrainFlagBit2Clear)();
 
             if (linkedTerrainClear != 0) {
-              for (TStationedUnitNode* unit = StationedUnitChainAt(regionIndex); unit != 0;
+              for (TMilitaryUnit* unit = StationedUnitChainAt(regionIndex); unit != 0;
                    unit = unit->next14) {
-
-                // GetCityActionGateValueFromOrderTemplate is at 0x5c3400
-                typedef short (__cdecl *GetCityActionGateValueFromOrderTemplate_t)(void);
-                short gateValue = reinterpret_cast<GetCityActionGateValueFromOrderTemplate_t>(
-                    (void*)&GetCityActionGateValueFromOrderTemplate)();
-
+                short costPoints = unit->GetUnitTypeCostPoints();
                 short movementClassId = unit->GetUnitMovementClassId();
-                if (gateValue > 0) {
+                if (movementClassId > 0) {
                   int remainingBudget = remainingBudgetByNation[candidateNationIndex];
-                  if (movementClassId < remainingBudget) {
-                    typedef void (__cdecl *AccumulateUnitOrderPriorityVectorContribution_t)(void*, float*, int, int);
-                    AccumulateUnitOrderPriorityVectorContribution_t AccumulateUnitOrderPriorityVectorContribution_fn =
-                        reinterpret_cast<AccumulateUnitOrderPriorityVectorContribution_t>(
-                            (void*)&AccumulateUnitOrderPriorityVectorContribution);
-                    AccumulateUnitOrderPriorityVectorContribution_fn(
-                        unit, vector, 0x3f800000, static_cast<int>(movementClassId));
-                    remainingBudgetByNation[candidateNationIndex] =
-                        remainingBudget - movementClassId;
+                  if (costPoints < remainingBudget) {
+                    AccumulateUnitOrderPriorityVectorContribution(
+                        unit, vector, 1.0f, static_cast<float>(unitOrderWeight));
+                    remainingBudgetByNation[candidateNationIndex] = remainingBudget - costPoints;
                   }
                 }
               }
             }
           }
         } else {
-          for (TStationedUnitNode* unit = StationedUnitChainAt(regionIndex); unit != 0;
+          for (TMilitaryUnit* unit = StationedUnitChainAt(regionIndex); unit != 0;
                unit = unit->next14) {
             short movementClassId = unit->GetUnitMovementClassId();
             if (movementClassId > 0) {
-              typedef void (__cdecl *AccumulateUnitOrderPriorityVectorContribution_t)(void*, float*, int, int);
-              AccumulateUnitOrderPriorityVectorContribution_t AccumulateUnitOrderPriorityVectorContribution_fn =
-                  reinterpret_cast<AccumulateUnitOrderPriorityVectorContribution_t>(
-                      (void*)&AccumulateUnitOrderPriorityVectorContribution);
-              AccumulateUnitOrderPriorityVectorContribution_fn(unit, vector, 0x3f800000,
-                                                             static_cast<int>(movementClassId));
+              AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
+                                                            static_cast<float>(unitOrderWeight));
             }
           }
         }
@@ -226,13 +195,12 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
 // FUNCTION: IMPERIALISM 0x0053ea70
 float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  
-  typedef void (__cdecl *NoOpRuntimeCallback_005184e0_t)(void);
-  reinterpret_cast<NoOpRuntimeCallback_005184e0_t>((void*)&NoOpRuntimeCallback_005184e0)();
 
-  for (TStationedUnitNode* unit = StationedUnitChainAt(nodeContext); unit != 0;
-       unit = unit->next14) {
-    AccumulatePriorityVectorFromStationedUnit(unit, vector);
+  short unitOrderWeight = GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
+
+  for (TMilitaryUnit* unit = StationedUnitChainAt(nodeContext); unit != 0; unit = unit->next14) {
+    AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
+                                                  static_cast<float>(unitOrderWeight));
   }
 
   float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
@@ -265,7 +233,8 @@ void TDefendProvinceMission::Free() {
   TGreatPower* nationState = g_apNationStates[nationId04];
   nationState->AssertValid();
 
-  typedef void (__fastcall *SetMapStateByteFlag970WithRuntimeGate_t)(void* self, int dummyEdx, int arg1, int arg2);
+  typedef void(__fastcall * SetMapStateByteFlag970WithRuntimeGate_t)(void* self, int dummyEdx,
+                                                                     int arg1, int arg2);
   SetMapStateByteFlag970WithRuntimeGate_t SetMapStateByteFlag970WithRuntimeGate_fn =
       reinterpret_cast<SetMapStateByteFlag970WithRuntimeGate_t>(
           (void*)&SetMapStateByteFlag970WithRuntimeGate);
@@ -304,17 +273,19 @@ void TDefendProvinceMission::SetStateByte8To2() {
 void TDefendProvinceMission::ResetValue0CToZero() {
   int tileIndex = field_14;
   char* cityScoreTable = reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable);
-  
+
   float local_8 = *reinterpret_cast<float*>(cityScoreTable + 0x9c + tileIndex * 0xa8);
-  int adjacentCount = static_cast<int>(g_pGlobalMapState->cityScoreTable[tileIndex].adjacentRegionCount08);
+  int adjacentCount =
+      static_cast<int>(g_pGlobalMapState->cityScoreTable[tileIndex].adjacentRegionCount08);
   int local_c = 0;
-  
+
   if (adjacentCount > 0) {
     const short* adjArray = g_pGlobalMapState->cityScoreTable[tileIndex].adjacentRegionIds0A;
     // GetTileNormalizedMovementClassId is at 0x514290
-    typedef short (__cdecl *GetTileNormalizedMovementClassId_t)(int);
+    typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
     GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-        reinterpret_cast<GetTileNormalizedMovementClassId_t>((void*)&GetTileNormalizedMovementClassId);
+        reinterpret_cast<GetTileNormalizedMovementClassId_t>(
+            (void*)&GetTileNormalizedMovementClassId);
     for (int i = 0; i < adjacentCount; ++i) {
       short adjTileIndex = adjArray[i];
       short movementClass = GetTileNormalizedMovementClassId_fn(adjTileIndex);
@@ -322,11 +293,13 @@ void TDefendProvinceMission::ResetValue0CToZero() {
         local_c++;
       }
     }
-    
+
     static const double* const p_neg_one_0065A9E0 = reinterpret_cast<const double*>(0x0065a9e0);
-    local_8 = (static_cast<float>(local_c) / static_cast<float>(adjacentCount) - static_cast<float>(*p_neg_one_0065A9E0)) * local_8;
+    local_8 = (static_cast<float>(local_c) / static_cast<float>(adjacentCount) -
+               static_cast<float>(*p_neg_one_0065A9E0)) *
+              local_8;
   }
-  
+
   static const float* const p_5000_0065A9C0 = reinterpret_cast<const float*>(0x0065a9c0);
   *reinterpret_cast<float*>(&value0c) = local_8 / (*p_5000_0065A9C0);
 }
@@ -344,21 +317,24 @@ void TDefendProvinceMission::NoOpSlot3C() {
     fStack_c = *p_1_0_0065A9B8;
   }
 
-  typedef int (__cdecl *IsMapTileCompatibleWithCurrentTerrainOrActionContext_t)(int tileIndex);
-  IsMapTileCompatibleWithCurrentTerrainOrActionContext_t IsMapTileCompatibleWithCurrentTerrainOrActionContext_fn =
-      reinterpret_cast<IsMapTileCompatibleWithCurrentTerrainOrActionContext_t>(
-          (void*)&IsMapTileCompatibleWithCurrentTerrainOrActionContext);
+  typedef int(__cdecl * IsMapTileCompatibleWithCurrentTerrainOrActionContext_t)(int tileIndex);
+  IsMapTileCompatibleWithCurrentTerrainOrActionContext_t
+      IsMapTileCompatibleWithCurrentTerrainOrActionContext_fn =
+          reinterpret_cast<IsMapTileCompatibleWithCurrentTerrainOrActionContext_t>(
+              (void*)&IsMapTileCompatibleWithCurrentTerrainOrActionContext);
   int compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext_fn(field_14);
 
   if (compat == 0) {
     unsigned char bVar8;
     if (g_pCityOrderCapabilityState->militaryCapRows39d[nationId04].eliteRecruitFlag == 0) {
-      bVar8 = (g_pCityOrderCapabilityState->militaryCapRows39d[nationId04].recruitTierFlag != 0) ? 8 : 0;
+      bVar8 = (g_pCityOrderCapabilityState->militaryCapRows39d[nationId04].recruitTierFlag != 0)
+                  ? 8
+                  : 0;
     } else {
       bVar8 = 0x10;
     }
 
-    typedef short (__cdecl *GetNormalizedCityActionResourceCostPercent_t)(int capFlag, int index);
+    typedef short(__cdecl * GetNormalizedCityActionResourceCostPercent_t)(int capFlag, int index);
     GetNormalizedCityActionResourceCostPercent_t GetNormalizedCityActionResourceCostPercent_fn =
         reinterpret_cast<GetNormalizedCityActionResourceCostPercent_t>(
             (void*)&GetNormalizedCityActionResourceCostPercent);
@@ -394,7 +370,8 @@ void TDefendProvinceMission::NoOpSlot3C() {
 
   for (int j = 0; j < 5; ++j) {
     short val = psVar5[j];
-    resourceWeights[j] = static_cast<float>(val) * unaff_EBX * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    resourceWeights[j] = static_cast<float>(val) * unaff_EBX *
+                         static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
   }
 }
 
@@ -414,9 +391,10 @@ char TDefendProvinceMission::MatchesMissionKeySlot4C(int kind, int key, int mode
 
 // FUNCTION: IMPERIALISM 0x0053f040
 TMission* TDefendProvinceMission::GetReplacementSlot48() {
-  typedef short (__cdecl *GetTileNormalizedMovementClassId_t)(int);
+  typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
   GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-      reinterpret_cast<GetTileNormalizedMovementClassId_t>((void*)&GetTileNormalizedMovementClassId);
+      reinterpret_cast<GetTileNormalizedMovementClassId_t>(
+          (void*)&GetTileNormalizedMovementClassId);
   short movementClass = GetTileNormalizedMovementClassId_fn(field_14);
   return (movementClass == nationId04) ? this : nullptr;
 }

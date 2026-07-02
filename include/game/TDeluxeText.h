@@ -5,7 +5,8 @@
 
 // TODO(manifest): describe TDeluxeText and its role. Base edge (TTEView) recovered from RTTI
 // CRuntimeClass chain: TDeluxeText -> TTEView -> TStaticText -> TControl -> TView -> TEventHandler
-// -> TObject -> CObject. VTABLE: IMPERIALISM 0x006406d8
+// -> TObject -> CObject.
+// VTABLE: IMPERIALISM 0x006406d8
 class TDeluxeText : public TTEView {
 public:
   // === BEGIN GENERATED DECLS (TDeluxeText) — refreshed by recover-class; do not hand-edit ===

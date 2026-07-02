@@ -647,6 +647,11 @@ manual-cruntimeclass-gate:
 decomplint:
   (cd "{{build_dir}}" && uv run reccmp-decomplint --target "{{target}}")
 
+[doc('Audit Hard-Rule-9 typedef-cast externs for cross-file signature drift (report-only)')]
+[group('gates')]
+typedef-cast-audit *args:
+  uv run python -m tools.workflow.check_typedef_cast_drift {{args}}
+
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or
 # --show-unasserted to list oracle classes with no size assert yet.

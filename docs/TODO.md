@@ -63,6 +63,24 @@ the ctor listing and fix the comment names.
   `thunk_InitializeDirectSoundDeviceAndChannels`, NoOpCallback pairs — small
   per-callsite jobs; verify receiver/convention before retargeting.
 
+## TMilitaryUnit full class recovery (follow-up to the 2026-07 mission-scoring cleanup)
+
+The TStationedUnitNode/TMilitaryUnit split is merged (one class, RTTI 0x66ed70, size
+0x44, base TObject) with a field/getter surface model. Still to port: constructor and
+CreateObject @ 0x5c2cb0 (217b), GetRuntimeClass @ 0x5c2dd0, vtable annotation +
+serialization (needs the TObject WriteTo/ReadFrom slots), and the sibling classes
+TUnit (0x66ed40, ctor 0x5c2430, size 0x24) / TCivUnit (0x66ed58, ctor 0x5c2860,
+size 0x28). Fields 0x08-0x13, 0x1c-0x23, 0x28-0x33, 0x3a-0x3f are still pads.
+
+## Remaining dropped-arg typedef casts in TDefendProvinceMission 0x53e6e0
+
+The mission-scoring cleanup fixed the accumulate/weight family, but the same body still
+calls through zero-arg casts that likely drop real arguments (verify each receiver/args
+in the listing before retargeting): `ComputeAggregateWeightedChildCostForMatchingType5NavyOrders`
+@ 0x557170 (called per nation with no nation arg!), `TileHasMovementClassId` @ 0x515e50,
+`AreAllLinkedEntriesTerrainFlagBit2Clear` @ 0x518a20. `just typedef-cast-audit` reports
+cross-file signature drift for this pattern class.
+
 ## Misleading-name backlog (spotted 2026-07, not yet renamed)
 
 - `GetSurfaceObjectAtContextOffset24` returns `context->surfaceObject`

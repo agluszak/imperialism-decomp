@@ -8,8 +8,8 @@
 class TObject;
 
 // TODO(manifest): describe TWindow and its role. Base edge (TView) recovered from RTTI
-// CRuntimeClass chain: TWindow -> TView -> TEventHandler -> TObject -> CObject. VTABLE: IMPERIALISM
-// 0x00649e58
+// CRuntimeClass chain: TWindow -> TView -> TEventHandler -> TObject -> CObject.
+// VTABLE: IMPERIALISM 0x00649e58
 class TWindow : public TView {
 public:
   // === BEGIN GENERATED DECLS (TWindow) — refreshed by recover-class; do not hand-edit ===

@@ -403,14 +403,6 @@ undefined4 RecomputeTileStrategicScoreHeatmap(void)
   return 0;
 }
 
-// ghidra_name NoOpRuntimeCallback_005184e0
-// ghidra_proto undefined NoOpRuntimeCallback_005184e0()
-// FUNCTION: IMPERIALISM 0x005184e0
-undefined4 NoOpRuntimeCallback_005184e0(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadScenarioMapStateFromTableResource
 // ghidra_proto undefined LoadScenarioMapStateFromTableResource()
 // FUNCTION: IMPERIALISM 0x00518540

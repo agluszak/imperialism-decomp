@@ -14,8 +14,6 @@
 extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
 extern short g_industryActionCostWeightResCode10[16];
 
-extern undefined4 FindMapActionContextByNodeId(void);
-
 static short SignedMod100(short value) {
   return (short)((value / 100 + (value >> 15)) -
                  (short)(((__int64)(int)value * 0x51eb851f) >> 0x3f));
@@ -112,7 +110,7 @@ void TShip::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field30, 2);
   short zoneIndex = 0;
   stream->ReadBytes(&zoneIndex, 2);
-  field08 = reinterpret_cast<TZone*(__cdecl*)(short)>(FindMapActionContextByNodeId)(zoneIndex);
+  field08 = FindMapActionContextByNodeId(zoneIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x0054fbf0

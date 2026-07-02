@@ -391,9 +391,16 @@ float g_Compute_Advisory_Handler_LookupTable_00653720 = -90.0f;
 float g_Compute_Advisory_Peer_LookupTable_00653724 = -0.5f;
 float g_ApplyIndexedResourceDeltaScale_00653728 = -1.0f / 255.0f;
 
-// Per-unit-type military power weights (0xe-byte records, weight short at +0).
-// Summed over militaryUnitList44 entries by the slot 0x8e-0x9c score family.
-short g_Classify_Nation_Military_LookupTable_00695CD4[64][7] = {0};
+// Per-unit-type military stat records (0xe-byte records, 7 shorts each), rebased
+// from the earlier 0x695CD4 model: TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400)
+// reads the category flag at record offset +0 (0x695cd2; 0x10 = counted) and the
+// power/cost points at +2 (0x695cd4, the short the slot 0x8e-0x9c score family sums).
+short g_UnitTypeMilitaryStatTable_00695CD2[64][7] = {0};
+
+// Per-unit-type stat table (7 shorts per type; rows for unit types 0x00-0x1d) and
+// per-stat divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
+short g_UnitTypeStatTable_0066EB88[30][7] = {0};
+short g_UnitTypeStatDivisorTable_0066ED30[7] = {0};
 
 // Per-order-type sort priority (short table at 0x6966d0), used by the TGreatPower
 // slot 0x55 tracked-order selection sort (0x004e0290).
@@ -596,7 +603,8 @@ unsigned short g_wUiResourceEntryDefaultParam2 = 0;
 
 // 0x006a6014 — global turn-event-queue manager pointer (built by
 // ConstructGlobalTurnEventQueueManager during multiplayer init, stored here and read by the
-// turn-event dispatch path). GLOBAL: IMPERIALISM 0x006a6014
+// turn-event dispatch path).
+// GLOBAL: IMPERIALISM 0x006a6014
 TNetMgr* DAT_006a6014 = 0;
 
 #include "game/TApplication.h"

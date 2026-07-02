@@ -218,6 +218,22 @@ short TZone::GetContextOrdinalOrInvalid() {
   return field14;
 }
 
+// FUNCTION: IMPERIALISM 0x0055f100
+TZone* FindMapActionContextByNodeId(short nodeId) {
+  if (nodeId == -1) {
+    return 0;
+  }
+  TZone* node;
+  for (node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
+    // Original inlines GetContextOrdinalOrInvalid (null -> -1, unreachable here).
+    short ordinal = (node != 0) ? node->field14 : -1;
+    if (ordinal == nodeId) {
+      break;
+    }
+  }
+  return node;
+}
+
 // FUNCTION: IMPERIALISM 0x0055f5c0
 void TZone::GenerateZoneStatusCodeIfUnset() {}
 

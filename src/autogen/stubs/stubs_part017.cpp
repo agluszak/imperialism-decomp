@@ -571,14 +571,6 @@ undefined4 WrapperFor_ftol_At0055e330(void)
   return 0;
 }
 
-// ghidra_name FindMapActionContextByNodeId
-// ghidra_proto undefined FindMapActionContextByNodeId()
-// FUNCTION: IMPERIALISM 0x0055f100
-undefined4 FindMapActionContextByNodeId(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchMapActionContextCallbackViaField24
 // ghidra_proto undefined DispatchMapActionContextCallbackViaField24()
 // FUNCTION: IMPERIALISM 0x0055f300

@@ -43,14 +43,6 @@ undefined4 CreateObject_005C2CB0(void)
   return 0;
 }
 
-// ghidra_name GetCityActionGateValueFromOrderTemplate
-// ghidra_proto undefined GetCityActionGateValueFromOrderTemplate()
-// FUNCTION: IMPERIALISM 0x005c3400
-undefined4 GetCityActionGateValueFromOrderTemplate(void)
-{
-  return 0;
-}
-
 // ghidra_name GetCityActionGateValueBySlot
 // ghidra_proto undefined GetCityActionGateValueBySlot()
 // FUNCTION: IMPERIALISM 0x005c3450
@@ -67,26 +59,10 @@ undefined4 GetCityActionCategoryCodeBySlot(void)
   return 0;
 }
 
-// ghidra_name NoOpRuntimeCallback_005c34d0
-// ghidra_proto undefined NoOpRuntimeCallback_005c34d0()
-// FUNCTION: IMPERIALISM 0x005c34d0
-undefined4 NoOpRuntimeCallback_005c34d0(void)
-{
-  return 0;
-}
-
 // ghidra_name AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl
 // ghidra_proto undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl()
 // FUNCTION: IMPERIALISM 0x005c3500
 undefined4 AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeCallback_005c3530
-// ghidra_proto undefined NoOpRuntimeCallback_005c3530()
-// FUNCTION: IMPERIALISM 0x005c3530
-undefined4 NoOpRuntimeCallback_005c3530(void)
 {
   return 0;
 }

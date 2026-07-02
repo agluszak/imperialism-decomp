@@ -87,6 +87,16 @@ ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 
 extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64];
 
+// Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
+// column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
+// points. See TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400).
+extern "C" short g_UnitTypeMilitaryStatTable_00695CD2[64][7];
+
+// Per-unit-type stat table (7 shorts per type; unit types 0x00-0x1d) and per-stat
+// divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
+extern "C" short g_UnitTypeStatTable_0066EB88[30][7];
+extern "C" short g_UnitTypeStatDivisorTable_0066ED30[7];
+
 // ============================================================================
 // Diplomacy globals
 // ============================================================================

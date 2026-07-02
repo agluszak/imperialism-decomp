@@ -129,6 +129,10 @@ ASSERT_SIZE(TZonePrimaryNeighborStretch, 0x10);
 ASSERT_SIZE(TZoneSecondaryNeighborStretch, 0x10);
 ASSERT_SIZE(TZone, 0x48);
 
+// Walks g_pMapActionContextListHead (via prev18) for the zone whose field14 context
+// ordinal matches nodeId; -1 and misses return 0. Used by mission deserialization.
+TZone* FindMapActionContextByNodeId(short nodeId); // 0x55f100
+
 // === BEGIN GENERATED (TZone) — refreshed by `just gen-class TZone`; do not hand-edit ===
 // clang-format off
 // vtable @ 0x0065c6d8 (55 slots), object size 0x48, base TObject

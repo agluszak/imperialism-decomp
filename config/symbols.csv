@@ -3232,7 +3232,7 @@ address|name|symbol|size|type|prototype|provenance
 518090|CollectSecondDegreeLinksWithMinorNationFallback||126|function|undefined CollectSecondDegreeLinksWithMinorNationFallback()|
 518130|RecomputeTileStrategicScoreHeatmap||643|function|undefined RecomputeTileStrategicScoreHeatmap()|
 518470|ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl||66|function|undefined ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl()|
-5184e0|NoOpRuntimeCallback_005184e0||7|function|undefined NoOpRuntimeCallback_005184e0()|
+5184e0|GetProvinceUnitOrderWeight||7|function|undefined GetProvinceUnitOrderWeight()|
 518540|LoadScenarioMapStateFromTableResource||536|function|undefined LoadScenarioMapStateFromTableResource()|
 5187f0|LoadScenarioMetadataByIndexIntoUiControlCore_Impl||62|function|undefined LoadScenarioMetadataByIndexIntoUiControlCore_Impl()|
 518840|LoadScenarioMapStateFromTableResource_Impl||219|function|undefined LoadScenarioMapStateFromTableResource_Impl()|
@@ -5908,13 +5908,13 @@ address|name|symbol|size|type|prototype|provenance
 5c3190|TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets||32|function|void __thiscall CopyUnitCurrentTileIntoOrderTargets(void)|
 5c31c0|TMilitaryUnitOrderState::DetachUnitOrderFromOwnerAndReset||39|function|void __thiscall DetachUnitOrderFromOwnerAndReset()|
 5c3200|TMilitaryUnitOrderState::VTableSlot10||395|function|void __thiscall VTableSlot10(int pOwnerContext)|
-5c3400|GetCityActionGateValueFromOrderTemplate||60|function|undefined GetCityActionGateValueFromOrderTemplate()|
+5c3400|GetUnitTypeCostPoints||60|function|undefined GetUnitTypeCostPoints()|
 5c3450|GetCityActionGateValueBySlot||35|function|undefined GetCityActionGateValueBySlot()|
 5c3490|GetUnitMovementClassId||13|function|undefined GetUnitMovementClassId()|
 5c34b0|GetCityActionCategoryCodeBySlot||14|function|undefined GetCityActionCategoryCodeBySlot()|
-5c34d0|NoOpRuntimeCallback_005c34d0||17|function|undefined NoOpRuntimeCallback_005c34d0()|
+5c34d0|IsNotStationedInProvince||17|function|undefined IsNotStationedInProvince()|
 5c3500|AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl||30|function|undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl()|
-5c3530|NoOpRuntimeCallback_005c3530||49|function|undefined NoOpRuntimeCallback_005c3530()|
+5c3530|GetUnitTypeStatPercent||49|function|undefined GetUnitTypeStatPercent()|
 5c3580|GetNormalizedCityActionResourceCostPercent||48|function|undefined GetNormalizedCityActionResourceCostPercent()|
 5c35c0|ResolveEraCapabilityFallbackSlot||103|function|undefined ResolveEraCapabilityFallbackSlot()|
 5c3650|WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650||13|function|undefined WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650()|
@@ -9916,7 +9916,7 @@ address|name|symbol|size|type|prototype|provenance
 695bb0|g_industryActionCostWeightResCode0B|||global||
 695bd0|g_industryActionCostWeightResCode03|||global||
 695bf0|g_industryActionCostWeightResCode0C|||global||
-695cd4|g_Classify_Nation_Military_LookupTable_00695CD4|||global||
+695cd2|g_UnitTypeMilitaryStatTable_00695CD2|||global||
 6960e0|g_pTradeSummarySelectionMap|||global||
 696178|g_anCityBuildingSlotOrder|||global||
 696196|g_nCityBuildingSlotOrderLast|||global||

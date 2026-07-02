@@ -7,6 +7,7 @@
 
 class CArchive;
 class TZone;
+class TMilitaryUnit;
 
 // Mac: TMission — base AI-mission class. Real polymorphic MFC object rooted at
 // CObject<-TObject (slot 0x00 RTTI, dtor resets vptr to the CObject sentinel
@@ -37,53 +38,61 @@ public:
   // Factory (0x5350d0). TEMP: still forwards to the stub until the concrete mission
   // ctors use real inheritance (plan step 4).
   static void* CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2,
-                                          TZone* portZoneContext,
-                                          int arg4);
+                                          TZone* portZoneContext, int arg4);
 
   // --- MFC CObject prefix slots 0x00-0x04 ---
   DECLARE_SERIAL(TMission)
-  virtual ~TMission();                                     // 0x01 dtor 0x535080 / ??_G 0x535050
+  virtual ~TMission(); // 0x01 dtor 0x535080 / ??_G 0x535050
   // 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited from CObject.
 
   // --- TMission's own virtuals, exact vtable slot order ---
-  virtual void WriteTo(TStream* stream) override;   // slot 0x05 0x535820
-  virtual void ReadFrom(TStream* stream) override;  // slot 0x06 0x5358a0
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x535820
+  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5358a0
   virtual char ReturnFalseSlot28(); // 0x0a 0x534c00 — mission-node queue dispatch (0x004daa80)
-  virtual int ReturnZeroSlot2C(int* outBuffer, int unused); // 0x0b 0x534c20 (ret 8)
-  virtual void Call30();                                    // 0x0c 0x534c40 (NoOpSlot30)
-  virtual void SetStateByte8To2();                          // 0x0d 0x534c60
-  virtual void ResetValue0CToZero();                        // 0x0e 0x534c80
-  virtual void NoOpSlot3C();                                // 0x0f 0x534ca0
-  virtual void RefreshSlot40();                             // 0x10 0x534cc0
-  virtual void MissionSlot44();                             // 0x11 0x534cf0
-  virtual TMission* GetReplacementSlot48();               // 0x12 0x534d10
+  virtual int ReturnZeroSlot2C(int* outBuffer, int unused);          // 0x0b 0x534c20 (ret 8)
+  virtual void Call30();                                             // 0x0c 0x534c40 (NoOpSlot30)
+  virtual void SetStateByte8To2();                                   // 0x0d 0x534c60
+  virtual void ResetValue0CToZero();                                 // 0x0e 0x534c80
+  virtual void NoOpSlot3C();                                         // 0x0f 0x534ca0
+  virtual void RefreshSlot40();                                      // 0x10 0x534cc0
+  virtual void MissionSlot44();                                      // 0x11 0x534cf0
+  virtual TMission* GetReplacementSlot48();                          // 0x12 0x534d10
   virtual char MatchesMissionKeySlot4C(int kind, int key, int mode); // 0x13 0x534d30
-  virtual char ReturnFalseSlot50();                         // 0x14 0x534d50
-  virtual char ReturnFalseSlot54();                         // 0x15 0x534d70
-  virtual int ReturnZeroSlot58();                           // 0x16 0x534d90
-  virtual int ReturnZeroSlot5C();                           // 0x17 0x534db0
-  virtual char ReturnFalseSlot60();                         // 0x18 0x534dd0
-  virtual char ReturnFalseSlot64();                         // 0x19 0x534df0
-  virtual float ReturnZeroFloatSlot68();                    // 0x1a 0x534e10
-  virtual float ReturnZeroFloatSlot6C();                    // 0x1b 0x534e30
-  virtual float ReturnZeroFloatSlot70(TMission* candidate);  // 0x1c 0x534e70 (ret 4 -- verified against base stub)
-  virtual float ReturnZeroFloatSlot74();                    // 0x1d 0x534e50
-  virtual float ReturnZeroFloatSlot78(TMission* candidate, float* referenceVector); // 0x1e 0x534eb0 (ret 8 -- verified against base stub)
-  virtual float ReturnZeroFloatSlot7C();                    // 0x1f 0x534e90
-  virtual void NoOpSlot80(TMission* item, int notify);      // 0x20 0x534ef0 — AdoptUnitSlot80
+  virtual char ReturnFalseSlot50();                                  // 0x14 0x534d50
+  virtual char ReturnFalseSlot54();                                  // 0x15 0x534d70
+  virtual int ReturnZeroSlot58();                                    // 0x16 0x534d90
+  virtual int ReturnZeroSlot5C();                                    // 0x17 0x534db0
+  virtual char ReturnFalseSlot60();                                  // 0x18 0x534dd0
+  virtual char ReturnFalseSlot64();                                  // 0x19 0x534df0
+  virtual float ReturnZeroFloatSlot68();                             // 0x1a 0x534e10
+  virtual float ReturnZeroFloatSlot6C();                             // 0x1b 0x534e30
+  virtual float ReturnZeroFloatSlot70(
+      TMilitaryUnit* candidateUnit);     // 0x1c 0x534e70 (ret 4 -- verified against base stub)
+  virtual float ReturnZeroFloatSlot74(); // 0x1d 0x534e50
+  virtual float ReturnZeroFloatSlot78(
+      TMilitaryUnit* candidateUnit,
+      float* referenceVector);           // 0x1e 0x534eb0 (ret 8 -- verified against base stub)
+  virtual float ReturnZeroFloatSlot7C(); // 0x1f 0x534e90
+  virtual void NoOpSlot80(TMilitaryUnit* unit, int notify); // 0x20 0x534ef0 — AdoptUnitSlot80
   virtual void NoOpSlot84(int a, int b);                    // 0x21 0x534ed0 (ret 8)
-  virtual void NoOpSlot88(TMission* item, int unused);      // 0x22 0x534f30
+  virtual void NoOpSlot88(TMilitaryUnit* unit, int unused); // 0x22 0x534f30
   virtual void NoOpSlot8C(int a, int b);                    // 0x23 0x534f10
   virtual void NoOpSlot90(int a);                           // 0x24 0x534f50
   virtual void SetFlag10FromArgSlot94(unsigned char value); // 0x25 0x534f70
   virtual char ReturnFalseSlot98();                         // 0x26 0x534f90
 
   // Slot 0x0c — detach notification while draining mission queues (0x004e7230).
-  void NotifyDetachSlot0C() { AssertValid(0); }
+  void NotifyDetachSlot0C() {
+    AssertValid(0);
+  }
   void AssertValid(CArchive* archive) const override;
 
-  void DispatchMissionNodeSlot28() { (void)ReturnFalseSlot28(); }
-  void AdoptUnitSlot80(TMission* unit, int flag) { NoOpSlot80(unit, flag); }
+  void DispatchMissionNodeSlot28() {
+    (void)ReturnFalseSlot28();
+  }
+  void AdoptUnitSlot80(TMilitaryUnit* unit, int flag) {
+    NoOpSlot80(unit, flag);
+  }
 
   // Slots 0x27-0x2f are NULL in the base table (abstract: filled only by derived
   // classes). Not declared here — C++ pure virtuals would emit _purecall, not NULL,

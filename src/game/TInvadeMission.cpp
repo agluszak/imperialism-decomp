@@ -15,8 +15,6 @@ IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
 // Not-yet-recovered free functions/subsystems this file calls into.
 extern undefined4 GetTileNormalizedMovementClassId(void);
 extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
-extern undefined4 NoOpRuntimeCallback_005c34d0(void);
-extern undefined4 NoOpRuntimeCallback_005184e0(void);
 extern undefined4 InitializeLinkedListCursorFromOwnerHead(void);
 extern undefined4 LinkedListCursorHasCurrent(void);
 extern undefined4 AdvanceLinkedListCursor(void);
@@ -169,10 +167,10 @@ char TInvadeMission::ReturnFalseSlot50() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053fac0
-float TInvadeMission::ReturnZeroFloatSlot70(TMission* candidate) {
+float TInvadeMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
   // TODO: ComputeInvadeMissionWeightedScoreDelta -- simplified passthrough
   // pending recovery of the beachhead-relative scaling logic.
-  return TArmyMission::ReturnZeroFloatSlot70(candidate);
+  return TArmyMission::ReturnZeroFloatSlot70(candidateUnit);
 }
 
 // FUNCTION: IMPERIALISM 0x0053fb60

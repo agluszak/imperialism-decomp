@@ -4,7 +4,8 @@
 #include "game/mfc.h"
 
 // TODO(manifest): describe TLanguageMgr and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: TLanguageMgr -> TObject -> CObject. VTABLE: IMPERIALISM 0x006585a8
+// CRuntimeClass chain: TLanguageMgr -> TObject -> CObject.
+// VTABLE: IMPERIALISM 0x006585a8
 class TLanguageMgr : public TObject {
 public:
   // === BEGIN GENERATED DECLS (TLanguageMgr) — refreshed by recover-class; do not hand-edit ===
