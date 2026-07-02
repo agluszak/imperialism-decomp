@@ -1,46 +1,167 @@
 #pragma once
 
+#include "compat.h"
+#include "decomp_types.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
+class TTaskForce;
 class TStream;
 
-// TODO(manifest): describe TTaskForce and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TTaskForce -> TObject -> CObject.
+// Child-link node for map-order mission trees (NOT TOcean / TZone).
+struct TMapOrderChildLinkNode {
+  TTaskForce* object_ptr;
+  TMapOrderChildLinkNode* next;
+  TMapOrderChildLinkNode* prev_link;
+  unsigned char active_flag;
+  unsigned char pad_0d;
+  unsigned char pad_0e;
+  unsigned char pad_0f;
+};
+
+ASSERT_SIZE(TMapOrderChildLinkNode, 0x10);
+
+// Per-owner bucket table for active map-order entries (Ghidra: ObjectPoolOwner).
+// NOTE (bd 1uj.16 follow-up): the internal shape past +0x18 is still under
+// investigation. TTaskForce::RemoveNode (0x550ff0) relies on the
+// {head@0x10, active_node@0x14, bucket_counts_base@0x18} reading used here, but
+// TTaskForce::PromoteMapOrderChainAndQueue (0x5533f0) separately reads a
+// stretch<T>-shaped growable array (data/capacity/count at +0x28/+0x2c/+0x30,
+// realloc'd via the same 0x5e7fc0 helper TZone's primary/secondaryNeighbors use)
+// plus a short comparison field at +0x44 off the SAME owner pointer -- a shape
+// that does not obviously square with a flat 0x100-byte bucket-count table
+// starting at +0x18. Left opaque pending a dedicated class-recovery pass rather
+// than guessing a layout that could silently corrupt the already-working
+// TTaskForce::RemoveNode / TAdmiral.cpp accessors.
+struct TMapOrderEntryOwnerContext {
+  char pad_00[0x10];
+  TMapOrderChildLinkNode* head;
+  TTaskForce* active_node;
+  char bucket_counts_base[0x100];
+
+  // Called from TTaskForce::RemoveNode's tail (0x550ff0, via ILT thunk
+  // 0x4027de) with RemoveNode's own `self` int parameter reinterpreted as
+  // this receiver -- confirmed __thiscall via ECX=this register evidence
+  // (0x553bc0 immediately does `mov edi, ecx`), and this receiver's own
+  // +0x10/+0x14 fields are read/compared exactly like head/active_node here.
+  // Searches head for an existing link to `node`; if none exists, allocates
+  // (operator new, 0x606f73) and inserts a new TMapOrderChildLinkNode in
+  // priority-sorted order (via a lookup table at 0x698120), bumps a bucket
+  // counter, and then makes a virtual dispatch through this receiver's own
+  // (still-uncharted) vtable whose consequences are not yet understood --
+  // including a write at node+0x34, past TTaskForce's own 0x34-byte size,
+  // that is only reached when this receiver's own +0x8 field takes an
+  // uncommon value. Left `// TODO: promote body` rather than guess at the
+  // owner's own polymorphic identity; see bd 1uj.16 follow-up notes.
+  void FindOrCreateChildOrderLink(TTaskForce* node); // 0x553bc0
+};
+
+// Map-order queue entry (0x34 bytes). RTTI-confirmed real name TTaskForce
+// (CRuntimeClass chain: TTaskForce -> TObject -> CObject; see
+// config/symbols.csv rtti-sourced rows at 0x552770/0x5527e0/0x552870). Was
+// previously modeled under the placeholder name TMapOrderEntry; merged into
+// the RTTI name once TTaskForce's own vtable (0x0065c468) was found to be the
+// SAME vtable TNavyMission.cpp's map-order bridges dispatch through (bd
+// 1uj.16). Objects live in a global doubly-linked queue headed by
+// TNavyMgr::orderListHead04 (g_pNavyOrderManager @ 0x6a43e4), threaded via
+// queue_prev/queue_next; TTaskForce::Free (0x552930) unlinks from that queue.
 // VTABLE: IMPERIALISM 0x0065c468
 class TTaskForce : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TTaskForce) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTaskForce)
-  virtual ~TTaskForce(); // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x552b90
+  ~TTaskForce() override;                          // slot 0x01 (scalar deleting destructor)
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x552b90
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x552d10
-  virtual void Free() override; // slot 0x07 0x552930
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-// === END GENERATED DECLS (TTaskForce) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTaskForce 0xCTOR`).
+  virtual void Free() override;                    // slot 0x07 0x552930
+
+  // TTaskForce's own fields start at absolute offset +0x04: the inherited
+  // TObject vtable pointer already occupies +0x00-0x03 (TObject is
+  // ASSERT_SIZE 0x4). A leftover `field_00` here (from before this struct
+  // was RTTI-merged from the standalone, non-TObject-derived TMapOrderEntry)
+  // double-counted that slot and pushed sizeof(TTaskForce) to 0x38; removed
+  // so order_type lands at +0x04, matching every `[this+4]` disassembly read
+  // cited across this file, and the total size matches the RTTI-confirmed
+  // 0x34 bytes (0x04 inherited + 0x30 own).
+  s16 order_type;
+  s16 order_strength;
+  // Order/entry "kind" tag (was named `attachment`): TNavyMgr's
+  // RemoveMatchingTaskForceOrders (0x557170 cluster) checks this == 5 for
+  // "task force" queue entries; SetMapOrderType9AndQueue (0x552f80) sets it to
+  // 9 for the map-order-9 kind. Kept the established `attachment` spelling
+  // (already used by TTaskForce::SelectPreferredMapOrderEntryByPriorityRules)
+  // to avoid touching working code; see bd 1uj.16 notes.
+  int attachment;
+  // Was read as a generic "targetRecord" pointer (compared against a
+  // cityRecordPtr) by TNavyMgr's order filter, and as a
+  // TMapOrderEntryOwnerContext* by RemoveNode -- an opaque per-order owner/
+  // target-context pointer whose real class is still unconfirmed.
+  TMapOrderEntryOwnerContext* owner;
+  // Head of this entry's own child order-node chain (was opaque pad_10[0]).
+  // Same TMapOrderChildLinkNode shape TNavyMission::orderList24 walks.
+  TMapOrderChildLinkNode* childOrderList; // +0x10
+  // Cached "preferred active child" pointer, recomputed by
+  // RecomputeMapOrderChildAggregateMetric (0x553e30) folding
+  // SelectPreferredMapOrderEntryByPriorityRules over childOrderList -- the
+  // same role TMapOrderEntryOwnerContext::active_node plays for TAdmiral's
+  // primary-order owner (was opaque pad_10[4]).
+  TTaskForce* activeChildEntry; // +0x14
+  // Copied from the source order node's own +0x08 field when this entry is
+  // created (GetOrCreateMissionOrderEntryForNode, 0x5503a0); compared against
+  // sibling nodes' own +0x08 field by ConsolidateMissionOrderEntriesByTarget-
+  // AndQueue. Real pointee type unconfirmed (was opaque pad_10[8]).
+  int contextAnchor; // +0x18
+  s16 required_count;
+  char pad_1e[0x02];
+  int attached_entity;
+  char pad_24[0x04];
+  TTaskForce* queue_prev;
+  TTaskForce* queue_next;
+  s16 tiebreak_strength;
+  char pad_32[0x02];
 
   TTaskForce();
+
+  static TMapOrderChildLinkNode* FindMissionOrderNodeById(TMapOrderChildLinkNode* node,
+                                                          TTaskForce* child_node);
+  static TMapOrderChildLinkNode*
+  DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_link_node);
+  static void RemoveLinkedOrderNodeByValueRecursive(TMapOrderChildLinkNode* node,
+                                                    TTaskForce* child_node);
+  static TMapOrderChildLinkNode* CreateLinkedOrderNode(TMapOrderChildLinkNode* next_node,
+                                                       TTaskForce* child_node);
+  static TMapOrderChildLinkNode*
+  PruneDefeatedMapOrderChildrenAndReturnHead(TMapOrderChildLinkNode* child_link_head);
+
+  void RelinkMapOrderQueueNodeBetween(TTaskForce* prev_node, TTaskForce* next_node);
+  void DecrementRequiredCount(short decrement);
+  TTaskForce* SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
+                                                          int compareAttachedFlag);
+  void RemoveNode(int self);
+
+  // Sets owner (was misread as "active child entry"); when newEntry is
+  // non-null also touches a still-unrecovered dual-purpose region at +0x10
+  // (see bd 1uj.16 follow-up notes). Only ever called with nullptr by the
+  // bd 1uj.16 target cluster.
+  void SetMapOrderActiveChildEntry(TTaskForce* newEntry); // 0x551220
+
+  // Folds SelectPreferredMapOrderEntryByPriorityRules over childOrderList into
+  // activeChildEntry (bd 1uj.16 target cluster).
+  void RecomputeMapOrderChildAggregateMetric(); // 0x553e30
+
+  // bd 1uj.16 target: sets attachment=9 (map-order kind 9), frees any
+  // childOrderList entries whose owning link is inactive, recomputes
+  // activeChildEntry, then either self-Frees (no live children) or
+  // (re)inserts `this` at the head of g_pNavyOrderManager->orderListHead04
+  // and notifies g_pActiveMapOrderContext.
+  void SetMapOrderType9AndQueue(); // 0x552f80
+
+  // bd 1uj.16 target: candidate-promotion pass over `owner`'s still-uncharted
+  // growable-array region (see TMapOrderEntryOwnerContext note above), then
+  // the same free-childOrderList / recompute / self-Free-or-queue tail as
+  // SetMapOrderType9AndQueue. The candidate-search body (owner's array) is
+  // left `// TODO: promote body` pending that follow-up class-recovery pass;
+  // the tail is ported for real.
+  void PromoteMapOrderChainAndQueue(void* pContextAnchor); // 0x5533f0
 };
 
-// === BEGIN GENERATED (TTaskForce) — refreshed by `just gen-class TTaskForce`; do not hand-edit ===
-// clang-format off
-// vtable @ 0x0065c468 (10 slots), object size 0x34, base TObject
-//   slot 0x00  byte 0x00  0x005527e0  override  GetRuntimeClass
-//   slot 0x01  byte 0x04  0x00552870  scalar_dtor (scalar deleting destructor)
-//   slot 0x02  byte 0x08  0x00485e90  inherited Serialize
-//   slot 0x03  byte 0x0c  0x00412bf0  inherited AssertValid
-//   slot 0x04  byte 0x10  0x00412c10  inherited Dump
-//   slot 0x05  byte 0x14  0x00552b90  override  WriteTo
-//   slot 0x06  byte 0x18  0x00552d10  override  ReadFrom
-//   slot 0x07  byte 0x1c  0x00552930  override  Free
-//   slot 0x08  byte 0x20  0x004798d0  inherited ShallowClone
-//   slot 0x09  byte 0x24  0x00415ce0  inherited ShallowFree
-// object size 0x34 (RTTI) unverified against the header layout;
-// set curated.layout.size_verified to emit a sizeof static_assert.
-// clang-format on
-// === END GENERATED (TTaskForce) ===
+ASSERT_SIZE(TTaskForce, 0x34);

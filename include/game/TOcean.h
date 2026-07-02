@@ -8,6 +8,7 @@
 #include "game/global_data_tables.h"
 
 class TCity;
+class TTaskForce;
 
 // TOcean map-order runtime singleton (g_pActiveMapOrderContext @ 0x6a3fbc).
 // Ghidra historically labeled this InputState for container-level methods.
@@ -50,6 +51,11 @@ public:
 
   // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.
   void* FindPortZoneBySelectedTile(TCity* city);
+
+  // bd 1uj.16: final step of TTaskForce::SetMapOrderType9AndQueue /
+  // PromoteMapOrderChainAndQueue (0x552f80 / 0x5533f0). Not yet recovered --
+  // body is a documented placeholder; see bd 1uj.16 follow-up notes.
+  void FinalizeQueuedMapOrderEntry(TTaskForce* entry); // 0x5642e0
 };
 
 void NotifyMapUberPictureTileMarker(short tileIndex);

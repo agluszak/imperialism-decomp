@@ -8,7 +8,7 @@
 #include "game/TZone.h"
 #include "game/TShip.h"
 #include "game/TDiplomacyMgr.h"
-#include "game/TMapOrderEntry.h"
+#include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 
 IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
@@ -20,8 +20,6 @@ extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
 extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
 extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
 extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
-extern undefined4 SetMapOrderType9AndQueue(void);
-extern undefined4 PromoteMapOrderChainAndQueue(void);
 extern undefined4 SelectBestMapActionContextForNationDiplomacyMask(void);
 extern undefined4 AccumulateNavyOrderCategoryVectorWithScale(void);
 extern undefined4 BuildNavyOrderCategoryVectorForNationWithExclusion(void);
@@ -135,7 +133,7 @@ void TNavyMission::Free() {
 
   while (orderList24 != nullptr) {
     orderList24->object_ptr = nullptr;
-    orderList24 = TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(orderList24);
+    orderList24 = TTaskForce::DeleteMapOrderChildLinkAndReturnNext(orderList24);
   }
 
   if (this != nullptr) {
@@ -165,7 +163,7 @@ void TNavyMission::WriteTo(TStream* stream) {
   }
 
   // orderList24 payloads are TShip nodes in this class (see TShip class recovery);
-  // TMapOrderChildLinkNode::object_ptr is typed TMapOrderEntry* for the (more common)
+  // TMapOrderChildLinkNode::object_ptr is typed TTaskForce* for the (more common)
   // army-mission usage of this shared node type.
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     int idx = reinterpret_cast<TShip*>(node->object_ptr)->GetIndexInPrimaryOrderList();
@@ -217,20 +215,20 @@ void TNavyMission::ReadFrom(TStream* stream) {
 char TNavyMission::ReturnFalseSlot98() {
   while (orderList24 != nullptr) {
     orderList24->object_ptr = nullptr;
-    orderList24 = TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(orderList24);
+    orderList24 = TTaskForce::DeleteMapOrderChildLinkAndReturnNext(orderList24);
   }
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00536780
 void TNavyMission::NoOpSlot84(int a, int b) {
-  TMapOrderEntry* item = reinterpret_cast<TMapOrderEntry*>(a);
+  TTaskForce* item = reinterpret_cast<TTaskForce*>(a);
   TMission*& owner = *reinterpret_cast<TMission**>(reinterpret_cast<char*>(item) + 0x2c);
   if (owner != nullptr) {
     owner->NoOpSlot8C(a, b);
   }
   owner = this;
-  TMapOrderChildLinkNode* node = TMapOrderEntry::CreateLinkedOrderNode(orderList24, item);
+  TMapOrderChildLinkNode* node = TTaskForce::CreateLinkedOrderNode(orderList24, item);
   orderList24 = node;
   if (static_cast<char>(b) != 0) {
     RefreshSlot40();
@@ -240,12 +238,12 @@ void TNavyMission::NoOpSlot84(int a, int b) {
 // FUNCTION: IMPERIALISM 0x005367d0
 void TNavyMission::NoOpSlot8C(int a, int b) {
   (void)b;
-  TMapOrderEntry* item = reinterpret_cast<TMapOrderEntry*>(a);
+  TTaskForce* item = reinterpret_cast<TTaskForce*>(a);
   if (orderList24 != nullptr) {
     if (orderList24->object_ptr == item) {
-      orderList24 = TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(orderList24);
+      orderList24 = TTaskForce::DeleteMapOrderChildLinkAndReturnNext(orderList24);
     } else {
-      TMapOrderEntry::RemoveLinkedOrderNodeByValueRecursive(orderList24->next, item);
+      TTaskForce::RemoveLinkedOrderNodeByValueRecursive(orderList24->next, item);
     }
   }
   *reinterpret_cast<int*>(reinterpret_cast<char*>(item) + 0x2c) = 0;
@@ -264,7 +262,7 @@ void TNavyMission::NoOpSlot90(int a) {
 int TNavyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
   (void)unused;
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TMapOrderEntry* entry = node->object_ptr;
+    TTaskForce* entry = node->object_ptr;
     for (int category = 0; category < 4; ++category) {
       ComputeNavyOrderPriorityContributionPercentByCategory(
           entry->order_type, entry->required_count, entry->tiebreak_strength, category);
@@ -443,12 +441,6 @@ LAB_0053711a:
   GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
       reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(
           (void*)&GetOrCreateMissionOrderEntryForNode);
-  typedef void(__fastcall * SetMapOrderType9AndQueue_t)(void*);
-  SetMapOrderType9AndQueue_t SetMapOrderType9AndQueue_fn =
-      reinterpret_cast<SetMapOrderType9AndQueue_t>((void*)&SetMapOrderType9AndQueue);
-  typedef void(__fastcall * PromoteMapOrderChainAndQueue_t)(void*, void*);
-  PromoteMapOrderChainAndQueue_t PromoteMapOrderChainAndQueue_fn =
-      reinterpret_cast<PromoteMapOrderChainAndQueue_t>((void*)&PromoteMapOrderChainAndQueue);
 
   for (int i = 0; i < 2; ++i) {
     void* orderObj = orders[i];
@@ -460,12 +452,15 @@ LAB_0053711a:
     void* nodePtr = FindFirstTrackedHandlerMatchingModeAndShortKey_fn(
         orderList24, reinterpret_cast<int>(orderObj));
     *reinterpret_cast<char*>(reinterpret_cast<char*>(nodePtr) + 0xc) = 1;
-    void* entry = GetOrCreateMissionOrderEntryForNode_fn(orderObj, 0);
+    // GetOrCreateMissionOrderEntryForNode (0x5503a0) creates/returns a TTaskForce
+    // entry -- see the contextAnchor field comment in TTaskForce.h.
+    TTaskForce* entry =
+        static_cast<TTaskForce*>(GetOrCreateMissionOrderEntryForNode_fn(orderObj, 0));
 
     if (*reinterpret_cast<int*>(reinterpret_cast<char*>(orderObj) + 8) == pContextAnchor) {
-      SetMapOrderType9AndQueue_fn(entry);
+      entry->SetMapOrderType9AndQueue();
     } else {
-      PromoteMapOrderChainAndQueue_fn(entry, reinterpret_cast<void*>(pContextAnchor));
+      entry->PromoteMapOrderChainAndQueue(reinterpret_cast<void*>(pContextAnchor));
     }
   }
 }
@@ -476,23 +471,21 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextA
   GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
       reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(
           (void*)&GetOrCreateMissionOrderEntryForNode);
-  typedef void(__fastcall * PromoteMapOrderChainAndQueue_t)(void*, void*);
-  PromoteMapOrderChainAndQueue_t PromoteMapOrderChainAndQueue_fn =
-      reinterpret_cast<PromoteMapOrderChainAndQueue_t>((void*)&PromoteMapOrderChainAndQueue);
 
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     if (node->active_flag == 0) {
       node->active_flag = 1;
-      void* entry = GetOrCreateMissionOrderEntryForNode_fn(node->object_ptr, 0);
+      // GetOrCreateMissionOrderEntryForNode (0x5503a0) creates/returns a TTaskForce
+      // entry -- see the contextAnchor field comment in TTaskForce.h.
+      TTaskForce* entry =
+          static_cast<TTaskForce*>(GetOrCreateMissionOrderEntryForNode_fn(node->object_ptr, 0));
       for (TMapOrderChildLinkNode* other = orderList24; other != nullptr; other = other->next) {
-        if (other->active_flag == 0 &&
-            *reinterpret_cast<int*>(reinterpret_cast<char*>(other->object_ptr) + 8) ==
-                *reinterpret_cast<int*>(reinterpret_cast<char*>(entry) + 0x18)) {
-          static_cast<TMapOrderEntry*>(other->object_ptr)->RemoveNode(reinterpret_cast<int>(entry));
+        if (other->active_flag == 0 && other->object_ptr->attachment == entry->contextAnchor) {
+          other->object_ptr->RemoveNode(reinterpret_cast<int>(entry));
           other->active_flag = 1;
         }
       }
-      PromoteMapOrderChainAndQueue_fn(entry, pContextAnchor);
+      entry->PromoteMapOrderChainAndQueue(pContextAnchor);
     }
   }
 }
