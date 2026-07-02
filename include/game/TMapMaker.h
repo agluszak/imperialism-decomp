@@ -12,43 +12,42 @@ public:
   TMapMaker();
   virtual ~TMapMaker() override;
 
-  virtual char GetBoolSlot28(); // slot 10 / 0x28
-  virtual void SetControlValue(int value); // slot 11 / 0x2c
-  virtual TEventHandler* QueryStepValue(); // slot 12 / 0x30
+  virtual char GetBoolSlot28();                                  // slot 10 / 0x28
+  virtual void SetControlValue(int value);                       // slot 11 / 0x2c
+  virtual TEventHandler* QueryStepValue();                       // slot 12 / 0x30
   virtual void DispatchQueuedUiCommandAndRelease(void* payload); // slot 13 / 0x34
-  virtual void DispatchUiSelectionToHandler(void* payload); // slot 14 / 0x38
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event); // slot 15 / 0x3c
-  virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event); // slot 16 / 0x40
-  virtual void vmethod_0017(int param); // slot 17 / 0x44
-  virtual void ForwardParam(int param); // slot 18 / 0x48
+  virtual void DispatchUiSelectionToHandler(void* payload);      // slot 14 / 0x38
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event); // slot 15 / 0x3c
+  virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler,
+                             TEvent* event);               // slot 16 / 0x40
+  virtual void vmethod_0017(int param);                    // slot 17 / 0x44
+  virtual void ForwardParam(int param);                    // slot 18 / 0x48
   virtual char CanHandleCityDialogActionFalse(int action); // slot 19 / 0x4c
-  virtual int GetCityDialogValueDword10(); // slot 20 / 0x50
-  virtual void SetCityDialogValueDword10(int value); // slot 21 / 0x54
-  virtual TView* OwnerPanel(); // slot 22 / 0x58
-  virtual char vmethod_0023(); // slot 23 / 0x5c
-  virtual char vmethod_0024(); // slot 24 / 0x60
-  virtual void vmethod_0025(); // slot 25 / 0x64
-  virtual void vmethod_0026(int gate); // slot 26 / 0x68
-  virtual void HandleCityProductionNoOp(); // slot 27 / 0x6c
-  virtual void DispatchUiCommand19ToParent(); // slot 28 / 0x70
-  virtual void DispatchCityProductionAction1A(); // slot 29 / 0x74
-  virtual void DispatchCityProductionAction1B(); // slot 30 / 0x78
-  virtual char ActivateCityProductionViewIfAllowed(); // slot 31 / 0x7c
-  virtual char vmethod_0080(); // slot 32 / 0x80
-  virtual void vmethod_0081(int param); // slot 33 / 0x84
+  virtual int GetCityDialogValueDword10();                 // slot 20 / 0x50
+  virtual void SetCityDialogValueDword10(int value);       // slot 21 / 0x54
+  virtual TView* OwnerPanel();                             // slot 22 / 0x58
+  virtual char vmethod_0023();                             // slot 23 / 0x5c
+  virtual char vmethod_0024();                             // slot 24 / 0x60
+  virtual void vmethod_0025();                             // slot 25 / 0x64
+  virtual void vmethod_0026(int gate);                     // slot 26 / 0x68
+  virtual void HandleCityProductionNoOp();                 // slot 27 / 0x6c
+  virtual void DispatchUiCommand19ToParent();              // slot 28 / 0x70
+  virtual void DispatchCityProductionAction1A();           // slot 29 / 0x74
+  virtual void DispatchCityProductionAction1B();           // slot 30 / 0x78
+  virtual char ActivateCityProductionViewIfAllowed();      // slot 31 / 0x7c
+  virtual char vmethod_0080();                             // slot 32 / 0x80
+  virtual void vmethod_0081(int param);                    // slot 33 / 0x84
 
-  // Slots 34 to 40 are NULL (pure virtual dummy methods)
-  virtual void TMapMakerDummy34() = 0;
-  virtual void TMapMakerDummy35() = 0;
-  virtual void TMapMakerDummy36() = 0;
-  virtual void TMapMakerDummy37() = 0;
-  virtual void TMapMakerDummy38() = 0;
-  virtual void TMapMakerDummy39() = 0;
-  virtual void TMapMakerDummy40() = 0;
-
-  // Slots 41 and 42 (offset 0xa4 and 0xa8)
-  virtual void SetEnabled(int enabledState, int refreshFlag); // slot 41 / 0xa4
-  virtual void SetState(int state, int refreshFlag); // slot 42 / 0xa8
+  // The orig vtable (0x006598f8) is 42 slots (0x00-0xa8), but slots 0x22..0x28
+  // (34-40) are literal NULL — MSVC500 cannot emit a mid-table NULL for a declared
+  // virtual (pure or not; `= 0` still emits a real _purecall slot), so, matching the
+  // TZone::vtable convention (see TZone.h), we model TMapMaker's vtable as ending at
+  // its last reachable real slot (0x21 / vmethod_0081 above). SetEnabled/SetState
+  // (the two real slots that follow the NULL run) are kept as ordinary non-virtual
+  // methods below, paired by address marker rather than by vtable slot.
+  void SetEnabled(int enabledState, int refreshFlag); // 0x0052a760
+  void SetState(int state, int refreshFlag);          // 0x0052c0a0
 
   char pad_04_2a8[0x2a8 - 0x04];
 };

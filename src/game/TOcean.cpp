@@ -158,9 +158,12 @@ IMPLEMENT_DYNCREATE(TOcean, TObject)
 TOcean::TOcean() {}
 
 // Slot 0x07 (Free). Ghidra: DispatchNationPendingActionEventCodes (264 bytes) —
-// real body is a follow-up port; stub keeps the vtable slot owned/paired. This
-// address was previously mis-owned by TPortZone (its "vtable" 0x65c7e4 aliases
-// TOcean's tail).
+// real body is a follow-up port; stub keeps the vtable slot owned/paired. The
+// address was briefly mis-modeled as non-virtual after a bad symbols.csv row
+// (65c7e4|TPortZone::vftable, a stale duplicate of TPortZone's real vtable at
+// 0x65c758) made TOcean's orig vtable boundary look 3 slots short; the row is
+// deleted and this is confirmed a real override slot (raw memory at 0x65c7e4
+// reads TOcean::Free, followed by inherited TObject::ShallowClone/ShallowFree).
 // FUNCTION: IMPERIALISM 0x005621e0
 void TOcean::Free() {}
 
