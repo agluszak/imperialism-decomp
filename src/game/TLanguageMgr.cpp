@@ -13,7 +13,7 @@ const char kPreplutPath[] = "preplut.";
 const char kReadTextMode[] = "rt";
 } // namespace
 
-const char* LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850();
+const char* GetDataDirectoryPathLiteral();
 
 // FUNCTION: IMPERIALISM 0x00507c60
 TLanguageMgr::TLanguageMgr() : TObject() {
@@ -42,7 +42,7 @@ void TLanguageMgr::Free() {}
 // FUNCTION: IMPERIALISM 0x00507e50
 bool TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, int languageTag) {
   (void)languageTag;
-  CString tablePath(LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850());
+  CString tablePath(GetDataDirectoryPathLiteral());
   tablePath += basePath;
   newsTabPath = kNewsTabPath;
   newsTexPath = kNewsTexPath;

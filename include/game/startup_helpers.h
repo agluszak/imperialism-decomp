@@ -16,7 +16,7 @@ void* SetGlobalCallback6A7FACAndReturnPrevious(void* callback);
 BOOL WarnLowDiskSpaceAndConfirmContinue();
 
 // 0x0049ded0 — allocates/initializes global runtime singletons from startup config.
-void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app);
+const char* GetDataDirectoryPathLiteral();
 }
 
 // 0x004974f0

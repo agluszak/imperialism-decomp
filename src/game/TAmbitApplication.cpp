@@ -11,6 +11,12 @@
 #include "game/TLanguageMgr.h"
 #include "game/TMacViewMgr.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/ImperialismApp.h"
+#include "game/TAssetMgr.h"
+#include "game/TLanguageMgr.h"
+#include "game/THelpMgr.h"
+#include "game/TTurnEventDialogFactoryRegistry.h"
+#include "game/app_init_globals.h"
 #include "game/THelpMgr.h"
 #include "game/ui_invalidation_guard.h"
 
@@ -88,6 +94,65 @@ TAmbitApplication::TAmbitApplication() : TApplication() {
 // TAmbitApplication::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TAmbitApplication, TApplication)
+
+// FUNCTION: IMPERIALISM 0x0049ded0
+void TAmbitApplication::InitializeGlobalRuntimeSystems() {
+  field_48 = 0;
+  field_50 = theApp.field_E4;
+
+  if (g_pLanguageMgr == nullptr) {
+    g_pLanguageMgr = new TLanguageMgr();
+  }
+
+  g_pLanguageMgr->ReloadPreplutNewsTableAndResources(field_50);
+
+  TSimMgr* simMgr = new TSimMgr();
+  if (simMgr != nullptr) {
+    simMgr->InitializeTurnFlowStateDefaults();
+  }
+  g_pLocalizationTable = simMgr;
+
+  TAssetMgr* assetMgr = new TAssetMgr();
+  ForwardEnsurePictWvDataGobLoadedBySlot(field_50);
+  g_pUiViewManager = assetMgr;
+
+  EnsureTurnEventDialogFactoryRegistryInitialized();
+
+  TViewMgr* viewMgr = new TViewMgr();
+  if (viewMgr != nullptr) {
+    viewMgr->LoadTurnEventCursorTable();
+  }
+  g_pUiRuntimeContext = viewMgr;
+
+  TDisplayMgr* displayMgr = new TDisplayMgr();
+  if (displayMgr != nullptr) {
+    displayMgr->InitializeTurnOrderNavigationDialogByViewportSize();
+  }
+  g_pDisplayMgr = displayMgr;
+
+  TMacViewMgr* mapView = new TMacViewMgr();
+  if (mapView != nullptr) {
+    mapView->InitializeStrategicMapViewSystem();
+  }
+  g_pStrategicMapViewSystem = mapView;
+
+  if (g_pHelpMgr == nullptr) {
+    g_pHelpMgr = new THelpMgr();
+  }
+  if (g_pHelpMgr != nullptr) {
+    g_pHelpMgr->InitializeHelpManagerIndexArrayAndState();
+  }
+
+  if (g_pGameFlowState != nullptr) {
+    g_pGameFlowState->Free();
+    g_pGameFlowState = nullptr;
+  }
+
+  g_pGameFlowState = new TMultiplayerMgr();
+  if (g_pGameFlowState != nullptr) {
+    g_pGameFlowState->InitializeMultiplayerManagerForSessionContext(CString());
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0049e1a0
 void TAmbitApplication::Free() {

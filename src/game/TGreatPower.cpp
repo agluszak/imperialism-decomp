@@ -24,7 +24,7 @@
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/TNavyMgr.h"
-#include "game/diplomacy_policy_hooks.h"
+#include "game/THelpMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/turn_flow_cooldown.h"
 #include "game/ui_invalidation_guard.h"
@@ -122,10 +122,7 @@ undefined4 InitializeCivWorkOrderState(void);
 
 static __inline void InvokeDiplomacyPolicyStateChangedHook(int policyOrGrant, int targetNation,
                                                            char acceptedFlag) {
-  (void)policyOrGrant;
-  (void)targetNation;
-  (void)acceptedFlag;
-  NoOpDiplomacyPolicyStateChangedHook();
+  g_pHelpMgr->NoOpDiplomacyPolicyStateChangedHook(policyOrGrant, targetNation, acceptedFlag);
 }
 float ComputeMapActionContextCompositeScoreForNation(void);
 void ApplyIndexedResourceDeltaAndAdjustNationTotals(void);

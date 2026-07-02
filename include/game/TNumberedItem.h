@@ -9,7 +9,8 @@ class TTEView;
 
 // TODO(manifest): describe TNumberedItem and its role. Base edge (TMegaPicture) recovered from
 // constructor/vtable evidence: TNumberedItem -> TMegaPicture -> TNoHilitePicture -> TPicture ->
-// TControl -> TView -> TEventHandler -> TObject -> CObject. VTABLE: IMPERIALISM 0x006582f0
+// TControl -> TView -> TEventHandler -> TObject -> CObject.
+// VTABLE: IMPERIALISM 0x006582f0
 class TNumberedItem : public TMegaPicture {
 public:
   // === BEGIN GENERATED DECLS (TNumberedItem) — refreshed by recover-class; do not hand-edit ===

@@ -32,25 +32,13 @@ undefined4 BuildMapContextStatusStringVariantD(void);
 undefined4 BuildMapContextStatusStringVariantA(void);
 undefined4 ShouldRetryMappedFlavorTextGeneration(void);
 
-static int MappedFlavorCStringLength(const CString* value) {
-  LPCSTR text = static_cast<LPCSTR>(*value);
-  if (text == 0) {
-    return 0;
-  }
-  int length = 0;
-  while (text[length] != '\0') {
-    ++length;
-  }
-  return length;
-}
-
 // FUNCTION: IMPERIALISM 0x005d4410
 void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot) {
-  if (reinterpret_cast<char*>(g_pLocalizationTable)[0x68] == '\0') {
+  if (g_pLocalizationTable->useLocalizedNameTables68 == '\0') {
     short variantIndex = g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex;
     GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
     if (DAT_006a43f0 == '\0') {
-      while (MappedFlavorCStringLength(dest) > 0xc) {
+      while (dest->GetLength() > 0xc) {
         GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
       }
     }

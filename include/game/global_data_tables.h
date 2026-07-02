@@ -145,6 +145,7 @@ extern TMultiplayerMgr* g_pGameFlowState;
 extern int g_NetworkDefaultNationId006a5fc0;
 extern int g_NetworkBroadcastNationId006a5fc4;
 extern int DAT_006a601c;
+extern const char s_DataDirectoryPath_006942A8[];
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;
 extern int* g_pMapContextActionManager;

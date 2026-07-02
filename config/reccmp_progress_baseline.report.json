@@ -284,7 +284,7 @@
     },
     {
       "address": "0x412dc0",
-      "matching": 0.46885245901639344,
+      "matching": 0.4827586206896552,
       "name": "InitializeImperialismApplicationInstance",
       "type": 1
     },
@@ -6907,7 +6907,7 @@
     },
     {
       "address": "0x49ded0",
-      "matching": 0.6994219653179191,
+      "matching": 0.8184438040345822,
       "name": "InitializeGlobalRuntimeSystemsFromConfig",
       "type": 1
     },
@@ -12235,7 +12235,7 @@
     },
     {
       "address": "0x4dd040",
-      "matching": 0.7540983606557377,
+      "matching": 0.7272727272727273,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_12",
       "type": 1
     },
@@ -12494,7 +12494,7 @@
     },
     {
       "address": "0x4ddfc0",
-      "matching": 0.39274924471299094,
+      "matching": 0.39644970414201186,
       "name": "TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks",
       "type": 1
     },
@@ -12512,7 +12512,7 @@
     },
     {
       "address": "0x4de340",
-      "matching": 0.3853820598006645,
+      "matching": 0.4115755627009646,
       "name": "TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury",
       "type": 1
     },
@@ -12734,7 +12734,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -15579,7 +15579,7 @@
     },
     {
       "address": "0x5033e0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "NoOpDiplomacyPolicyStateChangedHook",
       "type": 1
     },
@@ -16029,7 +16029,7 @@
     },
     {
       "address": "0x507c60",
-      "matching": 0.5740740740740741,
+      "matching": 0.5925925925925926,
       "name": "TLanguageMgr::ConstructTLanguageMgrBaseState",
       "type": 1
     },
@@ -32713,7 +32713,7 @@
     },
     {
       "address": "0x5d4410",
-      "matching": 0.29577464788732394,
+      "matching": 0.4647887323943662,
       "name": "SetSharedStringFromMappedFlavorTextWithLengthClamp",
       "type": 1
     },
@@ -41034,6 +41034,12 @@
       "type": 5
     },
     {
+      "address": "0x63eb00",
+      "matching": 1.0,
+      "name": "TInfoBarText::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x63ed78",
       "matching": 1.0,
       "name": "TNominationView::`vftable'",
@@ -41097,6 +41103,12 @@
       "address": "0x6404b0",
       "matching": 1.0,
       "name": "TMapKey::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x6406d8",
+      "matching": 1.0,
+      "name": "TDeluxeText::`vftable'",
       "type": 5
     },
     {
@@ -41529,6 +41541,12 @@
       "address": "0x64c170",
       "matching": 1.0,
       "name": "TAmbitFileBasedDocument::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x64c300",
+      "matching": 1.0,
+      "name": "TAnimation::`vftable'",
       "type": 5
     },
     {
@@ -42207,6 +42225,18 @@
       "address": "0x6580b0",
       "matching": 1.0,
       "name": "TNumberedIcon::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x6582f0",
+      "matching": 1.0,
+      "name": "TNumberedItem::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x6585a8",
+      "matching": 1.0,
+      "name": "TLanguageMgr::`vftable'",
       "type": 5
     },
     {
@@ -43221,6 +43251,12 @@
       "address": "0x66ce00",
       "matching": 1.0,
       "name": "TDropShadowText::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x66d288",
+      "matching": 1.0,
+      "name": "TInfoBarPictureText::`vftable'",
       "type": 5
     },
     {

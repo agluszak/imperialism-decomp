@@ -126,8 +126,7 @@ BOOL ImperialismApp::InitInstance() {
     DAT_006a1348 = this;
 
     g_pGlobalUiRootController = new TAmbitApplication();
-    InitializeGlobalRuntimeSystemsFromConfig(
-        static_cast<TAmbitApplication*>(g_pGlobalUiRootController));
+    static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->InitializeGlobalRuntimeSystems();
 
     g_pSfxPlaybackSystem = new TSoundPlayer();
     g_pSfxPlaybackSystem->InitializeSoundSubsystemAndAllocateChannelLists(0xf);

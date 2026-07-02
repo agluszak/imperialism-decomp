@@ -96,7 +96,11 @@ public:
   int redrawEnabled;
   short preferenceValues[14];
   int field_64;
-  unsigned char pad68[2];
+  // +0x68 — nonzero: city/nation names come from the localized string table
+  // (GetString group 0x2715) instead of the generated flavor-text variants
+  // (SetSharedStringFromMappedFlavorTextWithLengthClamp @ 0x5d4410).
+  char useLocalizedNameTables68;
+  unsigned char pad69;
   short field6a;
   short field6c;
   unsigned char field6e;

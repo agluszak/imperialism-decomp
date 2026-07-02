@@ -29,7 +29,7 @@ address|target_cpp|ownership|note
 4139f0|src/game/ImperialismApp.cpp|manual|marker_sync
 413a20|src/game/CMainFrame.cpp|manual|marker_sync
 414770|src/game/TAmbitApplication.cpp|manual|marker_sync
-414850|src/game/startup_paths.cpp|manual|marker_sync
+414850|src/game/startup_helpers.cpp|manual|marker_sync
 4149a0|src/game/ImperialismApp.cpp|manual|marker_sync
 415090|src/game/ImperialismApp.cpp|manual|marker_sync
 4152e0|src/game/TModalTemplateDialog.cpp|manual|marker_sync
@@ -740,7 +740,7 @@ address|target_cpp|ownership|note
 49de20|src/game/TNewGameCommand.cpp|manual|marker_sync
 49de40|src/game/TAmbitApplication.cpp|manual|marker_sync
 49deb0|src/game/TAmbitApplication.cpp|manual|marker_sync
-49ded0|src/game/startup_helpers.cpp|manual|marker_sync
+49ded0|src/game/TAmbitApplication.cpp|manual|marker_sync
 49e1a0|src/game/TAmbitApplication.cpp|manual|marker_sync
 49e280|src/game/TAmbitApplication.cpp|manual|marker_sync
 49e2f0|src/game/TAmbitApplication.cpp|manual|marker_sync
@@ -1946,7 +1946,7 @@ address|target_cpp|ownership|note
 501070|src/game/THelpMgr.cpp|manual|marker_sync
 5011a0|src/game/THelpMgr.cpp|manual|marker_sync
 5031c0|src/game/THelpMgr.cpp|manual|marker_sync
-5033e0|src/game/diplomacy_policy_hooks.cpp|manual|marker_sync
+5033e0|src/game/THelpMgr.cpp|manual|marker_sync
 503400|src/game/THelpMgr.cpp|manual|marker_sync
 503420|src/game/THelpMgr.cpp|manual|marker_sync
 503bd0|src/game/THelpPicture.cpp|manual|marker_sync

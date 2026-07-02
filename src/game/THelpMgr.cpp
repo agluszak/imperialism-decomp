@@ -50,7 +50,7 @@ static const HelpSetRecord kHelpSetIndexBootstrapRecords[] = {
 static const int kHelpSetIndexBootstrapRecordCount =
     sizeof(kHelpSetIndexBootstrapRecords) / sizeof(kHelpSetIndexBootstrapRecords[0]);
 
-}  // namespace
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x005005e0
 THelpMgr::THelpMgr() : TObject() {
@@ -78,11 +78,17 @@ IMPLEMENT_DYNCREATE(THelpMgr, TObject)
 
 THelpMgr::~THelpMgr() {}
 
-undefined THelpMgr::OrphanCallChain_C1_I22_00500f10() { return 0; }
+undefined THelpMgr::OrphanCallChain_C1_I22_00500f10() {
+  return 0;
+}
 
-void THelpMgr::ReadFrom(TStream* stream) { (void)stream; }
+void THelpMgr::ReadFrom(TStream* stream) {
+  (void)stream;
+}
 
-void THelpMgr::WriteTo(TStream* stream) { (void)stream; }
+void THelpMgr::WriteTo(TStream* stream) {
+  (void)stream;
+}
 
 void THelpMgr::Free() {}
 
@@ -106,11 +112,15 @@ undefined THelpMgr::InitializeHelpManagerIndexArrayAndState() {
 
 namespace {
 
-short DispatchTurnStateSpecialAdvisoriesAndReturnCount() { return 0; }
+short DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
+  return 0;
+}
 
 void ShowPeriodicCapabilityReminderIfNeeded() {}
 
-char ShowPeriodicNationComparisonAdvisoryIfNeeded() { return 0; }
+char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
+  return 0;
+}
 
 void ReleasePendingHelpDialogView(TView** dialogView) {
   if (*dialogView != 0) {
@@ -183,8 +193,7 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
         if (indexList == 0 || index > GetSortedPtrListEntryCount(indexList)) {
           break;
         }
-        HelpSetRecord* entry =
-            static_cast<HelpSetRecord*>(indexList->GetEntrySlot2C(index));
+        HelpSetRecord* entry = static_cast<HelpSetRecord*>(indexList->GetEntrySlot2C(index));
         if (entry->contextId == eventCode) {
           const short activeNation = g_pUiRuntimeContext->GetActiveNationId();
           if (entry->rank == activeNation) {
@@ -206,6 +215,14 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
   return activateCandidate;
 }
 
+// FUNCTION: IMPERIALISM 0x005033e0
+void THelpMgr::NoOpDiplomacyPolicyStateChangedHook(int policyOrGrant, int targetNation,
+                                                   int acceptedFlag) {
+  (void)policyOrGrant;
+  (void)targetNation;
+  (void)acceptedFlag;
+}
+
 // FUNCTION: IMPERIALISM 0x00503400
 void THelpMgr::HandlePostPendingEventActivationNoOp(short eventCode) {
   (void)eventCode;
@@ -223,4 +240,3 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
 
 // SYNTHETIC: IMPERIALISM 0x00500630
 // THelpMgr::`scalar deleting destructor'
-

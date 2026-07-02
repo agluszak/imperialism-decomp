@@ -5,8 +5,8 @@
 
 // TODO(manifest): describe TInfoBarPictureText and its role. Base edge (TInfoBarText) recovered
 // from RTTI CRuntimeClass chain: TInfoBarPictureText -> TInfoBarText -> TDeluxeText -> TTEView ->
-// TStaticText -> TControl -> TView -> TEventHandler -> TObject -> CObject. VTABLE: IMPERIALISM
-// 0x0066d288
+// TStaticText -> TControl -> TView -> TEventHandler -> TObject -> CObject.
+// VTABLE: IMPERIALISM 0x0066d288
 class TInfoBarPictureText : public TInfoBarText {
 public:
   // === BEGIN GENERATED DECLS (TInfoBarPictureText) — refreshed by recover-class; do not hand-edit

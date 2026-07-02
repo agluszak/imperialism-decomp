@@ -38,7 +38,8 @@ ASSERT_SIZE(TBitmapResourceLoaderState, 0x1c);
 ASSERT_SIZE(TBitmapResourceLoader, 0x20);
 
 // TODO(manifest): describe TAnimation and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: TAnimation -> TObject -> CObject. VTABLE: IMPERIALISM 0x0064c300
+// CRuntimeClass chain: TAnimation -> TObject -> CObject.
+// VTABLE: IMPERIALISM 0x0064c300
 class TAnimation : public TObject {
 public:
   // === BEGIN GENERATED DECLS (TAnimation) — refreshed by recover-class; do not hand-edit ===

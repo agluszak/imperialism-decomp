@@ -93,6 +93,14 @@ CIncludeView* GetMainViewHostFromActiveThread() {
   return static_cast<CIncludeView*>(mainFrame->GetActiveView());
 }
 
+// Returns the on-disk data directory prefix. The Ghidra-era name claimed it was a
+// news-tab resource loader; the whole function is this literal (used by TLanguageMgr's
+// table loaders, original caller 0x507e50).
+// FUNCTION: IMPERIALISM 0x00414850
+const char* GetDataDirectoryPathLiteral() {
+  return s_DataDirectoryPath_006942A8;
+}
+
 // FUNCTION: IMPERIALISM 0x00415760
 BOOL WarnLowDiskSpaceAndConfirmContinue() {
   const UINT dirSize = GetWindowsDirectoryA(nullptr, 0);
@@ -146,65 +154,6 @@ GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized()
 // FUNCTION: IMPERIALISM 0x0049cc40
 void SetCachedShowSplashFlag(BOOL showSplash) {
   g_cachedShowSplashFlag = showSplash;
-}
-
-// FUNCTION: IMPERIALISM 0x0049ded0
-void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app) {
-  app->field_48 = 0;
-  app->field_50 = theApp.field_E4;
-
-  if (g_pLanguageMgr == nullptr) {
-    g_pLanguageMgr = new TLanguageMgr();
-  }
-
-  g_pLanguageMgr->ReloadPreplutNewsTableAndResources(app->field_50);
-
-  TSimMgr* simMgr = new TSimMgr();
-  if (simMgr != nullptr) {
-    simMgr->InitializeTurnFlowStateDefaults();
-  }
-  g_pLocalizationTable = simMgr;
-
-  TAssetMgr* assetMgr = new TAssetMgr();
-  ForwardEnsurePictWvDataGobLoadedBySlot(app->field_50);
-  g_pUiViewManager = assetMgr;
-
-  EnsureTurnEventDialogFactoryRegistryInitialized();
-
-  TViewMgr* viewMgr = new TViewMgr();
-  if (viewMgr != nullptr) {
-    viewMgr->LoadTurnEventCursorTable();
-  }
-  g_pUiRuntimeContext = viewMgr;
-
-  TDisplayMgr* displayMgr = new TDisplayMgr();
-  if (displayMgr != nullptr) {
-    displayMgr->InitializeTurnOrderNavigationDialogByViewportSize();
-  }
-  g_pDisplayMgr = displayMgr;
-
-  TMacViewMgr* mapView = new TMacViewMgr();
-  if (mapView != nullptr) {
-    mapView->InitializeStrategicMapViewSystem();
-  }
-  g_pStrategicMapViewSystem = mapView;
-
-  if (g_pHelpMgr == nullptr) {
-    g_pHelpMgr = new THelpMgr();
-  }
-  if (g_pHelpMgr != nullptr) {
-    g_pHelpMgr->InitializeHelpManagerIndexArrayAndState();
-  }
-
-  if (g_pGameFlowState != nullptr) {
-    g_pGameFlowState->Free();
-    g_pGameFlowState = nullptr;
-  }
-
-  g_pGameFlowState = new TMultiplayerMgr();
-  if (g_pGameFlowState != nullptr) {
-    g_pGameFlowState->InitializeMultiplayerManagerForSessionContext(CString());
-  }
 }
 
 // FUNCTION: IMPERIALISM 0x005e7a80
