@@ -11,30 +11,35 @@ class TCity;
 
 // TOcean map-order runtime singleton (g_pActiveMapOrderContext @ 0x6a3fbc).
 // Ghidra historically labeled this InputState for container-level methods.
-// Polymorphic MFC object (vtable 0x0065c7c8, 7 slots); per-zone nodes use TZone vtable 0x0065c6d8.
+// Polymorphic MFC object (vtable 0x0065c7c8, 10 slots — TObject's own Free/
+// ShallowClone/ShallowFree slots 0x07-0x09 included: TOcean overrides Free,
+// inherits ShallowClone/ShallowFree unchanged); per-zone nodes use TZone vtable
+// 0x0065c6d8.
 // VTABLE: IMPERIALISM 0x0065c7c8
 class TOcean : public TObject {
 public:
   TOcean();
-// === BEGIN GENERATED DECLS (TOcean) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TOcean) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOcean)
   virtual ~TOcean(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x5628f0
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5628f0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x562340
-  virtual void Free() override; // slot 0x07 0x5621e0
-// === END GENERATED DECLS (TOcean) ===
-  short nationCount;                     // +0x04
-  TZone* contextArray;                   // +0x08
-  short field0c;                         // +0x0c
-  char pad0e[2];                         // +0x0e
-  unsigned short keyMask;                // +0x10
-  char pad12[0x26];                      // +0x12 .. +0x37
-  int* slotTable;                        // +0x38
-  unsigned int slotCount;                // +0x40
-  char pad44[0x14];                      // +0x44 .. +0x57 (allocation size TBD)
+  virtual void Free() override;                    // slot 0x07 0x5621e0
+  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
+  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
+  // === END GENERATED DECLS (TOcean) ===
+  short nationCount;      // +0x04
+  TZone* contextArray;    // +0x08
+  short field0c;          // +0x0c
+  char pad0e[2];          // +0x0e
+  unsigned short keyMask; // +0x10
+  char pad12[0x26];       // +0x12 .. +0x37
+  int* slotTable;         // +0x38
+  unsigned int slotCount; // +0x40
+  char pad44[0x14];       // +0x44 .. +0x57 (allocation size TBD)
 
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
 

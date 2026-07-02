@@ -20,7 +20,8 @@ struct TZoneSecondaryNeighborTag;
 class TZonePrimaryNeighborStretch : public stretch<TZone*, TZonePrimaryNeighborTag> {
 public:
   TZone** GetOrAppendUnique(TZone* zone) override; // 0x55e8e0
-  void Add(TZone* zone) override;                  // 0x55ead0
+  // Not a vtable slot (see stretch.h); called only on the concrete type.
+  void Add(TZone* zone); // 0x55ead0
   // Grows `data`/`capacity` to hold at least `count` elements (doubling capacity,
   // clamped to INT_MAX, with a same-size fallback realloc if the doubled request
   // fails). Only this one instantiation (primary neighbors) is evidenced; do not
@@ -32,7 +33,9 @@ public:
 class TZoneSecondaryNeighborStretch : public stretch<TZone*, TZoneSecondaryNeighborTag> {
 public:
   TZone** GetOrAppendUnique(TZone* zone) override; // 0x55e9c0
-  void Add(TZone* zone) override;                  // 0x55eba0
+  // Not a vtable slot (see stretch.h); called only on the concrete type. The orig
+  // vtable at 0x0065c748 is confirmed exactly 1 slot long (GetOrAppendUnique only).
+  void Add(TZone* zone); // 0x55eba0
 };
 
 // Map zone / map-action context node (Mac: TZone, TPortZone, TOcean hierarchy).
