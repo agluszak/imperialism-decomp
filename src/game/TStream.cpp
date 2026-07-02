@@ -64,8 +64,10 @@ void TStream::streamSlot48(void* out) {
 
 // FUNCTION: IMPERIALISM 0x00488bf0
 short TStream::ReadShort() {
-  return 0;
-} // TODO: 0x00488bf0
+  short value;
+  ReadBytes(&value, 2);
+  return value;
+}
 
 // FUNCTION: IMPERIALISM 0x00488c20
 int TStream::streamSlot50() {
