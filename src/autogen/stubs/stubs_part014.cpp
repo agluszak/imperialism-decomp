@@ -267,14 +267,6 @@ undefined4 WrapperFor_ftol_At004ee480(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructCObArray
-// ghidra_proto undefined thunk_DestructCObArray()
-// FUNCTION: IMPERIALISM 0x004ee5a0
-undefined4 thunk_DestructCObArray_004EE5A0(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeObArrayVtable654D38ModeField
 // ghidra_proto undefined InitializeObArrayVtable654D38ModeField()
 // FUNCTION: IMPERIALISM 0x004ee5c0

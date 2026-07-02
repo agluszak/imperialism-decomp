@@ -16,7 +16,7 @@
 #include "game/TMilitaryUnitOrderState.h"
 #include "game/TIndexAndRankList.h"
 #include "game/TGlobalMapState.h"
-#include "game/TStationedUnitNode.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TShip.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TDefendProvinceMission.h"
@@ -78,8 +78,6 @@ extern double g_Compute_Advisory_MinusHundred_00653FF0;
 extern double g_Compute_Advisory_Hundred_00654000;
 extern double g_Compute_Advisory_OnePointFive_00654008;
 extern void* g_apNationStates_End;
-// Per-unit-type military power weights (0xe-byte records, weight short at +0).
-extern short g_Classify_Nation_Military_LookupTable_00695CD4[][7];
 // Per-order-type sort priority table (slot 0x55 selection sort).
 extern short g_DAT_006966d0_Value_006966D0[];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).

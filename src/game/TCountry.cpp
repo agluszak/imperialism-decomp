@@ -12,7 +12,7 @@
 #include "game/TOcean.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TMilitaryUnitOrderState.h"
-#include "game/TStationedUnitNode.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
 #include "game/TUnit.h"
@@ -67,7 +67,7 @@ int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex) {
   if (nodeIndex < 0 || nodeIndex > 0x17f) {
     return 0;
   }
-  TStationedUnitNode* chain = g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain98;
+  TMilitaryUnit* chain = g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain98;
   int sum = 0;
   for (; chain != 0; chain = chain->next14) {
     sum += *reinterpret_cast<int*>(kAddrWeightedNeighborScoreByUnitType + chain->unitTypeId04 * 4);
@@ -662,11 +662,11 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
   do {
     short regionId = static_cast<short>(this->ownedRegionList->GetIntByOrdinalSlot24(ordinal));
     short garrisonCount = 0;
-    TStationedUnitNode* unitChain;
+    TMilitaryUnit* unitChain;
     if ((regionId < 0) || (0x17f < regionId)) {
       unitChain = 0;
     } else {
-      unitChain = *reinterpret_cast<TStationedUnitNode**>(
+      unitChain = *reinterpret_cast<TMilitaryUnit**>(
           reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + 0x98 +
           static_cast<int>(regionId) * 0xa8);
     }

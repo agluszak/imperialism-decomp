@@ -7,7 +7,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TCivUnit;
 class TStream;
-class TStationedUnitNode;
+class TMilitaryUnit;
 
 struct GlobalMapTileRecord {
   char pad_00_to_1f[0x20];
@@ -66,7 +66,7 @@ struct TGlobalMapCityScoreRecord {
   short stage2CounterC;
   short field94; // 0x94 — snapshotted by the city-redraw packet
   unsigned char pad96[2];
-  TStationedUnitNode* stationedUnitChain98; // 0x98
+  TMilitaryUnit* stationedUnitChain98; // 0x98
   int cityScoreValue;
   unsigned char padA0[0xA4 - 0xA0];
   CString cityNameA4; // 0xa4 — city display name
@@ -250,6 +250,10 @@ public:
 
   TMapMgr();
 };
+
+// Retail body ignores provinceId and returns the constant weight 0x21 (33); the
+// mission-scoring family converts it to float for the accumulate dampening factor.
+short __stdcall GetProvinceUnitOrderWeight(short provinceId); // 0x5184e0
 
 // === BEGIN GENERATED (TMapMgr) — refreshed by `just gen-class TMapMgr`; do not hand-edit ===
 // clang-format off

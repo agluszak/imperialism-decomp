@@ -10,7 +10,7 @@
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
 #include "game/TInterNationEventQueueManager.h"
-#include "game/TStationedUnitNode.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
 #include "game/TTown.h"
 #include "game/TUnit.h"
@@ -896,10 +896,10 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNati
       oneBasedIndex++;
       continue;
     }
-    TStationedUnitNode* unitNode = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
+    TMilitaryUnit* unitNode = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
     while (unitNode != 0) {
       TUnit* unit = reinterpret_cast<TUnit*>(unitNode);
-      TStationedUnitNode* nextNode = unitNode->next14;
+      TMilitaryUnit* nextNode = unitNode->next14;
       if (unit->field_18 == priorOwnerNationSlot) {
         unit->field_18 = this->nationSlot;
         CPtrList* sourceList = &this->militaryUnitList44->listState;

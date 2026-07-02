@@ -63,6 +63,76 @@ the ctor listing and fix the comment names.
   `thunk_InitializeDirectSoundDeviceAndChannels`, NoOpCallback pairs — small
   per-callsite jobs; verify receiver/convention before retargeting.
 
+## TMilitaryUnit full class recovery (follow-up to the 2026-07 mission-scoring cleanup)
+
+The TStationedUnitNode/TMilitaryUnit split is merged (one class, RTTI 0x66ed70, size
+0x44, base TObject) with a field/getter surface model. Still to port: constructor and
+CreateObject @ 0x5c2cb0 (217b), GetRuntimeClass @ 0x5c2dd0, vtable annotation +
+serialization (needs the TObject WriteTo/ReadFrom slots), and the sibling classes
+TUnit (0x66ed40, ctor 0x5c2430, size 0x24) / TCivUnit (0x66ed58, ctor 0x5c2860,
+size 0x28). Fields 0x08-0x13, 0x1c-0x23, 0x28-0x33, 0x3a-0x3f are still pads.
+
+## Remaining dropped-arg typedef casts in TDefendProvinceMission 0x53e6e0
+
+The mission-scoring cleanup fixed the accumulate/weight family, but the same body still
+calls through zero-arg casts that likely drop real arguments (verify each receiver/args
+in the listing before retargeting): `ComputeAggregateWeightedChildCostForMatchingType5NavyOrders`
+@ 0x557170 (called per nation with no nation arg!), `TileHasMovementClassId` @ 0x515e50,
+`AreAllLinkedEntriesTerrainFlagBit2Clear` @ 0x518a20. `just typedef-cast-audit` reports
+cross-file signature drift for this pattern class.
+
+## Library-region residue: what actually remains (post 2026-07 audit)
+
+State: 1,075 generated LIBRARY markers; ~370 unmarked function rows remain in the FID
+range 0x5e539c..0x626c7d. Findings from the extension attempt:
+
+- The `prototype` column's embedded mangled names are NOT trustworthy for identity
+  (12 different addresses all carried `?Create@CHotKeyCtrl@...`); only the `symbol`
+  column and unique demangled-name matches are, and those yielded just 4 new markers
+  (CDragListBox::Dropped, _abort, CDC::GetClipBox, CPaintDC ctor).
+- LIBRARY-marking an *unlinked* library function scores 0.00% (the recomp contains no
+  body to pair — the linker never pulls the .obj member because no recomp code
+  references it). More markers alone do not raise scores; the lever is either real
+  linkage (arrives naturally as ported code calls into MFC/CRT) or a report-policy
+  decision to exclude unlinked library code from the compared set.
+- 22 identified rows are blocked as `skip_referenced_project_alias`: manual code still
+  references the stub name through Hard-Rule-9 externs (e.g. AfxGetMainWnd,
+  FromHandlePermanent). Migrating those callsites to the real MFC declarations
+  releases them.
+- The ~350 remaining unnamed rows need a masked-byte matcher against the
+  fid-generation Ghidra project's .obj programs (FID skipped small/common bodies —
+  see vendor/msvc500/fid-generation/fidb/common.txt). Positional context helps:
+  unmatched runs between two FID-matched neighbors from the same .obj follow the
+  .lib member order.
+- `tmp_decomp/msvc500_fid_matches.csv` is the tool's complete source of truth and is
+  gitignored; it can be reconstructed from src/game/library_msvc500_fid.cpp marker
+  pairs + fidb/functions.txt obj paths. The tool now refuses to shrink the marker set
+  without --allow-marker-removals.
+
+## Global-data xref oracle: apply loop + disputed annotations
+
+`just global-xref-oracle` (tools/reccmp/global_xref_oracle.py) mines reccmp asm
+diffs for (original address <-> recomp symbol) global pairs; round 1 applied 32
+rows (`provenance=xref_oracle` in symbols.csv) and moved 31 functions to 100%
+with zero regressions. The loop is at fixpoint for auto-application; what
+remains is its *dispute list* — places where existing annotations disagree with
+observed instruction alignment (verify in Ghidra before touching):
+
+- `g_pDisplayMgr`: annotated at 0x6a2158, oracle votes 6x for 0x6a436c.
+- The nation-state pointer block 0x6a4310..0x6a43d8: cross-votes between
+  g_apNationStates / g_apTerrainTypeDescriptorTable / g_pLocalizationTable /
+  g_pUiRuntimeContext suggest one or more rows in that run are off by a slot
+  (0x6a438c currently rowed as g_apNationStates_End but votes as
+  g_pLocalizationTable; 0x6a20f8 rowed g_pLocalizationTable, votes
+  g_pUiRuntimeContext).
+- 0x63e044 rowed g_pRegistrySettingsSectionAlt_0063E044 but recomp aligns it
+  with DAT_006a1348 usage.
+
+Extensions worth building: the same mining for (STRING) refs (1,162 orig-only
+strings) and (FLOAT) refs (275 original float-pool constants, 0 paired — the
+recomp side reports no FLO entities at all, so check whether the reccmp fork
+detects MSVC500 constant pools before blaming annotations).
+
 ## Misleading-name backlog (spotted 2026-07, not yet renamed)
 
 - `GetSurfaceObjectAtContextOffset24` returns `context->surfaceObject`

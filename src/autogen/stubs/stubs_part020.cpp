@@ -43,14 +43,6 @@ undefined4 CreateObject_005C2CB0(void)
   return 0;
 }
 
-// ghidra_name GetCityActionGateValueFromOrderTemplate
-// ghidra_proto undefined GetCityActionGateValueFromOrderTemplate()
-// FUNCTION: IMPERIALISM 0x005c3400
-undefined4 GetCityActionGateValueFromOrderTemplate(void)
-{
-  return 0;
-}
-
 // ghidra_name GetCityActionGateValueBySlot
 // ghidra_proto undefined GetCityActionGateValueBySlot()
 // FUNCTION: IMPERIALISM 0x005c3450
@@ -67,26 +59,10 @@ undefined4 GetCityActionCategoryCodeBySlot(void)
   return 0;
 }
 
-// ghidra_name NoOpRuntimeCallback_005c34d0
-// ghidra_proto undefined NoOpRuntimeCallback_005c34d0()
-// FUNCTION: IMPERIALISM 0x005c34d0
-undefined4 NoOpRuntimeCallback_005c34d0(void)
-{
-  return 0;
-}
-
 // ghidra_name AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl
 // ghidra_proto undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl()
 // FUNCTION: IMPERIALISM 0x005c3500
 undefined4 AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeCallback_005c3530
-// ghidra_proto undefined NoOpRuntimeCallback_005c3530()
-// FUNCTION: IMPERIALISM 0x005c3530
-undefined4 NoOpRuntimeCallback_005c3530(void)
 {
   return 0;
 }
@@ -1587,14 +1563,6 @@ undefined4 DestroyRuntimeClassState_0066FA50_AtExit(void)
   return 0;
 }
 
-// ghidra_name TRuntimeLinkedBlockChainState_0066FA50::thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-// ghidra_proto undefined thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580()
-// FUNCTION: IMPERIALISM 0x005e2705
-undefined4 thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
-{
-  return 0;
-}
-
 // ghidra_name InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7_At005e2720
 // ghidra_proto undefined InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7_At005e2720()
 // FUNCTION: IMPERIALISM 0x005e2720
@@ -1603,26 +1571,10 @@ undefined4 InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At0
   return 0;
 }
 
-// ghidra_name TRuntimeHeapBufferOwnerState_0066FA68::thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// ghidra_proto undefined thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
-// FUNCTION: IMPERIALISM 0x005e2755
-undefined4 thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
-{
-  return 0;
-}
-
 // ghidra_name InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7_At005e2770
 // ghidra_proto undefined InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7_At005e2770()
 // FUNCTION: IMPERIALISM 0x005e2770
 undefined4 InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7_At005e2770(void)
-{
-  return 0;
-}
-
-// ghidra_name TRuntimeHeapBufferOwnerState_0066FA68::thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// ghidra_proto undefined thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
-// FUNCTION: IMPERIALISM 0x005e27a5
-undefined4 thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0_005E27A5(void)
 {
   return 0;
 }
@@ -1971,14 +1923,6 @@ undefined4 InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
   return 0;
 }
 
-// ghidra_name thunk_SendMciCommand804IfDeviceOpenAndClearHandle
-// ghidra_proto undefined thunk_SendMciCommand804IfDeviceOpenAndClearHandle()
-// FUNCTION: IMPERIALISM 0x005e4e15
-undefined4 thunk_SendMciCommand804IfDeviceOpenAndClearHandle(void)
-{
-  return 0;
-}
-
 // ghidra_name AfxGetMainWnd
 // ghidra_proto undefined AfxGetMainWnd()
 // FUNCTION: IMPERIALISM 0x005e539c
@@ -2007,14 +1951,6 @@ undefined4 WrapperFor_Ordinal13_FromField1C_At005e5561(void)
 // ghidra_proto undefined DispatchCallbackD8_WithMinusOne_At005e5597()
 // FUNCTION: IMPERIALISM 0x005e5597
 undefined4 DispatchCallbackD8_WithMinusOne_At005e5597(void)
-{
-  return 0;
-}
-
-// ghidra_name Dropped
-// ghidra_proto undefined Dropped()
-// FUNCTION: IMPERIALISM 0x005e55ee
-undefined4 Dropped(void)
 {
   return 0;
 }

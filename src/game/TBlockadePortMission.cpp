@@ -21,7 +21,6 @@ IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
 // TBlockadePortMission::`scalar deleting destructor'
 
 // Not-yet-recovered free functions/subsystems this file calls into.
-extern undefined4 FindMapActionContextByNodeId(void);
 extern undefined4 GetPortZoneOwnerNationCodeFromMissionField48(void);
 extern undefined4 SetByteFlagAtOffsetAF0ByIndex(void);
 
@@ -51,9 +50,7 @@ void TBlockadePortMission::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0053aca0
 void TBlockadePortMission::ReadFrom(TStream* stream) {
   TNavyMission::ReadFrom(stream);
-  typedef void*(__cdecl * FindMapActionContextByNodeId_t)(void);
-  portZoneContext3c =
-      reinterpret_cast<FindMapActionContextByNodeId_t>((void*)&FindMapActionContextByNodeId)();
+  portZoneContext3c = FindMapActionContextByNodeId(stream->ReadShort());
 }
 
 // FUNCTION: IMPERIALISM 0x0053ace0
@@ -93,8 +90,10 @@ void TBlockadePortMission::NoOpSlot3C() {
 
 // FUNCTION: IMPERIALISM 0x0053ba10
 char TBlockadePortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
-  (void)mode;
-  if (kind == 4 && key == reinterpret_cast<int>(portZoneContext3c)) {
+  (void)key;
+  // Original (0x53ba10) compares the third argument against the inherited
+  // targetZone14 pointer, not the second argument against portZoneContext3c.
+  if (kind == 4 && mode == reinterpret_cast<int>(targetZone14)) {
     return 1;
   }
   return 0;

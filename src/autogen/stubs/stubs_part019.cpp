@@ -1363,14 +1363,6 @@ undefined4 ConstructTDealListBaseState(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructCObArray
-// ghidra_proto undefined thunk_DestructCObArray()
-// FUNCTION: IMPERIALISM 0x005ba220
-undefined4 thunk_DestructCObArray_005BA220(void)
-{
-  return 0;
-}
-
 // ghidra_name TNextTradeCommand::ConstructTNextTradeCommandBaseState
 // ghidra_proto undefined ConstructTNextTradeCommandBaseState()
 // FUNCTION: IMPERIALISM 0x005ba400

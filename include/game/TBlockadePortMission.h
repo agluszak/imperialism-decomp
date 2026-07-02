@@ -2,6 +2,8 @@
 
 #include "game/TControlSeaZoneMission.h"
 
+class TZone;
+
 // Mac: TBlockadePortMission — navy mission that blockades an enemy port zone.
 //
 // Real base is TControlSeaZoneMission (confirmed via the RTTI CRuntimeClass
@@ -18,7 +20,7 @@ public:
   // +0x3c: pointer to the port-zone order-context this mission was built
   // from (TMission::ConstructBlockadePortMissionForContext); layout of the
   // pointed-to object is not yet recovered, so it stays untyped.
-  void* portZoneContext3c;
+  TZone* portZoneContext3c; // +0x3c blockade-target port zone (deserialized by node id)
 
   TBlockadePortMission();
   TBlockadePortMission(TZone* targetZone);

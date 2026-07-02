@@ -7,7 +7,8 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
-#include "game/TStationedUnitNode.h"
+#include "game/TMapMgr.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
 #include "game/global_data_tables.h"
 
@@ -286,26 +287,15 @@ void TAttackProvinceMission::ResetValue0CToZero() {
 // Shared with TInvadeMission (COMDAT-folded body).
 // FUNCTION: IMPERIALISM 0x0053e290
 void TAttackProvinceMission::NoOpSlot3C() {
-  extern undefined4 NoOpRuntimeCallback_005184e0(void);
-  extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
-
-  typedef short(__cdecl * NoOpRuntimeCallback_005184e0_t)(short);
-  short movementClassWeight = reinterpret_cast<NoOpRuntimeCallback_005184e0_t>(
-      (void*)&NoOpRuntimeCallback_005184e0)(targetProvince30);
+  short unitOrderWeight = GetProvinceUnitOrderWeight(targetProvince30);
 
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   if (targetProvince30 >= 0 && targetProvince30 <= 0x17f) {
-    typedef void(__cdecl * AccumulateUnitOrderPriorityVectorContribution_t)(void*, float*, int,
-                                                                            float);
-    AccumulateUnitOrderPriorityVectorContribution_t
-        AccumulateUnitOrderPriorityVectorContribution_fn =
-            reinterpret_cast<AccumulateUnitOrderPriorityVectorContribution_t>(
-                (void*)&AccumulateUnitOrderPriorityVectorContribution);
-    for (TStationedUnitNode* unit =
+    for (TMilitaryUnit* unit =
              g_pGlobalMapState->cityScoreTable[targetProvince30].stationedUnitChain98;
          unit != nullptr; unit = unit->next14) {
-      AccumulateUnitOrderPriorityVectorContribution_fn(unit, vector, 0x3f800000,
-                                                       static_cast<float>(movementClassWeight));
+      AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
+                                                    static_cast<float>(unitOrderWeight));
     }
   }
 
@@ -321,17 +311,14 @@ void TAttackProvinceMission::NoOpSlot3C() {
 
 // Shared with TInvadeMission (COMDAT-folded body).
 // FUNCTION: IMPERIALISM 0x0053e500
-float TAttackProvinceMission::ReturnZeroFloatSlot78(TMission* candidate, float* referenceVector) {
-  if (*reinterpret_cast<float*>(&value0c) > 0.0f) {
-    typedef short(__cdecl * NoOpRuntimeCallback_005c3530_t)(int);
-    extern undefined4 NoOpRuntimeCallback_005c3530(void);
-    short threatLevel =
-        reinterpret_cast<NoOpRuntimeCallback_005c3530_t>((void*)&NoOpRuntimeCallback_005c3530)(2);
-    if (threatLevel < 10) {
-      return *reinterpret_cast<const float*>(0x0065a9c4);
+float TAttackProvinceMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit,
+                                                    float* referenceVector) {
+  if (referenceVector[2] > 0.0f) {
+    if (candidateUnit->GetUnitTypeStatPercent(2) < 10) {
+      return -1000.0f;
     }
   }
-  return TArmyMission::ReturnZeroFloatSlot78(candidate, referenceVector);
+  return TArmyMission::ReturnZeroFloatSlot78(candidateUnit, referenceVector);
 }
 
 // FUNCTION: IMPERIALISM 0x0053e570

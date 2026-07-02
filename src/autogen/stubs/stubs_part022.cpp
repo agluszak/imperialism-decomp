@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_RegisterCommctrlDragListMessage
-// ghidra_proto undefined thunk_RegisterCommctrlDragListMessage()
-// FUNCTION: IMPERIALISM 0x006076b8
-undefined4 thunk_RegisterCommctrlDragListMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name RegisterCommctrlDragListMessage
 // ghidra_proto undefined RegisterCommctrlDragListMessage()
 // FUNCTION: IMPERIALISM 0x006076bd
@@ -23,14 +15,6 @@ undefined4 RegisterCommctrlDragListMessage(void)
 // ghidra_proto undefined WrapperFor_E361_At006076ce()
 // FUNCTION: IMPERIALISM 0x006076ce
 undefined4 WrapperFor_E361_At006076ce(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
-// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5()
-// FUNCTION: IMPERIALISM 0x006076d3
-undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
 {
   return 0;
 }
@@ -51,14 +35,6 @@ undefined4 WrapperFor_E367_At0060770c(void)
   return 0;
 }
 
-// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
-// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723()
-// FUNCTION: IMPERIALISM 0x00607711
-undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723()
 // FUNCTION: IMPERIALISM 0x00607723
@@ -75,14 +51,6 @@ undefined4 WrapperFor_E372_At0060774a(void)
   return 0;
 }
 
-// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761
-// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761()
-// FUNCTION: IMPERIALISM 0x0060774f
-undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761()
 // FUNCTION: IMPERIALISM 0x00607761
@@ -95,14 +63,6 @@ undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761(void)
 // ghidra_proto undefined WrapperFor_E377_At00607788()
 // FUNCTION: IMPERIALISM 0x00607788
 undefined4 WrapperFor_E377_At00607788(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f
-// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f()
-// FUNCTION: IMPERIALISM 0x0060778d
-undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f(void)
 {
   return 0;
 }
@@ -587,22 +547,6 @@ undefined4 SelectPaletteThenLookupHandleMapEntryWithCreate(void)
   return 0;
 }
 
-// ghidra_name CDC::GetClipBox
-// ghidra_proto undefined GetClipBox()
-// FUNCTION: IMPERIALISM 0x00612e9a
-undefined4 GetClipBox(void)
-{
-  return 0;
-}
-
-// ghidra_name CPaintDC::CPaintDC
-// ghidra_proto undefined CPaintDC()
-// FUNCTION: IMPERIALISM 0x006138f9
-undefined4 CPaintDC(void)
-{
-  return 0;
-}
-
 // ghidra_name DeleteObject
 // ghidra_proto undefined DeleteObject()
 // FUNCTION: IMPERIALISM 0x00613aa3
@@ -1075,26 +1019,10 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0061a98d(void)
   return 0;
 }
 
-// ghidra_name thunk_ResetMouseWheelTrackingGlobals
-// ghidra_proto undefined thunk_ResetMouseWheelTrackingGlobals()
-// FUNCTION: IMPERIALISM 0x0061c559
-undefined4 thunk_ResetMouseWheelTrackingGlobals(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetMouseWheelTrackingGlobals
 // ghidra_proto undefined ResetMouseWheelTrackingGlobals()
 // FUNCTION: IMPERIALISM 0x0061c55e
 undefined4 ResetMouseWheelTrackingGlobals(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RegisterMouseWheelRollMessageForLegacyWindows
-// ghidra_proto undefined thunk_RegisterMouseWheelRollMessageForLegacyWindows()
-// FUNCTION: IMPERIALISM 0x0061c57c
-undefined4 thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
 {
   return 0;
 }
@@ -1199,14 +1127,6 @@ undefined4 InvokeDialogCreateVslot5CWithTemplate45(void)
 // ghidra_proto undefined WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8()
 // FUNCTION: IMPERIALISM 0x0061ebf8
 undefined4 WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03
-// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03()
-// FUNCTION: IMPERIALISM 0x0061ebfd
-undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 {
   return 0;
 }

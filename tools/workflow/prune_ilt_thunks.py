@@ -20,6 +20,18 @@ A row is pruned only when ALL of these hold:
   4. no manual source references the symbol name (the sanctioned
      extern-thunk-cast callsite pattern still needs the autogen stub to link).
 
+Two further junk-row classes are pruned under the same keep-rules (3)+(4):
+
+  * `thunk_`-named function rows anywhere in .text whose first byte is 0xE9 —
+    incremental linking scatters more 5-byte jmp stubs through the tail of
+    .text; the big population is the ~1.4k per-EH-function
+    `thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_*` jmps to
+    ___CxxFrameHandler (compiler/linker output, never source). Curated
+    (non-`thunk_`-named) jmp rows such as COMDAT-folded dtor aliases are left
+    alone.
+  * function rows whose address is not inside .text at all (data-section
+    "functions", GOG `.patch`-section code, one-past-section-end artifacts).
+
 Run after `just sync-ghidra` regenerates config/symbols.csv (sync-ghidra does
 this automatically).
 """
@@ -165,6 +177,7 @@ def main() -> int:
     min_columns = max(addr_idx, name_idx, type_idx) + 1
     pruned = kept_claimed = kept_referenced = 0
     pruned_by_type: dict[str, int] = {}
+    pruned_scattered = pruned_nontext = 0
     for line in lines[1:]:
         parts = line.rstrip("\n").split("|")  # pipe-split-ok: line-preserving rewrite
         if len(parts) < min_columns:
@@ -176,10 +189,20 @@ def main() -> int:
         except ValueError:
             out.append(line)
             continue
-        if not (ilt_lo <= addr <= ilt_hi):
-            out.append(line)
-            continue
-        if text.byte_at(addr) != 0xE9:
+        in_text = text.va <= addr < text.va + text.vsize
+        prune_class = None
+        if ilt_lo <= addr <= ilt_hi and in_text and text.byte_at(addr) == 0xE9:
+            prune_class = "ilt"
+        elif (
+            in_text
+            and row_type == "function"
+            and name.split("::")[-1].startswith("thunk_")
+            and text.byte_at(addr) == 0xE9
+        ):
+            prune_class = "scattered-jmp"
+        elif not in_text and row_type == "function":
+            prune_class = "non-text"
+        if prune_class is None:
             out.append(line)
             continue
         keep = ilt_keep_reason(addr, name, claimed, manual_text)
@@ -192,14 +215,19 @@ def main() -> int:
             out.append(line)
             continue
         pruned += 1
+        if prune_class == "scattered-jmp":
+            pruned_scattered += 1
+        elif prune_class == "non-text":
+            pruned_nontext += 1
         pruned_by_type[row_type or "?"] = pruned_by_type.get(row_type or "?", 0) + 1
 
     by_type = ", ".join(f"{k}={v}" for k, v in sorted(pruned_by_type.items()))
     print(
         "ILT region 0x{:08x}..0x{:08x}: pruned {} rows{} "
-        "(kept {} claimed-by-manual-source, {} referenced-by-name)".format(
+        "(incl. {} scattered thunk_ jmp rows, {} non-.text function rows; "
+        "kept {} claimed-by-manual-source, {} referenced-by-name)".format(
             ilt_lo, ilt_hi, pruned, f" [{by_type}]" if by_type else "",
-            kept_claimed, kept_referenced
+            pruned_scattered, pruned_nontext, kept_claimed, kept_referenced
         )
     )
     if not args.dry_run:

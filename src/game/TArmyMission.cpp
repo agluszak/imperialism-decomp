@@ -6,7 +6,8 @@
 #include "game/TList.h"
 #include "game/TGreatPower.h"
 #include "game/TStream.h"
-#include "game/TStationedUnitNode.h"
+#include "game/TMapMgr.h"
+#include "game/TMilitaryUnit.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/CIterator.h"
@@ -18,13 +19,10 @@ IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 // SYNTHETIC: IMPERIALISM 0x0053c1d0
 // TArmyMission::`scalar deleting destructor'
 
-// Not-yet-recovered free functions this file calls into (generic stub
+// Not-yet-recovered free function this file calls into (generic stub
 // signature per the autogen stub definition; real signature applied via a
-// typed cast at each call site so the linker resolves the correct symbol).
+// typed cast at the call site so the linker resolves the correct symbol).
 extern undefined4 GetTileNormalizedMovementClassId(void);
-extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
-extern undefined4 ComputeArmyMissionScoreDeltaWithCandidateUnit(void);
-extern undefined4 ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(void);
 
 // Nation-order priority weight/scoring tables (shared with the DefendProvince /
 // Navy mission scoring family; not yet individually catalogued by field).
@@ -33,23 +31,6 @@ extern const float g_ArmyMissionOrderWeightTable_006978c8[6];
 extern const float g_ArmyMissionDotProductWeights_00697980[5];
 extern const float g_ArmyMissionCandidateScoreTable_006978f8[];
 }
-
-namespace {
-
-// Order-list items (orderListAt18) are a not-yet-recovered mission/order
-// subtype whose instance size exceeds every currently-modelled mission class;
-// only its owner back-pointer at +0x40 is known (cleared in Free()/NoOpSlot88,
-// set in NoOpSlot80). Real type/name TBD via further class recovery.
-struct TArmyMissionOrderItemLayout {
-  char pad_00[0x40];
-  TMission* owner; // +0x40
-};
-
-TMission*& OwnerOf(TMission* item) {
-  return reinterpret_cast<TArmyMissionOrderItemLayout*>(item)->owner;
-}
-
-} // namespace
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
@@ -65,29 +46,23 @@ static inline float SwapFloat(float val) {
   return dst.f;
 }
 
-// Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 both repeat
-// this exact per-unit vector-contribution pattern).
-void TArmyMission::AccumulateOrderPriorityVector(float* vector) {
-  typedef void(__cdecl * AccumulateUnitOrderPriorityVectorContribution_t)(int, float*, float,
-                                                                          float);
-  AccumulateUnitOrderPriorityVectorContribution_t AccumulateUnitOrderPriorityVectorContribution_fn =
-      reinterpret_cast<AccumulateUnitOrderPriorityVectorContribution_t>(
-          (void*)&AccumulateUnitOrderPriorityVectorContribution);
-
+// Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 / 0x53d020 /
+// 0x53d200 all repeat this exact per-unit vector-contribution pattern).
+inline void TArmyMission::AccumulateOrderPriorityVector(float* vector) {
   if (orderListAt18 == nullptr) {
     return;
   }
   CIterator iter(orderListAt18);
-  for (void* unit = iter.Reset(); iter.More(); unit = iter.Advance()) {
-    static_cast<TObject*>(unit)->AssertValid();
-    short contextId = GetMissionTargetContextIdFromField14();
-    short weightIndex = (pathMarker06 != contextId) ? 1 : 0;
+  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+    unit->AssertValid();
+    short weightIndex = unit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
     if (weightIndex > 5) {
       weightIndex = 5;
     }
-    float scale = g_ArmyMissionOrderWeightTable_006978c8[weightIndex];
-    AccumulateUnitOrderPriorityVectorContribution_fn(reinterpret_cast<int>(unit), vector, scale,
-                                                     33.0f);
+    AccumulateUnitOrderPriorityVectorContribution(
+        unit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex],
+        static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
   }
 }
 
@@ -151,7 +126,7 @@ void TArmyMission::Free() {
     CIterator iter(orderListAt18);
     void* current = iter.Reset();
     while (iter.More()) {
-      OwnerOf(static_cast<TMission*>(current)) = nullptr;
+      static_cast<TMilitaryUnit*>(current)->ownerMission40 = nullptr;
       current = iter.Advance();
     }
 
@@ -231,42 +206,43 @@ void TArmyMission::ReadFrom(TStream* stream) {
 char TArmyMission::ReturnFalseSlot98() {
   if (orderListAt18 != nullptr) {
     CIterator iter(orderListAt18);
-    void* unit = iter.Reset();
+    void* item = iter.Reset();
     while (iter.More()) {
-      short movementClass = static_cast<TStationedUnitNode*>(unit)->GetUnitMovementClassId();
+      TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+      short movementClass = unit->GetUnitMovementClassId();
       if (movementClass != 0) {
-        NoOpSlot88(static_cast<TMission*>(unit), 1);
+        NoOpSlot88(unit, 1);
       }
-      unit = iter.Advance();
+      item = iter.Advance();
     }
   }
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0053c570
-void TArmyMission::NoOpSlot80(TMission* item, int notify) {
-  item->TObject::AssertValid();
-  TMission*& owner = OwnerOf(item);
+void TArmyMission::NoOpSlot80(TMilitaryUnit* unit, int notify) {
+  unit->TObject::AssertValid();
+  TMission* owner = unit->ownerMission40;
   if (owner != nullptr) {
-    owner->NoOpSlot88(item, notify);
+    owner->NoOpSlot88(unit, notify);
   }
-  owner = this;
-  orderListAt18->AddHeadSlot28(item);
+  unit->ownerMission40 = this;
+  orderListAt18->AddHeadSlot28(unit);
   if (static_cast<char>(notify) != 0) {
     RefreshSlot40();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053c5e0
-void TArmyMission::NoOpSlot88(TMission* item, int unused) {
+void TArmyMission::NoOpSlot88(TMilitaryUnit* unit, int unused) {
   (void)unused;
   if (orderListAt18 != nullptr) {
-    POSITION pos = orderListAt18->listState.Find(item);
+    POSITION pos = orderListAt18->listState.Find(unit);
     if (pos != nullptr) {
       orderListAt18->listState.RemoveAt(pos);
     }
   }
-  OwnerOf(item) = nullptr;
+  unit->ownerMission40 = nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x0053c620
@@ -284,10 +260,84 @@ int TArmyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
   return total;
 }
 
+// FUNCTION: IMPERIALISM 0x0053cc10
+void AccumulateUnitOrderPriorityVectorContribution(TMilitaryUnit* unit, float* vector, float scale,
+                                                   float weight) {
+  short quality = unit->field_38;
+  short stat5 = unit->GetUnitTypeStatPercent(5);
+  short strength = unit->field_34;
+  float dampen = 1.0f - static_cast<float>(stat5) * weight * -0.0001f;
+  scale = static_cast<float>(strength) * 0.002f *
+          (1.0f - static_cast<float>(static_cast<short>(quality / 100)) * -0.1f) * scale;
+  vector[0] = vector[0] - static_cast<float>(strength) * -0.002f *
+                              static_cast<float>(unit->GetUnitTypeStatPercent(0)) * scale * dampen;
+  vector[1] = static_cast<float>(unit->GetUnitTypeStatPercent(1)) * scale * dampen + vector[1];
+  vector[2] = static_cast<float>(unit->GetUnitTypeStatPercent(2)) * scale + vector[2];
+  vector[3] = static_cast<float>(unit->GetUnitTypeStatPercent(3)) * scale + vector[3];
+  vector[4] = static_cast<float>(unit->GetUnitTypeStatPercent(4)) * scale * dampen + vector[4];
+}
+
 // FUNCTION: IMPERIALISM 0x0053ceb0
 float TArmyMission::ReturnZeroFloatSlot68() {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   AccumulateOrderPriorityVector(vector);
+
+  double numerator = 0.0;
+  double denominator = 0.0;
+  for (int i = 0; i < 5; ++i) {
+    float target = resourceWeights[i];
+    float v = vector[i];
+    if (target < v) {
+      v = (v - target) * 0.25f + target;
+    }
+    denominator += target;
+    numerator += sqrt(static_cast<double>(v) * static_cast<double>(target));
+  }
+  return static_cast<float>(numerator / denominator);
+}
+
+// FUNCTION: IMPERIALISM 0x0053d020
+float TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit* candidateUnit) {
+  float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  AccumulateOrderPriorityVector(vector);
+
+  short weightIndex =
+      candidateUnit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
+  if (weightIndex > 5) {
+    weightIndex = 5;
+  }
+  AccumulateUnitOrderPriorityVectorContribution(
+      candidateUnit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex],
+      static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+
+  double numerator = 0.0;
+  double denominator = 0.0;
+  for (int i = 0; i < 5; ++i) {
+    float target = resourceWeights[i];
+    float v = vector[i];
+    if (target < v) {
+      v = (v - target) * 0.25f + target;
+    }
+    denominator += target;
+    numerator += sqrt(static_cast<double>(v) * static_cast<double>(target));
+  }
+  return static_cast<float>(numerator / denominator);
+}
+
+// FUNCTION: IMPERIALISM 0x0053d200
+float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
+    TMilitaryUnit* candidateUnit) {
+  float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  AccumulateOrderPriorityVector(vector);
+
+  short weightIndex =
+      candidateUnit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
+  if (weightIndex > 5) {
+    weightIndex = 5;
+  }
+  AccumulateUnitOrderPriorityVectorContribution(
+      candidateUnit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex] * -1.0f,
+      static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
 
   double numerator = 0.0;
   double denominator = 0.0;
@@ -314,51 +364,38 @@ float TArmyMission::ReturnZeroFloatSlot6C() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053d420
-float TArmyMission::ReturnZeroFloatSlot70(TMission* candidate) {
+float TArmyMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
   if (flag10 != 0) {
     return 0.0f;
   }
 
-  typedef float(__cdecl * ComputeArmyMissionScoreDeltaWithCandidateUnit_t)(TMission*);
-  ComputeArmyMissionScoreDeltaWithCandidateUnit_t ComputeArmyMissionScoreDeltaWithCandidateUnit_fn =
-      reinterpret_cast<ComputeArmyMissionScoreDeltaWithCandidateUnit_t>(
-          (void*)&ComputeArmyMissionScoreDeltaWithCandidateUnit);
-  typedef float(__cdecl * ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_t)(TMission*);
-  ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_t
-      ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_fn =
-          reinterpret_cast<ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_t>(
-              (void*)&ComputeArmyMissionScoreDeltaWithScaledCandidateUnit);
-
-  if (OwnerOf(candidate) == this) {
-    return ReturnZeroFloatSlot68() -
-           ComputeArmyMissionScoreDeltaWithScaledCandidateUnit_fn(candidate);
+  if (candidateUnit->ownerMission40 == this) {
+    float ownScore = ReturnZeroFloatSlot68();
+    return ownScore - ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(candidateUnit);
   }
-  return ComputeArmyMissionScoreDeltaWithCandidateUnit_fn(candidate) - ReturnZeroFloatSlot68();
+  float withCandidate = ComputeArmyMissionScoreDeltaWithCandidateUnit(candidateUnit);
+  return withCandidate - ReturnZeroFloatSlot68();
 }
 
 // FUNCTION: IMPERIALISM 0x0053d4a0
-float TArmyMission::ReturnZeroFloatSlot78(TMission* candidate, float* referenceVector) {
-  short candidateField34 = *reinterpret_cast<short*>(reinterpret_cast<char*>(candidate) + 0x34);
-  if (static_cast<double>(candidateField34) * 0.002 < 139069760.0) {
+float TArmyMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* referenceVector) {
+  if (static_cast<double>(candidateUnit->field_34) * 0.002 < 139069760.0) {
     if (!ReturnFalseSlot28()) {
       return -1000.0f;
     }
   }
 
-  short contextId = GetMissionTargetContextIdFromField14();
-  short weightIndex = (pathMarker06 != contextId) ? 1 : 0;
+  short weightIndex =
+      candidateUnit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
   if (weightIndex > 5) {
     weightIndex = 5;
   }
   float baseline = g_ArmyMissionCandidateScoreTable_006978f8[weightIndex + state08 * 6];
 
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  typedef void(__cdecl * AccumulateUnitOrderPriorityVectorContribution_t)(TMission*, float*, float,
-                                                                          float);
-  AccumulateUnitOrderPriorityVectorContribution_t AccumulateUnitOrderPriorityVectorContribution_fn =
-      reinterpret_cast<AccumulateUnitOrderPriorityVectorContribution_t>(
-          (void*)&AccumulateUnitOrderPriorityVectorContribution);
-  AccumulateUnitOrderPriorityVectorContribution_fn(candidate, vector, 1.0f, 33.0f);
+  AccumulateUnitOrderPriorityVectorContribution(
+      candidateUnit, vector, 1.0f,
+      static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
 
   float total = 0.0f;
   for (int i = 0; i < 5; ++i) {

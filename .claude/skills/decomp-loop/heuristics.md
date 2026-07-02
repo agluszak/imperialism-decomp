@@ -675,3 +675,39 @@ stats, or as a long-missing vtable). After formatting headers, grep
 `'\. VTABLE: IMPERIALISM'` and `'VTABLE: IMPERIALISM$'`; splitting the marker back onto its
 own line re-pairs immediately (6 vtables recovered 2026-07-02).
 
+## 30. Typedef-cast externs drift; audit before trusting a signature
+
+The Hard-Rule-9 pattern (`extern undefined4 Foo(void);` + per-callsite
+`typedef ... (*Foo_t)(...)` cast) has no single source of truth, so signatures drift
+between files: the same target has been cast to four different signatures across three
+mission files, one caller dropped the only argument entirely
+(TBlockadePortMission::ReadFrom, fixed 56%→100% by porting the callee), and int-vs-float
+argument confusion passed unit ids where the callee reads an x87 float.
+`just typedef-cast-audit` (tools/workflow/check_typedef_cast_drift.py) extracts every
+`*_t` typedef and reports cross-file signature/convention conflicts — run it when touching
+any `_fn(` callsite, and prefer porting the callee outright (the targets are usually small
+leaves; the whole 2026-07 mission-scoring cluster was 8 functions).
+
+## 31. Comment reflow can silently eat reccmp annotations
+
+clang-format with `ReflowComments: true` (the LLVM default) merges an adjacent
+`// VTABLE: IMPERIALISM 0x...` (or GLOBAL/FUNCTION) line into a preceding over-long prose
+comment, turning the annotation into mid-sentence text that reccmp and every gate silently
+ignore — 7 vtables and 1 global had been lost this way with all gates green.
+`.clang-format` now pins `ReflowComments: false`; the diagnostic is
+`grep -rnE "// .*[a-z)\.] (VTABLE|GLOBAL|FUNCTION|SYNTHETIC|LIBRARY): IMPERIALISM" include src`
+(plus `grep -rn "IMPERIALISM$"` for annotations split across two lines). Repair = put the
+annotation back on its own line immediately above the declaration; the restored vtables
+paired at 100% for free (390→397).
+
+## 32. Mine reccmp diffs for global identities (`just global-xref-oracle`)
+
+reccmp renders an unresolved original operand as `<OFFSETn>` while the recomp side
+shows the real PDB symbol (`[g_Foo (DATA)]`). Each such positionally-paired mismatch
+line is a vote that the original address (re-disassembled with capstone) belongs to
+that symbol; symbols.csv is a reccmp `data_sources` entry, so applying a voted pair is
+just adding an `addr|name|||global||xref_oracle` row — no marker or rebuild needed.
+Round 1 (min 2 votes, no conflicts) moved 31 functions to 100% with zero regressions.
+The tool's conflict column doubles as an annotation-audit: consistent votes AGAINST an
+existing row mean the row (not the oracle) is probably wrong.
+

@@ -54,3 +54,6 @@ vendor/ghidra/imperialism-decomp.rep/
 vendor/msvc500/headers/
 
 scratch
+
+# reccmp detect output at repo root (build artifact)
+detect.log

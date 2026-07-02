@@ -95,6 +95,16 @@ def parse_args() -> argparse.Namespace:
         help="Allow converting existing non-LIBRARY source markers. Default: report-only skip.",
     )
     parser.add_argument("--apply", action="store_true", help="Write symbols/ownership/markers.")
+    parser.add_argument(
+        "--allow-marker-removals",
+        action="store_true",
+        help=(
+            "Permit shrinking the generated LIBRARY marker set. The matches CSV is "
+            "treated as the complete source of truth, so running --apply with a "
+            "partial tmp_decomp/msvc500_fid_matches.csv would otherwise silently "
+            "wipe previously generated markers/ownership (near-miss on 2026-07-02)."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -660,6 +670,16 @@ def main() -> int:
     if not args.apply:
         print("dry-run only; re-run with --apply to update symbols, ownership, and markers.")
         return 0
+
+    existing_generated = sum(
+        1 for m in markers.values() if m.kind == "LIBRARY" and m.path == marker_rel
+    )
+    if len(generated) < existing_generated and not args.allow_marker_removals:
+        raise SystemExit(
+            f"refusing to shrink the generated LIBRARY marker set "
+            f"({existing_generated} -> {len(generated)}): the matches CSV looks partial. "
+            f"Re-run with --allow-marker-removals if the removal is intentional."
+        )
 
     symbol_updates, added_symbols = apply_symbols(symbols_path, symbol_targets(candidates), sizes)
     marker_count = apply_markers(marker_path, generated, target=args.target)

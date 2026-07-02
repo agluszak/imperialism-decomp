@@ -371,34 +371,10 @@ undefined4 AccumulateMissionUnitPriorityContributionWithScaleMode(void)
   return 0;
 }
 
-// ghidra_name AccumulateUnitOrderPriorityVectorContribution
-// ghidra_proto undefined AccumulateUnitOrderPriorityVectorContribution()
-// FUNCTION: IMPERIALISM 0x0053cc10
-undefined4 AccumulateUnitOrderPriorityVectorContribution(void)
-{
-  return 0;
-}
-
 // ghidra_name AccumulateMissionUnitPriorityVector
 // ghidra_proto undefined AccumulateMissionUnitPriorityVector()
 // FUNCTION: IMPERIALISM 0x0053cda0
 undefined4 AccumulateMissionUnitPriorityVector(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeArmyMissionScoreDeltaWithCandidateUnit
-// ghidra_proto undefined ComputeArmyMissionScoreDeltaWithCandidateUnit()
-// FUNCTION: IMPERIALISM 0x0053d020
-undefined4 ComputeArmyMissionScoreDeltaWithCandidateUnit(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
-// ghidra_proto undefined ComputeArmyMissionScoreDeltaWithScaledCandidateUnit()
-// FUNCTION: IMPERIALISM 0x0053d200
-undefined4 ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(void)
 {
   return 0;
 }

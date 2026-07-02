@@ -699,22 +699,6 @@ undefined4 ConstructTUpDownViewBaseState(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00583db0
-undefined4 thunk_DestructTViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00583f90
-undefined4 thunk_DestructTViewBaseState_00583F90(void)
-{
-  return 0;
-}
-
 // ghidra_name TDipDlgCluster::ConstructTDipDlgClusterBaseState
 // ghidra_proto undefined ConstructTDipDlgClusterBaseState()
 // FUNCTION: IMPERIALISM 0x005840e0
@@ -723,26 +707,10 @@ undefined4 ConstructTDipDlgClusterBaseState(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00584140
-undefined4 thunk_DestructTViewBaseState_00584140(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradePolicyCluster::ConstructTTradePolicyClusterBaseState
 // ghidra_proto undefined ConstructTTradePolicyClusterBaseState()
 // FUNCTION: IMPERIALISM 0x005842a0
 undefined4 ConstructTTradePolicyClusterBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00584300
-undefined4 thunk_DestructTViewBaseState_00584300(void)
 {
   return 0;
 }
@@ -771,26 +739,10 @@ undefined4 ConstructTCloseParentButtonBaseState(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00584d10
-undefined4 thunk_DestructTViewBaseState_00584D10(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::ConstructTToolBarClusterBaseState
 // ghidra_proto undefined ConstructTToolBarClusterBaseState()
 // FUNCTION: IMPERIALISM 0x00584e20
 undefined4 ConstructTToolBarClusterBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00584e80
-undefined4 thunk_DestructTViewBaseState_00584E80(void)
 {
   return 0;
 }
@@ -803,122 +755,10 @@ undefined4 HandleCrossUSmallViewsCommandTagDispatch(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00586070
-undefined4 thunk_DestructTViewBaseState_00586070(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x005863e0
-undefined4 thunk_DestructTViewBaseState_005863E0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00586690
-undefined4 thunk_DestructTViewBaseState_00586690(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x005869a0
-undefined4 thunk_DestructTViewBaseState_005869A0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00586d40
-undefined4 thunk_DestructTViewBaseState_00586D40(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00587110
-undefined4 thunk_DestructTViewBaseState_00587110(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState_005885F0
-// ghidra_proto void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar)
-// FUNCTION: IMPERIALISM 0x005885f0
-undefined4 thunk_DestructTViewBaseState_005885F0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00588b50
-undefined4 thunk_DestructTViewBaseState_00588B50(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00589240
-undefined4 thunk_DestructTViewBaseState_00589240(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00589790
-undefined4 thunk_DestructTViewBaseState_00589790(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x0058a000
-undefined4 thunk_DestructTViewBaseState_0058A000(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x0058a5f0
-undefined4 thunk_DestructTViewBaseState_0058A5F0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x0058abd0
-undefined4 thunk_DestructTViewBaseState_0058ABD0(void)
-{
-  return 0;
-}
-
 // ghidra_name TTraderAmtBar::ConstructBaseState
 // ghidra_proto undefined ConstructBaseState()
 // FUNCTION: IMPERIALISM 0x0058aef0
 undefined4 ConstructBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState_0058AF60
-// ghidra_proto void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar)
-// FUNCTION: IMPERIALISM 0x0058af60
-undefined4 thunk_DestructTViewBaseState_0058AF60(void)
 {
   return 0;
 }

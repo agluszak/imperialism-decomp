@@ -2135,6 +2135,7 @@ address|target_cpp|ownership|note
 5178f0|src/game/TMapMgr.cpp|manual|marker_sync
 517c30|src/game/TMapMgr.cpp|manual|marker_sync
 518470|src/game/TMapMgr.cpp|manual|marker_sync
+5184e0|src/game/TMapMgr.cpp|manual|marker_sync
 518960|src/game/TMapMgr.cpp|manual|marker_sync
 5199c0|src/game/TMapDialog.cpp|manual|marker_sync
 519af0|src/game/TWorldView.cpp|manual|marker_sync
@@ -2508,7 +2509,10 @@ address|target_cpp|ownership|note
 53c570|src/game/TArmyMission.cpp|manual|marker_sync
 53c5e0|src/game/TArmyMission.cpp|manual|marker_sync
 53c620|src/game/TArmyMission.cpp|manual|marker_sync
+53cc10|src/game/TArmyMission.cpp|manual|marker_sync
 53ceb0|src/game/TArmyMission.cpp|manual|marker_sync
+53d020|src/game/TArmyMission.cpp|manual|marker_sync
+53d200|src/game/TArmyMission.cpp|manual|marker_sync
 53d3e0|src/game/TArmyMission.cpp|manual|marker_sync
 53d420|src/game/TArmyMission.cpp|manual|marker_sync
 53d4a0|src/game/TArmyMission.cpp|manual|marker_sync
@@ -2759,6 +2763,7 @@ address|target_cpp|ownership|note
 55f070|src/game/TZone.cpp|manual|marker_sync
 55f090|src/game/TZone.cpp|manual|marker_sync
 55f0b0|src/game/TZone.cpp|manual|marker_sync
+55f100|src/game/TZone.cpp|manual|marker_sync
 55f140|src/game/TGreatPower.cpp|manual|marker_sync
 55f4d0|src/game/TGreatPower.cpp|manual|marker_sync
 55f5c0|src/game/TZone.cpp|manual|marker_sync
@@ -3929,7 +3934,10 @@ address|target_cpp|ownership|note
 5c3190|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5c31c0|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5c3200|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
-5c3490|src/game/TStationedUnitNode.cpp|manual|marker_sync
+5c3400|src/game/TMilitaryUnit.cpp|manual|marker_sync
+5c3490|src/game/TMilitaryUnit.cpp|manual|marker_sync
+5c34d0|src/game/TMilitaryUnit.cpp|manual|marker_sync
+5c3530|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3b70|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 5c3d20|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5d4410|src/game/mapped_flavor_text.cpp|manual|marker_sync
@@ -4027,6 +4035,7 @@ address|target_cpp|ownership|note
 5e5529|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e556b|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e55a4|src/game/library_msvc500_fid.cpp|library|marker_sync
+5e55ee|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e56cd|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e56f2|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e57e9|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -4332,6 +4341,7 @@ address|target_cpp|ownership|note
 5f4b50|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4b70|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4b90|src/game/library_msvc500_fid.cpp|library|marker_sync
+5f4bb0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4cb0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4d30|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4db0|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -4900,6 +4910,7 @@ address|target_cpp|ownership|note
 612daa|src/game/library_msvc500_fid.cpp|library|marker_sync
 612df6|src/game/library_msvc500_fid.cpp|library|marker_sync
 612e42|src/game/library_msvc500_fid.cpp|library|marker_sync
+612e9a|src/game/library_msvc500_fid.cpp|library|marker_sync
 612eaa|src/game/library_msvc500_fid.cpp|library|marker_sync
 612ef8|src/game/library_msvc500_fid.cpp|library|marker_sync
 612f42|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -4931,6 +4942,7 @@ address|target_cpp|ownership|note
 613845|src/game/library_msvc500_fid.cpp|library|marker_sync
 61389b|src/game/library_msvc500_fid.cpp|library|marker_sync
 6138b7|src/game/library_msvc500_fid.cpp|library|marker_sync
+6138f9|src/game/library_msvc500_fid.cpp|library|marker_sync
 61394f|src/game/library_msvc500_fid.cpp|library|marker_sync
 61396b|src/game/library_msvc500_fid.cpp|library|marker_sync
 6139b2|src/game/library_msvc500_fid.cpp|library|marker_sync

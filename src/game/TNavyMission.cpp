@@ -27,7 +27,6 @@ extern const float g_ArmyMissionCandidateScoreTable_006978f8[];
 // Not-yet-recovered free functions this file calls into (generic stub
 // signature per the autogen stub definition; real signature applied via a
 // typed cast at each call site so the linker resolves the correct symbol).
-extern undefined4 FindMapActionContextByNodeId(void);
 extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
 extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
 extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
@@ -193,16 +192,11 @@ void TNavyMission::WriteTo(TStream* stream) {
 void TNavyMission::ReadFrom(TStream* stream) {
   TMission::ReadFrom(stream);
 
-  typedef int(__cdecl * FindMapActionContextByNodeId_t)(int id);
-  FindMapActionContextByNodeId_t FindMapActionContextByNodeId_fn =
-      reinterpret_cast<FindMapActionContextByNodeId_t>(
-          (void*)&FindMapActionContextByNodeId); // at 0x55f100
-
   int id1 = stream->ReadInteger();
-  targetZone14 = reinterpret_cast<TZone*>(FindMapActionContextByNodeId_fn(id1));
+  targetZone14 = FindMapActionContextByNodeId(static_cast<short>(id1));
 
   int id2 = stream->ReadInteger();
-  targetZone18 = reinterpret_cast<TZone*>(FindMapActionContextByNodeId_fn(id2));
+  targetZone18 = FindMapActionContextByNodeId(static_cast<short>(id2));
 
   stream->ReadBytes(&resourceWeights2c[0], 0x10);
   for (int i = 0; i < 4; ++i) {
