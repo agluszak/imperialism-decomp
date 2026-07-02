@@ -531,14 +531,6 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f666e(void)
   return 0;
 }
 
-// ghidra_name thunk_InitializeLocaleDecimalSeparatorFromRuntimeLocale
-// ghidra_proto undefined thunk_InitializeLocaleDecimalSeparatorFromRuntimeLocale()
-// FUNCTION: IMPERIALISM 0x005f66d4
-undefined4 thunk_InitializeLocaleDecimalSeparatorFromRuntimeLocale(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeLocaleDecimalSeparatorFromRuntimeLocale
 // ghidra_proto undefined InitializeLocaleDecimalSeparatorFromRuntimeLocale()
 // FUNCTION: IMPERIALISM 0x005f6797
@@ -699,14 +691,6 @@ undefined4 WrapperFor_TerminateMfcApplicationState_At005fa815(void)
   return 0;
 }
 
-// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829
-// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829()
-// FUNCTION: IMPERIALISM 0x005fa81a
-undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
-{
-  return 0;
-}
-
 // ghidra_name TerminateMfcApplicationState
 // ghidra_proto undefined TerminateMfcApplicationState()
 // FUNCTION: IMPERIALISM 0x005fa81f
@@ -719,14 +703,6 @@ undefined4 TerminateMfcApplicationState(void)
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829()
 // FUNCTION: IMPERIALISM 0x005fa829
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a
-// ghidra_proto undefined thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a()
-// FUNCTION: IMPERIALISM 0x005fa83a
-undefined4 thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a(void)
 {
   return 0;
 }
@@ -763,26 +739,10 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5(void)
   return 0;
 }
 
-// ghidra_name thunk_RegisterCommdlgLbSelChangedNotifyMessage
-// ghidra_proto undefined thunk_RegisterCommdlgLbSelChangedNotifyMessage()
-// FUNCTION: IMPERIALISM 0x005ffe27
-undefined4 thunk_RegisterCommdlgLbSelChangedNotifyMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name RegisterCommdlgLbSelChangedNotifyMessage
 // ghidra_proto undefined RegisterCommdlgLbSelChangedNotifyMessage()
 // FUNCTION: IMPERIALISM 0x005ffe2c
 undefined4 RegisterCommdlgLbSelChangedNotifyMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RegisterCommdlgShareViolationMessage
-// ghidra_proto undefined thunk_RegisterCommdlgShareViolationMessage()
-// FUNCTION: IMPERIALISM 0x005ffe3d
-undefined4 thunk_RegisterCommdlgShareViolationMessage(void)
 {
   return 0;
 }
@@ -795,26 +755,10 @@ undefined4 RegisterCommdlgShareViolationMessage(void)
   return 0;
 }
 
-// ghidra_name thunk_RegisterCommdlgFileNameOkMessage
-// ghidra_proto undefined thunk_RegisterCommdlgFileNameOkMessage()
-// FUNCTION: IMPERIALISM 0x005ffe53
-undefined4 thunk_RegisterCommdlgFileNameOkMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name RegisterCommdlgFileNameOkMessage
 // ghidra_proto undefined RegisterCommdlgFileNameOkMessage()
 // FUNCTION: IMPERIALISM 0x005ffe58
 undefined4 RegisterCommdlgFileNameOkMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RegisterCommdlgColorOkMessage
-// ghidra_proto undefined thunk_RegisterCommdlgColorOkMessage()
-// FUNCTION: IMPERIALISM 0x005ffe69
-undefined4 thunk_RegisterCommdlgColorOkMessage(void)
 {
   return 0;
 }
@@ -827,14 +771,6 @@ undefined4 RegisterCommdlgColorOkMessage(void)
   return 0;
 }
 
-// ghidra_name thunk_RegisterCommdlgHelpMessage
-// ghidra_proto undefined thunk_RegisterCommdlgHelpMessage()
-// FUNCTION: IMPERIALISM 0x005ffe7f
-undefined4 thunk_RegisterCommdlgHelpMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name RegisterCommdlgHelpMessage
 // ghidra_proto undefined RegisterCommdlgHelpMessage()
 // FUNCTION: IMPERIALISM 0x005ffe84
@@ -843,26 +779,10 @@ undefined4 RegisterCommdlgHelpMessage(void)
   return 0;
 }
 
-// ghidra_name thunk_RegisterCommdlgSetRgbColorMessage
-// ghidra_proto undefined thunk_RegisterCommdlgSetRgbColorMessage()
-// FUNCTION: IMPERIALISM 0x005ffe95
-undefined4 thunk_RegisterCommdlgSetRgbColorMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name RegisterCommdlgSetRgbColorMessage
 // ghidra_proto undefined RegisterCommdlgSetRgbColorMessage()
 // FUNCTION: IMPERIALISM 0x005ffe9a
 undefined4 RegisterCommdlgSetRgbColorMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name CWnd::thunk_Default
-// ghidra_proto undefined thunk_Default()
-// FUNCTION: IMPERIALISM 0x005ffffd
-undefined4 thunk_Default(void)
 {
   return 0;
 }

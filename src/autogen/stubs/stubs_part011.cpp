@@ -75,14 +75,6 @@ undefined4 DestroyViewModalStateNodeBlockChainAtExit(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
-// ghidra_proto undefined thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
-// FUNCTION: IMPERIALISM 0x0048d275
-undefined4 thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit
 // ghidra_proto undefined InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit()
 // FUNCTION: IMPERIALISM 0x0048d4a0
@@ -95,14 +87,6 @@ undefined4 InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit(void)
 // ghidra_proto undefined DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce()
 // FUNCTION: IMPERIALISM 0x0048d4d0
 undefined4 DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
-// ghidra_proto undefined thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
-// FUNCTION: IMPERIALISM 0x0048d4e9
-undefined4 thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass_0048D4E9(void)
 {
   return 0;
 }
@@ -1391,14 +1375,6 @@ undefined4 InitializeDialogTemplateD0WithTextState(void)
 // ghidra_proto undefined PopulateListBoxFromDelimitedText()
 // FUNCTION: IMPERIALISM 0x0049bd90
 undefined4 PopulateListBoxFromDelimitedText(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ReleaseSharedStringRefIfNotEmpty
-// ghidra_proto void __thiscall thunk_ReleaseSharedStringRefIfNotEmpty(void)
-// FUNCTION: IMPERIALISM 0x0049bf45
-undefined4 thunk_ReleaseSharedStringRefIfNotEmpty(void)
 {
   return 0;
 }

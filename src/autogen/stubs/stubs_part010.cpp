@@ -467,14 +467,6 @@ undefined4 DestroyRuntimeSelectionRecordArrayStateAtExit(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass
-// ghidra_proto undefined thunk_DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass()
-// FUNCTION: IMPERIALISM 0x0047f745
-undefined4 thunk_DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass(void)
-{
-  return 0;
-}
-
 // ghidra_name ReleaseSharedStringRefOnly_0047f7f0
 // ghidra_proto undefined ReleaseSharedStringRefOnly_0047f7f0()
 // FUNCTION: IMPERIALISM 0x0047f7f0
@@ -1771,26 +1763,10 @@ undefined4 ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl(void)
   return 0;
 }
 
-// ghidra_name CObArray::thunk_DestructCObArray
-// ghidra_proto undefined thunk_DestructCObArray()
-// FUNCTION: IMPERIALISM 0x004883c0
-undefined4 thunk_DestructCObArray(void)
-{
-  return 0;
-}
-
 // ghidra_name InsertCopiedRecordAtFrontOfPtrListAlt
 // ghidra_proto undefined InsertCopiedRecordAtFrontOfPtrListAlt()
 // FUNCTION: IMPERIALISM 0x00488470
 undefined4 InsertCopiedRecordAtFrontOfPtrListAlt(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructCObArray
-// ghidra_proto undefined thunk_DestructCObArray()
-// FUNCTION: IMPERIALISM 0x004884f0
-undefined4 thunk_DestructCObArray_004884F0(void)
 {
   return 0;
 }

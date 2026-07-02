@@ -1107,14 +1107,6 @@ undefined4 InitializeCityBuildingHoverSelectionRects_004b95c0(void)
   return 0;
 }
 
-// ghidra_name thunk_InitializeCityBuildingLayoutData
-// ghidra_proto undefined thunk_InitializeCityBuildingLayoutData()
-// FUNCTION: IMPERIALISM 0x004b9890
-undefined4 thunk_InitializeCityBuildingLayoutData(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeCityBuildingLayoutData
 // ghidra_proto undefined InitializeCityBuildingLayoutData()
 // FUNCTION: IMPERIALISM 0x004b98b0
