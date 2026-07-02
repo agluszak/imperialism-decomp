@@ -14511,7 +14511,7 @@
     },
     {
       "address": "0x4f64c0",
-      "matching": 0.4580152671755725,
+      "matching": 0.6062992125984252,
       "name": "TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit",
       "type": 1
     },
@@ -14529,13 +14529,13 @@
     },
     {
       "address": "0x4f6840",
-      "matching": 0.4423676012461059,
+      "matching": 0.5471698113207547,
       "name": "TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit",
       "type": 1
     },
     {
       "address": "0x4f6b10",
-      "matching": 0.4,
+      "matching": 0.41025641025641024,
       "name": "TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers",
       "type": 1
     },

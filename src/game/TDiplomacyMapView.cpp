@@ -29,7 +29,6 @@ undefined4 RenderTerrainAndMinorNationLegendLabels(void);
 undefined4 BlitRectWithOptionalTransparency(void);
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 MapTurnEventCodeToPaletteIndex(void);
-undefined4 thunk_SetUiResourceContextTagWord(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
 undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void);
 undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void);
@@ -380,8 +379,11 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
 
       maskState[0] = 0;
       maskState[1] = 0;
+      // 0x4270e0 (SetUiResourceContextTagWord, thiscall this[0]=arg) is the original's
+      // compiler-emitted converting-constructor call for BlitMonochromeMaskBytePatternToSurface's
+      // paletteByte argument -- ABI-transparent for a plain int, so passing paletteIndex directly
+      // reproduces it exactly with no separate call needed at this call site (and the two below).
       int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
-      reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
       maskRuns[nationIndex].BlitMonochromeMaskBytePatternToSurface(
           reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
           maskState, 1);
@@ -513,7 +515,6 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
         maskState[0] = 0;
         maskState[1] = 0;
         int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode + 200);
-        reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
         maskRuns[terrainIndex].BlitMonochromeMaskBytePatternToSurface(
             reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
             maskState, 1);
@@ -547,7 +548,6 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int e
   maskState[0] = 0;
   maskState[1] = 0;
   int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
-  reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
   DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
   maskRun->BlitMonochromeMaskBytePatternToSurface(
       reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
