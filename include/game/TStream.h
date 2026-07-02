@@ -28,9 +28,9 @@ public:
   // are inherited from TObject unchanged; 0x1c (Free) is overridden below.
   void Free() override;                                   // 7 (0x1c)  0x00488ab0
   virtual int streamSlot28();                             // 10 (0x28) TODO (read by streamSlot38)
-  virtual void streamSlot2c();                            // 11 (0x2c) TODO
+  virtual void streamSlot2c(void*);                       // 11 (0x2c) TODO
   virtual int streamSlot30();                             // 12 (0x30) TODO (read by streamSlot38)
-  virtual void streamSlot34();                            // 13 (0x34) TODO
+  virtual void streamSlot34(void*);                       // 13 (0x34) TODO
   virtual char streamSlot38();                            // 14 (0x38) 0x00488a80
   virtual void ReadBytes(void* buffer, int sizeBytes);    // 15 (0x3c) primitive TODO
   virtual int ReadInteger();                              // 16 (0x40) TODO: 0x00488b60

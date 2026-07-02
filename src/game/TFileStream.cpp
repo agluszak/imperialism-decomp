@@ -58,10 +58,10 @@ int TFileStream::streamSlot30() {
 }
 
 // FUNCTION: IMPERIALISM 0x004891c0
-void TFileStream::streamSlot2c() {}
+void TFileStream::streamSlot2c(void*) {}
 
 // FUNCTION: IMPERIALISM 0x004891f0
-void TFileStream::streamSlot34() {}
+void TFileStream::streamSlot34(void*) {}
 
 // FUNCTION: IMPERIALISM 0x00489220
 void TFileStream::ReadBytes(void* destination, int requestedCount) {

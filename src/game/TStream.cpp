@@ -53,8 +53,8 @@ int TStream::ReadInteger() {
   return 0;
 } // TODO: 0x00488b60
 
-// FUNCTION: IMPERIALISM 0x00488b90
 // Read a single byte through the ReadBytes primitive (slot 0x3c) and return it.
+// FUNCTION: IMPERIALISM 0x00488b90
 char TStream::streamSlot44() {
   char value;
   ReadBytes(&value, 1);
@@ -94,9 +94,9 @@ void TStream::streamSlot70(CString* dest, int maxLen) {
   dest->ReleaseBuffer(-1);
 }
 
-// FUNCTION: IMPERIALISM 0x00488ca0
 // Read a short length prefix (slot 0x4c), then that many raw bytes into buffer,
 // and null-terminate. maxLen is a caller capacity hint the base impl ignores.
+// FUNCTION: IMPERIALISM 0x00488ca0
 void TStream::streamSlot6c(void* buffer, int maxLen) {
   (void)maxLen;
   int length = this->ReadShort();
@@ -139,8 +139,8 @@ int TStream::streamSlot68() {
   return value;
 }
 
-// FUNCTION: IMPERIALISM 0x00488dd0
 // If the guard predicate (slot 0x28) has bit 0 set, consume one byte.
+// FUNCTION: IMPERIALISM 0x00488dd0
 void TStream::streamSlot74() {
   if ((streamSlot28() & 1) != 0) {
     char discarded;
@@ -152,10 +152,10 @@ void TStream::streamSlot74() {
 void TStream::AssertMcAppStreamLine596() {}
 
 // FUNCTION: IMPERIALISM 0x00488e30
-void TStream::streamSlot2c() {}
+void TStream::streamSlot2c(void*) {}
 
 // FUNCTION: IMPERIALISM 0x00488e50
-void TStream::streamSlot34() {}
+void TStream::streamSlot34(void*) {}
 
 // FUNCTION: IMPERIALISM 0x00488e70
 void TStream::WriteBytesSlot78(void*, int) {} // TODO: primitive (subclass overrides)

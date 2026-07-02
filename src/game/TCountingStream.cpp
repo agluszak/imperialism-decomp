@@ -34,7 +34,7 @@ int TCountingStream::streamSlot28() {
 }
 
 // FUNCTION: IMPERIALISM 0x004894d0
-void TCountingStream::streamSlot2c() {}
+void TCountingStream::streamSlot2c(void*) {}
 
 // FUNCTION: IMPERIALISM 0x00489500
 int TCountingStream::streamSlot30() {
@@ -42,7 +42,7 @@ int TCountingStream::streamSlot30() {
 }
 
 // FUNCTION: IMPERIALISM 0x00489520
-void TCountingStream::streamSlot34() {}
+void TCountingStream::streamSlot34(void*) {}
 
 // FUNCTION: IMPERIALISM 0x00489550
 void TCountingStream::WriteBytesSlot78(void* data, int length) {

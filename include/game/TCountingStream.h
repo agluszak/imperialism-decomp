@@ -67,9 +67,9 @@ public:
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
   int streamSlot28() override;
-  void streamSlot2c() override;
+  void streamSlot2c(void*) override;
   int streamSlot30() override;
-  void streamSlot34() override;
+  void streamSlot34(void*) override;
   // ReadBytes (slot 0x3c) is inherited unchanged from TStream.
   void WriteBytesSlot78(void* data, int length) override;
 };

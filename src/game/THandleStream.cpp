@@ -56,10 +56,10 @@ undefined THandleStream::OrphanLeaf_NoCall_Ins06_00489720() {
 }
 
 // FUNCTION: IMPERIALISM 0x00489740
-void THandleStream::streamSlot2c() {}
+void THandleStream::streamSlot2c(void*) {}
 
 // FUNCTION: IMPERIALISM 0x00489760
-void THandleStream::streamSlot34() {}
+void THandleStream::streamSlot34(void*) {}
 
 // FUNCTION: IMPERIALISM 0x004897a0
 void THandleStream::ReadBytes(void* buffer, int sizeBytes) {
