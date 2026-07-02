@@ -833,3 +833,38 @@ unrelated functions in the touched files by small amounts (register/operand
 reordering, not logic) — accepted as residual risk per the TU-codegen-
 fragility pattern (note 12b / TGreatPower notes) since the aggregate stats
 were net positive and the field rename was unavoidable.
+
+## 38. Widening a marked function's signature can "unpair" it — suspect a comment between `// FUNCTION:` and the decl before COMDAT-folding
+
+Symptom after changing a `// FUNCTION:`-marked function's *signature* (e.g.
+0-arg stub → real 2-arg body): `just compare 0xADDR` flips from a normal score
+to **"Failed to find a match at address 0xADDR"**, and every vtable that
+references that slot drops ~2% (one slot of ~49 ≈ 2.04%). It's tempting to
+diagnose this as COMDAT/ICF folding (two identical bodies collapsing to one
+address). **Check the marker placement first — it's almost always Hard Rule 3.**
+
+When you add an explanatory comment you may naturally write it *between* the
+marker and the declaration:
+
+    // FUNCTION: IMPERIALISM 0x00488c50
+    // Read a length-prefixed shared string…        <-- breaks the association
+    void TStream::streamSlot70(CString* dest, int maxLen) { … }
+
+reccmp's parser requires the `// FUNCTION:` line to be *immediately* followed by
+the declaration; any intervening comment/blank line detaches the marker, so the
+recomp symbol never pairs to the original address → "Failed to find a match",
+and the now-unresolved vtable slot pointer mismatches. Fix: move the prose
+*above* the marker:
+
+    // Read a length-prefixed shared string…
+    // FUNCTION: IMPERIALISM 0x00488c50
+    void TStream::streamSlot70(CString* dest, int maxLen) { … }
+
+Confirm it's not folding by dumping the recomp symbol addresses
+(`reccmp.cvdump.Cvdump(pdb).symbols().run()` → each function has a unique
+`(section, offset)`); if the addresses are distinct, it was never a fold.
+`just marker-gate` catches this too, but a bare `just compare`/`just stats` will
+not — the "unpaired + all vtables referencing that slot lose ~2%" fingerprint is
+the fast tell. (Seen porting `TStream::streamSlot70`, bd 1uj.56: base +
+TFileStream override both went 0.00% → 100% once the marker sat directly on the
+decl.)
