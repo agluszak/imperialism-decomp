@@ -14,12 +14,13 @@
 #include "game/mfc.h"
 #include "game/ui_control_tags.h"
 
-void __cdecl BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int stylePrimary);
+void __cdecl BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2,
+                                        int stylePrimary);
 
 namespace {
 const short kCouncilCoatOfArmsPictureBase = 0x1105;
 const short kCouncilTickerIntervalMapMode = 0x2710;
-const unsigned int kEndControlTagReselect = 0x52655374u; // mode 0x17
+const unsigned int kEndControlTagReselect = 0x52655374u;    // mode 0x17
 const unsigned int kEndControlTagReselectAlt = 0x53636f72u; // mode 0x16
 
 TView* CouncilHostPanel(TCouncilTickerAnimation* panelToken) {
@@ -30,13 +31,13 @@ char* CouncilHostPanelBytes(TCouncilTickerAnimation* panelToken) {
   return reinterpret_cast<char*>(CouncilHostPanel(panelToken));
 }
 
-void ApplyCouncilCandidateTextStyle(TStaticText* textControl, const TControlPictureRectState* style) {
+void ApplyCouncilCandidateTextStyle(TStaticText* textControl,
+                                    const TControlPictureRectState* style) {
   textControl->SetCityProductionDialogPictureRectAndMaybeRefresh(
       const_cast<TControlPictureRectState*>(style), 0);
 }
 
-void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag,
-                                     short nationSlot) {
+void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag, short nationSlot) {
   TControl* control = hostPanel->ResolveControlByTag(controlTag);
   if (control == nullptr) {
     return;
@@ -54,8 +55,7 @@ void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag,
   textControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&labelText, 1);
 }
 
-void RefreshCouncilCoatOfArmsPicture(TView* hostPanel, unsigned int controlTag,
-                                     short nationSlot) {
+void RefreshCouncilCoatOfArmsPicture(TView* hostPanel, unsigned int controlTag, short nationSlot) {
   TControl* control = hostPanel->ResolveControlByTag(controlTag);
   if (control == nullptr) {
     return;
@@ -107,22 +107,23 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
   char* panelState = CouncilHostPanelBytes(this);
 
   TControlPictureRectState councilTextStyle;
-  councilTextStyle.value0 = 0;
-  councilTextStyle.value1 = 0;
-  councilTextStyle.value2 = 0;
+  councilTextStyle.mode = 0;
+  councilTextStyle.flag2 = 0;
+  councilTextStyle.pointSize = 0;
+  councilTextStyle.styleRef6 = 0;
   BuildUiTextStyleDescriptor(&councilTextStyle, 0, 0xe, 0x2b6a);
 
   *reinterpret_cast<short*>(panelState + 0x24c8) = 0;
 
   RefreshCouncilCandidateNameText(hostPanel, kControlTagCan0,
-                                g_pDiplomacyTurnStateManager->selectedSourceNationSlot784);
+                                  g_pDiplomacyTurnStateManager->selectedSourceNationSlot784);
   TControl* can0Control = hostPanel->ResolveControlByTag(kControlTagCan0);
   if (can0Control != nullptr) {
     ApplyCouncilCandidateTextStyle(static_cast<TStaticText*>(can0Control), &councilTextStyle);
   }
 
   RefreshCouncilCandidateNameText(hostPanel, kControlTagCan1,
-                                g_pDiplomacyTurnStateManager->selectedTargetNationSlot786);
+                                  g_pDiplomacyTurnStateManager->selectedTargetNationSlot786);
   TControl* can1Control = hostPanel->ResolveControlByTag(kControlTagCan1);
   if (can1Control != nullptr) {
     ApplyCouncilCandidateTextStyle(static_cast<TStaticText*>(can1Control), &councilTextStyle);
@@ -172,8 +173,7 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
   if (tickerAnimation != nullptr) {
     tickerAnimation->ConstructTCouncilTickerAnimationBaseState(hostPanel, 2);
     if (g_pUiAnimator != nullptr) {
-      TCivAnimation2* civAnimator =
-          static_cast<TCivAnimation2*>(static_cast<void*>(g_pUiAnimator));
+      TCivAnimation2* civAnimator = static_cast<TCivAnimation2*>(static_cast<void*>(g_pUiAnimator));
       civAnimator->AddObjectToUiTransientRegistry(tickerAnimation);
     }
   }

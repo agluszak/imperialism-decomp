@@ -2,11 +2,18 @@
 
 #include "game/TView.h"
 
+#pragma pack(push, 2)
+// 10-byte packed text-style descriptor: three shorts plus a 4-byte style ref at offset
+// 6, as built by BuildUiTextStyleDescriptor (0x5c3e80) and BindUiResourceTextAndStyle
+// (0x41b490) and consumed by TControl slot 0x6d (copied into the 10 bytes at
+// TControl+0x78, i.e. the commandTagDefaultParam0/1/2 view of the same region).
 struct TControlPictureRectState {
-  int value0;
-  int value1;
-  short value2;
+  short mode;      // 0x0 — 3 when pointSize < 12, else 1
+  short flag2;     // 0x2
+  short pointSize; // 0x4
+  int styleRef6;   // 0x6
 };
+#pragma pack(pop)
 
 class TModalTemplateDialogBase : public TView {
 public:
@@ -17,6 +24,9 @@ public:
 protected:
   TModalTemplateDialogBase();
 
+public:
+  // Written directly by the turn-event dialog factory builders (frame/bevel style dword
+  // plus the 0x68-0x74 rect region shared with TControl::field74), so they stay public.
   int hasCommandTagResource;
   unsigned char commandTagResourceByte;
   unsigned char padding_65_to_67[3];

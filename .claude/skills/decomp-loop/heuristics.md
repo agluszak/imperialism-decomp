@@ -711,3 +711,31 @@ Round 1 (min 2 votes, no conflicts) moved 31 functions to 100% with zero regress
 The tool's conflict column doubles as an annotation-audit: consistent votes AGAINST an
 existing row mean the row (not the oracle) is probably wrong.
 
+
+## 33. Turn-event screen builders share one widget-block vocabulary
+
+Every `turn_event_dialog_factory.cpp` screen builder (the 253KB "return nullptr" giants,
+bd 1uj.51) is the same repeating block, so port them by recipe, not by decompile — the
+decompiler output for this cluster is degenerate (stack-tracking loss renders calls as
+`func_0x0040xxxx` ILT stubs with args as stack-slot stores; some functions are also
+split into fragments, see below). Read `just ghidra-listing` instead. Per widget:
+`new <WidgetClass>()` (size after `PUSH n; CALL 0x606f73` identifies the class; the ctor
+thunk resolves via a listing of the thunk address) → parent = build-stack tail data
+(`[0x6a13e8]+8` = `g_UiWidgetBuildStack006a13e0.GetTail()`, else head=widget) →
+`AddTail` (thunk 0x403643) → `InitializeUiResourceEntryFrameAndParent(0, parent,
+offset[2], size[2], 0, 0, 1)` (0x4096b5; offsets land in `[ESP+0x2c/0x30]`, sizes in
+`[ESP+0x34/0x38]` in later blocks) → `controlTag`/`field3c` stores → vtable slots 0xa4/0xa8
+= `SetEnabled`/`SetState` → `flag4c/4d` bytes → style: `hasCommandTagResource` (+0x60)
+plus the +0x68..+0x74 rect (CRect(0,0,0,0) copy) → per-class tail call (slot 0x1c8 =
+`SetPictureResourceIdAndRefresh` on pictures, `BindUiResourceTextAndStyle` 0x41b490 on
+text) → `g_pUiResourceContext = 0` (+ `RemoveTail` only when the widget takes no
+children). Out-of-line variants of the same steps exist and are now real functions in
+`ui_resource_pool.cpp`: `RegisterUiResourceEntry` 0x41b210, `SetUiResourceStateFlags`
+0x41b3a0, `SetUiResourceLayoutValues` 0x41b450, `BindUiResourceTextAndStyle` 0x41b490
+(the latter two hit 100%). The factory's first parameter is a `CWnd*` host window
+(flows into the tail `PropagateUiResourceContextRecursive` call); the event-code check
+is `(short)nEventCode != 0xNNN → return 0`. Gotcha: pushes before a 0-arg virtual call
+(e.g. slot 0x1b8 `GetEmbeddedDialogBehavior`) may belong to the *following* call —
+MSVC schedules argument pushes early; match pushes to callee-consumed counts, not
+adjacency. Also watch for Ghidra function splits: a builder whose listing ends without
+an epilogue continues in the next "function" (BuildUniversityDialogShell = 4 fragments).

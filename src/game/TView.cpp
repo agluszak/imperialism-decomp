@@ -187,7 +187,7 @@ TView::~TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048aa60
-void TView::InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TControl* panel,
+void TView::InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TView* panel,
                                                     int* offsetLayout, int* sizeLayout,
                                                     int layoutParam6, int layoutParam7,
                                                     int attachFlag) {

@@ -735,9 +735,10 @@ void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int 
   }
   control->AssertValid();
   TControlPictureRectState styleDescriptor;
-  styleDescriptor.value0 = 0;
-  styleDescriptor.value1 = 0;
-  styleDescriptor.value2 = 0;
+  styleDescriptor.mode = 0;
+  styleDescriptor.flag2 = 0;
+  styleDescriptor.pointSize = 0;
+  styleDescriptor.styleRef6 = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, styleWidth, styleSecondary);
   control->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
   (void)stylePrimary;
@@ -1159,9 +1160,10 @@ void TViewMgr::UiRuntimeSlot5C() {
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2731, 0);
 
   TControlPictureRectState foodStyle;
-  foodStyle.value0 = 0;
-  foodStyle.value1 = 0;
-  foodStyle.value2 = 0;
+  foodStyle.mode = 0;
+  foodStyle.flag2 = 0;
+  foodStyle.pointSize = 0;
+  foodStyle.styleRef6 = 0;
   BuildUiTextStyleDescriptor(&foodStyle, 0, 0xc, 0x2b6b);
   TControl* foodControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagFood);
   if (foodControl != nullptr) {

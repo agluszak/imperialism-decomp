@@ -23,6 +23,15 @@ const unsigned int kControlTagCoa1 = 0x636f6131u; // 'coa1'
 const unsigned int kControlTagEnd = 0x656e6420u;  // ' end'
 const unsigned int kControlTagText = 0x74657874u; // 'text'
 const unsigned int kControlTagFood = 0x646f6f66u; // 'food'
+const unsigned int kControlTagOkay = 0x6f6b6179u; // 'okay' — confirm button
+const unsigned int kControlTagRewa = 0x72657761u; // 'rewa' — reward picture
+const unsigned int kControlTagPict = 0x70696374u; // 'pict' — generic picture name tag
+const unsigned int kControlTagCoat = 0x636f6174u; // 'coat' — coat-of-arms picture
+const unsigned int kControlTagInfo = 0x696e666fu; // 'info' — info text block
+const unsigned int kControlTagTevw = 0x74657677u; // 'tevw' — text-view name tag
+const unsigned int kControlTagSeas = 0x73656173u; // 'seas' — season label
+const unsigned int kControlTagTrea = 0x74726561u; // 'trea' — treasury label
+const unsigned int kControlTagPatc = 0x70617463u; // 'patc' — patch picture
 
 // Game window control tags
 const unsigned int kTagMain = 0x6d61696e;  // 'main'

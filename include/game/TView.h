@@ -44,9 +44,9 @@ public:
   int field5c;
 
   TView();
-  void InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TControl* panel,
-                                               int* offsetLayout, int* sizeLayout, int layoutParam6,
-                                               int layoutParam7, int attachFlag);
+  void InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TView* panel, int* offsetLayout,
+                                               int* sizeLayout, int layoutParam6, int layoutParam7,
+                                               int attachFlag);
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
   void CopyCityDialogStateFromSource(TView* source);
   void EnableAndProcessFlag(CString sharedString);
@@ -94,9 +94,9 @@ public:
   // The "DC handle" flowing through slots 0x40/0x41/0x43/0x45 is a caller-supplied MFC
   // CDC* (or null = bind a fresh window DC): CMcWindow::OnPaint (0x4938c0) passes its
   // CPaintDC here, and BindScopedMapQuickDrawDcHandle stores it as the active DC object.
-  virtual int BindMapQuickDrawDc(CDC* paintDc);                                 // 0x40 0x48b7b0
-  virtual void ReleaseMapQuickDrawDc(CDC* paintDc);                             // 0x41 0x48b7e0
-  virtual void EnsureField48Buffer();                                           // 0x42 0x48b810
+  virtual int BindMapQuickDrawDc(CDC* paintDc);     // 0x40 0x48b7b0
+  virtual void ReleaseMapQuickDrawDc(CDC* paintDc); // 0x41 0x48b7e0
+  virtual void EnsureField48Buffer();               // 0x42 0x48b810
   virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect,
                                                         CDC* paintDc); // 0x43 0x48b8d0
   virtual void ApplyRectSlot110(RECT* rectBuffer);                     // 0x44
