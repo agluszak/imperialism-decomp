@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "imperialism_decomp",
+  "project_id": "b451c85f-9c71-4328-8219-a18daf568246"
+}
