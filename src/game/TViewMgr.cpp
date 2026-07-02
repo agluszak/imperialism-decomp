@@ -26,7 +26,6 @@
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
 #include "game/ui_invalidation_guard.h"
 #include "game/TMultiplayerMgr.h"
-#include "game/TMilitaryUnitOrderState.h" // g_szEmptyString
 #include "game/localization_text_helpers.h"
 #include "game/TCluster.h"
 #include "game/TCursorControlPanel.h"

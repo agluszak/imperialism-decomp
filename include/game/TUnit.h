@@ -17,17 +17,17 @@ public:
 
   // slot 0x08 Serialize is inherited from TObject unchanged (0x485e90)
 
-  void WriteTo(TStream* stream) override; // slot 0x14
+  void WriteTo(TStream* stream) override;  // slot 0x14
   void ReadFrom(TStream* stream) override; // slot 0x18
-  void Free() override; // slot 0x1c
+  void Free() override;                    // slot 0x1c
 
   // slot 0x20 ShallowClone is inherited unchanged (0x4798d0)
   // slot 0x24 ShallowFree is inherited unchanged (0x415ce0)
 
   // --- TUnit virtual functions ---
-  virtual void VTableSlot10(int pOwnerContext); // slot 0x28
-  virtual void DispatchSlot2C(); // slot 0x2c
-  virtual void DetachUnitOrderFromOwnerAndReset(); // slot 0x30
+  virtual void VTableSlot10(int pOwnerContext);           // slot 0x28
+  virtual void DispatchSlot2C();                          // slot 0x2c
+  virtual void DetachUnitOrderFromOwnerAndReset();        // slot 0x30
   virtual void SetOrderModeSlot34(int mode, int payload); // slot 0x34
 
   short orderType;        // 0x04
@@ -52,3 +52,5 @@ public:
   void RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
                                          short nOrderOwnerNationId, short arg3);
 };
+
+ASSERT_SIZE(TUnit, 0x24);

@@ -8,13 +8,12 @@
 #include "game/TSortedList.h"
 #include "game/global_data_tables.h"
 
-
 int SumMilitaryUnitPowerWeights(TSortedList* unitList) {
   int powerSum = 0;
   CIterator unitIter(unitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-    powerSum += g_UnitTypeMilitaryStatTable_00695CD2[unit->unitTypeId04][1];
+    powerSum += g_UnitTypeMilitaryStatTable_00695CD2[unit->orderType][1];
   }
   return powerSum;
 }

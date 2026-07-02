@@ -11,8 +11,6 @@
 #include "game/TSimMgr.h"
 #include "game/TOcean.h"
 #include "game/TMilitaryUnit.h"
-#include "game/TMilitaryUnitOrderState.h"
-#include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
 #include "game/TUnit.h"
@@ -65,8 +63,8 @@ int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex) {
   }
   TMilitaryUnit* chain = g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain98;
   int sum = 0;
-  for (; chain != 0; chain = chain->next14) {
-    sum += *reinterpret_cast<int*>(kAddrWeightedNeighborScoreByUnitType + chain->unitTypeId04 * 4);
+  for (; chain != 0; chain = static_cast<TMilitaryUnit*>(chain->nextOnTile)) {
+    sum += *reinterpret_cast<int*>(kAddrWeightedNeighborScoreByUnitType + chain->orderType * 4);
   }
   return sum;
 }
@@ -193,7 +191,7 @@ void TCountry::ReadFrom(TStream* stream) {
   int recruitIndex = 1;
   if (recruitCount > 0) {
     do {
-      TMilitaryUnitOrderState* militaryOrder = new TMilitaryUnitOrderState();
+      TMilitaryUnit* militaryOrder = new TMilitaryUnit();
       if (militaryOrder != nullptr) {
         militaryOrder->InitializeRecruitOrderState(0, 0, this->nationSlot);
         militaryOrder->ReadFrom(stream);
@@ -274,17 +272,17 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(ordinal);
       short regionTerrainId = g_pGlobalMapState->cityScoreTable[regionId].ownerNationSlot;
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
-        TMilitaryUnitOrderState* order = new TMilitaryUnitOrderState();
+        TMilitaryUnit* order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
         if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
-        order = new TMilitaryUnitOrderState();
+        order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
         if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
-        order = new TMilitaryUnitOrderState();
+        order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(7, regionId, this->nationSlot);
         if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
           order->SetOrderModeSlot34(2, -1);
@@ -293,12 +291,12 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         if (this->nationSlot < 7 &&
             g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 == 0 &&
             g_pLocalizationTable->runtimeSubsystemIndex == 4) {
-          order = new TMilitaryUnitOrderState();
+          order = new TMilitaryUnit();
           order->InitializeRecruitOrderState(6, regionId, this->nationSlot);
           if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
             order->SetOrderModeSlot34(2, -1);
           }
-          order = new TMilitaryUnitOrderState();
+          order = new TMilitaryUnit();
           order->InitializeRecruitOrderState(5, regionId, this->nationSlot);
           if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
             order->SetOrderModeSlot34(2, -1);
@@ -344,12 +342,12 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       if (g_pLocalizationTable->runtimeSubsystemIndex > 2) {
         this->CreateMilitaryRecruitOrderForNode(regionId);
         if (this->nationSlot >= 7) {
-          TMilitaryUnitOrderState* lateOrder = new TMilitaryUnitOrderState();
+          TMilitaryUnit* lateOrder = new TMilitaryUnit();
           lateOrder->InitializeRecruitOrderState(7, regionId, this->nationSlot);
         }
       }
       if (*g_pGlobalMapState->scenarioTagText1c == '+') {
-        TMilitaryUnitOrderState* bonusOrder = new TMilitaryUnitOrderState();
+        TMilitaryUnit* bonusOrder = new TMilitaryUnit();
         bonusOrder->InitializeRecruitOrderState(2, regionId, this->nationSlot);
         bonusOrder->SetOrderModeSlot34(2, -1);
       }
@@ -560,12 +558,12 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
   do {
     TMilitaryUnit* unit =
         static_cast<TMilitaryUnit*>(this->militaryUnitList44->GetEntryByOrdinalSlot4C(ordinal));
-    if (unit->nameTag1a == 0) {
-      if (unit->unitTypeId04 < 0x1b) {
+    if (unit->field_1A == 0) {
+      if (unit->orderType < 0x1b) {
         CString ordinalText;
         CString typeName;
         CString composedName;
-        short unitType = unit->unitTypeId04;
+        short unitType = unit->orderType;
         TSimMgr* localization = g_pLocalizationTable;
         short* nameOrdinalCounter = &this->unitNameOrdinalByType[unitType];
         localization->FormatOrdinalString(*nameOrdinalCounter, &ordinalText);
@@ -573,8 +571,8 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         CString withSeparator = ordinalText + CString(" ");
         CString fullName = withSeparator + typeName;
         composedName = fullName;
-        unit->displayName24 = composedName;
-        unit->nameTag1a = this->unitNameCounter84;
+        unit->name24 = composedName;
+        unit->field_1A = this->unitNameCounter84;
         ++this->unitNameCounter84;
         ++*nameOrdinalCounter;
       } else {
@@ -587,8 +585,8 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         CString withSeparator = flavorBase + CString(" ");
         CString fullName = withSeparator + flavorName;
         flavorName = fullName;
-        unit->displayName24 = flavorName;
-        unit->nameTag1a = this->unitNameCounter84;
+        unit->name24 = flavorName;
+        unit->field_1A = this->unitNameCounter84;
         ++this->unitNameCounter84;
       }
     }
@@ -674,7 +672,7 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
           reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + 0x98 +
           static_cast<int>(regionId) * 0xa8);
     }
-    for (; unitChain != 0; unitChain = unitChain->next14) {
+    for (; unitChain != 0; unitChain = static_cast<TMilitaryUnit*>(unitChain->nextOnTile)) {
       if (unitChain->GetUnitMovementClassId() == 0) {
         garrisonCount = static_cast<short>(garrisonCount + 1);
       }

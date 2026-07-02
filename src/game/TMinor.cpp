@@ -895,8 +895,8 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNati
     }
     TMilitaryUnit* unitNode = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
     while (unitNode != 0) {
-      TUnit* unit = reinterpret_cast<TUnit*>(unitNode);
-      TMilitaryUnit* nextNode = unitNode->next14;
+      TUnit* unit = unitNode;
+      TMilitaryUnit* nextNode = static_cast<TMilitaryUnit*>(unitNode->nextOnTile);
       if (unit->field_18 == priorOwnerNationSlot) {
         unit->field_18 = this->nationSlot;
         CPtrList* sourceList = &this->militaryUnitList44->listState;
