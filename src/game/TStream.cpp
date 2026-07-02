@@ -95,7 +95,14 @@ void TStream::streamSlot70(CString* dest, int maxLen) {
 }
 
 // FUNCTION: IMPERIALISM 0x00488ca0
-void TStream::streamSlot6c() {} // TODO: 0x00488ca0
+// Read a short length prefix (slot 0x4c), then that many raw bytes into buffer,
+// and null-terminate. maxLen is a caller capacity hint the base impl ignores.
+void TStream::streamSlot6c(void* buffer, int maxLen) {
+  (void)maxLen;
+  int length = this->ReadShort();
+  this->ReadBytes(buffer, length);
+  static_cast<char*>(buffer)[length] = 0;
+}
 
 // FUNCTION: IMPERIALISM 0x00488ce0
 void TStream::streamSlot54(void* out) {
@@ -133,7 +140,13 @@ int TStream::streamSlot68() {
 }
 
 // FUNCTION: IMPERIALISM 0x00488dd0
-void TStream::streamSlot74() {} // TODO: 0x00488dd0
+// If the guard predicate (slot 0x28) has bit 0 set, consume one byte.
+void TStream::streamSlot74() {
+  if ((streamSlot28() & 1) != 0) {
+    char discarded;
+    ReadBytes(&discarded, 1);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00488e00
 void TStream::AssertMcAppStreamLine596() {}

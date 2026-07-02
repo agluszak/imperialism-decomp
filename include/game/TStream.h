@@ -44,7 +44,7 @@ public:
   virtual void streamSlot60(void* out);                   // 24 (0x60) 0x00488d60
   virtual void streamSlot64(void* out);                   // 25 (0x64) 0x00488d80
   virtual int streamSlot68();                             // 26 (0x68) 0x00488da0
-  virtual void streamSlot6c();                            // 27 (0x6c) TODO: 0x00488ca0
+  virtual void streamSlot6c(void* buffer, int maxLen);    // 27 (0x6c) 0x00488ca0 read len+bytes
   virtual void streamSlot70(CString* dest, int maxLen);   // 28 (0x70) 0x00488c50 read shared string
   virtual void streamSlot74();                            // 29 (0x74) TODO: 0x00488dd0
   virtual void WriteBytesSlot78(void* data, int length);  // 30 (0x78) primitive TODO
