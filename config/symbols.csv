@@ -5956,15 +5956,15 @@ address|name|symbol|size|type|prototype|provenance
 5c2c60|TCivUnit::ResetCivWorkOrderAndRefreshCounters||62|function|void __thiscall ResetCivWorkOrderAndRefreshCounters()|
 5c2cb0|TMilitaryUnit::CreateObject|?CreateObject@TMilitaryUnit@@SGPAVCObject@@XZ|217|function|undefined CreateObject()|rtti
 5c2dd0|TMilitaryUnit::GetRuntimeClass|?GetRuntimeClass@TMilitaryUnit@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
-5c2df0|TMilitaryUnitOrderState::TMilitaryUnitOrderState||175|function|undefined TMilitaryUnitOrderState()|
-5c2ed0|TMilitaryUnitOrderState::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5c2f00|TMilitaryUnitOrderState::~TMilitaryUnitOrderState||62|function|void __thiscall ~TMilitaryUnitOrderState()|
-5c2f50|TMilitaryUnitOrderState::InitializeRecruitOrderState||96|function|void __thiscall InitializeRecruitOrderState(short capValue,int nodeContext,short nationSlot)|
-5c2fd0|TMilitaryUnitOrderState::ReadFrom||145|function|void __thiscall ReadFrom(TStream* stream)|
-5c30a0|TMilitaryUnitOrderState::WriteTo||190|function|void __thiscall WriteTo(TStream* stream)|
-5c3190|TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets||32|function|void __thiscall CopyUnitCurrentTileIntoOrderTargets(void)|
-5c31c0|TMilitaryUnitOrderState::DetachUnitOrderFromOwnerAndReset||39|function|void __thiscall DetachUnitOrderFromOwnerAndReset()|
-5c3200|TMilitaryUnitOrderState::VTableSlot10||395|function|void __thiscall VTableSlot10(int pOwnerContext)|
+5c2df0|TMilitaryUnit::TMilitaryUnit||175|function|undefined TMilitaryUnit()|
+5c2ed0|TMilitaryUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
+5c2f00|TMilitaryUnit::~TMilitaryUnit||62|function|void __thiscall ~TMilitaryUnit()|
+5c2f50|TMilitaryUnit::InitializeRecruitOrderState||96|function|void __thiscall InitializeRecruitOrderState(short capValue,int nodeContext,short nationSlot)|
+5c2fd0|TMilitaryUnit::ReadFrom||145|function|void __thiscall ReadFrom(TStream* stream)|
+5c30a0|TMilitaryUnit::WriteTo||190|function|void __thiscall WriteTo(TStream* stream)|
+5c3190|TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets||32|function|void __thiscall CopyUnitCurrentTileIntoOrderTargets(void)|
+5c31c0|TMilitaryUnit::DetachUnitOrderFromOwnerAndReset||39|function|void __thiscall DetachUnitOrderFromOwnerAndReset()|
+5c3200|TMilitaryUnit::VTableSlot10||395|function|void __thiscall VTableSlot10(int pOwnerContext)|
 5c3400|GetUnitTypeCostPoints||60|function|undefined GetUnitTypeCostPoints()|
 5c3450|GetCityActionGateValueBySlot||35|function|undefined GetCityActionGateValueBySlot()|
 5c3490|GetUnitMovementClassId||13|function|undefined GetUnitMovementClassId()|

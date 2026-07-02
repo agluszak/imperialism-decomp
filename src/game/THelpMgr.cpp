@@ -8,7 +8,7 @@
 #include "game/TDisplayMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/TMilitaryUnitOrderState.h"
+#include "game/TMilitaryUnit.h"
 
 extern "C" char DAT_006a43f0;
 

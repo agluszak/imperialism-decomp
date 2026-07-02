@@ -24,7 +24,6 @@ IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 // a typed cast at each call site so the linker resolves the correct symbol.
 extern undefined4 GetTileNormalizedMovementClassId(void);
 extern undefined4 AccumulateMissionUnitPriorityVectorWithOptionalFilter(void);
-extern undefined4 GetUnitMovementClassId(void);
 // TGreatPower method, not yet ported (operates on this+0x970 -- see
 // TDefendProvinceMission.cpp for the identical bridge).
 extern undefined4 SetMapStateByteFlag970WithRuntimeGate(void);
@@ -293,7 +292,7 @@ void TAttackProvinceMission::NoOpSlot3C() {
   if (targetProvince30 >= 0 && targetProvince30 <= 0x17f) {
     for (TMilitaryUnit* unit =
              g_pGlobalMapState->cityScoreTable[targetProvince30].stationedUnitChain98;
-         unit != nullptr; unit = unit->next14) {
+         unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
       AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
                                                     static_cast<float>(unitOrderWeight));
     }

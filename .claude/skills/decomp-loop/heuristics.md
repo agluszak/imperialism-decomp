@@ -796,3 +796,40 @@ is `(short)nEventCode != 0xNNN → return 0`. Gotcha: pushes before a 0-arg virt
 MSVC schedules argument pushes early; match pushes to callee-consumed counts, not
 adjacency. Also watch for Ghidra function splits: a builder whose listing ends without
 an epilogue continues in the next "function" (BuildUniversityDialogShell = 4 fragments).
+
+## 37. A bead's "not ported yet" claim can be two independent recoveries of the
+    same class under different names — check GetRuntimeClass address identity
+
+`bd 1uj.6` asked to port "TMilitaryUnit::CreateObject/GetRuntimeClass at
+0x5c2cb0/0x5c2dd0" onto the existing `include/game/TMilitaryUnit.h` (a raw-pad,
+`TObject`-direct, no-vtable field/getter surface model). Trap: a *different*
+class, `TMilitaryUnitOrderState` (vtable 0x66eea8, real `TUnit`-derived ctor at
+0x5c2df0, real CString member, already at ~86%), turned out to be the SAME
+game class, independently recovered by an earlier session under a different
+Ghidra-guessed name. The tell: `TMilitaryUnitOrderState::GetRuntimeClass`'s
+body at 0x5c2dd0 (`mov eax, 0x66ed70; ret`) is the address the RTTI oracle
+lists as **TMilitaryUnit**'s `getrtc` — an exact address match, not a
+name/vibes match. Corroborating: the "TMilitaryUnit-only" getters
+(`GetUnitMovementClassId` etc., 0x5c34xx) read `[ecx+4]`/`[ecx+6]`, which are
+exactly `TUnit::orderType`/`field_6` — fields already owned by the *other*
+class's base. And the old model's "unmodeled pad regions" (0x08-0x13,
+0x1c-0x23, 0x28-0x33, 0x3a-0x3f) decomposed exactly into the inherited `TUnit`
+fields plus the other class's own already-recovered fields — a strong signal
+that "recover these 4 pad regions" was actually "notice these two classes are
+one class." **Always check whether a `GetRuntimeClass`/`CreateObject` address
+already belongs to a *different* manual class before porting it onto the bead's
+named target** — `config/rtti_class_oracle.csv`'s descriptor-address column
+(e.g. `0x66ed40`/`0x66ed58`/`0x66ed70`) is the `CRuntimeClass` struct address
+(named `class<X>` by the `IMPLEMENT_RUNTIMECLASS` macro), **not** the vtable
+address; don't assume a bead's "vtable at 0xNNNN" phrase is literally the
+vtable — verify via `just ghidra-listing` on the ctor. Fix was a straight
+merge: keep the better-evidenced class (real ctor/vtable/CString), add the
+other's fields/getters via the inherited base, delete the duplicate file,
+`sed`-rename call sites, `just regen-stubs` (auto-relocates ownership rows +
+picks up new `// SYNTHETIC` claims), rename the scalar-deleting-dtor's curated
+`symbols.csv` backtick name to match (Hard Rule 10) — that was the only vtable
+slot mismatch after the merge. One MSVC500 TU-wide ripple regressed two
+unrelated functions in the touched files by small amounts (register/operand
+reordering, not logic) — accepted as residual risk per the TU-codegen-
+fragility pattern (note 12b / TGreatPower notes) since the aggregate stats
+were net positive and the field rename was unavoidable.

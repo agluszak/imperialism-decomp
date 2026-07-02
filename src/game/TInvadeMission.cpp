@@ -18,7 +18,6 @@ extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
 extern undefined4 InitializeLinkedListCursorFromOwnerHead(void);
 extern undefined4 LinkedListCursorHasCurrent(void);
 extern undefined4 AdvanceLinkedListCursor(void);
-extern undefined4 GetUnitMovementClassId(void);
 
 TInvadeMission::TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
 

@@ -131,7 +131,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
 
             if (linkedTerrainClear != 0) {
               for (TMilitaryUnit* unit = StationedUnitChainAt(regionIndex); unit != 0;
-                   unit = unit->next14) {
+                   unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
                 short costPoints = unit->GetUnitTypeCostPoints();
                 short movementClassId = unit->GetUnitMovementClassId();
                 if (movementClassId > 0) {
@@ -147,7 +147,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
           }
         } else {
           for (TMilitaryUnit* unit = StationedUnitChainAt(regionIndex); unit != 0;
-               unit = unit->next14) {
+               unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
             short movementClassId = unit->GetUnitMovementClassId();
             if (movementClassId > 0) {
               AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
@@ -179,7 +179,8 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
 
   short unitOrderWeight = GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
 
-  for (TMilitaryUnit* unit = StationedUnitChainAt(nodeContext); unit != 0; unit = unit->next14) {
+  for (TMilitaryUnit* unit = StationedUnitChainAt(nodeContext); unit != 0;
+       unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
     AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
                                                   static_cast<float>(unitOrderWeight));
   }

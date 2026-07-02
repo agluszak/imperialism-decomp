@@ -12595,13 +12595,13 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12619,7 +12619,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12925,7 +12925,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.9333333333333333,
+      "matching": 0.6666666666666666,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -19905,13 +19905,13 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -32040,7 +32040,7 @@
     },
     {
       "address": "0x5c2cb0",
-      "matching": 0.03125,
+      "matching": 0.3023255813953488,
       "name": "TMilitaryUnit::CreateObject",
       "type": 1
     },
@@ -32053,55 +32053,55 @@
     {
       "address": "0x5c2df0",
       "matching": 0.7446808510638298,
-      "name": "TMilitaryUnitOrderState::TMilitaryUnitOrderState",
+      "name": "TMilitaryUnit::TMilitaryUnit",
       "type": 1
     },
     {
       "address": "0x5c2ed0",
       "matching": 1.0,
-      "name": "TMilitaryUnitOrderState::`scalar deleting destructor'",
+      "name": "TMilitaryUnit::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x5c2f00",
       "matching": 0.8,
-      "name": "TMilitaryUnitOrderState::~TMilitaryUnitOrderState",
+      "name": "TMilitaryUnit::~TMilitaryUnit",
       "type": 1
     },
     {
       "address": "0x5c2f50",
       "matching": 0.5142857142857142,
-      "name": "TMilitaryUnitOrderState::InitializeRecruitOrderState",
+      "name": "TMilitaryUnit::InitializeRecruitOrderState",
       "type": 1
     },
     {
       "address": "0x5c2fd0",
-      "matching": 0.028985507246376812,
-      "name": "TMilitaryUnitOrderState::ReadFrom",
+      "matching": 0.4715447154471545,
+      "name": "TMilitaryUnit::ReadFrom",
       "type": 1
     },
     {
       "address": "0x5c30a0",
-      "matching": 0.025974025974025976,
-      "name": "TMilitaryUnitOrderState::WriteTo",
+      "matching": 0.9078947368421053,
+      "name": "TMilitaryUnit::WriteTo",
       "type": 1
     },
     {
       "address": "0x5c3190",
       "matching": 0.25,
-      "name": "TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets",
+      "name": "TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets",
       "type": 1
     },
     {
       "address": "0x5c31c0",
       "matching": 0.1,
-      "name": "TMilitaryUnitOrderState::DetachUnitOrderFromOwnerAndReset",
+      "name": "TMilitaryUnit::DetachUnitOrderFromOwnerAndReset",
       "type": 1
     },
     {
       "address": "0x5c3200",
       "matching": 0.015037593984962405,
-      "name": "TMilitaryUnitOrderState::VTableSlot10",
+      "name": "TMilitaryUnit::VTableSlot10",
       "type": 1
     },
     {
@@ -43015,7 +43015,7 @@
     {
       "address": "0x66eea8",
       "matching": 1.0,
-      "name": "TMilitaryUnitOrderState::`vftable'",
+      "name": "TMilitaryUnit::`vftable'",
       "type": 5
     },
     {

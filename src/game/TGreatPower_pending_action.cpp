@@ -1,6 +1,6 @@
 #include "game/TGreatPower.h"
 #include "game/TGreatPower_internal.h"
-#include "game/TMilitaryUnitOrderState.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TCivUnit.h"
 #include "game/TAdmiral.h"
 #include "game/TCity.h"
@@ -12,7 +12,6 @@
 #include "game/TDiplomacyMgr.h"
 
 #include "decomp_types.h"
-
 
 // FUNCTION: IMPERIALISM 0x004d7770
 void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
@@ -27,7 +26,7 @@ void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
       capabilityBonus = (static_cast<int>(-capabilityFlag) >> 0x1f) & 8;
     }
   }
-  TMilitaryUnitOrderState* militaryOrder = new TMilitaryUnitOrderState();
+  TMilitaryUnit* militaryOrder = new TMilitaryUnit();
   militaryOrder->InitializeRecruitOrderState(static_cast<short>(capabilityBonus), nodeContext,
                                              this->nationSlot);
   militaryOrder->SetOrderModeSlot34(2, -1);
@@ -42,7 +41,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
   // Land recruit order (serializedStatusFlags[1] == '2').
   if (this->serializedStatusFlags[1] == 0x32) {
-    TMilitaryUnitOrderState* militaryOrder = new TMilitaryUnitOrderState();
+    TMilitaryUnit* militaryOrder = new TMilitaryUnit();
     int nodeContext = this->GetHomeRegionCityRecordIndex();
     short capValue = CityOrderCapForNation(nationSlot);
     militaryOrder->InitializeRecruitOrderState(capValue, nodeContext, nationSlot);

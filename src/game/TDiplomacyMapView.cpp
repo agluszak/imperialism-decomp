@@ -20,7 +20,7 @@
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TInfoBarText.h"
 #include "game/ui_control_tags.h"
-#include "game/TMilitaryUnitOrderState.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TCursorControlPanel.h"
