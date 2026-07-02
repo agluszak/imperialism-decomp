@@ -33872,7 +33872,7 @@
     {
       "address": "0x5e55ee",
       "matching": 0.0,
-      "name": "Dropped",
+      "name": "CDragListBox::Dropped(int, class CPoint)",
       "type": 1
     },
     {

@@ -1,25 +1,36 @@
 address|name|symbol|size|type|prototype|provenance
+401122|thunk_TPictureButton::TPictureButton||5|function|undefined TPictureButton()|
 4019ba|thunk_InvalidateMapRegionForOrderEntry||5|function|undefined thunk_InvalidateMapRegionForOrderEntry()|
+40231a|TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C||5|function|undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()|
 40257c|thunk_GetCityBuildingProductionValueBySlot||5|function|int __thiscall thunk_GetCityBuildingProductionValueBySlot(short nBuildingSlotId)|
 4028d8|thunk_InitializeCityInteriorMinister||5|function|undefined thunk_InitializeCityInteriorMinister()|
 402a7c|thunk_InitializeUiTextStyleDescriptor||5|function|undefined thunk_InitializeUiTextStyleDescriptor()|
 402aa4|thunk_SetUiResourceContextTagWord||5|function|undefined thunk_SetUiResourceContextTagWord()|
 402eeb|TUnit::thunk_RegisterUnitOrderWithOwnerManager||5|function|undefined thunk_RegisterUnitOrderWithOwnerManager()|
 40318e|thunk_GetMapActionContextByTileIndex||5|function|void * __cdecl thunk_GetMapActionContextByTileIndex(short nTileIndex)|
+4032a1|TCivToolbar::thunk_SetMapInteractionMode||5|function|void __thiscall thunk_SetMapInteractionMode(short nMode)|
+403b16|UiRuntimeContext::GetActiveNationId||5|function|undefined GetActiveNationId()|
 403f71|thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90||5|function|undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()|
 4042c8|thunk_ConstructUiResourceEntryType4B0C0||5|function|undefined thunk_ConstructUiResourceEntryType4B0C0()|
+404a25|TDiplomacyMapView::thunk_AppendPackedColorDwordToMaskBuffers||5|function|undefined thunk_AppendPackedColorDwordToMaskBuffers()|
 405529|Config::InitDefaults||5|function|undefined4 * __fastcall InitDefaults(astruct_11 * this_obj)|
+4056a5|TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale||5|function|undefined thunk_ProjectTileIndexToWrappedScreenOffsetByScale()|
 405c72|thunk_DestructEngineerDialogBaseState||5|function|void __thiscall thunk_DestructEngineerDialogBaseState(void)|
+4061d1|thunk_InitializeDirectSoundDeviceAndChannels_004061D1|||global||
 406758|TCountry::thunk_QueueInterNationEventRecordDeduped||5|function|undefined thunk_QueueInterNationEventRecordDeduped()|
 4067c1|thunk_DestructCityDialogSharedBaseState||5|function|undefined thunk_DestructCityDialogSharedBaseState()|
 406afa|thunk_BuildUiTextStyleDescriptor||5|function|undefined thunk_BuildUiTextStyleDescriptor()|
+406c1c|TMapDialog::thunk_SplitTileIndexToRowAndColumn||5|function|undefined thunk_SplitTileIndexToRowAndColumn()|
 406ccb|thunk_HandleEngineerConstructionAction||5|function|bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)|
 407f4a|TCivDescription::`scalar deleting destructor'||5|function|undefined ScalarDeletingDestructor()|
 408035|thunk_DestroyScopedMapQuickDrawContext||5|function|undefined thunk_DestroyScopedMapQuickDrawContext()|
 408328|thunk_NormalizeWrappedMapCoord108x60||5|function|undefined thunk_NormalizeWrappedMapCoord108x60()|
+408995|TToolBarCluster::thunk_RefreshMapOrderEntryPanel||5|function|void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
 408ed6|thunk_GetResourceTypeRandomDrawBlockFlag||5|function|undefined thunk_GetResourceTypeRandomDrawBlockFlag()|
+409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex||5|function|undefined MapTurnEventCodeToPaletteIndex()|
 40928c|thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh||5|function|undefined thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh()|
 4096b0|thunk_DispatchLocalizedUiMessageWithTemplateA13A0||5|function|undefined thunk_DispatchLocalizedUiMessageWithTemplateA13A0()|
+409980|TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry||5|function|undefined thunk_ConstructUiClickablePictureResourceEntry()|
 4125d0|WrapperFor_ftol_At004125d0||30|function|undefined WrapperFor_ftol_At004125d0()|
 412600|InvokeCallbackForRecordRangeWithStride||42|function|undefined InvokeCallbackForRecordRangeWithStride()|
 412640|OrphanCallChain_C5_I60_00412640||173|function|undefined OrphanCallChain_C5_I60_00412640()|
@@ -278,7 +289,13 @@ address|name|symbol|size|type|prototype|provenance
 4601b0|InitializeTradeScreenBitmapControls||41928|function|undefined InitializeTradeScreenBitmapControls()|
 46503c|BuildTradeBoardDialogUiLayoutVariantA||4563|function|undefined BuildTradeBoardDialogUiLayoutVariantA()|
 46620f|InitializeUiResourceEntries||860|function|int * __cdecl InitializeUiResourceEntries(void)|
+46624f|alloc_failed_set_null_factory_result|||global||
+466251|build_first_resource_entry|||global||
+466566|jump_to_shared_cleanup_tail|||global||
 46baa7|BuildTradeBoardDialogUiLayoutVariantB||4104|function|undefined BuildTradeBoardDialogUiLayoutVariantB()|
+46ca6e|begin_final_resource_cleanup|||global||
+46ca9c|restore_exception_context|||global||
+46caae|return_resource_head|||global||
 46fd10|BuildTurnEventDialogResourcesForEvent7DE||15634|function|undefined BuildTurnEventDialogResourcesForEvent7DE()|
 4749a0|BuildUniversityDialogShell||293|function|int * __fastcall BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)|
 474ac5|BuildUniversityDialogControls||5307|function|undefined BuildUniversityDialogControls()|
@@ -580,6 +597,7 @@ address|name|symbol|size|type|prototype|provenance
 485150|TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150||28|function|undefined WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150()|
 485180|TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl||29|function|undefined TMacViewMgr_OnCommand_ID_8009_Impl()|
 4851b0|TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog||774|function|undefined TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog()|
+48542a|HandleDialogSelectionAndDispatchTurnEventCode|||global||
 485590|SetUiRuntimeContextValue64ToZero||1|function|undefined SetUiRuntimeContextValue64ToZero()|
 4855b0|TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog||1|function|undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()|
 485920|HandleCustomMessage2420DispatchTurnEvent||40|function|undefined HandleCustomMessage2420DispatchTurnEvent()|
@@ -1328,6 +1346,7 @@ address|name|symbol|size|type|prototype|provenance
 49c720|ReadWaveDataAndFormatViaLoaderWithRetry||225|function|undefined ReadWaveDataAndFormatViaLoaderWithRetry()|
 49c850|TSoundResourceManager::SetChannelVolumesUntilAccepted||61|function|int SetChannelVolumesUntilAccepted(int volume)|
 49c8e0|ClearDirectSoundInitPendingAndResetState_Impl||80|function|undefined ClearDirectSoundInitPendingAndResetState_Impl()|
+49c950|thunk_InitializeDirectSoundDeviceAndChannels||5|function|undefined thunk_InitializeDirectSoundDeviceAndChannels()|
 49c970|InitializeDirectSoundDeviceAndChannels||161|function|undefined InitializeDirectSoundDeviceAndChannels()|
 49ca50|ReleaseRuntimeSelectionPeersAndResetOwner_Impl||80|function|undefined ReleaseRuntimeSelectionPeersAndResetOwner_Impl()|
 49cac0|ResetGlobalPair6A1FD0And6A1FD4||13|function|undefined ResetGlobalPair6A1FD0And6A1FD4()|
@@ -1369,6 +1388,8 @@ address|name|symbol|size|type|prototype|provenance
 49dab0|TAdorner::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 49dae0|WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl()|
 49db60|WrapperFor_ftol_At0049db60||30|function|undefined WrapperFor_ftol_At0049db60()|
+49dbea|loc_WriteUiRuntimeCursorTableBase_A|||global||
+49dc60|loc_WriteUiRuntimeCursorTableBase_B|||global||
 49dd40|TNewGameCommand::CreateObject|?CreateObject@TNewGameCommand@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 49ddb0|TNewGameCommand::OrphanRetStub_00487a00||11|function|void ReinitializeGameFlowWithoutPostingTurnEvent()|
 49ddd0|TNewGameCommand::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -1835,6 +1856,10 @@ address|name|symbol|size|type|prototype|provenance
 4b6fe0|TUnitOrder::InitializeCityRecruitmentOrderContext||126|function|void __thiscall InitializeCityRecruitmentOrderContext(void * pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit, short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit, short nWorkforceMode, byte bSpecialistMode)|
 4b7080|TUnitOrder::MaxOrder||312|function|int MaxOrder(void)|
 4b7210|TUnitOrder::SetQuantity||197|function|bool SetQuantity(short nTargetOrderAmount)|
+4b7244|consume_primary_required_resource|||global||
+4b7271|consume_secondary_required_resource|||global||
+4b729a|apply_worker_group_delta|||global||
+4b72a4|deduct_city_cash_for_order_delta|||global||
 4b7320|TUnitOrder::FillOrderSheet||102|function|undefined AccumulateCityEntryCostsByAmount()|
 4b73b0|TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta||839|function|void __thiscall CommitCityRecruitmentOrderDelta(void)|
 4b77e0|UIState_ActivateSlotAndUpdateUI_Impl||66|function|undefined UIState_ActivateSlotAndUpdateUI_Impl()|
@@ -2112,7 +2137,16 @@ address|name|symbol|size|type|prototype|provenance
 4c9e30|TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState||32|function|undefined ConstructTBuildingConstructionViewBaseState()|
 4c9e60|TBuildingConstructionView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c9eb0|TBuildingConstructionView::OpenCityViewBuildingOrderDialog||2058|function|void __thiscall OpenCityViewBuildingOrderDialog(short nBuildingSlotId, int * pCityState, int nDialogContextFlags)|
+4c9f5a|branch_by_selected_slot|||global||
+4ca20d|select_cost_text_mode_by_slot|||global||
+4ca42d|resolve_ok_button_state_slot11|||global||
+4ca5bb|toggle_ok_button_for_pending_order|||global||
 4ca8f0|TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult||270|function|void __thiscall ApplyCityViewBuildingOrderDialogResult(int nDialogActionTag)|
+4ca8fd|check_university_slot11|||global||
+4ca943|handle_standard_slot_apply|||global||
+4ca94b|apply_order_on_ok|||global||
+4ca988|clear_pending_order_on_cancel|||global||
+4ca99a|handle_university_slot_ok|||global||
 4caa50|TOverlayRadioButton::CreateObject|?CreateObject@TOverlayRadioButton@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 4caaf0|TOverlayRadioButton::GetRuntimeClass|?GetRuntimeClass@TOverlayRadioButton@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
 4cab10|TOverlayRadioButton::ConstructTOverlayRadioButtonBaseState||98|function|undefined ConstructTOverlayRadioButtonBaseState()|
@@ -2121,7 +2155,18 @@ address|name|symbol|size|type|prototype|provenance
 4cac60|TUniversityView::ConstructTUniversityViewBaseState||32|function|undefined ConstructTUniversityViewBaseState()|
 4cac90|TUniversityView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4cace0|TUniversityView::OrphanRetStub_004c6fd0||1265|function|void OrphanRetStub_004c6fd0(int * pCityViewDialog)|
+4cad30|recruitment_row_loop_head|||global||
+4caedb|recruitment_row_next_iteration|||global||
+4cafa4|populate_title_rows_loop|||global||
+4cb03b|populate_description_rows_loop|||global||
+4cb0a1|finish_description_rows_loop|||global||
 4cb320|TUniversityView::SelectUniversityRecruitmentEntry||1105|function|void __thiscall SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex)|
+4cb37d|check_same_recruitment_entry|||global||
+4cb3b0|handle_entry_selection_change|||global||
+4cb671|update_required_level_pips|||global||
+4cb6db|enable_level_pips_loop|||global||
+4cb717|disable_level_pips_loop|||global||
+4cb73d|cleanup_recruitment_selection|||global||
 4cb8a0|TUniversityView::HandleEvent||301|function|undefined HandleUniversityRecruitmentSelectionAndStepCommand()|
 4cb9cd|UpdateUniversityCountControlAndRefreshView||54|function|undefined UpdateUniversityCountControlAndRefreshView()|
 4cba03|UpdateUniversityCountControlAndRefreshViewAlt||151|function|undefined UpdateUniversityCountControlAndRefreshViewAlt()|
@@ -2162,16 +2207,29 @@ address|name|symbol|size|type|prototype|provenance
 4ce520|ConstructBuildingExpansionView||18|function|undefined ConstructBuildingExpansionView()|
 4ce550|TBuildingExpansionView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ce5a0|TBuildingExpansionView::OpenCityViewProductionDialog||1228|function|void __thiscall OpenCityViewProductionDialog(int nBuildingSlotId, int * pCityStateData, int nDialogFlags)|
+4ce82d|handle_missing_building_entry|||global||
+4ce875|fatal_null_building_entry|||global||
+4ce91f|show_upgrade_in_progress_message|||global||
+4ce9d0|hide_upgrade_message_when_available|||global||
 4cebb0|TBuildingExpansionView::ApplyCityProductionDialogChanges||236|function|void __thiscall ApplyCityProductionDialogChanges(int nDialogActionTag)|
 4cece0|TArmoryView::CreateObject|?CreateObject@TArmoryView@@SGPAVCObject@@XZ|123|function|undefined CreateObject()|rtti
 4ced80|TArmoryView::GetRuntimeClass||6|function|undefined GetTArmoryViewClassNamePointer()|rtti
 4ceda0|ConstructArmoryView||32|function|undefined ConstructArmoryView()|
 4cedd0|TArmoryView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4cee20|TArmoryView::OrphanRetStub_004c6fd0||1048|function|void OrphanRetStub_004c6fd0(int * pCityViewDialog)|
+4cee7d|advanced_recruit_count_loop_head|||global||
+4ceea4|resolve_num_tag_mapping|||global||
+4cefd3|advanced_recruit_count_loop_next|||global||
+4cf0df|advanced_recruit_availability_loop_head|||global||
+4cf1b3|advanced_recruit_availability_loop_next|||global||
 4cf350|TArmoryView::HandleEvent||287|function|undefined HandleArmoryViewSelectionAndStepCommand()|
 4cf46f|UpdateUniversitySpecialistCountControlAndRefreshView||54|function|undefined UpdateUniversitySpecialistCountControlAndRefreshView()|
 4cf4a5|UpdateUniversitySpecialistCountControlAndRefreshViewAlt||151|function|undefined UpdateUniversitySpecialistCountControlAndRefreshViewAlt()|
 4cf5c0|TArmoryView::OrphanRetStub_004c6fb0||1217|function|void OrphanRetStub_004c6fb0(int * pCityViewDialog)|
+4cf67d|specialist_entry_null_guard|||global||
+4cf93c|resolve_capacity_mode|||global||
+4cf983|clamp_to_available_worker_pool|||global||
+4cf9bb|update_availability_indicator_color|||global||
 4cfbd0|TArmoryView::RefreshCityViewProductionDetails||1748|function|void __thiscall RefreshCityViewProductionDetails(short nBuildingSlotId)|
 4d0470|TArmoryView::Free||34|function|undefined HandleArmoryViewCloseAndMaybePostCommand23F8()|
 4d04b0|TEngineerDialog::CreateObject|?CreateObject@TEngineerDialog@@SGPAVCObject@@XZ|110|function|undefined CreateObject()|rtti
@@ -2187,6 +2245,7 @@ address|name|symbol|size|type|prototype|provenance
 4d1830|TPlaceCityDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4d1880|TPlaceCityDialog::BuildCityViewResourceRows||1163|function|undefined BuildCityViewResourceRows()|
 4d1e40|TPlaceCityDialog::ApplyRectSlot110||13|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
+4d1e60|TControl::thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44||5|function|undefined thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44()|
 4d1fb0|WrapperFor_ftol_At004d1fb0||30|function|undefined WrapperFor_ftol_At004d1fb0()|
 4d2000|TCivMgr::CreateObject|?CreateObject@TCivMgr@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4d2030|TCivMgr::GetRuntimeClass||6|function|undefined GetTCivMgrClassNamePointer()|rtti
@@ -2210,8 +2269,16 @@ address|name|symbol|size|type|prototype|provenance
 4d3070|TCivToolbar::HandleCivilianReportDecision||478|function|void __thiscall HandleCivilianReportDecision(int * pCivilianOrderEntry)|
 4d3310|TMapMgr::QueueCivilianWorkOrderWithCostCheck||606|function|bool __thiscall QueueCivilianWorkOrderWithCostCheck(short nTileIndex)|
 4d3610|TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder||757|function|bool __thiscall PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)|
+4d371c|check_afford_prompted_rail|||global||
+4d372e|prompt_confirm_rail_order|||global||
+4d3831|show_insufficient_funds_prompt|||global||
 4d39d0|QueueProspectingOrderAndPlayFeedback||99|function|undefined QueueProspectingOrderAndPlayFeedback()|
 4d3a60|TCivMgr::HandleEngineerConstructionAction||1761|function|bool __thiscall HandleEngineerConstructionAction(short nTileIndex)|
+4d3ab4|branch_fort_option|||global||
+4d3c8b|branch_port_cost_check|||global||
+4d3e37|branch_depot_cost_check|||global||
+4d3fa6|branch_adjacent_rail_cost_check|||global||
+4d40dd|finalize_engineer_action_and_refresh|||global||
 4d4310|TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles||86|function|void __thiscall RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex, int * pCivOrderEntry)|
 4d4390|ApplyCompletedCivWorkOrderToMapState||680|function|void __cdecl ApplyCompletedCivWorkOrderToMapState(int * pCivUnitOrderState)|
 4d4740|ResolveCompetingDeveloperTilePurchaseOrders||474|function|undefined ResolveCompetingDeveloperTilePurchaseOrders()|
@@ -2593,6 +2660,7 @@ address|name|symbol|size|type|prototype|provenance
 4eb5d0|OrphanCallChain_C4_I75_004eb5d0||172|function|undefined OrphanCallChain_C4_I75_004eb5d0()|
 4eb6b0|UpdateTrackedEntryEligibilityByClassMaskAndRatio||393|function|undefined UpdateTrackedEntryEligibilityByClassMaskAndRatio()|
 4eb8b0|AssignTrackedEntryActionsByProfileToOrdersOrUnits||1212|function|undefined AssignTrackedEntryActionsByProfileToOrdersOrUnits()|
+4ebea0|thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner|||global||
 4ebff0|WrapperFor_ftol_At004ebff0||30|function|undefined WrapperFor_ftol_At004ebff0()|
 4ec020|TDefenseMinister::CreateObject|?CreateObject@TDefenseMinister@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 4ec0a0|TDefenseMinister::CreateTDefenseMinisterInstance||9|function|undefined CreateTDefenseMinisterInstance()|
@@ -2664,6 +2732,11 @@ address|name|symbol|size|type|prototype|provenance
 4ee730|WrapperFor_FreeHeapBufferIfNotNull_At004ee730||73|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004ee730()|
 4ee7a0|TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults||220|function|undefined InitializeDiplomacyTurnStateManagerDefaults()|
 4ee8c0|RebuildCivilianOrderCompatibilityMatrices||1137|function|void __fastcall RebuildCivilianOrderCompatibilityMatrices(void * pNationSlotRuntime)|
+4ee8f1|loop_build_major_compatibility_grid|||global||
+4ee9b6|loop_build_minor_compatibility_grid|||global||
+4eea57|set_diagonal_relation_forbid_self|||global||
+4eeb26|apply_random_special_minor_pairings|||global||
+4eec95|apply_late_scenario_open_relations|||global||
 4eee60|RemoveNationSlotAndNotifyPeers_Impl||181|function|undefined RemoveNationSlotAndNotifyPeers_Impl()|
 4eef50|ResetTerrainAdjacencyMatrixRowAndSymmetricLink||191|function|undefined ResetTerrainAdjacencyMatrixRowAndSymmetricLink()|
 4ef040|DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy||43|function|undefined DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy()|
@@ -3148,6 +3221,9 @@ address|name|symbol|size|type|prototype|provenance
 513980|IsValidSecondaryNationHomeTileCandidate||632|function|undefined IsValidSecondaryNationHomeTileCandidate()|
 513ca0|HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask||443|function|undefined HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask()|
 513ed0|CheckTileProspectingDiscoveryCandidate||100|function|byte __thiscall CheckTileProspectingDiscoveryCandidate(short nTileIndex)|
+513ef2|loop_scan_resource_slots|||global||
+513f1d|check_oil_capability_flag|||global||
+513f27|set_candidate_found|||global||
 513f60|TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair||100|function|undefined SetHexAdjacencyDirectionFlagsForTilePair()|
 513ff0|ApplyRailSectionEndpointDirectionFlags||100|function|undefined ApplyRailSectionEndpointDirectionFlags()|
 514080|ApplyEngineerRailCostDeltaForConnectedTiles||100|function|void __thiscall ApplyEngineerRailCostDeltaForConnectedTiles(short nSourceTileIndex, short nTargetTileIndex)|
@@ -3158,7 +3234,17 @@ address|name|symbol|size|type|prototype|provenance
 514360|TMapMgr::OrphanLeaf_NoCall_Ins31_00514360||75|function|undefined OrphanLeaf_NoCall_Ins31_00514360(short param_1, short param_2, short param_3)|
 5143d0|TMapMgr::FloodFillTileRegionMarker||378|function|void __thiscall FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId)|
 5145b0|TMapMgr::QueueDepotConstructionOrder||417|function|int __thiscall QueueDepotConstructionOrder(int * pMapContext, short nTileIndex, short nNationId)|
+5145fb|check_bit10_order_exists|||global||
+514613|allocate_new_bit10_order|||global||
+514642|reuse_existing_bit10_order|||global||
+5146c6|deduct_cash_for_bit10_order|||global||
+5146d0|set_tile_flag_bit10|||global||
 5147d0|TMapMgr::QueuePortConstructionOrder||396|function|void __thiscall QueuePortConstructionOrder(int * pMapContext, short nTileIndex, short nNationId)|
+514807|check_bit04_order_exists|||global||
+51481d|allocate_new_bit04_order|||global||
+514842|reuse_existing_bit04_order|||global||
+5148d8|deduct_cash_for_bit04_order|||global||
+5148df|set_tile_flag_bit04|||global||
 5149d0|TMapMgr::SetProvinceCapitalTileFlagBit08||56|function|void __thiscall SetProvinceCapitalTileFlagBit08(short nProvinceId)|
 514a20|TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors||475|function|void __thiscall SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex)|
 514c80|FindReachableRecruitSpawnTileWithVisitedReset||61|function|undefined FindReachableRecruitSpawnTileWithVisitedReset()|
@@ -3938,7 +4024,13 @@ address|name|symbol|size|type|prototype|provenance
 54a9d0|IsSpecialNationDialogModeActive||38|function|undefined IsSpecialNationDialogModeActive()|
 54aa10|CreateAndSendTurnEvent0C_Text256AndTwoFlags||206|function|undefined CreateAndSendTurnEvent0C_Text256AndTwoFlags()|
 54ab20|DispatchTileRedrawInvalidateEvent||149|function|void __cdecl DispatchTileRedrawInvalidateEvent(short nTileIndex)|
+54ab8a|load_tile_record_base|||global||
+54ab9f|copy_tile_record_to_event_payload|||global||
 54abf0|DispatchCityRedrawInvalidateEvent||508|function|void __cdecl DispatchCityRedrawInvalidateEvent(short nCityId)|
+54ac94|load_city_record_base|||global||
+54acd6|copy_city_header_block|||global||
+54ad2e|copy_city_grid_block|||global||
+54adaa|dispatch_city_redraw_event|||global||
 54ae90|CopyA8RecordWithSharedStringAtA4||261|function|undefined CopyA8RecordWithSharedStringAtA4()|
 54aff0|TPoseMessageDialog::OrphanRetStub_00487a00||16|function|void InvokePoseMessageDialogRefreshFromContextField18()|
 54b010|TPoseMessageDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -4151,7 +4243,16 @@ address|name|symbol|size|type|prototype|provenance
 559dd0|GetMapContextActionLabelTokenByActionCode||29|function|ushort __cdecl GetMapContextActionLabelTokenByActionCode(short nTileIndex, int dwInputFlags)|
 559e00|GetMapContextActionLabelToken||423|function|ushort __cdecl GetMapContextActionLabelToken(short nTileIndex, int dwInputFlags)|
 55a020|TToolBarCluster::TryHandleMapContextAction||215|function|int __thiscall TryHandleMapContextAction(short nTileIndex, int nInputFlags)|
+55a064|handle_action_code_9|||global||
+55a081|handle_action_codes_2_to_8|||global||
+55a0a9|handle_action_code_11|||global||
+55a0ce|handle_action_code_10|||global||
+55a0ee|return_unhandled_action|||global||
 55a160|TryQueueMapOrderFromTileAction||648|function|int __thiscall TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags)|
+55a268|set_order_type_1_from_context|||global||
+55a292|commit_order_entry_to_global_queue|||global||
+55a2b5|set_order_type_6_from_context|||global||
+55a37e|set_order_type_5_from_province|||global||
 55a780|ResolveMapOrderPairConflictStep||2934|function|void __cdecl ResolveMapOrderPairConflictStep(int * pLeftOrderEntry, int * pRightOrderEntry)|
 55b640|WrapperFor_ftol_At0055b640||30|function|undefined WrapperFor_ftol_At0055b640()|
 55b670|TNewsMgr::CreateObject|?CreateObject@TNewsMgr@@SGPAVCObject@@XZ|27|function|undefined CreateObject()|rtti
@@ -5378,6 +5479,7 @@ address|name|symbol|size|type|prototype|provenance
 5a4690|TArmyBattle::CreateTArmyBattleInstance||89|function|undefined CreateTArmyBattleInstance()|
 5a4710|TArmyBattle::CreateObject|?CreateObject@TArmyBattle@@SGPAVCObject@@XZ|47|function|undefined CreateObject()|rtti
 5a4750|TArmyBattle::GetRuntimeClass||6|function|undefined GetTArmyBattleClassNamePointer()|rtti
+5a4770|TArmyBattle::ConstructTArmyBattleBaseState||5|function|undefined ConstructTArmyBattleBaseState()|
 5a4790|InitializeBattleSetupAndMaybeDispatchTurnEventED8||387|function|undefined InitializeBattleSetupAndMaybeDispatchTurnEventED8()|
 5a4990|TArmyBattle::ReadFrom||819|function|undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState()|
 5a4da0|TArmyBattle::WriteTo||425|function|undefined OrphanRetStub_0059ad90(int * param_1)|
@@ -5543,6 +5645,9 @@ address|name|symbol|size|type|prototype|provenance
 5aefd0|DestructTTechMgrAndMaybeFree_Impl||7|function|undefined DestructTTechMgrAndMaybeFree_Impl()|
 5aeff0|InitializeCityOrderCapabilityStateDefaults||651|function|undefined InitializeCityOrderCapabilityStateDefaults()|
 5af330|GenerateRandomCapabilityPrioritySlots||229|function|void __fastcall GenerateRandomCapabilityPrioritySlots(void * pCapabilityPriorityState)|
+5af38a|loop_over_priority_range_pairs|||global||
+5af3af|generate_unique_candidate_slot|||global||
+5af3de|scan_existing_slots_for_duplicate|||global||
 5af460|TTechMgr::ReadFrom||537|function|undefined DeserializeCityOrderCapabilityState()|
 5af710|TTechMgr::WriteTo||493|function|undefined SerializeCityOrderCapabilityState()|
 5af980|UpdateCityOrderCapabilityUnlockProgress||315|function|undefined UpdateCityOrderCapabilityUnlockProgress()|
@@ -6207,30 +6312,30 @@ address|name|symbol|size|type|prototype|provenance
 5e556b|CDragListBox::BeginDrag|?BeginDrag@CDragListBox@@UAEHVCPoint@@@Z|44|function|undefined WrapperFor_Ordinal14_AndDispatchCallbackD8_At005e556b()|
 5e5597|DispatchCallbackD8_WithMinusOne_At005e5597||13|function|undefined DispatchCallbackD8_WithMinusOne_At005e5597()|
 5e55a4|CDragListBox::Dragging|?Dragging@CDragListBox@@UAEIVCPoint@@@Z|74|function|undefined Dragging()|
-5e55ee|Dropped||115|function|undefined Dropped()|
+5e55ee|CDragListBox::Dropped|?Dropped@CDragListBox@@UAEXHVCPoint@@@Z|115|function|undefined Dropped()|
 5e5661|MoveListBoxEntryPreserveItemData||108|function|undefined MoveListBoxEntryPreserveItemData()|
 5e56cd|CDragListBox::DrawInsert|?DrawInsert@CDragListBox@@UAEXH@Z|37|function|undefined DrawInsert()|
 5e56f2|CDragListBox::DrawSingle|?DrawSingle@CDragListBox@@QAEXH@Z|247|function|undefined DrawSingle()|
 5e57e9|CDragListBox::OnChildNotify|?OnChildNotify@CDragListBox@@MAEHIIJPAJ@Z|188|function|undefined OnChildNotify()|
 5e58ab|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
 5e58e4|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
-5e591c|AddBitmap||52|function|int __thiscall ?AddBitmap@CToolBarCtrl@@QAEHHPAVCBitmap@@@Z@005e591c(int param_1, CBitmap * param_2)|
+5e591c|AddBitmap|AddBitmap|52|function|int __thiscall ?AddBitmap@CToolBarCtrl@@QAEHHPAVCBitmap@@@Z@005e591c(int param_1, CBitmap * param_2)|
 5e5950|CToolBarCtrl::AddBitmap|?AddBitmap@CToolBarCtrl@@QAEHHI@Z|55|function|undefined AddBitmap()|
-5e5987|SaveState||48|function|void __thiscall ?SaveState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e5987(HKEY__ * param_1, char * param_2, char * param_3)|
-5e59b7|RestoreState||48|function|void __thiscall ?RestoreState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e59b7(HKEY__ * param_1, char * param_2, char * param_3)|
+5e5987|SaveState|SaveState|48|function|void __thiscall ?SaveState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e5987(HKEY__ * param_1, char * param_2, char * param_3)|
+5e59b7|RestoreState|RestoreState|48|function|void __thiscall ?RestoreState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e59b7(HKEY__ * param_1, char * param_2, char * param_3)|
 5e59e7|CToolBarCtrl::AddString|?AddString@CToolBarCtrl@@QAEHI@Z|38|function|undefined AddString()|
 5e5a0d|OnCreate||41|function|undefined ?OnCreate@CToolBarCtrl@@IAEHPAUtagCREATESTRUCTA@@@Z@005e5a0d()|
 5e5a36|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
 5e5a6f|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e5ad2|CStatusBarCtrl::GetText|?GetText@CStatusBarCtrl@@QBE?AVCString@@HPAH@Z|159|function|undefined GetText()|
-5e5b9a|GetBorders||58|function|int __thiscall ?GetBorders@CStatusBarCtrl@@QBEHAAH00@Z@005e5b9a(int * param_1, int * param_2, int * param_3)|
+5e5b9a|GetBorders|GetBorders|58|function|int __thiscall ?GetBorders@CStatusBarCtrl@@QBEHAAH00@Z@005e5b9a(int * param_1, int * param_2, int * param_3)|
 5e5bd7|CListCtrl::OnChildNotify|?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z|46|function|undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7()|
 5e5c0b|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
 5e5c44|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e5c9c|CListCtrl::InsertColumn|?InsertColumn@CListCtrl@@QAEHHPBDHHH@Z|83|function|undefined InsertColumn()|
 5e5cef|CListCtrl::InsertItem|?InsertItem@CListCtrl@@QAEHIHPBDIIHJ@Z|76|function|undefined InsertItem()|
-5e5d3b|HitTest||54|function|int __thiscall ?HitTest@CListCtrl@@QBEHVCPoint@@PAI@Z@005e5d3b(CPoint param_1, uint * param_2)|
-5e5d71|SetItem||78|function|undefined ?SetItem@CListCtrl@@QAEHHHIPBDHIIJ@Z@005e5d71()|
+5e5d3b|HitTest|HitTest|54|function|int __thiscall ?HitTest@CListCtrl@@QBEHVCPoint@@PAI@Z@005e5d3b(CPoint param_1, uint * param_2)|
+5e5d71|SetItem|SetItem|78|function|undefined ?SetItem@CListCtrl@@QAEHHHIPBDHIIJ@Z@005e5d71()|
 5e5dbf|CListCtrl::GetItemText|?GetItemText@CListCtrl@@QBE?AVCString@@HH@Z|165|function|undefined GetItemText()|
 5e5e64|CListCtrl::GetItemText|?GetItemText@CListCtrl@@QBEHHHPADH@Z|69|function|undefined GetItemText_5e5e64()|
 5e5ea9|CListCtrl::GetItemData|?GetItemData@CListCtrl@@QBEKH@Z|66|function|undefined GetItemData()|
@@ -6246,13 +6351,13 @@ address|name|symbol|size|type|prototype|provenance
 5e61bb|CTreeCtrl::ItemHasChildren|?ItemHasChildren@CTreeCtrl@@QBEHPAU_TREEITEM@@@Z|46|function|undefined ItemHasChildren()|
 5e61e9|CTreeCtrl::SetItem|?SetItem@CTreeCtrl@@QAEHPAU_TREEITEM@@IPBDHHIIJ@Z|78|function|int __thiscall ?SetItem@CTreeCtrl@@QAEHPAU_TREEITEM@@IPBDHHIIJ@Z(_TREEITEM * param_1, uint param_2, char * param_3, int param_4, int param_5, uint param_6, uint param_7, long param_8)|
 5e6237|CTreeCtrl::InsertItem|?InsertItem@CTreeCtrl@@QAEPAU_TREEITEM@@IPBDHHIIJPAU2@1@Z|84|function|undefined InsertItem_5e6237()|
-5e628b|HitTest_005E628B||54|function|_TREEITEM * __thiscall HitTest_005E628B(CPoint param_1, uint * param_2)|
+5e628b|HitTest_005E628B|HitTest_005E628B|54|function|_TREEITEM * __thiscall HitTest_005E628B(CPoint param_1, uint * param_2)|
 5e62c1|CTreeCtrl::RemoveImageList|?RemoveImageList@CTreeCtrl@@IAEXH@Z|57|function|undefined RemoveImageList_5e62c1()|
 5e62fa|CTreeCtrl::OnDestroy|?OnDestroy@CTreeCtrl@@QAEXXZ|28|function|undefined OnDestroy()|
 5e6379|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
 5e63b2|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e6416|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
-5e644f|CProgressCtrl::~CHotKeyCtrl||56|function|undefined ??1CProgressCtrl@@UAE@XZ@005e644f()|
+5e644f|CProgressCtrl::~CHotKeyCtrl|CProgressCtrl::~CHotKeyCtrl|56|function|undefined ??1CProgressCtrl@@UAE@XZ@005e644f()|
 5e64be|CSliderCtrl::SetRange|?SetRange@CSliderCtrl@@QAEXHHH@Z|51|function|undefined SetRange()|
 5e6557|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
 5e6590|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
@@ -6327,8 +6432,8 @@ address|name|symbol|size|type|prototype|provenance
 5e702c|CMemoryException::CMemoryException|??0CMemoryException@@QAE@HI@Z|42|function|undefined WrapperFor_CException_At005e702c()|
 5e7056|WrapperFor_FreeHeapBufferIfNotNull_At005e7056||28|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005e7056()|
 5e7072|InitializeRuntimeClassVtablePointer_0066FEC4_VariantD||7|function|undefined InitializeRuntimeClassVtablePointer_0066FEC4_VariantD()|
-5e7079|CSharedFile::`scalar_deleting_destructor'||28|function|undefined ??_GCSharedFile@@UAEPAXI@Z@005e7079()|
-5e709d|CCtrlView::~CListView||49|function|undefined ??1CCtrlView@@UAE@XZ@005e709d()|
+5e7079|CSharedFile::`scalar_deleting_destructor'|CSharedFile::`scalar_deleting_destructor'|28|function|undefined ??_GCSharedFile@@UAEPAXI@Z@005e7079()|
+5e709d|CCtrlView::~CListView|CCtrlView::~CListView|49|function|undefined ??1CCtrlView@@UAE@XZ@005e709d()|
 5e70ce|CGdiObject::`scalar deleting dtor'|??_GCGdiObject@@UAEPAXI@Z|28|function|undefined ??_GCGdiObject@@UAEPAXI@Z()|
 5e70ea|CBrush::~CBrush|??1CBrush@@UAE@XZ|51|function|undefined SehProlog_DeleteObjectHandle_Wrapper()|
 5e711d|CArchiveStream::CArchiveStream|??0CArchiveStream@@QAE@PAVCArchive@@@Z|18|function|undefined CArchiveStream()|
@@ -6339,7 +6444,7 @@ address|name|symbol|size|type|prototype|provenance
 5e71d6|CArchiveStream::Write|?Write@CArchiveStream@@UAGJPBXKPAK@Z|70|function|undefined WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e71d6()|
 5e722f|CArchiveStream::Seek|?Seek@CArchiveStream@@UAGJT_LARGE_INTEGER@@KPAT_ULARGE_INTEGER@@@Z|111|function|undefined Seek()|
 5e72f1|CFileException::`scalar deleting dtor'|??_GCFileException@@UAEPAXI@Z|28|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005e72f1()|
-5e730d|CFileException::~CArchiveException||52|function|undefined ??1CFileException@@UAE@XZ@005e730d()|
+5e730d|CFileException::~CArchiveException|CFileException::~CArchiveException|52|function|undefined ??1CFileException@@UAE@XZ@005e730d()|
 5e7350|fpmath||23|function|void __cdecl fpmath(int param_1)|
 5e7370|NoOpCrtThreadLifecycleHook||1|function|undefined NoOpCrtThreadLifecycleHook()|
 5e7380|InitializeFpmathAmsgExitHandlerTable||56|function|undefined InitializeFpmathAmsgExitHandlerTable()|
@@ -6397,7 +6502,7 @@ address|name|symbol|size|type|prototype|provenance
 5e9050|flush/close/reset CRT FILE state|__fclose_lk|101|function|undefined FlushCloseAndResetBufferedStream()|
 5e90c0|fopen-style stream open with mode|__fsopen|55|function|undefined OpenBufferedStreamDescriptorWithModeAndLock()|
 5e9100|fopen wrapper|__wfopen|21|function|undefined OpenBufferedStreamWithMode40()|
-5e9120|_fprintf||73|function|int __cdecl _fprintf@005e9120(FILE * _File, wchar_t * _Format, ...)|
+5e9120|_fprintf|_fprintf|73|function|int __cdecl _fprintf@005e9120(FILE * _File, wchar_t * _Format, ...)|
 5e9170|_fwrite|_fwrite|55|function|undefined WriteBufferItemsToStreamLocked()|
 5e91b0|__fwrite_lk|__fwrite_lk|326|function|undefined WriteBufferItemsToStreamUnlocked()|
 5e9300|_fscanf|_fscanf|50|function|undefined DecodeScenarioTilePaletteMaskWithStreamLock()|
@@ -6509,6 +6614,7 @@ address|name|symbol|size|type|prototype|provenance
 5edc70|__unlock_file2|__unlock_file2|40|function|undefined WrapperFor_LeaveIndexedCriticalSection_At005edc70()|
 5edcc0|ConvertBrokenDownLocalTimeToEpochSeconds|___loctotime_t|226|function|undefined ConvertBrokenDownLocalTimeToEpochSeconds()|
 5eddeb|RunLocalExceptionFilterChainAndUnwind||117|function|undefined RunLocalExceptionFilterChainAndUnwind()|
+5ede75|__seh_longjmp_unwind@4|__seh_longjmp_unwind@4|27|function||
 5ede90|__heap_init|__heap_init|55|function|undefined InitializeCrtHeapSubsystem()|
 5edf40|___sbh_new_region|___sbh_new_region|354|function|undefined AllocateCrtHeapRegionDescriptor()|
 5ee0b0|___sbh_release_region|___sbh_release_region|91|function|undefined FreeAllocatorPageNodeAndUnlink()|
@@ -6611,7 +6717,7 @@ address|name|symbol|size|type|prototype|provenance
 5f4b50|_ValidateRead|?_ValidateRead@@YAHPBXI@Z|32|function|undefined IsReadablePointerRangeViaIsBadReadPtr()|
 5f4b70|_ValidateWrite|?_ValidateWrite@@YAHPAXI@Z|32|function|undefined IsWritablePointerRangeViaIsBadWritePtr()|
 5f4b90|_ValidateExecute|?_ValidateExecute@@YAHP6GHXZ@Z|27|function|undefined IsCodePointerCallableViaIsBadCodePtr()|
-5f4bb0|abort||27|function|void __cdecl abort(void)|
+5f4bb0|abort|_abort|27|function|void __cdecl abort(void)|
 5f4cb0|__lseek|__lseek|114|function|undefined SeekFileDescriptorWithLock()|
 5f4d30|__lseek_lk|__lseek_lk|128|function|undefined SeekFileDescriptorAndClearEofFlag()|
 5f4db0|__getbuf|__getbuf|93|function|undefined InitializeFileStreamBufferWithAllocFallback()|
@@ -6709,7 +6815,7 @@ address|name|symbol|size|type|prototype|provenance
 5fac0d|CToolTipCtrl::SetToolRect|?SetToolRect@CToolTipCtrl@@QAEXPAVCWnd@@IPBUtagRECT@@@Z|66|function|undefined SetToolRect()|
 5fac4f|CToolTipCtrl::UpdateTipText|?UpdateTipText@CToolTipCtrl@@QAEXPBDPAVCWnd@@I@Z|55|function|undefined UpdateTipText()|
 5fac86|CToolTipCtrl::UpdateTipText|?UpdateTipText@CToolTipCtrl@@QAEXIPAVCWnd@@I@Z|80|function|undefined UpdateTipText_5fac86()|
-5facd6|FillInToolInfo||83|function|undefined ?FillInToolInfo@CToolTipCtrl@@QBEXAAUtagTOOLINFOA@@PAVCWnd@@I@Z@005facd6()|
+5facd6|FillInToolInfo|FillInToolInfo|83|function|undefined ?FillInToolInfo@CToolTipCtrl@@QBEXAAUtagTOOLINFOA@@PAVCWnd@@I@Z@005facd6()|
 5fad29|CWnd::EnableToolTips|?EnableToolTips@CWnd@@QAEHH@Z|162|function|undefined EnableToolTips()|
 5fadcb|CWnd::_FilterToolTipMessage|?_FilterToolTipMessage@CWnd@@SGXPAUtagMSG@@PAV1@@Z|16|function|undefined WrapperFor_RelayMouseEventToTooltipWindow_At005fadcb()|
 5faddb|CWnd::FilterToolTipMessage|?FilterToolTipMessage@CWnd@@QAEXPAUtagMSG@@@Z|762|function|undefined FilterToolTipMessage()|
@@ -6830,7 +6936,7 @@ address|name|symbol|size|type|prototype|provenance
 604c3c|NoOpPaddingStub_00604c3c||5|function|undefined NoOpPaddingStub_00604c3c()|
 604c41|OnCmdMsg||133|function|undefined ?OnCmdMsg@CPropertySheet@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z()|
 604cc6|CDialog::CDialog|??0CDialog@@QAE@XZ|34|function|undefined ConstructObjectVtable0066fc2cBase()|
-604ce8|CSharedFile::`scalar_deleting_destructor'||28|function|undefined ??_GCSharedFile@@UAEPAXI@Z@00604ce8()|
+604ce8|CSharedFile::`scalar_deleting_destructor'|CSharedFile::`scalar_deleting_destructor'|28|function|undefined ??_GCSharedFile@@UAEPAXI@Z@00604ce8()|
 604d04|CDialog::~CDialog|??1CDialog@@UAE@XZ|62|function|void __thiscall ??1CDialog@@UAE@XZ(void)|
 604d42|CDialog::Create|?Create@CDialog@@QAEHPBDPAVCWnd@@@Z|80|function|undefined CreateDialogFromResourceNameAndOwner()|
 604da4|CDialog::CreateIndirect|?CreateIndirect@CDialog@@IAEHPAXPAVCWnd@@PAUHINSTANCE__@@@Z|35|function|undefined CreateIndirect()|
@@ -6911,13 +7017,14 @@ address|name|symbol|size|type|prototype|provenance
 6064b0|CWinThread::OnIdle|?OnIdle@CWinThread@@UAEHJ@Z|267|function|undefined OnIdle_6064b0()|
 6065c7|CWinThread::DispatchThreadMessageEx|?DispatchThreadMessageEx@CWinThread@@IAEHPAUtagMSG@@@Z|121|function|undefined DispatchThreadMessageEx()|
 606640|CWinThread::PreTranslateMessage|?PreTranslateMessage@CWinThread@@UAEHPAUtagMSG@@@Z|229|function|undefined PreTranslateMessage()|
-606725|AfxInternalProcessWndProcException||37|function|long __stdcall ?ProcessWndProcException@CWinThread@@UAEJPAVCException@@PBUtagMSG@@@Z@00606725(CException * param_1, tagMSG * param_2)|
+606725|AfxInternalProcessWndProcException|AfxInternalProcessWndProcException|37|function|long __stdcall ?ProcessWndProcException@CWinThread@@UAEJPAVCException@@PBUtagMSG@@@Z@00606725(CException * param_1, tagMSG * param_2)|
 60674a|_AfxMsgFilterHook|?_AfxMsgFilterHook@@YGJHIJ@Z|88|function|undefined DispatchMfcMsgFilterHookProc()|
 6067a2|CWinApp::ProcessMessageFilter||327|function|undefined ProcessMessageFilter()|
 6068e9|IsHelpKey|?IsHelpKey@@YGHPAUtagMSG@@@Z|75|function|undefined IsHelpKey()|
 606934|ConstructTTaskBaseState||27|function|undefined WrapperFor_GetOrCreateCWndFromHandle_At00606934()|
 60694f|ConstructTTaskBaseState||64|function|undefined PumpMessage()|
 60698f|CCmdTarget||32|function|undefined CCmdTarget()|
+6069af|CCmdTarget::`scalar deleting dtor'|??_GCCmdTarget@@UAEPAXI@Z|28|function||
 6069cb|CCmdTarget::~CCmdTarget|??1CCmdTarget@@UAE@XZ|60|function|undefined WrapperFor_EstablishSehFrameProlog_At006069cb()|
 606a07|CCmdTarget::OnCmdMsg|?OnCmdMsg@CCmdTarget@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z|280|function|undefined DispatchCommandToAfxMessageMapChain()|
 606b1f|DispatchCmdMsg|?DispatchCmdMsg@@YAHPAVCCmdTarget@@IHP81@AEXXZPAXIPAUAFX_CMDHANDLERINFO@@@Z|263|function|undefined DispatchCmdMsg()|
@@ -6984,15 +7091,19 @@ address|name|symbol|size|type|prototype|provenance
 607673|CWnd::AttachControlSite_607673||69|function|undefined AttachControlSite_607673()|
 6076bd|RegisterCommctrlDragListMessage||17|function|undefined RegisterCommctrlDragListMessage()|
 6076ce|WrapperFor_E361_At006076ce||5|function|undefined WrapperFor_E361_At006076ce()|
+6076d8|_$E361|_$E361|13|function||
 6076e5|WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5()|
 607706|CWnd::CWnd||5|function|void __thiscall CWnd(void)|
 60770c|WrapperFor_E367_At0060770c||5|function|undefined WrapperFor_E367_At0060770c()|
+607716|_$E367|_$E367|13|function||
 607723|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723()|
 607744|CWnd::CWnd_00607744||5|function|void __thiscall CWnd_00607744(void)|
 60774a|WrapperFor_E372_At0060774a||5|function|undefined WrapperFor_E372_At0060774a()|
+607754|_$E372|_$E372|13|function||
 607761|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761()|
 607782|CWnd::CWnd_00607782||5|function|void __thiscall CWnd_00607782(void)|
 607788|WrapperFor_E377_At00607788||5|function|undefined WrapperFor_E377_At00607788()|
+607792|_$E377|_$E377|13|function||
 60779f|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f()|
 6077c0|CWnd::CWnd_006077C0||5|function|void __thiscall CWnd_006077C0(void)|
 6077c6|CWnd::CWnd|??0CWnd@@QAE@XZ|42|function|undefined ConstructObjectVtable00670b4cBase()|
@@ -7050,14 +7161,14 @@ address|name|symbol|size|type|prototype|provenance
 60893b|AfxRegisterWndClass||180|function|undefined AfxRegisterWndClass()|
 6089ef|OrphanLeaf_NoCall_Ins07_004d8920||60|function|undefined OnNTCtlColor()|
 608a2b|SetEditSelectionAndScrollCaret||224|function|undefined RunWinHelpAfterCancelModeBroadcast()|
-608b11|AfxFindMessageEntry||64|function|AFX_MSGMAP_ENTRY * __stdcall ?AfxFindMessageEntry@@YGPBUAFX_MSGMAP_ENTRY@@PBU1@III@Z@00608b11(AFX_MSGMAP_ENTRY * param_1, uint param_2, uint param_3, uint param_4)|
+608b11|AfxFindMessageEntry|AfxFindMessageEntry|64|function|AFX_MSGMAP_ENTRY * __stdcall ?AfxFindMessageEntry@@YGPBUAFX_MSGMAP_ENTRY@@PBU1@III@Z@00608b11(AFX_MSGMAP_ENTRY * param_1, uint param_2, uint param_3, uint param_4)|
 608b66|CWnd::WindowProc|?WindowProc@CWnd@@MAEJIIJ@Z|66|function|undefined WindowProc()|
 608ba8|CWnd::OnWndMsg|?OnWndMsg@CWnd@@MAEHIIJPAJ@Z|1198|function|undefined OnWndMsg()|
 60911a|CTestCmdUI::CTestCmdUI|??0CTestCmdUI@@QAE@XZ|25|function|undefined CTestCmdUI()|
 60914d|CWnd::OnCommand|?OnCommand@CWnd@@MAEHIJ@Z|140|function|undefined OnCommand()|
 6091d9|UpdateControlCachedIntFromWindowText||122|function|undefined OnNotify()|
 609253|CWnd::GetParentFrame|?GetParentFrame@CWnd@@QBEPAVCFrameWnd@@XZ|68|function|undefined GetParentFrame()|
-609297|AfxGetParentOwner||69|function|HWND__ * __stdcall ?AfxGetParentOwner@@YGPAUHWND__@@PAU1@@Z@00609297(HWND__ * param_1)|
+609297|AfxGetParentOwner|AfxGetParentOwner|69|function|HWND__ * __stdcall ?AfxGetParentOwner@@YGPAUHWND__@@PAU1@@Z@00609297(HWND__ * param_1)|
 6092dc|CWnd::GetTopLevelParent|?GetTopLevelParent@CWnd@@QBEPAV1@XZ|44|function|undefined GetTopLevelParent()|
 60933b|CWnd::GetParentOwner|?GetParentOwner@CWnd@@QBEPAV1@XZ|71|function|undefined GetParentOwner()|
 609382|CWnd::IsTopParentActive|?IsTopParentActive@CWnd@@QBEHXZ|52|function|undefined IsTopParentActive()|
@@ -7111,7 +7222,7 @@ address|name|symbol|size|type|prototype|provenance
 60a769|TMacViewMgr_Slot30_Target||7|function|undefined TMacViewMgr_Slot30_Target()|
 60a770|InitDialogWindowAndSyncTitleIfChanged||36|function|undefined TMacViewMgr_Slot31_Target()|
 60a794|AfxEndDeferRegisterClass|?AfxEndDeferRegisterClass@@YGHF@Z|314|function|undefined AfxEndDeferRegisterClass()|
-60a8ce|AfxRegisterWithIcon||65|function|undefined ?RegisterWithIcon@@YGHPAUtagWNDCLASSA@@PBDI@Z@0060a8ce()|
+60a8ce|AfxRegisterWithIcon|AfxRegisterWithIcon|65|function|undefined ?RegisterWithIcon@@YGHPAUtagWNDCLASSA@@PBDI@Z@0060a8ce()|
 60a912|TMacViewMgr::TMacViewMgr_VtblSlot046||4|function|undefined TMacViewMgr_VtblSlot046()|
 60a916|CFrameWnd::IsTracking|?IsTracking@CFrameWnd@@QBEHXZ|31|function|undefined IsTracking()|
 60a935|CWnd::SubclassCtl3d|?SubclassCtl3d@CWnd@@QAEHH@Z|74|function|undefined SubclassCtl3d()|
@@ -7204,7 +7315,7 @@ address|name|symbol|size|type|prototype|provenance
 60d0c8|CMenu::FromHandle|?FromHandle@CMenu@@SGPAV1@PAUHMENU__@@@Z|22|function|undefined FromHandle_60d0c8()|
 60d0de|CMenu::FromHandlePermanent|?FromHandlePermanent@CMenu@@SGPAV1@PAUHMENU__@@@Z|28|function|undefined LookupCMenuByHandleNoCreate()|
 60d127|Detach||42|function|undefined ?Detach@CMenu@@QAEPAUHMENU__@@XZ()|
-60d151|CMenu::DeleteObject||22|function|undefined ?DestroyMenu@CMenu@@QAEHXZ@0060d151()|
+60d151|CMenu::DeleteObject|CMenu::DeleteObject|22|function|undefined ?DestroyMenu@CMenu@@QAEHXZ@0060d151()|
 60d16d|IncrementAfxModuleThreadStateTempMapLockDepth||9|function|undefined IncrementAfxModuleThreadStateTempMapLockDepth()|
 60d176|AfxUnlockTempMaps|?AfxUnlockTempMaps@@YGHH@Z|238|function|undefined AfxUnlockTempMaps()|
 60d264|CHandleMap::CHandleMap|??0CHandleMap@@QAE@PAUCRuntimeClass@@IH@Z|92|function|undefined CHandleMap()|
@@ -7296,7 +7407,7 @@ address|name|symbol|size|type|prototype|provenance
 612931|SelectObject||83|function|undefined SelectObject()|
 612984|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z|83|function|undefined SelectObject_612984()|
 6129d7|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z|83|function|undefined SelectObject_6129d7()|
-612a2a|CDC::SelectClipRgn||78|function|undefined ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z@00612a2a()|
+612a2a|CDC::SelectClipRgn|CDC::SelectClipRgn|78|function|undefined ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z@00612a2a()|
 612a78|thunk_DispatchHandleMapLookupWithReadPtrProbe||16|function|undefined thunk_DispatchHandleMapLookupWithReadPtrProbe()|
 612a88|TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate||18|function|undefined SelectPaletteThenLookupHandleMapEntryWithCreate()|
 612a9a|CDC::SetPolyFillMode|?SetPolyFillMode@CDC@@QAEHH@Z|56|function|undefined ?SetMapperFlags@CDC@@QAEKK@Z@00612a9a()|
@@ -7316,16 +7427,16 @@ address|name|symbol|size|type|prototype|provenance
 612e42|CDC::ScaleWindowExt|?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z|88|function|undefined ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z@00612e42()|
 612e9a|CDC::GetClipBox|?GetClipBox@CDC@@UBEHPAUtagRECT@@@Z|16|function|undefined GetClipBox()|
 612eaa|CDC::SelectClipRgn|?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z|78|function|undefined SelectClipRegionOnPrimaryAndSecondaryDc()|
-612ef8|CDC::IntersectClipRect||74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612ef8()|
-612f42|CDC::ExcludeClipRect||76|function|undefined ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612f42()|
-612f8e|CDC::IntersectClipRect||74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612f8e()|
+612ef8|CDC::IntersectClipRect|CDC::IntersectClipRect|74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612ef8()|
+612f42|CDC::ExcludeClipRect|CDC::ExcludeClipRect|76|function|undefined ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612f42()|
+612f8e|CDC::IntersectClipRect|CDC::IntersectClipRect|74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612f8e()|
 612fd8|IntersectClipRectOnPrimaryAndSecondaryDc||76|function|undefined IntersectClipRectOnPrimaryAndSecondaryDc()|
-613024|CDC::OffsetClipRgn||62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613024()|
-613062|CDC::OffsetClipRgn||62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613062()|
+613024|CDC::OffsetClipRgn|CDC::OffsetClipRgn|62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613024()|
+613062|CDC::OffsetClipRgn|CDC::OffsetClipRgn|62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613062()|
 6130a0|CDC::OffsetWindowOrg|?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z|76|function|undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@006130a0()|
-6130ec|LineTo||53|function|int __thiscall ?LineTo@CDC@@QAEHHH@Z@006130ec(int param_1, int param_2)|
+6130ec|LineTo|LineTo|53|function|int __thiscall ?LineTo@CDC@@QAEHHH@Z@006130ec(int param_1, int param_2)|
 613121|CDC::SetTextAlign|?SetTextAlign@CDC@@QAEII@Z|52|function|undefined SetTextAlign()|
-613155|CDC::OffsetClipRgn||62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613155()|
+613155|CDC::OffsetClipRgn|CDC::OffsetClipRgn|62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613155()|
 613193|CDC::SetPolyFillMode|?SetPolyFillMode@CDC@@QAEHH@Z|56|function|undefined ?SetMapperFlags@CDC@@QAEKK@Z@00613193()|
 6131cb|CDC::SetMapperFlags|?SetMapperFlags@CDC@@QAEKK@Z|56|function|undefined WrapperFor_SetMapperFlags_At006131cb()|
 613203|CDC::ArcTo|?ArcTo@CDC@@QAEHHHHHHHHH@Z|88|function|int __thiscall ?ArcTo@CDC@@QAEHHHHHHHHH@Z(int param_1, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7, int param_8)|
@@ -7337,11 +7448,11 @@ address|name|symbol|size|type|prototype|provenance
 6133a0|CDC::SelectClipPath|?SelectClipPath@CDC@@QAEHH@Z|94|function|undefined SelectClipPath()|
 6133fe|CDC::SelectClipRgn|?SelectClipRgn@CDC@@QAEHPAVCRgn@@H@Z|84|function|undefined SelectClipRgn()|
 613452|AfxEnumMetaFileProc|?AfxEnumMetaFileProc@@YGHPAUHDC__@@PAUtagHANDLETABLE@@PAUtagMETARECORD@@HJ@Z|564|function|undefined AfxEnumMetaFileProc()|
-613686|PlayMetaFile||57|function|int __thiscall ?PlayMetaFile@CDC@@QAEHPAUHMETAFILE__@@@Z@00613686(HMETAFILE__ * param_1)|
+613686|PlayMetaFile|PlayMetaFile|57|function|int __thiscall ?PlayMetaFile@CDC@@QAEHPAUHMETAFILE__@@@Z@00613686(HMETAFILE__ * param_1)|
 6136bf|CDC::LPtoDP|?LPtoDP@CDC@@QBEXPAUtagSIZE@@@Z|105|function|undefined LPtoDP()|
 613728|CDC::DPtoLP|?DPtoLP@CDC@@QBEXPAUtagSIZE@@@Z|105|function|undefined DPtoLP()|
 613791|CClientDC::CClientDC||86|function|undefined ConstructCClientDCFromViewHandle()|
-6137e7|CClientDC::`scalar_deleting_destructor'||28|function|undefined ??_GCClientDC@@UAEPAXI@Z@006137e7()|
+6137e7|CClientDC::`scalar_deleting_destructor'|CClientDC::`scalar_deleting_destructor'|28|function|undefined ??_GCClientDC@@UAEPAXI@Z@006137e7()|
 613803|CClientDC::~CClientDC||66|function|undefined DestroyCClientDCAndReleaseHandle()|
 613845|CWindowDC::CWindowDC|??0CWindowDC@@QAE@PAVCWnd@@@Z|86|function|undefined CWindowDC()|
 61389b|CClientDC::`scalar deleting dtor'|??_GCClientDC@@UAEPAXI@Z|28|function|undefined DestroyWindowDcAndMaybeFree()|
@@ -7500,6 +7611,7 @@ address|name|symbol|size|type|prototype|provenance
 619365|AfxFailRadio|?AfxFailRadio@@YGXPAVCDataExchange@@@Z|96|function|undefined AfxFailRadio()|
 6193c5|CWnd::OnHelp|?OnHelp@CWnd@@QAEXXZ|162|function|undefined OnHelp()|
 619467|CFrameWnd::OnHelp|?OnHelp@CFrameWnd@@IAEXXZ|51|function|undefined OnHelp_619467()|
+6194b1|TMacViewMgr_OnCommand_ID_E143_E147|||global||
 6194df|CFrameWnd::CanEnterHelpMode|?CanEnterHelpMode@CFrameWnd@@QAEHXZ|90|function|int __thiscall ?CanEnterHelpMode@CFrameWnd@@QAEHXZ(void)|
 619539|CFrameWnd::OnContextHelp|?OnContextHelp@CFrameWnd@@QAEXXZ|424|function|undefined OnContextHelp()|
 6196e1|CFrameWnd::SetHelpCapture|?SetHelpCapture@CFrameWnd@@IAEPAUHWND__@@UtagPOINT@@PAH@Z|278|function|undefined CFrameWnd::SetHelpCapture()|
@@ -7507,6 +7619,7 @@ address|name|symbol|size|type|prototype|provenance
 6199fd|MapClientArea|?MapClientArea@@YGKPAUHWND__@@UtagPOINT@@@Z|149|function|undefined MapClientArea()|
 619a92|MapNonClientArea|?MapNonClientArea@@YGKH@Z|26|function|undefined MapNonClientArea()|
 619aac|CMemFile::CMemFile|??0CMemFile@@QAE@I@Z|48|function|undefined CMemFile()|
+619adc|CMemFile::`scalar deleting dtor'|??_GCMemFile@@UAEPAXI@Z|28|function||
 619af8|CMemFile::CMemFile|??0CMemFile@@QAE@PAEII@Z|60|function|undefined CMemFile_619af8()|
 619b34|CMemFile::Attach|?Attach@CMemFile@@QAEXPAEII@Z|43|function|undefined CMemFile::Attach()|
 619b71|CMemFile::~CMemFile|??1CMemFile@@UAE@XZ|76|function|undefined DestructCMemFileLikeStateWithCloseIfOpen()|
@@ -7573,7 +7686,7 @@ address|name|symbol|size|type|prototype|provenance
 61cf1b|CFrameWnd::OnCreateClient|?OnCreateClient@CFrameWnd@@MAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z|34|function|undefined WrapperFor_CreateView_At0061cf1b()|
 61cf3d|WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d||1|function|undefined WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d()|
 61cf4c|CFrameWnd::OnCreateHelper|?OnCreateHelper@CFrameWnd@@IAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z|79|function|undefined OnCreateHelper()|
-61cf9b|GetIconWndClass||131|function|undefined ?GetIconWndClass@CFrameWnd@@IAEPBDKI@Z@0061cf9b()|
+61cf9b|GetIconWndClass|GetIconWndClass|131|function|undefined ?GetIconWndClass@CFrameWnd@@IAEPBDKI@Z@0061cf9b()|
 61d01e|CFrameWnd::LoadFrame|?LoadFrame@CFrameWnd@@UAEHIKPAVCWnd@@PAUCCreateContext@@@Z|235|function|undefined LoadFrame()|
 61d109|CFrameWnd::OnUpdateFrameMenu|?OnUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z|58|function|undefined SetWindowMenuFromParamOrActiveChildOrFallback()|
 61d143|CFrameWnd::InitialUpdateFrame|?InitialUpdateFrame@CFrameWnd@@QAEXPAVCDocument@@H@Z|194|function|undefined InitialUpdateFrame()|
@@ -7618,10 +7731,10 @@ address|name|symbol|size|type|prototype|provenance
 61e79d|CButton::Create|?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z|34|function|undefined CreateStaticClassControl()|
 61e7bf|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 61e7f7|CButton::Create|?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z|34|function|undefined CreateButtonClassControl()|
-61e819|CProgressCtrl::~CHotKeyCtrl||56|function|undefined ??1CProgressCtrl@@UAE@XZ@0061e819()|
+61e819|CProgressCtrl::~CHotKeyCtrl|CProgressCtrl::~CHotKeyCtrl|56|function|undefined ??1CProgressCtrl@@UAE@XZ@0061e819()|
 61e851|CWnd::GetCheckedRadioButton|?GetCheckedRadioButton@CWnd@@QAEHHH@Z|40|function|undefined GetCheckedRadioButton()|
 61e87c|CListCtrl::OnChildNotify|?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z|46|function|undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c()|
-61e8cb|Dtor_CListBox_FID_61e8cb||56|function|undefined Dtor_CListBox_FID_61e8cb()|
+61e8cb|Dtor_CListBox_FID_61e8cb|Dtor_CListBox_FID_61e8cb|56|function|undefined Dtor_CListBox_FID_61e8cb()|
 61e911|WrapperFor_Default_At0061e911||8|function|undefined WrapperFor_Default_At0061e911()|
 61e919|WrapperFor_Default_At0061e919||8|function|undefined WrapperFor_Default_At0061e919()|
 61e921|CListBox::OnChildNotify|?OnChildNotify@CListBox@@MAEHIIJPAJ@Z|153|function|undefined OnChildNotify_61e921()|
@@ -7641,7 +7754,7 @@ address|name|symbol|size|type|prototype|provenance
 61ed57|CDC::HIMETRICtoLP|?HIMETRICtoLP@CDC@@QBEXPAUtagSIZE@@@Z|27|function|undefined HIMETRICtoLP()|
 61ed72|CDC::GetHalftoneBrush|?GetHalftoneBrush@CDC@@SGPAVCBrush@@XZ|115|function|undefined GetHalftoneBrush()|
 61ede5|CDC::DrawDragRect|?DrawDragRect@CDC@@QAEXPBUtagRECT@@UtagSIZE@@01PAVCBrush@@2@Z|789|function|undefined DrawDragRect()|
-61f0fa|FillSolidRect||42|function|void __thiscall ?FillSolidRect@CDC@@QAEXPBUtagRECT@@K@Z@0061f0fa(tagRECT * param_1, ulong param_2)|
+61f0fa|FillSolidRect|FillSolidRect|42|function|void __thiscall ?FillSolidRect@CDC@@QAEXPBUtagRECT@@K@Z@0061f0fa(tagRECT * param_1, ulong param_2)|
 61f124|CDC::FillSolidRect|?FillSolidRect@CDC@@QAEXHHHHK@Z|76|function|undefined FillSolidRect()|
 61f19b|CDC::Draw3dRect|?Draw3dRect@CDC@@QAEXHHHHKK@Z|106|function|undefined Draw3dRect()|
 61f205|CFont::CreatePointFont|?CreatePointFont@CFont@@QAEHHPBDPAVCDC@@@Z|69|function|undefined CreatePointFont()|
@@ -7697,7 +7810,7 @@ address|name|symbol|size|type|prototype|provenance
 623061|SetRegistryKey||56|function|undefined SetRegistryKey()|
 623099|CWinApp::SetRegistryKey|?SetRegistryKey@CWinApp@@IAEXI@Z|51|function|undefined SetRegistryKey_623099()|
 6230cc|CWinApp::GetAppRegistryKey|?GetAppRegistryKey@CWinApp@@QAEPAUHKEY__@@XZ|148|function|undefined GetAppRegistryKey()|
-623160|GetSectionKey||70|function|undefined ?GetSectionKey@CWinApp@@QAEPAUHKEY__@@PBD@Z@00623160()|
+623160|GetSectionKey|GetSectionKey|70|function|undefined ?GetSectionKey@CWinApp@@QAEPAUHKEY__@@PBD@Z@00623160()|
 6231a6|CWinApp::GetProfileIntA|?GetProfileIntA@CWinApp@@QAEIPBD0H@Z|108|function|undefined GetProfileIntA()|
 623212|CWinApp::GetProfileStringA|?GetProfileStringA@CWinApp@@QAE?AVCString@@PBD00@Z|274|function|undefined GetProfileStringA()|
 623324|CWinApp::GetProfileBinary|?GetProfileBinary@CWinApp@@QAEHPBD0PAPAEPAI@Z|283|function|undefined GetProfileBinary()|
@@ -7715,17 +7828,21 @@ address|name|symbol|size|type|prototype|provenance
 623824|_AFX_BASE_MODULE_STATE>::CreateObject|?CreateObject@?$CProcessLocal@V_AFX_BASE_MODULE_STATE@@@@SGPAVCNoTrackObject@@XZ|66|function|undefined AllocateMfcModuleStateNode_1074()|
 623866|_AFX_BASE_MODULE_STATE::`scalar deleting dtor'|??_G_AFX_BASE_MODULE_STATE@@UAEPAXI@Z|27|function|undefined WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623866()|
 623886|AfxGetModuleState|?AfxGetModuleState@@YGPAVAFX_MODULE_STATE@@XZ|38|function|undefined AfxGetModuleState()|
-6238ac|AfxGetModuleThreadState||23|function|AFX_MODULE_THREAD_STATE * __stdcall ?AfxGetModuleThreadState@@YGPAVAFX_MODULE_THREAD_STATE@@XZ@006238ac(void)|
+6238ac|AfxGetModuleThreadState|AfxGetModuleThreadState|23|function|AFX_MODULE_THREAD_STATE * __stdcall ?AfxGetModuleThreadState@@YGPAVAFX_MODULE_THREAD_STATE@@XZ@006238ac(void)|
 6238c3|CTypeLibCache::Unlock|?Unlock@CTypeLibCache@@QAEXXZ|53|function|void __thiscall ?Unlock@CTypeLibCache@@QAEXXZ(void)|
 6239a2|GetCDocumentRuntimeClass||6|function|undefined GetCDocumentRuntimeClass()|
 6239ae|WrapperFor_E350_At006239ae||5|function|undefined WrapperFor_E350_At006239ae()|
+6239b8|_$E350|_$E350|18|function||
 6239ca|WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca()|
 6239e6|WrapperFor_E355_At006239e6||5|function|undefined WrapperFor_E355_At006239e6()|
+6239f0|_$E355|_$E355|18|function||
 623a02|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02()|
 623a9a|CPalette::GetRuntimeClass||6|function|CRuntimeClass * GetRuntimeClass() const|
 623ab2|WrapperFor_E350_At00623ab2||5|function|undefined WrapperFor_E350_At00623ab2()|
+623abc|_$E350|_$E350|18|function||
 623ace|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace()|
 623aea|WrapperFor_E355_At00623aea||5|function|undefined WrapperFor_E355_At00623aea()|
+623af4|_$E355|_$E355|18|function||
 623b06|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06()|
 623b3a|CPtrList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|
 623b40|GetCFileExceptionRuntimeClass||6|function|undefined GetCFileExceptionRuntimeClass()|
@@ -7779,117 +7896,11 @@ address|name|symbol|size|type|prototype|provenance
 624ed6|CWinApp::SetCurrentHandles|?SetCurrentHandles@CWinApp@@QAEXXZ|285|function|undefined SetCurrentHandles()|
 624ff3|AfxGetFileName|?AfxGetFileName@@YGIPBDPADI@Z|86|function|undefined AfxGetFileName()|
 626b59|_AFX_WIN_STATE::~_AFX_WIN_STATE|??1_AFX_WIN_STATE@@UAE@XZ|55|function|undefined FinalizeTurnStateObjectMfcDeleteResources()|
-626b90|AfxPostQuitMessage||35|function|void __stdcall ?AfxPostQuitMessage@@YGXH@Z@00626b90(int param_1)|
+626b90|AfxPostQuitMessage|AfxPostQuitMessage|35|function|void __stdcall ?AfxPostQuitMessage@@YGXH@Z@00626b90(int param_1)|
 626bb3|CWinThread::~CWinThread|??1CWinThread@@UAE@XZ|79|function|void __thiscall ??1CWinThread@@UAE@XZ(void)|
 626c02|WrapperFor_AfxDeleteObject_At00626c02||10|function|undefined WrapperFor_AfxDeleteObject_At00626c02()|
 626c0c|CDocManager::~CDocManager|??1CDocManager@@UAE@XZ|113|function|undefined ~CDocManager()|
 626c7d|AfxWinTerm|?AfxWinTerm@@YGXXZ|178|function|undefined AfxWinTerm()|
-401122|thunk_TPictureButton::TPictureButton||5|function|undefined TPictureButton()|
-40231a|TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C||5|function|undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()|
-4032a1|TCivToolbar::thunk_SetMapInteractionMode||5|function|void __thiscall thunk_SetMapInteractionMode(short nMode)|
-403b16|UiRuntimeContext::GetActiveNationId||5|function|undefined GetActiveNationId()|
-404a25|TDiplomacyMapView::thunk_AppendPackedColorDwordToMaskBuffers||5|function|undefined thunk_AppendPackedColorDwordToMaskBuffers()|
-4056a5|TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale||5|function|undefined thunk_ProjectTileIndexToWrappedScreenOffsetByScale()|
-4061d1|thunk_InitializeDirectSoundDeviceAndChannels_004061D1|||global||
-406c1c|TMapDialog::thunk_SplitTileIndexToRowAndColumn||5|function|undefined thunk_SplitTileIndexToRowAndColumn()|
-408995|TToolBarCluster::thunk_RefreshMapOrderEntryPanel||5|function|void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
-409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex||5|function|undefined MapTurnEventCodeToPaletteIndex()|
-409980|TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry||5|function|undefined thunk_ConstructUiClickablePictureResourceEntry()|
-46624f|alloc_failed_set_null_factory_result|||global||
-466251|build_first_resource_entry|||global||
-466566|jump_to_shared_cleanup_tail|||global||
-46ca6e|begin_final_resource_cleanup|||global||
-46ca9c|restore_exception_context|||global||
-46caae|return_resource_head|||global||
-48542a|HandleDialogSelectionAndDispatchTurnEventCode|||global||
-49c950|thunk_InitializeDirectSoundDeviceAndChannels||5|function|undefined thunk_InitializeDirectSoundDeviceAndChannels()|
-49dbea|loc_WriteUiRuntimeCursorTableBase_A|||global||
-49dc60|loc_WriteUiRuntimeCursorTableBase_B|||global||
-4b7244|consume_primary_required_resource|||global||
-4b7271|consume_secondary_required_resource|||global||
-4b729a|apply_worker_group_delta|||global||
-4b72a4|deduct_city_cash_for_order_delta|||global||
-4c9f5a|branch_by_selected_slot|||global||
-4ca20d|select_cost_text_mode_by_slot|||global||
-4ca42d|resolve_ok_button_state_slot11|||global||
-4ca5bb|toggle_ok_button_for_pending_order|||global||
-4ca8fd|check_university_slot11|||global||
-4ca943|handle_standard_slot_apply|||global||
-4ca94b|apply_order_on_ok|||global||
-4ca988|clear_pending_order_on_cancel|||global||
-4ca99a|handle_university_slot_ok|||global||
-4cad30|recruitment_row_loop_head|||global||
-4caedb|recruitment_row_next_iteration|||global||
-4cafa4|populate_title_rows_loop|||global||
-4cb03b|populate_description_rows_loop|||global||
-4cb0a1|finish_description_rows_loop|||global||
-4cb37d|check_same_recruitment_entry|||global||
-4cb3b0|handle_entry_selection_change|||global||
-4cb671|update_required_level_pips|||global||
-4cb6db|enable_level_pips_loop|||global||
-4cb717|disable_level_pips_loop|||global||
-4cb73d|cleanup_recruitment_selection|||global||
-4ce82d|handle_missing_building_entry|||global||
-4ce875|fatal_null_building_entry|||global||
-4ce91f|show_upgrade_in_progress_message|||global||
-4ce9d0|hide_upgrade_message_when_available|||global||
-4cee7d|advanced_recruit_count_loop_head|||global||
-4ceea4|resolve_num_tag_mapping|||global||
-4cefd3|advanced_recruit_count_loop_next|||global||
-4cf0df|advanced_recruit_availability_loop_head|||global||
-4cf1b3|advanced_recruit_availability_loop_next|||global||
-4cf67d|specialist_entry_null_guard|||global||
-4cf93c|resolve_capacity_mode|||global||
-4cf983|clamp_to_available_worker_pool|||global||
-4cf9bb|update_availability_indicator_color|||global||
-4d1e60|TControl::thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44||5|function|undefined thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44()|
-4d371c|check_afford_prompted_rail|||global||
-4d372e|prompt_confirm_rail_order|||global||
-4d3831|show_insufficient_funds_prompt|||global||
-4d3ab4|branch_fort_option|||global||
-4d3c8b|branch_port_cost_check|||global||
-4d3e37|branch_depot_cost_check|||global||
-4d3fa6|branch_adjacent_rail_cost_check|||global||
-4d40dd|finalize_engineer_action_and_refresh|||global||
-4ebea0|thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner|||global||
-4ee8f1|loop_build_major_compatibility_grid|||global||
-4ee9b6|loop_build_minor_compatibility_grid|||global||
-4eea57|set_diagonal_relation_forbid_self|||global||
-4eeb26|apply_random_special_minor_pairings|||global||
-4eec95|apply_late_scenario_open_relations|||global||
-513ef2|loop_scan_resource_slots|||global||
-513f1d|check_oil_capability_flag|||global||
-513f27|set_candidate_found|||global||
-5145fb|check_bit10_order_exists|||global||
-514613|allocate_new_bit10_order|||global||
-514642|reuse_existing_bit10_order|||global||
-5146c6|deduct_cash_for_bit10_order|||global||
-5146d0|set_tile_flag_bit10|||global||
-514807|check_bit04_order_exists|||global||
-51481d|allocate_new_bit04_order|||global||
-514842|reuse_existing_bit04_order|||global||
-5148d8|deduct_cash_for_bit04_order|||global||
-5148df|set_tile_flag_bit04|||global||
-54ab8a|load_tile_record_base|||global||
-54ab9f|copy_tile_record_to_event_payload|||global||
-54ac94|load_city_record_base|||global||
-54acd6|copy_city_header_block|||global||
-54ad2e|copy_city_grid_block|||global||
-54adaa|dispatch_city_redraw_event|||global||
-55a064|handle_action_code_9|||global||
-55a081|handle_action_codes_2_to_8|||global||
-55a0a9|handle_action_code_11|||global||
-55a0ce|handle_action_code_10|||global||
-55a0ee|return_unhandled_action|||global||
-55a268|set_order_type_1_from_context|||global||
-55a292|commit_order_entry_to_global_queue|||global||
-55a2b5|set_order_type_6_from_context|||global||
-55a37e|set_order_type_5_from_province|||global||
-5a4770|TArmyBattle::ConstructTArmyBattleBaseState||5|function|undefined ConstructTArmyBattleBaseState()|
-5af38a|loop_over_priority_range_pairs|||global||
-5af3af|generate_unique_candidate_slot|||global||
-5af3de|scan_existing_slots_for_duplicate|||global||
-6194b1|TMacViewMgr_OnCommand_ID_E143_E147|||global||
 63e038|g_pRegistryCompanyKey_0063E038|||global||
 63e03c|g_pRegistryAppKey_0063E03C|||global||
 63e040|g_pRegistrySettingsSection_0063E040|||global||
@@ -8511,6 +8522,8 @@ address|name|symbol|size|type|prototype|provenance
 697848|TMission::classTMission|||global||
 697870|g_Recompute_Nation_Order_LookupTable_00697870|||global||
 697958|g_Populate_Beachhead_Mission_LookupTable_00697958|||global||
+698010|s_GameName_00698010|||global||
+69801c|s_PlayerName_0069801c|||global||
 698108|g_Resolve_Map_Order_LookupTable_00698108|||global||
 69810c|g_Calculate_Mission_Order_LookupTable_0069810C|||global||
 698110|g_Task_Force_Order_LookupTable_00698110|||global||
@@ -8523,6 +8536,7 @@ address|name|symbol|size|type|prototype|provenance
 69b810|s_MissingFileSuffix_0069B810|||global||
 69b820|s_MissingFilePrefix_0069B820|||global||
 6a1344|g_pGlobalUiRootController|||global||
+6a1348|DAT_006a1348|||global||
 6a134c|g_pModuleLibraryCacheState|||global||
 6a1350|DAT_006a1350|||global||
 6a1354|DAT_006a1354|||global||
@@ -8635,17 +8649,3 @@ address|name|symbol|size|type|prototype|provenance
 6a590c|g_pCursorControlPanel|||global||
 6a60c0|g_soundResourceManager|||global||
 6a7fac|g_pGlobalCallback_006a7fac|||global||
-5ede75|__seh_longjmp_unwind@4|__seh_longjmp_unwind@4|27|function||
-6069af|CCmdTarget::`scalar deleting dtor'|??_GCCmdTarget@@UAEPAXI@Z|28|function||
-6076d8|_$E361|_$E361|13|function||
-607716|_$E367|_$E367|13|function||
-607754|_$E372|_$E372|13|function||
-607792|_$E377|_$E377|13|function||
-619adc|CMemFile::`scalar deleting dtor'|??_GCMemFile@@UAEPAXI@Z|28|function||
-6239b8|_$E350|_$E350|18|function||
-6239f0|_$E355|_$E355|18|function||
-623abc|_$E350|_$E350|18|function||
-623af4|_$E355|_$E355|18|function||
-698010|s_GameName_00698010|||global||
-69801c|s_PlayerName_0069801c|||global||
-6a1348|DAT_006a1348|||global||

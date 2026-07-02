@@ -81,6 +81,34 @@ in the listing before retargeting): `ComputeAggregateWeightedChildCostForMatchin
 `AreAllLinkedEntriesTerrainFlagBit2Clear` @ 0x518a20. `just typedef-cast-audit` reports
 cross-file signature drift for this pattern class.
 
+## Library-region residue: what actually remains (post 2026-07 audit)
+
+State: 1,075 generated LIBRARY markers; ~370 unmarked function rows remain in the FID
+range 0x5e539c..0x626c7d. Findings from the extension attempt:
+
+- The `prototype` column's embedded mangled names are NOT trustworthy for identity
+  (12 different addresses all carried `?Create@CHotKeyCtrl@...`); only the `symbol`
+  column and unique demangled-name matches are, and those yielded just 4 new markers
+  (CDragListBox::Dropped, _abort, CDC::GetClipBox, CPaintDC ctor).
+- LIBRARY-marking an *unlinked* library function scores 0.00% (the recomp contains no
+  body to pair — the linker never pulls the .obj member because no recomp code
+  references it). More markers alone do not raise scores; the lever is either real
+  linkage (arrives naturally as ported code calls into MFC/CRT) or a report-policy
+  decision to exclude unlinked library code from the compared set.
+- 22 identified rows are blocked as `skip_referenced_project_alias`: manual code still
+  references the stub name through Hard-Rule-9 externs (e.g. AfxGetMainWnd,
+  FromHandlePermanent). Migrating those callsites to the real MFC declarations
+  releases them.
+- The ~350 remaining unnamed rows need a masked-byte matcher against the
+  fid-generation Ghidra project's .obj programs (FID skipped small/common bodies —
+  see vendor/msvc500/fid-generation/fidb/common.txt). Positional context helps:
+  unmatched runs between two FID-matched neighbors from the same .obj follow the
+  .lib member order.
+- `tmp_decomp/msvc500_fid_matches.csv` is the tool's complete source of truth and is
+  gitignored; it can be reconstructed from src/game/library_msvc500_fid.cpp marker
+  pairs + fidb/functions.txt obj paths. The tool now refuses to shrink the marker set
+  without --allow-marker-removals.
+
 ## Misleading-name backlog (spotted 2026-07, not yet renamed)
 
 - `GetSurfaceObjectAtContextOffset24` returns `context->surfaceObject`
