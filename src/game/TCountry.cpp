@@ -87,7 +87,9 @@ char TCountry::ReturnFalseNationStateCapabilityFlag9C(void) {
 
 // slot 0x28 — ShouldDispatchImmediatelySlot28 (real body).
 // FUNCTION: IMPERIALISM 0x004d6770
-char TCountry::ShouldDispatchImmediatelySlot28(void) { return 0; }
+char TCountry::ShouldDispatchImmediatelySlot28(void) {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004d6790
 void TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
@@ -127,9 +129,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot)
   SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, nationSlot);
   this->identitySharedString0 = flavorName;
   if (g_pLocalizationTable != 0) {
-    CString* nationNameSlot = reinterpret_cast<CString*>(
-        reinterpret_cast<char*>(g_pLocalizationTable) + nationSlot * 4 + 0x7c);
-    *nationNameSlot = this->identitySharedString0;
+    g_pLocalizationTable->sharedTextSlots[nationSlot] = this->identitySharedString0;
   }
   this->identitySharedString1 = this->identitySharedString0;
   this->treasuryValue10 = 5000;
@@ -172,9 +172,7 @@ void TCountry::ReadFrom(TStream* stream) {
   stream->streamSlot70();
   stream->streamSlot70();
 
-  CString* nationNameSource = reinterpret_cast<CString*>(
-      reinterpret_cast<char*>(g_pLocalizationTable) + this->nationSlot * 4 + 0x7c);
-  this->identitySharedString1 = *nationNameSource;
+  this->identitySharedString1 = g_pLocalizationTable->sharedTextSlots[this->nationSlot];
   stream->ReadBytes(&this->identitySharedString0, 4);
 
   stream->ReadBytes(&this->nationSlot, 2);
@@ -339,8 +337,8 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
             if (portZone->PrimaryZoneHeapSize() == 0) {
               portZone->PrimaryZoneHeapSize() = 1;
             }
-            CreateNavyPrimaryOrderNodeAndAssignDisplayName(
-                3, portZone->PrimaryZoneHeapData()[0], this->nationSlot, 0);
+            CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone->PrimaryZoneHeapData()[0],
+                                                           this->nationSlot, 0);
           }
         }
       }
@@ -363,6 +361,14 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
     } while (ordinal <= this->ownedRegionList->GetCountSlot48());
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();
+}
+
+// FUNCTION: IMPERIALISM 0x004d7a00
+void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
+  this->identitySharedString0 = name;
+  if (g_pLocalizationTable != 0) {
+    g_pLocalizationTable->sharedTextSlots[this->nationSlot] = name;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d7ae0
@@ -501,7 +507,9 @@ int TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
 
 // slot 0x1d — GetDiplomacyCounterA2 (real body).
 // FUNCTION: IMPERIALISM 0x004d7f00
-short TCountry::GetDiplomacyCounterA2(void) { return 0; }
+short TCountry::GetDiplomacyCounterA2(void) {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004d7f20
 short TCountry::GetDiplomacyExternalStateByTarget(short nationSlot) {
@@ -794,7 +802,7 @@ void TriggerNationWarTransitionHandlersIfNeeded(int arg1, int arg2) {
 void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
   this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
   g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1b, this->nationSlot,
-                                                                    targetNationSlot, 0);
+                                                                      targetNationSlot, 0);
 }
 
 void OrphanCallChain_C2_I28_004e59d0(void) {}

@@ -17,6 +17,7 @@
 #include "game/TMapMgr.h"
 #include "game/TMinor.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TNextDiplomationCommand.h"
 #include "game/TSoundPlayer.h"
 #include "game/TTechMgr.h"
 #include "game/TViewMgr.h"
@@ -53,7 +54,6 @@ extern undefined4 PushCueToDualAudioCuePools(void);
 extern undefined4 SelectAndScheduleRandomAudioCue(void);
 extern undefined4 IsNationProfileInMinorRange100To199(void);
 extern undefined4 SetOutputDevice(void);
-extern undefined4 DispatchUiPacketWithTagNEXT(void);
 
 // QueryNationAdvisorSlot90Predicate28 / QueryJoinEmpireModePendingForNationAf are placeholder
 // per-nation checks that still need to be ported (cases 0x19 / 0xb); constant returns make those

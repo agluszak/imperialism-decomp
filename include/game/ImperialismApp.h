@@ -19,30 +19,31 @@ public:
   ImperialismApp();
 
   // CWinApp lifecycle overrides resolved by DispatchMfcAppLifecycle.
-  virtual BOOL InitInstance();  // slot +0x58, 0x00412dc0
-  virtual int ExitInstance();   // slot +0x70, 0x00413780
+  virtual BOOL InitInstance(); // slot +0x58, 0x00412dc0
+  virtual int ExitInstance();  // slot +0x70, 0x00413780
 
-  int ShowAutoResolutionDialogIfNeeded();            // 0x00415090
-  void ApplyAutoResolutionModeAndPersist(int mode);  // 0x004155b0
-  BOOL LoadLanguageResourcesFromIrgFiles();           // 0x004149a0
-  void HandleStartupCommand100();                     // 0x00413950
+  int ShowAutoResolutionDialogIfNeeded();           // 0x00415090
+  void ApplyAutoResolutionModeAndPersist(int mode); // 0x004155b0
+  BOOL LoadLanguageResourcesFromIrgFiles();         // 0x004149a0
+  void HandleStartupCommand100();                   // 0x00413950
 
   // Subclass state laid out immediately after the CWinApp base (offset 0xC0).
-  int field_C0;       // 0xC0
-  CString field_C4;   // 0xC4
-  int field_C8;       // 0xC8
-  CString field_CC;   // 0xCC
-  CString field_D0;   // 0xD0
-  CString field_D4;   // 0xD4
-  CString field_D8;   // 0xD8
-  CString field_DC;   // 0xDC
-  CString field_E0;   // 0xE0
-  int field_E4;       // 0xE4
+  int field_C0;     // 0xC0
+  CString field_C4; // 0xC4
+  int field_C8;     // 0xC8
+  CString field_CC; // 0xCC
+  CString field_D0; // 0xD0
+  CString field_D4; // 0xD4
+  CString field_D8; // 0xD8
+  CString field_DC; // 0xDC
+  CString field_E0; // 0xE0
+  int field_E4;     // 0xE4
 };
 
 extern ImperialismApp theApp;
 
-void __fastcall PostCommand100ToMainWindow(CWinApp* app);  // 0x004138b0
-void DispatchStartupCommand100ToAppSingleton();            // 0x00484fd0
-undefined4 WrapperFor_thunk_HandleStartupCommand100_At00484fb0();  // 0x00484fb0
-undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0();  // 0x004139f0
+void __fastcall PostCommand100ToMainWindow(CWinApp* app);           // 0x004138b0
+void PostWmCloseToMainThreadWindow();                               // 0x004146d0
+void DispatchStartupCommand100ToAppSingleton();                     // 0x00484fd0
+undefined4 WrapperFor_thunk_HandleStartupCommand100_At00484fb0();   // 0x00484fb0
+undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(); // 0x004139f0

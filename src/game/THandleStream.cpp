@@ -13,11 +13,11 @@ IMPLEMENT_DYNCREATE(THandleStream, TStream)
 
 // FUNCTION: IMPERIALISM 0x004895e0
 THandleStream::THandleStream() {
-  this->position = 1;
-  this->currentExtent = 0;
-  this->highWatermark = 0;
+  this->modeFlags10 = 1;
+  this->attachedGlobalHandle = 0;
+  this->streamPosition = 0;
   this->ownsHandleOrDirty = 0;
-  this->handleOrBuffer = 0;
+  this->attachedSizeBytes = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00489610
@@ -27,17 +27,27 @@ THandleStream::~THandleStream() {}
 // SYNTHETIC: IMPERIALISM 0x00489640
 // THandleStream::~THandleStream
 
+// FUNCTION: IMPERIALISM 0x00489660
+void THandleStream::AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int modeFlags) {
+  this->modeFlags10 = modeFlags;
+  this->streamPosition = 0;
+  if (memoryHandle != 0) {
+    this->attachedSizeBytes = GlobalSize(memoryHandle);
+    this->attachedGlobalHandle = memoryHandle;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004896a0
 void THandleStream::Free() {}
 
 // FUNCTION: IMPERIALISM 0x004896e0
 int THandleStream::streamSlot28() {
-  return highWatermark;
+  return streamPosition;
 }
 
 // FUNCTION: IMPERIALISM 0x00489700
 int THandleStream::streamSlot30() {
-  return handleOrBuffer;
+  return attachedSizeBytes;
 }
 
 // FUNCTION: IMPERIALISM 0x00489720

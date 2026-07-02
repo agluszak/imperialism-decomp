@@ -715,14 +715,6 @@ undefined4 AssignSharedStringFromDescriptorNameOrDefault(void)
   return 0;
 }
 
-// ghidra_name SetNationDisplayNameAndLocalizationSlotRef
-// ghidra_proto undefined SetNationDisplayNameAndLocalizationSlotRef()
-// FUNCTION: IMPERIALISM 0x004d7a00
-undefined4 SetNationDisplayNameAndLocalizationSlotRef(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeSelectedMilitaryPowerScore
 // ghidra_proto undefined ComputeSelectedMilitaryPowerScore()
 // FUNCTION: IMPERIALISM 0x004d8430

@@ -56,12 +56,11 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   field30 = 7;
   field34 = 0x10;
 
-  // Copy the per-nation scenario setup table (DAT_00698b1a) into the +0xe8 short arrays. The
-  // original reads 4 shorts per iteration at table[-1..2] with stride 4, scattering them to
-  // +0xda/-0xe, +0xe8/0, +0xf6/+0xe, +0x104/+0x1c (then cursor += 2). The writes straddle the
-  // scenarioSetupRows0..3 fields, so the cursor is the raw +0xe8 short pointer (matches
-  // ECX=ESI+0xe8).
-  short* destCursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xe8);
+  // Copy the per-nation scenario setup table (DAT_00698b1a) into the four contiguous
+  // scenarioSetupRows arrays. The original reads 4 shorts per iteration at table[-1..2]
+  // with stride 4, scattering them via one cursor anchored at scenarioSetupRows1
+  // (+0xe8): [-7] hits rows0, [0] rows1, [7] rows2, [14] rows3.
+  short* destCursor = scenarioSetupRows1;
   const short* tableCursor = g_anScenarioNationSetupTable_00698B1A;
   for (int row = 0; row < 7; ++row) {
     destCursor[-7] = tableCursor[-1];
@@ -139,6 +138,21 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int) {}
 
 // FUNCTION: IMPERIALISM 0x0057d830
 void TSimMgr::ApplyScenarioVariantSeedForNationSetup() {}
+
+// FUNCTION: IMPERIALISM 0x0057d870
+void TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode) {
+  char zeroFlag = 0;
+  this->redrawEnabled = stateCode;
+  if (stateCode != 0) {
+    if (0 < stateCode && stateCode <= 4) {
+      this->preferenceValues[12] = 0;
+      return;
+    }
+  } else {
+    zeroFlag = 1;
+  }
+  this->preferenceValues[12] = zeroFlag;
+}
 
 // FUNCTION: IMPERIALISM 0x0057d8b0
 short TSimMgr::GetTurnTickSlot3C() {

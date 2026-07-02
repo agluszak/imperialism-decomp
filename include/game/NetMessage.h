@@ -32,4 +32,7 @@ struct TimelyNetMessagePrefix : NetMessage {
   short uiTurnToken; // +0x18
 
   void SetTimeEmitPacketGameFlowTurnId();
+  // Stamp messageTag='time' + the active nation id and return this (0x5438e0; used by
+  // the diplomacy turn-event reply emitters).
+  TimelyNetMessagePrefix* InitializeEmitEventHeaderWithActiveNation();
 };

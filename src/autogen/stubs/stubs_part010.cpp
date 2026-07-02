@@ -531,14 +531,6 @@ undefined4 CacheObjectVslot18ResultToField0C(void)
   return 0;
 }
 
-// ghidra_name NotifyIfNationMatchesSessionActiveNation_Impl
-// ghidra_proto undefined NotifyIfNationMatchesSessionActiveNation_Impl()
-// FUNCTION: IMPERIALISM 0x0047fd30
-undefined4 NotifyIfNationMatchesSessionActiveNation_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnFalseRuntimeSelectionAuxStatus
 // ghidra_proto undefined ReturnFalseRuntimeSelectionAuxStatus()
 // FUNCTION: IMPERIALISM 0x0047fd70
@@ -1791,14 +1783,6 @@ undefined4 DestructTStreamAndMaybeFree(void)
 // ghidra_proto undefined DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl()
 // FUNCTION: IMPERIALISM 0x00489490
 undefined4 DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name AttachGlobalMemoryHandleAndResetPosition
-// ghidra_proto undefined AttachGlobalMemoryHandleAndResetPosition()
-// FUNCTION: IMPERIALISM 0x00489660
-undefined4 AttachGlobalMemoryHandleAndResetPosition(void)
 {
   return 0;
 }

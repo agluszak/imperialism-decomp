@@ -323,14 +323,6 @@ undefined4 RebuildNationStateSlotsAndAvailability(void)
   return 0;
 }
 
-// ghidra_name SetStateCodeAndUpdateZeroOrOutOfRangeFlag
-// ghidra_proto undefined SetStateCodeAndUpdateZeroOrOutOfRangeFlag()
-// FUNCTION: IMPERIALISM 0x0057d870
-undefined4 SetStateCodeAndUpdateZeroOrOutOfRangeFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name IsNationProfileInMinorRange100To199
 // ghidra_proto undefined IsNationProfileInMinorRange100To199()
 // FUNCTION: IMPERIALISM 0x0057f0e0

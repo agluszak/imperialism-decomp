@@ -75,6 +75,10 @@ public:
 
   void InitializeNationStateIdentityAndOwnedRegionList(short nationSlot);
 
+  // Assign the display name and mirror it into the TSimMgr shared-text slot for
+  // this nation (0x4d7a00).
+  void SetNationDisplayNameAndLocalizationSlotRef(const CString& name);
+
   CString identitySharedString0;
   CString identitySharedString1;
   short nationSlot;

@@ -28,6 +28,7 @@ address|target_cpp|ownership|note
 413950|src/game/ImperialismApp.cpp|manual|marker_sync
 4139f0|src/game/ImperialismApp.cpp|manual|marker_sync
 413a20|src/game/CMainFrame.cpp|manual|marker_sync
+4146d0|src/game/ImperialismApp.cpp|manual|marker_sync
 414770|src/game/TAmbitApplication.cpp|manual|marker_sync
 414850|src/game/startup_helpers.cpp|manual|marker_sync
 4149a0|src/game/ImperialismApp.cpp|manual|marker_sync
@@ -176,6 +177,7 @@ address|target_cpp|ownership|note
 47e390|src/game/CDibPal.cpp|manual|marker_sync
 47e3c0|src/game/CDibPal.cpp|manual|marker_sync
 47e440|src/game/CDibPal.cpp|manual|marker_sync
+47fd30|src/game/TWNetSessionManager.cpp|manual|marker_sync
 480850|src/game/TWNetSessionManager.cpp|manual|marker_sync
 4808a0|src/game/TWNetSessionManager.cpp|manual|marker_sync
 482850|src/game/CIncludeView.cpp|manual|marker_sync
@@ -380,6 +382,7 @@ address|target_cpp|ownership|note
 4895e0|src/game/THandleStream.cpp|manual|marker_sync
 489610|src/game/THandleStream.cpp|manual|marker_sync
 489640|src/game/THandleStream.cpp|manual|marker_sync
+489660|src/game/THandleStream.cpp|manual|marker_sync
 4896a0|src/game/THandleStream.cpp|manual|marker_sync
 4896e0|src/game/THandleStream.cpp|manual|marker_sync
 489700|src/game/THandleStream.cpp|manual|marker_sync
@@ -1392,6 +1395,7 @@ address|target_cpp|ownership|note
 4d70e0|src/game/TCountry.cpp|manual|marker_sync
 4d71b0|src/game/TCountry.cpp|manual|marker_sync
 4d7770|src/game/TGreatPower_pending_action.cpp|manual|marker_sync
+4d7a00|src/game/TCountry.cpp|manual|marker_sync
 4d7a40|src/game/TGreatPower.cpp|manual|marker_sync
 4d7ae0|src/game/TCountry.cpp|manual|marker_sync
 4d7b00|src/game/TCountry.cpp|manual|marker_sync
@@ -1753,7 +1757,9 @@ address|target_cpp|ownership|note
 4f05c0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f09c0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f0a10|src/game/TDiplomacyMgr.cpp|manual|marker_sync
-4f0db0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+4f0db0|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
+4f0dd0|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
+4f0e00|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
 4f0e20|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f1570|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f1630|src/game/TDiplomacyMgr.cpp|manual|marker_sync
@@ -1770,6 +1776,9 @@ address|target_cpp|ownership|note
 4f2090|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f2100|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f21f0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+4f28a0|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
+4f2910|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
+4f2930|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
 4f2bb0|src/game/TMinisterView.cpp|manual|marker_sync
 4f2c40|src/game/TMinisterView.cpp|manual|marker_sync
 4f2c90|src/game/TMinisterView.cpp|manual|marker_sync
@@ -2651,6 +2660,7 @@ address|target_cpp|ownership|note
 542b10|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542be0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542ff0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+5438e0|src/game/NetMessage.cpp|manual|marker_sync
 5446a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 544e30|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549540|src/game/TMultiplayerMgr.cpp|manual|marker_sync
@@ -3162,6 +3172,7 @@ address|target_cpp|ownership|note
 57cda0|src/game/TSimMgr.cpp|manual|marker_sync
 57d520|src/game/TSimMgr.cpp|manual|marker_sync
 57d830|src/game/TSimMgr.cpp|manual|marker_sync
+57d870|src/game/TSimMgr.cpp|manual|marker_sync
 57d8b0|src/game/TSimMgr.cpp|manual|marker_sync
 57d8d0|src/game/TSimMgr.cpp|manual|marker_sync
 57d950|src/game/TSimMgr.cpp|manual|marker_sync
@@ -3831,7 +3842,9 @@ address|target_cpp|ownership|note
 5ba260|src/game/TDealList.cpp|manual|marker_sync
 5ba370|src/game/TNextTradeCommand.cpp|manual|marker_sync
 5ba3e0|src/game/TNextTradeCommand.cpp|manual|marker_sync
+5ba400|src/game/TNextTradeCommand.cpp|manual|marker_sync
 5ba430|src/game/TNextTradeCommand.cpp|manual|marker_sync
+5ba480|src/game/TNextTradeCommand.cpp|manual|marker_sync
 5ba4b0|src/game/TNextTradeCommand.cpp|manual|marker_sync
 5ba680|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5ba700|src/game/TTradeScreenPicture.cpp|manual|marker_sync
@@ -4007,6 +4020,8 @@ address|target_cpp|ownership|note
 5e3470|src/game/TNetMgr.cpp|manual|marker_sync
 5e34f0|src/game/TNetMgr.cpp|manual|marker_sync
 5e3d40|src/game/TNetMgr.cpp|manual|marker_sync
+5e4280|src/game/TNetMgr.cpp|manual|marker_sync
+5e42c0|src/game/TNetMgr.cpp|manual|marker_sync
 5e4610|src/game/TNetMgr.cpp|manual|marker_sync
 5e4830|src/game/TNetMgr.cpp|manual|marker_sync
 5e4e70|src/game/TSoundPlayer.cpp|manual|marker_sync

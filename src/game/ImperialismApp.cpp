@@ -238,6 +238,19 @@ undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0() {
   return 0;
 }
 
+// Post WM_CLOSE to the main thread's window. Faithful to the original: when
+// AfxGetThread() returns null the main-window pointer stays null and the m_hWnd
+// read dereferences it unguarded (latent original bug, kept as-is).
+// FUNCTION: IMPERIALISM 0x004146d0
+void PostWmCloseToMainThreadWindow() {
+  if (AfxGetThread() != 0) {
+    PostMessageA(AfxGetThread()->GetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);
+    return;
+  }
+  CWnd* nullMainWindow = 0;
+  PostMessageA(nullMainWindow->m_hWnd, WM_CLOSE, 0, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x004149a0
 BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
   CString savedLanguage;

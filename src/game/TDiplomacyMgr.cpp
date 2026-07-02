@@ -787,11 +787,6 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x004f0db0
-void DispatchProcessQueuedWarTransitions() {
-  ReadGlobalTDiplomacyTurnStateManager()->ProcessQueuedWarTransitions();
-}
-
 // FUNCTION: IMPERIALISM 0x004f0e20
 void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices() {}
 

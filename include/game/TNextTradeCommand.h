@@ -29,6 +29,9 @@ public:
   void OrphanRetStub_00487a00() override; // slot 0x0b 0x5ba4b0
   // slot 0x01 (dtor) overridden by ~TNextTradeCommand below (0x5ba430)
 
+  // Seed the command payload with dispatch message 0x232b targeting the global UI
+  // root controller (0x5ba480; diplomacy turn-event code 0x1c path).
+  void InitializeRangePairFromDiplomacyConstants();
   virtual ~TNextTradeCommand();
 };
 

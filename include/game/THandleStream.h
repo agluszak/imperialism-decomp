@@ -59,15 +59,22 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins06_00489720(); // slot 0x31 0x489720
   // === END GENERATED DECLS (THandleStream) ===
   // clang-format on
-  int currentExtent;
-  int highWatermark;
-  int handleOrBuffer;
-  int position;
-  bool ownsHandleOrDirty;
+  // Field semantics evidenced by AttachGlobalMemoryHandleAndResetPosition (0x489660):
+  // +0x04 receives the HGLOBAL, +0x08 is zeroed (position), +0x0c receives
+  // GlobalSize(handle), +0x10 receives the caller's mode word (ctor default 1).
+  HGLOBAL attachedGlobalHandle; // +0x04
+  int streamPosition;           // +0x08
+  int attachedSizeBytes;        // +0x0c
+  int modeFlags10;              // +0x10
+  bool ownsHandleOrDirty;       // +0x14
 
   DECLARE_DYNCREATE(THandleStream)
   THandleStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
+
+  // Attach a global-memory handle: mode from the caller, position reset to 0,
+  // size from GlobalSize. A null handle only resets position/mode. (0x489660)
+  void AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int modeFlags);
 
   int streamSlot28() override;
   void streamSlot2c() override;

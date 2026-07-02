@@ -45,6 +45,13 @@ public:
   static TNetMgr* ConstructGlobalTurnEventQueueManager(TNetMgr* storage);
 };
 
+// WNetMgr.cpp free helpers over the file-scope session state.
+// Returns the local session id global 0x6a5fc0.
+int GetSessionActiveNationId(); // 0x5e4280
+// Destroys the DirectPlay player when `nationId` is the local session id (name kept
+// from Ghidra; the body destroys, it does not notify).
+void __stdcall NotifyIfNationMatchesSessionActiveNation(int nationId); // 0x5e42c0
+
 // === BEGIN GENERATED (TNetMgr) — refreshed by `just gen-class TNetMgr`; do not hand-edit ===
 // clang-format off
 // vtable @ 0x0066fa20 (23 slots), object size 0x04, base TObject

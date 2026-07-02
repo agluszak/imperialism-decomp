@@ -603,14 +603,6 @@ undefined4 HandleTurnResumeStateTelemetry(void)
   return 0;
 }
 
-// ghidra_name InitializeEmitEventHeaderWithActiveNation
-// ghidra_proto undefined InitializeEmitEventHeaderWithActiveNation()
-// FUNCTION: IMPERIALISM 0x005438e0
-undefined4 InitializeEmitEventHeaderWithActiveNation(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleDiplomacyTurnEventPacketByCode
 // ghidra_proto undefined HandleDiplomacyTurnEventPacketByCode()
 // FUNCTION: IMPERIALISM 0x00543910
@@ -755,8 +747,8 @@ undefined4 RouteAndProcessDiplomacyTurnStateEventQueue(void)
   return 0;
 }
 
-// ghidra_name TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine
-// ghidra_proto undefined ProcessDiplomacyTurnStateEventStateMachine()
+// ghidra_name TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+// ghidra_proto unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet)
 // FUNCTION: IMPERIALISM 0x00545940
 undefined4 ProcessDiplomacyTurnStateEventStateMachine(void)
 {

@@ -75,6 +75,9 @@ public:
   // g_pLocalizationTable (0x6a20f8) — this getter belongs to TSimMgr, not the view
   // managers that many older ports called it on.
   short GetActiveNationId(); // 0x581260
+  // Store a state code into +0x40 and set the +0x5c short flag to 1 only when the
+  // code is exactly zero (codes 1..4 and out-of-range codes clear it). 0x57d870.
+  void SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode);
   void DecrementField30Value();
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
@@ -95,6 +98,9 @@ public:
   int runtimeSubsystemIndex;
   int redrawEnabled;
   short preferenceValues[14];
+  unsigned char pad60[4]; // +0x60 — no observed reader/writer yet; required so field_64
+                          // lands at its original +0x64 (InitializeTurnFlowStateDefaults
+                          // 0x57bbf0 writes [this+0x64]; sharedTextSlots pins +0x7c)
   int field_64;
   // +0x68 — nonzero: city/nation names come from the localized string table
   // (GetString group 0x2715) instead of the generated flavor-text variants
@@ -112,12 +118,11 @@ public:
   CString sharedTextSlots[0x17];
   unsigned char fieldd8;
   unsigned char padD9;
+  // Contiguous 4x7 scenario setup rows at +0xda/+0xe8/+0xf6/+0x104 (constructor
+  // scatter-copy evidence; no inter-row padding).
   short scenarioSetupRows0[7];
-  short padE6;
   short scenarioSetupRows1[7];
-  short padF4;
   short scenarioSetupRows2[7];
-  short pad102;
   short scenarioSetupRows3[7];
   unsigned char field112;
   unsigned char pad113;

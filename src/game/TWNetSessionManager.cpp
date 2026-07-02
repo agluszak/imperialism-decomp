@@ -1,8 +1,15 @@
 #include "game/TWNetSessionManager.h"
 
+// FUNCTION: IMPERIALISM 0x0047fd30
+unsigned char TWNetSessionManager::DestroyPlayerAndStoreResult(DWORD idPlayer) {
+  long destroyResult = this->directPlayInterface04->DestroyPlayer(idPlayer);
+  this->lastErrorCode0c = destroyResult;
+  return destroyResult >= 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00480850
 int TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount) {
-  IDirectPlay2Compat* directPlay = this->directPlayInterface04;
+  IDirectPlay2* directPlay = this->directPlayInterface04;
   if (directPlay == 0) {
     return 0;
   }
@@ -12,12 +19,12 @@ int TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsign
 }
 
 // Pulls the next pending DirectPlay message into *bufferHandle, growing the GlobalAlloc
-// buffer until IDirectPlay2::Receive stops reporting DPERR_BUFFERTOOSMALL (-0x7788ffe2).
-// DPERR_NOMESSAGES (-0x7788ff42) ends the loop without a message.
+// buffer until IDirectPlay2::Receive stops reporting DPERR_BUFFERTOOSMALL.
+// DPERR_NOMESSAGES ends the loop without a message.
 // FUNCTION: IMPERIALISM 0x004808a0
 int TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromId, DWORD* toId,
                                                                     void** bufferHandle) {
-  IDirectPlay2Compat* directPlay = this->directPlayInterface04;
+  IDirectPlay2* directPlay = this->directPlayInterface04;
   if (directPlay == 0) {
     return 1;
   }
@@ -36,8 +43,9 @@ int TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromI
     }
     receiveResult = directPlay->Receive(fromId, toId, 1, *bufferHandle, &neededSize);
     this->lastErrorCode0c = receiveResult;
-  } while (receiveResult != -0x7788ff42 && (*bufferHandle == 0 || receiveResult == -0x7788ffe2));
-  if (receiveResult < 0 && receiveResult != -0x7788ff42) {
+  } while (receiveResult != DPERR_NOMESSAGES &&
+           (*bufferHandle == 0 || receiveResult == DPERR_BUFFERTOOSMALL));
+  if (receiveResult < 0 && receiveResult != DPERR_NOMESSAGES) {
     GlobalFree(*bufferHandle);
     *bufferHandle = 0;
     return 0;
