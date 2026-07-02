@@ -51,26 +51,10 @@ undefined4 thunk_InitializeUiTextStyleDescriptor(void)
   return 0;
 }
 
-// ghidra_name thunk_SetUiResourceContextTagWord
-// ghidra_proto undefined thunk_SetUiResourceContextTagWord()
-// ILT thunk 0x00402aa4 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_SetUiResourceContextTagWord(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_GetMapActionContextByTileIndex
 // ghidra_proto void * __cdecl thunk_GetMapActionContextByTileIndex(short nTileIndex)
 // ILT thunk 0x0040318e - unannotated on purpose (see ILT_THUNK_RANGE)
 undefined4 thunk_GetMapActionContextByTileIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::thunk_SetMapInteractionMode
-// ghidra_proto void __thiscall thunk_SetMapInteractionMode(short nMode)
-// ILT thunk 0x004032a1 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_SetMapInteractionMode(void)
 {
   return 0;
 }
@@ -95,14 +79,6 @@ undefined4 thunk_ConstructUiResourceEntryType4B0C0(void)
 // ghidra_proto undefined thunk_AppendPackedColorDwordToMaskBuffers()
 // ILT thunk 0x00404a25 - unannotated on purpose (see ILT_THUNK_RANGE)
 undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void)
-{
-  return 0;
-}
-
-// ghidra_name Config::InitDefaults
-// ghidra_proto undefined4 * __fastcall InitDefaults(astruct_11 * this_obj)
-// ILT thunk 0x00405529 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 InitDefaults(void)
 {
   return 0;
 }
@@ -159,14 +135,6 @@ undefined4 thunk_DestroyScopedMapQuickDrawContext(void)
 // ghidra_proto undefined thunk_NormalizeWrappedMapCoord108x60()
 // ILT thunk 0x00408328 - unannotated on purpose (see ILT_THUNK_RANGE)
 undefined4 thunk_NormalizeWrappedMapCoord108x60(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::thunk_RefreshMapOrderEntryPanel
-// ghidra_proto void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)
-// ILT thunk 0x00408995 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_RefreshMapOrderEntryPanel(void)
 {
   return 0;
 }

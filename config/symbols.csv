@@ -5,14 +5,11 @@ address|name|symbol|size|type|prototype|provenance
 40257c|thunk_GetCityBuildingProductionValueBySlot||5|function|int __thiscall thunk_GetCityBuildingProductionValueBySlot(short nBuildingSlotId)|
 4028d8|thunk_InitializeCityInteriorMinister||5|function|undefined thunk_InitializeCityInteriorMinister()|
 402a7c|thunk_InitializeUiTextStyleDescriptor||5|function|undefined thunk_InitializeUiTextStyleDescriptor()|
-402aa4|thunk_SetUiResourceContextTagWord||5|function|undefined thunk_SetUiResourceContextTagWord()|
 402eeb|TUnit::thunk_RegisterUnitOrderWithOwnerManager||5|function|undefined thunk_RegisterUnitOrderWithOwnerManager()|
 40318e|thunk_GetMapActionContextByTileIndex||5|function|void * __cdecl thunk_GetMapActionContextByTileIndex(short nTileIndex)|
-4032a1|TCivToolbar::thunk_SetMapInteractionMode||5|function|void __thiscall thunk_SetMapInteractionMode(short nMode)|
 403f71|thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90||5|function|undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()|
 4042c8|thunk_ConstructUiResourceEntryType4B0C0||5|function|undefined thunk_ConstructUiResourceEntryType4B0C0()|
 404a25|TDiplomacyMapView::thunk_AppendPackedColorDwordToMaskBuffers||5|function|undefined thunk_AppendPackedColorDwordToMaskBuffers()|
-405529|Config::InitDefaults||5|function|undefined4 * __fastcall InitDefaults(astruct_11 * this_obj)|
 4056a5|TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale||5|function|undefined thunk_ProjectTileIndexToWrappedScreenOffsetByScale()|
 405c72|thunk_DestructEngineerDialogBaseState||5|function|void __thiscall thunk_DestructEngineerDialogBaseState(void)|
 4061d1|thunk_InitializeDirectSoundDeviceAndChannels_004061D1|||global||
@@ -23,7 +20,6 @@ address|name|symbol|size|type|prototype|provenance
 407f4a|TCivDescription::`scalar deleting destructor'||5|function|undefined ScalarDeletingDestructor()|
 408035|thunk_DestroyScopedMapQuickDrawContext||5|function|undefined thunk_DestroyScopedMapQuickDrawContext()|
 408328|thunk_NormalizeWrappedMapCoord108x60||5|function|undefined thunk_NormalizeWrappedMapCoord108x60()|
-408995|TToolBarCluster::thunk_RefreshMapOrderEntryPanel||5|function|void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
 408ed6|thunk_GetResourceTypeRandomDrawBlockFlag||5|function|undefined thunk_GetResourceTypeRandomDrawBlockFlag()|
 40928c|thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh||5|function|undefined thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh()|
 4096b0|thunk_DispatchLocalizedUiMessageWithTemplateA13A0||5|function|undefined thunk_DispatchLocalizedUiMessageWithTemplateA13A0()|

@@ -25,12 +25,6 @@
       "type": 1
     },
     {
-      "address": "0x402aa4",
-      "matching": 0.0,
-      "name": "thunk_SetUiResourceContextTagWord",
-      "type": 1
-    },
-    {
       "address": "0x402eeb",
       "matching": 0.0,
       "name": "TUnit::thunk_RegisterUnitOrderWithOwnerManager",
@@ -6791,7 +6785,7 @@
     },
     {
       "address": "0x49ded0",
-      "matching": 0.8184438040345822,
+      "matching": 0.8242074927953891,
       "name": "InitializeGlobalRuntimeSystemsFromConfig",
       "type": 1
     },
@@ -28038,7 +28032,7 @@
     },
     {
       "address": "0x595c70",
-      "matching": 0.2552204176334107,
+      "matching": 0.2459396751740139,
       "name": "TWorldView::RenderMapContextOverlayWithScopedClipAndSurface",
       "type": 1
     },
@@ -28098,7 +28092,7 @@
     },
     {
       "address": "0x5962a0",
-      "matching": 0.3870967741935484,
+      "matching": 0.41830065359477125,
       "name": "TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79",
       "type": 1
     },
@@ -28212,7 +28206,7 @@
     },
     {
       "address": "0x596cb0",
-      "matching": 0.0,
+      "matching": 0.010526315789473684,
       "name": "TToolBarCluster::SetMapInteractionMode",
       "type": 1
     },
@@ -28260,13 +28254,13 @@
     },
     {
       "address": "0x597810",
-      "matching": 0.0,
+      "matching": 0.02127659574468085,
       "name": "TToolBarCluster::RefreshMapOrderEntryPanel",
       "type": 1
     },
     {
       "address": "0x597950",
-      "matching": 0.0,
+      "matching": 0.05263157894736842,
       "name": "TToolBarCluster::SetActiveMapOrderEntry",
       "type": 1
     },
