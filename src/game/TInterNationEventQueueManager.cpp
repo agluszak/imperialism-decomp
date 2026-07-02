@@ -31,7 +31,7 @@ void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int ev
   if (g_pLocalizationTable == 0) {
     return;
   }
-  if (g_pLocalizationTable->gateFlag76 != 0) {
+  if (g_pLocalizationTable->gateFlag7a != 0) {
     return;
   }
 
@@ -61,7 +61,7 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
   if (g_pLocalizationTable == 0) {
     return;
   }
-  if (g_pLocalizationTable->gateFlag76 != 0) {
+  if (g_pLocalizationTable->gateFlag7a != 0) {
     return;
   }
 
@@ -136,7 +136,7 @@ void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
   if (g_pLocalizationTable == 0) {
     return;
   }
-  if (g_pLocalizationTable->gateFlag76 != 0) {
+  if (g_pLocalizationTable->gateFlag7a != 0) {
     return;
   }
 

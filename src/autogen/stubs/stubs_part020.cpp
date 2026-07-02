@@ -1795,26 +1795,10 @@ undefined4 PopNextTurnEventPacketOrProcessSpecialQueueRecords(void)
   return 0;
 }
 
-// ghidra_name GetSessionActiveNationId
-// ghidra_proto undefined GetSessionActiveNationId()
-// FUNCTION: IMPERIALISM 0x005e4280
-undefined4 GetSessionActiveNationId(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpDialogModeTagChangedHook
 // ghidra_proto undefined NoOpDialogModeTagChangedHook()
 // FUNCTION: IMPERIALISM 0x005e42a0
 undefined4 NoOpDialogModeTagChangedHook(void)
-{
-  return 0;
-}
-
-// ghidra_name NotifyIfNationMatchesSessionActiveNation
-// ghidra_proto undefined NotifyIfNationMatchesSessionActiveNation()
-// FUNCTION: IMPERIALISM 0x005e42c0
-undefined4 NotifyIfNationMatchesSessionActiveNation(void)
 {
   return 0;
 }

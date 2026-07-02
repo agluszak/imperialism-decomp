@@ -60,7 +60,10 @@
       }
     }
     if (ShouldDispatchNextTradePacket(this)) {
-      DispatchUiPacketWithTagNEXT();
+      // 0x57df05: new TNextDiplomationCommand() + immediate dispatch; the original
+      // calls the method even when operator new returned null (kept faithfully).
+      TNextDiplomationCommand* nextCommand = new TNextDiplomationCommand();
+      nextCommand->DispatchUiPacketWithTagNEXT();
     }
     break;
   }

@@ -75,6 +75,9 @@ public:
   // g_pLocalizationTable (0x6a20f8) — this getter belongs to TSimMgr, not the view
   // managers that many older ports called it on.
   short GetActiveNationId(); // 0x581260
+  // Store a state code into +0x40 and set the +0x5c short flag to 1 only when the
+  // code is exactly zero (codes 1..4 and out-of-range codes clear it). 0x57d870.
+  void SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode);
   void DecrementField30Value();
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
@@ -95,39 +98,41 @@ public:
   int runtimeSubsystemIndex;
   int redrawEnabled;
   short preferenceValues[14];
-  // Field names below carry each field's real byte offset from `this`
-  // (verified against ctor/field-access evidence, see bd 1uj.4); the
-  // previous names drifted +4 relative to their true offsets from field60
-  // through pad115, self-correcting again at scenarioSetupRows1.
-  int field60;
-  // +0x64 — nonzero: city/nation names come from the localized string table
+  // Ground truth (bd 1uj.4 originally mis-shifted this whole region by -4; corrected
+  // per bd cwa/agent-2 evidence): pad60 is a genuine, currently-unidentified 4-byte gap
+  // -- InitializeTurnFlowStateDefaults (0x57bbf0) writes [this+0x64], and the
+  // constructor's scenario-row scatter-copy (destCursor anchored at scenarioSetupRows1)
+  // lands row0/1/2/3 at +0xda/+0xe8/+0xf6/+0x104 with zero inter-row padding -- both
+  // facts only hold if field_64 sits at its literal +0x64, not +0x60.
+  unsigned char pad60[4]; // +0x60 — no observed reader/writer yet
+  int field_64;
+  // +0x68 — nonzero: city/nation names come from the localized string table
   // (GetString group 0x2715) instead of the generated flavor-text variants
   // (SetSharedStringFromMappedFlavorTextWithLengthClamp @ 0x5d4410).
-  char useLocalizedNameTables64;
-  unsigned char pad65;
-  short field66;
-  short field68;
-  unsigned char field6a;
+  char useLocalizedNameTables68;
+  unsigned char pad69;
+  short field6a;
+  short field6c;
+  unsigned char field6e;
   unsigned char phaseFlags[9];
-  unsigned char field74;
-  unsigned char field75;
-  unsigned char gateFlag76;
-  unsigned char pad77;
+  unsigned char field78;
+  unsigned char field79;
+  unsigned char gateFlag7a;
+  unsigned char pad7b;
   CString sharedTextSlots[0x17];
-  unsigned char fieldd4;
-  unsigned char padD5;
+  unsigned char fieldd8;
+  unsigned char padD9;
+  // Contiguous 4x7 scenario setup rows at +0xda/+0xe8/+0xf6/+0x104 (constructor
+  // scatter-copy evidence; no inter-row padding).
   short scenarioSetupRows0[7];
-  short padE4;
   short scenarioSetupRows1[7];
-  short padF4;
   short scenarioSetupRows2[7];
-  short pad104;
   short scenarioSetupRows3[7];
-  unsigned char field114;
-  unsigned char pad115;
-  // 0x116 — nonzero switches TGreatPower seeding/home-region resolution to the
+  unsigned char field112;
+  unsigned char pad113;
+  // 0x114 — nonzero switches TGreatPower seeding/home-region resolution to the
   // direct-map path (0x004d71b0 / 0x004dfae0 / 0x004df810).
-  short stateFlag116;
+  short stateFlag114;
 };
 
 ASSERT_SIZE(TSimMgr, 0x118);

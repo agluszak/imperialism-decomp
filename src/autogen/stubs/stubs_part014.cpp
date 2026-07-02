@@ -307,22 +307,6 @@ undefined4 SyncNationField790FromLocalizationStateId(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0()
-// FUNCTION: IMPERIALISM 0x004f0dd0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0_Impl
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0_Impl()
-// FUNCTION: IMPERIALISM 0x004f0e00
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name RecomputeNationComparativePowerMetrics
 // ghidra_proto undefined RecomputeNationComparativePowerMetrics()
 // FUNCTION: IMPERIALISM 0x004f1760
@@ -359,30 +343,6 @@ undefined4 WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0(vo
 // ghidra_proto undefined SetNationPairSpecialRelationFlagAndQueueEvent14Or16()
 // FUNCTION: IMPERIALISM 0x004f2820
 undefined4 SetNationPairSpecialRelationFlagAndQueueEvent14Or16(void)
-{
-  return 0;
-}
-
-// ghidra_name TNextDiplomationCommand::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x004f28a0
-undefined4 CreateObject_004F28A0(void)
-{
-  return 0;
-}
-
-// ghidra_name TNextDiplomationCommand::GetRuntimeClass
-// ghidra_proto undefined __thiscall GetRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x004f2910
-undefined4 GetRuntimeClass_004F2910(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchUiPacketWithTagNEXT
-// ghidra_proto undefined DispatchUiPacketWithTagNEXT()
-// FUNCTION: IMPERIALISM 0x004f2930
-undefined4 DispatchUiPacketWithTagNEXT(void)
 {
   return 0;
 }

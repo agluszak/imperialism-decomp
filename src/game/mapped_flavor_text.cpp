@@ -34,7 +34,7 @@ undefined4 ShouldRetryMappedFlavorTextGeneration(void);
 
 // FUNCTION: IMPERIALISM 0x005d4410
 void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot) {
-  if (g_pLocalizationTable->useLocalizedNameTables64 == '\0') {
+  if (g_pLocalizationTable->useLocalizedNameTables68 == '\0') {
     short variantIndex = g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex;
     GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
     if (DAT_006a43f0 == '\0') {

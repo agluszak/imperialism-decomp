@@ -17,6 +17,7 @@
 #include "game/TMapMgr.h"
 #include "game/TMinor.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TNextDiplomationCommand.h"
 #include "game/TSoundPlayer.h"
 #include "game/TTechMgr.h"
 #include "game/TViewMgr.h"
@@ -53,7 +54,6 @@ extern undefined4 PushCueToDualAudioCuePools(void);
 extern undefined4 SelectAndScheduleRandomAudioCue(void);
 extern undefined4 IsNationProfileInMinorRange100To199(void);
 extern undefined4 SetOutputDevice(void);
-extern undefined4 DispatchUiPacketWithTagNEXT(void);
 
 // QueryNationAdvisorSlot90Predicate28 / QueryJoinEmpireModePendingForNationAf are placeholder
 // per-nation checks that still need to be ported (cases 0x19 / 0xb); constant returns make those
@@ -175,7 +175,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       }
     }
     if (DAT_006a43f0 == 0) {
-      if (stateFlag116 == 0) {
+      if (stateFlag114 == 0) {
         if (redrawEnabled == 0) {
           RefreshNationAdvisorLabelStrings();
         }
@@ -199,7 +199,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   // TODO(shortcut): this case has an *unverified, likely* bug, spotted but not fixed
   // (ran out of session time to re-verify field offsets before touching it). The real
   // disassembly around 0x0057db61-0x57db8b looked like it has the condition inverted
-  // (dispatch only when field34>=2 && stateFlag116==0, i.e. opposite of what's modeled
+  // (dispatch only when field34>=2 && stateFlag114==0, i.e. opposite of what's modeled
   // below) and dispatches a different event code (0x3b8, not 0x5e4) with the arguments
   // in (code, activeNationSlot) order rather than (activeNationSlot, code) — the same
   // swap pattern that was confirmed and fixed in case 1 above. Re-verify against
@@ -207,7 +207,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   // without re-checking the condition too, this one wasn't fully traced through.
   case 3:
     turnStateCode = 2;
-    if (field114 != 0) {
+    if (field112 != 0) {
       RebuildGlobalOrderManagersAndCapabilityState();
       RebuildMapContextAndGlobalMapState();
     }
@@ -215,7 +215,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       break;
     }
     RebuildNationStateSlotsAndAvailability();
-    if (field34 < 2 && stateFlag116 == 0) {
+    if (field34 < 2 && stateFlag114 == 0) {
       if (g_pUiRuntimeContext != nullptr) {
         g_pUiRuntimeContext->DispatchTurnEventSlot4C(activeNationSlot, 0x5e4);
       }

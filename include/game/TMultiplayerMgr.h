@@ -32,9 +32,14 @@ public:
   int nationStatusTags[kNationSlotCount];           // +0xbc — four-cc tags ('suna', 'lwoa', …)
   int sessionPhaseTag;                              // +0xd8 — four-cc phase tag ('adam', 'init', …)
   unsigned char activeNationTagIndex;               // +0xdc
-  unsigned char padDd[7];
+  unsigned char padDd[3];
+  int scenarioSelectionTag;       // +0xe0 — four-cc from the code-0xe session-init packet
+                                  // ('load', 'rand', 'scn0'..'szz9')
   unsigned char sessionReadyFlag; // +0xe4
-  unsigned char padE5[7];
+  unsigned char padE5[3];
+  int pendingNationBitmask;   // +0xe8 — one bit per nation slot; the turn-state machine
+                              // loads it whole from the code-1 sync packet and clears the
+                              // sender's bit on code-0x32 acknowledgements
   int activeNationSlotIndex;  // +0xec
   int pendingNationSlotIndex; // +0xf0
   unsigned char fieldF4;      // +0xf4

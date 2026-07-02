@@ -127,9 +127,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot)
   SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, nationSlot);
   this->identitySharedString0 = flavorName;
   if (g_pLocalizationTable != 0) {
-    CString* nationNameSlot = reinterpret_cast<CString*>(
-        reinterpret_cast<char*>(g_pLocalizationTable) + nationSlot * 4 + 0x7c);
-    *nationNameSlot = this->identitySharedString0;
+    g_pLocalizationTable->sharedTextSlots[nationSlot] = this->identitySharedString0;
   }
   this->identitySharedString1 = this->identitySharedString0;
   this->treasuryValue10 = 5000;
@@ -172,9 +170,7 @@ void TCountry::ReadFrom(TStream* stream) {
   stream->streamSlot70();
   stream->streamSlot70();
 
-  CString* nationNameSource = reinterpret_cast<CString*>(
-      reinterpret_cast<char*>(g_pLocalizationTable) + this->nationSlot * 4 + 0x7c);
-  this->identitySharedString1 = *nationNameSource;
+  this->identitySharedString1 = g_pLocalizationTable->sharedTextSlots[this->nationSlot];
   stream->ReadBytes(&this->identitySharedString0, 4);
 
   stream->ReadBytes(&this->nationSlot, 2);
@@ -269,7 +265,7 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004d71b0
 void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   TSimMgr* localization = g_pLocalizationTable;
-  if (localization->stateFlag116 > 0) {
+  if (localization->stateFlag114 > 0) {
     g_pGlobalMapState->NotifyCityRecordSlot12C(
         g_pGlobalMapState->terrainStateTable[this->ownerNationSlot].cityRecordIndex);
     return;
@@ -363,6 +359,14 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
     } while (ordinal <= this->ownedRegionList->GetCountSlot48());
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();
+}
+
+// FUNCTION: IMPERIALISM 0x004d7a00
+void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
+  this->identitySharedString0 = name;
+  if (g_pLocalizationTable != 0) {
+    g_pLocalizationTable->sharedTextSlots[this->nationSlot] = name;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d7ae0

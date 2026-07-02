@@ -134,15 +134,15 @@ int GetSortedPtrListEntryCount(TSortedPtrList* list) {
 }
 
 short ReadLocalizationFlowMode() {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x8);
+  return static_cast<short>(g_pLocalizationTable->mode);
 }
 
 short ReadLocalizationTurnGateFlag58() {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x58);
+  return g_pLocalizationTable->preferenceValues[10];
 }
 
 short ReadLocalizationPendingEventGate5c() {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x5c);
+  return g_pLocalizationTable->preferenceValues[12];
 }
 
 } // namespace

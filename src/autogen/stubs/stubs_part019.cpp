@@ -1363,26 +1363,10 @@ undefined4 ConstructTDealListBaseState(void)
   return 0;
 }
 
-// ghidra_name TNextTradeCommand::ConstructTNextTradeCommandBaseState
-// ghidra_proto undefined ConstructTNextTradeCommandBaseState()
-// FUNCTION: IMPERIALISM 0x005ba400
-undefined4 ConstructTNextTradeCommandBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl
 // ghidra_proto undefined DestructTNextTradeCommandAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005ba460
 undefined4 DestructTNextTradeCommandAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeRangePairFromDiplomacyConstants
-// ghidra_proto undefined InitializeRangePairFromDiplomacyConstants()
-// FUNCTION: IMPERIALISM 0x005ba480
-undefined4 InitializeRangePairFromDiplomacyConstants(void)
 {
   return 0;
 }

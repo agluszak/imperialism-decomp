@@ -9,7 +9,6 @@ address|name|symbol|size|type|prototype|provenance
 402eeb|TUnit::thunk_RegisterUnitOrderWithOwnerManager||5|function|undefined thunk_RegisterUnitOrderWithOwnerManager()|
 40318e|thunk_GetMapActionContextByTileIndex||5|function|void * __cdecl thunk_GetMapActionContextByTileIndex(short nTileIndex)|
 4032a1|TCivToolbar::thunk_SetMapInteractionMode||5|function|void __thiscall thunk_SetMapInteractionMode(short nMode)|
-403b16|UiRuntimeContext::GetActiveNationId||5|function|undefined GetActiveNationId()|
 403f71|thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90||5|function|undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()|
 4042c8|thunk_ConstructUiResourceEntryType4B0C0||5|function|undefined thunk_ConstructUiResourceEntryType4B0C0()|
 404a25|TDiplomacyMapView::thunk_AppendPackedColorDwordToMaskBuffers||5|function|undefined thunk_AppendPackedColorDwordToMaskBuffers()|
@@ -27,7 +26,6 @@ address|name|symbol|size|type|prototype|provenance
 408328|thunk_NormalizeWrappedMapCoord108x60||5|function|undefined thunk_NormalizeWrappedMapCoord108x60()|
 408995|TToolBarCluster::thunk_RefreshMapOrderEntryPanel||5|function|void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
 408ed6|thunk_GetResourceTypeRandomDrawBlockFlag||5|function|undefined thunk_GetResourceTypeRandomDrawBlockFlag()|
-409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex||5|function|undefined MapTurnEventCodeToPaletteIndex()|
 40928c|thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh||5|function|undefined thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh()|
 4096b0|thunk_DispatchLocalizedUiMessageWithTemplateA13A0||5|function|undefined thunk_DispatchLocalizedUiMessageWithTemplateA13A0()|
 409980|TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry||5|function|undefined thunk_ConstructUiClickablePictureResourceEntry()|
@@ -457,7 +455,7 @@ address|name|symbol|size|type|prototype|provenance
 47fb50|AssertDirectPlayLine118||20|function|undefined AssertDirectPlayLine118()|
 47fb80|WrapperFor_Ordinal_4_At0047fb80||34|function|undefined WrapperFor_Ordinal_4_At0047fb80()|
 47fcb0|CacheObjectVslot18ResultToField0C||86|function|undefined CacheObjectVslot18ResultToField0C()|
-47fd30|NotifyIfNationMatchesSessionActiveNation_Impl||33|function|undefined NotifyIfNationMatchesSessionActiveNation_Impl()|
+47fd30|TWNetSessionManager::DestroyPlayerAndStoreResult||33|function|unsigned char DestroyPlayerAndStoreResult(DWORD idPlayer)|curated
 47fd70|ReturnFalseRuntimeSelectionAuxStatus||5|function|undefined ReturnFalseRuntimeSelectionAuxStatus()|
 47fd90|RebuildRuntimeSelectionSource||129|function|undefined RebuildRuntimeSelectionSource()|
 47fe50|OpenRuntimeSelectionSourceWithOptionalSeed||377|function|undefined OpenRuntimeSelectionSourceWithOptionalSeed()|
@@ -2760,7 +2758,7 @@ address|name|symbol|size|type|prototype|provenance
 4f09c0|QueueNationPairWarTransition||58|function|undefined QueueNationPairWarTransition()|
 4f0a10|ProcessQueuedWarTransitions||722|function|undefined ProcessQueuedWarTransitions()|
 4f0db0|DispatchProcessQueuedWarTransitions||11|function|undefined DispatchProcessQueuedWarTransitions()|
-4f0dd0|WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0()|
+4f0dd0|TNextDiplomationCommand::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|curated
 4f0e00|WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0_Impl()|
 4f0e20|TSortedByRelationshipList::RebuildDiplomacyStandingAndInfluenceMatrices||1485|function|undefined RebuildDiplomacyStandingAndInfluenceMatrices()|
 4f1570|TSortedByRelationshipList::InitializeDiplomacyStandingBaselineRandom||132|function|undefined InitializeDiplomacyStandingBaselineRandom()|
@@ -3999,7 +3997,7 @@ address|name|symbol|size|type|prototype|provenance
 545660|ResetLocalUiStateAndPostTurnEvent5E5||42|function|undefined ResetLocalUiStateAndPostTurnEvent5E5()|
 5456a0|ResetDialogContextField40AndEmitTurnEvent3Mode18||108|function|undefined ResetDialogContextField40AndEmitTurnEvent3Mode18()|
 545730|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue||331|function|undefined RouteAndProcessDiplomacyTurnStateEventQueue()|
-545940|TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine||11459|function|undefined ProcessDiplomacyTurnStateEventStateMachine()|
+545940|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine||11459|function|unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet)|curated
 549240|TouchSessionActiveNationId||11|function|undefined TouchSessionActiveNationId()|
 549280|AppendNodeToTurnEventLinkedListAt6C||35|function|undefined AppendNodeToTurnEventLinkedListAt6C()|
 5493c0|CreateAndSendTurnEvent11_MapOffsetAndFlags||185|function|undefined CreateAndSendTurnEvent11_MapOffsetAndFlags()|
@@ -8100,7 +8098,6 @@ address|name|symbol|size|type|prototype|provenance
 654cb8|TSortedByRelationshipList::classTSortedByRelationshipList|||global||
 654cd0|TDiplomacyMgr::classTDiplomacyMgr|||global||
 654ce8|TNextDiplomationCommand::classRuntimeClass|||global||
-654e50|TNextTradeCommand::'vftable'|||global||
 654ed0|TMinisterView::classTMinisterView|||global||
 654ee8|TForeignMinisterView::classTForeignMinisterView|||global||
 654f00|TDefenseMinisterView::classTDefenseMinisterView|||global||

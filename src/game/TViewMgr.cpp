@@ -1,4 +1,6 @@
 #include "game/TViewMgr.h"
+
+#include "game/ImperialismApp.h"
 #include "game/TAssetMgr.h"
 #include "game/TSoundPlayer.h"        // g_pSfxPlaybackSystem
 #include "game/TMacViewMgr.h"         // g_pStrategicMapViewSystem
@@ -6,7 +8,7 @@
 #include "game/CWMgrIterator.h"       // window-registry traversal for the full (code-0) refresh
 #include "game/quickdraw_rendering.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
 #include "game/TToolBarCluster.h"     // pulls TView/TControl/TCluster chain for main-view dispatch
-#include "game/TViewMgr.h"
+
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCivToolbar.h"
@@ -62,7 +64,6 @@ undefined4 RunNationInfoModalAndReturnNonCancel(void);
 undefined4 NoOpUiRuntimeCallback_005db2f0(void);
 undefined4 NoOpRuntimeCallback_005d5d10(void);
 undefined4 DoModal_6051b9(void);
-undefined4 PostWmCloseToMainThreadWindow(void);
 
 // Provisional dispatch interfaces for the runtime-resolved turn-event dialog node (a
 // TView-family panel; the concrete class is registry-driven) and its 'GOLD' child

@@ -75,14 +75,6 @@ undefined4 thunk_SetMapInteractionMode(void)
   return 0;
 }
 
-// ghidra_name UiRuntimeContext::GetActiveNationId
-// ghidra_proto undefined GetActiveNationId()
-// ILT thunk 0x00403b16 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 GetActiveNationId(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
 // ghidra_proto undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()
 // ILT thunk 0x00403f71 - unannotated on purpose (see ILT_THUNK_RANGE)
@@ -191,14 +183,6 @@ undefined4 thunk_RefreshMapOrderEntryPanel(void)
 // ghidra_proto undefined thunk_GetResourceTypeRandomDrawBlockFlag()
 // ILT thunk 0x00408ed6 - unannotated on purpose (see ILT_THUNK_RANGE)
 undefined4 thunk_GetResourceTypeRandomDrawBlockFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name UiRuntimeContext::MapTurnEventCodeToPaletteIndex
-// ghidra_proto undefined MapTurnEventCodeToPaletteIndex()
-// ILT thunk 0x00409205 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 MapTurnEventCodeToPaletteIndex(void)
 {
   return 0;
 }
@@ -471,14 +455,6 @@ undefined4 WrapperFor_OnIdle_At004145f0(void)
 // ghidra_proto undefined AssertAmbitSubsystemReadyOrFailWithBmp3B6()
 // FUNCTION: IMPERIALISM 0x00414640
 undefined4 AssertAmbitSubsystemReadyOrFailWithBmp3B6(void)
-{
-  return 0;
-}
-
-// ghidra_name PostWmCloseToMainThreadWindow
-// ghidra_proto undefined PostWmCloseToMainThreadWindow()
-// FUNCTION: IMPERIALISM 0x004146d0
-undefined4 PostWmCloseToMainThreadWindow(void)
 {
   return 0;
 }

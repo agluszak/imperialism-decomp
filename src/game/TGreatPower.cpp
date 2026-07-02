@@ -3441,8 +3441,8 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   }
   TSimMgr* localization = g_pLocalizationTable;
   if (this->diplomacyEligibilityA0 == 0 || localization->runtimeSubsystemIndex < 2 ||
-      localization->stateFlag116 != 0) {
-    if (this->ShouldDispatchImmediatelySlot28() == 0 || localization->stateFlag116 != 0) {
+      localization->stateFlag114 != 0) {
+    if (this->ShouldDispatchImmediatelySlot28() == 0 || localization->stateFlag114 != 0) {
       this->CreateFrogCityAtHomeRegionAndAttach(mgr);
       return;
     }
@@ -3463,7 +3463,7 @@ void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
 void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   TSimMgr* localization = g_pLocalizationTable;
   int homeRegionIndex = -1;
-  if (localization->stateFlag116 == 0) {
+  if (localization->stateFlag114 == 0) {
     homeRegionIndex =
         static_cast<TCityInteriorMinister*>(this->interiorMinister)->GetHomeCityRecordIndexSlotC0();
   } else {

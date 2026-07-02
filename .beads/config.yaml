@@ -68,3 +68,5 @@
 sync.remote: "git+ssh://git@github.com/agluszak/imperialism-decomp.git"
 
 export.auto: true
+
+sync.branch: "beads-sync"
