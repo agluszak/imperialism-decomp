@@ -54,7 +54,12 @@ int TStream::ReadInteger() {
 } // TODO: 0x00488b60
 
 // FUNCTION: IMPERIALISM 0x00488b90
-void TStream::streamSlot44() {} // TODO: 0x00488b90
+// Read a single byte through the ReadBytes primitive (slot 0x3c) and return it.
+char TStream::streamSlot44() {
+  char value;
+  ReadBytes(&value, 1);
+  return value;
+}
 
 // FUNCTION: IMPERIALISM 0x00488bc0
 void TStream::streamSlot48(void* out) {

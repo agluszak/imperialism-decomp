@@ -34,7 +34,7 @@ public:
   virtual char streamSlot38();                            // 14 (0x38) 0x00488a80
   virtual void ReadBytes(void* buffer, int sizeBytes);    // 15 (0x3c) primitive TODO
   virtual int ReadInteger();                              // 16 (0x40) TODO: 0x00488b60
-  virtual void streamSlot44();                            // 17 (0x44) TODO: 0x00488b90
+  virtual char streamSlot44();                            // 17 (0x44) 0x00488b90 read 1 byte
   virtual void streamSlot48(void* out);                   // 18 (0x48) 0x00488bc0
   virtual short ReadShort();                              // 19 (0x4c) TODO: 0x00488bf0
   virtual int streamSlot50();                             // 20 (0x50) 0x00488c20
