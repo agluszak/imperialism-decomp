@@ -152,10 +152,10 @@ void TStream::streamSlot74() {
 void TStream::AssertMcAppStreamLine596() {}
 
 // FUNCTION: IMPERIALISM 0x00488e30
-void TStream::streamSlot2c(void*) {}
+void TStream::streamSlot2c(int) {}
 
 // FUNCTION: IMPERIALISM 0x00488e50
-void TStream::streamSlot34(void*) {}
+void TStream::streamSlot34(int) {}
 
 // FUNCTION: IMPERIALISM 0x00488e70
 void TStream::WriteBytesSlot78(void*, int) {} // TODO: primitive (subclass overrides)

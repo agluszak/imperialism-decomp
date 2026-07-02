@@ -71,9 +71,9 @@ public:
   void SetBackingArchive(ArchiveStreamAdapter* backingArchive);
 
   int streamSlot28() override;
-  void streamSlot2c(void*) override;
+  void streamSlot2c(int) override;
   int streamSlot30() override;
-  void streamSlot34(void*) override;
+  void streamSlot34(int) override;
   void ReadBytes(void* buffer, int sizeBytes) override;
   void streamSlot70(CString* dest, int maxLen) override;
   void WriteBytesSlot78(void* data, int length) override;
