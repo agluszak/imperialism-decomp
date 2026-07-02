@@ -11,18 +11,18 @@ struct TInterNationEventDedupPacket {
   int nationMask4;
 };
 
+// Forward iterator over a TQueueObject's 1-based entry array. `owner` is the
+// queue being walked; `counter` is the current 1-based index. The three real
+// thiscall methods live at 0x5e1fa0/0x5e1fd0/0x5e2000 (previously reached via
+// raw-address __fastcall casts through ILT thunks).
 struct TPlaybackWalkState {
   int counter;
   TQueueObject* owner;
-};
 
-// FUNCTION: IMPERIALISM 0x00406758
-void TInterNationEventQueueManager::thunk_QueueInterNationEventRecordDeduped(int eventCode,
-                                                                             int nationA,
-                                                                             int nationB,
-                                                                             char isReplayBypass) {
-  QueueInterNationEventRecordDeduped(eventCode, nationA, nationB, isReplayBypass);
-}
+  void* Begin();
+  int IsValid();
+  void* Next();
+};
 
 // FUNCTION: IMPERIALISM 0x0055c970
 void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int eventCode,
@@ -83,9 +83,9 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
   TPlaybackWalkState playbackState;
   playbackState.owner = sharedEventRecordQueue;
 
-  TInterNationEventDedupPacket* packet = reinterpret_cast<TInterNationEventDedupPacket*>(
-      reinterpret_cast<int*(__fastcall*)(TPlaybackWalkState*)>(0x00407919)(&playbackState));
-  while (reinterpret_cast<int(__fastcall*)(TPlaybackWalkState*)>(0x00409679)(&playbackState) != 0) {
+  TInterNationEventDedupPacket* packet =
+      static_cast<TInterNationEventDedupPacket*>(playbackState.Begin());
+  while (playbackState.IsValid() != 0) {
     if (packet->eventCode0 == static_cast<short>(eventCode)) {
       if (packet->nationSlot2 == static_cast<short>(nationA) &&
           (packet->nationMask4 & (1 << (nationB & 0x1f))) != 0) {
@@ -96,8 +96,7 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
         return;
       }
     }
-    packet = reinterpret_cast<TInterNationEventDedupPacket*>(
-        reinterpret_cast<int*(__fastcall*)(TPlaybackWalkState*)>(0x004097dc)(&playbackState));
+    packet = static_cast<TInterNationEventDedupPacket*>(playbackState.Next());
   }
 
   if (nationA < 7) {
@@ -225,4 +224,22 @@ void TInterNationEventQueueManager::AddOrUpdateBilateralActionRelationEntry(int 
     newEntryB.nationMask8 = 1 << (nationA & 0x1f);
     sharedEventRecordQueue->AddEntrySlot38(&newEntryB.eventCode0);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005e1fa0
+void* TPlaybackWalkState::Begin() {
+  counter = 2;
+  return owner->GetEntrySlot2C(1);
+}
+
+// FUNCTION: IMPERIALISM 0x005e1fd0
+int TPlaybackWalkState::IsValid() {
+  return counter <= owner->GetEntryCount() ? 1 : 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e2000
+void* TPlaybackWalkState::Next() {
+  int index = counter;
+  counter = index + 1;
+  return owner->GetEntrySlot2C(index);
 }

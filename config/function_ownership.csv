@@ -7,7 +7,6 @@ address|target_cpp|ownership|note
 404b33|src/game/TCivUnit.cpp|manual|name_paired_no_marker
 4053d5|src/game/TSimMgr.cpp|manual|name_paired_no_marker
 405ab5|src/game/TCapacityOrder.cpp|manual|name_paired_no_marker
-406758|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 406ee7|src/game/TMinor.cpp|manual|name_paired_no_marker
 407c1b|src/game/TSimMgr.cpp|manual|name_paired_no_marker
 407da6|src/game/TSortedPtrList.cpp|manual|name_paired_no_marker
@@ -4047,6 +4046,9 @@ address|target_cpp|ownership|note
 5e1bc0|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync
 5e1e50|src/game/TSortedPtrList.cpp|manual|marker_sync
 5e1f10|src/game/TSortedPtrList.cpp|manual|marker_sync
+5e1fa0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
+5e1fd0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
+5e2000|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 5e2210|src/game/TMovieView.cpp|manual|mfc_runtime_macro
 5e22f0|src/game/TMovieView.cpp|manual|marker_sync
 5e23f0|src/game/TMovieView.cpp|manual|marker_sync

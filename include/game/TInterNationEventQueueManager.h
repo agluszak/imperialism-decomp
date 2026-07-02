@@ -13,8 +13,6 @@ class TInterNationEventQueueManager {
 public:
   void QueueInterNationEventRecordDeduped(int eventCode, int nationA, int nationB,
                                           char isReplayBypass);
-  void thunk_QueueInterNationEventRecordDeduped(int eventCode, int nationA, int nationB,
-                                                char isReplayBypass);
   void QueueInterNationEventIntoNationBucket(int eventCode, int payloadOrNation,
                                              char isReplayBypass);
   void QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int nationA, int nationB,

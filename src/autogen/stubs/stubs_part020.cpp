@@ -1395,30 +1395,6 @@ undefined4 UpdateCursorHelperWindowTextFromUiString(void)
   return 0;
 }
 
-// ghidra_name SetPlaybackState2AndNotifyOwnerCallback
-// ghidra_proto undefined SetPlaybackState2AndNotifyOwnerCallback()
-// FUNCTION: IMPERIALISM 0x005e1fa0
-undefined4 SetPlaybackState2AndNotifyOwnerCallback(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpPlaybackCallback_005e1fd0
-// ghidra_proto undefined NoOpPlaybackCallback_005e1fd0()
-// FUNCTION: IMPERIALISM 0x005e1fd0
-undefined4 NoOpPlaybackCallback_005e1fd0(void)
-{
-  return 0;
-}
-
-// ghidra_name IncrementPlaybackCounterAndNotifyOwnerCallback
-// ghidra_proto undefined IncrementPlaybackCounterAndNotifyOwnerCallback()
-// FUNCTION: IMPERIALISM 0x005e2000
-undefined4 IncrementPlaybackCounterAndNotifyOwnerCallback(void)
-{
-  return 0;
-}
-
 // ghidra_name TMovieView::CreateTMovieViewInstance
 // ghidra_proto undefined CreateTMovieViewInstance()
 // FUNCTION: IMPERIALISM 0x005e2100
