@@ -19,14 +19,13 @@
 #include "game/TZone.h"
 #include <new>
 
-#include "game/map_action_context_helpers.h"
 #include "game/turn_event_packets.h"
 #include "game/TShip.h"
 
 undefined4 GenerateThreadLocalRandom15(void);
 
 static __inline short GetShortAtOffset14OrInvalidValue(void) {
-  return GetShortAtOffset14OrInvalid(g_pMapActionContextListHead);
+  return g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
 }
 
 extern "C" {
@@ -71,19 +70,17 @@ extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 }
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
+// SYNTHETIC: IMPERIALISM 0x004e6a70
+// TAutoGreatPower::CreateObject
+
 // SYNTHETIC: IMPERIALISM 0x004e6b30
 // TAutoGreatPower::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TAutoGreatPower, TGreatPower)
 
+// FUNCTION: IMPERIALISM 0x004e6b50
 TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
   missionQueue = 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004e6b50
-void* TAutoGreatPower::ConstructTAutoGreatPowerBaseState(void) {
-  ::new (static_cast<void*>(this)) TAutoGreatPower();
-  return this;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004e6b80

@@ -70,6 +70,9 @@ public:
   void AppendZonePointerToSecondaryArray(TZone* zone) { secondaryNeighbors.Add(zone); }
 
   // Non-virtual helpers (real bodies in TZone.cpp; not TZone vtable slots).
+  // 0x55f0b0 — null-tolerant: the original calls this on possibly-null TZone*
+  // (mov ecx, zone; test ecx,ecx inside), so keep the `this == 0` guard.
+  short GetContextOrdinalOrInvalid();
   void GenerateZoneStatusCodeIfUnset();                            // 0x55f5c0
   void InvokeObjectVtableMethod24();
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();

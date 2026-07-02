@@ -12746,7 +12746,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -13274,8 +13274,8 @@
     },
     {
       "address": "0x4e6a70",
-      "matching": 0.4444444444444444,
-      "name": "TAutoGreatPower::CreateObject(void)",
+      "matching": 0.5454545454545454,
+      "name": "TAutoGreatPower::CreateObject",
       "type": 1
     },
     {
@@ -13292,8 +13292,9 @@
     },
     {
       "address": "0x4e6b50",
-      "matching": 0.625,
-      "name": "TAutoGreatPower::ConstructTAutoGreatPowerBaseState",
+      "effective": true,
+      "matching": 0.875,
+      "name": "TAutoGreatPower::TAutoGreatPower",
       "type": 1
     },
     {
@@ -17060,7 +17061,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.34382566585956414,
+      "matching": 0.32038834951456313,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -22840,7 +22841,7 @@
     {
       "address": "0x55f0b0",
       "matching": 1.0,
-      "name": "GetShortAtOffset14OrInvalid",
+      "name": "TZone::GetContextOrdinalOrInvalid",
       "type": 1
     },
     {

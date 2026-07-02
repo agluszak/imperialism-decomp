@@ -2615,7 +2615,7 @@ address|name|symbol|size|type|prototype|provenance
 4e6a70|TAutoGreatPower::CreateObject|?CreateObject@TAutoGreatPower@@SGPAVCObject@@XZ|113|function||rtti
 4e6b10|TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||3|function|undefined CreateTAutoGreatPowerInstance()|
 4e6b30|TAutoGreatPower::GetRuntimeClass||6|function|CRuntimeClass * __thiscall GetRuntimeClass()|rtti
-4e6b50|TAutoGreatPower::ConstructTAutoGreatPowerBaseState||28|function|undefined ConstructTAutoGreatPowerBaseState()|
+4e6b50|TAutoGreatPower::TAutoGreatPower||28|function|void __thiscall TAutoGreatPower(void)|
 4e6b80|TAutoGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4e6bb0|TAutoGreatPower::~TAutoGreatPower||80|function|undefined ~TAutoGreatPower()|
 4e6c20|InitializeNationMinisterSubsystemsByPolicyIds||1160|function|undefined InitializeNationMinisterSubsystemsByPolicyIds()|
@@ -4325,7 +4325,7 @@ address|name|symbol|size|type|prototype|provenance
 55eff0|TZone::WriteTo||88|function|undefined SerializeZoneToBinaryStream()|
 55f070|TZone::AssignZoneDisplayNameToOutputRef_2b_2b_2b_2b_2b||16|function|undefined AssignZoneDisplayNameToOutputRef()|
 55f090|TZone::AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_2c_2c||16|function|undefined AssignZoneDisplayNameAliasToOutputRef()|
-55f0b0|GetShortAtOffset14OrInvalid||14|function|undefined GetShortAtOffset14OrInvalid()|
+55f0b0|TZone::GetContextOrdinalOrInvalid||14|function|short __thiscall GetContextOrdinalOrInvalid(void)|
 55f100|FindMapActionContextByNodeId||47|function|undefined FindMapActionContextByNodeId()|
 55f140|TGreatPower::ComputeMapActionContextNodeValueAverage||337|function|undefined ComputeMapActionContextNodeValueAverage()|
 55f300|DispatchMapActionContextCallbackViaField24||16|function|undefined DispatchMapActionContextCallbackViaField24()|

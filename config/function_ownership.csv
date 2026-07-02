@@ -1624,7 +1624,7 @@ address|target_cpp|ownership|note
 4e66c0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4e66f0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4e6740|src/game/TLandSaleEvent.cpp|manual|marker_sync
-4e6a70|src/game/tauto_great_power_factory.cpp|manual|marker_sync
+4e6a70|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6b10|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6b30|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6b50|src/game/TAutoGreatPower.cpp|manual|marker_sync
@@ -2755,7 +2755,7 @@ address|target_cpp|ownership|note
 55eff0|src/game/TZone.cpp|manual|marker_sync
 55f070|src/game/TZone.cpp|manual|marker_sync
 55f090|src/game/TZone.cpp|manual|marker_sync
-55f0b0|src/game/map_action_context_helpers.cpp|manual|marker_sync
+55f0b0|src/game/TZone.cpp|manual|marker_sync
 55f140|src/game/TGreatPower.cpp|manual|marker_sync
 55f4d0|src/game/TGreatPower.cpp|manual|marker_sync
 55f5c0|src/game/TZone.cpp|manual|marker_sync

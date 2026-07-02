@@ -26,7 +26,6 @@
 #include "game/TNavyMgr.h"
 #include "game/turn_event_packets.h"
 #include "game/diplomacy_policy_hooks.h"
-#include "game/map_action_context_helpers.h"
 #include "game/TTurnEventPacket.h"
 #include "game/turn_flow_cooldown.h"
 #include "game/ui_invalidation_guard.h"
@@ -434,7 +433,7 @@ static __inline void QueueNationPairWarTransition(TDiplomacyMgr* diplomacyManage
 }
 
 static __inline short GetShortAtOffset14OrInvalidValue(void) {
-  return GetShortAtOffset14OrInvalid(g_pMapActionContextListHead);
+  return g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
 }
 
 static __inline void TemporarilyClearAndRestoreUiInvalidationFlag(const char* path, int line) {
@@ -1865,7 +1864,7 @@ void TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(void) {
 
   TZone* contextEntry = static_cast<TZone*>(g_pMapActionContextListHead);
   while (contextEntry != 0) {
-    GetShortAtOffset14OrInvalid(contextEntry);
+    contextEntry->GetContextOrdinalOrInvalid();
     if (this->ContainsPointerArrayEntryMatchingByteKey(this->nationSlot) != 0) {
       bool emittedMessage = false;
       for (int nationSlotCandidate = 0; nationSlotCandidate < kMajorNationCount;

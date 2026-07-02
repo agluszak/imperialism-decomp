@@ -213,6 +213,14 @@ void TZone::AssignZoneDisplayNameAliasToOutputRef(void* outputRef) {
   (void)outputRef;
 }
 
+// FUNCTION: IMPERIALISM 0x0055f0b0
+short TZone::GetContextOrdinalOrInvalid() {
+  if (this == 0) {
+    return -1;
+  }
+  return field14;
+}
+
 // FUNCTION: IMPERIALISM 0x0055f5c0
 void TZone::GenerateZoneStatusCodeIfUnset() {}
 

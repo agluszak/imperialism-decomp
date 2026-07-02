@@ -109,10 +109,8 @@ public:
   // slot 0xb3 — 0x004ea990.
   virtual undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990();
 
-  void* ConstructTAutoGreatPowerBaseState(void);
 };
 
-TGreatPower* CreateAutoGreatPowerNationState(void);
 
 // === BEGIN GENERATED (TAutoGreatPower) — refreshed by `just gen-class TAutoGreatPower`; do not hand-edit ===
 // clang-format off
