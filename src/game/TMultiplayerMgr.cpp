@@ -299,9 +299,21 @@ struct CityRedrawInvalidateTurnEventPacket : NetMessage {
   unsigned char pad15;
   short uiTurnToken;
   short cityId;
-  // Field-by-field snapshot of the city row (the copy below skips exactly the record's
-  // pad bytes, which is what recovered the record's 0x3e/0x40/0x94/0xa4 fields).
-  TGlobalMapCityScoreRecord cityRecord;
+  unsigned char cityHeader00[4];
+  short cityWord04;
+  short cityWord06;
+  unsigned char cityByte08;
+  short adjacentRegionIds0A[12];
+  short adjacentRegionIds22[12];
+  unsigned char cityBytes3A[3];
+  short cityWord3E;
+  short cityWord40;
+  short linkedRegionIds42[32];
+  short linkedRegionIds82[10];
+  TMilitaryUnit* stationedUnitChain98;
+  int cityScoreValue9C;
+  unsigned char cityBytesA0[4];
+  CString cityNameA4;
 };
 #pragma pack(pop)
 
@@ -318,48 +330,46 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityId = cityId;
 
   const TGlobalMapCityScoreRecord* src = &g_pGlobalMapState->cityScoreTable[cityId];
-  TGlobalMapCityScoreRecord* dst = &packet.cityRecord;
-
-  dst->ownerNationCode00 = src->ownerNationCode00;
-  dst->byte01 = src->byte01;
-  dst->developmentStage = src->developmentStage;
-  dst->fortLevel03 = src->fortLevel03;
-  dst->ownerNationSlot = src->ownerNationSlot;
-  dst->lastTurnTick = src->lastTurnTick;
-  dst->adjacentRegionCount08 = src->adjacentRegionCount08;
+  packet.cityHeader00[0] = src->ownerNationCode00;
+  packet.cityHeader00[1] = src->byte01;
+  packet.cityHeader00[2] = src->developmentStage;
+  packet.cityHeader00[3] = src->fortLevel03;
+  packet.cityWord04 = src->ownerNationSlot;
+  packet.cityWord06 = src->lastTurnTick;
+  packet.cityByte08 = src->adjacentRegionCount08;
 
   for (int wordIndex = 0; wordIndex < 12; ++wordIndex) {
-    dst->adjacentRegionIds0A[wordIndex] = src->adjacentRegionIds0A[wordIndex];
-    dst->adjacentRegionIds0A[wordIndex + 12] = src->adjacentRegionIds0A[wordIndex + 12];
+    packet.adjacentRegionIds0A[wordIndex] = src->adjacentRegionIds0A[wordIndex];
+    packet.adjacentRegionIds22[wordIndex] = src->adjacentRegionIds0A[wordIndex + 12];
   }
 
-  dst->linkedRegionCount = src->linkedRegionCount;
-  dst->byte3B = src->byte3B;
-  dst->byte3C = src->byte3C;
-  dst->field3E = src->field3E;
-  dst->field40 = src->field40;
+  packet.cityBytes3A[0] = src->linkedRegionCount;
+  packet.cityBytes3A[1] = src->byte3B;
+  packet.cityBytes3A[2] = src->byte3C;
+  packet.cityWord3E = src->field3E;
+  packet.cityWord40 = src->field40;
 
   for (int linkedIndex = 0; linkedIndex < 32; ++linkedIndex) {
-    dst->linkedRegionIds[linkedIndex] = src->linkedRegionIds[linkedIndex];
+    packet.linkedRegionIds42[linkedIndex] = src->linkedRegionIds[linkedIndex];
   }
-  dst->linkedRegionIds[32] = src->linkedRegionIds[32];
-  dst->stage1CounterA = src->stage1CounterA;
-  dst->stage1CounterB = src->stage1CounterB;
-  dst->pad88 = src->pad88;
-  dst->stage1CounterC = src->stage1CounterC;
-  dst->stage1CounterD = src->stage1CounterD;
-  dst->stage2CounterA = src->stage2CounterA;
-  dst->stage2CounterB = src->stage2CounterB;
-  dst->stage2CounterC = src->stage2CounterC;
-  dst->field94 = src->field94;
+  packet.linkedRegionIds82[0] = src->linkedRegionIds[32];
+  packet.linkedRegionIds82[1] = src->stage1CounterA;
+  packet.linkedRegionIds82[2] = src->stage1CounterB;
+  packet.linkedRegionIds82[3] = src->pad88;
+  packet.linkedRegionIds82[4] = src->stage1CounterC;
+  packet.linkedRegionIds82[5] = src->stage1CounterD;
+  packet.linkedRegionIds82[6] = src->stage2CounterA;
+  packet.linkedRegionIds82[7] = src->stage2CounterB;
+  packet.linkedRegionIds82[8] = src->stage2CounterC;
+  packet.linkedRegionIds82[9] = src->field94;
 
-  dst->stationedUnitChain98 = src->stationedUnitChain98;
-  dst->cityScoreValue = src->cityScoreValue;
-  dst->padA0[0] = src->padA0[0];
-  dst->padA0[1] = src->padA0[1];
-  dst->padA0[2] = src->padA0[2];
-  dst->padA0[3] = src->padA0[3];
-  dst->cityNameA4 = src->cityNameA4;
+  packet.stationedUnitChain98 = src->stationedUnitChain98;
+  packet.cityScoreValue9C = src->cityScoreValue;
+  packet.cityBytesA0[0] = src->padA0[0];
+  packet.cityBytesA0[1] = src->padA0[1];
+  packet.cityBytesA0[2] = src->padA0[2];
+  packet.cityBytesA0[3] = src->padA0[3];
+  packet.cityNameA4 = src->cityNameA4;
 
   g_pNetMgr006a6014->Send(&packet, 0);
 }
@@ -377,12 +387,16 @@ struct TJoinEmpireTurnEventPacket : NetMessage {
 void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                                              int mode) {
   TJoinEmpireTurnEventPacket packet;
-  packet.eventCode = 0x27;
-  packet.messageLength = 0x24;
   packet.packetTag = 0x74696D65;
   packet.activeNationId = static_cast<unsigned char>(g_pLocalizationTable->GetActiveNationId());
+  packet.eventCode = 0;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = 0;
   packet.sourceNationSlot = sourceNation;
   packet.targetNationSlot = targetNation;
   packet.modeValue = mode;
+  packet.messageLength = 0x24;
+  packet.eventCode = 0x27;
   g_pNetMgr006a6014->Send(&packet, 0);
 }

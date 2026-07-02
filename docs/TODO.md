@@ -172,15 +172,6 @@ Current recovered surface:
   `DAT_006a2054`, cached splash flag `g_cachedShowSplashFlag` @ `0x006a2018`
   (`CCommandLineInfo::m_bShowSplash` as `BOOL` — **not** a filename pointer or shell command).
 
-Completed (2026-06-30):
-- ~~Model `DAT_006a2018`~~ — **done:** `g_cachedShowSplashFlag` +
-   `SetCachedShowSplashFlag` @ `0x49cc40`; guarded creator @ `0x49cc60`. Semantics
-   documented in source (`global_data_tables.cpp`, `ImperialismApp.cpp`).
-- ~~Confirm the visible-window path in `just debug`~~ — **done** (backdrop window exists).
-- Wired teardown trigger in source: `PostNcDestroy` @ `0x49cfa0` (59.77%), `OnCreate` @ `0x49d090` (50%),
-  `InitializeDefaultBackdropWindowFromBmp3B6` @ `0x49ce90` (74.75%), `RefreshBackdropOnInputMessages` @ `0x49cdf0` (74.67%).
-- `CMainFrame::ConfigureTopLevelWindowStyleAndPlacement` @ `0x484d70` (79.74%) - MFC library calls.
-
 Remaining work:
 1. Verify the `TBackdropWindow` base model. The class is structurally `CWnd`-derived,
    but the repo's current MFC vtable model emits extra OLE/dispatch slots for
@@ -210,156 +201,24 @@ Current compare snapshot (2026-06-30): `0x49ce90`/`0x49cdf0`/`0x49d180` ~75%,
 Updated 2026-06-30: Wired teardown trigger in source; shape passes completed for all functions.
 All gates passing (vtable 100%, datacmp OK).
 
-### 2026-07-01 continuation: backdrop closes, main frame reveals, but stays blank
+### Main-frame paint follow-ups (2026-07-02)
 
-The backdrop teardown documented above works and the main frame does reveal (maximized,
-2560x1440, confirmed via live X11 screenshot). The remaining gap is downstream of this
-section entirely: **nothing ever paints into the revealed main frame's client area.**
-Traced the full path this session; summary (see git log on branch
-`debug-window-asset-loading` for the fixes, and
-`src/game/turn_event_dialog_factory.cpp`'s `BuildStartupIntroBackground` for the
-in-progress port and its shortcut TODOs):
+Backdrop teardown and the main-frame reveal now work. The remaining blank-client-area
+gap is downstream: painting reaches a TView tree only through a realized `TWindow`
+whose `CMcWindow::OnPaint` starts slot-0x43 recursion. `CIncludeView` is not that paint
+host (no `WM_PAINT` map entry; no-op `OnDraw`).
 
-1. **Fixed**: `TSimMgr::AdvanceGlobalTurnStateMachine`'s `turnStateCode==1` case
-   dispatched fabricated event codes (`0`/`0x5e4`) instead of the real ones
-   (`0x11f8`/`0x5dc`, verified against `0x0057da70`'s disassembly). Now dispatches the
-   correct `0x11f8` for a fresh single-player start.
-2. **Fixed**: `TSimMgr_AdvanceGlobalTurnStateMachine.cpp`, `TPicture.cpp` ctor,
-   `ClipStateRegion.cpp`'s `afxMapHIMAGELIST_6139c6`, and `quickdraw_rendering.cpp`'s
-   `g_pGlobalClipRegionHandleObject` init — three real crash bugs, all previously
-   unreachable because nothing had ever painted a real picture before. Real title bitmap
-   (0x11f7) now genuinely renders — confirmed via screenshot — but only into a separate
-   transient popup window, not the main frame.
-3. **Partially fixed**: forcing `nativeWindow50` onto the built tree via
-   `PropagateUiResourceContextRecursive(mainNativeWindow)` (a deviation from the
-   original's own `PropagateUiResourceContextRecursive(0)` call — see the TODO comment
-   in `BuildStartupIntroBackground`) makes the stray popup window disappear. **But the
-   main frame's client area still doesn't paint anything** — process is stable
-   (no crash), just blank.
-
-**UPDATE 2026-07-01-E — critical tooling bug found; the 0x4ef "dead end" and "zero
-padding" conclusions below (2026-07-01-D) were both artifacts of it, now corrected.**
-
-`tools/ghidra/search_whole_binary.py dword` (used to conclude "0x4ef has zero data
-references") had a real bug: `Memory.getBytes(Address, byte[])` called with a *Python*
-`bytearray`/`bytes` object via jpype silently returns success with the buffer
-untouched (all zeros) in this environment — reproduced consistently when driven
-through `python -m`, not when the same code runs as a direct script (root cause not
-fully pinned down; smells like a jpype JVM-attach quirk). `Memory.getByte(Address)`
-(single-byte, no bulk buffer) reads correctly. **This is a serious, easy-to-hit trap
-for any future Ghidra scratch tooling in this repo** — see the `NOTE` now in
-`search_whole_binary.py`'s `search_dword` (rewritten to use Ghidra's own
-`Memory.findBytes` search, which never crosses the JNI boundary with a Python buffer)
-and in `linear_disasm.py`/scratch `capstone_disasm.py`. **Do not reintroduce
-`mem.getBytes(addr, pythonBuffer)` bulk reads** — use `findBytes` for searches,
-`getByte` in a loop for small reads.
-
-**Redone with the fixed tool:** `just ghidra-search dword 0x04ef` now finds **3** hits:
-two are the known senders' `PUSH 0x4ef` operand bytes, and a genuine third at
-**`.rdata: 0x00648338`**. Dumped the surrounding table (`AFX_MSGMAP_ENTRY` layout —
-`nMessage, nCode, nID, nLastID, nSig, pfn`, 24 bytes/entry) and it's a real MFC message
-map, 14 entries, `0x006481e8`-`0x00648368` (sentinel at the end). **Handles `0x4ef`**
-at `pfn=0x00403a3a` — an ILT thunk (ignore, per Hard Rule) to the real handler body at
-**`0x00482c1c`** (branches on `wParam&0xff`: `0`→`0x482c3b`, `1`→`0x482c1c`). The
-`wParam==1` branch (our `TIncludeView::NoOpUiLifecycleHook` sender uses `wParam=1`) is:
-```
-TView* root = this->m_activeDialogContext;      // [esi+0x40] — CIncludeView field, already modeled
-root->PropagateUiResourceContextRecursive(this); // this = CIncludeView* as CWnd* (thunk 0x4074d2 -> 0x48c900, already ported)
-root->ResolveControlByTag('main');               // vtable slot 0x25/byte 0x94; return value discarded
-```
-The message-map's parent class's `CRuntimeClass` sits exactly 0x18 bytes before this
-table (`0x6481c8`), matching **`CIncludeView`**'s already-known `CRuntimeClass` address
-(see `include/game/CIncludeView.h`) — **so this is confirmed to be `CIncludeView`'s
-own message handler**, not some other class's.
-
-**Conclusion: message 0x4ef genuinely does NOT paint anything itself** — its only
-substantive effect (`PropagateUiResourceContextRecursive`) is the exact thing this
-session's earlier fix (in `BuildStartupIntroBackground`, committed `4ea450b3`) already
-manually replicates. So that fix is likely *directionally* fine (both do "propagate
-nativeWindow50 down the tree"), but it does **not** mean CIncludeView is the right
-paint target — see below, this is now genuinely unresolved and reopened.
-
-**CIncludeView's full message map has NO `WM_PAINT` (0xf) entry** (dumped all 14
-entries: `WM_ERASEBKGND`, `WM_LBUTTONDOWN/UP/DBLCLK`, `WM_MOUSEMOVE`, `WM_COMMAND`×2,
-`WM_SETCURSOR`, `WM_RBUTTONDOWN/UP`, `WM_CHAR`(0x102), `WM_PARENTNOTIFY`(0x210),
-`WM_SHOWWINDOW`(0x19), `WM_KEYDOWN`(0x100), plus our `0x4ef`/`0x4c8`). Combined with
-`CIncludeView::OnDraw` being a confirmed-empty no-op, **this means CIncludeView is
-never the thing that actually paints TView content** — painting must happen through
-some *other* native window. This reopens (does not close) the original "why does
-content render in a separate window" question from earlier this session: **the
-separate popup window observed before this session's `nativeWindow50` fix may have
-been architecturally correct** (a real per-dialog host window, like `CMcWindow`), and
-forcing `nativeWindow50` onto `CIncludeView` may be the wrong direction, not a fix —
-it just happened to make a broken-looking symptom (stray popup) go away without
-addressing why the popup existed or was mis-sized/transient.
-
-**The real paint-dispatch function was found and fully disassembled** (bypassing the
-Ghidra gap with a direct capstone read of raw bytes, `getByte`-based, not the broken
-bulk read): starts at **`0x005742b0`** (has a real MSVC C++-EH prologue,
-`FUN_005741e0` genuinely ends before it, then ~0x30 bytes of `int3` alignment padding,
-*not* zero padding — the earlier "0x574279-0x5743f0 is empty" conclusion was also an
-artifact of the same tooling bug and is now corrected). Body: guards on
-`this->IsActionable()` (vtable slot 0x3b) and `this->Refresh()` (slot 0x3e), builds a
-clip-region object (reusing the same `0x67106c`-vtable clip object this session's
-`quickdraw_rendering.cpp` shortcut touches), then calls
-`this->PaintVisibleChildrenIntersectingClipRect(&clipRect, 2)` (slot 0x43) at
-`0x00574383`. This function itself isn't yet attributed to a specific class/method —
-**next step: identify what class's vtable slot points at `0x5742b0`** (search vtable
-data tables for that address, the way the earlier `xrefs_to` search found data refs to
-`0x48b8d0`) to name it, then figure out what actually *calls* this function (that
-caller is the real trigger this whole investigation has been hunting) and whether it's
-reachable for our `BuildStartupIntroBackground` tree at all given it's plain
-`TView`/`TPicture`, not `TWindow`-hosted.
-
-**UPDATE 2026-07-01-F — both questions above are RESOLVED; the real paint trigger is
-found and ported.**
-
-- `0x5742b0` is **`TScrollView::PaintVisibleChildrenIntersectingClipRect`** — slot 0x43
-  of `TScrollView::vftable` at `0x6417e0` (`0x6417e0 + 4*0x43 = 0x6418ec` holds ILT
-  thunk `0x407572` → `0x5742b0`). It was already declared at the right slot in
-  `TScrollView.h`; the body is still an empty stub in `TScrollView.cpp` (next port).
-- **The real trigger for all TView-tree painting is `CMcWindow::OnPaint`
-  (`0x4938c0`)** — CMcWindow's own MFC message map (AFX_MSGMAP at `0x64b5e8`, 14
-  `AFX_MSGMAP_ENTRY` rows at `0x64b5f0`, chained to CWnd's at `0x670868`) has a
-  `WM_PAINT` entry → thunk `0x406cf8` → `0x4938c0`. The body: `CPaintDC dc(this)`,
-  `dc.GetClipBox(&clipBox)`, `CopyRect`, then
-  `m_pOwnerWindow->PaintVisibleChildrenIntersectingClipRect(&paintRect, &dc)` (slot
-  0x43 on the owning TWindow). **Ported at 100% match** with a real
-  `BEGIN_MESSAGE_MAP(CMcWindow, CWnd) + ON_WM_PAINT()`; the other 13 handlers
-  (`WM_LBUTTONDOWN/UP`, `WM_MOUSEMOVE`, `WM_CLOSE`, `WM_KEYDOWN/UP`, `0x19`,
-  `WM_QUERYNEWPALETTE`(0x30f), `WM_PALETTECHANGED`(0x311), `WM_CHAR`, custom `0x468`
-  and `0x36a`) are still unported — thunk pfns in the original table:
-  0x408530/0x404a16/0x408a4e/0x402da1/0x40927d/0x4010fa/0x406a82/0x402987/0x408265/
-  0x40894a/0x4024ff/0x4020c7.
-- The `bindArg` of slots 0x40/0x41/0x43/0x45 is confirmed to be a **caller-supplied
-  `CDC*`** (CMcWindow::OnPaint passes its CPaintDC; BindScopedMapQuickDrawDcHandle
-  binds it as the active QuickDraw DC object, or wraps a fresh window DC when null).
-  The whole chain is now typed `CDC*` in source.
-- **Consequence for the blank main frame:** painting only ever reaches a TView tree
-  whose ancestry passes through a realized `TWindow` (its `DispatchSlot9CToLinkedChildren`
-  creates the `CMcWindow` host, whose `OnPaint` starts the slot-0x43 recursion).
-  `CIncludeView` never paints TView content (no WM_PAINT map entry, no-op OnDraw), so
-  parking the intro tree on the frame's `CIncludeView` `nativeWindow50` can never
-  render. The open init-chain question is **where the original builds/realizes the
-  main-screen TWindow** (window registry / TViewMgr / CreateTWindowInstance chain) —
-  that realize step is what makes WM_PAINT reach the tree.
-
-(Superseded by the above, kept for history) `TIncludeView::NoOpUiLifecycleHook`
-(already ported, `src/game/TIncludeView.cpp`) ends with
-`SendMessageA(nativeWindow50->m_hWnd, 0x4ef, 1, 0)` — originally guessed to be the real
-repaint trigger; confirmed not, see correction above. Confirmed **not** it (separately
-from the 0x4ef finding): `TView::RefreshControl()` — it's gated by
-`g_McAppUiActiveFlag_006950AC`, which is deliberately `0` for the entire duration of
-`TTurnEventDialogFactoryRegistry::InvokeDialogFactoryFromPacket` (the caller of every
-dialog factory, including `BuildStartupIntroBackground`), so any refresh call made
-*from inside* a factory body is a guaranteed no-op by design — the real refresh must
-happen strictly after that flag is restored, i.e. from the caller's caller onward.
-
-Also still open: `BuildStartupIntroBackground` only ports 2 of (at least) 3 widgets
-the real `0x0043b1cb` case builds — a `TMovieView` (0x94 bytes, ctor `0x5e2230`) follows
-the background picture and was not traced. `TMovieView` itself
-(`src/game/TMovieView.cpp`) is still all-stub method bodies. Unknown whether it's
-load-bearing for this screen to display, or a secondary/overlay element.
+Open work:
+- Identify where the original builds and realizes the main-screen `TWindow` (window
+  registry / `TViewMgr` / CreateTWindowInstance chain), then route
+  `BuildStartupIntroBackground` through that host instead of the current
+  `nativeWindow50` shortcut.
+- Port the remaining CMcWindow message handlers if they block the realized host path
+  (`WM_LBUTTONDOWN/UP`, `WM_MOUSEMOVE`, `WM_CLOSE`, `WM_KEYDOWN/UP`, `WM_SHOWWINDOW`,
+  palette messages, `WM_CHAR`, custom `0x468`/`0x36a`).
+- Trace the `TMovieView` created after the startup background picture
+  (`TMovieView` size 0x94, ctor `0x5e2230`) and decide whether it is load-bearing for
+  the first screen.
 
 ## Game init & asset loading
 
@@ -368,18 +227,6 @@ Goal: port the asset-loader functions that sit on top of the (already real)
 `reinterpret_cast` calling-convention hacks at their call sites. **No new `reinterpret_cast`s**
 (use `static_cast`/typed pointers/real types); **do not port MFC/Win32 library code** (link it).
 Almost every cast-hidden callee here is a real `__thiscall` method — model the real class.
-
-### Done
-- `1fbc9bcf` — Deleted the duplicate shadow `ModuleLibraryCacheState` struct in
-  `TDiplomacyMapView.cpp`; uses the real `TModuleLibraryCacheTableStateB` and calls
-  `LoadBmpResourceByIdCached`/`ReleaseRecordByHandle` directly. Moved the
-  `g_pModuleLibraryCacheState` definition (GLOBAL 0x6a134c) to the owning cpp.
-- `78744872` — Modeled the sound/wave manager at **0x6a60c0** as real class
-  `TSoundResourceManager` (`include/game/TSoundResourceManager.h`) + abstract `TAudioChannel`
-  interface (real virtuals at verified slots 0x30/0x34/0x3c, Hard Rule 12). Ported two
-  `__thiscall` methods and removed two of TSoundPlayer's three dummy-edx fastcall casts:
-  - `UpdateLocalizationAudioSlot` @ 0x49c240 (54.90%)
-  - `SetChannelVolumesUntilAccepted` @ 0x49c850 (68.75%)
 
 ### Next: picture resource tail
 The bitmap cache keystone is now typed: `BuildIndexedBmpResourceById` @ 0x499b40 and
@@ -470,68 +317,7 @@ Audit method: mine all 458 MFC `CRuntimeClass` descriptors from the binary
 (`scratchpad` scripts `dump_rtti_vtables.py` / `vdiff.py` reuse
 `tools/ghidra/apply_mfc_rtti.py` helpers), resolve each to its vtable via the
 getter→ILT→vtable chain (193 resolved), and diff against our `// VTABLE:`
-annotations. **Cat B (5 classes) is DONE** (commit "annotate 5 RTTI-evidenced
-class vtables"). Cat C / Cat D remain.
-
-### Cat C — classes that exist only as forward-decl structs in `root_types.h`
-
-Each has a raw `src/ghidra_autogen/<Class>.cpp` dump (GHIDRA_FUNCTION, banned
-scaffolding — reference only, NOT reccmp-paired) but no real
-`include/game/<Class>.h`. Recovery recipe per class: create the class header
-`class TX : public TBase` + `// VTABLE: IMPERIALISM <addr>`, declare the
-override slots (addresses below) as real virtuals in slot order, port honest
-bodies into a manual `src/game/TX.cpp` with `// FUNCTION:` markers (no manual
-vptr writes / `*AndMaybeFree` / `FreeHeapBufferIfNotNull` scaffolding), then
-`just regen-stubs` → `just build` → `just vtable TX`.
-The autogen struct in `root_types.h` can stay (separate TU; same name/layout,
-MSVC tags don't affect mangling). Slot 0x00 = `GetRuntimeClass`, slot 0x01 =
-scalar deleting destructor (claim via SYNTHETIC + symbols.csv backtick name;
-verify it isn't COMDAT-folded across vtables first, à la TAmbitApplication).
-
-Tractable (single inheritance, primary vtable, modest override counts):
-
-None currently.
-
-Done:
-
-| Class | vtable | base (vtable) | override slots |
-|---|---|---|---|
-| TBattleReportView | 0x0063efa8 | TDiplomacyMapView (0x00655b68) | 9: 0x00,0x01,0x07,0x0f,0x13,0x35,0x37,0x44,0x47 |
-| TShipOrder | 0x0064f738 | TProductionOrder (0x0064fa18) | 9: 0x00,0x01,0x0b,0x0c,0x0d,0x10,0x11,0x12,0x13 |
-| TCityProductionView | 0x0064fc20 | TNoHilitePicture (0x006606e8) | 17: 0x00,0x01,0x07,0x0f,0x35,0x37,0x44,0x47,0x68,0x74,0x75,0x76,0x77,0x78,0x79,0x7a,0x7b |
-
-`TBattleReportView` recovered 2026-06-27 as a real
-`TDiplomacyMapView` subclass with primary vtable **0x0063efa8** and size
-0x24d0. Slot 0x01 is modeled as the real scalar-deleting destructor at
-0x00430a30; the class cleanup at 0x004ad560 is the slot 0x07 `Free()` override
-that releases the transient registry object through the real `TAnimator`
-receiver. `just vtable TBattleReportView` passes.
-
-`TShipOrder` recovered 2026-06-27 as a real `TProductionOrder` subclass with
-its slots moved out of the temporary `TCapacityOrder` ownership. The shared city
-stock block is now modeled as named `TCity::cityStock*` commodity fields rather
-than the old offset-array/offset-helper surface; `just vtable TShipOrder` and
-`just vtable TCapacityOrder` both pass.
-
-`TCityProductionView` recovered 2026-06-27 as a real
-`TNoHilitePicture` subclass with 15 manually owned function bodies moved out of
-generated stubs; `just vtable TCityProductionView` passes (one vtable found).
-
-
-Done:
-
-- **TDiplomacyMapView** recovered 2026-06-27 as a real `TPicture` subclass with
-  primary vtable **0x00655b68**. Constructor listing calls `TPicture::TPicture`
-  (`0x0048efc0`), not `TPictureButton`; this keeps slot 0x73 as an introduced
-  one-argument legend/render virtual instead of conflicting with
-  `TPictureButton::IsSelected()`. The stale 0x0066f16c vtable row was renamed
-  to `g_TViewMgrTurnEventDispatchTable` as a data boundary; it is a turn-event
-  dispatch/data table or RTTI-resolver mis-hop, not an object vtable. `just
-  vtable TDiplomacyMapView` passes.
-
-Hard:
-
-None currently.
+annotations. The open residue is the disagreement list below.
 
 ### Cat D — RTTI vtable addr disagrees with our current annotation
 
@@ -547,26 +333,6 @@ None currently.
   different). **TGreatPower TU is codegen-fragile** (symmetric x87 leaves flip
   100%↔42.86% on recompile — see memory [[tgreatpower-tu-codegen-fragility]]).
   Investigate read-only; do not annotate without isolating the TU risk.
-
-## `IsSelected` (slot 0x73) per-branch arity reconciliation — DONE 2026-06-27
-
-Slot 0x73 (`IsSelected`, offset 0x1cc) is **not a single shared virtual**. The
-source now models the verified branch arities:
-
-| Branch | Body addr | Verified arity |
-|---|---:|---:|
-| TToggleButton / T2PictToggleButton | 0x571330 / 0x5849b0 | 0 |
-| TPictureButton (+ inherited button subclasses) | 0x5708c0 | 0 |
-| TUpDownPictureButton (+ TCivilianButton, TTextPictureButton, TRadioPictureButton, TMadnessButton, TCzechBox) | 0x571690 | 0 |
-| TCivReport / TCombatReportView | 0x590cb0 / 0x58c950 | 1 |
-| TArmyInfoView / TArmyPlacard / THQButton / TPlacard | varied | 2 |
-
-Verification notes: Ghidra listing showed `TPictureButton::IsSelected` returns
-with plain `RET`; `TUpDownPictureButton::SetControlStateFlagAndMaybeRefresh`
-calls slot 0x1cc with no argument pushes; `TCivReport` and
-`TCombatReportView` both return with `RET 0x4`. `just build` passed, and
-filtered `just vtable` checks for `TPictureButton`, `TUpDownPictureButton`,
-`TCivReport`, and `TCombatReportView` were 100%.
 
 ## `TNavyMission.cpp` antipattern audit (2026-07-02) — callconv-cast bridges needing class recovery
 
@@ -689,4 +455,3 @@ recovery, CList/CArray template-static modeling (commits d959348..this session).
   CList/CArray member functions (e.g. 0x5e4540..0x5e4a60 WNetMgr copies,
   0x479a80/0x479b00 IncludeView copies) cannot pair against the single recomp
   COMDAT — needs reccmp-side support or per-address SYNTHETIC aliasing.
-

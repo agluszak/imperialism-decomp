@@ -7,5 +7,5 @@ PointerAlignment: Left
 SortIncludes: false
 AccessModifierOffset: -2
 AllowShortFunctionsOnASingleLine: Empty
-...
 ReflowComments: false
+...
