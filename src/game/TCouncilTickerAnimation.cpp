@@ -105,9 +105,10 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
   char* panelState = CouncilHostPanelBytes(this);
 
   TControlPictureRectState councilTextStyle;
-  councilTextStyle.value0 = 0;
-  councilTextStyle.value1 = 0;
-  councilTextStyle.value2 = 0;
+  councilTextStyle.mode = 0;
+  councilTextStyle.flag2 = 0;
+  councilTextStyle.pointSize = 0;
+  councilTextStyle.styleRef6 = 0;
   BuildUiTextStyleDescriptor(&councilTextStyle, 0, 0xe, 0x2b6a);
 
   *reinterpret_cast<short*>(panelState + 0x24c8) = 0;

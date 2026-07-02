@@ -603,22 +603,6 @@ undefined4 AllocateUiResourceNode(void)
   return 0;
 }
 
-// ghidra_name RegisterUiResourceEntry
-// ghidra_proto undefined RegisterUiResourceEntry()
-// FUNCTION: IMPERIALISM 0x0041b210
-undefined4 RegisterUiResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourceStateFlags
-// ghidra_proto undefined SetUiResourceStateFlags()
-// FUNCTION: IMPERIALISM 0x0041b3a0
-undefined4 SetUiResourceStateFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyUiResourceLayoutFromContext
 // ghidra_proto undefined ApplyUiResourceLayoutFromContext()
 // FUNCTION: IMPERIALISM 0x0041b3d0
@@ -631,22 +615,6 @@ undefined4 ApplyUiResourceLayoutFromContext(void)
 // ghidra_proto undefined SetUiResourceContextStringCode()
 // FUNCTION: IMPERIALISM 0x0041b400
 undefined4 SetUiResourceContextStringCode(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourceLayoutValues
-// ghidra_proto undefined SetUiResourceLayoutValues()
-// FUNCTION: IMPERIALISM 0x0041b450
-undefined4 SetUiResourceLayoutValues(void)
-{
-  return 0;
-}
-
-// ghidra_name BindUiResourceTextAndStyle
-// ghidra_proto undefined BindUiResourceTextAndStyle()
-// FUNCTION: IMPERIALISM 0x0041b490
-undefined4 BindUiResourceTextAndStyle(void)
 {
   return 0;
 }

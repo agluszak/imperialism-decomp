@@ -3,28 +3,7 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
-
-TView* __cdecl BuildTradeSchoolDialogControls(int nContextSlot, int nEventCode);
-TView* __cdecl InitializeIndustryOverviewPlacardsAndTradeStatusTags(int nContextSlot,
-                                                                    int nEventCode);
-TView* __cdecl InitializeIndustryViewTradeMoveControlsAndCommodityRows(int nContextSlot,
-                                                                       int nEventCode);
-TView* __cdecl BuildTurnEventDialogResourcesForEvent547Or7D8(int nContextSlot, int nEventCode);
-TView* __cdecl InitializeDealBookScreenControlsAndCommandTags(int nContextSlot, int nEventCode);
-TView* __cdecl BuildTurnEventDialogUiByCode(int nContextSlot, int nEventCode);
-TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(int nContextSlot, int nEventCode);
-TView* __cdecl BuildTurnEventDialogResources_2508(int nContextSlot, int nEventCode);
-TView* __cdecl InitializeJoinSelectorDialogControlsAndNationSlots(int nContextSlot, int nEventCode);
-TView* __cdecl BuildUiResourceTreeByTemplateIdAndBindScreenContext(int nContextSlot,
-                                                                   int nEventCode);
-TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(int nContextSlot, int nEventCode);
-TView* __cdecl InitializeTacticalBattleViewToolbarAndDialogControls(int nContextSlot,
-                                                                    int nEventCode);
-TView* __cdecl BuildTurnEventDialogResourcesForEvent898(int nContextSlot, int nEventCode);
-TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(int nContextSlot, int nEventCode);
-TView* __cdecl InitializeTradeScreenBitmapControls(int nContextSlot, int nEventCode);
-TView* __cdecl BuildTurnEventDialogResourcesForEvent7DE(int nContextSlot, int nEventCode);
-TView* __cdecl BuildUniversityDialogShell(int nContextSlot, int nEventCode);
+#include "game/turn_event_dialog_factory.h"
 
 void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* registry) {
   static TurnEventDialogFactoryProc kStartupFactories[] = {

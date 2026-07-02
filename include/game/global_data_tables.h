@@ -336,6 +336,12 @@ extern int g_nMcWindowStateMsgAssertGate_006A1C74;
 // dialog assert/log helpers on the TControl branch.
 extern char g_szMcAppUiHeaderPath_006943CC[];
 
+// Placeholder strings baked into the turn-event dialog builders (season/treasury/info
+// text shown until real values are bound).
+extern char g_szUiPlaceholderTreasury_006943B0[];
+extern char g_szUiPlaceholderSeason_006943BC[];
+extern char g_szUiPlaceholderSampleText_00694A98[];
+
 // Source-file path string ("D:\\Ambit\\Cross\\UGameWindow.cpp") passed with a line number to
 // the UI invalidation-flag assert helper from the TDlgWindow/UGameWindow assert hooks.
 extern char g_szUGameWindowSourcePath_00696bc0[];

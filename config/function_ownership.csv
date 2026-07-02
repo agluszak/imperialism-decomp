@@ -43,7 +43,11 @@ address|target_cpp|ownership|note
 415d70|src/game/TEventHandler.cpp|manual|marker_sync
 415f00|src/game/CObject.cpp|manual|marker_sync
 415fe0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
+41b210|src/game/ui_resource_pool.cpp|manual|marker_sync
+41b3a0|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b420|src/game/ui_resource_pool.cpp|manual|marker_sync
+41b450|src/game/ui_resource_pool.cpp|manual|marker_sync
+41b490|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b6d0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 427200|src/game/TView.cpp|manual|marker_sync
 427220|src/game/TView.cpp|manual|marker_sync

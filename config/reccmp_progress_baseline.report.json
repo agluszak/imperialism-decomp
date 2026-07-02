@@ -440,13 +440,13 @@
     },
     {
       "address": "0x41b210",
-      "matching": 0.0196078431372549,
+      "matching": 0.28717948717948716,
       "name": "RegisterUiResourceEntry",
       "type": 1
     },
     {
       "address": "0x41b3a0",
-      "matching": 0.25,
+      "matching": 1.0,
       "name": "SetUiResourceStateFlags",
       "type": 1
     },
@@ -470,13 +470,13 @@
     },
     {
       "address": "0x41b450",
-      "matching": 0.10526315789473684,
+      "matching": 0.3448275862068966,
       "name": "SetUiResourceLayoutValues",
       "type": 1
     },
     {
       "address": "0x41b490",
-      "matching": 0.04081632653061224,
+      "matching": 1.0,
       "name": "BindUiResourceTextAndStyle",
       "type": 1
     },
@@ -1089,7 +1089,7 @@
     },
     {
       "address": "0x44a810",
-      "matching": 0.009237875288683603,
+      "matching": 0.44878957169459965,
       "name": "BuildTurnEventDialogResources_2508",
       "type": 1
     },
@@ -1305,7 +1305,7 @@
     },
     {
       "address": "0x45d520",
-      "matching": 0.0057553956834532375,
+      "matching": 0.20279720279720279,
       "name": "BuildTurnEventDialogResourcesForEvent898",
       "type": 1
     },
@@ -4846,7 +4846,7 @@
     },
     {
       "address": "0x48e7d0",
-      "matching": 0.8823529411764706,
+      "matching": 1.0,
       "name": "TControl::SetCityProductionDialogPictureRectAndMaybeRefresh",
       "type": 1
     },
@@ -12163,7 +12163,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12601,7 +12601,7 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12619,13 +12619,13 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12655,7 +12655,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -14870,7 +14870,7 @@
     },
     {
       "address": "0x4fc2e0",
-      "matching": 0.24867724867724866,
+      "matching": 0.24802110817941952,
       "name": "TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker",
       "type": 1
     },
@@ -16094,7 +16094,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20727272727272728,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16172,7 +16172,7 @@
     },
     {
       "address": "0x50da80",
-      "matching": 0.28507795100222716,
+      "matching": 0.30666666666666664,
       "name": "TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10",
       "type": 1
     },
@@ -19917,7 +19917,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.4108527131782946,
+      "matching": 0.41245136186770426,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -27125,7 +27125,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.47715736040609136,
+      "matching": 0.45685279187817257,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -32808,7 +32808,7 @@
     },
     {
       "address": "0x5d8dd0",
-      "matching": 0.027243589743589744,
+      "matching": 0.02722177742193755,
       "name": "HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor",
       "type": 1
     },

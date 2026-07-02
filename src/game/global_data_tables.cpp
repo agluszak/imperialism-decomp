@@ -141,6 +141,14 @@ TControl* g_McAppUiMouseCaptureControl_006A1A80 = 0;
 unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 // GLOBAL: IMPERIALISM 0x006950b0
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
+// Placeholder strings baked into the turn-event dialog builders (season/treasury/info
+// text shown until real values are bound).
+// GLOBAL: IMPERIALISM 0x006943b0
+char g_szUiPlaceholderTreasury_006943B0[] = "$55,555";
+// GLOBAL: IMPERIALISM 0x006943bc
+char g_szUiPlaceholderSeason_006943BC[] = "Winter, 1888";
+// GLOBAL: IMPERIALISM 0x00694a98
+char g_szUiPlaceholderSampleText_00694A98[] = "Sample Text 1\n2\n3\n4\n5\n6\n7\n8";
 // GLOBAL: IMPERIALISM 0x006943cc
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0

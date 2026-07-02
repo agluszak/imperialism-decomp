@@ -8,7 +8,10 @@
 // factory-pointer CList and demands the pointee type be complete.
 #include "game/TView.h"
 
-typedef TView*(__cdecl* TurnEventDialogFactoryProc)(int nContextSlot, int nEventCode);
+// Each factory receives the host window to bind into the built control tree (the tail
+// PropagateUiResourceContextRecursive(pHostWindow) call in each builder); the registry
+// sweep passes null and lets the tree bind its host window later.
+typedef TView*(__cdecl* TurnEventDialogFactoryProc)(CWnd* pHostWindow, int nEventCode);
 
 // Turn-event UI dialog factory registry (global @ 0x006a1b24). Owns the freelist-backed
 // callback table used by TAssetMgr::ResolveTurnEventDialogNodeByMessageContext.
