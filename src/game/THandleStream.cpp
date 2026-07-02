@@ -55,8 +55,11 @@ undefined THandleStream::OrphanLeaf_NoCall_Ins06_00489720() {
   return 0;
 }
 
+// Seek: store the requested position directly (no clamp for the handle stream).
 // FUNCTION: IMPERIALISM 0x00489740
-void THandleStream::streamSlot2c(int) {}
+void THandleStream::streamSlot2c(int position) {
+  streamPosition = position;
+}
 
 // FUNCTION: IMPERIALISM 0x00489760
 void THandleStream::streamSlot34(int) {}
