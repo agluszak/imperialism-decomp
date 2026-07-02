@@ -5,6 +5,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 #include "game/UiRuntimeContext.h"
+#include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TSpaceCommand.h"
 // FUNCTION: IMPERIALISM 0x0058be30
@@ -28,7 +29,7 @@ TArmyPlacard::TArmyPlacard() : TPicture() {
 
 // FUNCTION: IMPERIALISM 0x0058bf50
 bool TArmyPlacard::IsSelected(short value, bool refreshNow) {
-  short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
+  short activeNationId = g_pLocalizationTable->GetActiveNationId();
   short capValue =
       g_pCityOrderCapabilityState->nationCapRows1e8[activeNationId].caps[this->controlTag];
   short pictureId = capValue + 0x4c4;

@@ -1,4 +1,5 @@
 #include "game/TIndustryCluster.h"
+#include "game/TSimMgr.h"
 
 #include "game/TAmtBar.h"
 #include "game/TUberCluster.h"
@@ -17,7 +18,6 @@
 #include <new>
 
 #include "game/mfc.h"
-
 
 const int kAssertLineRatioB = 0xb73;
 
@@ -41,8 +41,6 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* con
   }
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00588a30
 TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
   return new TIndustryCluster();
@@ -57,16 +55,13 @@ IMPLEMENT_DYNCREATE(TIndustryCluster, TUberCluster)
 TIndustryCluster::TIndustryCluster()
     : TUberCluster(), selectedMetricControl(0), selectedMetricValue(0), selectedMetricStep(0) {}
 
-
-
 // SYNTHETIC: IMPERIALISM 0x00588b20
 // TIndustryCluster::`scalar deleting destructor'
-
 
 // FUNCTION: IMPERIALISM 0x00588b70
 void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {
   short tagIndex = 0;
-  short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
+  short activeNationId = g_pLocalizationTable->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
   TCity* cityState = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
@@ -89,14 +84,10 @@ void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {
                                      1);
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00588c30
 void TIndustryCluster::ApplyMoveValue(int value) {
   this->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00588c60
 int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFlag) {
@@ -148,15 +139,11 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
   return 0;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00588f60
 int TIndustryCluster::GetControlFlag(int arg1, int arg2) {
   UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioB);
   return 0;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00588ff0
 void TIndustryCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -180,6 +167,5 @@ void TIndustryCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
   int moveValue = moveControl->QueryValue();
   this->ApplyMoveValue(moveValue - 1);
 }
-
 
 TIndustryCluster::~TIndustryCluster() {}

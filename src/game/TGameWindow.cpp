@@ -170,7 +170,7 @@ void TGameWindow::ForwardParam(int param) {
         g_pLocalizationTable->PostMainWindowCommand100ForTurnFlow();
         return;
       }
-      short nationId = g_pUiRuntimeContext->GetActiveNationId();
+      short nationId = g_pLocalizationTable->GetActiveNationId();
       short abilityIndex = GameWindowInvoke::ConsumeFirstPendingAbilityUnlockForNation(nationId);
       if (abilityIndex != -1) {
         GameWindowInvoke::DispatchUiRuntimeAbilityUnlockSlot88Gate(abilityIndex);

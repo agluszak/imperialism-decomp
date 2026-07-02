@@ -151,7 +151,7 @@ extern "C" short g_nTurnFlowNationComparisonAdvisoryTick;
 
 // FUNCTION: IMPERIALISM 0x005011a0
 void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
-  const short nationId = g_pUiRuntimeContext->GetActiveNationId();
+  const short nationId = g_pLocalizationTable->GetActiveNationId();
   const int flowMode = ReadLocalizationFlowMode();
   if (flowMode == 0xf) {
     TGreatPower* nation = g_apNationStates[nationId];
@@ -195,8 +195,11 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
         }
         HelpSetRecord* entry = static_cast<HelpSetRecord*>(indexList->GetEntrySlot2C(index));
         if (entry->contextId == eventCode) {
-          const short activeNation = g_pUiRuntimeContext->GetActiveNationId();
-          if (entry->rank == activeNation) {
+          // NOT GetActiveNationId — original loads ECX from g_pLocalizationTable and
+          // dispatches vtable slot 0x3c (GetTurnTickSlot3C), same call as the currentTurn
+          // check above. entry->rank stores a turn tick here, not a nation id.
+          const short currentTick = g_pLocalizationTable->GetTurnTickSlot3C();
+          if (entry->rank == currentTick) {
             nationAlreadyCurrent = true;
           } else if (entry->flagByte == 0) {
             activateCandidate = 1;
@@ -234,7 +237,7 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
     return;
   }
   pendingEntry->flagByte = 1;
-  pendingEntry->rank = g_pUiRuntimeContext->GetActiveNationId();
+  pendingEntry->rank = g_pLocalizationTable->GetActiveNationId();
   // Full dialog refresh path deferred; mark the help-set entry seen/current-nation.
 }
 

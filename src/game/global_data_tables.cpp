@@ -289,7 +289,7 @@ short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot) {
 }
 
 TGreatPower* GetActiveNationState(void) {
-  return g_apNationStates[g_pUiRuntimeContext->GetActiveNationId()];
+  return g_apNationStates[g_pLocalizationTable->GetActiveNationId()];
 }
 
 int GetTradeSummarySelectionTagByIndex(short index) {

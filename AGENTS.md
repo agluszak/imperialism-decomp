@@ -303,6 +303,13 @@ free-function stub or fake calling-convention cast back to unblock a commit.
   cannot regress a score; confirm with `just compare <addr>`. Update an override's
   signature in lockstep with the base, or it silently stops overriding (`override` fails to
   compile, or a new vtable slot is created).
+- **Be opportunistic in touched code.** Whenever you are already reading or editing a
+  function, class, or file for an unrelated task, take the chance to improve types/names
+  per the rules above and fix any other issues you notice there (wrong types, stray
+  `reinterpret_cast`s, junk names, obvious bugs) — even if you didn't cause them and even
+  if fixing them isn't strictly required to close the task at hand. Don't go out of scope
+  hunting for unrelated problems elsewhere; this is about not walking past a fixable issue
+  in code you're already looking at.
 
 ## Commit-message policy
 

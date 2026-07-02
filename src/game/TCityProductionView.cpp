@@ -1,6 +1,7 @@
 // TCityProductionView temporary QuickDraw render-context slice.
 
 #include "game/TCityProductionView.h"
+#include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
@@ -68,7 +69,7 @@ void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
 
 // FUNCTION: IMPERIALISM 0x004badd0
 void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
-  TGreatPower* nationState = g_apNationStates[g_pUiRuntimeContext->GetActiveNationId()];
+  TGreatPower* nationState = g_apNationStates[g_pLocalizationTable->GetActiveNationId()];
   void* subObject = 0;
   if (nationState != 0) {
     subObject = *reinterpret_cast<void**>(reinterpret_cast<char*>(nationState) + 0x894);

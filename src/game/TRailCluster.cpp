@@ -1,4 +1,5 @@
 #include "game/TAmtBar.h"
+#include "game/TSimMgr.h"
 #include "game/TIndustryCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
@@ -20,7 +21,6 @@
 #include "game/TUberCluster.h"
 
 #include "game/mfc.h"
-
 
 const int kAssertLineRatioA = 0xd1d;
 
@@ -44,8 +44,6 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context
   }
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00589660
 TRailCluster* __cdecl CreateTradeMoveScaledControlPanel(void) {
   return new TRailCluster();
@@ -62,16 +60,13 @@ TRailCluster::TRailCluster() : TUberCluster() {
   this->selectedMetricStep = 0;
 }
 
-
-
 // SYNTHETIC: IMPERIALISM 0x00589760
 // TRailCluster::`scalar deleting destructor'
-
 
 // FUNCTION: IMPERIALISM 0x005897b0
 void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {
   short recordIndex = static_cast<short>(styleSeed);
-  short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
+  short activeNationId = g_pLocalizationTable->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
   TCity* cityState = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
@@ -90,8 +85,7 @@ void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {
       recordIndex = 0x3e;
       this->selectedMetricStep = 0;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 4) +
-                                  scenarioDescriptor->extraAt1e -
-                                  scenarioDescriptor->stockLevel1c;
+                                  scenarioDescriptor->extraAt1e - scenarioDescriptor->stockLevel1c;
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagFood) {
@@ -106,17 +100,19 @@ void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {
     if (summaryTag == kSummaryTagPowe) {
       recordIndex = 0x3f;
       this->selectedMetricStep = 0;
-      this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 5) +
-                                  *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x34) -
-                                  *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x20);
+      this->selectedMetricValue =
+          QueryNationMetricBySlot(activeNationState, 5) +
+          *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x34) -
+          *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x20);
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagRail) {
       recordIndex = 0x39;
       this->selectedMetricStep = 0;
-      this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 6) +
-                                  *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x2c) -
-                                  *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x14);
+      this->selectedMetricValue =
+          QueryNationMetricBySlot(activeNationState, 6) +
+          *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x2c) -
+          *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x14);
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagIart) {
@@ -140,14 +136,10 @@ LABEL_12:
   }
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x005899c0
 void TRailCluster::ApplyMoveValue(int value) {
   this->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x005899f0
 int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFlag) {
@@ -207,15 +199,11 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
   return 0;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00589d10
 int TRailCluster::GetControlFlag(int arg1, int arg2) {
   UpdateTradeBarFromSelectedMetricRatio(reinterpret_cast<TRailCluster*>(this), kAssertLineRatioA);
   return 0;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00589da0
 void TRailCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -239,6 +227,5 @@ void TRailCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
   int moveValue = moveControl->QueryValue();
   this->ApplyMoveValue(moveValue - 1);
 }
-
 
 TRailCluster::~TRailCluster() {}

@@ -1,10 +1,10 @@
 #include "game/TTransportPicture.h"
+#include "game/TSimMgr.h"
 #include "game/mfc.h"
 #include "game/TControl.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
-
 
 // FUNCTION: IMPERIALISM 0x00591d90
 TTransportPicture* __cdecl CreateTTransportPictureInstance(void) {
@@ -27,7 +27,7 @@ TTransportPicture::TTransportPicture()
 // FUNCTION: IMPERIALISM 0x00591f10
 void TTransportPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 100 && commandId <= 0x65) {
-    short nationId = g_pUiRuntimeContext->GetActiveNationId();
+    short nationId = g_pLocalizationTable->GetActiveNationId();
     TGreatPower* nation = g_apNationStates[nationId];
     int metricSlot = static_cast<int>(unknown92);
     short metricA = 0;

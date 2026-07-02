@@ -63,7 +63,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
       int fortLevel = g_pGlobalMapState->cityScoreTable[cityIndex].fortLevel03;
       short cost = g_awEngineerFortBuildCostByLevel[fortLevel];
 
-      short nationId = g_pUiRuntimeContext->GetActiveNationId();
+      short nationId = g_pLocalizationTable->GetActiveNationId();
       int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +
                  g_apNationStates[nationId]->treasuryValue10;
       int availableCash = (cash < 0) ? 0 : cash;
@@ -82,14 +82,14 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
             ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
       } else {
-        short nationId = g_pUiRuntimeContext->GetActiveNationId();
+        short nationId = g_pLocalizationTable->GetActiveNationId();
         g_apNationStates[nationId]->treasuryValue10 -= cost;
         pCiv->SetOrderModeSlot34(6, pCiv->field_6);
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232c, 0, 1);
         actionFinalized = true;
       }
     } else if (choice == 0x706f7274) { // 'port'
-      short nationId = g_pUiRuntimeContext->GetActiveNationId();
+      short nationId = g_pLocalizationTable->GetActiveNationId();
       int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +
                  g_apNationStates[nationId]->treasuryValue10;
       int availableCash = (cash < 0) ? 0 : cash;
@@ -108,18 +108,17 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
             ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
       } else {
-        short nationId = g_pUiRuntimeContext->GetActiveNationId();
+        short nationId = g_pLocalizationTable->GetActiveNationId();
         g_apNationStates[nationId]->treasuryValue10 -= 3000;
         pCiv->SetOrderModeSlot34(7, pCiv->field_6);
         if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-          g_pUiRuntimeContext->mapUberPictureF0
-              ->InvalidateTileMarkerChain(nTileIndex);
+          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(nTileIndex);
         }
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232b, 0, 1);
         actionFinalized = true;
       }
     } else if (choice == 0x7261696c) { // 'rail'
-      short nationId = g_pUiRuntimeContext->GetActiveNationId();
+      short nationId = g_pLocalizationTable->GetActiveNationId();
       int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +
                  g_apNationStates[nationId]->treasuryValue10;
       int availableCash = (cash < 0) ? 0 : cash;
@@ -138,12 +137,11 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
             ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
       } else {
-        short nationId = g_pUiRuntimeContext->GetActiveNationId();
+        short nationId = g_pLocalizationTable->GetActiveNationId();
         g_apNationStates[nationId]->treasuryValue10 -= 2000;
         pCiv->SetOrderModeSlot34(12, pCiv->field_6);
         if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-          g_pUiRuntimeContext->mapUberPictureF0
-              ->InvalidateTileMarkerChain(nTileIndex);
+          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(nTileIndex);
         }
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232a, 0, 1);
         actionFinalized = true;
@@ -153,7 +151,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
     int terrainType = g_pGlobalMapState->terrainStateTable[nTileIndex].pad00[0];
     int cost = g_adwEngineerRailBuildCostByTerrainType[terrainType];
 
-    short nationId = g_pUiRuntimeContext->GetActiveNationId();
+    short nationId = g_pLocalizationTable->GetActiveNationId();
     int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +
                g_apNationStates[nationId]->treasuryValue10;
     int availableCash = (cash < 0) ? 0 : cash;
@@ -166,13 +164,12 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
       g_pLocalizationTable->FormatIntegerString(cost, &costString);
       g_pLocalizationTable->GetString(0x2745, 8, &pszTemplateText);
       scanBracketExpressions(g_pLocalizationTable, &pszFormattedText,
-                             static_cast<LPCSTR>(pszTemplateText),
-                             static_cast<LPCSTR>(costString));
+                             static_cast<LPCSTR>(pszTemplateText), static_cast<LPCSTR>(costString));
 
       reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
           ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
     } else {
-      short nationId = g_pUiRuntimeContext->GetActiveNationId();
+      short nationId = g_pLocalizationTable->GetActiveNationId();
       g_apNationStates[nationId]->treasuryValue10 -= cost;
       g_pGlobalMapState->ApplyRailSectionEndpointDirectionFlags(pCiv->field_6, nTileIndex,
                                                                 pCiv->field_18);

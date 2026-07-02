@@ -9667,7 +9667,7 @@
     },
     {
       "address": "0x4badd0",
-      "matching": 0.7142857142857143,
+      "matching": 0.7238095238095238,
       "name": "TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh",
       "type": 1
     },
@@ -11341,7 +11341,7 @@
     },
     {
       "address": "0x4d3a60",
-      "matching": 0.2345415778251599,
+      "matching": 0.24093816631130063,
       "name": "TCivMgr::HandleEngineerConstructionAction",
       "type": 1
     },
@@ -12620,7 +12620,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12632,7 +12632,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -15435,7 +15435,7 @@
     },
     {
       "address": "0x5031c0",
-      "matching": 0.26229508196721313,
+      "matching": 0.29347826086956524,
       "name": "HandlePendingEventActivationByCode",
       "type": 1
     },
@@ -16035,7 +16035,7 @@
     },
     {
       "address": "0x50a6a0",
-      "matching": 0.6503067484662577,
+      "matching": 0.6993865030674846,
       "name": "TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation",
       "type": 1
     },
@@ -22768,7 +22768,7 @@
     },
     {
       "address": "0x55fc40",
-      "matching": 0.28846153846153844,
+      "matching": 0.3076923076923077,
       "name": "InputState::HandleKeyDown",
       "type": 1
     },
@@ -26886,7 +26886,7 @@
     },
     {
       "address": "0x588030",
-      "matching": 0.5150501672240803,
+      "matching": 0.5284280936454849,
       "name": "TTradeCluster::SetTradeOfferSecondaryBitmapState",
       "type": 1
     },
@@ -27168,7 +27168,7 @@
     },
     {
       "address": "0x58a610",
-      "matching": 0.56,
+      "matching": 0.6,
       "name": "TShipyardCluster::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27426,7 +27426,7 @@
     },
     {
       "address": "0x58bf50",
-      "matching": 0.6956521739130435,
+      "matching": 0.7246376811594203,
       "name": "TArmyPlacard::IsSelected",
       "type": 1
     },
@@ -27787,7 +27787,7 @@
     },
     {
       "address": "0x591f10",
-      "matching": 0.16964285714285715,
+      "matching": 0.17857142857142858,
       "name": "TTransportPicture::HandleEvent",
       "type": 1
     },
@@ -32641,7 +32641,7 @@
     },
     {
       "address": "0x5d6480",
-      "matching": 0.18181818181818182,
+      "matching": 0.19138755980861244,
       "name": "TViewMgr::BuildAndShowTurnOverlayByMode",
       "type": 1
     },
@@ -32653,7 +32653,7 @@
     },
     {
       "address": "0x5d6b70",
-      "matching": 0.8070175438596491,
+      "matching": 0.8421052631578947,
       "name": "TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent",
       "type": 1
     },
@@ -32809,7 +32809,7 @@
     },
     {
       "address": "0x5d8dd0",
-      "matching": 0.02564102564102564,
+      "matching": 0.027243589743589744,
       "name": "HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor",
       "type": 1
     },
@@ -32827,7 +32827,7 @@
     },
     {
       "address": "0x5da360",
-      "matching": 0.037418147801683815,
+      "matching": 0.037383177570093455,
       "name": "HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons",
       "type": 1
     },

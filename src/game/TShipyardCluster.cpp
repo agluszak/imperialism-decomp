@@ -1,4 +1,5 @@
 #include "game/TIndustryCluster.h"
+#include "game/TSimMgr.h"
 #include "game/TShipyardCluster.h"
 
 #include "game/TAmtBar.h"
@@ -19,7 +20,6 @@
 
 #include "game/mfc.h"
 
-
 static __inline TCity* GetNationCityStateBySlot(short slotId) {
   TGreatPower* nationState = GetNationStateBySlot(slotId);
   if (nationState == 0) {
@@ -27,8 +27,6 @@ static __inline TCity* GetNationCityStateBySlot(short slotId) {
   }
   return nationState->GetCityState();
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x0058a4d0
 TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
@@ -43,23 +41,18 @@ IMPLEMENT_DYNCREATE(TShipyardCluster, TUberCluster)
 // FUNCTION: IMPERIALISM 0x0058a590
 TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0), field_8e(0) {}
 
-
-
 // SYNTHETIC: IMPERIALISM 0x0058a5c0
 // TShipyardCluster::`scalar deleting destructor'
-
 
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::NoOpUiLifecycleHook(int styleSeed) {
   (void)styleSeed;
-  TCity* cityState = GetNationCityStateBySlot(g_pUiRuntimeContext->GetActiveNationId());
+  TCity* cityState = GetNationCityStateBySlot(g_pLocalizationTable->GetActiveNationId());
   field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
   field_8c = 999;
   this->InitializeTradeMoveAndBarControls();
   this->ApplyMoveValue(0);
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x0058a690
 void TShipyardCluster::ApplyMoveValue(int value) {
@@ -103,8 +96,6 @@ void TShipyardCluster::ApplyMoveValue(int value) {
   (void)value;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x0058a940
 void TShipyardCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TAmtBar* sourceControl = reinterpret_cast<TAmtBar*>(sourceHandler);
@@ -136,6 +127,5 @@ void TShipyardCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
     this->HandleTradeMoveControlAdjustment(commandId, sourceControl, eventExtra);
   }
 }
-
 
 TShipyardCluster::~TShipyardCluster() {}

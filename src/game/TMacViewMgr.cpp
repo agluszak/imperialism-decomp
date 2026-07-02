@@ -493,20 +493,20 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   if (atlas690 != 0) {
     FreeQuickDrawSurfaceContextSlot(&atlas690);
   }
-  nationId = g_pUiRuntimeContext->GetActiveNationId();
+  nationId = g_pLocalizationTable->GetActiveNationId();
   if (nationId < 0) {
     return;
   }
   g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
-  nationId = g_pUiRuntimeContext->GetActiveNationId();
+  nationId = g_pLocalizationTable->GetActiveNationId();
   variant = g_pCityOrderCapabilityState->orderCapRows277[nationId].flag != 0;
-  nationId = g_pUiRuntimeContext->GetActiveNationId();
+  nationId = g_pLocalizationTable->GetActiveNationId();
   if (g_pCityOrderCapabilityState->orderCapRows277[nationId].secondaryCapabilityFlag280 != 0) {
     variant = 2;
   }
-  nationId = g_pUiRuntimeContext->GetActiveNationId();
+  nationId = g_pLocalizationTable->GetActiveNationId();
   atlas68c = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x579 + variant * 7);
-  nationId = g_pUiRuntimeContext->GetActiveNationId();
+  nationId = g_pLocalizationTable->GetActiveNationId();
   atlas690 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
 }
 

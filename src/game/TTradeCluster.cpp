@@ -1,4 +1,5 @@
 #include "game/TIndustryCluster.h"
+#include "game/TSimMgr.h"
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/ui_widget_thunks.h"
@@ -137,7 +138,7 @@ void TTradeCluster::NoOpUiLifecycleHook(int styleSeed) {
   leftControl->SetState(0, 0);
   rightControl->SetState(0, 0);
 
-  short activeNationSlot = g_pUiRuntimeContext->GetActiveNationId();
+  short activeNationSlot = g_pLocalizationTable->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
   if (activeNationState != 0 && QueryNationTradeCapacity(activeNationState) == 0) {
     leftControl->SetEnabled(0, 0);
@@ -168,7 +169,7 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       }
 
       int sellValue = sellControl->QueryValue();
-      short activeNationSlot = g_pUiRuntimeContext->GetActiveNationId();
+      short activeNationSlot = g_pLocalizationTable->GetActiveNationId();
       TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
       short maxByNationMetric = 0;
       if (activeNationState != 0) {
@@ -235,7 +236,7 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
     }
     break;
   case 0x69: {
-    short activeNationSlot = g_pUiRuntimeContext->GetActiveNationId();
+    short activeNationSlot = g_pLocalizationTable->GetActiveNationId();
     TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
     short maxByNationMetric = 0;
     if (activeNationState != 0) {
@@ -306,8 +307,7 @@ int TTradeCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
 // control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587980
 int TTradeCluster::GetControlFlag(int arg1, int arg2) {
-  TPicture* bidControl =
-      reinterpret_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
+  TPicture* bidControl = reinterpret_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
   }
@@ -328,8 +328,7 @@ int TTradeCluster::GetControlFlag(int arg1, int arg2) {
 // the control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587a10
 int TTradeCluster::GetBoolSlot1DC() {
-  TPicture* offerControl =
-      reinterpret_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
+  TPicture* offerControl = reinterpret_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferActionable);
   }
@@ -475,12 +474,12 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
   int layoutCaptureF4[2] = {0x11, 0x14};
   offerControl->CaptureLayout(layoutCaptureF4, 1);
 
-  short activeNationSlot = g_pUiRuntimeContext->GetActiveNationId();
+  short activeNationSlot = g_pLocalizationTable->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
   short tradeMetricAvailable = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
 
   if (tradeMetricAvailable != 0) {
-    short activeNationSlotAgain = g_pUiRuntimeContext->GetActiveNationId();
+    short activeNationSlotAgain = g_pLocalizationTable->GetActiveNationId();
     TGreatPower* activeNationStateAgain = GetNationStateBySlot(activeNationSlotAgain);
     if (QueryNationTradeCapacity(activeNationStateAgain) != 0) {
       offerControl->SetEnabled(1, 0);
@@ -526,7 +525,7 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
 // trade metric, clamped to metricClampMax.
 // FUNCTION: IMPERIALISM 0x005882f0
 void TTradeCluster::ApplyMoveValue(int metricClampMax) {
-  short activeNationSlot = g_pUiRuntimeContext->GetActiveNationId();
+  short activeNationSlot = g_pLocalizationTable->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
   int tradeMetricValue = (int)QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
   if (tradeMetricValue > metricClampMax) {
