@@ -188,6 +188,12 @@ int g_uQuickDrawCurrentColor = 0;
 int g_nQuickDrawOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a1d84
 int g_nQuickDrawOriginY = 0;
+// Resolved (post-origin-adjustment) text-draw origin, cached by
+// SetQuickDrawTextOriginWithContextOffset for the cached-style leaves that consume it.
+// GLOBAL: IMPERIALISM 0x006a1d00
+int g_nQuickDrawResolvedTextOriginX = 0;
+// GLOBAL: IMPERIALISM 0x006a1d04
+int g_nQuickDrawResolvedTextOriginY = 0;
 // GLOBAL: IMPERIALISM 0x006a1ca0
 TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
 // Statically initialized to the sentinel address (the dword at 0x006950f8 holds
@@ -262,7 +268,7 @@ int g_nDibOrientationFlag_006A1890 = 0;
 // GLOBAL: IMPERIALISM 0x00694b48
 CRuntimeClass s_CDib_RuntimeClass_00694b48 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x6a1d9c
-void* g_pScopedMapQuickDrawDcHandleObject = 0;
+CDC* g_pScopedMapQuickDrawDcHandleObject = nullptr;
 // GLOBAL: IMPERIALISM 0x6a1dac
 void* g_pScopedMapQuickDrawViewContext = 0;
 // GLOBAL: IMPERIALISM 0x6a1c98

@@ -132,11 +132,12 @@ void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
       short textLeft = static_cast<short>((slider->field34 / 2) - (textWidth / 2));
 
       SetQuickDrawColorAndSyncGlobals(textMainColor);
-      SetQuickDrawTextOrigin(static_cast<short>(textLeft + 1), static_cast<short>(textCenterY + 5));
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textLeft + 1),
+                                              static_cast<short>(textCenterY + 5));
       DrawTextWithCachedStyle(&statusText);
 
       SetQuickDrawColorAndSyncGlobals(textShadowColor);
-      SetQuickDrawTextOrigin(textLeft, static_cast<short>(textCenterY + 4));
+      SetQuickDrawTextOriginWithContextOffset(textLeft, static_cast<short>(textCenterY + 4));
       DrawTextWithCachedStyle(&statusText);
     }
   }

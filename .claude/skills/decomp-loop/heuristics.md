@@ -750,3 +750,22 @@ reccmp later renders as `push "Literal" (STRING)` is a string-literal pointer, n
 int — model it as a named `s_*_00ADDR[]` `GLOBAL:` global per note 9/existing convention,
 not `reinterpret_cast<void*>(0xADDR)`).
 
+## 35. "Cached context singleton" globals dispatched via `[ecx+slot]` can just be real CDC*
+
+Before modeling a mystery "surface context" class behind vtable-slot calls, check whether
+the callee addresses are already-linked real MFC methods: `CDC::SelectObject(CFont*)` is
+`virtual` at slot 0x30 and `CDC::SetTextColor` at slot 0x38 (see afxwin.h), while
+`CDC::SetMapperFlags`/`CDC::SetTextAlign`/`CDC::OffsetWindowOrg`/`CDC::LineTo` are plain
+non-virtual direct-address calls — if a "cached context" global dispatches through both a
+vtable slot AND plain direct calls with the same `ecx`, it is almost certainly a genuine
+`CDC*`/`CFont*`, not a custom class needing recovery (`g_pQuickDrawMemoryDc` was already
+typed `CDC*`; the sibling fallback `g_pScopedMapQuickDrawDcHandleObject` at the *same*
+address family (0x6a1d9c) was still `void*` with hand-rolled `reinterpret_cast<...>(...)
++4` offset hacks reaching for `CDC::m_hAttribDC` — retyping it to `CDC*` let those dissolve
+into a plain member access). Cross-check: real MFC virtuals are declared `virtual` in the
+vendored header (`vendor/msvc500/headers/mfc/include/afxwin.h`); non-virtual ones aren't,
+matching the direct-vs-vtable call shape in the disassembly. Also: struct-by-value MFC
+returns (`CPoint OffsetWindowOrg(int,int)`) use a caller-allocated hidden-pointer arg
+pushed *last* (after the normal args) — `SUB ESP,N` at function entry that's never read
+back is often this scratch return buffer, not a mystery local.
+

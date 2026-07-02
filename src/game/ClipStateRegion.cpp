@@ -127,7 +127,7 @@ void DrawFrameRectOrUpdateClipRegion(RECT* rect) {
 
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
-    dc = static_cast<CDC*>(g_pScopedMapQuickDrawDcHandleObject);
+    dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   if (dc != nullptr) {
     FrameRect(dc->GetSafeHdc(), &frameRect, static_cast<HBRUSH>(brush.GetSafeHandle()));

@@ -18,16 +18,17 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect);
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 ApplyRectClipRegionToGlobalClipState(void);
 
-undefined4 SetQuickDrawTextOriginWithContextOffset(void);
-undefined4 DrawCenteredGuideLineOnMapDc(void);
+void SetQuickDrawTextOriginWithContextOffset(short x, short y);
+void DrawCenteredGuideLineOnMapDc(short x, short y);
 
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 
-// Cached-style text leaves (0x494a90 / 0x494e00 / 0x497c80 / 0x497d10) are not ported
-// yet — they dispatch through the cached text-style context singletons (0x6a1da0 /
-// 0x6a1d9c). Until that class is recovered, these are the single shared typed entry
-// points (Hard Rule 9: generic extern + typed cast), so call sites stay cast-free.
+// Cached-style text leaves (0x494a90 / 0x494e00) are not ported yet — they dispatch
+// through the cached text-style context singletons (0x6a1da0 / 0x6a1d9c), which are
+// real CDC* (see g_pQuickDrawMemoryDc / g_pScopedMapQuickDrawDcHandleObject). Until
+// they're ported these stay the single shared typed entry points (Hard Rule 9: generic
+// extern + typed cast), so call sites stay cast-free.
 undefined4 MeasureTextExtentWithCachedQuickDrawStyle(void);
 undefined4 DrawTextWithCachedQuickDrawStyleState(void);
 
@@ -39,16 +40,6 @@ static __inline short MeasureTextExtentWithCachedStyle(const CString* text) {
 static __inline void DrawTextWithCachedStyle(const CString* text) {
   reinterpret_cast<void(__cdecl*)(const CString*)>(
       reinterpret_cast<void (*)()>(DrawTextWithCachedQuickDrawStyleState))(text);
-}
-
-static __inline void SetQuickDrawTextOrigin(short x, short y) {
-  reinterpret_cast<void(__cdecl*)(short, short)>(
-      reinterpret_cast<void (*)()>(SetQuickDrawTextOriginWithContextOffset))(x, y);
-}
-
-static __inline void DrawCenteredGuideLine(short x, short y) {
-  reinterpret_cast<void(__cdecl*)(short, short)>(
-      reinterpret_cast<void (*)()>(DrawCenteredGuideLineOnMapDc))(x, y);
 }
 
 static __inline void ApplyUiTextStyleAndSyncColor(int unused, int styleWidth, int themeCode) {

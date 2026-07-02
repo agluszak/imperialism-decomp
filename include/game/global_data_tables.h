@@ -169,6 +169,8 @@ extern int g_uQuickDrawCurrentColor;
 extern int g_uQuickDrawStrokeColor;
 extern int g_nQuickDrawOriginX;
 extern int g_nQuickDrawOriginY;
+extern int g_nQuickDrawResolvedTextOriginX;
+extern int g_nQuickDrawResolvedTextOriginY;
 extern TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
@@ -234,7 +236,7 @@ extern LPCSTR g_apFontFiles[];
 extern int g_nDibOrientationFlag_006A1890;
 extern CRuntimeClass s_CDib_RuntimeClass_00694b48;
 extern void* g_pScopedMapQuickDrawViewContext;
-extern void* g_pScopedMapQuickDrawDcHandleObject;
+extern CDC* g_pScopedMapQuickDrawDcHandleObject;
 extern void* g_pReusableQuickDrawSurfaceListHead;
 }
 

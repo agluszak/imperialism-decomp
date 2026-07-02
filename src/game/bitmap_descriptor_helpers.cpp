@@ -127,7 +127,7 @@ InitializeBitmapDescriptorNodeFromResourceSurfaceImpl(TBitmapSurfaceContextDescr
 void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bounds) {
   CDC* dcTarget = g_pQuickDrawMemoryDc;
   if (dcTarget == nullptr && g_pScopedMapQuickDrawDcHandleObject != nullptr) {
-    dcTarget = static_cast<CDC*>(g_pScopedMapQuickDrawDcHandleObject);
+    dcTarget = g_pScopedMapQuickDrawDcHandleObject;
   }
   if (handle == nullptr || bounds == nullptr) {
     return;

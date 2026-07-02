@@ -3,20 +3,18 @@
 #include "game/global_data_tables.h"
 
 typedef void* hwnd_t;
-typedef void* hdc_t;
-
-undefined4 FromHandle_612736(void);
 
 // Bind the scoped map QuickDraw DC: record the active view, and select the DC-handle
 // object (either the caller-supplied one, or a fresh CDC wrapping the view window's DC).
 // FUNCTION: IMPERIALISM 0x004945f0
 int BindScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
   g_pScopedMapQuickDrawViewContext = view;
-  void* dcHandleObject = existingDc;
+  CDC* dcHandleObject = existingDc;
   if (existingDc == 0) {
     if (view->nativeWindow50 != 0) {
       HDC hdc = GetDC(reinterpret_cast<HWND>(view->nativeWindow50->m_hWnd));
-      void* cdc = reinterpret_cast<void*(__stdcall*)(HDC)>(FromHandle_612736)(hdc);
+      // LIBRARY: CDC::FromHandle (0x00612736)
+      CDC* cdc = CDC::FromHandle(hdc);
       g_pScopedMapQuickDrawDcHandleObject = cdc;
       return cdc != 0;
     }
@@ -31,8 +29,7 @@ int BindScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
 // FUNCTION: IMPERIALISM 0x004946b0
 void ReleaseScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
   if (existingDc == 0) {
-    HDC boundDc =
-        *reinterpret_cast<HDC*>(reinterpret_cast<char*>(g_pScopedMapQuickDrawDcHandleObject) + 4);
+    HDC boundDc = g_pScopedMapQuickDrawDcHandleObject->m_hAttribDC;
     ReleaseDC(reinterpret_cast<HWND>(view->nativeWindow50->m_hWnd), boundDc);
   }
   g_pScopedMapQuickDrawDcHandleObject = 0;
@@ -51,14 +48,14 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
   }
   g_pScopedMapQuickDrawViewContext = this->renderTarget;
   if (this != 0) {
-    g_pScopedMapQuickDrawDcHandleObject = this;
+    g_pScopedMapQuickDrawDcHandleObject = &clientDc;
   } else {
     TView* viewContext = this->renderTarget;
     if (viewContext->nativeWindow50 == 0) {
       g_pScopedMapQuickDrawDcHandleObject = 0;
     } else {
-      GetDC(reinterpret_cast<HWND>(viewContext->nativeWindow50->m_hWnd));
-      reinterpret_cast<void(__cdecl*)()>(FromHandle_612736)();
+      // LIBRARY: CDC::FromHandle (0x00612736)
+      CDC::FromHandle(GetDC(reinterpret_cast<HWND>(viewContext->nativeWindow50->m_hWnd)));
     }
   }
 }
@@ -68,8 +65,7 @@ ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext() {
   if (this == 0) {
     TView* viewContext = this->renderTarget;
     ReleaseDC(reinterpret_cast<HWND>(viewContext->nativeWindow50->m_hWnd),
-              reinterpret_cast<HDC>(*reinterpret_cast<hdc_t*>(
-                  reinterpret_cast<char*>(g_pScopedMapQuickDrawDcHandleObject) + 4)));
+              g_pScopedMapQuickDrawDcHandleObject->m_hAttribDC);
   }
   g_pScopedMapQuickDrawDcHandleObject = 0;
   g_pScopedMapQuickDrawViewContext = 0;

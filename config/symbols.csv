@@ -8586,6 +8586,8 @@ address|name|symbol|size|type|prototype|provenance
 6a1c74|g_nMcWindowStateMsgAssertGate_006A1C74|||global||
 6a1c98|g_pReusableQuickDrawSurfaceListHead|||global||
 6a1ca0|g_defaultQuickDrawSurfaceSentinel|||global||
+6a1d00|g_nQuickDrawResolvedTextOriginX|||global||
+6a1d04|g_nQuickDrawResolvedTextOriginY|||global||
 6a1d08|g_nQuickDrawStrokeStylePrimary|||global||
 6a1d0c|g_nQuickDrawStrokeStyleSecondary|||global||
 6a1d10|g_Reset_Quick_Draw_State_006A1D10|||global||

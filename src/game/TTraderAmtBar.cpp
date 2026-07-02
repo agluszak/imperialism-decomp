@@ -118,7 +118,8 @@ int TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
 void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(reinterpret_cast<int*>(surface.surfaceWrapper));
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(
+      reinterpret_cast<int*>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -132,10 +133,10 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       short styleValueAt60 = rangeOrMaxValue;
       if (styleValueAt60 > 0) {
         short styleValueAt66 = auxValueB;
-        reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(0, 0);
+        SetQuickDrawTextOriginWithContextOffset(0, 0);
         g_pUiRuntimeContext->ApplyLegendSplitSlot34(styleValueAt66);
         SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 5);
-        reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)((short)(styleValueAt60 - 1), 0);
+        DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 0);
         ResetQuickDrawStrokeState();
       }
 

@@ -34,8 +34,6 @@ undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void);
 undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 DrawFrameRectOrUpdateClipRegion(void);
-undefined4 SetQuickDrawTextOriginWithContextOffset(void);
-undefined4 DrawCenteredGuideLineOnMapDc(void);
 undefined4 AppendPointerToGlobalVectorAsStatus(void);
 undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
 undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
@@ -731,12 +729,12 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
       }
       reinterpret_cast<void(__cdecl*)(RECT*)>(DrawFrameRectOrUpdateClipRegion)(&destRect);
       SetQuickDrawFillColor(0);
-      reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(
-          static_cast<short>(destRect.right), static_cast<short>(destRect.top));
-      reinterpret_cast<void(__cdecl*)(int, int)>(DrawCenteredGuideLineOnMapDc)(destRect.right,
-                                                                               destRect.bottom);
-      reinterpret_cast<void(__cdecl*)(int, int)>(DrawCenteredGuideLineOnMapDc)(destRect.left,
-                                                                               destRect.bottom);
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(destRect.right),
+                                              static_cast<short>(destRect.top));
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(destRect.right),
+                                   static_cast<short>(destRect.bottom));
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(destRect.left),
+                                   static_cast<short>(destRect.bottom));
     }
     policyIndex += 1;
   } while (policyIndex < 0x180);

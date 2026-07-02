@@ -689,6 +689,8 @@ address|target_cpp|ownership|note
 497810|src/game/ClipStateRegion.cpp|manual|marker_sync
 497bb0|src/game/ClipStateRegion.cpp|manual|marker_sync
 497c00|src/game/ClipStateRegion.cpp|manual|marker_sync
+497c80|src/game/quickdraw_rendering.cpp|manual|marker_sync
+497d10|src/game/quickdraw_rendering.cpp|manual|marker_sync
 497ef0|src/game/ClipStateRegion.cpp|manual|marker_sync
 497f60|src/game/ClipStateRegion.cpp|manual|marker_sync
 497f90|src/game/ClipStateRegion.cpp|manual|marker_sync

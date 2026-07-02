@@ -62,11 +62,12 @@ void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
     short textX = static_cast<short>(field34 - textWidth);
     short textY = static_cast<short>(field38 - 2);
 
-    SetQuickDrawTextOrigin(textX, textY);
+    SetQuickDrawTextOriginWithContextOffset(textX, textY);
     DrawTextWithCachedStyle(&countText);
 
     ApplyUiTextStyleAndSyncColor(0, 10, 0x2b6c);
-    SetQuickDrawTextOrigin(static_cast<short>(textX - 1), static_cast<short>(textY - 1));
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textX - 1),
+                                            static_cast<short>(textY - 1));
     DrawTextWithCachedStyle(&countText);
   }
 }

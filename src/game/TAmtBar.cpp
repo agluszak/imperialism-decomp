@@ -73,7 +73,8 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   short guideValue = 0;
   short fillOrigin;
 
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(reinterpret_cast<int*>(surface.surfaceWrapper));
+  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(
+      reinterpret_cast<int*>(surface.surfaceWrapper));
 
   if (this->IsActionable() == 0 || this->Refresh() == 0) {
     return;
@@ -104,22 +105,22 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
                         &contentRect, 0);
 
   if (barRange > 0) {
-    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(0, 1);
+    SetQuickDrawTextOriginWithContextOffset(0, 1);
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(auxValueB);
     SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 7);
     guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
-    reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)((short)(guideValue - 1), 1);
+    DrawCenteredGuideLineOnMapDc((short)(guideValue - 1), 1);
     ResetQuickDrawStrokeState();
   }
 
   fillOrigin = guideValue > 0 ? (short)(guideValue + 1) : 0;
-  reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(fillOrigin, 4);
+  SetQuickDrawTextOriginWithContextOffset(fillOrigin, 4);
   SetQuickDrawFillColor(0);
   SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 1);
-  reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)(controlWidth, 4);
-  reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(stepOrCurrentValue, 0);
+  DrawCenteredGuideLineOnMapDc(controlWidth, 4);
+  SetQuickDrawTextOriginWithContextOffset(stepOrCurrentValue, 0);
   ResetQuickDrawStrokeState();
-  reinterpret_cast<void(__cdecl*)(short, short)>(DrawCenteredGuideLineOnMapDc)((short)(stepOrCurrentValue - 1), controlHeight);
+  DrawCenteredGuideLineOnMapDc((short)(stepOrCurrentValue - 1), controlHeight);
   int clipDescriptorHead = 0;
   SnapshotHitRegionToClipCache(&clipDescriptorHead);
 }

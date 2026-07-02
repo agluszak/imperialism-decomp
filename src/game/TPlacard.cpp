@@ -60,11 +60,11 @@ void TPlacard::ApplyRectSlot110(RECT* rectBuffer) {
   reinterpret_cast<void(__cdecl*)(int, int)>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)(0,
                                                                                                 10);
   if (glyph90 < 10) {
-    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(field34 / 2 - 2, 0);
+    SetQuickDrawTextOriginWithContextOffset(field34 / 2 - 2, 0);
   } else if (glyph90 < 100) {
-    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(field34 / 2 - 6, 0);
+    SetQuickDrawTextOriginWithContextOffset(field34 / 2 - 6, 0);
   } else {
-    reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(field34 / 2 - 10, 0);
+    SetQuickDrawTextOriginWithContextOffset(field34 / 2 - 10, 0);
   }
   RefreshControl();
 }

@@ -64,11 +64,12 @@ void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
       short textX = static_cast<short>(field34 / 2) - static_cast<short>(textWidth / 2);
 
       SetQuickDrawColorAndSyncGlobals(styleFlags2);
-      SetQuickDrawTextOrigin(static_cast<short>(textX + 1), static_cast<short>(currentY + 12));
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textX + 1),
+                                              static_cast<short>(currentY + 12));
       DrawTextWithCachedStyle(&tempString);
 
       SetQuickDrawColorAndSyncGlobals(styleFlags1);
-      SetQuickDrawTextOrigin(textX, static_cast<short>(currentY + 11));
+      SetQuickDrawTextOriginWithContextOffset(textX, static_cast<short>(currentY + 11));
       DrawTextWithCachedStyle(&tempString);
 
       currentY += itemHeight;

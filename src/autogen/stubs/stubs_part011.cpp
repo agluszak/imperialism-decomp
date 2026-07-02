@@ -931,22 +931,6 @@ undefined4 InitializeCityBuildingControlRegions_Impl(void)
   return 0;
 }
 
-// ghidra_name SetQuickDrawTextOriginWithContextOffset
-// ghidra_proto undefined SetQuickDrawTextOriginWithContextOffset()
-// FUNCTION: IMPERIALISM 0x00497c80
-undefined4 SetQuickDrawTextOriginWithContextOffset(void)
-{
-  return 0;
-}
-
-// ghidra_name DrawCenteredGuideLineOnMapDc
-// ghidra_proto undefined DrawCenteredGuideLineOnMapDc()
-// FUNCTION: IMPERIALISM 0x00497d10
-undefined4 DrawCenteredGuideLineOnMapDc(void)
-{
-  return 0;
-}
-
 // ghidra_name IntersectClipRegionWithRectAndUpdateBounds
 // ghidra_proto undefined IntersectClipRegionWithRectAndUpdateBounds()
 // FUNCTION: IMPERIALISM 0x00498070

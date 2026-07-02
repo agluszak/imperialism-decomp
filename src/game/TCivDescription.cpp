@@ -327,10 +327,10 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
     textOriginX = static_cast<short>((this->field34 / 2) - (textWidth / 2));
 
     SetQuickDrawColorAndSyncGlobals(styleSecondary);
-    SetQuickDrawTextOrigin(static_cast<short>(textOriginX + 1), 0x47);
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textOriginX + 1), 0x47);
     DrawTextWithCachedStyle(&localizedTextRef);
     SetQuickDrawColorAndSyncGlobals(stylePrimary);
-    SetQuickDrawTextOrigin(textOriginX, 0x46);
+    SetQuickDrawTextOriginWithContextOffset(textOriginX, 0x46);
     DrawTextWithCachedStyle(&localizedTextRef);
   }
 }

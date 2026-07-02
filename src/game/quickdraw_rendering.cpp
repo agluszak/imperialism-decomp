@@ -83,6 +83,79 @@ void SetGlobalQuickDrawOrigin(short originX, short originY) {
   g_nQuickDrawOriginY = originY;
 }
 
+// FUNCTION: IMPERIALISM 0x00497c80
+void SetQuickDrawTextOriginWithContextOffset(short x, short y) {
+  if (!GetMcAppUiActiveFlag()) {
+    return;
+  }
+  int resolvedX = x;
+  int resolvedY = y;
+  if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
+    resolvedX += g_nQuickDrawOriginX;
+    resolvedY += g_nQuickDrawOriginY;
+  }
+  g_nQuickDrawResolvedTextOriginX = resolvedX;
+  g_nQuickDrawResolvedTextOriginY = resolvedY;
+  // Verified against 0x0057cc4-0x497cdd: no null guard on either DC in the original --
+  // OffsetWindowOrg is called unconditionally, even on a null `dc` (matches faithfully).
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->OffsetWindowOrg(resolvedX, resolvedY);
+}
+
+// FUNCTION: IMPERIALISM 0x00497d10
+void DrawCenteredGuideLineOnMapDc(short x, short y) {
+  if (!GetMcAppUiActiveFlag()) {
+    return;
+  }
+  int penWidth = g_nQuickDrawStrokeStylePrimary;
+  if (penWidth <= g_nQuickDrawStrokeStyleSecondary) {
+    penWidth = g_nQuickDrawStrokeStyleSecondary;
+  }
+  CPen pen(PS_SOLID, penWidth, static_cast<COLORREF>(g_Quick_Draw_Color_State_006950FC));
+
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  CPen* oldPen = dc->SelectObject(&pen);
+
+  // Verified against 0x0057db6-0x497e1b: this offsets the window origin using the
+  // *stale* resolved-origin globals (left over from a previous
+  // SetQuickDrawTextOriginWithContextOffset call) before recomputing them below --
+  // faithful to the original's ordering, not a bug.
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->OffsetWindowOrg(g_nQuickDrawStrokeStylePrimary / 2 + g_nQuickDrawResolvedTextOriginX,
+                      g_nQuickDrawStrokeStyleSecondary / 2 + g_nQuickDrawResolvedTextOriginY);
+
+  int resolvedX = x;
+  int resolvedY = y;
+  if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
+    resolvedX += g_nQuickDrawOriginX;
+    resolvedY += g_nQuickDrawOriginY;
+  }
+  g_nQuickDrawResolvedTextOriginX = resolvedX;
+  g_nQuickDrawResolvedTextOriginY = resolvedY;
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->LineTo(g_nQuickDrawStrokeStylePrimary / 2 + resolvedX,
+             g_nQuickDrawStrokeStyleSecondary / 2 + resolvedY);
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SelectObject(oldPen);
+}
+
 // FUNCTION: IMPERIALISM 0x00498980
 void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   CBrush brush;
@@ -108,7 +181,7 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
 
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
-    dc = static_cast<CDC*>(g_pScopedMapQuickDrawDcHandleObject);
+    dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   if (dc != nullptr) {
     FillRect(dc->GetSafeHdc(), &fillRect, static_cast<HBRUSH>(brush.GetSafeHandle()));

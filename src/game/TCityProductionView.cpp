@@ -107,20 +107,20 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
 
   ResetQuickDrawStrokeState();
   g_pUiRuntimeContext->ApplyLegendSplitSlot34(1);
-  SetQuickDrawTextOrigin(originX, sVar2);
+  SetQuickDrawTextOriginWithContextOffset(originX, sVar2);
 
   short offset_x1 = g_Render_Nation_Header_Value_006961E0[currentMonthAtA8];
   short offset_y1 = g_Render_Nation_Header_Value_006961F8[currentMonthAtA8];
-  DrawCenteredGuideLine(static_cast<short>(offset_x1 + originX),
-                        static_cast<short>(offset_y1 + sVar2));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(offset_x1 + originX),
+                               static_cast<short>(offset_y1 + sVar2));
 
   SetQuickDrawFillColor(0);
-  SetQuickDrawTextOrigin(originX, sVar2);
+  SetQuickDrawTextOriginWithContextOffset(originX, sVar2);
 
   short offset_x2 = g_Render_Nation_Header_Value_00696210[currentWeekAtAa];
   short offset_y2 = g_Render_Nation_Header_Value_00696228[currentWeekAtAa];
-  DrawCenteredGuideLine(static_cast<short>(offset_x2 + originX),
-                        static_cast<short>(offset_y2 + sVar2));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(offset_x2 + originX),
+                               static_cast<short>(offset_y2 + sVar2));
 }
 
 // FUNCTION: IMPERIALISM 0x004bafa0

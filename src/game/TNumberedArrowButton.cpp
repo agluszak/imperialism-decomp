@@ -119,7 +119,7 @@ void TNumberedArrowButton::ApplyRectSlot110(RECT* rectBuffer) {
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
   reinterpret_cast<void(__cdecl*)(int, int)>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)(0,
                                                                                                 10);
-  reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(7, 0);
+  SetQuickDrawTextOriginWithContextOffset(7, 0);
   RefreshControl();
 }
 
