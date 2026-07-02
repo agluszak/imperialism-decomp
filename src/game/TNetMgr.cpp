@@ -237,42 +237,7 @@ unsigned char TNetMgr::Send(NetMessage* message, unsigned char queueOnly) {
   if (queueOnly != 0 || nationId == g_NetworkDefaultNationId006a5fc0) {
     void* heapCopy = GlobalAlloc(0, static_cast<DWORD>(sizeBytes));
     memcpy(heapCopy, message, sizeBytes);
-
-    undefined4* queueNode = reinterpret_cast<undefined4*>(g_pNetworkPacketQueueHead006a5f50);
-    if (g_pNetworkPacketQueueHead006a5f50 == 0) {
-      CPlex*& chain = *reinterpret_cast<CPlex**>(&g_pNetworkPacketBlockChain006a5f54);
-      CPlex* block =
-          CPlex::Create(chain, static_cast<unsigned int>(g_NetworkPacketBlockCount006a5f58), 0xc);
-      int blockBase = reinterpret_cast<int>(block);
-      queueNode = reinterpret_cast<undefined4*>(g_pNetworkPacketQueueHead006a5f50);
-      undefined4* freeListNode =
-          reinterpret_cast<undefined4*>(blockBase + -8 + g_NetworkPacketBlockCount006a5f58 * 0xc);
-      int remaining = g_NetworkPacketBlockCount006a5f58;
-      if (-1 < g_NetworkPacketBlockCount006a5f58 + -1) {
-        do {
-          queueNode = freeListNode;
-          *queueNode = reinterpret_cast<undefined4>(g_pNetworkPacketQueueHead006a5f50);
-          remaining = remaining + -1;
-          g_pNetworkPacketQueueHead006a5f50 = queueNode;
-          freeListNode = queueNode + -3;
-        } while (remaining != 0);
-      }
-    }
-    g_pNetworkPacketQueueHead006a5f50 = *reinterpret_cast<void**>(queueNode);
-
-    queueNode[1] = reinterpret_cast<undefined4>(g_pNetworkPacketQueueTail006a5f48);
-    queueNode[0] = 0;
-    g_NetworkPacketQueueCount006a5f4c = g_NetworkPacketQueueCount006a5f4c + 1;
-    queueNode[2] = 0;
-    queueNode[2] = reinterpret_cast<undefined4>(heapCopy);
-
-    undefined4* queueRoot = queueNode;
-    if (g_pNetworkPacketQueueTail006a5f48 != 0) {
-      *reinterpret_cast<undefined4**>(g_pNetworkPacketQueueTail006a5f48) = queueNode;
-      queueRoot = reinterpret_cast<undefined4*>(g_pNetworkPacketQueueRoot006a5f44);
-    }
-    g_pNetworkPacketQueueRoot006a5f44 = queueRoot;
-    g_pNetworkPacketQueueTail006a5f48 = queueNode;
+    g_WNetPendingPacketList006a5f40.AddTail(heapCopy);
     if (nationId == g_NetworkDefaultNationId006a5fc0) {
       return 1;
     }
@@ -281,27 +246,6 @@ unsigned char TNetMgr::Send(NetMessage* message, unsigned char queueOnly) {
   if (g_NetworkSessionManager006a5f60.TrySendNetworkPacket(nationId, message, sizeBytes)) {
     return 1;
   }
-  g_NetworkManagerLastError006a5f6c = g_NetworkSessionManager006a5f60.lastErrorCode0c;
-  HandleError(g_NetworkManagerLastError006a5f6c);
-  return 0;
-}
-
-undefined TNetMgr::SerializeLinkedRecordListWithFreeNodePool(CArchive* param_1) {
-  (void)param_1;
-  return 0;
-}
-
-undefined TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive* param_1) {
-  (void)param_1;
-  return 0;
-}
-
-undefined TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1) {
-  (void)param_1;
-  return 0;
-}
-
-undefined TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1) {
-  (void)param_1;
+  HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
   return 0;
 }

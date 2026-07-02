@@ -4001,8 +4001,6 @@ address|target_cpp|ownership|note
 5e3d40|src/game/TNetMgr.cpp|manual|marker_sync
 5e4610|src/game/TNetMgr.cpp|manual|marker_sync
 5e4830|src/game/TNetMgr.cpp|manual|marker_sync
-5e4a30|src/game/TNetMgr.cpp|manual|marker_sync
-5e4a60|src/game/TNetMgr.cpp|manual|marker_sync
 5e4e70|src/game/TSoundPlayer.cpp|manual|marker_sync
 5e4f60|src/game/TSoundPlayer.cpp|manual|marker_sync
 5e4f80|src/game/TSoundPlayer.cpp|manual|marker_sync

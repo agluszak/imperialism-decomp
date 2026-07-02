@@ -486,20 +486,6 @@ void* g_pMapActionContextDistanceCache = 0;
 int g_NetworkDefaultNationId006a5fc0 = 0;
 // GLOBAL: IMPERIALISM 0x006a5fc4
 int g_NetworkBroadcastNationId006a5fc4 = 0;
-// GLOBAL: IMPERIALISM 0x006a5f50
-void* g_pNetworkPacketQueueHead006a5f50 = 0;
-// GLOBAL: IMPERIALISM 0x006a5f48
-void* g_pNetworkPacketQueueTail006a5f48 = 0;
-// GLOBAL: IMPERIALISM 0x006a5f44
-void* g_pNetworkPacketQueueRoot006a5f44 = 0;
-// GLOBAL: IMPERIALISM 0x006a5f4c
-int g_NetworkPacketQueueCount006a5f4c = 0;
-// GLOBAL: IMPERIALISM 0x006a5f58
-int g_NetworkPacketBlockCount006a5f58 = 0;
-// GLOBAL: IMPERIALISM 0x006a5f54
-void* g_pNetworkPacketBlockChain006a5f54 = 0;
-// GLOBAL: IMPERIALISM 0x006a5f6c
-int g_NetworkManagerLastError006a5f6c = 0;
 undefined4 DAT_0066ac88 = 0;
 // GLOBAL: IMPERIALISM 0x006a601c
 int DAT_006a601c = 0;
@@ -605,6 +591,16 @@ unsigned short g_wUiResourceEntryDefaultParam2 = 0;
 } // extern "C"
 
 #include "game/TWNetSessionManager.h"
+
+// WNetMgr.cpp file-scope template statics; the CList is the local-player pending-packet
+// queue that TNetMgr::Send appends heap packet copies to (block size 10, per the original
+// static-init at 0x5e26d0).
+// GLOBAL: IMPERIALISM 0x006a5f10
+CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
+// GLOBAL: IMPERIALISM 0x006a5f28
+CArray<void*, void*> g_WNetSerializedPtrArrayB006a5f28;
+// GLOBAL: IMPERIALISM 0x006a5f40
+CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 
 // DirectPlay session manager object embedded at a fixed address (not a pointer).
 // GLOBAL: IMPERIALISM 0x006a5f60

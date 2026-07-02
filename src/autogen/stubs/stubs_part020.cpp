@@ -1915,6 +1915,22 @@ undefined4 DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
   return 0;
 }
 
+// ghidra_name TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)
+// FUNCTION: IMPERIALISM 0x005e4a30
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(void)
+{
+  return 0;
+}
+
+// ghidra_name TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)
+// FUNCTION: IMPERIALISM 0x005e4a60
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(void)
+{
+  return 0;
+}
+
 // ghidra_name ResizeDwordPointerArrayAndZeroNewSlots
 // ghidra_proto undefined ResizeDwordPointerArrayAndZeroNewSlots()
 // FUNCTION: IMPERIALISM 0x005e4a90

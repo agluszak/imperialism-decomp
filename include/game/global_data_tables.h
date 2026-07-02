@@ -6,6 +6,7 @@
 #include "decomp_types.h"
 
 #include "game/mfc.h"
+#include <afxtempl.h>
 #include "game/app_init_globals.h"
 #include "game/TCountry.h"
 #include "game/startup_helpers.h"
@@ -137,17 +138,12 @@ extern TApplication* g_pGlobalUiRootController;
 // The multiplayer/game-flow singleton (0x6a43c8); every turn-event emitter is a
 // __thiscall method on it (original callsites load ECX from here).
 extern TMultiplayerMgr* g_pGameFlowState;
-// WNetMgr.cpp TU globals (0x6a5fxx band): local-player pending-packet queue + DirectPlay
-// session error state, consumed by TNetMgr::Send / TWNetSessionManager.
+// WNetMgr.cpp TU globals (0x6a5fxx band), consumed by TNetMgr::Send / TWNetSessionManager.
+// The pending-packet queue and its two serialization siblings are file-scope MFC template
+// statics (see the typed C++ section below); the previous six raw queue globals were the
+// members of the CList at 0x6a5f40.
 extern int g_NetworkDefaultNationId006a5fc0;
 extern int g_NetworkBroadcastNationId006a5fc4;
-extern void* g_pNetworkPacketQueueHead006a5f50;
-extern void* g_pNetworkPacketQueueTail006a5f48;
-extern void* g_pNetworkPacketQueueRoot006a5f44;
-extern int g_NetworkPacketQueueCount006a5f4c;
-extern int g_NetworkPacketBlockCount006a5f58;
-extern void* g_pNetworkPacketBlockChain006a5f54;
-extern int g_NetworkManagerLastError006a5f6c;
 extern int DAT_006a601c;
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;
@@ -193,6 +189,15 @@ extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
 // Global TNetMgr (0x6a6014), created by TMultiplayerMgr session init.
 extern TNetMgr* g_pNetMgr006a6014;
+// WNetMgr.cpp file-scope MFC template statics (all atexit-destroyed; static-init
+// helpers 0x5e26d0/0x5e2720/0x5e2770). Vtables 0x66fa50 (CList) / 0x66fa68 (CArray)
+// are this TU's twin copies of the template vtables (recover-class once merged them
+// into TNetMgr's vtable annotation by adjacency). Element/name identification is
+// behavioral: Serialize instantiations at 0x5e4610/0x5e4830, node size 0xc,
+// ctor blockSize 10.
+extern CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
+extern CArray<void*, void*> g_WNetSerializedPtrArrayB006a5f28;
+extern CList<void*, void*> g_WNetPendingPacketList006a5f40;
 extern TTechMgr* g_pCityOrderCapabilityState;
 extern TSoundResourceManager g_soundResourceManager;
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];

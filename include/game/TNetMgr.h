@@ -7,8 +7,11 @@ struct NetMessage;
 
 // Global turn-event queue manager handle (ConstructGlobalTurnEventQueueManager @ 0x005e33e0
 // only stores vptr 0x0066fa20 on a 4-byte heap block). Plain TObject derivative — no extra
-// bases. recover-class merged the adjacent 0x0066fa50 vtable blob into this class; ignore
-// generated slots 0x0c+ until that extent is corrected.
+// bases. The adjacent vtables at 0x0066fa50/0x0066fa68 are NOT TNetMgr slots: they are the
+// WNetMgr.cpp TU's twin copies of the CList<void*,void*> / CArray<void*,void*> template
+// vtables for the file-scope statics g_WNetPendingPacketList006a5f40 /
+// g_WNetSerializedPtrArray{A,B} (ctor/dtor evidence 0x5e4540/0x5e4580, 0x5e4780/0x5e47b0;
+// Serialize instantiations 0x5e4610/0x5e4830).
 // VTABLE: IMPERIALISM 0x0066fa20
 class TNetMgr : public TObject {
 public:
@@ -40,13 +43,6 @@ public:
   // Placement ctor on a 4-byte heap block (Ghidra: ConstructGlobalTurnEventQueueManager @
   // 0x005e33e0).
   static TNetMgr* ConstructGlobalTurnEventQueueManager(TNetMgr* storage);
-
-  // Owned at 0x005e4a30 / 0x005e4610 / 0x005e4830 / 0x005e4a60 — live on the adjacent
-  // 0x0066fa50 vtable used by linked-block-chain subobjects, not on TNetMgr::`vftable'.
-  undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1);
-  undefined SerializeLinkedRecordListWithFreeNodePool(CArchive* param_1);
-  undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1);
-  undefined SerializeDynamicDwordPointerArrayState(CArchive* param_1);
 };
 
 // === BEGIN GENERATED (TNetMgr) — refreshed by `just gen-class TNetMgr`; do not hand-edit ===
@@ -64,17 +60,9 @@ public:
 //   slot 0x09  byte 0x24  0x00415ce0  inherited ShallowFree
 //   slot 0x0a  byte 0x28  0x00000000  null      (null)
 //   slot 0x0b  byte 0x2c  0x00000000  null      (null)
-//   slot 0x0c  byte 0x30  0x00606fba  override  GetRuntimeClass
-//   slot 0x0d  byte 0x34  0x005e4a30  override  WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
-//   slot 0x0e  byte 0x38  0x005e4610  override  SerializeLinkedRecordListWithFreeNodePool
-//   slot 0x0f  byte 0x3c  0x00412bf0  override  AssertValid
-//   slot 0x10  byte 0x40  0x00412c10  override  Dump
-//   slot 0x11  byte 0x44  0x00000000  null      (null)
-//   slot 0x12  byte 0x48  0x00606fba  override  GetRuntimeClass
-//   slot 0x13  byte 0x4c  0x005e4a60  override  WrapperFor_FreeHeapBufferIfNotNull_At005e4a60
-//   slot 0x14  byte 0x50  0x005e4830  override  SerializeDynamicDwordPointerArrayState
-//   slot 0x15  byte 0x54  0x00412bf0  override  AssertValid
-//   slot 0x16  byte 0x58  0x00412c10  override  Dump
+// bytes 0x30..0x5b of the original blob are the separate CList<void*,void*> (0x66fa50)
+// and CArray<void*,void*> (0x66fa68) template vtables of the WNetMgr.cpp statics —
+// hand-corrected here because recover-class merged them by adjacency (gen-class dormant).
 // object size 0x04 (RTTI) unverified against the header layout;
 // set curated.layout.size_verified to emit a sizeof static_assert.
 // clang-format on
