@@ -35,13 +35,13 @@ import re
 import pyghidra
 
 from tools.common import class_manifest, ghidra_env
-from tools.common.name_overrides import parse_name_overrides
+from tools.common.name_overrides import parse_name_overrides, resolve_name_overrides_path
 from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file
 
 REPO_ROOT = repo_root_from_file(__file__)
 OWNERSHIP_PATH = REPO_ROOT / "config" / "function_ownership.csv"
-NAME_OVERRIDES_PATH = REPO_ROOT / "config" / "function_name_overrides.csv"
+NAME_OVERRIDES_PATH = resolve_name_overrides_path(REPO_ROOT, None)
 SYMBOLS_PATH = REPO_ROOT / "config" / "symbols.csv"
 DEFAULT_LIBRARY_START = 0x005E539C
 DEFAULT_LIBRARY_END = 0x00626C7D
@@ -183,6 +183,12 @@ def run(program, args) -> dict:
         desired_qualified, name_source = wanted[addr]
         ns_path, simple = split_qualified(desired_qualified)
         if name_source != "library" and not IDENT_RE.match(simple):
+            stats["skipped_name"] += 1
+            continue
+        if name_source == "library" and re.search(r"[`\s]", desired_qualified):
+            # Ghidra rejects symbol names with spaces/backticks (MFC "`scalar
+            # deleting dtor'" spellings, descriptive curated names); they can
+            # never be pushed as-is, so don't re-attempt + fail on every sync.
             stats["skipped_name"] += 1
             continue
         fn = fm.getFunctionAt(A(addr))

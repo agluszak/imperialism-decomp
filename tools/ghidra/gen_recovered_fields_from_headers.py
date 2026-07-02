@@ -86,6 +86,9 @@ def extract_class_rows(path: Path, class_name: str, layout_bases: dict[str, tupl
             continue
         offset = initial_offset(class_name, layout_bases)
         for field in scope.fields:
+            if field.name is None:
+                # Anonymous member (e.g. unnamed union/bitfield): nothing to row-ify.
+                continue
             if is_pad_field(field.name):
                 from cxxheaderparser.types import Array as CxxArray
 

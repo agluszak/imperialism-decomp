@@ -14,8 +14,6 @@ from tools.common.repo import normalize_repo_relative_path
 
 
 DEFAULT_FUNCTION_OWNERSHIP_CSV = "config/function_ownership.csv"
-DEFAULT_NAME_OVERRIDES_CSV = "config/function_name_overrides.csv"
-LEGACY_NAME_OVERRIDES_CSV = "config/name_overrides.csv"
 FUNCTION_MARKER_RE_TEMPLATE = (
     r"//\s*(?:FUNCTION|STUB|TEMPLATE|SYNTHETIC|LIBRARY)\s*:\s*{target}\s+"
     r"(?:0x)?([0-9a-fA-F]+)"
@@ -40,19 +38,6 @@ def function_marker_regex(target: str) -> re.Pattern[str]:
 
 def manual_override_regex(target: str) -> re.Pattern[str]:
     return re.compile(MANUAL_OVERRIDE_RE_TEMPLATE.format(target=re.escape(target)), re.IGNORECASE)
-
-
-def resolve_name_overrides_path(repo_root: Path, requested_path: str | Path | None) -> Path:
-    raw = str(requested_path or DEFAULT_NAME_OVERRIDES_CSV)
-    candidate = Path(raw)
-    if not candidate.is_absolute():
-        candidate = (repo_root / candidate).resolve()
-
-    canonical = (repo_root / DEFAULT_NAME_OVERRIDES_CSV).resolve()
-    legacy = (repo_root / LEGACY_NAME_OVERRIDES_CSV).resolve()
-    if candidate == canonical and not canonical.is_file() and legacy.is_file():
-        return legacy
-    return candidate
 
 
 def load_function_ownership(path: Path) -> dict[int, FunctionOwnership]:

@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Validate the active tooling surface against justfile and required dependencies."""
+"""Validate the active tooling surface against justfile and required dependencies.
+
+Also lints tools/ for raw pipe-splitting of config tables: splitting a row on
+the pipe character and indexing parts[N] hardcodes column positions and silently
+breaks when the schema gains a column (the prune_ilt_thunks/
+gen_library_annotations parts[3] bug class). Use tools.common.pipe_csv (read_pipe_rows/read_pipe_table/
+header_column_indices) instead; genuinely non-tabular splits are whitelisted
+with a `# pipe-split-ok[: reason]` comment on the same line.
+"""
 
 from __future__ import annotations
 
@@ -11,6 +19,8 @@ from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 JUST_MODULE_RE = re.compile(r"python\s+-m\s+([A-Za-z0-9_.]+)")
+PIPE_SPLIT_RE = re.compile(r"""\.split\(\s*(['"])\|\1\s*\)""")
+PIPE_SPLIT_PRAGMA = "pipe-split-ok"
 
 
 def parse_args() -> argparse.Namespace:
@@ -33,7 +43,26 @@ def module_exists(repo_root: Path, module_name: str) -> bool:
 
 def parse_just_modules(justfile_path: Path) -> set[str]:
     text = justfile_path.read_text(encoding="utf-8", errors="ignore")
-    return {m.group(1) for m in JUST_MODULE_RE.finditer(text)}
+    # Only repo tool modules belong in the manifest (not stdlib ones like unittest).
+    return {m.group(1) for m in JUST_MODULE_RE.finditer(text) if m.group(1).startswith("tools.")}
+
+
+def find_raw_pipe_splits(repo_root: Path) -> list[str]:
+    """Flag `.split("|")` in tools/ without a `# pipe-split-ok` pragma (see module doc)."""
+    offenders: list[str] = []
+    for py in sorted((repo_root / "tools").rglob("*.py")):
+        try:
+            text = py.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        for lineno, line in enumerate(text.splitlines(), start=1):
+            if PIPE_SPLIT_RE.search(line) and PIPE_SPLIT_PRAGMA not in line:
+                rel = py.relative_to(repo_root).as_posix()
+                offenders.append(
+                    f"{rel}:{lineno}: raw pipe-split of a config table; use "
+                    f"tools.common.pipe_csv or annotate `# {PIPE_SPLIT_PRAGMA}: <reason>`"
+                )
+    return offenders
 
 
 def main() -> int:
@@ -75,6 +104,8 @@ def main() -> int:
             continue
 
         errors.append(f"Unsupported kind '{kind}' for entry '{entry}'")
+
+    errors.extend(find_raw_pipe_splits(repo_root))
 
     just_modules = parse_just_modules(justfile_path)
     missing_from_manifest = sorted(just_modules - manifest_modules)

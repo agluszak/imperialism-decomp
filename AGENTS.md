@@ -36,6 +36,9 @@ starting that kind of task.
 
 - Git history — clear commit messages are the durable execution record for what
   changed, how it was verified, and any score deltas.
+- `docs/workflows.md` — the three canonical command playbooks (daily port loop,
+  marker/ownership edits, full Ghidra DB resync). Start here when unsure which
+  `just` target to run; `just --list` groups every target and flags mutating ones.
 - `docs/toolchain.md` — compiler/linker forensics and reproduction decisions.
 - `docs/reference/` — layout/contract and game-domain references (struct layouts,
   function/entry-chain map, bitmap IDs, tech unlocks).
@@ -88,10 +91,10 @@ target). They need a built binary + reccmp DB.
    declaration — no comment or blank line between them. (enforced by `just marker-gate`)
 4. One owned implementation per address in manual source; no duplicate `// FUNCTION`
    for the same address across manual files and stubs. (enforced by `just marker-gate`)
-5. After editing markers/ownership, run `just sync-ownership` → `just regen-stubs` →
-   `just build`, and `just gates` before committing (raw-vtable + construction
-   anti-pattern + marker-hygiene gates; run `just format-check <touched paths>`
-   separately on files you edited).
+5. After editing markers/ownership, run `just regen-stubs` (it runs `sync-ownership`
+   and the symbols.csv integrity check first) → `just build`, and `just gates` before
+   committing (raw-vtable + construction anti-pattern + marker-hygiene gates; run
+   `just format-check <touched paths>` separately on files you edited).
 6. Keep naming from Ghidra unless there is a concrete semantic reason to rename; never
    rename for style only. But treat Ghidra class/method/field names as **provisional** —
    they may be auto-generated placeholders, even entirely random. reccmp pairs by the
@@ -116,8 +119,9 @@ target). They need a built binary + reccmp DB.
     class header at the verified slot and call `obj->Method(args)` directly.
 13. The raw-vtable gate (`just vtable-gate`) must pass; do not add new raw-vtable
     patterns in files not already baseline-tracked.
-14. `just session-loop` mutates `reccmp-project.yml` ignore lists; run it only when you
-    explicitly intend to rewrite ignore configuration.
+14. Rewriting `reccmp-project.yml` ignore lists is opt-in: only `just generate-ignores`
+    and `just session-loop --refresh-ignore` do it; run them only when you explicitly
+    intend to rewrite ignore configuration (`just session-loop` alone is read-only).
 15. Mac CodeWarrior evidence (vendored at `vendor/macos_codewarrior/`) is a
     name/signature **oracle only** — it must never assign Windows addresses, calling
     conventions, vtables, or inheritance.
@@ -199,8 +203,7 @@ Step 3 is **forbidden**. Fix forward or stop and report; never fix backward.
 
 1. **Build/link** — missing symbol: promote/own the callee as a real method, or use a
    genuine LIBRARY symbol (`operator new` at `0x606f73`, not a fake
-   `AllocateWithFallbackHandler` stub). Wrong owner: `just sync-ownership` →
-   `just regen-stubs`.
+   `AllocateWithFallbackHandler` stub). Wrong owner: `just regen-stubs`.
 2. **Duplicate marker** — one address, one owner; move `// FUNCTION:` to the class that
    owns the method, sync ownership, regen stubs. Do not delete the manual method.
 3. **`just vtable Class`** — first `new T()` in manual code can expose a pre-existing
@@ -298,10 +301,9 @@ free-function stub or fake calling-convention cast back to unblock a commit.
 
 **Pre-commit verification** (required before every commit):
 
-1. `just gates` — all gates pass
-2. `just build` — clean MSVC500 build
-3. `just stats` — review deltas vs `config/reccmp_progress_baseline.json`
-4. `just stats-commit` — refresh the baseline; commit it with the source change
+1. `just precommit` — build + all gates + tooling tests + stats in one command
+2. Review the stats deltas vs `config/reccmp_progress_baseline.json`
+3. `just stats-baseline-update` — refresh the baseline; commit it with the source change
 
 If gates fail or stats regress for reasons unrelated to your edit, stop and report
 rather than committing around the failure. See `.cursor/rules/commit-workflow.mdc`.

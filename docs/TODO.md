@@ -54,10 +54,10 @@ Remaining work:
    - `0x49cdf0` ~75% - input refresh
    - `0x49cca0`/`0x49cbf0` ~31–33% - creator path
 4. Verification loop for this batch:
-   - `just sync-ownership && just regen-stubs && just build`
+   - `just regen-stubs && just build`
    - `just compare 0x0049cbf0 0x0049cca0 0x0049cdf0 0x0049ce90 0x0049cfa0 0x49d090 0x49d180`
    - `just gates`
-   - `just stats` and `just stats-commit` once the runtime path is accepted
+   - `just stats` and `just stats-baseline-update` once the runtime path is accepted
 
 Current compare snapshot (2026-06-30): `0x49ce90`/`0x49cdf0`/`0x49d180` ~75%,
 `0x49cfa0` ~60%, `0x49d090` ~50%, `0x49cca0`/`0x49cbf0` ~31–33%.
@@ -299,7 +299,7 @@ Porting checklist:
    - `src/game/TSoundPlayer.cpp` to delete `LoadWaveResourceByNumericIdAndBuildBuffer(void)` and
      `CallLoadWaveResource`.
 7. Verification loop:
-   - `just sync-ownership && just regen-stubs && just build`
+   - `just regen-stubs && just build`
    - `just format-check include/game/TSoundResourceManager.h src/game/TSoundResourceManager.cpp src/game/TSoundPlayer.cpp`
    - `just compare 0x0049c430 0x0049c720 0x005e50c0`
    - `just build && just gates && just stats`
@@ -338,7 +338,7 @@ scaffolding — reference only, NOT reccmp-paired) but no real
 override slots (addresses below) as real virtuals in slot order, port honest
 bodies into a manual `src/game/TX.cpp` with `// FUNCTION:` markers (no manual
 vptr writes / `*AndMaybeFree` / `FreeHeapBufferIfNotNull` scaffolding), then
-`just sync-ownership` → `just regen-stubs` → `just build` → `just vtable TX`.
+`just regen-stubs` → `just build` → `just vtable TX`.
 The autogen struct in `root_types.h` can stay (separate TU; same name/layout,
 MSVC tags don't affect mangling). Slot 0x00 = `GetRuntimeClass`, slot 0x01 =
 scalar deleting destructor (claim via SYNTHETIC + symbols.csv backtick name;

@@ -12,6 +12,24 @@ def normalize_hex(value: str) -> str:
     return value.strip().lower().removeprefix("0x")
 
 
+def header_column_indices(header_line: str, *columns: str) -> tuple[int, ...]:
+    """Resolve column positions from a pipe-CSV header line.
+
+    For line-preserving rewriters that must keep unrelated rows byte-identical
+    (so they cannot round-trip through DictReader/DictWriter). Never hardcode
+    column indices — a schema change silently breaks them (the prune_ilt_thunks
+    / gen_library_annotations parts[3]-vs-parts[4] bug class).
+    """
+    names = [name.strip() for name in header_line.rstrip("\n").split("|")]  # pipe-split-ok
+    out = []
+    for column in columns:
+        try:
+            out.append(names.index(column))
+        except ValueError:
+            raise SystemExit(f"Column '{column}' not found in header: {names}")
+    return tuple(out)
+
+
 def read_pipe_rows(path: Path) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8", newline="") as fd:
         reader = csv.DictReader(fd, delimiter="|")

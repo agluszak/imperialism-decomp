@@ -43,6 +43,7 @@ reccmp-build.yml
 vendor/ghidra/*.rep/
 vendor/ghidra/*.gpr
 vendor/ghidra/*.lock
+vendor/ghidra/*.lock~
 vendor/ghidra/*.rep.bak
 # Live working project restored by `just restore-project` (regenerable from exports/)
 vendor/ghidra/imperialism-decomp/

@@ -24,7 +24,17 @@ def default_include_paths() -> list[str]:
 def make_header_preprocessor() -> object:
     """Build the repo-standard pcpp preprocessor (always-on)."""
     return make_pcpp_preprocessor(
-        defines=["__cplusplus 199711L"],
+        defines=[
+            "__cplusplus 199711L",
+            # MFC RTTI/message-map macros expand from afx*.h in the real build;
+            # afx*.h is not stubbed for parsing, so expand them to nothing (they
+            # contribute no instance fields, which is all this pipeline extracts).
+            "DECLARE_DYNAMIC(class_name) ",
+            "DECLARE_DYNCREATE(class_name) ",
+            "DECLARE_SERIAL(class_name) ",
+            "DECLARE_MESSAGE_MAP() ",
+            "afx_msg ",
+        ],
         include_paths=default_include_paths(),
     )
 

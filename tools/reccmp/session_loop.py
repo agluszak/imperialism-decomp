@@ -35,9 +35,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--pick", type=int, default=8, help="How many targets to queue.")
     parser.add_argument("--min-size", type=int, default=1)
     parser.add_argument(
+        "--refresh-ignore",
+        action="store_true",
+        help="Also regenerate + apply reccmp-project.yml ignore lists (mutates the config).",
+    )
+    parser.add_argument(
         "--no-refresh-ignore",
         action="store_true",
-        help="Skip ignore regeneration/apply.",
+        help=argparse.SUPPRESS,  # Deprecated: read-only is now the default.
     )
     parser.add_argument(
         "--run-reccmp",
@@ -148,7 +153,7 @@ def main() -> int:
     build_dir = resolve_repo_path(repo_root, args.build_dir)
     build_dir.mkdir(parents=True, exist_ok=True)
 
-    if not args.no_refresh_ignore:
+    if args.refresh_ignore:
         run_cmd(
             [
                 sys.executable,

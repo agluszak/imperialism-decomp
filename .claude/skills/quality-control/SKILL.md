@@ -23,17 +23,15 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
   once with `--json` (seconds total, vs ~10s of PDB parsing per single compare).
 - `just stats` — aggregate progress compared against the committed baseline. It reports
   improved and worsened metrics separately.
-- `just stats-commit` — update the committed aggregate baseline after accepting the
+- `just stats-baseline-update` — update the committed aggregate baseline after accepting the
   current stats snapshot. Per-function `compare` remains the real gate for touched
   bodies.
 
 ## Pre-commit sequence
 
 ```sh
-just gates
-just build
-just stats          # review improved/worsened vs baseline
-just stats-commit   # if stats are acceptable; commit baseline with source
+just precommit      # build + gates + tooling tests + stats in one command
+just stats-baseline-update   # if stats are acceptable; commit baseline with source
 ```
 
 See `.cursor/rules/commit-workflow.mdc` for regression thresholds and failure handling.
@@ -41,8 +39,7 @@ See `.cursor/rules/commit-workflow.mdc` for regression thresholds and failure ha
 ## Export-sync sequence (run whenever markers/ownership change)
 
 ```sh
-just sync-ownership   # sync function ownership CSV into source annotations
-just regen-stubs      # regenerate unresolved stubs
+just regen-stubs      # reconciles ownership CSV + checks symbols.csv, then regenerates stubs
 just build
 ```
 
@@ -87,7 +84,7 @@ local/gitignored and commit only `reccmp-project.yml`.
      no comment/blank line between).
    - Check for duplicate address ownership (one impl per address; no duplicate
      `// FUNCTION` across manual files and stubs).
-   - Re-run `just sync-ownership` + `just regen-stubs` + `just detect`.
+   - Re-run `just regen-stubs` + `just detect`.
 2. **`Dropped duplicate address ...`** — the same address is still annotated in a stub
    shard or another manual file.
 3. **Compare name looks like a sentence/comment** — a comment line sits between the

@@ -12,13 +12,17 @@ from tools.ghidra.gen_recovered_fields_from_headers import extract_class_rows, l
 REPO = repo_root_from_file(__file__)
 INCLUDE_GAME = REPO / "include" / "game"
 
+# Pilot fields the generator must place correctly from live headers. TCity's raw
+# fieldB6/orderSlotsE4 regions were since recovered into named members. TGreatPower
+# rows without an offset-comment hint were dropped: their absolute offsets came from
+# the dormant config/classes/ manifest base_offset (TCountry-inlined +0x90), which
+# no longer exists; only hint-anchored fields (e.g. `city` +0x894) stay verifiable.
 PILOT_ROWS: dict[tuple[str, str], tuple[int, str]] = {
-    ("TCity", "fieldB6"): (0xB6, "short[0x17]"),
-    ("TCity", "orderSlotsE4"): (0xE4, "void*[0x3d]"),
+    ("TCity", "cityStockCottonB6"): (0xB6, "short"),
+    ("TCity", "cityStockGoldE2"): (0xE2, "short"),
     ("TCity", "ownerNationAc"): (0xAC, "TGreatPower"),
-    ("TGreatPower", "needCapA6"): (0xA6, "short"),
-    ("TGreatPower", "needCurrentByType"): (0x10E, "short[0x17]"),
-    ("TGreatPower", "needTargetByType"): (0x13C, "short[0x17]"),
+    ("TCity", "productionOrderTable1dc"): (0x1DC, "short[0x10]"),
+    ("TCity", "trackedOrderList270"): (0x270, "TSortedList"),
     ("TGreatPower", "city"): (0x894, "TCity"),
 }
 

@@ -14,18 +14,6 @@ from tools.common.file_scan import iter_files
 VTABLE_MARKER_RE = re.compile(
     r"^\s*//\s*VTABLE\s*:\s*[A-Za-z0-9_]+\s+(?P<offset>(?:0x)?[0-9a-fA-F]+)"
 )
-NON_VTABLE_TYPES = {
-    "global",
-    "data",
-    "string",
-    "widechar",
-    "float",
-    "function",
-    "template",
-    "synthetic",
-    "library",
-    "stub",
-}
 
 
 @dataclass(frozen=True)
@@ -33,9 +21,10 @@ class MergeStats:
     preserved_names: int = 0
     preserved_symbols: int = 0
     preserved_prototypes: int = 0
+    preserved_function_types: int = 0
     new_from_export: int = 0
     retained_orphans: int = 0
-    coerced_vtables: int = 0
+    dropped_vtable_collisions: int = 0
 
 
 def addr_key(raw: str) -> int | None:
@@ -61,13 +50,14 @@ def collect_source_vtable_addresses(repo_root: Path) -> set[int]:
     return addrs
 
 
-def coerce_vtable_row(row: dict[str, str], vtable_addrs: set[int]) -> bool:
+def collides_with_source_vtable(row: dict[str, str], vtable_addrs: set[int]) -> bool:
+    """A symbols.csv row at a `// VTABLE:` address must not exist at all: reccmp
+    ingests symbols.csv entities after the source markers, so any row here (even
+    one typed `vtable`) clobbers the marker-derived vtable name and silently
+    breaks the match (see check_vtable_address_collisions). Drop it in the merge
+    instead of leaving it for manual deletion after every resync."""
     addr = addr_key(row.get("address") or "")
-    row_type = (row.get("type") or "").strip().lower()
-    if addr is None or addr not in vtable_addrs or row_type not in NON_VTABLE_TYPES:
-        return False
-    row["type"] = "vtable"
-    return True
+    return addr is not None and addr in vtable_addrs
 
 
 def index_symbols_by_address(rows: list[dict[str, str]]) -> dict[int, dict[str, str]]:
@@ -88,22 +78,15 @@ def merge_curated_symbols_csv(
 ) -> tuple[list[dict[str, str]], MergeStats]:
     """Keep curated name/prototype for known addresses; append curated-only rows."""
     vtable_addrs = vtable_addrs or set()
-    if not curated_by_addr:
-        coerced_vtables = 0
-        for row in exported_rows:
-            if coerce_vtable_row(row, vtable_addrs):
-                coerced_vtables += 1
-        return exported_rows, MergeStats(
-            new_from_export=len(exported_rows), coerced_vtables=coerced_vtables
-        )
 
     merged_addrs: set[int] = set()
     out_rows: list[dict[str, str]] = []
     preserved_names = 0
     preserved_symbols = 0
     preserved_prototypes = 0
+    preserved_function_types = 0
     new_from_export = 0
-    coerced_vtables = 0
+    dropped_vtable_collisions = 0
 
     for row in exported_rows:
         addr_text = (row.get("address") or "").strip()
@@ -118,6 +101,9 @@ def merge_curated_symbols_csv(
             continue
         merged_addrs.add(addr)
         merged = dict(row)
+        if collides_with_source_vtable(merged, vtable_addrs):
+            dropped_vtable_collisions += 1
+            continue
         curated = curated_by_addr.get(addr)
         if curated is None:
             new_from_export += 1
@@ -137,8 +123,19 @@ def merge_curated_symbols_csv(
             curated_prov = (curated.get("provenance") or "").strip()
             if curated_prov and merged.get("provenance", "") != curated_prov:
                 merged["provenance"] = curated_prov
-        if coerce_vtable_row(merged, vtable_addrs):
-            coerced_vtables += 1
+            # A curated `function` row must survive a bare-label export row at the
+            # same address. The DB deliberately models some jmp thunks as labels
+            # (ILT surgery), but manual source still links against the autogen
+            # stubs generated from these rows — demoting type to `global` silently
+            # drops the stubs and breaks the link (7 unresolved externs, 2026-07-02).
+            if (
+                (curated.get("type") or "").strip().lower() == "function"
+                and (merged.get("type") or "").strip().lower() != "function"
+                and not (merged.get("size") or "").strip()
+            ):
+                merged["type"] = curated.get("type", "function")
+                merged["size"] = (curated.get("size") or "").strip()
+                preserved_function_types += 1
         out_rows.append(merged)
 
     retained_orphans = 0
@@ -146,8 +143,9 @@ def merge_curated_symbols_csv(
         if addr in merged_addrs:
             continue
         retained = dict(curated_by_addr[addr])
-        if coerce_vtable_row(retained, vtable_addrs):
-            coerced_vtables += 1
+        if collides_with_source_vtable(retained, vtable_addrs):
+            dropped_vtable_collisions += 1
+            continue
         out_rows.append(retained)
         retained_orphans += 1
 
@@ -155,9 +153,10 @@ def merge_curated_symbols_csv(
         preserved_names=preserved_names,
         preserved_symbols=preserved_symbols,
         preserved_prototypes=preserved_prototypes,
+        preserved_function_types=preserved_function_types,
         new_from_export=new_from_export,
         retained_orphans=retained_orphans,
-        coerced_vtables=coerced_vtables,
+        dropped_vtable_collisions=dropped_vtable_collisions,
     )
 
 

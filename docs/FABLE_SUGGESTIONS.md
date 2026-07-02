@@ -106,19 +106,20 @@ fork to follow jump tables on the original side.
 
 ## 5. Tooling odds and ends
 
-- **Batch compare:** every `just compare 0xADDR` re-parses the PDB (~seconds).
-  A multi-address mode (`compare 0xA 0xB 0xC`, one parse) would tighten the
-  port-verify loop dramatically. (`compare-class` exists but is per-file.)
-- **`gen-class` is dead code:** it requires `config/classes/<Class>.yml`
-  manifests and `config/classes/` does not exist. Either seed manifests from the
-  RTTI oracle (name, size, base are all known now) or retire the tool.
-- **`sync-ownership` is add-only:** removing a marker leaves a stale ownership
-  row that silently suppresses stub regeneration for that address (hit twice
-  this session). It should reconcile deletions, or at least warn.
-- **symbols.csv fragility:** line 1 is a header row; a resort moved it to EOF
-  and silently broke vtable resolution (364/379 vtables "mismatched" until
-  restored). The loaders should reject/relocate a misplaced header, and a
-  round-trip check belongs in `just gates`.
-- **Curated-name provenance:** symbols.csv names carry no confidence/provenance
-  marker, so RTTI-verified truth and old guesses look identical. A provenance
-  column (rtti/mac/manual/ghidra-auto) would let tools trust accordingly.
+- **Batch compare:** RESOLVED — `just compare 0xA 0xB 0xC` and
+  `just compare --file src/game/X.cpp` run one `reccmp --json` parse.
+- **`gen-class` is dead code:** still open. It requires `config/classes/<Class>.yml`
+  manifests and `config/classes/` does not exist (the manifest system is dormant —
+  see the note in `tools/common/class_manifest.py`). Either seed manifests from the
+  RTTI oracle (name, size, base are all known now) or retire the tool. The dormancy
+  also cost `gen-recovered-fields-from-headers` its per-class base offsets
+  (TGreatPower pilot rows had to be dropped from the golden test, 2026-07-02).
+- **`sync-ownership` is add-only:** RESOLVED — deletion-reconciling for
+  `marker_sync` rows (curated notes never pruned), and `just regen-stubs` now runs
+  it (plus `symbols-integrity-gate`) automatically.
+- **symbols.csv fragility:** RESOLVED — `symbols-integrity-gate` (in `just gates`,
+  before every `regen-stubs`, and at the end of `sync-ghidra`) rejects a misplaced
+  header/duplicate addresses; the resync merge drops rows colliding with
+  `// VTABLE:` addresses instead of re-introducing them (2026-07-02 overhaul).
+- **Curated-name provenance:** RESOLVED — symbols.csv carries a trailing
+  `provenance` column (rtti/mac/manual/ghidra-auto), preserved by the merge.

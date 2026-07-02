@@ -281,14 +281,16 @@ recovery for TGreatPower's pending-action slots is the related lever — see
 
 - Convert `just promote` output to compile-safe member-method C++ immediately; rewrite
   raw `void __thiscall Foo(T* this, ...)` blocks into real method signatures before
-  building, then `just sync-ownership` → `just regen-stubs` → `just build`.
+  building, then `just regen-stubs` → `just build`.
 - If a readability cleanup drops the score, restore the higher-scoring body shape and
   keep the cleanup in helpers/typed views.
 - Batch related edits, then a single build + `just compare` over the batch; don't chase
   the last few percent on architecture-correct bodies. See [[big-batch-quality-passes]].
-- `just sync-ownership` is **additive only** — when you delete a function from source,
-  hand-prune its `config/function_ownership.csv` row before `regen-stubs`, or the stale
-  `manual` row blocks stub regeneration. See [[stub-regen-thunks-alias-collision]].
+- `just sync-ownership` is **deletion-reconciling** (and `just regen-stubs` runs it
+  automatically): `marker_sync` rows whose marker disappeared are pruned; curated notes
+  (e.g. `mfc_runtime_macro`) are never pruned. If a deleted function's stub still fails
+  to regenerate, check for a leftover curated row. See
+  [[stub-regen-thunks-alias-collision]].
 - After a vtable-dump correction, verify **every** declared virtual sits at the intended
   slot index — a skipped slot in the header shifts all later entries. Details belong in
   `docs/*_vtable_evidence.csv` / worklog, not here.

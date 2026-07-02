@@ -41,7 +41,7 @@ def split_csv_values(value: str) -> list[str]:
     raw = (value or "").strip()
     if not raw:
         return []
-    return [chunk for chunk in (part.strip() for part in raw.split("|")) if chunk]
+    return [chunk for chunk in (part.strip() for part in raw.split("|")) if chunk]  # pipe-split-ok: multi-value cell
 
 
 def parse_classes(raw: str) -> list[str]:

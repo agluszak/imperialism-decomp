@@ -61,8 +61,15 @@ def collect_files(repo_root: Path, roots: list[str]) -> list[Path]:
                 files.append(root)
             continue
         for path in root.rglob("*"):
-            if path.is_file() and path.suffix.lower() in DEFAULT_EXTENSIONS:
-                files.append(path)
+            if not (path.is_file() and path.suffix.lower() in DEFAULT_EXTENSIONS):
+                continue
+            # ghidra_autogen is regenerated reference output (never compiled,
+            # hand-editing forbidden): its raw-vtable pattern counts change with
+            # every DB resync and are not a source-policy signal (Hard Rule 13
+            # targets manual source).
+            if "/ghidra_autogen/" in path.as_posix():
+                continue
+            files.append(path)
     return sorted(set(files))
 
 

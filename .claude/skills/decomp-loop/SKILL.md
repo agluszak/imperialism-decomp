@@ -49,7 +49,7 @@ squeezing any single function to 100%.
    - **Promote-to-unblock is allowed and encouraged:** if the target calls a sibling/base
      method or another class's function that's still a stub, promote *that* too (into its
      own owning `<Class>.cpp`) so the call is real. Promoting a callee adds/moves a marker
-     → that's exactly when you must re-run sync-ownership + regen-stubs (see step 4).
+     → that's exactly when you must re-run regen-stubs (see step 4).
 3. **Shape pass** — make it compile-safe C++ that preserves the original control
    flow:
    - keep call order, branching shape, and fail-and-continue behavior from Ghidra;
@@ -65,7 +65,7 @@ squeezing any single function to 100%.
      yields a tiny exe with a stale PDB and makes reccmp crash with
      `InvalidVirtualAddressError`. After deleting `build-msvc500/`, run `just detect`
      before any reccmp tool (else "missing recompiled_path").
-   - `just sync-ownership` → `just regen-stubs` — **only when you added, removed, or moved
+   - `just regen-stubs` — **only when you added, removed, or moved
      a `// FUNCTION` marker, or changed ownership** (e.g. you promoted a new function).
      For a pure body or signature edit on an already-owned function, **skip these**:
      `regen-stubs` can downgrade hand-typed stub signatures back to generic
@@ -91,7 +91,7 @@ squeezing any single function to 100%.
   no comment or blank line between them.
 - One owned implementation per address; no duplicate `// FUNCTION` for one address
   across manual files and stubs.
-- Whenever you edit markers/ownership: `just sync-ownership` → `just regen-stubs` →
+- Whenever you edit markers/ownership: `just regen-stubs` →
   `just build`.
 - Both rules above are enforced mechanically by `just marker-gate` (part of
   `just gates`). Run `just gates` before committing.
@@ -113,7 +113,7 @@ The correct fix when the original does `CALL <ilt-thunk>` → real target:
 
 1. **Port the real target into its owning file** (find it via `config/function_ownership.csv`
    neighbors — sibling addresses reveal the right `<Class>.cpp`/module file), with a real
-   body, `// FUNCTION:` marker, and real signature; `just sync-ownership` → `regen-stubs`.
+   body, `// FUNCTION:` marker, and real signature; `just regen-stubs`.
 2. **Retire the thunk completely.** reccmp auto-resolves `CALL <thunk>` → real target
    **only if the thunk has no named `config/symbols.csv` row.** A named `thunk_Foo` row
    makes reccmp compare `call thunk_Foo` vs your `call Foo` as a literal mismatch (caps the

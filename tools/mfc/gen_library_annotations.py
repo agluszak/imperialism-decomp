@@ -19,8 +19,10 @@ as more of the MFC surface is reclaimed from the library.
 from __future__ import annotations
 
 import argparse
-import csv
 import sys
+from pathlib import Path
+
+from tools.common.pipe_csv import read_pipe_rows
 
 MFC_CLASSES = (
     "CObject", "CRuntimeClass", "CString", "CPtrList", "CPtrArray", "CObList",
@@ -45,14 +47,13 @@ def main(argv: list[str]) -> int:
     args = ap.parse_args(argv)
 
     rows: list[tuple[str, str]] = []
-    with open(args.symbols, newline="") as fh:
-        for line in fh:
-            parts = line.rstrip("\n").split("|")
-            if len(parts) < 4 or parts[3] != "function":
-                continue
-            addr, name = parts[0], parts[1]
-            if is_mfc(name):
-                rows.append((addr, name))
+    for row in read_pipe_rows(Path(args.symbols)):
+        if (row.get("type") or "").strip() != "function":
+            continue
+        addr = (row.get("address") or "").strip()
+        name = (row.get("name") or "").strip()
+        if addr and is_mfc(name):
+            rows.append((addr, name))
 
     rows.sort(key=lambda r: int(r[0], 16))
 

@@ -14,16 +14,19 @@ import re
 from pathlib import Path
 
 from tools.common.hexutil import parse_hex_address
-from tools.common.name_overrides import parse_name_overrides
+from tools.common.name_overrides import (
+    DEFAULT_NAME_OVERRIDES_CSV,
+    parse_name_overrides,
+    resolve_name_overrides_path,
+)
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 from tools.workflow.function_ownership import (
     DEFAULT_FUNCTION_OWNERSHIP_CSV,
-    DEFAULT_NAME_OVERRIDES_CSV,
+    FunctionOwnership,
     function_marker_regex,
     load_function_ownership,
-    resolve_name_overrides_path,
 )
 
 

@@ -13,7 +13,11 @@ from pathlib import Path
 
 import pyghidra
 from tools.common import ghidra_env
-from tools.common.name_overrides import parse_name_overrides
+from tools.common.name_overrides import (
+    DEFAULT_NAME_OVERRIDES_CSV,
+    parse_name_overrides,
+    resolve_name_overrides_path,
+)
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.ghidra.merge_curated_symbols import (
@@ -23,10 +27,6 @@ from tools.ghidra.merge_curated_symbols import (
     load_curated_symbols,
     merge_curated_symbols_csv,
     write_symbols_csv,
-)
-from tools.workflow.function_ownership import (
-    DEFAULT_NAME_OVERRIDES_CSV,
-    resolve_name_overrides_path,
 )
 
 REPO_CONFIG_PATH = "ghidra.toml"
@@ -322,9 +322,10 @@ def main() -> int:
                 f"names {merge_stats.preserved_names}, "
                 f"symbols {merge_stats.preserved_symbols}, "
                 f"prototypes {merge_stats.preserved_prototypes}, "
+                f"function types {merge_stats.preserved_function_types}, "
                 f"new {merge_stats.new_from_export}, "
                 f"retained orphans {merge_stats.retained_orphans}, "
-                f"vtable rows {merge_stats.coerced_vtables}, "
+                f"dropped VTABLE-collision rows {merge_stats.dropped_vtable_collisions}, "
                 f"symbols.txt names {renamed_txt}"
             )
         elif curated_by_addr and args.no_preserve_curated_symbols:

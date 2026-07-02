@@ -7,10 +7,9 @@ alwaysApply: true
 
 Before creating any git commit in this repo:
 
-1. **`just gates`** — all mechanical source-policy gates must pass (including `decomplint`).
-2. **`just build`** — MSVC500 Docker build must succeed.
-3. **`just stats`** — compare aggregate progress against `config/reccmp_progress_baseline.json`.
-4. **`just stats-commit`** — include the updated baseline in the same commit when stats are accepted.
+1. **`just precommit`** — build + all gates (including `decomplint`) + tooling tests +
+   stats against `config/reccmp_progress_baseline.json`, in one command.
+2. **`just stats-baseline-update`** — include the updated baseline in the same commit when stats are accepted.
 
 ## When verification fails
 
@@ -26,7 +25,7 @@ Before creating any git commit in this repo:
 
 ## Stats regression thresholds
 
-Treat as a **meaningful regression** (investigate before `stats-commit`):
+Treat as a **meaningful regression** (investigate before `stats-baseline-update`):
 
 - `aligned functions (100%)` drops by **≥ 5**
 - `average similarity` drops by **≥ 0.10 pp**

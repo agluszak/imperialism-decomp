@@ -294,7 +294,7 @@ def print_function_changes(
     print("")
     print("Function changes vs baseline")
     if base is None:
-        print("  no function baseline; run `just stats-commit` to record one")
+        print("  no function baseline; run `just stats-baseline-update` to record one")
         return
 
     regressed, unpaired_now, improved, newly_paired = function_changes(curr, base)
@@ -495,7 +495,7 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     print(f"Target: {entry['target']}")
     print(f"Baseline file: {baseline_file}")
     if baseline is None:
-        print("Baseline: missing; run `just stats-commit` after accepting this snapshot.")
+        print("Baseline: missing; run `just stats-baseline-update` after accepting this snapshot.")
     else:
         base_date = baseline.get("timestamp_utc", "unknown")
         base_commit = baseline.get("git_commit", "unknown")[:12]

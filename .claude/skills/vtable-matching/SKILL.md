@@ -45,7 +45,7 @@ the derived class.
 |---|---|
 | **Scalar deleting dtor** (often slot 0x04): recomp `` `scalar deleting destructor' `` shows `no orig` | Pair via SYNTHETIC: set the orig addr's `config/symbols.csv` name to ``Class::`scalar deleting destructor'``, replace any hand-written `*AndMaybeFree` bridge with a `// SYNTHETIC: …` marker. Needs a polymorphic class. See `decomp-loop/heuristics.md` #8 and [[synthetic-scalar-deleting-dtor]]. |
 | **Missing override**: orig slot → a class-specific addr, recomp → the inherited base function | Declare an `override` with the base's exact signature/name, give it the real body + `// FUNCTION:` marker at the orig addr. |
-| **Stub-in-slot**: recomp slot → an empty provisional virtual, while a real function exists as a stub at the orig addr | Promote: make the virtual method own the stub's address (move the `// FUNCTION:` marker onto the method, write an honest body), then `just sync-ownership` → `just regen-stubs` to drop the stub. |
+| **Stub-in-slot**: recomp slot → an empty provisional virtual, while a real function exists as a stub at the orig addr | Promote: make the virtual method own the stub's address (move the `// FUNCTION:` marker onto the method, write an honest body), then `just regen-stubs` to drop the stub. |
 | **Imported thunk**: orig slot → an ILT `jmp` thunk addr (`0x40xxxx`), recomp → the direct target | reccmp auto-resolves jmp thunks *unless the thunk is annotated as a function*. Un-import it. See below + [[imported-thunks-block-vtable-resolution]]. |
 | **Unowned base slot**: recomp slot has `no orig` and a tiny return-0 body matches an orphan stub (`OrphanTiny_ReturnZero_*`) | Claim the orig addr: add the `// FUNCTION:` marker to the base method (only if bodies genuinely match). |
 
@@ -67,7 +67,7 @@ but only when the thunk address is **not** claimed as a function on our side. To
 
 ## Verify loop
 
-After each fix: `just sync-ownership` → `just regen-stubs` → `just build` → `just detect`
+After each fix: `just regen-stubs` → `just build` → `just detect`
 → `just vtable <Class>` (expect `100% match`). Then `just gates` (marker hygiene +
 decomplint ordering) and `just format-check <touched paths>`. If you changed a **base**
 class, re-run `just vtable` on a couple of derived classes and `just stats` — base edits

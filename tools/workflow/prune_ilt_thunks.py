@@ -7,15 +7,21 @@ linker artifacts, not source functions: reccmp auto-detects unannotated jmp
 thunks in both binaries (EntityType.THUNK, skip=True) and excludes them from
 the report, and hand-writing bodies for them is forbidden (fake source).
 
+ANY symbols.csv row at a thunk address — `function` or `global`/label — becomes
+a reccmp entity that blocks the thunk auto-detection and breaks call/vtable
+resolution through the thunk (mass score drops; ~583 label rows re-imported on
+2026-07-02 cost 238 functions similarity until pruned).
+
 A row is pruned only when ALL of these hold:
-  1. type == function and the address lies inside the contiguous ILT region;
+  1. the address lies inside the contiguous ILT region;
   2. the original exe byte at the address is 0xE9 (jmp rel32);
   3. no manual source file claims the address with a FUNCTION/STUB/SYNTHETIC
      marker (those need a separate retirement pass first);
   4. no manual source references the symbol name (the sanctioned
      extern-thunk-cast callsite pattern still needs the autogen stub to link).
 
-Run after `just sync-ghidra` regenerates config/symbols.csv.
+Run after `just sync-ghidra` regenerates config/symbols.csv (sync-ghidra does
+this automatically).
 """
 
 from __future__ import annotations
@@ -26,6 +32,7 @@ import re
 import struct
 from pathlib import Path
 
+from tools.common.pipe_csv import header_column_indices
 from tools.common.repo import repo_root_from_file
 
 MARKER_RE = re.compile(
@@ -120,6 +127,25 @@ def collect_manual_text(repo_root: Path) -> str:
     return "\n".join(chunks)
 
 
+def ilt_keep_reason(
+    addr: int, name: str, claimed: set[int], manual_text: str
+) -> str | None:
+    """Why an ILT-range function row/entity must be kept (shared with the DB-side
+    prune in tools/ghidra/prune_ilt_db_functions.py): a manual marker claims the
+    address, or manual source references the symbol name (the sanctioned
+    extern-thunk-cast callsite pattern still needs the autogen stub to link)."""
+    if addr in claimed:
+        return "claimed"
+    ident = re.sub(r"[^A-Za-z0-9_]", "_", name.split("::")[-1])
+    # Ghidra disambiguates duplicate names with an address suffix
+    # (thunk_Foo_004061D1); manual source references the bare name.
+    bare = re.sub(r"_[0-9A-Fa-f]{8}$", "", ident)
+    for candidate in {ident, bare}:
+        if candidate and re.search(r"\b" + re.escape(candidate) + r"\b", manual_text):
+            return "referenced"
+    return None
+
+
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__, levels_up=2)
@@ -135,39 +161,45 @@ def main() -> int:
 
     lines = csv_path.read_text().splitlines(keepends=True)
     out = [lines[0]]
+    addr_idx, name_idx, type_idx = header_column_indices(lines[0], "address", "name", "type")
+    min_columns = max(addr_idx, name_idx, type_idx) + 1
     pruned = kept_claimed = kept_referenced = 0
+    pruned_by_type: dict[str, int] = {}
     for line in lines[1:]:
-        parts = line.rstrip("\n").split("|")
-        if len(parts) < 5:
+        parts = line.rstrip("\n").split("|")  # pipe-split-ok: line-preserving rewrite
+        if len(parts) < min_columns:
             out.append(line)
             continue
-        addr_text, name, row_type = parts[0], parts[1], parts[4]
+        addr_text, name, row_type = parts[addr_idx], parts[name_idx], parts[type_idx]
         try:
             addr = int(addr_text, 16)
         except ValueError:
             out.append(line)
             continue
-        if row_type != "function" or not (ilt_lo <= addr <= ilt_hi):
+        if not (ilt_lo <= addr <= ilt_hi):
             out.append(line)
             continue
         if text.byte_at(addr) != 0xE9:
             out.append(line)
             continue
-        if addr in claimed:
+        keep = ilt_keep_reason(addr, name, claimed, manual_text)
+        if keep == "claimed":
             kept_claimed += 1
             out.append(line)
             continue
-        ident = re.sub(r"[^A-Za-z0-9_]", "_", name.split("::")[-1])
-        if ident and re.search(r"\b" + re.escape(ident) + r"\b", manual_text):
+        if keep == "referenced":
             kept_referenced += 1
             out.append(line)
             continue
         pruned += 1
+        pruned_by_type[row_type or "?"] = pruned_by_type.get(row_type or "?", 0) + 1
 
+    by_type = ", ".join(f"{k}={v}" for k, v in sorted(pruned_by_type.items()))
     print(
-        "ILT region 0x{:08x}..0x{:08x}: pruned {} rows "
+        "ILT region 0x{:08x}..0x{:08x}: pruned {} rows{} "
         "(kept {} claimed-by-manual-source, {} referenced-by-name)".format(
-            ilt_lo, ilt_hi, pruned, kept_claimed, kept_referenced
+            ilt_lo, ilt_hi, pruned, f" [{by_type}]" if by_type else "",
+            kept_claimed, kept_referenced
         )
     )
     if not args.dry_run:

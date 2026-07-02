@@ -123,6 +123,7 @@ def main() -> int:
 
     merged = load_function_ownership(ownership_csv)
     stale_manual = 0
+    pruned_rows: list[FunctionOwnership] = []
     if args.prune_missing_manual:
         mention_cache: dict[str, str] = {}
 
@@ -157,14 +158,16 @@ def main() -> int:
                 continue
             if entry.note.strip().lower() != "marker_sync":
                 # Only reconcile rows this tool created. Any other note (e.g.
-                # mfc_runtime_macro) is a curated suppression: the address is owned
-                # by code with no marker (macro emissions, name-paired methods).
+                # mfc_runtime_macro, name_paired_no_marker) is a curated
+                # suppression: the address is owned by code with no marker
+                # (macro emissions, name-paired methods).
                 continue
             if address in scanned_entries:
                 continue
             if file_mentions_address(entry.target_cpp, address):
                 continue
             stale_manual += 1
+            pruned_rows.append(entry)
             del merged[address]
 
     updates = 0
@@ -178,6 +181,10 @@ def main() -> int:
     print(f"Ownership updates: {updates}")
     if args.prune_missing_manual:
         print(f"Pruned missing non-autogen ownership rows: {stale_manual}")
+        for entry in pruned_rows[:100]:
+            print(f"  pruned 0x{entry.address:08x} ({entry.target_cpp})")
+        if len(pruned_rows) > 100:
+            print(f"  ... and {len(pruned_rows) - 100} more")
     print(f"Wrote {ownership_csv}")
     return 0
 

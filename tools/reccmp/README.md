@@ -7,8 +7,8 @@ Primary workflow uses `just` wrappers:
 1. `just detect`
 2. `just compare 0xADDR` (or `just compare`)
 3. `just stats` (compare against the committed progress baseline)
-4. `just stats-commit` (update the committed progress baseline after accepting changes)
-5. `just session-loop`
+4. `just stats-baseline-update` (update the committed progress baseline after accepting changes)
+5. `just session-loop` (read-only ranking; pass `--refresh-ignore` to also rewrite ignore lists)
 
 Bootstrap project metadata once:
 

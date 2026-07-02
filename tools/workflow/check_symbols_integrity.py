@@ -58,7 +58,7 @@ def check_file(path: Path, max_errors: int) -> list[str]:
             f"('{'|'.join(BASE_COLUMNS)}' with optional '|provenance'), got: {lines[0][:80]!r}"
         )
 
-    column_count = len(lines[0].split("|")) if lines[0] in valid_headers else len(BASE_COLUMNS)
+    column_count = len(lines[0].split("|")) if lines[0] in valid_headers else len(BASE_COLUMNS)  # pipe-split-ok: structural validator
 
     seen: dict[int, int] = {}
     for idx, line in enumerate(lines[1:], start=2):
@@ -68,7 +68,7 @@ def check_file(path: Path, max_errors: int) -> list[str]:
         if line in valid_headers:
             violations.append(f"line {idx}: duplicate header row")
             continue
-        parts = line.split("|")
+        parts = line.split("|")  # pipe-split-ok: structural validator
         if len(parts) < len(BASE_COLUMNS):
             violations.append(
                 f"line {idx}: only {len(parts)} fields (need >= {len(BASE_COLUMNS)}): {line[:60]!r}"

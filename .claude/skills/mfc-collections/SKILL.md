@@ -94,7 +94,7 @@ After changing a collection model:
 
 1. Run `just build`.
 2. Run targeted `just compare 0xADDR...` for the owner ctor/dtor and list users.
-3. If marker ownership changed, run `just sync-ownership && just regen-stubs && just build`.
+3. If marker ownership changed, run `just regen-stubs && just build`.
 4. Run `just gates` before committing. If an unrelated global gate is already
    failing, record the exact failing gate and keep the collection diff scoped.
 
