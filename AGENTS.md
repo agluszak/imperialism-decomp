@@ -41,9 +41,12 @@ starting that kind of task.
 
 - Git history — clear commit messages are the durable execution record for what
   changed, how it was verified, and any score deltas.
-- `docs/workflows.md` — the three canonical command playbooks (daily port loop,
-  marker/ownership edits, full Ghidra DB resync). Start here when unsure which
-  `just` target to run; `just --list` groups every target and flags mutating ones.
+- `docs/workflows.md` — the canonical command playbooks (fresh-worktree bootstrap,
+  daily port loop, marker/ownership edits, full Ghidra DB resync). Start here when
+  unsure which `just` target to run; `just --list` groups every target and flags
+  mutating ones. In a fresh worktree, run its §0 bootstrap first (`.env`,
+  `reccmp-user.yml`, `just restore-project`) — gitignored machine state does not
+  follow the git tree.
 - `docs/toolchain.md` — compiler/linker forensics and reproduction decisions.
 - `docs/reference/` — layout/contract and game-domain references (struct layouts,
   function/entry-chain map, bitmap IDs, tech unlocks).
