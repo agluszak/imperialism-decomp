@@ -1,7 +1,7 @@
 #include "game/TModuleLibraryCacheTableStateB.h"
 
-// Shared empty-string literal at 0x006a13a0 (defined in global_data_tables.cpp).
-extern "C" char g_szEmptyString[];
+#include "game/global_data_tables.h"
+
 extern "C" const char s_BmpResourceNameFormat_006951C4[];
 extern "C" const char s_MissingRequiredFileFormat_00695188[];
 

@@ -14,10 +14,6 @@
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 
-extern "C" {
-extern short g_awEngineerFortBuildCostByLevel[8];
-extern int g_adwEngineerRailBuildCostByTerrainType[16];
-}
 undefined4 GetTickCountDiv16(void);
 // SYNTHETIC: IMPERIALISM 0x004d2000
 // TCivMgr::CreateObject

@@ -13,17 +13,6 @@
 
 IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 
-extern "C" {
-extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
-extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
-extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
-extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
-extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
-extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
-extern const float g_ArmyMissionOrderWeightTable_006978c8[6];
-extern const float g_ArmyMissionCandidateScoreTable_006978f8[];
-}
-
 // Not-yet-recovered free functions this file calls into (generic stub
 // signature per the autogen stub definition; real signature applied via a
 // typed cast at each call site so the linker resolves the correct symbol).

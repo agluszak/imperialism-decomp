@@ -147,8 +147,6 @@ short ReadLocalizationPendingEventGate5c() {
 
 } // namespace
 
-extern "C" short g_nTurnFlowNationComparisonAdvisoryTick;
-
 // FUNCTION: IMPERIALISM 0x005011a0
 void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   const short nationId = g_pLocalizationTable->GetActiveNationId();

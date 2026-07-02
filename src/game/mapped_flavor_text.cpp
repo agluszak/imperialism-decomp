@@ -4,12 +4,6 @@
 #include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 
-struct MappedFlavorTextNationVariantEntry {
-  short variantIndex;
-  short pad;
-};
-
-extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32];
 extern "C" char DAT_006a43f0;
 
 undefined4 AppendRandomMapContextStatusSuffixWithProbability(void);

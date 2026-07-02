@@ -17,15 +17,6 @@ IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 // SYNTHETIC: IMPERIALISM 0x005357d0
 // TDefendProvinceMission::`scalar deleting destructor'
 
-extern "C" {
-extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
-extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
-extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
-extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
-extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
-extern unsigned short g_Recompute_Nation_Order_LookupTable_00697870[];
-}
-
 #include "game/CIterator.h"
 
 // Not-yet-recovered free functions this file calls into (generic stub

@@ -1,4 +1,5 @@
 #include "game/TStatusButton.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 // FUNCTION: IMPERIALISM 0x00586280
 TStatusButton* __cdecl CreateTStatusButtonInstance(void) {
@@ -15,9 +16,6 @@ TStatusButton::TStatusButton() : TButton() {}
 // Destructor is compiler-generated (implicit) from real TButton inheritance.
 // SYNTHETIC: IMPERIALISM 0x005863b0
 // TStatusButton::`scalar deleting destructor'
-
-extern "C" void* g_pActiveCityDialogLegendSelectionOwner;
-extern int g_bCityDialogLegendSelectionInitialized;
 
 const int kControlTagBack = 0x6261636b; // 'back'
 const int kControlTagArms = 0x41726d73; // 'arms'

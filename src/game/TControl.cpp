@@ -12,9 +12,6 @@
 #include <new>
 
 extern "C" {
-extern int g_nUiResourceEntryDefaultParam0;
-extern int g_nUiResourceEntryDefaultParam1;
-extern unsigned short g_wUiResourceEntryDefaultParam2;
 extern CRuntimeClass PTR_s_TControl_00649600;
 }
 

@@ -393,3 +393,96 @@ undefined4 SetGlobalUiInvalidationFlagAndReturnPrevious(undefined4 newValue);
 
 // Read g_McAppUiActiveFlag_006950AC (0x489a70) — guard checked before any real painting.
 int GetMcAppUiActiveFlag();
+
+// ============================================================================
+// bd cwa: globals that were locally re-declared via raw extern in a consumer
+// .cpp instead of being declared here (see AGENTS.md's global_data_tables.h
+// consolidation rule). Grouped by consumer cluster below.
+// ============================================================================
+
+extern "C" {
+// ImperialismApp.cpp — registry key/section literals.
+extern const char* const g_pRegistryCompanyKey_0063E038;
+extern const char* const g_pRegistryAppKey_0063E03C;
+extern const char* const g_pRegistrySettingsSection_0063E040;
+extern const char* const g_pRegistryAutoResKey_0063E048;
+extern const char* const g_pRegistryLanguageKey_0063E04C;
+
+// Shared empty-string literal (ImperialismApp/TCountry/TIncludeView/
+// TLowDiskWarningDialog/TModuleLibraryCacheTableStateB/TSimMgr).
+extern char g_szEmptyString[];
+
+// TArmyMission.cpp / TNavyMission.cpp — army-mission order-priority tables.
+extern float g_ArmyMissionOrderWeightTable_006978c8[6];
+extern float g_ArmyMissionDotProductWeights_00697980[5];
+extern float g_ArmyMissionCandidateScoreTable_006978f8[];
+
+// TAutoGreatPower.cpp — AssignNeedSlotFromSourceSlot19C scaling constants.
+extern double g_DAT_00653fc0_Value_00653FC0;             // 1/255
+extern double g_DAT_00653fc8_Value_00653FC8;             // 32767.0
+extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
+
+// TCivMgr.cpp — engineer construction cost tables.
+extern short g_awEngineerFortBuildCostByLevel[8];
+extern int g_adwEngineerRailBuildCostByTerrainType[16];
+
+// TControl.cpp — UI resource entry defaults (also TMyStaticText.cpp/TStaticText.cpp).
+extern int g_nUiResourceEntryDefaultParam0;
+extern int g_nUiResourceEntryDefaultParam1;
+extern unsigned short g_wUiResourceEntryDefaultParam2;
+
+// TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
+// defend-province / mission priority-vector normalization constants.
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
+extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
+extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
+extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
+extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
+extern unsigned short g_Recompute_Nation_Order_LookupTable_00697870[];
+extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
+
+// TMapMgr.cpp — hex-area neighbor lookup tables.
+extern short g_Build_Hex_Area_LookupTable_00696E70[];
+extern short g_Build_Hex_Area_LookupTable_00696E80[];
+
+// TMinor.cpp — ApplyIndexedResourceDeltaAndAdjustNationTotals scale constant.
+extern float g_ApplyIndexedResourceDeltaScale_00653728;
+
+// TMission.cpp — default mission score constant.
+extern const float g_MissionDefaultScore_0065a468;
+
+// TSimMgr.cpp — per-nation scenario setup source table.
+extern short g_anScenarioNationSetupTable_00698B1A[27];
+
+// TSimMgr_AdvanceGlobalTurnStateMachine.cpp / turn_flow_cooldown.cpp — turn-cooldown state.
+extern short g_nTurnCooldownDeferCounter006A43C4;
+extern short g_nTurnCooldownSideFlag00698B10;
+
+// THelpMgr.cpp — periodic nation-comparison advisory tick.
+extern short g_nTurnFlowNationComparisonAdvisoryTick;
+
+// TStatusButton.cpp / TCivDescription.cpp — city-dialog legend selection state.
+extern void* g_pActiveCityDialogLegendSelectionOwner;
+extern int g_bCityDialogLegendSelectionInitialized;
+
+// TCivDescription.cpp — per-civilian-class tile profile / legend selection counts.
+extern short g_anTargetTileProfileByCivilianClassAndSlot[];
+extern unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
+
+// TZone.cpp — zone-graph BFS distance cache (see bd 1uj.16).
+extern int g_nMapActionContextCount;
+extern void* g_pMapActionContextDistanceCache;
+extern int g_nMapActionContextDistanceCacheSizedFor;
+
+// TBehavior.cpp / TDialogBehavior.cpp / TDialogView.cpp — RTTI class-descriptor anchors.
+extern char g_pClassDescTBehavior;
+extern char g_pClassDescTDialogBehavior;
+extern char g_pClassDescTDialogView;
+} // extern "C"
+
+// Per-nation-variant mapped flavor-text table (mapped_flavor_text.cpp / global_data_tables.cpp).
+struct MappedFlavorTextNationVariantEntry {
+  short variantIndex;
+  short pad;
+};
+extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32];

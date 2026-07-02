@@ -4,10 +4,7 @@
 #include "game/TControl.h"
 #include "game/TStaticText.h"
 #include "game/TViewMgr.h"
-
-extern "C" {
-extern int g_nUiResourceEntryDefaultParam0;
-}
+#include "game/global_data_tables.h"
 
 undefined4 LoadUiStringResourceByGroupAndIndex(void);
 // SYNTHETIC: IMPERIALISM 0x005b5380

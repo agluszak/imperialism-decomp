@@ -6,13 +6,9 @@
 #include "game/mfc.h"
 #include "game/TStream.h"
 
-extern "C" {
 // TMission RTTI descriptor (slot-0 GetRuntimeClass returns it). Defined in
 // global_data_tables.cpp; reccmp pairs by symbol name.
-extern CRuntimeClass PTR_s_TMission_00697848;
-// Default mission score constant (0.0) loaded by the slot 0x68-0x7C float stubs.
-extern const float g_MissionDefaultScore_0065a468;
-}
+extern "C" CRuntimeClass PTR_s_TMission_00697848;
 
 undefined4 CreateMissionObjectByKindAndNodeContext(void);
 

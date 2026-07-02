@@ -29,12 +29,6 @@ IMPLEMENT_SERIAL(TControlSeaZoneMission, TNavyMission, 1)
 // SYNTHETIC: IMPERIALISM 0x005355f0
 // TControlSeaZoneMission::`scalar deleting destructor'
 
-extern "C" {
-extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
-extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
-extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
-}
-
 // Not-yet-recovered free functions/subsystems this file calls into.
 extern undefined4 GetPortZoneOwnerNationCodeFromMissionField48(void);
 extern undefined4 FindFirstPortZoneContextByNation(void);

@@ -9,12 +9,7 @@
 #include "game/TPortZone.h"
 #include "game/UiRuntimeContext.h"
 
-extern "C" {
-extern int g_nMapActionContextCount;
-extern void* g_pMapActionContextDistanceCache;
-extern int g_nMapActionContextDistanceCacheSizedFor;
-char g_pClassDescTZone = 0;
-}
+extern "C" char g_pClassDescTZone = 0;
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 

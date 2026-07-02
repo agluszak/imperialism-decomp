@@ -24,14 +24,6 @@ IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 // typed cast at the call site so the linker resolves the correct symbol).
 extern undefined4 GetTileNormalizedMovementClassId(void);
 
-// Nation-order priority weight/scoring tables (shared with the DefendProvince /
-// Navy mission scoring family; not yet individually catalogued by field).
-extern "C" {
-extern const float g_ArmyMissionOrderWeightTable_006978c8[6];
-extern const float g_ArmyMissionDotProductWeights_00697980[5];
-extern const float g_ArmyMissionCandidateScoreTable_006978f8[];
-}
-
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
   union {

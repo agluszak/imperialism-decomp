@@ -48,9 +48,6 @@ int SignedDivideBy100(int value) {
 } // namespace
 
 extern undefined4 GenerateThreadLocalRandom15(void);
-extern "C" {
-extern float g_ApplyIndexedResourceDeltaScale_00653728;
-}
 
 // FUNCTION: IMPERIALISM 0x004e3660
 void* TMinor::CreateTMinorInstance() {

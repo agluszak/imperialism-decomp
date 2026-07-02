@@ -12,15 +12,11 @@
 #include "game/TView.h"
 #include "game/CString.h"
 
-extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
 #include "game/CString.h"
 #include "game/mfc.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
-
-extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
-extern "C" void* g_pActiveCityDialogLegendSelectionOwner;
 
 namespace {
 const unsigned int kAddrTargetTileProfileByCivilianClassAndSlot = 0x00698F58;

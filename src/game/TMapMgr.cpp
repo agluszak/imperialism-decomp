@@ -13,13 +13,9 @@ void EnsurePortZoneForTile(short nTileIndex);
 void RemovePortZoneByTile(short nTileIndex);
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 
-extern "C" {
-extern short g_Build_Hex_Area_LookupTable_00696E70[];
-extern short g_Build_Hex_Area_LookupTable_00696E80[];
-short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
+extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
   typedef short(__cdecl * Func)(short, short);
   return reinterpret_cast<Func>(0x00512dd0)(sourceTile, destTile);
-}
 }
 // SYNTHETIC: IMPERIALISM 0x0050e2f0
 // TMapMgr::CreateObject

@@ -5,8 +5,6 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
-extern "C" char g_szEmptyString[];
-
 // IMPLEMENT_DYNCREATE also emits `TIncludeView::CreateObject`; the original copy at
 // 0x48cc40 has the TIncludeView ctor fully inlined into it (same TU, inline-eligible),
 // so the pairing is structural, not byte-exact.

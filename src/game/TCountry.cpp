@@ -27,8 +27,6 @@
 
 #include <new>
 
-extern char g_szEmptyString[];
-
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 static const unsigned int kAddrClassDescTCountry = 0x00653670;

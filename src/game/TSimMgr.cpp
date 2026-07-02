@@ -9,11 +9,6 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 
-// Shared empty-string literal at 0x006a13a0 and the per-nation scenario setup table at
-// 0x00698b1a, both defined in global_data_tables.cpp.
-extern "C" char g_szEmptyString[];
-extern "C" short g_anScenarioNationSetupTable_00698B1A[27];
-
 // FUNCTION: IMPERIALISM 0x004153a0
 int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
   CString key;

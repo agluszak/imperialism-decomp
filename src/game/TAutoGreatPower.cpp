@@ -28,11 +28,6 @@ static __inline short GetShortAtOffset14OrInvalidValue(void) {
   return g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
 }
 
-extern "C" {
-extern double g_DAT_00653fc0_Value_00653FC0; // 1/255
-extern double g_DAT_00653fc8_Value_00653FC8; // 32767.0
-}
-
 static const unsigned int kAddrClassDescTAutoGreatPower = 0x00653F90;
 // kNationSlotCount (0x17) comes from TDiplomacyMgr.h.
 static const int kAidAllocationRowCount = 0x10;
@@ -62,10 +57,6 @@ static __inline int ProposalQueue_ReadCount(void* queue) {
 
 // FUNCTION: IMPERIALISM 0x004e6b10
 void TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {}
-
-extern "C" {
-extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
-}
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 // SYNTHETIC: IMPERIALISM 0x004e6a70

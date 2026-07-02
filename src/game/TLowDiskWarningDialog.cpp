@@ -1,6 +1,6 @@
 #include "game/TModalTemplateDialog.h"
 
-extern "C" char g_szEmptyString[];
+#include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x005e1bc0
 TLowDiskWarningDialog::TLowDiskWarningDialog(void* initParam) {

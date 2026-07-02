@@ -17,15 +17,9 @@
 #include "game/mfc.h"
 #include "game/TAutoResolutionDialog.h"
 
-extern "C" char g_szEmptyString[];
 extern "C" const char s_DataDirectoryPath_006942A8[];
 extern "C" const char s_IrgGlobPattern_006942FC[];
 extern "C" const char s_NoLanguageFilesMessage_006942B4[];
-extern "C" const char* const g_pRegistryCompanyKey_0063E038;
-extern "C" const char* const g_pRegistryAppKey_0063E03C;
-extern "C" const char* const g_pRegistrySettingsSection_0063E040;
-extern "C" const char* const g_pRegistryAutoResKey_0063E048;
-extern "C" const char* const g_pRegistryLanguageKey_0063E04C;
 
 namespace {
 

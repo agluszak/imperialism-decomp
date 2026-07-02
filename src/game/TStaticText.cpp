@@ -3,10 +3,7 @@
 #include "game/TStaticText.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TViewMgr.h"
-
-extern "C" {
-extern int g_nUiResourceEntryDefaultParam0;
-}
+#include "game/global_data_tables.h"
 
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"

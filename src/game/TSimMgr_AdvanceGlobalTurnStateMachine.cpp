@@ -25,8 +25,6 @@
 
 extern "C" char DAT_006a43f0;
 extern "C" char DAT_006a43c0;
-extern "C" short g_nTurnCooldownDeferCounter006A43C4;
-extern "C" short g_nTurnCooldownSideFlag00698B10;
 
 extern undefined4 RebuildGlobalOrderManagersAndCapabilityState(void);
 extern undefined4 RebuildMapContextAndGlobalMapState(void);

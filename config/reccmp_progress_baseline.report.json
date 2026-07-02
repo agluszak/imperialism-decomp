@@ -326,7 +326,7 @@
     },
     {
       "address": "0x4149a0",
-      "matching": 0.3667180277349769,
+      "matching": 0.3543913713405239,
       "name": "LoadLanguageResourcesFromIrgFiles",
       "type": 1
     },
@@ -1647,7 +1647,7 @@
     },
     {
       "address": "0x47c080",
-      "matching": 0.6073298429319371,
+      "matching": 0.5396825396825397,
       "name": "CDib::LoadBitmapResourceAndInitializeSurfaceState",
       "type": 1
     },
@@ -4240,7 +4240,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -12621,7 +12621,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12633,7 +12633,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13426,13 +13426,13 @@
     },
     {
       "address": "0x4e9ff0",
-      "matching": 0.768,
+      "matching": 0.752,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
     {
       "address": "0x4ea0e0",
-      "matching": 0.6808510638297872,
+      "matching": 0.6382978723404256,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00",
       "type": 1
     },
@@ -14548,7 +14548,7 @@
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.2248995983935743,
+      "matching": 0.242914979757085,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -16102,7 +16102,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20636363636363636,
+      "matching": 0.1990909090909091,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16180,7 +16180,7 @@
     },
     {
       "address": "0x50da80",
-      "matching": 0.2857142857142857,
+      "matching": 0.28507795100222716,
       "name": "TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10",
       "type": 1
     },
@@ -17116,7 +17116,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.2413793103448276,
+      "matching": 0.24,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -19913,13 +19913,13 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -27133,7 +27133,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27686,7 +27686,7 @@
     },
     {
       "address": "0x58f550",
-      "matching": 0.5138888888888888,
+      "matching": 0.4722222222222222,
       "name": "TCivDescription::ApplyRectSlot110",
       "type": 1
     },

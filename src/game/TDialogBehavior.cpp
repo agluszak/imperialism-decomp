@@ -1,6 +1,7 @@
 #include "game/TDialogBehavior.h"
 
-extern "C" char g_pClassDescTDialogBehavior;
+#include "game/global_data_tables.h"
+
 // SYNTHETIC: IMPERIALISM 0x00487300
 // TDialogBehavior::CreateObject
 

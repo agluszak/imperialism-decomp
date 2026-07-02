@@ -1,8 +1,8 @@
 #include "game/TBehavior.h"
 
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 
-extern "C" char g_pClassDescTBehavior;
 // SYNTHETIC: IMPERIALISM 0x00487180
 // TBehavior::CreateObject
 

@@ -1,9 +1,6 @@
 #include "game/turn_flow_cooldown.h"
 
-extern "C" {
-extern short g_nTurnCooldownDeferCounter006A43C4;
-extern short g_nTurnCooldownSideFlag00698B10;
-}
+#include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x0057b900
 char IsTurnCooldownCounterActiveOrResetFlag(void) {

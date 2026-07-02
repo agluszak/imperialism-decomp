@@ -418,10 +418,6 @@ short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};
 // in global_data_tables.h.
 TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64] = {{0}};
 
-struct MappedFlavorTextNationVariantEntry {
-  short variantIndex;
-  short pad;
-};
 MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32] = {0};
 
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
