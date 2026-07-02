@@ -14,9 +14,7 @@
 
 #include "game/mfc.h"
 
-
 const int kAssertLineMoveBarInitNil = 0x725;
-undefined4 thunk_BuildUiTextStyleDescriptor(void);
 #include "game/TAmtBar.h"
 #include "game/ui_widget_thunks.h"
 #include "game/TUberCluster.h"
@@ -57,10 +55,15 @@ void TUberCluster::DispatchRuntimeApplyMoveValue(int value) {
 // is owned by that vtable-slot override, so this body is not separately address-marked.
 void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
-  unsigned int styleDescriptor = styleSeed & 0xffff0000U;
+  unsigned int styleSeedMasked = styleSeed & 0xffff0000U;
+  // Buffer sized/args ordered to match BuildUiTextStyleDescriptor's real signature
+  // (styleDescriptor first, unused=0) -- was previously a single 4-byte `unsigned int`
+  // reused for both this buffer AND the NoOpUiLifecycleHook scalar below, an
+  // undersized-buffer/type conflation now that the callee has a real body (harmless
+  // while it was an empty stub).
+  int styleDescriptor[4] = {0, 0, 0, 0};
   if (moveControl != 0) {
-    reinterpret_cast<void(__cdecl*)(int, unsigned int*, int, int)>(
-        thunk_BuildUiTextStyleDescriptor)(0, &styleDescriptor, 0xa, 0x2b67);
+    BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
     moveControl->ApplyStyleDescriptor(&styleDescriptor, 0);
     moveControl->SetStyleState(-2, 0);
   }
@@ -69,7 +72,7 @@ void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineMoveBarInitNil);
   }
-  barControl->NoOpUiLifecycleHook(styleDescriptor);
+  barControl->NoOpUiLifecycleHook(static_cast<int>(styleSeedMasked));
   reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(0);
 }
 

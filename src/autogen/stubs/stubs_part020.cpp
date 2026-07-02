@@ -139,14 +139,6 @@ undefined4 WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40(void)
   return 0;
 }
 
-// ghidra_name BuildUiTextStyleDescriptor
-// ghidra_proto void __cdecl BuildUiTextStyleDescriptor(void * styleDescriptor, int unused, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x005c3e80
-void __cdecl BuildUiTextStyleDescriptor(void * styleDescriptor, int unused, int arg2, int arg3)
-{
-  return;
-}
-
 // ghidra_name InitializeUiTextStyleDescriptor
 // ghidra_proto undefined InitializeUiTextStyleDescriptor()
 // FUNCTION: IMPERIALISM 0x005c3f50

@@ -67,12 +67,6 @@
       "type": 1
     },
     {
-      "address": "0x406afa",
-      "matching": 0.0,
-      "name": "thunk_BuildUiTextStyleDescriptor",
-      "type": 1
-    },
-    {
       "address": "0x406ccb",
       "matching": 0.0,
       "name": "thunk_HandleEngineerConstructionAction",
@@ -12601,7 +12595,7 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12619,7 +12613,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12661,7 +12655,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -14546,7 +14540,7 @@
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.2248995983935743,
+      "matching": 0.242914979757085,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -16100,7 +16094,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20454545454545456,
+      "matching": 0.20545454545454545,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17114,7 +17108,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.2413793103448276,
+      "matching": 0.24,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -27131,7 +27125,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -31056,7 +31050,7 @@
     },
     {
       "address": "0x5b6840",
-      "matching": 0.48333333333333334,
+      "matching": 0.5,
       "name": "TInfoBarText::InitializeMapHintTextStyleAndThemeFlags",
       "type": 1
     },
@@ -32196,7 +32190,7 @@
     },
     {
       "address": "0x5c3e80",
-      "matching": 0.046511627906976744,
+      "matching": 0.4444444444444444,
       "name": "BuildUiTextStyleDescriptor",
       "type": 1
     },

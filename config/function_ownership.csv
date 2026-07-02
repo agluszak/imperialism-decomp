@@ -3962,6 +3962,7 @@ address|target_cpp|ownership|note
 5c3530|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3b70|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 5c3d20|src/game/quickdraw_rendering.cpp|manual|marker_sync
+5c3e80|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5d4410|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d46b0|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d4720|src/game/mapped_flavor_text.cpp|manual|marker_sync

@@ -4,8 +4,6 @@
 
 #include "game/quickdraw_rendering.h"
 
-void __cdecl BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int themeCode);
-
 // SYNTHETIC: IMPERIALISM 0x004293c0
 // TInfoBarText::`scalar deleting destructor'
 TInfoBarText::~TInfoBarText() {}

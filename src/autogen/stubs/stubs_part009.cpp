@@ -131,14 +131,6 @@ undefined4 thunk_DestructCityDialogSharedBaseState(void)
   return 0;
 }
 
-// ghidra_name thunk_BuildUiTextStyleDescriptor
-// ghidra_proto undefined thunk_BuildUiTextStyleDescriptor()
-// ILT thunk 0x00406afa - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_BuildUiTextStyleDescriptor(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapDialog::thunk_SplitTileIndexToRowAndColumn
 // ghidra_proto undefined thunk_SplitTileIndexToRowAndColumn()
 // ILT thunk 0x00406c1c - unannotated on purpose (see ILT_THUNK_RANGE)

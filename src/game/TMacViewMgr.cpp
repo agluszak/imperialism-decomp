@@ -33,7 +33,6 @@
 
 int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg);
 
-void __cdecl BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int arg3);
 undefined4 RebuildSurfaceRowsWithTemporaryRowBuffer(void);
 undefined4 BuildHexNeighborHighlightPolygonForTile(void);
 undefined4 CallObjectOffset24Vslot54IfPresent(void);

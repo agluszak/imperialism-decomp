@@ -21,6 +21,12 @@ undefined4 ApplyRectClipRegionToGlobalClipState(void);
 void SetQuickDrawTextOriginWithContextOffset(short x, short y);
 void DrawCenteredGuideLineOnMapDc(short x, short y);
 
+// styleDescriptor: opaque out-buffer (>= 10 bytes; callers use `int[4]`) -- real field
+// layout only partially recovered (see BuildUiTextStyleDescriptor body): a packed
+// {short,short,short,int} at +0x0/+0x2/+0x4/+0x6, rest unknown/unwritten by this
+// function. unused is always passed 0 by every known caller.
+void BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int themeCode);
+
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 

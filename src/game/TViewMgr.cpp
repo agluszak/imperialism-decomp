@@ -34,9 +34,6 @@
 
 char IsNationSlotEligibleForEventProcessing(short nationSlot);
 
-void __cdecl BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2,
-                                        int stylePrimary);
-
 undefined4 QueueDeferredUiEventPacket(void);
 undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
 undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
