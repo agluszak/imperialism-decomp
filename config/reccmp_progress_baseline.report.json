@@ -2795,13 +2795,19 @@
     {
       "address": "0x486760",
       "matching": 0.8648648648648649,
-      "name": "TApplicationUiRootControllerState_00648CA8::ConstructGlobalUiRootControllerState",
+      "name": "TApplication::TApplication",
       "type": 1
     },
     {
       "address": "0x4867b0",
       "matching": 1.0,
       "name": "TApplication::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x4867e0",
+      "matching": 0.875,
+      "name": "CList<void*,void*>::~CList (twin copy, unfoldable \u2014 see 0x005e4580)",
       "type": 1
     },
     {
@@ -5322,13 +5328,19 @@
     {
       "address": "0x491ad0",
       "matching": 0.07692307692307693,
-      "name": "TTurnEventDialogFactoryRegistryState_0064B328::InitializeTurnEventDialogFactoryRegistry_Impl",
+      "name": "TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry",
       "type": 1
     },
     {
       "address": "0x491b10",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TTurnEventDialogFactoryRegistry::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x491b40",
+      "matching": 0.64,
+      "name": "TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry",
       "type": 1
     },
     {
@@ -5449,6 +5461,12 @@
       "address": "0x4925e0",
       "matching": 0.05714285714285714,
       "name": "DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x4929b0",
+      "matching": 0.9393939393939394,
+      "name": "CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>::~CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>",
       "type": 1
     },
     {
@@ -6322,6 +6340,12 @@
       "type": 1
     },
     {
+      "address": "0x49ae30",
+      "matching": 0.9583333333333334,
+      "name": "CMap<unsigned short,unsigned short,CacheRecord *,CacheRecord *>::~CMap<unsigned short,unsigned short,CacheRecord *,CacheRecord *>",
+      "type": 1
+    },
+    {
       "address": "0x49aef0",
       "matching": 0.01015228426395939,
       "name": "TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive",
@@ -6331,6 +6355,12 @@
       "address": "0x49b190",
       "matching": 0.02666666666666667,
       "name": "BuildIndexedBmpResourceById_Impl",
+      "type": 1
+    },
+    {
+      "address": "0x49b270",
+      "matching": 0.9583333333333334,
+      "name": "CMap<void *,void *,CacheRecord *,CacheRecord *>::~CMap<void *,void *,CacheRecord *,CacheRecord *>",
       "type": 1
     },
     {
@@ -33672,8 +33702,26 @@
     },
     {
       "address": "0x5e4540",
-      "matching": 0.0,
-      "name": "TRuntimeLinkedBlockChainState_0066FA50::InitializeRuntimeClassVtablePointer_0066FA50_State",
+      "matching": 0.9090909090909091,
+      "name": "CList<void *,void *>::CList<void *,void *>",
+      "type": 1
+    },
+    {
+      "address": "0x5e4580",
+      "matching": 0.9393939393939394,
+      "name": "CList<void *,void *>::~CList<void *,void *>",
+      "type": 1
+    },
+    {
+      "address": "0x5e4780",
+      "matching": 0.875,
+      "name": "CArray<void *,void *>::CArray<void *,void *>",
+      "type": 1
+    },
+    {
+      "address": "0x5e47b0",
+      "matching": 0.9130434782608695,
+      "name": "CArray<void *,void *>::~CArray<void *,void *>",
       "type": 1
     },
     {
