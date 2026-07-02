@@ -4,8 +4,6 @@
 #include "game/global_data_tables.h"
 #include "game/TQuickDrawSurfaceContext.h"
 
-extern void* g_pScopedMapQuickDrawDcHandleObject;
-
 // FUNCTION: IMPERIALISM 0x00495000
 void SetQuickDrawFillColor(int fillColor) {
   g_Quick_Draw_Color_State_006950FC = fillColor;

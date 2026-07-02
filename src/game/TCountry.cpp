@@ -27,8 +27,6 @@
 
 #include <new>
 
-extern TGreatPower* g_apNationStates[];
-
 extern char g_szEmptyString[];
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
@@ -87,7 +85,9 @@ char TCountry::ReturnFalseNationStateCapabilityFlag9C(void) {
 
 // slot 0x28 — ShouldDispatchImmediatelySlot28 (real body).
 // FUNCTION: IMPERIALISM 0x004d6770
-char TCountry::ShouldDispatchImmediatelySlot28(void) { return 0; }
+char TCountry::ShouldDispatchImmediatelySlot28(void) {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004d6790
 void TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
@@ -339,8 +339,8 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
             if (portZone->PrimaryZoneHeapSize() == 0) {
               portZone->PrimaryZoneHeapSize() = 1;
             }
-            CreateNavyPrimaryOrderNodeAndAssignDisplayName(
-                3, portZone->PrimaryZoneHeapData()[0], this->nationSlot, 0);
+            CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone->PrimaryZoneHeapData()[0],
+                                                           this->nationSlot, 0);
           }
         }
       }
@@ -501,7 +501,9 @@ int TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
 
 // slot 0x1d — GetDiplomacyCounterA2 (real body).
 // FUNCTION: IMPERIALISM 0x004d7f00
-short TCountry::GetDiplomacyCounterA2(void) { return 0; }
+short TCountry::GetDiplomacyCounterA2(void) {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004d7f20
 short TCountry::GetDiplomacyExternalStateByTarget(short nationSlot) {
@@ -794,7 +796,7 @@ void TriggerNationWarTransitionHandlersIfNeeded(int arg1, int arg2) {
 void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
   this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
   g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1b, this->nationSlot,
-                                                                    targetNationSlot, 0);
+                                                                      targetNationSlot, 0);
 }
 
 void OrphanCallChain_C2_I28_004e59d0(void) {}

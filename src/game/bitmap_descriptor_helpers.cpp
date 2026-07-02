@@ -11,9 +11,6 @@
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
 
-extern "C" TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
-extern void* g_pScopedMapQuickDrawDcHandleObject;
-
 namespace {
 
 const char kQuickDrawDebugSourcePath[] = "D:\\Ambit\\QuickDraw.cpp";

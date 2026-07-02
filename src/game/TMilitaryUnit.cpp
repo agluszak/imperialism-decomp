@@ -2,8 +2,6 @@
 
 #include "game/global_data_tables.h"
 
-extern "C" short g_awTacticalUnitCategoryCodeBySlot[];
-
 // FUNCTION: IMPERIALISM 0x005c3400
 short TMilitaryUnit::GetUnitTypeCostPoints() {
   short unitType = unitTypeId04;

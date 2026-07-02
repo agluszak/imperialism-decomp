@@ -310,6 +310,13 @@ free-function stub or fake calling-convention cast back to unblock a commit.
   if fixing them isn't strictly required to close the task at hand. Don't go out of scope
   hunting for unrelated problems elsewhere; this is about not walking past a fixable issue
   in code you're already looking at.
+- **Every global in `global_data_tables.cpp` must be declared in `global_data_tables.h`.**
+  Consumer `.cpp` files must `#include "game/global_data_tables.h"` and use that
+  declaration — never hand-roll a local `extern` re-declaration of a global that's already
+  (or should be) declared there. When adding a new global to the `.cpp`, add its matching
+  `extern` to the header in the same change. When touching a file that locally
+  re-declares one of these globals, migrate it to the header include (opportunistic-fix
+  scope above).
 
 ## Commit-message policy
 

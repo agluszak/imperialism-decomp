@@ -4,8 +4,6 @@
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
 
-extern void* g_pScopedMapQuickDrawDcHandleObject;
-
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
 
 int* Sprite__CollectNonTransparentPixels(void* this_obj, uint this_ptr);

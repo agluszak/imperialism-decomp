@@ -7,7 +7,6 @@
 #include "game/ui_invalidation_guard.h"
 
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
-extern TApplication* g_pApplicationUiRootController;
 extern CPtrList g_ModalViewStack;
 
 undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void);

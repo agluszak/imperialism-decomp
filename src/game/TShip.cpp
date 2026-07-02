@@ -12,7 +12,6 @@
 #include <new>
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
-extern short g_industryActionCostWeightResCode10[16];
 
 static short SignedMod100(short value) {
   return (short)((value / 100 + (value >> 15)) -

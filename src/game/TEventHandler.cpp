@@ -17,8 +17,6 @@ extern "C" {
 extern CRuntimeClass PTR_s_TEventHandler_00649588;
 }
 
-extern TApplication* g_pApplicationUiRootController;
-
 // FUNCTION: IMPERIALISM 0x00415d50
 int TEventHandler::GetCityDialogValueDword10() {
   return field10;

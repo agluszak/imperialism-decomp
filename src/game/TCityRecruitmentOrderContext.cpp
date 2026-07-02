@@ -3,9 +3,7 @@
 #include "game/CString.h"
 #include "game/TCivUnit.h"
 #include "game/TSimMgr.h"
-
-extern "C" TSimMgr* g_pLocalizationTable;
-
+#include "game/global_data_tables.h"
 
 // Body moved to TUnitOrder::CommitIfPending for the real vtable owner.
 void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta() {

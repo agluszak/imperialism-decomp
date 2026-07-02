@@ -3,8 +3,8 @@
 #include "game/CString.h"
 #include "game/TCivUnit.h"
 #include "game/TSimMgr.h"
+#include "game/global_data_tables.h"
 
-extern "C" TSimMgr* g_pLocalizationTable;
 // SYNTHETIC: IMPERIALISM 0x004b6f20
 // TUnitOrder::CreateObject
 

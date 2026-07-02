@@ -64,7 +64,6 @@ static __inline int ProposalQueue_ReadCount(void* queue) {
 void TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {}
 
 extern "C" {
-extern float g_Compute_Advisory_Map_Value_00653FD4;      // -100.0f
 extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 }
 

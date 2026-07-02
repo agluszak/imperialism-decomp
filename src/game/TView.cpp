@@ -32,7 +32,6 @@ extern "C" CRuntimeClass PTR_s_TView_006495a0;
 unsigned short TView::GetField4E() {
   return field4e;
 }
-extern "C" TCursorControlPanel* g_pCursorControlPanel;
 extern "C" {
 void* AssertQuickDrawFlag6A1DCCNonZero(int index);
 void AssertQuickDrawFlag6A1DC8NonZero(void* ptr);

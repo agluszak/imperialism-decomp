@@ -9,8 +9,6 @@
 #include "game/TPortZone.h"
 #include "game/UiRuntimeContext.h"
 
-extern TZone* g_pMapActionContextListHead;
-
 extern "C" {
 extern int g_nMapActionContextCount;
 extern void* g_pMapActionContextDistanceCache;
