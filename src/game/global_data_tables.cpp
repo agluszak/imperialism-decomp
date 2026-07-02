@@ -629,6 +629,24 @@ CArray<void*, void*> g_WNetSerializedPtrArrayB006a5f28;
 // GLOBAL: IMPERIALISM 0x006a5f40
 CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 
+// Compiler-emitted ctor/dtor for the CList<void*,void*> / CArray<void*,void*> template
+// instantiations shared by g_WNetPendingPacketList006a5f40 and
+// g_WNetSerializedPtrArrayA/B006a5f10/28 above (WNetMgr.cpp TU). bd 1uj.44 (junk-named
+// non-RTTI state classes): these previously carried invented vtable-address-suffixed
+// placeholder class names (TRuntimeLinkedBlockChainState_0066FA50 /
+// TRuntimeHeapBufferOwnerState_0066FA68).
+// TEMPLATE: IMPERIALISM 0x005e4540
+// ??0?$CList@PAXPAX@@QAE@H@Z
+
+// TEMPLATE: IMPERIALISM 0x005e4580
+// ??1?$CList@PAXPAX@@UAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x005e4780
+// ??0?$CArray@PAXPAX@@QAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x005e47b0
+// ??1?$CArray@PAXPAX@@UAE@XZ
+
 // DirectPlay session manager object embedded at a fixed address (not a pointer).
 // GLOBAL: IMPERIALISM 0x006a5f60
 TWNetSessionManager g_NetworkSessionManager006a5f60;

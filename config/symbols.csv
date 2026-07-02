@@ -635,9 +635,9 @@ address|name|symbol|size|type|prototype|provenance
 486650|TCommandHandler::ConstructTCommandHandlerBaseState||23|function|void ConstructTCommandHandlerBaseState(TCommand * command)|
 486680|TApplication::CreateObject|?CreateObject@TApplication@@SGPAVCObject@@XZ|142|function|undefined CreateObject()|rtti
 486740|TApplication::GetRuntimeClass||6|function|undefined GetTApplicationClassNamePointer()|rtti
-486760|TApplicationUiRootControllerState_00648CA8::ConstructGlobalUiRootControllerState||61|function|undefined ConstructGlobalUiRootControllerState()|
+486760|TApplication::TApplication|??0TApplication@@QAE@XZ|61|function|undefined TApplication()|curated
 4867b0|TApplication::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4867e0|TApplicationUiRootControllerState_00648CA8::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0||128|function|undefined DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0()|
+4867e0|CList<void*,void*>::~CList (twin copy, unfoldable — see 0x005e4580)||128|function|undefined ~CList()|curated
 486880|TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880||10|function|void SetActiveView(TEventHandler * view)|
 4868a0|TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0||4|function|TEventHandler * GetActiveView(void)|
 4868c0|PumpUiMessagesAndBackgroundTasks||124|function|int __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode)|
@@ -1083,9 +1083,9 @@ address|name|symbol|size|type|prototype|provenance
 491a00|BeginSelectableTextOptionEntryIterator||71|function|undefined BeginSelectableTextOptionEntryIterator()|
 491a70|AdvanceSelectableTextOptionEntryIterator||40|function|undefined AdvanceSelectableTextOptionEntryIterator()|
 491ab0|IsSelectableTextOptionEntryIteratorValid||11|function|undefined IsSelectableTextOptionEntryIteratorValid()|
-491ad0|TTurnEventDialogFactoryRegistryState_0064B328::InitializeTurnEventDialogFactoryRegistry_Impl||40|function|undefined InitializeTurnEventDialogFactoryRegistry_Impl()|
+491ad0|TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry|??0TTurnEventDialogFactoryRegistry@@QAE@XZ|40|function|undefined TTurnEventDialogFactoryRegistry()|curated
 491b10|TTurnEventDialogFactoryRegistry::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-491b40|TTurnEventDialogFactoryRegistryState_0064B328::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40||116|function|undefined DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40()|
+491b40|TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry|??1TTurnEventDialogFactoryRegistry@@UAE@XZ|116|function|undefined ~TTurnEventDialogFactoryRegistry()|curated
 491be0|RegisterDialogFactoryCallback||125|function|void __thiscall RegisterDialogFactoryCallback(int pFactoryFn)|
 491c80|TCluster::OrphanCallChain_C1_I17_00491c80||42|function|undefined OrphanCallChain_C1_I17_00491c80(void)|
 491cc0|TCluster::RunRegisteredDialogFactoriesByEventCode||129|function|int * __thiscall RunRegisteredDialogFactoriesByEventCode(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)|
@@ -1110,7 +1110,7 @@ address|name|symbol|size|type|prototype|provenance
 4927e0|TCluster::SerializeRecordList_0x0C_WithBlockPool_D||280|function|undefined SerializeRecordList_0x0C_WithBlockPool_D()|
 492950|TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492950||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00492950(void)|
 492980|TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492980||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00492980(void)|
-4929b0|TTurnEventDialogFactoryRegistryState_0064B328::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0||101|function|undefined DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0()|
+4929b0|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::~CList|??1?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAE@XZ|101|function|undefined ~CList()|curated
 492a40|WrapperFor_AllocateAndLinkBlockHead_At00492a40||94|function|undefined WrapperFor_AllocateAndLinkBlockHead_At00492a40()|
 492ac0|WrapperFor_FreeLinkedBlockChain_At00492ac0||45|function|undefined WrapperFor_FreeLinkedBlockChain_At00492ac0()|
 492b00|WrapperFor_FreeLinkedBlockChain_At00492b00||68|function|undefined WrapperFor_FreeLinkedBlockChain_At00492b00()|
@@ -1290,10 +1290,10 @@ address|name|symbol|size|type|prototype|provenance
 49a7f0|FilterStringByCharacterTypeFlag4AndAppend||220|function|undefined FilterStringByCharacterTypeFlag4AndAppend()|
 49a910|renderTemplateOrExpandTokens||326|function|undefined4 __stdcall renderTemplateOrExpandTokens(undefined4 ctx_or_stream, undefined4 result_or_handle, undefined4 input_str_arg)|
 49ad50|RemoveHashIndexedRecordByShortKey||171|function|undefined RemoveHashIndexedRecordByShortKey()|
-49ae30|TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheTableStateBAndFree||132|function|undefined DestructModuleLibraryCacheTableStateBAndFree()|
+49ae30|CMap<WORD,WORD,CacheRecord*,CacheRecord*>::~CMap|??1?$CMap@GGPAUCacheRecord@@PAU1@@@UAE@XZ|132|function|void ~CMap()|curated
 49aef0|TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive||522|function|undefined SerializeNodeMapEntries_Key16Value32_WithArchive()|
 49b190|BuildIndexedBmpResourceById_Impl||168|function|undefined BuildIndexedBmpResourceById_Impl()|
-49b270|TModuleLibraryCacheTableStateA_0064BA68::DestructModuleLibraryCacheTableStateAAndFree||132|function|undefined DestructModuleLibraryCacheTableStateAAndFree()|
+49b270|CMap<void*,void*,CacheRecord*,CacheRecord*>::~CMap|??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ|132|function|void ~CMap()|curated
 49b330|TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive||517|function|undefined SerializeNodeMapEntries_Key32Value32_WithArchive()|
 49b5d0|WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0()|
 49b600|WrapperFor_FreeHeapBufferIfNotNull_At0049b600||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049b600()|
@@ -6262,11 +6262,11 @@ address|name|symbol|size|type|prototype|provenance
 5e42c0|NotifyIfNationMatchesSessionActiveNation||28|function|undefined NotifyIfNationMatchesSessionActiveNation()|
 5e42f0|CheckConnectivityOrShowLocalizedWarningAndReturnReady||187|function|undefined CheckConnectivityOrShowLocalizedWarningAndReturnReady()|
 5e43e0|ProbeNationReachabilityAndMarkAwolBitmask||264|function|undefined ProbeNationReachabilityAndMarkAwolBitmask()|
-5e4540|TRuntimeLinkedBlockChainState_0066FA50::InitializeRuntimeClassVtablePointer_0066FA50_State||35|function|undefined InitializeRuntimeClassVtablePointer_0066FA50_State()|
-5e4580|TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580||101|function|undefined DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580()|
+5e4540|CList<void*,void*>::CList|??0?$CList@PAXPAX@@QAE@H@Z|35|function|void CList(int)|curated
+5e4580|CList<void*,void*>::~CList|??1?$CList@PAXPAX@@UAE@XZ|101|function|void ~CList()|curated
 5e4610|TNetMgr::SerializeLinkedRecordListWithFreeNodePool||280|function|undefined SerializeLinkedRecordListWithFreeNodePool()|
-5e4780|TRuntimeHeapBufferOwnerState_0066FA68::InitializeRuntimeClassVtablePointer_0066FA68_State||23|function|undefined InitializeRuntimeClassVtablePointer_0066FA68_State()|
-5e47b0|TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0||81|function|undefined DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()|
+5e4780|CArray<void*,void*>::CArray|??0?$CArray@PAXPAX@@QAE@XZ|23|function|void CArray()|curated
+5e47b0|CArray<void*,void*>::~CArray|??1?$CArray@PAXPAX@@UAE@XZ|81|function|void ~CArray()|curated
 5e4830|TNetMgr::SerializeDynamicDwordPointerArrayState||392|function|undefined SerializeDynamicDwordPointerArrayState()|
 5e4a30|TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)|
 5e4a60|TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)|

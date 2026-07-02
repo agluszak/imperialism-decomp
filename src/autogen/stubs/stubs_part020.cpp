@@ -1803,38 +1803,6 @@ undefined4 ProbeNationReachabilityAndMarkAwolBitmask(void)
   return 0;
 }
 
-// ghidra_name TRuntimeLinkedBlockChainState_0066FA50::InitializeRuntimeClassVtablePointer_0066FA50_State
-// ghidra_proto undefined InitializeRuntimeClassVtablePointer_0066FA50_State()
-// FUNCTION: IMPERIALISM 0x005e4540
-undefined4 InitializeRuntimeClassVtablePointer_0066FA50_State(void)
-{
-  return 0;
-}
-
-// ghidra_name TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-// ghidra_proto undefined DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580()
-// FUNCTION: IMPERIALISM 0x005e4580
-undefined4 DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
-{
-  return 0;
-}
-
-// ghidra_name TRuntimeHeapBufferOwnerState_0066FA68::InitializeRuntimeClassVtablePointer_0066FA68_State
-// ghidra_proto undefined InitializeRuntimeClassVtablePointer_0066FA68_State()
-// FUNCTION: IMPERIALISM 0x005e4780
-undefined4 InitializeRuntimeClassVtablePointer_0066FA68_State(void)
-{
-  return 0;
-}
-
-// ghidra_name TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// ghidra_proto undefined DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
-// FUNCTION: IMPERIALISM 0x005e47b0
-undefined4 DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)
 // FUNCTION: IMPERIALISM 0x005e4a30

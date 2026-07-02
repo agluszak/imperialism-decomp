@@ -618,6 +618,7 @@ address|target_cpp|ownership|note
 4918a0|src/game/TCluster.cpp|manual|marker_sync
 491ad0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 491b10|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
+491b40|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 491be0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 491c80|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 491cc0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
@@ -636,6 +637,7 @@ address|target_cpp|ownership|note
 4927e0|src/game/TCluster.cpp|manual|marker_sync
 492950|src/game/TCluster.cpp|manual|marker_sync
 492980|src/game/TCluster.cpp|manual|marker_sync
+4929b0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 492c70|src/game/TEvent.cpp|manual|marker_sync
 492cc0|src/game/TWindow.cpp|manual|marker_sync
 492ce0|src/game/TWindow.cpp|manual|marker_sync
@@ -711,6 +713,8 @@ address|target_cpp|ownership|note
 499b40|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49a190|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+49ae30|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+49b270|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49c240|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c850|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49cbc0|src/game/TBackdropWindow.cpp|manual|marker_sync
@@ -4043,7 +4047,11 @@ address|target_cpp|ownership|note
 5e3d40|src/game/TNetMgr.cpp|manual|marker_sync
 5e4280|src/game/TNetMgr.cpp|manual|marker_sync
 5e42c0|src/game/TNetMgr.cpp|manual|marker_sync
+5e4540|src/game/global_data_tables.cpp|manual|marker_sync
+5e4580|src/game/global_data_tables.cpp|manual|marker_sync
 5e4610|src/game/TNetMgr.cpp|manual|marker_sync
+5e4780|src/game/global_data_tables.cpp|manual|marker_sync
+5e47b0|src/game/global_data_tables.cpp|manual|marker_sync
 5e4830|src/game/TNetMgr.cpp|manual|marker_sync
 5e4e70|src/game/TSoundPlayer.cpp|manual|marker_sync
 5e4f60|src/game/TSoundPlayer.cpp|manual|marker_sync

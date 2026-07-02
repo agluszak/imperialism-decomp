@@ -219,14 +219,6 @@ undefined4 IsSelectableTextOptionEntryIteratorValid(void)
   return 0;
 }
 
-// ghidra_name TTurnEventDialogFactoryRegistryState_0064B328::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40
-// ghidra_proto undefined DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40()
-// FUNCTION: IMPERIALISM 0x00491b40
-undefined4 DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTWindowAndUnlinkGlobalWindowNode
 // ghidra_proto undefined DestructTWindowAndUnlinkGlobalWindowNode()
 // FUNCTION: IMPERIALISM 0x00492140
@@ -271,14 +263,6 @@ undefined4 UnlinkNodeFromDoublyLinkedListAndRecycle(void)
 // ghidra_proto undefined DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
 // FUNCTION: IMPERIALISM 0x004925e0
 undefined4 DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(void)
-{
-  return 0;
-}
-
-// ghidra_name TTurnEventDialogFactoryRegistryState_0064B328::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0
-// ghidra_proto undefined DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0()
-// FUNCTION: IMPERIALISM 0x004929b0
-undefined4 DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(void)
 {
   return 0;
 }
@@ -1123,14 +1107,6 @@ undefined4 RemoveHashIndexedRecordByShortKey(void)
   return 0;
 }
 
-// ghidra_name TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheTableStateBAndFree
-// ghidra_proto undefined DestructModuleLibraryCacheTableStateBAndFree()
-// FUNCTION: IMPERIALISM 0x0049ae30
-undefined4 DestructModuleLibraryCacheTableStateBAndFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive
 // ghidra_proto undefined SerializeNodeMapEntries_Key16Value32_WithArchive()
 // FUNCTION: IMPERIALISM 0x0049aef0
@@ -1143,14 +1119,6 @@ undefined4 SerializeNodeMapEntries_Key16Value32_WithArchive(void)
 // ghidra_proto undefined BuildIndexedBmpResourceById_Impl()
 // FUNCTION: IMPERIALISM 0x0049b190
 undefined4 BuildIndexedBmpResourceById_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TModuleLibraryCacheTableStateA_0064BA68::DestructModuleLibraryCacheTableStateAAndFree
-// ghidra_proto undefined DestructModuleLibraryCacheTableStateAAndFree()
-// FUNCTION: IMPERIALISM 0x0049b270
-undefined4 DestructModuleLibraryCacheTableStateAAndFree(void)
 {
   return 0;
 }
