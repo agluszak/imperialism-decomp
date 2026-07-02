@@ -2691,6 +2691,7 @@ address|target_cpp|ownership|note
 54fb50|src/game/TShip.cpp|manual|marker_sync
 54fbf0|src/game/TShip.cpp|manual|marker_sync
 54ff00|src/game/TShip.cpp|manual|marker_sync
+550550|src/game/TShip.cpp|manual|marker_sync
 5505a0|src/game/TShip.cpp|manual|marker_sync
 5505c0|src/game/TShip.cpp|manual|marker_sync
 550610|src/game/TShip.cpp|manual|marker_sync
@@ -2776,6 +2777,9 @@ address|target_cpp|ownership|note
 560150|src/game/TZone.cpp|manual|marker_sync
 560470|src/game/TMapMgr.cpp|manual|marker_sync
 560580|src/game/TZone.cpp|manual|marker_sync
+560f80|src/game/TZone.cpp|manual|marker_sync
+5610b0|src/game/TZone.cpp|manual|marker_sync
+561300|src/game/TZone.cpp|manual|marker_sync
 5615e0|src/game/TPortZone.cpp|manual|marker_sync
 561660|src/game/TPortZone.cpp|manual|marker_sync
 561680|src/game/TPortZone.cpp|manual|marker_sync

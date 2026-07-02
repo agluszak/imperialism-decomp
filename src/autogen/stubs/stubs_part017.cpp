@@ -651,30 +651,6 @@ undefined4 SelectBestMapActionContextForNationDiplomacyMask(void)
   return 0;
 }
 
-// ghidra_name TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive
-// ghidra_proto undefined PropagateMapActionContextDistanceLevelsRecursive()
-// FUNCTION: IMPERIALISM 0x00560f80
-undefined4 PropagateMapActionContextDistanceLevelsRecursive(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute
-// ghidra_proto undefined GetCachedMapActionContextDistanceOrRecompute()
-// FUNCTION: IMPERIALISM 0x005610b0
-undefined4 GetCachedMapActionContextDistanceOrRecompute(void)
-{
-  return 0;
-}
-
-// ghidra_name ResizePointerArrayCapacityByRequestedCountAlt
-// ghidra_proto undefined ResizePointerArrayCapacityByRequestedCountAlt()
-// FUNCTION: IMPERIALISM 0x00561300
-undefined4 ResizePointerArrayCapacityByRequestedCountAlt(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildNationBitmaskForActiveType3Or4OrdersIncludingNation
 // ghidra_proto undefined BuildNationBitmaskForActiveType3Or4OrdersIncludingNation()
 // FUNCTION: IMPERIALISM 0x00561400

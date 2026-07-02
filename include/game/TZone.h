@@ -21,6 +21,11 @@ class TZonePrimaryNeighborStretch : public stretch<TZone*, TZonePrimaryNeighborT
 public:
   TZone** GetOrAppendUnique(TZone* zone) override; // 0x55e8e0
   void Add(TZone* zone) override;                  // 0x55ead0
+  // Grows `data`/`capacity` to hold at least `count` elements (doubling capacity,
+  // clamped to INT_MAX, with a same-size fallback realloc if the doubled request
+  // fails). Only this one instantiation (primary neighbors) is evidenced; do not
+  // assume TZoneSecondaryNeighborStretch shares the address.
+  void EnsureCapacityAtLeast(int count); // 0x561300
 };
 
 // VTABLE: IMPERIALISM 0x0065c748
@@ -80,6 +85,17 @@ public:
   // (mov ecx, zone; test ecx,ecx inside), so keep the `this == 0` guard.
   short GetContextOrdinalOrInvalid();
   void GenerateZoneStatusCodeIfUnset(); // 0x55f5c0
+  // BFS relaxation step over primaryNeighbors, writing shortest known distance
+  // (in "hops") into field44. level == -1 means "start a fresh search": resets
+  // every zone's field44 to the 0x29a sentinel first, then reseeds at level 0.
+  // Recurses onto each neighbor with level+1 while that improves its field44.
+  void PropagateMapActionContextDistanceLevelsRecursive(short level); // 0x560f80
+  // Zone-graph BFS distance from `this` to `other`, cached in a lazily-(re)built
+  // g_pMapActionContextDistanceCache[thisOrd][otherOrd] byte matrix sized by
+  // g_nMapActionContextCount; a cache miss (0xff sentinel) triggers a fresh BFS
+  // via PropagateMapActionContextDistanceLevelsRecursive and repopulates every
+  // (this, node) pair (both directions -- distance is symmetric).
+  short GetCachedMapActionContextDistanceOrRecompute(TZone* other); // 0x5610b0
   void InvokeObjectVtableMethod24();
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
 

@@ -178,6 +178,13 @@ int TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category) {
                                                                  field30, category);
 }
 
+// FUNCTION: IMPERIALISM 0x00550550
+short TShip::ComputeOrderNodeDistanceQuotientByDescriptorWord24(TZone* otherZone) {
+  short hopDistance = field08->GetCachedMapActionContextDistanceOrRecompute(otherZone);
+  short descriptorWeight = g_NavyOrderResourceDescriptorTable[resourceType04].descriptorWeight;
+  return static_cast<short>((descriptorWeight - 1 + hopDistance) / descriptorWeight);
+}
+
 // FUNCTION: IMPERIALISM 0x005505a0
 short GetNavyOrderNormalizationBaseByResourceType(short resourceType) {
   return g_NavyOrderResourceDescriptorTable[resourceType].stockCap;

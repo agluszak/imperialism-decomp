@@ -54,6 +54,10 @@ public:
   // Position of `this` in the primary navy order list, counted from
   // g_pNavyPrimaryOrderListHead (used when serializing orderList24 nodes by index).
   int GetIndexInPrimaryOrderList();
+  // BFS zone-graph "hop" distance from this ship's own zone (field08) to
+  // `otherZone`, blended against this resource type's descriptorWeight column
+  // (g_NavyOrderResourceDescriptorTable[resourceType04].descriptorWeight).
+  short ComputeOrderNodeDistanceQuotientByDescriptorWord24(TZone* otherZone);
 };
 
 ASSERT_SIZE(TShip, 0x38);

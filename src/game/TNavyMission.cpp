@@ -30,7 +30,6 @@ extern const float g_ArmyMissionCandidateScoreTable_006978f8[];
 extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
 extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
 extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
-extern undefined4 ComputeOrderNodeDistanceQuotientByDescriptorWord24(void);
 extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
 extern undefined4 SetMapOrderType9AndQueue(void);
 extern undefined4 PromoteMapOrderChainAndQueue(void);
@@ -429,13 +428,15 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
       topOrder = nullptr;
     } else {
       if (selectedOrder != nullptr) {
-        typedef short(__fastcall * ComputeOrderNodeDistanceQuotientByDescriptorWord24_t)(void*);
-        ComputeOrderNodeDistanceQuotientByDescriptorWord24_t
-            ComputeOrderNodeDistanceQuotientByDescriptorWord24_fn =
-                reinterpret_cast<ComputeOrderNodeDistanceQuotientByDescriptorWord24_t>(
-                    (void*)&ComputeOrderNodeDistanceQuotientByDescriptorWord24);
-        short target1 = ComputeOrderNodeDistanceQuotientByDescriptorWord24_fn(targetZone14);
-        short target2 = ComputeOrderNodeDistanceQuotientByDescriptorWord24_fn(topOrder);
+        // Ground truth (0x537090): the original compares the *existing selection's*
+        // zone-distance against the *candidate's* zone-distance, both to targetZone14 --
+        // the prior port dropped this argument and used targetZone14 itself as a fake
+        // receiver for target1 instead of selectedOrder.
+        short target1 = static_cast<TShip*>(selectedOrder)
+                            ->ComputeOrderNodeDistanceQuotientByDescriptorWord24(targetZone14);
+        short target2 =
+            static_cast<TShip*>(topOrder)->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
+                targetZone14);
         if (target1 < target2) {
           goto LAB_0053711a;
         }

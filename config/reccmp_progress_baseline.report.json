@@ -12620,7 +12620,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12632,7 +12632,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -19317,7 +19317,7 @@
     },
     {
       "address": "0x537090",
-      "matching": 0.2814814814814815,
+      "matching": 0.3120567375886525,
       "name": "TScatteredShipsMission::QueueMissionOrdersByPriorityForContext",
       "type": 1
     },
@@ -21598,7 +21598,7 @@
     },
     {
       "address": "0x550550",
-      "matching": 0.0,
+      "matching": 0.6875,
       "name": "ComputeOrderNodeDistanceQuotientByDescriptorWord24",
       "type": 1
     },
@@ -22852,19 +22852,19 @@
     },
     {
       "address": "0x560f80",
-      "matching": 0.025,
+      "matching": 0.36065573770491804,
       "name": "TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive",
       "type": 1
     },
     {
       "address": "0x5610b0",
-      "matching": 0.0,
+      "matching": 0.2074074074074074,
       "name": "TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute",
       "type": 1
     },
     {
       "address": "0x561300",
-      "matching": 0.0,
+      "matching": 0.5915492957746479,
       "name": "ResizePointerArrayCapacityByRequestedCountAlt",
       "type": 1
     },

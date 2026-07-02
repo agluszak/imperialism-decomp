@@ -14,6 +14,7 @@ extern TZone* g_pMapActionContextListHead;
 extern "C" {
 extern int g_nMapActionContextCount;
 extern void* g_pMapActionContextDistanceCache;
+extern int g_nMapActionContextDistanceCacheSizedFor;
 char g_pClassDescTZone = 0;
 }
 
@@ -492,6 +493,97 @@ void TZone::SetMapOrderUiFlag(int flag) {
     field20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(field20, 0);
     SetMapTileStateByteAndNotifyObserver(field20, magnitude * 0x14);
     NotifyMapUberPictureTileMarker(field20);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00560f80
+void TZone::PropagateMapActionContextDistanceLevelsRecursive(short level) {
+  if (level == -1) {
+    for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
+      node->field44 = 0x29a;
+    }
+    level = 0;
+  }
+  if (level < field44) {
+    field44 = level;
+    for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
+      primaryNeighbors.EnsureCapacityAtLeast(i + 1);
+      if (primaryNeighbors.Count() <= i) {
+        primaryNeighbors.Count() = i + 1;
+      }
+      TZone* neighbor = primaryNeighbors.GetAt(i);
+      neighbor->PropagateMapActionContextDistanceLevelsRecursive(static_cast<short>(level + 1));
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005610b0
+short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
+  if (other == this) {
+    return 0;
+  }
+
+  if (g_pMapActionContextDistanceCache == 0 ||
+      g_nMapActionContextCount != g_nMapActionContextDistanceCacheSizedFor) {
+    g_nMapActionContextDistanceCacheSizedFor = g_nMapActionContextCount;
+    int cellCount = g_nMapActionContextCount * g_nMapActionContextCount;
+    char* newCache = new char[cellCount];
+    for (int i = 0; i < cellCount; ++i) {
+      newCache[i] = static_cast<char>(0xff);
+    }
+    g_pMapActionContextDistanceCache = newCache;
+  }
+
+  short thisOrd = GetContextOrdinalOrInvalid();
+  short otherOrd = other->GetContextOrdinalOrInvalid();
+  char* cache = static_cast<char*>(g_pMapActionContextDistanceCache);
+  signed char cachedDistance = cache[thisOrd * g_nMapActionContextCount + otherOrd];
+
+  if (cachedDistance < 0) {
+    for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
+      node->field44 = 0x29a;
+    }
+
+    if (field44 > 0) {
+      field44 = 0;
+      for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
+        primaryNeighbors.EnsureCapacityAtLeast(i + 1);
+        if (primaryNeighbors.Count() <= i) {
+          primaryNeighbors.Count() = i + 1;
+        }
+        TZone* neighbor = primaryNeighbors.GetAt(i);
+        neighbor->PropagateMapActionContextDistanceLevelsRecursive(1);
+      }
+    }
+
+    for (TZone* writeNode = g_pMapActionContextListHead; writeNode != 0;
+         writeNode = writeNode->prev18) {
+      short nodeOrd = writeNode->GetContextOrdinalOrInvalid();
+      cache = static_cast<char*>(g_pMapActionContextDistanceCache);
+      cache[thisOrd * g_nMapActionContextCount + nodeOrd] = static_cast<char>(writeNode->field44);
+      cache[nodeOrd * g_nMapActionContextCount + thisOrd] = static_cast<char>(writeNode->field44);
+    }
+
+    cache = static_cast<char*>(g_pMapActionContextDistanceCache);
+    cachedDistance = cache[thisOrd * g_nMapActionContextCount + otherOrd];
+  }
+
+  return static_cast<unsigned char>(cachedDistance);
+}
+
+// FUNCTION: IMPERIALISM 0x00561300
+void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
+  unsigned int doubledCapacity = static_cast<unsigned int>(count * 2);
+  if (doubledCapacity > 0x7fffffffU) {
+    doubledCapacity = 0x7fffffffU;
+  }
+  void* grownBuffer = ReallocateStretchEntries(Data(), count * 8);
+  if (grownBuffer == 0) {
+    Data() = static_cast<TZone**>(ReallocateStretchEntries(Data(), count * 4));
+    Capacity() = count;
+  } else {
+    Data() = static_cast<TZone**>(grownBuffer);
+    Capacity() = static_cast<int>(doubledCapacity);
   }
 }
 

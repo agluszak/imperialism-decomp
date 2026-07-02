@@ -1251,14 +1251,6 @@ undefined4 GetOrderNodeDescriptorWord20ByResourceType(void)
   return 0;
 }
 
-// ghidra_name ComputeOrderNodeDistanceQuotientByDescriptorWord24
-// ghidra_proto undefined ComputeOrderNodeDistanceQuotientByDescriptorWord24()
-// FUNCTION: IMPERIALISM 0x00550550
-undefined4 ComputeOrderNodeDistanceQuotientByDescriptorWord24(void)
-{
-  return 0;
-}
-
 // ghidra_name GetNavyPrimaryOrderNodeByIndex
 // ghidra_proto undefined GetNavyPrimaryOrderNodeByIndex()
 // FUNCTION: IMPERIALISM 0x00550640
