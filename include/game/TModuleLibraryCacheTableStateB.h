@@ -57,6 +57,10 @@ public:
   // warning). Real __thiscall method (ECX = this on entry at 0x4994c0).
   void LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index); // 0x004994c0
 
+  // Load a localized UI string by raw resource id into `out` (falls back to the shared
+  // empty string). Reached via ILT 0x406933; sibling of the (group, index) loader.
+  undefined4 LoadUiStringResourceById(CString* out, unsigned int stringId); // 0x00499440
+
   // Cached bitmap-surface lookup/load by resource id (primary + slot modules). 0x004997e0
   CDib* LoadBmpResourceByIdCached(unsigned short bmpId);
 

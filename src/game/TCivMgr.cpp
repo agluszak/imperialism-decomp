@@ -42,9 +42,33 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
   return 0;
 }
 
+// Selection helpers merged from the retired duplicate class
+// "TSelectedCivilianOrderState" (the global g_pSelectedCivilianOrderState @0x6a43dc is
+// this TCivMgr instance). TODO(port): retire these absolute-address bridges by porting
+// the real bodies; they need the TMapUberPicture member slice (+0x96 selected-tool
+// index, +0xb0 toolbar table) recovered first.
+
+// FUNCTION: IMPERIALISM 0x004d2c60
+void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, char refreshCommandPanel) {
+  typedef void(__fastcall * Func)(TCivMgr*, int, TCivUnit*, int);
+  reinterpret_cast<Func>(0x004d2c60)(this, 0, entryContext, refreshCommandPanel);
+}
+
+// FUNCTION: IMPERIALISM 0x004d2cf0
+void TCivMgr::QueueImmediateCivilianCommandAndCycleSelection(int commandType) {
+  typedef void(__fastcall * Func)(TCivMgr*, int, int);
+  reinterpret_cast<Func>(0x004d2cf0)(this, 0, commandType);
+}
+
+// FUNCTION: IMPERIALISM 0x004d2d30
+void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
+  typedef void(__fastcall * Func)(TCivMgr*, int);
+  reinterpret_cast<Func>(0x004d2d30)(this, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x004d3a60
 bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
-  TCivUnit* pCiv = this->field04;
+  TCivUnit* pCiv = this->selectedEntry;
   if (pCiv == nullptr) {
     return false;
   }

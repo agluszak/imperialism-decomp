@@ -139,14 +139,6 @@ undefined4 InitializeUiTextStyleDescriptor(void)
   return 0;
 }
 
-// ghidra_name ApplyControlThemeStyleAndOptionalCaption
-// ghidra_proto undefined ApplyControlThemeStyleAndOptionalCaption()
-// FUNCTION: IMPERIALISM 0x005c4020
-undefined4 ApplyControlThemeStyleAndOptionalCaption(void)
-{
-  return 0;
-}
-
 // ghidra_name ConfigureUiControlStyleValueAndCaptionFromStringResource
 // ghidra_proto undefined ConfigureUiControlStyleValueAndCaptionFromStringResource()
 // FUNCTION: IMPERIALISM 0x005c4180
@@ -555,14 +547,6 @@ undefined4 WrapperFor_ftol_At005d4f00(void)
   return 0;
 }
 
-// ghidra_name SetTurnEventStateBaseVtable
-// ghidra_proto undefined SetTurnEventStateBaseVtable()
-// FUNCTION: IMPERIALISM 0x005d50e0
-undefined4 SetTurnEventStateBaseVtable(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateTurnEventPaletteByCode
 // ghidra_proto undefined UpdateTurnEventPaletteByCode()
 // FUNCTION: IMPERIALISM 0x005d5710
@@ -599,14 +583,6 @@ undefined4 HandleTurnEventDialogFactorySlot70(void)
 // ghidra_proto undefined HandleTurnEventDialogFactorySlot74()
 // FUNCTION: IMPERIALISM 0x005d6d70
 undefined4 HandleTurnEventDialogFactorySlot74(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnEventDialogFactorySlot78
-// ghidra_proto undefined HandleTurnEventDialogFactorySlot78()
-// FUNCTION: IMPERIALISM 0x005d6e50
-undefined4 HandleTurnEventDialogFactorySlot78(void)
 {
   return 0;
 }
@@ -723,14 +699,6 @@ undefined4 HandleTurnEvent5DE_RefreshMainView(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventTable66F220_Slot04_InvokeMainViewSlots0C_E4
-// ghidra_proto undefined HandleTurnEventTable66F220_Slot04_InvokeMainViewSlots0C_E4()
-// FUNCTION: IMPERIALISM 0x005dbdd0
-undefined4 HandleTurnEventTable66F220_Slot04_InvokeMainViewSlots0C_E4(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4
 // ghidra_proto undefined HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4()
 // FUNCTION: IMPERIALISM 0x005dbe10
@@ -787,22 +755,6 @@ undefined4 WrapperFor_ftol_At005dcc60(void)
   return 0;
 }
 
-// ghidra_name Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90
-// ghidra_proto undefined Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90()
-// FUNCTION: IMPERIALISM 0x005dcc90
-undefined4 Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90(void)
-{
-  return 0;
-}
-
-// ghidra_name TModalMessageCommand::CreateTModalMessageCommandInstance
-// ghidra_proto undefined CreateTModalMessageCommandInstance()
-// FUNCTION: IMPERIALISM 0x005dcd80
-undefined4 CreateTModalMessageCommandInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::HandleTurnEventDialogFactorySlotB4
 // ghidra_proto undefined HandleTurnEventDialogFactorySlotB4()
 // FUNCTION: IMPERIALISM 0x005dcdf0
@@ -831,14 +783,6 @@ undefined4 ExecuteUiFactoryModalDialogAndReturnResultTag(void)
 // ghidra_proto undefined HandleGlobalMapNationContextSelection()
 // FUNCTION: IMPERIALISM 0x005dd180
 undefined4 HandleGlobalMapNationContextSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::HandleTurnEventDialogFactorySlotE4
-// ghidra_proto undefined HandleTurnEventDialogFactorySlotE4()
-// FUNCTION: IMPERIALISM 0x005dd220
-undefined4 HandleTurnEventDialogFactorySlotE4(void)
 {
   return 0;
 }
@@ -883,14 +827,6 @@ undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void)
   return 0;
 }
 
-// ghidra_name ShowCivilianLedgerDialogAndSelectUnit
-// ghidra_proto void ShowCivilianLedgerDialogAndSelectUnit(void)
-// FUNCTION: IMPERIALISM 0x005ddd20
-undefined4 ShowCivilianLedgerDialogAndSelectUnit(void)
-{
-  return 0;
-}
-
 // ghidra_name RunTaggedOptionDialogAndReturnSelectionTag
 // ghidra_proto undefined RunTaggedOptionDialogAndReturnSelectionTag()
 // FUNCTION: IMPERIALISM 0x005de010
@@ -927,14 +863,6 @@ undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void)
 // ghidra_proto char __stdcall ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int uiStringGroup, int promptFlagA, int promptFlagB)
 // FUNCTION: IMPERIALISM 0x005de990
 undefined4 ShowLocalizedUiPromptByGroupAndIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateModalMessageCommandAndQueue
-// ghidra_proto undefined CreateModalMessageCommandAndQueue()
-// FUNCTION: IMPERIALISM 0x005dea60
-undefined4 CreateModalMessageCommandAndQueue(void)
 {
   return 0;
 }

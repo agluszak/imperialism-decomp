@@ -1,8 +1,10 @@
 #include "game/TWorldView.h"
+
+#include "game/TCivMgr.h"
+#include "game/TCivUnit.h"
 #include "game/mfc.h"
 #include "game/QuickDrawSurfaceGuard.h"
 #include "game/TGlobalMapState.h"
-#include "game/TSelectedCivilianOrderState.h"
 #include "game/TToolBarCluster.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -142,11 +144,10 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   short previewBand = -1;
 
   if (interactionMode == 0) {
-    int selectedOrder =
-        *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pSelectedCivilianOrderState) + 4);
+    TCivUnit* selectedOrder = g_pSelectedCivilianOrderState->selectedEntry;
     if (selectedOrder != 0) {
       previewTileIndex = -1;
-      previewBand = *reinterpret_cast<short*>(selectedOrder + 6);
+      previewBand = selectedOrder->field_6;
     }
   } else if (interactionMode == 1) {
     short actionIndex = *reinterpret_cast<short*>(reinterpret_cast<char*>(0x006a3338) + 0x31c);
@@ -220,8 +221,9 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
                                                                             &regionPresent);
   if (regionPresent == 0) {
     if (interactionMode == 0) {
-      int selectedOrder =
-          *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pSelectedCivilianOrderState) + 4);
+      // TODO(typing): RenderMapOrderEntryTilePreview's arg1 is really the selected
+      // TCivUnit*; retyping it means updating the whole TMapDialog override family.
+      int selectedOrder = reinterpret_cast<int>(g_pSelectedCivilianOrderState->selectedEntry);
       RenderMapOrderEntryTilePreview(selectedOrder, originX, outExtra);
     } else if (interactionMode == 1) {
       int previewArgs[4];

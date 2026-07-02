@@ -478,7 +478,7 @@ double DAT_0066fad0 = 0.092;
 #include "game/TOcean.h"
 #include "game/TMapMgr.h"
 #include "game/TMinor.h"
-#include "game/TSelectedCivilianOrderState.h"
+#include "game/TCivMgr.h"
 #include "game/TSoundPlayer.h"
 
 // Named global pointers read with a direct absolute load in the original (vs the
@@ -488,7 +488,7 @@ TZone* g_pMapActionContextListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a3fbc
 TOcean* g_pActiveMapOrderContext = 0;
 TMapMgr* g_pGlobalMapState = 0;
-TSelectedCivilianOrderState* g_pSelectedCivilianOrderState = 0;
+TCivMgr* g_pSelectedCivilianOrderState = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;
 
 extern "C" {
@@ -532,6 +532,10 @@ extern "C" const char s_MissingRequiredFileFormat_00695188[] =
 extern "C" const char s_BmpResourceNameFormat_006951C4[] = "%d.BMP";
 // GLOBAL: IMPERIALISM 0x0069b6b4
 extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[] = "~C%d";
+// GLOBAL: IMPERIALISM 0x0069b6bc
+extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UViewMgr.cpp";
+// GLOBAL: IMPERIALISM 0x0069b740
+extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 
 // Profile string keys used by LoadProfileStringAndAssignSharedRef during multiplayer init.
 // GLOBAL: IMPERIALISM 0x00698010

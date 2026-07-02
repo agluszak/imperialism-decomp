@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x0065e270
 class TPageView : public TView {
 public:
-// === BEGIN GENERATED DECLS (TPageView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TPageView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPageView)
   virtual ~TPageView(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -112,14 +112,18 @@ public:
   // slot 0x65 AssertMcAppUILine1914_e9 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922_ea inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb inherited unchanged (0x48bac0)
-  virtual undefined OrphanCallChain_C1_I06_0056fbb0(); // slot 0x68 0x56fbb0
-  virtual undefined OrphanCallChain_C1_I06_0056fbd0(); // slot 0x69 0x56fbd0
+  virtual undefined OrphanCallChain_C1_I06_0056fbb0();                // slot 0x68 0x56fbb0
+  virtual undefined OrphanCallChain_C1_I06_0056fbd0();                // slot 0x69 0x56fbd0
   virtual undefined ResetSelectableOptionEntriesExceptColorAndOkay(); // slot 0x6a 0x56fbf0
-  virtual undefined OrphanCallChain_C8_I82_0056fc80(); // slot 0x6b 0x56fc80
-  virtual undefined OrphanCallChain_C8_I118_0056fdb0(short param_1); // slot 0x6c 0x56fdb0
-  virtual undefined OrphanCallChain_C4_I18_0056ff90(); // slot 0x6d 0x56ff90
-// === END GENERATED DECLS (TPageView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPageView 0xCTOR`).
+  virtual undefined OrphanCallChain_C8_I82_0056fc80();                // slot 0x6b 0x56fc80
+  virtual undefined OrphanCallChain_C8_I118_0056fdb0(short param_1);  // slot 0x6c 0x56fdb0
+  virtual undefined OrphanCallChain_C4_I18_0056ff90();                // slot 0x6d 0x56ff90
+  // === END GENERATED DECLS (TPageView) ===
+
+  // Unrecovered TPageView-slice fields: the RTTI object size is 0x84 while the
+  // inherited TView slice ends at +0x60. Kept as raw padding so derived-class fields
+  // (e.g. TSuperCivRoster::selectedIndex84) land at their verified offsets.
+  unsigned char padPageViewSlice60[0x24]; // +0x60..+0x83
 
   TPageView();
 };

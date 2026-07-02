@@ -39,8 +39,8 @@ class TBackdropWindow;
 class TOcean;
 class TZone;
 class TMapMgr;
+class TCivMgr;
 class TTurnEventDialogFactoryRegistry;
-class TSelectedCivilianOrderState;
 class TSoundPlayer;
 class TCursorControlPanel;
 class TTechMgr;
@@ -385,7 +385,11 @@ extern int g_nUiInvalidationAssertFlagLine495;
 extern TZone* g_pMapActionContextListHead;
 extern TOcean* g_pActiveMapOrderContext;
 extern TMapMgr* g_pGlobalMapState;
-extern TSelectedCivilianOrderState* g_pSelectedCivilianOrderState;
+extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr instance
+
+// Assert source-path strings for the UViewMgr TU family.
+extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
+extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 extern TSoundPlayer* g_pSfxPlaybackSystem;
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 extern TApplication* g_pApplicationUiRootController;

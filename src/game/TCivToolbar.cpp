@@ -6,7 +6,7 @@
 #include "game/TTradeCluster.h"
 #include "game/TCivDescription.h"
 #include "game/TCivUnit.h"
-#include "game/TSelectedCivilianOrderState.h"
+#include "game/TCivMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TPanelEventPayload.h"
 
@@ -30,8 +30,6 @@
     reinterpret_cast<void(__cdecl*)(const char*, int)>(                                            \
         TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp", line);  \
   }
-
-undefined4 ShowCivilianLedgerDialogAndSelectUnit(void);
 
 // 0x004d3a60 (HandleEngineerConstructionAction) lives on TCivMgr — see TCivMgr.cpp.
 
@@ -109,13 +107,12 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   TControl* selectedStackButton;
   TCivUnit* selectedTileEntry;
   TControl* stackButton;
-  TSelectedCivilianOrderState* selectedCivilianState;
+  TCivMgr* selectedCivilianState;
   int mapState;
 
   selectedTileEntry = g_pGlobalMapState->GetFirstCivilianOrderOnTile(tileIndex);
   selectedStackButton = 0;
-  selectedCivilianState =
-      reinterpret_cast<TSelectedCivilianOrderState*>(g_pSelectedCivilianOrderState);
+  selectedCivilianState = g_pSelectedCivilianOrderState;
 
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
     stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
@@ -166,7 +163,7 @@ void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
   (void)sourceHandler;
   // ORIG_CALLCONV: __thiscall
 
-  TSelectedCivilianOrderState* selectedCivilianOrderState = g_pSelectedCivilianOrderState;
+  TCivMgr* selectedCivilianOrderState = g_pSelectedCivilianOrderState;
   if (commandId == 0xc) {
     if ((kTagStackSlotMin <= static_cast<unsigned int>(eventPayload->controlTag)) &&
         (static_cast<unsigned int>(eventPayload->controlTag) <= kTagStackSlotMax)) {
@@ -194,7 +191,7 @@ void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
       if (controlTag == kTagGarrison) {
         unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
-          ShowCivilianLedgerDialogAndSelectUnit();
+          g_pUiRuntimeContext->ShowCivilianLedgerDialogAndSelectUnit();
           this->TCluster::HandleEvent(10, reinterpret_cast<TEventHandler*>(eventPayload),
                                       reinterpret_cast<TEvent*>(eventFlags));
           return;

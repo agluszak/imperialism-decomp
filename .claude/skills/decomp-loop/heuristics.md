@@ -796,7 +796,6 @@ is `(short)nEventCode != 0xNNN → return 0`. Gotcha: pushes before a 0-arg virt
 MSVC schedules argument pushes early; match pushes to callee-consumed counts, not
 adjacency. Also watch for Ghidra function splits: a builder whose listing ends without
 an epilogue continues in the next "function" (BuildUniversityDialogShell = 4 fragments).
-
 ## 37. A bead's "not ported yet" claim can be two independent recoveries of the
     same class under different names — check GetRuntimeClass address identity
 
@@ -868,3 +867,19 @@ not — the "unpaired + all vtables referencing that slot lose ~2%" fingerprint 
 the fast tell. (Seen porting `TStream::streamSlot70`, bd 1uj.56: base +
 TFileStream override both went 0.00% → 100% once the marker sat directly on the
 decl.)
+
+## 39. Library vtable addresses need a decorated-symbol row, or every dtor pays
+
+A statically-linked MFC vtable address (e.g. CObject's `??_7CObject@@6B@` at
+0x66fec4) that only has a name-typed `global` row in `config/symbols.csv` classifies
+the original-side reloc as DATA while the recomp side is VTABLE — reccmp then counts
+a diff line in *every* destructor that stores it (the ubiquitous
+`mov [ecx], offset CObject::vftable` tail of inlined base dtors). Fix: give the csv
+row the decorated symbol (`66fec4|CObject::`vftable'|??_7CObject@@6B@||global||`) so
+`match_symbols` pairs it exactly. One such row change took `TViewMgr::~TViewMgr`
+50%→100% and improved ~50 functions in the same pass. Corollary from the same
+session: a fully-optimized derived dtor can compile to a *single* store of the
+root-base vtable + `ret` (all intermediate vptr stores dead-store-eliminated), so a
+7-byte "SetXxxBaseVtable" junk-named function called only from a scalar deleting
+destructor is that class's real `~T()` — claim it with a companion `// SYNTHETIC:`
+block, never model it as a vtable-reset helper.

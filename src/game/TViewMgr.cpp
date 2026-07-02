@@ -30,6 +30,16 @@
 #include "game/TCluster.h"
 #include "game/TCursorControlPanel.h"
 #include "game/TDiplomacyMapView.h"
+#include "game/TModalMessageCommand.h"
+#include "game/TApplication.h"
+#include "game/TSuperCivRoster.h"
+#include "game/TStaticText.h"
+#include "game/TDeluxeText.h"
+#include "game/TCivMgr.h"
+#include "game/TCivUnit.h"
+#include "game/TMapUberPicture.h"
+#include "game/TTurnEventDialogFactoryRegistry.h"
+#include "game/quickdraw_rendering.h" // ApplyControlThemeStyleAndOptionalCaption
 
 char IsNationSlotEligibleForEventProcessing(short nationSlot);
 
@@ -81,9 +91,16 @@ struct GoldDialogControl : public TControl {
   virtual void gold_vmethod_0071();                         // slot 0x71 byte 0x1c4
   virtual void SetGoldControlStateByResource(int a, int b); // slot 0x72 byte 0x1c8
 };
+// The 'GOLD' child of the factory dialogs opened by HandleTurnEventDialogFactorySlot78
+// dispatches a zero-argument commit through byte 0x1a0 — a different subclass family
+// than TurnEventDialogNode (whose 0x1a0 is ShowTurnEventDialog(int)) and than TControl
+// (whose slot 0x68 takes four arguments). Provisional interface until the concrete
+// class is recovered.
+struct GoldCommitControl : public TView {
+  virtual void CommitGoldDialogContent(); // slot 0x68 byte 0x1a0
+};
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
-const unsigned int kAddrStrSourceFile = 0x0069b6bc;
 const unsigned int kAddrHotKeyDialogTemplate = 0x00698b1a;
 const unsigned int kAddrHotKeyDialogTemplateEnd = 0x00698b52;
 const unsigned int kAddrLocalizedMessageTemplate = 0x006a13a0;
@@ -115,6 +132,9 @@ TViewMgr::TViewMgr() : TObject() {
 // SYNTHETIC: IMPERIALISM 0x005d50b0
 // TViewMgr::`scalar deleting destructor'
 TViewMgr::~TViewMgr() {}
+
+// SYNTHETIC: IMPERIALISM 0x005d50e0
+// TViewMgr::~TViewMgr
 
 // FUNCTION: IMPERIALISM 0x005d5100
 void TViewMgr::LoadTurnEventCursorTable() {
@@ -332,16 +352,12 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e5));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        TemporarilyClearAndRestoreUiInvalidationFlag)(
-        reinterpret_cast<const char*>(kAddrStrSourceFile), 0x223);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x223);
   }
   node->ShowTurnEventDialog(1);
   if (node->ResolveControlByTag(0x444c4f47) == nullptr) { // 'GOLD'
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        TemporarilyClearAndRestoreUiInvalidationFlag)(
-        reinterpret_cast<const char*>(kAddrStrSourceFile), 0x227);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x227);
   }
   void* content = node->QueryTurnEventContentObject();
   if (content != nullptr) {
@@ -623,6 +639,26 @@ void TViewMgr::UiRuntimeSlot58() {
 // FUNCTION: IMPERIALISM 0x005d6e30
 void TViewMgr::UiRuntimeSlot8C(int arg) {
   (void)arg;
+}
+
+// FUNCTION: IMPERIALISM 0x005d6e50
+void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(eventCode, 0));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x535);
+  }
+  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
+      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+  gold->AssertValid();
+  if (gold != nullptr) {
+    gold->CommitGoldDialogContent();
+  }
+  node->ShowTurnEventDialog(1);
+  node->RefreshTurnEventDialog();
+  node->CallVoidSlotA0();
+  node->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x005d7190
@@ -919,7 +955,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
         this->UiRuntimeSlot100();
         break;
       case 0x5df:
-        this->UiRuntimeSlot104();
+        this->HandleTurnEvent5DF_RefreshMainView();
         break;
       case 0x5e0:
         this->UiRuntimeSlot108();
@@ -1073,8 +1109,6 @@ void TViewMgr::UiRuntimeSlot6C() {
 void TViewMgr::UiRuntimeSlot70() {}
 
 void TViewMgr::UiRuntimeSlot74() {}
-
-void TViewMgr::UiRuntimeSlot78() {}
 
 void TViewMgr::UiRuntimeSlot7C() {}
 
@@ -1242,10 +1276,13 @@ void TViewMgr::UiRuntimeSlotBC() {
 void TViewMgr::NoOpTurnEventStateVtableSlotFC() {}
 
 void TViewMgr::UiRuntimeSlot100() {}
-void TViewMgr::UiRuntimeSlot104() {}
-void TViewMgr::UiRuntimeSlot108() {}
-void TViewMgr::UiRuntimeSlot10C() {}
-void TViewMgr::UiRuntimeSlot110() {}
+
+// FUNCTION: IMPERIALISM 0x005dbdd0
+void TViewMgr::HandleTurnEvent5DF_RefreshMainView() {
+  TControl* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
+  mainPanel->AssertValid();
+  mainPanel->RefreshControl();
+}
 
 // FUNCTION: IMPERIALISM 0x005dc160
 void TViewMgr::InvokeStrategicMapViewMethod6C() {
@@ -1287,12 +1324,14 @@ int TViewMgr::ShowConstructionOptionsDialog() {
 }
 
 void TViewMgr::UiRuntimeSlotE0() {}
-void TViewMgr::UiRuntimeSlotE4() {}
 void TViewMgr::UiRuntimeSlotE8() {}
 void TViewMgr::UiRuntimeSlotEC() {}
 void TViewMgr::UiRuntimeSlotF0() {}
 void TViewMgr::UiRuntimeSlotF4() {}
 void TViewMgr::UiRuntimeSlotF8() {}
+void TViewMgr::UiRuntimeSlot108() {}
+void TViewMgr::UiRuntimeSlot10C() {}
+void TViewMgr::UiRuntimeSlot110() {}
 
 // FUNCTION: IMPERIALISM 0x005dcaa0
 void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
@@ -1310,4 +1349,85 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
     }
     delete[] buffer;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005dd220
+void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x1c52));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x14a);
+  }
+  TControl* gold = node->ResolveControlByTag(0x444c4f47); // 'GOLD'
+  POINT placement;
+  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->RefreshTurnEventDialog();
+  TDeluxeText* nameText =
+      static_cast<TDeluxeText*>(static_cast<TView*>(gold->ResolveControlByTag(0x6e616d65)));
+  if (nameText == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x156);
+  }
+  nameText->SetTextFromUiStringResourceId(static_cast<short>(stringCode));
+  node->CallVoidSlotA0();
+  node->Free();
+}
+
+// FUNCTION: IMPERIALISM 0x005ddd20
+void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdac));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x232);
+  }
+  TControl* page = node->ResolveControlByTag(0x70616765); // 'page'
+  if (page == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x233);
+  }
+  TView* pageOwner = page->ownerContext;
+  page->Free();
+
+  TSuperCivRoster* roster = new TSuperCivRoster();
+  int rosterBounds[4] = {0x1ca, 0x136, 0xd, 0x2e};
+  TView* runningDialog = roster;
+  roster->InitializeLedgerRosterPages(pageOwner, rosterBounds, &runningDialog);
+  roster->controlTag = 0x70616765; // 'page'
+
+  TStaticText* textEntry = new TStaticText();
+  int textOffset[2] = {0x4d, 0x11};
+  int textSize[2] = {0x80, 0x12};
+  textEntry->InitializeTextEntryBaseAndOptionalStringResource(
+      static_cast<TControl*>(pageOwner), textOffset, textSize, 5, 5, 0x2746, 0xa);
+  ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
+
+  POINT placement;
+  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->ShowTurnEventDialog(1);
+  node->RefreshTurnEventDialog();
+  short selectedIndex = roster->selectedIndex84;
+  node->CallVoidSlotA0();
+  node->Free();
+
+  if (selectedIndex != -1) {
+    this->mapUberPictureF0->OrphanCallChain_C1_I06_00598a20(selectedIndex);
+    int orderState =
+        g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder20->field_8;
+    if (orderState == 0 || orderState == 3 || orderState == 2) {
+      g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(selectedIndex, 2);
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005dea60
+void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) {
+  TModalMessageCommand* command = new TModalMessageCommand();
+  command->message = *message;
+  command->payload = payload;
+  command->InitializeRangePair(0x48657921 /* 'Hey!' */, g_pGlobalUiRootController, 0, 0, 0);
+  g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }

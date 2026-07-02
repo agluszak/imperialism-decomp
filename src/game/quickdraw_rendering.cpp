@@ -3,6 +3,7 @@
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/TStaticText.h"
 
 // FUNCTION: IMPERIALISM 0x00495000
 void SetQuickDrawFillColor(int fillColor) {
@@ -253,4 +254,25 @@ void BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int
   *reinterpret_cast<int*>(fields + 3) = styleFlags;
   fields[2] = static_cast<short>(arg2);
   fields[0] = (arg2 >= 0xc) ? 1 : 3;
+}
+
+// FUNCTION: IMPERIALISM 0x005c4020
+TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int unused2,
+                                                      int pointSize, int themeCode, int themeCode2,
+                                                      const char* caption) {
+  (void)unused2;
+  control->AssertValid();
+  TControlPictureRectState styleDescriptor;
+  styleDescriptor.mode = 0;
+  styleDescriptor.flag2 = 0;
+  styleDescriptor.pointSize = 0;
+  styleDescriptor.styleRef6 = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
+  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+  control->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(themeCode2), 0);
+  if (caption != 0) {
+    CString captionString(caption);
+    control->AssignTextSharedRefIfChangedAndMaybeInvalidate(&captionString, 0);
+  }
+  return control;
 }

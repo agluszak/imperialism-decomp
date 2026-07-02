@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x0064d778
 class TSuperCivRoster : public TPageView {
 public:
-// === BEGIN GENERATED DECLS (TSuperCivRoster) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TSuperCivRoster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TSuperCivRoster)
   virtual ~TSuperCivRoster(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -118,12 +118,27 @@ public:
   // slot 0x6b OrphanCallChain_C8_I82_0056fc80 inherited unchanged (0x56fc80)
   // slot 0x6c OrphanCallChain_C8_I118_0056fdb0 inherited unchanged (0x56fdb0)
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
-  virtual undefined ConstructTSuperCivRosterBaseState(); // slot 0x6e 0x4ab470
-// === END GENERATED DECLS (TSuperCivRoster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TSuperCivRoster 0xCTOR`).
+  // Builds the ledger roster pages into the owning view context and tracks the
+  // running dialog through pOutDialogView (verified 3-arg thiscall, RET 0xC; the
+  // old ConstructTSuperCivRosterBaseState name was a misread — this is not a ctor).
+  virtual undefined InitializeLedgerRosterPages(TView* pOwnerContext, int* pBoundsRect,
+                                                TView** pOutDialogView); // slot 0x6e 0x4ab470
+  // === END GENERATED DECLS (TSuperCivRoster) ===
 
-  TSuperCivRoster();
+  // Object slice from the inline-expanded ctor at 0x5ddde1 (inside
+  // TViewMgr::ShowCivilianLedgerDialogAndSelectUnit): base TPageView ctor, own vptr,
+  // then the selected-entry index seeded to -1. Fields between the TPageView slice
+  // and +0x84 are not yet recovered.
+  short selectedIndex84; // +0x84 (selected civilian index; -1 = none)
+
+  // Defined inline: the original constructor exists only inline-expanded at its
+  // call sites (TPageView ctor call + vptr store + selectedIndex84 = -1).
+  TSuperCivRoster() : TPageView() {
+    selectedIndex84 = -1;
+  }
 };
+
+ASSERT_SIZE(TSuperCivRoster, 0x88);
 
 // === BEGIN GENERATED (TSuperCivRoster) — refreshed by `just gen-class TSuperCivRoster`; do not hand-edit ===
 // clang-format off

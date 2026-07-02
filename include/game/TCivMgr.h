@@ -10,7 +10,7 @@ class TCivMgr : public TObject {
 public:
   // === BEGIN GENERATED DECLS (TCivMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCivMgr)
-  virtual ~TCivMgr();                                      // slot 0x01 (scalar deleting destructor)
+  virtual ~TCivMgr(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -33,9 +33,17 @@ public:
   // HandleCivilianTileOrderAction via thunk_HandleEngineerConstructionAction (0x406ccb).
   bool HandleEngineerConstructionAction(short nTileIndex);
 
+  // Selection helpers (0x4d2c60/0x4d2cf0/0x4d2d30). These were previously modeled on a
+  // duplicate class "TSelectedCivilianOrderState"; the global at 0x6a43dc is this
+  // TCivMgr instance (same 0xc-byte object, same selectedEntry slot, and its vtable
+  // dispatches match the slots declared above).
+  void SetActiveCivilianSelection(class TCivUnit* entryContext, char refreshCommandPanel);
+  void QueueImmediateCivilianCommandAndCycleSelection(int commandType);
+  void ShowDisbandCivilianConfirmationDialog();
+
   // Data members (object size 0x0c, base TObject = vptr only).
-  class TCivUnit* field04; // 0x4 — selected civilian order entry
-  int field08;             // 0x8
+  class TCivUnit* selectedEntry; // 0x4 — selected civilian order entry
+  int field08;                   // 0x8
 
   TCivMgr();
 };

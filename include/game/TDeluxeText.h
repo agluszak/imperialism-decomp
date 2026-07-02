@@ -128,8 +128,12 @@ public:
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
-  virtual undefined OrphanCallChain_C1_I08_005b60a0(char param_1);            // slot 0x76 0x5b60a0
-  virtual undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl();   // slot 0x77 0x5b60d0
+  virtual undefined OrphanCallChain_C1_I08_005b60a0(char param_1); // slot 0x76 0x5b60a0
+  // Loads the localized UI string `stringId` from the module cache and assigns it
+  // via UpdateTextEntrySharedStringAndMaybeNotify (verified 1-arg thiscall, RET 4;
+  // the old InitializeTechHistoryViewTitleAndMapKeyControls name was junk and the
+  // declaration had dropped the argument).
+  virtual void SetTextFromUiStringResourceId(short stringId);                 // slot 0x77 0x5b60d0
   virtual undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(); // slot 0x78 0x5b62e0
   virtual undefined ConstructTMapKeyBaseState_Impl(void* styleDescriptor,
                                                    int unusedFlag); // slot 0x79 0x5b62a0
