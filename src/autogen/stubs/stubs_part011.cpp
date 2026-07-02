@@ -1651,14 +1651,6 @@ undefined4 CreateAndQueueTurnEventPacketTagGWEN(void)
   return 0;
 }
 
-// ghidra_name TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState
-// ghidra_proto undefined ConstructTAmbitFileBasedDocumentBaseState()
-// FUNCTION: IMPERIALISM 0x0049e5f0
-undefined4 ConstructTAmbitFileBasedDocumentBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTAmbitFileBasedDocumentAndMaybeFree_Impl
 // ghidra_proto undefined DestructTAmbitFileBasedDocumentAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0049e640

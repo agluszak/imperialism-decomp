@@ -195,6 +195,11 @@ extern TNetMgr* g_pNetMgr006a6014;
 // into TNetMgr's vtable annotation by adjacency). Element/name identification is
 // behavioral: Serialize instantiations at 0x5e4610/0x5e4830, node size 0xc,
 // ctor blockSize 10.
+// UGameWindow/dialog-factory widget build stack (IncludeView TU band). The out-of-line
+// "PushUiResourcePoolNode"/"PopUiResourcePoolNode" bodies at 0x479b00/0x479a80 are this
+// list's CList<...>::AddTail/RemoveTail twin copies; the "current panel" global the
+// factory bodies read at 0x6a13e8 is this object's m_pNodeTail (i.e. GetTail()).
+extern CList<void*, void*> g_UiWidgetBuildStack006a13e0; // elements are TView* widgets
 extern CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
 extern CArray<void*, void*> g_WNetSerializedPtrArrayB006a5f28;
 extern CList<void*, void*> g_WNetPendingPacketList006a5f40;

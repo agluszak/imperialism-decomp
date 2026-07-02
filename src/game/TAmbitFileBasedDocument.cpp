@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TAmbitFileBasedDocument, TFileBasedDocument)
 
+// FUNCTION: IMPERIALISM 0x0049e5f0
 TAmbitFileBasedDocument::TAmbitFileBasedDocument() {}
 
 // SYNTHETIC: IMPERIALISM 0x0049e610

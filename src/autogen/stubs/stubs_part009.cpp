@@ -1475,6 +1475,14 @@ undefined4 BuildUniversityRecruitmentRows(void)
   return 0;
 }
 
+// ghidra_name CAmbitDocument::CreateObject
+// ghidra_proto undefined CreateObject()
+// FUNCTION: IMPERIALISM 0x004793c0
+undefined4 CreateObject(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_OnNewDocument_At004797a0
 // ghidra_proto undefined WrapperFor_OnNewDocument_At004797a0()
 // FUNCTION: IMPERIALISM 0x004797a0
@@ -1550,7 +1558,7 @@ undefined4 RegisterUiResourceEntry_Impl(void)
 // ghidra_name CDib::CreateObject
 // ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x00479e40
-undefined4 CreateObject(void)
+undefined4 CreateObject_00479E40(void)
 {
   return 0;
 }

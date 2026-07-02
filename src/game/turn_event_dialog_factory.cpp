@@ -5,8 +5,6 @@
 #include "game/TView.h"
 #include "game/global_data_tables.h"
 
-extern void PushUiResourcePoolNode(void);
-extern void PopUiResourcePoolNode_00479A80(void);
 extern unsigned char* ZeroUiResourceContextStyleBytes(unsigned char* buffer);
 
 #include "game/ui_control_tags.h"
@@ -25,7 +23,7 @@ TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int h
   }
   g_pUiResourceContext = window;
 
-  PushUiResourcePoolNode();
+  g_UiWidgetBuildStack006a13e0.AddTail(window);
 
   int offsetLayout[2] = {offsetX, offsetY};
   int sizeLayout[2] = {width, height};
@@ -58,7 +56,7 @@ TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int h
   *reinterpret_cast<unsigned short*>(bytes + 0x9c) = 8;
 
   g_pUiResourceContext = 0;
-  PopUiResourcePoolNode_00479A80();
+  g_UiWidgetBuildStack006a13e0.RemoveTail();
 
   if (g_pUiResourceHead != 0) {
     g_pUiResourceHead->PropagateUiResourceContextRecursive(0);
@@ -123,7 +121,7 @@ TView* BuildStartupIntroBackground() {
   }
   g_pUiResourceContext = container;
 
-  PushUiResourcePoolNode();
+  g_UiWidgetBuildStack006a13e0.AddTail(container);
 
   int containerOffset[2] = {0, 0};
   int containerSize[2] = {0x7d0, 0x7d0};
@@ -156,7 +154,7 @@ TView* BuildStartupIntroBackground() {
   }
 
   g_pUiResourceContext = 0;
-  PopUiResourcePoolNode_00479A80();
+  g_UiWidgetBuildStack006a13e0.RemoveTail();
 
   // Unlike BuildTurnOrderNavigationWindow's TGameWindow (which gets its own native host
   // window later via TWindow::Realize), this tree is plain TView/TPicture — it has no
@@ -308,29 +306,4 @@ TView* __cdecl BuildUniversityDialogShell(int nContextSlot, int nEventCode) {
   (void)nContextSlot;
   (void)nEventCode;
   return nullptr;
-}
-
-// FUNCTION: IMPERIALISM 0x004793c0
-int* CreateTurnEventDialogFactoryRegistryObject() {
-  void* storage = new char[0x54];
-  if (storage == nullptr) {
-    return nullptr;
-  }
-  return InitializeTurnEventDialogFactoryRegistry(storage, (int*)storage);
-}
-
-// FUNCTION: IMPERIALISM 0x00479480
-int* InitializeTurnEventDialogFactoryRegistry(void* storage, int* bootstrap) {
-  (void)storage;
-  EnsureTurnEventDialogFactoryRegistryInitialized();
-  return bootstrap;
-}
-
-// FUNCTION: IMPERIALISM 0x00479710
-void DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory(int* bootstrap) {
-  if (g_pTurnEventDialogFactoryRegistry != nullptr) {
-    delete g_pTurnEventDialogFactoryRegistry;
-    g_pTurnEventDialogFactoryRegistry = nullptr;
-  }
-  (void)bootstrap;
 }

@@ -4,8 +4,9 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
-
-class TView;
+// Full TView definition required: MSVC500 instantiates DestructElements for the
+// factory-pointer CList and demands the pointee type be complete.
+#include "game/TView.h"
 
 typedef TView*(__cdecl* TurnEventDialogFactoryProc)(int nContextSlot, int nEventCode);
 
@@ -36,24 +37,10 @@ public:
   TTurnEventDialogFactoryRegistry();
   void RegisterDialogFactoryCallback(TurnEventDialogFactoryProc factory);
 
-  struct CallbackNode {
-    CallbackNode* next;
-    CallbackNode* previousTail;
-    TurnEventDialogFactoryProc factory;
-  };
-
-  char* runtimeClassSentinel; // +0x04
-  CallbackNode* listHead;     // +0x08
-  CallbackNode* listTail;     // +0x0c
-  int registeredCount;        // +0x10
-  CallbackNode* freeList;     // +0x14
-  int blockPoolHead;          // +0x18
-  int blockPoolCapacity;      // +0x1c
+  // +0x04 — embedded MFC template list of registered factory callbacks (this TU's twin
+  // copy of the CList vtable is 0x0064b328; ctor block size 10).
+  CList<TurnEventDialogFactoryProc, TurnEventDialogFactoryProc> factories;
 };
 
 void EnsureTurnEventDialogFactoryRegistryInitialized();
-
-// Document/bootstrap object (0x54 bytes) that owns the registry during CAmbitDocument setup.
-int* CreateTurnEventDialogFactoryRegistryObject();
-int* InitializeTurnEventDialogFactoryRegistry(void* storage, int* bootstrap);
-void DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory(int* bootstrap);
+void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* registry);

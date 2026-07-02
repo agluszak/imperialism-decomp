@@ -13,10 +13,7 @@ unsigned char* ZeroUiResourceContextStyleBytes(unsigned char* buffer) {
   return buffer;
 }
 
-// FUNCTION: IMPERIALISM 0x00479a80
-void PopUiResourcePoolNode_00479A80(void) {}
-
-// Minimal pool push/pop: turn-order navigation dialog init uses a single push/pop pair
-// with no nested siblings; full freelist pool @ DAT_006a13e0 remains TODO.
-// FUNCTION: IMPERIALISM 0x00479b00
-void PushUiResourcePoolNode(void) {}
+// 0x479a80 / 0x479b00 ("Pop/PushUiResourcePoolNode") are this TU's out-of-line twin copies
+// of CList<void*,void*>::RemoveTail / ::AddTail operating on g_UiWidgetBuildStack006a13e0
+// — see global_data_tables.h. They are template COMDATs, not game functions; their
+// addresses stay with autogen stubs (template twin-copy reccmp gap).

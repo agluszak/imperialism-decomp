@@ -595,6 +595,8 @@ unsigned short g_wUiResourceEntryDefaultParam2 = 0;
 // WNetMgr.cpp file-scope template statics; the CList is the local-player pending-packet
 // queue that TNetMgr::Send appends heap packet copies to (block size 10, per the original
 // static-init at 0x5e26d0).
+// GLOBAL: IMPERIALISM 0x006a13e0
+CList<void*, void*> g_UiWidgetBuildStack006a13e0;
 // GLOBAL: IMPERIALISM 0x006a5f10
 CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
 // GLOBAL: IMPERIALISM 0x006a5f28

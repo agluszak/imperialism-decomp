@@ -1473,7 +1473,7 @@
     },
     {
       "address": "0x4793c0",
-      "matching": 0.34285714285714286,
+      "matching": 0.07692307692307693,
       "name": "CAmbitDocument::CreateObject(void)",
       "type": 1
     },
@@ -1485,13 +1485,13 @@
     },
     {
       "address": "0x479480",
-      "matching": 0.02040816326530612,
+      "matching": 0.5774647887323944,
       "name": "InitializeTurnEventDialogFactoryRegistry",
       "type": 1
     },
     {
       "address": "0x479710",
-      "matching": 0.3783783783783784,
+      "matching": 0.9310344827586207,
       "name": "DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory",
       "type": 1
     },
@@ -1517,18 +1517,6 @@
       "address": "0x479990",
       "matching": 0.0,
       "name": "CreateParentDirectoryAndRunArchiveOperation_Mode1012",
-      "type": 1
-    },
-    {
-      "address": "0x479a80",
-      "matching": 0.05,
-      "name": "PopUiResourcePoolNode_00479A80",
-      "type": 1
-    },
-    {
-      "address": "0x479b00",
-      "matching": 0.0,
-      "name": "PushUiResourcePoolNode",
       "type": 1
     },
     {
@@ -5453,7 +5441,7 @@
     },
     {
       "address": "0x491be0",
-      "matching": 0.7128712871287128,
+      "matching": 0.98,
       "name": "RegisterDialogFactoryCallback",
       "type": 1
     },
@@ -5465,7 +5453,7 @@
     },
     {
       "address": "0x491cc0",
-      "matching": 0.6140350877192983,
+      "matching": 0.8421052631578947,
       "name": "TCluster::RunRegisteredDialogFactoriesByEventCode",
       "type": 1
     },
@@ -6961,7 +6949,7 @@
     },
     {
       "address": "0x49e5f0",
-      "matching": 0.4,
+      "matching": 0.2,
       "name": "TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState",
       "type": 1
     },
@@ -12764,7 +12752,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },

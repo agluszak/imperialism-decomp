@@ -4,9 +4,6 @@
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
 
-extern char CObjectVtbl_0064b328;
-extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-
 TView* __cdecl BuildTradeSchoolDialogControls(int nContextSlot, int nEventCode);
 TView* __cdecl InitializeIndustryOverviewPlacardsAndTradeStatusTags(int nContextSlot,
                                                                     int nEventCode);
@@ -29,7 +26,7 @@ TView* __cdecl InitializeTradeScreenBitmapControls(int nContextSlot, int nEventC
 TView* __cdecl BuildTurnEventDialogResourcesForEvent7DE(int nContextSlot, int nEventCode);
 TView* __cdecl BuildUniversityDialogShell(int nContextSlot, int nEventCode);
 
-static void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* registry) {
+void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* registry) {
   static TurnEventDialogFactoryProc kStartupFactories[] = {
       BuildTradeSchoolDialogControls,
       InitializeIndustryOverviewPlacardsAndTradeStatusTags,
@@ -57,60 +54,16 @@ static void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistr
 }
 
 // FUNCTION: IMPERIALISM 0x00491ad0
-TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry()
-    : TObject(), runtimeClassSentinel(&CObjectVtbl_0064b328), listHead(nullptr), listTail(nullptr),
-      registeredCount(0), freeList(nullptr), blockPoolHead(0), blockPoolCapacity(10) {}
+TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : TObject(), factories(10) {}
 
 // SYNTHETIC: IMPERIALISM 0x00491b10
 // TTurnEventDialogFactoryRegistry::`scalar deleting destructor'
-TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry() {
-  runtimeClassSentinel = &CObjectVtbl_0064b328;
-  CallbackNode* node = listHead;
-  while (node != nullptr) {
-    node = node->next;
-  }
-  registeredCount = 0;
-  freeList = nullptr;
-  listTail = nullptr;
-  listHead = nullptr;
-  while (blockPoolHead != 0) {
-    CPlex* plex = (CPlex*)blockPoolHead;
-    blockPoolHead = (int)plex->pNext;
-    delete (char*)plex;
-  }
-  runtimeClassSentinel = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-}
+TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry() {}
 
 // FUNCTION: IMPERIALISM 0x00491be0
 void TTurnEventDialogFactoryRegistry::RegisterDialogFactoryCallback(
     TurnEventDialogFactoryProc factory) {
-  CallbackNode* capturedTail = listTail;
-  if (freeList == nullptr) {
-    const int blockBase =
-        AllocateAndLinkBlockHead(&blockPoolHead, blockPoolCapacity, sizeof(CallbackNode));
-    CallbackNode* node = (CallbackNode*)(blockBase - 8 + blockPoolCapacity * sizeof(CallbackNode));
-    int remaining;
-    for (remaining = blockPoolCapacity - 1; remaining >= 0; --remaining) {
-      node->next = freeList;
-      freeList = node;
-      node = node - 1;
-    }
-  }
-
-  CallbackNode* node = freeList;
-  freeList = node->next;
-  node->next = nullptr;
-  node->previousTail = capturedTail;
-  ++registeredCount;
-  node->factory = factory;
-
-  if (listHead == nullptr) {
-    listHead = node;
-    listTail = node;
-    return;
-  }
-  listTail->next = node;
-  listTail = node;
+  factories.AddTail(factory);
 }
 
 // FUNCTION: IMPERIALISM 0x00491c80
@@ -135,11 +88,10 @@ TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
                                                                                 int* pAnchorPoint) {
   (void)nContextId;
   TView* result = nullptr;
-  CallbackNode* node = listHead;
-  while (node != nullptr) {
-    CallbackNode* next = node->next;
-    result = node->factory(0, nEventCode);
-    node = next;
+  POSITION pos = factories.GetHeadPosition();
+  while (pos != 0) {
+    TurnEventDialogFactoryProc factory = factories.GetNext(pos);
+    result = factory(0, nEventCode);
     if (result != nullptr) {
       break;
     }

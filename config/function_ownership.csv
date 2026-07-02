@@ -138,14 +138,13 @@ address|target_cpp|ownership|note
 4601b0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 46fd10|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 4749a0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
-4793c0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 479440|src/game/CAmbitDocument.cpp|manual|marker_sync
 479460|src/game/TTechStorePage.cpp|manual|marker_sync
-479480|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
+479480|src/game/CAmbitDocument.cpp|manual|marker_sync
 4796a0|src/game/TTechStorePage.cpp|manual|marker_sync
 4796c0|src/game/TTechStorePage.cpp|manual|marker_sync
 4796e0|src/game/TTechStorePage.cpp|manual|marker_sync
-479710|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
+479710|src/game/CAmbitDocument.cpp|manual|marker_sync
 4797d0|src/game/TTechStorePage.cpp|manual|marker_sync
 4798b0|src/game/TObject.cpp|manual|marker_sync
 4798d0|src/game/TObject.cpp|manual|marker_sync
@@ -750,6 +749,7 @@ address|target_cpp|ownership|note
 49e4e0|src/game/TAmbitApplication.cpp|manual|marker_sync
 49e5a0|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49e5d0|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
+49e5f0|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49e610|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49e660|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49e680|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
