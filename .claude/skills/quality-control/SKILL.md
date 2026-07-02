@@ -109,3 +109,7 @@ local/gitignored and commit only `reccmp-project.yml`.
    scalar-dtor name field per address (commit 22efcd3c restored the whole file from its
    parent after the 5b715e03 regen broke 272/272 vtables and dropped 369 aligned funcs).
    The same regen-induced name drift also shows up as a large `just stats` alignment drop.
+8. **Regressions right after a resync** (mass score drops around `thunk_*` names, one
+   function 100→0, unresolved `thunk_*` externals at link, +N original-only globals) —
+   these are symbols.csv/ownership pipeline symptoms, not build problems. See the
+   **`sync-pipeline` skill** ("Resync failure → fix") for the taxonomy and fixes.

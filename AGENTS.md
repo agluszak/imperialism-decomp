@@ -18,12 +18,17 @@ starting that kind of task.
   dump, cdecl/thiscall scan) and the interactive function-documentation methodology.
 - **`quality-control`** — build, reccmp detect/compare/stats, gates,
   formatting, and reccmp pairing-failure diagnosis.
-- **`class-recovery`** — class/vtable reconstruction, Mac evidence, the vcall facade
-  registry, and facade→virtual migration.
+- **`sync-pipeline`** — the derived-artifact pipeline: symbols.csv, function
+  ownership, autogen stubs, name overrides, `regen-stubs`/`db-resync`, and the
+  resync failure→fix taxonomy (junk thunk rows, type flips, size clamps).
+- **`class-recovery`** — class/vtable reconstruction, slice/class discovery,
+  Mac-evidence oracle use, and real-virtual dispatch on recovered classes.
 - **`vtable-matching`** — drive `just vtable <Class>` to 100%: read the reccmp vtable
   diff and fix per-slot mismatches (inherited-base, scalar-deleting-dtor, missing
   override, stub-in-slot, imported-thunk). Separate from `class-recovery`, which
   reconstructs an unknown layout/inheritance in the first place.
+- **`run-debug`** — run the recomp under Wine, scripted winedbg sessions, and the
+  capture-by-window-ID screenshot recipe for visual verification.
 
 ## IMPORTANT
 - Game is compiled with MSVC500 (Visual C++ 5.0), which is an old compiler. DO NOT USE modern C++ features or syntax.
@@ -68,6 +73,8 @@ starting that kind of task.
 Each wraps a `uv run reccmp-*` tool via a `just` target (Hard Rule 2 — prefer the
 target). They need a built binary + reccmp DB.
 
+- `just precommit` — the whole pre-commit sequence in one command: `build` +
+  `gates` + `test` (tooling unit tests) + `stats`.
 - `just gates` — the pre-commit mechanical source-policy gates. Now also runs
   `uv run reccmp-decomplint` (annotation linting: marker syntax, duplicate addresses,
   stray markers) via the `just decomplint` target.

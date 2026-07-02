@@ -60,17 +60,13 @@ different project, invoke the module directly with the env override, e.g.
 
 ## Sync with the source tree
 
-- `just sync-ghidra` — forward: export Ghidra names/protos/types/globals into
-  `config/` + `src/ghidra_autogen/` artifacts. **Curated `config/symbols.csv`
-  rows are preserved by address** (name + prototype) so provisional Ghidra labels
-  cannot regress reccmp pairing; `config/function_name_overrides.csv` still wins
-  afterward. The pipeline self-cleans: stray ILT-range DB Function entities are
-  pruned first, rows colliding with source `// VTABLE:` addresses are dropped in
-  the merge, and integrity/collision gates run at the end. It mutates the DB
-  (push-names), so `just export-project` must follow — or run `just db-resync`,
-  which chains the whole resync through build/gates/stats/export. Durable
-  renames belong in overrides, not hand-edited export output. Use
-  `--no-preserve-curated-symbols` only for a deliberate full refresh.
+- `just sync-ghidra` / `just db-resync` — forward: export Ghidra
+  names/protos/types/globals into `config/` + `src/ghidra_autogen/` artifacts.
+  Ownership of that pipeline (curated-merge semantics, junk cleanup, name
+  convergence, failure→fix) lives in the **`sync-pipeline` skill** — read it
+  before running or debugging a resync. Prefer `just db-resync` for the full
+  chain; `sync-ghidra` alone still mutates the DB (push-names), so
+  `just export-project` must follow before committing.
 - `just import-ghidra` — reverse: push our recovered names/signatures/types back
   into Ghidra (via the reccmp fork). Conventions you model in source propagate to
   Ghidra this way; there is deliberately no separate convention-rewriter.

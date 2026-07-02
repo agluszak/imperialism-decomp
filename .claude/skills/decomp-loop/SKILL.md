@@ -56,8 +56,9 @@ squeezing any single function to 100%.
    - rewrite raw `void __thiscall Foo(T* this, ...)` Ghidra blocks into real member
      methods before building (raw form breaks MSVC parsing and loses address
      pairing);
-   - call vtable slots through generated facades / real virtuals, never raw
-     `vftable[...]` indexing (see the `class-recovery` skill).
+   - call vtable slots as real `virtual` methods on the recovered class (declare the
+     method at the verified slot if missing — Hard Rules 11/12), never raw
+     `vftable[...]` indexing and never new `VCall_*` facades (see `class-recovery`).
 4. **Sync + build**:
    - `just build` — always. Use `just build`, **not** a hand-rolled `docker run`: it
      applies the exact match flags (`RelWithDebInfo`, `IMPERIALISM_LINK_MFC=ON`,
