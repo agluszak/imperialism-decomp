@@ -8,6 +8,7 @@
 #include "game/global_data_tables.h"
 
 class TCity;
+class TTaskForce;
 
 // TOcean map-order runtime singleton (g_pActiveMapOrderContext @ 0x6a3fbc).
 // Ghidra historically labeled this InputState for container-level methods.
@@ -16,25 +17,25 @@ class TCity;
 class TOcean : public TObject {
 public:
   TOcean();
-// === BEGIN GENERATED DECLS (TOcean) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TOcean) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOcean)
   virtual ~TOcean(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x5628f0
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5628f0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x562340
-  virtual void Free() override; // slot 0x07 0x5621e0
-// === END GENERATED DECLS (TOcean) ===
-  short nationCount;                     // +0x04
-  TZone* contextArray;                   // +0x08
-  short field0c;                         // +0x0c
-  char pad0e[2];                         // +0x0e
-  unsigned short keyMask;                // +0x10
-  char pad12[0x26];                      // +0x12 .. +0x37
-  int* slotTable;                        // +0x38
-  unsigned int slotCount;                // +0x40
-  char pad44[0x14];                      // +0x44 .. +0x57 (allocation size TBD)
+  virtual void Free() override;                    // slot 0x07 0x5621e0
+                                                   // === END GENERATED DECLS (TOcean) ===
+  short nationCount;                               // +0x04
+  TZone* contextArray;                             // +0x08
+  short field0c;                                   // +0x0c
+  char pad0e[2];                                   // +0x0e
+  unsigned short keyMask;                          // +0x10
+  char pad12[0x26];                                // +0x12 .. +0x37
+  int* slotTable;                                  // +0x38
+  unsigned int slotCount;                          // +0x40
+  char pad44[0x14];                                // +0x44 .. +0x57 (allocation size TBD)
 
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
 
@@ -45,6 +46,11 @@ public:
 
   // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.
   void* FindPortZoneBySelectedTile(TCity* city);
+
+  // bd 1uj.16: final step of TTaskForce::SetMapOrderType9AndQueue /
+  // PromoteMapOrderChainAndQueue (0x552f80 / 0x5533f0). Not yet recovered --
+  // body is a documented placeholder; see bd 1uj.16 follow-up notes.
+  void FinalizeQueuedMapOrderEntry(TTaskForce* entry); // 0x5642e0
 };
 
 void NotifyMapUberPictureTileMarker(short tileIndex);

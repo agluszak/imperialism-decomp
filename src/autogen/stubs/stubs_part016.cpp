@@ -1371,14 +1371,6 @@ undefined4 ReassignOrderNodeNationAndRebindParentCounters(void)
   return 0;
 }
 
-// ghidra_name TScatteredShipsMission::SetMapOrderActiveChildEntry
-// ghidra_proto void __thiscall SetMapOrderActiveChildEntry(int * pActiveChildEntry)
-// FUNCTION: IMPERIALISM 0x00551220
-undefined4 SetMapOrderActiveChildEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectNavyPrimaryOrderByNationAndRecomputePreferredChild
 // ghidra_proto undefined SelectNavyPrimaryOrderByNationAndRecomputePreferredChild()
 // FUNCTION: IMPERIALISM 0x00551850
@@ -1467,26 +1459,10 @@ undefined4 SetTaskForceOwnerPointer(void)
   return 0;
 }
 
-// ghidra_name SetMapOrderType9AndQueue
-// ghidra_proto void __fastcall SetMapOrderType9AndQueue(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00552f80
-undefined4 SetMapOrderType9AndQueue(void)
-{
-  return 0;
-}
-
 // ghidra_name SetMapOrderType3Or4AndQueue
 // ghidra_proto void __thiscall SetMapOrderType3Or4AndQueue(char fUseType4)
 // FUNCTION: IMPERIALISM 0x005530f0
 undefined4 SetMapOrderType3Or4AndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name PromoteMapOrderChainAndQueue
-// ghidra_proto void __fastcall PromoteMapOrderChainAndQueue(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x005533f0
-undefined4 PromoteMapOrderChainAndQueue(void)
 {
   return 0;
 }
@@ -1539,26 +1515,10 @@ undefined4 HasActiveMapOrderEntryChildren(void)
   return 0;
 }
 
-// ghidra_name GetOrCreateTaskForceOrderNodeByTemplate
-// ghidra_proto undefined GetOrCreateTaskForceOrderNodeByTemplate()
-// FUNCTION: IMPERIALISM 0x00553bc0
-undefined4 GetOrCreateTaskForceOrderNodeByTemplate(void)
-{
-  return 0;
-}
-
 // ghidra_name ObjectPool::RemoveTaskForceOrderNodeById
 // ghidra_proto undefined RemoveTaskForceOrderNodeById()
 // FUNCTION: IMPERIALISM 0x00553d40
 undefined4 RemoveTaskForceOrderNodeById(void)
-{
-  return 0;
-}
-
-// ghidra_name RecomputeMapOrderChildAggregateMetric
-// ghidra_proto void __fastcall RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00553e30
-undefined4 RecomputeMapOrderChildAggregateMetric(void)
 {
   return 0;
 }

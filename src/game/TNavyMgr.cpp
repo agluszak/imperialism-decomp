@@ -3,6 +3,7 @@
 #include "game/TAdmiral.h"
 #include "game/TShip.h"
 #include "game/TObject.h"
+#include "game/TTaskForce.h"
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
@@ -48,6 +49,41 @@ static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlo
     }
     node = nextNode;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00557080
+bool TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry) {
+  for (TTaskForce* node = orderListHead04; node != nullptr; node = node->queue_next) {
+    if (node == entry) {
+      return true;
+    }
+  }
+
+  int childCount = 0;
+  if (entry != nullptr) {
+    for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
+      ++childCount;
+    }
+  }
+
+  if (childCount <= 0) {
+    entry->Free();
+    return false;
+  }
+
+  if (entry->queue_prev != nullptr) {
+    entry->queue_prev->queue_next = entry->queue_next;
+  }
+  if (entry->queue_next != nullptr) {
+    entry->queue_next->queue_prev = entry->queue_prev;
+  }
+  entry->queue_prev = nullptr;
+  entry->queue_next = orderListHead04;
+  if (orderListHead04 != nullptr) {
+    orderListHead04->queue_prev = entry;
+  }
+  orderListHead04 = entry;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00557170

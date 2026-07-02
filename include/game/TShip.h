@@ -44,7 +44,7 @@ public:
   // TControlSeaZoneMission::NoOpSlot3C). Sibling of ComputeOrderNodeCompositeEconomicScore
   // (same lookup tables, different blend per category). Thin wrapper over the
   // receiver-agnostic ComputeNavyOrderPriorityContributionPercentByCategory
-  // free function -- the same body is also called on a plain TMapOrderEntry*
+  // free function -- the same body is also called on a plain TTaskForce*
   // (TNavyMission::ReturnZeroSlot2C), so the shared logic takes values, not `this`.
   int ComputeNavyOrderPriorityContributionPercentByCategory(int category);
   // Per-resourceType-04 normalization base (the "stock cap" field of the
@@ -75,7 +75,7 @@ int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeTyp
 // TNavyOrderResourceDescriptor and blends it with the caller's own
 // stock/tiebreak field. Called both on TShip nodes (the primary navy order
 // list, via TShip::ComputeNavyOrderPriorityContributionPercentByCategory) and
-// on plain TMapOrderEntry nodes (TNavyMission::ReturnZeroSlot2C's orderList24
+// on plain TTaskForce nodes (TNavyMission::ReturnZeroSlot2C's orderList24
 // chain) -- both classes happen to carry the same 3 fields at the offsets the
 // original reads (+0x04 resource/order type, +0x1c stock/required-count,
 // +0x30 a tiebreak/context field), so this takes them by value instead of by

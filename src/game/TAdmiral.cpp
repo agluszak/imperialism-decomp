@@ -1,12 +1,18 @@
 #include "game/TAdmiral.h"
 
 #include "game/mapped_flavor_text.h"
-#include "game/TMapOrderEntry.h"
+#include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 #include "game/TMinor.h"
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
 
 #include "game/CString.h"
+
+// FUNCTION: IMPERIALISM 0x004d7eb0
+void __fastcall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TMinor* terrainDescriptor,
+                                                                      CString* dest) {
+  GenerateMappedFlavorTextByTableSlot(dest, terrainDescriptor->nationSlot);
+}
 
 // SYNTHETIC: IMPERIALISM 0x005512d0
 // TAdmiral::CreateObject
@@ -15,12 +21,6 @@ extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
 // TAdmiral::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TAdmiral, TObject)
-
-// FUNCTION: IMPERIALISM 0x004d7eb0
-void __fastcall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TMinor* terrainDescriptor,
-                                                                      CString* dest) {
-  GenerateMappedFlavorTextByTableSlot(dest, terrainDescriptor->nationSlot);
-}
 
 // FUNCTION: IMPERIALISM 0x00551430
 TAdmiral::TAdmiral(short terrainTypeIndex)
@@ -32,8 +32,7 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
   }
   if (static_cast<unsigned short>(terrainType) != 0xffff) {
     GenerateMappedFlavorTextByNationSlotField0C(
-        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[terrainType]),
-                                                &displayName);
+        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[terrainType]), &displayName);
     for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
       if (node == this) {
         continue;
@@ -57,7 +56,7 @@ static void RecomputeMapOrderOwnerActiveSelection(TMapOrderEntryOwnerContext* ow
   }
   ownerContext->active_node = 0;
   for (TMapOrderChildLinkNode* link = ownerContext->head; link != 0; link = link->next) {
-    TMapOrderEntry* activeEntry = ownerContext->active_node;
+    TTaskForce* activeEntry = ownerContext->active_node;
     ownerContext->active_node =
         link->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
   }

@@ -16,6 +16,7 @@
 #include "game/UiRuntimeContext.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
+#include "game/TTaskForce.h"
 
 extern "C" {
 extern char g_pClassDescTPortZone;
@@ -142,13 +143,13 @@ void TZone::HandleKeyDown(int key_id) {
   }
   SetMapOrderUiFlag(0);
 }
+// SYNTHETIC: IMPERIALISM 0x00562100
+// TOcean::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x00562140
 // TOcean::`scalar deleting destructor'
 
 TOcean::~TOcean() {}
-// SYNTHETIC: IMPERIALISM 0x00562100
-// TOcean::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x00562190
 // TOcean::GetRuntimeClass
@@ -288,4 +289,15 @@ int ComputeGlobalMapActionContextNodeValueAverage(void) {
   }
 
   return sum / count;
+}
+
+// bd 1uj.16: TTaskForce::SetMapOrderType9AndQueue / PromoteMapOrderChainAndQueue's
+// final notification step (0x5642e0). Genuinely large (per-nation IsKindOf-gated
+// view/menu refresh over g_apNationStates[entry->required_count] and a TZone
+// SetMapOrderUiFlag dispatch) and several hops away from those two targets'
+// core receiver-recovery ask; left as a documented placeholder rather than a
+// guessed body. NOT claimed with a // FUNCTION: marker -- see bd 1uj.16
+// follow-up notes.
+void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
+  (void)entry;
 }

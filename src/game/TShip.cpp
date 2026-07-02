@@ -135,7 +135,7 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
   } while (1);
 }
 
-// Receiver-agnostic: also called directly on a TMapOrderEntry's own
+// Receiver-agnostic: also called directly on a TTaskForce's own
 // order_type/required_count/tiebreak_strength fields (TNavyMission::ReturnZeroSlot2C),
 // which happen to share these same 3 offsets with TShip -- see the header comment.
 // FUNCTION: IMPERIALISM 0x0054ff00

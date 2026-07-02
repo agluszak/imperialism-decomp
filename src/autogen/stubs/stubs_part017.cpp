@@ -275,14 +275,6 @@ undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void)
   return 0;
 }
 
-// ghidra_name MoveMapOrderEntryToQueueHeadIfValid
-// ghidra_proto undefined MoveMapOrderEntryToQueueHeadIfValid()
-// FUNCTION: IMPERIALISM 0x00557080
-undefined4 MoveMapOrderEntryToQueueHeadIfValid(void)
-{
-  return 0;
-}
-
 // ghidra_name GetEnabledIndustryCapabilitySlotByClass
 // ghidra_proto undefined GetEnabledIndustryCapabilitySlotByClass()
 // FUNCTION: IMPERIALISM 0x005572d0

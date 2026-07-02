@@ -3,6 +3,7 @@
 #include "game/global_data_tables.h"
 
 class TStream;
+class TTaskForce;
 
 // TODO(manifest): describe TNavyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TNavyMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065c4c8
@@ -20,7 +21,12 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // === END GENERATED DECLS (TNavyMgr) ===
-  void* orderListHead04;
+  // Head of the global task-force order queue (was `void*`; retyped once
+  // TTaskForce -- née TMapOrderEntry -- was RTTI-confirmed as the real
+  // element class, see bd 1uj.16). TTaskForce::Free/SetMapOrderType9AndQueue/
+  // PromoteMapOrderChainAndQueue (TTaskForce.cpp) all read/write this same
+  // field via the g_pNavyOrderManager global.
+  TTaskForce* orderListHead04;
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
   // 0x557170. Walks orderListHead04 (the same raw task-force-order node list
@@ -33,6 +39,12 @@ public:
   short ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(short nationSlot,
                                                                     void* cityRecordPtr,
                                                                     int filterValue);
+
+  // bd 1uj.16: if `entry` is already linked into orderListHead04, returns
+  // true (no-op). Otherwise, if `entry` has no live childOrderList entries,
+  // frees it and returns false; else unlinks it from wherever it is
+  // currently queued and (re)inserts it at orderListHead04, returning true.
+  bool MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry); // 0x557080
 
   TNavyMgr();
 };

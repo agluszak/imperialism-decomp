@@ -65,7 +65,7 @@ struct GlobalViewportRectDefaultsRecord {
 // g_Task_Force_Order_LookupTable_00698110, g_Navy_Order_Priority_LookupTable_00698118,
 // g_ResourceDescriptorWeightWord0Base0069811c); every one of those "tables" is read at
 // per-index byte offset `index * 0x24` from a base address exactly 4/8/0x10/0x14 bytes
-// apart -- confirmed via TShip.cpp/TMapOrderEntry.cpp callsite disassembly, they are one
+// apart -- confirmed via TShip.cpp/TTaskForce.cpp callsite disassembly, they are one
 // struct array. Element count is not yet pinned down (32 vs 64 in the pre-split
 // declarations); 64 is the conservative (larger) choice pending confirmation.
 struct TNavyOrderResourceDescriptor {
