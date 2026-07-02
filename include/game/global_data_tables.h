@@ -100,6 +100,52 @@ extern "C" short g_UnitTypeMilitaryStatTable_00695CD2[64][7];
 extern "C" short g_UnitTypeStatTable_0066EB88[30][7];
 extern "C" short g_UnitTypeStatDivisorTable_0066ED30[7];
 
+// Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
+// minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
+extern "C" {
+extern float g_DAT_Value_00653308[];
+extern float g_DAT_Value_00653328[];
+extern float g_DAT_Value_00653340[];
+extern float g_DAT_Value_00653360[];
+extern float g_DAT_Value_00653378[];
+extern float g_DAT_Value_00653398[];
+extern float g_DAT_006533b0_Value_006533B0[];
+extern float g_DAT_006533d0_Value_006533D0[];
+extern float g_DAT_006533e8_Value_006533E8[];
+extern float g_DAT_Value_00653408[];
+
+// Float constants used by the TGreatPower relative-power-score family
+// (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20).
+extern const float g_Compute_Advisory_Handler_LookupTable_00653700; // 0.0f
+extern float g_Compute_Advisory_Handler_LookupTable_00653714;       // -0.25f
+extern float g_Iterate_Linked_List_Value_00653718;                  // 0.25f
+extern float g_Compute_City_Order_Value_0065371C;                   // 0.5f
+extern float g_Compute_Advisory_Handler_LookupTable_00653720;       // -90.0f
+extern float g_Compute_Advisory_Peer_LookupTable_00653724;          // -0.5f
+extern const float g_Compute_Advisory_Zero_00653FD0;
+extern float g_Compute_Advisory_Map_Value_00653FD4;
+extern double g_Compute_Advisory_MinusSix_00653FE8;
+extern double g_Compute_Advisory_MinusHundred_00653FF0;
+extern double g_Compute_Advisory_Hundred_00654000;
+extern double g_Compute_Advisory_OnePointFive_00654008;
+
+// 0x653704-0x653710 — production-tier classification constants (TGreatPower slot
+// 0x82, body 0x004e2880): -1.0, 2.0, 1.0, -2.0.
+extern float g_Classify_Nation_Military_Value_00653704;
+extern float g_Classify_Nation_Military_Value_00653708;
+extern float g_Classify_Nation_Military_Value_0065370C;
+extern float g_Classify_Nation_Military_Value_00653710;
+
+// Per-order-type sort priority table (slot 0x55 selection sort).
+extern short g_DAT_006966d0_Value_006966D0[];
+// Per-unit-type tactical category code (slot 0x11 garrison sweep).
+extern short g_awTacticalUnitCategoryCodeBySlot[];
+
+// Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
+// the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
+extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
+} // extern "C"
+
 // ============================================================================
 // Diplomacy globals
 // ============================================================================

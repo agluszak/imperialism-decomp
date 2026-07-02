@@ -52,39 +52,6 @@
 #include <stddef.h>
 #include <new>
 
-// Minister-skill float coefficient tables (defined in global_data_tables.cpp).
-extern "C" {
-extern float g_DAT_Value_00653308[];
-extern float g_DAT_Value_00653328[];
-extern float g_DAT_Value_00653340[];
-extern float g_DAT_Value_00653360[];
-extern float g_DAT_Value_00653378[];
-extern float g_DAT_Value_00653398[];
-extern float g_DAT_006533b0_Value_006533B0[];
-extern float g_DAT_006533d0_Value_006533D0[];
-extern float g_DAT_006533e8_Value_006533E8[];
-extern float g_DAT_Value_00653408[];
-// Float constants for the relative-power-score family (slots 0x8e-0x9e).
-extern const float g_Compute_Advisory_Handler_LookupTable_00653700; // 0.0f
-extern float g_Compute_Advisory_Handler_LookupTable_00653714;       // -0.25f
-extern float g_Iterate_Linked_List_Value_00653718;                  // 0.25f
-extern float g_Compute_City_Order_Value_0065371C;                   // 0.5f
-extern float g_Compute_Advisory_Handler_LookupTable_00653720;       // -90.0f
-extern float g_Compute_Advisory_Peer_LookupTable_00653724;          // -0.5f
-extern const float g_Compute_Advisory_Zero_00653FD0;
-extern float g_Compute_Advisory_Map_Value_00653FD4;
-extern double g_Compute_Advisory_MinusSix_00653FE8;
-extern double g_Compute_Advisory_MinusHundred_00653FF0;
-extern double g_Compute_Advisory_Hundred_00654000;
-extern double g_Compute_Advisory_OnePointFive_00654008;
-extern void* g_apNationStates_End;
-// Per-order-type sort priority table (slot 0x55 selection sort).
-extern short g_DAT_006966d0_Value_006966D0[];
-// Per-unit-type tactical category code (slot 0x11 garrison sweep).
-extern short g_awTacticalUnitCategoryCodeBySlot[];
-}
-extern TZone* g_pMapActionContextListHead;
-
 // Abstract View Classes for Native Virtual Method Dispatches (MSVC 5.0 compatible __thiscall
 // dispatches)
 
@@ -134,12 +101,6 @@ void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
 undefined4 RebuildMinorNationDispositionLookupTables(void);
 undefined4 GenerateThreadLocalRandom15(void);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
-
-// EH-body order/state globals (defined in global_data_tables.cpp). Direct absolute
-// loads in the original; declaring them as real symbols lets reccmp pair the loads.
-extern "C" {
-extern TMinor* g_apNationAuxRuntimeStateSlots[];
-}
 
 #include "game/TUnit.h"
 #include "game/TZone.h"
@@ -424,14 +385,6 @@ static __inline void TemporarilyClearAndRestoreUiInvalidationFlag(const char* pa
 static const char kUCountryCppPath[] = "D:\\Ambit\\Cross\\UCountry.cpp";
 
 static const float kOne = 1.0f;
-
-extern "C" {
-extern float g_Classify_Nation_Military_Value_00653704; // -1.0f
-extern float g_Classify_Nation_Military_Value_00653708; // 2.0f
-extern float g_Classify_Nation_Military_Value_0065370C; // 1.0f
-extern float g_Classify_Nation_Military_Value_00653710; // -2.0f
-extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
-}
 
 // Each dispatch reloads the UI-context global, as the original does.
 static __inline void UiRuntime_QueueTurnStatusPrompt(int promptIndex, int payload) {
