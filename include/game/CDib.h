@@ -40,8 +40,9 @@ public:
 
   // Free every owned GDI/heap/mapping resource and zero the state. 0x0047bca0
   void Release();
-  // Lazily create the DIB section bitmap into m_hBitmap/m_dibBits. 0x0047ae20
-  HBITMAP EnsureDibSectionCreated(HDC hdc);
+  // Lazily create the DIB section bitmap into m_hBitmap/m_dibBits. The original takes
+  // the CDC (it derefs m_hDC itself, null-tolerant), not a raw HDC. 0x0047ae20
+  HBITMAP EnsureDibSectionCreated(CDC* dc);
   // Build m_hPalette (LOGPALETTE -> CreatePalette) from the RGBQUAD color table. 0x0047ae90
   int BuildPaletteFromRgbQuadBuffer();
   // Convert a LOGPALETTE's entries into the surface's RGBQUAD color table. 0x0047b0c0

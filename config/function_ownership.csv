@@ -183,9 +183,15 @@ address|target_cpp|ownership|note
 47fd30|src/game/TWNetSessionManager.cpp|manual|marker_sync
 480850|src/game/TWNetSessionManager.cpp|manual|marker_sync
 4808a0|src/game/TWNetSessionManager.cpp|manual|marker_sync
+482760|src/game/CIncludeView.cpp|manual|marker_sync
 482850|src/game/CIncludeView.cpp|manual|marker_sync
 482930|src/game/CIncludeView.cpp|manual|marker_sync
+482bf0|src/game/CIncludeView.cpp|manual|marker_sync
+482c90|src/game/CIncludeView.cpp|manual|marker_sync
 483340|src/game/CIncludeView.cpp|manual|marker_sync
+4835a0|src/game/CIncludeView.cpp|manual|marker_sync
+483720|src/game/CIncludeView.cpp|manual|marker_sync
+483750|src/game/CIncludeView.cpp|manual|marker_sync
 484990|src/game/TObject.cpp|manual|marker_sync
 484af0|src/game/CMainFrame.cpp|manual|marker_sync
 484bb0|src/game/CMainFrame.cpp|manual|marker_sync

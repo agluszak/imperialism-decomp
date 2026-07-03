@@ -337,6 +337,15 @@ char g_szMcWindowSourcePath_006950D8[] = "D:\\Ambit\\McWindow.cpp";
 // GLOBAL: IMPERIALISM 0x006a1c74
 int g_nMcWindowStateMsgAssertGate_006A1C74 = 0;
 
+// Source-path string for CIncludeView's IncludeView.cpp one-shot debug asserts.
+// GLOBAL: IMPERIALISM 0x00694d10
+char g_szIncludeViewSourcePath_00694D10[] = "D:\\Ambit\\IncludeView.cpp";
+
+// Gate read by CIncludeView::OnDialogTreeHostMsg4EF (msg 0x4ef, wParam 0) before firing
+// the detach-without-context one-shot assert (writer not yet identified).
+// GLOBAL: IMPERIALISM 0x006a17b0
+int g_nIncludeViewAssertGate_006A17B0 = 0;
+
 extern "C" {
 // MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
 // symbol name, so the zero-initialized contents are irrelevant to matching.

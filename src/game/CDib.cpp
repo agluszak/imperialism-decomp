@@ -137,13 +137,14 @@ BOOL CDib::StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int w
 }
 
 // FUNCTION: IMPERIALISM 0x0047ae20
-HBITMAP CDib::EnsureDibSectionCreated(HDC hdc) {
+HBITMAP CDib::EnsureDibSectionCreated(CDC* dc) {
   if (m_pInfoHeader == NULL) {
     return NULL;
   }
   if (m_dibBits != NULL) {
     return NULL;
   }
+  HDC hdc = (dc != NULL) ? dc->m_hDC : NULL;
   m_hBitmap = CreateDIBSection(hdc, m_pInfoHeader, 0, &m_dibBits, NULL, 0);
   return m_hBitmap;
 }

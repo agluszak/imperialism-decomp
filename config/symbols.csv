@@ -530,7 +530,7 @@ address|name|symbol|size|type|prototype|provenance
 482420|OrphanRetStub_00482420||3|function|undefined OrphanRetStub_00482420()|
 482440|OrphanVtableAssignStub_00482440||6|function|undefined OrphanVtableAssignStub_00482440()|
 482730|WrapperFor_ftol_At00482730||30|function|undefined WrapperFor_ftol_At00482730()|
-482760|InitializeChildWindowSurfaceAndTickTimer_Impl||131|function|undefined InitializeChildWindowSurfaceAndTickTimer_Impl()|
+482760|UiCursorTickTimerProc||131|function|void UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)|
 482820|InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820||18|function|undefined InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820()|
 482850|CIncludeView::CreateObject|?CreateObject@CIncludeView@@SGPAVCObject@@XZ|161|function|undefined CreateObject()|rtti
 482930|CIncludeView::GetRuntimeClass|?GetRuntimeClass@CIncludeView@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
@@ -539,19 +539,20 @@ address|name|symbol|size|type|prototype|provenance
 482a20|TCViewOwnedBufferChainState_00648578::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20||101|function|undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20()|
 482ab0|TCViewOwnedBufferRegistryState_00648560::DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers||213|function|undefined DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers()|
 482bd0|OrphanVtableAssignStub_00482bd0||6|function|undefined OrphanVtableAssignStub_00482bd0()|
-482c90|WrapperFor_NoOpRuntimeCallback_00489a70_At00482c90||80|function|undefined WrapperFor_NoOpRuntimeCallback_00489a70_At00482c90()|
+482bf0|CIncludeView::OnDialogTreeHostMsg4EF||119|function|LRESULT OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam)|
+482c90|CIncludeView::OnDraw||80|function|void OnDraw(CDC* pDC)|
 482d00|BlitMapDialogSurfaceToHdcWithClipBounds||359|function|undefined BlitMapDialogSurfaceToHdcWithClipBounds()|
 482ed0|Helper_Uses_BlitSurfaceRectSkippingTransparentColor_At00482ed0||120|function|undefined Helper_Uses_BlitSurfaceRectSkippingTransparentColor_At00482ed0()|
 482fc0|TCViewOwnedBufferRegistryState_00648560::UpdateAndRenderMapTileHintOverlayQueue||473|function|undefined UpdateAndRenderMapTileHintOverlayQueue()|
 483220|ComputeRectSpanFromStoredBounds||29|function|undefined ComputeRectSpanFromStoredBounds()|
-483340|SetUiRuntimeContextAndActivateMain||36|function|undefined SetUiRuntimeContextAndActivateMain()|
+483340|CIncludeView::SetUiRuntimeContextAndActivateMain||36|function|void SetUiRuntimeContextAndActivateMain(TView* activeDialog)|
 483380|WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380||32|function|undefined WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380()|
 4833b0|ReinitializeIncludeViewMainPaneAndRedrawWindow||300|function|undefined ReinitializeIncludeViewMainPaneAndRedrawWindow()|
 483530|WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530||66|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530()|
-4835a0|OrphanCallChain_C2_I17_004835a0||47|function|undefined OrphanCallChain_C2_I17_004835a0()|
+4835a0|CIncludeView::OnEraseBkgnd||47|function|BOOL OnEraseBkgnd(CDC* pDC)|
 4835e0|SelectPaletteAndResolveHandleMapEntry_004835e0||92|function|undefined SelectPaletteAndResolveHandleMapEntry_004835e0()|
-483720|WrapperFor_SetFocusViaSiteOrHandle_At00483720||23|function|undefined WrapperFor_SetFocusViaSiteOrHandle_At00483720()|
-483750|InitializeChildWindowSurfaceAndTickTimer||268|function|undefined InitializeChildWindowSurfaceAndTickTimer()|
+483720|CIncludeView::OnActivateView||23|function|void OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView)|
+483750|CIncludeView::OnInitialUpdate||268|function|void OnInitialUpdate()|
 4838b0|TCViewOwnedBufferRegistryState_00648560::HandleIncludeViewPointerUpdateAndNotifyChildren||232|function|undefined HandleIncludeViewPointerUpdateAndNotifyChildren()|
 4839e0|WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0||157|function|undefined WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0()|
 483ab0|WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl()|

@@ -1147,14 +1147,6 @@ undefined4 WrapperFor_ftol_At00482730(void)
   return 0;
 }
 
-// ghidra_name InitializeChildWindowSurfaceAndTickTimer_Impl
-// ghidra_proto undefined InitializeChildWindowSurfaceAndTickTimer_Impl()
-// FUNCTION: IMPERIALISM 0x00482760
-undefined4 InitializeChildWindowSurfaceAndTickTimer_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820
 // ghidra_proto undefined InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820()
 // FUNCTION: IMPERIALISM 0x00482820
@@ -1199,14 +1191,6 @@ undefined4 DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers(void)
 // ghidra_proto undefined OrphanVtableAssignStub_00482bd0()
 // FUNCTION: IMPERIALISM 0x00482bd0
 undefined4 OrphanVtableAssignStub_00482bd0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_NoOpRuntimeCallback_00489a70_At00482c90
-// ghidra_proto undefined WrapperFor_NoOpRuntimeCallback_00489a70_At00482c90()
-// FUNCTION: IMPERIALISM 0x00482c90
-undefined4 WrapperFor_NoOpRuntimeCallback_00489a70_At00482c90(void)
 {
   return 0;
 }
@@ -1267,34 +1251,10 @@ undefined4 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C2_I17_004835a0
-// ghidra_proto undefined OrphanCallChain_C2_I17_004835a0()
-// FUNCTION: IMPERIALISM 0x004835a0
-undefined4 OrphanCallChain_C2_I17_004835a0(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectPaletteAndResolveHandleMapEntry_004835e0
 // ghidra_proto undefined SelectPaletteAndResolveHandleMapEntry_004835e0()
 // FUNCTION: IMPERIALISM 0x004835e0
 undefined4 SelectPaletteAndResolveHandleMapEntry_004835e0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_SetFocusViaSiteOrHandle_At00483720
-// ghidra_proto undefined WrapperFor_SetFocusViaSiteOrHandle_At00483720()
-// FUNCTION: IMPERIALISM 0x00483720
-undefined4 WrapperFor_SetFocusViaSiteOrHandle_At00483720(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeChildWindowSurfaceAndTickTimer
-// ghidra_proto undefined InitializeChildWindowSurfaceAndTickTimer()
-// FUNCTION: IMPERIALISM 0x00483750
-undefined4 InitializeChildWindowSurfaceAndTickTimer(void)
 {
   return 0;
 }

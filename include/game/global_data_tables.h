@@ -332,6 +332,11 @@ extern char g_szMcAppUiSourcePath_006950B0[];
 extern char g_szMcWindowSourcePath_006950D8[];
 extern int g_nMcWindowStateMsgAssertGate_006A1C74;
 
+// Source-file path string ("D:\\Ambit\\IncludeView.cpp") for CIncludeView's one-shot
+// asserts, and the gate read before the msg-0x4ef detach assert fires.
+extern char g_szIncludeViewSourcePath_00694D10[];
+extern int g_nIncludeViewAssertGate_006A17B0;
+
 // Header path string ("D:\\Ambit\\McAppUI.h") passed with a line number to city-production
 // dialog assert/log helpers on the TControl branch.
 extern char g_szMcAppUiHeaderPath_006943CC[];

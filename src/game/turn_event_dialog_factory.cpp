@@ -76,56 +76,40 @@ TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int h
 // function as 25768 bytes; this is one of its many event-code cases, not a separate
 // function).
 //
-// KNOWN INCOMPLETE — does not yet render on screen. Shortcuts taken while porting this:
-//
 // TODO(shortcut): only the container + background picture are ported. The real
 // 0x0043b1cb case continues past this (building at least one more object, a 0x94-byte
 // TMovieView per its ctor address 0x5e2230) that was not traced/ported — TMovieView
-// itself is still all stub method bodies (src/game/TMovieView.cpp). Unknown whether the
-// missing piece is load-bearing for this screen to actually display.
+// itself is still all stub method bodies (src/game/TMovieView.cpp).
 //
-// TODO(shortcut): the "panel" argument passed to InitializeUiResourceEntryFrameAndParent
-// is hardcoded 0 for both widgets. The real disassembly reads the build-stack tail
-// (g_UiWidgetBuildStack006a13e0's last node, the enclosing widget being built) as each
-// new widget's parent panel — see RegisterUiResourceEntry and
-// BuildTurnEventDialogResources_2508 for the decoded pattern. Passing 0 means this tree
-// never inherits nativeWindow50 through the normal per-widget mechanism at all;
-// nativeWindow50 is instead force-set by hand below via
-// PropagateUiResourceContextRecursive(mainNativeWindow), which is NOT something the
-// original does at this point (verified: the original's g_pUiResourceHead->
-// PropagateUiResourceContextRecursive call elsewhere in this file, in
-// BuildTurnOrderNavigationWindow, passes literal 0/null — this factory diverges from
-// that on purpose as an experiment, and it did not fix on-screen rendering).
-//
-// Empirically confirmed via live winedbg + X11 screenshot capture this session:
-//   - Before the PropagateUiResourceContextRecursive(mainNativeWindow) change: the
-//     built tree rendered into a separate ~550x357 transient popup window (title bitmap
-//     visibly correct), not the main frame — that popup no longer appears after the
-//     change.
-//   - After the change: no crash, no popup, but the main frame's client area stays
-//     blank. The real trigger for repainting newly-attached content — believed to be
-//     TIncludeView::NoOpUiLifecycleHook's tail `SendMessageA(hwnd, 0x4ef, 1, 0)` (already
-//     ported) reaching some message-map handler not yet identified — was not found.
-//     TView::RefreshControl() was tried directly from here and is a confirmed no-op:
-//     g_McAppUiActiveFlag_006950AC is deliberately 0 for the whole duration of
-//     TTurnEventDialogFactoryRegistry::InvokeDialogFactoryFromPacket, so any refresh
-//     triggered from inside a factory body silently does nothing by design.
+// Hosting mechanism (bd 1uj.10): this tree deliberately propagates a null native
+// window here, exactly like the other factories. The real host hookup happens after
+// the factory returns: the tree is attached under the TIncludeView packet (which
+// inherited the main view's nativeWindow50), and the packet's NoOpUiLifecycleHook tail
+// sends message 0x4ef (wParam 1) to that window — CIncludeView::OnDialogTreeHostMsg4EF
+// then re-propagates the CIncludeView itself as every node's native window and
+// re-resolves 'main'. Painting flows through CIncludeView::OnDraw's slot-0x43
+// recursion over the hosted tree.
 TView* BuildStartupIntroBackground() {
+  TView* parent;
+
   TView* container = new TView();
   if (container == 0) {
     return 0;
   }
 
-  if (g_pUiResourceHead == 0) {
-    g_pUiResourceHead = container;
-  }
   g_pUiResourceContext = container;
-
+  if (g_pUiResourceHead != 0) {
+    parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
+  } else {
+    g_pUiResourceHead = container;
+    parent = 0;
+  }
   g_UiWidgetBuildStack006a13e0.AddTail(container);
 
   int containerOffset[2] = {0, 0};
   int containerSize[2] = {0x7d0, 0x7d0};
-  container->InitializeUiResourceEntryFrameAndParent(0, 0, containerOffset, containerSize, 0, 0, 1);
+  container->InitializeUiResourceEntryFrameAndParent(0, parent, containerOffset, containerSize, 0,
+                                                     0, 1);
   container->controlTag = static_cast<int>(kControlTagBase);
   container->field3c = 0;
   container->SetEnabled(1, 0);
@@ -134,15 +118,21 @@ TView* BuildStartupIntroBackground() {
   TPicture* background = new TPicture();
   if (background != 0) {
     g_pUiResourceContext = background;
+    if (g_pUiResourceHead != 0) {
+      parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
+    } else {
+      g_pUiResourceHead = background;
+      parent = 0;
+    }
 
     int pictureOffset[2] = {0, 0};
     int pictureSize[2] = {0x280, 0x1e0};
-    background->InitializeUiResourceEntryFrameAndParent(0, 0, pictureOffset, pictureSize, 0, 0, 1);
+    background->InitializeUiResourceEntryFrameAndParent(0, parent, pictureOffset, pictureSize, 0, 0,
+                                                        1);
     background->controlTag = static_cast<int>(kControlTagMain);
     background->field3c = 0;
     background->SetEnabled(1, 0);
     background->SetState(pictureSize[0], 0);
-    container->AttachChildControl(background, 0);
 
     background->EnsureField48Buffer();
     if (background->field48 != 0) {
@@ -161,15 +151,8 @@ TView* BuildStartupIntroBackground() {
   g_pUiResourceContext = 0;
   g_UiWidgetBuildStack006a13e0.RemoveTail();
 
-  // Unlike BuildTurnOrderNavigationWindow's TGameWindow (which gets its own native host
-  // window later via TWindow::Realize), this tree is plain TView/TPicture — it has no
-  // window of its own and must share the main view's, or nothing ever gets a valid HWND
-  // to paint into.
   if (g_pUiResourceHead != 0) {
-    CWnd* mainNativeWindow = (g_pDisplayMgr != nullptr && g_pDisplayMgr->activeDialog != nullptr)
-                                 ? g_pDisplayMgr->activeDialog->nativeWindow50
-                                 : nullptr;
-    g_pUiResourceHead->PropagateUiResourceContextRecursive(mainNativeWindow);
+    g_pUiResourceHead->PropagateUiResourceContextRecursive(0);
   }
   return g_pUiResourceHead;
 }

@@ -1551,7 +1551,7 @@
     },
     {
       "address": "0x47ae20",
-      "matching": 0.6545454545454545,
+      "matching": 0.9333333333333333,
       "name": "EnsureBitmapSurfaceDibSectionCreated",
       "type": 1
     },
@@ -2308,8 +2308,8 @@
     },
     {
       "address": "0x482760",
-      "matching": 0.044444444444444446,
-      "name": "InitializeChildWindowSurfaceAndTickTimer_Impl",
+      "matching": 0.7560975609756098,
+      "name": "UiCursorTickTimerProc",
       "type": 1
     },
     {
@@ -2349,6 +2349,18 @@
       "type": 1
     },
     {
+      "address": "0x482bf0",
+      "matching": 0.9459459459459459,
+      "name": "CIncludeView::OnDialogTreeHostMsg4EF",
+      "type": 1
+    },
+    {
+      "address": "0x482c90",
+      "matching": 1.0,
+      "name": "CIncludeView::OnDraw",
+      "type": 1
+    },
+    {
       "address": "0x482d00",
       "matching": 0.014925373134328358,
       "name": "BlitMapDialogSurfaceToHdcWithClipBounds",
@@ -2374,8 +2386,8 @@
     },
     {
       "address": "0x483340",
-      "matching": 0.5,
-      "name": "SetUiRuntimeContextAndActivateMain",
+      "matching": 1.0,
+      "name": "CIncludeView::SetUiRuntimeContextAndActivateMain",
       "type": 1
     },
     {
@@ -2386,8 +2398,8 @@
     },
     {
       "address": "0x4835a0",
-      "matching": 0.0,
-      "name": "OrphanCallChain_C2_I17_004835a0",
+      "matching": 1.0,
+      "name": "CIncludeView::OnEraseBkgnd",
       "type": 1
     },
     {
@@ -2397,9 +2409,15 @@
       "type": 1
     },
     {
+      "address": "0x483720",
+      "matching": 0.875,
+      "name": "CIncludeView::OnActivateView",
+      "type": 1
+    },
+    {
       "address": "0x483750",
-      "matching": 0.043478260869565216,
-      "name": "InitializeChildWindowSurfaceAndTickTimer",
+      "matching": 0.8901098901098901,
+      "name": "CIncludeView::OnInitialUpdate",
       "type": 1
     },
     {
@@ -6546,13 +6564,31 @@
     },
     {
       "address": "0x49c240",
-      "matching": 0.625,
+      "matching": 1.0,
       "name": "TSoundResourceManager::UpdateLocalizationAudioSlot",
       "type": 1
     },
     {
+      "address": "0x49c290",
+      "matching": 0.9733333333333334,
+      "name": "TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer",
+      "type": 1
+    },
+    {
+      "address": "0x49c430",
+      "matching": 0.26991150442477874,
+      "name": "TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer",
+      "type": 1
+    },
+    {
+      "address": "0x49c720",
+      "matching": 1.0,
+      "name": "TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry",
+      "type": 1
+    },
+    {
       "address": "0x49c850",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TSoundResourceManager::SetChannelVolumesUntilAccepted",
       "type": 1
     },
@@ -12182,7 +12218,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12614,7 +12650,7 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12674,7 +12710,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16113,7 +16149,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20626987732848706,
+      "matching": 0.19627442071785553,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -19930,7 +19966,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -33763,8 +33799,8 @@
     },
     {
       "address": "0x5e4ff0",
-      "matching": 1.0,
-      "name": "TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48",
+      "matching": 0.6363636363636364,
+      "name": "TSoundPlayer::StopAllSoundChannels",
       "type": 1
     },
     {
@@ -33781,7 +33817,7 @@
     },
     {
       "address": "0x5e50c0",
-      "matching": 0.6415094339622641,
+      "matching": 0.6792452830188679,
       "name": "TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState",
       "type": 1
     },
