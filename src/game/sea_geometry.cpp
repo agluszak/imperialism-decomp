@@ -10,6 +10,7 @@
 #include <math.h>
 
 #include "decomp_types.h"
+#include "game/TGlobalMapState.h"
 
 // Allocator-tracked realloc (generic stub form; typed cast at the call sites).
 extern undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
@@ -27,6 +28,9 @@ template <typename T> inline T* ReallocElems(T* buffer, int bytes) {
 const double kSeaAngleScale = 11733.857334728455;
 
 } // namespace
+
+// The Seapoint overlay-quad table global at 0x006a3478.
+SeapointStretch g_seapointQuadTable_006a3478;
 
 // Functions are emitted in ascending original-address order (decomplint requirement), so
 // the Seapoint/SeaSegment record methods interleave with the two stretch arrays' methods.
@@ -186,6 +190,40 @@ void* SeaSegmentStretch::Detach() {
   return detached;
 }
 
+// FUNCTION: IMPERIALISM 0x0052bef0
+void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
+  if (side != '\0') {
+    int cx = x0;
+    short cy = y0;
+    if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
+      if (0xd7 < cx) {
+        out[0] = cx - 0xd8;
+        out[1] = cy;
+        return;
+      }
+      if (cx < 0) {
+        cx = cx + 0xd8;
+      }
+    }
+    out[0] = cx;
+    out[1] = cy;
+    return;
+  }
+  int cx = x1;
+  short cy = y1;
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
+    if (cx < 0xd8) {
+      if (cx < 0) {
+        cx = cx + 0xd8;
+      }
+    } else {
+      cx = cx - 0xd8;
+    }
+  }
+  out[0] = cx;
+  out[1] = cy;
+}
+
 // FUNCTION: IMPERIALISM 0x0052c000
 unsigned short SeaSegment::SelectAttrByAngle() const {
   if (static_cast<unsigned short>(angle14) < 0x8fff) {
@@ -237,6 +275,48 @@ void* SeapointStretch::Detach() {
   capacity = 0;
   count = 0;
   return detached;
+}
+
+// FUNCTION: IMPERIALISM 0x0052ca20
+void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra) {
+  unsigned int row = tileIndex / 0x6c;
+  int column = (row & 1) + (tileIndex % 0x6c) * 2;
+  int overlayX = column;
+  if (side == '\0') {
+    overlayX = column + 2;
+    row = row + 1;
+    if (0xd7 < overlayX) {
+      overlayX = column - 0xd6;
+    }
+  }
+  int hi = b;
+  int lo = a;
+  if (b < a) {
+    hi = a;
+    lo = b;
+  }
+  Seapoint pt;
+  pt.coord00 = overlayX + row * 0xd8;
+  pt.lo04 = lo;
+  pt.hi08 = hi;
+  pt.f0c = extra;
+  // Dispatch through the stretch<Seapoint> base so the append goes through the vtable slot
+  // (the original calls it indirectly), rather than being devirtualized to a direct call.
+  stretch<Seapoint, SeapointTag>* table = &g_seapointQuadTable_006a3478;
+  table->GetOrAppendUnique(pt);
+}
+
+// FUNCTION: IMPERIALISM 0x0052d030
+double Seapoint::WrappedDeltaMetric(const Seapoint* other) const {
+  int rowDelta = coord00 / 0xd8 - other->coord00 / 0xd8;
+  if (rowDelta < 0) {
+    rowDelta = -rowDelta;
+  }
+  int colDelta = ((coord00 % 0xd8 - other->coord00 % 0xd8) + 0xd8) % 0xd8;
+  if (0x6c < colDelta) {
+    colDelta = 0xd7 - colDelta;
+  }
+  return sqrt(static_cast<double>(colDelta * colDelta * rowDelta * rowDelta));
 }
 
 // FUNCTION: IMPERIALISM 0x0052d0d0

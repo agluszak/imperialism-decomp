@@ -763,14 +763,6 @@ undefined4 AssignCityRegionIdsFromOverlayScanlineIntersections(void)
   return 0;
 }
 
-// ghidra_name ExtractWrappedEndpointFromSpanRecordBySide
-// ghidra_proto undefined ExtractWrappedEndpointFromSpanRecordBySide()
-// FUNCTION: IMPERIALISM 0x0052bef0
-undefined4 ExtractWrappedEndpointFromSpanRecordBySide(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060()
 // FUNCTION: IMPERIALISM 0x0052c060
@@ -795,26 +787,10 @@ undefined4 BuildCityRegionBorderOverlaySegments(void)
   return 0;
 }
 
-// ghidra_name EmitOverlaySegmentFromTileEdgeSorted
-// ghidra_proto undefined EmitOverlaySegmentFromTileEdgeSorted()
-// FUNCTION: IMPERIALISM 0x0052ca20
-undefined4 EmitOverlaySegmentFromTileEdgeSorted(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildOverlaySpanRecordsFromQuadBorderLinks
 // ghidra_proto undefined BuildOverlaySpanRecordsFromQuadBorderLinks()
 // FUNCTION: IMPERIALISM 0x0052cae0
 undefined4 BuildOverlaySpanRecordsFromQuadBorderLinks(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeWrappedOverlayCoordDeltaMetric
-// ghidra_proto undefined ComputeWrappedOverlayCoordDeltaMetric()
-// FUNCTION: IMPERIALISM 0x0052d030
-undefined4 ComputeWrappedOverlayCoordDeltaMetric(void)
 {
   return 0;
 }

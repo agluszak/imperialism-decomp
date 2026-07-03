@@ -32,6 +32,9 @@ struct Seapoint {
 
   // Store the four dwords, ordering lo04<=hi08. 0x0052b1e0.
   void InitSorted(int value, int a, int b, int extra);
+  // Wrapped overlay-grid distance metric to another point (sqrt of colDelta^2*rowDelta^2,
+  // horizontal delta wrapped to the 0xd8-wide grid). 0x0052d030.
+  double WrappedDeltaMetric(const Seapoint* other) const;
 };
 
 // A 0x18-byte coastline overlay segment (Mac evidence: SeaSegment(const Seapoint&, const
@@ -58,6 +61,9 @@ struct SeaSegment {
   void RecomputeEndpointsAndAngle();
   // Pick attr12 or attr10 depending on the heading angle. 0x0052c000.
   unsigned short SelectAttrByAngle() const;
+  // Write endpoint 1 (side 0) or endpoint 0 (side != 0) as [x,y] into out, applying the
+  // horizontal wrap when the map wraps. 0x0052bef0.
+  void ExtractWrappedEndpoint(int* out, char side) const;
 };
 
 // The Seapoint stretch. Vtable is adjacent to TMapMaker's (0x006599a0); left unannotated
@@ -89,3 +95,7 @@ public:
 
 ASSERT_SIZE(SeapointStretch, 0x10);
 ASSERT_SIZE(SeaSegmentStretch, 0x10);
+
+// Convert a tile index + edge side to an overlay coord, sort the two attribute values, and
+// append the resulting Seapoint to the overlay-quad table global (0x006a3478). 0x0052ca20.
+void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra);
