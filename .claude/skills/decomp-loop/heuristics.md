@@ -883,3 +883,39 @@ root-base vtable + `ret` (all intermediate vptr stores dead-store-eliminated), s
 7-byte "SetXxxBaseVtable" junk-named function called only from a scalar deleting
 destructor is that class's real `~T()` — claim it with a companion `// SYNTHETIC:`
 block, never model it as a vtable-reset helper.
+
+## 40. COM interfaces hide behind "channel/audio object" vtable dispatch
+
+If a cluster calls vtable slots on an opaque object with the receiver PUSHED on the
+stack (`PUSH EAX; CALL [ECX+0x34]`) instead of passed in ECX, it is a COM interface,
+not a game class. Identify it by slot arithmetic against the real interface layout
+plus API-specific constants (TSoundResourceManager's channels: slots 0x2c/0x30/0x34/
+0x3c/0x48/0x4c/0x50 = IDirectSoundBuffer Lock/Play/SetCurrentPosition/SetVolume/Stop/
+Unlock/Restore, and the 0x88780096 retry constant = DSERR_BUFFERLOST). Model it as a
+minimal C++ interface class with `virtual ... __stdcall` methods in the exact retail
+slot order (MSVC passes `this` as the hidden first stack arg for __stdcall members, so
+codegen matches exactly); don't invent dummy-slot game classes for it. dsound.h isn't
+in the MSVC500 toolchain — declaring the interface locally with real COM names is the
+right shape.
+
+## 41. GlobalHandle/GlobalUnlock/GlobalFree pairs = windowsx.h GlobalFreePtr; paired
+free-blocks + EH state = a local descriptor class with inlined dtor
+
+The repeated triple `GlobalUnlock(GlobalHandle(p)); GlobalFree(GlobalHandle(p))` is
+the windowsx.h `GlobalFreePtr(p)` macro (vendored header has it) — write the macro,
+not hand-rolled pairs. When a function with no visible C++ objects still carries an EH
+frame whose unwind funclet frees a group of stack slots this way, those slots are a
+real local class (ctor zeroes the fields, dtor runs the GlobalFreePtr pairs): model it
+as a small stack descriptor class with inline ctor/dtor and the EH states fall out
+naturally (WaveLoadDescriptor in TSoundResourceManager, 0x49c290/0x49c430).
+
+## 42. Find unknown message handlers by scanning for AFX_MSGMAP_ENTRY records
+
+To find who handles a custom window message (e.g. the 0x4ef repaint trigger), scan the
+original binary's data for the 24-byte AFX_MSGMAP_ENTRY pattern `{nMessage, nCode,
+nID, nLastID, nSig, pfn}` with pfn in the image range, then resolve the pfn ILT thunk.
+The null terminator entry is followed (in this binary) by the class's window-class
+string, which identifies the owner (CIncludeView's map at 0x6489e8 ends before
+"AmbitGameWindow"). This is how CIncludeView was recovered as the real main-frame
+paint host: its 0x4ef handler re-propagates the view as the whole activeDialog tree's
+nativeWindow50 — the mechanism hand-shortcuts in factories were papering over.
