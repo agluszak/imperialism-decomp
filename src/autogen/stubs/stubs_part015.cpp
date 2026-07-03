@@ -835,14 +835,6 @@ undefined4 BuildCityRegionBorderOverlaySegments(void)
   return 0;
 }
 
-// ghidra_name ConvertTileIndexToOverlayCoord216BySide
-// ghidra_proto undefined ConvertTileIndexToOverlayCoord216BySide()
-// FUNCTION: IMPERIALISM 0x0052c990
-undefined4 ConvertTileIndexToOverlayCoord216BySide(void)
-{
-  return 0;
-}
-
 // ghidra_name DetachAndResetOverlayQuadRecordArrayBuffer
 // ghidra_proto undefined DetachAndResetOverlayQuadRecordArrayBuffer()
 // FUNCTION: IMPERIALISM 0x0052ca00
@@ -871,22 +863,6 @@ undefined4 BuildOverlaySpanRecordsFromQuadBorderLinks(void)
 // ghidra_proto undefined ComputeWrappedOverlayCoordDeltaMetric()
 // FUNCTION: IMPERIALISM 0x0052d030
 undefined4 ComputeWrappedOverlayCoordDeltaMetric(void)
-{
-  return 0;
-}
-
-// ghidra_name ReserveOverlayQuadRecordArrayCapacity
-// ghidra_proto undefined ReserveOverlayQuadRecordArrayCapacity()
-// FUNCTION: IMPERIALISM 0x0052d0d0
-undefined4 ReserveOverlayQuadRecordArrayCapacity(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrCreateOverlayQuadRecordByIndex
-// ghidra_proto undefined GetOrCreateOverlayQuadRecordByIndex()
-// FUNCTION: IMPERIALISM 0x0052d150
-undefined4 GetOrCreateOverlayQuadRecordByIndex(void)
 {
   return 0;
 }

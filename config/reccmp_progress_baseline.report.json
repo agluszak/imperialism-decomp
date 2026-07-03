@@ -17973,7 +17973,7 @@
     },
     {
       "address": "0x52c990",
-      "matching": 0.06451612903225806,
+      "matching": 0.8333333333333334,
       "name": "ConvertTileIndexToOverlayCoord216BySide",
       "type": 1
     },
@@ -18003,13 +18003,13 @@
     },
     {
       "address": "0x52d0d0",
-      "matching": 0.0,
+      "matching": 0.6666666666666666,
       "name": "ReserveOverlayQuadRecordArrayCapacity",
       "type": 1
     },
     {
       "address": "0x52d150",
-      "matching": 0.0,
+      "matching": 0.6808510638297872,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },

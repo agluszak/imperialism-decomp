@@ -2272,6 +2272,9 @@ address|target_cpp|ownership|note
 52b460|src/game/TOverlaySpanRecordArray.cpp|manual|marker_sync
 52b500|src/game/TOverlaySpanRecordArray.cpp|manual|marker_sync
 52c0a0|src/game/TMapMaker.cpp|manual|marker_sync
+52c990|src/game/map_overlay_geometry.cpp|manual|marker_sync
+52d0d0|src/game/TOverlayQuadRecordArray.cpp|manual|marker_sync
+52d150|src/game/TOverlayQuadRecordArray.cpp|manual|marker_sync
 52d750|src/game/TMapMaker_MergeSmallCityRegions.cpp|manual|marker_sync
 52e310|src/game/TOverlaySpanRecordArray.cpp|manual|marker_sync
 52e840|src/game/TMapMaker.cpp|manual|marker_sync
