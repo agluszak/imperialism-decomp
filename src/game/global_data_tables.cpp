@@ -15,6 +15,7 @@ class TCursorControlPanel;
 
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
+#include "game/sea_geometry.h"
 #include "game/app_init_globals.h"
 #include "game/UiRuntimeContext.h"
 #include "game/startup_helpers.h"
@@ -761,3 +762,14 @@ CString g_cstrUiFontBelweBdBt;
 int g_nUiInvalidationAssertFlagLine471 = 0;
 // GLOBAL: IMPERIALISM 0x006a30b0
 int g_nUiInvalidationAssertFlagLine495 = 0;
+
+// --- UMapper coastline/region overlay tables (plain globals; addresses 0x006a3478 /
+// 0x006a3900 are untracked scratch tables). The per-tile-edge Seapoint quads are matched
+// into region-border SeaSegments that MergeSmallCityRegionsAndCompactIds consumes. ---
+SeapointStretch g_seapointQuadTable_006a3478;
+SeaSegmentStretch g_regionBorderLinkTable_006a3900;
+
+// Hex-neighbour offset tables (direction 0..5) for the 108-wide offset-coordinate grid.
+const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
+const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
+const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};

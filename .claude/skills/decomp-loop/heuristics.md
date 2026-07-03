@@ -952,27 +952,37 @@ copy loop on grow), it is a `stretch<T>`, not a `CArray`; model it as a real
 ad-hoc struct. Mac CodeWarrior evidence names the family `stretch<Seapoint>` /
 `stretch<SeaSegment>` with `Add/operator[]/OverStretch` members.
 
-## 44. Don't touch global_data_tables.h to share a subsystem global — use a .cpp-local extern
+## 44. All globals belong in global_data_tables — never architect around commutative-FP noise
 
-Adding *anything* to `global_data_tables.h` (even two forward-decls + `extern` lines) recompiles
-every TU that includes it, and the float-heavy ones flip: the TGreatPower commutative-FADD
-stubs (0x4e0590/0x4e0610/0x4e0650, `fld [tblA]; fadd [tblB]`) swap their two source-table
-operands and crater 100%→43% (note 39). The `check_global_location` gate only scans **headers**
-for `extern … g_…`, so a plain `.cpp`-scope global definition + a `.cpp`-local `extern` in each
-consumer is fully compliant and leaves every header byte-identical. Reserve global_data_tables.h
-for genuinely cross-cutting reccmp-DATA-tracked globals; keep subsystem scratch tables
-(e.g. the overlay Seapoint/SeaSegment stretch tables) defined in a subsystem `.cpp` and extern'd
-locally. Verified: header-based sharing flipped 3 TGreatPower funcs; moving to .cpp-local
-externs restored all three to 100% with the builder unchanged.
+**Globals go in `global_data_tables.{h,cpp}`.** Declare every shared global (`extern` +
+forward-decl if needed) in `global_data_tables.h` and define it in `global_data_tables.cpp` —
+including plain, non-reccmp-tracked subsystem scratch tables (e.g. the overlay
+Seapoint/SeaSegment stretch tables and the hex-offset tables). Do **not** stash a global in a
+subsystem `.cpp` with `.cpp`-local `extern`s to keep a widely-included header byte-identical.
 
-## 45. Big matching-heavy function: isolate it in its own TU, and use float (not double) locals
+That was an earlier (wrong) reaction to a phantom: adding declarations to `global_data_tables.h`
+recompiles the float-heavy TUs and the TGreatPower commutative-FADD stubs
+(0x4e0590/0x4e05d0/0x4e0610/0x4e0650/0x4e0690, `fld [tblA]; fadd [tblB]`) swap their two
+source-table operands, so reccmp reports 100%→43%. **That "regression" is meaningless.** `a+b`
+== `b+a`; the code is semantically identical and the operand order is pure compiler scheduling
+noise the source cannot steer. Ignore these flips — do not revert real structure, relocate
+globals, or otherwise contort the design to preserve the phantom 100%. Accept the delta and run
+`just stats-baseline-update`. The same applies to sub-1pp register-allocation wobbles in
+neighbouring functions when you add code to a TU: noise, not regressions.
 
-Two independent yields on the 1073-byte `BuildOverlaySpanRecordsFromQuadBorderLinks` (0x52cae0):
-(a) a `double` local for a distance forces an 8-byte-aligned frame (`push ebp; and esp,-8`) the
-original (which used `float`) never emits — storing the metric as `float`/comparing straight off
-the FPU return removed the whole alien prologue; (b) dropping the function into its own `.cpp`
-(rather than appending to a shared subsystem file) stopped it from shifting the register
-allocation of the neighbouring stretch methods (0x52d150/0x52c0a0 each recovered ~3pp). A big
-function's own score is dominated by the compiler's choice of induction-variable register
-(ebx vs the original's ebp) which source can't steer — expect ~30% structural, and treat the
-absolute aligned-byte gain (≈320 here) as the win, not the percentage.
+Corollary: reccmp's per-function % is a matching *aid*, not a score to defend. A drop caused by
+commutative FP operand order, register allocation, or instruction scheduling in code you did not
+change is not a regression worth a single line of work.
+
+## 45. Big matching-heavy function: use float (not double) locals to avoid an alien frame
+
+Real, source-steerable yield on the 1073-byte `BuildOverlaySpanRecordsFromQuadBorderLinks`
+(0x52cae0): a `double` local for a distance forces an 8-byte-aligned frame (`push ebp;
+and esp,-8`) the original (which used `float`) never emits — storing the metric as `float` /
+comparing straight off the FPU return removed the whole alien prologue. Match the original's FP
+width. Beyond that, a big function's score is dominated by the compiler's induction-variable
+register choice (ebx vs the original's ebp) which source can't steer — expect ~30% structural
+and treat the absolute aligned-byte gain (≈320 here) as the win, not the percentage. (A large
+standalone function may live in its own `.cpp`, following the merge-function precedent, for
+organization — but never move code between TUs to chase neighbouring register-allocation noise;
+see note 44.)

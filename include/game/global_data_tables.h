@@ -502,3 +502,18 @@ struct MappedFlavorTextNationVariantEntry {
   short pad;
 };
 extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32];
+
+// UMapper coastline/region overlay tables (defined in global_data_tables.cpp): the
+// per-tile-edge Seapoint quad table and the region-border SeaSegment table the merge pass
+// consumes. Forward-declared so this header need not pull in sea_geometry.h; consumers that
+// use the tables include it themselves.
+class SeapointStretch;
+class SeaSegmentStretch;
+extern SeapointStretch g_seapointQuadTable_006a3478;
+extern SeaSegmentStretch g_regionBorderLinkTable_006a3900;
+
+// Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns
+// differently), indexed by direction 0..5. Read by the city-region border/merge passes.
+extern const int g_hexColOffsetEvenRow_00697450[6];
+extern const int g_hexRowOffset_00697468[6];
+extern const int g_hexColOffsetOddRow_00697480[6];

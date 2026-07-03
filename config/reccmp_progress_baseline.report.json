@@ -4228,7 +4228,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -12614,37 +12614,37 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8571428571428571,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -16113,7 +16113,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20626987732848706,
+      "matching": 0.19718309859154928,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17961,7 +17961,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9391304347826087,
+      "matching": 0.9122807017543859,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -17991,7 +17991,7 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.2976,
+      "matching": 0.3054662379421222,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
@@ -18033,7 +18033,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -19924,13 +19924,13 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.441025641025641,
+      "matching": 0.44329896907216493,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },

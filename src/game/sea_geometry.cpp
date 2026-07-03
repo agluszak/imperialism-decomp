@@ -11,14 +11,10 @@
 
 #include "decomp_types.h"
 #include "game/TGlobalMapState.h"
+#include "game/global_data_tables.h"
 
 // Allocator-tracked realloc (generic stub form; typed cast at the call sites).
 extern undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
-
-// The per-tile-edge Seapoint quad table. A plain global (not reccmp DATA-tracked); declared
-// via local extern by the overlay-segment builder rather than in a header, so the
-// float-sensitive TUs that include global_data_tables.h stay untouched.
-SeapointStretch g_seapointQuadTable_006a3478;
 
 namespace {
 

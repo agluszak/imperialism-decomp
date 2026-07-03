@@ -40,17 +40,9 @@ struct RegionBorderLink {
   short reserved16;       // +0x16
 };
 
-// The global region-border-link table object at 0x006a3900. Defined here (its original home);
-// the overlay-segment builder reaches it via a local extern. Kept out of a shared header so
-// the float-sensitive TUs that include global_data_tables.h stay untouched.
-SeaSegmentStretch g_regionBorderLinkTable_006a3900;
-
-// Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns differently).
-// External linkage (explicit `extern` + initializer) so the neighbour helper in
-// map_overlay_geometry.cpp can share them via a local extern.
-extern const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
-extern const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
-extern const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};
+// The region-border-link table (0x006a3900) and the hex-neighbour offset tables this pass
+// reads are defined in global_data_tables.cpp (declared in global_data_tables.h, included
+// above).
 
 namespace {
 

@@ -11,11 +11,7 @@
 #include <stdlib.h>
 
 #include "decomp_types.h"
-
-// The two overlay tables are defined in sea_geometry.cpp; declared here locally rather than in
-// a header to keep the float-sensitive TUs that include global_data_tables.h untouched.
-extern SeapointStretch g_seapointQuadTable_006a3478;
-extern SeaSegmentStretch g_regionBorderLinkTable_006a3900;
+#include "game/global_data_tables.h"
 
 namespace {
 

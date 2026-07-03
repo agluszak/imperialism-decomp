@@ -4,12 +4,7 @@
 #include "game/map_overlay_geometry.h"
 
 #include "game/TGlobalMapState.h"
-
-// Hex-neighbour offset tables (defined in TMapMaker_MergeSmallCityRegions.cpp). Declared
-// locally rather than in a header to keep float-sensitive TUs untouched.
-extern const int g_hexColOffsetEvenRow_00697450[6];
-extern const int g_hexRowOffset_00697468[6];
-extern const int g_hexColOffsetOddRow_00697480[6];
+#include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x00528c10
 int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {
