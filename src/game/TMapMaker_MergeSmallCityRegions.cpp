@@ -40,7 +40,9 @@ struct RegionBorderLink {
   short reserved16;       // +0x16
 };
 
-// The global region-border-link table object at 0x006a3900.
+// The global region-border-link table object at 0x006a3900. Defined here (its original home);
+// the overlay-segment builder reaches it via a local extern. Kept out of a shared header so
+// the float-sensitive TUs that include global_data_tables.h stay untouched.
 SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns differently).

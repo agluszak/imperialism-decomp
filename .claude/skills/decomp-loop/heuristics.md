@@ -951,3 +951,28 @@ copy loop on grow), it is a `stretch<T>`, not a `CArray`; model it as a real
 `class X : public stretch<T, Tag>` overriding the single-slot append virtual, not an
 ad-hoc struct. Mac CodeWarrior evidence names the family `stretch<Seapoint>` /
 `stretch<SeaSegment>` with `Add/operator[]/OverStretch` members.
+
+## 44. Don't touch global_data_tables.h to share a subsystem global — use a .cpp-local extern
+
+Adding *anything* to `global_data_tables.h` (even two forward-decls + `extern` lines) recompiles
+every TU that includes it, and the float-heavy ones flip: the TGreatPower commutative-FADD
+stubs (0x4e0590/0x4e0610/0x4e0650, `fld [tblA]; fadd [tblB]`) swap their two source-table
+operands and crater 100%→43% (note 39). The `check_global_location` gate only scans **headers**
+for `extern … g_…`, so a plain `.cpp`-scope global definition + a `.cpp`-local `extern` in each
+consumer is fully compliant and leaves every header byte-identical. Reserve global_data_tables.h
+for genuinely cross-cutting reccmp-DATA-tracked globals; keep subsystem scratch tables
+(e.g. the overlay Seapoint/SeaSegment stretch tables) defined in a subsystem `.cpp` and extern'd
+locally. Verified: header-based sharing flipped 3 TGreatPower funcs; moving to .cpp-local
+externs restored all three to 100% with the builder unchanged.
+
+## 45. Big matching-heavy function: isolate it in its own TU, and use float (not double) locals
+
+Two independent yields on the 1073-byte `BuildOverlaySpanRecordsFromQuadBorderLinks` (0x52cae0):
+(a) a `double` local for a distance forces an 8-byte-aligned frame (`push ebp; and esp,-8`) the
+original (which used `float`) never emits — storing the metric as `float`/comparing straight off
+the FPU return removed the whole alien prologue; (b) dropping the function into its own `.cpp`
+(rather than appending to a shared subsystem file) stopped it from shifting the register
+allocation of the neighbouring stretch methods (0x52d150/0x52c0a0 each recovered ~3pp). A big
+function's own score is dominated by the compiler's choice of induction-variable register
+(ebx vs the original's ebp) which source can't steer — expect ~30% structural, and treat the
+absolute aligned-byte gain (≈320 here) as the win, not the percentage.

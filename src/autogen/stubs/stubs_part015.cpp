@@ -771,14 +771,6 @@ undefined4 BuildCityRegionBorderOverlaySegments(void)
   return 0;
 }
 
-// ghidra_name BuildOverlaySpanRecordsFromQuadBorderLinks
-// ghidra_proto undefined BuildOverlaySpanRecordsFromQuadBorderLinks()
-// FUNCTION: IMPERIALISM 0x0052cae0
-undefined4 BuildOverlaySpanRecordsFromQuadBorderLinks(void)
-{
-  return 0;
-}
-
 // ghidra_name ReindexContiguousCityRegionIds
 // ghidra_proto undefined ReindexContiguousCityRegionIds()
 // FUNCTION: IMPERIALISM 0x0052d1f0
