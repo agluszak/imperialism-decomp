@@ -22,24 +22,42 @@
 struct SeapointTag;
 struct SeaSegmentTag;
 
-// A 0x10-byte map point. Field semantics are not yet recovered; the append virtual copies
-// all four dwords by value.
+// A 0x10-byte map point / edge record. The two middle dwords are kept sorted (lo <= hi) by
+// InitSorted. The append virtual copies all four dwords by value.
 struct Seapoint {
-  int f00; // +0x00
-  int f04; // +0x04
-  int f08; // +0x08
-  int f0c; // +0x0c
+  int coord00; // +0x00 linear overlay index / raw value
+  int lo04;    // +0x04 sorted-low attribute
+  int hi08;    // +0x08 sorted-high attribute
+  int f0c;     // +0x0c
+
+  // Store the four dwords, ordering lo04<=hi08. 0x0052b1e0.
+  void InitSorted(int value, int a, int b, int extra);
 };
 
-// A 0x18-byte coastline segment (Mac evidence: constructed from two Seapoints). The append
-// virtual copies all six dwords by value; MSVC emits the original's 6-iteration dword copy.
+// A 0x18-byte coastline overlay segment (Mac evidence: SeaSegment(const Seapoint&, const
+// Seapoint&)). Endpoints are the two overlay-grid points (0xd8=216-wide grid); the segment
+// is normalized so endpoint 0 is topmost/leftmost, then a heading angle is computed. The
+// append virtual copies all six dwords by value.
 struct SeaSegment {
-  int f00; // +0x00
-  int f04; // +0x04
-  int f08; // +0x08
-  int f0c; // +0x0c
-  int f10; // +0x10
-  int f14; // +0x14
+  short x0;             // +0x00 overlay col of endpoint 0 (coord0 % 0xd8)
+  short y0;             // +0x02 overlay row of endpoint 0 (coord0 / 0xd8)
+  short x1;             // +0x04 overlay col of endpoint 1
+  short y1;             // +0x06 overlay row of endpoint 1
+  int coord0;           // +0x08 linear overlay index of endpoint 0 (x0 + y0*0xd8)
+  int coord1;           // +0x0c linear overlay index of endpoint 1
+  short attr10;         // +0x10 carried attribute (from endpoint 0's lo04)
+  short attr12;         // +0x12 carried attribute (from endpoint 0's hi08)
+  short angle14;        // +0x14 heading angle (atan2 of the endpoint delta)
+  unsigned char wrap16; // +0x16 set when the segment spans the horizontal wrap (|dx| > 0x6c)
+  unsigned char pad17;  // +0x17
+
+  // Build the segment from two Seapoints' linear coords, normalize endpoint order and
+  // recompute the heading angle. 0x0052b220.
+  void InitFromPoints(const Seapoint* p0, const Seapoint* p1);
+  // Re-normalize endpoint order (topmost/leftmost first) and recompute the angle. 0x0052ab00.
+  void RecomputeEndpointsAndAngle();
+  // Pick attr12 or attr10 depending on the heading angle. 0x0052c000.
+  unsigned short SelectAttrByAngle() const;
 };
 
 // The Seapoint stretch. Vtable is adjacent to TMapMaker's (0x006599a0); left unannotated
@@ -52,6 +70,7 @@ public:
   // Non-virtual helpers (paired by address marker, called on the concrete type).
   void OverStretch(unsigned int newCount);  // 0x0052d0d0
   Seapoint* operator[](unsigned int index); // 0x0052d150
+  void* Detach();                           // 0x0052ca00
 };
 
 // The SeaSegment stretch (e.g. the region-border-link table global at 0x006a3900).
@@ -63,7 +82,9 @@ public:
   void OverStretch(unsigned int newCount);    // 0x0052b3e0
   SeaSegment* operator[](unsigned int index); // 0x0052b460
   void* Detach();                             // 0x0052b500
-  void ReallocExact(int newCount);            // 0x0052e310
+  // Bounds-checked element pointer (no grow); null if index is out of range. 0x0052c030.
+  SeaSegment* At(unsigned int index);
+  void ReallocExact(int newCount); // 0x0052e310
 };
 
 ASSERT_SIZE(SeapointStretch, 0x10);

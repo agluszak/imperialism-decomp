@@ -17901,19 +17901,19 @@
     },
     {
       "address": "0x52ab00",
-      "matching": 0.046511627906976744,
+      "matching": 0.27672955974842767,
       "name": "RecomputeOverlaySegmentEndpointsAndAngle",
       "type": 1
     },
     {
       "address": "0x52b1e0",
-      "matching": 0.0,
+      "matching": 0.2962962962962963,
       "name": "InitializeOverlaySpanRecordSorted",
       "type": 1
     },
     {
       "address": "0x52b220",
-      "matching": 0.01694915254237288,
+      "matching": 0.3333333333333333,
       "name": "InitializeOverlaySegmentFromTwoMapCoords",
       "type": 1
     },
@@ -17949,13 +17949,13 @@
     },
     {
       "address": "0x52c000",
-      "matching": 0.25,
+      "matching": 1.0,
       "name": "SelectSpanEndpointXByThreshold",
       "type": 1
     },
     {
       "address": "0x52c030",
-      "matching": 0.16666666666666666,
+      "matching": 1.0,
       "name": "GetOverlaySpanRecordByIndex",
       "type": 1
     },
@@ -17979,7 +17979,7 @@
     },
     {
       "address": "0x52ca00",
-      "matching": 0.25,
+      "matching": 1.0,
       "name": "DetachAndResetOverlayQuadRecordArrayBuffer",
       "type": 1
     },

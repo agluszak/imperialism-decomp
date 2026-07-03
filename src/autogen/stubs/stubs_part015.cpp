@@ -755,30 +755,6 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820(void)
   return 0;
 }
 
-// ghidra_name RecomputeOverlaySegmentEndpointsAndAngle
-// ghidra_proto undefined RecomputeOverlaySegmentEndpointsAndAngle()
-// FUNCTION: IMPERIALISM 0x0052ab00
-undefined4 RecomputeOverlaySegmentEndpointsAndAngle(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeOverlaySpanRecordSorted
-// ghidra_proto undefined InitializeOverlaySpanRecordSorted()
-// FUNCTION: IMPERIALISM 0x0052b1e0
-undefined4 InitializeOverlaySpanRecordSorted(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeOverlaySegmentFromTwoMapCoords
-// ghidra_proto undefined InitializeOverlaySegmentFromTwoMapCoords()
-// FUNCTION: IMPERIALISM 0x0052b220
-undefined4 InitializeOverlaySegmentFromTwoMapCoords(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignCityRegionIdsFromOverlayScanlineIntersections
 // ghidra_proto undefined AssignCityRegionIdsFromOverlayScanlineIntersections()
 // FUNCTION: IMPERIALISM 0x0052b9b0
@@ -791,22 +767,6 @@ undefined4 AssignCityRegionIdsFromOverlayScanlineIntersections(void)
 // ghidra_proto undefined ExtractWrappedEndpointFromSpanRecordBySide()
 // FUNCTION: IMPERIALISM 0x0052bef0
 undefined4 ExtractWrappedEndpointFromSpanRecordBySide(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectSpanEndpointXByThreshold
-// ghidra_proto undefined SelectSpanEndpointXByThreshold()
-// FUNCTION: IMPERIALISM 0x0052c000
-undefined4 SelectSpanEndpointXByThreshold(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOverlaySpanRecordByIndex
-// ghidra_proto undefined GetOverlaySpanRecordByIndex()
-// FUNCTION: IMPERIALISM 0x0052c030
-undefined4 GetOverlaySpanRecordByIndex(void)
 {
   return 0;
 }
@@ -831,14 +791,6 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170(void)
 // ghidra_proto undefined BuildCityRegionBorderOverlaySegments()
 // FUNCTION: IMPERIALISM 0x0052c1a0
 undefined4 BuildCityRegionBorderOverlaySegments(void)
-{
-  return 0;
-}
-
-// ghidra_name DetachAndResetOverlayQuadRecordArrayBuffer
-// ghidra_proto undefined DetachAndResetOverlayQuadRecordArrayBuffer()
-// FUNCTION: IMPERIALISM 0x0052ca00
-undefined4 DetachAndResetOverlayQuadRecordArrayBuffer(void)
 {
   return 0;
 }
