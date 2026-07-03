@@ -29,6 +29,16 @@ Notes:
 
 ## 1. Daily port loop (no marker/ownership changes)
 
+Start the Ghidra query daemon once per session — every read-only evidence query
+(`ghidra-listing`, `xrefs`, `ghidra-search`, `ghidra-jumptable`, `ghidra-decompile`,
+`ghidra-vtable-dump`, …) then answers in ~0.2-3s instead of paying ~60-90s of JVM
+startup each. Stop it before any `MUTATES: Ghidra DB` target (§2/§3 targets stop
+it automatically; details in the `ghidra` skill):
+
+```sh
+just ghidra-daemon      # once; ghidra-daemon-stop / ghidra-daemon-status to manage
+```
+
 Edit manual source (shape/data passes on already-owned functions), then:
 
 ```sh

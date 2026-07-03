@@ -33,10 +33,10 @@ module|tools.workflow.promote_from_autogen|just:promote|Promote function bodies 
 module|tools.workflow.format_cpp|just:format|Formatting helper
 module|tools.workflow.check_tooling_surface|just:tooling-check|Tooling surface validator
 module|tools.ghidra.listing_one|query:listing|Read-only pyghidra instruction listing
-module|tools.ghidra.decompile_one|just:ghidra-decompile|Read-only pyghidra decompile helper
+module|tools.ghidra.decompile_one|query:decompile|Read-only pyghidra decompile helper
 module|tools.ghidra.decomp_check|just:ghidra-decomp-check|Ghidra decompile benchmark gate
 module|tools.ghidra.scan_cdecl_thiscall|just:scan-cdecl-thiscall|Classify __cdecl vs __thiscall by ECX use
-module|tools.ghidra.vtable_dump|just:ghidra-vtable-dump|Dump a class vtable slot->function map
+module|tools.ghidra.vtable_dump|query:vtable-dump|Dump a class vtable slot->function map
 module|tools.ghidra.name_vtable_slots|just:name-vtable-slots|Name and expand Ghidra vtable structs from recovered source slots
 module|tools.ghidra.gen_vtable_slot_overrides|just:gen-vtable-slot-overrides|Suggest curated vtable-slot method names
 module|tools.ghidra.propagate_virtual_method_names|just:propagate-virtual-method-names|Propagate virtual method identities parent-first

@@ -6,17 +6,22 @@ description: Run and debug the recompiled Imperialism.exe under Wine — launch 
 # Run & debug the recomp
 
 `ORIGINAL_BINARY` in `.env` must point at a retail `Imperialism.exe` whose directory
-holds `Data/` and the other assets; `just build` first. Current startup/rendering
-blockers are tracked in `docs/TODO.md`.
+holds `Data/` and the other assets; `just build` first.
 
 ## Launch
 
-- `just run` — runs the recomp under Wine from the retail dir (`WINEDEBUG=-all` by
-  default; override in the environment).
-- **Backgrounding is flaky when chained**: `pkill`/`wineserver -k` + launch in one
-  compound command silently fails to start about half the time. Use three separate
-  commands: (1) kill + settle, (2) `nohup just run > /tmp/…/run.log 2>&1 &` alone,
-  (3) sleep then `pgrep -fa Imperialism.exe` to confirm it's alive.
+- `just run-fresh` — the default way to (re)launch: kills stale game/wineserver
+  state, settles, launches detached, and confirms the process is alive (log:
+  `build-msvc500/run.log`). Do NOT hand-roll `pkill` + launch in one compound
+  command — that silently races about half the time; this target sequences it
+  correctly.
+- `just run` — foreground run without the hygiene (`WINEDEBUG=-all` by default;
+  override in the environment).
+- `just run-trace [timeout]` — timed run with `+seh,+debugstr` tracing that then
+  greps the log for unhandled exceptions/page faults. **Use this whenever the
+  window is blank or behavior silently stops**: crashes swallowed by an exception
+  handler (process alive, UI dead — e.g. a call through a null function pointer)
+  are invisible under plain `just run` and show up here.
 
 ## Debug
 
@@ -24,35 +29,35 @@ blockers are tracked in `docs/TODO.md`.
   `MessageBoxA`, continues, prints a backtrace, quits (made for empty-error-box
   startup failures). Override:
   `DEBUG_SCRIPT=$'break SomeSymbol\ncont\nbt\nquit\n' just debug`.
+  The recipe kills any stale wineserver first (stale state used to hang winedbg
+  until the timeout with zero output).
 - `just debug-timeout` — same with a deadline (`DEBUG_TIMEOUT=10s …`); its default
   `WINEDEBUG=err+all,+debugstr,+loaddll` is the useful starting channel set.
+- `just addr 0xADDR` — translate an original-binary address to the recomp
+  address/symbol (and back; cached, instant after the first call). Use it to set
+  winedbg breakpoints from `// FUNCTION` markers, memory notes, or crash
+  addresses when `break SymbolName` won't resolve (free functions, renamed
+  bodies).
 - OutputDebugString from the game shows up under the `debugstr` channel.
+- winedbg pitfalls: breakpoints freeze the message pump (step, don't free-run,
+  once inside), and named-parameter printing at a function's first instruction is
+  unreliable — cross-check with a raw stack read (`print *(short*)($esp+4)`).
 
 ## Screenshot the game window
 
-Root-window capture can fail with `BadMatch` under nested/Wayland X servers —
-capture the game window by ID instead (portable either way):
+```sh
+just screenshot [out.png]        # default /tmp/imperialism.png
+```
 
-1. `xwininfo -root -tree | grep -i imperialism` → top-level window ID (e.g.
-   `0x2e00001`). The ID goes stale on every relaunch; re-run after each launch.
-2. ```
-   uv run --with python-xlib --with pillow python3 - <<'EOF'
-   from Xlib import display, X
-   from PIL import Image
-   WIN_ID = 0x2e00001  # from xwininfo
-   d = display.Display()
-   win = d.create_resource_object('window', WIN_ID)
-   g = win.get_geometry()
-   raw = win.get_image(0, 0, g.width, g.height, X.ZPixmap, 0xffffffff)
-   Image.frombytes('RGB', (g.width, g.height), raw.data, 'raw', 'BGRX').save('/tmp/imperialism.png')
-   EOF
-   ```
-   Note the `BGRX` pixel order (32bpp TrueColor).
-3. Read the PNG back to inspect it visually.
+Auto-discovers the game window by class (largest match wins; window IDs go stale
+on every relaunch, so discovery beats hardcoding) and captures it by ID —
+root-window grabs fail with `BadMatch` under nested/Wayland X servers. Pass
+`--win 0xID` to force a specific window. Read the PNG back to inspect it
+visually.
 
 ## Verifying a change end-to-end
 
-Build → launch → screenshot → compare against the expectation (e.g. title bitmap
-present, no stray popup, window not blank). A blank-but-alive window usually means
-an init-sequence or paint-dispatch blocker, not a crash — check `docs/TODO.md`
-before digging.
+Build → `just run-fresh` → `just screenshot` → compare against the expectation
+(e.g. title bitmap present, no stray popup, window not blank). A blank-but-alive
+window can be an init/paint blocker **or a silently-swallowed crash** — run
+`just run-trace` to tell the two apart before digging.

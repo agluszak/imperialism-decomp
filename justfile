@@ -456,7 +456,7 @@ ghidra-function-slice *args: _require-ghidra-install
 
 [group('ghidra-inspect')]
 ghidra-decompile *args: _require-ghidra-install
-  uv run python -m tools.ghidra.decompile_one {{args}}
+  uv run python -m tools.ghidra.query decompile {{args}}
 
 # Linear disassembly by address, ignoring Ghidra's (sometimes wrong) function
 # boundaries. `just ghidra-linear-disasm 0xADDR [count]`.
@@ -480,7 +480,7 @@ ghidra-raw-disasm *args: _require-ghidra-install
 
 [group('ghidra-inspect')]
 ghidra-vtable-dump class vtable *args: _require-ghidra-install
-  uv run python -m tools.ghidra.vtable_dump "{{class}}" "{{vtable}}" {{args}}
+  uv run python -m tools.ghidra.query vtable-dump "{{class}}" "{{vtable}}" {{args}}
 
 [group('ghidra-inspect')]
 ghidra-vtable-struct-check *args: _require-ghidra-install

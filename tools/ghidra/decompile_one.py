@@ -80,34 +80,28 @@ def build_thunk_map(program) -> dict[str, str]:
     return thunk_map
 
 
-def main() -> int:
-    if len(sys.argv) < 2:
-        print("usage: decompile_one 0xADDR [0xADDR ...]", file=sys.stderr)
+def run(program, argv: list[str]) -> int:
+    if not argv:
+        print("usage: decompile 0xADDR [0xADDR ...]", file=sys.stderr)
         return 2
-    addrs = parse_addrs(sys.argv[1:])
+    addrs = parse_addrs(argv)
 
-    project = ghidra_env.open_project()
-    from ghidra.app.decompiler import DecompInterface
+    from ghidra.app.decompiler import DecompInterface, DecompileOptions
     from ghidra.util.task import ConsoleTaskMonitor
 
-    consumer = None
-    program = None
+    fm = program.getFunctionManager()
+    af = program.getAddressFactory().getDefaultAddressSpace()
+
+    ifc = DecompInterface()
+    opts = DecompileOptions()
+    ifc.setOptions(opts)
+    ifc.setSimplificationStyle("decompile")
+    if not ifc.openProgram(program):
+        print(f"openProgram FAILED: {ifc.getLastMessage()}", file=sys.stderr)
+        return 1
+    mon = ConsoleTaskMonitor()
+
     try:
-        consumer, program = ghidra_env.open_program(project)
-
-        fm = program.getFunctionManager()
-        af = program.getAddressFactory().getDefaultAddressSpace()
-        from ghidra.app.decompiler import DecompileOptions
-
-        ifc = DecompInterface()
-        opts = DecompileOptions()
-        ifc.setOptions(opts)
-        ifc.setSimplificationStyle("decompile")
-        if not ifc.openProgram(program):
-            print(f"openProgram FAILED: {ifc.getLastMessage()}", file=sys.stderr)
-            return 1
-        mon = ConsoleTaskMonitor()
-
         resolve_real_function = make_resolve_real_function(program)
         # Build thunk-name -> real-name map for post-processing decompiled output.
         resolver = ThunkResolver(build_thunk_map(program))
@@ -150,10 +144,25 @@ def main() -> int:
                 continue
             print(resolver.resolve(res.getDecompiledFunction().getC()))
     finally:
+        ifc.dispose()
+    return 0
+
+
+def main() -> int:
+    if len(sys.argv) < 2:
+        print("usage: decompile_one 0xADDR [0xADDR ...]", file=sys.stderr)
+        return 2
+
+    project = ghidra_env.open_project()
+    consumer = None
+    program = None
+    try:
+        consumer, program = ghidra_env.open_program(project)
+        return run(program, sys.argv[1:])
+    finally:
         if program is not None:
             program.release(consumer)
         project.close()
-    return 0
 
 
 if __name__ == "__main__":

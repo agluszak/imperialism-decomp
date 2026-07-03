@@ -15,11 +15,13 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from tools.ghidra import (
+    decompile_one,
     jumptable,
     linear_disasm,
     listing_one,
     raw_disasm,
     search_whole_binary,
+    vtable_dump,
     xrefs_to,
 )
 
@@ -30,6 +32,8 @@ COMMANDS: dict[str, Callable] = {
     "linear-disasm": linear_disasm.run,
     "raw-disasm": raw_disasm.run,
     "jumptable": jumptable.run,
+    "decompile": decompile_one.run,
+    "vtable-dump": vtable_dump.run,
 }
 
 

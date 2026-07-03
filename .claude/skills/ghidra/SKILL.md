@@ -24,15 +24,60 @@ just export-project    # repack the live .rep -> Imperialism.gzf (+ .sha256); co
 Never commit the live `.rep` (gitignored). Refresh the archive with
 `just export-project` whenever the Ghidra database has meaningfully changed.
 
+## Start the query daemon first (one JVM, instant queries)
+
+Every one-shot query pays ~60-90s of JVM/project startup. **Start the persistent
+read-only daemon at the beginning of any session that will issue more than one
+Ghidra query** — all the read-only targets below then answer in ~0.2-3s:
+
+```sh
+just ghidra-daemon          # start (blocks ~60-90s until "ready", then returns)
+just ghidra-daemon-status   # running?
+just ghidra-daemon-stop     # stop (frees the project lock)
+```
+
+Rules of thumb:
+- The daemon holds the **project lock**: stop it before any `MUTATES: Ghidra DB`
+  target. `just sync-ghidra` / `just restore-project` stop it automatically; the
+  other `apply-*`/`import-ghidra`/`export-project` targets will fail on the lock
+  until you `just ghidra-daemon-stop`.
+- Without a daemon everything still works — the targets fall back to the classic
+  one-shot path (same output, slow) and print a hint.
+- It exits on its own after 4h idle (`GHIDRA_DAEMON_IDLE_SECS` overrides).
+  Log: `.ghidra-query.log` in the repo root.
+
 ## Read-only queries (preferred — use these, not raw disassemblers)
 
 - **Instruction listing** for one or more addresses (follows ILT `jmp` thunks to
-  their real target):
+  their real target; on a Ghidra gap it prints the nearest functions before/after
+  instead of dead-ending):
   ```sh
   just ghidra-listing 0x004dd1b0 [0xADDR ...]
   ```
-- **Decompile** a single function: `tools/ghidra/decompile_one.py` (module
-  `tools.ghidra.decompile_one`).
+- **Who references this address** — callers, jumps, and address-taken/data refs,
+  hopping through ILT thunks automatically (a body address answers "who calls
+  this" in one query; address-taken hits are how data-registered callbacks hide):
+  ```sh
+  just xrefs 0x581870 [0xADDR ...] [--no-thunk-hop] [--limit N]
+  ```
+- **Decode a switch jump table** (MSVC500 two-level pattern; works inside Ghidra
+  code gaps — reads raw bytes, prints case→target with owning functions):
+  ```sh
+  just ghidra-jumptable 0x5db695            # address of the indirect jmp
+  just ghidra-jumptable --table 0x459548 --cases 10   # explicit-table form
+  ```
+- **Whole-binary search** — instruction text, raw data dwords, or exact immediate
+  operands. `imm` is the precise one: `imm 0x11f8` finds every `PUSH 0x11f8` /
+  `CMP EAX,0x11f8` (event-code dispatch sites, callback address-taken sites)
+  without false positives from addresses containing the digits:
+  ```sh
+  just ghidra-search text|dword|imm <value> [limit]
+  ```
+- **Gap disassembly** — when Ghidra has no instruction at an address:
+  `just ghidra-linear-disasm 0xADDR [count]` walks Ghidra's instruction DB past
+  wrong function bounds; `just ghidra-raw-disasm 0xADDR [bytes]` disassembles raw
+  bytes with capstone for regions Ghidra never analyzed at all.
+- **Decompile** a single function: `just ghidra-decompile 0xADDR [0x...]`.
 - **Dump a class vtable** (slot → function map):
   ```sh
   just ghidra-vtable-dump TGreatPower 0x00653938
