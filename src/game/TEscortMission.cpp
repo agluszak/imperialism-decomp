@@ -8,15 +8,6 @@
 
 IMPLEMENT_SERIAL(TEscortMission, TNavyMission, 1)
 
-// SYNTHETIC: IMPERIALISM 0x005399b0
-// TEscortMission::GetRuntimeClass
-// SYNTHETIC: IMPERIALISM 0x00539960
-// TEscortMission::`scalar deleting destructor'
-
-TEscortMission::TEscortMission() : TNavyMission() {}
-
-TEscortMission::TEscortMission(TZone* targetZone) : TNavyMission(targetZone) {}
-
 // FUNCTION: IMPERIALISM 0x00539900
 TMission* TEscortMission::GetReplacementSlot48() {
   return this;
@@ -31,6 +22,16 @@ char TEscortMission::ReturnFalseSlot64() {
 char TEscortMission::ReturnFalseSlot60() {
   return 0;
 }
+// SYNTHETIC: IMPERIALISM 0x00539960
+// TEscortMission::`scalar deleting destructor'
+
+TEscortMission::TEscortMission() : TNavyMission() {}
+
+// SYNTHETIC: IMPERIALISM 0x005399b0
+// TEscortMission::GetRuntimeClass
+
+// FUNCTION: IMPERIALISM 0x00539a20
+TEscortMission::TEscortMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
 // FUNCTION: IMPERIALISM 0x00539a70
 void TEscortMission::Call30() {

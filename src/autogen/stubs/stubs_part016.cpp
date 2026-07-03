@@ -203,14 +203,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At005399d0(void)
   return 0;
 }
 
-// ghidra_name TMission::ConstructTEscortMissionForPortContext
-// ghidra_proto undefined ConstructTEscortMissionForPortContext()
-// FUNCTION: IMPERIALISM 0x00539a20
-undefined4 ConstructTEscortMissionForPortContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeNavyOrderDistributionSimilarityScoreForNation
 // ghidra_proto undefined ComputeNavyOrderDistributionSimilarityScoreForNation()
 // FUNCTION: IMPERIALISM 0x00539a90
@@ -423,14 +415,6 @@ undefined4 CreateObject_0053F080(void)
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053f280()
 // FUNCTION: IMPERIALISM 0x0053f280
 undefined4 WrapperFor_AFX_CLASSINIT_At0053f280(void)
-{
-  return 0;
-}
-
-// ghidra_name TMission::ConstructTInvadeMissionWithOptionalBeachhead
-// ghidra_proto undefined ConstructTInvadeMissionWithOptionalBeachhead()
-// FUNCTION: IMPERIALISM 0x0053f2d0
-undefined4 ConstructTInvadeMissionWithOptionalBeachhead(void)
 {
   return 0;
 }

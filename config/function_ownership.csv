@@ -2483,6 +2483,7 @@ address|target_cpp|ownership|note
 539940|src/game/TEscortMission.cpp|manual|marker_sync
 539960|src/game/TEscortMission.cpp|manual|marker_sync
 5399b0|src/game/TEscortMission.cpp|manual|marker_sync
+539a20|src/game/TEscortMission.cpp|manual|marker_sync
 539a70|src/game/TEscortMission.cpp|manual|marker_sync
 539ca0|src/game/TEscortMission.cpp|manual|marker_sync
 539e70|src/game/TEscortMission.cpp|manual|marker_sync
@@ -2574,6 +2575,7 @@ address|target_cpp|ownership|note
 53f1f0|src/game/TInvadeMission.cpp|manual|marker_sync
 53f240|src/game/TInvadeMission.cpp|manual|marker_sync
 53f260|src/game/TInvadeMission.cpp|manual|marker_sync
+53f2d0|src/game/TInvadeMission.cpp|manual|marker_sync
 53f3c0|src/game/TInvadeMission.cpp|manual|marker_sync
 53f410|src/game/TInvadeMission.cpp|manual|marker_sync
 53f4e0|src/game/TInvadeMission.cpp|manual|marker_sync

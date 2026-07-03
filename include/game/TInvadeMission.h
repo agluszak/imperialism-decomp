@@ -14,7 +14,7 @@ public:
   TBeachheadMission* beachhead34; // +0x34 owned amphibious-landing child mission
 
   TInvadeMission();
-  TInvadeMission(short targetProvince, short amassingProvince);
+  TInvadeMission(short targetProvince, TZone* beachheadZone);
 
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x53f640
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x53f690
