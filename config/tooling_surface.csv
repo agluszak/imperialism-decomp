@@ -32,7 +32,7 @@ module|tools.reccmp.session_loop|just:session-loop|Top-impact session queue
 module|tools.workflow.promote_from_autogen|just:promote|Promote function bodies from autogen
 module|tools.workflow.format_cpp|just:format|Formatting helper
 module|tools.workflow.check_tooling_surface|just:tooling-check|Tooling surface validator
-module|tools.ghidra.listing_one|just:ghidra-listing|Read-only pyghidra instruction listing
+module|tools.ghidra.listing_one|query:listing|Read-only pyghidra instruction listing
 module|tools.ghidra.decompile_one|just:ghidra-decompile|Read-only pyghidra decompile helper
 module|tools.ghidra.decomp_check|just:ghidra-decomp-check|Ghidra decompile benchmark gate
 module|tools.ghidra.scan_cdecl_thiscall|just:scan-cdecl-thiscall|Classify __cdecl vs __thiscall by ECX use
@@ -68,13 +68,20 @@ module|tools.workflow.impk_compat|dependency:tools.workflow.class_discovery|In-r
 file|tools/ghidra/SyncExports_Ghidra.py|dependency:tools.ghidra.sync_exports|PyGhidra script used by sync wrapper
 module|tools.ghidra.push_names_to_ghidra|just:push-names|Stage 3: push source-owned curated names into the Ghidra DB so sync-ghidra converges names
 module|tools.workflow.vtable_autofix|just:vtable-autofix|Dry-run-first planner/applicator for deterministic vtable pairing fixes
-module|tools.ghidra.raw_disasm|just:ghidra-raw-disasm|Capstone raw-byte disassembly bypassing the Ghidra instruction DB
+module|tools.ghidra.raw_disasm|query:raw-disasm|Capstone raw-byte disassembly bypassing the Ghidra instruction DB
 module|tools.ghidra.rtti_class_oracle|just:rtti-oracle|Walk MFC CRuntimeClass descriptors: names, sizes, bases, CreateObject
-module|tools.ghidra.search_whole_binary|just:ghidra-search|Whole-binary text/dword search for handler hunting
+module|tools.ghidra.search_whole_binary|query:search|Whole-binary text/dword search for handler hunting
 module|tools.workflow.check_symbols_integrity|just:symbols-integrity-gate|Structural integrity of config/symbols.csv
-module|tools.ghidra.linear_disasm|just:ghidra-linear-disasm|Linear disassembly by address ignoring Ghidra function boundaries
+module|tools.ghidra.linear_disasm|query:linear-disasm|Linear disassembly by address ignoring Ghidra function boundaries
 module|tools.workflow.check_class_sizes|just:class-size-check|Modeled class sizes vs RTTI oracle object_size
 module|tools.ghidra.repair_code_gaps|just:repair-code-gaps|Create missing Ghidra functions at vtable/ILT/symbols targets
 module|tools.ghidra.prune_ilt_db_functions|just:prune-ilt-db-functions|Remove Function entities on ILT jmp thunks from the Ghidra DB
 module|tools.workflow.check_typedef_cast_drift|just:typedef-cast-audit|Audit Hard-Rule-9 typedef-cast externs for cross-file signature drift
 module|tools.reccmp.global_xref_oracle|just:global-xref-oracle|Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs
+module|tools.ghidra.query|just:ghidra-listing|Daemon-or-one-shot front door for read-only Ghidra queries
+module|tools.ghidra.daemon|just:ghidra-daemon|Persistent read-only Ghidra query daemon (one JVM per session)
+module|tools.reccmp.addr_translate|just:addr|orig<->recomp address lookup via cached reccmp JSON
+module|tools.ghidra.jumptable|query:jumptable|MSVC500 switch jump-table decoder (works in Ghidra code gaps)
+module|tools.ghidra.query_registry|dependency:tools.ghidra.query|Shared command registry for query client + daemon
+module|tools.runtime.screenshot|script:screenshot|Game-window screenshot by auto-discovered X11 window ID
+module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror the DirectX 5 SDK inc/lib from the build image for reference

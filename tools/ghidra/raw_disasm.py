@@ -30,32 +30,40 @@ import capstone
 from tools.common import ghidra_env
 
 
-def main() -> int:
-    if len(sys.argv) < 2:
-        print("usage: raw_disasm 0xADDR [byte_count]", file=sys.stderr)
+def run(program, argv: list[str]) -> int:
+    if not argv:
+        print("usage: raw-disasm 0xADDR [byte_count]", file=sys.stderr)
         return 2
-    addr_int = int(sys.argv[1], 16)
-    nbytes = int(sys.argv[2]) if len(sys.argv) > 2 else 200
+    addr_int = int(argv[0], 16)
+    nbytes = int(argv[1]) if len(argv) > 1 else 200
 
-    project = ghidra_env.open_project()
-    consumer = None
-    program = None
-    try:
-        consumer, program = ghidra_env.open_program(project)
-        af = program.getAddressFactory().getDefaultAddressSpace()
-        mem = program.getMemory()
-        addr = af.getAddress(addr_int)
-        data = bytes(mem.getByte(addr.add(i)) & 0xFF for i in range(nbytes))
-    finally:
-        if program is not None:
-            program.release(consumer)
-        project.close()
+    af = program.getAddressFactory().getDefaultAddressSpace()
+    mem = program.getMemory()
+    addr = af.getAddress(addr_int)
+    data = bytes(mem.getByte(addr.add(i)) & 0xFF for i in range(nbytes))
 
     md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
     md.detail = False
     for ins in md.disasm(data, addr_int):
         print(f"0x{ins.address:08x}  {ins.mnemonic} {ins.op_str}")
     return 0
+
+
+def main() -> int:
+    if len(sys.argv) < 2:
+        print("usage: raw_disasm 0xADDR [byte_count]", file=sys.stderr)
+        return 2
+
+    project = ghidra_env.open_project()
+    consumer = None
+    program = None
+    try:
+        consumer, program = ghidra_env.open_program(project)
+        return run(program, sys.argv[1:])
+    finally:
+        if program is not None:
+            program.release(consumer)
+        project.close()
 
 
 if __name__ == "__main__":

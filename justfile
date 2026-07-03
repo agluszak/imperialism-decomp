@@ -52,6 +52,7 @@ _require-ghidra-install:
 [doc('MUTATES: Ghidra DB, symbols.csv, thunk_map.csv, ghidra_autogen/. Re-export pipeline; follow with export-project')]
 [group('sync')]
 sync-ghidra: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
   just push-names --apply --include-library-symbols --library-start 0x005e539c --library-end 0x00626c7d
   just prune-ilt-db-functions --apply --quiet
   uv run python -m tools.ghidra.sync_exports \
@@ -227,6 +228,59 @@ run *args:
   cd "$game_dir"
   exec wine "$recomp" "$@"
 
+# Kill any stale game/wineserver state, then launch the recomp detached and confirm
+# it is alive. Replaces the error-prone manual three-command dance (kill+settle,
+# nohup launch, pgrep) — chaining kill and relaunch in one shell command silently
+# races about half the time. Log: build-msvc500/run.log.
+[doc('Fresh detached game launch: kill stale wine state, launch, confirm alive')]
+[group('build')]
+run-fresh:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  pkill -9 -f Imperialism.exe 2>/dev/null || true
+  sleep 1
+  wineserver -k 2>/dev/null || true
+  sleep 2
+  log="{{justfile_directory()}}/{{build_dir}}/run.log"
+  nohup just run > "$log" 2>&1 &
+  disown
+  sleep 8
+  if pgrep -f Imperialism.exe > /dev/null; then
+    echo "game running (pid $(pgrep -f Imperialism.exe | head -1)); log: $log"
+  else
+    echo "game did not stay up; log tail:" >&2
+    tail -20 "$log" >&2
+    exit 1
+  fi
+
+# Run with Wine SEH/debugstr tracing and surface unhandled faults. The blank-frame
+# failure mode where a page fault is silently swallowed (process stays alive, UI
+# dead) is invisible under plain `just run` — this catches it.
+[doc('Timed run with +seh tracing; prints any unhandled exceptions/page faults')]
+[group('build')]
+run-trace timeout='30s':
+  #!/usr/bin/env bash
+  set -euo pipefail
+  pkill -9 -f Imperialism.exe 2>/dev/null || true
+  sleep 1
+  wineserver -k 2>/dev/null || true
+  sleep 2
+  log="{{justfile_directory()}}/{{build_dir}}/run-trace.log"
+  WINEDEBUG="err+all,+seh,+debugstr" timeout --kill-after=2s "{{timeout}}" just run > "$log" 2>&1 || true
+  echo "--- unhandled exceptions / page faults ---"
+  grep -n -i -E "unhandled|page fault|stack overflow|access violation" "$log" | head -20 || echo "(none found)"
+  echo "--- last debugstr/err lines ---"
+  tail -15 "$log"
+  echo "full log: $log"
+
+# Screenshot the running game window by window ID (root grabs BadMatch under
+# nested/Wayland X servers). Auto-discovers the window; window IDs go stale on
+# every relaunch so discovery beats hardcoding. `just screenshot [out.png]`.
+[doc('Capture the running game window to a PNG (auto-discovers the window ID)')]
+[group('build')]
+screenshot *args:
+  uv run --with python-xlib --with pillow python tools/runtime/screenshot.py {{args}}
+
 # Run the recomp under winedbg from the retail install directory. By default breaks
 # on MessageBoxA, continues, prints a backtrace, and quits — useful for tracing
 # startup failures (empty error boxes, InitInstance bailouts). Override the
@@ -248,6 +302,10 @@ debug *args:
     exit 1
   fi
   export WINEDEBUG="${WINEDEBUG--all}"
+  # Stale wineserver state makes winedbg hang until the outer timeout kills it
+  # with no output at all; a clean server each session avoids that failure mode.
+  wineserver -k 2>/dev/null || true
+  sleep 1
   cd "$game_dir"
   script="${DEBUG_SCRIPT:-$'break MessageBoxA\ncont\nbt\nquit\n'}"
   printf '%s' "$script" | winedbg "$recomp" "$@"
@@ -321,6 +379,15 @@ datacmp *args:
 roadmap *args:
   (cd "{{build_dir}}" && uv run reccmp-roadmap --target "{{target}}" {{args}})
 
+# Translate original-binary addresses to recomp addresses and back (for winedbg
+# breakpoints, crash addresses, etc.). Direction auto-detected; result cached next
+# to the build until the binary/PDB changes.
+#   just addr 0x491cc0 [0x...]
+[doc('orig<->recomp address lookup with name + match % (cached reccmp parse)')]
+[group('compare')]
+addr *args:
+  uv run python -m tools.reccmp.addr_translate --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
+
 # Compare the stack layout of a single near-matching function.
 #   just stackcmp 0xADDR
 [group('compare')]
@@ -347,9 +414,41 @@ session-loop pick='8' top='50' min_size='1' *args:
 # ghidra-inspect — read-only evidence from the vendored Ghidra project.
 # ---------------------------------------------------------------------------
 
+# Read-only inspect targets route through tools.ghidra.query: when the persistent
+# daemon (`just ghidra-daemon`) is running they answer in milliseconds over its
+# socket; otherwise they fall back to the classic one-shot pyghidra path with
+# identical output. Stop the daemon (`just ghidra-daemon-stop`) before any
+# MUTATES-Ghidra-DB target — the daemon holds the project lock (sync-ghidra and
+# restore-project stop it automatically).
+[doc('Start the persistent read-only Ghidra query daemon (one JVM, instant queries)')]
+[group('ghidra-inspect')]
+ghidra-daemon: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon start
+
+[group('ghidra-inspect')]
+ghidra-daemon-stop:
+  uv run python -m tools.ghidra.daemon stop
+
+[group('ghidra-inspect')]
+ghidra-daemon-status:
+  uv run python -m tools.ghidra.daemon status
+
 [group('ghidra-inspect')]
 ghidra-listing *args: _require-ghidra-install
-  uv run python -m tools.ghidra.listing_one {{args}}
+  uv run python -m tools.ghidra.query listing {{args}}
+
+# References TO an address: callers, jumps, address-taken/data refs. Hops through
+# ILT `jmp` thunks automatically so body addresses answer "who calls this" in one
+# query. `just xrefs 0xADDR [0xADDR ...] [--no-thunk-hop] [--limit N]`.
+[group('ghidra-inspect')]
+xrefs *args: _require-ghidra-install
+  uv run python -m tools.ghidra.query xrefs {{args}}
+
+# Decode an MSVC500 switch jump table (works inside Ghidra code gaps).
+# `just ghidra-jumptable 0xJMPADDR` or `--table 0xADDR [--cases N]`.
+[group('ghidra-inspect')]
+ghidra-jumptable *args: _require-ghidra-install
+  uv run python -m tools.ghidra.query jumptable {{args}}
 
 [group('ghidra-inspect')]
 ghidra-function-slice *args: _require-ghidra-install
@@ -363,20 +462,21 @@ ghidra-decompile *args: _require-ghidra-install
 # boundaries. `just ghidra-linear-disasm 0xADDR [count]`.
 [group('ghidra-inspect')]
 ghidra-linear-disasm *args: _require-ghidra-install
-  uv run python -m tools.ghidra.linear_disasm {{args}}
+  uv run python -m tools.ghidra.query linear-disasm {{args}}
 
-# Whole-binary search for a value in disassembled instruction text or raw data
-# (message-map/handler hunting). `just ghidra-search text|dword <value> [limit]`.
+# Whole-binary search for a value in disassembled instruction text, raw data, or
+# instruction immediates (message-map/handler/event-code hunting).
+# `just ghidra-search text|dword|imm <value> [limit]`.
 [group('ghidra-inspect')]
 ghidra-search *args: _require-ghidra-install
-  uv run python -m tools.ghidra.search_whole_binary {{args}}
+  uv run python -m tools.ghidra.query search {{args}}
 
 # Disassemble raw bytes with capstone, bypassing Ghidra's instruction database
 # entirely (for regions Ghidra hasn't disassembled at all).
 # `just ghidra-raw-disasm 0xADDR [byte_count]`.
 [group('ghidra-inspect')]
 ghidra-raw-disasm *args: _require-ghidra-install
-  uv run python -m tools.ghidra.raw_disasm {{args}}
+  uv run python -m tools.ghidra.query raw-disasm {{args}}
 
 [group('ghidra-inspect')]
 ghidra-vtable-dump class vtable *args: _require-ghidra-install
@@ -432,6 +532,7 @@ w32dasm-report: _require-ghidra-install
 # One-time / fresh clone: recreate the live Ghidra working project from the vendored .gzf.
 [group('ghidra-db')]
 restore-project *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
   uv run python -m tools.ghidra.restore_project {{args}}
 
 # MUTATES: vendor/ghidra/exports/*.gzf (LFS).

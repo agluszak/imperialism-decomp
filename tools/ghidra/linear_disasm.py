@@ -19,35 +19,43 @@ import sys
 from tools.common import ghidra_env
 
 
+def run(program, argv: list[str]) -> int:
+    if not argv:
+        print("usage: linear-disasm 0xADDR [count]", file=sys.stderr)
+        return 2
+    addr_int = int(argv[0], 16)
+    count = int(argv[1]) if len(argv) > 1 else 60
+
+    af = program.getAddressFactory().getDefaultAddressSpace()
+    listing = program.getListing()
+    addr = af.getAddress(addr_int)
+    cur = listing.getInstructionAt(addr)
+    if cur is None:
+        print(f"no instruction at 0x{addr_int:08x}")
+        return 1
+    for _ in range(count):
+        if cur is None:
+            break
+        print(f"{cur.getAddress()}  {cur}")
+        cur = listing.getInstructionAt(cur.getAddress().add(cur.getLength()))
+    return 0
+
+
 def main() -> int:
     if len(sys.argv) < 2:
         print("usage: linear_disasm 0xADDR [count]", file=sys.stderr)
         return 2
-    addr_int = int(sys.argv[1], 16)
-    count = int(sys.argv[2]) if len(sys.argv) > 2 else 60
 
     project = ghidra_env.open_project()
     consumer = None
     program = None
     try:
         consumer, program = ghidra_env.open_program(project)
-        af = program.getAddressFactory().getDefaultAddressSpace()
-        listing = program.getListing()
-        addr = af.getAddress(addr_int)
-        cur = listing.getInstructionAt(addr)
-        if cur is None:
-            print(f"no instruction at 0x{addr_int:08x}")
-            return 1
-        for _ in range(count):
-            if cur is None:
-                break
-            print(f"{cur.getAddress()}  {cur}")
-            cur = listing.getInstructionAt(cur.getAddress().add(cur.getLength()))
+        return run(program, sys.argv[1:])
     finally:
         if program is not None:
             program.release(consumer)
         project.close()
-    return 0
 
 
 if __name__ == "__main__":
