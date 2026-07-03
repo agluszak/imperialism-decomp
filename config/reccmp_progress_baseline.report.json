@@ -5231,7 +5231,7 @@
     },
     {
       "address": "0x4912b0",
-      "matching": 0.95,
+      "matching": 1.0,
       "name": "TNumberText::ShallowClone",
       "type": 1
     },
@@ -15069,13 +15069,13 @@
     },
     {
       "address": "0x4feab0",
-      "matching": 0.9882352941176471,
+      "matching": 1.0,
       "name": "TDisplayMgr::InitializeBitmapSurfaceContextWithRetry",
       "type": 1
     },
     {
       "address": "0x4feb80",
-      "matching": 0.9714285714285714,
+      "matching": 1.0,
       "name": "TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated",
       "type": 1
     },
@@ -15129,7 +15129,7 @@
     },
     {
       "address": "0x4fefc0",
-      "matching": 0.9655172413793104,
+      "matching": 1.0,
       "name": "TDisplayMgr::SetMapTileIconVariantTriplet",
       "type": 1
     },
@@ -16023,25 +16023,25 @@
     },
     {
       "address": "0x50a3b0",
-      "matching": 0.9411764705882353,
+      "matching": 1.0,
       "name": "TMacViewMgr::LoadStrategicMapUnitIconAtlas750",
       "type": 1
     },
     {
       "address": "0x50a3e0",
-      "matching": 0.9411764705882353,
+      "matching": 1.0,
       "name": "TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751",
       "type": 1
     },
     {
       "address": "0x50a410",
-      "matching": 0.9411764705882353,
+      "matching": 1.0,
       "name": "TMacViewMgr::LoadStrategicMapOverlayAtlas8699",
       "type": 1
     },
     {
       "address": "0x50a440",
-      "matching": 0.9411764705882353,
+      "matching": 1.0,
       "name": "TMacViewMgr::LoadStrategicMapMarkerAtlas1372",
       "type": 1
     },
@@ -20266,7 +20266,7 @@
     },
     {
       "address": "0x53f7d0",
-      "matching": 0.9411764705882353,
+      "matching": 1.0,
       "name": "TInvadeMission::AdvanceInvadeMissionCompositeHandlers",
       "type": 1
     },

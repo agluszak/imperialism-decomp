@@ -433,27 +433,23 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050a3b0
-undefined TMacViewMgr::LoadStrategicMapUnitIconAtlas750() {
+void TMacViewMgr::LoadStrategicMapUnitIconAtlas750() {
   unitIconAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ee);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050a3e0
-undefined TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751() {
+void TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751() {
   unitOverlayAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ef);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050a410
-undefined TMacViewMgr::LoadStrategicMapOverlayAtlas8699() {
+void TMacViewMgr::LoadStrategicMapOverlayAtlas8699() {
   atlas680 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x21fb);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050a440
-undefined TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
+void TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
   atlas684 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050a470

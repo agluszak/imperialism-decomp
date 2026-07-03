@@ -152,9 +152,7 @@ void TInvadeMission::MissionSlot44() {
 
 // FUNCTION: IMPERIALISM 0x0053f7d0
 void TInvadeMission::RefreshSlot40() {
-  if (beachhead34 != nullptr) {
-    beachhead34->RefreshSlot40();
-  }
+  beachhead34->RefreshSlot40();
   SetStateByte8To2();
   ResetValue0CToZero();
   NoOpSlot3C();

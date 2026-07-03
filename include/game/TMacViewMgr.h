@@ -27,10 +27,10 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined BuildStrategicMapCommodityIconAtlasFrom700To722(); // slot 0x0a 0x50a1a0
-  virtual undefined LoadStrategicMapUnitIconAtlas750();                // slot 0x0b 0x50a3b0
-  virtual undefined LoadStrategicMapUnitOverlayAtlas751();             // slot 0x0c 0x50a3e0
-  virtual undefined LoadStrategicMapOverlayAtlas8699();                // slot 0x0d 0x50a410
-  virtual undefined LoadStrategicMapMarkerAtlas1372();                 // slot 0x0e 0x50a440
+  virtual void LoadStrategicMapUnitIconAtlas750();                     // slot 0x0b 0x50a3b0
+  virtual void LoadStrategicMapUnitOverlayAtlas751();                  // slot 0x0c 0x50a3e0
+  virtual void LoadStrategicMapOverlayAtlas8699();                     // slot 0x0d 0x50a410
+  virtual void LoadStrategicMapMarkerAtlas1372();                      // slot 0x0e 0x50a440
   virtual undefined OrphanCallChain_C4_I35_0050bbc0(int* param_1, undefined4 param_2,
                                                     short param_3); // slot 0x0f 0x50bbc0
   virtual undefined SyncSellTaggedChildControlWithNationState(int* param_1,
