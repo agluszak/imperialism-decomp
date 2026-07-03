@@ -917,3 +917,37 @@ byteOff/4 and the header's `// slot 0xIDX` comments (repo convention even names 
 offset, e.g. `Call30` = slot byte 0x30, `RefreshSlot40` = byte 0x40). Fix is swapping
 the method name at the callsite, no signature change. (`TMission::ReadFrom` 0x5358a0
 called `RefreshSlot40()` where the original dispatches slot 0x30 `Call30()`, 98%→100%.)
+
+## 42. Extractor over-extends a class vtable to swallow adjacent one-slot vtables
+
+The generated `// slot 0xNN … 0xADDR` block appends every non-NULL pointer up to the
+next *known* vtable, so a class whose real table is followed in memory by small (often
+1-slot) `stretch<T>`/helper vtables gets those foreign slots mis-attributed as its own.
+Tell: a run of NULL slots (the real table's abstract tail) and then 1–2 more non-NULL
+"slots" whose target functions operate on a *different* `this* ` shape than the class
+(e.g. touch only `[ecx+4/8/c]` = a stretch data/capacity/count header, not the class's
+0x2a8-byte layout). Confirm by resolving the slot pointer (`just ghidra-vtable-dump
+Name 0xVTABLE --count N` → follow the ILT `JMP`) and checking whether any *global* sets
+its vfptr to that slot's byte address (that global is the real owner). Fix: move the
+`// FUNCTION:` markers off the host class onto a real concrete subclass of the helper
+template, rename the `symbols.csv` rows, and leave the helper vtables unannotated when
+their address overlaps the host's vtable DATA region (pair the methods by address
+marker, not `// VTABLE:`, to avoid the collision gate). This turned the two empty
+`TMapMaker::SetEnabled/SetState` stubs (0x52a760/0x52c0a0) — actually
+`SeaSegmentStretch/SeapointStretch::GetOrAppendUnique` (the by-value append) — from
+0–9% into 93%/91%. Corollary: a `stretch<T>` element size is read straight off the grow
+strides (double `n*0x30`/fallback `n*0x18` ⇒ 0x18 element; `n*0x20`/`n*0x10` ⇒ 0x10),
+and a by-value append copies exactly `sizeof/4` dwords (6-iter `rep movsd` = 0x18,
+4 unrolled movs = 0x10) — the copy width is independent structural evidence for the type.
+
+## 43. stretch<T> vs MFC CArray: realloc-double-or-fallback is the discriminator
+
+Both are growable arrays with a `data/capacity/count` tail, but MFC `CArray` grows by
+allocating a fresh block and *copy-constructing* elements across (new + copy + delete),
+whereas the project's `stretch<T>` family reallocs in place — request `count*2*stride`
+via `ReallocateHeapBlockWithAllocatorTracking`, and on failure realloc to the exact
+`count*stride`. If you see that realloc-double-then-exact-fallback shape (no element
+copy loop on grow), it is a `stretch<T>`, not a `CArray`; model it as a real
+`class X : public stretch<T, Tag>` overriding the single-slot append virtual, not an
+ad-hoc struct. Mac CodeWarrior evidence names the family `stretch<Seapoint>` /
+`stretch<SeaSegment>` with `Add/operator[]/OverStretch` members.

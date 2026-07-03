@@ -6,9 +6,10 @@
 // Data it drives (subsystem only partially recovered -- accessed via typed views, documented):
 //  - the 108x60 = 6480-tile grid at this->mapTileGrid08 (stride 0x24; a "city region" tile has
 //    tile[0]==5, region id = tile[4]-0x17);
-//  - the global region-border-link table at 0x006a3900 (MFC-CArray-style grow buffer): each
-//    0x18-byte record holds the shared-border bbox (int16 x0,y0,x1,y1 at +0/2/4/6) and the pair
-//    of region ids it connects (uint16 at +0x10/+0x12);
+//  - the global region-border-link table at 0x006a3900 (a stretch<SeaSegment>, i.e. the
+//    project's growable-array template, NOT an MFC CArray): each 0x18-byte record holds the
+//    shared-border bbox (int16 x0,y0,x1,y1 at +0/2/4/6) and the pair of region ids it
+//    connects (uint16 at +0x10/+0x12), which is how this pass reinterprets the segment slot;
 //  - per-region tile-count / merged-flag scratch arrays (function locals).
 
 #include "game/TMapMaker.h"
@@ -17,8 +18,8 @@
 
 #include "decomp_types.h"
 #include "game/TGlobalMapState.h"
-#include "game/TOverlaySpanRecordArray.h"
 #include "game/global_data_tables.h"
+#include "game/sea_geometry.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 
@@ -40,7 +41,7 @@ struct RegionBorderLink {
 };
 
 // The global region-border-link table object at 0x006a3900.
-TOverlaySpanRecordArray g_regionBorderLinkTable_006a3900;
+SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns differently).
 const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
@@ -56,16 +57,16 @@ const int kTileGridBytes = 0x38f40; // 6480 * 0x24
 const int kRegionIdBias = 0x17;     // tile[4] region id is biased by +0x17
 
 // Inlined ElementAt(i) matching the original's inlined table access: grow via the real
-// ReserveCapacity method on a miss, bump count, then return the (region-border-typed) record.
+// OverStretch method on a miss, bump count, then return the (region-border-typed) record.
 inline RegionBorderLink* LinkElementAt(unsigned int i) {
-  TOverlaySpanRecordArray& t = g_regionBorderLinkTable_006a3900;
-  if (t.capacity <= i) {
-    t.ReserveCapacity(i + 1);
+  SeaSegmentStretch& t = g_regionBorderLinkTable_006a3900;
+  if (static_cast<unsigned int>(t.Capacity()) <= i) {
+    t.OverStretch(i + 1);
   }
-  if (t.count <= i) {
-    t.count = i + 1;
+  if (static_cast<unsigned int>(t.Count()) <= i) {
+    t.Count() = i + 1;
   }
-  return reinterpret_cast<RegionBorderLink*>(&t.buffer[i]);
+  return reinterpret_cast<RegionBorderLink*>(&t.Data()[i]);
 }
 
 // region id for the city-region tile at byte offset `off` in the grid (-1 if offset negative).
@@ -124,7 +125,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
       // 2a: score every border link touching this region; prefer the target with the largest
       // shared-border area weighted by target size, plus size/merge biases.
       for (unsigned int li = 0;
-           li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.count); ++li) {
+           li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.Count()); ++li) {
         RegionBorderLink* link = LinkElementAt(li);
         int other;
         if (link->regionA == regionByte) {
@@ -220,27 +221,27 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
         // Invalidate the consumed border-link record, then re-point every remaining link that
         // referenced `region` at `mergeTarget`.
         if (static_cast<int>(bestLink) >= 0) {
-          TOverlaySpanRecordArray& t = g_regionBorderLinkTable_006a3900;
-          if (t.capacity <= bestLink) {
+          SeaSegmentStretch& t = g_regionBorderLinkTable_006a3900;
+          if (static_cast<unsigned int>(t.Capacity()) <= bestLink) {
             int want = bestLink + 1;
             unsigned int newCap = static_cast<unsigned int>(want) * 2;
             if (newCap > 0x7fffffff) {
               newCap = 0x7fffffff;
             }
-            OverlaySpanRecord* grown =
-                reinterpret_cast<OverlaySpanRecord*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                    ReallocateHeapBlockWithAllocatorTracking)(t.buffer, want * 0x30));
+            SeaSegment* grown =
+                reinterpret_cast<SeaSegment*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+                    ReallocateHeapBlockWithAllocatorTracking)(t.Data(), want * 0x30));
             if (grown == nullptr) {
-              t.ReallocBuffer(want);
+              t.ReallocExact(want);
             } else {
-              t.buffer = grown;
-              t.capacity = newCap;
+              t.Data() = grown;
+              t.Capacity() = newCap;
             }
           }
-          if (t.count <= bestLink) {
-            t.count = bestLink + 1;
+          if (static_cast<unsigned int>(t.Count()) <= bestLink) {
+            t.Count() = bestLink + 1;
           }
-          RegionBorderLink* consumed = reinterpret_cast<RegionBorderLink*>(&t.buffer[bestLink]);
+          RegionBorderLink* consumed = reinterpret_cast<RegionBorderLink*>(&t.Data()[bestLink]);
           consumed->bboxX0 = 0;
           consumed->bboxY0 = 0;
           consumed->bboxX1 = 0;
@@ -251,7 +252,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
           consumed->reserved0c = -1;
         }
         for (unsigned int li = 0;
-             li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.count); ++li) {
+             li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.Count()); ++li) {
           RegionBorderLink* link = LinkElementAt(li);
           if (link->regionA == region) {
             link = LinkElementAt(li);
@@ -279,7 +280,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
         }
       }
       for (unsigned int li = 0;
-           li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.count); ++li) {
+           li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.Count()); ++li) {
         RegionBorderLink* link = LinkElementAt(li);
         if (static_cast<int>(static_cast<short>(link->regionA)) == cityRegionCount2a4) {
           link = LinkElementAt(li);

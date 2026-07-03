@@ -5,12 +5,10 @@
 IMPLEMENT_DYNAMIC(TMapMaker, TObject)
 
 // FUNCTION: IMPERIALISM 0x00525970
-TMapMaker::TMapMaker() : TObject() {
-}
+TMapMaker::TMapMaker() : TObject() {}
 
 // FUNCTION: IMPERIALISM 0x005259c0
-TMapMaker::~TMapMaker() {
-}
+TMapMaker::~TMapMaker() {}
 
 // FUNCTION: IMPERIALISM 0x00526ba0
 char TMapMaker::GetBoolSlot28() {
@@ -18,8 +16,7 @@ char TMapMaker::GetBoolSlot28() {
 }
 
 // FUNCTION: IMPERIALISM 0x00526c20
-void TMapMaker::SetControlValue(int value) {
-}
+void TMapMaker::SetControlValue(int value) {}
 
 // FUNCTION: IMPERIALISM 0x00527040
 TEventHandler* TMapMaker::QueryStepValue() {
@@ -27,8 +24,7 @@ TEventHandler* TMapMaker::QueryStepValue() {
 }
 
 // FUNCTION: IMPERIALISM 0x00527300
-void TMapMaker::DispatchQueuedUiCommandAndRelease(void* payload) {
-}
+void TMapMaker::DispatchQueuedUiCommandAndRelease(void* payload) {}
 
 // FUNCTION: IMPERIALISM 0x005274d0
 void TMapMaker::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -38,11 +34,10 @@ void TMapMaker::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEven
 }
 
 // FUNCTION: IMPERIALISM 0x005275a0
-void TMapMaker::DispatchUiSelectionToHandler(void* payload) {
-}
+void TMapMaker::DispatchUiSelectionToHandler(void* payload) {}
 
 // FUNCTION: IMPERIALISM 0x00527730
-void TMapMaker::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TMapMaker::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x00527d00
 char TMapMaker::vmethod_0023() {
@@ -60,8 +55,7 @@ class TView* TMapMaker::OwnerPanel() {
 }
 
 // FUNCTION: IMPERIALISM 0x005283c0
-void TMapMaker::ForwardParam(int param) {
-}
+void TMapMaker::ForwardParam(int param) {}
 
 // FUNCTION: IMPERIALISM 0x00528670
 char TMapMaker::CanHandleCityDialogActionFalse(int action) {
@@ -74,20 +68,16 @@ int TMapMaker::GetCityDialogValueDword10() {
 }
 
 // FUNCTION: IMPERIALISM 0x005288a0
-void TMapMaker::SetCityDialogValueDword10(int value) {
-}
+void TMapMaker::SetCityDialogValueDword10(int value) {}
 
 // FUNCTION: IMPERIALISM 0x00528ce0
-void TMapMaker::DispatchCityProductionAction1A() {
-}
+void TMapMaker::DispatchCityProductionAction1A() {}
 
 // FUNCTION: IMPERIALISM 0x00528e50
-void TMapMaker::vmethod_0017(int param) {
-}
+void TMapMaker::vmethod_0017(int param) {}
 
 // FUNCTION: IMPERIALISM 0x005292f0
-void TMapMaker::DispatchCityProductionAction1B() {
-}
+void TMapMaker::DispatchCityProductionAction1B() {}
 
 // FUNCTION: IMPERIALISM 0x005296a0
 char TMapMaker::ActivateCityProductionViewIfAllowed() {
@@ -100,29 +90,16 @@ char TMapMaker::vmethod_0080() {
 }
 
 // FUNCTION: IMPERIALISM 0x005298a0
-void TMapMaker::vmethod_0081(int) {
-}
+void TMapMaker::vmethod_0081(int) {}
 
 // FUNCTION: IMPERIALISM 0x00529f60
-void TMapMaker::vmethod_0025() {
-}
-
-// FUNCTION: IMPERIALISM 0x0052a760
-void TMapMaker::SetEnabled(int enabledState, int refreshFlag) {
-}
-
-// FUNCTION: IMPERIALISM 0x0052c0a0
-void TMapMaker::SetState(int state, int refreshFlag) {
-}
+void TMapMaker::vmethod_0025() {}
 
 // FUNCTION: IMPERIALISM 0x0052e840
-void TMapMaker::vmethod_0026(int gate) {
-}
+void TMapMaker::vmethod_0026(int gate) {}
 
 // FUNCTION: IMPERIALISM 0x0052e890
-void TMapMaker::DispatchUiCommand19ToParent() {
-}
+void TMapMaker::DispatchUiCommand19ToParent() {}
 
 // FUNCTION: IMPERIALISM 0x0052e900
-void TMapMaker::HandleCityProductionNoOp() {
-}
+void TMapMaker::HandleCityProductionNoOp() {}

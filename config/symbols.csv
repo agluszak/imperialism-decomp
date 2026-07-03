@@ -3446,7 +3446,7 @@ address|name|symbol|size|type|prototype|provenance
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
 52a6e0|WrapExtendedMapXCoordinateInPlace||48|function|undefined WrapExtendedMapXCoordinateInPlace()|
 52a720|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720||41|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720()|
-52a760|TMapMaker::SetEnabled||132|function|undefined AppendSixDwordsToDynamicRecordArray()|
+52a760|SeaSegmentStretch::GetOrAppendUnique||132|function|undefined AppendSixDwordsToDynamicRecordArray()|
 52a820|WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820||29|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820()|
 52ab00|RecomputeOverlaySegmentEndpointsAndAngle||242|function|undefined RecomputeOverlaySegmentEndpointsAndAngle()|
 52b1e0|InitializeOverlaySpanRecordSorted||42|function|undefined InitializeOverlaySpanRecordSorted()|
@@ -3459,7 +3459,7 @@ address|name|symbol|size|type|prototype|provenance
 52c000|SelectSpanEndpointXByThreshold||18|function|undefined SelectSpanEndpointXByThreshold()|
 52c030|GetOverlaySpanRecordByIndex||28|function|undefined GetOverlaySpanRecordByIndex()|
 52c060|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060||41|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060()|
-52c0a0|TMapMaker::SetState||147|function|undefined AppendOverlayQuadRecord()|
+52c0a0|SeapointStretch::GetOrAppendUnique||147|function|undefined AppendOverlayQuadRecord()|
 52c170|WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170||29|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170()|
 52c1a0|BuildCityRegionBorderOverlaySegments||1602|function|undefined BuildCityRegionBorderOverlaySegments()|
 52c990|ConvertTileIndexToOverlayCoord216BySide||77|function|undefined ConvertTileIndexToOverlayCoord216BySide()|

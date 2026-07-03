@@ -39,15 +39,13 @@ public:
   virtual char vmethod_0080();                             // slot 32 / 0x80
   virtual void vmethod_0081(int param);                    // slot 33 / 0x84
 
-  // The orig vtable (0x006598f8) is 42 slots (0x00-0xa8), but slots 0x22..0x28
-  // (34-40) are literal NULL — MSVC500 cannot emit a mid-table NULL for a declared
-  // virtual (pure or not; `= 0` still emits a real _purecall slot), so, matching the
-  // TZone::vtable convention (see TZone.h), we model TMapMaker's vtable as ending at
-  // its last reachable real slot (0x21 / vmethod_0081 above). SetEnabled/SetState
-  // (the two real slots that follow the NULL run) are kept as ordinary non-virtual
-  // methods below, paired by address marker rather than by vtable slot.
-  void SetEnabled(int enabledState, int refreshFlag); // 0x0052a760
-  void SetState(int state, int refreshFlag);          // 0x0052c0a0
+  // TMapMaker's real vtable (0x006598f8) ends at its last reachable slot (0x21 /
+  // vmethod_0081 above); slots 0x22..0x28 are a literal NULL tail (matching the
+  // TZone::vtable convention, see TZone.h). The two non-NULL pointers the extractor lists
+  // beyond that run (slots 0x29/0x2a → 0x0052a760/0x0052c0a0) are NOT TMapMaker methods:
+  // they are the single vtable slots of two adjacent stretch<T> tables laid out right after
+  // TMapMaker's vtable (SeaSegmentStretch @ 0x0065999c, SeapointStretch @ 0x006599a0). Those
+  // append virtuals are owned in sea_geometry.cpp; see sea_geometry.h.
 
   // Merges undersized city regions into a neighbour and compacts region ids.
   // Non-virtual (paired by address marker). 0x0052d750.
