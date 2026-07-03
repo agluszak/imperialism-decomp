@@ -220,8 +220,9 @@ int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxTo
 }
 
 // FUNCTION: IMPERIALISM 0x005e5140
-void TSoundPlayer::PlaySoundEffect(int sfxToken, int param_2, int param_3) {
+int TSoundPlayer::PlaySoundEffect(int sfxToken, int param_2, int param_3) {
   this->UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(sfxToken, param_2, param_3, 1);
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e51d0

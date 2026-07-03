@@ -12440,7 +12440,7 @@
     },
     {
       "address": "0x4de860",
-      "matching": 0.6717557251908397,
+      "matching": 0.6755725190839694,
       "name": "TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers",
       "type": 1
     },
@@ -12464,13 +12464,13 @@
     },
     {
       "address": "0x4df010",
-      "matching": 0.518348623853211,
+      "matching": 0.5458715596330275,
       "name": "TGreatPower::ApplyAcceptedDiplomacyProposalCode",
       "type": 1
     },
     {
       "address": "0x4df370",
-      "matching": 0.4673913043478261,
+      "matching": 0.5108695652173914,
       "name": "TGreatPower::QueueInterNationEventForProposalCode12D_130",
       "type": 1
     },
@@ -12758,7 +12758,7 @@
     },
     {
       "address": "0x4e1c20",
-      "matching": 0.5348837209302325,
+      "matching": 0.5465116279069767,
       "name": "TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent",
       "type": 1
     },
@@ -13010,7 +13010,7 @@
     },
     {
       "address": "0x4e50d0",
-      "matching": 0.18181818181818182,
+      "matching": 0.18855218855218855,
       "name": "TMinor::OrphanRetStub_004d7fe0",
       "type": 1
     },
@@ -13022,7 +13022,7 @@
     },
     {
       "address": "0x4e5340",
-      "matching": 0.34782608695652173,
+      "matching": 0.38405797101449274,
       "name": "TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers",
       "type": 1
     },
@@ -13034,7 +13034,7 @@
     },
     {
       "address": "0x4e5840",
-      "matching": 0.15789473684210525,
+      "matching": 0.17543859649122806,
       "name": "TMinor::ApplyJoinEmpireMode1TargetTransition",
       "type": 1
     },
@@ -13058,7 +13058,7 @@
     },
     {
       "address": "0x4e5be0",
-      "matching": 0.3842364532019704,
+      "matching": 0.39408866995073893,
       "name": "TMinor::QueueInterNationEvent17ForState300AffectedNations",
       "type": 1
     },
@@ -14025,7 +14025,7 @@
     },
     {
       "address": "0x4efeb0",
-      "matching": 0.9743589743589743,
+      "matching": 1.0,
       "name": "TSortedByRelationshipList::ApplyRelationCode4AndQueueEvent18ForTargetNation",
       "type": 1
     },
@@ -14037,7 +14037,7 @@
     },
     {
       "address": "0x4f01e0",
-      "matching": 0.4634760705289673,
+      "matching": 0.473551637279597,
       "name": "TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn",
       "type": 1
     },
@@ -14061,7 +14061,7 @@
     },
     {
       "address": "0x4f0a10",
-      "matching": 0.8590021691973969,
+      "matching": 0.8676789587852495,
       "name": "ProcessQueuedWarTransitions",
       "type": 1
     },
@@ -14133,7 +14133,7 @@
     },
     {
       "address": "0x4f1b70",
-      "matching": 0.15859030837004406,
+      "matching": 0.23788546255506607,
       "name": "TSortedByRelationshipList::SetNationPairDiplomacyRelationAndApplySideEffects",
       "type": 1
     },
@@ -33787,7 +33787,7 @@
     },
     {
       "address": "0x5e5140",
-      "matching": 0.9523809523809523,
+      "matching": 1.0,
       "name": "TSoundPlayer::ForwardActionToVslotB4WithFlag1",
       "type": 1
     },

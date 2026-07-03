@@ -13,7 +13,6 @@ address|name|symbol|size|type|prototype|provenance
 4056a5|TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale||5|function|undefined thunk_ProjectTileIndexToWrappedScreenOffsetByScale()|
 405c72|thunk_DestructEngineerDialogBaseState||5|function|void __thiscall thunk_DestructEngineerDialogBaseState(void)|
 4061d1|thunk_InitializeDirectSoundDeviceAndChannels_004061D1|||global||
-406758|TCountry::thunk_QueueInterNationEventRecordDeduped||5|function|undefined thunk_QueueInterNationEventRecordDeduped()|
 4067c1|thunk_DestructCityDialogSharedBaseState||5|function|undefined thunk_DestructCityDialogSharedBaseState()|
 406c1c|TMapDialog::thunk_SplitTileIndexToRowAndColumn||5|function|undefined thunk_SplitTileIndexToRowAndColumn()|
 406ccb|thunk_HandleEngineerConstructionAction||5|function|bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)|
