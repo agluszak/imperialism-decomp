@@ -17,17 +17,15 @@
 
 #include "decomp_types.h"
 #include "game/TGlobalMapState.h"
+#include "game/TOverlaySpanRecordArray.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 
-// Unrecovered helpers reached via typed casts at the call sites (generic stub form).
-extern undefined4 ReallocateHeapBlockWithAllocatorTracking(void); // allocator-tracked realloc
-extern undefined4 ReserveOverlaySpanRecordArray18Capacity(void);  // 0x0052b3e0 (thiscall on table)
-extern undefined4
-ReallocateRouteRecordBufferByCountStride18(void); // 0x0052e310 (thiscall on table)
+// Allocator-tracked realloc (generic stub form; typed cast at the call site).
+extern undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
-// One 0x18-byte region-border-link record.
+// One 0x18-byte region-border-link record (the overlay-span record this pass stores).
 struct RegionBorderLink {
   short bboxX0;           // +0x00
   short bboxY0;           // +0x02
@@ -42,13 +40,7 @@ struct RegionBorderLink {
 };
 
 // The global region-border-link table object at 0x006a3900.
-struct RegionBorderLinkTable {
-  int field00;              // +0x00
-  RegionBorderLink* buffer; // +0x04
-  int capacity;             // +0x08 (elements)
-  int count;                // +0x0c
-};
-RegionBorderLinkTable g_regionBorderLinkTable_006a3900;
+TOverlaySpanRecordArray g_regionBorderLinkTable_006a3900;
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns differently).
 const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
@@ -63,17 +55,17 @@ const int kTileStride = 0x24;       // 36 bytes / tile
 const int kTileGridBytes = 0x38f40; // 6480 * 0x24
 const int kRegionIdBias = 0x17;     // tile[4] region id is biased by +0x17
 
-// MFC-CArray-style ElementAt(i): grow buffer/count so i is addressable, then return &record[i].
+// Inlined ElementAt(i) matching the original's inlined table access: grow via the real
+// ReserveCapacity method on a miss, bump count, then return the (region-border-typed) record.
 inline RegionBorderLink* LinkElementAt(unsigned int i) {
-  RegionBorderLinkTable& t = g_regionBorderLinkTable_006a3900;
-  if (static_cast<unsigned int>(t.capacity) <= i) {
-    reinterpret_cast<void(__fastcall*)(RegionBorderLinkTable*, int)>(
-        ReserveOverlaySpanRecordArray18Capacity)(&t, i + 1);
+  TOverlaySpanRecordArray& t = g_regionBorderLinkTable_006a3900;
+  if (t.capacity <= i) {
+    t.ReserveCapacity(i + 1);
   }
-  if (static_cast<unsigned int>(t.count) <= i) {
+  if (t.count <= i) {
     t.count = i + 1;
   }
-  return &t.buffer[i];
+  return reinterpret_cast<RegionBorderLink*>(&t.buffer[i]);
 }
 
 // region id for the city-region tile at byte offset `off` in the grid (-1 if offset negative).
@@ -228,28 +220,27 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
         // Invalidate the consumed border-link record, then re-point every remaining link that
         // referenced `region` at `mergeTarget`.
         if (static_cast<int>(bestLink) >= 0) {
-          RegionBorderLinkTable& t = g_regionBorderLinkTable_006a3900;
-          if (static_cast<unsigned int>(t.capacity) <= bestLink) {
+          TOverlaySpanRecordArray& t = g_regionBorderLinkTable_006a3900;
+          if (t.capacity <= bestLink) {
             int want = bestLink + 1;
             unsigned int newCap = static_cast<unsigned int>(want) * 2;
             if (newCap > 0x7fffffff) {
               newCap = 0x7fffffff;
             }
-            RegionBorderLink* grown =
-                reinterpret_cast<RegionBorderLink*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                    ReallocateHeapBlockWithAllocatorTracking)(t.buffer, want * 0x18));
+            OverlaySpanRecord* grown =
+                reinterpret_cast<OverlaySpanRecord*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+                    ReallocateHeapBlockWithAllocatorTracking)(t.buffer, want * 0x30));
             if (grown == nullptr) {
-              reinterpret_cast<void(__fastcall*)(RegionBorderLinkTable*, int)>(
-                  ReallocateRouteRecordBufferByCountStride18)(&t, want);
+              t.ReallocBuffer(want);
             } else {
               t.buffer = grown;
               t.capacity = newCap;
             }
           }
-          if (static_cast<unsigned int>(t.count) <= bestLink) {
+          if (t.count <= bestLink) {
             t.count = bestLink + 1;
           }
-          RegionBorderLink* consumed = &t.buffer[bestLink];
+          RegionBorderLink* consumed = reinterpret_cast<RegionBorderLink*>(&t.buffer[bestLink]);
           consumed->bboxX0 = 0;
           consumed->bboxY0 = 0;
           consumed->bboxX1 = 0;

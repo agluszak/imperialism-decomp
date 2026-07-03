@@ -779,30 +779,6 @@ undefined4 InitializeOverlaySegmentFromTwoMapCoords(void)
   return 0;
 }
 
-// ghidra_name ReserveOverlaySpanRecordArray18Capacity
-// ghidra_proto undefined ReserveOverlaySpanRecordArray18Capacity()
-// FUNCTION: IMPERIALISM 0x0052b3e0
-undefined4 ReserveOverlaySpanRecordArray18Capacity(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrCreateOverlaySpanRecordArray18Entry
-// ghidra_proto undefined GetOrCreateOverlaySpanRecordArray18Entry()
-// FUNCTION: IMPERIALISM 0x0052b460
-undefined4 GetOrCreateOverlaySpanRecordArray18Entry(void)
-{
-  return 0;
-}
-
-// ghidra_name DetachAndResetOverlaySpanRecordArray18Buffer
-// ghidra_proto undefined DetachAndResetOverlaySpanRecordArray18Buffer()
-// FUNCTION: IMPERIALISM 0x0052b500
-undefined4 DetachAndResetOverlaySpanRecordArray18Buffer(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignCityRegionIdsFromOverlayScanlineIntersections
 // ghidra_proto undefined AssignCityRegionIdsFromOverlayScanlineIntersections()
 // FUNCTION: IMPERIALISM 0x0052b9b0
@@ -935,14 +911,6 @@ undefined4 OrphanDeadLeaf_NoRefs_0052d4b0(void)
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_0052d6b0()
 // FUNCTION: IMPERIALISM 0x0052d6b0
 undefined4 OrphanDeadLeaf_NoRefs_0052d6b0(void)
-{
-  return 0;
-}
-
-// ghidra_name ReallocateRouteRecordBufferByCountStride18
-// ghidra_proto undefined ReallocateRouteRecordBufferByCountStride18()
-// FUNCTION: IMPERIALISM 0x0052e310
-undefined4 ReallocateRouteRecordBufferByCountStride18(void)
 {
   return 0;
 }
