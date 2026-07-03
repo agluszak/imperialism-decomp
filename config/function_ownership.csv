@@ -2267,6 +2267,8 @@ address|target_cpp|ownership|note
 5297e0|src/game/TMapMaker.cpp|manual|marker_sync
 5298a0|src/game/TMapMaker.cpp|manual|marker_sync
 529f60|src/game/TMapMaker.cpp|manual|marker_sync
+52a670|src/game/TMapMaker.cpp|manual|marker_sync
+52a6e0|src/game/map_overlay_geometry.cpp|manual|marker_sync
 52a760|src/game/sea_geometry.cpp|manual|marker_sync
 52ab00|src/game/sea_geometry.cpp|manual|marker_sync
 52b1e0|src/game/sea_geometry.cpp|manual|marker_sync

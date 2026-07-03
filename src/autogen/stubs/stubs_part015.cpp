@@ -723,22 +723,6 @@ undefined4 GenerateCityRegionIdsBySeedAndNeighborPropagation(void)
   return 0;
 }
 
-// ghidra_name GetCityRegionIdAtTileIndex
-// ghidra_proto undefined GetCityRegionIdAtTileIndex()
-// FUNCTION: IMPERIALISM 0x0052a670
-undefined4 GetCityRegionIdAtTileIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapExtendedMapXCoordinateInPlace
-// ghidra_proto undefined WrapExtendedMapXCoordinateInPlace()
-// FUNCTION: IMPERIALISM 0x0052a6e0
-undefined4 WrapExtendedMapXCoordinateInPlace(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720()
 // FUNCTION: IMPERIALISM 0x0052a720

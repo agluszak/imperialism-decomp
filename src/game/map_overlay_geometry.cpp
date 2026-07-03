@@ -3,6 +3,22 @@
 
 #include "game/map_overlay_geometry.h"
 
+#include "game/TGlobalMapState.h"
+
+// FUNCTION: IMPERIALISM 0x0052a6e0
+void WrapExtendedMapXCoordinateInPlace(int* x) {
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
+    int value = *x;
+    if (value >= 0xd8) {
+      *x = value - 0xd8;
+      return;
+    }
+    if (value < 0) {
+      *x = value + 0xd8;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0052c990
 int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side) {
   unsigned int row = tileIndex / 0x6c;

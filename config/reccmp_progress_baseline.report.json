@@ -17883,13 +17883,13 @@
     },
     {
       "address": "0x52a670",
-      "matching": 0.0,
+      "matching": 0.7586206896551724,
       "name": "GetCityRegionIdAtTileIndex",
       "type": 1
     },
     {
       "address": "0x52a6e0",
-      "matching": 0.1111111111111111,
+      "matching": 0.3125,
       "name": "WrapExtendedMapXCoordinateInPlace",
       "type": 1
     },
@@ -17973,7 +17973,7 @@
     },
     {
       "address": "0x52c990",
-      "matching": 0.8333333333333334,
+      "matching": 1.0,
       "name": "ConvertTileIndexToOverlayCoord216BySide",
       "type": 1
     },
@@ -18033,7 +18033,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },

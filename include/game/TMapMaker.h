@@ -47,6 +47,10 @@ public:
   // TMapMaker's vtable (SeaSegmentStretch @ 0x0065999c, SeapointStretch @ 0x006599a0). Those
   // append virtuals are owned in sea_geometry.cpp; see sea_geometry.h.
 
+  // City-region id (tile[4] - 0x17) at a tile index, or -1 if the tile is out of range or
+  // not a city-region tile (tile[0] != 5). 0x0052a670.
+  int GetCityRegionIdAtTileIndex(int tileIndex);
+
   // Merges undersized city regions into a neighbour and compacts region ids.
   // Non-virtual (paired by address marker). 0x0052d750.
   void MergeSmallCityRegionsAndCompactIds();

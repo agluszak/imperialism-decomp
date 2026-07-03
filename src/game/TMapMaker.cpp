@@ -95,6 +95,17 @@ void TMapMaker::vmethod_0081(int) {}
 // FUNCTION: IMPERIALISM 0x00529f60
 void TMapMaker::vmethod_0025() {}
 
+// FUNCTION: IMPERIALISM 0x0052a670
+int TMapMaker::GetCityRegionIdAtTileIndex(int tileIndex) {
+  if (tileIndex >= 0) {
+    char* tile = mapTileGrid08 + tileIndex * 0x24;
+    if (*tile == '\x05') {
+      return tile[4] - 0x17;
+    }
+  }
+  return -1;
+}
+
 // FUNCTION: IMPERIALISM 0x0052e840
 void TMapMaker::vmethod_0026(int gate) {}
 
