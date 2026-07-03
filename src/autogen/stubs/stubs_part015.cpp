@@ -675,14 +675,6 @@ undefined4 ValidateSeedCandidateExistsForEachTerrainClass(void)
   return 0;
 }
 
-// ghidra_name GetNeighborTileIndexOnMap108x60
-// ghidra_proto undefined GetNeighborTileIndexOnMap108x60()
-// FUNCTION: IMPERIALISM 0x00528c10
-undefined4 GetNeighborTileIndexOnMap108x60(void)
-{
-  return 0;
-}
-
 // ghidra_name RandomizeRegionTemplateBanksForMismatchedNeighborClasses
 // ghidra_proto undefined RandomizeRegionTemplateBanksForMismatchedNeighborClasses()
 // FUNCTION: IMPERIALISM 0x005293d0

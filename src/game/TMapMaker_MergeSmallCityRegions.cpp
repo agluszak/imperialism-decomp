@@ -46,9 +46,11 @@ struct RegionBorderLink {
 SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns differently).
-const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
-const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
-const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};
+// External linkage (explicit `extern` + initializer) so the neighbour helper in
+// map_overlay_geometry.cpp can share them via a local extern.
+extern const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
+extern const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
+extern const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};
 
 namespace {
 

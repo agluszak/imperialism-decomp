@@ -2260,6 +2260,7 @@ address|target_cpp|ownership|note
 528670|src/game/TMapMaker.cpp|manual|marker_sync
 528780|src/game/TMapMaker.cpp|manual|marker_sync
 5288a0|src/game/TMapMaker.cpp|manual|marker_sync
+528c10|src/game/map_overlay_geometry.cpp|manual|marker_sync
 528ce0|src/game/TMapMaker.cpp|manual|marker_sync
 528e50|src/game/TMapMaker.cpp|manual|marker_sync
 5292f0|src/game/TMapMaker.cpp|manual|marker_sync

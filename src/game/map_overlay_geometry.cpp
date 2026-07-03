@@ -5,6 +5,42 @@
 
 #include "game/TGlobalMapState.h"
 
+// Hex-neighbour offset tables (defined in TMapMaker_MergeSmallCityRegions.cpp). Declared
+// locally rather than in a header to keep float-sensitive TUs untouched.
+extern const int g_hexColOffsetEvenRow_00697450[6];
+extern const int g_hexRowOffset_00697468[6];
+extern const int g_hexColOffsetOddRow_00697480[6];
+
+// FUNCTION: IMPERIALISM 0x00528c10
+int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {
+  int col;
+  if ((tileIndex / 0x6c & 1U) == 0) {
+    col = g_hexColOffsetEvenRow_00697450[direction];
+  } else {
+    col = g_hexColOffsetOddRow_00697480[direction];
+  }
+  col = tileIndex % 0x6c + col;
+  int row = tileIndex / 0x6c + g_hexRowOffset_00697468[direction];
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
+    if (col < 0) {
+      col = col + 0x6c;
+    } else if (0x6b < col) {
+      col = col - 0x6c;
+    }
+  } else {
+    if (col < 0) {
+      return -1;
+    }
+    if (0x6b < col) {
+      return -1;
+    }
+  }
+  if (-1 < row && row < 0x3c) {
+    return col + row * 0x6c;
+  }
+  return -1;
+}
+
 // FUNCTION: IMPERIALISM 0x0052a6e0
 void WrapExtendedMapXCoordinateInPlace(int* x) {
   if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
