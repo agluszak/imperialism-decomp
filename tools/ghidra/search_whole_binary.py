@@ -10,6 +10,9 @@ usage:
                                           # disassembled instruction text
   search_whole_binary dword 0x4ef        # raw little-endian 4-byte scan over every
                                           # initialized, readable memory block
+  search_whole_binary imm 0x11f8        # instructions with this exact immediate
+                                          # operand value (event codes, callback
+                                          # address-taken sites)
 """
 
 from __future__ import annotations
@@ -79,27 +82,80 @@ def search_dword(program, target: int, limit: int) -> int:
     return count
 
 
-def main() -> int:
-    if len(sys.argv) < 3 or sys.argv[1] not in ("text", "dword"):
-        print("usage: search_whole_binary text|dword <value> [limit]", file=sys.stderr)
+def search_imm(program, target: int, limit: int) -> int:
+    """Find instructions with `target` as an immediate/scalar operand anywhere.
+
+    Precise variant of `text` search: matches operand *values*, not rendered
+    strings, so `imm 0x11f8` finds `PUSH 0x11f8` / `CMP EAX,0x11f8` without
+    also matching addresses that merely contain the digits. This is how
+    "who dispatches event code X" and "who takes function Y's address as a
+    callback" queries run (an address-taken function shows up as a MOV/PUSH
+    immediate with zero CALL xrefs).
+    """
+    listing = program.getListing()
+    fm = program.getFunctionManager()
+    count = 0
+    it = listing.getInstructions(True)
+    while it.hasNext():
+        ins = it.next()
+        matched = False
+        for op_idx in range(ins.getNumOperands()):
+            for obj in ins.getOpObjects(op_idx):
+                # ghidra.program.model.scalar.Scalar exposes getUnsignedValue.
+                get_unsigned = getattr(obj, "getUnsignedValue", None)
+                if get_unsigned is None:
+                    continue
+                if int(get_unsigned()) == target:
+                    matched = True
+                    break
+            if matched:
+                break
+        if not matched:
+            continue
+        fn = fm.getFunctionContaining(ins.getAddress())
+        fname = fn.getName() if fn else "?"
+        print(f"{fname}: {ins.getAddress()}  {ins}")
+        count += 1
+        if count >= limit:
+            print("...truncated")
+            return count
+    print(f"total: {count}")
+    return count
+
+
+MODES = ("text", "dword", "imm")
+
+
+def run(program, argv: list[str]) -> int:
+    if len(argv) < 2 or argv[0] not in MODES:
+        print("usage: search text|dword|imm <value> [limit]", file=sys.stderr)
         return 2
-    mode = sys.argv[1]
-    limit = int(sys.argv[3]) if len(sys.argv) > 3 else 200
+    mode = argv[0]
+    limit = int(argv[2]) if len(argv) > 2 else 200
+    if mode == "text":
+        search_text(program, argv[1], limit)
+    elif mode == "dword":
+        search_dword(program, int(argv[1], 16), limit)
+    else:
+        search_imm(program, int(argv[1], 16), limit)
+    return 0
+
+
+def main() -> int:
+    if len(sys.argv) < 3 or sys.argv[1] not in MODES:
+        print("usage: search_whole_binary text|dword|imm <value> [limit]", file=sys.stderr)
+        return 2
 
     project = ghidra_env.open_project()
     consumer = None
     program = None
     try:
         consumer, program = ghidra_env.open_program(project)
-        if mode == "text":
-            search_text(program, sys.argv[2], limit)
-        else:
-            search_dword(program, int(sys.argv[2], 16), limit)
+        return run(program, sys.argv[1:])
     finally:
         if program is not None:
             program.release(consumer)
         project.close()
-    return 0
 
 
 if __name__ == "__main__":

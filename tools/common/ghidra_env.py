@@ -29,6 +29,37 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 REPO_CONFIG_PATH = REPO_ROOT / "ghidra.toml"
 
+_dotenv_loaded = False
+
+
+def load_dotenv(path: Path | None = None) -> None:
+    """Load KEY=VALUE pairs from the repo .env into os.environ (existing vars win).
+
+    `just` recipes get this for free (`set dotenv-load`), but raw
+    `uv run python -m tools...` invocations historically failed with
+    "GHIDRA_INSTALL_DIR is not set" unless the caller exported it by hand.
+    Routing every env read below through here removes that failure mode.
+    """
+    global _dotenv_loaded
+    if path is None:
+        if _dotenv_loaded:
+            return
+        _dotenv_loaded = True
+        path = REPO_ROOT / ".env"
+    if not path.is_file():
+        return
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            value = value[1:-1]
+        if key:
+            os.environ.setdefault(key, value)
+
 # pyghidra runtime pin (kept in lockstep with the Ghidra version in ghidra.toml).
 EXPECTED_PYGHIDRA_VERSION = "3.1.0"
 
@@ -38,18 +69,22 @@ DEFAULT_PROGRAM_NAME = "Imperialism.exe"
 
 
 def project_location() -> str:
+    load_dotenv()
     return os.getenv("GHIDRA_PROJECT_DIR", str(DEFAULT_PROJECT_DIR))
 
 
 def project_name() -> str:
+    load_dotenv()
     return os.getenv("GHIDRA_PROJECT_NAME", DEFAULT_PROJECT_NAME)
 
 
 def program_name() -> str:
+    load_dotenv()
     return os.getenv("GHIDRA_PROGRAM_NAME", DEFAULT_PROGRAM_NAME)
 
 
 def install_dir() -> Path | None:
+    load_dotenv()
     value = os.getenv("GHIDRA_INSTALL_DIR")
     return Path(value) if value else None
 

@@ -51,6 +51,16 @@ def xref_summary(program, addr, limit: int = 8) -> str:
     return ";".join(refs)
 
 
+def run(program, argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(prog="vtable-dump",
+                                     description="Dump a Windows/MSVC vtable from a Ghidra project.")
+    parser.add_argument("class_name")
+    parser.add_argument("vtable_addr")
+    parser.add_argument("--count", type=lambda value: parse_int(value), default=0xB8)
+    args = parser.parse_args(argv)
+    return _dump(program, args)
+
+
 def main() -> int:
     args = parse_args()
 
@@ -59,57 +69,60 @@ def main() -> int:
     program = None
     try:
         consumer, program = ghidra_env.open_program(project)
-
-        af = program.getAddressFactory().getDefaultAddressSpace()
-        memory = program.getMemory()
-        base = af.getAddress(args.vtable_addr)
-
-        writer = csv.DictWriter(
-            sys.stdout,
-            fieldnames=[
-                "class_name",
-                "vtable_addr",
-                "index",
-                "byte_offset",
-                "entry_addr",
-                "current_name",
-                "return_type",
-                "args",
-                "evidence_status",
-                "evidence",
-                "entry_xrefs",
-                "slot_xrefs",
-            ],
-        )
-        writer.writeheader()
-        for index in range(args.count):
-            slot_addr = base.add(index * 4)
-            try:
-                entry_int = signed_u32(memory.getInt(slot_addr))
-            except Exception:
-                break
-            entry_addr = af.getAddress(entry_int)
-            current = function_name(program, entry_addr)
-            writer.writerow(
-                {
-                    "class_name": args.class_name,
-                    "vtable_addr": f"0x{parse_int(args.vtable_addr):08x}",
-                    "index": f"0x{index:02x}",
-                    "byte_offset": f"0x{index * 4:03x}",
-                    "entry_addr": f"0x{entry_int:08x}",
-                    "current_name": current,
-                    "return_type": "",
-                    "args": "",
-                    "evidence_status": "raw",
-                    "evidence": f"read pointer at 0x{parse_int(args.vtable_addr) + index * 4:08x}",
-                    "entry_xrefs": xref_summary(program, entry_addr),
-                    "slot_xrefs": xref_summary(program, slot_addr),
-                }
-            )
+        return _dump(program, args)
     finally:
         if program is not None:
             program.release(consumer)
         project.close()
+
+
+def _dump(program, args: argparse.Namespace) -> int:
+    af = program.getAddressFactory().getDefaultAddressSpace()
+    memory = program.getMemory()
+    base = af.getAddress(args.vtable_addr)
+
+    writer = csv.DictWriter(
+        sys.stdout,
+        fieldnames=[
+            "class_name",
+            "vtable_addr",
+            "index",
+            "byte_offset",
+            "entry_addr",
+            "current_name",
+            "return_type",
+            "args",
+            "evidence_status",
+            "evidence",
+            "entry_xrefs",
+            "slot_xrefs",
+        ],
+    )
+    writer.writeheader()
+    for index in range(args.count):
+        slot_addr = base.add(index * 4)
+        try:
+            entry_int = signed_u32(memory.getInt(slot_addr))
+        except Exception:
+            break
+        entry_addr = af.getAddress(entry_int)
+        current = function_name(program, entry_addr)
+        writer.writerow(
+            {
+                "class_name": args.class_name,
+                "vtable_addr": f"0x{parse_int(args.vtable_addr):08x}",
+                "index": f"0x{index:02x}",
+                "byte_offset": f"0x{index * 4:03x}",
+                "entry_addr": f"0x{entry_int:08x}",
+                "current_name": current,
+                "return_type": "",
+                "args": "",
+                "evidence_status": "raw",
+                "evidence": f"read pointer at 0x{parse_int(args.vtable_addr) + index * 4:08x}",
+                "entry_xrefs": xref_summary(program, entry_addr),
+                "slot_xrefs": xref_summary(program, slot_addr),
+            }
+        )
     return 0
 
 
