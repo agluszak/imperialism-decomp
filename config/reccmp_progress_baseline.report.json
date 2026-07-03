@@ -19191,7 +19191,7 @@
     },
     {
       "address": "0x5358a0",
-      "matching": 0.9821428571428571,
+      "matching": 1.0,
       "name": "TMission::DeserializeMissionState",
       "type": 1
     },
@@ -43098,6 +43098,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }

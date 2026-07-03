@@ -196,7 +196,7 @@ void TMission::ReadFrom(TStream* stream) {
     stream->ReadBytes(&pathMarker06, 2);
   }
   if (g_nSaveFormatVersion < 9) {
-    RefreshSlot40();
+    Call30();
     return;
   }
   stream->ReadBytes(&marker11, 1);
