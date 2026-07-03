@@ -347,40 +347,61 @@ session-loop pick='8' top='50' min_size='1' *args:
 # ghidra-inspect — read-only evidence from the vendored Ghidra project.
 # ---------------------------------------------------------------------------
 
+# Read-only inspect targets run through the long-lived Ghidra daemon
+# (tools/ghidra/daemon.py): the first call auto-starts it and pays the one-time JVM +
+# project-load cost; every later call reuses the open program and returns fast. Warm it
+# eagerly with `just ghidra-daemon`, stop it with `just ghidra-daemon-stop`. Mutating
+# Ghidra targets evict the daemon automatically (they need exclusive project access).
+
+# Warm/ping the inspection daemon (auto-starts it if not already running).
+[group('ghidra-inspect')]
+ghidra-daemon: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon_client ping
+
+# Stop the inspection daemon and release the project lock.
+[group('ghidra-inspect')]
+ghidra-daemon-stop:
+  uv run python -m tools.ghidra.daemon_client shutdown
+
 [group('ghidra-inspect')]
 ghidra-listing *args: _require-ghidra-install
-  uv run python -m tools.ghidra.listing_one {{args}}
+  uv run python -m tools.ghidra.daemon_client listing {{args}}
 
 [group('ghidra-inspect')]
 ghidra-function-slice *args: _require-ghidra-install
-  uv run python -m tools.ghidra.function_slice {{args}}
+  uv run python -m tools.ghidra.daemon_client function-slice {{args}}
 
 [group('ghidra-inspect')]
 ghidra-decompile *args: _require-ghidra-install
-  uv run python -m tools.ghidra.decompile_one {{args}}
+  uv run python -m tools.ghidra.daemon_client decompile {{args}}
+
+# Cross-references to/from an address. `just ghidra-xrefs [to|from|both] 0xADDR [0xADDR ...]`.
+[group('ghidra-inspect')]
+ghidra-xrefs *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon_client xrefs {{args}}
 
 # Linear disassembly by address, ignoring Ghidra's (sometimes wrong) function
 # boundaries. `just ghidra-linear-disasm 0xADDR [count]`.
 [group('ghidra-inspect')]
 ghidra-linear-disasm *args: _require-ghidra-install
-  uv run python -m tools.ghidra.linear_disasm {{args}}
+  uv run python -m tools.ghidra.daemon_client linear-disasm {{args}}
 
 # Whole-binary search for a value in disassembled instruction text or raw data
 # (message-map/handler hunting). `just ghidra-search text|dword <value> [limit]`.
 [group('ghidra-inspect')]
 ghidra-search *args: _require-ghidra-install
-  uv run python -m tools.ghidra.search_whole_binary {{args}}
+  uv run python -m tools.ghidra.daemon_client search {{args}}
 
 # Disassemble raw bytes with capstone, bypassing Ghidra's instruction database
 # entirely (for regions Ghidra hasn't disassembled at all).
 # `just ghidra-raw-disasm 0xADDR [byte_count]`.
 [group('ghidra-inspect')]
 ghidra-raw-disasm *args: _require-ghidra-install
-  uv run python -m tools.ghidra.raw_disasm {{args}}
+  uv run python -m tools.ghidra.daemon_client raw-disasm {{args}}
 
 [group('ghidra-inspect')]
 ghidra-vtable-dump class vtable *args: _require-ghidra-install
-  uv run python -m tools.ghidra.vtable_dump "{{class}}" "{{vtable}}" {{args}}
+  uv run python -m tools.ghidra.daemon_client vtable-dump "{{class}}" "{{vtable}}" {{args}}
 
 [group('ghidra-inspect')]
 ghidra-vtable-struct-check *args: _require-ghidra-install
@@ -399,6 +420,8 @@ ghidra-decomp-check *args: _require-ghidra-install
 
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
+# One-shot (NOT daemon-routed): --stdin addresses can't reach the daemon process. Running it
+# evicts a warm daemon; re-warm with `just ghidra-daemon` afterwards.
 [doc('Classify functions: ecx_this (thiscall) / no_ecx (cdecl) / empty (thunk)')]
 [group('ghidra-inspect')]
 scan-cdecl-thiscall *args: _require-ghidra-install

@@ -68,3 +68,7 @@ detect.log
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# Ghidra inspection daemon runtime state
+.ghidra-daemon.sock
+.ghidra-daemon.log
