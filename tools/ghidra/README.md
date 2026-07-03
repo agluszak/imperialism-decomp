@@ -55,10 +55,18 @@ If `config/function_name_overrides.csv` exists, `sync_exports.py` reapplies over
 ## Read-only inspection daemon
 
 The read-only inspect tools (`listing_one`, `decompile_one`, `raw_disasm`, `linear_disasm`,
-`vtable_dump`, `xrefs`, `search_whole_binary`, `function_slice`) each used to pay the full
-pyghidra JVM + project-load cost (~15-30s) on every call. `daemon.py` opens the project/program
-**once** and serves those commands over a Unix-domain socket, so every call after the first is
-sub-second.
+`vtable_dump`, `xrefs`, `read_data`, `search_whole_binary`, `function_slice`) each used to pay
+the full pyghidra JVM + project-load cost (~15-30s) on every call. `daemon.py` opens the
+project/program **once** and serves those commands over a Unix-domain socket, so every call
+after the first is sub-second.
+
+Two companion helpers need no Ghidra at all (pure config-file readers, instant):
+
+- `just func-status 0xADDR` — one-stop function summary (curated name/size/prototype,
+  ownership, autogen body location, current reccmp match %) from the config CSVs + baseline
+  report, instead of grepping four files by hand.
+- `just port-candidates [--range LO HI] [--min-size N] [--max-score PCT]` — rank the biggest
+  weakly-matched functions to pick the next porting target.
 
 - `daemon.py` — the server. `ghidra_env.install_shared(project, program)` makes the shared
   program transparent to the existing tools: their `open_project`/`open_program` return the

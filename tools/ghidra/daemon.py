@@ -41,6 +41,7 @@ COMMANDS = {
     "linear-disasm": "tools.ghidra.linear_disasm",
     "vtable-dump": "tools.ghidra.vtable_dump",
     "xrefs": "tools.ghidra.xrefs",
+    "read-data": "tools.ghidra.read_data",
     "search": "tools.ghidra.search_whole_binary",
     "function-slice": "tools.ghidra.function_slice",
 }

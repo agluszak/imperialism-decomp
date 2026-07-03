@@ -380,6 +380,25 @@ ghidra-decompile *args: _require-ghidra-install
 ghidra-xrefs *args: _require-ghidra-install
   uv run python -m tools.ghidra.daemon_client xrefs {{args}}
 
+# Read memory at an address as a typed value (float/double/dword/ptr/str/bytes/...).
+# `just ghidra-read-data 0xADDR [type] [count]`.
+[group('ghidra-inspect')]
+ghidra-read-data *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon_client read-data {{args}}
+
+# One-stop function status from the config CSVs + reccmp baseline (no Ghidra / no build,
+# instant): curated name/size/proto, ownership, autogen body location, current match %.
+# `just func-status 0xADDR [0xADDR ...]`.
+[group('ghidra-inspect')]
+func-status *args:
+  uv run python -m tools.workflow.func_status {{args}}
+
+# Rank porting candidates: the biggest weakly-matched functions (no Ghidra / no build).
+# `just port-candidates [--range LO HI] [--min-size N] [--max-score PCT] [--limit N]`.
+[group('ghidra-inspect')]
+port-candidates *args:
+  uv run python -m tools.workflow.port_candidates {{args}}
+
 # Linear disassembly by address, ignoring Ghidra's (sometimes wrong) function
 # boundaries. `just ghidra-linear-disasm 0xADDR [count]`.
 [group('ghidra-inspect')]
