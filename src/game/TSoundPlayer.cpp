@@ -174,12 +174,12 @@ void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
   ClearDirectSoundInitPendingAndResetState_Impl();
 }
 
+// Slot 0x2a — stop playback on all six global DirectSound channels.
+
 // FUNCTION: IMPERIALISM 0x005e4ff0
-void TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48() {
-  for (int offset = 4; offset < 28; offset += 4) {
-    TAudioChannel* obj = *reinterpret_cast<TAudioChannel**>(
-        reinterpret_cast<char*>(&g_soundResourceManager) + offset);
-    obj->NotifyAudioObjectSlot48();
+void TSoundPlayer::StopAllSoundChannels() {
+  for (int i = 0; i < 6; ++i) {
+    g_soundResourceManager.m_channels[i]->Stop();
   }
 }
 

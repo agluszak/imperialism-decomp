@@ -1147,22 +1147,6 @@ undefined4 FormatVersionStringFromVersionResource(void)
   return 0;
 }
 
-// ghidra_name OpenWaveMmioReadFmtChunkAndAllocateHeader
-// ghidra_proto undefined OpenWaveMmioReadFmtChunkAndAllocateHeader()
-// FUNCTION: IMPERIALISM 0x005e0780
-undefined4 OpenWaveMmioReadFmtChunkAndAllocateHeader(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadMmioBytesToBufferAndUpdateChunkRemaining
-// ghidra_proto undefined ReadMmioBytesToBufferAndUpdateChunkRemaining()
-// FUNCTION: IMPERIALISM 0x005e09f0
-undefined4 ReadMmioBytesToBufferAndUpdateChunkRemaining(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateWaveFileAndWriteFmtFactChunks
 // ghidra_proto undefined CreateWaveFileAndWriteFmtFactChunks()
 // FUNCTION: IMPERIALISM 0x005e0b50
@@ -1175,14 +1159,6 @@ undefined4 CreateWaveFileAndWriteFmtFactChunks(void)
 // ghidra_proto undefined CopyMmioChunkByFourCCViaGlobalBuffer()
 // FUNCTION: IMPERIALISM 0x005e0fb0
 undefined4 CopyMmioChunkByFourCCViaGlobalBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadWaveDataAndFormatFromFilePath
-// ghidra_proto undefined LoadWaveDataAndFormatFromFilePath()
-// FUNCTION: IMPERIALISM 0x005e10c0
-undefined4 LoadWaveDataAndFormatFromFilePath(void)
 {
   return 0;
 }

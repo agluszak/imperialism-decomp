@@ -1334,9 +1334,9 @@ address|name|symbol|size|type|prototype|provenance
 49c120|UpdateGlobalWord6A2008FromScaled6A1FC0||30|function|undefined UpdateGlobalWord6A2008FromScaled6A1FC0()|
 49c150|InitializeDirectSoundDeviceAndChannels_Impl||186|function|undefined InitializeDirectSoundDeviceAndChannels_Impl()|
 49c240|TSoundResourceManager::UpdateLocalizationAudioSlot||54|function|int UpdateLocalizationAudioSlot(int slot)|
-49c290|Helper_Uses_thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2_At0049c290||210|function|undefined Helper_Uses_thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2_At0049c290()|
-49c430|LoadWaveResourceByNumericIdAndBuildBuffer||583|function|undefined LoadWaveResourceByNumericIdAndBuildBuffer()|
-49c720|ReadWaveDataAndFormatViaLoaderWithRetry||225|function|undefined ReadWaveDataAndFormatViaLoaderWithRetry()|
+49c290|TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer||210|function|int LoadWaveFileByPathAndBuildBuffer(char* filePath, int slot)|
+49c430|TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer||583|function|int LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId, int slot)|
+49c720|TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry||225|function|int ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescriptor* desc, int slot)|
 49c850|TSoundResourceManager::SetChannelVolumesUntilAccepted||61|function|int SetChannelVolumesUntilAccepted(int volume)|
 49c8e0|ClearDirectSoundInitPendingAndResetState_Impl||80|function|undefined ClearDirectSoundInitPendingAndResetState_Impl()|
 49c950|thunk_InitializeDirectSoundDeviceAndChannels||5|function|undefined thunk_InitializeDirectSoundDeviceAndChannels()|
@@ -6180,11 +6180,11 @@ address|name|symbol|size|type|prototype|provenance
 5e0460|DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot||137|function|undefined DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot()|
 5e0520|ScheduleTimerSlotCallbackWithInterval||79|function|undefined ScheduleTimerSlotCallbackWithInterval()|
 5e0590|FormatVersionStringFromVersionResource||212|function|undefined FormatVersionStringFromVersionResource()|
-5e0780|OpenWaveMmioReadFmtChunkAndAllocateHeader||428|function|undefined OpenWaveMmioReadFmtChunkAndAllocateHeader()|
-5e09f0|ReadMmioBytesToBufferAndUpdateChunkRemaining||205|function|undefined ReadMmioBytesToBufferAndUpdateChunkRemaining()|
+5e0780|OpenWaveMmioReadFmtChunkAndAllocateHeader||428|function|UINT OpenWaveMmioReadFmtChunkAndAllocateHeader(char* pszFileName, HMMIO* phmmio, WAVEFORMATEX** ppwfx, MMCKINFO* pckInRIFF, MMIOINFO* pmmioInfo)|
+5e09f0|ReadMmioBytesToBufferAndUpdateChunkRemaining||205|function|UINT ReadMmioBytesToBufferAndUpdateChunkRemaining(HMMIO hmmio, UINT cbRead, HPSTR pbDest, MMCKINFO* pckIn, UINT* pcbActualRead)|
 5e0b50|CreateWaveFileAndWriteFmtFactChunks||287|function|undefined CreateWaveFileAndWriteFmtFactChunks()|
 5e0fb0|CopyMmioChunkByFourCCViaGlobalBuffer||208|function|undefined CopyMmioChunkByFourCCViaGlobalBuffer()|
-5e10c0|LoadWaveDataAndFormatFromFilePath||262|function|undefined LoadWaveDataAndFormatFromFilePath()|
+5e10c0|LoadWaveDataAndFormatFromFilePath||262|function|UINT LoadWaveDataAndFormatFromFilePath(char* pszFileName, DWORD* pcbSize, DWORD* pcSamples, WAVEFORMATEX** ppwfx, unsigned char** ppbData, MMIOINFO* pmmioInfo)|
 5e1430|ProbeAuxOutputDeviceIndexByPidMask||110|function|undefined ProbeAuxOutputDeviceIndexByPidMask()|
 5e1500|SetAuxOutputVolumeFromScalar||43|function|undefined SetAuxOutputVolumeFromScalar()|
 5e1590|SetAuxOutputVolumeAcrossCompatibleDevices||110|function|undefined SetAuxOutputVolumeAcrossCompatibleDevices()|
@@ -6280,7 +6280,7 @@ address|name|symbol|size|type|prototype|provenance
 5e4f80|TSoundPlayer::RequestDirectSoundInitIfAllowed||22|function|undefined RequestDirectSoundInitIfAllowed()|
 5e4fb0|TSoundPlayer::ReturnConstantFalse_SoundPredicate||5|function|undefined ReturnConstantFalse_SoundPredicate()|
 5e4fd0|TSoundPlayer::ClearDirectSoundInitPendingAndResetState||14|function|undefined ClearDirectSoundInitPendingAndResetState()|
-5e4ff0|TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48||28|function|undefined NotifyGlobalAudioObjectsViaVslot48()|
+5e4ff0|TSoundPlayer::StopAllSoundChannels||28|function|void StopAllSoundChannels()|
 5e5020|TSoundPlayer::SetMasterVolumeFromPercent||94|function|void __thiscall SetMasterVolumeFromPercent(short percent)|
 5e50a0|TSoundPlayer::NoOpAudioTickCallback_005e50a0||3|function|undefined NoOpAudioTickCallback_005e50a0(void)|
 5e50c0|TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState||89|function|undefined UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState()|

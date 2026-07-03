@@ -1427,30 +1427,6 @@ undefined4 InitializeDirectSoundDeviceAndChannels_Impl(void)
   return 0;
 }
 
-// ghidra_name Helper_Uses_thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2_At0049c290
-// ghidra_proto undefined Helper_Uses_thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2_At0049c290()
-// FUNCTION: IMPERIALISM 0x0049c290
-undefined4 Helper_Uses_thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2_At0049c290(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadWaveResourceByNumericIdAndBuildBuffer
-// ghidra_proto undefined LoadWaveResourceByNumericIdAndBuildBuffer()
-// FUNCTION: IMPERIALISM 0x0049c430
-undefined4 LoadWaveResourceByNumericIdAndBuildBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadWaveDataAndFormatViaLoaderWithRetry
-// ghidra_proto undefined ReadWaveDataAndFormatViaLoaderWithRetry()
-// FUNCTION: IMPERIALISM 0x0049c720
-undefined4 ReadWaveDataAndFormatViaLoaderWithRetry(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearDirectSoundInitPendingAndResetState_Impl
 // ghidra_proto undefined ClearDirectSoundInitPendingAndResetState_Impl()
 // FUNCTION: IMPERIALISM 0x0049c8e0

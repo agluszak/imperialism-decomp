@@ -11,5 +11,29 @@
         "matcher": ""
       }
     ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(just ghidra-listing *)",
+      "Bash(just compare *)",
+      "Bash(just gates)",
+      "Bash(just vtable *)",
+      "Bash(just detect)",
+      "Bash(just stats)",
+      "Bash(just ghidra-decompile *)",
+      "Bash(bd show *)",
+      "Bash(just format-check *)",
+      "Bash(just --list)",
+      "Bash(just test)",
+      "Bash(just decomplint)",
+      "Bash(just ghidra-raw-disasm *)",
+      "Bash(just datacmp *)",
+      "Bash(bd search *)",
+      "Bash(just ghidra-vtable-dump *)",
+      "Bash(just tooling-check)",
+      "Bash(bd ready)",
+      "Bash(just ghidra-search *)",
+      "Bash(just symbols-integrity-gate)"
+    ]
   }
 }

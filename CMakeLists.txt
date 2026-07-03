@@ -48,7 +48,8 @@ endif()
 
 if(WIN32 AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
     set_target_properties(Imperialism PROPERTIES WIN32_EXECUTABLE YES)
-    target_link_libraries(Imperialism PRIVATE gdi32 user32)
+    # winmm: mmio* wave loaders (wave_helpers.cpp) and mci calls.
+    target_link_libraries(Imperialism PRIVATE gdi32 user32 winmm)
 endif()
 
 if(MSVC AND NOT IMPERIALISM_LINT_COMPILE_ONLY)

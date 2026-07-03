@@ -4,52 +4,94 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
+#include <mmsystem.h>
+#include <windowsx.h>
+
 // Global sound/wave resource manager living at 0x006a60c0. It owns an array of six
-// polymorphic audio-channel objects (+0x04..+0x18), the wave-pack module handle (+0x30) and a
-// scratch result slot (+0x34). The three methods below are real __thiscall members reached
-// from TSoundPlayer (previously through dummy-edx __fastcall casts).
-//
-// The channel objects are a not-yet-recovered polymorphic class; we only need three of its
-// vtable slots (0x30/0x34/0x3c), so it is modelled here as an abstract interface with real
-// virtuals at the verified slot offsets (Hard Rule 12 — dispatch to an unrecovered receiver
-// via a real virtual at the verified slot, never raw vftable indexing). Names are provisional.
-class TAudioChannel {
+// DirectSound secondary-buffer channels (+0x04..+0x18), the channel buffer byte size
+// (+0x24), the wave-pack module handle (+0x30) and a scratch result slot (+0x34).
+
+// The six channel objects are real COM IDirectSoundBuffer instances. dsound.h is not part
+// of the MSVC500 toolchain, so the interface is declared here with the retail vtable
+// layout. ABI verified in the disassembly: every call pushes the interface pointer itself
+// (COM `__stdcall` this-on-stack, e.g. 0x49c240 `PUSH EAX / CALL [ECX+0x34]`), slot 0x2c
+// takes the 7 Lock arguments, and 0x49c720 retries a failed Lock after DSERR_BUFFERLOST
+// (0x88780096) with a slot-0x50 Restore — the IDirectSoundBuffer slot map exactly.
+class IDirectSoundBuffer {
 public:
-#define AUDIO_CHANNEL_DUMMY(n) virtual void AudioChannelDummy##n() = 0
-  AUDIO_CHANNEL_DUMMY(00);                                  // 0x00
-  AUDIO_CHANNEL_DUMMY(04);                                  // 0x04
-  AUDIO_CHANNEL_DUMMY(08);                                  // 0x08
-  AUDIO_CHANNEL_DUMMY(0c);                                  // 0x0c
-  AUDIO_CHANNEL_DUMMY(10);                                  // 0x10
-  AUDIO_CHANNEL_DUMMY(14);                                  // 0x14
-  AUDIO_CHANNEL_DUMMY(18);                                  // 0x18
-  AUDIO_CHANNEL_DUMMY(1c);                                  // 0x1c
-  AUDIO_CHANNEL_DUMMY(20);                                  // 0x20
-  AUDIO_CHANNEL_DUMMY(24);                                  // 0x24
-  AUDIO_CHANNEL_DUMMY(28);                                  // 0x28
-  AUDIO_CHANNEL_DUMMY(2c);                                  // 0x2c
-  virtual int StartPlaybackSlot30(int a, int b, int c) = 0; // 0x30
-  virtual int RefreshVoiceStateSlot34(int a) = 0;           // 0x34
-  AUDIO_CHANNEL_DUMMY(38);                                  // 0x38
-  virtual int SetChannelVolumeSlot3C(int volume) = 0;       // 0x3c
-  AUDIO_CHANNEL_DUMMY(40);                                  // 0x40
-  AUDIO_CHANNEL_DUMMY(44);                                  // 0x44
-  virtual void __stdcall NotifyAudioObjectSlot48() = 0;     // 0x48
-#undef AUDIO_CHANNEL_DUMMY
+  virtual int __stdcall QueryInterface(void* riid, void** ppvObj) = 0; // 0x00
+  virtual unsigned long __stdcall AddRef() = 0;                        // 0x04
+  virtual unsigned long __stdcall Release() = 0;                       // 0x08
+  virtual int __stdcall GetCaps(void* pDSBufferCaps) = 0;              // 0x0c
+  virtual int __stdcall GetCurrentPosition(DWORD* pdwCurrentPlayCursor,
+                                           DWORD* pdwCurrentWriteCursor) = 0; // 0x10
+  virtual int __stdcall GetFormat(void* pwfxFormat, DWORD dwSizeAllocated,
+                                  DWORD* pdwSizeWritten) = 0;                     // 0x14
+  virtual int __stdcall GetVolume(long* plVolume) = 0;                            // 0x18
+  virtual int __stdcall GetPan(long* plPan) = 0;                                  // 0x1c
+  virtual int __stdcall GetFrequency(DWORD* pdwFrequency) = 0;                    // 0x20
+  virtual int __stdcall GetStatus(DWORD* pdwStatus) = 0;                          // 0x24
+  virtual int __stdcall Initialize(void* pDirectSound, void* pcDSBufferDesc) = 0; // 0x28
+  virtual int __stdcall Lock(DWORD dwOffset, DWORD dwBytes, void** ppvAudioPtr1,
+                             DWORD* pdwAudioBytes1, void** ppvAudioPtr2, DWORD* pdwAudioBytes2,
+                             DWORD dwFlags) = 0;                                      // 0x2c
+  virtual int __stdcall Play(DWORD dwReserved1, DWORD dwPriority, DWORD dwFlags) = 0; // 0x30
+  virtual int __stdcall SetCurrentPosition(DWORD dwNewPosition) = 0;                  // 0x34
+  virtual int __stdcall SetFormat(void* pcfxFormat) = 0;                              // 0x38
+  virtual int __stdcall SetVolume(long lVolume) = 0;                                  // 0x3c
+  virtual int __stdcall SetPan(long lPan) = 0;                                        // 0x40
+  virtual int __stdcall SetFrequency(DWORD dwFrequency) = 0;                          // 0x44
+  virtual int __stdcall Stop() = 0;                                                   // 0x48
+  virtual int __stdcall Unlock(void* pvAudioPtr1, DWORD dwAudioBytes1, void* pvAudioPtr2,
+                               DWORD dwAudioBytes2) = 0; // 0x4c
+  virtual int __stdcall Restore() = 0;                   // 0x50
+};
+
+#define DSERR_BUFFERLOST 0x88780096
+
+// Stack-local wave-load result block shared by the loaders (0x49c290/0x49c430) and
+// ReadWaveDataAndFormatViaLoaderWithRetry (0x49c720). A real local class in the original:
+// both loaders carry an EH state for it and run an inlined destructor (windowsx.h
+// GlobalFreePtr pairs — GlobalUnlock + GlobalFree via GlobalHandle) on every exit path.
+class WaveLoadDescriptor {
+public:
+  DWORD cbWaveSize;          // 0x00 — byte size of the loaded 'data' chunk
+  DWORD cSamples;            // 0x04 — sample-count out slot (never filled by the loader)
+  WAVEFORMATEX* pwfx;        // 0x08 — GlobalAlloc'd wave format header
+  unsigned char* pbWaveData; // 0x0c — GlobalAlloc'd wave data bytes
+
+  WaveLoadDescriptor() : cbWaveSize(0), cSamples(0), pwfx(0), pbWaveData(0) {}
+  ~WaveLoadDescriptor() {
+    if (pwfx != 0) {
+      GlobalFreePtr(pwfx);
+    }
+    pwfx = 0;
+    if (pbWaveData != 0) {
+      GlobalFreePtr(pbWaveData);
+    }
+  }
 };
 
 class TSoundResourceManager {
 public:
-  // 0x0049c240 — rotate to channel `slot`, refresh its voice state and (re)start playback.
+  // 0x0049c240 — rewind channel `slot` to position 0 and (re)start playback.
   int UpdateLocalizationAudioSlot(int slot);
-  // 0x0049c430 — load wave resource `waveId` from a file or the wave module and build a buffer.
-  int LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId, int param2);
+  // 0x0049c290 — load a wave file by path and copy it into channel `slot`'s buffer.
+  int LoadWaveFileByPathAndBuildBuffer(char* filePath, int slot);
+  // 0x0049c430 — load wave `waveId` from "<id>.wav" or the wave-pack module's "WAVE"
+  // resource (via the 'MEM ' mmio proc) and copy it into channel `slot`'s buffer.
+  int LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId, int slot);
+  // 0x0049c720 — Lock channel `slot`'s DirectSound buffer (Restore+retry on
+  // DSERR_BUFFERLOST), copy the loaded wave data in, zero-fill the tail, Unlock.
+  int ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescriptor* desc, int slot);
   // 0x0049c850 — push `volume` to every channel until one accepts it.
   int SetChannelVolumesUntilAccepted(int volume);
 
-  void* m_field0;               // 0x00
-  TAudioChannel* m_channels[6]; // 0x04..0x18
-  char m_pad1c[0x14];           // 0x1c..0x2f
-  HMODULE m_module;             // 0x30 (wave-pack module datafile)
-  int m_field34;                // 0x34 (last channel result / built buffer handle)
+  void* m_field0;                    // 0x00
+  IDirectSoundBuffer* m_channels[6]; // 0x04..0x18
+  char m_pad1c[0x8];                 // 0x1c..0x23
+  DWORD m_channelBufferBytes;        // 0x24 — byte size the channel buffers were created with
+  char m_pad28[0x8];                 // 0x28..0x2f
+  HMODULE m_module;                  // 0x30 (wave-pack module datafile)
+  int m_field34;                     // 0x34 (last channel result)
 };
