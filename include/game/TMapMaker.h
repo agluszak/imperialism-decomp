@@ -49,7 +49,15 @@ public:
   void SetEnabled(int enabledState, int refreshFlag); // 0x0052a760
   void SetState(int state, int refreshFlag);          // 0x0052c0a0
 
-  char pad_04_2a8[0x2a8 - 0x04];
+  // Merges undersized city regions into a neighbour and compacts region ids.
+  // Non-virtual (paired by address marker). 0x0052d750.
+  void MergeSmallCityRegionsAndCompactIds();
+
+  // --- data fields (raw pad except the two the region-merge pass reads) ---
+  char pad_04[0x08 - 0x04];  // +0x04
+  char* mapTileGrid08;       // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
+  char pad_0c[0x2a4 - 0x0c]; // +0x0c
+  int cityRegionCount2a4;    // +0x2a4 number of active city regions
 };
 
 ASSERT_SIZE(TMapMaker, 0x2a8);

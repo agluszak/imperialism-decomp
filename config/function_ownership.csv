@@ -2269,6 +2269,7 @@ address|target_cpp|ownership|note
 529f60|src/game/TMapMaker.cpp|manual|marker_sync
 52a760|src/game/TMapMaker.cpp|manual|marker_sync
 52c0a0|src/game/TMapMaker.cpp|manual|marker_sync
+52d750|src/game/TMapMaker_MergeSmallCityRegions.cpp|manual|marker_sync
 52e840|src/game/TMapMaker.cpp|manual|marker_sync
 52e890|src/game/TMapMaker.cpp|manual|marker_sync
 52e900|src/game/TMapMaker.cpp|manual|marker_sync

@@ -939,14 +939,6 @@ undefined4 OrphanDeadLeaf_NoRefs_0052d6b0(void)
   return 0;
 }
 
-// ghidra_name MergeSmallCityRegionsAndCompactIds
-// ghidra_proto undefined MergeSmallCityRegionsAndCompactIds()
-// FUNCTION: IMPERIALISM 0x0052d750
-undefined4 MergeSmallCityRegionsAndCompactIds(void)
-{
-  return 0;
-}
-
 // ghidra_name ReallocateRouteRecordBufferByCountStride18
 // ghidra_proto undefined ReallocateRouteRecordBufferByCountStride18()
 // FUNCTION: IMPERIALISM 0x0052e310
