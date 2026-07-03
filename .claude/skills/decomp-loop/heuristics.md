@@ -883,3 +883,37 @@ root-base vtable + `ret` (all intermediate vptr stores dead-store-eliminated), s
 7-byte "SetXxxBaseVtable" junk-named function called only from a scalar deleting
 destructor is that class's real `~T()` — claim it with a companion `// SYNTHETIC:`
 block, never model it as a vtable-reset helper.
+
+## 40. Two cheap recomp-side diffs to sweep in the near-miss (98–99%) band
+
+Both surface as a *recomp-only* line in `just compare 0xADDR` (green `+`) with no
+matching original line, and both are one-line source fixes on already-owned bodies —
+no marker/ownership churn, so skip `regen-stubs`.
+
+- **Trailing `+xor al,al` = a Ghidra `undefined` placeholder return that is really
+  `void`.** A body written `undefined Foo() { …; return 0; }` makes MSVC emit
+  `xor al,al` before the epilogue; the original returns void and emits nothing. Retype
+  the decl **and** the definition to `void` and drop `return 0;`. `undefined` is the
+  1-byte placeholder, so this is always `xor al,al` (a 4-byte `int` return would be
+  `xor eax,eax`, e.g. `0x5e5140` where the original *does* `xor eax,eax` and the fix is
+  the opposite direction — retype to `int`+`return 0`). Swept 7 of these (TDisplayMgr
+  ×3, TMacViewMgr atlas ×4) 94–98%→100% in one build. These are frequently *virtuals*
+  in a "GENERATED DECLS" header block introduced by that class (no base/override to
+  keep in lockstep) — changing the return type there is self-contained; the formatter
+  re-aligns the trailing `// slot` comments, so run `just format` after.
+- **Recomp-extra `test rX,rX; je …` = a null guard the original never had.** When the
+  original loads a pointer and immediately dereferences it (`mov eax,[ecx]; call
+  [eax+off]`) but the port wraps the call in `if (p != nullptr)`, reccmp shows the
+  `test/je` as recomp-only (and a downstream `je` displacement shifts by the extra
+  bytes). The original author knew the pointer was non-null here — delete the guard and
+  call unconditionally. (`TInvadeMission::RefreshSlot40` 0x53f7d0,
+  `TNumberText::ShallowClone` 0x4912b0, both →100%.)
+
+## 41. The pre-v9-save branch dispatches a *different* vtable slot — read the byte offset
+
+reccmp `call [eax+0xNN]` vs `call [eax+0xMM]` on an otherwise-identical body means the
+source calls the wrong virtual. Map byte-offset → named method with slot_index =
+byteOff/4 and the header's `// slot 0xIDX` comments (repo convention even names them by
+offset, e.g. `Call30` = slot byte 0x30, `RefreshSlot40` = byte 0x40). Fix is swapping
+the method name at the callsite, no signature change. (`TMission::ReadFrom` 0x5358a0
+called `RefreshSlot40()` where the original dispatches slot 0x30 `Call30()`, 98%→100%.)
