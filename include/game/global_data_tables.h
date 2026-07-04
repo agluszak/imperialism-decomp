@@ -338,6 +338,7 @@ extern char g_szMcAppUiHeaderPath_006943CC[];
 
 // Placeholder strings baked into the turn-event dialog builders (season/treasury/info
 // text shown until real values are bound).
+extern char g_szUiPlaceholderStaticText_00694354[];
 extern char g_szUiPlaceholderTreasury_006943B0[];
 extern char g_szUiPlaceholderSeason_006943BC[];
 extern char g_szUiPlaceholderSampleText_00694A98[];

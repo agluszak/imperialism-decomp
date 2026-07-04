@@ -144,6 +144,8 @@ unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 // Placeholder strings baked into the turn-event dialog builders (season/treasury/info
 // text shown until real values are bound).
+// GLOBAL: IMPERIALISM 0x00694354
+char g_szUiPlaceholderStaticText_00694354[] = "Static Text";
 // GLOBAL: IMPERIALISM 0x006943b0
 char g_szUiPlaceholderTreasury_006943B0[] = "$55,555";
 // GLOBAL: IMPERIALISM 0x006943bc
