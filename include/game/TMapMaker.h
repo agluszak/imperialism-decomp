@@ -63,6 +63,9 @@ public:
   // 0x0052a160.
   void GenerateCityRegionIdsBySeedAndNeighborPropagation();
 
+  // Rotates the map columns so the peak city-tile-density band is recentred. 0x00529960.
+  void RotateMapColumnsByPeakCityTileDensity();
+
   // Merges undersized city regions into a neighbour and compacts region ids.
   // Non-virtual (paired by address marker). 0x0052d750.
   void MergeSmallCityRegionsAndCompactIds();

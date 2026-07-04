@@ -683,14 +683,6 @@ undefined4 RandomizeRegionTemplateBanksForMismatchedNeighborClasses(void)
   return 0;
 }
 
-// ghidra_name RotateMapColumnsByPeakCityTileDensity
-// ghidra_proto undefined RotateMapColumnsByPeakCityTileDensity()
-// FUNCTION: IMPERIALISM 0x00529960
-undefined4 RotateMapColumnsByPeakCityTileDensity(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_00529d90
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_00529d90()
 // FUNCTION: IMPERIALISM 0x00529d90
