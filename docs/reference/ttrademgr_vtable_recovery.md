@@ -18,14 +18,47 @@ cluster (~10 methods) and the vtable dispatch in
 > with this (marker/ownership collisions on those 4 addresses, and a second class modeling
 > the same object). Attempted and reverted.
 >
-> The correct recovery is a **careful detangle**: separate the real 0x18 `TDealList` from the
-> manager class, decide whether the manager is a distinct `TTradeMgr` or the same object the
-> `TDealList` frankenclass already sizes, make the 0x66d990 slot methods **virtual** on the
-> owning class (so `CalculateDeveloperTilePurchaseCost`'s `[vtbl+0x4c]` dispatch pairs), and
-> fix the typedef/global. This touches existing *working* `TDealList`/manager code, so it is a
-> dedicated, regression-sensitive pass — not the mechanical promotion the plan below assumed.
-> **Do NOT create a parallel `TTradeMgr` class without first reconciling the existing
-> `TDealList` modeling.** The slot map below is still the authoritative vtable reference.
+> **Definitive structure (verified): two distinct classes conflated into one.**
+> - **Real `TDealList`** — vtable **0x66da38** (`TDealList::GetRuntimeClass` 0x5ba1a0, scalar
+>   dtor 0x5ba1f0, `CompareUnsignedIntsAscending` 0x5ba260), base `TSortedPtrList`, size 0x18.
+>   `just vtable TDealList` is **100% matched** today — this half is correct and must not break.
+>   Note `0x66da38 = 0x66d990 + 0xa8`; they sit adjacently in the binary's vtable section but
+>   belong to different classes.
+> - **The manager** (`TTradeMgr`/`TNationInteractionStateManager`) — vtable **0x66d990**, base
+>   `TObject`, size 0xaf0, ctor **0x5b7a20** (`MOV [EAX],0x66d990`). Its ctor, its
+>   `NationMetricCategoryRow categoryRows[0x11]` fields, and its metric methods (the
+>   `SlotXX` set + slots 0x0a–0x22) are currently **bolted onto `TDealList`**, so they match
+>   *poorly* because the class model is wrong: ctor **20%**, `IsCapabilityCategoryActiveSlot3C`
+>   60%, `QueryProposalWeightSlot4C` 37%, `DispatchProposalAmountSlot60` 33%,
+>   `ResolveProposalCodeForCategorySlot84` 6%.
+>
+> **The detangle** = pull the manager out of `TDealList` into its own `class TTradeMgr :
+> public TObject` (VTABLE 0x66d990, size 0xaf0): move the ctor 0x5b7a20,
+> `InitializeNationInteractionStateManagerDefaults`, `categoryRows`/`categoryRankLists`, and
+> the SlotXX methods out of `TDealList.{h,cpp}`; declare the metric methods **virtual** at
+> their slots (per the map below) so `CalculateDeveloperTilePurchaseCost`'s `[vtbl+0x4c]`
+> dispatch pairs; retype `g_pNationInteractionStateManager` → `TTradeMgr*` and drop the
+> `typedef TDealList TNationInteractionStateManager`. Leave the real `TDealList` (0x66da38,
+> 100%) untouched.
+>
+> **Blast radius (measured — good news):** the 19 external `g_pNationInteractionStateManager->`
+> callsites (TForeignMinister/TGreatPower/TMinor/TSimMgr) call **only** the four manager
+> methods (`QueryProposalWeightSlot4C` ×10, `IsCapabilityCategoryActiveSlot3C`/
+> `DispatchProposalAmountSlot60`/`ResolveProposalCodeForCategorySlot84` ×3 each) — all of which
+> move to `TTradeMgr` — plus 3 type-agnostic pointer copies. **No caller uses it as a TDealList
+> list**, so retyping the global `TTradeMgr*` is clean.
+>
+> **Remaining blocker (why the move alone isn't enough):** those methods match only 6–60% today
+> because their `this + off` field accesses (into `categoryRows`) assume the wrong base
+> (`TSortedPtrList`). The **real field offsets in the TObject-derived 0xaf0 manager are still
+> unrecovered** — the move must be paired with reading each method's `[this+X]` accesses to
+> place `categoryRows`/`categoryRankLists` at their true offsets. That layout recovery, plus
+> the class split, is the dedicated pass.
+>
+> **Regression surface / gating:** keep `just vtable TDealList` at **100%** throughout, don't
+> disturb the shared 0x66d990/0x66da38 vtable region, `just stats` after the global retype.
+> Revert on any drop. The slot map below is the authoritative primary-vtable (0x66d990)
+> reference for the move.
 
 ## Diagnosis: the global is mis-typed
 
