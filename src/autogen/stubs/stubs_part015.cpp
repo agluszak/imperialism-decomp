@@ -675,14 +675,6 @@ undefined4 ValidateSeedCandidateExistsForEachTerrainClass(void)
   return 0;
 }
 
-// ghidra_name RandomizeRegionTemplateBanksForMismatchedNeighborClasses
-// ghidra_proto undefined RandomizeRegionTemplateBanksForMismatchedNeighborClasses()
-// FUNCTION: IMPERIALISM 0x005293d0
-undefined4 RandomizeRegionTemplateBanksForMismatchedNeighborClasses(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_00529d90
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_00529d90()
 // FUNCTION: IMPERIALISM 0x00529d90

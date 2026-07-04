@@ -17829,7 +17829,7 @@
     },
     {
       "address": "0x5293d0",
-      "matching": 0.0,
+      "matching": 0.11855670103092783,
       "name": "RandomizeRegionTemplateBanksForMismatchedNeighborClasses",
       "type": 1
     },
@@ -17847,7 +17847,7 @@
     },
     {
       "address": "0x5298a0",
-      "matching": 0.06666666666666667,
+      "matching": 0.5172413793103449,
       "name": "TMapMaker::vmethod_0081",
       "type": 1
     },
@@ -17879,12 +17879,6 @@
       "address": "0x52a160",
       "matching": 0.2512908777969019,
       "name": "GenerateCityRegionIdsBySeedAndNeighborPropagation",
-      "type": 1
-    },
-    {
-      "address": "0x52a670",
-      "matching": 0.7586206896551724,
-      "name": "GetCityRegionIdAtTileIndex",
       "type": 1
     },
     {
@@ -17967,7 +17961,7 @@
     },
     {
       "address": "0x52c1a0",
-      "matching": 0.40605520926090827,
+      "matching": 0.402493321460374,
       "name": "BuildCityRegionBorderOverlaySegments",
       "type": 1
     },
@@ -18015,7 +18009,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.25071225071225073,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18033,7 +18027,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -18059,12 +18053,6 @@
       "address": "0x52e840",
       "matching": 0.0,
       "name": "TMapMaker::vmethod_0026",
-      "type": 1
-    },
-    {
-      "address": "0x52e890",
-      "matching": 0.0,
-      "name": "TMapMaker::GetCityDialogFlagByte4",
       "type": 1
     },
     {
@@ -41977,7 +41965,7 @@
     },
     {
       "address": "0x6598f8",
-      "matching": 1.0,
+      "matching": 0.9705882352941176,
       "name": "TMapMaker::`vftable'",
       "type": 5
     },

@@ -90,7 +90,16 @@ char TMapMaker::vmethod_0080() {
 }
 
 // FUNCTION: IMPERIALISM 0x005298a0
-void TMapMaker::vmethod_0081(int) {}
+int TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
+  int cell =
+      (static_cast<short>(coarseIndex % 0x1b) + static_cast<short>(coarseIndex / 0x1b) * 0x6c) *
+          0x90 +
+      reinterpret_cast<int>(mapTileGrid08);
+  if ((coarseIndex / 0x1b & 1U) != 0) {
+    cell = cell + -0x48;
+  }
+  return cell;
+}
 
 // FUNCTION: IMPERIALISM 0x00529f60
 void TMapMaker::vmethod_0025() {}
