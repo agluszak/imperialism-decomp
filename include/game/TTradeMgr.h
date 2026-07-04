@@ -33,14 +33,14 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
 
   // Introduced virtuals (slots 0x0a-0x22), declared in slot order so the compiler lays
-  // out vtable 0x66d990 correctly. The four with real bodies keep their established
-  // (caller-facing) names; the rest are honest stubs pending their own port.
-  virtual void OrphanCallChain_C3_I50_005b7fc0();                        // 0x0a 0x5b7fc0
-  virtual undefined4 AccumulateDiplomacyRelationChangesAndQueueEvents(); // 0x0b 0x5b8080
-  virtual void DispatchNationMetricUpdatePassForAllSlots();              // 0x0c 0x5b8aa0
-  virtual void ComputeNationMetricBaselineValueForSlot(short slot);      // 0x0d 0x5b8ad0
-  virtual double GetNationMetricWeightedScoreForSlot(short category);    // 0x0e 0x5b8d40
-  virtual short IsCapabilityCategoryActiveSlot3C(short category);        // 0x0f 0x5b8d70
+  // out vtable 0x66d990 correctly. All carry real, ported bodies (dispatches resolved to
+  // real virtuals on the recovered receiver classes).
+  virtual void OrphanCallChain_C3_I50_005b7fc0();                     // 0x0a 0x5b7fc0
+  virtual void AccumulateDiplomacyRelationChangesAndQueueEvents();    // 0x0b 0x5b8080
+  virtual void DispatchNationMetricUpdatePassForAllSlots();           // 0x0c 0x5b8aa0
+  virtual void ComputeNationMetricBaselineValueForSlot(short slot);   // 0x0d 0x5b8ad0
+  virtual double GetNationMetricWeightedScoreForSlot(short category); // 0x0e 0x5b8d40
+  virtual short IsCapabilityCategoryActiveSlot3C(short category);     // 0x0f 0x5b8d70
   virtual int ComputeNationMetricDispatchScoreAndResolveScale(short sourceSlot, short targetSlot,
                                                               short scoreA,
                                                               short scoreB);      // 0x10 0x5b8da0

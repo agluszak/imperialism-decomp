@@ -31206,7 +31206,7 @@
     },
     {
       "address": "0x5b8080",
-      "matching": 0.006920415224913495,
+      "matching": 0.24457142857142858,
       "name": "TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents",
       "type": 1
     },
@@ -31273,6 +31273,12 @@
       "address": "0x5b9060",
       "matching": 0.6363636363636364,
       "name": "TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster",
+      "type": 1
+    },
+    {
+      "address": "0x5b91e0",
+      "matching": 0.021052631578947368,
+      "name": "ProcessPendingDiplomacyTransferEntriesUntilBlocked",
       "type": 1
     },
     {

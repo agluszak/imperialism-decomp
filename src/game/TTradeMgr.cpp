@@ -267,9 +267,128 @@ void TTradeMgr::OrphanCallChain_C3_I50_005b7fc0() {
   } while (i != 0);
 }
 
+namespace {
+// The event record queued into a rank list per accumulated relation change.
+struct DiplomacyRelationEvent {
+  short sourceSlot;
+  short targetSlot;
+  short cellValue;
+  short relationScore;
+};
+
+// TDiplomacyMgr relation-standing-score matrix (+0x79c), row stride 0x17 shorts.
+inline short RelationStanding(TDiplomacyMgr* mgr, int source, int target) {
+  return *reinterpret_cast<short*>(reinterpret_cast<char*>(mgr) + 0x79c +
+                                   (source * 0x17 + target) * 2);
+}
+} // namespace
+
 // FUNCTION: IMPERIALISM 0x005b8080
-undefined4 TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
-  return 0;
+void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
+  char* self = reinterpret_cast<char*>(this);
+  short* cells = reinterpret_cast<short*>(self + 0x1c);
+  short* accum = reinterpret_cast<short*>(self + 0x4a);
+
+  // Rows 0..6: primary-nation targets, primary-nation sources.
+  int row = 0;
+  do {
+    int target = 0;
+    do {
+      if (g_apTerrainTypeDescriptorTable[target] != 0) {
+        short cell = cells[row * 0x50 + target];
+        if (0 < cell) {
+          accum[row * 0x50 + target] = static_cast<short>(accum[row * 0x50 + target] + cell);
+          int source = 0;
+          do {
+            if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
+                (g_pDiplomacyTurnStateManager->HasState300LinkBetweenNationPair(source, target) ==
+                 0) &&
+                (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
+              DiplomacyRelationEvent event;
+              event.sourceSlot = static_cast<short>(source);
+              event.targetSlot = static_cast<short>(target);
+              event.cellValue = cell;
+              event.relationScore = RelationStanding(g_pDiplomacyTurnStateManager, source, target);
+              this->ComputeNationMetricDispatchScoreAndResolveScale(
+                  static_cast<short>(source), static_cast<short>(target),
+                  cells[row * 0x50 + target - 8], cells[row * 0x50 + target]);
+              this->categoryRankLists[row]->AddEntrySlot38(&event);
+            }
+            source = source + 1;
+          } while (source < 7);
+        }
+      }
+      target = target + 1;
+    } while (target < 7);
+
+    // Rows 0..6: secondary-nation targets (slots 7..0x16).
+    int secTarget = 7;
+    do {
+      if (g_apTerrainTypeDescriptorTable[secTarget] != 0) {
+        short cell = cells[row * 0x50 + secTarget];
+        if (0 < cell) {
+          accum[row * 0x50 + secTarget] = static_cast<short>(accum[row * 0x50 + secTarget] + cell);
+          int source = 0;
+          do {
+            if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
+                (g_pDiplomacyTurnStateManager->HasState300LinkBetweenNationPair(source,
+                                                                                secTarget) == 0) &&
+                (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget) == 0)) {
+              DiplomacyRelationEvent event;
+              event.sourceSlot = static_cast<short>(source);
+              event.targetSlot = static_cast<short>(secTarget);
+              event.cellValue = cell;
+              event.relationScore =
+                  RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
+              this->ComputeNationMetricDispatchScoreAndResolveScale(
+                  static_cast<short>(source), static_cast<short>(secTarget),
+                  cells[row * 0x50 + secTarget - 8], cells[row * 0x50 + secTarget]);
+              this->categoryRankLists[row]->AddEntrySlot38(&event);
+            }
+            source = source + 1;
+          } while (source < 7);
+        }
+      }
+      secTarget = secTarget + 1;
+    } while (secTarget < 0x17);
+
+    row = row + 1;
+  } while (row < 7);
+
+  // Rows 7..0x16: secondary-nation rows.
+  int secRow = 7;
+  do {
+    int target = 0;
+    do {
+      if (g_apTerrainTypeDescriptorTable[target] != 0) {
+        short cell = cells[secRow * 0x50 + target];
+        if (0 < cell) {
+          accum[secRow * 0x50 + target] = static_cast<short>(accum[secRow * 0x50 + target] + cell);
+          int source = 0;
+          do {
+            if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
+                (cells[secRow * 0x50 + source] < 0) &&
+                (g_pDiplomacyTurnStateManager->HasState300LinkBetweenNationPair(source, target) ==
+                 0) &&
+                (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
+              DiplomacyRelationEvent event;
+              event.sourceSlot = static_cast<short>(source);
+              event.targetSlot = static_cast<short>(target);
+              event.cellValue = cell;
+              event.relationScore = RelationStanding(g_pDiplomacyTurnStateManager, source, target);
+              this->ComputeNationMetricDispatchScoreAndResolveScale(
+                  static_cast<short>(source), static_cast<short>(target),
+                  cells[secRow * 0x50 + target - 8], cells[secRow * 0x50 + target]);
+              this->categoryRankLists[secRow]->AddEntrySlot38(&event);
+            }
+            source = source + 1;
+          } while (source < 7);
+        }
+      }
+      target = target + 1;
+    } while (target < 7);
+    secRow = secRow + 1;
+  } while (secRow < 0x17);
 }
 
 // FUNCTION: IMPERIALISM 0x005b8aa0
