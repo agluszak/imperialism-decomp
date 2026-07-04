@@ -229,6 +229,11 @@ TZone* FindMapActionContextByNodeId(short nodeId) {
   return node;
 }
 
+// FUNCTION: IMPERIALISM 0x0055f300
+void TZone::AppendUniquePrimaryNeighbor(TZone* zone) {
+  primaryNeighbors.GetOrAppendUnique(zone);
+}
+
 // FUNCTION: IMPERIALISM 0x0055f5c0
 void TZone::GenerateZoneStatusCodeIfUnset() {
   if (field04 != -1) {

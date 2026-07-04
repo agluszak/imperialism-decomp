@@ -88,6 +88,9 @@ public:
   // (mov ecx, zone; test ecx,ecx inside), so keep the `this == 0` guard.
   short GetContextOrdinalOrInvalid();
   void GenerateZoneStatusCodeIfUnset(); // 0x55f5c0
+  // 0x55f300 — find-or-append `zone` to primaryNeighbors via the stretch's virtual
+  // GetOrAppendUnique (Ghidra: DispatchMapActionContextCallbackViaField24).
+  void AppendUniquePrimaryNeighbor(TZone* zone);
   // BFS relaxation step over primaryNeighbors, writing shortest known distance
   // (in "hops") into field44. level == -1 means "start a fresh search": resets
   // every zone's field44 to the 0x29a sentinel first, then reseeds at level 0.
