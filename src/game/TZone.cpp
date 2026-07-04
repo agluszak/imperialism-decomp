@@ -765,3 +765,82 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
 
   return 0;
 }
+
+// Walks every map tile; for each coastal/port tile (terrain marker 3 or 0xe) or land tile
+// in a city region, resolves the owning map-action context (a port zone matched by tile id,
+// or the region-indexed context) and, for each of the tile's 6 hex neighbours that carries a
+// city record, adds that city context to the owning context's secondary-neighbour list.
+// FUNCTION: IMPERIALISM 0x00563da0
+void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
+  int tileIndex = 0;
+  int tileByteOffset = 0;
+  do {
+    TZone* context;
+    short marker = static_cast<signed char>(
+        *(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + 0x16 + tileByteOffset));
+    if (marker == 3 || marker == 0xe) {
+      // Inlined FindPortZoneByTile(tileIndex): match a port zone by any of its tile ids.
+      context = TZone::GetFirstPortZone();
+      while (context != 0) {
+        short ti = static_cast<short>(tileIndex);
+        if (static_cast<short>(context->field0c) == ti || context->field20 == ti ||
+            static_cast<short>(static_cast<TPortZone*>(context)->field48) == ti) {
+          break;
+        }
+        context = context->GetNextPortZone();
+      }
+    } else {
+      short region = static_cast<short>(
+          *(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + tileByteOffset + 4));
+      if (region >= 0x17) {
+        context = g_pActiveMapOrderContext->contextArray + (region - 0x17);
+      } else {
+        context = 0;
+      }
+    }
+
+    if (context != 0) {
+      int direction = 0;
+      do {
+        short neighborTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
+            static_cast<short>(tileIndex), static_cast<short>(direction));
+        if (neighborTile != -1) {
+          short cityIdx = *reinterpret_cast<short*>(
+              reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + 0x14 +
+              neighborTile * 0x24);
+          int cityRecord;
+          if (cityIdx == -1) {
+            cityRecord = 0;
+          } else {
+            cityRecord = reinterpret_cast<int>(
+                reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + cityIdx * 0xa8);
+          }
+          if (cityRecord != 0) {
+            // Append the neighbour's city context to the secondary list if not already present.
+            int* match = 0;
+            if (context->secondaryNeighbors.Count() != 0) {
+              int* entries = reinterpret_cast<int*>(context->secondaryNeighbors.Data());
+              unsigned int j = 0;
+              int* scan = entries;
+              do {
+                if (*scan == cityRecord) {
+                  match = entries + j;
+                  break;
+                }
+                j = j + 1;
+                scan = scan + 1;
+              } while (j < static_cast<unsigned int>(context->secondaryNeighbors.Count()));
+            }
+            if (match == 0) {
+              context->secondaryNeighbors.GetOrAppendUnique(reinterpret_cast<TZone*>(cityRecord));
+            }
+          }
+        }
+        direction = direction + 1;
+      } while (direction < 6);
+    }
+
+    tileIndex = tileIndex + 1;
+    tileByteOffset = tileByteOffset + 0x24;
+  } while (static_cast<short>(tileIndex) < 0x1950);
+}

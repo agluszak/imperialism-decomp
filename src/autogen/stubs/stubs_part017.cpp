@@ -763,14 +763,6 @@ undefined4 EvaluateTerrainFlowCrossNationBoundaryToSea(void)
   return 0;
 }
 
-// ghidra_name PopulatePortZoneAdjacencyToNearbyCityContexts
-// ghidra_proto undefined PopulatePortZoneAdjacencyToNearbyCityContexts()
-// FUNCTION: IMPERIALISM 0x00563da0
-undefined4 PopulatePortZoneAdjacencyToNearbyCityContexts(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshPortZoneNeighborContextLinksAndFallbacks
 // ghidra_proto undefined RefreshPortZoneNeighborContextLinksAndFallbacks()
 // FUNCTION: IMPERIALISM 0x00563f50
