@@ -2281,6 +2281,7 @@ address|target_cpp|ownership|note
 52c000|src/game/sea_geometry.cpp|manual|marker_sync
 52c030|src/game/sea_geometry.cpp|manual|marker_sync
 52c0a0|src/game/sea_geometry.cpp|manual|marker_sync
+52c1a0|src/game/TMapMaker_BuildCityRegionBorders.cpp|manual|marker_sync
 52c990|src/game/map_overlay_geometry.cpp|manual|marker_sync
 52ca00|src/game/sea_geometry.cpp|manual|marker_sync
 52ca20|src/game/sea_geometry.cpp|manual|marker_sync

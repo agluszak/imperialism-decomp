@@ -755,14 +755,6 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170(void)
   return 0;
 }
 
-// ghidra_name BuildCityRegionBorderOverlaySegments
-// ghidra_proto undefined BuildCityRegionBorderOverlaySegments()
-// FUNCTION: IMPERIALISM 0x0052c1a0
-undefined4 BuildCityRegionBorderOverlaySegments(void)
-{
-  return 0;
-}
-
 // ghidra_name ReindexContiguousCityRegionIds
 // ghidra_proto undefined ReindexContiguousCityRegionIds()
 // FUNCTION: IMPERIALISM 0x0052d1f0

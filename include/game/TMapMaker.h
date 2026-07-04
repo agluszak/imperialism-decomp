@@ -51,6 +51,10 @@ public:
   // not a city-region tile (tile[0] != 5). 0x0052a670.
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
+  // Scans every tile's hex neighbours and emits a Seapoint into the overlay-quad table for
+  // each city-region border edge (single edges + 3-region triple junctions). 0x0052c1a0.
+  void BuildCityRegionBorderOverlaySegments();
+
   // Merges undersized city regions into a neighbour and compacts region ids.
   // Non-virtual (paired by address marker). 0x0052d750.
   void MergeSmallCityRegionsAndCompactIds();
