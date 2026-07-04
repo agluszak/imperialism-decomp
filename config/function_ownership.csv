@@ -559,7 +559,6 @@ address|target_cpp|ownership|note
 48eb10|src/game/TButton.cpp|manual|marker_sync
 48ec00|src/game/TButton.cpp|manual|marker_sync
 48ecc0|src/game/TButton.cpp|manual|marker_sync
-48ece0|src/game/TButton.cpp|manual|marker_sync
 48eeb0|src/game/TPicture.cpp|manual|marker_sync
 48efa0|src/game/TPicture.cpp|manual|marker_sync
 48efc0|src/game/TPicture.cpp|manual|marker_sync
