@@ -2298,6 +2298,7 @@ address|target_cpp|ownership|note
 52e840|src/game/TMapMaker.cpp|manual|marker_sync
 52e890|src/game/TMapMaker.cpp|manual|marker_sync
 52e900|src/game/TMapMaker.cpp|manual|marker_sync
+52e990|src/game/map_overlay_geometry.cpp|manual|marker_sync
 52eb30|src/game/TMinister.cpp|manual|marker_sync
 52eb60|src/game/TMinister.cpp|manual|marker_sync
 52eb80|src/game/TMinister.cpp|manual|marker_sync

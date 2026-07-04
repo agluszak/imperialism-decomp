@@ -763,14 +763,6 @@ undefined4 AllocateRouteNodeStateBufferByCount(void)
   return 0;
 }
 
-// ghidra_name AreRoutePointPairsEqual
-// ghidra_proto undefined AreRoutePointPairsEqual()
-// FUNCTION: IMPERIALISM 0x0052e990
-undefined4 AreRoutePointPairsEqual(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0052eb00
 // ghidra_proto undefined WrapperFor_ftol_At0052eb00()
 // FUNCTION: IMPERIALISM 0x0052eb00
