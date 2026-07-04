@@ -21,7 +21,10 @@ struct TTerrainStateRecordView {
   signed char ownerNationTag04; // 0x04
   unsigned char pad05;
   signed char adjacencyBits06; // 0x06
-  unsigned char pad07[0x0e - 0x07];
+  unsigned char pad07[0x0a - 0x07];
+  unsigned char adjacencyMaskA0a; // 0x0a -- per-direction bit mask (land coastline/edges)
+  unsigned char adjacencyMaskB0b; // 0x0b -- per-direction bit mask (region/water borders)
+  unsigned char pad0c[0x0e - 0x0c];
   unsigned char recruitSearchVisited0e; // 0x0e
   unsigned char pad0f[0x11 - 0x0f];
   signed char resourceTypeByEdge[2];
@@ -100,7 +103,7 @@ public:
   virtual undefined BuildOrLoadGlobalMapStateForSession(CString param_1,
                                                         char* param_2);     // slot 0x0b 0x50ec90
   virtual undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream(); // slot 0x0c 0x50f200
-  virtual undefined
+  virtual unsigned char*
   UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1);                  // slot 0x0d 0x510210
   virtual undefined InitializeTileNeighborConnectionMaskIfNeeded(int param_1); // slot 0x0e 0x5107e0
   virtual undefined UpdateTileNeighborBorderInfluenceCounters(short param_1,
@@ -237,6 +240,8 @@ public:
   int cityScoreTotal;                 // +0x18
   char* scenarioTagText1c;            // +0x1c
   char hexNeighborWrapHorizontally20; // +0x20
+  char pad21;                         // +0x21
+  short pendingRiverMouthTile22;      // +0x22 -- tile awaiting a river-mouth variant assign
 
   static void ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
                                             char wrapHorizontally);

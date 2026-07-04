@@ -56,10 +56,6 @@ undefined TMapMgr::UpdateTileNeighborBorderInfluenceCounters(short param_1, shor
   return 0;
 }
 
-undefined TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1) {
-  return 0;
-}
-
 undefined TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded(int param_1) {
   return 0;
 }
@@ -306,6 +302,194 @@ undefined TMapMgr::GetMapImprovementTileSpriteOffset(short param_1) {
 
 undefined TMapMgr::OrphanLeaf_NoCall_Ins08_005178c0() {
   return 0;
+}
+
+// Recompute a tile's per-direction adjacency masks (bytes 0x0a/0x0b) and its sprite-variant
+// code (byte 2) from its six hex neighbors, using the map-gen LCG for random tie-breaks.
+// Branches on terrain type (byte 0): type 5 = water/coast, else land. Returns the last EAX
+// value (a tile-byte pointer or an incidental scalar); callers ignore it.
+// FUNCTION: IMPERIALISM 0x00510210
+unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1) {
+  short tileIndex = (short)param_1;
+  short neighbors[6];
+  unsigned char* result;
+
+  if (terrainStateTable[tileIndex].pad00[0] != 5) {
+    ComputeHexNeighborTileIndices(param_1, neighbors, hexNeighborWrapHorizontally20);
+    result = reinterpret_cast<unsigned char*>(terrainStateTable);
+    for (int d = 0; d < 6; ++d) {
+      if (neighbors[d] != -1 &&
+          terrainStateTable[neighbors[d]].gateFlag == terrainStateTable[tileIndex].gateFlag) {
+        terrainStateTable[tileIndex].adjacencyMaskA0a |=
+            (unsigned char)g_hexDirectionBitMasks_00696e40[d];
+      }
+    }
+    if (terrainStateTable[tileIndex].pad00[0] == 2) {
+      for (int d = 0; d < 6; ++d) {
+        if (neighbors[d] != -1) {
+          if (terrainStateTable[neighbors[d]].pad00[0] == 3) {
+            terrainStateTable[tileIndex].adjacencyMaskB0b |=
+                (unsigned char)g_hexDirectionBitMasks_00696e40[d];
+          }
+          if (terrainStateTable[neighbors[d]].pad00[0] == 2) {
+            terrainStateTable[tileIndex].adjacencyMaskA0a |=
+                (unsigned char)g_hexDirectionBitMasks_00696e40[d];
+          }
+        }
+      }
+    }
+    if (terrainStateTable[tileIndex].pad00[0] == 3) {
+      for (int d = 0; d < 6; ++d) {
+        if (neighbors[d] != -1 && terrainStateTable[neighbors[d]].pad00[0] == 2) {
+          terrainStateTable[tileIndex].adjacencyMaskB0b |=
+              (unsigned char)g_hexDirectionBitMasks_00696e40[d];
+        }
+      }
+    }
+    if (terrainStateTable[tileIndex].pad00[0] == 3) {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      result = 0;
+      if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
+        result = reinterpret_cast<unsigned char*>(terrainStateTable);
+        terrainStateTable[tileIndex].pad00[1] = 1;
+      }
+    }
+    if (terrainStateTable[tileIndex].gateFlag == 0xb) {
+      for (short d = 0; d < 6; ++d) {
+        if (terrainStateTable[neighbors[d]].gateFlag == 0xb) {
+          short next = (d == 5) ? 0 : (short)(d + 1);
+          short prev = (d != 0) ? (short)(d - 1) : 5;
+          unsigned char prevTag = terrainStateTable[neighbors[prev]].gateFlag;
+          if (prevTag == 0xb) {
+          check_next_run:
+            if (terrainStateTable[neighbors[next]].gateFlag == 0xb) {
+              terrainStateTable[tileIndex].pad00[1] = 1;
+            } else {
+              if (prevTag != 0xb) {
+                goto check_next_only;
+              }
+              if (terrainStateTable[neighbors[next]].gateFlag != 0xb) {
+                terrainStateTable[tileIndex].pad00[1] = 2;
+              }
+            }
+          } else if (terrainStateTable[neighbors[next]].gateFlag == 0xb) {
+            if (prevTag == 0xb) {
+              goto check_next_run;
+            }
+          check_next_only:
+            if (terrainStateTable[neighbors[next]].gateFlag == 0xb) {
+              terrainStateTable[tileIndex].pad00[1] = 3;
+            }
+          } else {
+            terrainStateTable[tileIndex].pad00[1] = 0;
+          }
+        }
+      }
+    }
+    unsigned char variant = terrainStateTable[tileIndex].roadFlag;
+    if (variant != 0) {
+      if ((variant & 0x80) == 0) {
+        int resolved = ResolveMapTileVariantSpriteFromAdjacencyState(param_1);
+        terrainStateTable[tileIndex].roadFlag = (unsigned char)resolved;
+      } else {
+        terrainStateTable[tileIndex].roadFlag = variant & 0x7f;
+      }
+    }
+    char finalVariant = terrainStateTable[tileIndex].roadFlag;
+    result = reinterpret_cast<unsigned char*>((unsigned int)(unsigned char)finalVariant);
+    if (0x1a < finalVariant && finalVariant < 0x2b) {
+      terrainStateTable[tileIndex].roadFlag = finalVariant - 0x10;
+      return reinterpret_cast<unsigned char*>((unsigned int)(unsigned char)(finalVariant - 0x10));
+    }
+  } else {
+    ComputeHexNeighborTileIndices(param_1, neighbors, hexNeighborWrapHorizontally20);
+    unsigned int lcg = g_mapGenLcgState_006a38e8;
+    for (int d = 0; d < 6; ++d) {
+      if (neighbors[d] != -1 && terrainStateTable[neighbors[d]].pad00[0] != 5) {
+        terrainStateTable[tileIndex].adjacencyMaskB0b |=
+            (unsigned char)g_hexDirectionBitMasks_00696e40[d];
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        lcg = g_mapGenLcgState_006a38e8;
+        if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
+          terrainStateTable[tileIndex].pad00[1] |=
+              (unsigned char)g_hexDirectionBitMasks_00696e40[d];
+          lcg = g_mapGenLcgState_006a38e8;
+        }
+      }
+    }
+    result = reinterpret_cast<unsigned char*>(terrainStateTable);
+    if (terrainStateTable[tileIndex].adjacencyMaskB0b != 0) {
+      unsigned char variant = terrainStateTable[tileIndex].roadFlag;
+      result = &terrainStateTable[tileIndex].roadFlag;
+      if (variant == 0) {
+        return result;
+      }
+      if ((variant & 0x80) == 0) {
+        int resolved = ResolveMapTileVariantSpriteFromAdjacencyState(param_1);
+        terrainStateTable[tileIndex].roadFlag = (unsigned char)resolved;
+        return reinterpret_cast<unsigned char*>(resolved);
+      }
+      *result = variant & 0x7f;
+      return result;
+    }
+    if (neighbors[4] == -1) {
+      return result;
+    }
+    if (terrainStateTable[neighbors[4]].pad00[1] != 0) {
+      return result;
+    }
+    if (((neighbors[5] == -1) || (terrainStateTable[neighbors[5]].pad00[1] == 0)) &&
+        ((neighbors[0] == -1) || (terrainStateTable[neighbors[0]].pad00[1] == 0))) {
+      g_mapGenLcgState_006a38e8 = lcg * 0x15a4e35 + 1;
+      unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+      result = reinterpret_cast<unsigned char*>(roll / 100);
+      if (3 < roll % 100) {
+        return result;
+      }
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      terrainStateTable[tileIndex].pad00[1] =
+          (unsigned char)((g_mapGenLcgState_006a38e8 >> 0xc) & 3) + 1;
+      if (pendingRiverMouthTile22 != -1) {
+        return result;
+      }
+      pendingRiverMouthTile22 = tileIndex;
+      return reinterpret_cast<unsigned char*>(param_1 & 0xffff);
+    }
+    g_mapGenLcgState_006a38e8 = lcg * 0x15a4e35 + 1;
+    unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+    result = reinterpret_cast<unsigned char*>(roll / 100);
+    if (7 < roll % 100) {
+      return result;
+    }
+    char v;
+    if (neighbors[5] != -1) {
+      v = terrainStateTable[neighbors[5]].pad00[1];
+      if (v != 0) {
+        terrainStateTable[tileIndex].pad00[1] = v + 1;
+        v = terrainStateTable[tileIndex].pad00[1];
+        result = &terrainStateTable[tileIndex].pad00[1];
+        if (v != 0) {
+          if (v < 5) {
+            return result;
+          }
+          *result = 1;
+          return result;
+        }
+        goto assign_river_mouth_one;
+      }
+    }
+    if (neighbors[0] != -1) {
+      terrainStateTable[tileIndex].pad00[1] = terrainStateTable[neighbors[0]].pad00[1] + 1;
+      v = terrainStateTable[tileIndex].pad00[1];
+      result = &terrainStateTable[tileIndex].pad00[1];
+      if ((v == 0) || (4 < v)) {
+      assign_river_mouth_one:
+        *result = 1;
+        return result;
+      }
+    }
+  }
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005108d0
