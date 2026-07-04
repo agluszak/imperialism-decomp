@@ -26,6 +26,30 @@ inline const char* PickWeighted(const char* const* strings, const int* weights, 
   return strings[index];
 }
 
+// Advance the flavor PRNG twice: the first (intermediate) value drives a boolean
+// length-class gate, the second value is stored as the live seed for the following
+// no-step count draw. Returns 1 if the gated sample is below `threshold`, else 0.
+inline int FlavorGateFlag(int range, int threshold) {
+  unsigned int intermediate = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
+  int flag = static_cast<int>((intermediate >> 0xc) & 0x7fff) % range < threshold;
+  g_zoneStatusCodePrngSeed_006a5aec = intermediate * 0x15a4e35 + 1;
+  return flag;
+}
+
+// Draw a token count from an interleaved weight array using the CURRENT seed WITHOUT
+// advancing it (the gate already advanced it). The returned index counts every entry
+// (including zero-weight padding) consumed before the running remainder goes negative.
+inline int DrawCountNoStep(const int* weights, int range) {
+  int remaining =
+      static_cast<int>((g_zoneStatusCodePrngSeed_006a5aec >> 0xc) & 0x7fff) % range - weights[0];
+  int index = 0;
+  while (remaining >= 0) {
+    index = index + 1;
+    remaining = remaining - weights[index];
+  }
+  return index;
+}
+
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x005c4c60
@@ -981,5 +1005,82 @@ void BuildMapContextStatusStringVariantL(CString* out) {
       *out += text;
     }
     p = p + 1;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005cf1b0
+void GenerateMappedFlavorTextVariantC_005cf1b0(CString* out) {
+  int flag = FlavorGateFlag(0xeb, 0xc5);
+  int count;
+  if (flag == 0) {
+    const int countWeights[8] = {8, 0, 0x1a, 0, 4, 0, 0, 0};
+    count = DrawCountNoStep(countWeights, 0x26);
+  } else {
+    const int countWeights[8] = {0, 0x35, 0, 0x89, 0, 7, 0, 0};
+    count = DrawCountNoStep(countWeights, 0xc5);
+  }
+  count = count + 3;
+
+  *out = CString(g_szEmptyString);
+
+  if (flag == 0) {
+    const char* strings[5] = {s_mcflavor_0069872c, s_mcflavor_0069abf8, s_mcflavor_0069ae08,
+                              s_mcflavor_0069b0bc, s_mcflavor_0069b0c4};
+    const int weights[5] = {0x10, 0xc, 4, 2, 2};
+    *out += PickWeighted(strings, weights, 0x24, false);
+  } else {
+    const char* strings[14] = {g_szMovementParseCompareA_00694250,
+                               s_mcflavor_0069ac40,
+                               s_mcflavor_0069ad44,
+                               s_mcflavor_0069ac28,
+                               s_mcflavor_0069ac10,
+                               s_mcflavor_0069ac38,
+                               s_mcflavor_0069acec,
+                               s_mcflavor_0069ac44,
+                               s_mcflavor_0069ac54,
+                               s_mcflavor_0069acf4,
+                               s_mcflavor_0069ac1c,
+                               s_mcflavor_0069ac50,
+                               s_mcflavor_0069ac48,
+                               s_mcflavor_0069ac24};
+    const int weights[14] = {0x1a, 0x19, 0x16, 0x15, 0x13, 0x12, 0xf, 0xd, 9, 6, 6, 5, 4, 3};
+    *out += PickWeighted(strings, weights, 0xc0, false);
+  }
+
+  if (1 < count - 1) {
+    count = count - 2;
+    do {
+      flag = (flag == 0);
+      if (flag == 0) {
+        const char* strings[6] = {s_mcflavor_0069ab2c, s_mcflavor_0069ab24, s_mcflavor_0069ab18,
+                                  s_mcflavor_0069ab20, s_mcflavor_0069ab28, s_mcflavor_0069ab00};
+        const int weights[6] = {0x7a, 0x53, 0x4c, 0x46, 0x12, 0xd};
+        *out += PickWeighted(strings, weights, 0x17a, false);
+      } else {
+        const char* strings[34] = {
+            s_mcflavor_0069ab70, s_mcflavor_0069ab40, s_mcflavor_0069ab48, s_mcflavor_00696d10,
+            s_mcflavor_0069ad3c, s_mcflavor_0069abd0, s_mcflavor_0069adac, s_mcflavor_0069ad40,
+            s_mcflavor_0069ada8, s_mcflavor_0069b2b0, s_mcflavor_0069b2e0, s_mcflavor_0069adc4,
+            s_mcflavor_0069add8, s_mcflavor_0069abf4, s_mcflavor_0069b2dc, s_mcflavor_0069abb4,
+            s_mcflavor_0069abe0, s_mcflavor_0069b2d8, s_mcflavor_0069aba4, s_mcflavor_0069ab90,
+            s_mcflavor_0069ab38, s_mcflavor_0069adb0, s_mcflavor_0069b2d4, s_mcflavor_0069ab98,
+            s_mcflavor_0069abd4, s_mcflavor_0069b130, s_mcflavor_0069af34, s_mcflavor_0069b2d0,
+            s_mcflavor_00698720, s_mcflavor_0069b2cc, s_mcflavor_0069ab9c, s_mcflavor_0069af60,
+            s_mcflavor_0069acd8, s_mcflavor_0069b2c8};
+        const int weights[34] = {0x3c, 0x30, 0x23, 0x1c, 0x15, 0x10, 0x10, 0x10, 0x10,
+                                 0xf,  0xd,  0xc,  0xc,  0xb,  0xa,  0xa,  8,    7,
+                                 6,    6,    6,    5,    5,    5,    4,    4,    3,
+                                 3,    3,    3,    2,    2,    2,    2};
+        *out += PickWeighted(strings, weights, 0x19e, false);
+      }
+      count = count - 1;
+    } while (count != 0);
+  }
+
+  if (flag != 0) {
+    const char* strings[5] = {s_mcflavor_0069ac9c, s_mcflavor_0069ab2c, s_mcflavor_0069ab18,
+                              s_mcflavor_0069ab24, s_mcflavor_0069ab20};
+    const int weights[5] = {0x48, 0x3e, 0x2e, 0x1a, 0x13};
+    *out += PickWeighted(strings, weights, 0xe1, false);
   }
 }

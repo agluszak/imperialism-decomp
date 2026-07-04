@@ -307,14 +307,6 @@ undefined4 BuildMapContextStatusStringWithRandomSuffix(void)
   return 0;
 }
 
-// ghidra_name GenerateMappedFlavorTextVariantC_005cf1b0
-// ghidra_proto undefined GenerateMappedFlavorTextVariantC_005cf1b0()
-// FUNCTION: IMPERIALISM 0x005cf1b0
-undefined4 GenerateMappedFlavorTextVariantC_005cf1b0(void)
-{
-  return 0;
-}
-
 // ghidra_name GenerateMappedFlavorTextVariantCToSharedString
 // ghidra_proto undefined GenerateMappedFlavorTextVariantCToSharedString()
 // FUNCTION: IMPERIALISM 0x005cfba0

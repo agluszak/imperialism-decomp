@@ -8,7 +8,6 @@
 extern "C" char DAT_006a43f0;
 
 undefined4 AppendRandomMapContextStatusSuffixWithProbability(void);
-undefined4 GenerateMappedFlavorTextVariantC_005cf1b0(void);
 undefined4 GenerateMappedFlavorTextVariantE_005ccce0(void);
 undefined4 GenerateMappedFlavorTextVariantA_005d13d0(void);
 undefined4 GenerateMappedFlavorTextVariantB_005cfc40(void);
@@ -105,7 +104,7 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
           dest);
       break;
     case 1:
-      reinterpret_cast<void(__cdecl*)(CString*)>(GenerateMappedFlavorTextVariantC_005cf1b0)(dest);
+      GenerateMappedFlavorTextVariantC_005cf1b0(dest);
       break;
     case 2:
       reinterpret_cast<void(__cdecl*)(CString*)>(GenerateMappedFlavorTextVariantE_005ccce0)(dest);
