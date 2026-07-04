@@ -773,3 +773,9 @@ SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
 const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
 const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};
+
+// Map-generation PRNG state + region-seed grid dimensions (plain mutable globals at
+// 0x006a38e8/ec/f0, runtime-initialized to 0).
+unsigned int g_mapGenLcgState_006a38e8 = 0;
+int g_regionSeedGridRows_006a38ec = 0;
+int g_regionSeedGridCols_006a38f0 = 0;

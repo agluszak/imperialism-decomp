@@ -707,14 +707,6 @@ undefined4 OrphanDeadLeaf_NoRefs_0052a0a0(void)
   return 0;
 }
 
-// ghidra_name GenerateCityRegionIdsBySeedAndNeighborPropagation
-// ghidra_proto undefined GenerateCityRegionIdsBySeedAndNeighborPropagation()
-// FUNCTION: IMPERIALISM 0x0052a160
-undefined4 GenerateCityRegionIdsBySeedAndNeighborPropagation(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720()
 // FUNCTION: IMPERIALISM 0x0052a720

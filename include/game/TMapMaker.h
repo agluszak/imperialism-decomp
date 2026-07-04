@@ -59,6 +59,10 @@ public:
   // hex neighbours; writes tile[4] = newId + 0x17 and updates cityRegionCount2a4. 0x0052d1f0.
   void ReindexContiguousCityRegionIds();
 
+  // Seeds city regions on a lattice with LCG jitter then floods ids to adjacent city tiles.
+  // 0x0052a160.
+  void GenerateCityRegionIdsBySeedAndNeighborPropagation();
+
   // Merges undersized city regions into a neighbour and compacts region ids.
   // Non-virtual (paired by address marker). 0x0052d750.
   void MergeSmallCityRegionsAndCompactIds();
