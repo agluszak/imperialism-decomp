@@ -63,8 +63,8 @@ public:
   virtual void
   GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
                                                  void* overrideName);  // slot 0x0a 0x55f780
-  virtual void AssignZoneDisplayNameToOutputRef(void* outputRef);      // slot 0x0b 0x55f070
-  virtual void AssignZoneDisplayNameAliasToOutputRef(void* outputRef); // slot 0x0c 0x55f090
+  virtual void AssignZoneDisplayNameToOutputRef(CString* outputRef);      // slot 0x0b 0x55f070
+  virtual void AssignZoneDisplayNameAliasToOutputRef(CString* outputRef); // slot 0x0c 0x55f090
   virtual bool QueryZoneCapabilityFlagA();                             // slot 0x0d 0x55e820
   virtual bool QueryPortZoneCapability();                              // slot 0x0e 0x55e840
   virtual bool QueryZoneCapabilityFlagC();                             // slot 0x0f 0x55e860

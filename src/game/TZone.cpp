@@ -201,13 +201,13 @@ void TZone::ReadFrom(TStream* stream) {}
 void TZone::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x0055f070
-void TZone::AssignZoneDisplayNameToOutputRef(void* outputRef) {
-  (void)outputRef;
+void TZone::AssignZoneDisplayNameToOutputRef(CString* outputRef) {
+  *outputRef = displayName;
 }
 
 // FUNCTION: IMPERIALISM 0x0055f090
-void TZone::AssignZoneDisplayNameAliasToOutputRef(void* outputRef) {
-  (void)outputRef;
+void TZone::AssignZoneDisplayNameAliasToOutputRef(CString* outputRef) {
+  *outputRef = displayName;
 }
 
 // FUNCTION: IMPERIALISM 0x0055f0b0
