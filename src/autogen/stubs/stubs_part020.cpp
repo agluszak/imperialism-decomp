@@ -515,14 +515,6 @@ undefined4 HandleTurnEventDialogFactorySlotF8(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::HandleTurnEvent5DE_RefreshMainView
-// ghidra_proto undefined HandleTurnEvent5DE_RefreshMainView()
-// FUNCTION: IMPERIALISM 0x005dbd30
-undefined4 HandleTurnEvent5DE_RefreshMainView(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4
 // ghidra_proto undefined HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4()
 // FUNCTION: IMPERIALISM 0x005dbe10

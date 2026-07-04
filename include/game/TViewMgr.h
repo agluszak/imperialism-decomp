@@ -120,6 +120,10 @@ public:
 
   int MapTurnEventCodeToPaletteIndex(int eventCode);
 
+  // 0x5dbd30 — turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the
+  // 0x5DF handler; the original brackets the body with a scoped empty CString).
+  void HandleTurnEvent5DE_RefreshMainView();
+
   // 0x5ddd20 — opens the civilian ledger (TSuperCivRoster) inside factory dialog
   // 0xdac, runs it modally via the show/refresh chain, then applies the selected
   // civilian as the active map selection.

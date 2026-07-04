@@ -1278,6 +1278,17 @@ void TViewMgr::NoOpTurnEventStateVtableSlotFC() {}
 
 void TViewMgr::UiRuntimeSlot100() {}
 
+// Turn-event 0x5DE: like the 0x5DF handler, re-asserts and refreshes the 'main' view panel;
+// the original brackets the body with a scoped (empty) CString local.
+// FUNCTION: IMPERIALISM 0x005dbd30
+void TViewMgr::HandleTurnEvent5DE_RefreshMainView() {
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  CString scratch;
+  TView* mainView = activeDialog->ResolveControlByTag(kControlTagMain);
+  mainView->AssertValid();
+  mainView->RefreshControl();
+}
+
 // FUNCTION: IMPERIALISM 0x005dbdd0
 void TViewMgr::HandleTurnEvent5DF_RefreshMainView() {
   TView* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);

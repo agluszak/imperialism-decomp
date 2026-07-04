@@ -4129,6 +4129,7 @@ address|target_cpp|ownership|note
 5da180|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 5da360|src/game/TViewMgr.cpp|manual|marker_sync
 5dbd10|src/game/TViewMgr.cpp|manual|marker_sync
+5dbd30|src/game/TViewMgr.cpp|manual|marker_sync
 5dbdd0|src/game/TViewMgr.cpp|manual|marker_sync
 5dc160|src/game/TViewMgr.cpp|manual|marker_sync
 5dc180|src/game/TViewMgr.cpp|manual|marker_sync
