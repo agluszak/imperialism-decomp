@@ -388,6 +388,9 @@ extern unsigned int g_zoneStatusCodePrngSeed_006a5aec;
 // Map-action-context display-name cache key (0x6984b8): reset to -1 before each status
 // regen pass; read/written by GenerateMapActionContextDisplayNameAndHeadline.
 extern int g_mapActionContextDisplayNameCacheId_006984b8;
+// Companion stride (0x6984bc) for the display-name cache key: a random step (1/7/0xb/0x17)
+// added to the key after each headline resource pick.
+extern int g_mapActionContextDisplayNameCacheStep_006984bc;
 
 // Game singleton pointers (markers in global_data_tables.cpp).
 extern TZone* g_pMapActionContextListHead;

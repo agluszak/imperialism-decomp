@@ -2,6 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/CString.h"
+#include "game/mapped_flavor_text.h"
 #include "game/NetMessage.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
@@ -19,7 +20,6 @@
 // generic repo form per Hard Rule 9 and cast to their real typed signatures at the call sites.
 extern undefined4 NoOpInitializeGlobalTurnEventQueueManager();
 extern undefined4 ResetTurnEventQueueRuntimeRecordBuffer();
-extern undefined4 GenerateMappedFlavorTextByCurrentContextNation();
 extern undefined4 LoadProfileStringAndAssignSharedRef();
 extern undefined4 AssignStringSharedRefFromPointer();
 
@@ -78,16 +78,14 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(CString
   pendingNationSlotIndex = -1;
   reinterpret_cast<void (*)()>(ResetTurnEventQueueRuntimeRecordBuffer)();
 
-  reinterpret_cast<void (*)(CString*)>(GenerateMappedFlavorTextByCurrentContextNation)(
-      &playerNameString);
+  GenerateMappedFlavorTextByCurrentContextNation(&playerNameString);
   reinterpret_cast<void (*)(CString*, const char*, const char*)>(
       LoadProfileStringAndAssignSharedRef)(&loadedString, s_PlayerName_0069801c,
                                            static_cast<LPCSTR>(playerNameString));
   playerNameString = loadedString;
   playerNameMirror = playerNameString;
 
-  reinterpret_cast<void (*)(CString*)>(GenerateMappedFlavorTextByCurrentContextNation)(
-      &gameNameString);
+  GenerateMappedFlavorTextByCurrentContextNation(&gameNameString);
   reinterpret_cast<void (*)(CString*, const char*, const char*)>(
       LoadProfileStringAndAssignSharedRef)(&loadedString, s_GameName_00698010,
                                            static_cast<LPCSTR>(gameNameString));

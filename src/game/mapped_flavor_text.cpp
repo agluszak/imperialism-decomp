@@ -2,6 +2,7 @@
 
 #include "game/CString.h"
 #include "game/global_data_tables.h"
+#include "game/TLanguageMgr.h"
 #include "game/TSimMgr.h"
 
 extern "C" char DAT_006a43f0;
@@ -48,6 +49,13 @@ void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tab
 void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot) {
   GenerateMappedFlavorTextUntilValidationPasses(
       dest, g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex);
+}
+
+// FUNCTION: IMPERIALISM 0x005d46e0
+void GenerateMappedFlavorTextByCurrentContextNation(CString* dest) {
+  short nationIndex = (g_pLanguageMgr == 0) ? 2 : static_cast<short>(g_pLanguageMgr->field30);
+  GenerateMappedFlavorTextUntilValidationPasses(
+      dest, g_MappedFlavorTextNationVariantTable_0066EF30[nationIndex].variantIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d4720

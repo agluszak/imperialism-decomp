@@ -483,14 +483,6 @@ undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void)
   return 0;
 }
 
-// ghidra_name GenerateMappedFlavorTextByCurrentContextNation
-// ghidra_proto undefined GenerateMappedFlavorTextByCurrentContextNation()
-// FUNCTION: IMPERIALISM 0x005d46e0
-undefined4 GenerateMappedFlavorTextByCurrentContextNation(void)
-{
-  return 0;
-}
-
 // ghidra_name IsMappedShortcutKeyPressed
 // ghidra_proto bool __cdecl IsMappedShortcutKeyPressed(short nShortcutCode)
 // FUNCTION: IMPERIALISM 0x005d4890

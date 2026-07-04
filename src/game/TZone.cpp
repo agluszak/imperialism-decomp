@@ -3,16 +3,21 @@
 
 #include <new>
 
+#include "game/mapped_flavor_text.h"
 #include "game/mfc.h"
 #include "game/TGlobalMapState.h"
 #include "game/TOcean.h"
 #include "game/TPortZone.h"
+#include "game/TSimMgr.h"
 #include "game/UiRuntimeContext.h"
 
 extern "C" char g_pClassDescTZone = 0;
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
+// Localization template expander: substitutes bracket expressions in `input` using the
+// variadic values, writing the result into `out` (a CString). __cdecl variadic.
+void scanBracketExpressions(void* ctx, void* out, const char* input, ...);
 
 namespace {
 
@@ -314,9 +319,88 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f780
-void TZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {
-  (void)arg1;
-  (void)arg2;
+void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
+                                                           void* overrideName) {
+  char* usedCity = static_cast<char*>(usedCityFlags);
+  char* providedName = static_cast<char*>(overrideName);
+  if (providedName == 0) {
+    int chosenCity = -1;
+    // With a used-city bitmap and secondary neighbours, try to feature a random adjacent
+    // city that has not been used yet. The secondary list holds city score records here.
+    if (usedCity != 0 && secondaryNeighbors.Count() != 0) {
+      g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
+      unsigned int pick = (g_zoneStatusCodePrngSeed_006a5aec >> 0xc & 0x7fff) %
+                          static_cast<unsigned int>(secondaryNeighbors.Count());
+      if (static_cast<unsigned int>(secondaryNeighbors.Capacity()) <= pick) {
+        secondaryNeighbors.ResizePointerArrayCapacityByRequestedCount(pick + 1);
+      }
+      if (static_cast<unsigned int>(secondaryNeighbors.Count()) <= pick) {
+        secondaryNeighbors.Count() = pick + 1;
+      }
+      TGlobalMapCityScoreRecord* cityRecord = static_cast<TGlobalMapCityScoreRecord*>(
+          static_cast<void*>(secondaryNeighbors.Data()[pick]));
+      short tile = cityRecord->linkedRegionIds[0];
+      chosenCity = g_pGlobalMapState->terrainStateTable[tile].cityRecordIndex;
+      if (usedCity[chosenCity] == '\0') {
+        usedCity[chosenCity] = 1;
+      } else {
+        chosenCity = -1;
+      }
+    }
+    if (chosenCity == -1) {
+      if (g_pLocalizationTable->useLocalizedNameTables68 == '\0') {
+        GenerateMappedFlavorTextByCurrentContextNation(&displayName);
+      } else {
+        // Walk the headline resource table with a random start + stride so successive
+        // contexts get distinct names.
+        if (g_mapActionContextDisplayNameCacheId_006984b8 == -1) {
+          unsigned int r = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
+          g_mapActionContextDisplayNameCacheId_006984b8 = (r >> 0xc & 0x7fff) % 0x25;
+          g_zoneStatusCodePrngSeed_006a5aec = r * 0x15a4e35 + 1;
+          int strides[4] = {1, 7, 0xb, 0x17};
+          g_mapActionContextDisplayNameCacheStep_006984bc =
+              strides[g_zoneStatusCodePrngSeed_006a5aec >> 0xc & 3];
+        }
+        CString resourceName;
+        g_pLocalizationTable->GetString(
+            0x275b, static_cast<short>(g_mapActionContextDisplayNameCacheId_006984b8),
+            &resourceName);
+        displayName = resourceName;
+        g_mapActionContextDisplayNameCacheId_006984b8 +=
+            g_mapActionContextDisplayNameCacheStep_006984bc;
+        if (0x24 < g_mapActionContextDisplayNameCacheId_006984b8) {
+          g_mapActionContextDisplayNameCacheId_006984b8 -= 0x25;
+        }
+      }
+    } else {
+      g_pGlobalMapState->AssignSharedStringFromIndexedA8EntryNameField(chosenCity, &displayName);
+    }
+  } else {
+    CString provided(providedName);
+    displayName = provided;
+  }
+  // Build the headline by expanding the status-code-selected template with the display name.
+  CString headlineTemplate;
+  g_pLocalizationTable->GetString(0x275a, field04, &headlineTemplate);
+  CString expanded;
+  scanBracketExpressions(g_pLocalizationTable, &expanded, headlineTemplate, displayName);
+  displayName = expanded;
+}
+
+// FUNCTION: IMPERIALISM 0x0055fae0
+void TZoneSecondaryNeighborStretch::ResizePointerArrayCapacityByRequestedCount(int count) {
+  unsigned int doubled = static_cast<unsigned int>(count * 2);
+  if (doubled > 0x7fffffff) {
+    doubled = 0x7fffffff;
+  }
+  void* grown = ReallocateStretchEntries(Data(), count * 8);
+  if (grown == 0) {
+    Data() = static_cast<TZone**>(ReallocateStretchEntries(Data(), count * 4));
+    Capacity() = count;
+    return;
+  }
+  Data() = static_cast<TZone**>(grown);
+  Capacity() = static_cast<int>(doubled);
 }
 
 // FUNCTION: IMPERIALISM 0x0055fb60
@@ -723,7 +807,7 @@ void RegenerateAllMapActionContextStatusCodes(void) {
 
   for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
     node->GenerateZoneStatusCodeIfUnset();
-    node->GenerateMapActionContextDisplayNameAndHeadline(reinterpret_cast<int>(statusScratch), 0);
+    node->GenerateMapActionContextDisplayNameAndHeadline(statusScratch, 0);
   }
 
   g_zoneStatusCodePrngSeed_006a5aec = 0;

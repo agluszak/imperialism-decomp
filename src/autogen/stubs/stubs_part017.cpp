@@ -563,14 +563,6 @@ undefined4 IsZoneMaskOrArrayEntryPresentForKey(void)
   return 0;
 }
 
-// ghidra_name ResizePointerArrayCapacityByRequestedCount
-// ghidra_proto undefined ResizePointerArrayCapacityByRequestedCount()
-// FUNCTION: IMPERIALISM 0x0055fae0
-undefined4 ResizePointerArrayCapacityByRequestedCount(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildMapOrderObjectiveDescriptionTextForNation
 // ghidra_proto undefined BuildMapOrderObjectiveDescriptionTextForNation()
 // FUNCTION: IMPERIALISM 0x005606f0

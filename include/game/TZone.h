@@ -36,6 +36,9 @@ public:
   // Not a vtable slot (see stretch.h); called only on the concrete type. The orig
   // vtable at 0x0065c748 is confirmed exactly 1 slot long (GetOrAppendUnique only).
   void Add(TZone* zone); // 0x55eba0
+  // Unconditionally reallocate `data` to hold `count` entries (double-or-exact grow),
+  // updating capacity. 0x55fae0.
+  void ResizePointerArrayCapacityByRequestedCount(int count);
 };
 
 // Map zone / map-action context node (Mac: TZone, TPortZone, TOcean hierarchy).
@@ -57,18 +60,19 @@ public:
   void WriteTo(TStream* stream) override;  // slot 0x05 0x55eff0
   void ReadFrom(TStream* stream) override; // slot 0x06 0x55ed20
   void Free() override;                    // slot 0x07 0x55ec60
-  virtual void GenerateMapActionContextDisplayNameAndHeadline(int arg1,
-                                                              void* arg2); // slot 0x0a 0x55f780
-  virtual void AssignZoneDisplayNameToOutputRef(void* outputRef);          // slot 0x0b 0x55f070
-  virtual void AssignZoneDisplayNameAliasToOutputRef(void* outputRef);     // slot 0x0c 0x55f090
-  virtual bool QueryZoneCapabilityFlagA();                                 // slot 0x0d 0x55e820
-  virtual bool QueryPortZoneCapability();                                  // slot 0x0e 0x55e840
-  virtual bool QueryZoneCapabilityFlagC();                                 // slot 0x0f 0x55e860
-  virtual bool QueryZoneCapabilityFlagD(int unused);                       // slot 0x10 0x55e880
-  virtual bool QueryZoneCapabilityFlagE(int unused);                       // slot 0x11 0x55e8a0
-  virtual bool HasZoneActiveChildCount(int unused);                        // slot 0x12 0x55e8c0
-  virtual short FindNearestActiveSeaContextTileFromOffset216();            // slot 0x13 0x55fe60
-  virtual short GetActiveNationSlotTile();                                 // slot 0x14 0x55fef0
+  virtual void
+  GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
+                                                 void* overrideName);  // slot 0x0a 0x55f780
+  virtual void AssignZoneDisplayNameToOutputRef(void* outputRef);      // slot 0x0b 0x55f070
+  virtual void AssignZoneDisplayNameAliasToOutputRef(void* outputRef); // slot 0x0c 0x55f090
+  virtual bool QueryZoneCapabilityFlagA();                             // slot 0x0d 0x55e820
+  virtual bool QueryPortZoneCapability();                              // slot 0x0e 0x55e840
+  virtual bool QueryZoneCapabilityFlagC();                             // slot 0x0f 0x55e860
+  virtual bool QueryZoneCapabilityFlagD(int unused);                   // slot 0x10 0x55e880
+  virtual bool QueryZoneCapabilityFlagE(int unused);                   // slot 0x11 0x55e8a0
+  virtual bool HasZoneActiveChildCount(int unused);                    // slot 0x12 0x55e8c0
+  virtual short FindNearestActiveSeaContextTileFromOffset216();        // slot 0x13 0x55fe60
+  virtual short GetActiveNationSlotTile();                             // slot 0x14 0x55fef0
   virtual short
   FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState); // slot 0x15 0x560150
   virtual void SetMapOrderUiFlag(int flag);                                   // slot 0x16 0x560580

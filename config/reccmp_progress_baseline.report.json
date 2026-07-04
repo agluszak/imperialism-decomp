@@ -12613,7 +12613,7 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12631,7 +12631,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12643,7 +12643,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12673,7 +12673,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -17960,7 +17960,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9122807017543859,
+      "matching": 0.9391304347826087,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -19923,13 +19923,13 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.441025641025641,
+      "matching": 0.44329896907216493,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -22767,13 +22767,13 @@
     },
     {
       "address": "0x55f780",
-      "matching": 0.010526315789473684,
+      "matching": 0.4054794520547945,
       "name": "TZone::GenerateMapActionContextDisplayNameAndHeadline",
       "type": 1
     },
     {
       "address": "0x55fae0",
-      "matching": 0.0,
+      "matching": 0.5915492957746479,
       "name": "ResizePointerArrayCapacityByRequestedCount",
       "type": 1
     },
@@ -32496,7 +32496,7 @@
     },
     {
       "address": "0x5d46e0",
-      "matching": 0.125,
+      "matching": 0.7142857142857143,
       "name": "GenerateMappedFlavorTextByCurrentContextNation",
       "type": 1
     },

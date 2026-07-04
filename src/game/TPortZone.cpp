@@ -53,7 +53,8 @@ void TPortZone::WriteTo(TStream* stream) {}
 
 // slot 0x0a — TZone::GenerateMapActionContextDisplayNameAndHeadline override.
 // FUNCTION: IMPERIALISM 0x005618b0
-void TPortZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {}
+void TPortZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
+                                                               void* overrideName) {}
 
 // slot 0x07 — TZone::Free override.
 // FUNCTION: IMPERIALISM 0x00561a70
