@@ -46,6 +46,11 @@ public:
   int field08;                   // 0x8
 
   TCivMgr();
+
+  // 0x004d2f60. Validate whether the selected civilian (selectedEntry) can be assigned to the
+  // clicked tile. (Ghidra mis-attributed this to TCivToolbar via a thunk-only caller; the `this`
+  // is the TCivMgr order manager — [this+4] is selectedEntry.)
+  char CanAssignCivilianOrderToTile(short nTileIndex);
 };
 
 // === BEGIN GENERATED (TCivMgr) — refreshed by `just gen-class TCivMgr`; do not hand-edit ===

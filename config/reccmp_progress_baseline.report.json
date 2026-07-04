@@ -11328,8 +11328,8 @@
     },
     {
       "address": "0x4d2f60",
-      "matching": 0.028985507246376812,
-      "name": "TCivToolbar::CanAssignCivilianOrderToTile",
+      "matching": 0.4566929133858268,
+      "name": "TCivMgr::CanAssignCivilianOrderToTile",
       "type": 1
     },
     {

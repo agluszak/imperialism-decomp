@@ -1,6 +1,8 @@
 #include "game/TCivMgr.h"
 #include "decomp_types.h"
 #include "game/TCivUnit.h"
+#include "game/TCountry.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TUiRuntimeContext.h"
@@ -64,6 +66,31 @@ void TCivMgr::QueueImmediateCivilianCommandAndCycleSelection(int commandType) {
 void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
   typedef void(__fastcall * Func)(TCivMgr*, int);
   reinterpret_cast<Func>(0x004d2d30)(this, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x004d2f60
+char TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
+  TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
+  short tileTerrainClass = tile->ownerNationTag04;
+  TCivUnit* entry = this->selectedEntry;
+  if ((entry->field_6 != nTileIndex) && (tile->gateFlag != 0) &&
+      (((tile->activeFlags1c & 1) == 0) || (entry->orderType == 4))) {
+    if (tileTerrainClass < 7) {
+      return tileTerrainClass == entry->field_18;
+    }
+    if (g_apTerrainTypeDescriptorTable[tileTerrainClass]->encodedNationSlot == -1) {
+      short compatibility = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+          entry->field_18, tileTerrainClass);
+      if ((compatibility == 2) && (entry->orderType != 4)) {
+        return 1;
+      }
+    } else if (g_apTerrainTypeDescriptorTable[tileTerrainClass]->IsEncodedNationSlotMinus200Equal(
+                   entry->field_18) &&
+               (entry->orderType != 4)) {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d3a60

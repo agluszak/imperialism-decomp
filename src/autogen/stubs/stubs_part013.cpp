@@ -483,14 +483,6 @@ undefined4 TryQueueCivilianMoveOrderToTile(void)
   return 0;
 }
 
-// ghidra_name TCivToolbar::CanAssignCivilianOrderToTile
-// ghidra_proto undefined1 __thiscall CanAssignCivilianOrderToTile(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x004d2f60
-undefined4 CanAssignCivilianOrderToTile(void)
-{
-  return 0;
-}
-
 // ghidra_name TCivToolbar::HandleCivilianReportDecision
 // ghidra_proto void __thiscall HandleCivilianReportDecision(int * pCivilianOrderEntry)
 // FUNCTION: IMPERIALISM 0x004d3070
