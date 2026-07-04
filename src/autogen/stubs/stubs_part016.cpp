@@ -763,22 +763,6 @@ undefined4 CreateAndSendTurnEvent11_MapOffsetAndFlags(void)
   return 0;
 }
 
-// ghidra_name CreateAndSendTurnEvent12_TwoShorts
-// ghidra_proto undefined CreateAndSendTurnEvent12_TwoShorts()
-// FUNCTION: IMPERIALISM 0x005494b0
-undefined4 CreateAndSendTurnEvent12_TwoShorts(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateAndSendTurnEvent22_ByteAndShort
-// ghidra_proto undefined CreateAndSendTurnEvent22_ByteAndShort()
-// FUNCTION: IMPERIALISM 0x00549720
-undefined4 CreateAndSendTurnEvent22_ByteAndShort(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAndSendTurnEvent1B_FiveShortsAndDword
 // ghidra_proto undefined CreateAndSendTurnEvent1B_FiveShortsAndDword()
 // FUNCTION: IMPERIALISM 0x005498d0

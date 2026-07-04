@@ -138,6 +138,28 @@ char TMultiplayerMgr::CanHandleCityDialogActionFalse(int action) {
 // unused, exactly as in the original __thiscall bodies.
 // ---------------------------------------------------------------------------
 
+struct TurnEvent12Packet : NetMessage {
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char pad15[3];
+  short shortA;
+  short shortB;
+};
+
+// FUNCTION: IMPERIALISM 0x005494b0
+void TMultiplayerMgr::CreateAndSendTurnEvent12_TwoShorts(short shortA, short shortB) {
+  TurnEvent12Packet packet;
+  packet.eventCode = 0x12;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = 0x1c;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pLocalizationTable->GetActiveNationId());
+  packet.shortA = shortA;
+  packet.shortB = shortB;
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
+
 struct TurnEvent13Packet : NetMessage {
   int packetTag;
   unsigned char activeNationId;
@@ -212,6 +234,29 @@ void TMultiplayerMgr::CreateAndSendTurnEvent21_ThreeBytes(unsigned char byte0, u
   packet.byte0 = byte0;
   packet.byte1 = byte1;
   packet.byte2 = byte2;
+  g_pNetMgr006a6014->Send(&packet, 1);
+}
+
+struct TurnEvent22Packet : NetMessage {
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char pad15[3];
+  unsigned char byteVal;
+  unsigned char pad19;
+  short shortVal;
+};
+
+// FUNCTION: IMPERIALISM 0x00549720
+void TMultiplayerMgr::CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVal, short shortVal) {
+  TurnEvent22Packet packet;
+  packet.eventCode = 0x22;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = 0x1c;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pLocalizationTable->GetActiveNationId());
+  packet.byteVal = byteVal;
+  packet.shortVal = shortVal;
   g_pNetMgr006a6014->Send(&packet, 1);
 }
 

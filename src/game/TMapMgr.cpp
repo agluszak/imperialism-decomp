@@ -9,10 +9,12 @@
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/TTradeMgr.h"
+#include "game/TTechMgr.h"
 
 void EnsurePortZoneForTile(short nTileIndex);
 void RemovePortZoneByTile(short nTileIndex);
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
+void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
 
 extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
   typedef short(__cdecl * Func)(short, short);
@@ -822,6 +824,26 @@ short TMapMgr::GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short 
   return static_cast<short>(result);
 }
 
+// FUNCTION: IMPERIALISM 0x00513120
+void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord) {
+  short x = *xCoord;
+  if (x < 216) {
+    if (x >= 0)
+      goto clampY;
+    x = x + 216;
+  } else {
+    x = x - 217;
+  }
+  *xCoord = x;
+clampY:
+  if (*yCoord < 0) {
+    *yCoord = 0;
+    return;
+  }
+  if (*yCoord > 59)
+    *yCoord = 59;
+}
+
 // FUNCTION: IMPERIALISM 0x00513200
 int TMapMgr::SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags) {
   char* terrainTileBytes = *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(this) + 0xc);
@@ -893,6 +915,34 @@ short FindReachableRecruitSpawnTileRecursiveImpl(TMapMgr* mapState, short tileIn
 }
 
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x00513ed0
+byte TMapMgr::CheckTileProspectingDiscoveryCandidate(short nTileIndex) {
+  byte fHasDiscoveryCandidate;
+  int nResourceSlotIndex;
+  char cTileResourceCode;
+
+  fHasDiscoveryCandidate = 0;
+  if (terrainStateTable[nTileIndex].resourceTypeByEdge[0] != '\0') {
+    nResourceSlotIndex = 0;
+    do {
+      if (fHasDiscoveryCandidate != 0) {
+        return fHasDiscoveryCandidate;
+      }
+      cTileResourceCode =
+          terrainStateTable[nTileIndex].resourceTypeByEdge[(short)nResourceSlotIndex];
+      if ((((cTileResourceCode == '\x03') || (cTileResourceCode == '\x04')) ||
+           (cTileResourceCode == '\x15')) ||
+          ((cTileResourceCode == '\x16') ||
+           ((cTileResourceCode == '\x06') &&
+            (g_pCityOrderCapabilityState->hasProductionOrder193 != '\0')))) {
+        fHasDiscoveryCandidate = 1;
+      }
+      nResourceSlotIndex = nResourceSlotIndex + 1;
+    } while (nResourceSlotIndex < 2);
+  }
+  return fHasDiscoveryCandidate;
+}
 
 // FUNCTION: IMPERIALISM 0x00513ff0
 void TMapMgr::ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile,

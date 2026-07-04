@@ -284,6 +284,10 @@ public:
   char CheckTileVariantCodeMembershipSetC(short tileIndex);
   char CheckTileVariantCodeMembershipSetD(short tileIndex);
 
+  // 0x513ed0. True if either of the tile's two edge resources is a prospecting-discovery
+  // candidate (codes 3/4/0x15/0x16, or 6 when the active nation has a production order).
+  byte CheckTileProspectingDiscoveryCandidate(short nTileIndex);
+
   TCivUnit* GetFirstCivilianOrderOnTile(short tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }

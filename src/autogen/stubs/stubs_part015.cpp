@@ -219,14 +219,6 @@ undefined4 NormalizeWrappedMapCoord108x60(void)
   return 0;
 }
 
-// ghidra_name NormalizeWrappedMapCoord217x60
-// ghidra_proto undefined NormalizeWrappedMapCoord217x60()
-// FUNCTION: IMPERIALISM 0x00513120
-undefined4 NormalizeWrappedMapCoord217x60(void)
-{
-  return 0;
-}
-
 // ghidra_name TDeluxeText::CanBuildPortAtTile
 // ghidra_proto char __thiscall CanBuildPortAtTile(int nTileIndex)
 // FUNCTION: IMPERIALISM 0x005137b0
@@ -247,14 +239,6 @@ undefined4 IsValidSecondaryNationHomeTileCandidate(void)
 // ghidra_proto undefined HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask()
 // FUNCTION: IMPERIALISM 0x00513ca0
 undefined4 HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckTileProspectingDiscoveryCandidate
-// ghidra_proto byte __thiscall CheckTileProspectingDiscoveryCandidate(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x00513ed0
-undefined4 CheckTileProspectingDiscoveryCandidate(void)
 {
   return 0;
 }
