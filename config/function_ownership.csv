@@ -2296,6 +2296,7 @@ address|target_cpp|ownership|note
 52d1f0|src/game/TMapMaker_ReindexRegions.cpp|manual|marker_sync
 52d750|src/game/TMapMaker_MergeSmallCityRegions.cpp|manual|marker_sync
 52e310|src/game/sea_geometry.cpp|manual|marker_sync
+52e350|src/game/TMapMaker_RebuildRoute.cpp|manual|marker_sync
 52e7b0|src/game/TOcean_RouteBuffer.cpp|manual|marker_sync
 52e840|src/game/TMapMaker.cpp|manual|marker_sync
 52e890|src/game/TMapMaker.cpp|manual|marker_sync

@@ -739,14 +739,6 @@ undefined4 OrphanDeadLeaf_NoRefs_0052d6b0(void)
   return 0;
 }
 
-// ghidra_name RebuildUMapperRouteRecordsAndActiveMapRects
-// ghidra_proto undefined RebuildUMapperRouteRecordsAndActiveMapRects()
-// FUNCTION: IMPERIALISM 0x0052e350
-undefined4 RebuildUMapperRouteRecordsAndActiveMapRects(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0052eb00
 // ghidra_proto undefined WrapperFor_ftol_At0052eb00()
 // FUNCTION: IMPERIALISM 0x0052eb00

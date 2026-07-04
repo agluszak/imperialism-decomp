@@ -12181,7 +12181,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12619,7 +12619,7 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -16940,7 +16940,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32038834951456313,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18044,7 +18044,7 @@
     },
     {
       "address": "0x52e350",
-      "matching": 0.014814814814814815,
+      "matching": 0.49242424242424243,
       "name": "RebuildUMapperRouteRecordsAndActiveMapRects",
       "type": 1
     },

@@ -82,6 +82,12 @@ public:
   // Non-virtual (paired by address marker). 0x0052d750.
   void MergeSmallCityRegionsAndCompactIds();
 
+  // Rebuilds the map-order route buffer + active map-action contexts from the region-border
+  // SeaSegment table: cleans degenerate links, allocates a CRect route record per live link,
+  // wires mutual primary-neighbour adjacency between each link's two region contexts, then
+  // refreshes port-zone adjacency and zone status codes. 0x0052e350.
+  void RebuildUMapperRouteRecordsAndActiveMapRects();
+
   // --- data fields (raw pad except the two the region-merge pass reads) ---
   char pad_04[0x08 - 0x04];  // +0x04
   char* mapTileGrid08;       // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
