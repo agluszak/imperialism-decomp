@@ -783,3 +783,10 @@ int g_regionSeedGridCols_006a38f0 = 0;
 // One-shot assert-suppression flags for the UMapper overlay passes (0x006a3910/0x006a3914).
 int DAT_006a3910 = 0;
 int DAT_006a3914 = 0;
+
+// Zone status-code PRNG seed (0x006a5aec) + display-name cache key (0x006984b8);
+// see global_data_tables.h. Runtime-initialized.
+// GLOBAL: IMPERIALISM 0x006a5aec
+unsigned int g_zoneStatusCodePrngSeed_006a5aec = 0;
+// GLOBAL: IMPERIALISM 0x006984b8 (static init -1 in the original .data section)
+int g_mapActionContextDisplayNameCacheId_006984b8 = -1;

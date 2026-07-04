@@ -381,6 +381,14 @@ extern CString g_cstrUiFontBelweBdBt;
 extern int g_nUiInvalidationAssertFlagLine471;
 extern int g_nUiInvalidationAssertFlagLine495;
 
+// Zone status-code PRNG seed (0x6a5aec): reseeded from the scenario tag string hash at
+// the start of RegenerateAllMapActionContextStatusCodes, then advanced by the LCG in
+// GenerateZoneStatusCodeIfUnset (x = x*0x15a4e35 + 1).
+extern unsigned int g_zoneStatusCodePrngSeed_006a5aec;
+// Map-action-context display-name cache key (0x6984b8): reset to -1 before each status
+// regen pass; read/written by GenerateMapActionContextDisplayNameAndHeadline.
+extern int g_mapActionContextDisplayNameCacheId_006984b8;
+
 // Game singleton pointers (markers in global_data_tables.cpp).
 extern TZone* g_pMapActionContextListHead;
 extern TOcean* g_pActiveMapOrderContext;

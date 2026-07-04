@@ -12,6 +12,7 @@
 extern "C" char g_pClassDescTZone = 0;
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
+undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 namespace {
 
@@ -229,7 +230,83 @@ TZone* FindMapActionContextByNodeId(short nodeId) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f5c0
-void TZone::GenerateZoneStatusCodeIfUnset() {}
+void TZone::GenerateZoneStatusCodeIfUnset() {
+  if (field04 != -1) {
+    return; // status code already assigned
+  }
+  short category;
+  if (QueryPortZoneCapability() != 0) {
+    category = 5; // port zones are always the highest status band
+  } else {
+    category = static_cast<short>(primaryNeighbors.Count());
+    if (category == 2) {
+      // Materialize the primary-neighbor storage to hold at least 2 entries, growing
+      // its raw block (realloc-to-double, fall back to exact) exactly as the original.
+      // The original calls the cdecl allocator directly, so cast at the callsite.
+      if (static_cast<unsigned int>(primaryNeighbors.Capacity()) < 2) {
+        void* grown = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+            ReallocateHeapBlockWithAllocatorTracking)(primaryNeighbors.Data(), 0x10);
+        if (grown == 0) {
+          primaryNeighbors.Data() =
+              static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+                  ReallocateHeapBlockWithAllocatorTracking)(primaryNeighbors.Data(), 8));
+          primaryNeighbors.Capacity() = 2;
+        } else {
+          primaryNeighbors.Data() = static_cast<TZone**>(grown);
+          primaryNeighbors.Capacity() = 4;
+        }
+      }
+      if (static_cast<unsigned int>(primaryNeighbors.Count()) < 2) {
+        primaryNeighbors.Count() = 2;
+      }
+      if (primaryNeighbors.Capacity() == 0) {
+        void* grown = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+            ReallocateHeapBlockWithAllocatorTracking)(primaryNeighbors.Data(), 8);
+        if (grown == 0) {
+          primaryNeighbors.Data() =
+              static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+                  ReallocateHeapBlockWithAllocatorTracking)(primaryNeighbors.Data(), 4));
+          primaryNeighbors.Capacity() = 1;
+        } else {
+          primaryNeighbors.Data() = static_cast<TZone**>(grown);
+          primaryNeighbors.Capacity() = 2;
+        }
+      }
+      if (primaryNeighbors.Count() == 0) {
+        primaryNeighbors.Count() = 1;
+      }
+      // Is the second primary neighbor also a primary neighbor of the first? If so the
+      // two share an edge and the context sits inside a cluster (category 1).
+      TZone* neighbor0 = primaryNeighbors.Data()[0];
+      unsigned int neighborCount = static_cast<unsigned int>(neighbor0->primaryNeighbors.Count());
+      if (neighborCount != 0) {
+        TZone** scan = neighbor0->primaryNeighbors.Data();
+        TZone* target = primaryNeighbors.Data()[1];
+        unsigned int i = 0;
+        do {
+          if (*scan == target) {
+            category = 1;
+            break;
+          }
+          i = i + 1;
+          scan = scan + 1;
+        } while (i < neighborCount);
+      }
+    }
+    if (category > 5) {
+      category = 4;
+    } else if (category > 3) {
+      category = 3;
+    }
+    if (secondaryNeighbors.Count() == 0) {
+      category = 4;
+    } else if (category == 4) {
+      category = 3;
+    }
+  }
+  g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
+  field04 = static_cast<short>(((g_zoneStatusCodePrngSeed_006a5aec >> 0xc) & 3) + category * 4);
+}
 
 // FUNCTION: IMPERIALISM 0x0055f780
 void TZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {
@@ -615,6 +692,39 @@ TZone* TZone::GetNextPortZone() {
 // SYNTHETIC: IMPERIALISM 0x00562880
 // TZone::`vector deleting destructor'
 TZone::~TZone() {}
+
+// Reseeds the zone status-code PRNG from a hash of the scenario tag string (falling back
+// to the wall clock when the tag hashes to zero), then walks the whole map-action-context
+// list assigning each zone a status code and refreshing its display name/headline.
+// FUNCTION: IMPERIALISM 0x00563220
+void RegenerateAllMapActionContextStatusCodes(void) {
+  char* tag = g_pGlobalMapState->scenarioTagText1c;
+  int seed = 0x6e616461;
+  while (*tag != '\0') {
+    seed = (seed >> 0x10) + seed * 2 + static_cast<int>(*tag);
+    tag = tag + 1;
+  }
+  g_zoneStatusCodePrngSeed_006a5aec = seed;
+  if (seed == 0) {
+    g_zoneStatusCodePrngSeed_006a5aec =
+        reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+  }
+  g_mapActionContextDisplayNameCacheId_006984b8 = -1;
+
+  int statusScratch[96];
+  for (int i = 0; i < 0x60; i = i + 1) {
+    statusScratch[i] = 0;
+  }
+
+  for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
+    node->GenerateZoneStatusCodeIfUnset();
+    node->GenerateMapActionContextDisplayNameAndHeadline(reinterpret_cast<int>(statusScratch), 0);
+  }
+
+  g_zoneStatusCodePrngSeed_006a5aec = 0;
+  g_zoneStatusCodePrngSeed_006a5aec =
+      reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+}
 
 // FUNCTION: IMPERIALISM 0x00563540
 TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {

@@ -739,14 +739,6 @@ undefined4 RefreshMapActionContextNationOverlaysAndOrderRanks(void)
   return 0;
 }
 
-// ghidra_name RegenerateAllMapActionContextStatusCodes
-// ghidra_proto undefined RegenerateAllMapActionContextStatusCodes()
-// FUNCTION: IMPERIALISM 0x00563220
-undefined4 RegenerateAllMapActionContextStatusCodes(void)
-{
-  return 0;
-}
-
 // ghidra_name GetProvinceByTileIndex
 // ghidra_proto void * __cdecl GetProvinceByTileIndex(short nTileIndex)
 // FUNCTION: IMPERIALISM 0x00563360
