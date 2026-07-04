@@ -593,8 +593,75 @@ void TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b98d0
-undefined4 TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
-  return 0;
+void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
+  short turnCount = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x2c);
+  short bucket = static_cast<short>(
+      (static_cast<int>(turnCount) + (static_cast<int>(turnCount) >> 0x1f & 3U)) >> 2);
+  double base;
+  if (bucket < 0xb) {
+    base = 1.1;
+  } else if (bucket < 0x15) {
+    base = 1.08;
+  } else if (bucket < 0x1f) {
+    base = 1.06;
+  } else if (bucket < 0x29) {
+    base = 1.04;
+  } else if (bucket < 0x33) {
+    base = 1.03;
+  } else if (bucket < 0x3d) {
+    base = 1.02;
+  } else {
+    base = 1.01;
+  }
+
+  int nation = 0;
+  TGreatPower** np = g_apNationStates;
+  do {
+    if (IsNationSlotEligibleForEventProcessing(static_cast<short>(nation)) != 0) {
+      (*np)->AssignFallbackNationsToUnfilledDiplomacyNeedSlots();
+    }
+    nation = nation + 1;
+    np = np + 1;
+  } while (static_cast<short>(nation) < 7);
+
+  int metricRow = 0;
+  int cellBase = 0;
+  short* cursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xe);
+  do {
+    int col = 0;
+    np = g_apNationStates;
+    int slot = 0;
+    do {
+      if (IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) {
+        short metric = (*np)->QueryNationMetricBySlot7C(static_cast<short>(metricRow));
+        *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1c + (cellBase + col) * 2) =
+            metric;
+        if (metric < 0) {
+          cursor[-1] = cursor[-1] + 1;
+        } else if (0 < metric) {
+          *cursor = *cursor + 1;
+          cursor[5] = cursor[5] + metric;
+          double factor;
+          if (metric == 1) {
+            factor = 1.0;
+          } else {
+            int exponent = (metric < 0x19) ? (metric - 1) : 0x17;
+            factor = this->ComputeNationMetricPowerScale(base, static_cast<short>(exponent));
+            if (2.0 < factor) {
+              factor = 2.0;
+            }
+          }
+          *reinterpret_cast<double*>(cursor + 1) = factor + *reinterpret_cast<double*>(cursor + 1);
+        }
+      }
+      np = np + 1;
+      slot = slot + 1;
+      col = col + 1;
+    } while (static_cast<short>(slot) < 7);
+    metricRow = metricRow + 1;
+    cellBase = cellBase + 0x50;
+    cursor = cursor + 0x50;
+  } while (static_cast<short>(metricRow) < 0x11);
 }
 
 // FUNCTION: IMPERIALISM 0x005b9b30

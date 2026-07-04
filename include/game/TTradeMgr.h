@@ -55,7 +55,7 @@ public:
   virtual void RunNationUpdatePassesAndResetTransitionFlags();                   // 0x1a 0x5b97c0
   virtual void RunNationMetricPreUpdatePassAcrossSecondaryNations();             // 0x1b 0x5b9890
   virtual undefined4 BuildSecondaryNationMetricBucketsAndWeightedTrendScores();  // 0x1c 0x5b9b30
-  virtual undefined4 BuildEligibleNationMetricBucketsAndWeightedTrendScores();   // 0x1d 0x5b98d0
+  virtual void BuildEligibleNationMetricBucketsAndWeightedTrendScores();         // 0x1d 0x5b98d0
   virtual char IsNationMetricCellNegative(int row, int col);                     // 0x1e 0x5b9f70
   virtual char IsNationMetricCellPositive(int row, int col);                     // 0x1f 0x5b9fa0
   virtual undefined4 AllocateAndPopulateLinkedValueCollectionFromRosterFilter(); // 0x20 0x5b9fd0
