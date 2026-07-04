@@ -2014,3 +2014,5 @@ char s_mcflavor_0069b630[] = "";
 char s_mcflavor_0069b638[] = "";
 // GLOBAL: IMPERIALISM 0x0069b640
 char s_mcflavor_0069b640[] = "";
+// GLOBAL: IMPERIALISM 0x0069b7fc
+char s_Data_scores_dat_0069b7fc[] = "Data\\scores.dat";

@@ -875,14 +875,6 @@ undefined4 BuildScenarioPathForModeAndIndex(void)
   return 0;
 }
 
-// ghidra_name AssignScoresDatPathToSharedString
-// ghidra_proto undefined AssignScoresDatPathToSharedString()
-// FUNCTION: IMPERIALISM 0x005dfea0
-undefined4 AssignScoresDatPathToSharedString(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowSavedStatusDialogAndReturnAccepted
 // ghidra_proto undefined ShowSavedStatusDialogAndReturnAccepted()
 // FUNCTION: IMPERIALISM 0x005e0030

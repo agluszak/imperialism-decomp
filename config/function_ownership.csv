@@ -4114,6 +4114,7 @@ address|target_cpp|ownership|note
 5df410|src/game/TAssetMgr.cpp|manual|marker_sync
 5df780|src/game/TAssetMgr.cpp|manual|marker_sync
 5dfc10|src/game/TAssetMgr.cpp|manual|marker_sync
+5dfea0|src/game/TAssetMgr.cpp|manual|marker_sync
 5dff20|src/game/TAssetMgr.cpp|manual|marker_sync
 5e1bc0|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync
 5e1e50|src/game/TSortedPtrList.cpp|manual|marker_sync

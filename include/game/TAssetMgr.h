@@ -48,6 +48,8 @@ void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag);
 
 void __stdcall ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
 
+void __stdcall AssignScoresDatPathToSharedString(CString* out);
+
 // === BEGIN GENERATED (TAssetMgr) — refreshed by `just gen-class TAssetMgr`; do not hand-edit ===
 // clang-format off
 // vtable @ 0x0066f508 (15 slots), object size 0x58, base TObject
