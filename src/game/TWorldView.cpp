@@ -260,7 +260,12 @@ void TWorldView::RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) {
 }
 
 // FUNCTION: IMPERIALISM 0x00596040
-void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge() {}
+void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
+                                                               int arg3) {
+  (void)tileIndex;
+  (void)arg2;
+  (void)arg3;
+}
 
 // FUNCTION: IMPERIALISM 0x00596060
 void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
@@ -424,22 +429,24 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
 }
 
 // FUNCTION: IMPERIALISM 0x00596680
-undefined TWorldView::OrphanRetStub_00596680() {
-  return 0;
+void TWorldView::OrphanRetStub_00596680(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
 }
 
 // FUNCTION: IMPERIALISM 0x005966a0
-undefined TWorldView::OrphanRetStub_005966a0() {
-  return 0;
+void TWorldView::OrphanRetStub_005966a0(int arg1) {
+  (void)arg1;
 }
 
 // FUNCTION: IMPERIALISM 0x005966c0
-undefined TWorldView::OrphanRetStub_005966c0() {
-  return 0;
+void TWorldView::OrphanRetStub_005966c0(short arg1) {
+  (void)arg1;
 }
 
 // FUNCTION: IMPERIALISM 0x005966e0
-undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0() {
+undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
+  (void)arg1;
   return 0;
 }
 

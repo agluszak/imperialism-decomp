@@ -14,17 +14,17 @@ TCitySiteView::TCitySiteView() {}
 TCitySiteView::~TCitySiteView() {}
 
 // FUNCTION: IMPERIALISM 0x0051bff0
-void TCitySiteView::NoOpUiLifecycleHook(int arg) {
-}
+void TCitySiteView::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0051c2a0
-undefined TCitySiteView::OrphanRetStub_005966a0() {
-  return 0;
+void TCitySiteView::OrphanRetStub_005966a0(int arg1) {
+  (void)arg1;
 }
 
 // FUNCTION: IMPERIALISM 0x0051c2f0
-undefined TCitySiteView::OrphanRetStub_00596680() {
-  return 0;
+void TCitySiteView::OrphanRetStub_00596680(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
 }
 
 // FUNCTION: IMPERIALISM 0x0051c320
@@ -34,9 +34,7 @@ undefined TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_
 }
 
 // FUNCTION: IMPERIALISM 0x0051c3b0
-void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
-}
+void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {}
 
 // FUNCTION: IMPERIALISM 0x0051c760
-void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {
-}
+void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {}

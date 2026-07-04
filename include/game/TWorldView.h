@@ -28,13 +28,12 @@ public:
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                    int hitArg) override;
   virtual void NoOpUiLifecycleHook(int arg) override;
-  virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
-                                             int arg4) override;
+  virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
 
   virtual void SetFlagByteAndInvokeVslot1A4(unsigned char flagByte);
   virtual void RenderMapContextOverlayWithScopedClipAndSurface();
   virtual void RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3);
-  virtual void RenderTacticalStackCountIndicatorAndUnitBadge();
+  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2, int arg3);
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
                                                              unsigned char altOverlay);
   virtual void RenderStrategicTileSelectionAndNeighborHighlights();
@@ -52,9 +51,9 @@ public:
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags);
   virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1);
   virtual short QueryMinusOneWordSlot77();
-  virtual undefined OrphanRetStub_005966a0();
-  virtual undefined OrphanRetStub_00596680();
-  virtual undefined OrphanRetStub_005966c0();
-  virtual undefined OrphanLeaf_NoCall_Ins02_005966e0();
+  virtual void OrphanRetStub_005966a0(int arg1);
+  virtual void OrphanRetStub_00596680(int arg1, int arg2);
+  virtual void OrphanRetStub_005966c0(short arg1);
+  virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1);
   virtual void OrphanCallChain_C6_I29_00596700();
 };

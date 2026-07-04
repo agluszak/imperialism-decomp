@@ -17138,13 +17138,13 @@
     },
     {
       "address": "0x51aad0",
-      "matching": 0.0,
+      "matching": 0.045454545454545456,
       "name": "TMapDialog::OrphanRetStub_005966c0",
       "type": 1
     },
     {
       "address": "0x51ab60",
-      "matching": 0.0,
+      "matching": 0.03333333333333333,
       "name": "TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0",
       "type": 1
     },
@@ -17162,13 +17162,13 @@
     },
     {
       "address": "0x51ad70",
-      "matching": 0.0,
+      "matching": 0.09090909090909091,
       "name": "TMapDialog::OrphanRetStub_005966a0",
       "type": 1
     },
     {
       "address": "0x51adc0",
-      "matching": 0.0,
+      "matching": 0.2222222222222222,
       "name": "TMapDialog::OrphanRetStub_00596680",
       "type": 1
     },
@@ -17282,13 +17282,13 @@
     },
     {
       "address": "0x51c2a0",
-      "matching": 0.0,
+      "matching": 0.09090909090909091,
       "name": "TCitySiteView::OrphanRetStub_005966a0",
       "type": 1
     },
     {
       "address": "0x51c2f0",
-      "matching": 0.0,
+      "matching": 0.2222222222222222,
       "name": "TCitySiteView::OrphanRetStub_00596680",
       "type": 1
     },
@@ -17576,7 +17576,7 @@
     },
     {
       "address": "0x523b70",
-      "matching": 0.0,
+      "matching": 0.006825938566552901,
       "name": "TMapDialog::VTableSlot6B",
       "type": 1
     },
@@ -23433,7 +23433,7 @@
     },
     {
       "address": "0x566750",
-      "matching": 0.0,
+      "matching": 0.045454545454545456,
       "name": "TOceanDialog::OrphanRetStub_005966c0",
       "type": 1
     },
@@ -23451,7 +23451,7 @@
     },
     {
       "address": "0x568120",
-      "matching": 0.0,
+      "matching": 0.02040816326530612,
       "name": "TOceanDialog::VTableSlot6B",
       "type": 1
     },
@@ -23469,13 +23469,13 @@
     },
     {
       "address": "0x5687b0",
-      "matching": 0.0,
+      "matching": 0.04878048780487805,
       "name": "TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0",
       "type": 1
     },
     {
       "address": "0x5688d0",
-      "matching": 0.0,
+      "matching": 0.029411764705882353,
       "name": "TOceanDialog::OrphanRetStub_00596680",
       "type": 1
     },
@@ -28074,7 +28074,7 @@
     },
     {
       "address": "0x596040",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TWorldView::VTableSlot6B",
       "type": 1
     },
@@ -28146,25 +28146,25 @@
     },
     {
       "address": "0x596680",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TWorldView::OrphanRetStub_00596680",
       "type": 1
     },
     {
       "address": "0x5966a0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TWorldView::OrphanRetStub_005966a0",
       "type": 1
     },
     {
       "address": "0x5966c0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TWorldView::OrphanRetStub_005966c0",
       "type": 1
     },
     {
       "address": "0x5966e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TWorldView::OrphanLeaf_NoCall_Ins02_005966e0",
       "type": 1
     },
