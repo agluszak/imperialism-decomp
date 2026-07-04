@@ -3922,6 +3922,7 @@ address|target_cpp|ownership|note
 5b9030|src/game/TTradeMgr.cpp|manual|marker_sync
 5b9060|src/game/TTradeMgr.cpp|manual|marker_sync
 5b9190|src/game/TTradeMgr.cpp|manual|marker_sync
+5b91e0|src/game/TTradeMgr.cpp|manual|marker_sync
 5b9410|src/game/TTradeMgr.cpp|manual|marker_sync
 5b94d0|src/game/TTradeMgr.cpp|manual|marker_sync
 5b9790|src/game/TTradeMgr.cpp|manual|marker_sync

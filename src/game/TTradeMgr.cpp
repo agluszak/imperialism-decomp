@@ -309,9 +309,26 @@ void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot
 }
 
 // FUNCTION: IMPERIALISM 0x005b9190
-undefined4 TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper() {
-  return 0;
+void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper() {
+  char* self = reinterpret_cast<char*>(this);
+  *reinterpret_cast<short*>(self + 0x6) = 1;
+  *reinterpret_cast<short*>(self + 0x4) = 0;
+  short next = 0;
+  do {
+    short i = *reinterpret_cast<short*>(self + 0x4);
+    short idx = g_nationMetricSlotDispatchOrder006d810[i];
+    TDealList* list = this->categoryRankLists[idx];
+    if (*reinterpret_cast<int*>(reinterpret_cast<char*>(list) + 8) != 0) {
+      break;
+    }
+    next = *reinterpret_cast<short*>(self + 0x4) + 1;
+    *reinterpret_cast<short*>(self + 0x4) = next;
+  } while (next < 0x11);
+  this->ProcessPendingDiplomacyTransferEntriesUntilBlocked();
 }
+
+// FUNCTION: IMPERIALISM 0x005b91e0
+void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {}
 
 // FUNCTION: IMPERIALISM 0x005b9410
 void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline() {

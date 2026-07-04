@@ -506,6 +506,12 @@ int g_nMapActionContextDistanceCacheSizedFor = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pNationInteractionStateManager = 0;
 
+// Metric-slot dispatch-order lookup consumed by
+// TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper (0x5b9190). Values
+// are the original rdata table; kept zero-initialized here (function pairing is by address).
+// GLOBAL: IMPERIALISM 0x0066d810
+short g_nationMetricSlotDispatchOrder006d810[0x11] = {0};
+
 // GLOBAL: IMPERIALISM 0x006a5fc0
 int g_NetworkDefaultNationId006a5fc0 = 0;
 // GLOBAL: IMPERIALISM 0x006a5fc4

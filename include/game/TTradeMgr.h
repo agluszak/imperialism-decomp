@@ -46,7 +46,7 @@ public:
   virtual short QueryProposalWeightSlot4C(short metricSlot);                      // 0x13 0x5b8fe0
   virtual short GetNationMetricBucketValueByIndex(short category);                // 0x14 0x5b9030
   virtual void ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot); // 0x15 0x5b9060
-  virtual undefined4 ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper(); // 0x16 0x5b9190
+  virtual void ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper();       // 0x16 0x5b9190
   virtual void RebuildNationMetricPassesAndClampRowsByBaseline();                 // 0x17 0x5b9410
   virtual void DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
                                             int maxAmount, int targetNation, char emitEventFlag,
@@ -65,6 +65,8 @@ public:
 
   TTradeMgr();
   void InitializeNationInteractionStateManagerDefaults();
+  // Non-virtual impl invoked by the slot-0x16 wrapper.
+  void ProcessPendingDiplomacyTransferEntriesUntilBlocked(); // 0x5b91e0
 
   // One 0xa0-byte metric row per category, indexed from class offset 0x04. Field offsets
   // recovered from the accessors' disassembly: `categoryRows[i].field` resolves to

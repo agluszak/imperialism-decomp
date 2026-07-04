@@ -243,6 +243,7 @@ extern void* g_pReusableQuickDrawSurfaceListHead;
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 extern TCursorControlPanel* g_pCursorControlPanel;
 extern TTradeMgr* g_pNationInteractionStateManager;
+extern short g_nationMetricSlotDispatchOrder006d810[0x11];
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;

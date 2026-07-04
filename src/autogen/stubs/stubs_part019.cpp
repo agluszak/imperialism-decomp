@@ -1115,14 +1115,6 @@ undefined4 DestructTTradeMgrAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name ProcessPendingDiplomacyTransferEntriesUntilBlocked
-// ghidra_proto undefined ProcessPendingDiplomacyTransferEntriesUntilBlocked()
-// FUNCTION: IMPERIALISM 0x005b91e0
-undefined4 ProcessPendingDiplomacyTransferEntriesUntilBlocked(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshNationStateAndEmitTurnEvent3Mode18
 // ghidra_proto undefined RefreshNationStateAndEmitTurnEvent3Mode18()
 // FUNCTION: IMPERIALISM 0x005b9370
