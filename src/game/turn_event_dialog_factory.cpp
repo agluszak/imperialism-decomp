@@ -17,6 +17,14 @@
 
 namespace {
 
+// The original build emits CList<void*,void*>::AddTail on g_UiWidgetBuildStack out-of-line
+// (the 0x479b00 template COMDAT) and *calls* it from each builder; routing the append through
+// this non-inline wrapper reproduces that call rather than inlining AddTail into every builder
+// (which would inflate the builder's stack frame and cascade all stack offsets).
+void PushUiWidgetBuildStackNode(void* node) {
+  PushUiWidgetBuildStackNode(node);
+}
+
 TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int height,
                                       unsigned short layoutModeWord) {
   TGameWindow* window = new TGameWindow();
@@ -29,7 +37,7 @@ TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int h
   }
   g_pUiResourceContext = window;
 
-  g_UiWidgetBuildStack006a13e0.AddTail(window);
+  PushUiWidgetBuildStackNode(window);
 
   int offsetLayout[2] = {offsetX, offsetY};
   int sizeLayout[2] = {width, height};
@@ -121,7 +129,7 @@ TView* BuildStartupIntroBackground() {
   }
   g_pUiResourceContext = container;
 
-  g_UiWidgetBuildStack006a13e0.AddTail(container);
+  PushUiWidgetBuildStackNode(container);
 
   int containerOffset[2] = {0, 0};
   int containerSize[2] = {0x7d0, 0x7d0};
@@ -248,6 +256,8 @@ TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, in
 // FUNCTION: IMPERIALISM 0x0044a810
 TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventCode) {
   TView* parent;
+  int offset[2];
+  int size[2];
 
   g_pUiResourceHead = 0;
   if (static_cast<short>(nEventCode) != 0x2508) {
@@ -262,10 +272,12 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
     g_pUiResourceHead = window;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(window);
-  int windowOffset[2] = {0x64, 0x50};
-  int windowSize[2] = {0x186, 0x11a};
-  window->InitializeUiResourceEntryFrameAndParent(0, parent, windowOffset, windowSize, 0, 0, 1);
+  PushUiWidgetBuildStackNode(window);
+  offset[0] = 0x64;
+  offset[1] = 0x50;
+  size[0] = 0x186;
+  size[1] = 0x11a;
+  window->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
   window->controlTag = static_cast<int>(kControlTagWind);
   window->field3c = 0;
   window->SetEnabled(1, 0);
@@ -293,10 +305,12 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
     g_pUiResourceHead = goldPanel;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(goldPanel);
-  int goldOffset[2] = {0, 0};
-  int goldSize[2] = {0x186, 0x11a};
-  goldPanel->InitializeUiResourceEntryFrameAndParent(0, parent, goldOffset, goldSize, 0, 0, 1);
+  PushUiWidgetBuildStackNode(goldPanel);
+  offset[0] = 0;
+  offset[1] = 0;
+  size[0] = 0x186;
+  size[1] = 0x11a;
+  goldPanel->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
   goldPanel->controlTag = static_cast<int>(kControlTagGold);
   goldPanel->field3c = 0;
   goldPanel->SetEnabled(1, 0);
@@ -319,10 +333,12 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
     g_pUiResourceHead = okayButton;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(okayButton);
-  int okayOffset[2] = {0x136, 0xf8};
-  int okaySize[2] = {0x3d, 0x17};
-  okayButton->InitializeUiResourceEntryFrameAndParent(0, parent, okayOffset, okaySize, 0, 0, 1);
+  PushUiWidgetBuildStackNode(okayButton);
+  offset[0] = 0x136;
+  offset[1] = 0xf8;
+  size[0] = 0x3d;
+  size[1] = 0x17;
+  okayButton->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
   okayButton->controlTag = static_cast<int>(kControlTagOkay);
   okayButton->field3c = 0;
   okayButton->SetEnabled(1, 0);
@@ -346,11 +362,12 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
     g_pUiResourceHead = rewardPicture;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(rewardPicture);
-  int rewardOffset[2] = {0x70, 0x12};
-  int rewardSize[2] = {0xa7, 0x6d};
-  rewardPicture->InitializeUiResourceEntryFrameAndParent(0, parent, rewardOffset, rewardSize, 0, 0,
-                                                         1);
+  PushUiWidgetBuildStackNode(rewardPicture);
+  offset[0] = 0x70;
+  offset[1] = 0x12;
+  size[0] = 0xa7;
+  size[1] = 0x6d;
+  rewardPicture->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
   rewardPicture->controlTag = static_cast<int>(kControlTagRewa);
   rewardPicture->field3c = 0;
   rewardPicture->SetEnabled(1, 0);
@@ -446,7 +463,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
     g_pUiResourceHead = baseContainer;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(baseContainer);
+  PushUiWidgetBuildStackNode(baseContainer);
   int baseOffset[2] = {0, 0};
   int baseSize[2] = {0x7d0, 0x7d0};
   baseContainer->InitializeUiResourceEntryFrameAndParent(0, parent, baseOffset, baseSize, 0, 0, 1);
@@ -465,7 +482,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
     g_pUiResourceHead = mainPicture;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(mainPicture);
+  PushUiWidgetBuildStackNode(mainPicture);
   int mainOffset[2] = {0, 0};
   int mainSize[2] = {0x280, 0x1e0};
   mainPicture->InitializeUiResourceEntryFrameAndParent(0, parent, mainOffset, mainSize, 0, 0, 1);
@@ -499,7 +516,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
     g_pUiResourceHead = bodyText;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(bodyText);
+  PushUiWidgetBuildStackNode(bodyText);
   int bodyOffset[2] = {0x131, 0x14f};
   int bodySize[2] = {0x128, 0x7a};
   bodyText->InitializeUiResourceEntryFrameAndParent(0, parent, bodyOffset, bodySize, 0, 0, 1);
@@ -526,7 +543,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
     g_pUiResourceHead = toolbar;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(toolbar);
+  PushUiWidgetBuildStackNode(toolbar);
   int toolbarOffset[2] = {3, 6};
   int toolbarSize[2] = {0xed, 0x5a};
   toolbar->InitializeUiResourceEntryFrameAndParent(0, parent, toolbarOffset, toolbarSize, 0, 0, 1);
@@ -551,7 +568,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
     g_pUiResourceHead = endButton;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(endButton);
+  PushUiWidgetBuildStackNode(endButton);
   int endOffset[2] = {5, 0x20};
   int endSize[2] = {0x1f, 0x33};
   endButton->InitializeUiResourceEntryFrameAndParent(0, parent, endOffset, endSize, 0, 0, 1);
@@ -578,7 +595,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
     g_pUiResourceHead = seasonLabel;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(seasonLabel);
+  PushUiWidgetBuildStackNode(seasonLabel);
   int seasonOffset[2] = {0x2c, 1};
   int seasonSize[2] = {0x5e, 0x11};
   seasonLabel->InitializeUiResourceEntryFrameAndParent(0, parent, seasonOffset, seasonSize, 0, 0,
@@ -606,7 +623,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
     g_pUiResourceHead = treasuryLabel;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(treasuryLabel);
+  PushUiWidgetBuildStackNode(treasuryLabel);
   int treasuryOffset[2] = {0x8d, 1};
   int treasurySize[2] = {0x4b, 0x11};
   treasuryLabel->InitializeUiResourceEntryFrameAndParent(0, parent, treasuryOffset, treasurySize, 0,
