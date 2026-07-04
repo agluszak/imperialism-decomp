@@ -2967,6 +2967,7 @@ address|target_cpp|ownership|note
 56d190|src/game/TLoadSavePicture.cpp|manual|marker_sync
 56d1e0|src/game/TLoadSavePicture.cpp|manual|marker_sync
 56d2a0|src/game/TLoadSavePicture.cpp|manual|marker_sync
+56d5c0|src/game/mapped_flavor_text.cpp|manual|marker_sync
 56e1e0|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e200|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e2f0|src/game/TTwoPicSlider.cpp|manual|marker_sync

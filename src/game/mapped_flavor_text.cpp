@@ -7,6 +7,13 @@
 
 extern "C" char DAT_006a43f0;
 
+// FUNCTION: IMPERIALISM 0x0056d5c0
+CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex) {
+  CString result;
+  GenerateMappedFlavorTextUntilValidationPasses(&result, variantIndex);
+  return result;
+}
+
 // FUNCTION: IMPERIALISM 0x0057fef0
 void scanBracketExpressions(void* ctx, void* out, const char* input, ...) {
   (void)ctx;

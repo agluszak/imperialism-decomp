@@ -28,6 +28,7 @@ void BuildMapContextStatusStringVariantJ(CString* out);
 void BuildMapContextStatusStringVariantK(CString* out);
 void BuildMapContextStatusStringVariantL(CString* out);
 void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot);
+CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex);
 char ShouldRetryMappedFlavorTextGeneration(CString* dest);
 void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantIndex);
 void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot);

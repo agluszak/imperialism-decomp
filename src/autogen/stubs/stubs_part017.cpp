@@ -1003,14 +1003,6 @@ undefined4 DestructTLoadSavePictureAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name BuildSharedStringFromMappedFlavorTextIndex
-// ghidra_proto undefined BuildSharedStringFromMappedFlavorTextIndex()
-// FUNCTION: IMPERIALISM 0x0056d5c0
-undefined4 BuildSharedStringFromMappedFlavorTextIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildSavePathStringForMode
 // ghidra_proto undefined BuildSavePathStringForMode()
 // FUNCTION: IMPERIALISM 0x0056d660
