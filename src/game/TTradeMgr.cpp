@@ -665,8 +665,118 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b9b30
-undefined4 TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
-  return 0;
+void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
+  short turnCount = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x2c);
+  short band = static_cast<short>(
+      (static_cast<int>(turnCount) + (static_cast<int>(turnCount) >> 0x1f & 3U)) >> 2);
+  double base;
+  if (band < 0xb) {
+    base = 1.1;
+  } else if (band < 0x15) {
+    base = 1.09;
+  } else if (band < 0x1f) {
+    base = 1.08;
+  } else if (band < 0x29) {
+    base = 1.07;
+  } else if (band < 0x33) {
+    base = 1.06;
+  } else if (band < 0x3d) {
+    base = 1.05;
+  } else if (band < 0x47) {
+    base = 1.04;
+  } else if (band < 0x51) {
+    base = 1.03;
+  } else if (band < 0x5b) {
+    base = 1.02;
+  } else {
+    base = 1.01;
+  }
+
+  char* self = reinterpret_cast<char*>(this);
+  short* psVar4 = reinterpret_cast<short*>(self + 0xe);
+  int metricRow = 0;
+  do {
+    short* cellCursor = psVar4 + 0xe;
+    TMinor** mp = g_apSecondaryNationStateSlots + 7;
+    int remaining = 0x10;
+    do {
+      short metric = (*mp)->QueryNationMetricBySlot7C(static_cast<short>(metricRow));
+      *cellCursor = metric;
+      if (0 < metric) {
+        int value = metric;
+        if ((*mp)->GetDiplomacyExternalStateByTarget(static_cast<short>(metricRow)) < metric) {
+          value = (*mp)->GetDiplomacyExternalStateByTarget(static_cast<short>(metricRow));
+        }
+        *psVar4 = *psVar4 + 1;
+        short sv = static_cast<short>(value);
+        psVar4[5] = psVar4[5] + sv;
+        double factor;
+        if (this->QueryProposalWeightSlot4C(static_cast<short>(metricRow)) <
+            *reinterpret_cast<short*>(reinterpret_cast<char*>(*mp) + 0x124)) {
+          factor = 0.0;
+        } else if (sv == 1) {
+          factor = 1.0;
+        } else {
+          int exponent = (sv < 0x19) ? (value - 1) : 0x17;
+          factor = this->ComputeNationMetricPowerScale(base, static_cast<short>(exponent));
+        }
+        *reinterpret_cast<double*>(psVar4 + 1) = factor + *reinterpret_cast<double*>(psVar4 + 1);
+      }
+      cellCursor = cellCursor + 1;
+      mp = mp + 1;
+      remaining = remaining + -1;
+    } while (remaining != 0);
+    psVar4 = psVar4 + 0x50;
+    metricRow = metricRow + 1;
+  } while (static_cast<short>(metricRow) < 7);
+
+  TMinor** mp = g_apSecondaryNationStateSlots + 7;
+  short* aggCursor = reinterpret_cast<short*>(self + 0x48a);
+  int count = 0x10;
+  do {
+    short metric = (*mp)->QueryNationMetricBySlot7C(7);
+    *aggCursor = metric;
+    if (0 < metric) {
+      *reinterpret_cast<short*>(self + 0x46e) = *reinterpret_cast<short*>(self + 0x46e) + 1;
+      *reinterpret_cast<short*>(self + 0x478) =
+          static_cast<short>(*reinterpret_cast<short*>(self + 0x478) + metric);
+      double factor;
+      if (metric == 1) {
+        factor = 1.0;
+      } else {
+        int exponent = (metric < 0x19) ? (metric - 1) : 0x17;
+        factor = this->ComputeNationMetricPowerScale(base, static_cast<short>(exponent));
+      }
+      *reinterpret_cast<double*>(self + 0x470) = factor + *reinterpret_cast<double*>(self + 0x470);
+    }
+    aggCursor = aggCursor + 1;
+    mp = mp + 1;
+    count = count + -1;
+  } while (count != 0);
+
+  short* negCursor = reinterpret_cast<short*>(self + 0x82c);
+  int metricSlot = 0xd;
+  int cellBase = 0x410;
+  do {
+    int col = 7;
+    mp = g_apSecondaryNationStateSlots + 7;
+    int rem = 0x10;
+    do {
+      if (*mp != 0) {
+        short metric = (*mp)->QueryNationMetricBySlot7C(static_cast<short>(metricSlot));
+        *reinterpret_cast<short*>(self + 0x1c + (cellBase + col) * 2) = metric;
+        if (metric < 0) {
+          *negCursor = *negCursor + 1;
+        }
+      }
+      col = col + 1;
+      mp = mp + 1;
+      rem = rem + -1;
+    } while (rem != 0);
+    metricSlot = metricSlot + 1;
+    cellBase = cellBase + 0x50;
+    negCursor = negCursor + 0x50;
+  } while (static_cast<short>(metricSlot) < 0x19);
 }
 
 // FUNCTION: IMPERIALISM 0x005b9f30
