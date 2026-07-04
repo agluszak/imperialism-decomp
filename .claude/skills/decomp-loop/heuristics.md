@@ -986,3 +986,29 @@ and treat the absolute aligned-byte gain (≈320 here) as the win, not the perce
 standalone function may live in its own `.cpp`, following the merge-function precedent, for
 organization — but never move code between TUs to chase neighbouring register-allocation noise;
 see note 44.)
+
+## 46. Thunk-only-caller thiscall methods are frequently mis-attributed — reattribute by `[this+off]` field layout, not the curated name
+
+When a `__thiscall` method's *only* xref is an ILT thunk (`JMP 0xADDR`), Ghidra/symbols.csv
+guessed its owning class from weak evidence, so the `ClassName::` prefix is unreliable
+(Hard Rule 6 — names are provisional). Recover the real receiver from the object-field
+accesses in the body: match each `[this+off]` against candidate classes' recovered layouts.
+
+Concrete wins (this session, the civilian-order cluster all mislabeled `TCivToolbar::`):
+- `CanAssignCivilianOrderToTile` (0x4d2f60): `[this+4]` is used as a `TCivUnit*` selected
+  entry → matches `TCivMgr::selectedEntry` (0x4) exactly → real owner is **TCivMgr**
+  (TObject-derived), not the TControl-derived toolbar. The compat lookup is on a *global*
+  (`g_pDiplomacyTurnStateManager`, 0x6a43d0), not `this`, so "this calls a TControl method"
+  is NOT evidence the receiver is a TControl.
+- `CalculateDeveloperTilePurchaseCost` (0x518b40): `this->field0c` is a stride-0x24 tile
+  table base → matches `TMapMgr::terrainStateTable` (+0xc, `TTerrainStateRecordView[]`) →
+  real owner is **TMapMgr**. (Still blocked on a slot-0x13 vtable dispatch on the
+  ambiguously-typed `g_pNationInteractionStateManager` — TTradeMgr vs TDealList.)
+
+Procedure: (1) list the `[this+off]` accesses; (2) `grep` recovered class headers for a
+field at that offset with a compatible type; (3) reattribute — update the symbols.csv name,
+move the marker to the real class's `.cpp`, declare on its header. Reccmp pairs by address,
+so reattribution never risks the score; it just unlocks typed field/virtual access
+(`this->selectedEntry`, `g_apTerrainTypeDescriptorTable[c]->IsEncodedNationSlotMinus200Equal(...)`).
+The residual on these is usually pure register allocation (original caches `this`/param in
+edi/cx; the rebuild keeps them in ecx/dx) — same instructions, don't chase (Hard Rule 12).
