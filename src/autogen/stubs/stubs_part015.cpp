@@ -747,14 +747,6 @@ undefined4 RebuildUMapperRouteRecordsAndActiveMapRects(void)
   return 0;
 }
 
-// ghidra_name AllocateRouteNodeStateBufferByCount
-// ghidra_proto undefined AllocateRouteNodeStateBufferByCount()
-// FUNCTION: IMPERIALISM 0x0052e7b0
-undefined4 AllocateRouteNodeStateBufferByCount(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0052eb00
 // ghidra_proto undefined WrapperFor_ftol_At0052eb00()
 // FUNCTION: IMPERIALISM 0x0052eb00

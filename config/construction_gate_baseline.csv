@@ -16,3 +16,4 @@ src/game/tauto_great_power_factory.cpp|0|0|0|0|0|1|1
 src/game/TMapMaker_MergeSmallCityRegions.cpp|0|0|0|0|0|4|4
 src/game/TMapMaker_GenerateRegions.cpp|0|0|0|0|0|2|2
 src/game/TMapMaker_RotateMapColumns.cpp|0|0|0|0|0|2|2
+src/game/TOcean_RouteBuffer.cpp|0|0|0|0|0|2|2
