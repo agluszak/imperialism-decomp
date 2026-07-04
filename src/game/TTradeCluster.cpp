@@ -211,7 +211,8 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
-        TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
+        TControl* rowControl =
+            static_cast<TControl*>(ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]));
         if (rowControl != 0 &&
             reinterpret_cast<TTradeCluster*>(rowControl)->GetControlFlag() == '\0') {
           reinterpret_cast<TTradeCluster*>(rowControl)->DoControlAction();
@@ -226,7 +227,8 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
-        TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
+        TControl* rowControl =
+            static_cast<TControl*>(ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]));
         if (rowControl != 0 &&
             reinterpret_cast<TTradeCluster*>(rowControl)->GetControlFlag() == '\0') {
           reinterpret_cast<TTradeCluster*>(rowControl)->DoControlAction();
@@ -254,10 +256,10 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       applyValue = (int)cappedValue;
     }
 
-    TControl* sellControl = this->ResolveControlByTag(kControlTagSell);
+    TControl* sellControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagSell));
     sellControl->SetEnabled(1, 1);
 
-    TControl* barControl = this->ResolveControlByTag(kControlTagBar);
+    TControl* barControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagBar));
     if (barControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellMoveBar);
     }
@@ -266,10 +268,10 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
     return;
   }
   case 0x6a: {
-    TControl* sellControl = this->ResolveControlByTag(kControlTagSell);
+    TControl* sellControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagSell));
     sellControl->SetEnabled(0, 1);
 
-    TControl* barControl = this->ResolveControlByTag(kControlTagBar);
+    TControl* barControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagBar));
     if (barControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellZeroBar);
     }

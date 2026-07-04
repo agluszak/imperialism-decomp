@@ -135,7 +135,7 @@ char TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int a
 // FUNCTION: IMPERIALISM 0x004ffd70
 void TGameWindow::ForwardParam(int param) {
   TurnOrderNavCommandEvent* commandEvent = reinterpret_cast<TurnOrderNavCommandEvent*>(param);
-  TControl* mainControl = ResolveControlByTag(kTagMain);
+  TControl* mainControl = static_cast<TControl*>(ResolveControlByTag(kTagMain));
   if (mainControl == 0) {
     return;
   }

@@ -217,14 +217,14 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
 
-  TControl* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
+  TView* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x28a);
     return 0;
   }
 
-  TView* mainView = reinterpret_cast<TView*>(mainControl);
+  TView* mainView = mainControl;
   RECT queryBounds;
   mainView->QueryBounds(&queryBounds);
 

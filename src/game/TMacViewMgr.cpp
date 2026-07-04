@@ -47,7 +47,7 @@ static void SetPanelShortField(TControl* panel, int offset, short value) {
 }
 
 static TControl* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
-  TControl* panel = hostView->ResolveControlByTag(tag);
+  TControl* panel = static_cast<TControl*>(hostView->ResolveControlByTag(tag));
   if (panel == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -56,7 +56,7 @@ static TControl* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
 }
 
 static TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag) {
-  TControl* child = panel->ResolveControlByTag(tag);
+  TControl* child = static_cast<TControl*>(panel->ResolveControlByTag(tag));
   if (child == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -981,7 +981,7 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(int* param_1, s
     g_apNationStates[param_2]->SetDiplomacyState1c6ClampedToCounterA4(0, 0);
     sellCount = 0;
   }
-  sellControl = controlView->ResolveControlByTag(0x53656c6c);
+  sellControl = static_cast<TControl*>(controlView->ResolveControlByTag(0x53656c6c));
   if (sellControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();

@@ -63,7 +63,7 @@ public:
   // assignments are pinned by FUNCTION-marker addresses, original-binary call offsets,
   // and the byte-offset encoded in "SlotXX" names. vmethod_00NN placeholders fill the
   // remaining (body-owned-elsewhere / unported) slots.
-  virtual class TControl* ResolveControlByTag(unsigned int controlTag);           // 0x25 0x48afd0
+  virtual class TView* ResolveControlByTag(unsigned int controlTag);              // 0x25 0x48afd0
   virtual void SwitchActiveChildAndNotify(class TView* child);                    // 0x26 0x48af80
   virtual void DispatchSlot9CToLinkedChildren();                                  // 0x27 0x48c820
   virtual void CallVoidSlotA0();                                                  // 0x28 0x48c890

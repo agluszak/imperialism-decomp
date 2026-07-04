@@ -594,9 +594,9 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   // Turn-event 0x7DD targets the 'trb1' toolbar tag; everything else the 'tool' tag.
   TControl* control;
   if (this->currentTurnEventCode == 0x7dd) {
-    control = mainView->ResolveControlByTag(0x74627231);
+    control = static_cast<TControl*>(mainView->ResolveControlByTag(0x74627231));
   } else {
-    control = mainView->ResolveControlByTag(0x746f6f6c);
+    control = static_cast<TControl*>(mainView->ResolveControlByTag(0x746f6f6c));
   }
   if (control != nullptr) {
     static_cast<TToolBarCluster*>(control)->UpdateControlTagTreaTextFromNationAndMapContext(
@@ -623,7 +623,7 @@ void TViewMgr::UiRuntimeSlot58() {
   for (short iconIndex = 0; iconIndex < 0x12; ++iconIndex) {
     const unsigned int tag =
         *reinterpret_cast<const unsigned int*>(kStatusIconTagBytes + iconIndex * 4);
-    TControl* control = mainView->ResolveControlByTag(tag);
+    TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(tag));
     if (control != nullptr) {
       control->AssertValid();
       g_pStrategicMapViewSystem->OrphanCallChain_C4_I35_0050bbc0(reinterpret_cast<int*>(control),
@@ -684,7 +684,7 @@ TControl* ResolveMainTaggedControl(unsigned int controlTag) {
   if (mainView == nullptr) {
     return nullptr;
   }
-  return mainView->ResolveControlByTag(controlTag);
+  return static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
 }
 
 void BindCursorPanelAndSetTurnEventCodeRange() {
@@ -918,7 +918,8 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
     ShowDialogTemplateE0ModalAndReleaseCapture();
     this->field10 = 0;
   }
-  TControl* inclControl = mainView->ResolveControlByTag(0x496e636c); // 'Incl'
+  TControl* inclControl =
+      static_cast<TControl*>(mainView->ResolveControlByTag(0x496e636c)); // 'Incl'
   if (inclControl != nullptr) {
     inclControl->AssertValid();
     inclControl->RefreshControl();
@@ -1030,7 +1031,7 @@ void TViewMgr::UiRuntimeSlotA8() {
     return;
   }
 
-  TControl* cityControl = mainView->ResolveControlByTag(kControlTagCity);
+  TControl* cityControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCity));
   if (cityControl != nullptr) {
     cityControl->AssertValid();
     cityControl->SetState(0, 0);
@@ -1041,7 +1042,7 @@ void TViewMgr::UiRuntimeSlotA8() {
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
 
-  TControl* querControl = mainView->ResolveControlByTag(kControlTagQuer);
+  TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
     querControl->AssertValid();
     querControl->EnableAndProcessFlag(g_szEmptyString);
@@ -1066,11 +1067,11 @@ void TViewMgr::UiRuntimeSlotB8() {}
 void TViewMgr::UiRuntimeSlot50(int payload) {
   (void)payload;
   TView* mainView = g_pDisplayMgr->activeDialog;
-  TControl* cursor = mainView->ResolveControlByTag(kControlTagCrus);
+  TControl* cursor = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCrus));
   g_pCursorControlPanel = static_cast<TCursorControlPanel*>(cursor);
   cursor->AssertValid();
   static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
-  TControl* mainPanel = mainView->ResolveControlByTag(kControlTagMain);
+  TControl* mainPanel = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagMain));
   mainPanel->AssertValid();
   static_cast<TCouncilTickerAnimation*>(static_cast<void*>(mainPanel))
       ->InitializeDiplomacyCouncilViewControlsAndTicker();
@@ -1084,7 +1085,7 @@ void TViewMgr::UiRuntimeSlot6C() {
     return;
   }
 
-  TControl* diplControl = mainView->ResolveControlByTag(kControlTagDipl);
+  TControl* diplControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagDipl));
   if (diplControl != nullptr) {
     diplControl->AssertValid();
     diplControl->SetState(0, 0);
@@ -1095,7 +1096,7 @@ void TViewMgr::UiRuntimeSlot6C() {
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
 
-  TControl* querControl = mainView->ResolveControlByTag(kControlTagQuer);
+  TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
     querControl->AssertValid();
     querControl->EnableAndProcessFlag(g_szEmptyString);
@@ -1279,7 +1280,7 @@ void TViewMgr::UiRuntimeSlot100() {}
 
 // FUNCTION: IMPERIALISM 0x005dbdd0
 void TViewMgr::HandleTurnEvent5DF_RefreshMainView() {
-  TControl* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
+  TView* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
   mainPanel->AssertValid();
   mainPanel->RefreshControl();
 }
@@ -1359,7 +1360,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x14a);
   }
-  TControl* gold = node->ResolveControlByTag(0x444c4f47); // 'GOLD'
+  TControl* gold = static_cast<TControl*>(node->ResolveControlByTag(0x444c4f47)); // 'GOLD'
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
@@ -1383,7 +1384,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x232);
   }
-  TControl* page = node->ResolveControlByTag(0x70616765); // 'page'
+  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(0x70616765)); // 'page'
   if (page == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x233);

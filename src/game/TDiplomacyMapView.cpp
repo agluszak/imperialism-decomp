@@ -773,7 +773,7 @@ void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920() {
   emptyString = emptyString;
   EnableAndProcessFlag(emptyString);
 
-  TControl* queryControl = mainView->ResolveControlByTag(kControlTagQuer);
+  TControl* queryControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (queryControl != nullptr) {
     queryControl->AssertValid();
     CString loadedString;
@@ -781,7 +781,7 @@ void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920() {
     queryControl->EnableAndProcessFlag(loadedString);
   }
 
-  TControl* titleControl = mainView->ResolveControlByTag(0x7469744c);
+  TControl* titleControl = static_cast<TControl*>(mainView->ResolveControlByTag(0x7469744c));
   if (titleControl != nullptr) {
     titleControl->AssertValid();
     titleControl->RefreshControl();
