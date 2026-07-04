@@ -18015,7 +18015,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.02247191011235955,
+      "matching": 0.2784090909090909,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18033,7 +18033,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },

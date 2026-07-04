@@ -755,14 +755,6 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170(void)
   return 0;
 }
 
-// ghidra_name ReindexContiguousCityRegionIds
-// ghidra_proto undefined ReindexContiguousCityRegionIds()
-// FUNCTION: IMPERIALISM 0x0052d1f0
-undefined4 ReindexContiguousCityRegionIds(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_0052d4b0
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_0052d4b0()
 // FUNCTION: IMPERIALISM 0x0052d4b0
