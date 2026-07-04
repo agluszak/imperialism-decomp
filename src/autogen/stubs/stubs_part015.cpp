@@ -707,14 +707,6 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820(void)
   return 0;
 }
 
-// ghidra_name AssignCityRegionIdsFromOverlayScanlineIntersections
-// ghidra_proto undefined AssignCityRegionIdsFromOverlayScanlineIntersections()
-// FUNCTION: IMPERIALISM 0x0052b9b0
-undefined4 AssignCityRegionIdsFromOverlayScanlineIntersections(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060()
 // FUNCTION: IMPERIALISM 0x0052c060

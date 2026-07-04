@@ -523,3 +523,8 @@ extern const int g_hexColOffsetOddRow_00697480[6];
 extern unsigned int g_mapGenLcgState_006a38e8;
 extern int g_regionSeedGridRows_006a38ec;
 extern int g_regionSeedGridCols_006a38f0;
+
+// One-shot assert-suppression flags for the UMapper overlay-segment passes (0x006a3910 for the
+// scanline fill, 0x006a3914 for the route rebuild).
+extern int DAT_006a3910;
+extern int DAT_006a3914;

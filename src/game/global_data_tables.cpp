@@ -779,3 +779,7 @@ const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};
 unsigned int g_mapGenLcgState_006a38e8 = 0;
 int g_regionSeedGridRows_006a38ec = 0;
 int g_regionSeedGridCols_006a38f0 = 0;
+
+// One-shot assert-suppression flags for the UMapper overlay passes (0x006a3910/0x006a3914).
+int DAT_006a3910 = 0;
+int DAT_006a3914 = 0;

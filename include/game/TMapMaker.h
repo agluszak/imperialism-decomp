@@ -74,6 +74,10 @@ public:
                                                                         unsigned short class4,
                                                                         unsigned short class5);
 
+  // Scanline-fills city-region ids across the overlay grid from the region-border SeaSegment
+  // table: for each cell, find the nearest crossing segment and write its region. 0x0052b9b0.
+  void AssignCityRegionIdsFromOverlayScanlineIntersections();
+
   // Merges undersized city regions into a neighbour and compacts region ids.
   // Non-virtual (paired by address marker). 0x0052d750.
   void MergeSmallCityRegionsAndCompactIds();

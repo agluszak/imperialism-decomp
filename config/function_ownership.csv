@@ -2280,6 +2280,7 @@ address|target_cpp|ownership|note
 52b3e0|src/game/sea_geometry.cpp|manual|marker_sync
 52b460|src/game/sea_geometry.cpp|manual|marker_sync
 52b500|src/game/sea_geometry.cpp|manual|marker_sync
+52b9b0|src/game/TMapMaker_AssignRegionsScanline.cpp|manual|marker_sync
 52bef0|src/game/sea_geometry.cpp|manual|marker_sync
 52c000|src/game/sea_geometry.cpp|manual|marker_sync
 52c030|src/game/sea_geometry.cpp|manual|marker_sync
