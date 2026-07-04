@@ -308,7 +308,7 @@
     },
     {
       "address": "0x4149a0",
-      "matching": 0.3543913713405239,
+      "matching": 0.3667180277349769,
       "name": "LoadLanguageResourcesFromIrgFiles",
       "type": 1
     },
@@ -4228,7 +4228,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -11958,7 +11958,7 @@
     },
     {
       "address": "0x4db380",
-      "matching": 0.35699797160243407,
+      "matching": 0.3130081300813008,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -12325,7 +12325,7 @@
     },
     {
       "address": "0x4ddc30",
-      "matching": 0.6526315789473685,
+      "matching": 0.9894736842105263,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_20",
       "type": 1
     },
@@ -12643,7 +12643,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12667,13 +12667,13 @@
     },
     {
       "address": "0x4e0890",
-      "matching": 0.24242424242424243,
+      "matching": 0.2222222222222222,
       "name": "TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890",
       "type": 1
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13370,7 +13370,7 @@
     },
     {
       "address": "0x4e8540",
-      "matching": 0.44871794871794873,
+      "matching": 0.4358974358974359,
       "name": "TGreatPower::QueueMapActionMissionFromCandidateAndMarkState",
       "type": 1
     },
@@ -14030,7 +14030,7 @@
     },
     {
       "address": "0x4eff40",
-      "matching": 0.27988338192419826,
+      "matching": 0.2857142857142857,
       "name": "TSortedByRelationshipList::AdjustNationPairDiplomacyStandingAndPropagate",
       "type": 1
     },
@@ -16112,7 +16112,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20626987732848706,
+      "matching": 0.19900045433893684,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17126,7 +17126,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.24,
+      "matching": 0.2413793103448276,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -17852,7 +17852,7 @@
     },
     {
       "address": "0x529960",
-      "matching": 0.23766816143497757,
+      "matching": 0.2371364653243848,
       "name": "RotateMapColumnsByPeakCityTileDensity",
       "type": 1
     },
@@ -17960,7 +17960,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9391304347826087,
+      "matching": 0.9122807017543859,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -17984,7 +17984,7 @@
     },
     {
       "address": "0x52ca20",
-      "matching": 0.20202020202020202,
+      "matching": 0.24242424242424243,
       "name": "EmitOverlaySegmentFromTileEdgeSorted",
       "type": 1
     },
@@ -18008,7 +18008,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7311827956989247,
+      "matching": 0.7021276595744681,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -27143,7 +27143,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27696,7 +27696,7 @@
     },
     {
       "address": "0x58f550",
-      "matching": 0.4722222222222222,
+      "matching": 0.5138888888888888,
       "name": "TCivDescription::ApplyRectSlot110",
       "type": 1
     },
@@ -40230,7 +40230,7 @@
     },
     {
       "address": "0x6227a1",
-      "matching": 1.0,
+      "matching": 0.9696969696969697,
       "name": "CCommandLineInfo::ParseParamFlag",
       "type": 1
     },
