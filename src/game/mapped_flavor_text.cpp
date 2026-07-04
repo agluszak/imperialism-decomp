@@ -12,7 +12,6 @@ undefined4 GenerateMappedFlavorTextVariantE_005ccce0(void);
 undefined4 GenerateMappedFlavorTextVariantA_005d13d0(void);
 undefined4 GenerateMappedFlavorTextVariantB_005cfc40(void);
 undefined4 GenerateMappedFlavorTextVariantD_005d33a0(void);
-undefined4 ShouldRetryMappedFlavorTextGeneration(void);
 
 // FUNCTION: IMPERIALISM 0x0057fef0
 void scanBracketExpressions(void* ctx, void* out, const char* input, ...) {
@@ -61,6 +60,35 @@ void scanBracketExpressions(void* ctx, void* out, const char* input, ...) {
     ch = p[idx + 1];
     idx = idx + 1;
   }
+}
+
+// The generated flavor text is rejected (regenerate) if it contains any character from
+// this banned set list; each entry is a FindOneOf char-set probe against the result.
+// FUNCTION: IMPERIALISM 0x005d4240
+char ShouldRetryMappedFlavorTextGeneration(CString* dest) {
+  const char* bannedSets[34] = {s_mcflavor_0069b640, s_mcflavor_0069b638,
+                                s_mcflavor_0069b630, s_mcflavor_0069b628,
+                                s_mcflavor_0069b624, s_mcflavor_0069b61c,
+                                s_mcflavor_0069b614, s_mcflavor_0069b60c,
+                                s_mcflavor_0069b604, s_mcflavor_0069b5fc,
+                                s_mcflavor_0069b5f4, s_mcflavor_0069b5ec,
+                                s_mcflavor_0069b5e4, s_mcflavor_0069b5dc,
+                                s_mcflavor_0069b5d4, s_mcflavor_0069b5cc,
+                                s_mcflavor_0069b5c4, s_mcflavor_0069b5c0,
+                                s_mcflavor_0069b5b8, s_mcflavor_0069b5ac,
+                                s_mcflavor_0069b5a4, s_mcflavor_0069b59c,
+                                s_mcflavor_0069b598, s_mcflavor_0069b590,
+                                s_mcflavor_0069b584, s_mcflavor_0069b57c,
+                                s_mcflavor_0069b56c, s_mcflavor_0069b564,
+                                s_mcflavor_0069b55c, s_mcflavor_0069b554,
+                                s_mcflavor_0069b54c, s_mcflavor_0069b544,
+                                s_mcflavor_0069b53c, 0};
+  for (const char* const* set = bannedSets; *set != 0; set = set + 1) {
+    if (dest->FindOneOf(*set) > -1) {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005d4410
@@ -155,6 +183,6 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
       BuildMapContextStatusStringVariantA(dest);
       break;
     }
-    retry = reinterpret_cast<char(__cdecl*)(CString*)>(ShouldRetryMappedFlavorTextGeneration)(dest);
+    retry = ShouldRetryMappedFlavorTextGeneration(dest);
   } while (retry != 0);
 }
