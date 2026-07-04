@@ -1046,3 +1046,35 @@ Split procedure that keeps both halves green:
 Residual on the trivial ctor (just a vtable write in the original) stays low because the
 out-of-line empty `TObject::TObject()` base ctor isn't inlined under /Ob1 — systemic, not a
 detangle defect.
+
+## 48. Branch-order = fall-through: a `je far` on an equality test means the INEQUALITY body is the source `if`
+
+Ported `TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState` (0x5108d0). The listing opens
+`cmp byte[..],5 / je <far> / <inequality body...>`. Writing the natural
+`if (x == 5) { equal-body } else { unequal-body }` makes MSVC emit the EQUAL body as the
+fall-through (`jne` to the else), which misaligns the ENTIRE function against the original and
+pins reccmp near 25%. Fix: mirror the compiler's fall-through — the block that physically
+follows the conditional jump must be the source `if` body. Here the original falls through to
+`!= 5`, so write `if (x != 5) { unequal-body } else { equal-body }`. This one inversion moved
+alignment from "nothing matches" to "cases align" — a prerequisite before any register work.
+Corollary: the Ghidra decompile's `if (cond) {A} else {B}` nesting does NOT encode
+fall-through direction; read the actual `je`/`jne` target (near vs far) to decide which body is
+the `if`.
+
+Also from this port:
+- **The `int param_1` + `short sVar7 = (short)param_1` split is real, not decompiler noise.**
+  When a function is `MOVSX ebx,si` yet keeps the full dword arg live in another reg (used as
+  `lea edx,[esi-1]` for neighbor indices / helper args), model BOTH: declare the param `int`
+  and derive `short s = (short)param`. Use the raw `int` where the decompile writes `param_1`
+  (helper args, some inline reads) and the `short` where it writes `sVar7`. Collapsing to a
+  single `short` param removes the raw-dword variable the original allocated.
+- **A byte-compare-only field read is `MOV AL,byte` / `CMP AL,imm` regardless of field
+  signedness** (no MOVSX/MOVZX), so membership-test helpers hit 100% reading an `unsigned char`
+  field into a `char` local. Signedness only forces MOVSX/MOVZX when the byte feeds arithmetic
+  or a switch selector (there the source variable's declared signedness picks the extension —
+  match it).
+- **Adding ~2KB of ported code perturbs the linker's ICF/COMDAT fold groups**, so a few
+  untouched trivial twin accessors elsewhere (near-identical bodies differing only by a field
+  offset) can flip which recomp address reccmp pairs them to and drop 100→~43%. This is
+  layout noise, not a regression in the edited TU; confirm the net average-similarity delta is
+  positive and absorb it into the baseline.
