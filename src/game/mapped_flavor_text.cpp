@@ -7,8 +7,6 @@
 
 extern "C" char DAT_006a43f0;
 
-undefined4 AppendRandomMapContextStatusSuffixWithProbability(void);
-
 // FUNCTION: IMPERIALISM 0x0057fef0
 void scanBracketExpressions(void* ctx, void* out, const char* input, ...) {
   (void)ctx;
@@ -124,8 +122,7 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
   do {
     switch (static_cast<int>(variantIndex) % 0x12) {
     case 0:
-      reinterpret_cast<void(__cdecl*)(CString*)>(AppendRandomMapContextStatusSuffixWithProbability)(
-          dest);
+      AppendRandomMapContextStatusSuffixWithProbability(dest);
       break;
     case 1:
       GenerateMappedFlavorTextVariantC_005cf1b0(dest);

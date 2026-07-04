@@ -1114,6 +1114,121 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString* out) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005ce1b0
+void BuildRandomMapContextStatusBaseString(CString* out) {
+  int flag = FlavorGateFlag(0x55a, 0x3c3);
+  int count;
+  if (flag == 0) {
+    const int countWeights[8] = {0x5c, 0x85, 0x91, 0xe, 0xe, 9, 0, 0};
+    count = DrawCountNoStep(countWeights, 0x197);
+  } else {
+    const int countWeights[8] = {0x164, 0x148, 0x50, 0x87, 0x28, 0x14, 4, 0};
+    count = DrawCountNoStep(countWeights, 0x3c3);
+  }
+
+  *out = CString(g_szEmptyString);
+
+  if (flag == 0) {
+    const char* strings[8] = {s_mcflavor_0069872c, s_mcflavor_0069b0bc, s_mcflavor_0069abf8,
+                              s_mcflavor_0069b26c, s_mcflavor_0069ac00, s_mcflavor_0069ac08,
+                              s_mcflavor_0069b268, s_mcflavor_0069b0b8};
+    const int weights[8] = {0x62, 0x55, 0x42, 0x42, 0x1f, 0x13, 0x12, 0xe};
+    *out += PickWeighted(strings, weights, 0x186, false);
+  } else {
+    const char* strings[18] = {g_szMovementParseCompareA_00694250,
+                               s_mcflavor_0069ac44,
+                               s_mcflavor_0069ac38,
+                               s_mcflavor_0069ac58,
+                               s_mcflavor_0069ac10,
+                               s_mcflavor_0069ac28,
+                               s_mcflavor_0069ad44,
+                               s_mcflavor_0069ac1c,
+                               s_mcflavor_0069b0a0,
+                               s_mcflavor_0069ac40,
+                               s_mcflavor_0069ac0c,
+                               s_mcflavor_0069ac54,
+                               s_mcflavor_0069acec,
+                               s_mcflavor_0069ac24,
+                               s_mcflavor_0069b2c0,
+                               s_mcflavor_0069b2bc,
+                               s_mcflavor_0069ac50,
+                               s_mcflavor_0069b27c};
+    const int weights[18] = {0x80, 0x73, 0x6c, 0x5b, 0x51, 0x4f, 0x32, 0x30, 0x2a,
+                             0x25, 0x1d, 0x1c, 0x1a, 0xf,  0xe,  0xd,  0xc,  8};
+    *out += PickWeighted(strings, weights, 0x39c, false);
+  }
+
+  if (1 < count + 2) {
+    count = count + 1;
+    do {
+      flag = (flag == 0);
+      if (flag == 0) {
+        const char* strings[11] = {s_mcflavor_0069ab2c, s_mcflavor_0069ab24, s_mcflavor_0069ab20,
+                                   s_mcflavor_0069ab18, s_mcflavor_0069ad28, s_mcflavor_0069ab08,
+                                   s_mcflavor_0069ab28, s_mcflavor_0069ac98, s_mcflavor_0069ae84,
+                                   s_mcflavor_0069ab14, s_mcflavor_0069ab00};
+        const int weights[11] = {0x171, 0x162, 0xdf, 0xdb, 0x6c, 0x69,
+                                 0x64,  0x2c,  0x28, 0x1f, 0x1d};
+        *out += PickWeighted(strings, weights, 0x644, false);
+      } else {
+        const char* strings[37] = {
+            s_mcflavor_0069ad3c, s_mcflavor_00696d10, s_mcflavor_0069ad40, s_mcflavor_0069add8,
+            s_mcflavor_0069ab70, s_mcflavor_0069acd8, s_mcflavor_0069b2b8, s_mcflavor_0069abd0,
+            s_mcflavor_0069ada8, s_mcflavor_0069b130, s_mcflavor_0069b2b4, s_mcflavor_0069ab98,
+            s_mcflavor_0069aba4, s_mcflavor_0069ab40, s_mcflavor_0069b2b0, s_mcflavor_0069adac,
+            s_mcflavor_0069af74, s_mcflavor_0069b034, s_mcflavor_0069ab48, s_mcflavor_0069abb8,
+            s_mcflavor_0069abe0, s_mcflavor_0069acac, s_mcflavor_0069b16c, s_mcflavor_0069b2ac,
+            s_mcflavor_0069b128, s_mcflavor_0069af60, s_mcflavor_0069ab60, s_mcflavor_0069adf4,
+            s_mcflavor_0069ad34, s_mcflavor_0069af4c, s_mcflavor_0069b2a8, s_mcflavor_0069ae4c,
+            s_mcflavor_0069b2a4, s_mcflavor_0069ab9c, s_mcflavor_0069b2a0, s_mcflavor_0069adc4,
+            s_mcflavor_0069af70};
+        const int weights[37] = {0xb4, 0xb3, 0x99, 0x61, 0x51, 0x49, 0x3a, 0x34, 0x2d, 0x2b,
+                                 0x21, 0x1f, 0x1d, 0x1c, 0x19, 0x17, 0x15, 0x14, 0x14, 0x13,
+                                 0x12, 0x10, 0xe,  0xd,  0xc,  0xc,  0xb,  0xa,  9,    9,
+                                 8,    8,    8,    7,    7,    7,    7};
+        *out += PickWeighted(strings, weights, 0x568, false);
+      }
+      count = count - 1;
+    } while (count != 0);
+  }
+
+  if (flag == 0) {
+    const char* strings[20] = {
+        s_mcflavor_0069abd0, s_mcflavor_0069acbc, s_mcflavor_0069b29c, s_mcflavor_00696d10,
+        s_mcflavor_0069ab70, s_mcflavor_0069ad3c, s_mcflavor_0069ab40, s_mcflavor_0069adac,
+        s_mcflavor_0069b130, s_mcflavor_0069b108, s_mcflavor_0069ada8, s_mcflavor_0069ad34,
+        s_mcflavor_0069af60, s_mcflavor_0069adf4, s_mcflavor_00698b0c, s_mcflavor_0069adc4,
+        s_mcflavor_0069af34, s_mcflavor_0069b298, s_mcflavor_0069ad40, s_mcflavor_0069ab50};
+    const int weights[20] = {0xa0, 0x60, 0x50, 0x48, 0x29, 0x1f, 0x16, 0x10, 0xf, 9,
+                             8,    8,    8,    8,    8,    7,    6,    6,    6,   6};
+    *out += PickWeighted(strings, weights, 0x262, false);
+  } else {
+    const char* strings[4] = {s_mcflavor_0069ab24, s_mcflavor_0069ab20, s_mcflavor_0069ab00,
+                              s_mcflavor_0069b294};
+    const int weights[4] = {0x2a5, 0xe, 0xb, 0xb};
+    *out += PickWeighted(strings, weights, 0x2c0, false);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005cef20
+CString AssignRandomMapContextStatusBaseString() {
+  CString base;
+  BuildRandomMapContextStatusBaseString(&base);
+  return base;
+}
+
+// FUNCTION: IMPERIALISM 0x005cefc0
+void AppendRandomMapContextStatusSuffixWithProbability(CString* dest) {
+  BuildRandomMapContextStatusBaseString(dest);
+  if (dest->GetLength() < 9) {
+    g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
+    if (static_cast<int>((g_zoneStatusCodePrngSeed_006a5aec >> 0xc) & 0x7fff) % 10 == 0) {
+      *dest += s_mcflavor_0069b2c4;
+      *dest += AssignRandomMapContextStatusBaseString();
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005cf1b0
 void GenerateMappedFlavorTextVariantC_005cf1b0(CString* out) {
   int flag = FlavorGateFlag(0xeb, 0xc5);

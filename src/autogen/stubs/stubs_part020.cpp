@@ -267,30 +267,6 @@ undefined4 GenerateMappedFlavorTextVariantEToSharedString(void)
   return 0;
 }
 
-// ghidra_name BuildRandomMapContextStatusBaseString
-// ghidra_proto undefined BuildRandomMapContextStatusBaseString()
-// FUNCTION: IMPERIALISM 0x005ce1b0
-undefined4 BuildRandomMapContextStatusBaseString(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignRandomMapContextStatusBaseString
-// ghidra_proto undefined AssignRandomMapContextStatusBaseString()
-// FUNCTION: IMPERIALISM 0x005cef20
-undefined4 AssignRandomMapContextStatusBaseString(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendRandomMapContextStatusSuffixWithProbability
-// ghidra_proto undefined AppendRandomMapContextStatusSuffixWithProbability()
-// FUNCTION: IMPERIALISM 0x005cefc0
-undefined4 AppendRandomMapContextStatusSuffixWithProbability(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildMapContextStatusStringWithRandomSuffix
 // ghidra_proto undefined BuildMapContextStatusStringWithRandomSuffix()
 // FUNCTION: IMPERIALISM 0x005cf090
