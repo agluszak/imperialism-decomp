@@ -1078,3 +1078,13 @@ Also from this port:
   offset) can flip which recomp address reccmp pairs them to and drop 100→~43%. This is
   layout noise, not a regression in the edited TU; confirm the net average-similarity delta is
   positive and absorb it into the baseline.
+- **Don't cache a member pointer the original re-reads.** In the consumer
+  `UpdateMapTileAdjacencyMasksAndVariantForTile` (0x510210) the original re-derefs
+  `this->terrainStateTable` (`mov eax,[ebp+0xc]`) on *every* tile access. Caching it in a local
+  (`TTerrainStateRecordView* tiles = terrainStateTable;`) consumed one extra register, which
+  under MSVC500's pressure forced a `this` spill to stack (`sub esp,0x10` instead of `0xc`) and
+  shifted every subsequent `[esp+…]` offset — capping the match at 14.6%. Dropping the cache and
+  indexing `terrainStateTable[…]` directly (re-reading the member) matched the frame and jumped
+  it to 32%. General rule: mirror the original's caching decisions; a "cleaner" CSE that the
+  original didn't make can cost more than it saves. (Same function reconfirmed the note-48
+  branch-order rule: `je far` on `type==5` ⇒ source is `if (type != 5) {land} else {water}`.)
