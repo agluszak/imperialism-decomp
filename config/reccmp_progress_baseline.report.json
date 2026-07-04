@@ -10470,7 +10470,7 @@
     },
     {
       "address": "0x4c6740",
-      "matching": 0.0,
+      "matching": 0.0392156862745098,
       "name": "TSoundChannelNode::SoundChannelNodeDummy00",
       "type": 1
     },
@@ -12181,7 +12181,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12619,13 +12619,13 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12643,7 +12643,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -31349,14 +31349,8 @@
     },
     {
       "address": "0x5b9fd0",
-      "matching": 0.0,
+      "matching": 0.5217391304347826,
       "name": "TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter",
-      "type": 1
-    },
-    {
-      "address": "0x5ba090",
-      "matching": 0.0625,
-      "name": "SelectPreferredNationMetricCodeFromLookup",
       "type": 1
     },
     {
@@ -42977,7 +42971,7 @@
     },
     {
       "address": "0x66d990",
-      "matching": 1.0,
+      "matching": 0.9714285714285714,
       "name": "TTradeMgr::`vftable'",
       "type": 5
     },

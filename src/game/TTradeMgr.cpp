@@ -13,6 +13,7 @@
 #include "game/TCountry.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/TStream.h"
+#include "game/TSoundChannelNode.h"
 
 // Preset seed table for the metric rows (original global @ 0x69a910) and the proposal-code
 // lookup used by the code-resolver. Kept file-local until modeled as recovered globals.
@@ -805,8 +806,25 @@ char TTradeMgr::IsNationMetricCellPositive(int row, int col) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b9fd0
-undefined4 TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter() {
-  return 0;
+TSoundChannelNode*
+TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSlot,
+                                                                    int filterValue) {
+  TSoundChannelNode* node = new TSoundChannelNode();
+  short idx = 1;
+  TDealList* list = this->categoryRankLists[rosterSlot];
+  int count = *reinterpret_cast<int*>(reinterpret_cast<char*>(list) + 8);
+  if (0 < count) {
+    int i = 1;
+    do {
+      short* entry = reinterpret_cast<short*>(list->GetEntrySlot2C(i));
+      if (entry[1] == filterValue) {
+        node->SoundChannelNodeDummy00(*entry);
+      }
+      idx = idx + 1;
+      i = static_cast<int>(idx);
+    } while (i <= count);
+  }
+  return node;
 }
 
 // FUNCTION: IMPERIALISM 0x005ba090

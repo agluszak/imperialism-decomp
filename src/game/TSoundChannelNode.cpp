@@ -19,7 +19,9 @@ void TSoundChannelNode::Serialize(CArchive& ar) {
 }
 
 // FUNCTION: IMPERIALISM 0x004c6740
-void TSoundChannelNode::SoundChannelNodeDummy00() {}
+void TSoundChannelNode::SoundChannelNodeDummy00(int value) {
+  (void)value;
+}
 
 // FUNCTION: IMPERIALISM 0x004c67e0
 void TSoundChannelNode::SoundChannelNodeDummy01() {}

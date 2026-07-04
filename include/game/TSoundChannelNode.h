@@ -18,8 +18,8 @@ public:
   void Serialize(CArchive& ar) override;
   void Dump(CDumpContext& dc) const override;
 
+  virtual void SoundChannelNodeDummy00(int value); // slot 0x05 (0x14) — appends a value
 #define SOUND_CHANNEL_NODE_DUMMY(n) virtual void SoundChannelNodeDummy##n()
-  SOUND_CHANNEL_NODE_DUMMY(00);
   SOUND_CHANNEL_NODE_DUMMY(01);
   SOUND_CHANNEL_NODE_DUMMY(02);
   SOUND_CHANNEL_NODE_DUMMY(03);
