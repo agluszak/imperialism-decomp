@@ -45,6 +45,9 @@ public:
   // Reallocate routeNodeBuffer to hold `count` 0x10-byte route records. 0x0052e7b0.
   void AllocateRouteNodeStateBufferByCount(short count);
 
+  // Map-action context (TZone, stride 0x48) at the given index in contextArray. 0x00563330.
+  TZone* GetMapActionContextEntryByIndex(short index);
+
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
 
   TZone* GetMapActionContextEntryByNationCodeOffset17(short nationCode);

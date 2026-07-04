@@ -22,3 +22,8 @@ void TOcean::AllocateRouteNodeStateBufferByCount(short count) {
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UOcean.h", 0x1e7);
   }
 }
+
+// FUNCTION: IMPERIALISM 0x00563330
+TZone* TOcean::GetMapActionContextEntryByIndex(short index) {
+  return contextArray + index;
+}

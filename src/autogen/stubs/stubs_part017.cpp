@@ -747,14 +747,6 @@ undefined4 RegenerateAllMapActionContextStatusCodes(void)
   return 0;
 }
 
-// ghidra_name GetMapActionContextEntryByIndex
-// ghidra_proto undefined GetMapActionContextEntryByIndex()
-// FUNCTION: IMPERIALISM 0x00563330
-undefined4 GetMapActionContextEntryByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name GetProvinceByTileIndex
 // ghidra_proto void * __cdecl GetProvinceByTileIndex(short nTileIndex)
 // FUNCTION: IMPERIALISM 0x00563360

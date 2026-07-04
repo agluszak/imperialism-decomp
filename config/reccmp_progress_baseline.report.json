@@ -12631,7 +12631,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -23127,7 +23127,7 @@
     },
     {
       "address": "0x563330",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "GetMapActionContextEntryByIndex",
       "type": 1
     },

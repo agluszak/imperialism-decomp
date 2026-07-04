@@ -2866,6 +2866,7 @@ address|target_cpp|ownership|note
 5628f0|src/game/TOcean.cpp|manual|marker_sync
 562d90|src/game/TOcean.cpp|manual|marker_sync
 563300|src/game/TOcean.cpp|manual|marker_sync
+563330|src/game/TOcean_RouteBuffer.cpp|manual|marker_sync
 5634a0|src/game/TOcean.cpp|manual|marker_sync
 563540|src/game/TZone.cpp|manual|marker_sync
 5635e0|src/game/TMapMgr.cpp|manual|marker_sync
