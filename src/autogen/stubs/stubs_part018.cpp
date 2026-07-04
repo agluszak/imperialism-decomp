@@ -851,14 +851,6 @@ undefined4 RecomputeNationComparisonValuesAndNormalizeScale(void)
   return 0;
 }
 
-// ghidra_name TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets
-// ghidra_proto undefined SortSevenEntriesAndUpdatePictureWidgets()
-// FUNCTION: IMPERIALISM 0x00594c00
-undefined4 SortSevenEntriesAndUpdatePictureWidgets(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00594ed0
 // ghidra_proto undefined WrapperFor_ftol_At00594ed0()
 // FUNCTION: IMPERIALISM 0x00594ed0

@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00642268
 class TStatusPicture : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TStatusPicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TStatusPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TStatusPicture)
   virtual ~TStatusPicture(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +23,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x005942f0
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x005942f0
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -123,11 +124,20 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-// === END GENERATED DECLS (TStatusPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TStatusPicture 0xCTOR`).
+  // === END GENERATED DECLS (TStatusPicture) ===
+  char pad90[0x94 - 0x90]; // +0x90
+  int values94[7];         // +0x94 per-entry sort key (score)
+  short pictureIds_b0[7];  // +0xb0 per-entry picture id (-1 = empty slot)
+  char padBE[0xc0 - 0xbe]; // +0xbe
 
   TStatusPicture();
+
+  // Sorts the seven entries by descending value (empty -1 ids sink to the end), then pushes
+  // each entry's picture id into its child picture widget. 0x594c00.
+  void SortSevenEntriesAndUpdatePictureWidgets();
 };
+
+ASSERT_SIZE(TStatusPicture, 0xc0);
 
 // === BEGIN GENERATED (TStatusPicture) — refreshed by `just gen-class TStatusPicture`; do not hand-edit ===
 // clang-format off
