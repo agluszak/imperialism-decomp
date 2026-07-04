@@ -1088,3 +1088,36 @@ Also from this port:
   it to 32%. General rule: mirror the original's caching decisions; a "cleaner" CSE that the
   original didn't make can cost more than it saves. (Same function reconfirmed the note-48
   branch-order rule: `je far` on `type==5` ⇒ source is `if (type != 5) {land} else {water}`.)
+
+## 49. A failed build makes `just stats` report a phantom regression — confirm "Built target" first
+
+When you widen a `virtual` signature you must edit the base decl, the base body, AND every
+override's decl+body in lockstep; if ONE `Edit` silently fails (e.g. the file wasn't Read
+first, so the edit errors and is skipped), the header/body disagree and `just build` fails
+with a `C2511 overloaded member function not found` — but `just stats` then runs against the
+**stale** `.exe` from before your change and shows a large "-N aligned" delta. This is a
+phantom: nothing regressed, the binary just never rebuilt. **Always confirm the build printed
+`Built target Imperialism` before trusting any stats delta.** A whole prior session mis-read
+one such phantom as an "ICF fold wall" and reverted correct work to chase it. Corollary:
+verify empirically before theorizing a linker-fold story — this build has `/OPT:ICF` **off**
+(two byte-identical `void f(){}` stubs, 0x596040 and 0x596080, both survive at distinct
+addresses at 100%/0%), so byte-identical no-op stubs do **not** fold here; a real regression
+has a real cause (usually a broken build or a genuinely wrong signature), not folding.
+
+Also from this cluster (TWorldView/TMapDialog/TOceanDialog/TCitySiteView slots 0x6b–0x80):
+- **A "poison-pill" arg-count mismatch is the class model telling you the arity is wrong.**
+  A slot's base no-op stub `ret N` gives the true arg count directly (`ret 0xc` ⇒ 3 dwords),
+  and every real override of that slot forwards the same list — so recover the signature from
+  `ret N` + the overrides, then apply it to the base and ALL overrides at once. Five base
+  stubs sat at 0–50% purely because they were declared 0-arg (emitting `ret`) against an
+  original that pops the slot's real args.
+- **A dispatcher that `CALL [EAX+byte]` after pushing args is a real virtual call on `this`** —
+  model it as `this->Method(args)` on the recovered class (Hard Rule 11/12), never a raw
+  `vftable[i]`/`reinterpret_cast`. The 8-byte slot-0x79 dispatchers (0x51adc0/0x51c2f0) hit
+  100% as `ReleaseRuntimeSelectionOwnerAndDestroyObject(arg1, arg2, 0)` once that target
+  slot's true 3-arg arity (`ret 0xc`, not the modelled 2) was recovered.
+- **The shared-ILT-thunk call is a permanent ~1-instruction miss.** reccmp attributes the
+  recomp callsite to the unscoped `thunk_X` symbol and the original to `Class::thunk_X`, so a
+  body whose only residual diff is that `call` caps just under 100% (0x51ad70 → 95.24%); the
+  sibling callsite 0x51ac40 shows the identical diff. Accept it as inherent, not a bug in the
+  body.
