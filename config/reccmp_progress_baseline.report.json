@@ -193,6 +193,12 @@
       "type": 1
     },
     {
+      "address": "0x413250",
+      "matching": 0.047619047619047616,
+      "name": "TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250",
+      "type": 1
+    },
+    {
       "address": "0x4133a0",
       "matching": 0.2,
       "name": "OrphanCallChain_C1_I08_004133a0",
@@ -13923,7 +13929,7 @@
     {
       "address": "0x4ee7a0",
       "matching": 0.6942148760330579,
-      "name": "TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults",
+      "name": "TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults",
       "type": 1
     },
     {
@@ -13953,7 +13959,7 @@
     {
       "address": "0x4ef080",
       "matching": 0.12290502793296089,
-      "name": "TSortedByRelationshipList::DeserializeRelationshipSortedListBuffersFromStreamSwapBytes",
+      "name": "TDiplomacyMgr::ReadFrom",
       "type": 1
     },
     {
@@ -13971,7 +13977,7 @@
     {
       "address": "0x4ef590",
       "matching": 0.7384615384615385,
-      "name": "TSortedByRelationshipList::HasWarRelationTurnStampOutOfDate",
+      "name": "TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate",
       "type": 1
     },
     {
@@ -13983,7 +13989,7 @@
     {
       "address": "0x4ef650",
       "matching": 0.59375,
-      "name": "TSortedByRelationshipList::HasAnyWarRelationTurnStampOutOfDateForNation",
+      "name": "TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation",
       "type": 1
     },
     {
@@ -14001,43 +14007,43 @@
     {
       "address": "0x4ef700",
       "matching": 0.6158357771260997,
-      "name": "TSortedByRelationshipList::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode",
+      "name": "TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode",
       "type": 1
     },
     {
       "address": "0x4efc30",
       "matching": 0.6808510638297872,
-      "name": "TSortedByRelationshipList::HasAsymmetricWarRelationForPrimaryNation",
+      "name": "TDiplomacyMgr::HasAllianceGuardSlot60",
       "type": 1
     },
     {
       "address": "0x4efcb0",
       "matching": 0.3944954128440367,
-      "name": "TSortedByRelationshipList::SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors",
+      "name": "TDiplomacyMgr::SetStandingScoreSlot28",
       "type": 1
     },
     {
       "address": "0x4efe30",
       "matching": 0.36065573770491804,
-      "name": "TSortedByRelationshipList::CopyDiplomacyStandingMatrixRowAndColumn",
+      "name": "TDiplomacyMgr::CopyDiplomacyStandingMatrixRowAndColumnSlot2c",
       "type": 1
     },
     {
       "address": "0x4efeb0",
       "matching": 1.0,
-      "name": "TSortedByRelationshipList::ApplyRelationCode4AndQueueEvent18ForTargetNation",
+      "name": "TDiplomacyMgr::ApplyRelationCode4AndQueueEvent18ForTargetNation",
       "type": 1
     },
     {
       "address": "0x4eff40",
       "matching": 0.2857142857142857,
-      "name": "TSortedByRelationshipList::AdjustNationPairDiplomacyStandingAndPropagate",
+      "name": "TDiplomacyMgr::PropagateRelationSideEffectSlot80",
       "type": 1
     },
     {
       "address": "0x4f01e0",
       "matching": 0.473551637279597,
-      "name": "TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn",
+      "name": "TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn",
       "type": 1
     },
     {
@@ -14049,7 +14055,7 @@
     {
       "address": "0x4f05c0",
       "matching": 0.006968641114982578,
-      "name": "TSortedByRelationshipList::SelectPriorityNationIndicesForMinorCapabilityRows",
+      "name": "TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows",
       "type": 1
     },
     {
@@ -14079,19 +14085,19 @@
     {
       "address": "0x4f0e20",
       "matching": 0.0,
-      "name": "TSortedByRelationshipList::RebuildDiplomacyStandingAndInfluenceMatrices",
+      "name": "TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices",
       "type": 1
     },
     {
       "address": "0x4f1570",
       "matching": 0.0392156862745098,
-      "name": "TSortedByRelationshipList::InitializeDiplomacyStandingBaselineRandom",
+      "name": "TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom",
       "type": 1
     },
     {
       "address": "0x4f1630",
       "matching": 0.0,
-      "name": "TSortedByRelationshipList::BuildMajorNationDiplomacyStandingRanking",
+      "name": "TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking",
       "type": 1
     },
     {
@@ -14109,31 +14115,31 @@
     {
       "address": "0x4f19c0",
       "matching": 1.0,
-      "name": "TSortedByRelationshipList::GetNationPairDiplomacyStandingTierCode",
+      "name": "TDiplomacyMgr::GetNationPairDiplomacyStandingTierCode",
       "type": 1
     },
     {
       "address": "0x4f1a80",
       "matching": 0.0,
-      "name": "TSortedByRelationshipList::ShowRelationCodeNoticeForNationPairIfRelevant",
+      "name": "TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant",
       "type": 1
     },
     {
       "address": "0x4f1b10",
       "matching": 0.625,
-      "name": "TSortedByRelationshipList::GetNationPairDiplomacyRelationCode",
+      "name": "TDiplomacyMgr::GetNationPairDiplomacyRelationCode",
       "type": 1
     },
     {
       "address": "0x4f1b40",
       "matching": 1.0,
-      "name": "TSortedByRelationshipList::SetNationPairDiplomacyRelationWithFinalFlag",
+      "name": "TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal",
       "type": 1
     },
     {
       "address": "0x4f1b70",
       "matching": 0.23788546255506607,
-      "name": "TSortedByRelationshipList::SetNationPairDiplomacyRelationAndApplySideEffects",
+      "name": "TDiplomacyMgr::SetNationPairDiplomacyRelationCode",
       "type": 1
     },
     {
@@ -14151,31 +14157,31 @@
     {
       "address": "0x4f1f70",
       "matching": 0.7428571428571429,
-      "name": "TSortedByRelationshipList::CollectMinorNationStandingEntriesForMajorNation",
+      "name": "TDiplomacyMgr::BuildRelationshipListSlot88",
       "type": 1
     },
     {
       "address": "0x4f2050",
       "matching": 1.0,
-      "name": "TSortedByRelationshipList::CountNationAllianceRelationsForNation",
+      "name": "TDiplomacyMgr::CountMajorAllianceRelationsSlot8c",
       "type": 1
     },
     {
       "address": "0x4f2090",
       "matching": 0.35714285714285715,
-      "name": "TSortedByRelationshipList::GetNthAlliedMajorNationSlotForNation",
+      "name": "TDiplomacyMgr::GetNthAlliedMajorNationSlot90",
       "type": 1
     },
     {
       "address": "0x4f2100",
       "matching": 0.859504132231405,
-      "name": "TSortedByRelationshipList::SelectNationSlotFromCollectedStandingEntries",
+      "name": "TDiplomacyMgr::SelectNationSlotFromCollectedStandingEntriesSlot98",
       "type": 1
     },
     {
       "address": "0x4f21f0",
       "matching": 0.31952662721893493,
-      "name": "TSortedByRelationshipList::SelectDiplomacyTargetNationFromCandidateSet",
+      "name": "TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94",
       "type": 1
     },
     {
