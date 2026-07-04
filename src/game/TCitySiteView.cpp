@@ -23,13 +23,15 @@ void TCitySiteView::OrphanRetStub_005966a0(int arg1) {
 
 // FUNCTION: IMPERIALISM 0x0051c2f0
 void TCitySiteView::OrphanRetStub_00596680(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+  ReleaseRuntimeSelectionOwnerAndDestroyObject(arg1, arg2, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0051c320
-undefined TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1,
-                                                                      undefined4 param_2) {
+undefined TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2,
+                                                                      int param_3) {
+  (void)param_1;
+  (void)param_2;
+  (void)param_3;
   return 0;
 }
 

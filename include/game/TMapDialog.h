@@ -73,6 +73,7 @@ public:
   virtual undefined CopyDiagonalMaskWideningBlockKernel();
   virtual undefined Copy64x64TileBlockWithStrideAdjustment();
   virtual undefined HasRenderableParentAndContentSlotA2();
-  virtual undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, undefined4 param_2);
+  virtual undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2,
+                                                                 int param_3);
   virtual undefined UpdateMapInteractionPreviewParityAndRenderTransientSprites();
 };

@@ -14,8 +14,8 @@ public:
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) override;
   virtual void OrphanRetStub_005966a0(int arg1) override;
   virtual void OrphanRetStub_00596680(int arg1, int arg2) override;
-  virtual undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1,
-                                                                 undefined4 param_2) override;
+  virtual undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2,
+                                                                 int param_3) override;
 
   TCitySiteView();
 };

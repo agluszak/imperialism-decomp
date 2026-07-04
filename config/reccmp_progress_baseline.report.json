@@ -17168,13 +17168,13 @@
     },
     {
       "address": "0x51adc0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TMapDialog::OrphanRetStub_00596680",
       "type": 1
     },
     {
       "address": "0x51adf0",
-      "matching": 0.0,
+      "matching": 0.02127659574468085,
       "name": "TMapDialog::SetMapDialogCellCoordinatesAndRefresh",
       "type": 1
     },
@@ -17288,13 +17288,13 @@
     },
     {
       "address": "0x51c2f0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TCitySiteView::OrphanRetStub_00596680",
       "type": 1
     },
     {
       "address": "0x51c320",
-      "matching": 0.0,
+      "matching": 0.058823529411764705,
       "name": "TCitySiteView::SetMapDialogCellCoordinatesAndRefresh",
       "type": 1
     },
