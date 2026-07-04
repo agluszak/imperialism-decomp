@@ -7,6 +7,17 @@ class CString;
 // mapped form of that argument). `ctx` is unused. 0x0057fef0.
 void scanBracketExpressions(void* ctx, void* out, const char* input, ...);
 void GenerateMappedFlavorTextByCurrentContextNation(CString* dest);
+void BuildMapContextStatusStringVariantA(CString* out);
+void BuildMapContextStatusStringVariantB(CString* out);
+void BuildMapContextStatusStringVariantC(CString* out);
+void BuildMapContextStatusStringVariantD(CString* out);
+void BuildMapContextStatusStringVariantE(CString* out);
+void BuildMapContextStatusStringVariantF(CString* out);
+void BuildMapContextStatusStringVariantG(CString* out);
+void BuildMapContextStatusStringVariantH(CString* out);
+void BuildMapContextStatusStringVariantI(CString* out);
+void BuildMapContextStatusStringVariantJ(CString* out);
+void BuildMapContextStatusStringVariantK(CString* out);
 void BuildMapContextStatusStringVariantL(CString* out);
 void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot);
 void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantIndex);

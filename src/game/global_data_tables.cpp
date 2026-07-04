@@ -796,6 +796,8 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // === Map-context flavor-text string pool (procedural syllable/grammar .rdata literals
 // referenced by the BuildMapContextStatusString / GenerateMappedFlavorText family).
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
+// GLOBAL: IMPERIALISM 0x00695794
+char s_mcflavor_00695794[] = "";
 // GLOBAL: IMPERIALISM 0x00696674
 char s_mcflavor_00696674[] = "";
 // GLOBAL: IMPERIALISM 0x00696d10
@@ -1082,8 +1084,18 @@ char s_mcflavor_0069ad4c[] = "";
 char s_mcflavor_0069ad50[] = "";
 // GLOBAL: IMPERIALISM 0x0069ad54
 char s_mcflavor_0069ad54[] = "";
+// GLOBAL: IMPERIALISM 0x0069ad58
+char s_mcflavor_0069ad58[] = "";
+// GLOBAL: IMPERIALISM 0x0069ad60
+char s_mcflavor_0069ad60[] = "";
+// GLOBAL: IMPERIALISM 0x0069ad68
+char s_mcflavor_0069ad68[] = "";
+// GLOBAL: IMPERIALISM 0x0069ad70
+char s_mcflavor_0069ad70[] = "";
 // GLOBAL: IMPERIALISM 0x0069ad78
 char s_mcflavor_0069ad78[] = "";
+// GLOBAL: IMPERIALISM 0x0069ad84
+char s_mcflavor_0069ad84[] = "";
 // GLOBAL: IMPERIALISM 0x0069ad8c
 char s_mcflavor_0069ad8c[] = "";
 // GLOBAL: IMPERIALISM 0x0069ad90
@@ -1320,6 +1332,24 @@ char s_mcflavor_0069af94[] = "";
 char s_mcflavor_0069af98[] = "";
 // GLOBAL: IMPERIALISM 0x0069af9c
 char s_mcflavor_0069af9c[] = "";
+// GLOBAL: IMPERIALISM 0x0069afa0
+char s_mcflavor_0069afa0[] = "";
+// GLOBAL: IMPERIALISM 0x0069afb0
+char s_mcflavor_0069afb0[] = "";
+// GLOBAL: IMPERIALISM 0x0069afc0
+char s_mcflavor_0069afc0[] = "";
+// GLOBAL: IMPERIALISM 0x0069afd0
+char s_mcflavor_0069afd0[] = "";
+// GLOBAL: IMPERIALISM 0x0069afdc
+char s_mcflavor_0069afdc[] = "";
+// GLOBAL: IMPERIALISM 0x0069afec
+char s_mcflavor_0069afec[] = "";
+// GLOBAL: IMPERIALISM 0x0069aff4
+char s_mcflavor_0069aff4[] = "";
+// GLOBAL: IMPERIALISM 0x0069b004
+char s_mcflavor_0069b004[] = "";
+// GLOBAL: IMPERIALISM 0x0069b010
+char s_mcflavor_0069b010[] = "";
 // GLOBAL: IMPERIALISM 0x0069b01c
 char s_mcflavor_0069b01c[] = "";
 // GLOBAL: IMPERIALISM 0x0069b020
@@ -1456,6 +1486,8 @@ char s_mcflavor_0069b130[] = "";
 char s_mcflavor_0069b134[] = "";
 // GLOBAL: IMPERIALISM 0x0069b138
 char s_mcflavor_0069b138[] = "";
+// GLOBAL: IMPERIALISM 0x0069b13c
+char s_mcflavor_0069b13c[] = "";
 // GLOBAL: IMPERIALISM 0x0069b14c
 char s_mcflavor_0069b14c[] = "";
 // GLOBAL: IMPERIALISM 0x0069b158

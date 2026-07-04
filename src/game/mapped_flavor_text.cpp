@@ -12,18 +12,7 @@ undefined4 GenerateMappedFlavorTextVariantC_005cf1b0(void);
 undefined4 GenerateMappedFlavorTextVariantE_005ccce0(void);
 undefined4 GenerateMappedFlavorTextVariantA_005d13d0(void);
 undefined4 GenerateMappedFlavorTextVariantB_005cfc40(void);
-undefined4 BuildMapContextStatusStringVariantH(void);
-undefined4 BuildMapContextStatusStringVariantK(void);
-undefined4 BuildMapContextStatusStringVariantB(void);
 undefined4 GenerateMappedFlavorTextVariantD_005d33a0(void);
-undefined4 BuildMapContextStatusStringVariantI(void);
-undefined4 BuildMapContextStatusStringVariantG(void);
-undefined4 BuildMapContextStatusStringVariantF(void);
-undefined4 BuildMapContextStatusStringVariantJ(void);
-undefined4 BuildMapContextStatusStringVariantC(void);
-undefined4 BuildMapContextStatusStringVariantE(void);
-undefined4 BuildMapContextStatusStringVariantD(void);
-undefined4 BuildMapContextStatusStringVariantA(void);
 undefined4 ShouldRetryMappedFlavorTextGeneration(void);
 
 // FUNCTION: IMPERIALISM 0x0057fef0
@@ -128,43 +117,43 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
       reinterpret_cast<void(__cdecl*)(CString*)>(GenerateMappedFlavorTextVariantB_005cfc40)(dest);
       break;
     case 5:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantH)(dest);
+      BuildMapContextStatusStringVariantH(dest);
       break;
     case 6:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantK)(dest);
+      BuildMapContextStatusStringVariantK(dest);
       break;
     case 7:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantB)(dest);
+      BuildMapContextStatusStringVariantB(dest);
       break;
     case 8:
       reinterpret_cast<void(__cdecl*)(CString*)>(GenerateMappedFlavorTextVariantD_005d33a0)(dest);
       break;
     case 9:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantI)(dest);
+      BuildMapContextStatusStringVariantI(dest);
       break;
     case 10:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantG)(dest);
+      BuildMapContextStatusStringVariantG(dest);
       break;
     case 0xb:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantF)(dest);
+      BuildMapContextStatusStringVariantF(dest);
       break;
     case 0xc:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantJ)(dest);
+      BuildMapContextStatusStringVariantJ(dest);
       break;
     case 0xd:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantC)(dest);
+      BuildMapContextStatusStringVariantC(dest);
       break;
     case 0xe:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantE)(dest);
+      BuildMapContextStatusStringVariantE(dest);
       break;
     case 0xf:
       BuildMapContextStatusStringVariantL(dest);
       break;
     case 0x10:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantD)(dest);
+      BuildMapContextStatusStringVariantD(dest);
       break;
     case 0x11:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantA)(dest);
+      BuildMapContextStatusStringVariantA(dest);
       break;
     }
     retry = reinterpret_cast<char(__cdecl*)(CString*)>(ShouldRetryMappedFlavorTextGeneration)(dest);

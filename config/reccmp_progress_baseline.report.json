@@ -4228,7 +4228,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -11754,7 +11754,7 @@
     },
     {
       "address": "0x4d8000",
-      "matching": 0.3289817232375979,
+      "matching": 0.3237597911227154,
       "name": "TCountry::PopulateSelectableEntryFlavorTextAndOrdinals",
       "type": 1
     },
@@ -12415,7 +12415,7 @@
     },
     {
       "address": "0x4de700",
-      "matching": 0.6216216216216216,
+      "matching": 0.6486486486486487,
       "name": "TGreatPower::CanAffordDiplomacyGrantEntryForTarget",
       "type": 1
     },
@@ -12643,7 +12643,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -16112,7 +16112,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.19900045433893684,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17960,7 +17960,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9122807017543859,
+      "matching": 0.9391304347826087,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -18008,7 +18008,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7021276595744681,
+      "matching": 0.7311827956989247,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -27143,7 +27143,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.47715736040609136,
+      "matching": 0.45685279187817257,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -32316,73 +32316,73 @@
     },
     {
       "address": "0x5c4c60",
-      "matching": 0.0053475935828877,
+      "matching": 0.7247474747474747,
       "name": "BuildMapContextStatusStringVariantA",
       "type": 1
     },
     {
       "address": "0x5c57f0",
-      "matching": 0.005813953488372093,
+      "matching": 0.30446927374301674,
       "name": "BuildMapContextStatusStringVariantB",
       "type": 1
     },
     {
       "address": "0x5c61a0",
-      "matching": 0.005115089514066497,
+      "matching": 0.6348837209302326,
       "name": "BuildMapContextStatusStringVariantC",
       "type": 1
     },
     {
       "address": "0x5c6c40",
-      "matching": 0.005128205128205128,
+      "matching": 0.6804374240583232,
       "name": "BuildMapContextStatusStringVariantD",
       "type": 1
     },
     {
       "address": "0x5c77f0",
-      "matching": 0.005698005698005698,
+      "matching": 0.6116373477672531,
       "name": "BuildMapContextStatusStringVariantE",
       "type": 1
     },
     {
       "address": "0x5c81f0",
-      "matching": 0.006309148264984227,
+      "matching": 0.5118343195266272,
       "name": "BuildMapContextStatusStringVariantF",
       "type": 1
     },
     {
       "address": "0x5c8ae0",
-      "matching": 0.0037174721189591076,
+      "matching": 0.2313167259786477,
       "name": "BuildMapContextStatusStringVariantG",
       "type": 1
     },
     {
       "address": "0x5c9b20",
-      "matching": 0.0049382716049382715,
+      "matching": 0.6862514688601645,
       "name": "BuildMapContextStatusStringVariantH",
       "type": 1
     },
     {
       "address": "0x5ca860",
-      "matching": 0.013071895424836602,
+      "matching": 0.6128048780487805,
       "name": "BuildMapContextStatusStringVariantI",
       "type": 1
     },
     {
       "address": "0x5cb100",
-      "matching": 0.006389776357827476,
+      "matching": 0.6032689450222882,
       "name": "BuildMapContextStatusStringVariantJ",
       "type": 1
     },
     {
       "address": "0x5cb960",
-      "matching": 0.005076142131979695,
+      "matching": 0.6283704572098476,
       "name": "BuildMapContextStatusStringVariantK",
       "type": 1
     },
     {
       "address": "0x5cc590",
-      "matching": 0.5424292845257903,
+      "matching": 0.5862646566164154,
       "name": "BuildMapContextStatusStringVariantL",
       "type": 1
     },
