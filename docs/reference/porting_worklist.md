@@ -254,3 +254,28 @@ the return type widened to the true common base `TView*`, after which
 real virtuals (Hard Rule 11). That return-type change ripples to every
 `ResolveControlByTag` caller (each would need to re-cast its result), so it is a
 deliberate cross-file modeling change to stage carefully, not a per-method wire.
+
+## TViewMgr 'main'-node receiver: TMapDialog, not bare TWorldView (modeling correction)
+
+Deeper investigation of the 0x5d7090 "poison pill" (caller pushes 3 args to node
+slot 0x79 whose TWorldView impl is `ret 8`) showed it was a receiver-class /
+method-conflation error, not an original bug:
+
+- The turn-event 'main' node is a **TMapDialog** (`: TWorldView`, vtable 0x658a58),
+  the strategic map dialog — NOT a bare TWorldView. TMapDialog OVERRIDES the high
+  slots with real methods:
+  - slot 0x6b (byte 0x1ac) → 0x00523b70, a real 910-byte method (currently stubbed
+    at 0%, mislabeled `VTableSlot6B`).
+  - slot 0x79 (byte 0x1e4) → 0x0051adc0, a real 23-byte dispatcher forwarding
+    (arg0, arg1, 0) to its own vtable slot 0x28c (currently stubbed at 0%,
+    **mislabeled `OrphanRetStub_00596680`** — the SAME junk name as TWorldView's
+    unrelated 0x596680 `ret 8` stub; a genuine two-methods-conflated bug).
+- So wiring TViewMgr's turn-event methods should cast the node to **TMapDialog\***
+  and call TMapDialog's real overrides. Because those are real methods (not `ret`
+  stubs), wiring to them does NOT trigger the ICF fold-cascade that widening the
+  TWorldView base stub did.
+- Prereq: port TMapDialog::0x51adc0 and 0x523b70 (rename off the colliding
+  `OrphanRetStub_00596680` label first) so the wired callsites dispatch to real
+  bodies. The slot-0x79 canonical signature is 3-arg while the concrete bodies use
+  2 (the 3rd is passed-but-ignored) — expect the slot-0x79 body to land ~90% (one
+  `ret 8` vs `ret 0xc` epilogue), still far above the 0% stub.
