@@ -10,6 +10,8 @@
 #include "game/global_data_tables.h"
 #include "game/TMinor.h"
 #include "game/TForeignMinister.h"
+#include "game/TCountry.h"
+#include "game/nation_slot_eligibility.h"
 
 // Preset seed table for the metric rows (original global @ 0x69a910) and the proposal-code
 // lookup used by the code-resolver. Kept file-local until modeled as recovered globals.
@@ -95,7 +97,19 @@ void TTradeMgr::InitializeNationInteractionStateManagerDefaults() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b7bc0
-void TTradeMgr::Free() {}
+void TTradeMgr::Free() {
+  TDealList** p = this->categoryRankLists;
+  int i = 0x11;
+  do {
+    if (*p != 0) {
+      (*p)->ReleaseSlot24();
+    }
+    *p = 0;
+    p = p + 1;
+    i = i + -1;
+  } while (i != 0);
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x005b7c10
 void TTradeMgr::ReadFrom(TStream* stream) {
@@ -108,8 +122,48 @@ void TTradeMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b7fc0
-undefined4 TTradeMgr::OrphanCallChain_C3_I50_005b7fc0() {
-  return 0;
+void TTradeMgr::OrphanCallChain_C3_I50_005b7fc0() {
+  short* rowCursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x0e);
+  int rows = 0x11;
+  do {
+    rowCursor[-1] = 0;
+    rowCursor[0] = 0;
+    rowCursor[5] = 0;
+    *reinterpret_cast<int*>(rowCursor + 1) = 0;
+    *reinterpret_cast<int*>(rowCursor + 3) = 0;
+    short* cell = rowCursor + 0x1e;
+    int c = 0x17;
+    do {
+      cell[-0x17] = 0;
+      *cell = 0;
+      cell = cell + 1;
+      c = c + -1;
+    } while (c != 0);
+    rowCursor = rowCursor + 0x50;
+    rows = rows + -1;
+  } while (rows != 0);
+
+  TDealList** p = &this->categoryRankLists[0xd];
+  int i = 4;
+  do {
+    (*p)->ResetPtrListRecordsSlot1C();
+    p = p + 1;
+    i = i + -1;
+  } while (i != 0);
+  p = &this->categoryRankLists[7];
+  i = 6;
+  do {
+    (*p)->ResetPtrListRecordsSlot1C();
+    p = p + 1;
+    i = i + -1;
+  } while (i != 0);
+  p = &this->categoryRankLists[0];
+  i = 7;
+  do {
+    (*p)->ResetPtrListRecordsSlot1C();
+    p = p + 1;
+    i = i + -1;
+  } while (i != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005b8080
@@ -227,8 +281,31 @@ short TTradeMgr::GetNationMetricBucketValueByIndex(short category) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b9060
-undefined4 TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster() {
-  return 0;
+void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot) {
+  TDealList* list = this->categoryRankLists[slot];
+  int count = *reinterpret_cast<int*>(reinterpret_cast<char*>(list) + 8);
+  short idx = 1;
+  int i = 1;
+  if (0 < count) {
+    do {
+      short* entry = reinterpret_cast<short*>(list->GetEntrySlot2C(i));
+      int transfer =
+          g_apTerrainTypeDescriptorTable[entry[1]]->SumDiplomacyState1c6AndRelationDeltaSnapshot(
+              slot);
+      char inPlay = g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(entry[1]);
+      if ((inPlay != 0) &&
+          (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(entry[0]) == 0) &&
+          (g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2() < transfer)) {
+        transfer = g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2();
+      }
+      if (0 < transfer) {
+        g_apTerrainTypeDescriptorTable[entry[0]]->TryDispatchNationActionViaUiContextOrFallback(
+            entry[1], transfer, entry[4], slot);
+      }
+      idx = idx + 1;
+      i = static_cast<int>(idx);
+    } while (i <= count);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005b9190
@@ -237,8 +314,48 @@ undefined4 TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper(
 }
 
 // FUNCTION: IMPERIALISM 0x005b9410
-undefined4 TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline() {
-  return 0;
+void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline() {
+  int slot = 0xd;
+  do {
+    this->ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(static_cast<short>(slot));
+    slot = slot + 1;
+  } while (static_cast<short>(slot) < 0x11);
+  slot = 7;
+  do {
+    this->ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(static_cast<short>(slot));
+    slot = slot + 1;
+  } while (static_cast<short>(slot) < 0xd);
+  slot = 0;
+  do {
+    this->ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(static_cast<short>(slot));
+    slot = slot + 1;
+  } while (static_cast<short>(slot) < 7);
+
+  TGreatPower** np = g_apNationStates;
+  int i = 7;
+  do {
+    if (*np != 0) {
+      (*np)->ClearDiplomacyState1c6Block();
+    }
+    np = np + 1;
+    i = i + -1;
+  } while (i != 0);
+
+  short* base = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x78);
+  int rows = 0x11;
+  do {
+    short* q = base;
+    int c = 0x17;
+    do {
+      if (*q < q[-0x17]) {
+        *q = q[-0x17];
+      }
+      q = q + 1;
+      c = c + -1;
+    } while (c != 0);
+    base = base + 0x50;
+    rows = rows + -1;
+  } while (rows != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005b94d0
@@ -309,13 +426,53 @@ void TTradeMgr::SetNationMetricCellValueByIndex(short category, short value) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b97c0
-undefined4 TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
-  return 0;
+void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
+  int slot = 0;
+  TGreatPower** np = g_apNationStates;
+  do {
+    if ((IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) && (*np != 0)) {
+      (*np)->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
+    }
+    slot = slot + 1;
+    np = np + 1;
+  } while (static_cast<short>(slot) < 7);
+
+  TMinor** mp = g_apSecondaryNationStateSlots + 7;
+  int i = 0x10;
+  do {
+    if (*mp != 0) {
+      (*mp)->RebuildDiplomacyEconomicPressureFromMapState();
+    }
+    mp = mp + 1;
+    i = i + -1;
+  } while (i != 0);
+
+  slot = 0;
+  np = g_apNationStates;
+  do {
+    if ((IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) && (*np != 0)) {
+      (*np)->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
+    }
+    slot = slot + 1;
+    np = np + 1;
+  } while (static_cast<short>(slot) < 7);
+
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x4) = 0;
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x6) = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005b9890
-undefined4 TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations() {
-  return 0;
+void TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations() {
+  TMinor** p = g_apSecondaryNationStateSlots + 7;
+  int i = 0x10;
+  do {
+    if (*p != 0) {
+      (*p)->SeedRandomDiplomacyPolicyThresholds();
+    }
+    p = p + 1;
+    i = i + -1;
+  } while (i != 0);
+  this->BuildSecondaryNationMetricBucketsAndWeightedTrendScores();
 }
 
 // FUNCTION: IMPERIALISM 0x005b98d0

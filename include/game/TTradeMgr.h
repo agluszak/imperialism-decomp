@@ -34,7 +34,7 @@ public:
   // Introduced virtuals (slots 0x0a-0x22), declared in slot order so the compiler lays
   // out vtable 0x66d990 correctly. The four with real bodies keep their established
   // (caller-facing) names; the rest are honest stubs pending their own port.
-  virtual undefined4 OrphanCallChain_C3_I50_005b7fc0();                           // 0x0a 0x5b7fc0
+  virtual void OrphanCallChain_C3_I50_005b7fc0();                                 // 0x0a 0x5b7fc0
   virtual undefined4 AccumulateDiplomacyRelationChangesAndQueueEvents();          // 0x0b 0x5b8080
   virtual void DispatchNationMetricUpdatePassForAllSlots();                       // 0x0c 0x5b8aa0
   virtual void ComputeNationMetricBaselineValueForSlot(short slot);               // 0x0d 0x5b8ad0
@@ -45,15 +45,15 @@ public:
   virtual short GetNationMetricRosterWordAtOffset0C(short category);              // 0x12 0x5b8fb0
   virtual short QueryProposalWeightSlot4C(short metricSlot);                      // 0x13 0x5b8fe0
   virtual short GetNationMetricBucketValueByIndex(short category);                // 0x14 0x5b9030
-  virtual undefined4 ApplyDiplomacyTransferEffectsAcrossNationMetricRoster();     // 0x15 0x5b9060
+  virtual void ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot); // 0x15 0x5b9060
   virtual undefined4 ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper(); // 0x16 0x5b9190
-  virtual undefined4 RebuildNationMetricPassesAndClampRowsByBaseline();           // 0x17 0x5b9410
+  virtual void RebuildNationMetricPassesAndClampRowsByBaseline();                 // 0x17 0x5b9410
   virtual void DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
                                             int maxAmount, int targetNation, char emitEventFlag,
                                             char skipLocalizationBranch);        // 0x18 0x5b94d0
   virtual void SetNationMetricCellValueByIndex(short category, short value);     // 0x19 0x5b9790
-  virtual undefined4 RunNationUpdatePassesAndResetTransitionFlags();             // 0x1a 0x5b97c0
-  virtual undefined4 RunNationMetricPreUpdatePassAcrossSecondaryNations();       // 0x1b 0x5b9890
+  virtual void RunNationUpdatePassesAndResetTransitionFlags();                   // 0x1a 0x5b97c0
+  virtual void RunNationMetricPreUpdatePassAcrossSecondaryNations();             // 0x1b 0x5b9890
   virtual undefined4 BuildSecondaryNationMetricBucketsAndWeightedTrendScores();  // 0x1c 0x5b9b30
   virtual undefined4 BuildEligibleNationMetricBucketsAndWeightedTrendScores();   // 0x1d 0x5b98d0
   virtual char IsNationMetricCellNegative(int row, int col);                     // 0x1e 0x5b9f70

@@ -12625,7 +12625,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12637,7 +12637,7 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -31188,7 +31188,7 @@
     },
     {
       "address": "0x5b7bc0",
-      "matching": 0.07692307692307693,
+      "matching": 1.0,
       "name": "OrphanCallChain_C2_I25_005b7bc0",
       "type": 1
     },
@@ -31200,7 +31200,7 @@
     },
     {
       "address": "0x5b7fc0",
-      "matching": 0.038461538461538464,
+      "matching": 0.5504587155963303,
       "name": "OrphanCallChain_C3_I50_005b7fc0",
       "type": 1
     },
@@ -31271,7 +31271,7 @@
     },
     {
       "address": "0x5b9060",
-      "matching": 0.0,
+      "matching": 0.6363636363636364,
       "name": "TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster",
       "type": 1
     },
@@ -31289,7 +31289,7 @@
     },
     {
       "address": "0x5b9410",
-      "matching": 0.03508771929824561,
+      "matching": 0.6486486486486487,
       "name": "TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline",
       "type": 1
     },
@@ -31307,13 +31307,13 @@
     },
     {
       "address": "0x5b97c0",
-      "matching": 0.037037037037037035,
+      "matching": 0.7961165048543689,
       "name": "TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags",
       "type": 1
     },
     {
       "address": "0x5b9890",
-      "matching": 0.08695652173913043,
+      "matching": 0.6829268292682927,
       "name": "TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations",
       "type": 1
     },
