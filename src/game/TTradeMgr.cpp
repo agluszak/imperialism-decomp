@@ -12,6 +12,7 @@
 #include "game/TForeignMinister.h"
 #include "game/TCountry.h"
 #include "game/nation_slot_eligibility.h"
+#include "game/TStream.h"
 
 // Preset seed table for the metric rows (original global @ 0x69a910) and the proposal-code
 // lookup used by the code-resolver. Kept file-local until modeled as recovered globals.
@@ -113,12 +114,111 @@ void TTradeMgr::Free() {
 
 // FUNCTION: IMPERIALISM 0x005b7c10
 void TTradeMgr::ReadFrom(TStream* stream) {
-  (void)stream;
+  if (g_nSaveFormatVersion < 0x27) {
+    stream->ReadBytes(reinterpret_cast<char*>(this) + 0x8, 0xaa0);
+  } else {
+    char* rowCursor = reinterpret_cast<char*>(this) + 0xa;
+    int rows = 0x11;
+    do {
+      stream->ReadBytes(rowCursor - 2, 2);
+      stream->ReadBytes(rowCursor, 2);
+      stream->ReadBytes(rowCursor + 2, 2);
+      stream->ReadBytes(rowCursor + 4, 2);
+      stream->ReadBytes(rowCursor + 6, 8);
+      stream->ReadBytes(rowCursor + 0xe, 2);
+      stream->ReadBytes(rowCursor + 0x10, 2);
+      char* cell = rowCursor + 0x12;
+      stream->ReadBytes(cell, 0x2e);
+      int c = 0x17;
+      do {
+        char t = cell[0];
+        cell[0] = cell[1];
+        cell[1] = t;
+        cell = cell + 2;
+        c = c + -1;
+      } while (c != 0);
+      cell = rowCursor + 0x40;
+      stream->ReadBytes(cell, 0x2e);
+      c = 0x17;
+      do {
+        char t = cell[0];
+        cell[0] = cell[1];
+        cell[1] = t;
+        cell = cell + 2;
+        c = c + -1;
+      } while (c != 0);
+      cell = rowCursor + 0x6e;
+      stream->ReadBytes(cell, 0x2e);
+      c = 0x17;
+      do {
+        char t = cell[0];
+        cell[0] = cell[1];
+        cell[1] = t;
+        cell = cell + 2;
+        c = c + -1;
+      } while (c != 0);
+      rowCursor = rowCursor + 0xa0;
+      rows = rows + -1;
+    } while (rows != 0);
+  }
+  TDealList** p = this->categoryRankLists;
+  int i = 0x11;
+  do {
+    (*p)->ResetPtrListRecordsSlot1C();
+    (*p)->slot18();
+    p = p + 1;
+    i = i + -1;
+  } while (i != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005b7d90
 void TTradeMgr::WriteTo(TStream* stream) {
-  (void)stream;
+  char* rowCursor = reinterpret_cast<char*>(this) + 0xa;
+  int rows = 0x11;
+  do {
+    stream->WriteBytesSlot78(rowCursor - 2, 2);
+    stream->WriteBytesSlot78(rowCursor, 2);
+    stream->WriteBytesSlot78(rowCursor + 2, 2);
+    stream->WriteBytesSlot78(rowCursor + 4, 2);
+    stream->WriteBytesSlot78(rowCursor + 6, 8);
+    stream->WriteBytesSlot78(rowCursor + 0xe, 2);
+    stream->WriteBytesSlot78(rowCursor + 0x10, 2);
+    char* cell = rowCursor + 0x12;
+    int c = 0x17;
+    do {
+      short swapped = static_cast<short>((cell[0] & 0xff) | (cell[1] << 8));
+      stream->WriteBytesSlot78(&swapped, 2);
+      cell = cell + 2;
+      c = c + -1;
+    } while (c != 0);
+    cell = rowCursor + 0x40;
+    c = 0x17;
+    do {
+      short swapped = static_cast<short>((cell[0] & 0xff) | (cell[1] << 8));
+      stream->WriteBytesSlot78(&swapped, 2);
+      cell = cell + 2;
+      c = c + -1;
+    } while (c != 0);
+    cell = rowCursor + 0x6e;
+    c = 0x17;
+    do {
+      short swapped = static_cast<short>((cell[0] & 0xff) | (cell[1] << 8));
+      stream->WriteBytesSlot78(&swapped, 2);
+      cell = cell + 2;
+      c = c + -1;
+    } while (c != 0);
+    rowCursor = rowCursor + 0xa0;
+    rows = rows + -1;
+  } while (rows != 0);
+
+  TDealList** p = this->categoryRankLists;
+  int i = 0x11;
+  do {
+    (*p)->ResetPtrListRecordsSlot1C();
+    (*p)->slot18();
+    p = p + 1;
+    i = i + -1;
+  } while (i != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005b7fc0
