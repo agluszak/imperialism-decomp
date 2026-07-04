@@ -2084,6 +2084,11 @@ address|target_cpp|ownership|note
 50fe10|src/game/TMapMgr.cpp|manual|marker_sync
 510210|src/game/TMapMgr.cpp|manual|marker_sync
 5107e0|src/game/TMapMgr.cpp|manual|marker_sync
+5108d0|src/game/TMapMgr.cpp|manual|marker_sync
+5112f0|src/game/TMapMgr.cpp|manual|marker_sync
+511360|src/game/TMapMgr.cpp|manual|marker_sync
+5113d0|src/game/TMapMgr.cpp|manual|marker_sync
+511440|src/game/TMapMgr.cpp|manual|marker_sync
 511610|src/game/TMapMgr.cpp|manual|marker_sync
 511a70|src/game/TMapMgr.cpp|manual|marker_sync
 511e80|src/game/TMapMgr.cpp|manual|marker_sync

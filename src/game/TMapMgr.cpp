@@ -308,6 +308,229 @@ undefined TMapMgr::OrphanLeaf_NoCall_Ins08_005178c0() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005108d0
+int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
+  short sTileIndex = (short)nTileIndex;
+  int iTileIndex = (int)sTileIndex;
+  int result = 0;
+  TTerrainStateRecordView* tiles = terrainStateTable;
+  TTerrainStateRecordView* cur = &tiles[iTileIndex];
+  if (cur->pad00[0] != 5) {
+    char code = cur->roadFlag;
+    switch (code) {
+    case 1:
+      return 0xb;
+    case 2:
+      return 0xc;
+    case 3:
+      code = tiles[(short)(sTileIndex - 1)].roadFlag;
+      if (code == 0xf || code == 0x1f || code == 0x11 || code == 0x21 || code == 0x13 ||
+          code == 0x23 || code == 0x15 || code == 0x25 || code == 0x2c || code == 0x34) {
+        return 0xd;
+      }
+      code = tiles[(short)(sTileIndex - 1)].roadFlag;
+      if (code != 0x10 && code != 0x20 && code != 0x12 && code != 0x22 && code != 0x14 &&
+          code != 0x24 && code != 0x16 && code != 0x26 && code != 0x2d && code != 0x35) {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0xd;
+      }
+      return 0xe;
+    case 4:
+      if (iTileIndex % 0x6c != 0x6b) {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        return 0x10 - (unsigned int)((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0);
+      }
+      code = tiles[(short)(sTileIndex - 0x6b)].roadFlag;
+      if (code == 0xd || code == 0x1d || code == 0x11 || code == 0x21 || code == 0x12 ||
+          code == 0x22 || code == 0x17 || code == 0x27 || code == 0x30 || code == 0x38) {
+        return 0xf;
+      }
+      code = tiles[(short)(sTileIndex - 0x6b)].roadFlag;
+      if (code == 0xe || code == 0x1e || code == 0x13 || code == 0x23 || code == 0x14 ||
+          code == 0x24 || code == 0x18 || code == 0x28 || code == 0x31 || code == 0x39) {
+        return 0x10;
+      }
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0xf;
+    case 5:
+      code = tiles[(short)(sTileIndex - 1)].roadFlag;
+      if (code == 0xf || code == 0x1f || code == 0x11 || code == 0x21 || code == 0x13 ||
+          code == 0x23 || code == 0x15 || code == 0x25 || code == 0x2c || code == 0x34) {
+        if (iTileIndex % 0x6c != 0x6b) {
+          g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+          return 0x12 - (unsigned int)((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0);
+        }
+        code = tiles[(short)(sTileIndex - 0x6b)].roadFlag;
+        if (code != 0xd && code != 0x1d && code != 0x11 && code != 0x21 && code != 0x12 &&
+            code != 0x22 && code != 0x17 && code != 0x27 && code != 0x30 && code != 0x38) {
+          return 0x12;
+        }
+        return 0x11;
+      }
+      code = tiles[(short)(sTileIndex - 1)].roadFlag;
+      if (code == 0x10 || code == 0x20 || code == 0x12 || code == 0x22 || code == 0x14 ||
+          code == 0x24 || code == 0x16 || code == 0x26 || code == 0x2d || code == 0x35) {
+        if (iTileIndex % 0x6c != 0x6b) {
+        lcg_variant_0x14:
+          g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+          return 0x14 - (unsigned int)((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0);
+        }
+        code = tiles[(short)(sTileIndex - 0x6b)].roadFlag;
+      } else {
+        if (iTileIndex % 0x6c != 0x6b) {
+          goto lcg_variant_0x14;
+        }
+        code = tiles[(short)(sTileIndex - 0x6b)].roadFlag;
+      }
+      if (code != 0xd && code != 0x1d && code != 0x11 && code != 0x21 && code != 0x12 &&
+          code != 0x22 && code != 0x17 && code != 0x27 && code != 0x30 && code != 0x38) {
+        return 0x14;
+      }
+      return 0x13;
+    case 6:
+      if (iTileIndex % 0x6c != 0x6b) {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        return 0x16 - (unsigned int)((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0);
+      }
+      code = tiles[(short)(sTileIndex - 0x6b)].roadFlag;
+      if (code == 0xd || code == 0x1d || code == 0x11 || code == 0x21 || code == 0x12 ||
+          code == 0x22 || code == 0x17 || code == 0x27 || code == 0x30 || code == 0x38) {
+        return 0x15;
+      }
+      code = tiles[(short)(sTileIndex - 0x6b)].roadFlag;
+      if (code == 0xe || code == 0x1e || code == 0x13 || code == 0x23 || code == 0x14 ||
+          code == 0x24 || code == 0x18 || code == 0x28 || code == 0x31 || code == 0x39) {
+        return 0x16;
+      }
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x15;
+    case 7:
+      code = tiles[(short)(nTileIndex - 1)].roadFlag;
+      if (code == 0xf || code == 0x1f || code == 0x11 || code == 0x21 || code == 0x13 ||
+          code == 0x23 || code == 0x15 || code == 0x25 || code == 0x2c || code == 0x34) {
+        return 0x17;
+      }
+      if (CheckTileVariantCodeMembershipSetB(nTileIndex - 1) == 0) {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x17;
+      }
+      return 0x18;
+    case 8:
+      return 0x19;
+    case 9:
+      return 0x1a;
+    case 10:
+      return 0x2b;
+    case 0xb:
+      if (iTileIndex % 0x6c != 0x6b) {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        return 0x2d - (unsigned int)((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0);
+      }
+      if (CheckTileVariantCodeMembershipSetC(nTileIndex - 0x6b) == 0) {
+        if (CheckTileVariantCodeMembershipSetD(nTileIndex - 0x6b) == 0) {
+          g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+          return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x2c;
+        }
+        return 0x2d;
+      }
+      return 0x2c;
+    case 0xc:
+      return 0x2e;
+    case 0xd:
+      return 0x2f;
+    case 0xe:
+      if (CheckTileVariantCodeMembershipSetA(nTileIndex - 1) != 0) {
+        return 0x30;
+      }
+      if (CheckTileVariantCodeMembershipSetB(nTileIndex - 1) == 0) {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x30;
+      }
+      return 0x31;
+    case 0xf:
+      return 0x32;
+    }
+  } else {
+    char subtype = cur->roadFlag;
+    if (subtype != 0) {
+      switch (subtype) {
+      case 0x10:
+        return 0x37;
+      case 0x11:
+        if (CheckTileVariantCodeMembershipSetA(nTileIndex - 1) != 0) {
+          return 0x38;
+        }
+        if (CheckTileVariantCodeMembershipSetB(nTileIndex - 1) == 0) {
+          g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+          return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x38;
+        }
+        return 0x39;
+      case 0x12:
+        result = 0x3a;
+        break;
+      case 0x13:
+        return 0x33;
+      case 0x14:
+        if (iTileIndex % 0x6c != 0x6b) {
+          g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+          return 0x35 - (unsigned int)((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0);
+        }
+        if (CheckTileVariantCodeMembershipSetC(nTileIndex - 0x6b) == 0) {
+          if (CheckTileVariantCodeMembershipSetD(nTileIndex - 0x6b) == 0) {
+            g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+            return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x34;
+          }
+          return 0x35;
+        }
+        return 0x34;
+      case 0x15:
+        return 0x36;
+      }
+    }
+  }
+  return result;
+}
+
+// FUNCTION: IMPERIALISM 0x005112f0
+char TMapMgr::CheckTileVariantCodeMembershipSetA(short tileIndex) {
+  char code = terrainStateTable[tileIndex].roadFlag;
+  if (code == 0xf || code == 0x1f || code == 0x11 || code == 0x21 || code == 0x13 || code == 0x23 ||
+      code == 0x15 || code == 0x25 || code == 0x2c || code == 0x34) {
+    return 1;
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00511360
+char TMapMgr::CheckTileVariantCodeMembershipSetB(short tileIndex) {
+  char code = terrainStateTable[tileIndex].roadFlag;
+  if (code == 0x10 || code == 0x20 || code == 0x12 || code == 0x22 || code == 0x14 ||
+      code == 0x24 || code == 0x16 || code == 0x26 || code == 0x2d || code == 0x35) {
+    return 1;
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005113d0
+char TMapMgr::CheckTileVariantCodeMembershipSetC(short tileIndex) {
+  char code = terrainStateTable[tileIndex].roadFlag;
+  if (code == 0xd || code == 0x1d || code == 0x11 || code == 0x21 || code == 0x12 || code == 0x22 ||
+      code == 0x17 || code == 0x27 || code == 0x30 || code == 0x38) {
+    return 1;
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00511440
+char TMapMgr::CheckTileVariantCodeMembershipSetD(short tileIndex) {
+  char code = terrainStateTable[tileIndex].roadFlag;
+  if (code == 0xe || code == 0x1e || code == 0x13 || code == 0x23 || code == 0x14 || code == 0x24 ||
+      code == 0x18 || code == 0x28 || code == 0x31 || code == 0x39) {
+    return 1;
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00512b50
 void TMapMgr::ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
                                             char wrapHorizontally) {

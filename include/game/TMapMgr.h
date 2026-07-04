@@ -264,6 +264,21 @@ public:
   // manager's proposal-weight metric). Reattributed from TCivToolbar (heuristic 46).
   int CalculateDeveloperTilePurchaseCost(short nTileIndex);
 
+  // 0x5108d0. Map-tile sprite-variant resolver: reads the tile's terrain type
+  // (terrainStateTable byte 0) and feature/subtype code (byte 2, the field the layout
+  // calls roadFlag), inspects the west (tile-1) and NE-row (tile-0x6b) neighbors, and
+  // picks a sprite-variant id -- using the map-generation LCG (g_mapGenLcgState_006a38e8)
+  // to break ties. Called by UpdateMapTileAdjacencyMasksAndVariantForTile (0x510210).
+  int ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex);
+
+  // 0x5112f0/0x511360/0x5113d0/0x511440. Predicate helpers for the variant resolver:
+  // each returns 1 iff the neighbor tile's byte-2 feature code is in a specific set of
+  // adjacency-continuation codes (west-run set A/B, north-run set C/D).
+  char CheckTileVariantCodeMembershipSetA(short tileIndex);
+  char CheckTileVariantCodeMembershipSetB(short tileIndex);
+  char CheckTileVariantCodeMembershipSetC(short tileIndex);
+  char CheckTileVariantCodeMembershipSetD(short tileIndex);
+
   TCivUnit* GetFirstCivilianOrderOnTile(short tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }

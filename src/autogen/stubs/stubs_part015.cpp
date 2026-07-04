@@ -131,46 +131,6 @@ undefined4 RebuildTileOwnerNeighborCachesAndFallbackAssignments(void)
   return 0;
 }
 
-// ghidra_name ResolveMapTileVariantSpriteFromAdjacencyState
-// ghidra_proto undefined ResolveMapTileVariantSpriteFromAdjacencyState()
-// FUNCTION: IMPERIALISM 0x005108d0
-undefined4 ResolveMapTileVariantSpriteFromAdjacencyState(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckTileVariantCodeMembershipSetA
-// ghidra_proto undefined CheckTileVariantCodeMembershipSetA()
-// FUNCTION: IMPERIALISM 0x005112f0
-undefined4 CheckTileVariantCodeMembershipSetA(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckTileVariantCodeMembershipSetB
-// ghidra_proto undefined CheckTileVariantCodeMembershipSetB()
-// FUNCTION: IMPERIALISM 0x00511360
-undefined4 CheckTileVariantCodeMembershipSetB(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckTileVariantCodeMembershipSetC
-// ghidra_proto undefined CheckTileVariantCodeMembershipSetC()
-// FUNCTION: IMPERIALISM 0x005113d0
-undefined4 CheckTileVariantCodeMembershipSetC(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckTileVariantCodeMembershipSetD
-// ghidra_proto undefined CheckTileVariantCodeMembershipSetD()
-// FUNCTION: IMPERIALISM 0x00511440
-undefined4 CheckTileVariantCodeMembershipSetD(void)
-{
-  return 0;
-}
-
 // ghidra_name CheckTilePatternMaskAllowedByModeFlag
 // ghidra_proto undefined CheckTilePatternMaskAllowedByModeFlag()
 // FUNCTION: IMPERIALISM 0x005114b0
