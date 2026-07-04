@@ -22,7 +22,6 @@ undefined4 BuildMapContextStatusStringVariantF(void);
 undefined4 BuildMapContextStatusStringVariantJ(void);
 undefined4 BuildMapContextStatusStringVariantC(void);
 undefined4 BuildMapContextStatusStringVariantE(void);
-undefined4 BuildMapContextStatusStringVariantL(void);
 undefined4 BuildMapContextStatusStringVariantD(void);
 undefined4 BuildMapContextStatusStringVariantA(void);
 undefined4 ShouldRetryMappedFlavorTextGeneration(void);
@@ -159,7 +158,7 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
       reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantE)(dest);
       break;
     case 0xf:
-      reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantL)(dest);
+      BuildMapContextStatusStringVariantL(dest);
       break;
     case 0x10:
       reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantD)(dest);

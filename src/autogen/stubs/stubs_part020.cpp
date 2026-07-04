@@ -347,14 +347,6 @@ undefined4 BuildMapContextStatusStringVariantK(void)
   return 0;
 }
 
-// ghidra_name BuildMapContextStatusStringVariantL
-// ghidra_proto undefined BuildMapContextStatusStringVariantL()
-// FUNCTION: IMPERIALISM 0x005cc590
-undefined4 BuildMapContextStatusStringVariantL(void)
-{
-  return 0;
-}
-
 // ghidra_name GenerateMappedFlavorTextVariantE_005ccce0
 // ghidra_proto undefined GenerateMappedFlavorTextVariantE_005ccce0()
 // FUNCTION: IMPERIALISM 0x005ccce0
