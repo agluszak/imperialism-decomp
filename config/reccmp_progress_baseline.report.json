@@ -12181,7 +12181,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12619,13 +12619,13 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12637,7 +12637,7 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12673,7 +12673,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.4939759036144578,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -31238,7 +31238,7 @@
     },
     {
       "address": "0x5b8da0",
-      "matching": 0.0,
+      "matching": 0.33076923076923076,
       "name": "ComputeNationMetricDispatchScoreAndResolveScale",
       "type": 1
     },
@@ -31273,12 +31273,6 @@
       "address": "0x5b9060",
       "matching": 0.6363636363636364,
       "name": "TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster",
-      "type": 1
-    },
-    {
-      "address": "0x5b91e0",
-      "matching": 0.021052631578947368,
-      "name": "ProcessPendingDiplomacyTransferEntriesUntilBlocked",
       "type": 1
     },
     {
@@ -31351,6 +31345,12 @@
       "address": "0x5b9fd0",
       "matching": 0.5217391304347826,
       "name": "TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter",
+      "type": 1
+    },
+    {
+      "address": "0x5ba090",
+      "matching": 0.0625,
+      "name": "SelectPreferredNationMetricCodeFromLookup",
       "type": 1
     },
     {
@@ -42971,7 +42971,7 @@
     },
     {
       "address": "0x66d990",
-      "matching": 0.9714285714285714,
+      "matching": 1.0,
       "name": "TTradeMgr::`vftable'",
       "type": 5
     },

@@ -351,8 +351,61 @@ short TTradeMgr::IsCapabilityCategoryActiveSlot3C(short category) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b8da0
-undefined4 TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale() {
-  return 0;
+int TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale(short sourceSlot, short targetSlot,
+                                                               short scoreA, short scoreB) {
+  if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(sourceSlot, targetSlot) != 0) {
+    return -1;
+  }
+
+  short prefTarget = *reinterpret_cast<short*>(
+      reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[targetSlot]) + 0xe);
+  if (prefTarget >= 200) {
+    prefTarget = static_cast<short>(prefTarget - 200);
+  } else if (prefTarget >= 100) {
+    prefTarget = static_cast<short>(prefTarget - 100);
+  } else {
+    prefTarget = *reinterpret_cast<short*>(
+        reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[targetSlot]) + 0xc);
+  }
+  if (prefTarget == sourceSlot) {
+    return (scoreA < scoreB) ? scoreA : scoreB;
+  }
+
+  short prefSource = *reinterpret_cast<short*>(
+      reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[sourceSlot]) + 0xe);
+  if (prefSource >= 200) {
+    prefSource = static_cast<short>(prefSource - 200);
+  } else if (prefSource >= 100) {
+    prefSource = static_cast<short>(prefSource - 100);
+  } else {
+    prefSource = *reinterpret_cast<short*>(
+        reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[sourceSlot]) + 0xc);
+  }
+  if (prefSource == targetSlot) {
+    return (scoreA <= scoreB) ? scoreB : scoreA;
+  }
+
+  if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(targetSlot) != 0) {
+    int relation = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_apNationStates[targetSlot]) +
+                                             0x14 + sourceSlot * 2);
+    if (relation == 100) {
+      return scoreA;
+    }
+    if (relation == 300) {
+      return -1;
+    }
+    return static_cast<int>(static_cast<double>(scoreA * relation) * 0.01);
+  }
+  int relation = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_apNationStates[sourceSlot]) +
+                                           0x14 + targetSlot * 2);
+  if (relation == 100) {
+    return scoreA;
+  }
+  if (relation == 300) {
+    return -1;
+  }
+  int inverse = 200 - relation;
+  return static_cast<int>(static_cast<double>(scoreA) * static_cast<double>(inverse) * 0.01);
 }
 
 // FUNCTION: IMPERIALISM 0x005b8f80
