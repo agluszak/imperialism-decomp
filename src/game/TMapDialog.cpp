@@ -135,7 +135,10 @@ undefined TMapDialog::HasRenderableParentAndContentSlotA2() {
 
 // FUNCTION: IMPERIALISM 0x0051ad70
 void TMapDialog::OrphanRetStub_005966a0(int arg1) {
-  (void)arg1;
+  int tileCol;
+  reinterpret_cast<void(__cdecl*)(short, int*, int*)>(thunk_SplitTileIndexToRowAndColumn)(
+      static_cast<short>(arg1), &arg1, &tileCol);
+  OrphanRetStub_00596680(tileCol, arg1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051adc0
