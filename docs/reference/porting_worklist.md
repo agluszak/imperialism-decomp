@@ -220,3 +220,37 @@ are not yet triaged.
 ## SKIP_COMPILER (2) — do not port
 
 `0x0048cb00` TView::~TView, `0x0048ec30` TView::~TView
+
+## Receiver-class recovery finding (TViewMgr cluster)
+
+Investigated the "unrecovered receiver" that blocks the 11 TViewMgr turn-event
+methods (0x5d7090, 0x5d7100, 0x5d71b0, 0x5dbd30, 0x5dd180, 0x5dcdf0, 0x5dcf20,
+0x5dd340, 0x5dd770, 0x5dd0a0, 0x5d4c60). **The receiver is already recovered.**
+
+- The `'main'` node (`ResolveControlByTag(0x6d61696e)`) in the main-game-screen
+  turn-event context is a **TWorldView** (vtable `0x668cb0`), NOT the council
+  panel (TCouncilPanelView `0x640060` has NULLs at the called slots 0x1ac/0x1cc/
+  0x1e4; TWorldView has real functions there). The `'main'` tag is context-
+  dependent (council screen → TCouncilPanelView; game screen → TWorldView).
+- Called-slot → existing-virtual map (byte offset → TWorldView/TControl method):
+  - 0x0c (slot 3)  → `AssertValid` (MFC `ASSERT_VALID`, 1-byte no-op)
+  - 0x1c (slot 7)  → inherited close/release
+  - 0xa0 (slot 0x28) → inherited child-list dispatch
+  - 0xe4 (slot 0x39) → TControl invalidate (`0x48b6d0`)
+  - 0x1ac (slot 0x6b) → `TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge`
+  - 0x1cc (slot 0x73) → `TWorldView::DispatchOverlayEvent78FromStridedRecord`
+  - 0x1e4 (slot 0x79) → `TWorldView::OrphanRetStub_00596680` (a 3-arg no-op;
+    declared 0-arg — widen to `(int,int,int)` when wiring)
+- The dialog-factory methods (0x5dcdf0/0x5dcf20/0x5dd340/0x5dd770) use the
+  already-recovered `g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext`
+  and `this->ComputeTurnEventDialogPlacementByCode` virtuals.
+
+**Real blocker (not recovery):** `TView::ResolveControlByTag` (0x48afd0) is modeled
+as returning `TControl*`, but the turn-event `'main'` node is a `TWorldView` — a
+*sibling* branch under `TView` (TWorldView : TView; TControl : … : TView), so
+`static_cast<TWorldView*>(controlPtr)` is not a valid downcast. Clean wiring needs
+the return type widened to the true common base `TView*`, after which
+`static_cast<TWorldView*>(viewPtr)` is valid and each method can dispatch through
+real virtuals (Hard Rule 11). That return-type change ripples to every
+`ResolveControlByTag` caller (each would need to re-cast its result), so it is a
+deliberate cross-file modeling change to stage carefully, not a per-method wire.
