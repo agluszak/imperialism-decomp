@@ -435,14 +435,6 @@ undefined4 WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMa
   return 0;
 }
 
-// ghidra_name TCivToolbar::CalculateDeveloperTilePurchaseCost
-// ghidra_proto int __thiscall CalculateDeveloperTilePurchaseCost(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x00518b40
-undefined4 CalculateDeveloperTilePurchaseCost(void)
-{
-  return 0;
-}
-
 // ghidra_name MarkAdjacentHexOrderDirectionAndSelectTile
 // ghidra_proto undefined MarkAdjacentHexOrderDirectionAndSelectTile()
 // FUNCTION: IMPERIALISM 0x00518bd0

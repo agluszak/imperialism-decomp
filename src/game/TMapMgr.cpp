@@ -8,6 +8,7 @@
 #include "game/TOcean.h"
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
+#include "game/TTradeMgr.h"
 
 void EnsurePortZoneForTile(short nTileIndex);
 void RemovePortZoneByTile(short nTileIndex);
@@ -760,6 +761,31 @@ char TMapMgr::AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex) {
     }
   }
   return 0;
+}
+
+// Sum the developer purchase cost of the two edge resources on a tile: for each real
+// resource type (< 0x11) weight it via the trade manager's proposal-weight metric (slot
+// 0x13) scaled x20; fixed surcharges for the special types 0x15 (10000) and 0x16 (4000).
+// (Ghidra mis-attributed this to TCivToolbar; `this->field0c` is TMapMgr::terrainStateTable.)
+// FUNCTION: IMPERIALISM 0x00518b40
+int TMapMgr::CalculateDeveloperTilePurchaseCost(short nTileIndex) {
+  int total = 0;
+  int edge = 0;
+  do {
+    short resourceType = terrainStateTable[nTileIndex].resourceTypeByEdge[edge];
+    if (resourceType != -1) {
+      if (resourceType < 0x11) {
+        total = total +
+                g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceType) * 0x14;
+      } else if (resourceType == 0x15) {
+        total = total + 10000;
+      } else if (resourceType == 0x16) {
+        total = total + 4000;
+      }
+    }
+    edge = edge + 1;
+  } while (edge < 2);
+  return total;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e360

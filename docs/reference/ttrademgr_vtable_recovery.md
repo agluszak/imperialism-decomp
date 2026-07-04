@@ -23,8 +23,27 @@
 >   3 minor caller regressions accepted — they stem from the accessors becoming correct
 >   `short`-param real virtuals).
 >
-> Remaining follow-ups (not blocking): lift the 24 promoted slot stubs to real bodies, and
-> port the `CalculateDeveloperTilePurchaseCost` (0x518b40) consumer per step 5 below.
+> **UPDATE — port complete.** All 24 introduced-slot functions (0x0a–0x22) now carry real,
+> ported bodies (no `return 0` stubs remain; none left in the autogen stubs). Every vtable
+> dispatch was resolved by byte-offset → class slot → address → ILT target → curated `.cpp`
+> marker name and issued as a real `obj->Method()` (no raw `vftable[]`, no
+> `reinterpret_cast`-thiscall). Highlights: 7 slots at 100% (effective) plus `Free` 100% and
+> `ComputeNationMetricPowerScale` 92%; the rest are faithful partials (24–80%) whose
+> residuals are codegen-level only (FPU intermediate ordering, SEH frame prologues, stack
+> event-record layout, return-register allocation). Supporting work: recovered the full
+> `0xa0` row-field layout from the accessors; added the `g_nationMetricSlotDispatchOrder`
+> global (0x66d810); widened `TSoundChannelNode::SoundChannelNodeDummy00` to its real
+> one-arg signature; claimed the non-virtual impl `ProcessPendingDiplomacyTransferEntriesUntilBlocked` (0x5b91e0). `just vtable TTradeMgr`/`TDealList` still 100%; all cross-class
+> receiver classes (TCountry/TGreatPower/TMinor/TDiplomacyMgr/TSortedPtrList/TSoundChannelNode)
+> unchanged at 100%.
+>
+> **UPDATE — consumer wired (step 5 done).** `CalculateDeveloperTilePurchaseCost` (0x518b40)
+> reattributed from `TCivToolbar` to **TMapMgr** (its `this->field0c` is
+> `TMapMgr::terrainStateTable`; heuristic 46) and ported: it sums the two edge resources of a
+> tile, weighting each real resource type via `g_pNationInteractionStateManager->
+> QueryProposalWeightSlot4C(...)` (the real slot-0x13 virtual on TTradeMgr) ×0x14, with the
+> fixed +10000/+4000 surcharges for types 0x15/0x16. **95.24%** (sole residual is a 1-byte
+> loop-back jump offset). This closes the dispatch that motivated the whole recovery.
 
 Groundwork for recovering the **TTradeMgr** class (the "nation interaction / trade
 metric" manager). This is the class-recovery that unblocks the `TTradeMgr::` stub

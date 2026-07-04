@@ -260,6 +260,9 @@ public:
   int SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags);
   void ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation);
   short FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex, char allowActiveFlag2);
+  // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade
+  // manager's proposal-weight metric). Reattributed from TCivToolbar (heuristic 46).
+  int CalculateDeveloperTilePurchaseCost(short nTileIndex);
 
   TCivUnit* GetFirstCivilianOrderOnTile(short tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;

@@ -3298,7 +3298,7 @@ address|name|symbol|size|type|prototype|provenance
 518990|ResetTileToBaseTransportFlag||98|function|undefined ResetTileToBaseTransportFlag()|
 518a20|AreAllLinkedEntriesTerrainFlagBit2Clear||85|function|undefined AreAllLinkedEntriesTerrainFlagBit2Clear()|
 518aa0|WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0||115|function|undefined WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0()|
-518b40|TCivToolbar::CalculateDeveloperTilePurchaseCost||111|function|int __thiscall CalculateDeveloperTilePurchaseCost(short nTileIndex)|
+518b40|TMapMgr::CalculateDeveloperTilePurchaseCost||111|function|int __thiscall CalculateDeveloperTilePurchaseCost(short nTileIndex)|
 518bd0|MarkAdjacentHexOrderDirectionAndSelectTile||343|function|undefined MarkAdjacentHexOrderDirectionAndSelectTile()|
 518d90|MarkDirectionalMapOverlayFlagsForNationOrders||510|function|undefined MarkDirectionalMapOverlayFlagsForNationOrders()|
 519010|CreateTacticalBattleViewAndInitializeBattleSetup_Impl||179|function|undefined CreateTacticalBattleViewAndInitializeBattleSetup_Impl()|
