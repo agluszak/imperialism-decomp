@@ -64,3 +64,11 @@ int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side) {
   }
   return result + row * 0xd8;
 }
+
+// FUNCTION: IMPERIALISM 0x0052e990
+unsigned int MapEdgePoint::Equals(const MapEdgePoint* other) const {
+  if (y == other->y && x == other->x) {
+    return 1;
+  }
+  return 0;
+}

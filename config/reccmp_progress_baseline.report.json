@@ -17882,6 +17882,12 @@
       "type": 1
     },
     {
+      "address": "0x52a670",
+      "matching": 0.7586206896551724,
+      "name": "GetCityRegionIdAtTileIndex",
+      "type": 1
+    },
+    {
       "address": "0x52a6e0",
       "matching": 0.3125,
       "name": "WrapExtendedMapXCoordinateInPlace",
@@ -17961,7 +17967,7 @@
     },
     {
       "address": "0x52c1a0",
-      "matching": 0.402493321460374,
+      "matching": 0.40605520926090827,
       "name": "BuildCityRegionBorderOverlaySegments",
       "type": 1
     },
@@ -18009,7 +18015,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.25071225071225073,
+      "matching": 0.2784090909090909,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18053,6 +18059,12 @@
       "address": "0x52e840",
       "matching": 0.0,
       "name": "TMapMaker::vmethod_0026",
+      "type": 1
+    },
+    {
+      "address": "0x52e890",
+      "matching": 0.0,
+      "name": "TMapMaker::GetCityDialogFlagByte4",
       "type": 1
     },
     {
@@ -41965,7 +41977,7 @@
     },
     {
       "address": "0x6598f8",
-      "matching": 0.9705882352941176,
+      "matching": 1.0,
       "name": "TMapMaker::`vftable'",
       "type": 5
     },
