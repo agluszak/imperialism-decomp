@@ -15,9 +15,6 @@ extern "C" char g_pClassDescTZone = 0;
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
-// Localization template expander: substitutes bracket expressions in `input` using the
-// variadic values, writing the result into `out` (a CString). __cdecl variadic.
-void scanBracketExpressions(void* ctx, void* out, const char* input, ...);
 
 namespace {
 

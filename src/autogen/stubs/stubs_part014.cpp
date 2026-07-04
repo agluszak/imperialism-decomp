@@ -971,14 +971,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
   return 0;
 }
 
-// ghidra_name TToolBarCluster::BuildMappedSharedStringFromByteStateTable
-// ghidra_proto undefined BuildMappedSharedStringFromByteStateTable()
-// FUNCTION: IMPERIALISM 0x005083f0
-undefined4 BuildMappedSharedStringFromByteStateTable(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowCountrySelectionPromptAndReturnNationId
 // ghidra_proto undefined ShowCountrySelectionPromptAndReturnNationId()
 // FUNCTION: IMPERIALISM 0x00508910

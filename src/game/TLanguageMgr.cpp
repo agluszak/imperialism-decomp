@@ -141,6 +141,49 @@ void TLanguageMgr::ParseNewsTableRow(char* line) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005083f0
+CString TLanguageMgr::BuildMappedSharedStringFromByteStateTable(const char* data, char formatChar) {
+  if (formatChar == '\0') {
+    return CString(data);
+  }
+  unsigned char dataByte = static_cast<unsigned char>(*data);
+  CString result;
+  unsigned char column = static_cast<unsigned char>(firstColumn);
+  if (formatChar < static_cast<char>(column) ||
+      columnCount <= static_cast<int>((static_cast<unsigned int>(formatChar) & 0xff) - column) ||
+      ((dataByte < static_cast<unsigned char>(firstPrimaryRow) ||
+        primaryRowCount <= static_cast<int>(dataByte - firstPrimaryRow)) &&
+       (dataByte < static_cast<unsigned char>(firstExtraRow) ||
+        extraRowCount <= static_cast<int>(dataByte - firstExtraRow)))) {
+    // Format column or data byte out of range: fall back to the raw string (dropping a
+    // leading space if present).
+    if (*data == ' ') {
+      result = CString(data + 1);
+    } else {
+      result = CString(data);
+    }
+  } else {
+    unsigned char mappedColumn = static_cast<unsigned char>(formatChar - column);
+    char rowOffset;
+    if (dataByte < static_cast<unsigned char>(firstPrimaryRow) ||
+        primaryRowCount + firstPrimaryRow <= static_cast<int>(dataByte)) {
+      rowOffset = static_cast<char>(primaryRowCount) - static_cast<char>(firstExtraRow);
+    } else {
+      rowOffset = -static_cast<char>(firstPrimaryRow);
+    }
+    char* fragment = rowTextTable[static_cast<unsigned char>(dataByte + rowOffset)][mappedColumn];
+    for (char c = *fragment; c != '\0'; c = *fragment) {
+      if (c == '*') {
+        result += data + 1;
+      } else {
+        result += c;
+      }
+      fragment = fragment + 1;
+    }
+  }
+  return result;
+}
+
 // FUNCTION: IMPERIALISM 0x005086a0
 bool TLanguageMgr::ReloadPreplutNewsTableAndResources(int languageTag) {
   FreeNestedPointerTableRowsAndResetDimensions();

@@ -2026,6 +2026,7 @@ address|target_cpp|ownership|note
 507e20|src/game/TLanguageMgr.cpp|manual|marker_sync
 507e50|src/game/TLanguageMgr.cpp|manual|marker_sync
 5082b0|src/game/TLanguageMgr.cpp|manual|marker_sync
+5083f0|src/game/TLanguageMgr.cpp|manual|marker_sync
 5086a0|src/game/TLanguageMgr.cpp|manual|marker_sync
 508760|src/game/TLanguageMgr.cpp|manual|marker_sync
 508800|src/game/TLanguageMgr.cpp|manual|marker_sync
@@ -3256,6 +3257,7 @@ address|target_cpp|ownership|note
 57f8f0|src/game/TSimMgr.cpp|manual|marker_sync
 57fe90|src/game/TSimMgr.cpp|manual|marker_sync
 57fec0|src/game/TSimMgr.cpp|manual|marker_sync
+57fef0|src/game/mapped_flavor_text.cpp|manual|marker_sync
 580460|src/game/TSimMgr.cpp|manual|name_paired_no_marker
 580760|src/game/TSimMgr.cpp|manual|marker_sync
 580790|src/game/TSimMgr.cpp|manual|marker_sync

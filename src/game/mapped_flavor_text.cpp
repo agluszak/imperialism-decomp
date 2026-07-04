@@ -27,6 +27,55 @@ undefined4 BuildMapContextStatusStringVariantD(void);
 undefined4 BuildMapContextStatusStringVariantA(void);
 undefined4 ShouldRetryMappedFlavorTextGeneration(void);
 
+// FUNCTION: IMPERIALISM 0x0057fef0
+void scanBracketExpressions(void* ctx, void* out, const char* input, ...) {
+  (void)ctx;
+  CString* result = static_cast<CString*>(out);
+  const char* const* args = &input + 1; // first variadic argument
+  *result = CString(g_szEmptyString);
+
+  const char* p = input;
+  char ch = *input;
+  unsigned int idx = 0;
+  while (ch != '\0') {
+    ch = p[idx];
+    unsigned int scan = idx;
+    if (ch == '[') {
+      for (;;) {
+        idx = scan;
+        if (ch == '\0') {
+          break;
+        }
+        ch = p[scan + 1];
+        idx = scan + 1;
+        if (ch >= '0' && ch <= '9') {
+          char letter = p[idx + 1];
+          if (letter < 'a' || letter > 'z') {
+            *result += args[ch - '0'];
+          } else {
+            *result +=
+                g_pLanguageMgr->BuildMappedSharedStringFromByteStateTable(args[ch - '0'], letter);
+          }
+          break;
+        }
+        scan = idx;
+        if (ch == ']') {
+          break;
+        }
+      }
+      ch = p[idx];
+      while (ch != ']' && ch != '\0') {
+        idx = idx + 1;
+        ch = p[idx];
+      }
+    } else {
+      *result += ch;
+    }
+    ch = p[idx + 1];
+    idx = idx + 1;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005d4410
 void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot) {
   if (g_pLocalizationTable->useLocalizedNameTables68 == '\0') {
