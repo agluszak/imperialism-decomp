@@ -8,10 +8,6 @@
 extern "C" char DAT_006a43f0;
 
 undefined4 AppendRandomMapContextStatusSuffixWithProbability(void);
-undefined4 GenerateMappedFlavorTextVariantE_005ccce0(void);
-undefined4 GenerateMappedFlavorTextVariantA_005d13d0(void);
-undefined4 GenerateMappedFlavorTextVariantB_005cfc40(void);
-undefined4 GenerateMappedFlavorTextVariantD_005d33a0(void);
 
 // FUNCTION: IMPERIALISM 0x0057fef0
 void scanBracketExpressions(void* ctx, void* out, const char* input, ...) {
@@ -135,13 +131,13 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
       GenerateMappedFlavorTextVariantC_005cf1b0(dest);
       break;
     case 2:
-      reinterpret_cast<void(__cdecl*)(CString*)>(GenerateMappedFlavorTextVariantE_005ccce0)(dest);
+      GenerateMappedFlavorTextVariantE_005ccce0(dest);
       break;
     case 3:
-      reinterpret_cast<void(__cdecl*)(CString*)>(GenerateMappedFlavorTextVariantA_005d13d0)(dest);
+      GenerateMappedFlavorTextVariantA_005d13d0(dest);
       break;
     case 4:
-      reinterpret_cast<void(__cdecl*)(CString*)>(GenerateMappedFlavorTextVariantB_005cfc40)(dest);
+      GenerateMappedFlavorTextVariantB_005cfc40(dest);
       break;
     case 5:
       BuildMapContextStatusStringVariantH(dest);
@@ -153,7 +149,7 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
       BuildMapContextStatusStringVariantB(dest);
       break;
     case 8:
-      reinterpret_cast<void(__cdecl*)(CString*)>(GenerateMappedFlavorTextVariantD_005d33a0)(dest);
+      GenerateMappedFlavorTextVariantD_005d33a0(dest);
       break;
     case 9:
       BuildMapContextStatusStringVariantI(dest);

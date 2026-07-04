@@ -4037,7 +4037,11 @@ address|target_cpp|ownership|note
 5cb100|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5cb960|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5cc590|src/game/map_context_flavor_builders.cpp|manual|marker_sync
+5ccce0|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5cf1b0|src/game/map_context_flavor_builders.cpp|manual|marker_sync
+5cfc40|src/game/map_context_flavor_builders.cpp|manual|marker_sync
+5d13d0|src/game/map_context_flavor_builders.cpp|manual|marker_sync
+5d33a0|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5d4240|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d4410|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d46b0|src/game/mapped_flavor_text.cpp|manual|marker_sync

@@ -259,14 +259,6 @@ undefined4 AssignSharedStringToTaggedControlAndProcessState(void)
   return 0;
 }
 
-// ghidra_name GenerateMappedFlavorTextVariantE_005ccce0
-// ghidra_proto undefined GenerateMappedFlavorTextVariantE_005ccce0()
-// FUNCTION: IMPERIALISM 0x005ccce0
-undefined4 GenerateMappedFlavorTextVariantE_005ccce0(void)
-{
-  return 0;
-}
-
 // ghidra_name GenerateMappedFlavorTextVariantEToSharedString
 // ghidra_proto undefined GenerateMappedFlavorTextVariantEToSharedString()
 // FUNCTION: IMPERIALISM 0x005ce110
@@ -315,14 +307,6 @@ undefined4 GenerateMappedFlavorTextVariantCToSharedString(void)
   return 0;
 }
 
-// ghidra_name GenerateMappedFlavorTextVariantB_005cfc40
-// ghidra_proto undefined GenerateMappedFlavorTextVariantB_005cfc40()
-// FUNCTION: IMPERIALISM 0x005cfc40
-undefined4 GenerateMappedFlavorTextVariantB_005cfc40(void)
-{
-  return 0;
-}
-
 // ghidra_name GenerateMappedFlavorTextVariantBToSharedString
 // ghidra_proto undefined GenerateMappedFlavorTextVariantBToSharedString()
 // FUNCTION: IMPERIALISM 0x005d1330
@@ -331,26 +315,10 @@ undefined4 GenerateMappedFlavorTextVariantBToSharedString(void)
   return 0;
 }
 
-// ghidra_name GenerateMappedFlavorTextVariantA_005d13d0
-// ghidra_proto undefined GenerateMappedFlavorTextVariantA_005d13d0()
-// FUNCTION: IMPERIALISM 0x005d13d0
-undefined4 GenerateMappedFlavorTextVariantA_005d13d0(void)
-{
-  return 0;
-}
-
 // ghidra_name GenerateMappedFlavorTextVariantAToSharedString
 // ghidra_proto undefined GenerateMappedFlavorTextVariantAToSharedString()
 // FUNCTION: IMPERIALISM 0x005d3300
 undefined4 GenerateMappedFlavorTextVariantAToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantD_005d33a0
-// ghidra_proto undefined GenerateMappedFlavorTextVariantD_005d33a0()
-// FUNCTION: IMPERIALISM 0x005d33a0
-undefined4 GenerateMappedFlavorTextVariantD_005d33a0(void)
 {
   return 0;
 }

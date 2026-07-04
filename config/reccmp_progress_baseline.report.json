@@ -32388,7 +32388,7 @@
     },
     {
       "address": "0x5ccce0",
-      "matching": 0.006329113924050633,
+      "matching": 0.5209677419354839,
       "name": "GenerateMappedFlavorTextVariantE_005ccce0",
       "type": 1
     },
@@ -32436,7 +32436,7 @@
     },
     {
       "address": "0x5cfc40",
-      "matching": 0.005988023952095809,
+      "matching": 0.27113480578827115,
       "name": "GenerateMappedFlavorTextVariantB_005cfc40",
       "type": 1
     },
@@ -32448,7 +32448,7 @@
     },
     {
       "address": "0x5d13d0",
-      "matching": 0.004550625711035267,
+      "matching": 0.5028901734104047,
       "name": "GenerateMappedFlavorTextVariantA_005d13d0",
       "type": 1
     },
@@ -32460,7 +32460,7 @@
     },
     {
       "address": "0x5d33a0",
-      "matching": 0.007751937984496124,
+      "matching": 0.5563451776649746,
       "name": "GenerateMappedFlavorTextVariantD_005d33a0",
       "type": 1
     },
