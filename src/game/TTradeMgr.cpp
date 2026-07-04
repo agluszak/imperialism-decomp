@@ -118,18 +118,76 @@ undefined4 TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b8aa0
-undefined4 TTradeMgr::DispatchNationMetricUpdatePassForAllSlots() {
-  return 0;
+void TTradeMgr::DispatchNationMetricUpdatePassForAllSlots() {
+  int slot = 0;
+  do {
+    this->ComputeNationMetricBaselineValueForSlot(static_cast<short>(slot));
+    slot = slot + 1;
+  } while (static_cast<short>(slot) < 0x11);
 }
 
 // FUNCTION: IMPERIALISM 0x005b8ad0
-undefined4 TTradeMgr::ComputeNationMetricBaselineValueForSlot() {
-  return 0;
+void TTradeMgr::ComputeNationMetricBaselineValueForSlot(short slot) {
+  NationMetricCategoryRow* row = &this->categoryRows[slot];
+  row->presetSeed04 = row->proposalWeightScale06;
+
+  int result;
+  short via;
+  switch (slot) {
+  case 8:
+    result = (int)this->categoryRows[0].proposalWeightScale06 +
+             (int)this->categoryRows[1].proposalWeightScale06;
+    via = this->categoryRows[0xd].proposalWeightScale06;
+    result = ((int)via / 3 + (result / 2) * 3) / 2;
+    break;
+  case 9:
+    result = ((int)this->categoryRows[0xe].proposalWeightScale06 / 3 +
+              this->categoryRows[2].proposalWeightScale06 * 3) /
+             2;
+    break;
+  case 0xa:
+    result = this->categoryRows[2].proposalWeightScale06 * 3;
+    break;
+  case 0xb:
+    result = (int)this->categoryRows[4].proposalWeightScale06 +
+             (int)this->categoryRows[3].proposalWeightScale06;
+    via = this->categoryRows[0xf].proposalWeightScale06;
+    result = ((int)via / 3 + (result / 2) * 3) / 2;
+    break;
+  case 0xc:
+    result = this->categoryRows[6].proposalWeightScale06 * 3;
+    break;
+  case 0x10:
+    result = ((int)this->categoryRows[0xf].proposalWeightScale06 +
+              this->categoryRows[0xb].proposalWeightScale06 * 3) /
+             2;
+    break;
+  default: {
+    double weighted = *reinterpret_cast<double*>(&row->weightedScore0c);
+    double diff = (double)(int)row->field08 - weighted;
+    int pw = (int)row->proposalWeightScale06;
+    int a = (int)((double)pw + diff);
+    int b = (int)((1.0 + diff * 0.01) * (double)pw);
+    if (diff < 0.0) {
+      result = (a <= b) ? a : b;
+    } else {
+      result = (b <= a) ? a : b;
+    }
+    if ((double)result < (double)(int)row->field16 * 0.1) {
+      result = (int)((double)(int)row->field16 * 0.1);
+    }
+    break;
+  }
+  }
+  if (result >= 32000) {
+    result = 32000;
+  }
+  row->proposalWeightScale06 = (short)result;
 }
 
 // FUNCTION: IMPERIALISM 0x005b8d40
-undefined4 TTradeMgr::GetNationMetricWeightedScoreForSlot() {
-  return 0;
+double TTradeMgr::GetNationMetricWeightedScoreForSlot(short category) {
+  return *reinterpret_cast<double*>(&this->categoryRows[category].weightedScore0c);
 }
 
 // FUNCTION: IMPERIALISM 0x005b8d70
@@ -143,13 +201,13 @@ undefined4 TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b8f80
-undefined4 TTradeMgr::GetNationMetricRosterWordAtOffset0E() {
-  return 0;
+short TTradeMgr::GetNationMetricRosterWordAtOffset0E(short category) {
+  return this->categoryRows[category].field0a;
 }
 
 // FUNCTION: IMPERIALISM 0x005b8fb0
-undefined4 TTradeMgr::GetNationMetricRosterWordAtOffset0C() {
-  return 0;
+short TTradeMgr::GetNationMetricRosterWordAtOffset0C(short category) {
+  return this->categoryRows[category].field08;
 }
 
 // FUNCTION: IMPERIALISM 0x005b8fe0
@@ -164,8 +222,8 @@ short TTradeMgr::QueryProposalWeightSlot4C(short metricSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b9030
-undefined4 TTradeMgr::GetNationMetricBucketValueByIndex() {
-  return 0;
+short TTradeMgr::GetNationMetricBucketValueByIndex(short category) {
+  return this->categoryRows[category].field16;
 }
 
 // FUNCTION: IMPERIALISM 0x005b9060
@@ -246,8 +304,8 @@ void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
 }
 
 // FUNCTION: IMPERIALISM 0x005b9790
-undefined4 TTradeMgr::SetNationMetricCellValueByIndex() {
-  return 0;
+void TTradeMgr::SetNationMetricCellValueByIndex(short category, short value) {
+  this->categoryRows[category].proposalWeightScale06 = value;
 }
 
 // FUNCTION: IMPERIALISM 0x005b97c0
@@ -271,18 +329,28 @@ undefined4 TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() 
 }
 
 // FUNCTION: IMPERIALISM 0x005b9f30
-undefined4 TTradeMgr::ComputeNationMetricPowerScale() {
-  return 0;
+double TTradeMgr::ComputeNationMetricPowerScale(double base, short exponent) {
+  double result = 1.0;
+  if (exponent > 0) {
+    int remaining = exponent;
+    do {
+      result = result * base;
+      remaining = remaining + -1;
+    } while (remaining != 0);
+  }
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005b9f70
-undefined4 TTradeMgr::IsNationMetricCellNegative() {
-  return 0;
+char TTradeMgr::IsNationMetricCellNegative(int row, int col) {
+  short* cells = &this->categoryRows[0].cells18[0];
+  return cells[row * 0x50 + col] < 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b9fa0
-undefined4 TTradeMgr::IsNationMetricCellPositive() {
-  return 0;
+char TTradeMgr::IsNationMetricCellPositive(int row, int col) {
+  short* cells = &this->categoryRows[0].cells18[0];
+  return 0 < cells[row * 0x50 + col];
 }
 
 // FUNCTION: IMPERIALISM 0x005b9fd0

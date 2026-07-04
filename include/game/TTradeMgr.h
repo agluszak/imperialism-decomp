@@ -36,45 +36,50 @@ public:
   // (caller-facing) names; the rest are honest stubs pending their own port.
   virtual undefined4 OrphanCallChain_C3_I50_005b7fc0();                           // 0x0a 0x5b7fc0
   virtual undefined4 AccumulateDiplomacyRelationChangesAndQueueEvents();          // 0x0b 0x5b8080
-  virtual undefined4 DispatchNationMetricUpdatePassForAllSlots();                 // 0x0c 0x5b8aa0
-  virtual undefined4 ComputeNationMetricBaselineValueForSlot();                   // 0x0d 0x5b8ad0
-  virtual undefined4 GetNationMetricWeightedScoreForSlot();                       // 0x0e 0x5b8d40
+  virtual void DispatchNationMetricUpdatePassForAllSlots();                       // 0x0c 0x5b8aa0
+  virtual void ComputeNationMetricBaselineValueForSlot(short slot);               // 0x0d 0x5b8ad0
+  virtual double GetNationMetricWeightedScoreForSlot(short category);             // 0x0e 0x5b8d40
   virtual short IsCapabilityCategoryActiveSlot3C(short category);                 // 0x0f 0x5b8d70
   virtual undefined4 ComputeNationMetricDispatchScoreAndResolveScale();           // 0x10 0x5b8da0
-  virtual undefined4 GetNationMetricRosterWordAtOffset0E();                       // 0x11 0x5b8f80
-  virtual undefined4 GetNationMetricRosterWordAtOffset0C();                       // 0x12 0x5b8fb0
+  virtual short GetNationMetricRosterWordAtOffset0E(short category);              // 0x11 0x5b8f80
+  virtual short GetNationMetricRosterWordAtOffset0C(short category);              // 0x12 0x5b8fb0
   virtual short QueryProposalWeightSlot4C(short metricSlot);                      // 0x13 0x5b8fe0
-  virtual undefined4 GetNationMetricBucketValueByIndex();                         // 0x14 0x5b9030
+  virtual short GetNationMetricBucketValueByIndex(short category);                // 0x14 0x5b9030
   virtual undefined4 ApplyDiplomacyTransferEffectsAcrossNationMetricRoster();     // 0x15 0x5b9060
   virtual undefined4 ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper(); // 0x16 0x5b9190
   virtual undefined4 RebuildNationMetricPassesAndClampRowsByBaseline();           // 0x17 0x5b9410
   virtual void DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
                                             int maxAmount, int targetNation, char emitEventFlag,
                                             char skipLocalizationBranch);        // 0x18 0x5b94d0
-  virtual undefined4 SetNationMetricCellValueByIndex();                          // 0x19 0x5b9790
+  virtual void SetNationMetricCellValueByIndex(short category, short value);     // 0x19 0x5b9790
   virtual undefined4 RunNationUpdatePassesAndResetTransitionFlags();             // 0x1a 0x5b97c0
   virtual undefined4 RunNationMetricPreUpdatePassAcrossSecondaryNations();       // 0x1b 0x5b9890
   virtual undefined4 BuildSecondaryNationMetricBucketsAndWeightedTrendScores();  // 0x1c 0x5b9b30
   virtual undefined4 BuildEligibleNationMetricBucketsAndWeightedTrendScores();   // 0x1d 0x5b98d0
-  virtual undefined4 IsNationMetricCellNegative();                               // 0x1e 0x5b9f70
-  virtual undefined4 IsNationMetricCellPositive();                               // 0x1f 0x5b9fa0
+  virtual char IsNationMetricCellNegative(int row, int col);                     // 0x1e 0x5b9f70
+  virtual char IsNationMetricCellPositive(int row, int col);                     // 0x1f 0x5b9fa0
   virtual undefined4 AllocateAndPopulateLinkedValueCollectionFromRosterFilter(); // 0x20 0x5b9fd0
   virtual short ResolveProposalCodeForCategorySlot84(int proposalCode,
-                                                     int category); // 0x21 0x5ba090
-  virtual undefined4 ComputeNationMetricPowerScale();               // 0x22 0x5b9f30
+                                                     int category);          // 0x21 0x5ba090
+  virtual double ComputeNationMetricPowerScale(double base, short exponent); // 0x22 0x5b9f30
 
   TTradeMgr();
   void InitializeNationInteractionStateManagerDefaults();
 
   // One 0xa0-byte metric row per category, indexed from class offset 0x04. Field offsets
-  // recovered from the accessors (0x5b8d70/0x5b8fe0): element access resolves to
-  // `this + index*0xa0 + 0x{0a,18}`, i.e. array-base 0x04 + struct-offset {0x06,0x14}.
+  // recovered from the accessors' disassembly: `categoryRows[i].field` resolves to
+  // `this + i*0xa0 + (0x04 + struct_off)`. Row stride is 0xa0; struct alignment is 2 (the
+  // double at 0x0c is stored unaligned, so it is kept as raw bytes to avoid 8-byte packing).
   struct NationMetricCategoryRow {
-    unsigned char pad00[0x06];
-    short proposalWeightScale06; // struct 0x06 -> this + index*0xa0 + 0x0a
-    unsigned char pad08[0x14 - 0x08];
-    short capabilityActiveFlag14; // struct 0x14 -> this + index*0xa0 + 0x18
-    unsigned char pad16[0xa0 - 0x16];
+    unsigned char pad00[0x04];        // struct 0x00 (this 0x04)
+    short presetSeed04;               // struct 0x04
+    short proposalWeightScale06;      // struct 0x06
+    short field08;                    // struct 0x08
+    short field0a;                    // struct 0x0a
+    unsigned char weightedScore0c[8]; // struct 0x0c (unaligned double)
+    short capabilityActiveFlag14;     // struct 0x14
+    short field16;                    // struct 0x16
+    short cells18[(0xa0 - 0x18) / 2]; // struct 0x18..0x9f (flat cell matrix, stride 0x50 shorts)
   };
 
   NationMetricCategoryRow categoryRows[0x11]; // 0x04 .. 0xaa3
