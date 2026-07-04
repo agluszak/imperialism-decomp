@@ -1012,3 +1012,37 @@ so reattribution never risks the score; it just unlocks typed field/virtual acce
 (`this->selectedEntry`, `g_apTerrainTypeDescriptorTable[c]->IsEncodedNationSlotMinus200Equal(...)`).
 The residual on these is usually pure register allocation (original caches `this`/param in
 edi/cx; the rebuild keeps them in ecx/dx) — same instructions, don't chase (Hard Rule 12).
+
+## 47. Detangling a two-class "frankenclass": split by vtable, recover layout from accessor displacement
+
+When Ghidra (or an earlier port) merges two classes into one — e.g. a manager and a small
+list class conflated because one *contains* the other — the tell is a single class carrying
+**two distinct `// VTABLE:` roles** and methods that match only 6–60% because their
+`this + off` accesses assume the wrong base. `TTradeMgr` (vtable 0x66d990, `: TObject`, size
+0xaf0) had been bolted onto `TDealList` (vtable 0x66da38, `: TSortedPtrList`, size 0x18); the
+edge was **composition** — `TTradeMgr::categoryRankLists[]` holds real `TDealList` instances
+(its InitializeDefaults `new`s them and installs 0x66da38 into each).
+
+Split procedure that keeps both halves green:
+1. **Recover the real field layout from the accessors' disassembly, not the decompile.** A
+   one-line getter `MOVSX EAX,word[ESP+4]; LEA EAX,[EAX+EAX*4]; SHL EAX,5; MOV AX,[EAX+ECX+0x18]`
+   reads *exactly*: stride `5<<5 = 0xa0`, field displacement `0x18`, array base folded in.
+   Since MSVC folds `array_base_offset + field_offset` into one displacement, place the member
+   array right after the vptr (offset 0x04) and shift the struct field offsets down by 4
+   (here 0x18 → struct 0x14, 0x0a → struct 0x06) so codegen reproduces the same displacement.
+   Cross-check against the ctor/init loop's cursor deltas (`LEA ESI,[ECX+0x0e]`, `ADD ESI,0xa0`,
+   `LEA EBP,[ECX+0xaa8]`) and the object size to pin every array offset — the layout arithmetic
+   must total the RTTI size exactly (0x04 + 0x11*0xa0 = 0xaa4, pad, ranks[0x11] at 0xaa8 → 0xaf0).
+2. **Own every primary-vtable slot on the new class** (overrides of the base slots + all
+   introduced virtuals in slot order) so the compiler lays the vtable out correctly — honest
+   `return 0;` bodies are fine, slot correctness is body-independent, and `just vtable NewClass`
+   goes 100% immediately even with unfinished bodies. Move the already-ported real methods with
+   their markers; promote the autogen stubs (verify none are called by name first).
+3. **Retype the global + repoint the alias header**; move its definition (with the `// GLOBAL:`
+   marker) into `global_data_tables.cpp` (the marker gate rejects `// GLOBAL:` anywhere else).
+4. Getter param width matters: `MOVSX word` ⇒ `short` param (not `int`) — fixing both the
+   offset and the width took the accessors 60→100% / 37→64%. Callers that now truncate an int
+   arg may dip a couple pp; accept it (correct model > local caller score, Hard Rule 12).
+Residual on the trivial ctor (just a vtable write in the original) stays low because the
+out-of-line empty `TObject::TObject()` base ctor isn't inlined under /Ob1 — systemic, not a
+detangle defect.

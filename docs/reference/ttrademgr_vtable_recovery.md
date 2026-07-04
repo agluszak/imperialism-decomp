@@ -1,5 +1,31 @@
 # TTradeMgr class recovery (vtable 0x0066d990)
 
+> **STATUS — DONE (detangle executed).** `class TTradeMgr : public TObject` now exists
+> (`include/game/TTradeMgr.h` / `src/game/TTradeMgr.cpp`), split cleanly out of the former
+> `TDealList` frankenclass. Results:
+> - `just vtable TTradeMgr` = **100%** (all 35 primary slots owned: 5 TObject overrides +
+>   25 introduced virtuals 0x0a–0x22 + inherited), `just vtable TDealList` still **100%**.
+> - Field layout **recovered from the accessors' disassembly**: `categoryRows` at class
+>   offset 0x04, stride **0xa0** (row fields at struct 0x06 / 0x14), `categoryRankLists`
+>   (TDealList*) at 0xaa8, object size **0xaf0**. `categoryRankLists` holds real `TDealList`
+>   instances (InitializeDefaults installs vtable 0x66da38 into each) — the composition edge
+>   that caused the original conflation.
+> - Moved-method deltas: `IsCapabilityCategoryActiveSlot3C` 60→**100%**,
+>   `InitializeNationInteractionStateManagerDefaults` 54→**79%**,
+>   `QueryProposalWeightSlot4C` 37→**64%**; ctor 20% (unchanged — installs the *correct*
+>   vtable now; residual is the systemic out-of-line `TObject::TObject` base-ctor call),
+>   `DispatchProposalAmountSlot60`/`ResolveProposalCodeForCategorySlot84` unchanged.
+> - Global `g_pNationInteractionStateManager` retyped `TTradeMgr*`, definition moved to
+>   `global_data_tables.cpp` with its `// GLOBAL:` marker; `typedef TDealList
+>   TNationInteractionStateManager` dropped; the `TNationInteractionStateManager.h` alias
+>   header now points at `TTradeMgr.h`.
+> - Net stats: +3 aligned functions, +0.06pp avg similarity (13 improved, 2 newly paired,
+>   3 minor caller regressions accepted — they stem from the accessors becoming correct
+>   `short`-param real virtuals).
+>
+> Remaining follow-ups (not blocking): lift the 24 promoted slot stubs to real bodies, and
+> port the `CalculateDeveloperTilePurchaseCost` (0x518b40) consumer per step 5 below.
+
 Groundwork for recovering the **TTradeMgr** class (the "nation interaction / trade
 metric" manager). This is the class-recovery that unblocks the `TTradeMgr::` stub
 cluster (~10 methods) and the vtable dispatch in

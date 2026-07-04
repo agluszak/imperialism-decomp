@@ -11952,13 +11952,13 @@
     },
     {
       "address": "0x4daf30",
-      "matching": 0.13649851632047477,
+      "matching": 0.1952662721893491,
       "name": "TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage",
       "type": 1
     },
     {
       "address": "0x4db380",
-      "matching": 0.3130081300813008,
+      "matching": 0.3170731707317073,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -12048,7 +12048,7 @@
     },
     {
       "address": "0x4dcaa0",
-      "matching": 0.46511627906976744,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_40",
       "type": 1
     },
@@ -12631,13 +12631,13 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12673,7 +12673,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -12979,7 +12979,7 @@
     },
     {
       "address": "0x4e4bd0",
-      "matching": 0.5438066465256798,
+      "matching": 0.7104477611940299,
       "name": "TMinor::Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0",
       "type": 1
     },
@@ -12991,7 +12991,7 @@
     },
     {
       "address": "0x4e4f50",
-      "matching": 0.6037735849056604,
+      "matching": 0.9629629629629629,
       "name": "TMinor::ReturnFalseNationStateActionStub",
       "type": 1
     },
@@ -18284,13 +18284,13 @@
     },
     {
       "address": "0x52f9d0",
-      "matching": 0.3930131004366812,
+      "matching": 0.391304347826087,
       "name": "TForeignMinister::RunForeignMinisterVtableSlot94Shared",
       "type": 1
     },
     {
       "address": "0x52fba0",
-      "matching": 0.25301204819277107,
+      "matching": 0.19883040935672514,
       "name": "TForeignMinister::RunForeignMinisterAmountDispatchShared",
       "type": 1
     },
@@ -31158,7 +31158,7 @@
     },
     {
       "address": "0x5b79d0",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TTradeMgr::CreateObject",
       "type": 1
     },
@@ -31175,14 +31175,20 @@
       "type": 1
     },
     {
+      "address": "0x5b7a40",
+      "matching": 0.9090909090909091,
+      "name": "TTradeMgr::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x5b7a90",
-      "matching": 0.5441176470588235,
+      "matching": 0.7913669064748201,
       "name": "TDealList::InitializeNationInteractionStateManagerDefaults",
       "type": 1
     },
     {
       "address": "0x5b7bc0",
-      "matching": 0.07407407407407407,
+      "matching": 0.07692307692307693,
       "name": "OrphanCallChain_C2_I25_005b7bc0",
       "type": 1
     },
@@ -31224,7 +31230,8 @@
     },
     {
       "address": "0x5b8d70",
-      "matching": 0.6,
+      "effective": true,
+      "matching": 0.8,
       "name": "TTradeMgr::GetNationMetricAuxWordForSlot",
       "type": 1
     },
@@ -31248,7 +31255,7 @@
     },
     {
       "address": "0x5b8fe0",
-      "matching": 0.37037037037037035,
+      "matching": 0.6428571428571429,
       "name": "TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A",
       "type": 1
     },
@@ -31356,7 +31363,7 @@
     },
     {
       "address": "0x5ba130",
-      "matching": 0.4489795918367347,
+      "matching": 0.96,
       "name": "TDealList::CreateObject",
       "type": 1
     },
@@ -42962,6 +42969,12 @@
       "address": "0x66d7c8",
       "matching": 1.0,
       "name": "TTown::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x66d990",
+      "matching": 1.0,
+      "name": "TTradeMgr::`vftable'",
       "type": 5
     },
     {

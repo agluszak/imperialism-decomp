@@ -47,7 +47,7 @@ class TTechMgr;
 class TWNetSessionManager;
 class TMultiplayerMgr;
 class TNetMgr;
-class TDealList;
+class TTradeMgr;
 class TSoundResourceManager;
 class TModuleLibraryCacheTableStateB;
 
@@ -242,7 +242,7 @@ extern void* g_pReusableQuickDrawSurfaceListHead;
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 extern TCursorControlPanel* g_pCursorControlPanel;
-extern TDealList* g_pNationInteractionStateManager;
+extern TTradeMgr* g_pNationInteractionStateManager;
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;

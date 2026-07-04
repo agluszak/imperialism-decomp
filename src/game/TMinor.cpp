@@ -6,7 +6,7 @@
 #include "game/nation_slot_eligibility.h"
 #include "game/TCivUnit.h"
 #include "game/TDiplomacyMgr.h"
-#include "game/TDealList.h"
+#include "game/TTradeMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
 #include "game/TInterNationEventQueueManager.h"

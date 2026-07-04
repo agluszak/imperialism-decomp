@@ -5792,7 +5792,7 @@ address|name|symbol|size|type|prototype|provenance
 5b79d0|TTradeMgr::CreateObject|?CreateObject@TTradeMgr@@SGPAVCObject@@XZ|27|function|undefined CreateObject()|rtti
 5b7a00|TTradeMgr::GetRuntimeClass|?GetRuntimeClass@TTradeMgr@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
 5b7a20|ConstructNationInteractionStateManager_Vtbl0066d990||9|function|undefined ConstructNationInteractionStateManager_Vtbl0066d990()|
-5b7a40|TTradeMgr::DestructTTradeMgrAndMaybeFree||30|function|undefined DestructTTradeMgrAndMaybeFree()|
+5b7a40|TTradeMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b7a70|TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl||7|function|undefined DestructTTradeMgrAndMaybeFree_Impl()|
 5b7a90|TDealList::InitializeNationInteractionStateManagerDefaults||234|function|undefined InitializeNationInteractionStateManagerDefaults()|
 5b7bc0|OrphanCallChain_C2_I25_005b7bc0||56|function|undefined OrphanCallChain_C2_I25_005b7bc0()|
