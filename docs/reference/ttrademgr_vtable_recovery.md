@@ -5,6 +5,28 @@ metric" manager). This is the class-recovery that unblocks the `TTradeMgr::` stu
 cluster (~10 methods) and the vtable dispatch in
 `TMapMgr::CalculateDeveloperTilePurchaseCost` (0x518b40, slot 0x13).
 
+> **UPDATE — this is an entangled *detangle*, not a from-scratch creation.**
+> The object is **already modeled** in the tree, incorrectly, as `TDealList`:
+> `include/game/TDealList.h` declares `typedef TDealList TNationInteractionStateManager;`
+> and `g_pNationInteractionStateManager` is typed `TDealList*`. That `TDealList` class is a
+> conflation: it keeps the *real* TDealList's generated vtable comment (0x66da38, 0x18,
+> `: TSortedPtrList`) but has hand-added manager fields (`NationMetricCategoryRow
+> categoryRows[0x11]` — 0xa0 each — plus `categoryRankLists[0x11]`) and **four of the
+> 0x66d990-vtable methods as *non-virtual* `Slot3C/4C/60/84` methods** (0x5b8d70 slot 0x0f,
+> 0x5b8fe0 slot 0x13, 0x5b94d0 slot 0x18, 0x5ba090 slot 0x21 — the `SlotXX` byte offsets
+> are TTradeMgr vtable byte offsets). A from-scratch `TTradeMgr` **duplicates and conflicts**
+> with this (marker/ownership collisions on those 4 addresses, and a second class modeling
+> the same object). Attempted and reverted.
+>
+> The correct recovery is a **careful detangle**: separate the real 0x18 `TDealList` from the
+> manager class, decide whether the manager is a distinct `TTradeMgr` or the same object the
+> `TDealList` frankenclass already sizes, make the 0x66d990 slot methods **virtual** on the
+> owning class (so `CalculateDeveloperTilePurchaseCost`'s `[vtbl+0x4c]` dispatch pairs), and
+> fix the typedef/global. This touches existing *working* `TDealList`/manager code, so it is a
+> dedicated, regression-sensitive pass — not the mechanical promotion the plan below assumed.
+> **Do NOT create a parallel `TTradeMgr` class without first reconciling the existing
+> `TDealList` modeling.** The slot map below is still the authoritative vtable reference.
+
 ## Diagnosis: the global is mis-typed
 
 `g_pNationInteractionStateManager` (0x006a43cc) is declared `TDealList*` in
