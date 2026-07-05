@@ -75,7 +75,13 @@ struct TGlobalMapCityScoreRecord {
   unsigned char pad96[2];
   TMilitaryUnit* stationedUnitChain98; // 0x98
   int cityScoreValue;
-  unsigned char padA0[0xA4 - 0xA0];
+  unsigned char padA0;
+  // Per-nation-slot bitmask (bit N = nation slot N), tested by
+  // TArmyMgr::ComputeCivilianMapCursorStateIndex to gate an enemy-city order when the
+  // pending nation has previously been adjacent/hostile here. Exact set-site not yet
+  // identified.
+  unsigned char exploredByNationMaskA1;
+  unsigned char padA2[2];
   CString cityNameA4; // 0xa4 — city display name
 };
 

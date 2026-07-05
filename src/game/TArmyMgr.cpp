@@ -919,12 +919,74 @@ undefined TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short m
 
 // FUNCTION: IMPERIALISM 0x004a4c80
 int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
-  // TODO: port body @ 0x4a4c80 (641 bytes). Ground truth's own decompile loses register
-  // tracking (unaff_EBX/EBP/retaddr) badly enough that a faithful port needs dedicated
-  // listing-level analysis; left as a real, correctly-signed stub rather than guessed.
-  (void)tileIndex;
-  (void)mode;
-  return 0;
+  if (this->pendingMapActionIndex == -1) {
+    return ComputeMapCursorStateIndex(tileIndex, mode);
+  }
+
+  TTerrainStateRecordView* rec = &g_pGlobalMapState->terrainStateTable[tileIndex];
+  if (rec->perTileVisitedFlag0f > 0) {
+    return 6;
+  }
+  short cityRecordIndex = rec->cityRecordIndex;
+  if (cityRecordIndex == -1) {
+    return 1;
+  }
+
+  short pendingSlot =
+      g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(this->pendingMapActionIndex);
+  short citySlot = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(cityRecordIndex);
+
+  TMilitaryUnit* unit = nullptr;
+  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < 0x180) {
+    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain98;
+  }
+  bool hasMovableUnit = false;
+  for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+      hasMovableUnit = true;
+      break;
+    }
+  }
+
+  if (cityRecordIndex == this->pendingMapActionIndex) {
+    return ((rec->activeFlags1c >> 5) & 1) != 0 ? 7 : 0;
+  }
+
+  bool sameOwner = pendingSlot == citySlot;
+  if (!sameOwner) {
+    TCountry* cityOwnerCountry = g_apTerrainTypeDescriptorTable[citySlot];
+    sameOwner = cityOwnerCountry->IsEncodedNationSlotMinus200Equal(pendingSlot) != 0;
+  }
+
+  if (sameOwner) {
+    if (((rec->activeFlags1c >> 5) & 1) != 0) {
+      return 2;
+    }
+    if (!hasMovableUnit) {
+      return 1;
+    }
+    return g_pGlobalMapState->TileHasMovementClassId(this->pendingMapActionIndex, cityRecordIndex)
+               ? 3
+               : 4;
+  }
+
+  if (((rec->activeFlags1c >> 5) & 1) != 0) {
+    return 8;
+  }
+  if (!hasMovableUnit) {
+    return 1;
+  }
+  if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(pendingSlot, citySlot)) {
+    return 1;
+  }
+  if (g_pGlobalMapState->TileHasMovementClassId(this->pendingMapActionIndex, cityRecordIndex)) {
+    return 5;
+  }
+  if ((g_pGlobalMapState->cityScoreTable[cityRecordIndex].exploredByNationMaskA1 >> pendingSlot) &
+      1) {
+    return 5;
+  }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x004a5080
