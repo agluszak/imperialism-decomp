@@ -4156,7 +4156,7 @@
     },
     {
       "address": "0x48a6f0",
-      "matching": 1.0,
+      "matching": 0.2727272727272727,
       "name": "TEventHandler::DispatchCityProductionAction1B",
       "type": 1
     },
@@ -7488,7 +7488,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -8856,7 +8856,7 @@
     },
     {
       "address": "0x4b3e70",
-      "matching": 0.625,
+      "matching": 0.7770700636942676,
       "name": "TCity::RefreshOrderStateSlot0C",
       "type": 1
     },
@@ -12114,7 +12114,7 @@
     },
     {
       "address": "0x4dc440",
-      "matching": 0.7647058823529411,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_50",
       "type": 1
     },
@@ -12295,7 +12295,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12733,15 +12733,13 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12759,7 +12757,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -16228,7 +16226,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -18130,7 +18128,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2621082621082621,
+      "matching": 0.2784090909090909,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18148,7 +18146,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -23261,7 +23259,7 @@
     },
     {
       "address": "0x5634a0",
-      "matching": 0.5434782608695652,
+      "matching": 0.6666666666666666,
       "name": "FindPortZoneBySelectedTile",
       "type": 1
     },
@@ -37243,7 +37241,7 @@
     },
     {
       "address": "0x607318",
-      "matching": 0.16666666666666666,
+      "matching": 0.4,
       "name": "GetStyle",
       "type": 1
     },
@@ -37915,7 +37913,7 @@
     },
     {
       "address": "0x60a60a",
-      "matching": 0.047058823529411764,
+      "matching": 0.2421875,
       "name": "TMovieView::RunModalLoop",
       "type": 1
     },

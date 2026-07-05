@@ -10,6 +10,7 @@
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
 #include "game/TZone.h"
+#include "game/TPortZone.h"
 #include "game/TGreatPower.h"
 #include "game/global_data_tables.h"
 #include "game/TMapUberPicture.h"
@@ -25,23 +26,6 @@ extern CRuntimeClass PTR_s_TOcean_0065c630;
 
 undefined4 RelaxMapTileCostFieldByNeighborTerrain(void);
 undefined4 SelectBestSeedTileForNationFromCostField(void);
-
-namespace {
-
-// Map-action chain node: CObject-derived, next pointer at +0x18; TPortZone nodes
-// carry the tile-id shorts checked at +0x0c/+0x20/+0x48.
-struct MapActionNodeView : public CObject {
-  unsigned char pad04[0x0c - 0x04];
-  short tileId0c;
-  unsigned char pad0e[0x18 - 0x0e];
-  MapActionNodeView* next18;
-  unsigned char pad1c[0x20 - 0x1c];
-  short tileId20;
-  unsigned char pad22[0x48 - 0x22];
-  short tileId48;
-};
-
-} // namespace
 
 namespace {
 // Retain TOcean::`vftable' in the link until save/load paths virtual-dispatch through
@@ -244,31 +228,33 @@ TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   return GetMapActionContextEntryByNationCodeOffset17(static_cast<short>(nationCode));
 }
 
+// Walks the g_pMapActionContextListHead chain (via prev18) for the first TPortZone
+// whose selected/coastal tile id matches the city's currently-selected order tile.
 // FUNCTION: IMPERIALISM 0x005634a0
-void* TOcean::FindPortZoneBySelectedTile(TCity* city) {
+TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
   short selectedTileId = city->SelectedOrderTileId();
-  MapActionNodeView* node = reinterpret_cast<MapActionNodeView*>(g_pMapActionContextListHead);
+  TZone* node = g_pMapActionContextListHead;
   while (node != 0 &&
          node->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
-    node = node->next18;
+    node = node->prev18;
   }
   for (;;) {
     if (node == 0) {
       return 0;
     }
-    if (node->tileId0c == selectedTileId) {
+    if (static_cast<short>(node->field0c) == selectedTileId) {
       return node;
     }
-    if (node->tileId20 == selectedTileId) {
+    if (node->field20 == selectedTileId) {
       return node;
     }
-    if (node->tileId48 == selectedTileId) {
+    if (static_cast<short>(static_cast<TPortZone*>(node)->field48) == selectedTileId) {
       break;
     }
-    node = node->next18;
+    node = node->prev18;
     while (node != 0 &&
            node->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
-      node = node->next18;
+      node = node->prev18;
     }
   }
   return node;

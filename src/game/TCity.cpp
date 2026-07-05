@@ -41,16 +41,6 @@ TCity::TCity() {
 // FUNCTION: IMPERIALISM 0x004b2550
 TCity::~TCity() {}
 
-short TCity::SelectedOrderTileId() const {
-  if (selectedOrderB0 == 0) {
-    return 1;
-  }
-  short tileId;
-  const char* marker = static_cast<const char*>(selectedOrderB0);
-  memcpy(&tileId, marker + 0x14, sizeof(tileId));
-  return tileId;
-}
-
 // Body not yet ported (2210B production/building-table init); declared real so the
 // TGreatPower ctor dispatches it as a real __thiscall member instead of a fake
 // __fastcall bridge over the ILT thunk.
@@ -139,34 +129,48 @@ void TCity::PredictedNeeds() {
 
 // FUNCTION: IMPERIALISM 0x004b3e70
 void TCity::ProduceUnits() {
-  int shipSlot;
-  for (shipSlot = 0; shipSlot < 8; ++shipSlot) {
-    TShipOrder* shipOrder = this->shipOrderSlots[shipSlot];
-    if (shipOrder == 0) {
-      continue;
-    }
-    short pendingCount = shipOrder->quantityField04;
-    short tileId = shipOrder->resourceTypeIndex48;
-    if (pendingCount != 0) {
-      short blockFlag = GetResourceTypeRandomDrawBlockFlag(tileId);
-      if (blockFlag == 0) {
-        this->ownerNationAc->DispatchTurnOrderActionSlotB0(1, tileId, pendingCount);
-      } else {
-        this->ownerNationAc->DispatchTurnOrderActionSlotB0(0, tileId, pendingCount);
+  TShipOrder** shipCursor = this->shipOrderSlots;
+  int remaining = 8;
+  do {
+    TShipOrder* shipOrder = *shipCursor;
+    if (shipOrder != 0) {
+      // The original constructs a scratch CString here that it never reads; it exists
+      // only to bracket the loop body in an EH frame (ctor + dtor each iteration).
+      CString scratch;
+      short pendingCount = shipOrder->quantityField04;
+      short tileId = shipOrder->resourceTypeIndex48;
+      if (pendingCount != 0) {
+        short blockFlag = GetResourceTypeRandomDrawBlockFlag(tileId);
+        if (blockFlag == 0) {
+          this->ownerNationAc->DispatchTurnOrderActionSlotB0(1, tileId, pendingCount);
+        } else {
+          this->ownerNationAc->DispatchTurnOrderActionSlotB0(0, tileId, pendingCount);
+        }
       }
     }
-  }
-  int buildSlot;
-  for (buildSlot = 0; buildSlot < 0x12; ++buildSlot) {
-    if (this->buildOrderSlots[buildSlot] != 0) {
-      this->buildOrderSlots[buildSlot]->CommitIfPending();
+    ++shipCursor;
+    --remaining;
+  } while (remaining != 0);
+
+  TUnitOrder** buildCursor = this->buildOrderSlots;
+  int buildRemaining = 0x12;
+  do {
+    if (*buildCursor != 0) {
+      (*buildCursor)->CommitIfPending();
     }
-  }
-  for (shipSlot = 0; shipSlot < 8; ++shipSlot) {
-    if (this->shipOrderSlots[shipSlot] != 0) {
-      this->shipOrderSlots[shipSlot]->CommitIfPending();
+    ++buildCursor;
+    --buildRemaining;
+  } while (buildRemaining != 0);
+
+  shipCursor = this->shipOrderSlots;
+  remaining = 8;
+  do {
+    if (*shipCursor != 0) {
+      (*shipCursor)->CommitIfPending();
     }
-  }
+    ++shipCursor;
+    --remaining;
+  } while (remaining != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004b3fb0
@@ -241,8 +245,7 @@ short TCity::DirectTransport(short needIndex, short amount) {
   if (static_cast<short>(owner->needCapA6 - owner->needsOverCapFlag) < amount) {
     amount = static_cast<short>(owner->needCapA6 - owner->needsOverCapFlag);
   }
-  this->CityStockByType(needIndex) =
-      static_cast<short>(this->CityStockByType(needIndex) + amount);
+  this->CityStockByType(needIndex) = static_cast<short>(this->CityStockByType(needIndex) + amount);
   this->ownerNationAc->UpdateNeedTargetAndAccumulateOverCap(
       needIndex, static_cast<short>(owner->needTargetByType[needIndex] + amount));
   return amount;

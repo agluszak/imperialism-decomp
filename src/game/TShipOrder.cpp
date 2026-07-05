@@ -173,21 +173,18 @@ bool TShipOrder::SetQuantity(short quantity) {
       static_cast<short>(city->cityStockFabricC6 -
                          ReadWeight(g_industryActionCostWeightResCode08, weightIndex) * delta);
   city->VerifyStocks();
-  city->cityStockArmsD6 =
-      static_cast<short>(city->cityStockArmsD6 -
-                         ReadWeight(g_industryActionCostWeightResCode10, weightIndex) * delta);
+  city->cityStockArmsD6 = static_cast<short>(
+      city->cityStockArmsD6 - ReadWeight(g_industryActionCostWeightResCode10, weightIndex) * delta);
   city->VerifyStocks();
   city->cityStockSteelCC =
       static_cast<short>(city->cityStockSteelCC -
                          ReadWeight(g_industryActionCostWeightResCode0B, weightIndex) * delta);
   city->VerifyStocks();
-  city->cityStockCoalBC =
-      static_cast<short>(city->cityStockCoalBC -
-                         ReadWeight(g_industryActionCostWeightResCode03, weightIndex) * delta);
+  city->cityStockCoalBC = static_cast<short>(
+      city->cityStockCoalBC - ReadWeight(g_industryActionCostWeightResCode03, weightIndex) * delta);
   city->VerifyStocks();
-  city->cityStockFuelCE =
-      static_cast<short>(city->cityStockFuelCE -
-                         ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
+  city->cityStockFuelCE = static_cast<short>(
+      city->cityStockFuelCE - ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
   city->VerifyStocks();
   return 1;
 }
@@ -211,8 +208,7 @@ void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability() {
 
   while (quantity != 0) {
     const int nationSlot = static_cast<int>(city->ownerNationAc->nationSlot);
-    TZone* portZone =
-        static_cast<TZone*>(g_pActiveMapOrderContext->FindPortZoneBySelectedTile(city));
+    TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(city);
     CreateNavyPrimaryOrderNodeAndAssignDisplayName(this->resourceTypeIndex48, portZone, nationSlot,
                                                    0);
     quantity = this->quantityField04;

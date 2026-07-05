@@ -1669,7 +1669,8 @@ char TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
     return 0;
   }
   for (int recordIndex = 8; recordIndex < 0xd; ++recordIndex) {
-    TProductionOrder* record = tradeCity->tradeCommodityRecordPtrs[static_cast<short>(recordIndex)];
+    TProductionOrder* record =
+        this->city->tradeCommodityRecordPtrs[static_cast<short>(recordIndex)];
     short controlValue = record->quantityField04;
     if (record->MaxOrder() > controlValue) {
       return 1;
@@ -4336,8 +4337,8 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
         int production = 4;
         for (int buildingSlot = 0; buildingSlot < 7; ++buildingSlot) {
           peerMgr = (*nationCursor != 0) ? (*nationCursor)->city : 0;
-          production += static_cast<short>(
-              peerMgr->GetBuildingType(static_cast<short>(buildingSlot)));
+          production +=
+              static_cast<short>(peerMgr->GetBuildingType(static_cast<short>(buildingSlot)));
         }
         sampleCount = sampleCount - g_Classify_Nation_Military_Value_00653704;
         productionSum = static_cast<float>(production) + productionSum;
@@ -4357,8 +4358,8 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
            (sampleCount - g_Classify_Nation_Military_Value_0065370C)));
   int ownProduction = 4;
   for (int buildingSlot = 0; buildingSlot < 7; ++buildingSlot) {
-    ownProduction += static_cast<short>(
-        this->city->GetBuildingType(static_cast<short>(buildingSlot)));
+    ownProduction +=
+        static_cast<short>(this->city->GetBuildingType(static_cast<short>(buildingSlot)));
   }
   float ownScore = static_cast<float>(ownProduction);
   if (mean - deviation * g_Classify_Nation_Military_Value_00653710 < ownScore) {

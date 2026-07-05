@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstring>
+
 #include "decomp_types.h"
 #include "game/TObject.h"
 #include "game/TPopulationMgr.h"
@@ -16,13 +18,13 @@ class TUnitOrder;
 // VTABLE: IMPERIALISM 0x0064f580
 class TCity : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TCity) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TCity) — refreshed by recover-class; do not hand-edit ===
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-// === END GENERATED DECLS (TCity) ===
+  // === END GENERATED DECLS (TCity) ===
   DECLARE_DYNCREATE(TCity)
   ~TCity() override;
 
@@ -72,8 +74,7 @@ public:
   // slot 0x18 — body 0x004b4d50 (vtable stores direct body, not ILT 0x0040494e).
   virtual void BuildPowerPlant(char enableUpgrade);
   // slot 0x19 — body 0x004b4c80: write the production flag/current/accum for a slot.
-  virtual void SetBuildingWindowState(short productionSlot, char flag, short current,
-                                      short accum);
+  virtual void SetBuildingWindowState(short productionSlot, char flag, short current, short accum);
   // slot 0x1a — body 0x004b4cc0: read the production flag byte (+0x21c) and the two
   // production shorts (+0x22c/+0x24c) for a slot.
   virtual char GetBuildingWindowState(short productionSlot, short* outCurrent, short* outAccum);
@@ -157,7 +158,8 @@ public:
       TProductionOrder* trailingOrderSlots[0x0a];       // 0x33..0x3c
     };
   };
-  TPopulationMgr* productionSummary1d8; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)
+  TPopulationMgr*
+      productionSummary1d8; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)
   // 0x1DC — 16-entry per-city production order table (0x004b4dc0, ctor-cleared).
   short productionOrderTable1dc[0x10];
   short productionAccum1fc[0x10];         // 0x1FC — ctor-cleared
@@ -166,14 +168,26 @@ public:
   short production24c[0x10];              // 0x24C — GetBuildingWindowState outAccum
   short field26c;                         // 0x26C — zeroed by the ctor
   short pad26e;
-  TSortedList* trackedOrderList270;     // 0x270 — released via FreePayloadsAndDestroySlot58
+  TSortedList* trackedOrderList270;  // 0x270 — released via FreePayloadsAndDestroySlot58
   class TQueueObject* eventQueue274; // 0x274 — released via Call24
   unsigned char pad278[0x2d4 - 0x278];
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")
 
-  short& CityStockByType(int index) { return (&cityStockCottonB6)[index]; }
-  short SelectedOrderTileId() const;
+  short& CityStockByType(int index) {
+    return (&cityStockCottonB6)[index];
+  }
+  // Marker-less accessor: the original inlines this at every call site, so it must
+  // be defined in the header to inline across translation units under MSVC500.
+  short SelectedOrderTileId() const {
+    if (selectedOrderB0 != 0) {
+      short tileId;
+      const char* marker = static_cast<const char*>(selectedOrderB0);
+      memcpy(&tileId, marker + 0x14, sizeof(tileId));
+      return tileId;
+    }
+    return 1;
+  }
 
   int GetBuildingType(short buildingSlot);
 

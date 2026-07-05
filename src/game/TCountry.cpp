@@ -308,16 +308,14 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
           }
           TGreatPower* nation = g_apNationStates[this->nationSlot];
           TCity* cityForPort = (nation != 0) ? nation->city : 0;
-          void* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
-          CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, static_cast<TZone*>(portZone),
-                                                         this->nationSlot, 0);
+          TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
+          CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone, this->nationSlot, 0);
         }
         if (this->nationSlot < 7) {
           TGreatPower* nation = g_apNationStates[this->nationSlot];
           if (nation->diplomacyEligibilityA0 != 0 && g_pSimMgr->runtimeSubsystemIndex == 0) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
-            TZone* portZone = static_cast<TZone*>(
-                g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort));
+            TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
             if (portZone->PrimaryZoneHeapCapacity() == 0) {
               void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
                   ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);

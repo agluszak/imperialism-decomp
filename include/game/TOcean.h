@@ -56,7 +56,7 @@ public:
   TZone* GetLinkedZoneForSeaTile(short seaTileIndex);
 
   // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.
-  void* FindPortZoneBySelectedTile(TCity* city);
+  TZone* FindPortZoneBySelectedTile(TCity* city);
 
   // bd 1uj.16: final step of TTaskForce::SetMapOrderType9AndQueue /
   // PromoteMapOrderChainAndQueue (0x552f80 / 0x5533f0). Not yet recovered --
