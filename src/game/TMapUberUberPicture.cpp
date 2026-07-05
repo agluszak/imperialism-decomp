@@ -1,7 +1,8 @@
 #include "game/TMapUberUberPicture.h"
 
 // FUNCTION: IMPERIALISM 0x0045d2a0
-undefined TMapUberUberPicture::OrphanRetStub_0045d2a0() {
+undefined TMapUberUberPicture::OrphanRetStub_0045d2a0(int param1) {
+  (void)param1;
   return 0;
 }
 
@@ -19,9 +20,7 @@ IMPLEMENT_DYNCREATE(TMapUberUberPicture, TOffLimitsPicture)
 TMapUberUberPicture::TMapUberUberPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00596810
-void TMapUberUberPicture::NoOpUiLifecycleHook(int arg) {
-}
+void TMapUberUberPicture::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x00596840
-void TMapUberUberPicture::Free() {
-}
+void TMapUberUberPicture::Free() {}

@@ -98,10 +98,12 @@ public:
   // localized string code (0x5dd220).
   virtual void HandleTurnEventDialogFactorySlotE4(int stringCode); // 0xe4
   virtual void UiRuntimeSlotE8();                                  // 0xe8
-  virtual void UiRuntimeSlotEC();                                  // 0xec
-  virtual void UiRuntimeSlotF0();                                  // 0xf0
-  virtual void UiRuntimeSlotF4();                                  // 0xf4
-  virtual void UiRuntimeSlotF8();                                  // 0xf8
+  // Refreshes the 0xdac factory dialog's 'page' roster for a tile-selection map click
+  // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
+  virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
+  virtual void UiRuntimeSlotF0();                                    // 0xf0
+  virtual void UiRuntimeSlotF4();                                    // 0xf4
+  virtual void UiRuntimeSlotF8();                                    // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   virtual void UiRuntimeSlot100();               // 0x100
   // Turn-event 0x5DF path (see DispatchTurnEventSlot4C): re-asserts and refreshes

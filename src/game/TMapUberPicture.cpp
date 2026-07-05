@@ -7,7 +7,10 @@
 
 IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
 
-TMapUberPicture::TMapUberPicture() {}
+// FUNCTION: IMPERIALISM 0x005969e0
+TMapUberPicture::TMapUberPicture()
+    : field_0x94(1), activeUnitCategoryIndex96(3), field_0x98(0), field_0x9c(0), field_0xa0(0),
+      field_0xc0(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00596a30
 // TMapUberPicture::`scalar deleting destructor'
@@ -29,7 +32,8 @@ void TMapUberPicture::vmethod_0017(int param) {}
 void TMapUberPicture::ForwardParam(int param) {}
 
 // FUNCTION: IMPERIALISM 0x005977a0
-undefined TMapUberPicture::OrphanRetStub_0045d2a0() {
+undefined TMapUberPicture::OrphanRetStub_0045d2a0(int param1) {
+  (void)param1;
   return 0;
 }
 

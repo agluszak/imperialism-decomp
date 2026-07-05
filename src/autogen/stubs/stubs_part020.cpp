@@ -611,14 +611,6 @@ undefined4 HandleTurnEventDialogFactorySlotE8(void)
   return 0;
 }
 
-// ghidra_name TLineData::HandleTurnEventDialogFactorySlotEC
-// ghidra_proto undefined HandleTurnEventDialogFactorySlotEC()
-// FUNCTION: IMPERIALISM 0x005dd900
-undefined4 HandleTurnEventDialogFactorySlotEC(void)
-{
-  return 0;
-}
-
 // ghidra_name OpenSuperArmyRosterPageAndActivateProvinceSelection
 // ghidra_proto undefined OpenSuperArmyRosterPageAndActivateProvinceSelection()
 // FUNCTION: IMPERIALISM 0x005dda30

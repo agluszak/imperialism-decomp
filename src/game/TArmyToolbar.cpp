@@ -29,17 +29,11 @@ static __inline void DispatchUiRuntimeSlot48() {
   g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
 }
 
-// TODO: g_pUiRuntimeContext's vtable slot 0x3b (byte 0xec, ground truth target 0x005dd900,
-// 239 bytes) is not yet ported -- still a placeholder 0-arg UiRuntimeSlotEC() declaration.
-// This callsite (ground truth `CALL [EAX+0xec]` after `MOV EAX,[ECX]`, i.e. a real 2-arg
-// vtable dispatch) needs that method ported with its real signature before it can become a
-// real virtual call; kept as the pre-existing raw dispatch pending that port.
 static __inline void DispatchUiRuntimeMapSelection(short mapSelection) {
   if (g_pUiRuntimeContext == 0) {
     return;
   }
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>((
-      *reinterpret_cast<void***>(g_pUiRuntimeContext))[0x3b])(g_pUiRuntimeContext, 0, mapSelection);
+  g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotEC(mapSelection);
 }
 
 static __inline void SetMapContextActionMode(int mode) {

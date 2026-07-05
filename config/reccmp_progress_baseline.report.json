@@ -1251,7 +1251,7 @@
     },
     {
       "address": "0x45d2a0",
-      "matching": 0.0,
+      "matching": 0.6666666666666666,
       "name": "TMapUberUberPicture::OrphanRetStub_0045d2a0",
       "type": 1
     },
@@ -1275,7 +1275,7 @@
     },
     {
       "address": "0x45d3b0",
-      "matching": 0.0,
+      "matching": 0.2,
       "name": "TTacMapUberPicture::OrphanRetStub_0045d2a0",
       "type": 1
     },
@@ -12631,7 +12631,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -16118,7 +16118,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.19900045433893684,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -27588,7 +27588,7 @@
     },
     {
       "address": "0x58e1c0",
-      "matching": 0.44324324324324327,
+      "matching": 0.4782608695652174,
       "name": "TArmyToolbar::HandleEvent",
       "type": 1
     },
@@ -28212,7 +28212,7 @@
     },
     {
       "address": "0x5969e0",
-      "matching": 0.25,
+      "matching": 0.6428571428571429,
       "name": "TMapUberPicture::ConstructTMapUberPictureBaseState",
       "type": 1
     },
@@ -28278,7 +28278,7 @@
     },
     {
       "address": "0x5977a0",
-      "matching": 0.0,
+      "matching": 0.08333333333333333,
       "name": "TMapUberPicture::OrphanRetStub_0045d2a0",
       "type": 1
     },
@@ -33059,7 +33059,7 @@
     },
     {
       "address": "0x5dd900",
-      "matching": 0.0,
+      "matching": 0.7050359712230215,
       "name": "TLineData::HandleTurnEventDialogFactorySlotEC",
       "type": 1
     },

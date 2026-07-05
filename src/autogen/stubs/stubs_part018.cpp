@@ -859,14 +859,6 @@ undefined4 ConstructTWorldViewBaseState(void)
   return 0;
 }
 
-// ghidra_name TMapUberPicture::ConstructTMapUberPictureBaseState
-// ghidra_proto undefined ConstructTMapUberPictureBaseState()
-// FUNCTION: IMPERIALISM 0x005969e0
-undefined4 ConstructTMapUberPictureBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name ComposeAndDispatchTurnSummaryLocalizedMessage
 // ghidra_proto undefined ComposeAndDispatchTurnSummaryLocalizedMessage()
 // FUNCTION: IMPERIALISM 0x00597020

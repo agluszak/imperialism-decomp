@@ -1360,7 +1360,6 @@ int TViewMgr::ShowConstructionOptionsDialog() {
 
 void TViewMgr::UiRuntimeSlotE0() {}
 void TViewMgr::UiRuntimeSlotE8() {}
-void TViewMgr::UiRuntimeSlotEC() {}
 void TViewMgr::UiRuntimeSlotF0() {}
 void TViewMgr::UiRuntimeSlotF4() {}
 void TViewMgr::UiRuntimeSlotF8() {}
@@ -1408,6 +1407,45 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
   nameText->SetTextFromUiStringResourceId(static_cast<short>(stringCode));
   node->CallVoidSlotA0();
   node->Free();
+}
+
+// FUNCTION: IMPERIALISM 0x005dd900
+void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdac));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1e2);
+  }
+  TView* page = node->ResolveControlByTag(0x70616765); // 'page'
+  if (page == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1e3);
+  }
+  // Ground truth (0x004a8890, reached through the resolved ILT thunk at 0x00402216) rebuilds
+  // 'page's TArmyUnitLine roster for the tile at mapSelection from
+  // g_pGlobalMapState->cityScoreTable and appends each line via TPageView's own AddLine slot
+  // (byte 0x1a0, TPageView::OrphanCallChain_C1_I06_0056fbb0). Ghidra/symbols.csv misattribute
+  // that function to TLineData -- TLineData's vtable only spans 12 slots, far short of the
+  // 0x69 needed for its own AddLine call, so the real receiver is a TPageView-derived roster
+  // page. The concrete roster subclass installed as 'page' on this call path isn't recovered
+  // yet, so the call stays undone rather than fake a cast to a guessed class (Hard Rule 12).
+  (void)page;
+
+  POINT placement;
+  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->ShowTurnEventDialog(1);
+  node->RefreshTurnEventDialog();
+  node->CallVoidSlotA0();
+  node->Free();
+
+  // Ground truth then dispatches
+  // mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]'s own slot-0x74 virtual with
+  // mapSelection (matching the arity fixed on TMapUberUberPicture::OrphanRetStub_0045d2a0),
+  // but categoryPages' concrete element class isn't recovered yet -- left undone (Hard Rule
+  // 12) rather than fake that dispatch too.
+  (void)mapSelection;
 }
 
 // FUNCTION: IMPERIALISM 0x005ddd20

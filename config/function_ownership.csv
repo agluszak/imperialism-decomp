@@ -3595,6 +3595,7 @@ address|target_cpp|ownership|note
 596840|src/game/TMapUberUberPicture.cpp|manual|marker_sync
 596900|src/game/TMapUberPicture.cpp|manual|marker_sync
 5969c0|src/game/TMapUberPicture.cpp|manual|marker_sync
+5969e0|src/game/TMapUberPicture.cpp|manual|marker_sync
 596a30|src/game/TMapUberPicture.cpp|manual|marker_sync
 596a80|src/game/TMapUberPicture.cpp|manual|marker_sync
 596c60|src/game/TMapUberPicture.cpp|manual|marker_sync
@@ -4146,6 +4147,7 @@ address|target_cpp|ownership|note
 5dcd80|src/game/TModalMessageCommand.cpp|manual|marker_sync
 5dcdd0|src/game/TModalMessageCommand.cpp|manual|marker_sync
 5dd220|src/game/TViewMgr.cpp|manual|marker_sync
+5dd900|src/game/TViewMgr.cpp|manual|marker_sync
 5ddd20|src/game/TViewMgr.cpp|manual|marker_sync
 5dea60|src/game/TViewMgr.cpp|manual|marker_sync
 5df260|src/game/TAssetMgr.cpp|manual|mfc_runtime_macro
