@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game/TObject.h"
-#include "game/ClipStateRegion.h"
+#include "game/quickdraw_regions.h"
 #include "game/StrategicMapCallbackRecord.h"
 #include "game/mfc.h"
 
@@ -72,12 +72,12 @@ public:
   virtual undefined
   EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
                                                     short param_2);      // slot 0x25 0x50d680
-  virtual ClipStateRegionWrapper* GetClipRegionSlotByIndex(short index); // slot 0x26 0x509e10
+  virtual RgnHandle GetClipRegionSlotByIndex(short index); // slot 0x26 0x509e10
   // === END GENERATED DECLS (TMacViewMgr) ===
 
   TView* field04;
-  ClipStateRegionWrapper* regionSlots[0x17];
-  ClipStateRegionWrapper* tileStateSlots[0x180];
+  RgnHandle regionSlots[0x17];
+  RgnHandle tileStateSlots[0x180];
   int padding664;
   TQuickDrawSurfaceContext* atlas668;
   TQuickDrawSurfaceContext* atlas66c;

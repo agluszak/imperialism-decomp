@@ -50,17 +50,16 @@ void TShipAmtBar::NoOpUiLifecycleHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0058ac80
 void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
-  QuickDrawSurfaceGuard surface;
+  CTemporaryRegion surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(
-      reinterpret_cast<int*>(surface.surfaceWrapper));
+  GetClip(surface.tempRgn);
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
     if (control->IsActionable() != 0) {
       RECT boundsRect = {0, 0, 0, 0};
       control->QueryBounds(&boundsRect);
-      reinterpret_cast<void(__cdecl*)(RECT*)>(ApplyRectClipRegionToGlobalClipState)(&boundsRect);
+      ClipRect(&boundsRect);
       control->QueryBounds(&boundsRect);
       control->TranslatePointToParentChain4E();
 
@@ -81,7 +80,7 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       ResetQuickDrawStrokeState();
       DrawCenteredGuideLineOnMapDc(overlayOffsetX, (short)(overlayOffsetY - 2));
 
-      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
+      SetClip(surface.tempRgn);
       TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(control)->OwnerPanel());
       if (owner != 0) {
         owner->InvokeSlot13C();

@@ -739,14 +739,6 @@ undefined4 WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_DeleteRegionHandleFromClipState_At00495520
-// ghidra_proto undefined WrapperFor_DeleteRegionHandleFromClipState_At00495520()
-// FUNCTION: IMPERIALISM 0x00495520
-undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void)
-{
-  return 0;
-}
-
 // ghidra_name CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0
 // ghidra_proto undefined Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0()
 // FUNCTION: IMPERIALISM 0x004955b0
@@ -763,14 +755,6 @@ undefined4 BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl(void)
   return 0;
 }
 
-// ghidra_name IsPointInsideHitRegion
-// ghidra_proto int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg)
-// FUNCTION: IMPERIALISM 0x00495650
-int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C4_I50_004956e0
 // ghidra_proto undefined OrphanCallChain_C4_I50_004956e0()
 // FUNCTION: IMPERIALISM 0x004956e0
@@ -783,30 +767,6 @@ undefined4 OrphanCallChain_C4_I50_004956e0(void)
 // ghidra_proto undefined OrphanCallChain_C4_I50_00495780()
 // FUNCTION: IMPERIALISM 0x00495780
 undefined4 OrphanCallChain_C4_I50_00495780(void)
-{
-  return 0;
-}
-
-// ghidra_name ReplaceClipStateRegionHandleFromRect
-// ghidra_proto undefined ReplaceClipStateRegionHandleFromRect()
-// FUNCTION: IMPERIALISM 0x004958e0
-undefined4 ReplaceClipStateRegionHandleFromRect(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyHitRegionToClipState
-// ghidra_proto undefined ApplyHitRegionToClipState()
-// FUNCTION: IMPERIALISM 0x00495920
-undefined4 ApplyHitRegionToClipState(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyRectClipRegionToGlobalClipState
-// ghidra_proto undefined ApplyRectClipRegionToGlobalClipState()
-// FUNCTION: IMPERIALISM 0x00495a80
-undefined4 ApplyRectClipRegionToGlobalClipState(void)
 {
   return 0;
 }
@@ -919,14 +879,6 @@ undefined4 InitializeBrushStateVtableAndClearHandle(void)
 // ghidra_proto undefined WrapperFor_DeleteRegionHandleFromClipState_At00498610()
 // FUNCTION: IMPERIALISM 0x00498610
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00498610(void)
-{
-  return 0;
-}
-
-// ghidra_name GetRegionBoxToRectIfPresent
-// ghidra_proto undefined GetRegionBoxToRectIfPresent()
-// FUNCTION: IMPERIALISM 0x00498aa0
-undefined4 GetRegionBoxToRectIfPresent(void)
 {
   return 0;
 }

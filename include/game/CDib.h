@@ -68,6 +68,13 @@ public:
                                                unsigned int width, unsigned int height, int destX,
                                                int destY, int transparentColor);
 
+  // Scan the pixel buffer and return a heap int array describing the outline polygon of
+  // the non-transparent area: [0] = POINT count, POINTs from +2, closed (first point
+  // repeated last). transparentIndex == 0xffffffff means "use the first pixel's value";
+  // a 1-bpp surface treats zero bytes as transparent. Consumed by BitMapToRegion
+  // (CreatePolygonRgn) and the cursor/city-region builders. 0x0047c3d0
+  int* BuildNonTransparentOutlinePolygon(unsigned int transparentIndex);
+
   // Serialize backends: write a .bmp (BITMAPFILEHEADER + BITMAPINFO + pixels) / read one back.
   void Write(CFile* file); // 0x0047b9f0
   int Read(CFile* file);   // 0x0047b6d0

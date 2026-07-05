@@ -1,5 +1,5 @@
 #include "game/TMapDialog.h"
-#include "game/QuickDrawSurfaceGuard.h"
+#include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TView.h"

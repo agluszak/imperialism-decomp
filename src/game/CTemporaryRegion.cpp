@@ -1,46 +1,40 @@
-#include "game/QuickDrawSurfaceGuard.h"
+#include "game/CTemporaryRegion.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/ClipStateRegion.h"
+#include "game/quickdraw_regions.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
 
-undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
-
 const char kQuickDrawCppPath[] = "D:\\Ambit\\QuickDraw.cpp";
 
 // FUNCTION: IMPERIALISM 0x00497320
-QuickDrawSurfaceGuard::QuickDrawSurfaceGuard() {
-  if (g_pReusableQuickDrawSurfaceListHead != 0) {
-    surfaceWrapper =
-        reinterpret_cast<ClipStateRegionWrapper*>(g_pReusableQuickDrawSurfaceListHead);
-    g_pReusableQuickDrawSurfaceListHead = 0;
+CTemporaryRegion::CTemporaryRegion() {
+  if (g_pTemporaryRegionCache != 0) {
+    tempRgn = g_pTemporaryRegionCache;
+    g_pTemporaryRegionCache = 0;
     return;
   }
-  surfaceWrapper = CreateClipStateRegionWrapperObject();
-  if (surfaceWrapper == 0) {
+  tempRgn = NewRgn();
+  if (tempRgn == 0) {
     GAME_FAIL_NIL_POINTER();
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        TemporarilyClearAndRestoreUiInvalidationFlag)(kQuickDrawCppPath, 0x7f6);
+    TemporarilyClearAndRestoreUiInvalidationFlag(kQuickDrawCppPath, 0x7f6);
   }
 }
 
+// If another temp region already sits in the cache, really dispose ours
+// (DisposeRgn spelled out, as in the original); otherwise park the handle for
+// the next CTemporaryRegion.
 // FUNCTION: IMPERIALISM 0x00497390
-QuickDrawSurfaceGuard::~QuickDrawSurfaceGuard() {
-  if (g_pReusableQuickDrawSurfaceListHead != 0) {
-    ClipStateRegionWrapper* regionWrapper = surfaceWrapper;
-    if (regionWrapper != 0) {
-      ClipStateRegionInner* regionHandle = regionWrapper->inner;
-      if (regionHandle != 0) {
-        reinterpret_cast<void(__cdecl*)()>(WrapperFor_DeleteRegionHandleFromClipState_At00495520)();
-        delete regionHandle;
-        regionWrapper->inner = 0;
-      }
+CTemporaryRegion::~CTemporaryRegion() {
+  if (g_pTemporaryRegionCache != 0) {
+    RgnHandle handle = tempRgn;
+    if (handle != 0) {
+      delete *handle;
     }
-    delete regionWrapper;
-    surfaceWrapper = 0;
+    delete handle;
+    tempRgn = 0;
     return;
   }
-  g_pReusableQuickDrawSurfaceListHead = surfaceWrapper;
-  surfaceWrapper = 0;
+  g_pTemporaryRegionCache = tempRgn;
+  tempRgn = 0;
 }

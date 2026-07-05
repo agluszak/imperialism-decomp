@@ -62,7 +62,7 @@ void TAmtBar::ApplyRectSlot110(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x00588690
 void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
-  QuickDrawSurfaceGuard surface;
+  CTemporaryRegion surface;
   short barRange = rangeOrMaxValue;
   RECT contentBounds;
   RECT frameBounds;
@@ -73,15 +73,14 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   short guideValue = 0;
   short fillOrigin;
 
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(
-      reinterpret_cast<int*>(surface.surfaceWrapper));
+  GetClip(surface.tempRgn);
 
   if (this->IsActionable() == 0 || this->Refresh() == 0) {
     return;
   }
 
   this->QueryContentBounds(&contentBounds);
-  reinterpret_cast<void(__cdecl*)(RECT*)>(ApplyRectClipRegionToGlobalClipState)(&contentBounds);
+  ClipRect(&contentBounds);
 
   this->QueryBounds(&frameBounds);
 
@@ -121,8 +120,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   SetQuickDrawTextOriginWithContextOffset(stepOrCurrentValue, 0);
   ResetQuickDrawStrokeState();
   DrawCenteredGuideLineOnMapDc((short)(stepOrCurrentValue - 1), controlHeight);
-  int clipDescriptorHead = 0;
-  SnapshotHitRegionToClipCache(&clipDescriptorHead);
+  SetClip(surface.tempRgn);
 }
 
 // FUNCTION: IMPERIALISM 0x00588950

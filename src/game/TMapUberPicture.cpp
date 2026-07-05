@@ -1,6 +1,6 @@
 #include "game/TMapUberPicture.h"
 
-#include "game/ClipStateRegion.h"
+#include "game/quickdraw_regions.h"
 #include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
 #include "game/TMiniMapView.h"
@@ -9,8 +9,6 @@
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
-
-extern undefined4 ReplaceClipStateRegionHandleFromRect(void);
 
 // SYNTHETIC: IMPERIALISM 0x00596900
 // TMapUberPicture::CreateObject
@@ -267,12 +265,11 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
   toolRect.top = toolControl->ownerOffsetY + kToolWindowMargin;
   toolRect.right = toolRect.left + 0x71;
   toolRect.bottom = toolRect.top + 0x41;
-  ClipStateRegionWrapper* region = CreateClipStateRegionWrapperObject();
-  reinterpret_cast<void(__cdecl*)(ClipStateRegionWrapper*, RECT*)>(
-      ReplaceClipStateRegionHandleFromRect)(region, &toolRect);
-  CombineTwoRegionsIntoDestinationAndUpdateBox(this->ownClipRegion90, region,
+  RgnHandle region = NewRgn();
+  RectRgn(region, &toolRect);
+  UnionRgn(this->ownClipRegion90, region,
                                                this->ownClipRegion90);
-  DestroyClipStateRegionWrapperObject(region);
+  DisposeRgn(region);
 
   if (this->invalidationFlag94 == 0) {
     this->field_0xc0->markerBoxWidth98 = 0x20;

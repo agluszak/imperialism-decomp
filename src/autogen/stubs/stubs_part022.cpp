@@ -539,14 +539,6 @@ undefined4 SelectPaletteThenLookupHandleMapEntryWithCreate(void)
   return 0;
 }
 
-// ghidra_name DeleteObject
-// ghidra_proto undefined DeleteObject()
-// FUNCTION: IMPERIALISM 0x00613aa3
-undefined4 DeleteObject(void)
-{
-  return 0;
-}
-
 // ghidra_name CView
 // ghidra_proto undefined CView()
 // FUNCTION: IMPERIALISM 0x00613cb1

@@ -270,6 +270,12 @@ void* GetSurfaceNodePixelBits(void* surfaceObject) {
   return **reinterpret_cast<void***>(surfaceObject);
 }
 
+// FUNCTION: IMPERIALISM 0x00497c00
+undefined4 QDLoadResource(TBitmapResourceLoader** handle) {
+  (void)handle;
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005c3b70
 TQuickDrawSurfaceContext*
 LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {

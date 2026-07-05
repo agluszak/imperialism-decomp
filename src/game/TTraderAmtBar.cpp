@@ -116,10 +116,9 @@ int TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
 
 // FUNCTION: IMPERIALISM 0x0058b0f0
 void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
-  QuickDrawSurfaceGuard surface;
+  CTemporaryRegion surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(
-      reinterpret_cast<int*>(surface.surfaceWrapper));
+  GetClip(surface.tempRgn);
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -140,7 +139,7 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
         ResetQuickDrawStrokeState();
       }
 
-      SnapshotHitRegionToClipCache(0);
+      SetClip(surface.tempRgn);
       TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(control)->OwnerPanel());
       if (owner != 0) {
         owner->InvokeSlot13C();

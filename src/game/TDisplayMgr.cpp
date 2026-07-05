@@ -3,7 +3,7 @@
 #include <new>
 
 #include "game/bitmap_descriptor_helpers.h"
-#include "game/QuickDrawSurfaceGuard.h"
+#include "game/CTemporaryRegion.h"
 #include "game/startup_helpers.h"
 #include "game/TAssetMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -211,8 +211,8 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
 
   int savedFlags = 0;
   TQuickDrawSurfaceContext* savedContext = 0;
-  QuickDrawSurfaceGuard surfaceGuard;
-  ApplyHitRegionToClip(surfaceGuard.surfaceWrapper);
+  CTemporaryRegion surfaceGuard;
+  GetClip(surfaceGuard.tempRgn);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
@@ -236,12 +236,12 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
 
   SetGlobalQuickDrawOrigin(static_cast<short>(mainView->ownerOffsetX),
                            static_cast<short>(mainView->ownerOffsetY));
-  ApplyRectClipRegionToClip(&clipRect);
+  ClipRect(&clipRect);
   mainView->ApplyRectSlot110(&queryBounds);
 
   NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
-  SnapshotHitRegionToClipCache(reinterpret_cast<int*>(surfaceGuard.surfaceWrapper));
+  SetClip(surfaceGuard.tempRgn);
   clipSnapshotEvent = static_cast<short>(param_1);
   return 0;
 }

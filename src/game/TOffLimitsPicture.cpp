@@ -17,8 +17,8 @@ TOffLimitsPicture::~TOffLimitsPicture() {}
 // FUNCTION: IMPERIALISM 0x00573850
 void TOffLimitsPicture::NoOpUiLifecycleHook(int arg) {
   TView::NoOpUiLifecycleHook(arg);
-  ownClipRegion90 = CreateClipStateRegionWrapperObject();
-  ResetClipRegionAndReadBoundingRect(ownClipRegion90);
+  ownClipRegion90 = NewRgn();
+  SetEmptyRgn(ownClipRegion90);
 }
 
 // FUNCTION: IMPERIALISM 0x00573890
@@ -26,14 +26,14 @@ void TOffLimitsPicture::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x00573900
 void TOffLimitsPicture::Free() {
-  DestroyClipStateRegionWrapperObject(ownClipRegion90);
+  DisposeRgn(ownClipRegion90);
   ownClipRegion90 = nullptr;
   TView::Free();
 }
 
 // FUNCTION: IMPERIALISM 0x00573940
-undefined TOffLimitsPicture::ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(
-    ClipStateRegionWrapper* srcRegion) {
-  CombineOptionalSourceRegionIntoDestinationAndUpdateBox(srcRegion, ownClipRegion90);
+undefined TOffLimitsPicture::ForwardCopyRgn(
+    RgnHandle srcRegion) {
+  CopyRgn(srcRegion, ownClipRegion90);
   return 0;
 }

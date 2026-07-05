@@ -355,7 +355,7 @@ address|name|symbol|size|type|prototype|provenance
 47bf90|LoadBmpResourceByIdCached_Impl||73|function|undefined LoadBmpResourceByIdCached_Impl()|
 47c080|CDib::LoadBitmapResourceAndInitializeSurfaceState||224|function|int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module)|
 47c1f0|LoadAndPreviewDibFromDialogInput_Impl||384|function|undefined LoadAndPreviewDibFromDialogInput_Impl()|
-47c3d0|TTransFocusAnimation::Sprite__CollectNonTransparentPixels||898|function|int * __thiscall Sprite__CollectNonTransparentPixels(uint this_ptr)|
+47c3d0|CDib::BuildNonTransparentOutlinePolygon||898|function|int * __thiscall Sprite__CollectNonTransparentPixels(uint this_ptr)|
 47c980|RebuildSurfaceRowsWithTemporaryRowBuffer||203|function|undefined RebuildSurfaceRowsWithTemporaryRowBuffer()|
 47cac0|WrapperFor_DeleteRegionHandleFromClipState_At0047cac0||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cac0()|
 47cb60|WrapperFor_DeleteRegionHandleFromClipState_At0047cb60||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cb60()|
@@ -1201,18 +1201,18 @@ address|name|symbol|size|type|prototype|provenance
 495400|RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400||38|function|undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400()|
 495460|OrphanCallChain_C1_I15_00495460||36|function|undefined OrphanCallChain_C1_I15_00495460()|
 4954a0|WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0||91|function|undefined WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0()|
-495520|WrapperFor_DeleteRegionHandleFromClipState_At00495520||102|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At00495520()|
+495520|Region::~Region||102|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At00495520()|
 4955b0|CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0||45|function|undefined Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0()|
 4955f0|BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl||12|function|undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl()|
-495610|DestroyClipStateRegionWrapperObject||46|function|undefined DestroyClipStateRegionWrapperObject()|
-495650|IsPointInsideHitRegion||107|function|int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg)|
+495610|DisposeRgn||46|function|undefined DestroyClipStateRegionWrapperObject()|
+495650|PtInRgn||107|function|int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg)|
 4956e0|OrphanCallChain_C4_I50_004956e0||121|function|undefined OrphanCallChain_C4_I50_004956e0()|
 495780|OrphanCallChain_C4_I50_00495780||121|function|undefined OrphanCallChain_C4_I50_00495780()|
-495820|CreateClipStateRegionWrapperObject||130|function|undefined CreateClipStateRegionWrapperObject()|
-4958e0|ReplaceClipStateRegionHandleFromRect||47|function|undefined ReplaceClipStateRegionHandleFromRect()|
-495920|ApplyHitRegionToClipState||207|function|undefined ApplyHitRegionToClipState()|
-495a30|SnapshotHitRegionToClipCache||53|function|undefined SnapshotHitRegionToClipCache()|
-495a80|ApplyRectClipRegionToGlobalClipState||135|function|undefined ApplyRectClipRegionToGlobalClipState()|
+495820|NewRgn||130|function|undefined CreateClipStateRegionWrapperObject()|
+4958e0|RectRgn||47|function|undefined ReplaceClipStateRegionHandleFromRect()|
+495920|GetClip||207|function|undefined ApplyHitRegionToClipState()|
+495a30|SetClip||53|function|undefined SnapshotHitRegionToClipCache()|
+495a80|ClipRect||135|function|undefined ApplyRectClipRegionToGlobalClipState()|
 495b40|SetGlobalQuickDrawOrigin||22|function|undefined SetGlobalQuickDrawOrigin()|
 495b70|TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize||111|function|void EnsureBitmapResourceLoadedAndCopyRectSize()|
 495c00|TBitmapResourceLoader::ReleaseBitmapResource||35|function|void ReleaseBitmapResource(void)|
@@ -1236,33 +1236,33 @@ address|name|symbol|size|type|prototype|provenance
 4972c0|ReturnConstantTrueQuickDrawFlag||3|function|undefined ReturnConstantTrueQuickDrawFlag()|
 4972e0|NoOpQuickDrawLifecycleHookB||1|function|undefined NoOpQuickDrawLifecycleHookB()|
 497300|GetSurfaceHeaderFromSurfaceObject||9|function|undefined GetSurfaceHeaderFromSurfaceObject()|
-497320|AcquireReusableQuickDrawSurface||80|function|undefined AcquireReusableQuickDrawSurface()|
-497390|ReleaseOrCacheQuickDrawSurface||76|function|undefined ReleaseOrCacheQuickDrawSurface()|
+497320|CTemporaryRegion::CTemporaryRegion||80|function|undefined AcquireReusableQuickDrawSurface()|
+497390|CTemporaryRegion::~CTemporaryRegion||76|function|undefined ReleaseOrCacheQuickDrawSurface()|
 4974f0|ReleaseGlobalClipRegionHandleListAndReset_006a1c98||56|function|undefined ReleaseGlobalClipRegionHandleListAndReset_006a1c98()|
 497540|Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497540||466|function|undefined Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497540()|
-4977a0|CombineTwoRegionsIntoDestinationAndUpdateBox||71|function|undefined CombineTwoRegionsIntoDestinationAndUpdateBox()|
-497810|ResetClipRegionAndReadBoundingRect||59|function|undefined ResetClipRegionAndReadBoundingRect()|
+4977a0|UnionRgn||71|function|undefined CombineTwoRegionsIntoDestinationAndUpdateBox()|
+497810|SetEmptyRgn||59|function|undefined ResetClipRegionAndReadBoundingRect()|
 497860|TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState||165|function|undefined FrameRegionOnHdcAndReleaseBrushState()|
 497940|Helper_Uses_CBrush_At00497940||160|function|undefined Helper_Uses_CBrush_At00497940()|
 497a10|Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497a10||183|function|undefined Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497a10()|
 497b30|InitializeCityBuildingControlRegions_Impl||42|function|undefined InitializeCityBuildingControlRegions_Impl()|
-497bb0|CombineOptionalSourceRegionIntoDestinationAndUpdateBox||56|function|undefined CombineOptionalSourceRegionIntoDestinationAndUpdateBox()|
-497c00|NoOpRuntimeCallback_00497c00||3|function|undefined NoOpRuntimeCallback_00497c00()|
+497bb0|CopyRgn||56|function|undefined CombineOptionalSourceRegionIntoDestinationAndUpdateBox()|
+497c00|QDLoadResource||3|function|undefined NoOpRuntimeCallback_00497c00()|
 497c80|SetQuickDrawTextOriginWithContextOffset||102|function|undefined SetQuickDrawTextOriginWithContextOffset()|
 497d10|DrawCenteredGuideLineOnMapDc||376|function|undefined DrawCenteredGuideLineOnMapDc()|
-497ef0|RebuildSpriteNonTransparentPolygonRegion||76|function|undefined RebuildSpriteNonTransparentPolygonRegion()|
-497f60|RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl||20|function|undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl()|
-497f90|WrapperFor_LookupHandleMapEntryWithCreate_At00497f90||65|function|undefined WrapperFor_LookupHandleMapEntryWithCreate_At00497f90()|
+497ef0|BitMapToRegion||76|function|undefined RebuildSpriteNonTransparentPolygonRegion()|
+497f60|OpenRgn||20|function|undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl()|
+497f90|CloseRgn||65|function|undefined WrapperFor_LookupHandleMapEntryWithCreate_At00497f90()|
 498070|IntersectClipRegionWithRectAndUpdateBounds||197|function|undefined IntersectClipRegionWithRectAndUpdateBounds()|
-498180|DrawFrameRectOrUpdateClipRegion||319|function|undefined DrawFrameRectOrUpdateClipRegion()|
+498180|QDFrameRect||319|function|undefined DrawFrameRectOrUpdateClipRegion()|
 4985b0|InitializeBrushStateVtableAndClearHandle||16|function|undefined InitializeBrushStateVtableAndClearHandle()|
 498610|WrapperFor_DeleteRegionHandleFromClipState_At00498610||111|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At00498610()|
 498980|FillRectWithQuickDrawBrushAndContextOffset||215|function|undefined FillRectWithQuickDrawBrushAndContextOffset()|
-498aa0|GetRegionBoxToRectIfPresent||76|function|undefined GetRegionBoxToRectIfPresent()|
+498aa0|EmptyRgn||76|function|undefined GetRegionBoxToRectIfPresent()|
 498b10|ProbeRectEmptyAfterCopyToLocal||34|function|undefined ProbeRectEmptyAfterCopyToLocal()|
 498b50|AssertQuickDrawFlag6A1DC8NonZero||28|function|void __cdecl AssertQuickDrawFlag6A1DC8NonZero(void* ptr)|
 498b80|AssertQuickDrawFlag6A1DCCNonZero||30|function|void* __cdecl AssertQuickDrawFlag6A1DCCNonZero(int index)|
-498bb0|IntersectRectWrapper||22|function|undefined IntersectRectWrapper()|
+498bb0|SectRect||22|function|undefined IntersectRectWrapper()|
 498be0|WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0||50|function|undefined WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0()|
 498c60|RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl||1|function|undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl()|
 498c80|RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80||1|function|undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80()|
@@ -7454,11 +7454,11 @@ address|name|symbol|size|type|prototype|provenance
 61394f|CPaintDC::`scalar deleting dtor'|??_GCPaintDC@@UAEPAXI@Z|28|function|void * __thiscall ??_GCPaintDC@@UAEPAXI@Z(uint param_1)|
 61396b|CPaintDC::~CPaintDC|??1CPaintDC@@UAE@XZ|71|function|void __thiscall ??1CPaintDC@@UAE@XZ(void)|
 6139b2|CMenu::DeleteTempMap|?DeleteTempMap@CMenu@@SGXXZ|20|function|undefined DeleteTempMap_6139b2()|
-6139c6|afxMapHIMAGELIST_6139c6||112|function|undefined afxMapHIMAGELIST_6139c6()|
+6139c6|afxMapHGDIOBJ|?afxMapHGDIOBJ@@YGPAVCHandleMap@@H@Z|112|function|undefined afxMapHGDIOBJ()|
 613a36|CGdiObject::FromHandle|?FromHandle@CGdiObject@@SGPAV1@PAX@Z|22|function|undefined FromHandle_613a36()|
-613a4c|CBrush::AttachRegionHandleToClipStateAndRegister||45|function|undefined AttachRegionHandleToClipStateAndRegister()|
+613a4c|CGdiObject::Attach|?Attach@CGdiObject@@QAEHPAX@Z|45|function|undefined Attach()|
 613a79|CMenu::Detach|?Detach@CMenu@@QAEPAUHMENU__@@XZ|42|function|undefined DetachRegionHandleFromClipStateAndUnregister()|
-613aa3|DeleteObject||22|function|undefined DeleteObject()|
+613aa3|CGdiObject::DeleteObject|?DeleteObject@CGdiObject@@QAEHXZ|22|function|undefined DeleteObject()|
 613ab9|CPen::CPen|??0CPen@@QAE@HHK@Z|80|function|undefined CPen()|
 613b09|CPen::CPen|??0CPen@@QAE@HHPBUtagLOGBRUSH@@HPBK@Z|86|function|undefined CPen_613b09()|
 613b5f|CBrush::CBrush|??0CBrush@@QAE@K@Z|74|function|undefined CBrush()|
@@ -8562,7 +8562,7 @@ address|name|symbol|size|type|prototype|provenance
 6a1b1c|g_McAppUiFlag_006A1B1C|||global||
 6a1b24|g_pTurnEventDialogFactoryRegistry|||global||
 6a1c74|g_nMcWindowStateMsgAssertGate_006A1C74|||global||
-6a1c98|g_pReusableQuickDrawSurfaceListHead|||global||
+6a1c98|g_pTemporaryRegionCache|||global||
 6a1ca0|g_defaultQuickDrawSurfaceSentinel|||global||
 6a1d00|g_nQuickDrawResolvedTextOriginX|||global||
 6a1d04|g_nQuickDrawResolvedTextOriginY|||global||
@@ -8579,7 +8579,7 @@ address|name|symbol|size|type|prototype|provenance
 6a1d98|g_wUiResourceEntryDefaultParam2|||global||
 6a1d9c|g_pScopedMapQuickDrawDcHandleObject|||global||
 6a1da0|g_pQuickDrawMemoryDc|||global||
-6a1da4|g_pTempMapTileClipRegion|||global||
+6a1da4|g_hOpenRgnAccumulator|||global||
 6a1da8|g_pGlobalClipRegionHandleObject|||global||
 6a1dac|g_pScopedMapQuickDrawViewContext|||global||
 6a1db0|g_nActiveQuickDrawSurfaceFlags|||global||

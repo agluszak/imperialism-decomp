@@ -49,33 +49,18 @@ void ResetQuickDrawStrokeState() {
   g_bQuickDrawStrokePairDirty = 1;
 }
 
-// TODO(shortcut): the real owner (InitializeGlobalClipRegionHandleState, 0x494040)
-// constructs a small object (vtable @ 0x67106c + an HRGN member at +4) the first time
-// the app needs a cached hit-region handle, registers it via RegisterClipRegionHandle,
-// and stores it here. That owning class isn't modeled yet, so this lazily creates just
-// the HRGN this one reader needs instead of the real object — g_pGlobalClipRegionHandleObject
-// stays typed as a raw `int` (pre-existing, not introduced here) rather than a real
-// pointer, and nothing calls RegisterClipRegionHandle for it the way the real ctor
-// does. Fixes the crash (previously always-null, dereferenced offset+4 of a null
-// pointer on first paint) but is not a full port of InitializeGlobalClipRegionHandleState.
-static int* EnsureGlobalClipRegionHandleObject() {
+// TODO(shortcut): the real owner is a static-init object at 0x6a1d58 whose ctor
+// (0x494040, CRT init table) does `g_pGlobalClipRegionHandleObject = new CRgn;
+// ...->Attach(::CreateRectRgn(0,0,0,0));` and also seeds its own +0x8 field with
+// &g_defaultQuickDrawSurfaceSentinel. That object isn't modeled yet, so the CRgn is
+// created lazily here instead; same object shape (a real heap CRgn), different
+// construction time. SetClip/GetClip (quickdraw_regions.cpp) read the same global.
+CRgn* EnsureGlobalClipRegionHandleObject() {
   if (g_pGlobalClipRegionHandleObject == 0) {
-    static int s_clipRegionHandleObject[2] = {0, 0};
-    s_clipRegionHandleObject[1] = reinterpret_cast<int>(CreateRectRgn(0, 0, 0, 0));
-    g_pGlobalClipRegionHandleObject = reinterpret_cast<int>(s_clipRegionHandleObject);
+    g_pGlobalClipRegionHandleObject = new CRgn;
+    g_pGlobalClipRegionHandleObject->Attach(::CreateRectRgn(0, 0, 0, 0));
   }
-  return reinterpret_cast<int*>(g_pGlobalClipRegionHandleObject);
-}
-
-// FUNCTION: IMPERIALISM 0x00495a30
-void SnapshotHitRegionToClipCache(int* clipDescriptor) {
-  HRGN* clipRegionHandle = reinterpret_cast<HRGN*>(EnsureGlobalClipRegionHandleObject() + 1);
-  int descriptorHead = *clipDescriptor;
-  if (descriptorHead + 0x14 == 0) {
-    CombineRgn(*clipRegionHandle, nullptr, nullptr, 5);
-    return;
-  }
-  CombineRgn(*clipRegionHandle, *reinterpret_cast<HRGN*>(descriptorHead + 0x18), nullptr, 5);
+  return g_pGlobalClipRegionHandleObject;
 }
 
 // FUNCTION: IMPERIALISM 0x00495b40

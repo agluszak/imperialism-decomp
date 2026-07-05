@@ -80,8 +80,8 @@ void TTransFocusAnimation::Free() {
 
 // FUNCTION: IMPERIALISM 0x004a05c0
 void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() {
-  QuickDrawSurfaceGuard surface;
-  ApplyHitRegionToClipState();
+  CTemporaryRegion surface;
+  GetClip(surface.tempRgn);
 
   RECT destinationRect;
   RECT sourceRect;
@@ -94,7 +94,7 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
   sourceRect.bottom = SourceBottom();
   destinationRect.bottom = sourceRect.bottom - sourceRect.top;
 
-  ApplyRectClipRegionToGlobalClipState();
+  ClipRect(&destinationRect);
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithFallback(0x13);
   reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(0);
@@ -121,7 +121,7 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
   BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                         transientSurfaceContext->GetBlitSurface(), &sourceRect, &destinationRect,
                         0);
-  SnapshotHitRegionToClipCache(reinterpret_cast<int*>(surface.surfaceWrapper));
+  SetClip(surface.tempRgn);
 }
 
 // FUNCTION: IMPERIALISM 0x004a0770

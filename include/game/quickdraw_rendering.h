@@ -10,13 +10,11 @@ void SetGlobalBlitTransparentColorRaw(int transparentColor);
 void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags);
 void SetGlobalQuickDrawOrigin(short originX, short originY);
 void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB);
-void SnapshotHitRegionToClipCache(int* clipDescriptor);
 void ResetQuickDrawStrokeState();
+// Lazy stand-in for the unported static-init ctor at 0x494040; returns the global
+// clip CRgn (g_pGlobalClipRegionHandleObject), creating it on first use.
+CRgn* EnsureGlobalClipRegionHandleObject();
 void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect);
-
-// QuickDraw clip region functions
-undefined4 ApplyHitRegionToClipState(void);
-undefined4 ApplyRectClipRegionToGlobalClipState(void);
 
 void SetQuickDrawTextOriginWithContextOffset(short x, short y);
 void DrawCenteredGuideLineOnMapDc(short x, short y);
@@ -67,16 +65,3 @@ static __inline void UpdatePaletteIndexWithFallback(int paletteIndex) {
       reinterpret_cast<void (*)()>(UpdatePaletteIndexWithDefaultFallback))(paletteIndex);
 }
 
-struct ClipStateRegionWrapper;
-
-// 0x494b60 — pushes the wrapper's region into the global clip state (original callers
-// pass the QuickDrawSurfaceGuard's wrapper, or 0).
-static __inline void ApplyHitRegionToClip(ClipStateRegionWrapper* wrapper) {
-  reinterpret_cast<void(__cdecl*)(ClipStateRegionWrapper*)>(
-      reinterpret_cast<void (*)()>(ApplyHitRegionToClipState))(wrapper);
-}
-
-static __inline void ApplyRectClipRegionToClip(RECT* clipRect) {
-  reinterpret_cast<void(__cdecl*)(RECT*)>(
-      reinterpret_cast<void (*)()>(ApplyRectClipRegionToGlobalClipState))(clipRect);
-}

@@ -194,7 +194,7 @@ int g_nQuickDrawStrokeStyleSecondary = 0;
 // GLOBAL: IMPERIALISM 0x006a1db4
 int g_bQuickDrawStrokePairDirty = 0;
 // GLOBAL: IMPERIALISM 0x006a1da8
-int g_pGlobalClipRegionHandleObject = 0;
+CRgn* g_pGlobalClipRegionHandleObject = nullptr;
 // GLOBAL: IMPERIALISM 0x006950fc
 int g_Quick_Draw_Color_State_006950FC = 0x010000FF;
 // GLOBAL: IMPERIALISM 0x00695100
@@ -269,7 +269,7 @@ short g_industryActionCostWeightResCode0C[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8 = {
     "TAmbitApplication", sizeof(TAmbitApplication), 0xffff, nullptr, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x006a1da4
-HGDIOBJ g_pTempMapTileClipRegion = nullptr;
+HRGN g_hOpenRgnAccumulator = nullptr;
 
 // GLOBAL: IMPERIALISM 0x006a24d4
 char g_Sanitize_City_Counter_Value_006A24D4 = 0;
@@ -293,7 +293,7 @@ CDC* g_pScopedMapQuickDrawDcHandleObject = nullptr;
 // GLOBAL: IMPERIALISM 0x6a1dac
 void* g_pScopedMapQuickDrawViewContext = 0;
 // GLOBAL: IMPERIALISM 0x6a1c98
-void* g_pReusableQuickDrawSurfaceListHead = 0;
+RgnHandle g_pTemporaryRegionCache = 0;
 
 // GLOBAL: IMPERIALISM 0x006a2018
 // Cached CCommandLineInfo::m_bShowSplash flag (cmdInfo+0x04 after the CObject vptr).

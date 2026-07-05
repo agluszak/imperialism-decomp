@@ -5,7 +5,7 @@
 #include "game/TCivMgr.h"
 #include "game/TCivUnit.h"
 #include "game/mfc.h"
-#include "game/QuickDrawSurfaceGuard.h"
+#include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapUberPicture.h"
 #include "game/TTaskForce.h"
@@ -15,10 +15,7 @@
 #include <new>
 
 undefined4 thunk_GetMapActionContextByTileIndex(void);
-int IntersectRectWrapper(RECT* src1, RECT* src2, RECT* dst);
 undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void);
-undefined4 ReplaceClipStateRegionHandleFromRect(void);
-undefined4 GetRegionBoxToRectIfPresent(void);
 undefined4 thunk_DestroyScopedMapQuickDrawContext(void);
 undefined4 thunk_NormalizeWrappedMapCoord108x60(void);
 undefined4 ComputeStridedRecordAddress6C(void);
@@ -114,8 +111,8 @@ void TWorldView::SetFlagByteAndInvokeVslot1A4(unsigned char flagByte) {
 
 // FUNCTION: IMPERIALISM 0x00595c70
 void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
-  QuickDrawSurfaceGuard reusableSurfaceA;
-  QuickDrawSurfaceGuard reusableSurfaceB;
+  CTemporaryRegion reusableSurfaceA;
+  CTemporaryRegion reusableSurfaceB;
 
   TMapUberPicture* mapUberPicture = static_cast<TMapUberPicture*>(ownerContext);
   short interactionMode = mapUberPicture->activeUnitCategoryIndex96;
@@ -157,8 +154,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       previewTileIndex, reinterpret_cast<int>(&viewportOffsetX), reinterpret_cast<int>(&outX),
       reinterpret_cast<int>(&outY), packedBand);
 
-  int nullClipDescriptor = 0;
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(&nullClipDescriptor);
+  GetClip(reusableSurfaceA.tempRgn);
   SetGlobalQuickDrawOrigin(static_cast<short>(field2c), static_cast<short>(field30));
 
   short rectWidth = field76;
@@ -181,7 +177,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 
   char intersectScratch[16];
   char intersectPair[16];
-  IntersectRectWrapper(reinterpret_cast<RECT*>(&clipRect.left),
+  SectRect(reinterpret_cast<RECT*>(&clipRect.left),
                        reinterpret_cast<RECT*>(intersectScratch),
                        reinterpret_cast<RECT*>(intersectPair));
   OffsetRect(reinterpret_cast<RECT*>(&clipRect), field2c, field30);
@@ -189,13 +185,10 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   char scopedContextStorage[24];
   reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
       ConstructScopedMapQuickDrawContextWithPaletteToken)(scopedContextStorage, this, &clipRect);
-  reinterpret_cast<void(__cdecl*)(int, int)>(ReplaceClipStateRegionHandleFromRect)(
-      rectHeight, reinterpret_cast<int>(&clipRect.left));
-  SnapshotHitRegionToClipCache(0);
+  RectRgn(reusableSurfaceB.tempRgn, reinterpret_cast<RECT*>(&clipRect.left));
+  SetClip(reusableSurfaceB.tempRgn);
 
-  char regionPresent = 0;
-  reinterpret_cast<void(__cdecl*)(int, char*)>(GetRegionBoxToRectIfPresent)(rectHeight,
-                                                                            &regionPresent);
+  char regionPresent = EmptyRgn(reusableSurfaceB.tempRgn);
   if (regionPresent == 0) {
     if (interactionMode == 0) {
       // TODO(typing): RenderMapOrderEntryTilePreview's arg1 is really the selected
@@ -225,7 +218,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
     }
   }
 
-  SnapshotHitRegionToClipCache(0);
+  SetClip(reusableSurfaceA.tempRgn);
   reinterpret_cast<void(__cdecl*)()>(thunk_DestroyScopedMapQuickDrawContext)();
 }
 
@@ -287,7 +280,7 @@ char TWorldView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3
   (void)arg3;
   (void)arg4;
 
-  QuickDrawSurfaceGuard surface;
+  CTemporaryRegion surface;
 
   short tileRow = 0;
   unsigned short tileCol = 0;

@@ -18,5 +18,10 @@ void __stdcall FreeQuickDrawSurfaceContextSlot(TQuickDrawSurfaceContext** slot);
 unsigned char ReturnConstantTrueQuickDrawFlag(void* surfaceObject);
 void NoOpQuickDrawLifecycleHookB(void* surfaceObject);
 void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bounds);
+// Mac Resource Manager LoadResource emulation: a no-op returning noErr(0) — the
+// Windows "handles" are always resident. Callers invoke it before dereferencing a
+// resource-loader handle, exactly where the Mac source called LoadResource(Handle).
+// (QD prefix: Win32 LoadResource collides.)
+undefined4 QDLoadResource(TBitmapResourceLoader** handle);
 TQuickDrawSurfaceContext*
 LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId);

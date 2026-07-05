@@ -7,12 +7,10 @@
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/ClipStateRegion.h"
+#include "game/quickdraw_regions.h"
 
 // Shared thunks/hooks whose callers interpret the arguments differently are kept in
 // generic repo form (rule 9) with a typed cast at the callsite.
-undefined4 ReplaceClipStateRegionHandleFromRect(void);
-undefined4 GetRegionBoxToRectIfPresent(void);
 
 extern "C" CRuntimeClass PTR_s_TView_006495a0;
 
@@ -23,7 +21,6 @@ unsigned short TView::GetField4E() {
 extern "C" {
 void* AssertQuickDrawFlag6A1DCCNonZero(int index);
 void AssertQuickDrawFlag6A1DC8NonZero(void* ptr);
-int IsPointInsideHitRegion(CPoint* point, int hitArg);
 }
 
 // FUNCTION: IMPERIALISM 0x00427220
@@ -430,27 +427,24 @@ void TView::CaptureLayout(int* buffer, int modeFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048b4b0
-void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
+void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
   if (nativeWindow50 == 0) {
     return;
   }
 
-  ClipStateRegionWrapper* localRegion = CreateClipStateRegionWrapperObject();
-  if (localRegion == 0 || localRegion->inner == 0) {
+  RgnHandle localRegion = NewRgn();
+  if (localRegion == 0 || *localRegion == 0) {
     return;
   }
 
-  // *regionWrapper is a ClipStateRegionInner* (or the sentinel -0x14 meaning "no source
-  // region") — read directly, with no extra wrapper hop (ground truth: `*param_1 + 0x18`).
+  // CRgn::operator HRGN's this==NULL check absorbs the "nil region" sentinel
+  // (a Region* placed so &(*region)->rgn == NULL) some callers store in the handle.
   HRGN sourceRegion = 0;
-  if (regionWrapper != 0) {
-    ClipStateRegionInner* childInner = reinterpret_cast<ClipStateRegionInner*>(*regionWrapper);
-    if (childInner != reinterpret_cast<ClipStateRegionInner*>(-0x14)) {
-      sourceRegion = reinterpret_cast<HRGN>(childInner->brush.m_hObject);
-    }
+  if (region != 0) {
+    sourceRegion = (HRGN)(*region)->rgn;
   }
-  HRGN destRegion = reinterpret_cast<HRGN>(localRegion->inner->brush.m_hObject);
-  CombineRgn(destRegion, sourceRegion, nullptr, 5);
+  HRGN destRegion = static_cast<HRGN>((*localRegion)->rgn.m_hObject);
+  CombineRgn(destRegion, sourceRegion, nullptr, RGN_COPY);
 
   CPoint cachedPos;
   GetCachedPosPoint(&cachedPos);
@@ -460,7 +454,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
     InvalidateRgn(nativeWindow50->m_hWnd, destRegion, 0);
   }
 
-  DestroyClipStateRegionWrapperObject(localRegion);
+  DisposeRgn(localRegion);
 }
 
 // FUNCTION: IMPERIALISM 0x0048b5f0
@@ -755,8 +749,9 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, i
     }
   }
 
-  if (reinterpret_cast<char(__cdecl*)(int)>(GetRegionBoxToRectIfPresent)(hitArg) != 0 &&
-      Refresh() != 0) {
+  // TODO(typing): hitArg is really a RgnHandle threaded through the whole
+  // slot-0x2c/0x35 hover family (200+ files); retype the family in one pass.
+  if (EmptyRgn(reinterpret_cast<RgnHandle>(hitArg)) != 0 && Refresh() != 0) {
     HandleCursorHoverFallback(point, hitArg);
   }
 }
@@ -765,11 +760,10 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, i
 void TView::NoOpClipRegionSlot2D(int arg1, int arg2) {}
 
 // FUNCTION: IMPERIALISM 0x0048c1e0
-void TView::RefreshCityProductionViewStateFromContext(int* clipRegionWrapper) {
+void TView::RefreshCityProductionViewStateFromContext(RgnHandle clipRegion) {
   RECT rect;
   CopyRectFromBuildRectFromSlot158(&rect);
-  reinterpret_cast<void(__cdecl*)(int*, RECT*)>(
-      reinterpret_cast<void (*)()>(ReplaceClipStateRegionHandleFromRect))(clipRegionWrapper, &rect);
+  RectRgn(clipRegion, &rect);
 }
 
 // FUNCTION: IMPERIALISM 0x0048c220
@@ -792,7 +786,7 @@ void TView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
   }
   if (GetField4E() != 0xffff) {
     CPoint transformedPoint = TransformPointViaSlot138(point);
-    if (IsPointInsideHitRegion(&transformedPoint, hitArg)) {
+    if (PtInRgn(&transformedPoint, reinterpret_cast<RgnHandle>(hitArg))) {
       void* ptr = AssertQuickDrawFlag6A1DCCNonZero(GetField4E());
       AssertQuickDrawFlag6A1DC8NonZero(*reinterpret_cast<void**>(ptr));
       return;

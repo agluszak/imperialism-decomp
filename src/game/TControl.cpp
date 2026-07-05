@@ -2,7 +2,7 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "game/TControl.h"
-#include "game/ClipStateRegion.h"
+#include "game/quickdraw_regions.h"
 #include "game/TTEView.h"
 #include "game/TMovieView.h"
 #include "game/global_data_tables.h"
@@ -16,7 +16,6 @@ extern CRuntimeClass PTR_s_TControl_00649600;
 }
 
 undefined4 FromHandle(void);
-undefined4 GetRegionBoxToRectIfPresent(void);
 extern "C" char LAB_00409a9d;
 
 // FUNCTION: IMPERIALISM 0x00429450

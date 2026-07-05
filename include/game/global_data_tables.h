@@ -13,6 +13,7 @@
 #include "game/TCountry.h"
 #include "game/startup_helpers.h"
 #include "game/TDisplayMgr.h"
+#include "game/quickdraw_regions.h"
 #include "game/TGreatPower.h"
 #include "game/TMacViewMgr.h"
 #include "game/TMinor.h"
@@ -191,7 +192,10 @@ extern short g_Reset_Quick_Draw_State_006A1D10;
 extern int g_nQuickDrawStrokeStylePrimary;
 extern int g_nQuickDrawStrokeStyleSecondary;
 extern int g_bQuickDrawStrokePairDirty;
-extern int g_pGlobalClipRegionHandleObject;
+// The cached QuickDraw clip region — a heap CRgn built by the static-init ctor at
+// 0x494040 (unported; see quickdraw_rendering.cpp's lazy stand-in). GetClip seeds
+// from it; SetClip (0x495a30) copies a RgnHandle's region into it.
+extern CRgn* g_pGlobalClipRegionHandleObject;
 extern int g_Quick_Draw_Color_State_006950FC;
 extern int g_uQuickDrawCurrentColor;
 extern int g_uQuickDrawStrokeColor;
@@ -254,7 +258,8 @@ extern short g_industryActionCostWeightResCode0B[16];
 extern short g_industryActionCostWeightResCode03[16];
 extern short g_industryActionCostWeightResCode0C[16];
 extern "C" CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8;
-extern HGDIOBJ g_pTempMapTileClipRegion;
+// QuickDraw OpenRgn/CloseRgn recording accumulator (QDFrameRect XORs framed rects into it).
+extern HRGN g_hOpenRgnAccumulator;
 extern char g_Sanitize_City_Counter_Value_006A24D4;
 extern double DAT_0066fad0;
 extern char g_pClassDescTStratReportView;
@@ -269,7 +274,8 @@ extern int g_nAuxOutputDeviceIndex;
 extern CRuntimeClass s_CDib_RuntimeClass_00694b48;
 extern void* g_pScopedMapQuickDrawViewContext;
 extern CDC* g_pScopedMapQuickDrawDcHandleObject;
-extern void* g_pReusableQuickDrawSurfaceListHead;
+// One-slot CTemporaryRegion reuse cache (see CTemporaryRegion.h).
+extern RgnHandle g_pTemporaryRegionCache;
 }
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").

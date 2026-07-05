@@ -72,17 +72,16 @@ void TIndustryAmtBar::NoOpUiLifecycleHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x00589340
 void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
-  QuickDrawSurfaceGuard surface;
+  CTemporaryRegion surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(
-      reinterpret_cast<int*>(surface.surfaceWrapper));
+  GetClip(surface.tempRgn);
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
     if (control->IsActionable() != 0) {
       RECT boundsRect = {0, 0, 0, 0};
       control->QueryBounds(&boundsRect);
-      reinterpret_cast<void(__cdecl*)(RECT*)>(ApplyRectClipRegionToGlobalClipState)(&boundsRect);
+      ClipRect(&boundsRect);
       control->QueryBounds(&boundsRect);
       control->TranslatePointToParentChain4E();
 
@@ -102,7 +101,7 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       ResetQuickDrawStrokeState();
       DrawCenteredGuideLineOnMapDc(overlayOffsetX, (short)(overlayOffsetY - 2));
 
-      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
+      SetClip(surface.tempRgn);
       TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(control)->OwnerPanel());
       if (owner != 0) {
         owner->InvokeSlot13C();
@@ -115,10 +114,9 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, int unusedEdx,
                                                              short selectedValue) {
   (void)unusedEdx;
-  QuickDrawSurfaceGuard surface;
+  CTemporaryRegion surface;
   *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  reinterpret_cast<void(__cdecl*)(int*)>(ApplyHitRegionToClipState)(
-      reinterpret_cast<int*>(surface.surfaceWrapper));
+  GetClip(surface.tempRgn);
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();

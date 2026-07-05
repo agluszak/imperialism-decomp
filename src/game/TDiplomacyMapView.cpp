@@ -12,7 +12,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
-#include "game/ClipStateRegion.h"
+#include "game/quickdraw_regions.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TStrategicMapViewSystem.h"
 #include "game/TControl.h"
@@ -31,9 +31,7 @@ undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 MapTurnEventCodeToPaletteIndex(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
 undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void);
-undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
-undefined4 DrawFrameRectOrUpdateClipRegion(void);
 undefined4 AppendPointerToGlobalVectorAsStatus(void);
 undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
 undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
@@ -247,7 +245,7 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
 
 // FUNCTION: IMPERIALISM 0x004f6170
 void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect) {
-  QuickDrawSurfaceGuard surface;
+  CTemporaryRegion surface;
   QueryBounds(const_cast<RECT*>(presentRect));
 
   if (legendSurfaceModeAt524 != 0) {
@@ -318,7 +316,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
   }
 
   SetQuickDrawFillColor(0xffffff);
-  ClipStateRegionWrapper* frameRegion = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(
+  RgnHandle frameRegion = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(
       static_cast<short>(frameRegionSelectorAt98));
   reinterpret_cast<void(__fastcall*)(void*, int, void*)>(FrameRegionOnHdcAndReleaseBrushState)(
       this, 0, frameRegion);
@@ -327,22 +325,22 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
 
 // FUNCTION: IMPERIALISM 0x004f6440
 void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
-  ClipStateRegionWrapper* region = CreateClipStateRegionWrapperObject();
+  RgnHandle region = NewRgn();
 
   short terrainIndex = 0;
   void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   do {
     if (*terrainDescriptors != 0) {
-      ClipStateRegionWrapper* frameRegion =
+      RgnHandle frameRegion =
           g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(static_cast<short>(terrainIndex));
-      CombineTwoRegionsIntoDestinationAndUpdateBox(region, frameRegion, region);
+      UnionRgn(region, frameRegion, region);
     }
     terrainIndex = static_cast<short>(terrainIndex + 1);
     terrainDescriptors = terrainDescriptors + 1;
   } while (terrainIndex < 0x17);
 
   this->ForwardMapViewVirtualC4IfPresent(reinterpret_cast<int>(region));
-  DestroyClipStateRegionWrapperObject(region);
+  DisposeRgn(region);
 }
 
 // FUNCTION: IMPERIALISM 0x004f64c0
@@ -484,7 +482,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
   CString str1;
   CString str2;
   CString str3;
-  QuickDrawSurfaceGuard surface;
+  CTemporaryRegion surface;
   frameRegionSelectorAt98 = (short)activeNationSlot;
 
   TQuickDrawSurfaceContext* previousSurface = 0;
@@ -723,7 +721,7 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
       } else {
         SetQuickDrawFillColor(0xffffff);
       }
-      reinterpret_cast<void(__cdecl*)(RECT*)>(DrawFrameRectOrUpdateClipRegion)(&destRect);
+      QDFrameRect(&destRect);
       SetQuickDrawFillColor(0);
       SetQuickDrawTextOriginWithContextOffset(static_cast<short>(destRect.right),
                                               static_cast<short>(destRect.top));

@@ -169,7 +169,7 @@ void TCityProductionView::OrphanCallChain_C5_I49_004bc910() {}
 
 // FUNCTION: IMPERIALISM 0x004bc9b0
 void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip() {
-  QuickDrawSurfaceGuard surface;
+  CTemporaryRegion surface;
 
   RECT boundsRecord;
   this->QueryBounds(&boundsRecord);
@@ -182,20 +182,20 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip() 
 
   // Original pushes the guard's wrapper here and again into the snapshot below,
   // and hands ApplyRectSlot110 the same rect QueryBounds filled in.
-  ApplyHitRegionToClip(surface.surfaceWrapper);
+  GetClip(surface.tempRgn);
 
   TQuickDrawSurfaceContext* previousSurface = 0;
   int contextFlags = 0;
   GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
 
   SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
-  ApplyRectClipRegionToClip(&clipRect);
+  ClipRect(&clipRect);
 
   needsRefreshAtA6 = 1;
   this->ApplyRectSlot110(&boundsRecord);
 
   SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
-  SnapshotHitRegionToClipCache(reinterpret_cast<int*>(surface.surfaceWrapper));
+  SetClip(surface.tempRgn);
 }
 
 // FUNCTION: IMPERIALISM 0x004bcaf0

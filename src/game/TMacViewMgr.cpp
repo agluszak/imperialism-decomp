@@ -4,7 +4,7 @@
 
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/ClipStateRegion.h"
+#include "game/quickdraw_regions.h"
 #include "game/TAnimation.h"
 #include "game/TAssetMgr.h"
 #include "game/TCity.h"
@@ -31,7 +31,6 @@
 #include "decomp_types.h"
 #include <string.h>
 
-int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg);
 
 undefined4 RebuildSurfaceRowsWithTemporaryRowBuffer(void);
 undefined4 BuildHexNeighborHighlightPolygonForTile(void);
@@ -76,11 +75,11 @@ static void ScanBracketExpressionsInto(CString* dest, const CString& templateTex
   scanBracketExpressions(g_pSimMgr, dest, static_cast<LPCSTR>(templateText));
 }
 
-static undefined4 QueryPointInsideHitRegion(short x, short y, ClipStateRegionWrapper* region) {
+static undefined4 QueryPointInsideHitRegion(short x, short y, RgnHandle region) {
   CPoint point;
   point.x = x;
   point.y = y;
-  return IsPointInsideHitRegion(&point, reinterpret_cast<int>(region));
+  return PtInRgn(&point, region);
 }
 
 static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
@@ -304,7 +303,7 @@ TMacViewMgr::TMacViewMgr() : TObject() {
 }
 
 // FUNCTION: IMPERIALISM 0x00509e10
-ClipStateRegionWrapper* TMacViewMgr::GetClipRegionSlotByIndex(short index) {
+RgnHandle TMacViewMgr::GetClipRegionSlotByIndex(short index) {
   return regionSlots[index];
 }
 
@@ -329,7 +328,7 @@ void TMacViewMgr::Free() {
   int index = 0;
   while (index < 0x17) {
     if (regionSlots[index] != 0) {
-      DestroyClipStateRegionWrapperObject(regionSlots[index]);
+      DisposeRgn(regionSlots[index]);
       regionSlots[index] = 0;
     }
     ++index;
@@ -337,7 +336,7 @@ void TMacViewMgr::Free() {
   index = 0;
   while (index < 0x180) {
     if (tileStateSlots[index] != 0) {
-      DestroyClipStateRegionWrapperObject(tileStateSlots[index]);
+      DisposeRgn(tileStateSlots[index]);
       tileStateSlots[index] = 0;
     }
     ++index;
@@ -524,7 +523,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
                                                            &resourceBounds);
     SetActiveQuickDrawSurfaceContext(atlas694[stripIndex], savedFlags);
     ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas694[stripIndex]));
-    NoOpRuntimeCallback_00497c00(loaderHandle);
+    QDLoadResource(loaderHandle);
     if (*loaderHandle != 0) {
       loader = *loaderHandle;
       loader->EnsureBitmapResourceLoadedAndCopyRectSize();
@@ -889,15 +888,15 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
 undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
   int tileIndex = 0;
   int tileByteOffset = 0;
-  ClipStateRegionWrapper** tileSlot = tileStateSlots;
+  RgnHandle* tileSlot = tileStateSlots;
   while (tileByteOffset < 0xfc00) {
     if (reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset] != -1) {
       if (*tileSlot != 0) {
-        DestroyClipStateRegionWrapperObject(*tileSlot);
+        DisposeRgn(*tileSlot);
         *tileSlot = 0;
       }
-      *tileSlot = CreateClipStateRegionWrapperObject();
-      RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl();
+      *tileSlot = NewRgn();
+      OpenRgn();
       char neighborCount =
           reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset + 0x3a];
       int neighborIndex = 0;
@@ -910,7 +909,7 @@ undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
           neighborCursor = neighborCursor + 1;
         }
       }
-      WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(*tileSlot);
+      CloseRgn(*tileSlot);
     }
     tileByteOffset = tileByteOffset + 0xa8;
     tileIndex = tileIndex + 1;
@@ -926,16 +925,16 @@ undefined TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x72656765, 0, 0xfffffffd);
   }
   if (tileStateSlots[0] != 0) {
-    ClipStateRegionWrapper* regionWrapper = CreateClipStateRegionWrapperObject();
+    RgnHandle regionWrapper = NewRgn();
     int nationIndex = 0;
     while (nationIndex < 0x17) {
-      ResetClipRegionAndReadBoundingRect(regionWrapper);
+      SetEmptyRgn(regionWrapper);
       int tileByteOffset = 0;
-      ClipStateRegionWrapper** tileSlot = tileStateSlots;
+      RgnHandle* tileSlot = tileStateSlots;
       while (tileByteOffset < 0xfc00) {
         if (reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset] ==
             nationIndex) {
-          CombineTwoRegionsIntoDestinationAndUpdateBox(regionWrapper, *tileSlot, regionWrapper);
+          UnionRgn(regionWrapper, *tileSlot, regionWrapper);
         }
         tileByteOffset = tileByteOffset + 0xa8;
         tileSlot = tileSlot + 1;
@@ -944,7 +943,7 @@ undefined TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
                                                         static_cast<short>(nationIndex));
       nationIndex = nationIndex + 1;
     }
-    DestroyClipStateRegionWrapperObject(regionWrapper);
+    DisposeRgn(regionWrapper);
     RenderTurnEventPalettePreviewSurfaceAndProgress();
   }
   return 0;
@@ -995,7 +994,10 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(int* param_1, s
   }
   if (sellCount > 0) {
     controlView->ForwardMapViewVirtualC4IfPresent(sellCount);
-    sellControl->RefreshCityProductionViewStateFromContext(reinterpret_cast<int*>(sellCount));
+    // TODO(mis-port): the original (0x50bc50) calls vtable slot 0x79 (+0x1e4) with
+    // (sellCount, 0) here — a TControl-extension slot not yet modeled (184-slot job) —
+    // not slot 0x2e; this call is a placeholder carried over from the old port.
+    sellControl->RefreshCityProductionViewStateFromContext(reinterpret_cast<RgnHandle>(sellCount));
     sellControl->SetEnabled(1, 1);
     return 0;
   }
@@ -1460,10 +1462,10 @@ undefined TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1) {
 undefined TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
                                                                          short param_2) {
   if (regionSlots[param_2] == 0) {
-    regionSlots[param_2] = CreateClipStateRegionWrapperObject();
+    regionSlots[param_2] = NewRgn();
   }
-  CombineOptionalSourceRegionIntoDestinationAndUpdateBox(
-      reinterpret_cast<ClipStateRegionWrapper*>(param_1), regionSlots[param_2]);
+  CopyRgn(
+      reinterpret_cast<RgnHandle>(param_1), regionSlots[param_2]);
   return 0;
 }
 
@@ -1484,14 +1486,14 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
   // InitializeBitmapSurfaceContextWithRetry; the previous port misread that slot as
   // resourceBounds.right and passed the rect width around as a "context".
   TQuickDrawSurfaceContext* tileSurface = 0;
-  regionSlots[param_1] = CreateClipStateRegionWrapperObject();
+  regionSlots[param_1] = NewRgn();
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(param_1 + 4000);
   CopyRect(&resourceBounds, &(*loaderHandle)->bitmapRect);
   g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&tileSurface, 1, &resourceBounds);
   SetActiveQuickDrawSurfaceContext(tileSurface, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(tileSurface));
-  NoOpRuntimeCallback_00497c00(loaderHandle);
+  QDLoadResource(loaderHandle);
   TBitmapResourceLoader* loader = *loaderHandle;
   if (loader != 0) {
     loader->EnsureBitmapResourceLoadedAndCopyRectSize();
@@ -1503,9 +1505,9 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
   TBitmapSurfaceNode** surfaceHandle =
       static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(tileSurface));
   // The region rebuild consumes the node itself (it reads node->dib at +0x1c).
-  if (RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], *surfaceHandle) != 0) {
-    RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], *surfaceHandle);
-    RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], *surfaceHandle);
+  if (BitMapToRegion(regionSlots[param_1], *surfaceHandle) != 0) {
+    BitMapToRegion(regionSlots[param_1], *surfaceHandle);
+    BitMapToRegion(regionSlots[param_1], *surfaceHandle);
   }
   FreeQuickDrawSurfaceContextSlot(&tileSurface);
   // Faithful to the original: the slot is already zeroed here, so this reads

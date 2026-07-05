@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/ClipStateRegion.h"
+#include "game/quickdraw_regions.h"
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
@@ -126,14 +126,14 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill
   // arity mismatch: merges srcRegion into this object's own ownClipRegion90.
-  virtual undefined ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(
-      ClipStateRegionWrapper* srcRegion); // slot 0x73 0x573940
+  virtual undefined ForwardCopyRgn(
+      RgnHandle srcRegion); // slot 0x73 0x573940
                                           // === END GENERATED DECLS (TOffLimitsPicture) ===
   // TPicture ends at 0x90; this object's own 4-byte slice is a lazily-created clip
   // region wrapper (destroyed by Free(), merged into by
-  // ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox, and read/written by
+  // ForwardCopyRgn, and read/written by
   // TMapUberPicture::CreateToolWindow_00599CF0 -- see its own evidence).
-  ClipStateRegionWrapper* ownClipRegion90;
+  RgnHandle ownClipRegion90;
 
   TOffLimitsPicture();
 };
@@ -256,7 +256,7 @@ public:
 //   slot 0x70  byte 0x1c0  0x0048e810  inherited SetControlStateFlagAndMaybeRefresh
 //   slot 0x71  byte 0x1c4  0x0048f520  inherited ResetPictureResourceEntry
 //   slot 0x72  byte 0x1c8  0x0048f570  inherited SetPictureResourceIdAndRefresh
-//   slot 0x73  byte 0x1cc  0x00573940  override  ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox
+//   slot 0x73  byte 0x1cc  0x00573940  override  ForwardCopyRgn
 // object size 0x94 (RTTI) unverified against the header layout;
 // set curated.layout.size_verified to emit a sizeof static_assert.
 // clang-format on

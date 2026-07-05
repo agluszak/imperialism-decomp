@@ -1665,8 +1665,8 @@
     },
     {
       "address": "0x47c3d0",
-      "matching": 0.13793103448275862,
-      "name": "TTransFocusAnimation::Sprite__CollectNonTransparentPixels",
+      "matching": 0.22411347517730495,
+      "name": "CDib::BuildNonTransparentOutlinePolygon",
       "type": 1
     },
     {
@@ -1773,7 +1773,7 @@
     },
     {
       "address": "0x47d960",
-      "matching": 0.8888888888888888,
+      "matching": 0.9444444444444444,
       "name": "CGdiObject::~CGdiObject",
       "type": 1
     },
@@ -1870,13 +1870,13 @@
     },
     {
       "address": "0x47e3c0",
-      "matching": 0.9230769230769231,
+      "matching": 0.9615384615384616,
       "name": "CDibPal::~CDibPal",
       "type": 1
     },
     {
       "address": "0x47e440",
-      "matching": 0.5972222222222222,
+      "matching": 0.6111111111111112,
       "name": "CDibPal::BuildPaletteFromBitmapColorTable",
       "type": 1
     },
@@ -4306,7 +4306,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -4318,7 +4318,7 @@
     },
     {
       "address": "0x48b4b0",
-      "matching": 0.21052631578947367,
+      "matching": 0.2814814814814815,
       "name": "TView::InvalidateOffsetRegionUsingChildClipRect_b4",
       "type": 1
     },
@@ -5944,6 +5944,12 @@
       "type": 1
     },
     {
+      "address": "0x495520",
+      "matching": 0.9629629629629629,
+      "name": "Region::~Region",
+      "type": 1
+    },
+    {
       "address": "0x4955f0",
       "matching": 0.2857142857142857,
       "name": "BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl",
@@ -5951,14 +5957,14 @@
     },
     {
       "address": "0x495610",
-      "matching": 0.8372093023255814,
-      "name": "DestroyClipStateRegionWrapperObject",
+      "matching": 1.0,
+      "name": "DisposeRgn",
       "type": 1
     },
     {
       "address": "0x495650",
-      "matching": 0.08695652173913043,
-      "name": "IsPointInsideHitRegion",
+      "matching": 0.4943820224719101,
+      "name": "PtInRgn",
       "type": 1
     },
     {
@@ -5975,32 +5981,32 @@
     },
     {
       "address": "0x495820",
-      "matching": 0.27350427350427353,
-      "name": "CreateClipStateRegionWrapperObject",
+      "matching": 0.9787234042553191,
+      "name": "NewRgn",
       "type": 1
     },
     {
       "address": "0x4958e0",
-      "matching": 0.10526315789473684,
-      "name": "ReplaceClipStateRegionHandleFromRect",
+      "matching": 1.0,
+      "name": "RectRgn",
       "type": 1
     },
     {
       "address": "0x495920",
-      "matching": 0.05194805194805195,
-      "name": "ApplyHitRegionToClipState",
+      "matching": 0.40601503759398494,
+      "name": "GetClip",
       "type": 1
     },
     {
       "address": "0x495a30",
-      "matching": 0.34146341463414637,
-      "name": "SnapshotHitRegionToClipCache",
+      "matching": 0.5,
+      "name": "SetClip",
       "type": 1
     },
     {
       "address": "0x495a80",
-      "matching": 0.10526315789473684,
-      "name": "ApplyRectClipRegionToGlobalClipState",
+      "matching": 0.9444444444444444,
+      "name": "ClipRect",
       "type": 1
     },
     {
@@ -6126,13 +6132,13 @@
     {
       "address": "0x497320",
       "matching": 0.8461538461538461,
-      "name": "AcquireReusableQuickDrawSurface",
+      "name": "CTemporaryRegion::CTemporaryRegion",
       "type": 1
     },
     {
       "address": "0x497390",
-      "matching": 0.46875,
-      "name": "ReleaseOrCacheQuickDrawSurface",
+      "matching": 1.0,
+      "name": "CTemporaryRegion::~CTemporaryRegion",
       "type": 1
     },
     {
@@ -6149,14 +6155,14 @@
     },
     {
       "address": "0x4977a0",
-      "matching": 0.4666666666666667,
-      "name": "CombineTwoRegionsIntoDestinationAndUpdateBox",
+      "matching": 1.0,
+      "name": "UnionRgn",
       "type": 1
     },
     {
       "address": "0x497810",
-      "matching": 0.5531914893617021,
-      "name": "ResetClipRegionAndReadBoundingRect",
+      "matching": 0.6222222222222222,
+      "name": "SetEmptyRgn",
       "type": 1
     },
     {
@@ -6185,14 +6191,14 @@
     },
     {
       "address": "0x497bb0",
-      "matching": 0.5531914893617021,
-      "name": "CombineOptionalSourceRegionIntoDestinationAndUpdateBox",
+      "matching": 1.0,
+      "name": "CopyRgn",
       "type": 1
     },
     {
       "address": "0x497c00",
       "matching": 1.0,
-      "name": "NoOpRuntimeCallback_00497c00",
+      "name": "QDLoadResource",
       "type": 1
     },
     {
@@ -6203,20 +6209,26 @@
     },
     {
       "address": "0x497d10",
-      "matching": 0.3582089552238806,
+      "matching": 0.3681592039800995,
       "name": "DrawCenteredGuideLineOnMapDc",
       "type": 1
     },
     {
       "address": "0x497ef0",
-      "matching": 0.6031746031746031,
-      "name": "RebuildSpriteNonTransparentPolygonRegion",
+      "matching": 0.9152542372881356,
+      "name": "BitMapToRegion",
       "type": 1
     },
     {
       "address": "0x497f60",
       "matching": 1.0,
-      "name": "RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl",
+      "name": "OpenRgn",
+      "type": 1
+    },
+    {
+      "address": "0x497f90",
+      "matching": 0.6666666666666666,
+      "name": "CloseRgn",
       "type": 1
     },
     {
@@ -6227,8 +6239,8 @@
     },
     {
       "address": "0x498180",
-      "matching": 0.46987951807228917,
-      "name": "DrawFrameRectOrUpdateClipRegion",
+      "matching": 0.6790123456790124,
+      "name": "QDFrameRect",
       "type": 1
     },
     {
@@ -6239,14 +6251,14 @@
     },
     {
       "address": "0x498980",
-      "matching": 0.30303030303030304,
+      "matching": 0.3181818181818182,
       "name": "FillRectWithQuickDrawBrushAndContextOffset",
       "type": 1
     },
     {
       "address": "0x498aa0",
-      "matching": 0.06060606060606061,
-      "name": "GetRegionBoxToRectIfPresent",
+      "matching": 0.5901639344262295,
+      "name": "EmptyRgn",
       "type": 1
     },
     {
@@ -6270,7 +6282,7 @@
     {
       "address": "0x498bb0",
       "matching": 1.0,
-      "name": "IntersectRectWrapper",
+      "name": "SectRect",
       "type": 1
     },
     {
@@ -7266,7 +7278,7 @@
     },
     {
       "address": "0x4a05c0",
-      "matching": 0.6048780487804878,
+      "matching": 0.6445497630331753,
       "name": "TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip",
       "type": 1
     },
@@ -7476,7 +7488,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12283,7 +12295,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12721,8 +12733,7 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12741,14 +12752,13 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12778,7 +12788,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13054,7 +13064,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.6666666666666666,
+      "matching": 0.9333333333333333,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -17045,7 +17055,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32038834951456313,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -17231,7 +17241,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.2413793103448276,
+      "matching": 0.24,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -18065,7 +18075,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9391304347826087,
+      "matching": 0.9122807017543859,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -18119,7 +18129,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18137,7 +18147,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -25134,7 +25144,7 @@
     },
     {
       "address": "0x5742b0",
-      "matching": 0.6129032258064516,
+      "matching": 0.6612903225806451,
       "name": "TScrollView::PaintVisibleChildrenIntersectingClipRect",
       "type": 1
     },
@@ -27062,7 +27072,7 @@
     },
     {
       "address": "0x588690",
-      "matching": 0.5169230769230769,
+      "matching": 0.5185185185185185,
       "name": "TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -27158,7 +27168,7 @@
     },
     {
       "address": "0x589340",
-      "matching": 0.502283105022831,
+      "matching": 0.4954954954954955,
       "name": "TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -27248,13 +27258,13 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
     {
       "address": "0x58a1b0",
-      "matching": 0.502283105022831,
+      "matching": 0.4954954954954955,
       "name": "TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -27338,7 +27348,7 @@
     },
     {
       "address": "0x58ac80",
-      "matching": 0.5148514851485149,
+      "matching": 0.5170731707317073,
       "name": "TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -27386,7 +27396,7 @@
     },
     {
       "address": "0x58b0f0",
-      "matching": 0.45739910313901344,
+      "matching": 0.45535714285714285,
       "name": "TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -27801,7 +27811,7 @@
     },
     {
       "address": "0x58f550",
-      "matching": 0.5138888888888888,
+      "matching": 0.4722222222222222,
       "name": "TCivDescription::ApplyRectSlot110",
       "type": 1
     },
@@ -28167,7 +28177,7 @@
     },
     {
       "address": "0x595c70",
-      "matching": 0.24537037037037038,
+      "matching": 0.33649289099526064,
       "name": "TWorldView::RenderMapContextOverlayWithScopedClipAndSurface",
       "type": 1
     },
@@ -34016,7 +34026,7 @@
     },
     {
       "address": "0x5e56f2",
-      "matching": 0.9066666666666666,
+      "matching": 0.9333333333333333,
       "name": "CDragListBox::DrawSingle",
       "type": 1
     },
@@ -38983,44 +38993,62 @@
       "type": 1
     },
     {
+      "address": "0x6139c6",
+      "matching": 0.9210526315789473,
+      "name": "afxMapHGDIOBJ",
+      "type": 1
+    },
+    {
       "address": "0x613a36",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "CGdiObject::FromHandle",
       "type": 1
     },
     {
+      "address": "0x613a4c",
+      "matching": 1.0,
+      "name": "CGdiObject::Attach",
+      "type": 1
+    },
+    {
+      "address": "0x613aa3",
+      "matching": 0.875,
+      "name": "CGdiObject::DeleteObject",
+      "type": 1
+    },
+    {
       "address": "0x613ab9",
-      "matching": 0.88,
+      "matching": 0.92,
       "name": "CPen::CPen(int, int, unsigned long)",
       "type": 1
     },
     {
       "address": "0x613b09",
-      "matching": 0.8888888888888888,
+      "matching": 0.9259259259259259,
       "name": "CPen::CPen(int, int, struct tagLOGBRUSH const *, int, unsigned long const *)",
       "type": 1
     },
     {
       "address": "0x613b5f",
-      "matching": 0.8695652173913043,
+      "matching": 0.9130434782608695,
       "name": "CBrush::CBrush(unsigned long)",
       "type": 1
     },
     {
       "address": "0x613ba9",
-      "matching": 0.875,
+      "matching": 0.9166666666666666,
       "name": "CBrush::CBrush(int, unsigned long)",
       "type": 1
     },
     {
       "address": "0x613bf6",
-      "matching": 0.875,
+      "matching": 0.9166666666666666,
       "name": "CBrush::CBrush(class CBitmap *)",
       "type": 1
     },
     {
       "address": "0x613c43",
-      "matching": 0.9375,
+      "matching": 1.0,
       "name": "CBrush::CreateDIBPatternBrush",
       "type": 1
     },
@@ -40322,7 +40350,7 @@
     },
     {
       "address": "0x61ede5",
-      "matching": 0.9261992619926199,
+      "matching": 0.9630996309963099,
       "name": "CDC::DrawDragRect",
       "type": 1
     },
@@ -40346,7 +40374,7 @@
     },
     {
       "address": "0x61f24a",
-      "matching": 0.9692307692307692,
+      "matching": 0.9846153846153847,
       "name": "CFont::CreatePointFontIndirect",
       "type": 1
     },
