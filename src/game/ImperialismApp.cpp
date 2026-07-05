@@ -48,35 +48,6 @@ __inline void CloseCrtFindHandleIfOpen(long& findHandle) {
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x005df7a0
-BOOL QueryVolumeInformationForDriveIndex(char driveIndex, CString* volumeName, LPDWORD serial) {
-  char rootPath[4];
-  rootPath[0] = static_cast<char>('A' + driveIndex);
-  rootPath[1] = ':';
-  rootPath[2] = '\\';
-  rootPath[3] = '\0';
-
-  char volumeBuffer[0x1f];
-  volumeBuffer[0] = '\0';
-  BOOL result = GetVolumeInformationA(rootPath, volumeBuffer, 0x1e, serial, 0, 0, 0, 0);
-  *volumeName = CString(volumeBuffer);
-  return result;
-}
-
-// FUNCTION: IMPERIALISM 0x005df890
-bool QueryDriveTypeByDriveIndex(char driveIndex) {
-  char rootPath[4];
-  rootPath[0] = static_cast<char>('A' + driveIndex);
-  rootPath[1] = ':';
-  rootPath[2] = '/';
-  rootPath[3] = '\0';
-  return GetDriveTypeA(rootPath) == DRIVE_CDROM;
-}
-
-// The global MFC application object (DAT_006a1210). Its CRT static-init bootstrap is
-// 0x00412d40 (ctor) / 0x00412d70 (dtor).
-ImperialismApp theApp;
-
 // FUNCTION: IMPERIALISM 0x00412ac0
 ImperialismApp::ImperialismApp()
     : CWinApp(), waitCursorAnchorC0(0), field_C4(), appliedAutoResModeC8(0), languageLabelCC(),
@@ -248,31 +219,6 @@ void ImperialismApp::PostStartupCommand100() {
   PostMessageA(m_pMainWnd->m_hWnd, WM_COMMAND, 100, 0);
 }
 
-// FUNCTION: IMPERIALISM 0x00414870
-LPCTSTR ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix() {
-  if (field_C4.IsEmpty()) {
-    char driveIndex = 2;
-    while (driveIndex < 0x1a) {
-      if (QueryDriveTypeByDriveIndex(driveIndex)) {
-        CString volumeName;
-        DWORD serial = 0;
-        if (QueryVolumeInformationForDriveIndex(driveIndex, &volumeName, &serial) &&
-            strcmp(static_cast<LPCTSTR>(volumeName), g_pRegistryProfileAppName_0063E050) == 0) {
-          char prefix[4];
-          prefix[0] = static_cast<char>('A' + driveIndex);
-          prefix[1] = ':';
-          prefix[2] = '/';
-          prefix[3] = '\0';
-          field_C4 = CString(prefix);
-          break;
-        }
-      }
-      driveIndex = static_cast<char>(driveIndex + 1);
-    }
-  }
-  return static_cast<LPCTSTR>(field_C4);
-}
-
 // FUNCTION: IMPERIALISM 0x00413950
 void ImperialismApp::HandleStartupCommand100() {
   int waitCursorAnchor;
@@ -303,6 +249,34 @@ void PostWmCloseToMainThreadWindow() {
   }
   CWnd* nullMainWindow = 0;
   PostMessageA(nullMainWindow->m_hWnd, WM_CLOSE, 0, 0);
+}
+
+BOOL QueryVolumeInformationForDriveIndex(char driveIndex, CString* volumeName, LPDWORD serial);
+bool QueryDriveTypeByDriveIndex(char driveIndex);
+
+// FUNCTION: IMPERIALISM 0x00414870
+LPCTSTR ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix() {
+  if (field_C4.IsEmpty()) {
+    char driveIndex = 2;
+    while (driveIndex < 0x1a) {
+      if (QueryDriveTypeByDriveIndex(driveIndex)) {
+        CString volumeName;
+        DWORD serial = 0;
+        if (QueryVolumeInformationForDriveIndex(driveIndex, &volumeName, &serial) &&
+            strcmp(static_cast<LPCTSTR>(volumeName), g_pRegistryProfileAppName_0063E050) == 0) {
+          char prefix[4];
+          prefix[0] = static_cast<char>('A' + driveIndex);
+          prefix[1] = ':';
+          prefix[2] = '/';
+          prefix[3] = '\0';
+          field_C4 = CString(prefix);
+          break;
+        }
+      }
+      driveIndex = static_cast<char>(driveIndex + 1);
+    }
+  }
+  return static_cast<LPCTSTR>(field_C4);
 }
 
 // FUNCTION: IMPERIALISM 0x004149a0
@@ -466,3 +440,32 @@ void ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
     WriteProfileInt(SettingsSection(), AutoResValueName(), appliedAutoResModeC8);
   }
 }
+
+// FUNCTION: IMPERIALISM 0x005df7a0
+BOOL QueryVolumeInformationForDriveIndex(char driveIndex, CString* volumeName, LPDWORD serial) {
+  char rootPath[4];
+  rootPath[0] = static_cast<char>('A' + driveIndex);
+  rootPath[1] = ':';
+  rootPath[2] = '\\';
+  rootPath[3] = '\0';
+
+  char volumeBuffer[0x1f];
+  volumeBuffer[0] = '\0';
+  BOOL result = GetVolumeInformationA(rootPath, volumeBuffer, 0x1e, serial, 0, 0, 0, 0);
+  *volumeName = CString(volumeBuffer);
+  return result;
+}
+
+// FUNCTION: IMPERIALISM 0x005df890
+bool QueryDriveTypeByDriveIndex(char driveIndex) {
+  char rootPath[4];
+  rootPath[0] = static_cast<char>('A' + driveIndex);
+  rootPath[1] = ':';
+  rootPath[2] = '/';
+  rootPath[3] = '\0';
+  return GetDriveTypeA(rootPath) == DRIVE_CDROM;
+}
+
+// The global MFC application object (DAT_006a1210). Its CRT static-init bootstrap is
+// 0x00412d40 (ctor) / 0x00412d70 (dtor).
+ImperialismApp theApp;
