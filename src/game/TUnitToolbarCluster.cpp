@@ -64,7 +64,7 @@ int TUnitToolbarCluster::IsTradeControlAtMinimum() {
 
 // FUNCTION: IMPERIALISM 0x00586170
 void TUnitToolbarCluster::SetControlClassAndRefresh(int classState) {
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x84) = classState;
+  field84 = classState;
 
   TView* resourceControl =
       reinterpret_cast<TView*>(this)->ResolveControlByTag(0x7265736f + classState);
