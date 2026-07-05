@@ -7350,7 +7350,7 @@
     },
     {
       "address": "0x4a1eb0",
-      "matching": 0.038461538461538464,
+      "matching": 0.98,
       "name": "ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags",
       "type": 1
     },
@@ -7362,7 +7362,7 @@
     },
     {
       "address": "0x4a2390",
-      "matching": 0.01818181818181818,
+      "matching": 0.8230088495575221,
       "name": "TArmyMgr::OrphanCallChain_C12_I108_004a2390",
       "type": 1
     },
@@ -7398,7 +7398,7 @@
     },
     {
       "address": "0x4a3200",
-      "matching": 0.0,
+      "matching": 0.007662835249042145,
       "name": "TArmyMgr::TryCreateTacticalBattleViewForTileArmies",
       "type": 1
     },
@@ -7626,7 +7626,7 @@
     },
     {
       "address": "0x4a76a0",
-      "matching": 0.2777777777777778,
+      "matching": 0.3333333333333333,
       "name": "TArmyStack::CreateObject",
       "type": 1
     },
@@ -11586,7 +11586,7 @@
     },
     {
       "address": "0x4d7150",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "SetWordField8cFromShort",
       "type": 1
     },
@@ -12187,7 +12187,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12619,7 +12619,7 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12631,7 +12631,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12643,7 +12643,7 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -16118,7 +16118,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.19718309859154928,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -19929,7 +19929,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.441025641025641,
+      "matching": 0.44329896907216493,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },

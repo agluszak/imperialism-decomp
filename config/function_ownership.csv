@@ -821,6 +821,7 @@ address|target_cpp|ownership|note
 4a1b80|src/game/TArmyMgr.cpp|manual|marker_sync
 4a1dd0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a1e40|src/game/TArmyMgr.cpp|manual|marker_sync
+4a1eb0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a1f80|src/game/TArmyMgr.cpp|manual|marker_sync
 4a2390|src/game/TArmyMgr.cpp|manual|marker_sync
 4a2500|src/game/TArmyMgr.cpp|manual|marker_sync
@@ -1403,6 +1404,7 @@ address|target_cpp|ownership|note
 4d6e60|src/game/TCountry.cpp|manual|marker_sync
 4d7070|src/game/TCountry.cpp|manual|marker_sync
 4d70e0|src/game/TCountry.cpp|manual|marker_sync
+4d7150|src/game/TCountry.cpp|manual|marker_sync
 4d71b0|src/game/TCountry.cpp|manual|marker_sync
 4d7770|src/game/TGreatPower_pending_action.cpp|manual|marker_sync
 4d7a00|src/game/TCountry.cpp|manual|marker_sync

@@ -675,14 +675,6 @@ undefined4 AssignStringSharedRefFromPointer(void)
   return 0;
 }
 
-// ghidra_name SetWordField8cFromShort
-// ghidra_proto undefined SetWordField8cFromShort()
-// FUNCTION: IMPERIALISM 0x004d7150
-undefined4 SetWordField8cFromShort(void)
-{
-  return 0;
-}
-
 // ghidra_name GetOrComputeOverlayAnchorTileIndex
 // ghidra_proto undefined GetOrComputeOverlayAnchorTileIndex()
 // FUNCTION: IMPERIALISM 0x004d7170

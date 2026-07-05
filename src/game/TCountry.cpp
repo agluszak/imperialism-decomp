@@ -258,6 +258,11 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
   stream->WriteBytesSlot78(&this->serializedField8c, 4);
 }
 
+// FUNCTION: IMPERIALISM 0x004d7150
+void TCountry::SetSerializedField8c(short value) {
+  this->serializedField8c = value;
+}
+
 // FUNCTION: IMPERIALISM 0x004d71b0
 void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   TSimMgr* localization = g_pSimMgr;

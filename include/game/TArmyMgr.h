@@ -6,6 +6,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 class TSortedList;
+class TArmyStack;
 
 // TODO(manifest): describe TArmyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TArmyMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c928
@@ -24,23 +25,34 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined OrphanCallChain_C4_I26_004a1e40();                 // slot 0x0a 0x4a1e40
   virtual undefined ProcessTileUnitListsAndApplyRandomStatusUpdates(); // slot 0x0b 0x4a1f80
-  virtual undefined OrphanCallChain_C12_I108_004a2390();               // slot 0x0c 0x4a2390
-  virtual undefined IterateLinkedListCursorAndClearPerTileByte0F();    // slot 0x0d 0x4a2500
-  virtual undefined TryCreateTacticalBattleViewForTileArmies();        // slot 0x0e 0x4a3200
-  // unitQueue is the same head/cursor node-queue shape as
-  // ResetAndRelocateUnitOrderQueue_004a37b0's param_1 (concrete class unrecovered, Hard
-  // Rule 12); tileIndex indexes g_pGlobalMapState->cityScoreTable. Picks a random
-  // adjacent region matching the queue's head unit's field_18 tag and relocates every
-  // movable unit there (TUnit::SetOrderModeSlot34), or resets them if none qualifies.
+  // Walks pendingUnitPool0c's TArmyStack entries starting at pendingRebuildFlag10: for
+  // each stack whose categoryFlag8 matches regionAffinityTable1c[ownerNationCodeE],
+  // relocates every unit on its embedded chain (VTableSlot10 + SetOrderModeSlot34);
+  // otherwise tries TryCreateTacticalBattleViewForTileArmies. Stops early on the first
+  // battle view created; always re-releases the 3 cached objects up front and, when the
+  // pass fully completes without creating one, via ReleaseThreeLinkedObjectsAndReset-
+  // TerrainDescriptorFlags at the end (ground truth duplicates that release inline
+  // rather than calling out to it, so this mirrors that instead of extracting a helper).
+  virtual undefined ProcessPendingArmyStacksForBattleOrRelocation(); // slot 0x0c 0x4a2390
+  virtual undefined IterateLinkedListCursorAndClearPerTileByte0F();  // slot 0x0d 0x4a2500
+  // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
+  // poison-pill arity mismatch. Called from OrphanCallChain_C12_I108_004a2390 when a
+  // TArmyStack's categoryFlag8 doesn't match TArmyMgr::regionAffinityTable1c[ownerNationCodeE].
   virtual undefined
-  RedistributeUnitOrderQueueToRandomAdjacentRegion(void* unitQueue,
+  TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack,
+                                           short ownerNationCode); // slot 0x0e 0x4a3200
+  // stack is the same TArmyStack the tile-army-composition pass (0x4a1f80) builds and
+  // OrphanCallChain_C12_I108_004a2390 (0x4a2390) iterates. Picks a random adjacent region
+  // matching the stack's head unit's field_18 tag and relocates every movable unit there
+  // (TUnit::SetOrderModeSlot34), or resets them if none qualifies.
+  virtual undefined
+  RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stack,
                                                    short tileIndex); // slot 0x0f 0x4a35e0
-  // Ground truth doesn't touch `this` at all -- param_1 is a small {targetProvinceId
-  // @+0x10, head node @+0x14, cursor node @+0x18} queue of {TUnit*, next} nodes; the
-  // concrete owning class isn't recovered (only reached via vtable dispatch in Ghidra's
-  // xrefs), so it stays void* rather than a guessed type (Hard Rule 12).
-  virtual undefined ResetAndRelocateUnitOrderQueue_004a37b0(void* param_1); // slot 0x10 0x4a37b0
-  virtual undefined UpdateDualLinkedEntryMetersAndBlinkState();             // slot 0x11 0x4a3830
+  // Ground truth doesn't touch `this` at all -- stack is the same TArmyStack shape,
+  // relocating every unit on its embedded chain to stack->tileIndex10 unless already there.
+  virtual undefined
+  ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack);   // slot 0x10 0x4a37b0
+  virtual undefined UpdateDualLinkedEntryMetersAndBlinkState(); // slot 0x11 0x4a3830
   virtual undefined
   WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(); // slot 0x12 0x4a3bc0
   // Ground truth (RET 0x8, 2 stack args) proves the previous 1-arg declaration was a
@@ -91,7 +103,23 @@ public:
   short regionAffinityTable1c;
   unsigned char pad14[0x31c - 0x1e];
   short pendingMapActionIndex; // +0x31c
-  unsigned char pad31e[0x3a8 - 0x31e];
+  unsigned char pad31e[0x39a - 0x31e];
+  // +0x39a -- set when a terrain-descriptor refresh is pending; consumed and cleared by
+  // ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags (0x4a1eb0).
+  unsigned char needsTerrainRefreshFlag39a;
+  unsigned char pad39b;
+  // +0x39c/+0x3a0/+0x3a4 -- three cached objects released (TObject::Free) and cleared by
+  // ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags; concrete subtype not
+  // identified beyond TObject.
+  TObject* cachedObject39c;
+  TObject* cachedObject3a0;
+  TObject* cachedObject3a4;
+
+  // Releases the 3 cached objects above, re-runs the per-tile-unit cleanup (slot 0x0d)
+  // and eligibility rebuild (slot 0x12), and -- when needsTerrainRefreshFlag39a is set --
+  // rebuilds the strategic map view's nation clip regions and resets every nation's
+  // serializedField8c to -1. 0x004a1eb0, __thiscall, no args.
+  void ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags();
 
   TArmyMgr();
 };

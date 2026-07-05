@@ -2,6 +2,7 @@
 
 #include "game/CIterator.h"
 #include "game/CString.h"
+#include "game/TArmyStack.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
@@ -21,22 +22,6 @@
 // TArmyMgr::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
-
-namespace {
-// Provisional shape for the unit-order queue reached through TArmyMgr's slots 0x0f/0x10
-// (concrete owning class not recovered -- see the header declarations, Hard Rule 12).
-struct UnitOrderQueueNode {
-  TUnit* unit;              // +0x00
-  UnitOrderQueueNode* next; // +0x04
-};
-struct UnitOrderQueueCursor {
-  unsigned char pad00[0x10];
-  short targetProvinceId; // +0x10
-  unsigned char pad12[2];
-  UnitOrderQueueNode* head;   // +0x14
-  UnitOrderQueueNode* cursor; // +0x18
-};
-} // namespace
 
 extern undefined4 GenerateThreadLocalRandom15(void);
 
@@ -65,9 +50,39 @@ undefined TArmyMgr::OrphanCallChain_C4_I26_004a1e40() {
   } else {
     this->ProcessTileUnitListsAndApplyRandomStatusUpdates();
     this->pendingRebuildFlag10 = 1;
-    this->OrphanCallChain_C12_I108_004a2390();
+    this->ProcessPendingArmyStacksForBattleOrRelocation();
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004a1eb0
+void TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags() {
+  if (this->cachedObject39c != nullptr) {
+    this->cachedObject39c->Free();
+  }
+  this->cachedObject39c = nullptr;
+  if (this->cachedObject3a0 != nullptr) {
+    this->cachedObject3a0->Free();
+  }
+  this->cachedObject3a0 = nullptr;
+  if (this->cachedObject3a4 != nullptr) {
+    this->cachedObject3a4->Free();
+  }
+  this->cachedObject3a4 = nullptr;
+
+  this->IterateLinkedListCursorAndClearPerTileByte0F();
+  this->WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0();
+
+  if (this->needsTerrainRefreshFlag39a != 0) {
+    g_pStrategicMapViewSystem->RebuildNationClipRegionsAndDispatchMapEvent();
+    for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {
+      if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
+        g_apTerrainTypeDescriptorTable[i]->SetSerializedField8c(-1);
+      }
+    }
+  }
+  this->needsTerrainRefreshFlag39a = 0;
+  g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
 }
 
 // FUNCTION: IMPERIALISM 0x004a1f80
@@ -76,7 +91,64 @@ undefined TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a2390
-undefined TArmyMgr::OrphanCallChain_C12_I108_004a2390() {
+undefined TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation() {
+  bool battleViewCreated = false;
+  if (this->cachedObject39c != nullptr) {
+    this->cachedObject39c->Free();
+  }
+  this->cachedObject39c = nullptr;
+  if (this->cachedObject3a0 != nullptr) {
+    this->cachedObject3a0->Free();
+  }
+  this->cachedObject3a0 = nullptr;
+  if (this->cachedObject3a4 != nullptr) {
+    this->cachedObject3a4->Free();
+  }
+  this->cachedObject3a4 = nullptr;
+
+  int stackCount = this->pendingUnitPool0c->GetCountSlot48();
+  if (this->pendingRebuildFlag10 <= stackCount) {
+    do {
+      int cursor = this->pendingRebuildFlag10;
+      stackCount = this->pendingUnitPool0c->GetCountSlot48();
+      if (stackCount < cursor) {
+        break;
+      }
+      this->pendingRebuildFlag10 = cursor + 1;
+      TArmyStack* stack =
+          static_cast<TArmyStack*>(this->pendingUnitPool0c->GetEntryByOrdinalSlot4C(cursor));
+      stack->AssertValid();
+      if ((&this->regionAffinityTable1c)[stack->ownerNationCodeE] ==
+          static_cast<short>(static_cast<signed char>(stack->categoryFlag8))) {
+        stack->cursor18 = stack->head14;
+        TArmyStackUnitNode* node = stack->cursor18;
+        TUnit* unit = (node != nullptr) ? node->unit : nullptr;
+        while (unit != nullptr) {
+          unit->VTableSlot10(unit->field_C);
+          unit->SetOrderModeSlot34(0, -1);
+          node = stack->cursor18;
+          if (node != nullptr) {
+            node = node->next;
+            stack->cursor18 = node;
+            unit = (node != nullptr) ? node->unit : nullptr;
+          } else {
+            unit = nullptr;
+          }
+        }
+      } else {
+        battleViewCreated =
+            this->TryCreateTacticalBattleViewForTileArmies(stack, stack->ownerNationCodeE) != 0;
+      }
+    } while (!battleViewCreated);
+    stackCount = this->pendingUnitPool0c->GetCountSlot48();
+    if (this->pendingRebuildFlag10 <= stackCount) {
+      return 0;
+    }
+    if (battleViewCreated) {
+      return 0;
+    }
+  }
+  this->ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags();
   return 0;
 }
 
@@ -111,16 +183,18 @@ undefined TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a3200
-undefined TArmyMgr::TryCreateTacticalBattleViewForTileArmies() {
+undefined TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack,
+                                                             short ownerNationCode) {
+  (void)stack;
+  (void)ownerNationCode;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a35e0
-undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(void* unitQueue,
+undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stack,
                                                                      short tileIndex) {
-  UnitOrderQueueCursor* queue = static_cast<UnitOrderQueueCursor*>(unitQueue);
-  queue->cursor = queue->head;
-  TUnit* headUnit = (queue->head != nullptr) ? queue->head->unit : nullptr;
+  stack->cursor18 = stack->head14;
+  TUnit* headUnit = (stack->head14 != nullptr) ? stack->head14->unit : nullptr;
   short headUnitTag = headUnit->field_18;
 
   const TGlobalMapCityScoreRecord& record = g_pGlobalMapState->cityScoreTable[tileIndex];
@@ -138,17 +212,17 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(void* unitQ
   }
 
   if (candidateCount == 0) {
-    queue->cursor = queue->head;
-    UnitOrderQueueNode* node = queue->cursor;
+    stack->cursor18 = stack->head14;
+    TArmyStackUnitNode* node = stack->cursor18;
     TUnit* unit = (node != nullptr) ? node->unit : nullptr;
     while (unit != nullptr) {
       if (static_cast<TMilitaryUnit*>(unit)->field_34 != 0) {
         unit->DetachUnitOrderFromOwnerAndReset();
       }
-      node = queue->cursor;
+      node = stack->cursor18;
       if (node != nullptr) {
         node = node->next;
-        queue->cursor = node;
+        stack->cursor18 = node;
         unit = (node != nullptr) ? node->unit : nullptr;
       } else {
         unit = nullptr;
@@ -158,8 +232,8 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(void* unitQ
   }
 
   short chosenRegion = candidateRegions[GenerateThreadLocalRandom15() % candidateCount];
-  queue->cursor = queue->head;
-  UnitOrderQueueNode* node = queue->cursor;
+  stack->cursor18 = stack->head14;
+  TArmyStackUnitNode* node = stack->cursor18;
   TUnit* unit = (node != nullptr) ? node->unit : nullptr;
   while (unit != nullptr) {
     if (g_awTacticalUnitCategoryCodeBySlot[unit->orderType] == 0) {
@@ -167,18 +241,18 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(void* unitQ
     } else {
       unit->SetOrderModeSlot34(1, chosenRegion);
     }
-    node = queue->cursor;
+    node = stack->cursor18;
     if (node != nullptr) {
       node = node->next;
-      queue->cursor = node;
+      stack->cursor18 = node;
       unit = (node != nullptr) ? node->unit : nullptr;
     } else {
       unit = nullptr;
     }
   }
 
-  queue->cursor = queue->head;
-  node = queue->cursor;
+  stack->cursor18 = stack->head14;
+  node = stack->cursor18;
   unit = (node != nullptr) ? node->unit : nullptr;
   if (unit == nullptr) {
     return 0;
@@ -186,10 +260,10 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(void* unitQ
   do {
     unit->VTableSlot10(unit->field_C);
     unit->SetOrderModeSlot34(0, -1);
-    node = queue->cursor;
+    node = stack->cursor18;
     if (node != nullptr) {
       node = node->next;
-      queue->cursor = node;
+      stack->cursor18 = node;
       unit = (node != nullptr) ? node->unit : nullptr;
     } else {
       unit = nullptr;
@@ -199,20 +273,19 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(void* unitQ
 }
 
 // FUNCTION: IMPERIALISM 0x004a37b0
-undefined TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(void* param_1) {
-  UnitOrderQueueCursor* queue = static_cast<UnitOrderQueueCursor*>(param_1);
-  queue->cursor = queue->head;
-  UnitOrderQueueNode* node = queue->cursor;
+undefined TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack) {
+  stack->cursor18 = stack->head14;
+  TArmyStackUnitNode* node = stack->cursor18;
   TUnit* unit = (node != nullptr) ? node->unit : nullptr;
   while (unit != nullptr) {
     unit->SetOrderModeSlot34(0, -1);
-    if (unit->field_6 != queue->targetProvinceId) {
-      unit->VTableSlot10(queue->targetProvinceId);
+    if (unit->field_6 != stack->tileIndex10) {
+      unit->VTableSlot10(stack->tileIndex10);
     }
-    node = queue->cursor;
+    node = stack->cursor18;
     if (node != nullptr) {
       node = node->next;
-      queue->cursor = node;
+      stack->cursor18 = node;
       unit = (node != nullptr) ? node->unit : nullptr;
     } else {
       unit = nullptr;

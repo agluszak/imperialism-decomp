@@ -211,14 +211,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004a1d90(void)
   return 0;
 }
 
-// ghidra_name ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags
-// ghidra_proto undefined ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags()
-// FUNCTION: IMPERIALISM 0x004a1eb0
-undefined4 ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildArmyActionLabelFromLocalizationAndCounts
 // ghidra_proto undefined BuildArmyActionLabelFromLocalizationAndCounts()
 // FUNCTION: IMPERIALISM 0x004a2610

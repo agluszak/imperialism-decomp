@@ -1,28 +1,49 @@
 #pragma once
 
 #include "game/TObject.h"
+#include "game/TUnit.h"
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
+// A node in TArmyStack's embedded intrusive unit chain (head14/cursor18).
+struct TArmyStackUnitNode {
+  TUnit* unit;              // +0x00
+  TArmyStackUnitNode* next; // +0x04
+};
+
 // TODO(manifest): describe TArmyStack and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TArmyStack -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064ca38
 class TArmyStack : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TArmyStack) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TArmyStack) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyStack)
   virtual ~TArmyStack(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x4a7960
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4a7960
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a77b0
-  virtual void Free() override; // slot 0x07 0x4a7c20
+  virtual void Free() override;                    // slot 0x07 0x4a7c20
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-// === END GENERATED DECLS (TArmyStack) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyStack 0xCTOR`).
+  // === END GENERATED DECLS (TArmyStack) ===
+  // Field layout from ProcessTileUnitListsAndApplyRandomStatusUpdates's construction site
+  // (0x4a1f80, `new TArmyStack()` + scatter-init) and OrphanCallChain_C12_I108_004a2390's
+  // (0x4a2390) reads. TObject's own vptr occupies the first 4 bytes.
+  short field4;                // +0x04 -- zeroed at construction
+  short field6;                // +0x06 -- zeroed at construction
+  unsigned char categoryFlag8; // +0x08 -- compared against TArmyMgr::regionAffinityTable1c
+  unsigned char pad9;
+  short fieldA;         // +0x0a -- zeroed at construction
+  unsigned char fieldC; // +0x0c -- zeroed at construction
+  unsigned char padD;
+  short ownerNationCodeE; // +0x0e -- region/owner-nation code
+  short tileIndex10;      // +0x10 -- originating tile index / order-target province
+  unsigned char pad12[2];
+  TArmyStackUnitNode* head14;   // +0x14 -- head of an embedded {TUnit*, next} node chain
+  TArmyStackUnitNode* cursor18; // +0x18 -- traversal cursor over the chain
 
   TArmyStack();
 };
