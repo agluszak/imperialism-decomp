@@ -155,6 +155,18 @@ void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
   reinterpret_cast<Func>(0x004d2d30)(this, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x004d2ef0
+bool TCivMgr::TryQueueCivilianMoveOrderToTile(short nTileIndex) {
+  char canAssign = this->CanAssignCivilianOrderToTile(nTileIndex);
+  if (canAssign != 0) {
+    TCivUnit* entry = this->selectedEntry;
+    entry->SetOrderModeSlot34(1, entry->field_6);
+    g_pSfxPlaybackSystem->PlaySoundEffect(9000, 0, 1);
+    this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, entry);
+  }
+  return canAssign != 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004d2f60
 char TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
   TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
@@ -312,7 +324,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   }
 
   if (actionFinalized) {
-    this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, reinterpret_cast<int*>(pCiv));
+    this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, pCiv);
 
     int startTick = GetTickCountDiv16();
     while (true) {
@@ -336,4 +348,4 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
 // FUNCTION: IMPERIALISM 0x004d4310
 void TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
-                                                           int* pCivOrderEntry) {}
+                                                           TCivUnit* pCivOrderEntry) {}

@@ -23,9 +23,8 @@ public:
                                                         short nClickMode); // slot 0x0a 0x4d2380
   virtual bool HandleCivilianTileOrderAction(short nTileIndex,
                                              short nInputHint); // slot 0x0b 0x4d26d0
-  virtual void
-  RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
-                                               int* pCivOrderEntry); // slot 0x0c 0x4d4310
+  virtual void RelinkCivilianOrderTileAndInvalidateMapTiles(
+      short nNewTileIndex, class TCivUnit* pCivOrderEntry); // slot 0x0c 0x4d4310
   virtual void
   DispatchSelectedUnitToGlobalMapStateHandler(int* pUnitOrderEntry); // slot 0x0d 0x4d2270
   // === END GENERATED DECLS (TCivMgr) ===
@@ -62,6 +61,11 @@ public:
   // to ResolveCivilianTileOrderActionCode untouched.
   unsigned short LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex,
                                                                  short nInputHint);
+
+  // 0x004d2ef0. Attempts to queue a plain movement order (order type 1) for the selected
+  // civilian onto nTileIndex; false if CanAssignCivilianOrderToTile rejects the tile. Same
+  // mis-attribution as the functions above.
+  bool TryQueueCivilianMoveOrderToTile(short nTileIndex);
 };
 
 // === BEGIN GENERATED (TCivMgr) — refreshed by `just gen-class TCivMgr`; do not hand-edit ===

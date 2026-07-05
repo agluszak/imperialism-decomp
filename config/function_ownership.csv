@@ -1435,6 +1435,7 @@ address|target_cpp|ownership|note
 4d2c60|src/game/TCivMgr.cpp|manual|marker_sync
 4d2cf0|src/game/TCivMgr.cpp|manual|marker_sync
 4d2d30|src/game/TCivMgr.cpp|manual|marker_sync
+4d2ef0|src/game/TCivMgr.cpp|manual|marker_sync
 4d2f60|src/game/TCivMgr.cpp|manual|marker_sync
 4d3a60|src/game/TCivMgr.cpp|manual|marker_sync
 4d4310|src/game/TCivMgr.cpp|manual|marker_sync
