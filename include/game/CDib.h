@@ -55,6 +55,14 @@ public:
   BOOL StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int width, int height);
   // Load an RT_BITMAP resource from a module into the DIB state. 0x0047c080
   int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module);
+  // Software-blit a `width`x`height` rect from this DIB's pixel buffer (top-left at
+  // srcX/srcY) into destDib's pixel buffer (top-left at destX/destY), skipping any
+  // source byte equal to transparentColor (a straight block copy when
+  // transparentColor == -1). Row orientation (top-down vs bottom-up) is resolved from
+  // each DIB's signed biHeight independently. 0x0047bde0
+  void BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int srcY,
+                                               unsigned int width, unsigned int height, int destX,
+                                               int destY, int transparentColor);
 
   // Serialize backends: write a .bmp (BITMAPFILEHEADER + BITMAPINFO + pixels) / read one back.
   void Write(CFile* file); // 0x0047b9f0

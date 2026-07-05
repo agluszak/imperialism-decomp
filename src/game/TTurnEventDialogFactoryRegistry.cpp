@@ -89,18 +89,16 @@ TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
     }
   }
 
-  if (result == nullptr) {
-    return nullptr;
-  }
-
-  if (pEventPacket != nullptr) {
-    pEventPacket->AttachChildControl(result, 0);
-  }
-  if (pAnchorPoint[1] != 0 || pAnchorPoint[0] != 0) {
-    int layout[2];
-    layout[0] = pAnchorPoint[0] + result->ownerOffsetX;
-    layout[1] = pAnchorPoint[1] + result->ownerOffsetY;
-    result->CaptureLayoutF0(layout, 0);
+  if (result != nullptr) {
+    if (pEventPacket != nullptr) {
+      pEventPacket->AttachChildControl(result, 0);
+    }
+    if (pAnchorPoint[1] != 0 || pAnchorPoint[0] != 0) {
+      int layout[2];
+      layout[0] = pAnchorPoint[0] + result->ownerOffsetX;
+      layout[1] = pAnchorPoint[1] + result->ownerOffsetY;
+      result->CaptureLayoutF0(layout, 0);
+    }
   }
 
   return result;

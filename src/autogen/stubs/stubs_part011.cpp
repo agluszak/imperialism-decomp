@@ -1051,14 +1051,6 @@ undefined4 AllocateAndLinkBlockHeadPair_00499e80(void)
   return 0;
 }
 
-// ghidra_name IncrementDialogResourceRefCountByShortIdInRegistry
-// ghidra_proto undefined IncrementDialogResourceRefCountByShortIdInRegistry()
-// FUNCTION: IMPERIALISM 0x0049a0b0
-undefined4 IncrementDialogResourceRefCountByShortIdInRegistry(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadLocalizedStringByGroupAndIndexToSharedRef
 // ghidra_proto undefined LoadLocalizedStringByGroupAndIndexToSharedRef()
 // FUNCTION: IMPERIALISM 0x0049a590

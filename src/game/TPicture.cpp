@@ -1,10 +1,11 @@
 #include "game/TPicture.h"
 
+#include "game/CDib.h"
 #include "game/TView.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 
-undefined4 IncrementDialogResourceRefCountByShortIdInRegistry(void);
 undefined4 SetPictureResourceIdAndRefresh_Impl(void);
 // SYNTHETIC: IMPERIALISM 0x0048eeb0
 // TPicture::CreateObject
@@ -47,14 +48,13 @@ void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow
   this->ResetPictureResourceEntry();
   this->glyphBase84 = nPictureId;
   if (nPictureId != -1) {
-    this->field8C =
-        reinterpret_cast<int>(g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(nPictureId));
+    this->field8C = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(nPictureId);
   }
   if (this->field8C == 0) {
     reinterpret_cast<void(__cdecl*)(int, int)>(SetPictureResourceIdAndRefresh_Impl)(this->field34,
                                                                                     this->field38);
-    this->field8C = reinterpret_cast<int>(g_pModuleLibraryCacheState->BuildIndexedBmpResourceById(
-        nPictureId, this->field34, this->field38, 0));
+    this->field8C = g_pModuleLibraryCacheState->BuildIndexedBmpResourceById(
+        nPictureId, this->field34, this->field38, 0);
   }
   if (fRefreshNow) {
     this->RefreshControl();
@@ -86,10 +86,10 @@ TObject* TPicture::ShallowClone() {
   clone->field8A = field8A;
   clone->field8C = field8C;
   if (glyphBase84 != static_cast<short>(0xffff)) {
-    unsigned int packedId = (static_cast<unsigned int>(field8C) << 16) |
+    unsigned int packedId = (static_cast<unsigned int>(static_cast<unsigned short>(field8A))
+                             << 16) |
                             static_cast<unsigned int>(static_cast<unsigned short>(glyphBase84));
-    reinterpret_cast<void(__cdecl*)(unsigned int)>(
-        IncrementDialogResourceRefCountByShortIdInRegistry)(packedId);
+    g_pModuleLibraryCacheState->IncrementDialogResourceRefCountByShortIdInRegistry(packedId);
   }
   return clone;
 }

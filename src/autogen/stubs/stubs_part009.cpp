@@ -1491,14 +1491,6 @@ undefined4 OrphanCallChain_C3_I20_0047bd90(void)
   return 0;
 }
 
-// ghidra_name BlitSurfaceRectSkippingTransparentColor
-// ghidra_proto undefined BlitSurfaceRectSkippingTransparentColor()
-// FUNCTION: IMPERIALISM 0x0047bde0
-undefined4 BlitSurfaceRectSkippingTransparentColor(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadBmpResourceByIdCached_Impl
 // ghidra_proto undefined LoadBmpResourceByIdCached_Impl()
 // FUNCTION: IMPERIALISM 0x0047bf90

@@ -240,6 +240,23 @@ CDib* TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById(short bmpId, i
   return dib;
 }
 
+// Increment the ref count of the m_tableA record whose key is the low 16 bits of
+// packedKey; if no such record is registered (e.g. a picture record that was never
+// stored under this table), treat packedKey itself as an already-valid CacheRecord*
+// and bump its ref count directly. Faithful to the original's manually-inlined hash
+// walk, expressed via the public CMap API (mfc-collections: never walk protected
+// CMap internals).
+// FUNCTION: IMPERIALISM 0x0049a0b0
+void TModuleLibraryCacheTableStateB::IncrementDialogResourceRefCountByShortIdInRegistry(
+    unsigned int packedKey) {
+  CacheRecord* record = NULL;
+  if (m_tableA.Lookup(static_cast<WORD>(packedKey), record)) {
+    record->refCount++;
+  } else {
+    reinterpret_cast<CacheRecord*>(packedKey)->refCount++;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0049a190
 void TModuleLibraryCacheTableStateB::ReleaseRecordById(short id) {
   CacheRecord* record = NULL;

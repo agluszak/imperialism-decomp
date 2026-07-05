@@ -308,6 +308,98 @@ void CDib::Release() {
   m_hPalette = NULL;
 }
 
+// FUNCTION: IMPERIALISM 0x0047bde0
+void CDib::BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int srcY,
+                                                   unsigned int width, unsigned int height,
+                                                   int destX, int destY, int transparentColor) {
+  if (width == 0) {
+    return;
+  }
+  if (height == 0) {
+    return;
+  }
+
+  int srcBottomRow = srcY + static_cast<int>(height) - 1;
+  int srcWidth = m_pInfoHeader->bmiHeader.biWidth;
+  char* srcPtr;
+  if (srcX < srcWidth) {
+    int srcHeight = m_pInfoHeader->bmiHeader.biHeight;
+    int srcAbsHeight = (srcHeight < 1) ? -srcHeight : srcHeight;
+    if (srcAbsHeight <= srcBottomRow) {
+      srcPtr = 0;
+    } else {
+      unsigned int srcStride = (srcWidth + 3) & ~3u;
+      if (srcHeight < 0) {
+        srcPtr = static_cast<char*>(m_dibBits) + srcBottomRow * srcStride + srcX;
+      } else {
+        int h = (srcHeight < 1) ? -srcHeight : srcHeight;
+        srcPtr = static_cast<char*>(m_dibBits) + ((h - srcBottomRow) - 1) * srcStride + srcX;
+      }
+    }
+  } else {
+    srcPtr = 0;
+  }
+
+  int destBottomRow = destY + static_cast<int>(height) - 1;
+  int destWidth = destDib->m_pInfoHeader->bmiHeader.biWidth;
+  char* destPtr;
+  if (destX < destWidth) {
+    int destHeight = destDib->m_pInfoHeader->bmiHeader.biHeight;
+    int destAbsHeight = (destHeight < 1) ? -destHeight : destHeight;
+    if (destBottomRow < destAbsHeight) {
+      int h = (destHeight < 1) ? -destHeight : destHeight;
+      unsigned int destStride = (destWidth + 3) & ~3u;
+      destPtr = static_cast<char*>(destDib->m_dibBits) + ((h - destBottomRow) - 1) * destStride +
+                destX;
+    } else {
+      destPtr = 0;
+    }
+  } else {
+    destPtr = 0;
+  }
+
+  unsigned int srcStride = (srcWidth + 3) & ~3u;
+  unsigned int destStride = (destWidth + 3) & ~3u;
+
+  if (transparentColor != -1) {
+    unsigned int rowsRemaining = height;
+    do {
+      unsigned int colsRemaining = width;
+      do {
+        char pixel = *srcPtr;
+        ++srcPtr;
+        if (pixel != static_cast<char>(transparentColor)) {
+          *destPtr = pixel;
+        }
+        ++destPtr;
+        --colsRemaining;
+      } while (colsRemaining != 0);
+      srcPtr += srcStride - width;
+      destPtr += destStride - width;
+      --rowsRemaining;
+    } while (rowsRemaining != 0);
+    return;
+  }
+
+  do {
+    char* srcRow = srcPtr;
+    char* destRow = destPtr;
+    for (unsigned int w = width >> 2; w != 0; --w) {
+      *reinterpret_cast<unsigned int*>(destRow) = *reinterpret_cast<unsigned int*>(srcRow);
+      srcRow += 4;
+      destRow += 4;
+    }
+    srcPtr += srcStride;
+    for (unsigned int b = width & 3; b != 0; --b) {
+      *destRow = *srcRow;
+      ++srcRow;
+      ++destRow;
+    }
+    destPtr += destStride;
+    --height;
+  } while (height != 0);
+}
+
 // FUNCTION: IMPERIALISM 0x0047c080
 int CDib::LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module) {
   HRSRC resourceInfo = FindResourceA(module, resourceName, RT_BITMAP);

@@ -171,6 +171,7 @@ address|target_cpp|ownership|note
 47b9f0|src/game/CDib.cpp|manual|marker_sync
 47bb10|src/game/CDib.cpp|manual|marker_sync
 47bca0|src/game/CDib.cpp|manual|marker_sync
+47bde0|src/game/CDib.cpp|manual|marker_sync
 47c080|src/game/CDib.cpp|manual|marker_sync
 47c3d0|src/game/sprite.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|library|marker_sync
@@ -717,6 +718,7 @@ address|target_cpp|ownership|note
 4995c0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 4997e0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 499b40|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+49a0b0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49a190|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49ae30|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync

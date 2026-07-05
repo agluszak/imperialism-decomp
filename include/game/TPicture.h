@@ -7,6 +7,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TObject;
+class CDib;
 
 // TODO(manifest): describe TPicture and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064a930
@@ -133,7 +134,7 @@ public:
   short field86;
   short bitmapId;
   short field8A;
-  int field8C;
+  CDib* field8C; // cached bitmap surface (see SetPictureResourceIdAndRefresh)
 
   TPicture();
 };
