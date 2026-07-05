@@ -1,6 +1,7 @@
 #include "game/TViewMgr.h"
 
 #include "game/ImperialismApp.h"
+#include "game/TAmbitApplication.h"
 #include "game/TAssetMgr.h"
 #include "game/TSoundPlayer.h"        // g_pSfxPlaybackSystem
 #include "game/TMacViewMgr.h"         // g_pStrategicMapViewSystem
@@ -877,8 +878,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
 
   // Code 0 = rebuild every registered UI window node.
   if (newCode == 0) {
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x4c) =
-        0;
+    static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->dispatchBusyFlag4c = 0;
     this->currentTurnEventCode = 0;
     g_pDisplayMgr->clipSnapshotEvent = 0;
     mainView->CallVoidSlotA0();

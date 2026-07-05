@@ -84,7 +84,7 @@ void TAmbitApplication::VTableSlot2C() {
 
 TAmbitApplication::TAmbitApplication() : TApplication() {
   field_48 = 0;
-  field_4c = 0;
+  dispatchBusyFlag4c = 0;
   field_50 = 0;
 }
 // SYNTHETIC: IMPERIALISM 0x0049de40
