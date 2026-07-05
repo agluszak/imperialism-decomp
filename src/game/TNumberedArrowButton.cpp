@@ -1,7 +1,6 @@
 // UI wrapper class quads extracted from trade_screen.
 
 #include "game/TNumberedArrowButton.h"
-#include "game/TAmtBar.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -12,49 +11,6 @@
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
-
-void TNumberedArrowButton::OrphanCallChain_C3_I43_0058b750(char mode, char refreshParent) {
-  if (mode != *reinterpret_cast<char*>(reinterpret_cast<char*>(this) + 0x64)) {
-    *reinterpret_cast<char*>(reinterpret_cast<char*>(this) + 0x64) = mode;
-    short bitmapId = 0;
-    short modeState = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x98);
-    if (mode == 0) {
-      if (modeState == 0) {
-        bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x90);
-      } else if (modeState == 1) {
-        bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x94);
-      } else {
-        bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x96);
-      }
-    } else {
-      bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x92);
-    }
-    reinterpret_cast<TAmtBar*>(this)->SetBitmap(bitmapId, 1);
-    if (refreshParent != 0) {
-      TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(this)->OwnerPanel());
-      if (owner != 0) {
-        owner->InvokeSlot13C();
-      }
-    }
-  }
-}
-
-// OrphanCallChain_C2_I37_0058b8d0 — body at 0x0058b8d0 owned by
-// THQButton::SetSelectionStateAndRefreshBitmap
-void TNumberedArrowButton::OrphanCallChain_C2_I37_0058b8d0(short mode) {
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x98) = mode;
-  *reinterpret_cast<char*>(reinterpret_cast<char*>(this) + 0x64) = 0;
-  short bitmapId = 0;
-  if (mode == 0) {
-    bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x90);
-  } else if (mode == 1) {
-    bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x94);
-  } else {
-    bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x96);
-  }
-  reinterpret_cast<TAmtBar*>(this)->SetBitmap(bitmapId, 1);
-  reinterpret_cast<TAmtBar*>(this)->SetState(mode != 2, 0);
-}
 
 // FUNCTION: IMPERIALISM 0x0058c1e0
 TNumberedArrowButton* __cdecl CreateTNumberedArrowButtonInstance(void) {
