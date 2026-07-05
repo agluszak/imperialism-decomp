@@ -971,3 +971,87 @@ void TView::ReturnFromUiSlot63(int arg1, int arg2) {
 // byte-identical twins of 0x0048a9d0 (verified instruction-for-instruction). reccmp
 // cannot bind two original addresses to one recomp symbol, so the twins stay
 // stub-owned; their symbols.csv rows carry the truthful `TView::~TView` label.
+
+// FUNCTION: IMPERIALISM 0x00607318
+UINT TView::GetStyle() {
+  if (field38 != 0) {
+    // TODO(class-recovery): field38, when non-null, is some other polymorphic object
+    // whose own vtable slot 0x1e is tail-called here for the style value; that class
+    // isn't recovered yet. Falls back to the window-handle path below in the meantime
+    // (identical to the field38 == 0 case). Dead for TView::RunModalLoop's movie path
+    // (loopKind == 0 never reaches here).
+  }
+  return GetWindowLong(reinterpret_cast<HWND>(controlTag), GWL_STYLE);
+}
+
+// MFC-private message sent by RunModalLoop to itself each idle cycle (afxpriv.h
+// WM_KICKIDLE, not vendored here).
+namespace {
+const UINT kMsgKickIdle = 0x036a;
+}
+
+// FUNCTION: IMPERIALISM 0x0060a60a
+int TView::RunModalLoop(unsigned char loopKind) {
+  bool idleModeActive = true;
+  int idleMessageCount = 0;
+  bool showOnFirstNonInputMessage = false;
+  if ((loopKind & 4) != 0) {
+    showOnFirstNonInputMessage = (GetStyle() & WS_VISIBLE) == 0;
+  }
+
+  HWND parentHwnd = GetParent(reinterpret_cast<HWND>(controlTag));
+  ownerOffsetX |= 0x18;
+
+  CWinThread* thread = AfxGetThread();
+  LPMSG msg = &thread->m_msgCur;
+
+  for (;;) {
+    while (!idleModeActive || PeekMessageA(msg, nullptr, 0, 0, PM_NOREMOVE) != 0) {
+      if (!thread->PumpMessage()) {
+        AfxPostQuitMessage(0);
+        return -1;
+      }
+
+      if (showOnFirstNonInputMessage && (msg->message == 0x118 || msg->message == WM_SYSKEYDOWN)) {
+        // Original calls CWnd::ShowWindow/UpdateWindow directly on `this`; modeled here
+        // against the hosted native window until TView's relationship to that call is
+        // understood (dead for loopKind == 0, the movie path).
+        if (nativeWindow50 != 0) {
+          nativeWindow50->ShowWindow(SW_SHOWNORMAL);
+        }
+        UpdateWindow(reinterpret_cast<HWND>(controlTag));
+        showOnFirstNonInputMessage = false;
+      }
+
+      if (!ContinueModal()) {
+        ownerOffsetX &= ~0x18;
+        return field2c;
+      }
+
+      if (thread->IsIdleMessage(msg)) {
+        idleModeActive = true;
+        idleMessageCount = 0;
+      }
+    }
+
+    if (showOnFirstNonInputMessage) {
+      if (nativeWindow50 != 0) {
+        nativeWindow50->ShowWindow(SW_SHOWNORMAL);
+      }
+      UpdateWindow(reinterpret_cast<HWND>(controlTag));
+      showOnFirstNonInputMessage = false;
+    }
+
+    if ((loopKind & 1) == 0 && parentHwnd != 0 && idleMessageCount == 0) {
+      SendMessageA(parentHwnd, WM_ENTERIDLE, 0, static_cast<LPARAM>(controlTag));
+    }
+
+    if ((loopKind & 2) == 0) {
+      const int currentIdleCount = idleMessageCount++;
+      if (SendMessageA(reinterpret_cast<HWND>(controlTag), kMsgKickIdle, 0, currentIdleCount) != 0) {
+        continue;
+      }
+    }
+    idleModeActive = false;
+  }
+}

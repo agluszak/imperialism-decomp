@@ -276,9 +276,15 @@ void TEventHandler::DispatchUiCommand19ToParent() {
   DispatchEvent(0x19, this, 0);
 }
 
+// ContinueModal: the modal-loop continuation gate consulted by TView::RunModalLoop
+// (0x0060a60a). Bubbles command 0x1b up the owner chain via DispatchEvent/HandleEvent
+// (side effects preserved); the loop-relevant answer is whether an owner is still
+// present to receive it (QueryStepValue() != 0), i.e. whether this view (or its
+// owner chain) is still attached to the view tree.
 // FUNCTION: IMPERIALISM 0x0048a6f0
-void TEventHandler::DispatchCityProductionAction1B() {
+bool TEventHandler::ContinueModal() {
   DispatchEvent(0x1b, this, 0);
+  return QueryStepValue() != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a710

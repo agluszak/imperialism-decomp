@@ -4898,6 +4898,7 @@ address|target_cpp|ownership|note
 60726f|src/game/library_msvc500_fid.cpp|library|marker_sync
 607296|src/game/library_msvc500_fid.cpp|library|marker_sync
 6072e5|src/game/library_msvc500_fid.cpp|library|marker_sync
+607318|src/game/TView.cpp|manual|marker_sync
 607332|src/game/library_msvc500_fid.cpp|library|marker_sync
 6073b4|src/game/MfcRuntime.cpp|library|marker_sync
 607469|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5004,7 +5005,7 @@ address|target_cpp|ownership|note
 60a44b|src/game/library_msvc500_fid.cpp|library|marker_sync
 60a4d5|src/game/library_msvc500_fid.cpp|library|marker_sync
 60a5da|src/game/library_msvc500_fid.cpp|library|marker_sync
-60a60a|src/game/TMovieView.cpp|manual|marker_sync
+60a60a|src/game/TView.cpp|manual|marker_sync
 60a794|src/game/library_msvc500_fid.cpp|library|marker_sync
 60a8ce|src/game/library_msvc500_fid.cpp|library|marker_sync
 60a916|src/game/library_msvc500_fid.cpp|library|marker_sync

@@ -53,6 +53,8 @@ public:
   void EnableAndProcessFlag(CString sharedString);
   void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
   void SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive);
+  UINT GetStyle();
+  int RunModalLoop(unsigned char loopKind);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
   DECLARE_DYNCREATE(TView)

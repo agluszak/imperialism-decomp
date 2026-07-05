@@ -100,7 +100,7 @@ public:
   virtual void HandleCityProductionNoOp();                 // 0x1b 0x48a650
   virtual void DispatchUiCommand19ToParent();              // 0x1c 0x48a6d0
   virtual void DispatchCityProductionAction1A();           // 0x1d 0x48a670
-  virtual void DispatchCityProductionAction1B();           // 0x1e 0x48a6f0
+  virtual bool ContinueModal();                             // 0x1e 0x48a6f0
   virtual char ActivateCityProductionViewIfAllowed();      // 0x1f 0x48a570
   virtual char vmethod_0080();                             // 0x20 0x48a5e0
   virtual void vmethod_0081(int param);                    // 0x21 0x48a710

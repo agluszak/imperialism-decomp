@@ -995,14 +995,6 @@ undefined4 TMacViewMgr_Slot39_Target(void)
   return 0;
 }
 
-// ghidra_name GetStyle
-// ghidra_proto undefined GetStyle()
-// FUNCTION: IMPERIALISM 0x00607318
-undefined4 GetStyle(void)
-{
-  return 0;
-}
-
 // ghidra_name ModifyStyle
 // ghidra_proto undefined ModifyStyle()
 // FUNCTION: IMPERIALISM 0x0060734c

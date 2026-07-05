@@ -149,16 +149,3 @@ char TMovieView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3
   return TPicture::DispatchUiMouseMoveToChildren(point, arg2, arg3, arg4);
 }
 
-// FUNCTION: IMPERIALISM 0x0060a60a
-int TMovieView::RunModalLoop(TMovieView* view, unsigned char loopKind) {
-  (void)view;
-  (void)loopKind;
-  MSG msg;
-  while (GetMessage(&msg, nullptr, 0, 0) > 0) {
-    if (AfxGetApp() == nullptr || !AfxGetApp()->PreTranslateMessage(&msg)) {
-      TranslateMessage(&msg);
-      DispatchMessage(&msg);
-    }
-  }
-  return 0;
-}

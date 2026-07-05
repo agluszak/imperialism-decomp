@@ -2,8 +2,6 @@
 
 #include <new.h>
 
-#include "game/TMovieView.h"
-
 TModalTemplateDialog::TModalTemplateDialog()
     : TControl(), resourceTemplateId(0), templateInitContext(nullptr), lockedTemplateBytes(nullptr),
       templateSourceCopy(0), hDialogResource(nullptr), hModalDialog(nullptr), ownerWasDisabled(0),
@@ -67,7 +65,7 @@ int TModalTemplateDialog::FinalizeModalDialogAndRestoreOwnerFocus() {
       if (dialogWnd != nullptr && (dialogWnd->GetStyle() & 0x100) != 0) {
         loopKind = 5;
       }
-      TMovieView::RunModalLoop(reinterpret_cast<TMovieView*>(this), loopKind);
+      RunModalLoop(loopKind);
     }
     CWnd* dialogWnd = CWnd::FromHandlePermanent(hModalDialog);
     if (dialogWnd != nullptr) {

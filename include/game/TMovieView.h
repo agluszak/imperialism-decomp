@@ -134,7 +134,6 @@ public:
   bool OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath); // 0x5e24b0
   bool SendMessage806IfSelectionStateActive();            // 0x5e24e0
   bool SendMessage808IfSelectionStateActive();            // 0x5e2500
-  static int RunModalLoop(TMovieView* view, unsigned char loopKind);
 };
 
 ASSERT_SIZE(TMovieView, 0x94);
