@@ -322,12 +322,63 @@ undefined TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F() {
 static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
                                                           TArmyStack* enemyStack, int mode,
                                                           int ownerNationCodeInt, int unused) {
-  // TODO: port body @ 0x4a2900 (1791 bytes; large, not yet ported).
-  (void)ourStack;
-  (void)enemyStack;
   (void)mode;
   (void)ownerNationCodeInt;
   (void)unused;
+
+  // Ground truth also checks g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStamp-
+  // OutOfDate(ourStack->categoryFlag8, enemyStack->categoryFlag8) and enemyStack's head
+  // unit here, storing a "reason" code (3/4/unset) that's consumed only by the gapped
+  // record-construction/dispatch tail below -- not modeled since nothing in the ported
+  // portion reads it, and the tallying loops below run unconditionally regardless of it.
+
+  const int kUnitTypeSlotCount = 30;
+  int ourCount[kUnitTypeSlotCount] = {0};
+  int ourActiveCount[kUnitTypeSlotCount] = {0};
+  TUnit* ourBestUnit = nullptr;
+  for (TUnit* unit = ourStack->ResetCursorAndGetHeadUnit(); unit != nullptr;
+       unit = ourStack->AdvanceCursorAndGetUnit()) {
+    ++ourCount[unit->orderType];
+    if (static_cast<TMilitaryUnit*>(unit)->field_34 > 0) {
+      ++ourActiveCount[unit->orderType];
+    }
+    if (unit->orderType > 0x1a &&
+        (ourBestUnit == nullptr || static_cast<TMilitaryUnit*>(unit)->field_38 / 100 >
+                                       static_cast<TMilitaryUnit*>(ourBestUnit)->field_38 / 100)) {
+      ourBestUnit = unit;
+    }
+  }
+
+  int enemyCount[kUnitTypeSlotCount] = {0};
+  int enemyActiveCount[kUnitTypeSlotCount] = {0};
+  TUnit* enemyBestUnit = nullptr;
+  for (TUnit* enemyUnit = enemyStack->ResetCursorAndGetHeadUnit(); enemyUnit != nullptr;
+       enemyUnit = enemyStack->AdvanceCursorAndGetUnit()) {
+    ++enemyCount[enemyUnit->orderType];
+    if (static_cast<TMilitaryUnit*>(enemyUnit)->field_34 > 0) {
+      ++enemyActiveCount[enemyUnit->orderType];
+    }
+    if (enemyUnit->orderType > 0x1a &&
+        (enemyBestUnit == nullptr ||
+         static_cast<TMilitaryUnit*>(enemyUnit)->field_38 / 100 >
+             static_cast<TMilitaryUnit*>(enemyBestUnit)->field_38 / 100)) {
+      enemyBestUnit = enemyUnit;
+    }
+  }
+
+  // Ground truth then allocates one "army context action record" (44 bytes: orderType, a
+  // computed short, and a CString unit-name copy) per distinct orderType seen across
+  // ourCount/enemyCount, builds a formatted label from ourBestUnit/enemyBestUnit and the
+  // per-type counts, and dispatches it. Not modeled -- needs a new record struct plus
+  // CString-internals fidelity, and ends in the same DispatchLocalizedUiMessageWithTemplate-
+  // family arity ambiguity already documented on several other TArmyMgr callsites; left as
+  // a gap rather than guessed.
+  (void)ourCount;
+  (void)ourActiveCount;
+  (void)ourBestUnit;
+  (void)enemyCount;
+  (void)enemyActiveCount;
+  (void)enemyBestUnit;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3200
