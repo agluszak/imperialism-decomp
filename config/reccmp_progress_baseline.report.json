@@ -8856,7 +8856,7 @@
     },
     {
       "address": "0x4b3e70",
-      "matching": 0.5911949685534591,
+      "matching": 0.625,
       "name": "TCity::RefreshOrderStateSlot0C",
       "type": 1
     },
@@ -8934,7 +8934,7 @@
     },
     {
       "address": "0x4b4540",
-      "matching": 0.2222222222222222,
+      "matching": 0.43478260869565216,
       "name": "TCity::WriteQueuePairSlot48",
       "type": 1
     },
@@ -9000,7 +9000,7 @@
     },
     {
       "address": "0x4b4eb0",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TProductionOrder::CreateObject",
       "type": 1
     },
@@ -9078,7 +9078,7 @@
     },
     {
       "address": "0x4b51d0",
-      "matching": 0.35294117647058826,
+      "matching": 0.4117647058823529,
       "name": "TItemOrder::CreateObject",
       "type": 1
     },
@@ -9144,7 +9144,7 @@
     },
     {
       "address": "0x4b57b0",
-      "matching": 0.35294117647058826,
+      "matching": 0.4117647058823529,
       "name": "TOrItemOrder::CreateObject",
       "type": 1
     },
@@ -9288,7 +9288,7 @@
     },
     {
       "address": "0x4b6a60",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TTrainingOrder::CreateObject",
       "type": 1
     },
@@ -9474,7 +9474,7 @@
     },
     {
       "address": "0x4b7dc0",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TFoodProcessingOrder::CreateObject",
       "type": 1
     },
@@ -9528,7 +9528,7 @@
     },
     {
       "address": "0x4b8110",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TPopGrowthOrder::CreateObject",
       "type": 1
     },
@@ -9672,7 +9672,7 @@
     },
     {
       "address": "0x4b8f50",
-      "matching": 0.35294117647058826,
+      "matching": 0.4117647058823529,
       "name": "TExpansionOrder::CreateObject",
       "type": 1
     },
@@ -12755,8 +12755,7 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -18109,13 +18108,13 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.2976,
+      "matching": 0.3054662379421222,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
     {
       "address": "0x52d030",
-      "matching": 1.0,
+      "matching": 0.7766990291262136,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -18151,7 +18150,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20054,7 +20053,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.4108527131782946,
+      "matching": 0.41245136186770426,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -21812,7 +21811,7 @@
     },
     {
       "address": "0x550d80",
-      "matching": 0.3333333333333333,
+      "matching": 0.5714285714285714,
       "name": "GetResourceTypeRandomDrawBlockFlag",
       "type": 1
     },
@@ -23264,7 +23263,7 @@
     },
     {
       "address": "0x5634a0",
-      "matching": 0.6041666666666666,
+      "matching": 0.5434782608695652,
       "name": "FindPortZoneBySelectedTile",
       "type": 1
     },
@@ -27166,7 +27165,7 @@
     },
     {
       "address": "0x589260",
-      "matching": 0.3064516129032258,
+      "matching": 0.2764227642276423,
       "name": "TIndustryAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27208,7 +27207,7 @@
     },
     {
       "address": "0x5897b0",
-      "matching": 0.12844036697247707,
+      "matching": 0.1111111111111111,
       "name": "TRailCluster::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27262,7 +27261,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27322,7 +27321,7 @@
     },
     {
       "address": "0x58aaa0",
-      "matching": 0.5161290322580645,
+      "matching": 0.4838709677419355,
       "name": "TShipAmtBar::CreateObject(void)",
       "type": 1
     },
@@ -27334,7 +27333,7 @@
     },
     {
       "address": "0x58ab60",
-      "matching": 0.631578947368421,
+      "matching": 0.6,
       "name": "TShipAmtBar::ConstructBaseState",
       "type": 1
     },
@@ -27346,7 +27345,7 @@
     },
     {
       "address": "0x58abf0",
-      "matching": 0.9122807017543859,
+      "matching": 0.8771929824561403,
       "name": "TShipAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },

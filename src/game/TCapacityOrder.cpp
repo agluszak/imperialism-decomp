@@ -175,27 +175,27 @@ bool TCapacityOrder::SetCapacityOrderQuantity(short quantity) {
   city->cityStockLumberC8 =
       static_cast<short>(city->cityStockLumberC8 -
                          ReadWeight(g_industryActionCostWeightResCode09, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   city->cityStockFabricC6 =
       static_cast<short>(city->cityStockFabricC6 -
                          ReadWeight(g_industryActionCostWeightResCode08, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   city->cityStockArmsD6 =
       static_cast<short>(city->cityStockArmsD6 -
                          ReadWeight(g_industryActionCostWeightResCode10, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   city->cityStockSteelCC =
       static_cast<short>(city->cityStockSteelCC -
                          ReadWeight(g_industryActionCostWeightResCode0B, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   city->cityStockCoalBC =
       static_cast<short>(city->cityStockCoalBC -
                          ReadWeight(g_industryActionCostWeightResCode03, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   city->cityStockFuelCE =
       static_cast<short>(city->cityStockFuelCE -
                          ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   if (g_pUiRuntimeContext != 0) {
     g_pUiRuntimeContext->InvokeStrategicMapViewMethod5C();
   }

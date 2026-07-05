@@ -236,9 +236,20 @@ int g_nOverlayClipCacheParamX = 0;
 // GLOBAL: IMPERIALISM 0x006a4454
 int g_nOverlayClipCacheParamY = 0;
 
-// Trade summary selection map
-// GLOBAL: IMPERIALISM 0x006960e0
-int g_pTradeSummarySelectionMap[32] = {0};
+// Trade summary selection map — 23 read-only packed-FourCC commodity tags, one
+// per TCity commodity slot (Cotton..Gold, i.e. tradeCommodityRecordPtrs[0..0x16]
+// / cityStockCottonB6..cityStockGoldE2). Verified via `just ghidra-read-data
+// 0x696108 dword 23`: the previous model (a zeroed BSS int[32] at 0x6960e0) had
+// the wrong address, wrong size, and wrong storage class — 0x6960e0 actually
+// lands inside the unrelated kTradeSellPropagationTags string data below, and
+// the real table at 0x696108 is const-initialized, not runtime-populated.
+// GLOBAL: IMPERIALISM 0x00696108
+const int g_pTradeSummarySelectionMap[23] = {
+    0x636f7474, 0x776f6f6c, 0x74696d62, 0x636f616c, 0x69726f6e, 0x686f7273, 0x6f696c20,
+    0x666f6f64, 0x66616272, 0x6c756d62, 0x70617065, 0x73746565, 0x6675656c, 0x636c6f74,
+    0x6675726e, 0x68617264, 0x61726d61, 0x67726169, 0x70726f64, 0x66697368, 0x6c697665,
+    0x67656d73, 0x676f6c64,
+};
 
 // Trade sell propagation tags
 const int kTradeSellPropagationTags[17] = {

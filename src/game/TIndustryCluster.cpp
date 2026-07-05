@@ -6,6 +6,7 @@
 #include "game/TView.h"
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
+#include "game/TItemOrder.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
@@ -71,17 +72,23 @@ void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {
     mappedSummaryTag = GetTradeSummarySelectionTagByIndex(tagIndex);
   }
 
-  TradeCommodityMetricRecord* selectedMetricRecord = reinterpret_cast<TradeCommodityMetricRecord*>(
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + (int)tagIndex * 4 + 0xe4));
+  TProductionOrder* selectedMetricRecord = cityState->tradeCommodityRecordPtrs[tagIndex];
+  // `selectedMetricControl` is declared TAmtBar* but this control's vtable
+  // slot 0x30 (QueryStepValue, see UpdateTradeBarFromSelectedMetricRatio
+  // above) and TProductionOrder's slot 0x30 (MaxOrder) are the same "return a
+  // short value" shape the original exploits at this one call site — the
+  // pointer genuinely is a TProductionOrder, not a TAmtBar.
   this->selectedMetricControl = reinterpret_cast<TAmtBar*>(selectedMetricRecord);
-  this->selectedMetricValue =
-      static_cast<short>(activeNationState->GetCityState()->GetBuildingProductionValueBySlot(
-          *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 0x52)));
+  // `buildingSlot` only exists on TItemOrder-sized (0x54-byte) objects; safe
+  // here because tagIndex is bounded to the 23-entry g_pTradeSummarySelectionMap
+  // table (0x696108), which never selects the TTrainingOrder slots
+  // (0x17/0x18) sharing this band.
+  this->selectedMetricValue = static_cast<short>(activeNationState->GetCityState()->GetBuildingType(
+      static_cast<TItemOrder*>(selectedMetricRecord)->buildingSlot));
 
   this->InitializeTradeMoveAndBarControls(styleSeed);
-  this->NotifyControlSelectionChange(reinterpret_cast<void*>(*reinterpret_cast<short*>(
-                                         reinterpret_cast<char*>(selectedMetricRecord) + 4)),
-                                     1);
+  this->NotifyControlSelectionChange(
+      reinterpret_cast<void*>(selectedMetricRecord->quantityField04), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c30

@@ -35,7 +35,7 @@ void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
 // FUNCTION: IMPERIALISM 0x004dab20
 void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   TCity* cityPtr = this->city;
-  cityPtr->RefreshOrderStateSlot0C();
+  cityPtr->ProduceUnits();
 
   short nationSlot = this->nationSlot;
 

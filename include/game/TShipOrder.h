@@ -23,15 +23,11 @@ public:
 
   TShipOrder();
 
-  short quantityField04;
-  TCity* cityField08;
-  void* summaryField0c;
-  short trackingSlots10[0x17];
-  short field3e;
-  short field40;
-  int field44;
-  short resourceTypeIndex48;
-  short field4a;
+  // TShipOrder adds no fields of its own: `config/rtti_class_oracle.csv` gives
+  // it the identical 0x4c object size as TProductionOrder, so every field
+  // formerly modeled here (quantityField04, cityField08, summaryField0c,
+  // trackingSlots10, field3e, field40, field44, resourceTypeIndex48, field4a)
+  // is really TProductionOrder's own layout — see TProductionOrder.h.
 };
 
 ASSERT_SIZE(TShipOrder, 0x4c);

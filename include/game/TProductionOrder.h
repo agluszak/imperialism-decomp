@@ -5,8 +5,13 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+class TCity;
 
-// TODO(manifest): describe TProductionOrder and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TProductionOrder -> TObject -> CObject.
+// TProductionOrder is the common base for the city order-slot family
+// (TShipOrder, TTrainingOrder, TItemOrder/TOrItemOrder, TUnitOrder,
+// TPowerPlantOrder, TFoodProcessingOrder, TPopGrowthOrder, TCapacityOrder,
+// TExpansionOrder). Base edge (TObject) recovered from RTTI CRuntimeClass
+// chain: TProductionOrder -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064fa18
 class TProductionOrder : public TObject {
 public:
@@ -29,10 +34,29 @@ public:
   virtual undefined InitializeCityOrderItemWorkingBuffers(undefined4 * param_1); // slot 0x0f 0x4b5180
   virtual undefined FillOrderSheet(); // slot 0x10 0x4b51b0
 // === END GENERATED DECLS (TProductionOrder) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TProductionOrder 0xCTOR`).
+  // Field layout recovered from the RTTI object-size match: TProductionOrder
+  // and several direct children (TShipOrder, TTrainingOrder,
+  // TFoodProcessingOrder, TPopGrowthOrder) are ALL exactly 0x4c bytes per
+  // `config/rtti_class_oracle.csv`, so those children add zero fields of
+  // their own — every field previously modeled on TShipOrder at these same
+  // offsets is really this base's own layout. Cross-checked against
+  // TUnitOrder::CommitIfPending (0x004b73b0, a sibling with its own extra
+  // 0x10 bytes) reading the identical offsets +0x04/+0x08/+0x48 for the same
+  // roles (pending quantity, owning city, resource/entry id).
+  short quantityField04;         // 0x04 — pending order quantity
+  TCity* cityField08;            // 0x08 — owning city
+  void* summaryField0c;          // 0x0c — summary/list link (unresolved use)
+  short trackingSlots10[0x17];   // 0x10..0x3e — per-resource tracking slots
+  short field3e;                 // 0x3e
+  short field40;                 // 0x40
+  int accumulatedValue;          // 0x44 — summed by TGreatPower::SumCommodityRecordAccumulatedValues (0x004e06d0)
+  short resourceTypeIndex48;     // 0x48 — resource/entry type index
+  short field4a;                 // 0x4a
 
   TProductionOrder();
 };
+
+ASSERT_SIZE(TProductionOrder, 0x4c);
 
 // === BEGIN GENERATED (TProductionOrder) — refreshed by `just gen-class TProductionOrder`; do not hand-edit ===
 // clang-format off

@@ -9,7 +9,6 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
-#include "game/TradeCommodityMetricRecord.h"
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
@@ -29,7 +28,7 @@ TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ab60
-TShipAmtBar::TShipAmtBar() : TIndustryAmtBar() {}
+TShipAmtBar::TShipAmtBar() : TIndustryAmtBar(), selectedShipOrder(0) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x0058aba0
@@ -39,7 +38,7 @@ TShipAmtBar::TShipAmtBar() : TIndustryAmtBar() {}
 void TShipAmtBar::NoOpUiLifecycleHook(int arg) {
   TGreatPower* nationState = GetActiveNationState();
   TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
-  selectedMetricRecord = cityState->specialCommodityRecordAt190;
+  selectedShipOrder = cityState->shipOrderSlots[0];
   short productionCap = cityState->productionSummary1d8->stockLevel1c;
   stepOrCurrentValue = (short)this->field34;
   auxValueA = productionCap;

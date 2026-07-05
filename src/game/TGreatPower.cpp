@@ -45,7 +45,7 @@
 #include "game/TGreatPower_internal.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TInterNationEventQueueManager.h"
-#include "game/TradeCommodityMetricRecord.h"
+#include "game/TProductionOrder.h"
 #include "game/quickdraw_rendering.h"
 #include <stddef.h>
 #include <new>
@@ -388,27 +388,6 @@ static const float kOne = 1.0f;
 static __inline void UiRuntime_QueueTurnStatusPrompt(int promptIndex, int payload) {
   g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(promptIndex, payload);
 }
-
-// View of the city commodity record's step-value virtual (slot 0x30 on the record's
-// own vtable; the records are TAmtBar-shaped, see TradeCommodityMetricRecord).
-struct TCommodityRecordStepView {
-  virtual void s00() = 0;
-  virtual void s01() = 0;
-  virtual void s02() = 0;
-  virtual void s03() = 0;
-  virtual void s04() = 0;
-  virtual void s05() = 0;
-  virtual void s06() = 0;
-  virtual void s07() = 0;
-  virtual void s08() = 0;
-  virtual void s09() = 0;
-  virtual void s10() = 0;
-  virtual void s11() = 0;
-  virtual short GetStepValueSlot30() = 0;
-
-protected:
-  ~TCommodityRecordStepView() {}
-};
 
 // Packed entry layout shared by the diplomacyTrackedSlots queues (slots 0x6c/0x6f).
 struct TrackedSlotEntryPacket {
@@ -816,7 +795,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   }
 
   if (townCount > 0) {
-    this->city->AdoptSelectedOrderSlot44(
+    this->city->SetSelectedTownMarker(
         static_cast<TSortedList*>(townMarkerList)->GetEntryByOrdinalSlot4C());
   }
 
@@ -938,7 +917,7 @@ void TGreatPower::WriteTo(TStream* stream) {
     this->defenseMinister->WriteTo(stream);
   }
   if (this->city != 0) {
-    this->city->ForwardQueueSlot20Slot50(stream);
+    this->city->TransferTransportRequests(stream);
   }
 
   WriteTrackedListToStream(stream, this->townMarkerList);
@@ -1016,12 +995,12 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
     if (this->field8d6[7] == 2) {
       TCity* cityPtr = this->city;
       cityPtr->cityStockPaperCA = cityPtr->cityStockPaperCA + 10;
-      cityPtr->Refresh80();
+      cityPtr->VerifyStocks();
       UiRuntime_QueueTurnStatusPrompt(7, this->field8d6[7]);
     } else if (this->field8d6[7] == 3) {
       TCity* cityPtr = this->city;
       cityPtr->cityStockPaperCA = cityPtr->cityStockPaperCA + 10;
-      cityPtr->Refresh80();
+      cityPtr->VerifyStocks();
       UiRuntime_QueueTurnStatusPrompt(7, -1);
     }
   }
@@ -1215,7 +1194,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
       *relationDeltaPtr = 0;
       relationDeltaByNation[nationSlot] = static_cast<int>(relationDelta);
 
-      cityPtr->Refresh80();
+      cityPtr->VerifyStocks();
 
       void* nationInteractionState = g_pNationInteractionStateManager;
       if (nationInteractionState != 0) {
@@ -1575,7 +1554,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
           if ((turnDelta & 1U) == 0) {
             int sum01 = resourceSums[0] + resourceSums[1];
             if (sum01 != 0) {
-              int prod = this->city->GetBuildingProductionValueBySlot(1);
+              int prod = this->city->GetBuildingType(1);
               int limit = (static_cast<int>(*stage1CounterA) +
                            ((static_cast<int>(*stage1CounterA) >> 0x1f) & 3U)) >>
                           2;
@@ -1588,7 +1567,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
             }
 
             if (resourceSums[2] != 0) {
-              int prod = this->city->GetBuildingProductionValueBySlot(5);
+              int prod = this->city->GetBuildingType(5);
               int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
               if (static_cast<int>(*stage1CounterB) < prodLimit &&
                   static_cast<int>(*stage1CounterB) < resourceSums[2] / 2) {
@@ -1599,7 +1578,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
             }
 
             if (resourceSums[3] != 0) {
-              int prod = this->city->GetBuildingProductionValueBySlot(3);
+              int prod = this->city->GetBuildingType(3);
               int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
               if (static_cast<int>(*stage1CounterC) < prodLimit &&
                   static_cast<int>(*stage1CounterC) < resourceSums[3] / 2) {
@@ -1610,7 +1589,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
             }
 
             TTechMgr* orderCapabilityState = CityOrderCapabilityState();
-            int capabilityScore = this->city->GetBuildingProductionValueBySlot(7);
+            int capabilityScore = this->city->GetBuildingType(7);
             if (capabilityScore != 0 && orderCapabilityState != 0 &&
                 orderCapabilityState->hasProductionOrder193 != 0) {
               if (static_cast<int>(*stage1CounterD) < capabilityScore / 2) {
@@ -1690,10 +1669,9 @@ char TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
     return 0;
   }
   for (int recordIndex = 8; recordIndex < 0xd; ++recordIndex) {
-    TradeCommodityMetricRecord* record =
-        tradeCity->tradeCommodityRecordPtrs[static_cast<short>(recordIndex)];
-    short controlValue = record->controlValue;
-    if (reinterpret_cast<TCommodityRecordStepView*>(record)->GetStepValueSlot30() > controlValue) {
+    TProductionOrder* record = tradeCity->tradeCommodityRecordPtrs[static_cast<short>(recordIndex)];
+    short controlValue = record->quantityField04;
+    if (record->MaxOrder() > controlValue) {
       return 1;
     }
   }
@@ -1873,7 +1851,7 @@ void TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
   this->AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents();
   this->ApplyNationResourceNeedTargetsToOrderState();
   this->CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage();
-  this->city->Call28();
+  this->city->EndCityPhase();
   this->NoOpNationPendingActionHook();
 }
 
@@ -1881,7 +1859,7 @@ void TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
 void TGreatPower::NotifyCitySlot2C(void) {
   TCity* cityPtr = this->city;
   if (cityPtr != 0) {
-    cityPtr->Call2C();
+    cityPtr->PredictedNeeds();
   }
 }
 
@@ -1971,14 +1949,14 @@ void TGreatPower::ApplyNationResourceNeedTargetsToOrderState(void) {
   TCity* cityPtr = this->city;
   if (cityPtr != 0) {
     cityPtr->cityStockGemsE0 = 0;
-    cityPtr->Refresh80();
+    cityPtr->VerifyStocks();
   }
 
   this->AddToNationMetricAtField10(static_cast<int>(this->needTargetByType[0x16]) * 200);
 
   if (cityPtr != 0) {
     cityPtr->cityStockGoldE2 = 0;
-    cityPtr->Refresh80();
+    cityPtr->VerifyStocks();
   }
 
   for (int needIndex = 0; static_cast<short>(needIndex) < kNationSlotCount; ++needIndex) {
@@ -2316,7 +2294,7 @@ short TGreatPower::GetDiplomacyExternalStateByTarget(short targetNationSlot) {
 void TGreatPower::SetCityStockCounterAndRefresh(short targetSlot, short value) {
   TCity* cityPtr = this->city;
   (&cityPtr->cityStockCottonB6)[targetSlot] = value;
-  cityPtr->Refresh80();
+  cityPtr->VerifyStocks();
 }
 
 // FUNCTION: IMPERIALISM 0x004dd7b0
@@ -2324,7 +2302,7 @@ void TGreatPower::AddToCityStockCounterAndRefresh(short targetSlot, short value)
   TCity* cityPtr = this->city;
   (&cityPtr->cityStockCottonB6)[targetSlot] =
       static_cast<short>((&cityPtr->cityStockCottonB6)[targetSlot] + value);
-  cityPtr->Refresh80();
+  cityPtr->VerifyStocks();
 }
 
 // FUNCTION: IMPERIALISM 0x004dd7f0
@@ -2332,35 +2310,35 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
   switch (orderKind) {
   case 0:
   case 1: {
-    int production = this->city->GetBuildingProductionValueBySlot(0);
+    int production = this->city->GetBuildingType(0);
     return production + production;
   }
   case 2: {
-    int production = this->city->GetBuildingProductionValueBySlot(4);
+    int production = this->city->GetBuildingType(4);
     return production + production;
   }
   case 3:
   case 4:
-    return this->city->GetBuildingProductionValueBySlot(2);
+    return this->city->GetBuildingType(2);
   case 6: {
-    int production = this->city->GetBuildingProductionValueBySlot(6);
+    int production = this->city->GetBuildingType(6);
     return production + production;
   }
   case 8: {
-    int production = this->city->GetBuildingProductionValueBySlot(1);
+    int production = this->city->GetBuildingType(1);
     return production + production;
   }
   case 9:
   case 10: {
-    int production = this->city->GetBuildingProductionValueBySlot(5);
+    int production = this->city->GetBuildingType(5);
     return production + production;
   }
   case 0xb: {
-    int production = this->city->GetBuildingProductionValueBySlot(3);
+    int production = this->city->GetBuildingType(3);
     return production + production;
   }
   case 0xc: {
-    int production = this->city->GetBuildingProductionValueBySlot(0xb);
+    int production = this->city->GetBuildingType(0xb);
     return production + production;
   }
   case 7: {
@@ -3418,7 +3396,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   const short* presetRow = g_Rebuild_Primary_Nation_Value_00653570[presetLevel];
   for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
     (&mgr->cityStockCottonB6)[static_cast<short>(needIndex)] = presetRow[needIndex];
-    mgr->Refresh80();
+    mgr->VerifyStocks();
   }
   mgr->productionAccum1fc[8] += 999 - mgr->productionOrderTable1dc[8];
   mgr->productionOrderTable1dc[8] = 999;
@@ -3452,7 +3430,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
 void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   TTown* marker = new TTown();
   marker->InitializeTownMarker("Frog City", 0, 1, this->nationSlot);
-  static_cast<TCity*>(receiver)->AdoptSelectedOrderSlot44(marker);
+  static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
   marker->activeFlag4f = 1;
   this->townMarkerList->AddTailSlot30(marker);
 }
@@ -3488,7 +3466,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   *GreatPower_HomeRegionIndex88(this) = static_cast<short>(homeRegionIndex);
   TTown* marker = new TTown();
   marker->InitializeTownMarker("FrogCity", homeRegionIndex, 1, this->nationSlot);
-  static_cast<TCity*>(receiver)->AdoptSelectedOrderSlot44(marker);
+  static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
   marker->activeFlag4f = 1;
   this->townMarkerList->AddTailSlot30(marker);
   g_pGlobalMapState->LinkRegionToNationSlot134(marker->regionId14, this->nationSlot);
@@ -3642,11 +3620,11 @@ int TGreatPower::SumCommodityRecordAccumulatedValues(void) {
   TCity* cityState = this->city;
   int total = 0;
   if (cityState != 0) {
-    total = cityState->tradeCommodityRecordPtrs[11]->accumulatedValue44 +
-            cityState->tradeCommodityRecordPtrs[12]->accumulatedValue44 +
-            cityState->tradeCommodityRecordPtrs[9]->accumulatedValue44 +
-            cityState->tradeCommodityRecordPtrs[10]->accumulatedValue44 +
-            cityState->tradeCommodityRecordPtrs[8]->accumulatedValue44;
+    total = cityState->tradeCommodityRecordPtrs[12]->accumulatedValue +
+            cityState->tradeCommodityRecordPtrs[11]->accumulatedValue +
+            cityState->tradeCommodityRecordPtrs[9]->accumulatedValue +
+            cityState->tradeCommodityRecordPtrs[10]->accumulatedValue +
+            cityState->tradeCommodityRecordPtrs[8]->accumulatedValue;
   }
   return total;
 }
@@ -3654,7 +3632,7 @@ int TGreatPower::SumCommodityRecordAccumulatedValues(void) {
 // FUNCTION: IMPERIALISM 0x004e0740
 int TGreatPower::GetCityBuildingProductionSlot8D(short buildingSlot) {
   if (this->city != 0) {
-    return static_cast<short>(this->city->GetBuildingProductionValueBySlot(buildingSlot));
+    return static_cast<short>(this->city->GetBuildingType(buildingSlot));
   }
   return 0;
 }
@@ -4359,7 +4337,7 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
         for (int buildingSlot = 0; buildingSlot < 7; ++buildingSlot) {
           peerMgr = (*nationCursor != 0) ? (*nationCursor)->city : 0;
           production += static_cast<short>(
-              peerMgr->GetBuildingProductionValueBySlot(static_cast<short>(buildingSlot)));
+              peerMgr->GetBuildingType(static_cast<short>(buildingSlot)));
         }
         sampleCount = sampleCount - g_Classify_Nation_Military_Value_00653704;
         productionSum = static_cast<float>(production) + productionSum;
@@ -4380,7 +4358,7 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
   int ownProduction = 4;
   for (int buildingSlot = 0; buildingSlot < 7; ++buildingSlot) {
     ownProduction += static_cast<short>(
-        this->city->GetBuildingProductionValueBySlot(static_cast<short>(buildingSlot)));
+        this->city->GetBuildingType(static_cast<short>(buildingSlot)));
   }
   float ownScore = static_cast<float>(ownProduction);
   if (mean - deviation * g_Classify_Nation_Military_Value_00653710 < ownScore) {

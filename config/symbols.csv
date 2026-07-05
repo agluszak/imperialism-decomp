@@ -8489,7 +8489,7 @@ address|name|symbol|size|type|prototype|provenance
 695bd0|g_industryActionCostWeightResCode03|||global||
 695bf0|g_industryActionCostWeightResCode0C|||global||
 695cd2|g_UnitTypeMilitaryStatTable_00695CD2|||global||
-6960e0|g_pTradeSummarySelectionMap|||global||
+696108|g_pTradeSummarySelectionMap|||global||
 696178|g_anCityBuildingSlotOrder|||global||
 696196|g_nCityBuildingSlotOrderLast|||global||
 696198|g_anCityBuildingSlotCoords|||global||
