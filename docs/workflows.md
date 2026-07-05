@@ -7,9 +7,14 @@ start here rather than composing raw tool invocations.
 
 ## 0. Fresh clone / new git worktree bootstrap
 
-A new worktree shares the git tree but none of the gitignored machine state.
-Before any other workflow works, recreate three things (copy the first two from
-an existing checkout, or from the templates):
+**Genuinely fresh clone on a new machine** (no existing checkout, Docker image,
+or Beads setup yet): see the README's Prerequisites + Environment sections —
+that's the canonical first-time sequence (installs, `docker-build`,
+`bootstrap-reccmp`, `bd init`, first build).
+
+**New git worktree on a machine that already has a checkout** shares the git
+tree but none of the gitignored machine state. Recreate the first two (copy
+from an existing checkout, or from the templates):
 
 ```sh
 cp ../imperialism-decomp/.env .              # or: cp .env.example .env and edit
@@ -23,9 +28,12 @@ Notes:
 - `just bootstrap-reccmp` is only for a machine that has never had a reccmp
   project; it refuses to overwrite the committed `reccmp-project.yml`. In a
   worktree you only need `reccmp-user.yml`.
-- The Docker images (`imperialism-msvc500`, `imperialism-clang-mingw`) are
-  machine-global, not per-worktree — no rebuild needed.
-- The Beads DB lives under `.beads/` per checkout; hooks/`bd prime` work as-is.
+- The `imperialism-msvc500` Docker image is machine-global, not per-worktree —
+  no rebuild needed (`just lint` also runs inside it via `LINT=1`, not a
+  separate image).
+- `core.hooksPath` (→ `.beads/hooks`) is shared git config, not per-worktree, so
+  Beads hooks/`bd prime` work as-is in a new worktree without re-running
+  `bd init`.
 
 ## 1. Daily port loop (no marker/ownership changes)
 
