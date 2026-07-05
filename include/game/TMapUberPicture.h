@@ -129,18 +129,18 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
-  virtual undefined OrphanRetStub_0045d2a0(int param1) override; // slot 0x74 0x5977a0
-  virtual undefined OrphanLeaf_NoCall_Ins09_00598950();          // slot 0x75 0x598950
-  virtual void InvalidateTileMarkerChain(short tileIndex);       // slot 0x76 0x598870
-  virtual undefined OrphanCallChain_C2_I18_005988c0();           // slot 0x77 0x5988c0
+  virtual undefined NotifyActiveNationChanged(int param1) override; // slot 0x74 0x5977a0
+  virtual undefined RefreshAfterSelectionChange();                  // slot 0x75 0x598950
+  virtual void InvalidateTileMarkerChain(short tileIndex);          // slot 0x76 0x598870
+  virtual undefined OrphanCallChain_C2_I18_005988c0();              // slot 0x77 0x5988c0
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
   // mismatch. Forwards param to subviewAc's InvalidateTileMarkerChain, then refreshes
   // field_0xc0 if present.
-  virtual undefined OrphanCallChain_C2_I14_00598990(short param); // slot 0x78 0x598990
-  virtual undefined OrphanCallChain_C2_I16_005989d0();            // slot 0x79 0x5989d0
+  virtual undefined InvalidateTileMarkerAndRefreshLinkedControl(short param); // slot 0x78 0x598990
+  virtual undefined OrphanCallChain_C2_I16_005989d0();                        // slot 0x79 0x5989d0
   // Forwards entryIndex to the +0xac subview's byte-0x1f0 virtual (verified 1-arg
   // thiscall, RET 4; the previous declaration had dropped the argument).
-  virtual undefined OrphanCallChain_C1_I06_00598a20(short entryIndex);     // slot 0x7a 0x598a20
+  virtual undefined NotifySubviewOfSelectedTile(short entryIndex);         // slot 0x7a 0x598a20
   virtual undefined OrphanLeaf_NoCall_Ins23_00597a10();                    // slot 0x7b 0x597a10
   virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1);   // slot 0x7c 0x598910
   virtual void __fastcall CreateToolWindow_00599CF0(astruct_20* this_obj); // slot 0x7d 0x599cf0
@@ -167,8 +167,8 @@ public:
   // not recovered.
   void* goodGoldTagControlA4;
   unsigned char pad_0xa8[4];
-  // Subview forwarded entryIndex/commandCode by OrphanCallChain_C1_I06_00598a20 and
-  // OrphanCallChain_C2_I14_00598990 via slot 0x76 (InvalidateTileMarkerChain) -- same
+  // Subview forwarded entryIndex/commandCode by NotifySubviewOfSelectedTile and
+  // InvalidateTileMarkerAndRefreshLinkedControl via slot 0x76 (InvalidateTileMarkerChain) -- same
   // TMapUberPicture-family vtable prefix evidence as categoryPages[] below.
   TMapUberPicture* subviewAc;
   // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
@@ -323,13 +323,13 @@ public:
 //   slot 0x71  byte 0x1c4  0x0048f520  inherited ResetPictureResourceEntry
 //   slot 0x72  byte 0x1c8  0x0048f570  inherited SetPictureResourceIdAndRefresh
 //   slot 0x73  byte 0x1cc  0x00573940  inherited ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox
-//   slot 0x74  byte 0x1d0  0x005977a0  override  OrphanRetStub_0045d2a0
-//   slot 0x75  byte 0x1d4  0x00598950  override  OrphanLeaf_NoCall_Ins09_00598950
+//   slot 0x74  byte 0x1d0  0x005977a0  override  NotifyActiveNationChanged
+//   slot 0x75  byte 0x1d4  0x00598950  override  RefreshAfterSelectionChange
 //   slot 0x76  byte 0x1d8  0x00598870  override  WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
 //   slot 0x77  byte 0x1dc  0x005988c0  override  OrphanCallChain_C2_I18_005988c0
-//   slot 0x78  byte 0x1e0  0x00598990  override  OrphanCallChain_C2_I14_00598990
+//   slot 0x78  byte 0x1e0  0x00598990  override  InvalidateTileMarkerAndRefreshLinkedControl
 //   slot 0x79  byte 0x1e4  0x005989d0  override  OrphanCallChain_C2_I16_005989d0
-//   slot 0x7a  byte 0x1e8  0x00598a20  override  OrphanCallChain_C1_I06_00598a20
+//   slot 0x7a  byte 0x1e8  0x00598a20  override  NotifySubviewOfSelectedTile
 //   slot 0x7b  byte 0x1ec  0x00597a10  override  OrphanLeaf_NoCall_Ins23_00597a10
 //   slot 0x7c  byte 0x1f0  0x00598910  override  OrphanCallChain_C2_I11_00598910
 //   slot 0x7d  byte 0x1f4  0x00599cf0  override  CreateToolWindow_00599CF0

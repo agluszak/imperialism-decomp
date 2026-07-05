@@ -52,7 +52,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
     // further ('forc'/'seas'-tagged) control, tags it, and rebuilds its caption text from
     // two concatenated TSimMgr::GetString lookups (group 0x2730, offsets 0x12/0x8 or a
     // single lookup at group 0x2732 offset 0x11) before calling
-    // categoryPages[]-style OrphanRetStub_0045d2a0(GetActiveNationId()) on it. That
+    // categoryPages[]-style NotifyActiveNationChanged(GetActiveNationId()) on it. That
     // caption-control's real class isn't recovered (its own field writes don't match any
     // modeled class), so this whole UI-caption side effect is left undone rather than
     // faked; the mode-transition/selection-state and layout-capture side effects below are
@@ -81,7 +81,7 @@ void TMapUberPicture::vmethod_0017(int param) {}
 void TMapUberPicture::ForwardParam(int param) {}
 
 // FUNCTION: IMPERIALISM 0x005977a0
-undefined TMapUberPicture::OrphanRetStub_0045d2a0(int param1) {
+undefined TMapUberPicture::NotifyActiveNationChanged(int param1) {
   (void)param1;
   return 0;
 }
@@ -112,7 +112,7 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
   char* entry = reinterpret_cast<char*>(pMapOrderEntry);
   TView* commandDescriptor = *reinterpret_cast<TView**>(entry + 0x18);
   short commandCode = *reinterpret_cast<short*>(reinterpret_cast<char*>(commandDescriptor) + 0xc);
-  this->OrphanCallChain_C2_I14_00598990(commandCode);
+  this->InvalidateTileMarkerAndRefreshLinkedControl(commandCode);
 
   for (int i = 0; i < 4; ++i) {
     TView* slider = this->ResolveControlByTag(0x636c7330 + i); // "0slc".."3slc"
@@ -162,12 +162,12 @@ undefined TMapUberPicture::OrphanCallChain_C2_I11_00598910(undefined4 param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x00598950
-undefined TMapUberPicture::OrphanLeaf_NoCall_Ins09_00598950() {
+undefined TMapUberPicture::RefreshAfterSelectionChange() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00598990
-undefined TMapUberPicture::OrphanCallChain_C2_I14_00598990(short param) {
+undefined TMapUberPicture::InvalidateTileMarkerAndRefreshLinkedControl(short param) {
   this->subviewAc->InvalidateTileMarkerChain(param);
   if (this->field_0xc0 != nullptr) {
     this->field_0xc0->RefreshControl();
@@ -181,7 +181,7 @@ undefined TMapUberPicture::OrphanCallChain_C2_I16_005989d0() {
 }
 
 // FUNCTION: IMPERIALISM 0x00598a20
-undefined TMapUberPicture::OrphanCallChain_C1_I06_00598a20(short entryIndex) {
+undefined TMapUberPicture::NotifySubviewOfSelectedTile(short entryIndex) {
   return this->subviewAc->OrphanCallChain_C2_I11_00598910(entryIndex);
 }
 

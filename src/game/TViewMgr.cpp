@@ -1442,7 +1442,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
 
   // Ground truth then dispatches
   // mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]'s own slot-0x74 virtual with
-  // mapSelection (matching the arity fixed on TMapUberUberPicture::OrphanRetStub_0045d2a0),
+  // mapSelection (matching the arity fixed on TMapUberUberPicture::NotifyActiveNationChanged),
   // but categoryPages' concrete element class isn't recovered yet -- left undone (Hard Rule
   // 12) rather than fake that dispatch too.
   (void)mapSelection;
@@ -1487,7 +1487,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   node->Free();
 
   if (selectedIndex != -1) {
-    this->mapUberPictureF0->OrphanCallChain_C1_I06_00598a20(selectedIndex);
+    this->mapUberPictureF0->NotifySubviewOfSelectedTile(selectedIndex);
     int orderState =
         g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder20->field_8;
     if (orderState == 0 || orderState == 3 || orderState == 2) {

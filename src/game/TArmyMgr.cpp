@@ -813,11 +813,11 @@ void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
     }
     // TODO: ground truth also dispatches
     // g_pUiRuntimeContext->mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]'s
-    // slot-0x74 (OrphanRetStub_0045d2a0-shaped) virtual here, passing tileIndex. The
+    // slot-0x74 (NotifyActiveNationChanged-shaped) virtual here, passing tileIndex. The
     // categoryPages[] receiver class isn't recovered yet (TMapUberPicture.h Hard Rule 12
     // caveat), so this one dispatch is left undone rather than faked.
   }
-  g_pUiRuntimeContext->mapUberPictureF0->OrphanLeaf_NoCall_Ins09_00598950();
+  g_pUiRuntimeContext->mapUberPictureF0->RefreshAfterSelectionChange();
 }
 
 // FUNCTION: IMPERIALISM 0x004a4870

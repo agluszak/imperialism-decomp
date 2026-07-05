@@ -124,7 +124,7 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
-  virtual undefined OrphanRetStub_0045d2a0(int param1) override; // slot 0x74 0x45d3b0
+  virtual undefined NotifyActiveNationChanged(int param1) override; // slot 0x74 0x45d3b0
   // === END GENERATED DECLS (TTacMapUberPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacMapUberPicture 0xCTOR`).
 
@@ -250,7 +250,7 @@ public:
 //   slot 0x71  byte 0x1c4  0x0048f520  inherited ResetPictureResourceEntry
 //   slot 0x72  byte 0x1c8  0x0048f570  inherited SetPictureResourceIdAndRefresh
 //   slot 0x73  byte 0x1cc  0x00573940  inherited ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox
-//   slot 0x74  byte 0x1d0  0x0045d3b0  override  OrphanRetStub_0045d2a0
+//   slot 0x74  byte 0x1d0  0x0045d3b0  override  NotifyActiveNationChanged
 // object size 0x98 (RTTI) unverified against the header layout;
 // set curated.layout.size_verified to emit a sizeof static_assert.
 // clang-format on
