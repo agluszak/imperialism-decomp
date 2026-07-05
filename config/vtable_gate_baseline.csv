@@ -1,4 +1,5 @@
 file|raw_vtable_index|fn_typedef_cast|vftable_index|vcall_facade|total
+src/game/TArmyToolbar.cpp|1|0|0|0|1
 src/game/TCivDescription.cpp|0|1|0|0|1
 src/game/TMapDialog.cpp|0|1|0|0|1
 src/game/TMultiplayerMgr.cpp|14|0|0|0|14

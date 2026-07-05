@@ -14,16 +14,13 @@ TArmyMgr::TArmyMgr() {}
 TArmyMgr::~TArmyMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004a1a00
-void TArmyMgr::Free() {
-}
+void TArmyMgr::Free() {}
 
 // FUNCTION: IMPERIALISM 0x004a1b80
-void TArmyMgr::ReadFrom(TStream* stream) {
-}
+void TArmyMgr::ReadFrom(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x004a1dd0
-void TArmyMgr::WriteTo(TStream* stream) {
-}
+void TArmyMgr::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x004a1e40
 undefined TArmyMgr::OrphanCallChain_C4_I26_004a1e40() {
@@ -86,7 +83,8 @@ undefined TArmyMgr::CommitCityActionGateCostIfAffordable() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a4260
-undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260() {
+undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
+  (void)mode;
   return 0;
 }
 

@@ -2,8 +2,11 @@
 
 #include <new>
 
+#include "game/TArmyMgr.h"
 #include "game/TCivToolbar.h"
 #include "game/TView.h"
+#include "game/TViewMgr.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/ui_control_tags.h"
 
@@ -13,54 +16,48 @@ undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
 
 namespace {
 
-const unsigned int kAddrUiRuntimeContext = 0x006A21BC;
-const unsigned int kAddrMapContextActionManager = 0x006A3338;
-
 struct ArmyCommandPayload {
   void* vftable;
   char pad_04[0x18];
   unsigned int controlTag;
 };
 
-static __inline int* QueryUiRuntimeContextPtr() {
-  return *reinterpret_cast<int**>(kAddrUiRuntimeContext);
-}
-
-static __inline int* QueryMapContextActionManagerPtr() {
-  return *reinterpret_cast<int**>(kAddrMapContextActionManager);
-}
-
 static __inline void DispatchUiRuntimeSlot48() {
-  int* uiRuntime = QueryUiRuntimeContextPtr();
-  if (uiRuntime == 0) {
+  if (g_pUiRuntimeContext == 0) {
     return;
   }
-  reinterpret_cast<void(__fastcall*)(void*)>(uiRuntime[0x12])(uiRuntime);
+  g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
 }
 
+// TODO: g_pUiRuntimeContext's vtable slot 0x3b (byte 0xec, ground truth target 0x005dd900,
+// 239 bytes) is not yet ported -- still a placeholder 0-arg UiRuntimeSlotEC() declaration.
+// This callsite (ground truth `CALL [EAX+0xec]` after `MOV EAX,[ECX]`, i.e. a real 2-arg
+// vtable dispatch) needs that method ported with its real signature before it can become a
+// real virtual call; kept as the pre-existing raw dispatch pending that port.
 static __inline void DispatchUiRuntimeMapSelection(short mapSelection) {
-  int* uiRuntime = QueryUiRuntimeContextPtr();
-  if (uiRuntime == 0) {
+  if (g_pUiRuntimeContext == 0) {
     return;
   }
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(uiRuntime[0x3b])(uiRuntime, 0, mapSelection);
+  reinterpret_cast<void(__fastcall*)(void*, int, int)>((
+      *reinterpret_cast<void***>(g_pUiRuntimeContext))[0x3b])(g_pUiRuntimeContext, 0, mapSelection);
 }
 
 static __inline void SetMapContextActionMode(int mode) {
-  int* mapContextActionManager = QueryMapContextActionManagerPtr();
-  if (mapContextActionManager == 0) {
+  if (g_pMapContextActionManager == 0) {
     return;
   }
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(mapContextActionManager[0x16])(
-      mapContextActionManager, 0, mode);
+  g_pMapContextActionManager->OrphanCallChain_C1_I34_004a4260(mode);
 }
 
 static __inline void InvokeActiveCivToolbarCycleMapInteractionSelection() {
-  int* uiRuntime = QueryUiRuntimeContextPtr();
-  if (uiRuntime == 0) {
+  if (g_pUiRuntimeContext == 0) {
     return;
   }
-  reinterpret_cast<TCivToolbar*>(uiRuntime[0x3c])->CycleMapInteractionSelectionAfterHandledClick();
+  // mapUberPictureF0 (+0xf0) is a dual-purpose slot: this caller reads it as a TCivToolbar*,
+  // while the field's declared type (TMapUberPicture*) reflects other callers -- an explicit
+  // type pun, not a modeling error (see the type-modeling guardrail for shared slots).
+  reinterpret_cast<TCivToolbar*>(g_pUiRuntimeContext->mapUberPictureF0)
+      ->CycleMapInteractionSelectionAfterHandledClick();
 }
 
 static __inline void SetArmyPayloadRatioOrModeSelection(ArmyCommandPayload* payload, int value) {
@@ -119,13 +116,11 @@ void TArmyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
       return;
     }
 
-    int* mapContextActionManager = QueryMapContextActionManagerPtr();
-    if (mapContextActionManager == 0) {
+    if (g_pMapContextActionManager == 0) {
       return;
     }
 
-    short mapSelection =
-        *reinterpret_cast<short*>(reinterpret_cast<char*>(mapContextActionManager) + 0x31c);
+    short mapSelection = g_pMapContextActionManager->pendingMapActionIndex;
     if (mapSelection != -1) {
       DispatchUiRuntimeMapSelection(mapSelection);
     }

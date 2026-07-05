@@ -1,5 +1,6 @@
 #include "game/TWorldView.h"
 
+#include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
 #include "game/TCivUnit.h"
 #include "game/mfc.h"
@@ -150,7 +151,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       previewBand = selectedOrder->field_6;
     }
   } else if (interactionMode == 1) {
-    short actionIndex = *reinterpret_cast<short*>(reinterpret_cast<char*>(0x006a3338) + 0x31c);
+    short actionIndex = g_pMapContextActionManager->pendingMapActionIndex;
     if (actionIndex != -1) {
       previewBand = -1;
       previewTileIndex = *reinterpret_cast<short*>(

@@ -10,34 +10,48 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0064c928
 class TArmyMgr : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TArmyMgr) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TArmyMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyMgr)
   virtual ~TArmyMgr(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x4a1dd0
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4a1dd0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a1b80
-  virtual void Free() override; // slot 0x07 0x4a1a00
+  virtual void Free() override;                    // slot 0x07 0x4a1a00
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanCallChain_C4_I26_004a1e40(); // slot 0x0a 0x4a1e40
+  virtual undefined OrphanCallChain_C4_I26_004a1e40();                 // slot 0x0a 0x4a1e40
   virtual undefined ProcessTileUnitListsAndApplyRandomStatusUpdates(); // slot 0x0b 0x4a1f80
-  virtual undefined OrphanCallChain_C12_I108_004a2390(); // slot 0x0c 0x4a2390
-  virtual undefined IterateLinkedListCursorAndClearPerTileByte0F(); // slot 0x0d 0x4a2500
-  virtual undefined TryCreateTacticalBattleViewForTileArmies(); // slot 0x0e 0x4a3200
-  virtual undefined Helper_Uses_GenerateThreadLocalRandom15_At004a35e0(int param_1, short param_2); // slot 0x0f 0x4a35e0
-  virtual undefined OrphanCallChain_C2_I40_004a37b0(int param_1); // slot 0x10 0x4a37b0
-  virtual undefined UpdateDualLinkedEntryMetersAndBlinkState(); // slot 0x11 0x4a3830
-  virtual undefined WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(); // slot 0x12 0x4a3bc0
+  virtual undefined OrphanCallChain_C12_I108_004a2390();               // slot 0x0c 0x4a2390
+  virtual undefined IterateLinkedListCursorAndClearPerTileByte0F();    // slot 0x0d 0x4a2500
+  virtual undefined TryCreateTacticalBattleViewForTileArmies();        // slot 0x0e 0x4a3200
+  virtual undefined
+  Helper_Uses_GenerateThreadLocalRandom15_At004a35e0(int param_1,
+                                                     short param_2); // slot 0x0f 0x4a35e0
+  virtual undefined OrphanCallChain_C2_I40_004a37b0(int param_1);    // slot 0x10 0x4a37b0
+  virtual undefined UpdateDualLinkedEntryMetersAndBlinkState();      // slot 0x11 0x4a3830
+  virtual undefined
+  WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0();   // slot 0x12 0x4a3bc0
   virtual undefined OrphanCallChain_C3_I52_004a3d90(short param_1); // slot 0x13 0x4a3d90
-  virtual undefined SelectMovableUnitOnCurrentTileAndPlaySfx(); // slot 0x14 0x4a3e50
-  virtual undefined CommitCityActionGateCostIfAffordable(); // slot 0x15 0x4a3f30
-  virtual undefined OrphanCallChain_C1_I34_004a4260(); // slot 0x16 0x4a4260
-  virtual undefined HandleMapClickByComputedCursorState(); // slot 0x17 0x4a4870
-  virtual undefined HandleMapClickByCivilianCursorState(); // slot 0x18 0x4a4ad0
-// === END GENERATED DECLS (TArmyMgr) ===
+  virtual undefined SelectMovableUnitOnCurrentTileAndPlaySfx();     // slot 0x14 0x4a3e50
+  virtual undefined CommitCityActionGateCostIfAffordable();         // slot 0x15 0x4a3f30
+  virtual undefined OrphanCallChain_C1_I34_004a4260(int mode);      // slot 0x16 0x4a4260
+  virtual undefined HandleMapClickByComputedCursorState();          // slot 0x17 0x4a4870
+  virtual undefined HandleMapClickByCivilianCursorState();          // slot 0x18 0x4a4ad0
+  // === END GENERATED DECLS (TArmyMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyMgr 0xCTOR`).
+
+  // Object size 0x3a8 confirmed by RTTI. Only +0x31c is confirmed so far (read from three
+  // independent call sites: TArmyPlacard::HandleEvent, TArmyToolbar's equivalent, and
+  // TWorldView::RenderMapContextOverlayWithScopedClipAndSurface) -- a pending map-order/
+  // action index, -1 when none selected, otherwise used both as a tile index
+  // (ActivateFirstActiveTacticalUnitByCategoryAtTile) and as an index into the terrain
+  // descriptor table (g_pGlobalMapState-relative), so it is genuinely a shared "current
+  // selection" slot rather than two coincidentally-aliased meanings.
+  unsigned char pad00[0x31c];
+  short pendingMapActionIndex; // +0x31c
+  unsigned char pad31e[0x3a8 - 0x31e];
 
   TArmyMgr();
 };
