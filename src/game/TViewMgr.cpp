@@ -12,7 +12,7 @@
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCivToolbar.h"
-#include "game/global_data_tables.h" // g_pGameFlowState, g_pLocalizationTable, g_apNationStates
+#include "game/global_data_tables.h" // g_pGameFlowState, g_pSimMgr, g_apNationStates
 #include "game/TGreatPower.h"
 #include "game/TGlobalMapState.h"
 #include "game/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
@@ -49,7 +49,7 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 
 #include <new>
 
-// TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pLocalizationTable / turn-state
+// TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pSimMgr / turn-state
 // manager). Included via global_data_tables.h.
 
 // The display/GWorld manager (g_pDisplayMgr @ 0x6a2158); its activeDialog (+0x04) field
@@ -374,8 +374,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
 
   // Mask the game-flow flag while committing the refresh when localization mode is active.
   unsigned char savedFlag = 0;
-  bool localizationActive =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x44) != 0;
+  bool localizationActive = *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pSimMgr) + 0x44) != 0;
   if (localizationActive) {
     savedFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
@@ -383,14 +382,14 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   node->RefreshTurnEventDialog();
   node->CallVoidSlotA0();
   node->Free();
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x44) != 0) {
+  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pSimMgr) + 0x44) != 0) {
     g_pGameFlowState->processPrimaryEventQueue = savedFlag;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005d5960
 int TViewMgr::ClassifyTurnStateForOverlayMode() {
-  switch (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 8)) {
+  switch (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pSimMgr) + 8)) {
   case 6:
   case 0xc:
   case 0xe:
@@ -466,9 +465,9 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
 
   switch (overlayMode) {
   case 0:
-    g_pLocalizationTable->GetString(0, 0, &scratchA);
-    g_pLocalizationTable->GetString(0x2716, 0, &templateText);
-    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
+    g_pSimMgr->GetString(0, 0, &scratchA);
+    g_pSimMgr->GetString(0x2716, 0, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
     if (contextArg == 8) {
       resourceId = 0x2515;
     } else if (contextArg == 9) {
@@ -478,8 +477,8 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     }
     break;
   case 1: {
-    g_pLocalizationTable->GetString(0, 0, &templateText);
-    short nationId = g_pLocalizationTable->GetActiveNationId();
+    g_pSimMgr->GetString(0, 0, &templateText);
+    short nationId = g_pSimMgr->GetActiveNationId();
     short cap = g_pCityOrderCapabilityState->nationCapRows1e8[nationId].cap;
     if (cap == 0x1c) {
       resourceId = 0x2518;
@@ -489,48 +488,48 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     break;
   }
   case 2:
-    g_pLocalizationTable->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0, 0, &templateText);
     resourceId = 0x250a;
     break;
   case 3:
   case 4:
     g_pGlobalMapState->AssignSharedStringFromIndexedA8EntryNameField(contextArg, &formattedText);
-    g_pLocalizationTable->GetString(0, 0, &templateText);
-    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
+    g_pSimMgr->GetString(0, 0, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
   case 5:
   case 0xc:
-    g_pLocalizationTable->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0, 0, &templateText);
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
   case 6: {
-    TGreatPower* nation = g_apNationStates[g_pLocalizationTable->GetActiveNationId()];
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     if (nation != nullptr) {
       nation->LoadNationDisplayNameSharedRefFromField8(&formattedText);
     }
-    g_pLocalizationTable->GetString(0, 0, &templateText);
-    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
+    g_pSimMgr->GetString(0, 0, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = 0x250e;
     break;
   }
   case 7:
-    g_pLocalizationTable->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0, 0, &templateText);
     resourceId = static_cast<short>((-static_cast<int>(contextArg != -1) & 0xfff5) + 0x251a);
     break;
   case 8:
-    g_pLocalizationTable->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0, 0, &templateText);
     resourceId = 0x2510;
     break;
   case 9:
   case 0xb:
-    g_pLocalizationTable->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0, 0, &templateText);
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
   case 0xa:
     reinterpret_cast<void(__cdecl*)(void)>(FormatOverlayTerrainLabelText)();
-    g_pLocalizationTable->GetString(0, 0, &templateText);
-    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
+    g_pSimMgr->GetString(0, 0, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = 0x2512;
     break;
   default:
@@ -600,7 +599,7 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   }
   if (control != nullptr) {
     static_cast<TToolBarCluster*>(control)->UpdateControlTagTreaTextFromNationAndMapContext(
-        g_pLocalizationTable->GetActiveNationId());
+        g_pSimMgr->GetActiveNationId());
   }
 }
 
@@ -740,8 +739,7 @@ void RefreshToolBarClusterByTag(unsigned int controlTag) {
   }
   control->AssertValid();
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(control);
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(
-      g_pLocalizationTable->GetActiveNationId());
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
   toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 }
 
@@ -752,9 +750,8 @@ void RefreshOrderStatusPicture(unsigned int controlTag, unsigned int flagMask,
     return;
   }
   control->AssertValid();
-  const short pictureId = g_pLocalizationTable->TestTurnFlowStatusFlagMask(flagMask)
-                              ? pictureWhenFlagSet
-                              : pictureWhenFlagClear;
+  const short pictureId =
+      g_pSimMgr->TestTurnFlowStatusFlagMask(flagMask) ? pictureWhenFlagSet : pictureWhenFlagClear;
   static_cast<TPicture*>(control)->SetPictureResourceIdAndRefresh(pictureId, true);
 }
 
@@ -770,7 +767,7 @@ void RefreshTradClusterPictureAndHintText() {
   tradControl->SetState(0, 0);
 
   CString hintText;
-  g_pLocalizationTable->GetString(0x2730, 0, &hintText);
+  g_pSimMgr->GetString(0x2730, 0, &hintText);
   tradControl->EnableAndProcessFlag(hintText);
 }
 
@@ -782,7 +779,7 @@ void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stri
   }
   control->AssertValid();
   CString localizedText;
-  g_pLocalizationTable->GetString(stringCode, stringIndex, &localizedText);
+  g_pSimMgr->GetString(stringCode, stringIndex, &localizedText);
   control->EnableAndProcessFlag(localizedText);
 }
 
@@ -841,7 +838,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
 
   // Sound cue when the turn-flow mode is in the 0x67..0x6a band and the code changed.
   if (newCode != this->currentTurnEventCode) {
-    switch (static_cast<short>(g_pLocalizationTable->mode)) {
+    switch (static_cast<short>(g_pSimMgr->mode)) {
     case 0x67:
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5b);
       break;
@@ -912,7 +909,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       mainView->RefreshControl();
       HandleTurnEvent8FC_RebuildPageTabsAndTitles();
     } else if (newCode == 0x7d8) {
-      if (static_cast<short>(g_pLocalizationTable->mode) == 0x68) {
+      if (static_cast<short>(g_pSimMgr->mode) == 0x68) {
         mainView->RefreshControl();
         this->UiRuntimeSlot6C();
       }
@@ -1208,7 +1205,7 @@ void TViewMgr::UiRuntimeSlot5C() {
     textControl->EnableAndProcessFlag(g_szEmptyString);
   }
 
-  const short activeNationId = g_pLocalizationTable->GetActiveNationId();
+  const short activeNationId = g_pSimMgr->GetActiveNationId();
   g_apNationStates[activeNationId]->ReturnFalseNationStateCapabilityFlag9C();
   this->fieldEc = 0;
   for (short metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
@@ -1261,9 +1258,9 @@ void TViewMgr::UiRuntimeSlot64() {
 
 // FUNCTION: IMPERIALISM 0x005da360
 void TViewMgr::UiRuntimeSlotBC() {
-  const short activeNationId = g_pLocalizationTable->GetActiveNationId();
+  const short activeNationId = g_pSimMgr->GetActiveNationId();
   if (IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
-    g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(nullptr);
+    g_pSimMgr->CopyScenarioNationSetupIntoFlowState(nullptr);
   }
 
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
@@ -1278,9 +1275,8 @@ void TViewMgr::UiRuntimeSlotBC() {
   TControl* tranControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagTran);
   if (tranControl != nullptr) {
     tranControl->AssertValid();
-    g_pLocalizationTable->TestTurnFlowStatusFlagMask(0x1000);
-    const short followUpPictureId =
-        g_pLocalizationTable->TestTurnFlowStatusFlagMask(0x1000) ? 0x24df : 0x24e7;
+    g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000);
+    const short followUpPictureId = g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000) ? 0x24df : 0x24e7;
     static_cast<TPicture*>(tranControl)->SetPictureResourceIdAndRefresh(followUpPictureId, true);
   }
 
@@ -1290,7 +1286,7 @@ void TViewMgr::UiRuntimeSlotBC() {
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagCity, 0x2730, 0);
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagTrad, 0x2730, 0);
 
-  if (g_pLocalizationTable->TestTurnFlowStatusFlagMask(1) == 0) {
+  if (g_pSimMgr->TestTurnFlowStatusFlagMask(1) == 0) {
     turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDipl, 0x19, 0);
   } else {
     turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDipl, 0x15, 0);
@@ -1384,7 +1380,7 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
 
     int modalResult = reinterpret_cast<int(__cdecl*)(void)>(DoModal_6051b9)();
     if (modalResult != 0) {
-      g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
+      g_pSimMgr->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
     }
     delete[] buffer;
   }

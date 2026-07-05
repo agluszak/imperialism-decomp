@@ -90,8 +90,7 @@ void TCity::AdoptSelectedOrderSlot44(void* order) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b3b40
-void TCity::Call28() {
-}
+void TCity::Call28() {}
 
 // FUNCTION: IMPERIALISM 0x004b3de0
 void TCity::Call2C() {
@@ -277,7 +276,7 @@ void TCity::Refresh80() {
   do {
     if (*needCursor < 0) {
       char dispatchGate = this->ownerNationAc->ShouldDispatchImmediatelySlot28();
-      if ((dispatchGate == 0 || g_pLocalizationTable->redrawEnabled != 2) &&
+      if ((dispatchGate == 0 || g_pSimMgr->redrawEnabled != 2) &&
           g_Sanitize_City_Counter_Value_006A24D4 == 0) {
         TemporarilyClearAndRestoreUiInvalidationFlag();
       }
@@ -289,8 +288,7 @@ void TCity::Refresh80() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b4210
-void TCity::NoOpCitySlot7C() {
-}
+void TCity::NoOpCitySlot7C() {}
 
 // FUNCTION: IMPERIALISM 0x004b4230
 int TCity::GetOwnerNeedCapA6() {

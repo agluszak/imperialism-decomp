@@ -73,7 +73,7 @@ static void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* sr
 }
 
 static void ScanBracketExpressionsInto(CString* dest, const CString& templateText) {
-  scanBracketExpressions(g_pLocalizationTable, dest, static_cast<LPCSTR>(templateText));
+  scanBracketExpressions(g_pSimMgr, dest, static_cast<LPCSTR>(templateText));
 }
 
 static undefined4 QueryPointInsideHitRegion(short x, short y, ClipStateRegionWrapper* region) {
@@ -488,20 +488,20 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   if (atlas690 != 0) {
     FreeQuickDrawSurfaceContextSlot(&atlas690);
   }
-  nationId = g_pLocalizationTable->GetActiveNationId();
+  nationId = g_pSimMgr->GetActiveNationId();
   if (nationId < 0) {
     return;
   }
   g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
-  nationId = g_pLocalizationTable->GetActiveNationId();
+  nationId = g_pSimMgr->GetActiveNationId();
   variant = g_pCityOrderCapabilityState->orderCapRows277[nationId].flag != 0;
-  nationId = g_pLocalizationTable->GetActiveNationId();
+  nationId = g_pSimMgr->GetActiveNationId();
   if (g_pCityOrderCapabilityState->orderCapRows277[nationId].secondaryCapabilityFlag280 != 0) {
     variant = 2;
   }
-  nationId = g_pLocalizationTable->GetActiveNationId();
+  nationId = g_pSimMgr->GetActiveNationId();
   atlas68c = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x579 + variant * 7);
-  nationId = g_pLocalizationTable->GetActiveNationId();
+  nationId = g_pSimMgr->GetActiveNationId();
   atlas690 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
 }
 
@@ -922,7 +922,7 @@ undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
 
 // FUNCTION: IMPERIALISM 0x0050bad0
 undefined TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
-  if (g_pLocalizationTable->field30 == 1) {
+  if (g_pSimMgr->field30 == 1) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x72656765, 0, 0xfffffffd);
   }
   if (tileStateSlots[0] != 0) {
@@ -1027,7 +1027,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 
   if (nationSlot == static_cast<word>(-1)) {
     TControl* panel = ResolveTaggedPanelOrFail(hostView, kTagCityProductionTotal);
-    g_pLocalizationTable->GetString(0x2735, 0, &scratch38);
+    g_pSimMgr->GetString(0x2735, 0, &scratch38);
     panel->EnableAndProcessFlag(scratch38);
 
     TMyStaticText* textEntry = new TMyStaticText();
@@ -1046,7 +1046,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     textEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
     textEntry->controlTag = kTagDetailText;
 
-    g_pLocalizationTable->GetString(0x2735, 1, &scratch38);
+    g_pSimMgr->GetString(0x2735, 1, &scratch38);
     textEntry->EnableAndProcessFlag(scratch38);
 
     short needCap = nation != 0 ? nation->needCapA6 : 0;
@@ -1085,7 +1085,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0:
     needTarget = static_cast<short>(nation->needTargetByType[0] + nation->needTargetByType[1]);
     needCurrent = static_cast<short>(nation->needCurrentByType[0] + nation->needCurrentByType[1]);
-    g_pLocalizationTable->GetString(0x2735, 2, &formatTarget);
+    g_pSimMgr->GetString(0x2735, 2, &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(0);
       deficitCount =
@@ -1094,20 +1094,20 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
                            static_cast<int>(city->cityStockCottonB6) +
                                static_cast<int>(city->cityStockWoolB8));
       formatProduction.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
-      g_pLocalizationTable->GetString(0x2719, 0, &displayText);
+      g_pSimMgr->GetString(0x2719, 0, &displayText);
     }
     break;
   case 2:
     needTarget = nation->needTargetByType[2];
     needCurrent = nation->needCurrentByType[2];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(4);
       deficitCount = static_cast<short>(production * 2 - city->cityStockTimberBA);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockTimberBA));
       formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
-      g_pLocalizationTable->GetString(0x2719, 4, &displayText);
+      g_pSimMgr->GetString(0x2719, 4, &displayText);
       formatFieldValue = city->cityStockTimberBA;
       showArrowWidgets = 1;
       useProductionTailPath = true;
@@ -1117,14 +1117,14 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 4:
     needTarget = nation->needTargetByType[nationSlot];
     needCurrent = nation->needCurrentByType[nationSlot];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(2);
       deficitCount = static_cast<short>(production - (&city->cityStockCottonB6)[nationSlot]);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
       formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production);
-      g_pLocalizationTable->GetString(0x2719, 2, &displayText);
+      g_pSimMgr->GetString(0x2719, 2, &displayText);
       formatFieldValue = (&city->cityStockCottonB6)[nationSlot];
       showArrowWidgets = 1;
       useProductionTailPath = true;
@@ -1133,26 +1133,26 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 5:
     needTarget = nation->needTargetByType[5];
     needCurrent = nation->needCurrentByType[5];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                          static_cast<int>(needCurrent));
     formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                         static_cast<int>(needTarget));
-    g_pLocalizationTable->GetString(0x2719, 1, &displayText);
+    g_pSimMgr->GetString(0x2719, 1, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
     useBracketOnlyPath = true;
     break;
   case 6:
     needTarget = nation->needTargetByType[6];
     needCurrent = nation->needCurrentByType[6];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(6);
       deficitCount = static_cast<short>(production * 2 - city->cityStockOilC2);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockOilC2));
       formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
-      g_pLocalizationTable->GetString(0x2719, 6, &displayText);
+      g_pSimMgr->GetString(0x2719, 6, &displayText);
       formatFieldValue = city->cityStockOilC2;
       showArrowWidgets = 1;
       useProductionTailPath = true;
@@ -1161,14 +1161,14 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 8:
     needTarget = nation->needTargetByType[8];
     needCurrent = nation->needCurrentByType[8];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(1);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFabricC6);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockFabricC6));
       formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
-      g_pLocalizationTable->GetString(0x2719, 1, &displayText);
+      g_pSimMgr->GetString(0x2719, 1, &displayText);
       formatFieldValue = city->cityStockFabricC6;
       showArrowWidgets = 1;
       useProductionTailPath = true;
@@ -1177,14 +1177,14 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 9:
     needTarget = nation->needTargetByType[9];
     needCurrent = nation->needCurrentByType[9];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(5);
       deficitCount = static_cast<short>(production * 2 - city->cityStockLumberC8);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockLumberC8));
       formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
-      g_pLocalizationTable->GetString(0x2719, 5, &displayText);
+      g_pSimMgr->GetString(0x2719, 5, &displayText);
       formatFieldValue = city->cityStockLumberC8;
       showArrowWidgets = 1;
       useProductionTailPath = true;
@@ -1193,14 +1193,14 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0xb:
     needTarget = nation->needTargetByType[0xb];
     needCurrent = nation->needCurrentByType[0xb];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(3);
       deficitCount = static_cast<short>(production * 2 - city->cityStockSteelCC);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockSteelCC));
       formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
-      g_pLocalizationTable->GetString(0x2719, 3, &displayText);
+      g_pSimMgr->GetString(0x2719, 3, &displayText);
       formatFieldValue = city->cityStockSteelCC;
       showArrowWidgets = 1;
       useProductionTailPath = true;
@@ -1209,14 +1209,14 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0xc:
     needTarget = nation->needTargetByType[0xc];
     needCurrent = nation->needCurrentByType[0xc];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(0xb);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFuelCE);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockFuelCE));
       formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
-      g_pLocalizationTable->GetString(0x2719, 0xb, &displayText);
+      g_pSimMgr->GetString(0x2719, 0xb, &displayText);
       formatFieldValue = city->cityStockFuelCE;
       showArrowWidgets = 1;
       useProductionTailPath = true;
@@ -1227,12 +1227,12 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0xf:
     needTarget = nation->needTargetByType[nationSlot];
     needCurrent = nation->needCurrentByType[nationSlot];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                          static_cast<int>(needCurrent));
     formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                         static_cast<int>(needTarget));
-    g_pLocalizationTable->GetString(0x2719, 8, &displayText);
+    g_pSimMgr->GetString(0x2719, 8, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
     useBracketOnlyPath = true;
     break;
@@ -1240,7 +1240,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0x12:
     needTarget = nation->needTargetByType[nationSlot];
     needCurrent = nation->needCurrentByType[nationSlot];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       short* summary = city->GetCitySummaryRecordSlot74();
       short summaryValue = summary[nationSlot];
@@ -1249,7 +1249,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
       deficitCount = static_cast<short>(summaryValue - (&city->cityStockCottonB6)[nationSlot]);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
-      g_pLocalizationTable->GetString(0x2735, 7, &displayText);
+      g_pSimMgr->GetString(0x2735, 7, &displayText);
       ScanBracketExpressionsInto(&bracketScratch, displayText);
       displayText = bracketScratch;
       showArrowWidgets = 1;
@@ -1261,7 +1261,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
         static_cast<short>(nation->needTargetByType[0x13] + nation->needTargetByType[0x14]);
     needCurrent =
         static_cast<short>(nation->needCurrentByType[0x13] + nation->needCurrentByType[0x14]);
-    g_pLocalizationTable->GetString(0x2735, 3, &formatTarget);
+    g_pSimMgr->GetString(0x2735, 3, &formatTarget);
     {
       short* summary = city->GetCitySummaryRecordSlot74();
       short summaryValue = summary[0x14];
@@ -1277,18 +1277,18 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0x15:
     needTarget = nation->needTargetByType[0x15];
     needCurrent = nation->needCurrentByType[0x15];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
-    g_pLocalizationTable->GetString(500, 0, &formatCurrent);
-    g_pLocalizationTable->GetString(0x2735, 9, &displayText);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->GetString(500, 0, &formatCurrent);
+    g_pSimMgr->GetString(0x2735, 9, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
     useBracketOnlyPath = true;
     break;
   case 0x16:
     needTarget = nation->needTargetByType[0x16];
     needCurrent = nation->needCurrentByType[0x16];
-    g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
-    g_pLocalizationTable->GetString(200, 0, &formatCurrent);
-    g_pLocalizationTable->GetString(0x2735, 9, &displayText);
+    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->GetString(200, 0, &formatCurrent);
+    g_pSimMgr->GetString(0x2735, 9, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
     useBracketOnlyPath = true;
     break;
@@ -1308,7 +1308,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
       formatField.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                          static_cast<int>(formatFieldValue));
     }
-    g_pLocalizationTable->GetString(0x2735, 7, &formatTarget);
+    g_pSimMgr->GetString(0x2735, 7, &formatTarget);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
     displayText = bracketScratch;
   }
@@ -1368,7 +1368,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   textEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
   textEntry->controlTag = kTagDetailText;
 
-  g_pLocalizationTable->GetString(0x2735, 4, &scratch38);
+  g_pSimMgr->GetString(0x2735, 4, &scratch38);
   textEntry->EnableAndProcessFlag(scratch38);
 
   if (nationSlot == 0x15 || nationSlot == 0x16) {

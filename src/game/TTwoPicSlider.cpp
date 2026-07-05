@@ -122,7 +122,7 @@ void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
       int textShadowColor = 0;
       int textMainColor = 0;
 
-      g_pLocalizationTable->GetString(0x2743, 0x3b, &statusText);
+      g_pSimMgr->GetString(0x2743, 0x3b, &statusText);
       ApplyUiTextStyleAndSyncColor(0, 0xe, 0x2b6c);
       MapUiThemeCodeToStyleFlags(0x2b6c, &textShadowColor);
       MapUiThemeCodeToStyleFlags(0x2b67, &textMainColor);
@@ -180,7 +180,7 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventS
         reinterpret_cast<void(__cdecl*)(int)>(ScaleAndApplyAuxOutputVolume)(volumeScalar);
         // Original: mov eax,[0x6a20f8]; mov [eax+0x4e],di — the master-volume
         // preference slot on the TSimMgr singleton (not a raw global).
-        g_pLocalizationTable->preferenceValues[5] = static_cast<short>(volumeScalar);
+        g_pSimMgr->preferenceValues[5] = static_cast<short>(volumeScalar);
       }
     }
   }

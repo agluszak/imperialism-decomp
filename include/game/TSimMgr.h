@@ -6,7 +6,7 @@
 class TStream;
 
 // TSimMgr — the global turn-flow / simulation manager (historically reached through the
-// `g_pLocalizationTable` singleton @ 0x6a20f8; it also owns the UI string/format helpers,
+// `g_pSimMgr` singleton @ 0x6a20f8; it also owns the UI string/format helpers,
 // which is why callers treat it as a "localization table"). It drives the per-turn state
 // machine, rebuilds the nation-state slot tables, and tears the order managers back down.
 //
@@ -72,7 +72,7 @@ public:
   int GetField30();
 
   // Active great-power slot (this+0x2e). Every original callsite loads ECX from
-  // g_pLocalizationTable (0x6a20f8) — this getter belongs to TSimMgr, not the view
+  // g_pSimMgr (0x6a20f8) — this getter belongs to TSimMgr, not the view
   // managers that many older ports called it on.
   short GetActiveNationId(); // 0x581260
   // Store a state code into +0x40 and set the +0x5c short flag to 1 only when the
@@ -82,7 +82,7 @@ public:
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
   // 0x57c3b0. Verified against AdvanceGlobalTurnStateMachine's case-3 callsite
-  // (0x0057db25): a real __thiscall on TSimMgr (receiver g_pLocalizationTable), not a
+  // (0x0057db25): a real __thiscall on TSimMgr (receiver g_pSimMgr), not a
   // free function -- writes into the scenarioSetupRows regions at +0xe8 on `this`.
   void RebuildGlobalOrderManagersAndCapabilityState(char flag);
   // 0x57c7c0. Same callsite family (0x0057db32); real __thiscall, 3 stack args
@@ -90,11 +90,11 @@ public:
   // raw address.
   void RebuildMapContextAndGlobalMapState(int param1, const char* param2, int param3);
   // 0x57cad0. Verified against 0x0057db53: real __thiscall on `this` (not
-  // g_pLocalizationTable this time), 1 stack arg (`RET 0x4`).
+  // g_pSimMgr this time), 1 stack arg (`RET 0x4`).
   void RebuildNationStateSlotsAndAvailability(int flag);
 
   // --- fields (offsets are load-bearing: referenced from many other classes via
-  //     g_pLocalizationTable; do not rename or move) ---
+  //     g_pSimMgr; do not rename or move) ---
   int turnStateCode;
   int mode;
   int previousTurnStateCode;

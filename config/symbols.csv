@@ -8587,7 +8587,7 @@ address|name|symbol|size|type|prototype|provenance
 6a1dc0|g_pGlobalViewportRectDefaultsRecord|||global||
 6a2018|g_cachedShowSplashFlag|||global||
 6a2054|DAT_006a2054|||global||
-6a20f8|g_pLocalizationTable|||global||
+6a20f8|g_pSimMgr|||global||
 6a2148|g_pUiViewManager|||global||
 6a2158|g_pDisplayMgr|||global||
 6a21a8|g_pStrategicMapViewSystem|||global||

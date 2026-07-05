@@ -77,7 +77,7 @@ TGreatPower* g_apNationStates[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a438c
 void* g_apNationStates_End;
 // GLOBAL: IMPERIALISM 0x006a20f8
-TSimMgr* g_pLocalizationTable = 0;
+TSimMgr* g_pSimMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a21b8
 THelpMgr* g_pHelpMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e8
@@ -306,7 +306,7 @@ short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot) {
 }
 
 TGreatPower* GetActiveNationState(void) {
-  return g_apNationStates[g_pLocalizationTable->GetActiveNationId()];
+  return g_apNationStates[g_pSimMgr->GetActiveNationId()];
 }
 
 int GetTradeSummarySelectionTagByIndex(short index) {

@@ -788,7 +788,7 @@ void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920() {
     static_cast<TInfoBarText*>(titleControl)
         ->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
     CString titleString;
-    g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(&titleString);
+    g_pSimMgr->CopyScenarioNationSetupIntoFlowState(&titleString);
     titleControl->EnableAndProcessFlag(titleString);
     titleControl->RefreshHudNationTitleControlsAndTheme(0x2b6c);
   }

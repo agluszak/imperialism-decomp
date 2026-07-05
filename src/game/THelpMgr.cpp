@@ -134,22 +134,22 @@ int GetSortedPtrListEntryCount(TSortedPtrList* list) {
 }
 
 short ReadLocalizationFlowMode() {
-  return static_cast<short>(g_pLocalizationTable->mode);
+  return static_cast<short>(g_pSimMgr->mode);
 }
 
 short ReadLocalizationTurnGateFlag58() {
-  return g_pLocalizationTable->preferenceValues[10];
+  return g_pSimMgr->preferenceValues[10];
 }
 
 short ReadLocalizationPendingEventGate5c() {
-  return g_pLocalizationTable->preferenceValues[12];
+  return g_pSimMgr->preferenceValues[12];
 }
 
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x005011a0
 void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
-  const short nationId = g_pLocalizationTable->GetActiveNationId();
+  const short nationId = g_pSimMgr->GetActiveNationId();
   const int flowMode = ReadLocalizationFlowMode();
   if (flowMode == 0xf) {
     TGreatPower* nation = g_apNationStates[nationId];
@@ -163,7 +163,7 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
       }
     }
   } else if (flowMode == 0x6a && ReadLocalizationTurnGateFlag58() != 0) {
-    const short currentTurn = g_pLocalizationTable->GetTurnTickSlot3C();
+    const short currentTurn = g_pSimMgr->GetTurnTickSlot3C();
     if (g_nTurnFlowNationComparisonAdvisoryTick < currentTurn) {
       if (ShowPeriodicNationComparisonAdvisoryIfNeeded() != 0) {
         g_nTurnFlowNationComparisonAdvisoryTick = currentTurn;
@@ -193,10 +193,10 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
         }
         HelpSetRecord* entry = static_cast<HelpSetRecord*>(indexList->GetEntrySlot2C(index));
         if (entry->contextId == eventCode) {
-          // NOT GetActiveNationId — original loads ECX from g_pLocalizationTable and
+          // NOT GetActiveNationId — original loads ECX from g_pSimMgr and
           // dispatches vtable slot 0x3c (GetTurnTickSlot3C), same call as the currentTurn
           // check above. entry->rank stores a turn tick here, not a nation id.
-          const short currentTick = g_pLocalizationTable->GetTurnTickSlot3C();
+          const short currentTick = g_pSimMgr->GetTurnTickSlot3C();
           if (entry->rank == currentTick) {
             nationAlreadyCurrent = true;
           } else if (entry->flagByte == 0) {
@@ -235,7 +235,7 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
     return;
   }
   pendingEntry->flagByte = 1;
-  pendingEntry->rank = g_pLocalizationTable->GetActiveNationId();
+  pendingEntry->rank = g_pSimMgr->GetActiveNationId();
   // Full dialog refresh path deferred; mark the help-set entry seen/current-nation.
 }
 

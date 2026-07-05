@@ -110,7 +110,7 @@ void TAmbitApplication::InitializeGlobalRuntimeSystems() {
   if (simMgr != nullptr) {
     simMgr->InitializeTurnFlowStateDefaults();
   }
-  g_pLocalizationTable = simMgr;
+  g_pSimMgr = simMgr;
 
   TAssetMgr* assetMgr = new TAssetMgr();
   ForwardEnsurePictWvDataGobLoadedBySlot(field_50);
@@ -168,7 +168,7 @@ void TAmbitApplication::Free() {
     g_pHelpMgr->Free();
     g_pHelpMgr = nullptr;
   }
-  g_pLocalizationTable->Free();
+  g_pSimMgr->Free();
 
   if (g_pUiViewManager != nullptr) {
     g_pUiViewManager->Free();

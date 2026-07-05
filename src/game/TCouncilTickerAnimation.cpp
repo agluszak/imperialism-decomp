@@ -132,7 +132,7 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
   RefreshCouncilCoatOfArmsPicture(hostPanel, kControlTagCoa1,
                                   g_pDiplomacyTurnStateManager->selectedTargetNationSlot786);
 
-  const short localizationMode = static_cast<short>(g_pLocalizationTable->mode);
+  const short localizationMode = static_cast<short>(g_pSimMgr->mode);
   if (localizationMode == 0x16 || localizationMode == 0x17) {
     const char* tileRecordBytes = reinterpret_cast<const char*>(
         *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10));

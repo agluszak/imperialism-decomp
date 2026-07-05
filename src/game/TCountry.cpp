@@ -122,8 +122,8 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot)
   CString flavorName;
   SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, nationSlot);
   this->identitySharedString0 = flavorName;
-  if (g_pLocalizationTable != 0) {
-    g_pLocalizationTable->sharedTextSlots[nationSlot] = this->identitySharedString0;
+  if (g_pSimMgr != 0) {
+    g_pSimMgr->sharedTextSlots[nationSlot] = this->identitySharedString0;
   }
   this->identitySharedString1 = this->identitySharedString0;
   this->treasuryValue10 = 5000;
@@ -166,7 +166,7 @@ void TCountry::ReadFrom(TStream* stream) {
   stream->streamSlot70(&this->identitySharedString0, 0xff);
   stream->streamSlot70(&this->identitySharedString1, 0xff);
 
-  this->identitySharedString1 = g_pLocalizationTable->sharedTextSlots[this->nationSlot];
+  this->identitySharedString1 = g_pSimMgr->sharedTextSlots[this->nationSlot];
   stream->ReadBytes(&this->identitySharedString0, 4);
 
   stream->ReadBytes(&this->nationSlot, 2);
@@ -260,7 +260,7 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004d71b0
 void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
-  TSimMgr* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pSimMgr;
   if (localization->stateFlag114 > 0) {
     g_pGlobalMapState->NotifyCityRecordSlot12C(
         g_pGlobalMapState->terrainStateTable[this->ownerNationSlot].cityRecordIndex);
@@ -274,31 +274,31 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
         TMilitaryUnit* order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
-        if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
+        if (g_pSimMgr->runtimeSubsystemIndex < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
-        if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
+        if (g_pSimMgr->runtimeSubsystemIndex < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(7, regionId, this->nationSlot);
-        if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
+        if (g_pSimMgr->runtimeSubsystemIndex < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         g_pGlobalMapState->NotifyCityRecordSlot12C(regionId);
         if (this->nationSlot < 7 &&
             g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 == 0 &&
-            g_pLocalizationTable->runtimeSubsystemIndex == 4) {
+            g_pSimMgr->runtimeSubsystemIndex == 4) {
           order = new TMilitaryUnit();
           order->InitializeRecruitOrderState(6, regionId, this->nationSlot);
-          if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
+          if (g_pSimMgr->runtimeSubsystemIndex < 2) {
             order->SetOrderModeSlot34(2, -1);
           }
           order = new TMilitaryUnit();
           order->InitializeRecruitOrderState(5, regionId, this->nationSlot);
-          if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
+          if (g_pSimMgr->runtimeSubsystemIndex < 2) {
             order->SetOrderModeSlot34(2, -1);
           }
           TGreatPower* nation = g_apNationStates[this->nationSlot];
@@ -309,8 +309,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         }
         if (this->nationSlot < 7) {
           TGreatPower* nation = g_apNationStates[this->nationSlot];
-          if (nation->diplomacyEligibilityA0 != 0 &&
-              g_pLocalizationTable->runtimeSubsystemIndex == 0) {
+          if (nation->diplomacyEligibilityA0 != 0 && g_pSimMgr->runtimeSubsystemIndex == 0) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = static_cast<TZone*>(
                 g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort));
@@ -339,7 +338,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       this->CreateMilitaryRecruitOrderForNode(regionId);
       this->CreateMilitaryRecruitOrderForNode(regionId);
       this->CreateMilitaryRecruitOrderForNode(regionId);
-      if (g_pLocalizationTable->runtimeSubsystemIndex > 2) {
+      if (g_pSimMgr->runtimeSubsystemIndex > 2) {
         this->CreateMilitaryRecruitOrderForNode(regionId);
         if (this->nationSlot >= 7) {
           TMilitaryUnit* lateOrder = new TMilitaryUnit();
@@ -360,8 +359,8 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
 // FUNCTION: IMPERIALISM 0x004d7a00
 void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
   this->identitySharedString0 = name;
-  if (g_pLocalizationTable != 0) {
-    g_pLocalizationTable->sharedTextSlots[this->nationSlot] = name;
+  if (g_pSimMgr != 0) {
+    g_pSimMgr->sharedTextSlots[this->nationSlot] = name;
   }
 }
 
@@ -382,7 +381,7 @@ char TCountry::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2,
 
 // FUNCTION: IMPERIALISM 0x004d7b20
 void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
-  if (g_pLocalizationTable != 0 && g_pLocalizationTable->redrawEnabled == 1) {
+  if (g_pSimMgr != 0 && g_pSimMgr->redrawEnabled == 1) {
     g_pGameFlowState->DispatchJoinEmpireModeEventPacket24_27(this->nationSlot, targetNationSlot,
                                                              mode);
   }
@@ -393,7 +392,7 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode
   }
 
   if (this->nationSlot < 7) {
-    g_pLocalizationTable->DecrementField30Value();
+    g_pSimMgr->DecrementField30Value();
   }
 
   if (mode == 0) {
@@ -564,7 +563,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         CString typeName;
         CString composedName;
         short unitType = unit->orderType;
-        TSimMgr* localization = g_pLocalizationTable;
+        TSimMgr* localization = g_pSimMgr;
         short* nameOrdinalCounter = &this->unitNameOrdinalByType[unitType];
         localization->FormatOrdinalString(*nameOrdinalCounter, &ordinalText);
         localization->GetString(0x2717, unitType, &typeName);
@@ -578,7 +577,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
       } else {
         CString flavorBase;
         CString flavorName;
-        g_pLocalizationTable->GetString(0x2744, 0, &flavorBase);
+        g_pSimMgr->GetString(0x2744, 0, &flavorBase);
         do {
           GenerateMappedFlavorTextByTableSlot(&flavorName, this->nationSlot);
         } while (flavorName.GetLength() > 0xf - flavorBase.GetLength());
@@ -646,7 +645,7 @@ int TCountry::GetHomeRegionCityRecordIndex(void) {
 
 // FUNCTION: IMPERIALISM 0x004d87e0
 void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
-  short tickRaw = g_pLocalizationTable->quarterGateTick2c;
+  short tickRaw = g_pSimMgr->quarterGateTick2c;
   if (!IsRecruitQuarterTickGate(tickRaw)) {
     return;
   }

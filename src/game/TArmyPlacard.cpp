@@ -29,7 +29,7 @@ TArmyPlacard::TArmyPlacard() : TPicture() {
 
 // FUNCTION: IMPERIALISM 0x0058bf50
 bool TArmyPlacard::IsSelected(short value, bool refreshNow) {
-  short activeNationId = g_pLocalizationTable->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetActiveNationId();
   short capValue =
       g_pCityOrderCapabilityState->nationCapRows1e8[activeNationId].caps[this->controlTag];
   short pictureId = capValue + 0x4c4;

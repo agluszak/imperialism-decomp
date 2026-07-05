@@ -190,7 +190,7 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[16];
 extern TMinor* g_apMinorNationCapabilityObjects[16];
 extern TGreatPower* g_apNationStates[7];
 extern void* g_apNationStates_End;
-extern TSimMgr* g_pLocalizationTable;
+extern TSimMgr* g_pSimMgr;
 extern THelpMgr* g_pHelpMgr;
 extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
 extern TApplication* g_pGlobalUiRootController;

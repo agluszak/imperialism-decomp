@@ -46,7 +46,7 @@ void TTown::InitializeTownMarker(const char* markerName, short regionId, char en
   this->flags16[1] = 0;
   this->flags16[2] = 0;
   this->flags16[3] = 0;
-  this->createdTurnTick1a = g_pLocalizationTable->GetTurnTickSlot3C();
+  this->createdTurnTick1a = g_pSimMgr->GetTurnTickSlot3C();
   this->transportLinkedFlag4c = 0;
   memset(this->payload1e, 0, sizeof(this->payload1e));
 }
@@ -101,4 +101,3 @@ char TTown::IsTransportLinkedAndEnabled(void) {
 
 // SYNTHETIC: IMPERIALISM 0x005b6c80
 // TTown::`scalar deleting destructor'
-

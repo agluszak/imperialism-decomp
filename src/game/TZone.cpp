@@ -345,7 +345,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
       }
     }
     if (chosenCity == -1) {
-      if (g_pLocalizationTable->useLocalizedNameTables68 == '\0') {
+      if (g_pSimMgr->useLocalizedNameTables68 == '\0') {
         GenerateMappedFlavorTextByCurrentContextNation(&displayName);
       } else {
         // Walk the headline resource table with a random start + stride so successive
@@ -359,9 +359,9 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
               strides[g_zoneStatusCodePrngSeed_006a5aec >> 0xc & 3];
         }
         CString resourceName;
-        g_pLocalizationTable->GetString(
-            0x275b, static_cast<short>(g_mapActionContextDisplayNameCacheId_006984b8),
-            &resourceName);
+        g_pSimMgr->GetString(0x275b,
+                             static_cast<short>(g_mapActionContextDisplayNameCacheId_006984b8),
+                             &resourceName);
         displayName = resourceName;
         g_mapActionContextDisplayNameCacheId_006984b8 +=
             g_mapActionContextDisplayNameCacheStep_006984bc;
@@ -378,9 +378,9 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
   }
   // Build the headline by expanding the status-code-selected template with the display name.
   CString headlineTemplate;
-  g_pLocalizationTable->GetString(0x275a, field04, &headlineTemplate);
+  g_pSimMgr->GetString(0x275a, field04, &headlineTemplate);
   CString expanded;
-  scanBracketExpressions(g_pLocalizationTable, &expanded, headlineTemplate, displayName);
+  scanBracketExpressions(g_pSimMgr, &expanded, headlineTemplate, displayName);
   displayName = expanded;
 }
 

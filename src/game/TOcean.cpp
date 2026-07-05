@@ -77,7 +77,7 @@ void TZone::HandleKeyDown(int key_id) {
 
   if ((field10 & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
     field10 = static_cast<unsigned short>(field10 | (1U << ((unsigned char)key_id & 0x1f)));
-    sVarSlotId = g_pLocalizationTable->GetActiveNationId();
+    sVarSlotId = g_pSimMgr->GetActiveNationId();
 
     if ((field10 & (1U << ((unsigned char)sVarSlotId & 0x1f))) == 0) {
       uSlotCountLocal = slotCount;
@@ -127,9 +127,9 @@ void TZone::HandleKeyDown(int key_id) {
     }
   }
 
-  sVarActiveSlot = g_pLocalizationTable->GetActiveNationId();
+  sVarActiveSlot = g_pSimMgr->GetActiveNationId();
   if (sVarActiveSlot == -1) {
-    sVarActiveSlot = g_pLocalizationTable->GetActiveNationId();
+    sVarActiveSlot = g_pSimMgr->GetActiveNationId();
   }
 
   if ((field10 & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
