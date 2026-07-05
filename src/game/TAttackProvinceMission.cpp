@@ -22,7 +22,6 @@ IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 // Not-yet-recovered free functions/subsystems this file calls into. Generic
 // stub signature per the autogen stub definition; real signature applied via
 // a typed cast at each call site so the linker resolves the correct symbol.
-extern undefined4 GetTileNormalizedMovementClassId(void);
 extern undefined4 AccumulateMissionUnitPriorityVectorWithOptionalFilter(void);
 // TGreatPower method, not yet ported (operates on this+0x970 -- see
 // TDefendProvinceMission.cpp for the identical bridge).
@@ -117,15 +116,12 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
 
   const TGlobalMapCityScoreRecord& targetRecord =
       g_pGlobalMapState->cityScoreTable[targetProvince30];
-  typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
-  GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-      reinterpret_cast<GetTileNormalizedMovementClassId_t>(
-          (void*)&GetTileNormalizedMovementClassId);
 
   for (int i = 0; i < targetRecord.adjacentRegionCount08; ++i) {
     short candidateTile = targetRecord.adjacentRegionIds0A[i];
-    short movementClass = GetTileNormalizedMovementClassId_fn(candidateTile);
-    if (movementClass != nationId04) {
+    short tileOwnerNationCode =
+        g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(candidateTile);
+    if (tileOwnerNationCode != nationId04) {
       continue;
     }
 
@@ -135,9 +131,9 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
     int matchCount = 0;
     int adjacentCount = candidateRecord.adjacentRegionCount08;
     for (int j = 0; j < adjacentCount; ++j) {
-      short adjMovementClass =
-          GetTileNormalizedMovementClassId_fn(candidateRecord.adjacentRegionIds0A[j]);
-      if (adjMovementClass == nationId04) {
+      short adjOwnerNationCode = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
+          candidateRecord.adjacentRegionIds0A[j]);
+      if (adjOwnerNationCode == nationId04) {
         matchCount++;
       }
     }
@@ -226,12 +222,8 @@ TMission* TAttackProvinceMission::GetReplacementSlot48() {
       }
     }
   } else if (targetOwnerNation == nationId04) {
-    typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
-    GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-        reinterpret_cast<GetTileNormalizedMovementClassId_t>(
-            (void*)&GetTileNormalizedMovementClassId);
-    short movementClass = GetTileNormalizedMovementClassId_fn(field_14);
-    if (movementClass == pathMarker06) {
+    short tileOwnerNationCode = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(field_14);
+    if (tileOwnerNationCode == pathMarker06) {
       retarget = true;
     } else {
       retarget = (TryResolveTargetTerrainClass() != 0);
@@ -265,14 +257,10 @@ void TAttackProvinceMission::ResetValue0CToZero() {
   int matchCount = 0;
   int adjacentCount = targetRecord.adjacentRegionCount08;
   if (adjacentCount > 0) {
-    typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
-    GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-        reinterpret_cast<GetTileNormalizedMovementClassId_t>(
-            (void*)&GetTileNormalizedMovementClassId);
     for (int i = 0; i < adjacentCount; ++i) {
-      short movementClass =
-          GetTileNormalizedMovementClassId_fn(targetRecord.adjacentRegionIds0A[i]);
-      if (movementClass == nationId04) {
+      short tileOwnerNationCode = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
+          targetRecord.adjacentRegionIds0A[i]);
+      if (tileOwnerNationCode == nationId04) {
         matchCount++;
       }
     }

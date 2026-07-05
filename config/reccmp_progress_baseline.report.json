@@ -4234,7 +4234,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -7356,7 +7356,7 @@
     },
     {
       "address": "0x4a1f80",
-      "matching": 0.007782101167315175,
+      "matching": 0.5525291828793775,
       "name": "TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates",
       "type": 1
     },
@@ -12187,7 +12187,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12625,7 +12625,7 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12643,13 +12643,13 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12679,7 +12679,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16118,7 +16118,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.19718309859154928,
+      "matching": 0.20536119945479328,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16640,7 +16640,7 @@
     },
     {
       "address": "0x514290",
-      "matching": 0.0,
+      "matching": 0.47058823529411764,
       "name": "GetTileNormalizedMovementClassId",
       "type": 1
     },
@@ -17966,7 +17966,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9122807017543859,
+      "matching": 0.9391304347826087,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -17978,7 +17978,7 @@
     },
     {
       "address": "0x52c990",
-      "matching": 1.0,
+      "matching": 0.8333333333333334,
       "name": "ConvertTileIndexToOverlayCoord216BySide",
       "type": 1
     },
@@ -18038,7 +18038,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -19929,7 +19929,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -19965,7 +19965,7 @@
     },
     {
       "address": "0x53d630",
-      "matching": 0.5185185185185185,
+      "matching": 0.5925925925925926,
       "name": "ReturnMissionIfMovementClassMatchesTargetTile",
       "type": 1
     },
@@ -20031,7 +20031,7 @@
     },
     {
       "address": "0x53db60",
-      "matching": 0.4291497975708502,
+      "matching": 0.3724696356275304,
       "name": "TryResolveAttackProvinceMissionTargetTerrainClass",
       "type": 1
     },
@@ -20043,7 +20043,7 @@
     },
     {
       "address": "0x53e050",
-      "matching": 0.35602094240837695,
+      "matching": 0.5102040816326531,
       "name": "TryValidateOrRetargetDefendProvinceMissionTarget",
       "type": 1
     },
@@ -20055,7 +20055,7 @@
     },
     {
       "address": "0x53e1a0",
-      "matching": 0.29357798165137616,
+      "matching": 0.3119266055045872,
       "name": "ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile30",
       "type": 1
     },
@@ -20121,7 +20121,7 @@
     },
     {
       "address": "0x53ed00",
-      "matching": 0.3008849557522124,
+      "matching": 0.3185840707964602,
       "name": "TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14",
       "type": 1
     },
@@ -20145,7 +20145,7 @@
     },
     {
       "address": "0x53f040",
-      "matching": 0.5185185185185185,
+      "matching": 0.5925925925925926,
       "name": "ReturnInvadeMissionIfMovementClassMatchesTargetTile",
       "type": 1
     },

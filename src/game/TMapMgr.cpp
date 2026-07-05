@@ -1,6 +1,7 @@
 #include "game/TMapMgr.h"
 
 #include "game/CString.h"
+#include "game/TCountry.h"
 #include "game/TSortedList.h"
 #include "game/TMinor.h"
 #include "game/TCivUnit.h"
@@ -954,6 +955,26 @@ void TMapMgr::ApplyRailSectionEndpointDirectionFlags(short sourceTile, short des
   char* pTable8 = reinterpret_cast<char*>(g_Build_Hex_Area_LookupTable_00696E80) + 0x38;
   terrainStateTable[sourceTile].railFlags17 += pTable2[(dir + 3) * 2];
   terrainStateTable[destTile].railFlags17 += pTable8[((dir + 3) % 6) * 2];
+}
+
+// FUNCTION: IMPERIALISM 0x00514290
+short TMapMgr::ResolveTileOwnerNationCodeNormalized(int tileIndex) {
+  short ownerCode = cityScoreTable[tileIndex].ownerNationCode00;
+  if (ownerCode == -1) {
+    return ownerCode;
+  }
+  TCountry* nation = g_apTerrainTypeDescriptorTable[ownerCode];
+  if (nation->needLevelByNation[1] < 200) {
+    return ownerCode;
+  }
+  short code = nation->needLevelByNation[1];
+  if (code < 200) {
+    if (code < 100) {
+      return nation->needLevelByNation[0];
+    }
+    return code - 100;
+  }
+  return code - 200;
 }
 
 // FUNCTION: IMPERIALISM 0x00514c80

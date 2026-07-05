@@ -142,6 +142,14 @@ extern short g_DAT_006966d0_Value_006966D0[];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
 extern short g_awTacticalUnitCategoryCodeBySlot[];
 
+// Per-unit-type combat/composition class (0x695380), read by
+// ProcessTileUnitListsAndApplyRandomStatusUpdates when building a TArmyStack's
+// field4/field6 composition code.
+extern short g_awUnitCombatClassBySlot[64];
+// Stack composition class lookup (0x6953c0), indexed [minClass + maxClass*4]; true
+// bound unconfirmed beyond the observed min/max class range (1..5-ish).
+extern unsigned char g_abStackCompositionClassTable[32];
+
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
 extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];

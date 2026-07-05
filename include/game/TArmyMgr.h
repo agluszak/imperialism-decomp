@@ -96,12 +96,14 @@ public:
   // calling OrphanCallChain_C12_I108_004a2390; role not pinned down beyond that write site.
   int pendingRebuildFlag10;
   unsigned char pad18[0x1c - 0x14];
-  // +0x1c -- per-region affinity/eligibility lookup indexed by adjacent region id, read
-  // via raw offset arithmetic in ground truth (Helper_Uses_GenerateThreadLocalRandom15_
-  // At004a35e0, 0x4a35e0: `*(short*)(&this->field_0x1c + regionId*2)`); true array bound
-  // unconfirmed, so this models only the base element rather than asserting a size.
-  short regionAffinityTable1c;
-  unsigned char pad14[0x31c - 0x1e];
+  // +0x1c..+0x31b -- one entry per map tile (0x180 = 384 tiles, confirmed by
+  // ProcessTileUnitListsAndApplyRandomStatusUpdates's own fill loop at 0x4a1f80, which
+  // writes exactly 0x180 consecutive shorts starting here via
+  // TMapMgr::ResolveTileOwnerNationCodeNormalized) -- a per-tile owner-nation-code cache,
+  // read elsewhere indexed by a region/order-target id rather than a literal tile index
+  // (RedistributeUnitOrderQueueToRandomAdjacentRegion, ProcessPendingArmyStacksFor-
+  // BattleOrRelocation) so its exact addressing convention isn't fully pinned down.
+  short perTileOwnerNationCodeCache1c[0x180];
   short pendingMapActionIndex; // +0x31c
   unsigned char pad31e[0x39a - 0x31e];
   // +0x39a -- set when a terrain-descriptor refresh is pending; consumed and cleared by

@@ -315,6 +315,12 @@ public:
   // TArmyMgr callers that merely need a real, correctly-typed call site.
   void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag);
 
+  // Resolves cityScoreTable[tileIndex].ownerNationCode00, following one level of
+  // g_apTerrainTypeDescriptorTable[ownerCode]->needLevelByNation[1]'s 100/200-banded
+  // redirect encoding when it is >= 200 (annexation/transfer chain). 0x00514290,
+  // __thiscall, one int stack arg.
+  short ResolveTileOwnerNationCodeNormalized(int tileIndex);
+
   // Clears terrainStateTable[i].perTileVisitedFlag0f for every one of the 0x1950
   // (108x60) map tiles. 0x00409250, __thiscall, no args.
   void ClearPerTileByte0FForAllMapTiles();

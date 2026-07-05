@@ -427,6 +427,11 @@ short g_DAT_006966d0_Value_006966D0[16] = {0};
 // as garrison strength in TGreatPower slot 0x11 (0x004d87e0).
 short g_awTacticalUnitCategoryCodeBySlot[64] = {0};
 
+// Per-unit-type combat/composition class (short table at 0x695380).
+short g_awUnitCombatClassBySlot[64] = {0};
+// Stack composition class lookup (byte table at 0x6953c0); indexed [minClass + maxClass*4].
+unsigned char g_abStackCompositionClassTable[32] = {0};
+
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};
 

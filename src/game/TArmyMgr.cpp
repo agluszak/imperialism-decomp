@@ -87,6 +87,120 @@ void TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags() {
 
 // FUNCTION: IMPERIALISM 0x004a1f80
 undefined TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates() {
+  TArmyStack* stack = nullptr;
+  for (int tileIndex = 0; tileIndex < 0x180; ++tileIndex) {
+    TUnit* unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+    short prevFieldC = -1;
+    short prevField18 = -1;
+    for (; unit != nullptr; unit = unit->nextOnTile) {
+      short unitFieldC = unit->field_C;
+      short unitField18 = unit->field_18;
+      if (unitFieldC == -1) {
+        TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
+        if (milUnit->field_34 < 0x191) {
+          milUnit->field_34 += 100;
+        } else {
+          milUnit->field_34 = 500;
+        }
+        if (unitField18 < 7 && g_apNationStates[unitField18]->diplomacyEligibilityA0 == 0) {
+          unit->SetOrderModeSlot34(2, -1);
+        }
+        continue;
+      }
+
+      if (unitFieldC != prevFieldC || unitField18 != prevField18 || stack == nullptr) {
+        bool foundExisting = false;
+        int count = this->pendingUnitPool0c->GetCountSlot48();
+        if (count != 0) {
+          int index = 1;
+          count = this->pendingUnitPool0c->GetCountSlot48();
+          if (index <= count) {
+            do {
+              if (foundExisting) {
+                break;
+              }
+              stack =
+                  static_cast<TArmyStack*>(this->pendingUnitPool0c->GetEntryByOrdinalSlot4C(index));
+              stack->AssertValid();
+              if (stack->ownerNationCodeE == unitFieldC &&
+                  static_cast<short>(static_cast<signed char>(stack->categoryFlag8)) ==
+                      unitField18) {
+                foundExisting = true;
+              } else {
+                ++index;
+              }
+              count = this->pendingUnitPool0c->GetCountSlot48();
+            } while (index <= count);
+          }
+        }
+        if (!foundExisting) {
+          stack = new TArmyStack();
+          stack->head14 = nullptr;
+          stack->cursor18 = nullptr;
+          stack->fieldA = 0;
+          stack->field6 = 0;
+          stack->field4 = 0;
+          stack->categoryFlag8 = static_cast<unsigned char>(unitField18);
+          stack->fieldC = 0;
+          stack->ownerNationCodeE = unitFieldC;
+          stack->tileIndex10 = static_cast<short>(tileIndex);
+          this->pendingUnitPool0c->listState.AddHead(stack);
+        }
+        prevFieldC = unitFieldC;
+        prevField18 = unitField18;
+        if (stack == nullptr) {
+          MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+          TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0x333);
+        }
+      }
+
+      TArmyStackUnitNode* node = new TArmyStackUnitNode();
+      if (node == nullptr) {
+        MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+        TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xbeb);
+      }
+      node->unit = unit;
+      node->next = stack->head14;
+      ++stack->fieldA;
+      stack->head14 = node;
+    }
+  }
+
+  CIterator stackIter(this->pendingUnitPool0c);
+  for (TArmyStack* item = static_cast<TArmyStack*>(stackIter.Reset()); stackIter.More();
+       item = static_cast<TArmyStack*>(stackIter.Advance())) {
+    item->cursor18 = item->head14;
+    TArmyStackUnitNode* node = item->cursor18;
+    TUnit* unit = (node != nullptr) ? node->unit : nullptr;
+    short minClass = 3;
+    short maxClass = 1;
+    while (unit != nullptr) {
+      short unitClass = g_awUnitCombatClassBySlot[unit->orderType];
+      if (unitClass < minClass) {
+        minClass = unitClass;
+      }
+      if (unitClass > maxClass) {
+        maxClass = unitClass;
+      }
+      node = item->cursor18;
+      if (node != nullptr) {
+        node = node->next;
+        item->cursor18 = node;
+        unit = (node != nullptr) ? node->unit : nullptr;
+      } else {
+        unit = nullptr;
+      }
+    }
+    item->field4 = g_abStackCompositionClassTable[minClass + maxClass * 4];
+    int roll = GenerateThreadLocalRandom15();
+    item->field6 = static_cast<short>((item->field4 << 8) + (roll & 0xff));
+  }
+
+  this->pendingUnitPool0c->VirtualSlot64();
+  for (int i = 0; i < 0x180; ++i) {
+    this->perTileOwnerNationCodeCache1c[i] =
+        g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(i);
+  }
   return 0;
 }
 
@@ -118,7 +232,7 @@ undefined TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation() {
       TArmyStack* stack =
           static_cast<TArmyStack*>(this->pendingUnitPool0c->GetEntryByOrdinalSlot4C(cursor));
       stack->AssertValid();
-      if ((&this->regionAffinityTable1c)[stack->ownerNationCodeE] ==
+      if (this->perTileOwnerNationCodeCache1c[stack->ownerNationCodeE] ==
           static_cast<short>(static_cast<signed char>(stack->categoryFlag8))) {
         stack->cursor18 = stack->head14;
         TArmyStackUnitNode* node = stack->cursor18;
@@ -205,7 +319,7 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
     if (regionId == -1) {
       break;
     }
-    if ((&this->regionAffinityTable1c)[regionId] == headUnitTag) {
+    if (this->perTileOwnerNationCodeCache1c[regionId] == headUnitTag) {
       candidateRegions[candidateCount] = regionId;
       ++candidateCount;
     }

@@ -267,14 +267,6 @@ undefined4 GetTileUnitEntryByOwner(void)
   return 0;
 }
 
-// ghidra_name GetTileNormalizedMovementClassId
-// ghidra_proto undefined GetTileNormalizedMovementClassId()
-// FUNCTION: IMPERIALISM 0x00514290
-undefined4 GetTileNormalizedMovementClassId(void)
-{
-  return 0;
-}
-
 // ghidra_name FindReachableRecruitSpawnTileRecursive
 // ghidra_proto undefined FindReachableRecruitSpawnTileRecursive()
 // FUNCTION: IMPERIALISM 0x00514cd0

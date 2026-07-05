@@ -2115,6 +2115,7 @@ address|target_cpp|ownership|note
 513ed0|src/game/TMapMgr.cpp|manual|marker_sync
 513f60|src/game/TMapMgr.cpp|manual|marker_sync
 513ff0|src/game/TMapMgr.cpp|manual|marker_sync
+514290|src/game/TMapMgr.cpp|manual|marker_sync
 514310|src/game/TMapMgr.cpp|manual|marker_sync
 514360|src/game/TMapMgr.cpp|manual|marker_sync
 5143d0|src/game/TMapMgr.cpp|manual|marker_sync
