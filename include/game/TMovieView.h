@@ -3,6 +3,8 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
+struct MciMovieWindowState;
+
 // TODO(manifest): describe TMovieView and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TMovieView -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066f708
 class TMovieView : public TPicture {
@@ -126,10 +128,16 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
 // === END GENERATED DECLS (TMovieView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMovieView 0xCTOR`).
+  MciMovieWindowState* movieWindowState; // +0x90
 
   TMovieView();
+  bool OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath); // 0x5e24b0
+  bool SendMessage806IfSelectionStateActive();            // 0x5e24e0
+  bool SendMessage808IfSelectionStateActive();            // 0x5e2500
   static int RunModalLoop(TMovieView* view, unsigned char loopKind);
 };
+
+ASSERT_SIZE(TMovieView, 0x94);
 
 // === BEGIN GENERATED (TMovieView) — refreshed by `just gen-class TMovieView`; do not hand-edit ===
 // clang-format off

@@ -49,7 +49,10 @@ endif()
 if(WIN32 AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
     set_target_properties(Imperialism PROPERTIES WIN32_EXECUTABLE YES)
     # winmm: mmio* wave loaders (wave_helpers.cpp) and mci calls.
-    target_link_libraries(Imperialism PRIVATE gdi32 user32 winmm)
+    # msvfw32: MCIWnd* video window APIs; MSVC500 image lacks this import library.
+    target_link_libraries(Imperialism PRIVATE
+        gdi32 user32 winmm
+        "${CMAKE_CURRENT_SOURCE_DIR}/vendor/msvc500/lib/msvfw32.lib")
 endif()
 
 if(MSVC AND NOT IMPERIALISM_LINT_COMPILE_ONLY)

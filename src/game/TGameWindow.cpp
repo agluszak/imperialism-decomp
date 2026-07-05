@@ -4,6 +4,7 @@
 #include "game/TControl.h"
 #include "game/TSimMgr.h"
 #include "game/TView.h"
+#include "game/TMovieView.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
@@ -16,7 +17,6 @@ extern "C" CRuntimeClass PTR_s_TGameWindow_00656a30;
 undefined4 ConsumeFirstPendingAbilityUnlock(void);
 undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void);
 undefined4 SelectAndActivatePendingEventForCurrentView(void);
-undefined4 SendMessage808IfSelectionStateActive(void);
 
 namespace {
 
@@ -38,8 +38,8 @@ static short QueryUiRuntimeFieldF8() {
   return g_pUiRuntimeContext->fieldF8;
 }
 
-static int QueryUiRuntimeFieldF4() {
-  return static_cast<int>(g_pUiRuntimeContext->fieldF4);
+static TMovieView* QueryUiRuntimeActiveMovieView() {
+  return g_pUiRuntimeContext->activeMovieViewF4;
 }
 
 } // namespace
@@ -59,11 +59,6 @@ static void DispatchUiRuntimeMessage101AAndRefreshActiveViewGate() {
 static void SelectAndActivatePendingEventForCurrentViewGate() {
   reinterpret_cast<void(__cdecl*)(void)>(
       reinterpret_cast<void (*)()>(::SelectAndActivatePendingEventForCurrentView))();
-}
-
-static void SendMessage808IfSelectionStateActiveGate() {
-  reinterpret_cast<void(__cdecl*)(void)>(
-      reinterpret_cast<void (*)()>(::SendMessage808IfSelectionStateActive))();
 }
 
 static void DispatchUiRuntimeAbilityUnlockSlot88Gate(int abilityIndex) {
@@ -175,10 +170,11 @@ void TGameWindow::ForwardParam(int param) {
       return;
     }
     if (QueryUiRuntimeFieldF8() != 0) {
-      if (QueryUiRuntimeFieldF4() == 0) {
+      TMovieView* activeMovieView = QueryUiRuntimeActiveMovieView();
+      if (activeMovieView == 0) {
         return;
       }
-      GameWindowInvoke::SendMessage808IfSelectionStateActiveGate();
+      activeMovieView->SendMessage808IfSelectionStateActive();
       return;
     }
     mainControl->ForwardParam(param);

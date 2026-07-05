@@ -4,6 +4,7 @@
 #include "game/mfc.h"
 
 class TView;
+class TMovieView;
 
 // TODO(manifest): describe TAssetMgr and its role. Base edge (TObject) recovered from RTTI
 // CRuntimeClass chain: TAssetMgr -> TObject -> CObject.
@@ -28,7 +29,8 @@ public:
   virtual void NoOpRuntimeUiCallback_005df410(int arg);           // slot 0x0d 0x5df410
   virtual void
   PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
-                                            int followupEventCode); // slot 0x0e 0x5dfc10
+                                            TMovieView* movieView,
+                                            int modeFlag); // slot 0x0e 0x5dfc10
   // === END GENERATED DECLS (TAssetMgr) ===
 
   // Layout recovered from ctor 0x5df280: the 13 shared UI string-reference slots live at

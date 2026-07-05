@@ -11,6 +11,8 @@ tmp_decomp/
 *.pdb
 *.ilk
 *.lib
+!vendor/msvc500/lib/
+!vendor/msvc500/lib/*.lib
 *.exp
 *.exe
 !tools/**/tests/*.exe

@@ -26,6 +26,7 @@ const unsigned int kControlTagFood = 0x646f6f66u; // 'food'
 const unsigned int kControlTagOkay = 0x6f6b6179u; // 'okay' — confirm button
 const unsigned int kControlTagRewa = 0x72657761u; // 'rewa' — reward picture
 const unsigned int kControlTagPict = 0x70696374u; // 'pict' — generic picture name tag
+const unsigned int kControlTagMovi = 0x6d6f7669u; // 'movi' — startup movie view
 const unsigned int kControlTagCoat = 0x636f6174u; // 'coat' — coat-of-arms picture
 const unsigned int kControlTagInfo = 0x696e666fu; // 'info' — info text block
 const unsigned int kControlTagTevw = 0x74657677u; // 'tevw' — text-view name tag

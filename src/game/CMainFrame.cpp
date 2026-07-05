@@ -187,6 +187,16 @@ void CMainFrame::OnCommand800C() {
   TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog();
 }
 
+// FUNCTION: IMPERIALISM 0x00485990
+int CMainFrame::SetFieldC0AndInvalidateWindowIfChanged(int styleValue) {
+  int priorValue = field_C0;
+  if (priorValue != styleValue) {
+    field_C0 = styleValue;
+    InvalidateRect(NULL, TRUE);
+  }
+  return priorValue;
+}
+
 // FUNCTION: IMPERIALISM 0x00485920
 LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam) {
   (void)lParam;

@@ -9,6 +9,7 @@
 #include "game/CWMgrIterator.h"       // window-registry traversal for the full (code-0) refresh
 #include "game/quickdraw_rendering.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
 #include "game/TToolBarCluster.h"     // pulls TView/TControl/TCluster chain for main-view dispatch
+#include "game/TMovieView.h"
 
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
@@ -128,7 +129,7 @@ TViewMgr::TViewMgr() : TObject() {
   this->turnStateSeedHi = *reinterpret_cast<unsigned int*>(kAddrTurnStateSeedHi);
   this->field10 = 0;
   this->mapUberPictureF0 = 0;
-  this->fieldF4 = 0;
+  this->activeMovieViewF4 = 0;
   this->fieldF8 = 0;
 }
 
@@ -993,13 +994,13 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       }
     } else if (newCode > 0x898) {
       if (newCode == 0xed8 || newCode == 0xf3c) {
-        this->UiRuntimeSlotF4();
+        this->UiRuntimeSlotA0();
       } else if (newCode == 0x8fc) {
         HandleTurnEvent8FC_RebuildPageTabsAndTitles();
       } else if (newCode == 0x11f8) {
-        this->UiRuntimeSlot110();
+        this->HandleTurnEventDialogFactorySlotF4();
       } else if (newCode == 0xf3d) {
-        this->UiRuntimeSlotA0();
+        this->HandleTurnEventF3D_PopulateRecentTurnMessages(static_cast<int>(secondary));
       } else if (newCode == 0x2103) {
         this->UiRuntimeSlot64();
       } else if (newCode == 0x2134) {
@@ -1298,6 +1299,49 @@ void TViewMgr::UiRuntimeSlotBC() {
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagCity, 0x2731, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x005db3b0
+void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  TMovieView* movieView = static_cast<TMovieView*>(activeDialog->ResolveControlByTag(0x6d6f7669));
+  movieView->AssertValid();
+  movieView->SetState(1, 0);
+  movieView->InvokeSlot13C();
+
+  CString movieName;
+  switch (g_pSimMgr->mode) {
+  case 1:
+    movieName = CString("open");
+    if (movieView->linkedChildHandler != 0) {
+      static_cast<TView*>(movieView->linkedChildHandler)->SetState(0, 0);
+    }
+    break;
+  case 0xe:
+    movieName = CString("vote");
+    break;
+  case 0x16:
+    movieName = CString("win");
+    break;
+  case 0x17:
+    if (IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
+      movieName = CString("win");
+    } else {
+      movieName = CString("lose");
+    }
+    break;
+  default:
+    movieName = CString("lose");
+    break;
+  }
+
+  if (!movieName.IsEmpty()) {
+    g_pUiViewManager->PlayMovieClipAndDispatchTurnStateFollowup(movieName, movieView, 0);
+  }
+}
+
+void TViewMgr::UiRuntimeSlotF8() {}
+void TViewMgr::UiRuntimeSlot108() {}
+void TViewMgr::UiRuntimeSlot10C() {}
+
 // Screen-exit backbone: record the followup turn state; when leaving (state 0),
 // re-apply the audio volume preferences and post the followup turn-event code for the
 // current TSimMgr mode (1 -> 0x5dc main menu, 0xe/0x16/0x17 -> 0x7e0,
@@ -1311,7 +1355,7 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   g_pSfxPlaybackSystem->RequestDirectSoundInitIfAllowed();
   g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(g_pSimMgr->preferenceValues[4]);
   g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[5]);
-  this->fieldF4 = 0;
+  this->activeMovieViewF4 = 0;
   switch (g_pSimMgr->mode) {
     case 1:
       g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
@@ -1397,11 +1441,11 @@ int TViewMgr::ShowConstructionOptionsDialog() {
 void TViewMgr::UiRuntimeSlotE0() {}
 void TViewMgr::UiRuntimeSlotE8() {}
 void TViewMgr::UiRuntimeSlotF0() {}
-void TViewMgr::UiRuntimeSlotF4() {}
-void TViewMgr::UiRuntimeSlotF8() {}
-void TViewMgr::UiRuntimeSlot108() {}
-void TViewMgr::UiRuntimeSlot10C() {}
-void TViewMgr::UiRuntimeSlot110() {}
+
+// FUNCTION: IMPERIALISM 0x005dc690
+void TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot) {
+  (void)nationSlot;
+}
 
 // FUNCTION: IMPERIALISM 0x005dcaa0
 void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {

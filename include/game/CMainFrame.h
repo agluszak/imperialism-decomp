@@ -43,6 +43,7 @@ public:
   virtual BOOL PreTranslateMessage(MSG* msg);
 
   void ConfigureTopLevelWindowStyleAndPlacement(int width, int height);
+  int SetFieldC0AndInvalidateWindowIfChanged(int styleValue); // 0x00485990
 
   CDibPal* field_BC;
   int field_C0;

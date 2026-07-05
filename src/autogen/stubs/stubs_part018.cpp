@@ -795,14 +795,6 @@ undefined4 SetOutputDevice(void)
   return 0;
 }
 
-// ghidra_name TMovieView::HandleBlinkStateAndScheduleTimerTick
-// ghidra_proto undefined HandleBlinkStateAndScheduleTimerTick()
-// FUNCTION: IMPERIALISM 0x00593c10
-undefined4 HandleBlinkStateAndScheduleTimerTick(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_GetTickCountDiv16_At00593ce0
 // ghidra_proto undefined Helper_Uses_thunk_GetTickCountDiv16_At00593ce0()
 // FUNCTION: IMPERIALISM 0x00593ce0

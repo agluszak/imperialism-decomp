@@ -395,14 +395,6 @@ undefined4 AssertAmbitSubsystemReadyOrFailWithBmp3B6(void)
   return 0;
 }
 
-// ghidra_name DetectImperialismInstallDriveAndSetPathPrefix
-// ghidra_proto undefined DetectImperialismInstallDriveAndSetPathPrefix()
-// FUNCTION: IMPERIALISM 0x00414870
-undefined4 DetectImperialismInstallDriveAndSetPathPrefix(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000
 // ghidra_proto undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000()
 // FUNCTION: IMPERIALISM 0x00415000
