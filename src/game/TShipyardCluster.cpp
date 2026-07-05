@@ -47,7 +47,7 @@ TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0),
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::NoOpUiLifecycleHook(int styleSeed) {
   (void)styleSeed;
-  TCity* cityState = GetNationCityStateBySlot(g_pLocalizationTable->GetActiveNationId());
+  TCity* cityState = GetNationCityStateBySlot(g_pSimMgr->GetActiveNationId());
   field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
   field_8c = 999;
   this->InitializeTradeMoveAndBarControls();

@@ -321,7 +321,7 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
     ApplyUiTextStyleAndSyncColor(0, 0xc, 0x2b68);
     MapUiThemeCodeToStyleFlags(0x2b6c, &stylePrimary);
     MapUiThemeCodeToStyleFlags(0x2b67, &styleSecondary);
-    g_pLocalizationTable->GetString(0x2718, selectedClass, &localizedTextRef);
+    g_pSimMgr->GetString(0x2718, selectedClass, &localizedTextRef);
 
     textWidth = MeasureTextExtentWithCachedStyle(&localizedTextRef);
     textOriginX = static_cast<short>((this->field34 / 2) - (textWidth / 2));

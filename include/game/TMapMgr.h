@@ -21,9 +21,16 @@ struct TTerrainStateRecordView {
   signed char ownerNationTag04; // 0x04
   unsigned char pad05;
   signed char adjacencyBits06; // 0x06
-  unsigned char pad07[0x0e - 0x07];
+  unsigned char pad07[0x0a - 0x07];
+  unsigned char adjacencyMaskA0a; // 0x0a -- per-direction bit mask (land coastline/edges)
+  unsigned char adjacencyMaskB0b; // 0x0b -- per-direction bit mask (region/water borders)
+  unsigned char pad0c[0x0e - 0x0c];
   unsigned char recruitSearchVisited0e; // 0x0e
-  unsigned char pad0f[0x11 - 0x0f];
+  // 0x0f -- cleared to 0 across all 0x1950 tiles by
+  // TMapMgr::ClearPerTileByte0FForAllMapTiles (0x409250); reader/setter beyond that not
+  // yet identified.
+  unsigned char perTileVisitedFlag0f;
+  unsigned char pad10;
   signed char resourceTypeByEdge[2];
   unsigned char gateFlag;
   short cityRecordIndex;
@@ -100,7 +107,7 @@ public:
   virtual undefined BuildOrLoadGlobalMapStateForSession(CString param_1,
                                                         char* param_2);     // slot 0x0b 0x50ec90
   virtual undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream(); // slot 0x0c 0x50f200
-  virtual undefined
+  virtual unsigned char*
   UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1);                  // slot 0x0d 0x510210
   virtual undefined InitializeTileNeighborConnectionMaskIfNeeded(int param_1); // slot 0x0e 0x5107e0
   virtual undefined UpdateTileNeighborBorderInfluenceCounters(short param_1,
@@ -237,6 +244,8 @@ public:
   int cityScoreTotal;                 // +0x18
   char* scenarioTagText1c;            // +0x1c
   char hexNeighborWrapHorizontally20; // +0x20
+  char pad21;                         // +0x21
+  short pendingRiverMouthTile22;      // +0x22 -- tile awaiting a river-mouth variant assign
 
   static void ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
                                             char wrapHorizontally);
@@ -260,6 +269,28 @@ public:
   int SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags);
   void ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation);
   short FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex, char allowActiveFlag2);
+  // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade
+  // manager's proposal-weight metric). Reattributed from TCivToolbar (heuristic 46).
+  int CalculateDeveloperTilePurchaseCost(short nTileIndex);
+
+  // 0x5108d0. Map-tile sprite-variant resolver: reads the tile's terrain type
+  // (terrainStateTable byte 0) and feature/subtype code (byte 2, the field the layout
+  // calls roadFlag), inspects the west (tile-1) and NE-row (tile-0x6b) neighbors, and
+  // picks a sprite-variant id -- using the map-generation LCG (g_mapGenLcgState_006a38e8)
+  // to break ties. Called by UpdateMapTileAdjacencyMasksAndVariantForTile (0x510210).
+  int ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex);
+
+  // 0x5112f0/0x511360/0x5113d0/0x511440. Predicate helpers for the variant resolver:
+  // each returns 1 iff the neighbor tile's byte-2 feature code is in a specific set of
+  // adjacency-continuation codes (west-run set A/B, north-run set C/D).
+  char CheckTileVariantCodeMembershipSetA(short tileIndex);
+  char CheckTileVariantCodeMembershipSetB(short tileIndex);
+  char CheckTileVariantCodeMembershipSetC(short tileIndex);
+  char CheckTileVariantCodeMembershipSetD(short tileIndex);
+
+  // 0x513ed0. True if either of the tile's two edge resources is a prospecting-discovery
+  // candidate (codes 3/4/0x15/0x16, or 6 when the active nation has a production order).
+  byte CheckTileProspectingDiscoveryCandidate(short nTileIndex);
 
   TCivUnit* GetFirstCivilianOrderOnTile(short tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;
@@ -275,6 +306,24 @@ public:
   // tile) and clear the owner-nation byte (+0x18) wherever it matches nationSlot for
   // tiles tagged in [7,22]. 0x00518470, __thiscall, one int param.
   void ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot);
+
+  // Ground truth 0x00518bd0 (reached through the ILT thunk at 0x004079af): hex-neighbor
+  // direction math (adjacentRegionIds0A-style lookup via g_Build_Hex_Area_LookupTable_*)
+  // that marks an adjacent tile's rail/road direction byte and, if mapUberPictureF0 is
+  // set, forwards to its own slot-0x76 (byte 0x1d8) virtual. Left as a stub pending a
+  // dedicated pass -- the body is 343 bytes of hex-grid arithmetic, out of scope for the
+  // TArmyMgr callers that merely need a real, correctly-typed call site.
+  void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag);
+
+  // Resolves cityScoreTable[tileIndex].ownerNationCode00, following one level of
+  // g_apTerrainTypeDescriptorTable[ownerCode]->needLevelByNation[1]'s 100/200-banded
+  // redirect encoding when it is >= 200 (annexation/transfer chain). 0x00514290,
+  // __thiscall, one int stack arg.
+  short ResolveTileOwnerNationCodeNormalized(int tileIndex);
+
+  // Clears terrainStateTable[i].perTileVisitedFlag0f for every one of the 0x1950
+  // (108x60) map tiles. 0x00409250, __thiscall, no args.
+  void ClearPerTileByte0FForAllMapTiles();
 
   TMapMgr();
 };

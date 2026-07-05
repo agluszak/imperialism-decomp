@@ -17,6 +17,6 @@ void TimelyNetMessagePrefix::SetTimeEmitPacketGameFlowTurnId() {
 // FUNCTION: IMPERIALISM 0x005438e0
 TimelyNetMessagePrefix* TimelyNetMessagePrefix::InitializeEmitEventHeaderWithActiveNation() {
   messageTag = 0x74696d65; // 'time'
-  activeNationId = static_cast<unsigned char>(g_pLocalizationTable->GetActiveNationId());
+  activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   return this;
 }

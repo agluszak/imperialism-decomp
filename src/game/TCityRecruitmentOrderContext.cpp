@@ -15,7 +15,7 @@ void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta() {
   CString sharedRefA;
   CString sharedRefB;
 
-  TSimMgr* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pSimMgr;
   if (localization != 0) {
     localization->GetString(static_cast<short>((this->specialistMode == 0) ? 0x2718 : 0x2717),
                             this->entryId, &sharedRefB);

@@ -217,8 +217,8 @@ void ImperialismApp::HandleStartupCommand100() {
   int waitCursorAnchor;
   BeginWaitCursor();
   field_C0 = reinterpret_cast<int>(reinterpret_cast<void*>(&waitCursorAnchor));
-  if (g_pLocalizationTable != nullptr) {
-    g_pLocalizationTable->AdvanceGlobalTurnStateMachine();
+  if (g_pSimMgr != nullptr) {
+    g_pSimMgr->AdvanceGlobalTurnStateMachine();
   }
   field_C0 = 0;
   EndWaitCursor();

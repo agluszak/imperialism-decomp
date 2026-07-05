@@ -83,13 +83,15 @@ void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventAr
   int normalizedCommand = commandId - 100;
 
   if (normalizedCommand == 0) {
-    TControl* moveControl = this->ResolveControlByTag(0x6d6f7665); // kControlTagMove
+    TControl* moveControl =
+        static_cast<TControl*>(this->ResolveControlByTag(0x6d6f7665)); // kControlTagMove
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(0x749); // kAssertLineMoveAdjustMove
     }
     short moveValue = reinterpret_cast<TAmtBar*>(moveControl)->QueryValue();
 
-    TControl* availableControl = this->ResolveControlByTag(0x61766169); // kControlTagAvai
+    TControl* availableControl =
+        static_cast<TControl*>(this->ResolveControlByTag(0x61766169)); // kControlTagAvai
     if (availableControl == 0) {
       FailNilPointerInUSmallViews(0x74d); // kAssertLineMoveAdjustAvai
     }
@@ -98,7 +100,8 @@ void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventAr
       this->DispatchRuntimeApplyMoveValue(moveValue + 1);
     }
   } else if (normalizedCommand == 1) {
-    TControl* moveControl = this->ResolveControlByTag(0x6d6f7665); // kControlTagMove
+    TControl* moveControl =
+        static_cast<TControl*>(this->ResolveControlByTag(0x6d6f7665)); // kControlTagMove
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(0x759); // kAssertLineMoveAdjustMoveMinus
     }

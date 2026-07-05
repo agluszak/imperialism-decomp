@@ -323,14 +323,6 @@ undefined4 FormatFloatToLocalizedSharedString(void)
   return 0;
 }
 
-// ghidra_name scanBracketExpressions
-// ghidra_proto void __cdecl scanBracketExpressions(void * ctx, void * out_or_state, const char * input_str, ...)
-// FUNCTION: IMPERIALISM 0x0057fef0
-void __cdecl scanBracketExpressions(void * ctx, void * out_or_state, const char * input_str, ...)
-{
-  return;
-}
-
 // ghidra_name BuildUiMessageTextFromBracketTemplate
 // ghidra_proto undefined BuildUiMessageTextFromBracketTemplate()
 // FUNCTION: IMPERIALISM 0x00580060
@@ -851,14 +843,6 @@ undefined4 RecomputeNationComparisonValuesAndNormalizeScale(void)
   return 0;
 }
 
-// ghidra_name TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets
-// ghidra_proto undefined SortSevenEntriesAndUpdatePictureWidgets()
-// FUNCTION: IMPERIALISM 0x00594c00
-undefined4 SortSevenEntriesAndUpdatePictureWidgets(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00594ed0
 // ghidra_proto undefined WrapperFor_ftol_At00594ed0()
 // FUNCTION: IMPERIALISM 0x00594ed0
@@ -871,14 +855,6 @@ undefined4 WrapperFor_ftol_At00594ed0(void)
 // ghidra_proto undefined ConstructTWorldViewBaseState()
 // FUNCTION: IMPERIALISM 0x00595000
 undefined4 ConstructTWorldViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberPicture::ConstructTMapUberPictureBaseState
-// ghidra_proto undefined ConstructTMapUberPictureBaseState()
-// FUNCTION: IMPERIALISM 0x005969e0
-undefined4 ConstructTMapUberPictureBaseState(void)
 {
   return 0;
 }

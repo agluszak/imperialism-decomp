@@ -2,6 +2,7 @@
 
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
+#include "game/global_data_tables.h"
 IMPLEMENT_DYNCREATE(TAssetMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005df280
@@ -52,6 +53,11 @@ void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
                                                           int followupEventCode) {
   (void)movieName;
   (void)followupEventCode;
+}
+
+// FUNCTION: IMPERIALISM 0x005dfea0
+void __stdcall AssignScoresDatPathToSharedString(CString* out) {
+  *out = CString(s_Data_scores_dat_0069b7fc);
 }
 
 extern "C" const char s_PictWvGobPathFormat_00698BF4[];

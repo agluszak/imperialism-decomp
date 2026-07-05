@@ -99,14 +99,6 @@ undefined4 thunk_DestructEngineerDialogBaseState(void)
   return 0;
 }
 
-// ghidra_name TCountry::thunk_QueueInterNationEventRecordDeduped
-// ghidra_proto undefined thunk_QueueInterNationEventRecordDeduped()
-// ILT thunk 0x00406758 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_QueueInterNationEventRecordDeduped(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DestructCityDialogSharedBaseState
 // ghidra_proto undefined thunk_DestructCityDialogSharedBaseState()
 // ILT thunk 0x004067c1 - unannotated on purpose (see ILT_THUNK_RANGE)

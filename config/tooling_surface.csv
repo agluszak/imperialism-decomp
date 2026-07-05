@@ -22,6 +22,7 @@ module|tools.workflow.check_manual_cruntimeclass|just:manual-cruntimeclass-gate|
 module|tools.workflow.check_vtable_coverage|just:vtable-coverage|Report unpaired vtable annotations
 module|tools.workflow.correct_scalar_dtors|just:correct-scalar-dtors|Canonicalize scalar deleting destructor names
 module|tools.workflow.vendor_msvc500_headers|just:vendor-msvc500-headers|Populate local gitignored MSVC500 header mirror
+module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror the DirectX 5 SDK inc/lib reference copy of the build image
 module|tools.workflow.class_discovery|just:class-discovery|Read-only class/vtable discovery pipeline
 module|tools.workflow.slice_discovery|just:slice-discovery|Local vertical-slice evidence report
 module|tools.workflow.macos_evidence|just:mac-evidence|Persistent Mac CodeWarrior evidence extraction and validation

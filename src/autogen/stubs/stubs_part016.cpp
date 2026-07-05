@@ -203,14 +203,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At005399d0(void)
   return 0;
 }
 
-// ghidra_name TMission::ConstructTEscortMissionForPortContext
-// ghidra_proto undefined ConstructTEscortMissionForPortContext()
-// FUNCTION: IMPERIALISM 0x00539a20
-undefined4 ConstructTEscortMissionForPortContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeNavyOrderDistributionSimilarityScoreForNation
 // ghidra_proto undefined ComputeNavyOrderDistributionSimilarityScoreForNation()
 // FUNCTION: IMPERIALISM 0x00539a90
@@ -423,14 +415,6 @@ undefined4 CreateObject_0053F080(void)
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053f280()
 // FUNCTION: IMPERIALISM 0x0053f280
 undefined4 WrapperFor_AFX_CLASSINIT_At0053f280(void)
-{
-  return 0;
-}
-
-// ghidra_name TMission::ConstructTInvadeMissionWithOptionalBeachhead
-// ghidra_proto undefined ConstructTInvadeMissionWithOptionalBeachhead()
-// FUNCTION: IMPERIALISM 0x0053f2d0
-undefined4 ConstructTInvadeMissionWithOptionalBeachhead(void)
 {
   return 0;
 }
@@ -747,14 +731,6 @@ undefined4 RouteAndProcessDiplomacyTurnStateEventQueue(void)
   return 0;
 }
 
-// ghidra_name TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
-// ghidra_proto unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet)
-// FUNCTION: IMPERIALISM 0x00545940
-undefined4 ProcessDiplomacyTurnStateEventStateMachine(void)
-{
-  return 0;
-}
-
 // ghidra_name TouchSessionActiveNationId
 // ghidra_proto undefined TouchSessionActiveNationId()
 // FUNCTION: IMPERIALISM 0x00549240
@@ -775,22 +751,6 @@ undefined4 AppendNodeToTurnEventLinkedListAt6C(void)
 // ghidra_proto undefined CreateAndSendTurnEvent11_MapOffsetAndFlags()
 // FUNCTION: IMPERIALISM 0x005493c0
 undefined4 CreateAndSendTurnEvent11_MapOffsetAndFlags(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateAndSendTurnEvent12_TwoShorts
-// ghidra_proto undefined CreateAndSendTurnEvent12_TwoShorts()
-// FUNCTION: IMPERIALISM 0x005494b0
-undefined4 CreateAndSendTurnEvent12_TwoShorts(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateAndSendTurnEvent22_ByteAndShort
-// ghidra_proto undefined CreateAndSendTurnEvent22_ByteAndShort()
-// FUNCTION: IMPERIALISM 0x00549720
-undefined4 CreateAndSendTurnEvent22_ByteAndShort(void)
 {
   return 0;
 }

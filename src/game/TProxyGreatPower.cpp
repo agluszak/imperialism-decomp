@@ -59,8 +59,7 @@ void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalC
 
   TurnEvent16PacketPayload packetPayload;
   packetPayload.packetTag = 0x74696D65;
-  packetPayload.activeNationId =
-      static_cast<unsigned char>(g_pLocalizationTable->GetActiveNationId());
+  packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packetPayload.sourceNation = this->nationSlot;
   packetPayload.eventCode = 0x16;
   packetPayload.messageLength = 0x20;

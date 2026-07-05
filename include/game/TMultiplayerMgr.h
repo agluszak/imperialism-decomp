@@ -5,6 +5,7 @@
 #include "game/mfc.h"
 
 class TStream;
+struct NetMessage;
 
 // Multiplayer session / game-flow manager (g_pGameFlowState). Inherits the shared
 // TEventHandler control surface used by UI roots; vtable @ 0x0065c030.
@@ -61,9 +62,11 @@ public:
   // callee-cleanup `ret n`, so these are real TMultiplayerMgr methods, not free
   // functions. They build a stack packet and hand it to TNetMgr::Send via the
   // g_pNetMgr006a6014 global.
-  void EmitTurnEvent3Mode18WithActiveNation(); // 0x5446a0
+  void EmitTurnEvent3Mode18WithActiveNation();                         // 0x5446a0
+  void CreateAndSendTurnEvent12_TwoShorts(short shortA, short shortB); // 0x5494b0
   void CreateAndSendTurnEvent13_NationAndNineDwords(int nationSlot,
-                                                    int* payloadDwords); // 0x549540
+                                                    int* payloadDwords);             // 0x549540
+  void CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVal, short shortVal); // 0x549720
   void CreateAndSendTurnEvent20_ShortAndTwoBytes(short eventParam, unsigned char byteA,
                                                  unsigned char byteB); // 0x5495e0
   void CreateAndSendTurnEvent21_ThreeBytes(unsigned char byte0, unsigned char byte1,
@@ -75,6 +78,7 @@ public:
   void DispatchCityRedrawInvalidateEvent(short cityId);        // 0x54abf0
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                               int mode); // 0x54c5a0
+  undefined4 ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
 };
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);

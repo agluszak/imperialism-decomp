@@ -38,8 +38,7 @@ public:
   void SeedRandomDiplomacyPolicyThresholds(void);
   char CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode);
   void HandleNetworkPortConstructionOrder(int nationId);
-  void SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot,
-                                                            short predicateCode);
+  void SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot, short predicateCode);
   void ClearTileActivityOverlayByProvinceId(int provinceId);
   void QueueInterNationEvent17ForState300AffectedNations(void);
   void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId);
@@ -70,7 +69,13 @@ private:
   short diplomacyPolicyPredicateCode12e;
   short diplomacyPolicyGate130;
   short diplomacyPolicyGate132;
-  unsigned char minorTailPad134[0x16a - 0x134];
+  // Serialized as a unit by ReadFrom/WriteTo (byte-order swapped via
+  // SwapAdjacentBytesInShortArray on load); diplomacySaveExt13c is only present when
+  // g_nSaveFormatVersion > 0x39 (a later save-format addition). Same 0x17-short size as
+  // the sibling diplomacyGrantByNation/recurringGrantByResource tables, but the indexed
+  // dimension (nation vs. resource) is not yet confirmed.
+  short diplomacySaveFields134[4]; // 0x134
+  short diplomacySaveExt13c[0x17]; // 0x13c
   short recurringGrantByResource[0x17];
   short relationGrantLinkMatrix[7][7];
   unsigned char minorTailPad1fa[0x2cc - 0x1fa];

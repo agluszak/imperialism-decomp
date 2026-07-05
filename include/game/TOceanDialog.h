@@ -15,7 +15,8 @@ public:
   virtual void ApplyRectSlot110(RECT* rectBuffer) override;
 
   virtual void RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) override;
-  virtual void RenderTacticalStackCountIndicatorAndUnitBadge() override;
+  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
+                                                             int arg3) override;
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
                                                              unsigned char altOverlay) override;
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
@@ -25,9 +26,9 @@ public:
                                                                  unsigned short* outCol,
                                                                  short* outBand) override;
   virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) override;
-  virtual undefined OrphanRetStub_00596680() override;
-  virtual undefined OrphanRetStub_005966c0() override;
-  virtual undefined OrphanLeaf_NoCall_Ins02_005966e0() override;
+  virtual void OrphanRetStub_00596680(int arg1, int arg2) override;
+  virtual void OrphanRetStub_005966c0(short arg1) override;
+  virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;
   virtual undefined ComputeWrappedTileIndexFromObjectOffset7C7E();
 
   TOceanDialog();

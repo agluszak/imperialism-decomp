@@ -1,7 +1,6 @@
 #include "game/T2PictToggleButton.h"
 #include "game/mfc.h"
 
-
 // FUNCTION: IMPERIALISM 0x00584890
 T2PictToggleButton* __cdecl CreateT2PictToggleButtonInstance(void) {
   return new T2PictToggleButton();
@@ -27,17 +26,16 @@ bool T2PictToggleButton::IsSelected() {
 // FUNCTION: IMPERIALISM 0x005849d0
 void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   (void)notifyParent;
-  short sVar1;
   void** ppuVar2;
 
-  sVar1 = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x84);
-  int field3c = *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x3c);
+  short sVar1 = glyphBase84;
+  int oldField3c = field3c;
 
-  if (((isPressed == false) && (field3c < (int)sVar1)) ||
-      ((isPressed == true && ((int)sVar1 < field3c)))) {
+  if (((isPressed == false) && (oldField3c < (int)sVar1)) ||
+      ((isPressed == true && ((int)sVar1 < oldField3c)))) {
     reinterpret_cast<void(__cdecl*)(short, int)>(reinterpret_cast<void***>(this)[0][0x72])(
-        (short)field3c, 0);
-    *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x3c) = (int)sVar1;
+        (short)oldField3c, 0);
+    field3c = (int)sVar1;
   }
   ppuVar2 = reinterpret_cast<void***>(this)[0];
   reinterpret_cast<void(__cdecl*)()>(ppuVar2[0x3e])();

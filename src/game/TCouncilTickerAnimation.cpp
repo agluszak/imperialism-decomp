@@ -36,7 +36,7 @@ void ApplyCouncilCandidateTextStyle(TStaticText* textControl,
 }
 
 void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag, short nationSlot) {
-  TControl* control = hostPanel->ResolveControlByTag(controlTag);
+  TControl* control = static_cast<TControl*>(hostPanel->ResolveControlByTag(controlTag));
   if (control == nullptr) {
     return;
   }
@@ -54,7 +54,7 @@ void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag, 
 }
 
 void RefreshCouncilCoatOfArmsPicture(TView* hostPanel, unsigned int controlTag, short nationSlot) {
-  TControl* control = hostPanel->ResolveControlByTag(controlTag);
+  TControl* control = static_cast<TControl*>(hostPanel->ResolveControlByTag(controlTag));
   if (control == nullptr) {
     return;
   }
@@ -115,14 +115,14 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
 
   RefreshCouncilCandidateNameText(hostPanel, kControlTagCan0,
                                   g_pDiplomacyTurnStateManager->selectedSourceNationSlot784);
-  TControl* can0Control = hostPanel->ResolveControlByTag(kControlTagCan0);
+  TControl* can0Control = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagCan0));
   if (can0Control != nullptr) {
     ApplyCouncilCandidateTextStyle(static_cast<TStaticText*>(can0Control), &councilTextStyle);
   }
 
   RefreshCouncilCandidateNameText(hostPanel, kControlTagCan1,
                                   g_pDiplomacyTurnStateManager->selectedTargetNationSlot786);
-  TControl* can1Control = hostPanel->ResolveControlByTag(kControlTagCan1);
+  TControl* can1Control = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagCan1));
   if (can1Control != nullptr) {
     ApplyCouncilCandidateTextStyle(static_cast<TStaticText*>(can1Control), &councilTextStyle);
   }
@@ -132,10 +132,9 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
   RefreshCouncilCoatOfArmsPicture(hostPanel, kControlTagCoa1,
                                   g_pDiplomacyTurnStateManager->selectedTargetNationSlot786);
 
-  const short localizationMode = static_cast<short>(g_pLocalizationTable->mode);
+  const short localizationMode = static_cast<short>(g_pSimMgr->mode);
   if (localizationMode == 0x16 || localizationMode == 0x17) {
-    const char* tileRecordBytes = reinterpret_cast<const char*>(
-        *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10));
+    const char* tileRecordBytes = reinterpret_cast<const char*>(g_pGlobalMapState->cityScoreTable);
     int flagIndex = 0;
     for (int tileOffset = 0; tileOffset < 0xfc00; tileOffset += 0xa8) {
       if (tileRecordBytes[tileOffset] != -1) {
@@ -145,7 +144,7 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
     }
     *reinterpret_cast<short*>(panelState + 0x528) = kCouncilTickerIntervalMapMode;
 
-    TControl* endControl = hostPanel->ResolveControlByTag(kControlTagEnd);
+    TControl* endControl = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagEnd));
     if (endControl != nullptr) {
       endControl->AssertValid();
       *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(endControl) + 0x1c) =
@@ -155,11 +154,8 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
   }
 
   short maxPendingTier = *reinterpret_cast<short*>(panelState + 0x24c8);
-  short* tierScan =
-      reinterpret_cast<short*>(reinterpret_cast<char*>(g_pDiplomacyTurnStateManager) + 0x484);
-  const int tierCount = (0x784 - 0x484) / static_cast<int>(sizeof(short));
-  for (int tierIndex = 0; tierIndex < tierCount; ++tierIndex) {
-    const short tierValue = tierScan[tierIndex];
+  for (int tierIndex = 0; tierIndex < kDiplomacyPairMatrixEntries; ++tierIndex) {
+    const short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484[tierIndex];
     if (tierValue != -1 && maxPendingTier < tierValue) {
       maxPendingTier = tierValue;
     }
@@ -178,7 +174,7 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
 
   SetCursor(static_cast<HCURSOR>(g_pUiRuntimeContext->cursorTable[26]));
 
-  TControl* endControl = hostPanel->ResolveControlByTag(kControlTagEnd);
+  TControl* endControl = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagEnd));
   if (endControl != nullptr) {
     endControl->AssertValid();
     endControl->SetState(0, 0);

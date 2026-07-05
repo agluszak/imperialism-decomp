@@ -65,21 +65,14 @@ void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow
 TObject* TPicture::ShallowClone() {
   TPicture* clone = static_cast<TPicture*>(ShallowFree());
   clone->CopyCityDialogStateFromSource(this);
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(clone) + 0x60) =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x60);
-  reinterpret_cast<char*>(clone)[0x64] = reinterpret_cast<char*>(this)[0x64];
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(clone) + 0x68) =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x68);
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(clone) + 0x6c) =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x6c);
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(clone) + 0x70) =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x70);
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(clone) + 0x74) =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x74);
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(clone) + 0x78) =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x78);
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(clone) + 0x7c) =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x7c);
+  clone->hasCommandTagResource = hasCommandTagResource;
+  clone->commandTagResourceByte = commandTagResourceByte;
+  clone->field68 = field68;
+  clone->field6C = field6C;
+  clone->field70 = field70;
+  clone->field74 = field74;
+  clone->commandTagDefaultParam0 = commandTagDefaultParam0;
+  clone->commandTagDefaultParam1 = commandTagDefaultParam1;
   clone->glyphBase84 = glyphBase84;
   clone->field86 = field86;
   clone->bitmapId = bitmapId;

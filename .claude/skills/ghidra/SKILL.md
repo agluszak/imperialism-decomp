@@ -1,6 +1,6 @@
 ---
 name: ghidra
-description: Inspect Imperialism.exe through the vendored Ghidra project via pyghidra — print instruction listings, decompile a function, dump a class vtable, classify __cdecl-vs-__thiscall, and (interactively) document functions in Ghidra. Use whenever you need ground-truth disassembly, a vtable layout, a calling-convention check, or to read/annotate a function in the Ghidra database. Use this instead of objdump.
+description: Inspect Imperialism.exe through the vendored Ghidra project via pyghidra — print instruction listings, decompile a function, dump a class vtable, list cross-references (xrefs), read typed data/constants, classify __cdecl-vs-__thiscall, and (interactively) document functions in Ghidra. A persistent daemon keeps the project loaded so inspect calls are sub-second. Use whenever you need ground-truth disassembly, a vtable layout, a cross-reference, a constant's value, a calling-convention check, or to read/annotate a function in the Ghidra database. Use this instead of objdump.
 ---
 
 # Ghidra access (pyghidra)
@@ -45,6 +45,10 @@ Rules of thumb:
   one-shot path (same output, slow) and print a hint.
 - It exits on its own after 4h idle (`GHIDRA_DAEMON_IDLE_SECS` overrides).
   Log: `.ghidra-query.log` in the repo root.
+- A few tools stay one-shot (no daemon routing): `ghidra-xrefs` (bidirectional
+  to/from/both, no thunk-hop), `ghidra-read-data` (typed memory reads),
+  `ghidra-function-slice`, and `scan-cdecl-thiscall` (reads addresses from stdin).
+  Details: `tools/ghidra/README.md`.
 
 ## Read-only queries (preferred — use these, not raw disassemblers)
 
@@ -54,11 +58,29 @@ Rules of thumb:
   ```sh
   just ghidra-listing 0x004dd1b0 [0xADDR ...]
   ```
-- **Who references this address** — callers, jumps, and address-taken/data refs,
-  hopping through ILT thunks automatically (a body address answers "who calls
-  this" in one query; address-taken hits are how data-registered callbacks hide):
+- **Who references this address (TO-only, thunk-hopping)** — callers, jumps, and
+  address-taken/data refs, hopping through ILT thunks automatically (a body address
+  answers "who calls this" in one query; address-taken hits are how data-registered
+  callbacks hide):
   ```sh
   just xrefs 0x581870 [0xADDR ...] [--no-thunk-hop] [--limit N]
+  ```
+- **Cross-references, either direction (no thunk-hop)** — who references an address
+  (call sites, data reads, vtable-slot dispatches, with the containing function) and/or
+  what a function references out. Direction is `to` | `from` | `both` (default `both`).
+  Useful for "what does this function call" (`from`), which `xrefs` above doesn't do:
+  ```sh
+  just ghidra-xrefs to 0x0052a760      # who calls / dispatches this address
+  just ghidra-xrefs from 0x0052d750    # a function's callees + data reads
+  ```
+- **Read a typed value / constant** at an address — `byte word dword qword float double ptr
+  str bytes` (default `dword`), with an optional count for tables. Use this instead of hacking
+  a vtable dump or hand-unpacking bytes when you need a *value* (an FP scale, a jump-table
+  entry, a vtable slot pointer, a string):
+  ```sh
+  just ghidra-read-data 0x006598d8 double     # -> 11733.857334728455
+  just ghidra-read-data 0x0065999c ptr 2       # two vtable slot pointers
+  just ghidra-read-data 0x00697450 dword 6     # a 6-entry int table
   ```
 - **Decode a switch jump table** (MSVC500 two-level pattern; works inside Ghidra
   code gaps — reads raw bytes, prints case→target with owning functions):

@@ -52,7 +52,7 @@ TCivToolbar::TCivToolbar() {}
 void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrder) {
   this->civilianClassId = selectedOrder ? selectedOrder->orderType : -1;
 
-  TControl* unitControl = this->ResolveControlByTag(0x756e6974);
+  TControl* unitControl = static_cast<TControl*>(this->ResolveControlByTag(0x756e6974));
   if (unitControl == 0) {
     return;
   }
@@ -115,7 +115,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   selectedCivilianState = g_pSelectedCivilianOrderState;
 
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
-    stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
+    stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x73746b30 + slotIndex));
     GAME_ASSERT(stackButton != 0, 5585);
     reinterpret_cast<TTradeCluster*>(stackButton)->NotifyControlSelectionChange(selectedTileEntry);
     stackButton->SetEnabled(selectedTileEntry->IsInIdleSelectionState(), 1);
@@ -126,7 +126,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     selectedTileEntry = static_cast<TCivUnit*>(selectedTileEntry->nextOnTile);
   }
   while (slotIndex < 6) {
-    stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
+    stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x73746b30 + slotIndex));
     GAME_ASSERT(stackButton != 0, 5585);
     reinterpret_cast<TTradeCluster*>(stackButton)->NotifyControlSelectionChange(0);
     slotIndex = slotIndex + 1;
@@ -139,17 +139,17 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   reinterpret_cast<TCluster*>(this)->SetControlClassAndRefresh(selectedSlotTag);
 
   commandEnabled = (selectedStackButton != 0) ? 1 : 0;
-  stackButton = this->ResolveControlByTag(0x64666e64);
+  stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x64666e64));
   if (stackButton == 0) {
     return;
   }
   stackButton->SetEnabled(commandEnabled, 1);
-  stackButton = this->ResolveControlByTag(0x6c617472);
+  stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x6c617472));
   if (stackButton == 0) {
     return;
   }
   stackButton->SetEnabled(commandEnabled, 1);
-  stackButton = this->ResolveControlByTag(0x646f6e65);
+  stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x646f6e65));
   if (stackButton == 0) {
     return;
   }

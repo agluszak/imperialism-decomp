@@ -112,16 +112,14 @@ void TDisplayMgr::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004feab0
-undefined
-TDisplayMgr::InitializeBitmapSurfaceContextWithRetry(TQuickDrawSurfaceContext** outContext,
-                                                     short bitDepth, RECT* bounds) {
+void TDisplayMgr::InitializeBitmapSurfaceContextWithRetry(TQuickDrawSurfaceContext** outContext,
+                                                          short bitDepth, RECT* bounds) {
   short result = InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, bitDepth, bounds,
                                                                     field18, 0, 0);
   if (result != 0) {
     InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, bitDepth, bounds, field18, 0, 0);
     InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, bitDepth, bounds, field18, 0, 0);
   }
-  return 0;
 }
 
 // Frees the TQuickDrawSurfaceContext record held in `slot` and clears the slot.
@@ -133,12 +131,11 @@ void __stdcall FreeQuickDrawSurfaceContextSlot(TQuickDrawSurfaceContext** slot) 
 }
 
 // FUNCTION: IMPERIALISM 0x004feb80
-undefined TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated() {
+void TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated() {
   if (g_pPrimaryRenderSurfaceContext == 0) {
     RECT bounds = {-64, -64, 0x280, 0x220};
     InitializeBitmapSurfaceContextWithRetry(&g_pPrimaryRenderSurfaceContext, 8, &bounds);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004febd0
@@ -220,14 +217,14 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
 
-  TControl* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
+  TView* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x28a);
     return 0;
   }
 
-  TView* mainView = reinterpret_cast<TView*>(mainControl);
+  TView* mainView = mainControl;
   RECT queryBounds;
   mainView->QueryBounds(&queryBounds);
 
@@ -250,12 +247,11 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
 }
 
 // FUNCTION: IMPERIALISM 0x004fefc0
-undefined TDisplayMgr::SetMapTileIconVariantTriplet(undefined1* param_1) {
+void TDisplayMgr::SetMapTileIconVariantTriplet(undefined1* param_1) {
   tileIcon10 = param_1[0];
   tileIcon11 = param_1[1];
   tileIcon12 = param_1[2];
   reinterpret_cast<void(__cdecl*)(void*)>(NoOpCallback_00498ca0)(&tileIcon10);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004ff000

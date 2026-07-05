@@ -115,7 +115,8 @@ static inline short ReadCityOrderCapabilityField262(void) {
   if (g_pCityOrderCapabilityState == nullptr) {
     return 0;
   }
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pCityOrderCapabilityState) + 0x262);
+  // 0x262 = nationCapRows1e8[6].caps[1] ((0x262-0x1e8) = 122 = 6*sizeof(NationCapRow) + 2).
+  return g_pCityOrderCapabilityState->nationCapRows1e8[6].caps[1];
 }
 
 static inline void HandleTurnEndSavePaths(TSimMgr* simMgr) {
@@ -202,21 +203,21 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = 2;
     if (field112 != 0) {
       // Verified against 0x0057db25/0x0057db32: both are real TSimMgr thiscall
-      // methods on g_pLocalizationTable (not `this`, and not free functions).
-      g_pLocalizationTable->RebuildGlobalOrderManagersAndCapabilityState(1);
-      g_pLocalizationTable->RebuildMapContextAndGlobalMapState(1, s_Chunk_00698C0C, 1);
+      // methods on g_pSimMgr (not `this`, and not free functions).
+      g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
+      g_pSimMgr->RebuildMapContextAndGlobalMapState(1, s_Chunk_00698C0C, 1);
     }
     if (DAT_006a43f0 != 0) {
       break;
     }
     // Verified against 0x0057db53: real TSimMgr thiscall on `this` this time.
     RebuildNationStateSlotsAndAvailability(1);
-    // Verified against 0x0057db5c-0x57db89: the condition reads g_pLocalizationTable's
+    // Verified against 0x0057db5c-0x57db89: the condition reads g_pSimMgr's
     // redrawEnabled (this+0x40 on that object, NOT this->field34), the dispatch uses
     // event code 0x3b8 (not 0x5e4) with (code, activeNationSlot) argument order, and
     // there is no null guard on g_pUiRuntimeContext -- same missing-guard pattern as
     // case 1 above. field34/0x5e4/guarded call was an unverified placeholder shape.
-    if (g_pLocalizationTable->redrawEnabled > 1 && stateFlag114 == 0) {
+    if (g_pSimMgr->redrawEnabled > 1 && stateFlag114 == 0) {
       g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x3b8, activeNationSlot);
     } else {
       PostMainWindowCommand100ForTurnFlow();

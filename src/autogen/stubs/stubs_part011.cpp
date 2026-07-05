@@ -99,6 +99,14 @@ undefined4 CreateTButtonInstance(void)
   return 0;
 }
 
+// ghidra_name TRadio::CreateObject
+// ghidra_proto undefined CreateObject()
+// FUNCTION: IMPERIALISM 0x0048ece0
+undefined4 CreateObject_0048ECE0(void)
+{
+  return 0;
+}
+
 // ghidra_name TButton::DestructTButtonAndMaybeFree
 // ghidra_proto undefined DestructTButtonAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x0048edd0

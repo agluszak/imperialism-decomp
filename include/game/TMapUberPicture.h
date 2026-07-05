@@ -128,12 +128,12 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
-  virtual undefined OrphanRetStub_0045d2a0() override;     // slot 0x74 0x5977a0
-  virtual undefined OrphanLeaf_NoCall_Ins09_00598950();    // slot 0x75 0x598950
-  virtual void InvalidateTileMarkerChain(short tileIndex); // slot 0x76 0x598870
-  virtual undefined OrphanCallChain_C2_I18_005988c0();     // slot 0x77 0x5988c0
-  virtual undefined OrphanCallChain_C2_I14_00598990();     // slot 0x78 0x598990
-  virtual undefined OrphanCallChain_C2_I16_005989d0();     // slot 0x79 0x5989d0
+  virtual undefined OrphanRetStub_0045d2a0(int param1) override; // slot 0x74 0x5977a0
+  virtual undefined OrphanLeaf_NoCall_Ins09_00598950();          // slot 0x75 0x598950
+  virtual void InvalidateTileMarkerChain(short tileIndex);       // slot 0x76 0x598870
+  virtual undefined OrphanCallChain_C2_I18_005988c0();           // slot 0x77 0x5988c0
+  virtual undefined OrphanCallChain_C2_I14_00598990();           // slot 0x78 0x598990
+  virtual undefined OrphanCallChain_C2_I16_005989d0();           // slot 0x79 0x5989d0
   // Forwards entryIndex to the +0xac subview's byte-0x1f0 virtual (verified 1-arg
   // thiscall, RET 4; the previous declaration had dropped the argument).
   virtual undefined OrphanCallChain_C1_I06_00598a20(short entryIndex);     // slot 0x7a 0x598a20
@@ -144,6 +144,24 @@ public:
   virtual undefined SetTradeToolSubcontrolEnabledStateByFlag();            // slot 0x7f 0x59a180
   // === END GENERATED DECLS (TMapUberPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberPicture 0xCTOR`).
+
+  // Own slice (TMapUberUberPicture ends at 0x94; this object is 0xc4). Layout/roles from
+  // ConstructTMapUberPictureBaseState (0x5969e0) and NoOpUiLifecycleHook (0x596a80).
+  unsigned char field_0x94; // set to 1 by the ctor; role not yet identified
+  // 0=civilian, 1=army, 2=navy, 3=none (default) -- selects categoryPages[] below.
+  short activeUnitCategoryIndex96;
+  int field_0x98;
+  int field_0x9c;
+  int field_0xa0;
+  // 0xa4..0xaf: 'GOOD'/'GOLD'-tag sub-control pointers resolved by NoOpUiLifecycleHook;
+  // that method isn't ported yet, so these stay raw/unnamed.
+  unsigned char pad_0xa4[0xc];
+  // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
+  // NoOpUiLifecycleHook via ResolveControlByTag. The receiver class for their own
+  // slot-0x74 dispatch isn't recovered yet, so this stays untyped (Hard Rule 12) rather
+  // than fake a cast to TMapUberUberPicture*.
+  void* categoryPages[4];
+  int field_0xc0;
 
   TMapUberPicture();
 };

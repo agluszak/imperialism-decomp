@@ -32,15 +32,21 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // === END GENERATED DECLS (TOcean) ===
-  short nationCount;      // +0x04
-  TZone* contextArray;    // +0x08
-  short field0c;          // +0x0c
-  char pad0e[2];          // +0x0e
-  unsigned short keyMask; // +0x10
-  char pad12[0x26];       // +0x12 .. +0x37
-  int* slotTable;         // +0x38
-  unsigned int slotCount; // +0x40
-  char pad44[0x14];       // +0x44 .. +0x57 (allocation size TBD)
+  short nationCount;       // +0x04
+  TZone* contextArray;     // +0x08
+  short routeNodeCount;    // +0x0c number of route-node records in routeNodeBuffer
+  char pad0e[2];           // +0x0e
+  void* routeNodeBuffer;   // +0x10 heap buffer of routeNodeCount 0x10-byte route records
+  char pad14[0x38 - 0x14]; // +0x14 .. +0x37
+  int* slotTable;          // +0x38
+  unsigned int slotCount;  // +0x40
+  char pad44[0x14];        // +0x44 .. +0x57 (allocation size TBD)
+
+  // Reallocate routeNodeBuffer to hold `count` 0x10-byte route records. 0x0052e7b0.
+  void AllocateRouteNodeStateBufferByCount(short count);
+
+  // Map-action context (TZone, stride 0x48) at the given index in contextArray. 0x00563330.
+  TZone* GetMapActionContextEntryByIndex(short index);
 
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
 
@@ -59,6 +65,10 @@ public:
 };
 
 void NotifyMapUberPictureTileMarker(short tileIndex);
+
+// Map-action-context maintenance passes (bodies in TZone.cpp).
+void PopulatePortZoneAdjacencyToNearbyCityContexts(); // 0x00563da0
+void RegenerateAllMapActionContextStatusCodes();      // 0x00563220
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
 int ComputeGlobalMapActionContextNodeValueAverage(void);

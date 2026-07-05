@@ -547,14 +547,6 @@ undefined4 WrapperFor_ftol_At0055e330(void)
   return 0;
 }
 
-// ghidra_name DispatchMapActionContextCallbackViaField24
-// ghidra_proto undefined DispatchMapActionContextCallbackViaField24()
-// FUNCTION: IMPERIALISM 0x0055f300
-undefined4 DispatchMapActionContextCallbackViaField24(void)
-{
-  return 0;
-}
-
 // ghidra_name ContainsCityStatePointerInZoneArrayByCityIndex
 // ghidra_proto undefined ContainsCityStatePointerInZoneArrayByCityIndex()
 // FUNCTION: IMPERIALISM 0x0055f440
@@ -567,14 +559,6 @@ undefined4 ContainsCityStatePointerInZoneArrayByCityIndex(void)
 // ghidra_proto undefined IsZoneMaskOrArrayEntryPresentForKey()
 // FUNCTION: IMPERIALISM 0x0055f540
 undefined4 IsZoneMaskOrArrayEntryPresentForKey(void)
-{
-  return 0;
-}
-
-// ghidra_name ResizePointerArrayCapacityByRequestedCount
-// ghidra_proto undefined ResizePointerArrayCapacityByRequestedCount()
-// FUNCTION: IMPERIALISM 0x0055fae0
-undefined4 ResizePointerArrayCapacityByRequestedCount(void)
 {
   return 0;
 }
@@ -739,22 +723,6 @@ undefined4 RefreshMapActionContextNationOverlaysAndOrderRanks(void)
   return 0;
 }
 
-// ghidra_name RegenerateAllMapActionContextStatusCodes
-// ghidra_proto undefined RegenerateAllMapActionContextStatusCodes()
-// FUNCTION: IMPERIALISM 0x00563220
-undefined4 RegenerateAllMapActionContextStatusCodes(void)
-{
-  return 0;
-}
-
-// ghidra_name GetMapActionContextEntryByIndex
-// ghidra_proto undefined GetMapActionContextEntryByIndex()
-// FUNCTION: IMPERIALISM 0x00563330
-undefined4 GetMapActionContextEntryByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name GetProvinceByTileIndex
 // ghidra_proto void * __cdecl GetProvinceByTileIndex(short nTileIndex)
 // FUNCTION: IMPERIALISM 0x00563360
@@ -775,14 +743,6 @@ undefined4 GetMapActionContextByTileIndex(void)
 // ghidra_proto undefined EvaluateTerrainFlowCrossNationBoundaryToSea()
 // FUNCTION: IMPERIALISM 0x00563b70
 undefined4 EvaluateTerrainFlowCrossNationBoundaryToSea(void)
-{
-  return 0;
-}
-
-// ghidra_name PopulatePortZoneAdjacencyToNearbyCityContexts
-// ghidra_proto undefined PopulatePortZoneAdjacencyToNearbyCityContexts()
-// FUNCTION: IMPERIALISM 0x00563da0
-undefined4 PopulatePortZoneAdjacencyToNearbyCityContexts(void)
 {
   return 0;
 }
@@ -1039,14 +999,6 @@ undefined4 HandleOptionsTagAudioRefreshFragmentAndMaybePostTurnEvent5DC(void)
 // ghidra_proto undefined DestructTLoadSavePictureAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x0056c740
 undefined4 DestructTLoadSavePictureAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildSharedStringFromMappedFlavorTextIndex
-// ghidra_proto undefined BuildSharedStringFromMappedFlavorTextIndex()
-// FUNCTION: IMPERIALISM 0x0056d5c0
-undefined4 BuildSharedStringFromMappedFlavorTextIndex(void)
 {
   return 0;
 }

@@ -55,12 +55,10 @@ int TNumberText::UpdateControlCachedIntFromWindowText() {
 // FUNCTION: IMPERIALISM 0x004912b0
 TObject* TNumberText::ShallowClone() {
   TObject* cloned = this->ShallowFree();
-  if (cloned != nullptr) {
-    TNumberText* dest = static_cast<TNumberText*>(cloned);
-    dest->CopyCityDialogStateFromSource(this);
-    dest->field_94 = this->field_94;
-    dest->field_98 = this->field_98;
-    dest->field_9c = this->field_9c;
-  }
+  TNumberText* dest = static_cast<TNumberText*>(cloned);
+  dest->CopyCityDialogStateFromSource(this);
+  dest->field_94 = this->field_94;
+  dest->field_98 = this->field_98;
+  dest->field_9c = this->field_9c;
   return cloned;
 }

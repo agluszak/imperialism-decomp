@@ -444,6 +444,18 @@ ghidra-listing *args: _require-ghidra-install
 xrefs *args: _require-ghidra-install
   uv run python -m tools.ghidra.query xrefs {{args}}
 
+# Cross-references to/from an address, both directions in one call (no thunk-hop).
+# `just ghidra-xrefs [to|from|both] 0xADDR [0xADDR ...]`.
+[group('ghidra-inspect')]
+ghidra-xrefs *args: _require-ghidra-install
+  uv run python -m tools.ghidra.xrefs {{args}}
+
+# Read memory at an address as a typed value (float/double/dword/ptr/str/bytes/...).
+# `just ghidra-read-data 0xADDR [type] [count]`.
+[group('ghidra-inspect')]
+ghidra-read-data *args: _require-ghidra-install
+  uv run python -m tools.ghidra.read_data {{args}}
+
 # Decode an MSVC500 switch jump table (works inside Ghidra code gaps).
 # `just ghidra-jumptable 0xJMPADDR` or `--table 0xADDR [--cases N]`.
 [group('ghidra-inspect')]
@@ -457,6 +469,19 @@ ghidra-function-slice *args: _require-ghidra-install
 [group('ghidra-inspect')]
 ghidra-decompile *args: _require-ghidra-install
   uv run python -m tools.ghidra.query decompile {{args}}
+
+# One-stop function status from the config CSVs + reccmp baseline (no Ghidra / no build,
+# instant): curated name/size/proto, ownership, autogen body location, current match %.
+# `just func-status 0xADDR [0xADDR ...]`.
+[group('ghidra-inspect')]
+func-status *args:
+  uv run python -m tools.workflow.func_status {{args}}
+
+# Rank porting candidates: the biggest weakly-matched functions (no Ghidra / no build).
+# `just port-candidates [--range LO HI] [--min-size N] [--max-score PCT] [--limit N]`.
+[group('ghidra-inspect')]
+port-candidates *args:
+  uv run python -m tools.workflow.port_candidates {{args}}
 
 # Linear disassembly by address, ignoring Ghidra's (sometimes wrong) function
 # boundaries. `just ghidra-linear-disasm 0xADDR [count]`.
@@ -499,6 +524,8 @@ ghidra-decomp-check *args: _require-ghidra-install
 
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
+# One-shot (NOT daemon-routed): --stdin addresses can't reach the daemon process. Running it
+# evicts a warm daemon; re-warm with `just ghidra-daemon` afterwards.
 [doc('Classify functions: ecx_this (thiscall) / no_ecx (cdecl) / empty (thunk)')]
 [group('ghidra-inspect')]
 scan-cdecl-thiscall *args: _require-ghidra-install

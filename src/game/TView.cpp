@@ -302,9 +302,9 @@ void TView::SwitchActiveChildAndNotify(class TView* child) {
 // first, then recurse into each child via slot 0x25 (ResolveControlByTag). Returns the
 // matching control, or null. The own-tag case short-circuits (callers exclude self).
 // FUNCTION: IMPERIALISM 0x0048afd0
-class TControl* TView::ResolveControlByTag(unsigned int controlTag) {
+class TView* TView::ResolveControlByTag(unsigned int controlTag) {
   if (controlTag == static_cast<unsigned int>(this->controlTag)) {
-    return reinterpret_cast<class TControl*>(this);
+    return this;
   }
   if (childList44 == 0) {
     return 0;
@@ -314,14 +314,14 @@ class TControl* TView::ResolveControlByTag(unsigned int controlTag) {
   while (pos != NULL) {
     TView* entry = static_cast<TView*>(childList44->GetNext(pos));
     if (controlTag == static_cast<unsigned int>(entry->controlTag)) {
-      return reinterpret_cast<class TControl*>(entry);
+      return entry;
     }
   }
 
   pos = childList44->GetHeadPosition();
   while (pos != NULL) {
     TView* child = static_cast<TView*>(childList44->GetNext(pos));
-    TControl* match = child->ResolveControlByTag(controlTag);
+    TView* match = child->ResolveControlByTag(controlTag);
     if (match != 0) {
       return match;
     }

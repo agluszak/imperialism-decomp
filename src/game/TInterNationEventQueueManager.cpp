@@ -28,14 +28,14 @@ struct TPlaybackWalkState {
 void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int eventCode,
                                                                           int payloadOrNation,
                                                                           char isReplayBypass) {
-  if (g_pLocalizationTable == 0) {
+  if (g_pSimMgr == 0) {
     return;
   }
-  if (g_pLocalizationTable->gateFlag7a != 0) {
+  if (g_pSimMgr->gateFlag7a != 0) {
     return;
   }
 
-  if (isReplayBypass != '\0' || g_pLocalizationTable->redrawEnabled == 0) {
+  if (isReplayBypass != '\0' || g_pSimMgr->redrawEnabled == 0) {
     TQueueObject* interNationQueue = perNationEventBuckets[eventCode];
     if (interNationQueue != 0) {
       interNationQueue->AddEntrySlot38(&payloadOrNation);
@@ -58,15 +58,15 @@ struct TInterNationEventType0FMergePayload {
 void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int eventCode, int nationA,
                                                                        int nationB,
                                                                        char isReplayBypass) {
-  if (g_pLocalizationTable == 0) {
+  if (g_pSimMgr == 0) {
     return;
   }
-  if (g_pLocalizationTable->gateFlag7a != 0) {
+  if (g_pSimMgr->gateFlag7a != 0) {
     return;
   }
 
-  if (isReplayBypass == 0 && g_pLocalizationTable->redrawEnabled != 0) {
-    if (g_pLocalizationTable->redrawEnabled == 1) {
+  if (isReplayBypass == 0 && g_pSimMgr->redrawEnabled != 0) {
+    if (g_pSimMgr->redrawEnabled == 1) {
       g_pGameFlowState->CreateAndSendTurnEvent20_ShortAndTwoBytes(
           static_cast<short>(eventCode), static_cast<unsigned char>(nationA),
           static_cast<unsigned char>(nationB));
@@ -132,14 +132,14 @@ TQueueObject* TInterNationEventQueueManager::GetInterNationQueueByEventCode(int 
 // FUNCTION: IMPERIALISM 0x0055cbd0
 void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
     int eventCode, int nationA, int nationB, char isReplayBypass) {
-  if (g_pLocalizationTable == 0) {
+  if (g_pSimMgr == 0) {
     return;
   }
-  if (g_pLocalizationTable->gateFlag7a != 0) {
+  if (g_pSimMgr->gateFlag7a != 0) {
     return;
   }
 
-  if (isReplayBypass != '\0' || g_pLocalizationTable->redrawEnabled == 0) {
+  if (isReplayBypass != '\0' || g_pSimMgr->redrawEnabled == 0) {
     TQueueObject* mergeQueue = sharedEventRecordQueue;
     if (mergeQueue == 0) {
       return;

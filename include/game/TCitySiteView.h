@@ -12,10 +12,10 @@ public:
   virtual void NoOpUiLifecycleHook(int arg) override;
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) override;
-  virtual undefined OrphanRetStub_005966a0() override;
-  virtual undefined OrphanRetStub_00596680() override;
-  virtual undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1,
-                                                                 undefined4 param_2) override;
+  virtual void OrphanRetStub_005966a0(int arg1) override;
+  virtual void OrphanRetStub_00596680(int arg1, int arg2) override;
+  virtual undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2,
+                                                                 int param_3) override;
 
   TCitySiteView();
 };

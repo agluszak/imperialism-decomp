@@ -483,14 +483,6 @@ undefined4 TryQueueCivilianMoveOrderToTile(void)
   return 0;
 }
 
-// ghidra_name TCivToolbar::CanAssignCivilianOrderToTile
-// ghidra_proto undefined1 __thiscall CanAssignCivilianOrderToTile(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x004d2f60
-undefined4 CanAssignCivilianOrderToTile(void)
-{
-  return 0;
-}
-
 // ghidra_name TCivToolbar::HandleCivilianReportDecision
 // ghidra_proto void __thiscall HandleCivilianReportDecision(int * pCivilianOrderEntry)
 // FUNCTION: IMPERIALISM 0x004d3070
@@ -679,14 +671,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880(void)
 // ghidra_proto undefined AssignStringSharedRefFromPointer()
 // FUNCTION: IMPERIALISM 0x004d6b70
 undefined4 AssignStringSharedRefFromPointer(void)
-{
-  return 0;
-}
-
-// ghidra_name SetWordField8cFromShort
-// ghidra_proto undefined SetWordField8cFromShort()
-// FUNCTION: IMPERIALISM 0x004d7150
-undefined4 SetWordField8cFromShort(void)
 {
   return 0;
 }

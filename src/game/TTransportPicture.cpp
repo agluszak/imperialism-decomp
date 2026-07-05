@@ -27,7 +27,7 @@ TTransportPicture::TTransportPicture()
 // FUNCTION: IMPERIALISM 0x00591f10
 void TTransportPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 100 && commandId <= 0x65) {
-    short nationId = g_pLocalizationTable->GetActiveNationId();
+    short nationId = g_pSimMgr->GetActiveNationId();
     TGreatPower* nation = g_apNationStates[nationId];
     int metricSlot = static_cast<int>(unknown92);
     short metricA = 0;

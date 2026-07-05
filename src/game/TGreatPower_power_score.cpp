@@ -54,7 +54,7 @@ short* GetRelationStandingRowForNation(short nationSlot) {
 }
 
 int GetClampedQuarterYearTerm(void) {
-  TSimMgr* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pSimMgr;
   int yearTerm = static_cast<short>(localization->quarterGateTick2c / 4);
   if (yearTerm >= 0x3c) {
     yearTerm = 0x3c;

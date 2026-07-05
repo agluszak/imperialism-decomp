@@ -25,7 +25,6 @@ IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 // typed cast at each call site so the linker resolves the correct symbol).
 extern undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(void);
 extern undefined4 GetNormalizedCityActionResourceCostPercent(void);
-extern undefined4 GetTileNormalizedMovementClassId(void);
 extern undefined4 SetMapStateByteFlag970WithRuntimeGate(void);
 extern undefined4 PropagateTargetTileToLinkedUnitsIfDifferent(void);
 
@@ -264,15 +263,11 @@ void TDefendProvinceMission::ResetValue0CToZero() {
 
   if (adjacentCount > 0) {
     const short* adjArray = cityRecord.adjacentRegionIds0A;
-    // GetTileNormalizedMovementClassId is at 0x514290
-    typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
-    GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-        reinterpret_cast<GetTileNormalizedMovementClassId_t>(
-            (void*)&GetTileNormalizedMovementClassId);
     for (int i = 0; i < adjacentCount; ++i) {
       short adjTileIndex = adjArray[i];
-      short movementClass = GetTileNormalizedMovementClassId_fn(adjTileIndex);
-      if (nationId04 == movementClass) {
+      short tileOwnerNationCode =
+          g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(adjTileIndex);
+      if (nationId04 == tileOwnerNationCode) {
         local_c++;
       }
     }
@@ -374,10 +369,6 @@ char TDefendProvinceMission::MatchesMissionKeySlot4C(int kind, int key, int mode
 
 // FUNCTION: IMPERIALISM 0x0053f040
 TMission* TDefendProvinceMission::GetReplacementSlot48() {
-  typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
-  GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-      reinterpret_cast<GetTileNormalizedMovementClassId_t>(
-          (void*)&GetTileNormalizedMovementClassId);
-  short movementClass = GetTileNormalizedMovementClassId_fn(field_14);
-  return (movementClass == nationId04) ? this : nullptr;
+  short tileOwnerNationCode = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(field_14);
+  return (tileOwnerNationCode == nationId04) ? this : nullptr;
 }

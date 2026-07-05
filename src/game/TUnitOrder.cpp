@@ -55,7 +55,7 @@ undefined TUnitOrder::CommitIfPending() {
 
   short entryId = *reinterpret_cast<short*>(raw + 0x48);
   unsigned char specialistMode = raw[0x58];
-  TSimMgr* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pSimMgr;
   if (localization != 0) {
     localization->GetString(static_cast<short>((specialistMode == 0) ? 0x2718 : 0x2717), entryId,
                             &sharedRefB);

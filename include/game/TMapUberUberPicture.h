@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00645650
 class TMapUberUberPicture : public TOffLimitsPicture {
 public:
-// === BEGIN GENERATED DECLS (TMapUberUberPicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TMapUberUberPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMapUberUberPicture)
   virtual ~TMapUberUberPicture(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -124,8 +124,8 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
-  virtual undefined OrphanRetStub_0045d2a0(); // slot 0x74 0x45d2a0
-// === END GENERATED DECLS (TMapUberUberPicture) ===
+  virtual undefined OrphanRetStub_0045d2a0(int param1); // slot 0x74 0x45d2a0
+  // === END GENERATED DECLS (TMapUberUberPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberUberPicture 0xCTOR`).
 
   TMapUberUberPicture();

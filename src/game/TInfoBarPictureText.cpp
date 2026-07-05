@@ -15,9 +15,8 @@ TInfoBarPictureText::~TInfoBarPictureText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5cb0
 undefined TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
-  RECT* cachedLayout = reinterpret_cast<RECT*>(reinterpret_cast<char*>(this) + 0xa4);
-  if (EqualRect(layoutRect, cachedLayout) == 0) {
-    CopyRect(cachedLayout, layoutRect);
+  if (EqualRect(layoutRect, &layoutRectA4) == 0) {
+    CopyRect(&layoutRectA4, layoutRect);
     RECT clipRect;
     CopyRectFromBuildRectFromSlot158(&clipRect);
     InvalidateCityDialogRectRegion(&clipRect, 1);
