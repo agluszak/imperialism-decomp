@@ -1,6 +1,12 @@
 #include "game/wave_helpers.h"
 
+#include "game/global_data_tables.h"
 #include <stdio.h>
+
+// FUNCTION: IMPERIALISM 0x0047cdd0
+int __stdcall ApplyAuxOutputVolumeFromScalar(int scalar) {
+  return SetAuxOutputVolumeFromScalar(scalar);
+}
 
 // DirectX SDK sample wave.c module (see wave_helpers.h). The three functions below are
 // the read-side helpers used by TSoundResourceManager's wave loaders.
@@ -159,4 +165,13 @@ CloseAndReturn:
     mmioClose(hmmio, 0);
   }
   return result;
+}
+
+// FUNCTION: IMPERIALISM 0x005e1500
+int __stdcall SetAuxOutputVolumeFromScalar(int scalar) {
+  if (g_nAuxOutputDeviceIndex == -1) {
+    return 0;
+  }
+  auxSetVolume(g_nAuxOutputDeviceIndex, (scalar << 16) + scalar);
+  return 1;
 }

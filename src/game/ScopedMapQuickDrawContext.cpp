@@ -1,5 +1,6 @@
 #include "game/ScopedMapQuickDrawContext.h"
 #include "decomp_types.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/global_data_tables.h"
 
 typedef void* hwnd_t;
@@ -22,6 +23,25 @@ int BindScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
   }
   g_pScopedMapQuickDrawDcHandleObject = dcHandleObject;
   return dcHandleObject != 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00494660
+CDC* GetActiveQuickDrawDc() {
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  return dc;
+}
+
+// FUNCTION: IMPERIALISM 0x00494680
+CDib* GetActiveQuickDrawSurfaceDib() {
+  TQuickDrawSurfaceContext* head = g_pActiveQuickDrawSurfaceContextHead;
+  if (head == &g_defaultQuickDrawSurfaceSentinel) {
+    return 0;
+  }
+  TBitmapSurfaceNode** nodeSlot = static_cast<TBitmapSurfaceNode**>(head->surfaceObject);
+  return (*nodeSlot)->dib;
 }
 
 // Release the scoped map QuickDraw DC: when no caller-supplied handle was bound, return

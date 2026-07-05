@@ -1,6 +1,8 @@
 #include "game/TPicture.h"
 
 #include "game/CDib.h"
+#include "game/CDibPal.h"
+#include "game/ScopedMapQuickDrawContext.h"
 #include "game/TView.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/global_data_tables.h"
@@ -23,11 +25,45 @@ TPicture::TPicture()
 // TPicture::`scalar deleting destructor'
 TPicture::~TPicture() {}
 
-// Slot 0x44 override (picture-resource branch): ctrl-key hint overlay helper.
+// Slot 0x44 override: draw the cached bitmap. 8bpp uncompressed pictures software-blit
+// straight into the active QuickDraw surface; anything else realizes the default DIB
+// palette and StretchDIBits-es to the active DC at the control's cached position.
 
 // FUNCTION: IMPERIALISM 0x0048f3c0
 void TPicture::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer;
+  if (GetAsyncKeyState(VK_CONTROL) & 0x8000) {
+    RECT bounds;
+    this->BuildRectFromSlot158(&bounds);
+  }
+
+  if (GetActiveQuickDrawSurfaceDib() != 0 &&
+      this->field8C->m_pInfoHeader->bmiHeader.biBitCount == 8 &&
+      this->field8C->m_pInfoHeader->bmiHeader.biCompression == 0) {
+    RECT bounds;
+    this->BuildRectFromSlot158(&bounds);
+    int width = bounds.right - bounds.left;
+    int height = bounds.bottom - bounds.top;
+    CDib* surface = GetActiveQuickDrawSurfaceDib();
+    this->field8C->BlitSurfaceRectSkippingTransparentColor(surface, 0, 0, width, height,
+                                                           bounds.left, bounds.top, -1);
+    return;
+  }
+
+  g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(
+      GetActiveQuickDrawDc(), 0);
+
+  int srcHeight = this->field8C->m_pInfoHeader->bmiHeader.biHeight;
+  if (srcHeight <= 0) {
+    srcHeight = -srcHeight;
+  }
+  {
+    CPoint posForX;
+    CPoint posForY;
+    this->field8C->StretchDibitsRectToDc(
+        GetActiveQuickDrawDc(), this->GetCachedPosPoint(&posForX)->x,
+        this->GetCachedPosPoint(&posForY)->y, this->field34, this->field38, 0, 0,
+        this->field8C->m_pInfoHeader->bmiHeader.biWidth, srcHeight);
+  }
 }
 
 // Slot 0x08 override: allocate via slot 0x09 then copy city-dialog and picture-resource tail.
@@ -79,9 +115,9 @@ TObject* TPicture::ShallowClone() {
   clone->field8A = field8A;
   clone->field8C = field8C;
   if (glyphBase84 != static_cast<short>(0xffff)) {
-    unsigned int packedId = (static_cast<unsigned int>(static_cast<unsigned short>(field8A))
-                             << 16) |
-                            static_cast<unsigned int>(static_cast<unsigned short>(glyphBase84));
+    unsigned int packedId =
+        (static_cast<unsigned int>(static_cast<unsigned short>(field8A)) << 16) |
+        static_cast<unsigned int>(static_cast<unsigned short>(glyphBase84));
     g_pModuleLibraryCacheState->IncrementDialogResourceRefCountByShortIdInRegistry(packedId);
   }
   return clone;

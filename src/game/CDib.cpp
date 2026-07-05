@@ -136,6 +136,13 @@ BOOL CDib::StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int w
   return TRUE;
 }
 
+// FUNCTION: IMPERIALISM 0x0047abe0
+int CDib::StretchDibitsRectToDc(CDC* dc, int xDest, int yDest, int destWidth, int destHeight,
+                                int xSrc, int ySrc, int srcWidth, int srcHeight) {
+  return ::StretchDIBits(dc->GetSafeHdc(), xDest, yDest, destWidth, destHeight, xSrc, ySrc,
+                         srcWidth, srcHeight, m_dibBits, m_pInfoHeader, DIB_RGB_COLORS, SRCCOPY);
+}
+
 // FUNCTION: IMPERIALISM 0x0047ae20
 HBITMAP CDib::EnsureDibSectionCreated(CDC* dc) {
   if (m_pInfoHeader == NULL) {
@@ -349,8 +356,8 @@ void CDib::BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int 
     if (destBottomRow < destAbsHeight) {
       int h = (destHeight < 1) ? -destHeight : destHeight;
       unsigned int destStride = (destWidth + 3) & ~3u;
-      destPtr = static_cast<char*>(destDib->m_dibBits) + ((h - destBottomRow) - 1) * destStride +
-                destX;
+      destPtr =
+          static_cast<char*>(destDib->m_dibBits) + ((h - destBottomRow) - 1) * destStride + destX;
     } else {
       destPtr = 0;
     }

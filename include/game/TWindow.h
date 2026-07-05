@@ -92,8 +92,8 @@ public:
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
   virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) override; // slot 0x4c 0x492d40
-  virtual void TranslatePointToParentChain4D(int* point = 0) override;         // slot 0x4d 0x492d20
-  virtual void TranslatePointToParentChain4E(int* point = 0) override;         // slot 0x4e 0x492d00
+  virtual void TranslatePointToParentChain4D(CPoint* point = 0) override;      // slot 0x4d 0x492d20
+  virtual void TranslatePointToParentChain4E(CPoint* point = 0) override;      // slot 0x4e 0x492d00
   // slot 0x4f InvokeSlot13C inherited unchanged (0x48b700)
   // slot 0x50 OffsetRectByControlPosition inherited unchanged (0x48bb00)
   // slot 0x51 UpdateAfterBitmapChange inherited unchanged (0x427330)
@@ -118,8 +118,8 @@ public:
   // slot 0x64 DrawRectangleInCurrentUiContext inherited unchanged (0x48c750)
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
-  virtual void SubtractPosAndDispatchToOwnerSlot19C(int* point) override; // slot 0x67 0x492d60
-  virtual void SetField84(unsigned char param_1);                         // slot 0x68 0x48da40
+  virtual void SubtractPosAndDispatchToOwnerSlot19C(CPoint* point) override; // slot 0x67 0x492d60
+  virtual void SetField84(unsigned char param_1);                            // slot 0x68 0x48da40
   virtual void SetField88And8c(int param_1,
                                int param_2);           // slot 0x69 0x48d8a0
   virtual undefined GetDialogBehaviorByte10();         // slot 0x6a 0x48da10

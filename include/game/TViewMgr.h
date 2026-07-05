@@ -171,6 +171,11 @@ public:
   short padFa;                             // +0xfa
 
   TViewMgr();
+
+  // Screen-exit backbone: stash the followup turn state in fieldF8; on state 0,
+  // re-apply volume preferences and post the followup turn-event code (0x5dc menu /
+  // 0x7e0 / 0x5eb) via g_pGlobalUiRootController->PostTurnEventCodeMessage2420.
+  void HandleTurnStateExitAndPostFollowupEventCode(short followupState); // 0x5db620
 };
 
 ASSERT_SIZE(TViewMgr, 0xfc);

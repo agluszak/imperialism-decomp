@@ -3,6 +3,9 @@
 #include "game/ImperialismApp.h"
 #include "game/TBackdropWindow.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TSimMgr.h"
+#include "game/TViewMgr.h"
+#include "game/global_data_tables.h"
 
 #include <new>
 
@@ -24,6 +27,25 @@ void* GetValueAtOffset98(CWnd* wnd) {
 
 CMainFrameRefTarget::~CMainFrameRefTarget() {}
 
+// FUNCTION: IMPERIALISM 0x00413a20
+BOOL CMainFrame::PreTranslateMessage(MSG* msg) {
+  RefreshBackdropOnInputMessages(msg);
+  return CFrameWnd::PreTranslateMessage(msg);
+}
+
+// MCI notify callback (mode 0x20d == MCI_MODE_STOP): when the intro movie stops, run the
+// screen-exit path so the followup turn-event code (main menu, etc.) gets posted. The
+// original registers this by address only (no static xrefs; runtime registration site
+// still unidentified — see bd imperialism-decomp-1uj.57.4).
+// FUNCTION: IMPERIALISM 0x00484230
+int __stdcall AdvanceTurnStateWhenMovieMciModeStops(int wParam, int mciMode) {
+  (void)wParam;
+  if (mciMode == 0x20d) {
+    g_pUiRuntimeContext->HandleTurnStateExitAndPostFollowupEventCode(0);
+  }
+  return 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x00484af0
 // CMainFrame::CreateObject
 
@@ -37,15 +59,10 @@ ON_WM_CREATE()
 ON_MESSAGE(0x030F, OnMsg030F)
 ON_WM_PALETTECHANGED()
 ON_COMMAND(100, OnStartupCommand100)
+ON_MESSAGE(0x2420, HandleCustomMessage2420DispatchTurnEvent)
 ON_COMMAND(0x8009, OnCommand8009)
 ON_COMMAND(0x800C, OnCommand800C)
 END_MESSAGE_MAP()
-
-// FUNCTION: IMPERIALISM 0x00413a20
-BOOL CMainFrame::PreTranslateMessage(MSG* msg) {
-  RefreshBackdropOnInputMessages(msg);
-  return CFrameWnd::PreTranslateMessage(msg);
-}
 
 // FUNCTION: IMPERIALISM 0x00484bf0
 CMainFrame::CMainFrame()
@@ -154,4 +171,12 @@ void CMainFrame::OnCommand800C() {
 
 void CMainFrame::OnStartupCommand100() {
   DispatchStartupCommand100ToAppSingleton();
+}
+
+// FUNCTION: IMPERIALISM 0x00485920
+LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam) {
+  (void)lParam;
+  g_pUiRuntimeContext->DispatchTurnEventSlot4C(static_cast<short>(wParam),
+                                               g_pSimMgr->GetActiveNationId());
+  return 0;
 }

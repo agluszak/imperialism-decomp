@@ -275,14 +275,6 @@ undefined4 DrawPalettePreviewGridRectanglesToViewDc(void)
   return 0;
 }
 
-// ghidra_name TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
-// ghidra_proto undefined WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930()
-// FUNCTION: IMPERIALISM 0x0047e930
-undefined4 WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(void)
-{
-  return 0;
-}
-
 // ghidra_name OpenPaletteFileDialogAndLoadPaletteFromMmio
 // ghidra_proto undefined OpenPaletteFileDialogAndLoadPaletteFromMmio()
 // FUNCTION: IMPERIALISM 0x0047e960
@@ -1471,14 +1463,6 @@ undefined4 SetUiRuntimeContextValue64ToZero(void)
 // ghidra_proto undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()
 // FUNCTION: IMPERIALISM 0x004855b0
 undefined4 TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleCustomMessage2420DispatchTurnEvent
-// ghidra_proto undefined HandleCustomMessage2420DispatchTurnEvent()
-// FUNCTION: IMPERIALISM 0x00485920
-undefined4 HandleCustomMessage2420DispatchTurnEvent(void)
 {
   return 0;
 }

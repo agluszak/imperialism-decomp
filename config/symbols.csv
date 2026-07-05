@@ -69,7 +69,7 @@ address|name|symbol|size|type|prototype|provenance
 4145f0|WrapperFor_OnIdle_At004145f0||55|function|undefined WrapperFor_OnIdle_At004145f0()|
 414640|AssertAmbitSubsystemReadyOrFailWithBmp3B6||28|function|undefined AssertAmbitSubsystemReadyOrFailWithBmp3B6()|
 4146d0|PostWmCloseToMainThreadWindow||55|function|undefined PostWmCloseToMainThreadWindow()|
-414720|PostTurnEventCodeMessage2420||51|function|undefined PostTurnEventCodeMessage2420()|
+414720|TApplication::PostTurnEventCodeMessage2420||51|function|undefined PostTurnEventCodeMessage2420()|
 414770|OrphanRetStub_00414770||1|function|undefined OrphanRetStub_00414770()|
 414850|LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850||6|function|undefined LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850()|
 414870|DetectImperialismInstallDriveAndSetPathPrefix||233|function|undefined DetectImperialismInstallDriveAndSetPathPrefix()|
@@ -334,7 +334,7 @@ address|name|symbol|size|type|prototype|provenance
 47aa70|StretchDibitsFromStoredBitmapToHdcSimple||80|function|undefined StretchDibitsFromStoredBitmapToHdcSimple()|
 47aae0|BlitDibBitsWithStretchDIBits||82|function|undefined BlitDibBitsWithStretchDIBits()|
 47ab60|StretchDibitsFromStoredBitmapToHdc||81|function|undefined StretchDibitsFromStoredBitmapToHdc()|
-47abe0|RenderHintHelperWithCtrlModifierOverlay_Impl||76|function|undefined RenderHintHelperWithCtrlModifierOverlay_Impl()|
+47abe0|CDib::StretchDibitsRectToDc||76|function|undefined StretchDibitsRectToDc()|
 47ac50|StretchDibitsWithCopiedPaletteTable||368|function|undefined StretchDibitsWithCopiedPaletteTable()|
 47ae20|EnsureBitmapSurfaceDibSectionCreated||65|function|undefined EnsureBitmapSurfaceDibSectionCreated()|
 47ae90|BuildPaletteFromRgbQuadBuffer||145|function|undefined BuildPaletteFromRgbQuadBuffer()|
@@ -417,7 +417,7 @@ address|name|symbol|size|type|prototype|provenance
 47e3c0|CDibPal::~CDibPal||94|function|~CDibPal()|
 47e440|CDibPal::BuildPaletteFromBitmapColorTable||199|function|int BuildPaletteFromBitmapColorTable(CDib * dib)|
 47e590|DrawPalettePreviewGridRectanglesToViewDc||406|function|undefined DrawPalettePreviewGridRectanglesToViewDc()|
-47e930|TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930||32|function|undefined WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930()|
+47e930|CDibPal::SelectIntoDcAndRealize||32|function|undefined SelectIntoDcAndRealize()|
 47e960|OpenPaletteFileDialogAndLoadPaletteFromMmio||519|function|undefined OpenPaletteFileDialogAndLoadPaletteFromMmio()|
 47ec00|WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5_Impl||74|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5_Impl()|
 47ec70|Helper_Uses_thunk_Cluster_MapTileHint_0047ed70_At0047ec70||95|function|undefined Helper_Uses_thunk_Cluster_MapTileHint_0047ed70_At0047ec70()|
@@ -593,7 +593,7 @@ address|name|symbol|size|type|prototype|provenance
 48542a|HandleDialogSelectionAndDispatchTurnEventCode|||global||
 485590|SetUiRuntimeContextValue64ToZero||1|function|undefined SetUiRuntimeContextValue64ToZero()|
 4855b0|TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog||1|function|undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()|
-485920|HandleCustomMessage2420DispatchTurnEvent||40|function|undefined HandleCustomMessage2420DispatchTurnEvent()|
+485920|CMainFrame::HandleCustomMessage2420DispatchTurnEvent||40|function|undefined HandleCustomMessage2420DispatchTurnEvent()|
 485960|TMacViewMgr_OnMsg_0x0BC0_Impl||1|function|undefined TMacViewMgr_OnMsg_0x0BC0_Impl()|
 485990|TMovieView::SetFieldC0AndInvalidateWindowIfChanged||41|function|undefined SetFieldC0AndInvalidateWindowIfChanged()|
 4859d0|TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl||1|function|undefined TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl()|
@@ -1023,7 +1023,7 @@ address|name|symbol|size|type|prototype|provenance
 48f080|TRadio::Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080||206|function|undefined Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080()|
 48f250|DestructCityDialogSharedBaseState||172|function|undefined DestructCityDialogSharedBaseState()|
 48f330|InitializePictureEntryBaseAndRefresh||111|function|undefined InitializePictureEntryBaseAndRefresh()|
-48f3c0|THQButton::RenderHintHelperWithCtrlModifierOverlay||270|function|undefined RenderHintHelperWithCtrlModifierOverlay()|
+48f3c0|TPicture::ApplyRectSlot110||270|function|undefined ApplyRectSlot110()|
 48f520|TPicture::ResetPictureResourceEntry||53|function|void __thiscall ResetPictureResourceEntry(void)|
 48f570|TPicture::SetPictureResourceIdAndRefresh||118|function|void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow)|
 48f610|SetPictureResourceIdAndRefresh_Impl||18|function|undefined SetPictureResourceIdAndRefresh_Impl()|
@@ -1174,8 +1174,8 @@ address|name|symbol|size|type|prototype|provenance
 4944b0|ReleaseCachedGlobalFontObjectIfPresent_At004944b0||18|function|undefined ReleaseCachedGlobalFontObjectIfPresent_At004944b0()|
 4944e0|UpdateGlobalFontPresetAndRebuildCachedFontIfDirty||141|function|undefined UpdateGlobalFontPresetAndRebuildCachedFontIfDirty()|
 4945f0|BindScopedMapQuickDrawDcHandle||73|function|undefined BindScopedMapQuickDrawDcHandle()|
-494660|NoOpQuickDrawContextSelectionHook||15|function|undefined NoOpQuickDrawContextSelectionHook()|
-494680|RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680||24|function|undefined RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680()|
+494660|GetActiveQuickDrawDc||15|function|undefined GetActiveQuickDrawDc()|
+494680|GetActiveQuickDrawSurfaceDib||24|function|undefined GetActiveQuickDrawSurfaceDib()|
 4946b0|ReleaseScopedMapQuickDrawDcHandle||55|function|undefined ReleaseScopedMapQuickDrawDcHandle()|
 494700|ConstructScopedMapQuickDrawContext||171|function|undefined ConstructScopedMapQuickDrawContext()|
 4947e0|ConstructScopedMapQuickDrawContextWithPaletteToken||157|function|undefined ConstructScopedMapQuickDrawContextWithPaletteToken()|
@@ -1278,7 +1278,7 @@ address|name|symbol|size|type|prototype|provenance
 499440|TModuleLibraryCacheTableStateB::LoadUiStringResourceById||91|function|undefined4 LoadUiStringResourceById(class CString * out, unsigned int stringId)|
 4994c0|LoadUiStringResourceByGroupAndIndex||170|function|undefined LoadUiStringResourceByGroupAndIndex()|
 4995a0|TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0||9|function|undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0()|
-4995c0|TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6||429|function|undefined ResolveBmpResourceHandleWithDefault3B6()|
+4995c0|TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette||429|function|undefined EnsureDefaultDibPalette()|
 4997e0|TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached||678|function|CDib * LoadBmpResourceByIdCached(unsigned short bmpId)|
 499b40|TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById||642|function|CDib * BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode)|
 499e80|AllocateAndLinkBlockHeadPair_00499e80||434|function|undefined AllocateAndLinkBlockHeadPair_00499e80()|
@@ -5209,7 +5209,7 @@ address|name|symbol|size|type|prototype|provenance
 593920|TOceanDialog::RequestAudioPresetChangeWithDeferredApply||183|function|undefined RequestAudioPresetChangeWithDeferredApply()|
 593a10|TSimMgr::SetOutputDevice||388|function|void __thiscall SetOutputDevice(int this_ptr)|
 593c10|TMovieView::HandleBlinkStateAndScheduleTimerTick||116|function|undefined HandleBlinkStateAndScheduleTimerTick()|
-593cb0|WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0||22|function|undefined WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0()|
+593cb0|TSoundPlayer::ScaleAndApplyAuxOutputVolume||22|function|undefined ScaleAndApplyAuxOutputVolume()|
 593ce0|Helper_Uses_thunk_GetTickCountDiv16_At00593ce0||40|function|undefined Helper_Uses_thunk_GetTickCountDiv16_At00593ce0()|
 593e50|WrapperFor_ftol_At00593e50||30|function|undefined WrapperFor_ftol_At00593e50()|
 593e80|TStatusPicture::CreateObject|?CreateObject@TStatusPicture@@SGPAVCObject@@XZ|93|function|TStatusPicture * __cdecl CreateObject(void)|rtti
@@ -6095,7 +6095,7 @@ address|name|symbol|size|type|prototype|provenance
 5da360|HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons||3184|function|undefined HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()|
 5db2f0|NoOpUiRuntimeCallback_005db2f0||6|function|undefined NoOpUiRuntimeCallback_005db2f0()|
 5db3b0|HandleTurnEventDialogFactorySlotF4||439|function|undefined HandleTurnEventDialogFactorySlotF4()|
-5db620|HandleTurnStateExitAndPostFollowupEventCode||219|function|undefined HandleTurnStateExitAndPostFollowupEventCode()|
+5db620|TViewMgr::HandleTurnStateExitAndPostFollowupEventCode||219|function|undefined HandleTurnStateExitAndPostFollowupEventCode()|
 5db780|HandleTurnEventDialogFactorySlotF8||1130|function|undefined HandleTurnEventDialogFactorySlotF8()|
 5dbd10|NoOpTurnEventStateVtableSlotFC||1|function|undefined NoOpTurnEventStateVtableSlotFC()|
 5dbd30|TViewMgr::HandleTurnEvent5DE_RefreshMainView||115|function|undefined HandleTurnEvent5DE_RefreshMainView()|
@@ -7401,7 +7401,7 @@ address|name|symbol|size|type|prototype|provenance
 612984|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z|83|function|undefined SelectObject_612984()|
 6129d7|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z|83|function|undefined SelectObject_6129d7()|
 612a2a|CDC::SelectClipRgn|CDC::SelectClipRgn|78|function|undefined ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z@00612a2a()|
-612a78|thunk_DispatchHandleMapLookupWithReadPtrProbe||16|function|undefined thunk_DispatchHandleMapLookupWithReadPtrProbe()|
+612a78|CDC::SelectPalette||16|function|undefined SelectPalette()|
 612a88|TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate||18|function|undefined SelectPaletteThenLookupHandleMapEntryWithCreate()|
 612a9a|CDC::SetPolyFillMode|?SetPolyFillMode@CDC@@QAEHH@Z|56|function|undefined ?SetMapperFlags@CDC@@QAEKK@Z@00612a9a()|
 612ad2|CDC::SetMapperFlags|?SetMapperFlags@CDC@@QAEKK@Z|56|function|undefined SetBkModeOnPrimaryAndSecondaryDc()|

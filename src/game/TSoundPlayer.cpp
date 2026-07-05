@@ -1,6 +1,7 @@
 #include "game/TSoundPlayer.h"
 
 #include "game/mfc.h"
+#include "game/wave_helpers.h"
 #include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 #include "game/TApplication.h"
@@ -119,6 +120,13 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
     }
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00593cb0
+void TSoundPlayer::ScaleAndApplyAuxOutputVolume(short scalar) {
+  // Original forwards through 0x47cdd0 with ECX pointed at an unrecovered audio
+  // singleton (0x6a60bc) that the callee never reads; modeled as the free helper.
+  ApplyAuxOutputVolumeFromScalar(scalar << 8);
 }
 
 // Slot 0x25 — allocate the two sound-channel peer objects and bring up DirectSound.

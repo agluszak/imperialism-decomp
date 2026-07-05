@@ -419,14 +419,6 @@ undefined4 AssertAmbitSubsystemReadyOrFailWithBmp3B6(void)
   return 0;
 }
 
-// ghidra_name PostTurnEventCodeMessage2420
-// ghidra_proto undefined PostTurnEventCodeMessage2420()
-// FUNCTION: IMPERIALISM 0x00414720
-undefined4 PostTurnEventCodeMessage2420(void)
-{
-  return 0;
-}
-
 // ghidra_name DetectImperialismInstallDriveAndSetPathPrefix
 // ghidra_proto undefined DetectImperialismInstallDriveAndSetPathPrefix()
 // FUNCTION: IMPERIALISM 0x00414870
@@ -1403,14 +1395,6 @@ undefined4 StretchDibitsFromStoredBitmapToHdc(void)
   return 0;
 }
 
-// ghidra_name RenderHintHelperWithCtrlModifierOverlay_Impl
-// ghidra_proto undefined RenderHintHelperWithCtrlModifierOverlay_Impl()
-// FUNCTION: IMPERIALISM 0x0047abe0
-undefined4 RenderHintHelperWithCtrlModifierOverlay_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name StretchDibitsWithCopiedPaletteTable
 // ghidra_proto undefined StretchDibitsWithCopiedPaletteTable()
 // FUNCTION: IMPERIALISM 0x0047ac50
@@ -1567,14 +1551,6 @@ undefined4 ApplyMciPlaybackRangeFromAudioManager(void)
 // ghidra_proto undefined ForwardMciCommand808ToDevice()
 // FUNCTION: IMPERIALISM 0x0047cd80
 undefined4 ForwardMciCommand808ToDevice(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyAuxOutputVolumeFromScalar
-// ghidra_proto undefined ApplyAuxOutputVolumeFromScalar()
-// FUNCTION: IMPERIALISM 0x0047cdd0
-undefined4 ApplyAuxOutputVolumeFromScalar(void)
 {
   return 0;
 }

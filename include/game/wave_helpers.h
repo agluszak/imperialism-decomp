@@ -34,3 +34,10 @@ UINT ReadMmioBytesToBufferAndUpdateChunkRemaining(HMMIO hmmio, UINT cbRead, HPST
 UINT LoadWaveDataAndFormatFromFilePath(char* pszFileName, DWORD* pcbSize, DWORD* pcSamples,
                                        WAVEFORMATEX** ppwfx, unsigned char** ppbData,
                                        MMIOINFO* pmmioInfo);
+
+// Aux-output (CD-audio line) volume: 0x69b89c holds the probed aux device index
+// (-1 = none found; set by ProbeAuxOutputDeviceIndexByPidMask 0x5e1430, unported).
+// Duplicates dwVolume into both channel words and calls winmm auxSetVolume.
+int __stdcall SetAuxOutputVolumeFromScalar(int scalar); // 0x5e1500
+// Thin forwarder (multimedia module copy at 0x47cdd0).
+int __stdcall ApplyAuxOutputVolumeFromScalar(int scalar); // 0x47cdd0

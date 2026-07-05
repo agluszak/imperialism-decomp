@@ -228,25 +228,40 @@ run *args:
   cd "$game_dir"
   exec wine "$recomp" "$@"
 
+# Run the ORIGINAL retail binary the same way — the runtime oracle. Verified
+# 2026-07-05: it reaches the full main menu under this Wine setup (logo -> intro
+# movie -> menu), so any recomp divergence is a decomp bug, never "maybe Wine".
+[doc('Run the original retail exe under Wine (the runtime oracle)')]
+[group('build')]
+run-original *args:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env to your retail Imperialism.exe}"
+  game_dir="$(cd "$(dirname "$ORIGINAL_BINARY")" && pwd)"
+  export WINEDEBUG="${WINEDEBUG--all}"
+  cd "$game_dir"
+  exec wine "$ORIGINAL_BINARY" "$@"
+
 # Kill any stale game/wineserver state, then launch the recomp detached and confirm
 # it is alive. Replaces the error-prone manual three-command dance (kill+settle,
 # nohup launch, pgrep) — chaining kill and relaunch in one shell command silently
 # races about half the time. Log: build-msvc500/run.log.
+# `just run-fresh run-original` launches the oracle instead of the recomp.
 [doc('Fresh detached game launch: kill stale wine state, launch, confirm alive')]
 [group('build')]
-run-fresh:
+run-fresh target='run':
   #!/usr/bin/env bash
   set -euo pipefail
-  pkill -9 -f Imperialism.exe 2>/dev/null || true
+  pkill -9 -f -i Imperialism.exe 2>/dev/null || true
   sleep 1
   wineserver -k 2>/dev/null || true
   sleep 2
   log="{{justfile_directory()}}/{{build_dir}}/run.log"
-  nohup just run > "$log" 2>&1 &
+  nohup just {{target}} > "$log" 2>&1 &
   disown
   sleep 8
-  if pgrep -f Imperialism.exe > /dev/null; then
-    echo "game running (pid $(pgrep -f Imperialism.exe | head -1)); log: $log"
+  if pgrep -f -i Imperialism.exe > /dev/null; then
+    echo "game running (pid $(pgrep -f -i Imperialism.exe | head -1)); log: $log"
   else
     echo "game did not stay up; log tail:" >&2
     tail -20 "$log" >&2
@@ -280,6 +295,40 @@ run-trace timeout='30s':
 [group('build')]
 screenshot *args:
   uv run --with python-xlib --with pillow python tools/runtime/screenshot.py {{args}}
+
+# Synthetic input via XTest (xdotool is not installed here; python-xlib is, and
+# a fake click verifiably skips the intro movie). Coordinates are relative to
+# the game window. `just click 320 400`, `just key Return`.
+[doc('Click the game window at window-relative X Y (XTest fake input)')]
+[group('build')]
+click *args:
+  uv run --with python-xlib python tools/runtime/input.py click {{args}}
+
+[doc('Press a key in the game (X keysym name, e.g. Return, space, Escape)')]
+[group('build')]
+key *args:
+  uv run --with python-xlib python tools/runtime/input.py key {{args}}
+
+# The bring-up smoke ladder: launch the recomp under winedbg's gdb proxy, plant
+# tracepoint breakpoints on the startup milestones (dispatch -> view realize ->
+# CMcWindow ctor -> OnDraw -> blit), report which fired plus a non-black-pixel
+# measurement of the frame. Exit 1 if an expected milestone regressed. This
+# distinguishes the three black-screen causes (silent crash / tree never
+# attached / blit stub) that plain screenshots cannot.
+[doc('Milestone smoke ladder: which startup stages fire + non-black pixel check')]
+[group('build')]
+smoke *args:
+  uv run --with python-xlib --with pillow python tools/runtime/smoke.py run {{args}}
+
+# Scripted gdb session against the recomp (winedbg --gdb proxy; real gdb front
+# end: conditional breakpoints, set var, inferior calls, raw memory reads).
+# gdb sees no PDB symbols — use recomp VAs from `just addr 0xORIG`.
+#   just gdb-script --ex 'break *0x452af0' --ex 'continue' --ex 'bt'
+#   just gdb-script --script session.gdb --seconds 60
+[doc('Scripted gdb session on the recomp via the winedbg gdb proxy')]
+[group('build')]
+gdb-script *args:
+  uv run --with python-xlib --with pillow python tools/runtime/smoke.py gdb {{args}}
 
 # Run the recomp under winedbg from the retail install directory. By default breaks
 # on MessageBoxA, continues, prints a backtrace, and quits — useful for tracing

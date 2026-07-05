@@ -243,6 +243,7 @@ extern TBackdropWindow* DAT_006a2050;
 extern void* DAT_006a2054;
 extern LPCSTR g_apFontFiles[];
 extern int g_nDibOrientationFlag_006A1890;
+extern int g_nAuxOutputDeviceIndex;
 extern CRuntimeClass s_CDib_RuntimeClass_00694b48;
 extern void* g_pScopedMapQuickDrawViewContext;
 extern CDC* g_pScopedMapQuickDrawDcHandleObject;

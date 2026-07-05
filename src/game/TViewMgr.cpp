@@ -24,6 +24,7 @@
 #include "game/TCouncilTickerAnimation.h"
 #include "game/TToolBarCluster.h"
 #include "game/TPicture.h"
+#include "game/nation_slot_eligibility.h"
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
 #include "game/ui_invalidation_guard.h"
 #include "game/TMultiplayerMgr.h"
@@ -45,6 +46,7 @@
 char IsNationSlotEligibleForEventProcessing(short nationSlot);
 
 undefined4 QueueDeferredUiEventPacket(void);
+undefined4 ReinitializeGameFlowAndPostTurnEventCode(void);
 undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
 undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 
@@ -1294,6 +1296,40 @@ void TViewMgr::UiRuntimeSlotBC() {
 
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagTran, 0x2730, 0);
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagCity, 0x2731, 0);
+}
+
+// Screen-exit backbone: record the followup turn state; when leaving (state 0),
+// re-apply the audio volume preferences and post the followup turn-event code for the
+// current TSimMgr mode (1 -> 0x5dc main menu, 0xe/0x16/0x17 -> 0x7e0,
+// 0x19 -> 0x5eb when the active nation is eligible, else reinitialize).
+// FUNCTION: IMPERIALISM 0x005db620
+void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) {
+  this->fieldF8 = followupState;
+  if (followupState != 0) {
+    return;
+  }
+  g_pSfxPlaybackSystem->RequestDirectSoundInitIfAllowed();
+  g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(g_pSimMgr->preferenceValues[4]);
+  g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[5]);
+  this->fieldF4 = 0;
+  switch (g_pSimMgr->mode) {
+    case 1:
+      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+      return;
+    case 0xe:
+    case 0x16:
+    case 0x17:
+      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7e0);
+      return;
+    case 0x19:
+      if (IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
+        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5eb);
+        return;
+      }
+    default:
+      // 0x581870, unported __cdecl(int) — generic thunk form per Hard Rule 9.
+      reinterpret_cast<void(__cdecl*)(int)>(ReinitializeGameFlowAndPostTurnEventCode)(0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005dbd10

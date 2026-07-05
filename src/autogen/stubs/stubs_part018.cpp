@@ -803,14 +803,6 @@ undefined4 HandleBlinkStateAndScheduleTimerTick(void)
   return 0;
 }
 
-// ghidra_name ScaleAndApplyAuxOutputVolume
-// ghidra_proto undefined __cdecl ScaleAndApplyAuxOutputVolume(int volumeScalar)
-// FUNCTION: IMPERIALISM 0x00593cb0
-undefined4 ScaleAndApplyAuxOutputVolume(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_GetTickCountDiv16_At00593ce0
 // ghidra_proto undefined Helper_Uses_thunk_GetTickCountDiv16_At00593ce0()
 // FUNCTION: IMPERIALISM 0x00593ce0

@@ -16,8 +16,6 @@
 #include <new>
 #include "game/CString.h"
 
-undefined4 ScaleAndApplyAuxOutputVolume(void);
-
 // SYNTHETIC: IMPERIALISM 0x0056e1e0
 // TTwoPicSlider::GetRuntimeClass
 
@@ -172,12 +170,9 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventS
 
       if (slider->mode == 1) {
         int volumeScalar = SliderScaledValue(slider, 0xff);
-        // 0x593cb0: real cdecl(int) free function, not a class thunk (no ECX use
-        // by its own callee chain 0x47cdd0 -> SetAuxOutputVolumeFromScalar
-        // 0x5e1500). Scales volumeScalar (0-255) by 256 before forwarding --
-        // retirement (inlining the *256 + calling SetAuxOutputVolumeFromScalar
-        // directly) is a follow-up, not done here.
-        reinterpret_cast<void(__cdecl*)(int)>(ScaleAndApplyAuxOutputVolume)(volumeScalar);
+        // 0x593cb0 is a real TSoundPlayer thiscall (this callsite loads
+        // ECX = [0x6a43ec] in the original, same as 0x5db66f).
+        g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(static_cast<short>(volumeScalar));
         // Original: mov eax,[0x6a20f8]; mov [eax+0x4e],di — the master-volume
         // preference slot on the TSimMgr singleton (not a raw global).
         g_pSimMgr->preferenceValues[5] = static_cast<short>(volumeScalar);

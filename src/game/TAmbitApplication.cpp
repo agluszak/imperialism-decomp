@@ -218,16 +218,16 @@ void TAmbitApplication::VTableSlot2B(int arg1, int arg2, int arg3) {
     if (sVar1 == 0x7dd || sVar1 == 0x3b8 || sVar1 == 0xed8 || sVar1 == 0xf3c || sVar1 == 0x3c0) {
       iVar3 = TemporarilyClearAndRestoreUiInvalidationFlag();
       if (iVar3 == 0) {
-        POINT pt;
+        CPoint pt;
         pt.x = arg1;
         pt.y = arg2;
 
         TView* activeDialog = g_pDisplayMgr->activeDialog;
-        activeDialog->UpdateAfterBitmapChange(reinterpret_cast<int>(&pt));
+        activeDialog->UpdateAfterBitmapChange(&pt);
 
         if (pt.x > -200 && pt.y > -200) {
-          int width = *reinterpret_cast<int*>(reinterpret_cast<char*>(activeDialog) + 0x34);
-          int height = *reinterpret_cast<int*>(reinterpret_cast<char*>(activeDialog) + 0x38);
+          int width = activeDialog->field34;
+          int height = activeDialog->field38;
           if (pt.x < width + 200 && pt.y < height + 200) {
             byte bVar4 = 0;
             if (pt.x < 5) {

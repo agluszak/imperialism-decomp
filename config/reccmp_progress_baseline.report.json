@@ -296,8 +296,8 @@
     },
     {
       "address": "0x414720",
-      "matching": 0.10526315789473684,
-      "name": "PostTurnEventCodeMessage2420",
+      "matching": 1.0,
+      "name": "TApplication::PostTurnEventCodeMessage2420",
       "type": 1
     },
     {
@@ -314,7 +314,7 @@
     },
     {
       "address": "0x4149a0",
-      "matching": 0.3543913713405239,
+      "matching": 0.3667180277349769,
       "name": "LoadLanguageResourcesFromIrgFiles",
       "type": 1
     },
@@ -1545,8 +1545,8 @@
     },
     {
       "address": "0x47abe0",
-      "matching": 0.0,
-      "name": "RenderHintHelperWithCtrlModifierOverlay_Impl",
+      "matching": 1.0,
+      "name": "CDib::StretchDibitsRectToDc",
       "type": 1
     },
     {
@@ -1671,7 +1671,7 @@
     },
     {
       "address": "0x47cdd0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "ApplyAuxOutputVolumeFromScalar",
       "type": 1
     },
@@ -1866,6 +1866,12 @@
       "address": "0x47e590",
       "matching": 0.0,
       "name": "DrawPalettePreviewGridRectanglesToViewDc",
+      "type": 1
+    },
+    {
+      "address": "0x47e930",
+      "matching": 1.0,
+      "name": "CDibPal::SelectIntoDcAndRealize",
       "type": 1
     },
     {
@@ -2457,6 +2463,12 @@
       "type": 1
     },
     {
+      "address": "0x484230",
+      "matching": 1.0,
+      "name": "AdvanceTurnStateWhenMovieMciModeStops",
+      "type": 1
+    },
+    {
       "address": "0x4845a0",
       "matching": 0.2,
       "name": "InitializeEventThunkFields_00648590",
@@ -2548,7 +2560,7 @@
     },
     {
       "address": "0x484ff0",
-      "matching": 0.7074829931972789,
+      "matching": 0.7210884353741497,
       "name": "TryRealizeViewPaletteAndInvalidateWindow",
       "type": 1
     },
@@ -2578,8 +2590,8 @@
     },
     {
       "address": "0x485920",
-      "matching": 0.13333333333333333,
-      "name": "HandleCustomMessage2420DispatchTurnEvent",
+      "matching": 0.8148148148148148,
+      "name": "CMainFrame::HandleCustomMessage2420DispatchTurnEvent",
       "type": 1
     },
     {
@@ -4264,7 +4276,7 @@
     },
     {
       "address": "0x48b4b0",
-      "matching": 0.2028985507246377,
+      "matching": 0.21052631578947367,
       "name": "TView::InvalidateOffsetRegionUsingChildClipRect_b4",
       "type": 1
     },
@@ -4997,8 +5009,8 @@
     },
     {
       "address": "0x48f3c0",
-      "matching": 0.02,
-      "name": "THQButton::RenderHintHelperWithCtrlModifierOverlay",
+      "matching": 1.0,
+      "name": "TPicture::ApplyRectSlot110",
       "type": 1
     },
     {
@@ -5741,14 +5753,14 @@
     },
     {
       "address": "0x494660",
-      "matching": 0.2857142857142857,
-      "name": "NoOpQuickDrawContextSelectionHook",
+      "matching": 1.0,
+      "name": "GetActiveQuickDrawDc",
       "type": 1
     },
     {
       "address": "0x494680",
-      "matching": 0.36363636363636365,
-      "name": "RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680",
+      "matching": 1.0,
+      "name": "GetActiveQuickDrawSurfaceDib",
       "type": 1
     },
     {
@@ -6283,7 +6295,7 @@
     {
       "address": "0x4995c0",
       "matching": 0.23076923076923078,
-      "name": "TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6",
+      "name": "TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette",
       "type": 1
     },
     {
@@ -12223,7 +12235,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12668,13 +12680,15 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12686,7 +12700,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8571428571428571,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -19966,13 +19980,13 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -25858,7 +25872,7 @@
     },
     {
       "address": "0x57da70",
-      "matching": 0.10467610467610468,
+      "matching": 0.10773834972210346,
       "name": "TSimMgr::AdvanceGlobalTurnStateMachine",
       "type": 1
     },
@@ -26928,13 +26942,13 @@
     },
     {
       "address": "0x587aa0",
-      "matching": 0.8524590163934426,
+      "matching": 0.8688524590163934,
       "name": "TTradeCluster::SetTradeBidSecondaryBitmapState",
       "type": 1
     },
     {
       "address": "0x587bb0",
-      "matching": 0.45643153526970953,
+      "matching": 0.46473029045643155,
       "name": "TTradeCluster::SetTradeBidControlBitmapState",
       "type": 1
     },
@@ -27186,7 +27200,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.47715736040609136,
+      "matching": 0.45685279187817257,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27975,6 +27989,12 @@
       "address": "0x593c10",
       "matching": 0.0,
       "name": "TMovieView::HandleBlinkStateAndScheduleTimerTick",
+      "type": 1
+    },
+    {
+      "address": "0x593cb0",
+      "matching": 0.9090909090909091,
+      "name": "TSoundPlayer::ScaleAndApplyAuxOutputVolume",
       "type": 1
     },
     {
@@ -32916,8 +32936,8 @@
     },
     {
       "address": "0x5db620",
-      "matching": 0.0,
-      "name": "HandleTurnStateExitAndPostFollowupEventCode",
+      "matching": 0.7323943661971831,
+      "name": "TViewMgr::HandleTurnStateExitAndPostFollowupEventCode",
       "type": 1
     },
     {
@@ -33372,7 +33392,7 @@
     },
     {
       "address": "0x5e1500",
-      "matching": 0.125,
+      "matching": 1.0,
       "name": "SetAuxOutputVolumeFromScalar",
       "type": 1
     },
@@ -38712,8 +38732,8 @@
     },
     {
       "address": "0x612a78",
-      "matching": 0.0,
-      "name": "thunk_DispatchHandleMapLookupWithReadPtrProbe",
+      "matching": 0.5,
+      "name": "CDC::SelectPalette",
       "type": 1
     },
     {

@@ -53,6 +53,10 @@ public:
   UINT SelectAndRealizeDibPalette(CDC* dc, BOOL background);
   // Stretch-blit stored DIB bits to a DC. 0x0047aa70
   BOOL StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int width, int height);
+  // Full-control StretchDIBits of this DIB's bits/header: explicit dest and src rects,
+  // DIB_RGB_COLORS + SRCCOPY, null-tolerant CDC. 0x0047abe0
+  int StretchDibitsRectToDc(CDC* dc, int xDest, int yDest, int destWidth, int destHeight, int xSrc,
+                            int ySrc, int srcWidth, int srcHeight);
   // Load an RT_BITMAP resource from a module into the DIB state. 0x0047c080
   int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module);
   // Software-blit a `width`x`height` rect from this DIB's pixel buffer (top-left at

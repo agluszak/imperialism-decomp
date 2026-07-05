@@ -9,13 +9,18 @@ undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void);
 
 extern "C" CRuntimeClass PTR_s_TApplication_00648af8;
 
-// FUNCTION: IMPERIALISM 0x00486680
-void* __cdecl CreateTApplicationInstance(void) {
-  return new TApplication();
+// FUNCTION: IMPERIALISM 0x00414720
+void TApplication::PostTurnEventCodeMessage2420(short eventCode) {
+  ::PostMessage(AfxGetMainWnd()->m_hWnd, 0x2420, eventCode, 0);
 }
 
 // vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.
 IMPLEMENT_DYNCREATE(TApplication, TCommandHandler)
+
+// FUNCTION: IMPERIALISM 0x00486680
+void* __cdecl CreateTApplicationInstance(void) {
+  return new TApplication();
+}
 
 // FUNCTION: IMPERIALISM 0x00486760
 TApplication::TApplication()

@@ -531,14 +531,6 @@ undefined4 SelectObject(void)
   return 0;
 }
 
-// ghidra_name thunk_DispatchHandleMapLookupWithReadPtrProbe
-// ghidra_proto undefined thunk_DispatchHandleMapLookupWithReadPtrProbe()
-// FUNCTION: IMPERIALISM 0x00612a78
-undefined4 thunk_DispatchHandleMapLookupWithReadPtrProbe(void)
-{
-  return 0;
-}
-
 // ghidra_name TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate
 // ghidra_proto undefined SelectPaletteThenLookupHandleMapEntryWithCreate()
 // FUNCTION: IMPERIALISM 0x00612a88

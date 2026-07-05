@@ -64,6 +64,10 @@ public:
   TApplication();
   ~TApplication() override;
 
+  // Post custom message 0x2420 (turn-event code in wParam) to the main frame; handled
+  // by CMainFrame::HandleCustomMessage2420DispatchTurnEvent. Does not touch `this`.
+  void PostTurnEventCodeMessage2420(short eventCode); // 0x414720
+
   // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
   DECLARE_DYNCREATE(TApplication)
   // vtable index 0x27 (0x004868a0): load the active modal view pointer.

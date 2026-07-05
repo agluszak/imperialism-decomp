@@ -619,22 +619,6 @@ undefined4 UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(void)
   return 0;
 }
 
-// ghidra_name NoOpQuickDrawContextSelectionHook
-// ghidra_proto undefined NoOpQuickDrawContextSelectionHook()
-// FUNCTION: IMPERIALISM 0x00494660
-undefined4 NoOpQuickDrawContextSelectionHook(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680
-// ghidra_proto undefined RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680()
-// FUNCTION: IMPERIALISM 0x00494680
-undefined4 RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructScopedMapQuickDrawContextWithPaletteToken
 // ghidra_proto undefined ConstructScopedMapQuickDrawContextWithPaletteToken()
 // FUNCTION: IMPERIALISM 0x004947e0

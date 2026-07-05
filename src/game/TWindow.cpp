@@ -398,16 +398,16 @@ class TView* TWindow::QueryOwnerContextPanel() {
 }
 
 // FUNCTION: IMPERIALISM 0x00492d00
-void TWindow::TranslatePointToParentChain4E(int* point) {}
+void TWindow::TranslatePointToParentChain4E(CPoint* point) {}
 
 // FUNCTION: IMPERIALISM 0x00492d20
-void TWindow::TranslatePointToParentChain4D(int* point) {}
+void TWindow::TranslatePointToParentChain4D(CPoint* point) {}
 
 // FUNCTION: IMPERIALISM 0x00492d40
 void TWindow::DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) {}
 
 // FUNCTION: IMPERIALISM 0x00492d60
-void TWindow::SubtractPosAndDispatchToOwnerSlot19C(int* point) {}
+void TWindow::SubtractPosAndDispatchToOwnerSlot19C(CPoint* point) {}
 
 // FUNCTION: IMPERIALISM 0x00492d80
 TObject* TWindow::ShallowClone() {

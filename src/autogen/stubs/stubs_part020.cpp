@@ -483,14 +483,6 @@ undefined4 HandleTurnEventDialogFactorySlotF4(void)
   return 0;
 }
 
-// ghidra_name HandleTurnStateExitAndPostFollowupEventCode
-// ghidra_proto undefined HandleTurnStateExitAndPostFollowupEventCode()
-// FUNCTION: IMPERIALISM 0x005db620
-undefined4 HandleTurnStateExitAndPostFollowupEventCode(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventDialogFactorySlotF8
 // ghidra_proto undefined HandleTurnEventDialogFactorySlotF8()
 // FUNCTION: IMPERIALISM 0x005db780
@@ -951,14 +943,6 @@ undefined4 CopyMmioChunkByFourCCViaGlobalBuffer(void)
 // ghidra_proto undefined ProbeAuxOutputDeviceIndexByPidMask()
 // FUNCTION: IMPERIALISM 0x005e1430
 undefined4 ProbeAuxOutputDeviceIndexByPidMask(void)
-{
-  return 0;
-}
-
-// ghidra_name SetAuxOutputVolumeFromScalar
-// ghidra_proto undefined SetAuxOutputVolumeFromScalar()
-// FUNCTION: IMPERIALISM 0x005e1500
-undefined4 SetAuxOutputVolumeFromScalar(void)
 {
   return 0;
 }

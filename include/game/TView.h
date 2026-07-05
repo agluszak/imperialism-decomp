@@ -44,9 +44,9 @@ public:
   int field5c;
 
   TView();
-  void InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TView* panel, int* offsetLayout,
-                                               int* sizeLayout, int layoutParam6, int layoutParam7,
-                                               int attachFlag);
+  void InitializeUiResourceEntryFrameAndParent(TView* uiResourceContext, TView* panel,
+                                               int* offsetLayout, int* sizeLayout, int layoutParam6,
+                                               int layoutParam7, int attachFlag);
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
   void CopyCityDialogStateFromSource(TView* source);
   void EnableAndProcessFlag(CString sharedString);
@@ -112,16 +112,16 @@ public:
   virtual void QueryContentBounds(RECT* boundsOut);                   // 0x4a 0x427260
   virtual void QueryBounds(RECT* boundsOut);                          // 0x4b 0x427290
   virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect); // 0x4c 0x4272d0
-  virtual void TranslatePointToParentChain4D(int* point = 0);         // 0x4d 0x48ba80
-  virtual void TranslatePointToParentChain4E(int* point = 0);         // 0x4e 0x48ba40
+  virtual void TranslatePointToParentChain4D(CPoint* point = 0);      // 0x4d 0x48ba80
+  virtual void TranslatePointToParentChain4E(CPoint* point = 0);      // 0x4e 0x48ba40
   virtual void InvokeSlot13C();                                       // 0x4f 0x48b700
   virtual void OffsetRectByControlPosition(RECT* rect);               // 0x50 0x48bb00
-  virtual void UpdateAfterBitmapChange(int unknownFlag);              // 0x51
+  virtual void UpdateAfterBitmapChange(CPoint* point);                // 0x51
   virtual CPoint TransformPointViaSlot138(CPoint* inPoint);
   virtual RECT TransformRectViaSlot148(RECT* inRect);
   virtual void AddControlPosToPoint(int x, int y, int* outPoint);
   virtual void OffsetRectByCachedPos(RECT* inRect, RECT* outRect);
-  virtual int* GetCachedPosPoint(int* outPoint);
+  virtual CPoint* GetCachedPosPoint(CPoint* outPoint);
   virtual void CopyRectFromBuildRectFromSlot158(RECT* rectOut); // 0x57 0x429410
   virtual RECT* BuildRectFromSlot158(RECT* rectOut);
   virtual void RecomputeAbsolutePositionRecursive();
@@ -138,7 +138,7 @@ public:
   virtual void DrawRectangleInCurrentUiContext(int* rect);
   virtual void AssertMcAppUiLine1914();
   virtual void AssertMcAppUiLine1922();
-  virtual void SubtractPosAndDispatchToOwnerSlot19C(int* point);
+  virtual void SubtractPosAndDispatchToOwnerSlot19C(CPoint* point);
   // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ belong to the sibling
   // branches (TControl, TCivDescription, TAmtBar, ...). The destructor is slot 1
   // (TEventHandler override), so its declaration position is irrelevant.

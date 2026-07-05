@@ -18,6 +18,7 @@
 #include "game/TMinor.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TNextDiplomationCommand.h"
+#include "game/TApplication.h"
 #include "game/TSoundPlayer.h"
 #include "game/TTechMgr.h"
 #include "game/TViewMgr.h"
@@ -30,7 +31,6 @@ extern undefined4 ConfigureTurnResumeStateAndNationMask(void);
 extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 ShowTurnAlertsForActiveNation(void);
-extern undefined4 PostTurnEventCodeMessage2420(void);
 extern undefined4 SyncNationField790FromLocalizationStateId(void);
 extern undefined4 UpdatePersistentTopTenNationScores(void);
 extern undefined4 RebuildNationRankingDataAndUiCache(void);

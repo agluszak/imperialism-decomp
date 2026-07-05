@@ -276,6 +276,10 @@ LPCSTR g_apFontFiles[] = {"data\\WeBeBd__.ttf", "data\\Antqua.ttf", "data\\Antqu
                           "data\\AntquaB.ttf", nullptr};
 // GLOBAL: IMPERIALISM 0x006a1890
 int g_nDibOrientationFlag_006A1890 = 0;
+// Probed aux-output (CD-audio line) device index; -1 until
+// ProbeAuxOutputDeviceIndexByPidMask (0x5e1430, unported) finds one.
+// GLOBAL: IMPERIALISM 0x0069b89c
+int g_nAuxOutputDeviceIndex = -1;
 // GLOBAL: IMPERIALISM 0x00694b48
 CRuntimeClass s_CDib_RuntimeClass_00694b48 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x6a1d9c

@@ -432,10 +432,17 @@
     }
     break;
 
+  // Jump-table ground truth (0x57dad8, index-byte table 0x57ebec): case 0x71 -> 0x57eabf
+  // (posts 0x104f), case 0x72 -> 0x57ead8 (posts 0x5e4). The old merged port dropped both
+  // event codes.
   case 0x71:
+    turnStateCode = 4;
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x104f);
+    break;
+
   case 0x72:
     turnStateCode = 4;
-    PostTurnEventCodeMessage2420();
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e4);
     break;
 
   case 0x68:

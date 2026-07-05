@@ -1,30 +1,18 @@
-// Manual decompilation file.
-// Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
-
-#include "game/UiRuntimeContext.h"
-#include "game/quickdraw_guards.h"
 #include "game/mfc.h"
-#include "game/ui_widget_thunks.h"
-#include <new>
-
 #include "game/TApplication.h"
 #include "game/TEventHandler.h"
 #include "game/TView.h"
-#include "game/TControl.h"
 #include "game/TCursorControlPanel.h"
 #include "game/global_data_tables.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ClipStateRegion.h"
 
 // Shared thunks/hooks whose callers interpret the arguments differently are kept in
 // generic repo form (rule 9) with a typed cast at the callsite.
-undefined4 NoOpQuickDrawContextSelectionHook(void);
 undefined4 ReplaceClipStateRegionHandleFromRect(void);
-#include "game/ClipStateRegion.h"
 undefined4 GetRegionBoxToRectIfPresent(void);
-
-// TView::childList44 is an MFC CPtrList of child-control TView* pointers (node->data).
 
 extern "C" CRuntimeClass PTR_s_TView_006495a0;
 
@@ -70,13 +58,14 @@ void TView::QueryBounds(RECT* boundsOut) {
 }
 // FUNCTION: IMPERIALISM 0x004272d0
 void TView::DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) {
-  TranslatePointToParentChain4D(reinterpret_cast<int*>(&rect->left));
-  TranslatePointToParentChain4D(reinterpret_cast<int*>(&rect->right));
+  // RECT's four LONGs are two adjacent POINTs (left,top) and (right,bottom) — the
+  // standard MFC/Win32 idiom for treating a RECT as a pair of POINTs in place.
+  TranslatePointToParentChain4D(reinterpret_cast<CPoint*>(&rect->left));
+  TranslatePointToParentChain4D(reinterpret_cast<CPoint*>(&rect->right));
 }
 
 // FUNCTION: IMPERIALISM 0x00427330
-void TView::UpdateAfterBitmapChange(int unknownFlag) {
-  CPoint* point = reinterpret_cast<CPoint*>(unknownFlag);
+void TView::UpdateAfterBitmapChange(CPoint* point) {
   point->x -= ownerOffsetX;
   point->y -= ownerOffsetY;
 }
@@ -165,12 +154,6 @@ void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
 
 IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
-// Real ctor. The TEventHandler base ctor (inlined) writes the base vptr (0x006497a0)
-// and the base scalar fields (field0c/field10/field14/resourceOwner); MSVC then writes this
-// class's vptr (0x00649858) and constructs TView's own members in declaration order.
-// The scalar fields are member-initializers (not body assignments) so they are emitted
-// before the CString member sharedStringRef is constructed (-> 0x00605797). No manual
-// vtable writes — the // VTABLE: annotation owns it.
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
     : TEventHandler(), ownerContext(0), field2c(0), field30(0), field3c(0), childList44(0),
@@ -187,7 +170,7 @@ TView::~TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048aa60
-void TView::InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TView* panel,
+void TView::InitializeUiResourceEntryFrameAndParent(TView* uiResourceContext, TView* panel,
                                                     int* offsetLayout, int* sizeLayout,
                                                     int layoutParam6, int layoutParam7,
                                                     int attachFlag) {
@@ -199,7 +182,7 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TView* 
   controlTag = 0x20202020;
   field04 = 1;
   field08 = 1;
-  field0c = reinterpret_cast<int>(panel);
+  linkedChildHandler = panel;
   ownerOffsetX = offsetLayout[0];
   ownerOffsetY = offsetLayout[1];
   field34 = sizeLayout[0];
@@ -207,10 +190,8 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* ownerContext, TView* 
   if (panel != 0) {
     panel->AttachChildControl(this, attachFlag);
   }
-  uiResourceContext40 = ownerContext;
+  uiResourceContext40 = uiResourceContext;
 }
-// Recursively dispatch a control event: walk the field44 child list, forward to each
-// child's slot-0x36, then invoke this view's own slot-0x37 handler.
 // FUNCTION: IMPERIALISM 0x0048aaf0
 void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
   if (childList44 != 0) {
@@ -226,7 +207,6 @@ void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
 void TView::NoOpUiLifecycleHook(int arg) {
   (void)arg;
 }
-// Forward a map-view notification (slot 0x31) up to the owning view, if any.
 // FUNCTION: IMPERIALISM 0x0048ab90
 void TView::ForwardMapViewVirtualC4IfPresent(int param) {
   if (ownerContext != 0) {
@@ -239,7 +219,7 @@ void TView::NoOpUiCallback() {}
 // FUNCTION: IMPERIALISM 0x0048abe0
 void TView::AttachChildControl(class TView* child, int flag) {
   child->ownerContext = this;
-  child->field0c = reinterpret_cast<int>(this);
+  child->linkedChildHandler = this;
 
   if (childList44 == nullptr) {
     childList44 = new CPtrList();
@@ -254,9 +234,7 @@ void TView::AttachChildControl(class TView* child, int flag) {
   child->RecomputeAbsolutePositionRecursive();
 }
 
-// Find the child whose controlTag matches, unlink it from childList44 (inlined
-// CPtrList::RemoveAt; when the list empties, free its block chain), delete the now-empty
-// list, and clear the child's back-reference to this owner.
+// Inlines CPtrList::RemoveAt (frees the list's block chain once empty).
 // FUNCTION: IMPERIALISM 0x0048ae60
 void TView::DetachChildFromOwnerList(class TView* child) {
   CPtrList* list = childList44;
@@ -288,8 +266,6 @@ void TView::DetachChildFromOwnerList(class TView* child) {
   }
   child->ownerContext = 0;
 }
-// If the child list's tail element is not already the given child, notify the old/new
-// selection (slots 0x5d/0x5c) and refresh the newly active child.
 // FUNCTION: IMPERIALISM 0x0048af80
 void TView::SwitchActiveChildAndNotify(class TView* child) {
   if (childList44 != 0 && childList44->GetTail() != child) {
@@ -298,9 +274,8 @@ void TView::SwitchActiveChildAndNotify(class TView* child) {
     child->RefreshControl();
   }
 }
-// Find the descendant control whose controlTag matches: scan the direct child list
-// first, then recurse into each child via slot 0x25 (ResolveControlByTag). Returns the
-// matching control, or null. The own-tag case short-circuits (callers exclude self).
+// Scans the direct child list first, then recurses via slot 0x25. The own-tag case
+// short-circuits — callers exclude self, this is purely a descendant search.
 // FUNCTION: IMPERIALISM 0x0048afd0
 class TView* TView::ResolveControlByTag(unsigned int controlTag) {
   if (controlTag == static_cast<unsigned int>(this->controlTag)) {
@@ -328,7 +303,6 @@ class TView* TView::ResolveControlByTag(unsigned int controlTag) {
   }
   return 0;
 }
-// Push the control value through slot 0x0b, then refresh when it is non-zero.
 // FUNCTION: IMPERIALISM 0x0048b070
 void TView::SetState(int state, int refreshFlag) {
   (void)refreshFlag;
@@ -338,8 +312,6 @@ void TView::SetState(int state, int refreshFlag) {
   }
 }
 
-// Base-slot overrides (slots 0x07/0x08). Bodies differ from TEventHandler's; still
-// unported stubs.
 // FUNCTION: IMPERIALISM 0x0048b0b0
 void TView::Free() {
   while (childList44 != 0) {
@@ -371,9 +343,8 @@ void TView::Free() {
   delete this;
 }
 
-// Walk up the owner chain: forward to the owner context's own slot-0x16 query, or 0
-// at the root. (One level above QueryOwnerContextPanel, which only hops once.) Slot 0x16
-// override (TEventHandler's base body differs).
+// Recurses to the root owner. QueryOwnerContextPanel below looks almost identical but
+// only hops one level (via this method) instead of recursing.
 // FUNCTION: IMPERIALISM 0x0048b180
 TView* TView::OwnerPanel() {
   if (ownerContext == 0) {
@@ -381,7 +352,6 @@ TView* TView::OwnerPanel() {
   }
   return ownerContext->OwnerPanel();
 }
-// Forward to the owner context's panel query (slot 0x16), or 0 if no owner.
 // FUNCTION: IMPERIALISM 0x0048b1a0
 TView* TView::QueryOwnerContextPanel() {
   if (ownerContext == 0) {
@@ -389,7 +359,6 @@ TView* TView::QueryOwnerContextPanel() {
   }
   return ownerContext->OwnerPanel();
 }
-// If the enabled-state field (field08) changes, store it and optionally refresh.
 // FUNCTION: IMPERIALISM 0x0048b1c0
 void TView::SetEnabled(int enabledState, int refreshFlag) {
   if (enabledState != field08) {
@@ -417,9 +386,6 @@ void TView::CaptureLayoutF0(int* buffer, int modeFlag) {
   }
 }
 
-// Recompute this control's absolute position (field2c/field30) from the owner's absolute
-// position plus this control's owner offset (default position when no owner). If it
-// moved, propagate the recompute to every child via slot 0x59.
 // FUNCTION: IMPERIALISM 0x0048b2d0
 void TView::RecomputeAbsolutePositionRecursive() {
   TView* owner = ownerContext;
@@ -443,8 +409,6 @@ void TView::RecomputeAbsolutePositionRecursive() {
     }
   }
 }
-// Update the cached position (field34/field38) to buffer's point. When modeFlag is set,
-// capture the control rect before and after the move and invalidate their union.
 // FUNCTION: IMPERIALISM 0x0048b3f0
 void TView::CaptureLayout(int* buffer, int modeFlag) {
   if (modeFlag != 0) {
@@ -457,7 +421,7 @@ void TView::CaptureLayout(int* buffer, int modeFlag) {
     RECT unionRect;
     UnionRect(&unionRect, &newRect, &oldRect);
     if (g_McAppUiActiveFlag_006950AC != 0) {
-      InvalidateRect(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), &unionRect, 0);
+      InvalidateRect(nativeWindow50->m_hWnd, &unionRect, 0);
     }
   } else {
     field34 = buffer[0];
@@ -476,24 +440,24 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
     return;
   }
 
-  void* sourceRegion = 0;
-  if (regionWrapper != 0 && *regionWrapper != -0x14) {
-    ClipStateRegionWrapper* childWrapper =
-        reinterpret_cast<ClipStateRegionWrapper*>(*regionWrapper);
-    if (childWrapper != 0 && childWrapper->inner != 0) {
-      sourceRegion = *reinterpret_cast<void**>(reinterpret_cast<char*>(childWrapper->inner) + 0x18);
+  // *regionWrapper is a ClipStateRegionInner* (or the sentinel -0x14 meaning "no source
+  // region") — read directly, with no extra wrapper hop (ground truth: `*param_1 + 0x18`).
+  HRGN sourceRegion = 0;
+  if (regionWrapper != 0) {
+    ClipStateRegionInner* childInner = reinterpret_cast<ClipStateRegionInner*>(*regionWrapper);
+    if (childInner != reinterpret_cast<ClipStateRegionInner*>(-0x14)) {
+      sourceRegion = reinterpret_cast<HRGN>(childInner->brush.m_hObject);
     }
   }
-  void* destRegion = *reinterpret_cast<void**>(reinterpret_cast<char*>(localRegion->inner) + 0x18);
-  CombineRgn(reinterpret_cast<HRGN>(destRegion), reinterpret_cast<HRGN>(sourceRegion), nullptr, 5);
+  HRGN destRegion = reinterpret_cast<HRGN>(localRegion->inner->brush.m_hObject);
+  CombineRgn(destRegion, sourceRegion, nullptr, 5);
 
   CPoint cachedPos;
-  CPoint* pos = reinterpret_cast<CPoint*>(GetCachedPosPoint(reinterpret_cast<int*>(&cachedPos)));
-  OffsetRgn(reinterpret_cast<HRGN>(destRegion), -pos->x, -pos->y);
+  GetCachedPosPoint(&cachedPos);
+  OffsetRgn(destRegion, -cachedPos.x, -cachedPos.y);
 
   if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRgn(reinterpret_cast<HWND>(nativeWindow50->m_hWnd),
-                  reinterpret_cast<HRGN>(destRegion), 0);
+    InvalidateRgn(nativeWindow50->m_hWnd, destRegion, 0);
   }
 
   DestroyClipStateRegionWrapperObject(localRegion);
@@ -513,14 +477,14 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
     DispatchVslot134WithRectAndRectPlus8_Impl(&localRect);
   }
   if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRect(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), &localRect, 0);
+    InvalidateRect(nativeWindow50->m_hWnd, &localRect, 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048b690
 void TView::ValidateControlRectIfWindowActive(RECT* rect) {
   if (nativeWindow50 != 0 && g_McAppUiActiveFlag_006950AC != 0) {
-    ValidateRect(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), rect);
+    ValidateRect(nativeWindow50->m_hWnd, rect);
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b6d0
@@ -530,7 +494,6 @@ void TView::RefreshControl() {
   }
 }
 
-// Forward slot 0x4f to the owner when present; roots force a guarded UpdateWindow pass.
 // FUNCTION: IMPERIALISM 0x0048b700
 void TView::InvokeSlot13C() {
   if (ownerContext != 0) {
@@ -540,12 +503,11 @@ void TView::InvokeSlot13C() {
   if (g_McAppUiUpdateWindowRecursionGuard_006A1AF0 == 0) {
     g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 1;
     if (nativeWindow50 != 0 && g_McAppUiActiveFlag_006950AC != 0) {
-      UpdateWindow(reinterpret_cast<HWND>(nativeWindow50->m_hWnd));
+      UpdateWindow(nativeWindow50->m_hWnd);
     }
     g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 0;
   }
 }
-// Select this view as the active QuickDraw origin and return success.
 // FUNCTION: IMPERIALISM 0x0048b770
 char TView::Refresh() {
   if (this != g_McAppUiActiveRenderContext_006A1AF4) {
@@ -563,7 +525,7 @@ int TView::BindMapQuickDrawDc(CDC* paintDc) {
 void TView::ReleaseMapQuickDrawDc(CDC* paintDc) {
   ReleaseScopedMapQuickDrawDcHandle(this, paintDc);
 }
-// Lazily allocate the 8-byte auxiliary buffer stored at field48 (freed in the dtor).
+// field48 is freed in ~TView.
 // FUNCTION: IMPERIALISM 0x0048b810
 void TView::EnsureField48Buffer() {
   if (field48 == 0) {
@@ -621,63 +583,52 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
   }
 }
 
-// Translate a point into the owner's space (add this view's owner offset) and forward up
-// the owner chain via slot 0x4e. Mirror of SubtractPosAndDispatchToOwnerSlot19C (which
-// subtracts); recurses until the root owner.
+// Same offset-and-recurse shape as TranslatePointToParentChain4D below (0x4d/0x4e are
+// distinct vtable slots; both bottom out here at the root owner).
 // FUNCTION: IMPERIALISM 0x0048ba40
-void TView::TranslatePointToParentChain4E(int* point) {
-  point[1] += ownerOffsetY;
-  point[0] += ownerOffsetX;
+void TView::TranslatePointToParentChain4E(CPoint* point) {
+  point->y += ownerOffsetY;
+  point->x += ownerOffsetX;
   ownerContext->TranslatePointToParentChain4E(point);
 }
-// Translate a point into the owner's space (add this view's owner offset) and forward up
-// the owner chain via slot 0x4d. Mirror of TranslatePointToParentChain4E (slot 0x4e) but
-// on this slot.
 // FUNCTION: IMPERIALISM 0x0048ba80
-void TView::TranslatePointToParentChain4D(int* point) {
+void TView::TranslatePointToParentChain4D(CPoint* point) {
   int offY = ownerOffsetY;
-  point[0] += ownerOffsetX;
-  point[1] += offY;
+  point->x += ownerOffsetX;
+  point->y += offY;
   ownerContext->TranslatePointToParentChain4D(point);
 }
-// Translate a point out of this view's local space and forward it to the owner's
-// matching slot (recurses up the owner chain).
+// Mirror of TranslatePointToParentChain4D/4E above, but subtracts instead of adding.
 // FUNCTION: IMPERIALISM 0x0048bac0
-void TView::SubtractPosAndDispatchToOwnerSlot19C(int* point) {
+void TView::SubtractPosAndDispatchToOwnerSlot19C(CPoint* point) {
   int offY = ownerOffsetY;
-  point[0] = point[0] - ownerOffsetX;
-  point[1] = point[1] - offY;
+  point->x = point->x - ownerOffsetX;
+  point->y = point->y - offY;
   ownerContext->SubtractPosAndDispatchToOwnerSlot19C(point);
 }
 
-// KNOWN ILT (retired): 0x004064e2 is a 5-byte `jmp TView::TView` linker stub — not ported.
-// Real ctor: TView::TView @ 0x0048a8e0.
-// Offset a rect by this control's owner offset (its position within the owner).
 // FUNCTION: IMPERIALISM 0x0048bb00
 void TView::OffsetRectByControlPosition(RECT* rect) {
   OffsetRect(rect, ownerOffsetX, ownerOffsetY);
 }
 
 // FUNCTION: IMPERIALISM 0x0048bb30
-int* TView::GetCachedPosPoint(int* outPoint) {
+CPoint* TView::GetCachedPosPoint(CPoint* outPoint) {
   int posY = field30;
-  outPoint[0] = field2c;
-  outPoint[1] = posY;
+  outPoint->x = field2c;
+  outPoint->y = posY;
   return outPoint;
 }
 
-// Copy a point, transform it in place through slot 0x4e, and return the result by value.
 // FUNCTION: IMPERIALISM 0x0048bb60
 CPoint TView::TransformPointViaSlot138(CPoint* inPoint) {
   CPoint local;
   local.x = inPoint->x;
   local.y = inPoint->y;
-  TranslatePointToParentChain4E(reinterpret_cast<int*>(&local));
+  TranslatePointToParentChain4E(&local);
   return local;
 }
 
-// Transform a rect: carry its width/height, map its top-left corner through slot 0x52,
-// and rebuild the rect at the transformed origin.
 // FUNCTION: IMPERIALISM 0x0048bbb0
 RECT TView::TransformRectViaSlot148(RECT* inRect) {
   int width = inRect->right - inRect->left;
@@ -715,18 +666,16 @@ void TView::OffsetRectByCachedPos(RECT* inRect, RECT* outRect) {
   outRect->bottom = local.bottom;
 }
 
-// Build a rect from the slot-0x56 cached position (top-left) plus the cached size held
-// in field34/field38.
 // FUNCTION: IMPERIALISM 0x0048bce0
 RECT* TView::BuildRectFromSlot158(RECT* rectOut) {
   int width = field34;
   int height = field38;
-  int pos[2];
-  GetCachedPosPoint(pos);
-  rectOut->left = pos[0];
-  rectOut->top = pos[1];
-  rectOut->right = width + pos[0];
-  rectOut->bottom = height + pos[1];
+  CPoint pos;
+  GetCachedPosPoint(&pos);
+  rectOut->left = pos.x;
+  rectOut->top = pos.y;
+  rectOut->right = width + pos.x;
+  rectOut->bottom = height + pos.y;
   return rectOut;
 }
 // FUNCTION: IMPERIALISM 0x0048bef0
@@ -759,7 +708,6 @@ void TView::CopyCityDialogStateFromSource(TView* source) {
   }
 }
 
-// TView slot 0x08 override: allocate via slot 0x09 then copy city-dialog fields.
 // FUNCTION: IMPERIALISM 0x0048bfd0
 TObject* TView::ShallowClone() {
   TView* clone = static_cast<TView*>(ShallowFree());
@@ -797,7 +745,7 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, i
         TView* child = static_cast<TView*>(childList44->GetNext(pos));
 
         CPoint childPoint = *point;
-        child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
+        child->UpdateAfterBitmapChange(&childPoint);
         if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
             child->EvaluateControlInputGate() != 0) {
           child->HandleCursorHoverSelectionByChildHitTestAndFallback(&childPoint, hitArg);
@@ -853,9 +801,6 @@ void TView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
   HCURSOR hCursor = LoadCursorA(nullptr, IDC_ARROW);
   SetCursor(hCursor);
 }
-// Recompute and store this control's bounds (owner offset + cached size) from a new rect;
-// if it changed, optionally bracket the layout pass with city-dialog invalidations and
-// propagate the absolute-position recompute (slot 0x59).
 // FUNCTION: IMPERIALISM 0x0048c380
 void TView::ApplyBounds(RECT* newBounds, int modeFlag) {
   RECT current;
@@ -883,7 +828,7 @@ char TView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int
       TView* child = static_cast<TView*>(childList44->GetPrev(pos));
 
       CPoint childPoint = *point;
-      child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
+      child->UpdateAfterBitmapChange(&childPoint);
       if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
           child->DispatchUiMouseMoveToChildren(&childPoint, arg2, arg3, arg4) != 0) {
         return 1;
@@ -907,7 +852,7 @@ char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, i
       TView* child = static_cast<TView*>(childList44->GetPrev(pos));
 
       CPoint childPoint = *point;
-      child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
+      child->UpdateAfterBitmapChange(&childPoint);
       if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
           child->DispatchUiMouseEventToChildrenOrSelf_Impl(&childPoint, arg2, arg3, arg4) != 0) {
         return 1;
@@ -924,7 +869,6 @@ char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, i
   return 0;
 }
 
-// True (3) iff this view is actionable and the point falls inside its content bounds.
 // FUNCTION: IMPERIALISM 0x0048c6d0
 char TView::PointInBoundsAndActionable(CPoint* point) {
   RECT bounds;
@@ -939,15 +883,13 @@ char TView::PointInBoundsAndActionable(CPoint* point) {
   }
   return 0;
 }
-// Draw this control's rect into the current QuickDraw/GDI context.
 // FUNCTION: IMPERIALISM 0x0048c750
 void TView::DrawRectangleInCurrentUiContext(int* rect) {
   if (g_McAppUiDrawGate_006A1AF8 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x772);
   }
-  int context = NoOpQuickDrawContextSelectionHook();
-  Rectangle(reinterpret_cast<HDC>(*reinterpret_cast<void**>(context + 4)), rect[0], rect[1],
-            rect[2], rect[3]);
+  CDC* context = GetActiveQuickDrawDc();
+  Rectangle(context->m_hDC, rect[0], rect[1], rect[2], rect[3]);
 }
 // FUNCTION: IMPERIALISM 0x0048c7a0
 void TView::AssertMcAppUiLine1914() {
@@ -965,7 +907,6 @@ void TView::AssertMcAppUiLine1922() {
   CopyRectFromBuildRectFromSlot158(&rectStorage);
 }
 
-// Walk the field44 child list and forward slot-0x27 to each linked child.
 // FUNCTION: IMPERIALISM 0x0048c820
 void TView::DispatchSlot9CToLinkedChildren() {
   if (childList44 != 0) {
@@ -976,7 +917,6 @@ void TView::DispatchSlot9CToLinkedChildren() {
     }
   }
 }
-// Walk the field44 child list and forward slot-0x28 (CallVoidSlotA0) to each child.
 // FUNCTION: IMPERIALISM 0x0048c890
 void TView::CallVoidSlotA0() {
   if (childList44 != 0) {
@@ -988,7 +928,6 @@ void TView::CallVoidSlotA0() {
   }
 }
 
-// Propagate the native-window/resource context through this subtree.
 // FUNCTION: IMPERIALISM 0x0048c900
 void TView::PropagateUiResourceContextRecursive(CWnd* nativeWindow) {
   nativeWindow50 = nativeWindow;
@@ -1005,7 +944,6 @@ void TView::PropagateUiResourceContextRecursive(CWnd* nativeWindow) {
 unsigned short TView::GetField54() {
   return field54;
 }
-// True (3) iff the point falls inside this view's content bounds.
 // FUNCTION: IMPERIALISM 0x0048c990
 char TView::TestPointInBounds(CPoint* point) {
   RECT bounds;
@@ -1013,6 +951,7 @@ char TView::TestPointInBounds(CPoint* point) {
   POINT p;
   p.x = point->x;
   p.y = point->y;
+  // Returns 3 (not 1) on hit, unlike PointInBoundsAndActionable's near-identical body above.
   return -(PtInRect(&bounds, p) != 0) & 3;
 }
 // FUNCTION: IMPERIALISM 0x0048c9e0

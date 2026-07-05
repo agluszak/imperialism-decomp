@@ -26,6 +26,9 @@ public:
   afx_msg void OnStartupCommand100();
   afx_msg void OnPaletteChanged(CWnd* pFocusWnd);
   afx_msg LRESULT OnMsg030F(WPARAM wParam, LPARAM lParam);
+  // Message 0x2420 (posted by TApplication::PostTurnEventCodeMessage2420): dispatch the
+  // carried turn-event code into the UI runtime with the active nation as payload.
+  afx_msg LRESULT HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam);
   afx_msg void OnCommand8009();
   afx_msg void OnCommand800C();
 

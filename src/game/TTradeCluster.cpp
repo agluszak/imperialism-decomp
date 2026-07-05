@@ -369,7 +369,7 @@ void TTradeCluster::DoControlAction() {
       bidControl->SetBitmap(kTradeBitmapBidSecondaryStateA, 0);
     }
     bidControl->Refresh();
-    bidControl->UpdateAfterBitmapChange(0);
+    bidControl->PaintOrInvalidateControl();
     return;
   }
 
@@ -416,7 +416,7 @@ void TTradeCluster::SetTradeBidControlBitmap() {
   rightControl->SetState(0, 1);
 
   bidControl->Refresh();
-  bidControl->UpdateAfterBitmapChange(0);
+  bidControl->PaintOrInvalidateControl();
 }
 
 // Offer-state updater: assigns the 'offr' bitmap (row-state dependent) and
@@ -461,7 +461,7 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
   rightControl->SetState(1, 1);
 
   offerControl->Refresh();
-  offerControl->UpdateAfterBitmapChange(0);
+  offerControl->PaintOrInvalidateControl();
 }
 
 // Offer secondary-state updater: assigns the secondary 'offr' bitmap when the
@@ -520,7 +520,7 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
   rightControl->SetState(0, 1);
 
   offerControl->Refresh();
-  offerControl->UpdateAfterBitmapChange(0);
+  offerControl->PaintOrInvalidateControl();
 }
 
 // Updates the Sell control quantity and the Bar fill from the nation's current

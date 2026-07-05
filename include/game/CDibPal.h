@@ -20,6 +20,8 @@ public:
 
   // Build the HPALETTE from a CDib's RGBQUAD color table and Attach it. 0x0047e440
   int BuildPaletteFromBitmapColorTable(CDib* dib);
+  // Select this palette into the DC (MFC CDC::SelectPalette) and realize it. 0x0047e930
+  UINT SelectIntoDcAndRealize(CDC* dc, BOOL background);
 };
 
 ASSERT_SIZE(CDibPal, 0x0c);
