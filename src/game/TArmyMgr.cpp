@@ -6,7 +6,8 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TSimMgr.h"
 #include "game/TSortedList.h"
-#include "game/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable
+#include "game/TSoundPlayer.h"
+#include "game/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable, g_pSfxPlaybackSystem
 #include "game/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x004a1810
@@ -133,9 +134,24 @@ undefined TArmyMgr::DispatchTileActionByKind_004a3d90(int contextArg, short acti
 }
 
 // FUNCTION: IMPERIALISM 0x004a3e50
-undefined TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg) {
-  (void)contextArg;
-  return 0;
+bool TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg) {
+  TMilitaryUnit* unit = nullptr;
+  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < 0x180) {
+    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain98;
+  }
+  bool foundMovableUnit = false;
+  for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+      unit->SetOrderModeSlot34(1, contextArg);
+      foundMovableUnit = true;
+    }
+  }
+  if (foundMovableUnit) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
+    g_pGlobalMapState->MarkAdjacentHexOrderDirectionAndSelectTile(this->pendingMapActionIndex,
+                                                                  contextArg, 0);
+  }
+  return foundMovableUnit;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3f30

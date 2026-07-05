@@ -41,8 +41,11 @@ public:
   virtual undefined DispatchTileActionByKind_004a3d90(int contextArg,
                                                       short actionKind); // slot 0x13 0x4a3d90
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
-  // mismatch; contextArg is forwarded as TUnit::SetOrderModeSlot34's payload.
-  virtual undefined SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg); // slot 0x14 0x4a3e50
+  // mismatch; contextArg is forwarded as TUnit::SetOrderModeSlot34's payload. Returns
+  // whether a movable unit was found and commanded (BL in the ground truth, matching
+  // TCivMgr's directly-analogous HandleCivilianTileSelectionOrReportClick/
+  // HandleCivilianTileOrderAction shape) -- not a meaningless `undefined` stub value.
+  virtual bool SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg); // slot 0x14 0x4a3e50
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
   // mismatch.
   virtual undefined CommitCityActionGateCostIfAffordable(int contextArg); // slot 0x15 0x4a3f30

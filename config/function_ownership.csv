@@ -2168,6 +2168,7 @@ address|target_cpp|ownership|note
 518960|src/game/TMapMgr.cpp|manual|marker_sync
 518a20|src/game/TMapMgr.cpp|manual|marker_sync
 518b40|src/game/TMapMgr.cpp|manual|marker_sync
+518bd0|src/game/TMapMgr.cpp|manual|marker_sync
 5199c0|src/game/TMapDialog.cpp|manual|marker_sync
 519af0|src/game/TWorldView.cpp|manual|marker_sync
 519b30|src/game/TMapDialog.cpp|manual|marker_sync

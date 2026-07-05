@@ -307,6 +307,14 @@ public:
   // tiles tagged in [7,22]. 0x00518470, __thiscall, one int param.
   void ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot);
 
+  // Ground truth 0x00518bd0 (reached through the ILT thunk at 0x004079af): hex-neighbor
+  // direction math (adjacentRegionIds0A-style lookup via g_Build_Hex_Area_LookupTable_*)
+  // that marks an adjacent tile's rail/road direction byte and, if mapUberPictureF0 is
+  // set, forwards to its own slot-0x76 (byte 0x1d8) virtual. Left as a stub pending a
+  // dedicated pass -- the body is 343 bytes of hex-grid arithmetic, out of scope for the
+  // TArmyMgr callers that merely need a real, correctly-typed call site.
+  void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag);
+
   // Clears terrainStateTable[i].perTileVisitedFlag0f for every one of the 0x1950
   // (108x60) map tiles. 0x00409250, __thiscall, no args.
   void ClearPerTileByte0FForAllMapTiles();

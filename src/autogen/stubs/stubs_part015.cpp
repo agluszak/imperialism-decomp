@@ -371,14 +371,6 @@ undefined4 WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMa
   return 0;
 }
 
-// ghidra_name MarkAdjacentHexOrderDirectionAndSelectTile
-// ghidra_proto undefined MarkAdjacentHexOrderDirectionAndSelectTile()
-// FUNCTION: IMPERIALISM 0x00518bd0
-undefined4 MarkAdjacentHexOrderDirectionAndSelectTile(void)
-{
-  return 0;
-}
-
 // ghidra_name MarkDirectionalMapOverlayFlagsForNationOrders
 // ghidra_proto undefined MarkDirectionalMapOverlayFlagsForNationOrders()
 // FUNCTION: IMPERIALISM 0x00518d90

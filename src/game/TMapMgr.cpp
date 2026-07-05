@@ -1253,6 +1253,13 @@ int TMapMgr::CalculateDeveloperTilePurchaseCost(short nTileIndex) {
   return total;
 }
 
+// FUNCTION: IMPERIALISM 0x00518bd0
+void TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag) {
+  (void)tileIndex;
+  (void)contextArg;
+  (void)flag;
+}
+
 // FUNCTION: IMPERIALISM 0x0055e360
 short TMapMgr::StepHexTileIndexByDirectionWithWrapRules(short tileIndex, short direction) {
   int col = static_cast<int>(tileIndex) % 0x6c;
