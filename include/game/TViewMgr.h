@@ -17,6 +17,9 @@ class TDiplomacyMapView;
 // VTABLE: IMPERIALISM 0x0066f120
 class TViewMgr : public TObject {
 public:
+  // Base Windows cursor resource ID for cursorTable's indexing scheme (see below).
+  enum { kCursorResourceIdBase = 1000 };
+
   // === BEGIN GENERATED DECLS (TViewMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TViewMgr)
   virtual ~TViewMgr(); // slot 0x01 (scalar deleting destructor)
@@ -147,13 +150,17 @@ public:
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
   // LoadTurnEventCursorTable 0x5d5100. Field names past the event code are
   // provisional. Total size 0xfc, base TObject = 0x4.
-  short currentTurnEventCode;              // +0x04 (turn-event dispatch code)
-  short pad06;                             // +0x06
-  unsigned int turnStateSeedLo;            // +0x08 (seeded from g_dat_006a5b58)
-  unsigned int turnStateSeedHi;            // +0x0c (seeded from g_dat_006a5b5c)
-  unsigned char field10;                   // +0x10
-  unsigned char pad11[3];                  // +0x11
-  void* cursorTable[0x36];                 // +0x14 .. 0xeb (54 turn-event cursor handles)
+  short currentTurnEventCode;   // +0x04 (turn-event dispatch code)
+  short pad06;                  // +0x06
+  unsigned int turnStateSeedLo; // +0x08 (seeded from g_dat_006a5b58)
+  unsigned int turnStateSeedHi; // +0x0c (seeded from g_dat_006a5b5c)
+  unsigned char field10;        // +0x10
+  unsigned char pad11[3];       // +0x11
+  // +0x14 .. 0xeb (54 turn-event cursor handles). Indexed as
+  // cursorTable[resourceCursorId - kCursorResourceIdBase] -- confirmed against
+  // TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback's ground-truth
+  // `[EAX + EDX*4 + 0xfffff074]` (0xfffff074 == -0xf8c == 0x14 - kCursorResourceIdBase*4).
+  void* cursorTable[0x36];
   short fieldEc;                           // +0xec
   short padEe;                             // +0xee
   class TMapUberPicture* mapUberPictureF0; // +0xf0

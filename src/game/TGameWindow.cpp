@@ -31,15 +31,15 @@ struct TurnOrderNavCommandEvent {
 };
 
 static short QueryUiRuntimeEventCode() {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0x4);
+  return g_pUiRuntimeContext->currentTurnEventCode;
 }
 
 static short QueryUiRuntimeFieldF8() {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf8);
+  return g_pUiRuntimeContext->fieldF8;
 }
 
 static int QueryUiRuntimeFieldF4() {
-  return *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf4);
+  return static_cast<int>(g_pUiRuntimeContext->fieldF4);
 }
 
 } // namespace

@@ -68,7 +68,10 @@ TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
   fieldAt9c = 0;
   legendSurfaceModeAt524 = 6;
   stateFlagAtB8 = 0;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0x28) = 1;
+  // Slot 5 of TViewMgr::cursorTable (0x14 + 5*4 = 0x28), reused here as a plain flag rather
+  // than a cursor handle -- matches the established this-codebase pattern of dual-purpose
+  // slots (see e.g. TSimMgr::preferenceValues[0] / TWorldView::field74).
+  g_pUiRuntimeContext->cursorTable[5] = reinterpret_cast<void*>(1);
 }
 
 // FUNCTION: IMPERIALISM 0x004f3c70
@@ -226,12 +229,11 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
       }
     }
     *reinterpret_cast<short*>(self + 0x52a) = cursorId;
-    hCursor = *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) - 0xf8c +
-                                        cursorId * 4);
+    hCursor = g_pUiRuntimeContext->cursorTable[cursorId - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
   } else if (*reinterpret_cast<short*>(self + 0x52a) != 0x41b) {
     *reinterpret_cast<short*>(self + 0x52a) = 0x41b;
-    hCursor = *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xe0);
+    hCursor = g_pUiRuntimeContext->cursorTable[0x41b - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
   }
 

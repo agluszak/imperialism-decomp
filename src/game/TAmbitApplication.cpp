@@ -214,7 +214,7 @@ void TAmbitApplication::WriteTo(TStream* stream) {
 void TAmbitApplication::VTableSlot2B(int arg1, int arg2, int arg3) {
   int iVar3 = TemporarilyClearAndRestoreUiInvalidationFlag();
   if (iVar3 == 0 && activeView != nullptr) {
-    short sVar1 = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0x4);
+    short sVar1 = g_pUiRuntimeContext->currentTurnEventCode;
     if (sVar1 == 0x7dd || sVar1 == 0x3b8 || sVar1 == 0xed8 || sVar1 == 0xf3c || sVar1 == 0x3c0) {
       iVar3 = TemporarilyClearAndRestoreUiInvalidationFlag();
       if (iVar3 == 0) {
