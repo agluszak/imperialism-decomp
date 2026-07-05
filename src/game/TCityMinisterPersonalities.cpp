@@ -15,8 +15,8 @@ IMPLEMENT_DYNCREATE(TSteelCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c59e0
 TSteelCityMinister::TSteelCityMinister() : TCityInteriorMinister() {
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x14) = 1;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x16) = 1;
+  capabilityFlag14 = 1;
+  capabilityFlag16 = 1;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004c5a20
@@ -33,7 +33,10 @@ void TSteelCityMinister::CityInteriorSlot20() {}
 IMPLEMENT_DYNCREATE(TShipBuilderCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c5ce0
-TShipBuilderCityMinister::TShipBuilderCityMinister() : TCityInteriorMinister() {}
+TShipBuilderCityMinister::TShipBuilderCityMinister() : TCityInteriorMinister() {
+  capabilityFlag14 = 1;
+  capabilityFlag16 = 1;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004c5d20
 // TShipBuilderCityMinister::`scalar deleting destructor'
@@ -49,7 +52,10 @@ void TShipBuilderCityMinister::CityInteriorSlot20() {}
 IMPLEMENT_DYNCREATE(TEvenCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c5fe0
-TEvenCityMinister::TEvenCityMinister() : TCityInteriorMinister() {}
+TEvenCityMinister::TEvenCityMinister() : TCityInteriorMinister() {
+  capabilityFlag14 = 1;
+  capabilityFlag16 = 1;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004c6020
 // TEvenCityMinister::`scalar deleting destructor'
@@ -65,7 +71,10 @@ void TEvenCityMinister::CityInteriorSlot20() {}
 IMPLEMENT_DYNCREATE(TRailCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c62f0
-TRailCityMinister::TRailCityMinister() : TCityInteriorMinister() {}
+TRailCityMinister::TRailCityMinister() : TCityInteriorMinister() {
+  capabilityFlag14 = 1;
+  capabilityFlag16 = 1;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004c6330
 // TRailCityMinister::`scalar deleting destructor'

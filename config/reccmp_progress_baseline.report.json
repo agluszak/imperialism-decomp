@@ -10392,7 +10392,7 @@
     },
     {
       "address": "0x4c5ce0",
-      "matching": 0.631578947368421,
+      "matching": 0.7272727272727273,
       "name": "TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState",
       "type": 1
     },
@@ -10422,7 +10422,7 @@
     },
     {
       "address": "0x4c5fe0",
-      "matching": 0.631578947368421,
+      "matching": 0.7272727272727273,
       "name": "TEvenCityMinister::ConstructTEvenCityMinisterBaseState",
       "type": 1
     },
@@ -10452,7 +10452,7 @@
     },
     {
       "address": "0x4c62f0",
-      "matching": 0.631578947368421,
+      "matching": 0.7272727272727273,
       "name": "TRailCityMinister::ConstructTRailCityMinisterBaseState",
       "type": 1
     },

@@ -279,3 +279,45 @@ method-conflation error, not an original bug:
   bodies. The slot-0x79 canonical signature is 3-arg while the concrete bodies use
   2 (the 3rd is passed-but-ignored) — expect the slot-0x79 body to land ~90% (one
   `ret 8` vs `ret 0xc` epilogue), still far above the 0% stub.
+
+## TGreatPower field_0x38/0x3c/0x40 overlaps TCountry::needLevelByNation (real layout conflict, needs investigation)
+
+While retyping `reinterpret_cast<char*>(this)+offset` field accesses (global
+retype/field-modeling round), found a genuine, ground-truth-confirmed conflict
+on `TGreatPower : TCountry` — NOT introduced by this session's edits, and NOT
+fixed here (too risky to guess at without deeper investigation; both writers are
+load-bearing).
+
+- `TCountry::InitializeNationStateIdentityAndOwnedRegionList` (0x004d68f0)
+  writes `needLevelByNation` starting at object offset **0x14** via a
+  ground-truth `LEA EDI,[ESI+0x14]` + `STOSD.REP`(11 dwords)+`STOSW`(1 word)
+  sequence — 23 shorts, spanning 0x14..0x42. Independently confirmed by
+  `ReadFrom`'s `stream->ReadBytes(this->needLevelByNation, 0x2e)` (0x2e = 46
+  bytes = 23 shorts) and by `TCountry::InitializeNationStateIdentityAndOwnedRegionList`
+  itself setting `needLevelByNation[0x16] = 100` (index 22, i.e. object offset
+  0x40) right after the loop.
+- `TGreatPower::ComputeMapActionContextNodeValueAverage` (0x0055f140) reads/
+  writes a **growable heap-array descriptor** — pointer at object offset
+  **0x38**, capacity at **0x3c**, count at **0x40** — confirmed via ground-truth
+  `MOV dword ptr [ESI+0x38/0x3c/0x40],...` and matching
+  `ReallocateHeapBlockWithAllocatorTracking(*(this+0x38), ...)` calls in the
+  raw decompile (`src/ghidra_autogen/TGreatPower.cpp:8596-8604`). Also read by
+  `TGreatPower::ContainsPointerArrayEntryMatchingByteKey` (0x0055f4d0, ground
+  truth `MOV ESI,[ECX+0x40]` / `MOV EDX,[ECX+0x38]`).
+- These two confirmed layouts **overlap**: needLevelByNation indices 18-22
+  (object bytes 0x38-0x42) coincide with the pointer/capacity fields (0x38-0x40)
+  of the growable-array descriptor, and the count field (0x40, 4 bytes) extends
+  2 bytes past needLevelByNation's declared end (0x42).
+- Hypothesis for a future investigation: `needLevelByNation`'s *true* logical
+  size for TGreatPower (majors) may be smaller than TCountry's declared 0x17
+  (23) elements — e.g. majors might only populate indices 0-17 (18 elements,
+  matching the number of OTHER nations a major tracks a need-level against) and
+  TGreatPower repurposes the trailing 5 declared-but-unused slots (18-22) for
+  its own pointer/capacity/count triple. This would need confirming how many
+  nation slots actually exist (7 majors + minors) and whether TMinor (which
+  doesn't override this method) genuinely uses all 23 needLevelByNation slots
+  or also leaves some unused.
+- Do NOT resolve by guessing; verify against more ground truth (every writer of
+  needLevelByNation indices 18-22 specifically, and every TGreatPower-only
+  caller of the growable-array functions) before changing either field's
+  modeled size/position.
