@@ -1357,22 +1357,22 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[5]);
   this->activeMovieViewF4 = 0;
   switch (g_pSimMgr->mode) {
-    case 1:
-      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+  case 1:
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+    return;
+  case 0xe:
+  case 0x16:
+  case 0x17:
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7e0);
+    return;
+  case 0x19:
+    if (IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
+      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5eb);
       return;
-    case 0xe:
-    case 0x16:
-    case 0x17:
-      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7e0);
-      return;
-    case 0x19:
-      if (IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5eb);
-        return;
-      }
-    default:
-      // 0x581870, unported __cdecl(int) — generic thunk form per Hard Rule 9.
-      reinterpret_cast<void(__cdecl*)(int)>(ReinitializeGameFlowAndPostTurnEventCode)(0);
+    }
+  default:
+    // 0x581870, unported __cdecl(int) — generic thunk form per Hard Rule 9.
+    reinterpret_cast<void(__cdecl*)(int)>(ReinitializeGameFlowAndPostTurnEventCode)(0);
   }
 }
 
@@ -1574,6 +1574,12 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
       g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(selectedIndex, 2);
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005de4f0
+bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrderEntry) {
+  (void)pCivilianOrderEntry;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005dea60

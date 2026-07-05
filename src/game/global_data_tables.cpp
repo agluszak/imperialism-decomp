@@ -548,6 +548,10 @@ TSoundPlayer* g_pSfxPlaybackSystem = 0;
 extern "C" {
 short g_awEngineerFortBuildCostByLevel[8] = {0};
 int g_adwEngineerRailBuildCostByTerrainType[16] = {0};
+// Civilian work-order rescind refund by cost class (nibble from
+// GetTileCivilianWorkOrderCostClassNibble); -1 entries are unused classes.
+int g_adwCivilianWorkOrderCostByClass[16] = {100, 1000, 5000, -1, -1, -1, 0, 1,
+                                             -1,  -1,   2,    3,  4,  -1, 5, 6};
 
 int g_nMapActionContextCount = 0;
 void* g_pMapActionContextDistanceCache = 0;

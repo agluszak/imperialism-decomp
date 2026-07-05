@@ -978,15 +978,33 @@ byte TMapMgr::CheckTileProspectingDiscoveryCandidate(short nTileIndex) {
   return fHasDiscoveryCandidate;
 }
 
+// Hex-direction bit flags (1 << dir). Ground truth reads this via
+// `(char*)g_Build_Hex_Area_LookupTable_00696E80 + N`, but that offset lands well past that
+// global's own declared 6-short extent (0x696e80..0x696e8b) -- it's really a distinct,
+// separately-emitted 6-entry const table that happens to sit shortly after it in the
+// original .rdata layout, not guaranteed to hold in a freshly linked recompile. Modeled here
+// as its own bounds-safe table instead of pointer-walking off an unrelated global.
+static const unsigned char kHexDirectionBitMask[6] = {1, 2, 4, 8, 16, 32};
+
 // FUNCTION: IMPERIALISM 0x00513ff0
 void TMapMgr::ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile,
                                                      short ownerNation) {
   (void)ownerNation;
   short dir = GetHexDirectionBetweenTiles(sourceTile, destTile);
-  char* pTable2 = reinterpret_cast<char*>(g_Build_Hex_Area_LookupTable_00696E80) + 0x32;
-  char* pTable8 = reinterpret_cast<char*>(g_Build_Hex_Area_LookupTable_00696E80) + 0x38;
-  terrainStateTable[sourceTile].railFlags17 += pTable2[(dir + 3) * 2];
-  terrainStateTable[destTile].railFlags17 += pTable8[((dir + 3) % 6) * 2];
+  terrainStateTable[sourceTile].railFlags17 += kHexDirectionBitMask[dir];
+  terrainStateTable[destTile].railFlags17 += kHexDirectionBitMask[(dir + 3) % 6];
+}
+
+// Rescind counterpart to ApplyRailSectionEndpointDirectionFlags above: same bit-flag table,
+// subtracts instead of adding -- matches HandleCivilianReportDecision's "rescind a rail
+// section" refund path.
+// FUNCTION: IMPERIALISM 0x00514080
+void TMapMgr::ApplyEngineerRailCostDeltaForConnectedTiles(short tileA, short tileB,
+                                                          short ownerNation) {
+  (void)ownerNation;
+  short dir = GetHexDirectionBetweenTiles(tileA, tileB);
+  terrainStateTable[tileA].railFlags17 -= kHexDirectionBitMask[dir];
+  terrainStateTable[tileB].railFlags17 -= kHexDirectionBitMask[(dir + 3) % 6];
 }
 
 // FUNCTION: IMPERIALISM 0x00514250

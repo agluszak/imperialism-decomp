@@ -278,6 +278,8 @@ public:
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
   int SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags);
   void ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation);
+  // 0x514080. Rescind counterpart -- see the .cpp body comment.
+  void ApplyEngineerRailCostDeltaForConnectedTiles(short tileA, short tileB, short ownerNation);
   short FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex, char allowActiveFlag2);
   // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade
   // manager's proposal-weight metric). Reattributed from TCivToolbar (heuristic 46).

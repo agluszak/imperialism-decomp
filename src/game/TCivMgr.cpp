@@ -2,6 +2,7 @@
 
 #include "game/startup_helpers.h"
 #include "decomp_types.h"
+#include "game/TAnimator.h"
 #include "game/TCivUnit.h"
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
@@ -12,6 +13,7 @@
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TGreatPower.h"
+#include "game/TCivToolbar.h"
 #include "game/TMapUberPicture.h"
 #include "game/TViewMgr.h"
 #include "game/localization_text_helpers.h"
@@ -40,7 +42,7 @@ TCivMgr::TCivMgr() {}
 TCivMgr::~TCivMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004d2270
-void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(int* pUnitOrderEntry) {}
+void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEntry) {}
 
 // FUNCTION: IMPERIALISM 0x004d2380
 bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode) {
@@ -133,20 +135,48 @@ int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHi
 
 // Selection helpers merged from the retired duplicate class
 // "TSelectedCivilianOrderState" (the global g_pSelectedCivilianOrderState @0x6a43dc is
-// this TCivMgr instance). TODO(port): retire these absolute-address bridges by porting
-// the real bodies; they need the TMapUberPicture member slice (+0x96 selected-tool
-// index, +0xb0 toolbar table) recovered first.
+// this TCivMgr instance).
 
 // FUNCTION: IMPERIALISM 0x004d2c60
 void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, char refreshCommandPanel) {
-  typedef void(__fastcall * Func)(TCivMgr*, int, TCivUnit*, int);
-  reinterpret_cast<Func>(0x004d2c60)(this, 0, entryContext, refreshCommandPanel);
+  this->selectedEntry = entryContext;
+  this->DispatchSelectedUnitToGlobalMapStateHandler(entryContext);
+  if (entryContext == nullptr) {
+    return;
+  }
+
+  entryContext->VTableSlot10(entryContext->field_6);
+
+  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapUberPicture != nullptr) {
+    mapUberPicture->InvalidateTileMarkerChain(entryContext->field_6);
+  }
+
+  if (refreshCommandPanel != 0) {
+    mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+    if (mapUberPicture != nullptr) {
+      // categoryPages[] is a heterogeneous array of toolbar subtypes stored generically as
+      // TMapUberPicture* (see TArmyToolbar.cpp's own dual-purpose-slot precedent); the civilian
+      // page is really a TCivToolbar.
+      reinterpret_cast<TCivToolbar*>(
+          mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex96])
+          ->RefreshCivilianCommandPanelForSelection(entryContext);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d2cf0
 void TCivMgr::QueueImmediateCivilianCommandAndCycleSelection(int commandType) {
-  typedef void(__fastcall * Func)(TCivMgr*, int, int);
-  reinterpret_cast<Func>(0x004d2cf0)(this, 0, commandType);
+  TCivUnit* entry = this->selectedEntry;
+  if (entry != nullptr) {
+    entry->SetOrderModeSlot34(commandType, 0);
+  }
+
+  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapUberPicture != nullptr) {
+    // Same dual-purpose-slot cast as SetActiveCivilianSelection above.
+    reinterpret_cast<TCivToolbar*>(mapUberPicture)->CycleMapInteractionSelectionAfterHandledClick();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d2d30
@@ -190,6 +220,88 @@ char TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
     }
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d3070
+void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
+  if (g_pUiRuntimeContext->ShowCivilianReportDialogAndReturnConfirm(pCivilianOrderEntry)) {
+    return;
+  }
+
+  short targetTileIndex = pCivilianOrderEntry->field_6;
+  short subtypeOrTargetProvince = pCivilianOrderEntry->field_C;
+  int refundAmount = 0;
+  TGreatPower* ownerNationState = g_apNationStates[pCivilianOrderEntry->field_18];
+
+  switch (pCivilianOrderEntry->orderType) {
+  case 5: {
+    unsigned char terrainType = g_pGlobalMapState->terrainStateTable[targetTileIndex].pad00[0];
+    refundAmount = g_adwEngineerRailBuildCostByTerrainType[terrainType];
+    g_pGlobalMapState->ApplyEngineerRailCostDeltaForConnectedTiles(
+        targetTileIndex, subtypeOrTargetProvince, pCivilianOrderEntry->field_18);
+    break;
+  }
+  case 6:
+    refundAmount = 2000;
+    break;
+  case 7:
+    refundAmount = 3000;
+    break;
+  case 10: {
+    char useHighNibble = ((subtypeOrTargetProvince == 0) || (subtypeOrTargetProvince == 8)) ? 1 : 0;
+    unsigned char costClass =
+        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetTileIndex, useHighNibble);
+    refundAmount = g_adwCivilianWorkOrderCostByClass[costClass];
+    break;
+  }
+  case 12: {
+    short cityIndex = g_pGlobalMapState->terrainStateTable[targetTileIndex].cityRecordIndex;
+    unsigned char fortLevel = g_pGlobalMapState->cityScoreTable[cityIndex].fortLevel03;
+    refundAmount = g_awEngineerFortBuildCostByLevel[fortLevel];
+    break;
+  }
+  case 13:
+    refundAmount = g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(targetTileIndex);
+    break;
+  }
+
+  ownerNationState->treasuryValue10 += refundAmount;
+  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(reinterpret_cast<int>(pCivilianOrderEntry));
+
+  pCivilianOrderEntry->SetOrderModeSlot34(0, subtypeOrTargetProvince);
+  if ((subtypeOrTargetProvince != 0) && (subtypeOrTargetProvince != -1)) {
+    this->RelinkCivilianOrderTileAndInvalidateMapTiles(subtypeOrTargetProvince,
+                                                       pCivilianOrderEntry);
+  }
+
+  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapUberPicture != nullptr) {
+    mapUberPicture->SetMapInteractionMode(0);
+  }
+  g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+
+  this->selectedEntry = pCivilianOrderEntry;
+  this->DispatchSelectedUnitToGlobalMapStateHandler(pCivilianOrderEntry);
+  if (pCivilianOrderEntry != nullptr) {
+    pCivilianOrderEntry->VTableSlot10(pCivilianOrderEntry->field_6);
+
+    TMapUberPicture* invalidateTarget = g_pUiRuntimeContext->mapUberPictureF0;
+    if (invalidateTarget != nullptr) {
+      invalidateTarget->InvalidateTileMarkerChain(pCivilianOrderEntry->field_6);
+    }
+
+    TMapUberPicture* refreshTarget = g_pUiRuntimeContext->mapUberPictureF0;
+    if (refreshTarget != nullptr) {
+      // Same dual-purpose-slot cast as TCivMgr::SetActiveCivilianSelection.
+      reinterpret_cast<TCivToolbar*>(
+          refreshTarget->categoryPages[refreshTarget->activeUnitCategoryIndex96])
+          ->RefreshCivilianCommandPanelForSelection(pCivilianOrderEntry);
+    }
+  }
+
+  if (mapUberPicture != nullptr) {
+    mapUberPicture->NotifySubviewOfSelectedTile(pCivilianOrderEntry->field_6);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d3a60

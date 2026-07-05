@@ -506,6 +506,8 @@ extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 // TCivMgr.cpp — engineer construction cost tables.
 extern short g_awEngineerFortBuildCostByLevel[8];
 extern int g_adwEngineerRailBuildCostByTerrainType[16];
+// Civilian work-order rescind refund by cost class.
+extern int g_adwCivilianWorkOrderCostByClass[16];
 
 // TControl.cpp — UI resource entry defaults (also TMyStaticText.cpp/TStaticText.cpp).
 extern int g_nUiResourceEntryDefaultParam0;

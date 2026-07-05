@@ -7476,7 +7476,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -11406,13 +11406,13 @@
     },
     {
       "address": "0x4d2c60",
-      "matching": 0.09523809523809523,
+      "matching": 0.7352941176470589,
       "name": "TCivMgr::SetActiveCivilianSelection",
       "type": 1
     },
     {
       "address": "0x4d2cf0",
-      "matching": 0.1,
+      "matching": 1.0,
       "name": "TCivMgr::QueueImmediateCivilianCommandAndCycleSelection",
       "type": 1
     },
@@ -11436,7 +11436,7 @@
     },
     {
       "address": "0x4d3070",
-      "matching": 0.0,
+      "matching": 0.5096774193548387,
       "name": "TCivToolbar::HandleCivilianReportDecision",
       "type": 1
     },
@@ -12715,13 +12715,15 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12740,13 +12742,14 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8571428571428571,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -16215,7 +16218,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.19900045433893684,
+      "matching": 0.19718309859154928,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16293,7 +16296,7 @@
     },
     {
       "address": "0x50da80",
-      "matching": 0.2984409799554566,
+      "matching": 0.2857142857142857,
       "name": "TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10",
       "type": 1
     },
@@ -16719,7 +16722,7 @@
     },
     {
       "address": "0x514080",
-      "matching": 0.0,
+      "matching": 0.647887323943662,
       "name": "ApplyEngineerRailCostDeltaForConnectedTiles",
       "type": 1
     },
@@ -18093,7 +18096,7 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.2976,
+      "matching": 0.3054662379421222,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
@@ -18117,7 +18120,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18135,7 +18138,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20026,19 +20029,19 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.441025641025641,
+      "matching": 0.44329896907216493,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.4108527131782946,
+      "matching": 0.41245136186770426,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -27150,7 +27153,7 @@
     },
     {
       "address": "0x589260",
-      "matching": 0.3064516129032258,
+      "matching": 0.2764227642276423,
       "name": "TIndustryAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -33180,7 +33183,7 @@
     },
     {
       "address": "0x5de4f0",
-      "matching": 0.0,
+      "matching": 0.03333333333333333,
       "name": "ShowCivilianReportDialogAndReturnConfirm",
       "type": 1
     },

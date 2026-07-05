@@ -1437,6 +1437,7 @@ address|target_cpp|ownership|note
 4d2d30|src/game/TCivMgr.cpp|manual|marker_sync
 4d2ef0|src/game/TCivMgr.cpp|manual|marker_sync
 4d2f60|src/game/TCivMgr.cpp|manual|marker_sync
+4d3070|src/game/TCivMgr.cpp|manual|marker_sync
 4d3a60|src/game/TCivMgr.cpp|manual|marker_sync
 4d4310|src/game/TCivMgr.cpp|manual|marker_sync
 4d49a0|src/game/TLandSaleEvent.cpp|manual|marker_sync
@@ -2177,6 +2178,7 @@ address|target_cpp|ownership|note
 513ed0|src/game/TMapMgr.cpp|manual|marker_sync
 513f60|src/game/TMapMgr.cpp|manual|marker_sync
 513ff0|src/game/TMapMgr.cpp|manual|marker_sync
+514080|src/game/TMapMgr.cpp|manual|marker_sync
 514250|src/game/TMapMgr.cpp|manual|marker_sync
 514290|src/game/TMapMgr.cpp|manual|marker_sync
 514310|src/game/TMapMgr.cpp|manual|marker_sync
@@ -4233,6 +4235,7 @@ address|target_cpp|ownership|note
 5dd220|src/game/TViewMgr.cpp|manual|marker_sync
 5dd900|src/game/TViewMgr.cpp|manual|marker_sync
 5ddd20|src/game/TViewMgr.cpp|manual|marker_sync
+5de4f0|src/game/TViewMgr.cpp|manual|marker_sync
 5dea60|src/game/TViewMgr.cpp|manual|marker_sync
 5df260|src/game/TAssetMgr.cpp|manual|mfc_runtime_macro
 5df280|src/game/TAssetMgr.cpp|manual|marker_sync

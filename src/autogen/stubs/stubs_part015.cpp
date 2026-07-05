@@ -235,14 +235,6 @@ undefined4 HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(void)
   return 0;
 }
 
-// ghidra_name ApplyEngineerRailCostDeltaForConnectedTiles
-// ghidra_proto void __thiscall ApplyEngineerRailCostDeltaForConnectedTiles(short nSourceTileIndex, short nTargetTileIndex)
-// FUNCTION: IMPERIALISM 0x00514080
-undefined4 ApplyEngineerRailCostDeltaForConnectedTiles(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex
 // ghidra_proto undefined ResolveRegionTileSubtypeCodeForTileIndex()
 // FUNCTION: IMPERIALISM 0x00514110

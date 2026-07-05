@@ -25,8 +25,8 @@ public:
                                              short nInputHint); // slot 0x0b 0x4d26d0
   virtual void RelinkCivilianOrderTileAndInvalidateMapTiles(
       short nNewTileIndex, class TCivUnit* pCivOrderEntry); // slot 0x0c 0x4d4310
-  virtual void
-  DispatchSelectedUnitToGlobalMapStateHandler(int* pUnitOrderEntry); // slot 0x0d 0x4d2270
+  virtual void DispatchSelectedUnitToGlobalMapStateHandler(
+      class TCivUnit* pUnitOrderEntry); // slot 0x0d 0x4d2270
   // === END GENERATED DECLS (TCivMgr) ===
   // Non-virtual order-action helper (0x4d3a60); dispatched from the slot 0x0b virtual
   // HandleCivilianTileOrderAction via thunk_HandleEngineerConstructionAction (0x406ccb).
@@ -66,6 +66,12 @@ public:
   // civilian onto nTileIndex; false if CanAssignCivilianOrderToTile rejects the tile. Same
   // mis-attribution as the functions above.
   bool TryQueueCivilianMoveOrderToTile(short nTileIndex);
+
+  // 0x004d3070. Handles the Civilian Report dialog decision for pCivilianOrderEntry: if the
+  // player confirms the queued order, does nothing; if they rescind it, computes a refund by
+  // order type, credits the owner nation's treasury, clears the queued order, and rebinds
+  // selection. Same mis-attribution as the functions above.
+  void HandleCivilianReportDecision(class TCivUnit* pCivilianOrderEntry);
 };
 
 // === BEGIN GENERATED (TCivMgr) — refreshed by `just gen-class TCivMgr`; do not hand-edit ===

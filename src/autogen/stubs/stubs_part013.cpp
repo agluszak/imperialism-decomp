@@ -459,14 +459,6 @@ undefined4 ResolveCivilianTileSelectionOrReportActionCode(void)
   return 0;
 }
 
-// ghidra_name TCivToolbar::HandleCivilianReportDecision
-// ghidra_proto void __thiscall HandleCivilianReportDecision(int * pCivilianOrderEntry)
-// FUNCTION: IMPERIALISM 0x004d3070
-undefined4 HandleCivilianReportDecision(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapMgr::QueueCivilianWorkOrderWithCostCheck
 // ghidra_proto bool __thiscall QueueCivilianWorkOrderWithCostCheck(short nTileIndex)
 // FUNCTION: IMPERIALISM 0x004d3310
