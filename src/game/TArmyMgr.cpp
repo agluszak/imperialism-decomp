@@ -4,6 +4,7 @@
 #include "game/CString.h"
 #include "game/TArmyBattle.h"
 #include "game/TArmyStack.h"
+#include "game/TControl.h"
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
@@ -19,7 +20,9 @@
 #include "game/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable, g_pSfxPlaybackSystem, g_apNationStates, g_pUiRuntimeContext
 #include "game/mapped_flavor_text.h" // scanBracketExpressions
 #include "game/nation_slot_eligibility.h" // IsNationSlotEligibleForEventProcessing
+#include "game/quickdraw_rendering.h"     // BuildUiTextStyleDescriptor
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_widget_thunks.h" // thunk_InitializeUiTextStyleDescriptor
 
 // SYNTHETIC: IMPERIALISM 0x004a1810
 // TArmyMgr::CreateObject
@@ -1112,9 +1115,54 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   // dispatch is left undone rather than faked.
 }
 
+// FUNCTION: IMPERIALISM 0x004a5ec0
+bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
+                                                          TControlPictureRectState* styleC,
+                                                          TControlPictureRectState* styleD) {
+  // TODO: port body @ 0x4a5ec0 (1580 bytes; not yet ported). Declared for real so
+  // BuildMapHintOverlayTextAndDispatchUiMessages gets a correctly-typed call site.
+  (void)cityRecordIndex;
+  (void)styleC;
+  (void)styleD;
+  return false;
+}
+
 // FUNCTION: IMPERIALISM 0x004a6680
 void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex) {
-  // TODO: port body @ 0x4a6680 (1372 bytes; heavy CString-based UI hint-text composition;
-  // not yet ported).
-  (void)cityRecordIndex;
+  TControlPictureRectState styleA;
+  reinterpret_cast<void(__cdecl*)(int, void*, int, int, int)>(
+      thunk_InitializeUiTextStyleDescriptor)(0, &styleA, 0xe, 0x2b67, 1);
+
+  TControlPictureRectState styleB;
+  BuildUiTextStyleDescriptor(&styleB, 0, 0xc, 0x2b67);
+
+  TControlPictureRectState styleC;
+  reinterpret_cast<void(__cdecl*)(int, void*, int, int, int)>(
+      thunk_InitializeUiTextStyleDescriptor)(0, &styleC, 0xa, 0x2b67, 3);
+
+  TControlPictureRectState styleD;
+  reinterpret_cast<void(__cdecl*)(int, void*, int, int, int)>(
+      thunk_InitializeUiTextStyleDescriptor)(0, &styleD, 0xa, 0x2b67, 3);
+
+  if (!this->BuildMapOrderContextSummaryStringForNation(cityRecordIndex, &styleC, &styleD)) {
+    CString noSummaryMessage;
+    g_pSimMgr->GetString(0x2744, 8, &noSummaryMessage);
+    // Ground truth also dispatches noSummaryMessage via
+    // TViewMgr::DispatchLocalizedUiMessageWithTemplateA13A0 here -- that dispatch's own
+    // real arity (per its disassembly at 0x5d5b00) contradicts this callsite's 0
+    // explicit args, the same class of contradiction already documented on
+    // TMapUberPicture::DispatchPictureResourceCommand and
+    // ValidateOrderPlacementPrerequisitesForSelectedTile, so it's left undone rather
+    // than faked.
+    return;
+  }
+
+  // Ground truth also resolves g_pUiViewManager->ResolveTurnEventDialogNodeByMessage-
+  // Context(0x2503) here (asserting non-null via the established MessageBox+assert
+  // pattern), then dispatches through that node's own slot-0x1a0 virtual (the same
+  // DispatchPictureResourceCommand-shaped slot, and the same arity contradiction, as
+  // above) and a further ResolveControlByTag('geep')-based chain. Left undone rather
+  // than faked; styleA/styleB/styleC/styleD's real consumption in that path (and the
+  // per-owner-nation theme-code lookup at cityScoreTable[cityRecordIndex].ownerNation-
+  // Code00 feeding one of them) isn't recovered either.
 }

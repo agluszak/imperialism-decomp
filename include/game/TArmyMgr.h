@@ -7,6 +7,7 @@
 class TStream;
 class TSortedList;
 class TArmyStack;
+struct TControlPictureRectState;
 
 // TODO(manifest): describe TArmyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TArmyMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c928
@@ -177,9 +178,16 @@ public:
   void CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
                                                         TArmyStack* enemyStack,
                                                         int ownerNationCodeInt);
-  // 0x004a6680, 1372 bytes, __thiscall, 1 arg (cityRecordIndex). TODO stub body (heavy
-  // CString-based UI hint-text composition; not yet ported).
   void BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex);
+
+  // Fills styleC/styleD (both real TControlPictureRectState locals in the caller) with a
+  // localized order-context summary for cityRecordIndex; returns false when there's no
+  // summary to show. 0x004a5ec0, __thiscall, 1580 bytes. TODO: port body -- out of scope
+  // for BuildMapHintOverlayTextAndDispatchUiMessages, which only needs a real,
+  // correctly-typed call site.
+  bool BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
+                                                  TControlPictureRectState* styleC,
+                                                  TControlPictureRectState* styleD);
 
   TArmyMgr();
 };

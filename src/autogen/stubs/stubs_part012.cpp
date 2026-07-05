@@ -323,14 +323,6 @@ undefined4 WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl(void)
   return 0;
 }
 
-// ghidra_name BuildMapOrderContextSummaryStringForNation
-// ghidra_proto undefined BuildMapOrderContextSummaryStringForNation()
-// FUNCTION: IMPERIALISM 0x004a5ec0
-undefined4 BuildMapOrderContextSummaryStringForNation(void)
-{
-  return 0;
-}
-
 // ghidra_name ScanMapContextActionEntriesForCodeMatch
 // ghidra_proto undefined ScanMapContextActionEntriesForCodeMatch()
 // FUNCTION: IMPERIALISM 0x004a6d40
