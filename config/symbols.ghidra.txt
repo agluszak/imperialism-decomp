@@ -10977,7 +10977,7 @@ g_hQuickDrawSavedBitmap 6A1DBC l
 g_pGlobalViewportRectDefaultsRecord 6A1DC0 l
 g_cachedShowSplashFlag 6A2018 l
 DAT_006a2054 6A2054 l
-g_pLocalizationTable 6A20F8 l
+g_pSimMgr 6A20F8 l
 g_pUiViewManager 6A2148 l
 g_pDisplayMgr 6A2158 l
 g_pStrategicMapViewSystem 6A21A8 l

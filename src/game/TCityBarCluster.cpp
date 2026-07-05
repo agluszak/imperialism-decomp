@@ -45,25 +45,25 @@ void TCityBarCluster::ApplyMoveValue(int value) {
   int metricContext = *reinterpret_cast<int*>(recordContext + 0x1d8);
   int metrics = *reinterpret_cast<int*>(metricContext + 0x10);
 
-  TControl* areaControl = this->ResolveControlByTag(0x74726561);
+  TControl* areaControl = static_cast<TControl*>(this->ResolveControlByTag(0x74726561));
   if (areaControl != 0) {
     areaControl->SetControlValue(*reinterpret_cast<int*>(recordNode + 0x10));
     areaControl->SetEnabled(0, 1);
   }
 
-  TControl* returnControl = this->ResolveControlByTag(0x756e7472);
+  TControl* returnControl = static_cast<TControl*>(this->ResolveControlByTag(0x756e7472));
   if (returnControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
   }
   returnControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 4));
 
-  TControl* airControl = this->ResolveControlByTag(0x74726169);
+  TControl* airControl = static_cast<TControl*>(this->ResolveControlByTag(0x74726169));
   if (airControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
   }
   airControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 6));
 
-  TControl* profControl = this->ResolveControlByTag(0x70726f66);
+  TControl* profControl = static_cast<TControl*>(this->ResolveControlByTag(0x70726f66));
   if (profControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
   }

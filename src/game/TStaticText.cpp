@@ -88,7 +88,7 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
   if (panel != 0) {
     panel->AttachChildControl(this, 0);
   }
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x40) = 0;
+  resourceTemplateId40 = 0;
   SetCityProductionDialogPictureRectAndMaybeRefresh(
       reinterpret_cast<TControlPictureRectState*>(&g_nUiResourceEntryDefaultParam0), 0);
   field88 = reinterpret_cast<void*>(static_cast<int>(stringResourceGroup));

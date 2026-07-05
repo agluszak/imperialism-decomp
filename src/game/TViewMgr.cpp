@@ -1,6 +1,7 @@
 #include "game/TViewMgr.h"
 
 #include "game/ImperialismApp.h"
+#include "game/TAmbitApplication.h"
 #include "game/TAssetMgr.h"
 #include "game/TSoundPlayer.h"        // g_pSfxPlaybackSystem
 #include "game/TMacViewMgr.h"         // g_pStrategicMapViewSystem
@@ -12,7 +13,7 @@
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCivToolbar.h"
-#include "game/global_data_tables.h" // g_pGameFlowState, g_pLocalizationTable, g_apNationStates
+#include "game/global_data_tables.h" // g_pGameFlowState, g_pSimMgr, g_apNationStates
 #include "game/TGreatPower.h"
 #include "game/TGlobalMapState.h"
 #include "game/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
@@ -49,7 +50,7 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 
 #include <new>
 
-// TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pLocalizationTable / turn-state
+// TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pSimMgr / turn-state
 // manager). Included via global_data_tables.h.
 
 // The display/GWorld manager (g_pDisplayMgr @ 0x6a2158); its activeDialog (+0x04) field
@@ -374,8 +375,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
 
   // Mask the game-flow flag while committing the refresh when localization mode is active.
   unsigned char savedFlag = 0;
-  bool localizationActive =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x44) != 0;
+  bool localizationActive = *reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) != 0;
   if (localizationActive) {
     savedFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
@@ -383,14 +383,14 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   node->RefreshTurnEventDialog();
   node->CallVoidSlotA0();
   node->Free();
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x44) != 0) {
+  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) != 0) {
     g_pGameFlowState->processPrimaryEventQueue = savedFlag;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005d5960
 int TViewMgr::ClassifyTurnStateForOverlayMode() {
-  switch (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 8)) {
+  switch (*reinterpret_cast<short*>(&g_pSimMgr->mode)) {
   case 6:
   case 0xc:
   case 0xe:
@@ -466,9 +466,9 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
 
   switch (overlayMode) {
   case 0:
-    g_pLocalizationTable->GetString(0, 0, &scratchA);
-    g_pLocalizationTable->GetString(0x2716, 0, &templateText);
-    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
+    g_pSimMgr->GetString(0, 0, &scratchA);
+    g_pSimMgr->GetString(0x2716, 0, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
     if (contextArg == 8) {
       resourceId = 0x2515;
     } else if (contextArg == 9) {
@@ -478,8 +478,8 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     }
     break;
   case 1: {
-    g_pLocalizationTable->GetString(0, 0, &templateText);
-    short nationId = g_pLocalizationTable->GetActiveNationId();
+    g_pSimMgr->GetString(0, 0, &templateText);
+    short nationId = g_pSimMgr->GetActiveNationId();
     short cap = g_pCityOrderCapabilityState->nationCapRows1e8[nationId].cap;
     if (cap == 0x1c) {
       resourceId = 0x2518;
@@ -489,48 +489,48 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     break;
   }
   case 2:
-    g_pLocalizationTable->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0, 0, &templateText);
     resourceId = 0x250a;
     break;
   case 3:
   case 4:
     g_pGlobalMapState->AssignSharedStringFromIndexedA8EntryNameField(contextArg, &formattedText);
-    g_pLocalizationTable->GetString(0, 0, &templateText);
-    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
+    g_pSimMgr->GetString(0, 0, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
   case 5:
   case 0xc:
-    g_pLocalizationTable->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0, 0, &templateText);
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
   case 6: {
-    TGreatPower* nation = g_apNationStates[g_pLocalizationTable->GetActiveNationId()];
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     if (nation != nullptr) {
       nation->LoadNationDisplayNameSharedRefFromField8(&formattedText);
     }
-    g_pLocalizationTable->GetString(0, 0, &templateText);
-    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
+    g_pSimMgr->GetString(0, 0, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = 0x250e;
     break;
   }
   case 7:
-    g_pLocalizationTable->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0, 0, &templateText);
     resourceId = static_cast<short>((-static_cast<int>(contextArg != -1) & 0xfff5) + 0x251a);
     break;
   case 8:
-    g_pLocalizationTable->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0, 0, &templateText);
     resourceId = 0x2510;
     break;
   case 9:
   case 0xb:
-    g_pLocalizationTable->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0, 0, &templateText);
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
   case 0xa:
     reinterpret_cast<void(__cdecl*)(void)>(FormatOverlayTerrainLabelText)();
-    g_pLocalizationTable->GetString(0, 0, &templateText);
-    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
+    g_pSimMgr->GetString(0, 0, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = 0x2512;
     break;
   default:
@@ -594,13 +594,13 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   // Turn-event 0x7DD targets the 'trb1' toolbar tag; everything else the 'tool' tag.
   TControl* control;
   if (this->currentTurnEventCode == 0x7dd) {
-    control = mainView->ResolveControlByTag(0x74627231);
+    control = static_cast<TControl*>(mainView->ResolveControlByTag(0x74627231));
   } else {
-    control = mainView->ResolveControlByTag(0x746f6f6c);
+    control = static_cast<TControl*>(mainView->ResolveControlByTag(0x746f6f6c));
   }
   if (control != nullptr) {
     static_cast<TToolBarCluster*>(control)->UpdateControlTagTreaTextFromNationAndMapContext(
-        g_pLocalizationTable->GetActiveNationId());
+        g_pSimMgr->GetActiveNationId());
   }
 }
 
@@ -623,7 +623,7 @@ void TViewMgr::UiRuntimeSlot58() {
   for (short iconIndex = 0; iconIndex < 0x12; ++iconIndex) {
     const unsigned int tag =
         *reinterpret_cast<const unsigned int*>(kStatusIconTagBytes + iconIndex * 4);
-    TControl* control = mainView->ResolveControlByTag(tag);
+    TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(tag));
     if (control != nullptr) {
       control->AssertValid();
       g_pStrategicMapViewSystem->OrphanCallChain_C4_I35_0050bbc0(reinterpret_cast<int*>(control),
@@ -661,6 +661,33 @@ void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
   node->Free();
 }
 
+// FUNCTION: IMPERIALISM 0x005d7090
+void TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection(void* a1, void* a2, void* a3) {
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  DispatchTurnEventSlot4C(0x7d8, reinterpret_cast<int>(a1));
+  TDiplomacyMapView* mainView =
+      static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
+  mainView->AssertValid();
+  mainView->InvalidateAndForwardTabSwitchToChild(a1, a2, a3);
+}
+
+// FUNCTION: IMPERIALISM 0x005d7100
+char TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle(void* a1, void* a2, void* a3, void* a4) {
+  if (IsTurnCooldownCounterActiveOrResetFlag()) {
+    return 1;
+  }
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  DispatchTurnEventSlot4C(0x7d8, reinterpret_cast<int>(a1));
+  TDiplomacyMapView* mainView =
+      static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
+  mainView->AssertValid();
+  mainView->InvalidateAndRunChildWaitSheet(a1, a2, a3, a4);
+  // The original's non-cooldown path leaves AL from the (void) child call; the trailing
+  // xor al,al this emits is the sole residual diff (InvalidateAndRunChildWaitSheet is void,
+  // so its incidental AL cannot be tail-returned without regressing 0x4f7040's own match).
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005d7190
 void TViewMgr::UiRuntimeSlotD4(int arg) {
   (void)arg;
@@ -684,7 +711,7 @@ TControl* ResolveMainTaggedControl(unsigned int controlTag) {
   if (mainView == nullptr) {
     return nullptr;
   }
-  return mainView->ResolveControlByTag(controlTag);
+  return static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
 }
 
 void BindCursorPanelAndSetTurnEventCodeRange() {
@@ -713,8 +740,7 @@ void RefreshToolBarClusterByTag(unsigned int controlTag) {
   }
   control->AssertValid();
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(control);
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(
-      g_pLocalizationTable->GetActiveNationId());
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
   toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 }
 
@@ -725,9 +751,8 @@ void RefreshOrderStatusPicture(unsigned int controlTag, unsigned int flagMask,
     return;
   }
   control->AssertValid();
-  const short pictureId = g_pLocalizationTable->TestTurnFlowStatusFlagMask(flagMask)
-                              ? pictureWhenFlagSet
-                              : pictureWhenFlagClear;
+  const short pictureId =
+      g_pSimMgr->TestTurnFlowStatusFlagMask(flagMask) ? pictureWhenFlagSet : pictureWhenFlagClear;
   static_cast<TPicture*>(control)->SetPictureResourceIdAndRefresh(pictureId, true);
 }
 
@@ -743,7 +768,7 @@ void RefreshTradClusterPictureAndHintText() {
   tradControl->SetState(0, 0);
 
   CString hintText;
-  g_pLocalizationTable->GetString(0x2730, 0, &hintText);
+  g_pSimMgr->GetString(0x2730, 0, &hintText);
   tradControl->EnableAndProcessFlag(hintText);
 }
 
@@ -755,7 +780,7 @@ void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stri
   }
   control->AssertValid();
   CString localizedText;
-  g_pLocalizationTable->GetString(stringCode, stringIndex, &localizedText);
+  g_pSimMgr->GetString(stringCode, stringIndex, &localizedText);
   control->EnableAndProcessFlag(localizedText);
 }
 
@@ -814,7 +839,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
 
   // Sound cue when the turn-flow mode is in the 0x67..0x6a band and the code changed.
   if (newCode != this->currentTurnEventCode) {
-    switch (static_cast<short>(g_pLocalizationTable->mode)) {
+    switch (static_cast<short>(g_pSimMgr->mode)) {
     case 0x67:
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5b);
       break;
@@ -853,10 +878,9 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
 
   // Code 0 = rebuild every registered UI window node.
   if (newCode == 0) {
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x4c) =
-        0;
+    static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->dispatchBusyFlag4c = 0;
     this->currentTurnEventCode = 0;
-    *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pDisplayMgr) + 0x1c) = 0;
+    g_pDisplayMgr->clipSnapshotEvent = 0;
     mainView->CallVoidSlotA0();
     CWMgrIterator iter;
     iter.Reset(1);
@@ -885,7 +909,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       mainView->RefreshControl();
       HandleTurnEvent8FC_RebuildPageTabsAndTitles();
     } else if (newCode == 0x7d8) {
-      if (static_cast<short>(g_pLocalizationTable->mode) == 0x68) {
+      if (static_cast<short>(g_pSimMgr->mode) == 0x68) {
         mainView->RefreshControl();
         this->UiRuntimeSlot6C();
       }
@@ -918,7 +942,8 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
     ShowDialogTemplateE0ModalAndReleaseCapture();
     this->field10 = 0;
   }
-  TControl* inclControl = mainView->ResolveControlByTag(0x496e636c); // 'Incl'
+  TControl* inclControl =
+      static_cast<TControl*>(mainView->ResolveControlByTag(0x496e636c)); // 'Incl'
   if (inclControl != nullptr) {
     inclControl->AssertValid();
     inclControl->RefreshControl();
@@ -1030,7 +1055,7 @@ void TViewMgr::UiRuntimeSlotA8() {
     return;
   }
 
-  TControl* cityControl = mainView->ResolveControlByTag(kControlTagCity);
+  TControl* cityControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCity));
   if (cityControl != nullptr) {
     cityControl->AssertValid();
     cityControl->SetState(0, 0);
@@ -1041,7 +1066,7 @@ void TViewMgr::UiRuntimeSlotA8() {
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
 
-  TControl* querControl = mainView->ResolveControlByTag(kControlTagQuer);
+  TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
     querControl->AssertValid();
     querControl->EnableAndProcessFlag(g_szEmptyString);
@@ -1066,11 +1091,11 @@ void TViewMgr::UiRuntimeSlotB8() {}
 void TViewMgr::UiRuntimeSlot50(int payload) {
   (void)payload;
   TView* mainView = g_pDisplayMgr->activeDialog;
-  TControl* cursor = mainView->ResolveControlByTag(kControlTagCrus);
+  TControl* cursor = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCrus));
   g_pCursorControlPanel = static_cast<TCursorControlPanel*>(cursor);
   cursor->AssertValid();
   static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
-  TControl* mainPanel = mainView->ResolveControlByTag(kControlTagMain);
+  TControl* mainPanel = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagMain));
   mainPanel->AssertValid();
   static_cast<TCouncilTickerAnimation*>(static_cast<void*>(mainPanel))
       ->InitializeDiplomacyCouncilViewControlsAndTicker();
@@ -1084,7 +1109,7 @@ void TViewMgr::UiRuntimeSlot6C() {
     return;
   }
 
-  TControl* diplControl = mainView->ResolveControlByTag(kControlTagDipl);
+  TControl* diplControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagDipl));
   if (diplControl != nullptr) {
     diplControl->AssertValid();
     diplControl->SetState(0, 0);
@@ -1095,7 +1120,7 @@ void TViewMgr::UiRuntimeSlot6C() {
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
 
-  TControl* querControl = mainView->ResolveControlByTag(kControlTagQuer);
+  TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
     querControl->AssertValid();
     querControl->EnableAndProcessFlag(g_szEmptyString);
@@ -1180,7 +1205,7 @@ void TViewMgr::UiRuntimeSlot5C() {
     textControl->EnableAndProcessFlag(g_szEmptyString);
   }
 
-  const short activeNationId = g_pLocalizationTable->GetActiveNationId();
+  const short activeNationId = g_pSimMgr->GetActiveNationId();
   g_apNationStates[activeNationId]->ReturnFalseNationStateCapabilityFlag9C();
   this->fieldEc = 0;
   for (short metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
@@ -1233,9 +1258,9 @@ void TViewMgr::UiRuntimeSlot64() {
 
 // FUNCTION: IMPERIALISM 0x005da360
 void TViewMgr::UiRuntimeSlotBC() {
-  const short activeNationId = g_pLocalizationTable->GetActiveNationId();
+  const short activeNationId = g_pSimMgr->GetActiveNationId();
   if (IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
-    g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(nullptr);
+    g_pSimMgr->CopyScenarioNationSetupIntoFlowState(nullptr);
   }
 
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
@@ -1250,9 +1275,8 @@ void TViewMgr::UiRuntimeSlotBC() {
   TControl* tranControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagTran);
   if (tranControl != nullptr) {
     tranControl->AssertValid();
-    g_pLocalizationTable->TestTurnFlowStatusFlagMask(0x1000);
-    const short followUpPictureId =
-        g_pLocalizationTable->TestTurnFlowStatusFlagMask(0x1000) ? 0x24df : 0x24e7;
+    g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000);
+    const short followUpPictureId = g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000) ? 0x24df : 0x24e7;
     static_cast<TPicture*>(tranControl)->SetPictureResourceIdAndRefresh(followUpPictureId, true);
   }
 
@@ -1262,7 +1286,7 @@ void TViewMgr::UiRuntimeSlotBC() {
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagCity, 0x2730, 0);
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagTrad, 0x2730, 0);
 
-  if (g_pLocalizationTable->TestTurnFlowStatusFlagMask(1) == 0) {
+  if (g_pSimMgr->TestTurnFlowStatusFlagMask(1) == 0) {
     turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDipl, 0x19, 0);
   } else {
     turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDipl, 0x15, 0);
@@ -1277,9 +1301,20 @@ void TViewMgr::NoOpTurnEventStateVtableSlotFC() {}
 
 void TViewMgr::UiRuntimeSlot100() {}
 
+// Turn-event 0x5DE: like the 0x5DF handler, re-asserts and refreshes the 'main' view panel;
+// the original brackets the body with a scoped (empty) CString local.
+// FUNCTION: IMPERIALISM 0x005dbd30
+void TViewMgr::HandleTurnEvent5DE_RefreshMainView() {
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  CString scratch;
+  TView* mainView = activeDialog->ResolveControlByTag(kControlTagMain);
+  mainView->AssertValid();
+  mainView->RefreshControl();
+}
+
 // FUNCTION: IMPERIALISM 0x005dbdd0
 void TViewMgr::HandleTurnEvent5DF_RefreshMainView() {
-  TControl* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
+  TView* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
   mainPanel->AssertValid();
   mainPanel->RefreshControl();
 }
@@ -1325,7 +1360,6 @@ int TViewMgr::ShowConstructionOptionsDialog() {
 
 void TViewMgr::UiRuntimeSlotE0() {}
 void TViewMgr::UiRuntimeSlotE8() {}
-void TViewMgr::UiRuntimeSlotEC() {}
 void TViewMgr::UiRuntimeSlotF0() {}
 void TViewMgr::UiRuntimeSlotF4() {}
 void TViewMgr::UiRuntimeSlotF8() {}
@@ -1345,7 +1379,7 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
 
     int modalResult = reinterpret_cast<int(__cdecl*)(void)>(DoModal_6051b9)();
     if (modalResult != 0) {
-      g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
+      g_pSimMgr->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
     }
     delete[] buffer;
   }
@@ -1359,7 +1393,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x14a);
   }
-  TControl* gold = node->ResolveControlByTag(0x444c4f47); // 'GOLD'
+  TControl* gold = static_cast<TControl*>(node->ResolveControlByTag(0x444c4f47)); // 'GOLD'
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
@@ -1375,6 +1409,45 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
   node->Free();
 }
 
+// FUNCTION: IMPERIALISM 0x005dd900
+void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdac));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1e2);
+  }
+  TView* page = node->ResolveControlByTag(0x70616765); // 'page'
+  if (page == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1e3);
+  }
+  // Ground truth (0x004a8890, reached through the resolved ILT thunk at 0x00402216) rebuilds
+  // 'page's TArmyUnitLine roster for the tile at mapSelection from
+  // g_pGlobalMapState->cityScoreTable and appends each line via TPageView's own AddLine slot
+  // (byte 0x1a0, TPageView::OrphanCallChain_C1_I06_0056fbb0). Ghidra/symbols.csv misattribute
+  // that function to TLineData -- TLineData's vtable only spans 12 slots, far short of the
+  // 0x69 needed for its own AddLine call, so the real receiver is a TPageView-derived roster
+  // page. The concrete roster subclass installed as 'page' on this call path isn't recovered
+  // yet, so the call stays undone rather than fake a cast to a guessed class (Hard Rule 12).
+  (void)page;
+
+  POINT placement;
+  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->ShowTurnEventDialog(1);
+  node->RefreshTurnEventDialog();
+  node->CallVoidSlotA0();
+  node->Free();
+
+  // Ground truth then dispatches
+  // mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]'s own slot-0x74 virtual with
+  // mapSelection (matching the arity fixed on TMapUberUberPicture::OrphanRetStub_0045d2a0),
+  // but categoryPages' concrete element class isn't recovered yet -- left undone (Hard Rule
+  // 12) rather than fake that dispatch too.
+  (void)mapSelection;
+}
+
 // FUNCTION: IMPERIALISM 0x005ddd20
 void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
@@ -1383,7 +1456,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x232);
   }
-  TControl* page = node->ResolveControlByTag(0x70616765); // 'page'
+  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(0x70616765)); // 'page'
   if (page == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x233);

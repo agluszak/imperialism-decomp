@@ -131,46 +131,6 @@ undefined4 RebuildTileOwnerNeighborCachesAndFallbackAssignments(void)
   return 0;
 }
 
-// ghidra_name ResolveMapTileVariantSpriteFromAdjacencyState
-// ghidra_proto undefined ResolveMapTileVariantSpriteFromAdjacencyState()
-// FUNCTION: IMPERIALISM 0x005108d0
-undefined4 ResolveMapTileVariantSpriteFromAdjacencyState(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckTileVariantCodeMembershipSetA
-// ghidra_proto undefined CheckTileVariantCodeMembershipSetA()
-// FUNCTION: IMPERIALISM 0x005112f0
-undefined4 CheckTileVariantCodeMembershipSetA(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckTileVariantCodeMembershipSetB
-// ghidra_proto undefined CheckTileVariantCodeMembershipSetB()
-// FUNCTION: IMPERIALISM 0x00511360
-undefined4 CheckTileVariantCodeMembershipSetB(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckTileVariantCodeMembershipSetC
-// ghidra_proto undefined CheckTileVariantCodeMembershipSetC()
-// FUNCTION: IMPERIALISM 0x005113d0
-undefined4 CheckTileVariantCodeMembershipSetC(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckTileVariantCodeMembershipSetD
-// ghidra_proto undefined CheckTileVariantCodeMembershipSetD()
-// FUNCTION: IMPERIALISM 0x00511440
-undefined4 CheckTileVariantCodeMembershipSetD(void)
-{
-  return 0;
-}
-
 // ghidra_name CheckTilePatternMaskAllowedByModeFlag
 // ghidra_proto undefined CheckTilePatternMaskAllowedByModeFlag()
 // FUNCTION: IMPERIALISM 0x005114b0
@@ -259,14 +219,6 @@ undefined4 NormalizeWrappedMapCoord108x60(void)
   return 0;
 }
 
-// ghidra_name NormalizeWrappedMapCoord217x60
-// ghidra_proto undefined NormalizeWrappedMapCoord217x60()
-// FUNCTION: IMPERIALISM 0x00513120
-undefined4 NormalizeWrappedMapCoord217x60(void)
-{
-  return 0;
-}
-
 // ghidra_name TDeluxeText::CanBuildPortAtTile
 // ghidra_proto char __thiscall CanBuildPortAtTile(int nTileIndex)
 // FUNCTION: IMPERIALISM 0x005137b0
@@ -287,14 +239,6 @@ undefined4 IsValidSecondaryNationHomeTileCandidate(void)
 // ghidra_proto undefined HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask()
 // FUNCTION: IMPERIALISM 0x00513ca0
 undefined4 HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckTileProspectingDiscoveryCandidate
-// ghidra_proto byte __thiscall CheckTileProspectingDiscoveryCandidate(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x00513ed0
-undefined4 CheckTileProspectingDiscoveryCandidate(void)
 {
   return 0;
 }
@@ -323,26 +267,10 @@ undefined4 GetTileUnitEntryByOwner(void)
   return 0;
 }
 
-// ghidra_name GetTileNormalizedMovementClassId
-// ghidra_proto undefined GetTileNormalizedMovementClassId()
-// FUNCTION: IMPERIALISM 0x00514290
-undefined4 GetTileNormalizedMovementClassId(void)
-{
-  return 0;
-}
-
 // ghidra_name FindReachableRecruitSpawnTileRecursive
 // ghidra_proto undefined FindReachableRecruitSpawnTileRecursive()
 // FUNCTION: IMPERIALISM 0x00514cd0
 undefined4 FindReachableRecruitSpawnTileRecursive(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearPerTileByte0FForAllMapTiles
-// ghidra_proto undefined ClearPerTileByte0FForAllMapTiles()
-// FUNCTION: IMPERIALISM 0x00515db0
-undefined4 ClearPerTileByte0FForAllMapTiles(void)
 {
   return 0;
 }
@@ -431,22 +359,6 @@ undefined4 ResetTileToBaseTransportFlag(void)
 // ghidra_proto undefined WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0()
 // FUNCTION: IMPERIALISM 0x00518aa0
 undefined4 WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::CalculateDeveloperTilePurchaseCost
-// ghidra_proto int __thiscall CalculateDeveloperTilePurchaseCost(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x00518b40
-undefined4 CalculateDeveloperTilePurchaseCost(void)
-{
-  return 0;
-}
-
-// ghidra_name MarkAdjacentHexOrderDirectionAndSelectTile
-// ghidra_proto undefined MarkAdjacentHexOrderDirectionAndSelectTile()
-// FUNCTION: IMPERIALISM 0x00518bd0
-undefined4 MarkAdjacentHexOrderDirectionAndSelectTile(void)
 {
   return 0;
 }
@@ -675,30 +587,6 @@ undefined4 ValidateSeedCandidateExistsForEachTerrainClass(void)
   return 0;
 }
 
-// ghidra_name GetNeighborTileIndexOnMap108x60
-// ghidra_proto undefined GetNeighborTileIndexOnMap108x60()
-// FUNCTION: IMPERIALISM 0x00528c10
-undefined4 GetNeighborTileIndexOnMap108x60(void)
-{
-  return 0;
-}
-
-// ghidra_name RandomizeRegionTemplateBanksForMismatchedNeighborClasses
-// ghidra_proto undefined RandomizeRegionTemplateBanksForMismatchedNeighborClasses()
-// FUNCTION: IMPERIALISM 0x005293d0
-undefined4 RandomizeRegionTemplateBanksForMismatchedNeighborClasses(void)
-{
-  return 0;
-}
-
-// ghidra_name RotateMapColumnsByPeakCityTileDensity
-// ghidra_proto undefined RotateMapColumnsByPeakCityTileDensity()
-// FUNCTION: IMPERIALISM 0x00529960
-undefined4 RotateMapColumnsByPeakCityTileDensity(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_00529d90
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_00529d90()
 // FUNCTION: IMPERIALISM 0x00529d90
@@ -711,30 +599,6 @@ undefined4 OrphanDeadLeaf_NoRefs_00529d90(void)
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_0052a0a0()
 // FUNCTION: IMPERIALISM 0x0052a0a0
 undefined4 OrphanDeadLeaf_NoRefs_0052a0a0(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateCityRegionIdsBySeedAndNeighborPropagation
-// ghidra_proto undefined GenerateCityRegionIdsBySeedAndNeighborPropagation()
-// FUNCTION: IMPERIALISM 0x0052a160
-undefined4 GenerateCityRegionIdsBySeedAndNeighborPropagation(void)
-{
-  return 0;
-}
-
-// ghidra_name GetCityRegionIdAtTileIndex
-// ghidra_proto undefined GetCityRegionIdAtTileIndex()
-// FUNCTION: IMPERIALISM 0x0052a670
-undefined4 GetCityRegionIdAtTileIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapExtendedMapXCoordinateInPlace
-// ghidra_proto undefined WrapExtendedMapXCoordinateInPlace()
-// FUNCTION: IMPERIALISM 0x0052a6e0
-undefined4 WrapExtendedMapXCoordinateInPlace(void)
 {
   return 0;
 }
@@ -755,86 +619,6 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820(void)
   return 0;
 }
 
-// ghidra_name RecomputeOverlaySegmentEndpointsAndAngle
-// ghidra_proto undefined RecomputeOverlaySegmentEndpointsAndAngle()
-// FUNCTION: IMPERIALISM 0x0052ab00
-undefined4 RecomputeOverlaySegmentEndpointsAndAngle(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeOverlaySpanRecordSorted
-// ghidra_proto undefined InitializeOverlaySpanRecordSorted()
-// FUNCTION: IMPERIALISM 0x0052b1e0
-undefined4 InitializeOverlaySpanRecordSorted(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeOverlaySegmentFromTwoMapCoords
-// ghidra_proto undefined InitializeOverlaySegmentFromTwoMapCoords()
-// FUNCTION: IMPERIALISM 0x0052b220
-undefined4 InitializeOverlaySegmentFromTwoMapCoords(void)
-{
-  return 0;
-}
-
-// ghidra_name ReserveOverlaySpanRecordArray18Capacity
-// ghidra_proto undefined ReserveOverlaySpanRecordArray18Capacity()
-// FUNCTION: IMPERIALISM 0x0052b3e0
-undefined4 ReserveOverlaySpanRecordArray18Capacity(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrCreateOverlaySpanRecordArray18Entry
-// ghidra_proto undefined GetOrCreateOverlaySpanRecordArray18Entry()
-// FUNCTION: IMPERIALISM 0x0052b460
-undefined4 GetOrCreateOverlaySpanRecordArray18Entry(void)
-{
-  return 0;
-}
-
-// ghidra_name DetachAndResetOverlaySpanRecordArray18Buffer
-// ghidra_proto undefined DetachAndResetOverlaySpanRecordArray18Buffer()
-// FUNCTION: IMPERIALISM 0x0052b500
-undefined4 DetachAndResetOverlaySpanRecordArray18Buffer(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignCityRegionIdsFromOverlayScanlineIntersections
-// ghidra_proto undefined AssignCityRegionIdsFromOverlayScanlineIntersections()
-// FUNCTION: IMPERIALISM 0x0052b9b0
-undefined4 AssignCityRegionIdsFromOverlayScanlineIntersections(void)
-{
-  return 0;
-}
-
-// ghidra_name ExtractWrappedEndpointFromSpanRecordBySide
-// ghidra_proto undefined ExtractWrappedEndpointFromSpanRecordBySide()
-// FUNCTION: IMPERIALISM 0x0052bef0
-undefined4 ExtractWrappedEndpointFromSpanRecordBySide(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectSpanEndpointXByThreshold
-// ghidra_proto undefined SelectSpanEndpointXByThreshold()
-// FUNCTION: IMPERIALISM 0x0052c000
-undefined4 SelectSpanEndpointXByThreshold(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOverlaySpanRecordByIndex
-// ghidra_proto undefined GetOverlaySpanRecordByIndex()
-// FUNCTION: IMPERIALISM 0x0052c030
-undefined4 GetOverlaySpanRecordByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060()
 // FUNCTION: IMPERIALISM 0x0052c060
@@ -851,78 +635,6 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170(void)
   return 0;
 }
 
-// ghidra_name BuildCityRegionBorderOverlaySegments
-// ghidra_proto undefined BuildCityRegionBorderOverlaySegments()
-// FUNCTION: IMPERIALISM 0x0052c1a0
-undefined4 BuildCityRegionBorderOverlaySegments(void)
-{
-  return 0;
-}
-
-// ghidra_name ConvertTileIndexToOverlayCoord216BySide
-// ghidra_proto undefined ConvertTileIndexToOverlayCoord216BySide()
-// FUNCTION: IMPERIALISM 0x0052c990
-undefined4 ConvertTileIndexToOverlayCoord216BySide(void)
-{
-  return 0;
-}
-
-// ghidra_name DetachAndResetOverlayQuadRecordArrayBuffer
-// ghidra_proto undefined DetachAndResetOverlayQuadRecordArrayBuffer()
-// FUNCTION: IMPERIALISM 0x0052ca00
-undefined4 DetachAndResetOverlayQuadRecordArrayBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name EmitOverlaySegmentFromTileEdgeSorted
-// ghidra_proto undefined EmitOverlaySegmentFromTileEdgeSorted()
-// FUNCTION: IMPERIALISM 0x0052ca20
-undefined4 EmitOverlaySegmentFromTileEdgeSorted(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildOverlaySpanRecordsFromQuadBorderLinks
-// ghidra_proto undefined BuildOverlaySpanRecordsFromQuadBorderLinks()
-// FUNCTION: IMPERIALISM 0x0052cae0
-undefined4 BuildOverlaySpanRecordsFromQuadBorderLinks(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeWrappedOverlayCoordDeltaMetric
-// ghidra_proto undefined ComputeWrappedOverlayCoordDeltaMetric()
-// FUNCTION: IMPERIALISM 0x0052d030
-undefined4 ComputeWrappedOverlayCoordDeltaMetric(void)
-{
-  return 0;
-}
-
-// ghidra_name ReserveOverlayQuadRecordArrayCapacity
-// ghidra_proto undefined ReserveOverlayQuadRecordArrayCapacity()
-// FUNCTION: IMPERIALISM 0x0052d0d0
-undefined4 ReserveOverlayQuadRecordArrayCapacity(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrCreateOverlayQuadRecordByIndex
-// ghidra_proto undefined GetOrCreateOverlayQuadRecordByIndex()
-// FUNCTION: IMPERIALISM 0x0052d150
-undefined4 GetOrCreateOverlayQuadRecordByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name ReindexContiguousCityRegionIds
-// ghidra_proto undefined ReindexContiguousCityRegionIds()
-// FUNCTION: IMPERIALISM 0x0052d1f0
-undefined4 ReindexContiguousCityRegionIds(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_0052d4b0
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_0052d4b0()
 // FUNCTION: IMPERIALISM 0x0052d4b0
@@ -935,46 +647,6 @@ undefined4 OrphanDeadLeaf_NoRefs_0052d4b0(void)
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_0052d6b0()
 // FUNCTION: IMPERIALISM 0x0052d6b0
 undefined4 OrphanDeadLeaf_NoRefs_0052d6b0(void)
-{
-  return 0;
-}
-
-// ghidra_name MergeSmallCityRegionsAndCompactIds
-// ghidra_proto undefined MergeSmallCityRegionsAndCompactIds()
-// FUNCTION: IMPERIALISM 0x0052d750
-undefined4 MergeSmallCityRegionsAndCompactIds(void)
-{
-  return 0;
-}
-
-// ghidra_name ReallocateRouteRecordBufferByCountStride18
-// ghidra_proto undefined ReallocateRouteRecordBufferByCountStride18()
-// FUNCTION: IMPERIALISM 0x0052e310
-undefined4 ReallocateRouteRecordBufferByCountStride18(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildUMapperRouteRecordsAndActiveMapRects
-// ghidra_proto undefined RebuildUMapperRouteRecordsAndActiveMapRects()
-// FUNCTION: IMPERIALISM 0x0052e350
-undefined4 RebuildUMapperRouteRecordsAndActiveMapRects(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateRouteNodeStateBufferByCount
-// ghidra_proto undefined AllocateRouteNodeStateBufferByCount()
-// FUNCTION: IMPERIALISM 0x0052e7b0
-undefined4 AllocateRouteNodeStateBufferByCount(void)
-{
-  return 0;
-}
-
-// ghidra_name AreRoutePointPairsEqual
-// ghidra_proto undefined AreRoutePointPairsEqual()
-// FUNCTION: IMPERIALISM 0x0052e990
-undefined4 AreRoutePointPairsEqual(void)
 {
   return 0;
 }

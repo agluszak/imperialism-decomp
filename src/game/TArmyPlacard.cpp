@@ -1,4 +1,5 @@
 #include "game/TArmyPlacard.h"
+#include "game/TArmyMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/CString.h"
@@ -29,7 +30,7 @@ TArmyPlacard::TArmyPlacard() : TPicture() {
 
 // FUNCTION: IMPERIALISM 0x0058bf50
 bool TArmyPlacard::IsSelected(short value, bool refreshNow) {
-  short activeNationId = g_pLocalizationTable->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetActiveNationId();
   short capValue =
       g_pCityOrderCapabilityState->nationCapRows1e8[activeNationId].caps[this->controlTag];
   short pictureId = capValue + 0x4c4;
@@ -75,19 +76,15 @@ void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 
-const unsigned int kAddrMapContextActionManager = 0x006a3338;
-
 // FUNCTION: IMPERIALISM 0x0058c140
 void TArmyPlacard::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)commandId;
   (void)sourceHandler;
-  int* mapContextActionManager = *reinterpret_cast<int**>(kAddrMapContextActionManager);
   TSpaceCommand* spaceEvent = static_cast<TSpaceCommand*>(event);
   if (spaceEvent != nullptr) {
     if (spaceEvent->commandTag1c == 0x706c7573) { // "plus"
       short categoryId = this->controlTag - 0x6330;
-      short tileIndex =
-          *reinterpret_cast<short*>(reinterpret_cast<char*>(mapContextActionManager) + 0x31c);
+      short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
       int unitId = reinterpret_cast<int(__cdecl*)(short, short)>(
           ActivateFirstActiveTacticalUnitByCategoryAtTile)(categoryId, tileIndex);
       this->IsSelected(unitId, true);
@@ -95,8 +92,7 @@ void TArmyPlacard::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
     if (spaceEvent->commandTag1c == 0x6d696e75) { // "minu"
       short categoryId = this->controlTag - 0x6330;
-      short tileIndex =
-          *reinterpret_cast<short*>(reinterpret_cast<char*>(mapContextActionManager) + 0x31c);
+      short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
       int unitId = reinterpret_cast<int(__cdecl*)(short, short)>(
           ActivateFirstIdleTacticalUnitByCategoryAtTile)(categoryId, tileIndex);
       this->IsSelected(unitId, true);

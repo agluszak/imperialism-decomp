@@ -20,7 +20,13 @@ public:
   virtual void NoOpTurnOrderNavigationVtableSlotA();
   virtual void NoOpTurnOrderNavigationVtableSlotB();
 
-  unsigned char turnNavTail[0x1e4 - 0xa0];
+  // Only the constructor initializes these (0/0x14/0/0/0); no other confirmed reader/writer.
+  short fieldAtA0;
+  short fieldAtA2;
+  int fieldAtA4;
+  int fieldAtA8;
+  int fieldAtAc;
+  unsigned char turnNavTail[0x1e4 - 0xb0];
 
   TGameWindow();
 };

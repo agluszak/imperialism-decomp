@@ -66,7 +66,7 @@ TRailCluster::TRailCluster() : TUberCluster() {
 // FUNCTION: IMPERIALISM 0x005897b0
 void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {
   short recordIndex = static_cast<short>(styleSeed);
-  short activeNationId = g_pLocalizationTable->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
   TCity* cityState = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 

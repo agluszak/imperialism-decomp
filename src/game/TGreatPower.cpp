@@ -304,7 +304,7 @@ static __inline TSortedList* AllocateBattleListOwnerWithLinkedSentinel(void) {
 }
 
 static __inline bool IsQuarterlyLocalizationGateOpen(void) {
-  TSimMgr* localizationTable = g_pLocalizationTable;
+  TSimMgr* localizationTable = g_pSimMgr;
   if (localizationTable == 0) {
     return false;
   }
@@ -456,8 +456,8 @@ TGreatPower::TGreatPower()
   this->ownedRegionList = 0;
 
   int localeIndex = 0;
-  if (g_pLocalizationTable != 0) {
-    localeIndex = g_pLocalizationTable->runtimeSubsystemIndex;
+  if (g_pSimMgr != 0) {
+    localeIndex = g_pSimMgr->runtimeSubsystemIndex;
   }
   this->diplomacyBudgetBase = g_anNationBasePressureByLocale[localeIndex] * 100;
   this->escalationCounter =
@@ -521,7 +521,7 @@ TGreatPower::~TGreatPower() {}
 void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   this->InitializeNationStateIdentityAndOwnedRegionList(static_cast<short>(arg1));
 
-  TSimMgr* localizationRuntime = g_pLocalizationTable;
+  TSimMgr* localizationRuntime = g_pSimMgr;
   if (localizationRuntime != 0) {
     int runtimeIndex = localizationRuntime->runtimeSubsystemIndex;
     this->treasuryValue10 = g_anNationStartingTreasuryByLocale[runtimeIndex];
@@ -1177,7 +1177,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
     return;
   }
 
-  TSimMgr* localizationRuntime = g_pLocalizationTable;
+  TSimMgr* localizationRuntime = g_pSimMgr;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
     localeIndex = localizationRuntime->runtimeSubsystemIndex;
@@ -1244,7 +1244,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
 // FUNCTION: IMPERIALISM 0x004db380
 void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
-  TSimMgr* localizationRuntime = g_pLocalizationTable;
+  TSimMgr* localizationRuntime = g_pSimMgr;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
     localeIndex = localizationRuntime->runtimeSubsystemIndex;
@@ -1528,7 +1528,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
     unsigned char needsRedraw = 0;
 
     TMapMgr* globalMapState = g_pGlobalMapState;
-    TSimMgr* localizationRuntime = g_pLocalizationTable;
+    TSimMgr* localizationRuntime = g_pSimMgr;
     if (globalMapState != 0 && localizationRuntime != 0 && globalMapState->cityScoreTable != 0 &&
         globalMapState->terrainStateTable != 0) {
       TGlobalMapCityScoreRecord* cityTable = globalMapState->cityScoreTable;
@@ -1704,7 +1704,7 @@ char TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
 short TGreatPower::ComputeTreasuryStatusPromptCode(void) {
   int dispatchCounter = g_pDiplomacyTurnStateManager->proposalDispatchCounter790;
   short promptCode = 0;
-  int turnTick = g_pLocalizationTable->GetTurnTickSlot3C();
+  int turnTick = g_pSimMgr->GetTurnTickSlot3C();
   if (dispatchCounter == 0 && turnTick == 3) {
     promptCode = 0x25;
     return promptCode;
@@ -2210,7 +2210,7 @@ int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
 
 // FUNCTION: IMPERIALISM 0x004dd470
 void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
-  TSimMgr* localizationTable = g_pLocalizationTable;
+  TSimMgr* localizationTable = g_pSimMgr;
   if (localizationTable->runtimeSubsystemIndex != 0 || localizationTable->mode != 2) {
     return;
   }
@@ -2630,7 +2630,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
     break;
 
   case 3: {
-    TSimMgr* localizationTable = g_pLocalizationTable;
+    TSimMgr* localizationTable = g_pSimMgr;
     if (localizationTable != 0 && localizationTable->mode == 6) {
       this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetClass, 4, -1);
     }
@@ -2774,7 +2774,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
 
       if (shouldDispatchAlert) {
         SharedRefPairScope sharedRefs;
-        TSimMgr* localizationRuntime = g_pLocalizationTable;
+        TSimMgr* localizationRuntime = g_pSimMgr;
         if (localizationRuntime != 0) {
           localizationRuntime->GetString(0x2753, 0, &sharedRefs.first);
           localizationRuntime->GetString(0x2753, 0, &sharedRefs.second);
@@ -3006,7 +3006,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
   }
   g_pGlobalMapState->ApplyJoinEmpireMode0GlobalDiplomacyReset(this->nationSlot);
 
-  TSimMgr* localizationTable = g_pLocalizationTable;
+  TSimMgr* localizationTable = g_pSimMgr;
   if (localizationTable != 0 && localizationTable->redrawEnabled != 0) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6e616d65, this->nationSlot, 0xfffffffd);
   }
@@ -3413,7 +3413,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   if (this->diplomacyEligibilityA0 == 0) {
     presetLevel = 2;
   } else {
-    presetLevel = g_pLocalizationTable->runtimeSubsystemIndex;
+    presetLevel = g_pSimMgr->runtimeSubsystemIndex;
   }
   const short* presetRow = g_Rebuild_Primary_Nation_Value_00653570[presetLevel];
   for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
@@ -3437,7 +3437,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   } else {
     notifySink->NotifyProductionPresetSlot2C(4, 2, 1);
   }
-  TSimMgr* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pSimMgr;
   if (this->diplomacyEligibilityA0 == 0 || localization->runtimeSubsystemIndex < 2 ||
       localization->stateFlag114 != 0) {
     if (this->ShouldDispatchImmediatelySlot28() == 0 || localization->stateFlag114 != 0) {
@@ -3459,7 +3459,7 @@ void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
 
 // FUNCTION: IMPERIALISM 0x004dfae0
 void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
-  TSimMgr* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pSimMgr;
   int homeRegionIndex = -1;
   if (localization->stateFlag114 == 0) {
     homeRegionIndex =
@@ -4408,7 +4408,7 @@ void TGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, 
   };
 
   short turnTick = 0;
-  TSimMgr* localizationRuntime = g_pLocalizationTable;
+  TSimMgr* localizationRuntime = g_pSimMgr;
   if (localizationRuntime != 0) {
     turnTick = localizationRuntime->GetTurnTickSlot3C();
   }
@@ -4438,7 +4438,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   }
 
   short activeTurn = 0;
-  TSimMgr* localizationRuntime = g_pLocalizationTable;
+  TSimMgr* localizationRuntime = g_pSimMgr;
   if (localizationRuntime != 0) {
     activeTurn = static_cast<short>(localizationRuntime->GetTurnTickSlot3C() - 1);
   }
@@ -4540,7 +4540,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     if (selected == g_Compute_Advisory_Zero_00653FD0) {
       selected = kOne;
     }
-    int field30 = g_pLocalizationTable->GetField30();
+    int field30 = g_pSimMgr->GetField30();
     float denominator = static_cast<float>(field30) * selected -
                         static_cast<float>(g_Compute_Advisory_MinusSix_00653FE8);
     float numerator = sum - static_cast<float>(g_Compute_Advisory_MinusSix_00653FE8);
@@ -4568,7 +4568,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     if (selected == g_Compute_Advisory_Zero_00653FD0) {
       selected = kOne;
     }
-    int field30 = g_pLocalizationTable->GetField30();
+    int field30 = g_pSimMgr->GetField30();
     float denominator = static_cast<float>(field30) * selected -
                         static_cast<float>(g_Compute_Advisory_MinusSix_00653FE8);
     float numerator = sum - static_cast<float>(g_Compute_Advisory_MinusSix_00653FE8);

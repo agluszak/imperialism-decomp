@@ -28,11 +28,24 @@ squeezing any single function to 100%.
 - Use the score only as a *pairing sanity check* (did it pair? is the shape roughly
   right?), not a target. Don't restore-the-higher-scoring-body dances over pragma noise.
 
+## Picking targets & checking status (instant, no build/Ghidra)
+
+Two config-file readers replace the by-hand grep-across-CSVs dance:
+
+- `just port-candidates [--range LO HI] [--min-size N] [--max-score PCT] [--limit N]`
+  — rank the biggest weakly-matched functions (join of `symbols.csv` size + baseline
+  match % + ownership). This is how you find "big, unported" targets; scope with
+  `--range` to a subsystem. e.g. `just port-candidates --range 0x52c000 0x530000`.
+- `just func-status 0xADDR [0xADDR ...]` — one-stop summary for an address: curated
+  name/size/prototype, ownership (file + pairing), autogen body location, and current
+  reccmp match %. Use before touching a function instead of grepping four files.
+
 ## The loop
 
 1. **Pick one target** function (or a tightly-coupled neighbor pair). Prefer
-   high-impact non-trivial bodies over tiny thunks. `just compare 0xADDR` once
-   first to confirm it is a real body, not a `jmp` trampoline.
+   high-impact non-trivial bodies over tiny thunks (`just port-candidates`).
+   `just compare 0xADDR` (or `just func-status 0xADDR`) once first to confirm it is a
+   real body, not a `jmp` trampoline.
 2. **Promote** the Ghidra text. Promotion copies the decompiled body out of
    `src/ghidra_autogen/<Class>.cpp` into your manual file with the `// FUNCTION:` marker
    attached, and removes the address from stub ownership so there's one owned impl.

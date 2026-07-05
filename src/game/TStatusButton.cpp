@@ -39,7 +39,8 @@ void TStatusButton::HandleEvent(int selectedIndex, TEventHandler* sourceHandler,
       g_bCityDialogLegendSelectionInitialized = 0;
     }
 
-    TControl* backControl = ownerContext->ResolveControlByTag(kControlTagBack);
+    TControl* backControl =
+        static_cast<TControl*>(ownerContext->ResolveControlByTag(kControlTagBack));
     if (backControl != nullptr) {
       backControl->Free();
       ownerContext->RefreshControl();

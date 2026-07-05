@@ -33,8 +33,8 @@ void TOceanDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlay
 void TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights() {}
 
 // FUNCTION: IMPERIALISM 0x00566750
-undefined TOceanDialog::OrphanRetStub_005966c0() {
-  return 0;
+void TOceanDialog::OrphanRetStub_005966c0(short arg1) {
+  (void)arg1;
 }
 
 // FUNCTION: IMPERIALISM 0x005667f0
@@ -50,7 +50,12 @@ void TOceanDialog::RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) 
 }
 
 // FUNCTION: IMPERIALISM 0x00568120
-void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge() {}
+void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
+                                                                 int arg3) {
+  (void)tileIndex;
+  (void)arg2;
+  (void)arg3;
+}
 
 // FUNCTION: IMPERIALISM 0x005682d0
 void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
@@ -71,13 +76,15 @@ void TOceanDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1,
 }
 
 // FUNCTION: IMPERIALISM 0x005687b0
-undefined TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0() {
+undefined TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
+  (void)arg1;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005688d0
-undefined TOceanDialog::OrphanRetStub_00596680() {
-  return 0;
+void TOceanDialog::OrphanRetStub_00596680(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
 }
 
 // FUNCTION: IMPERIALISM 0x005689f0

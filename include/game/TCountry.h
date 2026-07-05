@@ -79,6 +79,9 @@ public:
   // this nation (0x4d7a00).
   void SetNationDisplayNameAndLocalizationSlotRef(const CString& name);
 
+  // 0x004d7150, __thiscall, one stack arg (sign-extended short -> int store).
+  void SetSerializedField8c(short value);
+
   CString identitySharedString0;
   CString identitySharedString1;
   short nationSlot;

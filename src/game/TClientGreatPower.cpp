@@ -62,14 +62,13 @@ int TClientGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation
   int accepted = TGreatPower::CheckTransitionSlot27C(targetNation, sourceNation);
   TurnEvent1EPacketPayload packetPayload;
   packetPayload.messageTag = 0x74696D65;
-  packetPayload.activeNationId =
-      static_cast<unsigned char>(g_pLocalizationTable->GetActiveNationId());
+  packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packetPayload.eventCode = 0x1E;
   packetPayload.messageLength = 0x24;
   packetPayload.SetTimeEmitPacketGameFlowTurnId();
   packetPayload.toNetworkId = -1;
   packetPayload.activeNationIdBeforePayload =
-      static_cast<unsigned char>(g_pLocalizationTable->GetActiveNationId());
+      static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packetPayload.acceptedFlag = accepted != 0 ? 1 : 0;
   packetPayload.commandCode = 0x69;
   packetPayload.commandArgA = static_cast<unsigned char>(targetNation);

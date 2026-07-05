@@ -17,6 +17,9 @@ class TDiplomacyMapView;
 // VTABLE: IMPERIALISM 0x0066f120
 class TViewMgr : public TObject {
 public:
+  // Base Windows cursor resource ID for cursorTable's indexing scheme (see below).
+  enum { kCursorResourceIdBase = 1000 };
+
   // === BEGIN GENERATED DECLS (TViewMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TViewMgr)
   virtual ~TViewMgr(); // slot 0x01 (scalar deleting destructor)
@@ -95,10 +98,12 @@ public:
   // localized string code (0x5dd220).
   virtual void HandleTurnEventDialogFactorySlotE4(int stringCode); // 0xe4
   virtual void UiRuntimeSlotE8();                                  // 0xe8
-  virtual void UiRuntimeSlotEC();                                  // 0xec
-  virtual void UiRuntimeSlotF0();                                  // 0xf0
-  virtual void UiRuntimeSlotF4();                                  // 0xf4
-  virtual void UiRuntimeSlotF8();                                  // 0xf8
+  // Refreshes the 0xdac factory dialog's 'page' roster for a tile-selection map click
+  // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
+  virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
+  virtual void UiRuntimeSlotF0();                                    // 0xf0
+  virtual void UiRuntimeSlotF4();                                    // 0xf4
+  virtual void UiRuntimeSlotF8();                                    // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   virtual void UiRuntimeSlot100();               // 0x100
   // Turn-event 0x5DF path (see DispatchTurnEventSlot4C): re-asserts and refreshes
@@ -120,6 +125,17 @@ public:
 
   int MapTurnEventCodeToPaletteIndex(int eventCode);
 
+  // 0x5d7090 / 0x5d7100 — turn-event 0x7D8: dispatch the event via slot 0x4C, then resolve the
+  // active dialog's 'main' control (a TDiplomacyMapView) and forward the tab-switch to its child.
+  // The 0x7100 variant early-outs while the turn-cooldown counter is active and finishes through
+  // the direct InvalidateAndRunChildWaitSheet path instead of the slot-0x79 virtual.
+  void DispatchTurnEvent7D8AndUpdateMainViewSelection(void* a1, void* a2, void* a3);
+  char DispatchTurnEvent7D8IfTurnFlowIdle(void* a1, void* a2, void* a3, void* a4);
+
+  // 0x5dbd30 — turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the
+  // 0x5DF handler; the original brackets the body with a scoped empty CString).
+  void HandleTurnEvent5DE_RefreshMainView();
+
   // 0x5ddd20 — opens the civilian ledger (TSuperCivRoster) inside factory dialog
   // 0xdac, runs it modally via the show/refresh chain, then applies the selected
   // civilian as the active map selection.
@@ -136,13 +152,17 @@ public:
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
   // LoadTurnEventCursorTable 0x5d5100. Field names past the event code are
   // provisional. Total size 0xfc, base TObject = 0x4.
-  short currentTurnEventCode;              // +0x04 (turn-event dispatch code)
-  short pad06;                             // +0x06
-  unsigned int turnStateSeedLo;            // +0x08 (seeded from g_dat_006a5b58)
-  unsigned int turnStateSeedHi;            // +0x0c (seeded from g_dat_006a5b5c)
-  unsigned char field10;                   // +0x10
-  unsigned char pad11[3];                  // +0x11
-  void* cursorTable[0x36];                 // +0x14 .. 0xeb (54 turn-event cursor handles)
+  short currentTurnEventCode;   // +0x04 (turn-event dispatch code)
+  short pad06;                  // +0x06
+  unsigned int turnStateSeedLo; // +0x08 (seeded from g_dat_006a5b58)
+  unsigned int turnStateSeedHi; // +0x0c (seeded from g_dat_006a5b5c)
+  unsigned char field10;        // +0x10
+  unsigned char pad11[3];       // +0x11
+  // +0x14 .. 0xeb (54 turn-event cursor handles). Indexed as
+  // cursorTable[resourceCursorId - kCursorResourceIdBase] -- confirmed against
+  // TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback's ground-truth
+  // `[EAX + EDX*4 + 0xfffff074]` (0xfffff074 == -0xf8c == 0x14 - kCursorResourceIdBase*4).
+  void* cursorTable[0x36];
   short fieldEc;                           // +0xec
   short padEe;                             // +0xee
   class TMapUberPicture* mapUberPictureF0; // +0xf0

@@ -47,8 +47,8 @@ public:
   virtual void SetMasterVolumeFromPercent(short percent); // 0x2b -> 0x5e5020
   virtual void NoOpAudioTickCallback_005e50a0();          // 0x2c -> 0x5e50a0
   virtual int UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(
-      int sfxToken, int param_2 = 0, int param_3 = 1, int param_4 = 1);         // 0x2d -> 0x5e50c0
-  virtual void PlaySoundEffect(int sfxToken, int param_2 = 0, int param_3 = 1); // 0x2e -> 0x5e5140
+      int sfxToken, int param_2 = 0, int param_3 = 1, int param_4 = 1);        // 0x2d -> 0x5e50c0
+  virtual int PlaySoundEffect(int sfxToken, int param_2 = 0, int param_3 = 1); // 0x2e -> 0x5e5140
 };
 
 TSoundPlayer* CreateTSoundPlayerInstance(void);

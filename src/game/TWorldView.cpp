@@ -1,5 +1,7 @@
 #include "game/TWorldView.h"
 
+#include "game/TApplication.h"
+#include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
 #include "game/TCivUnit.h"
 #include "game/mfc.h"
@@ -127,7 +129,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
 
 // FUNCTION: IMPERIALISM 0x00595c40
 void TWorldView::SetFlagByteAndInvokeVslot1A4(unsigned char flagByte) {
-  *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 0x74) = flagByte;
+  field74 = flagByte;
   RenderMapContextOverlayWithScopedClipAndSurface();
 }
 
@@ -150,12 +152,10 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       previewBand = selectedOrder->field_6;
     }
   } else if (interactionMode == 1) {
-    short actionIndex = *reinterpret_cast<short*>(reinterpret_cast<char*>(0x006a3338) + 0x31c);
+    short actionIndex = g_pMapContextActionManager->pendingMapActionIndex;
     if (actionIndex != -1) {
       previewBand = -1;
-      previewTileIndex = *reinterpret_cast<short*>(
-          *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10) + 4 +
-          actionIndex * 0xa8);
+      previewTileIndex = g_pGlobalMapState->cityScoreTable[actionIndex].ownerNationSlot;
     }
   } else if (interactionMode == 2) {
     int attachedEntity = 0;
@@ -260,7 +260,12 @@ void TWorldView::RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) {
 }
 
 // FUNCTION: IMPERIALISM 0x00596040
-void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge() {}
+void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
+                                                               int arg3) {
+  (void)tileIndex;
+  (void)arg2;
+  (void)arg3;
+}
 
 // FUNCTION: IMPERIALISM 0x00596060
 void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
@@ -331,7 +336,7 @@ char TWorldView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3
     return 1;
   }
 
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x24) < 2) {
+  if (g_pGlobalUiRootController->screenModeAt24 < 2) {
     HandleMapClickByInteractionMode(static_cast<short>(stridedRecord), regionBand);
     return 1;
   }
@@ -424,22 +429,24 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
 }
 
 // FUNCTION: IMPERIALISM 0x00596680
-undefined TWorldView::OrphanRetStub_00596680() {
-  return 0;
+void TWorldView::OrphanRetStub_00596680(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
 }
 
 // FUNCTION: IMPERIALISM 0x005966a0
-undefined TWorldView::OrphanRetStub_005966a0() {
-  return 0;
+void TWorldView::OrphanRetStub_005966a0(int arg1) {
+  (void)arg1;
 }
 
 // FUNCTION: IMPERIALISM 0x005966c0
-undefined TWorldView::OrphanRetStub_005966c0() {
-  return 0;
+void TWorldView::OrphanRetStub_005966c0(short arg1) {
+  (void)arg1;
 }
 
 // FUNCTION: IMPERIALISM 0x005966e0
-undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0() {
+undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
+  (void)arg1;
   return 0;
 }
 

@@ -127,7 +127,7 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
   InvokeLoadUiStringResourceByGroupAndIndex(&templateText, 0x2763, 0x19);
   FormatStringWithVarArgsToSharedRef(&scratch, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                      freeMegabytes);
-  InvokeScanBracketExpressions(g_pLocalizationTable, &formattedText, templateText.GetBuffer(0));
+  InvokeScanBracketExpressions(g_pSimMgr, &formattedText, templateText.GetBuffer(0));
 
   TLowDiskWarningDialog dialog(nullptr);
   dialog.SetPromptText(formattedText);

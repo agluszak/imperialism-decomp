@@ -19,11 +19,6 @@ IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 // SYNTHETIC: IMPERIALISM 0x0053c1d0
 // TArmyMission::`scalar deleting destructor'
 
-// Not-yet-recovered free function this file calls into (generic stub
-// signature per the autogen stub definition; real signature applied via a
-// typed cast at the call site so the linker resolves the correct symbol).
-extern undefined4 GetTileNormalizedMovementClassId(void);
-
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
   union {
@@ -407,10 +402,6 @@ float TArmyMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* r
 
 // FUNCTION: IMPERIALISM 0x0053d630
 TMission* TArmyMission::GetReplacementSlot48() {
-  typedef short(__cdecl * GetTileNormalizedMovementClassId_t)(int);
-  GetTileNormalizedMovementClassId_t GetTileNormalizedMovementClassId_fn =
-      reinterpret_cast<GetTileNormalizedMovementClassId_t>(
-          (void*)&GetTileNormalizedMovementClassId);
-  short movementClass = GetTileNormalizedMovementClassId_fn(field_14);
-  return (movementClass == nationId04) ? this : nullptr;
+  short tileOwnerNationCode = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(field_14);
+  return (tileOwnerNationCode == nationId04) ? this : nullptr;
 }

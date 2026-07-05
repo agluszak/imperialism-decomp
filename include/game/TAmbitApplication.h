@@ -35,6 +35,11 @@ public:
   void InitializeGlobalRuntimeSystems(); // 0x49ded0
 
   TMapUberPicture* field_48; // 0x48 — viewport edge-scroll handler (slot 0x74 target)
-  int field_4c;              // 0x4c
-  int field_50;              // 0x50
+  // 0x4c — a busy/dispatch-in-progress byte, set to 1 across many turn-event dispatch
+  // branches in TViewMgr's state machine (0x5d7240) and cleared to 0 once handling
+  // completes; ground truth confirms a byte-sized write (`MOV byte ptr [EAX+0x4c],1`),
+  // not the full int this was previously modeled as.
+  unsigned char dispatchBusyFlag4c;
+  unsigned char pad4d[3];
+  int field_50; // 0x50
 };

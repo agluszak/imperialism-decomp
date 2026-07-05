@@ -10,7 +10,7 @@ class TLanguageMgr : public TObject {
 public:
   // === BEGIN GENERATED DECLS (TLanguageMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TLanguageMgr)
-  virtual ~TLanguageMgr();                                 // slot 0x01 (scalar deleting destructor)
+  virtual ~TLanguageMgr(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -45,4 +45,9 @@ public:
                                 char lastPrimaryRow, char firstExtraRow, char lastExtraRow);
   void ParseNewsTableRow(char* line);
   bool ReloadPreplutNewsTableAndResources(int languageTag);
+
+  // Maps a data byte through the news-string table for the given format column, expanding
+  // '*' in the mapped fragment to the raw data string. Returns the built CString by value.
+  // Out of range (or formatChar 0) falls back to the raw data string. 0x005083f0.
+  CString BuildMappedSharedStringFromByteStateTable(const char* data, char formatChar);
 };

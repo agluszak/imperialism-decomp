@@ -6,7 +6,7 @@
 #include "game/nation_slot_eligibility.h"
 #include "game/TCivUnit.h"
 #include "game/TDiplomacyMgr.h"
-#include "game/TDealList.h"
+#include "game/TTradeMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
 #include "game/TInterNationEventQueueManager.h"
@@ -91,12 +91,11 @@ void TMinor::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->diplomacyPolicyPredicateCode12e, 2);
   stream->ReadBytes(&this->diplomacyPolicyGate130, 2);
   stream->ReadBytes(&this->diplomacyPolicyGate132, 2);
-  stream->ReadBytes(reinterpret_cast<char*>(this) + 0x134, 8);
-  SwapAdjacentBytesInShortArray(reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x134), 4);
+  stream->ReadBytes(diplomacySaveFields134, 8);
+  SwapAdjacentBytesInShortArray(diplomacySaveFields134, 4);
   if (g_nSaveFormatVersion > 0x39) {
-    stream->ReadBytes(reinterpret_cast<char*>(this) + 0x13c, 0x2e);
-    SwapAdjacentBytesInShortArray(reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x13c),
-                                  0x17);
+    stream->ReadBytes(diplomacySaveExt13c, 0x2e);
+    SwapAdjacentBytesInShortArray(diplomacySaveExt13c, 0x17);
   }
 }
 
@@ -117,9 +116,8 @@ void TMinor::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&this->diplomacyPolicyPredicateCode12e, 2);
   stream->WriteBytesSlot78(&this->diplomacyPolicyGate130, 2);
   stream->WriteBytesSlot78(&this->diplomacyPolicyGate132, 2);
-  WriteShortArrayElems(stream, reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x134), 4);
-  WriteShortArrayElems(stream, reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x13c),
-                       0x17);
+  WriteShortArrayElems(stream, diplomacySaveFields134, 4);
+  WriteShortArrayElems(stream, diplomacySaveExt13c, 0x17);
 }
 
 // FUNCTION: IMPERIALISM 0x004e45f0

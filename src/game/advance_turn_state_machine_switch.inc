@@ -113,8 +113,8 @@
 
   case 10: {
     turnStateCode = 0x14;
-    if (g_pLocalizationTable != nullptr) {
-      g_pLocalizationTable->RebuildPrimaryNationStateForSlot(0, 0);
+    if (g_pSimMgr != nullptr) {
+      g_pSimMgr->RebuildPrimaryNationStateForSlot(0, 0);
     }
     PostMainWindowCommand100ForTurnFlow();
     break;
@@ -230,7 +230,7 @@
       runtimeSubsystemIndex |= 0x40;
     }
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-      if (g_pLocalizationTable != nullptr && g_pLocalizationTable->activeNationSlot == nationSlot &&
+      if (g_pSimMgr != nullptr && g_pSimMgr->activeNationSlot == nationSlot &&
           g_nTurnCooldownDeferCounter006A43C4 < 1) {
         g_nTurnCooldownDeferCounter006A43C4 = 0;
         g_nTurnCooldownSideFlag00698B10 = 1;
@@ -359,8 +359,8 @@
   case 0x19: {
     turnStateCode = 8;
     char actionNeeded = 0;
-    if (g_pLocalizationTable != nullptr) {
-      const short localizationNation = g_pLocalizationTable->activeNationSlot;
+    if (g_pSimMgr != nullptr) {
+      const short localizationNation = g_pSimMgr->activeNationSlot;
       TGreatPower* localizationNationState = g_apNationStates[localizationNation];
       if (localizationNationState != nullptr) {
         const short encoded = localizationNationState->encodedNationSlot;

@@ -31,15 +31,15 @@ struct TurnOrderNavCommandEvent {
 };
 
 static short QueryUiRuntimeEventCode() {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0x4);
+  return g_pUiRuntimeContext->currentTurnEventCode;
 }
 
 static short QueryUiRuntimeFieldF8() {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf8);
+  return g_pUiRuntimeContext->fieldF8;
 }
 
 static int QueryUiRuntimeFieldF4() {
-  return *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf4);
+  return static_cast<int>(g_pUiRuntimeContext->fieldF4);
 }
 
 } // namespace
@@ -100,11 +100,11 @@ IMPLEMENT_DYNCREATE(TGameWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x004ffc10
 TGameWindow::TGameWindow() {
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa0) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xa2) = 0x14;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa4) = 0;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa8) = 0;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xac) = 0;
+  fieldAtA0 = 0;
+  fieldAtA2 = 0x14;
+  fieldAtA4 = 0;
+  fieldAtA8 = 0;
+  fieldAtAc = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004ffc60
@@ -135,7 +135,7 @@ char TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int a
 // FUNCTION: IMPERIALISM 0x004ffd70
 void TGameWindow::ForwardParam(int param) {
   TurnOrderNavCommandEvent* commandEvent = reinterpret_cast<TurnOrderNavCommandEvent*>(param);
-  TControl* mainControl = ResolveControlByTag(kTagMain);
+  TControl* mainControl = static_cast<TControl*>(ResolveControlByTag(kTagMain));
   if (mainControl == 0) {
     return;
   }
@@ -166,17 +166,17 @@ void TGameWindow::ForwardParam(int param) {
     if (QueryUiRuntimeEventCode() != 0x7dd &&
         mainControl->ResolveControlByTag(0x656e6420) != 0) { // 'end '
       GameWindowInvoke::PlayClickSfx7000();
-      if (g_pLocalizationTable->mode != 0x11) {
-        g_pLocalizationTable->PostMainWindowCommand100ForTurnFlow();
+      if (g_pSimMgr->mode != 0x11) {
+        g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
         return;
       }
-      short nationId = g_pLocalizationTable->GetActiveNationId();
+      short nationId = g_pSimMgr->GetActiveNationId();
       short abilityIndex = GameWindowInvoke::ConsumeFirstPendingAbilityUnlockForNation(nationId);
       if (abilityIndex != -1) {
         GameWindowInvoke::DispatchUiRuntimeAbilityUnlockSlot88Gate(abilityIndex);
         return;
       }
-      g_pLocalizationTable->PostMainWindowCommand100ForTurnFlow();
+      g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
       return;
     }
     if (QueryUiRuntimeFieldF8() != 0) {
@@ -190,13 +190,12 @@ void TGameWindow::ForwardParam(int param) {
     return;
   }
 
-  if (g_pLocalizationTable == 0) {
+  if (g_pSimMgr == 0) {
     mainControl->ForwardParam(param);
     return;
   }
-  if (g_pLocalizationTable->mode != 0x69 && g_pLocalizationTable->mode != 0x68 &&
-      g_pLocalizationTable->mode != 0x67 && g_pLocalizationTable->mode != 0x6a &&
-      g_pLocalizationTable->mode != 0x6d && QueryUiRuntimeEventCode() != 0x7dd) {
+  if (g_pSimMgr->mode != 0x69 && g_pSimMgr->mode != 0x68 && g_pSimMgr->mode != 0x67 &&
+      g_pSimMgr->mode != 0x6a && g_pSimMgr->mode != 0x6d && QueryUiRuntimeEventCode() != 0x7dd) {
     mainControl->ForwardParam(param);
     return;
   }
@@ -205,35 +204,35 @@ void TGameWindow::ForwardParam(int param) {
   case 0x31:
     if (QueryUiRuntimeEventCode() != 0x7de) {
       GameWindowInvoke::PlayClickSfx7000();
-      g_pLocalizationTable->SetGlobalTurnStateCodeIfAllowed(0x69);
+      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x69);
       return;
     }
     break;
   case 0x32:
     if (QueryUiRuntimeEventCode() != 0x7db) {
       GameWindowInvoke::PlayClickSfx7000();
-      g_pLocalizationTable->SetGlobalTurnStateCodeIfAllowed(0x6a);
+      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x6a);
       return;
     }
     break;
   case 0x33:
     if (QueryUiRuntimeEventCode() != 0x7d9 && QueryUiRuntimeEventCode() != 0x7da) {
       GameWindowInvoke::PlayClickSfx7000();
-      g_pLocalizationTable->SetGlobalTurnStateCodeIfAllowed(0x67);
+      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x67);
       return;
     }
     break;
   case 0x34:
     if (QueryUiRuntimeEventCode() != 0x7d8) {
       GameWindowInvoke::PlayClickSfx7000();
-      g_pLocalizationTable->SetGlobalTurnStateCodeIfAllowed(0x68);
+      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x68);
       return;
     }
     break;
   case 0x35:
     if (QueryUiRuntimeEventCode() != 0x8fc) {
       GameWindowInvoke::PlayClickSfx7000();
-      g_pLocalizationTable->SetGlobalTurnStateCodeIfAllowed(0x6d);
+      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x6d);
       return;
     }
     break;

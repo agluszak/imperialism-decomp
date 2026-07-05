@@ -166,7 +166,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
-  if (g_pLocalizationTable->redrawEnabled != 0) {
+  if (g_pSimMgr->redrawEnabled != 0) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, this->nationSlot, -3);
   }
 }
@@ -551,7 +551,7 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
     ++peerCursor;
     ++peerSlot;
   } while (peerCursor < g_apNationStates + 7);
-  int tickQuarter = static_cast<short>(g_pLocalizationTable->quarterGateTick2c / 4);
+  int tickQuarter = static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
   if (tickQuarter >= 0x3c) {
     tickQuarter = 0x3c;
   }

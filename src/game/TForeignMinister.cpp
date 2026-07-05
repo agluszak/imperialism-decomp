@@ -1,6 +1,6 @@
 #include "game/TForeignMinister.h"
 
-#include "game/TDealList.h"
+#include "game/TTradeMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TGreatPower_internal.h"
 #include "game/TSortedByRelationshipList.h"

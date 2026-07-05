@@ -22,21 +22,21 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined InitializeTurnOrderNavigationDialogByViewportSize(); // slot 0x0a 0x4fe840
-  virtual undefined InitializeBitmapSurfaceContextWithRetry(TQuickDrawSurfaceContext** outContext,
-                                                            short bitDepth,
-                                                            RECT* bounds); // slot 0x0b 0x4feab0
-  virtual undefined EnsurePrimaryRenderSurfaceContextAllocated();          // slot 0x0c 0x4feb80
-  virtual undefined WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0();   // slot 0x0d 0x4febd0
-  virtual undefined WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00();   // slot 0x0e 0x4fed00
-  virtual undefined OrphanRetStub_004fed50(char param_1);                  // slot 0x0f 0x4fed50
-  virtual undefined AssertUDisplayMgrLines614And616(char param_1);         // slot 0x10 0x4fed70
-  virtual undefined AssertUDisplayMgrLine471();                            // slot 0x11 0x4fec20
-  virtual undefined AssertUDisplayMgrLine495();                            // slot 0x12 0x4fec50
-  virtual undefined DispatchDisplayManagerControlStringMessage();          // slot 0x13 0x4fec80
+  virtual void InitializeBitmapSurfaceContextWithRetry(TQuickDrawSurfaceContext** outContext,
+                                                       short bitDepth,
+                                                       RECT* bounds);    // slot 0x0b 0x4feab0
+  virtual void EnsurePrimaryRenderSurfaceContextAllocated();             // slot 0x0c 0x4feb80
+  virtual undefined WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0(); // slot 0x0d 0x4febd0
+  virtual undefined WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00(); // slot 0x0e 0x4fed00
+  virtual undefined OrphanRetStub_004fed50(char param_1);                // slot 0x0f 0x4fed50
+  virtual undefined AssertUDisplayMgrLines614And616(char param_1);       // slot 0x10 0x4fed70
+  virtual undefined AssertUDisplayMgrLine471();                          // slot 0x11 0x4fec20
+  virtual undefined AssertUDisplayMgrLine495();                          // slot 0x12 0x4fec50
+  virtual undefined DispatchDisplayManagerControlStringMessage();        // slot 0x13 0x4fec80
   virtual undefined
-  LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1);      // slot 0x14 0x4fedc0
-  virtual undefined SetMapTileIconVariantTriplet(undefined1* param_1); // slot 0x15 0x4fefc0
-  virtual undefined DispatchUiWindowStatusTickForClass99Windows();     // slot 0x16 0x4ff000
+  LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1);  // slot 0x14 0x4fedc0
+  virtual void SetMapTileIconVariantTriplet(undefined1* param_1);  // slot 0x15 0x4fefc0
+  virtual undefined DispatchUiWindowStatusTickForClass99Windows(); // slot 0x16 0x4ff000
   // === END GENERATED DECLS (TDisplayMgr) ===
 
   TView* activeDialog;      // +0x04

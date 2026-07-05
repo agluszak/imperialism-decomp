@@ -2,16 +2,17 @@
 
 #include "decomp_types.h"
 #include "game/mfc.h"
-#include "game/TIndexAndRankList.h"
 #include "game/TSortedPtrList.h"
 
 class CArchive;
 
-// Mac oracle: TDealList (nation interaction / proposal weight manager).
+// Mac oracle: TDealList (a small sorted-ptr-list variant). Instances are held by
+// TTradeMgr::categoryRankLists (its ctor installs this vtable, 0x66da38). This is a
+// distinct class from the TTradeMgr manager it was previously conflated with.
 // VTABLE: IMPERIALISM 0x0066da38
 class TDealList : public TSortedPtrList {
 public:
-// === BEGIN GENERATED DECLS (TDealList) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TDealList) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDealList)
   virtual ~TDealList(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x412bd0)
@@ -30,32 +31,8 @@ public:
   // slot 0x0f AppendCopiedRecordToPtrList inherited unchanged (0x4882c0)
   // slot 0x10 InsertCopiedRecordAtFrontOfPtrList inherited unchanged (0x488310)
   virtual int CompareUnsignedIntsAscending(int lhs, int rhs); // slot 0x11 0x5ba260
-// === END GENERATED DECLS (TDealList) ===
-
-  struct NationMetricCategoryRow {
-    unsigned char pad00[0x0a];
-    short proposalWeightScale0a;
-    unsigned char pad0c[0x0c];
-    short capabilityActiveFlag18;
-    unsigned char pad1a[0xa0 - 0x1a];
-  };
-
-  TDealList();
-  void InitializeNationInteractionStateManagerDefaults();
-
-  short IsCapabilityCategoryActiveSlot3C(int category);
-  short QueryProposalWeightSlot4C(int metricSlot);
-  void DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
-                                    int maxAmount, int targetNation, char emitEventFlag,
-                                    char skipLocalizationBranch);
-  short ResolveProposalCodeForCategorySlot84(int proposalCode, int category);
-
-  NationMetricCategoryRow categoryRows[0x11];
-  unsigned char padBetweenRowsAndLists[0x3f8];
-  TIndexAndRankList* categoryRankLists[0x11];
+  // === END GENERATED DECLS (TDealList) ===
 };
-
-typedef TDealList TNationInteractionStateManager;
 
 // === BEGIN GENERATED (TDealList) — refreshed by `just gen-class TDealList`; do not hand-edit ===
 // clang-format off

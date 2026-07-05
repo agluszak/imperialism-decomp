@@ -63,9 +63,12 @@ starting that kind of task.
   signatures or collection layouts.
 - **Ghidra is the ground-truth evidence source.** Read the disassembly before trusting
   a decompile or a name: `just ghidra-listing 0xADDR`, `just ghidra-vtable-dump`,
-  `just scan-cdecl-thiscall`, plus decompile via the `ghidra` skill. Prefer this over
-  objdump. The vendored project (`vendor/ghidra`) is authoritative; the tools verify the
-  installed Ghidra matches `ghidra.toml` and fail fast on a mismatch.
+  `just ghidra-xrefs [to|from|both] 0xADDR` (cross-references), `just scan-cdecl-thiscall`,
+  plus decompile via the `ghidra` skill. Prefer this over objdump. The read-only inspect
+  targets run through a persistent daemon (`just ghidra-daemon` / `-stop`) that keeps the
+  project loaded, so calls after the first are sub-second; mutating targets evict it
+  automatically. The vendored project (`vendor/ghidra`) is authoritative; the tools verify
+  the installed Ghidra matches `ghidra.toml` and fail fast on a mismatch.
 - **Ghidra naming and calling conventions are provisional** (see Hard Rule 6 and the
   MSVC500 calling-convention guardrail): treat every name and
   `__cdecl`/`__fastcall`/`__thiscall` label as a hypothesis to verify against the

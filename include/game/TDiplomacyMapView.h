@@ -28,8 +28,8 @@ ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
 class TDiplomacyMapView : public TPicture {
 public:
   DECLARE_DYNCREATE(TDiplomacyMapView)
-  virtual ~TDiplomacyMapView() override;                   // slot 0x01 scalar deleting dtor
-  void Free() override;                                    // slot 0x07 0x4f3e60
+  virtual ~TDiplomacyMapView() override; // slot 0x01 scalar deleting dtor
+  void Free() override;                  // slot 0x07 0x4f3e60
   void HandleEvent(int commandId, TEventHandler* sourceHandler,
                    TEvent* event) override; // slot 0x0f 0x4f70c0
   void ForwardParam(int param) override;    // slot 0x12 0x4f7130
@@ -62,12 +62,28 @@ public:
   void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
   void RenderDiplomacyPendingPolicyIconsAndFrames();
   void SelectCandidateTilesWithLowGroundUnitCount(); // 0x005da040
-  void OrphanLeaf_NoCall_Ins07_004d8920(); // 0x005da180
+  void OrphanLeaf_NoCall_Ins07_004d8920();           // 0x005da180
 
 private:
-  char pad_90[0x08];
+  // 0x90 — compared against a terrain-descriptor index in
+  // ResolveDiplomacyActionFromClickAndUpdateTarget (matched to `actionCode != 0xd`); reset to 0
+  // in the constructor.
+  short selectedTerrainIndexAt90;
+  char pad_92[0x02];
+  // 0x94 — a mode/state code compared to 5 (`== 5` short-circuits the click handler); reset to
+  // 0 in the constructor.
+  int interactionModeAt94;
   short frameRegionSelectorAt98;
-  char pad_9a[0x48a];
+  char pad_9a[0x02];
+  int fieldAt9c; // 0x9c — reset to 0 in the constructor; no other confirmed reader in this file.
+  char pad_a0[0x14];
+  // 0xb4 — the panel's child control, read in InvalidateAndForwardTabSwitchToChild /
+  // InvalidateAndRunChildWaitSheet.
+  TControl* childControlAtB4;
+  // 0xb8 — a state code compared to 5 (mirrors interactionModeAt94's pattern); reset to 0 by
+  // CallVoidSlotA0 (slot 0xa0) and in the constructor.
+  int stateFlagAtB8;
+  char pad_bc[0x468];
   int legendSurfaceModeAt524;
   char pad_528[0x1984];
   DiplomacyMaskBufferRun maskRuns[0x17];

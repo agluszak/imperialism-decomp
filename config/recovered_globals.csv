@@ -11,7 +11,7 @@ g_apSecondaryNationStateSlots|0x006a4280|TMinor|36||Secondary nation rows (0x6a4
 g_apTerrainTypeDescriptorTable|0x006a4310|TCountry|23||Terrain/minor descriptor table; ends at 0x6a436c (23*4) immediately before g_apNationStates @0x6a4370. Manual kTerrainTypeDescriptorTableCount=23.
 g_pInterNationEventQueueManager|0x006a43e8|TInterNationEventQueueManager|1|0xf10|Evidence: RebuildGlobalOrderManagersAndCapabilityState allocates 0xf10 and calls TIndexAndRankList::InitializeInterNationEventQueueManager before assigning.
 g_pSfxPlaybackSystem|0x006a43ec|TSoundPlayer|1|0x84|Evidence: CMainFrame::OnEndPrintPreview allocates 0x84 and assigns TSoundPlayer::ConstructTSoundPlayerBaseState.
-g_pLocalizationTable|0x006a20f8|TSimMgr|1|0x118|Evidence: InitializeGlobalRuntimeSystemsFromConfig allocates 0x118 and assigns TSimMgr::ConstructTurnFlowStateManagerVtable00662a58. Manual port names the same object TSimMgr.
+g_pSimMgr|0x006a20f8|TSimMgr|1|0x118|Evidence: InitializeGlobalRuntimeSystemsFromConfig allocates 0x118 and assigns TSimMgr::ConstructTurnFlowStateManagerVtable00662a58. Manual port names the same object TSimMgr.
 g_pUiRuntimeContext|0x006a21bc|UiRuntimeContext|1|0xfc|Evidence: InitializeGlobalRuntimeSystemsFromConfig allocates 0xfc via TViewMgr::ConstructGlobalTurnEventState and stores in g_pUiRuntimeContext.
 g_pApplicationUiRootController|0x006a18e0|TApplication|1|0x48|Evidence: CreateTApplicationInstance / TApplication::ConstructGlobalUiRootControllerState assign this to g_pApplicationUiRootController (TApplication RTTI size 0x48).
 g_pGlobalUiRootController|0x006a1344|TApplication|1|0x48|Evidence: CMainFrame::OnEndPrintPreview constructs TApplication::ConstructGlobalUiRootControllerState and assigns g_pGlobalUiRootController.

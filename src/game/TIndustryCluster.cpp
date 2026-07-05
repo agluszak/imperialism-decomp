@@ -61,7 +61,7 @@ TIndustryCluster::TIndustryCluster()
 // FUNCTION: IMPERIALISM 0x00588b70
 void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {
   short tagIndex = 0;
-  short activeNationId = g_pLocalizationTable->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
   TCity* cityState = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 

@@ -883,3 +883,269 @@ root-base vtable + `ret` (all intermediate vptr stores dead-store-eliminated), s
 7-byte "SetXxxBaseVtable" junk-named function called only from a scalar deleting
 destructor is that class's real `~T()` — claim it with a companion `// SYNTHETIC:`
 block, never model it as a vtable-reset helper.
+
+## 40. Two cheap recomp-side diffs to sweep in the near-miss (98–99%) band
+
+Both surface as a *recomp-only* line in `just compare 0xADDR` (green `+`) with no
+matching original line, and both are one-line source fixes on already-owned bodies —
+no marker/ownership churn, so skip `regen-stubs`.
+
+- **Trailing `+xor al,al` = a Ghidra `undefined` placeholder return that is really
+  `void`.** A body written `undefined Foo() { …; return 0; }` makes MSVC emit
+  `xor al,al` before the epilogue; the original returns void and emits nothing. Retype
+  the decl **and** the definition to `void` and drop `return 0;`. `undefined` is the
+  1-byte placeholder, so this is always `xor al,al` (a 4-byte `int` return would be
+  `xor eax,eax`, e.g. `0x5e5140` where the original *does* `xor eax,eax` and the fix is
+  the opposite direction — retype to `int`+`return 0`). Swept 7 of these (TDisplayMgr
+  ×3, TMacViewMgr atlas ×4) 94–98%→100% in one build. These are frequently *virtuals*
+  in a "GENERATED DECLS" header block introduced by that class (no base/override to
+  keep in lockstep) — changing the return type there is self-contained; the formatter
+  re-aligns the trailing `// slot` comments, so run `just format` after.
+- **Recomp-extra `test rX,rX; je …` = a null guard the original never had.** When the
+  original loads a pointer and immediately dereferences it (`mov eax,[ecx]; call
+  [eax+off]`) but the port wraps the call in `if (p != nullptr)`, reccmp shows the
+  `test/je` as recomp-only (and a downstream `je` displacement shifts by the extra
+  bytes). The original author knew the pointer was non-null here — delete the guard and
+  call unconditionally. (`TInvadeMission::RefreshSlot40` 0x53f7d0,
+  `TNumberText::ShallowClone` 0x4912b0, both →100%.)
+
+## 41. The pre-v9-save branch dispatches a *different* vtable slot — read the byte offset
+
+reccmp `call [eax+0xNN]` vs `call [eax+0xMM]` on an otherwise-identical body means the
+source calls the wrong virtual. Map byte-offset → named method with slot_index =
+byteOff/4 and the header's `// slot 0xIDX` comments (repo convention even names them by
+offset, e.g. `Call30` = slot byte 0x30, `RefreshSlot40` = byte 0x40). Fix is swapping
+the method name at the callsite, no signature change. (`TMission::ReadFrom` 0x5358a0
+called `RefreshSlot40()` where the original dispatches slot 0x30 `Call30()`, 98%→100%.)
+
+## 42. Extractor over-extends a class vtable to swallow adjacent one-slot vtables
+
+The generated `// slot 0xNN … 0xADDR` block appends every non-NULL pointer up to the
+next *known* vtable, so a class whose real table is followed in memory by small (often
+1-slot) `stretch<T>`/helper vtables gets those foreign slots mis-attributed as its own.
+Tell: a run of NULL slots (the real table's abstract tail) and then 1–2 more non-NULL
+"slots" whose target functions operate on a *different* `this* ` shape than the class
+(e.g. touch only `[ecx+4/8/c]` = a stretch data/capacity/count header, not the class's
+0x2a8-byte layout). Confirm by resolving the slot pointer (`just ghidra-vtable-dump
+Name 0xVTABLE --count N` → follow the ILT `JMP`) and checking whether any *global* sets
+its vfptr to that slot's byte address (that global is the real owner). Fix: move the
+`// FUNCTION:` markers off the host class onto a real concrete subclass of the helper
+template, rename the `symbols.csv` rows, and leave the helper vtables unannotated when
+their address overlaps the host's vtable DATA region (pair the methods by address
+marker, not `// VTABLE:`, to avoid the collision gate). This turned the two empty
+`TMapMaker::SetEnabled/SetState` stubs (0x52a760/0x52c0a0) — actually
+`SeaSegmentStretch/SeapointStretch::GetOrAppendUnique` (the by-value append) — from
+0–9% into 93%/91%. Corollary: a `stretch<T>` element size is read straight off the grow
+strides (double `n*0x30`/fallback `n*0x18` ⇒ 0x18 element; `n*0x20`/`n*0x10` ⇒ 0x10),
+and a by-value append copies exactly `sizeof/4` dwords (6-iter `rep movsd` = 0x18,
+4 unrolled movs = 0x10) — the copy width is independent structural evidence for the type.
+
+## 43. stretch<T> vs MFC CArray: realloc-double-or-fallback is the discriminator
+
+Both are growable arrays with a `data/capacity/count` tail, but MFC `CArray` grows by
+allocating a fresh block and *copy-constructing* elements across (new + copy + delete),
+whereas the project's `stretch<T>` family reallocs in place — request `count*2*stride`
+via `ReallocateHeapBlockWithAllocatorTracking`, and on failure realloc to the exact
+`count*stride`. If you see that realloc-double-then-exact-fallback shape (no element
+copy loop on grow), it is a `stretch<T>`, not a `CArray`; model it as a real
+`class X : public stretch<T, Tag>` overriding the single-slot append virtual, not an
+ad-hoc struct. Mac CodeWarrior evidence names the family `stretch<Seapoint>` /
+`stretch<SeaSegment>` with `Add/operator[]/OverStretch` members.
+
+## 44. All globals belong in global_data_tables — never architect around commutative-FP noise
+
+**Globals go in `global_data_tables.{h,cpp}`.** Declare every shared global (`extern` +
+forward-decl if needed) in `global_data_tables.h` and define it in `global_data_tables.cpp` —
+including plain, non-reccmp-tracked subsystem scratch tables (e.g. the overlay
+Seapoint/SeaSegment stretch tables and the hex-offset tables). Do **not** stash a global in a
+subsystem `.cpp` with `.cpp`-local `extern`s to keep a widely-included header byte-identical.
+
+That was an earlier (wrong) reaction to a phantom: adding declarations to `global_data_tables.h`
+recompiles the float-heavy TUs and the TGreatPower commutative-FADD stubs
+(0x4e0590/0x4e05d0/0x4e0610/0x4e0650/0x4e0690, `fld [tblA]; fadd [tblB]`) swap their two
+source-table operands, so reccmp reports 100%→43%. **That "regression" is meaningless.** `a+b`
+== `b+a`; the code is semantically identical and the operand order is pure compiler scheduling
+noise the source cannot steer. Ignore these flips — do not revert real structure, relocate
+globals, or otherwise contort the design to preserve the phantom 100%. Accept the delta and run
+`just stats-baseline-update`. The same applies to sub-1pp register-allocation wobbles in
+neighbouring functions when you add code to a TU: noise, not regressions.
+
+Corollary: reccmp's per-function % is a matching *aid*, not a score to defend. A drop caused by
+commutative FP operand order, register allocation, or instruction scheduling in code you did not
+change is not a regression worth a single line of work.
+
+## 45. Big matching-heavy function: use float (not double) locals to avoid an alien frame
+
+Real, source-steerable yield on the 1073-byte `BuildOverlaySpanRecordsFromQuadBorderLinks`
+(0x52cae0): a `double` local for a distance forces an 8-byte-aligned frame (`push ebp;
+and esp,-8`) the original (which used `float`) never emits — storing the metric as `float` /
+comparing straight off the FPU return removed the whole alien prologue. Match the original's FP
+width. Beyond that, a big function's score is dominated by the compiler's induction-variable
+register choice (ebx vs the original's ebp) which source can't steer — expect ~30% structural
+and treat the absolute aligned-byte gain (≈320 here) as the win, not the percentage. (A large
+standalone function may live in its own `.cpp`, following the merge-function precedent, for
+organization — but never move code between TUs to chase neighbouring register-allocation noise;
+see note 44.)
+
+## 46. Thunk-only-caller thiscall methods are frequently mis-attributed — reattribute by `[this+off]` field layout, not the curated name
+
+When a `__thiscall` method's *only* xref is an ILT thunk (`JMP 0xADDR`), Ghidra/symbols.csv
+guessed its owning class from weak evidence, so the `ClassName::` prefix is unreliable
+(Hard Rule 6 — names are provisional). Recover the real receiver from the object-field
+accesses in the body: match each `[this+off]` against candidate classes' recovered layouts.
+
+Concrete wins (this session, the civilian-order cluster all mislabeled `TCivToolbar::`):
+- `CanAssignCivilianOrderToTile` (0x4d2f60): `[this+4]` is used as a `TCivUnit*` selected
+  entry → matches `TCivMgr::selectedEntry` (0x4) exactly → real owner is **TCivMgr**
+  (TObject-derived), not the TControl-derived toolbar. The compat lookup is on a *global*
+  (`g_pDiplomacyTurnStateManager`, 0x6a43d0), not `this`, so "this calls a TControl method"
+  is NOT evidence the receiver is a TControl.
+- `CalculateDeveloperTilePurchaseCost` (0x518b40): `this->field0c` is a stride-0x24 tile
+  table base → matches `TMapMgr::terrainStateTable` (+0xc, `TTerrainStateRecordView[]`) →
+  real owner is **TMapMgr**. (Still blocked on a slot-0x13 vtable dispatch on the
+  ambiguously-typed `g_pNationInteractionStateManager` — TTradeMgr vs TDealList.)
+
+Procedure: (1) list the `[this+off]` accesses; (2) `grep` recovered class headers for a
+field at that offset with a compatible type; (3) reattribute — update the symbols.csv name,
+move the marker to the real class's `.cpp`, declare on its header. Reccmp pairs by address,
+so reattribution never risks the score; it just unlocks typed field/virtual access
+(`this->selectedEntry`, `g_apTerrainTypeDescriptorTable[c]->IsEncodedNationSlotMinus200Equal(...)`).
+The residual on these is usually pure register allocation (original caches `this`/param in
+edi/cx; the rebuild keeps them in ecx/dx) — same instructions, don't chase (Hard Rule 12).
+
+## 47. Detangling a two-class "frankenclass": split by vtable, recover layout from accessor displacement
+
+When Ghidra (or an earlier port) merges two classes into one — e.g. a manager and a small
+list class conflated because one *contains* the other — the tell is a single class carrying
+**two distinct `// VTABLE:` roles** and methods that match only 6–60% because their
+`this + off` accesses assume the wrong base. `TTradeMgr` (vtable 0x66d990, `: TObject`, size
+0xaf0) had been bolted onto `TDealList` (vtable 0x66da38, `: TSortedPtrList`, size 0x18); the
+edge was **composition** — `TTradeMgr::categoryRankLists[]` holds real `TDealList` instances
+(its InitializeDefaults `new`s them and installs 0x66da38 into each).
+
+Split procedure that keeps both halves green:
+1. **Recover the real field layout from the accessors' disassembly, not the decompile.** A
+   one-line getter `MOVSX EAX,word[ESP+4]; LEA EAX,[EAX+EAX*4]; SHL EAX,5; MOV AX,[EAX+ECX+0x18]`
+   reads *exactly*: stride `5<<5 = 0xa0`, field displacement `0x18`, array base folded in.
+   Since MSVC folds `array_base_offset + field_offset` into one displacement, place the member
+   array right after the vptr (offset 0x04) and shift the struct field offsets down by 4
+   (here 0x18 → struct 0x14, 0x0a → struct 0x06) so codegen reproduces the same displacement.
+   Cross-check against the ctor/init loop's cursor deltas (`LEA ESI,[ECX+0x0e]`, `ADD ESI,0xa0`,
+   `LEA EBP,[ECX+0xaa8]`) and the object size to pin every array offset — the layout arithmetic
+   must total the RTTI size exactly (0x04 + 0x11*0xa0 = 0xaa4, pad, ranks[0x11] at 0xaa8 → 0xaf0).
+2. **Own every primary-vtable slot on the new class** (overrides of the base slots + all
+   introduced virtuals in slot order) so the compiler lays the vtable out correctly — honest
+   `return 0;` bodies are fine, slot correctness is body-independent, and `just vtable NewClass`
+   goes 100% immediately even with unfinished bodies. Move the already-ported real methods with
+   their markers; promote the autogen stubs (verify none are called by name first).
+3. **Retype the global + repoint the alias header**; move its definition (with the `// GLOBAL:`
+   marker) into `global_data_tables.cpp` (the marker gate rejects `// GLOBAL:` anywhere else).
+4. Getter param width matters: `MOVSX word` ⇒ `short` param (not `int`) — fixing both the
+   offset and the width took the accessors 60→100% / 37→64%. Callers that now truncate an int
+   arg may dip a couple pp; accept it (correct model > local caller score, Hard Rule 12).
+Residual on the trivial ctor (just a vtable write in the original) stays low because the
+out-of-line empty `TObject::TObject()` base ctor isn't inlined under /Ob1 — systemic, not a
+detangle defect.
+
+## 48. Branch-order = fall-through: a `je far` on an equality test means the INEQUALITY body is the source `if`
+
+Ported `TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState` (0x5108d0). The listing opens
+`cmp byte[..],5 / je <far> / <inequality body...>`. Writing the natural
+`if (x == 5) { equal-body } else { unequal-body }` makes MSVC emit the EQUAL body as the
+fall-through (`jne` to the else), which misaligns the ENTIRE function against the original and
+pins reccmp near 25%. Fix: mirror the compiler's fall-through — the block that physically
+follows the conditional jump must be the source `if` body. Here the original falls through to
+`!= 5`, so write `if (x != 5) { unequal-body } else { equal-body }`. This one inversion moved
+alignment from "nothing matches" to "cases align" — a prerequisite before any register work.
+Corollary: the Ghidra decompile's `if (cond) {A} else {B}` nesting does NOT encode
+fall-through direction; read the actual `je`/`jne` target (near vs far) to decide which body is
+the `if`.
+
+Also from this port:
+- **The `int param_1` + `short sVar7 = (short)param_1` split is real, not decompiler noise.**
+  When a function is `MOVSX ebx,si` yet keeps the full dword arg live in another reg (used as
+  `lea edx,[esi-1]` for neighbor indices / helper args), model BOTH: declare the param `int`
+  and derive `short s = (short)param`. Use the raw `int` where the decompile writes `param_1`
+  (helper args, some inline reads) and the `short` where it writes `sVar7`. Collapsing to a
+  single `short` param removes the raw-dword variable the original allocated.
+- **A byte-compare-only field read is `MOV AL,byte` / `CMP AL,imm` regardless of field
+  signedness** (no MOVSX/MOVZX), so membership-test helpers hit 100% reading an `unsigned char`
+  field into a `char` local. Signedness only forces MOVSX/MOVZX when the byte feeds arithmetic
+  or a switch selector (there the source variable's declared signedness picks the extension —
+  match it).
+- **Adding ~2KB of ported code perturbs the linker's ICF/COMDAT fold groups**, so a few
+  untouched trivial twin accessors elsewhere (near-identical bodies differing only by a field
+  offset) can flip which recomp address reccmp pairs them to and drop 100→~43%. This is
+  layout noise, not a regression in the edited TU; confirm the net average-similarity delta is
+  positive and absorb it into the baseline.
+- **Don't cache a member pointer the original re-reads.** In the consumer
+  `UpdateMapTileAdjacencyMasksAndVariantForTile` (0x510210) the original re-derefs
+  `this->terrainStateTable` (`mov eax,[ebp+0xc]`) on *every* tile access. Caching it in a local
+  (`TTerrainStateRecordView* tiles = terrainStateTable;`) consumed one extra register, which
+  under MSVC500's pressure forced a `this` spill to stack (`sub esp,0x10` instead of `0xc`) and
+  shifted every subsequent `[esp+…]` offset — capping the match at 14.6%. Dropping the cache and
+  indexing `terrainStateTable[…]` directly (re-reading the member) matched the frame and jumped
+  it to 32%. General rule: mirror the original's caching decisions; a "cleaner" CSE that the
+  original didn't make can cost more than it saves. (Same function reconfirmed the note-48
+  branch-order rule: `je far` on `type==5` ⇒ source is `if (type != 5) {land} else {water}`.)
+
+## 49. A failed build makes `just stats` report a phantom regression — confirm "Built target" first
+
+When you widen a `virtual` signature you must edit the base decl, the base body, AND every
+override's decl+body in lockstep; if ONE `Edit` silently fails (e.g. the file wasn't Read
+first, so the edit errors and is skipped), the header/body disagree and `just build` fails
+with a `C2511 overloaded member function not found` — but `just stats` then runs against the
+**stale** `.exe` from before your change and shows a large "-N aligned" delta. This is a
+phantom: nothing regressed, the binary just never rebuilt. **Always confirm the build printed
+`Built target Imperialism` before trusting any stats delta.** A whole prior session mis-read
+one such phantom as an "ICF fold wall" and reverted correct work to chase it. Corollary:
+verify empirically before theorizing a linker-fold story — this build has `/OPT:ICF` **off**
+(two byte-identical `void f(){}` stubs, 0x596040 and 0x596080, both survive at distinct
+addresses at 100%/0%), so byte-identical no-op stubs do **not** fold here; a real regression
+has a real cause (usually a broken build or a genuinely wrong signature), not folding.
+
+Also from this cluster (TWorldView/TMapDialog/TOceanDialog/TCitySiteView slots 0x6b–0x80):
+- **A "poison-pill" arg-count mismatch is the class model telling you the arity is wrong.**
+  A slot's base no-op stub `ret N` gives the true arg count directly (`ret 0xc` ⇒ 3 dwords),
+  and every real override of that slot forwards the same list — so recover the signature from
+  `ret N` + the overrides, then apply it to the base and ALL overrides at once. Five base
+  stubs sat at 0–50% purely because they were declared 0-arg (emitting `ret`) against an
+  original that pops the slot's real args.
+- **A dispatcher that `CALL [EAX+byte]` after pushing args is a real virtual call on `this`** —
+  model it as `this->Method(args)` on the recovered class (Hard Rule 11/12), never a raw
+  `vftable[i]`/`reinterpret_cast`. The 8-byte slot-0x79 dispatchers (0x51adc0/0x51c2f0) hit
+  100% as `ReleaseRuntimeSelectionOwnerAndDestroyObject(arg1, arg2, 0)` once that target
+  slot's true 3-arg arity (`ret 0xc`, not the modelled 2) was recovered.
+- **The shared-ILT-thunk call is a permanent ~1-instruction miss.** reccmp attributes the
+  recomp callsite to the unscoped `thunk_X` symbol and the original to `Class::thunk_X`, so a
+  body whose only residual diff is that `call` caps just under 100% (0x51ad70 → 95.24%); the
+  sibling callsite 0x51ac40 shows the identical diff. Accept it as inherent, not a bug in the
+  body.
+
+## 50. Recover a polymorphic NULL-abstract-slot's real receiver by scanning every vtable's byte offset
+
+When a caller invokes `obj->[byte X]` with an arg count that contradicts the slot's arity in
+the class you *assumed* `obj` is (e.g. a turn-event handler pushes 3 args to byte 0x1e4, but
+TWorldView's slot 0x79 there pops 2), the real static type of `obj` is a **different TView
+subtree**. `TView` declares many high slots as NULL (`0x00000000`) abstract placeholders that
+different subclass trees fill with genuinely different-arity methods — so "byte 0x1e4" is not
+one method, and `just vtable ClassX` being 100% tells you nothing about class Y's byte 0x1e4.
+
+Recovery recipe (used to prove the turn-event 'main' view is a `TDiplomacyMapView`, not a
+`TWorldView`):
+1. Collect every `// VTABLE: IMPERIALISM 0x…` address (`grep` the headers).
+2. For each vtable V, read the pointer at `V + byteoffset` with
+   `uv run python -m tools.ghidra.daemon_client read-data 0x<V+off>` (the daemon makes 400
+   reads cheap). Keep the non-null ones. Many annotations aren't that deep — ignore small
+   non-pointer values.
+3. Fillers point at ILT thunks (`0x004xxxxx`); resolve each with `daemon_client listing`
+   (`JMP 0x…` target), then check each target's `ret N` to filter to the arity the caller
+   needs (`ret 0xc` = 3 args).
+4. Map the surviving thunk back → its vtable(s) → class header. Cross-check with domain
+   evidence: the class that also *stores* the tag constant (here `0x6d61696e` 'main' in
+   `TBattleReportView`) is the receiver family. `just func-status <target>` names the method.
+
+Then wire the caller as `static_cast<TRealClass*>(resolve(...))->Method(args)` — a
+codegen-neutral downcast plus the real virtual (0x5d7090 hit 100% this way). Different callers
+of the *same* handler family can still have different receivers: 0x5d71b0 pushes 5 args to
+byte 0x1cc, so its 'main' view is yet another class — don't assume one recovery covers the set.

@@ -259,138 +259,10 @@ undefined4 AssignSharedStringToTaggedControlAndProcessState(void)
   return 0;
 }
 
-// ghidra_name BuildMapContextStatusStringVariantA
-// ghidra_proto undefined BuildMapContextStatusStringVariantA()
-// FUNCTION: IMPERIALISM 0x005c4c60
-undefined4 BuildMapContextStatusStringVariantA(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantB
-// ghidra_proto undefined BuildMapContextStatusStringVariantB()
-// FUNCTION: IMPERIALISM 0x005c57f0
-undefined4 BuildMapContextStatusStringVariantB(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantC
-// ghidra_proto undefined BuildMapContextStatusStringVariantC()
-// FUNCTION: IMPERIALISM 0x005c61a0
-undefined4 BuildMapContextStatusStringVariantC(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantD
-// ghidra_proto undefined BuildMapContextStatusStringVariantD()
-// FUNCTION: IMPERIALISM 0x005c6c40
-undefined4 BuildMapContextStatusStringVariantD(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantE
-// ghidra_proto undefined BuildMapContextStatusStringVariantE()
-// FUNCTION: IMPERIALISM 0x005c77f0
-undefined4 BuildMapContextStatusStringVariantE(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantF
-// ghidra_proto undefined BuildMapContextStatusStringVariantF()
-// FUNCTION: IMPERIALISM 0x005c81f0
-undefined4 BuildMapContextStatusStringVariantF(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantG
-// ghidra_proto undefined BuildMapContextStatusStringVariantG()
-// FUNCTION: IMPERIALISM 0x005c8ae0
-undefined4 BuildMapContextStatusStringVariantG(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantH
-// ghidra_proto undefined BuildMapContextStatusStringVariantH()
-// FUNCTION: IMPERIALISM 0x005c9b20
-undefined4 BuildMapContextStatusStringVariantH(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantI
-// ghidra_proto undefined BuildMapContextStatusStringVariantI()
-// FUNCTION: IMPERIALISM 0x005ca860
-undefined4 BuildMapContextStatusStringVariantI(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantJ
-// ghidra_proto undefined BuildMapContextStatusStringVariantJ()
-// FUNCTION: IMPERIALISM 0x005cb100
-undefined4 BuildMapContextStatusStringVariantJ(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantK
-// ghidra_proto undefined BuildMapContextStatusStringVariantK()
-// FUNCTION: IMPERIALISM 0x005cb960
-undefined4 BuildMapContextStatusStringVariantK(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringVariantL
-// ghidra_proto undefined BuildMapContextStatusStringVariantL()
-// FUNCTION: IMPERIALISM 0x005cc590
-undefined4 BuildMapContextStatusStringVariantL(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantE_005ccce0
-// ghidra_proto undefined GenerateMappedFlavorTextVariantE_005ccce0()
-// FUNCTION: IMPERIALISM 0x005ccce0
-undefined4 GenerateMappedFlavorTextVariantE_005ccce0(void)
-{
-  return 0;
-}
-
 // ghidra_name GenerateMappedFlavorTextVariantEToSharedString
 // ghidra_proto undefined GenerateMappedFlavorTextVariantEToSharedString()
 // FUNCTION: IMPERIALISM 0x005ce110
 undefined4 GenerateMappedFlavorTextVariantEToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildRandomMapContextStatusBaseString
-// ghidra_proto undefined BuildRandomMapContextStatusBaseString()
-// FUNCTION: IMPERIALISM 0x005ce1b0
-undefined4 BuildRandomMapContextStatusBaseString(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignRandomMapContextStatusBaseString
-// ghidra_proto undefined AssignRandomMapContextStatusBaseString()
-// FUNCTION: IMPERIALISM 0x005cef20
-undefined4 AssignRandomMapContextStatusBaseString(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendRandomMapContextStatusSuffixWithProbability
-// ghidra_proto undefined AppendRandomMapContextStatusSuffixWithProbability()
-// FUNCTION: IMPERIALISM 0x005cefc0
-undefined4 AppendRandomMapContextStatusSuffixWithProbability(void)
 {
   return 0;
 }
@@ -403,26 +275,10 @@ undefined4 BuildMapContextStatusStringWithRandomSuffix(void)
   return 0;
 }
 
-// ghidra_name GenerateMappedFlavorTextVariantC_005cf1b0
-// ghidra_proto undefined GenerateMappedFlavorTextVariantC_005cf1b0()
-// FUNCTION: IMPERIALISM 0x005cf1b0
-undefined4 GenerateMappedFlavorTextVariantC_005cf1b0(void)
-{
-  return 0;
-}
-
 // ghidra_name GenerateMappedFlavorTextVariantCToSharedString
 // ghidra_proto undefined GenerateMappedFlavorTextVariantCToSharedString()
 // FUNCTION: IMPERIALISM 0x005cfba0
 undefined4 GenerateMappedFlavorTextVariantCToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantB_005cfc40
-// ghidra_proto undefined GenerateMappedFlavorTextVariantB_005cfc40()
-// FUNCTION: IMPERIALISM 0x005cfc40
-undefined4 GenerateMappedFlavorTextVariantB_005cfc40(void)
 {
   return 0;
 }
@@ -435,26 +291,10 @@ undefined4 GenerateMappedFlavorTextVariantBToSharedString(void)
   return 0;
 }
 
-// ghidra_name GenerateMappedFlavorTextVariantA_005d13d0
-// ghidra_proto undefined GenerateMappedFlavorTextVariantA_005d13d0()
-// FUNCTION: IMPERIALISM 0x005d13d0
-undefined4 GenerateMappedFlavorTextVariantA_005d13d0(void)
-{
-  return 0;
-}
-
 // ghidra_name GenerateMappedFlavorTextVariantAToSharedString
 // ghidra_proto undefined GenerateMappedFlavorTextVariantAToSharedString()
 // FUNCTION: IMPERIALISM 0x005d3300
 undefined4 GenerateMappedFlavorTextVariantAToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantD_005d33a0
-// ghidra_proto undefined GenerateMappedFlavorTextVariantD_005d33a0()
-// FUNCTION: IMPERIALISM 0x005d33a0
-undefined4 GenerateMappedFlavorTextVariantD_005d33a0(void)
 {
   return 0;
 }
@@ -467,26 +307,10 @@ undefined4 GenerateMappedFlavorTextVariantDToSharedString(void)
   return 0;
 }
 
-// ghidra_name ShouldRetryMappedFlavorTextGeneration
-// ghidra_proto undefined ShouldRetryMappedFlavorTextGeneration()
-// FUNCTION: IMPERIALISM 0x005d4240
-undefined4 ShouldRetryMappedFlavorTextGeneration(void)
-{
-  return 0;
-}
-
 // ghidra_name SetSharedStringFromRotatingFlavorTextBySlot
 // ghidra_proto undefined SetSharedStringFromRotatingFlavorTextBySlot()
 // FUNCTION: IMPERIALISM 0x005d4550
 undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextByCurrentContextNation
-// ghidra_proto undefined GenerateMappedFlavorTextByCurrentContextNation()
-// FUNCTION: IMPERIALISM 0x005d46e0
-undefined4 GenerateMappedFlavorTextByCurrentContextNation(void)
 {
   return 0;
 }
@@ -603,22 +427,6 @@ undefined4 HandleTurnEventDialogFactorySlot80(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection
-// ghidra_proto undefined DispatchTurnEvent7D8AndUpdateMainViewSelection()
-// FUNCTION: IMPERIALISM 0x005d7090
-undefined4 DispatchTurnEvent7D8AndUpdateMainViewSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle
-// ghidra_proto undefined DispatchTurnEvent7D8IfTurnFlowIdle()
-// FUNCTION: IMPERIALISM 0x005d7100
-undefined4 DispatchTurnEvent7D8IfTurnFlowIdle(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::InvokeMainWidgetMethod1CCWithArgs
 // ghidra_proto undefined InvokeMainWidgetMethod1CCWithArgs()
 // FUNCTION: IMPERIALISM 0x005d71b0
@@ -687,14 +495,6 @@ undefined4 HandleTurnStateExitAndPostFollowupEventCode(void)
 // ghidra_proto undefined HandleTurnEventDialogFactorySlotF8()
 // FUNCTION: IMPERIALISM 0x005db780
 undefined4 HandleTurnEventDialogFactorySlotF8(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::HandleTurnEvent5DE_RefreshMainView
-// ghidra_proto undefined HandleTurnEvent5DE_RefreshMainView()
-// FUNCTION: IMPERIALISM 0x005dbd30
-undefined4 HandleTurnEvent5DE_RefreshMainView(void)
 {
   return 0;
 }
@@ -807,14 +607,6 @@ undefined4 RunMapOrderPageSelectionDialogAndApplyResult(void)
 // ghidra_proto undefined HandleTurnEventDialogFactorySlotE8()
 // FUNCTION: IMPERIALISM 0x005dd770
 undefined4 HandleTurnEventDialogFactorySlotE8(void)
-{
-  return 0;
-}
-
-// ghidra_name TLineData::HandleTurnEventDialogFactorySlotEC
-// ghidra_proto undefined HandleTurnEventDialogFactorySlotEC()
-// FUNCTION: IMPERIALISM 0x005dd900
-undefined4 HandleTurnEventDialogFactorySlotEC(void)
 {
   return 0;
 }
@@ -1047,14 +839,6 @@ undefined4 ReturnTrueStub(void)
 // ghidra_proto undefined BuildScenarioPathForModeAndIndex()
 // FUNCTION: IMPERIALISM 0x005dfd70
 undefined4 BuildScenarioPathForModeAndIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignScoresDatPathToSharedString
-// ghidra_proto undefined AssignScoresDatPathToSharedString()
-// FUNCTION: IMPERIALISM 0x005dfea0
-undefined4 AssignScoresDatPathToSharedString(void)
 {
   return 0;
 }

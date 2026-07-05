@@ -69,7 +69,7 @@ void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
 
 // FUNCTION: IMPERIALISM 0x004badd0
 void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
-  TGreatPower* nationState = g_apNationStates[g_pLocalizationTable->GetActiveNationId()];
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
   void* subObject = 0;
   if (nationState != 0) {
     subObject = *reinterpret_cast<void**>(reinterpret_cast<char*>(nationState) + 0x894);

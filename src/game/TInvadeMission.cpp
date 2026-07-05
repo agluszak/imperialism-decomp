@@ -7,23 +7,6 @@
 
 IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
 
-// SYNTHETIC: IMPERIALISM 0x0053f260
-// TInvadeMission::GetRuntimeClass
-// SYNTHETIC: IMPERIALISM 0x0053f3c0
-// TInvadeMission::`scalar deleting destructor'
-
-// Not-yet-recovered free functions/subsystems this file calls into.
-extern undefined4 GetTileNormalizedMovementClassId(void);
-extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
-extern undefined4 InitializeLinkedListCursorFromOwnerHead(void);
-extern undefined4 LinkedListCursorHasCurrent(void);
-extern undefined4 AdvanceLinkedListCursor(void);
-
-TInvadeMission::TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
-
-TInvadeMission::TInvadeMission(short targetProvince, short amassingProvince)
-    : TAttackProvinceMission(targetProvince, amassingProvince), beachhead34(nullptr) {}
-
 // FUNCTION: IMPERIALISM 0x0053f120
 int TInvadeMission::ReturnZeroSlot5C() {
   return reinterpret_cast<int>(beachhead34);
@@ -70,6 +53,28 @@ float TInvadeMission::ReturnZeroFloatSlot6C() {
 char TInvadeMission::ReturnFalseSlot64() {
   return 0;
 }
+
+// SYNTHETIC: IMPERIALISM 0x0053f260
+// TInvadeMission::GetRuntimeClass
+
+// FUNCTION: IMPERIALISM 0x0053f2d0
+TInvadeMission::TInvadeMission(short targetProvince, TZone* beachheadZone)
+    : TAttackProvinceMission(targetProvince, -1), beachhead34(nullptr) {
+  if (beachheadZone != nullptr) {
+    beachhead34 = new TBeachheadMission(beachheadZone, this);
+  }
+}
+// SYNTHETIC: IMPERIALISM 0x0053f3c0
+// TInvadeMission::`scalar deleting destructor'
+
+// Not-yet-recovered free functions/subsystems this file calls into.
+extern undefined4 GetTileNormalizedMovementClassId(void);
+extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
+extern undefined4 InitializeLinkedListCursorFromOwnerHead(void);
+extern undefined4 LinkedListCursorHasCurrent(void);
+extern undefined4 AdvanceLinkedListCursor(void);
+
+TInvadeMission::TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
 
 // FUNCTION: IMPERIALISM 0x0053f410
 void TInvadeMission::Free() {
@@ -152,9 +157,7 @@ void TInvadeMission::MissionSlot44() {
 
 // FUNCTION: IMPERIALISM 0x0053f7d0
 void TInvadeMission::RefreshSlot40() {
-  if (beachhead34 != nullptr) {
-    beachhead34->RefreshSlot40();
-  }
+  beachhead34->RefreshSlot40();
   SetStateByte8To2();
   ResetValue0CToZero();
   NoOpSlot3C();
