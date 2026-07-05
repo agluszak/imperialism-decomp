@@ -12,7 +12,6 @@
 #include "game/TSimMgr.h"
 #include "game/TSortedList.h"
 #include "game/TSoundPlayer.h"
-#include "game/TToolBarCluster.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable, g_pSfxPlaybackSystem, g_apNationStates, g_pUiRuntimeContext
 #include "game/mapped_flavor_text.h" // scanBracketExpressions
@@ -829,14 +828,7 @@ undefined TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short m
   switch (cursorState) {
   case 2:
     if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-      // SetMapInteractionMode's curated class attribution is TToolBarCluster (see
-      // TToolBarCluster.h), but this callsite's own disassembly proves the object it's
-      // invoked on here is g_pUiRuntimeContext->mapUberPictureF0 (a TMapUberPicture*) --
-      // matching the identical class-attribution caveat TWorldView.cpp already documents
-      // for this same method. Kept as a cast rather than reattributing the method, to
-      // avoid corrupting the existing (separately curated) TToolBarCluster model.
-      reinterpret_cast<TToolBarCluster*>(g_pUiRuntimeContext->mapUberPictureF0)
-          ->SetMapInteractionMode(1);
+      g_pUiRuntimeContext->mapUberPictureF0->SetMapInteractionMode(1);
       this->SetActiveProvinceSelection(cityRecordIndex);
       handled = true;
     }

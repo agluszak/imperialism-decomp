@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class astruct_20;
+class TTaskForce;
 
 // TODO(manifest): describe TMapUberPicture and its role. Base edge (TMapUberUberPicture) recovered from RTTI CRuntimeClass chain: TMapUberPicture -> TMapUberUberPicture -> TOffLimitsPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00668f08
@@ -132,8 +133,11 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins09_00598950();          // slot 0x75 0x598950
   virtual void InvalidateTileMarkerChain(short tileIndex);       // slot 0x76 0x598870
   virtual undefined OrphanCallChain_C2_I18_005988c0();           // slot 0x77 0x5988c0
-  virtual undefined OrphanCallChain_C2_I14_00598990();           // slot 0x78 0x598990
-  virtual undefined OrphanCallChain_C2_I16_005989d0();           // slot 0x79 0x5989d0
+  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
+  // mismatch. Forwards param to subviewAc's InvalidateTileMarkerChain, then refreshes
+  // field_0xc0 if present.
+  virtual undefined OrphanCallChain_C2_I14_00598990(short param); // slot 0x78 0x598990
+  virtual undefined OrphanCallChain_C2_I16_005989d0();            // slot 0x79 0x5989d0
   // Forwards entryIndex to the +0xac subview's byte-0x1f0 virtual (verified 1-arg
   // thiscall, RET 4; the previous declaration had dropped the argument).
   virtual undefined OrphanCallChain_C1_I06_00598a20(short entryIndex);     // slot 0x7a 0x598a20
@@ -147,23 +151,57 @@ public:
 
   // Own slice (TMapUberUberPicture ends at 0x94; this object is 0xc4). Layout/roles from
   // ConstructTMapUberPictureBaseState (0x5969e0) and NoOpUiLifecycleHook (0x596a80).
-  unsigned char field_0x94; // set to 1 by the ctor; role not yet identified
+  // Set to 1 by the ctor; read by SetActiveMapOrderEntry to gate
+  // InvalidateMapRegionForOrderEntry calls around orderEntryContext98 updates (matches
+  // TWorldView.cpp's independently-derived TMapOrderToolbarPendingState::invalidationFlag).
+  unsigned char invalidationFlag94;
   // 0=civilian, 1=army, 2=navy, 3=none (default) -- selects categoryPages[] below.
   short activeUnitCategoryIndex96;
-  int field_0x98;
+  // The currently-selected map order-entry object (SetActiveMapOrderEntry/
+  // RefreshMapOrderEntryPanel).
+  TTaskForce* orderEntryContext98;
   int field_0x9c;
   int field_0xa0;
-  // 0xa4..0xaf: 'GOOD'/'GOLD'-tag sub-control pointers resolved by NoOpUiLifecycleHook;
-  // that method isn't ported yet, so these stay raw/unnamed.
-  unsigned char pad_0xa4[0xc];
+  // 'GOOD'/'GOLD'-tag sub-control resolved by NoOpUiLifecycleHook (not yet ported);
+  // SetActiveMapOrderEntry calls InvalidateMapRegionForOrderEntry on it. Concrete class
+  // not recovered.
+  void* goodGoldTagControlA4;
+  unsigned char pad_0xa8[4];
+  // Subview forwarded entryIndex/commandCode by OrphanCallChain_C1_I06_00598a20 and
+  // OrphanCallChain_C2_I14_00598990 via slot 0x76 (InvalidateTileMarkerChain) -- same
+  // TMapUberPicture-family vtable prefix evidence as categoryPages[] below.
+  TMapUberPicture* subviewAc;
   // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
-  // NoOpUiLifecycleHook via ResolveControlByTag. The receiver class for their own
-  // slot-0x74 dispatch isn't recovered yet, so this stays untyped (Hard Rule 12) rather
-  // than fake a cast to TMapUberUberPicture*.
-  void* categoryPages[4];
-  int field_0xc0;
+  // NoOpUiLifecycleHook via ResolveControlByTag. Typed TMapUberPicture* per
+  // SetMapInteractionMode's own disassembly (its categoryPages[oldMode/newMode] entries
+  // are dispatched through slot 0x74/CaptureLayoutF0, both real TMapUberPicture-family
+  // slots) -- these are further TMapUberPicture instances, not a distinct class.
+  TMapUberPicture* categoryPages[4];
+  // Generic TView*: only ever dispatched through the inherited slot 0x39
+  // (TView::RefreshControl), so its concrete subtype isn't identified beyond that.
+  TView* field_0xc0;
 
   TMapUberPicture();
+
+  // Sets the active map-interaction mode (0=civilian, 1=army, 2=navy, 3=none), clearing
+  // the previous mode's selection state (TCivMgr/TArmyMgr singleton), refreshing the
+  // mode-caption text, and dispatching CaptureLayoutF0 on the old/new categoryPages[]
+  // entries. 0x00596cb0, __thiscall, 1 arg. Curated in symbols.csv as
+  // `TToolBarCluster::SetMapInteractionMode`, but this callsite's own disassembly reads
+  // activeUnitCategoryIndex96/categoryPages[] at their real TMapUberPicture offsets --
+  // moved here rather than left mis-attributed (see also TWorldView.cpp's own
+  // independent caveat about the same object).
+  void SetMapInteractionMode(short nMode);
+  // Refreshes the 4 order-quota slider controls ("0slc".."3slc") from
+  // orderEntryContext98, or clears them if it's null. 0x00597810, __thiscall, 1 arg.
+  void RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry);
+  // Sets orderEntryContext98 (invalidating the old/new map regions around the write),
+  // then calls RefreshMapOrderEntryPanel. 0x00597950, __thiscall, 1 arg.
+  void SetActiveMapOrderEntry(TTaskForce* pMapOrderEntry);
+  // Enters/exits the mode-specific overlay UI state (called from SetMapInteractionMode
+  // when switching to civilian mode). 0x00599a50, 252 bytes. TODO stub body (not yet
+  // ported).
+  void EnterMapInteractionOverlayMode(int param1);
 };
 
 // === BEGIN GENERATED (TMapUberPicture) — refreshed by `just gen-class TMapUberPicture`; do not hand-edit ===

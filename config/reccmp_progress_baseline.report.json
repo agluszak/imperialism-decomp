@@ -12187,7 +12187,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12625,7 +12625,7 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12643,7 +12643,7 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12679,7 +12679,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -23223,7 +23223,7 @@
     },
     {
       "address": "0x564600",
-      "matching": 0.0,
+      "matching": 0.043478260869565216,
       "name": "EnsureSelectedTaskForceForOrderOwnerAndRefresh",
       "type": 1
     },
@@ -28062,7 +28062,7 @@
     },
     {
       "address": "0x595c70",
-      "matching": 0.2361111111111111,
+      "matching": 0.24537037037037038,
       "name": "TWorldView::RenderMapContextOverlayWithScopedClipAndSurface",
       "type": 1
     },
@@ -28122,7 +28122,7 @@
     },
     {
       "address": "0x5962a0",
-      "matching": 0.41830065359477125,
+      "matching": 0.3968253968253968,
       "name": "TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79",
       "type": 1
     },
@@ -28212,7 +28212,7 @@
     },
     {
       "address": "0x5969e0",
-      "matching": 0.6428571428571429,
+      "matching": 0.6896551724137931,
       "name": "TMapUberPicture::ConstructTMapUberPictureBaseState",
       "type": 1
     },
@@ -28236,7 +28236,7 @@
     },
     {
       "address": "0x596cb0",
-      "matching": 0.010526315789473684,
+      "matching": 0.16101694915254236,
       "name": "TToolBarCluster::SetMapInteractionMode",
       "type": 1
     },
@@ -28284,13 +28284,13 @@
     },
     {
       "address": "0x597810",
-      "matching": 0.02127659574468085,
+      "matching": 0.3401360544217687,
       "name": "TToolBarCluster::RefreshMapOrderEntryPanel",
       "type": 1
     },
     {
       "address": "0x597950",
-      "matching": 0.05263157894736842,
+      "matching": 0.5517241379310345,
       "name": "TToolBarCluster::SetActiveMapOrderEntry",
       "type": 1
     },
@@ -28350,7 +28350,7 @@
     },
     {
       "address": "0x598990",
-      "matching": 0.0,
+      "matching": 0.8275862068965517,
       "name": "TMapUberPicture::OrphanCallChain_C2_I14_00598990",
       "type": 1
     },
@@ -28362,7 +28362,7 @@
     },
     {
       "address": "0x598a20",
-      "matching": 0.25,
+      "matching": 0.5,
       "name": "TMapUberPicture::OrphanCallChain_C1_I06_00598a20",
       "type": 1
     },
@@ -28416,7 +28416,7 @@
     },
     {
       "address": "0x599a50",
-      "matching": 0.0,
+      "matching": 0.028985507246376812,
       "name": "TacticalBattleView::EnterMapInteractionOverlayMode",
       "type": 1
     },

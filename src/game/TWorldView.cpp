@@ -7,15 +7,14 @@
 #include "game/mfc.h"
 #include "game/QuickDrawSurfaceGuard.h"
 #include "game/TGlobalMapState.h"
-#include "game/TToolBarCluster.h"
+#include "game/TMapUberPicture.h"
+#include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 
 #include <new>
 
 undefined4 thunk_GetMapActionContextByTileIndex(void);
-undefined4 thunk_InvalidateMapRegionForOrderEntry(void);
-undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void);
 int IntersectRectWrapper(RECT* src1, RECT* src2, RECT* dst);
 undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void);
 undefined4 ReplaceClipStateRegionHandleFromRect(void);
@@ -28,26 +27,6 @@ namespace {
 
 #define kAddrTEventClassVtable 0x00649770
 #define kAddrActiveMapTileIndexStorage 0x006a45ec
-
-// Typed view over this+0x94/this+0x98 (and, via RenderMapContextOverlayWithScoped-
-// ClipAndSurface below, this+0x96) of the map-interaction toolbar object reached via
-// TWorldView::ownerContext. NOT a TToolBarCluster member (see the caveat in
-// TToolBarCluster.h): TToolBarCluster's verified real size is 0x88 bytes (confirmed via
-// TToolBarCluster::CreateObject's allocator call and RTTI), but SetMapInteractionMode/
-// RefreshMapOrderEntryPanel/SetActiveMapOrderEntry (bd 1uj.50) touch fields up to
-// this+0xbc on the same receiver -- strong evidence the real receiver is a
-// further-derived, RTTI-invisible subclass not yet recovered. This view only covers the
-// fields this file itself reads/writes (this+0x88..0x93 stays unaccounted for); it's a
-// Hard-Rule-8 "typed view struct" stand-in until that subclass is recovered, not a claim
-// that these offsets belong to TToolBarCluster proper.
-struct TMapOrderToolbarPendingState {
-  char unknown88[0xc];            // 0x88-0x93, unmodeled
-  unsigned char invalidationFlag; // 0x94
-  char pad95;                     // 0x95, unmodeled
-  short interactionMode;          // 0x96 (matches TIconBar's own this+0x96 mode field
-                                  // convention; SetMapInteractionMode reads/writes it)
-  void* orderContext;             // 0x98
-};
 
 struct TOverlayDispatchEventBlock {
   void* vtable;
@@ -138,10 +117,8 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   QuickDrawSurfaceGuard reusableSurfaceA;
   QuickDrawSurfaceGuard reusableSurfaceB;
 
-  void* childMapView = ownerContext;
-  TMapOrderToolbarPendingState* pendingState =
-      reinterpret_cast<TMapOrderToolbarPendingState*>(childMapView);
-  short interactionMode = pendingState->interactionMode;
+  TMapUberPicture* mapUberPicture = static_cast<TMapUberPicture*>(ownerContext);
+  short interactionMode = mapUberPicture->activeUnitCategoryIndex96;
   int previewTileIndex = -1;
   short previewBand = -1;
 
@@ -159,8 +136,8 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
     }
   } else if (interactionMode == 2) {
     int attachedEntity = 0;
-    if (pendingState->interactionMode == 2) {
-      attachedEntity = reinterpret_cast<int>(pendingState->orderContext);
+    if (mapUberPicture->activeUnitCategoryIndex96 == 2) {
+      attachedEntity = reinterpret_cast<int>(mapUberPicture->orderEntryContext98);
     }
     if (attachedEntity != 0) {
       previewBand = -1;
@@ -197,9 +174,9 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
     long right;
     long bottom;
   } clipRect;
-  int childVtable = *reinterpret_cast<int*>(childMapView);
+  int childVtable = *reinterpret_cast<int*>(mapUberPicture);
   typedef void(__fastcall * ChildSlot128Fn)(void* self, int unusedEdx, long* bottomOut);
-  reinterpret_cast<ChildSlot128Fn>(*reinterpret_cast<int*>(childVtable + 0x128))(childMapView, 0,
+  reinterpret_cast<ChildSlot128Fn>(*reinterpret_cast<int*>(childVtable + 0x128))(mapUberPicture, 0,
                                                                                  &clipRect.bottom);
 
   char intersectScratch[16];
@@ -234,7 +211,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       typedef void(__fastcall * ChildSlot1acFn)(void* self, int unusedEdx, int tile, void* rectArgs,
                                                 int flag);
       reinterpret_cast<ChildSlot1acFn>(*reinterpret_cast<int*>(childVtable + 0x1ac))(
-          childMapView, 0, previewTileIndex, previewArgs, 1);
+          mapUberPicture, 0, previewTileIndex, previewArgs, 1);
     } else if (interactionMode == 2) {
       int previewArgs[4];
       previewArgs[0] = outExtra;
@@ -244,7 +221,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       typedef void(__fastcall * ChildSlot1b0Fn)(void* self, int unusedEdx, int tile, void* rectArgs,
                                                 int flag);
       reinterpret_cast<ChildSlot1b0Fn>(*reinterpret_cast<int*>(childVtable + 0x1b0))(
-          childMapView, 0, previewTileIndex, previewArgs, 1);
+          mapUberPicture, 0, previewTileIndex, previewArgs, 1);
     }
   }
 
@@ -369,33 +346,12 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, i
   short tileIndex = static_cast<short>(arg1);
   char* terrainTable = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
   if (terrainTable[tileIndex * 0x24] == '\x05') {
-    void* orderContext =
-        reinterpret_cast<void*(__cdecl*)(short)>(thunk_GetMapActionContextByTileIndex)(tileIndex);
-    // ownerContext is the owning toolbar cluster; SetMapInteractionMode/
-    // RefreshMapOrderEntryPanel are real TToolBarCluster methods (see the class-layout
-    // caveat on those declarations in TToolBarCluster.h). pendingState is a typed view
-    // over the same object's this+0x94/this+0x98 (see TMapOrderToolbarPendingState above)
-    // -- not TToolBarCluster members, since those offsets exceed its verified real size.
-    TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ownerContext);
-    TMapOrderToolbarPendingState* pendingState =
-        reinterpret_cast<TMapOrderToolbarPendingState*>(ownerContext);
-    toolbar->SetMapInteractionMode(2);
-    if (pendingState->invalidationFlag == 0) {
-      reinterpret_cast<void(__cdecl*)(int)>(thunk_InvalidateMapRegionForOrderEntry)(
-          reinterpret_cast<int>(pendingState->orderContext));
-    }
-    pendingState->orderContext = orderContext;
-    if (pendingState->invalidationFlag == 0) {
-      reinterpret_cast<void(__cdecl*)(int)>(thunk_InvalidateMapRegionForOrderEntry)(
-          reinterpret_cast<int>(orderContext));
-    }
-    if (orderContext == 0) {
-      orderContext = 0;
-    } else {
-      orderContext = reinterpret_cast<void*>(reinterpret_cast<int(__cdecl*)()>(
-          thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh)());
-    }
-    toolbar->RefreshMapOrderEntryPanel(orderContext);
+    TTaskForce* orderContext = static_cast<TTaskForce*>(
+        reinterpret_cast<void*(__cdecl*)(short)>(thunk_GetMapActionContextByTileIndex)(tileIndex));
+    // ownerContext is really a TMapUberPicture* (see the class-attribution note on
+    // TMapUberPicture::SetMapInteractionMode); SetActiveMapOrderEntry already reproduces
+    // this exact invalidate-old/set/invalidate-new/refresh sequence.
+    static_cast<TMapUberPicture*>(ownerContext)->SetActiveMapOrderEntry(orderContext);
   }
 
   *reinterpret_cast<int*>(kAddrActiveMapTileIndexStorage + 0x28) = tileIndex;

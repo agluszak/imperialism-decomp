@@ -979,14 +979,6 @@ undefined4 NotifyTaskForceSelectionListenerByWord62(void)
   return 0;
 }
 
-// ghidra_name TacticalBattleView::EnterMapInteractionOverlayMode
-// ghidra_proto undefined EnterMapInteractionOverlayMode()
-// FUNCTION: IMPERIALISM 0x00599a50
-undefined4 EnterMapInteractionOverlayMode(void)
-{
-  return 0;
-}
-
 // ghidra_name CommitPendingUiModeChangeAndRefreshViews
 // ghidra_proto undefined CommitPendingUiModeChangeAndRefreshViews()
 // FUNCTION: IMPERIALISM 0x00599b90

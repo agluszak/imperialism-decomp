@@ -132,30 +132,15 @@ public:
   // === END GENERATED DECLS (TToolBarCluster) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TToolBarCluster 0xCTOR`).
   //
-  // Do NOT add data members here for the this+0x94/this+0x96/this+0xb0.. fields touched
-  // by SetMapInteractionMode/RefreshMapOrderEntryPanel/SetActiveMapOrderEntry below:
-  // measured (bd 1uj.50), adding them widens sizeof(TToolBarCluster) past the verified
-  // real 0x88 bytes (CreateObject @ 0x584d80 allocates exactly size 0x88; RTTI agrees)
-  // and regresses TToolBarCluster::CreateObject's match (`push 0x88` -> `push 0x9c`).
-  // That's hard evidence these fields belong to a further-derived, RTTI-invisible
-  // subclass (no DECLARE_DYNCREATE sibling of TToolBarCluster exists), not to this
-  // class. Until that subclass is recovered, access them via a scoped typed-view struct
-  // at the callsite (see TWorldView.cpp) per Hard Rule 8's "typed view struct" option,
-  // not as members here and not as raw ad-hoc reinterpret_cast arithmetic.
-
-  // Non-virtual own methods (map-interaction/order-entry cluster; bd 1uj.50).
-  // CAUTION: the disassembly of SetMapInteractionMode/RefreshMapOrderEntryPanel/
-  // SetActiveMapOrderEntry reads/writes `this+0x96` (short) and a 3-element pointer
-  // array at `this+0xb0..0xbc`, which exceed TToolBarCluster's verified object size
-  // (0x88, confirmed via CreateObject's allocator call (size 0x88) at 0x584d80 and RTTI).
-  // The real receiver is very likely a further-derived, RTTI-invisible class (no
-  // DECLARE_DYNCREATE sibling found for TToolBarCluster), not modeled here yet. These
-  // three methods keep the curated symbols.csv class attribution and a real thiscall
-  // signature/callsite, but their bodies are intentionally left as TODO stubs rather
-  // than guessing fields on the wrong-sized class. See bd notes for follow-up.
-  void SetMapInteractionMode(short nMode);
-  void RefreshMapOrderEntryPanel(void* pMapOrderEntry);
-  void SetActiveMapOrderEntry(void* pMapOrderEntry);
+  // SetMapInteractionMode/RefreshMapOrderEntryPanel/SetActiveMapOrderEntry (previously
+  // declared here per symbols.csv's curated class attribution) moved to TMapUberPicture:
+  // their own disassembly reads/writes this+0x94/0x96/0x98/0xb0..0xbf at exactly
+  // TMapUberPicture's real field offsets (invalidationFlag94/activeUnitCategoryIndex96/
+  // orderEntryContext98/categoryPages[4]), and dispatches through TMapUberPicture's own
+  // vtable slots (0x58 OwnerPanel, 0x74/CaptureLayoutF0 on categoryPages[] entries) --
+  // not a further-derived, RTTI-invisible TToolBarCluster subclass as previously
+  // theorized. TWorldView.cpp's ownerContext (also retyped to TMapUberPicture*) reaches
+  // the same object independently, corroborating this.
 
   TToolBarCluster();
 };
