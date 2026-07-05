@@ -7296,7 +7296,7 @@
     },
     {
       "address": "0x4a1810",
-      "matching": 0.34285714285714286,
+      "matching": 0.4,
       "name": "TArmyMgr::CreateObject",
       "type": 1
     },
@@ -7344,7 +7344,7 @@
     },
     {
       "address": "0x4a1e40",
-      "matching": 0.07142857142857142,
+      "matching": 0.7843137254901961,
       "name": "TArmyMgr::OrphanCallChain_C4_I26_004a1e40",
       "type": 1
     },
@@ -7368,7 +7368,7 @@
     },
     {
       "address": "0x4a2500",
-      "matching": 0.030303030303030304,
+      "matching": 0.732824427480916,
       "name": "TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F",
       "type": 1
     },
@@ -7440,7 +7440,7 @@
     },
     {
       "address": "0x4a3d90",
-      "matching": 0.0,
+      "matching": 0.5849056603773585,
       "name": "TArmyMgr::OrphanCallChain_C3_I52_004a3d90",
       "type": 1
     },
@@ -7464,7 +7464,7 @@
     },
     {
       "address": "0x4a4260",
-      "matching": 0.05555555555555555,
+      "matching": 0.8529411764705882,
       "name": "TArmyMgr::OrphanCallChain_C1_I34_004a4260",
       "type": 1
     },
@@ -12643,13 +12643,13 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12679,7 +12679,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16118,7 +16118,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.19900045433893684,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16784,7 +16784,7 @@
     },
     {
       "address": "0x515db0",
-      "matching": 0.26666666666666666,
+      "matching": 0.5217391304347826,
       "name": "ClearPerTileByte0FForAllMapTiles",
       "type": 1
     },
@@ -18014,7 +18014,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7021276595744681,
+      "matching": 0.7311827956989247,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -18038,7 +18038,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -19929,7 +19929,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -19941,7 +19941,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.4108527131782946,
+      "matching": 0.41245136186770426,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },

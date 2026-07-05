@@ -404,6 +404,8 @@ extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr insta
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
+// Assert source-path string for the UArmyMgr TU.
+extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 extern TSoundPlayer* g_pSfxPlaybackSystem;
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 extern TApplication* g_pApplicationUiRootController;

@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+class TSortedList;
 
 // TODO(manifest): describe TArmyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TArmyMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c928
@@ -32,13 +33,22 @@ public:
   virtual undefined OrphanCallChain_C2_I40_004a37b0(int param_1);    // slot 0x10 0x4a37b0
   virtual undefined UpdateDualLinkedEntryMetersAndBlinkState();      // slot 0x11 0x4a3830
   virtual undefined
-  WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0();   // slot 0x12 0x4a3bc0
-  virtual undefined OrphanCallChain_C3_I52_004a3d90(short param_1); // slot 0x13 0x4a3d90
-  virtual undefined SelectMovableUnitOnCurrentTileAndPlaySfx();     // slot 0x14 0x4a3e50
-  virtual undefined CommitCityActionGateCostIfAffordable();         // slot 0x15 0x4a3f30
-  virtual undefined OrphanCallChain_C1_I34_004a4260(int mode);      // slot 0x16 0x4a4260
-  virtual undefined HandleMapClickByComputedCursorState();          // slot 0x17 0x4a4870
-  virtual undefined HandleMapClickByCivilianCursorState();          // slot 0x18 0x4a4ad0
+  WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(); // slot 0x12 0x4a3bc0
+  // Ground truth (RET 0x8, 2 stack args) proves the previous 1-arg declaration was a
+  // poison-pill arity mismatch. actionKind selects between the slot-0x14/0x15 dispatch
+  // (1/4 -> SelectMovableUnitOnCurrentTileAndPlaySfx, 7 -> CommitCityActionGateCostIfAffordable)
+  // before the shared tile-unit tail runs.
+  virtual undefined DispatchTileActionByKind_004a3d90(int contextArg,
+                                                      short actionKind); // slot 0x13 0x4a3d90
+  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
+  // mismatch; contextArg is forwarded as TUnit::SetOrderModeSlot34's payload.
+  virtual undefined SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg); // slot 0x14 0x4a3e50
+  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
+  // mismatch.
+  virtual undefined CommitCityActionGateCostIfAffordable(int contextArg); // slot 0x15 0x4a3f30
+  virtual undefined OrphanCallChain_C1_I34_004a4260(int mode);            // slot 0x16 0x4a4260
+  virtual undefined HandleMapClickByComputedCursorState();                // slot 0x17 0x4a4870
+  virtual undefined HandleMapClickByCivilianCursorState();                // slot 0x18 0x4a4ad0
   // === END GENERATED DECLS (TArmyMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyMgr 0xCTOR`).
 
@@ -49,7 +59,18 @@ public:
   // (ActivateFirstActiveTacticalUnitByCategoryAtTile) and as an index into the terrain
   // descriptor table (g_pGlobalMapState-relative), so it is genuinely a shared "current
   // selection" slot rather than two coincidentally-aliased meanings.
-  unsigned char pad00[0x31c];
+  // NOTE: TObject's own vptr occupies the object's first 4 bytes (ASSERT_SIZE(TObject,
+  // 0x4)), so every "+0xNN" comment below is an absolute this-relative offset and this
+  // pad must be 4 bytes short of its target to land the next field correctly.
+  unsigned char pad04[0x08];
+  // +0x0c -- a TSortedList (GetCountSlot48/GetEntryByOrdinalSlot4C evidence from
+  // ProcessTileUnitListsAndApplyRandomStatusUpdates's ground truth); freed at the top of
+  // IterateLinkedListCursorAndClearPerTileByte0F via FreePayloadsSlot54.
+  TSortedList* pendingUnitPool0c;
+  // +0x10 -- set to 1 by OrphanCallChain_C4_I26_004a1e40's non-turn-3 branch right before
+  // calling OrphanCallChain_C12_I108_004a2390; role not pinned down beyond that write site.
+  int pendingRebuildFlag10;
+  unsigned char pad14[0x31c - 0x14];
   short pendingMapActionIndex; // +0x31c
   unsigned char pad31e[0x3a8 - 0x31e];
 

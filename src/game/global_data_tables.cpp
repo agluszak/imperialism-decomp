@@ -546,6 +546,8 @@ extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[] = "~C%d";
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UViewMgr.cpp";
 // GLOBAL: IMPERIALISM 0x0069b740
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
+// GLOBAL: IMPERIALISM 0x0069573c
+extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
 
 // Profile string keys used by LoadProfileStringAndAssignSharedRef during multiplayer init.
 // GLOBAL: IMPERIALISM 0x00698010

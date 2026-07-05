@@ -1,4 +1,14 @@
 #include "game/TArmyMgr.h"
+
+#include "game/CIterator.h"
+#include "game/TCountry.h"
+#include "game/TMapMgr.h"
+#include "game/TMilitaryUnit.h"
+#include "game/TSimMgr.h"
+#include "game/TSortedList.h"
+#include "game/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable
+#include "game/ui_invalidation_guard.h"
+
 // SYNTHETIC: IMPERIALISM 0x004a1810
 // TArmyMgr::CreateObject
 
@@ -24,6 +34,16 @@ void TArmyMgr::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x004a1e40
 undefined TArmyMgr::OrphanCallChain_C4_I26_004a1e40() {
+  // g_pSimMgr's preferenceValues[0] is reused as a dual-purpose int slot (matching the
+  // established pattern in TMultiplayerMgr.cpp); == 2 selects the alternate branch here.
+  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 2) {
+    this->IterateLinkedListCursorAndClearPerTileByte0F();
+    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+  } else {
+    this->ProcessTileUnitListsAndApplyRandomStatusUpdates();
+    this->pendingRebuildFlag10 = 1;
+    this->OrphanCallChain_C12_I108_004a2390();
+  }
   return 0;
 }
 
@@ -39,6 +59,31 @@ undefined TArmyMgr::OrphanCallChain_C12_I108_004a2390() {
 
 // FUNCTION: IMPERIALISM 0x004a2500
 undefined TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F() {
+  this->pendingUnitPool0c->FreePayloadsSlot54();
+  g_pGlobalMapState->ClearPerTileByte0FForAllMapTiles();
+
+  for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {
+    TCountry* nation = g_apTerrainTypeDescriptorTable[i];
+    if (nation == nullptr) {
+      continue;
+    }
+    TSortedList* unitList = nation->militaryUnitList44;
+    if (unitList == nullptr) {
+      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0x39b);
+    }
+
+    CIterator unitIter(unitList);
+    for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+         unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+      if (unit->field_34 > 0 && unit->field_6 != -1) {
+        unit->DispatchSlot2C();
+      } else {
+        unit->DetachUnitOrderFromOwnerAndReset();
+        unit->Free();
+      }
+    }
+  }
   return 0;
 }
 
@@ -68,23 +113,48 @@ undefined TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0
 }
 
 // FUNCTION: IMPERIALISM 0x004a3d90
-undefined TArmyMgr::OrphanCallChain_C3_I52_004a3d90(short param_1) {
+undefined TArmyMgr::DispatchTileActionByKind_004a3d90(int contextArg, short actionKind) {
+  if (actionKind == 1 || actionKind == 4) {
+    this->SelectMovableUnitOnCurrentTileAndPlaySfx(contextArg);
+  } else if (actionKind == 7) {
+    this->CommitCityActionGateCostIfAffordable(contextArg);
+  }
+
+  TMilitaryUnit* unit = nullptr;
+  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < 0x180) {
+    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain98;
+  }
+  for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    if (unit->field_8 == 4) {
+      unit->SetOrderModeSlot34(0, -1);
+    }
+  }
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3e50
-undefined TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx() {
+undefined TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg) {
+  (void)contextArg;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3f30
-undefined TArmyMgr::CommitCityActionGateCostIfAffordable() {
+undefined TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
+  (void)contextArg;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a4260
 undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
-  (void)mode;
+  TMilitaryUnit* unit = nullptr;
+  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < 0x180) {
+    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain98;
+  }
+  for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    if (unit->field_8 == 0) {
+      unit->SetOrderModeSlot34(mode, -1);
+    }
+  }
   return 0;
 }
 

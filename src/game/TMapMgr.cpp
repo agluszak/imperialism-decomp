@@ -20,6 +20,7 @@ extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short des
   typedef short(__cdecl * Func)(short, short);
   return reinterpret_cast<Func>(0x00512dd0)(sourceTile, destTile);
 }
+
 // SYNTHETIC: IMPERIALISM 0x0050e2f0
 // TMapMgr::CreateObject
 
@@ -964,6 +965,13 @@ short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileInde
   }
   return FindReachableRecruitSpawnTileRecursiveImpl(this, startTileIndex, ownerNationTag,
                                                     allowActiveFlag2);
+}
+
+// FUNCTION: IMPERIALISM 0x00515db0
+void TMapMgr::ClearPerTileByte0FForAllMapTiles() {
+  for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
+    terrainStateTable[tileIndex].perTileVisitedFlag0f = 0;
+  }
 }
 
 // Verified against 0x0053e7bf's callsite (TDefendProvinceMission::

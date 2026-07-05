@@ -283,14 +283,6 @@ undefined4 FindReachableRecruitSpawnTileRecursive(void)
   return 0;
 }
 
-// ghidra_name ClearPerTileByte0FForAllMapTiles
-// ghidra_proto undefined ClearPerTileByte0FForAllMapTiles()
-// FUNCTION: IMPERIALISM 0x00515db0
-undefined4 ClearPerTileByte0FForAllMapTiles(void)
-{
-  return 0;
-}
-
 // ghidra_name SetGlobalMapCellSharedLabel
 // ghidra_proto undefined SetGlobalMapCellSharedLabel()
 // FUNCTION: IMPERIALISM 0x00515f40

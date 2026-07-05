@@ -26,7 +26,11 @@ struct TTerrainStateRecordView {
   unsigned char adjacencyMaskB0b; // 0x0b -- per-direction bit mask (region/water borders)
   unsigned char pad0c[0x0e - 0x0c];
   unsigned char recruitSearchVisited0e; // 0x0e
-  unsigned char pad0f[0x11 - 0x0f];
+  // 0x0f -- cleared to 0 across all 0x1950 tiles by
+  // TMapMgr::ClearPerTileByte0FForAllMapTiles (0x409250); reader/setter beyond that not
+  // yet identified.
+  unsigned char perTileVisitedFlag0f;
+  unsigned char pad10;
   signed char resourceTypeByEdge[2];
   unsigned char gateFlag;
   short cityRecordIndex;
@@ -302,6 +306,10 @@ public:
   // tile) and clear the owner-nation byte (+0x18) wherever it matches nationSlot for
   // tiles tagged in [7,22]. 0x00518470, __thiscall, one int param.
   void ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot);
+
+  // Clears terrainStateTable[i].perTileVisitedFlag0f for every one of the 0x1950
+  // (108x60) map tiles. 0x00409250, __thiscall, no args.
+  void ClearPerTileByte0FForAllMapTiles();
 
   TMapMgr();
 };

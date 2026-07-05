@@ -2135,6 +2135,7 @@ address|target_cpp|ownership|note
 5159b0|src/game/TMapMgr.cpp|manual|marker_sync
 515b10|src/game/TMapMgr.cpp|manual|marker_sync
 515d60|src/game/TMapMgr.cpp|manual|marker_sync
+515db0|src/game/TMapMgr.cpp|manual|marker_sync
 515de0|src/game/TMapMgr.cpp|manual|marker_sync
 515e00|src/game/TOcean.cpp|manual|marker_sync
 515e50|src/game/TMapMgr.cpp|manual|marker_sync
