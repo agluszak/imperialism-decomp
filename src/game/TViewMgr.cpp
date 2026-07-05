@@ -880,7 +880,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x4c) =
         0;
     this->currentTurnEventCode = 0;
-    *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pDisplayMgr) + 0x1c) = 0;
+    g_pDisplayMgr->clipSnapshotEvent = 0;
     mainView->CallVoidSlotA0();
     CWMgrIterator iter;
     iter.Reset(1);

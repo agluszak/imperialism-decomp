@@ -1,5 +1,6 @@
 #include "game/TWorldView.h"
 
+#include "game/TApplication.h"
 #include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
 #include "game/TCivUnit.h"
@@ -337,7 +338,7 @@ char TWorldView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3
     return 1;
   }
 
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x24) < 2) {
+  if (g_pGlobalUiRootController->screenModeAt24 < 2) {
     HandleMapClickByInteractionMode(static_cast<short>(stridedRecord), regionBand);
     return 1;
   }
