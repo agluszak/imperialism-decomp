@@ -834,10 +834,16 @@ address|target_cpp|ownership|note
 4a3e50|src/game/TArmyMgr.cpp|manual|marker_sync
 4a3f30|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4260|src/game/TArmyMgr.cpp|manual|marker_sync
+4a45e0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4870|src/game/TArmyMgr.cpp|manual|marker_sync
+4a4960|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4ad0|src/game/TArmyMgr.cpp|manual|marker_sync
+4a4c80|src/game/TArmyMgr.cpp|manual|marker_sync
+4a5080|src/game/TArmyMgr.cpp|manual|marker_sync
+4a5760|src/game/TArmyMgr.cpp|manual|marker_sync
 4a5aa0|src/game/TCountry.cpp|manual|marker_sync
 4a5c50|src/game/TArmyBattle.cpp|manual|marker_sync
+4a6680|src/game/TArmyMgr.cpp|manual|marker_sync
 4a76a0|src/game/TArmyStack.cpp|manual|marker_sync
 4a76d0|src/game/TArmyStack.cpp|manual|marker_sync
 4a7720|src/game/TArmyStack.cpp|manual|marker_sync

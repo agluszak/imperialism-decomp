@@ -7488,7 +7488,7 @@
     },
     {
       "address": "0x4a45e0",
-      "matching": 0.0,
+      "matching": 0.5263157894736842,
       "name": "SetActiveProvinceSelection",
       "type": 1
     },
@@ -7506,7 +7506,7 @@
     },
     {
       "address": "0x4a4870",
-      "matching": 0.0,
+      "matching": 0.6956521739130435,
       "name": "TArmyMgr::HandleMapClickByComputedCursorState",
       "type": 1
     },
@@ -7518,7 +7518,7 @@
     },
     {
       "address": "0x4a4960",
-      "matching": 0.02531645569620253,
+      "matching": 0.2695035460992908,
       "name": "ComputeMapCursorStateIndex",
       "type": 1
     },
@@ -7530,13 +7530,13 @@
     },
     {
       "address": "0x4a4ad0",
-      "matching": 0.0,
+      "matching": 0.4608695652173913,
       "name": "TArmyMgr::HandleMapClickByCivilianCursorState",
       "type": 1
     },
     {
       "address": "0x4a4c80",
-      "matching": 0.0,
+      "matching": 0.009302325581395349,
       "name": "ComputeCivilianMapCursorStateIndex",
       "type": 1
     },
@@ -7548,13 +7548,13 @@
     },
     {
       "address": "0x4a5080",
-      "matching": 0.0,
+      "matching": 0.010075566750629723,
       "name": "ValidateOrderPlacementPrerequisitesForSelectedTile",
       "type": 1
     },
     {
       "address": "0x4a5760",
-      "matching": 0.009615384615384616,
+      "matching": 0.00966183574879227,
       "name": "SetActiveProvinceAndBuildDirectionalOrderOverlays",
       "type": 1
     },
@@ -7584,7 +7584,7 @@
     },
     {
       "address": "0x4a6680",
-      "matching": 0.0,
+      "matching": 0.005025125628140704,
       "name": "BuildMapHintOverlayTextAndDispatchUiMessages",
       "type": 1
     },

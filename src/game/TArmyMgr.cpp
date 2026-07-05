@@ -6,10 +6,12 @@
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
+#include "game/TMapUberPicture.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TSimMgr.h"
 #include "game/TSortedList.h"
 #include "game/TSoundPlayer.h"
+#include "game/TToolBarCluster.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable, g_pSfxPlaybackSystem, g_apNationStates, g_pUiRuntimeContext
 #include "game/mapped_flavor_text.h" // scanBracketExpressions
@@ -25,6 +27,14 @@
 IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
 
 extern undefined4 GenerateThreadLocalRandom15(void);
+
+// Own-source function (not a TArmyMgr method -- ground truth doesn't touch `this`).
+// Classifies a map-click as: 6 (already visited this pass), 0 (blocked -- dialog/order
+// context active, or tile already has a pending civilian order), 8 (blocked -- active
+// nation not eligible, or a diplomacy-target mismatch with the tile's owner), or 2
+// (click accepted). Defined below (0x4a4960) in address order; forward-declared here
+// for HandleMapClickByComputedCursorState's use.
+static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode);
 
 TArmyMgr::TArmyMgr() {}
 
@@ -560,12 +570,160 @@ undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004a45e0
+void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
+  this->pendingMapActionIndex = tileIndex;
+  if (tileIndex != -1) {
+    TMilitaryUnit* unit = nullptr;
+    if (tileIndex >= 0 && tileIndex < 0x180) {
+      unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+    }
+    for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+      if ((unit->field_8 == 4 || unit->field_8 == 3) &&
+          g_awTacticalUnitCategoryCodeBySlot[unit->orderType] != 0) {
+        unit->SetOrderModeSlot34(0, -1);
+      }
+    }
+    // TODO: ground truth also dispatches
+    // g_pUiRuntimeContext->mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]'s
+    // slot-0x74 (OrphanRetStub_0045d2a0-shaped) virtual here, passing tileIndex. The
+    // categoryPages[] receiver class isn't recovered yet (TMapUberPicture.h Hard Rule 12
+    // caveat), so this one dispatch is left undone rather than faked.
+  }
+  g_pUiRuntimeContext->mapUberPictureF0->OrphanLeaf_NoCall_Ins09_00598950();
+}
+
 // FUNCTION: IMPERIALISM 0x004a4870
-undefined TArmyMgr::HandleMapClickByComputedCursorState() {
-  return 0;
+undefined TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short mode) {
+  bool handled = false;
+  int cursorState = ComputeMapCursorStateIndex(tileIndex, mode);
+  short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
+  switch (cursorState) {
+  case 2:
+    if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+      // SetMapInteractionMode's curated class attribution is TToolBarCluster (see
+      // TToolBarCluster.h), but this callsite's own disassembly proves the object it's
+      // invoked on here is g_pUiRuntimeContext->mapUberPictureF0 (a TMapUberPicture*) --
+      // matching the identical class-attribution caveat TWorldView.cpp already documents
+      // for this same method. Kept as a cast rather than reattributing the method, to
+      // avoid corrupting the existing (separately curated) TToolBarCluster model.
+      reinterpret_cast<TToolBarCluster*>(g_pUiRuntimeContext->mapUberPictureF0)
+          ->SetMapInteractionMode(1);
+      this->SetActiveProvinceSelection(cityRecordIndex);
+      handled = true;
+    }
+    break;
+  case 6:
+    this->SetActiveProvinceAndBuildDirectionalOrderOverlays(tileIndex);
+    return 1;
+  case 8:
+    this->BuildMapHintOverlayTextAndDispatchUiMessages(cityRecordIndex);
+    return 1;
+  }
+  return handled;
+}
+
+// FUNCTION: IMPERIALISM 0x004a4960
+static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
+  TTerrainStateRecordView* rec = &g_pGlobalMapState->terrainStateTable[tileIndex];
+  if (rec->perTileVisitedFlag0f > 0) {
+    return 6;
+  }
+  if (mode != 2) {
+    if (g_pUiRuntimeContext->mapUberPictureF0->OrphanLeaf_NoCall_Ins23_00597a10() != 0) {
+      return 0;
+    }
+    if (mode != 2 && rec->firstCivilianOrder20 != nullptr) {
+      return 0;
+    }
+  }
+  if (((rec->activeFlags1c >> 5) & 1) == 0) {
+    return 0;
+  }
+  short ownerTag = rec->ownerNationTag04;
+  short activeNationId = g_pSimMgr->GetActiveNationId();
+  if (IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
+    return 8;
+  }
+  activeNationId = g_pSimMgr->GetActiveNationId();
+  if (ownerTag != activeNationId) {
+    TCountry* owner = g_apTerrainTypeDescriptorTable[ownerTag];
+    activeNationId = g_pSimMgr->GetActiveNationId();
+    if (owner->IsEncodedNationSlotMinus200Equal(activeNationId) == 0) {
+      return 8;
+    }
+  }
+  return 2;
 }
 
 // FUNCTION: IMPERIALISM 0x004a4ad0
-undefined TArmyMgr::HandleMapClickByCivilianCursorState() {
+undefined TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) {
+  int cursorState = this->ComputeCivilianMapCursorStateIndex(tileIndex, mode);
+  short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
+  switch (cursorState) {
+  case 2:
+    this->SetActiveProvinceSelection(cityRecordIndex);
+    return 0;
+  case 3:
+  case 4:
+    break;
+  case 5:
+    return this->ValidateOrderPlacementPrerequisitesForSelectedTile(cityRecordIndex);
+  case 6:
+    this->SetActiveProvinceAndBuildDirectionalOrderOverlays(tileIndex);
+    return 0;
+  case 7:
+    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotEC(this->pendingMapActionIndex);
+    return 0;
+  case 8:
+    this->BuildMapHintOverlayTextAndDispatchUiMessages(cityRecordIndex);
+    // fall through
+  default:
+    return 0;
+  }
+
+  const TGlobalMapCityScoreRecord& selectedTile =
+      g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];
+  bool cityIsAdjacent = false;
+  for (short i = 0; i < selectedTile.adjacentRegionCount08; ++i) {
+    if (selectedTile.adjacentRegionIds0A[i] == cityRecordIndex) {
+      cityIsAdjacent = true;
+      break;
+    }
+  }
+  if (cityIsAdjacent) {
+    return this->SelectMovableUnitOnCurrentTileAndPlaySfx(cityRecordIndex);
+  }
+  return this->CommitCityActionGateCostIfAffordable(cityRecordIndex);
+}
+
+// FUNCTION: IMPERIALISM 0x004a4c80
+int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
+  // TODO: port body @ 0x4a4c80 (641 bytes). Ground truth's own decompile loses register
+  // tracking (unaff_EBX/EBP/retaddr) badly enough that a faithful port needs dedicated
+  // listing-level analysis; left as a real, correctly-signed stub rather than guessed.
+  (void)tileIndex;
+  (void)mode;
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004a5080
+bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex) {
+  // TODO: port body @ 0x4a5080 (1407 bytes; large, not yet ported).
+  (void)cityRecordIndex;
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x004a5760
+void TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex) {
+  // TODO: port body @ 0x4a5760 (656 bytes; builds directional order-overlay controls from
+  // the tile's adjacent-region list; not yet ported).
+  (void)tileIndex;
+}
+
+// FUNCTION: IMPERIALISM 0x004a6680
+void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex) {
+  // TODO: port body @ 0x4a6680 (1372 bytes; heavy CString-based UI hint-text composition;
+  // not yet ported).
+  (void)cityRecordIndex;
 }

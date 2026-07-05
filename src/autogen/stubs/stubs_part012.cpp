@@ -307,14 +307,6 @@ undefined4 ForwardGetUnitMovementClassId_At004a4550(void)
   return 0;
 }
 
-// ghidra_name SetActiveProvinceSelection
-// ghidra_proto undefined SetActiveProvinceSelection()
-// FUNCTION: IMPERIALISM 0x004a45e0
-undefined4 SetActiveProvinceSelection(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearProvinceSelectionHighlightsForNation
 // ghidra_proto undefined ClearProvinceSelectionHighlightsForNation()
 // FUNCTION: IMPERIALISM 0x004a46d0
@@ -339,14 +331,6 @@ undefined4 LookupMapCursorTokenByStateIndex(void)
   return 0;
 }
 
-// ghidra_name ComputeMapCursorStateIndex
-// ghidra_proto undefined ComputeMapCursorStateIndex()
-// FUNCTION: IMPERIALISM 0x004a4960
-undefined4 ComputeMapCursorStateIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name LookupCivilianMapCursorTokenByStateIndex
 // ghidra_proto undefined LookupCivilianMapCursorTokenByStateIndex()
 // FUNCTION: IMPERIALISM 0x004a4aa0
@@ -355,34 +339,10 @@ undefined4 LookupCivilianMapCursorTokenByStateIndex(void)
   return 0;
 }
 
-// ghidra_name ComputeCivilianMapCursorStateIndex
-// ghidra_proto undefined ComputeCivilianMapCursorStateIndex()
-// FUNCTION: IMPERIALISM 0x004a4c80
-undefined4 ComputeCivilianMapCursorStateIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyMgr::OrphanCallChain_C2_I54_004a4fc0
 // ghidra_proto undefined OrphanCallChain_C2_I54_004a4fc0()
 // FUNCTION: IMPERIALISM 0x004a4fc0
 undefined4 OrphanCallChain_C2_I54_004a4fc0(void)
-{
-  return 0;
-}
-
-// ghidra_name ValidateOrderPlacementPrerequisitesForSelectedTile
-// ghidra_proto undefined ValidateOrderPlacementPrerequisitesForSelectedTile()
-// FUNCTION: IMPERIALISM 0x004a5080
-undefined4 ValidateOrderPlacementPrerequisitesForSelectedTile(void)
-{
-  return 0;
-}
-
-// ghidra_name SetActiveProvinceAndBuildDirectionalOrderOverlays
-// ghidra_proto undefined SetActiveProvinceAndBuildDirectionalOrderOverlays()
-// FUNCTION: IMPERIALISM 0x004a5760
-undefined4 SetActiveProvinceAndBuildDirectionalOrderOverlays(void)
 {
   return 0;
 }
@@ -415,14 +375,6 @@ undefined4 WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl(void)
 // ghidra_proto undefined BuildMapOrderContextSummaryStringForNation()
 // FUNCTION: IMPERIALISM 0x004a5ec0
 undefined4 BuildMapOrderContextSummaryStringForNation(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapHintOverlayTextAndDispatchUiMessages
-// ghidra_proto undefined BuildMapHintOverlayTextAndDispatchUiMessages()
-// FUNCTION: IMPERIALISM 0x004a6680
-undefined4 BuildMapHintOverlayTextAndDispatchUiMessages(void)
 {
   return 0;
 }

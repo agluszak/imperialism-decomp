@@ -72,8 +72,19 @@ public:
   // (AL in the ground truth) -- not a meaningless `undefined` stub value.
   virtual bool CommitCityActionGateCostIfAffordable(int contextArg); // slot 0x15 0x4a3f30
   virtual undefined OrphanCallChain_C1_I34_004a4260(int mode);       // slot 0x16 0x4a4260
-  virtual undefined HandleMapClickByComputedCursorState();           // slot 0x17 0x4a4870
-  virtual undefined HandleMapClickByCivilianCursorState();           // slot 0x18 0x4a4ad0
+  // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
+  // poison-pill arity mismatch. Dispatches on the free-function ComputeMapCursorStateIndex
+  // classification: 2 -> map-interaction-mode switch + SetActiveProvinceSelection, 6 -> a
+  // directional-order-overlay rebuild, 8 -> a blocked-order hint message.
+  virtual undefined HandleMapClickByComputedCursorState(short tileIndex,
+                                                        short mode); // slot 0x17 0x4a4870
+  // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
+  // poison-pill arity mismatch. Civilian-order counterpart of the above: dispatches on
+  // ComputeCivilianMapCursorStateIndex's classification, falling through to an
+  // adjacency check (SelectMovableUnitOnCurrentTileAndPlaySfx vs.
+  // CommitCityActionGateCostIfAffordable) for the two "in range" codes.
+  virtual undefined HandleMapClickByCivilianCursorState(short tileIndex,
+                                                        short mode); // slot 0x18 0x4a4ad0
   // === END GENERATED DECLS (TArmyMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyMgr 0xCTOR`).
 
@@ -122,6 +133,33 @@ public:
   // rebuilds the strategic map view's nation clip regions and resets every nation's
   // serializedField8c to -1. 0x004a1eb0, __thiscall, no args.
   void ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags();
+
+  // Sets pendingMapActionIndex (the shared "current map selection" slot) and, unless
+  // clearing the selection (-1), resets the order mode of every stationed unit at that
+  // tile whose tactical category is nonzero (g_awTacticalUnitCategoryCodeBySlot); always
+  // notifies the active map-uber-picture's slot-0x75 handler at the end. 0x004a45e0,
+  // __thiscall, 1 arg. Called both by TArmyMgr's own map-click dispatchers and by other
+  // classes on the g_pMapContextActionManager singleton (e.g. the map-interaction-mode
+  // and province-cycling handlers).
+  void SetActiveProvinceSelection(short tileIndex);
+
+  // Civilian-order counterpart of the free-function ComputeMapCursorStateIndex (this one
+  // genuinely reads/writes `this`, e.g. pendingMapActionIndex). 0x004a4c80, 641 bytes;
+  // ground truth's own decompile loses register tracking (unaff_EBX/EBP/retaddr) badly
+  // enough that a faithful body needs dedicated listing-level analysis -- left as a TODO
+  // stub with the verified real signature rather than guessed.
+  int ComputeCivilianMapCursorStateIndex(short tileIndex, short mode);
+  // 0x004a5080, 1407 bytes, __thiscall, 1 arg (cityRecordIndex), returns bool. TODO stub:
+  // large and Ghidra's decompile for it is similarly unreliable; signature verified via
+  // the HandleMapClickByCivilianCursorState callsite disassembly.
+  bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
+  // 0x004a5760, 656 bytes, __thiscall, 1 arg (tileIndex). TODO stub body (builds
+  // directional order-overlay controls from the tile's adjacent-region list; not yet
+  // ported).
+  void SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex);
+  // 0x004a6680, 1372 bytes, __thiscall, 1 arg (cityRecordIndex). TODO stub body (heavy
+  // CString-based UI hint-text composition; not yet ported).
+  void BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex);
 
   TArmyMgr();
 };
