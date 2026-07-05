@@ -1430,6 +1430,8 @@ address|target_cpp|ownership|note
 4d2270|src/game/TCivMgr.cpp|manual|marker_sync
 4d2380|src/game/TCivMgr.cpp|manual|marker_sync
 4d26d0|src/game/TCivMgr.cpp|manual|marker_sync
+4d2930|src/game/TCivMgr.cpp|manual|marker_sync
+4d2960|src/game/TCivMgr.cpp|manual|marker_sync
 4d2c60|src/game/TCivMgr.cpp|manual|marker_sync
 4d2cf0|src/game/TCivMgr.cpp|manual|marker_sync
 4d2d30|src/game/TCivMgr.cpp|manual|marker_sync
@@ -2160,6 +2162,7 @@ address|target_cpp|ownership|note
 5122d0|src/game/TMapMgr.cpp|manual|marker_sync
 512b50|src/game/TMapMgr.cpp|manual|marker_sync
 512cc0|src/game/TMapMgr.cpp|manual|marker_sync
+512dd0|src/game/TMapMgr.cpp|manual|marker_sync
 513120|src/game/TMapMgr.cpp|manual|marker_sync
 513170|src/game/TMapMgr.cpp|manual|marker_sync
 513200|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2173,6 +2176,7 @@ address|target_cpp|ownership|note
 513ed0|src/game/TMapMgr.cpp|manual|marker_sync
 513f60|src/game/TMapMgr.cpp|manual|marker_sync
 513ff0|src/game/TMapMgr.cpp|manual|marker_sync
+514250|src/game/TMapMgr.cpp|manual|marker_sync
 514290|src/game/TMapMgr.cpp|manual|marker_sync
 514310|src/game/TMapMgr.cpp|manual|marker_sync
 514360|src/game/TMapMgr.cpp|manual|marker_sync

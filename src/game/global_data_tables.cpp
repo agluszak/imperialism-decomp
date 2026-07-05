@@ -451,6 +451,11 @@ short g_UnitTypeStatDivisorTable_0066ED30[7] = {0};
 // slot 0x55 tracked-order selection sort (0x004e0290).
 short g_DAT_006966d0_Value_006966D0[16] = {0};
 
+// Cursor resource id by civilian-tile-order action code (short table at 0x696678, 12
+// entries), used by TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex (0x4d2930).
+short g_civilianTileOrderCursorTokenTable[12] = {0,    1008, 0,    1004, 1003, 1002,
+                                                 1018, 1019, 1001, 1003, 1011, 1025};
+
 // Per-unit-type tactical category code (short table at 0x695528); category 0 counts
 // as garrison strength in TGreatPower slot 0x11 (0x004d87e0).
 short g_awTacticalUnitCategoryCodeBySlot[64] = {0};

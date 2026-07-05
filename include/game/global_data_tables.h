@@ -144,6 +144,8 @@ extern float g_Classify_Nation_Military_Value_00653710;
 
 // Per-order-type sort priority table (slot 0x55 selection sort).
 extern short g_DAT_006966d0_Value_006966D0[];
+// Cursor resource id by civilian-tile-order action code (12 entries).
+extern short g_civilianTileOrderCursorTokenTable[];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
 extern short g_awTacticalUnitCategoryCodeBySlot[];
 

@@ -93,6 +93,10 @@ struct HexSpiralSearchState {
   int stepInRing;
 };
 
+// 0x00512dd0. Hex direction (0-6) from sourceTile to destTile on the 0x6c(108)-wide map. Free
+// __cdecl function (no `this`), defined in TMapMgr.cpp.
+extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile);
+
 // TODO(manifest): describe TMapMgr and its role. Base edge (TObject) recovered from RTTI
 // CRuntimeClass chain: TMapMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006587e0
@@ -301,6 +305,11 @@ public:
   TCivUnit* GetFirstCivilianOrderOnTile(short tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }
+
+  // 0x514250. Walks the tile's civilian-order chain (GetFirstCivilianOrderOnTile) for the
+  // first entry owned by nationId. Reattributed from TCivToolbar (Ghidra bucket heuristic;
+  // `this` at the callsite is the global map state, not a TCivToolbar).
+  TCivUnit* GetTileUnitEntryByOwner(short tileIndex, short nationId);
 
   char CallMetricSlotC4(int regionIndex, int edgeIndex);
   short QueryIconStripXSlot110(int iconCode);

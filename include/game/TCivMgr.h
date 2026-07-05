@@ -51,6 +51,17 @@ public:
   // clicked tile. (Ghidra mis-attributed this to TCivToolbar via a thunk-only caller; the `this`
   // is the TCivMgr order manager — [this+4] is selectedEntry.)
   char CanAssignCivilianOrderToTile(short nTileIndex);
+
+  // 0x004d2960. Resolves the civilian map-click action code from current selection and tile
+  // context (see cpp for the full action-code map). Ghidra mis-attributed this to TCivToolbar
+  // via a thunk-only caller, same as CanAssignCivilianOrderToTile above.
+  int ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint);
+
+  // 0x004d2930. Cursor resource id for the action code ResolveCivilianTileOrderActionCode
+  // would return for this click. Same mis-attribution as above; `this` is implicitly forwarded
+  // to ResolveCivilianTileOrderActionCode untouched.
+  unsigned short LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex,
+                                                                 short nInputHint);
 };
 
 // === BEGIN GENERATED (TCivMgr) — refreshed by `just gen-class TCivMgr`; do not hand-edit ===

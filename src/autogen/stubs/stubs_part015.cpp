@@ -203,14 +203,6 @@ undefined4 BuildHexAreaTileIndexList(void)
   return 0;
 }
 
-// ghidra_name GetHexDirectionBetweenTiles
-// ghidra_proto short __cdecl GetHexDirectionBetweenTiles(short nFromTileIndex, short nToTileIndex)
-// FUNCTION: IMPERIALISM 0x00512dd0
-undefined4 GetHexDirectionBetweenTiles(void)
-{
-  return 0;
-}
-
 // ghidra_name NormalizeWrappedMapCoord108x60
 // ghidra_proto undefined NormalizeWrappedMapCoord108x60()
 // FUNCTION: IMPERIALISM 0x00513050
@@ -255,14 +247,6 @@ undefined4 ApplyEngineerRailCostDeltaForConnectedTiles(void)
 // ghidra_proto undefined ResolveRegionTileSubtypeCodeForTileIndex()
 // FUNCTION: IMPERIALISM 0x00514110
 undefined4 ResolveRegionTileSubtypeCodeForTileIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::GetTileUnitEntryByOwner
-// ghidra_proto int * __thiscall GetTileUnitEntryByOwner(short nTileIndex, short nOwnerNationId)
-// FUNCTION: IMPERIALISM 0x00514250
-undefined4 GetTileUnitEntryByOwner(void)
 {
   return 0;
 }

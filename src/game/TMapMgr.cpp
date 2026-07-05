@@ -25,10 +25,11 @@ TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
   return cityScoreTable[index].stationedUnitChain98;
 }
 
-extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
-  typedef short(__cdecl * Func)(short, short);
-  return reinterpret_cast<Func>(0x00512dd0)(sourceTile, destTile);
-}
+// Hex direction (0-6) from sourceTile to destTile on the 0x6c(108)-wide map, via each tile's
+// doubled-hex-coordinate ("diagonal") position: diag = (row & 1) + col*2. Ghidra's decompile
+// hand-emulates row/col with a magic-multiply division and a sign-correcting parity dance for
+// negative row indices; map tile indices are never negative in practice, so that correction
+// collapses to a plain `row & 1` here (a faithful simplification, not a shortcut of behavior).
 
 // SYNTHETIC: IMPERIALISM 0x0050e2f0
 // TMapMgr::CreateObject
@@ -833,6 +834,29 @@ short TMapMgr::GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short 
   }
   return static_cast<short>(result);
 }
+// FUNCTION: IMPERIALISM 0x00512dd0
+extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
+  short rowFrom = sourceTile / 0x6c;
+  short colFrom = sourceTile % 0x6c;
+  short diagFrom = (rowFrom & 1) + colFrom * 2;
+  short rowTo = destTile / 0x6c;
+  short colTo = destTile % 0x6c;
+  short diagTo = (rowTo & 1) + colTo * 2;
+
+  if ((diagFrom < diagTo) && (diagTo < diagFrom + 0xd7)) {
+    if (rowTo <= rowFrom) {
+      return (rowFrom <= rowTo) ? 1 : 0;
+    }
+    return 2;
+  }
+  if (((diagFrom <= diagTo) || (diagTo + 0xd7 <= diagFrom)) && (diagTo < diagFrom + 0xd7)) {
+    return (rowTo <= rowFrom) ? 5 : 3;
+  }
+  if (rowTo <= rowFrom) {
+    return (rowTo < rowFrom) ? 5 : 4;
+  }
+  return 3;
+}
 
 // FUNCTION: IMPERIALISM 0x00513120
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord) {
@@ -963,6 +987,15 @@ void TMapMgr::ApplyRailSectionEndpointDirectionFlags(short sourceTile, short des
   char* pTable8 = reinterpret_cast<char*>(g_Build_Hex_Area_LookupTable_00696E80) + 0x38;
   terrainStateTable[sourceTile].railFlags17 += pTable2[(dir + 3) * 2];
   terrainStateTable[destTile].railFlags17 += pTable8[((dir + 3) % 6) * 2];
+}
+
+// FUNCTION: IMPERIALISM 0x00514250
+TCivUnit* TMapMgr::GetTileUnitEntryByOwner(short tileIndex, short nationId) {
+  TCivUnit* entry = GetFirstCivilianOrderOnTile(tileIndex);
+  while ((entry != nullptr) && (entry->field_18 != nationId)) {
+    entry = static_cast<TCivUnit*>(entry->nextOnTile);
+  }
+  return entry;
 }
 
 // FUNCTION: IMPERIALISM 0x00514290

@@ -18,6 +18,13 @@
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 
+// 0x005d4890. 'D' (0x44) is the only currently-known remapped shortcut code (keyCode 2);
+// other codes pass through as literal virtual-key codes.
+static bool IsMappedShortcutKeyPressed(short keyCode) {
+  short virtualKey = (keyCode == 2) ? 0x44 : keyCode;
+  return (GetKeyState(virtualKey) & 0x8000) != 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x004d2000
 // TCivMgr::CreateObject
 
@@ -43,6 +50,85 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
 // FUNCTION: IMPERIALISM 0x004d26d0
 bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) {
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d2930
+unsigned short TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex,
+                                                                        short nInputHint) {
+  int actionCode = this->ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
+  return g_civilianTileOrderCursorTokenTable[actionCode];
+}
+
+// FUNCTION: IMPERIALISM 0x004d2960
+int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint) {
+  short nationId = g_pSimMgr->GetActiveNationId();
+  TCivUnit* pClickedTileUnit = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
+
+  if ((g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) &&
+      ((nTileIndex % 0x6c == 0) || (nTileIndex % 0x6c == 0x6b))) {
+    return 1;
+  }
+
+  TCivUnit* selectedEntry = this->selectedEntry;
+  if (selectedEntry == nullptr) {
+    nationId = g_pSimMgr->GetActiveNationId();
+    TCivUnit* pOwnedCivilianEntry =
+        g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
+    if (pOwnedCivilianEntry == nullptr) {
+      return 0;
+    }
+    if (!pOwnedCivilianEntry->IsInIdleSelectionState()) {
+      return 10;
+    }
+    if ((nInputHint != 2) &&
+        (((g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c >> 5) & 1) != 0)) {
+      return 0;
+    }
+    return 2;
+  }
+
+  if ((pClickedTileUnit != nullptr) && (pClickedTileUnit != selectedEntry)) {
+    return (pClickedTileUnit->field_8 != 0) ? 10 : 2;
+  }
+
+  if (IsMappedShortcutKeyPressed(2)) {
+    return this->CanAssignCivilianOrderToTile(nTileIndex) ? 3 : 1;
+  }
+
+  TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
+  if (tile->recruitSearchVisited0e == 0) {
+    short orderType = selectedEntry->orderType;
+    if (orderType == 1) {
+      return 8;
+    }
+    if (orderType == 4) {
+      short homeTile = selectedEntry->field_6;
+      if (nTileIndex == homeTile) {
+        return 4;
+      }
+      short dir = GetHexDirectionBetweenTiles(homeTile, nTileIndex);
+      if ((dir == 1) || (dir == 4)) {
+        return 5;
+      }
+      if ((dir == 0) || (dir == 3)) {
+        return 6;
+      }
+      return 7;
+    }
+    if (orderType == 7) {
+      return 0xb;
+    }
+    return 9;
+  }
+
+  TCivUnit* orderAtTile = tile->firstCivilianOrder20;
+  if (orderAtTile != nullptr) {
+    nationId = g_pSimMgr->GetActiveNationId();
+    if (orderAtTile->field_18 == nationId) {
+      return orderAtTile->IsInIdleSelectionState() ? 2 : 10;
+    }
+  }
+  return this->CanAssignCivilianOrderToTile(nTileIndex) ? 3 : 1;
 }
 
 // Selection helpers merged from the retired duplicate class
