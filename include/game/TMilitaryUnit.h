@@ -74,6 +74,8 @@ public:
   short GetUnitTypeCostPoints();                    // 0x5c3400
   short IsNotStationedInProvince(short provinceId); // 0x5c34d0
   short GetUnitTypeStatPercent(short statIndex);    // 0x5c3530
+  // Sets or clears the bits of `mask` in field_3A. 0x004a3b30, __thiscall, 2 args.
+  void SetOrClearWordMaskBits3a(short mask, bool setFlag);
 };
 
 ASSERT_SIZE(TMilitaryUnit, 0x44);

@@ -554,9 +554,102 @@ undefined TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack) {
   return 0;
 }
 
+// Not ground truth's own function -- ground truth repeats this exact eligibility check
+// inline 4 times inside UpdateDualLinkedEntryMetersAndBlinkState; factored out here rather
+// than duplicated.
+static bool IsUnitMeterEligible(TUnit* unit) {
+  TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
+  return milUnit->field_34 > milUnit->field_3C / 2 && (milUnit->field_3A & 2) == 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004a3830
-undefined TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState() {
-  return 0;
+bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArmyStack* stack2) {
+  // Phase 1: snapshot stack1's units' field_34 into field_3C and clear blink-mask bits 1/2,
+  // stopping early the first time a unit's fort-level attacker-penalty lookup is 0.
+  TUnit* unit = stack1->ResetCursorAndGetHeadUnit();
+  while (unit != nullptr) {
+    stack1->fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
+        g_anFortLevelAttackerPenaltyPercentByLevel[g_pGlobalMapState->cityScoreTable[unit->field_6]
+                                                       .fortLevel03]);
+    if (stack1->fortLevelAttackerPenaltyCache9 == 0) {
+      break;
+    }
+    TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
+    milUnit->field_3C = milUnit->field_34;
+    milUnit->SetOrClearWordMaskBits3a(1, false);
+    milUnit->SetOrClearWordMaskBits3a(2, false);
+    unit = stack1->AdvanceCursorAndGetUnit();
+  }
+
+  // Phase 2: same for stack2, except blink-mask bit 1 is set from the unit's
+  // blink-eligibility flag rather than always cleared.
+  unit = stack2->ResetCursorAndGetHeadUnit();
+  while (unit != nullptr) {
+    stack2->fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
+        g_anFortLevelAttackerPenaltyPercentByLevel[g_pGlobalMapState->cityScoreTable[unit->field_6]
+                                                       .fortLevel03]);
+    if (stack2->fortLevelAttackerPenaltyCache9 == 0) {
+      break;
+    }
+    TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
+    milUnit->field_3C = milUnit->field_34;
+    bool blinkFlag = g_abUnitTypeBlinkEligibilityFlag[unit->orderType] != 0;
+    milUnit->SetOrClearWordMaskBits3a(1, blinkFlag);
+    milUnit->SetOrClearWordMaskBits3a(2, false);
+    unit = stack2->AdvanceCursorAndGetUnit();
+  }
+
+  // Phase 3: repeatedly find one eligible unit per stack (field_34 still above half its
+  // Phase 1/2 snapshot, and blink-mask bit 2 clear) and accumulate/decay a shared meter
+  // across both stacks, until either side runs dry.
+  int counter = 0;
+  while (true) {
+    TUnit* eligible1 = stack1->ResetCursorAndGetHeadUnit();
+    while (eligible1 != nullptr && !IsUnitMeterEligible(eligible1)) {
+      eligible1 = stack1->AdvanceCursorAndGetUnit();
+    }
+    if (eligible1 == nullptr) {
+      break;
+    }
+    TUnit* eligible2 = stack2->ResetCursorAndGetHeadUnit();
+    while (eligible2 != nullptr && !IsUnitMeterEligible(eligible2)) {
+      eligible2 = stack2->AdvanceCursorAndGetUnit();
+    }
+    if (eligible2 == nullptr) {
+      break;
+    }
+
+    int sum1 = 0;
+    int count1 = 0;
+    int sum2 = 0;
+    int count2 = 0;
+    stack1->AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(&sum1, &count1, counter);
+    stack2->AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(&sum2, &count2, counter);
+    stack1->ApplyRandomizedMeterDecayToEligibleLinkedEntries(sum1, count1, counter);
+    stack2->ApplyRandomizedMeterDecayToEligibleLinkedEntries(sum2, count2, counter);
+    ++counter;
+  }
+
+  // Neither side found an eligible pairing this round: re-check stack1 alone. If it still
+  // has an eligible unit, boost stack1's meters (and give stack2 a plain refresh);
+  // otherwise refresh stack1 plainly and boost stack2's instead.
+  TUnit* probe = stack1->ResetCursorAndGetHeadUnit();
+  bool stack1StillEligible = false;
+  while (probe != nullptr) {
+    if (IsUnitMeterEligible(probe)) {
+      stack1StillEligible = true;
+      break;
+    }
+    probe = stack1->AdvanceCursorAndGetUnit();
+  }
+  if (stack1StillEligible) {
+    stack1->ApplyMeterGrowthToEligibleUnits(true);
+    stack2->ApplyMeterGrowthToEligibleUnits(false);
+    return true;
+  }
+  stack1->ApplyMeterGrowthToEligibleUnits(false);
+  stack2->ApplyMeterGrowthToEligibleUnits(true);
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3bc0

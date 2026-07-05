@@ -34,8 +34,11 @@ public:
   // (0x4a2390) reads. TObject's own vptr occupies the first 4 bytes.
   short field4;                // +0x04 -- zeroed at construction
   short field6;                // +0x06 -- zeroed at construction
-  unsigned char categoryFlag8; // +0x08 -- compared against TArmyMgr::regionAffinityTable1c
-  unsigned char pad9;
+  unsigned char categoryFlag8; // +0x08 -- compared against TArmyMgr::perTileOwnerNationCodeCache1c
+  // +0x09 -- cached g_anFortLevelAttackerPenaltyPercentByLevel lookup for the
+  // most-recently-processed unit in UpdateDualLinkedEntryMetersAndBlinkState's Phase 1/2
+  // scan; that scan stops early once this hits 0.
+  unsigned char fortLevelAttackerPenaltyCache9;
   short fieldA;         // +0x0a -- zeroed at construction
   unsigned char fieldC; // +0x0c -- zeroed at construction
   unsigned char padD;
@@ -44,6 +47,27 @@ public:
   unsigned char pad12[2];
   TArmyStackUnitNode* head14;   // +0x14 -- head of an embedded {TUnit*, next} node chain
   TArmyStackUnitNode* cursor18; // +0x18 -- traversal cursor over the chain
+
+  // Resets cursor18 to head14 and returns its unit (nullptr if the chain is empty).
+  // 0x004a3b70, __thiscall, no args.
+  TUnit* ResetCursorAndGetHeadUnit();
+  // Advances cursor18 to its next node and returns that node's unit (nullptr if there is
+  // no next node, or the cursor was already null). 0x004a3b90, __thiscall, no args.
+  TUnit* AdvanceCursorAndGetUnit();
+  // Walks the whole chain from head14 (via ResetCursorAndGetHeadUnit/
+  // AdvanceCursorAndGetUnit) and, for every unit with a positive field_34 (strength),
+  // grows field_38 (percent-scaled quality) by 35 if boosted else 20, capped at 400.
+  // 0x004a82b0, __thiscall, 1 arg.
+  void ApplyMeterGrowthToEligibleUnits(bool boosted);
+  // Walks the chain accumulating a weighted meter sum and eligible-entry count into the
+  // two out-params, seeded by `counter`. 0x004a7e70, 355 bytes. TODO stub body (not yet
+  // ported); signature verified via TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState's
+  // callsite disassembly.
+  void AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* outWeightedSum, int* outCount,
+                                                                int counter);
+  // Applies a randomized decay to eligible entries using the accumulated weighted sum/
+  // count from the method above. 0x004a8040, 482 bytes. TODO stub body (not yet ported).
+  void ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSum, int count, int counter);
 
   TArmyStack();
 };

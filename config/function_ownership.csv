@@ -830,6 +830,9 @@ address|target_cpp|ownership|note
 4a35e0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a37b0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a3830|src/game/TArmyMgr.cpp|manual|marker_sync
+4a3b30|src/game/TMilitaryUnit.cpp|manual|marker_sync
+4a3b70|src/game/TArmyStack.cpp|manual|marker_sync
+4a3b90|src/game/TArmyStack.cpp|manual|marker_sync
 4a3bc0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a3d90|src/game/TArmyMgr.cpp|manual|marker_sync
 4a3e50|src/game/TArmyMgr.cpp|manual|marker_sync
@@ -852,6 +855,9 @@ address|target_cpp|ownership|note
 4a77b0|src/game/TArmyStack.cpp|manual|marker_sync
 4a7960|src/game/TArmyStack.cpp|manual|marker_sync
 4a7c20|src/game/TArmyStack.cpp|manual|marker_sync
+4a7e70|src/game/TArmyStack.cpp|manual|marker_sync
+4a8040|src/game/TArmyStack.cpp|manual|marker_sync
+4a82b0|src/game/TArmyStack.cpp|manual|marker_sync
 4a83b0|src/game/TArmyStackList.cpp|manual|marker_sync
 4a8430|src/game/TArmyStackList.cpp|manual|marker_sync
 4a84c0|src/game/TArmyStackList.cpp|manual|marker_sync

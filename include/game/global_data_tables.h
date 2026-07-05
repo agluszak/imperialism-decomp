@@ -150,6 +150,15 @@ extern short g_awUnitCombatClassBySlot[64];
 // bound unconfirmed beyond the observed min/max class range (1..5-ish).
 extern unsigned char g_abStackCompositionClassTable[32];
 
+// Per-fort-level attacker penalty percent (0x695568), indexed by
+// TGlobalMapCityScoreRecord::fortLevel03; observed values 100/85/75/65/0/0/0/0 for levels
+// 0-7 (only the low byte of each int is ever read). Used by
+// TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState to gate the per-unit meter snapshot.
+extern int g_anFortLevelAttackerPenaltyPercentByLevel[8];
+// Per-unit-type blink/boost eligibility flag (0x64c808), indexed by TUnit::orderType; true
+// bound unconfirmed beyond the observed ~28 nonzero/zero entries.
+extern unsigned char g_abUnitTypeBlinkEligibilityFlag[32];
+
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
 extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];

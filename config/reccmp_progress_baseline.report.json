@@ -7416,19 +7416,19 @@
     },
     {
       "address": "0x4a3830",
-      "matching": 0.008888888888888889,
+      "matching": 0.4844124700239808,
       "name": "TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState",
       "type": 1
     },
     {
       "address": "0x4a3b30",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "SetOrClearWordMaskBits3a",
       "type": 1
     },
     {
       "address": "0x4a3b70",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "MirrorDword14To18",
       "type": 1
     },
@@ -7686,13 +7686,13 @@
     },
     {
       "address": "0x4a7e70",
-      "matching": 0.0,
+      "matching": 0.03571428571428571,
       "name": "AccumulateWeightedMeterAndCountFromEligibleLinkedEntries",
       "type": 1
     },
     {
       "address": "0x4a8040",
-      "matching": 0.0,
+      "matching": 0.011627906976744186,
       "name": "ApplyRandomizedMeterDecayToEligibleLinkedEntries",
       "type": 1
     },
@@ -12187,7 +12187,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12619,7 +12619,7 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12631,7 +12631,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12679,7 +12679,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.4939759036144578,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13472,7 +13472,7 @@
     },
     {
       "address": "0x4ea300",
-      "matching": 0.7701863354037267,
+      "matching": 0.782608695652174,
       "name": "TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations",
       "type": 1
     },
@@ -16118,7 +16118,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20536119945479328,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -18020,7 +18020,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2621082621082621,
+      "matching": 0.2784090909090909,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18038,7 +18038,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -19941,7 +19941,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },

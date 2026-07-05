@@ -56,8 +56,15 @@ public:
   // Ground truth doesn't touch `this` at all -- stack is the same TArmyStack shape,
   // relocating every unit on its embedded chain to stack->tileIndex10 unless already there.
   virtual undefined
-  ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack);   // slot 0x10 0x4a37b0
-  virtual undefined UpdateDualLinkedEntryMetersAndBlinkState(); // slot 0x11 0x4a3830
+  ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack); // slot 0x10 0x4a37b0
+  // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
+  // poison-pill arity mismatch. Snapshots each stack's units' field_34 into field_3C and
+  // resets their blink-mask bits, then repeatedly finds an eligible pair (one unit per
+  // stack whose field_34 still exceeds half its snapshot) to accumulate/decay a shared
+  // meter across, until one side runs out; the side that ran out gets a flat meter boost
+  // instead. Returns whether any eligible pairing was ever found.
+  virtual bool UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1,
+                                                        TArmyStack* stack2); // slot 0x11 0x4a3830
   virtual undefined
   WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(); // slot 0x12 0x4a3bc0
   // Ground truth (RET 0x8, 2 stack args) proves the previous 1-arg declaration was a

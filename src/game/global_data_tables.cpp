@@ -432,6 +432,13 @@ short g_awUnitCombatClassBySlot[64] = {0};
 // Stack composition class lookup (byte table at 0x6953c0); indexed [minClass + maxClass*4].
 unsigned char g_abStackCompositionClassTable[32] = {0};
 
+// Per-fort-level attacker penalty percent (int table at 0x695568); indexed by
+// TGlobalMapCityScoreRecord::fortLevel03.
+int g_anFortLevelAttackerPenaltyPercentByLevel[8] = {0};
+// Per-unit-type blink/boost eligibility flag (byte table at 0x64c808); indexed by
+// TUnit::orderType.
+unsigned char g_abUnitTypeBlinkEligibilityFlag[32] = {0};
+
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};
 

@@ -6,6 +6,15 @@
 
 extern "C" char g_pClassDescTMilitaryUnit = 0;
 
+// FUNCTION: IMPERIALISM 0x004a3b30
+void TMilitaryUnit::SetOrClearWordMaskBits3a(short mask, bool setFlag) {
+  if (setFlag) {
+    this->field_3A |= mask;
+  } else {
+    this->field_3A &= ~mask;
+  }
+}
+
 // SYNTHETIC: IMPERIALISM 0x005c2cb0
 // TMilitaryUnit::CreateObject
 

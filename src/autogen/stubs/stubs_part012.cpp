@@ -235,30 +235,6 @@ undefined4 OrphanVtableAssignStub_004a31e0(void)
   return 0;
 }
 
-// ghidra_name SetOrClearWordMaskBits3a
-// ghidra_proto undefined SetOrClearWordMaskBits3a()
-// FUNCTION: IMPERIALISM 0x004a3b30
-undefined4 SetOrClearWordMaskBits3a(void)
-{
-  return 0;
-}
-
-// ghidra_name MirrorDword14To18
-// ghidra_proto undefined MirrorDword14To18()
-// FUNCTION: IMPERIALISM 0x004a3b70
-undefined4 MirrorDword14To18(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90
-// ghidra_proto undefined WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90()
-// FUNCTION: IMPERIALISM 0x004a3b90
-undefined4 WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90(void)
-{
-  return 0;
-}
-
 // ghidra_name ValidateGridIndexRange0To17F
 // ghidra_proto undefined ValidateGridIndexRange0To17F()
 // FUNCTION: IMPERIALISM 0x004a4190
@@ -479,30 +455,6 @@ undefined4 WrapperFor_GenerateThreadLocalRandom15_At004a7c60(void)
 // ghidra_proto undefined OrphanCallChain_C2_I38_004a7d20()
 // FUNCTION: IMPERIALISM 0x004a7d20
 undefined4 OrphanCallChain_C2_I38_004a7d20(void)
-{
-  return 0;
-}
-
-// ghidra_name AccumulateWeightedMeterAndCountFromEligibleLinkedEntries
-// ghidra_proto undefined AccumulateWeightedMeterAndCountFromEligibleLinkedEntries()
-// FUNCTION: IMPERIALISM 0x004a7e70
-undefined4 AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyRandomizedMeterDecayToEligibleLinkedEntries
-// ghidra_proto undefined ApplyRandomizedMeterDecayToEligibleLinkedEntries()
-// FUNCTION: IMPERIALISM 0x004a8040
-undefined4 ApplyRandomizedMeterDecayToEligibleLinkedEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0
-// ghidra_proto undefined WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0()
-// FUNCTION: IMPERIALISM 0x004a82b0
-undefined4 WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0(void)
 {
   return 0;
 }
