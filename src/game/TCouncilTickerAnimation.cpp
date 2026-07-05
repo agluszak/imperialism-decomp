@@ -155,11 +155,8 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
   }
 
   short maxPendingTier = *reinterpret_cast<short*>(panelState + 0x24c8);
-  short* tierScan =
-      reinterpret_cast<short*>(reinterpret_cast<char*>(g_pDiplomacyTurnStateManager) + 0x484);
-  const int tierCount = (0x784 - 0x484) / static_cast<int>(sizeof(short));
-  for (int tierIndex = 0; tierIndex < tierCount; ++tierIndex) {
-    const short tierValue = tierScan[tierIndex];
+  for (int tierIndex = 0; tierIndex < kDiplomacyPairMatrixEntries; ++tierIndex) {
+    const short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484[tierIndex];
     if (tierValue != -1 && maxPendingTier < tierValue) {
       maxPendingTier = tierValue;
     }

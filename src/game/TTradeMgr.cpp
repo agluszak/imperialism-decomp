@@ -227,11 +227,12 @@ void TTradeMgr::OrphanCallChain_C3_I50_005b7fc0() {
   short* rowCursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x0e);
   int rows = 0x11;
   do {
-    rowCursor[-1] = 0;
-    rowCursor[0] = 0;
-    rowCursor[5] = 0;
-    *reinterpret_cast<int*>(rowCursor + 1) = 0;
-    *reinterpret_cast<int*>(rowCursor + 3) = 0;
+    NationMetricCategoryRow* row = reinterpret_cast<NationMetricCategoryRow*>(rowCursor - 5);
+    row->field08 = 0;
+    row->field0a = 0;
+    row->capabilityActiveFlag14 = 0;
+    *reinterpret_cast<int*>(row->weightedScore0c) = 0;
+    *reinterpret_cast<int*>(row->weightedScore0c + 4) = 0;
     short* cell = rowCursor + 0x1e;
     int c = 0x17;
     do {

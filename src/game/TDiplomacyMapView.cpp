@@ -90,7 +90,7 @@ void TDiplomacyMapView::NoOpUiLifecycleHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004f3e30
 void TDiplomacyMapView::CallVoidSlotA0() {
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xb8) = 0;
+  stateFlagAtB8 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004f3e60
