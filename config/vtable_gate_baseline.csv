@@ -1,6 +1,7 @@
 file|raw_vtable_index|fn_typedef_cast|vftable_index|vcall_facade|total
 src/game/TCivDescription.cpp|0|1|0|0|1
 src/game/TMapDialog.cpp|0|1|0|0|1
+src/game/TMultiplayerMgr.cpp|29|0|0|0|29
 src/game/TTradeMgr.cpp|0|3|0|0|3
 src/game/TUberCluster.cpp|1|0|0|0|1
 src/game/TWorldView.cpp|0|3|0|0|3

@@ -731,14 +731,6 @@ undefined4 RouteAndProcessDiplomacyTurnStateEventQueue(void)
   return 0;
 }
 
-// ghidra_name TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
-// ghidra_proto unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet)
-// FUNCTION: IMPERIALISM 0x00545940
-undefined4 ProcessDiplomacyTurnStateEventStateMachine(void)
-{
-  return 0;
-}
-
 // ghidra_name TouchSessionActiveNationId
 // ghidra_proto undefined TouchSessionActiveNationId()
 // FUNCTION: IMPERIALISM 0x00549240

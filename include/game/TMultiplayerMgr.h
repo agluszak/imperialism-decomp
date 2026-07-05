@@ -5,6 +5,7 @@
 #include "game/mfc.h"
 
 class TStream;
+struct NetMessage;
 
 // Multiplayer session / game-flow manager (g_pGameFlowState). Inherits the shared
 // TEventHandler control surface used by UI roots; vtable @ 0x0065c030.
@@ -77,6 +78,7 @@ public:
   void DispatchCityRedrawInvalidateEvent(short cityId);        // 0x54abf0
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                               int mode); // 0x54c5a0
+  undefined4 ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
 };
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);
