@@ -17072,7 +17072,7 @@
     },
     {
       "address": "0x5199c0",
-      "matching": 0.27586206896551724,
+      "matching": 0.2988505747126437,
       "name": "TMapDialog::CreateObject",
       "type": 1
     },
@@ -26457,6 +26457,12 @@
       "type": 1
     },
     {
+      "address": "0x584930",
+      "matching": 1.0,
+      "name": "T2PictToggleButton::ConstructT2PictToggleButtonBaseState",
+      "type": 1
+    },
+    {
       "address": "0x584960",
       "matching": 0.9090909090909091,
       "name": "T2PictToggleButton::`scalar deleting destructor'",
@@ -27990,7 +27996,7 @@
     },
     {
       "address": "0x594f20",
-      "matching": 0.47619047619047616,
+      "matching": 0.5079365079365079,
       "name": "TWorldView::CreateObject",
       "type": 1
     },

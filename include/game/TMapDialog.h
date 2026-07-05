@@ -2,15 +2,25 @@
 
 #include "game/TWorldView.h"
 
+class TQuickDrawSurfaceContext;
+
 // VTABLE: IMPERIALISM 0x658a58
 class TMapDialog : public TWorldView {
 public:
+  // CreateObject (0x00519c0e) allocates 0x364 bytes for the concrete object.
+  unsigned char pad7c[0x350 - 0x7c];
+  // Released (set to null) by Free(); read by RenderMapDialogTerrainOverlayFrameByTileOwner as
+  // the source surface for tile-owner/terrain-frame blits.
+  TQuickDrawSurfaceContext* quickDrawSurface350;
+  unsigned char pad354[0x35c - 0x354];
+  void* field35c; // released (set to null) by Free(); no other confirmed reader.
+  unsigned char pad360[0x364 - 0x360];
+
   DECLARE_DYNCREATE(TMapDialog)
   TMapDialog();
   virtual ~TMapDialog();
 
-  // slot 0x07 — 0x00519c90: release map-dialog quickdraw surface (+0x350) and child state.
-  void Free() override;
+  void Free() override; // slot 0x07 — 0x00519c90: release quickDrawSurface350/field35c.
 
   void ApplyRectSlot110(RECT* rectBuffer) override;
 
@@ -77,3 +87,5 @@ public:
                                                                  int param_3);
   virtual undefined UpdateMapInteractionPreviewParityAndRenderTransientSprites();
 };
+
+ASSERT_SIZE(TMapDialog, 0x364);

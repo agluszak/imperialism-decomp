@@ -14,6 +14,11 @@ public:
   unsigned short field6a;
   unsigned short field6c;
   unsigned short field6e;
+  unsigned char pad70[4];
+  // Written by SetFlagByteAndInvokeVslot1A4 (this+0x74=flagByte), read as a byte gate by
+  // TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner.
+  unsigned char field74;
+  unsigned char pad75;
   unsigned short field76;
   unsigned short field78;
   unsigned short field7a;

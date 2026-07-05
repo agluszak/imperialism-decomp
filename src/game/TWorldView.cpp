@@ -127,7 +127,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
 
 // FUNCTION: IMPERIALISM 0x00595c40
 void TWorldView::SetFlagByteAndInvokeVslot1A4(unsigned char flagByte) {
-  *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 0x74) = flagByte;
+  field74 = flagByte;
   RenderMapContextOverlayWithScopedClipAndSurface();
 }
 

@@ -31,12 +31,10 @@ TMapDialog::~TMapDialog() {}
 
 // FUNCTION: IMPERIALISM 0x00519c90
 void TMapDialog::Free() {
-  char* objectBytes = reinterpret_cast<char*>(this);
-  void** quickDrawSurfaceSlot = reinterpret_cast<void**>(objectBytes + 0x350);
-  if (*quickDrawSurfaceSlot != 0) {
-    *quickDrawSurfaceSlot = 0;
+  if (quickDrawSurface350 != 0) {
+    quickDrawSurface350 = 0;
   }
-  *reinterpret_cast<void**>(objectBytes + 0x35c) = 0;
+  field35c = 0;
   TView::Free();
 }
 
@@ -317,8 +315,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
   } srcRect;
 
   if (altOverlay == 0) {
-    void* quickDrawSurface = *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0x350);
-    surfaceContext = quickDrawSurface;
+    surfaceContext = quickDrawSurface350;
     srcRect.left = static_cast<long>(static_cast<short>(ownerPaletteIndex * 0x40));
     srcRect.right = srcRect.left + 0x40;
     srcRect.top = 0;
@@ -333,7 +330,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
     return;
   }
 
-  if (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 0x74) == 0) {
+  if (field74 == 0) {
     short terrainFrameIndex = static_cast<short>(tileRecord[0x10]);
     if (terrainFrameIndex == -1) {
       return;
@@ -342,10 +339,9 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
     srcRect.right = (terrainFrameIndex + 1) * 0x40;
     srcRect.top = 0;
     srcRect.bottom = 0x40;
-    void* quickDrawSurface = *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0x350);
     reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
         BlitRectWithOptionalTransparency)(
-        reinterpret_cast<char*>(quickDrawSurface) + 4,
+        reinterpret_cast<char*>(quickDrawSurface350) + 4,
         reinterpret_cast<char*>(g_pActiveQuickDrawSurfaceContext) + 4, &srcRect, dstRect, 0, 0);
     return;
   }
