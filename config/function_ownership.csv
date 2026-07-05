@@ -2816,6 +2816,7 @@ address|target_cpp|ownership|note
 550670|src/game/TTaskForce.cpp|manual|marker_sync
 550970|src/game/TShip.cpp|manual|marker_sync
 550b60|src/game/TShip.cpp|manual|marker_sync
+550d80|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550e70|src/game/TShip.cpp|manual|marker_sync
 550f80|src/game/TTaskForce.cpp|manual|marker_sync
 550ff0|src/game/TTaskForce.cpp|manual|marker_sync

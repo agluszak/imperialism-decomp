@@ -8,7 +8,7 @@
 #include "game/TIndustryAmtBar.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/TradeCommodityMetricRecord.h"
+#include "game/TItemOrder.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"
@@ -55,17 +55,24 @@ void TIndustryAmtBar::NoOpUiLifecycleHook(int arg) {
   }
 
   selectedMetricRecord = cityState->tradeCommodityRecordPtrs[summaryTagIndex];
-  int productionValue = nationState->GetCityState()->GetBuildingProductionValueBySlot(
-      selectedMetricRecord->buildingSlot);
+  // `buildingSlot` only exists on TItemOrder-sized (0x54-byte) objects. This
+  // downcast is safe here: the summary-tag scan above bounds summaryTagIndex
+  // to the 23-entry g_pTradeSummarySelectionMap table (0x696108), so tagIndex
+  // never reaches the TTrainingOrder slots (0x17/0x18, object size 0x4c) that
+  // share this band — see g_pTradeSummarySelectionMap's doc comment in
+  // global_data_tables.cpp.
+  int productionValue = nationState->GetCityState()->GetBuildingType(
+      static_cast<TItemOrder*>(selectedMetricRecord)->buildingSlot);
 
-  short stepValue = selectedMetricRecord->QueryStepValue();
+  short stepValue = selectedMetricRecord->MaxOrder();
   short productionCap = (short)productionValue;
   int rangeRaw = this->field34;
   stepOrCurrentValue = (short)((stepValue * rangeRaw) / productionCap);
 
   auxValueA = productionCap;
   auxValueB = 0x3a;
-  rangeOrMaxValue = (short)((selectedMetricRecord->controlValue * rangeRaw) / productionCap);
+  rangeOrMaxValue =
+      (short)((selectedMetricRecord->quantityField04 * rangeRaw) / productionCap);
 
   reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(arg);
 }

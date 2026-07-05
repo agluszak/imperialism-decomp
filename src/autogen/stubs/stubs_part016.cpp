@@ -1243,14 +1243,6 @@ undefined4 FormatLocalizedCommodityCountLabelByIndex(void)
   return 0;
 }
 
-// ghidra_name GetResourceTypeRandomDrawBlockFlag
-// ghidra_proto undefined GetResourceTypeRandomDrawBlockFlag()
-// FUNCTION: IMPERIALISM 0x00550d80
-undefined4 GetResourceTypeRandomDrawBlockFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name GetResourceDescriptorWord0CByType
 // ghidra_proto undefined GetResourceDescriptorWord0CByType()
 // FUNCTION: IMPERIALISM 0x00550db0

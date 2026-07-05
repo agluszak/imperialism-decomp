@@ -93,6 +93,8 @@ ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 
 extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64];
 
+short GetResourceTypeRandomDrawBlockFlag(short resourceType);
+
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
 // column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
 // points. See TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400).
@@ -206,7 +208,7 @@ extern TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext;
 extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;
-extern int g_pTradeSummarySelectionMap[32];
+extern const int g_pTradeSummarySelectionMap[23];
 extern const int kTradeSellPropagationTags[17];
 
 // 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout

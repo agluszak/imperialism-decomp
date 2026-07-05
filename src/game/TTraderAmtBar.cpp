@@ -8,7 +8,6 @@
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/TradeCommodityMetricRecord.h"
 #include "game/TGreatPower.h"
 
 #include "decomp_types.h"

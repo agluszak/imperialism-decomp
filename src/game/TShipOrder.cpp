@@ -33,9 +33,10 @@ static void ZeroShipOrderTrackingSlots(TShipOrder* order) {
   *reinterpret_cast<short*>(cursor) = 0;
 }
 
-TShipOrder::TShipOrder()
-    : quantityField04(0), cityField08(0), summaryField0c(0), field3e(0), field40(0), field44(0),
-      resourceTypeIndex48(0), field4a(0) {
+TShipOrder::TShipOrder() : TProductionOrder() {
+  // Fields are inherited from TProductionOrder, whose ctor already zero-inits
+  // them; this extra clear matches the original's belt-and-suspenders reset
+  // of the tracking-slot array at construction.
   ZeroShipOrderTrackingSlots(this);
 }
 // SYNTHETIC: IMPERIALISM 0x004b8470
@@ -167,27 +168,27 @@ bool TShipOrder::SetQuantity(short quantity) {
   city->cityStockLumberC8 =
       static_cast<short>(city->cityStockLumberC8 -
                          ReadWeight(g_industryActionCostWeightResCode09, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   city->cityStockFabricC6 =
       static_cast<short>(city->cityStockFabricC6 -
                          ReadWeight(g_industryActionCostWeightResCode08, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   city->cityStockArmsD6 =
       static_cast<short>(city->cityStockArmsD6 -
                          ReadWeight(g_industryActionCostWeightResCode10, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   city->cityStockSteelCC =
       static_cast<short>(city->cityStockSteelCC -
                          ReadWeight(g_industryActionCostWeightResCode0B, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   city->cityStockCoalBC =
       static_cast<short>(city->cityStockCoalBC -
                          ReadWeight(g_industryActionCostWeightResCode03, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   city->cityStockFuelCE =
       static_cast<short>(city->cityStockFuelCE -
                          ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
-  city->Refresh80();
+  city->VerifyStocks();
   return 1;
 }
 

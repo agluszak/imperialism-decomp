@@ -48,7 +48,7 @@ TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0),
 void TShipyardCluster::NoOpUiLifecycleHook(int styleSeed) {
   (void)styleSeed;
   TCity* cityState = GetNationCityStateBySlot(g_pSimMgr->GetActiveNationId());
-  field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
+  field_88 = cityState != 0 ? (int)cityState->shipOrderSlots[0] : 0;
   field_8c = 999;
   this->InitializeTradeMoveAndBarControls();
   this->ApplyMoveValue(0);

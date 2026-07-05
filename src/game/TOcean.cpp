@@ -246,13 +246,7 @@ TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005634a0
 void* TOcean::FindPortZoneBySelectedTile(TCity* city) {
-  short selectedTileId;
-  if (city->selectedOrderB0 == 0) {
-    selectedTileId = 1;
-  } else {
-    selectedTileId =
-        *reinterpret_cast<short*>(reinterpret_cast<char*>(city->selectedOrderB0) + 0x14);
-  }
+  short selectedTileId = city->SelectedOrderTileId();
   MapActionNodeView* node = reinterpret_cast<MapActionNodeView*>(g_pMapActionContextListHead);
   while (node != 0 &&
          node->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {

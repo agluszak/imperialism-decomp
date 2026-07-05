@@ -30,10 +30,17 @@ public:
   virtual undefined FillOrderSheet() override; // slot 0x10 0x4b5510
   virtual undefined InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5); // slot 0x11 0x4b5290
 // === END GENERATED DECLS (TItemOrder) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TItemOrder 0xCTOR`).
+  // TItemOrder is 0x54 bytes vs. TProductionOrder's 0x4c (RTTI), so it adds
+  // 8 bytes of its own (0x4c..0x54). Only `buildingSlot` at 0x52 is confirmed
+  // (read by TIndustryAmtBar::NoOpUiLifecycleHook / TIndustryCluster::NoOpUiLifecycleHook,
+  // 0x00589260 / 0x00588b70); the leading 6 bytes are still unresolved.
+  unsigned char pad4c[0x52 - 0x4c];
+  short buildingSlot; // 0x52
 
   TItemOrder();
 };
+
+ASSERT_SIZE(TItemOrder, 0x54);
 
 // === BEGIN GENERATED (TItemOrder) — refreshed by `just gen-class TItemOrder`; do not hand-edit ===
 // clang-format off

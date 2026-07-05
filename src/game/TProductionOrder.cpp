@@ -1,6 +1,12 @@
 #include "game/TProductionOrder.h"
 
-TProductionOrder::TProductionOrder() {}
+TProductionOrder::TProductionOrder()
+    : quantityField04(0), cityField08(0), summaryField0c(0), field3e(0), field40(0),
+      accumulatedValue(0), resourceTypeIndex48(0), field4a(0) {
+  for (int i = 0; i < 0x17; ++i) {
+    trackingSlots10[i] = 0;
+  }
+}
 // SYNTHETIC: IMPERIALISM 0x004b4eb0
 // TProductionOrder::CreateObject
 

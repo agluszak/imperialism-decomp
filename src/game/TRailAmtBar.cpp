@@ -11,7 +11,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
-#include "game/TradeCommodityMetricRecord.h"
+#include "game/TProductionOrder.h"
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
@@ -73,20 +73,20 @@ void TRailAmtBar::NoOpUiLifecycleHook(int arg) {
                                     scenario->extraAt1e + slots->valueAt4) /
                                    2);
   } else {
-    productionOrCapValue = selectedMetricRecord->QueryStepValue();
+    productionOrCapValue = selectedMetricRecord->MaxOrder();
   }
 
   if (productionOrCapValue == 0) {
     stepOrCurrentValue = 9999;
   } else {
-    short selectedStep = selectedMetricRecord->QueryStepValue();
+    short selectedStep = selectedMetricRecord->MaxOrder();
     stepOrCurrentValue = (short)(((int)selectedStep * this->field34) / (int)productionOrCapValue);
   }
   auxValueA = productionOrCapValue;
   if (productionOrCapValue == 0) {
     rangeOrMaxValue = 9999;
   } else {
-    rangeOrMaxValue = (short)((this->field34 * (int)selectedMetricRecord->controlValue) /
+    rangeOrMaxValue = (short)((this->field34 * (int)selectedMetricRecord->quantityField04) /
                               (int)productionOrCapValue);
   }
   auxValueB = 0x3a;

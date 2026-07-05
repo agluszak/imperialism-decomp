@@ -5,7 +5,6 @@
 #include "game/TTradeCluster.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/TradeCommodityMetricRecord.h"
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
 #include "game/ui_widget_thunks.h"
@@ -124,12 +123,14 @@ void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {
       goto LABEL_12;
     }
   }
-  if (cityState != 0) {
-    this->selectedMetricStep = cityState->tradeCommodityRecordPtrs[recordIndex]->buyQuantityStepRaw;
-    this->selectedMetricValue =
-        cityState->tradeCommodityRecordPtrs[recordIndex]->shortAt6 -
-        cityState->tradeCommodityRecordPtrs[recordIndex]->buyQuantityStepRaw;
-  }
+  // No commodity-record read here: the real disassembly (0x005897b0) falls
+  // through to the shared tail with `recordIndex` left at its initial value
+  // (the incoming `styleSeed` argument) and does NOT touch
+  // selectedMetricStep/selectedMetricValue in this branch — they simply keep
+  // whatever the caller/ctor already set. The previous body here read
+  // `buyQuantityStepRaw`/`shortAt6` off the facade at made-up offsets that
+  // never matched any real TProductionOrder field or this function's actual
+  // instructions; removed rather than reinventing conflicting base fields.
 LABEL_12:
   if (this->selectedMetricValue < 0) {
     this->selectedMetricValue = 0;

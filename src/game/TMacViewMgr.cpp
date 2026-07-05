@@ -1087,7 +1087,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needCurrent = static_cast<short>(nation->needCurrentByType[0] + nation->needCurrentByType[1]);
     g_pSimMgr->GetString(0x2735, 2, &formatTarget);
     {
-      int production = city->GetBuildingProductionValueBySlot(0);
+      int production = city->GetBuildingType(0);
       deficitCount =
           static_cast<short>(production * 2 - city->cityStockCottonB6 - city->cityStockWoolB8);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
@@ -1102,7 +1102,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needCurrent = nation->needCurrentByType[2];
     g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
-      int production = city->GetBuildingProductionValueBySlot(4);
+      int production = city->GetBuildingType(4);
       deficitCount = static_cast<short>(production * 2 - city->cityStockTimberBA);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockTimberBA));
@@ -1119,7 +1119,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needCurrent = nation->needCurrentByType[nationSlot];
     g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
-      int production = city->GetBuildingProductionValueBySlot(2);
+      int production = city->GetBuildingType(2);
       deficitCount = static_cast<short>(production - (&city->cityStockCottonB6)[nationSlot]);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
@@ -1147,7 +1147,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needCurrent = nation->needCurrentByType[6];
     g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
-      int production = city->GetBuildingProductionValueBySlot(6);
+      int production = city->GetBuildingType(6);
       deficitCount = static_cast<short>(production * 2 - city->cityStockOilC2);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockOilC2));
@@ -1163,7 +1163,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needCurrent = nation->needCurrentByType[8];
     g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
-      int production = city->GetBuildingProductionValueBySlot(1);
+      int production = city->GetBuildingType(1);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFabricC6);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockFabricC6));
@@ -1179,7 +1179,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needCurrent = nation->needCurrentByType[9];
     g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
-      int production = city->GetBuildingProductionValueBySlot(5);
+      int production = city->GetBuildingType(5);
       deficitCount = static_cast<short>(production * 2 - city->cityStockLumberC8);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockLumberC8));
@@ -1195,7 +1195,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needCurrent = nation->needCurrentByType[0xb];
     g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
-      int production = city->GetBuildingProductionValueBySlot(3);
+      int production = city->GetBuildingType(3);
       deficitCount = static_cast<short>(production * 2 - city->cityStockSteelCC);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockSteelCC));
@@ -1211,7 +1211,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needCurrent = nation->needCurrentByType[0xc];
     g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
-      int production = city->GetBuildingProductionValueBySlot(0xb);
+      int production = city->GetBuildingType(0xb);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFuelCE);
       formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                            static_cast<int>(city->cityStockFuelCE));
