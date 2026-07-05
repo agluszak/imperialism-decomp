@@ -22,6 +22,7 @@ int GetTradeSummarySelectionTagByIndex(short index);
 
 struct NationState;
 struct TQuickDrawSurfaceContext;
+class TArmyMgr;
 class TDiplomacyMgr;
 class TNavyMgr;
 class TSimMgr;
@@ -206,7 +207,7 @@ extern int DAT_006a601c;
 extern const char s_DataDirectoryPath_006942A8[];
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;
-extern int* g_pMapContextActionManager;
+extern TArmyMgr* g_pMapContextActionManager;
 extern int DAT_006a21c0;
 extern int g_nSaveFormatVersion;
 extern char g_szMovementParseCompareA_00694250[];

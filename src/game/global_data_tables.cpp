@@ -91,7 +91,7 @@ TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
 // GLOBAL: IMPERIALISM 0x006a43e4
 TNavyMgr* g_pNavyOrderManager = 0;
 // GLOBAL: IMPERIALISM 0x006a3338
-int* g_pMapContextActionManager = 0;
+TArmyMgr* g_pMapContextActionManager = 0;
 char g_vtblTSortedByRelationshipList = 0;
 // GLOBAL: IMPERIALISM 0x006a21c0
 int DAT_006a21c0 = 0;
