@@ -661,6 +661,33 @@ void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
   node->Free();
 }
 
+// FUNCTION: IMPERIALISM 0x005d7090
+void TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection(void* a1, void* a2, void* a3) {
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  DispatchTurnEventSlot4C(0x7d8, reinterpret_cast<int>(a1));
+  TDiplomacyMapView* mainView =
+      static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
+  mainView->AssertValid();
+  mainView->InvalidateAndForwardTabSwitchToChild(a1, a2, a3);
+}
+
+// FUNCTION: IMPERIALISM 0x005d7100
+char TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle(void* a1, void* a2, void* a3, void* a4) {
+  if (IsTurnCooldownCounterActiveOrResetFlag()) {
+    return 1;
+  }
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  DispatchTurnEventSlot4C(0x7d8, reinterpret_cast<int>(a1));
+  TDiplomacyMapView* mainView =
+      static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
+  mainView->AssertValid();
+  mainView->InvalidateAndRunChildWaitSheet(a1, a2, a3, a4);
+  // The original's non-cooldown path leaves AL from the (void) child call; the trailing
+  // xor al,al this emits is the sole residual diff (InvalidateAndRunChildWaitSheet is void,
+  // so its incidental AL cannot be tail-returned without regressing 0x4f7040's own match).
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005d7190
 void TViewMgr::UiRuntimeSlotD4(int arg) {
   (void)arg;

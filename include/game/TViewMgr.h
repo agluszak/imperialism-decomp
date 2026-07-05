@@ -120,6 +120,13 @@ public:
 
   int MapTurnEventCodeToPaletteIndex(int eventCode);
 
+  // 0x5d7090 / 0x5d7100 — turn-event 0x7D8: dispatch the event via slot 0x4C, then resolve the
+  // active dialog's 'main' control (a TDiplomacyMapView) and forward the tab-switch to its child.
+  // The 0x7100 variant early-outs while the turn-cooldown counter is active and finishes through
+  // the direct InvalidateAndRunChildWaitSheet path instead of the slot-0x79 virtual.
+  void DispatchTurnEvent7D8AndUpdateMainViewSelection(void* a1, void* a2, void* a3);
+  char DispatchTurnEvent7D8IfTurnFlowIdle(void* a1, void* a2, void* a3, void* a4);
+
   // 0x5dbd30 — turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the
   // 0x5DF handler; the original brackets the body with a scoped empty CString).
   void HandleTurnEvent5DE_RefreshMainView();

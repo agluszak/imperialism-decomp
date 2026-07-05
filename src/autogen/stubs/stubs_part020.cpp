@@ -427,22 +427,6 @@ undefined4 HandleTurnEventDialogFactorySlot80(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection
-// ghidra_proto undefined DispatchTurnEvent7D8AndUpdateMainViewSelection()
-// FUNCTION: IMPERIALISM 0x005d7090
-undefined4 DispatchTurnEvent7D8AndUpdateMainViewSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle
-// ghidra_proto undefined DispatchTurnEvent7D8IfTurnFlowIdle()
-// FUNCTION: IMPERIALISM 0x005d7100
-undefined4 DispatchTurnEvent7D8IfTurnFlowIdle(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::InvokeMainWidgetMethod1CCWithArgs
 // ghidra_proto undefined InvokeMainWidgetMethod1CCWithArgs()
 // FUNCTION: IMPERIALISM 0x005d71b0
