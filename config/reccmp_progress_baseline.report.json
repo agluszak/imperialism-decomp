@@ -12655,6 +12655,7 @@
     },
     {
       "address": "0x4e0590",
+      "effective": true,
       "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
@@ -19514,7 +19515,7 @@
     },
     {
       "address": "0x5393a0",
-      "matching": 0.3763837638376384,
+      "matching": 0.39114391143911437,
       "name": "TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure",
       "type": 1
     },
@@ -34763,7 +34764,7 @@
     },
     {
       "address": "0x5ea5d0",
-      "matching": 0.8421052631578947,
+      "matching": 0.8070175438596491,
       "name": "__CxxThrowException@8",
       "type": 1
     },
@@ -35717,7 +35718,7 @@
     },
     {
       "address": "0x5f7300",
-      "matching": 0.8257372654155496,
+      "matching": 0.7506702412868632,
       "name": "_signal",
       "type": 1
     },

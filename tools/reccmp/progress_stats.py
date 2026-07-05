@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from tools.common.repo import repo_root_from_file
+from tools.common.report_score import effective_matching
 
 FUNCTION_ROW_TYPE = "fun"
 GLOBAL_ROW_TYPES = ("dat", "lab", "str", "flo", "wid")
@@ -222,7 +223,7 @@ def parse_report_functions(path: Path) -> dict[str, dict[str, Any]]:
         address = row.get("address")
         if not address:
             continue
-        funcs[address] = {"m": float(row.get("matching", 0.0)), "n": row.get("name", "")}
+        funcs[address] = {"m": effective_matching(row), "n": row.get("name", "")}
     return funcs
 
 
@@ -331,7 +332,7 @@ def parse_report_counts(path: Path) -> dict[str, float | int]:
     total_matching = 0.0
     aligned = 0
     for row in rows:
-        matching = float(row.get("matching", 0.0))
+        matching = effective_matching(row)
         total_matching += matching
         aligned += int(matching >= 1.0)
 

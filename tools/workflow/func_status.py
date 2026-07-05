@@ -17,6 +17,7 @@ import sys
 from pathlib import Path
 
 from tools.common.pipe_csv import read_pipe_rows
+from tools.common.report_score import effective_matching
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SYMBOLS_CSV = REPO_ROOT / "config" / "symbols.csv"
@@ -47,7 +48,7 @@ def _scores() -> dict[str, float]:
     for entry in json.loads(BASELINE_REPORT.read_text(encoding="utf-8")).get("data", []):
         addr = entry.get("address")
         if addr:
-            out[addr.lower().replace("0x", "").lstrip("0") or "0"] = float(entry.get("matching", 0.0))
+            out[addr.lower().replace("0x", "").lstrip("0") or "0"] = effective_matching(entry)
     return out
 
 

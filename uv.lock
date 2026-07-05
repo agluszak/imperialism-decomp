@@ -109,7 +109,7 @@ requires-dist = [
     { name = "pcpp", specifier = ">=1.30" },
     { name = "pyghidra", specifier = "==3.1.0" },
     { name = "pyyaml", specifier = ">=6.0.3" },
-    { name = "reccmp", git = "https://github.com/agluszak/reccmp.git?rev=94642a8f" },
+    { name = "reccmp", git = "https://github.com/agluszak/reccmp.git?rev=a5818bbb" },
 ]
 
 [[package]]
@@ -383,8 +383,8 @@ wheels = [
 
 [[package]]
 name = "reccmp"
-version = "0.1.4"
-source = { git = "https://github.com/agluszak/reccmp.git?rev=94642a8f#94642a8ff7f659f6e37f94c614b73e0b480115ed" }
+version = "0.1.5"
+source = { git = "https://github.com/agluszak/reccmp.git?rev=a5818bbb#a5818bbb0f45b10880aa2027666580efcf8ab0f9" }
 dependencies = [
     { name = "capstone" },
     { name = "colorama" },

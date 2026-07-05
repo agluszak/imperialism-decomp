@@ -35,6 +35,7 @@ from pathlib import Path
 import capstone
 
 from tools.common.repo import repo_root_from_file
+from tools.common.report_score import effective_matching
 from tools.workflow.prune_ilt_thunks import original_exe_from_user_yml
 
 DATA_REF_RE = re.compile(r"(?P<name>[^\s\[\],]+) \(DATA\)")
@@ -140,7 +141,7 @@ def main() -> int:
     by_name: dict[str, set[int]] = defaultdict(set)
 
     for entity in data:
-        if (entity.get("matching") or 0) < args.min_match:
+        if effective_matching(entity) < args.min_match:
             continue
         for hunk in entity.get("diff") or []:
             for block in hunk[1]:

@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from tools.common.pipe_csv import read_pipe_rows
+from tools.common.report_score import effective_matching
 
 
 BUCKET_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
@@ -111,7 +112,7 @@ def parse_reccmp_report(path: Path) -> dict[int, float]:
             continue
         try:
             addr = int(addr_text, 16)
-            out[addr] = float(row.get("matching", 0.0)) * 100.0
+            out[addr] = effective_matching(row) * 100.0
         except ValueError:
             continue
     return out

@@ -19,6 +19,7 @@ import argparse
 import json
 from pathlib import Path
 
+from tools.common.report_score import effective_matching
 from tools.reccmp.compare_batch import run_reccmp_json
 
 CACHE_NAME = "reccmp_addr_cache.json"
@@ -91,6 +92,8 @@ def main() -> int:
         name = ent.get("name", "?")
         score = ent.get("matching")
         score_pct = f"{score * 100:.2f}%" if isinstance(score, (int, float)) else "?"
+        if ent.get("effective"):
+            score_pct = f"{effective_matching(ent) * 100:.2f}% (effective, raw {score_pct})"
         orig_str = f"0x{orig:08x}" if orig is not None else "?"
         recomp_str = f"0x{recomp:08x}" if recomp is not None else "(not linked)"
         print(f"[{direction}] orig {orig_str}  recomp {recomp_str}  {score_pct}  {name}")

@@ -23,6 +23,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+from tools.common.report_score import effective_matching
+
 MARKER_RE = re.compile(r"//\s*FUNCTION:\s*\w+\s+0x([0-9A-Fa-f]+)")
 
 
@@ -85,9 +87,11 @@ def main() -> int:
             print(f"  0x{a:08x}  ???.??%  <not found in reccmp output>")
             fails.append(f"0x{a:08x}(missing)")
             continue
-        pct = r["matching"] * 100.0
+        pct = effective_matching(r) * 100.0
+        effective = pct >= 100.0 and r["matching"] < 1.0
         mark = "OK " if pct >= 100.0 else "   "
-        print(f"{mark}0x{a:08x}  {pct:6.2f}%  {r['name']}")
+        note = " (effective)" if effective else ""
+        print(f"{mark}0x{a:08x}  {pct:6.2f}%  {r['name']}{note}")
         if pct >= 100.0:
             passed += 1
         else:

@@ -23,6 +23,7 @@ import json
 from pathlib import Path
 
 from tools.common.pipe_csv import read_pipe_rows
+from tools.common.report_score import effective_matching
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SYMBOLS_CSV = REPO_ROOT / "config" / "symbols.csv"
@@ -77,7 +78,7 @@ def _load_scores() -> dict[int, float]:
         if not addr:
             continue
         try:
-            out[int(addr, 16)] = float(entry.get("matching", 0.0))
+            out[int(addr, 16)] = effective_matching(entry)
         except (ValueError, TypeError):
             continue
     return out
