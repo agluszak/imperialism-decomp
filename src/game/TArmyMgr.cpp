@@ -11,6 +11,7 @@
 #include "game/TMapUberPicture.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TNavyMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TSortedList.h"
 #include "game/TSoundPlayer.h"
@@ -993,9 +994,71 @@ int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
 
 // FUNCTION: IMPERIALISM 0x004a5080
 bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex) {
-  // TODO: port body @ 0x4a5080 (1407 bytes; large, not yet ported).
-  (void)cityRecordIndex;
-  return false;
+  TMilitaryUnit* unit =
+      g_pGlobalMapState->ValidateGridIndexRange0To17F(this->pendingMapActionIndex);
+  int totalCost = 0;
+  for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+      totalCost += unit->GetUnitTypeCostPoints();
+    }
+  }
+  if (totalCost == 0) {
+    return false;
+  }
+
+  if (!g_pGlobalMapState->TileHasMovementClassId(this->pendingMapActionIndex, cityRecordIndex)) {
+    // Ground truth builds and dispatches a "not adjacent" localized message here
+    // (TSimMgr::GetString group 0x2745 offsets 4/5, then
+    // TViewMgr::DispatchLocalizedUiMessageWithTemplate(5)). That dispatch's own real
+    // arity (3 explicit stack args per its own disassembly at 0x5d5c40) contradicts this
+    // callsite's 0 explicit args -- the same class of contradiction already documented on
+    // TMapUberPicture::DispatchPictureResourceCommand -- so it's left undone rather than
+    // faked.
+    return false;
+  }
+
+  if (!g_pGlobalMapState->AreAllLinkedEntriesTerrainFlagBit2Clear(this->pendingMapActionIndex)) {
+    // Ground truth builds and dispatches a similar "at war" localized message here; same
+    // DispatchLocalizedUiMessageWithTemplate arity caveat as above.
+    return false;
+  }
+
+  short activeNationId = g_pSimMgr->GetActiveNationId();
+  TCountry* activeCountry = g_apTerrainTypeDescriptorTable[activeNationId];
+  int reinforcementCost = 0;
+  CIterator orderIter(activeCountry->militaryUnitList44);
+  for (TUnit* order = static_cast<TUnit*>(orderIter.Reset()); orderIter.More();
+       order = static_cast<TUnit*>(orderIter.Advance())) {
+    if (order->field_8 == 1 && order->field_C == cityRecordIndex &&
+        !g_pGlobalMapState->TileHasMovementClassId(order->field_6, cityRecordIndex)) {
+      reinforcementCost += static_cast<TMilitaryUnit*>(order)->GetUnitTypeCostPoints();
+    }
+  }
+
+  int seaValue = g_pNavyOrderManager->ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
+      activeNationId, &g_pGlobalMapState->cityScoreTable[cityRecordIndex], 0);
+  if (totalCost + reinforcementCost > seaValue) {
+    // Ground truth builds and dispatches an "insufficient capacity" localized message
+    // here (scanBracketExpressions-templated, embedding totalCost/reinforcementCost/
+    // seaValue); same DispatchLocalizedUiMessageWithTemplate arity caveat as above.
+    return false;
+  }
+
+  for (unit = g_pGlobalMapState->ValidateGridIndexRange0To17F(this->pendingMapActionIndex);
+       unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+      unit->SetOrderModeSlot34(1, cityRecordIndex);
+    }
+  }
+  g_pGlobalMapState->MarkAdjacentHexOrderDirectionAndSelectTile(this->pendingMapActionIndex,
+                                                                cityRecordIndex, 1);
+
+  if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
+    g_pUiRuntimeContext->mapUberPictureF0->NotifySubviewOfSelectedTile(
+        g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationSlot);
+  }
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004a5760

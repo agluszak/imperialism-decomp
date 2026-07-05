@@ -337,6 +337,12 @@ public:
   // 0x00519010, __thiscall, one int stack arg.
   int ClassifyCityGateTerrainComposition(int cityIndex);
 
+  // Returns cityScoreTable[index].stationedUnitChain98 when index is in [0, 0x180), else
+  // nullptr -- the same "validate then fetch the tile's unit chain head" idiom already
+  // inlined at several other TArmyMgr callsites, but here it's the original's own
+  // standalone function. 0x004a4190, __thiscall, one short stack arg.
+  TMilitaryUnit* ValidateGridIndexRange0To17F(short index);
+
   // Clears terrainStateTable[i].perTileVisitedFlag0f for every one of the 0x1950
   // (108x60) map tiles. 0x00409250, __thiscall, no args.
   void ClearPerTileByte0FForAllMapTiles();

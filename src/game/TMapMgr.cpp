@@ -17,6 +17,14 @@ void RemovePortZoneByTile(short nTileIndex);
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
 
+// FUNCTION: IMPERIALISM 0x004a4190
+TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
+  if (index < 0 || index >= 0x180) {
+    return nullptr;
+  }
+  return cityScoreTable[index].stationedUnitChain98;
+}
+
 extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
   typedef short(__cdecl * Func)(short, short);
   return reinterpret_cast<Func>(0x00512dd0)(sourceTile, destTile);

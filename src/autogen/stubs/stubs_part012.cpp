@@ -235,14 +235,6 @@ undefined4 OrphanVtableAssignStub_004a31e0(void)
   return 0;
 }
 
-// ghidra_name ValidateGridIndexRange0To17F
-// ghidra_proto undefined ValidateGridIndexRange0To17F()
-// FUNCTION: IMPERIALISM 0x004a4190
-undefined4 ValidateGridIndexRange0To17F(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeSelectedTileCityActionGateSum
 // ghidra_proto undefined ComputeSelectedTileCityActionGateSum()
 // FUNCTION: IMPERIALISM 0x004a41d0
