@@ -371,14 +371,6 @@ undefined4 MarkDirectionalMapOverlayFlagsForNationOrders(void)
   return 0;
 }
 
-// ghidra_name CreateTacticalBattleViewAndInitializeBattleSetup_Impl
-// ghidra_proto undefined CreateTacticalBattleViewAndInitializeBattleSetup_Impl()
-// FUNCTION: IMPERIALISM 0x00519010
-undefined4 CreateTacticalBattleViewAndInitializeBattleSetup_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name DumpAndResetMapScriptState
 // ghidra_proto void __fastcall DumpAndResetMapScriptState(void * pMapState)
 // FUNCTION: IMPERIALISM 0x00519140

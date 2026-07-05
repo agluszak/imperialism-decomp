@@ -35,26 +35,10 @@ undefined4 OrphanCallChain_C4_I70_0059f610(void)
   return 0;
 }
 
-// ghidra_name TTacticalBattle::ConstructTTacticalBattleBaseState
-// ghidra_proto undefined ConstructTTacticalBattleBaseState()
-// FUNCTION: IMPERIALISM 0x0059f770
-undefined4 ConstructTTacticalBattleBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTTacticalBattleAndMaybeFree_Impl
 // ghidra_proto undefined DestructTTacticalBattleAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0059f7d0
 undefined4 DestructTTacticalBattleAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyBattle::ConstructTArmyBattleBaseStateImpl
-// ghidra_proto undefined ConstructTArmyBattleBaseStateImpl()
-// FUNCTION: IMPERIALISM 0x0059f7f0
-undefined4 ConstructTArmyBattleBaseStateImpl(void)
 {
   return 0;
 }
@@ -391,14 +375,6 @@ undefined4 CreateTArmyBattleInstance(void)
 // ghidra_proto undefined ConstructTArmyBattleBaseState()
 // FUNCTION: IMPERIALISM 0x005a4770
 undefined4 ConstructTArmyBattleBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeBattleSetupAndMaybeDispatchTurnEventED8
-// ghidra_proto undefined InitializeBattleSetupAndMaybeDispatchTurnEventED8()
-// FUNCTION: IMPERIALISM 0x005a4790
-undefined4 InitializeBattleSetupAndMaybeDispatchTurnEventED8(void)
 {
   return 0;
 }

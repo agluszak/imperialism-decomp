@@ -2394,3 +2394,8 @@ void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, i
   packet.eventCode = 0x27;
   g_pNetMgr006a6014->Send(&packet, 0);
 }
+
+// FUNCTION: IMPERIALISM 0x0054c660
+void TMultiplayerMgr::NoOpCallbackRet4(void* param) {
+  (void)param;
+}

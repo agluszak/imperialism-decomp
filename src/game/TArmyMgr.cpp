@@ -2,6 +2,7 @@
 
 #include "game/CIterator.h"
 #include "game/CString.h"
+#include "game/TArmyBattle.h"
 #include "game/TArmyStack.h"
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
@@ -9,6 +10,7 @@
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/TMilitaryUnit.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TSortedList.h"
 #include "game/TSoundPlayer.h"
@@ -68,18 +70,18 @@ undefined TArmyMgr::OrphanCallChain_C4_I26_004a1e40() {
 
 // FUNCTION: IMPERIALISM 0x004a1eb0
 void TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags() {
-  if (this->cachedObject39c != nullptr) {
-    this->cachedObject39c->Free();
+  if (this->ourStackBattle39c != nullptr) {
+    this->ourStackBattle39c->Free();
   }
-  this->cachedObject39c = nullptr;
-  if (this->cachedObject3a0 != nullptr) {
-    this->cachedObject3a0->Free();
+  this->ourStackBattle39c = nullptr;
+  if (this->enemyStackBattle3a0 != nullptr) {
+    this->enemyStackBattle3a0->Free();
   }
-  this->cachedObject3a0 = nullptr;
-  if (this->cachedObject3a4 != nullptr) {
-    this->cachedObject3a4->Free();
+  this->enemyStackBattle3a0 = nullptr;
+  if (this->activeBattleView3a4 != nullptr) {
+    this->activeBattleView3a4->Free();
   }
-  this->cachedObject3a4 = nullptr;
+  this->activeBattleView3a4 = nullptr;
 
   this->IterateLinkedListCursorAndClearPerTileByte0F();
   this->WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0();
@@ -218,18 +220,18 @@ undefined TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates() {
 // FUNCTION: IMPERIALISM 0x004a2390
 undefined TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation() {
   bool battleViewCreated = false;
-  if (this->cachedObject39c != nullptr) {
-    this->cachedObject39c->Free();
+  if (this->ourStackBattle39c != nullptr) {
+    this->ourStackBattle39c->Free();
   }
-  this->cachedObject39c = nullptr;
-  if (this->cachedObject3a0 != nullptr) {
-    this->cachedObject3a0->Free();
+  this->ourStackBattle39c = nullptr;
+  if (this->enemyStackBattle3a0 != nullptr) {
+    this->enemyStackBattle3a0->Free();
   }
-  this->cachedObject3a0 = nullptr;
-  if (this->cachedObject3a4 != nullptr) {
-    this->cachedObject3a4->Free();
+  this->enemyStackBattle3a0 = nullptr;
+  if (this->activeBattleView3a4 != nullptr) {
+    this->activeBattleView3a4->Free();
   }
-  this->cachedObject3a4 = nullptr;
+  this->activeBattleView3a4 = nullptr;
 
   int stackCount = this->pendingUnitPool0c->GetCountSlot48();
   if (this->pendingRebuildFlag10 <= stackCount) {
@@ -1025,10 +1027,26 @@ void TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex
 void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
                                                                 TArmyStack* enemyStack,
                                                                 int ownerNationCodeInt) {
-  // TODO: port body @ 0x4a5b10 (243 bytes; SEH-framed; not yet ported).
-  (void)ourStack;
-  (void)enemyStack;
-  (void)ownerNationCodeInt;
+  int compositionClass = g_pGlobalMapState->ClassifyCityGateTerrainComposition(ownerNationCodeInt);
+  // Ground truth also computes fortLevel03 (+1 when positive) here, but never reads it
+  // again before it's overwritten -- kept for fidelity, matching the dead assignment in
+  // the original.
+  (void)g_pGlobalMapState->cityScoreTable[ownerNationCodeInt].fortLevel03;
+
+  TArmyBattle* newBattle = new TArmyBattle();
+  newBattle->InitializeBattleSetupAndMaybeDispatchTurnEventED8(ourStack, enemyStack,
+                                                               compositionClass);
+
+  this->ourStackBattle39c = ourStack;
+  this->enemyStackBattle3a0 = enemyStack;
+  this->activeBattleView3a4 = newBattle;
+
+  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+    g_pGameFlowState->NoOpCallbackRet4(newBattle);
+  }
+  // Ground truth also calls newBattle->field_0x18->vtable[0x28]() here
+  // (CallObjectOffset18Vslot28) -- TArmyBattle's own +0x18 field isn't recovered, so this
+  // dispatch is left undone rather than faked.
 }
 
 // FUNCTION: IMPERIALISM 0x004a6680

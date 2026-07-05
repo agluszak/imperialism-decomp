@@ -134,11 +134,13 @@ public:
   unsigned char needsTerrainRefreshFlag39a;
   unsigned char pad39b;
   // +0x39c/+0x3a0/+0x3a4 -- three cached objects released (TObject::Free) and cleared by
-  // ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags; concrete subtype not
-  // identified beyond TObject.
-  TObject* cachedObject39c;
-  TObject* cachedObject3a0;
-  TObject* cachedObject3a4;
+  // ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags. Typed from
+  // CreateTacticalBattleViewAndInitializeBattleSetup's own construction evidence (best-
+  // effort argument order derived from calling-convention analysis, not yet confirmed by
+  // a passing `just compare` on that function).
+  class TArmyStack* ourStackBattle39c;
+  class TArmyStack* enemyStackBattle3a0;
+  class TArmyBattle* activeBattleView3a4;
 
   // Releases the 3 cached objects above, re-runs the per-tile-unit cleanup (slot 0x0d)
   // and eligibility rebuild (slot 0x12), and -- when needsTerrainRefreshFlag39a is set --

@@ -7566,7 +7566,7 @@
     },
     {
       "address": "0x4a5b10",
-      "matching": 0.025974025974025976,
+      "matching": 0.36220472440944884,
       "name": "CreateTacticalBattleViewAndInitializeBattleSetup",
       "type": 1
     },
@@ -12187,7 +12187,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12625,25 +12625,25 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12679,7 +12679,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16118,7 +16118,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20354384370740572,
+      "matching": 0.2044525215810995,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17054,7 +17054,7 @@
     },
     {
       "address": "0x519010",
-      "matching": 0.025974025974025976,
+      "matching": 0.3821656050955414,
       "name": "CreateTacticalBattleViewAndInitializeBattleSetup_Impl",
       "type": 1
     },
@@ -18038,7 +18038,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -19935,7 +19935,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -21303,7 +21303,7 @@
     },
     {
       "address": "0x54c660",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "NoOpCallbackRet4",
       "type": 1
     },
@@ -29075,12 +29075,6 @@
       "type": 1
     },
     {
-      "address": "0x59f770",
-      "matching": 0.15384615384615385,
-      "name": "TTacticalBattle::ConstructTTacticalBattleBaseState",
-      "type": 1
-    },
-    {
       "address": "0x59f7a0",
       "matching": 0.9090909090909091,
       "name": "TTacticalBattle::`scalar deleting destructor'",
@@ -29088,7 +29082,7 @@
     },
     {
       "address": "0x59f7f0",
-      "matching": 0.05,
+      "matching": 0.38235294117647056,
       "name": "TArmyBattle::ConstructTArmyBattleBaseStateImpl",
       "type": 1
     },
