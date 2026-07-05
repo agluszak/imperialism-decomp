@@ -710,11 +710,9 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
         OffsetRect(&destRect, 0, (surfaceHeight - destRect.top) - destRect.bottom);
       }
 
-      int strategicMapSurface =
-          *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x6b8);
-      BlitQuickDrawSurfaces(
-          reinterpret_cast<TQuickDrawSurfaceContext*>(strategicMapSurface)->GetBlitSurface(),
-          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &destRect, 0x24);
+      BlitQuickDrawSurfaces(g_pStrategicMapViewSystem->atlas6b8->GetBlitSurface(),
+                            g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &destRect,
+                            0x24);
 
       destRect.left = iconRect->left - 1;
       destRect.top = iconRect->top - 1;

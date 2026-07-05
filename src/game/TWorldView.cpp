@@ -155,9 +155,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
     short actionIndex = g_pMapContextActionManager->pendingMapActionIndex;
     if (actionIndex != -1) {
       previewBand = -1;
-      previewTileIndex = *reinterpret_cast<short*>(
-          *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10) + 4 +
-          actionIndex * 0xa8);
+      previewTileIndex = g_pGlobalMapState->cityScoreTable[actionIndex].ownerNationSlot;
     }
   } else if (interactionMode == 2) {
     int attachedEntity = 0;

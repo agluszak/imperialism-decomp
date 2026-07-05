@@ -134,8 +134,7 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
 
   const short localizationMode = static_cast<short>(g_pSimMgr->mode);
   if (localizationMode == 0x16 || localizationMode == 0x17) {
-    const char* tileRecordBytes = reinterpret_cast<const char*>(
-        *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10));
+    const char* tileRecordBytes = reinterpret_cast<const char*>(g_pGlobalMapState->cityScoreTable);
     int flagIndex = 0;
     for (int tileOffset = 0; tileOffset < 0xfc00; tileOffset += 0xa8) {
       if (tileRecordBytes[tileOffset] != -1) {
