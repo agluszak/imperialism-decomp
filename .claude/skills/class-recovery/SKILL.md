@@ -120,5 +120,5 @@ layouts (dumped via `just ghidra-vtable-dump`): `CObject` (`0x66fec4`, 5 slots),
 (`CObject` base → `TIndexAndRankList : CObject` → `CPtrList` → `TSortedPtrList :
 TIndexAndRankList` → `CDocument`), unify each manual ctor's vtable write onto the same
 DATA symbol the C++ vtable resolves to, and re-verify the whole family +
-`just stats` (it touches ~20 already-100% functions). See heuristics.md #61–66
-for the concrete ctor/factory recipes.
+`just stats` (it touches ~20 already-100% functions). See heuristics.md #7–8
+for the ctor vtable-pairing and scalar-deleting-destructor recipes.

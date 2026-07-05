@@ -137,7 +137,7 @@ The correct fix when the original does `CALL <ilt-thunk>` → real target:
    convention: MFC `PASCAL`/`WINAPI` helpers (e.g. `CDC::FromHandle`) are `__stdcall`
    (callee cleans) — a `__cdecl` cast adds a spurious `add esp,4`.
 
-See heuristic **12b** in `heuristics.md` for the worked example (the QuickDraw DC family).
+See heuristic **12c** in `heuristics.md` for the worked example (the QuickDraw DC family).
 
 ## When a compare fails to pair
 

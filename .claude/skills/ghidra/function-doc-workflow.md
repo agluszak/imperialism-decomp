@@ -53,7 +53,7 @@ hint at stack-alignment issues), **Pointer arithmetic** (stride 1×/2×/4×/8×)
 **Conditionals** (`JZ` may be inverted), **Early exits** (tail calls misrepresented as
 returns). Document discrepancies in the plate comment. (For MSVC x86 specifically,
 watch `ret 0xN` stack-cleanup sizes — they reveal hidden stack args and the real
-calling convention; see `decomp-loop/heuristics.md` #15, #82.)
+calling convention; see `decomp-loop/heuristics.md` #5, #6.)
 
 ## Control flow and loop mapping
 

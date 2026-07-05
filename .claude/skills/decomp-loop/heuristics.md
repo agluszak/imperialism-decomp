@@ -7,9 +7,12 @@ The matching playbook: transferable tactics for raising `reccmp` scores on
 dead ends belong in commit messages, not here.
 
 When you learn a new transferable lesson (decomp-loop step 9), fold it into the
-relevant theme below — keep one short rule plus one or two `0xADDR (NN%→MM%)`
-evidence points. Do not append address-specific worklog entries here, and do not
-restate a Hard Rule or a memory; link to it instead.
+relevant numbered theme below — keep one short rule plus one or two
+`0xADDR (NN%→MM%)` evidence points. Do not append address-specific worklog
+entries here, and do not restate a Hard Rule or a memory; link to it instead.
+**Note numbers are stable identifiers** (commits and skills cite them): never
+renumber an existing note; a new note takes the next free number, and a note
+folded into another leaves a one-line pointer behind.
 
 ---
 
@@ -25,19 +28,13 @@ restate a Hard Rule or a memory; link to it instead.
   pointer casts, or manual vptr writes. The durable fix is real inheritance so the
   base ctor is referenced symbolically. See [[ilt-thunk-retirement]].
 - **A self-`this` vtable-slot call whose arg count / `RET n` can't match the
-  attributed class's slot means the function is mis-attributed.** Verify slot N by
-  reading the real method body (`RET imm`/arg reads) against the disassembled
-  callsite (count the `push`es before `CALL [vtbl+off]`, check for stack cleanup
-  after). On mismatch, trace the caller: `xrefs_to` the function (and its ILT thunk),
-  then read who loads `ECX` at the call (`MOV ECX,ESI` where `ESI=this` of a known
-  class). `0x4d3a60` was filed as `TCivToolbar` (slot 0x0c = 0-arg `RET 0` stub) but
-  its `this` is a `TCivMgr` (slot 0x0c = `RelinkCivilianOrderTileAndInvalidateMapTiles`,
-  2-arg `RET 8`); re-attributing let the finalize call become a real virtual and
-  dropped a spurious dummy-`edx` write (18.9%→19.6%). reccmp pairs by address, so the
-  fix is moving the body to the right class file + `symbols.csv` rename, not a
-  score change per se — but it unblocks real-virtual modeling.
-
-## 2. (removed)
+  attributed class's slot means the function is mis-attributed.** Verify the slot by
+  reading the real method body (`RET imm`, arg reads) against the callsite (count the
+  `push`es before `CALL [vtbl+off]`); on mismatch, trace who loads `ECX` at the call.
+  `0x4d3a60` was filed as `TCivToolbar` but its `this` is a `TCivMgr`; re-attributing
+  let the finalize call become a real virtual. reccmp pairs by address, so the fix is
+  moving the body to the right class file + `symbols.csv` rename — it unblocks
+  real-virtual modeling rather than changing the score per se.
 
 ## 3. Constructor matching = field-init PLACEMENT
 
@@ -98,8 +95,7 @@ who sets `ecx`/`edx`, who cleans the stack. See [[cdecl-thiscall-mislabel]],
 - Stale Ghidra boundaries/prototypes: a live `ghidra-listing` may report "no function"
   while `symbols.csv`/reccmp still pair the body. Trust the pushed args and `ret N`
   over the autogen `(void)` prototype.
-- `just scan-cdecl-thiscall` (tool `tools/ghidra/scan_cdecl_thiscall.py`) classifies
-  candidates: verdicts `ecx_this`/`no_ecx`/`empty`.
+- `just scan-cdecl-thiscall` classifies candidates: verdicts `ecx_this`/`no_ecx`/`empty`.
 
 ## 6. ABI return contracts
 
@@ -113,24 +109,17 @@ who sets `ecx`/`edx`, who cleans the stack. See [[cdecl-thiscall-mislabel]],
   on the success/fallthrough path and a caller branches on it, model a `char`/flag
   return (`0x004ef700` reject=0/valid=1). `extraout_AL` after a call means that call
   returns the flag.
-- **`ret N` as a class discriminator for a vtable receiver.** When a callsite dispatches
-  `call [vtable + byteOff]` and pushes **A** args, the slot's true ABI is thiscall + A
-  stack args. If your candidate base class's body for that same slot is `ret M` with
-  M ≠ 4·A, the receiver is **not** that base — it's a sibling subclass with its own slot
-  at that offset (the base's `OrphanRetStub`/no-op there is a shared placeholder, not the
-  real signature). Don't cast to the base and fight signatures; model the receiver as its
-  own vtable-view/class (see §4). Example: a `push 1; call [n+0x1a0]` callsite against
-  TControl whose slot-0x68 body is `ret 0x14` (5 args) proved the node was a distinct
-  TView-family dialog, not a TControl — modeled as `struct Node : public TView` with its
-  own 0x68+ virtuals (`0x5d57b0`).
-- **An empty `ret N` body still encodes its arg count — fix the arity everywhere.** A
-  no-op base virtual compiled as a 3-byte `RET 0x4` takes **one** stack arg; don't read
-  the empty body as "no params". When a callsite pushes an arg to a slot whose provisional
-  decl is arg-less (`field64->vmethod_0081(0)` vs declared `vmethod_0081()` ← `0x48a710`
-  is `RET 0x4`), correct the arity on the **base declaration and every real override**
-  (both headers and defs) plus the `symbols.csv` / `function_name_overrides.csv` rows, or
-  the `override` macro silently desyncs the slot (§14). (Fixed across TEventHandler +
-  TEditText/TMapMaker.)
+- **`ret N` as a class discriminator for a vtable receiver.** When a callsite pushes
+  **A** args to `call [vtable + byteOff]` but your candidate base's body at that slot
+  is `ret M` with M ≠ 4·A, the receiver is **not** that base — it's a sibling subclass
+  with its own slot there (the base's no-op stub is a shared placeholder, not the real
+  signature). Model the receiver as its own vtable-view/class (see §4); don't cast to
+  the base and fight signatures (`0x5d57b0`).
+- **An empty `ret N` body still encodes its arg count.** A no-op base virtual compiled
+  as `RET 0x4` takes one stack arg; don't read the empty body as "no params". Correct
+  the arity on the **base declaration and every override** (headers + defs) plus the
+  `symbols.csv`/`function_name_overrides.csv` rows, or the `override` macro silently
+  desyncs the slot (§14). (Fixed across TEventHandler + TEditText/TMapMaker, `0x48a710`.)
 
 ## 7. Data-symbol and vtable pairing infrastructure
 
@@ -149,8 +138,7 @@ reccmp pairs by **name** (stripping C-linkage underscore); values are irrelevant
   whose single vptr write is at the top of the derived body. See commit f6a0588 and
   AGENTS construction rules 1–2.
 - Keep the manual write + DATA row only when the ctor is called by name / via jmp-thunk
-  (a C++ ctor can't be addressed — see §3 and note on base-state methods) or when it
-  deliberately skips an intermediate base.
+  (a C++ ctor can't be addressed) or when it deliberately skips an intermediate base.
 
 ## 8. Scalar deleting destructors
 
@@ -220,51 +208,48 @@ A duplicated or over-sized declaration shifts every later slot/field by a consta
   a redeclared-but-not-overriding virtual becomes a NEW appended slot (+misalignment).
   See [[diplomacy-state-cleanup-progress]].
 
-### 12b. Vtable-not-matching campaign: the five recurring defects (2026-06-21)
+### 12b. Vtable-not-matching: the five recurring defects
 
 `override` is `#define override` (empty) in `compat.h` — MSVC500 has no override
 keyword, so the compiler matches an override to a base slot purely by **name +
 signature**. A derived "override" whose name/signature differs from the base virtual
 is silently appended as a NEW slot → "Recomp vtable is larger than orig" + every later
 slot shifts. Driving `Vtables not matching` down is mostly finding these. Five patterns,
-all source-only (edit header/cpp → `just build` → `just vtable`; ignore manifests):
+all source-only (edit header/cpp → `just build` → `just vtable`):
 
 1. **Duplicate virtuals for one slot** — generated `Orphan*`/`cmd_slotN` placeholder
    decls PLUS hand-written typed decls for the same slots ⇒ 2× the slots. Delete the
    junk set, keep the real typed methods (TBehavior, TCommand).
 2. **Wrong base class** — a class whose vtable shows TObject bodies (Serialize 0x485e90,
    WriteTo 0x485f70, ShallowFree 0x415ce0 at 0x08/0x14/0x24) but is modeled `: CObject`
-   or base-less. Reparent to `TObject` and drop the redundant streamSlot/cmd_slot decls
-   (TCommand→TObject, TStream→TObject). TObject vtable is 0x6485c0, 10 slots (0x00-0x24).
-3. **Missing base virtuals** — base header stops short; derived "inherited" comments name
-   slots the base never declares, so derived new/override virtuals land early. Add the
-   missing virtuals to the base in slot order (TPtrList 0x64-0x78, TStaticText 0x1c4-0x1d4).
+   or base-less. Reparent to `TObject` and drop the redundant slot decls
+   (TCommand→TObject, TStream→TObject). TObject vtable is 0x6485c0, 10 slots.
+3. **Missing base virtuals** — base header stops short, so derived new/override virtuals
+   land early. Add the missing virtuals to the base in slot order (TPtrList 0x64-0x78,
+   TStaticText 0x1c4-0x1d4).
 4. **Phantom trailing virtuals** — base declares `virtual` methods past the real vtable
    end (orig shows "not annotated" tail). De-virtualize them (TAnimation 3 trailing).
 5. **Junk-named overrides** — derived overrides named `Free`/`OwnerPanel`/`OrphanX`
-   instead of the ancestor's real slot name ⇒ appended. Rename the derived method to the
-   exact base virtual name+signature (TCluster pending; the big cascade for clusters/
-   ministers/great-powers/zones). Per-class, laborious; signatures must match exactly.
+   instead of the ancestor's real slot name ⇒ appended. Rename to the exact base virtual
+   name+signature. Per-class, laborious; signatures must match exactly.
 
 Plus a non-vtable infra tell: a slot-4 scalar-dtor mismatch where two `symbols.csv` rows
 share the `Class::\`scalar deleting destructor'` name → reccmp mispairs our `~`. Make the
 sibling-class row's name unique (TSortedPtrList vs sibling 0x649010).
 
-## 12b. Retire ILT thunks by deleting the named `symbols.csv` row — don't cast them
+### 12c. Retire ILT thunks by deleting the named `symbols.csv` row — don't cast them
 
-When the original calls a function through an ILT jmp thunk (`CALL 0x409a11` → real
-target), reccmp auto-resolves the thunk to the real function **only if the thunk
-address has no named `symbols.csv` entry**. A named thunk row (`thunk_Foo`) makes
-reccmp compare `call thunk_Foo` vs your `call Foo` as a literal symbol mismatch (caps
-the caller at ~93%). Contrast: a thunk with *no* row (e.g. 0x403729→BindScoped) resolves
-to 100% for free. So the fix is to **port the real target into its correct file** (real
-body, `// FUNCTION:` marker, `sync-ownership`), delete the thunk's rows from both
-`config/symbols.csv` and `config/thunk_map.csv`, then call the real function directly —
-never declare the thunk with a typed signature and `reinterpret_cast` it, and never
-whitelist a stub in `tools/stubgen.py` to fake a signature (both are banned hacks). This
-took TView::Refresh 93%→100% and ported SetGlobalQuickDrawOrigin / Bind+ReleaseScoped-
-MapQuickDrawDcHandle from stubs to real owned bodies. Note MFC `CDC::FromHandle` &c. are
-`PASCAL`/`__stdcall` (callee cleans stack) — a `__cdecl` cast adds a spurious `add esp,4`.
+When the original calls through an ILT jmp thunk (`CALL 0x409a11` → real target), reccmp
+auto-resolves the thunk to the real function **only if the thunk address has no named
+`symbols.csv` entry**. A named thunk row (`thunk_Foo`) makes reccmp compare
+`call thunk_Foo` vs your `call Foo` as a literal symbol mismatch (caps the caller ~93%);
+a row-less thunk resolves to 100% for free. Fix: **port the real target into its correct
+file** (real body, `// FUNCTION:` marker, `sync-ownership`), delete the thunk's rows from
+both `config/symbols.csv` and `config/thunk_map.csv`, then call the real function
+directly — never declare the thunk with a typed signature and `reinterpret_cast` it, and
+never whitelist a stub in `tools/stubgen.py` (both are banned hacks). Took
+`TView::Refresh` 93%→100% (QuickDraw DC family). Watch conventions: MFC `CDC::FromHandle`
+&c. are `PASCAL`/`__stdcall` — a `__cdecl` cast adds a spurious `add esp,4`.
 See [[imported-thunks-block-vtable-resolution]], [[ilt-thunk-retirement]],
 [[banned-operator-new-cdecl-factory]].
 
@@ -273,8 +258,7 @@ See [[imported-thunks-block-vtable-resolution]], [[ilt-thunk-retirement]],
 When a vtable region is one repeating template (e.g. TGreatPower score-factor slots
 0x8e–0x9e = six shapes × {army,navy}), port it as a batch, not one-off: define the
 shared float coefficients as named globals and reconstruct loop shape from the
-listing's FSTP slots (Ghidra's decompile of float-heavy code is garbage). Order-class
-recovery for TGreatPower's pending-action slots is the related lever — see
+listing's FSTP slots (Ghidra's decompile of float-heavy code is garbage). See
 [[order-class-recovery-cstring-blocker]] and [[next-tgreatpower-vtable-scope]].
 
 ## 14. General process
@@ -286,22 +270,20 @@ recovery for TGreatPower's pending-action slots is the related lever — see
   keep the cleanup in helpers/typed views.
 - Batch related edits, then a single build + `just compare` over the batch; don't chase
   the last few percent on architecture-correct bodies. See [[big-batch-quality-passes]].
+- **Batch compare exists — never loop single `just compare` calls.** `just compare
+  0xA 0xB 0xC`, `just compare --file src/game/X.cpp`, and `just compare-class X` all
+  run reccmp once with `--json` (one PDB parse for any number of functions).
 - `just sync-ownership` is **deletion-reconciling** (and `just regen-stubs` runs it
   automatically): `marker_sync` rows whose marker disappeared are pruned; curated notes
   (e.g. `mfc_runtime_macro`) are never pruned. If a deleted function's stub still fails
   to regenerate, check for a leftover curated row. See
   [[stub-regen-thunks-alias-collision]].
 - After a vtable-dump correction, verify **every** declared virtual sits at the intended
-  slot index — a skipped slot in the header shifts all later entries. Details belong in
-  `docs/*_vtable_evidence.csv` / worklog, not here.
-- `override` is a **no-op macro** under MSVC500 (`compat.h`: `#define override`), so a
-  derived declaration whose name/signature drifts from the base virtual silently becomes
-  a *new* vtable slot (extra slots, shifted layout) instead of an override — the build
-  won't complain. **`just lint` (real clang) is the only check that enforces this**: it
-  sees the genuine `override` keyword and errors on a non-overriding declaration. Run it
-  after any base-virtual rename or derived-override edit, before trusting `just vtable`.
-  (Found via a TWindow slot 0x60-0x63 `vmethod_009x` vs renamed `ReturnFromUiSlot6x`
-  desync that broke the TGameWindow vtable.)
+  slot index — a skipped slot in the header shifts all later entries.
+- `override` is a no-op macro under MSVC500 (§12b), so the build won't complain about a
+  non-overriding declaration. **`just lint` (real clang) is the only check that enforces
+  it** — run it after any base-virtual rename or derived-override edit, before trusting
+  `just vtable`. (Caught a TWindow slot 0x60-0x63 rename desync.)
 
 ## 15. Real MFC surface — call it directly, don't model it
 
@@ -320,15 +302,10 @@ against them.
   `CFrameWnd`, `CDocument`, `CDC`, …) — annotate it.** Mirror `CObject.cpp`/`CDocument.cpp`/
   `MfcRuntime.cpp`: a bodyless `// LIBRARY: IMPERIALISM 0xADDR` + `// Class::Method` comment
   pair (ascending address order), and rename the `symbols.csv` row at that addr to the real
-  MFC name (`CenterWindow` → `CWnd::CenterWindow`). reccmp then pairs the orig addr to the
-  linked nafxcw function. **Caveat:** a LIBRARY function only pairs once our build actually
-  *links* it — i.e. some manual code calls it (just like `CObject::IsKindOf` only paired
-  after `Free` called it). Annotating `CWnd::CenterWindow` @0x60a27d lifted the calling
-  wrapper 0x48e150 71%→74%; annotate the rest of the CWnd surface (`CreateEx` @0x608115,
-  `WindowProc`, `OnWndMsg`, …) as the window code that uses them is ported. So to "recover"
-  an MFC-derived game class (e.g. `CMcWindow : CWnd`, vtable 0x64b7c8 = the MFC message-map
-  vtable) you do NOT model `CWnd` — you `class X : public CWnd`, LIBRARY-annotate the CWnd
-  surface it calls, and write the real `new X(...)`. See [[cmcwindow-recovery-plan]].
+  MFC name. **Caveat:** a LIBRARY function only pairs once our build actually *links* it —
+  i.e. some manual code calls it. To "recover" an MFC-derived game class you do NOT model
+  `CWnd` — you `class X : public CWnd`, LIBRARY-annotate the CWnd surface it calls, and
+  write the real `new X(...)`. See [[cmcwindow-recovery-plan]].
 - **A `RUNTIME_CLASS` arg is a data global**: `IsKindOf(0x64b5d0)` → add a `g_pClassDesc<Class>`
   char + `// GLOBAL:` marker at that addr (rename the `symbols.csv` `Class::classRuntimeClass`
   row to it), pass `reinterpret_cast<CRuntimeClass*>(&g_pClassDesc<Class>)`. Same recipe as
@@ -336,17 +313,15 @@ against them.
 - **A "custom stack iterator" over a list field is usually MFC `POSITION` iteration.** A
   local `{pos, parent, flag, code, element}` struct whose advance helper walks
   `node{next@0, prev@4, data@8}` (reading `*(list+4)` = `m_pNodeHead`) is exactly
-  `GetHeadPosition()` + `GetNext(pos)`/`GetPrev(pos)` over a `CPtrList`. Recognize the raw
-  node walk and write the POSITION loop (TWindow `CallVoidSlotA0`/`DispatchSlot9C` child loops).
+  `GetHeadPosition()` + `GetNext(pos)`/`GetPrev(pos)` over a `CPtrList`.
 - **Generic-named callees are real functions, not "missing".** `FUN_00xxxxxx` is a defined
   function (just unnamed); a 5-byte `JMP` at `0x40xxxx` is an ILT thunk to a named target
   (`just ghidra-listing` the addr to resolve it). Forward-declare + call — minding the
-  Hard-Rule-9 thunk-signature trap for free `__cdecl` helpers (§12b).
+  Hard-Rule-9 thunk-signature trap (§12c).
 - **Don't fake these two shapes — recover the class instead:** (1) a free callee invoked with
-  `ECX=this` is a `__thiscall` *method* on that receiver (model it on the receiver class, never
-  reinterpret_cast a fake thiscall); (2) `buf = operator new(sz); Ctor(buf /*ecx*/, args)` is a
-  real `new RealClass(args)` expression (the banned EH-new-factory) — recover `RealClass`
-  (e.g. `CMcWindow : CWnd`, ctor 0x493470) and write `new CMcWindow(this)`.
+  `ECX=this` is a `__thiscall` *method* on that receiver; (2) `buf = operator new(sz);
+  Ctor(buf /*ecx*/, args)` is a real `new RealClass(args)` expression (the banned
+  EH-new-factory) — recover `RealClass` and write `new CMcWindow(this)` (ctor 0x493470).
 
 ## 16. Embedded subobject → expose via its real type
 
@@ -359,39 +334,22 @@ form to the original: a straight `mov eax,[this+off]; call [eax+slot]` is **dire
 (`reinterpret_cast<T*>(&field)->Method()`), while a `call [this_vtbl+0x1b8]` first is the
 **virtual accessor** (`GetEmbeddedX()->Method()`) — using the wrong one adds/drops a call
 (TWindow `DispatchEvent` 0x48dd10 direct vs `0x48dc90` via accessor). Reminder: an
-explanatory comment must go **above** the `// FUNCTION:` marker, never between it and the
-decl — a comment there silently unpairs the address (shows as `no recomp` / oversize vtable),
-not just a marker-gate fail.
-
-- **Shape-only class batch** *(historical — the gen-class/manifest tooling was retired 2026-07-02; config/classes/ manifests no longer exist)*: porting all remaining classes at once
-  works only if you *defer bodies*. `gen-class --no-bodies` emits header + GENERATED
-  DECLS + compilable **unmarked** cpp stubs (no `// FUNCTION:`/ownership/symbols), so
-  the vtable still emits/pairs but nothing claims the heavily-shared slot addresses
-  (claiming them is what made `sync-ownership` explode). Build blockers solved once and
-  for all in the generator: classify slots against the **full ancestry** (not just the
-  immediate base, which truncates/false-`new`s deep view vtables); propagate scalar-dtor
-  kind down the chain; match override return types to the nearest ancestor *header*
-  (C2555); dedupe duplicate slot names and sanitize invalid / bridge-shaped provisional
-  names to `VTableSlotNN`; `render_header` pulls `game/mfc.h` + forward-declares game
-  types; `compat.h` carries the Ghidra scalar typedefs. Bodies are the remaining
-  per-class decomp-loop work; expect the aligned-100% count to dip until they're ported.
+explanatory comment goes **above** the `// FUNCTION:` marker, never between it and the
+decl (§38).
 
 - **Codegen-saturated TU fragility (symmetric x87 FP leaves cannot be pinned).** In a huge
-  TU like `TGreatPower.cpp`, small commutative float leaves of the form
-  `tableA[p->idx] + tableB[q->idx]` (e.g. the `ComputeMinisterSkillFloatSlot8*` family
-  0x4e0590–0x4e0690) sit at a codegen knife-edge: MSVC500 freely reorders the `fld`/`fadd`
-  operands, and which order it picks is sensitive to the *whole* TU. **Any** recompile of
-  that TU — editing the file *or* editing any header it `#include`s (even a one-token
-  virtual-parameter change in `TForeignMinister.h`) — can flip a previously-100% leaf to
-  42.86%. They **cannot be pinned from source**: `double v = A; return v + B;` still emits
-  `fld B; fadd A` because the compiler reorders across the temporary. Practical
-  consequences: (1) the fake "view" facades and local `reinterpret_cast` bridges in the
-  GreatPower family are *deliberate workarounds* to dispatch/pass-args without recompiling
-  the fragile TU — "cleaning them up" trades those flips for architectural correctness
-  (Hard Rule 11), so batch all such edits into one TU recompile and get maintainer sign-off
-  on the regression; (2) the real de-risking fix is to split the fragile leaves into their
-  own small TU so future edits stop perturbing them. Always run full `just stats` (not just
-  the touched address) after editing a GreatPower-family file or its headers.
+  TU like `TGreatPower.cpp`, small commutative float leaves (`tableA[i] + tableB[j]`, e.g.
+  the `ComputeMinisterSkillFloatSlot8*` family 0x4e0590–0x4e0690) sit at a codegen
+  knife-edge: MSVC500 freely reorders the `fld`/`fadd` operands, and **any** recompile of
+  the TU — the file or any header it includes — can flip a previously-100% leaf to 42.86%.
+  They cannot be pinned from source. Consequences: (1) the remaining facades/casts in the
+  GreatPower family are deliberate workarounds — batch any cleanup into one TU recompile
+  and accept the flips (they're noise, §47); (2) the real de-risking fix is splitting the
+  fragile leaves into their own small TU. Always run full `just stats` after editing a
+  GreatPower-family file or its headers. See [[tgreatpower-tu-codegen-fragility]].
+- *(Historical)* The 2026 shape-only class batch (260 classes as vtables-only) used a
+  `gen-class --no-bodies` generator since retired (2026-07-02; `config/classes/` manifests
+  no longer exist). Bodies are ordinary per-class decomp-loop work.
 
 ## 17. Type safety: distinct classes, opaque slots, and cast-free call sites
 
@@ -402,233 +360,141 @@ a modeling error, and the fix removes casts rather than relocating them.
   `TEvent*` does not make whatever is passed there a `TEvent`. Confirm the object's real
   class from its constructor/vtable, `config/recovered_globals.csv`, `symbols.csv`, or the
   Mac oracle *before* typing or casting. Worked example: `ProcessQueuedWarTransitions`
-  builds a `TNextTradeCommand` (a `TCommand`) and routes it through the slot-0x0d dispatcher
-  into `DoEvent`'s `TEvent*` argument. `TCommand` ≠ `TEvent` (Mac evidence:
-  `TApplication::PostCommand(TCommand*)` vs `PostAnEvent(TEvent*)`), so that is a genuine
-  command-as-event pun in the original — not a class identity. Keep that one cast, comment
-  it, and type everything else correctly.
+  routes a `TNextTradeCommand` (a `TCommand`) into `DoEvent`'s `TEvent*` argument;
+  `TCommand` ≠ `TEvent` (Mac evidence: `PostCommand(TCommand*)` vs `PostAnEvent(TEvent*)`),
+  so that is a genuine pun in the original — keep that one cast, comment it, and type
+  everything else correctly.
 - **A polymorphic slot's parameter is `void*`.** If different overrides interpret the same
-  vtable slot's argument differently (slot 0x0d: the `TEventHandler` base reads a
-  `TCommand`, but a `TView` draw path passes a `RECT*` to the same slot), the honest base
-  signature is `void* payload`; do the interpretation (`static_cast<TCommand*>(payload)`)
-  inside each override body. Every call site then converts implicitly — `RECT*`, `TCommand*`,
-  `TNextTradeCommand*` all become `void*` with no cast — and the single irreducible pun
-  lives in one body. Picking one caller's type instead forces every other caller to
-  `reinterpret_cast`.
+  vtable slot's argument differently (slot 0x0d: `TEventHandler` reads a `TCommand`, a
+  `TView` draw path passes a `RECT*`), the honest base signature is `void* payload`; do the
+  interpretation (`static_cast<TCommand*>(payload)`) inside each override body. Every call
+  site then converts implicitly, and the single irreducible pun lives in one body. Picking
+  one caller's type forces every other caller to `reinterpret_cast`.
 - **Type pointer-bearing fields as typed pointers.** `TEventHandler* targetHandler` (not
   `int field10`) plus a typed init-helper argument lets call sites pass real objects by
-  implicit upcast (`TApplication*` → `TEventHandler*`) with zero casts. This is the
-  field-promotion half of Hard Rule 8 applied to the *type*, not just the offset.
+  implicit upcast with zero casts.
 - **But a dual-purpose offset stays raw.** `TEventHandler+0x18` is a resource-owner pointer
-  in the dtor / `SetUiResourceOwner` / detach / draw paths, yet an `int` block-pool count in
-  `TView::SerializeRecordList`. An offset read as both an `int` and a pointer in different
-  methods cannot be a pure pointer — keep it `int`/raw and accept the localized casts; don't
-  force a single pointer type and break the other reading.
-- **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral, so verify and
+  in some methods and an `int` block-pool count in `TView::SerializeRecordList` — keep it
+  `int`/raw and accept the localized casts; don't break one reading to purify the other.
+- **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral — verify and
   proceed fearlessly.** reccmp pairs by address and these casts emit no bytes, so `just
-  compare <addr>` should be byte-identical before/after. Use this to (a) align the generic
-  `vmethodNN` C++ identifier to the curated `symbols.csv` name — reuse that name, don't
-  invent a third — and (b) tighten field/parameter types. One catch: update an override's
-  signature in lockstep with the base, or it silently stops overriding (`override` fails to
-  compile, or MSVC spins up a new vtable slot). The TU-fragility caveat in note 16 still
-  applies if the touched header feeds a codegen-saturated TU.
+  compare <addr>` should be byte-identical. Use this to align `vmethodNN` identifiers to
+  curated `symbols.csv` names (reuse the name, don't invent a third) and tighten types.
+  Catch: update an override's signature in lockstep with the base (§14). The TU-fragility
+  caveat (§16) applies when the touched header feeds a saturated TU.
 
 ## 18. MFC convention/access traps + CMap embedded tables (extends 15/16)
 
-When you reach an MFC-surface helper, three traps make it look like game code that needs
-modeling/casting when it is really a real MFC method to call directly (see note 15):
+Three traps make an MFC-surface helper look like game code needing modeling when it is
+really a real MFC method to call directly:
 
 - **`AFX_CDECL` varargs members look like `__thiscall` but are `__cdecl`.** MFC's variadic
-  members (`CString::Format`, `CString::FormatMessage`, `AfxTrace`, …) are declared
-  `AFX_CDECL` = `__cdecl`, so the hidden `this` arrives as the **first stack arg**, not in
-  `ECX`. A leaf that does `MOV ECX,[ESP+4]` (load arg0 into ecx) then `CALL <thiscall helper>`
-  is such a member forwarding `this` to a thiscall internal — **not** a `__cdecl` free
-  function with an explicit object param, and **not** something to port. Worked example:
-  `0x5ff15e` "FormatStringWithVarArgsToSharedRef" *is* `CString::Format(LPCTSTR,...)` (it
-  loads `this`=dest from `[ESP+4]`, then calls the protected `FormatV` @0x5feeb8). Fix: call
-  `cstr.Format(fmt, arg)` directly and `// LIBRARY:`-annotate the addr — no wrapper, no cast.
-  Contrast with the real-thiscall rule in note 15 (this in `ECX` *on entry* = method).
+  members (`CString::Format`, `AfxTrace`, …) take the hidden `this` as the **first stack
+  arg**, not ECX. A leaf doing `MOV ECX,[ESP+4]` then `CALL <thiscall helper>` is such a
+  member forwarding `this` to a protected internal — not a free function to port.
+  (`0x5ff15e` *is* `CString::Format`; call `cstr.Format(fmt, arg)` + `// LIBRARY:`.)
+  Contrast: `this` in ECX *on entry* = real method (note 15).
 - **A tiny forwarder into a protected/AfxGetApp path is the library function itself.**
-  `0x6185e4` calls `AfxGetModuleState()->m_pCurrentWinApp->DoMessageBox(p1,p2,p3)` (vtbl+0x94)
-  — `DoMessageBox` is **protected**, so a free function *cannot* call it; only the library
-  fn can. That tells you `0x6185e4` **is** `AfxMessageBox(LPCTSTR,UINT,UINT)`. Call
-  `AfxMessageBox(...)` directly + LIBRARY-annotate. Same tell for any "wrapper" that touches
-  protected MFC members.
+  `0x6185e4` calls the **protected** `DoMessageBox` — only the library fn can, so it *is*
+  `AfxMessageBox(LPCTSTR,UINT,UINT)`. Same tell for any "wrapper" touching protected
+  MFC members.
 - **Verify access/convention against the docker image's `afx.h`, not modern docs.** MFC 4.2
-  differs from current `CStringT` (learn.microsoft.com). e.g. `CString::FormatV` is
-  **protected** in this MFC (afx.h ~line 599) though public in modern docs — so a free
-  function genuinely can't call `FormatV`, which is *why* `Format` (the public AFX_CDECL
-  member) is the right entry. Find it:
-  `find / -path '*msvc/mfc/include/afx.h'` under the docker overlay, then grep the member +
-  surrounding `public:`/`protected:`.
-- **Embedded CMap tables (extends 16).** A subobject laid out
-  `{vtbl, m_pHashTable, m_nHashTableSize=0x11, m_nCount, m_pFreeList, m_pBlocks,
-  m_nBlockSize=0xa}` (0x1c bytes) is an MFC **`CMap<>` template specialization** when its
-  vtable slot 0 is the *inherited* `CObject::GetRuntimeClass` (the concrete `CMapStringToPtr`/
-  `CMapPtrToPtr` have their **own** `classRuntimeClass`, so a derived getter). Confirm K/V are
-  scalar by reading the map's destructor — if it frees only the hash buffer + plex chain with
-  **no per-element key/value destruction**, both K and V are scalar (rules out `CString` keys).
-  Model the field as a real `CMap<K,ARG_K,V,ARG_V>` member: the genuine CMap default ctor then
-  emits the exact `size=17/block=10` field-init **byte-for-byte** (much better than hand
-  writes), and the owner ctor is `: m_field0(0), m_tableA(), m_tableB()`. Two *different*
-  embedded vtables ⇒ two *distinct* instantiations (different K/V); exact scalar args fix the
-  per-instantiation vtable but not the layout, so they can stay provisional (well-commented).
-  Worked example: `TModuleLibraryCacheTableStateB` @0x498f60 (see [[imperialismapp-keystone-initinstance]]).
-- **First-time linkage of an MFC fn causes reccmp re-pairing wobble.** Calling a nafxcw
-  function the build never linked before (the stubs are `return 0`, they don't pull it in)
-  adds that code and shifts the MFC layout, so reccmp re-pairs nearby LIBRARY functions and a
-  handful swing ±1-2pp (a big single-fn drop like `CString::CString -68pp` is a *mis-pairing
-  artifact* — recompiled simple ctor matched to a different original ctor, not a real loss).
-  Aggregate stays ~flat; refresh the baseline. Don't chase these or revert clean real-MFC
-  calls to avoid them.
+  differs from current `CStringT` (e.g. `CString::FormatV` is protected here though public
+  in modern docs). Grep the vendored/docker headers for the member and its access section.
+- **Embedded CMap tables (extends 16).** A subobject laid out `{vtbl, m_pHashTable,
+  m_nHashTableSize=0x11, m_nCount, m_pFreeList, m_pBlocks, m_nBlockSize=0xa}` (0x1c bytes)
+  whose slot 0 is the *inherited* `CObject::GetRuntimeClass` is an MFC **`CMap<>`
+  specialization**. Confirm K/V are scalar via the dtor (frees only hash buffer + plex
+  chain, no per-element destruction). Model it as a real `CMap<K,ARG_K,V,ARG_V>` member —
+  the genuine default ctor emits the `size=17/block=10` init byte-for-byte. Two different
+  embedded vtables ⇒ two distinct instantiations. Example: `TModuleLibraryCacheTableStateB`
+  @0x498f60 (see [[imperialismapp-keystone-initinstance]]).
+- **First-time linkage of an MFC fn causes reccmp re-pairing wobble.** Newly-linked nafxcw
+  code shifts the MFC layout, so nearby LIBRARY functions re-pair and a few swing ±1-2pp (a
+  big single-fn drop is a mis-pairing artifact, not a real loss). Aggregate stays ~flat;
+  refresh the baseline, don't revert clean real-MFC calls.
 
 ## 19. Monolithic functions must be ported as one inline body — never split into separate-TU helpers
 
 A big original function (e.g. a switch-based dispatcher) is a *single* function at one
 address. The build uses `/Ob1`, which only inlines `inline`-marked functions and never
-inlines across translation units (no LTCG). So if you decompose the case bodies into
-plain free functions in another `.cpp`, the recompiled body becomes a thin sequence of
-`CALL`s and can never match the inline original — a 4 KB dispatcher stuck at ~5%.
+inlines across translation units. Decomposing case bodies into free functions in another
+`.cpp` yields a thin sequence of `CALL`s that can never match — a 4 KB dispatcher stuck
+at ~5%.
 
-- **Inline the bodies into the one function.** Put the per-case code textually inside the
-  function (an `#include "..._switch.inc"` fragment between `case` labels works well). Wrap
-  each case in its own `{ }` so per-case locals don't collide — MSVC500 leaks `for`-init
-  vars to the enclosing block (Hard Rule 10), and braces give each case a fresh block.
-- **Genuine helpers go file-scope `static inline`** so `/Ob1` can fold them back in; trivial
+- **Inline the bodies into the one function** (an `#include "..._switch.inc"` fragment
+  between `case` labels works well). Wrap each case in its own `{ }` so per-case locals
+  don't collide (MSVC500 leaks `for`-init vars to the enclosing block, Hard Rule 10).
+- **Genuine helpers go file-scope `static inline`** so `/Ob1` folds them back in; trivial
   one-line wrappers are best expanded at the call site.
 - **Isolate a large/disruptive function in its own TU.** Adding the inline switch + its
-  extra includes to a shared `.cpp` perturbed that TU's codegen and regressed 9 neighbours
-  (incl. a `vftable` 100→60% and two fns →0%) — the TU-codegen-fragility lever
-  ([[tgreatpower-tu-codegen-fragility]]) cuts both ways. A class method can be *defined* in a
-  separate `.cpp` (`src/game/<Class>_<Method>.cpp`); reccmp pairs by address, so this is free
-  and keeps the neighbours byte-stable. Worked example: `TSimMgr::AdvanceGlobalTurnStateMachine`
-  @0x0057da70 (4.96%→9.55%, zero neighbour regressions) in its own TU.
-- Remaining gap on such a function is then ordinary matching work (e.g. the original hoists a
-  single function-scope `CString` at entry, pinning `this` in `ebx`; a per-case local `CString`
-  shifts register allocation across the whole body).
+  includes to a shared `.cpp` perturbed that TU's codegen and regressed 9 neighbours —
+  TU-codegen fragility (§16) cuts both ways. A class method can be *defined* in a separate
+  `.cpp` (`src/game/<Class>_<Method>.cpp`); reccmp pairs by address, so this is free.
+  Worked example: `TSimMgr::AdvanceGlobalTurnStateMachine` @0x0057da70 in its own TU.
+- Remaining gap is then ordinary matching work (e.g. hoisted function-scope `CString`
+  pinning `this` in `ebx` — see §33).
 
-- **Batch compare exists — never loop single `just compare` calls.** `just compare
-  0xA 0xB 0xC`, `just compare --file src/game/X.cpp`, and `just compare-class X`
-  all run reccmp once with `--json` (one PDB parse for any number of functions).
-  A per-address loop pays ~10s of PDB parsing per call for nothing.
 ## 20. "Same address in two sibling vtables" is inheritance, not COMDAT folding — check RTTI first
 
-Two supposedly-sibling classes whose vtables both point at the *identical* original address
-for several slots looks like linker COMDAT/ICF folding of byte-identical override bodies. It
-usually isn't — MSVC500's plain link here does not fold identical functions across TUs (we
-verified: porting each "shared" method as its own per-class override compiles to a *distinct*
-recomp address per class, so the vtable slot never matches; `just vtable`/`just gates` then
-fail with "Recomp vtable is larger than orig" + unpaired slots). The far more common real
-cause is that one of the "siblings" is actually the **base class** of the other(s), and the
-shared address is simply an *inherited, unoverridden* virtual — ordinary single inheritance,
-zero linker magic required.
+Two supposedly-sibling classes whose vtables point at *identical* original addresses for
+several slots looks like linker folding of identical bodies. It isn't — this link does
+not fold identical functions across TUs (§52). The real cause is almost always that one
+"sibling" is the **base class** of the other, and the shared address is an inherited,
+unoverridden virtual.
 
-- **Check the RTTI ancestry before modeling either theory.** Every class vtable slot 0 is its
-  `CRuntimeClass` getter; the descriptor's `+0x10` is `m_pBaseClass`, an intact ground-truth
-  chain. Query it directly (no Ghidra GUI needed):
-  `uv run python -m tools.ghidra.vtable_slots "ClassA=0xVTABLE"` (with `.env` sourced for
-  `GHIDRA_INSTALL_DIR`) prints `ancestry ClassA -> ClassB -> ... -> TObject -> CObject` as a
-  side-effect log line. This is deterministic and cheap — always run it before writing a
-  "shared/COMDAT-folded" comment.
-- **Corroborating evidence, if you want a second signal:** the derived class's constructor
-  disassembly calls the *grandparent's* ctor directly (one hop, e.g. straight to `TMission`'s
-  ctor) with no visible call to the immediate parent's ctor — this is just the parent's ctor
-  being trivial enough to get fully inlined at every call site (verified by checking the
-  parent's own standalone ctor: same flattened, call-free shape). It is not evidence against
-  a normal single-inheritance edge.
-- **The fix, once the real base is confirmed:** change the derived class's base from the
-  wrong sibling/grandparent to the real immediate base, delete the duplicate override
-  declarations+bodies for slots that are genuinely inherited unchanged (their address matches
-  the base's own address exactly), and fix the ctor initializer list to call the real base's
-  ctor. Slots where the "sibling" has a *distinct* address are genuine own overrides — keep
-  those. Field layout is unaffected when the true base is the same size as the wrongly-assumed
-  one, so no `ASSERT_SIZE`/offset changes are needed.
-- Worked example: `TBeachheadMission` and `TBlockadePortMission` were modeled as direct
-  `TNavyMission` children with 5 "COMDAT-folded" methods shared with sibling
-  `TControlSeaZoneMission`. RTTI ancestry proved both actually derive from
-  `TControlSeaZoneMission` (`TBeachheadMission -> TControlSeaZoneMission -> TNavyMission ->
-  TMission -> TObject -> CObject`). Fixing the base class and deleting the bogus overrides
-  took both vtables from "not matching" to 100% with zero score regressions elsewhere
-  (+33 aligned functions, +0.57pp average similarity overall).
+- **Check the RTTI ancestry before modeling either theory**: every vtable slot 0 is the
+  `CRuntimeClass` getter, and the descriptor's `+0x10` is `m_pBaseClass` — an intact
+  ground-truth chain. `uv run python -m tools.ghidra.vtable_slots "ClassA=0xVTABLE"`
+  prints the full ancestry as a side-effect log line. Cheap and deterministic — run it
+  before ever writing a "shared/COMDAT-folded" comment.
+- A derived ctor calling the *grandparent's* ctor directly is just the trivial parent
+  ctor being inlined — not evidence against a normal inheritance edge.
+- **Fix once the real base is confirmed:** repoint the base, delete the duplicate
+  override decls+bodies for genuinely-inherited slots (address matches the base's own),
+  fix the ctor init list. Slots with a *distinct* address are genuine overrides — keep.
+- Worked example: `TBeachheadMission`/`TBlockadePortMission` really derive from
+  `TControlSeaZoneMission` (not sibling of it); fixing the base took both vtables to 100%
+  (+33 aligned functions). See [[tmission-comdat-fold-was-inheritance]].
 
-## 22. Two adjacent same-typed fields that are always compared/set together are probably one field
+## 22. Two adjacent same-typed fields always used together are probably one field
 
-If a struct models two adjacent `short` (or other sub-word) fields purely from Ghidra's
-default per-access typing, and every real usage reads/writes them as a pair (never
-independently), check the disassembly for the *write* site (usually a constructor): a
-single `mov dword ptr [this+off], reg` zeroing both in one instruction means the source
-really declared **one** 4-byte field there, not two shorts ANDed together at every use.
-Modelling it as two shorts is harmless for a plain equality-to-zero check (the compiler may
-still fuse two `cmp` you can write as `a == 0 && b == 0`), but it's the wrong shape and can
-cost real match percentage elsewhere (a caller comparing the combined value in one op will
-now emit two `cmp`s instead of one `cmp dword`). Merge them into one field once the ctor
-disassembly confirms a single wide write; there is no user of the codebase who needs the
-narrower two-field view if no callsite ever reads them apart.
+Two adjacent `short`s (from Ghidra's default per-access typing) that every usage
+reads/writes as a pair are usually **one** 4-byte field: check the write site (usually
+the ctor) for a single `mov dword ptr [this+off], reg`. The split shape costs real score
+where a caller compares the combined value in one op (two `cmp`s instead of one
+`cmp dword`). Evidence: `TShip` +0xc was two shorts; one `int` restored the single
+`cmp dword ptr [x+0xc],0` in `TZone::HandleKeyDown` (17.25%→28.85%).
 
-Worked example: `TShip::linkContext0c` + `linkTag0e` (two `short`s in the header) were
-really one `int field0c` -- `TShip::TShip()` at 0x54f500 does one
-`MOV dword ptr [ESI+0xc],EDI` (zero), and the only reader (`TZone::HandleKeyDown`, 0x55fc40)
-tested equality-to-zero the same way. Splitting the check into
-`linkContext0c == 0 && linkTag0e == 0` compiled to two separate `cmp`s and dropped that
-caller from 28.85% to 17.25%; merging to one `int` field restored the original single
-`cmp dword ptr [x+0xc], 0` and the 28.85% score.
+## 23. "Same free-function name, different receiver class" — make the shared logic receiver-agnostic
 
-## 23. "Same free-function name, different receiver class" -- make the shared logic receiver-agnostic
-
-A function that reads fields at consistent offsets (e.g. +4/+0x1c/+0x30) may be called with
-*more than one* receiver class if those classes independently happen to carry compatible
-fields at those offsets (not uncommon for sibling "order node" types in this codebase, e.g.
-`TShip` and `TMapOrderEntry` both used as generic queue-node payloads). Don't force it onto
-one class as a member method if a second, unrelated call site passes a different class's
-pointer to the "same" free function name — that's a sign that promoting it to a member
-method would silently miscompile (or require an unsafe cross-cast) at the second call site.
-Instead: make the shared computation a plain function that takes the actual **values** by
-parameter (not `this`), and give each class a thin member-method wrapper that forwards its
-own fields into it. Both callers get a real, typed call with no casts; only the numeric
-values need to line up, not the class identity.
-
-Worked example: `ComputeNavyOrderPriorityContributionPercentByCategory` (0x54ff00) is called
-both on `TShip` nodes (`TNavyMission.cpp`'s primary order-list walk) and on `TMapOrderEntry`
-nodes (`TNavyMission::ReturnZeroSlot2C`'s `orderList24` chain) — unrelated classes that just
-happen to share `order_type`/`required_count`/`tiebreak_strength`-shaped fields at the same
-offsets. Modeled as a free function taking `(resourceType, stockOrRequiredCount,
-tiebreakField, category)`, with `TShip::ComputeNavyOrderPriorityContributionPercentByCategory`
-as a one-line wrapper.
+A helper reading fields at fixed offsets may be called with *more than one* receiver
+class that happens to carry compatible fields there (common for sibling "order node"
+types used as generic queue payloads). Promoting it to a member of one class silently
+miscompiles the other call site. Instead: make the shared computation a plain function
+taking the **values** as parameters, and give each class a thin member wrapper
+forwarding its own fields. Evidence: `ComputeNavyOrderPriorityContributionPercentByCategory`
+(0x54ff00) is called on both `TShip` and `TMapOrderEntry` nodes.
 
 ## 24. One "table" read at five different offsets is one struct, not five globals
 
-Ghidra's auto-analysis names a global by the *first* byte offset it sees referenced, so a
-single struct-array accessed at its base and at base+4/+8/+0x10/+0x14 etc. (by different
-functions, or even by the *same* function through different-looking pointer arithmetic)
-gets recorded as five separately-named "tables". Tell-tale sign: several `g_Foo_0x...`
-globals whose addresses are 4/8 bytes apart and which are always indexed with the *same*
-per-element stride (e.g. every read does `index * 0x24`, regardless of which "table" name is
-in the expression). Verify by disassembly, not decompile pseudocode — the decompiler will
-`MOV`/`MOVSX` from `[reg + 0x24*index + 0x1234]` for every one of the "different" tables at
-consecutive constant offsets. Once confirmed, merge into one real struct type (named fields
-at the recovered offsets, explicit `padXX` for gaps) and one array declaration; every
-consuming file's raw-offset accessor helpers collapse into named field reads.
-
-Worked example: `g_Resolve_Map_Order_LookupTable_00698108`, `g_Calculate_Mission_Order_LookupTable_0069810C`,
-`g_Task_Force_Order_LookupTable_00698110`, `g_Navy_Order_Priority_LookupTable_00698118`, and
-`g_ResourceDescriptorWeightWord0Base0069811c` were five "tables" 4-8 bytes apart, all indexed
-by `resourceType * 0x24` — one `TNavyOrderResourceDescriptor[64]` struct array. This also
-surfaced two real pre-existing bugs the split had caused: one already-ported function read a
-table at the wrong stride (a factor-of-2 miscount from indexing a `short[]` by element instead
-of by the real 0x24-byte stride), and another read from an entirely disconnected local
-zero-filled buffer instead of the real game data (always returned 0).
+Ghidra names a global by the *first* byte offset it sees, so a struct array accessed at
+base/+4/+8/+0x10/... becomes several separately-named "tables". Tell: `g_Foo_0x...`
+globals 4–8 bytes apart, all indexed with the **same per-element stride** (every read
+does `index * 0x24`). Verify in the disassembly (the decompile hides it), then merge
+into one real struct type + one array; raw-offset accessors collapse into named field
+reads. Evidence: five "navy order lookup tables" at 0x698108–0x69811c were one
+`TNavyOrderResourceDescriptor[64]` — and the split had caused two real bugs (a
+wrong-stride read and a read from a disconnected local buffer).
 
 ## 25. `function_out_of_order` (decomplint) is a pure textual-reorder fix
 
-Marked `// FUNCTION:` bodies within one non-header `.cpp` must appear in strictly ascending
-address order (folded/by-name markers are exempt). This is purely cosmetic — C++ member
-function definition order in a TU doesn't affect codegen or linkage, since the class header
-already declares every member. Fix by cutting-and-pasting whole comment+function blocks into
-address order; leave anonymous-namespace helpers and other unmarked prerequisites in place
-near the top if something later in the file (now possibly reordered before its old position)
-depends on them being textually visible first. Verify with `just decomplint` (or grep the
-`function_out_of_order` count) before/after — the reorder should be a pure score no-op in
-`just stats`.
+Marked `// FUNCTION:` bodies within one non-header `.cpp` must appear in ascending
+address order (folded/by-name markers exempt). Purely cosmetic — definition order
+doesn't affect codegen. Cut-and-paste whole comment+function blocks into order; leave
+unmarked anonymous-namespace helpers where later code needs them textually first.
+Verify with `just decomplint`; the reorder is a score no-op.
+(`uv run python -m tools.workflow.reorder_marked_functions <file>` automates it.)
 
 ## 26. Free-vs-method is decided at the CALLSITE: the ECX-load + `ret n` test
 
@@ -638,235 +504,143 @@ caller: `MOV ECX, <global or object>` immediately before the `CALL`, plus callee
 `RET n` matching the stack-arg count, proves `__thiscall` — and the ECX source names the
 owning class. Worked examples (2026-07-02): every turn-event emitter (0x5446a0..0x54c5a0)
 loads ECX from `g_pGameFlowState` → TMultiplayerMgr methods; `GetActiveNationId` 0x581260
-loads from `g_pLocalizationTable` → TSimMgr, exposing a repo-wide wrong-receiver bug;
-`NoOpDiplomacyPolicyStateChangedHook` 0x5033e0 (`ret 0xc`, body empty) loads from
-`g_pHelpMgr` → THelpMgr method whose three args old ports had dropped. Corollary: old
-no-arg `extern void F(void)` stubs at such addresses are the dropped-args audit pattern.
+loads from `g_pLocalizationTable` → TSimMgr, exposing a repo-wide wrong-receiver bug.
+Corollary: old no-arg `extern void F(void)` stubs at such addresses are the dropped-args
+audit pattern ([[quickdraw-thunk-retirement-2026-07]]).
 
 ## 27. CList/CArray twin copies masquerade as class methods and vtables
 
 A cluster of {ctor writing head/tail/count/free/blocks(+blockSize), dtor doing
 walk+FreeDataChain, Serialize doing ReadCount+per-element Read/AddTail} adjacent to a real
 class's vtable is a **per-TU template instantiation** (afxtempl CList/CArray compiled into
-that TU), not class methods — the original was built without ICF so every TU has its own
-copy of the template vtable + bodies. Model the underlying object (often a file-scope
-static reachable via an `InitStub`/atexit pair: `MOV ECX,<addr>` in the static-init gives
-the object address, the ctor arg gives blockSize) as a real `CList<...>`/`CArray<...>`
-global and call the public API; MSVC500 /Ob1 re-inlines AddTail identically
-(TNetMgr::Send 35%→65%). The twin-copy addresses themselves can't pair against the single
-recomp COMDAT (known gap) — leave them to autogen stubs. Bonus: "mystery globals" inside
-the object footprint are member aliases (0x6a13e8 = the 0x6a13e0 list's m_pNodeTail, i.e.
-GetTail(); 0x6a5f6c = the session manager's lastErrorCode field, not a separate global).
+that TU) — the original had no ICF, so every TU has its own copy. Model the underlying
+object (often a file-scope static reachable via an `InitStub`/atexit pair: `MOV ECX,<addr>`
+in the static-init gives the object address, the ctor arg gives blockSize) as a real
+`CList<...>`/`CArray<...>` global and call the public API; `/Ob1` re-inlines AddTail
+identically (TNetMgr::Send 35%→65%). The twin-copy addresses themselves can't pair against
+the single recomp COMDAT — leave them to autogen stubs. Bonus: "mystery globals" inside the
+object footprint are member aliases (0x6a13e8 = the 0x6a13e0 list's m_pNodeTail).
 
 ## 28. Field-by-field snapshot copies are a struct-recovery oracle
 
-When a function copies a record wholesale but element-wise (byte/word/dword slices, loops
-per array), the bytes it SKIPS are exactly the struct's padding, and every separately-copied
-slice is a real field boundary. Worked example: DispatchCityRedrawInvalidateEvent 0x54abf0
-snapshots the whole 0xa8 TGlobalMapCityScoreRecord and skips exactly 0x09/0x3d/0x96-97,
-proving shorts at 0x3e/0x40/0x94 and the CString city name at 0xa4 that were folded into
-pads. Use the copy to refine the record, then rewrite the copy through typed fields.
+When a function copies a record wholesale but element-wise, the bytes it SKIPS are the
+struct's padding, and every separately-copied slice is a real field boundary. Evidence:
+DispatchCityRedrawInvalidateEvent 0x54abf0 snapshots the 0xa8 record and skips exactly
+0x09/0x3d/0x96-97, proving fields that had been folded into pads. Use the copy to refine
+the record, then rewrite the copy through typed fields.
 
-## 29. clang-format eats `// VTABLE:` markers — keep them on their own line
+## 29. Comment reflow / formatting can silently eat reccmp annotations
 
-Reflowing a comment block can merge a `// VTABLE: IMPERIALISM 0x...` (or split its address
-onto the next line), which silently unpairs the vtable (it shows up as "unpaired now" in
-stats, or as a long-missing vtable). After formatting headers, grep
-`'\. VTABLE: IMPERIALISM'` and `'VTABLE: IMPERIALISM$'`; splitting the marker back onto its
-own line re-pairs immediately (6 vtables recovered 2026-07-02).
+clang-format with `ReflowComments: true` (the LLVM default) merges an adjacent
+`// VTABLE: IMPERIALISM 0x...` (or GLOBAL/FUNCTION/SYNTHETIC/LIBRARY) line into a
+preceding over-long prose comment — the annotation becomes mid-sentence text that reccmp
+and every gate silently ignore (7 vtables + 1 global lost with all gates green).
+`.clang-format` now pins `ReflowComments: false`. After formatting, diagnose with
+`grep -rnE "// .*[a-z)\.] (VTABLE|GLOBAL|FUNCTION|SYNTHETIC|LIBRARY): IMPERIALISM" include src`
+plus `grep -rn "IMPERIALISM$"` (annotation split across two lines). Repair = put the
+annotation back on its own line immediately above the declaration; restored vtables
+pair at 100% for free (390→397).
 
 ## 30. Typedef-cast externs drift; audit before trusting a signature
 
 The Hard-Rule-9 pattern (`extern undefined4 Foo(void);` + per-callsite
 `typedef ... (*Foo_t)(...)` cast) has no single source of truth, so signatures drift
-between files: the same target has been cast to four different signatures across three
-mission files, one caller dropped the only argument entirely
-(TBlockadePortMission::ReadFrom, fixed 56%→100% by porting the callee), and int-vs-float
-argument confusion passed unit ids where the callee reads an x87 float.
-`just typedef-cast-audit` (tools/workflow/check_typedef_cast_drift.py) extracts every
-`*_t` typedef and reports cross-file signature/convention conflicts — run it when touching
-any `_fn(` callsite, and prefer porting the callee outright (the targets are usually small
-leaves; the whole 2026-07 mission-scoring cluster was 8 functions).
+between files (same target cast four different ways across three mission files; one
+caller dropped the only argument — TBlockadePortMission::ReadFrom, 56%→100% by porting
+the callee). `just typedef-cast-audit` extracts every `*_t` typedef and reports
+cross-file conflicts — run it when touching any `_fn(` callsite, and prefer porting the
+callee outright (targets are usually small leaves).
 
-## 31. Comment reflow can silently eat reccmp annotations
-
-clang-format with `ReflowComments: true` (the LLVM default) merges an adjacent
-`// VTABLE: IMPERIALISM 0x...` (or GLOBAL/FUNCTION) line into a preceding over-long prose
-comment, turning the annotation into mid-sentence text that reccmp and every gate silently
-ignore — 7 vtables and 1 global had been lost this way with all gates green.
-`.clang-format` now pins `ReflowComments: false`; the diagnostic is
-`grep -rnE "// .*[a-z)\.] (VTABLE|GLOBAL|FUNCTION|SYNTHETIC|LIBRARY): IMPERIALISM" include src`
-(plus `grep -rn "IMPERIALISM$"` for annotations split across two lines). Repair = put the
-annotation back on its own line immediately above the declaration; the restored vtables
-paired at 100% for free (390→397).
+## 31. (folded into note 29)
 
 ## 32. Mine reccmp diffs for global identities (`just global-xref-oracle`)
 
 reccmp renders an unresolved original operand as `<OFFSETn>` while the recomp side
 shows the real PDB symbol (`[g_Foo (DATA)]`). Each such positionally-paired mismatch
-line is a vote that the original address (re-disassembled with capstone) belongs to
-that symbol; symbols.csv is a reccmp `data_sources` entry, so applying a voted pair is
-just adding an `addr|name|||global||xref_oracle` row — no marker or rebuild needed.
-Round 1 (min 2 votes, no conflicts) moved 31 functions to 100% with zero regressions.
-The tool's conflict column doubles as an annotation-audit: consistent votes AGAINST an
-existing row mean the row (not the oracle) is probably wrong.
+line is a vote that the original address belongs to that symbol; applying a voted pair
+is just adding an `addr|name|||global||xref_oracle` row to symbols.csv — no marker or
+rebuild needed. Round 1 (min 2 votes, no conflicts) moved 31 functions to 100%. The
+conflict column doubles as an annotation-audit: consistent votes AGAINST an existing
+row mean the row is probably wrong.
 
 ## 33. A local object with a non-trivial dtor forces MSVC's single-epilogue shape
 
 A function-scope local with a destructor (e.g. `CString`) that the original constructs
-*unconditionally right after the prologue* — not lazily where first used — is a strong
-tell that every exit path (every `break`/`return`) must funnel through **one shared
-epilogue block** that runs the destructor once, and every early exit becomes a `jmp` to
-it instead of its own inlined pop/ret sequence. If you instead scope that local inside
-one branch/loop (matching naive "where is it used" reading), the compiler has no reason
-to build a shared funnel — each exit gets its own duplicated epilogue, inflating code
-size and decorrelating nearly every jump-target offset in the function. Diagnostic:
-compare the recomp's `push`/`call CString::CString` position against 0x<funcstart>+few
-bytes in the original (before the first real branch) — if it's there, hoist the local to
-the top of the function, unconditionally constructed, even if only one switch-case reads
-it (pass it by value/const-ref into that case; it'll compile to a copy-ctor call per use,
-matching original). Caught in `TSimMgr::AdvanceGlobalTurnStateMachine` (0x57da70):
-moving `CString emptyString` from inside a case's loop to function-scope shrank the
-byte-size gap vs the original from +62 bytes to +1 byte (1277→1116, target 1215) even
-before any other fix landed.
+*unconditionally right after the prologue* forces every exit path through **one shared
+epilogue block** running the dtor, with early exits becoming `jmp`s to it. Scoping that
+local inside one branch (naive "where is it used" reading) gives each exit its own
+duplicated epilogue and decorrelates nearly every jump offset. Diagnostic: compare the
+recomp's `call CString::CString` position against the original's first few bytes — if
+the original constructs at entry, hoist the local to function scope even if only one
+switch case reads it. Evidence: 0x57da70, hoisting one `CString` shrank the byte-size
+gap from +62 to +1.
 
-## 34. `extern undefined4 Foo(void)` stubs beside a switch/state-machine may be real
-    methods on a *different* receiver — check ecx, not just the name
+## 34. `extern undefined4 Foo(void)` stubs may be real methods on a *different* receiver — read the ECX load
 
-A free-function stub called with no visible receiver can still be a real `__thiscall`
-hiding behind an ILT jmp thunk (`0x40xxxx` range — resolve with
-`just ghidra-listing 0xTHUNK`, never trust the un-followed `CALL 0x40xxxx` operand).
-Two traps found together in one switch case: (1) the receiver is not always `this` —
-`TSimMgr::AdvanceGlobalTurnStateMachine`'s case 3 called two methods with
-`ecx = g_pLocalizationTable` (a *different* TSimMgr instance/alias) while a third call a
-few lines later used `ecx = this`, in the same case body; (2) a condition guarding a
-call can reference a field on that *other* receiver (`g_pLocalizationTable->redrawEnabled`
-at +0x40) while the existing port had guessed a same-named-feeling field on `this`
-(`this->field34`) — same bug shape as note 17's cross-class-cast trap, just via a global
-alias instead of an inheritance cast. Always re-derive the field offset and receiver from
-the raw `MOV ECX, [global]` right before the `CALL`, never assume `this`. Also watch
-`RET 0xN` on the callee for the real stack-arg count/types (a `PUSH <addr>` operand that
-reccmp later renders as `push "Literal" (STRING)` is a string-literal pointer, not a raw
-int — model it as a named `s_*_00ADDR[]` `GLOBAL:` global per note 9/existing convention,
-not `reinterpret_cast<void*>(0xADDR)`).
+A free-function stub called "with no receiver" can be a real `__thiscall` behind an ILT
+thunk, and the receiver is not always `this`: in one switch case, two calls used
+`ecx = g_pLocalizationTable` while a third used `ecx = this` (0x57da70 case 3), and a
+guard condition read a field on that *other* receiver — the old port had guessed a
+similarly-named field on `this`. Always re-derive receiver + field offset from the
+`MOV ECX, …` immediately before the `CALL`. Also: a `PUSH <addr>` that reccmp renders as
+`push "Literal" (STRING)` is a string-literal pointer — model it as a named `s_*_00ADDR[]`
+`// GLOBAL:`, not `reinterpret_cast<void*>(0xADDR)`.
 
 ## 35. "Cached context singleton" globals dispatched via `[ecx+slot]` can just be real CDC*
 
 Before modeling a mystery "surface context" class behind vtable-slot calls, check whether
-the callee addresses are already-linked real MFC methods: `CDC::SelectObject(CFont*)` is
-`virtual` at slot 0x30 and `CDC::SetTextColor` at slot 0x38 (see afxwin.h), while
-`CDC::SetMapperFlags`/`CDC::SetTextAlign`/`CDC::OffsetWindowOrg`/`CDC::LineTo` are plain
-non-virtual direct-address calls — if a "cached context" global dispatches through both a
-vtable slot AND plain direct calls with the same `ecx`, it is almost certainly a genuine
-`CDC*`/`CFont*`, not a custom class needing recovery (`g_pQuickDrawMemoryDc` was already
-typed `CDC*`; the sibling fallback `g_pScopedMapQuickDrawDcHandleObject` at the *same*
-address family (0x6a1d9c) was still `void*` with hand-rolled `reinterpret_cast<...>(...)
-+4` offset hacks reaching for `CDC::m_hAttribDC` — retyping it to `CDC*` let those dissolve
-into a plain member access). Cross-check: real MFC virtuals are declared `virtual` in the
-vendored header (`vendor/msvc500/headers/mfc/include/afxwin.h`); non-virtual ones aren't,
-matching the direct-vs-vtable call shape in the disassembly. Also: struct-by-value MFC
-returns (`CPoint OffsetWindowOrg(int,int)`) use a caller-allocated hidden-pointer arg
-pushed *last* (after the normal args) — `SUB ESP,N` at function entry that's never read
-back is often this scratch return buffer, not a mystery local.
+the callees are already-linked MFC methods: `CDC::SelectObject` is `virtual` at slot 0x30,
+`CDC::SetTextColor` at 0x38, while `SetMapperFlags`/`SetTextAlign`/`OffsetWindowOrg`/
+`LineTo` are plain direct calls — a global dispatching through both a vtable slot AND
+direct calls with the same `ecx` is almost certainly a genuine `CDC*`/`CFont*`.
+Cross-check virtual-vs-direct against the vendored `afxwin.h`. Retyping
+`g_pScopedMapQuickDrawDcHandleObject` from `void*` to `CDC*` dissolved hand-rolled
+`+4` offset hacks into a plain member access. Also: struct-by-value MFC returns
+(`CPoint OffsetWindowOrg(int,int)`) push a caller-allocated hidden pointer *last* —
+a `SUB ESP,N` at entry that's never read back is often that scratch buffer.
 
 ## 36. Turn-event screen builders share one widget-block vocabulary
 
-Every `turn_event_dialog_factory.cpp` screen builder (the 253KB "return nullptr" giants,
-bd 1uj.51) is the same repeating block, so port them by recipe, not by decompile — the
-decompiler output for this cluster is degenerate (stack-tracking loss renders calls as
-`func_0x0040xxxx` ILT stubs with args as stack-slot stores; some functions are also
-split into fragments, see below). Read `just ghidra-listing` instead. Per widget:
-`new <WidgetClass>()` (size after `PUSH n; CALL 0x606f73` identifies the class; the ctor
-thunk resolves via a listing of the thunk address) → parent = build-stack tail data
-(`[0x6a13e8]+8` = `g_UiWidgetBuildStack006a13e0.GetTail()`, else head=widget) →
-`AddTail` (thunk 0x403643) → `InitializeUiResourceEntryFrameAndParent(0, parent,
-offset[2], size[2], 0, 0, 1)` (0x4096b5; offsets land in `[ESP+0x2c/0x30]`, sizes in
-`[ESP+0x34/0x38]` in later blocks) → `controlTag`/`field3c` stores → vtable slots 0xa4/0xa8
-= `SetEnabled`/`SetState` → `flag4c/4d` bytes → style: `hasCommandTagResource` (+0x60)
-plus the +0x68..+0x74 rect (CRect(0,0,0,0) copy) → per-class tail call (slot 0x1c8 =
-`SetPictureResourceIdAndRefresh` on pictures, `BindUiResourceTextAndStyle` 0x41b490 on
-text) → `g_pUiResourceContext = 0` (+ `RemoveTail` only when the widget takes no
-children). Out-of-line variants of the same steps exist and are now real functions in
-`ui_resource_pool.cpp`: `RegisterUiResourceEntry` 0x41b210, `SetUiResourceStateFlags`
-0x41b3a0, `SetUiResourceLayoutValues` 0x41b450, `BindUiResourceTextAndStyle` 0x41b490
-(the latter two hit 100%). The factory's first parameter is a `CWnd*` host window
-(flows into the tail `PropagateUiResourceContextRecursive` call); the event-code check
-is `(short)nEventCode != 0xNNN → return 0`. Gotcha: pushes before a 0-arg virtual call
-(e.g. slot 0x1b8 `GetEmbeddedDialogBehavior`) may belong to the *following* call —
-MSVC schedules argument pushes early; match pushes to callee-consumed counts, not
-adjacency. Also watch for Ghidra function splits: a builder whose listing ends without
-an epilogue continues in the next "function" (BuildUniversityDialogShell = 4 fragments).
-## 37. A bead's "not ported yet" claim can be two independent recoveries of the
-    same class under different names — check GetRuntimeClass address identity
+Every `turn_event_dialog_factory.cpp` screen builder (the 253KB giants, bd 1uj.51) is the
+same repeating widget block — port by recipe from `just ghidra-listing`, not the decompile
+(which degenerates to `func_0x0040xxxx` stubs, and some builders are split into fragments:
+a listing ending without an epilogue continues in the next "function"). Per widget:
+`new <WidgetClass>()` (size after `PUSH n; CALL 0x606f73` identifies the class) → parent =
+`g_UiWidgetBuildStack006a13e0.GetTail()` (else head=widget) → `AddTail` →
+`InitializeUiResourceEntryFrameAndParent(0, parent, offset[2], size[2], 0, 0, 1)` (0x4096b5)
+→ tag/field stores → slots 0xa4/0xa8 = `SetEnabled`/`SetState` → style bytes + rect →
+per-class tail call (slot 0x1c8 on pictures, `BindUiResourceTextAndStyle` 0x41b490 on text)
+→ `g_pUiResourceContext = 0` (+ `RemoveTail` when the widget takes no children).
+Out-of-line variants are real functions in `ui_resource_pool.cpp` (0x41b210/0x41b3a0/
+0x41b450/0x41b490). First param is the `CWnd*` host; the event-code check is
+`(short)nEventCode != 0xNNN → return 0`. Gotcha: MSVC schedules argument pushes early —
+match pushes to callee-consumed counts, not adjacency to the nearest call.
 
-`bd 1uj.6` asked to port "TMilitaryUnit::CreateObject/GetRuntimeClass at
-0x5c2cb0/0x5c2dd0" onto the existing `include/game/TMilitaryUnit.h` (a raw-pad,
-`TObject`-direct, no-vtable field/getter surface model). Trap: a *different*
-class, `TMilitaryUnitOrderState` (vtable 0x66eea8, real `TUnit`-derived ctor at
-0x5c2df0, real CString member, already at ~86%), turned out to be the SAME
-game class, independently recovered by an earlier session under a different
-Ghidra-guessed name. The tell: `TMilitaryUnitOrderState::GetRuntimeClass`'s
-body at 0x5c2dd0 (`mov eax, 0x66ed70; ret`) is the address the RTTI oracle
-lists as **TMilitaryUnit**'s `getrtc` — an exact address match, not a
-name/vibes match. Corroborating: the "TMilitaryUnit-only" getters
-(`GetUnitMovementClassId` etc., 0x5c34xx) read `[ecx+4]`/`[ecx+6]`, which are
-exactly `TUnit::orderType`/`field_6` — fields already owned by the *other*
-class's base. And the old model's "unmodeled pad regions" (0x08-0x13,
-0x1c-0x23, 0x28-0x33, 0x3a-0x3f) decomposed exactly into the inherited `TUnit`
-fields plus the other class's own already-recovered fields — a strong signal
-that "recover these 4 pad regions" was actually "notice these two classes are
-one class." **Always check whether a `GetRuntimeClass`/`CreateObject` address
-already belongs to a *different* manual class before porting it onto the bead's
-named target** — `config/rtti_class_oracle.csv`'s descriptor-address column
-(e.g. `0x66ed40`/`0x66ed58`/`0x66ed70`) is the `CRuntimeClass` struct address
-(named `class<X>` by the `IMPLEMENT_RUNTIMECLASS` macro), **not** the vtable
-address; don't assume a bead's "vtable at 0xNNNN" phrase is literally the
-vtable — verify via `just ghidra-listing` on the ctor. Fix was a straight
-merge: keep the better-evidenced class (real ctor/vtable/CString), add the
-other's fields/getters via the inherited base, delete the duplicate file,
-`sed`-rename call sites, `just regen-stubs` (auto-relocates ownership rows +
-picks up new `// SYNTHETIC` claims), rename the scalar-deleting-dtor's curated
-`symbols.csv` backtick name to match (Hard Rule 10) — that was the only vtable
-slot mismatch after the merge. One MSVC500 TU-wide ripple regressed two
-unrelated functions in the touched files by small amounts (register/operand
-reordering, not logic) — accepted as residual risk per the TU-codegen-
-fragility pattern (note 12b / TGreatPower notes) since the aggregate stats
-were net positive and the field rename was unavoidable.
+## 37. Two independent recoveries of one class can hide behind different names — check GetRuntimeClass address identity
 
-## 38. Widening a marked function's signature can "unpair" it — suspect a comment between `// FUNCTION:` and the decl before COMDAT-folding
+Before porting a "not yet ported" class onto a bead's named target, check whether its
+`GetRuntimeClass`/`CreateObject` **addresses** already belong to a different manual class:
+the RTTI oracle's descriptor-address column is the ground truth, and an exact address
+match (not name similarity) proves two recoveries are the same game class. Evidence:
+"TMilitaryUnit" (raw-pad surface model) and `TMilitaryUnitOrderState` (real ctor/vtable,
+~86%) shared `GetRuntimeClass` body 0x5c2dd0 — one class recovered twice; the old model's
+"unmodeled pad regions" decomposed exactly into the other's inherited fields. Fix = merge:
+keep the better-evidenced class, move fields/getters, delete the duplicate file, rename
+call sites, `just regen-stubs`, and rename the scalar-dtor's curated backtick row to
+match. Note `config/rtti_class_oracle.csv` descriptor addresses are the `CRuntimeClass`
+struct (`class<X>`), **not** the vtable — verify a bead's "vtable at 0xNNNN" claim via
+the ctor listing before trusting it. TU-wide ripple on merge is accepted noise (§16/§47).
 
-Symptom after changing a `// FUNCTION:`-marked function's *signature* (e.g.
-0-arg stub → real 2-arg body): `just compare 0xADDR` flips from a normal score
-to **"Failed to find a match at address 0xADDR"**, and every vtable that
-references that slot drops ~2% (one slot of ~49 ≈ 2.04%). It's tempting to
-diagnose this as COMDAT/ICF folding (two identical bodies collapsing to one
-address). **Check the marker placement first — it's almost always Hard Rule 3.**
+## 38. "Failed to find a match" after editing a marked function = detached marker, not folding
 
-When you add an explanatory comment you may naturally write it *between* the
-marker and the declaration:
-
-    // FUNCTION: IMPERIALISM 0x00488c50
-    // Read a length-prefixed shared string…        <-- breaks the association
-    void TStream::streamSlot70(CString* dest, int maxLen) { … }
-
-reccmp's parser requires the `// FUNCTION:` line to be *immediately* followed by
-the declaration; any intervening comment/blank line detaches the marker, so the
-recomp symbol never pairs to the original address → "Failed to find a match",
-and the now-unresolved vtable slot pointer mismatches. Fix: move the prose
-*above* the marker:
-
-    // Read a length-prefixed shared string…
-    // FUNCTION: IMPERIALISM 0x00488c50
-    void TStream::streamSlot70(CString* dest, int maxLen) { … }
-
-Confirm it's not folding by dumping the recomp symbol addresses
-(`reccmp.cvdump.Cvdump(pdb).symbols().run()` → each function has a unique
-`(section, offset)`); if the addresses are distinct, it was never a fold.
-`just marker-gate` catches this too, but a bare `just compare`/`just stats` will
-not — the "unpaired + all vtables referencing that slot lose ~2%" fingerprint is
-the fast tell. (Seen porting `TStream::streamSlot70`, bd 1uj.56: base +
-TFileStream override both went 0.00% → 100% once the marker sat directly on the
-decl.)
+Symptom: after changing a marked function's signature/body, `just compare 0xADDR` flips to
+**"Failed to find a match"** and every vtable referencing that slot drops ~2% (one slot of
+~49). Before theorizing COMDAT/ICF folding, **check Hard Rule 3**: an explanatory comment
+added *between* `// FUNCTION:` and the declaration detaches the marker, so the symbol
+never pairs. Move the prose above the marker. `just marker-gate` catches it; bare
+`compare`/`stats` do not — the "unpaired + all referencing vtables −2%" fingerprint is the
+fast tell. (Folding is ruled out anyway: §52.) Evidence: `TStream::streamSlot70`
+0x488c50, base + override 0%→100% once the marker sat directly on the decl.
 
 ## 39. Library vtable addresses need a decorated-symbol row, or every dtor pays
 
@@ -876,30 +650,25 @@ the original-side reloc as DATA while the recomp side is VTABLE — reccmp then 
 a diff line in *every* destructor that stores it (the ubiquitous
 `mov [ecx], offset CObject::vftable` tail of inlined base dtors). Fix: give the csv
 row the decorated symbol (`66fec4|CObject::`vftable'|??_7CObject@@6B@||global||`) so
-`match_symbols` pairs it exactly. One such row change took `TViewMgr::~TViewMgr`
-50%→100% and improved ~50 functions in the same pass. Corollary from the same
-session: a fully-optimized derived dtor can compile to a *single* store of the
-root-base vtable + `ret` (all intermediate vptr stores dead-store-eliminated), so a
-7-byte "SetXxxBaseVtable" junk-named function called only from a scalar deleting
-destructor is that class's real `~T()` — claim it with a companion `// SYNTHETIC:`
-block, never model it as a vtable-reset helper.
+`match_symbols` pairs it exactly. One such row took `TViewMgr::~TViewMgr` 50%→100% and
+improved ~50 functions. Corollary: a fully-optimized derived dtor can compile to a
+*single* store of the root-base vtable + `ret`, so a 7-byte "SetXxxBaseVtable"
+junk-named function called only from a scalar deleting destructor is that class's real
+`~T()` — claim it with a `// SYNTHETIC:` block, never model it as a vtable-reset helper.
 
 ## 40. COM interfaces hide behind "channel/audio object" vtable dispatch
 
 If a cluster calls vtable slots on an opaque object with the receiver PUSHED on the
 stack (`PUSH EAX; CALL [ECX+0x34]`) instead of passed in ECX, it is a COM interface,
 not a game class. Identify it by slot arithmetic against the real interface layout
-plus API-specific constants (TSoundResourceManager's channels: slots 0x2c/0x30/0x34/
-0x3c/0x48/0x4c/0x50 = IDirectSoundBuffer Lock/Play/SetCurrentPosition/SetVolume/Stop/
-Unlock/Restore, and the 0x88780096 retry constant = DSERR_BUFFERLOST). Model it as a
+plus API-specific constants (TSoundResourceManager's channels: slots 0x2c–0x50 =
+IDirectSoundBuffer Lock/Play/.../Restore; 0x88780096 = DSERR_BUFFERLOST). Model it as a
 minimal C++ interface class with `virtual ... __stdcall` methods in the exact retail
 slot order (MSVC passes `this` as the hidden first stack arg for __stdcall members, so
-codegen matches exactly); don't invent dummy-slot game classes for it. dsound.h isn't
-in the MSVC500 toolchain — declaring the interface locally with real COM names is the
-right shape.
+codegen matches exactly); don't invent dummy-slot game classes. dsound.h isn't in the
+MSVC500 toolchain — declaring the interface locally with real COM names is the right shape.
 
-## 41. GlobalHandle/GlobalUnlock/GlobalFree pairs = windowsx.h GlobalFreePtr; paired
-free-blocks + EH state = a local descriptor class with inlined dtor
+## 41. GlobalHandle/GlobalUnlock/GlobalFree pairs = windowsx.h GlobalFreePtr; paired free-blocks + EH state = a local descriptor class with inlined dtor
 
 The repeated triple `GlobalUnlock(GlobalHandle(p)); GlobalFree(GlobalHandle(p))` is
 the windowsx.h `GlobalFreePtr(p)` macro (vendored header has it) — write the macro,
@@ -917,8 +686,8 @@ nID, nLastID, nSig, pfn}` with pfn in the image range, then resolve the pfn ILT 
 The null terminator entry is followed (in this binary) by the class's window-class
 string, which identifies the owner (CIncludeView's map at 0x6489e8 ends before
 "AmbitGameWindow"). This is how CIncludeView was recovered as the real main-frame
-paint host: its 0x4ef handler re-propagates the view as the whole activeDialog tree's
-nativeWindow50 — the mechanism hand-shortcuts in factories were papering over.
+paint host.
+
 ## 43. Two cheap recomp-side diffs to sweep in the near-miss (98–99%) band
 
 Both surface as a *recomp-only* line in `just compare 0xADDR` (green `+`) with no
@@ -928,52 +697,42 @@ no marker/ownership churn, so skip `regen-stubs`.
 - **Trailing `+xor al,al` = a Ghidra `undefined` placeholder return that is really
   `void`.** A body written `undefined Foo() { …; return 0; }` makes MSVC emit
   `xor al,al` before the epilogue; the original returns void and emits nothing. Retype
-  the decl **and** the definition to `void` and drop `return 0;`. `undefined` is the
-  1-byte placeholder, so this is always `xor al,al` (a 4-byte `int` return would be
-  `xor eax,eax`, e.g. `0x5e5140` where the original *does* `xor eax,eax` and the fix is
-  the opposite direction — retype to `int`+`return 0`). Swept 7 of these (TDisplayMgr
-  ×3, TMacViewMgr atlas ×4) 94–98%→100% in one build. These are frequently *virtuals*
-  in a "GENERATED DECLS" header block introduced by that class (no base/override to
-  keep in lockstep) — changing the return type there is self-contained; the formatter
-  re-aligns the trailing `// slot` comments, so run `just format` after.
+  the decl **and** the definition to `void` and drop `return 0;`. (`undefined` is the
+  1-byte placeholder; a 4-byte return would be `xor eax,eax` — at `0x5e5140` the
+  original *does* `xor eax,eax` and the fix is the opposite: retype to `int`.) Swept 7
+  (TDisplayMgr ×3, TMacViewMgr ×4) 94–98%→100% in one build. These are frequently
+  virtuals in a "GENERATED DECLS" block introduced by that class — self-contained to
+  change; run `just format` after (trailing `// slot` comments re-align).
 - **Recomp-extra `test rX,rX; je …` = a null guard the original never had.** When the
-  original loads a pointer and immediately dereferences it (`mov eax,[ecx]; call
-  [eax+off]`) but the port wraps the call in `if (p != nullptr)`, reccmp shows the
-  `test/je` as recomp-only (and a downstream `je` displacement shifts by the extra
-  bytes). The original author knew the pointer was non-null here — delete the guard and
-  call unconditionally. (`TInvadeMission::RefreshSlot40` 0x53f7d0,
-  `TNumberText::ShallowClone` 0x4912b0, both →100%.)
+  original loads a pointer and immediately dereferences it but the port wraps the call
+  in `if (p != nullptr)`, delete the guard and call unconditionally.
+  (`TInvadeMission::RefreshSlot40` 0x53f7d0, `TNumberText::ShallowClone` 0x4912b0,
+  both →100%.)
 
-## 44. The pre-v9-save branch dispatches a *different* vtable slot — read the byte offset
+## 44. A `call [eax+0xNN]` vs `call [eax+0xMM]` diff = wrong virtual at the callsite
 
-reccmp `call [eax+0xNN]` vs `call [eax+0xMM]` on an otherwise-identical body means the
-source calls the wrong virtual. Map byte-offset → named method with slot_index =
-byteOff/4 and the header's `// slot 0xIDX` comments (repo convention even names them by
-offset, e.g. `Call30` = slot byte 0x30, `RefreshSlot40` = byte 0x40). Fix is swapping
-the method name at the callsite, no signature change. (`TMission::ReadFrom` 0x5358a0
-called `RefreshSlot40()` where the original dispatches slot 0x30 `Call30()`, 98%→100%.)
+Map byte-offset → named method with slot_index = byteOff/4 and the header's
+`// slot 0xIDX` comments (repo convention even names methods by byte offset:
+`Call30` = byte 0x30, `RefreshSlot40` = byte 0x40). Fix is swapping the method name at
+the callsite, no signature change. (`TMission::ReadFrom` 0x5358a0 called
+`RefreshSlot40()` where the original dispatches `Call30()`, 98%→100%.)
 
 ## 45. Extractor over-extends a class vtable to swallow adjacent one-slot vtables
 
 The generated `// slot 0xNN … 0xADDR` block appends every non-NULL pointer up to the
-next *known* vtable, so a class whose real table is followed in memory by small (often
-1-slot) `stretch<T>`/helper vtables gets those foreign slots mis-attributed as its own.
-Tell: a run of NULL slots (the real table's abstract tail) and then 1–2 more non-NULL
-"slots" whose target functions operate on a *different* `this* ` shape than the class
-(e.g. touch only `[ecx+4/8/c]` = a stretch data/capacity/count header, not the class's
-0x2a8-byte layout). Confirm by resolving the slot pointer (`just ghidra-vtable-dump
-Name 0xVTABLE --count N` → follow the ILT `JMP`) and checking whether any *global* sets
-its vfptr to that slot's byte address (that global is the real owner). Fix: move the
-`// FUNCTION:` markers off the host class onto a real concrete subclass of the helper
-template, rename the `symbols.csv` rows, and leave the helper vtables unannotated when
-their address overlaps the host's vtable DATA region (pair the methods by address
-marker, not `// VTABLE:`, to avoid the collision gate). This turned the two empty
-`TMapMaker::SetEnabled/SetState` stubs (0x52a760/0x52c0a0) — actually
-`SeaSegmentStretch/SeapointStretch::GetOrAppendUnique` (the by-value append) — from
-0–9% into 93%/91%. Corollary: a `stretch<T>` element size is read straight off the grow
-strides (double `n*0x30`/fallback `n*0x18` ⇒ 0x18 element; `n*0x20`/`n*0x10` ⇒ 0x10),
-and a by-value append copies exactly `sizeof/4` dwords (6-iter `rep movsd` = 0x18,
-4 unrolled movs = 0x10) — the copy width is independent structural evidence for the type.
+next *known* vtable, so a class whose table is followed in memory by small helper
+vtables (often 1-slot `stretch<T>`) gets those foreign slots mis-attributed. Tell: a
+run of NULL slots (the real abstract tail) then 1–2 more non-NULL "slots" whose targets
+operate on a different `this` shape (touch only `[ecx+4/8/c]` = a stretch header, not
+the class's layout). Confirm by resolving the slot pointer and checking which *global*
+installs it as a vfptr — that global is the real owner. Fix: move the `// FUNCTION:`
+markers onto a real concrete subclass of the helper template, rename the symbols.csv
+rows, and leave the helper vtables unannotated when they overlap the host's vtable DATA
+region (pair by address marker to avoid the collision gate). Turned two empty
+"TMapMaker" stubs (0x52a760/0x52c0a0) — really `SeaSegmentStretch/SeapointStretch::
+GetOrAppendUnique` — from 0–9% into 93%/91%. Corollary: a `stretch<T>` element size
+reads straight off the grow strides (`n*0x30`/fallback `n*0x18` ⇒ 0x18 element), and a
+by-value append copies exactly `sizeof/4` dwords — independent structural evidence.
 
 ## 46. stretch<T> vs MFC CArray: realloc-double-or-fallback is the discriminator
 
@@ -981,205 +740,137 @@ Both are growable arrays with a `data/capacity/count` tail, but MFC `CArray` gro
 allocating a fresh block and *copy-constructing* elements across (new + copy + delete),
 whereas the project's `stretch<T>` family reallocs in place — request `count*2*stride`
 via `ReallocateHeapBlockWithAllocatorTracking`, and on failure realloc to the exact
-`count*stride`. If you see that realloc-double-then-exact-fallback shape (no element
-copy loop on grow), it is a `stretch<T>`, not a `CArray`; model it as a real
-`class X : public stretch<T, Tag>` overriding the single-slot append virtual, not an
-ad-hoc struct. Mac CodeWarrior evidence names the family `stretch<Seapoint>` /
-`stretch<SeaSegment>` with `Add/operator[]/OverStretch` members.
+`count*stride`. That realloc-double-then-exact-fallback shape (no element copy loop on
+grow) means `stretch<T>`: model it as a real `class X : public stretch<T, Tag>`
+overriding the single-slot append virtual, not an ad-hoc struct. Mac evidence names the
+family `stretch<Seapoint>` / `stretch<SeaSegment>` with `Add/operator[]/OverStretch`.
 
-## 47. All globals belong in global_data_tables — never architect around commutative-FP noise
+## 47. All globals belong in global_data_tables — never architect around codegen noise
 
-**Globals go in `global_data_tables.{h,cpp}`.** Declare every shared global (`extern` +
-forward-decl if needed) in `global_data_tables.h` and define it in `global_data_tables.cpp` —
-including plain, non-reccmp-tracked subsystem scratch tables (e.g. the overlay
-Seapoint/SeaSegment stretch tables and the hex-offset tables). Do **not** stash a global in a
-subsystem `.cpp` with `.cpp`-local `extern`s to keep a widely-included header byte-identical.
+**Globals go in `global_data_tables.{h,cpp}`.** Declare every shared global in
+`global_data_tables.h`, define it in the `.cpp` — including plain untracked subsystem
+scratch tables. Do **not** stash a global in a subsystem `.cpp` with local `extern`s to
+keep a widely-included header byte-identical: that was a wrong reaction to a phantom.
 
-That was an earlier (wrong) reaction to a phantom: adding declarations to `global_data_tables.h`
-recompiles the float-heavy TUs and the TGreatPower commutative-FADD stubs
-(0x4e0590/0x4e05d0/0x4e0610/0x4e0650/0x4e0690, `fld [tblA]; fadd [tblB]`) swap their two
-source-table operands, so reccmp reports 100%→43%. **That "regression" is meaningless.** `a+b`
-== `b+a`; the code is semantically identical and the operand order is pure compiler scheduling
-noise the source cannot steer. Ignore these flips — do not revert real structure, relocate
-globals, or otherwise contort the design to preserve the phantom 100%. Accept the delta and run
-`just stats-baseline-update`. The same applies to sub-1pp register-allocation wobbles in
-neighbouring functions when you add code to a TU: noise, not regressions.
+The phantom: recompiling a float-heavy TU flips commutative-FADD leaves
+(0x4e0590–0x4e0690, `fld [tblA]; fadd [tblB]`) 100%→43% because MSVC reorders the
+operands. `a+b == b+a` — **that "regression" is meaningless.** Ignore such flips — do
+not revert real structure, relocate globals, or contort the design to defend a phantom
+100%. Accept the delta and `just stats-baseline-update`. Same for sub-1pp
+register-allocation wobbles in neighbouring functions when a TU grows.
 
-Corollary: reccmp's per-function % is a matching *aid*, not a score to defend. A drop caused by
-commutative FP operand order, register allocation, or instruction scheduling in code you did not
-change is not a regression worth a single line of work.
+Corollary: reccmp's per-function % is a matching *aid*, not a score to defend. A drop
+caused by operand order, register allocation, or scheduling in code you did not change
+is not a regression worth a single line of work.
 
 ## 48. Big matching-heavy function: use float (not double) locals to avoid an alien frame
 
-Real, source-steerable yield on the 1073-byte `BuildOverlaySpanRecordsFromQuadBorderLinks`
-(0x52cae0): a `double` local for a distance forces an 8-byte-aligned frame (`push ebp;
-and esp,-8`) the original (which used `float`) never emits — storing the metric as `float` /
-comparing straight off the FPU return removed the whole alien prologue. Match the original's FP
-width. Beyond that, a big function's score is dominated by the compiler's induction-variable
-register choice (ebx vs the original's ebp) which source can't steer — expect ~30% structural
-and treat the absolute aligned-byte gain (≈320 here) as the win, not the percentage. (A large
-standalone function may live in its own `.cpp`, following the merge-function precedent, for
-organization — but never move code between TUs to chase neighbouring register-allocation noise;
-see note 44.)
+A `double` local for a distance metric forces an 8-byte-aligned frame (`push ebp;
+and esp,-8`) the original (which used `float`) never emits — storing the metric as
+`float` removed the whole alien prologue on the 1073-byte
+`BuildOverlaySpanRecordsFromQuadBorderLinks` (0x52cae0). Match the original's FP width.
+Beyond that, a big function's score is dominated by the compiler's induction-variable
+register choice, which source can't steer — expect ~30% structural and treat the
+absolute aligned-byte gain as the win. (A large standalone function may live in its own
+`.cpp` per §19 — but never move code between TUs to chase neighbouring
+register-allocation noise; see §47.)
 
 ## 49. Thunk-only-caller thiscall methods are frequently mis-attributed — reattribute by `[this+off]` field layout, not the curated name
 
-When a `__thiscall` method's *only* xref is an ILT thunk (`JMP 0xADDR`), Ghidra/symbols.csv
-guessed its owning class from weak evidence, so the `ClassName::` prefix is unreliable
-(Hard Rule 6 — names are provisional). Recover the real receiver from the object-field
-accesses in the body: match each `[this+off]` against candidate classes' recovered layouts.
-
-Concrete wins (this session, the civilian-order cluster all mislabeled `TCivToolbar::`):
-- `CanAssignCivilianOrderToTile` (0x4d2f60): `[this+4]` is used as a `TCivUnit*` selected
-  entry → matches `TCivMgr::selectedEntry` (0x4) exactly → real owner is **TCivMgr**
-  (TObject-derived), not the TControl-derived toolbar. The compat lookup is on a *global*
-  (`g_pDiplomacyTurnStateManager`, 0x6a43d0), not `this`, so "this calls a TControl method"
-  is NOT evidence the receiver is a TControl.
-- `CalculateDeveloperTilePurchaseCost` (0x518b40): `this->field0c` is a stride-0x24 tile
-  table base → matches `TMapMgr::terrainStateTable` (+0xc, `TTerrainStateRecordView[]`) →
-  real owner is **TMapMgr**. (Still blocked on a slot-0x13 vtable dispatch on the
-  ambiguously-typed `g_pNationInteractionStateManager` — TTradeMgr vs TDealList.)
-
-Procedure: (1) list the `[this+off]` accesses; (2) `grep` recovered class headers for a
-field at that offset with a compatible type; (3) reattribute — update the symbols.csv name,
-move the marker to the real class's `.cpp`, declare on its header. Reccmp pairs by address,
-so reattribution never risks the score; it just unlocks typed field/virtual access
-(`this->selectedEntry`, `g_apTerrainTypeDescriptorTable[c]->IsEncodedNationSlotMinus200Equal(...)`).
-The residual on these is usually pure register allocation (original caches `this`/param in
-edi/cx; the rebuild keeps them in ecx/dx) — same instructions, don't chase (Hard Rule 12).
+When a `__thiscall` method's *only* xref is an ILT thunk, the `ClassName::` prefix was
+guessed from weak evidence (Hard Rule 6). Recover the real receiver from the body's
+`[this+off]` accesses: (1) list them; (2) grep recovered class headers for a field at
+that offset with a compatible type; (3) reattribute — symbols.csv rename, move the
+marker, declare on the real header. reccmp pairs by address, so reattribution never
+risks the score; it unlocks typed field/virtual access. Beware: a lookup on a *global*
+inside the body is NOT evidence about the receiver's class. Evidence: the
+civilian-order cluster was all mislabeled `TCivToolbar::` — `CanAssignCivilianOrderToTile`
+(0x4d2f60) reads `[this+4]` as a `TCivUnit*` = `TCivMgr::selectedEntry`, so the owner is
+TCivMgr; `CalculateDeveloperTilePurchaseCost` (0x518b40) reads a stride-0x24 table at
++0xc = `TMapMgr::terrainStateTable`. Residual is usually register allocation — don't chase.
 
 ## 50. Detangling a two-class "frankenclass": split by vtable, recover layout from accessor displacement
 
-When Ghidra (or an earlier port) merges two classes into one — e.g. a manager and a small
-list class conflated because one *contains* the other — the tell is a single class carrying
-**two distinct `// VTABLE:` roles** and methods that match only 6–60% because their
-`this + off` accesses assume the wrong base. `TTradeMgr` (vtable 0x66d990, `: TObject`, size
-0xaf0) had been bolted onto `TDealList` (vtable 0x66da38, `: TSortedPtrList`, size 0x18); the
-edge was **composition** — `TTradeMgr::categoryRankLists[]` holds real `TDealList` instances
-(its InitializeDefaults `new`s them and installs 0x66da38 into each).
+A single class carrying **two distinct `// VTABLE:` roles**, with methods matching only
+6–60% because their `this+off` accesses assume the wrong base, is two classes merged —
+often manager + contained element (`TTradeMgr` vt 0x66d990 had `TDealList` vt 0x66da38
+bolted on; the real edge was composition: `categoryRankLists[]` holds `TDealList`
+instances). Split procedure:
 
-Split procedure that keeps both halves green:
-1. **Recover the real field layout from the accessors' disassembly, not the decompile.** A
-   one-line getter `MOVSX EAX,word[ESP+4]; LEA EAX,[EAX+EAX*4]; SHL EAX,5; MOV AX,[EAX+ECX+0x18]`
-   reads *exactly*: stride `5<<5 = 0xa0`, field displacement `0x18`, array base folded in.
-   Since MSVC folds `array_base_offset + field_offset` into one displacement, place the member
-   array right after the vptr (offset 0x04) and shift the struct field offsets down by 4
-   (here 0x18 → struct 0x14, 0x0a → struct 0x06) so codegen reproduces the same displacement.
-   Cross-check against the ctor/init loop's cursor deltas (`LEA ESI,[ECX+0x0e]`, `ADD ESI,0xa0`,
-   `LEA EBP,[ECX+0xaa8]`) and the object size to pin every array offset — the layout arithmetic
-   must total the RTTI size exactly (0x04 + 0x11*0xa0 = 0xaa4, pad, ranks[0x11] at 0xaa8 → 0xaf0).
-2. **Own every primary-vtable slot on the new class** (overrides of the base slots + all
-   introduced virtuals in slot order) so the compiler lays the vtable out correctly — honest
-   `return 0;` bodies are fine, slot correctness is body-independent, and `just vtable NewClass`
-   goes 100% immediately even with unfinished bodies. Move the already-ported real methods with
-   their markers; promote the autogen stubs (verify none are called by name first).
-3. **Retype the global + repoint the alias header**; move its definition (with the `// GLOBAL:`
-   marker) into `global_data_tables.cpp` (the marker gate rejects `// GLOBAL:` anywhere else).
-4. Getter param width matters: `MOVSX word` ⇒ `short` param (not `int`) — fixing both the
-   offset and the width took the accessors 60→100% / 37→64%. Callers that now truncate an int
-   arg may dip a couple pp; accept it (correct model > local caller score, Hard Rule 12).
-Residual on the trivial ctor (just a vtable write in the original) stays low because the
-out-of-line empty `TObject::TObject()` base ctor isn't inlined under /Ob1 — systemic, not a
-detangle defect.
+1. **Recover the layout from accessor disassembly, not the decompile.** MSVC folds
+   `array_base_offset + field_offset` into one displacement, so place the member array
+   right after the vptr and shift struct field offsets accordingly; cross-check ctor
+   cursor deltas and make the arithmetic total the RTTI object size exactly.
+2. **Own every primary-vtable slot on the new class** (overrides + introduced virtuals
+   in slot order) — honest `return 0;` bodies are fine; slot correctness is
+   body-independent and `just vtable NewClass` hits 100% immediately.
+3. **Retype the global + repoint the alias header**; the `// GLOBAL:` definition moves
+   to `global_data_tables.cpp` (the marker gate rejects it anywhere else).
+4. Getter param width matters: `MOVSX word` ⇒ `short` param — fixing offset + width took
+   accessors 60→100%. Callers that now truncate may dip a couple pp; accept it
+   (correct model > local caller score, Hard Rule 12).
 
-## 51. Branch-order = fall-through: a `je far` on an equality test means the INEQUALITY body is the source `if`
+## 51. Branch-order = fall-through: read the `je`/`jne` target to pick which body is the `if`
 
-Ported `TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState` (0x5108d0). The listing opens
-`cmp byte[..],5 / je <far> / <inequality body...>`. Writing the natural
-`if (x == 5) { equal-body } else { unequal-body }` makes MSVC emit the EQUAL body as the
-fall-through (`jne` to the else), which misaligns the ENTIRE function against the original and
-pins reccmp near 25%. Fix: mirror the compiler's fall-through — the block that physically
-follows the conditional jump must be the source `if` body. Here the original falls through to
-`!= 5`, so write `if (x != 5) { unequal-body } else { equal-body }`. This one inversion moved
-alignment from "nothing matches" to "cases align" — a prerequisite before any register work.
-Corollary: the Ghidra decompile's `if (cond) {A} else {B}` nesting does NOT encode
-fall-through direction; read the actual `je`/`jne` target (near vs far) to decide which body is
-the `if`.
+A listing opening `cmp x,5 / je <far> / <body...>` falls through to the INEQUALITY body,
+so the source is `if (x != 5) { unequal } else { equal }` — writing the "natural"
+`if (x == 5)` swaps the block order and misaligns the entire function (pinned ~25% until
+inverted; `TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState` 0x5108d0). The Ghidra
+decompile's `if/else` nesting does NOT encode fall-through; read the actual jump target
+(near vs far). Related lessons from the same cluster:
 
-Also from this port:
-- **The `int param_1` + `short sVar7 = (short)param_1` split is real, not decompiler noise.**
-  When a function is `MOVSX ebx,si` yet keeps the full dword arg live in another reg (used as
-  `lea edx,[esi-1]` for neighbor indices / helper args), model BOTH: declare the param `int`
-  and derive `short s = (short)param`. Use the raw `int` where the decompile writes `param_1`
-  (helper args, some inline reads) and the `short` where it writes `sVar7`. Collapsing to a
-  single `short` param removes the raw-dword variable the original allocated.
-- **A byte-compare-only field read is `MOV AL,byte` / `CMP AL,imm` regardless of field
-  signedness** (no MOVSX/MOVZX), so membership-test helpers hit 100% reading an `unsigned char`
-  field into a `char` local. Signedness only forces MOVSX/MOVZX when the byte feeds arithmetic
-  or a switch selector (there the source variable's declared signedness picks the extension —
-  match it).
-- **Adding ~2KB of ported code perturbs the linker's ICF/COMDAT fold groups**, so a few
-  untouched trivial twin accessors elsewhere (near-identical bodies differing only by a field
-  offset) can flip which recomp address reccmp pairs them to and drop 100→~43%. This is
-  layout noise, not a regression in the edited TU; confirm the net average-similarity delta is
-  positive and absorb it into the baseline.
-- **Don't cache a member pointer the original re-reads.** In the consumer
-  `UpdateMapTileAdjacencyMasksAndVariantForTile` (0x510210) the original re-derefs
-  `this->terrainStateTable` (`mov eax,[ebp+0xc]`) on *every* tile access. Caching it in a local
-  (`TTerrainStateRecordView* tiles = terrainStateTable;`) consumed one extra register, which
-  under MSVC500's pressure forced a `this` spill to stack (`sub esp,0x10` instead of `0xc`) and
-  shifted every subsequent `[esp+…]` offset — capping the match at 14.6%. Dropping the cache and
-  indexing `terrainStateTable[…]` directly (re-reading the member) matched the frame and jumped
-  it to 32%. General rule: mirror the original's caching decisions; a "cleaner" CSE that the
-  original didn't make can cost more than it saves. (Same function reconfirmed the note-48
-  branch-order rule: `je far` on `type==5` ⇒ source is `if (type != 5) {land} else {water}`.)
+- **An `int param` + `short s = (short)param` split is real, not decompiler noise**: when
+  the body sign-extends (`MOVSX ebx,si`) but keeps the full dword live in another reg,
+  model BOTH and use each where the decompile does. Collapsing to one `short` param
+  removes a variable the original allocated.
+- **A byte-compare-only field read is `MOV AL` / `CMP AL,imm` regardless of signedness**;
+  signedness only forces MOVSX/MOVZX when the byte feeds arithmetic or a switch selector.
+- **Don't cache a member pointer the original re-reads.** Caching `this->terrainStateTable`
+  in a local consumed a register, forced a `this` spill, and shifted every `[esp+…]`
+  offset (capped 14.6%); dropping the cache matched the frame (→32%, 0x510210). Mirror
+  the original's caching decisions — a "cleaner" CSE can cost more than it saves.
+- **Adding ~2KB of ported code can flip which recomp address reccmp pairs near-identical
+  twin accessors to** (100→~43% on untouched functions). Layout noise, not a regression;
+  confirm the net stats delta and absorb into the baseline (§47).
 
-## 52. A failed build makes `just stats` report a phantom regression — confirm "Built target" first
+## 52. Confirm "Built target" before trusting any stats delta; this link does NOT fold identical functions
 
-When you widen a `virtual` signature you must edit the base decl, the base body, AND every
-override's decl+body in lockstep; if ONE `Edit` silently fails (e.g. the file wasn't Read
-first, so the edit errors and is skipped), the header/body disagree and `just build` fails
-with a `C2511 overloaded member function not found` — but `just stats` then runs against the
-**stale** `.exe` from before your change and shows a large "-N aligned" delta. This is a
-phantom: nothing regressed, the binary just never rebuilt. **Always confirm the build printed
-`Built target Imperialism` before trusting any stats delta.** A whole prior session mis-read
-one such phantom as an "ICF fold wall" and reverted correct work to chase it. Corollary:
-verify empirically before theorizing a linker-fold story — this build has `/OPT:ICF` **off**
-(two byte-identical `void f(){}` stubs, 0x596040 and 0x596080, both survive at distinct
-addresses at 100%/0%), so byte-identical no-op stubs do **not** fold here; a real regression
-has a real cause (usually a broken build or a genuinely wrong signature), not folding.
+If one edit in a lockstep signature change silently fails, `just build` fails (C2511) —
+but `just stats` still runs against the **stale** `.exe` and reports a large phantom
+"-N aligned" regression. Always confirm the build printed `Built target Imperialism`
+first; a whole session once mis-read this as an "ICF fold wall" and reverted correct
+work. Empirical anchor: `/OPT:ICF` is **off** — two byte-identical `void f(){}` stubs
+(0x596040, 0x596080) survive at distinct addresses — so byte-identical bodies never fold
+here (see §20, §38); a real regression has a real cause. Related from the same cluster:
 
-Also from this cluster (TWorldView/TMapDialog/TOceanDialog/TCitySiteView slots 0x6b–0x80):
-- **A "poison-pill" arg-count mismatch is the class model telling you the arity is wrong.**
-  A slot's base no-op stub `ret N` gives the true arg count directly (`ret 0xc` ⇒ 3 dwords),
-  and every real override of that slot forwards the same list — so recover the signature from
-  `ret N` + the overrides, then apply it to the base and ALL overrides at once. Five base
-  stubs sat at 0–50% purely because they were declared 0-arg (emitting `ret`) against an
-  original that pops the slot's real args.
-- **A dispatcher that `CALL [EAX+byte]` after pushing args is a real virtual call on `this`** —
-  model it as `this->Method(args)` on the recovered class (Hard Rule 11/12), never a raw
-  `vftable[i]`/`reinterpret_cast`. The 8-byte slot-0x79 dispatchers (0x51adc0/0x51c2f0) hit
-  100% as `ReleaseRuntimeSelectionOwnerAndDestroyObject(arg1, arg2, 0)` once that target
-  slot's true 3-arg arity (`ret 0xc`, not the modelled 2) was recovered.
-- **The shared-ILT-thunk call is a permanent ~1-instruction miss.** reccmp attributes the
-  recomp callsite to the unscoped `thunk_X` symbol and the original to `Class::thunk_X`, so a
-  body whose only residual diff is that `call` caps just under 100% (0x51ad70 → 95.24%); the
-  sibling callsite 0x51ac40 shows the identical diff. Accept it as inherent, not a bug in the
-  body.
+- **A "poison-pill" arg-count mismatch means the modeled arity is wrong.** The base
+  no-op stub's `ret N` gives the true arg count (`ret 0xc` ⇒ 3 dwords); recover the
+  signature from `ret N` + the overrides, then apply to the base and ALL overrides at
+  once (five base stubs sat at 0–50% purely from being declared 0-arg).
+- **A dispatcher that `CALL [EAX+byte]` after pushing args is a real virtual on `this`**
+  (Hard Rules 11/12) — the 8-byte slot-0x79 dispatchers (0x51adc0/0x51c2f0) hit 100%
+  once the target slot's true 3-arg arity was recovered.
+- **The shared-ILT-thunk callsite is a permanent ~1-instruction miss** (recomp pairs the
+  unscoped `thunk_X`, original the scoped `Class::thunk_X`) — a body whose only residual
+  is that `call` caps just under 100% (0x51ad70 → 95.24%). Accept as inherent.
 
 ## 53. Recover a polymorphic NULL-abstract-slot's real receiver by scanning every vtable's byte offset
 
-When a caller invokes `obj->[byte X]` with an arg count that contradicts the slot's arity in
-the class you *assumed* `obj` is (e.g. a turn-event handler pushes 3 args to byte 0x1e4, but
-TWorldView's slot 0x79 there pops 2), the real static type of `obj` is a **different TView
-subtree**. `TView` declares many high slots as NULL (`0x00000000`) abstract placeholders that
-different subclass trees fill with genuinely different-arity methods — so "byte 0x1e4" is not
-one method, and `just vtable ClassX` being 100% tells you nothing about class Y's byte 0x1e4.
+`TView` declares many high slots as NULL abstract placeholders that different subclass
+trees fill with genuinely different-arity methods — so "byte 0x1e4" is not one method,
+and a caller whose arg count contradicts the slot's arity in the class you *assumed*
+means the receiver is a different subtree. Recovery recipe (proved the turn-event
+'main' view is a `TDiplomacyMapView`, not a `TWorldView`):
 
-Recovery recipe (used to prove the turn-event 'main' view is a `TDiplomacyMapView`, not a
-`TWorldView`):
-1. Collect every `// VTABLE: IMPERIALISM 0x…` address (`grep` the headers).
-2. For each vtable V, read the pointer at `V + byteoffset` with
-   `uv run python -m tools.ghidra.read_data 0x<V+off>`. Keep the non-null ones. Many
-   annotations aren't that deep — ignore small non-pointer values.
-3. Fillers point at ILT thunks (`0x004xxxxx`); resolve each with `just ghidra-listing`
-   (`JMP 0x…` target), then check each target's `ret N` to filter to the arity the caller
-   needs (`ret 0xc` = 3 args).
-4. Map the surviving thunk back → its vtable(s) → class header. Cross-check with domain
-   evidence: the class that also *stores* the tag constant (here `0x6d61696e` 'main' in
-   `TBattleReportView`) is the receiver family. `just func-status <target>` names the method.
+1. Collect every `// VTABLE: IMPERIALISM 0x…` address (grep the headers).
+2. For each vtable V, `just ghidra-read-data 0x<V+off> ptr` — keep non-null slots.
+3. Resolve each filler's ILT thunk (`just ghidra-listing`), filter by the caller's
+   needed arity via the target's `ret N`.
+4. Map survivors back to vtable → class header; cross-check domain evidence (the class
+   that also *stores* the tag constant is the receiver family). `just func-status`
+   names the method.
 
 Then wire the caller as `static_cast<TRealClass*>(resolve(...))->Method(args)` — a
-codegen-neutral downcast plus the real virtual (0x5d7090 hit 100% this way). Different callers
-of the *same* handler family can still have different receivers: 0x5d71b0 pushes 5 args to
-byte 0x1cc, so its 'main' view is yet another class — don't assume one recovery covers the set.
+codegen-neutral downcast plus the real virtual (0x5d7090 →100%). Different callers of
+the same handler family can have different receivers — don't assume one recovery
+covers the set.
