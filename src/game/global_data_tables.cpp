@@ -439,6 +439,12 @@ int g_anFortLevelAttackerPenaltyPercentByLevel[8] = {0};
 // TUnit::orderType.
 unsigned char g_abUnitTypeBlinkEligibilityFlag[32] = {0};
 
+// Four per-unit-type meter-scoring tables, indexed by TUnit::orderType.
+int g_anWeightClassByOrderType[32] = {0};         // int table at 0x64c790
+short g_anScaledFactorByOrderType[32] = {0};      // short table at 0x64c660
+float g_afPercentEfficiencyByOrderType[32] = {0}; // float table at 0x64c6a0
+int g_anCountWeightByOrderType[32] = {0};         // int table at 0x695578
+
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};
 

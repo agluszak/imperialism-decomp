@@ -159,6 +159,14 @@ extern int g_anFortLevelAttackerPenaltyPercentByLevel[8];
 // bound unconfirmed beyond the observed ~28 nonzero/zero entries.
 extern unsigned char g_abUnitTypeBlinkEligibilityFlag[32];
 
+// Four per-unit-type meter-scoring tables read by
+// TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries, all indexed by
+// TUnit::orderType; true bounds unconfirmed beyond the observed sampled entries.
+extern int g_anWeightClassByOrderType[32];         // 0x64c790
+extern short g_anScaledFactorByOrderType[32];      // 0x64c660
+extern float g_afPercentEfficiencyByOrderType[32]; // 0x64c6a0
+extern int g_anCountWeightByOrderType[32];         // 0x695578
+
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
 extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
