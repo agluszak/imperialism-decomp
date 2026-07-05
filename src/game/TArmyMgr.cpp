@@ -998,8 +998,26 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
 
 // FUNCTION: IMPERIALISM 0x004a5760
 void TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex) {
-  // TODO: port body @ 0x4a5760 (656 bytes; builds directional order-overlay controls from
-  // the tile's adjacent-region list; not yet ported).
+  // TODO: port body @ 0x4a5760 (656 bytes; not yet ported). Partial reconnaissance from
+  // the raw listing for a future pass:
+  //  - direction = (terrainStateTable[tileIndex].perTileVisitedFlag0f - 1) % 6;
+  //    neighborTile = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(tileIndex, direction);
+  //    cityRecordIndex = terrainStateTable[neighborTile].cityRecordIndex.
+  //  - Walks g_apNationStates[GetActiveNationId()]->militaryUnitList44 via CIterator
+  //    (Reset/More/Advance), decrementing a per-nation counter
+  //    (g_apNationStates[nationSlot]->+0x900) for each qualifying member, then calls
+  //    unit->SetOrderModeSlot34(0, -1) once done (same shape as the field_8==4 branch in
+  //    TArmyMgr's other order-clearing loops).
+  //  - Ends by calling the not-yet-recovered TMapMgr::MarkDirectionalMapOverlayFlagsFor-
+  //    NationOrders (0x518d90, 510 bytes, thiscall on g_pGlobalMapState, no explicit
+  //    args) and, unless pendingMapActionIndex == -1, this->SetActiveProvinceSelection
+  //    (already real).
+  //  - A 6-iteration loop over ComputeHexNeighborTileIndices' output clears
+  //    terrainStateTable[...].perTileVisitedFlag0f when it encodes the same direction
+  //    mod 6 as (loopIndex+3), and forwards the tile to goodGoldTagControlA4's slot-0x76
+  //    virtual (InvalidateTileMarkerChain) when clearing succeeds.
+  // Left as a stub rather than guessed further -- a 10-int scratch buffer's role wasn't
+  // pinned down with confidence.
   (void)tileIndex;
 }
 
