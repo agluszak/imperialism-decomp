@@ -37,18 +37,21 @@ just ghidra-daemon-stop     # stop (frees the project lock)
 ```
 
 Rules of thumb:
-- The daemon holds the **project lock**: stop it before any `MUTATES: Ghidra DB`
-  target. `just sync-ghidra` / `just restore-project` stop it automatically; the
-  other `apply-*`/`import-ghidra`/`export-project` targets will fail on the lock
-  until you `just ghidra-daemon-stop`.
+- The daemon holds the **project lock**, and every other project open — a
+  `MUTATES: Ghidra DB` target or a one-shot read tool such as
+  `scan-cdecl-thiscall` — **evicts it automatically** (asks it to shut down,
+  waits for the lock). Re-warm with `just ghidra-daemon` afterwards.
 - Without a daemon everything still works — the targets fall back to the classic
   one-shot path (same output, slow) and print a hint.
 - It exits on its own after 4h idle (`GHIDRA_DAEMON_IDLE_SECS` overrides).
   Log: `.ghidra-query.log` in the repo root.
-- A few tools stay one-shot (no daemon routing): `ghidra-xrefs` (bidirectional
-  to/from/both, no thunk-hop), `ghidra-read-data` (typed memory reads),
-  `ghidra-function-slice`, and `scan-cdecl-thiscall` (reads addresses from stdin).
-  Details: `tools/ghidra/README.md`.
+- The daemon imports the tool code at startup: after editing anything under
+  `tools/ghidra/`, restart it (`just ghidra-daemon-stop && just ghidra-daemon`)
+  or queries keep answering with the old code.
+- Almost every read tool is daemon-routed (`listing`, `decompile`, `xrefs`,
+  `read-data`, `function-slice`, `search`, `jumptable`, `linear-disasm`,
+  `raw-disasm`, `vtable-dump`); `scan-cdecl-thiscall` stays one-shot (reads
+  addresses from stdin). Details: `tools/ghidra/README.md`.
 
 ## Read-only queries (preferred — use these, not raw disassemblers)
 
@@ -58,20 +61,16 @@ Rules of thumb:
   ```sh
   just ghidra-listing 0x004dd1b0 [0xADDR ...]
   ```
-- **Who references this address (TO-only, thunk-hopping)** — callers, jumps, and
+- **Cross-references** — direction `to` (default) lists callers, jumps, and
   address-taken/data refs, hopping through ILT thunks automatically (a body address
   answers "who calls this" in one query; address-taken hits are how data-registered
-  callbacks hide):
+  callbacks hide). Direction `from` lists the containing function's callees + global
+  data reads without decompiling; `both` prints both. (`just ghidra-xrefs` is an
+  alias.)
   ```sh
   just xrefs 0x581870 [0xADDR ...] [--no-thunk-hop] [--limit N]
-  ```
-- **Cross-references, either direction (no thunk-hop)** — who references an address
-  (call sites, data reads, vtable-slot dispatches, with the containing function) and/or
-  what a function references out. Direction is `to` | `from` | `both` (default `both`).
-  Useful for "what does this function call" (`from`), which `xrefs` above doesn't do:
-  ```sh
-  just ghidra-xrefs to 0x0052a760      # who calls / dispatches this address
-  just ghidra-xrefs from 0x0052d750    # a function's callees + data reads
+  just xrefs from 0x0052d750           # a function's callees + data reads
+  just xrefs both 0x0052a760
   ```
 - **Read a typed value / constant** at an address — `byte word dword qword float double ptr
   str bytes` (default `dword`), with an optional count for tables. Use this instead of hacking

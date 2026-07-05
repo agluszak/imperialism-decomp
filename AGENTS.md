@@ -63,7 +63,7 @@ starting that kind of task.
   signatures or collection layouts.
 - **Ghidra is the ground-truth evidence source.** Read the disassembly before trusting
   a decompile or a name: `just ghidra-listing 0xADDR`, `just ghidra-vtable-dump`,
-  `just ghidra-xrefs [to|from|both] 0xADDR` (cross-references), `just scan-cdecl-thiscall`,
+  `just xrefs [to|from|both] 0xADDR` (cross-references), `just scan-cdecl-thiscall`,
   plus decompile via the `ghidra` skill. Prefer this over objdump. The read-only inspect
   targets run through a persistent daemon (`just ghidra-daemon` / `-stop`) that keeps the
   project loaded, so calls after the first are sub-second; mutating targets evict it

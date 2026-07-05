@@ -16,10 +16,12 @@ from collections.abc import Callable
 
 from tools.ghidra import (
     decompile_one,
+    function_slice,
     jumptable,
     linear_disasm,
     listing_one,
     raw_disasm,
+    read_data,
     search_whole_binary,
     vtable_dump,
     xrefs_to,
@@ -34,6 +36,8 @@ COMMANDS: dict[str, Callable] = {
     "jumptable": jumptable.run,
     "decompile": decompile_one.run,
     "vtable-dump": vtable_dump.run,
+    "read-data": read_data.run,
+    "function-slice": function_slice.run,
 }
 
 

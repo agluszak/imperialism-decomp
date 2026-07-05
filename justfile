@@ -417,9 +417,10 @@ session-loop pick='8' top='50' min_size='1' *args:
 # Read-only inspect targets route through tools.ghidra.query: when the persistent
 # daemon (`just ghidra-daemon`) is running they answer in milliseconds over its
 # socket; otherwise they fall back to the classic one-shot pyghidra path with
-# identical output. Stop the daemon (`just ghidra-daemon-stop`) before any
-# MUTATES-Ghidra-DB target — the daemon holds the project lock (sync-ghidra and
-# restore-project stop it automatically).
+# identical output. The daemon holds the exclusive project lock, so every other
+# project open — the remaining one-shot read tools below and all MUTATES-Ghidra-DB
+# targets — evicts it automatically (via ghidra_env.open_project); re-warm with
+# `just ghidra-daemon` afterwards.
 [doc('Start the persistent read-only Ghidra query daemon (one JVM, instant queries)')]
 [group('ghidra-inspect')]
 ghidra-daemon: _require-ghidra-install
@@ -437,24 +438,22 @@ ghidra-daemon-status:
 ghidra-listing *args: _require-ghidra-install
   uv run python -m tools.ghidra.query listing {{args}}
 
-# References TO an address: callers, jumps, address-taken/data refs. Hops through
-# ILT `jmp` thunks automatically so body addresses answer "who calls this" in one
-# query. `just xrefs 0xADDR [0xADDR ...] [--no-thunk-hop] [--limit N]`.
+# Cross-references for an address. Direction `to` (default): callers, jumps,
+# address-taken/data refs, hopping through ILT `jmp` thunks automatically so body
+# addresses answer "who calls this" in one query. Direction `from`: the containing
+# function's callees + data reads without decompiling. `both` prints both.
+# `just xrefs [to|from|both] 0xADDR [0xADDR ...] [--no-thunk-hop] [--limit N]`.
 [group('ghidra-inspect')]
 xrefs *args: _require-ghidra-install
   uv run python -m tools.ghidra.query xrefs {{args}}
 
-# Cross-references to/from an address, both directions in one call (no thunk-hop).
-# `just ghidra-xrefs [to|from|both] 0xADDR [0xADDR ...]`.
-[group('ghidra-inspect')]
-ghidra-xrefs *args: _require-ghidra-install
-  uv run python -m tools.ghidra.xrefs {{args}}
+alias ghidra-xrefs := xrefs
 
 # Read memory at an address as a typed value (float/double/dword/ptr/str/bytes/...).
 # `just ghidra-read-data 0xADDR [type] [count]`.
 [group('ghidra-inspect')]
 ghidra-read-data *args: _require-ghidra-install
-  uv run python -m tools.ghidra.read_data {{args}}
+  uv run python -m tools.ghidra.query read-data {{args}}
 
 # Decode an MSVC500 switch jump table (works inside Ghidra code gaps).
 # `just ghidra-jumptable 0xJMPADDR` or `--table 0xADDR [--cases N]`.
@@ -462,9 +461,11 @@ ghidra-read-data *args: _require-ghidra-install
 ghidra-jumptable *args: _require-ghidra-install
   uv run python -m tools.ghidra.query jumptable {{args}}
 
+# Call/offset slice of a function: callers, callees, this+offset field accesses.
+# `just ghidra-function-slice 0xADDR [0xADDR ...]`.
 [group('ghidra-inspect')]
 ghidra-function-slice *args: _require-ghidra-install
-  uv run python -m tools.ghidra.function_slice {{args}}
+  uv run python -m tools.ghidra.query function-slice {{args}}
 
 [group('ghidra-inspect')]
 ghidra-decompile *args: _require-ghidra-install
@@ -681,6 +682,7 @@ precommit:
 [doc('Run all mechanical source-policy gates (the pre-commit check)')]
 [group('gates')]
 gates:
+  just tooling-check
   just vtable
   just datacmp
   just vtable-gate

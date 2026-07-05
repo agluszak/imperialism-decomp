@@ -12,6 +12,8 @@ from pathlib import Path
 from tools.common import ghidra_env
 from tools.ghidra import daemon
 from tools.ghidra.jumptable import looks_like_code_address, parse_jmp_table_operand
+from tools.ghidra.query_registry import COMMANDS
+from tools.ghidra.xrefs_to import parse_query
 from tools.runtime.screenshot import WININFO_LINE_RE
 
 
@@ -81,6 +83,64 @@ class DaemonProtocolTests(unittest.TestCase):
         self.assertEqual(line.count(b"\n"), 1)  # newline-delimited framing holds
         resp = daemon.decode_response(line)
         self.assertEqual(resp, {"ok": True, "rc": 0, "output": output})
+
+
+class DaemonSocketTests(unittest.TestCase):
+    def test_daemon_and_eviction_share_one_socket_path(self) -> None:
+        # The 2026-07 merge briefly left daemon.py binding .ghidra-query.sock while
+        # ghidra_env eviction probed .ghidra-daemon.sock, silently disabling the
+        # automatic eviction every one-shot/mutating open relies on.
+        self.assertEqual(daemon.SOCKET_PATH, ghidra_env.socket_path())
+
+    def test_pid_and_log_files_sit_next_to_the_socket(self) -> None:
+        self.assertEqual(daemon.PID_PATH, daemon.SOCKET_PATH.with_suffix(".pid"))
+        self.assertEqual(daemon.LOG_PATH, daemon.SOCKET_PATH.with_suffix(".log"))
+
+
+class QueryRegistryTests(unittest.TestCase):
+    EXPECTED = {
+        "listing",
+        "xrefs",
+        "search",
+        "linear-disasm",
+        "raw-disasm",
+        "jumptable",
+        "decompile",
+        "vtable-dump",
+        "read-data",
+        "function-slice",
+    }
+
+    def test_registry_serves_the_documented_command_surface(self) -> None:
+        self.assertEqual(set(COMMANDS), self.EXPECTED)
+        for name, handler in COMMANDS.items():
+            self.assertTrue(callable(handler), name)
+
+
+class XrefsParseTests(unittest.TestCase):
+    def test_defaults_to_direction_to_with_thunk_hop(self) -> None:
+        direction, addrs, thunk_hop, limit = parse_query(["0x581870"])
+        self.assertEqual(direction, "to")
+        self.assertEqual(addrs, [0x581870])
+        self.assertTrue(thunk_hop)
+        self.assertEqual(limit, 200)
+
+    def test_parses_direction_keyword_and_flags(self) -> None:
+        direction, addrs, thunk_hop, limit = parse_query(
+            ["both", "0x581870", "0x4a3bc0", "--no-thunk-hop", "--limit", "10"]
+        )
+        self.assertEqual(direction, "both")
+        self.assertEqual(addrs, [0x581870, 0x4A3BC0])
+        self.assertFalse(thunk_hop)
+        self.assertEqual(limit, 10)
+
+    def test_limit_without_value_is_rejected(self) -> None:
+        with self.assertRaises(ValueError):
+            parse_query(["0x581870", "--limit"])
+
+    def test_non_hex_address_is_rejected(self) -> None:
+        with self.assertRaises(ValueError):
+            parse_query(["from", "not-an-address"])
 
 
 class ScreenshotDiscoveryTests(unittest.TestCase):

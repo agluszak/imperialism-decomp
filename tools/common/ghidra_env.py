@@ -165,49 +165,15 @@ def start(ghidra_install_dir: Path | None = None) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Shared-program support (the daemon in tools/ghidra/daemon.py).
+# Daemon eviction (the read-only inspection daemon in tools/ghidra/daemon.py).
 #
-# The daemon opens the project/program once and then calls install_shared(...).
-# From then on, open_project()/open_program() hand every in-process tool the
-# already-open instances instead of paying the JVM + project-load cost again, so
-# the read-only tools run *unchanged* under the daemon. The daemon owns the real
-# lifecycle: a tool's project.close() is a no-op on the shared project, and its
-# program.release(consumer) only drops the fresh per-call consumer, never the
-# daemon's own reference.
+# The daemon keeps the vendored project open, and Ghidra's project lock is
+# exclusive: no other process can open the project while it runs. Every other
+# open therefore first asks a running daemon (over its unix socket) to shut
+# down. The daemon itself never hits this path — it binds its socket only
+# after its own open_project() completes, so during startup there is no live
+# socket for it to find.
 # ---------------------------------------------------------------------------
-
-_SHARED_PROJECT = None
-_SHARED_PROGRAM = None
-
-
-class _NoCloseProject:
-    """Delegates to the real project but makes close() a no-op (daemon owns it)."""
-
-    def __init__(self, real):
-        object.__setattr__(self, "_real", real)
-
-    def __getattr__(self, name):
-        return getattr(object.__getattribute__(self, "_real"), name)
-
-    def close(self):  # noqa: D401 - intentional no-op
-        return None
-
-
-def install_shared(project, program) -> None:
-    """Register an already-open (project, program) for reuse by later tool calls."""
-    global _SHARED_PROJECT, _SHARED_PROGRAM
-    _SHARED_PROJECT = project
-    _SHARED_PROGRAM = program
-
-
-def clear_shared() -> None:
-    global _SHARED_PROJECT, _SHARED_PROGRAM
-    _SHARED_PROJECT = None
-    _SHARED_PROGRAM = None
-
-
-def has_shared() -> bool:
-    return _SHARED_PROGRAM is not None
 
 
 def _evict_daemon_if_running() -> None:
@@ -225,11 +191,12 @@ def _evict_daemon_if_running() -> None:
     if not sp.exists():
         return
     probe = _socket.socket(_socket.AF_UNIX, _socket.SOCK_STREAM)
+    probe.settimeout(10.0)
     try:
         probe.connect(str(sp))
     except OSError:
         probe.close()
-        return  # stale socket; daemon.main() unlinks it on next start
+        return  # stale socket; daemon.serve() unlinks it on next start
     try:
         probe.sendall(_json.dumps({"cmd": "shutdown"}).encode() + b"\n")
         probe.recv(4096)
@@ -246,13 +213,10 @@ def _evict_daemon_if_running() -> None:
 def open_project(create: bool = False):
     """Start pyghidra (with the eager version check) and open the vendored project.
 
-    Under the daemon (install_shared was called) this returns the shared project
-    wrapped so close() is a no-op; the JVM and project are never re-loaded.
+    Evicts a running inspection daemon first (see _evict_daemon_if_running): the
+    daemon holds the exclusive project lock, so any other open would fail.
     """
     import pyghidra
-
-    if _SHARED_PROJECT is not None:
-        return _NoCloseProject(_SHARED_PROJECT)
 
     _evict_daemon_if_running()
     start()
@@ -263,16 +227,9 @@ def open_program(project, writable: bool = False):
     """Open the program inside ``project``; returns (consumer, program).
 
     Caller is responsible for ``program.release(consumer)`` and ``project.close()``.
-    Under the daemon, returns the shared program with a fresh per-call consumer so the
-    caller's release() cannot tear down the daemon's long-lived reference.
     """
     import pyghidra
     from java.lang import Object as JavaObject
-
-    if _SHARED_PROGRAM is not None and not writable:
-        consumer = JavaObject()
-        _SHARED_PROGRAM.addConsumer(consumer)
-        return consumer, _SHARED_PROGRAM
 
     consumer = JavaObject()
     name = program_name()
@@ -288,8 +245,15 @@ def open_program(project, writable: bool = False):
 
 
 def socket_path() -> Path:
-    """Filesystem path of the daemon's Unix socket (override via GHIDRA_DAEMON_SOCK)."""
+    """Filesystem path of the daemon's Unix socket (override via GHIDRA_DAEMON_SOCK).
+
+    Single source of truth: tools/ghidra/daemon.py binds here and
+    _evict_daemon_if_running() probes here — they must never disagree (the
+    2026-07 merge briefly left them on different paths, silently disabling
+    eviction).
+    """
+    load_dotenv()
     override = os.getenv("GHIDRA_DAEMON_SOCK")
     if override:
         return Path(override)
-    return REPO_ROOT / ".ghidra-daemon.sock"
+    return REPO_ROOT / ".ghidra-query.sock"

@@ -16,6 +16,8 @@ import json
 import sys
 from pathlib import Path
 
+from tools.common.pipe_csv import read_pipe_rows
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SYMBOLS_CSV = REPO_ROOT / "config" / "symbols.csv"
 OWNERSHIP_CSV = REPO_ROOT / "config" / "function_ownership.csv"
@@ -23,15 +25,14 @@ AUTOGEN_INDEX = REPO_ROOT / "src" / "ghidra_autogen" / "index.csv"
 BASELINE_REPORT = REPO_ROOT / "config" / "reccmp_progress_baseline.report.json"
 
 
-def _index_csv(path: Path, ncols: int) -> dict[str, list[str]]:
-    out: dict[str, list[str]] = {}
+def _index_by_address(path: Path) -> dict[str, dict[str, str]]:
+    out: dict[str, dict[str, str]] = {}
     if not path.is_file():
         return out
-    for line in path.read_text(encoding="utf-8").splitlines()[1:]:
-        parts = line.split("|")
-        if len(parts) < ncols:
-            continue
-        out[parts[0].lower().lstrip("0") or "0"] = parts
+    for row in read_pipe_rows(path):
+        addr = (row.get("address") or "").strip().lower().removeprefix("0x")
+        if addr:
+            out[addr.lstrip("0") or "0"] = row
     return out
 
 
@@ -56,9 +57,9 @@ def main() -> int:
         print("usage: func_status 0xADDR [0xADDR ...]", file=sys.stderr)
         return 2
 
-    symbols = _index_csv(SYMBOLS_CSV, 6)
-    ownership = _index_csv(OWNERSHIP_CSV, 3)
-    autogen = _index_csv(AUTOGEN_INDEX, 5)
+    symbols = _index_by_address(SYMBOLS_CSV)
+    ownership = _index_by_address(OWNERSHIP_CSV)
+    autogen = _index_by_address(AUTOGEN_INDEX)
     scores = _scores()
 
     for raw in argv:
@@ -68,22 +69,25 @@ def main() -> int:
 
         sym = symbols.get(key)
         if sym:
-            print(f"  symbols.csv : name={sym[1]!r} size={sym[3]} type={sym[4]}")
-            if len(sym) > 5 and sym[5]:
-                print(f"                proto={sym[5]}")
+            print(
+                f"  symbols.csv : name={sym.get('name', '')!r} "
+                f"size={sym.get('size', '')} type={sym.get('type', '')}"
+            )
+            if sym.get("prototype"):
+                print(f"                proto={sym['prototype']}")
         else:
             print("  symbols.csv : (not found)")
 
         own = ownership.get(key)
         if own:
-            note = f" note={own[3]}" if len(own) > 3 and own[3] else ""
-            print(f"  ownership   : {own[2]} -> {own[1]}{note}")
+            note = f" note={own['note']}" if own.get("note") else ""
+            print(f"  ownership   : {own.get('ownership', '')} -> {own.get('target_cpp', '')}{note}")
         else:
             print("  ownership   : (stub / unowned — lives in src/autogen/stubs)")
 
         ag = autogen.get(key)
         if ag:
-            print(f"  autogen body: {ag[3]} (status={ag[4]})")
+            print(f"  autogen body: {ag.get('file', '')} (status={ag.get('status', '')})")
 
         if key in scores:
             print(f"  reccmp score: {scores[key] * 100:.2f}%  (baseline report)")

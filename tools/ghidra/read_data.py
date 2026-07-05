@@ -66,51 +66,54 @@ def _read_bytes(mem, af, addr_int: int, length: int) -> str:
     return " ".join(row)
 
 
-def main() -> int:
-    argv = sys.argv[1:]
+def run(program, argv: list[str]) -> int:
     if not argv:
-        print("usage: read_data 0xADDR [byte|word|dword|qword|float|double|ptr|str|bytes] [count]",
+        print("usage: read-data 0xADDR [byte|word|dword|qword|float|double|ptr|str|bytes] [count]",
               file=sys.stderr)
         return 2
     addr_int = int(argv[0], 16)
     typ = (argv[1] if len(argv) > 1 else "dword").lower()
     count = int(argv[2], 0) if len(argv) > 2 else None
 
+    from java.lang import Double as JDouble
+    from java.lang import Float as JFloat
+
+    java = {"Float": JFloat, "Double": JDouble}
+    mem = program.getMemory()
+    af = program.getAddressFactory().getDefaultAddressSpace()
+
+    try:
+        if typ == "str":
+            print(f"0x{addr_int:08x} str  {_read_string(mem, af, addr_int, count or 256)}")
+            return 0
+        if typ == "bytes":
+            print(f"0x{addr_int:08x} bytes {_read_bytes(mem, af, addr_int, count or 16)}")
+            return 0
+        if typ not in _STRIDES:
+            print(f"unknown type: {typ}", file=sys.stderr)
+            return 2
+        stride = _STRIDES[typ]
+        n = count if count is not None else 1
+        for i in range(n):
+            a = af.getAddress(addr_int + i * stride)
+            print(f"{a} {typ:6s} {_read_one(mem, java, a, typ)}")
+    except Exception as exc:  # noqa: BLE001 - MemoryAccessException etc.
+        print(f"error reading 0x{addr_int:08x} as {typ}: {exc}", file=sys.stderr)
+        return 1
+    return 0
+
+
+def main() -> int:
     project = ghidra_env.open_project()
     consumer = None
     program = None
     try:
         consumer, program = ghidra_env.open_program(project)
-        from java.lang import Double as JDouble
-        from java.lang import Float as JFloat
-
-        java = {"Float": JFloat, "Double": JDouble}
-        mem = program.getMemory()
-        af = program.getAddressFactory().getDefaultAddressSpace()
-
-        try:
-            if typ == "str":
-                print(f"0x{addr_int:08x} str  {_read_string(mem, af, addr_int, count or 256)}")
-                return 0
-            if typ == "bytes":
-                print(f"0x{addr_int:08x} bytes {_read_bytes(mem, af, addr_int, count or 16)}")
-                return 0
-            if typ not in _STRIDES:
-                print(f"unknown type: {typ}", file=sys.stderr)
-                return 2
-            stride = _STRIDES[typ]
-            n = count if count is not None else 1
-            for i in range(n):
-                a = af.getAddress(addr_int + i * stride)
-                print(f"{a} {typ:6s} {_read_one(mem, java, a, typ)}")
-        except Exception as exc:  # noqa: BLE001 - MemoryAccessException etc.
-            print(f"error reading 0x{addr_int:08x} as {typ}: {exc}", file=sys.stderr)
-            return 1
+        return run(program, sys.argv[1:])
     finally:
         if program is not None:
             program.release(consumer)
         project.close()
-    return 0
 
 
 if __name__ == "__main__":

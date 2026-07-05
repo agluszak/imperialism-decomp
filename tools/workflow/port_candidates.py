@@ -22,6 +22,8 @@ import argparse
 import json
 from pathlib import Path
 
+from tools.common.pipe_csv import read_pipe_rows
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SYMBOLS_CSV = REPO_ROOT / "config" / "symbols.csv"
 OWNERSHIP_CSV = REPO_ROOT / "config" / "function_ownership.csv"
@@ -34,15 +36,17 @@ def _parse_int(value: str) -> int:
 
 def _load_symbols() -> dict[int, tuple[str, int, str]]:
     out: dict[int, tuple[str, int, str]] = {}
-    for line in SYMBOLS_CSV.read_text(encoding="utf-8").splitlines()[1:]:
-        parts = line.split("|")
-        if len(parts) < 5:
-            continue
-        addr, name, _sym, size, kind = parts[0], parts[1], parts[2], parts[3], parts[4]
+    for row in read_pipe_rows(SYMBOLS_CSV):
+        kind = (row.get("type") or "").strip()
         if kind != "function":
             continue
+        size = (row.get("size") or "").strip()
         try:
-            out[int(addr, 16)] = (name, int(size) if size else 0, kind)
+            out[int(row.get("address") or "", 16)] = (
+                (row.get("name") or "").strip(),
+                int(size) if size else 0,
+                kind,
+            )
         except ValueError:
             continue
     return out
@@ -52,12 +56,12 @@ def _load_ownership() -> dict[int, tuple[str, str]]:
     out: dict[int, tuple[str, str]] = {}
     if not OWNERSHIP_CSV.is_file():
         return out
-    for line in OWNERSHIP_CSV.read_text(encoding="utf-8").splitlines()[1:]:
-        parts = line.split("|")
-        if len(parts) < 3:
-            continue
+    for row in read_pipe_rows(OWNERSHIP_CSV):
         try:
-            out[int(parts[0], 16)] = (parts[1], parts[2])
+            out[int(row.get("address") or "", 16)] = (
+                (row.get("target_cpp") or "").strip(),
+                (row.get("ownership") or "").strip(),
+            )
         except ValueError:
             continue
     return out

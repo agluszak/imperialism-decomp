@@ -99,36 +99,39 @@ def print_body_slice(program, fn) -> None:
         print(f"  {addr},{reg},{offset},{text}")
 
 
-def main() -> int:
-    if len(sys.argv) < 2:
-        print("usage: function_slice 0xADDR [0xADDR ...]", file=sys.stderr)
+def run(program, argv: list[str]) -> int:
+    if not argv:
+        print("usage: function-slice 0xADDR [0xADDR ...]", file=sys.stderr)
         return 2
 
+    af = program.getAddressFactory().getDefaultAddressSpace()
+    for addr_int in parse_addrs(argv):
+        addr = af.getAddress(addr_int)
+        fn = function_at_or_containing(program, addr)
+        print("=" * 72)
+        if fn is None:
+            print(f"0x{addr_int:08x}: no function")
+            continue
+        print(
+            f"function,{fmt_addr(fn.getEntryPoint())},{fn.getName(True)},"
+            f"size={fn.getBody().getNumAddresses()}"
+        )
+        print_callers(program, fn)
+        print_body_slice(program, fn)
+    return 0
+
+
+def main() -> int:
     project = ghidra_env.open_project()
     consumer = None
     program = None
     try:
         consumer, program = ghidra_env.open_program(project)
-
-        af = program.getAddressFactory().getDefaultAddressSpace()
-        for addr_int in parse_addrs(sys.argv[1:]):
-            addr = af.getAddress(addr_int)
-            fn = function_at_or_containing(program, addr)
-            print("=" * 72)
-            if fn is None:
-                print(f"0x{addr_int:08x}: no function")
-                continue
-            print(
-                f"function,{fmt_addr(fn.getEntryPoint())},{fn.getName(True)},"
-                f"size={fn.getBody().getNumAddresses()}"
-            )
-            print_callers(program, fn)
-            print_body_slice(program, fn)
+        return run(program, sys.argv[1:])
     finally:
         if program is not None:
             program.release(consumer)
         project.close()
-    return 0
 
 
 if __name__ == "__main__":

@@ -14,10 +14,10 @@ Protocol: newline-delimited JSON over a unix socket in the repo root.
 Special cmds: "ping" (liveness) and "shutdown".
 
 LOCKING: the daemon holds the vendored Ghidra project open (read-only program, but
-the *project* lock is exclusive). Stop it before any mutating [ghidra-db]/[sync]
-target — `just sync-ghidra` and `just restore-project` do this automatically via
-`just ghidra-daemon-stop`. The daemon also exits on its own after
-GHIDRA_DAEMON_IDLE_SECS (default 4h) without queries.
+the *project* lock is exclusive). Any other project open — a one-shot read tool or
+a mutating [ghidra-db]/[sync] target — evicts it automatically through
+ghidra_env.open_project(); re-warm with `just ghidra-daemon` afterwards. The daemon
+also exits on its own after GHIDRA_DAEMON_IDLE_SECS (default 4h) without queries.
 
 usage: daemon start|stop|status|serve
 """
@@ -36,9 +36,10 @@ import time
 
 from tools.common import ghidra_env
 
-SOCKET_PATH = ghidra_env.REPO_ROOT / ".ghidra-query.sock"
-PID_PATH = ghidra_env.REPO_ROOT / ".ghidra-query.pid"
-LOG_PATH = ghidra_env.REPO_ROOT / ".ghidra-query.log"
+# Shared with ghidra_env._evict_daemon_if_running(); never hardcode a second path.
+SOCKET_PATH = ghidra_env.socket_path()
+PID_PATH = SOCKET_PATH.with_suffix(".pid")
+LOG_PATH = SOCKET_PATH.with_suffix(".log")
 DEFAULT_IDLE_SECS = 4 * 60 * 60
 START_TIMEOUT_SECS = 240
 _ACCEPT_POLL_SECS = 30
@@ -109,11 +110,6 @@ def serve() -> int:
 
     idle_limit = int(os.getenv("GHIDRA_DAEMON_IDLE_SECS", str(DEFAULT_IDLE_SECS)))
 
-    _cleanup_files()
-    server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    server.bind(str(SOCKET_PATH))
-    server.listen(4)
-    server.settimeout(_ACCEPT_POLL_SECS)
     PID_PATH.write_text(str(os.getpid()), encoding="utf-8")
 
     def _terminate(signum, frame):  # noqa: ARG001 — signal handler signature
@@ -121,13 +117,25 @@ def serve() -> int:
 
     signal.signal(signal.SIGTERM, _terminate)
 
+    # Open the project BEFORE binding the socket. open_project() evicts whatever
+    # daemon currently owns the project lock over this same socket path — binding
+    # only after the open completes means (a) we cannot evict ourselves during
+    # startup and (b) a live socket file always belongs to a daemon that is
+    # actually ready to answer.
     print(f"[daemon] opening Ghidra project (pid {os.getpid()})...", flush=True)
     project = ghidra_env.open_project()
     consumer, program = ghidra_env.open_program(project)
-    print("[daemon] ready", flush=True)
 
-    idle_since = time.monotonic()
+    server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     try:
+        with contextlib.suppress(OSError):
+            SOCKET_PATH.unlink()
+        server.bind(str(SOCKET_PATH))
+        server.listen(4)
+        server.settimeout(_ACCEPT_POLL_SECS)
+        print("[daemon] ready", flush=True)
+
+        idle_since = time.monotonic()
         while True:
             try:
                 conn, _ = server.accept()
@@ -176,7 +184,9 @@ def start() -> int:
     if request("ping", [], timeout=5.0):
         print(f"daemon already running (socket {SOCKET_PATH})")
         return 0
-    _cleanup_files()
+    # No file cleanup here: a daemon that failed the ping may just be busy, and
+    # unlinking its live socket would orphan it. serve() evicts any previous
+    # daemon via open_project() and unlinks the stale socket itself before bind.
     with LOG_PATH.open("ab") as log:
         proc = subprocess.Popen(
             [sys.executable, "-m", "tools.ghidra.daemon", "serve"],

@@ -54,14 +54,16 @@ If `config/function_name_overrides.csv` exists, `sync_exports.py` reapplies over
 
 ## Read-only inspection daemon
 
-The hot-path read-only inspect commands (`listing`, `decompile`, `xrefs` (thunk-hopping TO),
-`jumptable`, `search`, `linear-disasm`, `raw-disasm`, `vtable-dump` — see
-`query_registry.COMMANDS`) each used to pay the full pyghidra JVM + project-load cost
-(~15-30s) on every call. `daemon.py` opens the project/program **once** and serves those
-commands over a Unix-domain socket, so every call after the first is sub-second.
+The hot-path read-only inspect commands (`listing`, `decompile`, `xrefs` (to/from/both,
+thunk-hopping TO), `read-data`, `function-slice`, `jumptable`, `search`, `linear-disasm`,
+`raw-disasm`, `vtable-dump` — see `query_registry.COMMANDS`) each used to pay the full
+pyghidra JVM + project-load cost (~15-30s) on every call. `daemon.py` opens the
+project/program **once** and serves those commands over a Unix-domain socket, so every
+call after the first is sub-second.
 
 - `daemon.py` — the server (`start`/`stop`/`status`/`serve`); holds the shared program open
-  behind `.ghidra-query.sock` and answers registry commands via `query_registry.COMMANDS`.
+  behind the socket from `ghidra_env.socket_path()` and answers registry commands via
+  `query_registry.COMMANDS`.
 - `query.py` — the one front door the `just ghidra-*` inspect targets call: routes to the
   daemon when it's listening, otherwise falls back to a one-shot pyghidra open/run/close with
   identical output (no auto-spawn side effect).
@@ -69,21 +71,29 @@ commands over a Unix-domain socket, so every call after the first is sub-second.
 ```bash
 just ghidra-daemon          # warm it explicitly (optional; each call also tries the daemon)
 just ghidra-listing 0xADDR  # sub-second once warm
-just xrefs 0xADDR           # references TO an address, thunk-hop TO-only
+just xrefs [to|from|both] 0xADDR   # cross-references (default: to, thunk-hopping)
 just ghidra-daemon-stop     # stop it and release the project lock
 ```
 
-Because the daemon holds the project lock, **mutating** Ghidra tools (`sync-ghidra`, `apply-*`,
-`export-project`, `db-resync`, …) must stop it first — those targets call
-`just ghidra-daemon-stop` automatically. Re-warm with `just ghidra-daemon` afterwards.
-Socket/pid/log live at `.ghidra-query.sock` / `.ghidra-query.pid` / `.ghidra-query.log`
-(gitignored); override the idle shutdown with `GHIDRA_DAEMON_IDLE_SECS`.
+The daemon holds the exclusive project lock, so **every other project open evicts it
+automatically**: `ghidra_env.open_project()` asks a running daemon to shut down and waits
+for the lock before opening. That covers the mutating tools (`sync-ghidra`, `apply-*`,
+`export-project`, `db-resync`, …) and the remaining one-shot read tools alike — re-warm
+with `just ghidra-daemon` afterwards. The daemon itself binds its socket only *after* its
+own project open completes, so it never evicts itself during startup, and a visible socket
+always belongs to a ready daemon. Socket/pid/log live at `.ghidra-query.sock` /
+`.ghidra-query.pid` / `.ghidra-query.log` (gitignored; `GHIDRA_DAEMON_SOCK` overrides the
+socket path — `ghidra_env.socket_path()` is the single source of truth both sides use).
+Override the idle shutdown with `GHIDRA_DAEMON_IDLE_SECS`.
 
-A few read-only tools stay one-shot (no daemon routing) rather than going through the
-registry: `ghidra-xrefs` (`xrefs.py`, bidirectional to/from/both, no thunk-hop),
-`ghidra-read-data` (`read_data.py`, typed memory reads), `ghidra-function-slice`
-(`function_slice.py`, call/offset slice), and `scan-cdecl-thiscall` (reads addresses from
-stdin, which a separate daemon process can't see).
+The daemon imports the registry tool modules at startup: after editing anything under
+`tools/ghidra/`, restart it (`just ghidra-daemon-stop && just ghidra-daemon`) or queries
+keep running the old code.
+
+`scan-cdecl-thiscall` stays one-shot (no daemon routing) because its `--stdin` address list
+can't reach a separate daemon process; other occasional audit tools (`vtable-struct-check`,
+`datatype-audit`, `class-owner-probe`, `rtti-oracle`, …) are one-shot as well and evict a
+running daemon like any other open.
 
 Two companion helpers need no Ghidra at all (pure config-file readers, instant):
 

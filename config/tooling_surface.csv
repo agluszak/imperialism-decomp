@@ -34,6 +34,8 @@ module|tools.workflow.promote_from_autogen|just:promote|Promote function bodies 
 module|tools.workflow.format_cpp|just:format|Formatting helper
 module|tools.workflow.check_tooling_surface|just:tooling-check|Tooling surface validator
 module|tools.ghidra.listing_one|query:listing|Read-only pyghidra instruction listing
+module|tools.ghidra.xrefs_to|query:xrefs|Cross-references to/from an address (thunk-hopping TO, callees FROM)
+module|tools.ghidra.read_data|query:read-data|Read memory at an address as a typed value
 module|tools.ghidra.decompile_one|query:decompile|Read-only pyghidra decompile helper
 module|tools.ghidra.decomp_check|just:ghidra-decomp-check|Ghidra decompile benchmark gate
 module|tools.ghidra.scan_cdecl_thiscall|just:scan-cdecl-thiscall|Classify __cdecl vs __thiscall by ECX use
@@ -57,7 +59,7 @@ module|tools.ghidra.apply_source_datatypes|just:apply-source-datatypes|Apply rec
 module|tools.workflow.mfc_runtime_macros|just:mfc-runtime-macros|Apply MFC runtime macro annotations to recovered classes
 module|tools.workflow.pe_resources|just:resource-check|Check rebuilt PE resources for required UI assets
 module|tools.ghidra.class_owner_probe|just:class-owner-probe|Probe likely class owner for an address
-module|tools.ghidra.function_slice|just:ghidra-function-slice|Read-only Ghidra function slice report
+module|tools.ghidra.function_slice|query:function-slice|Read-only Ghidra function slice report (callers/callees/field offsets)
 module|tools.reccmp.compare_batch|just:compare|Batch reccmp compare over multiple targets
 module|tools.w32dasm.parse_alf|just:w32dasm-report|Parse W32Dasm ALF disassembly export
 module|tools.w32dasm.compare_alf_ghidra|just:w32dasm-report|Compare W32Dasm ALF against Ghidra
@@ -86,3 +88,5 @@ module|tools.ghidra.jumptable|query:jumptable|MSVC500 switch jump-table decoder 
 module|tools.ghidra.query_registry|dependency:tools.ghidra.query|Shared command registry for query client + daemon
 module|tools.runtime.screenshot|script:screenshot|Game-window screenshot by auto-discovered X11 window ID
 module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror the DirectX 5 SDK inc/lib from the build image for reference
+module|tools.workflow.func_status|just:func-status|One-stop function status from config CSVs + reccmp baseline
+module|tools.workflow.port_candidates|just:port-candidates|Rank porting candidates by size and match gap
