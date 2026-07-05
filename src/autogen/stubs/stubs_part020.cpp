@@ -475,14 +475,6 @@ undefined4 NoOpUiRuntimeCallback_005db2f0(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventDialogFactorySlotF4
-// ghidra_proto undefined HandleTurnEventDialogFactorySlotF4()
-// FUNCTION: IMPERIALISM 0x005db3b0
-undefined4 HandleTurnEventDialogFactorySlotF4(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventDialogFactorySlotF8
 // ghidra_proto undefined HandleTurnEventDialogFactorySlotF8()
 // FUNCTION: IMPERIALISM 0x005db780
@@ -527,14 +519,6 @@ undefined4 HandleTurnEventDialogFactorySlotB8(void)
 // ghidra_proto undefined DispatchUiRuntimeMessage102CAndRefreshActiveView()
 // FUNCTION: IMPERIALISM 0x005dc560
 undefined4 DispatchUiRuntimeMessage102CAndRefreshActiveView(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnEventF3D_PopulateRecentTurnMessages
-// ghidra_proto undefined HandleTurnEventF3D_PopulateRecentTurnMessages()
-// FUNCTION: IMPERIALISM 0x005dc690
-undefined4 HandleTurnEventF3D_PopulateRecentTurnMessages(void)
 {
   return 0;
 }
@@ -803,22 +787,6 @@ undefined4 GetResourceStreamSize(void)
   return 0;
 }
 
-// ghidra_name QueryVolumeInformationForDriveIndex
-// ghidra_proto undefined QueryVolumeInformationForDriveIndex()
-// FUNCTION: IMPERIALISM 0x005df7a0
-undefined4 QueryVolumeInformationForDriveIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name QueryDriveTypeByDriveIndex
-// ghidra_proto undefined QueryDriveTypeByDriveIndex()
-// FUNCTION: IMPERIALISM 0x005df890
-undefined4 QueryDriveTypeByDriveIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnTrueStub
 // ghidra_proto undefined ReturnTrueStub()
 // FUNCTION: IMPERIALISM 0x005df8d0
@@ -1075,42 +1043,10 @@ undefined4 CreateTMovieViewInstance(void)
   return 0;
 }
 
-// ghidra_name TMovieView::ConstructTMovieViewBaseState
-// ghidra_proto undefined ConstructTMovieViewBaseState()
-// FUNCTION: IMPERIALISM 0x005e2230
-undefined4 ConstructTMovieViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructMovieViewAndCloseOwnedWindow
 // ghidra_proto undefined DestructMovieViewAndCloseOwnedWindow()
 // FUNCTION: IMPERIALISM 0x005e2320
 undefined4 DestructMovieViewAndCloseOwnedWindow(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0
-// ghidra_proto undefined WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0()
-// FUNCTION: IMPERIALISM 0x005e24b0
-undefined4 WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0(void)
-{
-  return 0;
-}
-
-// ghidra_name SendMessage806IfSelectionStateActive
-// ghidra_proto undefined SendMessage806IfSelectionStateActive()
-// FUNCTION: IMPERIALISM 0x005e24e0
-undefined4 SendMessage806IfSelectionStateActive(void)
-{
-  return 0;
-}
-
-// ghidra_name SendMessage808IfSelectionStateActive
-// ghidra_proto undefined SendMessage808IfSelectionStateActive()
-// FUNCTION: IMPERIALISM 0x005e2500
-undefined4 SendMessage808IfSelectionStateActive(void)
 {
   return 0;
 }

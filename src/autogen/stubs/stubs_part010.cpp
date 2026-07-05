@@ -1467,14 +1467,6 @@ undefined4 TMacViewMgr_OnMsg_0x0BC0_Impl(void)
   return 0;
 }
 
-// ghidra_name TMovieView::SetFieldC0AndInvalidateWindowIfChanged
-// ghidra_proto undefined SetFieldC0AndInvalidateWindowIfChanged()
-// FUNCTION: IMPERIALISM 0x00485990
-undefined4 SetFieldC0AndInvalidateWindowIfChanged(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl
 // ghidra_proto undefined TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl()
 // FUNCTION: IMPERIALISM 0x004859d0

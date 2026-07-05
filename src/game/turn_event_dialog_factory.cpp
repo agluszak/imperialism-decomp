@@ -13,6 +13,7 @@
 #include "game/TPictureButton.h"
 #include "game/TStaticText.h"
 #include "game/TToolBarCluster.h"
+#include "game/TMovieView.h"
 #include "game/TUpDownPictureButton.h"
 #include "game/TView.h"
 #include "game/TWindow.h"
@@ -92,11 +93,6 @@ TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int h
 // function as 25768 bytes; this is one of its many event-code cases, not a separate
 // function).
 //
-// TODO(shortcut): only the container + background picture are ported. The real
-// 0x0043b1cb case continues past this (building at least one more object, a 0x94-byte
-// TMovieView per its ctor address 0x5e2230) that was not traced/ported — TMovieView
-// itself is still all stub method bodies (src/game/TMovieView.cpp).
-//
 // Hosting mechanism (bd 1uj.10): this tree deliberately propagates a null native
 // window here, exactly like the other factories. The real host hookup happens after
 // the factory returns: the tree is attached under the TIncludeView packet (which
@@ -140,6 +136,7 @@ TView* BuildStartupIntroBackground() {
       g_pUiResourceHead = background;
       parent = 0;
     }
+    PushUiWidgetBuildStackNode(background);
 
     int pictureOffset[2] = {0, 0};
     int pictureSize[2] = {0x280, 0x1e0};
@@ -162,6 +159,41 @@ TView* BuildStartupIntroBackground() {
     background->field70 = 0;
 
     background->SetPictureResourceIdAndRefresh(0x11f7, 0);
+
+    TMovieView* movie = new TMovieView();
+    if (movie != 0) {
+      g_pUiResourceContext = movie;
+      if (g_pUiResourceHead != 0) {
+        parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
+      } else {
+        g_pUiResourceHead = movie;
+        parent = 0;
+      }
+      PushUiWidgetBuildStackNode(movie);
+
+      int movieOffset[2] = {0xc8, 0x64};
+      int movieSize[2] = {0x11c, 0xe8};
+      movie->InitializeUiResourceEntryFrameAndParent(0, parent, movieOffset, movieSize, 0, 0, 1);
+      movie->controlTag = static_cast<int>(kControlTagMovi);
+      movie->field3c = 0;
+      movie->SetEnabled(1, 0);
+      movie->SetState(1, 0);
+
+      movie->EnsureField48Buffer();
+      if (movie->field48 != 0) {
+        movie->field48[1] = 0;
+        movie->field48[0] = 0xffffff;
+      }
+
+      movie->hasCommandTagResource = 0xa;
+      movie->field68 = 0;
+      movie->field6C = 0;
+      movie->field70 = 0;
+
+      movie->SetPictureResourceIdAndRefresh(0x11f7, 0);
+      PopUiWidgetBuildStackNode();
+    }
+    PopUiWidgetBuildStackNode();
   }
 
   g_pUiResourceContext = 0;

@@ -7,6 +7,7 @@
 #include "game/TApplication.h"
 #include "game/TSoundChannelNode.h"
 #include "game/TSoundResourceManager.h"
+#include "game/startup_helpers.h"
 
 #include <new>
 #include <math.h>
@@ -120,6 +121,30 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
     }
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00593c10
+void TSoundPlayer::HandleBlinkStateAndScheduleTimerTick(char enabled) {
+  int pendingCount = runtimePeerAt6c->QueryPendingPlaybackCountSlot28();
+  if (pendingCount > 0) {
+    runtimePeerAt6c->StopOrResetActivePlaybackSlot30();
+    runtimePeerAt70->StopOrResetActivePlaybackSlot30();
+  }
+
+  if (stateByte78 == 0) {
+    return;
+  }
+  if (enabled != 0) {
+    if (stateDword7c == 0) {
+      stateDword7c = GetTickCountDiv16();
+    }
+    stateByte80 = 1;
+    return;
+  }
+
+  ForwardMciCommand808ToDevice();
+  stateByte78 = 0;
+  fieldShort74 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00593cb0

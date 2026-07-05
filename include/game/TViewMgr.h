@@ -11,6 +11,7 @@ class TEventHandler;
 class TControl;
 class TCursorControlPanel;
 class TDiplomacyMapView;
+class TMovieView;
 
 // TODO(manifest): describe TViewMgr and its role. Base edge (TObject) recovered from RTTI
 // CRuntimeClass chain: TViewMgr -> TObject -> CObject.
@@ -102,7 +103,7 @@ public:
   // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
   virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
   virtual void UiRuntimeSlotF0();                                    // 0xf0
-  virtual void UiRuntimeSlotF4();                                    // 0xf4
+  virtual void HandleTurnEventDialogFactorySlotF4();                  // 0xf4
   virtual void UiRuntimeSlotF8();                                    // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   virtual void UiRuntimeSlot100();               // 0x100
@@ -111,7 +112,7 @@ public:
   virtual void HandleTurnEvent5DF_RefreshMainView(); // 0x104
   virtual void UiRuntimeSlot108();                   // 0x108
   virtual void UiRuntimeSlot10C();                   // 0x10c
-  virtual void UiRuntimeSlot110();                   // 0x110
+  virtual void HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot); // 0x110
 
   void ApplyLegendSplitSlot34(int split) {
     ApplyTurnEventPaletteColorByEventCode(split);
@@ -166,7 +167,7 @@ public:
   short fieldEc;                           // +0xec
   short padEe;                             // +0xee
   class TMapUberPicture* mapUberPictureF0; // +0xf0
-  unsigned int fieldF4;                    // +0xf4
+  TMovieView* activeMovieViewF4;            // +0xf4
   short fieldF8;                           // +0xf8
   short padFa;                             // +0xfa
 

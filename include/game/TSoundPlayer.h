@@ -50,6 +50,8 @@ public:
       int sfxToken, int param_2 = 0, int param_3 = 1, int param_4 = 1);        // 0x2d -> 0x5e50c0
   virtual int PlaySoundEffect(int sfxToken, int param_2 = 0, int param_3 = 1); // 0x2e -> 0x5e5140
 
+  void HandleBlinkStateAndScheduleTimerTick(char enabled); // 0x593c10
+
   // Non-virtual: scale a 0-255 aux-volume preference into the 16-bit auxSetVolume range
   // (scalar << 8) and apply it to the probed aux output device (CD-audio line). Both
   // original callsites (0x5db66f, 0x56e734) load ECX = g_pSfxPlaybackSystem.

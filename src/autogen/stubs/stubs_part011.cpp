@@ -347,46 +347,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(void)
   return 0;
 }
 
-// ghidra_name InitializeMovieViewOwnedStateBlock_Impl
-// ghidra_proto undefined InitializeMovieViewOwnedStateBlock_Impl()
-// FUNCTION: IMPERIALISM 0x00492f60
-undefined4 InitializeMovieViewOwnedStateBlock_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name SendWmCloseToWindowHandle
-// ghidra_proto undefined SendWmCloseToWindowHandle()
-// FUNCTION: IMPERIALISM 0x00492fa0
-undefined4 SendWmCloseToWindowHandle(void)
-{
-  return 0;
-}
-
-// ghidra_name SendMessage499AndDetachOnSuccess
-// ghidra_proto undefined SendMessage499AndDetachOnSuccess()
-// FUNCTION: IMPERIALISM 0x00492fc0
-undefined4 SendMessage499AndDetachOnSuccess(void)
-{
-  return 0;
-}
-
-// ghidra_name SendMessage806AndCacheResult
-// ghidra_proto undefined SendMessage806AndCacheResult()
-// FUNCTION: IMPERIALISM 0x00493090
-undefined4 SendMessage806AndCacheResult(void)
-{
-  return 0;
-}
-
-// ghidra_name SendMessage808AndCacheResult
-// ghidra_proto undefined SendMessage808AndCacheResult()
-// FUNCTION: IMPERIALISM 0x004930d0
-undefined4 SendMessage808AndCacheResult(void)
-{
-  return 0;
-}
-
 // ghidra_name PlayDefaultMessageBeep
 // ghidra_proto undefined PlayDefaultMessageBeep()
 // FUNCTION: IMPERIALISM 0x004931e0

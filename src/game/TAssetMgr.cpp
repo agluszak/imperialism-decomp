@@ -1,7 +1,11 @@
 #include "game/TAssetMgr.h"
 
+#include "game/ImperialismApp.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TMovieView.h"
+#include "game/TSoundPlayer.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 IMPLEMENT_DYNCREATE(TAssetMgr, TObject)
 
@@ -42,17 +46,29 @@ void TAssetMgr::NoOpRuntimeUiCallback_005df780(int arg) {
   (void)arg;
 }
 
-// Builds "Movies\<movieName>" (+ install-drive prefix), stashes followupEventCode in the
-// UI-runtime context, then tries to play the clip via the message-499 detach helper and
-// posts the turn-state followup. Left as a signature-correct stub: a faithful body needs
-// ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix (0x414870) promoted to a
-// real method first — it depends on the __thiscall helper 0x5feba9, which is still a free
-// stub, so porting it now would require a forbidden calling-convention cast.
 // FUNCTION: IMPERIALISM 0x005dfc10
 void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
-                                                          int followupEventCode) {
-  (void)movieName;
-  (void)followupEventCode;
+                                                          TMovieView* movieView,
+                                                          int modeFlag) {
+  (void)modeFlag;
+
+  CString moviePath = CString("Movies/") + movieName;
+  moviePath = moviePath + ".avi";
+
+  CString prefixedPath = CString(g_pImperialismApp->DetectImperialismInstallDriveAndSetPathPrefix()) +
+                         moviePath;
+
+  g_pUiRuntimeContext->activeMovieViewF4 = movieView;
+  if (!movieView->OpenMoviePathAndDetachOnSuccess(static_cast<LPCTSTR>(prefixedPath))) {
+    if (!movieView->OpenMoviePathAndDetachOnSuccess(static_cast<LPCTSTR>(moviePath))) {
+      g_pUiRuntimeContext->HandleTurnStateExitAndPostFollowupEventCode(0);
+      return;
+    }
+  }
+
+  g_pSfxPlaybackSystem->ClearDirectSoundInitPendingAndResetState();
+  g_pUiRuntimeContext->HandleTurnStateExitAndPostFollowupEventCode(2);
+  movieView->SendMessage806IfSelectionStateActive();
 }
 
 // FUNCTION: IMPERIALISM 0x005dfea0

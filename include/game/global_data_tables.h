@@ -474,6 +474,7 @@ extern "C" {
 // ImperialismApp.cpp — registry key/section literals.
 extern const char* const g_pRegistryCompanyKey_0063E038;
 extern const char* const g_pRegistryAppKey_0063E03C;
+extern const char* const g_pRegistryProfileAppName_0063E050;
 extern const char* const g_pRegistrySettingsSection_0063E040;
 extern const char* const g_pRegistryAutoResKey_0063E048;
 extern const char* const g_pRegistryLanguageKey_0063E04C;

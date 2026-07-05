@@ -1,2 +1,4 @@
 address|class_name|method_name|note
 0x004d83c0|TCountry|SumWeightedNeighborLinkScoreForLinkedNodes|__thiscall body uses ownedRegionList @+0x90; manual TCountry.cpp; wrongly attributed to TGreatPower in Ghidra.
+0x00485990|CMainFrame|SetFieldC0AndInvalidateWindowIfChanged|ECX is the SDI main frame; body reads field_C0 and invalidates m_hWnd.
+0x00593c10|TSoundPlayer|HandleBlinkStateAndScheduleTimerTick|ECX is g_pSfxPlaybackSystem; body uses TSoundPlayer channel fields at +0x6c/+0x70/+0x78.
