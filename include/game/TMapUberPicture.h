@@ -163,10 +163,19 @@ public:
   int field_0x9c;
   int field_0xa0;
   // 'GOOD'/'GOLD'-tag sub-control resolved by NoOpUiLifecycleHook (not yet ported);
-  // SetActiveMapOrderEntry calls InvalidateMapRegionForOrderEntry on it. Concrete class
-  // not recovered.
-  void* goodGoldTagControlA4;
-  unsigned char pad_0xa8[4];
+  // SetActiveMapOrderEntry calls InvalidateMapRegionForOrderEntry on it,
+  // EnterMapInteractionOverlayMode calls its real TView::CaptureLayoutF0, and also its
+  // own slot-0x1f4 virtual (beyond TView's own vtable range -- lands on
+  // TMapUberPicture's slot 0x7d, CreateToolWindow_00599CF0, but that slot's declared
+  // astruct_20*/__fastcall/void-return signature doesn't match this non-void callsite,
+  // so it's left as a documented gap rather than risk a second poison-pill guess).
+  // Typed generically as TView* since its further-derived concrete class isn't
+  // recovered.
+  TView* goodGoldTagControlA4;
+  // A second TMapUberPicture subview (EnterMapInteractionOverlayMode's own
+  // slot-0x76/InvalidateTileMarkerChain evidence), copied into subviewAc once entering
+  // overlay mode.
+  TMapUberPicture* subview2A8;
   // Subview forwarded entryIndex/commandCode by NotifySubviewOfSelectedTile and
   // InvalidateTileMarkerAndRefreshLinkedControl via slot 0x76 (InvalidateTileMarkerChain) -- same
   // TMapUberPicture-family vtable prefix evidence as categoryPages[] below.

@@ -36,6 +36,9 @@ void TMapUberPicture::Free() {}
 // each 8-byte entry aren't recovered -- CaptureLayoutF0's own body isn't ported.
 static int g_MapUberModeLayoutScratch_006a45e8[2] = {0};
 static int g_MapUberModeLayoutTable_006a4590[4][2] = {{0}};
+// A second layout-capture scratch buffer (0x6a45b8, BSS/zeroed), used the same way by
+// EnterMapInteractionOverlayMode.
+static int g_MapUberModeSecondaryLayoutScratch_006a45b8[2] = {0};
 
 // FUNCTION: IMPERIALISM 0x00596cb0
 void TMapUberPicture::SetMapInteractionMode(short nMode) {
@@ -187,8 +190,30 @@ undefined TMapUberPicture::NotifySubviewOfSelectedTile(short entryIndex) {
 
 // FUNCTION: IMPERIALISM 0x00599a50
 void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
-  // TODO: port body @ 0x599a50 (252 bytes; not yet ported).
-  (void)param1;
+  if (this->invalidationFlag94 != 0) {
+    return;
+  }
+  TView* zoomControl =
+      (param1 != 0) ? reinterpret_cast<TView*>(param1) : this->ResolveControlByTag(0x5a6d496e);
+  zoomControl->AssertValid();
+  // Ground truth also tags zoomControl->field_0x1c = 'ZmOt' (0x5a6d4f74) here when
+  // zoomControl is non-null -- a raw field write on a class beyond TView, matching the
+  // same "'forc'/'seas'-tagged control" attribution gap documented in
+  // SetMapInteractionMode; left undone.
+  this->invalidationFlag94 = 1;
+
+  // Ground truth also calls goodGoldTagControlA4->vtable[0x1f4]() here and forwards the
+  // result into subview2A8->InvalidateTileMarkerChain(...) (see the class-attribution
+  // caveat on goodGoldTagControlA4's declaration); left undone.
+
+  this->goodGoldTagControlA4->CaptureLayoutF0(g_MapUberModeLayoutScratch_006a45e8, 0);
+  this->subview2A8->CaptureLayoutF0(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
+  this->subviewAc = this->subview2A8;
+
+  // Ground truth also centers field_0xc0's cursor-marker box here: reads its own
+  // +0x34/+0x38 extent, writes +0x90/+0x94/+0x98/+0x9c, and calls its RefreshControl.
+  // field_0xc0's concrete class isn't recovered beyond TView (see its declaration), so
+  // that final step is left undone rather than faked.
 }
 
 // FUNCTION: IMPERIALISM 0x00599cf0
