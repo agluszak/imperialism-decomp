@@ -1,4 +1,0 @@
-LIBRARY MSVFW32.DLL
-
-EXPORTS
-    MCIWndCreateA@16=MCIWndCreateA
