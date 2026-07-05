@@ -67,6 +67,8 @@
 
 sync.remote: "git+ssh://git@github.com/agluszak/imperialism-decomp.git"
 
-export.auto: true
+# JSONL export disabled 2026-07-05: Dolt on the git remote (refs/dolt/data) is
+# the source of truth; no integration consumes .beads/issues.jsonl.
+export.auto: false
 
 sync.branch: "beads-sync"
