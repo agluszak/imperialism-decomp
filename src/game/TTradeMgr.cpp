@@ -747,8 +747,8 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
     np = np + 1;
   } while (static_cast<short>(slot) < 7);
 
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x4) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x6) = 1;
+  categoryRows[0].resetTransitionFlagA00 = 0;
+  categoryRows[0].resetTransitionFlagB02 = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005b9890
@@ -801,6 +801,7 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
   int cellBase = 0;
   short* cursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xe);
   do {
+    NationMetricCategoryRow* row = reinterpret_cast<NationMetricCategoryRow*>(cursor - 5);
     int col = 0;
     np = g_apNationStates;
     int slot = 0;
@@ -810,10 +811,10 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
         *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1c + (cellBase + col) * 2) =
             metric;
         if (metric < 0) {
-          cursor[-1] = cursor[-1] + 1;
+          row->field08 = row->field08 + 1;
         } else if (0 < metric) {
-          *cursor = *cursor + 1;
-          cursor[5] = cursor[5] + metric;
+          row->field0a = row->field0a + 1;
+          row->capabilityActiveFlag14 = row->capabilityActiveFlag14 + metric;
           double factor;
           if (metric == 1) {
             factor = 1.0;
@@ -824,7 +825,8 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
               factor = 2.0;
             }
           }
-          *reinterpret_cast<double*>(cursor + 1) = factor + *reinterpret_cast<double*>(cursor + 1);
+          *reinterpret_cast<double*>(row->weightedScore0c) =
+              factor + *reinterpret_cast<double*>(row->weightedScore0c);
         }
       }
       np = np + 1;

@@ -78,7 +78,13 @@ public:
   // `this + i*0xa0 + (0x04 + struct_off)`. Row stride is 0xa0; struct alignment is 2 (the
   // double at 0x0c is stored unaligned, so it is kept as raw bytes to avoid 8-byte packing).
   struct NationMetricCategoryRow {
-    unsigned char pad00[0x04];        // struct 0x00 (this 0x04)
+    // struct 0x00/0x02 -- only observed written by
+    // TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags, and only for categoryRows[0]
+    // (a literal this+0x04/this+0x06 write, not a per-row loop); every other row leaves this
+    // pair untouched. Named rather than left as padding since a concrete writer exists, but
+    // the semantic beyond "reset transition flag pair" is unconfirmed.
+    short resetTransitionFlagA00;     // struct 0x00
+    short resetTransitionFlagB02;     // struct 0x02
     short presetSeed04;               // struct 0x04
     short proposalWeightScale06;      // struct 0x06
     short field08;                    // struct 0x08
