@@ -27,11 +27,20 @@ public:
   virtual undefined OrphanCallChain_C12_I108_004a2390();               // slot 0x0c 0x4a2390
   virtual undefined IterateLinkedListCursorAndClearPerTileByte0F();    // slot 0x0d 0x4a2500
   virtual undefined TryCreateTacticalBattleViewForTileArmies();        // slot 0x0e 0x4a3200
+  // unitQueue is the same head/cursor node-queue shape as
+  // ResetAndRelocateUnitOrderQueue_004a37b0's param_1 (concrete class unrecovered, Hard
+  // Rule 12); tileIndex indexes g_pGlobalMapState->cityScoreTable. Picks a random
+  // adjacent region matching the queue's head unit's field_18 tag and relocates every
+  // movable unit there (TUnit::SetOrderModeSlot34), or resets them if none qualifies.
   virtual undefined
-  Helper_Uses_GenerateThreadLocalRandom15_At004a35e0(int param_1,
-                                                     short param_2); // slot 0x0f 0x4a35e0
-  virtual undefined OrphanCallChain_C2_I40_004a37b0(int param_1);    // slot 0x10 0x4a37b0
-  virtual undefined UpdateDualLinkedEntryMetersAndBlinkState();      // slot 0x11 0x4a3830
+  RedistributeUnitOrderQueueToRandomAdjacentRegion(void* unitQueue,
+                                                   short tileIndex); // slot 0x0f 0x4a35e0
+  // Ground truth doesn't touch `this` at all -- param_1 is a small {targetProvinceId
+  // @+0x10, head node @+0x14, cursor node @+0x18} queue of {TUnit*, next} nodes; the
+  // concrete owning class isn't recovered (only reached via vtable dispatch in Ghidra's
+  // xrefs), so it stays void* rather than a guessed type (Hard Rule 12).
+  virtual undefined ResetAndRelocateUnitOrderQueue_004a37b0(void* param_1); // slot 0x10 0x4a37b0
+  virtual undefined UpdateDualLinkedEntryMetersAndBlinkState();             // slot 0x11 0x4a3830
   virtual undefined
   WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(); // slot 0x12 0x4a3bc0
   // Ground truth (RET 0x8, 2 stack args) proves the previous 1-arg declaration was a
@@ -47,11 +56,12 @@ public:
   // HandleCivilianTileOrderAction shape) -- not a meaningless `undefined` stub value.
   virtual bool SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg); // slot 0x14 0x4a3e50
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
-  // mismatch.
-  virtual undefined CommitCityActionGateCostIfAffordable(int contextArg); // slot 0x15 0x4a3f30
-  virtual undefined OrphanCallChain_C1_I34_004a4260(int mode);            // slot 0x16 0x4a4260
-  virtual undefined HandleMapClickByComputedCursorState();                // slot 0x17 0x4a4870
-  virtual undefined HandleMapClickByCivilianCursorState();                // slot 0x18 0x4a4ad0
+  // mismatch. Returns whether the tile's unit-move cost was affordable and committed
+  // (AL in the ground truth) -- not a meaningless `undefined` stub value.
+  virtual bool CommitCityActionGateCostIfAffordable(int contextArg); // slot 0x15 0x4a3f30
+  virtual undefined OrphanCallChain_C1_I34_004a4260(int mode);       // slot 0x16 0x4a4260
+  virtual undefined HandleMapClickByComputedCursorState();           // slot 0x17 0x4a4870
+  virtual undefined HandleMapClickByCivilianCursorState();           // slot 0x18 0x4a4ad0
   // === END GENERATED DECLS (TArmyMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyMgr 0xCTOR`).
 
@@ -73,7 +83,13 @@ public:
   // +0x10 -- set to 1 by OrphanCallChain_C4_I26_004a1e40's non-turn-3 branch right before
   // calling OrphanCallChain_C12_I108_004a2390; role not pinned down beyond that write site.
   int pendingRebuildFlag10;
-  unsigned char pad14[0x31c - 0x14];
+  unsigned char pad18[0x1c - 0x14];
+  // +0x1c -- per-region affinity/eligibility lookup indexed by adjacent region id, read
+  // via raw offset arithmetic in ground truth (Helper_Uses_GenerateThreadLocalRandom15_
+  // At004a35e0, 0x4a35e0: `*(short*)(&this->field_0x1c + regionId*2)`); true array bound
+  // unconfirmed, so this models only the base element rather than asserting a size.
+  short regionAffinityTable1c;
+  unsigned char pad14[0x31c - 0x1e];
   short pendingMapActionIndex; // +0x31c
   unsigned char pad31e[0x3a8 - 0x31e];
 
