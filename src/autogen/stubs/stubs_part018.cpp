@@ -875,14 +875,6 @@ undefined4 GetActiveMapOrderEntry(void)
   return 0;
 }
 
-// ghidra_name TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
-// ghidra_proto void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)
-// FUNCTION: IMPERIALISM 0x00597a80
-undefined4 CycleMapInteractionSelectionAfterHandledClick(void)
-{
-  return 0;
-}
-
 // ghidra_name OpenMapEntryOrderDialog
 // ghidra_proto void __thiscall OpenMapEntryOrderDialog(void * pMapOrderEntry)
 // FUNCTION: IMPERIALISM 0x00597f80

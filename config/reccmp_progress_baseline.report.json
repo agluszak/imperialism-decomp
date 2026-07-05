@@ -27770,13 +27770,13 @@
     },
     {
       "address": "0x58ec50",
-      "matching": 0.304635761589404,
+      "matching": 0.4954682779456193,
       "name": "TCivToolbar::RefreshCivilianStackButtonsForTile",
       "type": 1
     },
     {
       "address": "0x58eed0",
-      "matching": 0.42290748898678415,
+      "matching": 0.47533632286995514,
       "name": "TCivToolbar::HandleEvent",
       "type": 1
     },
@@ -28424,8 +28424,8 @@
     },
     {
       "address": "0x597a80",
-      "matching": 0.006756756756756757,
-      "name": "TCivToolbar::CycleMapInteractionSelectionAfterHandledClick(void)",
+      "matching": 0.006779661016949152,
+      "name": "TCivToolbar::CycleMapInteractionSelectionAfterHandledClick",
       "type": 1
     },
     {
@@ -43326,6 +43326,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }
