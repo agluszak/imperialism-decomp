@@ -1121,3 +1121,31 @@ Also from this cluster (TWorldView/TMapDialog/TOceanDialog/TCitySiteView slots 0
   body whose only residual diff is that `call` caps just under 100% (0x51ad70 → 95.24%); the
   sibling callsite 0x51ac40 shows the identical diff. Accept it as inherent, not a bug in the
   body.
+
+## 50. Recover a polymorphic NULL-abstract-slot's real receiver by scanning every vtable's byte offset
+
+When a caller invokes `obj->[byte X]` with an arg count that contradicts the slot's arity in
+the class you *assumed* `obj` is (e.g. a turn-event handler pushes 3 args to byte 0x1e4, but
+TWorldView's slot 0x79 there pops 2), the real static type of `obj` is a **different TView
+subtree**. `TView` declares many high slots as NULL (`0x00000000`) abstract placeholders that
+different subclass trees fill with genuinely different-arity methods — so "byte 0x1e4" is not
+one method, and `just vtable ClassX` being 100% tells you nothing about class Y's byte 0x1e4.
+
+Recovery recipe (used to prove the turn-event 'main' view is a `TDiplomacyMapView`, not a
+`TWorldView`):
+1. Collect every `// VTABLE: IMPERIALISM 0x…` address (`grep` the headers).
+2. For each vtable V, read the pointer at `V + byteoffset` with
+   `uv run python -m tools.ghidra.daemon_client read-data 0x<V+off>` (the daemon makes 400
+   reads cheap). Keep the non-null ones. Many annotations aren't that deep — ignore small
+   non-pointer values.
+3. Fillers point at ILT thunks (`0x004xxxxx`); resolve each with `daemon_client listing`
+   (`JMP 0x…` target), then check each target's `ret N` to filter to the arity the caller
+   needs (`ret 0xc` = 3 args).
+4. Map the surviving thunk back → its vtable(s) → class header. Cross-check with domain
+   evidence: the class that also *stores* the tag constant (here `0x6d61696e` 'main' in
+   `TBattleReportView`) is the receiver family. `just func-status <target>` names the method.
+
+Then wire the caller as `static_cast<TRealClass*>(resolve(...))->Method(args)` — a
+codegen-neutral downcast plus the real virtual (0x5d7090 hit 100% this way). Different callers
+of the *same* handler family can still have different receivers: 0x5d71b0 pushes 5 args to
+byte 0x1cc, so its 'main' view is yet another class — don't assume one recovery covers the set.
