@@ -14,6 +14,11 @@
 #include "game/TStream.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TViewMgr.h"
+#include "game/TApplication.h"
+#include "game/TAssetMgr.h"
+#include "game/TMacViewMgr.h"
+#include "game/TCountry.h"
+#include "game/TSoundPlayer.h"
 #include "game/global_data_tables.h"
 #include <cstdlib>
 #include <cstring>
@@ -321,8 +326,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
       }
       local_4 = 0xffffffff;
       reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_pGlobalUiRootController))[14])();
+      g_pGlobalUiRootController->DispatchUiSelectionToHandler(pcVar25);
       uVar16 = 1;
     } else {
       sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
@@ -344,8 +348,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
       local_1b8[2] = 0;
       (&local_1a0)[iVar35] = 0x62757379;
       reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_pLocalizationTable))[17])();
+      g_pLocalizationTable->PostMainWindowCommand100ForTurnFlow();
       uVar16 = 1;
     }
     break;
@@ -848,9 +851,8 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
     pcVar25 = (char*)((int)param_2 + 0x341);
     do {
       sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-      if ((iVar35 != sVar15) && (cVar12 = reinterpret_cast<undefined4(__cdecl*)(...)>(
-                                     (*reinterpret_cast<void***>((*ppTVar37)))[40])(),
-                                 cVar12 != '\0')) {
+      if ((iVar35 != sVar15) &&
+          (cVar12 = (*ppTVar37)->ShouldDispatchImmediatelySlot28(), cVar12 != '\0')) {
         reinterpret_cast<undefined4(__cdecl*)(...)>(
             (*reinterpret_cast<void***>((*ppTVar37)))[41])();
         (reinterpret_cast<GhStr*>(&CStack_158)->m_pchData = (char*)(pcVar25));
@@ -923,9 +925,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
     *(unsigned char*)&(local_144[0].m_pchData) = 0;
     ((unsigned char*)&(local_144[0].m_pchData))[1] = 0;
     reinterpret_cast<undefined4(__cdecl*)(...)>(0x005c3e80)();
-    uVar11 = reinterpret_cast<undefined4(__cdecl*)(...)>(
-        (*reinterpret_cast<void***>(g_pUiViewManager))[9])();
-    piVar24 = (int*)CONCAT31(extraout_var_00, uVar11);
+    piVar24 = (int*)g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e4);
     if (piVar24 == (int*)0x0) {
       MessageBoxA((HWND)0x0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       reinterpret_cast<undefined4(__cdecl*)(...)>(0x4057a4)();
@@ -1005,8 +1005,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
       *(char**)(pcVar25 + 0x18) = local_1c8.m_pchData;
       local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 0xb);
       reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_pGlobalUiRootController))[14])();
+      g_pGlobalUiRootController->DispatchUiSelectionToHandler(pcVar25);
     }
     *(unsigned char*)&(local_4) = 10;
     *(char*)((int)g_pGameFlowState + 0x68) = ((unsigned int)(uStack_1cc) >> 24 & 0xff);
@@ -1052,8 +1051,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
         }
         uStack_14 = 0xe;
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_pGlobalUiRootController))[14])();
+        g_pGlobalUiRootController->DispatchUiSelectionToHandler(pcVar25);
         local_4 = 0xffffffff;
         ((void)0);
         uVar16 = 1;
@@ -1087,8 +1085,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
         }
         uStack_1c = CONCAT31(((unsigned int)(uStack_1c) >> 8 & 0xffffff), 0x10);
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_pGlobalUiRootController))[14])();
+        g_pGlobalUiRootController->DispatchUiSelectionToHandler(puVar22);
         local_4 = 0xffffffff;
         ((void)0);
         uVar16 = 1;
@@ -1115,8 +1112,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
     }
     goto LAB_005485d8;
   case 0x10:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(
-        (*reinterpret_cast<void***>(g_pLocalizationTable))[17])();
+    g_pLocalizationTable->PostMainWindowCommand100ForTurnFlow();
     uVar16 = 1;
     break;
   case 0x11:
@@ -1178,8 +1174,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
     uVar16 = 1;
     break;
   case 0x14:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(
-        (*reinterpret_cast<void***>(g_apTerrainTypeDescriptorTable[*(short*)(param_2 + 6)]))[14])();
+    g_apTerrainTypeDescriptorTable[*(short*)(param_2 + 6)]->AddToNationMetricAtField10(param_2[7]);
     uVar16 = 1;
     break;
   case 0x15:
@@ -1346,8 +1341,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
       }
       local_4 = 0xffffffff;
       reinterpret_cast<undefined4(__cdecl*)(...)>(0x408b7f)();
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_pGlobalUiRootController))[14])();
+      g_pGlobalUiRootController->DispatchUiSelectionToHandler(local_1c4.m_pchData);
       uVar16 = 1;
       break;
     }
@@ -1355,12 +1349,13 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
   case 0x1d:
     sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
     if (*(char*)(param_2 + 7) == 'i') {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_apNationStates[sVar15]))[159])();
+      g_apNationStates[sVar15]->CheckTransitionSlot27C(*(char*)((int)param_2 + 0x1d),
+                                                       *(char*)((int)param_2 + 0x1e));
       uVar16 = 1;
     } else {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_apNationStates[sVar15]))[160])();
+      g_apNationStates[sVar15]->PropagateWarTransitionSlot280(*(char*)((int)param_2 + 0x1d),
+                                                              *(char*)((int)param_2 + 0x1e),
+                                                              *(char*)((int)param_2 + 0x1f));
       uVar16 = 1;
     }
     break;
@@ -1377,8 +1372,8 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
             (*reinterpret_cast<void***>(g_apNationStates[*(char*)(param_2 + 7)]))[161])();
       }
     } else if ((*(char*)((int)param_2 + 0x1f) == 'i') && (*(char*)((int)param_2 + 0x21) != '\0')) {
-      cVar12 = reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_pDiplomacyTurnStateManager))[17])();
+      cVar12 = g_pDiplomacyTurnStateManager->IsNationPairAtWar(*(char*)((int)param_2 + 0x1c),
+                                                               *(char*)((int)param_2 + 0x1e));
       if (cVar12 == '\0') {
         reinterpret_cast<undefined4(__cdecl*)(...)>(
             (*reinterpret_cast<void***>(g_apNationStates[*(char*)(param_2 + 7)]))[161])();
@@ -1477,8 +1472,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
         }
         local_4 = 0xffffffff;
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_pGlobalUiRootController))[14])();
+        g_pGlobalUiRootController->DispatchUiSelectionToHandler(pcVar25);
         ((void)0);
         uStack_1c = 0x26;
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
@@ -1508,8 +1502,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
         }
         uStack_18 = 0x1a;
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_pGlobalUiRootController))[14])();
+        g_pGlobalUiRootController->DispatchUiSelectionToHandler(puVar22);
         local_4 = 0xffffffff;
         ((void)0);
         uVar16 = 1;
@@ -1715,8 +1708,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
       }
       if ((uVar36 == 0x72656765) &&
           (*(int*)(reinterpret_cast<char*>(g_pLocalizationTable) + 0x44) == 2)) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>(
-            *reinterpret_cast<char**>(g_pStrategicMapViewSystem) + 0x78))();
+        g_pStrategicMapViewSystem->RebuildNationClipRegionsAndDispatchMapEvent();
         uVar16 = 1;
         break;
       }
@@ -1829,8 +1821,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
     LAB_0054833b:
       if ((*(int*)(param_1 + iVar35 * 4 + 0xbc) == 0x62757379) &&
           (param_1[0xf4] != (CObject_slot_0x04_0x04)0x0)) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_pSfxPlaybackSystem))[8])();
+        g_pSfxPlaybackSystem->PlaySoundEffect(0x13f2, 0, 1);
         uVar16 = 1;
         break;
       }
@@ -1873,8 +1864,8 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
     }
     break;
   case 0x27:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(
-        (*reinterpret_cast<void***>(g_apTerrainTypeDescriptorTable[param_2[6]]))[19])();
+    g_apTerrainTypeDescriptorTable[param_2[6]]->ApplyJoinEmpireModeForTargetNation(param_2[7],
+                                                                                   param_2[8]);
     uVar16 = 1;
     break;
   case 0x28:
