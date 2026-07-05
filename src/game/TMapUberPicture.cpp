@@ -1,11 +1,16 @@
 #include "game/TMapUberPicture.h"
 
+#include "game/ClipStateRegion.h"
 #include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
+#include "game/TMiniMapView.h"
 #include "game/TOcean.h"
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
+
+extern undefined4 ReplaceClipStateRegionHandleFromRect(void);
 
 // SYNTHETIC: IMPERIALISM 0x00596900
 // TMapUberPicture::CreateObject
@@ -179,7 +184,9 @@ undefined TMapUberPicture::InvalidateTileMarkerAndRefreshLinkedControl(short par
 }
 
 // FUNCTION: IMPERIALISM 0x005989d0
-undefined TMapUberPicture::OrphanCallChain_C2_I16_005989d0() {
+undefined TMapUberPicture::OrphanCallChain_C2_I16_005989d0(int tileX, int tileY) {
+  (void)tileX;
+  (void)tileY;
   return 0;
 }
 
@@ -196,10 +203,9 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
   TView* zoomControl =
       (param1 != 0) ? reinterpret_cast<TView*>(param1) : this->ResolveControlByTag(0x5a6d496e);
   zoomControl->AssertValid();
-  // Ground truth also tags zoomControl->field_0x1c = 'ZmOt' (0x5a6d4f74) here when
-  // zoomControl is non-null -- a raw field write on a class beyond TView, matching the
-  // same "'forc'/'seas'-tagged control" attribution gap documented in
-  // SetMapInteractionMode; left undone.
+  if (zoomControl != nullptr) {
+    zoomControl->controlTag = 0x5a6d4f74; // "ZmOt" ("Zoom Out")
+  }
   this->invalidationFlag94 = 1;
 
   // Ground truth also calls goodGoldTagControlA4->vtable[0x1f4]() here and forwards the
@@ -210,14 +216,62 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
   this->subview2A8->CaptureLayoutF0(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
   this->subviewAc = this->subview2A8;
 
-  // Ground truth also centers field_0xc0's cursor-marker box here: reads its own
-  // +0x34/+0x38 extent, writes +0x90/+0x94/+0x98/+0x9c, and calls its RefreshControl.
-  // field_0xc0's concrete class isn't recovered beyond TView (see its declaration), so
-  // that final step is left undone rather than faked.
+  if (this->field_0xc0 != nullptr) {
+    this->field_0xc0->markerBoxWidth98 = g_defaultMarkerBoxWidth_006a460c;
+    this->field_0xc0->markerBoxHeight9c = 8;
+    this->field_0xc0->markerBoxX90 =
+        this->field_0xc0->field34 / 2 - this->field_0xc0->markerBoxWidth98 - 2;
+    this->field_0xc0->markerBoxY94 =
+        this->field_0xc0->field38 / 2 - this->field_0xc0->markerBoxHeight9c - 2;
+    this->field_0xc0->RefreshControl();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00599cf0
-void __fastcall TMapUberPicture::CreateToolWindow_00599CF0(astruct_20* this_obj) {}
+undefined TMapUberPicture::CreateToolWindow_00599CF0() {
+  TView* toolControl = this->ResolveControlByTag(0x746f6f6c); // "tool"
+  if (toolControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xa56);
+  }
+
+  const int kToolWindowMargin = 4;
+  TMiniMapView* miniMap = new TMiniMapView();
+  int offsetLayout[2] = {kToolWindowMargin, 0x31};
+  int sizeLayout[2] = {0x71, 0x41};
+  miniMap->InitializeUiResourceEntryFrameAndParent(nullptr, toolControl, offsetLayout, sizeLayout,
+                                                   kToolWindowMargin, kToolWindowMargin, 0);
+  miniMap->markerBoxX90 = miniMap->field34 / 2 - miniMap->markerBoxWidth98;
+  miniMap->ownerPicture84 = this;
+  miniMap->markerBoxY94 = miniMap->field38 / 2 - miniMap->markerBoxHeight9c;
+  miniMap->RefreshControl();
+  miniMap->SetState(1, 0);
+  this->field_0xc0 = miniMap;
+
+  RECT toolRect;
+  toolRect.left = toolControl->ownerOffsetX;
+  toolRect.top = toolControl->ownerOffsetY + kToolWindowMargin;
+  toolRect.right = toolRect.left + 0x71;
+  toolRect.bottom = toolRect.top + 0x41;
+  ClipStateRegionWrapper* region = CreateClipStateRegionWrapperObject();
+  reinterpret_cast<void(__cdecl*)(ClipStateRegionWrapper*, RECT*)>(
+      ReplaceClipStateRegionHandleFromRect)(region, &toolRect);
+  CombineTwoRegionsIntoDestinationAndUpdateBox(this->ownClipRegion90, region,
+                                               this->ownClipRegion90);
+  DestroyClipStateRegionWrapperObject(region);
+
+  if (this->invalidationFlag94 == 0) {
+    this->field_0xc0->markerBoxWidth98 = 0x20;
+    this->field_0xc0->markerBoxHeight9c = 0x1c;
+    this->field_0xc0->markerBoxX90 =
+        this->field_0xc0->field34 / 2 - this->field_0xc0->markerBoxWidth98 - 2;
+    this->field_0xc0->markerBoxY94 =
+        this->field_0xc0->field38 / 2 - this->field_0xc0->markerBoxHeight9c - 2;
+    this->field_0xc0->RefreshControl();
+  }
+
+  return this->SetTradeToolSubcontrolEnabledStateByFlag(0);
+}
 
 // FUNCTION: IMPERIALISM 0x00599fd0
 undefined TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion() {
@@ -225,6 +279,28 @@ undefined TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059a180
-undefined TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag() {
+undefined TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
+  TView* toolControl = this->ResolveControlByTag(0x746f6f6c); // "tool"
+  if (toolControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xac7);
+  }
+
+  TView* seasControl = toolControl->ResolveControlByTag(0x73656173); // "seas"
+  if (seasControl != nullptr) {
+    seasControl->SetEnabled(enabledState, 1);
+  }
+  TView* yearControl = toolControl->ResolveControlByTag(0x79656172); // "year"
+  if (yearControl != nullptr) {
+    yearControl->SetEnabled(enabledState, 1);
+  }
+  TView* treaControl = toolControl->ResolveControlByTag(0x74726561); // "trea"
+  if (treaControl != nullptr) {
+    treaControl->SetEnabled(enabledState, 1);
+  }
+  TView* treeControl = toolControl->ResolveControlByTag(0x74726565); // "tree"
+  if (treeControl != nullptr) {
+    treeControl->SetEnabled(enabledState, 1);
+  }
   return 0;
 }

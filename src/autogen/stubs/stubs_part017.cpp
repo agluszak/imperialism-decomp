@@ -1283,14 +1283,6 @@ undefined4 ConstructTMegaPictureBaseState(void)
   return 0;
 }
 
-// ghidra_name TOffLimitsPicture::ConstructTOffLimitsPictureBaseState
-// ghidra_proto undefined ConstructTOffLimitsPictureBaseState()
-// FUNCTION: IMPERIALISM 0x005737d0
-undefined4 ConstructTOffLimitsPictureBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TSliderPicture::ConstructTSliderPictureBaseState
 // ghidra_proto undefined ConstructTSliderPictureBaseState()
 // FUNCTION: IMPERIALISM 0x00573a20

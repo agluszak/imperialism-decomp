@@ -4,8 +4,8 @@
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
-class astruct_20;
 class TTaskForce;
+class TMiniMapView;
 
 // TODO(manifest): describe TMapUberPicture and its role. Base edge (TMapUberUberPicture) recovered from RTTI CRuntimeClass chain: TMapUberPicture -> TMapUberUberPicture -> TOffLimitsPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00668f08
@@ -137,15 +137,27 @@ public:
   // mismatch. Forwards param to subviewAc's InvalidateTileMarkerChain, then refreshes
   // field_0xc0 if present.
   virtual undefined InvalidateTileMarkerAndRefreshLinkedControl(short param); // slot 0x78 0x598990
-  virtual undefined OrphanCallChain_C2_I16_005989d0();                        // slot 0x79 0x5989d0
+  // TMiniMapView::DispatchPictureResourceCommand's own ground truth calls this slot as
+  // ownerPicture84->vtable[0x1e4](tileX, tileY) with 2 explicit int args (clamped tile
+  // coordinates) -- the previous 0-arg declaration was a poison-pill.
+  virtual undefined OrphanCallChain_C2_I16_005989d0(int tileX, int tileY); // slot 0x79 0x5989d0
   // Forwards entryIndex to the +0xac subview's byte-0x1f0 virtual (verified 1-arg
   // thiscall, RET 4; the previous declaration had dropped the argument).
-  virtual undefined NotifySubviewOfSelectedTile(short entryIndex);         // slot 0x7a 0x598a20
-  virtual undefined OrphanLeaf_NoCall_Ins23_00597a10();                    // slot 0x7b 0x597a10
-  virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1);   // slot 0x7c 0x598910
-  virtual void __fastcall CreateToolWindow_00599CF0(astruct_20* this_obj); // slot 0x7d 0x599cf0
-  virtual undefined SwapToolInfoSubviewAndRefreshClipRegion();             // slot 0x7e 0x599fd0
-  virtual undefined SetTradeToolSubcontrolEnabledStateByFlag();            // slot 0x7f 0x59a180
+  virtual undefined NotifySubviewOfSelectedTile(short entryIndex);       // slot 0x7a 0x598a20
+  virtual undefined OrphanLeaf_NoCall_Ins23_00597a10();                  // slot 0x7b 0x597a10
+  virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1); // slot 0x7c 0x598910
+  // Ground truth (final RET has no operand) proves the previous 1-arg
+  // __fastcall(astruct_20*)/void-return declaration was a poison-pill: real signature is
+  // thiscall, 0 explicit args; the caller-visible "return value" is just SetTrade-
+  // ToolSubcontrolEnabledStateByFlag's incidental EAX forwarded through, not a distinct
+  // result of this function's own.
+  virtual undefined CreateToolWindow_00599CF0();               // slot 0x7d 0x599cf0
+  virtual undefined SwapToolInfoSubviewAndRefreshClipRegion(); // slot 0x7e 0x599fd0
+  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill: real
+  // signature takes the enabled-state flag applied to the 'seas'/'year'/'trea'/'tree'
+  // trade-tool subcontrols.
+  virtual undefined
+  SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180
   // === END GENERATED DECLS (TMapUberPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberPicture 0xCTOR`).
 
@@ -165,10 +177,10 @@ public:
   // 'GOOD'/'GOLD'-tag sub-control resolved by NoOpUiLifecycleHook (not yet ported);
   // SetActiveMapOrderEntry calls InvalidateMapRegionForOrderEntry on it,
   // EnterMapInteractionOverlayMode calls its real TView::CaptureLayoutF0, and also its
-  // own slot-0x1f4 virtual (beyond TView's own vtable range -- lands on
-  // TMapUberPicture's slot 0x7d, CreateToolWindow_00599CF0, but that slot's declared
-  // astruct_20*/__fastcall/void-return signature doesn't match this non-void callsite,
-  // so it's left as a documented gap rather than risk a second poison-pill guess).
+  // own slot-0x1f4 virtual (beyond TView's own vtable range -- CreateToolWindow_00599CF0's
+  // real signature turned out to be a 0-arg/undefined-return TMapUberPicture slot, not the
+  // receiver of this call, so goodGoldTagControlA4's concrete further-derived class is
+  // still unrecovered and this dispatch stays a documented gap).
   // Typed generically as TView* since its further-derived concrete class isn't
   // recovered.
   TView* goodGoldTagControlA4;
@@ -186,9 +198,10 @@ public:
   // are dispatched through slot 0x74/CaptureLayoutF0, both real TMapUberPicture-family
   // slots) -- these are further TMapUberPicture instances, not a distinct class.
   TMapUberPicture* categoryPages[4];
-  // Generic TView*: only ever dispatched through the inherited slot 0x39
-  // (TView::RefreshControl), so its concrete subtype isn't identified beyond that.
-  TView* field_0xc0;
+  // The mini-map tool-window created by CreateToolWindow_00599CF0 (0x599cf0), which
+  // allocates a TMiniMapView (vtable 0x669170, size 0xa0), sets its owner backref, and
+  // stores the result here.
+  TMiniMapView* field_0xc0;
 
   TMapUberPicture();
 

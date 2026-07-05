@@ -3153,6 +3153,7 @@ address|target_cpp|ownership|note
 5736c0|src/game/TMegaPicture.cpp|manual|marker_sync
 573710|src/game/TOffLimitsPicture.cpp|manual|marker_sync
 5737b0|src/game/TOffLimitsPicture.cpp|manual|marker_sync
+5737d0|src/game/TOffLimitsPicture.cpp|manual|marker_sync
 573800|src/game/TOffLimitsPicture.cpp|manual|marker_sync
 573850|src/game/TOffLimitsPicture.cpp|manual|marker_sync
 573890|src/game/TOffLimitsPicture.cpp|manual|marker_sync
@@ -3640,6 +3641,7 @@ address|target_cpp|ownership|note
 59a180|src/game/TMapUberPicture.cpp|manual|marker_sync
 59a290|src/game/TMiniMapView.cpp|manual|marker_sync
 59a360|src/game/TMiniMapView.cpp|manual|marker_sync
+59a380|src/game/TMiniMapView.cpp|manual|marker_sync
 59a3f0|src/game/TMiniMapView.cpp|manual|marker_sync
 59a540|src/game/TMiniMapView.cpp|manual|marker_sync
 59a920|src/game/TMiniMapView.cpp|manual|marker_sync

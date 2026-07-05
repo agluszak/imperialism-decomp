@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/ClipStateRegion.h"
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
@@ -7,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x00660fb0
 class TOffLimitsPicture : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TOffLimitsPicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TOffLimitsPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOffLimitsPicture)
   virtual ~TOffLimitsPicture(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -123,9 +124,16 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(); // slot 0x73 0x573940
-// === END GENERATED DECLS (TOffLimitsPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TOffLimitsPicture 0xCTOR`).
+  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill
+  // arity mismatch: merges srcRegion into this object's own ownClipRegion90.
+  virtual undefined ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(
+      ClipStateRegionWrapper* srcRegion); // slot 0x73 0x573940
+                                          // === END GENERATED DECLS (TOffLimitsPicture) ===
+  // TPicture ends at 0x90; this object's own 4-byte slice is a lazily-created clip
+  // region wrapper (destroyed by Free(), merged into by
+  // ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox, and read/written by
+  // TMapUberPicture::CreateToolWindow_00599CF0 -- see its own evidence).
+  ClipStateRegionWrapper* ownClipRegion90;
 
   TOffLimitsPicture();
 };

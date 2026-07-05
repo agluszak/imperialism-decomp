@@ -995,14 +995,6 @@ undefined4 InvokeViewSlotE4IfContextPresent(void)
   return 0;
 }
 
-// ghidra_name TMiniMapView::ConstructTMiniMapViewBaseState
-// ghidra_proto undefined ConstructTMiniMapViewBaseState()
-// FUNCTION: IMPERIALISM 0x0059a380
-undefined4 ConstructTMiniMapViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0059acf0
 // ghidra_proto undefined WrapperFor_ftol_At0059acf0()
 // FUNCTION: IMPERIALISM 0x0059acf0

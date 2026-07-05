@@ -12631,7 +12631,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -16118,7 +16118,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2080872330758746,
+      "matching": 0.20354384370740572,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -19935,7 +19935,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -24909,7 +24909,7 @@
     },
     {
       "address": "0x573710",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TOffLimitsPicture::CreateObject",
       "type": 1
     },
@@ -24921,7 +24921,7 @@
     },
     {
       "address": "0x5737d0",
-      "matching": 0.2,
+      "matching": 0.75,
       "name": "TOffLimitsPicture::ConstructTOffLimitsPictureBaseState",
       "type": 1
     },
@@ -24933,7 +24933,7 @@
     },
     {
       "address": "0x573850",
-      "matching": 0.15384615384615385,
+      "matching": 1.0,
       "name": "TOffLimitsPicture::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -24945,13 +24945,13 @@
     },
     {
       "address": "0x573900",
-      "matching": 0.16666666666666666,
+      "matching": 1.0,
       "name": "TOffLimitsPicture::Free",
       "type": 1
     },
     {
       "address": "0x573940",
-      "matching": 0.0,
+      "matching": 0.9333333333333333,
       "name": "TOffLimitsPicture::ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox",
       "type": 1
     },
@@ -27149,7 +27149,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.47715736040609136,
+      "matching": 0.45685279187817257,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -28176,7 +28176,7 @@
     },
     {
       "address": "0x596770",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TMapUberUberPicture::CreateObject",
       "type": 1
     },
@@ -28200,7 +28200,7 @@
     },
     {
       "address": "0x596900",
-      "matching": 0.46875,
+      "matching": 0.5,
       "name": "TMapUberPicture::CreateObject",
       "type": 1
     },
@@ -28212,7 +28212,7 @@
     },
     {
       "address": "0x5969e0",
-      "matching": 0.6896551724137931,
+      "matching": 0.896551724137931,
       "name": "TMapUberPicture::ConstructTMapUberPictureBaseState",
       "type": 1
     },
@@ -28350,19 +28350,19 @@
     },
     {
       "address": "0x598990",
-      "matching": 0.8275862068965517,
+      "matching": 0.9655172413793104,
       "name": "TMapUberPicture::OrphanCallChain_C2_I14_00598990",
       "type": 1
     },
     {
       "address": "0x5989d0",
-      "matching": 0.0,
+      "matching": 0.1111111111111111,
       "name": "TMapUberPicture::OrphanCallChain_C2_I16_005989d0",
       "type": 1
     },
     {
       "address": "0x598a20",
-      "matching": 0.5,
+      "matching": 0.6666666666666666,
       "name": "TMapUberPicture::OrphanCallChain_C1_I06_00598a20",
       "type": 1
     },
@@ -28416,7 +28416,7 @@
     },
     {
       "address": "0x599a50",
-      "matching": 0.30927835051546393,
+      "matching": 0.6412213740458015,
       "name": "TacticalBattleView::EnterMapInteractionOverlayMode",
       "type": 1
     },
@@ -28428,7 +28428,7 @@
     },
     {
       "address": "0x599cf0",
-      "matching": 0.012987012987012988,
+      "matching": 0.581081081081081,
       "name": "TMapUberPicture::CreateToolWindow_00599CF0",
       "type": 1
     },
@@ -28446,13 +28446,13 @@
     },
     {
       "address": "0x59a180",
-      "matching": 0.0,
+      "matching": 0.8169014084507042,
       "name": "TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag",
       "type": 1
     },
     {
       "address": "0x59a290",
-      "matching": 0.46153846153846156,
+      "matching": 0.49230769230769234,
       "name": "TMiniMapView::CreateObject",
       "type": 1
     },
@@ -28464,7 +28464,7 @@
     },
     {
       "address": "0x59a380",
-      "matching": 0.23529411764705882,
+      "matching": 0.7741935483870968,
       "name": "TMiniMapView::ConstructTMiniMapViewBaseState",
       "type": 1
     },

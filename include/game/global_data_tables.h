@@ -431,6 +431,12 @@ extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
+// Assert source-path string for the USuperMap TU (TMapUberPicture family).
+extern "C" const char s_SourcePathUSuperMap_0069943C[];
+// Default viewport-marker-box width, shared by TMiniMapView/TacticalBattleView's own
+// marker-box construction (assigned once via ftol() elsewhere; role beyond that isn't
+// further recovered).
+extern short g_defaultMarkerBoxWidth_006a460c;
 extern TSoundPlayer* g_pSfxPlaybackSystem;
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 extern TApplication* g_pApplicationUiRootController;

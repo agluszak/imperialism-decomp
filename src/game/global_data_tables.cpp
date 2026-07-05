@@ -566,6 +566,10 @@ extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UView
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c
 extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
+// GLOBAL: IMPERIALISM 0x0069943c
+extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
+// GLOBAL: IMPERIALISM 0x006a460c
+short g_defaultMarkerBoxWidth_006a460c = 0;
 
 // Profile string keys used by LoadProfileStringAndAssignSharedRef during multiplayer init.
 // GLOBAL: IMPERIALISM 0x00698010
