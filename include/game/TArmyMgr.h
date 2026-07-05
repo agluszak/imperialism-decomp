@@ -7,6 +7,7 @@
 class TStream;
 class TSortedList;
 class TArmyStack;
+struct TControlPictureRectState;
 
 // TODO(manifest): describe TArmyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TArmyMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c928
@@ -36,9 +37,14 @@ public:
   virtual undefined ProcessPendingArmyStacksForBattleOrRelocation(); // slot 0x0c 0x4a2390
   virtual undefined IterateLinkedListCursorAndClearPerTileByte0F();  // slot 0x0d 0x4a2500
   // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
-  // poison-pill arity mismatch. Called from OrphanCallChain_C12_I108_004a2390 when a
-  // TArmyStack's categoryFlag8 doesn't match TArmyMgr::regionAffinityTable1c[ownerNationCodeE].
-  virtual undefined
+  // poison-pill arity mismatch. Called from ProcessPendingArmyStacksForBattleOrRelocation
+  // when a TArmyStack's categoryFlag8 doesn't match
+  // TArmyMgr::perTileOwnerNationCodeCache1c[ownerNationCodeE]. Partitions stack's unit
+  // chain into an "our stack" (units matching ownerNationCode) and, if any were found, an
+  // "enemy stack" (units garrisoned at that same slot in cityScoreTable); depending on
+  // TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate and whether the enemy stack is
+  // nonempty, either relocates our stack peacefully or creates a real tactical battle view.
+  virtual bool
   TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack,
                                            short ownerNationCode); // slot 0x0e 0x4a3200
   // stack is the same TArmyStack the tile-army-composition pass (0x4a1f80) builds and
@@ -51,8 +57,15 @@ public:
   // Ground truth doesn't touch `this` at all -- stack is the same TArmyStack shape,
   // relocating every unit on its embedded chain to stack->tileIndex10 unless already there.
   virtual undefined
-  ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack);   // slot 0x10 0x4a37b0
-  virtual undefined UpdateDualLinkedEntryMetersAndBlinkState(); // slot 0x11 0x4a3830
+  ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack); // slot 0x10 0x4a37b0
+  // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
+  // poison-pill arity mismatch. Snapshots each stack's units' field_34 into field_3C and
+  // resets their blink-mask bits, then repeatedly finds an eligible pair (one unit per
+  // stack whose field_34 still exceeds half its snapshot) to accumulate/decay a shared
+  // meter across, until one side runs out; the side that ran out gets a flat meter boost
+  // instead. Returns whether any eligible pairing was ever found.
+  virtual bool UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1,
+                                                        TArmyStack* stack2); // slot 0x11 0x4a3830
   virtual undefined
   WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(); // slot 0x12 0x4a3bc0
   // Ground truth (RET 0x8, 2 stack args) proves the previous 1-arg declaration was a
@@ -72,8 +85,19 @@ public:
   // (AL in the ground truth) -- not a meaningless `undefined` stub value.
   virtual bool CommitCityActionGateCostIfAffordable(int contextArg); // slot 0x15 0x4a3f30
   virtual undefined OrphanCallChain_C1_I34_004a4260(int mode);       // slot 0x16 0x4a4260
-  virtual undefined HandleMapClickByComputedCursorState();           // slot 0x17 0x4a4870
-  virtual undefined HandleMapClickByCivilianCursorState();           // slot 0x18 0x4a4ad0
+  // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
+  // poison-pill arity mismatch. Dispatches on the free-function ComputeMapCursorStateIndex
+  // classification: 2 -> map-interaction-mode switch + SetActiveProvinceSelection, 6 -> a
+  // directional-order-overlay rebuild, 8 -> a blocked-order hint message.
+  virtual undefined HandleMapClickByComputedCursorState(short tileIndex,
+                                                        short mode); // slot 0x17 0x4a4870
+  // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
+  // poison-pill arity mismatch. Civilian-order counterpart of the above: dispatches on
+  // ComputeCivilianMapCursorStateIndex's classification, falling through to an
+  // adjacency check (SelectMovableUnitOnCurrentTileAndPlaySfx vs.
+  // CommitCityActionGateCostIfAffordable) for the two "in range" codes.
+  virtual undefined HandleMapClickByCivilianCursorState(short tileIndex,
+                                                        short mode); // slot 0x18 0x4a4ad0
   // === END GENERATED DECLS (TArmyMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyMgr 0xCTOR`).
 
@@ -111,17 +135,59 @@ public:
   unsigned char needsTerrainRefreshFlag39a;
   unsigned char pad39b;
   // +0x39c/+0x3a0/+0x3a4 -- three cached objects released (TObject::Free) and cleared by
-  // ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags; concrete subtype not
-  // identified beyond TObject.
-  TObject* cachedObject39c;
-  TObject* cachedObject3a0;
-  TObject* cachedObject3a4;
+  // ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags. Typed from
+  // CreateTacticalBattleViewAndInitializeBattleSetup's own construction evidence (best-
+  // effort argument order derived from calling-convention analysis, not yet confirmed by
+  // a passing `just compare` on that function).
+  class TArmyStack* ourStackBattle39c;
+  class TArmyStack* enemyStackBattle3a0;
+  class TArmyBattle* activeBattleView3a4;
 
   // Releases the 3 cached objects above, re-runs the per-tile-unit cleanup (slot 0x0d)
   // and eligibility rebuild (slot 0x12), and -- when needsTerrainRefreshFlag39a is set --
   // rebuilds the strategic map view's nation clip regions and resets every nation's
   // serializedField8c to -1. 0x004a1eb0, __thiscall, no args.
   void ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags();
+
+  // Sets pendingMapActionIndex (the shared "current map selection" slot) and, unless
+  // clearing the selection (-1), resets the order mode of every stationed unit at that
+  // tile whose tactical category is nonzero (g_awTacticalUnitCategoryCodeBySlot); always
+  // notifies the active map-uber-picture's slot-0x75 handler at the end. 0x004a45e0,
+  // __thiscall, 1 arg. Called both by TArmyMgr's own map-click dispatchers and by other
+  // classes on the g_pMapContextActionManager singleton (e.g. the map-interaction-mode
+  // and province-cycling handlers).
+  void SetActiveProvinceSelection(short tileIndex);
+
+  // Civilian-order counterpart of the free-function ComputeMapCursorStateIndex (this one
+  // genuinely reads/writes `this`, e.g. pendingMapActionIndex). 0x004a4c80, 641 bytes;
+  // ground truth's own decompile loses register tracking (unaff_EBX/EBP/retaddr) badly
+  // enough that a faithful body needs dedicated listing-level analysis -- left as a TODO
+  // stub with the verified real signature rather than guessed.
+  int ComputeCivilianMapCursorStateIndex(short tileIndex, short mode);
+  // 0x004a5080, 1407 bytes, __thiscall, 1 arg (cityRecordIndex), returns bool. TODO stub:
+  // large and Ghidra's decompile for it is similarly unreliable; signature verified via
+  // the HandleMapClickByCivilianCursorState callsite disassembly.
+  bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
+  // 0x004a5760, 656 bytes, __thiscall, 1 arg (tileIndex). TODO stub body (builds
+  // directional order-overlay controls from the tile's adjacent-region list; not yet
+  // ported).
+  void SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex);
+  // 0x004a5b10, 243 bytes, __thiscall, 3 args (ourStack, enemyStack, ownerNationCodeInt).
+  // Called from TryCreateTacticalBattleViewForTileArmies when a real tactical battle
+  // should be created. TODO stub body (SEH-framed; not yet ported).
+  void CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
+                                                        TArmyStack* enemyStack,
+                                                        int ownerNationCodeInt);
+  void BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex);
+
+  // Fills styleC/styleD (both real TControlPictureRectState locals in the caller) with a
+  // localized order-context summary for cityRecordIndex; returns false when there's no
+  // summary to show. 0x004a5ec0, __thiscall, 1580 bytes. TODO: port body -- out of scope
+  // for BuildMapHintOverlayTextAndDispatchUiMessages, which only needs a real,
+  // correctly-typed call site.
+  bool BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
+                                                  TControlPictureRectState* styleC,
+                                                  TControlPictureRectState* styleD);
 
   TArmyMgr();
 };

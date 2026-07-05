@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TOffLimitsPicture, TPicture)
 
-TOffLimitsPicture::TOffLimitsPicture() {}
+// FUNCTION: IMPERIALISM 0x005737d0
+TOffLimitsPicture::TOffLimitsPicture() : TPicture(), ownClipRegion90(nullptr) {}
 
 // SYNTHETIC: IMPERIALISM 0x00573800
 // TOffLimitsPicture::`scalar deleting destructor'
@@ -15,17 +16,24 @@ TOffLimitsPicture::~TOffLimitsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00573850
 void TOffLimitsPicture::NoOpUiLifecycleHook(int arg) {
+  TView::NoOpUiLifecycleHook(arg);
+  ownClipRegion90 = CreateClipStateRegionWrapperObject();
+  ResetClipRegionAndReadBoundingRect(ownClipRegion90);
 }
 
 // FUNCTION: IMPERIALISM 0x00573890
-void TOffLimitsPicture::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TOffLimitsPicture::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x00573900
 void TOffLimitsPicture::Free() {
+  DestroyClipStateRegionWrapperObject(ownClipRegion90);
+  ownClipRegion90 = nullptr;
+  TView::Free();
 }
 
 // FUNCTION: IMPERIALISM 0x00573940
-undefined TOffLimitsPicture::ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox() {
+undefined TOffLimitsPicture::ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(
+    ClipStateRegionWrapper* srcRegion) {
+  CombineOptionalSourceRegionIntoDestinationAndUpdateBox(srcRegion, ownClipRegion90);
   return 0;
 }

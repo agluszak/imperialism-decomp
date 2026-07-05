@@ -17,6 +17,14 @@ void RemovePortZoneByTile(short nTileIndex);
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
 
+// FUNCTION: IMPERIALISM 0x004a4190
+TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
+  if (index < 0 || index >= 0x180) {
+    return nullptr;
+  }
+  return cityScoreTable[index].stationedUnitChain98;
+}
+
 extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
   typedef short(__cdecl * Func)(short, short);
   return reinterpret_cast<Func>(0x00512dd0)(sourceTile, destTile);
@@ -1279,6 +1287,55 @@ void TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int cont
   (void)tileIndex;
   (void)contextArg;
   (void)flag;
+}
+
+namespace {
+// Indexed by (gateFlag - 1) for terrainStateTable gateFlag values in [1,15]; groups a
+// linked region's gate type into one of the buckets tallied by
+// ClassifyCityGateTerrainComposition below (bucket 7, gateFlag 14, scores nothing).
+const unsigned char kGateFlagScoreBucket[15] = {0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 4, 2, 2, 7, 2};
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x00519010
+int TMapMgr::ClassifyCityGateTerrainComposition(int cityIndex) {
+  const TGlobalMapCityScoreRecord& city = cityScoreTable[cityIndex];
+  if ((terrainStateTable[city.ownerNationSlot].activeFlags1c & 1) != 0) {
+    return 3;
+  }
+
+  int tallyA = 0;
+  int tallyB = 0;
+  int tallyC = 0;
+  for (int i = 0; i < city.linkedRegionCount; ++i) {
+    short gateFlag = terrainStateTable[city.linkedRegionIds[i]].gateFlag;
+    if (gateFlag < 1 || gateFlag > 15) {
+      continue;
+    }
+    switch (kGateFlagScoreBucket[gateFlag - 1]) {
+    case 0:
+      ++tallyB;
+      break;
+    case 1:
+      tallyB += 2;
+      break;
+    case 2:
+      tallyA += 2;
+      break;
+    case 3:
+      tallyA += 4;
+      break;
+    case 4:
+      tallyC += 6;
+      break;
+    default:
+      break;
+    }
+  }
+
+  if (tallyC > tallyA && tallyC > tallyB) {
+    return 2;
+  }
+  return tallyA > tallyB ? 1 : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e360

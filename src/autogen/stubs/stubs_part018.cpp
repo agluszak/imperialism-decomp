@@ -971,14 +971,6 @@ undefined4 NotifyTaskForceSelectionListenerByWord62(void)
   return 0;
 }
 
-// ghidra_name TacticalBattleView::EnterMapInteractionOverlayMode
-// ghidra_proto undefined EnterMapInteractionOverlayMode()
-// FUNCTION: IMPERIALISM 0x00599a50
-undefined4 EnterMapInteractionOverlayMode(void)
-{
-  return 0;
-}
-
 // ghidra_name CommitPendingUiModeChangeAndRefreshViews
 // ghidra_proto undefined CommitPendingUiModeChangeAndRefreshViews()
 // FUNCTION: IMPERIALISM 0x00599b90
@@ -991,14 +983,6 @@ undefined4 CommitPendingUiModeChangeAndRefreshViews(void)
 // ghidra_proto undefined InvokeViewSlotE4IfContextPresent()
 // FUNCTION: IMPERIALISM 0x00599fa0
 undefined4 InvokeViewSlotE4IfContextPresent(void)
-{
-  return 0;
-}
-
-// ghidra_name TMiniMapView::ConstructTMiniMapViewBaseState
-// ghidra_proto undefined ConstructTMiniMapViewBaseState()
-// FUNCTION: IMPERIALISM 0x0059a380
-undefined4 ConstructTMiniMapViewBaseState(void)
 {
   return 0;
 }

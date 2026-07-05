@@ -294,6 +294,14 @@ int ComputeGlobalMapActionContextNodeValueAverage(void) {
   return sum / count;
 }
 
+// FUNCTION: IMPERIALISM 0x00564600
+TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TTaskForce* pMapOrderEntry) {
+  // TODO: port body @ 0x564600 (245 bytes; frees/caches a task force into an as-yet
+  // unexposed TOcean field around +0x14; not yet ported).
+  (void)pMapOrderEntry;
+  return nullptr;
+}
+
 // bd 1uj.16: TTaskForce::SetMapOrderType9AndQueue / PromoteMapOrderChainAndQueue's
 // final notification step (0x5642e0). Genuinely large (per-nation IsKindOf-gated
 // view/menu refresh over g_apNationStates[entry->required_count] and a TZone

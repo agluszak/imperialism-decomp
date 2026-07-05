@@ -947,8 +947,8 @@ undefined4 CCmdTarget(void)
   return 0;
 }
 
-// ghidra_name RestoreWaitCursor
-// ghidra_proto undefined RestoreWaitCursor()
+// ghidra_name CCmdTarget::RestoreWaitCursor
+// ghidra_proto void __thiscall RestoreWaitCursor()
 // FUNCTION: IMPERIALISM 0x00606c91
 undefined4 RestoreWaitCursor(void)
 {

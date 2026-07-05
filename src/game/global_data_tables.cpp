@@ -449,6 +449,19 @@ short g_awUnitCombatClassBySlot[64] = {0};
 // Stack composition class lookup (byte table at 0x6953c0); indexed [minClass + maxClass*4].
 unsigned char g_abStackCompositionClassTable[32] = {0};
 
+// Per-fort-level attacker penalty percent (int table at 0x695568); indexed by
+// TGlobalMapCityScoreRecord::fortLevel03.
+int g_anFortLevelAttackerPenaltyPercentByLevel[8] = {0};
+// Per-unit-type blink/boost eligibility flag (byte table at 0x64c808); indexed by
+// TUnit::orderType.
+unsigned char g_abUnitTypeBlinkEligibilityFlag[32] = {0};
+
+// Four per-unit-type meter-scoring tables, indexed by TUnit::orderType.
+int g_anWeightClassByOrderType[32] = {0};         // int table at 0x64c790
+short g_anScaledFactorByOrderType[32] = {0};      // short table at 0x64c660
+float g_afPercentEfficiencyByOrderType[32] = {0}; // float table at 0x64c6a0
+int g_anCountWeightByOrderType[32] = {0};         // int table at 0x695578
+
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};
 
@@ -575,6 +588,10 @@ extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UView
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c
 extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
+// GLOBAL: IMPERIALISM 0x0069943c
+extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
+// GLOBAL: IMPERIALISM 0x006a460c
+short g_defaultMarkerBoxWidth_006a460c = 0;
 
 // Profile string keys used by LoadProfileStringAndAssignSharedRef during multiplayer init.
 // GLOBAL: IMPERIALISM 0x00698010

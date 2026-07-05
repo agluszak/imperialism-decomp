@@ -3,11 +3,17 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
+class TMapUberPicture;
+
+// A small world-map thumbnail with a highlighted viewport-marker box (see
+// ApplyRectSlot110/DispatchPictureResourceCommand). Constructed by
+// TMapUberPicture::CreateToolWindow_00599CF0 (0x599cf0), which stores the new instance
+// into the owner's field_0xc0.
 // TODO(manifest): describe TMiniMapView and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TMiniMapView -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00669170
 class TMiniMapView : public TControl {
 public:
-// === BEGIN GENERATED DECLS (TMiniMapView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TMiniMapView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMiniMapView)
   virtual ~TMiniMapView(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -112,7 +118,8 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual void DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) override; // slot 0x68 0x59a920
+  virtual void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA,
+                                              void* pEventDataB) override; // slot 0x68 0x59a920
   // slot 0x69 DeserializeCityProductionQueueCommand inherited unchanged (0x48e980)
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
@@ -121,8 +128,23 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-// === END GENERATED DECLS (TMiniMapView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMiniMapView 0xCTOR`).
+  // === END GENERATED DECLS (TMiniMapView) ===
+  // TControl ends at 0x84; this object's own slice runs 0x84-0x9f (object size 0xa0).
+  // Owning TMapUberPicture backref -- set by CreateToolWindow_00599CF0 right after
+  // construction (not by the ctor itself; ctor leaves it untouched).
+  TMapUberPicture* ownerPicture84;
+  // Tile-column/row scroll offset on the strategic map (ApplyRectSlot110/
+  // DispatchPictureResourceCommand evidence; those bodies aren't ported yet).
+  int scrollTileColumn88;
+  int scrollTileRow8c;
+  // Centered viewport-marker-box draw position, recomputed whenever field34/field38 or
+  // the box size (below) change.
+  int markerBoxX90;
+  int markerBoxY94;
+  // Viewport-marker-box size; ctor default is (*0x6a460c, 8), later resized to (0x20,
+  // 0x1c) by CreateToolWindow_00599CF0's refresh path.
+  int markerBoxWidth98;
+  int markerBoxHeight9c;
 
   TMiniMapView();
 };

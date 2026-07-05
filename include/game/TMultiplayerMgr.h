@@ -77,8 +77,12 @@ public:
                                         int nationSlotOrMode); // 0x54a340
   void DispatchCityRedrawInvalidateEvent(short cityId);        // 0x54abf0
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
-                                              int mode); // 0x54c5a0
+                                              int mode);                     // 0x54c5a0
   undefined4 ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
+  // Genuinely empty in the shipped binary (single `RET 4`); called by
+  // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup with the new battle view,
+  // discarding both the argument and the (unset) return value. 0x54c660, __thiscall.
+  void NoOpCallbackRet4(void* param);
 };
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);

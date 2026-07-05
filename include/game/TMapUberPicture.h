@@ -4,7 +4,8 @@
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
-class astruct_20;
+class TTaskForce;
+class TMiniMapView;
 
 // TODO(manifest): describe TMapUberPicture and its role. Base edge (TMapUberUberPicture) recovered from RTTI CRuntimeClass chain: TMapUberPicture -> TMapUberUberPicture -> TOffLimitsPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00668f08
@@ -129,41 +130,104 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
   virtual undefined AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x5977a0
-  virtual undefined OrphanLeaf_NoCall_Ins09_00598950();          // slot 0x75 0x598950
-  virtual void InvalidateTileMarkerChain(short tileIndex);       // slot 0x76 0x598870
-  virtual undefined OrphanCallChain_C2_I18_005988c0();           // slot 0x77 0x5988c0
-  virtual undefined OrphanCallChain_C2_I14_00598990();           // slot 0x78 0x598990
-  virtual undefined OrphanCallChain_C2_I16_005989d0();           // slot 0x79 0x5989d0
+  virtual undefined RefreshAfterSelectionChange();                  // slot 0x75 0x598950
+  virtual void InvalidateTileMarkerChain(short tileIndex);          // slot 0x76 0x598870
+  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill:
+  // forwards entryIndex to subviewAc's NotifySubviewOfSelectedTile, then (only before
+  // entering overlay mode) syncs subview2A8's trade-tool enabled state to the same value.
+  virtual undefined
+  DispatchSelectedTileToSubviewsAndSyncTradeToolState(short entryIndex); // slot 0x77 0x5988c0
+  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
+  // mismatch. Forwards param to subviewAc's InvalidateTileMarkerChain, then refreshes
+  // field_0xc0 if present.
+  virtual undefined InvalidateTileMarkerAndRefreshLinkedControl(short param); // slot 0x78 0x598990
+  // TMiniMapView::DispatchPictureResourceCommand's own ground truth calls this slot as
+  // ownerPicture84->vtable[0x1e4](tileX, tileY) with 2 explicit int args (clamped tile
+  // coordinates) -- the previous 0-arg declaration was a poison-pill.
+  virtual undefined OrphanCallChain_C2_I16_005989d0(int tileX, int tileY); // slot 0x79 0x5989d0
   // Forwards entryIndex to the +0xac subview's byte-0x1f0 virtual (verified 1-arg
   // thiscall, RET 4; the previous declaration had dropped the argument).
-  virtual undefined OrphanCallChain_C1_I06_00598a20(short entryIndex);     // slot 0x7a 0x598a20
-  virtual undefined OrphanLeaf_NoCall_Ins23_00597a10();                    // slot 0x7b 0x597a10
-  virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1);   // slot 0x7c 0x598910
-  virtual void __fastcall CreateToolWindow_00599CF0(astruct_20* this_obj); // slot 0x7d 0x599cf0
-  virtual undefined SwapToolInfoSubviewAndRefreshClipRegion();             // slot 0x7e 0x599fd0
-  virtual undefined SetTradeToolSubcontrolEnabledStateByFlag();            // slot 0x7f 0x59a180
+  virtual undefined NotifySubviewOfSelectedTile(short entryIndex);       // slot 0x7a 0x598a20
+  virtual undefined OrphanLeaf_NoCall_Ins23_00597a10();                  // slot 0x7b 0x597a10
+  virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1); // slot 0x7c 0x598910
+  // Ground truth (final RET has no operand) proves the previous 1-arg
+  // __fastcall(astruct_20*)/void-return declaration was a poison-pill: real signature is
+  // thiscall, 0 explicit args; the caller-visible "return value" is just SetTrade-
+  // ToolSubcontrolEnabledStateByFlag's incidental EAX forwarded through, not a distinct
+  // result of this function's own.
+  virtual undefined CreateToolWindow_00599CF0();               // slot 0x7d 0x599cf0
+  virtual undefined SwapToolInfoSubviewAndRefreshClipRegion(); // slot 0x7e 0x599fd0
+  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill: real
+  // signature takes the enabled-state flag applied to the 'seas'/'year'/'trea'/'tree'
+  // trade-tool subcontrols.
+  virtual undefined
+  SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180
   // === END GENERATED DECLS (TMapUberPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberPicture 0xCTOR`).
 
   // Own slice (TMapUberUberPicture ends at 0x94; this object is 0xc4). Layout/roles from
   // ConstructTMapUberPictureBaseState (0x5969e0) and NoOpUiLifecycleHook (0x596a80).
-  unsigned char field_0x94; // set to 1 by the ctor; role not yet identified
+  // Set to 1 by the ctor; read by SetActiveMapOrderEntry to gate
+  // InvalidateMapRegionForOrderEntry calls around orderEntryContext98 updates (matches
+  // TWorldView.cpp's independently-derived TMapOrderToolbarPendingState::invalidationFlag).
+  unsigned char invalidationFlag94;
   // 0=civilian, 1=army, 2=navy, 3=none (default) -- selects categoryPages[] below.
   short activeUnitCategoryIndex96;
-  int field_0x98;
+  // The currently-selected map order-entry object (SetActiveMapOrderEntry/
+  // RefreshMapOrderEntryPanel).
+  TTaskForce* orderEntryContext98;
   int field_0x9c;
   int field_0xa0;
-  // 0xa4..0xaf: 'GOOD'/'GOLD'-tag sub-control pointers resolved by NoOpUiLifecycleHook;
-  // that method isn't ported yet, so these stay raw/unnamed.
-  unsigned char pad_0xa4[0xc];
+  // 'GOOD'/'GOLD'-tag sub-control resolved by NoOpUiLifecycleHook (not yet ported);
+  // SetActiveMapOrderEntry calls InvalidateMapRegionForOrderEntry on it,
+  // EnterMapInteractionOverlayMode calls its real TView::CaptureLayoutF0, and also its
+  // own slot-0x1f4 virtual (beyond TView's own vtable range -- CreateToolWindow_00599CF0's
+  // real signature turned out to be a 0-arg/undefined-return TMapUberPicture slot, not the
+  // receiver of this call, so goodGoldTagControlA4's concrete further-derived class is
+  // still unrecovered and this dispatch stays a documented gap).
+  // Typed generically as TView* since its further-derived concrete class isn't
+  // recovered.
+  TView* goodGoldTagControlA4;
+  // A second TMapUberPicture subview (EnterMapInteractionOverlayMode's own
+  // slot-0x76/InvalidateTileMarkerChain evidence), copied into subviewAc once entering
+  // overlay mode.
+  TMapUberPicture* subview2A8;
+  // Subview forwarded entryIndex/commandCode by NotifySubviewOfSelectedTile and
+  // InvalidateTileMarkerAndRefreshLinkedControl via slot 0x76 (InvalidateTileMarkerChain) -- same
+  // TMapUberPicture-family vtable prefix evidence as categoryPages[] below.
+  TMapUberPicture* subviewAc;
   // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
-  // NoOpUiLifecycleHook via ResolveControlByTag. The receiver class for their own
-  // slot-0x74 dispatch isn't recovered yet, so this stays untyped (Hard Rule 12) rather
-  // than fake a cast to TMapUberUberPicture*.
-  void* categoryPages[4];
-  int field_0xc0;
+  // NoOpUiLifecycleHook via ResolveControlByTag. Typed TMapUberPicture* per
+  // SetMapInteractionMode's own disassembly (its categoryPages[oldMode/newMode] entries
+  // are dispatched through slot 0x74/CaptureLayoutF0, both real TMapUberPicture-family
+  // slots) -- these are further TMapUberPicture instances, not a distinct class.
+  TMapUberPicture* categoryPages[4];
+  // The mini-map tool-window created by CreateToolWindow_00599CF0 (0x599cf0), which
+  // allocates a TMiniMapView (vtable 0x669170, size 0xa0), sets its owner backref, and
+  // stores the result here.
+  TMiniMapView* field_0xc0;
 
   TMapUberPicture();
+
+  // Sets the active map-interaction mode (0=civilian, 1=army, 2=navy, 3=none), clearing
+  // the previous mode's selection state (TCivMgr/TArmyMgr singleton), refreshing the
+  // mode-caption text, and dispatching CaptureLayoutF0 on the old/new categoryPages[]
+  // entries. 0x00596cb0, __thiscall, 1 arg. Curated in symbols.csv as
+  // `TToolBarCluster::SetMapInteractionMode`, but this callsite's own disassembly reads
+  // activeUnitCategoryIndex96/categoryPages[] at their real TMapUberPicture offsets --
+  // moved here rather than left mis-attributed (see also TWorldView.cpp's own
+  // independent caveat about the same object).
+  void SetMapInteractionMode(short nMode);
+  // Refreshes the 4 order-quota slider controls ("0slc".."3slc") from
+  // orderEntryContext98, or clears them if it's null. 0x00597810, __thiscall, 1 arg.
+  void RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry);
+  // Sets orderEntryContext98 (invalidating the old/new map regions around the write),
+  // then calls RefreshMapOrderEntryPanel. 0x00597950, __thiscall, 1 arg.
+  void SetActiveMapOrderEntry(TTaskForce* pMapOrderEntry);
+  // Enters/exits the mode-specific overlay UI state (called from SetMapInteractionMode
+  // when switching to civilian mode). 0x00599a50, 252 bytes. TODO stub body (not yet
+  // ported).
+  void EnterMapInteractionOverlayMode(int param1);
 };
 
 // === BEGIN GENERATED (TMapUberPicture) — refreshed by `just gen-class TMapUberPicture`; do not hand-edit ===
@@ -285,13 +349,13 @@ public:
 //   slot 0x71  byte 0x1c4  0x0048f520  inherited ResetPictureResourceEntry
 //   slot 0x72  byte 0x1c8  0x0048f570  inherited SetPictureResourceIdAndRefresh
 //   slot 0x73  byte 0x1cc  0x00573940  inherited ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox
-//   slot 0x74  byte 0x1d0  0x005977a0  override  OrphanRetStub_0045d2a0
-//   slot 0x75  byte 0x1d4  0x00598950  override  OrphanLeaf_NoCall_Ins09_00598950
+//   slot 0x74  byte 0x1d0  0x005977a0  override  AutoScrollByEdgeMask
+//   slot 0x75  byte 0x1d4  0x00598950  override  RefreshAfterSelectionChange
 //   slot 0x76  byte 0x1d8  0x00598870  override  WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
 //   slot 0x77  byte 0x1dc  0x005988c0  override  OrphanCallChain_C2_I18_005988c0
-//   slot 0x78  byte 0x1e0  0x00598990  override  OrphanCallChain_C2_I14_00598990
+//   slot 0x78  byte 0x1e0  0x00598990  override  InvalidateTileMarkerAndRefreshLinkedControl
 //   slot 0x79  byte 0x1e4  0x005989d0  override  OrphanCallChain_C2_I16_005989d0
-//   slot 0x7a  byte 0x1e8  0x00598a20  override  OrphanCallChain_C1_I06_00598a20
+//   slot 0x7a  byte 0x1e8  0x00598a20  override  NotifySubviewOfSelectedTile
 //   slot 0x7b  byte 0x1ec  0x00597a10  override  OrphanLeaf_NoCall_Ins23_00597a10
 //   slot 0x7c  byte 0x1f0  0x00598910  override  OrphanCallChain_C2_I11_00598910
 //   slot 0x7d  byte 0x1f4  0x00599cf0  override  CreateToolWindow_00599CF0

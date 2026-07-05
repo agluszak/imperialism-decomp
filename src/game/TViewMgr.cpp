@@ -1523,7 +1523,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   node->Free();
 
   if (selectedIndex != -1) {
-    this->mapUberPictureF0->OrphanCallChain_C1_I06_00598a20(selectedIndex);
+    this->mapUberPictureF0->NotifySubviewOfSelectedTile(selectedIndex);
     int orderState =
         g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder20->field_8;
     if (orderState == 0 || orderState == 3 || orderState == 2) {

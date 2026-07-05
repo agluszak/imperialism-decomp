@@ -10,13 +10,13 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0064ca68
 class TArmyBattle : public TTacticalBattle {
 public:
-// === BEGIN GENERATED DECLS (TArmyBattle) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TArmyBattle) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyBattle)
   virtual ~TArmyBattle(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x5a4da0
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5a4da0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5a4990
   // slot 0x07 Free inherited unchanged (0x59fb50)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
@@ -36,10 +36,19 @@ public:
   // slot 0x16 ComputeRallyStrengthAndQueueTacticalRallyCommand inherited unchanged (0x5a3810)
   // slot 0x17 ExecuteTacticalMineActionAndQueuePacket inherited unchanged (0x5a34d0)
   // slot 0x18 ExecuteTacticalDigActionAndConsumeUnitActionPoints inherited unchanged (0x5a3640)
-// === END GENERATED DECLS (TArmyBattle) ===
+  // === END GENERATED DECLS (TArmyBattle) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyBattle 0xCTOR`).
 
   TArmyBattle();
+
+  // Called by TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup right after
+  // construction, with the two combatant stacks and a composition class from
+  // TMapMgr::ClassifyCityGateTerrainComposition. 0x005a4790, __thiscall, 387 bytes.
+  // TODO: port body -- out of scope for that callsite, which only needs a real,
+  // correctly-typed call.
+  void InitializeBattleSetupAndMaybeDispatchTurnEventED8(class TArmyStack* ourStack,
+                                                         class TArmyStack* enemyStack,
+                                                         int compositionClass);
 };
 
 // === BEGIN GENERATED (TArmyBattle) — refreshed by `just gen-class TArmyBattle`; do not hand-edit ===

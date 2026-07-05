@@ -779,14 +779,6 @@ undefined4 FindMapActionContextContainingNodeByIndex(void)
   return 0;
 }
 
-// ghidra_name EnsureSelectedTaskForceForOrderOwnerAndRefresh
-// ghidra_proto undefined EnsureSelectedTaskForceForOrderOwnerAndRefresh()
-// FUNCTION: IMPERIALISM 0x00564600
-undefined4 EnsureSelectedTaskForceForOrderOwnerAndRefresh(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005647d0
 // ghidra_proto undefined WrapperFor_ftol_At005647d0()
 // FUNCTION: IMPERIALISM 0x005647d0
@@ -1287,14 +1279,6 @@ undefined4 ConstructPictureResourceEntry_Vtbl00660b48(void)
 // ghidra_proto undefined ConstructTMegaPictureBaseState()
 // FUNCTION: IMPERIALISM 0x00573190
 undefined4 ConstructTMegaPictureBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TOffLimitsPicture::ConstructTOffLimitsPictureBaseState
-// ghidra_proto undefined ConstructTOffLimitsPictureBaseState()
-// FUNCTION: IMPERIALISM 0x005737d0
-undefined4 ConstructTOffLimitsPictureBaseState(void)
 {
   return 0;
 }

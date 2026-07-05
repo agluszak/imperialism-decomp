@@ -68,11 +68,7 @@ TInvadeMission::TInvadeMission(short targetProvince, TZone* beachheadZone)
 // TInvadeMission::`scalar deleting destructor'
 
 // Not-yet-recovered free functions/subsystems this file calls into.
-extern undefined4 GetTileNormalizedMovementClassId(void);
 extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
-extern undefined4 InitializeLinkedListCursorFromOwnerHead(void);
-extern undefined4 LinkedListCursorHasCurrent(void);
-extern undefined4 AdvanceLinkedListCursor(void);
 
 TInvadeMission::TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
 

@@ -7,7 +7,7 @@
 class TBitmapResourceLoader;
 
 struct ClipStateRegionInner {
-  RECT boundingBox; // +0x00 region bounding rect (written by GetRgnBox)
+  RECT boundingBox;     // +0x00 region bounding rect (written by GetRgnBox)
   int attachRegistered; // +0x10
   CBrush brush;         // +0x14 (region handle in CGdiObject::m_hObject at +0x18)
 };

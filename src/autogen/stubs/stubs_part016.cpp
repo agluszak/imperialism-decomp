@@ -979,14 +979,6 @@ undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
   return 0;
 }
 
-// ghidra_name NoOpCallbackRet4
-// ghidra_proto undefined NoOpCallbackRet4()
-// FUNCTION: IMPERIALISM 0x0054c660
-undefined4 NoOpCallbackRet4(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpCallbackRet10
 // ghidra_proto undefined NoOpCallbackRet10()
 // FUNCTION: IMPERIALISM 0x0054c680

@@ -75,7 +75,13 @@ struct TGlobalMapCityScoreRecord {
   unsigned char pad96[2];
   TMilitaryUnit* stationedUnitChain98; // 0x98
   int cityScoreValue;
-  unsigned char padA0[0xA4 - 0xA0];
+  unsigned char padA0;
+  // Per-nation-slot bitmask (bit N = nation slot N), tested by
+  // TArmyMgr::ComputeCivilianMapCursorStateIndex to gate an enemy-city order when the
+  // pending nation has previously been adjacent/hostile here. Exact set-site not yet
+  // identified.
+  unsigned char exploredByNationMaskA1;
+  unsigned char padA2[2];
   CString cityNameA4; // 0xa4 — city display name
 };
 
@@ -320,6 +326,22 @@ public:
   // redirect encoding when it is >= 200 (annexation/transfer chain). 0x00514290,
   // __thiscall, one int stack arg.
   short ResolveTileOwnerNationCodeNormalized(int tileIndex);
+
+  // Tallies cityScoreTable[cityIndex]'s linked regions by their terrain gateFlag (bucketed
+  // via kGateFlagScoreBucket) into 3 running totals, then returns an opaque 0-3
+  // composition class from their relative sizes (3 if the city's own owner-nation tile has
+  // activeFlags1c bit 0 set, short-circuiting the tally). Consumed by
+  // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup as
+  // TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8's 3rd argument; the
+  // exact real-world meaning of the bucket totals or the 0-3 codes isn't recovered.
+  // 0x00519010, __thiscall, one int stack arg.
+  int ClassifyCityGateTerrainComposition(int cityIndex);
+
+  // Returns cityScoreTable[index].stationedUnitChain98 when index is in [0, 0x180), else
+  // nullptr -- the same "validate then fetch the tile's unit chain head" idiom already
+  // inlined at several other TArmyMgr callsites, but here it's the original's own
+  // standalone function. 0x004a4190, __thiscall, one short stack arg.
+  TMilitaryUnit* ValidateGridIndexRange0To17F(short index);
 
   // Clears terrainStateTable[i].perTileVisitedFlag0f for every one of the 0x1950
   // (108x60) map tiles. 0x00409250, __thiscall, no args.

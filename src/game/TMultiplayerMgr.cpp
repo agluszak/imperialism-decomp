@@ -2359,10 +2359,10 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
 
   packet.stationedUnitChain98 = src->stationedUnitChain98;
   packet.cityScoreValue9C = src->cityScoreValue;
-  packet.cityBytesA0[0] = src->padA0[0];
-  packet.cityBytesA0[1] = src->padA0[1];
-  packet.cityBytesA0[2] = src->padA0[2];
-  packet.cityBytesA0[3] = src->padA0[3];
+  packet.cityBytesA0[0] = src->padA0;
+  packet.cityBytesA0[1] = src->exploredByNationMaskA1;
+  packet.cityBytesA0[2] = src->padA2[0];
+  packet.cityBytesA0[3] = src->padA2[1];
   packet.cityNameA4 = src->cityNameA4;
 
   g_pNetMgr006a6014->Send(&packet, 0);
@@ -2393,4 +2393,9 @@ void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, i
   packet.messageLength = 0x24;
   packet.eventCode = 0x27;
   g_pNetMgr006a6014->Send(&packet, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0054c660
+void TMultiplayerMgr::NoOpCallbackRet4(void* param) {
+  (void)param;
 }

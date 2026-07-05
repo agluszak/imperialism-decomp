@@ -219,14 +219,6 @@ undefined4 BuildArmyActionLabelFromLocalizationAndCounts(void)
   return 0;
 }
 
-// ghidra_name BuildArmyContextActionRecordsAndDispatchLabel
-// ghidra_proto undefined BuildArmyContextActionRecordsAndDispatchLabel()
-// FUNCTION: IMPERIALISM 0x004a2900
-undefined4 BuildArmyContextActionRecordsAndDispatchLabel(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanVtableAssignStub_004a31c0
 // ghidra_proto undefined OrphanVtableAssignStub_004a31c0()
 // FUNCTION: IMPERIALISM 0x004a31c0
@@ -239,38 +231,6 @@ undefined4 OrphanVtableAssignStub_004a31c0(void)
 // ghidra_proto undefined OrphanVtableAssignStub_004a31e0()
 // FUNCTION: IMPERIALISM 0x004a31e0
 undefined4 OrphanVtableAssignStub_004a31e0(void)
-{
-  return 0;
-}
-
-// ghidra_name SetOrClearWordMaskBits3a
-// ghidra_proto undefined SetOrClearWordMaskBits3a()
-// FUNCTION: IMPERIALISM 0x004a3b30
-undefined4 SetOrClearWordMaskBits3a(void)
-{
-  return 0;
-}
-
-// ghidra_name MirrorDword14To18
-// ghidra_proto undefined MirrorDword14To18()
-// FUNCTION: IMPERIALISM 0x004a3b70
-undefined4 MirrorDword14To18(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90
-// ghidra_proto undefined WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90()
-// FUNCTION: IMPERIALISM 0x004a3b90
-undefined4 WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90(void)
-{
-  return 0;
-}
-
-// ghidra_name ValidateGridIndexRange0To17F
-// ghidra_proto undefined ValidateGridIndexRange0To17F()
-// FUNCTION: IMPERIALISM 0x004a4190
-undefined4 ValidateGridIndexRange0To17F(void)
 {
   return 0;
 }
@@ -307,14 +267,6 @@ undefined4 ForwardGetUnitMovementClassId_At004a4550(void)
   return 0;
 }
 
-// ghidra_name SetActiveProvinceSelection
-// ghidra_proto undefined SetActiveProvinceSelection()
-// FUNCTION: IMPERIALISM 0x004a45e0
-undefined4 SetActiveProvinceSelection(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearProvinceSelectionHighlightsForNation
 // ghidra_proto undefined ClearProvinceSelectionHighlightsForNation()
 // FUNCTION: IMPERIALISM 0x004a46d0
@@ -339,14 +291,6 @@ undefined4 LookupMapCursorTokenByStateIndex(void)
   return 0;
 }
 
-// ghidra_name ComputeMapCursorStateIndex
-// ghidra_proto undefined ComputeMapCursorStateIndex()
-// FUNCTION: IMPERIALISM 0x004a4960
-undefined4 ComputeMapCursorStateIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name LookupCivilianMapCursorTokenByStateIndex
 // ghidra_proto undefined LookupCivilianMapCursorTokenByStateIndex()
 // FUNCTION: IMPERIALISM 0x004a4aa0
@@ -355,42 +299,10 @@ undefined4 LookupCivilianMapCursorTokenByStateIndex(void)
   return 0;
 }
 
-// ghidra_name ComputeCivilianMapCursorStateIndex
-// ghidra_proto undefined ComputeCivilianMapCursorStateIndex()
-// FUNCTION: IMPERIALISM 0x004a4c80
-undefined4 ComputeCivilianMapCursorStateIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyMgr::OrphanCallChain_C2_I54_004a4fc0
 // ghidra_proto undefined OrphanCallChain_C2_I54_004a4fc0()
 // FUNCTION: IMPERIALISM 0x004a4fc0
 undefined4 OrphanCallChain_C2_I54_004a4fc0(void)
-{
-  return 0;
-}
-
-// ghidra_name ValidateOrderPlacementPrerequisitesForSelectedTile
-// ghidra_proto undefined ValidateOrderPlacementPrerequisitesForSelectedTile()
-// FUNCTION: IMPERIALISM 0x004a5080
-undefined4 ValidateOrderPlacementPrerequisitesForSelectedTile(void)
-{
-  return 0;
-}
-
-// ghidra_name SetActiveProvinceAndBuildDirectionalOrderOverlays
-// ghidra_proto undefined SetActiveProvinceAndBuildDirectionalOrderOverlays()
-// FUNCTION: IMPERIALISM 0x004a5760
-undefined4 SetActiveProvinceAndBuildDirectionalOrderOverlays(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateTacticalBattleViewAndInitializeBattleSetup
-// ghidra_proto undefined CreateTacticalBattleViewAndInitializeBattleSetup()
-// FUNCTION: IMPERIALISM 0x004a5b10
-undefined4 CreateTacticalBattleViewAndInitializeBattleSetup(void)
 {
   return 0;
 }
@@ -407,22 +319,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl(void)
 // ghidra_proto undefined WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl()
 // FUNCTION: IMPERIALISM 0x004a5ca0
 undefined4 WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapOrderContextSummaryStringForNation
-// ghidra_proto undefined BuildMapOrderContextSummaryStringForNation()
-// FUNCTION: IMPERIALISM 0x004a5ec0
-undefined4 BuildMapOrderContextSummaryStringForNation(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapHintOverlayTextAndDispatchUiMessages
-// ghidra_proto undefined BuildMapHintOverlayTextAndDispatchUiMessages()
-// FUNCTION: IMPERIALISM 0x004a6680
-undefined4 BuildMapHintOverlayTextAndDispatchUiMessages(void)
 {
   return 0;
 }
@@ -543,30 +439,6 @@ undefined4 WrapperFor_GenerateThreadLocalRandom15_At004a7c60(void)
 // ghidra_proto undefined OrphanCallChain_C2_I38_004a7d20()
 // FUNCTION: IMPERIALISM 0x004a7d20
 undefined4 OrphanCallChain_C2_I38_004a7d20(void)
-{
-  return 0;
-}
-
-// ghidra_name AccumulateWeightedMeterAndCountFromEligibleLinkedEntries
-// ghidra_proto undefined AccumulateWeightedMeterAndCountFromEligibleLinkedEntries()
-// FUNCTION: IMPERIALISM 0x004a7e70
-undefined4 AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyRandomizedMeterDecayToEligibleLinkedEntries
-// ghidra_proto undefined ApplyRandomizedMeterDecayToEligibleLinkedEntries()
-// FUNCTION: IMPERIALISM 0x004a8040
-undefined4 ApplyRandomizedMeterDecayToEligibleLinkedEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0
-// ghidra_proto undefined WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0()
-// FUNCTION: IMPERIALISM 0x004a82b0
-undefined4 WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0(void)
 {
   return 0;
 }
