@@ -100,11 +100,11 @@ IMPLEMENT_DYNCREATE(TGameWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x004ffc10
 TGameWindow::TGameWindow() {
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa0) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xa2) = 0x14;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa4) = 0;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa8) = 0;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xac) = 0;
+  fieldAtA0 = 0;
+  fieldAtA2 = 0x14;
+  fieldAtA4 = 0;
+  fieldAtA8 = 0;
+  fieldAtAc = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004ffc60

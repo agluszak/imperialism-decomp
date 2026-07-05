@@ -62,12 +62,12 @@ DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun() {
 
 // FUNCTION: IMPERIALISM 0x004f3b80
 TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x94) = 0;
+  interactionModeAt94 = 0;
   frameRegionSelectorAt98 = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x90) = 0;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x9c) = 0;
+  selectedTerrainIndexAt90 = 0;
+  fieldAt9c = 0;
   legendSurfaceModeAt524 = 6;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xb8) = 0;
+  stateFlagAtB8 = 0;
   *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0x28) = 1;
 }
 
@@ -129,7 +129,7 @@ int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* cl
                *reinterpret_cast<const POINT*>(clickPoint)) == 0) {
     return 0;
   }
-  if (*reinterpret_cast<int*>(self + 0x94) == 5) {
+  if (interactionModeAt94 == 5) {
     return 0;
   }
 
@@ -153,7 +153,7 @@ int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* cl
   if (terrainIndex < 0x17) {
     actionCode = *reinterpret_cast<int*>(self + 0xbc);
     *reinterpret_cast<short*>(self + 0xc2) = static_cast<short>(terrainIndex);
-    if (actionCode != 0xd && terrainIndex == *reinterpret_cast<short*>(self + 0x90)) {
+    if (actionCode != 0xd && terrainIndex == selectedTerrainIndexAt90) {
       return 1;
     }
   } else {
@@ -214,7 +214,7 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   if (hit) {
     int actionCode = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
     char valid = g_pDiplomacyTurnStateManager->ValidateDiplomacyActionSlot5c(
-        *reinterpret_cast<short*>(self + 0x90), *reinterpret_cast<short*>(self + 0xc2), actionCode);
+        selectedTerrainIndexAt90, *reinterpret_cast<short*>(self + 0xc2), actionCode);
 
     short cursorId;
     if (valid == 0) {
@@ -626,17 +626,15 @@ void TDiplomacyMapView::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, v
                                                        void* arg4) {
   reinterpret_cast<void(__stdcall*)(int)>(
       thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
-  void* child = *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0xb4);
   reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*, void*)>(
-      RunDiplomacyWaitSheetPopupAndAwaitResponse)(child, 0, arg1, arg2, arg3, arg4);
+      RunDiplomacyWaitSheetPopupAndAwaitResponse)(childControlAtB4, 0, arg1, arg2, arg3, arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080
 void TDiplomacyMapView::InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3) {
   reinterpret_cast<void(__stdcall*)(int)>(
       thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
-  TControl* child = *reinterpret_cast<TControl**>(reinterpret_cast<char*>(this) + 0xb4);
-  child->DeserializeCityProductionQueueCommand(reinterpret_cast<int*>(arg1));
+  childControlAtB4->DeserializeCityProductionQueueCommand(reinterpret_cast<int*>(arg1));
 }
 
 // FUNCTION: IMPERIALISM 0x004f70c0
@@ -663,10 +661,8 @@ void TDiplomacyMapView::HandleEvent(int commandId, TEventHandler* panelEvent, TE
 
 // FUNCTION: IMPERIALISM 0x004f7130
 void TDiplomacyMapView::ForwardParam(int param) {
-  char* self = reinterpret_cast<char*>(this);
-  if (*reinterpret_cast<int*>(self + 0xb8) == 5) {
-    TControl* child = *reinterpret_cast<TControl**>(self + 0xb4);
-    child->ForwardParam(param);
+  if (stateFlagAtB8 == 5) {
+    childControlAtB4->ForwardParam(param);
     return;
   }
   // Non-virtual call to TEventHandler::ForwardParam's body (orig routes through the
