@@ -13,6 +13,7 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable, g_pSfxPlaybackSystem, g_apNationStates, g_pUiRuntimeContext
 #include "game/mapped_flavor_text.h" // scanBracketExpressions
+#include "game/nation_slot_eligibility.h" // IsNationSlotEligibleForEventProcessing
 #include "game/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x004a1810
@@ -415,6 +416,50 @@ undefined TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState() {
 
 // FUNCTION: IMPERIALISM 0x004a3bc0
 undefined TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0() {
+  for (int tileIndex = 0; tileIndex < 0x180; ++tileIndex) {
+    short cachedOwner = this->perTileOwnerNationCodeCache1c[tileIndex];
+    signed char currentOwner = g_pGlobalMapState->cityScoreTable[tileIndex].ownerNationCode00;
+    if (currentOwner == -1 || cachedOwner == currentOwner) {
+      continue;
+    }
+    if (g_apTerrainTypeDescriptorTable[currentOwner]->IsEncodedNationSlotMinus200Equal(
+            cachedOwner) != 0) {
+      continue;
+    }
+
+    bool proceed = true;
+    if (cachedOwner < 7 && currentOwner > 6 &&
+        g_apTerrainTypeDescriptorTable[currentOwner]->needLevelByNation[1] == -1) {
+      bool eligible = IsNationSlotEligibleForEventProcessing(cachedOwner) != 0;
+      bool blockedByPeerBand = g_apNationStates[cachedOwner] != nullptr &&
+                               g_apNationStates[cachedOwner]->needLevelByNation[1] > 99 &&
+                               g_apNationStates[cachedOwner]->needLevelByNation[1] < 200;
+      if (!eligible || blockedByPeerBand) {
+        proceed = false;
+      }
+    }
+    if (!proceed) {
+      continue;
+    }
+
+    signed char primaryOwner = g_pGlobalMapState->cityScoreTable[tileIndex].ownerNationCode00;
+    signed char secondaryOwner = g_pGlobalMapState->cityScoreTable[tileIndex].byte01;
+    if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetHomeRegionCityRecordIndex() == tileIndex) {
+      g_apTerrainTypeDescriptorTable[primaryOwner]->ApplyJoinEmpireModeForTargetNation(cachedOwner,
+                                                                                       0);
+    } else if (g_apTerrainTypeDescriptorTable[secondaryOwner] != nullptr &&
+               g_apTerrainTypeDescriptorTable[secondaryOwner]->GetHomeRegionCityRecordIndex() ==
+                   tileIndex) {
+      g_apTerrainTypeDescriptorTable[secondaryOwner]
+          ->SetNationTransferTargetCodeAndNotifyEligiblePeers(cachedOwner);
+    }
+    // Ground truth ORs in an extra undefined upper-16-bit register (uVar6, leftover from
+    // whichever branch above ran) into this call's second argument; that garbage upper
+    // half isn't semantically meaningful, so cachedOwner alone is passed here.
+    g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
+        static_cast<short>(tileIndex), cachedOwner);
+    this->needsTerrainRefreshFlag39a = 1;
+  }
   return 0;
 }
 
