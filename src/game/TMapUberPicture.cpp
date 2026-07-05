@@ -160,12 +160,26 @@ void TMapUberPicture::InvalidateTileMarkerChain(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005988c0
-undefined TMapUberPicture::OrphanCallChain_C2_I18_005988c0() {
+undefined TMapUberPicture::DispatchSelectedTileToSubviewsAndSyncTradeToolState(short entryIndex) {
+  this->subviewAc->NotifySubviewOfSelectedTile(entryIndex);
+  if (this->invalidationFlag94 == 0) {
+    this->subview2A8->SetTradeToolSubcontrolEnabledStateByFlag(entryIndex != 0);
+  }
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00598910
 undefined TMapUberPicture::OrphanCallChain_C2_I11_00598910(undefined4 param_1) {
+  this->Refresh();
+  // Ground truth also calls subviewAc->vtable[0x1a0](param_1) here -- that slot lands on
+  // TMapUberPicture's own (inherited-from-TControl) DispatchPictureResourceCommand, whose
+  // real arity is independently established elsewhere (TControl.cpp/TMiniMapView's own
+  // override, both RET 0x14 = 5 args) as far larger than the single argument this
+  // callsite pushes. That contradiction means either the slot attribution or the
+  // 5-argument finding is wrong; rather than guess, this dispatch is left undone (see the
+  // same DispatchPictureResourceCommand arity caveat noted where TMiniMapView's override
+  // is declared).
+  (void)param_1;
   return 0;
 }
 

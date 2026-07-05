@@ -132,7 +132,11 @@ public:
   virtual undefined NotifyActiveNationChanged(int param1) override; // slot 0x74 0x5977a0
   virtual undefined RefreshAfterSelectionChange();                  // slot 0x75 0x598950
   virtual void InvalidateTileMarkerChain(short tileIndex);          // slot 0x76 0x598870
-  virtual undefined OrphanCallChain_C2_I18_005988c0();              // slot 0x77 0x5988c0
+  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill:
+  // forwards entryIndex to subviewAc's NotifySubviewOfSelectedTile, then (only before
+  // entering overlay mode) syncs subview2A8's trade-tool enabled state to the same value.
+  virtual undefined
+  DispatchSelectedTileToSubviewsAndSyncTradeToolState(short entryIndex); // slot 0x77 0x5988c0
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
   // mismatch. Forwards param to subviewAc's InvalidateTileMarkerChain, then refreshes
   // field_0xc0 if present.
