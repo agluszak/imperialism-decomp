@@ -219,14 +219,6 @@ undefined4 BuildArmyActionLabelFromLocalizationAndCounts(void)
   return 0;
 }
 
-// ghidra_name BuildArmyContextActionRecordsAndDispatchLabel
-// ghidra_proto undefined BuildArmyContextActionRecordsAndDispatchLabel()
-// FUNCTION: IMPERIALISM 0x004a2900
-undefined4 BuildArmyContextActionRecordsAndDispatchLabel(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanVtableAssignStub_004a31c0
 // ghidra_proto undefined OrphanVtableAssignStub_004a31c0()
 // FUNCTION: IMPERIALISM 0x004a31c0
@@ -343,14 +335,6 @@ undefined4 LookupCivilianMapCursorTokenByStateIndex(void)
 // ghidra_proto undefined OrphanCallChain_C2_I54_004a4fc0()
 // FUNCTION: IMPERIALISM 0x004a4fc0
 undefined4 OrphanCallChain_C2_I54_004a4fc0(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateTacticalBattleViewAndInitializeBattleSetup
-// ghidra_proto undefined CreateTacticalBattleViewAndInitializeBattleSetup()
-// FUNCTION: IMPERIALISM 0x004a5b10
-undefined4 CreateTacticalBattleViewAndInitializeBattleSetup(void)
 {
   return 0;
 }

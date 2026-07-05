@@ -4,6 +4,7 @@
 #include "game/CString.h"
 #include "game/TArmyStack.h"
 #include "game/TCountry.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
@@ -307,12 +308,146 @@ undefined TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F() {
   return 0;
 }
 
+// Own-source function (not a TArmyMgr method -- neither callsite reliably sets ECX to
+// `this` before calling it, and it cleans its own stack args, i.e. plain __cdecl).
+// Builds/dispatches the army-context action records for the "our stack" / "enemy stack"
+// pairing computed by TryCreateTacticalBattleViewForTileArmies; mode distinguishes the
+// peaceful (0) vs. no-enemy (1) paths.
+// FUNCTION: IMPERIALISM 0x004a2900
+static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
+                                                          TArmyStack* enemyStack, int mode,
+                                                          int ownerNationCodeInt, int unused) {
+  // TODO: port body @ 0x4a2900 (1791 bytes; large, not yet ported).
+  (void)ourStack;
+  (void)enemyStack;
+  (void)mode;
+  (void)ownerNationCodeInt;
+  (void)unused;
+}
+
 // FUNCTION: IMPERIALISM 0x004a3200
-undefined TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack,
-                                                             short ownerNationCode) {
-  (void)stack;
-  (void)ownerNationCode;
-  return 0;
+bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short ownerNationCode) {
+  bool tacticalViewCreated = false;
+  TArmyStackUnitNode* headNode = stack->head14;
+  stack->cursor18 = headNode;
+  TUnit* curUnit = (headNode != nullptr) ? headNode->unit : nullptr;
+
+  // Partition stack's own unit chain into a new "our stack" containing only the units
+  // whose field_C (order-owner nation) matches ownerNationCode; stack->head14 itself is
+  // left untouched, only its cursor18 iteration state advances.
+  TArmyStack* ourStack = new TArmyStack();
+  ourStack->head14 = nullptr;
+  ourStack->cursor18 = nullptr;
+  ourStack->categoryFlag8 = static_cast<unsigned char>(curUnit->field_18);
+  ourStack->fieldA = 0;
+  ourStack->field6 = 0;
+  ourStack->field4 = 0;
+  ourStack->fieldC = 0;
+  ourStack->ownerNationCodeE = ownerNationCode;
+  ourStack->tileIndex10 = curUnit->field_6;
+
+  while (curUnit != nullptr) {
+    if (curUnit->field_C == ownerNationCode) {
+      TArmyStackUnitNode* node = new TArmyStackUnitNode();
+      if (node == nullptr) {
+        MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+        TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xbeb);
+      }
+      node->unit = curUnit;
+      node->next = ourStack->head14;
+      ++ourStack->fieldA;
+      ourStack->head14 = node;
+    }
+    TArmyStackUnitNode* nextNode = stack->cursor18;
+    if (nextNode == nullptr) {
+      curUnit = nullptr;
+    } else {
+      nextNode = nextNode->next;
+      stack->cursor18 = nextNode;
+      curUnit = (nextNode != nullptr) ? nextNode->unit : nullptr;
+    }
+  }
+
+  TArmyStack* enemyStack = nullptr;
+  if (ourStack->fieldA != 0) {
+    int ownerNationCodeInt = ownerNationCode;
+    short cachedOwnerAtTile = this->perTileOwnerNationCodeCache1c[ownerNationCodeInt];
+
+    // The "enemy stack" is every unit currently garrisoned at the region/slot identified
+    // by ownerNationCode -- ground truth indexes cityScoreTable directly by this value
+    // rather than by a separately-resolved tile index.
+    enemyStack = new TArmyStack();
+    enemyStack->head14 = nullptr;
+    enemyStack->cursor18 = nullptr;
+    enemyStack->categoryFlag8 = static_cast<unsigned char>(cachedOwnerAtTile);
+    enemyStack->fieldA = 0;
+    enemyStack->field6 = 0;
+    enemyStack->field4 = 0;
+    enemyStack->fieldC = 0;
+    enemyStack->ownerNationCodeE = ownerNationCode;
+    enemyStack->tileIndex10 = ownerNationCode;
+
+    TMilitaryUnit* enemyUnit = nullptr;
+    if (ownerNationCode >= 0 && ownerNationCode < 0x180) {
+      enemyUnit = g_pGlobalMapState->cityScoreTable[ownerNationCodeInt].stationedUnitChain98;
+    }
+    for (; enemyUnit != nullptr; enemyUnit = static_cast<TMilitaryUnit*>(enemyUnit->nextOnTile)) {
+      TArmyStackUnitNode* node = new TArmyStackUnitNode();
+      if (node == nullptr) {
+        MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+        TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xbeb);
+      }
+      node->unit = enemyUnit;
+      node->next = enemyStack->head14;
+      ++enemyStack->fieldA;
+      enemyStack->head14 = node;
+    }
+
+    if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+            ourStack->categoryFlag8, cachedOwnerAtTile) == 0) {
+      // Relation is current: no battle -- dispatch the peaceful army-context path and
+      // relocate our own stack instead.
+      BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
+      this->ResetAndRelocateUnitOrderQueue_004a37b0(ourStack);
+    } else if (enemyStack->fieldA != 0) {
+      // Ground truth also loops over g_apNationStates here (advancing a pointer with no
+      // observable side effect -- the result is never read); not reproduced.
+      tacticalViewCreated = true;
+      this->CreateTacticalBattleViewAndInitializeBattleSetup(ourStack, enemyStack,
+                                                             ownerNationCodeInt);
+    } else {
+      // No enemy units present: dispatch the army-context path (mode 1), relocate/reset
+      // our own stack's units in place, then update the per-tile owner cache to reflect
+      // our stack taking over.
+      BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 1, ownerNationCodeInt, 0);
+      ourStack->cursor18 = ourStack->head14;
+      TArmyStackUnitNode* node = ourStack->cursor18;
+      TUnit* unit = (node != nullptr) ? node->unit : nullptr;
+      while (unit != nullptr) {
+        unit->VTableSlot10(unit->field_C);
+        unit->SetOrderModeSlot34(0, -1);
+        node = ourStack->cursor18;
+        if (node != nullptr) {
+          node = node->next;
+          ourStack->cursor18 = node;
+          unit = (node != nullptr) ? node->unit : nullptr;
+        } else {
+          unit = nullptr;
+        }
+      }
+      this->perTileOwnerNationCodeCache1c[ownerNationCodeInt] = ourStack->categoryFlag8;
+    }
+  }
+
+  if (!tacticalViewCreated) {
+    if (ourStack != nullptr) {
+      ourStack->Free();
+    }
+    if (enemyStack != nullptr) {
+      enemyStack->Free();
+    }
+  }
+  return tacticalViewCreated;
 }
 
 // FUNCTION: IMPERIALISM 0x004a35e0
@@ -719,6 +854,16 @@ void TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex
   // TODO: port body @ 0x4a5760 (656 bytes; builds directional order-overlay controls from
   // the tile's adjacent-region list; not yet ported).
   (void)tileIndex;
+}
+
+// FUNCTION: IMPERIALISM 0x004a5b10
+void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
+                                                                TArmyStack* enemyStack,
+                                                                int ownerNationCodeInt) {
+  // TODO: port body @ 0x4a5b10 (243 bytes; SEH-framed; not yet ported).
+  (void)ourStack;
+  (void)enemyStack;
+  (void)ownerNationCodeInt;
 }
 
 // FUNCTION: IMPERIALISM 0x004a6680

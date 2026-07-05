@@ -36,9 +36,14 @@ public:
   virtual undefined ProcessPendingArmyStacksForBattleOrRelocation(); // slot 0x0c 0x4a2390
   virtual undefined IterateLinkedListCursorAndClearPerTileByte0F();  // slot 0x0d 0x4a2500
   // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
-  // poison-pill arity mismatch. Called from OrphanCallChain_C12_I108_004a2390 when a
-  // TArmyStack's categoryFlag8 doesn't match TArmyMgr::regionAffinityTable1c[ownerNationCodeE].
-  virtual undefined
+  // poison-pill arity mismatch. Called from ProcessPendingArmyStacksForBattleOrRelocation
+  // when a TArmyStack's categoryFlag8 doesn't match
+  // TArmyMgr::perTileOwnerNationCodeCache1c[ownerNationCodeE]. Partitions stack's unit
+  // chain into an "our stack" (units matching ownerNationCode) and, if any were found, an
+  // "enemy stack" (units garrisoned at that same slot in cityScoreTable); depending on
+  // TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate and whether the enemy stack is
+  // nonempty, either relocates our stack peacefully or creates a real tactical battle view.
+  virtual bool
   TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack,
                                            short ownerNationCode); // slot 0x0e 0x4a3200
   // stack is the same TArmyStack the tile-army-composition pass (0x4a1f80) builds and
@@ -157,6 +162,12 @@ public:
   // directional order-overlay controls from the tile's adjacent-region list; not yet
   // ported).
   void SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex);
+  // 0x004a5b10, 243 bytes, __thiscall, 3 args (ourStack, enemyStack, ownerNationCodeInt).
+  // Called from TryCreateTacticalBattleViewForTileArmies when a real tactical battle
+  // should be created. TODO stub body (SEH-framed; not yet ported).
+  void CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
+                                                        TArmyStack* enemyStack,
+                                                        int ownerNationCodeInt);
   // 0x004a6680, 1372 bytes, __thiscall, 1 arg (cityRecordIndex). TODO stub body (heavy
   // CString-based UI hint-text composition; not yet ported).
   void BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex);

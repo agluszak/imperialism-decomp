@@ -7380,7 +7380,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.0076481835564053535,
+      "matching": 0.0038314176245210726,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -7398,7 +7398,7 @@
     },
     {
       "address": "0x4a3200",
-      "matching": 0.007662835249042145,
+      "matching": 0.6915520628683693,
       "name": "TArmyMgr::TryCreateTacticalBattleViewForTileArmies",
       "type": 1
     },
@@ -7566,7 +7566,7 @@
     },
     {
       "address": "0x4a5b10",
-      "matching": 0.0,
+      "matching": 0.025974025974025976,
       "name": "CreateTacticalBattleViewAndInitializeBattleSetup",
       "type": 1
     },
