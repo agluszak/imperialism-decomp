@@ -68,6 +68,7 @@ detect.log
 *.db
 .beads-credential-key
 .beads/proxieddb/
+.beads/interactions.jsonl
 
 # Ghidra query daemon runtime state (tools/ghidra/daemon.py)
 .ghidra-query.sock
