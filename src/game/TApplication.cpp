@@ -1,11 +1,9 @@
 #include "game/TApplication.h"
 
+#include "game/CIncludeView.h"
+#include "game/TEventHandler.h"
 #include "game/mfc.h"
-#include "game/TView.h"
-#include "game/ui_widget_thunks.h"
-#include <new.h>
-
-undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void);
+#include "game/startup_helpers.h"
 
 extern "C" CRuntimeClass PTR_s_TApplication_00648af8;
 
@@ -14,17 +12,17 @@ void TApplication::PostTurnEventCodeMessage2420(short eventCode) {
   ::PostMessage(AfxGetMainWnd()->m_hWnd, 0x2420, eventCode, 0);
 }
 
-// vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.
-IMPLEMENT_DYNCREATE(TApplication, TCommandHandler)
+// SYNTHETIC: IMPERIALISM 0x00486680
+// TApplication::CreateObject
 
-// FUNCTION: IMPERIALISM 0x00486680
-void* __cdecl CreateTApplicationInstance(void) {
-  return new TApplication();
-}
+// SYNTHETIC: IMPERIALISM 0x00486740
+// TApplication::GetRuntimeClass
+
+IMPLEMENT_DYNCREATE(TApplication, TCommandHandler)
 
 // FUNCTION: IMPERIALISM 0x00486760
 TApplication::TApplication()
-    : TCommandHandler(), activeView(0), screenModeAt24(0), field28(0), trackedEntries() {
+    : TCommandHandler(), activeView(0), screenModeAt24(0), field28(0), cohandlers() {
   g_pApplicationUiRootController = this;
 }
 
@@ -48,43 +46,51 @@ TEventHandler* TApplication::GetActiveView() {
 
 // vtable slot 0x25 is inherited from TCommandHandler: process a queued command through
 // its slot 0x0b and then release it through slot 0x07.
-// vtable slot 0x28 (0x00486990 via ILT 0x00405551): original body is `RET 0xc` (takes
-// three stack args, does nothing). A no-op hook for viewport-edge auto-scroll handling.
 
+// vtable slot 0x28 (0x00486990 via ILT 0x00405551): `RET 0xc` no-op. MacApp's
+// FUNCTION: IMPERIALISM 0x00486960
+BOOL TApplication::InModalState() {
+  return GetMainViewHostFromActiveThread()->GetUiInteractiveFlag90() == 0;
+}
+// TApplication::GetDefaultCursorRegion(CPoint, Region**) — the Windows port keeps the
+// hook (TAmbitApplication::HandleCursor tail-calls it) but computes no region.
 // FUNCTION: IMPERIALISM 0x00486990
-void TApplication::HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2, int arg3) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
+void TApplication::GetDefaultCursorRegion(int x, int y, void* cursorRegion) {
+  (void)x;
+  (void)y;
+  (void)cursorRegion;
 }
 
-// vtable slot 0x29 (0x004869b0): add/remove an entry from the embedded MFC list.
-
+// vtable slot 0x29 (0x004869b0): MacApp TApplication::InstallCohandler — register or
+// remove a TEventHandler on the idle cohandler list at +0x2c.
 // FUNCTION: IMPERIALISM 0x004869b0
-void TApplication::InsertOrRemoveTrackedEntry(int value, char insertFlag) {
-  if (insertFlag != 0) {
-    trackedEntries.AddHead(reinterpret_cast<void*>(value));
+void TApplication::InstallCohandler(TEventHandler* cohandler, unsigned char install) {
+  if (install != 0) {
+    cohandlers.AddHead(cohandler);
     return;
   }
 
-  POSITION match = trackedEntries.Find(reinterpret_cast<void*>(value));
+  POSITION match = cohandlers.Find(cohandler);
   if (match != 0) {
-    trackedEntries.RemoveAt(match);
+    cohandlers.RemoveAt(match);
   }
 }
 
-// vtable slot 0x2a (0x00486b10 via ILT 0x00403f21): walk the tracked entries and invoke
-// each receiver's tick method with `arg`.
-
+// vtable slot 0x2a (0x00486b10 via ILT 0x00403f21): MacApp TApplication::Idle — give
+// every installed cohandler its throttled idle tick.
 // FUNCTION: IMPERIALISM 0x00486b10
-void TApplication::TickEachTrackedEntry(int arg) {
-  POSITION pos = trackedEntries.GetHeadPosition();
+void TApplication::Idle(int idlePhase) {
+  POSITION pos = cohandlers.GetHeadPosition();
   while (pos != 0) {
-    int entry = reinterpret_cast<int>(trackedEntries.GetNext(pos));
-    reinterpret_cast<void(__fastcall*)(int, int, int)>(
-        reinterpret_cast<void (*)()>(WrapperFor_thunk_GetTickCountDiv16_At0048a410))(entry, 0, arg);
+    TEventHandler* cohandler = static_cast<TEventHandler*>(cohandlers.GetNext(pos));
+    cohandler->HandleIdle(idlePhase);
   }
 }
+
+// MacApp TApplication::InModalState(): TRUE while the main view host's +0x90
+// interactive flag is clear. Callers (always through g_pApplicationUiRootController or
+// this) bail out of cursor auto-scroll / nav-command handling while it holds. Reads
+// nothing from `this`; the original dereferences the view host unguarded.
 
 // FUNCTION: IMPERIALISM 0x00486b50
 void TApplication::DispatchQueuedUiCommandAndRelease(void* payload) {}

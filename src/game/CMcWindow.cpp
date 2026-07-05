@@ -156,7 +156,7 @@ void CMcWindow::OnLButtonDown(UINT nFlags, CPoint point) {
 void CMcWindow::OnClose() {
   Default();
   if (m_pOwnerWindow != NULL) {
-    m_pOwnerWindow->OrphanCallChain_C2_I10_0048e120();
+    m_pOwnerWindow->CloseAndFree();
   }
 }
 

@@ -128,7 +128,7 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
-  virtual undefined OrphanRetStub_0045d2a0(int param1) override; // slot 0x74 0x5977a0
+  virtual undefined AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x5977a0
   virtual undefined OrphanLeaf_NoCall_Ins09_00598950();          // slot 0x75 0x598950
   virtual void InvalidateTileMarkerChain(short tileIndex);       // slot 0x76 0x598870
   virtual undefined OrphanCallChain_C2_I18_005988c0();           // slot 0x77 0x5988c0

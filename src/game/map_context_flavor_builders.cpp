@@ -68,7 +68,7 @@ void BuildMapContextStatusStringVariantA(CString* out) {
                                  s_mcflavor_0069ac50, s_mcflavor_0069ac4c,
                                  s_mcflavor_0069ac48, s_mcflavor_0069ac44,
                                  s_mcflavor_0069ac40, s_mcflavor_0069ac3c,
-                                 s_mcflavor_0069ac38, g_szMovementParseCompareA_00694250,
+                                 s_mcflavor_0069ac38, g_szCmdSwitchLang_00694250,
                                  s_mcflavor_0069ac30, s_mcflavor_0069ac2c,
                                  s_mcflavor_0069ac28, s_mcflavor_0069ac24,
                                  s_mcflavor_0069ac20, s_mcflavor_0069ac1c,
@@ -151,7 +151,7 @@ void BuildMapContextStatusStringVariantB(CString* out) {
           s_mcflavor_0069ac10, s_mcflavor_0069ad00, s_mcflavor_0069acfc,
           s_mcflavor_0069acf8, s_mcflavor_0069ac44, s_mcflavor_0069ac14,
           s_mcflavor_0069ac40, s_mcflavor_0069ac38, s_mcflavor_0069acf4,
-          s_mcflavor_0069acf0, s_mcflavor_0069ac28, g_szMovementParseCompareA_00694250,
+          s_mcflavor_0069acf0, s_mcflavor_0069ac28, g_szCmdSwitchLang_00694250,
           s_mcflavor_0069ac24, s_mcflavor_0069acec};
       const int weights[14] = {3, 3, 2, 2, 2, 7, 3, 1, 1, 1, 1, 1, 1, 1};
       text = PickWeighted(strings, weights, 0x1d, false);
@@ -224,7 +224,7 @@ void BuildMapContextStatusStringVariantC(CString* out) {
       break;
     case 'G': {
       const char* strings[14] = {
-          s_mcflavor_0069ac1c, s_mcflavor_0069ac58, g_szMovementParseCompareA_00694250,
+          s_mcflavor_0069ac1c, s_mcflavor_0069ac58, g_szCmdSwitchLang_00694250,
           s_mcflavor_0069ac0c, s_mcflavor_0069ac38, s_mcflavor_0069ad00,
           s_mcflavor_0069acf4, s_mcflavor_0069ad54, s_mcflavor_0069acec,
           s_mcflavor_0069ad50, s_mcflavor_0069ac24, s_mcflavor_0069ac54,
@@ -466,7 +466,7 @@ void BuildMapContextStatusStringVariantF(CString* out) {
     const char* text = 0;
     switch (token) {
     case 'C': {
-      const char* strings[7] = {g_szMovementParseCompareA_00694250,
+      const char* strings[7] = {g_szCmdSwitchLang_00694250,
                                 s_mcflavor_0069ac2c,
                                 s_mcflavor_0069ac24,
                                 s_mcflavor_0069ac40,
@@ -547,7 +547,7 @@ void BuildMapContextStatusStringVariantG(CString* out) {
           s_mcflavor_0069ac38, s_mcflavor_0069ac58, s_mcflavor_0069ac44,
           s_mcflavor_0069acf0, s_mcflavor_0069ac10, s_mcflavor_0069af9c,
           s_mcflavor_0069ac14, s_mcflavor_0069acec, s_mcflavor_0069ae74,
-          s_mcflavor_0069af98, s_mcflavor_0069ac0c, g_szMovementParseCompareA_00694250,
+          s_mcflavor_0069af98, s_mcflavor_0069ac0c, g_szCmdSwitchLang_00694250,
           s_mcflavor_0069ac54, s_mcflavor_0069ad48};
       const int weights[14] = {1, 4, 7, 1, 4, 1, 1, 1, 1, 1, 2, 1, 1, 2};
       text = PickWeighted(strings, weights, 0x1c, false);
@@ -556,7 +556,7 @@ void BuildMapContextStatusStringVariantG(CString* out) {
     case 'K': {
       const char* strings[12] = {
           s_mcflavor_0069ac44, s_mcflavor_0069af98, s_mcflavor_0069ac10,
-          s_mcflavor_0069ac0c, s_mcflavor_0069ac38, g_szMovementParseCompareA_00694250,
+          s_mcflavor_0069ac0c, s_mcflavor_0069ac38, g_szCmdSwitchLang_00694250,
           s_mcflavor_0069af94, s_mcflavor_0069ad48, s_mcflavor_0069af9c,
           s_mcflavor_0069ac48, s_mcflavor_0069ac58, s_mcflavor_0069acec};
       const int weights[12] = {4, 3, 2, 1, 2, 2, 1, 1, 1, 1, 1, 1};
@@ -653,7 +653,7 @@ void BuildMapContextStatusStringVariantH(CString* out) {
     switch (token) {
     case 'K': {
       const char* strings[18] = {
-          s_mcflavor_0069af98, s_mcflavor_00696674, g_szMovementParseCompareA_00694250,
+          s_mcflavor_0069af98, s_mcflavor_00696674, g_szCmdSwitchLang_00694250,
           s_mcflavor_0069b0a4, s_mcflavor_0069ac44, s_mcflavor_0069ac54,
           s_mcflavor_0069ac58, s_mcflavor_0069ac2c, s_mcflavor_0069acec,
           s_mcflavor_0069ac1c, s_mcflavor_0069b0a0, s_mcflavor_0069ae74,
@@ -958,7 +958,7 @@ void BuildMapContextStatusStringVariantL(CString* out) {
                                  s_mcflavor_0069ac40,
                                  s_mcflavor_0069b0a0,
                                  s_mcflavor_0069acf0,
-                                 g_szMovementParseCompareA_00694250,
+                                 g_szCmdSwitchLang_00694250,
                                  s_mcflavor_0069ac54,
                                  s_mcflavor_0069ac0c,
                                  s_mcflavor_0069ac2c};
@@ -1033,7 +1033,7 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString* out) {
         s_mcflavor_0069ac58, s_mcflavor_0069ac2c, s_mcflavor_0069ac24,
         s_mcflavor_0069ac54, s_mcflavor_0069ac14, s_mcflavor_0069ac10,
         s_mcflavor_0069ac44, s_mcflavor_0069ac40, s_mcflavor_0069ad44,
-        s_mcflavor_0069ac48, s_mcflavor_0069b290, g_szMovementParseCompareA_00694250,
+        s_mcflavor_0069ac48, s_mcflavor_0069b290, g_szCmdSwitchLang_00694250,
         s_mcflavor_0069ac0c, s_mcflavor_0069ac38, s_mcflavor_0069b28c,
         s_mcflavor_0069b0a0, s_mcflavor_0069acec, s_mcflavor_0069ac28,
         s_mcflavor_0069ac1c, s_mcflavor_0069b288, s_mcflavor_0069b284,
@@ -1135,7 +1135,7 @@ void BuildRandomMapContextStatusBaseString(CString* out) {
     const int weights[8] = {0x62, 0x55, 0x42, 0x42, 0x1f, 0x13, 0x12, 0xe};
     *out += PickWeighted(strings, weights, 0x186, false);
   } else {
-    const char* strings[18] = {g_szMovementParseCompareA_00694250,
+    const char* strings[18] = {g_szCmdSwitchLang_00694250,
                                s_mcflavor_0069ac44,
                                s_mcflavor_0069ac38,
                                s_mcflavor_0069ac58,
@@ -1250,7 +1250,7 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString* out) {
     const int weights[5] = {0x10, 0xc, 4, 2, 2};
     *out += PickWeighted(strings, weights, 0x24, false);
   } else {
-    const char* strings[14] = {g_szMovementParseCompareA_00694250,
+    const char* strings[14] = {g_szCmdSwitchLang_00694250,
                                s_mcflavor_0069ac40,
                                s_mcflavor_0069ad44,
                                s_mcflavor_0069ac28,
@@ -1326,7 +1326,7 @@ void GenerateMappedFlavorTextVariantB_005cfc40(CString* out) {
     const int weights[4] = {0x5d, 0x1c, 0x1a, 8};
     *out += PickWeighted(strings, weights, 0x95, false);
   } else {
-    const char* strings[55] = {s_mcflavor_0069ac24, g_szMovementParseCompareA_00694250,
+    const char* strings[55] = {s_mcflavor_0069ac24, g_szCmdSwitchLang_00694250,
                                s_mcflavor_0069ac40, s_mcflavor_0069ac28,
                                s_mcflavor_0069ac44, s_mcflavor_0069ac54,
                                s_mcflavor_0069ac14, s_mcflavor_0069ac58,
@@ -1459,7 +1459,7 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString* out) {
                                s_mcflavor_0069ac44, s_mcflavor_0069ac10,
                                s_mcflavor_0069ac58, s_mcflavor_0069ac40,
                                s_mcflavor_0069ac38, s_mcflavor_0069af98,
-                               s_mcflavor_0069ac1c, g_szMovementParseCompareA_00694250,
+                               s_mcflavor_0069ac1c, g_szCmdSwitchLang_00694250,
                                s_mcflavor_0069ac0c, s_mcflavor_0069acec,
                                s_mcflavor_0069ac14, s_mcflavor_0069ac24,
                                s_mcflavor_0069ac2c, s_mcflavor_0069ac48,
@@ -1610,7 +1610,7 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString* out) {
     *out += PickWeighted(strings, weights, 0x1f, true);
   } else {
     const char* strings[20] = {
-        s_mcflavor_0069ac44, s_mcflavor_0069ad44, g_szMovementParseCompareA_00694250,
+        s_mcflavor_0069ac44, s_mcflavor_0069ad44, g_szCmdSwitchLang_00694250,
         s_mcflavor_0069ac40, s_mcflavor_0069ac28, s_mcflavor_0069ac48,
         s_mcflavor_0069ac38, s_mcflavor_0069ac54, s_mcflavor_0069ac10,
         s_mcflavor_0069ac1c, s_mcflavor_0069acec, s_mcflavor_0069ac24,

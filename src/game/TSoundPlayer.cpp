@@ -149,7 +149,7 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) 
   EnsureCdAudioDeviceHandleInitialized();
   this->field10 = param_1;
   // Notify the global UI root controller via its slot 0x29 (peer class unrecovered).
-  g_pGlobalUiRootController->InsertOrRemoveTrackedEntry(reinterpret_cast<int>(this), 1);
+  g_pGlobalUiRootController->InstallCohandler(this, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005e4f60

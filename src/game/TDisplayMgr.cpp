@@ -263,7 +263,7 @@ undefined TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows() {
     if (window != 0) {
       if (window->IsActionable() != 0 && window->field3c == kClass99WindowId) {
         if (window->GetDialogBehaviorByte10() == 0) {
-          window->OrphanCallChain_C2_I10_0048e120();
+          window->CloseAndFree();
         } else {
           window->OrphanCallChain_C2_I12_0048dc90(kTagOkOkOk, 1);
         }

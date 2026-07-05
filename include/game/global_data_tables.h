@@ -5,6 +5,8 @@
 
 #include "decomp_types.h"
 
+#include <new.h> // _PNH (CRT new-handler type)
+
 #include "game/mfc.h"
 #include <afxtempl.h>
 #include "game/app_init_globals.h"
@@ -213,16 +215,20 @@ extern int g_NetworkDefaultNationId006a5fc0;
 extern int g_NetworkBroadcastNationId006a5fc4;
 extern int DAT_006a601c;
 extern const char s_DataDirectoryPath_006942A8[];
+extern const char s_IrgGlobPattern_006942FC[];
+extern const char s_NoLanguageFilesMessage_006942B4[];
+extern const char s_OutOfMemoryText_006941F0[];
+extern const char s_ErrorCaption_00694204[];
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;
 extern TArmyMgr* g_pMapContextActionManager;
-extern int DAT_006a21c0;
+extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
-extern char g_szMovementParseCompareA_00694250[];
-extern char g_szMovementParseCompareB_00694254[];
-extern ImperialismApp* DAT_006a1348;
+extern char g_szCmdSwitchLang_00694250[];
+extern char g_szCmdSwitchLangQuit_00694254[];
+extern ImperialismApp* g_pImperialismApp;
 extern int DAT_006a1350;
-extern void* DAT_006a1354;
+extern _PNH g_pfnPreviousNewHandler;
 extern CRuntimeClass g_pClassDescTCapacityOrder;
 extern short g_industryActionCostWeightResCode09[16];
 extern short g_industryActionCostWeightResCode08[16];
@@ -236,7 +242,6 @@ extern char g_Sanitize_City_Counter_Value_006A24D4;
 extern double DAT_0066fad0;
 extern char g_pClassDescTStratReportView;
 extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
-extern void* g_pGlobalCallback_006a7fac;
 // Cached CCommandLineInfo::m_bShowSplash (cmdInfo+0x04), not m_nShellCommand.
 extern BOOL g_cachedShowSplashFlag;
 extern TBackdropWindow* DAT_006a2050;

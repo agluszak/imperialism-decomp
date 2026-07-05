@@ -124,7 +124,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
 
 void ReleasePendingHelpDialogView(TView** dialogView) {
   if (*dialogView != 0) {
-    static_cast<TWindow*>(*dialogView)->OrphanCallChain_C2_I10_0048e120();
+    static_cast<TWindow*>(*dialogView)->CloseAndFree();
     *dialogView = 0;
   }
 }

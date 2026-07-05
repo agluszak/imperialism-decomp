@@ -189,8 +189,8 @@ bool TLanguageMgr::ReloadPreplutNewsTableAndResources(int languageTag) {
   FreeNestedPointerTableRowsAndResetDimensions();
 
   CString preplutPath(kPreplutPath);
-  if (DAT_006a1348 != nullptr) {
-    preplutPath += DAT_006a1348->field_E0;
+  if (g_pImperialismApp != nullptr) {
+    preplutPath += g_pImperialismApp->languageCodeStringE0;
   }
   return LoadNewsTabTexResourcesAndBuildEntries(preplutPath, languageTag);
 }

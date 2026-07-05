@@ -251,34 +251,10 @@ undefined4 DestroyImperialismAppSingletonGlobal(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I05_00412d90
-// ghidra_proto undefined OrphanCallChain_C1_I05_00412d90()
-// FUNCTION: IMPERIALISM 0x00412d90
-undefined4 OrphanCallChain_C1_I05_00412d90(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I08_004133a0
 // ghidra_proto undefined OrphanCallChain_C1_I08_004133a0()
 // FUNCTION: IMPERIALISM 0x004133a0
 undefined4 OrphanCallChain_C1_I08_004133a0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413550
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413550()
-// FUNCTION: IMPERIALISM 0x00413550
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413550(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl()
-// FUNCTION: IMPERIALISM 0x00413580
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl(void)
 {
   return 0;
 }

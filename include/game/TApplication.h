@@ -55,11 +55,14 @@ public:
   // slot 0x25 ConstructTCommandHandlerBaseState inherited unchanged (0x486650)
   virtual void SetActiveView(TEventHandler* view); // slot 0x26 0x486880
   virtual TEventHandler* GetActiveView();          // slot 0x27 0x4868a0
-  virtual void HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2,
-                                                     int arg3); // slot 0x28 0x486990
-  virtual void InsertOrRemoveTrackedEntry(int value,
-                                          char insertFlag); // slot 0x29 0x4869b0
-  virtual void TickEachTrackedEntry(int arg);               // slot 0x2a 0x486b10
+  // MacApp TApplication::GetDefaultCursorRegion(CPoint, Region**); no-op on Windows.
+  virtual void GetDefaultCursorRegion(int x, int y,
+                                      void* cursorRegion); // slot 0x28 0x486990
+  // MacApp TApplication::InstallCohandler(TEventHandler*, Boolean).
+  virtual void InstallCohandler(TEventHandler* cohandler,
+                                unsigned char install); // slot 0x29 0x4869b0
+  // MacApp TApplication::Idle(IdlePhase): HandleIdle every installed cohandler.
+  virtual void Idle(int idlePhase); // slot 0x2a 0x486b10
   // === END GENERATED DECLS (TApplication) ===
   TApplication();
   ~TApplication() override;
@@ -68,22 +71,20 @@ public:
   // by CMainFrame::HandleCustomMessage2420DispatchTurnEvent. Does not touch `this`.
   void PostTurnEventCodeMessage2420(short eventCode); // 0x414720
 
+  // MacApp TApplication::InModalState(): TRUE while the main view host's +0x90
+  // interactive flag is clear.
+  BOOL InModalState(); // 0x486960
+
   // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
   DECLARE_DYNCREATE(TApplication)
   // vtable index 0x27 (0x004868a0): load the active modal view pointer.
-  // vtable index 0x28 (0x00486990): viewport-edge auto-scroll hook; no-op in the original
-  // (RET 0xc — takes 3 stack args). Kept as a real virtual so descendants can override.
-  // vtable index 0x29 (0x004869b0): when insertFlag is nonzero, allocate (or reuse from
-  // the free list) a 12-byte node, store `value` at node+8, and link it at the list head;
-  // when zero, find the first node whose node+8 equals `value`, unlink it, and return the
-  // node to the free list (freeing the block chain when the list becomes empty).
-  // vtable index 0x2a (0x00486b10): walk the embedded list and invoke each entry's tick
-  // method (slot at node+8 receiver, passing arg) via the per-entry thunk.
 
-  TEventHandler* activeView;          // 0x20
-  int screenModeAt24;                 // 0x24
-  int field28;                        // 0x28
-  CList<void*, void*> trackedEntries; // 0x2c, vtable 0x00648ca8
+  TEventHandler* activeView; // 0x20
+  int screenModeAt24;        // 0x24
+  int field28;               // 0x28
+  // 0x2c — MacApp fCohandlers: TEventHandlers given idle time by Idle(). Kept as the
+  // original CList<void*, void*> instantiation (vtable 0x00648ca8).
+  CList<void*, void*> cohandlers;
 
   // Reserved slots overridden by TAmbitApplication only (orig TApplication vtable has null at
   // 0x2b-0x2d).

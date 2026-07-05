@@ -7,12 +7,12 @@
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
+#include "game/TApplication.h"
 #include "game/startup_helpers.h"
 #include "game/ui_control_tags.h"
 
 extern "C" CRuntimeClass PTR_s_TGameWindow_00656a30;
 
-undefined4 InvokeAfxThreadAndCallSecondaryRefresh(void);
 undefined4 ConsumeFirstPendingAbilityUnlock(void);
 undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void);
 undefined4 SelectAndActivatePendingEventForCurrentView(void);
@@ -45,11 +45,6 @@ static int QueryUiRuntimeFieldF4() {
 } // namespace
 
 namespace GameWindowInvoke {
-
-static int InvokeAfxThreadAndCallSecondaryRefreshGate() {
-  return reinterpret_cast<int(__cdecl*)(void)>(
-      reinterpret_cast<void (*)()>(::InvokeAfxThreadAndCallSecondaryRefresh))();
-}
 
 static short ConsumeFirstPendingAbilityUnlockForNation(short nationId) {
   return static_cast<short>(reinterpret_cast<unsigned int(__cdecl*)(short)>(
@@ -142,7 +137,7 @@ void TGameWindow::ForwardParam(int param) {
   if (commandEvent->handledMarker == kUiCommandHandledMarker) {
     return;
   }
-  if (GameWindowInvoke::InvokeAfxThreadAndCallSecondaryRefreshGate() != 0) {
+  if (g_pApplicationUiRootController->InModalState() != 0) {
     return;
   }
   commandEvent->handledMarker = kUiCommandHandledMarker;

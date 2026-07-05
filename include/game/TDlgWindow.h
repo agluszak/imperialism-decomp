@@ -126,7 +126,7 @@ public:
   // (0x48e150)
   virtual void AssertMcAppUILine2358() override; // slot 0x72 0x5003a0
   // slot 0x73 OrphanCallChain_C2_I39_0048d900 inherited unchanged (0x48d900)
-  // slot 0x74 OrphanCallChain_C2_I10_0048e120 inherited unchanged (0x48e120)
+  // slot 0x74 CloseAndFree inherited unchanged (0x48e120)
   // slot 0x75 WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0 inherited unchanged (0x48d9c0)
   // slot 0x76 WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0 inherited unchanged (0x48d9f0)
   // === END GENERATED DECLS (TDlgWindow) ===

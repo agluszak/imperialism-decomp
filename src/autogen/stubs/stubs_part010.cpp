@@ -1307,14 +1307,6 @@ undefined4 WrapperFor_RouteCommandByIdWithUiProbe_At00483e80(void)
   return 0;
 }
 
-// ghidra_name InvokeAfxThreadAndCallSecondaryRefresh_Impl
-// ghidra_proto undefined InvokeAfxThreadAndCallSecondaryRefresh_Impl()
-// FUNCTION: IMPERIALISM 0x00484060
-undefined4 InvokeAfxThreadAndCallSecondaryRefresh_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TCommand::RunCommandModalLoopAndFinalizeState_Impl
 // ghidra_proto undefined RunCommandModalLoopAndFinalizeState_Impl()
 // FUNCTION: IMPERIALISM 0x00484080
@@ -1491,34 +1483,10 @@ undefined4 TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl(void)
   return 0;
 }
 
-// ghidra_name ConstructAndDestroyCPaintDC_NoOpPaintHandler
-// ghidra_proto undefined ConstructAndDestroyCPaintDC_NoOpPaintHandler()
-// FUNCTION: IMPERIALISM 0x00485bd0
-undefined4 ConstructAndDestroyCPaintDC_NoOpPaintHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_Default_At00485c00
-// ghidra_proto undefined WrapperFor_Default_At00485c00()
-// FUNCTION: IMPERIALISM 0x00485c00
-undefined4 WrapperFor_Default_At00485c00(void)
-{
-  return 0;
-}
-
 // ghidra_name SendF1KeyDownToActiveMainWindow
 // ghidra_proto undefined SendF1KeyDownToActiveMainWindow()
 // FUNCTION: IMPERIALISM 0x00485c20
 undefined4 SendF1KeyDownToActiveMainWindow(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_SwitchActiveFrameAndNotifyHandlers_At00485c60
-// ghidra_proto undefined WrapperFor_SwitchActiveFrameAndNotifyHandlers_At00485c60()
-// FUNCTION: IMPERIALISM 0x00485c60
-undefined4 WrapperFor_SwitchActiveFrameAndNotifyHandlers_At00485c60(void)
 {
   return 0;
 }
@@ -1607,14 +1575,6 @@ undefined4 CreateTFileBasedDocumentInstance(void)
 // ghidra_proto undefined CreateTCommandHandlerInstance()
 // FUNCTION: IMPERIALISM 0x00486610
 undefined4 CreateTCommandHandlerInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeAfxThreadAndCallSecondaryRefresh
-// ghidra_proto undefined InvokeAfxThreadAndCallSecondaryRefresh()
-// FUNCTION: IMPERIALISM 0x00486960
-undefined4 InvokeAfxThreadAndCallSecondaryRefresh(void)
 {
   return 0;
 }
@@ -1815,14 +1775,6 @@ undefined4 RemoveUiListEntryByOwnerIdAndRecycleStorage(void)
 // ghidra_proto undefined DestructTEventHandlerAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0048a160
 undefined4 DestructTEventHandlerAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_GetTickCountDiv16_At0048a410
-// ghidra_proto undefined WrapperFor_thunk_GetTickCountDiv16_At0048a410()
-// FUNCTION: IMPERIALISM 0x0048a410
-undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void)
 {
   return 0;
 }

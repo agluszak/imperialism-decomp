@@ -10,6 +10,7 @@
 #include "game/TView.h"
 #include "game/TApplication.h"
 #include "game/global_data_tables.h"
+#include "game/startup_helpers.h"
 #include "game/ui_invalidation_guard.h"
 #include <string.h>
 
@@ -53,6 +54,13 @@ void TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults() {
   field14 = 0;
 }
 
+// Destructor is compiler-generated (implicit virtual dtor); the scalar deleting
+// destructor at 0x0048a130 is emitted by the compiler from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0048a130
+// TEventHandler::`scalar deleting destructor'
+
+TEventHandler::~TEventHandler() {}
+
 // FUNCTION: IMPERIALISM 0x0048a180
 void TEventHandler::InitializePacketHeaderFields_Tag20202020(int packetTag) {
   field04 = 1;
@@ -60,13 +68,6 @@ void TEventHandler::InitializePacketHeaderFields_Tag20202020(int packetTag) {
   field0c = packetTag;
   controlTag = 0x20202020;
 }
-
-// Destructor is compiler-generated (implicit virtual dtor); the scalar deleting
-// destructor at 0x0048a130 is emitted by the compiler from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x0048a130
-// TEventHandler::`scalar deleting destructor'
-
-TEventHandler::~TEventHandler() {}
 // Slot 0x07/0x08: base implementations (overridden by TView and AppRoot).
 // FUNCTION: IMPERIALISM 0x0048a1b0
 void TEventHandler::Free() {
@@ -154,6 +155,30 @@ void TEventHandler::DispatchQueuedUiCommandAndRelease(void* payload) {
 // FUNCTION: IMPERIALISM 0x0048a3f0
 void TEventHandler::DispatchUiSelectionToHandler(void* payload) {
   DispatchQueuedUiCommandAndRelease(payload);
+}
+
+// MacApp TEventHandler::HandleIdle(IdlePhase): throttled idle dispatch, driven for every
+// installed cohandler by TApplication::Idle (0x486b10). field10 is the idle frequency in
+// tick16 units (0x7fffffff = never; MacApp fIdleFreq) and field14 the last-idle stamp
+// (MacApp fLastIdle). Slot 0x13 (CanHandleCityDialogActionFalse — MacApp's DoIdle) does
+// the work; a zero return on the continue phase (1) re-stamps the throttle clock.
+// FUNCTION: IMPERIALISM 0x0048a410
+void TEventHandler::HandleIdle(int idlePhase) {
+  if (field10 == 0x7fffffff) {
+    return;
+  }
+  if (!GetBoolSlot28()) {
+    return;
+  }
+  if (idlePhase == 1) {
+    int now = GetTickCountDiv16();
+    if (now - field14 < field10) {
+      return;
+    }
+  }
+  if (!CanHandleCityDialogActionFalse(idlePhase) && idlePhase == 1) {
+    field14 = GetTickCountDiv16();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0048a480

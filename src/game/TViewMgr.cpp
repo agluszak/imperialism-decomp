@@ -890,7 +890,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
     while (iter.More() != 0) {
       const unsigned int tag = static_cast<unsigned int>(window->controlTag);
       if (tag == kControlTagWpam || tag == kControlTagWnrt) {
-        window->OrphanCallChain_C2_I10_0048e120();
+        window->CloseAndFree();
       }
       window = static_cast<TWindow*>(iter.NextWindow());
     }
@@ -1478,7 +1478,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
 
   // Ground truth then dispatches
   // mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]'s own slot-0x74 virtual with
-  // mapSelection (matching the arity fixed on TMapUberUberPicture::OrphanRetStub_0045d2a0),
+  // mapSelection (matching the arity fixed on TMapUberUberPicture::AutoScrollByEdgeMask),
   // but categoryPages' concrete element class isn't recovered yet -- left undone (Hard Rule
   // 12) rather than fake that dispatch too.
   (void)mapSelection;

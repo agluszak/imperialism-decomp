@@ -59,6 +59,10 @@ public:
 
   void CreateTEventHandlerInstance();
 
+  // 0x48a410 — MacApp TEventHandler::HandleIdle(IdlePhase); throttled idle dispatch
+  // using field10 (idle frequency, 0x7fffffff = never) / field14 (last-idle stamp).
+  void HandleIdle(int idlePhase);
+
   // Standalone binary helper @ 0x48a100 (also reached via ILT 0x403049).
   void InitializeUiResourceEntryBaseHeaderDefaults();
 
@@ -85,7 +89,7 @@ public:
                              TEvent* event);               // 0x10 0x48a2e0 DoEvent
   virtual void vmethod_0017(int param);                    // 0x11 0x48a310
   virtual void ForwardParam(int param);                    // 0x12 0x48a380
-  virtual char CanHandleCityDialogActionFalse(int action); // 0x13 0x48a480
+  virtual char CanHandleCityDialogActionFalse(int action); // 0x13 0x48a480 (MacApp DoIdle)
   virtual int GetCityDialogValueDword10();                 // 0x14 0x415d50 field10
   virtual void SetCityDialogValueDword10(int value);       // 0x15 0x415d70
   virtual class TView* OwnerPanel();                       // 0x16

@@ -2159,7 +2159,7 @@ void __thiscall ParseDirectionTokenAndSetMovementFlags(void *this,CString param_
   CString::MakeReverse();
   if (param_2 != 0) {
     iVar2 = CompareAnsiStringsWithMbcsAwareness
-                      (param_1.m_pchData,&g_szMovementParseCompareB_00694254);
+                      (param_1.m_pchData,&g_szCmdSwitchLangQuit_00694254);
     if (iVar2 == 0) {
       *(undefined4 *)((int)this + 0x2c) = 1;
       *(undefined4 *)((int)this + 0x30) = 1;
@@ -2167,7 +2167,7 @@ void __thiscall ParseDirectionTokenAndSetMovementFlags(void *this,CString param_
     }
     if ((param_2 != 0) &&
        (iVar2 = CompareAnsiStringsWithMbcsAwareness
-                          (param_1.m_pchData,&g_szMovementParseCompareA_00694250), iVar2 == 0)) {
+                          (param_1.m_pchData,&g_szCmdSwitchLang_00694250), iVar2 == 0)) {
       *(undefined4 *)((int)this + 0x30) = 1;
       goto LAB_004134c8;
     }

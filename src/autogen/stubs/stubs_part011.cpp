@@ -403,14 +403,6 @@ undefined4 BusyWaitUntilShiftedTickDeadline(void)
   return 0;
 }
 
-// ghidra_name GetTickCountDiv16
-// ghidra_proto undefined GetTickCountDiv16()
-// FUNCTION: IMPERIALISM 0x00493250
-undefined4 GetTickCountDiv16(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004933a0
 // ghidra_proto undefined WrapperFor_ftol_At004933a0()
 // FUNCTION: IMPERIALISM 0x004933a0

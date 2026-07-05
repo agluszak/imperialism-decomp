@@ -1,4 +1,6 @@
 #include "game/TWindow.h"
+
+#include "game/ImperialismApp.h"
 #include "game/CMcWindow.h"
 #include "game/TApplication.h"
 #include "game/TDialogBehavior.h"
@@ -9,7 +11,6 @@
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
 extern CPtrList g_ModalViewStack;
 
-undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void);
 
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own
@@ -156,7 +157,7 @@ int TWindow::ExecuteViewModalStateWithPushPopChain() {
   if (wasArmed == 0) {
     SetField84(0);
   }
-  WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0();
+  g_pImperialismApp->RestoreWaitCursorIfStartupBusy();
   return armedCommand;
 }
 
@@ -279,7 +280,7 @@ void TWindow::CallVoidSlotA0() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e120
-void TWindow::OrphanCallChain_C2_I10_0048e120() {
+void TWindow::CloseAndFree() {
   CallVoidSlotA0();
   Free();
 }

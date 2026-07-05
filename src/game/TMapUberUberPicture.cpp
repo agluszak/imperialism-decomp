@@ -1,8 +1,8 @@
 #include "game/TMapUberUberPicture.h"
 
 // FUNCTION: IMPERIALISM 0x0045d2a0
-undefined TMapUberUberPicture::OrphanRetStub_0045d2a0(int param1) {
-  (void)param1;
+undefined TMapUberUberPicture::AutoScrollByEdgeMask(short edgeMask) {
+  (void)edgeMask;
   return 0;
 }
 

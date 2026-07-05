@@ -124,7 +124,7 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
-  virtual undefined OrphanRetStub_0045d2a0(int param1); // slot 0x74 0x45d2a0
+  virtual undefined AutoScrollByEdgeMask(short edgeMask); // slot 0x74 0x45d2a0
   // === END GENERATED DECLS (TMapUberUberPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberUberPicture 0xCTOR`).
 

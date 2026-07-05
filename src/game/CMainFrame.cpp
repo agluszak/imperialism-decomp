@@ -54,14 +54,26 @@ int __stdcall AdvanceTurnStateWhenMovieMciModeStops(int wParam, int mciMode) {
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
+// Entry order follows the original map at 0x648648. Original entries whose handlers are
+// not yet ported are commented in place: ON_COMMAND(0x800D, 0x485590),
+// ON_COMMAND(0x8013, 0x4855b0), ON_WM_ERASEBKGND (0x4859d0), ON_WM_ACTIVATEAPP
+// (0x485c90), ON_MESSAGE(0xBC0, 0x485960).
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
-ON_WM_CREATE()
-ON_MESSAGE(0x030F, OnMsg030F)
+ON_WM_QUERYNEWPALETTE()
 ON_WM_PALETTECHANGED()
-ON_COMMAND(100, OnStartupCommand100)
-ON_MESSAGE(0x2420, HandleCustomMessage2420DispatchTurnEvent)
+ON_WM_CREATE()
 ON_COMMAND(0x8009, OnCommand8009)
 ON_COMMAND(0x800C, OnCommand800C)
+ON_WM_PAINT()
+ON_WM_CHAR()
+ON_WM_ACTIVATE()
+ON_COMMAND(ID_HELP_FINDER, CFrameWnd::OnHelpFinder)
+ON_COMMAND(ID_HELP, CFrameWnd::OnHelp)
+ON_COMMAND(ID_CONTEXT_HELP, CFrameWnd::OnContextHelp)
+ON_COMMAND(ID_DEFAULT_HELP, CFrameWnd::OnHelpFinder)
+ON_COMMAND(100, OnStartupCommand100)
+ON_MESSAGE(0x464, OnMsg0464)
+ON_MESSAGE(0x2420, HandleCustomMessage2420DispatchTurnEvent)
 END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x00484bf0
@@ -82,7 +94,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   }
   WrapperFor_AllocateWithFallbackHandler_At0049cc60(this);
   field_BC = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
-  TryRealizeViewPaletteAndInvalidateWindow();
+  OnQueryNewPalette();
   return 0;
 }
 
@@ -121,8 +133,21 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
   return CFrameWnd::PreCreateWindow(cs);
 }
 
+// FUNCTION: IMPERIALISM 0x00484fb0
+LRESULT CMainFrame::OnMsg0464(WPARAM wParam, LPARAM lParam) {
+  (void)wParam;
+  (void)lParam;
+  g_pImperialismApp->HandleStartupCommand100();
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00484fd0
+void CMainFrame::OnStartupCommand100() {
+  g_pImperialismApp->HandleStartupCommand100();
+}
+
 // FUNCTION: IMPERIALISM 0x00484ff0
-int CMainFrame::TryRealizeViewPaletteAndInvalidateWindow() {
+BOOL CMainFrame::OnQueryNewPalette() {
   if (field_BC == 0) {
     return 0;
   }
@@ -147,30 +172,19 @@ void CMainFrame::OnPaletteChanged(CWnd* pFocusWnd) {
       focusHwnd = pFocusWnd->GetSafeHwnd();
     }
     if (!::IsChild(GetSafeHwnd(), focusHwnd)) {
-      TryRealizeViewPaletteAndInvalidateWindow();
+      OnQueryNewPalette();
     }
   }
-}
-
-LRESULT CMainFrame::OnMsg030F(WPARAM wParam, LPARAM lParam) {
-  (void)wParam;
-  (void)lParam;
-  TryRealizeViewPaletteAndInvalidateWindow();
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00485180
 void CMainFrame::OnCommand8009() {
   field_BC = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
-  TryRealizeViewPaletteAndInvalidateWindow();
+  OnQueryNewPalette();
 }
 
 void CMainFrame::OnCommand800C() {
   TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog();
-}
-
-void CMainFrame::OnStartupCommand100() {
-  DispatchStartupCommand100ToAppSingleton();
 }
 
 // FUNCTION: IMPERIALISM 0x00485920
@@ -179,4 +193,22 @@ LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPAR
   g_pUiRuntimeContext->DispatchTurnEventSlot4C(static_cast<short>(wParam),
                                                g_pSimMgr->GetActiveNationId());
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00485bd0
+void CMainFrame::OnPaint() {
+  CPaintDC dc(this);
+}
+
+// FUNCTION: IMPERIALISM 0x00485c00
+void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
+  (void)nChar;
+  (void)nRepCnt;
+  (void)nFlags;
+  Default();
+}
+
+// FUNCTION: IMPERIALISM 0x00485c60
+void CMainFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized) {
+  CFrameWnd::OnActivate(nState, pWndOther, bMinimized);
 }

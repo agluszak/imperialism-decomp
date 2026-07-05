@@ -44,7 +44,12 @@ public:
   CDib* m_pOffscreenDib;        // 0x48 — 640x480x8 surface created in OnInitialUpdate
   unsigned char pad4c[0x6c - 0x4c];
   UINT m_tickTimerId; // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
-  unsigned char pad70[0x94 - 0x70];
+  unsigned char pad70[0x90 - 0x70];
+  // 0x90 — nonzero while the UI is interactive; TApplication::InModalState (0x486960)
+  // reports TRUE while it is 0. Writer not yet located.
+  int m_uiInteractiveFlag90;
+
+  int GetUiInteractiveFlag90(); // 0x00484060
 };
 
 ASSERT_SIZE(CIncludeView, 0x94);

@@ -182,13 +182,13 @@
     },
     {
       "address": "0x412d90",
-      "matching": 0.4444444444444444,
-      "name": "OrphanCallChain_C1_I05_00412d90",
+      "matching": 1.0,
+      "name": "ShowOutOfMemoryErrorNewHandler",
       "type": 1
     },
     {
       "address": "0x412dc0",
-      "matching": 0.4827586206896552,
+      "matching": 0.47208931419457734,
       "name": "InitializeImperialismApplicationInstance",
       "type": 1
     },
@@ -206,8 +206,20 @@
     },
     {
       "address": "0x4133d0",
-      "matching": 0.46464646464646464,
-      "name": "ParseDirectionTokenAndSetMovementFlags",
+      "matching": 0.6464646464646465,
+      "name": "ImperialismCommandLineInfo::ParseParam",
+      "type": 1
+    },
+    {
+      "address": "0x413550",
+      "matching": 1.0,
+      "name": "ImperialismCommandLineInfo::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x413580",
+      "matching": 0.972972972972973,
+      "name": "ImperialismCommandLineInfo::~ImperialismCommandLineInfo",
       "type": 1
     },
     {
@@ -242,14 +254,20 @@
     },
     {
       "address": "0x4138b0",
-      "matching": 0.6,
-      "name": "PostCommand100ToMainWindow",
+      "matching": 1.0,
+      "name": "ImperialismApp::PostStartupCommand100",
       "type": 1
     },
     {
       "address": "0x413950",
       "matching": 0.5,
       "name": "HandleStartupCommand100",
+      "type": 1
+    },
+    {
+      "address": "0x4139f0",
+      "matching": 1.0,
+      "name": "ImperialismApp::RestoreWaitCursorIfStartupBusy",
       "type": 1
     },
     {
@@ -303,7 +321,7 @@
     {
       "address": "0x414770",
       "matching": 1.0,
-      "name": "OrphanRetStub_00414770",
+      "name": "TAmbitApplication::DoSetupMenus",
       "type": 1
     },
     {
@@ -314,7 +332,7 @@
     },
     {
       "address": "0x4149a0",
-      "matching": 0.3667180277349769,
+      "matching": 0.5078014184397163,
       "name": "LoadLanguageResourcesFromIrgFiles",
       "type": 1
     },
@@ -332,7 +350,7 @@
     },
     {
       "address": "0x415090",
-      "matching": 0.3316062176165803,
+      "matching": 0.7575757575757576,
       "name": "ShowAutoResolutionDialogIfNeeded",
       "type": 1
     },
@@ -1252,7 +1270,7 @@
     {
       "address": "0x45d2a0",
       "matching": 0.6666666666666666,
-      "name": "TMapUberUberPicture::OrphanRetStub_0045d2a0",
+      "name": "TMapUberUberPicture::AutoScrollByEdgeMask",
       "type": 1
     },
     {
@@ -1276,7 +1294,7 @@
     {
       "address": "0x45d3b0",
       "matching": 0.2,
-      "name": "TTacMapUberPicture::OrphanRetStub_0045d2a0",
+      "name": "TTacMapUberPicture::AutoScrollByEdgeMask",
       "type": 1
     },
     {
@@ -2446,8 +2464,8 @@
     },
     {
       "address": "0x484060",
-      "matching": 0.5,
-      "name": "InvokeAfxThreadAndCallSecondaryRefresh_Impl",
+      "matching": 1.0,
+      "name": "CIncludeView::GetUiInteractiveFlag90",
       "type": 1
     },
     {
@@ -2553,15 +2571,21 @@
       "type": 1
     },
     {
+      "address": "0x484fb0",
+      "matching": 1.0,
+      "name": "CMainFrame::OnMsg0464",
+      "type": 1
+    },
+    {
       "address": "0x484fd0",
-      "matching": 0.5714285714285714,
-      "name": "DispatchStartupCommand100ToAppSingleton",
+      "matching": 1.0,
+      "name": "CMainFrame::OnStartupCommand100",
       "type": 1
     },
     {
       "address": "0x484ff0",
       "matching": 0.7210884353741497,
-      "name": "TryRealizeViewPaletteAndInvalidateWindow",
+      "name": "CMainFrame::OnQueryNewPalette",
       "type": 1
     },
     {
@@ -2614,14 +2638,26 @@
     },
     {
       "address": "0x485bd0",
-      "matching": 0.2,
-      "name": "ConstructAndDestroyCPaintDC_NoOpPaintHandler",
+      "matching": 1.0,
+      "name": "CMainFrame::OnPaint",
+      "type": 1
+    },
+    {
+      "address": "0x485c00",
+      "matching": 1.0,
+      "name": "CMainFrame::OnChar",
       "type": 1
     },
     {
       "address": "0x485c20",
       "matching": 0.0,
       "name": "SendF1KeyDownToActiveMainWindow",
+      "type": 1
+    },
+    {
+      "address": "0x485c60",
+      "matching": 1.0,
+      "name": "CMainFrame::OnActivate",
       "type": 1
     },
     {
@@ -2807,7 +2843,7 @@
     {
       "address": "0x486680",
       "matching": 0.47058823529411764,
-      "name": "TApplication::CreateObject(void)",
+      "name": "TApplication::CreateObject",
       "type": 1
     },
     {
@@ -2854,26 +2890,26 @@
     },
     {
       "address": "0x486960",
-      "matching": 0.2222222222222222,
-      "name": "InvokeAfxThreadAndCallSecondaryRefresh",
+      "matching": 1.0,
+      "name": "TApplication::InModalState",
       "type": 1
     },
     {
       "address": "0x486990",
       "matching": 1.0,
-      "name": "TApplication::HandleTurnEventViewportEdgeAutoScroll",
+      "name": "TApplication::GetDefaultCursorRegion",
       "type": 1
     },
     {
       "address": "0x4869b0",
       "matching": 0.9908256880733946,
-      "name": "TApplication::InsertOrRemoveTrackedEntry",
+      "name": "TApplication::InstallCohandler",
       "type": 1
     },
     {
       "address": "0x486b10",
-      "matching": 0.8484848484848485,
-      "name": "TApplication::TickEachTrackedEntry",
+      "matching": 1.0,
+      "name": "TApplication::Idle",
       "type": 1
     },
     {
@@ -4035,6 +4071,12 @@
       "type": 1
     },
     {
+      "address": "0x48a410",
+      "matching": 1.0,
+      "name": "TEventHandler::HandleIdle",
+      "type": 1
+    },
+    {
       "address": "0x48a480",
       "matching": 1.0,
       "name": "TEventHandler::CanHandleCityDialogActionFalse",
@@ -4726,7 +4768,7 @@
     },
     {
       "address": "0x48da60",
-      "matching": 0.35121951219512193,
+      "matching": 0.3592233009708738,
       "name": "TWindow::ExecuteViewModalStateWithPushPopChain",
       "type": 1
     },
@@ -4787,7 +4829,7 @@
     {
       "address": "0x48e120",
       "matching": 1.0,
-      "name": "TWindow::OrphanCallChain_C2_I10_0048e120",
+      "name": "TWindow::CloseAndFree",
       "type": 1
     },
     {
@@ -5603,7 +5645,7 @@
     },
     {
       "address": "0x493250",
-      "matching": 0.4,
+      "matching": 0.6666666666666666,
       "name": "GetTickCountDiv16",
       "type": 1
     },
@@ -6875,6 +6917,12 @@
       "type": 1
     },
     {
+      "address": "0x49e320",
+      "matching": 1.0,
+      "name": "TAmbitApplication::HandleCursor",
+      "type": 1
+    },
+    {
       "address": "0x49e4b0",
       "matching": 1.0,
       "name": "OrphanCallChain_C1_I11_0049e4b0",
@@ -6882,8 +6930,8 @@
     },
     {
       "address": "0x49e4e0",
-      "matching": 0.8,
-      "name": "OrphanCallChain_C1_I04_0049e4e0",
+      "matching": 1.0,
+      "name": "TAmbitApplication::CloseAndFreeWindow",
       "type": 1
     },
     {
@@ -12235,7 +12283,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12674,7 +12722,8 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12687,14 +12736,14 @@
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12730,7 +12779,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -15359,7 +15408,7 @@
     },
     {
       "address": "0x4ffd70",
-      "matching": 0.4189189189189189,
+      "matching": 0.42792792792792794,
       "name": "TGameWindow::ForwardParam",
       "type": 1
     },
@@ -16169,7 +16218,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.20536119945479328,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -28336,7 +28385,7 @@
     {
       "address": "0x5977a0",
       "matching": 0.08333333333333333,
-      "name": "TMapUberPicture::OrphanRetStub_0045d2a0",
+      "name": "TMapUberPicture::AutoScrollByEdgeMask",
       "type": 1
     },
     {
@@ -34525,15 +34574,33 @@
       "type": 1
     },
     {
-      "address": "0x5e7a80",
-      "matching": 1.0,
-      "name": "SetGlobalCallback6A7FACAndReturnPrevious",
-      "type": 1
-    },
-    {
       "address": "0x5e7ac0",
       "matching": 0.9230769230769231,
       "name": "__callnewh",
+      "type": 1
+    },
+    {
+      "address": "0x5e7ae0",
+      "matching": 0.7920792079207921,
+      "name": "__findfirst",
+      "type": 1
+    },
+    {
+      "address": "0x5e7c10",
+      "matching": 0.8131868131868132,
+      "name": "__findnext",
+      "type": 1
+    },
+    {
+      "address": "0x5e7d30",
+      "matching": 0.5405405405405406,
+      "name": "__findclose",
+      "type": 1
+    },
+    {
+      "address": "0x5e7d60",
+      "matching": 0.9583333333333334,
+      "name": "___timet_from_ft",
       "type": 1
     },
     {
@@ -36866,6 +36933,12 @@
     },
     {
       "address": "0x605e52",
+      "matching": 1.0,
+      "name": "CString::MakeUpper",
+      "type": 1
+    },
+    {
+      "address": "0x605e64",
       "matching": 0.875,
       "name": "CString::MakeReverse(void)",
       "type": 1
@@ -36999,7 +37072,7 @@
     {
       "address": "0x606c91",
       "matching": 0.2222222222222222,
-      "name": "RestoreWaitCursor",
+      "name": "CCmdTarget::RestoreWaitCursor(void)",
       "type": 1
     },
     {
@@ -39625,6 +39698,54 @@
       "type": 1
     },
     {
+      "address": "0x6193c5",
+      "matching": 1.0,
+      "name": "CWnd::OnHelp",
+      "type": 1
+    },
+    {
+      "address": "0x619467",
+      "matching": 1.0,
+      "name": "CFrameWnd::OnHelp",
+      "type": 1
+    },
+    {
+      "address": "0x6194df",
+      "matching": 1.0,
+      "name": "CFrameWnd::CanEnterHelpMode",
+      "type": 1
+    },
+    {
+      "address": "0x619539",
+      "matching": 0.9932885906040269,
+      "name": "CFrameWnd::OnContextHelp",
+      "type": 1
+    },
+    {
+      "address": "0x6196e1",
+      "matching": 0.979381443298969,
+      "name": "CFrameWnd::SetHelpCapture",
+      "type": 1
+    },
+    {
+      "address": "0x6197f7",
+      "matching": 1.0,
+      "name": "CFrameWnd::ProcessHelpMsg",
+      "type": 1
+    },
+    {
+      "address": "0x6199fd",
+      "matching": 1.0,
+      "name": "MapClientArea",
+      "type": 1
+    },
+    {
+      "address": "0x619a92",
+      "matching": 1.0,
+      "name": "MapNonClientArea",
+      "type": 1
+    },
+    {
       "address": "0x619ca0",
       "matching": 0.4,
       "name": "CopyIntoStreamBufferFromSourceWithClamp_00619ca0",
@@ -39698,7 +39819,7 @@
     },
     {
       "address": "0x61a2ef",
-      "matching": 0.979296066252588,
+      "matching": 0.9813664596273292,
       "name": "CDocManager::OnDDECommand",
       "type": 1
     },
@@ -40274,14 +40395,14 @@
     },
     {
       "address": "0x622632",
-      "matching": 0.045454545454545456,
-      "name": "ParseCommandLine",
+      "matching": 0.9047619047619048,
+      "name": "CWinApp::ParseCommandLine",
       "type": 1
     },
     {
       "address": "0x622690",
-      "matching": 0.0625,
-      "name": "CCommandLineInfo",
+      "matching": 0.9333333333333333,
+      "name": "CCommandLineInfo::CCommandLineInfo",
       "type": 1
     },
     {
@@ -40298,8 +40419,8 @@
     },
     {
       "address": "0x622778",
-      "matching": 0.14285714285714285,
-      "name": "ParseParam",
+      "matching": 1.0,
+      "name": "CCommandLineInfo::ParseParam",
       "type": 1
     },
     {
@@ -40780,6 +40901,12 @@
       "address": "0x63e398",
       "matching": 1.0,
       "name": "TAmbitApplication::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x63e478",
+      "matching": 1.0,
+      "name": "ImperialismCommandLineInfo::`vftable'",
       "type": 5
     },
     {

@@ -19,22 +19,6 @@ undefined4 InitializeThreadObjectVtableProxy(void)
   return 0;
 }
 
-// ghidra_name ParseCommandLine
-// ghidra_proto undefined ParseCommandLine()
-// FUNCTION: IMPERIALISM 0x00622632
-undefined4 ParseCommandLine(void)
-{
-  return 0;
-}
-
-// ghidra_name CCommandLineInfo
-// ghidra_proto undefined CCommandLineInfo()
-// FUNCTION: IMPERIALISM 0x00622690
-undefined4 CCommandLineInfo(void)
-{
-  return 0;
-}
-
 // ghidra_name ExitInstance
 // ghidra_proto undefined ExitInstance()
 // FUNCTION: IMPERIALISM 0x00622a4f

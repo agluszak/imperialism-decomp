@@ -13,14 +13,14 @@
 int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
   CString key;
   key.Format("Pref%d", index);
-  return DAT_006a1348->GetProfileInt("Settings", key, defaultValue);
+  return g_pImperialismApp->GetProfileInt("Settings", key, defaultValue);
 }
 
 // FUNCTION: IMPERIALISM 0x00415440
 void WriteSettingsPrefIntByIndex(int index, int value) {
   CString key;
   key.Format("Pref%d", index);
-  DAT_006a1348->WriteProfileInt("Settings", key, value);
+  g_pImperialismApp->WriteProfileInt("Settings", key, value);
 }
 // SYNTHETIC: IMPERIALISM 0x0057b940
 // TSimMgr::CreateObject
@@ -183,7 +183,7 @@ void TSimMgr::IncrementQuarterGateTick2C() {
 
 // FUNCTION: IMPERIALISM 0x0057d970
 void TSimMgr::PostMainWindowCommand100ForTurnFlow() {
-  PostCommand100ToMainWindow(DAT_006a1348);
+  g_pImperialismApp->PostStartupCommand100();
 }
 
 // FUNCTION: IMPERIALISM 0x0057d990

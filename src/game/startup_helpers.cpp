@@ -138,6 +138,11 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
   return dialog.FinalizeModalDialogAndRestoreOwnerFocus() == 1 ? TRUE : FALSE;
 }
 
+// FUNCTION: IMPERIALISM 0x00493250
+unsigned int GetTickCountDiv16() {
+  return GetTickCount() >> 4;
+}
+
 // FUNCTION: IMPERIALISM 0x00497230
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized() {
   if (g_pGlobalViewportRectDefaultsRecord == nullptr) {
@@ -154,15 +159,4 @@ GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized()
 // FUNCTION: IMPERIALISM 0x0049cc40
 void SetCachedShowSplashFlag(BOOL showSplash) {
   g_cachedShowSplashFlag = showSplash;
-}
-
-// FUNCTION: IMPERIALISM 0x005e7a80
-void* SetGlobalCallback6A7FACAndReturnPrevious(void* callback) {
-  extern undefined4 EnterIndexedCriticalSectionWithLazyInit();
-  extern undefined4 LeaveIndexedCriticalSection();
-  reinterpret_cast<void(__cdecl*)(int)>(EnterIndexedCriticalSectionWithLazyInit)(9);
-  void* prev = g_pGlobalCallback_006a7fac;
-  g_pGlobalCallback_006a7fac = callback;
-  reinterpret_cast<void(__cdecl*)(int)>(LeaveIndexedCriticalSection)(9);
-  return prev;
 }

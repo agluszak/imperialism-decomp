@@ -9,15 +9,16 @@ class CIncludeView;
 struct GlobalViewportRectDefaultsRecord;
 
 extern "C" {
-// 0x005e7a80
-void* SetGlobalCallback6A7FACAndReturnPrevious(void* callback);
-
 // 0x00415760
 BOOL WarnLowDiskSpaceAndConfirmContinue();
 
 // 0x0049ded0 — allocates/initializes global runtime singletons from startup config.
 const char* GetDataDirectoryPathLiteral();
 }
+
+// 0x00493250 — GetTickCount() / 16; the game's coarse UI tick unit.
+unsigned int GetTickCountDiv16();
+
 
 // 0x004974f0
 extern "C++" undefined4 ReleaseGlobalClipRegionHandleListAndReset_006a1c98();

@@ -1,4 +1,6 @@
 #include "game/TCivMgr.h"
+
+#include "game/startup_helpers.h"
 #include "decomp_types.h"
 #include "game/TCivUnit.h"
 #include "game/TCountry.h"
@@ -16,7 +18,6 @@
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 
-undefined4 GetTickCountDiv16(void);
 // SYNTHETIC: IMPERIALISM 0x004d2000
 // TCivMgr::CreateObject
 
@@ -227,10 +228,10 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   if (actionFinalized) {
     this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, reinterpret_cast<int*>(pCiv));
 
-    int startTick = reinterpret_cast<int(__cdecl*)(void)>(GetTickCountDiv16)();
+    int startTick = GetTickCountDiv16();
     while (true) {
       PumpUiMessagesAndBackgroundTasks(1);
-      int now = reinterpret_cast<int(__cdecl*)(void)>(GetTickCountDiv16)();
+      int now = GetTickCountDiv16();
       if (now < startTick) {
         break;
       }

@@ -1,12 +1,12 @@
 #include "game/TTacMapUberPicture.h"
 
 // FUNCTION: IMPERIALISM 0x0045d3b0
-undefined TTacMapUberPicture::OrphanRetStub_0045d2a0(int param1) {
+undefined TTacMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {
   // Real body forwards param1 to field94's own vtable slot 0x6b when field94 != 0 (ground
   // truth: `mov ecx,[this+0x94]; test ecx,ecx; jz ret; ... call [eax+0x1ac]`), but field94's
   // receiver class isn't recovered yet -- left as the pre-existing stub rather than fake the
   // dispatch (Hard Rule 12).
-  (void)param1;
+  (void)edgeMask;
   return 0;
 }
 

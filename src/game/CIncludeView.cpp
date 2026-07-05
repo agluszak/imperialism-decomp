@@ -5,6 +5,27 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
+// The 17ms UI tick (timer id 0xd00d, armed in OnInitialUpdate): track the cursor in
+// client coordinates and, while the main frame is the foreground window, feed the
+// position into the global UI root's per-tick cursor dispatch (edge auto-scroll etc.).
+// FUNCTION: IMPERIALISM 0x00482760
+static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime) {
+  (void)uMsg;
+  (void)idEvent;
+  (void)dwTime;
+  POINT cursorPos;
+  GetCursorPos(&cursorPos);
+  ScreenToClient(hWnd, &cursorPos);
+  if (g_pGlobalUiRootController != 0) {
+    CWnd* foreground = CWnd::FromHandle(GetForegroundWindow());
+    CWnd* mainWnd = (AfxGetThread() != 0) ? AfxGetThread()->GetMainWnd() : 0;
+    if (foreground == mainWnd) {
+      static_cast<TAmbitApplication*>(g_pGlobalUiRootController)
+          ->HandleCursor(cursorPos.x, cursorPos.y, 0);
+    }
+  }
+}
+
 // SYNTHETIC: IMPERIALISM 0x00482850
 // CIncludeView::CreateObject
 
@@ -26,27 +47,6 @@ ON_MESSAGE(0x4ef, OnDialogTreeHostMsg4EF)
 END_MESSAGE_MAP()
 
 CIncludeView::CIncludeView() : CView() {}
-
-// The 17ms UI tick (timer id 0xd00d, armed in OnInitialUpdate): track the cursor in
-// client coordinates and, while the main frame is the foreground window, feed the
-// position into the global UI root's per-tick cursor dispatch (edge auto-scroll etc.).
-// FUNCTION: IMPERIALISM 0x00482760
-static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime) {
-  (void)uMsg;
-  (void)idEvent;
-  (void)dwTime;
-  POINT cursorPos;
-  GetCursorPos(&cursorPos);
-  ScreenToClient(hWnd, &cursorPos);
-  if (g_pGlobalUiRootController != 0) {
-    CWnd* foreground = CWnd::FromHandle(GetForegroundWindow());
-    CWnd* mainWnd = (AfxGetThread() != 0) ? AfxGetThread()->GetMainWnd() : 0;
-    if (foreground == mainWnd) {
-      static_cast<TAmbitApplication*>(g_pGlobalUiRootController)
-          ->VTableSlot2B(cursorPos.x, cursorPos.y, 0);
-    }
-  }
-}
 
 // FUNCTION: IMPERIALISM 0x00482bf0
 LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
@@ -70,9 +70,6 @@ LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
   return 0;
 }
 
-// Everything the hosted activeDialog TView tree ever draws on screen flows through
-// here (CView::OnPaint -> OnDraw): clip box -> slot-0x43 paint recursion, gated on the
-// global UI-active flag (deliberately 0 while a dialog factory body runs).
 // FUNCTION: IMPERIALISM 0x00482c90
 void CIncludeView::OnDraw(CDC* pDC) {
   RECT clipBox;
@@ -131,4 +128,12 @@ void CIncludeView::OnInitialUpdate() {
     m_tickTimerId = ::SetTimer(m_hWnd, 0xd00d, 0x11, UiCursorTickTimerProc);
   }
   OnUpdate(0, 0, 0);
+}
+
+// Everything the hosted activeDialog TView tree ever draws on screen flows through
+// here (CView::OnPaint -> OnDraw): clip box -> slot-0x43 paint recursion, gated on the
+// global UI-active flag (deliberately 0 while a dialog factory body runs).
+// FUNCTION: IMPERIALISM 0x00484060
+int CIncludeView::GetUiInteractiveFlag90() {
+  return m_uiInteractiveFlag90;
 }

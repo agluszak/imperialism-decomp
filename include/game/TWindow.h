@@ -136,7 +136,8 @@ public:
   virtual void AssertMcAppUILine2358();                                  // slot 0x72 0x48d8d0
   virtual undefined OrphanCallChain_C2_I39_0048d900(char param_1,
                                                     char param_2); // slot 0x73 0x48d900
-  virtual void OrphanCallChain_C2_I10_0048e120();                  // slot 0x74 0x48e120
+  // MacApp TWindow::CloseAndFree(): Close (slot 0x28) then Free (slot 0x07).
+  virtual void CloseAndFree();                                     // slot 0x74 0x48e120
   virtual undefined SetWindowText(CString* param_1);               // slot 0x75 0x48d9c0
   virtual undefined GetWindowText(CString* param_1);               // slot 0x76 0x48d9f0
   // === END GENERATED DECLS (TWindow) ===

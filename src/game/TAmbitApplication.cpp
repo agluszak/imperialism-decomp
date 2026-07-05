@@ -1,92 +1,38 @@
 #include "game/TAmbitApplication.h"
 
-#include "game/CObjectGameParse.h"
-#include "game/global_data_tables.h"
-#include "game/TDisplayMgr.h"
-#include "game/TViewMgr.h"
-#include "game/TSimMgr.h"
-#include "game/TAssetMgr.h"
-#include "game/TView.h"
-#include "game/TStream.h"
-#include "game/TLanguageMgr.h"
-#include "game/TMacViewMgr.h"
-#include "game/TMultiplayerMgr.h"
 #include "game/ImperialismApp.h"
 #include "game/TAssetMgr.h"
+#include "game/TDisplayMgr.h"
+#include "game/THelpMgr.h"
 #include "game/TLanguageMgr.h"
-#include "game/THelpMgr.h"
+#include "game/TMacViewMgr.h"
+#include "game/TMapUberPicture.h"
+#include "game/TMultiplayerMgr.h"
+#include "game/TSimMgr.h"
+#include "game/TStream.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
+#include "game/TView.h"
+#include "game/TViewMgr.h"
+#include "game/TWindow.h"
 #include "game/app_init_globals.h"
-#include "game/THelpMgr.h"
-#include "game/ui_invalidation_guard.h"
-
-// FUNCTION: IMPERIALISM 0x004133d0
-void TAmbitApplication::ParseDirectionTokenAndSetMovementFlags(CString token, int parseMode,
-                                                               int parseTail) {
-  CString localToken(token);
-
-  int& movementParseFlag2c = *reinterpret_cast<int*>(&trackedEntries);
-  int& movementParseFlag30 = *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 4);
-  int& movementParseCenterFlag =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 8);
-  CString& movementParseTypeTail =
-      *reinterpret_cast<CString*>(reinterpret_cast<char*>(&trackedEntries) + 12);
-  int& movementParseRightFlag =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 16);
-  int& movementParseStopFlag =
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(&trackedEntries) + 20);
-
-  unsigned char* tokenText = const_cast<unsigned char*>(
-      reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(localToken)));
-  if (parseMode != 0) {
-    if (CompareAnsiStringsWithMbcsAwareness(
-            tokenText, reinterpret_cast<unsigned char*>(g_szMovementParseCompareB_00694254)) == 0) {
-      movementParseFlag2c = 1;
-      movementParseFlag30 = 1;
-      goto finish_parse_direction_token;
-    }
-    if (CompareAnsiStringsWithMbcsAwareness(
-            tokenText, reinterpret_cast<unsigned char*>(g_szMovementParseCompareA_00694250)) == 0) {
-      movementParseFlag30 = 1;
-      goto finish_parse_direction_token;
-    }
-  }
-
-  if (parseMode == 0 || tokenText == nullptr || tokenText[0] != 'L') {
-    if (parseMode != 0) {
-      if (tokenText != nullptr && tokenText[0] == 'R') {
-        movementParseRightFlag = 1;
-      } else if (tokenText != nullptr && tokenText[0] == 'S') {
-        movementParseStopFlag = 1;
-      } else if (tokenText != nullptr && tokenText[0] == 'T') {
-        movementParseTypeTail = reinterpret_cast<const char*>(tokenText + 1);
-      } else if (tokenText != nullptr && tokenText[0] == 'C') {
-        movementParseCenterFlag = 1;
-      }
-    }
-  } else {
-    (**reinterpret_cast<CString**>(&screenModeAt24)) = reinterpret_cast<const char*>(tokenText + 1);
-  }
-
-finish_parse_direction_token:
-  static_cast<CObjectWithGameParseParam*>(static_cast<CObject*>(this))
-      ->ParseParam(reinterpret_cast<const char*>(tokenText), parseMode, parseTail);
-}
+#include "game/global_data_tables.h"
+#include "game/startup_helpers.h"
 
 // SYNTHETIC: IMPERIALISM 0x004135f0
 // TAmbitApplication::`scalar deleting destructor'
 TAmbitApplication::~TAmbitApplication() {}
 
+// Mac-oracle name TAmbitApplication::DoSetupMenus() — a no-op on Windows (there is no
+// menu bar to rebuild). Tentative attribution; the slot is a bare RET in the original.
 // FUNCTION: IMPERIALISM 0x00414770
-void TAmbitApplication::VTableSlot2C() {
-  // OrphanRetStub
-}
+void TAmbitApplication::DoSetupMenus() {}
 
 TAmbitApplication::TAmbitApplication() : TApplication() {
-  field_48 = 0;
+  edgeScrollTarget48 = 0;
   dispatchBusyFlag4c = 0;
-  field_50 = 0;
+  languagePackId50 = 0;
 }
+
 // SYNTHETIC: IMPERIALISM 0x0049de40
 // TAmbitApplication::CreateObject
 
@@ -97,14 +43,14 @@ IMPLEMENT_DYNCREATE(TAmbitApplication, TApplication)
 
 // FUNCTION: IMPERIALISM 0x0049ded0
 void TAmbitApplication::InitializeGlobalRuntimeSystems() {
-  field_48 = 0;
-  field_50 = theApp.field_E4;
+  edgeScrollTarget48 = 0;
+  languagePackId50 = theApp.languagePackIdE4;
 
   if (g_pLanguageMgr == nullptr) {
     g_pLanguageMgr = new TLanguageMgr();
   }
 
-  g_pLanguageMgr->ReloadPreplutNewsTableAndResources(field_50);
+  g_pLanguageMgr->ReloadPreplutNewsTableAndResources(languagePackId50);
 
   TSimMgr* simMgr = new TSimMgr();
   if (simMgr != nullptr) {
@@ -113,7 +59,7 @@ void TAmbitApplication::InitializeGlobalRuntimeSystems() {
   g_pSimMgr = simMgr;
 
   TAssetMgr* assetMgr = new TAssetMgr();
-  ForwardEnsurePictWvDataGobLoadedBySlot(field_50);
+  ForwardEnsurePictWvDataGobLoadedBySlot(languagePackId50);
   g_pUiViewManager = assetMgr;
 
   EnsureTurnEventDialogFactoryRegistryInitialized();
@@ -189,142 +135,63 @@ void TAmbitApplication::Free() {
   TApplication::Free();
 }
 
-extern "C" int __cdecl InvokeAfxThreadAndCallSecondaryRefresh();
-unsigned int __cdecl GetTickCountDiv16();
-extern "C" int DAT_006a21c0;
-
 // FUNCTION: IMPERIALISM 0x0049e280
 void TAmbitApplication::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   if (g_nSaveFormatVersion < 0x2a) {
-    stream->ReadBytes(&field_50, 2);
-    field_50 = 0x00657573;
+    stream->ReadBytes(&languagePackId50, 2);
+    languagePackId50 = 0x00657573;
   } else {
-    stream->ReadBytes(&field_50, 4);
+    stream->ReadBytes(&languagePackId50, 4);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0049e2f0
 void TAmbitApplication::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&field_50, 4);
+  stream->WriteBytesSlot78(&languagePackId50, 4);
 }
 
+// MacApp TAmbitApplication::HandleCursor(CPoint, Region**): on the map-style turn-event
+// screens, auto-scroll the map picture when the cursor sits within 4px of the viewport
+// edge (throttled to one scroll per 3 tick16 units); otherwise fall through to the base
+// hook. The edge mask is 8=left, 4=right, 1=top, 2=bottom.
 // FUNCTION: IMPERIALISM 0x0049e320
-void TAmbitApplication::VTableSlot2B(int arg1, int arg2, int arg3) {
-  int iVar3 = TemporarilyClearAndRestoreUiInvalidationFlag();
-  if (iVar3 == 0 && activeView != nullptr) {
-    short sVar1 = g_pUiRuntimeContext->currentTurnEventCode;
-    if (sVar1 == 0x7dd || sVar1 == 0x3b8 || sVar1 == 0xed8 || sVar1 == 0xf3c || sVar1 == 0x3c0) {
-      iVar3 = TemporarilyClearAndRestoreUiInvalidationFlag();
-      if (iVar3 == 0) {
+void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
+  if (!InModalState() && edgeScrollTarget48 != nullptr) {
+    short code = g_pUiRuntimeContext->currentTurnEventCode;
+    if (code == 0x7dd || code == 0x3b8 || code == 0xed8 || code == 0xf3c || code == 0x3c0) {
+      if (!InModalState()) {
         CPoint pt;
-        pt.x = arg1;
-        pt.y = arg2;
+        pt.x = x;
+        pt.y = y;
 
-        TView* activeDialog = g_pDisplayMgr->activeDialog;
-        activeDialog->UpdateAfterBitmapChange(&pt);
+        g_pDisplayMgr->activeDialog->UpdateAfterBitmapChange(&pt);
 
         if (pt.x > -200 && pt.y > -200) {
+          TView* activeDialog = g_pDisplayMgr->activeDialog;
           int width = activeDialog->field34;
-          int height = activeDialog->field38;
-          if (pt.x < width + 200 && pt.y < height + 200) {
-            byte bVar4 = 0;
-            if (pt.x < 5) {
-              bVar4 = 8;
-            } else if (width - 4 <= pt.x) {
-              bVar4 = 4;
-            }
-            if (pt.y < 5) {
-              bVar4 |= 1;
-            } else if (height - 4 <= pt.y) {
-              bVar4 |= 2;
-            }
-            if (bVar4 != 0) {
-              int ticks = GetTickCountDiv16();
-              if (ticks < DAT_006a21c0 || DAT_006a21c0 + 3 < ticks) {
-                DAT_006a21c0 = ticks;
-                // (**(code **)((this[3].vftable)->GetTEventClassNamePointer + 0x1d0))(bVar4);
-                // Wait! this[3] is activeView? No, this is TAmbitApplication.
-                // In TApplication, CList<void*, void*> trackedEntries is at 0x2c (which is offset
-                // 44). So this + 0x2c is trackedEntries. In the decompile: this[3].vftable is at
-                // offset 0x30 (since sizeof(TSoundPlayer) or whatever? No, it's pointer arithmetic
-                // on TNewGameCommand* which has size 16? Wait! pointer arithmetic on
-                // TNewGameCommand*: this[3] is at offset 3 * sizeof(TNewGameCommand) = 3 * 0x10 =
-                // 0x30? Yes! So it is at offset 0x30 from this, which is activeView! (activeView is
-                // at 0x20, wait, activeView at 0x20, screenModeAt24 at 0x24, field28 at 0x28,
-                // trackedEntries at 0x2c. Wait! What is at offset 0x30? Ah! in_ECX + 0x30 is inside
-                // trackedEntries? Let's check TApplication layout: activeView is at +0x20. In the
-                // decompile of HandleTurnEventViewportEdgeAutoScroll: this[3].vftable -> wait!
-                // TNewGameCommand has some size. But this is TAmbitApplication. Let's check who is
-                // this[3]. In the decompile: "this[3].vftable" is checked. Wait, this is
-                // TAmbitApplication*. Let's check: activeView is at +0x20. Let's check the offset
-                // of activeView! Yes, activeView is at +0x20. What is at +0x30? In TApplication,
-                // CList trackedEntries is at +0x2c. CList has size 28 bytes? Or 24 bytes? Wait,
-                // CList has: +0x00: vtable (4 bytes) +0x04: m_pNodeHead +0x08: m_pNodeTail
-                // ...
-                // So trackedEntries.vtable is at +0x2c.
-                // What is at +0x30? It's trackedEntries.m_pNodeHead!
-                // Wait! In the decompile:
-                // "this[3].vftable != (TNewGameCommandVtbl *)0x0"
-                // Wait, if this is TNewGameCommand* (with some size), this[3] means:
-                // this + 3 * sizeof(TNewGameCommand).
-                // But in TAmbitApplication:
-                // What was in_ECX?
-                // In the decompile:
-                // "this" was typed TNewGameCommand*.
-                // If it is actually TAmbitApplication*, then in_ECX + 0x30 is
-                // trackedEntries.m_pNodeHead! But wait! Is it trackedEntries.m_pNodeHead? Or is it
-                // activeView? Let's look at the assembly for 0x0049e320: 0049e32a  CMP dword ptr
-                // [ESI + 0x30], 0 Ah! [ESI + 0x30]! What is at [ESI + 0x30]? Wait! If [ESI + 0x30]
-                // is checked, and ESI is this (TAmbitApplication*). Wait! TApplication size is
-                // 0x48. CList trackedEntries is at +0x2c. In MFC, CList has: +0x00 (0x2c):
-                // m_pNodeHead +0x04 (0x30): m_pNodeTail +0x08 (0x34): m_nCount wait, does MFC CList
-                // have a vtable? No, MFC CList is a template class, it does NOT have a vtable! But
-                // wait, the comment in TApplication.h says: CList<void*, void*> trackedEntries; //
-                // 0x2c, vtable 0x00648ca8 Wait! If it has a vtable 0x00648ca8, then it does have a
-                // vtable! Why does it have a vtable? Because it inherits from CObject? Yes, MFC
-                // templated collections like CList do not inherit from CObject, but wait, did the
-                // game developers inherit from CObject or use a custom list? Ah! The comment says
-                // "vtable 0x00648ca8". So it has a vtable at +0x2c, and m_pNodeHead is at +0x30!
-                // Yes! [ESI + 0x30] is indeed m_pNodeHead!
-                // And what does it do?
-                // (**(code **)((this[3].vftable)->GetTEventClassNamePointer + 0x1d0))(bVar4);
-                // Wait!
-                // "this[3].vftable" is actually [this + 0x30], which is m_pNodeHead!
-                // So it gets the first node of the list: node = trackedEntries.m_pNodeHead.
-                // Then: (node->vftable)->GetTEventClassNamePointer?
-                // No! node is a CNode.
-                // In MFC CList:
-                // struct CNode {
-                //   CNode* pNext;
-                //   CNode* pPrev;
-                //   void* data;
-                // };
-                // So node->data is at offset +0x08 from node!
-                // In the decompile:
-                // "(this[3].vftable)->GetTEventClassNamePointer" is node + 0x08?
-                // Wait! In the decompile:
-                // "(this[3].vftable)->GetTEventClassNamePointer"
-                // Let's check the assembly for this part:
-                // 0049e3d9  MOV EAX,dword ptr [ESI + 0x30] ; EAX = m_pNodeHead (CNode*)
-                // ...
-                // 0049e3f4  MOV ECX,dword ptr [EAX + 0x8]  ; ECX = CNode->data
-                // 0049e3fa  MOV EAX,dword ptr [ECX]        ; EAX = CNode->data->vtable
-                // 0049e3fc  CALL dword ptr [EAX + 0x1d0]   ; Call virtual method at slot 0x1d0 of
-                // CNode->data! YES! This is exactly calling virtual method at slot 0x1d0 of the
-                // first element in trackedEntries! Let's write this in clean C++:
-                if (!trackedEntries.IsEmpty()) {
-                  void* data = trackedEntries.GetHead();
-                  union {
-                    void* p;
-                    void (TView::*fn)(byte);
-                  } u;
-                  void** vtbl = *reinterpret_cast<void***>(data);
-                  u.p = vtbl[116];
-                  (reinterpret_cast<TView*>(data)->*u.fn)(bVar4);
+          if (pt.x < width + 200) {
+            int height = activeDialog->field38;
+            if (pt.y < height + 200) {
+              char edgeMask = 0;
+              if (pt.x <= 4) {
+                edgeMask = 8;
+              } else if (pt.x >= width - 4) {
+                edgeMask = 4;
+              }
+              if (pt.y <= 4) {
+                edgeMask |= 1;
+              } else if (pt.y >= height - 4) {
+                edgeMask |= 2;
+              }
+              if (edgeMask != 0) {
+                int ticks = GetTickCountDiv16();
+                if (g_lastEdgeAutoScrollTick16 > ticks || g_lastEdgeAutoScrollTick16 + 3 < ticks) {
+                  g_lastEdgeAutoScrollTick16 = ticks;
+                  edgeScrollTarget48->AutoScrollByEdgeMask(edgeMask);
+                  return;
                 }
-                return;
               }
             }
           }
@@ -332,7 +199,7 @@ void TAmbitApplication::VTableSlot2B(int arg1, int arg2, int arg3) {
       }
     }
   }
-  TApplication::HandleTurnEventViewportEdgeAutoScroll(arg1, arg2, arg3);
+  TApplication::GetDefaultCursorRegion(x, y, cursorRegion);
 }
 
 // FUNCTION: IMPERIALISM 0x0049e4b0
@@ -342,15 +209,9 @@ void TAmbitApplication::ForwardParam(int param) {
   }
 }
 
+// MacApp TAmbitApplication::CloseAndFreeWindow(TWindow*): dispatch the window's
+// CloseAndFree (slot 0x74). The original does not null-check the window.
 // FUNCTION: IMPERIALISM 0x0049e4e0
-void TAmbitApplication::VTableSlot2D(void* param_1) {
-  if (param_1 != nullptr) {
-    union {
-      void* p;
-      void (TView::*fn)();
-    } u;
-    void** vtbl = *reinterpret_cast<void***>(param_1);
-    u.p = vtbl[116];
-    (reinterpret_cast<TView*>(param_1)->*u.fn)();
-  }
+void TAmbitApplication::CloseAndFreeWindow(TWindow* window) {
+  window->CloseAndFree();
 }

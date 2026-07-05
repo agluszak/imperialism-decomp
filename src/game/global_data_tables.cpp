@@ -93,20 +93,26 @@ TNavyMgr* g_pNavyOrderManager = 0;
 // GLOBAL: IMPERIALISM 0x006a3338
 TArmyMgr* g_pMapContextActionManager = 0;
 char g_vtblTSortedByRelationshipList = 0;
+// Last cursor edge-auto-scroll timestamp in GetTickCountDiv16 units
+// (TAmbitApplication::HandleCursor, 0x49e320).
 // GLOBAL: IMPERIALISM 0x006a21c0
-int DAT_006a21c0 = 0;
+int g_lastEdgeAutoScrollTick16 = 0;
 // GLOBAL: IMPERIALISM 0x00695278
 int g_nSaveFormatVersion = -1;
+// Upper-cased command-line switch literals matched by
+// ImperialismCommandLineInfo::ParseParam (0x4133d0).
 // GLOBAL: IMPERIALISM 0x00694250
-char g_szMovementParseCompareA_00694250[] = "";
+char g_szCmdSwitchLang_00694250[] = "L";
 // GLOBAL: IMPERIALISM 0x00694254
-char g_szMovementParseCompareB_00694254[] = "";
+char g_szCmdSwitchLangQuit_00694254[] = "L!";
+// The MFC application singleton (&theApp), cached by InitInstance (0x412dc0).
 // GLOBAL: IMPERIALISM 0x006a1348
-class ImperialismApp* DAT_006a1348 = 0;
+class ImperialismApp* g_pImperialismApp = 0;
 // GLOBAL: IMPERIALISM 0x006a1350
 int DAT_006a1350 = 0;
+// Previous CRT new-handler returned by _set_new_handler at startup (write-only).
 // GLOBAL: IMPERIALISM 0x006a1354
-void* DAT_006a1354 = 0;
+_PNH g_pfnPreviousNewHandler = 0;
 
 // McAppUI.cpp module globals referenced by TView/TControl widget code. See
 // include/game/global_data_tables.h.
@@ -289,8 +295,6 @@ void* g_pScopedMapQuickDrawViewContext = 0;
 // GLOBAL: IMPERIALISM 0x6a1c98
 void* g_pReusableQuickDrawSurfaceListHead = 0;
 
-// GLOBAL: IMPERIALISM 0x006a7fac
-void* g_pGlobalCallback_006a7fac = nullptr;
 // GLOBAL: IMPERIALISM 0x006a2018
 // Cached CCommandLineInfo::m_bShowSplash flag (cmdInfo+0x04 after the CObject vptr).
 // Writer: SetCachedShowSplashFlag @ 0x0049cc40 from InitInstance @ 0x00412f81.
@@ -547,6 +551,11 @@ extern "C" const char s_IrgGlobPattern_006942FC[] = "*.irg";
 // GLOBAL: IMPERIALISM 0x006942b4
 extern "C" const char s_NoLanguageFilesMessage_006942B4[] =
     "No language files are present. Unable to start Imperialism.";
+// Out-of-memory new-handler box (ShowOutOfMemoryErrorNewHandler, 0x412d90).
+// GLOBAL: IMPERIALISM 0x006941f0
+extern "C" const char s_OutOfMemoryText_006941F0[] = "Out of Memory!!!";
+// GLOBAL: IMPERIALISM 0x00694204
+extern "C" const char s_ErrorCaption_00694204[] = "Error!!!!!";
 // GLOBAL: IMPERIALISM 0x00698bf4
 extern "C" const char s_PictWvGobPathFormat_00698BF4[] = "Data/PictWv%d.gob";
 // GLOBAL: IMPERIALISM 0x0069b810

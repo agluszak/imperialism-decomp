@@ -2123,7 +2123,7 @@ char ** BuildMapContextStatusStringVariantA(CString *param_1)
       local_1d4 = &DAT_0069ac40;
       local_1d0 = &DAT_0069ac3c;
       local_1cc = &DAT_0069ac38;
-      local_1c8 = &g_szMovementParseCompareA_00694250;
+      local_1c8 = &g_szCmdSwitchLang_00694250;
       local_1c4 = &DAT_0069ac30;
       local_1c0 = &DAT_0069ac2c;
       local_1bc = &DAT_0069ac28;
@@ -2517,7 +2517,7 @@ char ** BuildMapContextStatusStringVariantB(CString *param_1)
       local_124 = &DAT_0069acf4;
       local_120 = &DAT_0069acf0;
       local_11c = &DAT_0069ac28;
-      local_118 = &g_szMovementParseCompareA_00694250;
+      local_118 = &g_szCmdSwitchLang_00694250;
       local_114 = &DAT_0069ac24;
       local_110 = &DAT_0069acec;
       local_10c = 3;
@@ -2860,7 +2860,7 @@ undefined ** BuildMapContextStatusStringVariantC(CString *param_1)
       iVar11 = 0;
       local_7c[0] = &DAT_0069ac1c;
       local_7c[1] = &DAT_0069ac58;
-      local_7c[2] = &g_szMovementParseCompareA_00694250;
+      local_7c[2] = &g_szCmdSwitchLang_00694250;
       local_7c[3] = &DAT_0069ac0c;
       local_6c = &DAT_0069ac38;
       local_68 = &DAT_0069ad00;
@@ -4015,7 +4015,7 @@ char ** BuildMapContextStatusStringVariantF(CString *param_1)
       local_1e4[3] = (undefined *)0xa;
       local_1e4[6] = (undefined *)0xa;
       iVar9 = 0;
-      local_1e4[7] = &g_szMovementParseCompareA_00694250;
+      local_1e4[7] = &g_szCmdSwitchLang_00694250;
       local_1e4[8] = &DAT_0069ac2c;
       local_1e4[9] = &DAT_0069ac24;
       local_1e4[10] = &DAT_0069ac40;
@@ -4416,7 +4416,7 @@ undefined ** BuildMapContextStatusStringVariantG(CString *param_1)
       local_334[8] = &DAT_0069ae74;
       local_334[9] = &DAT_0069af98;
       local_334[10] = &DAT_0069ac0c;
-      local_334[0xb] = &g_szMovementParseCompareA_00694250;
+      local_334[0xb] = &g_szCmdSwitchLang_00694250;
       local_334[0xc] = &DAT_0069ac54;
       local_334[0xd] = &DAT_0069ad48;
       local_37c[0] = (char *)0x1;
@@ -4455,7 +4455,7 @@ undefined ** BuildMapContextStatusStringVariantG(CString *param_1)
       local_1fc[2] = &DAT_0069ac10;
       local_1fc[3] = &DAT_0069ac0c;
       local_1fc[4] = &DAT_0069ac38;
-      local_1e8 = &g_szMovementParseCompareA_00694250;
+      local_1e8 = &g_szCmdSwitchLang_00694250;
       local_1e4 = &DAT_0069af94;
       local_1e0 = &DAT_0069ad48;
       local_1dc = &DAT_0069af9c;
@@ -4947,7 +4947,7 @@ char * BuildMapContextStatusStringVariantH(CString *param_1)
       local_220[0xb] = 5;
       local_1dc[0] = &DAT_0069af98;
       local_1dc[1] = &DAT_00696674;
-      local_1dc[2] = &g_szMovementParseCompareA_00694250;
+      local_1dc[2] = &g_szCmdSwitchLang_00694250;
       local_1dc[3] = &DAT_0069b0a4;
       local_1dc[4] = &DAT_0069ac44;
       local_1c8 = &DAT_0069ac54;
@@ -6387,7 +6387,7 @@ undefined ** BuildMapContextStatusStringVariantL(CString *param_1)
       local_c4[3] = &DAT_0069ac40;
       local_b4 = &DAT_0069b0a0;
       local_b0 = &DAT_0069acf0;
-      local_ac = &g_szMovementParseCompareA_00694250;
+      local_ac = &g_szCmdSwitchLang_00694250;
       local_a8 = &DAT_0069ac54;
       local_a4 = &DAT_0069ac0c;
       local_a0 = &DAT_0069ac2c;
@@ -6783,7 +6783,7 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString *param_1)
     local_444[0x24] = &DAT_0069ad44;
     local_444[0x25] = &DAT_0069ac48;
     local_444[0x26] = &DAT_0069b290;
-    local_444[0x27] = &g_szMovementParseCompareA_00694250;
+    local_444[0x27] = &g_szCmdSwitchLang_00694250;
     local_444[0x28] = &DAT_0069ac0c;
     local_444[0x29] = &DAT_0069ac38;
     local_444[0x2a] = &DAT_0069b28c;
@@ -7400,7 +7400,7 @@ void BuildRandomMapContextStatusBaseString(CString *param_1)
     local_1d4[0xe] = (undefined *)0xe;
     DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1;
     iVar6 = 0;
-    local_1d4[0x14] = &g_szMovementParseCompareA_00694250;
+    local_1d4[0x14] = &g_szCmdSwitchLang_00694250;
     local_1d4[0x15] = &DAT_0069ac44;
     local_1d4[0x16] = &DAT_0069ac38;
     local_1d4[0x17] = &DAT_0069ac58;
@@ -7924,7 +7924,7 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString *param_1)
   }
   else {
     DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1;
-    local_154[0] = &g_szMovementParseCompareA_00694250;
+    local_154[0] = &g_szCmdSwitchLang_00694250;
     local_154[1] = &DAT_0069ac40;
     local_154[2] = &DAT_0069ad44;
     local_154[3] = &DAT_0069ac28;
@@ -7954,7 +7954,7 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString *param_1)
     local_1a4[0xd] = (undefined *)0x3;
     iVar7 = (DAT_006a5aec >> 0xc & 0x7fff) % 0xc0 - 0x1a;
     if (iVar7 < 0) {
-      text = &g_szMovementParseCompareA_00694250;
+      text = &g_szCmdSwitchLang_00694250;
     }
     else {
       iVar6 = 0;
@@ -8308,7 +8308,7 @@ void GenerateMappedFlavorTextVariantB_005cfc40(CString *param_1)
   }
   else {
     local_2bc[0] = &DAT_0069ac24;
-    local_2bc[1] = &g_szMovementParseCompareA_00694250;
+    local_2bc[1] = &g_szCmdSwitchLang_00694250;
     local_2bc[2] = &DAT_0069ac40;
     local_2bc[3] = &DAT_0069ac28;
     local_2bc[4] = &DAT_0069ac44;
@@ -9131,7 +9131,7 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString *param_1)
     local_71c[6] = &DAT_0069ac38;
     local_71c[7] = &DAT_0069af98;
     local_71c[8] = &DAT_0069ac1c;
-    local_71c[9] = &g_szMovementParseCompareA_00694250;
+    local_71c[9] = &g_szCmdSwitchLang_00694250;
     local_71c[10] = &DAT_0069ac0c;
     local_71c[0xb] = &DAT_0069acec;
     local_71c[0xc] = &DAT_0069ac14;
@@ -9987,7 +9987,7 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString *param_1)
     DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1;
     local_23c[0] = &DAT_0069ac44;
     local_23c[1] = &DAT_0069ad44;
-    local_23c[2] = &g_szMovementParseCompareA_00694250;
+    local_23c[2] = &g_szCmdSwitchLang_00694250;
     local_23c[3] = &DAT_0069ac40;
     local_23c[4] = &DAT_0069ac28;
     local_228 = &DAT_0069ac48;
