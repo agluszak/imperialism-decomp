@@ -374,7 +374,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
 
   // Mask the game-flow flag while committing the refresh when localization mode is active.
   unsigned char savedFlag = 0;
-  bool localizationActive = *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pSimMgr) + 0x44) != 0;
+  bool localizationActive = *reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) != 0;
   if (localizationActive) {
     savedFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
@@ -382,14 +382,14 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   node->RefreshTurnEventDialog();
   node->CallVoidSlotA0();
   node->Free();
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pSimMgr) + 0x44) != 0) {
+  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) != 0) {
     g_pGameFlowState->processPrimaryEventQueue = savedFlag;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005d5960
 int TViewMgr::ClassifyTurnStateForOverlayMode() {
-  switch (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pSimMgr) + 8)) {
+  switch (*reinterpret_cast<short*>(&g_pSimMgr->mode)) {
   case 6:
   case 0xc:
   case 0xe:

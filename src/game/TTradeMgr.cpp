@@ -767,7 +767,7 @@ void TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations() {
 
 // FUNCTION: IMPERIALISM 0x005b98d0
 void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
-  short turnCount = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pSimMgr) + 0x2c);
+  short turnCount = g_pSimMgr->quarterGateTick2c;
   short bucket = static_cast<short>(
       (static_cast<int>(turnCount) + (static_cast<int>(turnCount) >> 0x1f & 3U)) >> 2);
   double base;
@@ -839,7 +839,7 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
 
 // FUNCTION: IMPERIALISM 0x005b9b30
 void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
-  short turnCount = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pSimMgr) + 0x2c);
+  short turnCount = g_pSimMgr->quarterGateTick2c;
   short band = static_cast<short>(
       (static_cast<int>(turnCount) + (static_cast<int>(turnCount) >> 0x1f & 3U)) >> 2);
   double base;
