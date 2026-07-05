@@ -3,29 +3,14 @@
 #include "game/GameAssert.h"
 
 #include "game/global_data_tables.h"
+#include "game/TCountry.h"
+#include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
+#include "game/TSortedList.h"
 #include "game/TStream.h"
 #include "game/ui_invalidation_guard.h"
 
 extern "C" char g_pClassDescTUnit = 0;
-
-struct TUnitOrderOwnerManagerView {
-  virtual void s00() = 0;
-  virtual void s01() = 0;
-  virtual void s02() = 0;
-  virtual void s03() = 0;
-  virtual void s04() = 0;
-  virtual void s05() = 0;
-  virtual void s06() = 0;
-  virtual void s07() = 0;
-  virtual void s08() = 0;
-  virtual void s09() = 0;
-  virtual void s10() = 0;
-  virtual void s11() = 0;
-  virtual void VTableSlot12(TUnit* order) = 0; // slot 12 at 0x30
-protected:
-  ~TUnitOrderOwnerManagerView() {}
-};
 
 // FUNCTION: IMPERIALISM 0x00402eeb
 void __fastcall thunk_RegisterUnitOrderWithOwnerManager(TUnit* order, int unusedEdx,
@@ -66,15 +51,14 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContex
   this->field_8 = 0;
   this->VTableSlot10(pOwnerContext);
 
-  TUnitOrderOwnerManagerView* ownerManager = 0;
+  // The order-owner "manager" is a real TSortedList: military units (field_1C != 0)
+  // register into the owning country's militaryUnitList44; other orders into the
+  // nation's trackedObjectList. Both dispatch AddTailSlot30(item) at vtable byte 0x30.
+  TSortedList* ownerManager;
   if (this->field_1C != 0) {
-    void* terrain = g_apTerrainTypeDescriptorTable[nOrderOwnerNationId];
-    ownerManager =
-        *reinterpret_cast<TUnitOrderOwnerManagerView**>(reinterpret_cast<char*>(terrain) + 0x44);
+    ownerManager = g_apTerrainTypeDescriptorTable[nOrderOwnerNationId]->militaryUnitList44;
   } else {
-    void* nation = g_apNationStates[nOrderOwnerNationId];
-    ownerManager =
-        *reinterpret_cast<TUnitOrderOwnerManagerView**>(reinterpret_cast<char*>(nation) + 0x89c);
+    ownerManager = g_apNationStates[nOrderOwnerNationId]->trackedObjectList;
   }
 
   if (ownerManager == 0) {
@@ -82,7 +66,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContex
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
 
-  ownerManager->VTableSlot12(this);
+  ownerManager->AddTailSlot30(this);
 
   this->field_18 = nOrderOwnerNationId;
   this->field_1A = arg3;
