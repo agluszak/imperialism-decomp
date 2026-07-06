@@ -1758,7 +1758,28 @@ int TMapMgr::GetMapImprovementTileOffsetFromClass(char classCode, int unusedPara
   return classCode * 16;
 }
 
-undefined TMapMgr::GetMapImprovementTileSpriteOffset(short param_1) {
+// FUNCTION: IMPERIALISM 0x005177f0
+short TMapMgr::GetMapImprovementTileSpriteOffset(short tileIndex) {
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  unsigned char flags = tile->activeFlags1c;
+  if (flags & 1) {
+    if (tile->ownerNationTag04 < 7) {
+      return (tile->ownerNationTag04 + 0x16) << 4;
+    }
+    return 0x1d << 4;
+  }
+  if ((flags >> 5) & 1) {
+    if (tile->ownerNationTag04 < 7) {
+      return (tile->ownerNationTag04 * 2 + 0x40) << 4;
+    }
+    return 0x4e << 4;
+  }
+  if ((flags >> 2) & 1) {
+    if (tile->ownerNationTag04 < 7) {
+      return (tile->ownerNationTag04 + 0x26) << 4;
+    }
+    return 0x2d << 4;
+  }
   return 0;
 }
 

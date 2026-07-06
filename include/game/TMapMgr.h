@@ -392,7 +392,10 @@ public:
   // GetMapImprovementOffsetByTownTransportLink above.
   virtual int GetMapImprovementTileOffsetFromClass(char classCode,
                                                    int unusedParam2); // slot 0x47 0x5177d0
-  virtual undefined GetMapImprovementTileSpriteOffset(short param_1); // slot 0x48 0x5177f0
+  // Bitmap tile-sprite offset (16-byte cells) for a tile's improvement class, gated on
+  // activeFlags1c bits 0/5/2 (checked in that priority order) and scaled by
+  // ownerNationTag04 below tier 7, else a fixed overflow cell.
+  virtual short GetMapImprovementTileSpriteOffset(short tileIndex); // slot 0x48 0x5177f0
   virtual int QueueDepotConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
                                           undefined2 param_4); // slot 0x49 0x5145b0
   virtual void QueuePortConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,

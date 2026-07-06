@@ -17034,7 +17034,7 @@
     },
     {
       "address": "0x5177f0",
-      "matching": 0.03636363636363636,
+      "matching": 0.25806451612903225,
       "name": "TMapMgr::GetMapImprovementTileSpriteOffset",
       "type": 1
     },
