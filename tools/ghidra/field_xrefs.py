@@ -26,6 +26,7 @@ import sys
 from tools.common import ghidra_env
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
+from tools.common.symbols import names_by_address
 
 MEM_RE = re.compile(r"\[(E[A-Z]{2})(?:\s*\+\s*(0x[0-9a-fA-F]+))?\]")
 MOV_REG_REG_RE = re.compile(r"^MOV (E[A-Z]{2}),(E[A-Z]{2})$")
@@ -35,19 +36,12 @@ CALL_CLOBBERS = ("EAX", "ECX", "EDX")
 
 def class_function_addrs(repo_root, cls: str) -> dict[int, str]:
     """address -> name for every function attributed to the class."""
-    out: dict[int, str] = {}
-    names_by_addr: dict[int, str] = {}
-    for row in read_pipe_rows(repo_root / "config" / "symbols.csv"):
-        name = row.get("name") or ""
-        try:
-            addr = int(row["address"], 16)
-        except ValueError:
-            continue
-        names_by_addr[addr] = name
-        if row.get("type") == "function" and (
-            name.startswith(f"{cls}::") or name.startswith(f"thunk_{cls}::")
-        ):
-            out[addr] = name
+    names_by_addr = names_by_address(repo_root)
+    out: dict[int, str] = {
+        addr: name
+        for addr, name in names_by_addr.items()
+        if name.startswith(f"{cls}::") or name.startswith(f"thunk_{cls}::")
+    }
     target_cpp = f"src/game/{cls}.cpp"
     for row in read_pipe_rows(repo_root / "config" / "function_ownership.csv"):
         if row.get("target_cpp") == target_cpp:

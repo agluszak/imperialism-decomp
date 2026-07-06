@@ -103,3 +103,5 @@ module|tools.workflow.check_datacmp_baseline|just:datacmp-gate|Global-data drift
 module|tools.workflow.check_empty_bodies|just:noop-gate|Silent no-op detector + empty-body ratchet
 module|tools.workflow.check_typedef_ghidra_args|just:typedef-args-audit|Typedef-cast arity/convention audit vs binary RET-imm
 module|tools.workflow.gen_compile_commands|just:gen-compile-commands|Rewrite lint compile_commands.json for host clangd
+module|tools.common.reccmp_report|dependency:tools.reccmp.compare_batch|Shared full-report runner (reccmp-reccmp --json, diet or full)
+module|tools.common.symbols|dependency:tools.reccmp.triage|Shared symbols.csv / function_ownership.csv loaders

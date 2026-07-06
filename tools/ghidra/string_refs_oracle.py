@@ -21,19 +21,16 @@ from __future__ import annotations
 import sys
 
 from tools.common import ghidra_env
-from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
+from tools.common.symbols import ownership_by_address
 
 
 def manual_owned_addrs(repo_root) -> set[int]:
-    owned: set[int] = set()
-    for row in read_pipe_rows(repo_root / "config" / "function_ownership.csv"):
-        if row.get("ownership") in ("manual", "library"):
-            try:
-                owned.add(int(row["address"], 16))
-            except ValueError:
-                continue
-    return owned
+    return {
+        addr
+        for addr, ownership in ownership_by_address(repo_root).items()
+        if ownership in ("manual", "library")
+    }
 
 
 def opt(argv: list[str], flag: str, default: int) -> int:

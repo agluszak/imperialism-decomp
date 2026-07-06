@@ -80,7 +80,7 @@ re-derives the file, and the merge preserves curated values by address.
 | Mass score drops, `thunk_*` fns 100→0 | entity rows (any type) at jmp-thunk addresses | `just prune-ilt-thunks` (runs in sync-ghidra); for non-ILT jmp islands, remove the DB function+label |
 | One fn 100→0 after resync | `size=1`/tiny row clamping the window | see Junk taxonomy #4 |
 | `just vtable` collapses (~all classes) | rows at VTABLE addrs, or scalar-dtor name drift | `vtable-collision-gate` lists them; see quality-control skill #7 |
-| Stubs regenerate at name-paired addresses | ownership row pruned (was `marker_sync`) | re-add with a curated note (`name_paired_no_marker`) |
+| Stubs regenerate at name-paired addresses | ownership row pruned (was `marker_sync`) | re-add with a curated note (`name_paired_no_marker`) — `just stub-count-gate` fails on any stub-count rise, which is the mechanical tell for this trap |
 | Stats show +N original-only globals after resync | junk label rows imported into symbols.csv | prune (ILT auto; islands by hand) |
 
 ## Name convergence

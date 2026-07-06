@@ -29,8 +29,8 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
+from tools.common.symbols import functions_by_name
 from tools.workflow.check_typedef_cast_drift import TYPEDEF_RE, normalize, strip_param_names
 
 DWORDS_PER_TYPE = {"double": 2, "__int64": 2, "LONGLONG": 2}
@@ -104,19 +104,12 @@ def collect_typedefs(root: Path):
 
 def resolve_addresses(repo_root: Path, names: set[str]) -> dict[str, int]:
     """typedef target name -> original address, via symbols.csv (thunk-tolerant)."""
-    by_symbol: dict[str, int] = {}
-    for row in read_pipe_rows(repo_root / "config" / "symbols.csv"):
-        if row.get("type") != "function":
-            continue
-        try:
-            by_symbol.setdefault(row["name"], int(row["address"], 16))
-        except ValueError:
-            continue
+    by_symbol = functions_by_name(repo_root)
     out: dict[str, int] = {}
     for name in names:
         for candidate in (name, f"thunk_{name}"):
             if candidate in by_symbol:
-                out[name] = by_symbol[candidate]
+                out[name] = by_symbol[candidate][0]
                 break
     return out
 

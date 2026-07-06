@@ -40,10 +40,11 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from tools.common.pipe_csv import read_pipe_rows
+from tools.common.reccmp_report import run_report
 from tools.common.repo import repo_root_from_file
+from tools.common.symbols import names_by_address, ownership_by_address
 from tools.reccmp.compare_batch import addrs_from_file
-from tools.reccmp.global_xref_oracle import PeImage, run_report
+from tools.reccmp.global_xref_oracle import PeImage
 from tools.workflow.prune_ilt_thunks import original_exe_from_user_yml
 
 SRC_TAG_RE = re.compile(r"\s*\t\([^)]*:\d+\)\s*$")
@@ -167,22 +168,6 @@ def triage_entity(entity, data_ranges, symbols, ownership):
     return buckets
 
 
-def load_symbol_maps(repo_root: Path):
-    symbols: dict[int, str] = {}
-    for row in read_pipe_rows(repo_root / "config" / "symbols.csv"):
-        try:
-            symbols[int(row["address"], 16)] = row.get("name") or ""
-        except ValueError:
-            continue
-    ownership: dict[int, str] = {}
-    for row in read_pipe_rows(repo_root / "config" / "function_ownership.csv"):
-        try:
-            ownership[int(row["address"], 16)] = row.get("ownership") or ""
-        except ValueError:
-            continue
-    return symbols, ownership
-
-
 def main() -> int:
     repo_root = repo_root_from_file(__file__)
     ap = argparse.ArgumentParser(description=__doc__)
@@ -207,7 +192,8 @@ def main() -> int:
         Path(args.original_exe) if args.original_exe else original_exe_from_user_yml(repo_root)
     )
     data_ranges = PeImage(exe_path.read_bytes()).data_ranges()
-    symbols, ownership = load_symbol_maps(repo_root)
+    symbols = names_by_address(repo_root)
+    ownership = ownership_by_address(repo_root)
 
     if args.report_json:
         data = json.loads(Path(args.report_json).read_text())["data"]

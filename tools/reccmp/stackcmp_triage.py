@@ -22,8 +22,8 @@ import re
 import subprocess
 from pathlib import Path
 
+from tools.common.reccmp_report import run_report
 from tools.common.repo import repo_root_from_file
-from tools.reccmp.compare_batch import run_reccmp_json
 from tools.common.report_score import effective_matching
 
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
@@ -66,7 +66,7 @@ def main() -> int:
     if args.addrs:
         chosen = [(int(a, 16), "?", 0.0) for a in args.addrs]
     else:
-        rows = run_reccmp_json(args.target, build_dir)
+        rows = run_report(args.target, build_dir, diet=True)
         scored = [
             (int(r["address"], 16), r["name"], effective_matching(r))
             for r in rows

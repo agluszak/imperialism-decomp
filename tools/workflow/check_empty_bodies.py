@@ -37,8 +37,8 @@ from pathlib import Path
 import tree_sitter_cpp
 from tree_sitter import Language, Parser
 
-from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
+from tools.common.symbols import functions_by_name
 
 # Function definitions come from a real parser (tree-sitter-cpp): error-tolerant,
 # no preprocessing needed, and immune to the macro/init-list/comment pitfalls a
@@ -52,21 +52,6 @@ NOOP_RE = re.compile(r"//\s*NOOP:.*?0x(?P<addr>[0-9a-fA-F]+)")
 SLOT_COMMENT_RE = re.compile(r"//\s*0x[0-9a-fA-F]{1,3}\s+0x(?P<addr>[0-9a-fA-F]{5,8})")
 
 VIOLATION_KINDS = ("empty_but_big", "empty_unmarked", "empty_unresolved", "noop_contradicted")
-
-
-def load_symbol_functions(repo_root: Path) -> dict[str, tuple[int, int]]:
-    """qualified name -> (address, size) for function rows."""
-    out: dict[str, tuple[int, int]] = {}
-    for row in read_pipe_rows(repo_root / "config" / "symbols.csv"):
-        if row.get("type") != "function":
-            continue
-        try:
-            addr = int(row["address"], 16)
-            size = int(row.get("size") or 0)
-        except ValueError:
-            continue
-        out.setdefault(row["name"], (addr, size))
-    return out
 
 
 def sizes_by_address(symbols: dict[str, tuple[int, int]]) -> dict[int, int]:
@@ -225,7 +210,7 @@ def scan_file(
 
 
 def collect_findings(repo_root: Path, roots: list[str], max_noop_size: int) -> list[dict]:
-    symbols = load_symbol_functions(repo_root)
+    symbols = functions_by_name(repo_root)
     addr_sizes = sizes_by_address(symbols)
     findings: list[dict] = []
     for root_value in roots:

@@ -84,7 +84,11 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
      For a pure body or signature edit on an already-owned function, **skip these**:
      `regen-stubs` can downgrade hand-typed stub signatures back to generic
      `undefined ()` and break the link for unrelated files.
-5. **Compare** the touched function: `just compare 0xADDR --verbose`.
+5. **Compare** the touched function: `just compare 0xADDR --verbose`. If it is
+   below 100%, run `just triage 0xADDR` first — it buckets every mismatched line
+   (field_offset / stack_layout / call_target / missing_annotation / constant /
+   reg_alloc / codegen) with the standard fix per bucket, so you read the raw diff
+   only for the `codegen` leftovers.
 6. **Data pass — optional, and only the cheap real-shape wins.** Align obvious
    `short`/`int` widths, hidden stack args, struct-return-via-hidden-pointer, and return
    contracts when they reflect the real shape. **Stop there.**

@@ -49,9 +49,11 @@ Rules of thumb:
   `tools/ghidra/`, restart it (`just ghidra-daemon-stop && just ghidra-daemon`)
   or queries keep answering with the old code.
 - Almost every read tool is daemon-routed (`listing`, `decompile`, `xrefs`,
-  `read-data`, `function-slice`, `search`, `jumptable`, `linear-disasm`,
-  `raw-disasm`, `vtable-dump`); `scan-cdecl-thiscall` stays one-shot (reads
-  addresses from stdin). Details: `tools/ghidra/README.md`.
+  `read-data`, `function-slice`, `func-sig`, `field-xrefs`, `string-oracle`,
+  `search`, `jumptable`, `linear-disasm`, `raw-disasm`, `vtable-dump`);
+  `scan-cdecl-thiscall` stays one-shot (reads addresses from stdin). Any
+  daemon-routed target answers `--help` locally with the command's docstring.
+  Details: `tools/ghidra/README.md`.
 
 ## Read-only queries (preferred — use these, not raw disassemblers)
 
@@ -117,6 +119,26 @@ Rules of thumb:
   ```
   Background: `__cdecl` in `symbols.csv` is mostly Ghidra's default-unknown label;
   ~33% of *defined* `__cdecl` functions are really `__thiscall` (heuristics.md #5).
+- **Signature facts per function** — Ghidra's cc/param count (hypothesis) next to
+  the `RET imm` purge bytes (binary ground truth: 4 bytes per stack dword for a
+  callee-cleaned convention):
+  ```sh
+  just func-sig 0x4d3a60 [0xADDR ...]
+  ```
+- **Field cross-references** — which member functions of a class read/write
+  `this+offset` (register-taint scan over the class's attributed methods; a lead
+  generator — it misses stack-spilled `this` and inlined helpers). Without an
+  offset it prints the class's full offset histogram (layout-recovery view):
+  ```sh
+  just field-xrefs TCivMgr           # offset histogram
+  just field-xrefs TCivMgr 0x4       # every access of this+0x4, R/W + instruction
+  ```
+- **String-literal oracle** — unported functions referencing (near-)unique string
+  literals; they largely name themselves and the strings double as `// STRING:`
+  annotations once ported:
+  ```sh
+  just string-oracle [--min-len N] [--max-refs N] [--limit N] [--all]
+  ```
 
 ## Pointing at a different project (rare)
 

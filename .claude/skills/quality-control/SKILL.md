@@ -21,6 +21,16 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
   once; `just compare --file src/game/X.cpp` scores every `// FUNCTION:` marker in
   a file; `just compare-class X` is shorthand for the latter. All three run reccmp
   once with `--json` (seconds total, vs ~10s of PDB parsing per single compare).
+- `just triage 0xADDR` (or `--file src/game/X.cpp`) — **run this before reading a raw
+  compare diff by eye.** Classifies every mismatched line into buckets with the
+  standard next action: `field_offset` (class-layout error), `stack_layout` (run
+  `just stackcmp`), `call_target` (unported callee / vtable-slot mismatch, with the
+  callee's ownership), `missing_annotation` (add `// GLOBAL:`/`// STRING:`),
+  `constant` (flags original values that lie in .data — likely unannotated
+  addresses), `reg_alloc` (chase last), `codegen` (structural; read in context).
+- `just stackcmp-triage` — batch `reccmp-stackcmp` over the near-match score range
+  and rank stack-layout suspects (each run re-parses the PDB, so it caps at
+  `--limit`, default 12).
 - `just stats` — aggregate progress compared against the committed baseline. It reports
   improved and worsened metrics separately.
 - `just stats-baseline-update` — update the committed aggregate baseline after accepting the
@@ -48,7 +58,25 @@ just build
 - `just gates` — run all mechanical source-policy gates (the pre-commit check):
   `vtable-gate`, `antipattern-gate`, `tgreatpower-gate`, `marker-gate`,
   `vtable-annotation-gate`, `vtable-collision-gate`, `field-layout-gate`,
-  `synthetic-gate`, and `decomplint`. **All must pass before committing.**
+  `synthetic-gate`, `decomplint`, plus the ratchet gates `datacmp-gate`,
+  `stub-count-gate`, `class-size-gate`, and `noop-gate`. **All must pass before
+  committing.**
+- **Ratchet gates** (each has a `just <gate>-update` baseline target; update only
+  after reviewing the delta, and commit the baseline with the change):
+  - `datacmp-gate` — per-variable reccmp-datacmp fingerprints
+    (`config/datacmp_baseline.csv`) may not regress; `just datacmp` stays the raw
+    report.
+  - `stub-count-gate` — the autogen stub count (`src/autogen/stubs/_manifest.json`)
+    may not rise. A rise is the sync-ownership prune-trap tell (see the
+    `sync-pipeline` skill): real marker-less owners got re-stubbed.
+  - `class-size-gate` — `ASSERT_SIZE` vs the RTTI oracle, strict; known mismatches
+    live in `config/class_size_allowlist.txt`, each citing a bead.
+  - `noop-gate` — empty (`{}` / `(void)arg;`-only) bodies may not grow per file
+    (`config/empty_body_baseline.csv`); an intentionally-empty body needs a
+    `// FUNCTION` marker or `// NOOP: verified empty in original 0xADDR`, and a
+    NOOP annotation contradicted by the original size always fails.
+    `just noop-audit [--kind empty_but_big]` lists the current findings — it is
+    also a port-target menu (empty bodies whose originals are big).
 - `just vtable-gate` — must pass; do not introduce new raw `vftable[...]` patterns in
   files not already baseline-tracked. `just vtable-gate-update` rewrites the baseline
   after an intentional refactor.

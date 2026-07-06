@@ -60,6 +60,7 @@ Edit manual source (shape/data passes on already-owned functions), then:
 ```sh
 just build              # Docker MSVC500 build (runs vtable-gate first)
 just compare 0xADDR     # or: just compare --file src/game/Foo.cpp
+just triage 0xADDR      # below 100%? classify the diff into actionable buckets first
 ```
 
 Pre-commit (always):
