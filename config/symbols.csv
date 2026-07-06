@@ -5261,7 +5261,7 @@ address|name|symbol|size|type|prototype|provenance
 596a30|TMapUberPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 596a80|TMapUberPicture::NoOpUiLifecycleHook||371|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 596c60|TMapUberPicture::Free||50|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-596cb0|TToolBarCluster::SetMapInteractionMode||691|function|void __thiscall SetMapInteractionMode(short nMode)|
+596cb0|TMapUberPicture::SetMapInteractionMode||691|function|void __thiscall SetMapInteractionMode(short nMode)|
 597020|ComposeAndDispatchTurnSummaryLocalizedMessage||639|function|undefined ComposeAndDispatchTurnSummaryLocalizedMessage()|
 597340|TMapUberPicture::HandleEvent||453|function|undefined HandleMapOverlayDialogCommandTagsAndForward()|
 5974a4|Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4||71|function|undefined Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4()|
@@ -5269,8 +5269,8 @@ address|name|symbol|size|type|prototype|provenance
 597600|TMapUberPicture::vmethod_0017||272|function|undefined 'scalar_deleting_destructor'(int param_1)|
 597770|TMapUberPicture::ForwardParam||23|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
 5977a0|TMapUberPicture::AutoScrollByEdgeMask||72|function|undefined AutoScrollByEdgeMask(short)|
-597810|TToolBarCluster::RefreshMapOrderEntryPanel||246|function|void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
-597950|TToolBarCluster::SetActiveMapOrderEntry||113|function|void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)|
+597810|TMapUberPicture::RefreshMapOrderEntryPanel||246|function|void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
+597950|TMapUberPicture::SetActiveMapOrderEntry||113|function|void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)|
 5979f0|GetActiveMapOrderEntry||9|function|void * __thiscall GetActiveMapOrderEntry(void)|
 597a10|TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10||68|function|undefined OrphanLeaf_NoCall_Ins23_00597a10(void)|
 597a80|TCivToolbar::CycleMapInteractionSelectionAfterHandledClick||996|function|void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)|
