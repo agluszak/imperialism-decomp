@@ -218,6 +218,7 @@ address|target_cpp|ownership|note
 485110|src/game/CMainFrame.cpp|manual|marker_sync
 485180|src/game/CMainFrame.cpp|manual|marker_sync
 485920|src/game/CMainFrame.cpp|manual|marker_sync
+485960|src/game/CMainFrame.cpp|manual|marker_sync
 485990|src/game/CMainFrame.cpp|manual|marker_sync
 4859d0|src/game/CMainFrame.cpp|manual|marker_sync
 485bd0|src/game/CMainFrame.cpp|manual|marker_sync

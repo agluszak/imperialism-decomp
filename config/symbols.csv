@@ -594,7 +594,7 @@ address|name|symbol|size|type|prototype|provenance
 485590|SetUiRuntimeContextValue64ToZero||1|function|undefined SetUiRuntimeContextValue64ToZero()|
 4855b0|TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog||1|function|undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()|
 485920|CMainFrame::HandleCustomMessage2420DispatchTurnEvent||40|function|undefined HandleCustomMessage2420DispatchTurnEvent()|
-485960|TMacViewMgr_OnMsg_0x0BC0_Impl||1|function|undefined TMacViewMgr_OnMsg_0x0BC0_Impl()|
+485960|CMainFrame::OnMsg0BC0||25|function|undefined TMacViewMgr_OnMsg_0x0BC0_Impl()|
 485990|TMovieView::SetFieldC0AndInvalidateWindowIfChanged||41|function|undefined SetFieldC0AndInvalidateWindowIfChanged()|
 4859d0|CMainFrame::OnEraseBkgnd||392|function|undefined TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl()|
 485bd0|CMainFrame::OnPaint||26|function|void __thiscall OnPaint()|

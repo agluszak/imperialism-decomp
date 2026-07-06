@@ -13,6 +13,16 @@ extern undefined4 TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void
 
 namespace {
 
+// Provisional interface for the queued UI command posted through message 0xBC0 by
+// TApplication::DispatchQueuedUiCommandAndRelease. The concrete class is not yet
+// recovered (the poster is registered via opaque vtable data with no traceable
+// callers); OnMsg0BC0 only needs its first own virtual (slot 0x0a, byte 0x28) after the
+// inherited AssertValid (slot 0x03). Legitimate provisional placeholder pending
+// class-recovery (bd imperialism-decomp-ve8.4).
+struct QueuedUiCommand : public TObject {
+  virtual void ExecuteQueuedCommand(); // slot 0x0a byte 0x28
+};
+
 void ReleaseFrameRefTarget(CObject* target) {
   if (target != nullptr) {
     delete target;
@@ -56,9 +66,8 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 // Entry order follows the original map at 0x648648. Original entries whose handlers are
 // still not ported: ON_COMMAND(0x800D, 0x485590) (forwards through TViewMgr slot 0x19,
-// byte 0x64 — needs TViewMgr slots 0x13..0x19 modeled), ON_COMMAND(0x8013, 0x4855b0)
-// (terrain-overlay dialog), ON_MESSAGE(0xBC0, 0x485960) (lParam-object dispatch); each
-// needs its own class/type recovery before porting.
+// byte 0x64 — needs TViewMgr slots 0x13..0x19 modeled) and ON_COMMAND(0x8013, 0x4855b0)
+// (terrain-overlay dialog builder); each needs its own class/type recovery before porting.
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 ON_WM_QUERYNEWPALETTE()
 ON_WM_PALETTECHANGED()
@@ -76,6 +85,7 @@ ON_COMMAND(ID_CONTEXT_HELP, CFrameWnd::OnContextHelp)
 ON_COMMAND(ID_DEFAULT_HELP, CFrameWnd::OnHelpFinder)
 ON_COMMAND(100, OnStartupCommand100)
 ON_MESSAGE(0x464, OnMsg0464)
+ON_MESSAGE(0xBC0, OnMsg0BC0)
 ON_MESSAGE(0x2420, HandleCustomMessage2420DispatchTurnEvent)
 END_MESSAGE_MAP()
 
@@ -195,6 +205,16 @@ LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPAR
   (void)lParam;
   g_pUiRuntimeContext->DispatchTurnEventSlot4C(static_cast<short>(wParam),
                                                g_pSimMgr->GetActiveNationId());
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00485960
+LRESULT CMainFrame::OnMsg0BC0(WPARAM wParam, LPARAM lParam) {
+  (void)wParam;
+  // lParam carries the queued UI command object (Win32 message-boundary cast).
+  QueuedUiCommand* command = reinterpret_cast<QueuedUiCommand*>(lParam);
+  command->AssertValid();
+  command->ExecuteQueuedCommand();
   return 0;
 }
 

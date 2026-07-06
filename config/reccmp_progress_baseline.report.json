@@ -2620,8 +2620,8 @@
     },
     {
       "address": "0x485960",
-      "matching": 0.0,
-      "name": "TMacViewMgr_OnMsg_0x0BC0_Impl",
+      "matching": 1.0,
+      "name": "CMainFrame::OnMsg0BC0",
       "type": 1
     },
     {

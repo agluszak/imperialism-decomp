@@ -47,6 +47,9 @@ public:
   // backdrop CDib and tile it 128x128 across the client area; otherwise realize the
   // default palette and solid-fill with field_C0. 0x004859d0.
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+  // ON_MESSAGE(0xBC0): validate then execute a queued UI command object carried in
+  // lParam (posted by TApplication::DispatchQueuedUiCommandAndRelease). 0x00485960.
+  afx_msg LRESULT OnMsg0BC0(WPARAM wParam, LPARAM lParam);
 
   virtual BOOL PreTranslateMessage(MSG* msg);
 

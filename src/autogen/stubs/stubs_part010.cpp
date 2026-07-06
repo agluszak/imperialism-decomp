@@ -1459,14 +1459,6 @@ undefined4 TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_OnMsg_0x0BC0_Impl
-// ghidra_proto undefined TMacViewMgr_OnMsg_0x0BC0_Impl()
-// FUNCTION: IMPERIALISM 0x00485960
-undefined4 TMacViewMgr_OnMsg_0x0BC0_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name SendF1KeyDownToActiveMainWindow
 // ghidra_proto undefined SendF1KeyDownToActiveMainWindow()
 // FUNCTION: IMPERIALISM 0x00485c20
