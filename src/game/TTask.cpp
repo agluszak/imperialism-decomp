@@ -9,6 +9,8 @@ IMPLEMENT_DYNCREATE(TTask, TObject)
 
 TTask::TTask() {}
 
+// SYNTHETIC: IMPERIALISM 0x005adbb0
+// TTask::`scalar deleting destructor'
 TTask::~TTask() {}
 
 undefined TTask::OrphanLeaf_NoCall_Ins04_005adc30() { return 0; }

@@ -1,7 +1,5 @@
 #include "game/TFloatWindow.h"
 
-extern "C" CRuntimeClass PTR_s_TFloatWindow_006496d8;
-
 // SYNTHETIC: IMPERIALISM 0x00491e00
 // TFloatWindow::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00491f90

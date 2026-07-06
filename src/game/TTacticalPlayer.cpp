@@ -12,6 +12,8 @@ undefined TTacticalPlayer::TArmyTacUnit_VtblSlot04() { return 0; }
 
 undefined TTacticalPlayer::OrphanRetStub_0059ae10() { return 0; }
 
+// SYNTHETIC: IMPERIALISM 0x0059ae30
+// TTacticalPlayer::`scalar deleting destructor'
 TTacticalPlayer::~TTacticalPlayer() {}
 // SYNTHETIC: IMPERIALISM 0x0059ad40
 // TTacticalPlayer::CreateObject

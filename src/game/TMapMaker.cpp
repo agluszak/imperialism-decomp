@@ -2,10 +2,15 @@
 #include "game/TObject.h"
 #include "game/TControl.h"
 
+// SYNTHETIC: IMPERIALISM 0x00525950
+// TMapMaker::GetRuntimeClass
 IMPLEMENT_DYNAMIC(TMapMaker, TObject)
 
 // FUNCTION: IMPERIALISM 0x00525970
 TMapMaker::TMapMaker() : TObject() {}
+
+// SYNTHETIC: IMPERIALISM 0x00525990
+// TMapMaker::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005259c0
 TMapMaker::~TMapMaker() {}

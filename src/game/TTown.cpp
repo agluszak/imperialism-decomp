@@ -7,8 +7,6 @@
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 
-extern "C" CRuntimeClass PTR_s_TTown_0066d780;
-
 static void SwapAdjacentBytePairs(unsigned char* bytes, int pairCount) {
   int remaining = pairCount;
   while (remaining > 0) {

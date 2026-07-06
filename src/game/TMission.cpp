@@ -6,10 +6,6 @@
 #include "game/mfc.h"
 #include "game/TStream.h"
 
-// TMission RTTI descriptor (slot-0 GetRuntimeClass returns it). Defined in
-// global_data_tables.cpp; reccmp pairs by symbol name.
-extern "C" CRuntimeClass PTR_s_TMission_00697848;
-
 undefined4 CreateMissionObjectByKindAndNodeContext(void);
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---

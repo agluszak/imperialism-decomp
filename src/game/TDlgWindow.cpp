@@ -2,8 +2,6 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
-extern "C" CRuntimeClass PTR_s_TDlgWindow_00656a48;
-
 // Application/document-root pointer @ 0x6a2158; its +0x0a field gates the line-0x27f assert.
 static const unsigned int kAddrMainViewHostPtr = 0x006a2158;
 

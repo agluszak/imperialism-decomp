@@ -1,5 +1,7 @@
 #include "game/TNewsMgr.h"
 
+// SYNTHETIC: IMPERIALISM 0x0055b6a0
+// TNewsMgr::`scalar deleting destructor'
 TNewsMgr::~TNewsMgr() {}
 // SYNTHETIC: IMPERIALISM 0x0055b670
 // TNewsMgr::CreateObject

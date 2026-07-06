@@ -9,6 +9,8 @@ IMPLEMENT_DYNCREATE(TPopulationMgr, TObject)
 
 TPopulationMgr::TPopulationMgr() {}
 
+// SYNTHETIC: IMPERIALISM 0x004b5bb0
+// TPopulationMgr::`scalar deleting destructor'
 TPopulationMgr::~TPopulationMgr() {}
 
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10(int param_1, int param_2) { return 0; }

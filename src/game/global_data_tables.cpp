@@ -35,7 +35,6 @@ class TCursorControlPanel;
 #include "game/TCursorControlPanel.h"
 #include "game/TAnimator.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TAmbitApplication.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TBackdropWindow.h"
 
@@ -280,9 +279,6 @@ short g_industryActionCostWeightResCode03[16] = {0,  0,  0,  0,  0, 10, 0, 10,
 // GLOBAL: IMPERIALISM 0x00695bf0
 short g_industryActionCostWeightResCode0C[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20, 0, 0};
 
-// GLOBAL: IMPERIALISM 0x0064c0b8
-CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8 = {
-    "TAmbitApplication", sizeof(TAmbitApplication), 0xffff, nullptr, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x006a1da4
 HRGN g_hOpenRgnAccumulator = nullptr;
 
@@ -380,36 +376,6 @@ int g_nIncludeViewAssertGate_006A17B0 = 0;
 int g_nIncludeViewPointerAssertGate_006A17C4 = 0;
 
 extern "C" {
-// MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
-// symbol name, so the zero-initialized contents are irrelevant to matching.
-CRuntimeClass PTR_s_TEventHandler_00649588 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x006495a0
-CRuntimeClass PTR_s_TView_006495a0 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x006495e8
-CRuntimeClass PTR_s_TWindow_006495e8 = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass PTR_s_TControl_00649600 = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass PTR_s_TButton_00649618 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x006496a8
-CRuntimeClass PTR_s_TNumberText_006496a8 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x0066c3c0
-CRuntimeClass PTR_s_TPictureNumberText_0066c3c0 = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass PTR_s_TCluster_006496c0 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x006496d8
-CRuntimeClass PTR_s_TFloatWindow_006496d8 = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass PTR_s_TPictureButton_0065e538 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x00656a30
-CRuntimeClass PTR_s_TGameWindow_00656a30 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x00654f30
-CRuntimeClass PTR_s_TRearFloatWindow_00654f30 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x00656a48
-CRuntimeClass PTR_s_TDlgWindow_00656a48 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x00697848
-CRuntimeClass PTR_s_TMission_00697848 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x0065c630
-CRuntimeClass PTR_s_TOcean_0065c630 = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass PTR_s_TTown_0066d780 = {nullptr, 0, 0, nullptr, nullptr};
-// GLOBAL: IMPERIALISM 0x00654cd0
-CRuntimeClass TDiplomacyMgr_classRuntimeClass_00654cd0 = {nullptr, 0, 0, nullptr, nullptr};
 char LAB_00409a9d = 0;
 
 // Default mission score constant (0.0), loaded by the TMission slot 0x68-0x7C float

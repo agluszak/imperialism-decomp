@@ -9,6 +9,8 @@ IMPLEMENT_DYNCREATE(TNextMoveCommand, TCommand)
 
 TNextMoveCommand::TNextMoveCommand() {}
 
+// SYNTHETIC: IMPERIALISM 0x005a6590
+// TNextMoveCommand::`scalar deleting destructor'
 TNextMoveCommand::~TNextMoveCommand() {}
 
 void TNextMoveCommand::OrphanRetStub_00487a00() {}

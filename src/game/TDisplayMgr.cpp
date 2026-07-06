@@ -19,10 +19,6 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_control_tags.h"
 
-extern "C" {
-extern CRuntimeClass classRuntimeClass;
-}
-
 namespace {
 
 const char* kSourceFileUDisplayMgr = "D:\\Ambit\\Cross\\UDisplayMgr.cpp";

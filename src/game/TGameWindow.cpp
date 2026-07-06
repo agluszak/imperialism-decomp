@@ -13,8 +13,6 @@
 #include "game/startup_helpers.h"
 #include "game/ui_control_tags.h"
 
-extern "C" CRuntimeClass PTR_s_TGameWindow_00656a30;
-
 undefined4 ConsumeFirstPendingAbilityUnlock(void);
 undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void);
 undefined4 SelectAndActivatePendingEventForCurrentView(void);

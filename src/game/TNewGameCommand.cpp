@@ -2,6 +2,8 @@
 
 void TNewGameCommand::OrphanRetStub_00487a00() {}
 
+// SYNTHETIC: IMPERIALISM 0x0049ddd0
+// TNewGameCommand::`scalar deleting destructor'
 TNewGameCommand::~TNewGameCommand() {}
 // SYNTHETIC: IMPERIALISM 0x0049dd40
 // TNewGameCommand::CreateObject

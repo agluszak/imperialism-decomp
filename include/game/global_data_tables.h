@@ -271,7 +271,6 @@ extern short g_industryActionCostWeightResCode10[16];
 extern short g_industryActionCostWeightResCode0B[16];
 extern short g_industryActionCostWeightResCode03[16];
 extern short g_industryActionCostWeightResCode0C[16];
-extern "C" CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8;
 // QuickDraw OpenRgn/CloseRgn recording accumulator (QDFrameRect XORs framed rects into it).
 extern HRGN g_hOpenRgnAccumulator;
 extern char g_Sanitize_City_Counter_Value_006A24D4;

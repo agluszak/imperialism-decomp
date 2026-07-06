@@ -15,8 +15,6 @@
 #include "game/TMultiplayerMgr.h"
 #include <new>
 
-extern "C" CRuntimeClass TDiplomacyMgr_classRuntimeClass_00654cd0;
-
 char IsNationSlotEligibleForEventProcessing(short nationSlot);
 
 namespace {

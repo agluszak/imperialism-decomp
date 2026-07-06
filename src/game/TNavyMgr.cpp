@@ -17,6 +17,8 @@ IMPLEMENT_DYNCREATE(TNavyMgr, TObject)
 
 TNavyMgr::TNavyMgr() : orderListHead04(0) {}
 
+// SYNTHETIC: IMPERIALISM 0x005565c0
+// TNavyMgr::`scalar deleting destructor'
 TNavyMgr::~TNavyMgr() {}
 
 void TNavyMgr::Free() {}

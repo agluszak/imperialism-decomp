@@ -1115,10 +1115,50 @@ undefined4 CreateObject(void)
   return 0;
 }
 
+// ghidra_name TTechStorePage::GetCityDialogValueDwordC
+// ghidra_proto undefined OrphanVtableAssignStub_00479460(void)
+// FUNCTION: IMPERIALISM 0x00479460
+undefined4 OrphanVtableAssignStub_00479460(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::GetCityDialogZeroValue
+// ghidra_proto undefined SerializeTMinisterBaseOrderArrayHeader(void)
+// FUNCTION: IMPERIALISM 0x004796a0
+undefined4 SerializeTMinisterBaseOrderArrayHeader(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::VTableSlot9D
+// ghidra_proto undefined SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)
+// FUNCTION: IMPERIALISM 0x004796c0
+undefined4 SerializeTMinisterBaseOrderArrayHeader_004796C0(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::VTableSlot85
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004796e0(byte param_1)
+// FUNCTION: IMPERIALISM 0x004796e0
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004796e0(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_OnNewDocument_At004797a0
 // ghidra_proto undefined WrapperFor_OnNewDocument_At004797a0()
 // FUNCTION: IMPERIALISM 0x004797a0
 undefined4 WrapperFor_OnNewDocument_At004797a0(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::Serialize
+// ghidra_proto undefined InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock()
+// FUNCTION: IMPERIALISM 0x004797d0
+undefined4 InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(void)
 {
   return 0;
 }

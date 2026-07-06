@@ -947,6 +947,46 @@ undefined4 CCmdTarget(void)
   return 0;
 }
 
+// ghidra_name TTechStorePage::CloseCityDialogChildrenAndReleaseSelf
+// ghidra_proto undefined TMacViewMgr_Slot07_Target()
+// FUNCTION: IMPERIALISM 0x00606c4e
+undefined4 TMacViewMgr_Slot07_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::CloneEngineerDialogStateToNewInstance
+// ghidra_proto undefined TMacViewMgr_Slot08_Target()
+// FUNCTION: IMPERIALISM 0x00606c54
+undefined4 TMacViewMgr_Slot08_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::ShallowFree
+// ghidra_proto undefined TMacViewMgr_Slot09_Target()
+// FUNCTION: IMPERIALISM 0x00606c59
+undefined4 TMacViewMgr_Slot09_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::GetCityDialogFlagByte4
+// ghidra_proto undefined TMacViewMgr_Slot10_Target()
+// FUNCTION: IMPERIALISM 0x00606c5c
+undefined4 TMacViewMgr_Slot10_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::SetCityDialogFlagByte4
+// ghidra_proto undefined TMacViewMgr_Slot11_Target()
+// FUNCTION: IMPERIALISM 0x00606c5f
+undefined4 TMacViewMgr_Slot11_Target(void)
+{
+  return 0;
+}
+
 // ghidra_name CCmdTarget::RestoreWaitCursor
 // ghidra_proto void __thiscall RestoreWaitCursor()
 // FUNCTION: IMPERIALISM 0x00606c91
@@ -959,6 +999,78 @@ undefined4 RestoreWaitCursor(void)
 // ghidra_proto undefined GetCCmdTargetMessageMap()
 // FUNCTION: IMPERIALISM 0x00606ca6
 undefined4 GetCCmdTargetMessageMap(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::DispatchUiSelectionToHandler
+// ghidra_proto undefined TMacViewMgr_Slot14_Target()
+// FUNCTION: IMPERIALISM 0x00606cac
+undefined4 TMacViewMgr_Slot14_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::ForwardNotifyParamToPrimaryChildSlot44
+// ghidra_proto undefined TMacViewMgr_Slot17_Target()
+// FUNCTION: IMPERIALISM 0x00606cb2
+undefined4 TMacViewMgr_Slot17_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::DispatchUiCommandToHandler
+// ghidra_proto undefined TMacViewMgr_Slot16_Target()
+// FUNCTION: IMPERIALISM 0x00606cb8
+undefined4 TMacViewMgr_Slot16_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::ForwardCityDialogParamToChildSlot48
+// ghidra_proto undefined TMacViewMgr_Slot18_Target()
+// FUNCTION: IMPERIALISM 0x00606cf0
+undefined4 TMacViewMgr_Slot18_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::CanHandleCityDialogActionFalse
+// ghidra_proto undefined TMacViewMgr_Slot19_Target()
+// FUNCTION: IMPERIALISM 0x00606cf4
+undefined4 TMacViewMgr_Slot19_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::HandleEvent
+// ghidra_proto undefined TMacViewMgr_Slot15_Target()
+// FUNCTION: IMPERIALISM 0x00606cf9
+undefined4 TMacViewMgr_Slot15_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::SetCityDialogValueDword10
+// ghidra_proto undefined TMacViewMgr_Slot21_Target()
+// FUNCTION: IMPERIALISM 0x00606cff
+undefined4 TMacViewMgr_Slot21_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::GetCityDialogValueDword10
+// ghidra_proto undefined TMacViewMgr_Slot20_Target()
+// FUNCTION: IMPERIALISM 0x00606d04
+undefined4 TMacViewMgr_Slot20_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechStorePage::DispatchQueuedUiCommandAndRelease
+// ghidra_proto undefined TMacViewMgr_Slot13_Target()
+// FUNCTION: IMPERIALISM 0x00606d09
+undefined4 TMacViewMgr_Slot13_Target(void)
 {
   return 0;
 }

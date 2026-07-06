@@ -21,6 +21,8 @@ IMPLEMENT_DYNCREATE(TTacticalBattle, TObject)
 TTacticalBattle::TTacticalBattle()
     : field4(0), field8(0), field1c(0), recordList20(nullptr), field24(0), field34(0), field74(0) {}
 
+// SYNTHETIC: IMPERIALISM 0x0059f7a0
+// TTacticalBattle::`scalar deleting destructor'
 TTacticalBattle::~TTacticalBattle() {}
 
 void TTacticalBattle::Free() {}

@@ -3,8 +3,6 @@
 #include "game/mfc.h"
 #include <stdlib.h>
 
-extern "C" CRuntimeClass PTR_s_TNumberText_006496a8;
-
 // FUNCTION: IMPERIALISM 0x00429500
 TNumberText::TNumberText() : TEditText() {
   this->value = 0;

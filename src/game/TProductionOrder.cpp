@@ -15,6 +15,8 @@ TProductionOrder::TProductionOrder()
 
 IMPLEMENT_DYNCREATE(TProductionOrder, TObject)
 
+// SYNTHETIC: IMPERIALISM 0x004b4f20
+// TProductionOrder::`scalar deleting destructor'
 TProductionOrder::~TProductionOrder() {}
 
 undefined TProductionOrder::InitializeBasicCityOrderContext(int param_1, undefined2 param_2) { return 0; }

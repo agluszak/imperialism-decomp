@@ -11,10 +11,6 @@
 
 #include <new>
 
-extern "C" {
-extern CRuntimeClass PTR_s_TControl_00649600;
-}
-
 undefined4 FromHandle(void);
 extern "C" char LAB_00409a9d;
 

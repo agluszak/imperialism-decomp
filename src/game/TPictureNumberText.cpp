@@ -1,8 +1,6 @@
 #include "game/TPictureNumberText.h"
 #include "game/mfc.h"
 
-extern "C" CRuntimeClass PTR_s_TPictureNumberText_0066c3c0;
-
 // SYNTHETIC: IMPERIALISM 0x005b5120
 // TPictureNumberText::CreateObject
 // SYNTHETIC: IMPERIALISM 0x005b51c0

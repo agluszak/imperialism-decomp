@@ -20,10 +20,6 @@
 #include "game/TShip.h"
 #include "game/TTaskForce.h"
 
-extern "C" {
-extern CRuntimeClass PTR_s_TOcean_0065c630;
-}
-
 undefined4 RelaxMapTileCostFieldByNeighborTerrain(void);
 undefined4 SelectBestSeedTileForNationFromCostField(void);
 

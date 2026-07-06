@@ -8,7 +8,6 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
-extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
 extern CPtrList g_ModalViewStack;
 
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation

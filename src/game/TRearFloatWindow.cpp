@@ -1,8 +1,6 @@
 #include "game/TRearFloatWindow.h"
 #include "game/mfc.h"
 
-extern "C" CRuntimeClass PTR_s_TRearFloatWindow_00654f30;
-
 // SYNTHETIC: IMPERIALISM 0x004f3840
 // TRearFloatWindow::CreateObject
 // SYNTHETIC: IMPERIALISM 0x004f38c0

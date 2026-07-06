@@ -211,6 +211,22 @@ undefined4 DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(void)
   return 0;
 }
 
+// ghidra_name TCluster::SerializeRecordList_0x0C_WithBlockPool_C
+// ghidra_proto undefined SerializeRecordList_0x0C_WithBlockPool_C()
+// FUNCTION: IMPERIALISM 0x00492670
+undefined4 SerializeRecordList_0x0C_WithBlockPool_C(void)
+{
+  return 0;
+}
+
+// ghidra_name TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492950
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00492950(void)
+// FUNCTION: IMPERIALISM 0x00492950
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00492950(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_AllocateAndLinkBlockHead_At00492a40
 // ghidra_proto undefined WrapperFor_AllocateAndLinkBlockHead_At00492a40()
 // FUNCTION: IMPERIALISM 0x00492a40

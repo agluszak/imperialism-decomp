@@ -9,8 +9,6 @@
 
 IMPLEMENT_DYNCREATE(TButton, TCtlMgr)
 
-extern "C" CRuntimeClass PTR_s_TButton_00649618;
-
 undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 // SYNTHETIC: IMPERIALISM 0x0048ec00

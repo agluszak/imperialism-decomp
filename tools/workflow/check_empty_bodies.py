@@ -133,7 +133,6 @@ def scan_file(
     path: Path, symbols: dict[str, tuple[int, int]], addr_sizes: dict[int, int], max_noop_size: int
 ) -> list[dict]:
     raw = path.read_bytes()
-    text = raw.decode("utf-8", errors="replace")
     tree = Parser(_CPP).parse(raw)
     findings: list[dict] = []
 
@@ -161,10 +160,15 @@ def scan_file(
                 qual = f"{cls}::"
 
         line_no = node.start_point[0] + 1
-        preceding = text[: node.start_byte].splitlines()[-6:]
+        # Slice `raw` (tree-sitter byte offsets), not `text`: a multi-byte UTF-8
+        # character (e.g. an em dash) anywhere earlier in the file desyncs a
+        # byte offset from the matching index into the decoded str.
+        preceding = raw[: node.start_byte].decode("utf-8", errors="replace").splitlines()[-6:]
         context = "\n".join(preceding)
-        nl = text.find("\n", body.end_byte)
-        trailing = text[body.end_byte : nl if nl != -1 else len(text)]
+        nl = raw.find(b"\n", body.end_byte)
+        trailing = raw[body.end_byte : nl if nl != -1 else len(raw)].decode(
+            "utf-8", errors="replace"
+        )
 
         marker = None
         for line in reversed(preceding):
@@ -251,7 +255,9 @@ def read_baseline(path: Path) -> dict[str, dict[str, int]]:
 def write_baseline(path: Path, data: dict[str, dict[str, int]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as fd:
-        writer = csv.DictWriter(fd, fieldnames=["file", *VIOLATION_KINDS], delimiter="|")
+        writer = csv.DictWriter(
+            fd, fieldnames=["file", *VIOLATION_KINDS], delimiter="|", lineterminator="\n"
+        )
         writer.writeheader()
         for file_key in sorted(data):
             writer.writerow({"file": file_key, **{k: str(v) for k, v in data[file_key].items()}})

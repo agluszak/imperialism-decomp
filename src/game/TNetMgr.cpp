@@ -19,6 +19,8 @@ TNetMgr* TNetMgr::ConstructGlobalTurnEventQueueManager(TNetMgr* storage) {
   return new (storage) TNetMgr();
 }
 
+// SYNTHETIC: IMPERIALISM 0x005e3400
+// TNetMgr::`scalar deleting destructor'
 TNetMgr::~TNetMgr() {}
 
 void TNetMgr::Free() {}

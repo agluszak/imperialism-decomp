@@ -9,6 +9,8 @@ IMPLEMENT_DYNCREATE(TLaborPool, TObject)
 
 TLaborPool::TLaborPool() {}
 
+// SYNTHETIC: IMPERIALISM 0x004b2160
+// TLaborPool::`scalar deleting destructor'
 TLaborPool::~TLaborPool() {}
 
 void TLaborPool::WriteTo(TStream* stream) {}

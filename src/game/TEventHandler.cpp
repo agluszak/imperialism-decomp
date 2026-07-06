@@ -14,10 +14,6 @@
 #include "game/ui_invalidation_guard.h"
 #include <string.h>
 
-extern "C" {
-extern CRuntimeClass PTR_s_TEventHandler_00649588;
-}
-
 namespace {
 
 struct TEventHandlerRawQueueNode {
