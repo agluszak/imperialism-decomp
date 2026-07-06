@@ -35,7 +35,6 @@ extern undefined4 FindFirstPortZoneContextByNation(void);
 extern undefined4 SelectBestMapActionContextForNationDiplomacyMask(void);
 extern undefined4 SetTaskForceOwnerPointer(void);
 extern undefined4 SetMapOrderType3Or4AndQueue(void);
-extern undefined4 ContainsPointerArrayEntryMatchingByteKey(void);
 extern undefined4 SetByteFlagAtOffsetAF0ByIndex(void);
 
 TControlSeaZoneMission::TControlSeaZoneMission() : TNavyMission() {}

@@ -5,7 +5,7 @@
 #include "game/TShipOrder.h"
 #include "game/TUnitOrder.h"
 #include "game/TSimMgr.h"
-#include "game/TQueueObject.h"
+#include "game/TPtrList.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
@@ -307,7 +307,7 @@ short* TCity::GetCitySummaryRecordSlot74() {
 // FUNCTION: IMPERIALISM 0x004b4540
 void TCity::AddTransportRequest(short low, short high) {
   int packed = (static_cast<unsigned short>(high) << 16) | static_cast<unsigned short>(low);
-  this->eventQueue274->WritePackedIntSlot38(&packed);
+  this->eventQueue274->AddEntrySlot38(&packed);
 }
 
 // FUNCTION: IMPERIALISM 0x004b4580

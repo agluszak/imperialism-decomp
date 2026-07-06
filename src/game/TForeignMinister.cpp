@@ -175,7 +175,8 @@ void TForeignMinister::Call94() {
   TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
   short nationSlot = owner->nationSlot;
   static const short kOrderKinds[] = {0, 1, 2, 3, 4, 5, 6};
-  int loopCount = IsRecruitTier2EnabledForNation(nationSlot) + 5;
+  int loopCount =
+      (g_pCityOrderCapabilityState->orderCapRows277[nationSlot].recruitTierFlag27b == 2) + 5;
   if (loopCount != 0) {
     const short* orderKindCursor = kOrderKinds;
     do {

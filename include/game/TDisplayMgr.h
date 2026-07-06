@@ -33,7 +33,10 @@ public:
   virtual undefined AssertUDisplayMgrLines614And616(char param_1);       // slot 0x10 0x4fed70
   virtual undefined AssertUDisplayMgrLine471();                          // slot 0x11 0x4fec20
   virtual undefined AssertUDisplayMgrLine495();                          // slot 0x12 0x4fec50
-  virtual undefined DispatchDisplayManagerControlStringMessage();        // slot 0x13 0x4fec80
+  // slot 0x13 0x4fec80 — forwards (message, messageStoreRef) to the TViewMgr
+  // RunControlStringProvider dispatch.
+  virtual void DispatchDisplayManagerControlStringMessage(CString message,
+                                                          CString* messageStoreRef);
   virtual undefined
   LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1);  // slot 0x14 0x4fedc0
   virtual void SetMapTileIconVariantTriplet(undefined1* param_1);  // slot 0x15 0x4fefc0
@@ -67,4 +70,3 @@ public:
 };
 
 // g_pDisplayMgr and UDisplayMgr font globals — see game/global_data_tables.h.
-

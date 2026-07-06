@@ -40,7 +40,7 @@ TMilitaryUnit::~TMilitaryUnit() {}
 // FUNCTION: IMPERIALISM 0x005c2f50
 void TMilitaryUnit::InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot) {
   field_1C = 1;
-  field_6 = static_cast<short>(-1);
+  tileIndex06 = static_cast<short>(-1);
   RegisterUnitOrderWithOwnerManager(capValue, nodeContext, nationSlot, 0);
   field_36 = static_cast<short>(
       (static_cast<int>(capValue) + (static_cast<int>(capValue) >> 31 & 7)) >> 3);
@@ -105,7 +105,7 @@ void TMilitaryUnit::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005c3190
 void TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets() {
-  short tile = field_6;
+  short tile = tileIndex06;
   short* cursor = orderTargetTilesMirror2E;
   int remaining = 3;
   do {
@@ -143,7 +143,7 @@ short TMilitaryUnit::GetUnitMovementClassId() {
 
 // FUNCTION: IMPERIALISM 0x005c34d0
 short TMilitaryUnit::IsNotStationedInProvince(short provinceId) {
-  return field_6 != provinceId;
+  return tileIndex06 != provinceId;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3530

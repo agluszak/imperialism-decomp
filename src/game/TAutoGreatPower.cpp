@@ -1,5 +1,7 @@
 #include "decomp_types.h"
 #include "game/TAutoGreatPower.h"
+#include "game/TSortedByRelationshipList.h"
+#include "game/nation_stream_serialization.h"
 #include "game/CIterator.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
@@ -24,11 +26,6 @@
 
 undefined4 GenerateThreadLocalRandom15(void);
 
-static __inline short GetShortAtOffset14OrInvalidValue(void) {
-  return g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
-}
-
-static const unsigned int kAddrClassDescTAutoGreatPower = 0x00653F90;
 // kNationSlotCount (0x17) comes from TDiplomacyMgr.h.
 static const int kAidAllocationRowCount = 0x10;
 static const int kAidAllocationColumnCount = 0x17;
@@ -36,24 +33,6 @@ static const int kMapNodeCount = 0x180;
 static const int kPortZoneCount = 0x70;
 
 undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void);
-
-static __inline void SwapShortArrayBytes(void* base, int count) {
-  unsigned char* bytes = reinterpret_cast<unsigned char*>(base);
-  int i = 0;
-  while (i < count) {
-    unsigned char t = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = t;
-    bytes += 2;
-    ++i;
-  }
-}
-
-#include "game/TQueueObject.h"
-
-static __inline int ProposalQueue_ReadCount(void* queue) {
-  return static_cast<TQueueObject*>(queue)->GetEntryCount();
-}
 
 // FUNCTION: IMPERIALISM 0x004e6b10
 void TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {}
@@ -117,7 +96,7 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
     missionContext = 0;
     char hasMission = stream->ReadByte(&missionContext);
     if (hasMission != 0) {
-      missionQueue->AddTail(reinterpret_cast<void*>(missionContext));
+      missionQueue->AddTailInt(missionContext);
     }
   }
 
@@ -130,34 +109,21 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
 void TAutoGreatPower::WriteTo(TStream* stream) {
   TGreatPower::WriteTo(stream);
 
-  TStream* message = reinterpret_cast<TStream*>(stream);
-  short* quarterMetric = this->actionMetricByQuarter;
-  int remaining = 6;
-  do {
-    short value = *quarterMetric;
-    unsigned char* bytes = reinterpret_cast<unsigned char*>(&value);
-    unsigned char tmp = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = tmp;
-    message->WriteBytesSlot78(&value, 2);
-    ++quarterMetric;
-    --remaining;
-  } while (remaining != 0);
+  WriteShortArrayElems(stream, this->actionMetricByQuarter, 6);
 
-  message->WriteBytesSlot78(this->mapNodeStateFlags, 0x180);
-  message->WriteBytesSlot78(this->portZoneStateFlags, 0x70);
+  stream->WriteBytesSlot78(this->mapNodeStateFlags, 0x180);
+  stream->WriteBytesSlot78(this->portZoneStateFlags, 0x70);
 
   TSortedList* missionQueue = this->missionQueue;
   missionQueue->WriteTo(stream);
   int missionQueueCount = missionQueue->GetCount();
 
   int zeroWord = 0;
-  message->WriteBytesSlot78(&zeroWord, 4);
+  stream->WriteBytesSlot78(&zeroWord, 4);
   int index = 1;
   if (index <= missionQueueCount) {
     do {
-      int value = reinterpret_cast<int>(missionQueue->GetEntryByOrdinal(index));
-      message->WriteObjectSlotB4(reinterpret_cast<void*>(value), 0);
+      stream->WriteObjectSlotB4(missionQueue->GetEntryByOrdinal(index), 0);
       ++index;
     } while (index <= missionQueueCount);
   }
@@ -244,9 +210,8 @@ void TAutoGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) 
   int total = 0;
   for (int resourceType = 0; static_cast<short>(resourceType) < 0x0E; ++resourceType) {
     short resourceWeight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(resourceType));
-    short relationWeight = *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(this->city) +
-                                                     0x5C + resourceType * 2);
-    total += static_cast<short>(resourceWeight * relationWeight);
+    short orderCount = this->city->orderCountByType5c[resourceType];
+    total += static_cast<short>(resourceWeight * orderCount);
   }
 
   this->tradeCapacity = static_cast<short>(total);
@@ -274,13 +239,19 @@ void TAutoGreatPower::ResetField900FromNeedCapA6(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7910
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2() {}
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message) {
+  (void)message;
+}
 
 // FUNCTION: IMPERIALISM 0x004e7930
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1() {}
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message) {
+  (void)message;
+}
 
 // FUNCTION: IMPERIALISM 0x004e7950
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0() {}
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message) {
+  (void)message;
+}
 
 // FUNCTION: IMPERIALISM 0x004e7970
 void TAutoGreatPower::SnapshotDiplomacyState1c6Into250(void) {}
@@ -370,11 +341,11 @@ void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   }
 
   int rowIndex = 1;
-  if (ProposalQueue_ReadCount(this->proposalQueue) >= rowIndex) {
+  if (this->proposalQueue->GetSize() >= rowIndex) {
     do {
       this->foreignMinister->MinisterSlot1F(static_cast<short>(rowIndex));
       ++rowIndex;
-    } while (rowIndex <= ProposalQueue_ReadCount(this->proposalQueue));
+    } while (rowIndex <= this->proposalQueue->GetSize());
   }
 
   this->ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
@@ -685,7 +656,7 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
            ownerTag < 100) ||
           199 < ownerTag) {
         TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
-        short portZoneId = GetShortAtOffset14OrInvalidValue();
+        short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
         this->portZoneStateFlags[portZoneId] = 1;
       }
     }
@@ -698,7 +669,7 @@ void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
     if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCount() > 0) {
       TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
-      short portZoneId = GetShortAtOffset14OrInvalidValue();
+      short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
       this->portZoneStateFlags[portZoneId] = 0;
     }
   }
@@ -726,7 +697,7 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
     if (mission->MatchesMissionKeySlot4C(3, regionId, 0) != 0) {
-      CPtrList* listState = &reinterpret_cast<TSortedList*>(this->missionQueue)->listState;
+      CPtrList* listState = &this->missionQueue->listState;
       POSITION pos = listState->Find(mission, 0);
       if (pos != 0) {
         listState->RemoveAt(pos);
@@ -781,7 +752,7 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
     portZone->PrimaryZoneHeapSize() = 1;
   }
   TZone* firstOrder = portZone->PrimaryZoneHeapData()[0];
-  short portZoneId = GetShortAtOffset14OrInvalidValue();
+  short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
   this->portZoneStateFlags[portZoneId] = 1;
   this->QueueMapActionMissionFromCandidateAndMarkState(3, -1, firstOrder, -1);
 }
@@ -833,7 +804,7 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
       }
       mission = static_cast<TMission*>(missionCursor.Advance());
     }
-    CPtrList* listState = &reinterpret_cast<TSortedList*>(this->missionQueue)->listState;
+    CPtrList* listState = &this->missionQueue->listState;
     POSITION pos = listState->Find(mission, 0);
     if (pos != 0) {
       listState->RemoveAt(pos);

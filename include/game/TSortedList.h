@@ -19,6 +19,19 @@ public:
 
   int GetIntByOrdinal(int ordinal);
 
+  // Several lists store plain integer ids as payloads (ownedRegionList region ids,
+  // TAutoGreatPower missionQueue stream markers); GetIntByOrdinal is the existing
+  // read-side accessor. These shims confine the one int<->pointer pun.
+  POSITION AddHeadInt(int value) {
+    return AddHead(reinterpret_cast<void*>(value));
+  }
+  POSITION AddTailInt(int value) {
+    return AddTail(reinterpret_cast<void*>(value));
+  }
+  POSITION AddTailIntEx(int value) {
+    return AddTailEx(reinterpret_cast<void*>(value));
+  }
+
   // Slots 0x28/0x2c and 0x30/0x34 can't be real C++ overloads of one name: both
   // parameters of the *Ex forms are always-unused/defaulted, so a same-named overload
   // would be ambiguous against the plain form at every 1-arg call site (confirmed by a

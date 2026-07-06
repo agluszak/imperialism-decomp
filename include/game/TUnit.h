@@ -30,8 +30,11 @@ public:
   virtual void DetachUnitOrderFromOwnerAndReset();        // slot 0x30
   virtual void SetOrderModeSlot34(int mode, int payload); // slot 0x34
 
-  short orderType;        // 0x04
-  short field_6;          // 0x06 (init 0xffff)
+  short orderType; // 0x04
+  // 0x06 — map tile index the order is anchored to (-1 = unassigned); read as
+  // the recruit/civilian target tile by TMapMgr and matched against the terrain
+  // table by TGreatPower slot 0x298.
+  short tileIndex06;
   int field_8;            // 0x08
   short field_C;          // 0x0c
   short field_E;          // 0x0e

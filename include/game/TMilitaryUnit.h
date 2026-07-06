@@ -12,7 +12,7 @@ class TMission;
 // (evidence: TMilitaryUnitOrderState::GetRuntimeClass at 0x5c2dd0 returned the
 // literal 0x66ed70 CRuntimeClass address, and this class's four
 // "battlefield-unit" getters (0x5c3400/0x5c3490/0x5c34d0/0x5c3530) read
-// [ecx+0x4]/[ecx+0x6] -- exactly the inherited TUnit::orderType/field_6
+// [ecx+0x4]/[ecx+0x6] -- exactly the inherited TUnit::orderType/tileIndex06
 // slots):
 //  - the per-nation military-recruit ORDER object queued by TGreatPower's
 //    slot-0x32 order family (ctor 0x5c2df0; the DYNCREATE CreateObject
@@ -38,7 +38,7 @@ public:
 
   // 0x28-0x33: three (target, mirror) short pairs written by
   // CopyUnitCurrentTileIntoOrderTargets (0x5c3190) from the inherited
-  // TUnit::field_6 "current tile" value at recruit-order init time; exact
+  // TUnit::tileIndex06 "current tile" value at recruit-order init time; exact
   // per-slot semantics (order targets vs a confirm/mirror copy) unconfirmed.
   short orderTargetTiles28[3];       // 0x28, 0x2a, 0x2c
   short orderTargetTilesMirror2E[3]; // 0x2e, 0x30, 0x32
@@ -69,7 +69,7 @@ public:
 
   // --- non-virtual battlefield-unit accessors; operate on the inherited
   // TUnit fields (orderType@0x04 read as a unit-type-id index into the
-  // per-unit-type tables, field_6@0x06 read as the stationed province id) ---
+  // per-unit-type tables, tileIndex06@0x06 read as the stationed province id) ---
   short GetUnitMovementClassId();                   // 0x5c3490
   short GetUnitTypeCostPoints();                    // 0x5c3400
   short IsNotStationedInProvince(short provinceId); // 0x5c34d0

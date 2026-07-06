@@ -89,7 +89,6 @@ using turn_event_dialog::TurnEventDialogNode;
 // turn-event dialog nodes by message context.
 const unsigned int kAddrHotKeyDialogTemplate = 0x00698b1a;
 const unsigned int kAddrHotKeyDialogTemplateEnd = 0x00698b52;
-const unsigned int kAddrLocalizedMessageTemplate = 0x006a13a0;
 } // namespace
 
 namespace {
@@ -400,29 +399,32 @@ int TViewMgr::ClassifyTurnStateForOverlayMode() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d5a70
-undefined4 TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(CString* messageString) {
+void TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(CString message,
+                                                                   CString* messageStoreRef) {
   int overlayMode = this->ClassifyTurnStateForOverlayMode();
-  CString stackMessage;
-  ::new ((void*)&stackMessage) CString(*messageString);
-  return this->DispatchLocalizedUiMessageWithTemplateA13A0(overlayMode, &stackMessage);
+  this->DispatchLocalizedUiMessageWithTemplateA13A0(message, messageStoreRef, overlayMode, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005d5b00
-undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplateA13A0(int overlayMode,
-                                                                 CString* messageCString) {
-  CString messageLocal;
-  ::new ((void*)&messageLocal) CString(*messageCString);
-  CString formatArg;
-  formatArg = reinterpret_cast<const char*>(kAddrLocalizedMessageTemplate);
-  (void)overlayMode;
-  (void)formatArg;
-  (void)messageLocal;
-  return this->DispatchLocalizedUiMessageWithTemplate(3);
+undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplateA13A0(CString message,
+                                                                 CString* messageStoreRef,
+                                                                 int overlayMode, int arg4) {
+  return this->DispatchLocalizedUiMessageWithTemplate(3, CString(g_szEmptyString), message,
+                                                      messageStoreRef, overlayMode, arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x005d5c40
-undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplate(int templateKind) {
+undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplate(int templateKind, CString formatText,
+                                                            CString message,
+                                                            CString* messageStoreRef,
+                                                            int overlayMode, int arg4) {
+  // TODO: real body — builds and shows the localized message window.
   (void)templateKind;
+  (void)formatText;
+  (void)message;
+  (void)messageStoreRef;
+  (void)overlayMode;
+  (void)arg4;
   return 0;
 }
 

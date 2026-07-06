@@ -10,6 +10,35 @@
 // They are `static __inline` so each translation unit inlines them at the callsite (no
 // emitted symbol), matching the original's inlined per-element loops.
 
+// Read-side byte-swap fixups applied after ReadBytes block reads (stream data is
+// big-endian). Same static __inline rationale as the writers below.
+static __inline void SwapShortArrayBytes(void* base, int count) {
+  unsigned char* bytes = static_cast<unsigned char*>(base);
+  int i = 0;
+  while (i < count) {
+    unsigned char t = bytes[0];
+    bytes[0] = bytes[1];
+    bytes[1] = t;
+    bytes += 2;
+    ++i;
+  }
+}
+
+static __inline void ReverseDwordArrayBytes(void* base, int count) {
+  unsigned char* bytes = static_cast<unsigned char*>(base);
+  int i = 0;
+  while (i < count) {
+    unsigned char t0 = bytes[0];
+    unsigned char t1 = bytes[1];
+    bytes[0] = bytes[3];
+    bytes[1] = bytes[2];
+    bytes[2] = t1;
+    bytes[3] = t0;
+    bytes += 4;
+    ++i;
+  }
+}
+
 static __inline void WriteShortArrayElems(TStream* stream, const short* values, int count) {
   for (int remaining = count; remaining != 0; --remaining) {
     short element = *values;

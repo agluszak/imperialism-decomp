@@ -106,6 +106,9 @@ public:
   // via PropagateMapActionContextDistanceLevelsRecursive and repopulates every
   // (this, node) pair (both directions -- distance is symmetric).
   short GetCachedMapActionContextDistanceOrRecompute(TZone* other); // 0x5610b0
+  // 0x0055f4d0 — true when any secondaryNeighbors entry (a TGlobalMapCityScoreRecord*
+  // under the documented stretch pun) has byte 0 (ownerNationCode00) == nationTag.
+  char HasSecondaryNeighborWithNationTag(short nationTag);
   void InvokeObjectVtableMethod24();
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
 
@@ -167,4 +170,3 @@ TZone* FindMapActionContextByNodeId(short nodeId); // 0x55f100
 // neighbor-city append in PopulatePortZoneAdjacencyToNearbyCityContexts). __stdcall free
 // function (no `this`).
 TZone* __stdcall FindMapActionContextContainingNodeByIndex(int cityRecordIndex); // 0x564570
-

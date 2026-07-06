@@ -3,7 +3,7 @@
 #include "game/global_data_tables.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
-#include "game/TQueueObject.h"
+#include "game/TPtrList.h"
 
 struct TInterNationEventDedupPacket {
   short eventCode0;
@@ -11,13 +11,13 @@ struct TInterNationEventDedupPacket {
   int nationMask4;
 };
 
-// Forward iterator over a TQueueObject's 1-based entry array. `owner` is the
+// Forward iterator over a TPtrList's 1-based entry array. `owner` is the
 // queue being walked; `counter` is the current 1-based index. The three real
 // thiscall methods live at 0x5e1fa0/0x5e1fd0/0x5e2000 (previously reached via
 // raw-address __fastcall casts through ILT thunks).
 struct TPlaybackWalkState {
   int counter;
-  TQueueObject* owner;
+  TPtrList* owner;
 
   void* Begin();
   int IsValid();
@@ -36,7 +36,7 @@ void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int ev
   }
 
   if (isReplayBypass != '\0' || g_pSimMgr->redrawEnabled == 0) {
-    TQueueObject* interNationQueue = perNationEventBuckets[eventCode];
+    TPtrList* interNationQueue = perNationEventBuckets[eventCode];
     if (interNationQueue != 0) {
       interNationQueue->AddEntrySlot38(&payloadOrNation);
     }
@@ -105,7 +105,7 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
     packetA.nationSlot2 = static_cast<short>(nationA);
     packetA.nationMask4 = 1 << (nationB & 0x1f);
     if (sharedEventRecordQueue != 0) {
-      sharedEventRecordQueue->AddEntrySlot38(reinterpret_cast<int*>(&packetA));
+      sharedEventRecordQueue->AddEntrySlot38(&packetA);
     }
   }
   if (nationB < 7 && eventCode > 1 && eventCode < 0x19) {
@@ -114,12 +114,12 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
     packetB.nationSlot2 = static_cast<short>(nationB);
     packetB.nationMask4 = 1 << (nationA & 0x1f);
     if (sharedEventRecordQueue != 0) {
-      sharedEventRecordQueue->AddEntrySlot38(reinterpret_cast<int*>(&packetB));
+      sharedEventRecordQueue->AddEntrySlot38(&packetB);
     }
   }
 }
 
-TQueueObject* TInterNationEventQueueManager::GetInterNationQueueByEventCode(int eventCode) {
+TPtrList* TInterNationEventQueueManager::GetInterNationQueueByEventCode(int eventCode) {
   if (eventCode >= 0 && eventCode < 7) {
     return perNationEventBuckets[eventCode];
   }
@@ -140,18 +140,18 @@ void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
   }
 
   if (isReplayBypass != '\0' || g_pSimMgr->redrawEnabled == 0) {
-    TQueueObject* mergeQueue = sharedEventRecordQueue;
+    TPtrList* mergeQueue = sharedEventRecordQueue;
     if (mergeQueue == 0) {
       return;
     }
 
-    int queueCount = mergeQueue->GetEntryCount();
+    int queueCount = mergeQueue->GetSize();
     int entryIndex = 1;
     if (entryIndex <= queueCount) {
       do {
         TInterNationEventType0FMergePayload* existingEntry =
             reinterpret_cast<TInterNationEventType0FMergePayload*>(
-                mergeQueue->GetEntryAt1BasedSlot2C(entryIndex));
+                mergeQueue->GetEntrySlot2C(entryIndex));
         if (existingEntry != 0 && existingEntry->eventMarker0 == 0x0F &&
             existingEntry->nationB12 == nationB && existingEntry->eventCode4 == eventCode) {
           existingEntry->nationMask8 |= 1 << (nationA & 0x1f);
@@ -194,10 +194,9 @@ void TInterNationEventQueueManager::AddOrUpdateBilateralActionRelationEntry(int 
     nationBHandled = true;
   }
   int entryIndex = 1;
-  while (!(nationAHandled && nationBHandled) &&
-         entryIndex <= sharedEventRecordQueue->GetEntryCount()) {
+  while (!(nationAHandled && nationBHandled) && entryIndex <= sharedEventRecordQueue->GetSize()) {
     TBilateralActionRelationEntry* entry = static_cast<TBilateralActionRelationEntry*>(
-        sharedEventRecordQueue->GetEntryAt1BasedSlot2C(entryIndex));
+        sharedEventRecordQueue->GetEntrySlot2C(entryIndex));
     if (entry->eventCode0 == eventCode) {
       if (!nationAHandled && entry->nationSlot4 == nationA) {
         nationAHandled = true;
@@ -234,7 +233,7 @@ void* TPlaybackWalkState::Begin() {
 
 // FUNCTION: IMPERIALISM 0x005e1fd0
 int TPlaybackWalkState::IsValid() {
-  return counter <= owner->GetEntryCount() ? 1 : 0;
+  return counter <= owner->GetSize() ? 1 : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e2000

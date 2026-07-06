@@ -655,15 +655,15 @@ void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
   char* terrainTileBytes =
       *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(g_pGlobalMapState) + 0xc);
   unsigned char nationTileFlags =
-      terrainTileBytes[0x1c + static_cast<short>(this->ownerNationSlot) * 0x24];
+      terrainTileBytes[0x1c + static_cast<short>(this->homeRegionIndex) * 0x24];
   if ((nationTileFlags >> 2 & 1) != 0) {
     return;
   }
 
   TTown* marker = new TTown();
-  marker->InitializeTownMarker("", this->ownerNationSlot, 1, static_cast<short>(nationId));
+  marker->InitializeTownMarker("", this->homeRegionIndex, 1, static_cast<short>(nationId));
   marker->activeFlag4f = 1;
-  g_pGlobalMapState->SetTileTransportFlags(this->ownerNationSlot, 0x15);
+  g_pGlobalMapState->SetTileTransportFlags(static_cast<short>(this->homeRegionIndex), 0x15);
   TGreatPower* targetNation = g_apNationStates[nationId];
   if (targetNation != 0 && targetNation->townMarkerList != 0) {
     targetNation->townMarkerList->AddTail(marker);
