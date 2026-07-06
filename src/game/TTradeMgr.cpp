@@ -605,7 +605,63 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b91e0
-void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {}
+void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
+  // Reuses categoryRows[0]'s resetTransitionFlagA00/B02 pair as persistent (row, ordinal)
+  // cursor state across calls -- matches the wrapper's own this+4/this+6 use of the same
+  // pair (see ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper above).
+  bool blocked = false;
+  do {
+    if (categoryRows[0].resetTransitionFlagA00 > 0x10) {
+      break;
+    }
+    short dispatchIdx =
+        g_nationMetricSlotDispatchOrder006d810[categoryRows[0].resetTransitionFlagA00];
+    TDealList* list = categoryRankLists[dispatchIdx];
+    // TDealList entry record layout not yet recovered: entry[0]=source nation slot,
+    // entry[1]=target nation slot, entry[4]=amount-ish field (raw short offsets, matching
+    // the original's own untyped short* walk over the GetEntrySlot2C result).
+    short* entry =
+        static_cast<short*>(list->GetEntrySlot2C(categoryRows[0].resetTransitionFlagB02));
+
+    int relationDelta =
+        g_apTerrainTypeDescriptorTable[entry[1]]->SumDiplomacyState1c6AndRelationDeltaSnapshot(
+            dispatchIdx);
+    if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(entry[1]) != 0 &&
+        g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(entry[0]) == 0) {
+      if (g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2() < relationDelta) {
+        relationDelta = g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2();
+      }
+    }
+
+    if (relationDelta > 0) {
+      blocked =
+          g_apTerrainTypeDescriptorTable[entry[0]]->TryDispatchNationActionViaUiContextOrFallback(
+              entry[1], relationDelta, entry[4], dispatchIdx) != 0;
+    } else {
+      blocked = false;
+    }
+
+    ++categoryRows[0].resetTransitionFlagB02;
+    if (categoryRows[0].resetTransitionFlagB02 >
+        *reinterpret_cast<int*>(reinterpret_cast<char*>(list) + 8)) {
+      do {
+        ++categoryRows[0].resetTransitionFlagA00;
+        if (categoryRows[0].resetTransitionFlagA00 > 0x10) {
+          break;
+        }
+      } while (*reinterpret_cast<int*>(
+                   reinterpret_cast<char*>(
+                       categoryRankLists[g_nationMetricSlotDispatchOrder006d810
+                                             [categoryRows[0].resetTransitionFlagA00]]) +
+                   8) == 0);
+      categoryRows[0].resetTransitionFlagB02 = 1;
+    }
+  } while (!blocked);
+
+  if (!blocked) {
+    RefreshNationStateAndEmitTurnEvent3Mode18();
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005b9370
 void TTradeMgr::RefreshNationStateAndEmitTurnEvent3Mode18() {
