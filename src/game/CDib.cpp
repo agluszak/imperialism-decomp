@@ -136,6 +136,19 @@ BOOL CDib::StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int w
   return TRUE;
 }
 
+// FUNCTION: IMPERIALISM 0x0047ab60
+BOOL CDib::StretchDibitsFromStoredBitmapToHdc(CDC* dc, POINT* topLeft) {
+  if (m_pInfoHeader == NULL) {
+    return FALSE;
+  }
+  HDC hdc = (dc != NULL) ? dc->m_hDC : NULL;
+  int destHeight = m_pInfoHeader->bmiHeader.biHeight;
+  int destWidth = m_pInfoHeader->bmiHeader.biWidth;
+  ::StretchDIBits(hdc, topLeft->x, topLeft->y, destWidth, destHeight, 0, 0, destWidth, destHeight,
+                  m_dibBits, m_pInfoHeader, DIB_RGB_COLORS, SRCCOPY);
+  return TRUE;
+}
+
 // FUNCTION: IMPERIALISM 0x0047abe0
 int CDib::StretchDibitsRectToDc(CDC* dc, int xDest, int yDest, int destWidth, int destHeight,
                                 int xSrc, int ySrc, int srcWidth, int srcHeight) {

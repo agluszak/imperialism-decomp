@@ -333,7 +333,7 @@ address|name|symbol|size|type|prototype|provenance
 47aa00|SelectAndRealizeDibPalette||79|function|undefined SelectAndRealizeDibPalette()|
 47aa70|StretchDibitsFromStoredBitmapToHdcSimple||80|function|undefined StretchDibitsFromStoredBitmapToHdcSimple()|
 47aae0|BlitDibBitsWithStretchDIBits||82|function|undefined BlitDibBitsWithStretchDIBits()|
-47ab60|StretchDibitsFromStoredBitmapToHdc||81|function|undefined StretchDibitsFromStoredBitmapToHdc()|
+47ab60|CDib::StretchDibitsFromStoredBitmapToHdc||81|function|int __thiscall StretchDibitsFromStoredBitmapToHdc(CDC * dc, tagPOINT * topLeft)|
 47abe0|CDib::StretchDibitsRectToDc||76|function|undefined StretchDibitsRectToDc()|
 47ac50|StretchDibitsWithCopiedPaletteTable||368|function|undefined StretchDibitsWithCopiedPaletteTable()|
 47ae20|EnsureBitmapSurfaceDibSectionCreated||65|function|undefined EnsureBitmapSurfaceDibSectionCreated()|
@@ -596,7 +596,7 @@ address|name|symbol|size|type|prototype|provenance
 485920|CMainFrame::HandleCustomMessage2420DispatchTurnEvent||40|function|undefined HandleCustomMessage2420DispatchTurnEvent()|
 485960|TMacViewMgr_OnMsg_0x0BC0_Impl||1|function|undefined TMacViewMgr_OnMsg_0x0BC0_Impl()|
 485990|TMovieView::SetFieldC0AndInvalidateWindowIfChanged||41|function|undefined SetFieldC0AndInvalidateWindowIfChanged()|
-4859d0|TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl||1|function|undefined TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl()|
+4859d0|CMainFrame::OnEraseBkgnd||392|function|undefined TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl()|
 485bd0|CMainFrame::OnPaint||26|function|void __thiscall OnPaint()|
 485c00|CMainFrame::OnChar||8|function|void __thiscall OnChar(uint,uint,uint)|
 485c20|SendF1KeyDownToActiveMainWindow||36|function|undefined SendF1KeyDownToActiveMainWindow()|

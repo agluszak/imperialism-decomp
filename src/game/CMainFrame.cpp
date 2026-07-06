@@ -56,10 +56,9 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 // Entry order follows the original map at 0x648648. Original entries whose handlers are
 // still not ported: ON_COMMAND(0x800D, 0x485590) (forwards through TViewMgr slot 0x19,
-// byte 0x64 — needs TViewMgr slots 0x10..0x19 modeled), ON_COMMAND(0x8013, 0x4855b0)
-// (terrain-overlay dialog), ON_WM_ERASEBKGND (0x4859d0) (lazy backdrop object + tile
-// loop), ON_MESSAGE(0xBC0, 0x485960) (lParam-object dispatch); each needs its own
-// class/type recovery before porting.
+// byte 0x64 — needs TViewMgr slots 0x13..0x19 modeled), ON_COMMAND(0x8013, 0x4855b0)
+// (terrain-overlay dialog), ON_MESSAGE(0xBC0, 0x485960) (lParam-object dispatch); each
+// needs its own class/type recovery before porting.
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 ON_WM_QUERYNEWPALETTE()
 ON_WM_PALETTECHANGED()
@@ -70,6 +69,7 @@ ON_WM_PAINT()
 ON_WM_CHAR()
 ON_WM_ACTIVATE()
 ON_WM_ACTIVATEAPP()
+ON_WM_ERASEBKGND()
 ON_COMMAND(ID_HELP_FINDER, CFrameWnd::OnHelpFinder)
 ON_COMMAND(ID_HELP, CFrameWnd::OnHelp)
 ON_COMMAND(ID_CONTEXT_HELP, CFrameWnd::OnContextHelp)
@@ -206,6 +206,38 @@ int CMainFrame::SetFieldC0AndInvalidateWindowIfChanged(int styleValue) {
     InvalidateRect(NULL, TRUE);
   }
   return priorValue;
+}
+
+// FUNCTION: IMPERIALISM 0x004859d0
+BOOL CMainFrame::OnEraseBkgnd(CDC* pDC) {
+  if (field_C0 != 0x100005f) {
+    g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
+    RECT solidRect;
+    GetClientRect(&solidRect);
+    pDC->FillSolidRect(&solidRect, field_C0);
+    return TRUE;
+  }
+  if (field_C4 == 0) {
+    field_C4 = new CDib();
+    field_C4->LoadBitmapResourceAndInitializeSurfaceState(MAKEINTRESOURCE(0x119), 0);
+  }
+  RECT clientRect;
+  GetClientRect(&clientRect);
+  int tileRows = (clientRect.bottom - clientRect.top) / 128;
+  int tileCols = (clientRect.right - clientRect.left) / 128;
+  field_C4->SelectAndRealizeDibPalette(pDC, FALSE);
+  POINT tile;
+  tile.x = 0;
+  tile.y = 0;
+  for (int row = 0; row <= tileRows; ++row) {
+    tile.x = 0;
+    for (int col = 0; col <= tileCols; ++col) {
+      field_C4->StretchDibitsFromStoredBitmapToHdc(pDC, &tile);
+      tile.x += 128;
+    }
+    tile.y += 128;
+  }
+  return TRUE;
 }
 
 // FUNCTION: IMPERIALISM 0x00485bd0

@@ -1355,14 +1355,6 @@ undefined4 BlitDibBitsWithStretchDIBits(void)
   return 0;
 }
 
-// ghidra_name StretchDibitsFromStoredBitmapToHdc
-// ghidra_proto undefined StretchDibitsFromStoredBitmapToHdc()
-// FUNCTION: IMPERIALISM 0x0047ab60
-undefined4 StretchDibitsFromStoredBitmapToHdc(void)
-{
-  return 0;
-}
-
 // ghidra_name StretchDibitsWithCopiedPaletteTable
 // ghidra_proto undefined StretchDibitsWithCopiedPaletteTable()
 // FUNCTION: IMPERIALISM 0x0047ac50

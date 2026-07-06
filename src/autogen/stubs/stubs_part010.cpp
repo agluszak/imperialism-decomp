@@ -1467,14 +1467,6 @@ undefined4 TMacViewMgr_OnMsg_0x0BC0_Impl(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl
-// ghidra_proto undefined TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl()
-// FUNCTION: IMPERIALISM 0x004859d0
-undefined4 TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name SendF1KeyDownToActiveMainWindow
 // ghidra_proto undefined SendF1KeyDownToActiveMainWindow()
 // FUNCTION: IMPERIALISM 0x00485c20

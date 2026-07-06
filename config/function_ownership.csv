@@ -169,6 +169,7 @@ address|target_cpp|ownership|note
 47a3e0|src/game/CDib.cpp|manual|marker_sync
 47aa00|src/game/CDib.cpp|manual|marker_sync
 47aa70|src/game/CDib.cpp|manual|marker_sync
+47ab60|src/game/CDib.cpp|manual|marker_sync
 47abe0|src/game/CDib.cpp|manual|marker_sync
 47ae20|src/game/CDib.cpp|manual|marker_sync
 47ae90|src/game/CDib.cpp|manual|marker_sync
@@ -218,6 +219,7 @@ address|target_cpp|ownership|note
 485180|src/game/CMainFrame.cpp|manual|marker_sync
 485920|src/game/CMainFrame.cpp|manual|marker_sync
 485990|src/game/CMainFrame.cpp|manual|marker_sync
+4859d0|src/game/CMainFrame.cpp|manual|marker_sync
 485bd0|src/game/CMainFrame.cpp|manual|marker_sync
 485c00|src/game/CMainFrame.cpp|manual|marker_sync
 485c60|src/game/CMainFrame.cpp|manual|marker_sync

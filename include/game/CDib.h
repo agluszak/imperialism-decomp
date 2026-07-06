@@ -53,6 +53,8 @@ public:
   UINT SelectAndRealizeDibPalette(CDC* dc, BOOL background);
   // Stretch-blit stored DIB bits to a DC. 0x0047aa70
   BOOL StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int width, int height);
+  // Blit the whole stored DIB to a DC at the given top-left point (natural size). 0x0047ab60
+  BOOL StretchDibitsFromStoredBitmapToHdc(CDC* dc, POINT* topLeft);
   // Full-control StretchDIBits of this DIB's bits/header: explicit dest and src rects,
   // DIB_RGB_COLORS + SRCCOPY, null-tolerant CDC. 0x0047abe0
   int StretchDibitsRectToDc(CDC* dc, int xDest, int yDest, int destWidth, int destHeight, int xSrc,

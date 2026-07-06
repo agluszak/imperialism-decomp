@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/CDib.h"
 #include "game/CDibPal.h"
 #include "game/mfc.h"
 
@@ -42,6 +43,10 @@ public:
   // ON_WM_ACTIVATEAPP: when the app loses activation and isn't already minimized, park
   // the (fullscreen) frame off-screen minimized. 0x00485c90.
   afx_msg void OnActivateApp(BOOL bActive, DWORD dwThreadID);
+  // ON_WM_ERASEBKGND: when field_C0 is the tiled-backdrop sentinel, lazily load the
+  // backdrop CDib and tile it 128x128 across the client area; otherwise realize the
+  // default palette and solid-fill with field_C0. 0x004859d0.
+  afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
   virtual BOOL PreTranslateMessage(MSG* msg);
 
@@ -50,6 +55,6 @@ public:
 
   CDibPal* field_BC;
   int field_C0;
-  CObject* field_C4;
+  CDib* field_C4; // backdrop DIB (tiled-background path of OnEraseBkgnd)
   int field_CC;
 };

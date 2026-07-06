@@ -1557,8 +1557,8 @@
     },
     {
       "address": "0x47ab60",
-      "matching": 0.0,
-      "name": "StretchDibitsFromStoredBitmapToHdc",
+      "matching": 0.9166666666666666,
+      "name": "CDib::StretchDibitsFromStoredBitmapToHdc",
       "type": 1
     },
     {
@@ -2632,8 +2632,8 @@
     },
     {
       "address": "0x4859d0",
-      "matching": 0.0,
-      "name": "TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl",
+      "matching": 0.8770491803278688,
+      "name": "CMainFrame::OnEraseBkgnd",
       "type": 1
     },
     {
@@ -16226,7 +16226,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.19809177646524306,
+      "matching": 0.2044525215810995,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
