@@ -157,6 +157,23 @@ public:
                                                           int compareAttachedFlag);
   void RemoveNode(int self);
 
+  // Null-safe (returns true on null `this`). Sums 4 consecutive shorts spanning
+  // pad_1e, attached_entity's two halves, and pad_24 -- the original reads this whole
+  // +0x1e..+0x25 region as a flat 4-short block rather than per individual field.
+  bool HasNoMapOrderEntryChildrenQueued(); // 0x553b10
+  // Null-safe (returns true on null `this`). Same +0x1e..+0x25 sum check as
+  // HasNoMapOrderEntryChildrenQueued short-circuits to true; otherwise scans
+  // childOrderList for any active entry. The "found" path returns the node pointer
+  // itself (mask is a no-op for an aligned allocation) rather than a clean bool --
+  // preserved raw since no confirmed caller needs more than a non-zero test.
+  unsigned int HasActiveMapOrderEntryChildren(); // 0x553b50
+  // This entry's 0-based rank among g_pNavyOrderManager->orderListHead04 entries
+  // sharing the same required_count value; -1 if `this` is null or not found in the
+  // queue.
+  int GetNavyOrderRankWithinNationBucket(); // 0x5563d0
+  // Clears this order's map marker tile if one is set (tiebreak_strength != -1).
+  void ClearNavyOrderMapMarker(); // 0x5564f0
+
   // Per-entry candidate score blending this order's tiebreak_strength bucket against
   // its resource-type's navy-priority/resolve/calculate/task-force weight columns
   // (g_NavyOrderResourceDescriptorTable[order_type]) plus required_count. Used by the

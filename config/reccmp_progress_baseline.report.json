@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.12752721617418353,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12789,20 +12789,21 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12815,14 +12816,13 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -22196,13 +22196,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.25,
+      "matching": 0.6206896551724138,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.125,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22394,7 +22394,7 @@
     },
     {
       "address": "0x5563d0",
-      "matching": 0.18181818181818182,
+      "matching": 0.85,
       "name": "GetNavyOrderRankWithinNationBucket",
       "type": 1
     },
@@ -22406,13 +22406,13 @@
     },
     {
       "address": "0x5564f0",
-      "matching": 0.14285714285714285,
+      "matching": 0.8,
       "name": "ClearNavyOrderMapMarker",
       "type": 1
     },
     {
       "address": "0x556530",
-      "matching": 0.2702702702702703,
+      "matching": 0.32432432432432434,
       "name": "TNavyMgr::CreateObject",
       "type": 1
     },
@@ -22424,19 +22424,19 @@
     },
     {
       "address": "0x556590",
-      "matching": 0.2222222222222222,
+      "matching": 0.1111111111111111,
       "name": "ConstructNavyManager",
       "type": 1
     },
     {
       "address": "0x5565c0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TNavyMgr::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x5565f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ResetNavyManagerVtable",
       "type": 1
     },

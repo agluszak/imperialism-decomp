@@ -1299,22 +1299,6 @@ undefined4 RefreshTaskForceSelectionFlagsForCurrentNationOrders(void)
   return 0;
 }
 
-// ghidra_name HasNoMapOrderEntryChildrenQueued
-// ghidra_proto undefined HasNoMapOrderEntryChildrenQueued()
-// FUNCTION: IMPERIALISM 0x00553b10
-undefined4 HasNoMapOrderEntryChildrenQueued(void)
-{
-  return 0;
-}
-
-// ghidra_name HasActiveMapOrderEntryChildren
-// ghidra_proto undefined HasActiveMapOrderEntryChildren()
-// FUNCTION: IMPERIALISM 0x00553b50
-undefined4 HasActiveMapOrderEntryChildren(void)
-{
-  return 0;
-}
-
 // ghidra_name ObjectPool::RemoveTaskForceOrderNodeById
 // ghidra_proto undefined RemoveTaskForceOrderNodeById()
 // FUNCTION: IMPERIALISM 0x00553d40

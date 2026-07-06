@@ -115,42 +115,10 @@ undefined4 ApplyMapOrderTypeExecutionEffects(void)
   return 0;
 }
 
-// ghidra_name GetNavyOrderRankWithinNationBucket
-// ghidra_proto undefined GetNavyOrderRankWithinNationBucket()
-// FUNCTION: IMPERIALISM 0x005563d0
-undefined4 GetNavyOrderRankWithinNationBucket(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateNavyOrderMapMarkerByOrderType
 // ghidra_proto undefined UpdateNavyOrderMapMarkerByOrderType()
 // FUNCTION: IMPERIALISM 0x00556410
 undefined4 UpdateNavyOrderMapMarkerByOrderType(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearNavyOrderMapMarker
-// ghidra_proto undefined ClearNavyOrderMapMarker()
-// FUNCTION: IMPERIALISM 0x005564f0
-undefined4 ClearNavyOrderMapMarker(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructNavyManager
-// ghidra_proto undefined ConstructNavyManager()
-// FUNCTION: IMPERIALISM 0x00556590
-undefined4 ConstructNavyManager(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetNavyManagerVtable
-// ghidra_proto undefined ResetNavyManagerVtable()
-// FUNCTION: IMPERIALISM 0x005565f0
-undefined4 ResetNavyManagerVtable(void)
 {
   return 0;
 }

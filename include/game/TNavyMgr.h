@@ -27,6 +27,11 @@ public:
   // PromoteMapOrderChainAndQueue (TTaskForce.cpp) all read/write this same
   // field via the g_pNavyOrderManager global.
   TTaskForce* orderListHead04;
+  // ctor initializes to -1; real purpose not yet identified from any confirmed reader.
+  short field08;
+  char pad0a[2];
+  // ctor initializes to 0; real purpose not yet identified from any confirmed reader.
+  int field0c;
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
   // 0x557170. Walks orderListHead04 (the same raw task-force-order node list
@@ -55,6 +60,8 @@ public:
 
   TNavyMgr();
 };
+
+ASSERT_SIZE(TNavyMgr, 0x10);
 
 // === BEGIN GENERATED (TNavyMgr) — refreshed by `just gen-class TNavyMgr`; do not hand-edit ===
 // clang-format off

@@ -15,8 +15,13 @@ extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 
 IMPLEMENT_DYNCREATE(TNavyMgr, TObject)
 
-TNavyMgr::TNavyMgr() : orderListHead04(0) {}
+// FUNCTION: IMPERIALISM 0x00556590
+TNavyMgr::TNavyMgr() : orderListHead04(0), field08(-1), field0c(0) {}
 
+// SYNTHETIC: IMPERIALISM 0x005565c0
+// TNavyMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x005565f0
 TNavyMgr::~TNavyMgr() {}
 
 void TNavyMgr::Free() {}

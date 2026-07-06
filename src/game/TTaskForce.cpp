@@ -555,6 +555,30 @@ void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveE
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00553b10
+bool TTaskForce::HasNoMapOrderEntryChildrenQueued() {
+  if (this == nullptr) {
+    return true;
+  }
+  const short* words = reinterpret_cast<const short*>(reinterpret_cast<const char*>(this) + 0x1e);
+  return (words[0] + words[1] + words[2] + words[3]) == 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00553b50
+unsigned int TTaskForce::HasActiveMapOrderEntryChildren() {
+  if (this != nullptr) {
+    const short* words = reinterpret_cast<const short*>(reinterpret_cast<const char*>(this) + 0x1e);
+    if (words[0] + words[1] + words[2] + words[3] != 0) {
+      for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+        if (node->active_flag != 0) {
+          return reinterpret_cast<unsigned int>(node) & 0xffffff00u;
+        }
+      }
+    }
+  }
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x00553bc0
 void TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink(TTaskForce* node) {
   // TODO: promote body -- searches `head` for an existing link to `node` (via
@@ -755,6 +779,32 @@ int TTaskForce::GetMapOrderEntryChildCount() {
     ++count;
   }
   return count;
+}
+
+// FUNCTION: IMPERIALISM 0x005563d0
+int TTaskForce::GetNavyOrderRankWithinNationBucket() {
+  if (this == nullptr) {
+    return -1;
+  }
+  int rank = 0;
+  for (TTaskForce* node = g_pNavyOrderManager->orderListHead04; node != nullptr;
+       node = node->queue_next) {
+    if (this == node) {
+      return rank;
+    }
+    if (node->required_count == required_count) {
+      ++rank;
+    }
+  }
+  return -1;
+}
+
+// FUNCTION: IMPERIALISM 0x005564f0
+void TTaskForce::ClearNavyOrderMapMarker() {
+  if (tiebreak_strength != -1) {
+    SetMapTileStateByteAndNotifyObserver(tiebreak_strength, -1);
+    tiebreak_strength = -1;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00556820
