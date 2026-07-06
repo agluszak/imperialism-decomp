@@ -12747,7 +12747,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12759,7 +12760,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -16228,7 +16229,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.19718309859154928,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16510,8 +16511,8 @@
     },
     {
       "address": "0x511610",
-      "matching": 0.0,
-      "name": "TMapMgr::OrphanLeaf_NoCall_Ins01_00511610",
+      "matching": 0.21868787276341947,
+      "name": "TMapMgr::UpdateStrategicMapTileIconVariantState",
       "type": 1
     },
     {
@@ -16738,7 +16739,7 @@
     },
     {
       "address": "0x514110",
-      "matching": 0.0,
+      "matching": 0.6751592356687898,
       "name": "TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex",
       "type": 1
     },
@@ -18112,7 +18113,7 @@
     },
     {
       "address": "0x52d030",
-      "matching": 0.7766990291262136,
+      "matching": 1.0,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -20039,7 +20040,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.441025641025641,
+      "matching": 0.44329896907216493,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },

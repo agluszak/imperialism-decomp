@@ -235,14 +235,6 @@ undefined4 HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(void)
   return 0;
 }
 
-// ghidra_name TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex
-// ghidra_proto undefined ResolveRegionTileSubtypeCodeForTileIndex()
-// FUNCTION: IMPERIALISM 0x00514110
-undefined4 ResolveRegionTileSubtypeCodeForTileIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name FindReachableRecruitSpawnTileRecursive
 // ghidra_proto undefined FindReachableRecruitSpawnTileRecursive()
 // FUNCTION: IMPERIALISM 0x00514cd0

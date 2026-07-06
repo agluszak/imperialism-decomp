@@ -3179,8 +3179,7 @@ address|name|symbol|size|type|prototype|provenance
 5113d0|CheckTileVariantCodeMembershipSetC||65|function|undefined CheckTileVariantCodeMembershipSetC()|
 511440|CheckTileVariantCodeMembershipSetD||65|function|undefined CheckTileVariantCodeMembershipSetD()|
 5114b0|CheckTilePatternMaskAllowedByModeFlag||268|function|undefined CheckTilePatternMaskAllowedByModeFlag()|
-511610|TMapMgr::OrphanLeaf_NoCall_Ins01_00511610||4|function|undefined OrphanLeaf_NoCall_Ins01_00511610(short param_1)|
-511614|UpdateStrategicMapTileIconVariantState||860|function|undefined UpdateStrategicMapTileIconVariantState()|
+511610|TMapMgr::UpdateStrategicMapTileIconVariantState||864|function|short __thiscall UpdateStrategicMapTileIconVariantState(short param_1)|
 511a70|TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng||830|function|undefined TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng()|
 511e80|TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress||49|function|undefined TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress()|
 511ed0|TMapMgr::DispatchTurnEvent7DDForActiveNation||42|function|undefined DispatchTurnEvent7DDForActiveNation()|

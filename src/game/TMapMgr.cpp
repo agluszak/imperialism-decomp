@@ -77,22 +77,6 @@ undefined TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded(int param_1) {
   return 0;
 }
 
-undefined TMapMgr::OrphanLeaf_NoCall_Ins01_00511610(short param_1) {
-  return 0;
-}
-
-undefined TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng() {
-  return 0;
-}
-
-undefined TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
-  return 0;
-}
-
-undefined TMapMgr::DispatchTurnEvent7DDForActiveNation() {
-  return 0;
-}
-
 // Recompute a tile's per-direction adjacency masks (bytes 0x0a/0x0b) and its sprite-variant
 // code (byte 2) from its six hex neighbors, using the map-gen LCG for random tie-breaks.
 // Branches on terrain type (byte 0): type 5 = water/coast, else land. Returns the last EAX
@@ -506,6 +490,129 @@ char TMapMgr::CheckTileVariantCodeMembershipSetD(short tileIndex) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00511610
+short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  switch (static_cast<unsigned char>(tile->terrainType00)) {
+  case 5: {
+    short neighbors[6];
+    ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
+    bool foundLandNeighbor = false;
+    for (int i = 0; i < 6; ++i) {
+      if (neighbors[i] != -1 && terrainStateTable[neighbors[i]].terrainType00 != 5) {
+        foundLandNeighbor = true;
+      }
+    }
+    if (foundLandNeighbor) {
+      tile->resourceTypeByEdge[0] = 0x13;
+    }
+    break;
+  }
+  case 0: {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+    if (roll % 100 < 10) {
+      tile->resourceTypeByEdge[0] = 0;
+      break;
+    }
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+    if (roll % 100 < 5 && tile->ownerNationTag04 < 7) {
+      tile->resourceTypeByEdge[0] = 5;
+      break;
+    }
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+    if (roll % 100 < 0x24) {
+      tile->resourceTypeByEdge[0] = 0x14;
+    } else {
+      tile->resourceTypeByEdge[0] = 0x11;
+    }
+    break;
+  }
+  case 7: {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+    if (roll % 100 < 0x37) {
+      tile->resourceTypeByEdge[0] = 0x11;
+    } else {
+      tile->resourceTypeByEdge[0] = 0x12;
+    }
+    break;
+  }
+  case 1:
+    tile->resourceTypeByEdge[0] = 2;
+    break;
+  case 4:
+  case 6: {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+    if (roll % 100 < 0xf) {
+      tile->resourceTypeByEdge[0] = 6;
+    }
+    break;
+  }
+  case 2: {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+    if (roll % 100 < 0xc) {
+      tile->resourceTypeByEdge[0] = 1;
+      break;
+    }
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+    if (roll % 100 < 0x14) {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+      if (roll % 100 < 0x32) {
+        tile->resourceTypeByEdge[0] = 3;
+      } else {
+        tile->resourceTypeByEdge[0] = 4;
+      }
+    }
+    break;
+  }
+  case 3: {
+    int edgeIndex = 0;
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+    if (roll % 100 < 0x14) {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+      if (roll % 100 < 0x32) {
+        tile->resourceTypeByEdge[0] = 3;
+      } else {
+        tile->resourceTypeByEdge[0] = 4;
+      }
+      edgeIndex = 1;
+    }
+    if (tile->ownerNationTag04 < 7) {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+      if (roll % 100 < 0xf) {
+        tile->resourceTypeByEdge[edgeIndex] = 0x16;
+      }
+    } else {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+      if (roll % 100 < 0xa) {
+        tile->resourceTypeByEdge[edgeIndex] = 0x15;
+      } else {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
+        if (roll % 100 < 0xf) {
+          tile->resourceTypeByEdge[edgeIndex] = 0x16;
+        }
+      }
+    }
+    break;
+  }
+  }
+  short code = ResolveRegionTileSubtypeCodeForTileIndex(tileIndex);
+  tile->gateFlag = static_cast<signed char>(code);
+  return code;
+}
+
 // FUNCTION: IMPERIALISM 0x00511f10
 void TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(undefined4 param_1) {
   ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(static_cast<short>(param_1), 1);
@@ -901,6 +1008,64 @@ void TMapMgr::ApplyEngineerRailCostDeltaForConnectedTiles(short tileA, short til
   short dir = GetHexDirectionBetweenTiles(tileA, tileB);
   terrainStateTable[tileA].railFlags17 -= kHexDirectionBitMask[dir];
   terrainStateTable[tileB].railFlags17 -= kHexDirectionBitMask[(dir + 3) % 6];
+}
+
+// FUNCTION: IMPERIALISM 0x00514110
+short TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(short tileIndex) {
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  switch (static_cast<unsigned char>(tile->terrainType00)) {
+  case 0:
+    if (tile->resourceTypeByEdge[0] == 0) {
+      return 2;
+    }
+    if (tile->resourceTypeByEdge[0] == 5) {
+      return 4;
+    }
+    if (tile->resourceTypeByEdge[0] == 0x14) {
+      return 3;
+    }
+    return (tile->activeFlags1c & 2) ? 0xe : 1;
+  case 1:
+    if (tile->gateFlag == -1) {
+      return 0xd;
+    }
+    return tile->gateFlag;
+  case 2:
+    return (tile->resourceTypeByEdge[0] != 1) + 7;
+  case 3:
+    return 9;
+  case 4:
+    return 0xa;
+  case 6:
+    if (tile->gateFlag != -1) {
+      return tile->gateFlag;
+    } else {
+      short quotient = tileIndex / 0x6c;
+      if (quotient < 0xf) {
+        return 0xc;
+      }
+      if (quotient > 0x2d) {
+        return 0xc;
+      }
+      return 0xb;
+    }
+  case 7:
+    return (tile->resourceTypeByEdge[0] != 0x11) + 5;
+  default:
+    return 0;
+  }
+}
+
+undefined TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng() {
+  return 0;
+}
+
+undefined TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
+  return 0;
+}
+
+undefined TMapMgr::DispatchTurnEvent7DDForActiveNation() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00514250

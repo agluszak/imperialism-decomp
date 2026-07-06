@@ -151,7 +151,13 @@ public:
   virtual undefined InitializeTileNeighborConnectionMaskIfNeeded(int param_1); // slot 0x0e 0x5107e0
   virtual undefined UpdateTileNeighborBorderInfluenceCounters(short param_1,
                                                               short param_2); // slot 0x0f 0x50fe10
-  virtual undefined OrphanLeaf_NoCall_Ins01_00511610(short param_1);          // slot 0x10 0x511610
+  // Map-gen resource-type assignment for a single tile: for water (terrainType00==5), marks
+  // resourceTypeByEdge[0]=0x13 if any hex neighbor is land; for the other 7 terrain classes,
+  // rolls the map-gen LCG against fixed percentage thresholds to assign resourceTypeByEdge[0]
+  // (terrainType00==3 can additionally fill resourceTypeByEdge[1]), then always resolves and
+  // stores the tile's border/subtype code via ResolveRegionTileSubtypeCodeForTileIndex into
+  // gateFlag.
+  virtual short UpdateStrategicMapTileIconVariantState(short tileIndex); // slot 0x10 0x511610
   virtual undefined
   TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(); // slot 0x11 0x511a70
   virtual undefined
@@ -447,6 +453,13 @@ public:
   // candidate (codes 3/4/0x15/0x16, or 6 when the active nation has a production order).
   byte CheckTileProspectingDiscoveryCandidate(short nTileIndex);
 
+  // 0x514110. Resolves a tile's border/subtype icon code from terrainType00, keyed off
+  // resourceTypeByEdge[0]/gateFlag/activeFlags1c depending on terrain class; falls back to
+  // returning gateFlag verbatim once it's been assigned (non-(-1)). Called by the region
+  // subtype/border-refresh family (0x50f200, 0x5107e0, 0x511a70, 0x514a20, 0x515f80) and by
+  // UpdateStrategicMapTileIconVariantState (0x511610).
+  short ResolveRegionTileSubtypeCodeForTileIndex(short tileIndex);
+
   TCivUnit* GetFirstCivilianOrderOnTile(short tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }
@@ -527,7 +540,7 @@ short __stdcall GetProvinceUnitOrderWeight(short provinceId); // 0x5184e0
 //   slot 0x0d  byte 0x34  0x00510210  override  UpdateMapTileAdjacencyMasksAndVariantForTile
 //   slot 0x0e  byte 0x38  0x005107e0  override  InitializeTileNeighborConnectionMaskIfNeeded
 //   slot 0x0f  byte 0x3c  0x0050fe10  override  UpdateTileNeighborBorderInfluenceCounters
-//   slot 0x10  byte 0x40  0x00511610  override  OrphanLeaf_NoCall_Ins01_00511610
+//   slot 0x10  byte 0x40  0x00511610  override  UpdateStrategicMapTileIconVariantState
 //   slot 0x11  byte 0x44  0x00511a70  override  TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng
 //   slot 0x12  byte 0x48  0x00511e80  override  TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress
 //   slot 0x13  byte 0x4c  0x00511ed0  override  DispatchTurnEvent7DDForActiveNation
