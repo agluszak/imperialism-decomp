@@ -836,6 +836,95 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
   return code;
 }
 
+namespace {
+
+// Shared body for TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng's
+// resourceType-3 and resourceType-4 passes: both are behaviorally identical (the original's
+// resourceType-4 pass has an extra early-exit goto around the tail cleanup, but every branch
+// still performs that exact same cleanup before reaching it, so unifying the two produces
+// identical observable state).
+void EnsureRegionHasResourceTypeAssignment(TMapMgr* mapMgr, short* linkedRegionIds,
+                                           int linkedRegionTotal, signed char resourceType) {
+  int foundIndex = -1;
+  for (int i = 0; i < linkedRegionTotal; ++i) {
+    signed char gateFlag = mapMgr->terrainStateTable[linkedRegionIds[i]].gateFlag;
+    if ((gateFlag == 9 || gateFlag == 8) &&
+        mapMgr->terrainStateTable[linkedRegionIds[i]].resourceTypeByEdge[0] == -1) {
+      foundIndex = i;
+      break;
+    }
+  }
+
+  int targetIndex;
+  if (foundIndex != -1) {
+    targetIndex = foundIndex;
+    mapMgr->terrainStateTable[linkedRegionIds[targetIndex]].resourceTypeByEdge[0] = resourceType;
+  } else {
+    signed char gateFlag;
+    do {
+      do {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        targetIndex =
+            static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % linkedRegionTotal);
+        gateFlag = mapMgr->terrainStateTable[linkedRegionIds[targetIndex]].gateFlag;
+      } while (gateFlag == 8);
+    } while (gateFlag == 9);
+    mapMgr->terrainStateTable[linkedRegionIds[targetIndex]].gateFlag = 8;
+    mapMgr->terrainStateTable[linkedRegionIds[targetIndex]].resourceTypeByEdge[0] = resourceType;
+  }
+
+  short targetRegion = linkedRegionIds[targetIndex];
+  mapMgr->terrainStateTable[targetRegion].resourceTypeByEdge[1] = -1;
+  mapMgr->terrainStateTable[targetRegion].gateFlag =
+      static_cast<signed char>(mapMgr->ResolveRegionTileSubtypeCodeForTileIndex(targetRegion));
+}
+
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x00511a70
+void TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng() {
+  for (int nationTag = 0; nationTag <= 6; ++nationTag) {
+    int i;
+    int linkedRegionTotal = 0;
+    for (i = 0; i < 0x180; ++i) {
+      if (cityScoreTable[i].ownerNationCode00 == nationTag) {
+        linkedRegionTotal += cityScoreTable[i].linkedRegionCount;
+      }
+    }
+
+    short* linkedRegionIds = static_cast<short*>(::operator new(linkedRegionTotal * 2));
+    short* cursor = linkedRegionIds;
+    for (i = 0; i < 0x180; ++i) {
+      if (cityScoreTable[i].ownerNationCode00 == nationTag) {
+        for (int j = 0; j < cityScoreTable[i].linkedRegionCount; ++j) {
+          *cursor = cityScoreTable[i].linkedRegionIds[j];
+          ++cursor;
+        }
+      }
+    }
+
+    short resourceTally[24] = {0};
+    for (i = 0; i < linkedRegionTotal; ++i) {
+      TTerrainStateRecordView* region = &terrainStateTable[linkedRegionIds[i]];
+      for (int edge = 0; edge < 2; ++edge) {
+        signed char resourceType = region->resourceTypeByEdge[edge];
+        if (resourceType != -1) {
+          ++resourceTally[resourceType];
+        }
+      }
+    }
+
+    if (resourceTally[3] == 0) {
+      EnsureRegionHasResourceTypeAssignment(this, linkedRegionIds, linkedRegionTotal, 3);
+    }
+    if (resourceTally[4] == 0) {
+      EnsureRegionHasResourceTypeAssignment(this, linkedRegionIds, linkedRegionTotal, 4);
+    }
+
+    ::operator delete(linkedRegionIds);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00511e80
 void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
   if (field8 == 0) {
@@ -1425,10 +1514,6 @@ short TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(short tileIndex) {
   default:
     return 0;
   }
-}
-
-undefined TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng() {
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00514250

@@ -200,8 +200,15 @@ public:
   // stores the tile's border/subtype code via ResolveRegionTileSubtypeCodeForTileIndex into
   // gateFlag.
   virtual short UpdateStrategicMapTileIconVariantState(short tileIndex); // slot 0x10 0x511610
-  virtual undefined
-  TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(); // slot 0x11 0x511a70
+  // For each of the 7 nations: collects every linkedRegionIds entry across that nation's
+  // owned cities into a heap scratch array, tallies resourceTypeByEdge occurrences by type
+  // (0-23) across those regions, then for resourceType 3 and (independently) 4 whose tally
+  // is 0: picks a region with gateFlag 8 or 9 and an empty resourceTypeByEdge[0] slot if one
+  // exists (else an LCG-random region not already gateFlag 8/9, forcing its gateFlag to 8),
+  // assigns resourceTypeByEdge = {3-or-4, -1}, and refreshes gateFlag via
+  // ResolveRegionTileSubtypeCodeForTileIndex.
+  virtual void TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(); // slot 0x11
+                                                                               // 0x511a70
   // If field8 is idle: forces hexNeighborWrapHorizontally20 and (re)opens the "mapdata"
   // session stream via BuildOrLoadGlobalMapStateForSession. If field4 is idle: ticks the
   // strategic map view's UI-progress method. Called from
