@@ -762,11 +762,13 @@ address|target_cpp|ownership|note
 49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49ae30|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49b270|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+49c150|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c240|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c290|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c430|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c720|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c850|src/game/TSoundResourceManager.cpp|manual|marker_sync
+49c970|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49cbc0|src/game/TBackdropWindow.cpp|manual|marker_sync
 49cbf0|src/game/TBackdropWindow.cpp|manual|marker_sync
 49cc40|src/game/startup_helpers.cpp|manual|marker_sync

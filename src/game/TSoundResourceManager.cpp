@@ -1,10 +1,55 @@
 #include "game/TSoundResourceManager.h"
 
+// TSoundResourceManager.h pulls <windowsx.h> (for GlobalFreePtr in WaveLoadDescriptor),
+// which defines UnionRgn/CopyRgn as GDI helper macros. Those would mangle the identically
+// named QuickDraw declarations in quickdraw_regions.h, pulled in transitively below by
+// global_data_tables.h. We use neither windowsx macro here, so drop them.
+#undef UnionRgn
+#undef CopyRgn
+
+#include "game/ImperialismApp.h"
+#include "game/global_data_tables.h"
 #include "game/wave_helpers.h"
 
 #include <string.h>
 
+// DSOUND.DLL::DirectSoundCreate — imported from the DX5 SDK dsound.lib (linked in CMake).
+extern "C" int __stdcall DirectSoundCreate(void* pcGuidDevice, IDirectSound** ppDS,
+                                           void* pUnkOuter);
+
 TSoundResourceManager g_soundResourceManager;
+
+// FUNCTION: IMPERIALISM 0x0049c150
+int TSoundResourceManager::CreateChannelBuffer(IDirectSoundBuffer** ppChannel) {
+  WAVEFORMATEX wfx;
+
+  wfx.wFormatTag = WAVE_FORMAT_PCM;
+  wfx.nChannels = 1;
+  wfx.nSamplesPerSec = 0x5622;
+  wfx.nAvgBytesPerSec = 0xac44;
+  wfx.nBlockAlign = 2;
+  wfx.wBitsPerSample = 0x10;
+  wfx.cbSize = 0;
+
+  m_channelBufferDesc.dwSize = 0;
+  m_channelBufferDesc.dwFlags = 0;
+  m_channelBufferDesc.dwBufferBytes = 0;
+  m_channelBufferDesc.dwReserved = 0;
+  m_channelBufferDesc.lpwfxFormat = 0;
+  m_channelBufferDesc.dwFlags = 0xe0;
+  m_channelBufferDesc.dwBufferBytes = 0x35e1c;
+  m_channelBufferDesc.lpwfxFormat = &wfx;
+  m_channelBufferDesc.dwSize = 0x14;
+  if (m_device->CreateSoundBuffer(&m_channelBufferDesc, ppChannel, 0) == 0) {
+    DSBCAPS caps;
+    caps.dwSize = 0x14;
+    if ((*ppChannel)->GetCaps(&caps) == 0) {
+      return 1;
+    }
+  }
+  *ppChannel = 0;
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x0049c240
 int TSoundResourceManager::UpdateLocalizationAudioSlot(int slot) {
@@ -83,12 +128,12 @@ int TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescr
   void* audioPtr2;
   DWORD audioBytes2;
 
-  int result = m_channels[slot]->Lock(0, m_channelBufferBytes, &audioPtr1, &audioBytes1, &audioPtr2,
-                                      &audioBytes2, 0);
+  int result = m_channels[slot]->Lock(0, m_channelBufferDesc.dwBufferBytes, &audioPtr1,
+                                      &audioBytes1, &audioPtr2, &audioBytes2, 0);
   if (result == (int)DSERR_BUFFERLOST) {
     m_channels[slot]->Restore();
-    result = m_channels[slot]->Lock(0, m_channelBufferBytes, &audioPtr1, &audioBytes1, &audioPtr2,
-                                    &audioBytes2, 0);
+    result = m_channels[slot]->Lock(0, m_channelBufferDesc.dwBufferBytes, &audioPtr1, &audioBytes1,
+                                    &audioPtr2, &audioBytes2, 0);
   }
   if (result == 0) {
     memcpy(audioPtr1, desc->pbWaveData, desc->cbWaveSize);
@@ -111,5 +156,41 @@ int TSoundResourceManager::SetChannelVolumesUntilAccepted(int volume) {
       return 0;
     }
   }
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x0049c970
+int TSoundResourceManager::InitializeDirectSoundDeviceAndChannels() {
+  if (m_device != 0) {
+    return 1;
+  }
+  if (m_module == 0) {
+    m_module = LoadLibraryExA(g_pImperialismApp->field_DC, 0, LOAD_LIBRARY_AS_DATAFILE);
+  }
+  m_field34 = DirectSoundCreate(0, &m_device, 0);
+  if (m_field34 != 0) {
+    m_device = 0;
+    return 0;
+  }
+  CWnd* pMainWnd;
+  if (AfxGetThread() != 0) {
+    pMainWnd = AfxGetThread()->GetMainWnd();
+  } else {
+    pMainWnd = 0;
+  }
+  void* hwnd;
+  if (pMainWnd != 0) {
+    hwnd = pMainWnd->m_hWnd;
+  } else {
+    hwnd = 0;
+  }
+  m_field34 = m_device->SetCooperativeLevel(hwnd, DSSCL_NORMAL);
+  IDirectSoundBuffer** ppChannel = m_channels;
+  int i = 6;
+  do {
+    CreateChannelBuffer(ppChannel);
+    ++ppChannel;
+    --i;
+  } while (i != 0);
   return 1;
 }

@@ -51,8 +51,10 @@ if(WIN32 AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
     # winmm: mmio* wave loaders (wave_helpers.cpp) and mci calls.
     # vfw32: MCIWnd* video window APIs (Video for Windows), shipped by the MSVC500
     # toolchain at C:\msvc\lib\vfw32.lib.
+    # dsound: DirectSoundCreate (TSoundResourceManager DirectSound init), from the DX5
+    # SDK import lib on LIB at C:\dxsdk\lib\dsound.lib.
     target_link_libraries(Imperialism PRIVATE
-        gdi32 user32 winmm vfw32)
+        gdi32 user32 winmm vfw32 dsound)
 endif()
 
 if(MSVC AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
