@@ -176,6 +176,21 @@ public:
   // consulted by callers, so this is modeled returning char rather than int.
   char ComputeTaskForceOrderTieBreakScore(TTaskForce* other); // 0x555c20
 
+  // this->ComputeTaskForceOrderAggregateScore()*100 < kOrderTypePriorityWeight[order_type] *
+  // other->ComputeTaskForceOrderAggregateScore(). Same per-order-type {200,100,50}
+  // weight table ResolveTaskForceOrderConflictAndPickCandidate uses.
+  char IsTaskForceOrderMixWithinPriorityThresholds(TTaskForce* other); // 0x555de0
+
+  // Top-level task-force order-conflict resolver: bails if either side has no active
+  // children; force-attempts resolution for type-5/6 attachments, else rolls against a
+  // priority-gap threshold (childRating average delta + child-count overflow); if
+  // attempted, compares aggregate scores (weighted by kOrderTypePriorityWeight) both
+  // ways and falls back to ComputeTaskForceOrderTieBreakScore on a near-tie; on a
+  // resolved conflict with both sides still non-empty, returns true immediately if
+  // either side is the active nation (when g_pSimMgr->preferenceValues[3] is set), else
+  // hands off to TNavyMgr::ResolveMapOrderPairConflictStep and returns false.
+  char ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other); // 0x555420
+
   // Marks every active childOrderList entry's order node (object_ptr+0x34 -- same
   // out-of-bounds write documented on TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink)
   // with a 1-or-2 selection-mode code depending on `reserveExtraSlot`, then scans the

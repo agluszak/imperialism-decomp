@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12789,14 +12789,14 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12852,7 +12852,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -22334,7 +22334,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.008968609865470852,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -22364,7 +22364,7 @@
     },
     {
       "address": "0x555de0",
-      "matching": 0.014925373134328358,
+      "matching": 0.09210526315789473,
       "name": "IsTaskForceOrderMixWithinPriorityThresholds",
       "type": 1
     },
@@ -22616,7 +22616,7 @@
     },
     {
       "address": "0x55a780",
-      "matching": 0.002129925452609159,
+      "matching": 0.0021321961620469083,
       "name": "ResolveMapOrderPairConflictStep",
       "type": 1
     },

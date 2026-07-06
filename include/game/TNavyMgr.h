@@ -46,6 +46,13 @@ public:
   // currently queued and (re)inserts it at orderListHead04, returning true.
   bool MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry); // 0x557080
 
+  // Called from TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate's tail
+  // (ECX=g_pNavyOrderManager evidence at that callsite) when neither entry's priority
+  // clears the other's threshold and no tie-break resolves it outright. 2934 bytes with
+  // a heavy CString-building body (SEH frame, ~500-byte format buffer); not yet
+  // reverse-engineered in detail.
+  void ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry); // 0x55a780
+
   TNavyMgr();
 };
 

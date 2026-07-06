@@ -3,6 +3,7 @@
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"
+#include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 
 extern undefined4 GenerateThreadLocalRandom15(void);
@@ -587,6 +588,85 @@ int TTaskForce::CalculateMapOrderEntryAverageChildRatingX10() {
   return (sum * 10) / count;
 }
 
+namespace {
+// Per-order-type priority weight used by both IsTaskForceOrderMixWithinPriorityThresholds
+// and ResolveTaskForceOrderConflictAndPickCandidate; indexed by order_type (only 0-2 are
+// meaningful -- the original indexes the same 3-entry stack array unconditionally, so an
+// out-of-range order_type reads original stack garbage there too).
+const int kOrderTypePriorityWeight[3] = {200, 100, 50};
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x00555420
+char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other) {
+  if (GetMapOrderEntryChildCount() == 0) {
+    return 0;
+  }
+  if (other == nullptr || other->GetMapOrderEntryChildCount() == 0) {
+    return 0;
+  }
+
+  bool shouldAttempt;
+  if (attachment == 6 || other->attachment == 6 || other->attachment == 5) {
+    shouldAttempt = true;
+  } else {
+    int sum = 0;
+    int count = 0;
+    for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+      if (node->active_flag != 0) {
+        sum += g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+        ++count;
+      }
+    }
+    short thisAverage = (count == 0) ? 0 : static_cast<short>((sum * 10) / count);
+    short otherAverage = static_cast<short>(other->CalculateMapOrderEntryAverageChildRatingX10());
+    short threshold = static_cast<short>(thisAverage - otherAverage + 0x32);
+    int totalChildren = other->GetMapOrderEntryChildCount() + GetMapOrderEntryChildCount();
+    if (totalChildren > 10) {
+      threshold = static_cast<short>(threshold + (totalChildren - 10));
+    }
+    int roll = GenerateThreadLocalRandom15();
+    shouldAttempt = (roll % 100) < threshold;
+  }
+
+  if (!shouldAttempt) {
+    return 0;
+  }
+
+  int thisScore = ComputeTaskForceOrderAggregateScore();
+  int otherScore = other->ComputeTaskForceOrderAggregateScore();
+  bool resolved;
+  if (thisScore * 100 < kOrderTypePriorityWeight[order_type] * otherScore) {
+    int otherScore2 = other->ComputeTaskForceOrderAggregateScore();
+    int thisScore2 = ComputeTaskForceOrderAggregateScore();
+    if (otherScore2 * 100 < kOrderTypePriorityWeight[other->order_type] * thisScore2 ||
+        other->eliminatedFlag26 != 0) {
+      resolved = false;
+    } else {
+      resolved = (ComputeTaskForceOrderTieBreakScore(other) == 0);
+    }
+  } else if (other->IsTaskForceOrderMixWithinPriorityThresholds(this) == 0) {
+    resolved = true;
+  } else {
+    resolved = (other->ComputeTaskForceOrderTieBreakScore(this) == 0);
+  }
+
+  if (!resolved) {
+    return 0;
+  }
+  if (GetMapOrderEntryChildCount() == 0 || other->GetMapOrderEntryChildCount() == 0) {
+    return 0;
+  }
+
+  if (g_pSimMgr->preferenceValues[3] != 0) {
+    if (g_pSimMgr->GetActiveNationId() == required_count ||
+        g_pSimMgr->GetActiveNationId() == other->required_count) {
+      return 1;
+    }
+  }
+  g_pNavyOrderManager->ResolveMapOrderPairConflictStep(other, this);
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00555c20
 char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
   unsigned short minDescriptorWeight = 10000;
@@ -619,6 +699,13 @@ char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
   }
   eliminatedFlag26 = 1;
   return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00555de0
+char TTaskForce::IsTaskForceOrderMixWithinPriorityThresholds(TTaskForce* other) {
+  int thisSum = ComputeTaskForceOrderAggregateScore();
+  int otherSum = other->ComputeTaskForceOrderAggregateScore();
+  return thisSum * 100 < kOrderTypePriorityWeight[order_type] * otherSum;
 }
 
 // FUNCTION: IMPERIALISM 0x00556010

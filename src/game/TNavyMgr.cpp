@@ -137,3 +137,14 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
   RemoveMatchingSecondaryOrders(nationSlot);
   RemoveMatchingTaskForceOrders(this, nationSlot);
 }
+
+// FUNCTION: IMPERIALISM 0x0055a780
+void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry) {
+  // TODO: promote body -- 2934 bytes, builds a CString-heavy diplomacy/order-conflict
+  // message (SEH frame, ~500-byte local format buffer) whose exact composition isn't
+  // reverse-engineered yet. Left unclaimed-logic rather than guessed; see
+  // TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate for the one confirmed
+  // callsite and receiver evidence.
+  (void)leftEntry;
+  (void)rightEntry;
+}

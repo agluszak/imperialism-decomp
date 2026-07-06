@@ -83,14 +83,6 @@ undefined4 BuildTaskForcePrimaryObjectiveDescriptionText(void)
   return 0;
 }
 
-// ghidra_name ResolveTaskForceOrderConflictAndPickCandidate
-// ghidra_proto undefined ResolveTaskForceOrderConflictAndPickCandidate()
-// FUNCTION: IMPERIALISM 0x00555420
-undefined4 ResolveTaskForceOrderConflictAndPickCandidate(void)
-{
-  return 0;
-}
-
 // ghidra_name ShouldAttemptMapOrderPairResolution
 // ghidra_proto undefined ShouldAttemptMapOrderPairResolution()
 // FUNCTION: IMPERIALISM 0x00555720
@@ -111,14 +103,6 @@ undefined4 TryMarkLosingMapOrderEntryFromForceBalance(void)
 // ghidra_proto undefined TryResolveMapOrderEntryPairExecution()
 // FUNCTION: IMPERIALISM 0x00555d10
 undefined4 TryResolveMapOrderEntryPairExecution(void)
-{
-  return 0;
-}
-
-// ghidra_name IsTaskForceOrderMixWithinPriorityThresholds
-// ghidra_proto undefined IsTaskForceOrderMixWithinPriorityThresholds()
-// FUNCTION: IMPERIALISM 0x00555de0
-undefined4 IsTaskForceOrderMixWithinPriorityThresholds(void)
 {
   return 0;
 }
@@ -351,14 +335,6 @@ undefined4 TryHandleMapContextAction(void)
 // ghidra_proto int __thiscall TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags)
 // FUNCTION: IMPERIALISM 0x0055a160
 undefined4 TryQueueMapOrderFromTileAction(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveMapOrderPairConflictStep
-// ghidra_proto void __cdecl ResolveMapOrderPairConflictStep(int * pLeftOrderEntry, int * pRightOrderEntry)
-// FUNCTION: IMPERIALISM 0x0055a780
-undefined4 ResolveMapOrderPairConflictStep(void)
 {
   return 0;
 }
