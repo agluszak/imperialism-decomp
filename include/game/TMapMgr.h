@@ -163,7 +163,12 @@ public:
   // flags field9 = 1 ("search in progress"). Pairs with ResetRecruitSearchVisitedState below.
   virtual void
   SeedRecruitSearchVisitedStateExcludingNation(short ownerNationTag); // slot 0x1d 0x514e40
-  virtual undefined OrphanLeaf_NoCall_Ins28_00514e80();               // slot 0x1e 0x514e80
+  // Seeds recruitSearchVisited0e from g_pSelectedCivilianOrderState->selectedEntry instead
+  // of an explicit nation tag: if there's no selected order, or its field_6 (a TUnit field,
+  // sentinel-inited to 0xffff) is nonzero, every tile is marked 1 (blocked); only when
+  // field_6 == 0 does it fall back to seeding per-tile from activeFlags1c bit 4 (an
+  // otherwise-unused bit of that byte -- not otherwise cross-referenced in this codebase).
+  virtual void SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(); // slot 0x1e 0x514e80
   virtual undefined WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(
       short param_1); // slot 0x1f 0x514dc0
   // Resets recruitSearchVisited0e to 0 across all tiles and clears field9 back to idle.
@@ -192,9 +197,23 @@ public:
   virtual undefined
   DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short param_1,
                                                          undefined4 param_2); // slot 0x2e 0x513290
-  virtual undefined OrphanLeaf_NoCall_Ins27_00516090(int param_1,
-                                                     int param_2); // slot 0x2f 0x516090
-  virtual undefined OrphanLeaf_NoCall_Ins18_00516100(int param_1); // slot 0x30 0x516100
+  // Searches cityScoreTable[cityRecordIndex].adjacentRegionIds0A[0..11] for regionId;
+  // on a hit returns the parallel entry at [i+12] (see TMultiplayerMgr's
+  // CityRedrawInvalidateTurnEventPacket, which already splits this same 24-entry array
+  // into adjacentRegionIds0A[12]/adjacentRegionIds22[12] for wire serialization). Returns
+  // -1 if not found. Kept as one raw array (not two named fields) because
+  // RedistributeUnitOrderQueueToRandomAdjacentRegion (0x4a35e0) scans all 24 entries as one
+  // flat, -1-terminated list -- a genuinely dual-purpose layout.
+  virtual short FindLinkedRegionIdForAdjacentRegion(int cityRecordIndex,
+                                                    int regionId); // slot 0x2f 0x516090
+  // If nationSlotParam < 7, marks that nation's capital-tile city (found via
+  // g_apTerrainTypeDescriptorTable[nationSlotParam]->ownerNationSlot used as a
+  // terrainStateTable index -- same dual-use pattern flagged on
+  // TGlobalMapCityScoreRecord::ownerNationSlot) as developmentStage 2. param_2 is unused
+  // by this body but the original callee epilogue pops 8 bytes (2 stack args), matching
+  // slot 0x2f's signature.
+  virtual void SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam,
+                                                               int param_2); // slot 0x30 0x516100
   virtual undefined OrphanLeaf_NoCall_Ins14_00513610(short param_1,
                                                      short param_2); // slot 0x31 0x513610
   virtual byte GetTileCivilianWorkOrderCostClassNibble(short nTileIndex,
@@ -226,10 +245,17 @@ public:
   virtual undefined OrphanCallChain_C3_I49_00517480();               // slot 0x3e 0x517480
   virtual undefined OrphanVtableAssignStub_00517520();               // slot 0x3f 0x517520
   virtual undefined OrphanLeaf_NoCall_Ins55_00517540(short param_1,
-                                                     short param_2);  // slot 0x40 0x517540
-  virtual undefined OrphanCallChain_C1_I46_00517600(short param_1);   // slot 0x41 0x517600
-  virtual undefined OrphanLeaf_NoCall_Ins04_005176a0(int param_1);    // slot 0x42 0x5176a0
-  virtual undefined OrphanLeaf_NoCall_Ins04_005176c0(int param_1);    // slot 0x43 0x5176c0
+                                                     short param_2); // slot 0x40 0x517540
+  virtual undefined OrphanCallChain_C1_I46_00517600(short param_1);  // slot 0x41 0x517600
+  // (index + 0x23) << 6 -- a bitmap-strip row offset, 64 bytes/row; sits in the same
+  // "map improvement" offset family as the following GetMapImprovementTierBucketOffset/
+  // GetMapImprovementSpriteBaseOffset slots (also 64-byte-row arithmetic). No callers other
+  // than the vtable itself, so the specific bitmap it indexes isn't identified.
+  virtual int GetMapImprovementBitmapRowOffsetForIndex(int index); // slot 0x42 0x5176a0
+  // index * 36 -- matches the terrainStateTable record stride (sizeof(TTerrainStateRecordView)
+  // == 0x24) used inline throughout this file; no `this` use and no other callers, so this
+  // is modeled as the raw arithmetic it computes rather than presumed to index a specific array.
+  virtual int ComputeTerrainRecordByteOffsetForIndex(int index);      // slot 0x43 0x5176c0
   virtual undefined GetMapImprovementTierBucketOffset(short param_1); // slot 0x44 0x5176e0
   virtual undefined GetMapImprovementSpriteBaseOffset(short param_1, char param_2,
                                                       char param_3);    // slot 0x45 0x517780
