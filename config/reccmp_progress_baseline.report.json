@@ -2381,26 +2381,32 @@
     },
     {
       "address": "0x482950",
-      "matching": 0.6285714285714286,
+      "matching": 0.7272727272727273,
       "name": "CIncludeView::CIncludeView",
       "type": 1
     },
     {
+      "address": "0x4829c0",
+      "matching": 1.0,
+      "name": "CIncludeView::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x4829f0",
-      "matching": 0.0,
-      "name": "ScalarDeletingDestructor_CIncludeViewRecordList_Derived_004829f0",
+      "matching": 1.0,
+      "name": "CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'(unsigned int)",
       "type": 1
     },
     {
       "address": "0x482a20",
-      "matching": 0.05714285714285714,
-      "name": "DestructCIncludeViewRecordListChain_Copy1_00482a20",
+      "matching": 0.9696969696969697,
+      "name": "CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::~CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>",
       "type": 1
     },
     {
       "address": "0x482ab0",
-      "matching": 0.028169014084507043,
-      "name": "CIncludeView::DestructCIncludeViewAndReleaseOwnedBuffers",
+      "matching": 0.9130434782608695,
+      "name": "CIncludeView::~CIncludeView",
       "type": 1
     },
     {
@@ -2549,20 +2555,8 @@
     },
     {
       "address": "0x484610",
-      "matching": 0.01639344262295082,
-      "name": "SerializeRecordList_0x18_WithBlockPool",
-      "type": 1
-    },
-    {
-      "address": "0x4847a0",
-      "matching": 0.0,
-      "name": "ScalarDeletingDestructor_CIncludeViewRecordList_Base_004847a0",
-      "type": 1
-    },
-    {
-      "address": "0x4847d0",
-      "matching": 0.05714285714285714,
-      "name": "DestructCIncludeViewRecordListChain_Copy2_004847d0",
+      "matching": 1.0,
+      "name": "CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::Serialize",
       "type": 1
     },
     {
@@ -4001,8 +3995,8 @@
     },
     {
       "address": "0x489a90",
-      "matching": 0.4,
-      "name": "ClearQuickDrawModeFlag950AC",
+      "matching": 1.0,
+      "name": "ClearGlobalUiInvalidationFlagAndReturnPrevious",
       "type": 1
     },
     {
@@ -4385,7 +4379,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -7591,7 +7585,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.12752721617418353,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12843,7 +12837,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -16824,7 +16819,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -18246,13 +18241,13 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.2976,
+      "matching": 0.3054662379421222,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
     {
       "address": "0x52d030",
-      "matching": 1.0,
+      "matching": 0.7766990291262136,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -18264,7 +18259,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7311827956989247,
+      "matching": 0.7021276595744681,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -20191,7 +20186,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -27952,7 +27947,7 @@
     },
     {
       "address": "0x58f550",
-      "matching": 0.4722222222222222,
+      "matching": 0.5138888888888888,
       "name": "TCivDescription::ApplyRectSlot110",
       "type": 1
     },

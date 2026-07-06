@@ -477,6 +477,8 @@ extern CPtrList g_ModalViewStack;
 // ============================================================================
 
 undefined4 SetGlobalUiInvalidationFlagAndReturnPrevious(undefined4 newValue);
+// Clear g_McAppUiActiveFlag_006950AC and return the previous value (0x489a90).
+undefined4 ClearGlobalUiInvalidationFlagAndReturnPrevious();
 
 // Read g_McAppUiActiveFlag_006950AC (0x489a70) — guard checked before any real painting.
 int GetMcAppUiActiveFlag();

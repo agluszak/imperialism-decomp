@@ -349,6 +349,13 @@ int GetMcAppUiActiveFlag() {
   return g_McAppUiActiveFlag_006950AC;
 }
 
+// FUNCTION: IMPERIALISM 0x00489a90
+undefined4 ClearGlobalUiInvalidationFlagAndReturnPrevious() {
+  undefined4 previous = g_McAppUiActiveFlag_006950AC;
+  g_McAppUiActiveFlag_006950AC = 0;
+  return previous;
+}
+
 // Source-path string for CMcWindow's McWindow.cpp one-shot debug asserts.
 // GLOBAL: IMPERIALISM 0x006950d8
 char g_szMcWindowSourcePath_006950D8[] = "D:\\Ambit\\McWindow.cpp";

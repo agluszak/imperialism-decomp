@@ -535,9 +535,10 @@ address|name|symbol|size|type|prototype|provenance
 482850|CIncludeView::CreateObject|?CreateObject@CIncludeView@@SGPAVCObject@@XZ|161|function|undefined CreateObject()|rtti
 482930|CIncludeView::GetRuntimeClass|?GetRuntimeClass@CIncludeView@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 482950|CIncludeView::CIncludeView||77|function|undefined ConstructCViewOwnedBufferRegistryState()|
-4829f0|ScalarDeletingDestructor_CIncludeViewRecordList_Derived_004829f0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004829f0()|
-482a20|DestructCIncludeViewRecordListChain_Copy1_00482a20||101|function|undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20()|
-482ab0|CIncludeView::DestructCIncludeViewAndReleaseOwnedBuffers||213|function|undefined DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers()|
+4829c0|CIncludeView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
+4829f0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004829f0()|template
+482a20|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::~CList|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|101|function|undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20()|template
+482ab0|CIncludeView::~CIncludeView|??1CIncludeView@@UAE@XZ|213|function|undefined DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers()|
 482bd0|OrphanVtableAssignStub_00482bd0||6|function|undefined OrphanVtableAssignStub_00482bd0()|
 482bf0|CIncludeView::OnDialogTreeHostMsg4EF||119|function|LRESULT OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam)|
 482c90|CIncludeView::OnDraw||80|function|void OnDraw(CDC* pDC)|
@@ -566,9 +567,9 @@ address|name|symbol|size|type|prototype|provenance
 484190|HandleParentNotifyAndEndMouseCapture_00484190||122|function|undefined HandleParentNotifyAndEndMouseCapture_00484190()|
 4845a0|TUiEvent::TUiEvent||23|function|undefined TUiEvent()|
 4845f0|DereferencePointerCellInPlace||16|function|undefined DereferencePointerCellInPlace()|
-484610|SerializeRecordList_0x18_WithBlockPool||307|function|undefined SerializeRecordList_0x18_WithBlockPool()|
-4847a0|ScalarDeletingDestructor_CIncludeViewRecordList_Base_004847a0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004847a0()|
-4847d0|DestructCIncludeViewRecordListChain_Copy2_004847d0||101|function|undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0()|
+484610|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::Serialize|?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z|307|function|undefined SerializeRecordList_0x18_WithBlockPool()|template
+4847a0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004847a0()|template
+4847d0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::~CList|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|101|function|undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0()|template
 484860|WrapperFor_FreeLinkedBlockChain_At00484860||68|function|undefined WrapperFor_FreeLinkedBlockChain_At00484860()|
 484970|InitializeRefCountedObjectBaseVtable||9|function|undefined InitializeRefCountedObjectBaseVtable()|
 484990|TObject::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -828,7 +829,7 @@ address|name|symbol|size|type|prototype|provenance
 489a20|WrapperFor_ftol_At00489a20||30|function|undefined WrapperFor_ftol_At00489a20()|
 489a50|SetGlobalUiInvalidationFlagAndReturnPrevious||16|function|undefined SetGlobalUiInvalidationFlagAndReturnPrevious()|
 489a70|GetMcAppUiActiveFlag||6|function|int GetMcAppUiActiveFlag()|
-489a90|ClearQuickDrawModeFlag950AC||16|function|undefined ClearQuickDrawModeFlag950AC()|
+489a90|ClearGlobalUiInvalidationFlagAndReturnPrevious||16|function|undefined ClearQuickDrawModeFlag950AC()|
 489ab0|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0||24|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0()|
 489b60|NotifyGlobalCaptureOwnerState1WithCachedCoords||99|function|undefined NotifyGlobalCaptureOwnerState1WithCachedCoords()|
 489bf0|WrapperFor_GetOrCreateCWndFromHandle_At00489bf0||133|function|undefined WrapperFor_GetOrCreateCWndFromHandle_At00489bf0()|

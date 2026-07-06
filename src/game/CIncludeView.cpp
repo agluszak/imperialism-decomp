@@ -93,16 +93,59 @@ ON_MESSAGE(0x4ef, OnDialogTreeHostMsg4EF)
 ON_MESSAGE(0x4c8, OnMciNotifyMode) // MCIWNDM_NOTIFYMODE
 END_MESSAGE_MAP()
 
+// Compiler-emitted bodies of the m_overlayRectQueue CList<IncludeViewOverlayRectRecord,
+// IncludeViewOverlayRectRecord&> instantiation. The original emitted the set twice (one
+// copy per TU): vtable 0x648560 + these two in the ctor's TU, vtable 0x648578 + the
+// 0x4847xx copies and the single Serialize body in the other.
+// TEMPLATE: IMPERIALISM 0x004829f0
+// ??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x00482a20
+// ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x004847a0
+// ??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x004847d0
+// ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x00484610
+// ?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z
+
 // FUNCTION: IMPERIALISM 0x00482950
 CIncludeView::CIncludeView() : CView() {
-  // TODO(partial 0x482950): the original also constructs the embedded record list at
-  // +0x4c (an MFC CList instantiation, vtable 0x648560 derived from 0x648578) inline
-  // here; blocked on modeling that member per the mfc-collections skill.
   m_activeDialogContext = 0;
   m_field44 = 0;
   m_pOffscreenDib = 0;
   m_tickTimerId = 0;
+  m_field70 = 0;
+  m_pointerDispatchView74 = 0;
   m_uiInteractiveFlag90 = 1;
+}
+
+// SYNTHETIC: IMPERIALISM 0x004829c0
+// CIncludeView::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00482ab0
+CIncludeView::~CIncludeView() {
+  if (m_tickTimerId != 0) {
+    m_tickTimerId = 0;
+  }
+  m_field44 = 0;
+  if (m_activeDialogContext != 0) {
+    undefined4 previousUiActive = ClearGlobalUiInvalidationFlagAndReturnPrevious();
+    m_activeDialogContext->nativeWindow50 = 0;
+    if (m_activeDialogContext != 0) {
+      m_activeDialogContext->Free();
+    }
+    m_activeDialogContext = 0;
+    SetGlobalUiInvalidationFlagAndReturnPrevious(previousUiActive);
+  }
+  if (m_pOffscreenDib != 0) {
+    delete m_pOffscreenDib;
+  }
+  // m_overlayRectQueue's inlined ~CList and CView::~CView emit from the real member and
+  // real inheritance.
 }
 
 // FUNCTION: IMPERIALISM 0x00482bf0
