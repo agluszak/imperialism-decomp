@@ -149,6 +149,12 @@ public:
   // serializedField8c to -1. 0x004a1eb0, __thiscall, no args.
   void ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags();
 
+  // Walks the region's stationed-unit chain (TGlobalMapCityScoreRecord::stationedUnitChain98,
+  // via TUnit::nextOnTile) for one whose field_8 is idle and whose
+  // TMilitaryUnit::GetUnitMovementClassId() is nonzero. 0x004a4550, __thiscall (this unused --
+  // operates purely off g_pGlobalMapState), 1 arg.
+  bool HasEligibleStationedUnitInRegion(short regionId);
+
   // Sets pendingMapActionIndex (the shared "current map selection" slot) and, unless
   // clearing the selection (-1), resets the order mode of every stationed unit at that
   // tile whose tactical category is nonzero (g_awTacticalUnitCategoryCodeBySlot); always

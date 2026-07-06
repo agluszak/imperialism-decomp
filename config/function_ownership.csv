@@ -920,6 +920,7 @@ address|target_cpp|ownership|note
 4a3f30|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4190|src/game/TMapMgr.cpp|manual|marker_sync
 4a4260|src/game/TArmyMgr.cpp|manual|marker_sync
+4a4550|src/game/TArmyMgr.cpp|manual|marker_sync
 4a45e0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4870|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4960|src/game/TArmyMgr.cpp|manual|marker_sync
@@ -2209,6 +2210,7 @@ address|target_cpp|ownership|note
 5121d0|src/game/TMapMgr.cpp|manual|marker_sync
 5122b0|src/game/TMapMgr.cpp|manual|marker_sync
 5122d0|src/game/TMapMgr.cpp|manual|marker_sync
+512930|src/game/TMapMgr.cpp|manual|marker_sync
 512b50|src/game/TMapMgr.cpp|manual|marker_sync
 512cc0|src/game/TMapMgr.cpp|manual|marker_sync
 512dd0|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2279,6 +2281,7 @@ address|target_cpp|ownership|note
 5178c0|src/game/TMapMgr.cpp|manual|marker_sync
 5178f0|src/game/TMapMgr.cpp|manual|marker_sync
 517c30|src/game/TMapMgr.cpp|manual|marker_sync
+517f80|src/game/TMapMgr.cpp|manual|marker_sync
 518470|src/game/TMapMgr.cpp|manual|marker_sync
 5184e0|src/game/TMapMgr.cpp|manual|marker_sync
 518960|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2844,6 +2847,7 @@ address|target_cpp|ownership|note
 549720|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5497b0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54a340|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54ab20|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54abf0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54aff0|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b010|src/game/TPoseMessageDialog.cpp|manual|marker_sync
@@ -3012,6 +3016,7 @@ address|target_cpp|ownership|note
 563da0|src/game/TZone.cpp|manual|marker_sync
 564240|src/game/TMapMgr.cpp|manual|marker_sync
 564530|src/game/TOcean.cpp|manual|marker_sync
+564570|src/game/TZone.cpp|manual|marker_sync
 564600|src/game/TOcean.cpp|manual|marker_sync
 564860|src/game/TMilitaryPageView.cpp|manual|marker_sync
 564900|src/game/TMilitaryPageView.cpp|manual|marker_sync

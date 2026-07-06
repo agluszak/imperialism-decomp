@@ -466,6 +466,9 @@ short g_awUnitCombatClassBySlot[64] = {0};
 // Stack composition class lookup (byte table at 0x6953c0); indexed [minClass + maxClass*4].
 unsigned char g_abStackCompositionClassTable[32] = {0};
 
+// Per-civilian-order-type map-improvement sprite class (short table at 0x697040).
+short g_anMapImprovementSpriteClassByOrderType[9] = {2, 3, 1, 6, 0, 7, 5, 4, 8};
+
 // Per-fort-level attacker penalty percent (int table at 0x695568); indexed by
 // TGlobalMapCityScoreRecord::fortLevel03.
 int g_anFortLevelAttackerPenaltyPercentByLevel[8] = {0};
@@ -505,8 +508,21 @@ unsigned char g_abResourceTypeAlwaysQualifies[24] = {1, 1, 1, 1, 1, 0, 1, 0, 0, 
 unsigned char g_abGateFlagQualifies[24] = {
     0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
-short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};
+// Doubled-column and row hex-direction deltas (direction 0..5), read by
+// GetWrappedHexNeighborTileIndexByDirection and BuildHexAreaTileIndexList to step across the
+// 0x6c(108)-wide hex grid. Confirmed via raw read of the original .rdata bytes.
+short g_Build_Hex_Area_LookupTable_00696E70[6] = {1, 2, 1, -1, -2, -1};
+short g_Build_Hex_Area_LookupTable_00696E80[6] = {-1, 0, 1, 1, 0, -1};
+
+unsigned char g_abTerrainTypeSeedGateProfileA[6] = {1, 1, 0, 0, 0, 0};
+
+short g_anTerrainTypeNeighborLinkPriority[8] = {10, 4, 7, 6, 8, 0, 9, 5};
+
+int g_nNextRegionMarkerId = 1;
+
+unsigned char g_bSeedGateNotifyFlag_00696f0a = 0;
+unsigned char g_bSeedGateNotifyFlag_00696f0b = 0;
+unsigned char g_bSeedGateNotifyFlag_00696f0c = 0;
 
 // Per-tile sprite-variant bitmap-strip offset tables, indexed [gateFlag][spriteVariantIndex01]
 // (or, for the 39-suffixed table, by spriteVariantIndex01 alone). Read by
@@ -910,6 +926,9 @@ const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};
 
 // GLOBAL: IMPERIALISM 0x00696e40
 const unsigned short g_hexDirectionBitMasks_00696e40[6] = {1, 2, 4, 8, 16, 32};
+
+// GLOBAL: IMPERIALISM 0x00696ea8
+const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7] = {1, 2, 4, 8, 16, 32, 0};
 
 // Map-generation PRNG state + region-seed grid dimensions (plain mutable globals at
 // 0x006a38e8/ec/f0, runtime-initialized to 0).

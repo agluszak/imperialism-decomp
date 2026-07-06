@@ -1,7 +1,8 @@
 // Retail MFC heap symbols (nafxcw.lib) — LIBRARY markers for reccmp pairing only.
 
 // LIBRARY: IMPERIALISM 0x005e7f50
-// FreeHeapBlockWithAllocatorTracking
+// _free (CRT free(), per symbols.csv -- not a game-specific tracking helper despite the
+// Ghidra-guessed name; call the real `free()` at call sites, e.g. TZone.cpp)
 
 // LIBRARY: IMPERIALISM 0x005e8310
 // AllocateWithGlobalNewMode

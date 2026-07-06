@@ -163,14 +163,6 @@ undefined4 ReturnIfTileIndexNegative(void)
   return 0;
 }
 
-// ghidra_name BuildHexAreaTileIndexList
-// ghidra_proto short * __cdecl BuildHexAreaTileIndexList(short nCenterTileIndex, short nRadius)
-// FUNCTION: IMPERIALISM 0x00512930
-undefined4 BuildHexAreaTileIndexList(void)
-{
-  return 0;
-}
-
 // ghidra_name NormalizeWrappedMapCoord108x60
 // ghidra_proto undefined NormalizeWrappedMapCoord108x60()
 // FUNCTION: IMPERIALISM 0x00513050
@@ -231,14 +223,6 @@ undefined4 OrphanDeadLeaf_NoRefs_00517d40(void)
 // ghidra_proto undefined HasDirectOrFallbackLinkedNodeType()
 // FUNCTION: IMPERIALISM 0x00517dd0
 undefined4 HasDirectOrFallbackLinkedNodeType(void)
-{
-  return 0;
-}
-
-// ghidra_name CollectSecondDegreeLinksMatchingNodeType
-// ghidra_proto undefined CollectSecondDegreeLinksMatchingNodeType()
-// FUNCTION: IMPERIALISM 0x00517f80
-undefined4 CollectSecondDegreeLinksMatchingNodeType(void)
 {
   return 0;
 }

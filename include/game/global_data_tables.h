@@ -159,6 +159,11 @@ extern short g_awUnitCombatClassBySlot[64];
 // bound unconfirmed beyond the observed min/max class range (1..5-ish).
 extern unsigned char g_abStackCompositionClassTable[32];
 
+// Per-civilian-order-type map-improvement sprite class (0x697040), read by
+// TMapMgr::GetMapImprovementSpriteBaseOffset via TCivUnit::orderType; only indices 0-8 are
+// non-zero (values 0-8), true bound beyond that unconfirmed.
+extern short g_anMapImprovementSpriteClassByOrderType[9];
+
 // Per-fort-level attacker penalty percent (0x695568), indexed by
 // TGlobalMapCityScoreRecord::fortLevel03; observed values 100/85/75/65/0/0/0/0 for levels
 // 0-7 (only the low byte of each int is ever read). Used by
@@ -547,6 +552,31 @@ extern unsigned char g_abGateFlagQualifies[24];
 extern short g_Build_Hex_Area_LookupTable_00696E70[];
 extern short g_Build_Hex_Area_LookupTable_00696E80[];
 
+// TMapMgr.cpp — per-terrainType00 gate table read by
+// MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA for both the origin tile and each of
+// its hex neighbors. Only indices 0-5 are meaningful (terrainType00's real range); read raw at
+// 0x00696f08, ground truth for the game's 6 terrain types.
+extern unsigned char g_abTerrainTypeSeedGateProfileA[6];
+
+// TMapMgr.cpp — per-terrainType00 priority score, read by
+// TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority (0x50fca0) to rank same-city
+// hex neighbors when picking primaryNeighborTileIndex40/secondaryNeighborTileIndex3e. Indexed
+// 0-7 (terrainType00's declared range); read raw at 0x00696e10.
+extern short g_anTerrainTypeNeighborLinkPriority[8];
+
+// TMapMgr.cpp — running region-marker id, assigned to a tile's regionSubtypeTag05 by
+// TMapMgr::FloodFillTileRegionMarker (0x5143d0) and incremented (low 16 bits only) after each
+// call. Read raw at 0x00696d90 (initial value 1).
+extern int g_nNextRegionMarkerId;
+
+// TMapMgr.cpp — three single-byte UI/notification flags set by
+// MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA when a nation-indexed
+// TTechMgr::OrderCapRow padding byte reads 2; purpose beyond that one comparison not
+// identified.
+extern unsigned char g_bSeedGateNotifyFlag_00696f0a;
+extern unsigned char g_bSeedGateNotifyFlag_00696f0b;
+extern unsigned char g_bSeedGateNotifyFlag_00696f0c;
+
 // TMapMgr.cpp — per-tile sprite-variant bitmap-strip offset tables, indexed
 // [gateFlag][spriteVariantIndex01] (table39 by spriteVariantIndex01 alone). Read by the
 // rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220).
@@ -625,6 +655,11 @@ extern const int g_hexColOffsetOddRow_00697480[6];
 // Per-hex-direction adjacency bit masks (1,2,4,8,16,32), indexed by direction 0..5. Read
 // byte-wise (OR'd into per-tile adjacency mask bytes) by the tile-adjacency update pass.
 extern const unsigned short g_hexDirectionBitMasks_00696e40[6];
+
+// Second copy of the per-hex-direction adjacency bit mask table (1,2,4,8,16,32,0), indexed
+// by direction 0..6 (index 6 is an unused trailing zero); read byte-wise into
+// TTerrainStateRecordView::adjacencyBits06 by SetHexAdjacencyDirectionFlagsForTilePair.
+extern const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7];
 
 // Map-generation PRNG state (LCG: x = x*0x15a4e35 + 1) and the region-seed grid dimensions,
 // shared by the city-region seeding/template passes.

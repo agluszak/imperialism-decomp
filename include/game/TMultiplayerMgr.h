@@ -96,3 +96,9 @@ public:
 };
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);
+
+// 0x0054ab20. Free __stdcall sibling of TMultiplayerMgr::DispatchCityRedrawInvalidateEvent (no
+// `this` -- reads g_pGlobalMapState directly instead): builds and sends a turn event carrying
+// a raw snapshot of terrainStateTable[tileIndex]. RET 4 (callee-cleaned) proves __stdcall, not
+// Ghidra's default __cdecl label. Defined in TMultiplayerMgr.cpp.
+extern "C" void __stdcall DispatchTileRedrawInvalidateEvent(short tileIndex);

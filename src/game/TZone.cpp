@@ -1,6 +1,7 @@
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 
+#include <cstdlib>
 #include <new>
 
 #include "game/mapped_flavor_text.h"
@@ -12,6 +13,9 @@
 #include "game/UiRuntimeContext.h"
 
 extern "C" char g_pClassDescTZone = 0;
+extern "C" {
+extern char g_pClassDescTPortZone;
+}
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
@@ -22,32 +26,10 @@ void DeleteUnlinkedZone(TZone* zone) {
   delete zone;
 }
 
-void* ReallocateStretchEntries(TZone** entries, int sizeBytes) {
-  return reinterpret_cast<void*(__cdecl*)(void*, int)>(ReallocateHeapBlockWithAllocatorTracking)(
-      entries, sizeBytes);
-}
-
-template <typename TStretch> void AppendZonePointerToStretch(TStretch* list, TZone* entry) {
-  int slotIndex = list->Count();
-  if (list->Capacity() <= slotIndex) {
-    int nextCapacity = slotIndex + 1;
-    unsigned int doubledCapacity = static_cast<unsigned int>(nextCapacity * 2);
-    if (doubledCapacity > 0x7fffffffU) {
-      doubledCapacity = 0x7fffffffU;
-    }
-    void* grownBuffer = ReallocateStretchEntries(list->Data(), nextCapacity * 8);
-    if (grownBuffer == 0) {
-      list->Data() = static_cast<TZone**>(ReallocateStretchEntries(list->Data(), nextCapacity * 4));
-      list->Capacity() = nextCapacity;
-    } else {
-      list->Data() = static_cast<TZone**>(grownBuffer);
-      list->Capacity() = static_cast<int>(doubledCapacity);
-    }
-  }
-  if (list->Count() <= slotIndex) {
-    list->Count() = slotIndex + 1;
-  }
-  list->Data()[slotIndex] = entry;
+// 0x005e7f50 resolves to CRT `_free` (per symbols.csv), not a game-specific tracking
+// helper -- call the real library function directly (LIBRARY: IMPERIALISM 0x005e7f50).
+void FreeStretchEntries(void* entries) {
+  free(entries);
 }
 
 } // namespace
@@ -143,36 +125,114 @@ bool TZone::HasZoneActiveChildCount(int unused) {
 
 // FUNCTION: IMPERIALISM 0x0055e8e0
 TZone** TZonePrimaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
-  int count = GetSize();
+  int count = Count();
   for (int index = 0; index < count; ++index) {
-    if (GetAt(index) == zone) {
-      return &ElementAt(index);
+    if (Data()[index] == zone) {
+      return &Data()[index];
     }
   }
-  Add(zone);
-  return &ElementAt(count);
+  if (count >= Capacity()) {
+    unsigned int doubledCapacity = static_cast<unsigned int>((count + 1) * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 8);
+    if (grownBuffer == 0) {
+      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 4));
+      Capacity() = count + 1;
+    } else {
+      Data() = static_cast<TZone**>(grownBuffer);
+      Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (Count() <= count) {
+    Count() = count + 1;
+  }
+  Data()[count] = zone;
+  return &Data()[count];
 }
 
 // FUNCTION: IMPERIALISM 0x0055e9c0
 TZone** TZoneSecondaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
-  int count = GetSize();
+  int count = Count();
   for (int index = 0; index < count; ++index) {
-    if (GetAt(index) == zone) {
-      return &ElementAt(index);
+    if (Data()[index] == zone) {
+      return &Data()[index];
     }
   }
-  Add(zone);
-  return &ElementAt(count);
+  if (count >= Capacity()) {
+    unsigned int doubledCapacity = static_cast<unsigned int>((count + 1) * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 8);
+    if (grownBuffer == 0) {
+      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 4));
+      Capacity() = count + 1;
+    } else {
+      Data() = static_cast<TZone**>(grownBuffer);
+      Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (Count() <= count) {
+    Count() = count + 1;
+  }
+  Data()[count] = zone;
+  return &Data()[count];
 }
 
 // FUNCTION: IMPERIALISM 0x0055ead0
 void TZonePrimaryNeighborStretch::Add(TZone* zone) {
-  AppendZonePointerToStretch(this, zone);
+  int index = Count();
+  if (index >= Capacity()) {
+    unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 8);
+    if (grownBuffer == 0) {
+      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 4));
+      Capacity() = index + 1;
+    } else {
+      Data() = static_cast<TZone**>(grownBuffer);
+      Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (Count() <= index) {
+    Count() = index + 1;
+  }
+  Data()[index] = zone;
 }
 
 // FUNCTION: IMPERIALISM 0x0055eba0
 void TZoneSecondaryNeighborStretch::Add(TZone* zone) {
-  AppendZonePointerToStretch(this, zone);
+  int index = Count();
+  if (index >= Capacity()) {
+    unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 8);
+    if (grownBuffer == 0) {
+      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 4));
+      Capacity() = index + 1;
+    } else {
+      Data() = static_cast<TZone**>(grownBuffer);
+      Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (Count() <= index) {
+    Count() = index + 1;
+  }
+  Data()[index] = zone;
 }
 
 // FUNCTION: IMPERIALISM 0x0055ec60
@@ -192,10 +252,80 @@ void TZone::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055ed20
-void TZone::ReadFrom(TStream* stream) {}
+void TZone::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->streamSlot70(&displayName, 0x20);
+  stream->ReadBytes(&field04, 2);
+  stream->ReadBytes(&field0c, 4);
+  stream->ReadBytes(&field12, 2);
+  stream->ReadBytes(&field20, 2);
+  if (g_nSaveFormatVersion < 0x12) {
+    field14 = static_cast<short>(g_nMapActionContextCount);
+    ++g_nMapActionContextCount;
+  } else {
+    stream->ReadBytes(&field14, 2);
+  }
+  field10 = 0;
+  field44 = 0;
+
+  if (primaryNeighbors.Data() != 0) {
+    void* oldData = primaryNeighbors.Data();
+    primaryNeighbors.Data() = 0;
+    primaryNeighbors.Capacity() = 0;
+    primaryNeighbors.Count() = 0;
+    FreeStretchEntries(oldData);
+  }
+  if (secondaryNeighbors.Data() != 0) {
+    void* oldData = secondaryNeighbors.Data();
+    secondaryNeighbors.Data() = 0;
+    secondaryNeighbors.Capacity() = 0;
+    secondaryNeighbors.Count() = 0;
+    FreeStretchEntries(oldData);
+  }
+
+  // Pre-0xd save format stored the neighbor arrays directly; current saves rebuild them
+  // (AppendUniquePrimaryNeighbor et al.) after load instead.
+  if (g_nSaveFormatVersion < 0xd) {
+    short primaryCount;
+    stream->ReadBytes(&primaryCount, 2);
+    for (short i = 0; i < primaryCount; ++i) {
+      TZone* entry;
+      stream->ReadBytes(&entry, 4);
+      if (i >= primaryNeighbors.Capacity()) {
+        primaryNeighbors.EnsureCapacityAtLeast(i + 1);
+      }
+      if (primaryNeighbors.Count() <= i) {
+        primaryNeighbors.Count() = i + 1;
+      }
+      primaryNeighbors.Data()[i] = entry;
+    }
+
+    short secondaryCount;
+    stream->ReadBytes(&secondaryCount, 2);
+    for (short j = 0; j < secondaryCount; ++j) {
+      TZone* entry;
+      stream->ReadBytes(&entry, 4);
+      if (j >= secondaryNeighbors.Capacity()) {
+        secondaryNeighbors.ResizePointerArrayCapacityByRequestedCount(j + 1);
+      }
+      if (secondaryNeighbors.Count() <= j) {
+        secondaryNeighbors.Count() = j + 1;
+      }
+      secondaryNeighbors.Data()[j] = entry;
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0055eff0
-void TZone::WriteTo(TStream* stream) {}
+void TZone::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->streamSlotAc(&displayName);
+  stream->WriteBytesSlot78(&field04, 2);
+  stream->WriteBytesSlot78(&field0c, 4);
+  stream->WriteBytesSlot78(&field12, 2);
+  stream->WriteBytesSlot78(&field20, 2);
+  stream->WriteBytesSlot78(&field14, 2);
+}
 
 // FUNCTION: IMPERIALISM 0x0055f070
 void TZone::AssignZoneDisplayNameToOutputRef(CString* outputRef) {
@@ -390,9 +520,11 @@ void TZoneSecondaryNeighborStretch::ResizePointerArrayCapacityByRequestedCount(i
   if (doubled > 0x7fffffff) {
     doubled = 0x7fffffff;
   }
-  void* grown = ReallocateStretchEntries(Data(), count * 8);
+  void* grown = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+      ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 8);
   if (grown == 0) {
-    Data() = static_cast<TZone**>(ReallocateStretchEntries(Data(), count * 4));
+    Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 4));
     Capacity() = count;
     return;
   }
@@ -733,9 +865,11 @@ void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
   if (doubledCapacity > 0x7fffffffU) {
     doubledCapacity = 0x7fffffffU;
   }
-  void* grownBuffer = ReallocateStretchEntries(Data(), count * 8);
+  void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+      ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 8);
   if (grownBuffer == 0) {
-    Data() = static_cast<TZone**>(ReallocateStretchEntries(Data(), count * 4));
+    Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 4));
     Capacity() = count;
   } else {
     Data() = static_cast<TZone**>(grownBuffer);
@@ -745,19 +879,32 @@ void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
 
 // FUNCTION: IMPERIALISM 0x00561bf0
 TZone* TZone::FindPortZoneByTile(short nTileIndex) {
-  for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
+  TZone* zone = g_pMapActionContextListHead;
+  while (zone != 0 &&
+         zone->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
+    zone = zone->prev18;
+  }
+  for (;;) {
+    if (zone == 0) {
+      return 0;
+    }
     if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
         static_cast<short>(static_cast<TPortZone*>(zone)->field48) == nTileIndex) {
       return zone;
     }
+    zone = zone->prev18;
+    while (zone != 0 &&
+           zone->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
+      zone = zone->prev18;
+    }
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00561c80
 TZone* TZone::GetFirstPortZone() {
   TZone* cursor = g_pMapActionContextListHead;
-  while (cursor != 0 && cursor->QueryPortZoneCapability() == 0) {
+  while (cursor != 0 &&
+         cursor->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
     cursor = cursor->prev18;
   }
   return cursor;
@@ -766,7 +913,8 @@ TZone* TZone::GetFirstPortZone() {
 // FUNCTION: IMPERIALISM 0x00561d40
 TZone* TZone::GetNextPortZone() {
   TZone* cursor = this->prev18;
-  while (cursor != 0 && cursor->QueryPortZoneCapability() == 0) {
+  while (cursor != 0 &&
+         cursor->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
     cursor = cursor->prev18;
   }
   return cursor;
@@ -817,7 +965,7 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
   TZone* esi = static_cast<TZone*>(g_pMapActionContextListHead);
   if (esi != 0) {
     do {
-      if (esi->QueryPortZoneCapability() != 0) {
+      if (esi->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) != 0) {
         break;
       }
       esi = esi->prev18;
@@ -840,7 +988,7 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
     esi = eax->prev18;
     if (esi != 0) {
       do {
-        if (esi->QueryPortZoneCapability() != 0) {
+        if (esi->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) != 0) {
           break;
         }
         esi = esi->prev18;
@@ -929,4 +1077,22 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
     tileIndex = tileIndex + 1;
     tileByteOffset = tileByteOffset + 0x24;
   } while (static_cast<short>(tileIndex) < 0x1950);
+}
+
+// FUNCTION: IMPERIALISM 0x00564570
+TZone* __stdcall FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
+  TGlobalMapCityScoreRecord* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    int count = zone->secondaryNeighbors.Count();
+    if (count != 0) {
+      TGlobalMapCityScoreRecord** entries =
+          reinterpret_cast<TGlobalMapCityScoreRecord**>(zone->secondaryNeighbors.Data());
+      for (int i = 0; i < count; ++i) {
+        if (entries[i] == target) {
+          return zone;
+        }
+      }
+    }
+  }
+  return 0;
 }

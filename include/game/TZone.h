@@ -62,17 +62,17 @@ public:
   void Free() override;                    // slot 0x07 0x55ec60
   virtual void
   GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
-                                                 void* overrideName);  // slot 0x0a 0x55f780
+                                                 void* overrideName);     // slot 0x0a 0x55f780
   virtual void AssignZoneDisplayNameToOutputRef(CString* outputRef);      // slot 0x0b 0x55f070
   virtual void AssignZoneDisplayNameAliasToOutputRef(CString* outputRef); // slot 0x0c 0x55f090
-  virtual bool QueryZoneCapabilityFlagA();                             // slot 0x0d 0x55e820
-  virtual bool QueryPortZoneCapability();                              // slot 0x0e 0x55e840
-  virtual bool QueryZoneCapabilityFlagC();                             // slot 0x0f 0x55e860
-  virtual bool QueryZoneCapabilityFlagD(int unused);                   // slot 0x10 0x55e880
-  virtual bool QueryZoneCapabilityFlagE(int unused);                   // slot 0x11 0x55e8a0
-  virtual bool HasZoneActiveChildCount(int unused);                    // slot 0x12 0x55e8c0
-  virtual short FindNearestActiveSeaContextTileFromOffset216();        // slot 0x13 0x55fe60
-  virtual short GetActiveNationSlotTile();                             // slot 0x14 0x55fef0
+  virtual bool QueryZoneCapabilityFlagA();                                // slot 0x0d 0x55e820
+  virtual bool QueryPortZoneCapability();                                 // slot 0x0e 0x55e840
+  virtual bool QueryZoneCapabilityFlagC();                                // slot 0x0f 0x55e860
+  virtual bool QueryZoneCapabilityFlagD(int unused);                      // slot 0x10 0x55e880
+  virtual bool QueryZoneCapabilityFlagE(int unused);                      // slot 0x11 0x55e8a0
+  virtual bool HasZoneActiveChildCount(int unused);                       // slot 0x12 0x55e8c0
+  virtual short FindNearestActiveSeaContextTileFromOffset216();           // slot 0x13 0x55fe60
+  virtual short GetActiveNationSlotTile();                                // slot 0x14 0x55fef0
   virtual short
   FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState); // slot 0x15 0x560150
   virtual void SetMapOrderUiFlag(int flag);                                   // slot 0x16 0x560580
@@ -158,6 +158,15 @@ ASSERT_SIZE(TZone, 0x48);
 // Walks g_pMapActionContextListHead (via prev18) for the zone whose field14 context
 // ordinal matches nodeId; -1 and misses return 0. Used by mission deserialization.
 TZone* FindMapActionContextByNodeId(short nodeId); // 0x55f100
+
+// Walks g_pMapActionContextListHead (via prev18) for the zone whose secondaryNeighbors
+// list contains a pointer to g_pGlobalMapState->cityScoreTable[cityRecordIndex] --
+// despite the TZone* element type, the ground truth compares raw addresses against a
+// TGlobalMapCityScoreRecord*, matching the existing secondaryNeighbors int*/TZone* pun
+// already used in TZone.cpp (e.g. PropagateMapActionContextDistanceLevelsRecursive's
+// neighbor-city append in PopulatePortZoneAdjacencyToNearbyCityContexts). __stdcall free
+// function (no `this`).
+TZone* __stdcall FindMapActionContextContainingNodeByIndex(int cityRecordIndex); // 0x564570
 
 // === BEGIN GENERATED (TZone) — refreshed by `just gen-class TZone`; do not hand-edit ===
 // clang-format off

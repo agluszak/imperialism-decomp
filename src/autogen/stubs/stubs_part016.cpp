@@ -851,14 +851,6 @@ undefined4 CreateAndSendTurnEvent0C_Text256AndTwoFlags(void)
   return 0;
 }
 
-// ghidra_name DispatchTileRedrawInvalidateEvent
-// ghidra_proto void __cdecl DispatchTileRedrawInvalidateEvent(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x0054ab20
-undefined4 DispatchTileRedrawInvalidateEvent(void)
-{
-  return 0;
-}
-
 // ghidra_name CopyA8RecordWithSharedStringAtA4
 // ghidra_proto undefined CopyA8RecordWithSharedStringAtA4()
 // FUNCTION: IMPERIALISM 0x0054ae90
