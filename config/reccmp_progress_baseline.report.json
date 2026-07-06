@@ -25,12 +25,6 @@
       "type": 1
     },
     {
-      "address": "0x402eeb",
-      "matching": 0.0,
-      "name": "TUnit::thunk_RegisterUnitOrderWithOwnerManager",
-      "type": 1
-    },
-    {
       "address": "0x40318e",
       "matching": 0.0,
       "name": "thunk_GetMapActionContextByTileIndex",

@@ -2,7 +2,6 @@ address|target_cpp|ownership|note
 401c0d|src/game/TCapacityOrder.cpp|manual|name_paired_no_marker
 4021ee|src/game/TSimMgr.cpp|manual|name_paired_no_marker
 402d1a|src/game/TSimMgr.cpp|manual|name_paired_no_marker
-402eeb|src/game/TUnit.cpp|manual|marker_sync
 4032fb|src/game/TTradeCluster.cpp|manual|name_paired_no_marker
 404b33|src/game/TCivUnit.cpp|manual|name_paired_no_marker
 4053d5|src/game/TSimMgr.cpp|manual|name_paired_no_marker

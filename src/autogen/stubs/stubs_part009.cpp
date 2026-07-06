@@ -51,6 +51,14 @@ undefined4 thunk_InitializeUiTextStyleDescriptor(void)
   return 0;
 }
 
+// ghidra_name TUnit::thunk_RegisterUnitOrderWithOwnerManager
+// ghidra_proto undefined thunk_RegisterUnitOrderWithOwnerManager()
+// ILT thunk 0x00402eeb - unannotated on purpose (see ILT_THUNK_RANGE)
+undefined4 thunk_RegisterUnitOrderWithOwnerManager(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_GetMapActionContextByTileIndex
 // ghidra_proto void * __cdecl thunk_GetMapActionContextByTileIndex(short nTileIndex)
 // ILT thunk 0x0040318e - unannotated on purpose (see ILT_THUNK_RANGE)
