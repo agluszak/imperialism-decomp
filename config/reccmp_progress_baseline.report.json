@@ -7488,7 +7488,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -16643,7 +16643,7 @@
     },
     {
       "address": "0x513170",
-      "matching": 0.044444444444444446,
+      "matching": 0.4444444444444444,
       "name": "TMapMgr::OrphanCallChain_C3_I43_00513170",
       "type": 1
     },
@@ -16973,7 +16973,7 @@
     },
     {
       "address": "0x516260",
-      "matching": 0.004291845493562232,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins464_00516260",
       "type": 1
     },
@@ -17057,7 +17057,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.2987951807228916,
+      "matching": 0.32038834951456313,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18113,7 +18113,7 @@
     },
     {
       "address": "0x52d030",
-      "matching": 1.0,
+      "matching": 0.7766990291262136,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -18149,7 +18149,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20046,13 +20046,13 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.4108527131782946,
+      "matching": 0.41245136186770426,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },

@@ -7,6 +7,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TCivUnit;
 class TStream;
+class TTown;
 class TMilitaryUnit;
 
 struct GlobalMapTileRecord {
@@ -228,8 +229,11 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2,
                                                      int param_3); // slot 0x34 0x513720
   virtual undefined OrphanCallChain_C1_I29_005135a0(short param_1,
-                                                    char param_2);  // slot 0x35 0x5135a0
-  virtual undefined OrphanCallChain_C3_I43_00513170(short param_1); // slot 0x36 0x513170
+                                                    char param_2); // slot 0x35 0x5135a0
+  // Looks up the TTown marker for tileIndex on its owning nation's townMarkerList
+  // (g_apNationStates[terrainStateTable[tileIndex].ownerNationTag04]->townMarkerList),
+  // matching TTown::regionId14 == tileIndex.
+  virtual class TTown* FindTownMarkerForTileByOwnerNation(short tileIndex); // slot 0x36 0x513170
   virtual undefined SetTileOwnerAndInvalidateNeighborState(short param_1,
                                                            short param_2); // slot 0x37 0x5133f0
   // Rendering-variant lookup family: pick a bitmap-strip byte offset for a tile's
@@ -244,10 +248,19 @@ public:
   LookupTileSpriteVariantOffsetByGateAndVariant(short nTileIndex); // slot 0x3a 0x5161e0
   virtual short
   LookupTileSpriteVariantOffsetByGateAndVariantAlt(short nTileIndex); // slot 0x3b 0x516220
-  virtual undefined OrphanLeaf_NoCall_Ins464_00516260(char param_1,
-                                                      char param_2); // slot 0x3c 0x516260
-  virtual undefined OrphanCallChain_C3_I41_00517410(char param_1);   // slot 0x3d 0x517410
-  virtual undefined OrphanCallChain_C3_I49_00517480();               // slot 0x3e 0x517480
+  // Body is a 64x7 lookup table (`table[bitmaskIndex][direction]`), materialized as
+  // literal per-element stack stores in the original (not static rodata) -- reproduced
+  // as a local (non-static) initializer to match. Column 0 always equals the row index
+  // (bitmaskIndex, 0-63 = a 6-bit adjacency mask, matching the file's 6-hex-direction
+  // domain); columns 1-6 are small 0-3 variant codes, same value range as
+  // gateFlag/spriteVariantIndex01 in the sibling rendering-variant family
+  // (0x516150 etc.) directly above this slot. No callers besides the vtable itself, so
+  // the exact semantic role of each column beyond "some adjacency-keyed variant code"
+  // isn't identified.
+  virtual short LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex,
+                                                         char direction); // slot 0x3c 0x516260
+  virtual undefined OrphanCallChain_C3_I41_00517410(char param_1);        // slot 0x3d 0x517410
+  virtual undefined OrphanCallChain_C3_I49_00517480();                    // slot 0x3e 0x517480
   // Real body is just `mov ax, 0xc80; ret` -- a bare constant, no callers besides the
   // vtable itself so its purpose isn't identified.
   virtual short GetFixedConstant0xc80(); // slot 0x3f 0x517520

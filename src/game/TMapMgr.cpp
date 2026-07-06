@@ -12,6 +12,8 @@
 #include "game/global_data_tables.h"
 #include "game/TTradeMgr.h"
 #include "game/TTechMgr.h"
+#include "game/TGreatPower.h"
+#include "game/TTown.h"
 
 void EnsurePortZoneForTile(short nTileIndex);
 void RemovePortZoneByTile(short nTileIndex);
@@ -528,44 +530,6 @@ int TMapMgr::IsAltKeyDown() {
   return GetAsyncKeyState(VK_MENU) & 0x8000;
 }
 
-undefined TMapMgr::OrphanCallChain_C3_I43_00513170(short param_1) {
-  return 0;
-}
-
-undefined TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short param_1,
-                                                                          undefined4 param_2) {
-  return 0;
-}
-
-undefined TMapMgr::SetTileOwnerAndInvalidateNeighborState(short param_1, short param_2) {
-  return 0;
-}
-
-undefined TMapMgr::OrphanCallChain_C1_I29_005135a0(short param_1, char param_2) {
-  return 0;
-}
-
-undefined TMapMgr::OrphanLeaf_NoCall_Ins14_00513610(short param_1, short param_2) {
-  return 0;
-}
-
-byte TMapMgr::GetTileCivilianWorkOrderCostClassNibble(short nTileIndex, char fUseHighNibble) {
-  return 0;
-}
-
-undefined TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0(short param_1, char param_2, byte param_3,
-                                                    char param_4) {
-  return 0;
-}
-
-undefined TMapMgr::OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2, int param_3) {
-  return 0;
-}
-
-undefined TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(short param_1, short param_2) {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00512b50
 void TMapMgr::ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
                                             char wrapHorizontally) {
@@ -714,6 +678,56 @@ clampY:
   }
   if (*yCoord > 59)
     *yCoord = 59;
+}
+
+// FUNCTION: IMPERIALISM 0x00513170
+TTown* TMapMgr::FindTownMarkerForTileByOwnerNation(short tileIndex) {
+  TGreatPower* owner = g_apNationStates[terrainStateTable[tileIndex].ownerNationTag04];
+  if (owner == nullptr) {
+    return nullptr;
+  }
+  TSortedList* townMarkerList = owner->townMarkerList;
+  for (int ordinal = 1; ordinal <= townMarkerList->GetCountSlot48(); ++ordinal) {
+    TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinalSlot4C(ordinal));
+    if (town->regionId14 == tileIndex) {
+      return town;
+    }
+  }
+  return nullptr;
+}
+
+undefined TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short param_1,
+                                                                          undefined4 param_2) {
+  return 0;
+}
+
+undefined TMapMgr::SetTileOwnerAndInvalidateNeighborState(short param_1, short param_2) {
+  return 0;
+}
+
+undefined TMapMgr::OrphanCallChain_C1_I29_005135a0(short param_1, char param_2) {
+  return 0;
+}
+
+undefined TMapMgr::OrphanLeaf_NoCall_Ins14_00513610(short param_1, short param_2) {
+  return 0;
+}
+
+byte TMapMgr::GetTileCivilianWorkOrderCostClassNibble(short nTileIndex, char fUseHighNibble) {
+  return 0;
+}
+
+undefined TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0(short param_1, char param_2, byte param_3,
+                                                    char param_4) {
+  return 0;
+}
+
+undefined TMapMgr::OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2, int param_3) {
+  return 0;
+}
+
+undefined TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(short param_1, short param_2) {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00513200
@@ -1094,8 +1108,33 @@ short TMapMgr::LookupTileSpriteVariantOffsetByGateAndVariantAlt(short nTileIndex
   return g_awTileSpriteVariantOffsetTable3b[tile->gateFlag][tile->spriteVariantIndex01];
 }
 
-undefined TMapMgr::OrphanLeaf_NoCall_Ins464_00516260(char param_1, char param_2) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00516260
+short TMapMgr::LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex, char direction) {
+  short table[64][7] = {
+      {0, 0, 0, 0, 0, 0, 0},  {1, 2, 2, 0, 0, 0, 0},  {2, 0, 3, 3, 0, 0, 0},
+      {3, 2, 1, 3, 0, 0, 0},  {4, 0, 0, 2, 2, 0, 0},  {5, 2, 0, 2, 2, 0, 0},
+      {6, 0, 3, 1, 2, 0, 0},  {7, 2, 1, 1, 2, 0, 0},  {8, 0, 0, 0, 3, 3, 0},
+      {9, 2, 2, 0, 3, 3, 0},  {10, 0, 3, 3, 3, 3, 0}, {11, 2, 1, 3, 3, 3, 0},
+      {12, 0, 0, 2, 1, 3, 0}, {13, 2, 2, 2, 1, 3, 0}, {14, 0, 3, 1, 1, 3, 0},
+      {15, 2, 1, 1, 1, 3, 0}, {16, 0, 0, 0, 0, 2, 2}, {17, 2, 2, 0, 0, 2, 2},
+      {18, 0, 3, 3, 0, 2, 2}, {19, 2, 1, 3, 0, 2, 2}, {20, 0, 0, 2, 2, 2, 2},
+      {21, 2, 2, 2, 2, 2, 2}, {22, 0, 3, 1, 2, 2, 2}, {23, 2, 1, 1, 2, 2, 2},
+      {24, 0, 0, 0, 3, 1, 2}, {25, 2, 2, 0, 3, 1, 2}, {26, 0, 3, 3, 3, 1, 2},
+      {27, 2, 1, 3, 3, 1, 2}, {28, 0, 0, 2, 1, 1, 2}, {29, 2, 2, 2, 1, 1, 2},
+      {30, 0, 3, 1, 1, 1, 2}, {31, 2, 1, 1, 1, 1, 2}, {32, 3, 0, 0, 0, 0, 3},
+      {33, 1, 2, 0, 0, 0, 3}, {34, 3, 3, 3, 0, 0, 3}, {35, 1, 1, 3, 0, 0, 3},
+      {36, 3, 0, 2, 2, 0, 3}, {37, 1, 2, 2, 2, 0, 3}, {38, 3, 3, 1, 2, 0, 3},
+      {39, 1, 1, 1, 2, 0, 3}, {40, 3, 0, 0, 3, 3, 3}, {41, 1, 2, 0, 3, 3, 3},
+      {42, 3, 3, 3, 3, 3, 3}, {43, 1, 1, 3, 3, 3, 3}, {44, 3, 0, 2, 1, 3, 3},
+      {45, 1, 2, 2, 1, 3, 3}, {46, 3, 3, 1, 1, 3, 3}, {47, 1, 1, 1, 1, 3, 3},
+      {48, 3, 0, 0, 0, 2, 1}, {49, 1, 2, 0, 0, 2, 1}, {50, 3, 3, 3, 0, 2, 1},
+      {51, 1, 1, 3, 0, 2, 1}, {52, 3, 0, 2, 2, 2, 1}, {53, 1, 2, 2, 2, 2, 1},
+      {54, 3, 3, 1, 2, 2, 1}, {55, 1, 1, 1, 2, 2, 1}, {56, 3, 0, 0, 3, 1, 1},
+      {57, 1, 2, 0, 3, 1, 1}, {58, 3, 3, 3, 3, 1, 1}, {59, 1, 1, 3, 3, 1, 1},
+      {60, 3, 0, 2, 1, 1, 1}, {61, 1, 2, 2, 1, 1, 1}, {62, 3, 3, 1, 1, 1, 1},
+      {63, 1, 1, 1, 1, 1, 1},
+  };
+  return table[bitmaskIndex][direction];
 }
 
 undefined TMapMgr::OrphanCallChain_C3_I41_00517410(char param_1) {
