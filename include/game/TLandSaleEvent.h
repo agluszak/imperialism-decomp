@@ -25,21 +25,3 @@ public:
   TLandSaleEvent();
 };
 
-// === BEGIN GENERATED (TLandSaleEvent) — refreshed by `just gen-class TLandSaleEvent`; do not hand-edit ===
-// clang-format off
-// vtable @ 0x00653290 (11 slots), object size 0x0c, base TTurnStartEvent
-//   slot 0x00  byte 0x00  0x004e66f0  override  OrphanLeaf_NoCall_Ins07_004d8920
-//   slot 0x01  byte 0x04  0x004d49a0  override  ApplyJoinEmpireModeForTargetNation
-//   slot 0x02  byte 0x08  0x00485e90  inherited Serialize
-//   slot 0x03  byte 0x0c  0x00412bf0  inherited AssertValid
-//   slot 0x04  byte 0x10  0x00412c10  inherited Dump
-//   slot 0x05  byte 0x14  0x00485f70  inherited WriteTo
-//   slot 0x06  byte 0x18  0x00485f90  inherited ReadFrom
-//   slot 0x07  byte 0x1c  0x004798b0  inherited Free
-//   slot 0x08  byte 0x20  0x004798d0  inherited ShallowClone
-//   slot 0x09  byte 0x24  0x00415ce0  inherited ShallowFree
-//   slot 0x0a  byte 0x28  0x004e6740  override  ApplyJoinEmpireMode2FinalizeNationNameState
-// object size 0x0c (RTTI) unverified against the header layout;
-// set curated.layout.size_verified to emit a sizeof static_assert.
-// clang-format on
-// === END GENERATED (TLandSaleEvent) ===

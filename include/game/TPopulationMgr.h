@@ -58,31 +58,3 @@ public:
   TPopulationMgr();
 };
 
-// === BEGIN GENERATED (TPopulationMgr) — refreshed by `just gen-class TPopulationMgr`; do not hand-edit ===
-// clang-format off
-// vtable @ 0x0064f9b0 (21 slots), object size 0x50, base TObject
-//   slot 0x00  byte 0x00  0x004b5b70  override  GetRuntimeClass
-//   slot 0x01  byte 0x04  0x004b5bb0  scalar_dtor (scalar deleting destructor)
-//   slot 0x02  byte 0x08  0x00485e90  inherited Serialize
-//   slot 0x03  byte 0x0c  0x00412bf0  inherited AssertValid
-//   slot 0x04  byte 0x10  0x00412c10  inherited Dump
-//   slot 0x05  byte 0x14  0x004b6850  override  WriteTo
-//   slot 0x06  byte 0x18  0x004b68f0  override  ReadFrom
-//   slot 0x07  byte 0x1c  0x004b6990  override  Free
-//   slot 0x08  byte 0x20  0x004798d0  inherited ShallowClone
-//   slot 0x09  byte 0x24  0x00415ce0  inherited ShallowFree
-//   slot 0x0a  byte 0x28  0x004b5d10  override  OrphanLeaf_NoCall_Ins09_004b5d10
-//   slot 0x0b  byte 0x2c  0x004b5dc0  override  OrphanLeaf_NoCall_Ins47_004b5dc0
-//   slot 0x0c  byte 0x30  0x004b5d50  override  OrphanLeaf_NoCall_Ins20_004b5d50
-//   slot 0x0d  byte 0x34  0x004b66a0  override  OrphanLeaf_NoCall_Ins87_004b66a0
-//   slot 0x0e  byte 0x38  0x004b5ed0  override  Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0
-//   slot 0x0f  byte 0x3c  0x004b6260  override  OrphanLeaf_NoCall_Ins111_004b6260
-//   slot 0x10  byte 0x40  0x004b65b0  override  OrphanCallChain_C2_I61_004b65b0
-//   slot 0x11  byte 0x44  0x004b5e80  override  OrphanCallChain_C2_I24_004b5e80
-//   slot 0x12  byte 0x48  0x004b63e0  override  OrphanLeaf_NoCall_Ins50_004b63e0
-//   slot 0x13  byte 0x4c  0x004b67e0  override  OrphanLeaf_NoCall_Ins26_004b67e0
-//   slot 0x14  byte 0x50  0x004b64c0  override  OrphanLeaf_NoCall_Ins63_004b64c0
-// object size 0x50 (RTTI) unverified against the header layout;
-// set curated.layout.size_verified to emit a sizeof static_assert.
-// clang-format on
-// === END GENERATED (TPopulationMgr) ===

@@ -51,35 +51,3 @@ public:
                                                          int compositionClass);
 };
 
-// === BEGIN GENERATED (TArmyBattle) — refreshed by `just gen-class TArmyBattle`; do not hand-edit ===
-// clang-format off
-// vtable @ 0x0064ca68 (25 slots), object size 0x78, base TTacticalBattle
-//   slot 0x00  byte 0x00  0x005a4750  override  GetTTacticalBattleClassNamePointer
-//   slot 0x01  byte 0x04  0x004a5c50  override  WrapperFor_FreeHeapBufferIfNotNull_At004a5c50
-//   slot 0x02  byte 0x08  0x00485e90  inherited Serialize
-//   slot 0x03  byte 0x0c  0x00412bf0  inherited AssertValid
-//   slot 0x04  byte 0x10  0x00412c10  inherited Dump
-//   slot 0x05  byte 0x14  0x005a4da0  override  OrphanRetStub_0059ad90
-//   slot 0x06  byte 0x18  0x005a4990  override  OrphanCallChain_C11_I88_004874b0
-//   slot 0x07  byte 0x1c  0x0059fb50  inherited WrapperFor_FreeHeapBufferIfNotNull_At0059fb50
-//   slot 0x08  byte 0x20  0x004798d0  inherited ShallowClone
-//   slot 0x09  byte 0x24  0x00415ce0  inherited ShallowFree
-//   slot 0x0a  byte 0x28  0x0059ff20  inherited ComputeTacticalReachableTileCostsByUnitCategory
-//   slot 0x0b  byte 0x2c  0x005a02e0  inherited PropagateTileAccessibilityStrengthLevels
-//   slot 0x0c  byte 0x30  0x005a51e0  override  OrphanRetStub_0059f710
-//   slot 0x0d  byte 0x34  0x005a1bd0  inherited MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
-//   slot 0x0e  byte 0x38  0x005a1400  inherited WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400
-//   slot 0x0f  byte 0x3c  0x005a1ca0  inherited ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
-//   slot 0x10  byte 0x40  0x005a1ee0  inherited EvaluateAndResolveTacticalActionAgainstTileOccupant
-//   slot 0x11  byte 0x44  0x005a2700  inherited OrphanCallChain_C4_I30_005a2700
-//   slot 0x12  byte 0x48  0x005a5320  override  CreateTTacticalBattleInstance
-//   slot 0x13  byte 0x4c  0x005a3190  inherited MarkTacticalTileStateQueuedAndMaybeDispatchPacket
-//   slot 0x14  byte 0x50  0x005a3210  inherited AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket
-//   slot 0x15  byte 0x54  0x005a3320  inherited ClearTacticalTileStateRunByStride
-//   slot 0x16  byte 0x58  0x005a3810  inherited ComputeRallyStrengthAndQueueTacticalRallyCommand
-//   slot 0x17  byte 0x5c  0x005a34d0  inherited ExecuteTacticalMineActionAndQueuePacket
-//   slot 0x18  byte 0x60  0x005a3640  inherited ExecuteTacticalDigActionAndConsumeUnitActionPoints
-// object size 0x78 (RTTI) unverified against the header layout;
-// set curated.layout.size_verified to emit a sizeof static_assert.
-// clang-format on
-// === END GENERATED (TArmyBattle) ===
