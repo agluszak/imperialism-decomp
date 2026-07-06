@@ -8,6 +8,12 @@
 
 extern undefined4 GenerateThreadLocalRandom15(void);
 
+// FUNCTION: IMPERIALISM 0x00550510
+short TTaskForce::GetOrderNodeDescriptorWord20ByResourceType() {
+  return static_cast<short>(
+      g_NavyOrderResourceDescriptorTable[order_type].enabledFlagOrBucketOffset);
+}
+
 // FUNCTION: IMPERIALISM 0x00550670
 TTaskForce* TTaskForce::SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
                                                                     int compareAttachedFlag) {
@@ -78,6 +84,11 @@ TTaskForce* TTaskForce::SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* 
     }
   }
   return candidate;
+}
+
+// FUNCTION: IMPERIALISM 0x00550820
+short TTaskForce::GetOrderNodeDescriptorWord0CByResourceType() {
+  return g_NavyOrderResourceDescriptorTable[order_type].calculateWeight;
 }
 
 // FUNCTION: IMPERIALISM 0x00550aa0

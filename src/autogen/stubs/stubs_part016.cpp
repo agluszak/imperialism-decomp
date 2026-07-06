@@ -1171,26 +1171,10 @@ undefined4 GetOrCreateMissionOrderEntryForNode(void)
   return 0;
 }
 
-// ghidra_name GetOrderNodeDescriptorWord20ByResourceType
-// ghidra_proto undefined GetOrderNodeDescriptorWord20ByResourceType()
-// FUNCTION: IMPERIALISM 0x00550510
-undefined4 GetOrderNodeDescriptorWord20ByResourceType(void)
-{
-  return 0;
-}
-
 // ghidra_name GetNavyPrimaryOrderNodeByIndex
 // ghidra_proto undefined GetNavyPrimaryOrderNodeByIndex()
 // FUNCTION: IMPERIALISM 0x00550640
 undefined4 GetNavyPrimaryOrderNodeByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrderNodeDescriptorWord0CByResourceType
-// ghidra_proto undefined GetOrderNodeDescriptorWord0CByResourceType()
-// FUNCTION: IMPERIALISM 0x00550820
-undefined4 GetOrderNodeDescriptorWord0CByResourceType(void)
 {
   return 0;
 }
@@ -1219,58 +1203,10 @@ undefined4 FormatLocalizedCommodityCountLabelByIndex(void)
   return 0;
 }
 
-// ghidra_name GetResourceDescriptorWord0CByType
-// ghidra_proto undefined GetResourceDescriptorWord0CByType()
-// FUNCTION: IMPERIALISM 0x00550db0
-undefined4 GetResourceDescriptorWord0CByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWord10ByType
-// ghidra_proto undefined GetResourceDescriptorWord10ByType()
-// FUNCTION: IMPERIALISM 0x00550de0
-undefined4 GetResourceDescriptorWord10ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWord14ByType
-// ghidra_proto undefined GetResourceDescriptorWord14ByType()
-// FUNCTION: IMPERIALISM 0x00550e10
-undefined4 GetResourceDescriptorWord14ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWord18ByType
-// ghidra_proto undefined GetResourceDescriptorWord18ByType()
-// FUNCTION: IMPERIALISM 0x00550e40
-undefined4 GetResourceDescriptorWord18ByType(void)
-{
-  return 0;
-}
-
 // ghidra_name GetResourceDescriptorWord20ByType
 // ghidra_proto undefined GetResourceDescriptorWord20ByType()
 // FUNCTION: IMPERIALISM 0x00550ea0
 undefined4 GetResourceDescriptorWord20ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWeightWord1ByType
-// ghidra_proto undefined GetResourceDescriptorWeightWord1ByType()
-// FUNCTION: IMPERIALISM 0x00550ed0
-undefined4 GetResourceDescriptorWeightWord1ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWord08ByTypeOffset
-// ghidra_proto undefined GetResourceDescriptorWord08ByTypeOffset()
-// FUNCTION: IMPERIALISM 0x00550f30
-undefined4 GetResourceDescriptorWord08ByTypeOffset(void)
 {
   return 0;
 }

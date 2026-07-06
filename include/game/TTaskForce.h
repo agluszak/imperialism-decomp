@@ -191,6 +191,12 @@ public:
   // hands off to TNavyMgr::ResolveMapOrderPairConflictStep and returns false.
   char ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other); // 0x555420
 
+  // Low word of this order's resource-type enabledFlagOrBucketOffset column (same field
+  // RemoveNode reads as a bucket_offset).
+  short GetOrderNodeDescriptorWord20ByResourceType(); // 0x550510
+  // This order's resource-type calculateWeight column.
+  short GetOrderNodeDescriptorWord0CByResourceType(); // 0x550820
+
   // Marks every active childOrderList entry's order node (object_ptr+0x34 -- same
   // out-of-bounds write documented on TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink)
   // with a 1-or-2 selection-mode code depending on `reserveExtraSlot`, then scans the

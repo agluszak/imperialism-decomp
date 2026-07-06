@@ -97,6 +97,12 @@ ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64];
 
 short GetResourceTypeRandomDrawBlockFlag(short resourceType);
+short GetResourceDescriptorWord0CByType(short resourceType);
+short GetResourceDescriptorWord10ByType(short resourceType);
+short GetResourceDescriptorWord14ByType(short resourceType);
+short GetResourceDescriptorWord18ByType(short resourceType);
+short GetResourceDescriptorWeightWord1ByType(short resourceType);
+short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot);
 
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
 // column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
