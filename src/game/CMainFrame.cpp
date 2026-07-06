@@ -133,6 +133,12 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
   cs.hMenu = NULL;
   cs.style = 0x02000000;
   cs.x = (int)0xFFFFFC18;
+  // Wine-compat deviation from the original (which leaves cs.y = CW_USEDEFAULT): under Wine,
+  // CW_USEDEFAULT (0x80000000 == INT_MIN) is kept literally as the frame's Y, which then
+  // corrupts ConfigureTopLevelWindowStyleAndPlacement's maximize into a 2px-tall off-screen
+  // frame -> blank paint + broken hit-testing (the movie can't be clicked/skipped). Pinning a
+  // valid y makes the frame size correctly under Wine; Windows would have clamped CW_USEDEFAULT.
+  cs.y = 0;
   return CFrameWnd::PreCreateWindow(cs);
 }
 
