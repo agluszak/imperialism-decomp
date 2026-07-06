@@ -1529,8 +1529,42 @@ void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThreshold(TCivUnit* pCivi
   }
 }
 
-undefined TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability(int param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00515720
+void TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability(TCivUnit* pCivilianOrderEntry) {
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    terrainStateTable[tileIndex].recruitSearchVisited0e = 1;
+  }
+
+  short nationTag = pCivilianOrderEntry->field_18;
+  TGreatPower* nation = g_apNationStates[nationTag];
+  TSortedList* townMarkerList = nation->townMarkerList;
+  int townCount = townMarkerList->GetCount();
+  for (int ordinal = 1; ordinal <= townCount; ++ordinal) {
+    TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(ordinal));
+    if (town->enabledFlag4d == 0) {
+      continue;
+    }
+    short regionId = town->regionId14;
+    signed char townTag5 = terrainStateTable[regionId].regionSubtypeTag05;
+    short neighbors[6];
+    ComputeHexNeighborTileIndices(regionId, neighbors, hexNeighborWrapHorizontally20);
+    for (int d = 0; d < 6; ++d) {
+      if (neighbors[d] == -1) {
+        continue;
+      }
+      TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
+      if (neighbor->terrainType00 != 5) {
+        continue;
+      }
+      if (neighbor->regionSubtypeTag05 != townTag5) {
+        continue;
+      }
+      if (neighbor->developmentClassNibbles0c <
+          g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationTag][19]) {
+        neighbor->recruitSearchVisited0e = 0;
+      }
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00515890

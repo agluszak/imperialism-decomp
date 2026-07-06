@@ -33,8 +33,12 @@ struct TTerrainStateRecordView {
   unsigned char roadFlag;
   unsigned char pad03;
   signed char ownerNationTag04; // 0x04
-  unsigned char pad05;
-  signed char adjacencyBits06; // 0x06
+  // Read as a signed byte and equality-compared between a town's own tile and its hex
+  // neighbors by MarkType5NeighborTilesUnavailableByNationCapability (matches a coastal
+  // water tile to "its" town) -- not padding, though the exact semantic beyond that one
+  // equality test isn't otherwise identified.
+  signed char regionSubtypeTag05; // 0x05
+  signed char adjacencyBits06;    // 0x06
   unsigned char pad07[0x0a - 0x07];
   unsigned char adjacencyMaskA0a; // 0x0a -- per-direction bit mask (land coastline/edges)
   unsigned char adjacencyMaskB0b; // 0x0b -- per-direction bit mask (region/water borders)
@@ -256,8 +260,12 @@ public:
   // qualify depends on pCivilianOrderEntry->orderType (== 0 selects {3,4,21,22}, else {6}).
   virtual void SeedRecruitSearchVisitedStateByCapabilityThreshold(
       class TCivUnit* pCivilianOrderEntry); // slot 0x25 0x5155c0
-  virtual undefined
-  MarkType5NeighborTilesUnavailableByNationCapability(int param_1); // slot 0x26 0x515720
+  // Seeds recruitSearchVisited0e = 1 across all tiles, then for each of the order's nation's
+  // enabled TTown markers, clears it (0) on any hex-adjacent water tile that shares the
+  // town's regionSubtypeTag05 and whose developmentClassNibbles0c is below
+  // TTechMgr::capabilityValueByNationAndResource[nationTag][19].
+  virtual void MarkType5NeighborTilesUnavailableByNationCapability(
+      class TCivUnit* pCivilianOrderEntry); // slot 0x26 0x515720
   // Sibling of SeedRecruitSearchVisitedStateByCapabilityThreshold: defaults every tile to
   // blocked, then clears it if owned by pCivilianOrderEntry->field_18 (via
   // ownerNationTag04 or secondaryOwnerNationTag18) and g_abGateFlagQualifies[gateFlag] is

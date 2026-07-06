@@ -16854,7 +16854,7 @@
     },
     {
       "address": "0x515720",
-      "matching": 0.021505376344086023,
+      "matching": 0.4067796610169492,
       "name": "TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability",
       "type": 1
     },
@@ -17046,7 +17046,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32038834951456313,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
