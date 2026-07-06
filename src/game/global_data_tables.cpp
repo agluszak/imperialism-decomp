@@ -492,6 +492,16 @@ unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 
 // (0x513720).
 unsigned char g_abResourceTypeCapabilityCategory[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
+// Per-resourceType required-order-type code. Read by
+// SeedRecruitSearchVisitedStateByCapabilityThresholdAlt (0x515890).
+short g_anResourceTypeRequiredOrderType[24] = {2,  5,  3,  -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                                               -1, -1, -1, -1, 2,  2,  6,  5,  -1, -1, 0,  0};
+// Per-resourceType "always-qualifies" flag; same caller as above.
+unsigned char g_abResourceTypeAlwaysQualifies[24] = {1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0,
+                                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
+// Per-gateFlag eligibility flag; only indices 0-3 are meaningful (gateFlag's real range).
+unsigned char g_abGateFlagQualifies[24] = {
+    0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};

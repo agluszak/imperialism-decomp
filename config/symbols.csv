@@ -8130,6 +8130,8 @@ address|name|symbol|size|type|prototype|provenance
 6579d0|TNumberedItem::classRuntimeClass|||global||
 658560|TLanguageMgr::classTLanguageMgr|||global||
 658610|TMacViewMgr::classTMacViewMgr|||global||
+658720|g_abResourceTypeAlwaysQualifies|||global||
+658738|g_abGateFlagQualifies|||global||
 658788|TMapMgr::classTMapMgr|||global||
 658964|g_anMapActionClassToImprovementOpIndex|||global||
 658998|TMapDialog::classTMapDialog|||global||
@@ -8509,6 +8511,7 @@ address|name|symbol|size|type|prototype|provenance
 696e70|g_Build_Hex_Area_LookupTable_00696E70|||global||
 696e80|g_Build_Hex_Area_LookupTable_00696E80|||global||
 696e90|g_abResourceTypeCapabilityCategory|||global||
+696ed8|g_anResourceTypeRequiredOrderType|||global||
 696f10|g_awTileSpriteVariantOffsetTable38|||global||
 696f50|g_awTileSpriteVariantOffsetTable39|||global||
 696f60|g_awTileSpriteVariantOffsetTable3a|||global||

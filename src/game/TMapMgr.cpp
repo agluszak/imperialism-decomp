@@ -1085,8 +1085,44 @@ undefined TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability(int param
   return 0;
 }
 
-undefined TMapMgr::OrphanLeaf_NoCall_Ins69_00515890(int param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00515890
+void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(TCivUnit* pCivilianOrderEntry) {
+  this->field9 = 1;
+  short nationTag = pCivilianOrderEntry->field_18;
+  short orderType = pCivilianOrderEntry->orderType;
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+    tile->recruitSearchVisited0e = 1;
+    if (tile->ownerNationTag04 != nationTag && tile->secondaryOwnerNationTag18 != nationTag) {
+      continue;
+    }
+    if (g_abGateFlagQualifies[tile->gateFlag] == 0) {
+      continue;
+    }
+    short maxValue = 0;
+    for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
+      signed char resourceType = tile->resourceTypeByEdge[edgeIndex];
+      if (resourceType == -1) {
+        continue;
+      }
+      if (g_anResourceTypeRequiredOrderType[resourceType] != orderType) {
+        continue;
+      }
+      if (g_abResourceTypeAlwaysQualifies[resourceType] == 0 &&
+          tile->ownerNationTag04 != nationTag) {
+        continue;
+      }
+      short value =
+          g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationTag][resourceType];
+      if (value > maxValue) {
+        maxValue = value;
+      }
+    }
+    signed char lowNibble = tile->developmentClassNibbles0c & 0xf;
+    if (lowNibble < maxValue) {
+      tile->recruitSearchVisited0e = 0;
+    }
+  }
 }
 
 undefined TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(int param_1) {

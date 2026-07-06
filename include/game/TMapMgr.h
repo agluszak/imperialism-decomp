@@ -208,7 +208,15 @@ public:
       class TCivUnit* pCivilianOrderEntry); // slot 0x25 0x5155c0
   virtual undefined
   MarkType5NeighborTilesUnavailableByNationCapability(int param_1); // slot 0x26 0x515720
-  virtual undefined OrphanLeaf_NoCall_Ins69_00515890(int param_1);  // slot 0x27 0x515890
+  // Sibling of SeedRecruitSearchVisitedStateByCapabilityThreshold: defaults every tile to
+  // blocked, then clears it if owned by pCivilianOrderEntry->field_18 (via
+  // ownerNationTag04 or secondaryOwnerNationTag18) and g_abGateFlagQualifies[gateFlag] is
+  // set, and the max capability value (over qualifying resourceTypeByEdge entries -- an
+  // entry qualifies if g_anResourceTypeRequiredOrderType[resourceType] matches
+  // pCivilianOrderEntry->orderType, and either g_abResourceTypeAlwaysQualifies[resourceType]
+  // or ownerNationTag04 matches) exceeds the low development nibble.
+  virtual void SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(
+      class TCivUnit* pCivilianOrderEntry); // slot 0x27 0x515890
   virtual undefined
   MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(int param_1); // slot 0x28 0x5159b0
   virtual undefined

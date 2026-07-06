@@ -530,6 +530,15 @@ extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 // TMapMgr.cpp — per-resourceType capability-category code, compared for equality against
 // a caller-supplied category code by FindMaxResourceCapabilityValueForTile (0x513720).
 extern unsigned char g_abResourceTypeCapabilityCategory[24];
+// TMapMgr.cpp — per-resourceType required-order-type code (short), compared against
+// pCivilianOrderEntry->orderType by SeedRecruitSearchVisitedStateByCapabilityThresholdAlt
+// (0x515890).
+extern short g_anResourceTypeRequiredOrderType[24];
+// TMapMgr.cpp — per-resourceType "always-qualifies" flag; same caller as above.
+extern unsigned char g_abResourceTypeAlwaysQualifies[24];
+// TMapMgr.cpp — per-gateFlag eligibility flag (only indices 0-3 meaningful, gateFlag's
+// range); same caller as above.
+extern unsigned char g_abGateFlagQualifies[24];
 
 // TMapMgr.cpp — hex-area neighbor lookup tables.
 extern short g_Build_Hex_Area_LookupTable_00696E70[];
