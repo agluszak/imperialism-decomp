@@ -959,7 +959,33 @@ Interpretation:
 - `PromoteTileToCityAndRefreshNeighbors @ 0x0051DC90`
   - City-type promotion/update pass touching city flags (`tile+0x1C`) and neighbor refresh callbacks.
 
-These functions improve readability of the strategic-map cache pipeline and confirm more runtime writes for `+0x03/+0x04/+0x06/+0x07/+0x1C`, while the direct gameplay writer for `tile+0x17` remains to be identified.
+These functions improve readability of the strategic-map cache pipeline and confirm more runtime writes for `+0x03/+0x04/+0x06/+0x07/+0x1C`.
+
+### tile+0x17 runtime writer identified (bd imperialism-decomp-1uj.38, 2026-07-06)
+
+`tile+0x17` is `TTerrainStateRecordView::railFlags17` (`include/game/TMapMgr.h:38`). Its
+only runtime writer is **`TMapMgr::ApplyRailSectionEndpointDirectionFlags`
+(0x00513ff0)** — the rail-section endpoint pass accumulates per-tile hex-direction bits
+into the field (`terrainStateTable[sourceTile].railFlags17 += pTable2[(dir+3)*2]` /
+`terrainStateTable[destTile].railFlags17 += pTable8[((dir+3)%6)*2]`,
+`src/game/TMapMgr.cpp:964-965`). It is genuinely non-editor (the rail civilian-order
+commit path), which closes the open "direct gameplay writer for tile+0x17" question.
+
+Correction to the earlier premise: `tile+0x17` is specifically the **rail-overlay
+direction state**, not the general civilian-order icon selector. The civilian
+`400..408 / 409..417 / 418..426` icon-state selection is driven by the *other* tile
+bytes:
+- `tile+0x11`/`tile+0x12` — written by the editor/tile-edit dispatchers (already known).
+- `tile+0x16` (`pad16`) — the map-order state byte written at runtime by
+  `SetMapTileStateByteAndNotifyObserver` (`src/game/TOcean.cpp`, called from
+  `TZone::HandleKeyDown` with values `7..13`), which also stamps `tile+0x1a = 0xFFFF`.
+
+To finish the exact `400..426` state machine, the remaining trace target is the sprite
+selection inside `RenderStrategicMapTileCell` (0x0051EB40) — still a stub — and the
+vfunc icon-draw helpers it dispatches (doc §"strategic-map cache pipeline"), which read
+`+0x11/+0x12/+0x16/+0x17` to pick the sprite range. The *writers* of every input byte
+are now identified; only the render-side range mapping remains, and it is data/vfunc
+driven rather than a per-state code branch.
 
 ## City Dialog Legibility Update (2026-02-15, continuation)
 
