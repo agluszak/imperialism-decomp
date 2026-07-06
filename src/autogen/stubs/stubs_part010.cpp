@@ -1267,14 +1267,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00483ad0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00483ad0()
-// FUNCTION: IMPERIALISM 0x00483ad0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AllocateAndLinkBlockHead_At00483ba0
 // ghidra_proto undefined WrapperFor_AllocateAndLinkBlockHead_At00483ba0()
 // FUNCTION: IMPERIALISM 0x00483ba0
@@ -1319,14 +1311,6 @@ undefined4 WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0(void)
 // ghidra_proto undefined HandleParentNotifyAndEndMouseCapture_00484190()
 // FUNCTION: IMPERIALISM 0x00484190
 undefined4 HandleParentNotifyAndEndMouseCapture_00484190(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeEventThunkFields_00648590
-// ghidra_proto undefined InitializeEventThunkFields_00648590()
-// FUNCTION: IMPERIALISM 0x004845a0
-undefined4 InitializeEventThunkFields_00648590(void)
 {
   return 0;
 }
@@ -1663,22 +1647,6 @@ undefined4 NotifyGlobalCaptureOwnerState1WithCachedCoords(void)
 // ghidra_proto undefined WrapperFor_GetOrCreateCWndFromHandle_At00489bf0()
 // FUNCTION: IMPERIALISM 0x00489bf0
 undefined4 WrapperFor_GetOrCreateCWndFromHandle_At00489bf0(void)
-{
-  return 0;
-}
-
-// ghidra_name NotifyCaptureOwnerState1AndMaybeUpdateCoords
-// ghidra_proto undefined NotifyCaptureOwnerState1AndMaybeUpdateCoords()
-// FUNCTION: IMPERIALISM 0x00489cb0
-undefined4 NotifyCaptureOwnerState1AndMaybeUpdateCoords(void)
-{
-  return 0;
-}
-
-// ghidra_name EndMouseCaptureAndStopRepeatTimer
-// ghidra_proto undefined EndMouseCaptureAndStopRepeatTimer()
-// FUNCTION: IMPERIALISM 0x00489d40
-undefined4 EndMouseCaptureAndStopRepeatTimer(void)
 {
   return 0;
 }

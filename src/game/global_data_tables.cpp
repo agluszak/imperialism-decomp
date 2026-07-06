@@ -137,13 +137,7 @@ int g_McAppUiDefaultPosX_006A1A60 = 0;
 // GLOBAL: IMPERIALISM 0x006a1a64
 int g_McAppUiDefaultPosY_006A1A64 = 0;
 // GLOBAL: IMPERIALISM 0x006a1a68
-int g_McAppUiMouseCaptureStartPoint_006A1A68[2] = {0, 0};
-// GLOBAL: IMPERIALISM 0x006a1a70
-int g_McAppUiMouseCaptureLastPoint_006A1A70[2] = {0, 0};
-// GLOBAL: IMPERIALISM 0x006a1a78
-int g_McAppUiMouseCaptureCurrentPoint_006A1A78[2] = {0, 0};
-// GLOBAL: IMPERIALISM 0x006a1a80
-TControl* g_McAppUiMouseCaptureControl_006A1A80 = 0;
+TMouseCaptureState g_McAppMouseCaptureState;
 // GLOBAL: IMPERIALISM 0x006a1adc
 unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 // GLOBAL: IMPERIALISM 0x006950b0
@@ -245,10 +239,9 @@ int g_nOverlayClipCacheParamY = 0;
 // the real table at 0x696108 is const-initialized, not runtime-populated.
 // GLOBAL: IMPERIALISM 0x00696108
 const int g_pTradeSummarySelectionMap[23] = {
-    0x636f7474, 0x776f6f6c, 0x74696d62, 0x636f616c, 0x69726f6e, 0x686f7273, 0x6f696c20,
-    0x666f6f64, 0x66616272, 0x6c756d62, 0x70617065, 0x73746565, 0x6675656c, 0x636c6f74,
-    0x6675726e, 0x68617264, 0x61726d61, 0x67726169, 0x70726f64, 0x66697368, 0x6c697665,
-    0x67656d73, 0x676f6c64,
+    0x636f7474, 0x776f6f6c, 0x74696d62, 0x636f616c, 0x69726f6e, 0x686f7273, 0x6f696c20, 0x666f6f64,
+    0x66616272, 0x6c756d62, 0x70617065, 0x73746565, 0x6675656c, 0x636c6f74, 0x6675726e, 0x68617264,
+    0x61726d61, 0x67726169, 0x70726f64, 0x66697368, 0x6c697665, 0x67656d73, 0x676f6c64,
 };
 
 // Trade sell propagation tags

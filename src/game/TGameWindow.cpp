@@ -3,6 +3,7 @@
 #include "game/TSimMgr.h"
 #include "game/TControl.h"
 #include "game/TSimMgr.h"
+#include "game/TUiEvent.h"
 #include "game/TView.h"
 #include "game/TMovieView.h"
 #include "game/UiRuntimeContext.h"
@@ -22,13 +23,6 @@ namespace {
 
 const unsigned int kAddrSfxPlaybackSystem = 0x006a43ec;
 const short kUiCommandHandledMarker = 0x29a;
-
-struct TurnOrderNavCommandEvent {
-  unsigned char pad00[0x1c];
-  short commandCode;
-  unsigned char pad1e[2];
-  short handledMarker;
-};
 
 static short QueryUiRuntimeEventCode() {
   return g_pUiRuntimeContext->currentTurnEventCode;
@@ -124,7 +118,7 @@ char TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int a
 
 // FUNCTION: IMPERIALISM 0x004ffd70
 void TGameWindow::ForwardParam(int param) {
-  TurnOrderNavCommandEvent* commandEvent = reinterpret_cast<TurnOrderNavCommandEvent*>(param);
+  TKeyCommandEvent* commandEvent = reinterpret_cast<TKeyCommandEvent*>(param);
   TControl* mainControl = static_cast<TControl*>(ResolveControlByTag(kTagMain));
   if (mainControl == 0) {
     return;

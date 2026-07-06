@@ -555,7 +555,7 @@ address|name|symbol|size|type|prototype|provenance
 4838b0|TCViewOwnedBufferRegistryState_00648560::HandleIncludeViewPointerUpdateAndNotifyChildren||232|function|undefined HandleIncludeViewPointerUpdateAndNotifyChildren()|
 4839e0|WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0||157|function|undefined WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0()|
 483ab0|WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl()|
-483ad0|WrapperFor_FreeHeapBufferIfNotNull_At00483ad0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00483ad0()|
+483ad0|TUiEvent::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 483ba0|WrapperFor_AllocateAndLinkBlockHead_At00483ba0||284|function|undefined WrapperFor_AllocateAndLinkBlockHead_At00483ba0()|
 483db0|RegisterAmbitGameWindowClass||156|function|undefined RegisterAmbitGameWindowClass()|
 483e80|WrapperFor_RouteCommandByIdWithUiProbe_At00483e80||74|function|undefined WrapperFor_RouteCommandByIdWithUiProbe_At00483e80()|
@@ -563,7 +563,7 @@ address|name|symbol|size|type|prototype|provenance
 484080|TCommand::RunCommandModalLoopAndFinalizeState_Impl||25|function|undefined RunCommandModalLoopAndFinalizeState_Impl()|
 4840d0|WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0||135|function|undefined WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0()|
 484190|HandleParentNotifyAndEndMouseCapture_00484190||122|function|undefined HandleParentNotifyAndEndMouseCapture_00484190()|
-4845a0|InitializeEventThunkFields_00648590||23|function|undefined InitializeEventThunkFields_00648590()|
+4845a0|TUiEvent::TUiEvent||23|function|undefined TUiEvent()|
 4845f0|DereferencePointerCellInPlace||16|function|undefined DereferencePointerCellInPlace()|
 484610|SerializeRecordList_0x18_WithBlockPool||307|function|undefined SerializeRecordList_0x18_WithBlockPool()|
 4847a0|WrapperFor_FreeHeapBufferIfNotNull_At004847a0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004847a0()|
@@ -831,8 +831,8 @@ address|name|symbol|size|type|prototype|provenance
 489ab0|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0||24|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0()|
 489b60|NotifyGlobalCaptureOwnerState1WithCachedCoords||99|function|undefined NotifyGlobalCaptureOwnerState1WithCachedCoords()|
 489bf0|WrapperFor_GetOrCreateCWndFromHandle_At00489bf0||133|function|undefined WrapperFor_GetOrCreateCWndFromHandle_At00489bf0()|
-489cb0|NotifyCaptureOwnerState1AndMaybeUpdateCoords||108|function|undefined NotifyCaptureOwnerState1AndMaybeUpdateCoords()|
-489d40|EndMouseCaptureAndStopRepeatTimer||153|function|undefined EndMouseCaptureAndStopRepeatTimer()|
+489cb0|TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords||108|function|undefined NotifyCaptureOwnerState1AndMaybeUpdateCoords()|
+489d40|TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer||153|function|undefined EndMouseCaptureAndStopRepeatTimer()|
 489e40|RenderMapOrderEntryTilePreview_Impl||21|function|undefined RenderMapOrderEntryTilePreview_Impl()|
 489ee0|TEvent::CreateTEventInstance||6|function|undefined CreateTEventInstance()|
 489f00|TEvent::CreateObject|?CreateObject@TEvent@@SGPAVCObject@@XZ|38|function|undefined CreateObject()|rtti
@@ -8544,10 +8544,10 @@ address|name|symbol|size|type|prototype|provenance
 6a1a40|g_LiveViewRegistry|||global||
 6a1a60|g_McAppUiDefaultPosX_006A1A60|||global||
 6a1a64|g_McAppUiDefaultPosY_006A1A64|||global||
-6a1a68|g_McAppUiMouseCaptureStartPoint_006A1A68|||global||
-6a1a70|g_McAppUiMouseCaptureLastPoint_006A1A70|||global||
-6a1a78|g_McAppUiMouseCaptureCurrentPoint_006A1A78|||global||
-6a1a80|g_McAppUiMouseCaptureControl_006A1A80|||global||
+6a1a68|g_McAppMouseCaptureState|||global||
+6a1a70|g_McAppMouseCaptureState.lastPoint|||global||
+6a1a78|g_McAppMouseCaptureState.currentPoint|||global||
+6a1a80|g_McAppMouseCaptureState.capturedControl|||global||
 6a1ab0|g_turnEventDialogAnchorPoint|||global||
 6a1adc|g_McAppUiMouseCaptureTimerId_006A1ADC|||global||
 6a1ae0|g_McAppUiFlag_006A1AE0|||global||

@@ -3,6 +3,7 @@
 #include "game/CMcWindow.h"
 #include "game/TAmbitApplication.h"
 #include "game/TEvent.h"
+#include "game/TUiEvent.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
@@ -35,27 +36,16 @@ static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, D
   }
 }
 
-// The shared keyboard command event (original object @ 0x6a1780): a real TEvent header
-// (whose ctor installs vtable 0x648590 and zeroes the base fields) immediately followed by
-// the command parameters the handler writes per keystroke. It lives as a function-local
-// static so first use constructs the TEvent once; the whole block is forwarded (as an int,
-// == &event) into the active TView tree.
-// (The original object is shared with the not-yet-ported CMcWindow WM_CHAR handler
-// 0x493ce0; hoist to a shared accessor/header when that lands — see bd 1uj.58.6.1.)
-struct KeyCommandBlock {
-  TEvent event;                     // 0x00 TEvent header (0x14; installs vtable 0x648590)
-  unsigned char pad14[0x1c - 0x14]; // 0x14
-  short commandCode;                // 0x1c virtual key code (0x68 for VK_F1)
-  short keyFlags;                   // 0x1e nFlags & 0xf
-  short repeatCount;                // 0x20 nRepCnt (ForwardParam reuses this as handledMarker)
-  unsigned char pad22[0x28 - 0x22]; // 0x22
-  unsigned int modifierFlags;       // 0x28 bit0 Ctrl, bit1 Shift, bit2 Alt, bit3 RWin
-};
-
-static void PopulateKeyCommandBlock(KeyCommandBlock& block, UINT nChar, UINT nRepCnt, UINT nFlags) {
+// The shared keyboard command event (original object @ 0x6a1780) lives as a function-local
+// static so first use constructs it once; the whole block is forwarded (as an int, == &event)
+// into the active TView tree. Layout/type shared with TGameWindow::ForwardParam (which reads
+// commandCode/handledMarker) and the not-yet-ported CMcWindow WM_CHAR handler 0x493ce0 via
+// game/TUiEvent.h (TKeyCommandEvent).
+static void PopulateKeyCommandBlock(TKeyCommandEvent& block, UINT nChar, UINT nRepCnt,
+                                    UINT nFlags) {
   block.commandCode = (nChar == VK_F1) ? 0x68 : static_cast<short>(nChar);
   block.keyFlags = static_cast<short>(nFlags & 0xf);
-  block.repeatCount = static_cast<short>(nRepCnt);
+  block.handledMarker = static_cast<short>(nRepCnt);
   unsigned int mods = block.modifierFlags;
   mods = (mods & ~1u) | ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0 ? 1u : 0u);
   mods = (mods & ~2u) | (((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0 ? 1u : 0u) << 1);
@@ -64,15 +54,16 @@ static void PopulateKeyCommandBlock(KeyCommandBlock& block, UINT nChar, UINT nRe
   block.modifierFlags = mods;
 }
 
-// Local mouse event the click handlers forward into the dialog tree: a TEvent header
-// (its ctor installs vtable 0x648590) followed by the click coordinates.
+// Local mouse event the click handlers forward into the dialog tree: a TUiEvent header
+// followed by the click coordinates (a separate stack-local instance from the persistent
+// keyboard command event above, but the same underlying class @ vtable 0x648590).
 struct UiMouseEventBlock {
-  TEvent event; // 0x00 TEvent header (0x14)
-  int x;        // 0x14
-  int y;        // 0x18
-  int pad1c;    // 0x1c
-  int pad20;    // 0x20
-  int pad24;    // 0x24
+  TUiEvent event; // 0x00 TEvent-derived header (0x14; installs vtable 0x648590)
+  int x;          // 0x14
+  int y;          // 0x18
+  int pad1c;      // 0x1c
+  int pad20;      // 0x20
+  int pad24;      // 0x24
 };
 
 // Active-window/native-host accessors used by OnKeyDown; defined below in address order
@@ -248,7 +239,7 @@ LRESULT CIncludeView::OnMciNotifyMode(WPARAM wParam, LPARAM mciMode) {
 // TGameWindow::ForwardParam, e.g. to stop (skip) a playing movie.
 // FUNCTION: IMPERIALISM 0x00484260
 void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  static KeyCommandBlock s_keyCommand;
+  static TKeyCommandEvent s_keyCommand;
   const int commandParam = reinterpret_cast<int>(&s_keyCommand);
 
   CWnd* target = GetModalStackTopHostView();

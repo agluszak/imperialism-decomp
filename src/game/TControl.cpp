@@ -77,19 +77,21 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int
   (void)arg2;
   (void)arg3;
   (void)arg4;
-  g_McAppUiMouseCaptureControl_006A1A80 = this;
+  int startX = point->x;
+  int startY = point->y;
+  g_McAppMouseCaptureState.capturedControl = this;
   void* capturedWindow =
       reinterpret_cast<void*>(SetCapture(reinterpret_cast<HWND>(nativeWindow50->m_hWnd)));
   reinterpret_cast<void(__cdecl*)(void*)>(FromHandle)(capturedWindow);
-  g_McAppUiMouseCaptureStartPoint_006A1A68[0] = point->x;
-  g_McAppUiMouseCaptureStartPoint_006A1A68[1] = point->y;
-  g_McAppUiMouseCaptureLastPoint_006A1A70[0] = point->x;
-  g_McAppUiMouseCaptureLastPoint_006A1A70[1] = point->y;
-  g_McAppUiMouseCaptureCurrentPoint_006A1A78[0] = point->x;
-  g_McAppUiMouseCaptureCurrentPoint_006A1A78[1] = point->y;
-  DispatchPictureResourceCommand(0, g_McAppUiMouseCaptureStartPoint_006A1A68,
-                                 g_McAppUiMouseCaptureLastPoint_006A1A70,
-                                 g_McAppUiMouseCaptureCurrentPoint_006A1A78);
+  g_McAppMouseCaptureState.startPoint.x = startX;
+  g_McAppMouseCaptureState.startPoint.y = startY;
+  g_McAppMouseCaptureState.lastPoint.x = startX;
+  g_McAppMouseCaptureState.lastPoint.y = startY;
+  g_McAppMouseCaptureState.currentPoint.x = startX;
+  g_McAppMouseCaptureState.currentPoint.y = startY;
+  DispatchPictureResourceCommand(0, &g_McAppMouseCaptureState.startPoint,
+                                 &g_McAppMouseCaptureState.lastPoint,
+                                 &g_McAppMouseCaptureState.currentPoint);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
     g_McAppUiMouseCaptureTimerId_006A1ADC =
         SetTimer(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0xef, 0x11,
