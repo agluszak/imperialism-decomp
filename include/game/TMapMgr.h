@@ -472,8 +472,18 @@ public:
   virtual void SetProvinceCapitalTileFlagBit08(short nProvinceId); // slot 0x4b 0x5149d0
   virtual void FloodFillTileRegionMarker(short nTileIndex,
                                          short nOwnerNationId); // slot 0x4c 0x5143d0
+  // Moves cityRecordIndex's anchor to nTileIndex (real call into
+  // SetRegionTileSubtypeAndRefreshNeighborFlags), sets its activeFlags1c to 0x37 (0x17 then
+  // OR 0x20), and calls FloodFillTileRegionMarker(nTileIndex, nOwnerNationId). Then, for each
+  // of the 6 hex neighbors plus nTileIndex itself (direction 6 is a self special-case, not a
+  // 7th real hex direction), if that tile shares nTileIndex's regionSubtypeTag05 and has a
+  // port/depot-eligible resourceTypeByEdge entry (17 or 18) whose gateFlag qualifies
+  // (g_abGateFlagQualifies), calls SetCivilianDevelopmentClassNibble(neighborTile, 0, 1, 1) on
+  // it. Finishes by calling EnsurePortZoneForTile(nTileIndex) and refreshing nTileIndex's
+  // gateFlag via ResolveRegionTileSubtypeCodeForTileIndex.
   virtual void
-  SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex); // slot 0x4d 0x514a20
+  SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex,
+                                                 short nOwnerNationId); // slot 0x4d 0x514a20
   // === END GENERATED DECLS (TMapMgr) ===
 
   // Global map session state (g_pGlobalMapState @ 0x006A43D4). RTTI object size 0x28

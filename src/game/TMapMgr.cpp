@@ -1423,7 +1423,48 @@ void TMapMgr::SetProvinceCapitalTileFlagBit08(short nProvinceId) {
   ++cityScoreTable[nProvinceId].fortLevel03;
 }
 
-void TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex) {}
+// FUNCTION: IMPERIALISM 0x00514a20
+void TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex,
+                                                             short nOwnerNationId) {
+  short cityRecordIndex = terrainStateTable[nTileIndex].cityRecordIndex;
+  SetRegionTileSubtypeAndRefreshNeighborFlags(cityRecordIndex, nTileIndex);
+
+  terrainStateTable[nTileIndex].activeFlags1c = 0x17;
+  terrainStateTable[nTileIndex].pad1d[0] = 0;
+  terrainStateTable[nTileIndex].activeFlags1c |= 0x20;
+  FloodFillTileRegionMarker(nTileIndex, nOwnerNationId);
+
+  signed char originRegionTag = terrainStateTable[nTileIndex].regionSubtypeTag05;
+  for (int direction = 0; direction <= 6; ++direction) {
+    short neighborTile =
+        (direction == 6)
+            ? nTileIndex
+            : GetWrappedHexNeighborTileIndexByDirection(nTileIndex, static_cast<short>(direction));
+    if (neighborTile == -1) {
+      continue;
+    }
+    TTerrainStateRecordView* neighbor = &terrainStateTable[neighborTile];
+    if (neighbor->regionSubtypeTag05 != originRegionTag) {
+      continue;
+    }
+
+    bool eligible = false;
+    for (int edge = 0; edge < 2; ++edge) {
+      signed char resourceType = neighbor->resourceTypeByEdge[edge];
+      if ((resourceType == 0x11 || resourceType == 0x12) &&
+          g_abGateFlagQualifies[neighbor->gateFlag] != 0) {
+        eligible = true;
+      }
+    }
+    if (eligible) {
+      SetCivilianDevelopmentClassNibble(neighborTile, 0, 1, 1);
+    }
+  }
+
+  EnsurePortZoneForTile(nTileIndex);
+  terrainStateTable[nTileIndex].gateFlag =
+      static_cast<signed char>(ResolveRegionTileSubtypeCodeForTileIndex(nTileIndex));
+}
 
 // FUNCTION: IMPERIALISM 0x00514c80
 short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex,
