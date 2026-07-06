@@ -201,6 +201,10 @@ extern int g_bQuickDrawStrokePairDirty;
 // from it; SetClip (0x495a30) copies a RgnHandle's region into it.
 extern CRgn* g_pGlobalClipRegionHandleObject;
 extern int g_Quick_Draw_Color_State_006950FC;
+extern short g_nQuickDrawTextFont;               // 0x6a1d4c
+extern short g_nQuickDrawTextFace;               // 0x6a1d4e
+extern short g_nQuickDrawTextSize;               // 0x6a1d50
+extern unsigned char g_bQuickDrawTextStyleDirty; // 0x6a1d56
 extern int g_uQuickDrawCurrentColor;
 extern int g_uQuickDrawStrokeColor;
 extern int g_nQuickDrawOriginX;

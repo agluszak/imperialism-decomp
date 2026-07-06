@@ -370,7 +370,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
         }
       }
     } else {
-      g_pGlobalMapState->AssignSharedStringFromIndexedA8EntryNameField(chosenCity, &displayName);
+      g_pGlobalMapState->AssignCityRecordDisplayName(chosenCity, &displayName);
     }
   } else {
     CString provided(providedName);

@@ -199,6 +199,14 @@ CRgn* g_pGlobalClipRegionHandleObject = nullptr;
 int g_Quick_Draw_Color_State_006950FC = 0x010000FF;
 // GLOBAL: IMPERIALISM 0x00695100
 int g_uQuickDrawStrokeColor = 0x01000000;
+// GLOBAL: IMPERIALISM 0x006a1d4c
+short g_nQuickDrawTextFont = 0;
+// GLOBAL: IMPERIALISM 0x006a1d4e
+short g_nQuickDrawTextFace = 0;
+// GLOBAL: IMPERIALISM 0x006a1d50
+short g_nQuickDrawTextSize = 0;
+// GLOBAL: IMPERIALISM 0x006a1d56
+unsigned char g_bQuickDrawTextStyleDirty = 0;
 // GLOBAL: IMPERIALISM 0x006a1d52
 int g_uQuickDrawCurrentColor = 0;
 // GLOBAL: IMPERIALISM 0x006a1d80
@@ -245,10 +253,9 @@ int g_nOverlayClipCacheParamY = 0;
 // the real table at 0x696108 is const-initialized, not runtime-populated.
 // GLOBAL: IMPERIALISM 0x00696108
 const int g_pTradeSummarySelectionMap[23] = {
-    0x636f7474, 0x776f6f6c, 0x74696d62, 0x636f616c, 0x69726f6e, 0x686f7273, 0x6f696c20,
-    0x666f6f64, 0x66616272, 0x6c756d62, 0x70617065, 0x73746565, 0x6675656c, 0x636c6f74,
-    0x6675726e, 0x68617264, 0x61726d61, 0x67726169, 0x70726f64, 0x66697368, 0x6c697665,
-    0x67656d73, 0x676f6c64,
+    0x636f7474, 0x776f6f6c, 0x74696d62, 0x636f616c, 0x69726f6e, 0x686f7273, 0x6f696c20, 0x666f6f64,
+    0x66616272, 0x6c756d62, 0x70617065, 0x73746565, 0x6675656c, 0x636c6f74, 0x6675726e, 0x68617264,
+    0x61726d61, 0x67726169, 0x70726f64, 0x66697368, 0x6c697665, 0x67656d73, 0x676f6c64,
 };
 
 // Trade sell propagation tags

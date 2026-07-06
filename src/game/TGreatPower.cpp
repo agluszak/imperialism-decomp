@@ -1833,7 +1833,7 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
     if (marker != 0 && marker->enabledFlag4d != 0 && marker->transportLinkedFlag4c == 0) {
       CString messageRef;
       CString scratchRef;
-      g_pGlobalMapState->AssignSharedStringFromIndexedA8EntryNameField(
+      g_pGlobalMapState->AssignCityRecordDisplayName(
           g_pGlobalMapState->terrainStateTable[marker->regionId14].cityRecordIndex, &messageRef);
       scratchRef = CString("\n") + messageRef;
       scratchRef += messageRef;

@@ -643,30 +643,6 @@ undefined4 UpdatePaletteIndexWithDefaultFallback(void)
   return 0;
 }
 
-// ghidra_name SetQuickDrawStyleWord_1D4C_AndMarkDirty
-// ghidra_proto undefined SetQuickDrawStyleWord_1D4C_AndMarkDirty()
-// FUNCTION: IMPERIALISM 0x00495230
-undefined4 SetQuickDrawStyleWord_1D4C_AndMarkDirty(void)
-{
-  return 0;
-}
-
-// ghidra_name SetQuickDrawStyleWord_1D50_AndMarkDirty
-// ghidra_proto undefined SetQuickDrawStyleWord_1D50_AndMarkDirty()
-// FUNCTION: IMPERIALISM 0x00495260
-undefined4 SetQuickDrawStyleWord_1D50_AndMarkDirty(void)
-{
-  return 0;
-}
-
-// ghidra_name SetQuickDrawStyleWord_1D4E_AndMarkDirty
-// ghidra_proto undefined SetQuickDrawStyleWord_1D4E_AndMarkDirty()
-// FUNCTION: IMPERIALISM 0x00495290
-undefined4 SetQuickDrawStyleWord_1D4E_AndMarkDirty(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderUiBitmapOnRuntimeSurfaceContext_Impl
 // ghidra_proto undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl()
 // FUNCTION: IMPERIALISM 0x004953e0

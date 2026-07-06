@@ -58,7 +58,7 @@ struct TTerrainStateRecordView {
 // Field evidence beyond the original recovery: TMultiplayerMgr::DispatchCityRedrawInvalidateEvent
 // (0x54abf0) snapshots the whole record field-by-field and skips exactly bytes 0x09, 0x3d and
 // 0x96..0x97 — so 0x3e/0x40/0x94 are real short fields (formerly folded into pads) and 0xa4 is
-// the CString city display name (also read by AssignSharedStringFromIndexedA8EntryNameField).
+// the CString city display name (also read by AssignCityRecordDisplayName).
 struct TGlobalMapCityScoreRecord {
   signed char ownerNationCode00;
   unsigned char byte01;
@@ -369,7 +369,7 @@ public:
   short QueryIconStripXSlot110(int iconCode);
   void NotifyCityRecordSlot12C(int cityRecordIndex);
   void LinkRegionToNationSlot134(int regionId, int nationSlot);
-  void AssignSharedStringFromIndexedA8EntryNameField(int cityRecordIndex, CString* dest);
+  void AssignCityRecordDisplayName(int cityRecordIndex, CString* dest);
 
   // Join-empire (mode 0) reset: walk the +0x0c tile table (0x24-byte records, one per
   // tile) and clear the owner-nation byte (+0x18) wherever it matches nationSlot for

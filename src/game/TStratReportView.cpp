@@ -4,6 +4,11 @@
 #include "game/TStratReportView.h"
 #include "game/global_data_tables.h"
 
+#include "game/TCountry.h"
+#include "game/TMapMgr.h"
+#include "game/TSimMgr.h"
+#include "game/quickdraw_rendering.h"
+
 #include <new>
 
 IMPLEMENT_DYNCREATE(TStratReportView, TView)
@@ -20,9 +25,64 @@ TStratReportView::TStratReportView() : TView() {}
 // TStratReportView::`scalar deleting destructor'
 TStratReportView::~TStratReportView() {}
 
+// Draws the battle-outcome header: fills the background, then "Battle of <location>",
+// "Winner: <country>" with its per-unit-type counts, and "Loser: <country>" with its.
 // FUNCTION: IMPERIALISM 0x0058e460
 void TStratReportView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer;
-  // TODO: not yet ported -- draws the battle-outcome header winner/loser
-  // score lines via CString formatting + THQButton text rendering.
+  SetQuickDrawFillColor(0xffffff);
+  FillRectWithQuickDrawBrushAndContextOffset(rectBuffer);
+
+  CString lineBuffer;
+  CString countText;
+  CString sideName;
+  CString locationName;
+
+  SetQuickDrawFillColor(0);
+  SetQuickDrawTextFont(3);
+  SetQuickDrawTextFace(1);
+  SetQuickDrawTextSize(0xa);
+  SetQuickDrawTextOriginWithContextOffset(0xc, 0x40);
+
+  g_pGlobalMapState->AssignCityRecordDisplayName(battleOutcome->location, &locationName);
+  lineBuffer = "Battle of " + locationName;
+  DrawTextWithCachedStyle(&lineBuffer);
+
+  g_apTerrainTypeDescriptorTable[battleOutcome->winnerId]->FormatOverlayTerrainLabelText(&sideName);
+  lineBuffer = "Winner: " + sideName;
+  SetQuickDrawTextOriginWithContextOffset(0xc, 0x50);
+  DrawTextWithCachedStyle(&lineBuffer);
+
+  int y = 0x60;
+  int i;
+  SetQuickDrawTextFace(0);
+  for (i = 0; i < 30; ++i) {
+    if (battleOutcome->winnerCounts[i] != 0) {
+      g_pSimMgr->GetString(0x2717, (short)i, &sideName);
+      countText.Format(g_szDecimalFormat, battleOutcome->winnerCounts[i]);
+      lineBuffer = countText + " " + sideName;
+      SetQuickDrawTextOriginWithContextOffset(0xc, (short)y);
+      DrawTextWithCachedStyle(&lineBuffer);
+      y += 0x10;
+    }
+  }
+
+  SetQuickDrawTextFace(1);
+  y += 0x10;
+  g_apTerrainTypeDescriptorTable[battleOutcome->loserId]->FormatOverlayTerrainLabelText(&sideName);
+  lineBuffer = "Loser: " + sideName;
+  SetQuickDrawTextOriginWithContextOffset(0xc, (short)y);
+  DrawTextWithCachedStyle(&lineBuffer);
+  y += 0x10;
+
+  SetQuickDrawTextFace(0);
+  for (i = 0; i < 30; ++i) {
+    if (battleOutcome->loserCounts[i] != 0) {
+      g_pSimMgr->GetString(0x2717, (short)i, &sideName);
+      countText.Format(g_szDecimalFormat, battleOutcome->loserCounts[i]);
+      lineBuffer = countText + " " + sideName;
+      SetQuickDrawTextOriginWithContextOffset(0xc, (short)y);
+      DrawTextWithCachedStyle(&lineBuffer);
+      y += 0x10;
+    }
+  }
 }

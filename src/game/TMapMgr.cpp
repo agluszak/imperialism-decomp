@@ -1017,7 +1017,7 @@ char TMapMgr::TileHasMovementClassId(int nodeContext, int regionIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00515ec0
-void TMapMgr::AssignSharedStringFromIndexedA8EntryNameField(int cityRecordIndex, CString* dest) {
+void TMapMgr::AssignCityRecordDisplayName(int cityRecordIndex, CString* dest) {
   *dest = cityScoreTable[cityRecordIndex].cityNameA4;
 }
 

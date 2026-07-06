@@ -55,6 +55,13 @@ static __inline void DrawTextWithCachedStyle(const CString* text) {
       reinterpret_cast<void (*)()>(DrawTextWithCachedQuickDrawStyleState))(text);
 }
 
+// QuickDraw text-style words at 0x6a1d4c/0x6a1d4e/0x6a1d50 (txFont/txFace/txSize); each
+// stores the value and marks the text-style state dirty (0x6a1d56). Real game functions
+// (the D:\Ambit\QuickDraw.cpp layer), ported in quickdraw_rendering.cpp.
+void SetQuickDrawTextFont(short value); // 0x00495230 (txFont)
+void SetQuickDrawTextFace(short value); // 0x00495290 (txFace)
+void SetQuickDrawTextSize(short value); // 0x00495260 (txSize)
+
 static __inline void ApplyUiTextStyleAndSyncColor(int unused, int styleWidth, int themeCode) {
   reinterpret_cast<void(__cdecl*)(int, int, int)>(reinterpret_cast<void (*)()>(
       ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor))(unused, styleWidth, themeCode);
@@ -64,4 +71,3 @@ static __inline void UpdatePaletteIndexWithFallback(int paletteIndex) {
   reinterpret_cast<void(__cdecl*)(int)>(
       reinterpret_cast<void (*)()>(UpdatePaletteIndexWithDefaultFallback))(paletteIndex);
 }
-

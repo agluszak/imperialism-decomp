@@ -1192,9 +1192,9 @@ address|name|symbol|size|type|prototype|provenance
 4950d0|SetGlobalBlitTransparentColorRaw||10|function|undefined SetGlobalBlitTransparentColorRaw()|
 4950f0|SetQuickDrawFillColorFromPaletteIndex||186|function|undefined SetQuickDrawFillColorFromPaletteIndex()|
 4951e0|UpdatePaletteIndexWithDefaultFallback||52|function|void __stdcall UpdatePaletteIndexWithDefaultFallback(uint palette_index)|
-495230|SetQuickDrawStyleWord_1D4C_AndMarkDirty||28|function|undefined SetQuickDrawStyleWord_1D4C_AndMarkDirty()|
-495260|SetQuickDrawStyleWord_1D50_AndMarkDirty||28|function|undefined SetQuickDrawStyleWord_1D50_AndMarkDirty()|
-495290|SetQuickDrawStyleWord_1D4E_AndMarkDirty||28|function|undefined SetQuickDrawStyleWord_1D4E_AndMarkDirty()|
+495230|SetQuickDrawTextFont||28|function|undefined SetQuickDrawTextFont()|
+495260|SetQuickDrawTextSize||28|function|undefined SetQuickDrawTextSize()|
+495290|SetQuickDrawTextFace||28|function|undefined SetQuickDrawTextFace()|
 495310|SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty||32|function|undefined SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty()|
 4953a0|ResetQuickDrawStrokeState||47|function|undefined ResetQuickDrawStrokeState()|
 4953e0|RenderUiBitmapOnRuntimeSurfaceContext_Impl||10|function|undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl()|
@@ -3260,7 +3260,7 @@ address|name|symbol|size|type|prototype|provenance
 515de0|TMapMgr::OrphanRetStub_00515de0||3|function|undefined OrphanRetStub_00515de0(void)|
 515e00|InputState::SetMapTileStateByteAndNotifyObserver||50|function|undefined SetMapTileStateByteAndNotifyObserver()|
 515e50|TileHasMovementClassId||76|function|undefined TileHasMovementClassId()|
-515ec0|AssignSharedStringFromIndexedA8EntryNameField||37|function|undefined AssignSharedStringFromIndexedA8EntryNameField()|
+515ec0|AssignCityRecordDisplayName||37|function|undefined AssignCityRecordDisplayName()|
 515f40|SetGlobalMapCellSharedLabel||37|function|undefined SetGlobalMapCellSharedLabel()|
 515f80|TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags||206|function|undefined SetRegionTileSubtypeAndRefreshNeighborFlags(int param_1, int param_2)|
 516090|TMapMgr::OrphanLeaf_NoCall_Ins27_00516090||66|function|undefined OrphanLeaf_NoCall_Ins27_00516090(int param_1, int param_2)|

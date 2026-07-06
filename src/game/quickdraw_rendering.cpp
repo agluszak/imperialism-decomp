@@ -34,6 +34,30 @@ void SetGlobalBlitTransparentColorRaw(int transparentColor) {
   g_uQuickDrawStrokeColor = transparentColor;
 }
 
+// FUNCTION: IMPERIALISM 0x00495230
+void SetQuickDrawTextFont(short value) {
+  if (g_nQuickDrawTextFont != value) {
+    g_nQuickDrawTextFont = value;
+    g_bQuickDrawTextStyleDirty = 1;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00495260
+void SetQuickDrawTextSize(short value) {
+  if (g_nQuickDrawTextSize != value) {
+    g_nQuickDrawTextSize = value;
+    g_bQuickDrawTextStyleDirty = 1;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00495290
+void SetQuickDrawTextFace(short value) {
+  if (g_nQuickDrawTextFace != value) {
+    g_nQuickDrawTextFace = value;
+    g_bQuickDrawTextStyleDirty = 1;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00495310
 void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB) {
   g_nQuickDrawStrokeStylePrimary = (int)styleParamA;

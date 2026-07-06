@@ -480,7 +480,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     break;
   case 3:
   case 4:
-    g_pGlobalMapState->AssignSharedStringFromIndexedA8EntryNameField(contextArg, &formattedText);
+    g_pGlobalMapState->AssignCityRecordDisplayName(contextArg, &formattedText);
     g_pSimMgr->GetString(0, 0, &templateText);
     scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = static_cast<short>(overlayMode + 0x2508);
