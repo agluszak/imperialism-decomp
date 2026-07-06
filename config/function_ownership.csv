@@ -2823,6 +2823,7 @@ address|target_cpp|ownership|note
 549720|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5497b0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54a340|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54ab20|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54abf0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54aff0|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b010|src/game/TPoseMessageDialog.cpp|manual|marker_sync

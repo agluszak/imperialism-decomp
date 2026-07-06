@@ -565,6 +565,11 @@ extern unsigned char g_abTerrainTypeSeedGateProfileA[6];
 // 0-7 (terrainType00's declared range); read raw at 0x00696e10.
 extern short g_anTerrainTypeNeighborLinkPriority[8];
 
+// TMapMgr.cpp — running region-marker id, assigned to a tile's regionSubtypeTag05 by
+// TMapMgr::FloodFillTileRegionMarker (0x5143d0) and incremented (low 16 bits only) after each
+// call. Read raw at 0x00696d90 (initial value 1).
+extern int g_nNextRegionMarkerId;
+
 // TMapMgr.cpp — three single-byte UI/notification flags set by
 // MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA when a nation-indexed
 // TTechMgr::OrderCapRow padding byte reads 2; purpose beyond that one comparison not

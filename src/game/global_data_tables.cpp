@@ -524,6 +524,8 @@ unsigned char g_abTerrainTypeSeedGateProfileA[6] = {1, 1, 0, 0, 0, 0};
 
 short g_anTerrainTypeNeighborLinkPriority[8] = {10, 4, 7, 6, 8, 0, 9, 5};
 
+int g_nNextRegionMarkerId = 1;
+
 unsigned char g_bSeedGateNotifyFlag_00696f0a = 0;
 unsigned char g_bSeedGateNotifyFlag_00696f0b = 0;
 unsigned char g_bSeedGateNotifyFlag_00696f0c = 0;

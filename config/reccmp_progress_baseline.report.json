@@ -7483,7 +7483,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12723,7 +12723,8 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12743,20 +12744,20 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12786,7 +12787,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16225,7 +16226,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20354384370740572,
+      "matching": 0.2044525215810995,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16675,7 +16676,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -16759,7 +16760,7 @@
     },
     {
       "address": "0x5143d0",
-      "matching": 0.017699115044247787,
+      "matching": 0.5087719298245614,
       "name": "TMapMgr::FloodFillTileRegionMarker",
       "type": 1
     },
@@ -17047,7 +17048,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32038834951456313,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18097,7 +18098,7 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.3054662379421222,
+      "matching": 0.2976,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
@@ -20030,19 +20031,19 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -21278,7 +21279,7 @@
     },
     {
       "address": "0x54ab20",
-      "matching": 0.05128205128205128,
+      "matching": 0.37142857142857144,
       "name": "DispatchTileRedrawInvalidateEvent",
       "type": 1
     },

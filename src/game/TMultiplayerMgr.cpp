@@ -2311,6 +2311,42 @@ struct CityRedrawInvalidateTurnEventPacket : NetMessage {
 };
 #pragma pack(pop)
 
+#pragma pack(push, 1)
+struct TileRedrawInvalidateTurnEventPacket : NetMessage {
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char pad15;
+  short uiTurnToken;
+  short tileIndex;
+  TTerrainStateRecordView tileSnapshot;
+};
+#pragma pack(pop)
+
+// FUNCTION: IMPERIALISM 0x0054ab20
+extern "C" void __stdcall DispatchTileRedrawInvalidateEvent(short tileIndex) {
+  TileRedrawInvalidateTurnEventPacket packet;
+  packet.eventCode = 0x23;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = 0x44;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.tileIndex = tileIndex;
+  packet.tileSnapshot = g_pGlobalMapState->terrainStateTable[tileIndex];
+
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
+
+struct TJoinEmpireTurnEventPacket : NetMessage {
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char pad15[3];
+  int sourceNationSlot;
+  int targetNationSlot;
+  int modeValue;
+};
+
 // FUNCTION: IMPERIALISM 0x0054abf0
 void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   CityRedrawInvalidateTurnEventPacket packet;
@@ -2367,15 +2403,6 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
 
   g_pNetMgr006a6014->Send(&packet, 0);
 }
-
-struct TJoinEmpireTurnEventPacket : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15[3];
-  int sourceNationSlot;
-  int targetNationSlot;
-  int modeValue;
-};
 
 // FUNCTION: IMPERIALISM 0x0054c5a0
 void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,

@@ -1323,7 +1323,53 @@ bool TMapMgr::TileHasCivilianOrderOfTypeAndField8(short tileIndex, short orderTy
   return false;
 }
 
-void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) {}
+// FUNCTION: IMPERIALISM 0x005143d0
+void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) {
+  unsigned char regionMarkerId = static_cast<unsigned char>(g_nNextRegionMarkerId);
+  terrainStateTable[nTileIndex].regionSubtypeTag05 = regionMarkerId;
+
+  if (terrainStateTable[nTileIndex].activeFlags1c & 2) {
+    short cityIdx = terrainStateTable[nTileIndex].cityRecordIndex;
+    if (cityScoreTable[cityIdx].lastTurnTick == 999) {
+      cityScoreTable[cityIdx].lastTurnTick = g_pSimMgr->GetTurnTickSlot3C();
+    }
+  }
+
+  short neighbors[6];
+  ComputeHexNeighborTileIndices(nTileIndex, neighbors, hexNeighborWrapHorizontally20);
+  for (int d = 0; d < 6; ++d) {
+    short neighborTile = neighbors[d];
+    if (neighborTile == -1) {
+      continue;
+    }
+    if (terrainStateTable[neighborTile].ownerNationTag04 != nOwnerNationId) {
+      continue;
+    }
+    if (terrainStateTable[neighborTile].regionSubtypeTag05 != -1) {
+      continue;
+    }
+
+    terrainStateTable[neighborTile].regionSubtypeTag05 = regionMarkerId;
+    if (terrainStateTable[neighborTile].activeFlags1c & 2) {
+      short cityIdx = terrainStateTable[neighborTile].cityRecordIndex;
+      bool skipRedraw = false;
+      if (cityScoreTable[cityIdx].lastTurnTick == 999) {
+        cityScoreTable[cityIdx].lastTurnTick = g_pSimMgr->GetTurnTickSlot3C();
+        if (g_nSaveFormatVersion == -3) {
+          skipRedraw = true;
+        } else if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+          g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
+        }
+      }
+      if (!skipRedraw && g_nSaveFormatVersion != -3 &&
+          *reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+        DispatchTileRedrawInvalidateEvent(neighborTile);
+      }
+    }
+  }
+
+  g_nNextRegionMarkerId = static_cast<short>(g_nNextRegionMarkerId) + 1;
+}
 
 int TMapMgr::QueueDepotConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
                                          undefined2 param_4) {
