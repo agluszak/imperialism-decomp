@@ -55,6 +55,26 @@ struct GoldDialogControl : public TControl {
 // (whose slot 0x68 takes four arguments).
 struct GoldCommitControl : public TView {
   virtual void CommitGoldDialogContent(); // slot 0x68 byte 0x1a0
+  // Padding to reach the later 'GOLD' control slots dispatched by the turn-event
+  // handlers. Only the byte-annotated slots below are actually called; the rest keep
+  // the vtable indices aligned on the (not-yet-recovered) concrete control class.
+  virtual void goldSlot69();
+  virtual void goldSlot6a();
+  virtual void goldSlot6b();
+  virtual void goldSlot6c();
+  virtual void goldSlot6d();
+  virtual void goldSlot6e();
+  virtual void goldSlot6f();
+  virtual void goldSlot70();
+  virtual void goldSlot71();
+  virtual void goldSlot72();
+  virtual void goldSlot73();
+  virtual void goldSlot74();
+  virtual void goldSlot75();
+  virtual void goldSlot76();
+  virtual void goldSlot77();
+  virtual void goldSlot78();
+  virtual void ConfigureGoldValueCells(int cellWidth, int cellHeight); // slot 0x79 byte 0x1e4
 };
 
 } // namespace turn_event_dialog

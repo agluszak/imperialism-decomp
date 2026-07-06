@@ -113,9 +113,12 @@ public:
   virtual void HandleTurnEvent5DE_RefreshMainView(); // 0x100 0x5dbd30
   // Turn-event 0x5DF path (see DispatchTurnEventSlot4C): re-asserts and refreshes
   // the main view's 'main' panel (0x5dbdd0).
-  virtual void HandleTurnEvent5DF_RefreshMainView();                          // 0x104
-  virtual void UiRuntimeSlot108();                                            // 0x108
-  virtual void UiRuntimeSlot10C();                                            // 0x10c
+  virtual void HandleTurnEvent5DF_RefreshMainView(); // 0x104
+  virtual void UiRuntimeSlot108();                   // 0x108
+  // Resolves the active dialog's 'GOLD' control and configures its value-cell grid
+  // (0x14 x 0x14) via the control's slot-0x79 virtual (0x5dc3f0).
+  virtual void
+  HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14();        // 0x10c 0x5dc3f0
   virtual void HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot); // 0x110
 
   void ApplyLegendSplitSlot34(int split) {

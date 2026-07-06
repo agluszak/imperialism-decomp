@@ -1076,7 +1076,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       }
     }
   } else if (newCode == 0x3c0) {
-    this->UiRuntimeSlot10C();
+    this->HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14();
   } else if (newCode == 0x3b8) {
     this->UiRuntimeSlotD0();
   }
@@ -1456,7 +1456,13 @@ void TViewMgr::UiRuntimeSlot108() {
   mainPanel->RefreshControl();
 }
 
-void TViewMgr::UiRuntimeSlot10C() {}
+// FUNCTION: IMPERIALISM 0x005dc3f0
+void TViewMgr::HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14() {
+  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
+      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+  gold->AssertValid();
+  gold->ConfigureGoldValueCells(0x14, 0x14);
+}
 
 // FUNCTION: IMPERIALISM 0x005dc160
 void TViewMgr::InvokeStrategicMapViewMethod6C() {

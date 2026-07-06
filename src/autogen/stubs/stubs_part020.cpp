@@ -459,14 +459,6 @@ undefined4 BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14
-// ghidra_proto undefined HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14()
-// FUNCTION: IMPERIALISM 0x005dc3f0
-undefined4 HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventDialogFactorySlotB8
 // ghidra_proto undefined HandleTurnEventDialogFactorySlotB8()
 // FUNCTION: IMPERIALISM 0x005dc430
