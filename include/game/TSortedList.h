@@ -60,7 +60,6 @@ public:
   void ConstructTSortedListBaseState(int blockSize);
 
   TSortedList();
-  static TSortedList* CreateTSortedListInstance();
 };
 
 ASSERT_SIZE(TSortedList, 0x20);

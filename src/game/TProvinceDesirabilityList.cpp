@@ -6,10 +6,8 @@
 
 IMPLEMENT_DYNCREATE(TProvinceDesirabilityList, TSortedPtrList)
 
-// FUNCTION: IMPERIALISM 0x004d6500
-TProvinceDesirabilityList* TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstance() {
-  return new TProvinceDesirabilityList();
-}
+// SYNTHETIC: IMPERIALISM 0x004d6500
+// TProvinceDesirabilityList::CreateObject
 
 // FUNCTION: IMPERIALISM 0x004d6590
 TProvinceDesirabilityList::TProvinceDesirabilityList() {}

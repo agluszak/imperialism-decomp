@@ -54,7 +54,7 @@ undefined4 CreateTOneTimeAnimationInstance(void)
 // ghidra_name TOneTimeAnimation::GetRuntimeClass
 // ghidra_proto undefined __thiscall GetRuntimeClass(void)
 // FUNCTION: IMPERIALISM 0x0049fd40
-undefined4 GetRuntimeClass_0049FD40(void)
+undefined4 GetRuntimeClass(void)
 {
   return 0;
 }
@@ -903,14 +903,6 @@ undefined4 DestructTFoodProcessingOrderAndMaybeFree(void)
 // ghidra_proto undefined DestructTShipOrderAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004b8510
 undefined4 DestructTShipOrderAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TCapacityOrder::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x004b8c90
-undefined4 CreateObject_004B8C90(void)
 {
   return 0;
 }

@@ -6,10 +6,8 @@
 
 IMPLEMENT_DYNCREATE(TSortByPriceList, TSortedPtrList)
 
-// FUNCTION: IMPERIALISM 0x00534680
-TSortByPriceList* TSortByPriceList::AllocateAndConstructTSortByPriceList() {
-  return new TSortByPriceList();
-}
+// SYNTHETIC: IMPERIALISM 0x00534680
+// TSortByPriceList::CreateObject
 
 // FUNCTION: IMPERIALISM 0x00534710
 TSortByPriceList::TSortByPriceList() {}

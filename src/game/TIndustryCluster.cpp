@@ -42,10 +42,8 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* con
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00588a30
-TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
-  return new TIndustryCluster();
-}
+// SYNTHETIC: IMPERIALISM 0x00588a30
+// TIndustryCluster::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x00588ad0
 // TIndustryCluster::GetRuntimeClass
@@ -87,8 +85,8 @@ void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {
       static_cast<TItemOrder*>(selectedMetricRecord)->buildingSlot));
 
   this->InitializeTradeMoveAndBarControls(styleSeed);
-  this->NotifyControlSelectionChange(
-      reinterpret_cast<void*>(selectedMetricRecord->quantityField04), 1);
+  this->NotifyControlSelectionChange(reinterpret_cast<void*>(selectedMetricRecord->quantityField04),
+                                     1);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c30

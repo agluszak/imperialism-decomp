@@ -12,6 +12,7 @@ struct NetMessage;
 // VTABLE: IMPERIALISM 0x0065c030
 class TMultiplayerMgr : public TEventHandler {
 public:
+  DECLARE_DYNCREATE(TMultiplayerMgr)
   enum { kNationSlotCount = 7 };
 
   int nationStatusControlSlots[8];        // +0x20
@@ -46,7 +47,6 @@ public:
   unsigned char fieldF4;      // +0xf4
   unsigned char padF5[3];
 
-  virtual CRuntimeClass* GetRuntimeClass() const override;          // slot 0x00 0x542650
   virtual ~TMultiplayerMgr();                                       // slot 0x01 0x5427e0
   virtual void WriteTo(TStream* stream) override;                   // slot 0x05 0x542ff0
   virtual void ReadFrom(TStream* stream) override;                  // slot 0x06 0x542be0

@@ -1,10 +1,8 @@
 #include "game/TSortedByRelationshipList.h"
 #include "game/mfc.h"
 
-// FUNCTION: IMPERIALISM 0x004ee4b0
-TSortedByRelationshipList* TSortedByRelationshipList::CreateTSortedByRelationshipListInstance() {
-  return new TSortedByRelationshipList();
-}
+// SYNTHETIC: IMPERIALISM 0x004ee4b0
+// TSortedByRelationshipList::CreateObject
 // SYNTHETIC: IMPERIALISM 0x004ee520
 // TSortedByRelationshipList::GetRuntimeClass
 

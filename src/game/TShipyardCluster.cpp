@@ -28,10 +28,8 @@ static __inline TCity* GetNationCityStateBySlot(short slotId) {
   return nationState->GetCityState();
 }
 
-// FUNCTION: IMPERIALISM 0x0058a4d0
-TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
-  return new TShipyardCluster();
-}
+// SYNTHETIC: IMPERIALISM 0x0058a4d0
+// TShipyardCluster::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x0058a570
 // TShipyardCluster::GetRuntimeClass

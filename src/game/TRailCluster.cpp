@@ -43,10 +43,8 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00589660
-TRailCluster* __cdecl CreateTradeMoveScaledControlPanel(void) {
-  return new TRailCluster();
-}
+// SYNTHETIC: IMPERIALISM 0x00589660
+// TRailCluster::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x00589700
 // TRailCluster::GetRuntimeClass

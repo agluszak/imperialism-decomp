@@ -1,8 +1,5 @@
 #include "game/THandleStream.h"
 
-extern "C" {
-char g_pClassDescTHandleStream = 0;
-}
 // SYNTHETIC: IMPERIALISM 0x00489580
 // THandleStream::CreateObject
 

@@ -10,8 +10,6 @@ class TList : public TSortedList {
 public:
   DECLARE_DYNCREATE(TList)
   TList();
-
-  static TList* CreateTListInstance();
 };
 
 ASSERT_SIZE(TList, 0x20);

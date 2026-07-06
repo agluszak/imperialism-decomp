@@ -108,7 +108,7 @@ void TForeignMinister::Call8C() {
 
   if (*reinterpret_cast<short*>(raw + 0x10) != kPrimaryNationUnset) {
     TSortedByRelationshipList* relationshipList =
-        TSortedByRelationshipList::CreateTSortedByRelationshipListInstance();
+        static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
     if (relationshipList != 0) {
       relationshipList->relationType = 4;
     }

@@ -5,8 +5,6 @@
 #include "game/mfc.h"
 #include "game/startup_helpers.h"
 
-extern "C" CRuntimeClass PTR_s_TApplication_00648af8;
-
 // FUNCTION: IMPERIALISM 0x00414720
 void TApplication::PostTurnEventCodeMessage2420(short eventCode) {
   ::PostMessage(AfxGetMainWnd()->m_hWnd, 0x2420, eventCode, 0);

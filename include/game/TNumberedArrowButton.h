@@ -4,7 +4,6 @@
 
 extern "C" int g_vtblTNumberedArrowButton;
 struct CRuntimeClass;
-extern "C" CRuntimeClass g_pClassDescTNumberedArrowButton;
 
 // VTABLE: IMPERIALISM 0x667678
 class TNumberedArrowButton : public TControl {

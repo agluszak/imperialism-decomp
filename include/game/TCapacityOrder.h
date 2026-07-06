@@ -10,13 +10,15 @@ class TCity;
 // VTABLE: IMPERIALISM 0x0064f678
 class TCapacityOrder : public TItemOrder {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TCapacityOrder)
+  TCapacityOrder(); // trivial; inlined into CreateObject in the binary
   ~TCapacityOrder();
 
   undefined CommitIfPending() override; // slot 0x0d 0x4b8dd0
-  virtual undefined InitializeCityProductionState_Impl_At004b8d50(
-      TCity* city, short resourceType, short trackingIndex4e, short trackingIndex50,
-      short field52); // slot 0x12 0x4b8d50
+  virtual undefined
+  InitializeCityProductionState_Impl_At004b8d50(TCity* city, short resourceType,
+                                                short trackingIndex4e, short trackingIndex50,
+                                                short field52); // slot 0x12 0x4b8d50
 
   explicit TCapacityOrder(TCity* city);
   short ComputeCapacityOrderMaxQuantity();

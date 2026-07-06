@@ -931,46 +931,6 @@ undefined4 WrapperFor_ftol_At005b4ee0(void)
   return 0;
 }
 
-// ghidra_name TMyNumberText::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x005b4f10
-undefined4 CreateObject_005B4F10(void)
-{
-  return 0;
-}
-
-// ghidra_name TMyNumberText::GetRuntimeClass
-// ghidra_proto undefined __thiscall GetRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x005b4fb0
-undefined4 GetRuntimeClass_005B4FB0(void)
-{
-  return 0;
-}
-
-// ghidra_name TMyNumberText::ConstructTMyNumberTextBaseState
-// ghidra_proto undefined ConstructTMyNumberTextBaseState()
-// FUNCTION: IMPERIALISM 0x005b4fd0
-undefined4 ConstructTMyNumberTextBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TMyNumberText::DestructTMyNumberTextAndMaybeFree
-// ghidra_proto undefined DestructTMyNumberTextAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005b5000
-undefined4 DestructTMyNumberTextAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TMyNumberText::UpdateMyNumberTextFromTownValueString
-// ghidra_proto undefined UpdateMyNumberTextFromTownValueString()
-// FUNCTION: IMPERIALISM 0x005b5050
-undefined4 UpdateMyNumberTextFromTownValueString(void)
-{
-  return 0;
-}
-
 // ghidra_name TPictureText::ConstructTPictureTextBaseState
 // ghidra_proto undefined ConstructTPictureTextBaseState()
 // FUNCTION: IMPERIALISM 0x005b5300
@@ -983,46 +943,6 @@ undefined4 ConstructTPictureTextBaseState(void)
 // ghidra_proto undefined ConstructSelectableTextOptionEntryBase()
 // FUNCTION: IMPERIALISM 0x005b5590
 undefined4 ConstructSelectableTextOptionEntryBase(void)
-{
-  return 0;
-}
-
-// ghidra_name TDropShadowNumberText::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x005b5820
-undefined4 CreateObject_005B5820(void)
-{
-  return 0;
-}
-
-// ghidra_name TDropShadowNumberText::GetRuntimeClass
-// ghidra_proto undefined __thiscall GetRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x005b58f0
-undefined4 GetRuntimeClass_005B58F0(void)
-{
-  return 0;
-}
-
-// ghidra_name TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState
-// ghidra_proto undefined ConstructTDropShadowNumberTextBaseState()
-// FUNCTION: IMPERIALISM 0x005b5910
-undefined4 ConstructTDropShadowNumberTextBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TDropShadowNumberText::DestructTDropShadowNumberTextAndMaybeFree
-// ghidra_proto undefined DestructTDropShadowNumberTextAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005b5960
-undefined4 DestructTDropShadowNumberTextAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TDropShadowNumberText::RenderDropShadowNumberTextValue
-// ghidra_proto undefined RenderDropShadowNumberTextValue()
-// FUNCTION: IMPERIALISM 0x005b59b0
-undefined4 RenderDropShadowNumberTextValue(void)
 {
   return 0;
 }

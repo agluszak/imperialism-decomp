@@ -65,10 +65,8 @@ TSortedPtrList::~TSortedPtrList() {}
 
 TSortedPtrList::TSortedPtrList() {}
 
-// FUNCTION: IMPERIALISM 0x00488400
-TSortedPtrList* TSortedPtrList::ConstructTSortedPtrListBaseState() {
-  return new TSortedPtrList();
-}
+// SYNTHETIC: IMPERIALISM 0x00488400
+// TPtrList::CreateObject
 
 // FUNCTION: IMPERIALISM 0x005e1e50
 void TSortedPtrList::slot18() {}

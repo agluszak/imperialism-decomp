@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/CDib.h"
+#include <afxtempl.h>
+
 #include "game/mfc.h"
 
 class TControl;
@@ -18,11 +20,21 @@ class TView;
 // and re-propagated by the 0x4ef message handler after each turn-event dialog factory
 // runs), and every on-screen paint of that tree flows through OnDraw's slot-0x43
 // PaintVisibleChildrenIntersectingClipRect recursion.
+// 0x18-byte dirty-rect record queued on CIncludeView's overlay repaint list; the list's
+// CList<Rec,Rec&>::Serialize moves these raw (POD).
+struct IncludeViewOverlayRectRecord {
+  RECT rect;           // +0x00 — client-area rect awaiting repaint
+  int processedFlag10; // +0x10 — set once the repaint pass has consumed the rect
+  int field14;
+};
+ASSERT_SIZE(IncludeViewOverlayRectRecord, 0x18);
+
 class CIncludeView : public CView {
 public:
   DECLARE_DYNCREATE(CIncludeView)
 
   CIncludeView();
+  virtual ~CIncludeView(); // 0x00482ab0 (scalar deleting destructor 0x4829c0)
 
   void SetUiRuntimeContextAndActivateMain(TView* activeDialog); // 0x00483340
 
@@ -66,9 +78,13 @@ public:
   TView* m_activeDialogContext; // 0x40 — g_pDisplayMgr->activeDialog tree hosted here
   int m_field44;                // 0x44 — cleared together with the context by msg 0x4ef
   CDib* m_pOffscreenDib;        // 0x48 — 640x480x8 surface created in OnInitialUpdate
-  unsigned char pad4c[0x6c - 0x4c];
-  UINT m_tickTimerId; // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
-  unsigned char pad70[4];
+  // 0x4c — overlay dirty-rect queue. The original emitted the CList<Rec,Rec&>
+  // instantiation twice (ctor TU vtable 0x648560, dtor/Serialize TU vtable 0x648578) —
+  // the twin-copy template pattern; both are the same class.
+  CList<IncludeViewOverlayRectRecord, IncludeViewOverlayRectRecord&> m_overlayRectQueue;
+  POSITION m_overlayRectCursor68; // 0x68 — iteration cursor of the repaint pass (0x482fc0)
+  UINT m_tickTimerId;             // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
+  unsigned char pad70[4]; // 0x70 — zeroed in the ctor, not yet resolved to a field
   // 0x74 — this view's own captured-control track (a second copy of the
   // TMouseCaptureState shape: control + start/last/current points). OnMouseMove sends
   // it the state-1 drag command through TControl slots 0x67/0x68; the writer that arms

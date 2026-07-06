@@ -1,9 +1,5 @@
 #include "game/TCountingStream.h"
 
-extern "C" {
-char g_pClassDescTCountingStream = 0;
-}
-
 // SYNTHETIC: IMPERIALISM 0x004893c0
 // TCountingStream::CreateObject
 

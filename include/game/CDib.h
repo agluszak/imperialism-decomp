@@ -32,9 +32,9 @@ public:
   CDib();                                    // 0x00479f40
   CDib(int width, int height, int bitDepth); // 0x00479fe0
 
-  CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x00479ed0
-  virtual ~CDib() override;                        // slot 0x01 (real dtor 0x0047a370)
-  void Serialize(CArchive& archive) override;      // slot 0x02 0x0047bb10
+  DECLARE_SERIAL(CDib) // slot 0x00 GetRuntimeClass 0x00479ed0; schema 0 in the binary descriptor
+  virtual ~CDib() override;                   // slot 0x01 (real dtor 0x0047a370)
+  void Serialize(CArchive& archive) override; // slot 0x02 0x0047bb10
   // slot 0x03 AssertValid inherited unchanged
   // slot 0x04 Dump inherited unchanged
 

@@ -7,12 +7,8 @@
 // VTABLE: IMPERIALISM 0x0065bde0
 class TRemoteMinor : public TMinor {
 public:
+  DECLARE_DYNCREATE(TRemoteMinor)
   TRemoteMinor();
-
-  static void* AllocateAndConstructTRemoteMinor();
-  static void* GetTRemoteMinorClassNamePointer();
-
-  CRuntimeClass* GetRuntimeClass() const override;
 
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;

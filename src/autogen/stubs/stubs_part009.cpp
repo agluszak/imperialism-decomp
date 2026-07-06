@@ -651,14 +651,6 @@ undefined4 ConstructPictureResourceEntry_Vtbl00640258(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430660
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00430660()
-// FUNCTION: IMPERIALISM 0x00430660
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430660(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl()
 // FUNCTION: IMPERIALISM 0x00430690
@@ -923,22 +915,6 @@ undefined4 WrapperFor_thunk_RegisterDialogFactoryCallback_At0044fba0(void)
   return 0;
 }
 
-// ghidra_name ConstructUiClickablePictureResourceEntry_Vtbl643A40
-// ghidra_proto undefined ConstructUiClickablePictureResourceEntry_Vtbl643A40()
-// FUNCTION: IMPERIALISM 0x00453800
-undefined4 ConstructUiClickablePictureResourceEntry_Vtbl643A40(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructUiClickablePictureResourceEntry_Vtbl643A40_AndMaybeFree
-// ghidra_proto undefined DestructUiClickablePictureResourceEntry_Vtbl643A40_AndMaybeFree()
-// FUNCTION: IMPERIALISM 0x00453830
-undefined4 DestructUiClickablePictureResourceEntry_Vtbl643A40_AndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildDifficultyAndNamesSetupUiResources
 // ghidra_proto undefined BuildDifficultyAndNamesSetupUiResources()
 // FUNCTION: IMPERIALISM 0x00456ba3
@@ -1191,14 +1167,6 @@ undefined4 InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0(vo
 // ghidra_proto undefined RegisterUiResourceEntry_Impl()
 // FUNCTION: IMPERIALISM 0x00479e10
 undefined4 RegisterUiResourceEntry_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name CDib::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x00479e40
-undefined4 CreateObject_00479E40(void)
 {
   return 0;
 }

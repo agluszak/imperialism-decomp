@@ -10,9 +10,6 @@
 #include <cstring>
 #include <new>
 
-extern "C" {
-char g_pClassDescTNetMgr = 0;
-}
 IMPLEMENT_DYNCREATE(TNetMgr, TObject)
 
 TNetMgr::TNetMgr() : TObject() {}

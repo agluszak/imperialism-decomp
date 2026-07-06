@@ -523,14 +523,6 @@ undefined4 DestructCancelGameOptionsCommand(void)
   return 0;
 }
 
-// ghidra_name TMultiplayerMgr::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x005425d0
-undefined4 CreateObject_005425D0(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializePointerPairToNull
 // ghidra_proto undefined InitializePointerPairToNull()
 // FUNCTION: IMPERIALISM 0x005427a0

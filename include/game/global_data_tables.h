@@ -265,7 +265,6 @@ extern char g_szCmdSwitchLangQuit_00694254[];
 extern ImperialismApp* g_pImperialismApp;
 extern int DAT_006a1350;
 extern _PNH g_pfnPreviousNewHandler;
-extern CRuntimeClass g_pClassDescTCapacityOrder;
 extern short g_industryActionCostWeightResCode09[16];
 extern short g_industryActionCostWeightResCode08[16];
 extern short g_industryActionCostWeightResCode10[16];
@@ -277,7 +276,6 @@ extern "C" CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8;
 extern HRGN g_hOpenRgnAccumulator;
 extern char g_Sanitize_City_Counter_Value_006A24D4;
 extern double DAT_0066fad0;
-extern char g_pClassDescTStratReportView;
 extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
 // Cached CCommandLineInfo::m_bShowSplash (cmdInfo+0x04), not m_nShellCommand.
 extern BOOL g_cachedShowSplashFlag;
@@ -286,7 +284,6 @@ extern void* DAT_006a2054;
 extern LPCSTR g_apFontFiles[];
 extern int g_nDibOrientationFlag_006A1890;
 extern int g_nAuxOutputDeviceIndex;
-extern CRuntimeClass s_CDib_RuntimeClass_00694b48;
 extern void* g_pScopedMapQuickDrawViewContext;
 extern CDC* g_pScopedMapQuickDrawDcHandleObject;
 // One-slot CTemporaryRegion reuse cache (see CTemporaryRegion.h).
@@ -322,6 +319,8 @@ extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount
 extern TDisplayMgr* g_pDisplayMgr;
 extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
+extern int g_councilControlTagTable[6];
+extern int g_defaultDropShadowTextColor;
 extern TAssetMgr* g_pUiViewManager;
 extern TLanguageMgr* g_pLanguageMgr;
 extern TAnimator* g_pUiAnimator;
@@ -479,6 +478,8 @@ extern CPtrList g_ModalViewStack;
 // ============================================================================
 
 undefined4 SetGlobalUiInvalidationFlagAndReturnPrevious(undefined4 newValue);
+// Clear g_McAppUiActiveFlag_006950AC and return the previous value (0x489a90).
+undefined4 ClearGlobalUiInvalidationFlagAndReturnPrevious();
 
 // Read g_McAppUiActiveFlag_006950AC (0x489a70) — guard checked before any real painting.
 int GetMcAppUiActiveFlag();
@@ -626,11 +627,6 @@ extern int g_nMapActionContextDistanceCacheSizedFor;
 extern unsigned char g_bRandomMapDeveloperCheatFlag;
 // "Conan" — developer-cheat probe filename statted by TSimMgr::InitializeTurnFlowStateDefaults.
 extern char g_szConanCheatFileName_00698BEC[];
-
-// TBehavior.cpp / TDialogBehavior.cpp / TDialogView.cpp — RTTI class-descriptor anchors.
-extern char g_pClassDescTBehavior;
-extern char g_pClassDescTDialogBehavior;
-extern char g_pClassDescTDialogView;
 } // extern "C"
 
 // Per-nation-variant mapped flavor-text table (mapped_flavor_text.cpp / global_data_tables.cpp).

@@ -7,10 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TSortedList, TObject)
 
-// FUNCTION: IMPERIALISM 0x00487a90
-TSortedList* TSortedList::CreateTSortedListInstance() {
-  return new TSortedList();
-}
+// SYNTHETIC: IMPERIALISM 0x00487a90
+// TSortedList::CreateObject
 
 // FUNCTION: IMPERIALISM 0x00487b30
 int TSortedList::VirtualSlot6C() {

@@ -2,7 +2,6 @@
 #include "game/TUnit.h"
 #include "game/TStream.h"
 
-extern "C" char g_pClassDescTCivUnit = 0;
 // SYNTHETIC: IMPERIALISM 0x005c2860
 // TCivUnit::CreateObject
 
@@ -22,7 +21,7 @@ TCivUnit::~TCivUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005c2940
 void TCivUnit::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
-                                                     int nOrderOwnerNationId) {
+                                           int nOrderOwnerNationId) {
   this->RegisterUnitOrderWithOwnerManager(static_cast<short>(nOrderType), pOwnerContext,
                                           static_cast<short>(nOrderOwnerNationId), 0);
   this->remainingTurns24 = 0;
