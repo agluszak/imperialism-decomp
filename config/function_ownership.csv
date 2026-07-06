@@ -904,6 +904,7 @@ address|target_cpp|ownership|note
 4a3f30|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4190|src/game/TMapMgr.cpp|manual|marker_sync
 4a4260|src/game/TArmyMgr.cpp|manual|marker_sync
+4a4550|src/game/TArmyMgr.cpp|manual|marker_sync
 4a45e0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4870|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4960|src/game/TArmyMgr.cpp|manual|marker_sync

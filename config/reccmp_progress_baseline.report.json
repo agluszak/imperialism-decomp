@@ -7483,7 +7483,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -7585,7 +7585,7 @@
     },
     {
       "address": "0x4a4550",
-      "matching": 0.0,
+      "matching": 0.8831168831168831,
       "name": "ForwardGetUnitMovementClassId_At004a4550",
       "type": 1
     },
@@ -12723,8 +12723,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12751,8 +12750,7 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12788,7 +12786,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -14673,7 +14671,7 @@
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.242914979757085,
+      "matching": 0.2248995983935743,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -16227,7 +16225,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.19718309859154928,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16527,7 +16525,7 @@
     },
     {
       "address": "0x511ed0",
-      "matching": 0.13333333333333333,
+      "matching": 0.6666666666666666,
       "name": "TMapMgr::DispatchTurnEvent7DDForActiveNation",
       "type": 1
     },
@@ -16881,7 +16879,7 @@
     },
     {
       "address": "0x515d60",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TMapMgr::ApplyUnitMovementClassForTileIfValid",
       "type": 1
     },
@@ -17013,7 +17011,7 @@
     },
     {
       "address": "0x5176e0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TMapMgr::GetMapImprovementTierBucketOffset",
       "type": 1
     },
@@ -17031,7 +17029,7 @@
     },
     {
       "address": "0x5177d0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TMapMgr::GetMapImprovementTileOffsetFromClass",
       "type": 1
     },
@@ -18105,7 +18103,7 @@
     },
     {
       "address": "0x52d030",
-      "matching": 0.7766990291262136,
+      "matching": 1.0,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -18123,7 +18121,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -20038,13 +20036,13 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -43325,6 +43323,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }

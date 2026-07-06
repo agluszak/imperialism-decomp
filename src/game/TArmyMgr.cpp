@@ -853,6 +853,23 @@ undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004a4550
+bool TArmyMgr::HasEligibleStationedUnitInRegion(short regionId) {
+  if (regionId == -1) {
+    return false;
+  }
+  TMilitaryUnit* unit = nullptr;
+  if (regionId >= 0 && regionId < 0x180) {
+    unit = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
+  }
+  for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // FUNCTION: IMPERIALISM 0x004a45e0
 void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
   this->pendingMapActionIndex = tileIndex;

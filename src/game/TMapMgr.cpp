@@ -1,7 +1,10 @@
 #include "game/TMapMgr.h"
 
 #include "game/CString.h"
+#include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
+#include "game/TSimMgr.h"
+#include "game/TViewMgr.h"
 #include "game/TCountry.h"
 #include "game/TSortedList.h"
 #include "game/TMinor.h"
@@ -672,6 +675,13 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
   return code;
 }
 
+// FUNCTION: IMPERIALISM 0x00511ed0
+void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
+  TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress();
+  short nationId = g_pSimMgr->GetActiveNationId();
+  g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x7dd, nationId);
+}
+
 // FUNCTION: IMPERIALISM 0x00511f10
 void TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(undefined4 param_1) {
   ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(static_cast<short>(param_1), 1);
@@ -1123,10 +1133,6 @@ undefined TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
   return 0;
 }
 
-undefined TMapMgr::DispatchTurnEvent7DDForActiveNation() {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00514250
 TCivUnit* TMapMgr::GetTileUnitEntryByOwner(short tileIndex, short nationId) {
   TCivUnit* entry = GetFirstCivilianOrderOnTile(tileIndex);
@@ -1459,8 +1465,11 @@ undefined TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int 
   return 0;
 }
 
-undefined TMapMgr::ApplyUnitMovementClassForTileIfValid(int param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00515d60
+void TMapMgr::ApplyUnitMovementClassForTileIfValid(int tileIndex) {
+  if (tileIndex != -1) {
+    g_pMapContextActionManager->HasEligibleStationedUnitInRegion(static_cast<short>(tileIndex));
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00515db0
@@ -1677,8 +1686,12 @@ int TMapMgr::ComputeTerrainRecordByteOffsetForIndex(int index) {
   return (index + index * 8) << 2;
 }
 
-undefined TMapMgr::GetMapImprovementTierBucketOffset(short param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x005176e0
+short TMapMgr::GetMapImprovementTierBucketOffset(short tier) {
+  if (tier < 7) {
+    return tier * 9;
+  }
+  return 0x3f;
 }
 
 undefined TMapMgr::ApplyMapImprovementSelectionState(void* param_1) {
@@ -1689,8 +1702,10 @@ undefined TMapMgr::GetMapImprovementSpriteBaseOffset(short param_1, char param_2
   return 0;
 }
 
-undefined TMapMgr::GetMapImprovementTileOffsetFromClass(char param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x005177d0
+int TMapMgr::GetMapImprovementTileOffsetFromClass(char classCode, int unusedParam2) {
+  (void)unusedParam2;
+  return classCode * 16;
 }
 
 undefined TMapMgr::GetMapImprovementTileSpriteOffset(short param_1) {

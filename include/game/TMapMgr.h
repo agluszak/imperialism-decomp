@@ -163,8 +163,10 @@ public:
   TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(); // slot 0x11 0x511a70
   virtual undefined
   TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(); // slot 0x12 0x511e80
-  virtual undefined DispatchTurnEvent7DDForActiveNation();     // slot 0x13 0x511ed0
-  virtual void ResetAllTileSpriteVariantIndexToSentinel();     // slot 0x14 0x5178c0
+  // Ensures the map data stream is ready (slot 0x12), then dispatches turn-event 0x7dd
+  // (a UI refresh notification) to g_pUiRuntimeContext for the active nation.
+  virtual void DispatchTurnEvent7DDForActiveNation();      // slot 0x13 0x511ed0
+  virtual void ResetAllTileSpriteVariantIndexToSentinel(); // slot 0x14 0x5178c0
   virtual undefined
   TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short param_1,
                                                               short param_2); // slot 0x15 0x511f30
@@ -247,8 +249,11 @@ public:
   virtual undefined
   MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int param_1); // slot 0x29 0x515b10
   virtual undefined
-  UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int param_1);   // slot 0x2a 0x50fca0
-  virtual undefined ApplyUnitMovementClassForTileIfValid(int param_1); // slot 0x2b 0x515d60
+  UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int param_1); // slot 0x2a 0x50fca0
+  // Looks up whether tileIndex's region has an eligible stationed unit
+  // (TArmyMgr::HasEligibleStationedUnitInRegion) but discards the result -- the original's
+  // own call site never reads the return value either, so this is vestigial/dead code.
+  virtual void ApplyUnitMovementClassForTileIfValid(int tileIndex); // slot 0x2b 0x515d60
   virtual undefined SetRegionTileSubtypeAndRefreshNeighborFlags(int param_1,
                                                                 int param_2); // slot 0x2c 0x515f80
   // Real body is just `ret 0xc` (pops 3 stack dwords, no other instructions) -- no evidence
@@ -361,13 +366,18 @@ public:
   // index * 36 -- matches the terrainStateTable record stride (sizeof(TTerrainStateRecordView)
   // == 0x24) used inline throughout this file; no `this` use and no other callers, so this
   // is modeled as the raw arithmetic it computes rather than presumed to index a specific array.
-  virtual int ComputeTerrainRecordByteOffsetForIndex(int index);      // slot 0x43 0x5176c0
-  virtual undefined GetMapImprovementTierBucketOffset(short param_1); // slot 0x44 0x5176e0
+  virtual int ComputeTerrainRecordByteOffsetForIndex(int index); // slot 0x43 0x5176c0
+  // Bitmap-strip row offset (64-byte rows) for a map-improvement tier: tier*9 below tier 7,
+  // else a fixed overflow row.
+  virtual short GetMapImprovementTierBucketOffset(short tier); // slot 0x44 0x5176e0
   virtual undefined GetMapImprovementSpriteBaseOffset(short param_1, char param_2,
-                                                      char param_3);    // slot 0x45 0x517780
-  virtual undefined ApplyMapImprovementSelectionState(void* param_1);   // slot 0x46 0x517710
-  virtual undefined GetMapImprovementTileOffsetFromClass(char param_1); // slot 0x47 0x5177d0
-  virtual undefined GetMapImprovementTileSpriteOffset(short param_1);   // slot 0x48 0x5177f0
+                                                      char param_3);  // slot 0x45 0x517780
+  virtual undefined ApplyMapImprovementSelectionState(void* param_1); // slot 0x46 0x517710
+  // Real signature has 2 stack slots (RET 8); the second is never read -- same pattern as
+  // GetMapImprovementOffsetByTownTransportLink above.
+  virtual int GetMapImprovementTileOffsetFromClass(char classCode,
+                                                   int unusedParam2); // slot 0x47 0x5177d0
+  virtual undefined GetMapImprovementTileSpriteOffset(short param_1); // slot 0x48 0x5177f0
   virtual int QueueDepotConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
                                           undefined2 param_4); // slot 0x49 0x5145b0
   virtual void QueuePortConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
