@@ -1083,14 +1083,6 @@ undefined4 WrapperFor_ftol_At005b79a0(void)
   return 0;
 }
 
-// ghidra_name BuildInterNationEventSummaryRowsForAdvisorDialog_Impl
-// ghidra_proto undefined BuildInterNationEventSummaryRowsForAdvisorDialog_Impl()
-// FUNCTION: IMPERIALISM 0x005ba0e0
-undefined4 BuildInterNationEventSummaryRowsForAdvisorDialog_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TDealList::ConstructTDealListBaseState
 // ghidra_proto undefined ConstructTDealListBaseState()
 // FUNCTION: IMPERIALISM 0x005ba1c0

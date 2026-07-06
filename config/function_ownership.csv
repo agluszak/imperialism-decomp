@@ -4089,6 +4089,7 @@ address|target_cpp|ownership|note
 5b9fa0|src/game/TTradeMgr.cpp|manual|marker_sync
 5b9fd0|src/game/TTradeMgr.cpp|manual|marker_sync
 5ba090|src/game/TTradeMgr.cpp|manual|marker_sync
+5ba0e0|src/game/TTradeMgr.cpp|manual|marker_sync
 5ba130|src/game/TDealList.cpp|manual|marker_sync
 5ba1a0|src/game/TDealList.cpp|manual|marker_sync
 5ba1f0|src/game/TDealList.cpp|manual|marker_sync
