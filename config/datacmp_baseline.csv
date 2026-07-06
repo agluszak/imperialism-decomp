@@ -182,7 +182,7 @@ TMapEditView::classTMapEditView|0x6589f8|WARN|10
 TMapKey::classTMapKey|0x655038|WARN|10
 TMapMgr::classTMapMgr|0x658788|WARN|8
 TMapPreviewView::classTMapPreviewView|0x6619f8|WARN|10
-TMapUberPicture::classTMapUberPicture|0x668c40|WARN|8
+TMapUberPicture::classTMapUberPicture|0x668c40|WARN|9
 TMapUberUberPicture::classTMapUberUberPicture|0x668c28|WARN|9
 TMegaPicture::classTMegaPicture|0x660658|WARN|10
 TMerchantBoyView::classTMerchantBoyView|0x64dce0|WARN|10
@@ -378,10 +378,10 @@ TUnitOrder::classTUnitOrder|0x64f3c8|WARN|9
 TUnitToolbarCluster::classTUnitToolbarCluster|0x662ed8|WARN|9
 TUnitsView::classTUnitsView|0x651260|WARN|10
 TUniversityView::classTUniversityView|0x6512c0|WARN|10
-TUpDownPictureButton::classTUpDownPictureButton|0x65e5c8|WARN|8
+TUpDownPictureButton::classTUpDownPictureButton|0x65e5c8|WARN|9
 TUpDownView::classTUpDownView|0x662de8|WARN|10
 TView::classTView|0x6495a0|WARN|9
-TViewMgr::classTViewMgr|0x66f0b8|WARN|76
+TViewMgr::classTViewMgr|0x66f0b8|WARN|77
 TWarehouseView::classTWarehouseView|0x651248|WARN|11
 TWarningView::classTWarningView|0x663178|WARN|9
 TWindow::classTWindow|0x6495e8|WARN|8
