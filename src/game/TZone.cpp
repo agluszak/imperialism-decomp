@@ -13,6 +13,9 @@
 #include "game/UiRuntimeContext.h"
 
 extern "C" char g_pClassDescTZone = 0;
+extern "C" {
+extern char g_pClassDescTPortZone;
+}
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
@@ -876,19 +879,32 @@ void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
 
 // FUNCTION: IMPERIALISM 0x00561bf0
 TZone* TZone::FindPortZoneByTile(short nTileIndex) {
-  for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
+  TZone* zone = g_pMapActionContextListHead;
+  while (zone != 0 &&
+         zone->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
+    zone = zone->prev18;
+  }
+  for (;;) {
+    if (zone == 0) {
+      return 0;
+    }
     if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
         static_cast<short>(static_cast<TPortZone*>(zone)->field48) == nTileIndex) {
       return zone;
     }
+    zone = zone->prev18;
+    while (zone != 0 &&
+           zone->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
+      zone = zone->prev18;
+    }
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00561c80
 TZone* TZone::GetFirstPortZone() {
   TZone* cursor = g_pMapActionContextListHead;
-  while (cursor != 0 && cursor->QueryPortZoneCapability() == 0) {
+  while (cursor != 0 &&
+         cursor->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
     cursor = cursor->prev18;
   }
   return cursor;
@@ -897,7 +913,8 @@ TZone* TZone::GetFirstPortZone() {
 // FUNCTION: IMPERIALISM 0x00561d40
 TZone* TZone::GetNextPortZone() {
   TZone* cursor = this->prev18;
-  while (cursor != 0 && cursor->QueryPortZoneCapability() == 0) {
+  while (cursor != 0 &&
+         cursor->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
     cursor = cursor->prev18;
   }
   return cursor;
