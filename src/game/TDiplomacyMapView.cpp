@@ -740,7 +740,7 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
 void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount() {
   TView* mainView = g_pDisplayMgr->activeDialog;
   TCursorControlPanel* cursor =
-      static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCrus));
+      static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel = cursor;
   if (cursor != nullptr) {
     cursor->AssertValid();
@@ -756,7 +756,7 @@ void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount() {
 void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920() {
   TView* mainView = g_pDisplayMgr->activeDialog;
   TCursorControlPanel* cursor =
-      static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCrus));
+      static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel = cursor;
   if (cursor != nullptr) {
     cursor->AssertValid();

@@ -778,7 +778,7 @@ TControl* ResolveMainTaggedControl(unsigned int controlTag) {
 }
 
 void BindCursorPanelAndSetTurnEventCodeRange() {
-  TControl* cursor = ResolveMainTaggedControl(kControlTagCrus);
+  TControl* cursor = ResolveMainTaggedControl(kControlTagCurs);
   g_pCursorControlPanel = static_cast<TCursorControlPanel*>(cursor);
   if (cursor != nullptr) {
     cursor->AssertValid();
@@ -1152,7 +1152,7 @@ void TViewMgr::UiRuntimeSlotB4() {}
 void TViewMgr::UiRuntimeSlot50(int payload) {
   (void)payload;
   TView* mainView = g_pDisplayMgr->activeDialog;
-  TControl* cursor = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCrus));
+  TControl* cursor = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel = static_cast<TCursorControlPanel*>(cursor);
   cursor->AssertValid();
   static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);

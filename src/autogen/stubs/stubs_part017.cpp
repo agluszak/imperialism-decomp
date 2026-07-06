@@ -1251,14 +1251,6 @@ undefined4 WrapperFor_ftol_At00572a50(void)
   return 0;
 }
 
-// ghidra_name TNoHilitePicture::ConstructPictureResourceEntryType606E8
-// ghidra_proto undefined ConstructPictureResourceEntryType606E8()
-// FUNCTION: IMPERIALISM 0x00572b30
-undefined4 ConstructPictureResourceEntryType606E8(void)
-{
-  return 0;
-}
-
 // ghidra_name TBackgroundPicture::ConstructTBackgroundPictureBaseState
 // ghidra_proto undefined ConstructTBackgroundPictureBaseState()
 // FUNCTION: IMPERIALISM 0x00572c80

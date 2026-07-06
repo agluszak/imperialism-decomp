@@ -125,7 +125,7 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined UniversityDialogMethod_00405623(); // slot 0x73 0x572bb0
 // === END GENERATED DECLS (TNoHilitePicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNoHilitePicture 0xCTOR`).
+  unsigned char field90; // +0x90
 
   TNoHilitePicture();
 };

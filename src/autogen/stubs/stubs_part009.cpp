@@ -563,14 +563,6 @@ undefined4 SetUiResourcePairValues(void)
   return 0;
 }
 
-// ghidra_name ConstructUiCursorTextResourceEntry
-// ghidra_proto undefined ConstructUiCursorTextResourceEntry()
-// FUNCTION: IMPERIALISM 0x00429330
-undefined4 ConstructUiCursorTextResourceEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeCityTradeDiplomacyUiEntries
 // ghidra_proto undefined InitializeCityTradeDiplomacyUiEntries()
 // FUNCTION: IMPERIALISM 0x0042d240

@@ -1,8 +1,10 @@
 #include "game/turn_event_dialog_factory.h"
 
 #include "game/TBook.h"
+#include "game/TControl.h"
 #include "game/TDeluxeText.h"
 #include "game/TDropShadowText.h"
+#include "game/TGameSetupPicture.h"
 #include "game/TNoHilitePicture.h"
 #include "game/TPageView.h"
 #include "game/TScrollView.h"
@@ -506,11 +508,109 @@ TView* __cdecl BuildUiResourceTreeByTemplateIdAndBindScreenContext(CWnd* pHostWi
   return nullptr;
 }
 
+// Main-menu screen (event 0x5dc): a 2000x2000 'base' container holding a full-screen
+// 640x480 'main' TGameSetupPicture (bitmap 0x1194), seven 'cntl' TControl hotspots
+// (load/rand/mult/high/scen/quit/pref), and a 'tevw'/'curs' TInfoBarText info bar
+// between 'scen' and 'quit'.
+//
+// TODO(bd 1uj.57.5 follow-up): only event 0x5dc is wired. The dispatcher's other
+// reachable branches -- exact cases 0x3b8 (strategic-map screen) and 0x3b9 (a GOLD
+// dialog), the <=0x3c6 range, the 0x5dd-0x5e5/0x5eb jump-table cases (new-game setup,
+// multiplayer setup, etc.), and the >0x5eb default -- are still unported. Ghidra's
+// recorded bounds for this function (13059 bytes) are also known to be wrong (real
+// code continues past 0x458cd1); see the bd 1uj.57.5 2026-07-06 comment for the full
+// case-to-address map, decodable again via `just decode-builder 0x4538a0`.
 // FUNCTION: IMPERIALISM 0x004538a0
 TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, int nEventCode) {
-  (void)pHostWindow;
-  (void)nEventCode;
-  return nullptr;
+  g_pUiResourceHead = 0;
+
+  if (static_cast<short>(nEventCode) != 0x5dc) {
+    return nullptr;
+  }
+
+  TView* base = new TView();
+  RegisterUiResourceEntry(0x76696577, kControlTagBase, base, 0, 0, 0x7d0, 0x7d0, 0, 1, 0, 0);
+  SetUiResourceStateFlags(1, 1);
+  g_pUiResourceContext = 0;
+
+  TGameSetupPicture* main = new TGameSetupPicture();
+  RegisterUiResourceEntry(kControlTagPict, kControlTagMain, main, 0, 0, 0x280, 0x1e0, 0, 1,
+                          kControlTagBase, 0);
+  SetUiResourceStateFlags(1, 1);
+  ReplaceUiResourceContextPairBuffer(0, 0xffffff);
+  SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+  SetUiResourceContextPictureId(0x1194);
+  g_pUiResourceContext = 0;
+
+  TControl* loadButton = new TControl();
+  RegisterUiResourceEntry(kControlTagCntl, kControlTagLoad, loadButton, 0x3d, 0x6f, 0x89, 0x54, 1,
+                          0, kControlTagMain, 0);
+  SetUiResourceStateFlags(1, 1);
+  SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+  g_pUiResourceContext = 0;
+  PopUiWidgetBuildStackNode();
+
+  TControl* randButton = new TControl();
+  RegisterUiResourceEntry(kControlTagCntl, kControlTagRand, randButton, 0xe, 0xd1, 0x8a, 0xab, 1, 0,
+                          kControlTagMain, 0);
+  SetUiResourceStateFlags(1, 1);
+  SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+  g_pUiResourceContext = 0;
+  PopUiWidgetBuildStackNode();
+
+  TControl* multButton = new TControl();
+  RegisterUiResourceEntry(kControlTagCntl, kControlTagMult, multButton, 0x1ca, 0x102, 0x8f, 0x8c, 1,
+                          0, kControlTagMain, 0);
+  SetUiResourceStateFlags(1, 1);
+  SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+  g_pUiResourceContext = 0;
+  PopUiWidgetBuildStackNode();
+
+  TControl* highButton = new TControl();
+  RegisterUiResourceEntry(kControlTagCntl, kControlTagHigh, highButton, 0x1c0, 0x71, 0xa4, 0x4e, 1,
+                          0, kControlTagMain, 0);
+  SetUiResourceStateFlags(1, 1);
+  SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+  g_pUiResourceContext = 0;
+  PopUiWidgetBuildStackNode();
+
+  TControl* scenButton = new TControl();
+  RegisterUiResourceEntry(kControlTagCntl, kControlTagScen, scenButton, 1, 0x18d, 0x9c, 0x48, 1, 0,
+                          kControlTagMain, 0);
+  SetUiResourceStateFlags(1, 1);
+  SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+  g_pUiResourceContext = 0;
+  PopUiWidgetBuildStackNode();
+
+  TInfoBarText* cursorInfoText = new TInfoBarText();
+  RegisterUiResourceEntry(kControlTagTevw, kControlTagCurs, cursorInfoText, 0xb4, 0x1a8, 0x112,
+                          0x34, 0, 1, kControlTagMain, 0);
+  SetUiResourceStateFlags(1, 0);
+  g_pUiResourceContext = 0;
+  PopUiWidgetBuildStackNode();
+
+  TControl* quitButton = new TControl();
+  RegisterUiResourceEntry(kControlTagCntl, kControlTagQuit, quitButton, 0xdd, 0x66, 0xc3, 0xc3, 1,
+                          0, kControlTagMain, 0);
+  SetUiResourceStateFlags(1, 1);
+  SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+  g_pUiResourceContext = 0;
+  PopUiWidgetBuildStackNode();
+
+  TControl* prefButton = new TControl();
+  RegisterUiResourceEntry(kControlTagCntl, kControlTagPref, prefButton, 0x21c, 0x18f, 0x64, 0x49, 1,
+                          0, kControlTagMain, 0);
+  SetUiResourceStateFlags(1, 1);
+  SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+  g_pUiResourceContext = 0;
+  PopUiWidgetBuildStackNode();
+  PopUiWidgetBuildStackNode();
+  PopUiWidgetBuildStackNode();
+
+  if (g_pUiResourceHead != 0) {
+    g_pUiResourceHead->PropagateUiResourceContextRecursive(pHostWindow);
+  }
+  return g_pUiResourceHead;
 }
 
 // FUNCTION: IMPERIALISM 0x0045b100
@@ -726,7 +826,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   PopUiWidgetBuildStackNode();
 
   TInfoBarText* cursorInfoText = new TInfoBarText();
-  RegisterUiResourceEntry(kControlTagTevw, kControlTagCrus, cursorInfoText, 0xf7, 7, 0x155, 0x11, 0,
+  RegisterUiResourceEntry(kControlTagTevw, kControlTagCurs, cursorInfoText, 0xf7, 7, 0x155, 0x11, 0,
                           1, kControlTagMain, 0);
   SetUiResourceStateFlags(1, 0);
   g_pUiResourceContext = 0;
@@ -1194,7 +1294,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     PopUiWidgetBuildStackNode();
 
     TInfoBarText* cursorInfoText = new TInfoBarText();
-    RegisterUiResourceEntry(kControlTagTevw, kControlTagCrus, cursorInfoText, 0x182, 5, 0xc9, 0x1e,
+    RegisterUiResourceEntry(kControlTagTevw, kControlTagCurs, cursorInfoText, 0x182, 5, 0xc9, 0x1e,
                             0, 1, kControlTagMain, 0);
     SetUiResourceStateFlags(1, 0);
     g_pUiResourceContext = 0;

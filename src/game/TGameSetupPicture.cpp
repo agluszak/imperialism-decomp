@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TGameSetupPicture, TNoHilitePicture)
 
-TGameSetupPicture::TGameSetupPicture() {}
+// FUNCTION: IMPERIALISM 0x00575860
+TGameSetupPicture::TGameSetupPicture() : TNoHilitePicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00575890
 // TGameSetupPicture::`scalar deleting destructor'

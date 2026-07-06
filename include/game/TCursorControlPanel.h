@@ -3,7 +3,7 @@
 #include "game/TControl.h"
 
 // Provisional interface for the 'crus' cursor-info control (g_pCursorControlPanel,
-// resolved via ResolveControlByTag(kControlTagCrus)). Concrete-class recovery in
+// resolved via ResolveControlByTag(kControlTagCurs)). Concrete-class recovery in
 // progress (bd imperialism-decomp-hpd.8):
 //   * The UI factory registers 'crus' as a TInfoBarText (see
 //     turn_event_dialog_factory.cpp:671/1139 + the comment at :701 "a 'crus'

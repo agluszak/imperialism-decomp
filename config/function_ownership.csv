@@ -72,6 +72,7 @@ address|target_cpp|ownership|note
 4272d0|src/game/TView.cpp|manual|marker_sync
 427330|src/game/TView.cpp|manual|marker_sync
 427360|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
+429330|src/game/TInfoBarText.cpp|manual|marker_sync
 4293c0|src/game/TInfoBarText.cpp|manual|marker_sync
 429410|src/game/TView.cpp|manual|marker_sync
 429450|src/game/TControl.cpp|manual|marker_sync
@@ -3225,6 +3226,7 @@ address|target_cpp|ownership|note
 572790|src/game/TTextPictureButton.cpp|manual|marker_sync
 572a80|src/game/TNoHilitePicture.cpp|manual|marker_sync
 572b10|src/game/TNoHilitePicture.cpp|manual|marker_sync
+572b30|src/game/TNoHilitePicture.cpp|manual|marker_sync
 572b60|src/game/TNoHilitePicture.cpp|manual|marker_sync
 572bb0|src/game/TNoHilitePicture.cpp|manual|marker_sync
 572bd0|src/game/TBackgroundPicture.cpp|manual|marker_sync
@@ -3285,6 +3287,7 @@ address|target_cpp|ownership|note
 575770|src/game/THighScoresPicture.cpp|manual|marker_sync
 5757c0|src/game/TGameSetupPicture.cpp|manual|marker_sync
 575840|src/game/TGameSetupPicture.cpp|manual|marker_sync
+575860|src/game/TGameSetupPicture.cpp|manual|marker_sync
 575890|src/game/TGameSetupPicture.cpp|manual|marker_sync
 5758e0|src/game/TGameSetupPicture.cpp|manual|marker_sync
 575900|src/game/TGameSetupPicture.cpp|manual|marker_sync

@@ -627,7 +627,7 @@
     },
     {
       "address": "0x429330",
-      "matching": 0.07407407407407407,
+      "matching": 0.3333333333333333,
       "name": "ConstructUiCursorTextResourceEntry",
       "type": 1
     },
@@ -1150,7 +1150,7 @@
     },
     {
       "address": "0x4538a0",
-      "matching": 0.0005141388174807198,
+      "matching": 0.1113440484509667,
       "name": "InitializeGameSetupScreenControlsAndModeTags",
       "type": 1
     },
@@ -1324,13 +1324,13 @@
     },
     {
       "address": "0x45d520",
-      "matching": 0.2961808261886204,
+      "matching": 0.2977396726422447,
       "name": "BuildTurnEventDialogResourcesForEvent898",
       "type": 1
     },
     {
       "address": "0x45e0b0",
-      "matching": 0.44873949579831934,
+      "matching": 0.4515406162464986,
       "name": "BuildTurnEventDialogResourcesForEvent8FC",
       "type": 1
     },
@@ -9805,7 +9805,7 @@
     },
     {
       "address": "0x4ba240",
-      "matching": 0.9166666666666666,
+      "matching": 0.9583333333333334,
       "name": "TCityProductionView::CreateObject",
       "type": 1
     },
@@ -9853,7 +9853,7 @@
     },
     {
       "address": "0x4badd0",
-      "matching": 0.7333333333333333,
+      "matching": 0.8285714285714286,
       "name": "TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh",
       "type": 1
     },
@@ -9895,7 +9895,7 @@
     },
     {
       "address": "0x4bc9b0",
-      "matching": 0.9154929577464789,
+      "matching": 0.9295774647887324,
       "name": "TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip",
       "type": 1
     },
@@ -14738,7 +14738,7 @@
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.2248995983935743,
+      "matching": 0.242914979757085,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -16292,7 +16292,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.19900045433893684,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17354,7 +17354,7 @@
     },
     {
       "address": "0x51b0a0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTerrainInfoDialog::CreateObject",
       "type": 1
     },
@@ -17384,7 +17384,7 @@
     },
     {
       "address": "0x51ba70",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTownNameDialog::CreateObject",
       "type": 1
     },
@@ -21591,7 +21591,7 @@
     },
     {
       "address": "0x54e690",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TJoinSelectorDialog::CreateObject",
       "type": 1
     },
@@ -23733,7 +23733,7 @@
     },
     {
       "address": "0x5691d0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TShipPlacard::CreateObject",
       "type": 1
     },
@@ -24921,7 +24921,7 @@
     },
     {
       "address": "0x572a80",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TNoHilitePicture::CreateObject",
       "type": 1
     },
@@ -24933,7 +24933,7 @@
     },
     {
       "address": "0x572b30",
-      "matching": 0.2,
+      "matching": 0.875,
       "name": "TNoHilitePicture::ConstructPictureResourceEntryType606E8",
       "type": 1
     },
@@ -24951,7 +24951,7 @@
     },
     {
       "address": "0x572bd0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TBackgroundPicture::CreateObject",
       "type": 1
     },
@@ -25125,7 +25125,7 @@
     },
     {
       "address": "0x573970",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TSliderPicture::CreateObject",
       "type": 1
     },
@@ -25359,7 +25359,7 @@
     },
     {
       "address": "0x5757c0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TGameSetupPicture::CreateObject",
       "type": 1
     },
@@ -25371,7 +25371,7 @@
     },
     {
       "address": "0x575860",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TGameSetupPicture::ConstructTGameSetupPictureBaseState",
       "type": 1
     },
@@ -25395,7 +25395,7 @@
     },
     {
       "address": "0x575e90",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TGameSetupMultiplayerPicture::CreateObject",
       "type": 1
     },
@@ -25431,7 +25431,7 @@
     },
     {
       "address": "0x576900",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TNetSelectPicture::CreateObject",
       "type": 1
     },
@@ -25455,7 +25455,7 @@
     },
     {
       "address": "0x576aa0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TNetGameSelectPicture::CreateObject",
       "type": 1
     },
@@ -25797,7 +25797,7 @@
     },
     {
       "address": "0x57b000",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TGameScorePicture::CreateObject",
       "type": 1
     },

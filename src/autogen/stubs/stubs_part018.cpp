@@ -131,14 +131,6 @@ undefined4 CreateTSpaceCommandInstance(void)
   return 0;
 }
 
-// ghidra_name TGameSetupPicture::ConstructTGameSetupPictureBaseState
-// ghidra_proto undefined ConstructTGameSetupPictureBaseState()
-// FUNCTION: IMPERIALISM 0x00575860
-undefined4 ConstructTGameSetupPictureBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState
 // ghidra_proto undefined ConstructTGameSetupMultiplayerPictureBaseState()
 // FUNCTION: IMPERIALISM 0x00575f30
