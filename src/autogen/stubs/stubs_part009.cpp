@@ -1531,14 +1531,6 @@ undefined4 WrapperFor_ftol_At0047cfa0(void)
   return 0;
 }
 
-// ghidra_name InitializeDialogTemplateC2WithTextState
-// ghidra_proto undefined InitializeDialogTemplateC2WithTextState()
-// FUNCTION: IMPERIALISM 0x0047cfd0
-undefined4 InitializeDialogTemplateC2WithTextState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047d090
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d090()
 // FUNCTION: IMPERIALISM 0x0047d090

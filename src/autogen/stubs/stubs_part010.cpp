@@ -1435,14 +1435,6 @@ undefined4 WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog
-// ghidra_proto undefined TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog()
-// FUNCTION: IMPERIALISM 0x004851b0
-undefined4 TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog
 // ghidra_proto undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()
 // FUNCTION: IMPERIALISM 0x004855b0

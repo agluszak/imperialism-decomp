@@ -182,6 +182,7 @@ address|target_cpp|ownership|note
 47c080|src/game/CDib.cpp|manual|marker_sync
 47c3d0|src/game/CDib.cpp|manual|marker_sync
 47cdd0|src/game/wave_helpers.cpp|manual|marker_sync
+47cfd0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|library|marker_sync
 47dfd0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
 47e0c0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
@@ -217,6 +218,7 @@ address|target_cpp|ownership|note
 484ff0|src/game/CMainFrame.cpp|manual|marker_sync
 485110|src/game/CMainFrame.cpp|manual|marker_sync
 485180|src/game/CMainFrame.cpp|manual|marker_sync
+4851b0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 485590|src/game/CMainFrame.cpp|manual|marker_sync
 485920|src/game/CMainFrame.cpp|manual|marker_sync
 485960|src/game/CMainFrame.cpp|manual|marker_sync

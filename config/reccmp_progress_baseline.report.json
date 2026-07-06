@@ -1695,7 +1695,7 @@
     },
     {
       "address": "0x47cfd0",
-      "matching": 0.05128205128205128,
+      "matching": 0.4,
       "name": "InitializeDialogTemplateC2WithTextState",
       "type": 1
     },
@@ -2596,7 +2596,7 @@
     },
     {
       "address": "0x4851b0",
-      "matching": 0.009708737864077669,
+      "matching": 0.6133333333333333,
       "name": "TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog",
       "type": 1
     },

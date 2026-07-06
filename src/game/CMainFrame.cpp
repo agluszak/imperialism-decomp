@@ -9,7 +9,7 @@
 
 #include <new>
 
-extern undefined4 TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void);
+void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void);
 
 namespace {
 
