@@ -117,8 +117,90 @@ void TMapMgr::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&pendingRiverMouthTile22, 2);
 }
 
-undefined TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0() {
-  return 0;
+// FUNCTION: IMPERIALISM 0x0050e8b0
+void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
+  if (terrainStateTable == 0) {
+    terrainStateTable = static_cast<TTerrainStateRecordView*>(::operator new(0x38f40));
+    if (terrainStateTable == 0) {
+      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0x198);
+    }
+  }
+  int i;
+  for (i = 0; i < 0x1950; ++i) {
+    TTerrainStateRecordView* tile = &terrainStateTable[i];
+    tile->terrainType00 = -1;
+    tile->spriteVariantIndex01 = 0;
+    tile->roadFlag = 0;
+    tile->pad03 = 0xff;
+    tile->ownerNationTag04 = -1;
+    tile->regionSubtypeTag05 = -1;
+    tile->adjacencyBits06 = 0;
+    tile->ownerBorderMask07 = 0;
+    tile->cityBorderMask08 = 0;
+    tile->waterAdjacencyMask09 = 0;
+    tile->adjacencyMaskA0a = 0;
+    tile->adjacencyMaskB0b = 0;
+    tile->developmentClassNibbles0c = 0;
+    tile->pendingDevelopmentFlag0d = 0;
+    tile->perTileVisitedFlag0f = 0;
+    tile->resourceTypeByEdge[0] = -1;
+    tile->resourceTypeByEdge[1] = -1;
+    tile->gateFlag = -1;
+    tile->cityRecordIndex = -1;
+    tile->pad16 = 0xff;
+    tile->railFlags17 = 0;
+    tile->secondaryOwnerNationTag18 = -1;
+    tile->pad19[1] = 0xff;
+    tile->pad19[2] = 0xff;
+    tile->activeFlags1c = 0;
+    tile->pad1d[0] = 0;
+    tile->firstCivilianOrder20 = 0;
+  }
+
+  if (cityScoreTable == 0) {
+    cityScoreTable = new TGlobalMapCityScoreRecord[0x180];
+    if (cityScoreTable == 0) {
+      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0x1c7);
+    }
+  }
+  int j;
+  for (i = 0; i < 0x180; ++i) {
+    TGlobalMapCityScoreRecord* record = &cityScoreTable[i];
+    record->ownerNationCode00 = -1;
+    record->byte01 = 0xff;
+    record->developmentStage = 0;
+    record->fortLevel03 = 0;
+    record->ownerNationSlot = -1;
+    record->lastTurnTick = 999;
+    record->adjacentRegionCount08 = 0;
+    for (j = 0; j < 0x18; ++j) {
+      record->adjacentRegionIds0A[j] = -1;
+    }
+    record->linkedRegionCount = 0;
+    record->byte3B = 0;
+    record->byte3C = 0;
+    record->secondaryNeighborTileIndex3e = -1;
+    record->primaryNeighborTileIndex40 = -1;
+    for (j = 0; j < 0x20; ++j) {
+      record->linkedRegionIds[j] = -1;
+    }
+    record->linkedRegionIds[0x20] = 0;
+    record->stage1CounterA = 0;
+    record->stage1CounterB = 0;
+    record->pad88 = 0;
+    record->stage1CounterC = 0;
+    record->stage1CounterD = 0;
+    record->stage2CounterA = 0;
+    record->stage2CounterB = 0;
+    record->stage2CounterC = 0;
+    record->field94 = 0;
+    record->stationedUnitChain98 = 0;
+    record->padA2 = 0;
+    record->regionClassA3 = -1;
+    record->cityNameA4 = g_szEmptyString;
+  }
 }
 
 undefined TMapMgr::BuildOrLoadGlobalMapStateForSession(CString param_1, char* param_2) {

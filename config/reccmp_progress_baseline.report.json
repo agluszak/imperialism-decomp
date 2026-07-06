@@ -16380,7 +16380,7 @@
     },
     {
       "address": "0x50e8b0",
-      "matching": 0.0,
+      "matching": 0.19428571428571428,
       "name": "TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0",
       "type": 1
     },
@@ -16596,7 +16596,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.2491103202846975,
+      "matching": 0.25622775800711745,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -16872,7 +16872,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3378995433789954,
+      "matching": 0.3167420814479638,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },

@@ -174,7 +174,11 @@ public:
   virtual void Free() override;                    // slot 0x07 0x50e510
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined WrapperFor_AllocateWithFallbackHandler_At0050e8b0(); // slot 0x0a 0x50e8b0
+  // Lazily allocates terrainStateTable (0x1950 tiles, raw 0x24-byte records) and
+  // cityScoreTable (0x180 records, real TGlobalMapCityScoreRecord[] so CString members
+  // construct), then resets every record to its sentinel defaults (-1 for
+  // unassigned owner/region/index fields, 0 for counters/masks, 999 for lastTurnTick).
+  virtual void AllocateAndResetTerrainAndCityScoreTables(); // slot 0x0a 0x50e8b0
   virtual undefined BuildOrLoadGlobalMapStateForSession(CString param_1,
                                                         char* param_2);     // slot 0x0b 0x50ec90
   virtual undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream(); // slot 0x0c 0x50f200

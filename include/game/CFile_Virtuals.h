@@ -5,7 +5,10 @@
 class CFile_Virtuals {
 public:
   virtual void dummy00() = 0;
-  virtual void dummy04() = 0;
+  // Called with arg=1 by ReleaseResourceStreamIfNotNull (0x5df6d0); scalar-deleting-destructor
+  // shape (bool "delete storage too" flag) for whatever concrete CFile-family object this
+  // interface is viewing.
+  virtual void CloseAndMaybeDeleteSlot04(int deleteStorage) = 0;
   virtual void dummy08() = 0;
   virtual void dummy0C() = 0;
   virtual void dummy10() = 0;
