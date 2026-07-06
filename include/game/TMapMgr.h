@@ -207,8 +207,16 @@ public:
   // TTown on the owning TGreatPower's townMarkerList.
   virtual void SeedRecruitSearchVisitedStateAndClearAlliedTerritory(
       class TCivUnit* pCivilianOrderEntry); // slot 0x21 0x514f20
-  virtual undefined OrphanCallChain_C1_I159_005150e0(int* param_1,
-                                                     short param_2); // slot 0x22 0x5150e0
+  // Military-recruit counterpart of the SeedRecruitSearchVisitedState* family above: scans
+  // `candidates` (fixed 6 slots) for the last non-null entry, seeds recruitSearchVisited0e =
+  // 1 across all tiles and clears it for the found unit's own tile
+  // (TUnit::field_6), then clears it for the 6 hex neighbors of either the unit's
+  // orderTargetTiles28[orderTargetSlot-1] (when orderTargetSlot != 0) or its own tile,
+  // provided the neighbor is owned by the same nation (TUnit::field_18) or is at war with it
+  // (TDiplomacyMgr::IsNationPairAtWar). Bails immediately if no candidate is non-null.
+  virtual void SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
+      class TMilitaryUnit* const candidates[6],
+      short orderTargetSlot); // slot 0x22 0x5150e0
   virtual undefined
   WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(int param_1); // slot 0x23 0x515330
   virtual undefined

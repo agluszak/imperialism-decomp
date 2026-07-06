@@ -6,6 +6,7 @@
 #include "game/TSortedList.h"
 #include "game/TMinor.h"
 #include "game/TCivUnit.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TPortZone.h"
 #include "game/TOcean.h"
 #include "game/TZone.h"
@@ -1235,8 +1236,61 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
   }
 }
 
-undefined TMapMgr::OrphanCallChain_C1_I159_005150e0(int* param_1, short param_2) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x005150e0
+void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
+    TMilitaryUnit* const candidates[6], short orderTargetSlot) {
+  int i;
+  TMilitaryUnit* unit = nullptr;
+  for (i = 0; i < 6; ++i) {
+    if (candidates[i] != nullptr) {
+      unit = candidates[i];
+    }
+  }
+  if (unit == nullptr) {
+    return;
+  }
+
+  short nationSlot = unit->field_18;
+  field9 = 1;
+  int tileScanIndex;
+  for (tileScanIndex = 0; tileScanIndex < 0x1950; ++tileScanIndex) {
+    terrainStateTable[tileScanIndex].recruitSearchVisited0e = 1;
+  }
+  terrainStateTable[unit->field_6].recruitSearchVisited0e = 0;
+
+  // Minimum per-candidate combat class across all 6 slots (capped at 3) -- computed but
+  // never read by the original; kept for byte-fidelity rather than dropped as dead code.
+  short minCombatClass = 3;
+  for (i = 0; i < 6; ++i) {
+    if (candidates[i] != nullptr) {
+      short combatClass = g_awUnitCombatClassBySlot[candidates[i]->orderType];
+      if (combatClass < minCombatClass) {
+        minCombatClass = combatClass;
+      }
+    }
+  }
+  (void)minCombatClass;
+
+  short targetTileIndex;
+  if (orderTargetSlot != 0) {
+    targetTileIndex = unit->orderTargetTiles28[orderTargetSlot - 1];
+  } else {
+    targetTileIndex = unit->field_6;
+  }
+
+  for (short direction = 0; direction < 6; ++direction) {
+    short neighborTile = GetWrappedHexNeighborTileIndexByDirection(targetTileIndex, direction);
+    if (neighborTile == -1) {
+      continue;
+    }
+    TTerrainStateRecordView* neighbor = &terrainStateTable[neighborTile];
+    if (neighbor->ownerNationTag04 == nationSlot) {
+      neighbor->recruitSearchVisited0e = 0;
+    } else if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(neighbor->ownerNationTag04,
+                                                               nationSlot)) {
+      neighbor->recruitSearchVisited0e = 0;
+    }
+  }
 }
 
 undefined TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(int param_1) {

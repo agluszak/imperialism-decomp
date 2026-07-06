@@ -16515,12 +16515,6 @@
       "type": 1
     },
     {
-      "address": "0x511614",
-      "matching": 0.0,
-      "name": "UpdateStrategicMapTileIconVariantState",
-      "type": 1
-    },
-    {
       "address": "0x511a70",
       "matching": 0.007722007722007722,
       "name": "TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng",
@@ -16840,7 +16834,7 @@
     },
     {
       "address": "0x5150e0",
-      "matching": 0.012422360248447204,
+      "matching": 0.35856573705179284,
       "name": "TMapMgr::OrphanCallChain_C1_I159_005150e0",
       "type": 1
     },
