@@ -35,7 +35,7 @@ public:
   // signature is a five-argument thiscall (RET 0x14) matching TCommand::ICommand.
   void InitializeRangePair(int arg1, TCommandHandler* arg2, int arg3, int arg4, int arg5);
 
-  virtual ~TCommand();
+  virtual ~TCommand() override;
 };
 
 ASSERT_SIZE(TCommand, 0x18);

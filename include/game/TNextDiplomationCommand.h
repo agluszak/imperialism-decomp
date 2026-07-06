@@ -22,7 +22,7 @@ public:
   // through the UI root controller (0x4f2930).
   void DispatchUiPacketWithTagNEXT();
 
-  virtual ~TNextDiplomationCommand(); // slot 0x01 scalar deleting dtor 0x4f0dd0
+  virtual ~TNextDiplomationCommand() override; // slot 0x01 scalar deleting dtor 0x4f0dd0
 };
 
 ASSERT_SIZE(TNextDiplomationCommand, 0x18);

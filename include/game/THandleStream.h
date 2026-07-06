@@ -9,7 +9,7 @@ class THandleStream : public TStream {
 public:
   // clang-format off
   // === BEGIN GENERATED DECLS (THandleStream) — refreshed by recover-class; do not hand-edit ===
-  virtual ~THandleStream(); // slot 0x01 (scalar deleting destructor)
+  virtual ~THandleStream() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)

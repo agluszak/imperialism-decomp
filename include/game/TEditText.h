@@ -19,7 +19,7 @@ public:
   short padding_9e;    // 0x9e
 
   DECLARE_DYNCREATE(TEditText)
-  virtual ~TEditText();
+  virtual ~TEditText() override;
 
   void Free() override;
   char GetBoolSlot28() override;

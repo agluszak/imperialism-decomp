@@ -92,9 +92,11 @@ if(IMPERIALISM_LINT_COMPILE_ONLY)
         -fms-extensions
         -Wno-unknown-pragmas
         -Wno-ignored-pragmas
-        # Core diagnostics.
-        -Wall
-        -Wextra
+        # Core diagnostics. NOTE: this compiler is clang-cl (see cmake/clang-cl-i686.cmake),
+        # where bare "-Wall"/"-Wextra" are parsed as the MSVC /Wall/​/Wextra spelling — i.e.
+        # "enable nearly every diagnostic clang has", not GNU clang's modest -Wall/-Wextra
+        # default set. /W4 is the real clang-cl equivalent of a sane default level.
+        /W4
         # High-value vtable checks — the reason for this second compiler.
         -Werror=inconsistent-missing-override
         -Werror=suggest-override
@@ -118,6 +120,11 @@ if(IMPERIALISM_LINT_COMPILE_ONLY)
         -Wno-array-bounds
         -Wno-switch
         -Wno-mismatched-tags
+        # Explicitly disabled: not useful for MSVC500-matching decomp source.
+        -Wno-unsafe-buffer-usage
+        -Wno-c++98-compat
+        -Wno-global-constructors
+        -Wno-exit-time-destructors
     )
 
     if(IMPERIALISM_LINT_WERROR)

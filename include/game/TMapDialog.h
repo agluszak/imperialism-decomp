@@ -18,7 +18,7 @@ public:
 
   DECLARE_DYNCREATE(TMapDialog)
   TMapDialog();
-  virtual ~TMapDialog();
+  virtual ~TMapDialog() override;
 
   void Free() override; // slot 0x07 — 0x00519c90: release quickDrawSurface350/field35c.
 

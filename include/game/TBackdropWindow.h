@@ -13,7 +13,7 @@ class TBackdropWindow : public CWnd {
 
 public:
   TBackdropWindow();
-  virtual ~TBackdropWindow();
+  virtual ~TBackdropWindow() override;
 
   void InitializeDefaultBackdropWindowFromBmp3B6(CWnd* parent);
   virtual void PostNcDestroy() override;

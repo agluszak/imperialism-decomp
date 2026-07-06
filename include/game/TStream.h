@@ -23,7 +23,7 @@ public:
   TStream();
 
 public:
-  virtual ~TStream();
+  virtual ~TStream() override;
   // Slots 0x14/0x18 (WriteTo/ReadFrom) and 0x20/0x24 (ShallowClone/ShallowFree)
   // are inherited from TObject unchanged; 0x1c (Free) is overridden below.
   void Free() override;                                   // 7 (0x1c)  0x00488ab0

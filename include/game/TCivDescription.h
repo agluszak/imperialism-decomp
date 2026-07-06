@@ -16,7 +16,7 @@ struct Rect32 {
 class TCivDescription : public TView {
 public:
   DECLARE_DYNCREATE(TCivDescription)
-  virtual ~TCivDescription();
+  virtual ~TCivDescription() override;
 
   virtual void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x58f550
   virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,

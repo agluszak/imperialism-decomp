@@ -8,7 +8,7 @@
 class TGameWindow : public TWindow {
 public:
   DECLARE_DYNCREATE(TGameWindow)
-  virtual ~TGameWindow();
+  virtual ~TGameWindow() override;
 
   virtual void Free() override;
   virtual void ForwardParam(int param) override;

@@ -22,7 +22,7 @@ class TSoundChannelNode;
 class TTradeMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TTradeMgr)
-  virtual ~TTradeMgr(); // slot 0x01 (scalar deleting destructor, 0x5b7a40)
+  virtual ~TTradeMgr() override; // slot 0x01 (scalar deleting destructor, 0x5b7a40)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)

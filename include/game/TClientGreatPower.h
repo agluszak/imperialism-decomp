@@ -7,7 +7,7 @@
 class TClientGreatPower : public TGreatPower {
 public:
   DECLARE_DYNCREATE(TClientGreatPower)
-  ~TClientGreatPower();
+  ~TClientGreatPower() override;
 
   // slot 0x26 — 0x005412b0
   char ReturnFalseNationStateCapabilityFlag98(void) override;

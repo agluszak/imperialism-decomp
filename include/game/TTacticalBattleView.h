@@ -12,7 +12,7 @@ class TTacticalBattleView : public TView {
 public:
 // === BEGIN GENERATED DECLS (TTacticalBattleView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacticalBattleView)
-  virtual ~TTacticalBattleView(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TTacticalBattleView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)

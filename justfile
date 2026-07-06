@@ -787,6 +787,7 @@ gates:
   just stub-count-gate
   just class-size-gate
   just noop-gate
+  just lint
 
 [group('gates')]
 tooling-check:

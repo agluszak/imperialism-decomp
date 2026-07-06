@@ -12,7 +12,7 @@ class TCapacityOrder : public TItemOrder {
 public:
   DECLARE_DYNCREATE(TCapacityOrder)
   TCapacityOrder(); // trivial; inlined into CreateObject in the binary
-  ~TCapacityOrder();
+  ~TCapacityOrder() override;
 
   undefined CommitIfPending() override; // slot 0x0d 0x4b8dd0
   virtual undefined

@@ -7,7 +7,7 @@
 class TCreditsPicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TCreditsPicture)
-  virtual ~TCreditsPicture();
+  virtual ~TCreditsPicture() override;
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void NoOpUiLifecycleHook(int arg) override;
