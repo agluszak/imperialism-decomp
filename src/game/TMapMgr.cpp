@@ -1033,8 +1033,52 @@ undefined TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(int
   return 0;
 }
 
-undefined TMapMgr::OrphanLeaf_NoCall_Ins83_005155c0(int param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x005155c0
+void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThreshold(TCivUnit* pCivilianOrderEntry) {
+  unsigned char qualifiesByResourceType[23] = {0};
+  if (pCivilianOrderEntry->orderType == 0) {
+    qualifiesByResourceType[3] = 1;
+    qualifiesByResourceType[4] = 1;
+    qualifiesByResourceType[21] = 1;
+    qualifiesByResourceType[22] = 1;
+  } else {
+    qualifiesByResourceType[6] = 1;
+  }
+
+  this->field9 = 1;
+  short nationTag = pCivilianOrderEntry->field_18;
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+    if (tile->terrainType00 == 5) {
+      tile->recruitSearchVisited0e = 1;
+      continue;
+    }
+    if (tile->ownerNationTag04 != nationTag && tile->secondaryOwnerNationTag18 != nationTag) {
+      tile->recruitSearchVisited0e = 1;
+      continue;
+    }
+    if (tile->pendingDevelopmentFlag0d == 0) {
+      tile->recruitSearchVisited0e = 1;
+      continue;
+    }
+    short maxValue = 0;
+    for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
+      signed char resourceType = tile->resourceTypeByEdge[edgeIndex];
+      if (resourceType == -1) {
+        continue;
+      }
+      if (qualifiesByResourceType[resourceType] == 0) {
+        continue;
+      }
+      short value =
+          g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationTag][resourceType];
+      if (value > maxValue) {
+        maxValue = value;
+      }
+    }
+    signed char highNibble = tile->developmentClassNibbles0c >> 4;
+    tile->recruitSearchVisited0e = (highNibble >= maxValue) ? 1 : 0;
+  }
 }
 
 undefined TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability(int param_1) {

@@ -60,7 +60,11 @@ struct TTerrainStateRecordView {
   short cityRecordIndex;
   unsigned char pad16;
   unsigned char railFlags17; // 0x17
-  unsigned char pad18[4];
+  // Secondary/alternate owner nation tag (offset 0x18): the recruit-search-eligibility
+  // family (0x5155c0, 0x515890) accepts a tile as owned by a nation if EITHER
+  // ownerNationTag04 OR this byte matches -- a genuine second owner slot, not padding.
+  signed char secondaryOwnerNationTag18;
+  unsigned char pad19[3];
   unsigned char activeFlags1c; // 0x1c
   unsigned char pad1d[0x20 - 0x1d];
   TCivUnit* firstCivilianOrder20; // 0x20
@@ -193,7 +197,15 @@ public:
   WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(int param_1); // slot 0x23 0x515330
   virtual undefined
   WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(int param_1); // slot 0x24 0x515460
-  virtual undefined OrphanLeaf_NoCall_Ins83_005155c0(int param_1);        // slot 0x25 0x5155c0
+  // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family, but each
+  // tile is eligible only if it's owned by pCivilianOrderEntry->field_18 (via
+  // ownerNationTag04 or secondaryOwnerNationTag18) and pendingDevelopmentFlag0d != 0, and
+  // then gated on whether its high development nibble is below the max capability value
+  // (over its qualifying resourceTypeByEdge entries) from
+  // g_pCityOrderCapabilityState->capabilityValueByNationAndResource. Which resourceTypes
+  // qualify depends on pCivilianOrderEntry->orderType (== 0 selects {3,4,21,22}, else {6}).
+  virtual void SeedRecruitSearchVisitedStateByCapabilityThreshold(
+      class TCivUnit* pCivilianOrderEntry); // slot 0x25 0x5155c0
   virtual undefined
   MarkType5NeighborTilesUnavailableByNationCapability(int param_1); // slot 0x26 0x515720
   virtual undefined OrphanLeaf_NoCall_Ins69_00515890(int param_1);  // slot 0x27 0x515890
