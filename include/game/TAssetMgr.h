@@ -27,10 +27,12 @@ public:
   virtual void NoOpRuntimeUiCallback_005df780(int arg);           // slot 0x0b 0x5df780
   virtual void NoOpRuntimeUiCallback_005df3f0(int arg);           // slot 0x0c 0x5df3f0
   virtual void NoOpRuntimeUiCallback_005df410(int arg);           // slot 0x0d 0x5df410
+  // Ground truth (0x5dfc10): two parameters only — the movie view pointer is the
+  // second arg (stored into g_pUiRuntimeContext->activeMovieViewF4 at 0x5dfc8e);
+  // there is no mode flag.
   virtual void
   PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
-                                            TMovieView* movieView,
-                                            int modeFlag); // slot 0x0e 0x5dfc10
+                                            TMovieView* movieView); // slot 0x0e 0x5dfc10
   // === END GENERATED DECLS (TAssetMgr) ===
 
   // Layout recovered from ctor 0x5df280: the 13 shared UI string-reference slots live at

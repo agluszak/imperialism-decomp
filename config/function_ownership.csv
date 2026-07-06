@@ -801,6 +801,7 @@ address|target_cpp|ownership|note
 49c430|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c720|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c850|src/game/TSoundResourceManager.cpp|manual|marker_sync
+49c8e0|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c970|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49cbc0|src/game/TBackdropWindow.cpp|manual|marker_sync
 49cbf0|src/game/TBackdropWindow.cpp|manual|marker_sync

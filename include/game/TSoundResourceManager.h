@@ -131,6 +131,11 @@ public:
   // 0x0049c970 — create the DirectSound device (once), set the app main-window cooperative
   // level, then create all six channel buffers. Returns 1 on success, 0 on failure.
   int InitializeDirectSoundDeviceAndChannels();
+  // 0x0049c8e0 — Release() all six channel buffers, Release() the device, and free the
+  // wave-pack module. Reached via TSoundPlayer::ClearDirectSoundInitPendingAndResetState
+  // (0x5e4fd0 sets ECX = &g_soundResourceManager); the original releases the audio
+  // device this way right before MCIWnd movie playback starts.
+  void ReleaseDirectSoundDeviceAndChannels();
   // 0x0049c150 — build the shared DSBUFFERDESC and create one channel buffer into
   // *ppChannel, then GetCaps to confirm it. Returns 1 on success, 0 on failure.
   int CreateChannelBuffer(IDirectSoundBuffer** ppChannel);

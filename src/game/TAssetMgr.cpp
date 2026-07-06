@@ -47,10 +47,8 @@ void TAssetMgr::NoOpRuntimeUiCallback_005df780(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dfc10
-void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName, TMovieView* movieView,
-                                                          int modeFlag) {
-  (void)modeFlag;
-
+void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
+                                                          TMovieView* movieView) {
   CString moviePath = CString("Movies/") + movieName;
   moviePath = moviePath + ".avi";
 

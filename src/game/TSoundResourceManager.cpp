@@ -159,6 +159,27 @@ int TSoundResourceManager::SetChannelVolumesUntilAccepted(int volume) {
   return 1;
 }
 
+// Release the six channel buffers, the DirectSound device, and the wave-pack module.
+// The original runs this (via TSoundPlayer slot 0x29) right before starting MCIWnd
+// movie playback so the AVI audio can open the wave device.
+// FUNCTION: IMPERIALISM 0x0049c8e0
+void TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels() {
+  for (int i = 0; i < 6; ++i) {
+    if (m_channels[i] != 0) {
+      m_channels[i]->Release();
+      m_channels[i] = 0;
+    }
+  }
+  if (m_device != 0) {
+    m_device->Release();
+    m_device = 0;
+  }
+  if (m_module != 0) {
+    FreeLibrary(m_module);
+    m_module = 0;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0049c970
 int TSoundResourceManager::InitializeDirectSoundDeviceAndChannels() {
   if (m_device != 0) {

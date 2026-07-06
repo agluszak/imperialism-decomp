@@ -33057,7 +33057,7 @@
     },
     {
       "address": "0x5db3b0",
-      "matching": 0.23529411764705882,
+      "matching": 0.2361111111111111,
       "name": "HandleTurnEventDialogFactorySlotF4",
       "type": 1
     },
@@ -33441,7 +33441,7 @@
     },
     {
       "address": "0x5dfc10",
-      "matching": 0.4691358024691358,
+      "matching": 0.4567901234567901,
       "name": "TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup",
       "type": 1
     },
@@ -33933,7 +33933,7 @@
     },
     {
       "address": "0x5e4f80",
-      "matching": 0.7692307692307693,
+      "matching": 0.8571428571428571,
       "name": "TSoundPlayer::RequestDirectSoundInitIfAllowed",
       "type": 1
     },
@@ -33945,7 +33945,7 @@
     },
     {
       "address": "0x5e4fd0",
-      "matching": 0.8,
+      "matching": 1.0,
       "name": "TSoundPlayer::ClearDirectSoundInitPendingAndResetState",
       "type": 1
     },

@@ -1383,7 +1383,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
   }
 
   if (!movieName.IsEmpty()) {
-    g_pUiViewManager->PlayMovieClipAndDispatchTurnStateFollowup(movieName, movieView, 0);
+    g_pUiViewManager->PlayMovieClipAndDispatchTurnStateFollowup(movieName, movieView);
   }
 }
 
