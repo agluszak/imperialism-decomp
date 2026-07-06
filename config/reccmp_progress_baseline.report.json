@@ -4498,7 +4498,7 @@
     },
     {
       "address": "0x48c250",
-      "matching": 0.5161290322580645,
+      "matching": 0.6666666666666666,
       "name": "TView::HandleCursorHoverFallback_b0",
       "type": 1
     },
@@ -28351,7 +28351,7 @@
     {
       "address": "0x596cb0",
       "matching": 0.16101694915254236,
-      "name": "TToolBarCluster::SetMapInteractionMode",
+      "name": "TMapUberPicture::SetMapInteractionMode",
       "type": 1
     },
     {
@@ -28399,13 +28399,13 @@
     {
       "address": "0x597810",
       "matching": 0.3401360544217687,
-      "name": "TToolBarCluster::RefreshMapOrderEntryPanel",
+      "name": "TMapUberPicture::RefreshMapOrderEntryPanel",
       "type": 1
     },
     {
       "address": "0x597950",
       "matching": 0.5517241379310345,
-      "name": "TToolBarCluster::SetActiveMapOrderEntry",
+      "name": "TMapUberPicture::SetActiveMapOrderEntry",
       "type": 1
     },
     {

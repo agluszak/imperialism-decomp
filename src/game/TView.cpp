@@ -780,8 +780,7 @@ void TView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
     RECT parentRect;
     CopyRect(&parentRect, &rect);
     if (g_pCursorControlPanel != nullptr) {
-      g_pCursorControlPanel->sharedStringRef = sharedStringRef;
-      g_pCursorControlPanel->UpdateCursorState();
+      g_pCursorControlPanel->SetTextAndLayoutRect(sharedStringRef, &parentRect);
     }
   }
   if (GetField4E() != 0xffff) {
@@ -1048,7 +1047,8 @@ int TView::RunModalLoop(unsigned char loopKind) {
 
     if ((loopKind & 2) == 0) {
       const int currentIdleCount = idleMessageCount++;
-      if (SendMessageA(reinterpret_cast<HWND>(controlTag), kMsgKickIdle, 0, currentIdleCount) != 0) {
+      if (SendMessageA(reinterpret_cast<HWND>(controlTag), kMsgKickIdle, 0, currentIdleCount) !=
+          0) {
         continue;
       }
     }

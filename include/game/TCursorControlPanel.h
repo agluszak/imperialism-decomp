@@ -22,7 +22,10 @@
 //     subtype before folding this placeholder into the real class.
 class TCursorControlPanel : public TControl {
 public:
-  // Slots 113-127 (0x1C4-0x1FC)
+  // Slots 113-127 (bytes 0x1C4..0x1FC) — these correspond to TInfoBarText's own
+  // inherited vtable slots (the real 'crus' object is a plain TInfoBarText); kept as
+  // placeholders only to land SetTextAndLayoutRect at the correct byte 0x200 without
+  // reparenting this TControl-typed global (autogen references it as TControl*).
   virtual void dummy_113() = 0;
   virtual void dummy_114() = 0;
   virtual void dummy_115() = 0;
@@ -39,6 +42,8 @@ public:
   virtual void dummy_126() = 0;
   virtual void dummy_127() = 0;
 
-  // Slot 128 (0x200)
-  virtual void UpdateCursorState() = 0;
+  // Slot 0x80 / byte 0x200 — the real TInfoBarText method (0x5b66b0): set the info-bar
+  // text and its layout rect. HandleCursorHoverFallback pushes the hovered view's
+  // sharedStringRef + computed rect through here to refresh the cursor tooltip panel.
+  virtual void SetTextAndLayoutRect(CString text, RECT* layoutRect) = 0;
 };
