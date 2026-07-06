@@ -593,6 +593,14 @@ class-owner-probe address *args: _require-ghidra-install
 rtti-oracle *args: _require-ghidra-install
   uv run python -m tools.ghidra.rtti_class_oracle {{args}}
 
+# Enumerate every MFC message map (AFX_MSGMAP): per-class message->handler table
+# joined against function ownership (Audit C, bd 1uj.58.3). `--csv` for the full
+# table, `--unported` for handlers with no manual owner.
+[doc('Enumerate MFC message maps: message->handler->port-status per class; --csv / --unported')]
+[group('ghidra-inspect')]
+dump-message-maps *args: _require-ghidra-install
+  uv run python -m tools.ghidra.dump_message_maps {{args}}
+
 [group('ghidra-inspect')]
 w32dasm-report: _require-ghidra-install
   uv run python -m tools.w32dasm.parse_alf
