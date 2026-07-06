@@ -559,6 +559,12 @@ extern short g_Build_Hex_Area_LookupTable_00696E80[];
 // 0x00696f08, ground truth for the game's 6 terrain types.
 extern unsigned char g_abTerrainTypeSeedGateProfileA[6];
 
+// TMapMgr.cpp — per-terrainType00 priority score, read by
+// TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority (0x50fca0) to rank same-city
+// hex neighbors when picking primaryNeighborTileIndex40/secondaryNeighborTileIndex3e. Indexed
+// 0-7 (terrainType00's declared range); read raw at 0x00696e10.
+extern short g_anTerrainTypeNeighborLinkPriority[8];
+
 // TMapMgr.cpp — three single-byte UI/notification flags set by
 // MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA when a nation-indexed
 // TTechMgr::OrderCapRow padding byte reads 2; purpose beyond that one comparison not

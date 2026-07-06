@@ -128,8 +128,48 @@ undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
   return 0;
 }
 
-undefined TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x0050fca0
+void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(short cityRecordIndex) {
+  short neighbors[6];
+  ComputeHexNeighborTileIndices(cityScoreTable[cityRecordIndex].ownerNationSlot, neighbors,
+                                hexNeighborWrapHorizontally20);
+
+  bool consumed[6] = {false, false, false, false, false, false};
+  int d;
+
+  int bestDirection = -1;
+  short bestPriority = 1;
+  for (d = 0; d < 6; ++d) {
+    if (neighbors[d] != -1) {
+      TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
+      if (neighbor->cityRecordIndex == cityRecordIndex) {
+        if (bestPriority < g_anTerrainTypeNeighborLinkPriority[neighbor->terrainType00]) {
+          bestDirection = d;
+          bestPriority = g_anTerrainTypeNeighborLinkPriority[neighbor->terrainType00];
+        }
+      }
+    }
+  }
+  consumed[bestDirection] = true;
+  cityScoreTable[cityRecordIndex].primaryNeighborTileIndex40 = neighbors[bestDirection];
+
+  int secondDirection = -1;
+  short secondPriority = -1;
+  for (d = 0; d < 6; ++d) {
+    if (neighbors[d] != -1 && !consumed[d]) {
+      TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
+      short priority = g_anTerrainTypeNeighborLinkPriority[neighbor->terrainType00];
+      if (neighbor->cityRecordIndex == cityRecordIndex) {
+        priority += 0x14;
+      }
+      if (secondPriority < priority) {
+        secondDirection = d;
+        secondPriority = priority;
+      }
+    }
+  }
+  consumed[secondDirection] = true;
+  cityScoreTable[cityRecordIndex].secondaryNeighborTileIndex3e = neighbors[secondDirection];
 }
 
 undefined TMapMgr::UpdateTileNeighborBorderInfluenceCounters(short param_1, short param_2) {

@@ -94,8 +94,12 @@ struct TGlobalMapCityScoreRecord {
   unsigned char byte3B;
   unsigned char byte3C;
   unsigned char pad3D;
-  short field3E; // 0x3e — snapshotted by the city-redraw packet
-  short field40; // 0x40 — snapshotted by the city-redraw packet
+  // Secondary/primary same-cityRecordIndex neighbor tile index, chosen by
+  // TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority (0x50fca0) via a
+  // per-terrainType00 priority table (g_anTerrainTypeNeighborLinkPriority), with same-city
+  // neighbors preferred; also snapshotted by the city-redraw packet.
+  short secondaryNeighborTileIndex3e; // 0x3e
+  short primaryNeighborTileIndex40;   // 0x40
   short linkedRegionIds[0x21];
   short stage1CounterA;
   short stage1CounterB;
@@ -297,8 +301,14 @@ public:
   // when its regionSubtypeTag05 is -1 or its city's fortLevel03 is below 3.
   virtual void MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
       class TCivUnit* pCivilianOrderEntry); // slot 0x29 0x515b10
-  virtual undefined
-  UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int param_1); // slot 0x2a 0x50fca0
+  // Picks up to 2 of cityRecordIndex's 6 hex neighbors as "linked" tiles, ranked by
+  // g_anTerrainTypeNeighborLinkPriority[terrainType00] (same-cityRecordIndex neighbors get a
+  // +0x14 bonus in the second pass): the top-ranked same-city neighbor becomes
+  // primaryNeighborTileIndex40, then the next-best remaining neighbor (any city) becomes
+  // secondaryNeighborTileIndex3e. Faithfully reproduces the original's own out-of-bounds
+  // stack read (local_c[-1]) when a pass finds no eligible neighbor at all.
+  virtual void
+  UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(short cityRecordIndex); // slot 0x2a 0x50fca0
   // Looks up whether tileIndex's region has an eligible stationed unit
   // (TArmyMgr::HasEligibleStationedUnitInRegion) but discards the result -- the original's
   // own call site never reads the return value either, so this is vestigial/dead code.

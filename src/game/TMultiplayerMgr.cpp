@@ -2340,8 +2340,8 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityBytes3A[0] = src->linkedRegionCount;
   packet.cityBytes3A[1] = src->byte3B;
   packet.cityBytes3A[2] = src->byte3C;
-  packet.cityWord3E = src->field3E;
-  packet.cityWord40 = src->field40;
+  packet.cityWord3E = src->secondaryNeighborTileIndex3e;
+  packet.cityWord40 = src->primaryNeighborTileIndex40;
 
   for (int linkedIndex = 0; linkedIndex < 32; ++linkedIndex) {
     packet.linkedRegionIds42[linkedIndex] = src->linkedRegionIds[linkedIndex];
