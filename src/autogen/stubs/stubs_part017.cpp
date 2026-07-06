@@ -211,14 +211,6 @@ undefined4 InitializeNavyOrderPriorityTables(void)
   return 0;
 }
 
-// ghidra_name DestroyNavyOrderAndChildren
-// ghidra_proto undefined DestroyNavyOrderAndChildren()
-// FUNCTION: IMPERIALISM 0x00556820
-undefined4 DestroyNavyOrderAndChildren(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetNavyOrderListsAndManagerOwner
 // ghidra_proto undefined ResetNavyOrderListsAndManagerOwner()
 // FUNCTION: IMPERIALISM 0x00556850

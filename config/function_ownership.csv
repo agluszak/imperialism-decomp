@@ -2929,6 +2929,7 @@ address|target_cpp|ownership|note
 556570|src/game/TNavyMgr.cpp|manual|marker_sync
 5565c0|src/game/TNavyMgr.cpp|manual|marker_sync
 5567a0|src/game/TNavyMgr.cpp|manual|marker_sync
+556820|src/game/TTaskForce.cpp|manual|marker_sync
 5568c0|src/game/TNavyMgr.cpp|manual|marker_sync
 556aa0|src/game/TNavyMgr.cpp|manual|marker_sync
 557080|src/game/TNavyMgr.cpp|manual|marker_sync

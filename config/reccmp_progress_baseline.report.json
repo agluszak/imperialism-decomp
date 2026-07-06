@@ -12803,15 +12803,13 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -22450,7 +22448,7 @@
     },
     {
       "address": "0x556820",
-      "matching": 0.15384615384615385,
+      "matching": 1.0,
       "name": "DestroyNavyOrderAndChildren",
       "type": 1
     },

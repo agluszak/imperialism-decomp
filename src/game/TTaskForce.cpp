@@ -568,3 +568,12 @@ void TTaskForce::SetTaskForceOrderSelectionByNationClassAndFlag(short nationClas
     *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->object_ptr) + 0x34) = 0;
   }
 }
+
+// FUNCTION: IMPERIALISM 0x00556820
+void TTaskForce::DestroyNavyOrderAndChildren() {
+  if (this == nullptr) {
+    return;
+  }
+  queue_next->DestroyNavyOrderAndChildren();
+  Free();
+}

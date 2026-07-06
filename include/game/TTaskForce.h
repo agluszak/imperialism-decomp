@@ -169,6 +169,12 @@ public:
   void SetTaskForceOrderSelectionByNationClassAndFlag(short nationClass,
                                                       char activeFlag); // 0x554930
 
+  // Recursively destroys the whole queue_next chain (tail-first: recurses before
+  // freeing `this`) then Free()s `this`. Deliberately null-safe on `this` itself --
+  // callers (e.g. a manager's own Free()) invoke it on a possibly-null queue head
+  // without checking first, matching the original's `test esi,esi; jz` guard.
+  void DestroyNavyOrderAndChildren(); // 0x556820
+
   // Sets owner (was misread as "active child entry"); when newEntry is
   // non-null also touches a still-unrecovered dual-purpose region at +0x10
   // (see bd 1uj.16 follow-up notes). Only ever called with nullptr by the
