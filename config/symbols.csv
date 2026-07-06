@@ -2959,12 +2959,12 @@ address|name|symbol|size|type|prototype|provenance
 4ff460|TFuzzyVar::CreateObject|?CreateObject@TFuzzyVar@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4ff490|TFuzzyVar::GetRuntimeClass||6|function|undefined GetTFuzzyVarClassNamePointer()|rtti
 4ff4d0|TFuzzyVar::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4ff500|TFuzzySet::CreateTFuzzySetInstance||7|function|undefined CreateTFuzzySetInstance()|
+4ff500|TFuzzyVar::~TFuzzyVar||7|function|undefined ~TFuzzyVar()|
 4ff690|TFuzzySet::CreateObject|?CreateObject@TFuzzySet@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4ff6c0|TFuzzySet::GetRuntimeClass||6|function|undefined GetTFuzzySetClassNamePointer()|rtti
-4ff6e0|TFuzzySet::ConstructTFuzzySetBaseState||9|function|undefined ConstructTFuzzySetBaseState()|
+4ff6e0|TFuzzySet::TFuzzySet||9|function|undefined TFuzzySet()|
 4ff700|TFuzzySet::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4ff730|DestructTFuzzySetAndMaybeFree_Impl||7|function|undefined DestructTFuzzySetAndMaybeFree_Impl()|
+4ff730|TFuzzySet::~TFuzzySet||7|function|undefined ~TFuzzySet()|
 4ff750|InitializeCityInteriorMinister_Impl||22|function|undefined InitializeCityInteriorMinister_Impl()|
 4ff780|TFuzzySet::Free||52|function|undefined OrphanCallChain_C2_I27_004ff780(void)|
 4ff7d0|TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0||73|function|undefined AllocateAndAppendTFuzzyVarRecord_004ff7d0()|

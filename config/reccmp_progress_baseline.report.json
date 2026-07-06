@@ -663,7 +663,7 @@
     },
     {
       "address": "0x4294d0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TStaticText::AssignSharedStringFromField84",
       "type": 1
     },
@@ -5142,7 +5142,7 @@
     },
     {
       "address": "0x48f890",
-      "matching": 0.3466666666666667,
+      "matching": 0.49411764705882355,
       "name": "TStaticText::TStaticText",
       "type": 1
     },
@@ -5160,7 +5160,7 @@
     },
     {
       "address": "0x48fb10",
-      "matching": 0.27586206896551724,
+      "matching": 0.6851851851851852,
       "name": "TStaticText::CopyCityDialogStateFromSource",
       "type": 1
     },
@@ -5172,8 +5172,8 @@
     },
     {
       "address": "0x48fc30",
-      "matching": 0.045454545454545456,
-      "name": "TStaticText::~TStaticText(void)",
+      "matching": 0.7323943661971831,
+      "name": "TStaticText::~TStaticText",
       "type": 1
     },
     {
@@ -5184,19 +5184,19 @@
     },
     {
       "address": "0x48fe60",
-      "matching": 0.06666666666666667,
+      "matching": 0.9056603773584906,
       "name": "TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate",
       "type": 1
     },
     {
       "address": "0x48fed0",
-      "matching": 0.0,
+      "matching": 0.8955223880597015,
       "name": "TStaticText::LoadUiStringAndDispatchViaVslot1C8",
       "type": 1
     },
     {
       "address": "0x48ff70",
-      "matching": 0.4444444444444444,
+      "matching": 1.0,
       "name": "TStaticText::SetTextThemeCodeAndMaybeRefresh",
       "type": 1
     },
@@ -5226,19 +5226,19 @@
     },
     {
       "address": "0x4903a0",
-      "matching": 0.7578947368421053,
+      "matching": 0.2,
       "name": "TEditText::TEditText",
       "type": 1
     },
     {
       "address": "0x4904d0",
-      "matching": 0.7070707070707071,
+      "matching": 0.4943820224719101,
       "name": "TEditText::~TEditText",
       "type": 1
     },
     {
       "address": "0x490650",
-      "matching": 0.10526315789473684,
+      "matching": 1.0,
       "name": "TEditText::CallVoidSlotA0",
       "type": 1
     },
@@ -5250,19 +5250,19 @@
     },
     {
       "address": "0x4906d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TEditText::GetBoolSlot28",
       "type": 1
     },
     {
       "address": "0x4906f0",
-      "matching": 0.16666666666666666,
+      "matching": 0.36363636363636365,
       "name": "TEditText::SetControlValue",
       "type": 1
     },
     {
       "address": "0x490730",
-      "matching": 0.07142857142857142,
+      "matching": 1.0,
       "name": "TEditText::SetEnabled",
       "type": 1
     },
@@ -5274,19 +5274,19 @@
     },
     {
       "address": "0x490a50",
-      "matching": 0.0,
+      "matching": 0.5,
       "name": "TEditText::SetEditSelectionAndScrollCaret",
       "type": 1
     },
     {
       "address": "0x490aa0",
-      "matching": 0.25,
+      "matching": 1.0,
       "name": "TEditText::ActivateCityProductionViewIfAllowed",
       "type": 1
     },
     {
       "address": "0x490ad0",
-      "matching": 0.027777777777777776,
+      "matching": 0.3076923076923077,
       "name": "TEditText::Free",
       "type": 1
     },
@@ -5298,25 +5298,25 @@
     },
     {
       "address": "0x490c10",
-      "matching": 0.3333333333333333,
+      "matching": 1.0,
       "name": "TEditText::HandleCityProductionNoOp",
       "type": 1
     },
     {
       "address": "0x490c30",
-      "matching": 0.125,
+      "matching": 1.0,
       "name": "TEditText::vmethod_0081",
       "type": 1
     },
     {
       "address": "0x490c70",
-      "matching": 0.13333333333333333,
+      "matching": 0.9230769230769231,
       "name": "TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70",
       "type": 1
     },
     {
       "address": "0x490cb0",
-      "matching": 0.18181818181818182,
+      "matching": 1.0,
       "name": "TEditText::SetTextThemeCodeAndMaybeRefresh",
       "type": 1
     },
@@ -5328,7 +5328,7 @@
     },
     {
       "address": "0x490e50",
-      "matching": 0.06060606060606061,
+      "matching": 0.59375,
       "name": "TEditText::VTableSlot59",
       "type": 1
     },
@@ -15371,7 +15371,7 @@
     },
     {
       "address": "0x4ff460",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TFuzzyVar::CreateObject",
       "type": 1
     },
@@ -15383,19 +15383,19 @@
     },
     {
       "address": "0x4ff4d0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TFuzzyVar::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x4ff500",
-      "matching": 0.5,
-      "name": "TFuzzySet::CreateTFuzzySetInstance",
+      "matching": 1.0,
+      "name": "TFuzzyVar::~TFuzzyVar",
       "type": 1
     },
     {
       "address": "0x4ff690",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TFuzzySet::CreateObject",
       "type": 1
     },
@@ -15407,14 +15407,20 @@
     },
     {
       "address": "0x4ff6e0",
-      "matching": 0.4,
-      "name": "TFuzzySet::ConstructTFuzzySetBaseState",
+      "matching": 0.2,
+      "name": "TFuzzySet::TFuzzySet",
       "type": 1
     },
     {
       "address": "0x4ff700",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TFuzzySet::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x4ff730",
+      "matching": 1.0,
+      "name": "TFuzzySet::~TFuzzySet",
       "type": 1
     },
     {
@@ -15425,13 +15431,13 @@
     },
     {
       "address": "0x4ff780",
-      "matching": 0.07142857142857142,
+      "matching": 1.0,
       "name": "TFuzzySet::Free",
       "type": 1
     },
     {
       "address": "0x4ff7d0",
-      "matching": 0.07407407407407407,
+      "matching": 0.6129032258064516,
       "name": "TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0",
       "type": 1
     },
@@ -16289,7 +16295,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.19718309859154928,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -25656,7 +25662,7 @@
     },
     {
       "address": "0x579580",
-      "matching": 0.13333333333333333,
+      "matching": 1.0,
       "name": "TRadioText::OrphanCallChain_C3_I13_00579580",
       "type": 1
     },
@@ -25842,7 +25848,7 @@
     },
     {
       "address": "0x57b760",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TSelectoText::OrphanRetStub_0057b760",
       "type": 1
     },
@@ -31119,7 +31125,7 @@
     },
     {
       "address": "0x5b5cb0",
-      "matching": 0.46017699115044247,
+      "matching": 0.4642857142857143,
       "name": "TInfoBarPictureText::SetTextAndLayoutRect",
       "type": 1
     },
@@ -31155,7 +31161,7 @@
     },
     {
       "address": "0x5b60a0",
-      "matching": 0.2,
+      "matching": 0.2222222222222222,
       "name": "TDeluxeText::OrphanCallChain_C1_I08_005b60a0",
       "type": 1
     },
@@ -31173,7 +31179,7 @@
     },
     {
       "address": "0x5b62a0",
-      "matching": 0.10526315789473684,
+      "matching": 0.1111111111111111,
       "name": "TDeluxeText::ConstructTMapKeyBaseState_Impl",
       "type": 1
     },
@@ -31185,7 +31191,7 @@
     },
     {
       "address": "0x5b6360",
-      "matching": 0.06896551724137931,
+      "matching": 0.38095238095238093,
       "name": "TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360",
       "type": 1
     },
@@ -31197,13 +31203,13 @@
     },
     {
       "address": "0x5b6480",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TDeluxeText::UpdateTextEntrySharedString",
       "type": 1
     },
     {
       "address": "0x5b64a0",
-      "matching": 0.9629629629629629,
+      "matching": 1.0,
       "name": "TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify",
       "type": 1
     },
@@ -31227,7 +31233,7 @@
     },
     {
       "address": "0x5b66b0",
-      "matching": 0.6896551724137931,
+      "matching": 0.6976744186046512,
       "name": "TInfoBarText::SetTextAndLayoutRect",
       "type": 1
     },
@@ -31239,13 +31245,13 @@
     },
     {
       "address": "0x5b6810",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TInfoBarText::Dump",
       "type": 1
     },
     {
       "address": "0x5b6840",
-      "matching": 0.5,
+      "matching": 0.5042016806722689,
       "name": "TInfoBarText::InitializeMapHintTextStyleAndThemeFlags",
       "type": 1
     },

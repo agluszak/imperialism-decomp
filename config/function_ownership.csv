@@ -631,6 +631,7 @@ address|target_cpp|ownership|note
 48f9a0|src/game/TStaticText.cpp|manual|marker_sync
 48fb10|src/game/TStaticText.cpp|manual|marker_sync
 48fc00|src/game/TStaticText.cpp|manual|marker_sync
+48fc30|src/game/TStaticText.cpp|manual|marker_sync
 48fd00|src/game/TStaticText.cpp|manual|marker_sync
 48fe60|src/game/TStaticText.cpp|manual|marker_sync
 48fed0|src/game/TStaticText.cpp|manual|marker_sync
@@ -2037,10 +2038,14 @@ address|target_cpp|ownership|note
 4ff460|src/game/TFuzzyVar.cpp|manual|marker_sync
 4ff490|src/game/TFuzzyVar.cpp|manual|marker_sync
 4ff4d0|src/game/TFuzzyVar.cpp|manual|marker_sync
+4ff500|src/game/TFuzzyVar.cpp|manual|marker_sync
 4ff690|src/game/TFuzzySet.cpp|manual|marker_sync
 4ff6c0|src/game/TFuzzySet.cpp|manual|marker_sync
+4ff6e0|src/game/TFuzzySet.cpp|manual|marker_sync
 4ff700|src/game/TFuzzySet.cpp|manual|marker_sync
+4ff730|src/game/TFuzzySet.cpp|manual|marker_sync
 4ff780|src/game/TFuzzySet.cpp|manual|marker_sync
+4ff7d0|src/game/TFuzzyVar.cpp|manual|marker_sync
 4ffb30|src/game/TGameWindow.cpp|manual|marker_sync
 4ffbf0|src/game/TGameWindow.cpp|manual|marker_sync
 4ffc10|src/game/TGameWindow.cpp|manual|marker_sync

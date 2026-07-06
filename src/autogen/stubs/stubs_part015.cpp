@@ -115,14 +115,6 @@ undefined4 CheckTilePatternMaskAllowedByModeFlag(void)
   return 0;
 }
 
-// ghidra_name UpdateStrategicMapTileIconVariantState
-// ghidra_proto undefined UpdateStrategicMapTileIconVariantState()
-// FUNCTION: IMPERIALISM 0x00511614
-undefined4 UpdateStrategicMapTileIconVariantState(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeStridedRecordAddress6C
 // ghidra_proto undefined ComputeStridedRecordAddress6C()
 // FUNCTION: IMPERIALISM 0x005123e0
