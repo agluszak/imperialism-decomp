@@ -11,6 +11,10 @@ detail lines) and compare against config/datacmp_baseline.csv:
   - status worsened or diff-line count grew  -> FAIL (regressed global)
   - fewer diffs / fewer variables            -> PASS + ratchet reminder
 
+MFC CRuntimeClass descriptors (`Foo::classFoo`) are excluded up front — their
+byte-diffs are pointer-relocation noise that jitters every build (see
+DESCRIPTOR_RE), which otherwise forced a baseline regen on nearly every commit.
+
 `--write-baseline` records the current fingerprints. Needs a built binary
 (reccmp detect) like the other comparison targets.
 """
@@ -29,21 +33,38 @@ ENTRY_RE = re.compile(r"^(?P<name>\S.*?) \((?P<addr>0x[0-9a-fA-F]+)\) \.\.\. (?P
 DETAIL_RE = re.compile(r"^\s+\+ 0x[0-9a-fA-F]+\s")
 STATUS_RANK = {"OK": 0, "WARN": 1, "ERROR": 2, "FAIL": 2}
 
+# MFC IMPLEMENT_DYNCREATE/DYNAMIC CRuntimeClass descriptors (`Foo::classFoo`) are
+# almost entirely embedded pointers (name string, CreateObject thunk, base-class
+# descriptor). Those pointers hold recomp addresses that don't yet match the
+# original, so every descriptor legitimately differs by several bytes, and the
+# exact byte-diff count jitters ±1 whenever any unrelated edit nudges the binary
+# layout. Ratcheting on that count just forces a baseline regen on nearly every
+# commit for pure relocation noise, so exclude these rows from the gate. Real
+# global_data_tables values (the signal we actually want to guard) are kept.
+DESCRIPTOR_RE = re.compile(r"::class[A-Za-z0-9_]+$")
+
 
 def parse_report(text: str) -> dict[str, dict[str, str]]:
-    """name -> {address, status, diffs} from reccmp-datacmp --no-color output."""
+    """name -> {address, status, diffs} from reccmp-datacmp --no-color output.
+
+    CRuntimeClass descriptors (see DESCRIPTOR_RE) are skipped as relocation noise.
+    """
     entries: dict[str, dict[str, str]] = {}
     current: dict[str, str] | None = None
     for line in text.splitlines():
         m = ENTRY_RE.match(line)
         if m:
+            name = m.group("name")
+            if DESCRIPTOR_RE.search(name):
+                current = None  # drop this entry and its detail lines
+                continue
             current = {
-                "name": m.group("name"),
+                "name": name,
                 "address": m.group("addr").lower(),
                 "status": m.group("status"),
                 "diffs": "0",
             }
-            entries[current["name"]] = current
+            entries[name] = current
             continue
         if current is not None and DETAIL_RE.match(line):
             current["diffs"] = str(int(current["diffs"]) + 1)

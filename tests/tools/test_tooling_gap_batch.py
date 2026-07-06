@@ -174,6 +174,21 @@ class DatacmpGateTests(unittest.TestCase):
         self.assertEqual(entries["g_Foo"]["diffs"], "2")
         self.assertEqual(entries["g_Bar"]["address"], "0x63e03c")
 
+    def test_crt_descriptors_skipped(self) -> None:
+        # CRuntimeClass descriptors are relocation noise: drop them and any of
+        # their detail lines, without swallowing the next real variable.
+        report = (
+            "TArmyPlayer::classTArmyPlayer (0x669488) ... WARN \n"
+            "    + 0x00                                  1 : 2 \n"
+            "    + 0x0c                                  3 : 4 \n"
+            "g_Real (0x63e040) ... WARN \n"
+            "    + 0x00                                  5 : 6 \n"
+        )
+        entries = parse_report(report)
+        self.assertNotIn("TArmyPlayer::classTArmyPlayer", entries)
+        self.assertEqual(set(entries), {"g_Real"})
+        self.assertEqual(entries["g_Real"]["diffs"], "1")
+
     def test_new_variable_fails(self) -> None:
         current = parse_report(self.REPORT)
         baseline = {"g_Foo": {"name": "g_Foo", "address": "0x63e038", "status": "WARN", "diffs": "2"}}
