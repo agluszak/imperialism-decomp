@@ -17,9 +17,13 @@ class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
 # The Ghidra project is vendored in-repo; only GHIDRA_INSTALL_DIR is machine-specific (.env).
 # Exported so every recipe (and the pyghidra tools) use the vendored project authoritatively.
-# Do NOT set GHIDRA_PROJECT_DIR/NAME/PROGRAM_NAME in .env — these exports are the source of truth.
+# Do NOT set GHIDRA_PROJECT_NAME/PROGRAM_NAME in .env — these exports are the source of truth.
+# GHIDRA_PROJECT_DIR may be overridden in .env for one case only: a git worktree under a
+# dot-directory (e.g. .claude/worktrees/...), whose path Ghidra's ProjectLocator rejects
+# ("Path element starting with '.' is not permitted"). Point it at any dot-free directory
+# and `just restore-project` recreates the live project there from the vendored .gzf.
 export GHIDRA_PROGRAM_NAME := "Imperialism.exe"
-export GHIDRA_PROJECT_DIR := justfile_directory() / "vendor/ghidra"
+export GHIDRA_PROJECT_DIR := env_var_or_default("GHIDRA_PROJECT_DIR", justfile_directory() / "vendor/ghidra")
 export GHIDRA_PROJECT_NAME := "imperialism-decomp"
 
 # External, machine-specific: the extracted macOS CodeWarrior dump dir. Only needed to
@@ -443,6 +447,19 @@ addr *args:
 stackcmp addr *args:
   (cd "{{build_dir}}" && uv run reccmp-stackcmp --target "{{target}}" {{args}} "{{addr}}")
 
+# Classify every mismatched diff line of a below-100% function into actionable
+# buckets (field_offset / stack_layout / call_target / missing_annotation /
+# constant / reg_alloc / codegen). `just triage 0xADDR [...]` or `--file SRC.cpp`.
+[group('compare')]
+triage *args:
+  uv run python -m tools.reccmp.triage --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
+
+# Batch stack-layout triage: run reccmp-stackcmp over near-match functions and
+# rank layout suspects. `just stackcmp-triage [--min 0.4] [--max 0.999] [--limit 12]`.
+[group('compare')]
+stackcmp-triage *args:
+  uv run python -m tools.reccmp.stackcmp_triage --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
+
 [group('compare')]
 stats:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled
@@ -509,6 +526,24 @@ alloc-audit:
 [group('ghidra-inspect')]
 xrefs *args: _require-ghidra-install
   uv run python -m tools.ghidra.query xrefs {{args}}
+
+# Signature facts per function: Ghidra cc/params (hypothesis) + RET-imm purge bytes
+# (ground truth). `just func-sig 0xADDR [0xADDR ...]`.
+[group('ghidra-inspect')]
+func-sig *args: _require-ghidra-install
+  uv run python -m tools.ghidra.query func-sig {{args}}
+
+# Which member functions touch `this+offset`? `just field-xrefs <Class> [0xOFF] [--limit N]`
+# (no offset = histogram of all this-relative offsets the class touches).
+[group('ghidra-inspect')]
+field-xrefs *args: _require-ghidra-install
+  uv run python -m tools.ghidra.query field-xrefs {{args}}
+
+# Unported functions that reference (near-)unique string literals — self-naming
+# port targets. `just string-oracle [--min-len N] [--max-refs N] [--limit N] [--all]`.
+[group('ghidra-inspect')]
+string-oracle *args: _require-ghidra-install
+  uv run python -m tools.ghidra.query string-oracle {{args}}
 
 alias ghidra-xrefs := xrefs
 
@@ -755,7 +790,7 @@ precommit:
 gates:
   just tooling-check
   just vtable
-  just datacmp
+  just datacmp-gate
   just vtable-gate
   just antipattern-gate
   just tgreatpower-gate
@@ -768,10 +803,49 @@ gates:
   just global-location-gate
   just manual-cruntimeclass-gate
   just decomplint
+  just stub-count-gate
+  just class-size-gate
+  just noop-gate
 
 [group('gates')]
 tooling-check:
   uv run python -m tools.workflow.check_tooling_surface
+
+# Autogen stub count vs baseline (ratchet down). A rise is the sync-ownership
+# prune-trap tell: real marker-less owners re-stubbed, breaking vtables.
+[group('gates')]
+stub-count-gate:
+  uv run python -m tools.workflow.check_stub_count
+
+# ASSERT_SIZE vs the RTTI oracle, strict; known mismatches must be allowlisted
+# in config/class_size_allowlist.txt with a tracking bead.
+[group('gates')]
+class-size-gate:
+  uv run python -m tools.workflow.check_class_sizes --strict --allowlist config/class_size_allowlist.txt
+
+# Global-data drift vs baseline: reccmp-datacmp fingerprints may not regress.
+# Needs a built binary (like `just vtable`); `just datacmp` stays the raw report.
+[group('gates')]
+datacmp-gate:
+  uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}"
+
+# Empty-body ratchet: silent `{}` placeholders may not grow; intentionally-empty
+# bodies need a // FUNCTION marker or a `// NOOP: verified empty in original 0xADDR`.
+[group('gates')]
+noop-gate:
+  uv run python -m tools.workflow.check_empty_bodies --baseline config/empty_body_baseline.csv
+
+# Report every empty-body finding (audit mode of the noop gate).
+# `just noop-audit [--kind empty_but_big|empty_unmarked|empty_unresolved]`
+[group('gates')]
+noop-audit *args:
+  uv run python -m tools.workflow.check_empty_bodies {{args}}
+
+# Audit Hard-Rule-9 typedef casts against binary evidence (RET-imm purge bytes):
+# catches dropped-args/convention bugs drift can't see. Report-only; --strict to fail.
+[group('gates')]
+typedef-args-audit *args:
+  uv run python -m tools.workflow.check_typedef_ghidra_args {{args}}
 
 # Run the Python tooling unit tests (tests/tools).
 [group('gates')]
@@ -902,6 +976,21 @@ antipattern-gate-update:
 tgreatpower-gate-update:
   uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
 
+# MUTATES: config/stub_count_baseline.json.
+[group('baseline-update')]
+stub-count-gate-update:
+  uv run python -m tools.workflow.check_stub_count --write-baseline
+
+# MUTATES: config/datacmp_baseline.csv.
+[group('baseline-update')]
+datacmp-gate-update:
+  uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}" --write-baseline
+
+# MUTATES: config/empty_body_baseline.csv.
+[group('baseline-update')]
+noop-gate-update:
+  uv run python -m tools.workflow.check_empty_bodies --write-baseline config/empty_body_baseline.csv
+
 # MUTATES: reccmp-project.yml ignore lists (Hard Rule 14).
 [group('baseline-update')]
 generate-ignores:
@@ -1015,6 +1104,14 @@ build-lint-image:
 bootstrap-reccmp:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"
   uv run reccmp-project create --originals "$ORIGINAL_BINARY" --scm
+
+# Generate ./compile_commands.json (clang-lint flavor, host paths) for clangd/LSP
+# navigation. Not for matching questions — the reccmp build is MSVC500. The lint
+# *build* may fail (advisory); the database comes from the CMake configure step.
+[group('setup')]
+gen-compile-commands:
+  -just lint "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+  uv run python -m tools.workflow.gen_compile_commands
 
 [group('setup')]
 vendor-msvc500-headers *args:

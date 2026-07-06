@@ -75,3 +75,4 @@ detect.log
 .ghidra-query.pid
 .ghidra-query.log
 .ghidra-daemon.log
+compile_commands.json

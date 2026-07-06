@@ -17,7 +17,7 @@ import sys
 
 from tools.common import ghidra_env
 from tools.ghidra import daemon
-from tools.ghidra.query_registry import COMMANDS, usage_line
+from tools.ghidra.query_registry import COMMANDS, command_help, usage_line
 
 
 def main() -> int:
@@ -29,6 +29,11 @@ def main() -> int:
     if cmd not in COMMANDS:
         print(f"unknown command: {cmd}\n{usage_line()}", file=sys.stderr)
         return 2
+    # Answer --help locally: command run() functions parse positional hex args
+    # and must never see "--help" (it used to crash int(x, 16) via the daemon).
+    if any(a in ("-h", "--help") for a in args):
+        print(command_help(cmd))
+        return 0
 
     resp = daemon.request(cmd, args)
     if resp is not None:

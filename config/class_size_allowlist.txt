@@ -1,0 +1,4 @@
+# Classes whose ASSERT_SIZE is known to disagree with the RTTI oracle, each with a
+# tracking bead. The class-size gate (`just class-size-gate`) fails on any mismatch
+# NOT listed here; remove an entry once its layout is recovered.
+TMinor  # bead imperialism-decomp-1uj.15: missing 0x10 bytes of fields vs RTTI 0x2dc

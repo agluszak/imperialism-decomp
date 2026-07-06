@@ -109,6 +109,9 @@ class QueryRegistryTests(unittest.TestCase):
         "vtable-dump",
         "read-data",
         "function-slice",
+        "func-sig",
+        "field-xrefs",
+        "string-oracle",
     }
 
     def test_registry_serves_the_documented_command_surface(self) -> None:
