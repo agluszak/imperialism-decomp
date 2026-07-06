@@ -7483,7 +7483,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12291,7 +12291,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -16519,7 +16519,7 @@
     },
     {
       "address": "0x511e80",
-      "matching": 0.1,
+      "matching": 0.7441860465116279,
       "name": "TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress",
       "type": 1
     },
@@ -16675,7 +16675,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -16777,7 +16777,7 @@
     },
     {
       "address": "0x5149d0",
-      "matching": 0.1,
+      "matching": 0.6341463414634146,
       "name": "TMapMgr::SetProvinceCapitalTileFlagBit08",
       "type": 1
     },
@@ -17017,13 +17017,13 @@
     },
     {
       "address": "0x517710",
-      "matching": 0.06451612903225806,
+      "matching": 0.4,
       "name": "TMapMgr::ApplyMapImprovementSelectionState",
       "type": 1
     },
     {
       "address": "0x517780",
-      "matching": 0.13333333333333333,
+      "matching": 0.6923076923076923,
       "name": "TMapMgr::GetMapImprovementSpriteBaseOffset",
       "type": 1
     },
@@ -20030,13 +20030,13 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.441025641025641,
+      "matching": 0.44329896907216493,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },

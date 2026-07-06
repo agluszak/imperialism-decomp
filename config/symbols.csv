@@ -8516,6 +8516,7 @@ address|name|symbol|size|type|prototype|provenance
 696f50|g_awTileSpriteVariantOffsetTable39|||global||
 696f60|g_awTileSpriteVariantOffsetTable3a|||global||
 697000|g_awTileSpriteVariantOffsetTable3b|||global||
+697040|g_anMapImprovementSpriteClassByOrderType|||global||
 697848|TMission::classTMission|||global||
 697870|g_Recompute_Nation_Order_LookupTable_00697870|||global||
 697958|g_Populate_Beachhead_Mission_LookupTable_00697958|||global||

@@ -472,6 +472,9 @@ short g_awUnitCombatClassBySlot[64] = {0};
 // Stack composition class lookup (byte table at 0x6953c0); indexed [minClass + maxClass*4].
 unsigned char g_abStackCompositionClassTable[32] = {0};
 
+// Per-civilian-order-type map-improvement sprite class (short table at 0x697040).
+short g_anMapImprovementSpriteClassByOrderType[9] = {2, 3, 1, 6, 0, 7, 5, 4, 8};
+
 // Per-fort-level attacker penalty percent (int table at 0x695568); indexed by
 // TGlobalMapCityScoreRecord::fortLevel03.
 int g_anFortLevelAttackerPenaltyPercentByLevel[8] = {0};

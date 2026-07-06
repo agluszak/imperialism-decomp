@@ -161,8 +161,11 @@ public:
   virtual short UpdateStrategicMapTileIconVariantState(short tileIndex); // slot 0x10 0x511610
   virtual undefined
   TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(); // slot 0x11 0x511a70
-  virtual undefined
-  TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(); // slot 0x12 0x511e80
+  // If field8 is idle: forces hexNeighborWrapHorizontally20 and (re)opens the "mapdata"
+  // session stream via BuildOrLoadGlobalMapStateForSession. If field4 is idle: ticks the
+  // strategic map view's UI-progress method. Called from
+  // DispatchTurnEvent7DDForActiveNation.
+  virtual void TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(); // slot 0x12 0x511e80
   // Ensures the map data stream is ready (slot 0x12), then dispatches turn-event 0x7dd
   // (a UI refresh notification) to g_pUiRuntimeContext for the active nation.
   virtual void DispatchTurnEvent7DDForActiveNation();      // slot 0x13 0x511ed0
@@ -370,9 +373,14 @@ public:
   // Bitmap-strip row offset (64-byte rows) for a map-improvement tier: tier*9 below tier 7,
   // else a fixed overflow row.
   virtual short GetMapImprovementTierBucketOffset(short tier); // slot 0x44 0x5176e0
-  virtual undefined GetMapImprovementSpriteBaseOffset(short param_1, char param_2,
-                                                      char param_3);  // slot 0x45 0x517780
-  virtual undefined ApplyMapImprovementSelectionState(void* param_1); // slot 0x46 0x517710
+  // Bitmap-strip base offset for a map-improvement class: 0x6c0 flat if param_2, else
+  // g_anMapImprovementSpriteClassByOrderType[param_1]*64, +0x480 unless param_3.
+  virtual short GetMapImprovementSpriteBaseOffset(short param_1, char param_2,
+                                                  char param_3); // slot 0x45 0x517780
+  // Looks up the improvement sprite base offset for civUnit's own order type/idle state via
+  // the slot above, but discards the result -- same vestigial pattern as
+  // ApplyUnitMovementClassForTileIfValid.
+  virtual void ApplyMapImprovementSelectionState(class TCivUnit* civUnit); // slot 0x46 0x517710
   // Real signature has 2 stack slots (RET 8); the second is never read -- same pattern as
   // GetMapImprovementOffsetByTownTransportLink above.
   virtual int GetMapImprovementTileOffsetFromClass(char classCode,

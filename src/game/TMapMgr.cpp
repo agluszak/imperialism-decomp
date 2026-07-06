@@ -675,6 +675,17 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
   return code;
 }
 
+// FUNCTION: IMPERIALISM 0x00511e80
+void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
+  if (field8 == 0) {
+    hexNeighborWrapHorizontally20 = 1;
+    BuildOrLoadGlobalMapStateForSession("mapdata", nullptr);
+  }
+  if (field4 == 0) {
+    g_pUiRuntimeContext->InvokeStrategicMapViewMethod70();
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00511ed0
 void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
   TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress();
@@ -1129,10 +1140,6 @@ undefined TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(
   return 0;
 }
 
-undefined TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00514250
 TCivUnit* TMapMgr::GetTileUnitEntryByOwner(short tileIndex, short nationId) {
   TCivUnit* entry = GetFirstCivilianOrderOnTile(tileIndex);
@@ -1195,7 +1202,12 @@ int TMapMgr::QueueDepotConstructionOrder(int* pMapContext, short nTileIndex, sho
 void TMapMgr::QueuePortConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
                                          undefined2 param_4) {}
 
-void TMapMgr::SetProvinceCapitalTileFlagBit08(short nProvinceId) {}
+// FUNCTION: IMPERIALISM 0x005149d0
+void TMapMgr::SetProvinceCapitalTileFlagBit08(short nProvinceId) {
+  short capitalTileIndex = cityScoreTable[nProvinceId].ownerNationSlot;
+  terrainStateTable[capitalTileIndex].activeFlags1c |= 8;
+  ++cityScoreTable[nProvinceId].fortLevel03;
+}
 
 void TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex) {}
 
@@ -1694,12 +1706,26 @@ short TMapMgr::GetMapImprovementTierBucketOffset(short tier) {
   return 0x3f;
 }
 
-undefined TMapMgr::ApplyMapImprovementSelectionState(void* param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00517710
+void TMapMgr::ApplyMapImprovementSelectionState(TCivUnit* civUnit) {
+  if (civUnit->field_1C != 0) {
+    GetMapImprovementSpriteBaseOffset(civUnit->orderType, 1, 0);
+  } else {
+    char idleState = static_cast<char>(civUnit->IsInIdleSelectionState());
+    GetMapImprovementSpriteBaseOffset(civUnit->orderType, 0, idleState);
+  }
 }
 
-undefined TMapMgr::GetMapImprovementSpriteBaseOffset(short param_1, char param_2, char param_3) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00517780
+short TMapMgr::GetMapImprovementSpriteBaseOffset(short param_1, char param_2, char param_3) {
+  if (param_2 != 0) {
+    return 0x6c0;
+  }
+  short offset = g_anMapImprovementSpriteClassByOrderType[param_1] << 6;
+  if (param_3 == 0) {
+    offset += 0x480;
+  }
+  return offset;
 }
 
 // FUNCTION: IMPERIALISM 0x005177d0

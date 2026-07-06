@@ -157,6 +157,11 @@ extern short g_awUnitCombatClassBySlot[64];
 // bound unconfirmed beyond the observed min/max class range (1..5-ish).
 extern unsigned char g_abStackCompositionClassTable[32];
 
+// Per-civilian-order-type map-improvement sprite class (0x697040), read by
+// TMapMgr::GetMapImprovementSpriteBaseOffset via TCivUnit::orderType; only indices 0-8 are
+// non-zero (values 0-8), true bound beyond that unconfirmed.
+extern short g_anMapImprovementSpriteClassByOrderType[9];
+
 // Per-fort-level attacker penalty percent (0x695568), indexed by
 // TGlobalMapCityScoreRecord::fortLevel03; observed values 100/85/75/65/0/0/0/0 for levels
 // 0-7 (only the low byte of each int is ever read). Used by
