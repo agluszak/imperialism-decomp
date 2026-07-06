@@ -965,7 +965,7 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
   TZone* esi = static_cast<TZone*>(g_pMapActionContextListHead);
   if (esi != 0) {
     do {
-      if (esi->QueryPortZoneCapability() != 0) {
+      if (esi->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) != 0) {
         break;
       }
       esi = esi->prev18;
@@ -988,7 +988,7 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
     esi = eax->prev18;
     if (esi != 0) {
       do {
-        if (esi->QueryPortZoneCapability() != 0) {
+        if (esi->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) != 0) {
           break;
         }
         esi = esi->prev18;
