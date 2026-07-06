@@ -2,6 +2,7 @@
 
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
+#include "game/TShip.h"
 #include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x00550670
@@ -74,6 +75,21 @@ TTaskForce* TTaskForce::SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* 
     }
   }
   return candidate;
+}
+
+// FUNCTION: IMPERIALISM 0x00550aa0
+int TTaskForce::ComputeMapOrderEntryHeuristicScore() {
+  short strengthBucket = static_cast<short>(tiebreak_strength / 100);
+
+  const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[order_type];
+  int navyPriorityScore = strengthBucket + 5 + desc.navyPriorityWeight * 10;
+  int resolveScore = strengthBucket + 5 + desc.resolveWeight * 10;
+
+  short resolveBucket = static_cast<short>(resolveScore / 10);
+  short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+
+  return ((resolveBucket + navyPriorityBucket + desc.calculateWeight) * 100 + required_count) /
+         desc.taskForceWeight;
 }
 
 // FUNCTION: IMPERIALISM 0x00550f80
@@ -250,9 +266,15 @@ TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead(TMapOrderChildLinkNode* c
 IMPLEMENT_DYNCREATE(TTaskForce, TObject)
 
 TTaskForce::TTaskForce()
-    : order_type(0), order_strength(0), attachment(0), owner(nullptr), childOrderList(nullptr),
-      activeChildEntry(nullptr), contextAnchor(0), required_count(0), attached_entity(0),
-      queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(0) {}
+    : order_type(1), order_strength(0), attachment(0), owner(nullptr), childOrderList(nullptr),
+      activeChildEntry(nullptr), contextAnchor(0), required_count(-1), attached_entity(0),
+      queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(-1) {}
+
+// FUNCTION: IMPERIALISM 0x00552800
+TTaskForce::TTaskForce(int contextAnchorArg, short requiredCountArg)
+    : order_type(1), order_strength(0), attachment(0), owner(nullptr), childOrderList(nullptr),
+      activeChildEntry(nullptr), contextAnchor(contextAnchorArg), required_count(requiredCountArg),
+      attached_entity(0), queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(-1) {}
 
 TTaskForce::~TTaskForce() {}
 
@@ -472,6 +494,36 @@ void TTaskForce::PromoteMapOrderChainAndQueue(void* pContextAnchor) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00553a50
+void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveExtraSlot) {
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    if (node->active_flag != 0) {
+      // Same node+0x34 overrun documented on
+      // TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink.
+      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->object_ptr) + 0x34) =
+          (reserveExtraSlot != 0) ? 1u : 2u;
+    }
+  }
+
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
+    if (reinterpret_cast<int>(ship->field08) == contextAnchor &&
+        ship->ownerNationSlot14 == required_count && ship->field0c == 0) {
+      // Same `this`-as-owner-context reinterpretation RemoveNode's tail uses; the node
+      // argument here is a TShip* (the primary navy order list's own element type), not
+      // a TTaskForce* -- FindOrCreateChildOrderLink's own body is still unported
+      // (`// TODO: promote body`), so its real, evidenced parameter type is unresolved.
+      reinterpret_cast<TMapOrderEntryOwnerContext*>(this)->FindOrCreateChildOrderLink(
+          reinterpret_cast<TTaskForce*>(ship));
+    }
+  }
+
+  for (TMapOrderChildLinkNode* recheckNode = childOrderList; recheckNode != nullptr;
+       recheckNode = recheckNode->next) {
+    recheckNode->active_flag =
+        *reinterpret_cast<int*>(reinterpret_cast<char*>(recheckNode->object_ptr) + 0x34) == 0;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00553bc0
 void TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink(TTaskForce* node) {
   // TODO: promote body -- searches `head` for an existing link to `node` (via
@@ -493,5 +545,26 @@ void TTaskForce::RecomputeMapOrderChildAggregateMetric() {
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     activeChildEntry =
         node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00554930
+void TTaskForce::SetTaskForceOrderSelectionByNationClassAndFlag(short nationClass,
+                                                                char activeFlag) {
+  TMapOrderChildLinkNode* node = childOrderList;
+  if (node == nullptr) {
+    return;
+  }
+  while (static_cast<short>(g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type]
+                                .enabledFlagOrBucketOffset) != nationClass ||
+         node->active_flag == activeFlag) {
+    node = node->next;
+    if (node == nullptr) {
+      return;
+    }
+  }
+  node->active_flag = activeFlag;
+  if (activeFlag != 0) {
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->object_ptr) + 0x34) = 0;
   }
 }

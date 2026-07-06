@@ -1211,14 +1211,6 @@ undefined4 PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
   return 0;
 }
 
-// ghidra_name ComputeMapOrderEntryHeuristicScore
-// ghidra_proto undefined ComputeMapOrderEntryHeuristicScore()
-// FUNCTION: IMPERIALISM 0x00550aa0
-undefined4 ComputeMapOrderEntryHeuristicScore(void)
-{
-  return 0;
-}
-
 // ghidra_name FormatLocalizedCommodityCountLabelByIndex
 // ghidra_proto undefined FormatLocalizedCommodityCountLabelByIndex()
 // FUNCTION: IMPERIALISM 0x00550c20
@@ -1355,14 +1347,6 @@ undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
   return 0;
 }
 
-// ghidra_name TTaskForce::ConstructTTaskForce
-// ghidra_proto undefined ConstructTTaskForce()
-// FUNCTION: IMPERIALISM 0x00552800
-undefined4 ConstructTTaskForce(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTTaskForceToSentinelVtable
 // ghidra_proto undefined ResetTTaskForceToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x005528a0
@@ -1415,14 +1399,6 @@ undefined4 SetMapOrderType5AndQueue(void)
 // ghidra_proto undefined RefreshTaskForceSelectionFlagsForCurrentNationOrders()
 // FUNCTION: IMPERIALISM 0x005539c0
 undefined4 RefreshTaskForceSelectionFlagsForCurrentNationOrders(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTaskForceSelectionModeForCurrentNationOrders
-// ghidra_proto undefined ApplyTaskForceSelectionModeForCurrentNationOrders()
-// FUNCTION: IMPERIALISM 0x00553a50
-undefined4 ApplyTaskForceSelectionModeForCurrentNationOrders(void)
 {
   return 0;
 }

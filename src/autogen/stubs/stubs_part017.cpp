@@ -19,14 +19,6 @@ undefined4 RecomputeTaskForceAverageOrderScore(void)
   return 0;
 }
 
-// ghidra_name SetTaskForceOrderSelectionByNationClassAndFlag
-// ghidra_proto undefined SetTaskForceOrderSelectionByNationClassAndFlag()
-// FUNCTION: IMPERIALISM 0x00554930
-undefined4 SetTaskForceOrderSelectionByNationClassAndFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name SetTaskForceOrderSelectionByNodeId
 // ghidra_proto undefined SetTaskForceOrderSelectionByNodeId()
 // FUNCTION: IMPERIALISM 0x005549a0

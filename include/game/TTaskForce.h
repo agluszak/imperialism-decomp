@@ -120,6 +120,13 @@ public:
   char pad_32[0x02];
 
   TTaskForce();
+  // Real constructor used when a task-force order entry is created for a specific
+  // context/nation slot (CreateTaskForceFromNavyOrdersForNationIfEligible 0x560a78,
+  // RebuildMapOrderEntryChildrenForContext 0x536dce). `contextAnchorArg` is an opaque
+  // caller-supplied value stored verbatim into contextAnchor (its real pointee type
+  // varies by caller -- see the contextAnchor field comment); `requiredCountArg` seeds
+  // required_count.
+  TTaskForce(int contextAnchorArg, short requiredCountArg);
 
   static TMapOrderChildLinkNode* FindMissionOrderNodeById(TMapOrderChildLinkNode* node,
                                                           TTaskForce* child_node);
@@ -137,6 +144,30 @@ public:
   TTaskForce* SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
                                                           int compareAttachedFlag);
   void RemoveNode(int self);
+
+  // Per-entry candidate score blending this order's tiebreak_strength bucket against
+  // its resource-type's navy-priority/resolve/calculate/task-force weight columns
+  // (g_NavyOrderResourceDescriptorTable[order_type]) plus required_count. Used by the
+  // order-selection cluster to rank candidate task-force order entries.
+  int ComputeMapOrderEntryHeuristicScore(); // 0x550aa0
+
+  // Marks every active childOrderList entry's order node (object_ptr+0x34 -- same
+  // out-of-bounds write documented on TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink)
+  // with a 1-or-2 selection-mode code depending on `reserveExtraSlot`, then scans the
+  // global primary navy order list (g_pNavyPrimaryOrderListHead) for TShip nodes
+  // matching this entry's contextAnchor/required_count and re-attaches each one via the
+  // same `this`-as-TMapOrderEntryOwnerContext reinterpretation RemoveNode's tail uses,
+  // and finally recomputes each childOrderList entry's active_flag from whether its
+  // node+0x34 slot was left at 0.
+  void ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveExtraSlot); // 0x553a50
+
+  // Finds the first childOrderList entry whose order node's resource-type bucket
+  // (g_NavyOrderResourceDescriptorTable[...].enabledFlagOrBucketOffset, low word) equals
+  // `nationClass` and whose active_flag differs from `activeFlag`; sets that entry's
+  // active_flag and, when activating (activeFlag != 0), clears its order node's +0x34
+  // slot (same overrun as above).
+  void SetTaskForceOrderSelectionByNationClassAndFlag(short nationClass,
+                                                      char activeFlag); // 0x554930
 
   // Sets owner (was misread as "active child entry"); when newEntry is
   // non-null also touches a still-unrecovered dual-purpose region at +0x10

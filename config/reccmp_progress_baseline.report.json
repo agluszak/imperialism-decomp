@@ -12133,7 +12133,7 @@
     },
     {
       "address": "0x4db380",
-      "matching": 0.3170731707317073,
+      "matching": 0.3130081300813008,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -12824,7 +12824,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -21856,7 +21856,7 @@
     },
     {
       "address": "0x550aa0",
-      "matching": 0.04,
+      "matching": 0.5773195876288659,
       "name": "ComputeMapOrderEntryHeuristicScore",
       "type": 1
     },
@@ -22095,12 +22095,6 @@
       "type": 1
     },
     {
-      "address": "0x552800",
-      "matching": 0.0,
-      "name": "TTaskForce::ConstructTTaskForce",
-      "type": 1
-    },
-    {
       "address": "0x552870",
       "matching": 0.9090909090909091,
       "name": "TTaskForce::`scalar deleting destructor'",
@@ -22192,7 +22186,7 @@
     },
     {
       "address": "0x553a50",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "ApplyTaskForceSelectionModeForCurrentNationOrders",
       "type": 1
     },
@@ -22282,7 +22276,7 @@
     },
     {
       "address": "0x554930",
-      "matching": 0.0,
+      "matching": 0.5555555555555556,
       "name": "SetTaskForceOrderSelectionByNationClassAndFlag",
       "type": 1
     },
@@ -43385,6 +43379,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }

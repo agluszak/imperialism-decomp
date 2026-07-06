@@ -2888,6 +2888,7 @@ address|target_cpp|ownership|note
 550610|src/game/TShip.cpp|manual|marker_sync
 550670|src/game/TTaskForce.cpp|manual|marker_sync
 550970|src/game/TShip.cpp|manual|marker_sync
+550aa0|src/game/TTaskForce.cpp|manual|marker_sync
 550b60|src/game/TShip.cpp|manual|marker_sync
 550d80|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550e70|src/game/TShip.cpp|manual|marker_sync
@@ -2911,6 +2912,7 @@ address|target_cpp|ownership|note
 5526e0|src/game/TTaskForce.cpp|manual|marker_sync
 552770|src/game/TTaskForce.cpp|manual|marker_sync
 5527e0|src/game/TTaskForce.cpp|manual|marker_sync
+552800|src/game/TTaskForce.cpp|manual|marker_sync
 552870|src/game/TTaskForce.cpp|manual|marker_sync
 5528c0|src/game/TTaskForce.cpp|manual|marker_sync
 5528e0|src/game/TTaskForce.cpp|manual|marker_sync
@@ -2919,8 +2921,10 @@ address|target_cpp|ownership|note
 552d10|src/game/TTaskForce.cpp|manual|marker_sync
 552f80|src/game/TTaskForce.cpp|manual|marker_sync
 5533f0|src/game/TTaskForce.cpp|manual|marker_sync
+553a50|src/game/TTaskForce.cpp|manual|marker_sync
 553bc0|src/game/TTaskForce.cpp|manual|marker_sync
 553e30|src/game/TTaskForce.cpp|manual|marker_sync
+554930|src/game/TTaskForce.cpp|manual|marker_sync
 556530|src/game/TNavyMgr.cpp|manual|marker_sync
 556570|src/game/TNavyMgr.cpp|manual|marker_sync
 5565c0|src/game/TNavyMgr.cpp|manual|marker_sync
