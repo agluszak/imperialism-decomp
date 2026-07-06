@@ -12,10 +12,13 @@ Add a command by giving its module a `run(program, argv)` and listing it here.
 
 from __future__ import annotations
 
+import sys
 from collections.abc import Callable
 
 from tools.ghidra import (
     decompile_one,
+    field_xrefs,
+    func_sig,
     function_slice,
     jumptable,
     linear_disasm,
@@ -23,6 +26,7 @@ from tools.ghidra import (
     raw_disasm,
     read_data,
     search_whole_binary,
+    string_refs_oracle,
     vtable_dump,
     xrefs_to,
 )
@@ -38,8 +42,17 @@ COMMANDS: dict[str, Callable] = {
     "vtable-dump": vtable_dump.run,
     "read-data": read_data.run,
     "function-slice": function_slice.run,
+    "func-sig": func_sig.run,
+    "field-xrefs": field_xrefs.run,
+    "string-oracle": string_refs_oracle.run,
 }
 
 
 def usage_line() -> str:
     return f"commands: {', '.join(sorted(COMMANDS))}"
+
+
+def command_help(cmd: str) -> str:
+    """The command module's docstring (run() functions never parse --help)."""
+    doc = sys.modules[COMMANDS[cmd].__module__].__doc__ or ""
+    return doc.strip()

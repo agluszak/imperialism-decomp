@@ -33,7 +33,20 @@ def parse_args() -> argparse.Namespace:
                         help="Exit non-zero on size mismatches.")
     parser.add_argument("--show-unasserted", action="store_true",
                         help="Also list oracle classes with no ASSERT_SIZE.")
+    parser.add_argument("--allowlist", default="",
+                        help="File of class names (one per line, '#' comments) whose "
+                             "known mismatches don't fail --strict; each entry must "
+                             "cite a tracking bead.")
     return parser.parse_args()
+
+
+def read_allowlist(path: Path) -> set[str]:
+    allowed: set[str] = set()
+    for line in path.read_text(encoding="utf-8").splitlines():
+        name = line.split("#", 1)[0].strip()
+        if name:
+            allowed.add(name)
+    return allowed
 
 
 def collect_asserts(repo_root: Path) -> dict[str, tuple[int, str]]:
@@ -73,27 +86,33 @@ def main() -> int:
         oracle[row["name"]] = int(row["object_size"], 16)
 
     asserts = collect_asserts(repo_root)
+    allowed = read_allowlist(repo_root / args.allowlist) if args.allowlist else set()
 
     mismatches: list[str] = []
+    allowed_mismatches: list[str] = []
     matched = 0
     for name, (size, path) in sorted(asserts.items()):
         true_size = oracle.get(name)
         if true_size is None:
             continue  # not an RTTI class (view structs, PODs, etc.)
         if size != true_size:
-            mismatches.append(
+            line = (
                 f"  MISMATCH {name}: ASSERT_SIZE 0x{size:x} vs RTTI m_nObjectSize "
                 f"0x{true_size:x}  ({path})"
             )
+            (allowed_mismatches if name in allowed else mismatches).append(line)
         else:
             matched += 1
 
     unasserted = sorted(name for name in oracle if name not in asserts)
 
     print(f"oracle classes: {len(oracle)}  asserted+verified: {matched}  "
-          f"mismatched: {len(mismatches)}  unasserted: {len(unasserted)}")
+          f"mismatched: {len(mismatches)}  allowlisted: {len(allowed_mismatches)}  "
+          f"unasserted: {len(unasserted)}")
     for line in mismatches:
         print(line)
+    for line in allowed_mismatches:
+        print(f"{line}  [allowlisted]")
     if args.show_unasserted:
         for name in unasserted:
             print(f"  UNASSERTED {name} (RTTI size 0x{oracle[name]:x})")

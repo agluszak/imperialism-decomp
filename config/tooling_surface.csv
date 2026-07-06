@@ -16,7 +16,6 @@ module|tools.workflow.reshape_autogen_signatures|just:normalize-autogen|Reshape 
 module|tools.workflow.check_marker_hygiene|just:marker-gate|Marker hygiene gate (Hard Rules 3 and 4)
 module|tools.workflow.check_construction_antipatterns|just:antipattern-gate|Real-C++-construction anti-pattern gate
 module|tools.workflow.check_tgreatpower_hygiene|just:tgreatpower-gate|TGreatPower hygiene policy gate
-module|tools.workflow.check_field_layout_annotations|just:field-layout-gate|Field-layout annotation gate
 module|tools.workflow.check_global_location|just:global-location-gate|Global definition location policy gate
 module|tools.workflow.check_manual_cruntimeclass|just:manual-cruntimeclass-gate|Manual CRuntimeClass definition policy gate
 module|tools.workflow.check_vtable_coverage|just:vtable-coverage|Report unpaired vtable annotations
@@ -41,13 +40,11 @@ module|tools.ghidra.decomp_check|just:ghidra-decomp-check|Ghidra decompile bench
 module|tools.ghidra.scan_cdecl_thiscall|just:scan-cdecl-thiscall|Classify __cdecl vs __thiscall by ECX use
 module|tools.ghidra.vtable_dump|query:vtable-dump|Dump a class vtable slot->function map
 module|tools.ghidra.name_vtable_slots|just:name-vtable-slots|Name and expand Ghidra vtable structs from recovered source slots
-module|tools.ghidra.gen_vtable_slot_overrides|just:gen-vtable-slot-overrides|Suggest curated vtable-slot method names
 module|tools.ghidra.propagate_virtual_method_names|just:propagate-virtual-method-names|Propagate virtual method identities parent-first
 module|tools.ghidra.vtable_struct_check|just:ghidra-vtable-struct-check|Check Ghidra vtable struct field names
 module|tools.ghidra.fix_in_stack_params|just:fix-in-stack-params|Promote Ghidra in_stack variables to parameters
 module|tools.ghidra.dump_thunk_map|just:dump-thunk-map|Dump Ghidra thunk-name map for offline promotion
 module|tools.ghidra.dump_message_maps|just:dump-message-maps|Enumerate MFC message maps: message->handler->port-status per class
-module|tools.ghidra.gen_recovered_fields_from_headers|just:gen-recovered-fields-from-headers|Generate recovered fields from source headers
 module|tools.ghidra.apply_mfc_datatypes|just:apply-mfc-datatypes|Apply MFC datatypes into Ghidra
 module|tools.ghidra.apply_mfc_rtti|just:apply-mfc-rtti|Apply MFC RTTI into Ghidra
 module|tools.ghidra.apply_fidb|just:apply-fidb|Attach/query/apply an MSVC/MFC Function ID database into Ghidra
@@ -62,10 +59,6 @@ module|tools.workflow.pe_resources|just:resource-check|Check rebuilt PE resource
 module|tools.ghidra.class_owner_probe|just:class-owner-probe|Probe likely class owner for an address
 module|tools.ghidra.function_slice|query:function-slice|Read-only Ghidra function slice report (callers/callees/field offsets)
 module|tools.reccmp.compare_batch|just:compare|Batch reccmp compare over multiple targets
-module|tools.w32dasm.parse_alf|just:w32dasm-report|Parse W32Dasm ALF disassembly export
-module|tools.w32dasm.compare_alf_ghidra|just:w32dasm-report|Compare W32Dasm ALF against Ghidra
-module|tools.w32dasm.inspect_wpj|just:w32dasm-report|Inspect W32Dasm project file
-module|tools.w32dasm.rank_report|just:w32dasm-report|Rank W32Dasm report findings
 module|tools.common.ghidra_env|dependency:tools.ghidra.listing_one|Shared pyghidra bootstrap + eager version enforcement for all Ghidra tools
 module|tools.reccmp.core_impact_ranking|dependency:tools.reccmp.session_loop|Imported by session loop
 module|tools.workflow.impk_compat|dependency:tools.workflow.class_discovery|In-repo class-discovery evidence CLI (formerly external impk)
@@ -93,3 +86,15 @@ module|tools.workflow.func_status|just:func-status|One-stop function status from
 module|tools.workflow.port_candidates|just:port-candidates|Rank porting candidates by size and match gap
 module|tools.binary.decode_builder|just:decode-builder|Widget-block pseudo-source decoder for screen builders (bd 1uj.51)
 module|tools.binary.alloc_audit|just:alloc-audit|Audit new-vs-::new spellings against original allocator calls
+module|tools.reccmp.triage|just:triage|Asm-diff mismatch classifier (bucket + suggested action)
+module|tools.reccmp.stackcmp_triage|just:stackcmp-triage|Batch stackcmp over near-match functions
+module|tools.ghidra.func_sig|dependency:tools.ghidra.query_registry|func-sig query command (cc/params/RET-imm)
+module|tools.ghidra.field_xrefs|dependency:tools.ghidra.query_registry|field-xrefs query command (this+offset accesses per class)
+module|tools.ghidra.string_refs_oracle|dependency:tools.ghidra.query_registry|string-oracle query command (self-naming port targets)
+module|tools.workflow.check_stub_count|just:stub-count-gate|Autogen stub count ratchet (prune-trap tell)
+module|tools.workflow.check_datacmp_baseline|just:datacmp-gate|Global-data drift ratchet over reccmp-datacmp
+module|tools.workflow.check_empty_bodies|just:noop-gate|Silent no-op detector + empty-body ratchet
+module|tools.workflow.check_typedef_ghidra_args|just:typedef-args-audit|Typedef-cast arity/convention audit vs binary RET-imm
+module|tools.workflow.gen_compile_commands|just:gen-compile-commands|Rewrite lint compile_commands.json for host clangd
+module|tools.common.reccmp_report|dependency:tools.reccmp.compare_batch|Shared full-report runner (reccmp-reccmp --json, diet or full)
+module|tools.common.symbols|dependency:tools.reccmp.triage|Shared symbols.csv / function_ownership.csv loaders

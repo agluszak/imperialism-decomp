@@ -25,6 +25,13 @@ just build && just detect && just stats       # first build + reccmp pairing; st
 ```
 
 Notes:
+- **Worktrees under a dot-directory** (e.g. `.claude/worktrees/<name>`) cannot host
+  the live Ghidra project: Ghidra's `ProjectLocator` rejects any path element
+  starting with `.` ("Path element starting with '.' is not permitted"). Before
+  `just restore-project`, add a dot-free override to the worktree's `.env`, e.g.
+  `GHIDRA_PROJECT_DIR=/home/<you>/code/decomp/ghidra-worktree-projects/<name>` —
+  the justfile honors the override (intended only for this case; on a normal
+  checkout the vendored `vendor/ghidra` default is the source of truth).
 - `just bootstrap-reccmp` is only for a machine that has never had a reccmp
   project; it refuses to overwrite the committed `reccmp-project.yml`. In a
   worktree you only need `reccmp-user.yml`.
@@ -53,6 +60,7 @@ Edit manual source (shape/data passes on already-owned functions), then:
 ```sh
 just build              # Docker MSVC500 build (runs vtable-gate first)
 just compare 0xADDR     # or: just compare --file src/game/Foo.cpp
+just triage 0xADDR      # below 100%? classify the diff into actionable buckets first
 ```
 
 Pre-commit (always):

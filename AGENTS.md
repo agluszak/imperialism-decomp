@@ -64,6 +64,9 @@ starting that kind of task.
 - **Ghidra is the ground-truth evidence source.** Read the disassembly before trusting
   a decompile or a name: `just ghidra-listing 0xADDR`, `just ghidra-vtable-dump`,
   `just xrefs [to|from|both] 0xADDR` (cross-references), `just scan-cdecl-thiscall`,
+  `just func-sig 0xADDR` (cc/params hypothesis + RET-imm purge ground truth),
+  `just field-xrefs <Class> [0xOFF]` (who touches `this+offset`), `just string-oracle`
+  (unported functions referencing unique strings — self-naming port targets),
   plus decompile via the `ghidra` skill. Prefer this over objdump. The read-only inspect
   targets run through a persistent daemon (`just ghidra-daemon` / `-stop`) that keeps the
   project loaded, so calls after the first are sub-second; mutating targets evict it
@@ -81,17 +84,28 @@ target). They need a built binary + reccmp DB.
 
 - `just precommit` — the whole pre-commit sequence in one command: `build` +
   `gates` + `test` (tooling unit tests) + `stats`.
-- `just gates` — the pre-commit mechanical source-policy gates. Now also runs
-  `uv run reccmp-decomplint` (annotation linting: marker syntax, duplicate addresses,
-  stray markers) via the `just decomplint` target.
+- `just gates` — the pre-commit mechanical source-policy gates, including
+  `decomplint` (annotation linting) and the ratchet gates: `datacmp-gate`
+  (global-data drift vs `config/datacmp_baseline.csv`), `stub-count-gate`
+  (autogen stub count may not rise — the sync-ownership prune-trap tell),
+  `class-size-gate` (`ASSERT_SIZE` vs RTTI oracle, allowlist in
+  `config/class_size_allowlist.txt`), and `noop-gate` (empty-body ratchet;
+  intentionally-empty bodies need a marker or `// NOOP: verified empty in
+  original 0xADDR`). Each ratchet has a `just <gate>-update` baseline target.
+- `just triage 0xADDR` / `just triage --file src/game/X.cpp` — classify every
+  mismatched diff line of a below-100% function into actionable buckets
+  (field_offset / stack_layout / call_target / missing_annotation / constant /
+  reg_alloc / codegen) with the standard next action per bucket. Run this before
+  reading a raw `just compare` diff by eye.
 - `just vtable [Name]` (`uv run reccmp-vtable`) — assert virtual-table correctness
   against the original; optionally filter by class-name substring.
 - `just datacmp [-a]` (`uv run reccmp-datacmp`) — compare global data values between
-  the original and the recompiled binary.
+  the original and the recompiled binary (raw report; the gate is `datacmp-gate`).
 - `just roadmap` (`uv run reccmp-roadmap`) — compare symbol locations (functions,
   vtables, data) between original and recompiled.
 - `just stackcmp 0xADDR` (`uv run reccmp-stackcmp`) — compare the stack layout of a
-  single near-matching function.
+  single near-matching function; `just stackcmp-triage` batches it over the
+  near-match range and ranks stack-layout suspects.
 
 ## Hard Rules
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Shared class/vtable code generation primitives for manifest recovery.
+"""Shared class/vtable code generation primitives.
 
-This module classifies vtable slots and renders the first-pass C++ scaffold used
-by ``tools.workflow.gen_class`` when a manifest describes a class without a
-hand-written header yet.
+This module classifies vtable slots and renders C++ scaffold (declarations,
+stub bodies, symbols/ownership rows) shared by ``shape_body`` and
+``source_base_slots``.
 """
 
 from __future__ import annotations

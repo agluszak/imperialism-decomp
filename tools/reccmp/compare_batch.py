@@ -16,13 +16,11 @@ as a regression gate over a batch.
 from __future__ import annotations
 
 import argparse
-import json
 import re
-import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
+from tools.common.reccmp_report import run_report
 from tools.common.report_score import effective_matching
 
 MARKER_RE = re.compile(r"//\s*FUNCTION:\s*\w+\s+0x([0-9A-Fa-f]+)")
@@ -39,23 +37,6 @@ def addrs_from_file(path: Path) -> list[int]:
         if m:
             out.append(int(m.group(1), 16))
     return out
-
-
-def run_reccmp_json(target: str, build_dir: Path) -> list[dict]:
-    with tempfile.NamedTemporaryFile("r", suffix=".json", delete=False) as tf:
-        json_path = tf.name
-    subprocess.run(
-        [
-            "uv", "run", "reccmp-reccmp",
-            "--target", target,
-            "--json", json_path,
-            "--json-diet", "--silent",
-        ],
-        cwd=build_dir,
-        check=True,
-        stdout=subprocess.DEVNULL,
-    )
-    return json.loads(Path(json_path).read_text())["data"]
 
 
 def main() -> int:
@@ -75,7 +56,7 @@ def main() -> int:
         return 2
     wanted_set = set(wanted)
 
-    rows = run_reccmp_json(args.target, args.build_dir)
+    rows = run_report(args.target, args.build_dir, diet=True)
     by_addr = {norm(r["address"]): r for r in rows}
 
     passed = failed = missing = 0

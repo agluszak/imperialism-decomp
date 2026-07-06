@@ -32,13 +32,3 @@ public:
 
 ASSERT_SIZE(TPortZone, 0x4c);
 
-// === BEGIN GENERATED (TPortZone) — refreshed by `just gen-class TPortZone`; do not hand-edit ===
-// clang-format off
-// vtable @ 0x0065c7e4 (3 slots), object size 0x4c, base TZone
-//   slot 0x00  byte 0x00  0x005621e0  override  DispatchNationPendingActionEventCodes
-//   slot 0x01  byte 0x04  0x004798d0  override  ShallowClone
-//   slot 0x02  byte 0x08  0x00415ce0  override  ShallowFree
-// object size 0x4c (RTTI) unverified against the header layout;
-// set curated.layout.size_verified to emit a sizeof static_assert.
-// clang-format on
-// === END GENERATED (TPortZone) ===

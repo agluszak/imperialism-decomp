@@ -69,35 +69,3 @@ public:
   TTacticalBattle();
 };
 
-// === BEGIN GENERATED (TTacticalBattle) — refreshed by `just gen-class TTacticalBattle`; do not hand-edit ===
-// clang-format off
-// vtable @ 0x0066a088 (25 slots), object size 0x78, base TObject
-//   slot 0x00  byte 0x00  0x0059f750  override  GetRuntimeClass
-//   slot 0x01  byte 0x04  0x0059f7a0  scalar_dtor (scalar deleting destructor)
-//   slot 0x02  byte 0x08  0x00485e90  inherited Serialize
-//   slot 0x03  byte 0x0c  0x00412bf0  inherited AssertValid
-//   slot 0x04  byte 0x10  0x00412c10  inherited Dump
-//   slot 0x05  byte 0x14  0x00485f70  inherited WriteTo
-//   slot 0x06  byte 0x18  0x00485f90  inherited ReadFrom
-//   slot 0x07  byte 0x1c  0x0059fb50  override  Free
-//   slot 0x08  byte 0x20  0x004798d0  inherited ShallowClone
-//   slot 0x09  byte 0x24  0x00415ce0  inherited ShallowFree
-//   slot 0x0a  byte 0x28  0x0059ff20  override  ComputeTacticalReachableTileCostsByUnitCategory
-//   slot 0x0b  byte 0x2c  0x005a02e0  override  PropagateTileAccessibilityStrengthLevels
-//   slot 0x0c  byte 0x30  0x0059f710  override  OrphanRetStub_0059f710
-//   slot 0x0d  byte 0x34  0x005a1bd0  override  MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
-//   slot 0x0e  byte 0x38  0x005a1400  override  WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400
-//   slot 0x0f  byte 0x3c  0x005a1ca0  override  ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
-//   slot 0x10  byte 0x40  0x005a1ee0  override  EvaluateAndResolveTacticalActionAgainstTileOccupant
-//   slot 0x11  byte 0x44  0x005a2700  override  OrphanCallChain_C4_I30_005a2700
-//   slot 0x12  byte 0x48  0x0059f730  override  CreateTTacticalBattleInstance
-//   slot 0x13  byte 0x4c  0x005a3190  override  MarkTacticalTileStateQueuedAndMaybeDispatchPacket
-//   slot 0x14  byte 0x50  0x005a3210  override  AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket
-//   slot 0x15  byte 0x54  0x005a3320  override  ClearTacticalTileStateRunByStride
-//   slot 0x16  byte 0x58  0x005a3810  override  ComputeRallyStrengthAndQueueTacticalRallyCommand
-//   slot 0x17  byte 0x5c  0x005a34d0  override  ExecuteTacticalMineActionAndQueuePacket
-//   slot 0x18  byte 0x60  0x005a3640  override  ExecuteTacticalDigActionAndConsumeUnitActionPoints
-// object size 0x78 (RTTI) unverified against the header layout;
-// set curated.layout.size_verified to emit a sizeof static_assert.
-// clang-format on
-// === END GENERATED (TTacticalBattle) ===

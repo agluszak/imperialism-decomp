@@ -22,20 +22,19 @@ Read-only: this tool never writes to config or source.
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import re
 import struct
-import subprocess
 import sys
-import tempfile
 from collections import Counter, defaultdict
 from pathlib import Path
 
 import capstone
 
+from tools.common.reccmp_report import run_report
 from tools.common.repo import repo_root_from_file
 from tools.common.report_score import effective_matching
+from tools.common.symbols import names_by_address
 from tools.workflow.prune_ilt_thunks import original_exe_from_user_yml
 
 DATA_REF_RE = re.compile(r"(?P<name>[^\s\[\],]+) \(DATA\)")
@@ -71,18 +70,6 @@ class PeImage:
             for name, lo, vsize, _raw in self.sections
             if name in (".rdata", ".data")
         ]
-
-
-def run_report(target: str, build_dir: Path) -> list[dict]:
-    with tempfile.NamedTemporaryFile("r", suffix=".json", delete=False) as tf:
-        json_path = tf.name
-    subprocess.run(
-        ["uv", "run", "reccmp-reccmp", "--target", target, "--json", json_path, "--silent"],
-        cwd=build_dir,
-        check=True,
-        stdout=subprocess.DEVNULL,
-    )
-    return json.loads(Path(json_path).read_text())["data"]
 
 
 def instruction_data_refs(pe: PeImage, addr: int, ranges: list[tuple[int, int]]) -> list[int]:
@@ -168,14 +155,7 @@ def main() -> int:
                     by_addr[addr].add(names[0])
                     by_name[names[0]].add(addr)
 
-    known_addrs: dict[int, str] = {}
-    with (repo_root / "config" / "symbols.csv").open() as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            try:
-                known_addrs[int(row["address"], 16)] = row["name"]
-            except ValueError:
-                continue
+    known_addrs = names_by_address(repo_root)
 
     out_rows = []
     for (addr, name), n in sorted(votes.items(), key=lambda kv: -kv[1]):

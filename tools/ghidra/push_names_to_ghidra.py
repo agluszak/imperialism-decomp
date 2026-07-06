@@ -34,7 +34,7 @@ import re
 
 import pyghidra
 
-from tools.common import class_manifest, ghidra_env
+from tools.common import ghidra_env
 from tools.common.name_overrides import parse_name_overrides, resolve_name_overrides_path
 from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file
@@ -91,30 +91,13 @@ def owned_addresses(kind: str = "manual") -> set[int]:
 
 
 def canonical_names(owned: set[int]) -> dict[int, str]:
-    """address -> explicitly-curated (possibly ``Class::``-qualified) source name.
+    """address -> explicitly-curated source name, from function_name_overrides.csv.
 
-    Only the curated surfaces are pushed: manifest curated.slots and
-    function_name_overrides.csv (the latter wins). The bulk of symbols.csv is NOT
-    a curation signal (it is mostly the previous export) and is intentionally
-    excluded so a push can never revert a newer Ghidra DB name.
+    The bulk of symbols.csv is NOT a curation signal (it is mostly the previous
+    export) and is intentionally excluded so a push can never revert a newer
+    Ghidra DB name.
     """
     names: dict[int, str] = {}
-    # 1. manifest curated.slots methods (Class::method)
-    for cls, manifest in class_manifest.load_all_manifests(REPO_ROOT).items():
-        gen = manifest.get("generated") or {}
-        target_by_index = {
-            class_manifest._as_int(s["index"]): class_manifest._as_int(s["target"])
-            for s in (gen.get("slots") or [])
-            if "index" in s and s.get("target")
-        }
-        for rec in (manifest.get("curated") or {}).get("slots") or []:
-            method = (rec.get("method") or "").strip()
-            if not method or "index" not in rec:
-                continue
-            target = target_by_index.get(class_manifest._as_int(rec["index"]))
-            if target is not None and target in owned:
-                names[target] = f"{cls}::{method}"
-    # 2. explicit per-address overrides (highest precedence)
     for addr, (name, _proto) in parse_name_overrides(NAME_OVERRIDES_PATH).items():
         if addr in owned and name:
             names[addr] = name
