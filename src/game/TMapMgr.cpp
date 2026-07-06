@@ -1393,8 +1393,43 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
   }
 }
 
-undefined TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(int param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00515330
+void TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(
+    TCivUnit* pCivilianOrderEntry) {
+  field9 = 1;
+  short nationTag = pCivilianOrderEntry->field_18;
+  unsigned char eligibleGateFlags[24] = {0};
+  eligibleGateFlags[8] = 1;
+  eligibleGateFlags[9] = 1;
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].recruitTierFlag27b == 2) {
+    eligibleGateFlags[10] = 1;
+    eligibleGateFlags[11] = 1;
+    eligibleGateFlags[12] = 1;
+  }
+  unsigned char nationBit = 1 << nationTag;
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+    if (tile->terrainType00 == 5) {
+      tile->recruitSearchVisited0e = 0;
+      continue;
+    }
+    if (tile->ownerNationTag04 != nationTag) {
+      if (tile->ownerNationTag04 < 7) {
+        tile->recruitSearchVisited0e = 1;
+        continue;
+      }
+      if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+              nationTag, tile->ownerNationTag04) != 2) {
+        tile->recruitSearchVisited0e = 1;
+        continue;
+      }
+    }
+    if (eligibleGateFlags[tile->gateFlag] == 0) {
+      tile->recruitSearchVisited0e = 1;
+      continue;
+    }
+    tile->recruitSearchVisited0e = (nationBit & tile->pendingDevelopmentFlag0d) ? 1 : 0;
+  }
 }
 
 undefined TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(int param_1) {

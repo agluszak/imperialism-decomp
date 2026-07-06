@@ -230,8 +230,14 @@ public:
   virtual void SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
       class TMilitaryUnit* const candidates[6],
       short orderTargetSlot); // slot 0x22 0x5150e0
-  virtual undefined
-  WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(int param_1); // slot 0x23 0x515330
+  // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family: eligible
+  // only for water tiles (always) or tiles owned by pCivilianOrderEntry->field_18 (nationTag)
+  // or diplomatically compatible (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2),
+  // further gated on gateFlag being in {8,9} (or {10,11,12} when
+  // g_pCityOrderCapabilityState->orderCapRows277[nationTag].recruitTierFlag27b == 2), and
+  // finally on this nation's bit not already being set in pendingDevelopmentFlag0d.
+  virtual void WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(
+      class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
   virtual undefined
   WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(int param_1); // slot 0x24 0x515460
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family, but each
