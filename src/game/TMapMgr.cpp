@@ -1432,8 +1432,53 @@ void TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(
   }
 }
 
-undefined TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(int param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00515460
+void TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(
+    TCivUnit* pCivilianOrderEntry) {
+  short nationTag = pCivilianOrderEntry->field_18;
+  bool recruitTierFlagIsTwo =
+      (g_pCityOrderCapabilityState->orderCapRows277[nationTag].recruitTierFlag27b == 2);
+  field9 = 1;
+  unsigned char nationBit = 1 << nationTag;
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+    tile->recruitSearchVisited0e = 1;
+    if (tile->terrainType00 == 5) {
+      continue;
+    }
+    if (tile->ownerNationTag04 < 7) {
+      continue;
+    }
+    if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+            nationTag, tile->ownerNationTag04) != 2) {
+      continue;
+    }
+    if (tile->secondaryOwnerNationTag18 != -1) {
+      continue;
+    }
+    if (g_abGateFlagQualifies[tile->gateFlag] == 0) {
+      continue;
+    }
+    bool found = false;
+    for (int edge = 0; edge < 2; ++edge) {
+      signed char resourceType = tile->resourceTypeByEdge[edge];
+      if (resourceType == 0 || resourceType == 1 || resourceType == 2) {
+        found = true;
+        continue;
+      }
+      if (tile->pendingDevelopmentFlag0d & nationBit) {
+        if (resourceType == 3 || resourceType == 4 || resourceType == 0x15 ||
+            resourceType == 0x16) {
+          found = true;
+        } else if (recruitTierFlagIsTwo && resourceType == 6) {
+          found = true;
+        }
+      }
+    }
+    if (found) {
+      tile->recruitSearchVisited0e = 0;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005155c0

@@ -238,8 +238,15 @@ public:
   // finally on this nation's bit not already being set in pendingDevelopmentFlag0d.
   virtual void WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(
       class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
-  virtual undefined
-  WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(int param_1); // slot 0x24 0x515460
+  // Seeds recruitSearchVisited0e (defaults to 1/ineligible, unlike the sibling slot above):
+  // requires the tile be diplomatically compatible
+  // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2, ownerNationTag04 >= 7),
+  // secondaryOwnerNationTag18 == -1, g_abGateFlagQualifies[gateFlag] != 0, and at least one
+  // of its two edge resourceTypes qualifying (0/1/2 always; 3/4/0x15/0x16, or 6 when
+  // recruitTierFlag27b == 2, only when this nation's bit is already set in
+  // pendingDevelopmentFlag0d).
+  virtual void WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(
+      class TCivUnit* pCivilianOrderEntry); // slot 0x24 0x515460
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family, but each
   // tile is eligible only if it's owned by pCivilianOrderEntry->field_18 (via
   // ownerNationTag04 or secondaryOwnerNationTag18) and pendingDevelopmentFlag0d != 0, and

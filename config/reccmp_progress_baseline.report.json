@@ -16842,7 +16842,7 @@
     },
     {
       "address": "0x515460",
-      "matching": 0.021739130434782608,
+      "matching": 0.3707865168539326,
       "name": "TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460",
       "type": 1
     },
@@ -17046,7 +17046,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.34382566585956414,
+      "matching": 0.32038834951456313,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
