@@ -11,7 +11,7 @@ class TEventHandler;
 // VTABLE: IMPERIALISM 0x6653c8
 class TProductionCluster : public TUberCluster {
 public:
-// === BEGIN GENERATED DECLS (TProductionCluster) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TProductionCluster) — refreshed by recover-class; do not hand-edit ===
   virtual ~TProductionCluster(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -26,7 +26,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x005869c0
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x005869c0
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -127,10 +128,10 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
-  virtual void ApplyMoveValue(int value); // slot 0x74 0x586a60
+  virtual void ApplyMoveValue(int value);                                   // slot 0x74 0x586a60
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0); // slot 0x75 0x586ab0
-  virtual int GetControlFlag(int value90 = 0, int value94 = 0); // slot 0x76 0x586a80
-// === END GENERATED DECLS (TProductionCluster) ===
+  virtual int GetControlFlag(int value90 = 0, int value94 = 0);             // slot 0x76 0x586a80
+  // === END GENERATED DECLS (TProductionCluster) ===
   int field88;
   short field8c;
   short field8e;
@@ -143,10 +144,6 @@ public:
 
 ASSERT_SIZE(TProductionCluster, 0x98);
 
-TProductionCluster* __cdecl CreateTProductionClusterInstance(void);
-TProductionCluster* ConstructTProductionClusterBaseState(TProductionCluster* cluster);
-TProductionCluster* DestructTProductionClusterAndMaybeFree(TProductionCluster* cluster,
-                                                           unsigned char freeSelfFlag);
 void HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(TProductionCluster* cluster,
                                                                         int commandId,
                                                                         void* eventArg,

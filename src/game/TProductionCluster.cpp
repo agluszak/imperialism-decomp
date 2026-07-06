@@ -19,29 +19,12 @@
 
 #include "game/mfc.h"
 
-
-// FUNCTION: IMPERIALISM 0x00586840
-TProductionCluster* __cdecl CreateTProductionClusterInstance(void) {
-  return new TProductionCluster();
-}
+// SYNTHETIC: IMPERIALISM 0x00586840
+// TProductionCluster::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00586900
 // TProductionCluster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TProductionCluster, TUberCluster)
-
-TProductionCluster* ConstructTProductionClusterBaseState(TProductionCluster* cluster) {
-  ::new (static_cast<void*>(cluster)) TProductionCluster();
-  return cluster;
-}
-
-TProductionCluster* DestructTProductionClusterAndMaybeFree(TProductionCluster* cluster,
-                                                           unsigned char freeSelfFlag) {
-  cluster->~TProductionCluster();
-  if ((freeSelfFlag & 1) != 0) {
-    delete cluster;
-  }
-  return cluster;
-}
 
 // FUNCTION: IMPERIALISM 0x00586920
 TProductionCluster::TProductionCluster()

@@ -26808,7 +26808,7 @@
     {
       "address": "0x586840",
       "matching": 0.5079365079365079,
-      "name": "TProductionCluster::CreateObject(void)",
+      "name": "TProductionCluster::CreateObject",
       "type": 1
     },
     {
@@ -31064,7 +31064,7 @@
     {
       "address": "0x5b5dd0",
       "matching": 0.0,
-      "name": "TInfoBarPictureText::DestructTInfoBarTextAndMaybeFree",
+      "name": "TInfoBarPictureText::ClearTextAndLayoutRect",
       "type": 1
     },
     {
@@ -31167,6 +31167,12 @@
       "address": "0x5b66b0",
       "matching": 0.6896551724137931,
       "name": "TInfoBarText::SetTextAndLayoutRect",
+      "type": 1
+    },
+    {
+      "address": "0x5b6770",
+      "matching": 0.5070422535211268,
+      "name": "TInfoBarText::ClearTextAndLayoutRect",
       "type": 1
     },
     {

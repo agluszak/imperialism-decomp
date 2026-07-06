@@ -27,6 +27,9 @@ undefined TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRe
 }
 
 // FUNCTION: IMPERIALISM 0x005b5dd0
-undefined TInfoBarPictureText::DestructTInfoBarTextAndMaybeFree() {
-  return 0;
+void TInfoBarPictureText::ClearTextAndLayoutRect() {
+  // TODO: picture-variant of the slot-0x7f clear -- zeroes layoutRectA4, then measures a
+  // rect via the picture's slot-0x4b getter, CopyRect + invalidate, and calls slot 0x39.
+  // Body not yet ported (unresolved slot-0x4b/0x39 getters); renamed off the bogus
+  // Destruct*AndMaybeFree name so it is a real virtual, not a construction bridge.
 }

@@ -5747,7 +5747,7 @@ address|name|symbol|size|type|prototype|provenance
 5b5c60|TInfoBarPictureText::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b5c90|TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree||5|function|undefined DestructTInfoBarPictureTextAndMaybeFree()|
 5b5cb0|TInfoBarPictureText::SetTextAndLayoutRect||216|function|undefined __thiscall SetTextAndLayoutRect(CString text, RECT* layoutRect)|
-5b5dd0|TInfoBarPictureText::DestructTInfoBarTextAndMaybeFree||193|function|undefined DestructTInfoBarTextAndMaybeFree(void)|
+5b5dd0|TInfoBarPictureText::ClearTextAndLayoutRect||193|function|undefined ClearTextAndLayoutRect(void)|
 5b5ee0|TDeluxeText::CreateObject|?CreateObject@TDeluxeText@@SGPAVCObject@@XZ|184|function|undefined CreateObject()|rtti
 5b5fd0|TDeluxeText::GetRuntimeClass||6|function|undefined GetTDeluxeTextClassNamePointer()|rtti
 5b5ff0|TDeluxeText::ConstructTDeluxeTextBaseState||77|function|undefined ConstructTDeluxeTextBaseState()|
@@ -5765,7 +5765,7 @@ address|name|symbol|size|type|prototype|provenance
 5b65a0|TInfoBarText::CreateObject|?CreateObject@TInfoBarText@@SGPAVCObject@@XZ|184|function|undefined CreateObject()|rtti
 5b6690|TInfoBarText::GetRuntimeClass||6|function|undefined GetTInfoBarTextClassNamePointer()|rtti
 5b66b0|TInfoBarText::SetTextAndLayoutRect||140|function|undefined __thiscall SetTextAndLayoutRect(CString text, RECT* layoutRect)|
-5b6770|TInfoBarText::DestructTInfoBarTextAndMaybeFree||117|function|undefined DestructTInfoBarTextAndMaybeFree(void)|
+5b6770|TInfoBarText::ClearTextAndLayoutRect||117|function|undefined ClearTextAndLayoutRect(void)|
 5b6810|TInfoBarText::Dump||19|function|undefined OrphanCallChain_C1_I05_005b6810(void)|
 5b6840|TInfoBarText::InitializeMapHintTextStyleAndThemeFlags||183|function|undefined __thiscall InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary)|
 5b6930|TInfoBarText::Free||23|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|

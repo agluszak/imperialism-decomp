@@ -137,7 +137,7 @@ public:
   // slot 0x7c UpdateTextEntrySharedString inherited unchanged (0x5b6480)
   // slot 0x7d Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360 inherited unchanged
   // (0x5b6360) slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
-  virtual undefined DestructTInfoBarTextAndMaybeFree();                   // slot 0x7f 0x5b6770
+  virtual void ClearTextAndLayoutRect();                                  // slot 0x7f 0x5b6770
   virtual undefined SetTextAndLayoutRect(CString text, RECT* layoutRect); // slot 0x80 0x5b66b0
   virtual undefined
   InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
