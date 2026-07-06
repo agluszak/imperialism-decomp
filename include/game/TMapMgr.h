@@ -77,7 +77,8 @@ struct TTerrainStateRecordView {
 struct TGlobalMapCityScoreRecord {
   signed char ownerNationCode00;
   unsigned char byte01;
-  unsigned char developmentStage;
+  // Signed: 0x517540's switch on this reads it via MOVSX, not MOVZX.
+  signed char developmentStage;
   unsigned char fortLevel03; // fort level (indexes g_awEngineerFortBuildCostByLevel)
   short ownerNationSlot;
   short lastTurnTick;
@@ -316,8 +317,13 @@ public:
   // Real body is just `mov ax, 0xc80; ret` -- a bare constant, no callers besides the
   // vtable itself so its purpose isn't identified.
   virtual short GetFixedConstant0xc80(); // slot 0x3f 0x517520
-  virtual undefined OrphanLeaf_NoCall_Ins55_00517540(short param_1,
-                                                     short param_2); // slot 0x40 0x517540
+  // Picks a fixed bitmap offset from activeFlags1c bits 0/1, gated by categoryCode < 7:
+  // when < 7 and bit1 is set, refines further by cityScoreTable[cityRecordIndex]'s
+  // developmentStage (0/1/2 -> 0x700/0x740/0x780); else falls back to the >=7 family
+  // (0x9c0/0x980).
+  virtual int
+  GetMapImprovementOffsetByActiveFlagsAndCityStage(short tileIndex,
+                                                   short categoryCode); // slot 0x40 0x517540
   // Real signature has 2 stack slots (RET 8); the second is never read. Dispatches to
   // FindTownMarkerForTileByOwnerNation (slot 0x36) and combines its transportLinkedFlag4c
   // with activeFlags1c bits 2/4 to pick one of 6 fixed bitmap offsets.

@@ -1293,7 +1293,33 @@ short TMapMgr::GetFixedConstant0xc80() {
   return 0xc80;
 }
 
-undefined TMapMgr::OrphanLeaf_NoCall_Ins55_00517540(short param_1, short param_2) {
+// FUNCTION: IMPERIALISM 0x00517540
+int TMapMgr::GetMapImprovementOffsetByActiveFlagsAndCityStage(short tileIndex, short categoryCode) {
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  unsigned char flags = tile->activeFlags1c;
+  if (categoryCode < 7) {
+    if (flags & 1) {
+      return 0x6c0;
+    }
+    if (flags & 2) {
+      short cityRecordIndex = tile->cityRecordIndex;
+      switch (cityScoreTable[cityRecordIndex].developmentStage) {
+      case 0:
+        return 0x700;
+      case 1:
+        return 0x740;
+      case 2:
+        return 0x780;
+      }
+    }
+    return 0;
+  }
+  if (flags & 1) {
+    return 0x9c0;
+  }
+  if (flags & 2) {
+    return 0x980;
+  }
   return 0;
 }
 
