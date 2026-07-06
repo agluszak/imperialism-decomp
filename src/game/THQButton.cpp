@@ -8,10 +8,8 @@
 #include "game/ui_widget_thunks.h"
 #include <new>
 #include "game/mfc.h"
-// FUNCTION: IMPERIALISM 0x0058b5c0
-void* __cdecl CreateTHQButtonInstance(void) {
-  return new THQButton();
-}
+// SYNTHETIC: IMPERIALISM 0x0058b5c0
+// THQButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058b640
 // THQButton::GetRuntimeClass
 

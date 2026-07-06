@@ -91,3 +91,5 @@ module|tools.runtime.screenshot|script:screenshot|Game-window screenshot by auto
 module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror the DirectX 5 SDK inc/lib from the build image for reference
 module|tools.workflow.func_status|just:func-status|One-stop function status from config CSVs + reccmp baseline
 module|tools.workflow.port_candidates|just:port-candidates|Rank porting candidates by size and match gap
+module|tools.binary.decode_builder|just:decode-builder|Widget-block pseudo-source decoder for screen builders (bd 1uj.51)
+module|tools.binary.alloc_audit|just:alloc-audit|Audit new-vs-::new spellings against original allocator calls

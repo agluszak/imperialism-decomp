@@ -2,7 +2,11 @@
 #include "game/TApplication.h"
 #include "game/TEventHandler.h"
 #include "game/TView.h"
+#include "game/TBehavior.h"
 #include "game/TCursorControlPanel.h"
+#include "game/TDialogBehavior.h"
+#include "game/TWindow.h"
+#include "game/ui_resource_pool.h"
 #include "game/global_data_tables.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/quickdraw_rendering.h"
@@ -13,6 +17,50 @@
 // generic repo form (rule 9) with a typed cast at the callsite.
 
 extern "C" CRuntimeClass PTR_s_TView_006495a0;
+
+// UI-resource context helpers 0x426fa0-0x4270e0: original TU is this TView region
+// (0x4272xx methods follow); they operate on g_pUiResourceContext from ui_resource_pool.h.
+// FUNCTION: IMPERIALISM 0x00426fa0
+void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleType,
+                                                 unsigned char f70, unsigned char f6f,
+                                                 unsigned char f6e, unsigned char f6d,
+                                                 unsigned char f6c, unsigned char f71) {
+  TWindow* window = static_cast<TWindow*>(g_pUiResourceContext);
+  window->field70 = f70;
+  window->flag6f = f6f;
+  window->flag6e = f6e;
+  window->field6d = f6d;
+  window->flag6c = f6c;
+  window->flag71 = f71;
+  window->field9c = static_cast<unsigned short>(nField9C);
+  window->windowStyleType = nStyleType;
+}
+
+// FUNCTION: IMPERIALISM 0x00427010
+void __cdecl ApplyUiResourceColorTripletFromContext(unsigned char nFlag0C,
+                                                    unsigned char nTripletFlag, int colorA,
+                                                    int colorB) {
+  TWindow* window = static_cast<TWindow*>(g_pUiResourceContext);
+  window->GetEmbeddedDialogBehavior()->SetFlag0C(nFlag0C);
+  window->GetEmbeddedDialogBehavior()->SetUiColorDescriptorGoldTriplet(nTripletFlag, colorA,
+                                                                       colorB);
+}
+
+// Replaces the context widget's field48 style payload. Note the original writes
+// through field48 without re-checking the fresh allocation for null — faithful.
+// FUNCTION: IMPERIALISM 0x00427060
+void __cdecl ReplaceUiResourceContextPairBuffer(int styleWord, int packedColor) {
+  TView* context = g_pUiResourceContext;
+  delete context->field48;
+  context->field48 = new TUiStyleBytes();
+  context->field48->styleWord = styleWord;
+  context->field48->packedColor = packedColor;
+}
+
+// FUNCTION: IMPERIALISM 0x004270e0
+TUiStyleRef::TUiStyleRef(int value) {
+  this->value = value;
+}
 
 // FUNCTION: IMPERIALISM 0x00427200
 unsigned short TView::GetField4E() {
@@ -163,7 +211,7 @@ TView::TView()
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
   delete childList44;
-  delete[] field48;
+  delete field48;
 }
 
 // FUNCTION: IMPERIALISM 0x0048aa60
@@ -523,13 +571,7 @@ void TView::ReleaseMapQuickDrawDc(CDC* paintDc) {
 // FUNCTION: IMPERIALISM 0x0048b810
 void TView::EnsureField48Buffer() {
   if (field48 == 0) {
-    field48 = new int[2];
-    if (field48 != 0) {
-      field48[0] = 0;
-      field48[1] = 0;
-      return;
-    }
-    field48 = 0;
+    field48 = new TUiStyleBytes();
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b860

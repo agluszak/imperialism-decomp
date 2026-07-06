@@ -1,10 +1,8 @@
 #include "game/TStatusButton.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
-// FUNCTION: IMPERIALISM 0x00586280
-TStatusButton* __cdecl CreateTStatusButtonInstance(void) {
-  return new TStatusButton();
-}
+// SYNTHETIC: IMPERIALISM 0x00586280
+// TStatusButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00586310
 // TStatusButton::GetRuntimeClass
 

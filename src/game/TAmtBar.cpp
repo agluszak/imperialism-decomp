@@ -23,10 +23,8 @@ void TAmtBar::SetBarMetric(int value, int range) {
   UpdateBarValuesAndRefresh(static_cast<short>(value), static_cast<short>(range));
 }
 
-// FUNCTION: IMPERIALISM 0x005884c0
-TAmtBar* __cdecl CreateTAmtBarInstance(void) {
-  return new TAmtBar();
-}
+// SYNTHETIC: IMPERIALISM 0x005884c0
+// TAmtBar::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00588560
 // TAmtBar::GetRuntimeClass
 

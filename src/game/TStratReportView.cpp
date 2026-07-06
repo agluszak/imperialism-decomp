@@ -13,10 +13,8 @@
 
 IMPLEMENT_DYNCREATE(TStratReportView, TView)
 
-// FUNCTION: IMPERIALISM 0x0058e330
-TStratReportView* __cdecl CreateTStratReportViewInstance(void) {
-  return new TStratReportView();
-}
+// SYNTHETIC: IMPERIALISM 0x0058e330
+// TStratReportView::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0058e3c0
 TStratReportView::TStratReportView() : TView() {}

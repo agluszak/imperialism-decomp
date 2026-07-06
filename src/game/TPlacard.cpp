@@ -4,10 +4,8 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_widget_thunks.h"
-// FUNCTION: IMPERIALISM 0x0058b960
-void* __cdecl CreateTPlacardInstance(void) {
-  return new TPlacard();
-}
+// SYNTHETIC: IMPERIALISM 0x0058b960
+// TPlacard::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058b9f0
 // TPlacard::GetRuntimeClass
 

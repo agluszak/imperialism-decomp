@@ -531,30 +531,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00415f90(void)
   return 0;
 }
 
-// ghidra_name AllocateUiResourceNode
-// ghidra_proto undefined AllocateUiResourceNode()
-// FUNCTION: IMPERIALISM 0x0041b1c0
-undefined4 AllocateUiResourceNode(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyUiResourceLayoutFromContext
-// ghidra_proto undefined ApplyUiResourceLayoutFromContext()
-// FUNCTION: IMPERIALISM 0x0041b3d0
-undefined4 ApplyUiResourceLayoutFromContext(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourceContextStringCode
-// ghidra_proto undefined SetUiResourceContextStringCode()
-// FUNCTION: IMPERIALISM 0x0041b400
-undefined4 SetUiResourceContextStringCode(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateUiResourceContextMetricWord27
 // ghidra_proto undefined UpdateUiResourceContextMetricWord27()
 // FUNCTION: IMPERIALISM 0x0041b570
@@ -567,22 +543,6 @@ undefined4 UpdateUiResourceContextMetricWord27(void)
 // ghidra_proto undefined DispatchUiResourceContextVslot1E4WithCoords()
 // FUNCTION: IMPERIALISM 0x0041b5a0
 undefined4 DispatchUiResourceContextVslot1E4WithCoords(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearUiResourceContext
-// ghidra_proto undefined ClearUiResourceContext()
-// FUNCTION: IMPERIALISM 0x0041b5f0
-undefined4 ClearUiResourceContext(void)
-{
-  return 0;
-}
-
-// ghidra_name PopUiResourcePoolNode
-// ghidra_proto undefined PopUiResourcePoolNode()
-// FUNCTION: IMPERIALISM 0x0041b610
-undefined4 PopUiResourcePoolNode(void)
 {
   return 0;
 }
@@ -607,38 +567,6 @@ undefined4 GetUiLinkedListNodePayload(void)
 // ghidra_proto undefined NoOpRuntimeCallback_00426f80()
 // FUNCTION: IMPERIALISM 0x00426f80
 undefined4 NoOpRuntimeCallback_00426f80(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourceContextFlagsAndMetrics
-// ghidra_proto undefined SetUiResourceContextFlagsAndMetrics()
-// FUNCTION: IMPERIALISM 0x00426fa0
-undefined4 SetUiResourceContextFlagsAndMetrics(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyUiResourceColorTripletFromContext
-// ghidra_proto undefined ApplyUiResourceColorTripletFromContext()
-// FUNCTION: IMPERIALISM 0x00427010
-undefined4 ApplyUiResourceColorTripletFromContext(void)
-{
-  return 0;
-}
-
-// ghidra_name ReplaceUiResourceContextPairBuffer
-// ghidra_proto undefined ReplaceUiResourceContextPairBuffer()
-// FUNCTION: IMPERIALISM 0x00427060
-undefined4 ReplaceUiResourceContextPairBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourceContextTagWord
-// ghidra_proto undefined SetUiResourceContextTagWord()
-// FUNCTION: IMPERIALISM 0x004270e0
-undefined4 SetUiResourceContextTagWord(void)
 {
   return 0;
 }

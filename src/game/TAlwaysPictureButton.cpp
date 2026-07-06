@@ -2,10 +2,8 @@
 #include "game/mfc.h"
 
 
-// FUNCTION: IMPERIALISM 0x00570950
-TAlwaysPictureButton* __cdecl CreateTAlwaysPictureButtonInstance(void) {
-  return new TAlwaysPictureButton();
-}
+// SYNTHETIC: IMPERIALISM 0x00570950
+// TAlwaysPictureButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x005709d0
 // TAlwaysPictureButton::GetRuntimeClass
 

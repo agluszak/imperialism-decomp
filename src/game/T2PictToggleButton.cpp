@@ -1,10 +1,8 @@
 #include "game/T2PictToggleButton.h"
 #include "game/mfc.h"
 
-// FUNCTION: IMPERIALISM 0x00584890
-T2PictToggleButton* __cdecl CreateT2PictToggleButtonInstance(void) {
-  return new T2PictToggleButton();
-}
+// SYNTHETIC: IMPERIALISM 0x00584890
+// T2PictToggleButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00584910
 // T2PictToggleButton::GetRuntimeClass
 

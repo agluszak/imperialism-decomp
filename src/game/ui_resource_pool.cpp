@@ -1,6 +1,8 @@
 #include "game/ui_resource_pool.h"
 
+#include "game/TCluster.h"
 #include "game/TControl.h"
+#include "game/TPicture.h"
 #include "game/TStaticText.h"
 #include "game/global_data_tables.h"
 
@@ -42,17 +44,28 @@ void __cdecl SetUiResourceStateFlags(unsigned char flag4c, unsigned char flag4d)
   context->flag4d = flag4d;
 }
 
+// FUNCTION: IMPERIALISM 0x0041b3d0
+void __cdecl SetUiResourceContextPictureId(int nPictureId) {
+  static_cast<TPicture*>(g_pUiResourceContext)
+      ->SetPictureResourceIdAndRefresh(static_cast<short>(nPictureId), 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0041b400
+void __cdecl SetUiResourceContextStringCode(int nCode) {
+  static_cast<TCluster*>(g_pUiResourceContext)->field84 = nCode;
+}
+
 // FUNCTION: IMPERIALISM 0x0041b420
-unsigned char* ZeroUiResourceContextStyleBytes(unsigned char* buffer) {
-  buffer[0] = 0;
-  buffer[1] = 0;
-  buffer[2] = 0;
-  buffer[3] = 0;
-  buffer[4] = 0;
-  buffer[5] = 0;
-  buffer[6] = 0;
-  buffer[7] = 0;
-  return buffer;
+TUiStyleBytes* TUiStyleBytes::Reset() {
+  styleBytes[0] = 0;
+  styleBytes[1] = 0;
+  styleBytes[2] = 0;
+  styleBytes[3] = 0;
+  styleBytes[4] = 0;
+  styleBytes[5] = 0;
+  styleBytes[6] = 0;
+  styleBytes[7] = 0;
+  return this;
 }
 
 // FUNCTION: IMPERIALISM 0x0041b450
@@ -72,7 +85,7 @@ void __cdecl SetUiResourceLayoutValues(int frameStyle, int rectLeft, int rectTop
 // like RegisterUiResourceEntry's tags).
 // FUNCTION: IMPERIALISM 0x0041b490
 void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText, short nMode,
-                                        short nFlag, short nPointSize, int styleRef,
+                                        short nFlag, short nPointSize, TUiStyleRef styleRef,
                                         short nThemeCode) {
   (void)nGroupId;
   (void)nVariant;
@@ -86,9 +99,22 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText
   style.mode = nMode;
   style.flag2 = nFlag;
   style.pointSize = nPointSize;
-  style.styleRef6 = styleRef;
+  style.styleRef6 = styleRef.value;
   context->SetCityProductionDialogPictureRectAndMaybeRefresh(&style, 0);
   context->SetTextThemeCodeAndMaybeRefresh(nThemeCode, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0041b5f0
+void __cdecl ClearUiResourceContext() {
+  g_pUiResourceContext = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0041b610
+void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
+  (void)nameTag;
+  // CList::RemoveTail -> FreeNode already performs the on-empty RemoveAll teardown
+  // (walk + CPlex::FreeDataChain + member zeroing) — do not repeat it here.
+  g_UiWidgetBuildStack006a13e0.RemoveTail();
 }
 
 // 0x479a80 / 0x479b00 ("Pop/PushUiResourcePoolNode") are this TU's out-of-line twin copies

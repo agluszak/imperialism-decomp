@@ -63,10 +63,8 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 // SYNTHETIC: IMPERIALISM 0x0044a7a0
 // TCivDescription::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x0058f050
-CivDescriptionState* __cdecl CreateTCivDescriptionInstance(void) {
-  return new TCivDescription();
-}
+// SYNTHETIC: IMPERIALISM 0x0058f050
+// TCivDescription::CreateObject
 
 TCivDescription::TCivDescription() : TView() {
   selectedCivilianClass = -1;

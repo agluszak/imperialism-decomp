@@ -25,10 +25,8 @@
 
 // 0x004d3a60 (HandleEngineerConstructionAction) lives on TCivMgr — see TCivMgr.cpp.
 
-// FUNCTION: IMPERIALISM 0x0058ea00
-TCivToolbar* __cdecl CreateTCivToolbarInstance(void) {
-  return new TCivToolbar();
-}
+// SYNTHETIC: IMPERIALISM 0x0058ea00
+// TCivToolbar::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058ea80
 // TCivToolbar::GetRuntimeClass
 

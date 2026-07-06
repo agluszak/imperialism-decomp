@@ -13,6 +13,40 @@
 // (0x07 ReleaseRuntimeSelectionOwnerAndDestroyObject, 0x08 CloneEngineerDialogStateToNewInstance,
 // 0x16 OwnerPanel) and introduces its own virtuals at slot 0x25+ (declared below in exact vtable
 // slot order). See include/game/TEventHandler.h and memory tview-vtable-slot-scramble.
+
+// 8-byte style/color payload hung off TView::field48 (see TView::EnsureField48Buffer
+// 0x48b810 and ReplaceUiResourceContextPairBuffer 0x427060). Its default ctor zeroes
+// the bytes and is inlined at the new-expressions (both bodies show the 8 byte-stores
+// inline); 0x41b420 is the same zeroing as the out-of-line Reset entry the factory
+// builders call — previously mis-ported as a __cdecl free function (bd 1uj.51.4).
+// packedColor/styleWord names are hedged from the observed writes ({0xffffff, 0} at
+// the 0x427060 call sites).
+class TUiStyleBytes {
+public:
+  // Inline default ctor: zero the 8 style bytes byte-wise. Inlined at the
+  // new-expressions in TView::EnsureField48Buffer (0x48b810) and
+  // ReplaceUiResourceContextPairBuffer (0x427060); the factory-builder TUs call the
+  // out-of-line Reset body (0x41b420) instead.
+  TUiStyleBytes() {
+    styleBytes[0] = 0;
+    styleBytes[1] = 0;
+    styleBytes[2] = 0;
+    styleBytes[3] = 0;
+    styleBytes[4] = 0;
+    styleBytes[5] = 0;
+    styleBytes[6] = 0;
+    styleBytes[7] = 0;
+  }
+  TUiStyleBytes* Reset(); // 0x41b420 — same zeroing, out-of-line (thiscall, returns this)
+  union {
+    unsigned char styleBytes[8];
+    struct {
+      int packedColor; // +0
+      int styleWord;   // +4
+    };
+  };
+};
+
 // VTABLE: IMPERIALISM 0x649858
 class TView : public TEventHandler {
 public:
@@ -33,8 +67,8 @@ public:
     TView* uiResourceContext40;
     int resourceTemplateId40;
   };
-  CPtrList* childList44; // 0x44 — child-control list (CObList/CPtrList)
-  int* field48;
+  CPtrList* childList44;  // 0x44 — child-control list (CObList/CPtrList)
+  TUiStyleBytes* field48; // 8-byte style/color payload (see TUiStyleBytes above)
   unsigned char flag4c;
   unsigned char flag4d;
   unsigned short field4e;
@@ -66,22 +100,22 @@ public:
   // assignments are pinned by FUNCTION-marker addresses, original-binary call offsets,
   // and the byte-offset encoded in "SlotXX" names. vmethod_00NN placeholders fill the
   // remaining (body-owned-elsewhere / unported) slots.
-  virtual class TView* ResolveControlByTag(unsigned int controlTag);              // 0x25 0x48afd0
-  virtual void SwitchActiveChildAndNotify(class TView* child);                    // 0x26 0x48af80
-  virtual void DispatchSlot9CToLinkedChildren();                                  // 0x27 0x48c820
-  virtual void CallVoidSlotA0();                                                  // 0x28 0x48c890
-  virtual void SetEnabled(int enabledState, int refreshFlag);                     // 0x29 0x48b1c0
-  virtual void SetState(int state, int refreshFlag);                              // 0x2a 0x48b070
-  virtual unsigned short GetField4E();                                            // 0x2b 0x427200
-  virtual void HandleCursorHoverFallback(CPoint* point, int hitArg);              // 0x2c
-  virtual void NoOpClipRegionSlot2D(int arg1, int arg2);                          // 0x2d 0x48c1c0
+  virtual class TView* ResolveControlByTag(unsigned int controlTag);            // 0x25 0x48afd0
+  virtual void SwitchActiveChildAndNotify(class TView* child);                  // 0x26 0x48af80
+  virtual void DispatchSlot9CToLinkedChildren();                                // 0x27 0x48c820
+  virtual void CallVoidSlotA0();                                                // 0x28 0x48c890
+  virtual void SetEnabled(int enabledState, int refreshFlag);                   // 0x29 0x48b1c0
+  virtual void SetState(int state, int refreshFlag);                            // 0x2a 0x48b070
+  virtual unsigned short GetField4E();                                          // 0x2b 0x427200
+  virtual void HandleCursorHoverFallback(CPoint* point, int hitArg);            // 0x2c
+  virtual void NoOpClipRegionSlot2D(int arg1, int arg2);                        // 0x2d 0x48c1c0
   virtual void RefreshCityProductionViewStateFromContext(RgnHandle clipRegion); // 0x2e 0x48c1e0
-  virtual int QuerySelectedIndexSlotBC();                                         // 0x2f
-  virtual void InvalidateOffsetRegionUsingChildClipRect(RgnHandle region);           // 0x30 0x48b4b0
-  virtual void ForwardMapViewVirtualC4IfPresent(int param);                       // 0x31 0x48ab90
-  virtual void ValidateControlRectIfWindowActive(RECT* rect);                     // 0x32 0x48b690
-  virtual char EvaluateControlInputGate();                                        // 0x33 0x48c000
-  virtual char HasRenderableParentAndContent();                                   // 0x34 0x48c050
+  virtual int QuerySelectedIndexSlotBC();                                       // 0x2f
+  virtual void InvalidateOffsetRegionUsingChildClipRect(RgnHandle region);      // 0x30 0x48b4b0
+  virtual void ForwardMapViewVirtualC4IfPresent(int param);                     // 0x31 0x48ab90
+  virtual void ValidateControlRectIfWindowActive(RECT* rect);                   // 0x32 0x48b690
+  virtual char EvaluateControlInputGate();                                      // 0x33 0x48c000
+  virtual char HasRenderableParentAndContent();                                 // 0x34 0x48c050
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                    int hitArg); // 0x35 0x48c080
   virtual void DispatchControlEventToChildrenAndSelf(int eventArg);             // 0x36 0x48aaf0

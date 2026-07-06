@@ -2,10 +2,8 @@
 #include "game/mfc.h"
 
 
-// FUNCTION: IMPERIALISM 0x00570b10
-T2PictureButton* __cdecl CreateT2PictureButtonInstance(void) {
-  return new T2PictureButton();
-}
+// SYNTHETIC: IMPERIALISM 0x00570b10
+// T2PictureButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00570b90
 // T2PictureButton::GetRuntimeClass
 

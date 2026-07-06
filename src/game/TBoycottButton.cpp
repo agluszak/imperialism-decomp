@@ -4,10 +4,8 @@
 #include "game/mfc.h"
 
 
-// FUNCTION: IMPERIALISM 0x005846e0
-TBoycottButton* __cdecl CreateTBoycottButtonInstance(void) {
-  return new TBoycottButton();
-}
+// SYNTHETIC: IMPERIALISM 0x005846e0
+// TBoycottButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00584760
 // TBoycottButton::GetRuntimeClass
 

@@ -4,10 +4,8 @@
 #include "game/mfc.h"
 
 
-// FUNCTION: IMPERIALISM 0x00571050
-TToggleButton* __cdecl CreateTToggleButtonInstance(void) {
-  return new TToggleButton();
-}
+// SYNTHETIC: IMPERIALISM 0x00571050
+// TToggleButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x005710d0
 // TToggleButton::GetRuntimeClass
 

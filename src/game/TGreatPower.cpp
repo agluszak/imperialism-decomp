@@ -407,10 +407,9 @@ void TGreatPower::LoadNationDisplayNameSharedRefFromField8(CString* destString) 
   *destString = identitySharedString1;
 }
 
-// FUNCTION: IMPERIALISM 0x004d8950
-void* __cdecl TGreatPower::CreateTGreatPowerInstance(void) {
-  return new TGreatPower();
-}
+// SYNTHETIC: IMPERIALISM 0x004d8950
+// TGreatPower::CreateObject
+
 // SYNTHETIC: IMPERIALISM 0x004d89d0
 // TGreatPower::GetRuntimeClass
 

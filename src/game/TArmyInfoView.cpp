@@ -2,10 +2,8 @@
 #include "game/mfc.h"
 
 
-// FUNCTION: IMPERIALISM 0x00591500
-TArmyInfoView* __cdecl CreateTArmyInfoViewInstance(void) {
-  return new TArmyInfoView();
-}
+// SYNTHETIC: IMPERIALISM 0x00591500
+// TArmyInfoView::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00591580
 // TArmyInfoView::GetRuntimeClass
 

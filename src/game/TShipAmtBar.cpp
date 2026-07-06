@@ -22,10 +22,8 @@
 
 IMPLEMENT_DYNCREATE(TShipAmtBar, TAmtBar)
 
-// FUNCTION: IMPERIALISM 0x0058aaa0
-TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {
-  return new TShipAmtBar();
-}
+// SYNTHETIC: IMPERIALISM 0x0058aaa0
+// TShipAmtBar::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0058ab60
 TShipAmtBar::TShipAmtBar() : TIndustryAmtBar(), selectedShipOrder(0) {}

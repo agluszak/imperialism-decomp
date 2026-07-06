@@ -41,6 +41,7 @@ address|name|symbol|size|type|prototype|provenance
 412d90|ShowOutOfMemoryErrorNewHandler||23|function|int __cdecl ShowOutOfMemoryErrorNewHandler(size_t)|
 412dc0|InitializeImperialismApplicationInstance||1161|function|undefined InitializeImperialismApplicationInstance()|
 413250|TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250||233|function|undefined WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250()|
+413380|CObject::operator delete|??3CObject@@SGXPAX@Z|16|function|void __stdcall operator delete(void * p)|
 4133a0|OrphanCallChain_C1_I08_004133a0||20|function|undefined OrphanCallChain_C1_I08_004133a0()|
 4133d0|ImperialismCommandLineInfo::ParseParam||299|function|void __thiscall ParseParam(char const *,int,int)|
 413550|ImperialismCommandLineInfo::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -101,12 +102,12 @@ address|name|symbol|size|type|prototype|provenance
 415f50|InitializeUiResourcePoolRuntimeClassFields||33|function|undefined InitializeUiResourcePoolRuntimeClassFields()|
 415f90|WrapperFor_FreeHeapBufferIfNotNull_At00415f90||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00415f90()|
 415fe0|BuildTradeSchoolDialogControls||16760|function|int * __fastcall BuildTradeSchoolDialogControls(dword dwPanelId, short nDialogTypeTag)|
-41b1c0|AllocateUiResourceNode||16|function|undefined AllocateUiResourceNode()|
+41b1c0|CObject::operator new|??2CObject@@SGPAXI@Z|16|function|void * __stdcall operator new(unsigned int nSize)|
 41b210|RegisterUiResourceEntry||312|function|undefined RegisterUiResourceEntry()|
 41b3a0|SetUiResourceStateFlags||20|function|undefined SetUiResourceStateFlags()|
-41b3d0|ApplyUiResourceLayoutFromContext||22|function|undefined ApplyUiResourceLayoutFromContext()|
+41b3d0|SetUiResourceContextPictureId||22|function|void __cdecl SetUiResourceContextPictureId(int nPictureId)|
 41b400|SetUiResourceContextStringCode||16|function|undefined SetUiResourceContextStringCode()|
-41b420|ZeroUiResourceContextStyleBytes||28|function|undefined ZeroUiResourceContextStyleBytes()|
+41b420|TUiStyleBytes::Reset||28|function|TUiStyleBytes * __thiscall Reset()|
 41b450|SetUiResourceLayoutValues||47|function|undefined SetUiResourceLayoutValues()|
 41b490|BindUiResourceTextAndStyle||173|function|undefined BindUiResourceTextAndStyle()|
 41b570|UpdateUiResourceContextMetricWord27||28|function|undefined UpdateUiResourceContextMetricWord27()|
@@ -120,7 +121,7 @@ address|name|symbol|size|type|prototype|provenance
 426fa0|SetUiResourceContextFlagsAndMetrics||69|function|undefined SetUiResourceContextFlagsAndMetrics()|
 427010|ApplyUiResourceColorTripletFromContext||61|function|undefined ApplyUiResourceColorTripletFromContext()|
 427060|ReplaceUiResourceContextPairBuffer||83|function|undefined ReplaceUiResourceContextPairBuffer()|
-4270e0|SetUiResourceContextTagWord||11|function|undefined SetUiResourceContextTagWord()|
+4270e0|TUiStyleRef::TUiStyleRef|??0TUiStyleRef@@QAE@H@Z|11|function|__thiscall TUiStyleRef(int value)|
 427100|SetUiResourcePairValues||18|function|undefined SetUiResourcePairValues()|
 427200|TView::CtrlSlot43_GetWordField4E_Impl_af||5|function|undefined CtrlSlot43_GetWordField4E_Impl()|
 427220|TView::VTableSlotC3||1|function|undefined 'scalar_deleting_destructor'(void)|
@@ -906,7 +907,7 @@ address|name|symbol|size|type|prototype|provenance
 48b770|TView::SetGlobalUiSelectionIfChangedAndNotify_c2||40|function|undefined SetGlobalUiSelectionIfChangedAndNotify()|
 48b7b0|TView::GetTEventHandlerClassNamePointer_c4||17|function|undefined GetTEventHandlerClassNamePointer(void)|
 48b7e0|TView::CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl_c5||17|function|undefined CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl()|
-48b810|TView::OrphanCallChain_C11_I88_004874b0_c6||62|function|undefined OrphanCallChain_C11_I88_004874b0(void)|
+48b810|TView::EnsureField48Buffer||62|function|void __thiscall EnsureField48Buffer()|
 48b860|TView::GetTEventHandlerClassNamePointer_c9||71|function|undefined GetTEventHandlerClassNamePointer(void)|
 48b8d0|TView::PaintVisibleChildrenIntersectingClipRect_c7||282|function|undefined PaintVisibleChildrenIntersectingClipRect()|
 48ba40|TView::OffsetRectByControlPositionAndDispatchVslot138_Impl_d2||41|function|undefined OffsetRectByControlPositionAndDispatchVslot138_Impl()|
@@ -5098,7 +5099,7 @@ address|name|symbol|size|type|prototype|provenance
 58b040|TTraderAmtBar::UpdateFromScaleOrRatio||1|function|undefined UpdateFromScaleOrRatio()|
 58b070|TTraderAmtBar::ApplyMoveClamp||94|function|undefined AdjustForZero()|
 58b0f0|TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache||453|function|undefined DrawAmt()|
-58b340|TCivilianButton::CreateObject|?CreateObject@TCivilianButton@@SGPAVCObject@@XZ|90|function|TCivilianButton * __cdecl CreateObject(void)|rtti
+58b340|TCivilianButton::CreateObject|?CreateObject@TCivilianButton@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 58b3c0|TCivilianButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 58b3e0|TCivilianButton::TCivilianButton||25|function|undefined TCivilianButton()|
 58b410|TCivilianButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|

@@ -58,4 +58,3 @@ public:
   void ScaleAndApplyAuxOutputVolume(short scalar); // 0x593cb0
 };
 
-TSoundPlayer* CreateTSoundPlayerInstance(void);

@@ -12,10 +12,8 @@
 #include "game/ui_widget_thunks.h"
 #include <new>
 
-// FUNCTION: IMPERIALISM 0x0058c1e0
-TNumberedArrowButton* __cdecl CreateTNumberedArrowButtonInstance(void) {
-  return new TNumberedArrowButton();
-}
+// SYNTHETIC: IMPERIALISM 0x0058c1e0
+// TNumberedArrowButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058c280
 // TNumberedArrowButton::GetRuntimeClass
 

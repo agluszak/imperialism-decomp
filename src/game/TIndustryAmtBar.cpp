@@ -25,10 +25,8 @@
 
 #include "game/mfc.h"
 
-// FUNCTION: IMPERIALISM 0x00589110
-TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
-  return new TIndustryAmtBar();
-}
+// SYNTHETIC: IMPERIALISM 0x00589110
+// TIndustryAmtBar::CreateObject
 // SYNTHETIC: IMPERIALISM 0x005891b0
 // TIndustryAmtBar::GetRuntimeClass
 

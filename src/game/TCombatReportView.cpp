@@ -1,10 +1,8 @@
 #include "game/TCombatReportView.h"
 #include "game/mfc.h"
 #include "game/TControl.h"
-// FUNCTION: IMPERIALISM 0x0058c830
-void* __cdecl CreateTCombatReportViewInstance(void) {
-  return new TCombatReportView();
-}
+// SYNTHETIC: IMPERIALISM 0x0058c830
+// TCombatReportView::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058c8b0
 // TCombatReportView::GetRuntimeClass
 

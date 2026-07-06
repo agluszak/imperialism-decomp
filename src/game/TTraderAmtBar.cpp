@@ -34,10 +34,8 @@ const int kScenarioRecordTags[] = {
 
 TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
 
-// FUNCTION: IMPERIALISM 0x0058ae30
-TTraderAmtBar* __cdecl CreateTTraderAmtBarInstance(void) {
-  return new TTraderAmtBar();
-}
+// SYNTHETIC: IMPERIALISM 0x0058ae30
+// TTraderAmtBar::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058aed0
 // TTraderAmtBar::GetRuntimeClass
 

@@ -9,10 +9,8 @@
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TSpaceCommand.h"
-// FUNCTION: IMPERIALISM 0x0058be30
-void* __cdecl CreateTArmyPlacardInstance(void) {
-  return new TArmyPlacard();
-}
+// SYNTHETIC: IMPERIALISM 0x0058be30
+// TArmyPlacard::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058beb0
 // TArmyPlacard::GetRuntimeClass
 

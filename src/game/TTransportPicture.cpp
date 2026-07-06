@@ -6,10 +6,8 @@
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 
-// FUNCTION: IMPERIALISM 0x00591d90
-TTransportPicture* __cdecl CreateTTransportPictureInstance(void) {
-  return new TTransportPicture();
-}
+// SYNTHETIC: IMPERIALISM 0x00591d90
+// TTransportPicture::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00591e50
 // TTransportPicture::GetRuntimeClass
 

@@ -60,14 +60,14 @@ TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int h
   window->flag4d = 1;
 
   if (window->field48 != 0) {
-    delete[] window->field48;
+    delete window->field48;
     window->field48 = 0;
   }
   window->EnsureField48Buffer();
   if (window->field48 != 0) {
-    ZeroUiResourceContextStyleBytes(reinterpret_cast<unsigned char*>(window->field48));
-    window->field48[1] = 0;
-    window->field48[0] = 0xffffff;
+    window->field48->Reset();
+    window->field48->styleWord = 0;
+    window->field48->packedColor = 0xffffff;
   }
 
   window->field6d = 0;
@@ -149,8 +149,8 @@ TView* BuildStartupIntroBackground() {
 
     background->EnsureField48Buffer();
     if (background->field48 != 0) {
-      background->field48[1] = 0;
-      background->field48[0] = 0xffffff;
+      background->field48->styleWord = 0;
+      background->field48->packedColor = 0xffffff;
     }
 
     background->hasCommandTagResource = 0xa;
@@ -181,8 +181,8 @@ TView* BuildStartupIntroBackground() {
 
       movie->EnsureField48Buffer();
       if (movie->field48 != 0) {
-        movie->field48[1] = 0;
-        movie->field48[0] = 0xffffff;
+        movie->field48->styleWord = 0;
+        movie->field48->packedColor = 0xffffff;
       }
 
       movie->hasCommandTagResource = 0xa;
@@ -521,8 +521,8 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   mainPicture->field48 = 0;
   mainPicture->EnsureField48Buffer();
   if (mainPicture->field48 != 0) {
-    mainPicture->field48[1] = 0;
-    mainPicture->field48[0] = 0xffffff;
+    mainPicture->field48->styleWord = 0;
+    mainPicture->field48->packedColor = 0xffffff;
   }
   mainPicture->hasCommandTagResource = 0xa;
   mainPicture->field68 = 0;
@@ -757,8 +757,8 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     mainBook->field48 = 0;
     mainBook->EnsureField48Buffer();
     if (mainBook->field48 != 0) {
-      mainBook->field48[1] = 0;
-      mainBook->field48[0] = 0xffffff;
+      mainBook->field48->styleWord = 0;
+      mainBook->field48->packedColor = 0xffffff;
     }
     mainBook->hasCommandTagResource = 0xa;
     mainBook->field68 = 0;

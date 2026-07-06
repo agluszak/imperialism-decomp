@@ -22,10 +22,8 @@ const int kAssertLineMoveBarInitNil = 0x725;
 
 #include <new>
 
-// FUNCTION: IMPERIALISM 0x005713c0
-TUberCluster* __cdecl CreateTUberClusterInstance(void) {
-  return new TUberCluster();
-}
+// SYNTHETIC: IMPERIALISM 0x005713c0
+// TUberCluster::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00571440
 // TUberCluster::GetRuntimeClass
 

@@ -21,10 +21,8 @@
 
 #include "game/mfc.h"
 
-// FUNCTION: IMPERIALISM 0x00589ed0
-TRailAmtBar* __cdecl CreateTRailAmtBarInstance(void) {
-  return new TRailAmtBar();
-}
+// SYNTHETIC: IMPERIALISM 0x00589ed0
+// TRailAmtBar::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x00589f70
 // TRailAmtBar::GetRuntimeClass

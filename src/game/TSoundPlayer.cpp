@@ -30,10 +30,9 @@ void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player);
 
 static int DAT_006a60f8 = 0;
 
-// FUNCTION: IMPERIALISM 0x005932b0
-TSoundPlayer* CreateTSoundPlayerInstance(void) {
-  return new TSoundPlayer();
-}
+// SYNTHETIC: IMPERIALISM 0x005932b0
+// TSoundPlayer::CreateObject
+
 // SYNTHETIC: IMPERIALISM 0x00593350
 // TSoundPlayer::GetRuntimeClass
 

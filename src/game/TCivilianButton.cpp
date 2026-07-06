@@ -10,10 +10,8 @@
 #include "game/mfc.h"
 const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 
-// FUNCTION: IMPERIALISM 0x0058b340
-void* __cdecl CreateTCivilianButtonInstance(void) {
-  return new TCivilianButton();
-}
+// SYNTHETIC: IMPERIALISM 0x0058b340
+// TCivilianButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058b3c0
 // TCivilianButton::GetRuntimeClass
 

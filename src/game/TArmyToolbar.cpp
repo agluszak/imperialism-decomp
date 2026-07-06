@@ -64,10 +64,8 @@ static __inline void SetArmyPayloadRatioOrModeSelection(ArmyCommandPayload* payl
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x0058de40
-TArmyToolbar* __cdecl CreateTArmyToolbarInstance(void) {
-  return new TArmyToolbar();
-}
+// SYNTHETIC: IMPERIALISM 0x0058de40
+// TArmyToolbar::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058dec0
 // TArmyToolbar::GetRuntimeClass
 

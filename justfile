@@ -487,6 +487,20 @@ ghidra-daemon-status:
 ghidra-listing *args: _require-ghidra-install
   uv run python -m tools.ghidra.query listing {{args}}
 
+# Decode a turn-event screen-builder into widget-block pseudo-source (bd 1uj.51):
+# per-eventCode case map + helper-call sequences with FourCC tags decoded. Reads the
+# ORIGINAL binary directly (no Ghidra round-trip; works where the decompiler
+# degenerates). `just decode-builder 0xADDR [--len N]`.
+[group('ghidra-inspect')]
+decode-builder *args:
+  uv run python -m tools.binary.decode_builder {{args}}
+
+# Audit every manual `new TViewFamily(...)` spelling against the original's allocator
+# (TView::operator new 0x41b1c0 vs ::operator new 0x606f73). Exit 1 on mismatch.
+[group('ghidra-inspect')]
+alloc-audit:
+  uv run python -m tools.binary.alloc_audit
+
 # Cross-references for an address. Direction `to` (default): callers, jumps,
 # address-taken/data refs, hopping through ILT `jmp` thunks automatically so body
 # addresses answer "who calls this" in one query. Direction `from`: the containing

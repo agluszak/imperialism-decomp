@@ -2,10 +2,8 @@
 #include "game/TClosePicture.h"
 
 
-// FUNCTION: IMPERIALISM 0x00586ad0
-TClosePicture* __cdecl CreateTClosePictureInstance(void) {
-  return new TClosePicture();
-}
+// SYNTHETIC: IMPERIALISM 0x00586ad0
+// TClosePicture::CreateObject
 
 // MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x662f38).
 // SYNTHETIC: IMPERIALISM 0x00586b50

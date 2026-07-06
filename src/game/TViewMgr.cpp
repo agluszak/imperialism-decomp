@@ -622,6 +622,23 @@ void TViewMgr::UiRuntimeSlot58() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005d6cd0
+void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(eventCode, 0));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x4ff);
+  }
+  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
+      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+  gold->AssertValid();
+  if (gold != nullptr) {
+    gold->CommitGoldDialogContent();
+  }
+  node->DispatchSlot9CToLinkedChildren();
+}
+
 // FUNCTION: IMPERIALISM 0x005d6d70
 void TViewMgr::HandleTurnEventDialogFactorySlot74(int eventCode) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
@@ -1177,23 +1194,6 @@ void TViewMgr::UiRuntimeSlot6C() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005d6cd0
-void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(eventCode, 0));
-  if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x4ff);
-  }
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
-  gold->AssertValid();
-  if (gold != nullptr) {
-    gold->CommitGoldDialogContent();
-  }
-  node->DispatchSlot9CToLinkedChildren();
-}
-
 // FUNCTION: IMPERIALISM 0x005d83b0
 void TViewMgr::UiRuntimeSlot84() {
   turn_event_ui_refresh::RefreshMainCouncilTickerPanel();
@@ -1456,14 +1456,6 @@ void TViewMgr::UiRuntimeSlot108() {
   mainPanel->RefreshControl();
 }
 
-// FUNCTION: IMPERIALISM 0x005dc3f0
-void TViewMgr::HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14() {
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47))); // 'GOLD'
-  gold->AssertValid();
-  gold->ConfigureGoldValueCells(0x14, 0x14);
-}
-
 // FUNCTION: IMPERIALISM 0x005dc160
 void TViewMgr::InvokeStrategicMapViewMethod6C() {
   g_pStrategicMapViewSystem->WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950();
@@ -1506,6 +1498,14 @@ int TViewMgr::ShowConstructionOptionsDialog() {
 void TViewMgr::UiRuntimeSlotE0() {}
 void TViewMgr::UiRuntimeSlotE8() {}
 void TViewMgr::UiRuntimeSlotF0() {}
+
+// FUNCTION: IMPERIALISM 0x005dc3f0
+void TViewMgr::HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14() {
+  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
+      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+  gold->AssertValid();
+  gold->ConfigureGoldValueCells(0x14, 0x14);
+}
 
 // FUNCTION: IMPERIALISM 0x005dc690
 void TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot) {

@@ -3,10 +3,8 @@
 #include "game/TControl.h"
 
 
-// FUNCTION: IMPERIALISM 0x00592860
-TWarningView* __cdecl CreateTWarningViewInstance(void) {
-  return new TWarningView();
-}
+// SYNTHETIC: IMPERIALISM 0x00592860
+// TWarningView::CreateObject
 // SYNTHETIC: IMPERIALISM 0x005928e0
 // TWarningView::GetRuntimeClass
 

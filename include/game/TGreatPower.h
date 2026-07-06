@@ -402,7 +402,6 @@ public:
   TGreatPower();
   TGreatPower(int arg1, int arg2);
 
-  static void* CreateTGreatPowerInstance(void);
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
   void QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, TZone* portZoneContext,
                                                       int arg4);

@@ -7,7 +7,15 @@
 // (g_UiWidgetBuildStack006a13e0) and the g_pUiResourceHead/g_pUiResourceContext pair —
 // see include/game/global_data_tables.h.
 
-unsigned char* ZeroUiResourceContextStyleBytes(unsigned char* buffer);
+// 4-byte by-value style-ref wrapper (bd 1uj.51.2): constructed in place on the stack as
+// BindUiResourceTextAndStyle's styleRef argument. Factory-builder call sites convert an
+// int through the out-of-line converting ctor 0x4270e0 (~200 calls across the cluster);
+// sites passing an existing TUiStyleRef copy it trivially (plain push, no call).
+class TUiStyleRef {
+public:
+  TUiStyleRef(int value); // 0x4270e0
+  int value;
+};
 
 // Out-of-line variant of the per-widget build prologue: push `widget` onto the build
 // stack (parenting it to the previous stack tail), bind the frame/layout, and set the
@@ -29,5 +37,37 @@ void __cdecl SetUiResourceStateFlags(unsigned char flag4c, unsigned char flag4d)
 // Assign text + packed style descriptor + theme code onto the current
 // g_pUiResourceContext text control (a TStaticText-family widget).
 void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText, short nMode,
-                                        short nFlag, short nPointSize, int styleRef,
+                                        short nFlag, short nPointSize, TUiStyleRef styleRef,
                                         short nThemeCode);
+
+// Set the picture resource id on the current g_pUiResourceContext picture widget
+// (virtual slot 0x72 SetPictureResourceIdAndRefresh, no immediate refresh).
+void __cdecl SetUiResourceContextPictureId(int nPictureId);
+
+// Store a FourCC group/mode code into the current context cluster's field84.
+void __cdecl SetUiResourceContextStringCode(int nCode);
+
+// Replace the current context widget's field48 style payload with a fresh zeroed
+// buffer carrying {packedColor, styleWord}.
+void __cdecl ReplaceUiResourceContextPairBuffer(int styleWord, int packedColor);
+
+// Set the TWindow style/flag block (+0x6c..+0x71 flags, +0x9c mode word, +0x60 window
+// style type) on the current context window.
+void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleType,
+                                                 unsigned char f70, unsigned char f6f,
+                                                 unsigned char f6e, unsigned char f6d,
+                                                 unsigned char f6c, unsigned char f71);
+
+// Set the embedded dialog behavior's flag0C and gold color triplet on the current
+// context window.
+void __cdecl ApplyUiResourceColorTripletFromContext(unsigned char nFlag0C,
+                                                    unsigned char nTripletFlag, int colorA,
+                                                    int colorB);
+
+// Clear the g_pUiResourceContext cursor.
+void __cdecl ClearUiResourceContext();
+
+// Pop the top build-stack node; when the stack empties, release the node pool.
+// `nameTag` is the FourCC of the widget being closed — present at every call site but
+// unused by the body (signature fidelity, like RegisterUiResourceEntry's tags).
+void __cdecl PopUiResourcePoolNode(unsigned int nameTag);
