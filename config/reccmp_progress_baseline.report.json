@@ -7482,7 +7482,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12078,7 +12078,8 @@
     },
     {
       "address": "0x4dbac0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.9848484848484849,
       "name": "TGreatPower::MarkConnectedOwnedRegionsInMaskRecursive",
       "type": 1
     },
@@ -12289,7 +12290,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12721,13 +12722,15 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12782,7 +12785,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.4939759036144578,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16221,7 +16224,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -32826,7 +32829,7 @@
     },
     {
       "address": "0x5d6d70",
-      "matching": 0.0,
+      "matching": 0.9791666666666666,
       "name": "HandleTurnEventDialogFactorySlot74",
       "type": 1
     },
@@ -32844,13 +32847,13 @@
     },
     {
       "address": "0x5d6f10",
-      "matching": 0.0,
+      "matching": 0.9791666666666666,
       "name": "HandleTurnEventDialogFactorySlot7C",
       "type": 1
     },
     {
       "address": "0x5d6fd0",
-      "matching": 0.0,
+      "matching": 0.9791666666666666,
       "name": "HandleTurnEventDialogFactorySlot80",
       "type": 1
     },

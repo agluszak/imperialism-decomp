@@ -57,12 +57,12 @@ public:
   virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
   virtual void UiRuntimeSlot6C();                        // 0x6c
   virtual void UiRuntimeSlot70();                        // 0x70
-  virtual void UiRuntimeSlot74();                        // 0x74
-  // Resolves the factory dialog for eventCode, commits its 'GOLD' child, then
-  // shows/refreshes/frees the dialog node (0x5d6e50).
-  virtual void HandleTurnEventDialogFactorySlot78(int eventCode); // 0x78
-  virtual void UiRuntimeSlot7C();                                 // 0x7c
-  virtual void UiRuntimeSlot80();                                 // 0x80
+  // Slots 0x74/0x78/0x7C/0x80 share the same body: resolve the factory dialog for
+  // eventCode, commit its 'GOLD' child, then show/refresh/free the dialog node.
+  virtual void HandleTurnEventDialogFactorySlot74(int eventCode); // 0x74 0x5d6d70
+  virtual void HandleTurnEventDialogFactorySlot78(int eventCode); // 0x78 0x5d6e50
+  virtual void HandleTurnEventDialogFactorySlot7C(int eventCode); // 0x7c 0x5d6f10
+  virtual void HandleTurnEventDialogFactorySlot80(int eventCode); // 0x80 0x5d6fd0
   virtual void UiRuntimeSlot84();                                 // 0x84
   virtual void UiRuntimeSlot88();                                 // 0x88
   virtual void UiRuntimeSlot8C(int arg);                          // 0x8c
@@ -103,15 +103,15 @@ public:
   // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
   virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
   virtual void UiRuntimeSlotF0();                                    // 0xf0
-  virtual void HandleTurnEventDialogFactorySlotF4();                  // 0xf4
+  virtual void HandleTurnEventDialogFactorySlotF4();                 // 0xf4
   virtual void UiRuntimeSlotF8();                                    // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   virtual void UiRuntimeSlot100();               // 0x100
   // Turn-event 0x5DF path (see DispatchTurnEventSlot4C): re-asserts and refreshes
   // the main view's 'main' panel (0x5dbdd0).
-  virtual void HandleTurnEvent5DF_RefreshMainView(); // 0x104
-  virtual void UiRuntimeSlot108();                   // 0x108
-  virtual void UiRuntimeSlot10C();                   // 0x10c
+  virtual void HandleTurnEvent5DF_RefreshMainView();                          // 0x104
+  virtual void UiRuntimeSlot108();                                            // 0x108
+  virtual void UiRuntimeSlot10C();                                            // 0x10c
   virtual void HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot); // 0x110
 
   void ApplyLegendSplitSlot34(int split) {
@@ -174,7 +174,7 @@ public:
   short fieldEc;                           // +0xec
   short padEe;                             // +0xee
   class TMapUberPicture* mapUberPictureF0; // +0xf0
-  TMovieView* activeMovieViewF4;            // +0xf4
+  TMovieView* activeMovieViewF4;           // +0xf4
   short fieldF8;                           // +0xf8
   short padFa;                             // +0xfa
 
