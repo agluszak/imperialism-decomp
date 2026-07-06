@@ -42,7 +42,6 @@ static void ZeroTrackingSlots(TCapacityOrder* order) {
   *reinterpret_cast<short*>(blockCursor) = 0;
 }
 
-
 TCapacityOrder::TCapacityOrder(TCity* city)
     : quantityField04(0), cityField08(city),
       summaryField0c(city != 0 ? city->productionSummary1d8 : 0), field3e(0), field40(0),
@@ -54,8 +53,6 @@ TCapacityOrder::TCapacityOrder(TCity* city)
 TCapacityOrder* TCapacityOrder::NewForCity(TCity* city) {
   return new TCapacityOrder(city);
 }
-
-
 
 bool TCapacityOrder::CanMakeFromCityStock() {
   TCity* city = this->cityField08;
@@ -77,8 +74,6 @@ bool TCapacityOrder::CanMakeFromCityStock() {
   return false;
 }
 
-
-
 bool TCapacityOrder::CanFillOrderSheet(void* orderSheet) {
   const short weightIndex = this->resourceTypeIndex48;
   const short weight09 = ReadWeight(g_industryActionCostWeightResCode09, weightIndex);
@@ -98,8 +93,6 @@ bool TCapacityOrder::CanFillOrderSheet(void* orderSheet) {
   }
   return false;
 }
-
-
 
 short TCapacityOrder::ComputeCapacityOrderMaxQuantity() {
   TCity* city = this->cityField08;
@@ -152,8 +145,6 @@ short TCapacityOrder::ComputeCapacityOrderMaxQuantity() {
   return static_cast<short>(static_cast<short>(this->quantityField04) + static_cast<short>(limit));
 }
 
-
-
 bool TCapacityOrder::SetCapacityOrderQuantity(short quantity) {
   TCity* city = this->cityField08;
   const short priorQuantity = this->quantityField04;
@@ -180,21 +171,18 @@ bool TCapacityOrder::SetCapacityOrderQuantity(short quantity) {
       static_cast<short>(city->cityStockFabricC6 -
                          ReadWeight(g_industryActionCostWeightResCode08, weightIndex) * delta);
   city->VerifyStocks();
-  city->cityStockArmsD6 =
-      static_cast<short>(city->cityStockArmsD6 -
-                         ReadWeight(g_industryActionCostWeightResCode10, weightIndex) * delta);
+  city->cityStockArmsD6 = static_cast<short>(
+      city->cityStockArmsD6 - ReadWeight(g_industryActionCostWeightResCode10, weightIndex) * delta);
   city->VerifyStocks();
   city->cityStockSteelCC =
       static_cast<short>(city->cityStockSteelCC -
                          ReadWeight(g_industryActionCostWeightResCode0B, weightIndex) * delta);
   city->VerifyStocks();
-  city->cityStockCoalBC =
-      static_cast<short>(city->cityStockCoalBC -
-                         ReadWeight(g_industryActionCostWeightResCode03, weightIndex) * delta);
+  city->cityStockCoalBC = static_cast<short>(
+      city->cityStockCoalBC - ReadWeight(g_industryActionCostWeightResCode03, weightIndex) * delta);
   city->VerifyStocks();
-  city->cityStockFuelCE =
-      static_cast<short>(city->cityStockFuelCE -
-                         ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
+  city->cityStockFuelCE = static_cast<short>(
+      city->cityStockFuelCE - ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
   city->VerifyStocks();
   if (g_pUiRuntimeContext != 0) {
     g_pUiRuntimeContext->InvokeStrategicMapViewMethod5C();
@@ -202,15 +190,11 @@ bool TCapacityOrder::SetCapacityOrderQuantity(short quantity) {
   return true;
 }
 
-
-
 void TCapacityOrder::CommitCapacityOrderIfPending() {
   if (this->resourceTypeIndex48 != 0 && this->quantityField04 != 0) {
     this->CommitIfPending();
   }
 }
-
-
 
 void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
   short value = 0;
@@ -260,23 +244,21 @@ void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
   }
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004b8cc0
 CRuntimeClass* TCapacityOrder::GetRuntimeClass() const {
   return &g_pClassDescTCapacityOrder;
 }
-
-
 
 // SYNTHETIC: IMPERIALISM 0x004b8d00
 // TCapacityOrder::`scalar deleting destructor'
 
 TCapacityOrder::~TCapacityOrder() {}
 // FUNCTION: IMPERIALISM 0x004b8d50
-undefined TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50(
-    TCity* city, short resourceType, short trackingIndex4eInit, short trackingIndex50Init,
-    short field52Init) {
+undefined TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50(TCity* city,
+                                                                        short resourceType,
+                                                                        short trackingIndex4eInit,
+                                                                        short trackingIndex50Init,
+                                                                        short field52Init) {
   this->cityField08 = city;
   this->summaryField0c = city->productionSummary1d8;
   this->resourceTypeIndex48 = resourceType;
@@ -291,8 +273,6 @@ undefined TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50(
   this->field52 = field52Init;
   return 0;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004b8dd0
 undefined TCapacityOrder::CommitIfPending() {
@@ -312,19 +292,19 @@ undefined TCapacityOrder::CommitIfPending() {
   if (slotIndex == 0xf) {
     TGreatPower* owner = city->ownerNationAc;
     if (*reinterpret_cast<char*>(reinterpret_cast<unsigned char*>(owner) + 0x8d1) < '3') {
-      int laborPool = owner->ownedRegionList->GetCountSlot48();
+      int laborPool = owner->ownedRegionList->GetCount();
       if ((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2 < 2) {
         newValue = 1;
       } else {
-        laborPool = owner->ownedRegionList->GetCountSlot48();
+        laborPool = owner->ownedRegionList->GetCount();
         newValue = static_cast<short>((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2);
       }
     } else {
-      int laborPool = owner->ownedRegionList->GetCountSlot48();
+      int laborPool = owner->ownedRegionList->GetCount();
       if (laborPool / 3 < 2) {
         newValue = 1;
       } else {
-        laborPool = owner->ownedRegionList->GetCountSlot48();
+        laborPool = owner->ownedRegionList->GetCount();
         newValue = static_cast<short>(laborPool / 3);
       }
     }

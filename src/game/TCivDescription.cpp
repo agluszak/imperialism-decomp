@@ -151,11 +151,11 @@ void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int ar
         0) {
       TSortedList* ownerNationProvinceCollection =
           g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
-      provinceCount = ownerNationProvinceCollection->GetCountSlot48();
+      provinceCount = ownerNationProvinceCollection->GetCount();
       if (0 < provinceCount) {
         provinceOrdinal = 1;
         do {
-          provinceId = ownerNationProvinceCollection->GetIntByOrdinalSlot24(provinceOrdinal);
+          provinceId = ownerNationProvinceCollection->GetIntByOrdinal(provinceOrdinal);
           provinceTileCount =
               (int)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) +
                             provinceId * 0xa8 + 0x3a);
@@ -191,7 +191,7 @@ void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int ar
             }
           }
           provinceOrdinal = provinceOrdinal + 1;
-          provinceCount = ownerNationProvinceCollection->GetCountSlot48();
+          provinceCount = ownerNationProvinceCollection->GetCount();
         } while (provinceOrdinal <= provinceCount);
       }
     }
@@ -232,12 +232,12 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
   context->targetTileCountsBySlot[2] = 0;
   context->targetTileCountsBySlot[1] = 0;
   context->targetTileCountsBySlot[0] = 0;
-  provinceCount = ownerNationProvinceCollection->GetCountSlot48();
+  provinceCount = ownerNationProvinceCollection->GetCount();
   if (provinceCount < provinceOrdinal) {
     return;
   }
   do {
-    int provinceRecordId = ownerNationProvinceCollection->GetIntByOrdinalSlot24(provinceOrdinal);
+    int provinceRecordId = ownerNationProvinceCollection->GetIntByOrdinal(provinceOrdinal);
     provinceTileOrdinal = 0;
     provinceRecord =
         reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + provinceRecordId * 0xa8;
@@ -268,7 +268,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
       } while (provinceTileOrdinal < *(char*)(provinceRecord + 0x3a));
     }
     provinceOrdinal = provinceOrdinal + 1;
-    provinceCount = ownerNationProvinceCollection->GetCountSlot48();
+    provinceCount = ownerNationProvinceCollection->GetCount();
   } while (provinceOrdinal <= provinceCount);
 }
 

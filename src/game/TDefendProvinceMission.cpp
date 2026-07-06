@@ -229,8 +229,8 @@ void TDefendProvinceMission::Free() {
       current = iter.Advance();
     }
 
-    orderListAt18->RemoveAllSlot5C();
-    orderListAt18->FreePayloadsAndDestroySlot58();
+    orderListAt18->RemoveAll();
+    orderListAt18->FreePayloadsAndDestroy();
     orderListAt18 = nullptr;
   }
 

@@ -43,24 +43,24 @@ int TSortedList::VirtualSlot68() {
 }
 
 // FUNCTION: IMPERIALISM 0x004885d0
-POSITION TSortedList::AddHeadSlot28(void* item) {
+POSITION TSortedList::AddHead(void* item) {
   return this->listState.AddHead(item);
 }
 
 // FUNCTION: IMPERIALISM 0x004885f0
-POSITION TSortedList::AddHeadSlot2C(void* item, int unused1, int unused2) {
+POSITION TSortedList::AddHeadEx(void* item, int unused1, int unused2) {
   (void)unused1;
   (void)unused2;
   return this->listState.AddHead(item);
 }
 
 // FUNCTION: IMPERIALISM 0x00488610
-POSITION TSortedList::AddTailSlot30(void* item) {
+POSITION TSortedList::AddTail(void* item) {
   return this->listState.AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x00488630
-POSITION TSortedList::AddTailSlot34(void* item, int unused1, int unused2) {
+POSITION TSortedList::AddTailEx(void* item, int unused1, int unused2) {
   (void)unused1;
   (void)unused2;
   return this->listState.AddTail(item);
@@ -72,7 +72,7 @@ POSITION TSortedList::AddTailSlot38(void* item) {
 }
 
 // FUNCTION: IMPERIALISM 0x00488670
-void* TSortedList::RemoveTailSlot3C() {
+void* TSortedList::RemoveTail() {
   return this->listState.RemoveTail();
 }
 
@@ -82,30 +82,30 @@ POSITION TSortedList::AddTailSlot40(void* item) {
 }
 
 // FUNCTION: IMPERIALISM 0x004886b0
-void* TSortedList::RemoveHeadSlot44() {
+void* TSortedList::RemoveHead() {
   return this->listState.RemoveHead();
 }
 
 // Repo convenience only (no address claim): callers store ordinals/ints in the
-// payload slots, so this narrows GetEntryByOrdinalSlot4C's pointer to int.
-int TSortedList::GetIntByOrdinalSlot24(int ordinal) {
-  void* entry = GetEntryByOrdinalSlot4C(ordinal);
+// payload slots, so this narrows GetEntryByOrdinal's pointer to int.
+int TSortedList::GetIntByOrdinal(int ordinal) {
+  void* entry = GetEntryByOrdinal(ordinal);
   return reinterpret_cast<int>(entry);
 }
 
 // FUNCTION: IMPERIALISM 0x004886d0
-int TSortedList::GetCountSlot48() {
+int TSortedList::GetCount() {
   return this->listState.GetCount();
 }
 
 // FUNCTION: IMPERIALISM 0x004886f0
-void* TSortedList::GetEntryByOrdinalSlot4C(int ordinal) {
+void* TSortedList::GetEntryByOrdinal(int ordinal) {
   POSITION pos = this->listState.FindIndex(ordinal - 1);
   return pos != NULL ? this->listState.GetAt(pos) : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00488720
-void TSortedList::RemoveAtOrdinalSlot50(int oneBasedIndex) {
+void TSortedList::RemoveAtOrdinal(int oneBasedIndex) {
   POSITION pos = this->listState.FindIndex(oneBasedIndex - 1);
   if (pos != 0) {
     this->listState.RemoveAt(pos);
@@ -113,7 +113,7 @@ void TSortedList::RemoveAtOrdinalSlot50(int oneBasedIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00488750
-void TSortedList::FreePayloadsSlot54() {
+void TSortedList::FreePayloads() {
   if (this->listState.IsEmpty()) {
     return;
   }
@@ -131,13 +131,13 @@ void TSortedList::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004887b0
-void TSortedList::FreePayloadsAndDestroySlot58() {
-  this->FreePayloadsSlot54();
+void TSortedList::FreePayloadsAndDestroy() {
+  this->FreePayloads();
   this->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x004887e0
-void TSortedList::RemoveAllSlot5C() {
+void TSortedList::RemoveAll() {
   this->listState.RemoveAll();
 }
 
@@ -152,7 +152,7 @@ void TSortedList::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x00488840
-void TSortedList::SetAtOrdinalSlot60(int ordinal, void** entryPtr, int unusedFlag) {
+void TSortedList::SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag) {
   (void)unusedFlag;
   POSITION pos = this->listState.FindIndex(ordinal - 1);
   if (pos != NULL) {

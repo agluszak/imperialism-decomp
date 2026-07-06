@@ -84,7 +84,7 @@ void TCity::Free() {
     --remaining;
   } while (remaining != 0);
   if (this->trackedOrderList270 != 0) {
-    this->trackedOrderList270->FreePayloadsAndDestroySlot58();
+    this->trackedOrderList270->FreePayloadsAndDestroy();
   }
   this->trackedOrderList270 = 0;
   if (this->eventQueue274 != 0) {
@@ -322,7 +322,7 @@ void TCity::TransferTransportRequests(void*) {
 short TCity::GetMaxBuildingCapacity(int buildingSlot) {
   if (buildingSlot == 0xf) {
     TGreatPower* owner = this->ownerNationAc;
-    int regionCount = owner->ownedRegionList->GetCountSlot48();
+    int regionCount = owner->ownedRegionList->GetCount();
     if (static_cast<signed char>(owner->serializedStatusFlags[9]) < 0x33) {
       if (regionCount / 4 > 1) {
         return static_cast<short>(regionCount / 4);
@@ -429,12 +429,12 @@ int TCity::GetBuildingType(short buildingSlot) {
   }
   TGreatPower* owner = this->ownerNationAc;
   if (static_cast<signed char>(owner->serializedStatusFlags[9]) < 0x33) {
-    if (owner->ownedRegionList->GetCountSlot48() / 4 > 1) {
-      return this->ownerNationAc->ownedRegionList->GetCountSlot48() / 4;
+    if (owner->ownedRegionList->GetCount() / 4 > 1) {
+      return this->ownerNationAc->ownedRegionList->GetCount() / 4;
     }
   } else {
-    if (owner->ownedRegionList->GetCountSlot48() / 3 > 1) {
-      return this->ownerNationAc->ownedRegionList->GetCountSlot48() / 3;
+    if (owner->ownedRegionList->GetCount() / 3 > 1) {
+      return this->ownerNationAc->ownedRegionList->GetCount() / 3;
     }
   }
   return 1;

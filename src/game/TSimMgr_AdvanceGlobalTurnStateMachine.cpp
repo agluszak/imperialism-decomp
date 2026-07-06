@@ -88,7 +88,7 @@ static inline int GetNationTrackedOrderCount(TGreatPower* nation) {
   if (nation == nullptr || nation->trackedObjectList == nullptr) {
     return 0;
   }
-  return nation->trackedObjectList->GetCountSlot48();
+  return nation->trackedObjectList->GetCount();
 }
 
 static inline bool ShouldDispatchNextTradePacket(TSimMgr* simMgr) {

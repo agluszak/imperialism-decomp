@@ -485,6 +485,32 @@ short g_anScaledFactorByOrderType[32] = {0};      // short table at 0x64c660
 float g_afPercentEfficiencyByOrderType[32] = {0}; // float table at 0x64c6a0
 int g_anCountWeightByOrderType[32] = {0};         // int table at 0x695578
 
+// Per-resourceType requirement table (4 columns per resourceType, 0-23). Read by
+// TMapMgr::FindResourceCapabilityRequirementLevel (0x513610).
+unsigned char g_abUniversityRequirementLevelById[24][4] = {
+    {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {0, 2, 4, 6}, {0, 2, 4, 6}, {1, 1, 1, 1},
+    {0, 2, 4, 6}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
+    {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {1, 2, 3, 4},
+    {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {0, 1, 2, 3}, {0, 1, 2, 3}, {0, 0, 0, 0}};
+// Per-resourceType "requires tiered nibble" boolean flag table. Read by the same function
+// above; only nonzero-ness is consumed there.
+unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
+                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
+// Per-resourceType capability-category code. Read by FindMaxResourceCapabilityValueForTile
+// (0x513720).
+unsigned char g_abResourceTypeCapabilityCategory[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
+                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
+// Per-resourceType required-order-type code. Read by
+// SeedRecruitSearchVisitedStateByCapabilityThresholdAlt (0x515890).
+short g_anResourceTypeRequiredOrderType[24] = {2,  5,  3,  -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                                               -1, -1, -1, -1, 2,  2,  6,  5,  -1, -1, 0,  0};
+// Per-resourceType "always-qualifies" flag; same caller as above.
+unsigned char g_abResourceTypeAlwaysQualifies[24] = {1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0,
+                                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
+// Per-gateFlag eligibility flag; only indices 0-3 are meaningful (gateFlag's real range).
+unsigned char g_abGateFlagQualifies[24] = {
+    0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};
 

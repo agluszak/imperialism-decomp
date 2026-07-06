@@ -41,11 +41,10 @@ static __inline void WriteIntArrayElems(TStream* stream, const int* values, int 
 // count (slot 0x48), then each 1-based entry through its own slot 0x14 serializer.
 static __inline void WriteTrackedListToStream(TStream* stream, TSortedList* list) {
   list->WriteTo(stream);
-  int entryCount = list->GetCountSlot48();
+  int entryCount = list->GetCount();
   stream->WriteBytesSlot78(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-    TUnit* entry =
-        reinterpret_cast<TUnit*>(list->GetEntryByOrdinalSlot4C(ordinal));
+    TUnit* entry = reinterpret_cast<TUnit*>(list->GetEntryByOrdinal(ordinal));
     entry->WriteTo(stream);
   }
 }
@@ -54,10 +53,10 @@ static __inline void WriteTrackedListToStream(TStream* stream, TSortedList* list
 // entry count (slot 0x28), then each 1-based int value (slot 0x24).
 static __inline void WriteIntListToStream(TStream* stream, TSortedList* list) {
   list->WriteTo(stream);
-  int entryCount = list->GetCountSlot48();
+  int entryCount = list->GetCount();
   stream->WriteBytesSlot78(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-    int entryValue = list->GetIntByOrdinalSlot24(ordinal);
+    int entryValue = list->GetIntByOrdinal(ordinal);
     stream->WriteBytesSlot78(&entryValue, 4);
   }
 }

@@ -127,17 +127,16 @@ undefined TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates() {
 
       if (unitFieldC != prevFieldC || unitField18 != prevField18 || stack == nullptr) {
         bool foundExisting = false;
-        int count = this->pendingUnitPool0c->GetCountSlot48();
+        int count = this->pendingUnitPool0c->GetCount();
         if (count != 0) {
           int index = 1;
-          count = this->pendingUnitPool0c->GetCountSlot48();
+          count = this->pendingUnitPool0c->GetCount();
           if (index <= count) {
             do {
               if (foundExisting) {
                 break;
               }
-              stack =
-                  static_cast<TArmyStack*>(this->pendingUnitPool0c->GetEntryByOrdinalSlot4C(index));
+              stack = static_cast<TArmyStack*>(this->pendingUnitPool0c->GetEntryByOrdinal(index));
               stack->AssertValid();
               if (stack->ownerNationCodeE == unitFieldC &&
                   static_cast<short>(static_cast<signed char>(stack->categoryFlag8)) ==
@@ -146,7 +145,7 @@ undefined TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates() {
               } else {
                 ++index;
               }
-              count = this->pendingUnitPool0c->GetCountSlot48();
+              count = this->pendingUnitPool0c->GetCount();
             } while (index <= count);
           }
         }
@@ -237,17 +236,17 @@ undefined TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation() {
   }
   this->activeBattleView3a4 = nullptr;
 
-  int stackCount = this->pendingUnitPool0c->GetCountSlot48();
+  int stackCount = this->pendingUnitPool0c->GetCount();
   if (this->pendingRebuildFlag10 <= stackCount) {
     do {
       int cursor = this->pendingRebuildFlag10;
-      stackCount = this->pendingUnitPool0c->GetCountSlot48();
+      stackCount = this->pendingUnitPool0c->GetCount();
       if (stackCount < cursor) {
         break;
       }
       this->pendingRebuildFlag10 = cursor + 1;
       TArmyStack* stack =
-          static_cast<TArmyStack*>(this->pendingUnitPool0c->GetEntryByOrdinalSlot4C(cursor));
+          static_cast<TArmyStack*>(this->pendingUnitPool0c->GetEntryByOrdinal(cursor));
       stack->AssertValid();
       if (this->perTileOwnerNationCodeCache1c[stack->ownerNationCodeE] ==
           static_cast<short>(static_cast<signed char>(stack->categoryFlag8))) {
@@ -271,7 +270,7 @@ undefined TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation() {
             this->TryCreateTacticalBattleViewForTileArmies(stack, stack->ownerNationCodeE) != 0;
       }
     } while (!battleViewCreated);
-    stackCount = this->pendingUnitPool0c->GetCountSlot48();
+    stackCount = this->pendingUnitPool0c->GetCount();
     if (this->pendingRebuildFlag10 <= stackCount) {
       return 0;
     }
@@ -285,7 +284,7 @@ undefined TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation() {
 
 // FUNCTION: IMPERIALISM 0x004a2500
 undefined TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F() {
-  this->pendingUnitPool0c->FreePayloadsSlot54();
+  this->pendingUnitPool0c->FreePayloads();
   g_pGlobalMapState->ClearPerTileByte0FForAllMapTiles();
 
   for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {

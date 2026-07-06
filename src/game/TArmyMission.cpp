@@ -117,8 +117,8 @@ void TArmyMission::Free() {
       current = iter.Advance();
     }
 
-    orderListAt18->RemoveAllSlot5C();
-    orderListAt18->FreePayloadsAndDestroySlot58();
+    orderListAt18->RemoveAll();
+    orderListAt18->FreePayloadsAndDestroy();
     orderListAt18 = nullptr;
   }
 
@@ -136,7 +136,7 @@ void TArmyMission::WriteTo(TStream* stream) {
     stream->WriteBytesSlot78(&swapped, 4);
   }
 
-  int count = (orderListAt18 != nullptr) ? orderListAt18->GetCountSlot48() : 0;
+  int count = (orderListAt18 != nullptr) ? orderListAt18->GetCount() : 0;
   stream->WriteCountSlot88(count);
 
   TGreatPower* nation = g_apNationStates[nationId04];
@@ -182,9 +182,9 @@ void TArmyMission::ReadFrom(TStream* stream) {
 
   for (int i = 0; i < count; ++i) {
     short index = stream->ReadShort();
-    void* unit = unitList->GetEntryByOrdinalSlot4C(index);
+    void* unit = unitList->GetEntryByOrdinal(index);
     if (orderListAt18 != nullptr) {
-      orderListAt18->AddTailSlot30(unit);
+      orderListAt18->AddTail(unit);
     }
   }
 }
@@ -214,7 +214,7 @@ void TArmyMission::NoOpSlot80(TMilitaryUnit* unit, int notify) {
     owner->NoOpSlot88(unit, notify);
   }
   unit->ownerMission40 = this;
-  orderListAt18->AddHeadSlot28(unit);
+  orderListAt18->AddHead(unit);
   if (static_cast<char>(notify) != 0) {
     RefreshSlot40();
   }

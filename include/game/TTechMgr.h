@@ -10,7 +10,18 @@ public:
   TTechMgr();
   void WriteTo(TStream* stream) override;  // slot 0x14 (0x005af710)
   void ReadFrom(TStream* stream) override; // slot 0x18 (0x005af460)
-  unsigned char pad000[0x193];
+  // pad000 is 0x3a (not the raw-disassembly offset 0x3e) because the field below sits at
+  // absolute `this+0x3e`, and the compiler places the first declared data member 4 bytes
+  // in (after the inherited TObject/CObject vtable pointer) -- verified empirically: at
+  // 0x3e the compiled field address was off by exactly 4 bytes until this was corrected.
+  unsigned char pad000[0x3a];
+  // Per-nation/per-resourceType capability value table, index = nationTag*23 + resourceType
+  // (row stride 23 shorts). Evidenced independently by three TMapMgr functions that all
+  // read this exact formula off g_pCityOrderCapabilityState+0x3e: 0x513720, 0x5155c0,
+  // 0x515890. Row count (7) matches g_apNationStates[7]; column count (23) matches the
+  // resourceType range used throughout TMapMgr (see resourceTypeByEdge).
+  short capabilityValueByNationAndResource[7][23];
+  unsigned char pad180[0x193 - 0x17c];
   unsigned char hasProductionOrder193;
   unsigned char pad194[0x1a5 - 0x194];
   unsigned char shipCapabilityFlag1a5;

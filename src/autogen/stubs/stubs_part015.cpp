@@ -35,14 +35,6 @@ undefined4 ConstructGlobalMapState(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490
-// ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490()
-// FUNCTION: IMPERIALISM 0x0050e490
-undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeGlobalMapState
 // ghidra_proto void __fastcall InitializeGlobalMapState(int * pGlobalMapState)
 // FUNCTION: IMPERIALISM 0x0050e4e0
@@ -139,14 +131,6 @@ undefined4 CheckTilePatternMaskAllowedByModeFlag(void)
   return 0;
 }
 
-// ghidra_name UpdateStrategicMapTileIconVariantState
-// ghidra_proto undefined UpdateStrategicMapTileIconVariantState()
-// FUNCTION: IMPERIALISM 0x00511614
-undefined4 UpdateStrategicMapTileIconVariantState(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeStridedRecordAddress6C
 // ghidra_proto undefined ComputeStridedRecordAddress6C()
 // FUNCTION: IMPERIALISM 0x005123e0
@@ -231,14 +215,6 @@ undefined4 IsValidSecondaryNationHomeTileCandidate(void)
 // ghidra_proto undefined HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask()
 // FUNCTION: IMPERIALISM 0x00513ca0
 undefined4 HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex
-// ghidra_proto undefined ResolveRegionTileSubtypeCodeForTileIndex()
-// FUNCTION: IMPERIALISM 0x00514110
-undefined4 ResolveRegionTileSubtypeCodeForTileIndex(void)
 {
   return 0;
 }
