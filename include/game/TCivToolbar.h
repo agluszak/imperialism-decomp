@@ -1,7 +1,6 @@
 #pragma once
 
 #include "game/TCluster.h"
-#include "game/TPanelEventPayload.h"
 
 struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x667f00

@@ -23,11 +23,10 @@ public:
                                                         short nClickMode); // slot 0x0a 0x4d2380
   virtual bool HandleCivilianTileOrderAction(short nTileIndex,
                                              short nInputHint); // slot 0x0b 0x4d26d0
-  virtual void
-  RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
-                                               int* pCivOrderEntry); // slot 0x0c 0x4d4310
-  virtual void
-  DispatchSelectedUnitToGlobalMapStateHandler(int* pUnitOrderEntry); // slot 0x0d 0x4d2270
+  virtual void RelinkCivilianOrderTileAndInvalidateMapTiles(
+      short nNewTileIndex, class TCivUnit* pCivOrderEntry); // slot 0x0c 0x4d4310
+  virtual void DispatchSelectedUnitToGlobalMapStateHandler(
+      class TCivUnit* pUnitOrderEntry); // slot 0x0d 0x4d2270
   // === END GENERATED DECLS (TCivMgr) ===
   // Non-virtual order-action helper (0x4d3a60); dispatched from the slot 0x0b virtual
   // HandleCivilianTileOrderAction via thunk_HandleEngineerConstructionAction (0x406ccb).
@@ -51,6 +50,28 @@ public:
   // clicked tile. (Ghidra mis-attributed this to TCivToolbar via a thunk-only caller; the `this`
   // is the TCivMgr order manager — [this+4] is selectedEntry.)
   char CanAssignCivilianOrderToTile(short nTileIndex);
+
+  // 0x004d2960. Resolves the civilian map-click action code from current selection and tile
+  // context (see cpp for the full action-code map). Ghidra mis-attributed this to TCivToolbar
+  // via a thunk-only caller, same as CanAssignCivilianOrderToTile above.
+  int ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint);
+
+  // 0x004d2930. Cursor resource id for the action code ResolveCivilianTileOrderActionCode
+  // would return for this click. Same mis-attribution as above; `this` is implicitly forwarded
+  // to ResolveCivilianTileOrderActionCode untouched.
+  unsigned short LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex,
+                                                                 short nInputHint);
+
+  // 0x004d2ef0. Attempts to queue a plain movement order (order type 1) for the selected
+  // civilian onto nTileIndex; false if CanAssignCivilianOrderToTile rejects the tile. Same
+  // mis-attribution as the functions above.
+  bool TryQueueCivilianMoveOrderToTile(short nTileIndex);
+
+  // 0x004d3070. Handles the Civilian Report dialog decision for pCivilianOrderEntry: if the
+  // player confirms the queued order, does nothing; if they rescind it, computes a refund by
+  // order type, credits the owner nation's treasury, clears the queued order, and rebinds
+  // selection. Same mis-attribution as the functions above.
+  void HandleCivilianReportDecision(class TCivUnit* pCivilianOrderEntry);
 };
 
 // === BEGIN GENERATED (TCivMgr) — refreshed by `just gen-class TCivMgr`; do not hand-edit ===

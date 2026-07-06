@@ -144,6 +144,8 @@ extern float g_Classify_Nation_Military_Value_00653710;
 
 // Per-order-type sort priority table (slot 0x55 selection sort).
 extern short g_DAT_006966d0_Value_006966D0[];
+// Cursor resource id by civilian-tile-order action code (12 entries).
+extern short g_civilianTileOrderCursorTokenTable[];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
 extern short g_awTacticalUnitCategoryCodeBySlot[];
 
@@ -504,6 +506,8 @@ extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 // TCivMgr.cpp — engineer construction cost tables.
 extern short g_awEngineerFortBuildCostByLevel[8];
 extern int g_adwEngineerRailBuildCostByTerrainType[16];
+// Civilian work-order rescind refund by cost class.
+extern int g_adwCivilianWorkOrderCostByClass[16];
 
 // TControl.cpp — UI resource entry defaults (also TMyStaticText.cpp/TStaticText.cpp).
 extern int g_nUiResourceEntryDefaultParam0;
@@ -523,6 +527,14 @@ extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 // TMapMgr.cpp — hex-area neighbor lookup tables.
 extern short g_Build_Hex_Area_LookupTable_00696E70[];
 extern short g_Build_Hex_Area_LookupTable_00696E80[];
+
+// TMapMgr.cpp — per-tile sprite-variant bitmap-strip offset tables, indexed
+// [gateFlag][spriteVariantIndex01] (table39 by spriteVariantIndex01 alone). Read by the
+// rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220).
+extern short g_awTileSpriteVariantOffsetTable38[4][2];
+extern short g_awTileSpriteVariantOffsetTable39[4];
+extern short g_awTileSpriteVariantOffsetTable3a[4][5];
+extern short g_awTileSpriteVariantOffsetTable3b[4][2];
 
 // TMinor.cpp — ApplyIndexedResourceDeltaAndAdjustNationTotals scale constant.
 extern float g_ApplyIndexedResourceDeltaScale_00653728;

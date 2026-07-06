@@ -603,14 +603,6 @@ undefined4 RunTaggedOptionDialogAndReturnSelectionTag(void)
   return 0;
 }
 
-// ghidra_name ShowCivilianReportDialogAndReturnConfirm
-// ghidra_proto bool __fastcall ShowCivilianReportDialogAndReturnConfirm(int * pCivilianOrderEntry)
-// FUNCTION: IMPERIALISM 0x005de4f0
-undefined4 ShowCivilianReportDialogAndReturnConfirm(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshCurrentUiViewAndActivePanelState
 // ghidra_proto undefined RefreshCurrentUiViewAndActivePanelState()
 // FUNCTION: IMPERIALISM 0x005de5d0

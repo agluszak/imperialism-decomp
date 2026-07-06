@@ -2,6 +2,7 @@
 
 #include "game/startup_helpers.h"
 #include "decomp_types.h"
+#include "game/TAnimator.h"
 #include "game/TCivUnit.h"
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
@@ -12,11 +13,19 @@
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TGreatPower.h"
+#include "game/TCivToolbar.h"
 #include "game/TMapUberPicture.h"
 #include "game/TViewMgr.h"
 #include "game/localization_text_helpers.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
+
+// 0x005d4890. 'D' (0x44) is the only currently-known remapped shortcut code (keyCode 2);
+// other codes pass through as literal virtual-key codes.
+static bool IsMappedShortcutKeyPressed(short keyCode) {
+  short virtualKey = (keyCode == 2) ? 0x44 : keyCode;
+  return (GetKeyState(virtualKey) & 0x8000) != 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004d2000
 // TCivMgr::CreateObject
@@ -33,7 +42,7 @@ TCivMgr::TCivMgr() {}
 TCivMgr::~TCivMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004d2270
-void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(int* pUnitOrderEntry) {}
+void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEntry) {}
 
 // FUNCTION: IMPERIALISM 0x004d2380
 bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode) {
@@ -45,28 +54,147 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004d2930
+unsigned short TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex,
+                                                                        short nInputHint) {
+  int actionCode = this->ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
+  return g_civilianTileOrderCursorTokenTable[actionCode];
+}
+
+// FUNCTION: IMPERIALISM 0x004d2960
+int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint) {
+  short nationId = g_pSimMgr->GetActiveNationId();
+  TCivUnit* pClickedTileUnit = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
+
+  if ((g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) &&
+      ((nTileIndex % 0x6c == 0) || (nTileIndex % 0x6c == 0x6b))) {
+    return 1;
+  }
+
+  TCivUnit* selectedEntry = this->selectedEntry;
+  if (selectedEntry == nullptr) {
+    nationId = g_pSimMgr->GetActiveNationId();
+    TCivUnit* pOwnedCivilianEntry =
+        g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
+    if (pOwnedCivilianEntry == nullptr) {
+      return 0;
+    }
+    if (!pOwnedCivilianEntry->IsInIdleSelectionState()) {
+      return 10;
+    }
+    if ((nInputHint != 2) &&
+        (((g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c >> 5) & 1) != 0)) {
+      return 0;
+    }
+    return 2;
+  }
+
+  if ((pClickedTileUnit != nullptr) && (pClickedTileUnit != selectedEntry)) {
+    return (pClickedTileUnit->field_8 != 0) ? 10 : 2;
+  }
+
+  if (IsMappedShortcutKeyPressed(2)) {
+    return this->CanAssignCivilianOrderToTile(nTileIndex) ? 3 : 1;
+  }
+
+  TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
+  if (tile->recruitSearchVisited0e == 0) {
+    short orderType = selectedEntry->orderType;
+    if (orderType == 1) {
+      return 8;
+    }
+    if (orderType == 4) {
+      short homeTile = selectedEntry->field_6;
+      if (nTileIndex == homeTile) {
+        return 4;
+      }
+      short dir = GetHexDirectionBetweenTiles(homeTile, nTileIndex);
+      if ((dir == 1) || (dir == 4)) {
+        return 5;
+      }
+      if ((dir == 0) || (dir == 3)) {
+        return 6;
+      }
+      return 7;
+    }
+    if (orderType == 7) {
+      return 0xb;
+    }
+    return 9;
+  }
+
+  TCivUnit* orderAtTile = tile->firstCivilianOrder20;
+  if (orderAtTile != nullptr) {
+    nationId = g_pSimMgr->GetActiveNationId();
+    if (orderAtTile->field_18 == nationId) {
+      return orderAtTile->IsInIdleSelectionState() ? 2 : 10;
+    }
+  }
+  return this->CanAssignCivilianOrderToTile(nTileIndex) ? 3 : 1;
+}
+
 // Selection helpers merged from the retired duplicate class
 // "TSelectedCivilianOrderState" (the global g_pSelectedCivilianOrderState @0x6a43dc is
-// this TCivMgr instance). TODO(port): retire these absolute-address bridges by porting
-// the real bodies; they need the TMapUberPicture member slice (+0x96 selected-tool
-// index, +0xb0 toolbar table) recovered first.
+// this TCivMgr instance).
 
 // FUNCTION: IMPERIALISM 0x004d2c60
 void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, char refreshCommandPanel) {
-  typedef void(__fastcall * Func)(TCivMgr*, int, TCivUnit*, int);
-  reinterpret_cast<Func>(0x004d2c60)(this, 0, entryContext, refreshCommandPanel);
+  this->selectedEntry = entryContext;
+  this->DispatchSelectedUnitToGlobalMapStateHandler(entryContext);
+  if (entryContext == nullptr) {
+    return;
+  }
+
+  entryContext->VTableSlot10(entryContext->field_6);
+
+  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapUberPicture != nullptr) {
+    mapUberPicture->InvalidateTileMarkerChain(entryContext->field_6);
+  }
+
+  if (refreshCommandPanel != 0) {
+    mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+    if (mapUberPicture != nullptr) {
+      // categoryPages[] is a heterogeneous array of toolbar subtypes stored generically as
+      // TMapUberPicture* (see TArmyToolbar.cpp's own dual-purpose-slot precedent); the civilian
+      // page is really a TCivToolbar.
+      reinterpret_cast<TCivToolbar*>(
+          mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex96])
+          ->RefreshCivilianCommandPanelForSelection(entryContext);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d2cf0
 void TCivMgr::QueueImmediateCivilianCommandAndCycleSelection(int commandType) {
-  typedef void(__fastcall * Func)(TCivMgr*, int, int);
-  reinterpret_cast<Func>(0x004d2cf0)(this, 0, commandType);
+  TCivUnit* entry = this->selectedEntry;
+  if (entry != nullptr) {
+    entry->SetOrderModeSlot34(commandType, 0);
+  }
+
+  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapUberPicture != nullptr) {
+    // Same dual-purpose-slot cast as SetActiveCivilianSelection above.
+    reinterpret_cast<TCivToolbar*>(mapUberPicture)->CycleMapInteractionSelectionAfterHandledClick();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d2d30
 void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
   typedef void(__fastcall * Func)(TCivMgr*, int);
   reinterpret_cast<Func>(0x004d2d30)(this, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x004d2ef0
+bool TCivMgr::TryQueueCivilianMoveOrderToTile(short nTileIndex) {
+  char canAssign = this->CanAssignCivilianOrderToTile(nTileIndex);
+  if (canAssign != 0) {
+    TCivUnit* entry = this->selectedEntry;
+    entry->SetOrderModeSlot34(1, entry->field_6);
+    g_pSfxPlaybackSystem->PlaySoundEffect(9000, 0, 1);
+    this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, entry);
+  }
+  return canAssign != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d2f60
@@ -92,6 +220,88 @@ char TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
     }
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d3070
+void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
+  if (g_pUiRuntimeContext->ShowCivilianReportDialogAndReturnConfirm(pCivilianOrderEntry)) {
+    return;
+  }
+
+  short targetTileIndex = pCivilianOrderEntry->field_6;
+  short subtypeOrTargetProvince = pCivilianOrderEntry->field_C;
+  int refundAmount = 0;
+  TGreatPower* ownerNationState = g_apNationStates[pCivilianOrderEntry->field_18];
+
+  switch (pCivilianOrderEntry->orderType) {
+  case 5: {
+    unsigned char terrainType = g_pGlobalMapState->terrainStateTable[targetTileIndex].terrainType00;
+    refundAmount = g_adwEngineerRailBuildCostByTerrainType[terrainType];
+    g_pGlobalMapState->ApplyEngineerRailCostDeltaForConnectedTiles(
+        targetTileIndex, subtypeOrTargetProvince, pCivilianOrderEntry->field_18);
+    break;
+  }
+  case 6:
+    refundAmount = 2000;
+    break;
+  case 7:
+    refundAmount = 3000;
+    break;
+  case 10: {
+    char useHighNibble = ((subtypeOrTargetProvince == 0) || (subtypeOrTargetProvince == 8)) ? 1 : 0;
+    unsigned char costClass =
+        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetTileIndex, useHighNibble);
+    refundAmount = g_adwCivilianWorkOrderCostByClass[costClass];
+    break;
+  }
+  case 12: {
+    short cityIndex = g_pGlobalMapState->terrainStateTable[targetTileIndex].cityRecordIndex;
+    unsigned char fortLevel = g_pGlobalMapState->cityScoreTable[cityIndex].fortLevel03;
+    refundAmount = g_awEngineerFortBuildCostByLevel[fortLevel];
+    break;
+  }
+  case 13:
+    refundAmount = g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(targetTileIndex);
+    break;
+  }
+
+  ownerNationState->treasuryValue10 += refundAmount;
+  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(reinterpret_cast<int>(pCivilianOrderEntry));
+
+  pCivilianOrderEntry->SetOrderModeSlot34(0, subtypeOrTargetProvince);
+  if ((subtypeOrTargetProvince != 0) && (subtypeOrTargetProvince != -1)) {
+    this->RelinkCivilianOrderTileAndInvalidateMapTiles(subtypeOrTargetProvince,
+                                                       pCivilianOrderEntry);
+  }
+
+  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapUberPicture != nullptr) {
+    mapUberPicture->SetMapInteractionMode(0);
+  }
+  g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+
+  this->selectedEntry = pCivilianOrderEntry;
+  this->DispatchSelectedUnitToGlobalMapStateHandler(pCivilianOrderEntry);
+  if (pCivilianOrderEntry != nullptr) {
+    pCivilianOrderEntry->VTableSlot10(pCivilianOrderEntry->field_6);
+
+    TMapUberPicture* invalidateTarget = g_pUiRuntimeContext->mapUberPictureF0;
+    if (invalidateTarget != nullptr) {
+      invalidateTarget->InvalidateTileMarkerChain(pCivilianOrderEntry->field_6);
+    }
+
+    TMapUberPicture* refreshTarget = g_pUiRuntimeContext->mapUberPictureF0;
+    if (refreshTarget != nullptr) {
+      // Same dual-purpose-slot cast as TCivMgr::SetActiveCivilianSelection.
+      reinterpret_cast<TCivToolbar*>(
+          refreshTarget->categoryPages[refreshTarget->activeUnitCategoryIndex96])
+          ->RefreshCivilianCommandPanelForSelection(pCivilianOrderEntry);
+    }
+  }
+
+  if (mapUberPicture != nullptr) {
+    mapUberPicture->NotifySubviewOfSelectedTile(pCivilianOrderEntry->field_6);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d3a60
@@ -193,7 +403,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
       }
     }
   } else { // adjacent tile click
-    int terrainType = g_pGlobalMapState->terrainStateTable[nTileIndex].pad00[0];
+    int terrainType = g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00;
     int cost = g_adwEngineerRailBuildCostByTerrainType[terrainType];
 
     short nationId = g_pSimMgr->GetActiveNationId();
@@ -226,7 +436,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   }
 
   if (actionFinalized) {
-    this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, reinterpret_cast<int*>(pCiv));
+    this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, pCiv);
 
     int startTick = GetTickCountDiv16();
     while (true) {
@@ -250,4 +460,4 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
 // FUNCTION: IMPERIALISM 0x004d4310
 void TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
-                                                           int* pCivOrderEntry) {}
+                                                           TCivUnit* pCivOrderEntry) {}

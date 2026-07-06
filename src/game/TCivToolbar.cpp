@@ -8,7 +8,6 @@
 #include "game/TCivUnit.h"
 #include "game/TCivMgr.h"
 #include "game/TGlobalMapState.h"
-#include "game/TPanelEventPayload.h"
 
 #include "game/TControl.h"
 #include "game/GameAssert.h"
@@ -23,13 +22,6 @@
 #include "game/TMapUberPicture.h"
 #include "game/TViewMgr.h"
 #include "game/ui_invalidation_guard.h"
-
-#define GAME_ASSERT(cond, line)                                                                    \
-  if (!(cond)) {                                                                                   \
-    GAME_FAIL_NIL_POINTER();                                                                       \
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(                                            \
-        TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp", line);  \
-  }
 
 // 0x004d3a60 (HandleEngineerConstructionAction) lives on TCivMgr — see TCivMgr.cpp.
 
@@ -60,8 +52,7 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrde
   if (selectedOrder == 0) {
     unitControl->SetEnabled(0, 1);
   } else {
-    reinterpret_cast<TCluster*>(unitControl)
-        ->SetControlClassAndRefresh(this->civilianClassId + 0x438);
+    static_cast<TCluster*>(unitControl)->SetControlClassAndRefresh(this->civilianClassId + 0x438);
     unitControl->SetEnabled(1, 1);
   }
 
@@ -108,7 +99,6 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   TCivUnit* selectedTileEntry;
   TControl* stackButton;
   TCivMgr* selectedCivilianState;
-  int mapState;
 
   selectedTileEntry = g_pGlobalMapState->GetFirstCivilianOrderOnTile(tileIndex);
   selectedStackButton = 0;
@@ -116,9 +106,11 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
 
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
     stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x73746b30 + slotIndex));
-    GAME_ASSERT(stackButton != 0, 5585);
-    reinterpret_cast<TTradeCluster*>(stackButton)->NotifyControlSelectionChange(selectedTileEntry);
-    stackButton->SetEnabled(selectedTileEntry->IsInIdleSelectionState(), 1);
+    if (stackButton == 0) {
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15d1);
+    }
+    static_cast<TTradeCluster*>(stackButton)->NotifyControlSelectionChange(selectedTileEntry);
+    stackButton->SetState(selectedTileEntry->IsInIdleSelectionState(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
       selectedStackButton = stackButton;
@@ -127,8 +119,10 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   }
   while (slotIndex < 6) {
     stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x73746b30 + slotIndex));
-    GAME_ASSERT(stackButton != 0, 5585);
-    reinterpret_cast<TTradeCluster*>(stackButton)->NotifyControlSelectionChange(0);
+    if (stackButton == 0) {
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15df);
+    }
+    static_cast<TTradeCluster*>(stackButton)->NotifyControlSelectionChange(0);
     slotIndex = slotIndex + 1;
   }
 
@@ -136,55 +130,56 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   if (selectedStackButton != 0) {
     selectedSlotTag = selectedStackButton->controlTag;
   }
-  reinterpret_cast<TCluster*>(this)->SetControlClassAndRefresh(selectedSlotTag);
+  this->SetControlClassAndRefresh(selectedSlotTag);
 
   commandEnabled = (selectedStackButton != 0) ? 1 : 0;
   stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x64666e64));
   if (stackButton == 0) {
-    return;
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15eb);
   }
-  stackButton->SetEnabled(commandEnabled, 1);
+  stackButton->SetState(commandEnabled, 1);
   stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x6c617472));
   if (stackButton == 0) {
-    return;
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15ed);
   }
-  stackButton->SetEnabled(commandEnabled, 1);
+  stackButton->SetState(commandEnabled, 1);
   stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x646f6e65));
   if (stackButton == 0) {
-    return;
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15ef);
   }
-  stackButton->SetEnabled(commandEnabled, 1);
+  stackButton->SetState(commandEnabled, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0058eed0
 void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TPanelEventPayload* eventPayload = reinterpret_cast<TPanelEventPayload*>(event);
-  int eventFlags = 0;
-  (void)sourceHandler;
   // ORIG_CALLCONV: __thiscall
 
   TCivMgr* selectedCivilianOrderState = g_pSelectedCivilianOrderState;
   if (commandId == 0xc) {
-    if ((kTagStackSlotMin <= static_cast<unsigned int>(eventPayload->controlTag)) &&
-        (static_cast<unsigned int>(eventPayload->controlTag) <= kTagStackSlotMax)) {
-      selectedCivilianOrderState->SetActiveCivilianSelection(eventPayload->selectedEntryContext, 0);
-      this->TCluster::HandleEvent(0xc, reinterpret_cast<TEventHandler*>(eventPayload),
-                                  reinterpret_cast<TEvent*>(eventFlags));
+    unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
+    if ((kTagStackSlotMin <= controlTag) && (controlTag <= kTagStackSlotMax)) {
+      // The stack-slot button's bound civilian entry lives at +0x9c on the raw sourceHandler
+      // pointer. That offset is past TTradeCluster's own end (real object size 0x8c, confirmed
+      // via TTradeCluster::CreateObject's allocation constant at 0x587027), so the button is a
+      // more-derived, not-yet-recovered TTradeCluster subclass; kept as a documented raw offset
+      // (Hard Rule 8) rather than a field on the wrong class.
+      TCivUnit* boundStackEntry =
+          *reinterpret_cast<TCivUnit**>(reinterpret_cast<unsigned char*>(sourceHandler) + 0x9c);
+      selectedCivilianOrderState->SetActiveCivilianSelection(boundStackEntry, 0);
+      this->TCluster::HandleEvent(0xc, sourceHandler, event);
       return;
     }
   } else if (commandId == 10) {
-    unsigned int controlTag = eventPayload->controlTag;
+    unsigned int controlTag = sourceHandler->controlTag;
     if (controlTag < 0x646f6e6f) {
       if (controlTag == kTagDone) {
         selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(4);
-        this->TCluster::HandleEvent(10, reinterpret_cast<TEventHandler*>(eventPayload),
-                                    reinterpret_cast<TEvent*>(eventFlags));
+        this->TCluster::HandleEvent(10, sourceHandler, event);
         return;
       }
       if (controlTag == kTagDefend) {
         selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(2);
-        this->TCluster::HandleEvent(10, reinterpret_cast<TEventHandler*>(eventPayload),
-                                    reinterpret_cast<TEvent*>(eventFlags));
+        this->TCluster::HandleEvent(10, sourceHandler, event);
         return;
       }
     } else {
@@ -192,30 +187,27 @@ void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
         unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
           g_pUiRuntimeContext->ShowCivilianLedgerDialogAndSelectUnit();
-          this->TCluster::HandleEvent(10, reinterpret_cast<TEventHandler*>(eventPayload),
-                                      reinterpret_cast<TEvent*>(eventFlags));
+          this->TCluster::HandleEvent(10, sourceHandler, event);
           return;
         }
         selectedCivilianOrderState->ShowDisbandCivilianConfirmationDialog();
       } else if (controlTag == kTagLater) {
         selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(3);
-        this->TCluster::HandleEvent(10, reinterpret_cast<TEventHandler*>(eventPayload),
-                                    reinterpret_cast<TEvent*>(eventFlags));
+        this->TCluster::HandleEvent(10, sourceHandler, event);
         return;
       }
     }
   }
-  this->TCluster::HandleEvent(commandId, reinterpret_cast<TEventHandler*>(eventPayload),
-                              reinterpret_cast<TEvent*>(eventFlags));
+  this->TCluster::HandleEvent(commandId, sourceHandler, event);
 }
 
-undefined4 CycleMapInteractionSelectionAfterHandledClick(void);
-
-void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick() {
-  typedef void (*CycleMapInteractionDispatch)(TCivToolbar*);
-  CycleMapInteractionDispatch dispatch = reinterpret_cast<CycleMapInteractionDispatch>(
-      ::CycleMapInteractionSelectionAfterHandledClick);
-  dispatch(this);
-}
+// TODO: unported. Ground truth (src/ghidra_autogen/TCivToolbar.cpp ~L1205) is a
+// civilian/province/map-order selection-cycling state machine built from partial-register
+// byte-field tricks (classic Ghidra decompiler artifact on optimized switch code) and ~15
+// still-unresolved func_0x... helpers. Needs raw-listing analysis to resolve those helpers
+// to real methods before this can be ported faithfully; left as an honest stub rather than a
+// fake calling-convention dispatch.
+// FUNCTION: IMPERIALISM 0x00597a80
+void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick() {}
 
 TCivToolbar::~TCivToolbar() {}

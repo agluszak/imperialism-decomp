@@ -459,38 +459,6 @@ undefined4 ResolveCivilianTileSelectionOrReportActionCode(void)
   return 0;
 }
 
-// ghidra_name TCivToolbar::LookupCivilianTileOrderCursorTokenByActionIndex
-// ghidra_proto undefined LookupCivilianTileOrderCursorTokenByActionIndex()
-// FUNCTION: IMPERIALISM 0x004d2930
-undefined4 LookupCivilianTileOrderCursorTokenByActionIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::ResolveCivilianTileOrderActionCode
-// ghidra_proto int __thiscall ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)
-// FUNCTION: IMPERIALISM 0x004d2960
-undefined4 ResolveCivilianTileOrderActionCode(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::TryQueueCivilianMoveOrderToTile
-// ghidra_proto bool __thiscall TryQueueCivilianMoveOrderToTile(int nTileIndex)
-// FUNCTION: IMPERIALISM 0x004d2ef0
-undefined4 TryQueueCivilianMoveOrderToTile(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::HandleCivilianReportDecision
-// ghidra_proto void __thiscall HandleCivilianReportDecision(int * pCivilianOrderEntry)
-// FUNCTION: IMPERIALISM 0x004d3070
-undefined4 HandleCivilianReportDecision(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapMgr::QueueCivilianWorkOrderWithCostCheck
 // ghidra_proto bool __thiscall QueueCivilianWorkOrderWithCostCheck(short nTileIndex)
 // FUNCTION: IMPERIALISM 0x004d3310

@@ -74,3 +74,4 @@ detect.log
 .ghidra-query.sock
 .ghidra-query.pid
 .ghidra-query.log
+.ghidra-daemon.log

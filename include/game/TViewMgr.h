@@ -150,6 +150,13 @@ public:
   undefined1 DispatchLocalizedUiMessageWithTemplateA13A0(int overlayMode, CString* messageCString);
   undefined1 DispatchLocalizedUiMessageWithTemplate(int templateKind);
 
+  // 0x5de4f0. Shows the Civilian Report confirmation dialog (resource 0xbc4) for
+  // pCivilianOrderEntry and returns true iff the player picked "confirm" ('okay').
+  // TODO(port): real body creates the dialog via g_pUiViewManager and formats its message
+  // text through a 'DLOG'-tagged control -- not yet ported; stubbed to the conservative
+  // "confirm, no changes" default so callers don't act on unverified dialog state.
+  bool ShowCivilianReportDialogAndReturnConfirm(class TCivUnit* pCivilianOrderEntry);
+
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
   // LoadTurnEventCursorTable 0x5d5100. Field names past the event code are
   // provisional. Total size 0xfc, base TObject = 0x4.

@@ -1439,10 +1439,14 @@ address|target_cpp|ownership|note
 4d2270|src/game/TCivMgr.cpp|manual|marker_sync
 4d2380|src/game/TCivMgr.cpp|manual|marker_sync
 4d26d0|src/game/TCivMgr.cpp|manual|marker_sync
+4d2930|src/game/TCivMgr.cpp|manual|marker_sync
+4d2960|src/game/TCivMgr.cpp|manual|marker_sync
 4d2c60|src/game/TCivMgr.cpp|manual|marker_sync
 4d2cf0|src/game/TCivMgr.cpp|manual|marker_sync
 4d2d30|src/game/TCivMgr.cpp|manual|marker_sync
+4d2ef0|src/game/TCivMgr.cpp|manual|marker_sync
 4d2f60|src/game/TCivMgr.cpp|manual|marker_sync
+4d3070|src/game/TCivMgr.cpp|manual|marker_sync
 4d3a60|src/game/TCivMgr.cpp|manual|marker_sync
 4d4310|src/game/TCivMgr.cpp|manual|marker_sync
 4d49a0|src/game/TLandSaleEvent.cpp|manual|marker_sync
@@ -2170,6 +2174,7 @@ address|target_cpp|ownership|note
 5122d0|src/game/TMapMgr.cpp|manual|marker_sync
 512b50|src/game/TMapMgr.cpp|manual|marker_sync
 512cc0|src/game/TMapMgr.cpp|manual|marker_sync
+512dd0|src/game/TMapMgr.cpp|manual|marker_sync
 513120|src/game/TMapMgr.cpp|manual|marker_sync
 513170|src/game/TMapMgr.cpp|manual|marker_sync
 513200|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2183,6 +2188,8 @@ address|target_cpp|ownership|note
 513ed0|src/game/TMapMgr.cpp|manual|marker_sync
 513f60|src/game/TMapMgr.cpp|manual|marker_sync
 513ff0|src/game/TMapMgr.cpp|manual|marker_sync
+514080|src/game/TMapMgr.cpp|manual|marker_sync
+514250|src/game/TMapMgr.cpp|manual|marker_sync
 514290|src/game/TMapMgr.cpp|manual|marker_sync
 514310|src/game/TMapMgr.cpp|manual|marker_sync
 514360|src/game/TMapMgr.cpp|manual|marker_sync
@@ -3688,6 +3695,7 @@ address|target_cpp|ownership|note
 597810|src/game/TMapUberPicture.cpp|manual|marker_sync
 597950|src/game/TMapUberPicture.cpp|manual|marker_sync
 597a10|src/game/TMapUberPicture.cpp|manual|marker_sync
+597a80|src/game/TCivToolbar.cpp|manual|marker_sync
 598870|src/game/TMapUberPicture.cpp|manual|marker_sync
 5988c0|src/game/TMapUberPicture.cpp|manual|marker_sync
 598910|src/game/TMapUberPicture.cpp|manual|marker_sync
@@ -4238,6 +4246,7 @@ address|target_cpp|ownership|note
 5dd220|src/game/TViewMgr.cpp|manual|marker_sync
 5dd900|src/game/TViewMgr.cpp|manual|marker_sync
 5ddd20|src/game/TViewMgr.cpp|manual|marker_sync
+5de4f0|src/game/TViewMgr.cpp|manual|marker_sync
 5dea60|src/game/TViewMgr.cpp|manual|marker_sync
 5df260|src/game/TAssetMgr.cpp|manual|mfc_runtime_macro
 5df280|src/game/TAssetMgr.cpp|manual|marker_sync

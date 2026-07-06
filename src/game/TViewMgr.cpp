@@ -1559,6 +1559,12 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005de4f0
+bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrderEntry) {
+  (void)pCivilianOrderEntry;
+  return true;
+}
+
 // FUNCTION: IMPERIALISM 0x005dea60
 void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) {
   TModalMessageCommand* command = new TModalMessageCommand();

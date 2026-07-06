@@ -15,7 +15,19 @@ struct GlobalMapTileRecord {
 };
 
 struct TTerrainStateRecordView {
-  unsigned char pad00[2];
+  // Region/terrain class (0-7), the switch key read by the map-gen resource-assignment
+  // dispatcher (0x511610) and by several rendering-variant lookups (e.g. 0x516150); also
+  // widely compared against fixed small values (2/3/5) elsewhere in this file and in
+  // TZone.cpp/TCivMgr.cpp. Confirmed via raw-listing cross-checks across those callers --
+  // not padding.
+  // Signed: the rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220)
+  // reads this with MOVSX when computing a table index, not MOVZX.
+  signed char terrainType00;
+  // Per-tile sprite/adjacency variant index, read by the rendering-variant lookup family
+  // (0x516150/0x5161a0/0x5161e0/0x516220) and written by
+  // UpdateMapTileAdjacencyMasksAndVariantForTile's streak-length bookkeeping. Same
+  // evidence basis as terrainType00 above; also MOVSX-read there.
+  signed char spriteVariantIndex01;
   unsigned char roadFlag;
   unsigned char pad03;
   signed char ownerNationTag04; // 0x04
@@ -32,7 +44,8 @@ struct TTerrainStateRecordView {
   unsigned char perTileVisitedFlag0f;
   unsigned char pad10;
   signed char resourceTypeByEdge[2];
-  unsigned char gateFlag;
+  // Signed: same MOVSX-index evidence as terrainType00/spriteVariantIndex01 above.
+  signed char gateFlag;
   short cityRecordIndex;
   unsigned char pad16;
   unsigned char railFlags17; // 0x17
@@ -93,6 +106,10 @@ struct HexSpiralSearchState {
   int stepInRing;
 };
 
+// 0x00512dd0. Hex direction (0-6) from sourceTile to destTile on the 0x6c(108)-wide map. Free
+// __cdecl function (no `this`), defined in TMapMgr.cpp.
+extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile);
+
 // TODO(manifest): describe TMapMgr and its role. Base edge (TObject) recovered from RTTI
 // CRuntimeClass chain: TMapMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006587e0
@@ -124,16 +141,16 @@ public:
   virtual undefined
   TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(); // slot 0x12 0x511e80
   virtual undefined DispatchTurnEvent7DDForActiveNation();     // slot 0x13 0x511ed0
-  virtual undefined OrphanLeaf_NoCall_Ins08_005178c0();        // slot 0x14 0x5178c0
+  virtual void ResetAllTileSpriteVariantIndexToSentinel();     // slot 0x14 0x5178c0
   virtual undefined
   TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short param_1,
                                                               short param_2); // slot 0x15 0x511f30
   virtual undefined
   IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(int param_1,
                                                        short param_2); // slot 0x16 0x5121d0
-  virtual undefined IsShiftKeyDown();                                  // slot 0x17 0x5122b0
-  virtual undefined IsAltKeyDown();                                    // slot 0x18 0x5122d0
-  virtual undefined ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
+  virtual int IsShiftKeyDown();                                        // slot 0x17 0x5122b0
+  virtual int IsAltKeyDown();                                          // slot 0x18 0x5122d0
+  virtual void ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
       undefined4 param_1); // slot 0x19 0x511f10
   virtual undefined SetHexAdjacencyDirectionFlagsForTilePair(short param_1,
                                                              short param_2); // slot 0x1a 0x513f60
@@ -141,11 +158,21 @@ public:
                                                      short param_2); // slot 0x1b 0x514310
   virtual undefined OrphanLeaf_NoCall_Ins31_00514360(short param_1, short param_2,
                                                      short param_3); // slot 0x1c 0x514360
-  virtual undefined OrphanLeaf_NoCall_Ins15_00514e40(short param_1); // slot 0x1d 0x514e40
-  virtual undefined OrphanLeaf_NoCall_Ins28_00514e80();              // slot 0x1e 0x514e80
+  // Seeds recruitSearchVisited0e across all tiles: 1 (already visited/blocked) for every
+  // tile NOT owned by ownerNationTag, 0 (unvisited seed candidate) for tiles it owns, and
+  // flags field9 = 1 ("search in progress"). Pairs with ResetRecruitSearchVisitedState below.
+  virtual void
+  SeedRecruitSearchVisitedStateExcludingNation(short ownerNationTag); // slot 0x1d 0x514e40
+  // Seeds recruitSearchVisited0e from g_pSelectedCivilianOrderState->selectedEntry instead
+  // of an explicit nation tag: if there's no selected order, or its field_6 (a TUnit field,
+  // sentinel-inited to 0xffff) is nonzero, every tile is marked 1 (blocked); only when
+  // field_6 == 0 does it fall back to seeding per-tile from activeFlags1c bit 4 (an
+  // otherwise-unused bit of that byte -- not otherwise cross-referenced in this codebase).
+  virtual void SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(); // slot 0x1e 0x514e80
   virtual undefined WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(
-      short param_1);                                              // slot 0x1f 0x514dc0
-  virtual undefined OrphanLeaf_NoCall_Ins09_00514ef0();            // slot 0x20 0x514ef0
+      short param_1); // slot 0x1f 0x514dc0
+  // Resets recruitSearchVisited0e to 0 across all tiles and clears field9 back to idle.
+  virtual void ResetRecruitSearchVisitedState();                   // slot 0x20 0x514ef0
   virtual undefined OrphanCallChain_C5_I115_00514f20(int param_1); // slot 0x21 0x514f20
   virtual undefined OrphanCallChain_C1_I159_005150e0(int* param_1,
                                                      short param_2); // slot 0x22 0x5150e0
@@ -170,9 +197,23 @@ public:
   virtual undefined
   DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short param_1,
                                                          undefined4 param_2); // slot 0x2e 0x513290
-  virtual undefined OrphanLeaf_NoCall_Ins27_00516090(int param_1,
-                                                     int param_2); // slot 0x2f 0x516090
-  virtual undefined OrphanLeaf_NoCall_Ins18_00516100(int param_1); // slot 0x30 0x516100
+  // Searches cityScoreTable[cityRecordIndex].adjacentRegionIds0A[0..11] for regionId;
+  // on a hit returns the parallel entry at [i+12] (see TMultiplayerMgr's
+  // CityRedrawInvalidateTurnEventPacket, which already splits this same 24-entry array
+  // into adjacentRegionIds0A[12]/adjacentRegionIds22[12] for wire serialization). Returns
+  // -1 if not found. Kept as one raw array (not two named fields) because
+  // RedistributeUnitOrderQueueToRandomAdjacentRegion (0x4a35e0) scans all 24 entries as one
+  // flat, -1-terminated list -- a genuinely dual-purpose layout.
+  virtual short FindLinkedRegionIdForAdjacentRegion(int cityRecordIndex,
+                                                    int regionId); // slot 0x2f 0x516090
+  // If nationSlotParam < 7, marks that nation's capital-tile city (found via
+  // g_apTerrainTypeDescriptorTable[nationSlotParam]->ownerNationSlot used as a
+  // terrainStateTable index -- same dual-use pattern flagged on
+  // TGlobalMapCityScoreRecord::ownerNationSlot) as developmentStage 2. param_2 is unused
+  // by this body but the original callee epilogue pops 8 bytes (2 stack args), matching
+  // slot 0x2f's signature.
+  virtual void SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam,
+                                                               int param_2); // slot 0x30 0x516100
   virtual undefined OrphanLeaf_NoCall_Ins14_00513610(short param_1,
                                                      short param_2); // slot 0x31 0x513610
   virtual byte GetTileCivilianWorkOrderCostClassNibble(short nTileIndex,
@@ -186,20 +227,35 @@ public:
   virtual undefined OrphanCallChain_C3_I43_00513170(short param_1); // slot 0x36 0x513170
   virtual undefined SetTileOwnerAndInvalidateNeighborState(short param_1,
                                                            short param_2); // slot 0x37 0x5133f0
-  virtual undefined OrphanLeaf_NoCall_Ins14_00516150(short param_1);       // slot 0x38 0x516150
-  virtual undefined OrphanLeaf_NoCall_Ins12_005161a0(short param_1);       // slot 0x39 0x5161a0
-  virtual undefined OrphanLeaf_NoCall_Ins10_005161e0(short param_1);       // slot 0x3a 0x5161e0
-  virtual undefined OrphanLeaf_NoCall_Ins09_00516220(short param_1);       // slot 0x3b 0x516220
+  // Rendering-variant lookup family: pick a bitmap-strip byte offset for a tile's
+  // sprite, indexed by gateFlag and/or spriteVariantIndex01. Tables verified via
+  // raw-listing + ghidra-read-data at 0x38: 0x696f10, 0x39: 0x696f50, 0x3a: 0x696f60,
+  // 0x3b: 0x697000.
+  virtual short
+  LookupTileSpriteVariantOffsetByTerrainAndGate(short nTileIndex); // slot 0x38 0x516150
+  virtual short
+  LookupTileSpriteVariantOffsetByAdjacencyMaskB(short nTileIndex); // slot 0x39 0x5161a0
+  virtual short
+  LookupTileSpriteVariantOffsetByGateAndVariant(short nTileIndex); // slot 0x3a 0x5161e0
+  virtual short
+  LookupTileSpriteVariantOffsetByGateAndVariantAlt(short nTileIndex); // slot 0x3b 0x516220
   virtual undefined OrphanLeaf_NoCall_Ins464_00516260(char param_1,
                                                       char param_2); // slot 0x3c 0x516260
   virtual undefined OrphanCallChain_C3_I41_00517410(char param_1);   // slot 0x3d 0x517410
   virtual undefined OrphanCallChain_C3_I49_00517480();               // slot 0x3e 0x517480
   virtual undefined OrphanVtableAssignStub_00517520();               // slot 0x3f 0x517520
   virtual undefined OrphanLeaf_NoCall_Ins55_00517540(short param_1,
-                                                     short param_2);  // slot 0x40 0x517540
-  virtual undefined OrphanCallChain_C1_I46_00517600(short param_1);   // slot 0x41 0x517600
-  virtual undefined OrphanLeaf_NoCall_Ins04_005176a0(int param_1);    // slot 0x42 0x5176a0
-  virtual undefined OrphanLeaf_NoCall_Ins04_005176c0(int param_1);    // slot 0x43 0x5176c0
+                                                     short param_2); // slot 0x40 0x517540
+  virtual undefined OrphanCallChain_C1_I46_00517600(short param_1);  // slot 0x41 0x517600
+  // (index + 0x23) << 6 -- a bitmap-strip row offset, 64 bytes/row; sits in the same
+  // "map improvement" offset family as the following GetMapImprovementTierBucketOffset/
+  // GetMapImprovementSpriteBaseOffset slots (also 64-byte-row arithmetic). No callers other
+  // than the vtable itself, so the specific bitmap it indexes isn't identified.
+  virtual int GetMapImprovementBitmapRowOffsetForIndex(int index); // slot 0x42 0x5176a0
+  // index * 36 -- matches the terrainStateTable record stride (sizeof(TTerrainStateRecordView)
+  // == 0x24) used inline throughout this file; no `this` use and no other callers, so this
+  // is modeled as the raw arithmetic it computes rather than presumed to index a specific array.
+  virtual int ComputeTerrainRecordByteOffsetForIndex(int index);      // slot 0x43 0x5176c0
   virtual undefined GetMapImprovementTierBucketOffset(short param_1); // slot 0x44 0x5176e0
   virtual undefined GetMapImprovementSpriteBaseOffset(short param_1, char param_2,
                                                       char param_3);    // slot 0x45 0x517780
@@ -274,6 +330,8 @@ public:
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
   int SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags);
   void ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation);
+  // 0x514080. Rescind counterpart -- see the .cpp body comment.
+  void ApplyEngineerRailCostDeltaForConnectedTiles(short tileA, short tileB, short ownerNation);
   short FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex, char allowActiveFlag2);
   // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade
   // manager's proposal-weight metric). Reattributed from TCivToolbar (heuristic 46).
@@ -301,6 +359,11 @@ public:
   TCivUnit* GetFirstCivilianOrderOnTile(short tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }
+
+  // 0x514250. Walks the tile's civilian-order chain (GetFirstCivilianOrderOnTile) for the
+  // first entry owned by nationId. Reattributed from TCivToolbar (Ghidra bucket heuristic;
+  // `this` at the callsite is the global map state, not a TCivToolbar).
+  TCivUnit* GetTileUnitEntryByOwner(short tileIndex, short nationId);
 
   char CallMetricSlotC4(int regionIndex, int edgeIndex);
   short QueryIconStripXSlot110(int iconCode);
